@@ -80,6 +80,7 @@ public class PSSPatientUtils {
 				location = homepage.locationpage();
 				Log4jUtil.log("Starting point not Present going to select next provider ");
 			}
+
 		} else if (testData.isIsstartpointPresent()) {
 			startappointmentInOrder = homepage.startpage();
 			Log4jUtil.log("in else part  click on  " + PSSConstants.START_LOCATION);
@@ -132,7 +133,6 @@ public class PSSPatientUtils {
 		} else {
 			Log4jUtil.log("Start point not present");
 			provider = homepage.providerpage();
-
 		}
 
 		Log4jUtil.log("Step 9: Verfiy Provider Page and provider =" + testData.getProvider());
@@ -145,7 +145,7 @@ public class PSSPatientUtils {
 		AppointmentDateTime aptDateTime = appointmentpage.selectTypeOfAppointment(testData.getAppointmenttype(), Boolean.valueOf(testData.getIsAppointmentPopup()));
 		aptDateTime.selectDate(testData.getIsNextDayBooking());
 		Thread.sleep(6000);
-		bookAppointment(false, aptDateTime, testData, driver);
+		clickOnSubmitAppt(false, aptDateTime, testData, driver);
 	}
 
 	public void BTLFlow(HomePage homepage, Appointment testData, String startOrderOn, WebDriver driver) throws Exception {
@@ -190,7 +190,7 @@ public class PSSPatientUtils {
 		AppointmentDateTime aptDateTime = location.selectDatTime(testData.getLocation());
 		aptDateTime.selectDate(testData.getIsNextDayBooking());
 		Thread.sleep(6000);
-		bookAppointment(false, aptDateTime, testData, driver);
+		clickOnSubmitAppt(false, aptDateTime, testData, driver);
 	}
 
 	public void LTBFlow(HomePage homepage, Appointment testData, String startOrderOn, WebDriver driver) throws Exception {
@@ -232,12 +232,12 @@ public class PSSPatientUtils {
 		Thread.sleep(15000);
 		Provider provider = appointment.selectTypeOfProvider(testData.getAppointmenttype(), Boolean.valueOf(testData.getIsAppointmentPopup()));
 		Log4jUtil.log("Step 11: Verfiy Provider Page and Provider = " + testData.getProvider());
-		Thread.sleep(22000);
+		Thread.sleep(2000);
 		AppointmentDateTime aptDateTime = provider.searchForProviderFromList(testData.getProvider());
 		assertTrue(aptDateTime.areBasicPageElementsPresent());
 		aptDateTime.selectDate(testData.getIsNextDayBooking());
 		Thread.sleep(6000);
-		bookAppointment(false, aptDateTime, testData, driver);
+		clickOnSubmitAppt(false, aptDateTime, testData, driver);
 	}
 
 	public void TLBFlow(HomePage homepage, Appointment testData, String startOrderOn, WebDriver driver) throws Exception {
@@ -270,9 +270,7 @@ public class PSSPatientUtils {
 		} else {
 			Log4jUtil.log("Start point not present");
 			appointment = homepage.appointmentpage();
-
 		}
-
 		Log4jUtil.log("Step 9: Verfiy Appointment Page and appointment =" + testData.getAppointmenttype());
 		assertTrue(appointment.areBasicPageElementsPresent());
 		Location location = appointment.selectTypeOfLocation(testData.getAppointmenttype(), Boolean.valueOf(testData.getIsAppointmentPopup()));
@@ -338,7 +336,8 @@ public class PSSPatientUtils {
 		AppointmentDateTime aptDateTime = location.selectDatTime(testData.getLocation());
 		aptDateTime.selectDate(testData.getIsNextDayBooking());
 		Log4jUtil.log("current URL " + driver.getCurrentUrl());
-		bookAppointment(false, aptDateTime, testData, driver);
+		clickOnSubmitAppt(false, aptDateTime, testData, driver);
+		Log4jUtil.log("Test Case Passed");
 	}
 
 	public void TBLFlow(HomePage homepage, Appointment testData, String startOrderOn, AppointmentPage appointment, WebDriver driver) throws Exception {
@@ -410,15 +409,15 @@ public class PSSPatientUtils {
 		AppointmentDateTime aptDateTime = location.selectDatTime(testData.getLocation());
 		aptDateTime.selectDate(testData.getIsNextDayBooking());
 		Log4jUtil.log("current URL " + driver.getCurrentUrl());
-		bookAppointment(false, aptDateTime, testData, driver);
+		clickOnSubmitAppt(false, aptDateTime, testData, driver);
 	}
 
 	public void STLBFlow(HomePage homepage, Appointment testData, String startOrderOn, WebDriver driver) throws Exception {
 		Log4jUtil.log("Step 8: Select Appointment for appointment.");
 		Log4jUtil.log("--------Flow Starts---------------");
-		AppointmentPage appointment = null;
-		StartAppointmentInOrder startappointmentInOrder = null;
-		Speciality speciality = null;
+		AppointmentPage appointment;
+		StartAppointmentInOrder startappointmentInOrder;
+		Speciality speciality;
 		Log4jUtil.log("Insurance is Enabled " + testData.isIsinsuranceVisible());
 		Log4jUtil.log("startPage is Visible " + testData.isIsstartpointPresent());
 

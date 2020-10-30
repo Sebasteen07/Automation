@@ -13,7 +13,6 @@ import com.medfusion.product.object.maps.patientportal2.page.JalapenoLoginPage;
 import com.medfusion.product.object.maps.patientportal2.page.CreateAccount.PatientDemographicPage;
 import com.medfusion.product.object.maps.patientportal2.page.CreateAccount.SecurityDetailsPage;
 import com.medfusion.product.object.maps.patientportal2.page.HomePage.JalapenoHomePage;
-import com.medfusion.product.object.maps.pss2.page.AppEntryPoint.StartAppointmentInOrder;
 import com.medfusion.product.object.maps.pss2.page.Appointment.DateTime.AppointmentDateTime;
 import com.medfusion.product.object.maps.pss2.page.Appointment.HomePage.HomePage;
 import com.medfusion.product.object.maps.pss2.page.Appointment.HomePage.SelectProfilePage;
@@ -45,44 +44,56 @@ public class PSS2PatientPortalAcceptanceTests extends BaseTestNGWebDriver {
 
 	@Test(enabled = true, groups = {"AcceptanceTests"}, retryAnalyzer = RetryAnalyzer.class)
 	public void testE2ELoginlessForExistingPatientGW() throws Exception {
+
+		log("E2E test to verify loginless appointment for a Existing patient for GW");
 		log("Test To View if configuration change from Admin is reflected in PSS patient portal");
-		log("Step 1: set test data for existing patient ");
 		PSSPropertyFileLoader propertyData = new PSSPropertyFileLoader();
+
 		Appointment testData = new Appointment();
 		AdminUser adminuser = new AdminUser();
+		PSSAdminUtils adminUtils = new PSSAdminUtils();
+
+		log("Step 1: Set the Test Data for GW ADMIN & APPOINTMENT-------");
 		propertyData.setAdminGW(adminuser);
 		propertyData.setAppointmentResponseGW(testData);
-		adminuser.setIsLoginlessFlow(true);
-		adminuser.setIsExisting(true);
-		PSSAdminUtils adminUtils = new PSSAdminUtils();
+
+		log(testData.getUrlLoginLess());
+		log("Appointment Type- " + testData.getAppointmenttype());
+		log("Location- " + testData.getLocation());
+		log("Provider Name- " + testData.getProvider());
+
 		log("Step 2: Fetch rule and settings from PSS 2.0 Admin portal");
-		adminUtils.adminSettings(driver, adminuser, testData, PSSConstants.LOGINLESS);
-		log("Step 3: Fetch the rules set in Admin");
+		log("--------Admin Setting for Loginless Flow Starts----------");
+		adminUtils.adminSettingsLoginless(driver, adminuser, testData, PSSConstants.LOGINLESS);
 		String rule = adminuser.getRule();
-		log("rule are " + rule);
 		rule = rule.replaceAll(" ", "");
+		log("Rule -" + rule);
+
+		log("Step 3: Move to PSS patient Portal 2.0 to book an Appointment");
 		PSSPatientUtils psspatientutils = new PSSPatientUtils();
-		log("Step 4: Move to PSS patient Portal 2.0 to book an Appointment - " + testData.getUrlLoginLess());
-		OnlineAppointmentScheduling onlineappointmentschedulingPage = new OnlineAppointmentScheduling(driver, testData.getUrlLoginLess());
-		log("Step 5: Select Existing patient from the list");
-		ExistingPatient existingpatient = onlineappointmentschedulingPage.selectExistingPatient();
-		log("Step 6: Set the Patient criteria");
-		Boolean isPrivacyPageEnabled = true;
-		HomePage homepage = null;
-		if (isPrivacyPageEnabled) {
-			log("Privacy Enabled");
-			PrivacyPolicy privacypolicy = existingpatient.loginPatient(testData.getFirstName(), testData.getLastName(), testData.getDob(), testData.getEmail(),
-					testData.getGender(), testData.getZipCode());
-			homepage = privacypolicy.submitPrivacyPage();
-		} else {
-			log("Privacy Disabled");
-			homepage = existingpatient.login(testData.getFirstName(), testData.getLastName(), testData.getDob(), testData.getEmail(), testData.getGender(),
-					testData.getZipCode());
-		}
-		log("Wait for patient HomePage to be loaded..");
-		Thread.sleep(14000);
-		log("Step 7: Start the Booking appointment flow=" + rule);
+
+		log("Step 4: Login to PSS Appointment");
+		DismissPage dismissPage = new DismissPage(driver, testData.getUrlLoginLess());
+		Thread.sleep(1000);
+
+		log("Step 5: LoginlessPatientInformation****");
+		log("Clicked on Dismiss");
+		LoginlessPatientInformation loginlessPatientInformation = dismissPage.clickDismiss();
+
+		log("Step 6: Fill Patient criteria");
+		log("First Name- " + testData.getFirstName());
+		log("Last Name- " + testData.getLastName());
+		log("Gender- " + testData.getGender());
+		log("Email- " + testData.getEmail());
+		log("Phone Number- " + testData.getPrimaryNumber());
+		log("Date Of Birth- " + testData.getDob());
+		Thread.sleep(3000);
+
+		HomePage homepage = loginlessPatientInformation.fillNewPatientForm(testData.getFirstName(), testData.getLastName(), testData.getDob(), testData.getEmail(),
+				testData.getGender(), testData.getZipCode(), testData.getPrimaryNumber());
+
 		psspatientutils.selectAFlow(driver, rule, homepage, testData);
+
 	}
 
 	@Test(enabled = true, groups = {"AcceptanceTests"}, retryAnalyzer = RetryAnalyzer.class)
@@ -638,56 +649,156 @@ public class PSS2PatientPortalAcceptanceTests extends BaseTestNGWebDriver {
 
 	@Test(enabled = true, groups = {"AcceptanceTests"}, retryAnalyzer = RetryAnalyzer.class)
 	public void testE2ELoginlessForExistingPatientGE() throws Exception {
-		log("Test To View if configuration change from Admin is reflected in PSS patient portal for GE");
-		log("Step 1: set test data for existing patient ");
+
+		log("E2E test to verify loginless appointment for a Existing patient for GE");
+		log("Test To View if configuration change from Admin is reflected in PSS patient portal");
+		PSSPropertyFileLoader propertyData = new PSSPropertyFileLoader();
+
+		Appointment testData = new Appointment();
+		AdminUser adminuser = new AdminUser();
+		PSSAdminUtils adminUtils = new PSSAdminUtils();
+
+		log("Step 1: Set the Test Data for GE ADMIN & APPOINTMENT-------");
+		propertyData.setAdminGE(adminuser);
+		propertyData.setAppointmentResponseGE(testData);
+
+		log(testData.getUrlLoginLess());
+		log(testData.getAppointmenttype());
+
+		log("Step 2: Fetch rule and settings from PSS 2.0 Admin portal");
+		log("--------Admin Setting for Loginless Flow Starts----------");
+		adminUtils.adminSettingsLoginless(driver, adminuser, testData, PSSConstants.LOGINLESS);
+		String rule = adminuser.getRule();
+		rule = rule.replaceAll(" ", "");
+		log("Rule -" + rule);
+
+		log("Step 3: Move to PSS patient Portal 2.0 to book an Appointment");
+		PSSPatientUtils psspatientutils = new PSSPatientUtils();
+
+		log("Step 4: Login to PSS Appointment");
+		DismissPage dismissPage = new DismissPage(driver, testData.getUrlLoginLess());
+		Thread.sleep(1000);
+
+		log("Step 5: LoginlessPatientInformation****");
+		log("Clicked on Dismiss");
+		LoginlessPatientInformation loginlessPatientInformation = dismissPage.clickDismiss();
+
+		log("Step 6: Fill Patient criteria");
+		log("First Name- " + testData.getFirstName());
+		log("Last Name- " + testData.getLastName());
+		log("Gender- " + testData.getGender());
+		log("Email- " + testData.getEmail());
+		log("Phone Number- " + testData.getPrimaryNumber());
+		log("Date Of Birth- " + testData.getDob());
+		Thread.sleep(3000);
+
+		HomePage homepage = loginlessPatientInformation.fillNewPatientForm(testData.getFirstName(), testData.getLastName(), testData.getDob(), testData.getEmail(),
+				testData.getGender(), testData.getZipCode(), testData.getPrimaryNumber());
+		psspatientutils.selectAFlow(driver, rule, homepage, testData);
+
+	}
+
+	@Test(enabled = true, groups = {"AcceptanceTests"}, retryAnalyzer = RetryAnalyzer.class)
+	public void testE2ELoginlessForExistingPatientNG() throws Exception {
+
+		log("E2E test to verify loginless appointment for a Existing patient for NG");
+		log("Test To View if configuration change from Admin is reflected in PSS patient portal");
+		PSSPropertyFileLoader propertyData = new PSSPropertyFileLoader();
+
+		Appointment testData = new Appointment();
+		AdminUser adminuser = new AdminUser();
+		PSSAdminUtils adminUtils = new PSSAdminUtils();
+
+		log("Step 1: Set the Test Data for NG ADMIN & APPOINTMENT-------");
+		propertyData.setAdminNG(adminuser);
+		propertyData.setAppointmentResponseNG(testData);
+
+		log(testData.getUrlLoginLess());
+		log(testData.getAppointmenttype());
+
+		log("Step 2: Fetch rule and settings from PSS 2.0 Admin portal");
+		log("--------Admin Setting for Loginless Flow Starts----------");
+		adminUtils.adminSettingsLoginless(driver, adminuser, testData, PSSConstants.LOGINLESS);
+		String rule = adminuser.getRule();
+		rule = rule.replaceAll(" ", "");
+		log("Rule -" + rule);
+
+		log("Step 3: Move to PSS patient Portal 2.0 to book an Appointment");
+		PSSPatientUtils psspatientutils = new PSSPatientUtils();
+
+		log("Step 4: Login to PSS Appointment");
+		DismissPage dismissPage = new DismissPage(driver, testData.getUrlLoginLess());
+		Thread.sleep(1000);
+
+		log("Step 5: LoginlessPatientInformation****");
+		log("Clicked on Dismiss");
+		LoginlessPatientInformation loginlessPatientInformation = dismissPage.clickDismiss();
+
+		log("Step 6: Fill Patient criteria");
+		log("First Name- " + testData.getFirstName());
+		log("Last Name- " + testData.getLastName());
+		log("Gender- " + testData.getGender());
+		log("Email- " + testData.getEmail());
+		log("Phone Number- " + testData.getPrimaryNumber());
+		log("Date Of Birth- " + testData.getDob());
+		Thread.sleep(3000);
+
+		HomePage homepage = loginlessPatientInformation.fillNewPatientForm(testData.getFirstName(), testData.getLastName(), testData.getDob(), testData.getEmail(),
+				testData.getGender(), testData.getZipCode(), testData.getPrimaryNumber());
+		psspatientutils.selectAFlow(driver, rule, homepage, testData);
+
+	}
+
+	@Test(enabled = true, groups = {"AcceptanceTests"}, retryAnalyzer = RetryAnalyzer.class)
+	public void testE2ELoginlessForExistingPatientAT() throws Exception {
+
+		log("E2E test to verify loginless appointment for a Existing patient for AT");
+		log("Test To View if configuration change from Admin is reflected in PSS patient portal");
 		PSSPropertyFileLoader propertyData = new PSSPropertyFileLoader();
 		Appointment testData = new Appointment();
 		AdminUser adminuser = new AdminUser();
-		propertyData.setAdminGE(adminuser);
-		propertyData.setAppointmentResponseGE(testData);
-		adminuser.setIsLoginlessFlow(true);
-		adminuser.setIsExisting(true);
 		PSSAdminUtils adminUtils = new PSSAdminUtils();
+
+		log("Step 1: Set the Test Data for AT ADMIN & APPOINTMENT-------");
+		propertyData.setAdminAT(adminuser);
+		propertyData.setAppointmentResponseAT(testData);
+
+		log(testData.getUrlLoginLess());
+		log("Appointment Type- " + testData.getAppointmenttype());
+		log("Location- " + testData.getLocation());
+		log("Provider Name- " + testData.getProvider());
+
 		log("Step 2: Fetch rule and settings from PSS 2.0 Admin portal");
-		adminUtils.adminSettings(driver, adminuser, testData, PSSConstants.LOGINLESS);
-		log("Step 3: Fetch the rules set in Admin");
+		log("--------Admin Setting for Loginless Flow Starts----------");
+		adminUtils.adminSettingsLoginless(driver, adminuser, testData, PSSConstants.LOGINLESS);
 		String rule = adminuser.getRule();
 		rule = rule.replaceAll(" ", "");
-		log("rule are " + rule);
-		log("char At start is=" + (rule.charAt(0) == 'S'));
-		String subRule;
-		if ((rule.charAt(0) == 'S')) {
-			subRule = rule.substring(2, 7);
-			log("subRule = " + subRule);
-		} else {
-			subRule = rule;
-		}
+		log("Rule- " + rule);
+
+		log("Step 3: Move to PSS patient Portal 2.0 to book an Appointment");
 		PSSPatientUtils psspatientutils = new PSSPatientUtils();
-		log("Step 4: Move to PSS patient Portal 2.0 to book an Appointment");
-		OnlineAppointmentScheduling onlineappointmentschedulingPage = new OnlineAppointmentScheduling(driver, testData.getUrlLoginLess());
-		log("Step 5: Select Existing patient from the list");
-		ExistingPatient existingpatient = onlineappointmentschedulingPage.selectExistingPatient();
-		log("Step 6: Set the Patient criteria");
-		Boolean isPrivacyPageEnabled = false;
-		HomePage homepage = null;
-		if (isPrivacyPageEnabled) {
-			log("Privacy Enabled");
-			PrivacyPolicy privacypolicy = existingpatient.loginPatient(testData.getFirstName(), testData.getLastName(), testData.getDob(), testData.getEmail(),
-					testData.getGender(), testData.getZipCode());
-			homepage = privacypolicy.submitPrivacyPage();
-		} else {
-			log("Privacy Disabled");
-			homepage = existingpatient.login(testData.getFirstName(), testData.getLastName(), testData.getDob(), testData.getEmail(), testData.getGender(),
-					testData.getZipCode());
-		}
-		Thread.sleep(11000);
-		log("getSpeciality = " + testData.getSpeciality());
-		StartAppointmentInOrder startappointmentinorder = homepage.selectSpeciality(testData.getSpeciality());
-		AppointmentPage appointmentpage = startappointmentinorder.selectFirstAppointment(PSSConstants.START_APPOINTMENT);
-		log("appointmentpage " + appointmentpage.getClass());
-		log("Step 7: Start the Booking appointment flow=" + rule);
-		psspatientutils.selectAFlow(driver, subRule, homepage, testData, appointmentpage);
-		Thread.sleep(11000);
+
+		log("Step 4: Login to PSS Appointment");
+		DismissPage dismissPage = new DismissPage(driver, testData.getUrlLoginLess());
+		Thread.sleep(1000);
+
+		log("Step 5: LoginlessPatientInformation****");
+		log("Clicked on Dismiss");
+		LoginlessPatientInformation loginlessPatientInformation = dismissPage.clickDismiss();
+
+		log("Step 6: Fill Patient criteria");
+		log("First Name- " + testData.getFirstName());
+		log("Last Name- " + testData.getLastName());
+		log("Gender- " + testData.getGender());
+		log("Email- " + testData.getEmail());
+		log("Phone Number- " + testData.getPrimaryNumber());
+		log("Date Of Birth- " + testData.getDob());
+		Thread.sleep(3000);
+
+		HomePage homepage = loginlessPatientInformation.fillNewPatientForm(testData.getFirstName(), testData.getLastName(), testData.getDob(), testData.getEmail(),
+				testData.getGender(), testData.getZipCode(), testData.getPrimaryNumber());
+		psspatientutils.selectAFlow(driver, rule, homepage, testData);
+
 	}
 
 	@DataProvider(name = "partnerType")
