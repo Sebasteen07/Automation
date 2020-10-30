@@ -216,7 +216,7 @@ public class NGAPIFlows {
 		try{ 
             allergy.setAllergyId(allergyID);
             allergy.setAllergyTypeId(AllergyType);
-            allergy.setOnsetDate(sdf.format(new Date()));
+            allergy.setOnsetDate(sdf.format(DateUtils.addDays(new Date(), -1)));
             allergy.setlocationId(DBUtils.executeQueryOnDB("NGCoreDB",strSqlQueryForLocation.replace("locationName", locationName)));
             allergy.setproviderId(DBUtils.executeQueryOnDB("NGCoreDB",strSqlQueryForProvider.replace("ProviderName",ProviderName)));
            
