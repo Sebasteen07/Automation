@@ -330,7 +330,7 @@ public class PSSAdminUtils {
 		appointment.setIsinsuranceVisible(patientflow.insuracetogglestatus());
 		Log4jUtil.log("Insurance is Enabled= " + patientflow.insuracetogglestatus());
 		appointment.setIsstartpointPresent(patientflow.isstartpagepresent());
-		Log4jUtil.log("Startpoint is Enabled= " + patientflow.isstartpagepresent());
+		Log4jUtil.log("StartPage is Visible= " + patientflow.isstartpagepresent());
 		patientflow.logout();
 
 	}
