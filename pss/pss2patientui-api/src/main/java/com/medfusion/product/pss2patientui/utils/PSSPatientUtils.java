@@ -336,7 +336,6 @@ public class PSSPatientUtils {
 		AppointmentDateTime aptDateTime = location.selectDatTime(testData.getLocation());
 		aptDateTime.selectDate(testData.getIsNextDayBooking());
 		Log4jUtil.log("current URL " + driver.getCurrentUrl());
-		// bookAppointment(false, aptDateTime, testData, driver);
 		clickOnSubmitAppt(false, aptDateTime, testData, driver);
 		Log4jUtil.log("Test Case Passed");
 	}
@@ -410,7 +409,6 @@ public class PSSPatientUtils {
 		AppointmentDateTime aptDateTime = location.selectDatTime(testData.getLocation());
 		aptDateTime.selectDate(testData.getIsNextDayBooking());
 		Log4jUtil.log("current URL " + driver.getCurrentUrl());
-		// bookAppointment(false, aptDateTime, testData, driver);
 		clickOnSubmitAppt(false, aptDateTime, testData, driver);
 	}
 

@@ -56,7 +56,6 @@ public class Provider extends PSS2MainPage {
 		log("in selectLocation providerList" + providerName);
 		for (int i = 0; i < providerList.size(); i++) {
 			log(providerList.get(i).getText() + " match " + providerList.get(i).getText().equalsIgnoreCase(providerName));
-			// if (providerList.get(i).getText().contains(providerName)) {
 			if (providerList.get(i).getText().trim().equalsIgnoreCase(providerName.trim())) {
 				providerList.get(i).click();
 				return PageFactory.initElements(driver, Location.class);
