@@ -414,7 +414,7 @@ public class NGAPIUtils {
 	public synchronized static void updateLoginDefaultTo(String mode,String enterpriseID, String practiceID) throws Throwable {
 		Log4jUtil.log("Step Begins --- API Route Change the Login Defaults: enterpriseID -"+enterpriseID+", practiceID -"+practiceID);
 
-        String strSqlQueryForUserDetails="select user_id from user_mstr where email_login_id='" + EnterpriseEmail + "'";
+		String strSqlQueryForUserDetails="select top 1 user_id from user_mstr where email_login_id='" + EnterpriseEmail + "' order by create_timestamp";
         String CurrentUserID =DBUtils.executeQueryOnDB("NGCoreDB",strSqlQueryForUserDetails);
 
         String LogInDefaultsUrl= BaseURL+apiRoutes.LogInDefaults.getRouteURL().toString().replace("userId", CurrentUserID);

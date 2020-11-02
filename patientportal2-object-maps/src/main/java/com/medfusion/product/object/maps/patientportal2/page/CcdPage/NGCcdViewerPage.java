@@ -1,10 +1,14 @@
 // Copyright 2020 NXGN Management, LLC. All Rights Reserved.
 package com.medfusion.product.object.maps.patientportal2.page.CcdPage;
 
+import static org.testng.Assert.assertTrue;
+
 import java.io.IOException;
 import java.net.URISyntaxException;
 import java.util.ArrayList;
 
+import org.openqa.selenium.By;
+import org.openqa.selenium.NoSuchElementException;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.FindBy;
@@ -15,6 +19,7 @@ import org.openqa.selenium.support.ui.WebDriverWait;
 import org.testng.Assert;
 
 import com.medfusion.common.utils.IHGUtil;
+import com.intuit.ifs.csscat.core.utils.Log4jUtil;
 import com.intuit.ihg.common.utils.downloads.RequestMethod;
 import com.intuit.ihg.common.utils.downloads.URLStatusChecker;
 import com.medfusion.product.object.maps.patientportal2.page.MedfusionPage;
@@ -305,7 +310,6 @@ public class NGCcdViewerPage extends MedfusionPage {
 			webElementsList.add(problems);
 			webElementsList.add(medication);
 			webElementsList.add(allergies);
-			webElementsList.add(pastMedicalHistory);
 			webElementsList.add(procedures);
 			webElementsList.add(vitalSigns);
 			webElementsList.add(results);
@@ -315,7 +319,6 @@ public class NGCcdViewerPage extends MedfusionPage {
 			webElementsList.add(immunizations);
 			webElementsList.add(payer);
 			webElementsList.add(socialHistory);
-			webElementsList.add(chiefComplaintAndReasonForVisit);
 			webElementsList.add(reasonForReferral);
 			webElementsList.add(planOfTreatment);
 			webElementsList.add(functionalStatus);
@@ -326,9 +329,124 @@ public class NGCcdViewerPage extends MedfusionPage {
 			webElementsList.add(medicalEquipment);
 			webElementsList.add(mentalStatus);
 			webElementsList.add(healthConcerns);
-			webElementsList.add(generalStatus);
-			webElementsList.add(reviewOfSystem);
 
 			return assessPageElements(webElementsList);
 	}
+		
+		public void verifyCCDElementsContent(WebDriver driver,String allergy,String medication, String Problem, String Result, String diagnosis) {
+
+			String allergyXPath ="//h2[text()='Allergies, Adverse Reactions, Alerts']";
+			String medicationXPath = "//h2[text()='Medications']";
+			String problemXPath = "//h2[text()='Problems']";
+			String resultsXPath = "//h2[text()='Results']";
+			String encounterXPath = "//h2[text()='Encounters']";
+			
+			Boolean status =driver.findElement(By.xpath(allergyXPath+"//parent::section//td[contains(text(),'"+allergy+"')]")).isDisplayed();
+			checkStatus(status,"Allergy");
+			
+			status =driver.findElement(By.xpath(medicationXPath+"//parent::section//td[contains(text(),'"+medication+"')]")).isDisplayed();
+			checkStatus(status,"Medication");
+			
+			status =driver.findElement(By.xpath(problemXPath+"//parent::section//td[contains(text(),'"+Problem+"')]")).isDisplayed();
+			checkStatus(status,"Problem");
+			
+			if(Result.isEmpty()){
+				status =driver.findElement(By.xpath(resultsXPath+"//parent::section//td[contains(text(),'No Information')]")).isDisplayed();
+				assertTrue(status);
+			}
+			else{
+			status =driver.findElement(By.xpath(resultsXPath+"//parent::section//td[contains(text(),'"+Result+"')]")).isDisplayed();
+			checkStatus(status,"Result");}
+		
+			status =driver.findElement(By.xpath(encounterXPath+"//parent::section//li[contains(text(),'"+diagnosis+"')]")).isDisplayed();
+			checkStatus(status,"Encounter");
+		}
+			
+		public void verifySensitiveONDemandCCDElementsContent(WebDriver driver) {
+
+			String allergyXPath ="//h2[text()='Allergies, Adverse Reactions, Alerts']";
+			String medicationXPath = "//h2[text()='Medications']";
+			String problemXPath = "//h2[text()='Problems']";
+			String resultsXPath = "//h2[text()='Results']";
+			String encounterXPath = "//h2[text()='Encounters']";
+			String expectedText ="As per patient privacy policy some of the clinical information may not be visible.";
+			
+			Boolean status =driver.findElement(By.xpath(allergyXPath+"//parent::section//td[contains(text(),'No Information')]")).isDisplayed();
+			checkStatus(status,"Allergy");
+			verifySensitiveText(driver, allergyXPath, expectedText);
+			
+			status =driver.findElement(By.xpath(medicationXPath+"//parent::section//td[contains(text(),'No Information')]")).isDisplayed();
+			checkStatus(status,"Medication");
+			verifySensitiveText(driver, medicationXPath, expectedText);
+			//Problem can be displayed
+//			status =driver.findElement(By.xpath(problemXPath+"//parent::section//td[contains(text(),'No Information')]")).isDisplayed();
+//			checkStatus(status,"Problem"); 
+			verifySensitiveText(driver, problemXPath, expectedText);
+			
+			status =driver.findElement(By.xpath(resultsXPath+"//parent::section//td[contains(text(),'No Information')]")).isDisplayed();
+			checkStatus(status,"Result");
+			verifySensitiveText(driver, resultsXPath, expectedText);
+		
+			try{
+				status =driver.findElement(By.xpath(encounterXPath+"//parent::section//td[contains(text(),'No Information')]")).isDisplayed();}
+			catch(NoSuchElementException e){
+				status=true;
+				Log4jUtil.log("Encounter sensitive information is not displayed as expected");
+			}
+			assertTrue(status);
+			verifySensitiveText(driver, encounterXPath, expectedText);
+		}
+		
+		public void checkStatus(Boolean status,String ccdElement){
+		if(status)
+			Log4jUtil.log(ccdElement+" is displayed as expected");
+		else{
+			Log4jUtil.log(ccdElement+" is not displayed");
+		}
+		assertTrue(status);
+		}
+		
+		public void verifySensitiveText(WebDriver driver,String ccdElement,String expectedText){	
+			Boolean status = false;
+			if(driver.findElement(By.xpath(ccdElement+"//parent::section//p")).isDisplayed()){
+				if(driver.findElement(By.xpath(ccdElement+"//parent::section//p")).getText().equalsIgnoreCase(expectedText)){
+					Log4jUtil.log(ccdElement+" sensitive information is displayed as expected");
+					status =true;
+				}
+			}
+			else{
+				Log4jUtil.log(ccdElement+" sensitive information is not displayed");
+			}
+			assertTrue(status);
+		}
+		
+		public void verifySensitiveMSUCCDElementsContent(WebDriver driver) {
+
+			String allergyXPath ="//h2[text()='Allergies, Adverse Reactions, Alerts']";
+			String medicationXPath = "//h2[text()='Medications']";
+			String problemXPath = "//h2[text()='Problems']";
+			String resultsXPath = "//h2[text()='Results']";
+			String encounterXPath = "//h2[text()='Encounters']";
+			
+			Boolean status =driver.findElement(By.xpath(allergyXPath+"//parent::section//td[contains(text(),'No Information')]")).isDisplayed();
+			checkStatus(status,"Allergy");
+			
+			status =driver.findElement(By.xpath(medicationXPath+"//parent::section//td[contains(text(),'No Information')]")).isDisplayed();
+			checkStatus(status,"Medication");
+			
+			status =driver.findElement(By.xpath(problemXPath+"//parent::section//td[contains(text(),'No Information')]")).isDisplayed();
+			checkStatus(status,"Problem");
+			
+			status =driver.findElement(By.xpath(resultsXPath+"//parent::section//td[contains(text(),'No Information')]")).isDisplayed();
+			checkStatus(status,"Result");
+		
+			try{
+				status =driver.findElement(By.xpath(encounterXPath+"//parent::section//td[contains(text(),'No Information')]")).isDisplayed();}
+			catch(NoSuchElementException e){
+				status=true;
+				Log4jUtil.log("Encounter sensitive information is not displayed as expected");
+			}
+			assertTrue(status);
+		}
+
 }

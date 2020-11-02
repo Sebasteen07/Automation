@@ -5,11 +5,14 @@ import java.util.ArrayList;
 import java.util.List;
 
 import org.openqa.selenium.By;
+import org.openqa.selenium.JavascriptExecutor;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.FindBy;
 import org.openqa.selenium.support.How;
 import org.openqa.selenium.support.PageFactory;
+import org.testng.Assert;
+
 import com.medfusion.common.utils.IHGUtil;
 import com.medfusion.product.object.maps.patientportal2.page.JalapenoMenu;
 import com.medfusion.product.object.maps.patientportal2.page.CcdPage.JalapenoCcdViewerPage;
@@ -259,6 +262,30 @@ public class JalapenoMessagesPage extends JalapenoMenu {
 		ccdDocument.click();
 
 		return PageFactory.initElements(driver, NGCcdViewerPage.class);
+	}
+	
+	public void archiveMessage() {
+		IHGUtil.PrintMethodName();
+		IHGUtil.waitForElement(driver, 60, archiveButton);
+		archiveButton.click();
+	}
+	
+	public void verifyMessageContent(WebDriver driver, String subject,String body) {
+		IHGUtil.PrintMethodName();
+		WebElement element;
+		String actualBody =null;
+			try {
+				element = driver.findElement(By.xpath("//*/ul/li/a/span[contains(text(),'" + subject + "')]"));
+				log("Message with subject \"" + subject + "\" displayed. Clicking to message");
+				Thread.sleep(10000);
+				((JavascriptExecutor) driver).executeScript("arguments[0].click();", element);
+				Thread.sleep(10000);
+				actualBody= getMessageBody();
+			} catch (Exception ex) {
+				log("Message with subject " + subject+"is not clickable");
+				log(ex.getMessage());
+			}
+			Assert.assertEquals(actualBody, body);
 	}
 }
 
