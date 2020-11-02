@@ -6,7 +6,6 @@ import java.util.Arrays;
 import java.util.List;
 import java.util.Random;
 
-import com.medfusion.portal.utils.PortalConstants;
 import org.apache.commons.lang.StringUtils;
 import org.testng.annotations.DataProvider;
 import org.testng.annotations.Test;
@@ -27,6 +26,7 @@ import com.intuit.ihg.product.integrationplatform.utils.StatementPreferenceTestD
 import com.intuit.ihg.product.object.maps.smintegration.page.BetaCreateNewPatientPage;
 import com.medfusion.common.utils.IHGUtil;
 import com.medfusion.common.utils.Mailinator;
+import com.medfusion.portal.utils.PortalConstants;
 import com.medfusion.product.object.maps.patientportal1.page.MyPatientPage;
 import com.medfusion.product.object.maps.patientportal1.page.PortalLoginPage;
 import com.medfusion.product.object.maps.patientportal1.page.createAccount.CreateAccountPage;
@@ -39,6 +39,9 @@ import com.medfusion.product.object.maps.patientportal1.page.solutions.askstaff.
 import com.medfusion.product.object.maps.patientportal1.page.solutions.askstaff.AskAStaffStep1Page;
 import com.medfusion.product.object.maps.patientportal1.page.solutions.askstaff.AskAStaffStep2Page;
 import com.medfusion.product.object.maps.patientportal1.page.solutions.askstaff.AskAStaffStep3Page;
+import com.medfusion.product.object.maps.patientportal2.page.JalapenoLoginPage;
+import com.medfusion.product.object.maps.patientportal2.page.HomePage.JalapenoHomePage;
+import com.medfusion.product.object.maps.patientportal2.page.MessagesPage.JalapenoMessagesPage;
 import com.medfusion.product.object.maps.practice.page.PracticeHomePage;
 import com.medfusion.product.object.maps.practice.page.PracticeLoginPage;
 import com.medfusion.product.object.maps.practice.page.patientSearch.PatientDashboardPage;
@@ -728,6 +731,8 @@ public class IntegrationPlatformRegressionTests extends BaseTestNGWebDriver {
 
 		List<String> valuedData = RestUtils.patientDatails;
 
+		log("Payload is :   " + message);
+
 		log("Step 3: POST AMDC with batch size 3");
 		String processingUrl = RestUtils.setupHttpPostRequestExceptOauth(testData.getRestUrl(), message, testData.getResponsePath(), null);
 
@@ -743,33 +748,29 @@ public class IntegrationPlatformRegressionTests extends BaseTestNGWebDriver {
 
 		for (int j = 0; j < 3; j++) {
 			log("Step 5: Login to Patient Portal");
-			PortalLoginPage loginPage = new PortalLoginPage(driver, testData.getUrl());
-			MyPatientPage myPatientPage = loginPage.login(valuedData.get(1), testData.getPassword());
+			JalapenoLoginPage loginPage = new JalapenoLoginPage(driver, testData.getUrl());
+			JalapenoHomePage homePage = loginPage.login(valuedData.get(1), testData.getPassword());
 
 			log("Step 6: Go to Inbox");
-			MessageCenterInboxPage inboxPage = myPatientPage.clickViewAllMessagesInMessageCenter();
-			assertTrue(inboxPage.isInboxLoaded(), "Inbox failed to load properly.");
+
+			JalapenoMessagesPage inboxPage = homePage.clickOnMenuMessages();
+			assertTrue(inboxPage.areBasicPageElementsPresent(), "Inbox failed to load properly.");
 
 			log("Step 7: Find message in Inbox");
 			String messageIdentifier = valuedData.get(2).toString();
 
 			log("Validate message loads and is the right message");
-			MessagePage msg = inboxPage.openMessageInInbox(messageIdentifier);
+			assertTrue(inboxPage.isMessageDisplayed(driver, messageIdentifier));
 
+			inboxPage.returnSubjectMessage();
 			log("Step 8: Validate message loads and is the right message");
-			assertTrue(msg.isSubjectLocated(messageIdentifier));
-
-			log("Validate the Sender Name ");
-			verifyEquals(msg.returnSenderName(), senderData.get(j), "Sender name is differ than actual");
-
-			log("Validate the Recipient Name ");
-			verifyEquals(msg.returnRecipientName(), recipientData.get(j), "Recipient name is differ than actual");
+			assertEquals(inboxPage.returnSubjectMessage(), messageIdentifier);
 
 			log("Validate the Message content ");
-			verifyEquals(msg.returnMessage(), valuedData.get(3), "Message is differ than actual");
+			assertEquals(inboxPage.getMessageBody(), valuedData.get(3));
 
 			log("Step 9: Logout");
-			myPatientPage.logout(driver);
+			homePage.clickOnLogout();
 
 			for (int k = 0; k < 4; k++) {
 				valuedData.remove(0);
