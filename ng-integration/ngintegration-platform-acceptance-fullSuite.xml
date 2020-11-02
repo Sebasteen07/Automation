@@ -1,0 +1,47 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<!-- Copyright 2020 NXGN Management, LLC. All Rights Reserved. -->
+
+<suite name = "NGIntegration-Platform-Acceptance-FullSuite" verbose = "2" >
+<listeners>
+  <listener class-name="com.intuit.ifs.csscat.core.TestValidationErrorListener" />
+  <listener class-name="org.uncommons.reportng.HTMLReporter" />
+  <listener class-name="org.uncommons.reportng.JUnitXMLReporter" />
+</listeners>
+ 	
+<test name = "NGIntegration-Platform-Acceptance-FullSuite" >
+	<classes>
+		<class name = "com.ng.product.integrationplatform.tests.NGIntegrationE2ESITTests" />
+		<methods>
+	    		<include name="testEnrollPatientWithOnlyMandatoryDemographicsToMFPortal"/>
+	    		<include name="testEnrollPatientWithoutMandatoryDemographicsToMFPortal"/>   
+	    		<include name="testEnrollPatientWithoutMandatoryDemographicsEmailAddressToMFPortal"/> 
+	    		<include name="testEnrollPatientWithoutMandatoryDemographicsZipToMFPortal"/> 
+	    		<include name="testDeletePatientEnrollment"/> 
+	    		<include name="testCreateDependentAndGuardian"/> 
+	    		<include name="testCreateGuardianAndDependentANDEnrollOnlyDependentToPortal"/>
+	    		<include name="testLACreateTrustedRepresentativeOnly"/>	
+	    		<include name="testEnrollPatientHavingInvalidZipToMFPortal"/>
+	    		<include name="testDeactivatePatientEnrollment"/>
+	    		<include name="testELEAutoPatientEnrollmentP2"/>
+	    		<include name="testELEAutoPatientEnrollmentP1"/>   
+	    		<include name="testELEDeleteP3AutoPatientEnrollmentP1"/> 
+	    		<include name="testELEDeactivateReactivateP3AutoPatientEnrollmentP1"/> 
+	    		<include name="testELEPatientEnrollmentPracticeLevelE1P4"/> 
+	    		<include name="testELEDeleteP2PatientEnrolledP1P2P3"/> 
+	    		<include name="testELEDeactivateP2PatientEnrolledP1P2P3"/>
+	    		<include name="testELEPatientEnrollmentE1P1TrustedRepresentativeE1P4"/>	
+	    		<include name="testELEPatientEnrollmentE1P1TrustedRepresentativeE1P2"/>
+	    		<include name="testELEPatientEnrollmentE1P4TrustedRepresentativeE1P5"/>
+	    		<include name="testELEPatientStatusE2P1EnrolledinE1P1"/>
+	    		<include name="testCreateDependentAndGuardianP1P2P3"/>
+	    		<include name="testCreateGuardianAndDependentANDEnrollOnlyDependentToP1P2P3"/>	    		
+	    		<include name="testPracticeLevelEnrollmentOnDemandCCD"/>
+	    		<include name="testMSUCCD"/> 
+	    		<include name="testLockedEncounterCCD"/>
+	    		<include name="testGuardianDependentCCD"/> 
+	    		<include name="testCCDTrustedRepresentativeWithoutMFAccount"/>
+      	</methods>
+	</classes>
+</test>
+</suite>

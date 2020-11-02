@@ -237,9 +237,9 @@ public class IntegrationPlatformAcceptanceTests extends BaseTestNGWebDriver {
 		log("Step 6: Check secure message in patient gmail inbox");
 		//String link = RestUtils.verifyEmailNotification(testData.getGmailUserName(), testData.getGmailPassword(), testData.getSender3(), 3, "Portal 2.0");
 		Mailinator mail = new Mailinator();
-		String subject = "New message from IHGQA Automation Integrated Oauth 2.0";
+		String subject = "New message from PI Automation rsdk Integrated";
 		String messageLink = "Sign in to view this message";
-		String emailMessageLink = mail.getLinkFromEmail(testData.getUserName(), subject, messageLink, 5);
+		String emailMessageLink = mail.getLinkFromEmail(testData.getGmailUserName(), subject, messageLink, 5);
 
 		log("Step 7: Login to Patient Portal");
 		log("Link is " + emailMessageLink);

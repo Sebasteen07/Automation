@@ -36,7 +36,9 @@ public enum apiRoutes {
 	PostCCDARequest("api/ccda-requests"),
 	CheckOutEncounter("api/persons/personId/chart/encounters/encounterId/checkout"),
 	CheckInEncounter("api/persons/personId/chart/encounters/encounterId/checkin"),
-	UpdateEncounter("api/persons/personId/chart/encounters/encounterId");
+	UpdateEncounter("api/persons/personId/chart/encounters/encounterId"),
+	PostSecureMessage("api/secure-messages"),
+	GetSecureMessage("api/secure-messages/secureMessageId");
 	
 	private String routeURL;
 

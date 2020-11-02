@@ -22,8 +22,7 @@ import com.medfusion.product.pss2patientui.pojo.Appointment;
 
 public class PSSAdminUtils {
 
-	public void adminSettings(WebDriver driver, AdminUser adminuser, Appointment testData, String urlToUse)
-			throws Exception {
+	public void adminSettings(WebDriver driver, AdminUser adminuser, Appointment testData, String urlToUse) throws Exception {
 		PSS2PracticeConfiguration psspracticeConfig = loginToAdminPortal(driver, adminuser);
 		AccessRules accessrule = psspracticeConfig.gotoAccessTab();
 		Thread.sleep(2000);
@@ -36,8 +35,7 @@ public class PSSAdminUtils {
 				accessrule.loginlessPrivacyPolicyClick();
 			}
 		} else {
-			if (adminuser.getIsExisting() && adminuser.getIsLoginlessFlow()
-					&& accessrule.isLLExistingPatientSelected().equalsIgnoreCase("true")) {
+			if (adminuser.getIsExisting() && adminuser.getIsLoginlessFlow() && accessrule.isLLExistingPatientSelected().equalsIgnoreCase("true")) {
 				accessrule.selectLLExistingPatient();
 			}
 		}
@@ -70,8 +68,7 @@ public class PSSAdminUtils {
 		Thread.sleep(4000);
 	}
 
-	public void adminSettingsLoginless(WebDriver driver, AdminUser adminuser, Appointment testData, String urlToUse)
-			throws Exception {
+	public void adminSettingsLoginless(WebDriver driver, AdminUser adminuser, Appointment testData, String urlToUse) throws Exception {
 		Log4jUtil.log("****************ADMIN SETTINGS FOR Loginless FLOW**************************");
 		PSS2PracticeConfiguration psspracticeConfig = loginToAdminPortal(driver, adminuser);
 		AccessRules accessrule = psspracticeConfig.gotoAccessTab();
@@ -85,8 +82,7 @@ public class PSSAdminUtils {
 				Log4jUtil.log("PrivacyPolicySelected is set TRUE");
 			}
 		} else {
-			if (adminuser.getIsExisting() && adminuser.getIsLoginlessFlow()
-					&& accessrule.isLLExistingPatientSelected().equalsIgnoreCase("true")) {
+			if (adminuser.getIsExisting() && adminuser.getIsLoginlessFlow() && accessrule.isLLExistingPatientSelected().equalsIgnoreCase("true")) {
 				accessrule.selectLLExistingPatient();
 			}
 		}
@@ -113,13 +109,19 @@ public class PSSAdminUtils {
 		Log4jUtil.log("adminSettings Step 3: Navigate to Patient Flow tab in settings");
 		PatientFlow patientflow = accessrule.gotoPatientFlowTab();
 		Log4jUtil.log("are basic elements present " + patientflow.areBasicPageElementsPresent());
+
 		Log4jUtil.log("adminSettings Step 4: Fetch the list of Rules");
-		Log4jUtil.log("length " + patientflow.ruleLength());
-		Log4jUtil.log("Rule length : " + patientflow.getRule());
-		Log4jUtil.log("Insurance Displayed ? " + patientflow.isIsuranceDisplayed());
-		if (patientflow.isIsuranceDisplayed().equalsIgnoreCase("true")) {
-			adminuser.setIsInsuranceDisplayed(false);
-		}
+		adminuser.setRule(patientflow.getRule());
+		Log4jUtil.log("rule= " + patientflow.getRule());
+
+		Log4jUtil.log("AdminSettings Step 5: Fetch the Insurance Status");
+		testData.setIsinsuranceVisible(patientflow.insuracetogglestatus());
+		Log4jUtil.log("Insurance Status= " + patientflow.insuracetogglestatus());
+
+		Log4jUtil.log("AdminSettings Step 6: Fetch the Starting Point Status");
+		testData.setIsstartpointPresent(patientflow.isstartpagepresent());
+		Log4jUtil.log("Startpoint  Status= " + patientflow.isstartpagepresent());
+
 		AdminPatientMatching adminpatientmatching = patientflow.gotoPatientMatchingTab();
 		adminpatientmatching.patientMatchingSelection();
 		Log4jUtil.log("adminSettings Step 5: Logout from PSS Admin Portal");
@@ -127,8 +129,7 @@ public class PSSAdminUtils {
 		Thread.sleep(4000);
 	}
 
-	public void adminSettingsAnonymous(WebDriver driver, AdminUser adminuser, Appointment testData, String urlToUse)
-			throws Exception {
+	public void adminSettingsAnonymous(WebDriver driver, AdminUser adminuser, Appointment testData, String urlToUse) throws Exception {
 		Log4jUtil.log("****************ADMIN SETTINGS FOR ANONYMOUS FLOW**************************");
 		Log4jUtil.log("adminSettings Step 1: LOGIN TO ADMIN");
 		PSS2PracticeConfiguration psspracticeConfig = loginToAdminPortal(driver, adminuser);
@@ -179,8 +180,8 @@ public class PSSAdminUtils {
 	}
 
 	public PSS2PracticeConfiguration loginToAdminPortal(WebDriver driver, AdminUser adminuser) throws Exception {
-		Log4jUtil.log("adminSettings Step 1: Login to Admin portal. url=" + adminuser.getAdminUrl() + " and username="
-				+ adminuser.getUser() + " and password=" + adminuser.getPassword());
+		Log4jUtil.log("adminSettings Step 1: Login to Admin portal. url=" + adminuser.getAdminUrl() + " and username=" + adminuser.getUser() + " and password="
+				+ adminuser.getPassword());
 		PSS2AdminLogin pssadminlogin = new PSS2AdminLogin(driver, adminuser.getAdminUrl());
 		PSS2PracticeConfiguration psspracticeConfig = pssadminlogin.login(adminuser.getUser(), adminuser.getPassword());
 		Log4jUtil.log("refreshing admin page after login");
@@ -315,15 +316,13 @@ public class PSSAdminUtils {
 		Log4jUtil.log("Patient Flow page Show Insurance= " + patientflow.isInsuranceToBeDisplayed());
 		Thread.sleep(6000);
 		InsuranceCarrier insurancecarrier = patientflow.gotoInsuranceCarrierTab();
-		Log4jUtil.log(
-				"Basic elements of Insurance carrier page located? " + insurancecarrier.areBasicPageElementsPresent());
+		Log4jUtil.log("Basic elements of Insurance carrier page located? " + insurancecarrier.areBasicPageElementsPresent());
 		insurancecarrier.enableshowInsuranceAtStart();
 		insurancecarrier.logout();
 
 	}
 
-	public void getInsuranceStateandRule(WebDriver driver, AdminUser adminuser, Appointment appointment)
-			throws Exception {
+	public void getInsuranceStateandRule(WebDriver driver, AdminUser adminuser, Appointment appointment) throws Exception {
 		PSS2PracticeConfiguration psspracticeConfig = loginToAdminPortal(driver, adminuser);
 		PatientFlow patientflow = psspracticeConfig.gotoPatientFlowTab();
 		adminuser.setRule(patientflow.getRule());
@@ -331,7 +330,7 @@ public class PSSAdminUtils {
 		appointment.setIsinsuranceVisible(patientflow.insuracetogglestatus());
 		Log4jUtil.log("Insurance is Enabled= " + patientflow.insuracetogglestatus());
 		appointment.setIsstartpointPresent(patientflow.isstartpagepresent());
-		Log4jUtil.log("Startpoint is Enabled= " + patientflow.isstartpagepresent());
+		Log4jUtil.log("StartPage is Visible= " + patientflow.isstartpagepresent());
 		patientflow.logout();
 
 	}
