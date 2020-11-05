@@ -277,8 +277,6 @@ public class PatientMessagingPage extends BasePageObject {
 				templateName, subjectText);
 	}
 
-	
-
 	public ArrayList<String> setFieldsAndPublishMessage(String firstName, String lastName, String email,
 			String templateName, String subjectText) {
 		IHGUtil.PrintMethodName();
@@ -294,7 +292,7 @@ public class PatientMessagingPage extends BasePageObject {
 		return messages;
 
 	}
- 
+
 	public void setFieldsAndPublishMessageWithFile(String firstName, String lastName, String templateName,
 			String subjectText, String filePath) {
 		IHGUtil.PrintMethodName();
@@ -302,6 +300,17 @@ public class PatientMessagingPage extends BasePageObject {
 		new WebDriverWait(driver, 120).until(ExpectedConditions.visibilityOf(messageAttachment));
 		messageAttachment.sendKeys(filePath);
 		setFieldsAndPublishMessage(firstName, lastName, "", templateName, subjectText);
+
+	}
+
+	public void setFieldsAndPublishMessageWithFile(PropertyFileLoader testData, String templateName, String subjectText,
+			String filePath) {
+		IHGUtil.PrintMethodName();
+		IHGUtil.setFrame(driver, PracticeConstants.FRAME_NAME);
+		new WebDriverWait(driver, 120).until(ExpectedConditions.visibilityOf(messageAttachment));
+		messageAttachment.sendKeys(filePath);
+		setFieldsAndPublishMessage(testData.getProperty("documentsPatientFirstName"),
+				testData.getProperty("documentsPatientLastName"), "", templateName, subjectText);
 
 	}
 
