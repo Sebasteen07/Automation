@@ -2,7 +2,6 @@ package com.medfusion.product.object.maps.patientportal2.page.AppointmentRequest
 
 import java.util.ArrayList;
 
-import com.medfusion.product.object.maps.patientportal2.page.JalapenoMenu;
 import org.openqa.selenium.By;
 import org.openqa.selenium.StaleElementReferenceException;
 import org.openqa.selenium.TimeoutException;
@@ -13,9 +12,11 @@ import org.openqa.selenium.support.How;
 import org.openqa.selenium.support.PageFactory;
 import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.openqa.selenium.support.ui.Select;
-import com.medfusion.common.utils.IHGUtil;
-import com.medfusion.product.object.maps.patientportal2.page.HomePage.JalapenoHomePage;
 import org.openqa.selenium.support.ui.WebDriverWait;
+
+import com.medfusion.common.utils.IHGUtil;
+import com.medfusion.product.object.maps.patientportal2.page.JalapenoMenu;
+import com.medfusion.product.object.maps.patientportal2.page.HomePage.JalapenoHomePage;
 
 public class JalapenoAppointmentRequestPage extends JalapenoMenu {
 
@@ -45,6 +46,11 @@ public class JalapenoAppointmentRequestPage extends JalapenoMenu {
 
 		@FindBy(how = How.ID, using = "id1b")
 		private WebElement homeButton; //this is not Home button from Jalapeno Menu
+
+
+	@FindBy(how = How.ID, using = "appointmentSolutionBtn")
+	private WebElement appointmentSolutionBtn;
+
 
 		public JalapenoAppointmentRequestPage(WebDriver driver) {
 				super(driver);
@@ -134,4 +140,10 @@ public class JalapenoAppointmentRequestPage extends JalapenoMenu {
 				IHGUtil.setDefaultFrame(driver);
 				return false;
 		}
+
+	public JalapenoAppointmentRequestV2Step1 requestForAppointmentStep1(WebDriver driver) {
+		IHGUtil.PrintMethodName();
+		javascriptClick(appointmentSolutionBtn);
+		return PageFactory.initElements(driver, JalapenoAppointmentRequestV2Step1.class);
+	}
 }

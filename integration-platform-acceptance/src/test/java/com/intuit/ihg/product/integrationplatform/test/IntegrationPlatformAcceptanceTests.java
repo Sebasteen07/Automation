@@ -4,14 +4,11 @@ import static org.testng.Assert.assertNotNull;
 
 import java.util.Random;
 
-import org.apache.commons.lang.StringUtils;
-import org.openqa.selenium.support.PageFactory;
 import org.testng.annotations.Test;
 
 import com.intuit.ifs.csscat.core.BaseTestNGWebDriver;
 import com.intuit.ifs.csscat.core.RetryAnalyzer;
 import com.intuit.ifs.csscat.core.TestConfig;
-import com.intuit.ihg.common.utils.mail.GmailBot;
 import com.intuit.ihg.common.utils.monitoring.PerformanceReporter;
 import com.intuit.ihg.product.integrationplatform.utils.AMDC;
 import com.intuit.ihg.product.integrationplatform.utils.AMDCTestData;
@@ -29,30 +26,21 @@ import com.intuit.ihg.product.integrationplatform.utils.PaymentTestData;
 import com.intuit.ihg.product.integrationplatform.utils.Prescription;
 import com.intuit.ihg.product.integrationplatform.utils.PrescriptionTestData;
 import com.intuit.ihg.product.integrationplatform.utils.RestUtils;
-import com.intuit.ihg.product.integrationplatform.utils.StatementPreference;
-import com.intuit.ihg.product.integrationplatform.utils.StatementPreferenceTestData;
-import com.intuit.ihg.product.object.maps.integrationplatform.page.TestPage;
-import com.intuit.ihg.product.object.maps.phr.page.PhrDocumentsPage;
-import com.intuit.ihg.product.object.maps.phr.page.PhrHomePage;
-import com.intuit.ihg.product.object.maps.phr.page.messages.PhrInboxMessage;
-import com.intuit.ihg.product.object.maps.phr.page.messages.PhrMessagesPage;
 import com.medfusion.common.utils.IHGUtil;
 import com.medfusion.common.utils.Mailinator;
 import com.medfusion.portal.utils.PortalConstants;
 import com.medfusion.product.object.maps.patientportal1.page.MyPatientPage;
 import com.medfusion.product.object.maps.patientportal1.page.NoLoginPaymentPage;
 import com.medfusion.product.object.maps.patientportal1.page.PortalLoginPage;
-import com.medfusion.product.object.maps.patientportal1.page.createAccount.CreateAccountPage;
 import com.medfusion.product.object.maps.patientportal1.page.inbox.MessageCenterInboxPage;
 import com.medfusion.product.object.maps.patientportal1.page.inbox.MessagePage;
-import com.medfusion.product.object.maps.patientportal1.page.myAccount.MyAccountPage;
-import com.medfusion.product.object.maps.patientportal1.page.myAccount.preferences.PreferencesPage;
 import com.medfusion.product.object.maps.patientportal1.page.solutions.apptRequest.AppointmentRequestStep1Page;
 import com.medfusion.product.object.maps.patientportal1.page.solutions.apptRequest.AppointmentRequestStep2Page;
 import com.medfusion.product.object.maps.patientportal1.page.solutions.apptRequest.AppointmentRequestStep3Page;
 import com.medfusion.product.object.maps.patientportal1.page.solutions.apptRequest.AppointmentRequestStep4Page;
 import com.medfusion.product.object.maps.patientportal2.page.JalapenoLoginPage;
 import com.medfusion.product.object.maps.patientportal2.page.AskAStaff.JalapenoAskAStaffPage;
+import com.medfusion.product.object.maps.patientportal2.page.CcdPage.JalapenoCcdViewerPage;
 import com.medfusion.product.object.maps.patientportal2.page.HomePage.JalapenoHomePage;
 import com.medfusion.product.object.maps.patientportal2.page.MessagesPage.JalapenoMessagesPage;
 import com.medfusion.product.object.maps.patientportal2.page.MyAccountPage.JalapenoMyAccountProfilePage;
@@ -65,8 +53,6 @@ import com.medfusion.product.object.maps.practice.page.PracticeLoginPage;
 import com.medfusion.product.object.maps.practice.page.apptrequest.ApptRequestDetailStep1Page;
 import com.medfusion.product.object.maps.practice.page.apptrequest.ApptRequestSearchPage;
 import com.medfusion.product.object.maps.practice.page.onlinebillpay.OnlineBillPaySearchPage;
-import com.medfusion.product.object.maps.practice.page.patientSearch.PatientDashboardPage;
-import com.medfusion.product.object.maps.practice.page.patientSearch.PatientSearchPage;
 import com.medfusion.product.object.maps.practice.page.rxrenewal.RxRenewalSearchPage;
 import com.medfusion.product.object.maps.practice.page.virtualCardSwiper.VirtualCardSwiperPage;
 import com.medfusion.product.object.maps.practice.page.virtualCardSwiper.VirtualCardSwiperPageChargeHistory;
@@ -946,73 +932,30 @@ public class IntegrationPlatformAcceptanceTests extends BaseTestNGWebDriver {
 		log("Processing URL: " + processingUrl);
 		log("Step 3: Get processing status until it is completed");
 		Thread.sleep(60000);
-		/*
-		 * boolean completed = false; for (int i = 0; i < 3; i++) { // wait 10 seconds so the message can be processed Thread.sleep(180000);
-		 * RestUtils.setupHttpGetRequest(processingUrl, testData.getResponsePath()); if (RestUtils.isMessageProcessingCompleted(testData.getResponsePath())) {
-		 * completed = true; break; } } verifyTrue(completed, "Message processing was not completed in time");
-		 */
+
 		log("Step 4:LogIn to Patient Portal ");
-		PortalLoginPage portalloginpage = new PortalLoginPage(driver, testData.getURL());
-		MyPatientPage pMyPatientPage = portalloginpage.login(testData.getUserName(), testData.getPassword());
+		JalapenoLoginPage portalloginpage = new JalapenoLoginPage(driver, testData.getURL());
+		JalapenoHomePage homePage = portalloginpage.login(testData.getUserName(), testData.getPassword());
 
 		log("Step 5: Go to Inbox");
-		MessageCenterInboxPage inboxPage = pMyPatientPage.clickViewAllMessagesInMessageCenter();
-		assertTrue(inboxPage.isInboxLoaded(), "Inbox failed to load properly.");
+		JalapenoMessagesPage inboxPage = homePage.clickOnMenuMessages();
+		assertTrue(inboxPage.areBasicPageElementsPresent(), "Inbox failed to load properly.");
 
-		log("Step 6: Find message in Inbox");
-		MessagePage pMessage = inboxPage.clickFirstMessageRow();
+		log("Step 5: Validate message subject and send date");
+		assertTrue(inboxPage.isMessageDisplayed(driver, "You have a new health data summary"));
+		log("CCD sent date & time is : " + inboxPage.returnMessageSentDate());
 
-		log("Step 7: Validate message subject and send date");
-		Thread.sleep(10000);
-		log("######  Message Date :: " + IHGUtil.getEstTiming());
-		assertTrue(pMessage.isSubjectLocated(IntegrationConstants.CCD_MESSAGE_SUBJECT));
-		assertTrue(verifyTextPresent(driver, IHGUtil.getEstTiming(), 10000));
-		log("CCD sent date & time is :" + pMessage.returnMessageSentDate());
-		// assertTrue(RestUtils.verifyCCDMessageDate(pMessage.returnMessageSentDate(),timestamp));
+		log("Step 6: Click on link View health data");
+		JalapenoCcdViewerPage jalapenoCcdPage = inboxPage.findCcdMessage(driver);
 
-		log("Step 8: Click on link View health data");
-		pMessage.clickBtnReviewHealthInformation();
-		Thread.sleep(9000);
-		log("Step 9: Verify if CCD Viewer is loaded and click Close Viewer");
-		pMessage.verifyCCDViewerAndClose();
+		log("Step 7: Verify if CCD Viewer is loaded and click Close Viewer");
+		assertTrue(jalapenoCcdPage.areBasicPageElementsPresent());
+		inboxPage = jalapenoCcdPage.closeCcd(driver);
 
-		driver.switchTo().defaultContent();
-
-		log("Step 10: Go to patient page");
-		Thread.sleep(2000);
-		pMyPatientPage = pMessage.clickMyPatientPage();
-
-		log("Step 11: Click PHR");
-		pMyPatientPage.clickPHRWithoutInit(driver);
-		PhrHomePage phrPage = PageFactory.initElements(driver, PhrHomePage.class);
-
-		log("Step 12: Go to PHR Inbox");
-		PhrMessagesPage phrMessagesPage = phrPage.clickOnMyMessages();
-		// assertTrue(phrMessagesPage.isInboxLoaded(),
-		// "Inbox failed to load properly.");
-
-		log("Step 13: Click first message");
-		PhrInboxMessage phrInboxMessage = phrMessagesPage.clickOnFirstMessage();
-
-		log("Step 14: Validate message subject and send date");
-		Thread.sleep(1000);
-		assertEquals(phrInboxMessage.getPhrMessageSubject(), IntegrationConstants.CCD_MESSAGE_SUBJECT, "### Assertion failed for Message subject");
-		log("######  Message Date :: " + IHGUtil.getEstTiming());
-		assertTrue(verifyTextPresent(driver, IHGUtil.getEstTiming()));
-
-		log("Step 15: Click on link ReviewHealthInformation");
-		PhrDocumentsPage phrDocuments = phrInboxMessage.clickBtnReviewHealthInformationPhr();
-
-		log("step 16:Click on View health data");
-		phrDocuments.clickViewHealthInformation();
-		Thread.sleep(15000);
-		log("step 17:click Close Viewer");
-		phrDocuments.closeViewer();
-
-		log("step 18:Click Logout");
-		Thread.sleep(6000);
-		phrDocuments.clickLogout();
-
+		log("Step 8: Logging out");
+		assertTrue(inboxPage.areBasicPageElementsPresent());
+		homePage = inboxPage.backToHomePage(driver);
+		homePage.clickOnLogout();
 	}
 
 	@Test(enabled = true, groups = {"AcceptanceTests"}, retryAnalyzer = RetryAnalyzer.class)
