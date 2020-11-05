@@ -602,11 +602,6 @@ public class PatientPortal2AcceptanceTests extends BaseTestNGWebDriver {
 		logStep("Send CCD if there is CCD older than 7 days");
 		recordSummaries.sendCCDIfNewestIsOlderThan(7);
 
-		/*
-		 * logStep("Set filter to third visible CCD");
-		 * recordSummaries.setFilterToThirdCCDDate();
-		 */
-
 		logStep("Select and send CCD to Direct email address");
 		recordSummaries.selectFirstVisibleCCD();
 		recordSummaries.sendFirstVisibleCCDUsingDirectProtocol(DIRECT_EMAIL_ADDRESS);
@@ -616,7 +611,7 @@ public class PatientPortal2AcceptanceTests extends BaseTestNGWebDriver {
 
 		logStep("Go to Documents tab");
 		DocumentsPage documentsPage = recordSummaries.gotoOtherDocumentTab();
-		// assertTrue(documentsPage.areBasicPageElementsPresent());
+	    assertTrue(documentsPage.areBasicPageElementsPresent());
 
 	}
 
@@ -664,6 +659,11 @@ public class PatientPortal2AcceptanceTests extends BaseTestNGWebDriver {
 		tmpDocument.deleteOnExit();
 		FileUtils.copyFile(originalDocument, tmpDocument);
 
+		logStep("Send a new secure message with attachment to static patient");
+		PatientMessagingPage patientMessagingPage = practiceHome.clickPatientMessagingTab();
+		patientMessagingPage.setFieldsAndPublishMessageWithFile(testData, "TestingMessage", messageSubject,
+				tmpDocument.toString());
+
 		logStep("Login patient");
 		JalapenoLoginPage loginPage = new JalapenoLoginPage(driver, testData.getUrl());
 		JalapenoHomePage homePage = loginPage.login(testData.getProperty("documentsPatientUserId"),
@@ -682,7 +682,7 @@ public class PatientPortal2AcceptanceTests extends BaseTestNGWebDriver {
 		assertTrue(documentsPage.checkLastImportedFileName(tmpDocument.getName()));
 
 	}
-
+	
 	@Test(enabled = true, groups = { "acceptance-basics", "commonpatient" }, retryAnalyzer = RetryAnalyzer.class)
 	public void testCreatePatientHealthKey6outOf6SamePractice() throws Exception {
 		createCommonPatient();
@@ -2786,8 +2786,6 @@ public class PatientPortal2AcceptanceTests extends BaseTestNGWebDriver {
 		assertTrue(messagesPage.isMessageDisplayed(driver, "Set to Pending " + tsPracticePortal));
 		homePage.clickOnLogout();
 
-		logStep("Looking for Prescription approval from doctor");
-		assertTrue(messagesPage.isMessageDisplayed(driver, "RxRenewalSubjectGuardian"));
 	}
 
 	@Test(enabled = true, groups = { "acceptance-linkedaccounts" }, retryAnalyzer = RetryAnalyzer.class)
