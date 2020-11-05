@@ -108,13 +108,25 @@ public class MedicalRecordSummariesPage extends JalapenoMenu {
 
 	@FindBy(how = How.XPATH, using = "//span[text()='Unmatched Condition']")
 	private WebElement unmatchedCondition;
-	
+
 	@FindBy(how = How.ID, using = "requestCcdContinueButton")
 	private WebElement requestCcdContinueButton;
-	
+
+	@FindBy(how = How.XPATH, using = "//span[text()='Hypertensive Emergency']")
+	private WebElement hypertensiveEmergency;
+
+	@FindBy(how = How.XPATH, using = "//span[text()='Hypothyroidism']")
+	private WebElement hypothyroidism;
+
+	@FindBy(how = How.XPATH, using = "//span[text()='Organ Transplant Rejection']")
+	private WebElement organTransplantRejection;
+
+	@FindBy(how = How.XPATH, using = "//span[text()='Fever']")
+	private WebElement fever;
+
 	@FindBy(how = How.XPATH, using = "(//input[@id='select-all'])[1]")
 	private WebElement requestCompleteRecord;
-	
+
 	@FindBy(how = How.ID, using = "requestCcdContinueButton")
 	private WebElement requestRecord;
 
@@ -337,24 +349,46 @@ public class MedicalRecordSummariesPage extends JalapenoMenu {
 		return unmatchedCondition.getText();
 	}
 
-	
-	public String getTodaysDateinYYYY_MM_DDFormat(){
+	public String gethypertensiveEmergency() {
+		IHGUtil.waitForElement(driver, 60, hypertensiveEmergency);
+		return hypertensiveEmergency.getText();
+	}
+
+	public String getHypothyroidism() {
+		IHGUtil.waitForElement(driver, 60, hypothyroidism);
+		return hypothyroidism.getText();
+	}
+
+	public String getOrganTransplantRejection() {
+		IHGUtil.waitForElement(driver, 60, organTransplantRejection);
+		return organTransplantRejection.getText();
+	}
+
+	public String getFever() {
+		IHGUtil.waitForElement(driver, 60, fever);
+		return fever.getText();
+
+	}
+
+	public String getTodaysDateinYYYY_MM_DDFormat() {
 		LocalDateTime currentdatetime = LocalDateTime.now();
 		String TodaysDate = DateTimeFormatter.ofPattern("yyyy-MM-dd", Locale.ENGLISH).format(currentdatetime);
 		return TodaysDate;
 	}
-	
-	public String get3MonthsOldDateinYYYY_MM_DDFormat(){
+
+	public String get3MonthsOldDateinYYYY_MM_DDFormat() {
 		LocalDateTime ThreeMonthsOldTodaysDate = LocalDateTime.now().minusMonths(3);
-		String ThreeMonthsOldDate = DateTimeFormatter.ofPattern("yyyy-MM-dd", Locale.ENGLISH).format(ThreeMonthsOldTodaysDate);
+		String ThreeMonthsOldDate = DateTimeFormatter.ofPattern("yyyy-MM-dd", Locale.ENGLISH)
+				.format(ThreeMonthsOldTodaysDate);
 		return ThreeMonthsOldDate;
 	}
+
 	public void requestCcdOnDemandFromPopUp() {
 		IHGUtil.waitForElement(driver, 60, requestCcdContinueButton);
 		requestCcdContinueButton.click();
 		log("Clicked on the Request Record button");
 	}
-	
+
 	public void requestCompleteRecord() {
 		IHGUtil.waitForElement(driver, 60, requestCompleteRecord);
 		requestCompleteRecord.click();
