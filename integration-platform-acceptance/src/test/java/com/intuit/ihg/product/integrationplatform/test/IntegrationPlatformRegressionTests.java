@@ -28,7 +28,6 @@ import com.medfusion.product.object.maps.patientportal1.page.inbox.MessageCenter
 import com.medfusion.product.object.maps.patientportal1.page.inbox.MessagePage;
 import com.medfusion.product.object.maps.patientportal1.page.myAccount.MyAccountPage;
 import com.medfusion.product.object.maps.patientportal1.page.myAccount.insurance.InsurancePage;
-import com.medfusion.product.object.maps.patientportal1.page.myAccount.preferences.PreferencesPage;
 import com.medfusion.product.object.maps.patientportal1.page.solutions.askstaff.AskAStaffHistoryPage;
 import com.medfusion.product.object.maps.patientportal1.page.solutions.askstaff.AskAStaffStep1Page;
 import com.medfusion.product.object.maps.patientportal1.page.solutions.askstaff.AskAStaffStep2Page;
@@ -38,11 +37,14 @@ import com.medfusion.product.object.maps.patientportal2.page.CreateAccount.Patie
 import com.medfusion.product.object.maps.patientportal2.page.CreateAccount.SecurityDetailsPage;
 import com.medfusion.product.object.maps.patientportal2.page.HomePage.JalapenoHomePage;
 import com.medfusion.product.object.maps.patientportal2.page.MessagesPage.JalapenoMessagesPage;
+import com.medfusion.product.object.maps.patientportal2.page.MyAccountPage.JalapenoMyAccountPreferencesPage;
+import com.medfusion.product.object.maps.patientportal2.page.MyAccountPage.JalapenoMyAccountProfilePage;
 import com.medfusion.product.object.maps.practice.page.PracticeHomePage;
 import com.medfusion.product.object.maps.practice.page.PracticeLoginPage;
 import com.medfusion.product.object.maps.practice.page.patientSearch.PatientDashboardPage;
 import com.medfusion.product.object.maps.practice.page.patientSearch.PatientSearchPage;
 import com.medfusion.product.patientportal1.utils.PortalUtil;
+import com.medfusion.product.patientportal2.pojo.StatementPreferenceType;
 
 /**
  * @author Vasudeo P
@@ -752,23 +754,20 @@ public class IntegrationPlatformRegressionTests extends BaseTestNGWebDriver {
 		Long timeStamp = System.currentTimeMillis();
 
 		log("Step 2: LogIn to Patient Portal");
-		PortalLoginPage loginPage = new PortalLoginPage(driver, testData.getUrl());
-		assertTrue(loginPage.isLoginPageLoaded(), "There was an error loading the login page");
-		MyPatientPage myPatientPage = loginPage.login(testData.getUserName(), testData.getPassword());
+		JalapenoLoginPage loginPage = new JalapenoLoginPage(driver, testData.getUrl());
+		JalapenoHomePage homePage = loginPage.login(testData.getUserName(), testData.getPassword());
 
 		log("Step 3: Click on myaccountLink on MyPatientPage");
-		MyAccountPage myAccountPage = myPatientPage.clickMyAccountLink();
+		JalapenoMyAccountProfilePage myAccountProfilePage = homePage.goToAccountPage();
 
 		log("Step 4: Click on Preferences Tab");
-		PreferencesPage myPreferencePage = myAccountPage.clickpreferencesLink();
+		JalapenoMyAccountPreferencesPage myPreferencePage = myAccountProfilePage.goToPreferencesTab(driver);
 
 		log("Step 5: Set Statement Delievery Preference as Paper Statement");
-		String setPref = "PAPER";
-		myPreferencePage.setStatementPreference(setPref);
-		myPreferencePage.clickupdateYourPreferences();
+		myPreferencePage.checkAndSetStatementPreference(driver, StatementPreferenceType.PAPER);
 
 		log("Step 6: Logout from Patient portal");
-		myAccountPage.logout(driver);
+		homePage.clickOnLogout();
 
 		log("Step 7: Login to Practice Portal");
 		PracticeLoginPage practiceLogin = new PracticeLoginPage(driver, testData.getPracticeURL());
@@ -805,7 +804,7 @@ public class IntegrationPlatformRegressionTests extends BaseTestNGWebDriver {
 		String nextTimeStamp = RestUtils.setupHttpGetRequest(testData.getRestUrl() + "?since=" + timeStamp, testData.getResponsePath());
 
 		log("Step 14: Validate the response");
-		RestUtils.isStatementPreferenceCorrect(testData.getResponsePath(), memberId, setPref);
+		RestUtils.isStatementPreferenceCorrect(testData.getResponsePath(), memberId, "PAPER");
 
 		String statementPreference[] = {"E_STATEMENT", "BOTH"};
 
@@ -835,17 +834,17 @@ public class IntegrationPlatformRegressionTests extends BaseTestNGWebDriver {
 			assertTrue(completed);
 
 			log("Step 18: Login to Patient Portal");
-			PortalLoginPage loginPage1 = new PortalLoginPage(driver, testData.getUrl());
-			assertTrue(loginPage1.isLoginPageLoaded());
-			MyPatientPage myPatientPage1 = loginPage1.login(testData.getUserName(), testData.getPassword());
+			JalapenoLoginPage loginPage1 = new JalapenoLoginPage(driver, testData.getUrl());
+			JalapenoHomePage homePage1 = loginPage1.login(testData.getUserName(), testData.getPassword());
 
 			log("Step 19: Check for update in Statement Preference");
-			MyAccountPage myAccountPage1 = myPatientPage1.clickMyAccountLink();
-			PreferencesPage myPreferencePage1 = myAccountPage1.clickpreferencesLink();
-			myPreferencePage1.checkStatementPreference(statementPreference[i]);
+			JalapenoMyAccountProfilePage myAccountProfilePage1 = homePage1.goToAccountPage();
+			JalapenoMyAccountPreferencesPage myPreferencePage1 = myAccountProfilePage1.goToPreferencesTab(driver);
+
+			assertTrue(myPreferencePage1.checkStatementPreferenceUpdated(StatementPreferenceType.valueOf(statementPreference[i])));
 
 			log("Step 20: Logout of Portal");
-			myAccountPage1.logout(driver);
+			homePage1.clickOnLogout();
 
 			log("Step 21: GET Statement Preference API");
 			log("Getting statement preference updates since timestamp: " + timeStamp);
