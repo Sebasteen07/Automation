@@ -666,7 +666,12 @@ public class IntegrationPlatformAcceptanceTests extends BaseTestNGWebDriver {
 		Thread.sleep(90000);
 
 		log("Step 13: Check secure message in patient gmail inbox");
-		RestUtils.verifyEmailNotification(OLBPData.getGmailUserName(), OLBPData.getGmailPassword(), OLBPData.getPracticeName(), 3, "Portal 2.0");
+		Mailinator mail = new Mailinator();
+		String subject = "New message from PI Automation rsdk Integrated";
+		String messageLink = "Sign in to view this message";
+		assertTrue(mail.isMessageInInbox(OLBPData.getUserName(), subject, messageLink, 5));
+
+		// RestUtils.verifyEmailNotification(OLBPData.getGmailUserName(), OLBPData.getGmailPassword(), OLBPData.getPracticeName(), 3, "Portal 2.0");
 
 		// patient Portal validation
 		log("Step 14: Login to Patient Portal");
