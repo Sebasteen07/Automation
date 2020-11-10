@@ -466,7 +466,6 @@ public class IntegrationPlatformAcceptanceTests extends BaseTestNGWebDriver {
 		log("Step 3: Click on Appointment Button on Home Page");
 		JalapenoAppointmentRequestPage apptPage = homePage.clickOnAppointment(driver);
 		JalapenoAppointmentRequestV2Step1 apptPage1 = apptPage.requestForAppointmentStep1(driver);
-		assertTrue(apptPage1.assessElements());
 
 		apptPage1.chooseFirstProvider();
 
@@ -671,7 +670,6 @@ public class IntegrationPlatformAcceptanceTests extends BaseTestNGWebDriver {
 		String messageLink = "Sign in to view this message";
 		assertTrue(mail.isMessageInInbox(OLBPData.getUserName(), subject, messageLink, 5));
 
-		// RestUtils.verifyEmailNotification(OLBPData.getGmailUserName(), OLBPData.getGmailPassword(), OLBPData.getPracticeName(), 3, "Portal 2.0");
 
 		// patient Portal validation
 		log("Step 14: Login to Patient Portal");

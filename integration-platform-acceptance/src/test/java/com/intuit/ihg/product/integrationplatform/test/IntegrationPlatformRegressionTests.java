@@ -6,7 +6,6 @@ import java.util.Arrays;
 import java.util.List;
 import java.util.Random;
 
-import org.apache.commons.lang.StringUtils;
 import org.testng.annotations.DataProvider;
 import org.testng.annotations.Test;
 
@@ -19,8 +18,6 @@ import com.intuit.ihg.product.integrationplatform.utils.IntegrationConstants;
 import com.intuit.ihg.product.integrationplatform.utils.PIDC;
 import com.intuit.ihg.product.integrationplatform.utils.PIDCTestData;
 import com.intuit.ihg.product.integrationplatform.utils.RestUtils;
-import com.intuit.ihg.product.integrationplatform.utils.StatementPreference;
-import com.intuit.ihg.product.integrationplatform.utils.StatementPreferenceTestData;
 import com.medfusion.common.utils.IHGUtil;
 import com.medfusion.product.object.maps.patientportal1.page.MyPatientPage;
 import com.medfusion.product.object.maps.patientportal1.page.PortalLoginPage;
@@ -37,14 +34,11 @@ import com.medfusion.product.object.maps.patientportal2.page.CreateAccount.Patie
 import com.medfusion.product.object.maps.patientportal2.page.CreateAccount.SecurityDetailsPage;
 import com.medfusion.product.object.maps.patientportal2.page.HomePage.JalapenoHomePage;
 import com.medfusion.product.object.maps.patientportal2.page.MessagesPage.JalapenoMessagesPage;
-import com.medfusion.product.object.maps.patientportal2.page.MyAccountPage.JalapenoMyAccountPreferencesPage;
-import com.medfusion.product.object.maps.patientportal2.page.MyAccountPage.JalapenoMyAccountProfilePage;
 import com.medfusion.product.object.maps.practice.page.PracticeHomePage;
 import com.medfusion.product.object.maps.practice.page.PracticeLoginPage;
 import com.medfusion.product.object.maps.practice.page.patientSearch.PatientDashboardPage;
 import com.medfusion.product.object.maps.practice.page.patientSearch.PatientSearchPage;
 import com.medfusion.product.patientportal1.utils.PortalUtil;
-import com.medfusion.product.patientportal2.pojo.StatementPreferenceType;
 
 /**
  * @author Vasudeo P
@@ -727,131 +721,4 @@ public class IntegrationPlatformRegressionTests extends BaseTestNGWebDriver {
 
 	}
 
-	@Test(enabled = true, groups = {"AcceptanceTests"}, retryAnalyzer = RetryAnalyzer.class)
-	public void testStatementPreference() throws Exception {
-		log("Test Case: Statement Preference in Portal 1.0");
-		log("Execution Environment: " + IHGUtil.getEnvironmentType());
-		log("Execution Browser: " + TestConfig.getBrowserType());
-
-		log("Step 1: Get Data from Excel");
-		StatementPreference statementPreferenceData = new StatementPreference();
-		StatementPreferenceTestData testData = new StatementPreferenceTestData(statementPreferenceData);
-
-		log("Url: " + testData.getUrl());
-		log("User Name: " + testData.getUserName());
-		log("Password: " + testData.getPassword());
-		log("Patient's First Name: " + testData.getFirstName());
-		log("Patient's Last Name: " + testData.getLastName());
-		log("Rest Url: " + testData.getRestUrl());
-		log("Statement Path: " + testData.getStatementPath());
-		log("Response Path: " + testData.getResponsePath());
-		log("OAuthProperty: " + testData.getOAuthProperty());
-		log("OAuthKeyStore: " + testData.getOAuthKeyStore());
-		log("OAuthAppToken: " + testData.getOAuthAppToken());
-		log("OAuthUsername: " + testData.getOAuthUsername());
-		log("OAuthPassword: " + testData.getOAuthPassword());
-
-		Long timeStamp = System.currentTimeMillis();
-
-		log("Step 2: LogIn to Patient Portal");
-		JalapenoLoginPage loginPage = new JalapenoLoginPage(driver, testData.getUrl());
-		JalapenoHomePage homePage = loginPage.login(testData.getUserName(), testData.getPassword());
-
-		log("Step 3: Click on myaccountLink on MyPatientPage");
-		JalapenoMyAccountProfilePage myAccountProfilePage = homePage.goToAccountPage();
-
-		log("Step 4: Click on Preferences Tab");
-		JalapenoMyAccountPreferencesPage myPreferencePage = myAccountProfilePage.goToPreferencesTab(driver);
-
-		log("Step 5: Set Statement Delievery Preference as Paper Statement");
-		myPreferencePage.checkAndSetStatementPreference(driver, StatementPreferenceType.PAPER);
-
-		log("Step 6: Logout from Patient portal");
-		homePage.clickOnLogout();
-
-		log("Step 7: Login to Practice Portal");
-		PracticeLoginPage practiceLogin = new PracticeLoginPage(driver, testData.getPracticeURL());
-		PracticeHomePage practiceHome = practiceLogin.login(testData.getPracticeUserName(), testData.getPracticePassword());
-
-
-		log("Step 8: Search for above patient with first name & last name");
-		PatientSearchPage patientSearch = practiceHome.clickPatientSearchLink();
-		patientSearch.searchForPatientInPatientSearch(testData.getFirstName(), testData.getLastName());
-
-		log("Step 9: Verify search results");
-		IHGUtil.waitForElement(driver, 60, patientSearch.searchResult);
-		assertTrue(patientSearch.searchResult.getText().contains(testData.getFirstName()));
-
-		log("Step 10: Get Medfusion Member Id & External Id of the patient");
-		PatientDashboardPage patientDashboard = patientSearch.clickOnPatient(testData.getFirstName(), testData.getLastName());
-		patientDashboard.editPatientLink();
-
-		String memberId = patientDashboard.medfusionID();
-		log("MemberId is " + memberId);
-		String externalPatientId = patientDashboard.readExternalPatientID();
-		log("External Id is " + externalPatientId);
-
-		practiceHome.logOut();
-
-		log("Step 11: Setup Oauth client");
-		RestUtils.oauthSetup(testData.getOAuthKeyStore(), testData.getOAuthProperty(), testData.getOAuthAppToken(), testData.getOAuthUsername(),
-				testData.getOAuthPassword());
-
-		log("Step 12: Wait 60 seconds");
-		Thread.sleep(60000);
-
-		log("Step 13: Getting statement preference updates since timestamp: " + timeStamp);
-		String nextTimeStamp = RestUtils.setupHttpGetRequest(testData.getRestUrl() + "?since=" + timeStamp, testData.getResponsePath());
-
-		log("Step 14: Validate the response");
-		RestUtils.isStatementPreferenceCorrect(testData.getResponsePath(), memberId, "PAPER");
-
-		String statementPreference[] = {"E_STATEMENT", "BOTH"};
-
-		for (int i = 0; i < statementPreference.length; i++) {
-			log("-----Statement Preference : " + statementPreference[i] + "-----");
-			log("Step 15: Prepare payload to set Statement Preference as " + statementPreference[i]);
-			if (StringUtils.isBlank(nextTimeStamp))
-				timeStamp = System.currentTimeMillis();
-			else
-				timeStamp = Long.valueOf(nextTimeStamp);
-
-			String payload = RestUtils.preparePostStatementPreference(testData.getStatementPath(), memberId, externalPatientId, statementPreference[i]);
-
-			log("Step 16: Do POST Statement Preference API & set preference to " + statementPreference[i]);
-			String processingUrl = RestUtils.setupHttpPostRequest(testData.getRestUrl(), payload, testData.getResponsePath());
-
-			log("Step 17: Get processing status until it is completed");
-			boolean completed = false;
-			for (int j = 0; j < 3; j++) {
-				Thread.sleep(60000);
-				RestUtils.setupHttpGetRequest(processingUrl, testData.getResponsePath());
-				if (RestUtils.isMessageProcessingCompleted(testData.getResponsePath())) {
-					completed = true;
-					break;
-				}
-			}
-			assertTrue(completed);
-
-			log("Step 18: Login to Patient Portal");
-			JalapenoLoginPage loginPage1 = new JalapenoLoginPage(driver, testData.getUrl());
-			JalapenoHomePage homePage1 = loginPage1.login(testData.getUserName(), testData.getPassword());
-
-			log("Step 19: Check for update in Statement Preference");
-			JalapenoMyAccountProfilePage myAccountProfilePage1 = homePage1.goToAccountPage();
-			JalapenoMyAccountPreferencesPage myPreferencePage1 = myAccountProfilePage1.goToPreferencesTab(driver);
-
-			assertTrue(myPreferencePage1.checkStatementPreferenceUpdated(StatementPreferenceType.valueOf(statementPreference[i])));
-
-			log("Step 20: Logout of Portal");
-			homePage1.clickOnLogout();
-
-			log("Step 21: GET Statement Preference API");
-			log("Getting statement preference updates since timestamp: " + timeStamp);
-			nextTimeStamp = RestUtils.setupHttpGetRequest(testData.getRestUrl() + "?since=" + timeStamp, testData.getResponsePath());
-
-			log("Step 22: Validate the response");
-			RestUtils.isStatementPreferenceCorrect(testData.getResponsePath(), memberId, statementPreference[i]);
-		}
-	}
 }
