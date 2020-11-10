@@ -14,22 +14,16 @@ import com.intuit.ifs.csscat.core.RetryAnalyzer;
 import com.intuit.ifs.csscat.core.TestConfig;
 import com.intuit.ihg.product.integrationplatform.utils.AMDC;
 import com.intuit.ihg.product.integrationplatform.utils.AMDCTestData;
-import com.intuit.ihg.product.integrationplatform.utils.IntegrationConstants;
 import com.intuit.ihg.product.integrationplatform.utils.PIDC;
 import com.intuit.ihg.product.integrationplatform.utils.PIDCTestData;
 import com.intuit.ihg.product.integrationplatform.utils.RestUtils;
 import com.medfusion.common.utils.IHGUtil;
 import com.medfusion.product.object.maps.patientportal1.page.MyPatientPage;
 import com.medfusion.product.object.maps.patientportal1.page.PortalLoginPage;
-import com.medfusion.product.object.maps.patientportal1.page.inbox.MessageCenterInboxPage;
-import com.medfusion.product.object.maps.patientportal1.page.inbox.MessagePage;
 import com.medfusion.product.object.maps.patientportal1.page.myAccount.MyAccountPage;
 import com.medfusion.product.object.maps.patientportal1.page.myAccount.insurance.InsurancePage;
-import com.medfusion.product.object.maps.patientportal1.page.solutions.askstaff.AskAStaffHistoryPage;
-import com.medfusion.product.object.maps.patientportal1.page.solutions.askstaff.AskAStaffStep1Page;
-import com.medfusion.product.object.maps.patientportal1.page.solutions.askstaff.AskAStaffStep2Page;
-import com.medfusion.product.object.maps.patientportal1.page.solutions.askstaff.AskAStaffStep3Page;
 import com.medfusion.product.object.maps.patientportal2.page.JalapenoLoginPage;
+import com.medfusion.product.object.maps.patientportal2.page.AskAStaff.JalapenoAskAStaffPage;
 import com.medfusion.product.object.maps.patientportal2.page.CreateAccount.PatientDemographicPage;
 import com.medfusion.product.object.maps.patientportal2.page.CreateAccount.SecurityDetailsPage;
 import com.medfusion.product.object.maps.patientportal2.page.HomePage.JalapenoHomePage;
@@ -109,26 +103,24 @@ public class IntegrationPlatformRegressionTests extends BaseTestNGWebDriver {
 
 
 		log("Step 2: LogIn");
-		PortalLoginPage loginPage = new PortalLoginPage(driver, testData.getUrl());
-		assertTrue(loginPage.isLoginPageLoaded(), "There was an error loading the login page");
-		MyPatientPage myPatientPage = loginPage.login(testData.getUserName(), testData.getPassword());
+		JalapenoLoginPage loginPage = new JalapenoLoginPage(driver, testData.getUrl());
+		JalapenoHomePage homePage = loginPage.login(testData.getUserName(), testData.getPassword());
 
-		log("Step 3: Click Ask A Staff");
-		AskAStaffStep1Page askStaff1 = myPatientPage.clickAskAStaffLink();
+		log("Step 3: Click Ask Ur Doc");
+		JalapenoAskAStaffPage askStaff1 = homePage.clickOnAskADoc(driver);
 
-		log("Step 4: Complete Step 1 of Ask A Staff");
-		AskAStaffStep2Page askStaff2 = askStaff1.askQuestion("Test", "This is generated from the AMDCAskQuestion automation test case.");
+		Thread.sleep(8000);
+		log("Step 4: fill and complete the of Ask A Staff");
+		boolean askStaff2 = askStaff1.fillAndSubmitAskyourDocUnpaid(driver);
 
-		log("Step 5: Complete Step 2 of Ask A Staff");
-		AskAStaffStep3Page askStaff3 = askStaff2.submitUnpaidQuestion();
 
 		log("Step 6: Validate entry is on Ask A Staff History page");
-		AskAStaffHistoryPage aasHistory = askStaff3.clickAskAStaffHistory();
-		verifyTrue(aasHistory.isAskAStaffOnHistoryPage(Long.toString(askStaff1.getCreatedTimeStamp())),
-				"Expected to see a subject containing " + askStaff1.getCreatedTimeStamp() + " on the Ask A Staff History page. None were found.");
+		homePage.clickOnAskADoc(driver);
+		boolean aasHistory = askStaff1.checkHistory(driver);
+		Thread.sleep(7000);
 
 		log("Step 7: Logout of Patient Portal");
-		myPatientPage.logout(driver);
+		homePage.clickOnLogout();
 
 		log("Step 8: Setup Oauth client");
 		RestUtils.oauthSetup(testData.getOAuthKeyStore(), testData.getOAuthProperty(), testData.getOAuthAppToken(), testData.getOAuthUsername(),
@@ -171,21 +163,17 @@ public class IntegrationPlatformRegressionTests extends BaseTestNGWebDriver {
 		verifyTrue(completed, "Message processing was not completed in time");
 
 		log("Step 13: Login to Patient Portal");
-		loginPage = new PortalLoginPage(driver, testData.getUrl());
-		myPatientPage = loginPage.login(testData.getUserName(), testData.getPassword());
+		JalapenoLoginPage loginPage1 = new JalapenoLoginPage(driver, testData.getUrl());
+		JalapenoHomePage homePageP = loginPage1.login(testData.getUserName(), testData.getPassword());
+
 
 		log("Step 14: Go to Inbox");
-		MessageCenterInboxPage inboxPage = myPatientPage.clickViewAllMessagesInMessageCenter();
-		assertTrue(inboxPage.isInboxLoaded(), "Inbox failed to load properly.");
-
-		MessagePage msg = inboxPage.openMessageInInbox(reply_Subject);
-
-		log("Step 15: Validate message loads and is the right message");
-		assertTrue(msg.isSubjectLocated(reply_Subject));
+		JalapenoMessagesPage inboxPage = homePageP.showMessages(driver);
+		assertTrue(inboxPage.isMessageDisplayed(driver, reply_Subject));
 
 		Thread.sleep(12000);
 		log("Step 16: Reply to the message");
-		msg.replyToMessage(IntegrationConstants.MESSAGE_REPLY, null);
+		inboxPage.replyToMessage(driver);
 
 		log("Step 17: Wait 60 seconds, so the message can be processed");
 		Thread.sleep(60000);
