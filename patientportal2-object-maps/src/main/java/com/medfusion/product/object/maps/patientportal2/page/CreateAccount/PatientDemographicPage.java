@@ -3,23 +3,27 @@ package com.medfusion.product.object.maps.patientportal2.page.CreateAccount;
 
 import static org.testng.Assert.assertFalse;
 import static org.testng.Assert.assertTrue;
+
 import java.io.IOException;
 import java.time.Month;
 import java.util.ArrayList;
-import javax.transaction.Synchronization;
-import com.medfusion.pojos.Patient;
-import com.medfusion.product.patientportal2.pojo.JalapenoPatient;
+
+import org.openqa.selenium.By;
 import org.openqa.selenium.Keys;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.FindBy;
 import org.openqa.selenium.support.How;
 import org.openqa.selenium.support.PageFactory;
+
 import com.medfusion.common.utils.IHGUtil;
 import com.medfusion.common.utils.PropertyFileLoader;
+import com.medfusion.pojos.Patient;
 import com.medfusion.product.object.maps.patientportal2.page.MedfusionPage;
+import com.medfusion.product.patientportal2.pojo.JalapenoPatient;
 
 public class PatientDemographicPage extends MedfusionPage {
+
 	private PropertyFileLoader testData;
 
 	public static final String ACTIVE_TAB_XPATH_SELECTOR = "//div[contains(@class,'tab-pane') and contains(@class,'active')]";
@@ -313,6 +317,20 @@ public class PatientDemographicPage extends MedfusionPage {
 			setStatesendkeys.sendKeys(Keys.ENTER);
 			break;
 		}
+	}
+
+	public void fillInPatientDataPortal2(String firstName, String lastName, String email, String dobMonthText, String dobDay, String dobYear,
+			String zip, String address1, String address2, String state, String city, String Gender) throws InterruptedException {
+		log("Gender Passed is:    " + Gender);
+		setName(firstName, lastName);
+		setEmail(email);
+		setDateOfBirth(dobMonthText, dobDay, dobYear);
+		setAddress(address1, address2, city, state, zip);
+		Thread.sleep(10000);
+		driver.findElement(By.xpath("//label[contains(text(), '" + Gender + "')]/preceding-sibling::input")).click();
+		IHGUtil.waitForElement(driver, 10, buttonContinue);
+		buttonContinue.click();
+
 	}
 
 }

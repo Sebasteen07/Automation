@@ -12,14 +12,7 @@
 			<methods>
 	    		<include name="testAMDCBatch" />
         		<include name="testAMDCRegression" />
-        		<include name="testOnDemandProvisionCCD" />
-        		<include name="testOnDemandProvisionPIDC" />
-        		<include name="testPatientRegistrationfromPractice" />
-        		<include name="testPIDCBatch" />
-        		<include name="testPIDCPatientDemographicsUpdate" />
         		<include name="testHealthKeyPatientUpdate" />
-        		<include name="testPatientDemographicsUpdateWithSpecialCharacter" />
-        		<include name="testPIDCWithSpecialCharacterData" />
         		<include name="testHealthKeyPatientLoginAndOnDemandProvision" /> 
         		<include name="testHealthKeyPatientAddInsurance" />
         		<include name="testHealthKeyPatientUpdateInsurance" />

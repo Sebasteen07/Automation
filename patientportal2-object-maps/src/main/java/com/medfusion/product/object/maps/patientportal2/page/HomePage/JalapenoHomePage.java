@@ -113,7 +113,7 @@ public class JalapenoHomePage extends JalapenoMenu {
 	@FindBy(how = How.XPATH, using = "//*[@title=\"Ask a Staff\"]")
 	private WebElement askAStaffButtonOnPopup;
 	
-	@FindBy(how = How.XPATH, using = "//*[@title=\"Ask Ur Doc\"]")
+	@FindBy(how = How.XPATH, using = "//*[@title=\"Ask a Doc\"]")
 	private WebElement askADocButtonOnPopup;
 	
 	@FindBy(how = How.XPATH, using = "//div[@id='menu']//li[@id='home']")
