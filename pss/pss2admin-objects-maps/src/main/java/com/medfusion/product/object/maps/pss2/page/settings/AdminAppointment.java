@@ -9,11 +9,24 @@ import org.openqa.selenium.support.FindBy;
 import org.openqa.selenium.support.How;
 
 import com.medfusion.common.utils.IHGUtil;
+import com.medfusion.product.object.maps.pss2.page.util.CommonMethods;
 
 public class AdminAppointment extends SettingsTab {
 
 	@FindBy(how = How.ID, using = "cancelappointment")
 	private WebElement cancelAppointment;
+
+	@FindBy(how = How.XPATH, using = "//input[@id=\"showCancelReason\"]")
+	private WebElement showCancelReschedReason;
+
+	@FindBy(how = How.XPATH, using = "//input[@id=\"showCancelReasonFromPM\"]")
+	private WebElement showCancelReasonPM;
+
+	@FindBy(how = How.XPATH, using = "//form[5]/div[2]/div[1]/div[1]/label[2]")
+	private WebElement showCancelReschedReasonLabel;
+
+	@FindBy(how = How.XPATH, using = "//label[normalize-space()='Show cancellation reason From PM']")
+	private WebElement showCancelReasonPMLabel;
 
 	@FindBy(how = How.ID, using = "blockpatientmonths")
 	private WebElement blockPatientMonths;
@@ -75,6 +88,8 @@ public class AdminAppointment extends SettingsTab {
 		return true;
 	}
 
+	CommonMethods commonMethods = new CommonMethods(driver);
+
 	public void clearAll() {
 		// 01:00 1 1 5 1 18
 		cancelAppointment.clear();
@@ -112,9 +127,54 @@ public class AdminAppointment extends SettingsTab {
 		buttonSave.click();
 	}
 
-	public void updateCancelAppointmentSettings(String cancelHoursBefore) {
+	public void toggleCancelReason() throws InterruptedException {
+		pageDown();
+		log("Verify the Cancel Settings in ADMIN TAB");
+
+		boolean cancel1 = isShowCancellationRescheduleReason();
+		log("verifying the settings of Cancel/Reschedule Reason : " + cancel1);
+		Thread.sleep(1000);
+		if (cancel1) {
+			log("Cancel/Reschedule Reason ALREADY turned ON..");
+			boolean cancel2 = isShowCancellationReasonPM();
+			log("verifying the settings of Cancel Reason from PM : " + cancel2);
+			if (cancel2) {
+
+				log("cancel 1 - ON and Cance2 - ON");
+
+			} else {
+
+				log("cancel 1 - ON and Cance2 - OFF");
+			}
+
+		} else {
+
+			log("Cancel/Reschedule reason setting is OFF-Defaults pop up message will display");
+			log("cancel 1 - OFF and Cancel2 - OFF");
+		}
+		
+
+	}
+
+	public void updateCancelAppointmentSettings(String cancelHoursBefore) throws InterruptedException {
+		commonMethods.highlightElement(cancelAppointment);
 		cancelAppointment.sendKeys(cancelHoursBefore);
-		buttonSave.click();
+		 commonMethods.highlightElement(buttonSave);
+		 buttonSave.click();
+		 Thread.sleep(1000);
+	}
+
+	public Boolean isShowCancellationRescheduleReason() {
+		// commonMethods.highlightElement(showCancelReschedReasonLabel);
+		String str = showCancelReschedReason.getAttribute("ng-reflect-model");
+		log(str);
+		return Boolean.parseBoolean(str);
+	}
+
+	public Boolean isShowCancellationReasonPM() {
+		// commonMethods.highlightElement(showCancelReasonPMLabel);
+		String str = showCancelReasonPM.getAttribute("ng-reflect-model");
+		return Boolean.parseBoolean(str);
 	}
 
 	public void blockPatientsAsPerMonth(String lastSeenMonth) {
