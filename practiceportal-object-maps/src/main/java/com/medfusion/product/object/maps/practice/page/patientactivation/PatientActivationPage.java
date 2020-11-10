@@ -1,10 +1,16 @@
+//Copyright 2013-2020 NXGN Management, LLC. All Rights Reserved.
 package com.medfusion.product.object.maps.practice.page.patientactivation;
 
 import static org.testng.AssertJUnit.*;
 
+import java.io.IOException;
+import java.util.Hashtable;
+import java.util.Properties;
+
 import com.intuit.ifs.csscat.core.pageobject.BasePageObject;
 import com.intuit.ifs.csscat.core.utils.Log4jUtil;
 import com.medfusion.common.utils.IHGUtil;
+import com.medfusion.common.utils.PropertyFileLoader;
 import com.medfusion.portal.utils.PortalConstants;
 import com.medfusion.product.practice.api.utils.PracticeConstants;
 
@@ -106,8 +112,9 @@ public class PatientActivationPage extends BasePageObject {
 
 	@FindBy(xpath = ".//*[@id='content']/form/table/tbody/tr[8]/td[2]")
 	private WebElement unlockCode;
-
-	private String firstNameString = "";
+	
+	static  String firstNameString = "Beta" + IHGUtil.createRandomNumericString();
+	
 	private String lastNameString = "";
 	private String patientIdString = "";
 	private String zipCodeString = "";
@@ -148,7 +155,6 @@ public class PatientActivationPage extends BasePageObject {
 	}
 
 	public void setInitialDetails(String sEmail) {
-		firstNameString = "Beta" + IHGUtil.createRandomNumericString();
 		lastNameString = "Tester";
 		emailAddressString = sEmail;
 		patientIdString = emailAddressString;
@@ -182,6 +188,7 @@ public class PatientActivationPage extends BasePageObject {
 		clickDone();
 
 	}
+
 
 	public String setInitialDetailsAllFields(String firstName, String lastName, String gender, String patientID, String homePhone, String email, String month,
 			String day, String year, String address1, String address2, String city, String state, String zipCode) {
@@ -314,6 +321,50 @@ public class PatientActivationPage extends BasePageObject {
 	public boolean checkGuardianUrl(String url) {
 		IHGUtil.PrintMethodName();
 		return url.contains("guardian");
+	}
+
+	public void setInitialDetailsPortal2(int flag, String firstname, String sEmail) throws IOException {
+		PropertyFileLoader testData=new PropertyFileLoader();
+		lastNameString = "Tester";
+		emailAddressString = sEmail;
+		patientIdString =  "jalapeno"+IHGUtil.createRandomNumericString();;
+		IHGUtil.PrintMethodName();
+		log("New Random First Name is " + firstname);
+		firstName.sendKeys(firstname);
+		lastName.sendKeys(lastNameString);
+		male.click();
+		log("New Random patientid is " + patientIdString);
+		patientId.sendKeys(patientIdString);
+
+		log("New Random Email is " + sEmail);
+		email.sendKeys(sEmail);
+		confirmEmail.sendKeys(sEmail);
+
+		if(firstname.contains("Dependent"))
+		{
+			setDOB(testData.getDOBMonthText(), testData.getDOBDay(),testData.getDOBYearUnderage());
+		}
+		else
+		{
+			setDOB(testData.getDOBMonthText(), testData.getDOBDay(),testData.getDOBYear());
+		}
+		zip.sendKeys(PracticeConstants.ZIP);
+
+		clickRegPatient();
+		clickVerify();
+		
+		if(flag==1) {
+		IHGUtil.waitForElement(driver, 10, unlockLink);
+		unlocklink = unlockLink.getText().trim();
+		Assert.assertTrue("### ERROR: Couldn't get unlock link", !unlocklink.isEmpty());
+		log("#### The unlock link exists and the link is:" + unlocklink);
+		
+		} else
+		{
+			log("Patient activation link is not present- Auto enrolled");
+		}
+		clickDone();
+		
 	}
 
 }

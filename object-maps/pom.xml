@@ -6,7 +6,7 @@
  	<parent>
 		<groupId>com.intuit.ihg</groupId>
 		<artifactId>ihg-depot-qa-parent-pom</artifactId>
-		<version>20.5.0</version>
+		<version>20.6.0</version>
 	</parent>
 	
 	<artifactId>object-maps</artifactId>
@@ -23,7 +23,7 @@
     
 	<properties>
 		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
-		<ihg.version>20.5.0</ihg.version>
+		<ihg.version>20.6.0</ihg.version>
 	</properties>
   
 	<dependencies>

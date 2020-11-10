@@ -2,8 +2,11 @@
 package com.medfusion.patientportal2.test;
 
 import static org.testng.Assert.assertNotNull;
+
+//import static org.testng.Assert.assertNotNull;
 import java.io.File;
 import java.io.IOException;
+import java.lang.reflect.Method;
 import java.time.Instant;
 import java.time.temporal.ChronoUnit;
 import java.util.ArrayList;
@@ -33,6 +36,7 @@ import com.intuit.ihg.common.utils.monitoring.PerformanceReporter;
 import com.medfusion.common.utils.IHGUtil;
 import com.medfusion.common.utils.Mailinator;
 import com.medfusion.common.utils.PropertyFileLoader;
+import com.medfusion.product.object.maps.patientportal2.page.JalapenoLoginEnrollment;
 import com.medfusion.product.object.maps.patientportal2.page.JalapenoLoginPage;
 import com.medfusion.product.object.maps.patientportal2.page.AccountPage.JalapenoAccountPage;
 import com.medfusion.product.object.maps.patientportal2.page.AppointmentRequestPage.JalapenoAppointmentRequestPage;
@@ -105,8 +109,13 @@ public class PatientPortal2AcceptanceTests extends BaseTestNGWebDriver {
 	private static final String INVITE_EMAIL_SUBJECT_PATIENT = "You're invited to create a Patient Portal account at ";
 	private static final String INVITE_EMAIL_SUBJECT_REPRESENTATIVE = "You're invited to create a Portal account to be a trusted representative of a patient at ";
 	private static final String INVITE_EMAIL_BUTTON_TEXT = "Sign Up!";
+	private static final String WELCOME_EMAIL_BUTTON_TEXT = "Visit our patient portal now";
+	private static final String WELCOME_EMAIL_SUBJECT_PATIENT = "New Member Confirmation";
+	private static final String WELCOME_EMAIL_BODY_PATTERN_PRACTICE = "Thank you for creating an account with TestPracticeELE02";
+	private static final String WELCOME_EMAIL_BODY_PATTERN_SECOND_PRACTICE = "Thank you for creating an account with TestPracticeELE01";
 	private static final String INVITE_LINK_FRAGMENT = "invite";
 	private static final String ACTIVATE_LINK_FRAGMENT = "activate";
+	private static final String GUARDIAN_INVITE_SUBJECT="You are invited to create a Patient Portal guardian account at ";
 	private static final String questionText = "wat";
 	private static String ErrorfilePath = System.getProperty("user.dir")
 			+ "\\src\\test\\resources\\File_Attachment\\Error_Files_Testing.pdf";
@@ -141,7 +150,7 @@ public class PatientPortal2AcceptanceTests extends BaseTestNGWebDriver {
 			patient = new CreatePatient().selfRegisterUnderAgePatient(driver, patient, testData.getUrl());
 		}
 	}
-	
+
 	public void createCommonPatientStateSpecific() throws Exception {
 		if (Objects.isNull(patient)) {
 			String username = PortalUtil.generateUniqueUsername(testData.getProperty("userid"), testData);
@@ -182,7 +191,13 @@ public class PatientPortal2AcceptanceTests extends BaseTestNGWebDriver {
 			log("The retrieved link is a redirect URL : " + url);
 		return isFinalUrl;
 	}
-
+    
+	private boolean isWelcomeLinkFinal(String url) {
+		boolean isFinalUrl= url.contains(WELCOME_EMAIL_BUTTON_TEXT);
+		if(!isFinalUrl)
+			log("The retrieved link is a redirect URL:"+url);
+		return isFinalUrl;			
+	}
 	@Test(enabled = true, retryAnalyzer = RetryAnalyzer.class)
 	public void testAssessLoginPageElements() {
 		log("Load login page");
@@ -1071,6 +1086,8 @@ public class PatientPortal2AcceptanceTests extends BaseTestNGWebDriver {
 		logStep("Finishing of patient activation: step 2 - filling patient data");
 		JalapenoHomePage jalapenoHomePage = accountDetailsPage.fillAccountDetailsAndContinue(patientLogin,
 				testData.getPassword(), testData);
+		
+		log("Login username of Guardian is "+patientLogin);
 
 		logStep("Detecting if Home Page is opened");
 		assertTrue(jalapenoHomePage.areBasicPageElementsPresent());
@@ -1081,6 +1098,7 @@ public class PatientPortal2AcceptanceTests extends BaseTestNGWebDriver {
 				testData.getZipCode(), testData.getDOBMonth(), testData.getDOBDay(), testData.getDOBYearUnderage());
 
 		logStep("Continue registration - check dependent info and fill login credentials");
+		log("Login username of Guardian is "+patientLogin);		
 		linkAccountPage.checkDependentInfo("Dependent", patientLastName, patientEmail);
 		jalapenoHomePage = linkAccountPage.linkPatientToCreateGuardian(patientLogin, testData.getPassword(), "Parent");
 
@@ -1953,7 +1971,7 @@ public class PatientPortal2AcceptanceTests extends BaseTestNGWebDriver {
 		logStep("Test case passed");
 
 	}
-	
+
 	@Test(enabled = true, groups = { "acceptance-basics", "commonpatient" }, retryAnalyzer = RetryAnalyzer.class)
 	public void testCreatePatientStateSpecific() throws Exception {
 		createCommonPatientStateSpecific();
@@ -1963,4 +1981,244 @@ public class PatientPortal2AcceptanceTests extends BaseTestNGWebDriver {
 		assertTrue(homePage.areBasicPageElementsPresent());
 	}
 
+	@Test(enabled = true, groups = { "acceptance-basics" }, retryAnalyzer = RetryAnalyzer.class)
+	public void testPatientActivationEnrolment() throws Exception {
+		PropertyFileLoader testData = new PropertyFileLoader();
+		String patientsEmail = IHGUtil.createRandomEmailAddress(testData.getEmail(), '.');		
+		List<ExpectedEmail> mails = new ArrayList<ExpectedEmail>();
+
+		logStep("Generating Activation Link of patient in First Practice Porta");
+		PatientActivationSearchTest patientActivationSearchTest = new PatientActivationSearchTest();
+		String firstunlockLinkPortal = patientActivationSearchTest.getPatientActivationPracticeLink(driver, testData,
+				patientsEmail, "doctorLogin1", "doctorPassword1");
+		logStep("Patient first practice unlockLinkPortal" + firstunlockLinkPortal);
+
+		logStep("Logging into Mailinator and getting Patient Activation url for first Practice");
+		String firstunlockLinkEmail = new Mailinator().getLinkFromEmail(patientsEmail,
+				INVITE_EMAIL_SUBJECT_PATIENT + testData.getProperty("practiceName1"), INVITE_EMAIL_BUTTON_TEXT, 10);
+		assertNotNull(firstunlockLinkEmail, "Error: Activation link not found.");
+
+		logStep("Retrieved activation link for first Practice is " + firstunlockLinkEmail);
+		if (!isInviteLinkFinal(firstunlockLinkEmail)) {
+			firstunlockLinkEmail = getRedirectUrl(firstunlockLinkEmail);
+			log("Retrieved link was redirect link. Final link for first Practice is " + firstunlockLinkEmail);
+		}
+		logStep("Comparing with portal unlock link for first Practice " + firstunlockLinkPortal);
+		assertEquals(firstunlockLinkEmail, firstunlockLinkPortal, "!patient unlock links are not equal!");
+
+		logStep("Generating Unlock link and  Activating patient on Seocnd Practice Portal");
+		PatientActivationSearchTest patientActivationSearchTest1 = new PatientActivationSearchTest();
+		String secondunlockLinkPortal = patientActivationSearchTest1.getPatientActivationPracticeLink(driver, testData,
+				patientsEmail, "doctorLoginPractice2", "doctorPasswordPractice2");
+
+		logStep("Logging into Mailinator and getting Patient Activation url for Seond Practice");
+		String secondunlockLinkEmail = new Mailinator().getLinkFromEmail(patientsEmail,
+				INVITE_EMAIL_SUBJECT_PATIENT + testData.getProperty("practiceName2"), INVITE_EMAIL_BUTTON_TEXT, 20);
+		assertNotNull(secondunlockLinkEmail, "Error: Activation link not found for second practice.");
+		logStep("Retrieved activation link for Seond Practice is " + secondunlockLinkEmail);
+
+		if (!isInviteLinkFinal(secondunlockLinkEmail)) {
+			secondunlockLinkEmail = getRedirectUrl(secondunlockLinkEmail);
+			log("Retrieved link was redirect link. Final link for Seond Practice is " + secondunlockLinkEmail);
+		}
+		logStep("Comparing with portal unlock link for Second Practice " + secondunlockLinkEmail);
+		assertEquals(secondunlockLinkEmail, secondunlockLinkPortal, "!patient unlock links are not equal for Seond Practice!");
+
+		logStep("Finishing of patient activation for portal 2: step 1 - verifying identity");
+		PatientVerificationPage patientVerificationPage = new PatientVerificationPage(driver, secondunlockLinkPortal);
+		SecurityDetailsPage accountDetailsPage = patientVerificationPage.fillPatientInfoAndContinue(
+				PracticeConstants.ZIP_CODE, PortalConstants.DateOfBirthMonthNumber, PortalConstants.DateOfBirthDay,
+				PortalConstants.DateOfBirthYear);
+
+		logStep("Finishing of patient activation: step 2 - filling patient data");
+		JalapenoHomePage jalapenoHomePage = accountDetailsPage.fillAccountDetailsAndContinue(
+				patientActivationSearchTest1.getPatientIdString(), testData.getPassword(), testData);
+
+		logStep("Detecting if Home Page is opened");
+		assertTrue(jalapenoHomePage.areBasicPageElementsPresent());
+
+		logStep("Checking if address in My Account is filled");
+		JalapenoAccountPage accountPage = jalapenoHomePage.clickOnAccount();
+		JalapenoMyAccountProfilePage jalapenoMyAccountPage = accountPage.clickOnEditMyAccount();
+		assertTrue(
+				jalapenoMyAccountPage.checkForAddress(driver, "5501 Dillard Dr", "Cary", PracticeConstants.ZIP_CODE));
+		
+		
+		mails.add(new ExpectedEmail(patientsEmail, WELCOME_EMAIL_SUBJECT_PATIENT, WELCOME_EMAIL_BODY_PATTERN_PRACTICE));
+		mails.add(new ExpectedEmail(patientsEmail, WELCOME_EMAIL_SUBJECT_PATIENT, WELCOME_EMAIL_BODY_PATTERN_SECOND_PRACTICE));
+		assertTrue(new Mailinator().areAllMessagesInInbox(mails, 15));
+		
+		
+		logStep("Load login page for the auto enrolled practice");
+		JalapenoLoginEnrollment loginPage = new JalapenoLoginEnrollment(driver, testData.getProperty("practiceUrl3"));
+		JalapenoHomePage homePage = loginPage.login(patientActivationSearchTest1.getPatientIdString(), testData.getPassword());
+		
+	
+		}
+	// Auto Enrollment Scenario 2, PP-2134
+		@Test(enabled = true, groups = { "acceptance-basics" }, retryAnalyzer = RetryAnalyzer.class)
+		public void testPatientAutoEnrolment() throws Exception {
+			        PropertyFileLoader testData = new PropertyFileLoader();
+			        String patientsEmail = IHGUtil.createRandomEmailAddress(testData.getEmail(), '.');
+			        String patientFirstName = "Betapatient" + IHGUtil.createRandomNumericString();
+
+			        logStep("Patient Activation at First Practice Portal");
+			        PatientActivationSearchTest patientActivationSearchTest = new PatientActivationSearchTest();
+			        String unlockLinkPortal = patientActivationSearchTest.getPatientActivationPortalLink(1,driver,patientsEmail,testData.getProperty("doctorLogin1"),testData.getProperty("doctorPassword1"),testData.getProperty("portalUrl"),patientFirstName);
+			        logStep("Activation Link of First Practice is " + unlockLinkPortal);
+			        
+			        logStep("Logging into Mailinator and getting Patient Activation url for first Practice");
+			        String unlockLinkEmail = new Mailinator().getLinkFromEmail(patientsEmail,
+			                INVITE_EMAIL_SUBJECT_PATIENT + testData.getProperty("practiceName1"), INVITE_EMAIL_BUTTON_TEXT, 10);
+			        assertNotNull(unlockLinkEmail, "Error: Activation link not found.");
+
+			        logStep("Retrieved activation link for first Practice is " + unlockLinkEmail);
+			        if (!isInviteLinkFinal(unlockLinkEmail)) {
+			            unlockLinkEmail = getRedirectUrl(unlockLinkEmail);
+			            log("Retrieved link was redirect link. Final link for second Practice is " + unlockLinkEmail);
+			        }
+			        logStep("Comparing with portal unlock link for first Practice " + unlockLinkPortal);
+			        assertEquals(unlockLinkEmail, unlockLinkPortal, "!patient unlock links are not equal!");
+
+			        logStep("Finishing of patient activation for Practice1: step 1 - verifying identity");
+			        PatientVerificationPage patientVerificationPage = new PatientVerificationPage(driver, unlockLinkPortal);
+			        SecurityDetailsPage accountDetailsPage = patientVerificationPage.fillPatientInfoAndContinue(testData.getZipCode(), testData.getDOBMonth(),testData.getDOBDay(),
+			        		testData.getProperty("DOBYear"));
+
+			        logStep("Finishing of patient activation: step 2 - filling patient data");
+			       JalapenoHomePage jalapenoHomePage = accountDetailsPage.fillAccountDetailsAndContinue(
+			           patientActivationSearchTest.getPatientIdString(), testData.getPassword(), testData);
+
+			        logStep("Detecting if Home Page is opened");
+			        assertTrue(jalapenoHomePage.areBasicPageElementsPresent());
+			        
+			        logStep("Patient Activation on Second Practice Portal- Patient Activation link will not be present");
+			        PatientActivationSearchTest patientActivationSearchTest12 = new PatientActivationSearchTest();
+			        patientActivationSearchTest12.getPatientActivationPortalLink(0,driver,patientsEmail,testData.getProperty("doctorLoginPractice2"),testData.getProperty("doctorPasswordPractice2"),testData.getPortalUrl(),patientFirstName); 
+			        	
+			        log("Waiting for welcome mail at patient inbox from second practice");
+			        Instant testStart = Instant.now();
+			        Email visitPortal = new Mailer(patientsEmail).pollForNewEmailWithSubject(WELCOME_EMAIL_SUBJECT_PATIENT,60,
+							testSecondsTaken(testStart));
+					assertNotNull(visitPortal,
+							"Error: No Welcome email found recent enough with specified subject: " + WELCOME_EMAIL_SUBJECT_PATIENT);
+					String portalUrlLink = Mailer.getLinkByText(visitPortal,WELCOME_EMAIL_BUTTON_TEXT);
+					System.out.println("patient portal url is "+portalUrlLink);
+					assertTrue(portalUrlLink.length() > 0, "Error: No matching link found in patient welcome email!");
+					
+					if (!isWelcomeLinkFinal(portalUrlLink)) {
+						portalUrlLink = getRedirectUrl(portalUrlLink);
+					}
+					
+					JalapenoLoginEnrollment loginPage = new JalapenoLoginEnrollment(driver,portalUrlLink);
+					JalapenoHomePage homePage = loginPage.login(patientActivationSearchTest.getPatientIdString(), testData.getPassword());
+						   
+			        logStep("Detecting if Home Page is opened");
+			        assertTrue(jalapenoHomePage.areBasicPageElementsPresent());
+		        
+			        logStep("Switching to Second Practice to verify auto enrollment");
+			        jalapenoHomePage.switchPractice(testData.getProperty("practiceName1"));
+			        
+			        assertTrue(jalapenoHomePage.areBasicPageElementsPresent());
+			        logStep("Auto Enrolment to Second Practice is completed");				
+		}
+		
+		@Test(enabled = true, groups = { "acceptance-linkedaccounts"}, retryAnalyzer = RetryAnalyzer.class)
+		public void testGuardianAutoEnrolment() throws Exception {
+	    String guardianpatientEmail = IHGUtil.createRandomEmailAddress(testData.getEmail(), '.');
+	    String guardianFirstName = "BetaGuardian" + IHGUtil.createRandomNumericString();
+	   String guardianLogin = PortalUtil.generateUniqueUsername("login", testData);
+
+		logStep("Guardian Patient Activation at Practice Portal1");
+	    PatientActivationSearchTest patientActivationSearchTest = new PatientActivationSearchTest();
+	    String unlockLinkPortal = patientActivationSearchTest.getPatientActivationPortalLink(1,driver,guardianpatientEmail,testData.getProperty("doctorLogin1"),testData.getProperty("doctorPassword1"),testData.getPortalUrl(),guardianFirstName);
+		
+		logStep("Finishing of patient activation: step 1 - verifying identity");
+		PatientVerificationPage patientVerificationPage = new PatientVerificationPage(driver, unlockLinkPortal);
+		SecurityDetailsPage accountDetailsPage = patientVerificationPage.fillPatientInfoAndContinue(
+				testData.getZipCode(), testData.getDOBMonth(), testData.getDOBDay(),
+				testData.getDOBYear());
+
+		logStep("Finishing of patient activation: step 2 - filling patient data");
+		JalapenoHomePage jalapenoHomePage = accountDetailsPage.fillAccountDetailsAndContinue(
+				guardianLogin, testData.getPassword(), testData);
+
+		logStep("Detecting if Home Page is opened");
+		assertTrue(jalapenoHomePage.areBasicPageElementsPresent());
+		
+		logStep("Registering Dependent patient at Practice1");
+		String patientFirstName = "BetaDependent" + IHGUtil.createRandomNumericString();
+		
+		String guardianLinkPortal01 = patientActivationSearchTest.getPatientActivationPortalLink(1,driver,guardianpatientEmail,testData.getProperty("doctorLogin1"),testData.getProperty("doctorPassword1"),testData.getPortalUrl(),patientFirstName);
+		
+		logStep("Logging into Mailinator and getting Patient Activation url");
+		String unlockLinkEmail01 = new Mailinator().getLinkFromEmail(guardianpatientEmail,
+				GUARDIAN_INVITE_SUBJECT + testData.getProperty("practiceName1"), INVITE_EMAIL_BUTTON_TEXT, 10);
+		log("Guardian invite subject from mail is "+unlockLinkEmail01);
+		assertNotNull(unlockLinkEmail01, "Error: Activation link not found.");
+		
+		log("UNLOCK LINK EMAIL PORTAL1+====="+unlockLinkEmail01);
+		
+		logStep("Sign up using invite link from Practice Portal1");
+		
+		patientVerificationPage.getToThisPage(guardianLinkPortal01);
+		AuthUserLinkAccountPage linkAccountPage = patientVerificationPage.fillDependentInfoAndContinue(
+				testData.getZipCode(), testData.getDOBMonth(), testData.getDOBDay(), testData.getDOBYearUnderage());
+		
+		logStep("Continue registration - check dependent info and fill login credentials");
+		linkAccountPage.checkDependentInfo(patientFirstName,"Tester", guardianpatientEmail);
+		jalapenoHomePage = linkAccountPage.linkPatientToCreateGuardian(guardianLogin, testData.getPassword(), "Parent");
+
+		logStep("Continue to the portal and check elements");
+		assertTrue(jalapenoHomePage.assessFamilyAccountElements(true));
+		
+		logStep("Retrieved activation link is " + unlockLinkEmail01);
+		if (!isInviteLinkFinal(unlockLinkEmail01)) {
+			unlockLinkEmail01 = getRedirectUrl(unlockLinkEmail01);
+			log("Retrieved link was redirect link. Final link is " + unlockLinkEmail01);
+		}
+		logStep("Comparing with portal unlock link " + guardianLinkPortal01);
+		assertEquals(unlockLinkEmail01, guardianLinkPortal01, "!patient unlock links are not equal!");
+
+		logStep("Registering Dependent Patient at Practice2");
+		patientActivationSearchTest.getPatientActivationPortalLink(0,driver,guardianpatientEmail,testData.getProperty("doctorLoginPractice2"),testData.getProperty("doctorPasswordPractice2"),testData.getPortalUrl(),patientFirstName);
+		
+		logStep("Validate Welcome mail recieved by guardianpatient at Practice Portal2");
+		
+		log("Waiting for welcome mail at patient inbox from second practice");
+        Instant testStart = Instant.now();
+        Email visitPortal = new Mailer(guardianpatientEmail).pollForNewEmailWithSubject(WELCOME_EMAIL_SUBJECT_PATIENT,60,
+				testSecondsTaken(testStart));
+		assertNotNull(visitPortal,
+				"Error: No Welcome email found recent enough with specified subject: " + WELCOME_EMAIL_SUBJECT_PATIENT);
+		
+		String portalUrlLink = Mailer.getLinkByText(visitPortal,WELCOME_EMAIL_BUTTON_TEXT);
+		
+		System.out.println("patient portal url is "+portalUrlLink);
+		
+		assertTrue(portalUrlLink.length() > 0, "Error: No matching link found in patient welcome email!");
+		
+		if (!isWelcomeLinkFinal(portalUrlLink)) {
+			portalUrlLink = getRedirectUrl(portalUrlLink);
+		}
+		
+		JalapenoLoginEnrollment loginPage = new JalapenoLoginEnrollment(driver,portalUrlLink);
+		JalapenoHomePage homePage = loginPage.login(guardianLogin, testData.getPassword());
+			   
+        logStep("Detecting if Home Page is opened");
+        assertTrue(jalapenoHomePage.areBasicPageElementsPresent());
+        
+        jalapenoHomePage.faChangePatient();
+		assertTrue(jalapenoHomePage.assessFamilyAccountElements(true));
+	
+        logStep("Switching to Second Practice to verify auto enrollment");
+        jalapenoHomePage.switchPractice(testData.getProperty("practiceName1"));
+    	
+        assertTrue(jalapenoHomePage.areBasicPageElementsPresent());
+        logStep("Auto Enrolment of Guardian and Dependent to Second Practice is completed");				
 }
+		
+	}
+
+
+

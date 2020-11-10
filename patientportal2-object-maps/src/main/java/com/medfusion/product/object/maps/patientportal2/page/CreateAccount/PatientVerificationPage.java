@@ -1,3 +1,4 @@
+//Copyright 2013-2020 NXGN Management, LLC. All Rights Reserved.
 package com.medfusion.product.object.maps.patientportal2.page.CreateAccount;
 
 import java.util.ArrayList;
@@ -58,37 +59,41 @@ public class PatientVerificationPage extends MedfusionPage {
 				}
 		}
 
-		public SecurityDetailsPage fillPatientInfoAndContinue(Patient patient) {
+		public SecurityDetailsPage fillPatientInfoAndContinue(Patient patient) throws InterruptedException {
 				return fillPatientInfoAndContinue(patient.getZipCode(), patient.getDOBMonth(), patient.getDOBDay(), patient.getDOBYear());
 		}
 
-		public SecurityDetailsPage fillPatientInfoAndContinue(String zipCode, String dobMonth, String dobDay, String dobYear) {
+		public SecurityDetailsPage fillPatientInfoAndContinue(String zipCode, String dobMonth, String dobDay, String dobYear) throws InterruptedException {
 				fillPatientIdentifyInfo(zipCode, dobMonth, dobDay, dobYear);
 				continueButton.click();
 				return PageFactory.initElements(driver, SecurityDetailsPage.class);
 		}
 
-		public AuthUserLinkAccountPage fillDependentInfoAndContinue(Patient patient) {
+		public AuthUserLinkAccountPage fillDependentInfoAndContinue(Patient patient) throws InterruptedException {
 				return fillDependentInfoAndContinue(patient.getZipCode(), patient.getDOBMonth(), patient.getDOBDay(), patient.getDOBYear());
 		}
 
-		public AuthUserLinkAccountPage fillDependentInfoAndContinue(String zipCode, String dobMonth, String dobDay, String dobYear) {
+		public AuthUserLinkAccountPage fillDependentInfoAndContinue(String zipCode, String dobMonth, String dobDay, String dobYear) throws InterruptedException {
 				fillPatientIdentifyInfo(zipCode, dobMonth, dobDay, dobYear);
 				continueButton.click();
 				return PageFactory.initElements(driver, AuthUserLinkAccountPage.class);
 		}
 
-		private void fillPatientIdentifyInfo(String zipCode, String month, String day, String year) {
+		private void fillPatientIdentifyInfo(String zipCode, String month, String day, String year) throws InterruptedException {
 				IHGUtil.PrintMethodName();
 
 				log("Fill inputs with ZIP: " + zipCode + " and DOB: " + month + "/" + day + "/" + year);
+				IHGUtil.waitForElement(driver, 10, zipCodeInput);
 				zipCodeInput.sendKeys(zipCode);
+				IHGUtil.waitForElement(driver, 10, dateOfBirthMonthSelect);
 				Select dobMonth = new Select(dateOfBirthMonthSelect);
 				if (month.startsWith("0")) {
 						month = month.substring(1);
 				}
 				dobMonth.selectByValue(month);
+				IHGUtil.waitForElement(driver, 10, dateOfBirthDayInput);
 				dateOfBirthDayInput.sendKeys(day);
+				IHGUtil.waitForElement(driver, 10, dateOfBirthYearInput);
 				dateOfBirthYearInput.sendKeys(year);
 		}
 }
