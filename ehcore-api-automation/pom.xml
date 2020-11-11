@@ -105,33 +105,6 @@
 		</dependency>
 
 		<!-- Kavitha's ccd project START -->
-		<!-- Allscripts Dependencies START -->
-
-		<dependency>
-			<groupId>com.allscripts</groupId>
-			<artifactId>connecthub-pojos</artifactId>
-			<version>1.0.5</version>
-		</dependency>
-
-		<dependency>
-			<groupId>com.allscripts</groupId>
-			<artifactId>connecthub-schemas</artifactId>
-			<version>1.0.0</version>
-		</dependency>
-
-		<dependency>
-			<groupId>com.allscripts</groupId>
-			<artifactId>connecthub-stubs</artifactId>
-			<version>1.0.0</version>
-		</dependency>
-
-		<dependency>
-			<groupId>com.intuit.health.eh.adapters</groupId>
-			<artifactId>allscripts-ehr-adapter-dto</artifactId>
-			<version>20.7.0rc-SNAPSHOT</version>
-		</dependency>
-		<!-- Allscripts Dependencies END -->
-		
 		<!-- Message Hub Publisher dependencies START -->
 		<dependency>
 			<groupId>com.intuit.qhg.hub.schemas</groupId>
