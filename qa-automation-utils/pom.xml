@@ -76,13 +76,6 @@
 	      <version>20.7.0rc-SNAPSHOT</version>
 	      <scope>compile</scope>
 		</dependency>
-		
-		<dependency>
-	      <groupId>com.intuit.health.eh.adapters</groupId>
-	      <artifactId>allscripts-ehr-adapter-dto</artifactId>
-	      <version>20.7.0rc-SNAPSHOT</version>
-	      <scope>compile</scope>
-    	</dependency>
     	
     	<dependency>
 			<groupId>com.intuit.api.security</groupId>
