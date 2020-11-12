@@ -1,6 +1,8 @@
 // Copyright 2018-2020 NXGN Management, LLC. All Rights Reserved.
 package com.medfusion.product.pss2patientportal.test;
 
+import java.util.ArrayList;
+
 import org.testng.annotations.DataProvider;
 import org.testng.annotations.Parameters;
 import org.testng.annotations.Test;
@@ -1517,7 +1519,7 @@ public class PSS2PatientPortalAcceptanceTests extends BaseTestNGWebDriver {
 
 		log("rule set in admin = " + rule);
 		rule = rule.replaceAll(" ", "");
-
+		
 		log("Step 4: Login to PSS Appointment");
 		DismissPage dismissPage = new DismissPage(driver, testData.getUrlLoginLess());
 		Thread.sleep(1000);
@@ -1541,21 +1543,24 @@ public class PSS2PatientPortalAcceptanceTests extends BaseTestNGWebDriver {
 		assertTrue(homepage.getFutureAppointmentListSize() > 0, "No Future Appointment found.");
 		log("Step 6: Verify Past appointment type for existence");
 		assertTrue(homepage.getPastAppointmentListSize() > 0, "No Past Appointment found.");
-		testData.setIsCancelApt(true);
-
+				
 		if (can1 == true & can2 == false) {
 
 			homepage.cancelAppointment("CANCEL");
 
 		} else if (can1 == true & can2 == true) {
+			
+			log("True- True Conditions follow");
+			
+			ArrayList<String> len= new ArrayList<String>();
+			homepage.cancelAppointmentPMReason(len);
 
 		} else if (can1 == false & can2 == false) {
-
+			
 			String popupmsg = "We understand that there are times when you must miss an appointment due to emergencies or obligations for work or family. However, when you do not call to cancel an appointment, you may be preventing another patient from getting much needed treatment. If an appointment is not cancelled in advance you may be charged a fee; this will not be covered by your insurance company.";
 			String confirmCancelmsg = "Are you sure you want to cancel your appointment?";
 
 			homepage.defaultcancelAppointment(popupmsg, confirmCancelmsg);
-
 		}
 
 	}
