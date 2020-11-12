@@ -107,11 +107,6 @@
 
        		<dependency>
        			<groupId>com.intuit.ihg</groupId>
-       			<artifactId>object-maps</artifactId>
-       			<version>${ihg.version}</version>
-       		</dependency>
-       		<dependency>
-       			<groupId>com.intuit.ihg</groupId>
        			<artifactId>practiceportal-object-maps</artifactId>
        			<version>${ihg.version}</version>
        		</dependency>

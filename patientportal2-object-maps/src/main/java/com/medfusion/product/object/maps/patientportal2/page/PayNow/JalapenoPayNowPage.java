@@ -2,7 +2,6 @@ package com.medfusion.product.object.maps.patientportal2.page.PayNow;
 
 import java.util.ArrayList;
 
-import com.medfusion.portal.utils.PortalConstants;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.FindBy;
@@ -10,9 +9,11 @@ import org.openqa.selenium.support.PageFactory;
 import org.openqa.selenium.support.ui.Select;
 
 import com.medfusion.common.utils.IHGUtil;
+import com.medfusion.portal.utils.PortalConstants;
 import com.medfusion.product.patientportal2.pojo.CreditCard;
 import com.medfusion.product.patientportal2.pojo.CreditCard.CardType;
 import com.medfusion.product.patientportal2.pojo.PayNowInfo;
+import com.medfusion.product.patientportal2.utils.PortalUtil;
 
 public class JalapenoPayNowPage extends IHGUtil {
 
@@ -67,6 +68,11 @@ public class JalapenoPayNowPage extends IHGUtil {
 		@FindBy(xpath = "//*[@id='payForm']/div[16]/div/div/div/iframe | //*[@id='payForm']/div[15]/div/div/div/iframe")
 		private WebElement reCaptchaFrame;
 
+	@FindBy(xpath = ".//td[@class='table_text']/span")
+	private WebElement txtConfirmationNumber;
+
+	String amountToBePaid = IHGUtil.createRandomNumericString().substring(1, 4);
+
 		public JalapenoPayNowPage(WebDriver driver) throws Exception {
 				super(driver);
 				IHGUtil.PrintMethodName();
@@ -99,7 +105,6 @@ public class JalapenoPayNowPage extends IHGUtil {
 
 		public boolean validateNoLoginPaymentPage(String patientFirstName, String patientLastName, String patientZip, String email) throws InterruptedException {
 				IHGUtil.PrintMethodName();
-				String amountToBePaid = IHGUtil.createRandomNumericString().substring(1, 4);
 
 				nameOnCardInput.sendKeys(patientFirstName + " " + patientLastName);
 				patientNameInput.sendKeys(patientFirstName + " " + patientLastName);
@@ -198,4 +203,16 @@ public class JalapenoPayNowPage extends IHGUtil {
 						selectLocation.selectByVisibleText(location);
 				}
 		}
+
+	public String GetAmountPrize() {
+		return amountToBePaid;
+	}
+
+	public String readConfirmationNumber() {
+		IHGUtil.PrintMethodName();
+		PortalUtil.setPortalFrame(driver);
+		String confirmationNumber = txtConfirmationNumber.getText().toString();
+		return confirmationNumber.substring(confirmationNumber.indexOf("confirmation number is ") + "confirmation number is ".length(),
+				confirmationNumber.indexOf(". Please retain"));
+	}
 }

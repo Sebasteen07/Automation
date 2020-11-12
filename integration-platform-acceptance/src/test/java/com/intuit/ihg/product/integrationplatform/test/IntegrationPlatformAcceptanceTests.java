@@ -32,7 +32,6 @@ import com.intuit.ihg.product.integrationplatform.utils.StatementPreferenceTestD
 import com.medfusion.common.utils.IHGUtil;
 import com.medfusion.common.utils.Mailinator;
 import com.medfusion.portal.utils.PortalConstants;
-import com.medfusion.product.object.maps.patientportal1.page.NoLoginPaymentPage;
 import com.medfusion.product.object.maps.patientportal2.page.JalapenoLoginPage;
 import com.medfusion.product.object.maps.patientportal2.page.AppointmentRequestPage.JalapenoAppointmentRequestPage;
 import com.medfusion.product.object.maps.patientportal2.page.AppointmentRequestPage.JalapenoAppointmentRequestV2Step1;
@@ -589,23 +588,16 @@ public class IntegrationPlatformAcceptanceTests extends BaseTestNGWebDriver {
 		PayNowTestData testcasesData = new PayNowTestData(payNowData);
 		Long timestamp = System.currentTimeMillis();
 
-		logStep("Open login page");
+		logStep("Step 1: Open login page");
 		JalapenoLoginPage loginPage = new JalapenoLoginPage(driver, testcasesData.getUrl());
 
-		logStep("Click on Pay a bill (without logging in");
-		JalapenoPayNowPage payNowPage = loginPage.clickPayNowButton();
-		logStep("Verify Pay now (Pay here) page");
-		assertTrue(
-				payNowPage.validateNoLoginPaymentPage(testcasesData.getFirstName(), testcasesData.getLastName(), testcasesData.getZip(), testcasesData.getEmail()));
-
-		log("Step 1: Open no login payment page");
-		NoLoginPaymentPage pNoLoginPaymentPage = new NoLoginPaymentPage(driver, testcasesData.getUrl());
-		Thread.sleep(3000);
-		log("Step 2: Fill in payment info and submit");
-		assertTrue(pNoLoginPaymentPage.validateNoLoginPaymentPage(testcasesData.getFirstName(), testcasesData.getLastName(), testcasesData.getZip(),
-				testcasesData.getEmail()));
-		Thread.sleep(90000);
+		logStep("Step 2: Click on Pay a bill (without logging in");
+		JalapenoPayNowPage pNoLoginPaymentPage = loginPage.clickPayNowButton();
 		log("Step 3: Verify payment OK");
+		assertTrue(
+				pNoLoginPaymentPage.validateNoLoginPaymentPage(testcasesData.getFirstName(), testcasesData.getLastName(), testcasesData.getZip(),
+						testcasesData.getEmail()));
+		Thread.sleep(90000);
 
 		log("Step 4: Verify account set to N/A");
 		verifyTrue(driver.getPageSource().contains("Account N/A."));
