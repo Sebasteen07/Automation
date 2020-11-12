@@ -10,7 +10,6 @@ import java.util.StringTokenizer;
 
 import javax.xml.parsers.ParserConfigurationException;
 
-import com.medfusion.portal.utils.PortalConstants;
 import org.openqa.selenium.WebDriver;
 import org.testng.Assert;
 import org.xml.sax.SAXException;
@@ -18,14 +17,12 @@ import org.xml.sax.SAXException;
 import com.intuit.ifs.csscat.core.utils.Log4jUtil;
 import com.intuit.ihg.product.integrationplatform.pojo.PIDCInfo;
 import com.intuit.ihg.product.integrationplatform.pojo.PatientDetail;
-import com.medfusion.product.object.maps.patientportal1.page.MyPatientPage;
-import com.medfusion.product.object.maps.patientportal1.page.PortalLoginPage;
-import com.medfusion.product.object.maps.patientportal1.page.createAccount.CreateAccountPage;
+import com.medfusion.common.utils.Mailinator;
+import com.medfusion.portal.utils.PortalConstants;
 import com.medfusion.product.object.maps.patientportal2.page.CreateAccount.AuthUserLinkAccountPage;
 import com.medfusion.product.object.maps.patientportal2.page.CreateAccount.PatientVerificationPage;
 import com.medfusion.product.object.maps.patientportal2.page.CreateAccount.SecurityDetailsPage;
 import com.medfusion.product.object.maps.patientportal2.page.HomePage.JalapenoHomePage;
-import com.medfusion.common.utils.Mailinator;
 
 public class PatientRegistrationUtils {
 	public static void registerPatient(String activationUrl,String EmailID,String PatientPassword,String SecretQuestion,String SecretAnswer,String RegisterTelephone,WebDriver driver,String zip,String birthdate) throws InterruptedException {
@@ -141,22 +138,8 @@ public class PatientRegistrationUtils {
 		}
 	}
 	
-	public static void registerPatient10(String activationUrl, WebDriver driver,String zip,String email,String password,String secretQuestion,String secretAnswer) throws InterruptedException {
-		Log4jUtil.log("Portal 1.0 patient registration");
-		CreateAccountPage pCreateAccountPage = new PortalLoginPage(driver).loadUnlockLink(activationUrl);
-
-		Log4jUtil.log("Step 5: Filling in user credentials and finishing the registration");
-		// Filing the User credentials
-		MyPatientPage myPatientPage =
-				pCreateAccountPage.fillPatientActivaion(zip, email, password, secretQuestion, secretAnswer);
-		Thread.sleep(9000);
-		Log4jUtil.log("Step 6: Assert Webelements in MyPatientPage");
-		//Assert.assertTrue(myPatientPage.isViewallmessagesButtonPresent(driver));
-
-		Log4jUtil.log("Step 7: Signing out of the Patient Portal");
-		myPatientPage.clickLogout(driver);
-	}
 	
+
 	public static void pidcPatientRegistration(String ChannelVersion,WebDriver driver,String portalVersion) throws Exception {
 		LoadPreTestData LoadPreTestDataObj = new LoadPreTestData();
 		PIDCInfo testData = new PIDCInfo();
@@ -197,9 +180,7 @@ public class PatientRegistrationUtils {
 			Log4jUtil.log("Step 4: Moving to the link obtained from the email message");
 			Assert.assertNotNull(activationUrl, "Error: Activation link not found.");
 			
-			if(portalVersion.contains("1.0")) {
-				registerPatient10(activationUrl, driver,payloadObj.zipGroup.get(i),payloadObj.emailGroup.get(i),testData.getPatientPassword(),testData.getSecretQuestion(),testData.getSecretAnswer());
-			}
+
 			if(portalVersion.contains("2.0")) {
 				registerPatient(activationUrl, payloadObj.emailGroup.get(i), testData.getPatientPassword(), testData.getSecretQuestion(), testData.getSecretAnswer(), testData.getHomePhoneNo(), driver, payloadObj.zipGroup.get(i),testData.getBirthDay());
 			}

@@ -379,7 +379,7 @@ public class IntegrationPlatformAcceptanceTests extends BaseTestNGWebDriver {
 		Mailinator mail = new Mailinator();
 		String subject = "New message from PI Automation rsdk Integrated";
 		String messageLink = "Sign in to view this message";
-		String emailMessageLink = mail.getLinkFromEmail(testData.getGmailUserName(), subject, messageLink, 20);
+		String emailMessageLink = mail.getLinkFromEmail(testData.getUserName(), subject, messageLink, 20);
 
 		log("Step 14: Login to Patient Portal");
 		JalapenoLoginPage ploginPage = new JalapenoLoginPage(driver, emailMessageLink);
