@@ -7,8 +7,10 @@ import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.FindBy;
 import org.openqa.selenium.support.How;
+import org.openqa.selenium.support.PageFactory;
 
 import com.medfusion.common.utils.IHGUtil;
+import com.medfusion.product.object.maps.pss2.page.PSS2MenuPage;
 import com.medfusion.product.object.maps.pss2.page.util.CommonMethods;
 
 public class AdminAppointment extends SettingsTab {
@@ -338,6 +340,11 @@ public class AdminAppointment extends SettingsTab {
 		}
 	}
 
+	public PSS2MenuPage saveSlotCancelReasonSetting() {
+		javascriptClick(buttonSave);
+		return PageFactory.initElements(driver, PSS2MenuPage.class);
+	}
+	
 	public void saveSlotSettings() {
 		javascriptClick(buttonSave);
 	}
