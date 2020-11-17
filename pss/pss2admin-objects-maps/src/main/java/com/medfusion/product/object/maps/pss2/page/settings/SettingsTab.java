@@ -76,6 +76,7 @@ public class SettingsTab extends PSS2MenuPage {
 	}
 
 	public AdminAppointment gotoAdminAppointmentTab() {
+		commonMethods.highlightElement(appointmentTab);
 		appointmentTab.click();
 		return PageFactory.initElements(driver, AdminAppointment.class);
 	}

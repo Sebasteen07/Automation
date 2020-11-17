@@ -87,6 +87,9 @@ public class Appointment {
 	private boolean isAnonymousFlow = false;
 	private boolean isinsuranceVisible = false;
 	private boolean isstartpointPresent = false;
+	
+	private boolean showCancellationRescheduleReason = false;
+	private boolean showCancellationReasonPM = false;	
 
 	public Appointment(String providerConfig, String usernameConfig, String passwordConfig, String datetimeConfig, String locationConfig,
 			String appointmentConfig, String specialityConfig) {
@@ -97,6 +100,22 @@ public class Appointment {
 		this.datetime = datetimeConfig;
 		this.appointmenttype = appointmentConfig;
 		this.speciality = specialityConfig;
+	}
+
+	public boolean isShowCancellationRescheduleReason() {
+		return showCancellationRescheduleReason;
+	}
+
+	public void setShowCancellationRescheduleReason(boolean showCancellationRescheduleReason) {
+		this.showCancellationRescheduleReason = showCancellationRescheduleReason;
+	}
+
+	public boolean isShowCancellationReasonPM() {
+		return showCancellationReasonPM;
+	}
+
+	public void setShowCancellationReasonPM(boolean showCancellationReasonPM) {
+		this.showCancellationReasonPM = showCancellationReasonPM;
 	}
 
 	public Appointment() {}
