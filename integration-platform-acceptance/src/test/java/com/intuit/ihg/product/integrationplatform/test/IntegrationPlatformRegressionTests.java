@@ -1,3 +1,4 @@
+//Copyright 2013-2020 NXGN Management, LLC. All Rights Reserved.
 package com.intuit.ihg.product.integrationplatform.test;
 
 
@@ -396,11 +397,9 @@ public class IntegrationPlatformRegressionTests extends BaseTestNGWebDriver {
 
 		Long since = timestamp / 1000;
 		log("Step 2: LogIn Health Key patient into first practice");
-//		PortalLoginPage loginpage = new PortalLoginPage(driver, testData.getUrl());
-//		MyPatientPage pMyPatientPage = loginpage.login(testData.getHealthKeyPatientUserName(), testData.getPassword());
 
 		log("Step 3: Click on myaccountLink on MyPatientPage");
-		//MyAccountPage pMyAccountPage = pMyPatientPage.clickMyAccountLink();
+		MyAccountPage pMyAccountPage = pMyPatientPage.clickMyAccountLink();
 
 		String randomData = IHGUtil.createRandomNumericString();
 		List<String> updateData = new ArrayList<String>();
@@ -452,11 +451,11 @@ public class IntegrationPlatformRegressionTests extends BaseTestNGWebDriver {
 		Long since = timestamp / 1000;
 
 		log("Step 2: LogIn Health Key patient into second practice which does not support Insurance");
-		PortalLoginPage loginpage = new PortalLoginPage(driver, testData.getInsurancePortalURL());
-		MyPatientPage pMyPatientPage = loginpage.login(testData.getInsuranceHealthKeyPatientUserName(), testData.getPassword());
+		//PortalLoginPage loginpage = new PortalLoginPage(driver, testData.getInsurancePortalURL());
+		//MyPatientPage pMyPatientPage = loginpage.login(testData.getInsuranceHealthKeyPatientUserName(), testData.getPassword());
 
 		log("Step 3: Click on myaccountLink on MyPatientPage");
-		MyAccountPage pMyAccountPage = pMyPatientPage.clickMyAccountLink();
+		//MyAccountPage pMyAccountPage = pMyPatientPage.clickMyAccountLink();
 
 		log("Step 4: Create random  addresses to update");
 		Random random = new Random();

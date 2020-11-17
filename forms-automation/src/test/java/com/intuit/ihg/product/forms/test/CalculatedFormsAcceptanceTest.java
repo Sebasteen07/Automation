@@ -1,3 +1,4 @@
+//Copyright 2013-2020 NXGN Management, LLC. All Rights Reserved.
 package com.intuit.ihg.product.forms.test;
 
 import org.openqa.selenium.support.PageFactory;
