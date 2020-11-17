@@ -314,5 +314,13 @@ public class PSSPropertyFileLoader {
 		appointValues.setZipCode(property.getProperty("zipCodeNG"));
 		appointValues.setPrimaryNumber(property.getProperty("primaryNumberNG"));
 	}
+	
+	public void setRestAPIData(Appointment appointValues) {
+		appointValues.setBaseurl_BookRule(property.getProperty("baseurl_BookRule"));
+		appointValues.setBaseurl_LocationRule(property.getProperty("baseurl_LocationRule"));
+		appointValues.setBaseurl_AppointmentType(property.getProperty("baseurl_AptType"));
+		appointValues.setBaseurl_AvailableSlots("baseurl_available_slots");
+		appointValues.setBaseurl_ScheduleAppointment("baseurl_ScheduleAppointment");		
+	}
 
 }
