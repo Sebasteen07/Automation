@@ -1,3 +1,4 @@
+// Copyright 2020 NXGN Management, LLC. All Rights Reserved.
 package com.medfusion.product.pssPatientModulatorAPI.test;
 
 public class Payload {
