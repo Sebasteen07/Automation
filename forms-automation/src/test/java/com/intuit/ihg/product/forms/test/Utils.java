@@ -30,11 +30,8 @@ import com.intuit.ihg.common.utils.downloads.URLStatusChecker;
 import com.medfusion.common.utils.IHGUtil;
 import com.medfusion.common.utils.PropertyFileLoader;
 import com.medfusion.product.object.maps.forms.page.HealthFormListPage;
-import com.medfusion.product.object.maps.patientportal1.page.MyPatientPage;
-import com.medfusion.product.object.maps.patientportal1.page.PortalLoginPage;
 import com.medfusion.product.object.maps.patientportal2.page.JalapenoLoginPage;
 import com.medfusion.product.object.maps.patientportal2.page.HomePage.JalapenoHomePage;
-import com.medfusion.product.patientportal1.flows.CreatePatientTest;
 import com.medfusion.product.patientportal1.pojo.Portal;
 import com.medfusion.product.patientportal1.utils.TestcasesData;
 
@@ -47,10 +44,6 @@ public class Utils {
 		 */
 		public static HealthFormListPage loginPIAndOpenFormsList(WebDriver driver, PracticeType practiceType, PropertyFileLoader testData) throws Exception {
 				return loginPI(driver, practiceType, testData).clickOnHealthForms();
-		}
-
-		public static HealthFormListPage loginPortal1AndOpenFormsList(WebDriver driver, PracticeType practiceType, PropertyFileLoader testData) throws Exception {
-				return loginPortal1(driver, practiceType, testData).clickOnHealthForms();
 		}
 
 		public static JalapenoHomePage loginPI(WebDriver driver, PracticeType practiceType, Patient patient, PropertyFileLoader testData) {
@@ -71,36 +64,6 @@ public class Utils {
 				log("Login to PI");
 				logLogin(url, username, password);
 				return new JalapenoLoginPage(driver, url).login(username, password);
-		}
-
-		public static MyPatientPage loginPortal1(WebDriver driver, PracticeType practiceType, PropertyFileLoader testData) throws Exception {
-				log("Login to Portal 1");
-				String url = getPortalURL(practiceType, false, testData);
-				logLogin(url, testData.getProperty("patientUsername"), testData.getProperty("patientPassword"));
-				return new PortalLoginPage(driver, url).login(testData.getProperty("patientUsername"), testData.getProperty("patientPassword"));
-		}
-
-		public static MyPatientPage loginPortal1(WebDriver driver, PracticeType practiceType, String username, String password, PropertyFileLoader testData)
-				throws Exception {
-				log("Login to Portal 1");
-				String url = getPortalURL(practiceType, false, testData);
-				logLogin(url, username, password);
-				return new PortalLoginPage(driver, url).login(username, password);
-		}
-
-		public static MyPatientPage createAndLoginPatientPortal1(WebDriver driver, PracticeType practiceType, PatientData p) throws Exception {
-				PropertyFileLoader testData = new PropertyFileLoader();
-				String url = getPortalURL(practiceType, false, testData);
-				CreatePatientTest patientCreation = new CreatePatientTest(null, null, url);
-				MyPatientPage home = patientCreation.createPatient(driver, testData);
-				logLogin(url, patientCreation.getEmail(), patientCreation.getPassword());
-				p.setDob(patientCreation.getDob());
-				p.setEmail(patientCreation.getEmail());
-				p.setFirstName(patientCreation.getFirstName());
-				p.setLastName(patientCreation.getLastName());
-				p.setPassword(patientCreation.getPassword());
-				p.setUrl(patientCreation.getUrl());
-				return home;
 		}
 
 		public static Patient createPatientPI(WebDriver driver, String username, String url, PropertyFileLoader testData) throws Exception {

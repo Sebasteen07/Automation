@@ -16,7 +16,6 @@ import com.medfusion.common.utils.PropertyFileLoader;
 import com.medfusion.product.object.maps.forms.page.HealthFormListPage;
 import com.medfusion.product.object.maps.forms.page.questionnaires.CalculatedFormPage;
 import com.medfusion.product.object.maps.forms.page.questionnaires.FormWelcomePage;
-import com.medfusion.product.object.maps.patientportal1.page.MyPatientPage;
 import com.medfusion.product.object.maps.patientportal2.page.HomePage.JalapenoHomePage;
 
 import static com.intuit.ihg.product.forms.test.Utils.*;
@@ -91,19 +90,6 @@ public class CalculatedFormsAcceptanceTest extends BaseTestNGWebDriver {
 				assertEquals(newWelcomeMessage, previewWelcomePage.getMessageText());
 		}
 
-		/**
-		 * @author: Petr H
-		 * @Steps: Login to Patient Portal, click on Patient Forms, open calculated form, fill in the form, submit the form, check if PDF was generated Practices
-		 * configured on: DEV3
-		 */
-		@Test(groups = "OldPortalForms")
-		public void testCalculatedFormPortal1() throws Exception {
-				log("create patient and login to Portal 1");
-				PatientData p = new PatientData();
-				MyPatientPage home = Utils.createAndLoginPatientPortal1(driver, PracticeType.SECONDARY, p);
-				testCalculatedForm(home.clickOnHealthForms());
-		}
-
 		@Test(groups = "CalculatedForms")
 		public void testCalculatedFormPI() throws Exception {
 				log("Create patient and log to Portal 2");
@@ -127,16 +113,6 @@ public class CalculatedFormsAcceptanceTest extends BaseTestNGWebDriver {
 
 				log("Step 4: Check if the date is correct");
 				Utils.verifyFormsDatePatientPortal(formsPage, SitegenConstants.CALCULATED_PHQ9_FORM, driver);
-		}
-
-		/**
-		 * @author: Petr H
-		 * @Steps: Login to Patient Portal, click on Patient Forms, open calculated form, try to save without any answer, try to save it with one answer missing and
-		 * finally saves it with all the correct answers Practices configured on: DEV3
-		 */
-		@Test(groups = "OldPortalForms")
-		public void testCalculatedFormValidationPortal1() throws Exception {
-				testCalculatedFormValidation(Utils.createAndLoginPatientPortal1(driver, PracticeType.SECONDARY, new PatientData()).clickOnHealthForms());
 		}
 
 		@Test(groups = "CalculatedForms")

@@ -12,7 +12,7 @@ import org.openqa.selenium.support.ui.Select;
 
 import com.intuit.ifs.csscat.core.pageobject.BasePageObject;
 import com.medfusion.common.utils.IHGUtil;
-import com.medfusion.product.object.maps.patientportal1.page.MyPatientPage;
+//import com.medfusion.product.object.maps.patientportal1.page.MyPatientPage;
 import com.medfusion.product.patientportal1.utils.PortalUtil;
 
 public class BetaCreateNewPatientPage extends BasePageObject {
@@ -169,71 +169,71 @@ public class BetaCreateNewPatientPage extends BasePageObject {
 	 * @param city
 	 * @return
 	 */
-	public MyPatientPage BetaSiteCreateAccountPage(String patientFirstName, String patientLastName, String email, String patientPhoneNumber,
-			String patientDob_Month, String patientDob_Day, String patientDob_Year, String patientZip, String patientSSN, String address, String password,
-			String Question, String answer, String state, String city) {
-
-		IHGUtil.PrintMethodName();
-		PortalUtil.setPortalFrame(driver);
-
-		patientFirstName = patientFirstName + PortalUtil.createRandomNumber();
-		log("patientFirstName: " + patientFirstName);
-		txtPatientFirstname.sendKeys(patientFirstName);
-		firstName(patientFirstName);
-		patientLastName = patientLastName + PortalUtil.createRandomNumber();
-		log("patientLastName: " + patientLastName);
-		txtLastname.sendKeys(patientLastName);
-		lastName(patientLastName);
-		radioButtGender.click();
-		setBirthDate();
-		// String birthday = PortalConstants.Month + "/" + patientDob_Day + "/" + patientDob_Year;
-		/* txtbirthday.sendKeys(birthday); */
-		txtPatientFirstname.click();// This a fix given for chrome browser
-		// for dealing date drop down
-		log("patientZip: " + patientZip);
-		txtzipcode.sendKeys(patientZip);
-		/*
-		 * log("patientSSN: " + patientSSN); txtssn.sendKeys(patientSSN);
-		 */
-
-		log("email" + email);
-		txtEmail.sendKeys(email);
-		btnContinue.click();
-
-		log("I am on the second Page :======");
-		/*
-		 * txtFirstName.clear(); txtFirstName.sendKeys(patientFirstName); txtLastName.clear(); txtLastName.sendKeys(patientLastName); txtDoB.clear();
-		 * //setBirthDate(); txtDoB.sendKeys(birthday); txtLastName.click();// This a fix given for chrome browser for // dealing date drop down txtSSN.clear();
-		 * txtSSN.sendKeys(patientSSN); chkGender.click();
-		 */
-		txtAddress.sendKeys(address);
-		txtCity.sendKeys(city);
-		Select selectstate = new Select(dropDownState);
-		selectstate.selectByVisibleText(state);
-		txtZipCode.clear();
-		txtZipCode.sendKeys(patientZip);
-		txtHomePhone.sendKeys(patientPhoneNumber);
-		txtEmailPage2.clear();
-		txtEmailPage2.sendKeys(email);
-		txtConfirmEmailPage2.clear();
-		txtConfirmEmailPage2.sendKeys(email);
-		txtUserID.sendKeys(email);
-		txtPassword.sendKeys(password);
-		txtConfirmpassword.sendKeys(password);
-		/*
-		 * Select secretQuestion=new Select(dropDownSecretQuestion); secretQuestion.selectByVisibleText(Question);
-		 */
-		chooseSecretQuestion(Question);
-		txtSecretAnswer.sendKeys(answer);
-		// chkAgreePatientPrivacyInfo.click();
-		if (driver.getPageSource().contains("Preferred Provider")) {
-			chooseProvider();
-		}
-		chkAgreeIntuitTAndC.click();
-		btnSubmit.click();
-
-		return PageFactory.initElements(driver, MyPatientPage.class);
-	}
+//	public MyPatientPage BetaSiteCreateAccountPage(String patientFirstName, String patientLastName, String email, String patientPhoneNumber,
+//			String patientDob_Month, String patientDob_Day, String patientDob_Year, String patientZip, String patientSSN, String address, String password,
+//			String Question, String answer, String state, String city) {
+//
+//		IHGUtil.PrintMethodName();
+//		PortalUtil.setPortalFrame(driver);
+//
+//		patientFirstName = patientFirstName + PortalUtil.createRandomNumber();
+//		log("patientFirstName: " + patientFirstName);
+//		txtPatientFirstname.sendKeys(patientFirstName);
+//		firstName(patientFirstName);
+//		patientLastName = patientLastName + PortalUtil.createRandomNumber();
+//		log("patientLastName: " + patientLastName);
+//		txtLastname.sendKeys(patientLastName);
+//		lastName(patientLastName);
+//		radioButtGender.click();
+//		setBirthDate();
+//		// String birthday = PortalConstants.Month + "/" + patientDob_Day + "/" + patientDob_Year;
+//		/* txtbirthday.sendKeys(birthday); */
+//		txtPatientFirstname.click();// This a fix given for chrome browser
+//		// for dealing date drop down
+//		log("patientZip: " + patientZip);
+//		txtzipcode.sendKeys(patientZip);
+//		/*
+//		 * log("patientSSN: " + patientSSN); txtssn.sendKeys(patientSSN);
+//		 */
+//
+//		log("email" + email);
+//		txtEmail.sendKeys(email);
+//		btnContinue.click();
+//
+//		log("I am on the second Page :======");
+//		/*
+//		 * txtFirstName.clear(); txtFirstName.sendKeys(patientFirstName); txtLastName.clear(); txtLastName.sendKeys(patientLastName); txtDoB.clear();
+//		 * //setBirthDate(); txtDoB.sendKeys(birthday); txtLastName.click();// This a fix given for chrome browser for // dealing date drop down txtSSN.clear();
+//		 * txtSSN.sendKeys(patientSSN); chkGender.click();
+//		 */
+//		txtAddress.sendKeys(address);
+//		txtCity.sendKeys(city);
+//		Select selectstate = new Select(dropDownState);
+//		selectstate.selectByVisibleText(state);
+//		txtZipCode.clear();
+//		txtZipCode.sendKeys(patientZip);
+//		txtHomePhone.sendKeys(patientPhoneNumber);
+//		txtEmailPage2.clear();
+//		txtEmailPage2.sendKeys(email);
+//		txtConfirmEmailPage2.clear();
+//		txtConfirmEmailPage2.sendKeys(email);
+//		txtUserID.sendKeys(email);
+//		txtPassword.sendKeys(password);
+//		txtConfirmpassword.sendKeys(password);
+//		/*
+//		 * Select secretQuestion=new Select(dropDownSecretQuestion); secretQuestion.selectByVisibleText(Question);
+//		 */
+//		chooseSecretQuestion(Question);
+//		txtSecretAnswer.sendKeys(answer);
+//		// chkAgreePatientPrivacyInfo.click();
+//		if (driver.getPageSource().contains("Preferred Provider")) {
+//			chooseProvider();
+//		}
+//		chkAgreeIntuitTAndC.click();
+//		btnSubmit.click();
+//
+//		return PageFactory.initElements(driver, MyPatientPage.class);
+//	}
 
 	public void chooseSecretQuestion(String question) {
 		PortalUtil.setPortalFrame(driver);

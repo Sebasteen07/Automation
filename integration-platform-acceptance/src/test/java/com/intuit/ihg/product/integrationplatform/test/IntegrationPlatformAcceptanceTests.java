@@ -32,7 +32,6 @@ import com.intuit.ihg.product.integrationplatform.utils.StatementPreferenceTestD
 import com.medfusion.common.utils.IHGUtil;
 import com.medfusion.common.utils.Mailinator;
 import com.medfusion.portal.utils.PortalConstants;
-import com.medfusion.product.object.maps.patientportal1.page.NoLoginPaymentPage;
 import com.medfusion.product.object.maps.patientportal2.page.JalapenoLoginPage;
 import com.medfusion.product.object.maps.patientportal2.page.AppointmentRequestPage.JalapenoAppointmentRequestPage;
 import com.medfusion.product.object.maps.patientportal2.page.AppointmentRequestPage.JalapenoAppointmentRequestV2Step1;

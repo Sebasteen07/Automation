@@ -18,10 +18,6 @@ import com.intuit.ihg.product.integrationplatform.utils.PIDC;
 import com.intuit.ihg.product.integrationplatform.utils.PIDCTestData;
 import com.intuit.ihg.product.integrationplatform.utils.RestUtils;
 import com.medfusion.common.utils.IHGUtil;
-import com.medfusion.product.object.maps.patientportal1.page.MyPatientPage;
-import com.medfusion.product.object.maps.patientportal1.page.PortalLoginPage;
-import com.medfusion.product.object.maps.patientportal1.page.myAccount.MyAccountPage;
-import com.medfusion.product.object.maps.patientportal1.page.myAccount.insurance.InsurancePage;
 import com.medfusion.product.object.maps.patientportal2.page.JalapenoLoginPage;
 import com.medfusion.product.object.maps.patientportal2.page.AskAStaff.JalapenoAskAStaffPage;
 import com.medfusion.product.object.maps.patientportal2.page.CreateAccount.PatientDemographicPage;
@@ -400,11 +396,11 @@ public class IntegrationPlatformRegressionTests extends BaseTestNGWebDriver {
 
 		Long since = timestamp / 1000;
 		log("Step 2: LogIn Health Key patient into first practice");
-		PortalLoginPage loginpage = new PortalLoginPage(driver, testData.getUrl());
-		MyPatientPage pMyPatientPage = loginpage.login(testData.getHealthKeyPatientUserName(), testData.getPassword());
+//		PortalLoginPage loginpage = new PortalLoginPage(driver, testData.getUrl());
+//		MyPatientPage pMyPatientPage = loginpage.login(testData.getHealthKeyPatientUserName(), testData.getPassword());
 
 		log("Step 3: Click on myaccountLink on MyPatientPage");
-		MyAccountPage pMyAccountPage = pMyPatientPage.clickMyAccountLink();
+		//MyAccountPage pMyAccountPage = pMyPatientPage.clickMyAccountLink();
 
 		String randomData = IHGUtil.createRandomNumericString();
 		List<String> updateData = new ArrayList<String>();
@@ -420,7 +416,7 @@ public class IntegrationPlatformRegressionTests extends BaseTestNGWebDriver {
 		updateData.add(testData.getChooseCommunication());
 		updateData.add("MiddleName" + randomData);
 
-		pMyAccountPage.updateDemographics(updateData);
+		//pMyAccountPage.updateDemographics(updateData);
 
 		log("Step 4: Invoke Get PIDC for Practice to which patient updates should be sent (Practice 2) ");
 		String[] subString = testData.getPortalRestUrl().split("/");
