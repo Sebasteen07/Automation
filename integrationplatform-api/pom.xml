@@ -61,11 +61,6 @@
   			<artifactId>patientportal2-object-maps</artifactId>
   			<version>20.7.0rc-SNAPSHOT</version>
   		</dependency>
-  		<dependency>
-       		<groupId>com.intuit.ihg</groupId>
-       		<artifactId>patientportal1-object-maps</artifactId>
-       		<version>20.7.0rc-SNAPSHOT</version>
-       	</dependency>
 		<dependency>
 			<groupId>org.eclipse.jetty</groupId>
 			<artifactId>jetty-util</artifactId>
