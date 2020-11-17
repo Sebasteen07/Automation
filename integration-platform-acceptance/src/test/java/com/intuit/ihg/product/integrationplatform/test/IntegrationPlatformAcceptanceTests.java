@@ -627,6 +627,7 @@ public class IntegrationPlatformAcceptanceTests extends BaseTestNGWebDriver {
 		String postPayload =
 				RestUtils.preparePayment(testcasesData.getPaymentPath(), paymentID, pNoLoginPaymentPage.GetAmountPrize() + ".00", IntegrationConstants.PAYNOWPAYMENT);
 
+		log("Posted Payload :     " + postPayload);
 		log("Step 10: Do a Post and get the message");
 		String processingUrl = RestUtils.setupHttpPostRequest(testcasesData.getRestUrl() + "=payNowpayment", postPayload, testcasesData.getResponsePath());
 
