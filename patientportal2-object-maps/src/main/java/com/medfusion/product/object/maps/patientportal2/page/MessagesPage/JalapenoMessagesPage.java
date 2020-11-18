@@ -287,5 +287,20 @@ public class JalapenoMessagesPage extends JalapenoMenu {
 			}
 			Assert.assertEquals(actualBody, body);
 	}
+	
+	public void OpenMessage(WebDriver driver, String subject) {
+		IHGUtil.PrintMethodName();
+		WebElement element;
+			try {
+				element = driver.findElement(By.xpath("//*/ul/li/a/span[contains(text(),'" + subject + "')]"));
+				log("Message with subject \"" + subject + "\" displayed. Clicking to message");
+				Thread.sleep(10000);
+				((JavascriptExecutor) driver).executeScript("arguments[0].click();", element);
+				Thread.sleep(5000);
+			} catch (Exception ex) {
+				log("Message with subject " + subject+"is not clickable");
+				log(ex.getMessage());
+			}
+	}
 }
 

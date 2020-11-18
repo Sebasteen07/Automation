@@ -1,3 +1,4 @@
+//Copyright 2013-2020 NXGN Management, LLC. All Rights Reserved.
 package com.medfusion.product.object.maps.patientportal2.page.CcdPage;
 
 import java.util.ArrayList;
@@ -62,6 +63,10 @@ public class DocumentsPage extends JalapenoMenu {
 		Log4jUtil.log("File name posted: " + fileName2 + " Matches with the Filename on portal : " + fileName.getText());
 
 	}
+	
+	public String getMessageAttachmentData() {
+		return fileName.getText();
+    }
 
 
 
