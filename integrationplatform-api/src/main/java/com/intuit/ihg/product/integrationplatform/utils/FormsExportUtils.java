@@ -1,3 +1,4 @@
+//Copyright 2013-2020 NXGN Management, LLC. All Rights Reserved.
 package com.intuit.ihg.product.integrationplatform.utils;
 
 import java.awt.Robot;
@@ -42,7 +43,6 @@ import com.medfusion.product.object.maps.forms.page.questionnaires.prereg_pages.
 import com.medfusion.product.object.maps.forms.page.questionnaires.prereg_pages.FormSocialHistoryPage;
 import com.medfusion.product.object.maps.forms.page.questionnaires.prereg_pages.FormSurgeriesHospitalizationsPage;
 import com.medfusion.product.object.maps.forms.page.questionnaires.prereg_pages.FormVaccinePage;
-import com.medfusion.product.object.maps.patientportal1.page.PortalLoginPage;
 import com.medfusion.product.object.maps.patientportal2.page.JalapenoLoginPage;
 import com.medfusion.product.object.maps.patientportal2.page.JalapenoMenu;
 import com.medfusion.product.object.maps.patientportal2.page.CreateAccount.PatientDemographicPage;
