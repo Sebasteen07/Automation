@@ -20,6 +20,7 @@ import java.util.HashSet;
 
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
+import org.openqa.selenium.support.PageFactory;
 
 import com.intuit.ifs.csscat.core.utils.Log4jUtil;
 import com.medfusion.product.object.maps.pss2.page.AppEntryPoint.StartAppointmentInOrder;
@@ -814,7 +815,7 @@ public class PSSPatientUtils {
 		OnlineAppointmentScheduling onlineappointmentscheduling = homePage.logout();
 	}
 
-	public void selectAFlow(WebDriver driver, String rule, HomePage homepage, Appointment testData) throws Exception {
+	public ScheduledAppointment selectAFlow(WebDriver driver, String rule, HomePage homepage, Appointment testData) throws Exception {
 		Log4jUtil.log("selectAFlow method started");
 		Thread.sleep(1000);
 		testData.setIsInsuranceEnabled(false);
@@ -856,6 +857,7 @@ public class PSSPatientUtils {
 		if (rule.equalsIgnoreCase(PSSConstants.SBLT)) {
 			SBLTFlow(homepage, testData, Boolean.toString(testData.getIsInsuranceEnabled()), driver);
 		}
+		return PageFactory.initElements(driver, ScheduledAppointment.class);
 	}
 
 	public void selectAFlow(WebDriver driver, String rule, HomePage homepage, Appointment testData, AppointmentPage appointment) throws Exception {
