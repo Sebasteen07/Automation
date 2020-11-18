@@ -100,7 +100,7 @@ public class JalapenoHomePage extends JalapenoMenu {
 	@FindBy(how = How.XPATH, using = "//a[text()='Ask (paid)']")
 	private WebElement askPaid;
 
-	@FindBy(how = How.XPATH, using = "//i[@class='caret pull-right']")
+	@FindBy(how = How.XPATH, using = "//span[@class='caret pull-right']")
 	private WebElement practiceToggleSearch;
 
 	@FindBy(how = How.XPATH, using = "//input[@type='search']")
@@ -487,6 +487,21 @@ public class JalapenoHomePage extends JalapenoMenu {
 
 		String nextAppointmentScheduleText = nextAppointmentSchedule.getText();
 		return nextAppointmentScheduleText;
+	}
+	
+	public JalapenoAskAStaffV2Page1 openSpecificAskaQuestion(String askaName) throws InterruptedException {
+		IHGUtil.PrintMethodName();
+		Thread.sleep(8000);
+		askAQuestion.click();
+		log("It clicked on the ASK a question in homepage");
+		try {
+			Thread.sleep(8000);
+			driver.findElement(By.xpath("//a[text()='"+askaName+"']")).click();
+		} catch (NoSuchElementException e) {
+			log("No question with the specified link text found! name: " + askaName);
+			e.printStackTrace();
+		}
+		return PageFactory.initElements(driver, JalapenoAskAStaffV2Page1.class);
 	}
 
 

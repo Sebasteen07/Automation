@@ -29,7 +29,7 @@ import com.ng.product.integrationplatform.flows.NGAPIFlows;
 
 public class CommonFlows {
 
-	static int arg_timeOut=900; 
+	static int arg_timeOut=1100; 
 	
    public static void verifyMFJOBStatusWithoutValidatingGetProcessingStatusCall(PropertyFileLoader PropertyLoaderObj,String entityidentifier,String integrationID, String type) throws Throwable{
 		
@@ -187,6 +187,8 @@ public class CommonFlows {
 	   Log4jUtil.log("Message Date" + IHGUtil.getEstTiming());
 	   Assert.assertTrue(messagesPage.isMessageDisplayed(driver, "You have a new health data summary"));
 	   Log4jUtil.log("CCD sent date & time is : " + messagesPage.returnMessageSentDate());
+	   
+	   messagesPage.OpenMessage(driver, "You have a new health data summary");
 
 	   Log4jUtil.log("Step Begins: Click on link View health data");
 	   NGCcdViewerPage ngCcdPage = messagesPage.findNGCcdMessage(driver);
