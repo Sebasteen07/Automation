@@ -12,6 +12,7 @@ import org.openqa.selenium.support.PageFactory;
 import com.medfusion.common.utils.IHGUtil;
 import com.medfusion.product.object.maps.pss2.page.Appointment.Main.PSS2MainPage;
 import com.medfusion.product.object.maps.pss2.page.AppointmentType.ManageAppointmentType;
+import com.medfusion.product.object.maps.pss2.page.CancelReason.ManageCancelReason;
 import com.medfusion.product.object.maps.pss2.page.Location.ManageLocation;
 import com.medfusion.product.object.maps.pss2.page.Lockout.ManageLockoutRules;
 import com.medfusion.product.object.maps.pss2.page.Resource.ManageResource;
@@ -50,6 +51,9 @@ public class PSS2MenuPage extends PSS2MainPage {
 	@FindBy(how = How.XPATH, using = "//a[@href=\"#/app/location\"]")
 	private WebElement linkLocation;
 
+	@FindBy(how = How.XPATH, using = "//a[@href='#/app/cancelreason']")
+	private WebElement linkCancelReason;
+
 	public PSS2MenuPage(WebDriver driver) {
 		super(driver);
 	}
@@ -62,6 +66,7 @@ public class PSS2MenuPage extends PSS2MainPage {
 		webElementsList.add(linkAppointmenttype);
 		webElementsList.add(linkResource);
 		webElementsList.add(linkLocation);
+		webElementsList.add(linkCancelReason);
 		return new IHGUtil(driver).assessAllPageElements(webElementsList, this.getClass());
 	}
 
@@ -107,6 +112,14 @@ public class PSS2MenuPage extends PSS2MainPage {
 		javascriptClick(linkCareTeam);
 		log("Care Team Tab clicked.....");
 		return PageFactory.initElements(driver, ManageCareTeam.class);
+	}
+
+	public ManageCancelReason gotoCancelReason() throws InterruptedException {
+		javascriptClick(linkCancelReason);
+		log("Clicked on CANCEL REASON Tab.....");
+		driver.navigate().refresh();
+		Thread.sleep(1000);
+		return PageFactory.initElements(driver, ManageCancelReason.class);
 	}
 
 	public void logout() {

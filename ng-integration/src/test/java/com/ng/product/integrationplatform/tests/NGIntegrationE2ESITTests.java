@@ -3159,6 +3159,7 @@ public class NGIntegrationE2ESITTests extends BaseTestNGWebDriver{
 		long since1 = zdt1.toInstant().toEpochMilli() / 1000;
 		log("midnight"+since1);
 		
+		Thread.sleep(60000);
 		logStep("Request On Demand CCD for Practice 1");
 		CommonFlows.requestCCD(driver,PropertyLoaderObj.getProperty("MFPortalURLPractice1"),trustedPatient.getEmailAddress(), PropertyLoaderObj.getPassword(),"","");
 		
@@ -3261,9 +3262,36 @@ public class NGIntegrationE2ESITTests extends BaseTestNGWebDriver{
 		logStep("Verify the patient is able to receive CCD");
 		CommonFlows.IsCCDReceived(driver, PropertyLoaderObj.getProperty("MFPortalURLPractice1"),createPatient.getEmailAddress(), PropertyLoaderObj.getPassword(), "","");
 		
-		logStep("Add Encounter to patient chart");
-		String encounter_id = CommonFlows.addDataToCCD(locationName,providerName,person_id,practiceId);
-				
+		logStep("Adding Test data to patient CCD "+person_id);
+		   Log4jUtil.log("Step Begins: Add Chart to patient");
+		   NGAPIFlows.addCharttoProvider(locationName,providerName,person_id); 
+		
+		   Log4jUtil.log("Step Begins: Add Encounter to patient chart");
+		   String encounter_id = NGAPIFlows.addEncounter(locationName,providerName,person_id); 
+		
+		   Log4jUtil.log("Step Begins: Add Diagnosis to created encounter");
+		   String diagnosis_id = NGAPIFlows.addDiagnosis(practiceId, person_id, encounter_id);
+		
+		   Log4jUtil.log("Step Begins: Add Medication to created encounter");
+		   String medication_id = NGAPIFlows.addMedication(practiceId,locationName,providerName, "Active", person_id, encounter_id,"R07.9",286939);
+		
+		   Log4jUtil.log("Step Begins: Add allergy to created encounter");
+		   String allergy_id = NGAPIFlows.addAllergy(locationName,providerName,person_id, encounter_id,"1000",2);
+		
+		   Log4jUtil.log("Step Begins: Add Problem to patient chart");
+		   String problem_id = NGAPIFlows.addProblem(locationName,providerName,  person_id,"420543008","55561003","Active");
+
+		   Log4jUtil.log("Step Begins: Add Immunization to created encounter");
+		   String immunization_id = NGAPIFlows.addNewImmunizationsOrder(locationName,providerName,person_id,encounter_id);
+		
+		   Log4jUtil.log("Step Begins: Add lab Order and lab results to patient CCD");
+		   String labOrder_id = NGAPIFlows.addLabOrder(locationName,providerName, person_id, encounter_id);		
+		   String labOrderTest_id = NGAPIFlows.addLabOrderTest(person_id, labOrder_id,"NG001032");
+		   String ObsPanel_id = NGAPIFlows.addObsPanel(person_id, labOrder_id);
+		   String labResult_id = NGAPIFlows.addLabResult(person_id, ObsPanel_id,"75325-1");
+		   String updatelabOrder_id = NGAPIFlows.updateLabOrder(locationName, providerName, person_id, labOrder_id);
+		   Log4jUtil.log("Step End: Test data added to patient CCD successfully to encounter "+encounter_id);
+		   
 		logStep("Request for Locked Encounter CCD");
 		NGAPIFlows.PostCCDRequest(locationName,providerName, person_id,"LockedEncounter", encounter_id);
 		
@@ -3466,5 +3494,193 @@ public class NGIntegrationE2ESITTests extends BaseTestNGWebDriver{
 
 		log("Test Case End: The details are not present when the Encounter is sensitive.");
 	}
+	
+	@Test(enabled = true, groups = { "acceptance-CCD" }, retryAnalyzer = RetryAnalyzer.class)
+	public void testMultiPracticeCCDP1P2ANDOnDemandCCDTrustedRepresentativeWithMFAccount() throws Throwable {
+		log("Test Case: Verify the trusted representative are able to request for On demand CCD (With Medfusion Account)");
+		log("Execution Environment: " + IHGUtil.getEnvironmentType());
+		log("Execution Browser: " + TestConfig.getBrowserType());
+		
+		NGAPIUtils.updateLoginDefaultTo("EnterpriseGateway",PropertyLoaderObj.getNGEnterpiseEnrollmentE1(), PropertyLoaderObj.getNGEnterpiseEnrollmentE1P1());
+		logStep("Create the patient in NG EPM in Practice 1");
+		NewPatient createPatient = NGPatient.patientUsingJSON(PropertyLoaderObj,"complete");
+		String personId= NGAPIFlows.CreatePatientinEPM(createPatient);
+		
+		enrollPatientWithoutGetProcessingStatusValidation(createPatient,personId,PropertyLoaderObj.getProperty("practiceName1"),PropertyLoaderObj.getProperty("integrationPracticeIDE1P1"),PropertyLoaderObj.getNGEnterpiseEnrollmentE1(), PropertyLoaderObj.getNGEnterpiseEnrollmentE1P1());
+		
+		logStep("Create the chart in Enterprise 1 practice 2");
+		NGAPIUtils.updateLoginDefaultTo("EnterpriseGateway",PropertyLoaderObj.getNGEnterpiseEnrollmentE1(), PropertyLoaderObj.getNGEnterpiseEnrollmentE1P2());		
+        NGAPIFlows.addCharttoProvider(PropertyLoaderObj.getNGE1P2Location(),PropertyLoaderObj.getNGE1P2Provider(),personId);		
+		
+		logStep("Create the trusted patient in NG EPM in practice 2");
+		NewPatient trustedPatient = NGPatient.patientUsingJSON(PropertyLoaderObj,"trustedPatient");	
+		trustedPatient = NGPatient.addDataToPatientDemographics(PropertyLoaderObj, trustedPatient);
+		String trustedperson_id=NGAPIFlows.CreatePatientinEPM(trustedPatient);
+		log("Step End: Person created with id "+trustedperson_id);
+		
+		enrollPatientWithoutGetProcessingStatusValidation(trustedPatient,trustedperson_id,PropertyLoaderObj.getProperty("practiceName2"),PropertyLoaderObj.getProperty("integrationPracticeIDE1P2"),PropertyLoaderObj.getNGEnterpiseEnrollmentE1(), PropertyLoaderObj.getNGEnterpiseEnrollmentE1P2());
+		
+		logStep("Waiting for welcome mail at patient inbox from practice 2");        
+  		Thread.sleep(15000);
+		log(createPatient.getEmailAddress() + "   :    " + WELCOME_EMAIL_SUBJECT_PATIENT + "     :   " + WELCOME_EMAIL_BUTTON_TEXT);
+		Thread.sleep(60000);	
+		logStep("Logging into Mailinator and getting Patient Activation url for second Practice");
+	    String visitPortal = new Mailinator().getLinkFromEmail(createPatient.getEmailAddress(), WELCOME_EMAIL_SUBJECT_PATIENT, WELCOME_EMAIL_BUTTON_TEXT, 60);
+	    assertNotNull(visitPortal, "Error: Portal link not found.");
+	    log("Patient portal url for practice 1 is "+visitPortal);
+		
+	    logStep("Waiting for welcome mail at Trusted Representative patient inbox from practice 2");        
+  		Thread.sleep(15000);
+		log(trustedPatient.getEmailAddress() + "   :    " + WELCOME_EMAIL_SUBJECT_PATIENT + "     :   " + WELCOME_EMAIL_BUTTON_TEXT);
+		Thread.sleep(60000);	
+		logStep("Logging into Mailinator and getting Patient Activation url for second Practice");
+	    String Portal2URL = new Mailinator().getLinkFromEmail(trustedPatient.getEmailAddress(), WELCOME_EMAIL_SUBJECT_PATIENT, WELCOME_EMAIL_BUTTON_TEXT, 60);
+	    assertNotNull(Portal2URL, "Error: Portal link not found.");
+	    log("Patient portal url for practice 2 is "+Portal2URL);		
+		
+		logStep("Load login page for the Practice 2 Portal");
+		NGLoginPage loginPage = new NGLoginPage(driver,PropertyLoaderObj.getProperty("MFPortalURLPractice2"));
+		
+		logStep("Load login page and log in to Patient 2 account");
+		Thread.sleep(3000);
+		JalapenoHomePage homePage = loginPage.login(createPatient.getEmailAddress(), PropertyLoaderObj.getPassword());
+		
+		logStep("Switching to Second Practice to verify auto enrollment");
+		homePage.switchToPractice(PropertyLoaderObj.getProperty("practiceName2"));
+	        
+		Thread.sleep(20000);
+		JalapenoAccountPage accountPage = homePage.clickOnAccount();
+		
+		logStep("Invite Trusted Representative");
+		accountPage.inviteTrustedRepresentative(trustedPatient.getFirstName(),trustedPatient.getLastName(),trustedPatient.getEmailAddress());
+
+		log("Waiting for invitation email");
+		String patientTrustedRepresentativeUrl = new Mailinator().getLinkFromEmail(trustedPatient.getEmailAddress(),
+				INVITE_EMAIL_SUBJECT_REPRESENTATIVE, INVITE_EMAIL_BUTTON_TEXT, 15);
+		assertNotNull(patientTrustedRepresentativeUrl, "Error: Activation patients link not found.");
+
+		logStep("Redirecting to verification page");
+		PatientVerificationPage patientVerificationPage = new PatientVerificationPage(driver, patientTrustedRepresentativeUrl);
+
+		Thread.sleep(15000);
+		logStep("Identify patient");
+		AuthUserLinkAccountPage linkAccountPage = patientVerificationPage.fillDependentInfoAndContinue(
+				createPatient.getZip(), PropertyLoaderObj.getDOBMonth(), PropertyLoaderObj.getDOBDay(), PropertyLoaderObj.getDOBYear());
+		
+		Thread.sleep(5000);
+		logStep("Continue registration - check dependent info and fill trusted representative name");
+		linkAccountPage.checkDependentInfo(createPatient.getFirstName(), createPatient.getLastName(), trustedPatient.getEmailAddress());
+		homePage = linkAccountPage.linkPatientToCreateGuardian(trustedPatient.getEmailAddress(), PropertyLoaderObj.getPassword(), "Spouse");
+		assertTrue(homePage.assessFamilyAccountElements(false));
+
+		logStep("Log out and log in");
+		loginPage = homePage.LogoutfromNGMFPortal();
+		homePage = loginPage.login(trustedPatient.getEmailAddress(), PropertyLoaderObj.getPassword());
+		assertTrue(homePage.assessFamilyAccountElements(false));
+		loginPage = homePage.LogoutfromNGMFPortal();
+		
+		homePage = loginPage.login(createPatient.getEmailAddress(), PropertyLoaderObj.getPassword());
+		assertTrue(homePage.assessFamilyAccountElements(false));
+		homePage.LogoutfromNGMFPortal();
+
+		String locationName =PropertyLoaderObj.getProperty("NGE1P2Location"); String providerName =PropertyLoaderObj.getProperty("NGE1P2Provider");	
+		String practiceId = PropertyLoaderObj.getProperty("NGEnterprise1Practice2"); String integrationPracticeId =PropertyLoaderObj.getProperty("integrationPracticeIDE1P2");
+
+		logStep("Verify Enrollment CCD is received by Trusted Representative");
+//		CommonFlows.addDataToCCD(locationName, providerName, trustedperson_id, practiceId);
+		
+		log("Test Case : Verify the patient is able to receive CCD from both practices P1 and P2");
+		
+		String locationName1 =PropertyLoaderObj.getProperty("NGE1P1Location"); String providerName1 =PropertyLoaderObj.getProperty("NGE1P1Provider");	
+		String practiceId1 = PropertyLoaderObj.getProperty("NGEnterprise1Practice1"); String integrationPracticeId1 =PropertyLoaderObj.getProperty("integrationPracticeIDE1P1");
+
+//		CommonFlows.addDataToCCD(locationName1, providerName1, personId, practiceId1);
+
+		logStep("Verify Enrollment CCD is received by Patient for Practice 1");
+		CommonFlows.verifyCCDProcessingStatus(PropertyLoaderObj, personId, practiceId1, integrationPracticeId1, 1);
+		
+		CommonFlows.IsCCDReceived(driver, PropertyLoaderObj.getProperty("MFPortalURLPractice1"),createPatient.getEmailAddress(), PropertyLoaderObj.getPassword(), "","");
+		
+		logStep("Generate Since time for the GET API Call.");
+		LocalTime midnight1 = LocalTime.MIDNIGHT;
+		LocalDate today1 = LocalDate.now(ZoneId.of("America/New_York"));
+		LocalDateTime todayMidnight1 = LocalDateTime.of(today1, midnight1);
+		ZonedDateTime zdt1 = todayMidnight1.atZone(ZoneId.of("America/New_York"));
+		long since1 = zdt1.toInstant().toEpochMilli() / 1000;
+		log("midnight"+since1);
+		
+		logStep("Request On Demand CCD for Practice 1");
+		CommonFlows.requestCCD(driver,PropertyLoaderObj.getProperty("MFPortalURLPractice1"),createPatient.getEmailAddress(), PropertyLoaderObj.getPassword(),"","");
+		
+		logStep("Setup Oauth Token");
+		RestUtils.oauthSetup(PropertyLoaderObj.getOAuthKeyStore(), PropertyLoaderObj.getOAuthProperty(), PropertyLoaderObj.getOAuthAppToken(), PropertyLoaderObj.getProperty("oAuthUsername1"),PropertyLoaderObj.getProperty("oAuthPassword1"));
+
+		Thread.sleep(60000);
+		logStep("Do the Get onDemand Health Data Get API Call.");
+		RestUtils.setupHttpGetRequest(PropertyLoaderObj.getProperty("GetHealthData").replaceAll("integrationID", integrationPracticeId1) + "?since=" + since1 + ",0", PropertyLoaderObj.getResponsePath());
+		
+		String person_nbr = DBUtils.executeQueryOnDB("NGCoreDB","select person_nbr from person where person_id = '"+personId+"'");
+		
+		logStep("Verify CCD received in the Get Api Call.");
+		RestUtils.verifyOnDemandRequestSubmitted(PropertyLoaderObj.getResponsePath(), person_nbr.trim().replace("\t", ""));
+		
+		Thread.sleep(50000);
+		CommonFlows.verifyCCDProcessingStatus(PropertyLoaderObj, personId,practiceId1, integrationPracticeId1, 2);
+		
+		logStep("Verify OnDemand CCD is received by Patient for Practice 1");
+		CommonFlows.IsCCDReceived(driver,PropertyLoaderObj.getProperty("MFPortalURLPractice1"),createPatient.getEmailAddress(), PropertyLoaderObj.getPassword(),"","");	
+		log("Patient received CCD successfully for Practice 1");
+		
+		logStep("Verify Enrollment CCD is received by Patient for Practice 2");
+        CommonFlows.verifyCCDProcessingStatus(PropertyLoaderObj, personId, practiceId, integrationPracticeId, 1);
+		
+		CommonFlows.IsCCDReceived(driver, PropertyLoaderObj.getProperty("MFPortalURLPractice2"),createPatient.getEmailAddress(), PropertyLoaderObj.getPassword(), "","");
+		
+		logStep("Request OnDemand CCD for Practice 2");
+		CommonFlows.requestCCD(driver,PropertyLoaderObj.getProperty("MFPortalURLPractice2"),createPatient.getEmailAddress(), PropertyLoaderObj.getPassword(),"","");
+		
+		Thread.sleep(60000);
+		CommonFlows.verifyCCDProcessingStatus(PropertyLoaderObj, personId,practiceId, integrationPracticeId, 2);
+		
+		logStep("Verify OnDemand CCD is received by Patient for Practice 2");
+		CommonFlows.IsCCDReceived(driver,PropertyLoaderObj.getProperty("MFPortalURLPractice2"),createPatient.getEmailAddress(), PropertyLoaderObj.getPassword(),"","");
+
+		log("Test Case End: The patient is able to receive CCD from both practices P1 and P2");
+		
+        CommonFlows.verifyCCDProcessingStatus(PropertyLoaderObj, trustedperson_id, practiceId, integrationPracticeId, 1);
+		
+		CommonFlows.IsCCDReceived(driver, PropertyLoaderObj.getProperty("MFPortalURLPractice2"),trustedPatient.getEmailAddress(), PropertyLoaderObj.getPassword(), "","");
+		
+		logStep("Generate Since time for the GET API Call.");
+		LocalTime midnight = LocalTime.MIDNIGHT;
+		LocalDate today = LocalDate.now(ZoneId.of("America/New_York"));
+		LocalDateTime todayMidnight = LocalDateTime.of(today, midnight);
+		ZonedDateTime zdt = todayMidnight.atZone(ZoneId.of("America/New_York"));
+		long since = zdt.toInstant().toEpochMilli() / 1000;
+		log("midnight"+since);
+		
+		logStep("Request for OnDemand CCD for Trusted Representative");
+		CommonFlows.requestCCD(driver,PropertyLoaderObj.getProperty("MFPortalURLPractice2"),trustedPatient.getEmailAddress(), PropertyLoaderObj.getPassword(),"","");
+		
+		logStep("Setup Oauth Token");
+		RestUtils.oauthSetup(PropertyLoaderObj.getOAuthKeyStore(), PropertyLoaderObj.getOAuthProperty(), PropertyLoaderObj.getOAuthAppToken(), PropertyLoaderObj.getProperty("oAuthUsername2"),PropertyLoaderObj.getProperty("oAuthPassword2"));
+
+		Thread.sleep(60000);
+		logStep("Do the Get onDemand Health Data Get API Call.");
+		RestUtils.setupHttpGetRequest(PropertyLoaderObj.getProperty("GetHealthData").replaceAll("integrationID", integrationPracticeId) + "?since=" + since + ",0", PropertyLoaderObj.getResponsePath());
+		
+		String trustedperson_nbr = DBUtils.executeQueryOnDB("NGCoreDB","select person_nbr from person where person_id = '"+trustedperson_id+"'");
+		
+		logStep("Verify CCD received in the Get Api Call.");
+		RestUtils.verifyOnDemandRequestSubmitted(PropertyLoaderObj.getResponsePath(), trustedperson_nbr.trim().replace("\t", ""));
+		
+		Thread.sleep(50000);
+		CommonFlows.verifyCCDProcessingStatus(PropertyLoaderObj, trustedperson_id,practiceId, integrationPracticeId, 2);
+		
+		logStep("Verify OnDemand CCD is received by Trusted Representative");
+		CommonFlows.IsCCDReceived(driver,PropertyLoaderObj.getProperty("MFPortalURLPractice2"),trustedPatient.getEmailAddress(), PropertyLoaderObj.getPassword(),"","");
+
+		log("Test Case End: The trusted representative is able to request successfully for On demand CCD (With Medfusion Account)");
+		}
 
 }

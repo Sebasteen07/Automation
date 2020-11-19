@@ -174,7 +174,7 @@ public class IntegrationPlatformRegressionTests extends BaseTestNGWebDriver {
 		log("Step 3: Fill Message data");
 		long timestamp = System.currentTimeMillis();
 		String message = AMDCPayload.getAMDCPayload(testData);
-		// log("message :- "+message);
+		log("message :- " + message);
 		String messageID = AMDCPayload.messageID;
 		log("Partner Message ID:" + messageID);
 

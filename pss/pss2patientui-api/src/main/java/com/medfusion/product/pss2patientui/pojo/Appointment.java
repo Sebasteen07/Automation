@@ -91,11 +91,21 @@ public class Appointment {
 
 	private String providerImageAPI;
 
+	private String baseurl_BookRule;
+	private String baseurl_LocationRule;
+	private String baseurl_AvailableSlots;
+	private String baseurl_ScheduleAppointment;
+	private String baseurl_AppointmentType;
+
 	private String urlAnonymous;
 	private String urlAnonymousNG;
 	private boolean isAnonymousFlow = false;
 	private boolean isinsuranceVisible = false;
 	private boolean isstartpointPresent = false;
+
+
+	private boolean showCancellationRescheduleReason = false;
+	private boolean showCancellationReasonPM = false;
 
 	public Appointment(String providerConfig, String usernameConfig, String passwordConfig, String datetimeConfig,
 			String locationConfig, String appointmentConfig, String specialityConfig) {
@@ -115,10 +125,70 @@ public class Appointment {
 	public String getNextDateAvaliable() {
 		return nextDateAvaliable;
 	}
+		
 
-	public void setNextDateAvaliable(String nextDateAvaliable) {
-		this.nextDateAvaliable = nextDateAvaliable;
+		public void setNextDateAvaliable(String nextDateAvaliable) {
+			this.nextDateAvaliable = nextDateAvaliable;
+		}
+		
+	public String getBaseurl_BookRule() {
+		return baseurl_BookRule;
 	}
+
+	public void setBaseurl_BookRule(String baseurl_BookRule) {
+		this.baseurl_BookRule = baseurl_BookRule;
+	}
+
+	public String getBaseurl_LocationRule() {
+		return baseurl_LocationRule;
+	}
+
+	public void setBaseurl_LocationRule(String baseurl_LocationRule) {
+		this.baseurl_LocationRule = baseurl_LocationRule;
+	}
+
+	public String getBaseurl_AvailableSlots() {
+		return baseurl_AvailableSlots;
+	}
+
+	public void setBaseurl_AvailableSlots(String baseurl_AvailableSlots) {
+		this.baseurl_AvailableSlots = baseurl_AvailableSlots;
+	}
+
+	public String getBaseurl_ScheduleAppointment() {
+		return baseurl_ScheduleAppointment;
+	}
+
+	public void setBaseurl_ScheduleAppointment(String baseurl_ScheduleAppointment) {
+		this.baseurl_ScheduleAppointment = baseurl_ScheduleAppointment;
+	}
+
+	public String getBaseurl_AppointmentType() {
+		return baseurl_AppointmentType;
+	}
+
+	public void setBaseurl_AppointmentType(String baseurl_AppointmentType) {
+		this.baseurl_AppointmentType = baseurl_AppointmentType;
+	}
+
+	public boolean isShowCancellationRescheduleReason() {
+		return showCancellationRescheduleReason;
+	}
+
+	public void setShowCancellationRescheduleReason(boolean showCancellationRescheduleReason) {
+		this.showCancellationRescheduleReason = showCancellationRescheduleReason;
+	}
+
+	public boolean isShowCancellationReasonPM() {
+		return showCancellationReasonPM;
+	}
+
+	public void setShowCancellationReasonPM(boolean showCancellationReasonPM) {
+		this.showCancellationReasonPM = showCancellationReasonPM;
+	}
+
+	
+
 	public boolean isIsstartpointPresent() {
 		return isstartpointPresent;
 	}

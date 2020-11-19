@@ -42,11 +42,6 @@
   			<artifactId>patientportal1-api</artifactId>
   			<version>${ihg.version}</version>
   		</dependency>
-  		<dependency>
-  			<groupId>com.intuit.ihg</groupId>
-  			<artifactId>patientportal1-object-maps</artifactId>
-  			<version>${ihg.version}</version>
-  		</dependency>
   	</dependencies>
   	
     <build>
@@ -72,6 +67,7 @@
 					</archive>
 				</configuration>
 			</plugin>
+			
 		</plugins>
 	</build>
 </project>
