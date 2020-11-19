@@ -26,9 +26,12 @@ import com.medfusion.product.object.maps.pss2.page.AppointmentType.AppointmentPa
 import com.medfusion.product.object.maps.pss2.page.util.CommonMethods;
 
 public class Provider extends PSS2MainPage {
-	@FindAll({@FindBy(
-			xpath = "//*[@class='col-sm-6 col-xs-12 provider-width-btn'or @class='btn providerimage-btn handle-text-Overflow outer-div'or @class='btn providerimage-btn handle-text-Overflow outer-div ']")})
+	@FindAll({@FindBy(xpath = "//*[@class='col-sm-6 col-xs-12 provider-width-btn'or @class='btn providerimage-btn handle-text-Overflow outer-div'or @class='btn providerimage-btn handle-text-Overflow outer-div ']")})
 	private List<WebElement> providerList;
+
+	
+	@FindAll({@FindBy(xpath = "//body/div[@id='root']/div[1]/div[1]/div[1]/div[4]/div[2]/div[2]/a[1]/div[1]/div[2]")})
+	private WebElement providerNextavaliable;
 
 	@FindBy(how = How.ID, using = "providerserach")
 	private WebElement searchForProvider;
@@ -132,5 +135,27 @@ public class Provider extends PSS2MainPage {
 		log("providerList = " + providerList.size());
 		Thread.sleep(6000);
 		return providerList.size();
+	}
+	
+	public AppointmentDateTime searchForProviderFromList1(String providerName) throws InterruptedException {
+		searchForProvider.sendKeys(providerName.trim());
+		log("providerList = " + providerList.size());
+		Thread.sleep(20000);
+		getNextavaliableDate();
+		CommonMethods.highlightElement(providerList.get(0));
+		providerList.get(0).click();
+		log("Clicked on the Provider ");
+		
+		return PageFactory.initElements(driver, AppointmentDateTime.class);
+	}
+	
+	public String getNextavaliableDate()
+	{
+		
+		log("Next Available date is  "+providerNextavaliable.getText());
+		String nextav=providerNextavaliable.getText();
+		String nextDate=nextav.substring(16,28);
+		log("Only date is  "+nextDate);
+		return nextDate;
 	}
 }

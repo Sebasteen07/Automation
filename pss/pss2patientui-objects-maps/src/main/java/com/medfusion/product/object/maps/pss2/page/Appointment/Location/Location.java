@@ -50,8 +50,10 @@ public class Location extends PSS2MainPage {
 		log("location " + locationName);
 		for (int i = 0; i < locationList.size(); i++) {
 			if (locationList.get(i).getText().contains(locationName)) {
+				log("Search Location");
 				log("Location of user found at " + locationList.get(i).getText());
 				javascriptClick(locationList.get(i));
+				log("clicke on location  "+locationName);
 				return PageFactory.initElements(driver, AppointmentPage.class);
 			}
 		}

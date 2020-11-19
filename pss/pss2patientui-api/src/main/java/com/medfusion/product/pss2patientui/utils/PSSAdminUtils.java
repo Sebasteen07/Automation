@@ -8,6 +8,7 @@ import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 
 import com.intuit.ifs.csscat.core.utils.Log4jUtil;
+import com.medfusion.product.object.maps.pss2.page.PSS2MenuPage;
 import com.medfusion.product.object.maps.pss2.page.AppointmentType.ManageAppointmentType;
 import com.medfusion.product.object.maps.pss2.page.Location.ManageLocation;
 import com.medfusion.product.object.maps.pss2.page.Login.PSS2AdminLogin;
@@ -334,5 +335,29 @@ public class PSSAdminUtils {
 		patientflow.logout();
 
 	}
+	public void leadTime(WebDriver driver, AdminUser adminuser, Appointment appointment) throws Exception {
+	
+		PSS2PracticeConfiguration psspracticeConfig = loginToAdminPortal(driver, adminuser);
+		PatientFlow patientflow = psspracticeConfig.gotoPatientFlowTab();
+		//PSS2MenuPage pSS2MenuPage=new PSS2MenuPage(driver);
+		adminuser.setRule(patientflow.getRule());
+		Log4jUtil.log("rule= " + patientflow.getRule());
+		appointment.setIsinsuranceVisible(patientflow.insuracetogglestatus());
+		Log4jUtil.log("Insurance is Enabled= " + patientflow.insuracetogglestatus());
+		appointment.setIsstartpointPresent(patientflow.isstartpagepresent());
+		Log4jUtil.log("StartPage is Visible= " + patientflow.isstartpagepresent());
+		ManageResource mr = psspracticeConfig.gotoResource();
+		pageRefresh(driver);
+		mr.selectResource(appointment.getProvider());
+		mr.selectAppointmenttype(appointment.getAppointmenttype());
+		appointment.setLeadtimeDay(mr.getDay());
+		Log4jUtil.log("Lead time Day is = " + appointment.getLeadtimeDay());
+		appointment.setLeadtimeHour(mr.getHour());
+		Log4jUtil.log("Lead time Hour is = " + appointment.getLeadtimeHour());
+		appointment.setLeadtimeMinute(mr.getMinut());
+		Log4jUtil.log("Lead time Minute is = " + appointment.getLeadtimeMinute());
+		patientflow.logout();
+	}
+
 
 }

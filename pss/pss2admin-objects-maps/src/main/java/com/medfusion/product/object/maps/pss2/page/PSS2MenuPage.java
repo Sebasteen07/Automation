@@ -38,7 +38,10 @@ public class PSS2MenuPage extends PSS2MainPage {
 	@FindBy(how = How.XPATH, using = "//a[@href=\"#/app/appointmenttype\"]")
 	private WebElement linkAppointmenttype;
 
-	@FindBy(how = How.XPATH, using = "//a[@href=\"#/app/resource\"]")
+//	@FindBy(how = How.XPATH, using = "//a[@href=\"#/app/resource\"]")
+//	private WebElement linkResource;
+    
+	@FindBy(how = How.XPATH, using = "//body/app[1]/layout[1]/nav[1]/div[1]/div[1]/ul[1]/li[2]/a[1]/span[1]/i[1]")
 	private WebElement linkResource;
 
 	@FindBy(how = How.XPATH, using = "//a[@href='#/app/careteam']")
@@ -89,9 +92,13 @@ public class PSS2MenuPage extends PSS2MainPage {
 		log("Appointment Type Tab clicked.....");
 		return PageFactory.initElements(driver, ManageAppointmentType.class);
 	}
+	
+	
 
 	public ManageResource gotoResource() {
-		javascriptClick(linkResource);
+		//javascriptClick(linkResource);
+		
+		linkResource.click();
 		log("Resource Tab clicked.....");
 		return PageFactory.initElements(driver, ManageResource.class);
 	}

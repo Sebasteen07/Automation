@@ -7,6 +7,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.concurrent.TimeUnit;
 
+import org.apache.poi.openxml4j.exceptions.InvalidOperationException;
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
@@ -145,5 +146,24 @@ public class AppointmentDateTime extends PSS2MainPage {
 
 	public int getAppointmentDateList() {
 		return appointmentList.size();
+	}
+	
+	public void getfirstdate() {
+		for(int i=0;i<appointmentList.size();i++)
+		{
+			log("First Appointment is"+appointmentList.get(i));
+			
+		}
+		}
+	
+	public String getfirsttime()
+	{  
+		String time="";
+		for(int i=0;i<appointmentTimeList.size();i++)
+		{
+		    time= appointmentTimeList.get(0).getText();
+		}
+		return time;
+
 	}
 }
