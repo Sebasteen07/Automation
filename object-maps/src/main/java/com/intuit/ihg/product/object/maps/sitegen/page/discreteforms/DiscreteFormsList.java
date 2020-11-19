@@ -39,7 +39,6 @@ import com.intuit.ihg.product.sitegen.utils.SitegenlUtil;
 import com.medfusion.common.utils.IHGConstants;
 import com.medfusion.common.utils.IHGUtil;
 import com.medfusion.product.object.maps.forms.page.questionnaires.FormWelcomePage;
-import com.medfusion.product.patientportal1.utils.PortalUtil;
 
 /**
  *
@@ -262,7 +261,6 @@ public class DiscreteFormsList extends BasePageObject {
 
 	public FormWelcomePage openUnpublishedFormPreview(String unpublishedFormName) throws Exception {
 		getUnpublishedFormsOption(unpublishedFormName).findElement(By.linkText("Preview")).click();
-		PortalUtil.setquestionnarieFrame(driver);
 		return PageFactory.initElements(driver, FormWelcomePage.class);
 	}
 
