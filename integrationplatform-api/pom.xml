@@ -46,16 +46,6 @@
   			<artifactId>qa-automation-utils</artifactId>
   			<version>20.7.0rc-SNAPSHOT</version>
   		</dependency>
-  		<dependency>
-  			<groupId>com.intuit.ihg</groupId>
-  			<artifactId>patientportal1-api</artifactId>
-  			<version>20.7.0rc-SNAPSHOT</version>
-  		</dependency>
-  		 <dependency>
-  			<groupId>com.intuit.ihg</groupId>
-  			<artifactId>patientportal1-api</artifactId>
-  			<version>20.7.0rc-SNAPSHOT</version>
-  		</dependency>
   		 <dependency>
   			<groupId>com.intuit.ihg</groupId>
   			<artifactId>patientportal2-object-maps</artifactId>
@@ -83,11 +73,6 @@
 		    <artifactId>commons-io</artifactId>
 		    <version>2.4</version>
 	    </dependency>
-		<dependency>
-			<groupId>com.allscripts</groupId>
-			<artifactId>connecthub-schemas</artifactId>
-			<version>1.0.0</version>
-		</dependency>
 		
 		<dependency>
 	      <groupId>com.intuit.qhg.hub.schemas</groupId>
@@ -113,11 +98,6 @@
 	  		<artifactId>eh-core-dto</artifactId>
 	  		<version>20.7.0rc-SNAPSHOT</version>
 	  	</dependency>
-	  	<dependency>
-	  		<groupId>com.allscripts</groupId>
-	  		<artifactId>connecthub-schemas</artifactId>
-	  		<version>1.0.0</version>
-  		</dependency>
 
 	  	<dependency>
 	  		<groupId>org.openhealthtools.mdht</groupId>

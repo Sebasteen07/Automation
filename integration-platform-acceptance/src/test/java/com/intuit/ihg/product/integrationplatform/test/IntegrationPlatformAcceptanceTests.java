@@ -379,7 +379,7 @@ public class IntegrationPlatformAcceptanceTests extends BaseTestNGWebDriver {
 		Mailinator mail = new Mailinator();
 		String subject = "New message from PI Automation rsdk Integrated";
 		String messageLink = "Sign in to view this message";
-		String emailMessageLink = mail.getLinkFromEmail(testData.getGmailUserName(), subject, messageLink, 20);
+		String emailMessageLink = mail.getLinkFromEmail(testData.getUserName(), subject, messageLink, 20);
 
 		log("Step 14: Login to Patient Portal");
 		JalapenoLoginPage ploginPage = new JalapenoLoginPage(driver, emailMessageLink);
@@ -589,23 +589,16 @@ public class IntegrationPlatformAcceptanceTests extends BaseTestNGWebDriver {
 		PayNowTestData testcasesData = new PayNowTestData(payNowData);
 		Long timestamp = System.currentTimeMillis();
 
-		logStep("Open login page");
+		logStep("Step 1: Open login page");
 		JalapenoLoginPage loginPage = new JalapenoLoginPage(driver, testcasesData.getUrl());
 
-		logStep("Click on Pay a bill (without logging in");
-		JalapenoPayNowPage payNowPage = loginPage.clickPayNowButton();
-		logStep("Verify Pay now (Pay here) page");
-		assertTrue(
-				payNowPage.validateNoLoginPaymentPage(testcasesData.getFirstName(), testcasesData.getLastName(), testcasesData.getZip(), testcasesData.getEmail()));
-
-		log("Step 1: Open no login payment page");
-		NoLoginPaymentPage pNoLoginPaymentPage = new NoLoginPaymentPage(driver, testcasesData.getUrl());
-		Thread.sleep(3000);
-		log("Step 2: Fill in payment info and submit");
-		assertTrue(pNoLoginPaymentPage.validateNoLoginPaymentPage(testcasesData.getFirstName(), testcasesData.getLastName(), testcasesData.getZip(),
-				testcasesData.getEmail()));
-		Thread.sleep(90000);
+		logStep("Step 2: Click on Pay a bill (without logging in");
+		JalapenoPayNowPage pNoLoginPaymentPage = loginPage.clickPayNowButton();
 		log("Step 3: Verify payment OK");
+		assertTrue(
+				pNoLoginPaymentPage.validateNoLoginPaymentPage(testcasesData.getFirstName(), testcasesData.getLastName(), testcasesData.getZip(),
+						testcasesData.getEmail()));
+		Thread.sleep(90000);
 
 		log("Step 4: Verify account set to N/A");
 		verifyTrue(driver.getPageSource().contains("Account N/A."));
@@ -635,6 +628,7 @@ public class IntegrationPlatformAcceptanceTests extends BaseTestNGWebDriver {
 		String postPayload =
 				RestUtils.preparePayment(testcasesData.getPaymentPath(), paymentID, pNoLoginPaymentPage.GetAmountPrize() + ".00", IntegrationConstants.PAYNOWPAYMENT);
 
+		log("Posted Payload :     " + postPayload);
 		log("Step 10: Do a Post and get the message");
 		String processingUrl = RestUtils.setupHttpPostRequest(testcasesData.getRestUrl() + "=payNowpayment", postPayload, testcasesData.getResponsePath());
 

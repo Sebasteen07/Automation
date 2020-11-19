@@ -25,6 +25,7 @@ import com.medfusion.product.object.maps.patientportal2.page.CreateAccount.Patie
 import com.medfusion.product.object.maps.patientportal2.page.CreateAccount.SecurityDetailsPage;
 import com.medfusion.product.object.maps.patientportal2.page.HomePage.JalapenoHomePage;
 import com.medfusion.product.object.maps.patientportal2.page.MessagesPage.JalapenoMessagesPage;
+import com.medfusion.product.object.maps.patientportal2.page.MyAccountPage.JalapenoMyAccountProfilePage;
 import com.medfusion.product.object.maps.practice.page.PracticeHomePage;
 import com.medfusion.product.object.maps.practice.page.PracticeLoginPage;
 import com.medfusion.product.object.maps.practice.page.patientSearch.PatientDashboardPage;
@@ -398,8 +399,11 @@ public class IntegrationPlatformRegressionTests extends BaseTestNGWebDriver {
 		Long since = timestamp / 1000;
 		log("Step 2: LogIn Health Key patient into first practice");
 
+		JalapenoLoginPage loginpage = new JalapenoLoginPage(driver, testData.getUrl());
+		JalapenoHomePage pMyPatientPage = loginpage.login(testData.getHealthKeyPatientUserName(), testData.getPassword());
+
 		log("Step 3: Click on myaccountLink on MyPatientPage");
-		MyAccountPage pMyAccountPage = pMyPatientPage.clickMyAccountLink();
+		JalapenoMyAccountProfilePage pMyAccountPage = pMyPatientPage.clickOnMyAccount();
 
 		String randomData = IHGUtil.createRandomNumericString();
 		List<String> updateData = new ArrayList<String>();
@@ -415,7 +419,7 @@ public class IntegrationPlatformRegressionTests extends BaseTestNGWebDriver {
 		updateData.add(testData.getChooseCommunication());
 		updateData.add("MiddleName" + randomData);
 
-		//pMyAccountPage.updateDemographics(updateData);
+		pMyAccountPage.updateDemographics(updateData);
 
 		log("Step 4: Invoke Get PIDC for Practice to which patient updates should be sent (Practice 2) ");
 		String[] subString = testData.getPortalRestUrl().split("/");
@@ -437,7 +441,7 @@ public class IntegrationPlatformRegressionTests extends BaseTestNGWebDriver {
 		assertTrue(found, "Health Key Patient is not found in Get Response");
 
 		log("Step 6: Logout from Patient portal");
-		pMyAccountPage.logout(driver);
+		pMyAccountPage.clickOnLogout();
 	}
 
 
@@ -451,11 +455,11 @@ public class IntegrationPlatformRegressionTests extends BaseTestNGWebDriver {
 		Long since = timestamp / 1000;
 
 		log("Step 2: LogIn Health Key patient into second practice which does not support Insurance");
-		//PortalLoginPage loginpage = new PortalLoginPage(driver, testData.getInsurancePortalURL());
-		//MyPatientPage pMyPatientPage = loginpage.login(testData.getInsuranceHealthKeyPatientUserName(), testData.getPassword());
+		JalapenoLoginPage loginPage = new JalapenoLoginPage(driver, testData.getInsurancePortalURL());
+		JalapenoHomePage homePage = loginPage.login(testData.getInsuranceHealthKeyPatientUserName(), testData.getPassword());
 
 		log("Step 3: Click on myaccountLink on MyPatientPage");
-		//MyAccountPage pMyAccountPage = pMyPatientPage.clickMyAccountLink();
+		JalapenoMyAccountProfilePage pMyAccountPage = homePage.clickOnMyAccount();
 
 		log("Step 4: Create random  addresses to update");
 		Random random = new Random();
@@ -468,15 +472,15 @@ public class IntegrationPlatformRegressionTests extends BaseTestNGWebDriver {
 		pMyAccountPage.modifyAndSubmitAddressLines(firstLine, secondLine);
 
 		log("Step 6: Logout from Patient portal");
-		pMyAccountPage.logout(driver);
+		pMyAccountPage.clickOnLogout();
 
 
 		log("Step 7: LogIn Health Key patient into first practice");
-		loginpage = new PortalLoginPage(driver, testData.getPortalURL());
-		pMyPatientPage = loginpage.login(testData.getInsuranceHealthKeyPatientUserName(), testData.getPassword());
+		loginPage = new JalapenoLoginPage(driver, testData.getPortalURL());
+		homePage = loginPage.login(testData.getInsuranceHealthKeyPatientUserName(), testData.getPassword());
 
 		log("Step 8: Click on myaccountLink on MyPatientPage");
-		pMyAccountPage = pMyPatientPage.clickMyAccountLink();
+		pMyAccountPage = homePage.clickOnMyAccount();
 
 		List<String> insuranceData = new ArrayList<String>();
 		insuranceData.addAll(Arrays.asList(new String[20]));
@@ -489,13 +493,13 @@ public class IntegrationPlatformRegressionTests extends BaseTestNGWebDriver {
 		insuranceData.add(17, IHGUtil.createRandomNumericString()); // insurance Group number
 
 		log("Step 9: Click on insuranceLink on MyAccountPage");
-		InsurancePage pinsuranceDetailsPage = pMyAccountPage.addInsuranceLink();
+		// InsurancePage pinsuranceDetailsPage = pMyAccountPage.addInsuranceLink();
 
 		log("Step 10: Delete existing insurance");
-		pinsuranceDetailsPage.deleteAllInsurances();
+		// pinsuranceDetailsPage.deleteAllInsurances();
 
 		log("Step 11: Start to add Insurance details");
-		pinsuranceDetailsPage.allInsuranceDetails(testData.getInsurance_Name(), testData.getInsurance_Type(), testData.getRelation(), insuranceData);
+		// pinsuranceDetailsPage.allInsuranceDetails(testData.getInsurance_Name(), testData.getInsurance_Type(), testData.getRelation(), insuranceData);
 
 		log("Step 12: Asserting for Insurance Name ,Insurance Type and Policy number");
 		Thread.sleep(60000);
@@ -530,11 +534,11 @@ public class IntegrationPlatformRegressionTests extends BaseTestNGWebDriver {
 		}
 
 		log("Step 16: Delete insurance");
-		pinsuranceDetailsPage.deleteAllInsurances();
+		// pinsuranceDetailsPage.deleteAllInsurances();
 		Thread.sleep(60000);
 
 		log("Step 17: Logout from Patient portal");
-		pMyAccountPage.logout(driver);
+		homePage.clickOnLogout();
 
 	}
 
@@ -548,11 +552,12 @@ public class IntegrationPlatformRegressionTests extends BaseTestNGWebDriver {
 		Long since = timestamp / 1000;
 
 		log("Step 2: LogIn Health Key patient into second practice an update demographics so patient gets available in Get response");
-		PortalLoginPage loginpage = new PortalLoginPage(driver, testData.getPortalURL());
-		MyPatientPage pMyPatientPage = loginpage.login(testData.getInsuranceHealthKeyPatientUserName1(), testData.getPassword());
+
+		JalapenoLoginPage loginpage = new JalapenoLoginPage(driver, testData.getPortalURL());
+		JalapenoHomePage pMyPatientPage = loginpage.login(testData.getInsuranceHealthKeyPatientUserName1(), testData.getPassword());
 
 		log("Step 3: Click on myaccountLink on MyPatientPage");
-		MyAccountPage pMyAccountPage = pMyPatientPage.clickMyAccountLink();
+		JalapenoMyAccountProfilePage pMyAccountPage = pMyPatientPage.clickOnMyAccount();
 
 		log("Step 4: Create random  addresses to update");
 		Random random = new Random();
@@ -565,14 +570,14 @@ public class IntegrationPlatformRegressionTests extends BaseTestNGWebDriver {
 		pMyAccountPage.modifyAndSubmitAddressLines(firstLine, secondLine);
 
 		log("Step 6: Logout from Patient portal");
-		pMyAccountPage.logout(driver);
+		pMyAccountPage.clickOnLogout();
 
 		log("Step 7: LogIn Health Key patient into first practice and add insurance '" + testData.getInsurance_Name() + "'");
-		loginpage = new PortalLoginPage(driver, testData.getUrl());
+		loginpage = new JalapenoLoginPage(driver, testData.getUrl());
 		pMyPatientPage = loginpage.login(testData.getInsuranceHealthKeyPatientUserName1(), testData.getPassword());
 
 		log("Step 8: Click on myaccountLink on MyPatientPage");
-		pMyAccountPage = pMyPatientPage.clickMyAccountLink();
+		pMyAccountPage = pMyPatientPage.clickOnMyAccount();
 
 		List<String> insuranceData = new ArrayList<String>();
 		insuranceData.addAll(Arrays.asList(new String[20]));
@@ -585,13 +590,13 @@ public class IntegrationPlatformRegressionTests extends BaseTestNGWebDriver {
 		insuranceData.add(17, IHGUtil.createRandomNumericString()); // insurance Group number
 
 		log("Step 9: Click on insuranceLink on MyAccountPage");
-		InsurancePage pinsuranceDetailsPage = pMyAccountPage.addInsuranceLink();
+		// InsurancePage pinsuranceDetailsPage = pMyAccountPage.addInsuranceLink();
 
 		log("Step 10: Delete existing insurance");
-		pinsuranceDetailsPage.deleteAllInsurances();
+		// pinsuranceDetailsPage.deleteAllInsurances();
 
 		log("Step 11: Start to add Insurance details");
-		pinsuranceDetailsPage.allInsuranceDetails(testData.getInsurance_Name(), testData.getInsurance_Type(), testData.getRelation(), insuranceData);
+		// pinsuranceDetailsPage.allInsuranceDetails(testData.getInsurance_Name(), testData.getInsurance_Type(), testData.getRelation(), insuranceData);
 
 		log("Step 12: Asserting for Insurance Name ,Insurance Type and Policy number");
 		Thread.sleep(60000);
@@ -628,19 +633,18 @@ public class IntegrationPlatformRegressionTests extends BaseTestNGWebDriver {
 
 
 		log("Step 17: Delete insurance");
-		pinsuranceDetailsPage.deleteAllInsurances();
+		// pinsuranceDetailsPage.deleteAllInsurances();
 		Thread.sleep(60000);
 
 		log("Step 18: Logout from first Patient portal");
-		pMyAccountPage.logout(driver);
-
+		pMyAccountPage.clickOnLogout();
 
 		log("Step 19: LogIn Health Key patient into second practice and add insurance '" + testData.getSecondInsuranceName() + "'");
-		loginpage = new PortalLoginPage(driver, testData.getPortalURL());
+		loginpage = new JalapenoLoginPage(driver, testData.getPortalURL());
 		pMyPatientPage = loginpage.login(testData.getInsuranceHealthKeyPatientUserName1(), testData.getPassword());
 
 		log("Step 20: Click on myaccountLink on MyPatientPage");
-		pMyAccountPage = pMyPatientPage.clickMyAccountLink();
+		pMyAccountPage = pMyPatientPage.clickOnMyAccount();
 
 		insuranceData = new ArrayList<String>();
 		insuranceData.addAll(Arrays.asList(new String[20]));
@@ -653,13 +657,13 @@ public class IntegrationPlatformRegressionTests extends BaseTestNGWebDriver {
 		insuranceData.set(17, IHGUtil.createRandomNumericString()); // insurance Group number
 
 		log("Step 21: Click on insuranceLink on MyAccountPage");
-		pinsuranceDetailsPage = pMyAccountPage.addInsuranceLink();
+		// pinsuranceDetailsPage = pMyAccountPage.addInsuranceLink();
 
 		log("Step 22: Delete existing insurance");
-		pinsuranceDetailsPage.deleteAllInsurances();
+		// pinsuranceDetailsPage.deleteAllInsurances();
 
 		log("Step 23: Start to add Insurance details");
-		pinsuranceDetailsPage.allInsuranceDetails(testData.getSecondInsuranceName(), testData.getInsurance_Type(), testData.getRelation(), insuranceData);
+		// pinsuranceDetailsPage.allInsuranceDetails(testData.getSecondInsuranceName(), testData.getInsurance_Type(), testData.getRelation(), insuranceData);
 
 		log("Step 24: Asserting for Insurance Name ,Insurance Type and Policy number");
 		Thread.sleep(60000);
@@ -696,11 +700,11 @@ public class IntegrationPlatformRegressionTests extends BaseTestNGWebDriver {
 		}
 
 		log("Step 29: Delete insurance");
-		pinsuranceDetailsPage.deleteAllInsurances();
+		// pinsuranceDetailsPage.deleteAllInsurances();
 		Thread.sleep(60000);
 
 		log("Step 30: Logout from Patient portal");
-		pMyAccountPage.logout(driver);
+		pMyAccountPage.clickOnLogout();
 
 	}
 

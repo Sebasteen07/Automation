@@ -37,11 +37,6 @@
   			<artifactId>practiceportal-api</artifactId>
   			<version>${ihg.version}</version>
   		</dependency>
-  		<dependency>
-  			<groupId>com.intuit.ihg</groupId>
-  			<artifactId>patientportal1-api</artifactId>
-  			<version>${ihg.version}</version>
-  		</dependency>
   	</dependencies>
   	
     <build>
