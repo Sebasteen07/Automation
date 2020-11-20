@@ -26,7 +26,7 @@ public class ConfirmationPage extends PSS2MainPage {
 
 	@FindBy(how = How.XPATH, using = "//body/div[@id='root']/div[1]/div[1]/div[1]/div[4]/div[2]/div[1]/div[3]/div[1]/div[3]/div[1]/div[1]/div[1]")
 	private WebElement DateConfirmation;
-	
+
 	public ConfirmationPage(WebDriver driver) {
 		super(driver);
 	}
@@ -53,19 +53,19 @@ public class ConfirmationPage extends PSS2MainPage {
 	public List<WebElement> getAppointmentDetails() {
 		return appointmentScheduledDetails;
 	}
-	public String dateConfirm()
-	{
-		String datetext=DateConfirmation.getText();
-		String replace1=datetext.replace(",", "");
-		String nextDate1=replace1.substring(00,16);
+
+	public String dateConfirm() {
+		String datetext = DateConfirmation.getText();
+		String replace1 = datetext.replace(",", "");
+		String nextDate1 = replace1.substring(00, 16);
 		return nextDate1;
-		
+
 	}
-	public HomePage confirmationPage()
-	{
-		
+
+	public HomePage confirmationPage() {
+
 		return PageFactory.initElements(driver, HomePage.class);
-		
+
 	}
 
 }

@@ -11,7 +11,7 @@ import org.openqa.selenium.support.How;
 
 public class PSS2PracticeConfiguration extends SettingsTab {
 
-	
+
 	@FindBy(how = How.XPATH, using = "/html/body/app/layout/div/main/div[2]/div/div/div/section/div/div/div[2]/div[1]/div[1]/div[1]/img")
 	private WebElement clientlogo;
 

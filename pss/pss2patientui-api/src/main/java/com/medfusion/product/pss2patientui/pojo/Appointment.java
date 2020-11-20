@@ -74,19 +74,20 @@ public class Appointment {
 	private int leadtimeDay;
 	private int leadtimeHour;
 	private int leadtimeMinute;
+
+
 	private String currentDate;
+	private String currentTimeZone;
 
 	private Boolean isCancelButtonPresent;
 	private int displaySlotCountLength;
 	private Boolean isNextMonthSlotAvail;
 	private String nextDateAvaliable;
 
-
-
 	private int calanderDaysAvaiable;
 	private Boolean isCalanderDateDisplayed;
 	private Boolean isProviderImageDisplayed;
-	
+
 	private Boolean isSearchLocationDisplayed;
 
 	private String providerImageAPI;
@@ -103,12 +104,11 @@ public class Appointment {
 	private boolean isinsuranceVisible = false;
 	private boolean isstartpointPresent = false;
 
-
 	private boolean showCancellationRescheduleReason = false;
 	private boolean showCancellationReasonPM = false;
 
-	public Appointment(String providerConfig, String usernameConfig, String passwordConfig, String datetimeConfig,
-			String locationConfig, String appointmentConfig, String specialityConfig) {
+	public Appointment(String providerConfig, String usernameConfig, String passwordConfig, String datetimeConfig, String locationConfig,
+			String appointmentConfig, String specialityConfig) {
 		this.username = usernameConfig;
 		this.password = passwordConfig;
 		this.provider = providerConfig;
@@ -118,19 +118,24 @@ public class Appointment {
 		this.speciality = specialityConfig;
 	}
 
-	public Appointment() {
+	public Appointment() {}
+
+	public String getCurrentTimeZone() {
+		return currentTimeZone;
 	}
 
+	public void setCurrentTimeZone(String currentTimeZone) {
+		this.currentTimeZone = currentTimeZone;
+	}
 
 	public String getNextDateAvaliable() {
 		return nextDateAvaliable;
 	}
-		
 
-		public void setNextDateAvaliable(String nextDateAvaliable) {
-			this.nextDateAvaliable = nextDateAvaliable;
-		}
-		
+	public void setNextDateAvaliable(String nextDateAvaliable) {
+		this.nextDateAvaliable = nextDateAvaliable;
+	}
+
 	public String getBaseurl_BookRule() {
 		return baseurl_BookRule;
 	}
@@ -187,8 +192,6 @@ public class Appointment {
 		this.showCancellationReasonPM = showCancellationReasonPM;
 	}
 
-	
-
 	public boolean isIsstartpointPresent() {
 		return isstartpointPresent;
 	}
@@ -217,7 +220,6 @@ public class Appointment {
 		this.leadtimeMinute = leadtimeMinute;
 	}
 
-	
 	public String getCurrentDate() {
 		return currentDate;
 	}
