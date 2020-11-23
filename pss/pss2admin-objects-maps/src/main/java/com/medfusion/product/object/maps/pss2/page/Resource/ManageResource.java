@@ -164,13 +164,8 @@ public class ManageResource extends PSS2MenuPage {
 	public int getMinut() {
 		String leadtimeMinut = leadMinut.getAttribute("value");
 		int laeahour = Integer.parseInt(leadtimeMinut);
-
 		return laeahour;
 
-	}
-
-	public void setMinut() {
-		leadMinut.sendKeys("30");
 	}
 
 }

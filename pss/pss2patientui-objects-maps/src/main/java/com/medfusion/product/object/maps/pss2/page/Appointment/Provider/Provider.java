@@ -30,7 +30,6 @@ public class Provider extends PSS2MainPage {
 			xpath = "//*[@class='col-sm-6 col-xs-12 provider-width-btn'or @class='btn providerimage-btn handle-text-Overflow outer-div'or @class='btn providerimage-btn handle-text-Overflow outer-div ']")})
 	private List<WebElement> providerList;
 
-
 	@FindAll({@FindBy(xpath = "//body/div[@id='root']/div[1]/div[1]/div[1]/div[4]/div[2]/div[2]/a[1]/div[1]/div[2]")})
 	private WebElement providerNextavaliable;
 

@@ -1187,17 +1187,22 @@ public class PSSPatientUtils {
 	}
 
 	public String currentDateandLeadDay(Appointment testData) {
-		SimpleDateFormat f1 = new SimpleDateFormat("MMMM");
-		SimpleDateFormat f2 = new SimpleDateFormat("dd");
-		SimpleDateFormat f3 = new SimpleDateFormat("YYYY");
+
+		TimeZone timeZone = TimeZone.getTimeZone("America/New_York");
+		String dateFormat = "MMMM dd,yyyy"; // MMMM dd,yyyy G
+
+		SimpleDateFormat f1 = new SimpleDateFormat(dateFormat);
+
 		Calendar c = Calendar.getInstance();
 		TimeZone time_zone = TimeZone.getTimeZone(testData.getCurrentTimeZone());
+		f1.setTimeZone(timeZone);
 		c.setTimeZone(time_zone);
-		f2.setTimeZone(TimeZone.getTimeZone(testData.getCurrentTimeZone()));
 		c.add(Calendar.DATE, testData.getLeadtimeDay());
-		String currentDate = f1.format(c.getTime()) + " " + f2.format(c.getTime()) + " " + f3.format(c.getTime());
-		Log4jUtil.log("Current Date is " + currentDate);
-		return currentDate;
+		String currentDate = f1.format(c.getTime());
+		String currentleddate = currentDate.substring(00, 16);
+		String date = currentleddate.replace(" ", "");
+		Log4jUtil.log("Current Date is " + date);
+		return date;
 
 	}
 
@@ -1209,7 +1214,7 @@ public class PSSPatientUtils {
 		Log4jUtil.log("Time Before the lead time   " + time1);
 		now.add(Calendar.HOUR, testData.getLeadtimeHour());
 		now.add(Calendar.MINUTE, testData.getLeadtimeMinute());
-		String timeplusleadmin = now.get(Calendar.HOUR_OF_DAY) + ":" + now.get(Calendar.MINUTE);
+		String timeplusleadmin = +now.get(Calendar.HOUR_OF_DAY) + ":" + now.get(Calendar.MINUTE);
 		Log4jUtil.log("Time After add leadtime   " + timeplusleadmin);
 		return timeplusleadmin;
 
@@ -1229,5 +1234,7 @@ public class PSSPatientUtils {
 		Log4jUtil.log("Current Date is " + currentDate);
 		return currentDate;
 	}
+
+
 
 }

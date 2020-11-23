@@ -79,6 +79,8 @@ public class Appointment {
 	private String currentDate;
 	private String currentTimeZone;
 
+
+
 	private Boolean isCancelButtonPresent;
 	private int displaySlotCountLength;
 	private Boolean isNextMonthSlotAvail;
