@@ -63,12 +63,14 @@ public class ConfirmationPage extends PSS2MainPage {
 		String confirmdate = nextDate1.replace(" ", "");
 		return confirmdate;
 	}
+
 	public String timeConfirm() {
 		String datetext = timeConfirmation.getText();
 		String nextDate1 = datetext.substring(00, 05);
 		String confirmtime = nextDate1.replace(" ", "");
 		return confirmtime;
 	}
+
 	public HomePage confirmationPage() {
 		return PageFactory.initElements(driver, HomePage.class);
 	}

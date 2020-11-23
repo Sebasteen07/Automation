@@ -1206,7 +1206,7 @@ public class PSSPatientUtils {
 
 	}
 
-	public String currentESTTime(Appointment testData) {
+	public String currentESTTimeandLeadTime(Appointment testData) {
 		Calendar now = Calendar.getInstance();
 		TimeZone time_zone = TimeZone.getTimeZone(testData.getCurrentTimeZone());
 		now.setTimeZone(time_zone);

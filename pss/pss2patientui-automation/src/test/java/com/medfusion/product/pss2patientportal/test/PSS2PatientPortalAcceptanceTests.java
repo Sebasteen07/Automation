@@ -2216,9 +2216,8 @@ public class PSS2PatientPortalAcceptanceTests extends BaseTestNGWebDriver {
 		log("Confirmation Date    " + confirmationpage.dateConfirm());
 		assertEquals(psspatientutils.currentDateandLeadDay(testData), confirmationpage.dateConfirm());
 		log("Current Timezone On AdminUi " + testData.getCurrentTimeZone());
-		log("Time + Lead minut is  " + psspatientutils.currentESTTime(testData));
 		log("Confirmation Time is " + confirmationpage.timeConfirm());
-		assertEquals(confirmationpage.timeConfirm(), psspatientutils.currentESTTime(testData));
+		assertEquals(confirmationpage.timeConfirm(), psspatientutils.currentESTTimeandLeadTime(testData));
 
 	}
 
