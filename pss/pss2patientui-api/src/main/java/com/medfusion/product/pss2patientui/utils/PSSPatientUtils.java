@@ -13,10 +13,14 @@ import java.net.HttpURLConnection;
 import java.net.MalformedURLException;
 import java.net.URL;
 import java.net.URLConnection;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Calendar;
 import java.util.Collection;
+import java.util.Date;
 import java.util.HashSet;
+import java.util.TimeZone;
 
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
@@ -1171,5 +1175,66 @@ public class PSSPatientUtils {
 		}
 		return output;
 	}
+
+	public void leadtimefeature(Appointment testData) {
+		SimpleDateFormat f1 = new SimpleDateFormat("dd");
+		SimpleDateFormat f2 = new SimpleDateFormat("MMM");
+		String currentDate = "Current Date is :" + f1.format(new Date()) + " " + f2.format(new Date());
+		Log4jUtil.log("Current Date is   " + currentDate);
+		String Nextbook = currentDate + testData.getLeadtimeDay();
+		Log4jUtil.log("Next Avaliable Date is   " + Nextbook);
+
+	}
+
+	public String currentDateandLeadDay(Appointment testData) {
+
+		TimeZone timeZone = TimeZone.getTimeZone("America/New_York");
+		String dateFormat = "MMMM dd,yyyy"; // MMMM dd,yyyy G
+
+		SimpleDateFormat f1 = new SimpleDateFormat(dateFormat);
+
+		Calendar c = Calendar.getInstance();
+		TimeZone time_zone = TimeZone.getTimeZone(testData.getCurrentTimeZone());
+		f1.setTimeZone(timeZone);
+		c.setTimeZone(time_zone);
+		c.add(Calendar.DATE, testData.getLeadtimeDay());
+		String currentDate = f1.format(c.getTime());
+		String currentleddate = currentDate.substring(00, 16);
+		String date = currentleddate.replace(" ", "");
+		Log4jUtil.log("Current Date is " + date);
+		return date;
+
+	}
+
+	public String currentESTTimeandLeadTime(Appointment testData) {
+		Calendar now = Calendar.getInstance();
+		TimeZone time_zone = TimeZone.getTimeZone(testData.getCurrentTimeZone());
+		now.setTimeZone(time_zone);
+		String time1 = now.get(Calendar.HOUR_OF_DAY) + ":" + now.get(Calendar.MINUTE);
+		Log4jUtil.log("Time Before the lead time   " + time1);
+		now.add(Calendar.HOUR, testData.getLeadtimeHour());
+		now.add(Calendar.MINUTE, testData.getLeadtimeMinute());
+		String timeplusleadmin = +now.get(Calendar.HOUR_OF_DAY) + ":" + now.get(Calendar.MINUTE);
+		Log4jUtil.log("Time After add leadtime   " + timeplusleadmin);
+		return timeplusleadmin;
+
+	}
+
+	public String curentandlLeadtime(Appointment testData) {
+		Calendar c = Calendar.getInstance();
+		TimeZone time_zone = TimeZone.getTimeZone("EST");
+		c.setTimeZone(time_zone);
+		SimpleDateFormat f1 = new SimpleDateFormat("MMM");
+		SimpleDateFormat f2 = new SimpleDateFormat("dd");
+		SimpleDateFormat f3 = new SimpleDateFormat("YYYY");
+		c.add(Calendar.DATE, testData.getLeadtimeDay());
+		c.add(Calendar.HOUR, 3);
+		c.add(Calendar.MINUTE, 2);
+		String currentDate = f1.format(c.getTime()) + " " + f2.format(c.getTime()) + " " + f3.format(c.getTime());
+		Log4jUtil.log("Current Date is " + currentDate);
+		return currentDate;
+	}
+
+
 
 }

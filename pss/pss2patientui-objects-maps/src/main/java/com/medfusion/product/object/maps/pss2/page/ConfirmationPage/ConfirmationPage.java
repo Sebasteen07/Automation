@@ -10,6 +10,7 @@ import org.openqa.selenium.support.FindBy;
 import org.openqa.selenium.support.How;
 import org.openqa.selenium.support.PageFactory;
 
+import com.medfusion.product.object.maps.pss2.page.Appointment.HomePage.HomePage;
 import com.medfusion.product.object.maps.pss2.page.Appointment.Main.PSS2MainPage;
 import com.medfusion.product.object.maps.pss2.page.Scheduled.ScheduledAppointment;
 import com.medfusion.product.object.maps.pss2.page.Scheduled.ScheduledAppointmentAnonymous;
@@ -22,6 +23,12 @@ public class ConfirmationPage extends PSS2MainPage {
 
 	@FindBy(how = How.XPATH, using = "//a[@id='everythingiscorrectbutton']")
 	private WebElement buttonAllGood;
+
+	@FindBy(how = How.XPATH, using = "//body/div[@id='root']/div[1]/div[1]/div[1]/div[4]/div[2]/div[1]/div[3]/div[1]/div[3]/div[1]/div[1]/div[1]")
+	private WebElement DateConfirmation;
+
+	@FindBy(how = How.XPATH, using = "//body/div[@id='root']/div[1]/div[1]/div[1]/div[4]/div[2]/div[1]/div[3]/div[1]/div[3]/div[1]/div[2]/div[1]")
+	private WebElement timeConfirmation;
 
 	public ConfirmationPage(WebDriver driver) {
 		super(driver);
@@ -48,6 +55,24 @@ public class ConfirmationPage extends PSS2MainPage {
 
 	public List<WebElement> getAppointmentDetails() {
 		return appointmentScheduledDetails;
+	}
+
+	public String dateConfirm() {
+		String datetext = DateConfirmation.getText();
+		String nextDate1 = datetext.substring(00, 17);
+		String confirmdate = nextDate1.replace(" ", "");
+		return confirmdate;
+	}
+
+	public String timeConfirm() {
+		String datetext = timeConfirmation.getText();
+		String nextDate1 = datetext.substring(00, 05);
+		String confirmtime = nextDate1.replace(" ", "");
+		return confirmtime;
+	}
+
+	public HomePage confirmationPage() {
+		return PageFactory.initElements(driver, HomePage.class);
 	}
 
 }

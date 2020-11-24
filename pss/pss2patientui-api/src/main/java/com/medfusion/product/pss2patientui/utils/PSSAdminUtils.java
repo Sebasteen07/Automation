@@ -26,8 +26,7 @@ import com.medfusion.product.pss2patientui.pojo.Appointment;
 
 public class PSSAdminUtils {
 
-	public void adminSettings(WebDriver driver, AdminUser adminuser, Appointment testData, String urlToUse)
-			throws Exception {
+	public void adminSettings(WebDriver driver, AdminUser adminuser, Appointment testData, String urlToUse) throws Exception {
 		PSS2PracticeConfiguration psspracticeConfig = loginToAdminPortal(driver, adminuser);
 		AccessRules accessrule = psspracticeConfig.gotoAccessTab();
 		Thread.sleep(2000);
@@ -40,8 +39,7 @@ public class PSSAdminUtils {
 				accessrule.loginlessPrivacyPolicyClick();
 			}
 		} else {
-			if (adminuser.getIsExisting() && adminuser.getIsLoginlessFlow()
-					&& accessrule.isLLExistingPatientSelected().equalsIgnoreCase("true")) {
+			if (adminuser.getIsExisting() && adminuser.getIsLoginlessFlow() && accessrule.isLLExistingPatientSelected().equalsIgnoreCase("true")) {
 				accessrule.selectLLExistingPatient();
 			}
 		}
@@ -74,8 +72,7 @@ public class PSSAdminUtils {
 		Thread.sleep(4000);
 	}
 
-	public void adminSettingsLoginless(WebDriver driver, AdminUser adminuser, Appointment testData, String urlToUse)
-			throws Exception {
+	public void adminSettingsLoginless(WebDriver driver, AdminUser adminuser, Appointment testData, String urlToUse) throws Exception {
 		Log4jUtil.log("****************ADMIN SETTINGS FOR Loginless FLOW**************************");
 		PSS2PracticeConfiguration psspracticeConfig = loginToAdminPortal(driver, adminuser);
 		AccessRules accessrule = psspracticeConfig.gotoAccessTab();
@@ -89,8 +86,7 @@ public class PSSAdminUtils {
 				Log4jUtil.log("PrivacyPolicySelected is set TRUE");
 			}
 		} else {
-			if (adminuser.getIsExisting() && adminuser.getIsLoginlessFlow()
-					&& accessrule.isLLExistingPatientSelected().equalsIgnoreCase("true")) {
+			if (adminuser.getIsExisting() && adminuser.getIsLoginlessFlow() && accessrule.isLLExistingPatientSelected().equalsIgnoreCase("true")) {
 				accessrule.selectLLExistingPatient();
 			}
 		}
@@ -137,8 +133,7 @@ public class PSSAdminUtils {
 		Thread.sleep(4000);
 	}
 
-	public void adminSettingsAnonymous(WebDriver driver, AdminUser adminuser, Appointment testData, String urlToUse)
-			throws Exception {
+	public void adminSettingsAnonymous(WebDriver driver, AdminUser adminuser, Appointment testData, String urlToUse) throws Exception {
 		Log4jUtil.log("****************ADMIN SETTINGS FOR ANONYMOUS FLOW**************************");
 		Log4jUtil.log("adminSettings Step 1: LOGIN TO ADMIN");
 		PSS2PracticeConfiguration psspracticeConfig = loginToAdminPortal(driver, adminuser);
@@ -189,8 +184,8 @@ public class PSSAdminUtils {
 	}
 
 	public PSS2PracticeConfiguration loginToAdminPortal(WebDriver driver, AdminUser adminuser) throws Exception {
-		Log4jUtil.log("adminSettings Step 1: Login to Admin portal. url=" + adminuser.getAdminUrl() + " and username="
-				+ adminuser.getUser() + " and password=" + adminuser.getPassword());
+		Log4jUtil.log("adminSettings Step 1: Login to Admin portal. url=" + adminuser.getAdminUrl() + " and username=" + adminuser.getUser() + " and password="
+				+ adminuser.getPassword());
 		PSS2AdminLogin pssadminlogin = new PSS2AdminLogin(driver, adminuser.getAdminUrl());
 		PSS2PracticeConfiguration psspracticeConfig = pssadminlogin.login(adminuser.getUser(), adminuser.getPassword());
 		Log4jUtil.log("refreshing admin page after login");
@@ -325,15 +320,13 @@ public class PSSAdminUtils {
 		Log4jUtil.log("Patient Flow page Show Insurance= " + patientflow.isInsuranceToBeDisplayed());
 		Thread.sleep(6000);
 		InsuranceCarrier insurancecarrier = patientflow.gotoInsuranceCarrierTab();
-		Log4jUtil.log(
-				"Basic elements of Insurance carrier page located? " + insurancecarrier.areBasicPageElementsPresent());
+		Log4jUtil.log("Basic elements of Insurance carrier page located? " + insurancecarrier.areBasicPageElementsPresent());
 		insurancecarrier.enableshowInsuranceAtStart();
 		insurancecarrier.logout();
 
 	}
 
-	public void getInsuranceStateandRule(WebDriver driver, AdminUser adminuser, Appointment appointment)
-			throws Exception {
+	public void getInsuranceStateandRule(WebDriver driver, AdminUser adminuser, Appointment appointment) throws Exception {
 		PSS2PracticeConfiguration psspracticeConfig = loginToAdminPortal(driver, adminuser);
 		PatientFlow patientflow = psspracticeConfig.gotoPatientFlowTab();
 		adminuser.setRule(patientflow.getRule());
@@ -345,31 +338,23 @@ public class PSSAdminUtils {
 		patientflow.logout();
 	}
 
-	public ArrayList<String> getCancelRescheduleSettings(WebDriver driver, AdminUser adminuser, Appointment testData,
-			AdminAppointment adminAppointment) throws Exception {
+	public ArrayList<String> getCancelRescheduleSettings(WebDriver driver, AdminUser adminuser, Appointment testData, AdminAppointment adminAppointment)
+			throws Exception {
 		PSS2PracticeConfiguration psspracticeConfig = loginToAdminPortal(driver, adminuser);
 		PatientFlow patientflow = psspracticeConfig.gotoPatientFlowTab();
 		adminuser.setRule(patientflow.getRule());
 		Log4jUtil.log("rule= " + patientflow.getRule());
-
 		testData.setIsinsuranceVisible(patientflow.insuracetogglestatus());
 		Log4jUtil.log("Insurance is Enabled= " + patientflow.insuracetogglestatus());
-
 		testData.setIsstartpointPresent(patientflow.isstartpagepresent());
 		Log4jUtil.log("StartPage is Visible= " + patientflow.isstartpagepresent());
-
 		adminAppointment = patientflow.gotoAdminAppointmentTab();
 		adminAppointment.areBasicPageElementsPresent();
-
-		Log4jUtil.log(
-				"Step 3: Set the Cancellation & rescheduling lead time (hrs)- " + PSSConstants.CANCEL_APT_UPTO_HRS);
+		Log4jUtil.log("Step 3: Set the Cancellation & rescheduling lead time (hrs)- " + PSSConstants.CANCEL_APT_UPTO_HRS);
 		adminAppointment.updateCancelAppointmentSettings(PSSConstants.CANCEL_APT_UPTO_HRS);
-
 		Log4jUtil.log("Step 4: Fetch the status of cancel settings from Admin");
 		adminAppointment.toggleCancelReason();
-
 		Log4jUtil.log("Verify the Cancel Settings in ADMIN TAB");
-
 		boolean cancel1 = adminAppointment.isShowCancellationRescheduleReason();
 		Log4jUtil.log("verifying the settings of Cancel/Reschedule Reason : " + cancel1);
 		Thread.sleep(1000);
@@ -382,25 +367,46 @@ public class PSSAdminUtils {
 			if (cancel2) {
 				testData.setShowCancellationReasonPM(cancel2);
 				Log4jUtil.log("cancel 1 - ON and Cance2 - ON");
-
 			} else {
-
 				Log4jUtil.log("cancel 1 - ON and Cance2 - OFF");
 			}
-
 		} else {
-
 			Log4jUtil.log("Cancel/Reschedule reason setting is OFF-Defaults pop up message will display");
 			Log4jUtil.log("cancel 1 - OFF and Cancel2 - OFF");
 		}
-
 		PSS2MenuPage pss2MenuPage = adminAppointment.saveSlotCancelReasonSetting();
 		ManageCancelReason manageCancelReason = pss2MenuPage.gotoCancelReason();
-
 		ArrayList<String> list = manageCancelReason.fetchCancelReasonList(driver);
-
 		patientflow.logout();
 		return list;
 	}
+
+	public void leadTime(WebDriver driver, AdminUser adminuser, Appointment appointment) throws Exception {
+
+		PSS2PracticeConfiguration psspracticeConfig = loginToAdminPortal(driver, adminuser);
+		PatientFlow patientflow = psspracticeConfig.gotoPatientFlowTab();
+		adminuser.setRule(patientflow.getRule());
+		Log4jUtil.log("rule= " + patientflow.getRule());
+		appointment.setIsinsuranceVisible(patientflow.insuracetogglestatus());
+		Log4jUtil.log("Insurance is Enabled= " + patientflow.insuracetogglestatus());
+		appointment.setIsstartpointPresent(patientflow.isstartpagepresent());
+		Log4jUtil.log("StartPage is Visible= " + patientflow.isstartpagepresent());
+		ManageResource mr = psspracticeConfig.gotoResource();
+		pageRefresh(driver);
+		mr.selectResource(appointment.getProvider());
+		mr.selectAppointmenttype(appointment.getAppointmenttype());
+		appointment.setLeadtimeDay(mr.getDay());
+		Log4jUtil.log("Lead time Day is = " + appointment.getLeadtimeDay());
+		appointment.setLeadtimeHour(mr.getHour());
+		Log4jUtil.log("Lead time Hour is = " + appointment.getLeadtimeHour());
+		appointment.setLeadtimeMinute(mr.getMinut());
+		Log4jUtil.log("Lead time Minute is = " + appointment.getLeadtimeMinute());
+		ManageLocation manageLocation = psspracticeConfig.gotoLocation();
+		manageLocation.selectlocation(appointment.getLocation());
+		appointment.setCurrentTimeZone(manageLocation.getTimezone());
+		Log4jUtil.log("Current Timezone On AdminUi " + appointment.getCurrentTimeZone());
+		patientflow.logout();
+	}
+
 
 }

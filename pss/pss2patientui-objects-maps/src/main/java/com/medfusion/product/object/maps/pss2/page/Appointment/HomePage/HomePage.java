@@ -26,6 +26,7 @@ import com.medfusion.product.object.maps.pss2.page.Appointment.Menu.PSSPatientHe
 import com.medfusion.product.object.maps.pss2.page.Appointment.Provider.Provider;
 import com.medfusion.product.object.maps.pss2.page.Appointment.Speciality.Speciality;
 import com.medfusion.product.object.maps.pss2.page.AppointmentType.AppointmentPage;
+import com.medfusion.product.object.maps.pss2.page.ConfirmationPage.ConfirmationPage;
 import com.medfusion.product.object.maps.pss2.page.Insurance.UpdateInsurancePage;
 import com.medfusion.product.object.maps.pss2.page.util.CommonMethods;
 
@@ -520,4 +521,5 @@ public class HomePage extends PSS2MainPage {
 		log("it returns on specility page");
 		return PageFactory.initElements(driver, Speciality.class);
 	}
+	
 }

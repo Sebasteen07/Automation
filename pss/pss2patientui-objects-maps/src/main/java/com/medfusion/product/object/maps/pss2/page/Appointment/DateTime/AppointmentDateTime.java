@@ -146,4 +146,20 @@ public class AppointmentDateTime extends PSS2MainPage {
 	public int getAppointmentDateList() {
 		return appointmentList.size();
 	}
+
+	public void getfirstdate() {
+		for (int i = 0; i < appointmentList.size(); i++) {
+			log("First Appointment is" + appointmentList.get(i));
+
+		}
+	}
+
+	public String getfirsttime() {
+		String time = "";
+		for (int i = 0; i < appointmentTimeList.size(); i++) {
+			time = appointmentTimeList.get(0).getText();
+		}
+		return time;
+
+	}
 }
