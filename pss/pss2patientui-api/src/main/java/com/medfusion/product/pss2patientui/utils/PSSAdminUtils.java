@@ -408,5 +408,26 @@ public class PSSAdminUtils {
 		patientflow.logout();
 	}
 
+	public void reserveforDay(WebDriver driver, AdminUser adminuser, Appointment appointment) throws Exception {
+		PSS2PracticeConfiguration psspracticeConfig = loginToAdminPortal(driver, adminuser);
+		psspracticeConfig = psspracticeConfig.gotoPracticeConfigTab();
+		psspracticeConfig.busineesHour("0800", "0500");
+		ManageResource mr = psspracticeConfig.gotoResource();
+		pageRefresh(driver);
+		mr.selectResource(appointment.getProvider());
+		mr.selectAppointmenttype(appointment.getAppointmenttype());
+		mr.reserveFor();
+		ManageLocation manageLocation = psspracticeConfig.gotoLocation();
+		manageLocation.selectlocation(appointment.getLocation());
+		appointment.setCurrentTimeZone(manageLocation.getTimezone());
+		Log4jUtil.log("Current Timezone On AdminUi " + appointment.getCurrentTimeZone());
+
+
+
+		Log4jUtil.log("Successfully upto reserve for same day");
+
+
+	}
+
 
 }

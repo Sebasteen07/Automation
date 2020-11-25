@@ -33,6 +33,17 @@ public class PSS2PracticeConfiguration extends SettingsTab {
 	@FindAll({@FindBy(xpath = "//*[@id=\"simple-select\"]/option")})
 	private List<WebElement> partnerOptionValue;
 
+
+	@FindBy(how = How.ID, using = "frompractice")
+	private WebElement businesshourStart;
+
+	@FindBy(how = How.ID, using = "topractice")
+	private WebElement businesshourEnd;
+
+	@FindBy(how = How.XPATH, using = "//*[@id=\"basic\"]/fieldset/div/div/button")
+	private WebElement saveButton;
+
+
 	public PSS2PracticeConfiguration(WebDriver driver) {
 		super(driver);
 	}
@@ -81,5 +92,17 @@ public class PSS2PracticeConfiguration extends SettingsTab {
 			}
 		}
 		return null;
+	}
+
+	public void busineesHour(String startTime,String endTime)
+	{
+		businesshourStart.clear();
+		businesshourStart.sendKeys(startTime);
+		businesshourEnd.clear();
+		businesshourEnd.sendKeys(endTime);
+		saveButton.click();
+		log("Successfully send the keys");
+
+		
 	}
 }

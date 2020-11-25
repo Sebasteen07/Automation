@@ -2212,13 +2212,81 @@ public class PSS2PatientPortalAcceptanceTests extends BaseTestNGWebDriver {
 		Thread.sleep(6000);
 		ConfirmationPage confirmationpage = aptDateTime.selectAppointmentDateTime(testData.getIsNextDayBooking());
 		confirmationpage.dateConfirm();
+		log("Current plus Lead Date is " + psspatientutils.currentDateandLeadDay(testData));
+		log("Confirmation Date    " + confirmationpage.dateConfirm());
+		assertEquals(psspatientutils.currentDateandLeadDay(testData), confirmationpage.dateConfirm());
+		log("Current Timezone On AdminUi " + testData.getCurrentTimeZone());
+		log("Confirmation Time is " + confirmationpage.timeConfirm());
+		int i = Integer.parseInt(confirmationpage.timeConfirm());
+		int j = Integer.parseInt(psspatientutils.currentESTTimeandLeadTime(testData));
+		int k = Math.max(i, j);
+
+		assertEquals(i, k, "Time differ");
+
+	}
+
+	@Test(enabled = true, groups = {"AcceptanceTests"}, retryAnalyzer = RetryAnalyzer.class)
+	public void LeadTimeGWReserveForSameDay() throws Exception {
+		log("Test To Verify Lead Time Functionality For GE Partner");
+		PSSPropertyFileLoader propertyData = new PSSPropertyFileLoader();
+		Appointment testData = new Appointment();
+		AdminUser adminuser = new AdminUser();
+		propertyData.setAdminGW(adminuser);
+		propertyData.setAppointmentResponseGW(testData);
+		PSSPatientUtils psspatientutils = new PSSPatientUtils();
+		PSSAdminUtils adminUtils = new PSSAdminUtils();
+		log("Login to PSS 2.0 Admin portal");
+		adminUtils.reserveforDay(driver, adminuser, testData);
+		log("Fetch the rules set in Admin");
+		String rule = adminuser.getRule();
+		log("rule are " + rule);
+		rule = rule.replaceAll(" ", "");
+		JalapenoLoginPage loginPage = new JalapenoLoginPage(driver, testData.getPatientPortalURL());
+		JalapenoHomePage homePage = loginPage.login(testData.getPatientPortalUserName(), testData.getPatientPortalPassword());
+		log("Detecting if Home Page is opened");
+		assertTrue(homePage.isHomeButtonPresent(driver));
+		homePage.clickFeaturedAppointmentsReq();
+		log("Wait for PSS 2.0 Patient UI to be loaded.");
+		Thread.sleep(6000);
+		log("Switching tabs");
+		String currentUrl = psspatientutils.switchtabs(driver);
+		HomePage homepage = new HomePage(driver, currentUrl);
+		Thread.sleep(15000);
+		if (homepage.isPopUP()) {
+			homepage.popUPClick();
+		}
+		Thread.sleep(12000);
+		log("Verify PSS2 patient portal elements");
+		assertTrue(homepage.areBasicPageElementsPresent());
+		log("Successfully upto Home page");
+		Location location = null;
+		StartAppointmentInOrder startappointmentInOrder = null;
+		startappointmentInOrder = homepage.skipInsurance(driver);
+		location = startappointmentInOrder.selectFirstLocation(PSSConstants.START_LOCATION);
+		Log4jUtil.log("Step 9: Verfiy location Page and location =" + testData.getLocation());
+		assertTrue(location.areBasicPageElementsPresent());
+		Thread.sleep(4000);
+		Provider provider = location.searchProvider(testData.getLocation());
+		Log4jUtil.log("Step 10: Verfiy Provider Page and provider to be selected = " + testData.getProvider());
+		assertTrue(provider.areBasicPageElementsPresent());
+		AppointmentPage appointment = provider.selectAppointment(testData.getProvider());
+		Log4jUtil.log("Step 11: Verfiy Appointment Page and Appointment to be selected = " + testData.getAppointmenttype());
+		AppointmentDateTime aptDateTime = appointment.selectTypeOfAppointment(testData.getAppointmenttype(), Boolean.valueOf(testData.getIsAppointmentPopup()));
+		Log4jUtil.log("Step 12: Select avaiable Date ");
+		String date = aptDateTime.selectDate(testData.getIsNextDayBooking());
+		Log4jUtil.log("date- " + date);
+		log("Done Confirmation");
+		log("Appointment first time is   " + aptDateTime.getfirsttime());
+		Thread.sleep(6000);
+		ConfirmationPage confirmationpage = aptDateTime.selectAppointmentDateTime(testData.getIsNextDayBooking());
+		confirmationpage.dateConfirm();
 		log("Lead Date is " + psspatientutils.currentDateandLeadDay(testData));
 		log("Confirmation Date    " + confirmationpage.dateConfirm());
 		assertEquals(psspatientutils.currentDateandLeadDay(testData), confirmationpage.dateConfirm());
 		log("Current Timezone On AdminUi " + testData.getCurrentTimeZone());
 		log("Confirmation Time is " + confirmationpage.timeConfirm());
-		assertEquals(confirmationpage.timeConfirm(), psspatientutils.currentESTTimeandLeadTime(testData));
 
 	}
+
 
 }

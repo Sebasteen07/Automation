@@ -13,6 +13,7 @@ import java.net.HttpURLConnection;
 import java.net.MalformedURLException;
 import java.net.URL;
 import java.net.URLConnection;
+import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -1201,14 +1202,15 @@ public class PSSPatientUtils {
 		String currentDate = f1.format(c.getTime());
 		String currentleddate = currentDate.substring(00, 16);
 		String date = currentleddate.replace(" ", "");
-		Log4jUtil.log("Current Date is " + date);
 		return date;
 
 	}
 
 	public String currentESTTimeandLeadTime(Appointment testData) {
+		DateFormat dateFormat = new SimpleDateFormat("hh.mm aa");
 		Calendar now = Calendar.getInstance();
 		TimeZone time_zone = TimeZone.getTimeZone(testData.getCurrentTimeZone());
+		dateFormat.setTimeZone(time_zone);
 		now.setTimeZone(time_zone);
 		String time1 = now.get(Calendar.HOUR_OF_DAY) + ":" + now.get(Calendar.MINUTE);
 		Log4jUtil.log("Time Before the lead time   " + time1);
