@@ -309,8 +309,9 @@ public class JalapenoAskAStaffV2Page1 extends JalapenoMenu {
 		return assessPageElements(webElementsList);
 	}
 
-	public JalapenoAskAStaffV2HistoryListPage clickOnHistory() {
+	public JalapenoAskAStaffV2HistoryListPage clickOnHistory() throws InterruptedException {
 		log("Clicking on Ask a Question menu button");
+		wait.until(ExpectedConditions.elementToBeClickable(historyButton));
 		historyButton.click();
 		return PageFactory.initElements(driver, JalapenoAskAStaffV2HistoryListPage.class);
 	}

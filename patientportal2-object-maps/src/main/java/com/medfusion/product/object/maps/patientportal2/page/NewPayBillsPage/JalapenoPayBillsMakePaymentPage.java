@@ -31,7 +31,7 @@ public class JalapenoPayBillsMakePaymentPage extends JalapenoMenu {
 	@FindBy(how = How.ID, using = "removeCardOkButton")
 	private WebElement removeCardOkButton;
 
-	@FindBy(xpath = ".//a[contains(text(), 'Payment History') or @id = 'pay_history']")
+	@FindBy(xpath = ".//a[contains(text(), 'Payment History') or @id = 'billpayTabPaymentHistoryTab']")
 	private WebElement payHistoryButton;
 
 	@FindBy(how = How.ID, using = "accountNumber")
@@ -91,6 +91,12 @@ public class JalapenoPayBillsMakePaymentPage extends JalapenoMenu {
 	@FindBy(how = How.XPATH, using = "//*[contains(@href,'#/payments/history/details')]/preceding-sibling::span[1]")
 	private WebElement confirmationNumberMsg;
 
+	@FindBy(how = How.XPATH, using = "(//tr[@data-ng-repeat='payment in payments']/td/a)[1]")
+	private WebElement selectFirsttransaction;
+
+	@FindBy(how = How.XPATH, using = "//td[contains(text(),' ************')]")
+	private WebElement receiptCardDigit;
+
 	public JalapenoPayBillsMakePaymentPage(WebDriver driver) {
 		super(driver);
 		IHGUtil.PrintMethodName();
@@ -142,11 +148,13 @@ public class JalapenoPayBillsMakePaymentPage extends JalapenoMenu {
 		Thread.sleep(3000);
 	}
 
-	public JalapenoPayBillsConfirmationPage fillPaymentInfo(String amount, String accNumber, CreditCard creditCard) throws InterruptedException {
+	public JalapenoPayBillsConfirmationPage fillPaymentInfo(String amount, String accNumber, CreditCard creditCard)
+			throws InterruptedException {
 		return fillPaymentInfo(amount, accNumber, creditCard, "");
 	}
 
-	public JalapenoPayBillsConfirmationPage fillPaymentInfo(String amount, String accNumber, CreditCard creditCard, String location) throws InterruptedException {
+	public JalapenoPayBillsConfirmationPage fillPaymentInfo(String amount, String accNumber, CreditCard creditCard,
+			String location) throws InterruptedException {
 
 		WebDriverWait wait = new WebDriverWait(driver, 10);
 
@@ -173,10 +181,10 @@ public class JalapenoPayBillsMakePaymentPage extends JalapenoMenu {
 		}
 
 		log("Click on Continue button");
-		// Race condition - sometimes click doesn't work, added explicit wait (didn't help), updated to sendKeys
+		// Race condition - sometimes click doesn't work, added explicit wait (didn't
+		// help), updated to sendKeys
 		wait.until(ExpectedConditions.elementToBeClickable(continueButton));
 		continueButton.sendKeys(Keys.ENTER);
-
 		return PageFactory.initElements(driver, JalapenoPayBillsConfirmationPage.class);
 	}
 
@@ -196,7 +204,8 @@ public class JalapenoPayBillsMakePaymentPage extends JalapenoMenu {
 			log("Count of displayed cards: " + cards.size());
 			int removedCards = 0;
 
-			ArrayList<WebElement> removeButtons = (ArrayList<WebElement>) driver.findElements(By.xpath("//a[contains(@class,'creditCardRemoveButton')]"));
+			ArrayList<WebElement> removeButtons = (ArrayList<WebElement>) driver
+					.findElements(By.xpath("//a[contains(@class,'creditCardRemoveButton')]"));
 			for (int i = 0; i < removeButtons.size(); i++) {
 				if (removeButtons.get(i).isDisplayed()) {
 					removeCreditCard(removeButtons.get(i));
@@ -212,30 +221,37 @@ public class JalapenoPayBillsMakePaymentPage extends JalapenoMenu {
 
 	private JalapenoPayBillsMakePaymentPage removeCreditCard(WebElement removeButton) {
 		removeButton.click();
-
 		wait.until(ExpectedConditions.elementToBeClickable(removeCardOkButton));
 		removeCardOkButton.click();
-
 		return this;
+	}
+
+	public void clickPaymentHistory() {
+		wait.until(ExpectedConditions.elementToBeClickable(payHistoryButton));
+		payHistoryButton.click();
+		wait.until(ExpectedConditions.elementToBeClickable(payHistoryButton));
+		selectFirsttransaction.click();
+
 	}
 
 	private boolean isCardTypeSelected(CardType type) {
 		switch (type) {
-			case Visa:
-				return visaCard.getAttribute("class").contains("ccselected");
-			case Mastercard:
-				return mastercardCard.getAttribute("class").contains("ccselected");
-			case Discover:
-				return discoverCard.getAttribute("class").contains("ccselected");
-			case Amex:
-				return amexCard.getAttribute("class").contains("ccselected");
-			default:
-				log("Unknown card type was inserted");
-				return false;
+		case Visa:
+			return visaCard.getAttribute("class").contains("ccselected");
+		case Mastercard:
+			return mastercardCard.getAttribute("class").contains("ccselected");
+		case Discover:
+			return discoverCard.getAttribute("class").contains("ccselected");
+		case Amex:
+			return amexCard.getAttribute("class").contains("ccselected");
+		default:
+			log("Unknown card type was inserted");
+			return false;
 		}
 	}
 
-	// modified assess to see if it will work without waitForElement and moved allElementsDisplayed=true at the end
+	// modified assess to see if it will work without waitForElement and moved
+	// allElementsDisplayed=true at the end
 	@Deprecated // same functionality as areBasicElementPresent
 	public boolean assessPayBillsMakePaymentPageElements() {
 
@@ -285,6 +301,11 @@ public class JalapenoPayBillsMakePaymentPage extends JalapenoMenu {
 
 	public String getBalanceDueDate() {
 		return balanceDueDate.getText();
+	}
+
+	public String getReceiptCreditCardDigit() {
+		return receiptCardDigit.getText().substring(receiptCardDigit.getText().length() - 4);
+
 	}
 
 	public String readConfirmationNumber() {
