@@ -39,6 +39,9 @@ import com.medfusion.product.object.maps.patientportal2.page.SymptomAssessment.J
 public class JalapenoHomePage extends JalapenoMenu {
 	@FindBy(how = How.ID, using = "feature_messaging")
 	private WebElement messages;
+	
+	@FindBy(how = How.XPATH, using = "//span[text()='Messages']")
+	private WebElement messagesSideBar;
 
 	@FindBy(how = How.XPATH, using = "//h3[contains(text(),'Schedule an Appointment')]")
 	private WebElement sheduleanappointment;
@@ -122,6 +125,8 @@ public class JalapenoHomePage extends JalapenoMenu {
 	@FindBy(how = How.XPATH, using = "//*[@id=\"feature_appointments\"]/div")
 	private WebElement nextAppointmentSchedule;
 
+	@FindBy(how = How.ID, using = "sentFolder")
+	private WebElement sentFolder;
 
 	public JalapenoHomePage(WebDriver driver) {
 		super(driver);
@@ -133,6 +138,16 @@ public class JalapenoHomePage extends JalapenoMenu {
 		WebDriverWait wait= new WebDriverWait(driver, 5);
 		wait.until(ExpectedConditions.elementToBeClickable(messages));
 		messages.click();
+		return PageFactory.initElements(driver, JalapenoMessagesPage.class);
+	}
+	
+	public JalapenoMessagesPage showMessagesSent(WebDriver driver) {
+		IHGUtil.PrintMethodName();
+		WebDriverWait wait= new WebDriverWait(driver, 5);
+		wait.until(ExpectedConditions.elementToBeClickable(messagesSideBar));
+		messagesSideBar.click();
+		wait.until(ExpectedConditions.elementToBeClickable(sentFolder));
+		sentFolder.click();
 		return PageFactory.initElements(driver, JalapenoMessagesPage.class);
 	}
 
