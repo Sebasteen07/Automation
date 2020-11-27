@@ -411,7 +411,11 @@ public class PSSAdminUtils {
 	public void reserveforDay(WebDriver driver, AdminUser adminuser, Appointment appointment) throws Exception {
 		PSS2PracticeConfiguration psspracticeConfig = loginToAdminPortal(driver, adminuser);
 		psspracticeConfig = psspracticeConfig.gotoPracticeConfigTab();
-		psspracticeConfig.busineesHour("0800", "0500");
+		// Log4jUtil.log(psspracticeConfig.gettextbusineesHourStarttime());
+		appointment.setBusinesshourStartTime(psspracticeConfig.gettextbusineesHourStarttime());
+		appointment.setBusinesshourEndTime(psspracticeConfig.gettextbusineesHourEndtime());
+		Log4jUtil.log("Starttime is " + appointment.getBusinesshourStartTime());
+		Log4jUtil.log("End time is" + appointment.getBusinesshourEndTime());
 		ManageResource mr = psspracticeConfig.gotoResource();
 		pageRefresh(driver);
 		mr.selectResource(appointment.getProvider());
@@ -421,9 +425,6 @@ public class PSSAdminUtils {
 		manageLocation.selectlocation(appointment.getLocation());
 		appointment.setCurrentTimeZone(manageLocation.getTimezone());
 		Log4jUtil.log("Current Timezone On AdminUi " + appointment.getCurrentTimeZone());
-
-
-
 		Log4jUtil.log("Successfully upto reserve for same day");
 
 

@@ -1190,10 +1190,8 @@ public class PSSPatientUtils {
 	public String currentDateandLeadDay(Appointment testData) {
 
 		TimeZone timeZone = TimeZone.getTimeZone("America/New_York");
-		String dateFormat = "MMMM dd,yyyy"; // MMMM dd,yyyy G
-
+		String dateFormat = "MMMM dd,yyyy";
 		SimpleDateFormat f1 = new SimpleDateFormat(dateFormat);
-
 		Calendar c = Calendar.getInstance();
 		TimeZone time_zone = TimeZone.getTimeZone(testData.getCurrentTimeZone());
 		f1.setTimeZone(timeZone);
@@ -1212,28 +1210,33 @@ public class PSSPatientUtils {
 		TimeZone time_zone = TimeZone.getTimeZone(testData.getCurrentTimeZone());
 		dateFormat.setTimeZone(time_zone);
 		now.setTimeZone(time_zone);
-		String time1 = now.get(Calendar.HOUR_OF_DAY) + ":" + now.get(Calendar.MINUTE);
+		int ampm = now.get(Calendar.AM_PM);
+		String am_pm = "ampm";
+		if (ampm == 0) {
+			am_pm = "AM";
+		} else {
+			am_pm = "PM";
+		}
+		String time1 = now.get(Calendar.HOUR) + ":" + now.get(Calendar.MINUTE) + am_pm;
 		Log4jUtil.log("Time Before the lead time   " + time1);
 		now.add(Calendar.HOUR, testData.getLeadtimeHour());
 		now.add(Calendar.MINUTE, testData.getLeadtimeMinute());
-		String timeplusleadmin = +now.get(Calendar.HOUR_OF_DAY) + ":" + now.get(Calendar.MINUTE);
+		String timeplusleadmin = +now.get(Calendar.HOUR_OF_DAY) + ":" + now.get(Calendar.MINUTE) + am_pm;
 		Log4jUtil.log("Time After add leadtime   " + timeplusleadmin);
 		return timeplusleadmin;
 
 	}
 
-	public String curentandlLeadtime(Appointment testData) {
+	public String currentESTDate(Appointment testData) {
+
+		TimeZone timeZone = TimeZone.getTimeZone(testData.getCurrentTimeZone());
+		String dateFormat = "dd";
+		SimpleDateFormat f1 = new SimpleDateFormat(dateFormat);
 		Calendar c = Calendar.getInstance();
-		TimeZone time_zone = TimeZone.getTimeZone("EST");
+		TimeZone time_zone = TimeZone.getTimeZone(testData.getCurrentTimeZone());
+		f1.setTimeZone(timeZone);
 		c.setTimeZone(time_zone);
-		SimpleDateFormat f1 = new SimpleDateFormat("MMM");
-		SimpleDateFormat f2 = new SimpleDateFormat("dd");
-		SimpleDateFormat f3 = new SimpleDateFormat("YYYY");
-		c.add(Calendar.DATE, testData.getLeadtimeDay());
-		c.add(Calendar.HOUR, 3);
-		c.add(Calendar.MINUTE, 2);
-		String currentDate = f1.format(c.getTime()) + " " + f2.format(c.getTime()) + " " + f3.format(c.getTime());
-		Log4jUtil.log("Current Date is " + currentDate);
+		String currentDate = f1.format(c.getTime());
 		return currentDate;
 	}
 

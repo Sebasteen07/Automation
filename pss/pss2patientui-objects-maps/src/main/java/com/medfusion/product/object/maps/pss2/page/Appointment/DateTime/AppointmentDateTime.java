@@ -32,6 +32,9 @@ public class AppointmentDateTime extends PSS2MainPage {
 	@FindBy(how = How.XPATH, using = "//*[@id=\"topdiv\"]/div[2]/div/div[2]/div[3]/div/div/div")
 	private WebElement scrollBarCalander;
 
+	@FindBy(how = How.XPATH, using = "//*[@class='rbc-event-content']")
+	private WebElement dateFirst;
+
 	public AppointmentDateTime(WebDriver driver) {
 		super(driver);
 	}
@@ -161,5 +164,20 @@ public class AppointmentDateTime extends PSS2MainPage {
 		}
 		return time;
 
+	}
+
+	public String selectdateforreserve() {
+		log("Date size is   " + getAppointmentDateList());
+		String dt = null;
+		List<WebElement> appointmentList = driver.findElements(By.cssSelector(".rbc-event-content"));
+		for (int i = 0; i < appointmentList.size(); i++) {
+			if (appointmentList.get(i).isDisplayed()) {
+				log("Appointment Date selected=" + appointmentList.get(i).getText());
+				appointmentList.get(i).click();
+				dt = appointmentList.get(i).getText();
+				return appointmentList.get(i).getText();
+			}
+		}
+		return dt;
 	}
 }

@@ -66,7 +66,7 @@ public class ConfirmationPage extends PSS2MainPage {
 
 	public String timeConfirm() {
 		String datetext = timeConfirmation.getText();
-		String nextDate1 = datetext.substring(00, 05);
+		String nextDate1 = datetext.substring(00, 8);
 		String confirmtime = nextDate1.replace(" ", "");
 		return confirmtime;
 	}

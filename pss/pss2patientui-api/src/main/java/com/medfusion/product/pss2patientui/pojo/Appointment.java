@@ -78,8 +78,26 @@ public class Appointment {
 
 	private String currentDate;
 	private String currentTimeZone;
+	private String businesshourStartTime;
+	private String businesshourEndTime;
 
 
+
+	public String getBusinesshourStartTime() {
+		return businesshourStartTime;
+	}
+
+	public void setBusinesshourStartTime(String businesshourStartTime) {
+		this.businesshourStartTime = businesshourStartTime;
+	}
+
+	public String getBusinesshourEndTime() {
+		return businesshourEndTime;
+	}
+
+	public void setBusinesshourEndTime(String businesshourEndTime) {
+		this.businesshourEndTime = businesshourEndTime;
+	}
 
 	private Boolean isCancelButtonPresent;
 	private int displaySlotCountLength;

@@ -105,4 +105,17 @@ public class PSS2PracticeConfiguration extends SettingsTab {
 
 		
 	}
+
+	public String gettextbusineesHourStarttime() {
+		String starttime = businesshourStart.getAttribute("value");
+		log("Business hour Starttime is" + starttime);
+		return starttime;
+	}
+
+	public String gettextbusineesHourEndtime() {
+		String endtime = businesshourEnd.getAttribute("value");
+		log("Business hour businesshourEnd is" + endtime);
+		return endtime;
+
+	}
 }
