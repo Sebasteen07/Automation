@@ -90,14 +90,14 @@ public class PSSAdminUtils {
 				accessrule.selectLLExistingPatient();
 			}
 		}
-		Log4jUtil.log("------------Set OTP Settings off for loginless flow----------");
-		if (accessrule.isEnableOTPSelected().equalsIgnoreCase("true")) {
-			Log4jUtil.log("Status of EnableOTP is " + accessrule.isEnableOTPSelected());
-			accessrule.clickEnableOTP();
-			Log4jUtil.log("Enable OTP is set False");
-		} else {
-			Log4jUtil.log("Enable OTP is already False no need to change");
-		}
+//		Log4jUtil.log("------------Set OTP Settings off for loginless flow----------");
+//		if (accessrule.isEnableOTPSelected().equalsIgnoreCase("true")) {
+//			Log4jUtil.log("Status of EnableOTP is " + accessrule.isEnableOTPSelected());
+//			accessrule.clickEnableOTP();
+//			Log4jUtil.log("Enable OTP is set False");
+//		} else {
+//			Log4jUtil.log("Enable OTP is already False no need to change");
+//		}
 		if (urlToUse.equalsIgnoreCase(PSSConstants.LOGINLESS)) {
 			Log4jUtil.log("PSS Patient URL : " + accessrule.getLoginlessURL());
 			testData.setUrlLoginLess(accessrule.getLoginlessURL());

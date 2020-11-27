@@ -806,18 +806,6 @@ public class PSSPatientUtils {
 		scheduledappointment.downloadCalander();
 		Thread.sleep(2000);
 		readICSFile(filePath());
-		HomePage homePage = scheduledappointment.backtoHomePage();
-		Log4jUtil.log("home page loaded ? " + homePage.areBasicPageElementsPresent());
-		homePage.bookedAppointmentInUpcomingList(testData.getAppointmentScheduledFromPM());
-		Log4jUtil.log("Verify if appointment Scheduled from PM system does not have cancel button.");
-		homePage.verifyAppointmentScheduledInPMSystem(testData.getAppointmentScheduledFromPM());
-		if (testData.getIsCancelApt()) {
-			Log4jUtil.log("Cancel the appointment which was booked");
-			homePage.cancelAppointment(testData.getCancellationPolicyText());
-		}
-		Thread.sleep(8000);
-		Log4jUtil.log("Step 14: Logout from PSS 2.0 Patient UI ");
-		OnlineAppointmentScheduling onlineappointmentscheduling = homePage.logout();
 	}
 
 	public ScheduledAppointment selectAFlow(WebDriver driver, String rule, HomePage homepage, Appointment testData) throws Exception {
