@@ -507,7 +507,6 @@ public class SiteGenAcceptanceTests extends BaseTestNGWebDriver {
 	    AddPharmacyPage addPharmaPage= managePharmacyPage.clickOnAddPharmacyButton();
 	    
 		String externalid= IHGUtil.createRandomNumericString(12);
-		System.out.println("Random id generated in " +externalid);
 		
 	    String message=addPharmaPage.fillPharmacyDetails(externalid,true);
 	    assertTrue(message.contains("success"));
