@@ -143,9 +143,9 @@ public class JalapenoHomePage extends JalapenoMenu {
 	
 	public JalapenoMessagesPage showMessagesSent(WebDriver driver) {
 		IHGUtil.PrintMethodName();
-		WebDriverWait wait= new WebDriverWait(driver, 5);
-		wait.until(ExpectedConditions.elementToBeClickable(messagesSideBar));
-		messagesSideBar.click();
+		WebDriverWait wait= new WebDriverWait(driver, 20);
+		wait.until(ExpectedConditions.elementToBeClickable(messages));
+		messages.click();
 		wait.until(ExpectedConditions.elementToBeClickable(sentFolder));
 		sentFolder.click();
 		return PageFactory.initElements(driver, JalapenoMessagesPage.class);
