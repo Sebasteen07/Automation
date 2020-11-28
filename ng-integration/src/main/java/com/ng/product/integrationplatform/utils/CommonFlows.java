@@ -38,6 +38,19 @@ public class CommonFlows {
         String emailStatus1 =DBUtils.executeQueryOnDB("MFAgentDB","select status from processingstatus_entity where entityidentifier ='"+entityidentifier+"'");
 		String jobStatus1 =DBUtils.executeQueryOnDB("MFAgentDB","select status from processingstatus where id = (select processingstatus_id from processingstatus_entity where entityidentifier ='"+entityidentifier+"')");
 
+		if(jobStatus1.isEmpty()){
+			for (int i = 0; i < arg_timeOut; i++) {
+				jobStatus1 =DBUtils.executeQueryOnDB("MFAgentDB","select status from processingstatus where id = (select processingstatus_id from processingstatus_entity where entityidentifier ='"+entityidentifier+"')");
+				if ((jobStatus1.equalsIgnoreCase("Pending")) || (jobStatus1.equalsIgnoreCase("COMPLETED"))) {
+					Log4jUtil.log("Step End: Request is sent to RSDK successfully");
+	                break;
+	            } else {
+	                if (i == arg_timeOut - 1)
+	                    Thread.sleep(1000);
+	            }
+	        }
+		}
+		
 		Log4jUtil.log("Status of MF agent job "+jobStatus1);
 		if(!jobStatus1.isEmpty()){
 			if(jobStatus1.equalsIgnoreCase("Pending"))
