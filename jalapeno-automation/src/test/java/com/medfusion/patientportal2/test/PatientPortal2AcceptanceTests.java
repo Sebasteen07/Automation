@@ -2957,7 +2957,19 @@ public class PatientPortal2AcceptanceTests extends BaseTestNGWebDriver {
 
 		logStep("Verifying credit card ending in payment receipt");
 		assertTrue(payBillsPage.getReceiptCreditCardDigit().equals(creditCard.getLastFourDigits()));
+		homePage.clickOnLogout();
+		
+		logStep("Load login page");
+		loginPage = new JalapenoLoginPage(driver, testData.getUrl());
+		homePage = loginPage.login(testData.getUserId(), testData.getPassword());
 
+		logStep("Click on messages solution and navigate to Inbox");
+		JalapenoMessagesPage messagesPage = homePage.showMessagesSent(driver);
+		assertTrue(messagesPage.areBasicPageElementsPresent());
+
+		logStep("Waiting for message in SecureMessage Inbox");
+		assertTrue(messagesPage.isMessageDisplayed(driver, messageSubject));
+		
 		logStep("Verifying the Payment Notification Mail is received by the patient or not");
 		String notificationEmailSubject = "Payment Receipt";
 		String[] mailAddress = "automationjalapeno2@mailinator.com".split("@");
@@ -2966,14 +2978,7 @@ public class PatientPortal2AcceptanceTests extends BaseTestNGWebDriver {
 		assertNotNull(email, "Error: No new message notification recent enough found");
 		String emailBody = email.getBody();
 		assertTrue(emailBody.contains("Receipt"));
-
-		logStep("Click on messages solution and navigate to Inbox");
-		JalapenoMessagesPage messagesPage = homePage.showMessagesSent(driver);
-		assertTrue(messagesPage.areBasicPageElementsPresent());
-
-		logStep("Waiting for message in SecureMessage Inbox");
-		assertTrue(messagesPage.isMessageDisplayed(driver, messageSubject));
-
+		
 		homePage.clickOnLogout();
 
 	}
