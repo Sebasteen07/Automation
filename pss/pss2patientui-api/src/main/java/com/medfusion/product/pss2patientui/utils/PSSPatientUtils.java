@@ -14,6 +14,7 @@ import java.net.MalformedURLException;
 import java.net.URL;
 import java.net.URLConnection;
 import java.text.DateFormat;
+import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -22,6 +23,8 @@ import java.util.Collection;
 import java.util.Date;
 import java.util.HashSet;
 import java.util.TimeZone;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
@@ -36,7 +39,6 @@ import com.medfusion.product.object.maps.pss2.page.Appointment.HomePage.HomePage
 import com.medfusion.product.object.maps.pss2.page.Appointment.Location.Location;
 import com.medfusion.product.object.maps.pss2.page.Appointment.Loginless.LoginlessPatientInformation;
 import com.medfusion.product.object.maps.pss2.page.Appointment.Main.NewPatientInsuranceInfo;
-import com.medfusion.product.object.maps.pss2.page.Appointment.Main.OnlineAppointmentScheduling;
 import com.medfusion.product.object.maps.pss2.page.Appointment.Main.PrivacyPolicy;
 import com.medfusion.product.object.maps.pss2.page.Appointment.Provider.Provider;
 import com.medfusion.product.object.maps.pss2.page.Appointment.Speciality.Speciality;
@@ -1187,8 +1189,7 @@ public class PSSPatientUtils {
 		c.add(Calendar.DATE, testData.getLeadtimeDay());
 		String currentDate = f1.format(c.getTime());
 		String currentleddate = currentDate.substring(00, 16);
-		String date = currentleddate.replace(" ", "");
-		return date;
+		return currentleddate;
 
 	}
 
@@ -1228,6 +1229,57 @@ public class PSSPatientUtils {
 		return currentDate;
 	}
 
+	public String numDate(Appointment testData) {
+		int MILLIS_IN_DAY = 1000 * 60 * 60 * 24;
+		Log4jUtil.log("current est date is  " + currentDateandLeadDay(testData));
+		String date = currentDateandLeadDay(testData);
+		String dateFormat = "MMMM dd,yyyy";
+		SimpleDateFormat f1 = new SimpleDateFormat(dateFormat);
+		java.util.Date dateSelectedFrom = null;
+		java.util.Date dateNextDate = null;
+		String date2 = "";
+		try {
+			dateSelectedFrom = f1.parse(date);
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		String nextDate = f1.format(dateSelectedFrom.getTime() + MILLIS_IN_DAY);
+		try {
+			dateNextDate = f1.parse(nextDate);
+			String date1 = dateNextDate.toString();
+			date2 = date1.substring(8, 10);
+			System.out.println("Next day's date: " + dateNextDate);
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		return date2;
+	}
 
+	public long timeDifference(Appointment testData) throws ParseException {
+		Log4jUtil.log("Bussiness Hour Endtime is  " + testData.getBusinesshourEndTime());
+		Calendar now = Calendar.getInstance();
+		TimeZone time_zone = TimeZone.getTimeZone("EST");
+		now.setTimeZone(time_zone);
+		now.add(Calendar.HOUR, testData.getLeadtimeHour());
+		now.add(Calendar.MINUTE, testData.getLeadtimeMinute());
+		String currenttime = +now.get(Calendar.HOUR_OF_DAY) + ":" + now.get(Calendar.MINUTE);
+		Log4jUtil.log("Afetr Add leadTime : " + currenttime);
+		SimpleDateFormat format = new SimpleDateFormat("HH:mm");
+		Date time1 = format.parse(currenttime);
+		Date time2 = format.parse(testData.getBusinesshourEndTime());
+		long difference = time2.getTime() - time1.getTime();
+		Log4jUtil.log("Time Differnce is  " + difference);
+		return difference;
 
+	}
+
+	public boolean isValidTime(String time) {
+		String regexPattern = "(1[012]|[1-9]):" + "[0-5][0-9](\\s)" + "?(?i)(am|pm)";
+		Pattern compiledPattern = Pattern.compile(regexPattern);
+		if (time == null) {
+			return false;
+		}
+		Matcher m = compiledPattern.matcher(time);
+		return m.matches();
+	}
 }

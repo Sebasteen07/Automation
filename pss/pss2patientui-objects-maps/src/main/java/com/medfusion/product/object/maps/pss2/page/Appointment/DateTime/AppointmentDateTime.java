@@ -39,6 +39,9 @@ public class AppointmentDateTime extends PSS2MainPage {
 		super(driver);
 	}
 
+	@FindBy(how = How.XPATH, using = "//span[contains(text(),'No slots available')]")
+	private WebElement noslotsAvaliable;
+
 	@Override
 	public boolean areBasicPageElementsPresent() {
 		if (appointmentList.size() != 0) {
@@ -167,7 +170,7 @@ public class AppointmentDateTime extends PSS2MainPage {
 	}
 
 	public String selectdateforreserve() {
-		log("Date size is   " + getAppointmentDateList());
+		log("Total Dates present on patientUI is " + getAppointmentDateList());
 		String dt = null;
 		List<WebElement> appointmentList = driver.findElements(By.cssSelector(".rbc-event-content"));
 		for (int i = 0; i < appointmentList.size(); i++) {
@@ -179,5 +182,11 @@ public class AppointmentDateTime extends PSS2MainPage {
 			}
 		}
 		return dt;
+	}
+
+	public String gettextNoslot() {
+		String text = noslotsAvaliable.getText();
+		log("text is" + text);
+		return text;
 	}
 }

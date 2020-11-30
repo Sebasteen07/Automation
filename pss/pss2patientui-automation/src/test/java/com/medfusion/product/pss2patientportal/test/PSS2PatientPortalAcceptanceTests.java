@@ -2418,6 +2418,7 @@ public class PSS2PatientPortalAcceptanceTests extends BaseTestNGWebDriver {
 		assertEquals(psspatientutils.currentDateandLeadDay(testData), confirmationpage.dateConfirm());
 		log("Current Timezone On AdminUi " + testData.getCurrentTimeZone());
 		log("Confirmation Time is " + confirmationpage.timeConfirm());
+		log("Is Confirmation time is Valid   " + psspatientutils.isValidTime(confirmationpage.timeConfirm()));
 		log("Current time and lead time is  " + psspatientutils.currentESTTimeandLeadTime(testData));
 
 
@@ -2472,20 +2473,20 @@ public class PSS2PatientPortalAcceptanceTests extends BaseTestNGWebDriver {
 		AppointmentDateTime aptDateTime = appointment.selectTypeOfAppointment(testData.getAppointmenttype(), Boolean.valueOf(testData.getIsAppointmentPopup()));
 		Log4jUtil.log("Step 12: Select avaiable Date ");
 		String date = aptDateTime.selectdateforreserve();
+		Log4jUtil.log("Verifying only one date availiable or not");
+		assertEquals(1, aptDateTime.getAppointmentDateList());
 		Log4jUtil.log("date- " + date);
-		assertEquals(date, psspatientutils.currentESTDate(testData));
+		log("Next date is    " + psspatientutils.numDate(testData));
+		if (psspatientutils.timeDifference(testData) < 0) {
+			assertEquals(date, psspatientutils.numDate(testData));
+		} else {
+			assertEquals(date, psspatientutils.currentESTDate(testData));
+		}
 		log("Done Confirmation");
-		log("Appointment first time is " + aptDateTime.getfirsttime());
 		Thread.sleep(6000);
 		ConfirmationPage confirmationpage = aptDateTime.selectAppointmentDateTime(testData.getIsNextDayBooking());
 		confirmationpage.dateConfirm();
 		log("Current Date is " + psspatientutils.currentDateandLeadDay(testData));
 		log("Confirmation Date " + confirmationpage.dateConfirm());
-		assertEquals(psspatientutils.currentDateandLeadDay(testData), confirmationpage.dateConfirm());
-
-
 	}
-
-
-
 }

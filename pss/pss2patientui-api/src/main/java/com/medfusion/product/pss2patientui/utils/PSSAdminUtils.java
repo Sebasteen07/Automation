@@ -384,6 +384,11 @@ public class PSSAdminUtils {
 	public void leadTime(WebDriver driver, AdminUser adminuser, Appointment appointment) throws Exception {
 
 		PSS2PracticeConfiguration psspracticeConfig = loginToAdminPortal(driver, adminuser);
+		psspracticeConfig = psspracticeConfig.gotoPracticeConfigTab();
+		appointment.setBusinesshourStartTime(psspracticeConfig.gettextbusineesHourStarttime());
+		appointment.setBusinesshourEndTime(psspracticeConfig.gettextbusineesHourEndtime());
+		Log4jUtil.log("Starttime is " + appointment.getBusinesshourStartTime());
+		Log4jUtil.log("End time is" + appointment.getBusinesshourEndTime());
 		PatientFlow patientflow = psspracticeConfig.gotoPatientFlowTab();
 		adminuser.setRule(patientflow.getRule());
 		Log4jUtil.log("rule= " + patientflow.getRule());
@@ -411,7 +416,6 @@ public class PSSAdminUtils {
 	public void reserveforDay(WebDriver driver, AdminUser adminuser, Appointment appointment) throws Exception {
 		PSS2PracticeConfiguration psspracticeConfig = loginToAdminPortal(driver, adminuser);
 		psspracticeConfig = psspracticeConfig.gotoPracticeConfigTab();
-		// Log4jUtil.log(psspracticeConfig.gettextbusineesHourStarttime());
 		appointment.setBusinesshourStartTime(psspracticeConfig.gettextbusineesHourStarttime());
 		appointment.setBusinesshourEndTime(psspracticeConfig.gettextbusineesHourEndtime());
 		Log4jUtil.log("Starttime is " + appointment.getBusinesshourStartTime());
@@ -420,6 +424,12 @@ public class PSSAdminUtils {
 		pageRefresh(driver);
 		mr.selectResource(appointment.getProvider());
 		mr.selectAppointmenttype(appointment.getAppointmenttype());
+		appointment.setLeadtimeDay(mr.getDay());
+		Log4jUtil.log("Lead time Day is = " + appointment.getLeadtimeDay());
+		appointment.setLeadtimeHour(mr.getHour());
+		Log4jUtil.log("Lead time Hour is = " + appointment.getLeadtimeHour());
+		appointment.setLeadtimeMinute(mr.getMinut());
+		Log4jUtil.log("Lead time Minute is = " + appointment.getLeadtimeMinute());
 		mr.reserveFor();
 		ManageLocation manageLocation = psspracticeConfig.gotoLocation();
 		manageLocation.selectlocation(appointment.getLocation());
