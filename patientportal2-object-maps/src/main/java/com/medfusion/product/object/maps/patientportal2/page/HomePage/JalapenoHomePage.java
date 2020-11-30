@@ -143,9 +143,9 @@ public class JalapenoHomePage extends JalapenoMenu {
 	
 	public JalapenoMessagesPage showMessagesSent(WebDriver driver) {
 		IHGUtil.PrintMethodName();
-		WebDriverWait wait= new WebDriverWait(driver, 5);
-		wait.until(ExpectedConditions.elementToBeClickable(messagesSideBar));
-		messagesSideBar.click();
+		WebDriverWait wait= new WebDriverWait(driver, 20);
+		wait.until(ExpectedConditions.elementToBeClickable(messages));
+		messages.click();
 		wait.until(ExpectedConditions.elementToBeClickable(sentFolder));
 		sentFolder.click();
 		return PageFactory.initElements(driver, JalapenoMessagesPage.class);
@@ -468,7 +468,7 @@ public class JalapenoHomePage extends JalapenoMenu {
 		}
 	}
 	
-	public void switchToPractice(String practice){
+	public void switchToPractice(String practice) throws InterruptedException{
 		try{
 			WebElement verifySelectedPractice= driver.findElement((By.xpath("(//span[@title='"+practice+"'])[2]")));
 			Boolean status =IHGUtil.waitForElement(driver, 15, verifySelectedPractice);
@@ -480,7 +480,8 @@ public class JalapenoHomePage extends JalapenoMenu {
 			practiceToggleSearch.click();
 		 	practiceInput.sendKeys(practice);
 			practiceInput.sendKeys(Keys.ENTER);
-			IHGUtil.waitForElement(driver, 80, switchButtonContinue);
+			Thread.sleep(8000);
+			IHGUtil.waitForElement(driver, 90, switchButtonContinue);
 			switchButtonContinue.click();
 			log("Switch to the practice "+practice+" is completed");
 			}

@@ -13,14 +13,14 @@
 	<classes>
 		<class name = "com.ng.product.integrationplatform.tests.NGIntegrationE2ESITTests" />
 		<methods>
-	    		<include name="testPracticeLevelEnrollmentOnDemandCCD"/>
-	    		<include name="testMSUCCD"/> 
-	    		<include name="testLockedEncounterCCD"/>
-	    		<include name="testGuardianDependentCCD"/>
+	    		<include name="testCCDPracticeLevelEnrollmentOnDemandCCD"/>
+	    		<include name="testCCDMSUCCD"/> 
+	    		<include name="testCCDLockedEncounterCCD"/>
+	    		<include name="testCCDGuardianDependentCCD"/>
 	    		<include name="testCCDTrustedRepresentativeWithoutMFAccount"/>
-	    		<include name="testUnSignedOffLabResultInCCD"/> 
-	    		<include name="testSensitiveLockedEncounterCCD"/>  
-	    		<include name="testMultiPracticeCCDP1P2ANDOnDemandCCDTrustedRepresentativeWithMFAccount"/>	   	    			    		
+	    		<include name="testCCDUnSignedOffLabResultInCCD"/> 
+	    		<include name="testCCDSensitiveLockedEncounterCCD"/>  
+	    		<include name="testCCDMultiPracticeCCDP1P2ANDOnDemandCCDTrustedRepresentativeWithMFAccount"/>	   	    			    		
 	    	</methods>
 	</classes>
 </test>

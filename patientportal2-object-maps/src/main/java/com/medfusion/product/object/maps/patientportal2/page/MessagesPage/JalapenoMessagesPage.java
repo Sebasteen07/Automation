@@ -75,6 +75,9 @@ public class JalapenoMessagesPage extends JalapenoMenu {
 	
 	@FindBy(how = How.XPATH, using = "//button[@class='btn btn-default ng-binding ng-scope']")
 	private WebElement archiveButton;
+	
+	@FindBy(how = How.XPATH, using = "//span[@class='messageFrom ng-binding']")
+	private WebElement senderName;
 
 	private static final int maxCount = 15;
 	private static final String replyContent = "This is response to doctor's message";
@@ -301,6 +304,59 @@ public class JalapenoMessagesPage extends JalapenoMenu {
 				log("Message with subject " + subject+"is not clickable");
 				log(ex.getMessage());
 			}
+	}
+	
+	public void verifyMessageAttachment(WebDriver driver, String attachmentName) {
+		IHGUtil.PrintMethodName();
+		WebElement element;
+		Boolean status= false;
+			try {
+				element = driver.findElement(By.xpath("//a[contains(text(),'" + attachmentName + "')]"));
+				log("Message with subject \"" + attachmentName + "\" displayed. Clicking to message");
+				Thread.sleep(10000);
+				if(element.isDisplayed())
+					status= true;
+			} catch (Exception ex) {
+				log("Message with subject " + attachmentName+"is not clickable");
+				log(ex.getMessage());
+				Assert.assertTrue(status, "Attachment is not found in message");
+			}
+	}
+	
+	public Boolean verifyReplyButton(WebDriver driver) {
+		IHGUtil.PrintMethodName();
+		Boolean status= false;
+			try {
+				log("Verify Reply Button should not be displayed");
+				Thread.sleep(5000);
+				if(replyButton.isDisplayed())
+					status= false;
+			} catch (Exception ex) {
+				status= true;
+				log("Reply Button is not displayed");
+				log(ex.getMessage());
+				Assert.assertTrue(status, "Reply Button is not displayed");
+			}
+			return status;
+	}
+	
+	public Boolean verifySenderInfo(WebDriver driver,String senderFirstName, String senderLastName) {
+		IHGUtil.PrintMethodName();
+		Boolean status= false;
+			try {
+				log("Verify Sender Name");
+				Thread.sleep(5000);
+				String acutalSenderName = senderName.getText();
+				if((acutalSenderName.contains(senderFirstName))&&((acutalSenderName.contains(senderLastName))))			
+					status= true;
+			} catch (Exception ex) {
+				status= false;
+				log("Sender Name is not correct");
+				log(ex.getMessage());
+			}
+			Assert.assertTrue(status, "Sender Name is not correct");
+			log("Sender Name is correct");
+			return status;
 	}
 }
 
