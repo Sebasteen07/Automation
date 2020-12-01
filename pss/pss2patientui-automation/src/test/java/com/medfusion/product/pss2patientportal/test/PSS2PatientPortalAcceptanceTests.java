@@ -1045,8 +1045,7 @@ public class PSS2PatientPortalAcceptanceTests extends BaseTestNGWebDriver {
 		assertTrue(homepage.areBasicPageElementsPresent());
 	}
 
-	@Test(enabled = true, dataProvider = "partnerType", groups = {
-			"AcceptanceTests" }, retryAnalyzer = RetryAnalyzer.class)
+	@Test(enabled = true, dataProvider = "partnerType", groups = {"AcceptanceTests" }, retryAnalyzer = RetryAnalyzer.class)
 	public void testIDPLoginWithNewPatient_1_10(String partnerPractice) throws Exception {
 		log("Test To Verify if PSS 2.0 IDP New Patient is able to create account and login. " + partnerPractice);
 		log("Step 1: set test data for existing patient ");
@@ -1084,8 +1083,7 @@ public class PSS2PatientPortalAcceptanceTests extends BaseTestNGWebDriver {
 		Thread.sleep(6000);
 	}
 
-	@Test(enabled = true, dataProvider = "partnerType", groups = {
-			"AcceptanceTests" }, retryAnalyzer = RetryAnalyzer.class)
+	@Test(enabled = true, dataProvider = "partnerType", groups = {"AcceptanceTests" }, retryAnalyzer = RetryAnalyzer.class)
 	public void testCreateIDPPatientWithExistingCredentials(String partnerPractice) throws Exception {
 		log("Test To Verify appropriate error message when creating new IDP patient with existing credentials for "
 				+ partnerPractice);
@@ -1120,8 +1118,7 @@ public class PSS2PatientPortalAcceptanceTests extends BaseTestNGWebDriver {
 		assertTrue(createnewaccountidp.errorMessageText().contains(emessage), "Error message did not showed up");
 	}
 
-	@Test(enabled = true, dataProvider = "partnerType", groups = {
-			"AcceptanceTests" }, retryAnalyzer = RetryAnalyzer.class)
+	@Test(enabled = true, dataProvider = "partnerType", groups = {"AcceptanceTests" }, retryAnalyzer = RetryAnalyzer.class)
 	public void testCreateIDPPatientWithInvalidCredentials(String partnerPractice) throws Exception {
 		log("Test To Verify appropriate error message when creating new IDP patient with existing credentials "
 				+ partnerPractice);
@@ -1246,8 +1243,7 @@ public class PSS2PatientPortalAcceptanceTests extends BaseTestNGWebDriver {
 		psspatientutils.check_Provider_Apt_Loc_List(driver, homepage, testData);
 	}
 
-	@Test(enabled = true, dataProvider = "partnerType", groups = {
-			"AcceptanceTests" }, retryAnalyzer = RetryAnalyzer.class)
+	@Test(enabled = true, dataProvider = "partnerType", groups = {"AcceptanceTests" }, retryAnalyzer = RetryAnalyzer.class)
 	public void testPSSSAgeRuleCriteriaForUnderAgePatient(String partnerPractice) throws Exception {
 		log("Test PSS 2.0 Age Rule Criteria");
 		PSSPropertyFileLoader propertyData = new PSSPropertyFileLoader();
@@ -1288,8 +1284,7 @@ public class PSS2PatientPortalAcceptanceTests extends BaseTestNGWebDriver {
 		psspatientutils.ageRule(driver, homepage, testData, true, rule);
 	}
 
-	@Test(enabled = true, dataProvider = "partnerType", groups = {
-			"AcceptanceTests" }, retryAnalyzer = RetryAnalyzer.class)
+	@Test(enabled = true, dataProvider = "partnerType", groups = {"AcceptanceTests" }, retryAnalyzer = RetryAnalyzer.class)
 	public void testPSSSAgeRuleForPatientWithinCriteria(String partnerPractice) throws Exception {
 		log("Test PSS 2.0 Age Rule Criteria");
 		PSSPropertyFileLoader propertyData = new PSSPropertyFileLoader();
@@ -1330,8 +1325,7 @@ public class PSS2PatientPortalAcceptanceTests extends BaseTestNGWebDriver {
 		psspatientutils.ageRule(driver, homepage, testData, false, rule);
 	}
 
-	@Test(enabled = true, dataProvider = "partnerType", groups = {
-			"AcceptanceTests" }, retryAnalyzer = RetryAnalyzer.class)
+	@Test(enabled = true, dataProvider = "partnerType", groups = {"AcceptanceTests" }, retryAnalyzer = RetryAnalyzer.class)
 	public void testPSSSLBTAssociation(String partnerPractice) throws Exception {
 		log("Test to verify associations of various providers and their appoinement types and locations are displayed appropriately.");
 		log("Step 1: set test data for existing patient from external property file");
@@ -1373,8 +1367,7 @@ public class PSS2PatientPortalAcceptanceTests extends BaseTestNGWebDriver {
 		psspatientutils.verifyProviderAssociation(driver, homepage, testData, rule);
 	}
 
-	@Test(enabled = true, dataProvider = "partnerType", groups = {
-			"AcceptanceTests" }, retryAnalyzer = RetryAnalyzer.class)
+	@Test(enabled = true, dataProvider = "partnerType", groups = {"AcceptanceTests" }, retryAnalyzer = RetryAnalyzer.class)
 	public void testSchedulingForSpecialityFlow(String partnerPractice) throws Exception {
 		log("Test to verify associations of various providers and their appoinement types and locations are displayed appropriately.");
 		log("Step 1: set test data for existing patient from external property file");
@@ -1701,6 +1694,92 @@ public class PSS2PatientPortalAcceptanceTests extends BaseTestNGWebDriver {
 
 			homepage.defaultcancelAppointment(popupmsg, confirmCancelmsg);
 		}
+
+	}
+	
+	@Test(enabled = true, groups = { "AcceptanceTests" }, retryAnalyzer = RetryAnalyzer.class)
+	public void testRescheduleAppointmentGE() throws Exception {
+		log("Test To Verify if a Patient is able to login via SSO Flow from Patient 2.0 portal.");
+		log("Step 1: Login to Patient Portal 2.0");
+		PSSPropertyFileLoader propertyData = new PSSPropertyFileLoader();
+		Appointment testData = new Appointment();
+		AdminUser adminuser = new AdminUser();
+		
+		propertyData.setAdminGE(adminuser);
+		propertyData.setAppointmentResponseGE(testData);
+		
+		PSSPatientUtils psspatientutils = new PSSPatientUtils();
+		PSSAdminUtils pssadminutils = new PSSAdminUtils();
+		
+		AdminAppointment adminAppointment = new AdminAppointment(driver);
+		
+		log("Login to PSS 2.0 Admin portal");
+		//adminUtils.getInsuranceStateandRule(driver, adminuser, testData);
+		
+		pssadminutils.getRescheduleSettings(driver, adminuser, testData, adminAppointment);
+
+		log("isShowCancellationRescheduleReason --" + testData.isShowCancellationRescheduleReason());
+		log("isShowCancellationReasonPM ---" + testData.isShowCancellationReasonPM());
+
+		boolean can1 = testData.isShowCancellationRescheduleReason();
+		boolean can2 = testData.isShowCancellationReasonPM();
+		
+		log("Fetch the rules set in Admin");
+		String rule = adminuser.getRule();
+		log("rule are " + rule);
+		rule = rule.replaceAll(" ", "");
+		
+		JalapenoLoginPage loginPage = new JalapenoLoginPage(driver, testData.getPatientPortalURL());
+		JalapenoHomePage homePage = loginPage.login(testData.getPatientPortalUserName(),testData.getPatientPortalPassword());
+		
+		log("Detecting if Home Page is opened");
+		assertTrue(homePage.isHomeButtonPresent(driver));
+		homePage.clickFeaturedAppointmentsReq();
+		
+		log("Wait for PSS 2.0 Patient UI to be loaded.");
+		Thread.sleep(2000);
+		
+		log("Switching tabs");
+		String currentUrl = psspatientutils.switchtabs(driver);
+		
+		log("Step 4: Login to PSS Appointment");
+//		DismissPage dismissPage = new DismissPage();
+//		Thread.sleep(1000);
+//
+//		log("Clicked on Dismiss");
+//		HomePage homepage = dismissPage.clickDismisse();
+		
+		
+		HomePage homepage = new HomePage(driver, currentUrl);
+		Thread.sleep(1500);
+		if (homepage.isPopUP()) {
+			homepage.popUPClick();
+		}
+		Thread.sleep(1200);
+		log("Verify PSS2 patient portal elements");
+		assertTrue(homepage.areBasicPageElementsPresent());
+		ScheduledAppointment scheduledAppointment=psspatientutils.selectAFlow(driver, rule, homepage, testData);
+		homepage=scheduledAppointment.backtoHomePage();
+		
+		if (can1 == true & can2 == false) {
+
+			log("True- False Conditions follow");
+
+		} else if (can1 == true & can2 == true) {
+
+			log("True- True Conditions follow");
+
+			
+
+		} else if (can1 == false & can2 == false) {
+			
+			log("False- False Conditions follow");
+			homepage.clickRescheduleLink();
+			psspatientutils.resheduleAPT( testData, driver);
+			
+
+		}
+
 
 	}
 

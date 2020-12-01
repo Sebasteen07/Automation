@@ -29,7 +29,10 @@ public class ScheduledAppointment extends PSS2MainPage {
 	@FindBy(how = How.XPATH, using = "//h1[@class=\"schedule\"]/text()")
 	private WebElement appointmentID;
 
-	@FindBy(how = How.XPATH, using = "//div[@id='appointmentconfirm']/h1/span[2]")
+//	@FindBy(how = How.XPATH, using = "//div[@id='appointmentconfirm']/h1/span[2]")
+//	private WebElement confirmationNumber;
+	
+	@FindBy(how = How.XPATH, using = "//div[@id='appointmentconfirm']")
 	private WebElement confirmationNumber;
 
 	public ScheduledAppointment(WebDriver driver) {

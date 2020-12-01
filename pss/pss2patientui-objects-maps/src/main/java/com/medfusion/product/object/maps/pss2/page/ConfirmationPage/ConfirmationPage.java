@@ -46,10 +46,21 @@ public class ConfirmationPage extends PSS2MainPage {
 		buttonAllGood.click();
 		return PageFactory.initElements(driver, ScheduledAppointment.class);
 	}
+	
+	public ScheduledAppointment rescheduleAppointmentConfirmed() throws InterruptedException {
+		commonMethods.highlightElement(buttonAllGood);		
+		jse.executeScript("window.scrollBy(0,550)", "");
+		Thread.sleep(1000);
+		jse.executeScript("arguments[0].click();", buttonAllGood);
+		log("Click on Everything is Correct button");		
+		return PageFactory.initElements(driver, ScheduledAppointment.class);
+	}
 
-	public ScheduledAppointmentAnonymous appointmentConfirmedAnonymous() {
+	public ScheduledAppointmentAnonymous appointmentConfirmedAnonymous() throws InterruptedException {
 		commonMethods.highlightElement(buttonAllGood);
-		buttonAllGood.click();
+		Thread.sleep(1000);
+		jse.executeScript("arguments[0].click();", buttonAllGood);
+		//buttonAllGood.click();
 		return PageFactory.initElements(driver, ScheduledAppointmentAnonymous.class);
 	}
 

@@ -749,6 +749,20 @@ public class PSSPatientUtils {
 			appointmentToScheduled(confirmationpage, testData);
 		}
 	}
+	
+	public void reBookAppointment(Boolean isInsuranceDisplated, AppointmentDateTime aptDateTime, Appointment testData, WebDriver driver) throws Exception {
+		Log4jUtil.log("Step 12: Verify Confirmation page and Scheduled page");
+		Log4jUtil.log("Is Insurance Page Displated= " + isInsuranceDisplated);
+		Thread.sleep(2000);
+		if (isInsuranceDisplated) {
+			UpdateInsurancePage updateinsurancePage = aptDateTime.selectAppointmentTimeIns();
+			ConfirmationPage confirmationpage = updateinsurancePage.skipInsuranceUpdate();
+			appointmentToRescheduled(confirmationpage, testData);
+		} else {
+			ConfirmationPage confirmationpage = aptDateTime.selectAppointmentDateTime(testData.getIsNextDayBooking());
+			appointmentToRescheduled(confirmationpage, testData);
+		}
+	}
 
 	public void bookAnonymousApt(AppointmentDateTime aptDateTime, Appointment testData, WebDriver driver) throws Exception {
 		Log4jUtil.log("Step 12: Verify Confirmation page and Scheduled page");
@@ -799,6 +813,24 @@ public class PSSPatientUtils {
 			Log4jUtil.log("apt Details= " + ele.getText());
 		}
 		ScheduledAppointment scheduledappointment = confirmationpage.appointmentConfirmed();
+		Log4jUtil.log("appointment ID = " + scheduledappointment.getAppointmentID());
+		assertTrue(scheduledappointment.areBasicPageElementsPresent());
+		Log4jUtil.log("Add to calendar option is displayed and is clickable.");
+		scheduledappointment.downloadCalander();
+		Thread.sleep(2000);
+		readICSFile(filePath());
+	}
+	
+	public void appointmentToRescheduled(ConfirmationPage confirmationpage, Appointment testData) throws Exception {
+		Log4jUtil.log("Step 13: Verify if Appointment is scheduled and download ics file");
+		assertTrue(confirmationpage.areBasicPageElementsPresent());
+		String aptScheduledAt = confirmationpage.getAppointmentDetails().get((confirmationpage.getAppointmentDetails().size() - 1)).getText();
+		Log4jUtil.log(">> " + aptScheduledAt);
+		for (WebElement ele : confirmationpage.getAppointmentDetails()) {
+			Log4jUtil.log("apt Details= " + ele.getText());
+			
+		}
+		ScheduledAppointment scheduledappointment = confirmationpage.rescheduleAppointmentConfirmed();
 		Log4jUtil.log("appointment ID = " + scheduledappointment.getAppointmentID());
 		assertTrue(scheduledappointment.areBasicPageElementsPresent());
 		Log4jUtil.log("Add to calendar option is displayed and is clickable.");
@@ -1222,6 +1254,15 @@ public class PSSPatientUtils {
 		Log4jUtil.log("Current Date is " + currentDate);
 		return currentDate;
 	}
+	
+	public void resheduleAPT(Appointment testData, WebDriver driver) throws Exception {
+		AppointmentDateTime aptDateTime = new AppointmentDateTime(driver);
+		aptDateTime=aptDateTime.selectDt(testData.getIsNextDayBooking());
+		Thread.sleep(1000);
+		reBookAppointment(true, aptDateTime, testData, driver);
+		//clickOnSubmitAppt(true, aptDateTime, testData, driver);
+	}
+
 
 
 

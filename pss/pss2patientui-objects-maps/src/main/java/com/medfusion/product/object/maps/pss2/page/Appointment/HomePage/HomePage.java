@@ -102,6 +102,9 @@ public class HomePage extends PSS2MainPage {
 	@FindAll({
 			@FindBy(xpath = "//*[@class=\"list-group-item listingOfappointments undefined\"]/div[3]/div[2]/button//span[contains(text(),'Cancel')]") })
 	private List<WebElement> cancelAppointmentList;
+	
+	@FindAll({ @FindBy(xpath = "//div[@id='upcomingevents']//div//div[1]//div[3]//div[2]//button[2]") })
+	private List<WebElement> rescheduleAppointmentList;
 
 	@FindAll({ @FindBy(xpath = "//*[@id=\"upcomingappoitment\"]/div") })
 	private List<WebElement> selectUpcomingApptList;
@@ -289,6 +292,18 @@ public class HomePage extends PSS2MainPage {
 		} else {
 			log("No Appointments found to cancel.");
 			return false;
+		}
+	}
+	
+	public void clickRescheduleLink() throws InterruptedException {
+
+		if (rescheduleAppointmentList.size() > 0) {
+			log("rescheduleAppointmentList display =" + rescheduleAppointmentList.get(0).isDisplayed());
+			rescheduleAppointmentList.get(0).click();
+
+		} else {
+			log("No Appointments found to Reschedule.");
+
 		}
 	}
 
