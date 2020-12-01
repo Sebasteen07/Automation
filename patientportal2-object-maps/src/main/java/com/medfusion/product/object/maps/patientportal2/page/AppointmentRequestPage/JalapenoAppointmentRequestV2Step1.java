@@ -1,3 +1,4 @@
+//Copyright 2013-2020 NXGN Management, LLC. All Rights Reserved.
 package com.medfusion.product.object.maps.patientportal2.page.AppointmentRequestPage;
 
 import java.util.ArrayList;
@@ -27,7 +28,7 @@ public class JalapenoAppointmentRequestV2Step1 extends JalapenoMenu {
 	@FindBy(how = How.XPATH, using = "(//div[@id='locationProviderResultList']/ol/li[1]/ul/li/label/span)")
 	private WebElement doctorSelect;
 
-	@FindBy(how = How.ID, using = "prevStep")
+	@FindBy(how = How.ID, using = "cancel_button")
 	private WebElement cancelButton;
 
 	@FindBy(how = How.ID, using = "continue_button")

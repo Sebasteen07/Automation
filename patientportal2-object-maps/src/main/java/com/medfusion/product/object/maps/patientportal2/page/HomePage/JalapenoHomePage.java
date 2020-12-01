@@ -39,6 +39,9 @@ import com.medfusion.product.object.maps.patientportal2.page.SymptomAssessment.J
 public class JalapenoHomePage extends JalapenoMenu {
 	@FindBy(how = How.ID, using = "feature_messaging")
 	private WebElement messages;
+	
+	@FindBy(how = How.XPATH, using = "//span[text()='Messages']")
+	private WebElement messagesSideBar;
 
 	@FindBy(how = How.XPATH, using = "//h3[contains(text(),'Schedule an Appointment')]")
 	private WebElement sheduleanappointment;
@@ -122,6 +125,8 @@ public class JalapenoHomePage extends JalapenoMenu {
 	@FindBy(how = How.XPATH, using = "//*[@id=\"feature_appointments\"]/div")
 	private WebElement nextAppointmentSchedule;
 
+	@FindBy(how = How.ID, using = "sentFolder")
+	private WebElement sentFolder;
 
 	public JalapenoHomePage(WebDriver driver) {
 		super(driver);
@@ -133,6 +138,16 @@ public class JalapenoHomePage extends JalapenoMenu {
 		WebDriverWait wait= new WebDriverWait(driver, 5);
 		wait.until(ExpectedConditions.elementToBeClickable(messages));
 		messages.click();
+		return PageFactory.initElements(driver, JalapenoMessagesPage.class);
+	}
+	
+	public JalapenoMessagesPage showMessagesSent(WebDriver driver) {
+		IHGUtil.PrintMethodName();
+		WebDriverWait wait= new WebDriverWait(driver, 20);
+		wait.until(ExpectedConditions.elementToBeClickable(messages));
+		messages.click();
+		wait.until(ExpectedConditions.elementToBeClickable(sentFolder));
+		sentFolder.click();
 		return PageFactory.initElements(driver, JalapenoMessagesPage.class);
 	}
 
@@ -453,7 +468,7 @@ public class JalapenoHomePage extends JalapenoMenu {
 		}
 	}
 	
-	public void switchToPractice(String practice){
+	public void switchToPractice(String practice) throws InterruptedException{
 		try{
 			WebElement verifySelectedPractice= driver.findElement((By.xpath("(//span[@title='"+practice+"'])[2]")));
 			Boolean status =IHGUtil.waitForElement(driver, 15, verifySelectedPractice);
@@ -465,7 +480,8 @@ public class JalapenoHomePage extends JalapenoMenu {
 			practiceToggleSearch.click();
 		 	practiceInput.sendKeys(practice);
 			practiceInput.sendKeys(Keys.ENTER);
-			IHGUtil.waitForElement(driver, 80, switchButtonContinue);
+			Thread.sleep(8000);
+			IHGUtil.waitForElement(driver, 90, switchButtonContinue);
 			switchButtonContinue.click();
 			log("Switch to the practice "+practice+" is completed");
 			}

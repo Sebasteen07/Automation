@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<!-- Copyright 2020 NXGN Management, LLC. All Rights Reserved. -->
+
+<suite name = "NGIntegration-Platform-Acceptance-SecureCommunicationMessages" verbose = "2" >
+<listeners>
+  <listener class-name="com.intuit.ifs.csscat.core.TestValidationErrorListener" />
+  <listener class-name="org.uncommons.reportng.HTMLReporter" />
+  <listener class-name="org.uncommons.reportng.JUnitXMLReporter" />
+</listeners>
+ 	
+<test name = "NGIntegration-Platform-Acceptance-SecureCommunicationMessages" >
+	<classes>
+		<class name = "com.ng.product.integrationplatform.tests.NGIntegrationE2ESITTests" />
+		<methods>
+	    		<include name="testCOMHighPrioritySecureMessageDoNotAddToEncounterSendByPracticeUser"/>
+	    		<include name="testCOMReadReceiptSecureMessageNewLockedEncounter"/>   
+	    		<include name="testCOMUnreadNotificationSecureMessageNewUnLockedEncounter"/> 
+	    		<include name="testCOMDisableReplySecureMessageExistingEncounter"/> 
+	    		<include name="testCOMSecureMessageSentAndReplyUsingOnlineProfile"/> 
+	    		<include name="testCOMSecureMessageSentAndReplyUsingAliasName"/> 
+	    		<include name="testCOMAskAQuestion"/>
+	    	<!-- 	<include name="testDelayedDeliverySecureMessageOriginalUnlockedEncounter"/> -->
+      	</methods>
+	</classes>
+</test>
+</suite>

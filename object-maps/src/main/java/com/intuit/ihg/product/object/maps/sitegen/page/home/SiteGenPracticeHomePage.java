@@ -1,3 +1,4 @@
+//Copyright 2013-2020 NXGN Management, LLC. All Rights Reserved.
 package com.intuit.ihg.product.object.maps.sitegen.page.home;
 
 import java.util.concurrent.TimeUnit;
@@ -21,6 +22,7 @@ import com.intuit.ihg.product.object.maps.sitegen.page.discreteforms.DiscreteFor
 import com.intuit.ihg.product.object.maps.sitegen.page.location.ManageYourLocationsPage;
 import com.intuit.ihg.product.object.maps.sitegen.page.permissionsAndPersonnelTypes.ManageYourGroupPersonnelTypesPage;
 import com.intuit.ihg.product.object.maps.sitegen.page.personnel.ManageYourPersonnelPage;
+import com.intuit.ihg.product.object.maps.sitegen.page.pharmacy.ManageYourPharmacies;
 import com.intuit.ihg.product.object.maps.sitegen.page.physicians.ManageYourPhysiciansPage;
 import com.intuit.ihg.product.sitegen.utils.SitegenConstants;
 import com.intuti.ihg.product.object.maps.sitegen.page.medfusionadmin.PracticeInfoPage;
@@ -75,6 +77,10 @@ public class SiteGenPracticeHomePage extends BasePageObject {
 
 	@FindBy(linkText = "Return to Main")
 	private WebElement returnToMain;
+
+	@FindBy(linkText = "Pharmacies")
+	private WebElement pharmacyLink;
+
 
 	/**
 	 * @author bkrishnankutty
@@ -350,4 +356,11 @@ public class SiteGenPracticeHomePage extends BasePageObject {
 		return PageFactory.initElements(driver, PracticeInfoPage.class);
 	}
 
+	public ManageYourPharmacies clickOnPharmacy() {
+		IHGUtil.PrintMethodName();
+		IHGUtil.waitForElement(driver, 30, pharmacyLink);
+		pharmacyLink.click();
+		return PageFactory.initElements(driver, ManageYourPharmacies.class);
+	}
+	
 }
