@@ -42,6 +42,7 @@ import com.medfusion.product.object.maps.pss2.page.Appointment.Speciality.Specia
 import com.medfusion.product.object.maps.pss2.page.AppointmentType.AppointmentPage;
 import com.medfusion.product.object.maps.pss2.page.ConfirmationPage.ConfirmationPage;
 import com.medfusion.product.object.maps.pss2.page.Insurance.UpdateInsurancePage;
+import com.medfusion.product.object.maps.pss2.page.RescheduleAppointment.RescheduleAppointment;
 import com.medfusion.product.object.maps.pss2.page.Scheduled.ScheduledAppointment;
 import com.medfusion.product.object.maps.pss2.page.Scheduled.ScheduledAppointmentAnonymous;
 import com.medfusion.product.pss2patientui.pojo.AdminUser;
@@ -763,6 +764,20 @@ public class PSSPatientUtils {
 			appointmentToRescheduled(confirmationpage, testData);
 		}
 	}
+	
+	public void fillRescheduleDetails(Boolean isInsuranceDisplated, AppointmentDateTime aptDateTime, Appointment testData, WebDriver driver) throws Exception {
+		Log4jUtil.log("Step 12: Verify Confirmation page and Scheduled page");
+		Log4jUtil.log("Is Insurance Page Displated= " + isInsuranceDisplated);
+		Thread.sleep(2000);
+		if (isInsuranceDisplated) {
+			UpdateInsurancePage updateinsurancePage = aptDateTime.selectAppointmentTimeIns();
+			updateinsurancePage.skipInsuranceUpdate();
+			
+		} else {
+			aptDateTime.selectAppointmentDateTime(testData.getIsNextDayBooking());
+			
+		}
+	}
 
 	public void bookAnonymousApt(AppointmentDateTime aptDateTime, Appointment testData, WebDriver driver) throws Exception {
 		Log4jUtil.log("Step 12: Verify Confirmation page and Scheduled page");
@@ -1261,6 +1276,15 @@ public class PSSPatientUtils {
 		Thread.sleep(1000);
 		reBookAppointment(true, aptDateTime, testData, driver);
 		//clickOnSubmitAppt(true, aptDateTime, testData, driver);
+	}
+	
+	public RescheduleAppointment resheduleAPPT(Appointment testData, WebDriver driver) throws Exception {
+		AppointmentDateTime aptDateTime = new AppointmentDateTime(driver);
+		aptDateTime=aptDateTime.selectDt(testData.getIsNextDayBooking());
+		Thread.sleep(1000);
+		fillRescheduleDetails(true, aptDateTime, testData, driver);
+		
+		return PageFactory.initElements(driver, RescheduleAppointment.class);
 	}
 
 

@@ -28,6 +28,7 @@ import com.medfusion.product.object.maps.pss2.page.Appointment.Speciality.Specia
 import com.medfusion.product.object.maps.pss2.page.AppointmentType.AppointmentPage;
 import com.medfusion.product.object.maps.pss2.page.ConfirmationPage.ConfirmationPage;
 import com.medfusion.product.object.maps.pss2.page.Insurance.UpdateInsurancePage;
+import com.medfusion.product.object.maps.pss2.page.RescheduleAppointment.RescheduleAppointment;
 import com.medfusion.product.object.maps.pss2.page.util.CommonMethods;
 
 public class HomePage extends PSS2MainPage {
@@ -129,7 +130,7 @@ public class HomePage extends PSS2MainPage {
 	private WebElement dismissPopUp;
 
 	@FindBy(how = How.XPATH, using = "//*[@id=\"upcomingevents\"]/h2/span")
-	private WebElement upCmgAptLabel;
+	private WebElement upCmgAptLabel;	
 
 	public HomePage(WebDriver driver) {
 		super(driver);
@@ -305,6 +306,19 @@ public class HomePage extends PSS2MainPage {
 			log("No Appointments found to Reschedule.");
 
 		}
+	}
+	
+	public RescheduleAppointment clickRescheduleLinkTrueFalse() throws InterruptedException {
+
+		if (rescheduleAppointmentList.size() > 0) {
+			log("rescheduleAppointmentList display =" + rescheduleAppointmentList.get(0).isDisplayed());
+			rescheduleAppointmentList.get(0).click();
+
+		} else {
+			log("No Appointments found to Reschedule.");
+		}
+
+		return PageFactory.initElements(driver, RescheduleAppointment.class);
 	}
 
 	public void cancelAppointmentPMReason(ArrayList<String> listAdminCancelReason) throws InterruptedException {
