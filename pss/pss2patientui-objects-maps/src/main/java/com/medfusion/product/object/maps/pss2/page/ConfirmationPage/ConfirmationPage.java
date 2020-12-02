@@ -1,6 +1,7 @@
 // Copyright 2018-2020 NXGN Management, LLC. All Rights Reserved.
 package com.medfusion.product.object.maps.pss2.page.ConfirmationPage;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import org.openqa.selenium.WebDriver;
@@ -10,6 +11,7 @@ import org.openqa.selenium.support.FindBy;
 import org.openqa.selenium.support.How;
 import org.openqa.selenium.support.PageFactory;
 
+import com.medfusion.common.utils.IHGUtil;
 import com.medfusion.product.object.maps.pss2.page.Appointment.HomePage.HomePage;
 import com.medfusion.product.object.maps.pss2.page.Appointment.Main.PSS2MainPage;
 import com.medfusion.product.object.maps.pss2.page.Scheduled.ScheduledAppointment;
@@ -29,16 +31,69 @@ public class ConfirmationPage extends PSS2MainPage {
 
 	@FindBy(how = How.XPATH, using = "//body/div[@id='root']/div[1]/div[1]/div[1]/div[4]/div[2]/div[1]/div[3]/div[1]/div[3]/div[1]/div[2]/div[1]")
 	private WebElement timeConfirmation;
+	
+	@FindBy(how = How.XPATH, using = "//div[@id='confirmdatalist']/div/div/h1/span[contains(text(),'Appointment to')]")
+	private WebElement rescheduleApptHeading;
+	
+	@FindBy(how = How.XPATH, using = "//span[normalize-space()='Provide a cancelation reason']")
+	private WebElement rescheduleReasonLabel;
+	
+	@FindBy(how = How.XPATH, using = "//input[@id='cancelReasonText']")
+	private WebElement rescheduleReasonInputBox;
+	
+	@FindBy(how = How.XPATH, using = "//span[contains(text(),\"You're about to confirm the following appointment.\")]")
+	private WebElement confirmaApptToolti;
+	
+	@FindBy(how = How.XPATH, using = "//h1[@class='h1color']//span[contains(text(),'Confirm your appointment')]")
+	private WebElement confirmApptHeading;
+	
+	@FindBy(how = How.XPATH, using = "//textarea[@class='form-control textareaconfirm']")
+	private WebElement confirmApptReasonInputBox;
+	
+	@FindBy(how = How.XPATH, using = "//div/div[@class=\"col-sm-6\"]/following-sibling::div/span[contains(text(),'Confirmation number')]")
+	private WebElement confirmationNumberLabelPreviousAppt;
+	
+	@FindBy(how = How.XPATH, using = "//div/div[@class=\"col-sm-6\"]/following-sibling::div/span[contains(text(),'Confirmation number')]/following-sibling::div")
+	private WebElement confirmationNumberPreviousAppt;	
 
 	public ConfirmationPage(WebDriver driver) {
 		super(driver);
 	}
 
 	CommonMethods commonMethods = new CommonMethods(driver);
+	
 
 	@Override
 	public boolean areBasicPageElementsPresent() {
-		return true;
+
+		ArrayList<WebElement> webElementsList = new ArrayList<WebElement>();
+		
+		if(rescheduleApptHeading.isDisplayed()) {
+			commonMethods.highlightElement(rescheduleApptHeading);
+			webElementsList.add(rescheduleApptHeading);
+			webElementsList.add(confirmationNumberLabelPreviousAppt);
+			webElementsList.add(confirmationNumberPreviousAppt);
+			jse.executeScript("window.scrollBy(0,250)", "");
+
+		}	
+		
+		commonMethods.highlightElement(confirmApptHeading);
+		webElementsList.add(confirmApptHeading);
+		webElementsList.add(confirmaApptToolti);
+		return assessPageElements(webElementsList);
+		
+	}
+	
+	public void sendRescheduleReason() throws InterruptedException {
+		commonMethods.highlightElement(rescheduleReasonInputBox);
+		rescheduleReasonInputBox.sendKeys("Rescheduling the appointment because I want to change the date and time");
+		Thread.sleep(1000);		
+		
+	}
+	
+	public int maxLengthRescheduleReason() throws InterruptedException {
+		String l=rescheduleReasonInputBox.getAttribute("maxlength");	
+		return Integer.parseInt(l);
 	}
 
 	public ScheduledAppointment appointmentConfirmed() {

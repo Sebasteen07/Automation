@@ -33,7 +33,6 @@ import com.medfusion.product.object.maps.pss2.page.Appointment.Main.PrivacyPolic
 import com.medfusion.product.object.maps.pss2.page.Appointment.Provider.Provider;
 import com.medfusion.product.object.maps.pss2.page.AppointmentType.AppointmentPage;
 import com.medfusion.product.object.maps.pss2.page.ConfirmationPage.ConfirmationPage;
-import com.medfusion.product.object.maps.pss2.page.RescheduleAppointment.RescheduleAppointment;
 import com.medfusion.product.object.maps.pss2.page.Scheduled.ScheduledAppointment;
 import com.medfusion.product.object.maps.pss2.page.settings.AdminAppointment;
 import com.medfusion.product.object.maps.pss2.page.settings.PSS2PracticeConfiguration;
@@ -1570,6 +1569,8 @@ public class PSS2PatientPortalAcceptanceTests extends BaseTestNGWebDriver {
 		AdminAppointment adminAppointment = new AdminAppointment(driver);
 
 		psspatientutils.setTestData("GE", testData, adminuser);
+		
+		testData.setRescheduleAppointment(true);
 
 		ArrayList<String> adminCancelReasonList = pssadminutils.getCancelRescheduleSettings(driver, adminuser, testData,
 				adminAppointment);
@@ -1756,16 +1757,15 @@ public class PSS2PatientPortalAcceptanceTests extends BaseTestNGWebDriver {
 //		ScheduledAppointment scheduledAppointment=psspatientutils.selectAFlow(driver, rule, homepage, testData);
 //		homepage=scheduledAppointment.backtoHomePage();
 		
+		ConfirmationPage confirmationPage= new ConfirmationPage(driver);
+		
 		if (can1 == true & can2 == false) {
 
 			log("True- False Conditions follow");
-			homepage.clickRescheduleLinkTrueFalse();
-			RescheduleAppointment rescheduleAppointment=psspatientutils.resheduleAPPT( testData, driver);
-			rescheduleAppointment.areBasicPageElementsPresent();
-			assertEquals(rescheduleAppointment.maxLengthRescheduleReason(),500);
-			ScheduledAppointment scheduledAppointment=rescheduleAppointment.rescheduleAppointmentwithTextReason();
-			log("New Confirmation Id is "+scheduledAppointment.getAppointmentID());	
 			
+			homepage.clickRescheduleLink();
+			psspatientutils.rescheduleAPT(testData, driver);
+		
 
 		} else if (can1 == true & can2 == true) {
 
@@ -1777,8 +1777,8 @@ public class PSS2PatientPortalAcceptanceTests extends BaseTestNGWebDriver {
 			
 			log("False- False Conditions follow");
 			homepage.clickRescheduleLink();
-			psspatientutils.resheduleAPT( testData, driver);
-			
+			psspatientutils.rescheduleAPT( testData, driver);
+			psspatientutils.appointmentToRescheduled(confirmationPage, testData);
 
 		}
 

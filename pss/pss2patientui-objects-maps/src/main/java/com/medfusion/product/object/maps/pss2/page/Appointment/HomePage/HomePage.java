@@ -17,7 +17,6 @@ import org.testng.Assert;
 
 import com.medfusion.common.utils.IHGUtil;
 import com.medfusion.product.object.maps.pss2.page.AppEntryPoint.StartAppointmentInOrder;
-import com.medfusion.product.object.maps.pss2.page.Appointment.DateTime.AppointmentDateTime;
 import com.medfusion.product.object.maps.pss2.page.Appointment.Location.Location;
 import com.medfusion.product.object.maps.pss2.page.Appointment.Main.OnlineAppointmentScheduling;
 import com.medfusion.product.object.maps.pss2.page.Appointment.Main.PSS2MainPage;
@@ -26,9 +25,7 @@ import com.medfusion.product.object.maps.pss2.page.Appointment.Menu.PSSPatientHe
 import com.medfusion.product.object.maps.pss2.page.Appointment.Provider.Provider;
 import com.medfusion.product.object.maps.pss2.page.Appointment.Speciality.Speciality;
 import com.medfusion.product.object.maps.pss2.page.AppointmentType.AppointmentPage;
-import com.medfusion.product.object.maps.pss2.page.ConfirmationPage.ConfirmationPage;
 import com.medfusion.product.object.maps.pss2.page.Insurance.UpdateInsurancePage;
-import com.medfusion.product.object.maps.pss2.page.RescheduleAppointment.RescheduleAppointment;
 import com.medfusion.product.object.maps.pss2.page.util.CommonMethods;
 
 public class HomePage extends PSS2MainPage {
@@ -307,19 +304,7 @@ public class HomePage extends PSS2MainPage {
 
 		}
 	}
-	
-	public RescheduleAppointment clickRescheduleLinkTrueFalse() throws InterruptedException {
 
-		if (rescheduleAppointmentList.size() > 0) {
-			log("rescheduleAppointmentList display =" + rescheduleAppointmentList.get(0).isDisplayed());
-			rescheduleAppointmentList.get(0).click();
-
-		} else {
-			log("No Appointments found to Reschedule.");
-		}
-
-		return PageFactory.initElements(driver, RescheduleAppointment.class);
-	}
 
 	public void cancelAppointmentPMReason(ArrayList<String> listAdminCancelReason) throws InterruptedException {
 
