@@ -182,4 +182,11 @@ public class ManageResource extends PSS2MenuPage {
 		appointmenttypeSave.click();
 	}
 
+	public void notreserve() {
+		Select objSelect = new Select(reservefor);
+		objSelect.selectByVisibleText("Not Reserved");
+		reservefor.click();
+		appointmenttypeSave.click();
+	}
+
 }

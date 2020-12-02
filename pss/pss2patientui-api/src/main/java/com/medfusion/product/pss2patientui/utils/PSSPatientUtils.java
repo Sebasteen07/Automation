@@ -1211,13 +1211,11 @@ public class PSSPatientUtils {
 		now.add(Calendar.HOUR, testData.getLeadtimeHour());
 		now.add(Calendar.MINUTE, testData.getLeadtimeMinute());
 		String timeplusleadmin = +now.get(Calendar.HOUR_OF_DAY) + ":" + now.get(Calendar.MINUTE) + am_pm;
-		Log4jUtil.log("Time After add leadtime   " + timeplusleadmin);
 		return timeplusleadmin;
 
 	}
 
 	public String currentESTDate(Appointment testData) {
-
 		TimeZone timeZone = TimeZone.getTimeZone(testData.getCurrentTimeZone());
 		String dateFormat = "dd";
 		SimpleDateFormat f1 = new SimpleDateFormat(dateFormat);
@@ -1255,10 +1253,10 @@ public class PSSPatientUtils {
 		return date2;
 	}
 
-	public long timeDifference(Appointment testData) throws ParseException {
+	public long timeDifferenceendTime(Appointment testData) throws ParseException {
 		Log4jUtil.log("Bussiness Hour Endtime is  " + testData.getBusinesshourEndTime());
 		Calendar now = Calendar.getInstance();
-		TimeZone time_zone = TimeZone.getTimeZone("EST");
+		TimeZone time_zone = TimeZone.getTimeZone(testData.getCurrentTimeZone());
 		now.setTimeZone(time_zone);
 		now.add(Calendar.HOUR, testData.getLeadtimeHour());
 		now.add(Calendar.MINUTE, testData.getLeadtimeMinute());
@@ -1270,7 +1268,46 @@ public class PSSPatientUtils {
 		long difference = time2.getTime() - time1.getTime();
 		Log4jUtil.log("Time Differnce is  " + difference);
 		return difference;
+	}
 
+	public String leadTime(Appointment testData) throws ParseException {
+		String currentleadtime = null;
+		String getBusinesshourStartTime = testData.getBusinesshourStartTime();
+		String hour = getBusinesshourStartTime.substring(0, 2);
+		String min = getBusinesshourStartTime.substring(3, 5);
+		int i = Integer.parseInt(hour);
+		int j = Integer.parseInt(min);
+		Calendar now = Calendar.getInstance();
+		Calendar cal = Calendar.getInstance();
+		cal.set(Calendar.HOUR_OF_DAY, i);
+		cal.set(Calendar.MINUTE, j);
+		String fixedtime = +cal.get(Calendar.HOUR_OF_DAY) + ":" + cal.get(Calendar.MINUTE);
+		Log4jUtil.log("Fixed time is" + fixedtime);
+		TimeZone time_zone = TimeZone.getTimeZone(testData.getCurrentTimeZone());
+		now.setTimeZone(time_zone);
+		cal.setTimeZone(time_zone);
+		String currenttime = +now.get(Calendar.HOUR_OF_DAY) + ":" + now.get(Calendar.MINUTE);
+		Log4jUtil.log("Current Time is : " + currenttime);
+		SimpleDateFormat format = new SimpleDateFormat("HH:mm");
+		Date time1 = format.parse(currenttime);
+		Date time2 = format.parse(fixedtime);
+		cal.getTime();
+		cal.setTime(time2);
+		long difference = time2.getTime() - time1.getTime();
+		Log4jUtil.log("Time Differnce is  " + difference);
+		if (difference < 0) {
+			currentleadtime = currentESTTimeandLeadTime(testData);
+			Log4jUtil.log("Lead Time Added in the current time  " + currentleadtime);
+			return currentleadtime;
+		} else {
+			System.out.println("add into starthour");
+			cal.add(Calendar.HOUR, testData.getLeadtimeHour());
+			cal.add(Calendar.MINUTE, testData.getLeadtimeMinute());
+			String time3 = cal.getTimeInMillis() + " -> " + cal.getTime();
+			currentleadtime = time3.substring(22, 28);
+			Log4jUtil.log("Lead Time in the Businessstart time  " + currentleadtime);
+			return currentleadtime;
+		}
 	}
 
 	public boolean isValidTime(String time) {

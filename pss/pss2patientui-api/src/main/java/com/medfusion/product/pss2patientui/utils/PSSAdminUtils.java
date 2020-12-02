@@ -406,6 +406,7 @@ public class PSSAdminUtils {
 		Log4jUtil.log("Lead time Hour is = " + appointment.getLeadtimeHour());
 		appointment.setLeadtimeMinute(mr.getMinut());
 		Log4jUtil.log("Lead time Minute is = " + appointment.getLeadtimeMinute());
+		mr.notreserve();
 		ManageLocation manageLocation = psspracticeConfig.gotoLocation();
 		manageLocation.selectlocation(appointment.getLocation());
 		appointment.setCurrentTimeZone(manageLocation.getTimezone());
