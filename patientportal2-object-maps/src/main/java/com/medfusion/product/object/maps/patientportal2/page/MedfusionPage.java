@@ -98,7 +98,8 @@ public abstract class MedfusionPage extends BasePageObject {
 		//handles modal dialogs in Portal (accepting NPP, statement preference selection)
 		public void handleWeNeedToConfirmSomethingModal(){
 				log("Checking if some confirmation needed");
-				while (isElementVisible(weNeedToConfirmSomethingModal, 60)){
+				try{
+				while (isElementVisible(weNeedToConfirmSomethingModal, 110)){
 						log("We need to confirm something modal window shown");
 						okButton.click();
 
@@ -108,6 +109,9 @@ public abstract class MedfusionPage extends BasePageObject {
 						} catch (InterruptedException e) {
 								e.printStackTrace();
 						}
+				}}
+				catch(Exception e){
+					log(e.getMessage());
 				}
 		}
 
