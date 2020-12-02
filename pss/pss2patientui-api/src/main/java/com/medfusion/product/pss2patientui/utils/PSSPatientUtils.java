@@ -1174,11 +1174,9 @@ public class PSSPatientUtils {
 		Log4jUtil.log("Current Date is   " + currentDate);
 		String Nextbook = currentDate + testData.getLeadtimeDay();
 		Log4jUtil.log("Next Avaliable Date is   " + Nextbook);
-
 	}
 
 	public String currentDateandLeadDay(Appointment testData) {
-
 		TimeZone timeZone = TimeZone.getTimeZone("America/New_York");
 		String dateFormat = "MMMM dd,yyyy";
 		SimpleDateFormat f1 = new SimpleDateFormat(dateFormat);
@@ -1190,7 +1188,6 @@ public class PSSPatientUtils {
 		String currentDate = f1.format(c.getTime());
 		String currentleddate = currentDate.substring(00, 16);
 		return currentleddate;
-
 	}
 
 	public String currentESTTimeandLeadTime(Appointment testData) {
@@ -1212,7 +1209,6 @@ public class PSSPatientUtils {
 		now.add(Calendar.MINUTE, testData.getLeadtimeMinute());
 		String timeplusleadmin = +now.get(Calendar.HOUR_OF_DAY) + ":" + now.get(Calendar.MINUTE) + am_pm;
 		return timeplusleadmin;
-
 	}
 
 	public String currentESTDate(Appointment testData) {
@@ -1246,7 +1242,7 @@ public class PSSPatientUtils {
 			dateNextDate = f1.parse(nextDate);
 			String date1 = dateNextDate.toString();
 			date2 = date1.substring(8, 10);
-			System.out.println("Next day's date: " + dateNextDate);
+			Log4jUtil.log("Next day's date: " + dateNextDate);
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
@@ -1300,7 +1296,6 @@ public class PSSPatientUtils {
 			Log4jUtil.log("Lead Time Added in the current time  " + currentleadtime);
 			return currentleadtime;
 		} else {
-			System.out.println("add into starthour");
 			cal.add(Calendar.HOUR, testData.getLeadtimeHour());
 			cal.add(Calendar.MINUTE, testData.getLeadtimeMinute());
 			String time3 = cal.getTimeInMillis() + " -> " + cal.getTime();
