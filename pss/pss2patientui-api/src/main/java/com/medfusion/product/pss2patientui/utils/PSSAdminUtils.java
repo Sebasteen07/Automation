@@ -437,9 +437,5 @@ public class PSSAdminUtils {
 		appointment.setCurrentTimeZone(manageLocation.getTimezone());
 		Log4jUtil.log("Current Timezone On AdminUi " + appointment.getCurrentTimeZone());
 		Log4jUtil.log("Successfully upto reserve for same day");
-
-
 	}
-
-
 }
