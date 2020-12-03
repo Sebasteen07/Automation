@@ -1714,15 +1714,10 @@ public class PSS2PatientPortalAcceptanceTests extends BaseTestNGWebDriver {
 		AdminAppointment adminAppointment = new AdminAppointment(driver);
 		
 		log("Login to PSS 2.0 Admin portal");
-		//adminUtils.getInsuranceStateandRule(driver, adminuser, testData);
-		
 		pssadminutils.getRescheduleSettings(driver, adminuser, testData, adminAppointment);
 
 		log("isShowCancellationRescheduleReason --" + testData.isShowCancellationRescheduleReason());
 		log("isShowCancellationReasonPM ---" + testData.isShowCancellationReasonPM());
-
-		boolean can1 = testData.isShowCancellationRescheduleReason();
-		boolean can2 = testData.isShowCancellationReasonPM();
 		
 		log("Fetch the rules set in Admin");
 		String rule = adminuser.getRule();
@@ -1752,34 +1747,12 @@ public class PSS2PatientPortalAcceptanceTests extends BaseTestNGWebDriver {
 		
 		log("Verify PSS2 patient portal elements");
 		assertTrue(homepage.areBasicPageElementsPresent());
-//		ScheduledAppointment scheduledAppointment=psspatientutils.selectAFlow(driver, rule, homepage, testData);
-//		homepage=scheduledAppointment.backtoHomePage();
 		
-		ConfirmationPage confirmationPage= new ConfirmationPage(driver);
+		ScheduledAppointment scheduledAppointment=psspatientutils.selectAFlow(driver, rule, homepage, testData);
+		homepage=scheduledAppointment.backtoHomePage();
 		
-		if (can1 == true & can2 == false) {
-
-			log("True- False Conditions follow");
-			
-			homepage.clickRescheduleLink();
-			psspatientutils.rescheduleAPT(testData, driver);
-		
-
-		} else if (can1 == true & can2 == true) {
-
-			log("True- True Conditions follow");
-
-			
-
-		} else if (can1 == false & can2 == false) {
-			
-			log("False- False Conditions follow");
-			homepage.clickRescheduleLink();
-			psspatientutils.rescheduleAPT( testData, driver);
-			psspatientutils.appointmentToRescheduled(confirmationPage, testData);
-
-		}
-
+		homepage.clickRescheduleLink();
+		psspatientutils.rescheduleAPT( testData, driver);		
 
 	}
 

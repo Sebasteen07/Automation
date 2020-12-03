@@ -6,6 +6,7 @@ import java.util.List;
 
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
+import org.openqa.selenium.interactions.Actions;
 import org.openqa.selenium.support.FindAll;
 import org.openqa.selenium.support.FindBy;
 import org.openqa.selenium.support.How;
@@ -41,6 +42,15 @@ public class ConfirmationPage extends PSS2MainPage {
 	@FindBy(how = How.XPATH, using = "//input[@id='cancelReasonText']")
 	private WebElement rescheduleReasonInputBox;
 	
+	@FindBy(how = How.XPATH, using = "//span/span[@class=\"Select-arrow\"]")
+	private WebElement selectArrow;
+	
+	@FindBy(how = How.XPATH, using = "//div[@class='Select-placeholder']")
+	private WebElement dropdownReschedule;	
+	
+	@FindAll({@FindBy(how = How.XPATH, using = "//div[@class=\"Select-menu\"]/div")})
+	private List<WebElement> rescheduleReasondropDownList;
+	
 	@FindBy(how = How.XPATH, using = "//span[contains(text(),\"You're about to confirm the following appointment.\")]")
 	private WebElement confirmaApptToolti;
 	
@@ -50,10 +60,10 @@ public class ConfirmationPage extends PSS2MainPage {
 	@FindBy(how = How.XPATH, using = "//textarea[@class='form-control textareaconfirm']")
 	private WebElement confirmApptReasonInputBox;
 	
-	@FindBy(how = How.XPATH, using = "//div/div[@class=\"col-sm-6\"]/following-sibling::div/span[contains(text(),'Confirmation number')]")
+	@FindBy(how = How.XPATH, using = "//span[contains(text(),'Confirmation number')]")
 	private WebElement confirmationNumberLabelPreviousAppt;
 	
-	@FindBy(how = How.XPATH, using = "//div/div[@class=\"col-sm-6\"]/following-sibling::div/span[contains(text(),'Confirmation number')]/following-sibling::div")
+	@FindBy(how = How.XPATH, using = "//span[contains(text(),'Confirmation number')]/following-sibling::div")
 	private WebElement confirmationNumberPreviousAppt;	
 
 	public ConfirmationPage(WebDriver driver) {
@@ -66,16 +76,7 @@ public class ConfirmationPage extends PSS2MainPage {
 	@Override
 	public boolean areBasicPageElementsPresent() {
 
-		ArrayList<WebElement> webElementsList = new ArrayList<WebElement>();
-		
-		if(rescheduleApptHeading.isDisplayed()) {
-			commonMethods.highlightElement(rescheduleApptHeading);
-			webElementsList.add(rescheduleApptHeading);
-			webElementsList.add(confirmationNumberLabelPreviousAppt);
-			webElementsList.add(confirmationNumberPreviousAppt);
-			jse.executeScript("window.scrollBy(0,250)", "");
-
-		}	
+		ArrayList<WebElement> webElementsList = new ArrayList<WebElement>();	
 		
 		commonMethods.highlightElement(confirmApptHeading);
 		webElementsList.add(confirmApptHeading);
@@ -87,8 +88,35 @@ public class ConfirmationPage extends PSS2MainPage {
 	public void sendRescheduleReason() throws InterruptedException {
 		commonMethods.highlightElement(rescheduleReasonInputBox);
 		rescheduleReasonInputBox.sendKeys("Rescheduling the appointment because I want to change the date and time");
-		Thread.sleep(1000);		
+		Thread.sleep(1000);				
+	}
+	
+	public void selectRescheduleReason() throws InterruptedException {
+
+		List<WebElement> rescheduleReasonlist = new ArrayList<WebElement>();
+		Actions act = new Actions(driver);
 		
+		IHGUtil.waitForElement(driver, 5, dropdownReschedule);
+		
+		selectArrow.click();
+
+		rescheduleReasonlist = rescheduleReasondropDownList;
+		log("Save all the reschedule reason in rescheduleReasonlist ");
+
+		if (rescheduleReasonlist.size() > 0) {
+
+			int length = rescheduleReasonlist.size();
+
+			log("There " + length + " number of reschedule reason ");
+			for (WebElement a : rescheduleReasonlist) {
+				log(a.getText());			
+			}
+			log("Selected Reschedule Reason- " + rescheduleReasonlist.get(1).getText());
+
+			act.moveToElement(rescheduleReasonlist.get(1)).click().build().perform();
+		}
+
+		Thread.sleep(1000);
 	}
 	
 	public int maxLengthRescheduleReason() throws InterruptedException {

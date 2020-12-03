@@ -775,15 +775,15 @@ public class PSSPatientUtils {
 		} else {
 			ConfirmationPage confirmationpage = aptDateTime.selectAppointmentDateTime(testData.getIsNextDayBooking());
 
-			if (testData.isShowCancellationReasonPM() == false & testData.isShowCancellationReasonPM() == false) {
+			if (testData.isShowCancellationRescheduleReason() == false & testData.isShowCancellationReasonPM() == false) {
 
 				appointmentToRescheduled(confirmationpage, testData);
 
-			} else if (testData.isShowCancellationReasonPM() == true & testData.isShowCancellationReasonPM() == false) {
+			} else if (testData.isShowCancellationRescheduleReason() == true & testData.isShowCancellationReasonPM() == false) {
 
 				apptRescheduledwithTextReason(confirmationpage, testData);
 
-			} else if (testData.isShowCancellationReasonPM() == true & testData.isShowCancellationReasonPM() == true) {
+			} else if (testData.isShowCancellationRescheduleReason() == true & testData.isShowCancellationReasonPM() == true) {
 
 				apptRescheduledDropdownReason(confirmationpage, testData);
 			}
@@ -917,8 +917,10 @@ public class PSSPatientUtils {
 		Log4jUtil.log(">> " + aptScheduledAt);
 		for (WebElement ele : confirmationpage.getAppointmentDetails()) {
 			Log4jUtil.log("apt Details= " + ele.getText());
-
 		}
+		
+		Log4jUtil.log("Select reason from drop down list");
+		confirmationpage.selectRescheduleReason();
 
 		ScheduledAppointment scheduledappointment = confirmationpage.rescheduleAppointmentConfirmed();
 		Log4jUtil.log("appointment ID = " + scheduledappointment.getAppointmentID());
@@ -1350,7 +1352,6 @@ public class PSSPatientUtils {
 		aptDateTime=aptDateTime.selectDt(testData.getIsNextDayBooking());
 		Thread.sleep(1000);
 		reBookAppointment(true, aptDateTime, testData, driver);
-		//clickOnSubmitAppt(true, aptDateTime, testData, driver);
 	}
 	
 
