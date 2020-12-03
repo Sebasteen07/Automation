@@ -90,14 +90,14 @@ public class PSSAdminUtils {
 				accessrule.selectLLExistingPatient();
 			}
 		}
-//		Log4jUtil.log("------------Set OTP Settings off for loginless flow----------");
-//		if (accessrule.isEnableOTPSelected().equalsIgnoreCase("true")) {
-//			Log4jUtil.log("Status of EnableOTP is " + accessrule.isEnableOTPSelected());
-//			accessrule.clickEnableOTP();
-//			Log4jUtil.log("Enable OTP is set False");
-//		} else {
-//			Log4jUtil.log("Enable OTP is already False no need to change");
-//		}
+		// Log4jUtil.log("------------Set OTP Settings off for loginless flow----------");
+		// if (accessrule.isEnableOTPSelected().equalsIgnoreCase("true")) {
+		// Log4jUtil.log("Status of EnableOTP is " + accessrule.isEnableOTPSelected());
+		// accessrule.clickEnableOTP();
+		// Log4jUtil.log("Enable OTP is set False");
+		// } else {
+		// Log4jUtil.log("Enable OTP is already False no need to change");
+		// }
 		if (urlToUse.equalsIgnoreCase(PSSConstants.LOGINLESS)) {
 			Log4jUtil.log("PSS Patient URL : " + accessrule.getLoginlessURL());
 			testData.setUrlLoginLess(accessrule.getLoginlessURL());
@@ -427,6 +427,11 @@ public class PSSAdminUtils {
 	public void leadTime(WebDriver driver, AdminUser adminuser, Appointment appointment) throws Exception {
 
 		PSS2PracticeConfiguration psspracticeConfig = loginToAdminPortal(driver, adminuser);
+		psspracticeConfig = psspracticeConfig.gotoPracticeConfigTab();
+		appointment.setBusinesshourStartTime(psspracticeConfig.gettextbusineesHourStarttime());
+		appointment.setBusinesshourEndTime(psspracticeConfig.gettextbusineesHourEndtime());
+		Log4jUtil.log("Starttime is " + appointment.getBusinesshourStartTime());
+		Log4jUtil.log("End time is" + appointment.getBusinesshourEndTime());
 		PatientFlow patientflow = psspracticeConfig.gotoPatientFlowTab();
 		adminuser.setRule(patientflow.getRule());
 		Log4jUtil.log("rule= " + patientflow.getRule());
@@ -444,6 +449,7 @@ public class PSSAdminUtils {
 		Log4jUtil.log("Lead time Hour is = " + appointment.getLeadtimeHour());
 		appointment.setLeadtimeMinute(mr.getMinut());
 		Log4jUtil.log("Lead time Minute is = " + appointment.getLeadtimeMinute());
+		mr.notreserve();
 		ManageLocation manageLocation = psspracticeConfig.gotoLocation();
 		manageLocation.selectlocation(appointment.getLocation());
 		appointment.setCurrentTimeZone(manageLocation.getTimezone());
@@ -451,5 +457,28 @@ public class PSSAdminUtils {
 		patientflow.logout();
 	}
 
-
+	public void reserveforDay(WebDriver driver, AdminUser adminuser, Appointment appointment) throws Exception {
+		PSS2PracticeConfiguration psspracticeConfig = loginToAdminPortal(driver, adminuser);
+		psspracticeConfig = psspracticeConfig.gotoPracticeConfigTab();
+		appointment.setBusinesshourStartTime(psspracticeConfig.gettextbusineesHourStarttime());
+		appointment.setBusinesshourEndTime(psspracticeConfig.gettextbusineesHourEndtime());
+		Log4jUtil.log("Starttime is " + appointment.getBusinesshourStartTime());
+		Log4jUtil.log("End time is" + appointment.getBusinesshourEndTime());
+		ManageResource mr = psspracticeConfig.gotoResource();
+		pageRefresh(driver);
+		mr.selectResource(appointment.getProvider());
+		mr.selectAppointmenttype(appointment.getAppointmenttype());
+		appointment.setLeadtimeDay(mr.getDay());
+		Log4jUtil.log("Lead time Day is = " + appointment.getLeadtimeDay());
+		appointment.setLeadtimeHour(mr.getHour());
+		Log4jUtil.log("Lead time Hour is = " + appointment.getLeadtimeHour());
+		appointment.setLeadtimeMinute(mr.getMinut());
+		Log4jUtil.log("Lead time Minute is = " + appointment.getLeadtimeMinute());
+		mr.reserveFor();
+		ManageLocation manageLocation = psspracticeConfig.gotoLocation();
+		manageLocation.selectlocation(appointment.getLocation());
+		appointment.setCurrentTimeZone(manageLocation.getTimezone());
+		Log4jUtil.log("Current Timezone On AdminUi " + appointment.getCurrentTimeZone());
+		Log4jUtil.log("Successfully upto reserve for same day");
+	}
 }

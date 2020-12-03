@@ -13,6 +13,8 @@ import java.net.HttpURLConnection;
 import java.net.MalformedURLException;
 import java.net.URL;
 import java.net.URLConnection;
+import java.text.DateFormat;
+import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -21,6 +23,8 @@ import java.util.Collection;
 import java.util.Date;
 import java.util.HashSet;
 import java.util.TimeZone;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
@@ -36,7 +40,6 @@ import com.medfusion.product.object.maps.pss2.page.Appointment.HomePage.HomePage
 import com.medfusion.product.object.maps.pss2.page.Appointment.Location.Location;
 import com.medfusion.product.object.maps.pss2.page.Appointment.Loginless.LoginlessPatientInformation;
 import com.medfusion.product.object.maps.pss2.page.Appointment.Main.NewPatientInsuranceInfo;
-import com.medfusion.product.object.maps.pss2.page.Appointment.Main.OnlineAppointmentScheduling;
 import com.medfusion.product.object.maps.pss2.page.Appointment.Main.PrivacyPolicy;
 import com.medfusion.product.object.maps.pss2.page.Appointment.Provider.Provider;
 import com.medfusion.product.object.maps.pss2.page.Appointment.Speciality.Speciality;
@@ -1295,16 +1298,12 @@ public class PSSPatientUtils {
 		Log4jUtil.log("Current Date is   " + currentDate);
 		String Nextbook = currentDate + testData.getLeadtimeDay();
 		Log4jUtil.log("Next Avaliable Date is   " + Nextbook);
-
 	}
 
 	public String currentDateandLeadDay(Appointment testData) {
-
 		TimeZone timeZone = TimeZone.getTimeZone("America/New_York");
-		String dateFormat = "MMMM dd,yyyy"; // MMMM dd,yyyy G
-
+		String dateFormat = "MMMM dd,yyyy";
 		SimpleDateFormat f1 = new SimpleDateFormat(dateFormat);
-
 		Calendar c = Calendar.getInstance();
 		TimeZone time_zone = TimeZone.getTimeZone(testData.getCurrentTimeZone());
 		f1.setTimeZone(timeZone);
@@ -1312,38 +1311,39 @@ public class PSSPatientUtils {
 		c.add(Calendar.DATE, testData.getLeadtimeDay());
 		String currentDate = f1.format(c.getTime());
 		String currentleddate = currentDate.substring(00, 16);
-		String date = currentleddate.replace(" ", "");
-		Log4jUtil.log("Current Date is " + date);
-		return date;
-
+		return currentleddate;
 	}
 
 	public String currentESTTimeandLeadTime(Appointment testData) {
+		DateFormat dateFormat = new SimpleDateFormat("hh.mm aa");
 		Calendar now = Calendar.getInstance();
 		TimeZone time_zone = TimeZone.getTimeZone(testData.getCurrentTimeZone());
+		dateFormat.setTimeZone(time_zone);
 		now.setTimeZone(time_zone);
-		String time1 = now.get(Calendar.HOUR_OF_DAY) + ":" + now.get(Calendar.MINUTE);
+		int ampm = now.get(Calendar.AM_PM);
+		String am_pm = "ampm";
+		if (ampm == 0) {
+			am_pm = "AM";
+		} else {
+			am_pm = "PM";
+		}
+		String time1 = now.get(Calendar.HOUR) + ":" + now.get(Calendar.MINUTE) + am_pm;
 		Log4jUtil.log("Time Before the lead time   " + time1);
 		now.add(Calendar.HOUR, testData.getLeadtimeHour());
 		now.add(Calendar.MINUTE, testData.getLeadtimeMinute());
-		String timeplusleadmin = +now.get(Calendar.HOUR_OF_DAY) + ":" + now.get(Calendar.MINUTE);
-		Log4jUtil.log("Time After add leadtime   " + timeplusleadmin);
+		String timeplusleadmin = +now.get(Calendar.HOUR_OF_DAY) + ":" + now.get(Calendar.MINUTE) + am_pm;
 		return timeplusleadmin;
-
 	}
 
-	public String curentandlLeadtime(Appointment testData) {
+	public String currentESTDate(Appointment testData) {
+		TimeZone timeZone = TimeZone.getTimeZone(testData.getCurrentTimeZone());
+		String dateFormat = "dd";
+		SimpleDateFormat f1 = new SimpleDateFormat(dateFormat);
 		Calendar c = Calendar.getInstance();
-		TimeZone time_zone = TimeZone.getTimeZone("EST");
+		TimeZone time_zone = TimeZone.getTimeZone(testData.getCurrentTimeZone());
+		f1.setTimeZone(timeZone);
 		c.setTimeZone(time_zone);
-		SimpleDateFormat f1 = new SimpleDateFormat("MMM");
-		SimpleDateFormat f2 = new SimpleDateFormat("dd");
-		SimpleDateFormat f3 = new SimpleDateFormat("YYYY");
-		c.add(Calendar.DATE, testData.getLeadtimeDay());
-		c.add(Calendar.HOUR, 3);
-		c.add(Calendar.MINUTE, 2);
-		String currentDate = f1.format(c.getTime()) + " " + f2.format(c.getTime()) + " " + f3.format(c.getTime());
-		Log4jUtil.log("Current Date is " + currentDate);
+		String currentDate = f1.format(c.getTime());
 		return currentDate;
 	}
 	
@@ -1356,6 +1356,95 @@ public class PSSPatientUtils {
 	
 
 
+	public String numDate(Appointment testData) {
+		int MILLIS_IN_DAY = 1000 * 60 * 60 * 24;
+		Log4jUtil.log("current est date is  " + currentDateandLeadDay(testData));
+		String date = currentDateandLeadDay(testData);
+		String dateFormat = "MMMM dd,yyyy";
+		SimpleDateFormat f1 = new SimpleDateFormat(dateFormat);
+		java.util.Date dateSelectedFrom = null;
+		java.util.Date dateNextDate = null;
+		String date2 = "";
+		try {
+			dateSelectedFrom = f1.parse(date);
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		String nextDate = f1.format(dateSelectedFrom.getTime() + MILLIS_IN_DAY);
+		try {
+			dateNextDate = f1.parse(nextDate);
+			String date1 = dateNextDate.toString();
+			date2 = date1.substring(8, 10);
+			Log4jUtil.log("Next day's date: " + dateNextDate);
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		return date2;
+	}
 
+	public long timeDifferenceendTime(Appointment testData) throws ParseException {
+		Log4jUtil.log("Bussiness Hour Endtime is  " + testData.getBusinesshourEndTime());
+		Calendar now = Calendar.getInstance();
+		TimeZone time_zone = TimeZone.getTimeZone(testData.getCurrentTimeZone());
+		now.setTimeZone(time_zone);
+		now.add(Calendar.HOUR, testData.getLeadtimeHour());
+		now.add(Calendar.MINUTE, testData.getLeadtimeMinute());
+		String currenttime = +now.get(Calendar.HOUR_OF_DAY) + ":" + now.get(Calendar.MINUTE);
+		Log4jUtil.log("Afetr Add leadTime : " + currenttime);
+		SimpleDateFormat format = new SimpleDateFormat("HH:mm");
+		Date time1 = format.parse(currenttime);
+		Date time2 = format.parse(testData.getBusinesshourEndTime());
+		long difference = time2.getTime() - time1.getTime();
+		Log4jUtil.log("Time Differnce is  " + difference);
+		return difference;
+	}
 
+	public String leadTime(Appointment testData) throws ParseException {
+		String currentleadtime = null;
+		String getBusinesshourStartTime = testData.getBusinesshourStartTime();
+		String hour = getBusinesshourStartTime.substring(0, 2);
+		String min = getBusinesshourStartTime.substring(3, 5);
+		int i = Integer.parseInt(hour);
+		int j = Integer.parseInt(min);
+		Calendar now = Calendar.getInstance();
+		Calendar cal = Calendar.getInstance();
+		cal.set(Calendar.HOUR_OF_DAY, i);
+		cal.set(Calendar.MINUTE, j);
+		String fixedtime = +cal.get(Calendar.HOUR_OF_DAY) + ":" + cal.get(Calendar.MINUTE);
+		Log4jUtil.log("Fixed time is" + fixedtime);
+		TimeZone time_zone = TimeZone.getTimeZone(testData.getCurrentTimeZone());
+		now.setTimeZone(time_zone);
+		cal.setTimeZone(time_zone);
+		String currenttime = +now.get(Calendar.HOUR_OF_DAY) + ":" + now.get(Calendar.MINUTE);
+		Log4jUtil.log("Current Time is : " + currenttime);
+		SimpleDateFormat format = new SimpleDateFormat("HH:mm");
+		Date time1 = format.parse(currenttime);
+		Date time2 = format.parse(fixedtime);
+		cal.getTime();
+		cal.setTime(time2);
+		long difference = time2.getTime() - time1.getTime();
+		Log4jUtil.log("Time Differnce is  " + difference);
+		if (difference < 0) {
+			currentleadtime = currentESTTimeandLeadTime(testData);
+			Log4jUtil.log("Lead Time Added in the current time  " + currentleadtime);
+			return currentleadtime;
+		} else {
+			cal.add(Calendar.HOUR, testData.getLeadtimeHour());
+			cal.add(Calendar.MINUTE, testData.getLeadtimeMinute());
+			String time3 = cal.getTimeInMillis() + " -> " + cal.getTime();
+			currentleadtime = time3.substring(22, 28);
+			Log4jUtil.log("Lead Time in the Businessstart time  " + currentleadtime);
+			return currentleadtime;
+		}
+	}
+
+	public boolean isValidTime(String time) {
+		String regexPattern = "(1[012]|[1-9]):" + "[0-5][0-9](\\s)" + "?(?i)(am|pm)";
+		Pattern compiledPattern = Pattern.compile(regexPattern);
+		if (time == null) {
+			return false;
+		}
+		Matcher m = compiledPattern.matcher(time);
+		return m.matches();
+	}
 }

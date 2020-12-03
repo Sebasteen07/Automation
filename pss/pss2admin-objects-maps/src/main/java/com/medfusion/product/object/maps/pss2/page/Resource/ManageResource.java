@@ -8,6 +8,7 @@ import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.FindAll;
 import org.openqa.selenium.support.FindBy;
 import org.openqa.selenium.support.How;
+import org.openqa.selenium.support.ui.Select;
 
 import com.medfusion.common.utils.IHGUtil;
 import com.medfusion.product.object.maps.pss2.page.PSS2MenuPage;
@@ -89,6 +90,12 @@ public class ManageResource extends PSS2MenuPage {
 	@FindBy(how = How.XPATH, using = "//input[@id='leadTimemins']")
 	private WebElement leadMinut;
 
+	@FindBy(how = How.XPATH, using = "//*[@name='apptTypeReservedReason']")
+	private WebElement reservefor;
+	
+	@FindBy(how = How.XPATH, using = "//*[@class='col-xs-12']/div/button[1]")
+	private WebElement appointmenttypeSave;
+
 	public ManageResource(WebDriver driver) {
 		super(driver);
 	}
@@ -166,6 +173,20 @@ public class ManageResource extends PSS2MenuPage {
 		int laeahour = Integer.parseInt(leadtimeMinut);
 		return laeahour;
 
+	}
+
+	public void reserveFor() {
+		Select objSelect = new Select(reservefor);
+		objSelect.selectByVisibleText("Same Day");
+		reservefor.click();
+		appointmenttypeSave.click();
+	}
+
+	public void notreserve() {
+		Select objSelect = new Select(reservefor);
+		objSelect.selectByVisibleText("Not Reserved");
+		reservefor.click();
+		appointmenttypeSave.click();
 	}
 
 }
