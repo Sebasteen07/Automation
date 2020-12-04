@@ -105,7 +105,7 @@ public abstract class JalapenoMenu extends MedfusionPage {
 
 	public boolean isHomeButtonPresent(WebDriver driver) {
 		openMenuIfClosed();
-		return IHGUtil.waitForElement(driver, 12, homeMenu);
+		return IHGUtil.waitForElement(driver, 2, homeMenu);
 	}
 
 	private void openMenuIfClosed() {

@@ -1466,6 +1466,111 @@ public class PSS2PatientPortalAcceptanceTests extends BaseTestNGWebDriver {
 		psspatientutils.rescheduleAPT( testData, driver);		
 
 	}
+	
+	@Test(enabled = true, groups = {"AcceptanceTests"}, retryAnalyzer = RetryAnalyzer.class)
+	public void testRescheduleAppointmentGW() throws Exception {
+		log("Test to verify if Cancel Appointment button available only after given hours.");
+		log("Step 1: Load test Data from External Property file.");
+		Appointment testData = new Appointment();
+		AdminUser adminuser = new AdminUser();
+		PSSPatientUtils psspatientutils = new PSSPatientUtils();
+		PSSAdminUtils pssadminutils = new PSSAdminUtils();
+
+		PSSPropertyFileLoader propertyData = new PSSPropertyFileLoader();
+		propertyData.setAppointmentResponseGW(testData);
+		propertyData.setAdminGW(adminuser);
+
+		pssadminutils.getInsuranceStateandRule(driver, adminuser, testData);
+		String rule = adminuser.getRule();
+
+		log("rule set in admin = " + rule);
+		rule = rule.replaceAll(" ", "");
+		
+		JalapenoLoginPage loginPage = new JalapenoLoginPage(driver, testData.getPatientPortalURL());
+		JalapenoHomePage homePage = loginPage.login(testData.getPatientPortalUserName(),testData.getPatientPortalPassword());
+		
+		log("Detecting if Home Page is opened");
+		assertTrue(homePage.isHomeButtonPresent(driver));
+		homePage.clickFeaturedAppointmentsReq();
+		
+		log("Wait for PSS 2.0 Patient UI to be loaded.");
+		Thread.sleep(2000);
+		
+		log("Switching tabs");
+		String currentUrl = psspatientutils.switchtabs(driver);
+		
+		log("Step 4: Login to PSS Appointment");
+		HomePage homepage = new HomePage(driver, currentUrl);
+		Thread.sleep(1500);
+		if (homepage.isPopUP()) {
+			homepage.popUPClick();
+		}
+		Thread.sleep(500);
+		
+		log("Verify PSS2 patient portal elements");
+		assertTrue(homepage.areBasicPageElementsPresent());
+		
+		ScheduledAppointment scheduledAppointment=psspatientutils.selectAFlow(driver, rule, homepage, testData);
+		homepage=scheduledAppointment.backtoHomePage();
+		
+		homepage.clickRescheduleLink();
+		psspatientutils.rescheduleAPT( testData, driver);		
+	}
+	
+	@Test(enabled = true, groups = {"AcceptanceTests"}, retryAnalyzer = RetryAnalyzer.class)
+	public void testRescheduleAppointmentAT() throws Exception {
+		log("Test to verify if Cancel Appointment button available only after given hours.");
+		log("Step 1: Load test Data from External Property file.");
+		Appointment testData = new Appointment();
+		AdminUser adminuser = new AdminUser();
+		PSSPatientUtils psspatientutils = new PSSPatientUtils();
+		PSSAdminUtils pssadminutils = new PSSAdminUtils();
+
+		AdminAppointment adminAppointment = new AdminAppointment(driver);
+
+		psspatientutils.setTestData("AT", testData, adminuser);
+
+		pssadminutils.getCancelRescheduleSettings(driver, adminuser, testData, adminAppointment);
+
+		log("isShowCancellationRescheduleReason --" + testData.isShowCancellationRescheduleReason());
+		log("isShowCancellationReasonPM ---" + testData.isShowCancellationReasonPM());
+
+		String rule = adminuser.getRule();
+
+		log("rule set in admin = " + rule);
+		rule = rule.replaceAll(" ", "");	
+		
+		JalapenoLoginPage loginPage = new JalapenoLoginPage(driver, testData.getPatientPortalURL());
+		JalapenoHomePage homePage = loginPage.login(testData.getPatientPortalUserName(),testData.getPatientPortalPassword());
+		
+		log("Detecting if Home Page is opened");
+		assertTrue(homePage.isHomeButtonPresent(driver));
+		homePage.clickFeaturedAppointmentsReq();
+		
+		log("Wait for PSS 2.0 Patient UI to be loaded.");
+		Thread.sleep(2000);
+		
+		log("Switching tabs");
+		String currentUrl = psspatientutils.switchtabs(driver);
+		
+		log("Step 4: Login to PSS Appointment");
+		HomePage homepage = new HomePage(driver, currentUrl);
+		Thread.sleep(1500);
+		if (homepage.isPopUP()) {
+			homepage.popUPClick();
+		}
+		Thread.sleep(1200);
+		
+		log("Verify PSS2 patient portal elements");
+		assertTrue(homepage.areBasicPageElementsPresent());
+		
+		ScheduledAppointment scheduledAppointment=psspatientutils.selectAFlow(driver, rule, homepage, testData);
+		homepage=scheduledAppointment.backtoHomePage();
+		
+		homepage.clickRescheduleLink();
+		psspatientutils.rescheduleAPT( testData, driver);		
+	}
+
 
 	@Test(enabled = true, dataProvider = "partnerType", groups = {"AcceptanceTests"}, retryAnalyzer = RetryAnalyzer.class)
 	public void testBlockPatients(String partnerPractice) throws Exception {
