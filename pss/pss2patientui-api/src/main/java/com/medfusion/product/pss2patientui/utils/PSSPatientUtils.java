@@ -1314,4 +1314,24 @@ public class PSSPatientUtils {
 		Matcher m = compiledPattern.matcher(time);
 		return m.matches();
 	}
+
+	public void clickOnSubmitAppt1(Boolean isInsuranceDisplated, AppointmentDateTime aptDateTime, Appointment testData, WebDriver driver) throws Exception {
+		Log4jUtil.log("Step 12: Verify Confirmation page and Scheduled page");
+		Log4jUtil.log("Is Insurance Page Displated= " + isInsuranceDisplated);
+		Thread.sleep(2000);
+		if (isInsuranceDisplated) {
+			UpdateInsurancePage updateinsurancePage = aptDateTime.selectAppointmentDateAndTime(driver);
+			ConfirmationPage confirmationpage = updateinsurancePage.skipInsuranceUpdate();
+			appointmentToScheduled(confirmationpage, testData);
+		} else {
+			ConfirmationPage confirmationpage = aptDateTime.selectAppointmentDateTime(testData.getIsNextDayBooking());
+			backtohomePage(confirmationpage, testData);
+		}
+	}
+
+	public void backtohomePage(ConfirmationPage confirmationpage, Appointment testData) throws Exception {
+		assertTrue(confirmationpage.areBasicPageElementsPresent());
+		ScheduledAppointmentAnonymous scheduledAppointmentAnonymous = confirmationpage.appointmentConfirmedAnonymous();
+		scheduledAppointmentAnonymous.backtoHomePage();
+	}
 }

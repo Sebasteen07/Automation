@@ -35,12 +35,17 @@ public class AppointmentDateTime extends PSS2MainPage {
 	@FindBy(how = How.XPATH, using = "//*[@class='rbc-event-content']")
 	private WebElement dateFirst;
 
+	@FindBy(how = How.XPATH, using = "//span[contains(text(),'No slots available')]")
+	private WebElement noslotsAvaliable;
+
+	@FindBy(how = How.XPATH, using = "//*[@class='rbc-date-cell rbc-now']")
+	private WebElement currentDaydisabled;
+
 	public AppointmentDateTime(WebDriver driver) {
 		super(driver);
 	}
 
-	@FindBy(how = How.XPATH, using = "//span[contains(text(),'No slots available')]")
-	private WebElement noslotsAvaliable;
+
 
 	@Override
 	public boolean areBasicPageElementsPresent() {
@@ -88,7 +93,7 @@ public class AppointmentDateTime extends PSS2MainPage {
 	public ConfirmationPage selectAppointmentDateTime(Boolean nextMonthBooking) {
 		List<WebElement> appointmentTimeList = driver.findElements(By.cssSelector(".time-btn"));
 		for (int i = 0; i < appointmentTimeList.size(); i++) {
-			if (appointmentTimeList.get(i+2).isDisplayed()) {
+			if (appointmentTimeList.get(i + 2).isDisplayed()) {
 				log("Appointment Time selected=" + appointmentTimeList.get(i).getText());
 				appointmentTimeList.get(i).click();
 				return PageFactory.initElements(driver, ConfirmationPage.class);
@@ -188,5 +193,28 @@ public class AppointmentDateTime extends PSS2MainPage {
 		String text = noslotsAvaliable.getText();
 		log("text is" + text);
 		return text;
+	}
+
+	public boolean disabledate() {
+		return currentDaydisabled.isDisplayed();
+	}
+
+	public String selectDateforMaxPDay(Boolean nextMonthBooking) {
+		String dt = null;
+		if (nextMonthBooking) {
+			driver.findElement(By.className("rbc-next-month")).click();
+			driver.manage().timeouts().implicitlyWait(80, TimeUnit.SECONDS);
+		}
+		List<WebElement> appointmentList = driver.findElements(By.cssSelector(".rbc-event-content"));
+		for (int i = 0; i < appointmentList.size(); i++) {
+			if (appointmentList.get(i).isDisplayed()) {
+				log("Appointment Date selected=" + appointmentList.get(i).getText());
+				appointmentList.get(i).click();
+				dt = appointmentList.get(i).getText();
+				log("Current date is disable  " + disabledate());
+				return appointmentList.get(i).getText();
+			}
+		}
+		return dt;
 	}
 }

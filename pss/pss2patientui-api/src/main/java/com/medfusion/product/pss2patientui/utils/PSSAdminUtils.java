@@ -381,7 +381,7 @@ public class PSSAdminUtils {
 		return list;
 	}
 
-	public void leadTime(WebDriver driver, AdminUser adminuser, Appointment appointment) throws Exception {
+	public void leadTimenotReserve(WebDriver driver, AdminUser adminuser, Appointment appointment) throws Exception {
 
 		PSS2PracticeConfiguration psspracticeConfig = loginToAdminPortal(driver, adminuser);
 		psspracticeConfig = psspracticeConfig.gotoPracticeConfigTab();
@@ -396,17 +396,17 @@ public class PSSAdminUtils {
 		Log4jUtil.log("Insurance is Enabled= " + patientflow.insuracetogglestatus());
 		appointment.setIsstartpointPresent(patientflow.isstartpagepresent());
 		Log4jUtil.log("StartPage is Visible= " + patientflow.isstartpagepresent());
-		ManageResource mr = psspracticeConfig.gotoResource();
+		ManageResource manageResource = psspracticeConfig.gotoResource();
 		pageRefresh(driver);
-		mr.selectResource(appointment.getProvider());
-		mr.selectAppointmenttype(appointment.getAppointmenttype());
-		appointment.setLeadtimeDay(mr.getDay());
+		manageResource.selectResource(appointment.getProvider());
+		manageResource.selectAppointmenttype(appointment.getAppointmenttype());
+		appointment.setLeadtimeDay(manageResource.getDay());
 		Log4jUtil.log("Lead time Day is = " + appointment.getLeadtimeDay());
-		appointment.setLeadtimeHour(mr.getHour());
+		appointment.setLeadtimeHour(manageResource.getHour());
 		Log4jUtil.log("Lead time Hour is = " + appointment.getLeadtimeHour());
-		appointment.setLeadtimeMinute(mr.getMinut());
+		appointment.setLeadtimeMinute(manageResource.getMinut());
 		Log4jUtil.log("Lead time Minute is = " + appointment.getLeadtimeMinute());
-		mr.notreserve();
+		manageResource.notreserve();
 		ManageLocation manageLocation = psspracticeConfig.gotoLocation();
 		manageLocation.selectlocation(appointment.getLocation());
 		appointment.setCurrentTimeZone(manageLocation.getTimezone());
@@ -437,5 +437,23 @@ public class PSSAdminUtils {
 		appointment.setCurrentTimeZone(manageLocation.getTimezone());
 		Log4jUtil.log("Current Timezone On AdminUi " + appointment.getCurrentTimeZone());
 		Log4jUtil.log("Successfully upto reserve for same day");
+	}
+
+	public void maxPerDay(WebDriver driver, AdminUser adminuser, Appointment appointment) throws Exception {
+
+		PSS2PracticeConfiguration psspracticeConfig = loginToAdminPortal(driver, adminuser);
+		PatientFlow patientflow = psspracticeConfig.gotoPatientFlowTab();
+		adminuser.setRule(patientflow.getRule());
+		Log4jUtil.log("rule= " + patientflow.getRule());
+		appointment.setIsinsuranceVisible(patientflow.insuracetogglestatus());
+		Log4jUtil.log("Insurance is Enabled= " + patientflow.insuracetogglestatus());
+		appointment.setIsstartpointPresent(patientflow.isstartpagepresent());
+		Log4jUtil.log("StartPage is Visible= " + patientflow.isstartpagepresent());
+		ManageResource manageResource = psspracticeConfig.gotoResource();
+		pageRefresh(driver);
+		manageResource.selectResource(appointment.getProvider());
+		manageResource.selectAppointmenttype(appointment.getAppointmenttype());
+		manageResource.maxperDay("1");
+		patientflow.logout();
 	}
 }
