@@ -439,12 +439,19 @@ public class PSSAdminUtils {
 		Log4jUtil.log("Successfully upto reserve for same day");
 	}
 
-	public void maxPerDay(WebDriver driver, AdminUser adminuser, Appointment appointment) throws Exception {
+	public void maxPerDayAT(WebDriver driver, AdminUser adminuser, Appointment appointment) throws Exception {
 
 		PSS2PracticeConfiguration psspracticeConfig = loginToAdminPortal(driver, adminuser);
 		PatientFlow patientflow = psspracticeConfig.gotoPatientFlowTab();
 		adminuser.setRule(patientflow.getRule());
 		Log4jUtil.log("rule= " + patientflow.getRule());
+		appointment.setResourcetoggleStatus(patientflow.resourcetoggleStatus());
+		Log4jUtil.log("Resource is Enabled= " + patientflow.resourcetoggleStatus());
+		if(patientflow.resourcetoggleStatus()==false)
+		{
+			patientflow.clickonProviderToggle();
+		}
+		setRulesNoSpecialitySet1(patientflow);
 		appointment.setIsinsuranceVisible(patientflow.insuracetogglestatus());
 		Log4jUtil.log("Insurance is Enabled= " + patientflow.insuracetogglestatus());
 		appointment.setIsstartpointPresent(patientflow.isstartpagepresent());
@@ -453,7 +460,28 @@ public class PSSAdminUtils {
 		pageRefresh(driver);
 		manageResource.selectResource(appointment.getProvider());
 		manageResource.selectAppointmenttype(appointment.getAppointmenttype());
-		manageResource.maxperDay("1");
+		manageResource.maxperDay(appointment.getMaxperDay());
+		Log4jUtil.log("Max per Day is " + appointment.getMaxperDay());
+		patientflow.logout();
+	}
+
+	public void maxPerDayGE(WebDriver driver, AdminUser adminuser, Appointment appointment) throws Exception {
+
+		PSS2PracticeConfiguration psspracticeConfig = loginToAdminPortal(driver, adminuser);
+		PatientFlow patientflow = psspracticeConfig.gotoPatientFlowTab();
+		adminuser.setRule(patientflow.getRule());
+		Log4jUtil.log("rule= " + patientflow.getRule());
+		setRulesNoSpecialitySet1(patientflow);
+		appointment.setIsinsuranceVisible(patientflow.insuracetogglestatus());
+		Log4jUtil.log("Insurance is Enabled= " + patientflow.insuracetogglestatus());
+		appointment.setIsstartpointPresent(patientflow.isstartpagepresent());
+		Log4jUtil.log("StartPage is Visible= " + patientflow.isstartpagepresent());
+		ManageResource manageResource = psspracticeConfig.gotoResource();
+		pageRefresh(driver);
+		manageResource.selectResource(appointment.getProvider());
+		manageResource.selectAppointmenttype(appointment.getAppointmenttype());
+		manageResource.maxperDay(appointment.getMaxperDay());
+		Log4jUtil.log("Max per Day is " + appointment.getMaxperDay());
 		patientflow.logout();
 	}
 }

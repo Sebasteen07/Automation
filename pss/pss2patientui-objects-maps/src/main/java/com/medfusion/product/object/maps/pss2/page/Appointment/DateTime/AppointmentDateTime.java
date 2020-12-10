@@ -211,7 +211,8 @@ public class AppointmentDateTime extends PSS2MainPage {
 				log("Appointment Date selected=" + appointmentList.get(i).getText());
 				appointmentList.get(i).click();
 				dt = appointmentList.get(i).getText();
-				log("Current date is disable  " + disabledate());
+				log("Current date is disabled  " + disabledate());
+				assertTrue(disabledate());
 				return appointmentList.get(i).getText();
 			}
 		}
