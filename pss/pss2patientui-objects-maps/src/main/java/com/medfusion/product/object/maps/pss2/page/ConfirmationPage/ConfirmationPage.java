@@ -143,7 +143,6 @@ public class ConfirmationPage extends PSS2MainPage {
 		commonMethods.highlightElement(buttonAllGood);
 		Thread.sleep(1000);
 		jse.executeScript("arguments[0].click();", buttonAllGood);
-		//buttonAllGood.click();
 		return PageFactory.initElements(driver, ScheduledAppointmentAnonymous.class);
 	}
 
