@@ -77,16 +77,34 @@ public class HomePage extends PSS2MainPage {
 
 	@FindBy(how = How.XPATH, using = "//div//button[@class='submitcancel']")
 	private WebElement cancelSubmit;
+	
+	@FindBy(how = How.XPATH, using = "//button[@class='submitcancelbtn col-sm-3']")
+	private WebElement cancelSubmitwithEmail;	
+
+	@FindBy(how = How.XPATH, using = "//div[@id='appointmentCancleModal']")
+	private WebElement cancelAppointmentConfirmedPopUp;	
+
+	@FindBy(how = How.XPATH, using = "//div[@id='appointmentCancleModal']/div[2]/span")
+	private WebElement cancelApptConfirmMsg;
+
+	@FindBy(how = How.XPATH, using = "//button[@id='cancleNo']")
+	private WebElement cancelNoBtnEmail;
+	
+	@FindBy(how = How.XPATH, using = "//div[@id='myModal']//div[4]//button[1]")
+	private WebElement cancelYesBtnEmail;
+
+	@FindBy(how = How.XPATH, using = "//button[@id='gotodashboard']//span[contains(text(),'Ok')]")
+	private WebElement okCancelBtnEmail;
 
 	@FindBy(how = How.XPATH, using = "//body[@class='modal-open']/div[@id='root']/div/div/div[@class='container']/div/div[@id='dashboardmobileview']/div/div[@class='row']/div[@id='upcomingevents']/div[@id='upcomingappoitment']/div[1]/div[1]/div[3]/div[2]/div[1]/div[1]/div[1]/div[2]/span[1]")
 	private WebElement cancelAppointmentConfirmed;
 
 	@FindBy(how = How.XPATH, using = "//div[1]/div[1]/div[3]/div[2]/div[1]/div[1]/div[1]/div[3]/div[4]/button[1]/span[1]")
-	private WebElement cancelYesButton;
+	private WebElement cancelYesButton;	
 
 	@FindBy(how = How.XPATH, using = "//button[@class='okbuttons']")
 	private WebElement okCancelBtn;
-
+	
 	@FindAll({ @FindBy(xpath = "//a[@class='btn specialtybtndashboard handle-text-Overflow outer-div']") })
 	private List<WebElement> selectSpecialityList;
 
@@ -291,6 +309,35 @@ public class HomePage extends PSS2MainPage {
 			log("No Appointments found to cancel.");
 			return false;
 		}
+	}
+	
+	public Boolean cancelAppointmentWithEmail(String popupTextMessage) throws InterruptedException {
+
+		IHGUtil.waitForElement(driver, 60, cancelReason);
+		JavascriptExecutor jse = (JavascriptExecutor) driver;
+		jse.executeScript("window.scrollBy(0,400)", "");
+		cancelReason.sendKeys("Cancel Appointment to test the function");
+		log("Send the below text in cancel input box --->Cancel Appointment to test the function ");
+		
+		commonMethods.highlightElement(cancelSubmitwithEmail);
+		cancelSubmitwithEmail.click();
+		Thread.sleep(3000);
+		jse.executeScript("window.scrollBy(0,400)", "");
+		log("Clicked on Submit Cancel button");
+		if (cancelAppointmentConfirmedPopUp.isDisplayed()) {
+			
+			Thread.sleep(1000);
+			commonMethods.highlightElement(cancelNoBtnEmail);
+			commonMethods.highlightElement(cancelYesBtnEmail);
+			cancelYesBtnEmail.click();
+			Thread.sleep(1000);
+			okCancelBtnEmail.click();
+			log("appointment cancelled Successfully...");
+		}
+		Thread.sleep(3000);
+		log("appointment cancelled...");
+		return true;
+
 	}
 	
 	public void clickRescheduleLink() throws InterruptedException {

@@ -26,14 +26,20 @@ import java.util.TimeZone;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
+import org.openqa.selenium.By;
+import org.openqa.selenium.JavascriptExecutor;
+import org.openqa.selenium.Keys;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.PageFactory;
+import org.openqa.selenium.support.ui.ExpectedConditions;
+import org.openqa.selenium.support.ui.WebDriverWait;
 import org.testng.Assert;
 
 import com.intuit.ifs.csscat.core.utils.Log4jUtil;
 import com.medfusion.product.object.maps.pss2.page.AppEntryPoint.StartAppointmentInOrder;
 import com.medfusion.product.object.maps.pss2.page.Appointment.Anonymous.AnonymousPatientInformation;
+import com.medfusion.product.object.maps.pss2.page.Appointment.CancResc.PatientIdentificationPage;
 import com.medfusion.product.object.maps.pss2.page.Appointment.DateTime.AppointmentDateTime;
 import com.medfusion.product.object.maps.pss2.page.Appointment.HomePage.HomePage;
 import com.medfusion.product.object.maps.pss2.page.Appointment.HomePage.HomePageSpeciality;
@@ -1027,6 +1033,14 @@ public class PSSPatientUtils {
 		pssPatientUrl = pssPatientUrl.replaceAll("https", "http");
 		Log4jUtil.log("Url = " + driver.getCurrentUrl());
 		return pssPatientUrl;
+	}
+	
+	public PatientIdentificationPage newtabs(WebDriver driver, String url) throws InterruptedException {
+		ArrayList<String> tabs = new ArrayList<String>(driver.getWindowHandles());
+		driver.switchTo().window(tabs.get(0)); // switches to new tab
+		driver.get(url);
+		driver.navigate().to(url);
+		return PageFactory.initElements(driver, PatientIdentificationPage.class);
 	}
 
 	public void fillPatientDetails(Boolean insuranceSelected, Appointment testData, LoginlessPatientInformation loginlesspatientinformation)

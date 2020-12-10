@@ -80,11 +80,11 @@ public class AppointmentDateTime extends PSS2MainPage {
 		}
 		List<WebElement> appointmentList = driver.findElements(By.cssSelector(".rbc-event-content"));
 		for (int i = 0; i < appointmentList.size(); i++) {
-			if (appointmentList.get(i).isDisplayed()) {
-				log("Appointment Date selected=" + appointmentList.get(i).getText());
-				appointmentList.get(i).click();
-				dt = appointmentList.get(i).getText();
-				return appointmentList.get(i).getText();
+			if (appointmentList.get(i+5).isDisplayed()) {
+				log("Appointment Date selected=" + appointmentList.get(i+5).getText());
+				appointmentList.get(i+5).click();
+				dt = appointmentList.get(i+5).getText();
+				return appointmentList.get(i+5).getText();
 			}
 		}
 		return dt;
