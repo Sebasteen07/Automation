@@ -417,11 +417,7 @@ public class PSSAdminUtils {
 			Log4jUtil.log("Cancel/Reschedule reason setting is OFF-Defaults pop up message will display");
 			Log4jUtil.log("cancel 1 - OFF and Cancel2 - OFF");
 		}
-		PSS2MenuPage pss2MenuPage = adminAppointment.saveSlotCancelReasonSetting();
-//		ManageCancelReason manageCancelReason = pss2MenuPage.gotoCancelReason();
-//		ArrayList<String> list = manageCancelReason.fetchCancelReasonList(driver);
-//		patientflow.logout();
-//		return list;
+		adminAppointment.saveSlotCancelReasonSetting();
 	}
 
 	public void leadTime(WebDriver driver, AdminUser adminuser, Appointment appointment) throws Exception {
