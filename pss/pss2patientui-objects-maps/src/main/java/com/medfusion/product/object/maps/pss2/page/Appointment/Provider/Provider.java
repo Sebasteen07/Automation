@@ -71,13 +71,14 @@ public class Provider extends PSS2MainPage {
 		log("size= " + providerList.size());
 		log("Text= " + providerList.get(0).getText());
 		for (int i = 0; i < providerList.size(); i++) {
-			log(providerList.get(i).getText() + " match " + providerName + " = " + providerList.get(i).getText().equalsIgnoreCase(providerName));
-			if (providerList.get(i).getText().contains(providerName)) {
+			log(providerList.get(i).getText() + " match " + providerName + "= " + providerList.get(i).getText().trim().equalsIgnoreCase(providerName.trim()));
+			if (providerList.get(i).getText().trim().equalsIgnoreCase(providerName.trim())) {
 				providerList.get(i).click();
+				log("Clicked on the Provider");
 				return PageFactory.initElements(driver, AppointmentPage.class);
 			}
 		}
-		return null;
+		return PageFactory.initElements(driver, AppointmentPage.class);
 	}
 
 	public AppointmentDateTime selectDateTime(String providerName) throws InterruptedException {

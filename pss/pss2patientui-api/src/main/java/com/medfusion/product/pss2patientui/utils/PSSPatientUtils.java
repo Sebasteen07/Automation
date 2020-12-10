@@ -26,13 +26,20 @@ import java.util.TimeZone;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
+import org.openqa.selenium.By;
+import org.openqa.selenium.JavascriptExecutor;
+import org.openqa.selenium.Keys;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.PageFactory;
+import org.openqa.selenium.support.ui.ExpectedConditions;
+import org.openqa.selenium.support.ui.WebDriverWait;
+import org.testng.Assert;
 
 import com.intuit.ifs.csscat.core.utils.Log4jUtil;
 import com.medfusion.product.object.maps.pss2.page.AppEntryPoint.StartAppointmentInOrder;
 import com.medfusion.product.object.maps.pss2.page.Appointment.Anonymous.AnonymousPatientInformation;
+import com.medfusion.product.object.maps.pss2.page.Appointment.CancResc.PatientIdentificationPage;
 import com.medfusion.product.object.maps.pss2.page.Appointment.DateTime.AppointmentDateTime;
 import com.medfusion.product.object.maps.pss2.page.Appointment.HomePage.HomePage;
 import com.medfusion.product.object.maps.pss2.page.Appointment.HomePage.HomePageSpeciality;
@@ -752,6 +759,59 @@ public class PSSPatientUtils {
 			appointmentToScheduled(confirmationpage, testData);
 		}
 	}
+	
+	public void reBookAppointment(Boolean isInsuranceDisplated, AppointmentDateTime aptDateTime, Appointment testData, WebDriver driver) throws Exception {
+		Log4jUtil.log("Step 12: Verify Confirmation page and Scheduled page");
+		Log4jUtil.log("Is Insurance Page Displated= " + isInsuranceDisplated);
+		Thread.sleep(2000);
+		if (isInsuranceDisplated) {
+			UpdateInsurancePage updateinsurancePage = aptDateTime.selectAppointmentTimeIns();
+			ConfirmationPage confirmationpage = updateinsurancePage.skipInsuranceUpdate();
+
+			if (testData.isShowCancellationRescheduleReason() == false & testData.isShowCancellationReasonPM() == false) {
+
+				appointmentToRescheduled(confirmationpage, testData);
+
+			} else if (testData.isShowCancellationRescheduleReason() == true & testData.isShowCancellationReasonPM() == false) {
+
+				apptRescheduledwithTextReason(confirmationpage, testData);
+
+			} else if (testData.isShowCancellationRescheduleReason() == true & testData.isShowCancellationReasonPM() == true) {
+
+				apptRescheduledDropdownReason(confirmationpage, testData);
+			}		
+		
+		} else {
+			ConfirmationPage confirmationpage = aptDateTime.selectAppointmentDateTime(testData.getIsNextDayBooking());
+
+			if (testData.isShowCancellationRescheduleReason() == false & testData.isShowCancellationReasonPM() == false) {
+
+				appointmentToRescheduled(confirmationpage, testData);
+
+			} else if (testData.isShowCancellationRescheduleReason() == true & testData.isShowCancellationReasonPM() == false) {
+
+				apptRescheduledwithTextReason(confirmationpage, testData);
+
+			} else if (testData.isShowCancellationRescheduleReason() == true & testData.isShowCancellationReasonPM() == true) {
+
+				apptRescheduledDropdownReason(confirmationpage, testData);
+			}
+		}
+	}
+	
+	public void fillRescheduleDetails(Boolean isInsuranceDisplated, AppointmentDateTime aptDateTime, Appointment testData, WebDriver driver) throws Exception {
+		Log4jUtil.log("Step 12: Verify Confirmation page and Scheduled page");
+		Log4jUtil.log("Is Insurance Page Displated= " + isInsuranceDisplated);
+		Thread.sleep(2000);
+		if (isInsuranceDisplated) {
+			UpdateInsurancePage updateinsurancePage = aptDateTime.selectAppointmentTimeIns();
+			updateinsurancePage.skipInsuranceUpdate();
+			
+		} else {
+			aptDateTime.selectAppointmentDateTime(testData.getIsNextDayBooking());
+			
+		}
+	}
 
 	public void bookAnonymousApt(AppointmentDateTime aptDateTime, Appointment testData, WebDriver driver) throws Exception {
 		Log4jUtil.log("Step 12: Verify Confirmation page and Scheduled page");
@@ -802,6 +862,76 @@ public class PSSPatientUtils {
 			Log4jUtil.log("apt Details= " + ele.getText());
 		}
 		ScheduledAppointment scheduledappointment = confirmationpage.appointmentConfirmed();
+		Log4jUtil.log("appointment ID = " + scheduledappointment.getAppointmentID());
+		assertTrue(scheduledappointment.areBasicPageElementsPresent());
+		Log4jUtil.log("Add to calendar option is displayed and is clickable.");
+		scheduledappointment.downloadCalander();
+		Thread.sleep(2000);
+		readICSFile(filePath());
+	}
+	
+	public void appointmentToRescheduled(ConfirmationPage confirmationpage, Appointment testData) throws Exception {
+		
+		Log4jUtil.log("Step 13: Verify if Appointment is scheduled and download ics file");
+		assertTrue(confirmationpage.areBasicPageElementsPresent());
+		
+		String aptScheduledAt = confirmationpage.getAppointmentDetails().get((confirmationpage.getAppointmentDetails().size() - 1)).getText();
+		Log4jUtil.log(">> " + aptScheduledAt);
+		for (WebElement ele : confirmationpage.getAppointmentDetails()) {
+			Log4jUtil.log("apt Details= " + ele.getText());
+			
+		}
+		
+		ScheduledAppointment scheduledappointment = confirmationpage.rescheduleAppointmentConfirmed();
+		Log4jUtil.log("appointment ID = " + scheduledappointment.getAppointmentID());
+		assertTrue(scheduledappointment.areBasicPageElementsPresent());
+		Log4jUtil.log("Add to calendar option is displayed and is clickable.");
+		scheduledappointment.downloadCalander();
+		Thread.sleep(2000);
+		readICSFile(filePath());
+	}
+	
+	public void apptRescheduledwithTextReason(ConfirmationPage confirmationpage, Appointment testData) throws Exception {
+		
+		Log4jUtil.log("Step 13: Verify if Appointment is scheduled and download ics file");
+		assertTrue(confirmationpage.areBasicPageElementsPresent());
+		
+		String aptScheduledAt = confirmationpage.getAppointmentDetails().get((confirmationpage.getAppointmentDetails().size() - 1)).getText();
+		Log4jUtil.log(">> " + aptScheduledAt);
+		for (WebElement ele : confirmationpage.getAppointmentDetails()) {
+			Log4jUtil.log("apt Details= " + ele.getText());
+			
+		}
+		
+		Log4jUtil.log("Enter the Reschedule Reason");
+		confirmationpage.sendRescheduleReason();
+		Assert.assertEquals(confirmationpage.maxLengthRescheduleReason(), 500, "The max length of Reschedule reason is not 500, so test case failed");
+				
+		ScheduledAppointment scheduledappointment = confirmationpage.rescheduleAppointmentConfirmed();
+		Log4jUtil.log("appointment ID = " + scheduledappointment.getAppointmentID());
+		assertTrue(scheduledappointment.areBasicPageElementsPresent());
+		Log4jUtil.log("Add to calendar option is displayed and is clickable.");
+		scheduledappointment.downloadCalander();
+		Thread.sleep(2000);
+		readICSFile(filePath());
+	}
+	
+	public void apptRescheduledDropdownReason(ConfirmationPage confirmationpage, Appointment testData)throws Exception {
+
+		Log4jUtil.log("Step 13: Verify if Appointment is scheduled and download ics file");
+		assertTrue(confirmationpage.areBasicPageElementsPresent());
+
+		String aptScheduledAt = confirmationpage.getAppointmentDetails()
+				.get((confirmationpage.getAppointmentDetails().size() - 1)).getText();
+		Log4jUtil.log(">> " + aptScheduledAt);
+		for (WebElement ele : confirmationpage.getAppointmentDetails()) {
+			Log4jUtil.log("apt Details= " + ele.getText());
+		}
+		
+		Log4jUtil.log("Select reason from drop down list");
+		confirmationpage.selectRescheduleReason();
+
+		ScheduledAppointment scheduledappointment = confirmationpage.rescheduleAppointmentConfirmed();
 		Log4jUtil.log("appointment ID = " + scheduledappointment.getAppointmentID());
 		assertTrue(scheduledappointment.areBasicPageElementsPresent());
 		Log4jUtil.log("Add to calendar option is displayed and is clickable.");
@@ -903,6 +1033,14 @@ public class PSSPatientUtils {
 		pssPatientUrl = pssPatientUrl.replaceAll("https", "http");
 		Log4jUtil.log("Url = " + driver.getCurrentUrl());
 		return pssPatientUrl;
+	}
+	
+	public PatientIdentificationPage newtabs(WebDriver driver, String url) throws InterruptedException {
+		ArrayList<String> tabs = new ArrayList<String>(driver.getWindowHandles());
+		driver.switchTo().window(tabs.get(0)); // switches to new tab
+		driver.get(url);
+		driver.navigate().to(url);
+		return PageFactory.initElements(driver, PatientIdentificationPage.class);
 	}
 
 	public void fillPatientDetails(Boolean insuranceSelected, Appointment testData, LoginlessPatientInformation loginlesspatientinformation)
@@ -1222,6 +1360,15 @@ public class PSSPatientUtils {
 		String currentDate = f1.format(c.getTime());
 		return currentDate;
 	}
+	
+	public void rescheduleAPT(Appointment testData, WebDriver driver) throws Exception {
+		AppointmentDateTime aptDateTime = new AppointmentDateTime(driver);
+		aptDateTime=aptDateTime.selectDt(testData.getIsNextDayBooking());
+		Thread.sleep(1000);
+		reBookAppointment(true, aptDateTime, testData, driver);
+	}
+	
+
 
 	public String numDate(Appointment testData) {
 		int MILLIS_IN_DAY = 1000 * 60 * 60 * 24;

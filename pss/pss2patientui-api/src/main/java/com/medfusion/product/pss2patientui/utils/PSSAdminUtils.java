@@ -380,6 +380,45 @@ public class PSSAdminUtils {
 		patientflow.logout();
 		return list;
 	}
+	
+	public void getRescheduleSettings(WebDriver driver, AdminUser adminuser, Appointment testData, AdminAppointment adminAppointment)
+			throws Exception {
+		PSS2PracticeConfiguration psspracticeConfig = loginToAdminPortal(driver, adminuser);
+		PatientFlow patientflow = psspracticeConfig.gotoPatientFlowTab();
+		adminuser.setRule(patientflow.getRule());
+		Log4jUtil.log("rule= " + patientflow.getRule());
+		testData.setIsinsuranceVisible(patientflow.insuracetogglestatus());
+		Log4jUtil.log("Insurance is Enabled= " + patientflow.insuracetogglestatus());
+		testData.setIsstartpointPresent(patientflow.isstartpagepresent());
+		Log4jUtil.log("StartPage is Visible= " + patientflow.isstartpagepresent());
+		adminAppointment = patientflow.gotoAdminAppointmentTab();
+		adminAppointment.areBasicPageElementsPresent();
+		Log4jUtil.log("Step 3: Set the Cancellation & rescheduling lead time (hrs)- " + PSSConstants.CANCEL_APT_UPTO_HRS);
+		adminAppointment.updateCancelAppointmentSettings(PSSConstants.CANCEL_APT_UPTO_HRS);
+		Log4jUtil.log("Step 4: Fetch the status of cancel settings from Admin");
+		adminAppointment.toggleCancelReason();
+		Log4jUtil.log("Verify the Cancel Settings in ADMIN TAB");
+		boolean cancel1 = adminAppointment.isShowCancellationRescheduleReason();
+		Log4jUtil.log("verifying the settings of Cancel/Reschedule Reason : " + cancel1);
+		Thread.sleep(1000);
+		if (cancel1) {
+			Log4jUtil.log("Cancel/Reschedule Reason ALREADY turned ON..");
+			testData.setShowCancellationRescheduleReason(cancel1);
+			boolean cancel2 = adminAppointment.isShowCancellationReasonPM();
+
+			Log4jUtil.log("verifying the settings of Cancel Reason from PM : " + cancel2);
+			if (cancel2) {
+				testData.setShowCancellationReasonPM(cancel2);
+				Log4jUtil.log("cancel 1 - ON and Cance2 - ON");
+			} else {
+				Log4jUtil.log("cancel 1 - ON and Cance2 - OFF");
+			}
+		} else {
+			Log4jUtil.log("Cancel/Reschedule reason setting is OFF-Defaults pop up message will display");
+			Log4jUtil.log("cancel 1 - OFF and Cancel2 - OFF");
+		}
+		adminAppointment.saveSlotCancelReasonSetting();
+	}
 
 	public void leadTime(WebDriver driver, AdminUser adminuser, Appointment appointment) throws Exception {
 
