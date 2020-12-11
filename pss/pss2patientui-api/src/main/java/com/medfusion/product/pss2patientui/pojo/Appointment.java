@@ -80,11 +80,10 @@ public class Appointment {
 	private String currentTimeZone;
 	private String businesshourStartTime;
 	private String businesshourEndTime;
-
 	private String maxperDay;
-
-
-
+	private String gmailUserName;
+	
+	
 
 	private Boolean isCancelButtonPresent;
 	private int displaySlotCountLength;
@@ -135,6 +134,14 @@ public class Appointment {
 	}
 
 	public Appointment() {}
+	
+	public String getGmailUserName() {
+		return gmailUserName;
+	}
+
+	public void setGmailUserName(String gmailUserName) {
+		this.gmailUserName = gmailUserName;
+	}
 
 
 	public String getMaxperDay() {
