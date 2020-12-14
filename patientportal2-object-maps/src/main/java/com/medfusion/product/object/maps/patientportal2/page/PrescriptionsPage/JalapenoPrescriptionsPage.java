@@ -215,7 +215,7 @@ public class JalapenoPrescriptionsPage extends JalapenoMenu {
 		driver.switchTo().defaultContent();
 		driver.switchTo().frame("iframebody");
 		jse.executeScript("window.scrollBy(0,650)", "");
-		// addAnotherMedicationBtn.click();
+		addAnotherMedicationBtn.click();
 		jse.executeScript("window.scrollBy(0,350)", "");
 		IHGUtil.waitForElement(driver, 10, medicationNameField);
 		log("Step 5: Insert Medication Details");
