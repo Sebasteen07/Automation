@@ -76,7 +76,7 @@ public class AppointmentDateTime extends PSS2MainPage {
 		}
 		return PageFactory.initElements(driver, AppointmentDateTime.class);
 	}
-	
+
 	public String selectDate(Boolean nextMonthBooking) {
 		String dt = null;
 		if (nextMonthBooking) {
@@ -85,11 +85,11 @@ public class AppointmentDateTime extends PSS2MainPage {
 		}
 		List<WebElement> appointmentList = driver.findElements(By.cssSelector(".rbc-event-content"));
 		for (int i = 0; i < appointmentList.size(); i++) {
-			if (appointmentList.get(i+5).isDisplayed()) {
-				log("Appointment Date selected=" + appointmentList.get(i+5).getText());
-				appointmentList.get(i+5).click();
-				dt = appointmentList.get(i+5).getText();
-				return appointmentList.get(i+5).getText();
+			if (appointmentList.get(0).isDisplayed()) {
+				log("Appointment Date selected=" + appointmentList.get(i + 5).getText());
+				appointmentList.get(0).click();
+				dt = appointmentList.get(0).getText();
+				return appointmentList.get(0).getText();
 			}
 		}
 		return dt;

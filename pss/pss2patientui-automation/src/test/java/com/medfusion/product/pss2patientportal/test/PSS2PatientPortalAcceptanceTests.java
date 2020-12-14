@@ -3,7 +3,6 @@ package com.medfusion.product.pss2patientportal.test;
 
 import java.util.ArrayList;
 
-import org.openqa.selenium.WebDriver;
 import org.testng.annotations.DataProvider;
 import org.testng.annotations.Parameters;
 import org.testng.annotations.Test;
@@ -2520,13 +2519,12 @@ public class PSS2PatientPortalAcceptanceTests extends BaseTestNGWebDriver {
 		log("Verify PSS2 patient portal elements");
 		assertTrue(homepage.areBasicPageElementsPresent());
 		log("Successfully upto Home page");
-
 		Log4jUtil.log("Step 8: Select Provider for appointment.");
 		Provider provider = null;
 		StartAppointmentInOrder startappointmentInOrder = null;
 		int n = Integer.parseInt(testData.getMaxperDay());
 		for (int i = 0; i < n; i++) {
-			Log4jUtil.log("in for loop");
+			Log4jUtil.log("Book an appointment as per the max per day");
 			startappointmentInOrder = homepage.skipInsurance(driver);
 			provider = startappointmentInOrder.selectFirstProvider(PSSConstants.START_PROVIDER);
 			Log4jUtil.log("clicked on provider ");
@@ -2545,7 +2543,6 @@ public class PSS2PatientPortalAcceptanceTests extends BaseTestNGWebDriver {
 			psspatientutils.clickOnSubmitAppt1(false, aptDateTime, testData, driver);
 		}
 		Log4jUtil.log("Max per day appointment booked and now verifying the current date is disabled or Not");
-		Log4jUtil.log("Again book an appointment for verify max per day functionality ");
 		startappointmentInOrder = homepage.skipInsurance(driver);
 		provider = startappointmentInOrder.selectFirstProvider(PSSConstants.START_PROVIDER);
 		Log4jUtil.log("clicked on provider ");
@@ -2560,10 +2557,7 @@ public class PSS2PatientPortalAcceptanceTests extends BaseTestNGWebDriver {
 		Log4jUtil.log("Step 11: Verfiy Location Page and location = " + testData.getAppointmenttype());
 		AppointmentDateTime aptDateTime = location.selectDatTime(testData.getLocation());
 		aptDateTime.selectDateforMaxPDay(testData.getIsNextDayBooking());
-
 		Thread.sleep(6000);
-
-
 	}
 
 
@@ -2602,13 +2596,12 @@ public class PSS2PatientPortalAcceptanceTests extends BaseTestNGWebDriver {
 		log("Verify PSS2 patient portal elements");
 		assertTrue(homepage.areBasicPageElementsPresent());
 		log("Successfully upto Home page");
-
 		Log4jUtil.log("Step 8: Select Provider for appointment.");
 		Provider provider = null;
 		StartAppointmentInOrder startappointmentInOrder = null;
 		int n = Integer.parseInt(testData.getMaxperDay());
 		for (int i = 0; i < n; i++) {
-			Log4jUtil.log("in for loop");
+			Log4jUtil.log("Book an appointment as per the max per day");
 			startappointmentInOrder = homepage.skipInsurance(driver);
 			provider = startappointmentInOrder.selectFirstProvider(PSSConstants.START_PROVIDER);
 			Log4jUtil.log("clicked on provider ");
@@ -2627,7 +2620,6 @@ public class PSS2PatientPortalAcceptanceTests extends BaseTestNGWebDriver {
 			psspatientutils.clickOnSubmitAppt1(false, aptDateTime, testData, driver);
 		}
 		Log4jUtil.log("Max per day appointment booked and now verifying the current date is disabled or Not");
-		Log4jUtil.log("Again book an appointment for verify max per day functionality ");
 		startappointmentInOrder = homepage.skipInsurance(driver);
 		provider = startappointmentInOrder.selectFirstProvider(PSSConstants.START_PROVIDER);
 		Log4jUtil.log("clicked on provider ");
@@ -2642,17 +2634,10 @@ public class PSS2PatientPortalAcceptanceTests extends BaseTestNGWebDriver {
 		Log4jUtil.log("Step 11: Verfiy Location Page and location = " + testData.getAppointmenttype());
 		AppointmentDateTime aptDateTime = location.selectDatTime(testData.getLocation());
 		aptDateTime.selectDateforMaxPDay(testData.getIsNextDayBooking());
-
-		Thread.sleep(6000);
-
-
-
 	}
-
 
 	@Test(enabled = true, groups = {"AcceptanceTests"}, retryAnalyzer = RetryAnalyzer.class)
 	public void testMaxperDayNG() throws Exception {
-
 		log("Test To Verify Lead Time Functionality");
 		PSSPropertyFileLoader propertyData = new PSSPropertyFileLoader();
 		Appointment testData = new Appointment();
@@ -2691,7 +2676,7 @@ public class PSS2PatientPortalAcceptanceTests extends BaseTestNGWebDriver {
 		StartAppointmentInOrder startappointmentInOrder = null;
 		int n = Integer.parseInt(testData.getMaxperDay());
 		for (int i = 0; i < n; i++) {
-			Log4jUtil.log("in for loop");
+			Log4jUtil.log("Book an appointment as per max per day");
 			startappointmentInOrder = homepage.skipInsurance(driver);
 			provider = startappointmentInOrder.selectFirstProvider(PSSConstants.START_PROVIDER);
 			Log4jUtil.log("clicked on provider ");
@@ -2710,7 +2695,6 @@ public class PSS2PatientPortalAcceptanceTests extends BaseTestNGWebDriver {
 			psspatientutils.clickOnSubmitAppt1(false, aptDateTime, testData, driver);
 		}
 		Log4jUtil.log("Max per day appointment booked and now verifying the current date is disabled or Not");
-		Log4jUtil.log("Again book an appointment for verify max per day functionality ");
 		startappointmentInOrder = homepage.skipInsurance(driver);
 		provider = startappointmentInOrder.selectFirstProvider(PSSConstants.START_PROVIDER);
 		Log4jUtil.log("clicked on provider ");
@@ -2725,11 +2709,6 @@ public class PSS2PatientPortalAcceptanceTests extends BaseTestNGWebDriver {
 		Log4jUtil.log("Step 11: Verfiy Location Page and location = " + testData.getAppointmenttype());
 		AppointmentDateTime aptDateTime = location.selectDatTime(testData.getLocation());
 		aptDateTime.selectDateforMaxPDay(testData.getIsNextDayBooking());
-
-		Thread.sleep(6000);
-
-
-
 	}
 
 }
