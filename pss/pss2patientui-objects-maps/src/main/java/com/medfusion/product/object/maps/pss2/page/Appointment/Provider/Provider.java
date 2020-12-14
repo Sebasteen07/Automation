@@ -48,7 +48,7 @@ public class Provider extends PSS2MainPage {
 		log("inside the are basic element");
 		ArrayList<WebElement> webElementsList = new ArrayList<WebElement>();
 		log("Checking provider list");
-		// webElementsList.add(providerList.get(0));
+		webElementsList.add(providerList.get(0));
 		log("First provider is" + providerList.get(0).getText());
 		return new IHGUtil(driver).assessAllPageElements(webElementsList, this.getClass());
 	}
