@@ -1,6 +1,8 @@
 // Copyright 2018-2020 NXGN Management, LLC. All Rights Reserved.
 package com.medfusion.product.object.maps.patientportal2.page.PrescriptionsPage;
 
+import static org.junit.Assert.assertTrue;
+
 import org.openqa.selenium.StaleElementReferenceException;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
@@ -107,6 +109,9 @@ public class JalapenoPrescriptionsPage extends JalapenoMenu {
 	@FindBy(how = How.XPATH, using = "//*[@class='feedback']/following::*[contains(text(),'Prescription Renewa')]")
 	public WebElement renewalConfirmationmessage;
 
+	@FindBy(how = How.XPATH, using = "//*[@id='idff']")
+	public WebElement Medicationlist;
+
 
 
 	public JalapenoPrescriptionsPage(WebDriver driver) {
@@ -209,8 +214,8 @@ public class JalapenoPrescriptionsPage extends JalapenoMenu {
 
 		driver.switchTo().defaultContent();
 		driver.switchTo().frame("iframebody");
-		jse.executeScript("window.scrollBy(0,350)", "");
-		addAnotherMedicationBtn.click();
+		jse.executeScript("window.scrollBy(0,650)", "");
+		// addAnotherMedicationBtn.click();
 		jse.executeScript("window.scrollBy(0,350)", "");
 		IHGUtil.waitForElement(driver, 10, medicationNameField);
 		log("Step 5: Insert Medication Details");
@@ -246,6 +251,9 @@ public class JalapenoPrescriptionsPage extends JalapenoMenu {
 		return createdTs;
 	}
 
-
+	public void validatemedication(String productName) {
+		driver.switchTo().frame("iframebody");
+		assertTrue(Medicationlist.getText().contains(productName));
+	}
 
 }
