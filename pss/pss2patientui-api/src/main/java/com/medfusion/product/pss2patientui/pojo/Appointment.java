@@ -78,8 +78,26 @@ public class Appointment {
 
 	private String currentDate;
 	private String currentTimeZone;
+	private String businesshourStartTime;
+	private String businesshourEndTime;
+	
+	private String gmailUserName;
+	
+	public String getBusinesshourStartTime() {
+		return businesshourStartTime;
+	}
 
+	public void setBusinesshourStartTime(String businesshourStartTime) {
+		this.businesshourStartTime = businesshourStartTime;
+	}
 
+	public String getBusinesshourEndTime() {
+		return businesshourEndTime;
+	}
+
+	public void setBusinesshourEndTime(String businesshourEndTime) {
+		this.businesshourEndTime = businesshourEndTime;
+	}
 
 	private Boolean isCancelButtonPresent;
 	private int displaySlotCountLength;
@@ -121,6 +139,14 @@ public class Appointment {
 	}
 
 	public Appointment() {}
+	
+	public String getGmailUserName() {
+		return gmailUserName;
+	}
+
+	public void setGmailUserName(String gmailUserName) {
+		this.gmailUserName = gmailUserName;
+	}
 
 	public String getCurrentTimeZone() {
 		return currentTimeZone;

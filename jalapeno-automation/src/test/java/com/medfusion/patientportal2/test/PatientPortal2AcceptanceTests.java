@@ -2956,6 +2956,7 @@ public class PatientPortal2AcceptanceTests extends BaseTestNGWebDriver {
 		payBillsPage.clickPaymentHistory();
 
 		logStep("Verifying credit card ending in payment receipt");
+		String creditCardEnding=payBillsPage.getReceiptCreditCardDigit();
 		assertTrue(payBillsPage.getReceiptCreditCardDigit().equals(creditCard.getLastFourDigits()));
 		homePage.clickOnLogout();
 		
@@ -2977,7 +2978,7 @@ public class PatientPortal2AcceptanceTests extends BaseTestNGWebDriver {
 				testSecondsTaken(messageBuildingStart));
 		assertNotNull(email, "Error: No new message notification recent enough found");
 		String emailBody = email.getBody();
-		assertTrue(emailBody.contains("Receipt"));
+		assertTrue(emailBody.contains("************"+creditCardEnding));
 		
 		homePage.clickOnLogout();
 

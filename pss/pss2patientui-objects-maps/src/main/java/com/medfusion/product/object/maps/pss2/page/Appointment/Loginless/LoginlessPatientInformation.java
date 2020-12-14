@@ -172,6 +172,7 @@ public class LoginlessPatientInformation extends PSS2MainPage {
 		inputPrimaryPhoneNumber.sendKeys(phoneNumber);
 		commonMethods.highlightElement(inputEmail);
 		inputEmail.sendKeys(email);
+		log("Email id used= " + email);
 		jse.executeScript("window.scrollTo(0, 300)");
 		Thread.sleep(3000);
 		commonMethods.highlightElement(inputZip);
