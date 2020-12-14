@@ -80,24 +80,10 @@ public class Appointment {
 	private String currentTimeZone;
 	private String businesshourStartTime;
 	private String businesshourEndTime;
-	
+	private String maxperDay;
 	private String gmailUserName;
 	
-	public String getBusinesshourStartTime() {
-		return businesshourStartTime;
-	}
-
-	public void setBusinesshourStartTime(String businesshourStartTime) {
-		this.businesshourStartTime = businesshourStartTime;
-	}
-
-	public String getBusinesshourEndTime() {
-		return businesshourEndTime;
-	}
-
-	public void setBusinesshourEndTime(String businesshourEndTime) {
-		this.businesshourEndTime = businesshourEndTime;
-	}
+	
 
 	private Boolean isCancelButtonPresent;
 	private int displaySlotCountLength;
@@ -123,6 +109,15 @@ public class Appointment {
 	private boolean isAnonymousFlow = false;
 	private boolean isinsuranceVisible = false;
 	private boolean isstartpointPresent = false;
+	private boolean resourcetoggleStatus = false;
+
+	public boolean isResourcetoggleStatus() {
+		return resourcetoggleStatus;
+	}
+
+	public void setResourcetoggleStatus(boolean resourcetoggleStatus) {
+		this.resourcetoggleStatus = resourcetoggleStatus;
+	}
 
 	private boolean showCancellationRescheduleReason = false;
 	private boolean showCancellationReasonPM = false;
@@ -146,6 +141,31 @@ public class Appointment {
 
 	public void setGmailUserName(String gmailUserName) {
 		this.gmailUserName = gmailUserName;
+	}
+
+
+	public String getMaxperDay() {
+		return maxperDay;
+	}
+
+	public void setMaxperDay(String maxperDay) {
+		this.maxperDay = maxperDay;
+	}
+
+	public String getBusinesshourStartTime() {
+		return businesshourStartTime;
+	}
+
+	public void setBusinesshourStartTime(String businesshourStartTime) {
+		this.businesshourStartTime = businesshourStartTime;
+	}
+
+	public String getBusinesshourEndTime() {
+		return businesshourEndTime;
+	}
+
+	public void setBusinesshourEndTime(String businesshourEndTime) {
+		this.businesshourEndTime = businesshourEndTime;
 	}
 
 	public String getCurrentTimeZone() {

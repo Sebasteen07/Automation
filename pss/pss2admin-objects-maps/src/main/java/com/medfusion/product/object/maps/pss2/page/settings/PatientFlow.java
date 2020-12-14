@@ -66,6 +66,16 @@ public class PatientFlow extends SettingsTab {
 	@FindBy(how = How.XPATH, using = "//*[@id=\"flow\"]/div[3]/div[2]/form/fieldset/div/div/button")
 	private WebElement saveRuleButton;
 
+	@FindBy(how = How.XPATH, using = "//*[@id='showProvider']")
+	private WebElement providerToggle;
+
+	@FindBy(how = How.XPATH, using = "//*[@id='flow']/form/div/div[2]/div/label[1]/i")
+	private WebElement providerToggleCheckBox;
+
+	@FindBy(how = How.XPATH, using = "//*[@id='flow']/form/div/div[2]/div/label[2]")
+	private WebElement providerToggleLabe;
+
+
 	public PatientFlow(WebDriver driver) {
 		super(driver);
 	}
@@ -182,6 +192,22 @@ public class PatientFlow extends SettingsTab {
 		} else {
 			return false;
 		}
+
+	}
+
+	public boolean resourcetoggleStatus() throws InterruptedException {
+
+		commonMethods.highlightElement(providerToggleLabe);
+		commonMethods.highlightElement(providerToggleCheckBox);
+		log(insuranceToggle.getAttribute("ng-reflect-model"));
+		boolean bool = Boolean.parseBoolean(providerToggle.getAttribute("ng-reflect-model"));
+		return bool;
+	}
+
+	public void clickonProviderToggle() {
+		providerToggleCheckBox.click();
+		log("clicked on providertoggle");
+
 
 	}
 }

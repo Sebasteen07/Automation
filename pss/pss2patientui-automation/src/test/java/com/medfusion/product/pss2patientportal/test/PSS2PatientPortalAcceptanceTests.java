@@ -1,8 +1,8 @@
 // Copyright 2018-2020 NXGN Management, LLC. All Rights Reserved.
 package com.medfusion.product.pss2patientportal.test;
+
 import java.util.ArrayList;
 
-import org.openqa.selenium.WebDriver;
 import org.testng.annotations.DataProvider;
 import org.testng.annotations.Parameters;
 import org.testng.annotations.Test;
@@ -2354,7 +2354,7 @@ public class PSS2PatientPortalAcceptanceTests extends BaseTestNGWebDriver {
 		PSSPatientUtils psspatientutils = new PSSPatientUtils();
 		PSSAdminUtils adminUtils = new PSSAdminUtils();
 		log("Login to PSS 2.0 Admin portal");
-		adminUtils.leadTime(driver, adminuser, testData);
+		adminUtils.leadTimenotReserve(driver, adminuser, testData);
 		log("Fetch the rules set in Admin");
 		String rule = adminuser.getRule();
 		log("rule are " + rule);
@@ -2483,4 +2483,234 @@ public class PSS2PatientPortalAcceptanceTests extends BaseTestNGWebDriver {
 		log("Current time and lead time is  " + psspatientutils.leadTime(testData));
 
 	}
+
+	@Test(enabled = true, groups = {"AcceptanceTests"}, retryAnalyzer = RetryAnalyzer.class)
+	public void testMaxperDayGE() throws Exception {
+
+		log("Test To Verify Lead Time Functionality");
+		PSSPropertyFileLoader propertyData = new PSSPropertyFileLoader();
+		Appointment testData = new Appointment();
+		AdminUser adminuser = new AdminUser();
+		propertyData.setAdminGE(adminuser);
+		propertyData.setAppointmentResponseGE(testData);
+		PSSPatientUtils psspatientutils = new PSSPatientUtils();
+		PSSAdminUtils adminUtils = new PSSAdminUtils();
+		log("Login to PSS 2.0 Admin portal");
+		adminUtils.maxPerDayGE(driver, adminuser, testData);
+		log("Fetch the rules set in Admin");
+		String rule = adminuser.getRule();
+		log("rule are " + rule);
+		rule = rule.replaceAll(" ", "");
+		JalapenoLoginPage loginPage = new JalapenoLoginPage(driver, testData.getPatientPortalURL());
+		JalapenoHomePage homePage = loginPage.login(testData.getPatientPortalUserName(), testData.getPatientPortalPassword());
+		log("Detecting if Home Page is opened");
+		assertTrue(homePage.isHomeButtonPresent(driver));
+		homePage.clickFeaturedAppointmentsReq();
+		log("Wait for PSS 2.0 Patient UI to be loaded.");
+		Thread.sleep(6000);
+		log("Switching tabs");
+		String currentUrl = psspatientutils.switchtabs(driver);
+		HomePage homepage = new HomePage(driver, currentUrl);
+		Thread.sleep(15000);
+		if (homepage.isPopUP()) {
+			homepage.popUPClick();
+		}
+		Thread.sleep(12000);
+		log("Verify PSS2 patient portal elements");
+		assertTrue(homepage.areBasicPageElementsPresent());
+		log("Successfully upto Home page");
+		Log4jUtil.log("Step 8: Select Provider for appointment.");
+		Provider provider = null;
+		StartAppointmentInOrder startappointmentInOrder = null;
+		int n = Integer.parseInt(testData.getMaxperDay());
+		for (int i = 0; i < n; i++) {
+			Log4jUtil.log("Book an appointment as per the max per day");
+			startappointmentInOrder = homepage.skipInsurance(driver);
+			provider = startappointmentInOrder.selectFirstProvider(PSSConstants.START_PROVIDER);
+			Log4jUtil.log("clicked on provider ");
+			Log4jUtil.log("Step 9: Verfiy Provider Page and provider =" + testData.getProvider());
+			Log4jUtil.log("going to choose an provider");
+			assertTrue(provider.areBasicPageElementsPresent());
+			Log4jUtil.log("basic element are present");
+			AppointmentPage appointmentpage = provider.selectAppointment(testData.getProvider());
+			Log4jUtil.log("Step 10: Verfiy Appointment Page and appointment to be selected = " + testData.getAppointmenttype());
+			assertTrue(appointmentpage.areBasicPageElementsPresent());
+			Location location = appointmentpage.selectTypeOfLocation(testData.getAppointmenttype(), true);
+			Log4jUtil.log("Step 11: Verfiy Location Page and location = " + testData.getAppointmenttype());
+			AppointmentDateTime aptDateTime = location.selectDatTime(testData.getLocation());
+			aptDateTime.selectDate(testData.getIsNextDayBooking());
+			Thread.sleep(6000);
+			psspatientutils.clickOnSubmitAppt1(false, aptDateTime, testData, driver);
+		}
+		Log4jUtil.log("Max per day appointment booked and now verifying the current date is disabled or Not");
+		startappointmentInOrder = homepage.skipInsurance(driver);
+		provider = startappointmentInOrder.selectFirstProvider(PSSConstants.START_PROVIDER);
+		Log4jUtil.log("clicked on provider ");
+		Log4jUtil.log("Step 9: Verfiy Provider Page and provider =" + testData.getProvider());
+		Log4jUtil.log("going to choose an provider");
+		assertTrue(provider.areBasicPageElementsPresent());
+		Log4jUtil.log("basic element are present");
+		AppointmentPage appointmentpage = provider.selectAppointment(testData.getProvider());
+		Log4jUtil.log("Step 10: Verfiy Appointment Page and appointment to be selected = " + testData.getAppointmenttype());
+		assertTrue(appointmentpage.areBasicPageElementsPresent());
+		Location location = appointmentpage.selectTypeOfLocation(testData.getAppointmenttype(), true);
+		Log4jUtil.log("Step 11: Verfiy Location Page and location = " + testData.getAppointmenttype());
+		AppointmentDateTime aptDateTime = location.selectDatTime(testData.getLocation());
+		aptDateTime.selectDateforMaxPDay(testData.getIsNextDayBooking());
+		Thread.sleep(6000);
+	}
+
+
+	@Test(enabled = true, groups = {"AcceptanceTests"}, retryAnalyzer = RetryAnalyzer.class)
+	public void testMaxperDayAT() throws Exception {
+
+		log("Test To Verify Lead Time Functionality");
+		PSSPropertyFileLoader propertyData = new PSSPropertyFileLoader();
+		Appointment testData = new Appointment();
+		AdminUser adminuser = new AdminUser();
+		propertyData.setAdminAT(adminuser);
+		propertyData.setAppointmentResponseAT(testData);
+		PSSPatientUtils psspatientutils = new PSSPatientUtils();
+		PSSAdminUtils adminUtils = new PSSAdminUtils();
+		log("Login to PSS 2.0 Admin portal");
+		adminUtils.maxPerDayAT(driver, adminuser, testData);
+		log("Fetch the rules set in Admin");
+		String rule = adminuser.getRule();
+		log("rule are " + rule);
+		rule = rule.replaceAll(" ", "");
+		JalapenoLoginPage loginPage = new JalapenoLoginPage(driver, testData.getPatientPortalURL());
+		JalapenoHomePage homePage = loginPage.login(testData.getPatientPortalUserName(), testData.getPatientPortalPassword());
+		log("Detecting if Home Page is opened");
+		assertTrue(homePage.isHomeButtonPresent(driver));
+		homePage.clickFeaturedAppointmentsReq();
+		log("Wait for PSS 2.0 Patient UI to be loaded.");
+		Thread.sleep(6000);
+		log("Switching tabs");
+		String currentUrl = psspatientutils.switchtabs(driver);
+		HomePage homepage = new HomePage(driver, currentUrl);
+		Thread.sleep(15000);
+		if (homepage.isPopUP()) {
+			homepage.popUPClick();
+		}
+		Thread.sleep(12000);
+		log("Verify PSS2 patient portal elements");
+		assertTrue(homepage.areBasicPageElementsPresent());
+		log("Successfully upto Home page");
+		Log4jUtil.log("Step 8: Select Provider for appointment.");
+		Provider provider = null;
+		StartAppointmentInOrder startappointmentInOrder = null;
+		int n = Integer.parseInt(testData.getMaxperDay());
+		for (int i = 0; i < n; i++) {
+			Log4jUtil.log("Book an appointment as per the max per day");
+			startappointmentInOrder = homepage.skipInsurance(driver);
+			provider = startappointmentInOrder.selectFirstProvider(PSSConstants.START_PROVIDER);
+			Log4jUtil.log("clicked on provider ");
+			Log4jUtil.log("Step 9: Verfiy Provider Page and provider =" + testData.getProvider());
+			Log4jUtil.log("going to choose an provider");
+			assertTrue(provider.areBasicPageElementsPresent());
+			Log4jUtil.log("basic element are present");
+			AppointmentPage appointmentpage = provider.selectAppointment(testData.getProvider());
+			Log4jUtil.log("Step 10: Verfiy Appointment Page and appointment to be selected = " + testData.getAppointmenttype());
+			assertTrue(appointmentpage.areBasicPageElementsPresent());
+			Location location = appointmentpage.selectTypeOfLocation(testData.getAppointmenttype(), true);
+			Log4jUtil.log("Step 11: Verfiy Location Page and location = " + testData.getAppointmenttype());
+			AppointmentDateTime aptDateTime = location.selectDatTime(testData.getLocation());
+			aptDateTime.selectDate(testData.getIsNextDayBooking());
+			Thread.sleep(6000);
+			psspatientutils.clickOnSubmitAppt1(false, aptDateTime, testData, driver);
+		}
+		Log4jUtil.log("Max per day appointment booked and now verifying the current date is disabled or Not");
+		startappointmentInOrder = homepage.skipInsurance(driver);
+		provider = startappointmentInOrder.selectFirstProvider(PSSConstants.START_PROVIDER);
+		Log4jUtil.log("clicked on provider ");
+		Log4jUtil.log("Step 9: Verfiy Provider Page and provider =" + testData.getProvider());
+		Log4jUtil.log("going to choose an provider");
+		assertTrue(provider.areBasicPageElementsPresent());
+		Log4jUtil.log("basic element are present");
+		AppointmentPage appointmentpage = provider.selectAppointment(testData.getProvider());
+		Log4jUtil.log("Step 10: Verfiy Appointment Page and appointment to be selected = " + testData.getAppointmenttype());
+		assertTrue(appointmentpage.areBasicPageElementsPresent());
+		Location location = appointmentpage.selectTypeOfLocation(testData.getAppointmenttype(), true);
+		Log4jUtil.log("Step 11: Verfiy Location Page and location = " + testData.getAppointmenttype());
+		AppointmentDateTime aptDateTime = location.selectDatTime(testData.getLocation());
+		aptDateTime.selectDateforMaxPDay(testData.getIsNextDayBooking());
+	}
+
+	@Test(enabled = true, groups = {"AcceptanceTests"}, retryAnalyzer = RetryAnalyzer.class)
+	public void testMaxperDayNG() throws Exception {
+		log("Test To Verify Lead Time Functionality");
+		PSSPropertyFileLoader propertyData = new PSSPropertyFileLoader();
+		Appointment testData = new Appointment();
+		AdminUser adminuser = new AdminUser();
+		propertyData.setAdminNG(adminuser);
+		propertyData.setAppointmentResponseNG(testData);
+		PSSPatientUtils psspatientutils = new PSSPatientUtils();
+		PSSAdminUtils adminUtils = new PSSAdminUtils();
+		log("Login to PSS 2.0 Admin portal");
+		adminUtils.maxPerDayAT(driver, adminuser, testData);
+		log("Fetch the rules set in Admin");
+		String rule = adminuser.getRule();
+		log("rule are " + rule);
+		rule = rule.replaceAll(" ", "");
+		JalapenoLoginPage loginPage = new JalapenoLoginPage(driver, testData.getPatientPortalURL());
+		JalapenoHomePage homePage = loginPage.login(testData.getPatientPortalUserName(), testData.getPatientPortalPassword());
+		log("Detecting if Home Page is opened");
+		assertTrue(homePage.isHomeButtonPresent(driver));
+		homePage.clickFeaturedAppointmentsReq();
+		log("Wait for PSS 2.0 Patient UI to be loaded.");
+		Thread.sleep(6000);
+		log("Switching tabs");
+		String currentUrl = psspatientutils.switchtabs(driver);
+		HomePage homepage = new HomePage(driver, currentUrl);
+		Thread.sleep(15000);
+		if (homepage.isPopUP()) {
+			homepage.popUPClick();
+		}
+		Thread.sleep(12000);
+		log("Verify PSS2 patient portal elements");
+		assertTrue(homepage.areBasicPageElementsPresent());
+		log("Successfully upto Home page");
+
+		Log4jUtil.log("Step 8: Select Provider for appointment.");
+		Provider provider = null;
+		StartAppointmentInOrder startappointmentInOrder = null;
+		int n = Integer.parseInt(testData.getMaxperDay());
+		for (int i = 0; i < n; i++) {
+			Log4jUtil.log("Book an appointment as per max per day");
+			startappointmentInOrder = homepage.skipInsurance(driver);
+			provider = startappointmentInOrder.selectFirstProvider(PSSConstants.START_PROVIDER);
+			Log4jUtil.log("clicked on provider ");
+			Log4jUtil.log("Step 9: Verfiy Provider Page and provider =" + testData.getProvider());
+			Log4jUtil.log("going to choose an provider");
+			assertTrue(provider.areBasicPageElementsPresent());
+			Log4jUtil.log("basic element are present");
+			AppointmentPage appointmentpage = provider.selectAppointment(testData.getProvider());
+			Log4jUtil.log("Step 10: Verfiy Appointment Page and appointment to be selected = " + testData.getAppointmenttype());
+			assertTrue(appointmentpage.areBasicPageElementsPresent());
+			Location location = appointmentpage.selectTypeOfLocation(testData.getAppointmenttype(), true);
+			Log4jUtil.log("Step 11: Verfiy Location Page and location = " + testData.getAppointmenttype());
+			AppointmentDateTime aptDateTime = location.selectDatTime(testData.getLocation());
+			aptDateTime.selectDate(testData.getIsNextDayBooking());
+			Thread.sleep(6000);
+			psspatientutils.clickOnSubmitAppt1(false, aptDateTime, testData, driver);
+		}
+		Log4jUtil.log("Max per day appointment booked and now verifying the current date is disabled or Not");
+		startappointmentInOrder = homepage.skipInsurance(driver);
+		provider = startappointmentInOrder.selectFirstProvider(PSSConstants.START_PROVIDER);
+		Log4jUtil.log("clicked on provider ");
+		Log4jUtil.log("Step 9: Verfiy Provider Page and provider =" + testData.getProvider());
+		Log4jUtil.log("going to choose an provider");
+		assertTrue(provider.areBasicPageElementsPresent());
+		Log4jUtil.log("basic element are present");
+		AppointmentPage appointmentpage = provider.selectAppointment(testData.getProvider());
+		Log4jUtil.log("Step 10: Verfiy Appointment Page and appointment to be selected = " + testData.getAppointmenttype());
+		assertTrue(appointmentpage.areBasicPageElementsPresent());
+		Location location = appointmentpage.selectTypeOfLocation(testData.getAppointmenttype(), true);
+		Log4jUtil.log("Step 11: Verfiy Location Page and location = " + testData.getAppointmenttype());
+		AppointmentDateTime aptDateTime = location.selectDatTime(testData.getLocation());
+		aptDateTime.selectDateforMaxPDay(testData.getIsNextDayBooking());
+	}
+
 }
+
+

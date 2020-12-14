@@ -96,6 +96,9 @@ public class ManageResource extends PSS2MenuPage {
 	@FindBy(how = How.XPATH, using = "//*[@class='col-xs-12']/div/button[1]")
 	private WebElement appointmenttypeSave;
 
+	@FindBy(how = How.ID, using = "maxPerDay")
+	private WebElement maxPerDay;
+
 	public ManageResource(WebDriver driver) {
 		super(driver);
 	}
@@ -187,6 +190,16 @@ public class ManageResource extends PSS2MenuPage {
 		objSelect.selectByVisibleText("Not Reserved");
 		reservefor.click();
 		appointmenttypeSave.click();
+	}
+
+	public void maxperDay(String maxvalue) {
+		maxPerDay.clear();
+		maxPerDay.sendKeys("0");
+		appointmenttypeSave.click();
+		maxPerDay.clear();
+		maxPerDay.sendKeys(maxvalue);
+		appointmenttypeSave.click();
+
 	}
 
 }
