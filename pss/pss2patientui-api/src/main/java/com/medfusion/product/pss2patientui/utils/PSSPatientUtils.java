@@ -26,8 +26,11 @@ import java.util.TimeZone;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
+import org.openqa.selenium.By;
+import org.openqa.selenium.Keys;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
+import org.openqa.selenium.interactions.Actions;
 import org.openqa.selenium.support.PageFactory;
 import org.testng.Assert;
 
@@ -1030,10 +1033,18 @@ public class PSSPatientUtils {
 	}
 
 	public PatientIdentificationPage newtabs(WebDriver driver, String url) throws InterruptedException {
+		Actions action= new Actions(driver);
+		driver.findElement(By.tagName("body")).sendKeys(Keys.CONTROL +"t");
+		driver.findElement(By.tagName("body")).sendKeys(Keys.CONTROL +"\t");
+		action.sendKeys(driver.findElement(By.tagName("html")), Keys.CONTROL).sendKeys(driver.findElement(By.tagName("html")),Keys.NUMPAD2).build().perform();
+
+		String selectLinkOpeninNewTab = Keys.chord(Keys.CONTROL,Keys.RETURN); 
+		driver.findElement(By.cssSelector("body")).sendKeys(selectLinkOpeninNewTab);
 		ArrayList<String> tabs = new ArrayList<String>(driver.getWindowHandles());
-		driver.switchTo().window(tabs.get(0)); // switches to new tab
+		Log4jUtil.log("Size of the tab open- "+tabs.size());
+		//driver.switchTo().window(tabs.get(0)); // switches to new tab
 		driver.get(url);
-		driver.navigate().to(url);
+		//driver.navigate().to(url);
 		return PageFactory.initElements(driver, PatientIdentificationPage.class);
 	}
 

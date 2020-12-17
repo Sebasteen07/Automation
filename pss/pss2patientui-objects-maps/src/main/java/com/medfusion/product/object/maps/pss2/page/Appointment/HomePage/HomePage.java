@@ -145,7 +145,14 @@ public class HomePage extends PSS2MainPage {
 	private WebElement dismissPopUp;
 
 	@FindBy(how = How.XPATH, using = "//*[@id=\"upcomingevents\"]/h2/span")
-	private WebElement upCmgAptLabel;	
+	private WebElement upCmgAptLabel;
+	
+	
+	@FindBy(how = How.XPATH, using = "//span[@class='circle']")
+	private WebElement logoutCircle;
+
+	@FindBy(how = How.XPATH, using = "//*[@class='dropdown-menu']//a")
+	private WebElement logout;
 
 	public HomePage(WebDriver driver) {
 		super(driver);
@@ -581,6 +588,17 @@ public class HomePage extends PSS2MainPage {
 	public Speciality specilitypage() {
 		log("it returns on specility page");
 		return PageFactory.initElements(driver, Speciality.class);
+	}
+	
+	public void patientLogout(WebDriver driver) throws InterruptedException {
+		Thread.sleep(1000);
+		jse.executeScript("window.scrollBy(1000,0)");
+		Thread.sleep(500);
+		logoutCircle.click();
+		Thread.sleep(500);
+		IHGUtil.waitForElement(driver, 6, logout);
+		logout.click();
+		driver.manage().deleteAllCookies();
 	}
 	
 }
