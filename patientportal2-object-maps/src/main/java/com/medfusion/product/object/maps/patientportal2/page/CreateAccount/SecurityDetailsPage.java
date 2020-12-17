@@ -1,3 +1,5 @@
+//  Copyright 2013-2020 NXGN Management, LLC. All Rights Reserved.
+
 package com.medfusion.product.object.maps.patientportal2.page.CreateAccount;
 
 import java.util.ArrayList;
@@ -92,15 +94,15 @@ public class SecurityDetailsPage extends MedfusionPage {
 
 		public JalapenoHomePage fillAccountDetailsAndContinue(Patient patient) {
 				return fillAccountDetailsAndContinue(patient.getUsername(), patient.getPassword(), patient.getSecurityQuestion(), patient.getSecurityQuestionAnswer(),
-						patient.getPhoneMobile(), 3);
+						patient.getPhoneMobile(), 2);
 		}
 
 		public JalapenoHomePage fillAccountDetailsAndContinue(String userId, String password, PropertyFileLoader testData) {
-				return fillAccountDetailsAndContinue(userId, password, testData.getSecretQuestion(), testData.getSecretAnswer(), testData.getPhoneNumber(), 3);
+				return fillAccountDetailsAndContinue(userId, password, testData.getSecretQuestion(), testData.getSecretAnswer(), testData.getPhoneNumber(), 2);
 		}
 
 		public JalapenoHomePage fillAccountDetailsAndContinue(String userId, String password, String secretQuestion, String secretAnswer, String phoneNumber) {
-				return fillAccountDetailsAndContinue(userId, password, secretQuestion, secretAnswer, phoneNumber, 3);
+				return fillAccountDetailsAndContinue(userId, password, secretQuestion, secretAnswer, phoneNumber, 2);
 		}
 
 		public JalapenoHomePage fillAccountDetailsAndContinue(String userId, String password, String secretQuestion, String secretAnswer, String phoneNumber,
