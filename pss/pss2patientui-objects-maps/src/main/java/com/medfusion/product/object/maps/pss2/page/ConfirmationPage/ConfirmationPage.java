@@ -163,6 +163,7 @@ public class ConfirmationPage extends PSS2MainPage {
 		String datetext = timeConfirmation.getText();
 		String nextDate1 = datetext.substring(00, 8);
 		String confirmtime = nextDate1.replace(" ", "");
+		log("Confirmmation time is" + confirmtime);
 		return confirmtime;
 	}
 
