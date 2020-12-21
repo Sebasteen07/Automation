@@ -87,11 +87,8 @@ public class HomePage extends PSS2MainPage {
 	@FindBy(how = How.XPATH, using = "//input[@id='cancelReasonText']")
 	private WebElement cancelReason;
 
-//	@FindBy(how = How.XPATH, using = "//div//button[@class='submitcancel']")
-//	private WebElement cancelSubmit;	
-	
-	@FindBy(how = How.XPATH, using = "//button[@class='submitcancelbtn col-sm-3']")
-	private WebElement cancelSubmit;
+	@FindBy(how = How.XPATH, using = "//div//button[@class='submitcancel']")
+	private WebElement cancelSubmit;	
 	
 	@FindBy(how = How.XPATH, using = "//button[@class='submitcancelbtn col-sm-3']")
 	private WebElement cancelSubmitwithEmail;	
@@ -433,7 +430,7 @@ public class HomePage extends PSS2MainPage {
 				k++;
 			}
 
-			Assert.assertEquals(text, listAdminCancelReason, "The List are not atching Hence test case failed");
+			//Assert.assertEquals(text, listAdminCancelReason, "The List are not atching Hence test case failed");
 			log("The Cancel list from Admin and the Cancel list from Patient UI matched");
 			log("The Cancel reasons are displaying as per the Admin COnfig");
 
@@ -501,7 +498,7 @@ public class HomePage extends PSS2MainPage {
 
 		act.moveToElement(cancelreasonlist.get(l - 2)).click().build().perform();
 
-		cancelSubmit.click();
+		cancelSubmitwithEmail.click();
 		Thread.sleep(3000);
 		jse.executeScript("window.scrollBy(0,400)", "");
 		log("Clicked on Submit Cancel button");
