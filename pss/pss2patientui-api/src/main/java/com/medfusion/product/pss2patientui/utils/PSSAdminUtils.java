@@ -431,6 +431,7 @@ public class PSSAdminUtils {
 		PatientFlow patientflow = psspracticeConfig.gotoPatientFlowTab();
 		adminuser.setRule(patientflow.getRule());
 		Log4jUtil.log("rule= " + patientflow.getRule());
+		setRulesNoSpecialitySet1(patientflow);
 		appointment.setIsinsuranceVisible(patientflow.insuracetogglestatus());
 		Log4jUtil.log("Insurance is Enabled= " + patientflow.insuracetogglestatus());
 		appointment.setIsstartpointPresent(patientflow.isstartpagepresent());
@@ -446,6 +447,9 @@ public class PSSAdminUtils {
 		appointment.setLeadtimeMinute(manageResource.getMinut());
 		Log4jUtil.log("Lead time Minute is = " + appointment.getLeadtimeMinute());
 		manageResource.notreserve();
+		Log4jUtil.log("Status for AcceptFor Same day is" + manageResource.acceptforStatus());
+		appointment.setAccepttoggleStatus(manageResource.acceptforStatus());
+		Log4jUtil.log("Status for AcceptFor Same day is" + appointment.isAccepttoggleStatus());
 		ManageLocation manageLocation = psspracticeConfig.gotoLocation();
 		manageLocation.selectlocation(appointment.getLocation());
 		appointment.setCurrentTimeZone(manageLocation.getTimezone());
@@ -522,5 +526,42 @@ public class PSSAdminUtils {
 		manageResource.maxperDay(appointment.getMaxperDay());
 		Log4jUtil.log("Max per Day is " + appointment.getMaxperDay());
 		patientflow.logout();
+	}
+
+	public void acceptforsameDay(WebDriver driver, AdminUser adminuser, Appointment appointment) throws Exception {
+		PSS2PracticeConfiguration psspracticeConfig = loginToAdminPortal(driver, adminuser);
+		psspracticeConfig = psspracticeConfig.gotoPracticeConfigTab();
+		appointment.setBusinesshourStartTime(psspracticeConfig.gettextbusineesHourStarttime());
+		appointment.setBusinesshourEndTime(psspracticeConfig.gettextbusineesHourEndtime());
+		Log4jUtil.log("Starttime is " + appointment.getBusinesshourStartTime());
+		Log4jUtil.log("End time is" + appointment.getBusinesshourEndTime());
+		PatientFlow patientflow = psspracticeConfig.gotoPatientFlowTab();
+		setRulesNoSpecialitySet1(patientflow);
+		adminuser.setRule(patientflow.getRule());
+		ManageResource manageResource = psspracticeConfig.gotoResource();
+		pageRefresh(driver);
+		manageResource.selectResource(appointment.getProvider());
+		manageResource.selectAppointmenttype(appointment.getAppointmenttype());
+		appointment.setLeadtimeDay(manageResource.getDay());
+		Log4jUtil.log("Lead time Day is = " + appointment.getLeadtimeDay());
+		appointment.setLeadtimeHour(manageResource.getHour());
+		Log4jUtil.log("Lead time Hour is = " + appointment.getLeadtimeHour());
+		appointment.setLeadtimeMinute(manageResource.getMinut());
+		Log4jUtil.log("Lead time Minute is = " + appointment.getLeadtimeMinute());
+		manageResource.notreserve();
+		appointment.setAccepttoggleStatus(manageResource.acceptforStatus());
+		Log4jUtil.log("Status for AcceptFor Same day is   " + appointment.isAccepttoggleStatus());
+		if (appointment.isAccepttoggleStatus() == true) {
+			manageResource.clickacceptsameday();
+			appointment.setAccepttoggleStatus(manageResource.acceptforStatus());
+			Log4jUtil.log("Status for AcceptFor Same day is   " + appointment.isAccepttoggleStatus());
+		}
+		ManageLocation manageLocation = psspracticeConfig.gotoLocation();
+		manageLocation.selectlocation(appointment.getLocation());
+		appointment.setCurrentTimeZone(manageLocation.getTimezone());
+		Log4jUtil.log("Current Timezone On AdminUi " + appointment.getCurrentTimeZone());
+		patientflow.logout();
+
+
 	}
 }

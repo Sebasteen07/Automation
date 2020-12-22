@@ -110,14 +110,8 @@ public class Appointment {
 	private boolean isinsuranceVisible = false;
 	private boolean isstartpointPresent = false;
 	private boolean resourcetoggleStatus = false;
+	private boolean accepttoggleStatus = false;
 
-	public boolean isResourcetoggleStatus() {
-		return resourcetoggleStatus;
-	}
-
-	public void setResourcetoggleStatus(boolean resourcetoggleStatus) {
-		this.resourcetoggleStatus = resourcetoggleStatus;
-	}
 
 	private boolean showCancellationRescheduleReason = false;
 	private boolean showCancellationReasonPM = false;
@@ -135,6 +129,23 @@ public class Appointment {
 
 	public Appointment() {}
 	
+	public boolean isResourcetoggleStatus() {
+		return resourcetoggleStatus;
+	}
+
+	public void setResourcetoggleStatus(boolean resourcetoggleStatus) {
+		this.resourcetoggleStatus = resourcetoggleStatus;
+	}
+
+	public boolean isAccepttoggleStatus() {
+		return accepttoggleStatus;
+	}
+
+	public void setAccepttoggleStatus(boolean accepttoggleStatus) {
+		this.accepttoggleStatus = accepttoggleStatus;
+	}
+
+
 	public String getGmailUserName() {
 		return gmailUserName;
 	}

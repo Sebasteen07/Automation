@@ -84,9 +84,11 @@ public class AppointmentDateTime extends PSS2MainPage {
 			driver.manage().timeouts().implicitlyWait(80, TimeUnit.SECONDS);
 		}
 		List<WebElement> appointmentList = driver.findElements(By.cssSelector(".rbc-event-content"));
-		for (int i = 0; i < appointmentList.size(); i++) {
+		log("size is " + appointmentList.size());
+		for (int i = 0; i < appointmentList.size(); i++)
+		{
 			if (appointmentList.get(0).isDisplayed()) {
-				log("Appointment Date selected=" + appointmentList.get(i + 5).getText());
+				log("Appointment Date selected=" + appointmentList.get(0).getText());
 				appointmentList.get(0).click();
 				dt = appointmentList.get(0).getText();
 				return appointmentList.get(0).getText();

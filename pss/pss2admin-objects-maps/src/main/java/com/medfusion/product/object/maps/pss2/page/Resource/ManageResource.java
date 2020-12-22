@@ -99,6 +99,13 @@ public class ManageResource extends PSS2MenuPage {
 	@FindBy(how = How.ID, using = "maxPerDay")
 	private WebElement maxPerDay;
 
+	@FindBy(how = How.XPATH, using = "//div[@class='form-group row']//div[@class='col-md-12']//label[@for='allowSameDayAppts']/input")
+	private WebElement acceptToggle;
+
+	// @FindBy(how = How.XPATH, using = "//*[@id='tab43']/div/form/fieldset[1]/div[14]/div/label[1]/i")
+	@FindBy(how = How.XPATH, using = "//div[@class='col-md-12']//label[@for='allowSameDayAppts']")
+	private WebElement acceptToggleclick;
+
 	public ManageResource(WebDriver driver) {
 		super(driver);
 	}
@@ -200,6 +207,19 @@ public class ManageResource extends PSS2MenuPage {
 		maxPerDay.sendKeys(maxvalue);
 		appointmenttypeSave.click();
 
+	}
+
+	public boolean acceptforStatus() {
+
+		log(acceptToggle.getAttribute("ng-reflect-model"));
+		boolean bool = Boolean.parseBoolean(acceptToggle.getAttribute("ng-reflect-model"));
+		return bool;
+	}
+
+	public void clickacceptsameday() {
+		acceptToggleclick.click();
+		appointmenttypeSave.click();
+		log("clicked on accceptfor sameday");
 	}
 
 }
