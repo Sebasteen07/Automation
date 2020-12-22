@@ -2092,7 +2092,7 @@ public class PatientPortal2AcceptanceTests extends BaseTestNGWebDriver {
 	}
 
 	@Test(enabled = true, groups = { "acceptance-basics" }, retryAnalyzer = RetryAnalyzer.class)
-	public void testPatientActivationEnrolment() throws Exception {
+	public void testPatientActivationEnrollment() throws Exception {
 		PropertyFileLoader testData = new PropertyFileLoader();
 		String patientsEmail = IHGUtil.createRandomEmailAddress(testData.getEmail(), '.');
 		List<ExpectedEmail> mails = new ArrayList<ExpectedEmail>();
@@ -2168,7 +2168,7 @@ public class PatientPortal2AcceptanceTests extends BaseTestNGWebDriver {
 
 	// Auto Enrollment Scenario 2, PP-2134
 	@Test(enabled = true, groups = { "acceptance-basics" }, retryAnalyzer = RetryAnalyzer.class)
-	public void testPatientAutoEnrolment() throws Exception {
+	public void testPatientAutoEnrollment() throws Exception {
 		PropertyFileLoader testData = new PropertyFileLoader();
 		String patientsEmail = IHGUtil.createRandomEmailAddress(testData.getEmail(), '.');
 		String patientFirstName = "Betapatient" + IHGUtil.createRandomNumericString();
@@ -2235,7 +2235,7 @@ public class PatientPortal2AcceptanceTests extends BaseTestNGWebDriver {
 		jalapenoHomePage.switchPractice(testData.getProperty("practiceName1"));
 
 		assertTrue(jalapenoHomePage.areBasicPageElementsPresent());
-		logStep("Auto Enrolment to Second Practice is completed");
+		logStep("Auto Enrollment to Second Practice is completed");
 	}
 	
 	@Test(enabled = true, groups = { "acceptance-basics" }, retryAnalyzer = RetryAnalyzer.class)
@@ -2268,7 +2268,8 @@ public class PatientPortal2AcceptanceTests extends BaseTestNGWebDriver {
 				testData.getPassword(), testData.getSecretQuestion(), testData.getSecretAnswer(),
 				testData.getPhoneNumber());
 
-		assertTrue(homePage.assessFamilyAccountElements(true));
+		logStep("Guardian not a patient so family account element not present");
+		assertTrue(homePage.assessFamilyAccountElements(false));
 
 		logStep("Patient Activation on Second Practice Portal- Patient Activation link will not be present");
 		PatientActivationSearchTest patientActivationSearchTest12 = new PatientActivationSearchTest();
@@ -2402,7 +2403,7 @@ public class PatientPortal2AcceptanceTests extends BaseTestNGWebDriver {
 		jalapenoHomePage.switchPractice(testData.getProperty("practiceName1"));
 
 		assertTrue(jalapenoHomePage.areBasicPageElementsPresent());
-		logStep("Auto Enrolment of Guardian and Dependent to Second Practice is completed");
+		logStep("Auto Enrollment of Guardian and Dependent to Second Practice is completed");
 	}
 
 	/**
