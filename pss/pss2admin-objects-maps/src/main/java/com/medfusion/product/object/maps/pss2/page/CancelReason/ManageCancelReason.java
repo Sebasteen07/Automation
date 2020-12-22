@@ -32,8 +32,7 @@ public class ManageCancelReason extends PSS2MenuPage {
 
 	public ArrayList<String> fetchCancelReasonList(WebDriver driver) {
 
-		ArrayList<String> list = new ArrayList<String>();
-		list.add("Other");
+		ArrayList<String> list = new ArrayList<String>();		
 		int noofreason = driver.findElements(By.xpath("//tbody[1]/tr")).size();
 		Log4jUtil.log("length " + noofreason);
 
@@ -44,13 +43,13 @@ public class ManageCancelReason extends PSS2MenuPage {
 
 			if (reasonType.getText().contains("Cancellation")) {
 
-				WebElement cancellationReasonAdmin = driver
-						.findElement(By.xpath("//tbody[1]/tr[" + i + "]/td[1]/span"));
+				WebElement cancellationReasonAdmin = driver.findElement(By.xpath("//tbody[1]/tr[" + i + "]/td[1]/span"));
 				commonMethods.highlightElement(cancellationReasonAdmin);
 				list.add(cancellationReasonAdmin.getText());
 				Log4jUtil.log("Cancellation Reason from Admin" + i + " -" + cancellationReasonAdmin.getText());
 			}
 		}
+		list.add("Other");
 		return list;
 	}
 

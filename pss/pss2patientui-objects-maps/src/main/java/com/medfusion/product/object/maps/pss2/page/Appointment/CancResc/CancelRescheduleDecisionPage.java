@@ -45,13 +45,23 @@ public class CancelRescheduleDecisionPage extends PSS2MainPage {
 		return new IHGUtil(driver).assessAllPageElements(webElementList, this.getClass());
 	}
 	
-	public HomePage clickCancel() {
+	public void clickCancelll() {
 		
 		log("The previous Appointment details are as below");
 		for (WebElement a:appointmentScheduledDetails) {
 			log(a.getText());
 		}
 		buttonCancel.click();
+	}
+	
+	public HomePage clickCancel() throws InterruptedException {
+		
+		log("The previous Appointment details are as below");
+		for (WebElement a:appointmentScheduledDetails) {
+			log(a.getText());
+		}
+		buttonCancel.click();
+		Thread.sleep(1000);
 		return PageFactory.initElements(driver, HomePage.class);
 	}
 
