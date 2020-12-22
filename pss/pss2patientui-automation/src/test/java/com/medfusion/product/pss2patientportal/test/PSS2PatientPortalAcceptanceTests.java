@@ -2944,7 +2944,7 @@ public class PSS2PatientPortalAcceptanceTests extends BaseTestNGWebDriver {
 		Thread.sleep(15000);
 		Provider provider = appointment.selectTypeOfProvider(testData.getAppointmenttype(), Boolean.valueOf(testData.getIsAppointmentPopup()));
 		Log4jUtil.log("Step 11: Verfiy Provider Page and Provider = " + testData.getProvider());
-		Thread.sleep(2000);
+		Thread.sleep(15000);
 		AppointmentDateTime aptDateTime = provider.searchForProviderFromList(testData.getProvider());
 		assertTrue(aptDateTime.areBasicPageElementsPresent());
 		String date = aptDateTime.selectDate(testData.getIsNextDayBooking());
