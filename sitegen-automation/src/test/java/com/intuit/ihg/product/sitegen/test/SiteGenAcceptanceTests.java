@@ -3,6 +3,8 @@ package com.intuit.ihg.product.sitegen.test;
 
 import java.io.IOException;
 
+import org.openqa.selenium.By;
+import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.PageFactory;
 import org.testng.annotations.BeforeClass;
 import org.testng.annotations.Test;
@@ -518,5 +520,32 @@ public class SiteGenAcceptanceTests extends BaseTestNGWebDriver {
 	    assertTrue(message2.contains("The External PharmacyID already exists for 88, please enter a unique value"));
      
 }
-	
+	@Test(enabled = true, groups = {"AcceptanceTests"}, retryAnalyzer = RetryAnalyzer.class)
+	public void testEditAndDeletePharmacy() throws Exception {
+		
+		logStep("Log In");
+		SiteGenLoginPage loginpage = new SiteGenLoginPage(driver, testData.getProperty("sitegenUrl"));
+		SiteGenHomePage pSiteGenHomePage = loginpage.login(testData.getProperty("automationUser"), testData.getProperty("automationPassword"));
+		
+		logStep("Navigate to SiteGen HomePage");
+		SiteGenPracticeHomePage practiceHome = pSiteGenHomePage.clickLinkMedfusionSiteAdministration();
+		
+		logStep("Navigate to Manage Your Pharamcies Page");
+		ManageYourPharmacies managePharmacyPage = practiceHome.clickOnPharmacy();
+	    
+		logStep("Click on Edit pharmacy Link and Edit the External Id");
+		
+		String PharmacyName = managePharmacyPage.clickonEditPharmacyLink();
+		String externalid= IHGUtil.createRandomNumericString(12);
+		AddPharmacyPage addPharma= new AddPharmacyPage(driver);
+	    addPharma.editPharmacy(externalid);
+	 
+		logStep("Click on Edit Pharmacy Link and Delete the Pharmacy");
+		managePharmacyPage.clickonEditPharmacyLink();
+		boolean isDeleted = addPharma.deletePharmacy(PharmacyName);
+		if(isDeleted)
+		{
+			logStep("Pharmacy is deleted succesfully");
+		}
+	}
 }

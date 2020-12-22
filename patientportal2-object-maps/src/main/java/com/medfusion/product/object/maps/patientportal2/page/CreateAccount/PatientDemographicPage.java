@@ -64,10 +64,10 @@ public class PatientDemographicPage extends MedfusionPage {
 	@FindBy(how = How.ID, using = "city")
 	private WebElement inputCity;
 
-	@FindBy(how = How.XPATH, using = "//*[@placeholder='State'][1]")
+	@FindBy(how = How.XPATH, using = "//div[@class='ng-input']")
 	private WebElement inputState;
-
-	@FindBy(how = How.XPATH, using = "//li[@class='ui-select-choices-group']/div[3]/span/div")
+	
+	@FindBy(how = How.XPATH, using = "//div[@class='ng-option ng-option-marked']")
 	private WebElement setState;
 
 	@FindBy(how = How.XPATH, using = "//span[@ng-click='$select.toggle($event)']")
