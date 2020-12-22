@@ -1,11 +1,10 @@
 //Copyright 2013-2020 NXGN Management, LLC. All Rights Reserved.
 package com.intuit.ihg.product.object.maps.sitegen.page.pharmacy;
 
-import org.hamcrest.core.IsEqual;
-import org.hamcrest.core.IsNull;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.FindBy;
+import org.openqa.selenium.support.PageFactory;
 import org.openqa.selenium.support.ui.Select;
 
 import com.intuit.ifs.csscat.core.pageobject.BasePageObject;
@@ -52,12 +51,16 @@ public class AddPharmacyPage  extends BasePageObject{
 	
     @FindBy(xpath="//input[@name='btn_cancel']")
 	private WebElement btnCancel;
+    
+    @FindBy(xpath="//input[@value='Delete Pharmacy']")
+    private WebElement btnDelete;
 
     @FindBy(xpath="//li[@class='sg_err_text']")
     private WebElement sameIDErrorMsg;
     
 	public AddPharmacyPage(WebDriver driver) {
 		super(driver);
+		PageFactory.initElements(driver, this);
 	}
 
 	public String fillPharmacyDetails(String externalid,boolean flag) throws InterruptedException {
@@ -88,6 +91,24 @@ public class AddPharmacyPage  extends BasePageObject{
 		return sameIDErrorMsg.getText();
 		}		
 	}
+
+	public void editPharmacy(String externalid) throws InterruptedException {
+		
+		externalPharmacyId.clear();
+		externalPharmacyId.sendKeys(externalid);
+		btnConfirmPharmacy.click();
+		Thread.sleep(2000);
+	}
+	
+	public boolean deletePharmacy(String pharmaName) throws InterruptedException
+	{
+		System.out.println("Pharmacy  to be deleted  is " +pharmaName);
+		Thread.sleep(2000);
+		btnDelete.click();
+		ManageYourPharmacies managePage= new ManageYourPharmacies(driver);
+		boolean flag= managePage.confirmPharmacyInTable(pharmaName);
+		return flag;
+		
+	}
+
 }
-
-
