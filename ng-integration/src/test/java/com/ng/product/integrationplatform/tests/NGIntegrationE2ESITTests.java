@@ -239,7 +239,7 @@ public class NGIntegrationE2ESITTests extends BaseTestNGWebDriver{
 			Thread.sleep(15000);
 			Log4jUtil.log(createPatient.getEmailAddress() + "   :    " + PortalConstants.NewPatientActivationMessage + "     :   " + PortalConstants.NewPatientActivationMessageLinkText);
 			Thread.sleep(60000);
-			String activationUrl = mail.getLinkFromEmail(createPatient.getEmailAddress(), PortalConstants.NewPatientActivationMessage, PortalConstants.NewPatientActivationMessageLinkText, 40);
+			String activationUrl = mail.getLinkFromEmail(createPatient.getEmailAddress(), PortalConstants.NewPatientActivationMessage, PortalConstants.NewPatientActivationMessageLinkText, 80);
 			Log4jUtil.log("Step 10: Moving to the link obtained from the email message");
 			Assert.assertNotNull(activationUrl, "Error: Activation link not found.");
 			Thread.sleep(20000);
@@ -524,13 +524,13 @@ public class NGIntegrationE2ESITTests extends BaseTestNGWebDriver{
 		Thread.sleep(15000);
 		Log4jUtil.log(createPatient.getEmailAddress() + "   :    " + PortalConstants.NewPatientActivationMessage + "     :   " + PortalConstants.NewPatientActivationMessageLinkText);
 		Thread.sleep(60000);
-		String activationGuardianUrl = mail.getLinkFromEmail(createPatient.getEmailAddress(), PortalConstants.NewPatientActivationMessage, PortalConstants.NewPatientActivationMessageLinkText, 40);
+		String activationGuardianUrl = mail.getLinkFromEmail(createPatient.getEmailAddress(), PortalConstants.NewPatientActivationMessage, PortalConstants.NewPatientActivationMessageLinkText, 80);
 		log("Step End: Guradian mail is received");
 		
 		log("Step 7: Verify the dependent mail");
 		Log4jUtil.log(createdependent.getEmailAddress() + "   :    " + NewDependentActivationMessage + "     :   " + PortalConstants.NewPatientActivationMessageLinkText);
 		Thread.sleep(60000);
-		String activationDependentUrl = mail.getLinkFromEmail(createdependent.getEmailAddress(), NewDependentActivationMessage, PortalConstants.NewPatientActivationMessageLinkText, 40);
+		String activationDependentUrl = mail.getLinkFromEmail(createdependent.getEmailAddress(), NewDependentActivationMessage, PortalConstants.NewPatientActivationMessageLinkText, 80);
 		log("Step End: Dependent mail is received");
 		
 		log("Step 8 : Enroll the Guardian to MedFusion Portal : step 1 - verifying identity");
@@ -570,7 +570,7 @@ public class NGIntegrationE2ESITTests extends BaseTestNGWebDriver{
 		Thread.sleep(15000);
 		Log4jUtil.log(createPatient.getEmailAddress() + "   :    " + MemberConfirmationMessage + "     :   " + PortalURL);
 		Thread.sleep(60000);
-		String MemberConfirmationUrl = mail.getLinkFromEmail(createPatient.getEmailAddress(), MemberConfirmationMessage, PortalURL, 40);
+		String MemberConfirmationUrl = mail.getLinkFromEmail(createPatient.getEmailAddress(), MemberConfirmationMessage, PortalURL, 80);
 		if(!MemberConfirmationUrl.isEmpty()){
 		log("The new member confirmation mail is received successfully");}
 		
@@ -666,7 +666,7 @@ public class NGIntegrationE2ESITTests extends BaseTestNGWebDriver{
 			log("Step 6: Verify the dependent mail");
 			Log4jUtil.log(createdependent.getEmailAddress() + "   :    " + NewDependentActivationMessage + "     :   " + PortalConstants.NewPatientActivationMessageLinkText);
 			Thread.sleep(60000);
-			String activationDependentUrl = mail.getLinkFromEmail(createdependent.getEmailAddress(), NewDependentActivationMessage, PortalConstants.NewPatientActivationMessageLinkText, 40);
+			String activationDependentUrl = mail.getLinkFromEmail(createdependent.getEmailAddress(), NewDependentActivationMessage, PortalConstants.NewPatientActivationMessageLinkText, 80);
 			log("Step End: Dependent mail is received");
 			
 			log("Step 7 : Enroll the Dependent to MedFusion Portal");
@@ -1082,7 +1082,7 @@ public class NGIntegrationE2ESITTests extends BaseTestNGWebDriver{
 			Thread.sleep(15000);
 			Log4jUtil.log(createPatient.getEmailAddress() + "   :    " + PortalConstants.NewPatientActivationMessage + "     :   " + PortalConstants.NewPatientActivationMessageLinkText);
 			Thread.sleep(60000);
-			String activationUrl = mail.getLinkFromEmail(createPatient.getEmailAddress(), PortalConstants.NewPatientActivationMessage, PortalConstants.NewPatientActivationMessageLinkText, 40);
+			String activationUrl = mail.getLinkFromEmail(createPatient.getEmailAddress(), PortalConstants.NewPatientActivationMessage, PortalConstants.NewPatientActivationMessageLinkText, 80);
 			Log4jUtil.log("Step 10: Moving to the link obtained from the email message");
 			Assert.assertNotNull(activationUrl, "Error: Activation link not found.");
 			Thread.sleep(20000);
@@ -1162,7 +1162,7 @@ public class NGIntegrationE2ESITTests extends BaseTestNGWebDriver{
 			Thread.sleep(15000);
 			Log4jUtil.log(createPatient.getEmailAddress() + "   :    " + PortalConstants.NewPatientActivationMessage + "     :   " + PortalConstants.NewPatientActivationMessageLinkText);
 			Thread.sleep(60000);
-			String activationUrl = mail.getLinkFromEmail(createPatient.getEmailAddress(), PortalConstants.NewPatientActivationMessage, PortalConstants.NewPatientActivationMessageLinkText, 40);
+			String activationUrl = mail.getLinkFromEmail(createPatient.getEmailAddress(), PortalConstants.NewPatientActivationMessage, PortalConstants.NewPatientActivationMessageLinkText, 80);
 			Log4jUtil.log("Step 10: Moving to the link obtained from the email message");
 			Assert.assertNotNull(activationUrl, "Error: Activation link not found.");
 			Thread.sleep(20000);
@@ -1433,7 +1433,7 @@ public class NGIntegrationE2ESITTests extends BaseTestNGWebDriver{
 		
 		Thread.sleep(60000);
         logStep("Waiting for welcome mail at patient inbox from second practice");  
-        String visitPortal = new Mailinator().getLinkFromEmail(createPatient.getEmailAddress(), WELCOME_EMAIL_SUBJECT_PATIENT, WELCOME_EMAIL_BUTTON_TEXT, 60);
+        String visitPortal = new Mailinator().getLinkFromEmail(createPatient.getEmailAddress(), WELCOME_EMAIL_SUBJECT_PATIENT, WELCOME_EMAIL_BUTTON_TEXT, 80);
 	    assertNotNull(visitPortal, "Error: Portal link not found.");
 	    log("Patient portal url is "+visitPortal);
 		
@@ -1491,7 +1491,7 @@ public class NGIntegrationE2ESITTests extends BaseTestNGWebDriver{
 		Thread.sleep(60000);
 		mails.add(new ExpectedEmail(createPatient.getEmailAddress(), WELCOME_EMAIL_SUBJECT_PATIENT, WELCOME_EMAIL_BODY_PATTERN_PRACTICE.replace("PracticeName", PropertyLoaderObj.getProperty("practiceName1"))));
 		mails.add(new ExpectedEmail(createPatient.getEmailAddress(), WELCOME_EMAIL_SUBJECT_PATIENT, WELCOME_EMAIL_BODY_PATTERN_PRACTICE.replace("PracticeName", PropertyLoaderObj.getProperty("practiceName3"))));
-		assertTrue(new Mailinator().areAllMessagesInInbox(mails, 40));		
+		assertTrue(new Mailinator().areAllMessagesInInbox(mails, 80));		
 		
 		Thread.sleep(10000);
 		logStep("Waiting for welcome mail at patient inbox from second practice");        
@@ -1703,7 +1703,7 @@ public class NGIntegrationE2ESITTests extends BaseTestNGWebDriver{
 			Thread.sleep(60000);	
 			logStep("Logging into Mailinator and getting Patient Activation url for first Practice");
 	        String activationUrl = mail.getLinkFromEmail(createPatient.getEmailAddress(),
-	                INVITE_EMAIL_SUBJECT_PATIENT + PropertyLoaderObj.getProperty("practiceName4"), PortalConstants.NewPatientActivationMessageLinkText, 60);
+	                INVITE_EMAIL_SUBJECT_PATIENT + PropertyLoaderObj.getProperty("practiceName4"), PortalConstants.NewPatientActivationMessageLinkText, 80);
 	        assertNotNull(activationUrl, "Error: Activation link not found.");
 
 	    logStep("Moving to the link obtained from the email message and enroll the Patient to MedFusion Portal : step 1 - verifying identity");
@@ -1929,7 +1929,7 @@ public class NGIntegrationE2ESITTests extends BaseTestNGWebDriver{
   		log(createPatient.getEmailAddress() + "   :    " + WELCOME_EMAIL_SUBJECT_PATIENT + "     :   " + WELCOME_EMAIL_BUTTON_TEXT);
 		Thread.sleep(60000);	
 		logStep("Logging into Mailinator and getting Patient Activation url for first Practice");
-	    String visitPortal = new Mailinator().getLinkFromEmail(createPatient.getEmailAddress(), WELCOME_EMAIL_SUBJECT_PATIENT, WELCOME_EMAIL_BUTTON_TEXT, 60);
+	    String visitPortal = new Mailinator().getLinkFromEmail(createPatient.getEmailAddress(), WELCOME_EMAIL_SUBJECT_PATIENT, WELCOME_EMAIL_BUTTON_TEXT, 80);
 	    assertNotNull(visitPortal, "Error: Portal link not found.");
 	    log("Patient portal url is "+visitPortal);
 		
@@ -1947,7 +1947,7 @@ public class NGIntegrationE2ESITTests extends BaseTestNGWebDriver{
 
 		log("Waiting for invitation email");
 		String patientTrustedRepresentativeUrl = new Mailinator().getLinkFromEmail(trustedPatient.getEmailAddress(),
-				INVITE_EMAIL_SUBJECT_REPRESENTATIVE, INVITE_EMAIL_BUTTON_TEXT, 40);
+				INVITE_EMAIL_SUBJECT_REPRESENTATIVE, INVITE_EMAIL_BUTTON_TEXT, 80);
 		assertNotNull(patientTrustedRepresentativeUrl, "Error: Activation patients link not found.");
 
 		logStep("Redirecting to verification page");
@@ -2008,7 +2008,7 @@ public class NGIntegrationE2ESITTests extends BaseTestNGWebDriver{
 		log(createPatient.getEmailAddress() + "   :    " + WELCOME_EMAIL_SUBJECT_PATIENT + "     :   " + WELCOME_EMAIL_BUTTON_TEXT);
 		Thread.sleep(60000);	
 		logStep("Logging into Mailinator and getting Patient Activation url for second Practice");
-	    String visitPortal = new Mailinator().getLinkFromEmail(createPatient.getEmailAddress(), WELCOME_EMAIL_SUBJECT_PATIENT, WELCOME_EMAIL_BUTTON_TEXT, 60);
+	    String visitPortal = new Mailinator().getLinkFromEmail(createPatient.getEmailAddress(), WELCOME_EMAIL_SUBJECT_PATIENT, WELCOME_EMAIL_BUTTON_TEXT, 80);
 	    assertNotNull(visitPortal, "Error: Portal link not found.");
 	    log("Patient portal url for practice 1 is "+visitPortal);
 		
@@ -2017,7 +2017,7 @@ public class NGIntegrationE2ESITTests extends BaseTestNGWebDriver{
 		log(trustedPatient.getEmailAddress() + "   :    " + WELCOME_EMAIL_SUBJECT_PATIENT + "     :   " + WELCOME_EMAIL_BUTTON_TEXT);
 		Thread.sleep(60000);	
 		logStep("Logging into Mailinator and getting Patient Activation url for second Practice");
-	    String Portal2URL = new Mailinator().getLinkFromEmail(trustedPatient.getEmailAddress(), WELCOME_EMAIL_SUBJECT_PATIENT, WELCOME_EMAIL_BUTTON_TEXT, 60);
+	    String Portal2URL = new Mailinator().getLinkFromEmail(trustedPatient.getEmailAddress(), WELCOME_EMAIL_SUBJECT_PATIENT, WELCOME_EMAIL_BUTTON_TEXT, 80);
 	    assertNotNull(Portal2URL, "Error: Portal link not found.");
 	    log("Patient portal url for practice 2 is "+Portal2URL);		
 		
@@ -2095,7 +2095,7 @@ public class NGIntegrationE2ESITTests extends BaseTestNGWebDriver{
 		log(createPatient.getEmailAddress() + "   :    " + WELCOME_EMAIL_SUBJECT_PATIENT + "     :   " + WELCOME_EMAIL_BUTTON_TEXT);
 		Thread.sleep(60000);	
 		logStep("Logging into Mailinator and getting Patient Activation url for first Practice");
-	    String visitPortal = new Mailinator().getLinkFromEmail(createPatient.getEmailAddress(), WELCOME_EMAIL_SUBJECT_PATIENT, WELCOME_EMAIL_BUTTON_TEXT, 60);
+	    String visitPortal = new Mailinator().getLinkFromEmail(createPatient.getEmailAddress(), WELCOME_EMAIL_SUBJECT_PATIENT, WELCOME_EMAIL_BUTTON_TEXT, 80);
 	    assertNotNull(visitPortal, "Error: Portal link not found.");
 	    log("Patient portal url for practice 5 is "+visitPortal);
 		
@@ -2104,7 +2104,7 @@ public class NGIntegrationE2ESITTests extends BaseTestNGWebDriver{
 		log(trustedPatient.getEmailAddress() + "   :    " + WELCOME_EMAIL_SUBJECT_PATIENT + "     :   " + WELCOME_EMAIL_BUTTON_TEXT);
 		Thread.sleep(60000);	
 		logStep("Logging into Mailinator and getting Patient Activation url for first Practice");
-	    String Portal4URL = new Mailinator().getLinkFromEmail(trustedPatient.getEmailAddress(), WELCOME_EMAIL_SUBJECT_PATIENT, WELCOME_EMAIL_BUTTON_TEXT, 60);
+	    String Portal4URL = new Mailinator().getLinkFromEmail(trustedPatient.getEmailAddress(), WELCOME_EMAIL_SUBJECT_PATIENT, WELCOME_EMAIL_BUTTON_TEXT, 80);
 	    assertNotNull(Portal4URL, "Error: Portal link not found.");
 	    log("Patient portal url for practice 4 is "+Portal4URL);		
 		
@@ -2198,7 +2198,7 @@ public class NGIntegrationE2ESITTests extends BaseTestNGWebDriver{
 			Thread.sleep(60000);	
 			logStep("Logging into Mailinator and getting Patient Activation url for first Practice");
 	        String activationUrl = mail.getLinkFromEmail(createPatient.getEmailAddress(),
-	                INVITE_EMAIL_SUBJECT_PATIENT + PropertyLoaderObj.getProperty("E2practiceName1"), PortalConstants.NewPatientActivationMessageLinkText, 60);
+	                INVITE_EMAIL_SUBJECT_PATIENT + PropertyLoaderObj.getProperty("E2practiceName1"), PortalConstants.NewPatientActivationMessageLinkText, 80);
 	        assertNotNull(activationUrl, "Error: Activation link not found.");
 
 	    logStep("Moving to the link obtained from the email message and enroll the Patient to MedFusion Portal : step 1 - verifying identity");
@@ -2313,14 +2313,14 @@ public class NGIntegrationE2ESITTests extends BaseTestNGWebDriver{
 		Thread.sleep(15000);
 		Log4jUtil.log(createPatient.getEmailAddress() + "   :    " + INVITE_EMAIL_SUBJECT_PATIENT + PropertyLoaderObj.getProperty("practiceName1") + "     :   " + PortalConstants.NewPatientActivationMessageLinkText);
 		Thread.sleep(60000);
-		String activationGuardianUrl = mail.getLinkFromEmail(createPatient.getEmailAddress(), INVITE_EMAIL_SUBJECT_PATIENT + PropertyLoaderObj.getProperty("practiceName1"), PortalConstants.NewPatientActivationMessageLinkText, 40);
+		String activationGuardianUrl = mail.getLinkFromEmail(createPatient.getEmailAddress(), INVITE_EMAIL_SUBJECT_PATIENT + PropertyLoaderObj.getProperty("practiceName1"), PortalConstants.NewPatientActivationMessageLinkText, 80);
 		assertNotNull(activationGuardianUrl,"Error: No Registeration email found with specified subject: " + INVITE_EMAIL_SUBJECT_PATIENT + PropertyLoaderObj.getProperty("practiceName1"));
 		log("Step End: Guradian mail is received");
 		
 		logStep("Verify the dependent mail");
 		Log4jUtil.log(createdependent.getEmailAddress() + "   :    " + NewDependentActivationMessage + PropertyLoaderObj.getProperty("practiceName1")+ "     :   " + PortalConstants.NewPatientActivationMessageLinkText);
 		Thread.sleep(60000);
-		String activationDependentUrl = mail.getLinkFromEmail(createdependent.getEmailAddress(), NewDependentActivationMessage + PropertyLoaderObj.getProperty("practiceName1"), PortalConstants.NewPatientActivationMessageLinkText, 40);
+		String activationDependentUrl = mail.getLinkFromEmail(createdependent.getEmailAddress(), NewDependentActivationMessage + PropertyLoaderObj.getProperty("practiceName1"), PortalConstants.NewPatientActivationMessageLinkText, 80);
 		assertNotNull(activationDependentUrl,"Error: No Registeration email found with specified subject: " + NewDependentActivationMessage + PropertyLoaderObj.getProperty("practiceName1"));
 		log("Step End: Dependent mail is received");
 		
@@ -2452,7 +2452,7 @@ public class NGIntegrationE2ESITTests extends BaseTestNGWebDriver{
 			logStep("Verify the dependent mail");
 			Log4jUtil.log(createdependent.getEmailAddress() + "   :    " + NewDependentActivationMessage + "     :   " + PortalConstants.NewPatientActivationMessageLinkText);
 			Thread.sleep(60000);
-			String activationDependentUrl = mail.getLinkFromEmail(createdependent.getEmailAddress(), NewDependentActivationMessage, PortalConstants.NewPatientActivationMessageLinkText, 40);
+			String activationDependentUrl = mail.getLinkFromEmail(createdependent.getEmailAddress(), NewDependentActivationMessage, PortalConstants.NewPatientActivationMessageLinkText, 80);
 			log("Step End: Dependent mail is received");
 			
 			logStep("Enroll the Dependent to MedFusion Portal");
@@ -2560,7 +2560,7 @@ public class NGIntegrationE2ESITTests extends BaseTestNGWebDriver{
 			Thread.sleep(60000);
 			logStep("Logging into Mailinator and getting Patient Activation url for first Practice");
 	        String activationUrl = mail.getLinkFromEmail(createPatient.getEmailAddress(),
-	                INVITE_EMAIL_SUBJECT_PATIENT + practiceName, PortalConstants.NewPatientActivationMessageLinkText, 40);
+	                INVITE_EMAIL_SUBJECT_PATIENT + practiceName, PortalConstants.NewPatientActivationMessageLinkText, 80);
 	        assertNotNull(activationUrl, "Error: Activation link not found.");
 
 	    logStep("Moving to the link obtained from the email message and enroll the Patient to MedFusion Portal : step 1 - verifying identity");
@@ -2694,7 +2694,7 @@ public class NGIntegrationE2ESITTests extends BaseTestNGWebDriver{
 		Thread.sleep(60000);	
 		logStep("Logging into Mailinator and getting Patient Activation url for first Practice");
         String activationUrl = mail.getLinkFromEmail(createPatient.getEmailAddress(),
-                INVITE_EMAIL_SUBJECT_PATIENT + practiceName, PortalConstants.NewPatientActivationMessageLinkText, 40);
+                INVITE_EMAIL_SUBJECT_PATIENT + practiceName, PortalConstants.NewPatientActivationMessageLinkText, 80);
         assertNotNull(activationUrl, "Error: Activation link not found.");
 
         logStep("Moving to the link obtained from the email message and enroll the Patient to MedFusion Portal : step 1 - verifying identity");
@@ -2963,13 +2963,13 @@ public class NGIntegrationE2ESITTests extends BaseTestNGWebDriver{
 			Thread.sleep(15000);
 			Log4jUtil.log(createPatient.getEmailAddress() + "   :    " + PortalConstants.NewPatientActivationMessage + "     :   " + PortalConstants.NewPatientActivationMessageLinkText);
 			Thread.sleep(60000);
-			String activationGuardianUrl = mail.getLinkFromEmail(createPatient.getEmailAddress(), PortalConstants.NewPatientActivationMessage, PortalConstants.NewPatientActivationMessageLinkText, 40);
+			String activationGuardianUrl = mail.getLinkFromEmail(createPatient.getEmailAddress(), PortalConstants.NewPatientActivationMessage, PortalConstants.NewPatientActivationMessageLinkText, 80);
 			log("Step End: Guradian mail is received");
 			
 			logStep("Verify the dependent mail");
 			Log4jUtil.log(createdependent.getEmailAddress() + "   :    " + NewDependentActivationMessage + "     :   " + PortalConstants.NewPatientActivationMessageLinkText);
 			Thread.sleep(60000);
-			String activationDependentUrl = mail.getLinkFromEmail(createdependent.getEmailAddress(), NewDependentActivationMessage, PortalConstants.NewPatientActivationMessageLinkText, 40);
+			String activationDependentUrl = mail.getLinkFromEmail(createdependent.getEmailAddress(), NewDependentActivationMessage, PortalConstants.NewPatientActivationMessageLinkText, 80);
 			log("Step End: Dependent mail is received");
 			
 			logStep("Enroll the Guardian to MedFusion Portal : step 1 - verifying identity");
@@ -3110,7 +3110,7 @@ public class NGIntegrationE2ESITTests extends BaseTestNGWebDriver{
   		log(createPatient.getEmailAddress() + "   :    " + WELCOME_EMAIL_SUBJECT_PATIENT + "     :   " + WELCOME_EMAIL_BUTTON_TEXT);
 		Thread.sleep(60000);	
 		logStep("Logging into Mailinator and getting Patient Activation url for first Practice");
-	    String visitPortal = new Mailinator().getLinkFromEmail(createPatient.getEmailAddress(), WELCOME_EMAIL_SUBJECT_PATIENT, WELCOME_EMAIL_BUTTON_TEXT, 60);
+	    String visitPortal = new Mailinator().getLinkFromEmail(createPatient.getEmailAddress(), WELCOME_EMAIL_SUBJECT_PATIENT, WELCOME_EMAIL_BUTTON_TEXT, 80);
 	    assertNotNull(visitPortal, "Error: Portal link not found.");
 	    log("Patient portal url is "+visitPortal);
 		
@@ -3128,7 +3128,7 @@ public class NGIntegrationE2ESITTests extends BaseTestNGWebDriver{
 
 		log("Waiting for invitation email");
 		String patientTrustedRepresentativeUrl = new Mailinator().getLinkFromEmail(trustedPatient.getEmailAddress(),
-				INVITE_EMAIL_SUBJECT_REPRESENTATIVE, INVITE_EMAIL_BUTTON_TEXT, 40);
+				INVITE_EMAIL_SUBJECT_REPRESENTATIVE, INVITE_EMAIL_BUTTON_TEXT, 80);
 		assertNotNull(patientTrustedRepresentativeUrl, "Error: Activation patients link not found.");
 
 		logStep("Redirecting to verification page");
@@ -3541,7 +3541,7 @@ public class NGIntegrationE2ESITTests extends BaseTestNGWebDriver{
 		log(createPatient.getEmailAddress() + "   :    " + WELCOME_EMAIL_SUBJECT_PATIENT + "     :   " + WELCOME_EMAIL_BUTTON_TEXT);
 		Thread.sleep(60000);	
 		logStep("Logging into Mailinator and getting Patient Activation url for second Practice");
-	    String visitPortal = new Mailinator().getLinkFromEmail(createPatient.getEmailAddress(), WELCOME_EMAIL_SUBJECT_PATIENT, WELCOME_EMAIL_BUTTON_TEXT, 60);
+	    String visitPortal = new Mailinator().getLinkFromEmail(createPatient.getEmailAddress(), WELCOME_EMAIL_SUBJECT_PATIENT, WELCOME_EMAIL_BUTTON_TEXT, 80);
 	    assertNotNull(visitPortal, "Error: Portal link not found.");
 	    log("Patient portal url for practice 1 is "+visitPortal);
 		
@@ -3550,7 +3550,7 @@ public class NGIntegrationE2ESITTests extends BaseTestNGWebDriver{
 		log(trustedPatient.getEmailAddress() + "   :    " + WELCOME_EMAIL_SUBJECT_PATIENT + "     :   " + WELCOME_EMAIL_BUTTON_TEXT);
 		Thread.sleep(60000);	
 		logStep("Logging into Mailinator and getting Patient Activation url for second Practice");
-	    String Portal2URL = new Mailinator().getLinkFromEmail(trustedPatient.getEmailAddress(), WELCOME_EMAIL_SUBJECT_PATIENT, WELCOME_EMAIL_BUTTON_TEXT, 60);
+	    String Portal2URL = new Mailinator().getLinkFromEmail(trustedPatient.getEmailAddress(), WELCOME_EMAIL_SUBJECT_PATIENT, WELCOME_EMAIL_BUTTON_TEXT, 80);
 	    assertNotNull(Portal2URL, "Error: Portal link not found.");
 	    log("Patient portal url for practice 2 is "+Portal2URL);		
 		
