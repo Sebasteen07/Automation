@@ -462,7 +462,7 @@ public class NGIntegrationE2ESITTests extends BaseTestNGWebDriver{
 	Long timestamp = System.currentTimeMillis();
 	
 	log("Step 1: Create the Guardian in NG EPM");
-	NGAPIUtils.updateLoginDefaultTo("EnterpriseGateway",PropertyLoaderObj.getProperty("NGMainEnterpriseID"), PropertyLoaderObj.getProperty("NGMainPracticeID"));
+	NGAPIUtils.updateLoginDefaultTo("EnterpriseGateway",PropertyLoaderObj.getProperty("NGEnterpiseEnrollmentEnterprise1"), PropertyLoaderObj.getProperty("NGEnterprise1Practice1"));
 	NewPatient createPatient = NGPatient.patientUsingJSON(PropertyLoaderObj,"");
 	System.setProperty("ParentEmailAddress", createPatient.getEmailAddress());
 	
@@ -515,8 +515,8 @@ public class NGIntegrationE2ESITTests extends BaseTestNGWebDriver{
 	String enrollment_status1 =DBUtils.executeQueryOnDB("NGCoreDB","select enrollment_status from pxp_enrollments where person_id = '"+dependentperson_id.trim()+"'");
 	CommonUtils.VerifyTwoValues(enrollment_status1,"equals","1");
 	
-	verifyProcessingStatusto3WithoutValidatingGetProcessingStatusCall(person_id.trim(),PropertyLoaderObj.getProperty("NGMainPracticeID"), PropertyLoaderObj.getIntegrationPracticeID());
-	verifyProcessingStatusto3WithoutValidatingGetProcessingStatusCall(dependentperson_id.trim(),PropertyLoaderObj.getProperty("NGMainPracticeID"),PropertyLoaderObj.getIntegrationPracticeID());
+	verifyProcessingStatusto3WithoutValidatingGetProcessingStatusCall(person_id.trim(),PropertyLoaderObj.getProperty("NGEnterprise1Practice1"), PropertyLoaderObj.getProperty("integrationPracticeIDE1P1"));
+	verifyProcessingStatusto3WithoutValidatingGetProcessingStatusCall(dependentperson_id.trim(),PropertyLoaderObj.getProperty("NGEnterprise1Practice1"),PropertyLoaderObj.getProperty("integrationPracticeIDE1P1"));
 	
 		Mailinator mail = new Mailinator();
 		Thread.sleep(15000);
@@ -564,7 +564,7 @@ public class NGIntegrationE2ESITTests extends BaseTestNGWebDriver{
 		jalapenoHomePage.faChangePatient();
 		assertTrue(jalapenoHomePage.assessFamilyAccountElements(true));
 
-		VerifyGetPIDCCall(timestamp, dependentperson_nbr,createdependent.getFirstName(), createdependent.getLastName(),"Registered",PropertyLoaderObj.getIntegrationPracticeID());
+		VerifyGetPIDCCall(timestamp, dependentperson_nbr,createdependent.getFirstName(), createdependent.getLastName(),"Registered",PropertyLoaderObj.getProperty("integrationPracticeIDE1P1"));
 		
 		log("Step 15: Using mailinator Mailer to retrieve the latest emails for patient and guardian");
 		Thread.sleep(15000);
@@ -1431,7 +1431,7 @@ public class NGIntegrationE2ESITTests extends BaseTestNGWebDriver{
 		Instant testStart = Instant.now();
 		NGAPIFlows.addCharttoProvider(PropertyLoaderObj.getNGE1P2Location(),PropertyLoaderObj.getNGE1P2Provider(),personId); 
 		
-		Thread.sleep(60000);
+		Thread.sleep(90000);
         logStep("Waiting for welcome mail at patient inbox from second practice");  
         String visitPortal = new Mailinator().getLinkFromEmail(createPatient.getEmailAddress(), WELCOME_EMAIL_SUBJECT_PATIENT, WELCOME_EMAIL_BUTTON_TEXT, 80);
 	    assertNotNull(visitPortal, "Error: Portal link not found.");
@@ -1754,9 +1754,7 @@ public class NGIntegrationE2ESITTests extends BaseTestNGWebDriver{
 		NewPatient createPatient = NGPatient.patientUsingJSON(PropertyLoaderObj,"complete");
 		String personId= NGAPIFlows.CreatePatientinEPM(createPatient);
 		
-		enrollPatientWithoutGetProcessingStatusValidation(createPatient,personId,PropertyLoaderObj.getProperty("practiceName1"),PropertyLoaderObj.getProperty("integrationPracticeIDE1P1"),PropertyLoaderObj.getNGEnterpiseEnrollmentE1(), PropertyLoaderObj.getNGEnterpiseEnrollmentE1P1());
-		
-		logStep("Create the chart in Practice 2");
+        logStep("Create the chart in Practice 2");
 		NGAPIUtils.updateLoginDefaultTo("EnterpriseGateway",PropertyLoaderObj.getNGEnterpiseEnrollmentE1(), PropertyLoaderObj.getNGEnterpiseEnrollmentE1P2());
 		Instant testStart = Instant.now();
 		NGAPIFlows.addCharttoProvider(PropertyLoaderObj.getNGE1P2Location(),PropertyLoaderObj.getNGE1P2Provider(),personId); 
@@ -1766,7 +1764,9 @@ public class NGIntegrationE2ESITTests extends BaseTestNGWebDriver{
 		NGAPIUtils.updateLoginDefaultTo("EnterpriseGateway",PropertyLoaderObj.getNGEnterpiseEnrollmentE1(), PropertyLoaderObj.getNGEnterpiseEnrollmentE1P3());
 		NGAPIFlows.addCharttoProvider(PropertyLoaderObj.getNGE1P3Location(),PropertyLoaderObj.getNGE1P3Provider(),personId);
 
-		Thread.sleep(60000);		
+		enrollPatientWithoutGetProcessingStatusValidation(createPatient,personId,PropertyLoaderObj.getProperty("practiceName1"),PropertyLoaderObj.getProperty("integrationPracticeIDE1P1"),PropertyLoaderObj.getNGEnterpiseEnrollmentE1(), PropertyLoaderObj.getNGEnterpiseEnrollmentE1P1());
+		
+		Thread.sleep(80000);		
 		logStep("Waiting for welcome mail at patient inbox from second practice");        
         Email visitPortal = new Mailer(createPatient.getEmailAddress()).pollForNewEmailWithSubject(WELCOME_EMAIL_SUBJECT_PATIENT, 90, testSecondsTaken(testStart));
 		assertNotNull(visitPortal, "Error: No Welcome email found recent enough with specified subject: " + WELCOME_EMAIL_SUBJECT_PATIENT);
@@ -1835,9 +1835,7 @@ public class NGIntegrationE2ESITTests extends BaseTestNGWebDriver{
 		NewPatient createPatient = NGPatient.patientUsingJSON(PropertyLoaderObj,"complete");
 		String personId= NGAPIFlows.CreatePatientinEPM(createPatient);
 		
-		enrollPatientWithoutGetProcessingStatusValidation(createPatient,personId,PropertyLoaderObj.getProperty("practiceName1"),PropertyLoaderObj.getProperty("integrationPracticeIDE1P1"),PropertyLoaderObj.getNGEnterpiseEnrollmentE1(), PropertyLoaderObj.getNGEnterpiseEnrollmentE1P1());
-		
-		logStep("Create the chart in Practice 2");
+        logStep("Create the chart in Practice 2");
 		NGAPIUtils.updateLoginDefaultTo("EnterpriseGateway",PropertyLoaderObj.getNGEnterpiseEnrollmentE1(), PropertyLoaderObj.getNGEnterpiseEnrollmentE1P2());
 		Instant testStart = Instant.now();
 		NGAPIFlows.addCharttoProvider(PropertyLoaderObj.getNGE1P2Location(),PropertyLoaderObj.getNGE1P2Provider(),personId); 
@@ -1847,7 +1845,9 @@ public class NGIntegrationE2ESITTests extends BaseTestNGWebDriver{
 		NGAPIUtils.updateLoginDefaultTo("EnterpriseGateway",PropertyLoaderObj.getNGEnterpiseEnrollmentE1(), PropertyLoaderObj.getNGEnterpiseEnrollmentE1P3());
 		NGAPIFlows.addCharttoProvider(PropertyLoaderObj.getNGE1P3Location(),PropertyLoaderObj.getNGE1P3Provider(),personId);
 		
-		Thread.sleep(60000);		
+		enrollPatientWithoutGetProcessingStatusValidation(createPatient,personId,PropertyLoaderObj.getProperty("practiceName1"),PropertyLoaderObj.getProperty("integrationPracticeIDE1P1"),PropertyLoaderObj.getNGEnterpiseEnrollmentE1(), PropertyLoaderObj.getNGEnterpiseEnrollmentE1P1());
+				
+		Thread.sleep(80000);		
 		logStep("Waiting for welcome mail at patient inbox from second practice");        
         Email visitPortal = new Mailer(createPatient.getEmailAddress()).pollForNewEmailWithSubject(WELCOME_EMAIL_SUBJECT_PATIENT, 90, testSecondsTaken(testStart));
 		assertNotNull(visitPortal, "Error: No Welcome email found recent enough with specified subject: " + WELCOME_EMAIL_SUBJECT_PATIENT);
