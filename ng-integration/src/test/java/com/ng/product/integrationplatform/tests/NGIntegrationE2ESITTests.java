@@ -3229,6 +3229,7 @@ public class NGIntegrationE2ESITTests extends BaseTestNGWebDriver{
 		logStep("Verify the patient is able to receive CCD");
 		CommonFlows.IsCCDReceived(driver, PropertyLoaderObj.getProperty("MFPortalURLPractice1"),createPatient.getEmailAddress(), PropertyLoaderObj.getPassword(), "","");
 		
+        NGAPIUtils.updateLoginDefaultTo("EnterpriseGateway",PropertyLoaderObj.getNGEnterpiseEnrollmentE1(), PropertyLoaderObj.getNGEnterpiseEnrollmentE1P1());
 		logStep("Add Chart to patient");
 		NGAPIFlows.addCharttoProvider(locationName,providerName,person_id); 
 		
@@ -3278,6 +3279,7 @@ public class NGIntegrationE2ESITTests extends BaseTestNGWebDriver{
 		logStep("Verify the patient is able to receive CCD");
 		CommonFlows.IsCCDReceived(driver, PropertyLoaderObj.getProperty("MFPortalURLPractice1"),createPatient.getEmailAddress(), PropertyLoaderObj.getPassword(), "","");
 		
+        NGAPIUtils.updateLoginDefaultTo("EnterpriseGateway",PropertyLoaderObj.getNGEnterpiseEnrollmentE1(), PropertyLoaderObj.getNGEnterpiseEnrollmentE1P1());
 		logStep("Adding Test data to patient CCD "+person_id);
 		   Log4jUtil.log("Step Begins: Add Chart to patient");
 		   NGAPIFlows.addCharttoProvider(locationName,providerName,person_id); 
