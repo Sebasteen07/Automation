@@ -1450,6 +1450,7 @@ public class NGIntegrationE2ESITTests extends BaseTestNGWebDriver{
         logStep("Switching to First Practice to verify auto enrollment");
         homePage.switchToPractice(PropertyLoaderObj.getProperty("practiceName1"));
         Thread.sleep(40000);
+        driver.navigate().refresh();
         homePage.switchToPractice(PropertyLoaderObj.getProperty("practiceName2"));
         Thread.sleep(20000);
         assertTrue(homePage.areBasicPageElementsPresent());
@@ -1515,6 +1516,7 @@ public class NGIntegrationE2ESITTests extends BaseTestNGWebDriver{
         homePage.switchToPractice(PropertyLoaderObj.getProperty("practiceName1"));
         Thread.sleep(40000);
         assertTrue(homePage.areBasicPageElementsPresent());
+        driver.navigate().refresh();
         homePage.switchToPractice(PropertyLoaderObj.getProperty("practiceName3"));        
 
         String person_nbr =DBUtils.executeQueryOnDB("NGCoreDB","select person_nbr from person where person_id = '"+personId.trim()+"'");
@@ -1787,8 +1789,10 @@ public class NGIntegrationE2ESITTests extends BaseTestNGWebDriver{
         logStep("Switching to First Practice to verify auto enrollment");
         homePage.switchToPractice(PropertyLoaderObj.getProperty("practiceName1"));
         Thread.sleep(40000);
+        driver.navigate().refresh();
         homePage.switchToPractice(PropertyLoaderObj.getProperty("practiceName2"));
         Thread.sleep(40000);
+        driver.navigate().refresh();
         homePage.switchToPractice(PropertyLoaderObj.getProperty("practiceName3"));
         assertTrue(homePage.areBasicPageElementsPresent());	
 	
@@ -1814,6 +1818,7 @@ public class NGIntegrationE2ESITTests extends BaseTestNGWebDriver{
         logStep("Switching to First Practice to verify auto enrollment");
         homePage.switchToPractice(PropertyLoaderObj.getProperty("practiceName1"));
         Thread.sleep(40000);
+        driver.navigate().refresh();
         homePage.switchToPractice(PropertyLoaderObj.getProperty("practiceName3"));
         assertTrue(homePage.areBasicPageElementsPresent());
     
@@ -1868,8 +1873,10 @@ public class NGIntegrationE2ESITTests extends BaseTestNGWebDriver{
         logStep("Switching to First Practice to verify auto enrollment");
         homePage.switchToPractice(PropertyLoaderObj.getProperty("practiceName1"));
         Thread.sleep(40000);
+        driver.navigate().refresh();
         homePage.switchToPractice(PropertyLoaderObj.getProperty("practiceName2"));
         Thread.sleep(40000);
+        driver.navigate().refresh();
         homePage.switchToPractice(PropertyLoaderObj.getProperty("practiceName3"));
         assertTrue(homePage.areBasicPageElementsPresent());	
 	
@@ -1896,6 +1903,7 @@ public class NGIntegrationE2ESITTests extends BaseTestNGWebDriver{
         logStep("Switching to First Practice to verify auto enrollment");
         homePage.switchToPractice(PropertyLoaderObj.getProperty("practiceName1"));
         Thread.sleep(40000);
+        driver.navigate().refresh();
         homePage.switchToPractice(PropertyLoaderObj.getProperty("practiceName3"));
         assertTrue(homePage.areBasicPageElementsPresent());
     
@@ -2373,9 +2381,11 @@ public class NGIntegrationE2ESITTests extends BaseTestNGWebDriver{
         homePage.switchToPractice(PropertyLoaderObj.getProperty("practiceName1"));
         Thread.sleep(40000);
 		assertTrue(homePage.assessFamilyAccountElements(true));
+        driver.navigate().refresh();
         homePage.switchToPractice(PropertyLoaderObj.getProperty("practiceName2"));
         Thread.sleep(40000);
         assertTrue(homePage.areBasicPageElementsPresent());
+        driver.navigate().refresh();
         homePage.switchToPractice(PropertyLoaderObj.getProperty("practiceName3"));
         Thread.sleep(20000);
         assertTrue(homePage.areBasicPageElementsPresent());
@@ -2387,6 +2397,7 @@ public class NGIntegrationE2ESITTests extends BaseTestNGWebDriver{
         homePage.switchToPractice(PropertyLoaderObj.getProperty("practiceName1"));
         Thread.sleep(40000);
 		assertTrue(homePage.assessFamilyAccountElements(true));
+        driver.navigate().refresh();
         homePage.switchToPractice(PropertyLoaderObj.getProperty("practiceName2"));
         Thread.sleep(40000);
         assertTrue(homePage.areBasicPageElementsPresent());
@@ -2529,8 +2540,10 @@ public class NGIntegrationE2ESITTests extends BaseTestNGWebDriver{
 	        logStep("Switching to Second Practice to verify auto enrollment");
 	        homePage.switchToPractice(PropertyLoaderObj.getProperty("practiceName1"));
 	        Thread.sleep(40000);
+            driver.navigate().refresh();
 	        jalapenoHomePage.switchToPractice(PropertyLoaderObj.getProperty("practiceName2"));
 	        Thread.sleep(40000);
+            driver.navigate().refresh();
 	        homePage.switchToPractice(PropertyLoaderObj.getProperty("practiceName3"));
 	        assertTrue(homePage.areBasicPageElementsPresent());
 	        log("Auto Enrolment of Dependent to Second Practice is completed");						
