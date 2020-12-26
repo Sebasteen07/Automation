@@ -564,6 +564,9 @@ public class NGIntegrationE2ESITTests extends BaseTestNGWebDriver{
 		jalapenoHomePage.faChangePatient();
 		assertTrue(jalapenoHomePage.assessFamilyAccountElements(true));
 
+        Log4jUtil.log("Step Begins: Setup Oauth client" + PropertyLoaderObj.getResponsePath());
+		RestUtils.oauthSetup(PropertyLoaderObj.getOAuthKeyStore(), PropertyLoaderObj.getOAuthProperty(), PropertyLoaderObj.getOAuthAppToken(), PropertyLoaderObj.getProperty("oAuthUsername1"),PropertyLoaderObj.getProperty("oAuthPassword1"));
+        
 		VerifyGetPIDCCall(timestamp, dependentperson_nbr,createdependent.getFirstName(), createdependent.getLastName(),"Registered",PropertyLoaderObj.getProperty("integrationPracticeIDE1P1"));
 		
 		log("Step 15: Using mailinator Mailer to retrieve the latest emails for patient and guardian");
@@ -2900,7 +2903,7 @@ public class NGIntegrationE2ESITTests extends BaseTestNGWebDriver{
 		log("Execution Browser: " + TestConfig.getBrowserType());
 		Long timestamp = System.currentTimeMillis();
 		
-		NGAPIUtils.updateLoginDefaultTo("EnterpriseGateway",PropertyLoaderObj.getProperty("NGMainEnterpriseID"), PropertyLoaderObj.getProperty("NGMainPracticeID"));
+		NGAPIUtils.updateLoginDefaultTo("EnterpriseGateway",PropertyLoaderObj.getProperty("NGEnterpiseEnrollmentEnterprise1"), PropertyLoaderObj.getProperty("NGEnterprise1Practice1"));
 		logStep("Create the Guardian in NG EPM");
 		NewPatient createPatient = NGPatient.patientUsingJSON(PropertyLoaderObj,"complete");
 		System.setProperty("ParentEmailAddress", createPatient.getEmailAddress());
@@ -2954,8 +2957,8 @@ public class NGIntegrationE2ESITTests extends BaseTestNGWebDriver{
 		String enrollment_status1 =DBUtils.executeQueryOnDB("NGCoreDB","select enrollment_status from pxp_enrollments where person_id = '"+dependentperson_id.trim()+"'");
 		CommonUtils.VerifyTwoValues(enrollment_status1,"equals","1");
 		
-		verifyProcessingStatusto3WithoutValidatingGetProcessingStatusCall(person_id.trim(),PropertyLoaderObj.getProperty("NGMainPracticeID"), PropertyLoaderObj.getIntegrationPracticeID());
-		verifyProcessingStatusto3WithoutValidatingGetProcessingStatusCall(dependentperson_id.trim(),PropertyLoaderObj.getProperty("NGMainPracticeID"),PropertyLoaderObj.getIntegrationPracticeID());
+		verifyProcessingStatusto3WithoutValidatingGetProcessingStatusCall(person_id.trim(),PropertyLoaderObj.getProperty("NGEnterprise1Practice1"), PropertyLoaderObj.getProperty("integrationPracticeIDE1P1"));
+		verifyProcessingStatusto3WithoutValidatingGetProcessingStatusCall(dependentperson_id.trim(),PropertyLoaderObj.getProperty("NGEnterprise1Practice1"),PropertyLoaderObj.getProperty("integrationPracticeIDE1P1"));
 		
 			Mailinator mail = new Mailinator();
 			Thread.sleep(15000);
@@ -3044,16 +3047,16 @@ public class NGIntegrationE2ESITTests extends BaseTestNGWebDriver{
 			CommonUtils.VerifyTwoValues(CommonUtils.getResponseKeyValue(GetEnrollmentStatusresponse1,"statusDescription"),"equals","Completed"); 
 			log("Step End: Dependent enrollment status is "+CommonUtils.getResponseKeyValue(GetEnrollmentStatusresponse1,"statusDescription"));
 			
-		String locationName =PropertyLoaderObj.getProperty("EPMLocationName"); 
-		String providerName =PropertyLoaderObj.getProperty("EPMProviderName");	
-		String practiceId = PropertyLoaderObj.getProperty("NGMainPracticeID");
+		String locationName =PropertyLoaderObj.getProperty("NGE1P1Location"); 
+		String providerName =PropertyLoaderObj.getProperty("NGE1P1Provider");	
+		String practiceId = PropertyLoaderObj.getProperty("NGEnterprise1Practice1");
 
 //		CommonFlows.addDataToCCD(locationName, providerName, dependentperson_id, practiceId);
 
-		CommonFlows.verifyCCDProcessingStatus(PropertyLoaderObj, dependentperson_id, PropertyLoaderObj.getProperty("NGMainPracticeID"), PropertyLoaderObj.getProperty("integrationPracticeIDAMDC"), 1);
+		CommonFlows.verifyCCDProcessingStatus(PropertyLoaderObj, dependentperson_id, PropertyLoaderObj.getProperty("NGEnterprise1Practice1"), PropertyLoaderObj.getProperty("integrationPracticeIDE1P1"), 1);
 		
 		logStep("Verify Dependent is able to receive Enrollment CCD");
-		CommonFlows.IsCCDReceived(driver, PropertyLoaderObj.getProperty("url"),createPatient.getEmailAddress(), PropertyLoaderObj.getPassword(), "Dependent","");
+		CommonFlows.IsCCDReceived(driver, PropertyLoaderObj.getProperty("MFPortalURLPractice1"),createPatient.getEmailAddress(), PropertyLoaderObj.getPassword(), "Dependent","");
 		
 		logStep("Generate Since time for the GET API Call.");
 		LocalTime midnight = LocalTime.MIDNIGHT;
@@ -3064,14 +3067,14 @@ public class NGIntegrationE2ESITTests extends BaseTestNGWebDriver{
 		log("midnight"+since);
 		
 		logStep("Verify Guardian is able to request dependent On Demand CCD");
-		CommonFlows.requestCCD(driver,PropertyLoaderObj.getProperty("url"),createPatient.getEmailAddress(), PropertyLoaderObj.getPassword(),"Dependent","");
+		CommonFlows.requestCCD(driver,PropertyLoaderObj.getProperty("MFPortalURLPractice1"),createPatient.getEmailAddress(), PropertyLoaderObj.getPassword(),"Dependent","");
 		
 		logStep("Setup Oauth Token");
-		RestUtils.oauthSetup(PropertyLoaderObj.getOAuthKeyStore(), PropertyLoaderObj.getOAuthProperty(), PropertyLoaderObj.getOAuthAppToken(), PropertyLoaderObj.getOAuthUsername(),PropertyLoaderObj.getOAuthPassword());
+		RestUtils.oauthSetup(PropertyLoaderObj.getOAuthKeyStore(), PropertyLoaderObj.getOAuthProperty(), PropertyLoaderObj.getOAuthAppToken(), PropertyLoaderObj.getProperty("oAuthUsername1"),PropertyLoaderObj.getProperty("oAuthPassword1"));
 
 		Thread.sleep(60000);
 		logStep("Do the Get onDemand Health Data Get API Call.");
-		RestUtils.setupHttpGetRequest(PropertyLoaderObj.getProperty("GetHealthData").replaceAll("integrationID", PropertyLoaderObj.getIntegrationPracticeID()) + "?since=" + since + ",0", PropertyLoaderObj.getResponsePath());
+		RestUtils.setupHttpGetRequest(PropertyLoaderObj.getProperty("GetHealthData").replaceAll("integrationID", PropertyLoaderObj.getProperty("integrationPracticeIDE1P1")) + "?since=" + since + ",0", PropertyLoaderObj.getResponsePath());
 		
 		String person_nbr = DBUtils.executeQueryOnDB("NGCoreDB","select person_nbr from person where person_id = '"+dependentperson_id+"'");
 		
@@ -3079,10 +3082,10 @@ public class NGIntegrationE2ESITTests extends BaseTestNGWebDriver{
 		RestUtils.verifyOnDemandRequestSubmitted(PropertyLoaderObj.getResponsePath(), person_nbr.trim().replace("\t", ""));
 		
 		Thread.sleep(60000);
-		CommonFlows.verifyCCDProcessingStatus(PropertyLoaderObj, dependentperson_id, PropertyLoaderObj.getProperty("NGMainPracticeID"), PropertyLoaderObj.getProperty("integrationPracticeIDAMDC"), 2);
+		CommonFlows.verifyCCDProcessingStatus(PropertyLoaderObj, dependentperson_id, PropertyLoaderObj.getProperty("NGEnterprise1Practice1"), PropertyLoaderObj.getProperty("integrationPracticeIDE1P1"), 2);
 		
 		logStep("Verify Dependent is able to receive OnDemand CCD");
-		CommonFlows.IsCCDReceived(driver,PropertyLoaderObj.getProperty("url"),createPatient.getEmailAddress(), PropertyLoaderObj.getPassword(),"Dependent","");
+		CommonFlows.IsCCDReceived(driver,PropertyLoaderObj.getProperty("MFPortalURLPractice1"),createPatient.getEmailAddress(), PropertyLoaderObj.getPassword(),"Dependent","");
 
 		log("Test Case End: The Guardian is able to receive On-Demand CCD of dependent successfully");
 	}
