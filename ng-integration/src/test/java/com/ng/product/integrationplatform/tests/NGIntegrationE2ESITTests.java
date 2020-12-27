@@ -84,7 +84,7 @@ public class NGIntegrationE2ESITTests extends BaseTestNGWebDriver{
 	private static final String WELCOME_EMAIL_SUBJECT_PATIENT = "New Member Confirmation";
 	private static final String WELCOME_EMAIL_BODY_PATTERN_PRACTICE = "Thank you for creating an account with PracticeName";
 	
-    int arg_timeOut=900; 
+    int arg_timeOut=1800; 
     NGAPIUtils ngAPIUtils;
     String EnterprisebaseURL;
     NGAPIFlows NGAPIFlows;
