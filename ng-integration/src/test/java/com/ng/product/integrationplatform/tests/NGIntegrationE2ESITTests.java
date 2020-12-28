@@ -1427,7 +1427,7 @@ public class NGIntegrationE2ESITTests extends BaseTestNGWebDriver{
 		String personId= NGAPIFlows.CreatePatientinEPM(createPatient);
 		
 		enrollPatientWithoutGetProcessingStatusValidation(createPatient,personId,PropertyLoaderObj.getProperty("practiceName1"),PropertyLoaderObj.getProperty("integrationPracticeIDE1P1"),PropertyLoaderObj.getNGEnterpiseEnrollmentE1(), PropertyLoaderObj.getNGEnterpiseEnrollmentE1P1());
-		
+		Thread.sleep(60000);
 		Long timestamp = System.currentTimeMillis();
 		logStep("Create the chart in second practice");
 		NGAPIUtils.updateLoginDefaultTo("EnterpriseGateway",PropertyLoaderObj.getNGEnterpiseEnrollmentE1(), PropertyLoaderObj.getNGEnterpiseEnrollmentE1P2());
@@ -1794,7 +1794,11 @@ public class NGIntegrationE2ESITTests extends BaseTestNGWebDriver{
         Thread.sleep(40000);
         driver.navigate().refresh();
         homePage.switchToPractice(PropertyLoaderObj.getProperty("practiceName3"));
+        Thread.sleep(30000);
         assertTrue(homePage.areBasicPageElementsPresent());	
+      
+        logStep("Detecting if Home Page is opened and logout");
+		homePage.LogoutfromNGMFPortal();
 	
         logStep("Login to Practice Portal");
 		PracticeLoginPage practiceLogin = new PracticeLoginPage(driver, PropertyLoaderObj.getPortalUrl());
