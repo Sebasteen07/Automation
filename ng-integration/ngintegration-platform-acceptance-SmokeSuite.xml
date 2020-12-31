@@ -29,7 +29,8 @@
 	    		<include name="testBELEPatientEnrollmentE1P1TrustedRepresentativeE1P2"/>	    			    		
 	    		<include name="testCCDPracticeLevelEnrollmentOnDemandCCD"/>
 	    		<include name="testCCDMSUCCD"/> 
-	    		<include name="testCCDLockedEncounterCCD"/>	    		
+	    		<include name="testCCDLockedEncounterCCD"/>
+	    		<include name="testCCDDateFilterCCD"/>	
       	</methods>
 	</classes>
 </test>
