@@ -3757,22 +3757,9 @@ public class NGIntegrationE2ESITTests extends BaseTestNGWebDriver{
 		else{
 			Log4jUtil.log("Invalid Execution Mode");
 		}    
-	    CommonFlows.verifyMessageINInbox(PropertyLoaderObj,driver,url,username,PropertyLoaderObj.getPassword(),subject,body,comm_id,messageID,integrationPracticeID,"SentByPracticeUser","");
+	    String replyMessageID = CommonFlows.verifyMessageINInbox(PropertyLoaderObj,driver,url,username,PropertyLoaderObj.getPassword(),subject,body,comm_id,messageID,integrationPracticeID,"SentByPracticeUser","");
 	    Thread.sleep(60000);
-	    String replyMessageID =DBUtils.executeQueryOnDB("NGCoreDB","select comm_id from ngweb_communications where subject  ='"+"Re: "+subject+"'");
-	    if(replyMessageID.isEmpty()){
-			for (int i = 0; i < arg_timeOut; i++) {
-				replyMessageID =DBUtils.executeQueryOnDB("NGCoreDB","select comm_id from ngweb_communications where subject  ='"+"Re: "+subject+"'");
-				if (!replyMessageID.isEmpty()) {
-					Log4jUtil.log("Reply Message ID is "+replyMessageID);
-	                break;
-	            } else {
-	                if (i == arg_timeOut - 1)
-	                    Thread.sleep(1000);
-	            }
-	        }
-		}
-	    CommonFlows.verifyMessageReceivedAtNGCore(replyMessageID,"Re: "+subject, JalapenoMessagesPage.getPatientReply());
+	    CommonFlows.verifyReplyReceivedAtNGCore(replyMessageID,"Re: "+subject, JalapenoMessagesPage.getPatientReply());
 	    log("Test Case End: The practice user is able to compose a message with 'high priority' flag on and send it to enrolled patient with “Do not add to chart” option selected in Send & Chart button and patient reply to message sent by Practice User");	
 	}
 	
@@ -4027,22 +4014,9 @@ public class NGIntegrationE2ESITTests extends BaseTestNGWebDriver{
 			Log4jUtil.log("Invalid Execution Mode");
 		}
 
-	    CommonFlows.verifyMessageINInbox(PropertyLoaderObj,driver,url,username,PropertyLoaderObj.getPassword(),subject,body,comm_id,messageID,integrationPracticeID,"SentByOnlineProfile","");
+    	String replyMessageID = CommonFlows.verifyMessageINInbox(PropertyLoaderObj,driver,url,username,PropertyLoaderObj.getPassword(),subject,body,comm_id,messageID,integrationPracticeID,"SentByOnlineProfile","");
 	    Thread.sleep(60000);
-	    String replyMessageID =DBUtils.executeQueryOnDB("NGCoreDB","select comm_id from ngweb_communications where subject  ='"+"Re: "+subject+"'");
-	    if(replyMessageID.isEmpty()){
-			for (int i = 0; i < arg_timeOut; i++) {
-				replyMessageID =DBUtils.executeQueryOnDB("NGCoreDB","select comm_id from ngweb_communications where subject  ='"+"Re: "+subject+"'");
-				if (!replyMessageID.isEmpty()) {
-					Log4jUtil.log("Reply Message ID is "+replyMessageID);
-	                break;
-	            } else {
-	                if (i == arg_timeOut - 1)
-	                    Thread.sleep(1000);
-	            }
-	        }
-		}
-		CommonFlows.verifyMessageReceivedAtNGCore(replyMessageID,"Re: "+subject, JalapenoMessagesPage.getPatientReply());
+		CommonFlows.verifyReplyReceivedAtNGCore(replyMessageID,"Re: "+subject, JalapenoMessagesPage.getPatientReply());
     	log("Test Case End: The practice user is able to send a message with Onine Profile as sender of message and patient is able to reply to that message.");	
 	}
 	
@@ -4106,22 +4080,9 @@ public class NGIntegrationE2ESITTests extends BaseTestNGWebDriver{
 			Log4jUtil.log("Invalid Execution Mode");
 		}
 
-	    CommonFlows.verifyMessageINInbox(PropertyLoaderObj,driver,url,username,PropertyLoaderObj.getPassword(),subject,body,comm_id,messageID,integrationPracticeID,"SentByAlias","");
+    	String replyMessageID = CommonFlows.verifyMessageINInbox(PropertyLoaderObj,driver,url,username,PropertyLoaderObj.getPassword(),subject,body,comm_id,messageID,integrationPracticeID,"SentByAlias","");
 	    Thread.sleep(60000);
-	    String replyMessageID =DBUtils.executeQueryOnDB("NGCoreDB","select comm_id from ngweb_communications where subject  ='"+"Re: "+subject+"'");
-	    if(replyMessageID.isEmpty()){
-			for (int i = 0; i < arg_timeOut; i++) {
-				replyMessageID =DBUtils.executeQueryOnDB("NGCoreDB","select comm_id from ngweb_communications where subject  ='"+"Re: "+subject+"'");
-				if (!replyMessageID.isEmpty()) {
-					Log4jUtil.log("Reply Message ID is "+replyMessageID);
-	                break;
-	            } else {
-	                if (i == arg_timeOut - 1)
-	                    Thread.sleep(1000);
-	            }
-	        }
-		}
-		CommonFlows.verifyMessageReceivedAtNGCore(replyMessageID,"Re: "+subject, JalapenoMessagesPage.getPatientReply());
+		CommonFlows.verifyReplyReceivedAtNGCore(replyMessageID,"Re: "+subject, JalapenoMessagesPage.getPatientReply());
 	    log("Test Case End: The practice user is able to send a message with Alias Name as sender of message and patient is able to reply to that message.");	
 	}
 
@@ -4157,7 +4118,8 @@ public class NGIntegrationE2ESITTests extends BaseTestNGWebDriver{
 		else{
 			Log4jUtil.log("Invalid Execution Mode");
 		}
-	    
+    	String userLocationName = PropertyLoaderObj.getProperty("PortalLocationName");
+    	
 		long timestamp = System.currentTimeMillis();
 		Log4jUtil.log("Step Begins: Do a GET and get the read communication");
 		Long since = timestamp / 1000L - 60 * 24;
@@ -4172,7 +4134,7 @@ public class NGIntegrationE2ESITTests extends BaseTestNGWebDriver{
 		String askaSubject = Long.toString(askPage1.getCreatedTimeStamp());
 
 		logStep("Fill question and continue");
-		JalapenoAskAStaffV2Page2 askPage2 = askPage1.NGfillAndContinue(askaSubject, questionText,userProviderName);
+		JalapenoAskAStaffV2Page2 askPage2 = askPage1.NGfillAndContinue(askaSubject, questionText,userProviderName,userLocationName);
 
 		assertTrue(askaSubject.equals(askPage2.getSubject()),"Expected: " + askaSubject + ", found: " + askPage2.getSubject());
 		assertTrue(questionText.equals(askPage2.getQuestion()),"Expected: " + questionText + ", found: " + askPage2.getQuestion());
@@ -4198,10 +4160,15 @@ public class NGIntegrationE2ESITTests extends BaseTestNGWebDriver{
 		RestUtils.setupHttpGetRequest(PropertyLoaderObj.getProperty("GetInboundMessage").replaceAll("integrationID", integrationPracticeID) + "?since=" + since + ",0", PropertyLoaderObj.getResponsePath());
 
 		Log4jUtil.log("Step Begins: Validate message reply");
-		String messageID = RestUtils.isReplyPresentReturnMessageID(PropertyLoaderObj.getResponsePath(), askaSubject);
+		String PatientFirstName = DBUtils.executeQueryOnDB("NGCoreDB","select first_name from person where person_id ='"+person_id+"'");
+		String PatientLastName = DBUtils.executeQueryOnDB("NGCoreDB","select last_name from person where person_id ='"+person_id+"'");
+		String expectedBody= "Dear "+PropertyLoaderObj.getProperty("practiceName")+",<br/><br/>"+IntegrationConstants.MESSAGE_REPLY+"<br/><br/>Thanks,<br>"+PatientFirstName+" "+PatientLastName;		
 		
+		String messageID = RestUtils.isReplyPresentReturnMessageID(PropertyLoaderObj.getResponsePath(), askaSubject,expectedBody);
+		
+		String expectedBodyinInbox= "Dear "+PropertyLoaderObj.getProperty("practiceName")+",\n"+IntegrationConstants.MESSAGE_REPLY+"\nThanks,\n"+PatientFirstName+" "+PatientLastName;		
 		Thread.sleep(60000);
-		CommonFlows.verifyMessageReceivedAtNGCore(messageID,askaSubject,questionText);
+		CommonFlows.verifyMessageReceivedAtNGCore(PropertyLoaderObj,messageID,askaSubject,expectedBodyinInbox.replace("\n", ""),PropertyLoaderObj.getProperty("askAV2Name"));
 		
     	String comm_id =NGAPIFlows.postSecureMessage("ReplyToPortal"+messageID,person_id,practiceId,userId,providerName,locationName, "EHR", "NewLockedEncounter","PracticeUser","","","");		
     	

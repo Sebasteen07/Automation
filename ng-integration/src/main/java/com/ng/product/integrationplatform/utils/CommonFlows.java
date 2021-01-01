@@ -12,6 +12,7 @@ import org.openqa.selenium.WebDriver;
 import org.testng.Assert;
 
 import com.intuit.ifs.csscat.core.utils.Log4jUtil;
+import com.intuit.ihg.product.integrationplatform.utils.IntegrationConstants;
 import com.intuit.ihg.product.integrationplatform.utils.PropertyFileLoader;
 import com.intuit.ihg.product.integrationplatform.utils.RestUtils;
 import com.medfusion.common.utils.IHGUtil;
@@ -466,7 +467,7 @@ public class CommonFlows {
 			RestUtils.setupHttpGetRequest(PropertyLoaderObj.getProperty("GetInboundMessage").replaceAll("integrationID", integrationID) + "?since=" + since + ",0", PropertyLoaderObj.getResponsePath());
 
 			Log4jUtil.log("Step Begins: Validate message reply");
-			replyMessageID = RestUtils.isReplyPresentReturnMessageID(PropertyLoaderObj.getResponsePath(), "Re: "+subject);
+			replyMessageID = RestUtils.isReplyPresentReturnMessageID(PropertyLoaderObj.getResponsePath(), "Re: "+subject, IntegrationConstants.MESSAGE_REPLY);
 		}
 		
 		if(messageType.equalsIgnoreCase("SentByPracticeUser")){
@@ -498,7 +499,7 @@ public class CommonFlows {
 		RestUtils.setupHttpGetRequest(PropertyLoaderObj.getProperty("GetInboundMessage").replaceAll("integrationID", integrationID) + "?since=" + since + ",0", PropertyLoaderObj.getResponsePath());
 
 		Log4jUtil.log("Step Begins: Validate message reply");
-		replyMessageID = RestUtils.isReplyPresentReturnMessageID(PropertyLoaderObj.getResponsePath(), "Re: "+subject);
+		replyMessageID = RestUtils.isReplyPresentReturnMessageID(PropertyLoaderObj.getResponsePath(), "Re: "+subject,IntegrationConstants.MESSAGE_REPLY);
 		return replyMessageID;
    }
    
@@ -552,10 +553,12 @@ public class CommonFlows {
 		
 		String messageReadTimeStamp =DBUtils.executeQueryOnDB("NGCoreDB","select read_timestamp from ngweb_comm_recpts where comm_id ='"+comm_id+"'");
 		
-		Boolean ReadTimeStampStatus = false;		
-		if(messageReadTimeStamp.contains(actualReadDateTimestamp.replace("T", " ")))
+		Boolean ReadTimeStampStatus = false;	actualReadDateTimestamp = actualReadDateTimestamp.replace("T", " ");
+		actualReadDateTimestamp = actualReadDateTimestamp.substring(0, actualReadDateTimestamp.lastIndexOf("."));
+		if(messageReadTimeStamp.contains(actualReadDateTimestamp)){
 			ReadTimeStampStatus = true;
-		Assert.assertTrue(ReadTimeStampStatus, "Read TimeStamp is added to ngweb_comm_recpts table");
+			Log4jUtil.log("Read TimeStamp is added to ngweb_comm_recpts table "+actualReadDateTimestamp);}
+		Assert.assertTrue(ReadTimeStampStatus, "Read TimeStamp is not added to ngweb_comm_recpts table");
 	   }
    
    public static void verifyReadReceiptMessageReceived(String comm_id,String subject) throws Throwable{
@@ -569,13 +572,41 @@ public class CommonFlows {
 	   CommonUtils.VerifyTwoValues(ReadReceiptBody,"contains","This message was read by");
    }
    
-   public static void verifyMessageReceivedAtNGCore(String comm_id,String subject,String body) throws Throwable{
+   public static void verifyMessageReceivedAtNGCore(PropertyFileLoader PropertyLoaderObj,String comm_id,String subject,String body,String comm_category) throws Throwable{
 	   String ActualSubject = DBUtils.executeQueryOnDB("NGCoreDB","select subject from ngweb_communications where comm_id ='"+comm_id+"'");
 	   CommonUtils.VerifyTwoValues(ActualSubject,"equals",subject);
 	   String ActualBody = DBUtils.executeQueryOnDB("NGCoreDB","select body from ngweb_communications where comm_id ='"+comm_id+"'");
-	   CommonUtils.VerifyTwoValues(ActualBody,"contains",body);
+	   CommonUtils.VerifyTwoValues(ActualBody.replace("\r", "").replace("\n", ""),"equals",body);
 	   String senderType = DBUtils.executeQueryOnDB("NGCoreDB","select sender_type from ngweb_communications where comm_id ='"+comm_id+"'");
-	   CommonUtils.VerifyTwoValues(senderType,"contains","2");
+	   CommonUtils.VerifyTwoValues(senderType,"equals","2");	   
+	   String bulk = DBUtils.executeQueryOnDB("NGCoreDB","select isBulk from ngweb_communications where comm_id ='"+comm_id+"'");
+	   CommonUtils.VerifyTwoValues(bulk,"equals","0");	   
+	   String actualCommCategory = DBUtils.executeQueryOnDB("NGCoreDB","select comm_category from ngweb_communications where comm_id ='"+comm_id+"'");
+	   CommonUtils.VerifyTwoValues(actualCommCategory,"equals",comm_category);
+   }
+   
+   public static void verifyReplyReceivedAtNGCore(String comm_id,String subject,String body) throws Throwable{
+	   String ActualSubject = DBUtils.executeQueryOnDB("NGCoreDB","select subject from ngweb_communications where parent_id ='"+comm_id+"'");
+	   if(ActualSubject.isEmpty()){
+			for (int i = 0; i < arg_timeOut; i++) {
+				ActualSubject = DBUtils.executeQueryOnDB("NGCoreDB","select subject from ngweb_communications where parent_id ='"+comm_id+"'");
+				if (!ActualSubject.isEmpty()) {
+					Log4jUtil.log("Message deilvered to NG Core");
+	                break;
+	            } else {
+	                if (i == arg_timeOut - 1)
+	                    Thread.sleep(1000);
+	            }
+	        }
+		}
+	   
+	   CommonUtils.VerifyTwoValues(ActualSubject,"equals",subject);
+	   String ActualBody = DBUtils.executeQueryOnDB("NGCoreDB","select body from ngweb_communications where comm_id ='"+comm_id+"'");
+	   CommonUtils.VerifyTwoValues(ActualBody.replace("\r", "").replace("\n", ""),"equals",body);
+	   String senderType = DBUtils.executeQueryOnDB("NGCoreDB","select sender_type from ngweb_communications where comm_id ='"+comm_id+"'");
+	   CommonUtils.VerifyTwoValues(senderType,"equals","2");	   
+	   String bulk = DBUtils.executeQueryOnDB("NGCoreDB","select isBulk from ngweb_communications where comm_id ='"+comm_id+"'");
+	   CommonUtils.VerifyTwoValues(bulk,"equals","0");
    }
 
 }
