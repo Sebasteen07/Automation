@@ -1,9 +1,9 @@
+//  Copyright 2013-2020 NXGN Management, LLC. All Rights Reserved.
 package com.medfusion.product.object.maps.practice.page.onlinebillpay;
 
-import java.util.Calendar;
+import java.util.ArrayList;
 import java.util.List;
-
-import org.eclipse.jetty.util.log.Log;
+import org.openqa.selenium.Alert;
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
@@ -119,6 +119,42 @@ public class PayMyBillOnlinePage extends BasePageObject {
 
 	@FindBy(id = "table-1")
 	private WebElement transactionsList;
+
+	@FindBy(xpath = "//label[text()='Schedule budget payment plan']")
+	private WebElement budgetPaymentPlanSchedule;
+
+	@FindBy(xpath = "//input[@name='perPaymentAmountRow:recurringMonthlyAmount']")
+	private WebElement prePaymentAmount;
+
+	@FindBy(xpath = "(//thead[tr[th[text()='Pay Dates']]]/following-sibling::tbody/tr)[1]/td[4]")
+	private WebElement planStartDate;
+
+	@FindBy(xpath = "(//thead[tr[th[text()='Pay Dates']]]/following-sibling::tbody/tr)[5]/td[4]")
+	private WebElement planEndDate;
+
+	@FindBy(xpath = "//span[@fieldid='endDateText']")
+	private WebElement planEndDateBudgetSearch;
+
+	@FindBy(xpath = "//div[contains(text(),'Your payment plan start date ')]")
+	private WebElement paymentPlanStartText;
+
+	@FindBy(xpath = "//table[@class='searchForm']//input[@name='searchParams:4:input']")
+	private WebElement budgetSearchfirstName;
+
+	@FindBy(xpath = "//table[@class='searchForm']//input[@name='searchParams:5:input']")
+	private WebElement budgetSearchlastName;
+
+	@FindBy(xpath = "//span[@fieldid='billingCreditCardNumber']")
+	private WebElement creditCradMasked;
+
+	@FindBy(xpath = "//span[@fieldid='activeCCard']")
+	private WebElement activeBudgetPaymentCard;
+
+	@FindBy(xpath = "//a[text()='Delete']")
+	private WebElement creditCardDelete;
+
+	@FindBy(xpath = "//input[@value='Stop Budget Payments']")
+	private WebElement stopBudgetPayment;
 
 	/**
 	 * @Description:Set First name
@@ -378,14 +414,13 @@ public class PayMyBillOnlinePage extends BasePageObject {
 		firstName.sendKeys(fName);
 		lastName.clear();
 		lastName.sendKeys(lName);
-
 		searchForPatients.click();
 		IHGUtil.waitForElement(driver, 30, searchResult);
 
 		driver.findElement(By.xpath(
 				"//table[@id='MfAjaxFallbackDefaultDataTable']//span[contains(text(),'" + lName + ", " + fName + "')]"))
 				.click();
-		Thread.sleep(10000);
+		Thread.sleep(8000);
 
 	}
 
@@ -443,10 +478,8 @@ public class PayMyBillOnlinePage extends BasePageObject {
 		}
 		cvvCode.clear();
 		cvvCode.sendKeys(PracticeConstants.CVV);
-
 		zipCode.clear();
 		zipCode.sendKeys(PracticeConstants.ZIP_CODE);
-
 		IHGUtil.setFrame(driver, PracticeConstants.FRAME_NAME);
 		chooseProvider(provider);
 		payBillButton.click();
@@ -490,6 +523,181 @@ public class PayMyBillOnlinePage extends BasePageObject {
 		} else
 			return false;
 
+	}
+
+	public void setTransactionsForBudgetPaymentPlan(String location, String provider, String acctNum, String amount,
+			String prepayamount, String cardHolderName, String cardNum, String cardTyp) throws Exception {
+		IHGUtil.PrintMethodName();
+		IHGUtil.setFrame(driver, PracticeConstants.FRAME_NAME);
+		budgetPaymentPlanSchedule.click();
+		setLocation(location);
+		setPatientAccountNumber(acctNum);
+		setPaymentAmount(amount);
+		setPrePaymentAmount(prepayamount);
+
+		try {
+			setPaymentComment(PracticeConstants.PAYMENT_COMMENT.concat(IHGUtil.createRandomNumericString()));
+		} catch (Exception e) {
+			log("Payment Comment Field is not displayed");
+		}
+
+		removeAllCards();
+		IHGUtil.setFrame(driver, PracticeConstants.FRAME_NAME);
+		IHGUtil.waitForElement(driver, 30, cardHolder);
+		cardHolder.clear();
+		cardHolder.sendKeys(cardHolderName);
+		Thread.sleep(4000);
+
+		IHGUtil.waitForElement(driver, 30, cardNumber);
+		cardNumber.clear();
+		cardNumber.sendKeys(cardNum);
+		Thread.sleep(4000);
+
+		IHGUtil.setFrame(driver, PracticeConstants.FRAME_NAME);
+		Select sel = new Select(cardType);
+		sel.selectByVisibleText(cardTyp);
+
+		IHGUtil.setFrame(driver, PracticeConstants.FRAME_NAME);
+		Select selexp = new Select(expirationMonth);
+		selexp.selectByVisibleText(PracticeConstants.EXPIRATION_MONTH);
+		Select sele = new Select(expirationYear);
+		List<WebElement> dropdown = sele.getOptions();
+		for (int i = 0; i < dropdown.size(); i++) {
+			String drop_down_values = dropdown.get(i).getText();
+			String current_date = IHGUtil.getCurrentDate();
+			String Current_year = current_date.substring(0, 4);
+			int ExpirationYear = Integer.valueOf(Current_year);
+			String yearInString = String.valueOf(ExpirationYear + 2);
+			if (yearInString.equals(drop_down_values)) {
+				sele.selectByVisibleText(yearInString);
+				log("The" + yearInString + "and" + drop_down_values + " Matched");
+			}
+
+			else {
+
+				log("The" + yearInString + "and" + drop_down_values + "didnt Matched");
+
+			}
+		}
+		cvvCode.clear();
+		cvvCode.sendKeys(PracticeConstants.CVV);
+
+		zipCode.clear();
+		zipCode.sendKeys(PracticeConstants.ZIP_CODE);
+
+		IHGUtil.setFrame(driver, PracticeConstants.FRAME_NAME);
+		chooseProvider(provider);
+		payBillButton.click();
+		IHGUtil.setFrame(driver, PracticeConstants.FRAME_NAME);
+
+	}
+
+	public void setPrePaymentAmount(String prepayamount) {
+		IHGUtil.PrintMethodName();
+		IHGUtil.setFrame(driver, PracticeConstants.FRAME_NAME);
+		IHGUtil.waitForElement(driver, 60, prePaymentAmount);
+		prePaymentAmount.clear();
+		prePaymentAmount.sendKeys(prepayamount);
+	}
+
+	public String getPaymentStartDateText() {
+		IHGUtil.waitForElement(driver, 60, planStartDate);
+		return paymentPlanStartText.getText();
+	}
+
+	public String getPlanStartDate() {
+		IHGUtil.waitForElement(driver, 60, planStartDate);
+		return planStartDate.getText();
+	}
+
+	public String getPlanEndDate() {
+
+		IHGUtil.waitForElement(driver, 60, planEndDate);
+		return planEndDate.getText();
+	}
+
+	public String getCreditCardLastFourDigits() {
+		return creditCradMasked.getText().substring(creditCradMasked.getText().length() - 4);
+	}
+
+	public String getActiveBudgetPaymentCardDigit() {
+		return activeBudgetPaymentCard.getText().substring(activeBudgetPaymentCard.getText().length() - 4);
+	}
+
+	public String getplanEndDateBudgetSearch() {
+		IHGUtil.waitForElement(driver, 60, planEndDateBudgetSearch);
+		return planEndDateBudgetSearch.getText();
+	}
+
+	public void clickOnSubmitPayment() throws Exception {
+		IHGUtil.PrintMethodName();
+		IHGUtil.waitForElement(driver, 30, submitPaymentButton);
+		submitPaymentButton.click();
+		Thread.sleep(10000);
+	}
+
+	public void clickOnStopBudgetPayment() throws Exception {
+		IHGUtil.PrintMethodName();
+		IHGUtil.waitForElement(driver, 30, stopBudgetPayment);
+		stopBudgetPayment.click();
+		Thread.sleep(5000);
+	}
+
+	public void budgetPaymentPlanSearchPatient(String fName, String lName) throws Exception {
+		IHGUtil.PrintMethodName();
+		IHGUtil.setFrame(driver, PracticeConstants.FRAME_NAME);
+		budgetSearchfirstName.clear();
+		budgetSearchfirstName.sendKeys(fName);
+		budgetSearchlastName.clear();
+		budgetSearchlastName.sendKeys(lName);
+		searchForPatients.click();
+		Thread.sleep(8000);
+		WebElement searchOption = driver
+				.findElement(By.xpath("//table[@id='MfAjaxFallbackDefaultDataTable']//td[span[contains(text(),'" + lName
+						+ ", " + fName + "')]]/preceding-sibling::td"));
+		IHGUtil.waitForElement(driver, 30, searchOption);
+		searchOption.click();
+		Thread.sleep(10000);
+
+	}
+
+	private ArrayList<WebElement> getCreditCards() {
+		return (ArrayList<WebElement>) driver.findElements(By.xpath("//a[text()='Delete']"));
+	}
+
+	public boolean isAnyCardPresent() {
+		return getCreditCards().size() > 0;
+	}
+
+	private PayMyBillOnlinePage removeCreditCard(WebElement removeButton) {
+		removeButton.click();
+		Alert alert = wait.until(ExpectedConditions.alertIsPresent());
+		driver.switchTo().alert();
+		alert.accept();
+		return this;
+	}
+
+	public void removeAllCards() throws InterruptedException {
+		log("Removing of displayed cards");
+		ArrayList<WebElement> cards = getCreditCards();
+
+		if (cards.size() > 0) {
+			log("Count of displayed cards: " + cards.size());
+			int removedCards = 0;
+
+			ArrayList<WebElement> removeButtons = (ArrayList<WebElement>) driver
+					.findElements(By.xpath("//a[text()='Delete']"));
+			for (int i = 0; i < removeButtons.size(); i++) {
+				if (removeButtons.get(i).isDisplayed()) {
+					removeCreditCard(removeButtons.get(i));
+					log("Card #" + ++removedCards + " removed");
+					// need to sleep because of modal disappearing time
+					Thread.sleep(5000);
+				}
+			}
+		} else {
+			log("No previous card is displayed");
+		}
 	}
 
 }
