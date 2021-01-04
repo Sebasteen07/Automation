@@ -23,8 +23,7 @@ public class CancelRescheduleDecisionPage extends PSS2MainPage {
 	
 	
 	@FindBy(how = How.XPATH, using = "//button[@value='cancel']")
-	private WebElement buttonCancel;
-	
+	private WebElement buttonCancel;	
 	
 	@FindBy(how = How.XPATH, using = "//button[@value='reschedule']")
 	private WebElement buttonReschedule;
@@ -60,9 +59,20 @@ public class CancelRescheduleDecisionPage extends PSS2MainPage {
 		for (WebElement a:appointmentScheduledDetails) {
 			log(a.getText());
 		}
+		commonMethods.highlightElement(buttonCancel);
 		buttonCancel.click();
 		Thread.sleep(1000);
 		return PageFactory.initElements(driver, HomePage.class);
+	}
+	
+	public void clickReschedule() throws InterruptedException {		
+		log("The previous Appointment details are as below");
+		for (WebElement a:appointmentScheduledDetails) {
+			log(a.getText());
+		}
+		commonMethods.highlightElement(buttonReschedule);
+		buttonReschedule.click();
+		Thread.sleep(1000);		
 	}
 
 }
