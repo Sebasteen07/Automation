@@ -27,6 +27,8 @@ import com.ng.product.integrationplatform.pojo.AcknowledgedProblem;
 import com.ng.product.integrationplatform.pojo.ObsPanel;
 import com.ng.product.integrationplatform.pojo.Problem;
 import com.ng.product.integrationplatform.pojo.Allergy;
+import com.ng.product.integrationplatform.pojo.Appointment;
+import com.ng.product.integrationplatform.pojo.AppointmentResponse;
 import com.ng.product.integrationplatform.pojo.Attachment;
 import com.ng.product.integrationplatform.pojo.CCDRequest;
 import com.ng.product.integrationplatform.pojo.CCDRequestDetails;
@@ -663,5 +665,66 @@ public class NGAPIFlows {
 		Log4jUtil.log(e.getMessage());
     }
 		return comm_id;
+	}
+	
+	public static void postAppointmentResponse(String appointmentRequestId, String appointmentId, String message) throws Throwable{
+		AppointmentResponse appointmentResponse = new AppointmentResponse();		
+		try{			
+			appointmentResponse.setMessage(message);
+			appointmentResponse.setApprovedDate(sdf.format(new Date()));
+			appointmentResponse.setAppointmentId(appointmentId.toUpperCase());
+			appointmentResponse.setAppointmentStatus("Booked");
+			appointmentResponse.setSourceApplicationType(1);
+			
+			ObjectMapper mapper = new ObjectMapper();
+			mapper.setSerializationInclusion(Inclusion.NON_NULL);				
+	        String requestbody = mapper.defaultPrettyPrintingWriter().writeValueAsString(appointmentResponse);
+	        Log4jUtil.log("Appointment Response request body \n"+requestbody);			
+			
+			String appointmentResponseURL =apiRoutes.valueOf("PostAppointmentResponse").getRouteURL().replace("appointmentRequestId", appointmentRequestId); 
+			String finalURL = EnterprisebaseURL +appointmentResponseURL;
+			NGAPIUtils.setupNGHttpPostRequest("EnterpriseGateway",finalURL,requestbody, 201);
+			Log4jUtil.log("Appointment Response is sent successsfully");			
+	} catch (Exception e) {
+		Log4jUtil.log(e.getMessage());
+    }
+	}
+	
+	public static String postAppointment(String personId,String locationName, String ProviderName,String EventName, String ResourceName,int expectedStatusCode) throws Throwable{
+		Appointment appointment = new Appointment();	String epm_appt_id ="";	
+		try{			
+			String strSqlQueryForProvider= "select provider_id from provider_mstr where description='"+ProviderName+"'";
+			String strSqlQueryForLocation= "select location_id from location_mstr where location_name='"+locationName+"'";
+			String strSqlQueryForEvent= "select event_id from events where event ='"+EventName+"'";
+			String strSqlQueryForResource= "select resource_id from resources where description = '"+ResourceName+"'";			
+			String strSqlQueryForDuration= "select duration from events where event ='"+EventName+"'";
+						
+			appointment.setPersonId(personId);
+			appointment.setEventId(DBUtils.executeQueryOnDB("NGCoreDB",strSqlQueryForEvent).toLowerCase());
+			appointment.setLocationId(DBUtils.executeQueryOnDB("NGCoreDB",strSqlQueryForLocation));
+			appointment.setRenderingProviderId(DBUtils.executeQueryOnDB("NGCoreDB",strSqlQueryForProvider));
+			appointment.setDurationMinutes(DBUtils.executeQueryOnDB("NGCoreDB",strSqlQueryForDuration));
+			
+			String appointmentDate = sdf.format(DateUtils.addDays(new Date(), 1));
+			appointmentDate = appointmentDate.substring(0, appointmentDate.indexOf("T"));
+			appointment.setAppointmentDate(appointmentDate + "T00:00:00");
+			
+			List<String> resourceIds =new ArrayList<String>();
+			resourceIds.add(DBUtils.executeQueryOnDB("NGCoreDB",strSqlQueryForResource));			
+			appointment.setResourceIds(resourceIds);
+					
+			ObjectMapper mapper = new ObjectMapper();
+			mapper.setSerializationInclusion(Inclusion.NON_NULL);				
+	        String requestbody = mapper.defaultPrettyPrintingWriter().writeValueAsString(appointment);
+	        Log4jUtil.log("Appointment request body \n"+requestbody);			
+			
+			String appointmentURL =apiRoutes.valueOf("PostAppointment").getRouteURL(); 
+			String finalURL = EnterprisebaseURL +appointmentURL;
+			epm_appt_id = NGAPIUtils.setupNGHttpPostRequest("EnterpriseGateway",finalURL,requestbody, expectedStatusCode);
+			Log4jUtil.log("Appointment posted successsfully with ID "+epm_appt_id);			
+	} catch (Exception e) {
+		Log4jUtil.log(e.getMessage());
+    }
+		return epm_appt_id;
 	}
 }

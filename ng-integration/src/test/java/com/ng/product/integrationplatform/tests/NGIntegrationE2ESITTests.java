@@ -19,7 +19,10 @@ import javax.xml.parsers.ParserConfigurationException;
 
 import org.codehaus.jackson.map.ObjectMapper;
 import org.json.JSONException;
+import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
+import org.openqa.selenium.WebDriverException;
+import org.openqa.selenium.support.PageFactory;
 import org.testng.Assert;
 import org.testng.annotations.BeforeClass;
 import org.testng.annotations.Test;
@@ -40,6 +43,9 @@ import com.medfusion.portal.utils.PortalConstants;
 import com.medfusion.product.object.maps.patientportal2.page.JalapenoLoginEnrollment;
 import com.medfusion.product.object.maps.patientportal2.page.NGLoginPage;
 import com.medfusion.product.object.maps.patientportal2.page.AccountPage.JalapenoAccountPage;
+import com.medfusion.product.object.maps.patientportal2.page.AppointmentRequestPage.JalapenoAppointmentRequestV2Step2;
+import com.medfusion.product.object.maps.patientportal2.page.AppointmentRequestPage.NGAppointmentRequestV2HistoryPage;
+import com.medfusion.product.object.maps.patientportal2.page.AppointmentRequestPage.NGAppointmentRequestV2Step1;
 import com.medfusion.product.object.maps.patientportal2.page.AskAStaff.JalapenoAskAStaffV2Page1;
 import com.medfusion.product.object.maps.patientportal2.page.AskAStaff.JalapenoAskAStaffV2Page2;
 import com.medfusion.product.object.maps.patientportal2.page.CcdPage.JalapenoCcdViewerPage;
@@ -3922,11 +3928,11 @@ public class NGIntegrationE2ESITTests extends BaseTestNGWebDriver{
 			Log4jUtil.log("Invalid Execution Mode");
 		}
 	    
+    	NGAPIUtils.updateLoginDefaultTo("EnterpriseGateway",enterpriseId,practiceId);
 		String encounter_id = NGAPIFlows.addEncounter(locationName,providerName,person_id);
 		 
 	    logStep("Compose Message with Cann't Reply and send it to enrolled patient with “Existing Encounter” option selected in Send & Chart button.");
-        NGAPIUtils.updateLoginDefaultTo("EnterpriseGateway",enterpriseId,practiceId);    
-    	String comm_id =NGAPIFlows.postSecureMessage("DisableReply",person_id,practiceId,userId,providerName,locationName, "EHR", "ExistingEncounter","PracticeUser",encounter_id,"","");		
+        String comm_id =NGAPIFlows.postSecureMessage("DisableReply",person_id,practiceId,userId,providerName,locationName, "EHR", "ExistingEncounter","PracticeUser",encounter_id,"","");		
         
     	String subjectQuery ="select subject from ngweb_communications where comm_id ='"+comm_id+"'";
     	String bodyQuery ="select body from ngweb_communications where comm_id ='"+comm_id+"'";	

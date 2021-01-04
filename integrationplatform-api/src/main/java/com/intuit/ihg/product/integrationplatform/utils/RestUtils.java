@@ -3404,6 +3404,31 @@ public static void verifyPatientCCDFormInfo(String responsepath,List<String> lis
 		Assert.assertTrue(found, "Reply was not found in response XML");
 		return MessageID;
 	}
+	
+	public static String isAppointmentReasonResponseXMLValid(String xmlFileName, String reason) throws ParserConfigurationException, SAXException, IOException {
+		IHGUtil.PrintMethodName();
+		Document doc = buildDOMXML(xmlFileName); String appointmentID ="";
+		
+		Log4jUtil.log("finding reason message");
+		boolean found = false;
+		NodeList nodes = doc.getElementsByTagName(IntegrationConstants.REASON);
+		Node node = null;
+		for (int i = 0; i < nodes.getLength(); i++) {
+			node = nodes.item(i);
+			Log4jUtil.log("Searching: " + node.getChildNodes().item(0).getTextContent() + ", to be found: " + (reason));
+			if (node.getChildNodes().item(0).getTextContent().contains(reason)) {
+				found = true;
+				Log4jUtil.log("Reason is found.");				
+				Element appointment = (Element) node.getParentNode().getParentNode();				
+				appointmentID = appointment.getAttribute(IntegrationConstants.APPOINTMENT_ID);				
+				Log4jUtil.log("Appointment ID is "+appointmentID);
+				break;
+			}
+		}
+		Assert.assertTrue(found, "Reason was not found in response XML");
+		Log4jUtil.log("response is ok");
+		return appointmentID;
+	}
 
 
 }
