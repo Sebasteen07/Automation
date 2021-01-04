@@ -600,8 +600,7 @@ public class PSS2PatientPortalAcceptanceTests extends BaseTestNGWebDriver {
 
 		log("Step 2: Fetch rule and settings from PSS 2.0 Admin portal");
 		log("--------Admin Setting for Loginless Flow Starts----------");
-		// adminUtils.adminSettingsLoginless(driver, adminuser, testData, PSSConstants.LOGINLESS);
-		adminUtils.getInsuranceStateandRule(driver, adminuser, testData);
+		adminUtils.adminSettingsLoginless(driver, adminuser, testData, PSSConstants.LOGINLESS);
 		String rule = adminuser.getRule();
 		rule = rule.replaceAll(" ", "");
 		log("Rule -" + rule);
@@ -1279,7 +1278,6 @@ public class PSS2PatientPortalAcceptanceTests extends BaseTestNGWebDriver {
 		log("Step 1: Load test Data from External Property file.");
 		Appointment testData = new Appointment();
 		AdminUser adminuser = new AdminUser();
-		// PSSPatientUtils psspatientutils = new PSSPatientUtils();
 		PSSAdminUtils pssadminutils = new PSSAdminUtils();
 
 		PSSPropertyFileLoader propertyData = new PSSPropertyFileLoader();
@@ -1903,6 +1901,76 @@ public class PSS2PatientPortalAcceptanceTests extends BaseTestNGWebDriver {
 		homepage.clickRescheduleLink();
 		psspatientutils.rescheduleAPT(testData, driver);
 	}
+	
+	@Test(enabled = true, groups = {"AcceptanceTests"}, retryAnalyzer = RetryAnalyzer.class, dependsOnMethods="testE2ELoginlessForExistingPatientGE")
+	public void testRescheduleviaEmailNotifiicationGE() throws Exception {
+		
+		log("Test to verify if Reschedule an Appointment via Email Notification");		
+		log("Step 1: Load test Data from External Property file.");
+		Appointment testData = new Appointment();
+		AdminUser adminuser = new AdminUser();
+		PSSPatientUtils psspatientutils = new PSSPatientUtils();
+		PSSAdminUtils pssadminutils = new PSSAdminUtils();
+
+		AdminAppointment adminAppointment = new AdminAppointment(driver);
+
+		psspatientutils.setTestData("GE", testData, adminuser);
+
+		ArrayList<String> adminCancelReasonList = pssadminutils.getCancelRescheduleSettings(driver, adminuser, testData, adminAppointment);
+
+		log("isShowCancellationRescheduleReason --" + testData.isShowCancellationRescheduleReason());
+		log("isShowCancellationReasonPM ---" + testData.isShowCancellationReasonPM());
+
+		String rule = adminuser.getRule();
+
+		log("rule set in admin = " + rule);
+		rule = rule.replaceAll(" ", "");
+
+		log("Step 4: Login to PSS Appointment");
+		DismissPage dismissPage = new DismissPage(driver, testData.getUrlLoginLess());
+		Thread.sleep(2000);
+
+		log("Step 5: LoginlessPatientInformation****");
+		log("Clicked on Dismiss");
+		LoginlessPatientInformation loginlessPatientInformation = dismissPage.clickDismiss();
+
+		Thread.sleep(1000);
+
+		HomePage homepage = loginlessPatientInformation.fillNewPatientForm(testData.getFirstName(), testData.getLastName(), testData.getDob(), testData.getEmail(),
+				testData.getGender(), testData.getZipCode(), testData.getPrimaryNumber());
+		
+		homepage.patientLogout(driver);
+		
+		log("Step 8: Fetch the Cancel/Reschedule link from email");
+		Mailinator mail = new Mailinator();
+		String subject = testData.getEmaiSubject();
+		String messageLink = "Reschedule or cancel";
+		String CancelReschedulelink = mail.getLinkFromEmail(testData.getGmailUserName(), subject, messageLink, 5);
+		
+		log(CancelReschedulelink+" ---This is cancel link");		
+		
+		PatientIdentificationPage patientIdentificationPage = new PatientIdentificationPage(driver,CancelReschedulelink);
+		
+		log("Step 9: Click on Cancel/Reschedule link from email");
+
+		Thread.sleep(1500);
+		if (patientIdentificationPage.isPopUP()) {
+			patientIdentificationPage.popUPClick();
+		}
+		
+		log("Step 10: Fill Patient details for Identification");
+		log("First Name- " + testData.getFirstName());
+		log("Last Name- " + testData.getLastName());		
+		
+		
+		log("Step 11: Verify the appointment details and click on Cancel button");
+		CancelRescheduleDecisionPage cancelRescheduleDecisionPage =patientIdentificationPage.fillPatientForm(testData.getFirstName(), testData.getLastName());
+		cancelRescheduleDecisionPage.areBasicPageElementsPresent();
+		cancelRescheduleDecisionPage.clickReschedule();
+		psspatientutils.rescheduleAPT( testData, driver);
+
+	}
+
 
 
 	@Test(enabled = true, dataProvider = "partnerType", groups = {"AcceptanceTests"}, retryAnalyzer = RetryAnalyzer.class)
