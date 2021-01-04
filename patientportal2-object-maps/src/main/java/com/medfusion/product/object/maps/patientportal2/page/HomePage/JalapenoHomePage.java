@@ -25,6 +25,7 @@ import com.medfusion.product.object.maps.forms.page.questionnaires.PortalFormPag
 import com.medfusion.product.object.maps.patientportal2.page.JalapenoMenu;
 import com.medfusion.product.object.maps.patientportal2.page.AppointmentRequestPage.JalapenoAppointmentRequestPage;
 import com.medfusion.product.object.maps.patientportal2.page.AppointmentRequestPage.JalapenoAppointmentRequestV2Step1;
+import com.medfusion.product.object.maps.patientportal2.page.AppointmentRequestPage.NGAppointmentPage;
 import com.medfusion.product.object.maps.patientportal2.page.AppointmentsPage.JalapenoAppointmentsPage;
 import com.medfusion.product.object.maps.patientportal2.page.AskAStaff.JalapenoAskAStaffPage;
 import com.medfusion.product.object.maps.patientportal2.page.AskAStaff.JalapenoAskAStaffV2Page1;
@@ -519,6 +520,11 @@ public class JalapenoHomePage extends JalapenoMenu {
 		}
 		return PageFactory.initElements(driver, JalapenoAskAStaffV2Page1.class);
 	}
-
+	
+	public NGAppointmentPage clickOnAppointmentV3(WebDriver driver) {
+		IHGUtil.PrintMethodName();
+		javascriptClick(appointments);
+		return PageFactory.initElements(driver, NGAppointmentPage.class);
+	}
 
 }
