@@ -24,6 +24,7 @@ public class PSSPropertyFileLoader {
 		Log4jUtil.log("Loading data for GW appointment related cases..");
 		appointValues.setIsinsuranceVisible(false);
 		appointValues.setIsstartpointPresent(false);
+		appointValues.setLinkProvider(property.getProperty("linkProviderGW"));
 		appointValues.setAppointmenttype(property.getProperty("appointmenttypeGW"));
 		appointValues.setDatetime(property.getProperty("datetimeGW"));
 		appointValues.setLocation(property.getProperty("locationGW"));
@@ -129,6 +130,7 @@ public class PSSPropertyFileLoader {
 
 	public void setAppointmentResponseAT(Appointment appointValues) {
 		Log4jUtil.log("Loading data for ATHENA appointment related cases..");
+		appointValues.setLinkProvider(property.getProperty("linkProviderAT"));
 		appointValues.setMaxperDay(property.getProperty("maxperDayAT"));
 		appointValues.setUrlAnonymous(property.getProperty("urlAnonymousAT"));
 		Log4jUtil.log(appointValues.getUrlAnonymous());
@@ -189,6 +191,7 @@ public class PSSPropertyFileLoader {
 
 	public void setAppointmentResponseGE(Appointment appointValues) {
 		Log4jUtil.log("Loading data for GE appointment related cases..");
+		appointValues.setLinkProvider(property.getProperty("linkProviderGE"));
 		appointValues.setMaxperDay(property.getProperty("maxperDayGE"));
 		appointValues.setAppointmenttype(property.getProperty("appointmenttypeGE"));
 		appointValues.setDatetime(property.getProperty("datetimeGE"));
@@ -250,6 +253,7 @@ public class PSSPropertyFileLoader {
 		appointValues.setUrlAnonymous(property.getProperty("urlAnonymousNG"));
 		Log4jUtil.log(appointValues.getUrlAnonymous());
 		appointValues.setIsInsuranceEnabled(true);
+		appointValues.setLinkProvider(property.getProperty("linkProviderNG"));
 		appointValues.setMaxperDay(property.getProperty("maxperDayNG"));
 		appointValues.setAppointmenttype(property.getProperty("appointmenttypeNG"));
 		appointValues.setDatetime(property.getProperty("datetimeNG"));

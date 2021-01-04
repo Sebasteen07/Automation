@@ -654,6 +654,13 @@ public class HomePage extends PSS2MainPage {
 		return PageFactory.initElements(driver, StartAppointmentInOrder.class);
 	}
 
+	public AppointmentPage skipInsurancepage(WebDriver driver) throws InterruptedException {
+		UpdateInsurancePage updateinsurancepage = PageFactory.initElements(driver, UpdateInsurancePage.class);
+		updateinsurancepage.skipInsuranceUpdateOnHomePage();
+		return PageFactory.initElements(driver, AppointmentPage.class);
+	}
+
+
 	public Speciality skipInsuranceForSpeciality(WebDriver driver) throws InterruptedException {
 		UpdateInsurancePage updateinsurancepage = PageFactory.initElements(driver, UpdateInsurancePage.class);
 		updateinsurancepage.skipInsuranceUpdateOnHomePage();
