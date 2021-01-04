@@ -601,7 +601,6 @@ public class PSS2PatientPortalAcceptanceTests extends BaseTestNGWebDriver {
 		log("Step 2: Fetch rule and settings from PSS 2.0 Admin portal");
 		log("--------Admin Setting for Loginless Flow Starts----------");
 		adminUtils.adminSettingsLoginless(driver, adminuser, testData, PSSConstants.LOGINLESS);
-		//adminUtils.getInsuranceStateandRule(driver, adminuser, testData);
 		String rule = adminuser.getRule();
 		rule = rule.replaceAll(" ", "");
 		log("Rule -" + rule);
@@ -1279,7 +1278,6 @@ public class PSS2PatientPortalAcceptanceTests extends BaseTestNGWebDriver {
 		log("Step 1: Load test Data from External Property file.");
 		Appointment testData = new Appointment();
 		AdminUser adminuser = new AdminUser();
-		//PSSPatientUtils psspatientutils = new PSSPatientUtils();
 		PSSAdminUtils pssadminutils = new PSSAdminUtils();
 
 		PSSPropertyFileLoader propertyData = new PSSPropertyFileLoader();
@@ -1923,9 +1921,6 @@ public class PSS2PatientPortalAcceptanceTests extends BaseTestNGWebDriver {
 		log("isShowCancellationRescheduleReason --" + testData.isShowCancellationRescheduleReason());
 		log("isShowCancellationReasonPM ---" + testData.isShowCancellationReasonPM());
 
-		boolean can1 = testData.isShowCancellationRescheduleReason();
-		boolean can2 = testData.isShowCancellationReasonPM();
-
 		String rule = adminuser.getRule();
 
 		log("rule set in admin = " + rule);
@@ -1974,25 +1969,6 @@ public class PSS2PatientPortalAcceptanceTests extends BaseTestNGWebDriver {
 		cancelRescheduleDecisionPage.clickReschedule();
 		psspatientutils.rescheduleAPT( testData, driver);
 
-		/*if (can1 == true & can2 == false) {
-
-			homepage.cancelAppointmentWithEmail("CANCEL");
-
-		} else if (can1 == true & can2 == true) {
-
-			log("True- True Conditions follow");
-
-			homepage.cancelAppointmentPMReasonviaEmail(adminCancelReasonList);
-
-		} else if (can1 == false & can2 == false) {
-
-			log("False- False Conditions follow");
-			String popupmsg =
-					"We understand that there are times when you must miss an appointment due to emergencies or obligations for work or family. However, when you do not call to cancel an appointment, you may be preventing another patient from getting much needed treatment. If an appointment is not cancelled in advance you may be charged a fee; this will not be covered by your insurance company.";
-			String confirmCancelmsg = "Are you sure you want to cancel your appointment?";
-
-			homepage.defaultcancelAppointmentviaEmail(popupmsg, confirmCancelmsg);
-		}*/
 	}
 
 
