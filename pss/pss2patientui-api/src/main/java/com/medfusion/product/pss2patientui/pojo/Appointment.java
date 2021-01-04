@@ -23,6 +23,9 @@ public class Appointment {
 	private String speciality;
 	private String icsFilePath;
 	private String urlLoginLess;
+	private String urlLinkGen;
+
+
 	private String firstTimeUser;
 	private String primaryNumber;
 	private String patientUserName;
@@ -82,10 +85,11 @@ public class Appointment {
 	private String businesshourEndTime;
 	private String maxperDay;
 	private String gmailUserName;
-	
+	private String linkProvider;
 	
 
 	private Boolean isCancelButtonPresent;
+
 	private int displaySlotCountLength;
 	private Boolean isNextMonthSlotAvail;
 	private String nextDateAvaliable;
@@ -347,6 +351,14 @@ public class Appointment {
 		this.password = password;
 	}
 
+	public String getLinkProvider() {
+		return linkProvider;
+	}
+
+	public void setLinkProvider(String linkProvider) {
+		this.linkProvider = linkProvider;
+	}
+
 	public String getLocation() {
 		return location;
 	}
@@ -457,6 +469,14 @@ public class Appointment {
 
 	public void setUrlLoginLess(String urlLoginLess) {
 		this.urlLoginLess = urlLoginLess;
+	}
+
+	public String getUrlLinkGen() {
+		return urlLinkGen;
+	}
+
+	public void setUrlLinkGen(String urlLinkGen) {
+		this.urlLinkGen = urlLinkGen;
 	}
 
 	public String getUrlIPD() {

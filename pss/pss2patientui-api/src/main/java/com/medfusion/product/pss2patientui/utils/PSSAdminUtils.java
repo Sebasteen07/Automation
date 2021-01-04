@@ -19,6 +19,7 @@ import com.medfusion.product.object.maps.pss2.page.settings.AccessRules;
 import com.medfusion.product.object.maps.pss2.page.settings.AdminAppointment;
 import com.medfusion.product.object.maps.pss2.page.settings.AdminPatientMatching;
 import com.medfusion.product.object.maps.pss2.page.settings.InsuranceCarrier;
+import com.medfusion.product.object.maps.pss2.page.settings.LinkTab;
 import com.medfusion.product.object.maps.pss2.page.settings.PSS2PracticeConfiguration;
 import com.medfusion.product.object.maps.pss2.page.settings.PatientFlow;
 import com.medfusion.product.pss2patientui.pojo.AdminUser;
@@ -380,9 +381,8 @@ public class PSSAdminUtils {
 		patientflow.logout();
 		return list;
 	}
-	
-	public void getRescheduleSettings(WebDriver driver, AdminUser adminuser, Appointment testData, AdminAppointment adminAppointment)
-			throws Exception {
+
+	public void getRescheduleSettings(WebDriver driver, AdminUser adminuser, Appointment testData, AdminAppointment adminAppointment) throws Exception {
 		PSS2PracticeConfiguration psspracticeConfig = loginToAdminPortal(driver, adminuser);
 		PatientFlow patientflow = psspracticeConfig.gotoPatientFlowTab();
 		adminuser.setRule(patientflow.getRule());
@@ -490,8 +490,7 @@ public class PSSAdminUtils {
 		Log4jUtil.log("rule= " + patientflow.getRule());
 		appointment.setResourcetoggleStatus(patientflow.resourcetoggleStatus());
 		Log4jUtil.log("Resource is Enabled= " + patientflow.resourcetoggleStatus());
-		if(patientflow.resourcetoggleStatus()==false)
-		{
+		if (patientflow.resourcetoggleStatus() == false) {
 			patientflow.clickonProviderToggle();
 		}
 		setRulesNoSpecialitySet1(patientflow);
@@ -561,7 +560,21 @@ public class PSSAdminUtils {
 		appointment.setCurrentTimeZone(manageLocation.getTimezone());
 		Log4jUtil.log("Current Timezone On AdminUi " + appointment.getCurrentTimeZone());
 		patientflow.logout();
+	}
 
-
+	public void adminSettingLinkGeneration(WebDriver driver, AdminUser adminuser, Appointment testData, String urlToUse) throws Exception {
+		Log4jUtil.log("****************ADMIN SETTINGS FOR Loginless FLOW**************************");
+		PSS2PracticeConfiguration psspracticeConfig = loginToAdminPortal(driver, adminuser);
+		Thread.sleep(2000);
+		LinkTab linkTab = psspracticeConfig.linksTab();
+		linkTab.searchLinkandRemove(testData.getLinkProvider());
+		linkTab.addLink(testData.getLocation(), testData.getLinkProvider());
+		linkTab.getURL(testData.getLinkProvider());
+		testData.setUrlLinkGen(linkTab.getURL(testData.getLinkProvider()));
+		PatientFlow patientflow = psspracticeConfig.gotoPatientFlowTab();
+		AdminPatientMatching adminpatientmatching = patientflow.gotoPatientMatchingTab();
+		adminpatientmatching.patientMatchingSelection();
+		Log4jUtil.log("adminSettings Step 5: Logout from PSS Admin Portal");
+		Thread.sleep(4000);
 	}
 }

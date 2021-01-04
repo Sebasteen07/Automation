@@ -36,6 +36,10 @@ public class SettingsTab extends PSS2MenuPage {
 	@FindBy(how = How.ID, using = "insurance-tab")
 	private WebElement insuranceCarrierTab;
 
+	@FindBy(how = How.ID, using = "links-tab")
+	private WebElement linksTab;
+
+
 	public SettingsTab(WebDriver driver) {
 		super(driver);
 	}
@@ -89,5 +93,11 @@ public class SettingsTab extends PSS2MenuPage {
 	public PSS2PracticeConfiguration gotoPracticeConfigTab() {
 		practiceConfigTab.click();
 		return PageFactory.initElements(driver, PSS2PracticeConfiguration.class);
+	}
+
+	public LinkTab linksTab() {
+		linksTab.click();
+		return PageFactory.initElements(driver, LinkTab.class);
+
 	}
 }
