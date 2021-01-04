@@ -103,7 +103,7 @@ public class JalapenoHomePage extends JalapenoMenu {
 	@FindBy(how = How.XPATH, using = "//a[text()='Ask (paid)']")
 	private WebElement askPaid;
 
-	@FindBy(how = How.XPATH, using = "//span[@class='caret pull-right']")
+	@FindBy(how = How.XPATH, using = "//*[@aria-label='Select box activate']")
 	private WebElement practiceToggleSearch;
 
 	@FindBy(how = How.XPATH, using = "//input[@type='search']")
