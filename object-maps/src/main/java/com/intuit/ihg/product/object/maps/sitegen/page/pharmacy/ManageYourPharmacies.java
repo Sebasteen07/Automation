@@ -1,7 +1,6 @@
 //Copyright 2013-2020 NXGN Management, LLC. All Rights Reserved.
 package com.intuit.ihg.product.object.maps.sitegen.page.pharmacy;
 
-import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.FindBy;
@@ -15,8 +14,11 @@ public class ManageYourPharmacies extends BasePageObject {
 	@FindBy(xpath = "//input[@value='Add New Pharmacy']")
 	private WebElement btnAddNewPharmacy;
 	
-	@FindBy(linkText = "Edit Pharmacy")
+	@FindBy(xpath="//div[@id='availablePharmaciesParams']//tbody/tr[1]/td[2]")
 	private WebElement lnkEditPharmacy;
+	
+	@FindBy(xpath="//div[@id='availablePharmaciesParams']//tbody/tr[1]/td[1]")
+	private WebElement pharmacyInList;
 	
 	@FindBy(xpath="//input[@name='exportPharmaciesBtn']")
 	private WebElement btnExportPharmacy;
@@ -26,7 +28,7 @@ public class ManageYourPharmacies extends BasePageObject {
 
 	public ManageYourPharmacies(WebDriver driver) {
 		super(driver);
-		// TODO Auto-generated constructor stub
+		PageFactory.initElements(driver, this);
 	}
 
 	public AddPharmacyPage clickOnAddPharmacyButton() {
@@ -34,5 +36,20 @@ public class ManageYourPharmacies extends BasePageObject {
 		btnAddNewPharmacy.click();
 		return PageFactory.initElements(driver, AddPharmacyPage.class);
 	}	
+	
+	public String clickonEditPharmacyLink() throws InterruptedException {
+		String pharmacyName= pharmacyInList.getText();
+		lnkEditPharmacy.click();
+		return pharmacyName ;
+	}
+	
+	public boolean confirmPharmacyInTable(String pharmacyName) {
+		if((pharmacyInList.isDisplayed()))
+		{
+		  return true;
+		}
+			
+		return false;	
+	
+	}
 }
-

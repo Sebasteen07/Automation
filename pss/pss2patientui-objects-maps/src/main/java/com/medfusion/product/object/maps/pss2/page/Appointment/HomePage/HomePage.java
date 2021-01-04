@@ -17,7 +17,6 @@ import org.testng.Assert;
 
 import com.medfusion.common.utils.IHGUtil;
 import com.medfusion.product.object.maps.pss2.page.AppEntryPoint.StartAppointmentInOrder;
-import com.medfusion.product.object.maps.pss2.page.Appointment.DateTime.AppointmentDateTime;
 import com.medfusion.product.object.maps.pss2.page.Appointment.Location.Location;
 import com.medfusion.product.object.maps.pss2.page.Appointment.Main.OnlineAppointmentScheduling;
 import com.medfusion.product.object.maps.pss2.page.Appointment.Main.PSS2MainPage;
@@ -26,7 +25,6 @@ import com.medfusion.product.object.maps.pss2.page.Appointment.Menu.PSSPatientHe
 import com.medfusion.product.object.maps.pss2.page.Appointment.Provider.Provider;
 import com.medfusion.product.object.maps.pss2.page.Appointment.Speciality.Speciality;
 import com.medfusion.product.object.maps.pss2.page.AppointmentType.AppointmentPage;
-import com.medfusion.product.object.maps.pss2.page.ConfirmationPage.ConfirmationPage;
 import com.medfusion.product.object.maps.pss2.page.Insurance.UpdateInsurancePage;
 import com.medfusion.product.object.maps.pss2.page.util.CommonMethods;
 
@@ -60,12 +58,21 @@ public class HomePage extends PSS2MainPage {
 	private WebElement buttonRevertCancelAppointment;
 
 	@FindBy(how = How.XPATH, using = "/html[1]/body[1]/div[1]/div[1]/div[1]/div[1]/div[4]/div[1]/div[2]/div[1]/div[1]/div[2]/div[1]/div[1]/div[3]/div[2]/div[1]/div[1]/div[1]/div[2]/div[1]/pre[1]/div[1]")
-	private WebElement cancelAppointmentPopup;
+	private WebElement cancelAppointmentPopup;	
+	
+	@FindBy(how = How.XPATH, using = "//div[@id='appointmentCancleModal']")
+	private WebElement cancelpopupEmail;
+	
+	@FindBy(how = How.XPATH, using = "//span[normalize-space()='Are you sure you want to cancel your appointment?']")
+	private WebElement cancelConfirmationviaEmail;
 
 	@FindBy(how = How.XPATH, using = "/html[1]/body[1]/div[1]/div[1]/div[1]/div[1]/div[4]/div[1]/div[2]/div[1]/div[1]/div[2]/div[1]/div[1]/div[3]/div[2]/div[1]/div[1]/div[1]/div[2]/span[1]")
 	private WebElement cancelAppointmentPopupMSG;
-
-	@FindAll({ @FindBy(xpath = "//div[@id='react-select-4--list']/div") })
+	
+	@FindBy(how = How.XPATH, using = "//div[contains(text(),'We understand that there are times when you must m')]")
+	private WebElement cancelAppointmentPopupMSGviaEmail;
+	
+	@FindAll({ @FindBy(xpath = "//div[@class='Select-menu-outer']/div/div") })
 	private List<WebElement> cancelAppointmentdropdownlist;
 
 	@FindBy(how = How.XPATH, using = "//span[normalize-space()='Select cancel reason']")
@@ -78,17 +85,41 @@ public class HomePage extends PSS2MainPage {
 	private WebElement cancelReason;
 
 	@FindBy(how = How.XPATH, using = "//div//button[@class='submitcancel']")
-	private WebElement cancelSubmit;
+	private WebElement cancelSubmit;	
+	
+	@FindBy(how = How.XPATH, using = "//button[@class='submitcancelbtn col-sm-3']")
+	private WebElement cancelSubmitwithEmail;	
 
-	@FindBy(how = How.XPATH, using = "//body[@class='modal-open']/div[@id='root']/div/div/div[@class='container']/div/div[@id='dashboardmobileview']/div/div[@class='row']/div[@id='upcomingevents']/div[@id='upcomingappoitment']/div[1]/div[1]/div[3]/div[2]/div[1]/div[1]/div[1]/div[2]/span[1]")
-	private WebElement cancelAppointmentConfirmed;
+	@FindBy(how = How.XPATH, using = "//div[@id='appointmentCancleModal']")
+	private WebElement cancelAppointmentConfirmedPopUp;	
 
-	@FindBy(how = How.XPATH, using = "//div[1]/div[1]/div[3]/div[2]/div[1]/div[1]/div[1]/div[3]/div[4]/button[1]/span[1]")
-	private WebElement cancelYesButton;
+	@FindBy(how = How.XPATH, using = "//div[@id='appointmentCancleModal']/div[2]/span")
+	private WebElement cancelApptConfirmMsg;
+
+	@FindBy(how = How.XPATH, using = "//button[@id='cancleNo']")
+	private WebElement cancelNoBtnEmail;
+	
+	@FindBy(how = How.XPATH, using = "//div[@id='myModal']//div[4]//button[1]")
+	private WebElement cancelYesBtnEmail;
+
+	@FindBy(how = How.XPATH, using = "//button[@id='gotodashboard']//span[contains(text(),'Ok')]")
+	private WebElement okCancelBtnEmail;
+	
+	@FindBy(how = How.XPATH, using = "//div[@id='appointmentCancleModal']")
+	private WebElement cancelAppointmentConfirmed;	
+	
+	@FindBy(how = How.XPATH, using = "//div[@id='cancelAppnt']/div/div/div[2]")
+	private WebElement cancelAppointmentConfirmedviaEmail;
+	
+	@FindBy(how = How.XPATH, using = "//span[normalize-space()='Yes']")
+	private WebElement cancelYesButton;	
 
 	@FindBy(how = How.XPATH, using = "//button[@class='okbuttons']")
-	private WebElement okCancelBtn;
-
+	private WebElement okCancelBtn;	
+	
+	@FindBy(how = How.XPATH, using = "//button[@id='gotodashboard']")
+	private WebElement okCancelBtnviaEmail;
+	
 	@FindAll({ @FindBy(xpath = "//a[@class='btn specialtybtndashboard handle-text-Overflow outer-div']") })
 	private List<WebElement> selectSpecialityList;
 
@@ -102,6 +133,9 @@ public class HomePage extends PSS2MainPage {
 	@FindAll({
 			@FindBy(xpath = "//*[@class=\"list-group-item listingOfappointments undefined\"]/div[3]/div[2]/button//span[contains(text(),'Cancel')]") })
 	private List<WebElement> cancelAppointmentList;
+	
+	@FindAll({ @FindBy(xpath = "//div[@id='upcomingevents']//div//div[1]//div[3]//div[2]//button[2]") })
+	private List<WebElement> rescheduleAppointmentList;
 
 	@FindAll({ @FindBy(xpath = "//*[@id=\"upcomingappoitment\"]/div") })
 	private List<WebElement> selectUpcomingApptList;
@@ -127,6 +161,13 @@ public class HomePage extends PSS2MainPage {
 
 	@FindBy(how = How.XPATH, using = "//*[@id=\"upcomingevents\"]/h2/span")
 	private WebElement upCmgAptLabel;
+	
+	
+	@FindBy(how = How.XPATH, using = "//span[@class='circle']")
+	private WebElement logoutCircle;
+
+	@FindBy(how = How.XPATH, using = "//*[@class='dropdown-menu']//a")
+	private WebElement logout;
 
 	public HomePage(WebDriver driver) {
 		super(driver);
@@ -260,6 +301,19 @@ public class HomePage extends PSS2MainPage {
 	public int getPastAppointmentListSize() {
 		return selectPastApptList.size();
 	}
+	
+	public boolean isCancelAppointmentListPresent() {
+		if (cancelAppointmentList.size() > 0) {
+			log("cancelAppointmentList display =" + cancelAppointmentList.get(0).isDisplayed());
+			cancelAppointmentList.get(0).click();
+			//IHGUtil.waitForElement(driver, 60, cancelReason);
+			return true;
+		} else {
+			log("No Appointments found to cancel.");
+			return false;
+		}
+
+	}
 
 	public Boolean cancelAppointment(String popupTextMessage) throws InterruptedException {
 
@@ -291,9 +345,50 @@ public class HomePage extends PSS2MainPage {
 			return false;
 		}
 	}
+	
+	public Boolean cancelAppointmentWithEmail(String popupTextMessage) throws InterruptedException {
+
+		IHGUtil.waitForElement(driver, 60, cancelReason);
+		JavascriptExecutor jse = (JavascriptExecutor) driver;
+		jse.executeScript("window.scrollBy(0,400)", "");
+		cancelReason.sendKeys("Cancel Appointment to test the function");
+		log("Send the below text in cancel input box --->Cancel Appointment to test the function ");
+		
+		commonMethods.highlightElement(cancelSubmitwithEmail);
+		cancelSubmitwithEmail.click();
+		Thread.sleep(3000);
+		jse.executeScript("window.scrollBy(0,400)", "");
+		log("Clicked on Submit Cancel button");
+		if (cancelAppointmentConfirmedPopUp.isDisplayed()) {
+			
+			Thread.sleep(1000);
+			commonMethods.highlightElement(cancelNoBtnEmail);
+			commonMethods.highlightElement(cancelYesBtnEmail);
+			cancelYesBtnEmail.click();
+			Thread.sleep(1000);
+			okCancelBtnEmail.click();
+			log("appointment cancelled Successfully...");
+		}
+		Thread.sleep(3000);
+		log("appointment cancelled...");
+		return true;
+
+	}
+	
+	public void clickRescheduleLink() throws InterruptedException {
+
+		if (rescheduleAppointmentList.size() > 0) {
+			log("rescheduleAppointmentList display =" + rescheduleAppointmentList.get(0).isDisplayed());
+			rescheduleAppointmentList.get(0).click();
+
+		} else {
+			log("No Appointments found to Reschedule.");
+
+		}
+	}
+
 
 	public void cancelAppointmentPMReason(ArrayList<String> listAdminCancelReason) throws InterruptedException {
-
 		if (cancelAppointmentList.size() > 0) {
 			log("cancelAppointmentList display =" + cancelAppointmentList.get(0).isDisplayed());
 			cancelAppointmentList.get(0).click();
@@ -308,10 +403,9 @@ public class HomePage extends PSS2MainPage {
 			IHGUtil.waitForElement(driver, 5, cancelAppointmentdropdownbox);
 			commonMethods.highlightElement(cancelAppointmentdropdownbox);
 
-			commonMethods.highlightElement(selectarrowzone);
 			jse.executeScript("window.scrollBy(0,100)", "");
 			Thread.sleep(100);
-			selectarrowzone.click();
+			cancelAppointmentdropdownbox.click();
 			Thread.sleep(1000);
 			cancelreasonlist = cancelAppointmentdropdownlist;
 
@@ -332,9 +426,9 @@ public class HomePage extends PSS2MainPage {
 			log("The Cancel reasons are displaying as per the Admin COnfig");
 
 			log("Displayed 01 " + cancelreasonlist.get(0).isDisplayed());
-			log("Cancel Reason- " + cancelreasonlist.get(l - 1).getText());
+			log("Cancel Reason- " + cancelreasonlist.get(l - 2).getText());
 
-			act.moveToElement(cancelreasonlist.get(l - 1)).click().build().perform();
+			act.moveToElement(cancelreasonlist.get(l - 2)).click().build().perform();
 
 			cancelSubmit.click();
 			Thread.sleep(3000);
@@ -354,6 +448,61 @@ public class HomePage extends PSS2MainPage {
 		} else {
 			log("No Appointments found to cancel.");
 		}
+	}
+
+	public void cancelAppointmentPMReasonviaEmail(ArrayList<String> listAdminCancelReason) throws InterruptedException {
+
+		JavascriptExecutor jse = (JavascriptExecutor) driver;
+		jse.executeScript("window.scrollBy(0,100)", "");
+
+		Actions act = new Actions(driver);
+
+		List<WebElement> cancelreasonlist = new ArrayList<WebElement>();
+
+		IHGUtil.waitForElement(driver, 5, cancelAppointmentdropdownbox);
+		commonMethods.highlightElement(cancelAppointmentdropdownbox);
+
+		jse.executeScript("window.scrollBy(0,100)", "");
+		Thread.sleep(100);
+		cancelAppointmentdropdownbox.click();
+		Thread.sleep(1000);
+		cancelreasonlist = cancelAppointmentdropdownlist;
+
+		int l = cancelreasonlist.size();
+		log("Cancel Reason length- " + l);
+
+		ArrayList<String> text = new ArrayList<String>();
+
+		int k = 0;
+		// Storing List elements text into String array
+		for (WebElement a : cancelreasonlist) {
+			text.add(a.getText());
+			k++;
+		}
+
+		Assert.assertEquals(text, listAdminCancelReason, "The List are not atching Hence test case failed");
+		log("The Cancel list from Admin and the Cancel list from Patient UI matched");
+		log("The Cancel reasons are displaying as per the Admin COnfig");
+
+		log("Displayed 01 " + cancelreasonlist.get(0).isDisplayed());
+		log("Cancel Reason- " + cancelreasonlist.get(l - 2).getText());
+
+		act.moveToElement(cancelreasonlist.get(l - 2)).click().build().perform();
+
+		cancelSubmitwithEmail.click();
+		Thread.sleep(3000);
+		jse.executeScript("window.scrollBy(0,400)", "");
+		log("Clicked on Submit Cancel button");
+		if (cancelAppointmentConfirmed.isDisplayed()) {
+			Thread.sleep(1000);
+			cancelYesButton.click();
+			Thread.sleep(1000);
+			okCancelBtnviaEmail.click();
+			log("appointment cancelled Successfully...");
+		}
+		Thread.sleep(3000);
+
+		log("appointment cancelled...");
 	}
 	
 	public void cancelAppointmentPMReason() throws InterruptedException {
@@ -384,7 +533,7 @@ public class HomePage extends PSS2MainPage {
 			log("Displayed 01 " + cancelreasonlist.get(0).isDisplayed());
 			log("Cancel Reason- " + cancelreasonlist.get(l - 1).getText());
 
-			act.moveToElement(cancelreasonlist.get(l - 1)).click().build().perform();
+			act.moveToElement(cancelreasonlist.get(l - 2)).click().build().perform();
 			
 			cancelSubmit.click();
 			Thread.sleep(3000);
@@ -407,6 +556,36 @@ public class HomePage extends PSS2MainPage {
 	}
 
 
+	public void defaultcancelAppointmentviaEmail(String popupTextMessage, String cancelConfirmMessage)
+			throws InterruptedException {
+
+			IHGUtil.waitForElement(driver, 60, cancelpopupEmail);
+			JavascriptExecutor jse = (JavascriptExecutor) driver;
+			jse.executeScript("window.scrollBy(0,400)", "");
+
+			commonMethods.highlightElement(cancelAppointmentPopupMSGviaEmail);
+			commonMethods.highlightElement(cancelConfirmationviaEmail);
+
+			Assert.assertEquals(cancelAppointmentPopupMSGviaEmail.getText().trim(), popupTextMessage.trim(), "Text not matched");
+			
+			Assert.assertEquals(cancelConfirmationviaEmail.getText().trim(), cancelConfirmMessage.trim());
+
+			Thread.sleep(1000);
+			jse.executeScript("window.scrollBy(0,400)", "");
+
+			if (cancelAppointmentConfirmed.isDisplayed()) {
+				Thread.sleep(1000);
+				cancelYesButton.click();
+				Thread.sleep(1000);
+				okCancelBtnviaEmail.click();
+
+				log("appointment cancelled Successfully...");
+			}
+			Thread.sleep(3000);
+			log("appointment cancelled...");
+
+	}
+	
 	public void defaultcancelAppointment(String popupTextMessage, String cancelConfirmMessage)
 			throws InterruptedException {
 
@@ -520,6 +699,17 @@ public class HomePage extends PSS2MainPage {
 	public Speciality specilitypage() {
 		log("it returns on specility page");
 		return PageFactory.initElements(driver, Speciality.class);
+	}
+	
+	public void patientLogout(WebDriver driver) throws InterruptedException {
+		Thread.sleep(1000);
+		jse.executeScript("window.scrollBy(1000,0)");
+		Thread.sleep(500);
+		logoutCircle.click();
+		Thread.sleep(500);
+		IHGUtil.waitForElement(driver, 6, logout);
+		logout.click();
+		driver.manage().deleteAllCookies();
 	}
 	
 }

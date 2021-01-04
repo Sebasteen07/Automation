@@ -3381,7 +3381,7 @@ public static void verifyPatientCCDFormInfo(String responsepath,List<String> lis
 		Assert.assertTrue(found, "CCDA Request was not found in the response XML");
 	}
 	
-	public static String isReplyPresentReturnMessageID(String responsePath, String messageIdentifier) throws ParserConfigurationException, SAXException, IOException {
+	public static String isReplyPresentReturnMessageID(String responsePath, String messageIdentifier, String expectedBody) throws ParserConfigurationException, SAXException, IOException {
 		Document doc = buildDOMXML(responsePath);
 
 		Log4jUtil.log("finding sent message");
@@ -3394,7 +3394,7 @@ public static void verifyPatientCCDFormInfo(String responsepath,List<String> lis
 			if (node.getChildNodes().item(0).getTextContent().contains(messageIdentifier.toString())) {
 				Element question = (Element) node.getParentNode();
 				Node message = question.getElementsByTagName(IntegrationConstants.QUESTION_MESSAGE).item(0);
-				Assert.assertEquals(message.getChildNodes().item(0).getTextContent(), IntegrationConstants.MESSAGE_REPLY, "Received reply is not the same as sent");
+				Assert.assertEquals(message.getChildNodes().item(0).getTextContent(), expectedBody, "Received reply is not the same as sent");
 				Node messageId = question.getElementsByTagName("MessageThreadId").item(0);
 				MessageID = messageId.getChildNodes().item(0).getTextContent();				
 				found = true;
@@ -3403,6 +3403,31 @@ public static void verifyPatientCCDFormInfo(String responsepath,List<String> lis
 		}
 		Assert.assertTrue(found, "Reply was not found in response XML");
 		return MessageID;
+	}
+	
+	public static String isAppointmentReasonResponseXMLValid(String xmlFileName, String reason) throws ParserConfigurationException, SAXException, IOException {
+		IHGUtil.PrintMethodName();
+		Document doc = buildDOMXML(xmlFileName); String appointmentID ="";
+		
+		Log4jUtil.log("finding reason message");
+		boolean found = false;
+		NodeList nodes = doc.getElementsByTagName(IntegrationConstants.REASON);
+		Node node = null;
+		for (int i = 0; i < nodes.getLength(); i++) {
+			node = nodes.item(i);
+			Log4jUtil.log("Searching: " + node.getChildNodes().item(0).getTextContent() + ", to be found: " + (reason));
+			if (node.getChildNodes().item(0).getTextContent().contains(reason)) {
+				found = true;
+				Log4jUtil.log("Reason is found.");				
+				Element appointment = (Element) node.getParentNode().getParentNode();				
+				appointmentID = appointment.getAttribute(IntegrationConstants.APPOINTMENT_ID);				
+				Log4jUtil.log("Appointment ID is "+appointmentID);
+				break;
+			}
+		}
+		Assert.assertTrue(found, "Reason was not found in response XML");
+		Log4jUtil.log("response is ok");
+		return appointmentID;
 	}
 
 

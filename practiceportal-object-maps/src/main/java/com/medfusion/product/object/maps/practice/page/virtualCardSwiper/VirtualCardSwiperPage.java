@@ -1,3 +1,4 @@
+//  Copyright 2013-2020 NXGN Management, LLC. All Rights Reserved.
 package com.medfusion.product.object.maps.practice.page.virtualCardSwiper;
 
 import org.openqa.selenium.By;
@@ -122,10 +123,9 @@ public class VirtualCardSwiperPage extends BasePageObject {
 
 		patientNameField.sendKeys(PName);
 
-		/*
-		 * if((IHGUtil.getEnvironmentType().toString()== "DEV3") || (IHGUtil.getEnvironmentType().toString()== "QA1")) { paymentCommentField.sendKeys(comment); }
-		 */
-
+		
+		 if((IHGUtil.getEnvironmentType().toString()== "DEV3") || (IHGUtil.getEnvironmentType().toString()== "QA1")) { paymentCommentField.sendKeys(comment); }
+		
 		clickHereToChargeCard.click();
 	}
 

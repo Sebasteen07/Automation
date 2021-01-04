@@ -76,6 +76,7 @@ public class PSSPropertyFileLoader {
 		appointValues.setOldPatientUserName(property.getProperty("oldPatientUserNameGW"));
 		appointValues.setOldPatientPassword(property.getProperty("oldPatientPasswordGW"));
 		appointValues.setProviderImageAPI(property.getProperty("providerImageAPIGW"));
+		appointValues.setGmailUserName(property.getProperty("gmailUserNameGW"));
 	}
 
 	public void setAdminGW(AdminUser adminuser) {
@@ -128,6 +129,7 @@ public class PSSPropertyFileLoader {
 
 	public void setAppointmentResponseAT(Appointment appointValues) {
 		Log4jUtil.log("Loading data for ATHENA appointment related cases..");
+		appointValues.setMaxperDay(property.getProperty("maxperDayAT"));
 		appointValues.setUrlAnonymous(property.getProperty("urlAnonymousAT"));
 		Log4jUtil.log(appointValues.getUrlAnonymous());
 		appointValues.setIsInsuranceEnabled(true);
@@ -187,6 +189,7 @@ public class PSSPropertyFileLoader {
 
 	public void setAppointmentResponseGE(Appointment appointValues) {
 		Log4jUtil.log("Loading data for GE appointment related cases..");
+		appointValues.setMaxperDay(property.getProperty("maxperDayGE"));
 		appointValues.setAppointmenttype(property.getProperty("appointmenttypeGE"));
 		appointValues.setDatetime(property.getProperty("datetimeGE"));
 		appointValues.setLocation(property.getProperty("locationGE"));
@@ -239,6 +242,7 @@ public class PSSPropertyFileLoader {
 		appointValues.setOldPatientUserName(property.getProperty("oldPatientUserNameGE"));
 		appointValues.setOldPatientPassword(property.getProperty("oldPatientPasswordGE"));
 		appointValues.setProviderImageAPI(property.getProperty("providerImageAPIGE"));
+		appointValues.setGmailUserName(property.getProperty("emailGE"));
 	}
 
 	public void setAppointmentResponseNG(Appointment appointValues) {
@@ -246,6 +250,7 @@ public class PSSPropertyFileLoader {
 		appointValues.setUrlAnonymous(property.getProperty("urlAnonymousNG"));
 		Log4jUtil.log(appointValues.getUrlAnonymous());
 		appointValues.setIsInsuranceEnabled(true);
+		appointValues.setMaxperDay(property.getProperty("maxperDayNG"));
 		appointValues.setAppointmenttype(property.getProperty("appointmenttypeNG"));
 		appointValues.setDatetime(property.getProperty("datetimeNG"));
 		appointValues.setLocation(property.getProperty("locationNG"));

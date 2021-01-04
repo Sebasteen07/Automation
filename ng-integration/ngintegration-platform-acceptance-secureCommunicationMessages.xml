@@ -20,7 +20,7 @@
 	    		<include name="testCOMSecureMessageSentAndReplyUsingOnlineProfile"/> 
 	    		<include name="testCOMSecureMessageSentAndReplyUsingAliasName"/> 
 	    		<include name="testCOMAskAQuestion"/>
-	    	<!-- 	<include name="testDelayedDeliverySecureMessageOriginalUnlockedEncounter"/> -->
+	    	 	<include name="testCOMDelayedDeliverySecureMessageOriginalUnlockedEncounter"/>
       	</methods>
 	</classes>
 </test>

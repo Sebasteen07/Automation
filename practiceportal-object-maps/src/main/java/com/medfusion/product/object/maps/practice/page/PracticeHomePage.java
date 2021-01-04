@@ -1,3 +1,4 @@
+//  Copyright 2013-2020 NXGN Management, LLC. All Rights Reserved.
 package com.medfusion.product.object.maps.practice.page;
 
 import org.openqa.selenium.WebDriver;
@@ -5,7 +6,6 @@ import org.openqa.selenium.WebDriverException;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.FindBy;
 import org.openqa.selenium.support.PageFactory;
-
 import com.intuit.ifs.csscat.core.pageobject.BasePageObject;
 import com.medfusion.common.utils.IHGUtil;
 import com.medfusion.product.object.maps.practice.page.apptrequest.ApptRequestSearchPage;
@@ -97,6 +97,9 @@ public class PracticeHomePage extends BasePageObject {
 	@FindBy(xpath = ".//a[contains(@href, 'home.referral')]")
 	private WebElement referralsTab;
 
+	@FindBy(xpath = "//a[text()='Budget Payment Plan Search']")
+	private WebElement budgetPaymentPlanSearch;
+
 	public PracticeHomePage(WebDriver driver) {
 		super(driver);
 	}
@@ -134,7 +137,8 @@ public class PracticeHomePage extends BasePageObject {
 	}
 
 	/**
-	 * Will take the staff member to the Ask A Staff search page where the staff member can search questions that need processing.
+	 * Will take the staff member to the Ask A Staff search page where the staff
+	 * member can search questions that need processing.
 	 * 
 	 * @return the Ask A Staff search page
 	 * @see AskAStaffSearchPage
@@ -149,7 +153,8 @@ public class PracticeHomePage extends BasePageObject {
 			askAStaffTab.isDisplayed();
 		} catch (Exception e) {
 			// Helpful message about possible issues
-			throw new Exception("Either there was a timeout on loading the page, " + "the staff member is not permissioned for 'Ask A Question' solution,"
+			throw new Exception("Either there was a timeout on loading the page, "
+					+ "the staff member is not permissioned for 'Ask A Question' solution,"
 					+ " or there was an error on login");
 		}
 
@@ -158,7 +163,8 @@ public class PracticeHomePage extends BasePageObject {
 	}
 
 	/**
-	 * Will take the staff member to the Online Bill Pay search page where the staff member can search payments that need processing.
+	 * Will take the staff member to the Online Bill Pay search page where the staff
+	 * member can search payments that need processing.
 	 * 
 	 * @return the Online Bill Pay search page
 	 * @see OnlineBillPaySearchPage
@@ -173,7 +179,8 @@ public class PracticeHomePage extends BasePageObject {
 			onlineBillPay.isDisplayed();
 		} catch (Exception e) {
 			// Helpful message about possible issues
-			throw new Exception("Either there was a timeout on loading the page, " + "the staff member is not permissioned for 'Online Bill Pay' solution,"
+			throw new Exception("Either there was a timeout on loading the page, "
+					+ "the staff member is not permissioned for 'Online Bill Pay' solution,"
 					+ " or there was an error on login");
 		}
 
@@ -182,7 +189,8 @@ public class PracticeHomePage extends BasePageObject {
 	}
 
 	/**
-	 * Will take the staff member to the Online Bill Pay search page where the staff member can search payments that need processing.
+	 * Will take the staff member to the Online Bill Pay search page where the staff
+	 * member can search payments that need processing.
 	 * 
 	 * @return the Online Bill Pay search page
 	 * @see OnlineBillPaySearchPage
@@ -197,7 +205,8 @@ public class PracticeHomePage extends BasePageObject {
 			patientactivation.isDisplayed();
 		} catch (Exception e) {
 			// Helpful message about possible issues
-			throw new Exception("Either there was a timeout on loading the page, " + "the staff member is not permissioned for 'Online Bill Pay' solution,"
+			throw new Exception("Either there was a timeout on loading the page, "
+					+ "the staff member is not permissioned for 'Online Bill Pay' solution,"
 					+ " or there was an error on login");
 		}
 
@@ -206,7 +215,8 @@ public class PracticeHomePage extends BasePageObject {
 	}
 
 	/**
-	 * Will take the staff member to the Online Bill Pay search page where the staff member can search payments that need processing.
+	 * Will take the staff member to the Online Bill Pay search page where the staff
+	 * member can search payments that need processing.
 	 * 
 	 * @return the Online Bill Pay search page
 	 * @see OnlineBillPaySearchPage
@@ -221,7 +231,8 @@ public class PracticeHomePage extends BasePageObject {
 			virtualCardSwiperTab.isDisplayed();
 		} catch (WebDriverException e) {
 			// Helpful message about possible issues
-			throw new WebDriverException("Either there was a timeout on loading the page, " + " or virtualCardSwiperTab not found");
+			throw new WebDriverException(
+					"Either there was a timeout on loading the page, " + " or virtualCardSwiperTab not found");
 		}
 
 		virtualCardSwiperTab.click();
@@ -229,7 +240,8 @@ public class PracticeHomePage extends BasePageObject {
 	}
 
 	/**
-	 * Will take the staff member to the Online Bill Pay search page where the staff member can search payments that need processing.
+	 * Will take the staff member to the Online Bill Pay search page where the staff
+	 * member can search payments that need processing.
 	 * 
 	 * @return the Online Bill Pay search page
 	 * @see OnlineBillPaySearchPage
@@ -252,7 +264,8 @@ public class PracticeHomePage extends BasePageObject {
 	}
 
 	/**
-	 * Will take the staff member to the Rx Renewal Pay search page where the staff member can search rx removals that need processing.
+	 * Will take the staff member to the Rx Renewal Pay search page where the staff
+	 * member can search rx removals that need processing.
 	 * 
 	 * @return the Online Bill Pay search page
 	 * @see OnlineBillPaySearchPage
@@ -267,7 +280,8 @@ public class PracticeHomePage extends BasePageObject {
 			rxRenewal.isDisplayed();
 		} catch (Exception e) {
 			// Helpful message about possible issues
-			throw new Exception("Either there was a timeout on loading the page, " + "the staff member is not permissioned for 'Rx Renewal' solution,"
+			throw new Exception("Either there was a timeout on loading the page, "
+					+ "the staff member is not permissioned for 'Rx Renewal' solution,"
 					+ " or there was an error on login");
 		}
 
@@ -276,7 +290,8 @@ public class PracticeHomePage extends BasePageObject {
 	}
 
 	/**
-	 * Will taky the staff member to the Referrals page where the staff member can work with referrals
+	 * Will taky the staff member to the Referrals page where the staff member can
+	 * work with referrals
 	 * 
 	 * @return the Referrals page
 	 * @see referrals
@@ -291,7 +306,8 @@ public class PracticeHomePage extends BasePageObject {
 	}
 
 	/**
-	 * Will take the staff member to the Appt Request search page where the staff member can search questions that need processing.
+	 * Will take the staff member to the Appt Request search page where the staff
+	 * member can search questions that need processing.
 	 * 
 	 * @return the Appt Request search page
 	 * 
@@ -305,7 +321,8 @@ public class PracticeHomePage extends BasePageObject {
 			apptRequestTab.isDisplayed();
 		} catch (Exception e) {
 			// Helpful message about possible issues
-			throw new Exception("Either there was a timeout on loading the page, " + "the staff member is not permissioned for 'Appt Request' solution,"
+			throw new Exception("Either there was a timeout on loading the page, "
+					+ "the staff member is not permissioned for 'Appt Request' solution,"
 					+ " or there was an error on login");
 		}
 
@@ -321,7 +338,8 @@ public class PracticeHomePage extends BasePageObject {
 			virtualOfficeVisitTab.isDisplayed();
 		} catch (Exception e) {
 			// Helpful message about possible issues
-			throw new Exception("Either there was a timeout on loading the page, " + "the staff member is not permissioned for 'Virtual Office Visit' solution,"
+			throw new Exception("Either there was a timeout on loading the page, "
+					+ "the staff member is not permissioned for 'Virtual Office Visit' solution,"
 					+ " or there was an error on login");
 		}
 
@@ -435,5 +453,11 @@ public class PracticeHomePage extends BasePageObject {
 		familyManagement.click();
 		return PageFactory.initElements(driver, AgeOutReportPage.class);
 
+	}
+
+	public void budgetPaymentPlanSearch() {
+		IHGUtil.PrintMethodName();
+		IHGUtil.waitForElementInDefaultFrame(driver, 20, budgetPaymentPlanSearch);
+		budgetPaymentPlanSearch.click();
 	}
 }

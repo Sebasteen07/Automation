@@ -38,7 +38,9 @@ public enum apiRoutes {
 	CheckInEncounter("api/persons/personId/chart/encounters/encounterId/checkin"),
 	UpdateEncounter("api/persons/personId/chart/encounters/encounterId"),
 	PostSecureMessage("api/secure-messages"),
-	GetSecureMessage("api/secure-messages/secureMessageId");
+	GetSecureMessage("api/secure-messages/secureMessageId"),
+	PostAppointmentResponse("api/appointments/requests/appointmentRequestId/responses"),
+	PostAppointment("api/appointments");
 	
 	private String routeURL;
 

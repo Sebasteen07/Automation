@@ -1,3 +1,4 @@
+//Copyright 2013-2020 NXGN Management, LLC. All Rights Reserved.
 package com.medfusion.product.object.maps.patientportal2.page.AppointmentsPage;
 
 import java.util.ArrayList;
@@ -11,6 +12,7 @@ import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.FindBy;
 import org.openqa.selenium.support.How;
 
+import com.intuit.ifs.csscat.core.utils.Log4jUtil;
 import com.medfusion.common.utils.IHGUtil;
 
 public class JalapenoAppointmentsPage extends MedfusionPage {
@@ -97,5 +99,18 @@ public class JalapenoAppointmentsPage extends MedfusionPage {
 				webElementsList.add(noAppointmentsText);
 
 				return assessPageElements(webElementsList);
+		}
+		
+		public boolean verifyAppointment(String appointmentDate,String appointmentTime,String appointmentProvider){
+			List<WebElement> appointmentList = getAppointments();
+			Boolean status = false;
+			WebElement date =appointmentList.get(1).findElement(By.xpath("//*[contains(text(),'"+appointmentDate+"')]"));
+			WebElement time =appointmentList.get(1).findElement(By.xpath("//*[contains(text(),'"+appointmentTime+"')]"));
+			WebElement provider =appointmentList.get(1).findElement(By.xpath("//*[contains(text(),'"+appointmentProvider+"')]"));
+			if(date.isDisplayed() && time.isDisplayed() && provider.isDisplayed()){
+				status = true;
+				Log4jUtil.log("Booked Appointment is posted successfully to Portal");
+			}
+			return status;
 		}
 }
