@@ -30,7 +30,7 @@ import com.ng.product.integrationplatform.flows.NGAPIFlows;
 
 public class CommonFlows {
 
-	static int arg_timeOut=1100; 
+	static int arg_timeOut=1800; 
 	
    public static void verifyMFJOBStatusWithoutValidatingGetProcessingStatusCall(PropertyFileLoader PropertyLoaderObj,String entityidentifier,String integrationID, String type) throws Throwable{
 		
