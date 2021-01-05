@@ -1,3 +1,4 @@
+//Copyright 2013-2020 NXGN Management, LLC. All Rights Reserved.
 package com.intuit.ihg.product.integrationplatform.utils;
 
 import java.awt.Robot;
@@ -26,7 +27,6 @@ import org.openqa.selenium.support.ui.Select;
 
 import com.intuit.ifs.csscat.core.utils.Log4jUtil;
 import com.medfusion.common.utils.IHGUtil;
-import com.medfusion.common.utils.IHGUtil.Gender;
 import com.medfusion.pojos.Patient;
 import com.medfusion.product.object.maps.forms.page.HealthFormListPage;
 import com.medfusion.product.object.maps.forms.page.questionnaires.prereg_pages.FormAllergiesPage;
@@ -43,7 +43,6 @@ import com.medfusion.product.object.maps.forms.page.questionnaires.prereg_pages.
 import com.medfusion.product.object.maps.forms.page.questionnaires.prereg_pages.FormSocialHistoryPage;
 import com.medfusion.product.object.maps.forms.page.questionnaires.prereg_pages.FormSurgeriesHospitalizationsPage;
 import com.medfusion.product.object.maps.forms.page.questionnaires.prereg_pages.FormVaccinePage;
-import com.medfusion.product.object.maps.patientportal1.page.PortalLoginPage;
 import com.medfusion.product.object.maps.patientportal2.page.JalapenoLoginPage;
 import com.medfusion.product.object.maps.patientportal2.page.JalapenoMenu;
 import com.medfusion.product.object.maps.patientportal2.page.CreateAccount.PatientDemographicPage;
@@ -155,7 +154,7 @@ public class FormsExportUtils {
 			}
 			
 			Log4jUtil.log("Step 11: Login to Patient Portal for submitting 'Patient Registration' Discrete Form");
-			new PortalLoginPage(driver, testData.url_FE);
+			new JalapenoLoginPage(driver, testData.url_FE);
 			loginPage.login(username, testData.patientPassword1_FE);
 			Thread.sleep(9000);	
 			jalapenoHomePage.clickOnMenuHealthForms();
@@ -199,7 +198,7 @@ public class FormsExportUtils {
 				    Log4jUtil.log("File location is "+pdfFileLocation);
 				}
 				if(driver instanceof ChromeDriver) {
-					testData.responsePDF_FE = "./true/CCDExchangePdfBatch.pdf";
+					testData.responsePDF_FE = "./src/test/resources/common/CCDExchangePdfBatch.pdf";
 					String home = System.getProperty("user.home");
 					String fileName = externalPatientID+"_General_Registration_and_Health_History_"+currentDate;
 					File file = new File(home+"/Downloads/" + fileName + ".pdf");

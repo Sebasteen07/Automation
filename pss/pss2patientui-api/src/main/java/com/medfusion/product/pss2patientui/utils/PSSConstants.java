@@ -1,3 +1,4 @@
+// Copyright 2018-2020 NXGN Management, LLC. All Rights Reserved.
 package com.medfusion.product.pss2patientui.utils;
 
 public class PSSConstants {
@@ -28,13 +29,21 @@ public class PSSConstants {
 	public final static String STLB = "S,T,L,B";
 	public final static String STBL = "S,T,B,L";
 	public final static String SLTB = "S,L,T,B";
-	
+	public final static String SLBT = "S,L,B,T";
+	public final static String SBLT = "S,B,L,T";
+	public final static String SBTL = "S,B,T,L";
+
+
+
+
 	public final static String LOGINLESS = "loginless";
 	public final static String IDP = "idp";
+	public final static String ANONYMOUS = "anonymous";
 
 	public final static String GW = "GW";
 	public final static String GE = "GE";
 	public final static String NG = "NG";
+	public final static String AT = "AT";
 
 	public final static String NON_EXISTENCE_PATIENT_EMAIL = "mf.0611201888890@mailnator.com";
 	public final static String NON_EXISTENCE_FIRSTNAME = "mf.9876543210@mailnator.com";
@@ -58,4 +67,20 @@ public class PSSConstants {
 	public final static String CANCEL_APT_UPTO_HRS = "06:00";
 	public final static String MAJOR_AGE = "50";
 	public final static String MAX_BLOCK_MONTHS = "1";
+	
+	public final static String selectRCPorPCP_GE = "rcp";
+	public final static String PCP_AVAILABILITY_DURATION_GE = "29";
+	public final static String FCT_AVAILABILITY_DURATION_GE = "1";
+	
+	public final static String selectRCPorPCP_GW = "pcp";
+	public final static String PCP_AVAILABILITY_DURATION_GW = "100";
+	public final static String FCT_AVAILABILITY_DURATION_GW = "1";
+	
+	public final static String selectRCPorPCP_NG = "pcp";
+	public final static String PCP_AVAILABILITY_DURATION_NG = "29";
+	public final static String FCT_AVAILABILITY_DURATION_NG = "1";
+	
+	public final static String selectRCPorPCP_AT = "pcp";
+	public final static String PCP_AVAILABILITY_DURATION_AT = "29";
+	public final static String FCT_AVAILABILITY_DURATION_AT = "1";
 }

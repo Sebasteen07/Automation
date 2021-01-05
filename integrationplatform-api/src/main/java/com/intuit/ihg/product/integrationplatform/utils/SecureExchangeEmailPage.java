@@ -16,117 +16,134 @@ import com.medfusion.common.utils.IHGUtil;
 
 public class SecureExchangeEmailPage {
 	WebDriver driver;
-	
+
 	@FindBy(how = How.XPATH, using = "//span[contains(text(),'Date, Descending')]")
 	public WebElement searchOrder;
-	
-	@FindBy(how = How.XPATH, using = "//*[@id=\"layout_3pane\"]/div/div[5]/div/div[3]/div[5]/ul/li/a")
+
+	@FindBy(how = How.XPATH, using = "//i[@class='fas fa-folder-open fa-lg']")
 	public WebElement viewTOC;
-	
+
 	@FindBy(how = How.XPATH, using = "//a[contains(text(),'Hi pmemrqa')]")
 	public WebElement userName;
-	
-	@FindBy(how = How.XPATH, using = "//a[contains(text(),'Sign Out')]")
+
+	@FindBy(how = How.XPATH, using = "//*[@id=\"divMessageSelected\"]/section/div/article/div[3]/header/span")
+	public WebElement attachmentBody;
+
+	@FindBy(how = How.XPATH, using = "//i[@class=\"fas fa-sign-out-alt icon-size\"]")
 	public WebElement signOut;
 
 	@FindBy(how = How.XPATH, using = "//*[@id=\"layout_3pane\"]/div/div[5]/div/div[3]/div[4]/div[3]/span[1]/a")
 	public WebElement fromEmailID;
-	
+
 	@FindBy(how = How.XPATH, using = "//*[@id=\"layout_3pane\"]/div/div[5]/div/div[3]/div[4]/div[3]/span[3]/span")
 	public WebElement toEmailID;
-	
+
 	@FindBy(how = How.XPATH, using = "//*[@id=\"layout_3pane\"]/div/div[5]/div/div[3]/div[5]/ul/li/span[2]")
 	public WebElement attachmentName;
-	
+
 	@FindBy(how = How.XPATH, using = "//*[@id=\"layout_3pane\"]/div/div[5]/div/div[3]/div[6]/div[3]/div")
 	public WebElement subjectBody;
-	
-	@FindBy(how = How.XPATH, using = "//*[@id=\"layout_3pane\"]/div/div[3]/div/div[1]/span/span[4]/span[1]/span[2]")
+
+	@FindBy(how = How.XPATH, using = "//*[@data-original-title='Move to trash']")
 	public WebElement deleteMessage;
-	
+
+	@FindBy(how = How.XPATH, using = "//div[@class='modal-body']/button/following-sibling::div")
+	public WebElement deleteConf;
+
+	@FindBy(how = How.XPATH, using = "//div[@class='modal-body']/button")
+	public WebElement deleteConfPopupClose;
+
+
+
 	public SecureExchangeEmailPage(WebDriver driver) {
 		this.driver = driver;
 		PageFactory.initElements(driver, this);
 	}
 
-	public SecureExchangeEmailPage verifySecureEmail(String subject,String AttachmentType,String fileName,String toEmail,String fromEmail,String attachTOCName) {
-		Log4jUtil.log("Switching frame");
-		driver.switchTo().defaultContent();
-		driver.switchTo().frame("webMailFrame");
-		Log4jUtil.log("SearchBy  "+searchOrder.getText());
-		
-		WebElement secureEmail =driver.findElement(By.xpath("//*[contains(text(),'"+subject+"')]"));
-//		new WebDriverWait(driver, 30).until(ExpectedConditions.visibilityOf(secureEmail));
-		Log4jUtil.log("Verify Subject if matched actual "+secureEmail.getText()+" expected "+subject);
-		Assert.assertEquals(secureEmail.getText(),subject);
-		
+	public SecureExchangeEmailPage verifySecureEmail(String subject, String AttachmentType, String fileName, String toEmail, String fromEmail,
+			String attachTOCName) {
+
+		WebElement secureEmail = driver.findElement(By.xpath("//*[contains(text(),'" + subject + "')]"));
+		Log4jUtil.log("Verify Subject if matched actual " + secureEmail.getText() + " expected " + subject);
+		Assert.assertEquals(secureEmail.getText(), subject);
+
 		Log4jUtil.log("Secure Exchange Step 1: Verfiy Secure Message ");
 		secureEmail.click();
-		//Log4jUtil.log("Verify From Email address actual "+fromEmailID.getText()+" expected is "+fromEmail);
-		//Assert.assertEquals(fromEmailID.getText(), fromEmail);
-		//Log4jUtil.log("Verify To Email address actual "+toEmailID.getText()+" expected is "+toEmail);
-		//Assert.assertEquals(toEmailID.getText(), toEmail);
-		if(AttachmentType!=null && !AttachmentType.isEmpty() && !AttachmentType.equalsIgnoreCase("none")) {
-			WebElement attachmentName =driver.findElement(By.xpath("//*[contains(text(),'"+fileName+"')]"));
-//			new WebDriverWait(driver, 60).until(ExpectedConditions.visibilityOf(attachmentName));
-			Log4jUtil.log("Actual name is "+attachmentName.getText()+" should contain name: "+fileName);
+		if (AttachmentType != null && !AttachmentType.isEmpty() && !AttachmentType.equalsIgnoreCase("none")) {
+			WebElement attachmentName = driver.findElement(By.xpath("//*[contains(text(),'" + fileName + "')]"));
+			Log4jUtil.log("Actual name is " + attachmentName.getText() + " should contain name: " + fileName);
 			Assert.assertTrue(attachmentName.getText().contains(fileName), "filename not matched");
 		}
-		
-		if(AttachmentType.equalsIgnoreCase("xml")) {
-			viewTOC.click();
+
+		if (AttachmentType.equalsIgnoreCase("xml")) {
+			try {
+				Thread.sleep(20000);
+			} catch (InterruptedException e) {
+				e.printStackTrace();
+			}
+			Log4jUtil.log("body=" + attachmentBody.isEnabled());
+
+			JavascriptExecutor jse = (JavascriptExecutor) driver;
+			jse.executeScript("window.scrollBy(0,450)", "");
+			try {
+				Thread.sleep(3000);
+			} catch (InterruptedException e) {
+				e.printStackTrace();
+			}
+
+			WebElement TOCOpenNewWindow = driver.findElement(By.xpath("//i[@class='fas fa-folder-open fa-lg']"));
+			jse.executeScript("arguments[0].click();", TOCOpenNewWindow);
+			Log4jUtil.log("TOCOpenNewWindow");
 			driver.manage().timeouts().implicitlyWait(30, TimeUnit.SECONDS);
 			String winHandleBefore = driver.getWindowHandle();
-			for(String winHandle : driver.getWindowHandles()){
-			    driver.switchTo().window(winHandle);
+			for (String winHandle : driver.getWindowHandles()) {
+				driver.switchTo().window(winHandle);
 			}
+
 			// Perform the actions on new window
-			Log4jUtil.log("Secure Exchange Step 2: Verfiy if attachment is present");			
-			WebElement tocDocument= driver.findElement(By.xpath("//a[contains(text(),'Document')]"));
-		
-			tocDocument.click();
-			//wait for TOC to load
-			WebElement tocName= driver.findElement(By.xpath("/html/body/div/div/div[3]/div[2]/div/div/div/h1"));
-//			new WebDriverWait(driver, 30).until(ExpectedConditions.visibilityOf(tocName));
-			Log4jUtil.log("Verify the TOC name Actual "+tocName.getText()+" expected name is "+attachTOCName);
+			Log4jUtil.log("Secure Exchange Step 2: Verfiy if attachment is present");
+			// wait for TOC to load
+			WebElement tocName = driver.findElement(By.xpath("//*[@id=\"contentDiv_1_SET_1_XML_FILE_1\"]/h1"));
+			Log4jUtil.log("Verify the TOC name Actual " + tocName.getText() + " expected name is " + attachTOCName);
 			Assert.assertEquals(tocName.getText(), attachTOCName);
 			driver.close();
 			driver.switchTo().window(winHandleBefore);
 		}
-		
+
 		return PageFactory.initElements(driver, SecureExchangeEmailPage.class);
 	}
-	
-	public SecureExchangeEmailPage SignOut()  {
-		driver.switchTo().defaultContent(); 
-		userName.click();
+
+	public SecureExchangeEmailPage SignOut() {
+		driver.switchTo().defaultContent();
+		IHGUtil.waitForElement(driver, 30, signOut);
 		signOut.click();
 		return PageFactory.initElements(driver, SecureExchangeEmailPage.class);
 	}
-	
+
 	public SecureExchangeEmailPage serchForDeleteMessage(String subject) throws InterruptedException {
 		Log4jUtil.log("Switching frame");
-		driver.switchTo().defaultContent();
-		driver.switchTo().frame("webMailFrame");
-		Log4jUtil.log("Searching for Email with subject "+subject);
-		try{
-			WebElement secureSendEmail =driver.findElement(By.xpath("//*[contains(text(),'"+subject+"')]"));
+		Log4jUtil.log("Searching for Email with subject " + subject);
+		try {
+			WebElement secureSendEmail = driver.findElement(By.xpath("//*[contains(text(),'" + subject + "')]"));
 			IHGUtil.waitForElement(driver, 80, secureSendEmail);
-			Log4jUtil.log("Verify Subject if matched actual "+secureSendEmail.getText()+" expected "+subject);
-			Assert.assertEquals(secureSendEmail.getText(),subject);
-			secureSendEmail.click();
-			JavascriptExecutor jse = (JavascriptExecutor)driver;
+			Log4jUtil.log("Verify Subject if matched actual " + secureSendEmail.getText() + " expected " + subject);
+			Assert.assertEquals(secureSendEmail.getText(), subject);
+			WebElement secureSendEmailSelectCheckbox =
+					driver.findElement(By.xpath("//*[contains(text(),'" + subject + "')]/preceding::input[contains(@class,'ptSelectConversation-input')][1]"));
+			secureSendEmailSelectCheckbox.click();
+			JavascriptExecutor jse = (JavascriptExecutor) driver;
 			jse.executeScript("window.scrollBy(0,400)", "");
 			IHGUtil.waitForElement(driver, 80, deleteMessage);
 			deleteMessage.click();
-			WebElement deleteConf = driver.findElement(By.xpath("//*[@id=\"layout_3pane\"]/div/div[5]/div/div[3]/div[6]/div[3]/div/div"));
-			
-			String[] deletedMessage = deleteConf.getText().split("\\.");
-			Log4jUtil.log("Delete Message "+deletedMessage[0]);
-			Assert.assertEquals(deletedMessage[0],"No message selected");
-		}
-		catch(Exception E) {
-			Log4jUtil.log("Exception caught "+E);
+			Log4jUtil.log("Clicked on delete button successfully and popup appeared");
+			IHGUtil.waitForElement(driver, 80, deleteConf);
+			String deletedMessage = deleteConf.getText();
+			deleteConfPopupClose.click();
+			Log4jUtil.log("Delete Message :   " + subject + "  " + deletedMessage);
+			Assert.assertEquals(deletedMessage, "Message moved successfully.");
+
+		} catch (Exception E) {
+			Log4jUtil.log("Exception caught " + E);
 			Assert.assertTrue(false);
 		}
 		return PageFactory.initElements(driver, SecureExchangeEmailPage.class);

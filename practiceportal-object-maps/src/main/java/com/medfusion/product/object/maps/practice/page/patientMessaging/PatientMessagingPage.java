@@ -1,6 +1,10 @@
+//Copyright 2013-2020 NXGN Management, LLC. All Rights Reserved.
 package com.medfusion.product.object.maps.practice.page.patientMessaging;
 
+import static org.testng.Assert.assertTrue;
+
 import java.net.URL;
+import java.util.ArrayList;
 
 import com.medfusion.common.utils.PropertyFileLoader;
 import com.medfusion.product.practice.api.utils.PracticeConstants;
@@ -33,6 +37,18 @@ public class PatientMessagingPage extends BasePageObject {
 
 	@FindBy(id = "msgattachment_1_1")
 	private WebElement messageAttachment;
+
+	@FindBy(xpath = "//input[@id='msgattachment_2_2']")
+	private WebElement attachment2;
+
+	@FindBy(xpath = "//input[@id='msgattachment_3_3']")
+	private WebElement attachment3;
+
+	@FindBy(xpath = "//small[text()='Add another attachment']")
+	private WebElement addAnotherAttachment;
+
+	@FindBy(xpath = "//a[@id='msgattachment_3_addlink']")
+	private WebElement addAnotherAttachment3;
 
 	@FindBy(xpath = "//table[@class='searchForm']//select[@name='recipienttype']")
 	private WebElement recipientType;
@@ -72,6 +88,15 @@ public class PatientMessagingPage extends BasePageObject {
 
 	@FindBy(xpath = "//*[contains(text(),'Message Published Successfully')]")
 	private WebElement messagePublishedSuccessfully;
+
+	@FindBy(xpath = "//table[@class='searchForm'][2]//tbody//a")
+	private WebElement messageURL;
+
+	@FindBy(xpath = "//td[@id='htmlTemplate']")
+	private WebElement messageBody;
+
+	@FindBy(xpath = "//fieldset//div//p")
+	private WebElement patientReply;
 
 	private static int maxCount = 10;
 
@@ -219,6 +244,7 @@ public class PatientMessagingPage extends BasePageObject {
 		setDeliveryMode();
 		setMessageType();
 		setTemplate();
+
 		setSubject();
 
 		URL QuickSendPDFUrl = ClassLoader.getSystemResource(PracticeConstants.QUICK_SEND_PDF_FILE_PATH);
@@ -245,32 +271,46 @@ public class PatientMessagingPage extends BasePageObject {
 		setFieldsAndPublishMessage(firstName, lastName, "", templateName, subjectText);
 	}
 
-	public void setFieldsAndPublishMessage(PropertyFileLoader testData, String templateName, String subjectText) {
-		setFieldsAndPublishMessage(testData.getFirstName(), testData.getLastName(), testData.getEmail(), templateName, subjectText);
+	public ArrayList<String> setFieldsAndPublishMessage(PropertyFileLoader testData, String templateName,
+			String subjectText) {
+		return setFieldsAndPublishMessage(testData.getFirstName(), testData.getLastName(), testData.getEmail(),
+				templateName, subjectText);
 	}
-	
-	public void setFieldsAndPublishMessage(String firstName, String lastName, String email, String templateName, String subjectText) {
+
+	public ArrayList<String> setFieldsAndPublishMessage(String firstName, String lastName, String email,
+			String templateName, String subjectText) {
 		IHGUtil.PrintMethodName();
+
 		setMessageFields(templateName, subjectText);
 		setRecipient(firstName, lastName, email);
+		String msgurl = checkMessageURL();
+		String msgBody = checkMessageBody();
+		ArrayList<String> messages = new ArrayList<String>();
+		messages.add(msgurl);
+		messages.add(msgBody);
 		publishMessage();
-	}
-	
-	public void setFieldsAndPublishMessageWithFile(PropertyFileLoader testData, String templateName, String subjectText, String filePath) {
-		IHGUtil.PrintMethodName();
-		IHGUtil.setFrame(driver, PracticeConstants.FRAME_NAME);
-		new WebDriverWait(driver, 120).until(ExpectedConditions.visibilityOf(messageAttachment));
-		messageAttachment.sendKeys(filePath);
-		setFieldsAndPublishMessage(testData.getProperty("documentsPatientFirstName"), testData.getProperty("documentsPatientLastName"), "", templateName, subjectText);
+		return messages;
 
 	}
-	
-	public void setFieldsAndPublishMessageWithFile(String firstName, String lastName, String templateName, String subjectText, String filePath) {
+
+	public void setFieldsAndPublishMessageWithFile(String firstName, String lastName, String templateName,
+			String subjectText, String filePath) {
 		IHGUtil.PrintMethodName();
 		IHGUtil.setFrame(driver, PracticeConstants.FRAME_NAME);
 		new WebDriverWait(driver, 120).until(ExpectedConditions.visibilityOf(messageAttachment));
 		messageAttachment.sendKeys(filePath);
 		setFieldsAndPublishMessage(firstName, lastName, "", templateName, subjectText);
+
+	}
+
+	public void setFieldsAndPublishMessageWithFile(PropertyFileLoader testData, String templateName, String subjectText,
+			String filePath) {
+		IHGUtil.PrintMethodName();
+		IHGUtil.setFrame(driver, PracticeConstants.FRAME_NAME);
+		new WebDriverWait(driver, 120).until(ExpectedConditions.visibilityOf(messageAttachment));
+		messageAttachment.sendKeys(filePath);
+		setFieldsAndPublishMessage(testData.getProperty("documentsPatientFirstName"),
+				testData.getProperty("documentsPatientLastName"), "", templateName, subjectText);
 
 	}
 
@@ -333,5 +373,24 @@ public class PatientMessagingPage extends BasePageObject {
 		return false;
 	}
 
+	public String checkMessageURL() {
+
+		log("Checking if the URL is present in message to be sent");
+		assertTrue(messageURL.isDisplayed());
+		log("The URL in Messsage Body sent from Practice Portal is: " + messageURL.getText());
+		return messageURL.getText();
+
+	}
+
+	public String checkMessageBody() {
+		log("The message sent to the patient is: " + messageBody.getText());
+		return messageBody.getText();
+
+	}
+
+	public String checkReplyContent() {
+		log("The patient reply Content is: " + patientReply.getText());
+		return patientReply.getText();
+	}
 
 }

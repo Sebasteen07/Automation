@@ -6,7 +6,7 @@
 	<parent>
 		<groupId>com.intuit.ihg</groupId>
 		<artifactId>ihg-depot-qa-parent-pom</artifactId>
-		<version>20.6.0</version>
+		<version>20.7.0</version>
 	</parent>
 	<artifactId>phr-portal-automation</artifactId>
 	<name>phr-portal-automation</name>
@@ -22,8 +22,8 @@ http://maven.qhg.local/nexus/content/groups/qhg-dev/
 	</repositories>
 	<properties>
 		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
-		<!-- <qa-automation-utils.version>20.6.0</qa-automation-utils.version> -->
-		<ihg.version>20.6.0</ihg.version>
+		<!-- <qa-automation-utils.version>20.7.0</qa-automation-utils.version> -->
+		<ihg.version>20.7.0</ihg.version>
 	</properties>
 	<dependencies>
 		<dependency>
@@ -38,17 +38,7 @@ http://maven.qhg.local/nexus/content/groups/qhg-dev/
 		</dependency>
 		<dependency>
 			<groupId>com.intuit.ihg</groupId>
-			<artifactId>patientportal1-object-maps</artifactId>
-			<version>${ihg.version}</version>
-		</dependency>
-		<dependency>
-			<groupId>com.intuit.ihg</groupId>
 			<artifactId>patientportal1-api</artifactId>
-			<version>${ihg.version}</version>
-		</dependency>
-		<dependency>
-			<groupId>com.intuit.ihg</groupId>
-			<artifactId>patientportal1-service</artifactId>
 			<version>${ihg.version}</version>
 		</dependency>
 		<dependency>

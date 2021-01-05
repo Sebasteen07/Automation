@@ -1,33 +1,23 @@
+//Copyright 2013-2020 NXGN Management, LLC. All Rights Reserved.
 package com.intuit.ihg.product.integrationplatform.test;
 
 import static org.testng.Assert.assertNotNull;
 
-import java.util.List;
 import java.util.Random;
 
-import com.medfusion.portal.utils.PortalConstants;
 import org.apache.commons.lang.StringUtils;
-import org.openqa.selenium.By;
-import org.openqa.selenium.support.PageFactory;
 import org.testng.annotations.Test;
 
 import com.intuit.ifs.csscat.core.BaseTestNGWebDriver;
 import com.intuit.ifs.csscat.core.RetryAnalyzer;
 import com.intuit.ifs.csscat.core.TestConfig;
-import com.intuit.ihg.common.utils.mail.GmailBot;
 import com.intuit.ihg.common.utils.monitoring.PerformanceReporter;
 import com.intuit.ihg.product.integrationplatform.utils.AMDC;
 import com.intuit.ihg.product.integrationplatform.utils.AMDCTestData;
-import com.intuit.ihg.product.integrationplatform.utils.AllScript;
-import com.intuit.ihg.product.integrationplatform.utils.AllScriptTestData;
 import com.intuit.ihg.product.integrationplatform.utils.Appointment;
 import com.intuit.ihg.product.integrationplatform.utils.AppointmentTestData;
 import com.intuit.ihg.product.integrationplatform.utils.EHDC;
 import com.intuit.ihg.product.integrationplatform.utils.EHDCTestData;
-import com.intuit.ihg.product.integrationplatform.utils.FormExport;
-import com.intuit.ihg.product.integrationplatform.utils.FormExportTestData;
-import com.intuit.ihg.product.integrationplatform.utils.GE;
-import com.intuit.ihg.product.integrationplatform.utils.GETestData;
 import com.intuit.ihg.product.integrationplatform.utils.IntegrationConstants;
 import com.intuit.ihg.product.integrationplatform.utils.PIDC;
 import com.intuit.ihg.product.integrationplatform.utils.PIDCTestData;
@@ -40,37 +30,23 @@ import com.intuit.ihg.product.integrationplatform.utils.PrescriptionTestData;
 import com.intuit.ihg.product.integrationplatform.utils.RestUtils;
 import com.intuit.ihg.product.integrationplatform.utils.StatementPreference;
 import com.intuit.ihg.product.integrationplatform.utils.StatementPreferenceTestData;
-import com.intuit.ihg.product.object.maps.integrationplatform.page.TestPage;
-import com.intuit.ihg.product.object.maps.phr.page.PhrDocumentsPage;
-import com.intuit.ihg.product.object.maps.phr.page.PhrHomePage;
-import com.intuit.ihg.product.object.maps.phr.page.messages.PhrInboxMessage;
-import com.intuit.ihg.product.object.maps.phr.page.messages.PhrMessagesPage;
-import com.intuit.ihg.product.object.maps.smintegration.page.BetaCreateNewPatientPage;
 import com.medfusion.common.utils.IHGUtil;
 import com.medfusion.common.utils.Mailinator;
-import com.medfusion.product.object.maps.forms.page.questionnaires.FormWelcomePage;
-import com.medfusion.product.object.maps.forms.page.questionnaires.prereg_pages.FormBasicInfoPage;
-import com.medfusion.product.object.maps.forms.page.questionnaires.prereg_pages.FormCurrentSymptomsPage;
-import com.medfusion.product.object.maps.forms.page.questionnaires.prereg_pages.FormEmergencyContactPage;
-import com.medfusion.product.object.maps.forms.page.questionnaires.prereg_pages.FormMedicationsPage;
-import com.medfusion.product.object.maps.patientportal1.page.MyPatientPage;
-import com.medfusion.product.object.maps.patientportal1.page.NoLoginPaymentPage;
-import com.medfusion.product.object.maps.patientportal1.page.PortalLoginPage;
-import com.medfusion.product.object.maps.patientportal1.page.createAccount.CreateAccountPage;
-import com.medfusion.product.object.maps.patientportal1.page.inbox.MessageCenterInboxPage;
-import com.medfusion.product.object.maps.patientportal1.page.inbox.MessagePage;
-import com.medfusion.product.object.maps.patientportal1.page.makePaymentpage.MakePaymentPage;
-import com.medfusion.product.object.maps.patientportal1.page.myAccount.MyAccountPage;
-import com.medfusion.product.object.maps.patientportal1.page.myAccount.preferences.PreferencesPage;
-import com.medfusion.product.object.maps.patientportal1.page.newRxRenewalpage.NewRxRenewalPage;
-import com.medfusion.product.object.maps.patientportal1.page.solutions.apptRequest.AppointmentRequestStep1Page;
-import com.medfusion.product.object.maps.patientportal1.page.solutions.apptRequest.AppointmentRequestStep2Page;
-import com.medfusion.product.object.maps.patientportal1.page.solutions.apptRequest.AppointmentRequestStep3Page;
-import com.medfusion.product.object.maps.patientportal1.page.solutions.apptRequest.AppointmentRequestStep4Page;
-import com.medfusion.product.object.maps.patientportal1.page.solutions.askstaff.AskAStaffHistoryPage;
-import com.medfusion.product.object.maps.patientportal1.page.solutions.askstaff.AskAStaffStep1Page;
-import com.medfusion.product.object.maps.patientportal1.page.solutions.askstaff.AskAStaffStep2Page;
-import com.medfusion.product.object.maps.patientportal1.page.solutions.askstaff.AskAStaffStep3Page;
+import com.medfusion.portal.utils.PortalConstants;
+import com.medfusion.product.object.maps.patientportal2.page.JalapenoLoginPage;
+import com.medfusion.product.object.maps.patientportal2.page.AppointmentRequestPage.JalapenoAppointmentRequestPage;
+import com.medfusion.product.object.maps.patientportal2.page.AppointmentRequestPage.JalapenoAppointmentRequestV2Step1;
+import com.medfusion.product.object.maps.patientportal2.page.AppointmentRequestPage.JalapenoAppointmentRequestV2Step2;
+import com.medfusion.product.object.maps.patientportal2.page.AskAStaff.JalapenoAskAStaffPage;
+import com.medfusion.product.object.maps.patientportal2.page.CcdPage.JalapenoCcdViewerPage;
+import com.medfusion.product.object.maps.patientportal2.page.HomePage.JalapenoHomePage;
+import com.medfusion.product.object.maps.patientportal2.page.MessagesPage.JalapenoMessagesPage;
+import com.medfusion.product.object.maps.patientportal2.page.MyAccountPage.JalapenoMyAccountPreferencesPage;
+import com.medfusion.product.object.maps.patientportal2.page.MyAccountPage.JalapenoMyAccountProfilePage;
+import com.medfusion.product.object.maps.patientportal2.page.NewPayBillsPage.JalapenoPayBillsConfirmationPage;
+import com.medfusion.product.object.maps.patientportal2.page.NewPayBillsPage.JalapenoPayBillsMakePaymentPage;
+import com.medfusion.product.object.maps.patientportal2.page.PayNow.JalapenoPayNowPage;
+import com.medfusion.product.object.maps.patientportal2.page.PrescriptionsPage.JalapenoPrescriptionsPage;
 import com.medfusion.product.object.maps.practice.page.PracticeHomePage;
 import com.medfusion.product.object.maps.practice.page.PracticeLoginPage;
 import com.medfusion.product.object.maps.practice.page.apptrequest.ApptRequestDetailStep1Page;
@@ -81,7 +57,9 @@ import com.medfusion.product.object.maps.practice.page.patientSearch.PatientSear
 import com.medfusion.product.object.maps.practice.page.rxrenewal.RxRenewalSearchPage;
 import com.medfusion.product.object.maps.practice.page.virtualCardSwiper.VirtualCardSwiperPage;
 import com.medfusion.product.object.maps.practice.page.virtualCardSwiper.VirtualCardSwiperPageChargeHistory;
-import com.medfusion.product.patientportal1.utils.PortalUtil;
+import com.medfusion.product.patientportal2.pojo.CreditCard;
+import com.medfusion.product.patientportal2.pojo.CreditCard.CardType;
+import com.medfusion.product.patientportal2.pojo.StatementPreferenceType;
 
 /**
  * @author bkrishnankutty
@@ -92,34 +70,7 @@ import com.medfusion.product.patientportal1.utils.PortalUtil;
 
 public class IntegrationPlatformAcceptanceTests extends BaseTestNGWebDriver {
 
-	/**
-	 * @Author:-bkrishnankutty
-	 * @Date:-5/Aug/2013
-	 * @User Story ID in Rally : test
-	 * @StepsToReproduce: List Steps here ======================================== =====================
-	 * @AreaImpacted :- Description
-	 * @throws Exception
-	 */
-
-	// @Test (enabled = true, groups = {"AcceptanceTests"},
-	// retryAnalyzer=RetryAnalyzer.class)
-	public void testSiteGenLoginLogout() throws Exception {
-
-		log("+++++++++++++ Test run+++++++++++");
-
-		log("Test Case: testAddandRemovePreferences");
-		log("Execution Environment: " + IHGUtil.getEnvironmentType());
-		log("Execution Browser: " + TestConfig.getBrowserType());
-		log("URL: " + "http://wwww.google.com");
-
-		log("Step 2:LogIn");
-		new TestPage(driver, "http://www.google.com");
-		Thread.sleep(100000);
-		// MyPatientPage pMyPatientPage =
-		// loginpage.login(testcasesData.getUsername(),
-		// testcasesData.getPassword());
-
-	}
+	
 
 	/*
 	 * ////@Test (enabled = true, groups = { "AcceptanceTests" }, retryAnalyzer = RetryAnalyzer.class) public void testGetAppointmentRequest() throws Exception {
@@ -173,160 +124,9 @@ public class IntegrationPlatformAcceptanceTests extends BaseTestNGWebDriver {
 	 */
 
 	@Test(enabled = true, groups = {"AcceptanceTests"}, retryAnalyzer = RetryAnalyzer.class)
-	public void testE2EAppointmentRequest() throws Exception {
+	public void testAMDCAskQuestionPaid() throws Exception {
 
-		log("Test Case: Appointment Request");
-
-		log("Execution Environment: " + IHGUtil.getEnvironmentType());
-		log("Execution Browser: " + TestConfig.getBrowserType());
-
-		Long timestamp = System.currentTimeMillis();
-		log("Step 1: Get Data from Excel");
-		Appointment aptData = new Appointment();
-		AppointmentTestData testData = new AppointmentTestData(aptData);
-
-		log("Url: " + testData.getUrl());
-		log("User Name: " + testData.getUserName());
-		log("Password: " + testData.getPassword());
-		log("Rest Url: " + testData.getRestUrl());
-		log("Response Path: " + testData.getResponsePath());
-		log("From: " + testData.getFrom());
-		log("AppointmentPath: " + testData.getAppointmentPath());
-		log("OAuthProperty: " + testData.getOAuthProperty());
-		log("OAuthKeyStore: " + testData.getOAuthKeyStore());
-		log("OAuthAppToken: " + testData.getOAuthAppToken());
-		log("OAuthUsername: " + testData.getOAuthUsername());
-		log("OAuthPassword: " + testData.getOAuthPassword());
-
-		log("Step 2: LogIn");
-		PortalLoginPage loginPage = new PortalLoginPage(driver, testData.getUrl());
-		assertTrue(loginPage.isLoginPageLoaded(), "There was an error loading the login page");
-		MyPatientPage myPatientPage = loginPage.login(testData.getUserName(), testData.getPassword());
-
-		log("Step 3: Click on Appointment Button on My Patient Page");
-		AppointmentRequestStep1Page apptRequestStep1 = myPatientPage.clickAppointmentRequestTab();
-
-		log("Step 4: Complete Appointment Request Step1 Page  ");
-		AppointmentRequestStep2Page apptRequestStep2 = apptRequestStep1.requestAppointment(null, null, testData.getPreferredDoctor(), null);
-
-		log("Step 5: Complete Appointment Request Step2 Page  ");
-		AppointmentRequestStep3Page apptRequestStep3 = apptRequestStep2.fillInForm(PortalConstants.PreferredTimeFrame, PortalConstants.PreferredDay,
-				PortalConstants.ChoosePreferredTime, PortalConstants.ApptReason, PortalConstants.WhichIsMoreImportant, testData.getPhoneNumber());
-
-		log("Getting Appointment reason ");
-		long time = apptRequestStep2.getCreatedTs();
-		String reason = PortalConstants.ApptReason.toString() + " " + String.valueOf(time);
-		String arSMSubject = IntegrationConstants.AR_SM_SUBJECT.toString() + "" + String.valueOf(time);
-		String arSMBody = IntegrationConstants.AR_SM_BODY.toString() + "" + String.valueOf(time);
-		log("************Appointment Reason: " + reason);
-		log("************Appointment Secure Message Subject: " + arSMSubject);
-		log("************Appointment Secure Message Body: " + arSMBody);
-
-		log("Step 6: Complete Appointment Request Step3 Page  ");
-		AppointmentRequestStep4Page apptRequestStep4 = apptRequestStep3.clickSubmit();
-		
-		log("Step 7: Complete Appointment Request Step4 Page  ");
-		myPatientPage = apptRequestStep4.clickBackToMyPatientPage();
-
-		log("Step 8: Logout of Patient Portal");
-		myPatientPage.logout(driver);
-		Thread.sleep(5000);
-		
-		log("Step 9: Setup Oauth client");
-		RestUtils.oauthSetup(testData.getOAuthKeyStore(), testData.getOAuthProperty(), testData.getOAuthAppToken(), testData.getOAuthUsername(),
-				testData.getOAuthPassword());
-
-		log("Step 10: Get Appointment Rest call");
-
-		// get only messages from last hour in epoch time to avoid transferring
-		// lot of data
-		Long since = timestamp / 1000L - 60 * 24;
-
-		log("Getting messages since timestamp: " + since);
-
-		// do the call and save xml, ",0" is there because of the since
-		// attribute format
-		RestUtils.setupHttpGetRequest(testData.getRestUrl() + "?since=" + since + ",0", testData.getResponsePath());
-
-		log("Step 11: Checking reason in the response xml");
-		RestUtils.isReasonResponseXMLValid(testData.getResponsePath(), reason);
-
-		String postXML =
-				RestUtils.findValueOfChildNode(testData.getResponsePath(), "AppointmentRequest", reason, arSMSubject, arSMBody, testData.getAppointmentPath());
-
-		// httpPostRequest method
-		log("Step 12: Do Message Post Request");
-		String processingUrl = RestUtils.setupHttpPostRequest(testData.getRestUrl(), postXML, testData.getResponsePath());
-
-		log("Step 13: Get processing status until it is completed");
-		boolean completed = false;
-		for (int i = 0; i < 3; i++) {
-			// wait 10 seconds so the message can be processed
-			Thread.sleep(120000);
-			RestUtils.setupHttpGetRequest(processingUrl, testData.getResponsePath());
-			if (RestUtils.isMessageProcessingCompleted(testData.getResponsePath())) {
-				completed = true;
-				break;
-			}
-		}
-		verifyTrue(completed, "Message processing was not completed in time");
-
-		log("Step 14: Check secure message in patient gmail inbox");
-		Mailinator mail = new Mailinator();
-		String subject = "New message from IHGQA Automation Integrated Oauth 2.0";
-		String messageLink = "Sign in to view this message";
-		String emailMessageLink = mail.getLinkFromEmail(testData.getUserName(), subject, messageLink, 5);
-		
-		// patient Portal validation
-		log("Step 15: Login to Patient Portal");
-		PortalLoginPage ploginPage = new PortalLoginPage(driver, emailMessageLink);
-		MessageCenterInboxPage inboxPage = ploginPage.loginNavigateToInboxPage(testData.getUserName(), testData.getPassword());
-		Thread.sleep(9000);
-		assertTrue(inboxPage.isInboxLoaded(), "Inbox failed to load properly.");
-
-		log("Step 16: Find message in Inbox");
-		MessagePage msg = inboxPage.openMessageInInbox(arSMSubject);
-
-		log("Step 17: Validate message loads and is the right message");
-		assertTrue(msg.isSubjectLocated(arSMSubject));
-
-		log("Step 18: Logout of Patient Portal");
-		myPatientPage.logout(driver);
-		Thread.sleep(5000);
-		// Practice portal validation
-		log("Step 19: Login to Practice Portal");
-
-		PracticeLoginPage practiceLogin = new PracticeLoginPage(driver, testData.getPracticeURL());
-		PracticeHomePage practiceHome = practiceLogin.login(testData.getPracticeUserName(), testData.getPracticePassword());
-
-		log("Step 20: Click Appt Request tab");
-		ApptRequestSearchPage apptSearch = practiceHome.clickApptRequestTab();
-		PerformanceReporter.getPageLoadDuration(driver, ApptRequestSearchPage.PAGE_NAME);
-
-		log("Step 21: Search for appt requests");
-		apptSearch.searchForApptRequests(2, null, null);
-		Thread.sleep(240000);
-		ApptRequestDetailStep1Page detailStep1 = apptSearch.getRequestDetails(reason);
-		assertNotNull(detailStep1, "The submitted patient request was not found in the practice");
-		PerformanceReporter.getPageLoadDuration(driver, ApptRequestDetailStep1Page.PAGE_NAME);
-
-		String actualSMSubject = detailStep1.getPracticeMessageSubject();
-		assertTrue(detailStep1.getPracticeMessageSubject().contains(arSMSubject),
-				"Expected Secure Message Subject containing [" + arSMSubject + "but actual message subject was [" + actualSMSubject + "]");
-
-		String actualSMBody = detailStep1.getPracticeMessageBody();
-		assertTrue(detailStep1.getPracticeMessageBody().contains(arSMBody),
-				"Expected Secure Message Body containing [" + arSMBody + "but actual message body was [" + actualSMBody + "]");
-
-		log("Step 22: Logout of Practice Portal");
-		practiceHome.logOut();
-
-	}
-
-	@Test(enabled = true, groups = {"AcceptanceTests"}, retryAnalyzer = RetryAnalyzer.class)
-	public void testAMDCAskQuestion() throws Exception {
-
-		log("Test Case: AMDC Ask Question");
+		log("Test Case: AMDC Ask Question to your Staff");
 
 		log("Execution Environment: " + IHGUtil.getEnvironmentType());
 		log("Execution Browser: " + TestConfig.getBrowserType());
@@ -349,27 +149,25 @@ public class IntegrationPlatformAcceptanceTests extends BaseTestNGWebDriver {
 		log("OAuthPassword: " + testData.getOAuthPassword());
 
 		log("Step 2: LogIn");
-		PortalLoginPage loginPage = new PortalLoginPage(driver, testData.getUrl());
-		assertTrue(loginPage.isLoginPageLoaded(), "There was an error loading the login page");
-		MyPatientPage myPatientPage = loginPage.login(testData.getUserName(), testData.getPassword());
-		Thread.sleep(6000);
-		log("Step 3: Click Ask A Staff");
-		AskAStaffStep1Page askStaff1 = myPatientPage.clickAskAStaffLink();
-		Thread.sleep(8000);
-		log("Step 4: Complete Step 1 of Ask A Staff");
-		AskAStaffStep2Page askStaff2 = askStaff1.askQuestion("Test", "This is generated from the AMDCAskQuestion automation test case.");
+		JalapenoLoginPage loginPage = new JalapenoLoginPage(driver, testData.getUrl());
+		JalapenoHomePage homePage = loginPage.login(testData.getUserName(), testData.getPassword());
 
-		log("Step 5: Complete Step 2 of Ask A Staff");
-		AskAStaffStep3Page askStaff3 = askStaff2.submitUnpaidQuestion();
+		log("Step 3: Click Ask A Staff");
+		JalapenoAskAStaffPage askStaff1 = homePage.clickOnAskAStaff(driver);
+
+		Thread.sleep(8000);
+		log("Step 4: fill and complete the of Ask A Staff");
+		boolean askStaff2 = askStaff1.fillAndSubmitAskAStaff(driver);
+
 
 		log("Step 6: Validate entry is on Ask A Staff History page");
-		AskAStaffHistoryPage aasHistory = askStaff3.clickAskAStaffHistory();
+		homePage.clickOnAskAStaff(driver);
+		boolean aasHistory = askStaff1.checkHistory(driver);
 		Thread.sleep(7000);
-		verifyTrue(aasHistory.isAskAStaffOnHistoryPage(Long.toString(askStaff1.getCreatedTimeStamp())),
-				"Expected to see a subject containing " + askStaff1.getCreatedTimeStamp() + " on the Ask A Staff History page. None were found.");
+		verifyTrue(aasHistory);
 
 		log("Step 7: Logout of Patient Portal");
-		myPatientPage.logout(driver);
+		homePage.clickOnLogout();
 
 		log("Step 8: Setup Oauth client");
 		RestUtils.oauthSetup(testData.getOAuthKeyStore(), testData.getOAuthProperty(), testData.getOAuthAppToken(), testData.getOAuthUsername(),
@@ -392,108 +190,6 @@ public class IntegrationPlatformAcceptanceTests extends BaseTestNGWebDriver {
 		RestUtils.isQuestionResponseXMLValid(testData.getResponsePath(), askStaff1.getCreatedTimeStamp());
 	}
 
-	@Test(enabled = true, groups = {"AcceptanceTests"}, retryAnalyzer = RetryAnalyzer.class)
-	public void testAMDCSecureMessageWithReadCommnunication() throws Exception {
-		log("Test Case: AMDC Secure Message with Read Communication");
-
-		log("Execution Environment: " + IHGUtil.getEnvironmentType());
-		log("Execution Browser: " + TestConfig.getBrowserType());
-
-		log("Step 1: Get Data from Excel");
-		AMDC AMDCData = new AMDC();
-		AMDCTestData testData = new AMDCTestData(AMDCData);
-
-		log("Url: " + testData.getUrl());
-		log("User Name: " + testData.getUserName());
-		log("Password: " + testData.getPassword());
-		log("Rest Url: " + testData.getRestUrl());
-		log("Response Path: " + testData.getResponsePath());
-		log("From: " + testData.getFrom());
-		log("SecureMessagePath: " + testData.getSecureMessagePath());
-		log("OAuthProperty: " + testData.getOAuthProperty());
-		log("OAuthKeyStore: " + testData.getOAuthKeyStore());
-		log("OAuthAppToken: " + testData.getOAuthAppToken());
-		log("OAuthUsername: " + testData.getOAuthUsername());
-		log("OAuthPassword: " + testData.getOAuthPassword());
-
-		log("Step 2: Setup Oauth client");
-		RestUtils.oauthSetup(testData.getOAuthKeyStore(), testData.getOAuthProperty(), testData.getOAuthAppToken(), testData.getOAuthUsername(),
-				testData.getOAuthPassword());
-
-		log("Step 3: Fill Message data");
-		long timestamp = System.currentTimeMillis();
-		String message = RestUtils.prepareSecureMessage(testData.getSecureMessagePath(), testData.getFrom(), testData.getUserName(), "Test " + timestamp, null);
-
-		String messageID = RestUtils.newMessageID();
-		log("Partner Message ID:" + messageID);
-
-		log("Step 4: Do Message Post Request");
-		String processingUrl = RestUtils.setupHttpPostRequest(testData.getRestUrl(), message, testData.getResponsePath());
-
-		log("Step 5: Get processing status until it is completed");
-		boolean completed = false;
-		for (int i = 0; i < 3; i++) {
-			// wait 10 seconds so the message can be processed
-			Thread.sleep(120000);
-			RestUtils.setupHttpGetRequest(processingUrl, testData.getResponsePath());
-			if (RestUtils.isMessageProcessingCompleted(testData.getResponsePath())) {
-				completed = true;
-				break;
-			}
-		}
-		verifyTrue(completed, "Message processing was not completed in time");
-
-		log("Step 6: Check secure message in patient gmail inbox");
-		Mailinator mail = new Mailinator();
-		String subject = "New message from IHGQA Automation Integrated Oauth 2.0";
-		String messageLink = "Sign in to view this message";
-		String emailMessageLink = mail.getLinkFromEmail(testData.getUserName(), subject, messageLink, 5);
-
-		log("Step 7: Login to Patient Portal");
-		PortalLoginPage loginPage = new PortalLoginPage(driver, emailMessageLink);
-		MessageCenterInboxPage inboxPage = loginPage.loginNavigateToInboxPage(testData.getUserName(), testData.getPassword());
-		Thread.sleep(9000);
-		assertTrue(inboxPage.isInboxLoaded(), "Inbox failed to load properly.");
-
-		log("Step 8: Find message in Inbox");
-		String messageIdentifier = Long.toString(timestamp);
-
-		log("Step 9: Log the message read time ");
-		long epoch = System.currentTimeMillis() / 1000;
-
-		String readdatetimestamp = RestUtils.readTime(epoch);
-		log("Message Read Time:" + readdatetimestamp);
-
-		MessagePage msg = inboxPage.openMessageInInbox(messageIdentifier);
-
-		log("Step 10: Validate message loads and is the right message");
-		assertTrue(msg.isSubjectLocated(messageIdentifier));
-
-		log("Step 11: Do a GET and get the read communication");
-		Long since = timestamp / 1000L - 60 * 24;
-
-		log("Step 12: Wait 120 seconds, so the message can be processed");
-		Thread.sleep(120000);
-
-		log("Getting messages since timestamp: " + since);
-		RestUtils.setupHttpGetRequest(testData.getReadCommunicationURL() + "?since=" + since + ",0", testData.getResponsePath());
-
-		log("Step 13: Validate the message id and read time in response");
-		RestUtils.isReadCommunicationMessage(testData.getResponsePath(), messageID, readdatetimestamp);
-
-		log("Step 14: Reply to the message");
-		msg.replyToMessage(IntegrationConstants.MESSAGE_REPLY, null);
-
-		log("Step 15: Wait 60 seconds, so the message can be processed");
-		Thread.sleep(60000);
-
-		log("Step 16: Do a GET and get the message");
-		RestUtils.setupHttpGetRequest(testData.getRestUrl() + "?since=" + since + ",0", testData.getResponsePath());
-
-		log("Step 17: Validate message reply");
-		RestUtils.isReplyPresent(testData.getResponsePath(), messageIdentifier);
-
-	}
 
 	@Test(enabled = true, groups = {"AcceptanceTests"}, retryAnalyzer = RetryAnalyzer.class)
 	public void testPIDCPatientUpdate() throws Exception {
@@ -502,11 +198,11 @@ public class IntegrationPlatformAcceptanceTests extends BaseTestNGWebDriver {
 
 		Long timestamp = System.currentTimeMillis();
 		log("Step 2: LogIn");
-		PortalLoginPage loginpage = new PortalLoginPage(driver, testData.getUrl());
-		MyPatientPage pMyPatientPage = loginpage.login(testData.getUserName(), testData.getPassword());
-		Thread.sleep(9000);
+		JalapenoLoginPage loginPage = new JalapenoLoginPage(driver, testData.getUrl());
+		JalapenoHomePage homePage = loginPage.login(testData.getUserName(), testData.getPassword());
+
 		log("Step 3: Click on myaccountLink on MyPatientPage");
-		MyAccountPage pMyAccountPage = pMyPatientPage.clickMyAccountLink();
+		JalapenoMyAccountProfilePage myAccountPage = homePage.goToAccountPage();
 
 		log("Step 4: Create random  addresses to update");
 		Random random = new Random();
@@ -516,10 +212,10 @@ public class IntegrationPlatformAcceptanceTests extends BaseTestNGWebDriver {
 		log("Address 1: " + firstLine + "\nAddress 2: " + secondLine);
 		Thread.sleep(9000);
 		log("Step 5: Modify address line 1 and 2 on MyAccountPage");
-		pMyAccountPage.modifyAndSubmitAddressLines(firstLine, secondLine);
+		myAccountPage.modifyAndSubmitAddressLines(firstLine, secondLine);
 
 		log("Step 6: Logout from Patient portal");
-		pMyAccountPage.logout(driver);
+		myAccountPage.clickOnLogout();
 
 		log("Step 7: Setup Oauth client");
 		RestUtils.oauthSetup(testData.getOAuthKeyStore(), testData.getOAuthProperty(), testData.getOAuthAppToken(), testData.getOAuthUsername(),
@@ -540,110 +236,6 @@ public class IntegrationPlatformAcceptanceTests extends BaseTestNGWebDriver {
 		log("Step 10: Check changes of address lines");
 		RestUtils.isPatientUpdated(testData.getResponsePath(), testData.getUserName(), firstLine, secondLine);
 
-	}
-
-	@Test(enabled = true, groups = {"AcceptanceTests"}, retryAnalyzer = RetryAnalyzer.class)
-	public void testPIDCPatientRegistration() throws Exception {
-		log("Test Case: PIDC Patient Registration");
-		PIDCTestData testData = loadDataFromExcel();
-
-		log("Step 1: Prepare patient to post");
-		Long timestamp = System.currentTimeMillis();
-		String practicePatientId = "Patient" + timestamp;
-		String firstName = "Name" + timestamp;
-		String lastName = "TestPatient1" + timestamp;
-		String email = IHGUtil.createRandomEmailAddress(testData.getEmail());
-		String zip = testData.getZipCode();
-		String date = testData.getBirthDay();
-
-		String dt = date.substring(0, 2);
-		String month = date.substring(3, 5);
-		String year = date.substring(6);
-
-		log("Created Patient details");
-		log("Practice Patient ID: " + practicePatientId);
-		log("Firstname: " + firstName);
-		log("Lastname: " + lastName);
-		log("Email address: " + email);
-		log("Birthdate: " + date);
-		log("Zipcode: " + zip);
-
-		String patient = RestUtils.preparePatient(testData.getPatientPath(), practicePatientId, firstName, lastName, dt, month, year, email, zip, null);
-
-		log("Step 2: Setup Oauth client");
-		RestUtils.oauthSetup(testData.getOAuthKeyStore(), testData.getOAuthProperty(), testData.getOAuthAppToken(), testData.getOAuthUsername(),
-				testData.getOAuthPassword());
-
-		log("Step 3: Do a POST call and get processing status URL");
-		String processingUrl = RestUtils.setupHttpPostRequest(testData.getRestUrl(), patient, testData.getResponsePath());
-
-		log("Step 4: Get processing status until it is completed");
-		boolean completed = false;
-		for (int i = 0; i < 1; i++) {
-			// wait 60 seconds so the message can be processed
-			Thread.sleep(60000);
-			RestUtils.setupHttpGetRequest(processingUrl, testData.getResponsePath());
-			if (RestUtils.isMessageProcessingCompleted(testData.getResponsePath())) {
-				completed = true;
-				break;
-			}
-		}
-		assertTrue(completed, "Message processing was not completed in time");
-		// comment code for optimization
-		GmailBot gBot = new GmailBot();
-		log("Step 5: Checking for the activation link inside the patient Gmail inbox");
-
-		// Searching for the link for patient activation in the Gmail Inbox
-		String activationUrl = gBot.findInboxEmailLink(testData.getGmailUsername(), testData.getGmailPassword(), PortalConstants.NewPatientActivationMessage,
-				PortalConstants.NewPatientActivationMessageLink, 3, false, true);
-
-		log("Step 6: Moving to the link obtained from the email message");
-		// Moving to the Link from email
-		driver.get(activationUrl);
-		/*
-		 * log("Get Activation Link from Practice Portal"); log("Step 5: Login to Practice Portal"); PracticeLoginPage practiceLogin = new PracticeLoginPage(driver,
-		 * testData.getPracticeURL()); PracticeHomePage pPracticeHomePage = practiceLogin .login(testData.getPracticeUserName(),testData.getPracticePassword ());
-		 * 
-		 * log("Step 6: Click on Patient Search Link"); PatientSearchPage pPatientSearchPage= pPracticeHomePage.clickPatientSearchLink();
-		 * 
-		 * log("Step 7: Set Patient Search Fields"); pPatientSearchPage.searchAllPatientInPatientSearch (firstName,lastName,0);
-		 * 
-		 * log("Step 8: Verify the Search Result"); IHGUtil.waitForElement(driver,30,pPatientSearchPage.searchResult); verifyEquals
-		 * (true,pPatientSearchPage.searchResult.getText().contains(firstName));
-		 * 
-		 * log("Step 9: Click on Patient"); PatientDashboardPage patientPage=pPatientSearchPage.clickOnPatient(firstName, lastName);
-		 * 
-		 * String activationUrl = patientPage.unlockLink(); log("Activation URL: "+activationUrl);
-		 * 
-		 * log("Step 10: Logout of Practice Portal"); pPracticeHomePage.logOut();
-		 */
-		CreateAccountPage pCreateAccountPage = new PortalLoginPage(driver).loadUnlockLink(activationUrl);
-
-		log("Step 7: Filling in user credentials and finishing the registration");
-		// Filing the User credentials
-		MyPatientPage myPatientPage =
-				pCreateAccountPage.fillPatientActivaion(zip, email, testData.getNewPatientPassword(), testData.getSecretQuestion(), testData.getSecretAnswer());
-		Thread.sleep(9000);
-		log("Step 8: Assert Webelements in MyPatientPage");
-		//assertTrue(myPatientPage.isViewallmessagesButtonPresent(driver));
-
-		log("Step 9: Signing out of the Patient Portal");
-		myPatientPage.clickLogout(driver);
-
-		log("Step 10: Do a GET on PIDC Url to get registered patient");
-		// get only patients from last day in epoch time to avoid transferring
-		// lot of data
-		Long since = timestamp / 1000L - 60 * 24;
-
-		log("Wait 60 seconds so the message can be processed");
-		Thread.sleep(60000);
-
-		log("Getting patients since timestamp: " + since);
-
-		RestUtils.setupHttpGetRequest(testData.getRestUrl() + "?since=" + since + ",0", testData.getResponsePath());
-
-		log("Step 11: Find the patient and check if he is registered");
-		RestUtils.isPatientRegistered(testData.getResponsePath(), practicePatientId, firstName, lastName, null);
 	}
 
 	private PIDCTestData loadDataFromExcel() throws Exception {
@@ -677,105 +269,6 @@ public class IntegrationPlatformAcceptanceTests extends BaseTestNGWebDriver {
 	}
 
 	@Test(enabled = true, groups = {"AcceptanceTests"}, retryAnalyzer = RetryAnalyzer.class)
-	public void testEHDCsendCCD() throws Exception {
-
-		log("Test Case: send a CCD and check in patient Portal");
-		EHDC EHDCData = new EHDC();
-		EHDCTestData testData = new EHDCTestData(EHDCData);
-
-		log("UserName: " + testData.getUserName());
-		log("Password:" + testData.getPassword());
-		log("Rest Url: " + testData.getRestUrl());
-		log("CCD Path: " + testData.getCCDPath());
-		log("Response Path: " + testData.getResponsePath());
-		log("OAuthProperty: " + testData.getOAuthProperty());
-		log("OAuthKeyStore: " + testData.getOAuthKeyStore());
-		log("OAuthAppToken: " + testData.getOAuthAppToken());
-		log("OAuthUsername: " + testData.getOAuthUsername());
-		log("OAuthPassword: " + testData.getOAuthPassword());
-
-		log("Step 1: Setup Oauth client");
-		RestUtils.oauthSetup(testData.getOAuthKeyStore(), testData.getOAuthProperty(), testData.getOAuthAppToken(), testData.getOAuthUsername(),
-				testData.getOAuthPassword());
-
-		String ccd = RestUtils.prepareCCD(testData.getCCDPath());
-
-		log("Step 2: Do Message Post Request");
-		String processingUrl = RestUtils.setupHttpPostRequest(testData.getRestUrl(), ccd, testData.getResponsePath());
-
-		log("Processing URL: " + processingUrl);
-		log("Step 3: Get processing status until it is completed");
-		Thread.sleep(60000);
-		/*
-		 * boolean completed = false; for (int i = 0; i < 3; i++) { // wait 10 seconds so the message can be processed Thread.sleep(180000);
-		 * RestUtils.setupHttpGetRequest(processingUrl, testData.getResponsePath()); if (RestUtils.isMessageProcessingCompleted(testData.getResponsePath())) {
-		 * completed = true; break; } } verifyTrue(completed, "Message processing was not completed in time");
-		 */
-		log("Step 4:LogIn to Patient Portal ");
-		PortalLoginPage portalloginpage = new PortalLoginPage(driver, testData.getURL());
-		MyPatientPage pMyPatientPage = portalloginpage.login(testData.getUserName(), testData.getPassword());
-
-		log("Step 5: Go to Inbox");
-		MessageCenterInboxPage inboxPage = pMyPatientPage.clickViewAllMessagesInMessageCenter();
-		assertTrue(inboxPage.isInboxLoaded(), "Inbox failed to load properly.");
-
-		log("Step 6: Find message in Inbox");
-		MessagePage pMessage = inboxPage.clickFirstMessageRow();
-
-		log("Step 7: Validate message subject and send date");
-		Thread.sleep(10000);
-		log("######  Message Date :: " + IHGUtil.getEstTiming());
-		assertTrue(pMessage.isSubjectLocated(IntegrationConstants.CCD_MESSAGE_SUBJECT));
-		assertTrue(verifyTextPresent(driver, IHGUtil.getEstTiming(), 10000));
-		log("CCD sent date & time is :" + pMessage.returnMessageSentDate());
-		// assertTrue(RestUtils.verifyCCDMessageDate(pMessage.returnMessageSentDate(),timestamp));
-
-		log("Step 8: Click on link View health data");
-		pMessage.clickBtnReviewHealthInformation();
-		Thread.sleep(9000);
-		log("Step 9: Verify if CCD Viewer is loaded and click Close Viewer");
-		pMessage.verifyCCDViewerAndClose();
-
-		driver.switchTo().defaultContent();
-
-		log("Step 10: Go to patient page");
-		Thread.sleep(2000);
-		pMyPatientPage = pMessage.clickMyPatientPage();
-
-		log("Step 11: Click PHR");
-		pMyPatientPage.clickPHRWithoutInit(driver);
-		PhrHomePage phrPage = PageFactory.initElements(driver, PhrHomePage.class);
-
-		log("Step 12: Go to PHR Inbox");
-		PhrMessagesPage phrMessagesPage = phrPage.clickOnMyMessages();
-		// assertTrue(phrMessagesPage.isInboxLoaded(),
-		// "Inbox failed to load properly.");
-
-		log("Step 13: Click first message");
-		PhrInboxMessage phrInboxMessage = phrMessagesPage.clickOnFirstMessage();
-
-		log("Step 14: Validate message subject and send date");
-		Thread.sleep(1000);
-		assertEquals(phrInboxMessage.getPhrMessageSubject(), IntegrationConstants.CCD_MESSAGE_SUBJECT, "### Assertion failed for Message subject");
-		log("######  Message Date :: " + IHGUtil.getEstTiming());
-		assertTrue(verifyTextPresent(driver, IHGUtil.getEstTiming()));
-
-		log("Step 15: Click on link ReviewHealthInformation");
-		PhrDocumentsPage phrDocuments = phrInboxMessage.clickBtnReviewHealthInformationPhr();
-
-		log("step 16:Click on View health data");
-		phrDocuments.clickViewHealthInformation();
-		Thread.sleep(15000);
-		log("step 17:click Close Viewer");
-		phrDocuments.closeViewer();
-
-		log("step 18:Click Logout");
-		Thread.sleep(6000);
-		phrDocuments.clickLogout();
-		
-	}
-
-	@Test(enabled = true, groups = {"AcceptanceTests"}, retryAnalyzer = RetryAnalyzer.class)
 	public void testE2ERxPrescription() throws Exception {
 		log("Test Case: Rx Prescription Request");
 
@@ -801,24 +294,18 @@ public class IntegrationPlatformAcceptanceTests extends BaseTestNGWebDriver {
 		log("OAuthPassword: " + testData.getOAuthPassword());
 
 		log("Step 2: LogIn");
-		PortalLoginPage loginPage = new PortalLoginPage(driver, testData.getUrl());
-		MyPatientPage myPatientPage = loginPage.login(testData.getUserName(), testData.getPassword());
+		JalapenoLoginPage loginPage = new JalapenoLoginPage(driver, testData.getUrl());
+		JalapenoHomePage homePage = loginPage.login(testData.getUserName(), testData.getPassword());
 		Thread.sleep(9000);
-		log("Step 3: Verify for My Patient Page ");
-		PortalUtil.setPortalFrame(driver);
-		verifyEquals(myPatientPage.txtMyPatientPage.getText(), PortalConstants.MyPatientPage);
 
 		log("Step 4: Click on PrescriptionRenewal Link ");
-		NewRxRenewalPage newRxRenewalPage = myPatientPage.clickPrescriptionRenewal();
-
-		log("Step 5: Set Medication Fields in RxRenewal Page");
-		newRxRenewalPage.setMedicationDetails();
-
-		log("Step 6: Set Pharmacy Fields in RxRenewal Page");
-		newRxRenewalPage.setPharmacyFields();
+		JalapenoPrescriptionsPage prescriptionsPage = homePage.clickOnPrescriptions(driver);
+		Thread.sleep(15000);
+		prescriptionsPage.clickContinueButton(driver);
+		Thread.sleep(15000);
 
 		log("Getting Medication Name ");
-		long time = newRxRenewalPage.getCreatedTs();
+		long time = prescriptionsPage.getCreatedTs();
 		String medicationName = PortalConstants.MedicationName.toString() + String.valueOf(time);
 		log("Medication Name :" + medicationName);
 
@@ -828,19 +315,21 @@ public class IntegrationPlatformAcceptanceTests extends BaseTestNGWebDriver {
 		String rxSMBody = IntegrationConstants.QUESTION_MESSAGE.toString() + "" + String.valueOf(time);
 		log("Perscription Reply :" + rxSMBody);
 
+		prescriptionsPage.fillThePrescriptionforExisitngUser();
+
 		log("Step 7: Verify RxRenewal Confirmation Message");
-		PortalUtil.setPortalFrame(driver);
-		IHGUtil.waitForElement(driver, 5, newRxRenewalPage.renewalConfirmationmessage);
-		verifyEquals(newRxRenewalPage.renewalConfirmationmessage.getText(), PortalConstants.RenewalConfirmation);
+		IHGUtil.waitForElement(driver, 5, prescriptionsPage.renewalConfirmationmessage);
+		assertEquals(prescriptionsPage.renewalConfirmationmessage.getText(), PortalConstants.RenewalConfirmation);
+		prescriptionsPage.homeButton.click();
+		driver.switchTo().defaultContent();
+		Thread.sleep(5000);
 
 		log("Step 8: Logout of Patient Portal");
-		myPatientPage.logout(driver);
+		homePage.clickOnLogout();
 
 		log("Step 9: Setup Oauth client");
 		RestUtils.oauthSetup(testData.getOAuthKeyStore(), testData.getOAuthProperty(), testData.getOAuthAppToken(), testData.getOAuthUsername(),
 				testData.getOAuthPassword());
-
-		// OAuthPropertyManager.init(testData.getOAuthProperty());
 
 		log("Step 10: Get Prescription Rest call");
 		// get only messages from last hour in epoch time to avoid transferring
@@ -851,9 +340,11 @@ public class IntegrationPlatformAcceptanceTests extends BaseTestNGWebDriver {
 
 		// do the call and save xml, ",0" is there because of the since
 		// attribute format
+		Thread.sleep(4000);
 		RestUtils.setupHttpGetRequest(testData.getRestUrl() + "?since=" + since + ",0", testData.getResponsePath());
 
 		log("Step 11: Checking validity of the response xml");
+
 		RestUtils.isMedicationDetailsResponseXMLValid(testData.getResponsePath(), medicationName);
 
 		String postXML =
@@ -867,7 +358,7 @@ public class IntegrationPlatformAcceptanceTests extends BaseTestNGWebDriver {
 		log("SigCodeAbbreviation :" + SigCodeAbbreviation);
 		log("SigCodeMeaning :" + SigCodeMeaning);
 
-		log("Step 12: Do Message Post Request");
+		log("Step 12: Do Message Post Request" + postXML);
 		String processingUrl = RestUtils.setupHttpPostRequest(testData.getRestUrl(), postXML, testData.getResponsePath());
 
 		log("Step 13: Get processing status until it is completed");
@@ -886,32 +377,22 @@ public class IntegrationPlatformAcceptanceTests extends BaseTestNGWebDriver {
 		// Patient portal validation
 		log("Step 13: Check secure message in patient mailinator inbox");
 		Mailinator mail = new Mailinator();
-		String subject = "New message from IHGQA Automation Integrated Oauth 2.0";
+		String subject = "New message from PI Automation rsdk Integrated";
 		String messageLink = "Sign in to view this message";
-		String emailMessageLink = mail.getLinkFromEmail(testData.getUserName(), subject, messageLink, 5);
-		
-		// patient Portal validation
+		String emailMessageLink = mail.getLinkFromEmail(testData.getUserName(), subject, messageLink, 20);
+
 		log("Step 14: Login to Patient Portal");
-		PortalLoginPage ploginPage = new PortalLoginPage(driver, emailMessageLink);
-		MessageCenterInboxPage inboxPage = ploginPage.loginNavigateToInboxPage(testData.getUserName(), testData.getPassword());
+		JalapenoLoginPage ploginPage = new JalapenoLoginPage(driver, emailMessageLink);
+		JalapenoHomePage phomePage = ploginPage.login(testData.getUserName(), testData.getPassword());
+		JalapenoMessagesPage inboxPage = phomePage.clickOnMenuMessages();
 		Thread.sleep(9000);
-		assertTrue(inboxPage.isInboxLoaded(), "Inbox failed to load properly.");
 
-		// String rxSMSubject="Prescription Renewal Approved1411738963818";
 		log("Step 15: Find message in Inbox");
-		MessagePage msg = inboxPage.openMessageInInbox(rxSMSubject);
-
-		log("Step 16: Validate message loads and is the right message");
-		assertTrue(msg.isSubjectLocated(rxSMSubject));
-
-		log("Step 17: Checking Instructions(SigCodeMeaning) in inbox");
-		String Instructions = msg.readSigCode(SigCodeMeaning);
-		verifyEquals(SigCodeMeaning, Instructions);
+		boolean msg = inboxPage.isMessageDisplayed(driver, rxSMSubject);
 
 		log("Step 18: Logout of Patient Portal");
-		myPatientPage.logout(driver);
-		Thread.sleep(5000);
-		// Practice portal validation
+		homePage.clickOnLogout();
+
 		log("Step 19: Login to Practice Portal");
 		Thread.sleep(6000);
 		PracticeLoginPage practiceLogin = new PracticeLoginPage(driver, testData.getPracticeURL());
@@ -932,353 +413,10 @@ public class IntegrationPlatformAcceptanceTests extends BaseTestNGWebDriver {
 		log("Step 24: Logout of Practice Portal");
 		practiceHome.logOut();
 
-	}
 
-	@Test(enabled = true, groups = {"AcceptanceTests"}, retryAnalyzer = RetryAnalyzer.class)
-	public void testGEAdaptersendCCD() throws Exception {
-
-		log("Test Case:  Import CCD via GE Adapter5 and check in patient Portal");
-		GE EHDCData = new GE();
-		GETestData testData = new GETestData(EHDCData);
-
-		log("UserName: " + testData.getUserName());
-		log("Password:" + testData.getPassword());
-		log("Rest Url: " + testData.getRestUrl());
-		log("CCD Path: " + testData.getCCDPath());
-		log("Response Path: " + testData.getResponsePath());
-		log("OAuthProperty: " + testData.getOAuthProperty());
-		log("OAuthKeyStore: " + testData.getOAuthKeyStore());
-		log("OAuthAppToken: " + testData.getOAuthAppToken());
-		log("OAuthUsername: " + testData.getOAuthUsername());
-		log("OAuthPassword: " + testData.getOAuthPassword());
-
-		log("Step 1: Setup Oauth client");
-		RestUtils.oauthSetup(testData.getOAuthKeyStore(), testData.getOAuthProperty(), testData.getOAuthAppToken(), testData.getOAuthUsername(),
-				testData.getOAuthPassword());
-
-		String ccd = RestUtils.prepareCCD(testData.getCCDPath());
-
-		log("Step 2: Do Message Post Request");
-		String processingUrl = RestUtils.setupHttpPostRequest(testData.getRestUrl(), ccd, testData.getResponsePath());
-
-		log("Processing URL: " + processingUrl);
-
-		/*
-		 * log("Step 3: Get processing status until it is completed"); boolean completed = false; for (int i = 0; i < 3; i++) { // wait 10 seconds so the message
-		 * can be processed Thread.sleep(180000); RestUtils.setupHttpGetRequest(processingUrl, testData.getResponsePath()); if
-		 * (RestUtils.isMessageProcessingCompleted(testData.getResponsePath())) { completed = true; break; } } verifyTrue(completed,
-		 * "Message processing was not completed in time");
-		 */
-
-		log("Step 5: LogIn to Patient Portal ");
-		PortalLoginPage portalloginpage = new PortalLoginPage(driver, testData.getURL());
-		MyPatientPage pMyPatientPage = portalloginpage.login(testData.getUserName(), testData.getPassword());
-
-		log("Step 6: Go to Inbox");
-		MessageCenterInboxPage inboxPage = pMyPatientPage.clickViewAllMessagesInMessageCenter();
-		assertTrue(inboxPage.isInboxLoaded(), "Inbox failed to load properly.");
-
-		log("Step 7: Find message in Inbox");
-		MessagePage pMessage = inboxPage.clickFirstMessageRow();
-
-		log("Step 8: Validate message subject and send date");
-		Thread.sleep(1000);
-		log("######  Message Date :: " + IHGUtil.getEstTiming());
-		assertTrue(pMessage.isSubjectLocated(IntegrationConstants.CCD_MESSAGE_SUBJECT));
-		assertTrue(verifyTextPresent(driver, IHGUtil.getEstTiming(), 10000));
-		log("CCD sent date & time is :" + pMessage.returnMessageSentDate());
-		// assertTrue(RestUtils.verifyCCDMessageDate(pMessage.returnMessageSentDate(),timestamp));
-
-		log("Step 9: Click on link View health data");
-		pMessage.clickBtnReviewHealthInformation();
-
-		log("Step 10: Verify if CCD Viewer is loaded and click Close Viewer");
-		pMessage.verifyCCDViewerAndClose();
-
-		driver.switchTo().defaultContent();
-
-		/*
-		 * log("Step 10: Go to patient page"); pMyPatientPage = pMessage.clickMyPatientPage();
-		 * 
-		 * log("Step 11:Click PHR"); pMyPatientPage.clickPHRWithoutInit(driver); PhrHomePage phrPage = PageFactory.initElements(driver, PhrHomePage.class);
-		 * 
-		 * log("Step 12:Go to PHR Inbox"); PhrMessagesPage phrMessagesPage = phrPage.clickOnMyMessages(); // assertTrue(phrMessagesPage.isInboxLoaded(), //
-		 * "Inbox failed to load properly.");
-		 * 
-		 * log("Step 13: Click first message"); PhrInboxMessage phrInboxMessage = phrMessagesPage.clickOnFirstMessage();
-		 * 
-		 * log("Step 14: Validate message subject and send date"); Thread.sleep(1000); assertEquals(phrInboxMessage.getPhrMessageSubject(),
-		 * IntegrationConstants.CCD_MESSAGE_SUBJECT, "### Assertion failed for Message subject"); log("######  Message Date :: " + IHGUtil.getEstTiming());
-		 * assertTrue(verifyTextPresent(driver, IHGUtil.getEstTiming()));
-		 * 
-		 * log("Step 15: Click on link ReviewHealthInformation"); PhrDocumentsPage phrDocuments = phrInboxMessage .clickBtnReviewHealthInformationPhr();
-		 * 
-		 * log("step 16:Click on View Health Information"); phrDocuments.clickViewHealthInformation();
-		 * 
-		 * log("step 17:click Close Viewer"); phrDocuments.closeViewer();
-		 * 
-		 * log("step 18:Click Logout"); phrDocuments.clickLogout();
-		 */
 
 	}
 
-	@Test(enabled = true, groups = {"AcceptanceTests"}, retryAnalyzer = RetryAnalyzer.class)
-	public void testAllScriptImportCCD() throws Exception {
-
-		log("Test Case:  Import CCD via All script Adapter and check in patient Portal");
-		AllScript allScriptData = new AllScript();
-		AllScriptTestData testData = new AllScriptTestData(allScriptData);
-
-		log("UserName: " + testData.getUserName());
-		log("Password:" + testData.getPassword());
-		log("Rest Url: " + testData.getRestUrl());
-		log("CCD Path: " + testData.getCCDPath());
-		log("Response Path: " + testData.getResponsePath());
-		log("Response Path: " + testData.getEmail());
-
-		log("Step 1: AllScript CCD");
-		String ccd = RestUtils.fileToString(testData.getCCDPath());
-
-		log("Step 2: Do Message Post Request");
-		RestUtils.setupHttpPostRequestExceptOauth(testData.getRestUrl(), ccd, testData.getResponsePath(), null);
-
-		log("Step 3: verify transport status in response xml");
-		boolean completed = false;
-		for (int i = 0; i < 1; i++) {
-			// wait 10 seconds so the message can be processed
-			Thread.sleep(120000);
-			if (RestUtils.isCCDProcessingCompleted(testData.getResponsePath())) {
-				completed = true;
-				break;
-			}
-		}
-		verifyTrue(completed, "Message processing was not completed in time");
-
-		log("Step 4: LogIn to Patient Portal ");
-		PortalLoginPage portalloginpage = new PortalLoginPage(driver, testData.getURL());
-		Thread.sleep(7000);
-		MyPatientPage pMyPatientPage = portalloginpage.login(testData.getUserName(), testData.getPassword());
-		Thread.sleep(9000);
-		log("Step 5: Go to Inbox");
-		MessageCenterInboxPage inboxPage = pMyPatientPage.clickViewAllMessagesInMessageCenter();
-		assertTrue(inboxPage.isInboxLoaded(), "Inbox failed to load properly.");
-
-		log("Step 6: Find message in Inbox");
-		MessagePage pMessage = inboxPage.clickFirstMessageRow();
-
-		log("Step 7: Validate message subject and send date");
-		Thread.sleep(9000);
-		log("######  Message Date :: " + IHGUtil.getEstTiming());
-		assertTrue(pMessage.isSubjectLocated(IntegrationConstants.CCD_MESSAGE_SUBJECT));
-		assertTrue(verifyTextPresent(driver, IHGUtil.getEstTiming(), 10000));
-		log("CCD sent date & time is :" + pMessage.returnMessageSentDate());
-		// assertTrue(RestUtils.verifyCCDMessageDate(pMessage.returnMessageSentDate(),timestamp));
-
-		log("Step 8: Click on link View health data");
-		pMessage.clickBtnReviewHealthInformation();
-		Thread.sleep(15000);
-		log("Step 9: Click on PDF download Link");
-		pMessage.clickOnPDF();
-
-		log("Step 10: Click on Send Information link");
-		String Email = testData.getEmail();
-		pMessage.generateTransmitEvent(Email);
-		Thread.sleep(9000);
-		log("Step 11: Verify if CCD Viewer is loaded and click Close Viewer");
-		pMessage.verifyCCDViewerAndClose();
-
-		driver.switchTo().defaultContent();
-
-		log("Step 12: Go to patient page");
-		pMyPatientPage = pMessage.clickMyPatientPage();
-
-		log("Step 13: Click PHR");
-		pMyPatientPage.clickPHRWithoutInit(driver);
-		PhrHomePage phrPage = PageFactory.initElements(driver, PhrHomePage.class);
-
-		log("Step 14: Go to PHR Inbox");
-		PhrMessagesPage phrMessagesPage = phrPage.clickOnMyMessages();
-		// assertTrue(phrMessagesPage.isInboxLoaded(),
-		// "Inbox failed to load properly.");
-
-		log("Step 15:Click first message");
-		PhrInboxMessage phrInboxMessage = phrMessagesPage.clickOnFirstMessage();
-
-		log("Step 16: Validate message subject and send date");
-		Thread.sleep(1000);
-		assertEquals(phrInboxMessage.getPhrMessageSubject(), IntegrationConstants.CCD_MESSAGE_SUBJECT, "### Assertion failed for Message subject");
-		log("######  Message Date :: " + IHGUtil.getEstTiming());
-		assertTrue(verifyTextPresent(driver, IHGUtil.getEstTiming()));
-
-		log("Step 17: Click on link ReviewHealthInformation");
-		PhrDocumentsPage phrDocuments = phrInboxMessage.clickBtnReviewHealthInformationPhr();
-
-		log("step 18:Click on View health data");
-		phrDocuments.clickViewHealthInformation();
-
-		log("step 19:click Close Viewer");
-		phrDocuments.closeViewer();
-
-		log("step 20:Click Logout");
-		Thread.sleep(9000);
-		phrDocuments.clickLogout();
-
-	}
-
-	@Test(enabled = true, groups = {"AcceptanceTests"}, retryAnalyzer = RetryAnalyzer.class)
-	public void testE2EFormsExport() throws Exception {
-		log("Test Case: testE2EFormsExport");
-
-		log("Execution Environment: " + IHGUtil.getEnvironmentType());
-		log("Execution Browser: " + TestConfig.getBrowserType());
-
-		log("Step 1: Get Data from Excel");
-		FormExport formExport = new FormExport();
-		FormExportTestData testData = new FormExportTestData(formExport);
-		Long timestamp = System.currentTimeMillis();
-
-		log("Url: " + testData.getUrl());
-		log("Response Path: " + testData.getResponsePath());
-		log("OAuthProperty: " + testData.getOAuthProperty());
-		log("OAuthKeyStore: " + testData.getOAuthKeyStore());
-		log("OAuthAppToken: " + testData.getOAuthAppToken());
-		log("OAuthUsername: " + testData.getOAuthUsername());
-		log("OAuthPassword: " + testData.getOAuthPassword());
-		for (int i = 1; i < 3; i++) {
-			log("Step 2: Click Sign-UP");
-			PortalLoginPage loginpage = new PortalLoginPage(driver, testData.getUrl());
-			loginpage.signUp();
-			String getURL = testData.getRestUrl();
-
-			BetaCreateNewPatientPage createNewPatientPage = new BetaCreateNewPatientPage(driver);
-			log("Step 3: Fill details in Create Account Page");
-			// Setting the variables for user in other tests
-			String email = PortalUtil.createRandomEmailAddress(testData.getEmail());
-			log("Email as well as UserName:-" + email);
-			MyPatientPage pMyPatientPage =
-					createNewPatientPage.BetaSiteCreateAccountPage(testData.getFirstName(), testData.getLastName(), email, testData.getPhoneNumber(),
-							testData.getDob_Month(), testData.getDob_Day(), testData.getDob_Year(), testData.getZip(), testData.getSSN(), testData.getAddress(),
-							testData.getPassword(), testData.getSecretQuestion(), testData.getAnswer(), testData.getAddressState(), testData.getAddressCity());
-
-			String firstName = createNewPatientPage.FName;
-			String lastName = createNewPatientPage.LName;
-			Thread.sleep(9000);
-			log("Step 4: Assert Webelements in MyPatientPage");
-			assertTrue(pMyPatientPage.isViewallmessagesButtonPresent(driver));
-
-			log("Step 5: Logout");
-			pMyPatientPage.clickLogout(driver);
-			
-			Thread.sleep(5000);
-			log("Step 6: Login to Practice Portal");
-			PracticeLoginPage practiceLogin = new PracticeLoginPage(driver, testData.getPracticeURL());
-			Thread.sleep(5000);
-			PracticeHomePage pPracticeHomePage = practiceLogin.login(testData.getPracticeUsername(), testData.getPracticePassword());
-
-			log("Step 7: Click on Patient Search Link");
-			PatientSearchPage pPatientSearchPage = pPracticeHomePage.clickPatientSearchLink();
-
-			log("Step 8: Set Patient Search Fields");
-			pPatientSearchPage.searchForPatientInPatientSearch(firstName, lastName);
-
-			log("Step 9: Verify the Search Result");
-			Thread.sleep(12000);
-			IHGUtil.waitForElement(driver, 60, pPatientSearchPage.searchResult);
-			verifyEquals(true, pPatientSearchPage.searchResult.getText().contains(firstName));
-
-			log("Step 10: Click on Patient");
-			PatientDashboardPage patientPage = pPatientSearchPage.clickOnPatient(firstName, lastName);
-
-			Thread.sleep(12000);
-			log("Step 11: Set External Patient ID");
-			String externalPatientID = patientPage.setExternalPatientID();
-
-			log("External Patient Id:-" + externalPatientID);
-
-			String patientID = patientPage.patientID;
-			log("Medfusion Patient ID:-" + patientID);
-
-			log("Step 12: Logout of Practice Portal");
-			pPracticeHomePage.logOut();
-
-			log("Step 13: Login to Patient Portal for submitting 'Patient Registration' Discrete Form");
-			PortalLoginPage loginPage = new PortalLoginPage(driver, testData.getUrl());
-			MyPatientPage myPatientPage = loginPage.login(email, testData.getPassword());
-			Thread.sleep(9000);
-			log("Step 14: Verify for My Patient Page ");
-			PortalUtil.setPortalFrame(driver);
-			verifyEquals(myPatientPage.txtMyPatientPage.getText(), PortalConstants.MyPatientPage);
-
-			log("Step 15: Click on Registration button ");
-			FormWelcomePage pFormWelcomePage = pMyPatientPage.clickStartRegistrationButton(driver);
-			Thread.sleep(9000);
-			log("Step 16: Click on Continue button ");
-			FormBasicInfoPage pFormBasicInfoPage = pFormWelcomePage.clickSaveContinue(FormBasicInfoPage.class);
-
-			log("Step 17: Set Basic Information Form Fields");
-			FormEmergencyContactPage pFormEmergencyContactPage = pFormBasicInfoPage.setBasicInfoFromField();
-
-			log("Step 18: Set Emergency Contact Form Fields");
-			FormCurrentSymptomsPage pFormCurrentSymptomsPage = pFormEmergencyContactPage.fillEmergencyContactFormFields();
-
-			log("Step 19: Set Current Symptoms Form Fields");
-			pFormCurrentSymptomsPage.setNoSymptoms();
-			FormMedicationsPage pFormMedicationsPage = pFormCurrentSymptomsPage.clickSaveContinue(FormMedicationsPage.class);
-
-			log("Step 20: Set Medication Form Fields");
-			pFormMedicationsPage.fillMedicationFormFields();
-
-			log("Step 21: Wait 120 seconds, so the message can be processed");
-			Thread.sleep(60000);
-
-			log("Step 22: Setup Oauth client 2.O");
-			RestUtils.oauthSetup(testData.getOAuthKeyStore(), testData.getOAuthProperty(), testData.getOAuthAppToken(), testData.getOAuthUsername(),
-					testData.getOAuthPassword());
-
-			Long since = timestamp / 1000L - 60 * 24;
-
-			if (i == 1) {
-				getURL = testData.getRestUrl() + "/" + externalPatientID;
-			} else {
-				log("Verify both the patient details in ccdExchangeBatch response ");
-				getURL = testData.getRestUrl() + "Batch";
-			}
-
-			log("Step 23:  Getting forms (CCDs) since timestamp: " + since + " using ccdExchange API");
-			RestUtils.setupHttpGetRequest(getURL + "?since=" + since + ",0", testData.getResponsePath());
-
-			List<String> patientList = RestUtils.patientDatails;
-			patientList.add(externalPatientID);
-			patientList.add(patientID);
-			patientList.add(firstName);
-
-			for (int j = 0; j < i; j++) {
-				log("Step 24: Validate PatientDemographics and CCD details in the response");
-				RestUtils.isPatientAppeared(testData.getResponsePath(), patientList.get(0), patientList.get(1), patientList.get(2));
-
-				if (i == 2) {
-					patientList.remove(0);
-					patientList.remove(0);
-					patientList.remove(0);
-				}
-
-			}
-			if(i==2) {
-				Thread.sleep(10000);
-				log("Step 25: Verify 204 response when no new forms is present");
-				long timeStamp204 = System.currentTimeMillis();
-				Long sinceTime = timeStamp204 / 1000;
-				String ccdExchangeBatchURL=RestUtils.setupHttpGetRequestWithEmptyResponse(getURL + "?since=" + sinceTime + ",0", testData.getResponsePath());
-				Thread.sleep(800);
-				log("Step 26: Invoke ccdExchangeBatch api when there are no forms");
-				RestUtils.setupHttpGetRequestWithEmptyResponse(ccdExchangeBatchURL, testData.getResponsePath());
-			}
-			log("Step 27: Logout");
-			pMyPatientPage.clickLogout(driver);
-
-		}
-	}
-	
 	@Test(enabled = true, groups = {"AcceptanceTests"}, retryAnalyzer = RetryAnalyzer.class)
 	public void testOnlineBillPayment() throws Exception {
 
@@ -1292,32 +430,37 @@ public class IntegrationPlatformAcceptanceTests extends BaseTestNGWebDriver {
 		Long timestamp = System.currentTimeMillis();
 		String accountNumber = IHGUtil.createRandomNumericString();
 		String amount = "100.00";
-		String CCLastDig = "1111";
 		String CCType = "Visa";
+		String name = "TestPatient CreditCard";
+		CreditCard creditCard = new CreditCard(CardType.Visa, name);
+		String CCLastDig = creditCard.getLastFourDigits();
 
 		log("URL: " + testcasesData.getUrl());
 		log("USER NAME: " + testcasesData.getUserName());
 		log("Password: " + testcasesData.getPassword());
 
 		log("Step 2: LogIn");
-		PortalLoginPage loginPage = new PortalLoginPage(driver, testcasesData.getUrl());
-		MyPatientPage myPatientPage = loginPage.login(testcasesData.getUserName(), testcasesData.getPassword());
-		Thread.sleep(12000);
-		log("Step 3: Verify for My Patient Page ");
-		PortalUtil.setPortalFrame(driver);
-		verifyEquals(myPatientPage.txtMyPatientPage.getText(), PortalConstants.MyPatientPage);
+		JalapenoLoginPage loginPage = new JalapenoLoginPage(driver, testcasesData.getUrl());
 
-		log("Step 4: Click on Make Payment Link ");
-		MakePaymentPage makePaymentPage = myPatientPage.clickMakePaymentLnk();
+		JalapenoHomePage homePage = loginPage.login(testcasesData.getUserName(), testcasesData.getPassword());
+		JalapenoPayBillsMakePaymentPage payBillsPage = homePage.clickOnNewPayBills(driver);
+		logStep("Remove all cards because Selenium can't see AddNewCard button");
+		payBillsPage.removeAllCards();
+		logStep("Check that no card is present");
+		assertFalse(payBillsPage.isAnyCardPresent());
+		assertTrue(payBillsPage.areBasicPageElementsPresent());
 
-		log("Step 5: Set Make Payments Fields ");
-		makePaymentPage.setMakePaymentFields(accountNumber);
+		JalapenoPayBillsConfirmationPage confirmationPage = payBillsPage.fillPaymentInfo(amount, accountNumber, creditCard);
+		assertTrue(confirmationPage.areBasicPageElementsPresent());
+		logStep("Verifying credit card ending");
+		assertTrue(confirmationPage.getCreditCardEnding().equals(creditCard.getLastFourDigits()));
 
+		homePage = confirmationPage.commentAndSubmitPayment("Testing payment from number: " + accountNumber);
 		log("Step 6: fetch confirmation number ");
-		String confirmationNumber = makePaymentPage.readConfirmationNumber();
-
-		log("Step 7: Logout of Patient Portal");
-		myPatientPage.logout(driver);
+		String confirmationNumber = payBillsPage.readConfirmationNumber();
+		log("Confirmation Number is: " + confirmationNumber);
+		assertTrue(homePage.wasPayBillsSuccessfull());
+		homePage.clickOnLogout();
 
 		log("Step 8: Setup Oauth client 2.O");
 		RestUtils.oauthSetup(testcasesData.getOAuthKeyStore(), testcasesData.getOAuthProperty(), testcasesData.getOAuthAppToken(), testcasesData.getOAuthUsername(),
@@ -1332,10 +475,10 @@ public class IntegrationPlatformAcceptanceTests extends BaseTestNGWebDriver {
 		String messageThreadID = RestUtils.paymentID;
 		log("Payment ID :" + messageThreadID);
 
-		String reply_Subject = "Test" + IHGUtil.createRandomNumericString();
+		String reply_Subject = "Test Message " + IHGUtil.createRandomNumericString();
 		String message = RestUtils.prepareSecureMessage(testcasesData.getcommunicationXML(), testcasesData.getFrom(), testcasesData.getUserName(), reply_Subject,
 				messageThreadID);
-
+		log("Payload to beposted for AM: " + message);
 		log("Step 11: Do Message Post AMDC Request");
 		String processingUrl = RestUtils.setupHttpPostRequest(testcasesData.getCommRestUrl(), message, testcasesData.getResponsePath());
 
@@ -1352,31 +495,35 @@ public class IntegrationPlatformAcceptanceTests extends BaseTestNGWebDriver {
 
 		log("Step 13: Check secure message in patient mailinator inbox");
 		Mailinator mail = new Mailinator();
-		String subject = "New message from IHGQA Automation Integrated Oauth 2.0";
+		String subject = "New message from PI Automation rsdk Integrated";
 		String messageLink = "Sign in to view this message";
-		String emailMessageLink = mail.getLinkFromEmail(testcasesData.getUserName(), subject, messageLink, 5);
+		String emailMessageLink = mail.getLinkFromEmail(testcasesData.getGmailUserName(), subject, messageLink, 20);
 
 		// patient Portal validation
 		log("Step 14: Login to Patient Portal");
-		PortalLoginPage ploginPage = new PortalLoginPage(driver, emailMessageLink);
-		Thread.sleep(9000);
-		MessageCenterInboxPage inboxPage = ploginPage.loginNavigateToInboxPage(testcasesData.getUserName(), testcasesData.getPassword());
-		Thread.sleep(9000);
-		assertTrue(inboxPage.isInboxLoaded(), "Inbox failed to load properly.");
 
-		MessagePage msg = inboxPage.openMessageInInbox(reply_Subject);
+		log("Step 7: Login to Patient Portal");
+		log("Link is " + emailMessageLink);
+		JalapenoLoginPage ploginPage = new JalapenoLoginPage(driver, emailMessageLink);
+		Thread.sleep(9000);
+		JalapenoHomePage phomePage = loginPage.login(testcasesData.getUserName(), testcasesData.getPassword());
+		assertTrue(phomePage.isHomeButtonPresent(driver));
+
+		Thread.sleep(9000);
+		JalapenoMessagesPage messagesPage = phomePage.showMessages(driver);
+		assertTrue(messagesPage.areBasicPageElementsPresent(), "Inbox failed to load properly.");
+
+		Long since = timestamp / 1000L - 60 * 24;
 
 		log("Step 15: Validate message loads and is the right message");
-		assertTrue(msg.isSubjectLocated(reply_Subject));
+		boolean msg = messagesPage.isMessageDisplayed(driver, reply_Subject);
 
 		Thread.sleep(60000);
 		log("Step 16: Reply to the message");
-		msg.replyToMessage(IntegrationConstants.MESSAGE_REPLY, null);
+		messagesPage.replyToMessage(driver);
 
 		log("Step 17: Wait 60 seconds, so the message can be processed");
 		Thread.sleep(60000);
-
-		Long since = timestamp / 1000L - 60 * 24;
 
 		log("Step 18: Do a GET AMDC and verify patient reply in Get AMDC response");
 		RestUtils.setupHttpGetRequest(testcasesData.getCommRestUrl() + "?since=" + since + ",0", testcasesData.getResponsePath());
@@ -1384,10 +531,12 @@ public class IntegrationPlatformAcceptanceTests extends BaseTestNGWebDriver {
 		log("Step 19: Validate message reply");
 		RestUtils.isReplyPresent(testcasesData.getResponsePath(), reply_Subject);
 
-		myPatientPage.logout(driver);
+		log("Logout from Patient Portal");
+		homePage.clickOnLogout();
 
 		String postPayload = RestUtils.preparePayment(testcasesData.getPaymentPath(), messageThreadID, null, IntegrationConstants.BILLPAYMENT);
 
+		log("Post Payload is:  " + postPayload);
 		log("Step 20: Do a Post and get the message");
 		processingUrl = RestUtils.setupHttpPostRequest(testcasesData.getRestUrl(), postPayload, testcasesData.getResponsePath());
 
@@ -1425,9 +574,11 @@ public class IntegrationPlatformAcceptanceTests extends BaseTestNGWebDriver {
 		log("Step 25: Verify Payment status in Get Response using the Timestamp received in response of Step 8");
 		RestUtils.setupHttpGetRequest(testcasesData.getRestUrl() + "?since=" + lastTimestamp, testcasesData.getResponsePath());
 
+
+
 	}
 
-	@Test(enabled = false, groups = {"AcceptanceTests"}, retryAnalyzer = RetryAnalyzer.class)
+	@Test(enabled = true, groups = {"AcceptanceTests"}, retryAnalyzer = RetryAnalyzer.class)
 	public void testPayNow() throws Exception {
 
 		log("Test Case: testPayNow - No login payment");
@@ -1438,14 +589,17 @@ public class IntegrationPlatformAcceptanceTests extends BaseTestNGWebDriver {
 		PayNowTestData testcasesData = new PayNowTestData(payNowData);
 		Long timestamp = System.currentTimeMillis();
 
-		log("Step 1: Open no login payment page");
-		NoLoginPaymentPage pNoLoginPaymentPage = new NoLoginPaymentPage(driver, testcasesData.getUrl());
-		Thread.sleep(3000);
-		log("Step 2: Fill in payment info and submit");
-		assertTrue(pNoLoginPaymentPage.validateNoLoginPaymentPage(testcasesData.getFirstName(),testcasesData.getLastName(),testcasesData.getZip(), testcasesData.getEmail()));
-		
+		logStep("Step 1: Open login page");
+		JalapenoLoginPage loginPage = new JalapenoLoginPage(driver, testcasesData.getUrl());
+
+		logStep("Step 2: Click on Pay a bill (without logging in");
+		JalapenoPayNowPage pNoLoginPaymentPage = loginPage.clickPayNowButton();
 		log("Step 3: Verify payment OK");
-		
+		assertTrue(
+				pNoLoginPaymentPage.validateNoLoginPaymentPage(testcasesData.getFirstName(), testcasesData.getLastName(), testcasesData.getZip(),
+						testcasesData.getEmail()));
+		Thread.sleep(90000);
+
 		log("Step 4: Verify account set to N/A");
 		verifyTrue(driver.getPageSource().contains("Account N/A."));
 
@@ -1474,6 +628,7 @@ public class IntegrationPlatformAcceptanceTests extends BaseTestNGWebDriver {
 		String postPayload =
 				RestUtils.preparePayment(testcasesData.getPaymentPath(), paymentID, pNoLoginPaymentPage.GetAmountPrize() + ".00", IntegrationConstants.PAYNOWPAYMENT);
 
+		log("Posted Payload :     " + postPayload);
 		log("Step 10: Do a Post and get the message");
 		String processingUrl = RestUtils.setupHttpPostRequest(testcasesData.getRestUrl() + "=payNowpayment", postPayload, testcasesData.getResponsePath());
 
@@ -1523,7 +678,7 @@ public class IntegrationPlatformAcceptanceTests extends BaseTestNGWebDriver {
 		PayNow payNowData = new PayNow();
 		PayNowTestData testcasesData = new PayNowTestData(payNowData);
 		Long timestamp = System.currentTimeMillis();
-		
+
 		log("Step 1: Login to Practice Portal");
 		PracticeLoginPage practiceLogin = new PracticeLoginPage(driver, testcasesData.getPracticeURL());
 		PracticeHomePage practiceHome = practiceLogin.login(testcasesData.getPracticeUserName(), testcasesData.getPracticePassword());
@@ -1599,6 +754,73 @@ public class IntegrationPlatformAcceptanceTests extends BaseTestNGWebDriver {
 	}
 
 	@Test(enabled = true, groups = {"AcceptanceTests"}, retryAnalyzer = RetryAnalyzer.class)
+	public void testAMDCAskQuestionUnpaid() throws Exception {
+
+		log("Test Case: AMDC Ask Question to your Doc");
+
+		log("Execution Environment: " + IHGUtil.getEnvironmentType());
+		log("Execution Browser: " + TestConfig.getBrowserType());
+
+		log("Step 1: Get Data from Excel");
+		AMDC AMDCData = new AMDC();
+		AMDCTestData testData = new AMDCTestData(AMDCData);
+
+		log("Url: " + testData.getUrl());
+		log("User Name: " + testData.getUserName());
+		log("Password: " + testData.getPassword());
+		log("Rest Url: " + testData.getRestUrl());
+		log("Response Path: " + testData.getResponsePath());
+		log("From: " + testData.getFrom());
+		log("SecureMessagePath: " + testData.getSecureMessagePath());
+		log("OAuthProperty: " + testData.getOAuthProperty());
+		log("OAuthKeyStore: " + testData.getOAuthKeyStore());
+		log("OAuthAppToken: " + testData.getOAuthAppToken());
+		log("OAuthUsername: " + testData.getOAuthUsername());
+		log("OAuthPassword: " + testData.getOAuthPassword());
+
+		log("Step 2: LogIn");
+		JalapenoLoginPage loginPage = new JalapenoLoginPage(driver, testData.getUrl());
+		JalapenoHomePage homePage = loginPage.login(testData.getUserName(), testData.getPassword());
+
+		log("Step 3: Click Ask Ur Doc");
+		JalapenoAskAStaffPage askStaff1 = homePage.clickOnAskADoc(driver);
+
+		Thread.sleep(8000);
+		log("Step 4: fill and complete the of Ask A Staff");
+		boolean askStaff2 = askStaff1.fillAndSubmitAskyourDocUnpaid(driver);
+
+
+		log("Step 6: Validate entry is on Ask A Staff History page");
+		homePage.clickOnAskADoc(driver);
+		boolean aasHistory = askStaff1.checkHistory(driver);
+		Thread.sleep(7000);
+		// verifyTrue(aasHistory);
+
+		log("Step 7: Logout of Patient Portal");
+		homePage.clickOnLogout();
+
+		log("Step 8: Setup Oauth client");
+		RestUtils.oauthSetup(testData.getOAuthKeyStore(), testData.getOAuthProperty(), testData.getOAuthAppToken(), testData.getOAuthUsername(),
+				testData.getOAuthPassword());
+
+		// OAuthPropertyManager.init(testData.getOAuthProperty());
+
+		log("Step 9: Get AMDC Rest call");
+		// get only messages from last day in epoch time to avoid transferring
+		// lot of data
+		Long since = askStaff1.getCreatedTimeStamp() / 1000L;
+
+		log("Getting messages since timestamp: " + since);
+
+		// do the call and save xml, ",0" is there because of the since
+		// attribute format
+		RestUtils.setupHttpGetRequest(testData.getRestUrl() + "?since=" + since + ",0", testData.getResponsePath());
+
+		log("Step 10: Checking validity of the response xml");
+		RestUtils.isQuestionResponseXMLValid(testData.getResponsePath(), askStaff1.getCreatedTimeStamp());
+	}
+
+	@Test(enabled = true, groups = {"AcceptanceTests"}, retryAnalyzer = RetryAnalyzer.class)
 	public void testAMDCSecureMessageFromPractice() throws Exception {
 		log("Test Case: AMDC Secure Message from Practice. ");
 
@@ -1628,12 +850,14 @@ public class IntegrationPlatformAcceptanceTests extends BaseTestNGWebDriver {
 
 		log("Step 3: Fill Message data");
 		long timestamp = System.currentTimeMillis();
+		String Subject = "Test " + timestamp;
 		String message =
 				RestUtils.prepareSecureMessage(testData.getSecureMessagePath(), testData.getIntegrationPracticeID(), testData.getUserName(), "Test " + timestamp, null);
 
 		String messageID = RestUtils.newMessageID();
 		log("Partner Message ID:" + messageID);
 
+		log("Payload posted is ___________" + message);
 		log("Step 4: Do Message Post Request");
 		String processingUrl = RestUtils.setupHttpPostRequest(testData.getRestUrl(), message, testData.getResponsePath());
 
@@ -1641,7 +865,7 @@ public class IntegrationPlatformAcceptanceTests extends BaseTestNGWebDriver {
 		boolean completed = false;
 		for (int i = 0; i < 3; i++) {
 			// wait 10 seconds so the message can be processed
-			Thread.sleep(120000);
+			Thread.sleep(10000);
 			RestUtils.setupHttpGetRequest(processingUrl, testData.getResponsePath());
 			if (RestUtils.isMessageProcessingCompleted(testData.getResponsePath())) {
 				completed = true;
@@ -1654,28 +878,239 @@ public class IntegrationPlatformAcceptanceTests extends BaseTestNGWebDriver {
 		Mailinator mail = new Mailinator();
 		String subject = "New message from IHGQA Automation Integrated Oauth 2.0";
 		String messageLink = "Sign in to view this message";
-		String emailMessageLink = mail.getLinkFromEmail(testData.getUserName(), subject, messageLink, 5);
+		String emailMessageLink = mail.getLinkFromEmail(testData.getUserName(), subject, messageLink, 20);
 
 		log("Step 7: Login to Patient Portal");
-		PortalLoginPage loginPage = new PortalLoginPage(driver, emailMessageLink);
+		log("Link is " + emailMessageLink);
+		JalapenoLoginPage loginPage = new JalapenoLoginPage(driver, emailMessageLink);
 		Thread.sleep(9000);
-		MessageCenterInboxPage inboxPage = loginPage.loginNavigateToInboxPage(testData.getUserName(), testData.getPassword());
-		Thread.sleep(12000);
-		assertTrue(inboxPage.isInboxLoaded(), "Inbox failed to load properly.");
+		JalapenoHomePage homePage = loginPage.login(testData.getUserName(), testData.getPassword());
+		assertTrue(homePage.isHomeButtonPresent(driver));
 
-		log("Step 8: Find message in Inbox");
-		String messageIdentifier = Long.toString(timestamp);
+		Thread.sleep(9000);
+		JalapenoMessagesPage messagesPage = homePage.showMessages(driver);
+		assertTrue(messagesPage.areBasicPageElementsPresent(), "Inbox failed to load properly.");
 
-		MessagePage msg = inboxPage.openMessageInInbox(messageIdentifier);
+		Long since = timestamp / 1000L - 60 * 24;
 
-		log("Step 9: Validate message loads and is the right message");
-		assertTrue(msg.isSubjectLocated(messageIdentifier));
+		log("Step 8: Validate message loads and is the right message");
+		assertTrue(messagesPage.isMessageDisplayed(driver, Subject), "Message received with timestamp");
 
 	}
 
 	@Test(enabled = true, groups = {"AcceptanceTests"}, retryAnalyzer = RetryAnalyzer.class)
+	public void testEHDCsendCCD() throws Exception {
+
+		log("Test Case: send a CCD and check in patient Portal");
+		EHDC EHDCData = new EHDC();
+		EHDCTestData testData = new EHDCTestData(EHDCData);
+
+		log("UserName: " + testData.getUserName());
+		log("Password:" + testData.getPassword());
+		log("Rest Url: " + testData.getRestUrl());
+		log("CCD Path: " + testData.getCCDPath());
+		log("Response Path: " + testData.getResponsePath());
+		log("OAuthProperty: " + testData.getOAuthProperty());
+		log("OAuthKeyStore: " + testData.getOAuthKeyStore());
+		log("OAuthAppToken: " + testData.getOAuthAppToken());
+		log("OAuthUsername: " + testData.getOAuthUsername());
+		log("OAuthPassword: " + testData.getOAuthPassword());
+
+		log("Step 1: Setup Oauth client");
+		RestUtils.oauthSetup(testData.getOAuthKeyStore(), testData.getOAuthProperty(), testData.getOAuthAppToken(), testData.getOAuthUsername(),
+				testData.getOAuthPassword());
+
+		String ccd = RestUtils.prepareCCD(testData.getCCDPath());
+
+		log("Step 2: Do Message Post Request");
+		String processingUrl = RestUtils.setupHttpPostRequest(testData.getRestUrl(), ccd, testData.getResponsePath());
+
+		log("Processing URL: " + processingUrl);
+		log("Step 3: Get processing status until it is completed");
+		Thread.sleep(60000);
+
+		log("Step 4:LogIn to Patient Portal ");
+		JalapenoLoginPage portalloginpage = new JalapenoLoginPage(driver, testData.getURL());
+		JalapenoHomePage homePage = portalloginpage.login(testData.getUserName(), testData.getPassword());
+
+		log("Step 5: Go to Inbox");
+		JalapenoMessagesPage inboxPage = homePage.clickOnMenuMessages();
+		assertTrue(inboxPage.areBasicPageElementsPresent(), "Inbox failed to load properly.");
+
+		log("Step 5: Validate message subject and send date");
+		assertTrue(inboxPage.isMessageDisplayed(driver, "You have a new health data summary"));
+		log("CCD sent date & time is : " + inboxPage.returnMessageSentDate());
+
+		log("Step 6: Click on link View health data");
+		JalapenoCcdViewerPage jalapenoCcdPage = inboxPage.findCcdMessage(driver);
+
+		log("Step 7: Verify if CCD Viewer is loaded and click Close Viewer");
+		assertTrue(jalapenoCcdPage.areBasicPageElementsPresent());
+		inboxPage = jalapenoCcdPage.closeCcd(driver);
+
+		log("Step 8: Logging out");
+		assertTrue(inboxPage.areBasicPageElementsPresent());
+		homePage = inboxPage.backToHomePage(driver);
+		homePage.clickOnLogout();
+	}
+
+	@Test(enabled = true, groups = {"AcceptanceTests"}, retryAnalyzer = RetryAnalyzer.class)
+	public void testE2EAppointmentRequest() throws Exception {
+
+		log("Test Case: Appointment Request");
+
+		log("Execution Environment: " + IHGUtil.getEnvironmentType());
+		log("Execution Browser: " + TestConfig.getBrowserType());
+
+		Long timestamp = System.currentTimeMillis();
+		log("Step 1: Get Data from Excel");
+		Appointment aptData = new Appointment();
+		AppointmentTestData testData = new AppointmentTestData(aptData);
+
+		log("Url: " + testData.getUrl());
+		log("User Name: " + testData.getUserName());
+		log("Password: " + testData.getPassword());
+		log("Rest Url: " + testData.getRestUrl());
+		log("Response Path: " + testData.getResponsePath());
+		log("From: " + testData.getFrom());
+		log("AppointmentPath: " + testData.getAppointmentPath());
+		log("OAuthProperty: " + testData.getOAuthProperty());
+		log("OAuthKeyStore: " + testData.getOAuthKeyStore());
+		log("OAuthAppToken: " + testData.getOAuthAppToken());
+		log("OAuthUsername: " + testData.getOAuthUsername());
+		log("OAuthPassword: " + testData.getOAuthPassword());
+
+		String reason = "Reason" + timestamp;
+
+		log("Step 2: LogIn");
+		JalapenoLoginPage loginPage = new JalapenoLoginPage(driver, testData.getUrl());
+		JalapenoHomePage homePage = loginPage.login(testData.getUserName(), testData.getPassword());
+
+		log("Step 3: Click on Appointment Button on Home Page");
+		JalapenoAppointmentRequestPage apptPage = homePage.clickOnAppointment(driver);
+		JalapenoAppointmentRequestV2Step1 apptPage1 = apptPage.requestForAppointmentStep1(driver);
+
+		apptPage1.chooseFirstProvider();
+
+		log("Step 4: Complete Appointment Request Page");
+		JalapenoAppointmentRequestV2Step2 apptPage2 = apptPage1.continueToStep2(driver);
+
+		apptPage2.fillAppointmentRequestForm(reason);
+		homePage = apptPage2.submitAppointment(driver);
+
+		log("Step 5: Check if thank you frame is displayd");
+		assertTrue(homePage.isTextDisplayed("Thank you"));
+
+		log("Step 6: Logout of Patient Portal");
+		homePage.clickOnLogout();
+
+		Thread.sleep(5000);
+
+		log("Step 7: Setup Oauth client");
+		RestUtils.oauthSetup(testData.getOAuthKeyStore(), testData.getOAuthProperty(), testData.getOAuthAppToken(), testData.getOAuthUsername(),
+				testData.getOAuthPassword());
+
+		log("Step 8: Get Appointment Rest call");
+
+		// get only messages from last hour in epoch time to avoid transferring
+		// lot of data
+		Long since = timestamp / 1000L - 60 * 24;
+
+		log("Getting messages since timestamp: " + since);
+
+		// do the call and save xml, ",0" is there because of the since
+		// attribute format
+		RestUtils.setupHttpGetRequest(testData.getRestUrl() + "?since=" + since + ",0", testData.getResponsePath());
+
+		log("Step 9: Checking reason in the response xml");
+		RestUtils.isReasonResponseXMLValid(testData.getResponsePath(), reason);
+
+		// String arSMSubject = "Reply to Appointment Request";
+		// String arSMBody = "This is reply to AR for " + reason;
+
+		log("Getting Appointment reason ");
+		String arSMSubject = IntegrationConstants.AR_SM_SUBJECT.toString();
+		String arSMBody = IntegrationConstants.AR_SM_BODY.toString();
+		log("************Appointment Reason: " + reason);
+		log("************Appointment Secure Message Subject: " + arSMSubject);
+		log("************Appointment Secure Message Body: " + arSMBody);
+
+
+		String postXML =
+				RestUtils.findValueOfChildNode(testData.getResponsePath(), "AppointmentRequest", reason, arSMSubject, arSMBody, testData.getAppointmentPath());
+
+		// httpPostRequest method
+		log("Step 10: Do Message Post Request");
+		String processingUrl = RestUtils.setupHttpPostRequest(testData.getRestUrl(), postXML, testData.getResponsePath());
+
+		log("Step 11: Get processing status until it is completed");
+		boolean completed = false;
+		for (int i = 0; i < 3; i++) {
+			// wait 10 seconds so the message can be processed
+			Thread.sleep(120000);
+			RestUtils.setupHttpGetRequest(processingUrl, testData.getResponsePath());
+			if (RestUtils.isMessageProcessingCompleted(testData.getResponsePath())) {
+				completed = true;
+				break;
+			}
+		}
+		verifyTrue(completed, "Message processing was not completed in time");
+
+		log("Step 12: Check secure message in patient gmail inbox");
+		Mailinator mail = new Mailinator();
+		String subject = "New message from IHGQA Automation Integrated Oauth 2.0";
+		String messageLink = "Sign in to view this message";
+		String emailMessageLink = mail.getLinkFromEmail(testData.getUserName(), subject, messageLink, 5);
+
+		// patient Portal validation
+		log("Step 13: Login to Patient Portal");
+		JalapenoLoginPage loginPage2 = new JalapenoLoginPage(driver, emailMessageLink);
+		JalapenoHomePage homePage2 = loginPage2.login(testData.getUserName(), testData.getPassword());
+
+		log("Step 14:Click on messages solution");
+		JalapenoMessagesPage messagesPage = homePage2.showMessages(driver);
+		assertTrue(messagesPage.areBasicPageElementsPresent(), "Inbox failed to load properly.");
+
+		log("Step 15: Find & validate message in Inbox");
+		assertTrue(messagesPage.isMessageDisplayed(driver, arSMSubject));
+
+		log("Step 16: Logout of Patient Portal");
+		homePage2.clickOnLogout();
+
+		// Practice portal validation
+		log("Step 17: Login to Practice Portal");
+
+		PracticeLoginPage practiceLogin = new PracticeLoginPage(driver, testData.getPracticeURL());
+		PracticeHomePage practiceHome = practiceLogin.login(testData.getPracticeUserName(), testData.getPracticePassword());
+
+		log("Step 18: Click Appt Request tab");
+		ApptRequestSearchPage apptSearch = practiceHome.clickApptRequestTab();
+		PerformanceReporter.getPageLoadDuration(driver, ApptRequestSearchPage.PAGE_NAME);
+
+		log("Step 19: Search for appt requests");
+		apptSearch.searchForApptRequests(2, null, null);
+		Thread.sleep(120000);
+		ApptRequestDetailStep1Page detailStep1 = apptSearch.getRequestDetails(reason);
+		assertNotNull(detailStep1, "The submitted patient request was not found in the practice");
+		PerformanceReporter.getPageLoadDuration(driver, ApptRequestDetailStep1Page.PAGE_NAME);
+
+		String actualSMSubject = detailStep1.getPracticeMessageSubject();
+		assertTrue(detailStep1.getPracticeMessageSubject().contains(arSMSubject),
+				"Expected Secure Message Subject containing [" + arSMSubject + "but actual message subject was [" + actualSMSubject + "]");
+
+		String actualSMBody = detailStep1.getPracticeMessageBody();
+		assertTrue(detailStep1.getPracticeMessageBody().contains(arSMBody),
+				"Expected Secure Message Body containing [" + arSMBody + "but actual message body was [" + actualSMBody + "]");
+
+		log("Step 20: Logout of Practice Portal");
+		practiceHome.logOut();
+
+	}
+
+
+	@Test(enabled = true, groups = {"AcceptanceTests"}, retryAnalyzer = RetryAnalyzer.class)
 	public void testStatementPreference() throws Exception {
-		log("Test Case: Statement Preference in Portal 1.0");
+		log("Test Case: Statement Preference in Patient Portal");
 		log("Execution Environment: " + IHGUtil.getEnvironmentType());
 		log("Execution Browser: " + TestConfig.getBrowserType());
 
@@ -1700,29 +1135,26 @@ public class IntegrationPlatformAcceptanceTests extends BaseTestNGWebDriver {
 		Long timeStamp = System.currentTimeMillis();
 
 		log("Step 2: LogIn to Patient Portal");
-		PortalLoginPage loginPage = new PortalLoginPage(driver, testData.getUrl());
-		assertTrue(loginPage.isLoginPageLoaded());
-		MyPatientPage myPatientPage = loginPage.login(testData.getUserName(), testData.getPassword());
+		JalapenoLoginPage loginPage = new JalapenoLoginPage(driver, testData.getUrl());
+		JalapenoHomePage homePage = loginPage.login(testData.getUserName(), testData.getPassword());
 
 		log("Step 3: Click on myaccountLink on MyPatientPage");
-		MyAccountPage myAccountPage = myPatientPage.clickMyAccountLink();
+		JalapenoMyAccountProfilePage myAccountProfilePage = homePage.goToAccountPage();
 
 		log("Step 4: Click on Preferences Tab");
-		PreferencesPage myPreferencePage = myAccountPage.clickpreferencesLink();
+		JalapenoMyAccountPreferencesPage myPreferencePage = myAccountProfilePage.goToPreferencesTab(driver);
 
 		log("Step 5: Set Statement Delievery Preference as Paper Statement");
-		String setStatementPrefernce = "PAPER";
-		myPreferencePage.setStatementPreference(setStatementPrefernce);
-		myPreferencePage.clickupdateYourPreferences();
+		myPreferencePage.checkAndSetStatementPreference(driver, StatementPreferenceType.PAPER);
 
 		log("Step 6: Logout from Patient portal");
-		myAccountPage.logout(driver);
-		
-		Thread.sleep(5000);
+		homePage.clickOnLogout();
+
 		log("Step 7: Login to Practice Portal");
 		PracticeLoginPage practiceLogin = new PracticeLoginPage(driver, testData.getPracticeURL());
 		PracticeHomePage practiceHome = practiceLogin.login(testData.getPracticeUserName(), testData.getPracticePassword());
-		Thread.sleep(12000);
+
+
 		log("Step 8: Search for above patient with first name & last name");
 		PatientSearchPage patientSearch = practiceHome.clickPatientSearchLink();
 		patientSearch.searchForPatientInPatientSearch(testData.getFirstName(), testData.getLastName());
@@ -1738,7 +1170,7 @@ public class IntegrationPlatformAcceptanceTests extends BaseTestNGWebDriver {
 		String memberId = patientDashboard.medfusionID();
 		log("MemberId is " + memberId);
 		String externalPatientId = patientDashboard.readExternalPatientID();
-		log("External Patient Id is " + externalPatientId);
+		log("External Id is " + externalPatientId);
 
 		practiceHome.logOut();
 
@@ -1753,52 +1185,57 @@ public class IntegrationPlatformAcceptanceTests extends BaseTestNGWebDriver {
 		String nextTimeStamp = RestUtils.setupHttpGetRequest(testData.getRestUrl() + "?since=" + timeStamp, testData.getResponsePath());
 
 		log("Step 14: Validate the response");
-		RestUtils.isStatementPreferenceCorrect(testData.getResponsePath(), memberId, setStatementPrefernce);
+		RestUtils.isStatementPreferenceCorrect(testData.getResponsePath(), memberId, "PAPER");
 
-		log("Step 15: Prepare payload to set Statement Preference as Electronic Statement");
-		setStatementPrefernce = "E_STATEMENT";
-		if (StringUtils.isBlank(nextTimeStamp))
-			timeStamp = System.currentTimeMillis();
-		else
-			timeStamp = Long.valueOf(nextTimeStamp);
+		String statementPreference[] = {"E_STATEMENT", "BOTH"};
 
-		String payload = RestUtils.preparePostStatementPreference(testData.getStatementPath(), memberId, externalPatientId, setStatementPrefernce);
+		for (int i = 0; i < statementPreference.length; i++) {
+			log("-----Statement Preference : " + statementPreference[i] + "-----");
+			log("Step 15: Prepare payload to set Statement Preference as " + statementPreference[i]);
+			if (StringUtils.isBlank(nextTimeStamp))
+				timeStamp = System.currentTimeMillis();
+			else
+				timeStamp = Long.valueOf(nextTimeStamp);
 
-		log("Step 16: Do POST Statement Preference API & set preference to Electronic Statement");
-		String processingUrl = RestUtils.setupHttpPostRequest(testData.getRestUrl(), payload, testData.getResponsePath());
+			String payload = RestUtils.preparePostStatementPreference(testData.getStatementPath(), memberId, externalPatientId, statementPreference[i]);
 
-		log("Step 17: Get processing status until it is completed");
-		boolean completed = false;
-		for (int i = 0; i < 3; i++) {
-			Thread.sleep(60000);
-			RestUtils.setupHttpGetRequest(processingUrl, testData.getResponsePath());
-			if (RestUtils.isMessageProcessingCompleted(testData.getResponsePath())) {
-				completed = true;
-				break;
+			log("Step 16: Do POST Statement Preference API & set preference to " + statementPreference[i]);
+			String processingUrl = RestUtils.setupHttpPostRequest(testData.getRestUrl(), payload, testData.getResponsePath());
+
+			log("Step 17: Get processing status until it is completed");
+			boolean completed = false;
+			for (int j = 0; j < 3; j++) {
+				Thread.sleep(60000);
+				RestUtils.setupHttpGetRequest(processingUrl, testData.getResponsePath());
+				if (RestUtils.isMessageProcessingCompleted(testData.getResponsePath())) {
+					completed = true;
+					break;
+				}
 			}
+			assertTrue(completed);
+
+			log("Step 18: Login to Patient Portal");
+			JalapenoLoginPage loginPage1 = new JalapenoLoginPage(driver, testData.getUrl());
+			JalapenoHomePage homePage1 = loginPage1.login(testData.getUserName(), testData.getPassword());
+
+			log("Step 19: Check for update in Statement Preference");
+			JalapenoMyAccountProfilePage myAccountProfilePage1 = homePage1.goToAccountPage();
+			JalapenoMyAccountPreferencesPage myPreferencePage1 = myAccountProfilePage1.goToPreferencesTab(driver);
+
+			assertTrue(myPreferencePage1.checkStatementPreferenceUpdated(StatementPreferenceType.valueOf(statementPreference[i])));
+
+			log("Step 20: Logout of Portal");
+			homePage1.clickOnLogout();
+
+			log("Step 21: GET Statement Preference API");
+			log("Getting statement preference updates since timestamp: " + timeStamp);
+			nextTimeStamp = RestUtils.setupHttpGetRequest(testData.getRestUrl() + "?since=" + timeStamp, testData.getResponsePath());
+
+			log("Step 22: Validate the response");
+			RestUtils.isStatementPreferenceCorrect(testData.getResponsePath(), memberId, statementPreference[i]);
 		}
-		assertTrue(completed);
-
-		log("Step 18: GET Statement Preference API");
-		log("Getting statement preference updates since timestamp: " + timeStamp);
-		RestUtils.setupHttpGetRequest(testData.getRestUrl() + "?since=" + timeStamp, testData.getResponsePath());
-
-		log("Step 19: Validate the response");
-		RestUtils.isStatementPreferenceCorrect(testData.getResponsePath(), memberId, setStatementPrefernce);
-
-		log("Step 20: Login to Patient Portal");
-		PortalLoginPage loginPage1 = new PortalLoginPage(driver, testData.getUrl());
-		assertTrue(loginPage1.isLoginPageLoaded());
-		MyPatientPage myPatientPage1 = loginPage1.login(testData.getUserName(), testData.getPassword());
-
-		log("Step 21: Check for update in Statement Preference");
-		MyAccountPage myAccountPage1 = myPatientPage1.clickMyAccountLink();
-		PreferencesPage myPreferencePage1 = myAccountPage1.clickpreferencesLink();
-		myPreferencePage1.checkStatementPreference(setStatementPrefernce);
-
-		log("Step 22: Logout of Portal");
-		myAccountPage1.logout(driver);
-
 	}
+
+
 
 }

@@ -1,3 +1,4 @@
+// Copyright 2018-2020 NXGN Management, LLC. All Rights Reserved.
 package com.medfusion.product.pss2patientui.utils;
 
 import java.io.IOException;
@@ -23,16 +24,12 @@ public class PSSAdminUtils {
 
 	public void adminSettings(WebDriver driver, AdminUser adminuser, Appointment testData, String urlToUse) throws Exception {
 		PSS2PracticeConfiguration psspracticeConfig = loginToAdminPortal(driver, adminuser);
-
 		AccessRules accessrule = psspracticeConfig.gotoAccessTab();
-		Thread.sleep(4400);
+		Thread.sleep(2000);
 		Log4jUtil.log("New = " + accessrule.isLLNewPatientSelected());
 		Log4jUtil.log("Existing = " + accessrule.isLLExistingPatientSelected());
-		Log4jUtil.log("new Patient show insurance = " + accessrule.isLLInsurancePageSelected());
-
 		Log4jUtil.log("isLLExistingPatientSelected " + accessrule.isLLExistingPatientSelected());
 		if (accessrule.isLLNewPatientSelected().equalsIgnoreCase("true")) {
-			Log4jUtil.log("isLLInsurancePageSelected " + accessrule.isLLInsurancePageSelected());
 			Log4jUtil.log("isLLPrivacyPolicySelected " + accessrule.isLLPrivacyPolicySelected());
 			if (accessrule.isLLPrivacyPolicySelected().equalsIgnoreCase("true")) {
 				accessrule.loginlessPrivacyPolicyClick();
@@ -42,7 +39,6 @@ public class PSSAdminUtils {
 				accessrule.selectLLExistingPatient();
 			}
 		}
-
 		if (urlToUse.equalsIgnoreCase(PSSConstants.LOGINLESS)) {
 			Log4jUtil.log("PSS Patient URL : " + accessrule.getLoginlessURL());
 			testData.setUrlLoginLess(accessrule.getLoginlessURL());
@@ -51,11 +47,116 @@ public class PSSAdminUtils {
 			Log4jUtil.log("PSS Patient URL : " + accessrule.getIDPUrl());
 			testData.setUrlIPD(accessrule.getIDPUrl());
 		}
+		if (urlToUse.equalsIgnoreCase(PSSConstants.ANONYMOUS)) {
+			Log4jUtil.log("PSS Patient URL : " + accessrule.getIDPUrl());
+			testData.setUrlIPD(accessrule.getIDPUrl());
+		}
+		Log4jUtil.log("adminSettings Step 3: Navigate to Patient Flow tab in settings");
+		PatientFlow patientflow = accessrule.gotoPatientFlowTab();
+		Log4jUtil.log("are basic elements present " + patientflow.areBasicPageElementsPresent());
+		Log4jUtil.log("adminSettings Step 4: Fetch the list of Rules");
+		Log4jUtil.log("length " + patientflow.ruleLength());
+		Log4jUtil.log("Rule length : " + patientflow.getRule());
+		Log4jUtil.log("Insurance Displayed ? " + patientflow.isIsuranceDisplayed());
+		if (patientflow.isIsuranceDisplayed().equalsIgnoreCase("true")) {
+			adminuser.setIsInsuranceDisplayed(false);
+		}
+		AdminPatientMatching adminpatientmatching = patientflow.gotoPatientMatchingTab();
+		adminpatientmatching.patientMatchingSelection();
+		Log4jUtil.log("adminSettings Step 5: Logout from PSS Admin Portal");
+		adminpatientmatching.logout();
+		Thread.sleep(4000);
+	}
 
+	public void adminSettingsLoginless(WebDriver driver, AdminUser adminuser, Appointment testData, String urlToUse) throws Exception {
+		Log4jUtil.log("****************ADMIN SETTINGS FOR Loginless FLOW**************************");
+		PSS2PracticeConfiguration psspracticeConfig = loginToAdminPortal(driver, adminuser);
+		AccessRules accessrule = psspracticeConfig.gotoAccessTab();
+		Thread.sleep(2000);
+		Log4jUtil.log("New_Patient Select Checkedbox = " + accessrule.isLLNewPatientSelected());
+		Log4jUtil.log("Existing_Patient Select Checkbox = " + accessrule.isLLExistingPatientSelected());
+		if (accessrule.isLLNewPatientSelected().equalsIgnoreCase("true")) {
+			Log4jUtil.log("isLLPrivacyPolicySelected " + accessrule.isLLPrivacyPolicySelected());
+			if (accessrule.isLLPrivacyPolicySelected().equalsIgnoreCase("false")) {
+				accessrule.loginlessPrivacyPolicyClick();
+				Log4jUtil.log("PrivacyPolicySelected is set TRUE");
+			}
+		} else {
+			if (adminuser.getIsExisting() && adminuser.getIsLoginlessFlow() && accessrule.isLLExistingPatientSelected().equalsIgnoreCase("true")) {
+				accessrule.selectLLExistingPatient();
+			}
+		}
+		Log4jUtil.log("------------Set OTP Settings off for loginless flow----------");
+		if (accessrule.isEnableOTPSelected().equalsIgnoreCase("true")) {
+			Log4jUtil.log("Status of EnableOTP is " + accessrule.isEnableOTPSelected());
+			accessrule.clickEnableOTP();
+			Log4jUtil.log("Enable OTP is set False");
+		} else {
+			Log4jUtil.log("Enable OTP is already False no need to change");
+		}
+		if (urlToUse.equalsIgnoreCase(PSSConstants.LOGINLESS)) {
+			Log4jUtil.log("PSS Patient URL : " + accessrule.getLoginlessURL());
+			testData.setUrlLoginLess(accessrule.getLoginlessURL());
+		}
+		if (urlToUse.equalsIgnoreCase(PSSConstants.IDP)) {
+			Log4jUtil.log("PSS Patient URL : " + accessrule.getIDPUrl());
+			testData.setUrlIPD(accessrule.getIDPUrl());
+		}
+		if (urlToUse.equalsIgnoreCase(PSSConstants.ANONYMOUS)) {
+			Log4jUtil.log("PSS Patient URL : " + accessrule.getIDPUrl());
+			testData.setUrlIPD(accessrule.getIDPUrl());
+		}
 		Log4jUtil.log("adminSettings Step 3: Navigate to Patient Flow tab in settings");
 		PatientFlow patientflow = accessrule.gotoPatientFlowTab();
 		Log4jUtil.log("are basic elements present " + patientflow.areBasicPageElementsPresent());
 
+		Log4jUtil.log("adminSettings Step 4: Fetch the list of Rules");
+		adminuser.setRule(patientflow.getRule());
+		Log4jUtil.log("rule= " + patientflow.getRule());
+
+		Log4jUtil.log("AdminSettings Step 5: Fetch the Insurance Status");
+		testData.setIsinsuranceVisible(patientflow.insuracetogglestatus());
+		Log4jUtil.log("Insurance Status= " + patientflow.insuracetogglestatus());
+
+		Log4jUtil.log("AdminSettings Step 6: Fetch the Starting Point Status");
+		testData.setIsstartpointPresent(patientflow.isstartpagepresent());
+		Log4jUtil.log("Startpoint  Status= " + patientflow.isstartpagepresent());
+
+		AdminPatientMatching adminpatientmatching = patientflow.gotoPatientMatchingTab();
+		adminpatientmatching.patientMatchingSelection();
+		Log4jUtil.log("adminSettings Step 5: Logout from PSS Admin Portal");
+		adminpatientmatching.logout();
+		Thread.sleep(4000);
+	}
+
+	public void adminSettingsAnonymous(WebDriver driver, AdminUser adminuser, Appointment testData, String urlToUse) throws Exception {
+		Log4jUtil.log("****************ADMIN SETTINGS FOR ANONYMOUS FLOW**************************");
+		Log4jUtil.log("adminSettings Step 1: LOGIN TO ADMIN");
+		PSS2PracticeConfiguration psspracticeConfig = loginToAdminPortal(driver, adminuser);
+		Log4jUtil.log("adminSettings Step 2: Navigate to ACCESS RULE tab in settings");
+		AccessRules accessrule = psspracticeConfig.gotoAccessTab();
+		Thread.sleep(2000);
+		Log4jUtil.log("Status of Enable Anonymous Flow = " + accessrule.isEnableAnonymousSelected());
+		Log4jUtil.log("Status of Display Privacy policy = " + accessrule.isDisplayPrivacypolicyAnonymous());
+		Log4jUtil.log("Status of Allow Duplicate Patient " + accessrule.isAllowDuplicatePatientAnonymous());
+		Log4jUtil.log("Status of Enable OTP " + accessrule.isEnableOtpAnonymous());
+		if (urlToUse.equalsIgnoreCase(PSSConstants.LOGINLESS)) {
+			Log4jUtil.log("PSS Patient URL : " + accessrule.getLoginlessURL());
+			testData.setUrlLoginLess(accessrule.getLoginlessURL());
+		}
+		if (urlToUse.equalsIgnoreCase(PSSConstants.IDP)) {
+			Log4jUtil.log("PSS Patient URL : " + accessrule.getIDPUrl());
+			testData.setUrlIPD(accessrule.getIDPUrl());
+		}
+		if (urlToUse.equalsIgnoreCase(PSSConstants.ANONYMOUS)) {
+			Log4jUtil.log("PSS Patient URL : " + accessrule.getAnonymousUrl());
+			testData.setUrlAnonymous(accessrule.getAnonymousUrl());
+		}
+		accessrule.saveAnonymouSetting();
+		Log4jUtil.log("Click on Save Button");
+		Log4jUtil.log("adminSettings Step 3: Navigate to Patient Flow tab in settings");
+		PatientFlow patientflow = accessrule.gotoPatientFlowTab();
+		Log4jUtil.log("are basic elements present " + patientflow.areBasicPageElementsPresent());
 		Log4jUtil.log("adminSettings Step 4: Fetch the list of Rules");
 		Log4jUtil.log("length " + patientflow.ruleLength());
 		Log4jUtil.log("Rule length : " + patientflow.getRule());
@@ -63,23 +164,19 @@ public class PSSAdminUtils {
 			if (patientflow.getRule().contains(PSSConstants.SPECIALITY)) {
 				setRulesNoSpecialitySet1(patientflow);
 			}
-			Thread.sleep(9000);
+			Thread.sleep(4000);
 			Log4jUtil.log("Rule length : " + patientflow.getRule());
 			adminuser.setRule(patientflow.getRule());
 		}
 		Log4jUtil.log("Insurance Displayed ? " + patientflow.isIsuranceDisplayed());
-		// if (patientflow.isIsuranceDisplayed() != null && !patientflow.isIsuranceDisplayed().isEmpty()) {
-		// adminuser.setIsInsuranceDisplayed(false);
-		// }
 		if (patientflow.isIsuranceDisplayed().equalsIgnoreCase("true")) {
 			adminuser.setIsInsuranceDisplayed(false);
 		}
 		AdminPatientMatching adminpatientmatching = patientflow.gotoPatientMatchingTab();
-		
 		adminpatientmatching.patientMatchingSelection();
 		Log4jUtil.log("adminSettings Step 5: Logout from PSS Admin Portal");
 		adminpatientmatching.logout();
-		Thread.sleep(9000);
+		Thread.sleep(4000);
 	}
 
 	public PSS2PracticeConfiguration loginToAdminPortal(WebDriver driver, AdminUser adminuser) throws Exception {
@@ -87,16 +184,15 @@ public class PSSAdminUtils {
 				+ adminuser.getPassword());
 		PSS2AdminLogin pssadminlogin = new PSS2AdminLogin(driver, adminuser.getAdminUrl());
 		PSS2PracticeConfiguration psspracticeConfig = pssadminlogin.login(adminuser.getUser(), adminuser.getPassword());
-
 		Log4jUtil.log("refreshing admin page after login");
 		pageRefresh(driver);
 		return psspracticeConfig;
 	}
 
 	public void pageRefresh(WebDriver driver) throws InterruptedException {
-		Thread.sleep(16000);
+		Thread.sleep(6000);
 		driver.navigate().refresh();
-		Thread.sleep(34000);
+		Thread.sleep(14000);
 	}
 
 	public AdminUser setPracticeAdminAccount(String staffPracitceName) throws IOException {
@@ -144,9 +240,7 @@ public class PSSAdminUtils {
 	public void setRuleWithoutSpeciality(WebDriver driver, AdminUser adminuser) throws Exception {
 		PSS2PracticeConfiguration practiceconfiguration = loginToAdminPortal(driver, adminuser);
 		PatientFlow patientflow = practiceconfiguration.gotoPatientFlowTab();
-
 		setRulesNoSpecialitySet1(patientflow);
-
 		Log4jUtil.log("Logging out of PSS 2.0 admin UI");
 		patientflow.logout();
 	}
@@ -162,7 +256,6 @@ public class PSSAdminUtils {
 		patientflow.saveRule();
 		Thread.sleep(8000);
 		Log4jUtil.log("--------------------------------WAIT FOR RULE TLB TO BE ADDED--------------------------------");
-
 		patientflow.addNewRulesButton();
 		patientflow.selectRuleName("Location");
 		patientflow.addNewRules(PSSConstants.RULE_LOCATION_VALUE);
@@ -179,7 +272,6 @@ public class PSSAdminUtils {
 		patientflow.saveRule();
 		Thread.sleep(8000);
 		Log4jUtil.log("--------------------------------WAIT FOR RULE BTL TO BE ADDED--------------------------------");
-
 	}
 
 	public void setRulesNoSpecialitySet2(PatientFlow patientflow) throws InterruptedException {
@@ -190,17 +282,14 @@ public class PSSAdminUtils {
 		patientflow.addNewRules(PSSConstants.RULE_APPOINTMENT_VALUE);
 		patientflow.addNewRules(PSSConstants.RULE_PROVIDER_VALUE);
 		patientflow.addNewRules(PSSConstants.RULE_LOCATION_VALUE);
-
 		patientflow.saveRule();
 		Thread.sleep(8000);
 		Log4jUtil.log("--------------------------------WAIT FOR RULE TBL TO BE ADDED--------------------------------");
-
 		patientflow.addNewRulesButton();
 		patientflow.selectRuleName("Location");
 		patientflow.addNewRules(PSSConstants.RULE_LOCATION_VALUE);
 		patientflow.addNewRules(PSSConstants.RULE_PROVIDER_VALUE);
 		patientflow.addNewRules(PSSConstants.RULE_APPOINTMENT_VALUE);
-
 		patientflow.saveRule();
 		Thread.sleep(8000);
 		Log4jUtil.log("--------------------------------WAIT FOR RULE LBT TO BE ADDED--------------------------------");
@@ -209,7 +298,6 @@ public class PSSAdminUtils {
 		patientflow.addNewRules(PSSConstants.RULE_PROVIDER_VALUE);
 		patientflow.addNewRules(PSSConstants.RULE_LOCATION_VALUE);
 		patientflow.addNewRules(PSSConstants.RULE_APPOINTMENT_VALUE);
-
 		patientflow.saveRule();
 		Thread.sleep(8000);
 		Log4jUtil.log("--------------------------------WAIT FOR RULE BLT TO BE ADDED--------------------------------");
@@ -231,5 +319,20 @@ public class PSSAdminUtils {
 		Log4jUtil.log("Basic elements of Insurance carrier page located? " + insurancecarrier.areBasicPageElementsPresent());
 		insurancecarrier.enableshowInsuranceAtStart();
 		insurancecarrier.logout();
+
 	}
+
+	public void getInsuranceStateandRule(WebDriver driver, AdminUser adminuser, Appointment appointment) throws Exception {
+		PSS2PracticeConfiguration psspracticeConfig = loginToAdminPortal(driver, adminuser);
+		PatientFlow patientflow = psspracticeConfig.gotoPatientFlowTab();
+		adminuser.setRule(patientflow.getRule());
+		Log4jUtil.log("rule= " + patientflow.getRule());
+		appointment.setIsinsuranceVisible(patientflow.insuracetogglestatus());
+		Log4jUtil.log("Insurance is Enabled= " + patientflow.insuracetogglestatus());
+		appointment.setIsstartpointPresent(patientflow.isstartpagepresent());
+		Log4jUtil.log("StartPage is Visible= " + patientflow.isstartpagepresent());
+		patientflow.logout();
+
+	}
+
 }

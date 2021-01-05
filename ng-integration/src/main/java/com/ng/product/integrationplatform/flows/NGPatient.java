@@ -141,4 +141,35 @@ public class NGPatient {
 		return person_id;
 
 	}
+	
+	public static NewPatient addDataToPatientDemographics(PropertyFileLoader propertyLoaderObj,NewPatient newpatient) throws Throwable{
+        try{
+            String strAddressLine1 = propertyLoaderObj.getProperty("Address1");
+            String strAddressLine2 = propertyLoaderObj.getProperty("Address2");
+            String strCity = propertyLoaderObj.getProperty("City");
+            String strState = propertyLoaderObj.getProperty("State");
+            
+            newpatient.setAddressLine1(strAddressLine1);
+            newpatient.setCity(strCity);
+            newpatient.setState(strState);
+            
+            newpatient.setHomePhone(propertyLoaderObj.getPhoneNumber());
+            newpatient.setContactSequence("HDASEC");
+            newpatient.setCurrentGender("M");
+            newpatient.setMiddleName("Auto");
+
+            String strSqlQueryForEthnicity="SELECT top 1 mstr_list_item_id FROM mstr_lists where mstr_list_type ='ethnicity' and mstr_list_item_desc not in('Test','Unknown','Unknown Ethnicity (uds)','Other') and delete_ind='N' ORDER BY NEWID()";
+            String strSqlQueryForRace="SELECT top 1 mstr_list_item_id FROM mstr_lists where mstr_list_type ='race' and mstr_list_item_desc not in('Other Pacific Islander (Not Hawaiian)') and delete_ind='N' ORDER BY NEWID()";
+            String strSqlQueryForLanguage="SELECT top 1 mstr_list_item_id FROM mstr_lists where mstr_list_type = 'language' and mstr_list_item_desc not in('Other Pacific Islander (Not Hawaiian)') and delete_ind='N' ORDER BY NEWID()";
+            String strSqlQueryForReligion="SELECT top 1 mstr_list_item_id FROM mstr_lists where mstr_list_type = 'religion' and mstr_list_item_desc not in('Jewish           jewish',' ','Other','None') and delete_ind='N' ORDER BY NEWID()";
+            
+            newpatient.setEthnicityId(DBUtils.executeQueryOnDB("NGCoreDB",strSqlQueryForEthnicity));
+            newpatient.setRaceId(DBUtils.executeQueryOnDB("NGCoreDB",strSqlQueryForRace));
+            newpatient.setLanguageId(DBUtils.executeQueryOnDB("NGCoreDB",strSqlQueryForLanguage));
+            newpatient.setReligionId(DBUtils.executeQueryOnDB("NGCoreDB",strSqlQueryForReligion));
+	    } catch (Exception e) {
+        	Log4jUtil.log(e.getMessage());
+        }
+			return newpatient;            
+	}
 }

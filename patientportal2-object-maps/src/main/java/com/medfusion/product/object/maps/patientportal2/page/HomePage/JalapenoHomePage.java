@@ -1,11 +1,11 @@
+// Copyright 2018-2020 NXGN Management, LLC. All Rights Reserved.
 package com.medfusion.product.object.maps.patientportal2.page.HomePage;
+import static org.testng.Assert.assertTrue;
 
 import java.util.ArrayList;
 
-import com.medfusion.product.object.maps.patientportal2.page.CcdPage.DocumentsPage;
 import org.apache.log4j.Level;
 import org.openqa.selenium.By;
-import org.openqa.selenium.ElementNotInteractableException;
 import org.openqa.selenium.JavascriptExecutor;
 import org.openqa.selenium.Keys;
 import org.openqa.selenium.NoSuchElementException;
@@ -17,12 +17,12 @@ import org.openqa.selenium.support.PageFactory;
 import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.openqa.selenium.support.ui.WebDriverWait;
 
+import com.intuit.ifs.csscat.core.utils.Log4jUtil;
 import com.medfusion.common.utils.IHGUtil;
 import com.medfusion.product.object.maps.forms.page.FiltersFormPages;
 import com.medfusion.product.object.maps.forms.page.HealthFormListPage;
 import com.medfusion.product.object.maps.forms.page.questionnaires.PortalFormPage;
 import com.medfusion.product.object.maps.patientportal2.page.JalapenoMenu;
-import com.medfusion.product.object.maps.patientportal2.page.AccountPage.JalapenoAccountPage;
 import com.medfusion.product.object.maps.patientportal2.page.AppointmentRequestPage.JalapenoAppointmentRequestPage;
 import com.medfusion.product.object.maps.patientportal2.page.AppointmentRequestPage.JalapenoAppointmentRequestV2Step1;
 import com.medfusion.product.object.maps.patientportal2.page.AppointmentsPage.JalapenoAppointmentsPage;
@@ -40,6 +40,9 @@ public class JalapenoHomePage extends JalapenoMenu {
 	@FindBy(how = How.ID, using = "feature_messaging")
 	private WebElement messages;
 
+	@FindBy(how = How.XPATH, using = "//h3[contains(text(),'Schedule an Appointment')]")
+	private WebElement sheduleanappointment;
+	
 	@FindBy(how = How.XPATH, using = "//a[@id = 'feature_appointments'] | //a[@id = 'feature_appointment_request'][1]")
 	private WebElement appointments;
 
@@ -67,18 +70,18 @@ public class JalapenoHomePage extends JalapenoMenu {
 	@FindBy(how = How.ID, using = "inprogressformbutton")
 	private WebElement continueRegistrationButton;
 
-	@FindBy(how = How.XPATH, using = "//span[@id='currentPatientBubble']")
+	@FindBy(how = How.XPATH, using ="//span[@class='badge currentPatientBubble ng-binding']")
 	private WebElement bubble;
 
-	@FindBy(how = How.XPATH, using = "//span[@id='currentPatientBubble-grp']")
+	@FindBy(how = How.ID, using = "currentPatientBubble-grp")
 	private WebElement mobileViewBubble;
 
-	@FindBy(how = How.ID, using = "listBadgedependent")
+	@FindBy(how = How.XPATH, using = "//span[@class='badge listBadge listBadgedependent ng-binding']")
 	private WebElement viewDifferentPatientButton;
 
-	@FindBy(how = How.XPATH, using = "//li[@id='open-top-grp']/span[@id='listB-grp']")
+	@FindBy(how = How.XPATH, using = "//li[@class='open-top-grp ng-scope']")
 	private WebElement mobileViewDifferentPatientButton;
-
+	
 	@FindBy(how = How.XPATH, using = "//a[contains(@class, 'success')]")
 	private WebElement succPaymentNotification;
 
@@ -105,6 +108,20 @@ public class JalapenoHomePage extends JalapenoMenu {
 
 	@FindBy(how = How.XPATH, using = "//button[@id='switchingPracticeContinueButton']")
 	private WebElement switchButtonContinue;
+	
+	
+	@FindBy(how = How.XPATH, using = "//*[@title=\"Ask a Staff\"]")
+	private WebElement askAStaffButtonOnPopup;
+	
+	@FindBy(how = How.XPATH, using = "//*[@title=\"Ask a Doc\"]")
+	private WebElement askADocButtonOnPopup;
+	
+	@FindBy(how = How.XPATH, using = "//div[@id='menu']//li[@id='home']")
+	private WebElement homeButton;
+
+	@FindBy(how = How.XPATH, using = "//*[@id=\"feature_appointments\"]/div")
+	private WebElement nextAppointmentSchedule;
+
 
 	public JalapenoHomePage(WebDriver driver) {
 		super(driver);
@@ -113,6 +130,8 @@ public class JalapenoHomePage extends JalapenoMenu {
 
 	public JalapenoMessagesPage showMessages(WebDriver driver) {
 		IHGUtil.PrintMethodName();
+		WebDriverWait wait= new WebDriverWait(driver, 5);
+		wait.until(ExpectedConditions.elementToBeClickable(messages));
 		messages.click();
 		return PageFactory.initElements(driver, JalapenoMessagesPage.class);
 	}
@@ -170,6 +189,8 @@ public class JalapenoHomePage extends JalapenoMenu {
 
 	public MedicalRecordSummariesPage clickOnMedicalRecordSummaries(WebDriver driver) {
 		log("Clicking on Medical Record Summaries button on dashboard");
+		 JavascriptExecutor jse = (JavascriptExecutor)driver;
+	     jse.executeScript("window.scrollBy(0,400)", "");
 		medicalRecordSummaries.click();
 		return PageFactory.initElements(driver, MedicalRecordSummariesPage.class);
 	}
@@ -177,6 +198,8 @@ public class JalapenoHomePage extends JalapenoMenu {
 	public DocumentsPage goToDocumentsPage() {
 
 		log("Clicking on Health Record menu button");
+		 JavascriptExecutor jse = (JavascriptExecutor)driver;
+	     jse.executeScript("window.scrollBy(0,400)", "");
 		medicalRecordSummaries.click();
 		try {
 			WebElement otherDocumentsButton = new WebDriverWait(driver, 30)
@@ -266,9 +289,9 @@ public class JalapenoHomePage extends JalapenoMenu {
 		IHGUtil.PrintMethodName();
 		ArrayList<WebElement> webElementsList = new ArrayList<WebElement>();
 		if (button) { 
-	        log("Regular Resolution Bubble is visible " + isElementVisible(bubble, 5));
-	        log("Mobile Resolution Bubble is visible " + isElementVisible(mobileViewBubble, 5));
-	        if (isElementVisible(bubble, 5)==true) {
+	        log("Regular Resolution Bubble is visible " + isElementVisible(bubble, 10));
+	        log("Mobile Resolution Bubble is visible " + isElementVisible(mobileViewBubble, 10));
+	        if (isElementVisible(bubble, 10)==true) {
 	            webElementsList.add(bubble);
 	        log("Regular size resolution Bubble added to the webElement List");
 	        }    
@@ -286,6 +309,7 @@ public class JalapenoHomePage extends JalapenoMenu {
 	public JalapenoAskAStaffPage clickOnAskAStaff(WebDriver driver) {
 		IHGUtil.PrintMethodName();
 		askAQuestion.click();
+		askAStaffButtonOnPopup.click();
 
 		return PageFactory.initElements(driver, JalapenoAskAStaffPage.class);
 	}
@@ -359,13 +383,13 @@ public class JalapenoHomePage extends JalapenoMenu {
 	}
 
 	public void clickFeaturedAppointmentsReq() {
-		javascriptClick(appointments);
+		javascriptClick(sheduleanappointment);
 		IHGUtil.waitForElement(driver, 80, buttonContinue);
 		javascriptClick(buttonContinue);
 	}
 
 	public String appointmentNotScheduled() {
-		javascriptClick(appointments);
+		javascriptClick(sheduleanappointment);
 		IHGUtil.waitForElement(driver, 80, appointmentNotScheduled);
 		return appointmentNotScheduled.getText();
 	}
@@ -402,9 +426,7 @@ public class JalapenoHomePage extends JalapenoMenu {
 	public void clickOnDifferentPatientView() {
 		log("Clicking on LinkedPatient icon - regular resolution");
 		try {
-			JavascriptExecutor ex = (JavascriptExecutor) driver;
-			ex.executeScript("arguments[0].click();", viewDifferentPatientButton);
-
+			javascriptClick(viewDifferentPatientButton);
 		} catch (NoSuchElementException ex) {
 			log("Did not find LinkedPatient icon, trying mobile version size");
 			new WebDriverWait(driver, 10).until(ExpectedConditions.visibilityOf(mobileViewDifferentPatientButton));
@@ -413,4 +435,59 @@ public class JalapenoHomePage extends JalapenoMenu {
 		}
 
 	}
+	
+	public void VerifyMuiltiplePracticeToggle() {
+		log("Verify Practice toggle Search is not present");
+		try{
+		Boolean status =practiceToggleSearch.isDisplayed();
+		if(!status)
+			log("Practice toggle Search is not displayed as expected");
+		else{
+			log("Practice toggle Search is displayed");
+			assertTrue(!status);
+		}
+		}
+		catch(NoSuchElementException e)
+		{
+			log("Step Passed: Practice toggle Search is not displayed");
+		}
+	}
+	
+	public void switchToPractice(String practice){
+		try{
+			WebElement verifySelectedPractice= driver.findElement((By.xpath("(//span[@title='"+practice+"'])[2]")));
+			Boolean status =IHGUtil.waitForElement(driver, 15, verifySelectedPractice);
+			if(status)
+				log(practice+" is already selected as expected");}
+		catch(NoSuchElementException e){
+			Log4jUtil.log(e.getMessage());
+			log("Clicking on Practice toggle Search");	
+			practiceToggleSearch.click();
+		 	practiceInput.sendKeys(practice);
+			practiceInput.sendKeys(Keys.ENTER);
+			IHGUtil.waitForElement(driver, 80, switchButtonContinue);
+			switchButtonContinue.click();
+			log("Switch to the practice "+practice+" is completed");
+			}
+	}
+
+	public JalapenoAskAStaffPage clickOnAskADoc(WebDriver driver) {
+		IHGUtil.PrintMethodName();
+		askAQuestion.click();
+		askADocButtonOnPopup.click();
+		return PageFactory.initElements(driver, JalapenoAskAStaffPage.class);
+	}
+	
+	public void clickonHomeButton()
+	{
+		homeButton.click();	
+	}
+
+	public String getNextScheduledApptDate() {
+
+		String nextAppointmentScheduleText = nextAppointmentSchedule.getText();
+		return nextAppointmentScheduleText;
+	}
+
+
 }

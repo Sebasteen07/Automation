@@ -180,6 +180,20 @@ public class RxRenewalSearchPage extends BasePageObject {
 
 
 	}
+	
+	public void setRxRenewalFields(String user) {
+		IHGUtil.PrintMethodName();
+		PracticeUtil.setPracticeFrame(driver);
+		setQuantity.clear();
+		setQuantity.sendKeys(PracticeConstants.QUANTITY);
+		Select startDaySelect = new Select(setFrequency);
+		startDaySelect.selectByVisibleText(PracticeConstants.FREQUENCY);
+		subject = createdTs + PracticeConstants.MESSAGE_SUBJECT+user;
+		setSubject.sendKeys(subject);
+		setSubjectBody.sendKeys(PracticeConstants.MESSAGE_BODY);
+
+
+	}
 
 	/**
 	 * @throws InterruptedException 

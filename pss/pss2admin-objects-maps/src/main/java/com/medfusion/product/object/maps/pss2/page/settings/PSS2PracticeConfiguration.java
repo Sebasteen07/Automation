@@ -1,3 +1,4 @@
+// Copyright 2018-2020 NXGN Management, LLC. All Rights Reserved.
 package com.medfusion.product.object.maps.pss2.page.settings;
 
 import java.util.List;
@@ -27,10 +28,10 @@ public class PSS2PracticeConfiguration extends SettingsTab {
 
 	@FindBy(how = How.ID, using = "simple-select")
 	private WebElement partnerName;
-	
+
 	@FindAll({@FindBy(xpath = "//*[@id=\"simple-select\"]/option")})
 	private List<WebElement> partnerOptionValue;
-	
+
 	public PSS2PracticeConfiguration(WebDriver driver) {
 		super(driver);
 	}
@@ -55,7 +56,7 @@ public class PSS2PracticeConfiguration extends SettingsTab {
 	public String clientTimeZone() {
 		return clientTimeZone.getAttribute("ng-reflect-model");
 	}
-	
+
 	public String getPartnerValue() {
 		return partnerName.getAttribute("ng-reflect-model");
 	}
@@ -65,15 +66,16 @@ public class PSS2PracticeConfiguration extends SettingsTab {
 		for (int i = 0; i < colorType.size(); i++) {
 			if (colorType.get(i).getAttribute("ng-reflect-ng-class").contains("active")) {
 				return colorType.get(i).getCssValue("background-color");
+
 			}
 		}
 		log("active color not found.");
 		return null;
 	}
-	
+
 	public String matchPartnerName() {
-		for(int i=0;i<partnerOptionValue.size();i++) {
-			if(partnerOptionValue.get(i).getAttribute("ng-reflect-ng-value").equalsIgnoreCase(getPartnerValue())) {
+		for (int i = 0; i < partnerOptionValue.size(); i++) {
+			if (partnerOptionValue.get(i).getAttribute("ng-reflect-ng-value").equalsIgnoreCase(getPartnerValue())) {
 				return partnerOptionValue.get(i).getText();
 			}
 		}

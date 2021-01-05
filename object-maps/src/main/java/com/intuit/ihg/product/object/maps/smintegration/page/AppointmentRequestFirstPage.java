@@ -8,7 +8,6 @@ import org.openqa.selenium.support.PageFactory;
 
 import com.intuit.ifs.csscat.core.pageobject.BasePageObject;
 import com.medfusion.common.utils.IHGUtil;
-import com.medfusion.product.patientportal1.utils.PortalUtil;
 
 public class AppointmentRequestFirstPage extends BasePageObject {
 
@@ -27,7 +26,6 @@ public class AppointmentRequestFirstPage extends BasePageObject {
 	 */
 	public void clickContinueBtn() {
 		IHGUtil.PrintMethodName();
-		PortalUtil.setPortalFrame(driver);
 		btnContinue.click();
 
 

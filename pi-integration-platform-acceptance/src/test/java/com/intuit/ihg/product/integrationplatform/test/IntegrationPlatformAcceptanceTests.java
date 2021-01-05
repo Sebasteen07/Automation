@@ -2,7 +2,6 @@ package com.intuit.ihg.product.integrationplatform.test;
 
 import static org.testng.Assert.assertNotNull;
 
-import com.medfusion.portal.utils.PortalConstants;
 import org.apache.commons.lang.StringUtils;
 import org.testng.annotations.Test;
 
@@ -28,12 +27,15 @@ import com.intuit.ihg.product.integrationplatform.utils.StatementEventData;
 import com.intuit.ihg.product.integrationplatform.utils.StatementPreference;
 import com.intuit.ihg.product.integrationplatform.utils.StatementPreferenceTestData;
 import com.medfusion.common.utils.IHGUtil;
+import com.medfusion.common.utils.Mailinator;
+import com.medfusion.portal.utils.PortalConstants;
 import com.medfusion.product.object.maps.patientportal2.page.JalapenoLoginPage;
+import com.medfusion.product.object.maps.patientportal2.page.AppointmentRequestPage.JalapenoAppointmentRequestPage;
 import com.medfusion.product.object.maps.patientportal2.page.AppointmentRequestPage.JalapenoAppointmentRequestV2Step1;
 import com.medfusion.product.object.maps.patientportal2.page.AppointmentRequestPage.JalapenoAppointmentRequestV2Step2;
 import com.medfusion.product.object.maps.patientportal2.page.CcdPage.JalapenoCcdViewerPage;
-import com.medfusion.product.object.maps.patientportal2.page.CreateAccount.SecurityDetailsPage;
 import com.medfusion.product.object.maps.patientportal2.page.CreateAccount.PatientVerificationPage;
+import com.medfusion.product.object.maps.patientportal2.page.CreateAccount.SecurityDetailsPage;
 import com.medfusion.product.object.maps.patientportal2.page.HomePage.JalapenoHomePage;
 import com.medfusion.product.object.maps.patientportal2.page.MessagesPage.JalapenoMessagesPage;
 import com.medfusion.product.object.maps.patientportal2.page.MyAccountPage.JalapenoMyAccountPreferencesPage;
@@ -234,11 +236,15 @@ public class IntegrationPlatformAcceptanceTests extends BaseTestNGWebDriver {
 		verifyTrue(completed, "Message processing was not completed in time");
 
 		log("Step 6: Check secure message in patient gmail inbox");
-		String link = RestUtils.verifyEmailNotification(testData.getGmailUserName(), testData.getGmailPassword(), testData.getSender3(), 3, "Portal 2.0");
+		//String link = RestUtils.verifyEmailNotification(testData.getGmailUserName(), testData.getGmailPassword(), testData.getSender3(), 3, "Portal 2.0");
+		Mailinator mail = new Mailinator();
+		String subject = "New message from PI Automation rsdk Integrated";
+		String messageLink = "Sign in to view this message";
+		String emailMessageLink = mail.getLinkFromEmail(testData.getUserName(), subject, messageLink, 5);
 
 		log("Step 7: Login to Patient Portal");
-		log("Link is " + link);
-		JalapenoLoginPage loginPage = new JalapenoLoginPage(driver, link);
+		log("Link is " + emailMessageLink);
+		JalapenoLoginPage loginPage = new JalapenoLoginPage(driver, emailMessageLink);
 		JalapenoHomePage homePage = loginPage.login(testData.getUserName(), testData.getPassword());
 
 		log("Detecting if Home Page is opened");
@@ -458,8 +464,10 @@ public class IntegrationPlatformAcceptanceTests extends BaseTestNGWebDriver {
 		JalapenoHomePage homePage = loginPage.login(testData.getUserName(), testData.getPassword());
 
 		log("Step 3: Click on Appointment Button on Home Page");
-		JalapenoAppointmentRequestV2Step1 apptPage1 = homePage.clickOnAppointmentV2(driver);
-		assertTrue(apptPage1.assessElements());
+		JalapenoAppointmentRequestPage apptPage = homePage.clickOnAppointment(driver);
+		JalapenoAppointmentRequestV2Step1 apptPage1 = apptPage.requestForAppointmentStep1(driver);
+
+		apptPage1.chooseFirstProvider();
 
 		log("Step 4: Complete Appointment Request Page");
 		JalapenoAppointmentRequestV2Step2 apptPage2 = apptPage1.continueToStep2(driver);
@@ -516,9 +524,12 @@ public class IntegrationPlatformAcceptanceTests extends BaseTestNGWebDriver {
 		}
 		verifyTrue(completed, "Message processing was not completed in time");
 
-		log("Step 12: Check secure message in patient gmail inbox");
-		String emailMessageLink =
-				RestUtils.verifyEmailNotification(testData.getGmailUserName(), testData.getGmailPassword(), testData.getPracticeName(), 3, "Portal 2.0");
+		log("Step 12: Check secure message in patient mailinator inbox");
+
+		Mailinator mail = new Mailinator();
+		String subject = "New message from PI Automation rsdk Integrated";
+		String messageLink = "Sign in to view this message";
+		String emailMessageLink = mail.getLinkFromEmail(testData.getUserName(), subject, messageLink, 10);
 
 		log("Email link is: " + emailMessageLink);
 
@@ -654,7 +665,11 @@ public class IntegrationPlatformAcceptanceTests extends BaseTestNGWebDriver {
 		Thread.sleep(90000);
 
 		log("Step 13: Check secure message in patient gmail inbox");
-		RestUtils.verifyEmailNotification(OLBPData.getGmailUserName(), OLBPData.getGmailPassword(), OLBPData.getPracticeName(), 3, "Portal 2.0");
+		Mailinator mail = new Mailinator();
+		String subject = "New message from PI Automation rsdk Integrated";
+		String messageLink = "Sign in to view this message";
+		assertTrue(mail.isMessageInInbox(OLBPData.getUserName(), subject, messageLink, 5));
+
 
 		// patient Portal validation
 		log("Step 14: Login to Patient Portal");

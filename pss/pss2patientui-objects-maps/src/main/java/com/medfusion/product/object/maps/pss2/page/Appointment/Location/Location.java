@@ -1,3 +1,4 @@
+// Copyright 2018-2020 NXGN Management, LLC. All Rights Reserved.
 package com.medfusion.product.object.maps.pss2.page.Appointment.Location;
 
 import java.util.ArrayList;
@@ -26,18 +27,20 @@ import com.medfusion.product.object.maps.pss2.page.AppointmentType.AppointmentPa
 
 public class Location extends PSS2MainPage {
 
-	@FindAll({@FindBy(className = "locationlinkclick")})
+	@FindAll({@FindBy(xpath = "//a[@class='locationlink locationlinkclick']")})
 	private List<WebElement> locationList;
 
-	@FindBy(how = How.ID, using = "sel1")
+	@FindAll({@FindBy(xpath = "//a[contains(text(),'River Oaks Main')]")})
+	private List<WebElement> locationRever;
+
+	@FindBy(how = How.XPATH, using = "//select[@id='sel1']")
 	private WebElement selectRadius;
 
-	@FindBy(how = How.XPATH, using = "//*[@id=\"locationwizardlist\"]/div[3]/div[1]/div/div[1]/div/input")
+	@FindBy(how = How.XPATH, using = "//div[@class='col-sm-4 locationclass']//input[@placeholder='Zipcode']")
 	private WebElement nearByZipCodeInput;
 
 	public Location(WebDriver driver) {
 		super(driver);
-		// PageFactory.initElements(driver, Location.class);
 	}
 
 	private String addressValue = null;
@@ -48,7 +51,6 @@ public class Location extends PSS2MainPage {
 		for (int i = 0; i < locationList.size(); i++) {
 			if (locationList.get(i).getText().contains(locationName)) {
 				log("Location of user found at " + locationList.get(i).getText());
-				// getLocAddress(i + 1);
 				javascriptClick(locationList.get(i));
 				return PageFactory.initElements(driver, AppointmentPage.class);
 			}
@@ -56,78 +58,48 @@ public class Location extends PSS2MainPage {
 		return null;
 	}
 
-
 	public Provider searchProvider(String locationName) throws InterruptedException {
-		isViewallmessagesButtonPresent(driver);
+		log("In SearchProvider Method");
 		for (int i = 0; i < locationList.size(); i++) {
 			if (locationList.get(i).getText().contains(locationName)) {
-				javascriptClick(locationList.get(i));
-				// getLocAddress(i);
+				log("Location is ---> " + locationList.get(i).getText());
+				locationList.get(i).click();
 				return PageFactory.initElements(driver, Provider.class);
 			}
 		}
-		return null;
+		return PageFactory.initElements(driver, Provider.class);
 	}
 
 	public AppointmentDateTime selectDatTime(String dateTime) throws Exception {
-		isViewallmessagesButtonPresent(driver);
+		log("location is  ");
 		log("location " + dateTime);
 		for (int i = 0; i < locationList.size(); i++) {
 			if (locationList.get(i).getText().contains(dateTime)) {
 				log("Location of user found at " + locationList.get(i).getText());
-				// getLocAddress(i);
-
 				javascriptClick(locationList.get(i));
 				return PageFactory.initElements(driver, AppointmentDateTime.class);
 			}
 		}
 		return null;
-
 	}
 
 	@Override
 	public boolean areBasicPageElementsPresent() {
 		ArrayList<WebElement> webElementsList = new ArrayList<WebElement>();
-		// webElementsList.add(locationList.get(0));
 		return new IHGUtil(driver).assessAllPageElements(webElementsList, this.getClass());
-
 	}
 
 	public boolean isViewallmessagesButtonPresent(WebDriver driver) throws InterruptedException {
-
-		FluentWait<WebDriver> wait = new FluentWait<WebDriver>(driver)
-.withTimeout(60, TimeUnit.SECONDS)
-				.pollingEvery(3, TimeUnit.SECONDS)
-				.ignoring(NoSuchElementException.class)
-				.ignoring(NoSuchFrameException.class)
-				.ignoring(WebDriverException.class);
-		
+		FluentWait<WebDriver> wait = new FluentWait<WebDriver>(driver).withTimeout(60, TimeUnit.SECONDS).pollingEvery(3, TimeUnit.SECONDS)
+				.ignoring(NoSuchElementException.class).ignoring(NoSuchFrameException.class).ignoring(WebDriverException.class);
 		boolean result = wait.until(new Function<WebDriver, Boolean>() {
-			     public Boolean apply(WebDriver driver) {			    	
+			@Override
+			public Boolean apply(WebDriver driver) {
 				return driver.findElement(By.className("locationlinkclick")).isDisplayed();
-			       }
-			     }
-				);
+			}
+		});
 		return result;
 	}
-
-
-	// public void getLocAddress(int indexValue) {
-	// try {
-	// Thread.sleep(9000);
-	// } catch (InterruptedException e) {
-	// e.printStackTrace();
-	// }
-	// log(indexValue + " = " + locationAddress.size());
-	//
-	// for (int i = 0; i < locationAddress.size(); i++) {
-	// if (i == indexValue) {
-	// setAddressValue(locationAddress.get(i).getText());
-	// }
-	// }
-	//
-	// }
-
 
 	public String getAddressValue() {
 		return addressValue;
@@ -137,7 +109,7 @@ public class Location extends PSS2MainPage {
 	public void setAddressValue(String addressValue) {
 		this.addressValue = addressValue;
 	}
-	
+
 	public int getLocationListSize() {
 		return locationList.size();
 	}
@@ -147,8 +119,8 @@ public class Location extends PSS2MainPage {
 	}
 
 	public Boolean isSearchLocationEnabled() {
-		// log("ZipSearch display =" + nearByZipCodeInput.isDisplayed() + " and Select Dropdown display=" + selectRadius.isDisplayed());
 		if (selectRadius.isDisplayed() && nearByZipCodeInput.isDisplayed()) {
+			log("selectRadius.isDisplayed  --->" + selectRadius.isDisplayed());
 			return true;
 		} else {
 			return false;

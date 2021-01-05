@@ -1,3 +1,4 @@
+// Copyright 2018-2020 NXGN Management, LLC. All Rights Reserved.
 package com.medfusion.product.object.maps.pss2.page.AppEntryPoint;
 
 import java.util.ArrayList;
@@ -7,6 +8,7 @@ import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.FindAll;
 import org.openqa.selenium.support.FindBy;
+import org.openqa.selenium.support.How;
 import org.openqa.selenium.support.PageFactory;
 
 import com.medfusion.common.utils.IHGUtil;
@@ -17,8 +19,12 @@ import com.medfusion.product.object.maps.pss2.page.AppointmentType.AppointmentPa
 
 public class StartAppointmentInOrder extends PSS2MainPage {
 
-	@FindAll({@FindBy(css = ".btn")})
+	@FindAll({@FindBy(xpath = "//a[@class='btn appointmentTypedashboardbtn' or @class='btn startingpoint-btn']")})
 	private List<WebElement> startingWith;
+
+	@FindBy(how = How.XPATH, using = "//span[contains(text(),'Choose a starting point')]")
+	private WebElement chooseStartPoint;
+
 
 	public StartAppointmentInOrder(WebDriver driver) {
 		super(driver);
@@ -27,14 +33,13 @@ public class StartAppointmentInOrder extends PSS2MainPage {
 	@Override
 	public boolean areBasicPageElementsPresent() {
 		ArrayList<WebElement> webElementsList = new ArrayList<WebElement>();
-		// webElementsList.add(startingWith.get(0));
 		return new IHGUtil(driver).assessAllPageElements(webElementsList, this.getClass());
 	}
 
 	public Provider selectFirstProvider(String selectOrderWith) {
-		for (int i = 1; i <= startingWith.size(); i++) {
-
+		for (int i = 0; i < startingWith.size(); i++) {
 			if (startingWith.get(i).getText().equalsIgnoreCase(selectOrderWith)) {
+				log("Starting Point Selected is " + startingWith.get(i).getText());
 				startingWith.get(i).click();
 				return PageFactory.initElements(driver, Provider.class);
 			}
@@ -43,12 +48,13 @@ public class StartAppointmentInOrder extends PSS2MainPage {
 		return null;
 	}
 
-	public AppointmentPage selectFirstAppointment(String selectOrderWith) {
+	public AppointmentPage selectFirstAppointment(String selectOrderWith) throws InterruptedException {
 		log("size of list=" + startingWith.size());
 		log("selectOrderWith=" + selectOrderWith);
 		for (int i = 0; i < startingWith.size(); i++) {
 			if (startingWith.get(i).getText().equalsIgnoreCase(selectOrderWith)) {
 				log("selectOrderWith=" + selectOrderWith);
+				Thread.sleep(3000);
 				startingWith.get(i).click();
 				return PageFactory.initElements(driver, AppointmentPage.class);
 			}
@@ -58,9 +64,8 @@ public class StartAppointmentInOrder extends PSS2MainPage {
 	}
 
 	public Location selectFirstLocation(String selectOrderWith) {
-
 		log("startingWith length " + startingWith.size());
-		for (int i = 1; i <= startingWith.size(); i++) {
+		for (int i = 0; i < startingWith.size(); i++) {
 			if (startingWith.get(i).getText().equalsIgnoreCase(selectOrderWith)) {
 				startingWith.get(i).click();
 				return PageFactory.initElements(driver, Location.class);
@@ -69,4 +74,9 @@ public class StartAppointmentInOrder extends PSS2MainPage {
 		log("Location Not found");
 		return null;
 	}
+
+	public Boolean isstartPointpresent() {
+		return chooseStartPoint.isDisplayed();
+	}
+
 }

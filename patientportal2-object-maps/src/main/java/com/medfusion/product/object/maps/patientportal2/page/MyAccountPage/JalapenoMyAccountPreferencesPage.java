@@ -6,6 +6,8 @@ import java.util.ArrayList;
 import java.util.List;
 
 import org.openqa.selenium.By;
+import org.openqa.selenium.JavascriptExecutor;
+import org.openqa.selenium.Keys;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.FindBy;
@@ -26,8 +28,11 @@ public class JalapenoMyAccountPreferencesPage extends JalapenoMyAccountPage {
 		@FindBy(how = How.ID, using = "statementPreference")
 		private WebElement statementPreference;
 
-		@FindBy(how = How.NAME, using = "preferredLanguage")
+		@FindBy(how = How.XPATH, using = "//div[@name='preferredLanguage']")
 		private WebElement preferredLanguageSelect;
+		
+		@FindBy(how = How.XPATH, using = "//input[@id='preferredLanguage']")
+		private WebElement preferredLanguageSelectTextbox;
 
 		@FindBy(how = How.XPATH, using = "//div[contains(@input-id,'preferredLanguage')]//div[text()='English']")
 		private WebElement preferredLanguageEnglish;
@@ -121,15 +126,23 @@ public class JalapenoMyAccountPreferencesPage extends JalapenoMyAccountPage {
 
 		//this method is not working, the element is not select but something customized
 		@Deprecated
-		private void setStatementLanguage(String statementLanguageType) {
-				Select statementSelect = new Select(this.preferredLanguageSelect);
-				statementSelect.selectByVisibleText(statementLanguageType);
+		private void setStatementLanguageT(String statementLanguageType) throws InterruptedException {
+				//Select statementSelect = new Select(this.preferredLanguageSelect);
+				//statementSelect.selectByVisibleText(statementLanguageType);
+				log("Setting preferred language");
+				JavascriptExecutor jse = (JavascriptExecutor) driver;
+				jse.executeScript("window.scrollBy(0,150)", "");
+				preferredLanguageSelect.click();
+				Thread.sleep(1000);
+				preferredLanguageSelectTextbox.sendKeys(statementLanguageType);	
+				preferredLanguageSelectTextbox.sendKeys(Keys.ENTER);
+
 		}
 
 		//this method is not working, the element is not select but something customized
 		@Deprecated
-		public void setStatementLanguage(WebDriver driver, String statementLanguageType) {
-				setStatementLanguage(statementLanguageType);
+		public void setStatementLanguage(WebDriver driver, String statementLanguageType) throws InterruptedException {
+				setStatementLanguageT(statementLanguageType);
 				saveAccountChanges.click();
 		}
 

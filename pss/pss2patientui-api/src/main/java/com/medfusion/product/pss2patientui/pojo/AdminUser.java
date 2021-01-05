@@ -1,3 +1,4 @@
+// Copyright 2018-2020 NXGN Management, LLC. All Rights Reserved.
 package com.medfusion.product.pss2patientui.pojo;
 
 public class AdminUser {
@@ -9,9 +10,29 @@ public class AdminUser {
 	private Boolean isInsuranceDisplayed;
 	private Boolean isIPDFLow;
 	private Boolean isLoginlessFlow;
+	private Boolean isAnonymousFlow;
+	private Boolean isstartpointPresent;
+
+
+	public Boolean getIsstartpointPresent() {
+		return isstartpointPresent;
+	}
+
+	public void setIsstartpointPresent(Boolean isstartpointPresent) {
+		this.isstartpointPresent = isstartpointPresent;
+	}
+
 	private String practiceId;
 
 	public AdminUser() {}
+
+	public Boolean getIsAnonymousFlow() {
+		return isAnonymousFlow;
+	}
+
+	public void setIsAnonymousFlow(Boolean isAnonymousFlow) {
+		this.isAnonymousFlow = isAnonymousFlow;
+	}
 
 	public String getUser() {
 		return user;

@@ -21,6 +21,7 @@ import org.apache.http.impl.client.CloseableHttpClient;
 import org.apache.http.impl.client.HttpClients;
 import org.apache.http.util.EntityUtils;
 import org.codehaus.jackson.map.ObjectMapper;
+import org.json.JSONArray;
 import org.json.JSONException;
 import org.testng.Assert;
 
@@ -54,7 +55,7 @@ public class NGAPIUtils {
 		Log4jUtil.log("API Execution Mode "+PropertyLoaderObj.getNGAPIexecutionMode());	
 		XNGSessionID = DBUtils.executeQueryOnDB("NGCoreDB","Select option_value from configuration_options where app_name='API' and key_name='SiteId'");
 		if(PropertyLoaderObj.getNGAPIexecutionMode().equalsIgnoreCase("QAMain")){
-			BaseURL =apiRoutes.BaseURL.getRouteURL().toString();
+			BaseURL =getRelativeBaseUrl();
 			TokenGenerationURL =apiRoutes.QAMainTokenGenerationURL.getRouteURL().toString();
 		    EnterpriseUsername= apiConfig.valueOf("QAMainEnterpriseUsername").getConfigProperty().toString();
 		    EnterprisePassword= apiConfig.valueOf("QAMainEnterprisePassword").getConfigProperty().toString();
@@ -63,7 +64,7 @@ public class NGAPIUtils {
 		    PracticeID= PropertyLoaderObj.getNGAPIQAMainPracticeID();
 		}
 		else if (PropertyLoaderObj.getNGAPIexecutionMode().equalsIgnoreCase("SIT")){
-			BaseURL =apiRoutes.BaseSITURL.getRouteURL().toString();
+			BaseURL =getRelativeBaseUrl();
 			TokenGenerationURL =apiRoutes.SITTokenGenerationURL.getRouteURL().toString();
 			EnterpriseUsername= apiConfig.valueOf("SITEnterpriseUsername").getConfigProperty().toString();
 			EnterprisePassword= apiConfig.valueOf("SITEnterprisePassword").getConfigProperty().toString();
@@ -281,7 +282,7 @@ public class NGAPIUtils {
 	        if(httpResponse.getStatusLine().getStatusCode()==ExpectedStatusCode){
 	        	Log4jUtil.log("Post request completed successfully");
 	        }else{
-	        	Log4jUtil.log("Unable to post the request");
+	        	Log4jUtil.log("Unable to post the request, Response is \n"+EntityUtils.toString(httpResponse.getEntity()));
 	            Assert.assertEquals(httpResponse.getStatusLine().getStatusCode(), ExpectedStatusCode);
 	        }}
 	        
@@ -353,4 +354,115 @@ public class NGAPIUtils {
 	}
 	return null;
     }
+	
+	public static String setupNGHttpPutRequest(String mode,String argRouteURL,String requestbody, int ExpectedStatusCode) throws IOException {
+		IHGUtil.PrintMethodName();
+		Log4jUtil.log("PutURL "+argRouteURL);
+		String strLocationHeader = null;
+		try { 	
+    		CloseableHttpResponse httpResponse = null;
+            CloseableHttpClient httpClient = HttpClients.createDefault();
+    		HttpPut httpPut = new HttpPut(argRouteURL);   
+    		StringEntity entity=new StringEntity(requestbody);
+    	
+    		String XNGDate = getXNGDate();
+    		String Email= EnterpriseEmail;
+    		
+    		httpPut.addHeader("Accept", "*/*");
+    	    if(mode.equalsIgnoreCase("CAGateway")){
+    	    	httpPut.addHeader("Authorization", System.getProperty("BearerToken"));
+    	    	httpPut.addHeader("X-NG-SessionId",System.getProperty("XNGSessionId"));
+    	    	httpPut.addHeader("X-NG-Date", XNGDate);
+    		}
+            else if(mode.equalsIgnoreCase("EnterpriseGateway")){
+            	getAuthSignature(argRouteURL,"PUT",requestbody, "");
+            	httpPut.addHeader("Authorization", "NEXTGEN-AMB-API-V2 Credential=" + Email.toLowerCase() + ", Signature="+ System.getProperty("AuthEnterpriseSignature"));
+            	httpPut.addHeader("X-NG-Date", EnterpriseSignature.NGTime);
+            	httpPut.addHeader("X-NG-Product", "NEXTGEN-AMB-API-V2");
+            	httpPut.addHeader("x-nge-site-id",XNGSessionID);
+            }
+    		httpPut.setHeader("Content-type", "application/json");
+  
+    		httpPut.setEntity(entity);
+    		httpResponse = httpClient.execute(httpPut);
+    	
+    		if (mode.equals("CAGateway")) {
+    			httpPut.releaseConnection();
+    		}
+    	        
+    		Log4jUtil.log("Status code for Put request "+httpResponse.getStatusLine().getStatusCode());
+    		if(ExpectedStatusCode!=0){
+    		    if(httpResponse.getStatusLine().getStatusCode()==ExpectedStatusCode){
+    		    	Log4jUtil.log("Put request completed successfully");
+    	        }else{
+    	        	Log4jUtil.log("Unable to put the request");
+    	            Assert.assertEquals(httpResponse.getStatusLine().getStatusCode(), ExpectedStatusCode);
+    	        }}
+
+    	    for(Header headerRes: httpResponse.getAllHeaders()){
+    	        if(headerRes.getName().equalsIgnoreCase("Location")){
+    	            strLocationHeader= headerRes.getValue().toString();
+    	         }
+    	    }
+        return strLocationHeader;
+		}catch (Exception E) {
+		Log4jUtil.log("Exception caught "+E.getMessage());
+	}
+	return null;
+    }
+	
+	public synchronized static void updateLoginDefaultTo(String mode,String enterpriseID, String practiceID) throws Throwable {
+		Log4jUtil.log("Step Begins --- API Route Change the Login Defaults: enterpriseID -"+enterpriseID+", practiceID -"+practiceID);
+
+		String strSqlQueryForUserDetails="select top 1 user_id from user_mstr where email_login_id='" + EnterpriseEmail + "' order by create_timestamp";
+        String CurrentUserID =DBUtils.executeQueryOnDB("NGCoreDB",strSqlQueryForUserDetails);
+
+        String LogInDefaultsUrl= BaseURL+apiRoutes.LogInDefaults.getRouteURL().toString().replace("userId", CurrentUserID);
+        String GetLogInDefaultResponse = setupNGHttpGetRequest(mode,LogInDefaultsUrl,200);
+
+        String currentPracticeID = CommonUtils.getResponseKeyValue(GetLogInDefaultResponse, "practiceId");
+        if(!currentPracticeID.equalsIgnoreCase(practiceID)){
+        	Log4jUtil.log("Expected practice id is different from current practice ID");
+    	
+    		LoginDefaults loginDefaults = new LoginDefaults();
+    		loginDefaults.setEnterpriseId(enterpriseID);
+    		loginDefaults.setPracticeId(practiceID);
+    		ObjectMapper objMap = new ObjectMapper();
+            String requestbody = objMap.defaultPrettyPrintingWriter().writeValueAsString(loginDefaults);
+            Log4jUtil.log("Login Defaults request Body is \n" + requestbody);
+            
+            String LogInDefaultsID =setupNGHttpPutRequest(mode,LogInDefaultsUrl,requestbody, 200);
+            Log4jUtil.log("Login default updated with id " + LogInDefaultsID);   
+            }else
+            	Log4jUtil.log("Expected practice id "+practiceID+" is same as current practice ID "+currentPracticeID);
+    }
+	
+	public static String getRelativeBaseUrl() throws IOException, JSONException{
+		String baseURL = apiRoutes.BaseURL.getRouteURL().toString();
+	    String response = setupNGHttpGetRequest("EnterpriseGateway",baseURL, 200);
+	    String relativeBaseURL ="";
+	    String value ="";
+	    String actualURL ="";
+	    if(!response.isEmpty()){
+			JSONArray jsonArr = new JSONArray(response);			
+			for(int i =0; i< jsonArr.length(); i++){
+				JsonObject jsonObject = new JsonParser().parse(jsonArr.get(i).toString()).getAsJsonObject();
+				value = jsonObject.get("productName").toString();
+				if(value.contains("NextGen.Api.Edge")){
+					relativeBaseURL= jsonObject.get("relativeBaseApiUrl").toString();
+					break;
+				}
+			 }
+		}
+		else
+			Log4jUtil.log("Response is empty");
+	    
+        if(relativeBaseURL.isEmpty())
+        	Log4jUtil.log("Relative Base URL is empty");
+        	
+	    actualURL = baseURL.replace("/gateway", "")+relativeBaseURL.replace("\"", "")+"/";	    
+	    Log4jUtil.log("BaseURL is \n"+actualURL);
+	    
+	    return actualURL;
+	    }
 }

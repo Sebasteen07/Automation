@@ -1,3 +1,4 @@
+// Copyright 2018-2020 NXGN Management, LLC. All Rights Reserved.
 package com.medfusion.product.object.maps.pss2.page;
 
 import java.util.ArrayList;
@@ -15,13 +16,14 @@ import com.medfusion.product.object.maps.pss2.page.Location.ManageLocation;
 import com.medfusion.product.object.maps.pss2.page.Lockout.ManageLockoutRules;
 import com.medfusion.product.object.maps.pss2.page.Resource.ManageResource;
 import com.medfusion.product.object.maps.pss2.page.Specialty.ManageSpecialty;
+import com.medfusion.product.oject.maps.pss2.page.CareTeam.ManageCareTeam;
 
 public class PSS2MenuPage extends PSS2MainPage {
 
-	@FindBy(how = How.XPATH, using = "/html/body/app/layout/nav[2]/ul[2]/li[3]/a")
+	@FindBy(how = How.XPATH, using = "//a[@class='nav-link dropdown-toggle']/i")
 	private WebElement settingsLogout;
 
-	@FindBy(how = How.XPATH, using = "/html/body/app/layout/nav[2]/ul[2]/li[3]/ul/li/a/i")
+	@FindBy(how = How.XPATH, using = "//li[@class='nav-item dropdown open show']/ul")
 	private WebElement logout;
 
 	@FindBy(how = How.XPATH, using = "//a[@href=\"#/app/settings\"]")
@@ -38,6 +40,9 @@ public class PSS2MenuPage extends PSS2MainPage {
 
 	@FindBy(how = How.XPATH, using = "//a[@href=\"#/app/resource\"]")
 	private WebElement linkResource;
+
+	@FindBy(how = How.XPATH, using = "//a[@href='#/app/careteam']")
+	private WebElement linkCareTeam;
 
 	@FindBy(how = How.XPATH, using = "//a[@href=\"#/app/location\"]")
 	private WebElement linkLocation;
@@ -59,10 +64,12 @@ public class PSS2MenuPage extends PSS2MainPage {
 
 	public void gotoSettings() {
 		javascriptClick(linkSettings);
+		log("Settings Tab clicked.....");
 	}
 
 	public ManageLocation gotoLocation() {
 		javascriptClick(linkLocation);
+		log("Location Tab clicked.....");
 		return PageFactory.initElements(driver, ManageLocation.class);
 	}
 
@@ -73,27 +80,35 @@ public class PSS2MenuPage extends PSS2MainPage {
 
 	public ManageSpecialty gotoSpeciality() {
 		javascriptClick(linkSpecialty);
+		log("Speciality Tab clicked.....");
 		return PageFactory.initElements(driver, ManageSpecialty.class);
 	}
 
 	public ManageAppointmentType gotoAppointment() {
 		javascriptClick(linkAppointmenttype);
+		log("Appointment Type Tab clicked.....");
 		return PageFactory.initElements(driver, ManageAppointmentType.class);
 	}
 
 	public ManageResource gotoResource() {
 		javascriptClick(linkResource);
+		log("Resource Tab clicked.....");
 		return PageFactory.initElements(driver, ManageResource.class);
+	}
+
+	public ManageCareTeam gotoCareTeam() {
+		javascriptClick(linkCareTeam);
+		log("Care Team Tab clicked.....");
+		return PageFactory.initElements(driver, ManageCareTeam.class);
 	}
 
 	public void logout() {
 		log("logging out from admin...need to add logic to check which page it redirects too");
 		try {
 			settingsLogout.click();
-			logout.click();	
-		}catch(Exception E) {
-			log("Exception occured while logging out. "+E);
+			logout.click();
+		} catch (Exception E) {
+			log("Exception occured while logging out. " + E);
 		}
 	}
-
 }

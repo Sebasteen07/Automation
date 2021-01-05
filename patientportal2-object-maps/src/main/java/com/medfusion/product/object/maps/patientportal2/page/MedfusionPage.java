@@ -1,4 +1,8 @@
+// Copyright 2013-2020 NXGN Management, LLC. All Rights Reserved.
+
 package com.medfusion.product.object.maps.patientportal2.page;
+
+import static java.lang.Thread.sleep;
 
 import java.awt.datatransfer.StringSelection;
 import java.util.ArrayList;
@@ -8,7 +12,12 @@ import java.util.Set;
 
 import org.apache.commons.lang.StringUtils;
 import org.apache.log4j.Level;
-import org.openqa.selenium.*;
+import org.openqa.selenium.By;
+import org.openqa.selenium.Cookie;
+import org.openqa.selenium.StaleElementReferenceException;
+import org.openqa.selenium.TimeoutException;
+import org.openqa.selenium.WebDriver;
+import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.FindBy;
 import org.openqa.selenium.support.How;
 import org.openqa.selenium.support.PageFactory;
@@ -17,10 +26,7 @@ import org.openqa.selenium.support.ui.Select;
 import org.openqa.selenium.support.ui.WebDriverWait;
 
 import com.intuit.ifs.csscat.core.pageobject.BasePageObject;
-import com.medfusion.common.utils.IHGUtil;
 import com.medfusion.common.utils.IHGUtil.SupportedWebElements;
-
-import static java.lang.Thread.sleep;
 
 /**
  * Page with general functionality. TODO Should be moved somewhere to BasePageObject later
@@ -51,10 +57,11 @@ public abstract class MedfusionPage extends BasePageObject {
 						String sanitizedUrl = url.trim();
 						log("URL: " + sanitizedUrl);
 						driver.get(sanitizedUrl);
+						driver.manage().window().maximize();
 				}
 				System.out.println("Size of window before maximizing: " + driver.manage().window().getSize());
 				// there's an issue related to hudson slave's resolution 1024x768 - can't click on CreateNewPatient element
-				driver.manage().window().maximize();
+				//driver.manage().window().maximize();
 				//System.out.println("Size of window after maximizing: " + driver.manage().window().getSize());
 				printCookies();
 				PageFactory.initElements(driver, this);
