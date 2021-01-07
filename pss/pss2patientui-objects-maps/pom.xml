@@ -6,20 +6,20 @@
 	<parent>
 		<groupId>com.intuit.ihg</groupId>
 		<artifactId>ihg-depot-qa-parent-pom</artifactId>
-		<version>21.1.0-SNAPSHOT</version>
-	</parent>
-	<artifactId>pss2-objects-maps</artifactId>
-	<repositories>
-		<repository>
-			<id>IHG-nexus</id>
-			<name>IHG-nexus</name>
-			<url>http://maven.qhg.local/nexus/content/groups/qhg-dev/</url>
-		</repository>
-	</repositories>
-
-	<properties>
+		<version>21.2.0-SNAPSHOT</version>
+  </parent>	
+  <artifactId>pss2-objects-maps</artifactId>
+  <repositories>
+        <repository>
+            <id>IHG-nexus</id>
+            <name>IHG-nexus</name>
+            <url>http://maven.qhg.local/nexus/content/groups/qhg-dev/</url>
+        </repository>
+  </repositories>
+    
+  <properties>
 		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
-		<ihg.version>21.1.0-SNAPSHOT</ihg.version>
+		<ihg.version>21.2.0-SNAPSHOT</ihg.version>
 	</properties>
 
 	<dependencies>
