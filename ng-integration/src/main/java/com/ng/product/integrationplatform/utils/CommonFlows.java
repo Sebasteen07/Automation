@@ -574,13 +574,25 @@ public class CommonFlows {
    
    public static void verifyMessageReceivedAtNGCore(PropertyFileLoader PropertyLoaderObj,String comm_id,String subject,String body,String comm_category) throws Throwable{
 	   String ActualSubject = DBUtils.executeQueryOnDB("NGCoreDB","select subject from ngweb_communications where comm_id ='"+comm_id+"'");
+	   if(ActualSubject.isEmpty()){
+			for (int i = 0; i < arg_timeOut; i++) {
+				ActualSubject = DBUtils.executeQueryOnDB("NGCoreDB","select subject from ngweb_communications where comm_id ='"+comm_id+"'");
+				if (!ActualSubject.isEmpty()) {
+					Log4jUtil.log("Message deilvered to NG Core");
+	                break;
+	            } else {
+	                if (i == arg_timeOut - 1)
+	                    Thread.sleep(1000);
+	            }
+	        }
+		}
 	   CommonUtils.VerifyTwoValues(ActualSubject,"equals",subject);
 	   String ActualBody = DBUtils.executeQueryOnDB("NGCoreDB","select body from ngweb_communications where comm_id ='"+comm_id+"'");
 	   CommonUtils.VerifyTwoValues(ActualBody.replace("\r", "").replace("\n", ""),"equals",body);
 	   String senderType = DBUtils.executeQueryOnDB("NGCoreDB","select sender_type from ngweb_communications where comm_id ='"+comm_id+"'");
 	   CommonUtils.VerifyTwoValues(senderType,"equals","2");	   
 	   String bulk = DBUtils.executeQueryOnDB("NGCoreDB","select isBulk from ngweb_communications where comm_id ='"+comm_id+"'");
-	   CommonUtils.VerifyTwoValues(bulk,"equals","0");	   
+	   CommonUtils.VerifyTwoValues(bulk,"equals","false");	   
 	   String actualCommCategory = DBUtils.executeQueryOnDB("NGCoreDB","select comm_category from ngweb_communications where comm_id ='"+comm_id+"'");
 	   CommonUtils.VerifyTwoValues(actualCommCategory,"equals",comm_category);
    }
@@ -601,12 +613,12 @@ public class CommonFlows {
 		}
 	   
 	   CommonUtils.VerifyTwoValues(ActualSubject,"equals",subject);
-	   String ActualBody = DBUtils.executeQueryOnDB("NGCoreDB","select body from ngweb_communications where comm_id ='"+comm_id+"'");
+	   String ActualBody = DBUtils.executeQueryOnDB("NGCoreDB","select body from ngweb_communications where parent_id ='"+comm_id+"'");
 	   CommonUtils.VerifyTwoValues(ActualBody.replace("\r", "").replace("\n", ""),"equals",body);
-	   String senderType = DBUtils.executeQueryOnDB("NGCoreDB","select sender_type from ngweb_communications where comm_id ='"+comm_id+"'");
+	   String senderType = DBUtils.executeQueryOnDB("NGCoreDB","select sender_type from ngweb_communications where parent_id ='"+comm_id+"'");
 	   CommonUtils.VerifyTwoValues(senderType,"equals","2");	   
-	   String bulk = DBUtils.executeQueryOnDB("NGCoreDB","select isBulk from ngweb_communications where comm_id ='"+comm_id+"'");
-	   CommonUtils.VerifyTwoValues(bulk,"equals","0");
+	   String bulk = DBUtils.executeQueryOnDB("NGCoreDB","select isBulk from ngweb_communications where parent_id ='"+comm_id+"'");
+	   CommonUtils.VerifyTwoValues(bulk,"equals","false");
    }
 
 }
