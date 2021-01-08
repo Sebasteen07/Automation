@@ -113,7 +113,7 @@ public class AppointmentDateTime extends PSS2MainPage {
 	public ConfirmationPage selectAppointmentDateTime(Boolean nextMonthBooking) {
 		List<WebElement> appointmentTimeList = driver.findElements(By.cssSelector(".time-btn"));
 		for (int i = 0; i < appointmentTimeList.size(); i++) {
-			if (appointmentTimeList.get(i + 2).isDisplayed()) {
+			if (appointmentTimeList.get(i).isDisplayed()) {
 				log("Appointment Time selected=" + appointmentTimeList.get(i).getText());
 				appointmentTimeList.get(i).click();
 				return PageFactory.initElements(driver, ConfirmationPage.class);

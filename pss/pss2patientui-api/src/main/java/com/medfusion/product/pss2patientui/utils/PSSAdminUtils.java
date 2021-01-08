@@ -460,6 +460,10 @@ public class PSSAdminUtils {
 	public void reserveforDay(WebDriver driver, AdminUser adminuser, Appointment appointment) throws Exception {
 		PSS2PracticeConfiguration psspracticeConfig = loginToAdminPortal(driver, adminuser);
 		psspracticeConfig = psspracticeConfig.gotoPracticeConfigTab();
+		PatientFlow patientflow = psspracticeConfig.gotoPatientFlowTab();
+		adminuser.setRule(patientflow.getRule());
+		Log4jUtil.log("rule= " + patientflow.getRule());
+		setRulesNoSpecialitySet1(patientflow);
 		appointment.setBusinesshourStartTime(psspracticeConfig.gettextbusineesHourStarttime());
 		appointment.setBusinesshourEndTime(psspracticeConfig.gettextbusineesHourEndtime());
 		Log4jUtil.log("Starttime is " + appointment.getBusinesshourStartTime());
