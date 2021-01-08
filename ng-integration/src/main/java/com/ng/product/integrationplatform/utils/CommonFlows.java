@@ -555,6 +555,7 @@ public class CommonFlows {
 		
 		Boolean ReadTimeStampStatus = false;	actualReadDateTimestamp = actualReadDateTimestamp.replace("T", " ");
 		actualReadDateTimestamp = actualReadDateTimestamp.substring(0, actualReadDateTimestamp.lastIndexOf("."));
+		Log4jUtil.log("Actual Read DateTimestamp "+actualReadDateTimestamp);
 		if(messageReadTimeStamp.contains(actualReadDateTimestamp)){
 			ReadTimeStampStatus = true;
 			Log4jUtil.log("Read TimeStamp is added to ngweb_comm_recpts table "+actualReadDateTimestamp);}
