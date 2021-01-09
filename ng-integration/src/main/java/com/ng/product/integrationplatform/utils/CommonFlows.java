@@ -554,7 +554,7 @@ public class CommonFlows {
 		String messageReadTimeStamp =DBUtils.executeQueryOnDB("NGCoreDB","select read_timestamp from ngweb_comm_recpts where comm_id ='"+comm_id+"'");
 		
 		Boolean ReadTimeStampStatus = false;	actualReadDateTimestamp = actualReadDateTimestamp.replace("T", " ");
-		actualReadDateTimestamp = actualReadDateTimestamp.substring(0, actualReadDateTimestamp.lastIndexOf("."));
+		actualReadDateTimestamp = actualReadDateTimestamp.substring(0, actualReadDateTimestamp.lastIndexOf(":")+2);
 		Log4jUtil.log("Actual Read DateTimestamp "+actualReadDateTimestamp);
 		if(messageReadTimeStamp.contains(actualReadDateTimestamp)){
 			ReadTimeStampStatus = true;
