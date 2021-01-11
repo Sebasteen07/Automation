@@ -119,6 +119,8 @@ public class Appointment {
 
 	private boolean showCancellationRescheduleReason = false;
 	private boolean showCancellationReasonPM = false;
+	private boolean isFutureApt = false;
+
 
 	public Appointment(String providerConfig, String usernameConfig, String passwordConfig, String datetimeConfig, String locationConfig,
 			String appointmentConfig, String specialityConfig) {
@@ -142,6 +144,16 @@ public class Appointment {
 	}
 
 	
+	
+	
+	public boolean isFutureApt() {
+		return isFutureApt;
+	}
+
+	public void setFutureApt(boolean isFutureApt) {
+		this.isFutureApt = isFutureApt;
+	}
+
 	public boolean isResourcetoggleStatus() {
 		return resourcetoggleStatus;
 	}
