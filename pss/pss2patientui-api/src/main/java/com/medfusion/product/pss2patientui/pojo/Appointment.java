@@ -24,7 +24,7 @@ public class Appointment {
 	private String icsFilePath;
 	private String urlLoginLess;
 	private String urlLinkGen;
-
+	private String popUpMessege;
 
 	private String firstTimeUser;
 	private String primaryNumber;
@@ -132,6 +132,15 @@ public class Appointment {
 	}
 
 	public Appointment() {}
+
+	public String getPopUpMessege() {
+		return popUpMessege;
+	}
+
+	public void setPopUpMessege(String popUpMessege) {
+		this.popUpMessege = popUpMessege;
+	}
+
 	
 	public boolean isResourcetoggleStatus() {
 		return resourcetoggleStatus;

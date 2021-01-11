@@ -581,4 +581,21 @@ public class PSSAdminUtils {
 		Log4jUtil.log("adminSettings Step 5: Logout from PSS Admin Portal");
 		Thread.sleep(4000);
 	}
+
+	public void adminSettingLinkGenandDeleteLink(WebDriver driver, AdminUser adminuser, Appointment testData, String urlToUse) throws Exception {
+		Log4jUtil.log("****************ADMIN SETTINGS FOR Loginless FLOW**************************");
+		PSS2PracticeConfiguration psspracticeConfig = loginToAdminPortal(driver, adminuser);
+		Thread.sleep(2000);
+		LinkTab linkTab = psspracticeConfig.linksTab();
+		// linkTab.searchLinkandRemove(testData.getLinkProvider());
+		linkTab.addLink(testData.getLocation(), testData.getLinkProvider());
+		linkTab.getURL(testData.getLinkProvider());
+		testData.setUrlLinkGen(linkTab.getURL(testData.getLinkProvider()));
+		linkTab.searchLinkandRemove(testData.getLinkProvider());
+		PatientFlow patientflow = psspracticeConfig.gotoPatientFlowTab();
+		AdminPatientMatching adminpatientmatching = patientflow.gotoPatientMatchingTab();
+		adminpatientmatching.patientMatchingSelection();
+		Log4jUtil.log("adminSettings Step 5: Logout from PSS Admin Portal");
+		Thread.sleep(4000);
+	}
 }

@@ -78,6 +78,7 @@ public class PSSPropertyFileLoader {
 		appointValues.setOldPatientPassword(property.getProperty("oldPatientPasswordGW"));
 		appointValues.setProviderImageAPI(property.getProperty("providerImageAPIGW"));
 		appointValues.setGmailUserName(property.getProperty("gmailUserNameGW"));
+		appointValues.setPopUpMessege(property.getProperty("popUpMessege"));
 	}
 
 	public void setAdminGW(AdminUser adminuser) {
@@ -246,6 +247,8 @@ public class PSSPropertyFileLoader {
 		appointValues.setOldPatientPassword(property.getProperty("oldPatientPasswordGE"));
 		appointValues.setProviderImageAPI(property.getProperty("providerImageAPIGE"));
 		appointValues.setGmailUserName(property.getProperty("emailGE"));
+		appointValues.setPopUpMessege(property.getProperty("popUpMessege"));
+
 	}
 
 	public void setAppointmentResponseNG(Appointment appointValues) {
