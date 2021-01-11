@@ -70,13 +70,13 @@ public class JalapenoMessagesPage extends JalapenoMenu {
 	@FindBy(xpath = "//a[contains(text(),'QuickSend.pdf')]")
 	private WebElement attachmentPdfFile;
 
-	@FindBy(xpath = "//div[@class='messageContent ng-binding']")
+	@FindBy(xpath = "//div[@class='messageContent']")
 	private WebElement inboxMessageBody;
 	
 	@FindBy(how = How.XPATH, using = "//button[@class='btn btn-default ng-binding ng-scope']")
 	private WebElement archiveButton;
 	
-	@FindBy(how = How.XPATH, using = "//span[@class='messageFrom ng-binding']")
+	@FindBy(how = How.XPATH, using = "//span[@class='messageFrom']")
 	private WebElement senderName;
 
 	private static final int maxCount = 15;

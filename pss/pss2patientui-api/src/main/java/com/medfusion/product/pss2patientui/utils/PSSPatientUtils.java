@@ -28,10 +28,8 @@ import java.util.regex.Pattern;
 
 import org.openqa.selenium.By;
 import org.openqa.selenium.JavascriptExecutor;
-import org.openqa.selenium.Keys;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
-import org.openqa.selenium.interactions.Actions;
 import org.openqa.selenium.support.PageFactory;
 import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.openqa.selenium.support.ui.WebDriverWait;
@@ -1559,7 +1557,7 @@ public class PSSPatientUtils {
 		c.setTimeZone(time_zone);
 		c.add(Calendar.DATE, testData.getLeadtimeDay());
 		String currentDate = f1.format(c.getTime());
-		String currentleddate = currentDate.substring(00, 16);
+		String currentleddate = currentDate.substring(00, 15);
 		return currentleddate;
 	}
 

@@ -2625,16 +2625,18 @@ public class PSS2PatientPortalAcceptanceTests extends BaseTestNGWebDriver {
 		StartAppointmentInOrder startappointmentInOrder = null;
 		startappointmentInOrder = homepage.skipInsurance(driver);
 		location = startappointmentInOrder.selectFirstLocation(PSSConstants.START_LOCATION);
-		Log4jUtil.log("Step 9: Verfiy location Page and location =" + testData.getLocation());
+		Log4jUtil.log("Step 9: Verfiy Location Page and location =" + testData.getLocation());
 		assertTrue(location.areBasicPageElementsPresent());
-		Provider provider = location.searchProvider(testData.getLocation());
-		Log4jUtil.log("Step 10: Verfiy Provider Page and provider to be selected = " + testData.getProvider());
-		assertTrue(provider.areBasicPageElementsPresent());
-		AppointmentPage appointment = provider.selectAppointment(testData.getProvider());
-		Log4jUtil.log("Step 11: Verfiy Appointment Page and Appointment to be selected = " + testData.getAppointmenttype());
-		AppointmentDateTime aptDateTime = appointment.selectTypeOfAppointment(testData.getAppointmenttype(), Boolean.valueOf(testData.getIsAppointmentPopup()));
-		Log4jUtil.log("Step 12: Select avaiable Date ");
-		Thread.sleep(18000);
+		AppointmentPage appointment = location.selectAppointment(testData.getLocation());
+		Log4jUtil.log("Step 10: Verfiy Appointment Page and appointment to be selected = " + testData.getAppointmenttype());
+		assertTrue(appointment.areBasicPageElementsPresent());
+		Thread.sleep(15000);
+		Provider provider = appointment.selectTypeOfProvider(testData.getAppointmenttype(), Boolean.valueOf(testData.getIsAppointmentPopup()));
+		Log4jUtil.log("Step 11: Verfiy Provider Page and Provider = " + testData.getProvider());
+		Thread.sleep(15000);
+		AppointmentDateTime aptDateTime = provider.searchForProviderFromList(testData.getProvider());
+		assertTrue(aptDateTime.areBasicPageElementsPresent());
+
 		String date = aptDateTime.selectDate(testData.getIsNextDayBooking());
 		Log4jUtil.log("date- " + date);
 		log("Next date is    " + psspatientutils.numDate(testData));
@@ -2770,20 +2772,21 @@ public class PSS2PatientPortalAcceptanceTests extends BaseTestNGWebDriver {
 		StartAppointmentInOrder startappointmentInOrder = null;
 		startappointmentInOrder = homepage.skipInsurance(driver);
 		location = startappointmentInOrder.selectFirstLocation(PSSConstants.START_LOCATION);
-		Log4jUtil.log("Step 9: Verfiy location Page and location =" + testData.getLocation());
+		Log4jUtil.log("Step 9: Verfiy Location Page and location =" + testData.getLocation());
 		assertTrue(location.areBasicPageElementsPresent());
-		Thread.sleep(4000);
-		Provider provider = location.searchProvider(testData.getLocation());
-		Log4jUtil.log("Step 10: Verfiy Provider Page and provider to be selected = " + testData.getProvider());
-		assertTrue(provider.areBasicPageElementsPresent());
-		AppointmentPage appointment = provider.selectAppointment(testData.getProvider());
-		Log4jUtil.log("Step 11: Verfiy Appointment Page and Appointment to be selected = " + testData.getAppointmenttype());
-		AppointmentDateTime aptDateTime = appointment.selectTypeOfAppointment(testData.getAppointmenttype(), Boolean.valueOf(testData.getIsAppointmentPopup()));
-		Log4jUtil.log("Step 12: Select avaiable Date ");
-		String date = aptDateTime.selectdateforreserve();
-		Log4jUtil.log("Verifying only one date availiable or not");
-		assertEquals(1, aptDateTime.getAppointmentDateList());
+		AppointmentPage appointment = location.selectAppointment(testData.getLocation());
+		Log4jUtil.log("Step 10: Verfiy Appointment Page and appointment to be selected = " + testData.getAppointmenttype());
+		assertTrue(appointment.areBasicPageElementsPresent());
+		Thread.sleep(15000);
+		Provider provider = appointment.selectTypeOfProvider(testData.getAppointmenttype(), Boolean.valueOf(testData.getIsAppointmentPopup()));
+		Log4jUtil.log("Step 11: Verfiy Provider Page and Provider = " + testData.getProvider());
+		Thread.sleep(15000);
+		AppointmentDateTime aptDateTime = provider.searchForProviderFromList(testData.getProvider());
+		assertTrue(aptDateTime.areBasicPageElementsPresent());
+
+		String date = aptDateTime.selectDate(testData.getIsNextDayBooking());
 		Log4jUtil.log("date- " + date);
+
 		log("Next date is    " + psspatientutils.numDate(testData));
 		if (psspatientutils.timeDifferenceendTime(testData) < 0) {
 			assertEquals(date, psspatientutils.numDate(testData));
