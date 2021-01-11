@@ -108,8 +108,8 @@ public class PSSAdminUtils {
 			testData.setUrlIPD(accessrule.getIDPUrl());
 		}
 		if (urlToUse.equalsIgnoreCase(PSSConstants.ANONYMOUS)) {
-			Log4jUtil.log("PSS Patient URL : " + accessrule.getIDPUrl());
-			testData.setUrlIPD(accessrule.getIDPUrl());
+			Log4jUtil.log("PSS Patient URL : " + accessrule.getAnonymousUrl());
+			testData.setUrlAnonymous(accessrule.getAnonymousUrl());
 		}
 		Log4jUtil.log("adminSettings Step 3: Navigate to Patient Flow tab in settings");
 		PatientFlow patientflow = accessrule.gotoPatientFlowTab();
@@ -144,7 +144,10 @@ public class PSSAdminUtils {
 		Log4jUtil.log("Status of Enable Anonymous Flow = " + accessrule.isEnableAnonymousSelected());
 		Log4jUtil.log("Status of Display Privacy policy = " + accessrule.isDisplayPrivacypolicyAnonymous());
 		Log4jUtil.log("Status of Allow Duplicate Patient " + accessrule.isAllowDuplicatePatientAnonymous());
-		Log4jUtil.log("Status of Enable OTP " + accessrule.isEnableOtpAnonymous());
+		
+		//OTP code will require in future release so commenting the code
+		//Log4jUtil.log("Status of Enable OTP " + accessrule.isEnableOtpAnonymous());
+		
 		if (urlToUse.equalsIgnoreCase(PSSConstants.LOGINLESS)) {
 			Log4jUtil.log("PSS Patient URL : " + accessrule.getLoginlessURL());
 			testData.setUrlLoginLess(accessrule.getLoginlessURL());
