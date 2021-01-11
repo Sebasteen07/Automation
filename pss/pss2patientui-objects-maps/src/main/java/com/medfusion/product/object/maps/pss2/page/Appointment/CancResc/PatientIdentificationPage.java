@@ -44,6 +44,10 @@ public class PatientIdentificationPage extends PSS2MainPage {
 	@FindBy(how = How.XPATH, using = "//button[@type='button']//span[contains(text(),'Dismiss')]")
 	private WebElement dismissButtons;
 	
+	@FindBy(how = How.XPATH, using = "//div[@id='myModalsss']/div/div/div[3]/button/span")
+	private WebElement dismissButtonsAnonymous;
+	
+	
 	public PatientIdentificationPage(WebDriver driver) {
 		super(driver);
 
@@ -63,6 +67,17 @@ public class PatientIdentificationPage extends PSS2MainPage {
 
 	public void popUPClick() {
 		dismissButtons.click();
+	}
+	
+	public Boolean isPopUPAn() {
+		if (dismissButtonsAnonymous.isDisplayed() == true) {
+			return true;
+		}
+		return false;
+	}
+
+	public void popUPAnClick() {
+		dismissButtonsAnonymous.click();
 	}
 
 	@Override
