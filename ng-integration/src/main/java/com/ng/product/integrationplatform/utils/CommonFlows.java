@@ -9,6 +9,7 @@ package com.ng.product.integrationplatform.utils;
 import static org.testng.Assert.assertTrue;
 
 import org.openqa.selenium.WebDriver;
+import org.openqa.selenium.support.PageFactory;
 import org.testng.Assert;
 
 import com.intuit.ifs.csscat.core.utils.Log4jUtil;
@@ -18,6 +19,7 @@ import com.intuit.ihg.product.integrationplatform.utils.RestUtils;
 import com.medfusion.common.utils.IHGUtil;
 import com.medfusion.product.object.maps.patientportal2.page.JalapenoLoginPage;
 import com.medfusion.product.object.maps.patientportal2.page.NGLoginPage;
+import com.medfusion.product.object.maps.patientportal2.page.AppointmentsPage.JalapenoAppointmentsPage;
 import com.medfusion.product.object.maps.patientportal2.page.CcdPage.DocumentsPage;
 import com.medfusion.product.object.maps.patientportal2.page.CcdPage.MedicalRecordSummariesPage;
 import com.medfusion.product.object.maps.patientportal2.page.CcdPage.NGCcdViewerPage;
@@ -621,5 +623,191 @@ public class CommonFlows {
 	   String bulk = DBUtils.executeQueryOnDB("NGCoreDB","select isBulk from ngweb_communications where parent_id ='"+comm_id+"'");
 	   CommonUtils.VerifyTwoValues(bulk,"equals","false");
    }
+   
+   public static void verifyAppointmentRequestReceived(String appointment_id,String Reason,String StartTime, String EndTime, String Days, String practiceId) throws Throwable{
+	   String apptProcessingStatusQuery = "Select processing_status from NGWEB_APPOINTMENT_REQ where appointment_id ='"+appointment_id+"'";	   
+	   String apptStatusQuery = "Select appointment_status_id from NGWEB_APPOINTMENT_REQ where appointment_id ='"+appointment_id+"'";	   
+	   String requestReasonQuery = "Select requested_reason from NGWEB_APPOINTMENT_REQ where appointment_id ='"+appointment_id+"'";	   
+	   String startTimeQuery = "Select requested_starttime1 from NGWEB_APPOINTMENT_REQ where appointment_id ='"+appointment_id+"'";	   
+	   String endTimeQuery = "Select requested_endtime1 from NGWEB_APPOINTMENT_REQ where appointment_id ='"+appointment_id+"'";	   
+	   String daysQuery = "Select requested_days1 from NGWEB_APPOINTMENT_REQ where appointment_id ='"+appointment_id+"'";
+	   String PracticeIDinApptTable = "Select nx_practice_id from NGWEB_APPOINTMENT_REQ where appointment_id ='"+appointment_id+"'";
+	   String practiceIdQuery ="select nx_practice_id from nxmd_practices where practice_id ='"+practiceId+"'";
+	   
+	   String ProcessingStatus = DBUtils.executeQueryOnDB("NGCoreDB",apptProcessingStatusQuery);
+		if(ProcessingStatus.isEmpty()){
+			for (int i = 0; i < arg_timeOut; i++) {
+				ProcessingStatus =DBUtils.executeQueryOnDB("NGCoreDB",apptProcessingStatusQuery);
+				if (ProcessingStatus.equalsIgnoreCase("0")) {
+					Log4jUtil.log("Step End: Appointment request is reached to EPM/EHR Inbox from Portal.");
+	                break;
+	            } else {
+	                if (i == arg_timeOut - 1)
+	                    Thread.sleep(1000);
+	            }
+	        }
+		}
+			   
+	   CommonUtils.VerifyTwoValues(ProcessingStatus,"equals","0");
+	   String apptStatus = DBUtils.executeQueryOnDB("NGCoreDB",apptStatusQuery);
+	   CommonUtils.VerifyTwoValues(apptStatus,"equals","1");
+	   String requestReason = DBUtils.executeQueryOnDB("NGCoreDB",requestReasonQuery);
+	   CommonUtils.VerifyTwoValues(requestReason,"contains",Reason);
+	   String startTime = DBUtils.executeQueryOnDB("NGCoreDB",startTimeQuery);
+	   CommonUtils.VerifyTwoValues(startTime,"equals",StartTime);
+	   String endTime = DBUtils.executeQueryOnDB("NGCoreDB",endTimeQuery);
+	   CommonUtils.VerifyTwoValues(endTime,"equals",EndTime);
+	   String days = DBUtils.executeQueryOnDB("NGCoreDB",daysQuery);
+	   CommonUtils.VerifyTwoValues(days,"equals",Days);	
+	   String ExpectedPracticeID = DBUtils.executeQueryOnDB("NGCoreDB",practiceIdQuery);
+	   String ActualPracticeIDinDB = DBUtils.executeQueryOnDB("NGCoreDB",PracticeIDinApptTable);
+	   CommonUtils.VerifyTwoValues(ActualPracticeIDinDB,"equals",ExpectedPracticeID);
+	   Log4jUtil.log("Step End: The appointment request is reached to EPM/EHR Inbox");
+	   }
+   
+   public static void verifyAppointmentProcessingStatus(PropertyFileLoader PropertyLoaderObj,String appointment_id, String integrationID) throws Throwable{
+	    String apptProcessingStatusQuery = "Select processing_status from NGWEB_APPOINTMENT_REQ where appointment_id='"+appointment_id+"'";
+		String apptResponseQuery="Select epm_appt_id from NGWEB_APPOINTMENT_RESP where appointment_id ='"+appointment_id+"'";
+		String processing_status =DBUtils.executeQueryOnDB("NGCoreDB",apptProcessingStatusQuery);
+
+		if(processing_status.isEmpty()){
+			for (int i = 0; i < arg_timeOut; i++) {
+				processing_status =DBUtils.executeQueryOnDB("NGCoreDB",apptProcessingStatusQuery);
+				if ((processing_status.equals("0")) || (processing_status.equals("1")) || (processing_status.equals("2"))) {
+					Log4jUtil.log("Step End: Appointment request is reached to EPM/EHR Inbox from Portal.");
+	                break;
+	            } else {
+	                if (i == arg_timeOut - 1)
+	                    Thread.sleep(1000);
+	            }
+	        }
+		}
+		
+		if(processing_status.equals("0")){
+			    Log4jUtil.log("Processing status is "+processing_status+" i.e. appointment request is reached to EPM/EHR Inbox from Portal.");
+			for (int i = 0; i < arg_timeOut; i++) {
+				processing_status =DBUtils.executeQueryOnDB("NGCoreDB",apptProcessingStatusQuery);
+	           if (processing_status.equals("1")) {
+	        	   Log4jUtil.log("Processing status is "+processing_status+" i.e. appointment response is picked up by MF agent");
+	               break;
+	           } else {
+	               if (i == arg_timeOut - 1)
+	                   Thread.sleep(1000);
+	           }
+	       }
+			CommonUtils.VerifyTwoValues(processing_status,"equals","1");
+		}
+		
+		String appt_Response =DBUtils.executeQueryOnDB("NGCoreDB",apptResponseQuery);
+		if(appt_Response.isEmpty()){
+			for (int i = 0; i < arg_timeOut; i++) {
+				appt_Response =DBUtils.executeQueryOnDB("NGCoreDB",apptResponseQuery);
+				if (!appt_Response.isEmpty()) {
+					Log4jUtil.log("Step End: Appointment is posted successfully to MF agent");
+	                break;
+	            } else {
+	                if (i == arg_timeOut - 1)
+	                    Thread.sleep(1000);
+	            }
+	        }
+		}
+		
+		verifyMFJOBStatusWithoutValidatingGetProcessingStatusCall(PropertyLoaderObj,appt_Response,integrationID,"Appointment");
+		
+		if(processing_status.equals("1")){
+	        	Log4jUtil.log("Processing status is "+processing_status+" i.e. appointment response is sent to MF agent");
+	        	for (int i = 0; i < arg_timeOut; i++) {
+					processing_status =DBUtils.executeQueryOnDB("NGCoreDB",apptProcessingStatusQuery);
+		           if (processing_status.equals("2")) {
+		        	   Log4jUtil.log("Processing status is "+processing_status+" i.e. appointment is sent successfully to Portal");
+		               break;
+		           } else {
+		               if (i == arg_timeOut - 1)
+		                   Thread.sleep(1000);
+		           }
+		       }
+	        	CommonUtils.VerifyTwoValues(processing_status,"equals","2");
+	     }
+		else if(processing_status.equals("2")){
+			Log4jUtil.log("Step End: Processing status is "+processing_status+" i.e. appointment is sent successfully to Portal");
+		}	
+		else if(processing_status.equals("3")){
+			Log4jUtil.log("Step End: Processing status is "+processing_status+" i.e. Failed to post appointment to Portal");
+		}
+		CommonUtils.VerifyTwoValues(processing_status,"equals","2");
+	   }
+   
+   public static void verifyAppointmentBookedResponseCaptured(String appointment_id,String Response) throws Throwable{   
+	   String apptStatusQuery = "Select appointment_status_id from NGWEB_APPOINTMENT_REQ where appointment_id ='"+appointment_id+"'";	
+	   String apptResponseQuery="Select message from NGWEB_APPOINTMENT_RESP where appointment_id ='"+appointment_id+"'";	   
+	   String apptStatus = DBUtils.executeQueryOnDB("NGCoreDB",apptStatusQuery);
+	   
+	   if(apptStatus.equals("1")){
+       	Log4jUtil.log("Appointment status is "+apptStatus+" i.e. appointment status is Pending");
+       	for (int i = 0; i < arg_timeOut; i++) {
+       		apptStatus =DBUtils.executeQueryOnDB("NGCoreDB",apptStatusQuery);
+	           if (apptStatus.equals("2")) {
+	        	   Log4jUtil.log("Appointment status is "+apptStatus+" i.e. appointment status is Booked");
+	               break;
+	           } else {
+	               if (i == arg_timeOut - 1)
+	                   Thread.sleep(1000);
+	           }
+	       }
+       	CommonUtils.VerifyTwoValues(apptStatus,"equals","2");
+       } 
+	   
+	   CommonUtils.VerifyTwoValues(apptStatus,"equals","2");	   
+	   String expectedApptResponse =DBUtils.executeQueryOnDB("NGCoreDB",apptResponseQuery);
+	   CommonUtils.VerifyTwoValues(expectedApptResponse,"equals",Response); 
+	   Log4jUtil.log("Step End: The appointment response is saved to NG_Web_Response Table");
+	   }
+   
+   public static void verifyAppointmentReceivedinPortal(PropertyFileLoader PropertyLoaderObj, WebDriver driver,String url,String username,String appointmentDate,String appointmentTime,String body) throws InterruptedException{
+	    Log4jUtil.log("Step Begins: Log into Portal");
+		NGLoginPage loginPage = new NGLoginPage(driver, url);
+		JalapenoHomePage homePage = loginPage.login(username, PropertyLoaderObj.getPassword());
+		
+		Log4jUtil.log("Detecting if Home Page is opened");
+		assertTrue(homePage.isHomeButtonPresent(driver));
+		
+		if(!body.isEmpty()){
+		JalapenoMessagesPage messagesPage = homePage.showMessages(driver);
+		
+		Log4jUtil.log("Step Begins: Validate message loads and is the right message");
+		assertTrue(messagesPage.isMessageDisplayed(driver, PropertyLoaderObj.getProperty("AppointmentSubject")));
+		messagesPage.verifyMessageContent(driver, PropertyLoaderObj.getProperty("AppointmentSubject"),body);		
+		messagesPage.backToHomePage(driver);}
+
+		Log4jUtil.log("Step Begins: Click appointment request");
+		homePage.clickOnAppointmentV3(driver);
+		JalapenoAppointmentsPage appointmentsPage = PageFactory.initElements(driver, JalapenoAppointmentsPage.class);
+		
+		Log4jUtil.log("Step Begins: Verify booked appointment received in Portal");
+		Boolean appointmentStatus =appointmentsPage.verifyAppointment(appointmentDate,appointmentTime,PropertyLoaderObj.getProperty("ResourceName"));
+		Assert.assertTrue(appointmentStatus, "Booked Appointment didnot receive by Patient");
+		
+		driver.navigate().back();
+		homePage = PageFactory.initElements(driver, JalapenoHomePage.class);
+		homePage.LogoutfromNGMFPortal();
+		Log4jUtil.log("Step End: Booked Appointment is received by Patient");
+   }
+   
+   public static void verifyAppointmentDeletedinPortal(PropertyFileLoader PropertyLoaderObj, WebDriver driver,String url,String username,String appointmentDate,String appointmentTime) throws InterruptedException{
+	    Log4jUtil.log("Step Begins: Log into Portal");
+		NGLoginPage loginPage = new NGLoginPage(driver, url);
+		JalapenoHomePage homePage = loginPage.login(username, PropertyLoaderObj.getPassword());
+		
+		Log4jUtil.log("Detecting if Home Page is opened");
+		assertTrue(homePage.isHomeButtonPresent(driver));
+
+		Log4jUtil.log("Step Begins: Click appointment request");
+		homePage.clickOnAppointmentV3(driver);		
+		JalapenoAppointmentsPage appointmentsPage = PageFactory.initElements(driver, JalapenoAppointmentsPage.class);
+		
+		Log4jUtil.log("Step Begins: Verify appointment is deleted");
+		appointmentsPage.verifyAppointmentisDeleted(appointmentDate,appointmentTime);
+		Log4jUtil.log("Booked Appointment is deleted successfully");
+  }
 
 }

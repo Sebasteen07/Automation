@@ -12,6 +12,7 @@ import org.apache.http.Header;
 import org.apache.http.HttpEntity;
 import org.apache.http.client.ClientProtocolException;
 import org.apache.http.client.methods.CloseableHttpResponse;
+import org.apache.http.client.methods.HttpDelete;
 import org.apache.http.client.methods.HttpGet;
 import org.apache.http.client.methods.HttpPost;
 import org.apache.http.client.methods.HttpPut;
@@ -465,4 +466,48 @@ public class NGAPIUtils {
 	    
 	    return actualURL;
 	    }
+	
+	public static void setupNGHttpDeleteRequest(String mode, String argRouteURL, int ExpectedStatusCode) throws IOException {
+		IHGUtil.PrintMethodName();
+		Log4jUtil.log("DeleteURL "+argRouteURL);
+		try { 	
+    		CloseableHttpResponse httpResponse = null;
+            CloseableHttpClient httpClient = HttpClients.createDefault();            
+            HttpDelete htttpDelete = new HttpDelete(argRouteURL);               
+    		    	
+    		String XNGDate = getXNGDate();
+    		String Email= EnterpriseEmail;    		
+    		htttpDelete.addHeader("Accept", "*/*");
+    	    if(mode.equalsIgnoreCase("CAGateway")){
+    	    	htttpDelete.addHeader("Authorization", System.getProperty("BearerToken"));
+    	    	htttpDelete.addHeader("X-NG-SessionId",System.getProperty("XNGSessionId"));
+    	    	htttpDelete.addHeader("X-NG-Date", XNGDate);
+    		}
+            else if(mode.equalsIgnoreCase("EnterpriseGateway")){
+            	getAuthSignature(argRouteURL,"DELETE","", "");
+            	htttpDelete.addHeader("Authorization", "NEXTGEN-AMB-API-V2 Credential=" + Email.toLowerCase() + ", Signature="+ System.getProperty("AuthEnterpriseSignature"));
+            	htttpDelete.addHeader("X-NG-Date", EnterpriseSignature.NGTime);
+            	htttpDelete.addHeader("X-NG-Product", "NEXTGEN-AMB-API-V2");
+            	htttpDelete.addHeader("x-nge-site-id",XNGSessionID);
+            }
+    	    htttpDelete.setHeader("Content-type", "application/json");
+
+    		httpResponse = httpClient.execute(htttpDelete);
+    	
+    		if (mode.equals("CAGateway")) {
+    			htttpDelete.releaseConnection();
+    		}
+    	        
+    		Log4jUtil.log("Status code for Delete request "+httpResponse.getStatusLine().getStatusCode());
+    		if(ExpectedStatusCode!=0){
+    		    if(httpResponse.getStatusLine().getStatusCode()==ExpectedStatusCode){
+    		    	Log4jUtil.log("Delete request completed successfully");
+    	        }else{
+    	        	Log4jUtil.log("Unable to delete the request");
+    	            Assert.assertEquals(httpResponse.getStatusLine().getStatusCode(), ExpectedStatusCode);
+    	        }}
+		}catch (Exception E) {
+		Log4jUtil.log("Exception caught "+E.getMessage());
+	}
+    }
 }
