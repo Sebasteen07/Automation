@@ -36,6 +36,9 @@ private Boolean isDraft =false;
 private List<Recipient> recipients = null;
 private List<Attachment> attachments = null;
 
+private Boolean isBulk =false;
+private List<String> reportNames = null;
+
 public String getId() {
 return id;
 }
@@ -226,5 +229,21 @@ return attachments;
 
 public void setAttachments(List<Attachment> attachments) {
 this.attachments = attachments;
+}
+
+public Boolean getIsBulk() {
+return isBulk;
+}
+
+public void setIsBulk(Boolean isBulk) {
+this.isBulk = isBulk;
+}
+
+public List<String> getReportNames() {
+return reportNames;
+}
+
+public void setReportNames(List<String> reportNames) {
+this.reportNames = reportNames;
 }
 }
