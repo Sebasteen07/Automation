@@ -1128,7 +1128,7 @@ public class IntegrationPlatformAcceptanceTests extends BaseTestNGWebDriver {
 		log("Step 7: Verify the medication Posted");
 		prescriptionsPage.validatemedication(productName);
 		
-		log("Step8: Post Same Medication with DELETED status to remove the medication from portal");
+		log("Step 8: Post Same Medication with DELETED status to remove the medication from portal");
 
 		String deletepayload = MedicationObj.getMedicationPayLoad(testData, 1, productName, testData.getMFPatientID(), "DELETED", MedicationID);
 		log("payload: " + deletepayload);
@@ -1148,7 +1148,7 @@ public class IntegrationPlatformAcceptanceTests extends BaseTestNGWebDriver {
 		prescriptionsPage.validateDeletedMedication(productName);
 		log("Deleted medication is not visible on portal");
 
-		log("Step 6: Logout of Patient Portal");
+		log("Step 11: Logout of Patient Portal");
 		prescriptionsPage.clickOnLogout();
 
 
