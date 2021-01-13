@@ -990,7 +990,7 @@ public class IntegrationPlatformAcceptanceTests extends BaseTestNGWebDriver {
 
 
 	@Test(enabled = true, groups = {"AcceptanceTests"}, retryAnalyzer = RetryAnalyzer.class)
-	public void testMedicationPosted() throws Exception {
+	public void testAddMedication() throws Exception {
 
 		log("Test Case: End to end testing Medication Posted");
 		log("Execution Environment: " + IHGUtil.getEnvironmentType());

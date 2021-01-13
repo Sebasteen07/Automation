@@ -109,7 +109,7 @@ public class JalapenoPrescriptionsPage extends JalapenoMenu {
 	@FindBy(how = How.XPATH, using = "//*[@class='feedback']/following::*[contains(text(),'Prescription Renewa')]")
 	public WebElement renewalConfirmationmessage;
 
-	@FindBy(how = How.XPATH, using = "//*[@id='idff']")
+	@FindBy(how = How.ID, using = "medicationForm")
 	public WebElement Medicationlist;
 
 
@@ -140,6 +140,7 @@ public class JalapenoPrescriptionsPage extends JalapenoMenu {
 			try {
 				Select providerSelect = new Select(providerDropdown);
 				providerSelect.selectByIndex(1);
+
 			} catch (StaleElementReferenceException ex) {
 				log("Dont know what's going on here");
 			}
@@ -252,8 +253,10 @@ public class JalapenoPrescriptionsPage extends JalapenoMenu {
 	}
 
 	public void validatemedication(String productName) {
-		driver.switchTo().frame("iframebody");
+		driver.switchTo().frame("iframe");
 		assertTrue(Medicationlist.getText().contains(productName));
+		driver.switchTo().defaultContent();
+
 	}
 
 }
