@@ -189,6 +189,8 @@ public class PSSPropertyFileLoader {
 		appointValues.setOldPatientPassword(property.getProperty("oldPatientPasswordAT"));
 		appointValues.setProviderImageAPI(property.getProperty("providerImageAPIAT"));
 		appointValues.setGmailUserName(property.getProperty("emailAT"));
+		appointValues.setPopUpMessege(property.getProperty("popUpMessege"));
+
 	}
 
 	public void setAppointmentResponseGE(Appointment appointValues) {
