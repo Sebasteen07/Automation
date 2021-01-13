@@ -3,6 +3,11 @@ package com.ng.product.integrationplatform.utils;
 
 import static org.testng.Assert.assertTrue;
 
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.util.Date;
+import java.util.TimeZone;
+
 import org.testng.Assert;
 
 import com.google.gson.JsonObject;
@@ -50,4 +55,15 @@ public class CommonUtils {
 	return value;
 	}
 	
+	public static String changeESTtoIST(String dateInput) throws ParseException {
+		TimeZone sourceTimeZone = TimeZone.getTimeZone("America/New_York");
+	    TimeZone targetTimeZone = TimeZone.getTimeZone("Asia/Calcutta");
+	    
+		SimpleDateFormat formatter = new SimpleDateFormat("M/d/yy hh:mm");
+	    formatter.setTimeZone(sourceTimeZone);
+	    Date date = formatter.parse(dateInput);
+	    formatter.setTimeZone(targetTimeZone);
+	    Log4jUtil.log("IST Date "+formatter.format(date));
+	    return formatter.format(date);
+	}
 }

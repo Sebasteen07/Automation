@@ -40,7 +40,8 @@ public enum apiRoutes {
 	PostSecureMessage("api/secure-messages"),
 	GetSecureMessage("api/secure-messages/secureMessageId"),
 	PostAppointmentResponse("api/appointments/requests/appointmentRequestId/responses"),
-	PostAppointment("api/appointments");
+	PostAppointment("api/appointments"),
+	DeleteAppointment("api/appointments/appointmentId");
 	
 	private String routeURL;
 

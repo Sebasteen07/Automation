@@ -690,7 +690,7 @@ public class NGAPIFlows {
     }
 	}
 	
-	public static String postAppointment(String personId,String locationName, String ProviderName,String EventName, String ResourceName,int expectedStatusCode) throws Throwable{
+	public static String postAppointment(String personId,String locationName, String ProviderName,String EventName, String ResourceName,int appointmentDaytobeAdded,String time,int expectedStatusCode) throws Throwable{
 		Appointment appointment = new Appointment();	String epm_appt_id ="";	
 		try{			
 			String strSqlQueryForProvider= "select provider_id from provider_mstr where description='"+ProviderName+"'";
@@ -705,9 +705,12 @@ public class NGAPIFlows {
 			appointment.setRenderingProviderId(DBUtils.executeQueryOnDB("NGCoreDB",strSqlQueryForProvider));
 			appointment.setDurationMinutes(DBUtils.executeQueryOnDB("NGCoreDB",strSqlQueryForDuration));
 			
-			String appointmentDate = sdf.format(DateUtils.addDays(new Date(), 1));
+			String appointmentDate = sdf.format(DateUtils.addDays(new Date(), appointmentDaytobeAdded));
 			appointmentDate = appointmentDate.substring(0, appointmentDate.indexOf("T"));
-			appointment.setAppointmentDate(appointmentDate + "T00:00:00");
+			if(time.isEmpty())
+				appointment.setAppointmentDate(appointmentDate + "T00:00:00");
+			else
+				appointment.setAppointmentDate(appointmentDate + "T"+time);
 			
 			List<String> resourceIds =new ArrayList<String>();
 			resourceIds.add(DBUtils.executeQueryOnDB("NGCoreDB",strSqlQueryForResource));			
@@ -727,4 +730,16 @@ public class NGAPIFlows {
     }
 		return epm_appt_id;
 	}
+	
+	public static void deleteAppointment(String appointmentId) throws Throwable{	
+		try{			
+			String deleteAppointmentURL =apiRoutes.valueOf("DeleteAppointment").getRouteURL().replace("appointmentId", appointmentId); 
+			String finalURL = EnterprisebaseURL +deleteAppointmentURL;
+			NGAPIUtils.setupNGHttpDeleteRequest("EnterpriseGateway",finalURL, 200);
+			Log4jUtil.log("Appointment is deleted successsfully from EPM Appointment Book");			
+	} catch (Exception e) {
+		Log4jUtil.log(e.getMessage());
+    }
+	}
+	
 }
