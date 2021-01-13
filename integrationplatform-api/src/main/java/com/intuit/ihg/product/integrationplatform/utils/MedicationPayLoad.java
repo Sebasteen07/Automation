@@ -22,14 +22,13 @@ import org.w3c.dom.Node;
 
 public class MedicationPayLoad {
 	public String output = null;
-	public String status = "ACTIVE";
 	public String genericName = "HYDROCORTISONE SOD SUCCINATE";
 	public String doseUnit = "MG";
 	public String rxNormCode = "208947";
 	public String dosage = "5";
 	public String ndcCode = "187065142";
 	
-	public String getMedicationPayLoad(MedicationTestData testData, int batchSize, String productName, String MFPatientID)
+	public String getMedicationPayLoad(MedicationTestData testData, int batchSize, String productName, String MFPatientID, String status, String MedicationID)
 			throws InterruptedException, IOException, ParseException {
 
 		try {
@@ -44,7 +43,7 @@ public class MedicationPayLoad {
 
 			for (int i = 0; i < batchSize; i++) {
 				Element Medication = doc.createElement("Medication");
-				Medication.setAttribute("id", randomNumbers(12));
+				Medication.setAttribute("id", MedicationID);
 
 				Node GenericName = doc.createElement("GenericName");
 				GenericName.appendChild(doc.createTextNode(genericName));
