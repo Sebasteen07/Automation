@@ -999,6 +999,329 @@
       </con:method>
     </con:resource>
   </con:interface>
+    <con:interface xsi:type="con:RestService" id="2a8fb494-4264-4e86-9a04-3062bf90e97a" wadlVersion="http://wadl.dev.java.net/2009/02" name="Bifrost HD Manage Service" type="rest" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+    <con:settings/>
+    <con:definitionCache type="TEXT" rootPart=""/>
+    <con:endpoints>
+      <con:endpoint>http://d3-mfssembed1.dev.medfusion.net:8186</con:endpoint>
+    </con:endpoints>
+    <con:resource name="" path="/bifrost-manage-hd-service/v1/ccd/PORTAL/{document_id}" id="6a758c35-4730-4f60-88bf-51d94ae35548">
+      <con:settings/>
+      <con:parameters>
+        <con:parameter>
+          <con:name>document_id</con:name>
+          <con:value>document_id</con:value>
+          <con:style>TEMPLATE</con:style>
+          <con:default>document_id</con:default>
+        </con:parameter>
+      </con:parameters>
+      <con:method name="" id="5710a180-5dc3-4a6e-99d1-32e6611f0679" method="GET">
+        <con:settings/>
+        <con:parameters>
+          <con:parameter required="true">
+            <con:name>source</con:name>
+            <con:value/>
+            <con:style>QUERY</con:style>
+            <con:default/>
+          </con:parameter>
+          <con:parameter required="true">
+            <con:name>postProcessMethod</con:name>
+            <con:value/>
+            <con:style>QUERY</con:style>
+            <con:default/>
+          </con:parameter>
+        </con:parameters>
+        <con:representation type="FAULT">
+          <con:mediaType>application/json</con:mediaType>
+          <con:status>401 404</con:status>
+          <con:params/>
+          <con:element xmlns:ded="http://d3-mfssembed1.dev.medfusion.net/bifrost-manage-hd-service/v1/ccd/PORTAL/5dedb7c80f9044650660d953">ded:Fault</con:element>
+        </con:representation>
+        <con:representation type="RESPONSE">
+          <con:mediaType>application/json</con:mediaType>
+          <con:status>200</con:status>
+          <con:params/>
+          <con:element xmlns:ded="http://d3-mfssembed1.dev.medfusion.net/bifrost-manage-hd-service/v1/ccd/PORTAL/5dedb7c80f9044650660d953">ded:Response</con:element>
+        </con:representation>
+        <con:request name="ccd-resource" id="adbb9250-d5d4-4c39-b0f2-f40aab257de6" mediaType="application/json">
+          <con:settings>
+            <con:setting id="com.eviware.soapui.impl.wsdl.WsdlRequest@request-headers">&lt;xml-fragment/></con:setting>
+          </con:settings>
+          <con:endpoint>http://d3-mfssembed1.dev.medfusion.net:8186</con:endpoint>
+          <con:request/>
+          <con:credentials>
+            <con:selectedAuthProfile>No Authorization</con:selectedAuthProfile>
+            <con:authType>No Authorization</con:authType>
+          </con:credentials>
+          <con:jmsConfig JMSDeliveryMode="PERSISTENT"/>
+          <con:parameters>
+            <con:entry key="source" value="PORTAL"/>
+            <con:entry key="postProcessMethod" value="DATA_SYNC_POST_PROCESS"/>
+          </con:parameters>
+          <con:parameterOrder>
+            <con:entry>document_id</con:entry>
+            <con:entry>source</con:entry>
+            <con:entry>postProcessMethod</con:entry>
+          </con:parameterOrder>
+        </con:request>
+      </con:method>
+    </con:resource>
+    <con:resource name="fhir" path="/bifrost-manage-hd-service/v1/ccd/PORTAL/{document_id}/fhir" id="16920f07-4649-4282-8a8f-e021f3f7559d">
+      <con:settings/>
+      <con:parameters>
+        <con:parameter required="true">
+          <con:name>source</con:name>
+          <con:value>source</con:value>
+          <con:style>QUERY</con:style>
+          <con:default>source</con:default>
+        </con:parameter>
+        <con:parameter required="true">
+          <con:name>document_id</con:name>
+          <con:value>document_id</con:value>
+          <con:style>TEMPLATE</con:style>
+          <con:default>document_id</con:default>
+        </con:parameter>
+      </con:parameters>
+      <con:method name="Method 1" id="3c07e618-c3fc-4b07-81b7-8faf485e0bcb" method="GET">
+        <con:settings/>
+        <con:parameters/>
+        <con:representation type="FAULT">
+          <con:mediaType>application/json</con:mediaType>
+          <con:status>400 404</con:status>
+          <con:params/>
+          <con:element xmlns:fhir="http://d3-mfssembed1.dev.medfusion.net/bifrost-manage-hd-service/v1/ccd/source/document_id/fhir">fhir:Fault</con:element>
+        </con:representation>
+        <con:representation type="RESPONSE">
+          <con:mediaType xsi:nil="true"/>
+          <con:status>200</con:status>
+          <con:params/>
+          <con:element>data</con:element>
+        </con:representation>
+        <con:representation type="RESPONSE">
+          <con:mediaType>application/json</con:mediaType>
+          <con:status>200</con:status>
+          <con:params/>
+          <con:element>Response</con:element>
+        </con:representation>
+        <con:request name="getCcdDocumentinFhir" id="b498d414-5583-4e12-b877-14996f784a2a" mediaType="application/json">
+          <con:settings>
+            <con:setting id="com.eviware.soapui.impl.wsdl.WsdlRequest@request-headers">&lt;xml-fragment/></con:setting>
+          </con:settings>
+          <con:endpoint>http://d3-mfssembed1.dev.medfusion.net:8186</con:endpoint>
+          <con:request/>
+          <con:credentials>
+            <con:selectedAuthProfile>No Authorization</con:selectedAuthProfile>
+            <con:authType>No Authorization</con:authType>
+          </con:credentials>
+          <con:jmsConfig JMSDeliveryMode="PERSISTENT"/>
+          <con:parameters>
+            <con:entry key="source" value="PORTAL"/>
+          </con:parameters>
+        </con:request>
+      </con:method>
+    </con:resource>
+  </con:interface>
+  <con:interface xsi:type="con:RestService" id="0d3567cf-b03d-428d-be0e-91f253522de0" wadlVersion="http://wadl.dev.java.net/2009/02" name="Bifrost Query HD Service" type="rest" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+    <con:settings/>
+    <con:definitionCache type="TEXT" rootPart=""/>
+    <con:endpoints>
+      <con:endpoint>http://d3-mfssembed1.dev.medfusion.net:8185</con:endpoint>
+    </con:endpoints>
+    <con:resource name="" path="/bifrost-query-hd-service/v1/customers/{customer_id}/patients/search" id="7e2cf963-8773-4d01-a019-33e93e54a591">
+      <con:settings/>
+      <con:parameters>
+        <con:parameter>
+          <con:name>customer_id</con:name>
+          <con:style>TEMPLATE</con:style>
+        </con:parameter>
+      </con:parameters>
+      <con:method name="" id="ba726d51-3674-4953-81bf-f0868f01f293" method="POST">
+        <con:settings/>
+        <con:parameters/>
+        <con:representation type="FAULT">
+          <con:mediaType>application/json</con:mediaType>
+          <con:status>405 400</con:status>
+          <con:params/>
+          <con:element xmlns:sear="http://d3-mfssembed1.dev.medfusion.net/bifrost-query-hd-service/v1/customers/d1fe81f0-b057-493f-b320-0c681726aad4/patients/search">sear:Fault</con:element>
+        </con:representation>
+        <con:representation type="RESPONSE">
+          <con:mediaType>application/json</con:mediaType>
+          <con:status>200</con:status>
+          <con:params/>
+          <con:element>Response</con:element>
+        </con:representation>
+        <con:request name="Request 1" id="9e6b916d-4dfa-4fbd-90f4-9fa2f61031e4" mediaType="application/json" postQueryString="false">
+          <con:settings>
+            <con:setting id="com.eviware.soapui.impl.wsdl.WsdlRequest@request-headers">&lt;xml-fragment/></con:setting>
+          </con:settings>
+          <con:endpoint>http://d3-mfssembed1.dev.medfusion.net:8185</con:endpoint>
+          <con:request>{
+  "birthDay": "string",
+  "firstName": "string",
+  "gender": "string",
+  "lastName": "string",
+  "zipCode": "string"
+}</con:request>
+          <con:credentials>
+            <con:selectedAuthProfile>No Authorization</con:selectedAuthProfile>
+            <con:authType>No Authorization</con:authType>
+          </con:credentials>
+          <con:jmsConfig JMSDeliveryMode="PERSISTENT"/>
+          <con:parameters/>
+          <con:parameterOrder>
+            <con:entry>customer_id</con:entry>
+          </con:parameterOrder>
+        </con:request>
+      </con:method>
+    </con:resource>
+    <con:resource name="CcdDocumentsMetadata" path="/bifrost-query-hd-service/v1/customers/{customer_id}/patients/{patient_demography_id}/documents/metadata" id="c931dda0-401c-4506-822b-87a346320400">
+      <con:settings/>
+      <con:parameters>
+        <con:parameter>
+          <con:name>customer_id</con:name>
+          <con:value>patient_demography_id</con:value>
+          <con:style>TEMPLATE</con:style>
+          <con:default>patient_demography_id</con:default>
+        </con:parameter>
+        <con:parameter>
+          <con:name>patient_demography_id</con:name>
+          <con:value/>
+          <con:style>TEMPLATE</con:style>
+          <con:default/>
+        </con:parameter>
+      </con:parameters>
+      <con:method name="Method 1" id="484b2e22-b7c4-4e12-b304-85499791d956" method="GET">
+        <con:settings/>
+        <con:parameters/>
+        <con:representation type="FAULT">
+          <con:mediaType>text/html;charset=utf-8</con:mediaType>
+          <con:status>404</con:status>
+          <con:params/>
+          <con:element>html</con:element>
+        </con:representation>
+        <con:representation type="FAULT">
+          <con:mediaType>application/json</con:mediaType>
+          <con:status>401</con:status>
+          <con:params/>
+          <con:element xmlns:met="http://d3-mfssembed1.dev.medfusion.net/​/bifrost-query-hd-service​/v1​/customers​/1​/patients​/546662​/documents​/metadata">met:Fault</con:element>
+        </con:representation>
+        <con:representation type="RESPONSE">
+          <con:mediaType>application/json</con:mediaType>
+          <con:status>200</con:status>
+          <con:params/>
+          <con:element>Response</con:element>
+        </con:representation>
+        <con:request name="CcdDocumentsMetadata" id="7ae91809-ffb9-4508-b277-4e453b6b45c2" mediaType="application/json">
+          <con:settings>
+            <con:setting id="com.eviware.soapui.impl.wsdl.WsdlRequest@request-headers">&lt;xml-fragment/></con:setting>
+          </con:settings>
+          <con:endpoint>http://d3-mfssembed1.dev.medfusion.net:8185</con:endpoint>
+          <con:request/>
+          <con:originalUri>http://d3-mfssembed1.dev.medfusion.net/bifrost-query-hd-service​/v1​/customers​/patient_demography_id​/patients​/​/documents​/metadata</con:originalUri>
+          <con:credentials>
+            <con:selectedAuthProfile>No Authorization</con:selectedAuthProfile>
+            <con:authType>No Authorization</con:authType>
+          </con:credentials>
+          <con:jmsConfig JMSDeliveryMode="PERSISTENT"/>
+          <con:parameters>
+            <con:entry key="customer_id" value=""/>
+            <con:entry key="patient_demography_id" value=""/>
+          </con:parameters>
+          <con:parameterOrder>
+            <con:entry>customer_id</con:entry>
+            <con:entry>patient_demography_id</con:entry>
+          </con:parameterOrder>
+        </con:request>
+      </con:method>
+    </con:resource>
+    <con:resource name="getCcdDocument" path="/bifrost-query-hd-service/v1/customers/{customer_id}/patients/{patient_demography_id}/documents/{document_id}/ccd" id="bb599c9c-873f-49e4-9a6f-a8d7b066340f">
+      <con:settings/>
+      <con:parameters>
+        <con:parameter required="true">
+          <con:name>customer_id</con:name>
+          <con:value>customer_id</con:value>
+          <con:style>TEMPLATE</con:style>
+          <con:default>customer_id</con:default>
+        </con:parameter>
+        <con:parameter required="true">
+          <con:name>patient_demography_id</con:name>
+          <con:value>patient_demography_id</con:value>
+          <con:style>TEMPLATE</con:style>
+          <con:default>patient_demography_id</con:default>
+        </con:parameter>
+        <con:parameter required="true">
+          <con:name>document_id</con:name>
+          <con:value>document_id</con:value>
+          <con:style>TEMPLATE</con:style>
+          <con:default>document_id</con:default>
+        </con:parameter>
+      </con:parameters>
+      <con:method name="Method 1" id="2a82dba3-c7a9-437a-830c-812559663054" method="GET">
+        <con:settings/>
+        <con:parameters/>
+        <con:request name="Request 1" id="5be19b36-095b-44b6-84d5-6932ed2ef8c1" mediaType="application/json">
+          <con:settings/>
+          <con:endpoint>http://d3-mfssembed1.dev.medfusion.net:8185</con:endpoint>
+          <con:request/>
+          <con:credentials>
+            <con:selectedAuthProfile>No Authorization</con:selectedAuthProfile>
+            <con:authType>No Authorization</con:authType>
+          </con:credentials>
+          <con:jmsConfig JMSDeliveryMode="PERSISTENT"/>
+          <con:parameters/>
+        </con:request>
+      </con:method>
+    </con:resource>
+    <con:resource name="DocumentFhirResources" path="/bifrost-query-hd-service/v1/customers/{customer_id}/patients/{patient_demography_id}/documents/{document_id}/resources" id="0353ec12-6545-48cb-8a96-1458b8dfaf77">
+      <con:settings/>
+      <con:parameters>
+        <con:parameter required="true">
+          <con:name>customer_id</con:name>
+          <con:value>customer_id</con:value>
+          <con:style>TEMPLATE</con:style>
+          <con:default>customer_id</con:default>
+        </con:parameter>
+        <con:parameter required="true">
+          <con:name>patient_demography_id</con:name>
+          <con:value>patient_demography_id</con:value>
+          <con:style>TEMPLATE</con:style>
+          <con:default>patient_demography_id</con:default>
+        </con:parameter>
+        <con:parameter required="true">
+          <con:name>document_id</con:name>
+          <con:value>document_id</con:value>
+          <con:style>TEMPLATE</con:style>
+          <con:default>document_id</con:default>
+        </con:parameter>
+      </con:parameters>
+      <con:method name="Method 1" id="6ca111e8-0fd0-4b75-b4f5-ea97004d70ad" method="GET">
+        <con:settings/>
+        <con:parameters/>
+        <con:representation type="RESPONSE">
+          <con:mediaType>application/json</con:mediaType>
+          <con:status>200</con:status>
+          <con:params/>
+          <con:element>Response</con:element>
+        </con:representation>
+        <con:representation type="FAULT">
+          <con:mediaType>application/json</con:mediaType>
+          <con:status>500 404</con:status>
+          <con:params/>
+          <con:element xmlns:res="http://d3-mfssembed1.dev.medfusion.net/bifrost-query-hd-service/v1/customers/1/patients/546662/documents/196943/resources">res:Fault</con:element>
+        </con:representation>
+        <con:request name="Request 1" id="a5d1bfe9-fda1-4555-84fe-85f50ca33cda" mediaType="application/json">
+          <con:settings/>
+          <con:endpoint>http://d3-mfssembed1.dev.medfusion.net:8185</con:endpoint>
+          <con:request/>
+          <con:credentials>
+            <con:authType>No Authorization</con:authType>
+          </con:credentials>
+          <con:jmsConfig JMSDeliveryMode="PERSISTENT"/>
+          <con:parameters/>
+        </con:request>
+      </con:method>
+    </con:resource>
+  </con:interface>
   <con:testSuite id="c0696381-04ae-4c1f-999f-72354167fab6" name="Scenarios: Creating a customer">
     <con:settings/>
     <con:savedRecentRuns>1</con:savedRecentRuns>
@@ -10421,6 +10744,509 @@ Take with food or milk.
             </con:credentials>
             <con:jmsConfig JMSDeliveryMode="PERSISTENT"/>
             <con:parameters/>
+          </con:restRequest>
+        </con:config>
+      </con:testStep>
+      <con:properties/>
+      <con:reportParameters/>
+    </con:testCase>
+    <con:properties/>
+    <con:reportParameters/>
+  </con:testSuite>
+  <con:testSuite id="ab12c5e9-a1f6-4a5c-a6d5-2acf6cec89da" name="Bifrost HD Manage Tests">
+    <con:settings/>
+    <con:savedRecentRuns>1</con:savedRecentRuns>
+    <con:runType>SEQUENTIAL</con:runType>
+    <con:testCase id="93b6a88e-47fa-4b1c-8988-df61b979c678" discardOkResults="false" failOnError="true" failTestCaseOnErrors="true" keepSession="false" name="Post to Get Token" searchProperties="true" timeout="0">
+      <con:settings/>
+      <con:savedRecentRuns>1</con:savedRecentRuns>
+      <con:testStep type="httprequest" name="POST to get token 1" id="0c3fb485-1c6e-48b5-8132-4ab26af898c2">
+        <con:settings/>
+        <con:config method="POST" xsi:type="con:HttpRequest" id="8ae11df4-4f10-4870-9017-b2df7f6e1a57" name="POST to get token 1" postQueryString="false" mediaType="application/x-www-form-urlencoded" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+          <con:settings>
+            <con:setting id="com.eviware.soapui.impl.wsdl.WsdlRequest@request-headers">&lt;xml-fragment/></con:setting>
+          </con:settings>
+          <con:endpoint>https://d1-ping-01.dev.medfusion.net/as/token.oauth2</con:endpoint>
+          <con:request/>
+          <con:assertion type="Valid HTTP Status Codes" id="54c6e7e2-2c13-4e97-8076-847d427be6da" name="Valid HTTP Status Codes">
+            <con:settings/>
+            <con:configuration>
+              <codes>200</codes>
+            </con:configuration>
+          </con:assertion>
+          <con:assertion type="JsonPath Existence Match" id="e8dd7307-20dc-4b62-9b7c-a6864fb4966f" name="Check for existence of [access_token]">
+            <con:configuration>
+              <path>$.access_token</path>
+              <content>true</content>
+              <allowWildcards>false</allowWildcards>
+              <ignoreNamspaceDifferences>false</ignoreNamspaceDifferences>
+              <ignoreComments>false</ignoreComments>
+            </con:configuration>
+          </con:assertion>
+          <con:assertion type="JsonPath Match" id="aee5e10e-16f8-4295-a51f-b183e79f8a30" name="Match content of [token_type]">
+            <con:configuration>
+              <path>$.token_type</path>
+              <content>Bearer</content>
+              <allowWildcards>false</allowWildcards>
+              <ignoreNamspaceDifferences>false</ignoreNamspaceDifferences>
+              <ignoreComments>false</ignoreComments>
+            </con:configuration>
+          </con:assertion>
+          <con:assertion type="JsonPath Existence Match" id="fb99b8be-c637-4733-a4e1-4b7f0d018814" name="Check for existence of [access_token]">
+            <con:configuration>
+              <path>$['access_token']</path>
+              <content>true</content>
+              <allowWildcards>false</allowWildcards>
+              <ignoreNamspaceDifferences>false</ignoreNamspaceDifferences>
+              <ignoreComments>false</ignoreComments>
+            </con:configuration>
+          </con:assertion>
+          <con:credentials>
+            <con:selectedAuthProfile>No Authorization</con:selectedAuthProfile>
+            <con:authType>No Authorization</con:authType>
+          </con:credentials>
+          <con:jmsConfig JMSDeliveryMode="PERSISTENT"/>
+          <con:jmsPropertyConfig/>
+          <con:parameters>
+            <con:parameter>
+              <con:name>grant_type</con:name>
+              <con:value>client_credentials</con:value>
+              <con:style>QUERY</con:style>
+              <con:default>client_credentials</con:default>
+              <con:path xsi:nil="true"/>
+              <con:description xsi:nil="true"/>
+            </con:parameter>
+            <con:parameter>
+              <con:name>client_id</con:name>
+              <con:value>SystemJwtValidationClientV1</con:value>
+              <con:style>QUERY</con:style>
+              <con:default>SystemJwtValidationClientV1</con:default>
+              <con:path xsi:nil="true"/>
+              <con:description xsi:nil="true"/>
+            </con:parameter>
+            <con:parameter>
+              <con:name>client_secret</con:name>
+              <con:value>lWiNlRcD1snTlSNXmi0GfGFYRHmNtf1iFoawSKAL4M1kICsALm1pF4gwwvEddpIF</con:value>
+              <con:style>QUERY</con:style>
+              <con:default>lWiNlRcD1snTlSNXmi0GfGFYRHmNtf1iFoawSKAL4M1kICsALm1pF4gwwvEddpIF</con:default>
+              <con:path xsi:nil="true"/>
+              <con:description xsi:nil="true"/>
+            </con:parameter>
+          </con:parameters>
+          <con:environmentSpec>
+            <con:entry environmentId="f748b448-8a36-4bf5-b065-27d73d62ea00">
+              <con:authProfile>Inherit From Parent</con:authProfile>
+            </con:entry>
+          </con:environmentSpec>
+        </con:config>
+      </con:testStep>
+      <con:properties/>
+      <con:reportParameters/>
+    </con:testCase>
+    <con:testCase id="e2d21ead-ceef-4bc3-b914-3529c0b6b4b7" discardOkResults="false" failOnError="true" failTestCaseOnErrors="true" keepSession="false" name="Get Ccd document for valid documentid" searchProperties="true" timeout="0">
+      <con:settings/>
+      <con:savedRecentRuns>1</con:savedRecentRuns>
+      <con:testStep type="restrequest" name="REST Request" id="34d9f2c2-de25-408b-8b59-45d1697e656a">
+        <con:settings/>
+        <con:config service="Bifrost HD Manage Service" resourcePath="/bifrost-manage-hd-service/v1/ccd/PORTAL/{document_id}" methodName="" xsi:type="con:RestRequestStep" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+          <con:restRequest name="REST Request" id="adbb9250-d5d4-4c39-b0f2-f40aab257de6" mediaType="application/json">
+            <con:settings>
+              <con:setting id="com.eviware.soapui.impl.wsdl.WsdlRequest@request-headers">&lt;entry key="Authorization" value="Bearer ${#[Bifrost HD Manage Tests#Post to Get Token#POST to get token 1]#Response#$['access_token']}" xmlns="http://eviware.com/soapui/config"/></con:setting>
+            </con:settings>
+            <con:endpoint>http://d3-mfssembed1.dev.medfusion.net:8186</con:endpoint>
+            <con:request/>
+            <con:originalUri>http://d3-mfssembed1.dev.medfusion.net/bifrost-manage-hd-service/v1/ccd/PORTAL/5dedb7c80f9044650660d953</con:originalUri>
+            <con:assertion type="Valid HTTP Status Codes" id="a61b198b-5e1f-4d6c-85a6-10341b741e0d" name="Valid HTTP Status Codes">
+              <con:settings/>
+              <con:configuration>
+                <codes>200</codes>
+              </con:configuration>
+            </con:assertion>
+            <con:assertion type="Response SLA Assertion" id="a57c4b35-345d-4e73-926f-556b93995bd0" name="Response SLA">
+              <con:configuration>
+                <SLA>200</SLA>
+              </con:configuration>
+            </con:assertion>
+            <con:credentials>
+              <con:selectedAuthProfile>Valid Bearer Token</con:selectedAuthProfile>
+              <con:authType>No Authorization</con:authType>
+            </con:credentials>
+            <con:jmsConfig JMSDeliveryMode="PERSISTENT"/>
+            <con:parameters>
+              <con:entry key="source" value="PORTAL"/>
+              <con:entry key="postProcessMethod" value="DATA_SYNC_POST_PROCESS"/>
+              <con:entry key="document_id" value="5dedb7c80f9044650660d953"/>
+            </con:parameters>
+            <con:parameterOrder>
+              <con:entry>document_id</con:entry>
+              <con:entry>source</con:entry>
+              <con:entry>postProcessMethod</con:entry>
+            </con:parameterOrder>
+          </con:restRequest>
+        </con:config>
+      </con:testStep>
+      <con:properties/>
+      <con:reportParameters/>
+    </con:testCase>
+    <con:testCase id="dbaf9269-326a-4a64-8129-9d4a03ec7756" discardOkResults="false" failOnError="true" failTestCaseOnErrors="true" keepSession="false" name="Get Ccd document for InValid documentid" searchProperties="true" timeout="0">
+      <con:settings/>
+      <con:savedRecentRuns>1</con:savedRecentRuns>
+      <con:testStep type="restrequest" name="REST Request" id="ae8470c5-c5ca-4050-84fd-446300d29464">
+        <con:settings/>
+        <con:config service="Bifrost HD Manage Service" resourcePath="/bifrost-manage-hd-service/v1/ccd/PORTAL/{document_id}" methodName="" xsi:type="con:RestRequestStep" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+          <con:restRequest name="REST Request" id="adbb9250-d5d4-4c39-b0f2-f40aab257de6" mediaType="application/json">
+            <con:settings>
+              <con:setting id="com.eviware.soapui.impl.wsdl.WsdlRequest@request-headers">&lt;entry key="Authorization" value="Bearer ${#[Bifrost HD Manage Tests#Post to Get Token#POST to get token 1]#Response#$['access_token']}" xmlns="http://eviware.com/soapui/config"/></con:setting>
+            </con:settings>
+            <con:endpoint>http://d3-mfssembed1.dev.medfusion.net:8186</con:endpoint>
+            <con:request/>
+            <con:originalUri>http://d3-mfssembed1.dev.medfusion.net/bifrost-manage-hd-service/v1/ccd/PORTAL/5dedb7c80f9044650660d953</con:originalUri>
+            <con:assertion type="Valid HTTP Status Codes" id="a61b198b-5e1f-4d6c-85a6-10341b741e0d" name="Valid HTTP Status Codes">
+              <con:settings/>
+              <con:configuration>
+                <codes>404</codes>
+              </con:configuration>
+            </con:assertion>
+            <con:assertion type="Response SLA Assertion" id="a57c4b35-345d-4e73-926f-556b93995bd0" name="Response SLA">
+              <con:configuration>
+                <SLA>200</SLA>
+              </con:configuration>
+            </con:assertion>
+            <con:credentials>
+              <con:selectedAuthProfile>Valid Bearer Token</con:selectedAuthProfile>
+              <con:authType>No Authorization</con:authType>
+            </con:credentials>
+            <con:jmsConfig JMSDeliveryMode="PERSISTENT"/>
+            <con:parameters>
+              <con:entry key="source" value="PORTAL"/>
+              <con:entry key="postProcessMethod" value="DATA_SYNC_POST_PROCESS"/>
+              <con:entry key="document_id" value="5dedb7c80f9044650660d9"/>
+            </con:parameters>
+            <con:parameterOrder>
+              <con:entry>document_id</con:entry>
+              <con:entry>source</con:entry>
+              <con:entry>postProcessMethod</con:entry>
+            </con:parameterOrder>
+          </con:restRequest>
+        </con:config>
+      </con:testStep>
+      <con:properties/>
+      <con:reportParameters/>
+    </con:testCase>
+    <con:testCase id="9929ddea-0468-45ec-8cd9-c1cbe4891e3e" discardOkResults="false" failOnError="true" failTestCaseOnErrors="true" keepSession="false" name="Get Ccd Document in Fhir for valid documentId" searchProperties="true" timeout="0">
+      <con:settings/>
+      <con:savedRecentRuns>1</con:savedRecentRuns>
+      <con:testStep type="restrequest" name="REST Request" id="cd9a1a8d-574c-43aa-b581-970b50b80b2a">
+        <con:settings/>
+        <con:config service="Bifrost HD Manage Service" resourcePath="/bifrost-manage-hd-service/v1/ccd/PORTAL/{document_id}/fhir" methodName="Method 1" xsi:type="con:RestRequestStep" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+          <con:restRequest name="REST Request" id="b498d414-5583-4e12-b877-14996f784a2a" mediaType="application/json">
+            <con:settings>
+              <con:setting id="com.eviware.soapui.impl.wsdl.WsdlRequest@request-headers">&lt;entry key="Authorization" value="Bearer ${#[Bifrost HD Manage Tests#Post to Get Token#POST to get token 1]#Response#$['access_token']}" xmlns="http://eviware.com/soapui/config"/></con:setting>
+            </con:settings>
+            <con:endpoint>http://d3-mfssembed1.dev.medfusion.net:8186</con:endpoint>
+            <con:request/>
+            <con:originalUri>http://d3-mfssembed1.dev.medfusion.net/bifrost-manage-hd-service/v1/ccd/source/document_id/fhir</con:originalUri>
+            <con:assertion type="Valid HTTP Status Codes" id="8c156d1a-4cef-4dc8-bdbb-bd7127726762" name="Valid HTTP Status Codes">
+              <con:settings/>
+              <con:configuration>
+                <codes>200</codes>
+              </con:configuration>
+            </con:assertion>
+            <con:credentials>
+              <con:selectedAuthProfile>No Authorization</con:selectedAuthProfile>
+              <con:authType>No Authorization</con:authType>
+            </con:credentials>
+            <con:jmsConfig JMSDeliveryMode="PERSISTENT"/>
+            <con:parameters>
+              <con:entry key="source" value="PORTAL"/>
+              <con:entry key="document_id" value="5dedb7c80f9044650660d953"/>
+            </con:parameters>
+          </con:restRequest>
+        </con:config>
+      </con:testStep>
+      <con:properties/>
+      <con:reportParameters/>
+    </con:testCase>
+    <con:testCase id="8b797cc8-c73f-46b3-bf3c-cca5c7bb9557" discardOkResults="false" failOnError="true" failTestCaseOnErrors="true" keepSession="false" name="Get Ccd Document in Fhir for InValid documentId" searchProperties="true" timeout="0">
+      <con:settings/>
+      <con:savedRecentRuns>1</con:savedRecentRuns>
+      <con:testStep type="restrequest" name="REST Request" id="065cb0f4-e450-4e95-839e-db879332a616">
+        <con:settings/>
+        <con:config service="Bifrost HD Manage Service" resourcePath="/bifrost-manage-hd-service/v1/ccd/PORTAL/{document_id}/fhir" methodName="Method 1" xsi:type="con:RestRequestStep" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+          <con:restRequest name="REST Request" id="b498d414-5583-4e12-b877-14996f784a2a" mediaType="application/json">
+            <con:settings>
+              <con:setting id="com.eviware.soapui.impl.wsdl.WsdlRequest@request-headers">&lt;entry key="Authorization" value="Bearer ${#[Bifrost HD Manage Tests#Post to Get Token#POST to get token 1]#Response#$['access_token']}" xmlns="http://eviware.com/soapui/config"/></con:setting>
+            </con:settings>
+            <con:endpoint>http://d3-mfssembed1.dev.medfusion.net:8186</con:endpoint>
+            <con:request/>
+            <con:originalUri>http://d3-mfssembed1.dev.medfusion.net/bifrost-manage-hd-service/v1/ccd/source/document_id/fhir</con:originalUri>
+            <con:assertion type="Valid HTTP Status Codes" id="252ec675-c36f-4b99-9103-485ccb21cdc3" name="Valid HTTP Status Codes">
+              <con:settings/>
+              <con:configuration>
+                <codes>404</codes>
+              </con:configuration>
+            </con:assertion>
+            <con:credentials>
+              <con:selectedAuthProfile>No Authorization</con:selectedAuthProfile>
+              <con:authType>No Authorization</con:authType>
+            </con:credentials>
+            <con:jmsConfig JMSDeliveryMode="PERSISTENT"/>
+            <con:parameters>
+              <con:entry key="source" value="PORTAL"/>
+              <con:entry key="document_id" value="5dedb7c80f9044650660d"/>
+            </con:parameters>
+          </con:restRequest>
+        </con:config>
+      </con:testStep>
+      <con:properties/>
+      <con:reportParameters/>
+    </con:testCase>
+    <con:properties/>
+    <con:reportParameters/>
+  </con:testSuite>
+  <con:testSuite id="2bd6a9e5-ac16-4a8d-a970-91b8e64f4519" name="Bifrost Query HD Service Tests">
+    <con:settings/>
+    <con:savedRecentRuns>1</con:savedRecentRuns>
+    <con:runType>SEQUENTIAL</con:runType>
+    <con:testCase id="2e21f530-f377-4f21-9f86-19c28bbfc5c0" discardOkResults="false" failOnError="true" failTestCaseOnErrors="true" keepSession="false" name="Post to Get Token" searchProperties="true" timeout="0">
+      <con:settings/>
+      <con:savedRecentRuns>1</con:savedRecentRuns>
+      <con:testStep type="httprequest" name="POST to get token 1" id="d56d402e-16b3-4afc-89c5-1d83345c6aff">
+        <con:settings/>
+        <con:config method="POST" xsi:type="con:HttpRequest" id="8ae11df4-4f10-4870-9017-b2df7f6e1a57" name="POST to get token 1" postQueryString="false" mediaType="application/x-www-form-urlencoded" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+          <con:settings>
+            <con:setting id="com.eviware.soapui.impl.wsdl.WsdlRequest@request-headers">&lt;xml-fragment/></con:setting>
+          </con:settings>
+          <con:endpoint>https://d1-ping-01.dev.medfusion.net/as/token.oauth2</con:endpoint>
+          <con:request/>
+          <con:assertion type="Valid HTTP Status Codes" id="54c6e7e2-2c13-4e97-8076-847d427be6da" name="Valid HTTP Status Codes">
+            <con:settings/>
+            <con:configuration>
+              <codes>200</codes>
+            </con:configuration>
+          </con:assertion>
+          <con:assertion type="JsonPath Existence Match" id="e8dd7307-20dc-4b62-9b7c-a6864fb4966f" name="Check for existence of [access_token]">
+            <con:configuration>
+              <path>$.access_token</path>
+              <content>true</content>
+              <allowWildcards>false</allowWildcards>
+              <ignoreNamspaceDifferences>false</ignoreNamspaceDifferences>
+              <ignoreComments>false</ignoreComments>
+            </con:configuration>
+          </con:assertion>
+          <con:assertion type="JsonPath Match" id="aee5e10e-16f8-4295-a51f-b183e79f8a30" name="Match content of [token_type]">
+            <con:configuration>
+              <path>$.token_type</path>
+              <content>Bearer</content>
+              <allowWildcards>false</allowWildcards>
+              <ignoreNamspaceDifferences>false</ignoreNamspaceDifferences>
+              <ignoreComments>false</ignoreComments>
+            </con:configuration>
+          </con:assertion>
+          <con:assertion type="JsonPath Existence Match" id="fb99b8be-c637-4733-a4e1-4b7f0d018814" name="Check for existence of [access_token]">
+            <con:configuration>
+              <path>$['access_token']</path>
+              <content>true</content>
+              <allowWildcards>false</allowWildcards>
+              <ignoreNamspaceDifferences>false</ignoreNamspaceDifferences>
+              <ignoreComments>false</ignoreComments>
+            </con:configuration>
+          </con:assertion>
+          <con:credentials>
+            <con:selectedAuthProfile>No Authorization</con:selectedAuthProfile>
+            <con:authType>No Authorization</con:authType>
+          </con:credentials>
+          <con:jmsConfig JMSDeliveryMode="PERSISTENT"/>
+          <con:jmsPropertyConfig/>
+          <con:parameters>
+            <con:parameter>
+              <con:name>grant_type</con:name>
+              <con:value>client_credentials</con:value>
+              <con:style>QUERY</con:style>
+              <con:default>client_credentials</con:default>
+              <con:path xsi:nil="true"/>
+              <con:description xsi:nil="true"/>
+            </con:parameter>
+            <con:parameter>
+              <con:name>client_id</con:name>
+              <con:value>SystemJwtValidationClientV1</con:value>
+              <con:style>QUERY</con:style>
+              <con:default>SystemJwtValidationClientV1</con:default>
+              <con:path xsi:nil="true"/>
+              <con:description xsi:nil="true"/>
+            </con:parameter>
+            <con:parameter>
+              <con:name>client_secret</con:name>
+              <con:value>lWiNlRcD1snTlSNXmi0GfGFYRHmNtf1iFoawSKAL4M1kICsALm1pF4gwwvEddpIF</con:value>
+              <con:style>QUERY</con:style>
+              <con:default>lWiNlRcD1snTlSNXmi0GfGFYRHmNtf1iFoawSKAL4M1kICsALm1pF4gwwvEddpIF</con:default>
+              <con:path xsi:nil="true"/>
+              <con:description xsi:nil="true"/>
+            </con:parameter>
+          </con:parameters>
+          <con:environmentSpec>
+            <con:entry environmentId="f748b448-8a36-4bf5-b065-27d73d62ea00">
+              <con:authProfile>Inherit From Parent</con:authProfile>
+            </con:entry>
+          </con:environmentSpec>
+        </con:config>
+      </con:testStep>
+      <con:properties/>
+      <con:reportParameters/>
+    </con:testCase>
+    <con:testCase id="2bd9db54-bfce-4ad8-9069-a31c1ba9ad7d" discardOkResults="false" failOnError="true" failTestCaseOnErrors="true" keepSession="false" name="Get Patient DemogId" searchProperties="true" timeout="0">
+      <con:settings/>
+      <con:savedRecentRuns>1</con:savedRecentRuns>
+      <con:testStep type="restrequest" name="REST Request" id="5578f950-4b2b-4585-b5ad-dc8369676053">
+        <con:settings/>
+        <con:config service="Bifrost Query HD Service" resourcePath="/bifrost-query-hd-service/v1/customers/{customer_id}/patients/search" methodName="" xsi:type="con:RestRequestStep" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+          <con:restRequest name="REST Request" id="9e6b916d-4dfa-4fbd-90f4-9fa2f61031e4" mediaType="application/json" postQueryString="false">
+            <con:settings>
+              <con:setting id="com.eviware.soapui.impl.wsdl.WsdlRequest@request-headers">&lt;entry key="Authorization" value="Bearer ${#[Bifrost Query HD Service Tests#Post to Get Token#POST to get token 1]#Response#$['access_token']}" xmlns="http://eviware.com/soapui/config"/></con:setting>
+              <con:setting id="RecordRequestRepresentations">false</con:setting>
+            </con:settings>
+            <con:endpoint>http://d3-mfssembed1.dev.medfusion.net:8185</con:endpoint>
+            <con:request>{
+  "birthDay": "1990-01-01",
+  "firstName": "testphrsync",
+  "gender": "MALE",
+  "lastName": "testphrsync",
+  "zipCode": "12345"
+}</con:request>
+            <con:originalUri>http://d3-mfssembed1.dev.medfusion.net/bifrost-query-hd-service/v1/customers/d1fe81f0-b057-493f-b320-0c681726aad4/patients/search</con:originalUri>
+            <con:assertion type="Valid HTTP Status Codes" id="5874c833-41ab-4af3-8414-71b80ddead64" name="Valid HTTP Status Codes">
+              <con:settings/>
+              <con:configuration>
+                <codes>200</codes>
+              </con:configuration>
+            </con:assertion>
+            <con:assertion type="JsonPath Existence Match" id="33fe7a5b-7d72-44eb-b74d-7ddb383e3371" name="Check for existence of [id]">
+              <con:configuration>
+                <path>$[0]['id']</path>
+                <content>true</content>
+                <allowWildcards>false</allowWildcards>
+                <ignoreNamspaceDifferences>false</ignoreNamspaceDifferences>
+                <ignoreComments>false</ignoreComments>
+              </con:configuration>
+            </con:assertion>
+            <con:credentials>
+              <con:selectedAuthProfile>No Authorization</con:selectedAuthProfile>
+              <con:authType>No Authorization</con:authType>
+            </con:credentials>
+            <con:jmsConfig JMSDeliveryMode="PERSISTENT"/>
+            <con:parameters>
+              <con:entry key="customer_id" value="1"/>
+            </con:parameters>
+            <con:parameterOrder>
+              <con:entry>customer_id</con:entry>
+            </con:parameterOrder>
+          </con:restRequest>
+        </con:config>
+      </con:testStep>
+      <con:properties/>
+      <con:reportParameters/>
+    </con:testCase>
+    <con:testCase id="ccf5d5d8-669a-417d-abcb-e9c6d3eb1a2b" discardOkResults="false" failOnError="true" failTestCaseOnErrors="true" keepSession="false" name="Get Documentid for valid PatientDemogId" searchProperties="true" timeout="0">
+      <con:settings/>
+      <con:savedRecentRuns>1</con:savedRecentRuns>
+      <con:testStep type="restrequest" name="REST Request" id="3c6fbf64-ea34-4b01-b827-0627583e1936">
+        <con:settings/>
+        <con:config service="Bifrost Query HD Service" resourcePath="/bifrost-query-hd-service/v1/customers/{customer_id}/patients/{patient_demography_id}/documents/metadata" methodName="Method 1" xsi:type="con:RestRequestStep" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+          <con:restRequest name="REST Request" id="7ae91809-ffb9-4508-b277-4e453b6b45c2" mediaType="application/json">
+            <con:settings>
+              <con:setting id="com.eviware.soapui.impl.wsdl.WsdlRequest@request-headers">&lt;entry key="Authorization" value="Bearer ${#[Bifrost Query HD Service Tests#Post to Get Token#POST to get token 1]#Response#$['access_token']}" xmlns="http://eviware.com/soapui/config"/></con:setting>
+            </con:settings>
+            <con:endpoint>http://d3-mfssembed1.dev.medfusion.net:8185</con:endpoint>
+            <con:request/>
+            <con:originalUri>http://d3-mfssembed1.dev.medfusion.net/​/bifrost-query-hd-service​/v1​/customers​/1​/patients​/546662​/documents​/metadata</con:originalUri>
+            <con:assertion type="Valid HTTP Status Codes" id="f12b34cb-a984-4bf4-9abd-bc1b6c0a6306" name="Valid HTTP Status Codes">
+              <con:settings/>
+              <con:configuration>
+                <codes>200</codes>
+              </con:configuration>
+            </con:assertion>
+            <con:credentials>
+              <con:selectedAuthProfile>No Authorization</con:selectedAuthProfile>
+              <con:authType>No Authorization</con:authType>
+            </con:credentials>
+            <con:jmsConfig JMSDeliveryMode="PERSISTENT"/>
+            <con:parameters>
+              <con:entry key="customer_id" value="1"/>
+              <con:entry key="patient_demography_id" value="546662"/>
+            </con:parameters>
+            <con:parameterOrder>
+              <con:entry>customer_id</con:entry>
+              <con:entry>patient_demography_id</con:entry>
+            </con:parameterOrder>
+          </con:restRequest>
+        </con:config>
+      </con:testStep>
+      <con:properties/>
+      <con:reportParameters/>
+    </con:testCase>
+    <con:testCase id="81d8d29a-2853-48a9-a792-3f9ccf0f1ae2" discardOkResults="false" failOnError="true" failTestCaseOnErrors="true" keepSession="false" name="Get Document Fhir for valid documentId" searchProperties="true" timeout="0">
+      <con:settings/>
+      <con:testStep type="restrequest" name="REST Request" id="65527121-87c0-495b-a676-4ce138e6f6de">
+        <con:settings/>
+        <con:config service="Bifrost Query HD Service" resourcePath="/bifrost-query-hd-service/v1/customers/{customer_id}/patients/{patient_demography_id}/documents/{document_id}/resources" methodName="Method 1" xsi:type="con:RestRequestStep" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+          <con:restRequest name="REST Request" id="a5d1bfe9-fda1-4555-84fe-85f50ca33cda" mediaType="application/json">
+            <con:settings>
+              <con:setting id="com.eviware.soapui.impl.wsdl.WsdlRequest@request-headers">&lt;entry key="Authorization" value="Bearer ${#[Bifrost Query HD Service Tests#Post to Get Token#POST to get token 1]#Response#$['access_token']}" xmlns="http://eviware.com/soapui/config"/></con:setting>
+            </con:settings>
+            <con:endpoint>http://d3-mfssembed1.dev.medfusion.net:8185</con:endpoint>
+            <con:request/>
+            <con:originalUri>http://d3-mfssembed1.dev.medfusion.net/bifrost-query-hd-service/v1/customers/1/patients/546662/documents/196943/resources</con:originalUri>
+            <con:assertion type="Valid HTTP Status Codes" id="b366bbe5-1cce-45b5-8739-5f824fb135d5" name="Valid HTTP Status Codes">
+              <con:settings/>
+              <con:configuration>
+                <codes>200</codes>
+              </con:configuration>
+            </con:assertion>
+            <con:credentials>
+              <con:selectedAuthProfile>No Authorization</con:selectedAuthProfile>
+              <con:authType>No Authorization</con:authType>
+            </con:credentials>
+            <con:jmsConfig JMSDeliveryMode="PERSISTENT"/>
+            <con:parameters>
+              <con:entry key="customer_id" value="1"/>
+              <con:entry key="document_id" value="196943"/>
+              <con:entry key="patient_demography_id" value="546662"/>
+            </con:parameters>
+          </con:restRequest>
+        </con:config>
+      </con:testStep>
+      <con:properties/>
+      <con:reportParameters/>
+    </con:testCase>
+    <con:testCase id="8cd3f4da-647b-4569-9b19-1091fadaffd3" discardOkResults="false" failOnError="true" failTestCaseOnErrors="true" keepSession="false" name="Get Document Fhir for Invalid documentId" searchProperties="true" timeout="0">
+      <con:settings/>
+      <con:savedRecentRuns>1</con:savedRecentRuns>
+      <con:testStep type="restrequest" name="REST Request" id="39e33c01-499c-4d4d-b141-810865558a2b">
+        <con:settings/>
+        <con:config service="Bifrost Query HD Service" resourcePath="/bifrost-query-hd-service/v1/customers/{customer_id}/patients/{patient_demography_id}/documents/{document_id}/resources" methodName="Method 1" xsi:type="con:RestRequestStep" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+          <con:restRequest name="REST Request" id="a5d1bfe9-fda1-4555-84fe-85f50ca33cda" mediaType="application/json">
+            <con:settings>
+              <con:setting id="com.eviware.soapui.impl.wsdl.WsdlRequest@request-headers">&lt;entry key="Authorization" value="Bearer ${#[Bifrost Query HD Service Tests#Post to Get Token#POST to get token 1]#Response#$['access_token']}" xmlns="http://eviware.com/soapui/config"/></con:setting>
+            </con:settings>
+            <con:endpoint>http://d3-mfssembed1.dev.medfusion.net:8185</con:endpoint>
+            <con:request/>
+            <con:originalUri>http://d3-mfssembed1.dev.medfusion.net/bifrost-query-hd-service/v1/customers/1/patients/546662/documents/196943/resources</con:originalUri>
+            <con:assertion type="Valid HTTP Status Codes" id="b366bbe5-1cce-45b5-8739-5f824fb135d5" name="Valid HTTP Status Codes">
+              <con:settings/>
+              <con:configuration>
+                <codes>404</codes>
+              </con:configuration>
+            </con:assertion>
+            <con:credentials>
+              <con:selectedAuthProfile>No Authorization</con:selectedAuthProfile>
+              <con:authType>No Authorization</con:authType>
+            </con:credentials>
+            <con:jmsConfig JMSDeliveryMode="PERSISTENT"/>
+            <con:parameters>
+              <con:entry key="customer_id" value="1"/>
+              <con:entry key="document_id" value="196941"/>
+              <con:entry key="patient_demography_id" value="546662"/>
+            </con:parameters>
           </con:restRequest>
         </con:config>
       </con:testStep>
