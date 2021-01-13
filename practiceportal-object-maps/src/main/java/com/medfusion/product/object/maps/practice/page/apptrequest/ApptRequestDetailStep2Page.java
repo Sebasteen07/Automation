@@ -40,18 +40,18 @@ public class ApptRequestDetailStep2Page extends BasePageObject {
 		return result;
 	}
 
-
 	/**
 	 * Will process the appt request and redirect to the Appt Request search page
 	 * 
 	 * @return the appt request search page
+	 * @throws InterruptedException
 	 */
-	public ApptRequestSearchPage processApptRequest() {
+	public ApptRequestSearchPage processApptRequest() throws InterruptedException {
+		Thread.sleep(10000);
 		IHGUtil.PrintMethodName();
 		PracticeUtil.setPracticeFrame(driver);
-
-		IHGUtil.waitForElement(driver, 20, btnProcessApptRequest);
-		btnProcessApptRequest.click();
+		IHGUtil.waitForElement(driver, 60, btnProcessApptRequest);
+		javascriptClick(btnProcessApptRequest);
 		return PageFactory.initElements(driver, ApptRequestSearchPage.class);
 	}
 
