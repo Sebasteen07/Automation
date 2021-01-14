@@ -1,6 +1,7 @@
 // Copyright 2018-2020 NXGN Management, LLC. All Rights Reserved.
 package com.medfusion.product.object.maps.patientportal2.page.PrescriptionsPage;
 
+import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertTrue;
 
 import org.openqa.selenium.StaleElementReferenceException;
@@ -109,7 +110,7 @@ public class JalapenoPrescriptionsPage extends JalapenoMenu {
 	@FindBy(how = How.XPATH, using = "//*[@class='feedback']/following::*[contains(text(),'Prescription Renewa')]")
 	public WebElement renewalConfirmationmessage;
 
-	@FindBy(how = How.XPATH, using = "//*[@id='idff']")
+	@FindBy(how = How.ID, using = "medicationForm")
 	public WebElement Medicationlist;
 
 
@@ -140,6 +141,7 @@ public class JalapenoPrescriptionsPage extends JalapenoMenu {
 			try {
 				Select providerSelect = new Select(providerDropdown);
 				providerSelect.selectByIndex(1);
+
 			} catch (StaleElementReferenceException ex) {
 				log("Dont know what's going on here");
 			}
@@ -252,8 +254,16 @@ public class JalapenoPrescriptionsPage extends JalapenoMenu {
 	}
 
 	public void validatemedication(String productName) {
-		driver.switchTo().frame("iframebody");
+		driver.switchTo().frame("iframe");
 		assertTrue(Medicationlist.getText().contains(productName));
+		driver.switchTo().defaultContent();
+
 	}
 
+	public void validateDeletedMedication(String productName) {
+		driver.switchTo().frame("iframe");
+		assertFalse(Medicationlist.getText().contains(productName));
+		driver.switchTo().defaultContent();
+
+	}
 }

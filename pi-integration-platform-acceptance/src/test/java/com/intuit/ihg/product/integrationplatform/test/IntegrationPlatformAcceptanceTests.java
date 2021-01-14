@@ -1,3 +1,4 @@
+// Copyright 2013-2020 NXGN Management, LLC. All Rights Reserved.
 package com.intuit.ihg.product.integrationplatform.test;
 
 import static org.testng.Assert.assertNotNull;
@@ -990,7 +991,7 @@ public class IntegrationPlatformAcceptanceTests extends BaseTestNGWebDriver {
 
 
 	@Test(enabled = true, groups = {"AcceptanceTests"}, retryAnalyzer = RetryAnalyzer.class)
-	public void testMedicationPosted() throws Exception {
+	public void testAddMedication() throws Exception {
 
 		log("Test Case: End to end testing Medication Posted");
 		log("Execution Environment: " + IHGUtil.getEnvironmentType());
@@ -1026,7 +1027,9 @@ public class IntegrationPlatformAcceptanceTests extends BaseTestNGWebDriver {
 
 		log("Step 3: Do medication Post Request");
 		MedicationPayLoad MedicationObj = new MedicationPayLoad();
-		String payload = MedicationObj.getMedicationPayLoad(testData, 1, productName, testData.getMFPatientID());
+		String MedicationID = MedicationPayLoad.randomNumbers(12);
+		log("MedicationID Posted is : " + MedicationID);
+		String payload = MedicationObj.getMedicationPayLoad(testData, 1, productName, testData.getMFPatientID(), "ACTIVE", MedicationID);
 		log("payload: " + payload);
 		String processingUrl = RestUtils.setupHttpPostRequest(testData.getRestUrl(), payload, testData.getResponsePath());
 		log("Step 4: Get processing status until it is completed");
@@ -1055,6 +1058,98 @@ public class IntegrationPlatformAcceptanceTests extends BaseTestNGWebDriver {
 
 
 		log("Step 6: Logout of Patient Portal");
+		prescriptionsPage.clickOnLogout();
+
+
+	}
+
+
+	@Test(enabled = true, groups = {"AcceptanceTests"}, retryAnalyzer = RetryAnalyzer.class)
+	public void testDeleteMedicationAdded() throws Exception {
+
+		log("Test Case: End to end testing Medication Posted");
+		log("Execution Environment: " + IHGUtil.getEnvironmentType());
+		log("Execution Browser: " + TestConfig.getBrowserType());
+
+		Long timestamp = System.currentTimeMillis();
+		log("Step 1: Get Data from Excel");
+		Medication aptData = new Medication();
+		MedicationTestData testData = new MedicationTestData(aptData);
+
+		log("Url: " + testData.getUrl());
+		log("User Name: " + testData.getUserName());
+		log("Password: " + testData.getPassword());
+		log("Rest Url: " + testData.getRestUrl());
+		log("Response Path: " + testData.getResponsePath());
+		log("From: " + testData.getFrom());
+		log("AppointmentPath: " + testData.getMedicationPath());
+		log("OAuthProperty: " + testData.getOAuthProperty());
+		log("OAuthKeyStore: " + testData.getOAuthKeyStore());
+		log("OAuthAppToken: " + testData.getOAuthAppToken());
+		log("OAuthUsername: " + testData.getOAuthUsername());
+		log("OAuthPassword: " + testData.getOAuthPassword());
+		log("PracticePassword: " + testData.getPracticePassword());
+		log("Practice User Name: " + testData.getPracticeUserName());
+		log("Patient's First Name: " + testData.getFirstName());
+		log("Patient's Last Name: " + testData.getLastName());
+		log("MedfusionMemeberID: " + testData.getMFPatientID());
+
+		String productName = "Diclofenac-500";
+		log("Step 2: Setup Oauth client");
+		RestUtils.oauthSetup(testData.getOAuthKeyStore(), testData.getOAuthProperty(), testData.getOAuthAppToken(), testData.getOAuthUsername(),
+				testData.getOAuthPassword());
+
+		log("Step 3: Do medication Post Request to add the medication");
+		MedicationPayLoad MedicationObj = new MedicationPayLoad();
+		String MedicationID = MedicationPayLoad.randomNumbers(12);
+		log("MedicationID Posted is : " + MedicationID);
+		String payload = MedicationObj.getMedicationPayLoad(testData, 1, productName, testData.getMFPatientID(), "ACTIVE", MedicationID);
+		log("payload: " + payload);
+		String processingUrl = RestUtils.setupHttpPostRequest(testData.getRestUrl(), payload, testData.getResponsePath());
+		log("Step 4: Get processing status until it is completed");
+		boolean completed = false;
+		for (int j = 0; j < 3; j++) {
+			Thread.sleep(60000);
+			RestUtils.setupHttpGetRequest(processingUrl, testData.getResponsePath());
+			if (RestUtils.isMessageProcessingCompleted(testData.getResponsePath())) {
+				completed = true;
+				break;
+			}
+		}
+		log("Step 5: LogIn");
+		JalapenoLoginPage loginPage = new JalapenoLoginPage(driver, testData.getUrl());
+		JalapenoHomePage homePage = loginPage.login(testData.getUserName(), testData.getPassword());
+
+		log("Step 6: Click on Prescription Button on Home Page");
+		JalapenoPrescriptionsPage prescriptionsPage = homePage.clickOnPrescriptions(driver);
+		Thread.sleep(15000);
+		prescriptionsPage.clickContinueButton(driver);
+		Thread.sleep(15000);
+
+		log("Step 7: Verify the medication Posted");
+		prescriptionsPage.validatemedication(productName);
+		
+		log("Step 8: Post Same Medication with DELETED status to remove the medication from portal");
+
+		String deletepayload = MedicationObj.getMedicationPayLoad(testData, 1, productName, testData.getMFPatientID(), "DELETED", MedicationID);
+		log("payload: " + deletepayload);
+		String processingUrlDelete = RestUtils.setupHttpPostRequest(testData.getRestUrl(), deletepayload, testData.getResponsePath());
+		log("Step 9: Get processing status until it is completed");
+		boolean completed2 = false;
+		for (int j = 0; j < 3; j++) {
+			Thread.sleep(60000);
+			RestUtils.setupHttpGetRequest(processingUrlDelete, testData.getResponsePath());
+			if (RestUtils.isMessageProcessingCompleted(testData.getResponsePath())) {
+				completed2 = true;
+				break;
+			}
+		}
+		log("Step 10: Verify Deleted medication is not visible on portal");
+
+		prescriptionsPage.validateDeletedMedication(productName);
+		log("Deleted medication is not visible on portal");
+
+		log("Step 11: Logout of Patient Portal");
 		prescriptionsPage.clickOnLogout();
 
 
