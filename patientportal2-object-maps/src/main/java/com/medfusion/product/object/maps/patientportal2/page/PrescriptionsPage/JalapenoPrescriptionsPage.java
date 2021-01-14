@@ -1,6 +1,7 @@
 // Copyright 2018-2020 NXGN Management, LLC. All Rights Reserved.
 package com.medfusion.product.object.maps.patientportal2.page.PrescriptionsPage;
 
+import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertTrue;
 
 import org.openqa.selenium.StaleElementReferenceException;
@@ -259,4 +260,10 @@ public class JalapenoPrescriptionsPage extends JalapenoMenu {
 
 	}
 
+	public void validateDeletedMedication(String productName) {
+		driver.switchTo().frame("iframe");
+		assertFalse(Medicationlist.getText().contains(productName));
+		driver.switchTo().defaultContent();
+
+	}
 }
