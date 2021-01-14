@@ -4631,6 +4631,7 @@ public class NGIntegrationE2ESITTests extends BaseTestNGWebDriver{
 		log("Expected appointment Date is "+appointmentDate.substring(0,appointmentDate.lastIndexOf(" ")));
 		log("Expected appointment Time is "+appointmentDate.substring(appointmentDate.lastIndexOf(" ")+1));
 		logStep("Verfiy appointment is received in Portal");
+        Thread.sleep(70000);
 		CommonFlows.verifyAppointmentReceivedinPortal(PropertyLoaderObj, driver, url, username, appointmentDate.substring(0,appointmentDate.lastIndexOf(" ")),appointmentDate.substring(appointmentDate.lastIndexOf(" ")+1),"");
 		
 		logStep("Delete booked appointment from EPM Appointment Book having appointment ID "+EPMAppointmenttId);
