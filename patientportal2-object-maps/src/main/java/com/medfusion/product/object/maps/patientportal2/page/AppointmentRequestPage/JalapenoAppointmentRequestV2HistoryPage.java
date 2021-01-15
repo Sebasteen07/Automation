@@ -16,19 +16,19 @@ import com.medfusion.common.utils.IHGUtil;
 
 public class JalapenoAppointmentRequestV2HistoryPage extends JalapenoMenu {
 
-		@FindBy(how = How.XPATH, using = "(//div[@id='frame']/table)")
+		@FindBy(how = How.XPATH, using = "//div[@id='frame']/div/table")
 		private WebElement fullTable;
 
-		@FindBy(how = How.XPATH, using = "//li[contains(@data-ng-show,'reason')]")
+		@FindBy(how = How.XPATH, using = "//li[label[text()='Reason']]")
 		private WebElement reason;
 
-		@FindBy(how = How.XPATH, using = "//li[contains(@data-ng-show,'preferredtime')]")
+		@FindBy(how = How.XPATH, using = "//li[label[text()='Preferred Time']]")
 		private WebElement preferredTime;
 
-		@FindBy(how = How.XPATH, using = "//li[contains(@data-ng-show,'requestedday')]")
+		@FindBy(how = How.XPATH, using = "//li[label[text()='Request Day']]")
 		private WebElement requestedDay;
 
-		@FindBy(how = How.XPATH, using = "//li[contains(@data-ng-show,'requestedtime')]")
+		@FindBy(how = How.XPATH, using = "//li[label[text()='Request Time']]")
 		private WebElement requestedTime;
 
 		@FindBy(how = How.ID, using = "back_button")
@@ -62,8 +62,7 @@ public class JalapenoAppointmentRequestV2HistoryPage extends JalapenoMenu {
 
 		public boolean checkAppointmentDetails(String appointmentReason) throws InterruptedException {
 				IHGUtil.PrintMethodName();
-				Thread.sleep(5000);
-				new WebDriverWait(driver, 30).until(ExpectedConditions.visibilityOf(reason));
+				new WebDriverWait(driver, 60).until(ExpectedConditions.visibilityOf(reason));
 				try {
 						return (reason.getText().contains(appointmentReason) && preferredTime.getText().contains("Early Morning, Late Afternoon") && requestedDay.getText()
 								.contains("Monday - Thursday") && requestedTime.getText().contains("Anytime"));

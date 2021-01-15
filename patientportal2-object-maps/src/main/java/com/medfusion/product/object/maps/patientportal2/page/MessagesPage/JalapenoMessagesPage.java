@@ -64,7 +64,7 @@ public class JalapenoMessagesPage extends JalapenoMenu {
 	@FindBy(how = How.XPATH, using = "//div[@class='messageMetadata clearfix']/span[1]")
 	private WebElement msgSubject;
 
-	@FindBy(xpath = "//div[@class='messageContent ng-binding']//a")
+	@FindBy(xpath = "//a[text()='This is testing URL']")
 	private WebElement messageURL;
 
 	@FindBy(xpath = "//a[contains(text(),'QuickSend.pdf')]")
@@ -72,6 +72,7 @@ public class JalapenoMessagesPage extends JalapenoMenu {
 
 	@FindBy(xpath = "//div[@class='messageContent']")
 	private WebElement inboxMessageBody;
+	//a[text()='This is testing URL']
 	
 	@FindBy(how = How.XPATH, using = "//button[@class='btn btn-default ng-binding ng-scope']")
 	private WebElement archiveButton;
