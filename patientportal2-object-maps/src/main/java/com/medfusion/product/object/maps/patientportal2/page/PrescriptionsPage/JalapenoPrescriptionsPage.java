@@ -1,9 +1,6 @@
 // Copyright 2018-2020 NXGN Management, LLC. All Rights Reserved.
 package com.medfusion.product.object.maps.patientportal2.page.PrescriptionsPage;
 
-import static org.junit.Assert.assertFalse;
-import static org.junit.Assert.assertTrue;
-
 import org.openqa.selenium.By;
 import org.openqa.selenium.StaleElementReferenceException;
 import org.openqa.selenium.WebDriver;
@@ -112,7 +109,7 @@ public class JalapenoPrescriptionsPage extends JalapenoMenu {
 	public WebElement renewalConfirmationmessage;
 
 	@FindBy(how = How.XPATH, using = "//*[@id='medicationForm']/div[1]/div")
-	public WebElement Medicationlist;
+	public By Medicationlist;
 
 	public JalapenoPrescriptionsPage(WebDriver driver) {
 		super(driver);
@@ -255,18 +252,32 @@ public class JalapenoPrescriptionsPage extends JalapenoMenu {
 	public void validatemedication(String productName) {
 		driver.switchTo().frame("iframe");
 		java.util.List<WebElement> medications = driver.findElements((By) Medicationlist);
-		
 		for (int i= 0;i<medications.size();i++) {
+			String medicationName = driver.findElement(By.xpath("//*[@id='medicationForm']/div[1]/div[i]")).getText();
+			if (medicationName.contains(productName)) {
+				log("Medication POSTED is visible on portal");
+				break;
+			} else {
+				continue;
+			}
 		}
-		
-		assertTrue(Medicationlist.getText().contains(productName));
+		// assertTrue(Medicationlist.getText().contains(productName));
 		driver.switchTo().defaultContent();
-
 	}
 
 	public void validateDeletedMedication(String productName) {
 		driver.switchTo().frame("iframe");
-		assertFalse(Medicationlist.getText().contains(productName));
+		java.util.List<WebElement> medications = driver.findElements(Medicationlist);
+		for (int i = 0; i < medications.size(); i++) {
+			String medicationName = driver.findElement(By.xpath("//*[@id='medicationForm']/div[1]/div[i]")).getText();
+			if (medicationName.contains(productName)) {
+				break;
+			} else {
+				continue;
+			}
+		}
+
+		// assertFalse(Medicationlist.getText().contains(productName));
 		driver.switchTo().defaultContent();
 
 	}
