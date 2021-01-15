@@ -4,6 +4,7 @@ package com.medfusion.product.object.maps.patientportal2.page.PrescriptionsPage;
 import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertTrue;
 
+import org.openqa.selenium.By;
 import org.openqa.selenium.StaleElementReferenceException;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
@@ -110,10 +111,8 @@ public class JalapenoPrescriptionsPage extends JalapenoMenu {
 	@FindBy(how = How.XPATH, using = "//*[@class='feedback']/following::*[contains(text(),'Prescription Renewa')]")
 	public WebElement renewalConfirmationmessage;
 
-	@FindBy(how = How.ID, using = "medicationForm")
+	@FindBy(how = How.XPATH, using = "//*[@id='medicationForm']/div[1]/div")
 	public WebElement Medicationlist;
-
-
 
 	public JalapenoPrescriptionsPage(WebDriver driver) {
 		super(driver);
@@ -255,6 +254,11 @@ public class JalapenoPrescriptionsPage extends JalapenoMenu {
 
 	public void validatemedication(String productName) {
 		driver.switchTo().frame("iframe");
+		java.util.List<WebElement> medications = driver.findElements((By) Medicationlist);
+		
+		for (int i= 0;i<medications.size();i++) {
+		}
+		
 		assertTrue(Medicationlist.getText().contains(productName));
 		driver.switchTo().defaultContent();
 
