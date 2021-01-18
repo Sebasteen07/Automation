@@ -13,11 +13,26 @@
 			<class
 				name="com.medfusion.product.pss2patientportal.test.PSS2PatientPortalAcceptanceTests">
 				<methods>
-					
+
 					<include name="testSSOFlowGW" />
 					<include name="testSSOFlowGE" />
 					<include name="testSSOFlowNG" />
-				    <include name="testSSOFlowAT" />
+					<include name="testSSOFlowAT" />
+					<include name="testAcceptSameDayAT" />
+					<include name="testAcceptSameDayGE" />
+					<include name="testAcceptSameDayGW" />
+					<include name="testE2ELinkGenerationAT" />
+					<include name="testE2ELinkGenerationGE" />
+					<include name="testE2ELinkGenerationGW" />
+					<include name="testE2ELinkGenandDeleteLinkAT" />
+					<include name="testE2ELinkGenandDeleteLinkGE" />
+					<include name="testE2ELinkGenandDeleteLinkGW" />
+					<include name="testLeadTimeGE" />
+					<include name="testLeadTimeGW" />
+					<include name="testLeadTimeGWReserveForSameDay" />
+					<include name="testMaxperDayAT" />
+					<include name="testMaxperDayGE" />
+					<include name="testMaxperDayNG" />
 					<include name="testSSOFlowNewPatientWithoutEMRIDGW" />
 					<include name="testSSOFlowNewPatientWithoutEMRIDGE" />
 				</methods>

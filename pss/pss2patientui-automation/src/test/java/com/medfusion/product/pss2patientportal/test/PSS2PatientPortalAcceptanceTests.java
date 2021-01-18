@@ -3397,6 +3397,92 @@ public class PSS2PatientPortalAcceptanceTests extends BaseTestNGWebDriver {
 		Log4jUtil.log("Test Case Passed");
 	}
 
+	@Test(enabled = true, groups = {"AcceptanceTests"}, retryAnalyzer = RetryAnalyzer.class)
+	public void testE2ELinkGenandDeleteLinkGW() throws Exception {
+		log("Test To View if configuration change from Admin is reflected in PSS patient portal");
+		PSSPropertyFileLoader propertyData = new PSSPropertyFileLoader();
+		Appointment testData = new Appointment();
+		AdminUser adminuser = new AdminUser();
+		PSSNewPatient pssNewPatient = new PSSNewPatient();
+		propertyData.setAdminGW(adminuser);
+		propertyData.setAppointmentResponseGW(testData);
+		log("-----Loaded the test data for New Patient----------");
+		pssNewPatient.createPatientDetails(testData);
+		log(testData.getUrlLoginLess());
+		log(testData.getAppointmenttype());
+		log("Step 2: Fetch rule and settings from PSS 2.0 Admin portal");
+		PSSAdminUtils adminUtils = new PSSAdminUtils();
+		adminUtils.adminSettingLinkGenandDeleteLink(driver, adminuser, testData, PSSConstants.LOGINLESS);
+		String rule = adminuser.getRule();
+		rule = rule.replaceAll(" ", "");
+		log("Step 3: Move to PSS patient Portal 2.0 to book an Appointment");
+		log("Step 4: Login to PSS Appointment");
+		log("Link GEneration link is   " + testData.getUrlLinkGen());
+		DismissPage dismissPage = new DismissPage(driver, testData.getUrlLinkGen());
+		Thread.sleep(1000);
+		log("The Messege Getting in Patient UI is  "+		dismissPage.popUpMessage());
+		log("expected messege is " + testData.getPopUpMessege());
+		assertEquals(testData.getPopUpMessege(), dismissPage.popUpMessage());
+		Log4jUtil.log("Test Case Passed");
+	}
+
+	@Test(enabled = true, groups = {"AcceptanceTests"}, retryAnalyzer = RetryAnalyzer.class)
+	public void testE2ELinkGenandDeleteLinkGE() throws Exception {
+		log("Test To View if configuration change from Admin is reflected in PSS patient portal");
+		PSSPropertyFileLoader propertyData = new PSSPropertyFileLoader();
+		Appointment testData = new Appointment();
+		AdminUser adminuser = new AdminUser();
+		PSSNewPatient pssNewPatient = new PSSNewPatient();
+		propertyData.setAdminGE(adminuser);
+		propertyData.setAppointmentResponseGE(testData);
+		log("-----Loaded the test data for New Patient----------");
+		pssNewPatient.createPatientDetails(testData);
+		log(testData.getUrlLoginLess());
+		log(testData.getAppointmenttype());
+		log("Step 2: Fetch rule and settings from PSS 2.0 Admin portal");
+		PSSAdminUtils adminUtils = new PSSAdminUtils();
+		adminUtils.adminSettingLinkGenandDeleteLink(driver, adminuser, testData, PSSConstants.LOGINLESS);
+		String rule = adminuser.getRule();
+		rule = rule.replaceAll(" ", "");
+		log("Step 3: Move to PSS patient Portal 2.0 to book an Appointment");
+		log("Step 4: Login to PSS Appointment");
+		log("Link GEneration link is   " + testData.getUrlLinkGen());
+		DismissPage dismissPage = new DismissPage(driver, testData.getUrlLinkGen());
+		Thread.sleep(1000);
+		log("The Messege Getting in Patient UI is  " + dismissPage.popUpMessage());
+		log("expected messege is " + testData.getPopUpMessege());
+		assertEquals(testData.getPopUpMessege(), dismissPage.popUpMessage());
+		Log4jUtil.log("Test Case Passed");
+	}
+
+	@Test(enabled = true, groups = {"AcceptanceTests"}, retryAnalyzer = RetryAnalyzer.class)
+	public void testE2ELinkGenandDeleteLinkAT() throws Exception {
+		log("Test To View if configuration change from Admin is reflected in PSS patient portal");
+		PSSPropertyFileLoader propertyData = new PSSPropertyFileLoader();
+		Appointment testData = new Appointment();
+		AdminUser adminuser = new AdminUser();
+		PSSNewPatient pssNewPatient = new PSSNewPatient();
+		propertyData.setAdminAT(adminuser);
+		propertyData.setAppointmentResponseAT(testData);
+		log("-----Loaded the test data for New Patient----------");
+		pssNewPatient.createPatientDetails(testData);
+		log(testData.getUrlLoginLess());
+		log(testData.getAppointmenttype());
+		log("Step 2: Fetch rule and settings from PSS 2.0 Admin portal");
+		PSSAdminUtils adminUtils = new PSSAdminUtils();
+		adminUtils.adminSettingLinkGenandDeleteLink(driver, adminuser, testData, PSSConstants.LOGINLESS);
+		String rule = adminuser.getRule();
+		rule = rule.replaceAll(" ", "");
+		log("Step 3: Move to PSS patient Portal 2.0 to book an Appointment");
+		log("Step 4: Login to PSS Appointment");
+		log("Link GEneration link is   " + testData.getUrlLinkGen());
+		DismissPage dismissPage = new DismissPage(driver, testData.getUrlLinkGen());
+		Thread.sleep(1000);
+		log("The Messege Getting in Patient UI is  " + dismissPage.popUpMessage());
+		log("expected messege is " + testData.getPopUpMessege());
+		assertEquals(testData.getPopUpMessege(), dismissPage.popUpMessage());
+		Log4jUtil.log("Test Case Passed");
+	}
 }
 
 

@@ -18,6 +18,10 @@ public class DismissPage extends PSS2MainPage {
 	@FindBy(how = How.XPATH, using = "//button[@class='dismissbuttons']//span[contains(text(),'Dismiss')]")
 	private WebElement dismissBtn;
 
+	@FindBy(how = How.XPATH, using = "//*[@class='announcementmessage']/div")
+	private WebElement popUpMessege;
+
+
 	public DismissPage(WebDriver driver, String url) {
 		super(driver, url);
 	}
@@ -35,6 +39,12 @@ public class DismissPage extends PSS2MainPage {
 		return PageFactory.initElements(driver, LoginlessPatientInformation.class);
 	}
 	
+	public String popUpMessage() {
+		commonMethods.highlightElement(popUpMessege);
+		String messege = popUpMessege.getText();
+		return messege;
+	}
+
 	public HomePage clickDismisse() {
 		commonMethods.highlightElement(dismissBtn);
 		dismissBtn.click();
