@@ -4,6 +4,7 @@ package com.ng.product.integrationplatform.tests;
 import static org.testng.Assert.assertNotNull;
 
 import java.io.IOException;
+import java.text.SimpleDateFormat;
 import java.time.Instant;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
@@ -44,6 +45,7 @@ import com.medfusion.product.object.maps.patientportal2.page.JalapenoLoginEnroll
 import com.medfusion.product.object.maps.patientportal2.page.NGLoginPage;
 import com.medfusion.product.object.maps.patientportal2.page.AccountPage.JalapenoAccountPage;
 import com.medfusion.product.object.maps.patientportal2.page.AppointmentRequestPage.JalapenoAppointmentRequestV2Step2;
+import com.medfusion.product.object.maps.patientportal2.page.AppointmentRequestPage.NGAppointmentPage;
 import com.medfusion.product.object.maps.patientportal2.page.AppointmentRequestPage.NGAppointmentRequestV2HistoryPage;
 import com.medfusion.product.object.maps.patientportal2.page.AppointmentRequestPage.NGAppointmentRequestV2Step1;
 import com.medfusion.product.object.maps.patientportal2.page.AskAStaff.JalapenoAskAStaffV2Page1;
@@ -4198,6 +4200,7 @@ public class NGIntegrationE2ESITTests extends BaseTestNGWebDriver{
 		Thread.sleep(60000);
 		CommonFlows.verifyMessageReceivedAtNGCore(PropertyLoaderObj,messageID,askaSubject,expectedBodyinInbox.replace("\n", ""),PropertyLoaderObj.getProperty("askAV2Name"));
 		
+        NGAPIUtils.updateLoginDefaultTo("EnterpriseGateway",enterpriseId, practiceId);
     	String comm_id =NGAPIFlows.postSecureMessage("ReplyToPortal"+messageID,person_id,practiceId,userId,providerName,locationName, "EHR", "NewLockedEncounter","PracticeUser","","","");		
     	
     	Thread.sleep(60000);
@@ -4381,6 +4384,268 @@ public class NGIntegrationE2ESITTests extends BaseTestNGWebDriver{
 		logStep("Verify date filter CCD is received by patient");
 		CommonFlows.IsCCDReceived(driver,url,username, PropertyLoaderObj.getPassword(),"","");
 		log("Test Case End: The patient is able to receive the Date Filter CCD successfully");
+	}
+	
+	@Test(enabled = true, groups = { "acceptance-INBOX" }, retryAnalyzer = RetryAnalyzer.class)
+	public void testInboxAppointment() throws Throwable{
+		log("Test Case: Verify the patient is able to request for appointment and practice user is able to book appointment and send response to patient");
+		log("Execution Environment: " + IHGUtil.getEnvironmentType());
+		log("Execution Browser: " + TestConfig.getBrowserType());
+		
+		logStep("Getting Existing User");
+		String username = PropertyLoaderObj.getProperty("CCDAUsername");
+    	String person_id = DBUtils.executeQueryOnDB("NGCoreDB","select person_id from person where email_address = '"+username+"'");
+    	String enterpriseId = null, practiceId = null, providerName = null, locationName = null , userId = null, integrationPracticeID= null, url =null;
+    	
+    	if(PropertyLoaderObj.getNGAPIexecutionMode().equalsIgnoreCase("QAMain")){
+    		enterpriseId= PropertyLoaderObj.getProperty("NGEnterpiseEnrollmentEnterprise1");
+    	    practiceId= PropertyLoaderObj.getProperty("NGEnterprise1Practice1");
+    	    providerName =PropertyLoaderObj.getProperty("NGE1P1Provider"); 
+    	    locationName =PropertyLoaderObj.getProperty("NGE1P1Location");
+    	    integrationPracticeID =PropertyLoaderObj.getProperty("integrationPracticeIDE1P1");
+    	    url = PropertyLoaderObj.getProperty("MFPortalURLPractice1");	
+		}
+		else if (PropertyLoaderObj.getNGAPIexecutionMode().equalsIgnoreCase("SIT")){
+			enterpriseId= PropertyLoaderObj.getProperty("NGMainEnterpriseID");
+		    practiceId= PropertyLoaderObj.getProperty("NGMainPracticeID");
+		    providerName =PropertyLoaderObj.getProperty("EPMProviderName"); 
+		    locationName =PropertyLoaderObj.getProperty("EPMLocationName");
+		    integrationPracticeID =PropertyLoaderObj.getProperty("integrationPracticeIDAMDC");
+		    url = PropertyLoaderObj.getProperty("url");			           
+		}
+		else{
+			Log4jUtil.log("Invalid Execution Mode");
+		}
+    	String eventName = PropertyLoaderObj.getProperty("EventName");
+		String resourceName = PropertyLoaderObj.getProperty("ResourceName");
+		
+    	long timestamp = System.currentTimeMillis();
+    	Long since = timestamp / 1000L - 60 * 24;
+		String appointmentReason = "Illness" + System.currentTimeMillis();
+
+		logStep("Log into Portal");
+		NGLoginPage loginPage = new NGLoginPage(driver, url);
+		JalapenoHomePage homePage = loginPage.login(username, PropertyLoaderObj.getPassword());
+		
+		Log4jUtil.log("Detecting if Home Page is opened");
+		assertTrue(homePage.isHomeButtonPresent(driver));		
+
+		logStep("Navigate to appointment page");
+		homePage.clickOnAppointmentV3(driver);
+		
+		logStep("Request for appointment");
+		// workaround for extra appointments list when multiple appointments solutions are on
+		try {
+
+			driver.findElement(By.id("appointmentSolutionBtn")).click();
+		} catch (WebDriverException e) {
+			System.out.println("Exception caught");// go on assuming we didn't find the extra page and button
+		}
+
+		NGAppointmentRequestV2Step1 appointmentRequestStep1 = PageFactory.initElements(driver, NGAppointmentRequestV2Step1.class);
+		
+		logStep("Assess Elements and choose provider");
+		appointmentRequestStep1.chooseProvider(PropertyLoaderObj.getProperty("ProviderName"));
+
+		logStep("Continue to step 2: click continue and assess elements");
+		JalapenoAppointmentRequestV2Step2 appointmentRequestStep2 = appointmentRequestStep1.continueToStep2(driver);
+		assertTrue(appointmentRequestStep2.areBasicPageElementsPresent());
+
+		logStep("Fill details and submit");
+		appointmentRequestStep2.fillAppointmentRequestForm(appointmentReason);
+		homePage = appointmentRequestStep2.submitAppointment(driver);
+
+		logStep("Check if thank you frame is displayd");
+		Thread.sleep(10000);
+		assertTrue(homePage.isTextDisplayed("Thank you"));
+
+		logStep("Navigate to Appointment Request History");
+		try{
+			NGAppointmentPage appointmentPage =homePage.clickOnAppointmentV3(driver);}
+		catch(Exception e){
+			Log4jUtil.log(e.getMessage());}
+		
+		Thread.sleep(5000);
+		NGAppointmentRequestV2HistoryPage historyPage = appointmentRequestStep1.goToHistory(driver);
+
+		logStep("Check elements and appointment request reason");
+		assertTrue(historyPage.areBasicPageElementsPresent());
+		assertTrue(historyPage.findAppointmentReasonAndOpen(appointmentReason));
+
+		logStep("Check appointment request details");
+		assertTrue(historyPage.checkAppointmentDetails(appointmentReason));
+		homePage = historyPage.clickOnMenuHome();
+		homePage.LogoutfromNGMFPortal();
+		
+		logStep("Setup Oauth client" + PropertyLoaderObj.getResponsePath());
+    	if(PropertyLoaderObj.getNGAPIexecutionMode().equalsIgnoreCase("QAMain")){
+    		RestUtils.oauthSetup(PropertyLoaderObj.getOAuthKeyStore(), PropertyLoaderObj.getOAuthProperty(), PropertyLoaderObj.getOAuthAppToken(), PropertyLoaderObj.getProperty("oAuthUsername1"),PropertyLoaderObj.getProperty("oAuthPassword1"));
+		}
+		else if (PropertyLoaderObj.getNGAPIexecutionMode().equalsIgnoreCase("SIT")){
+			RestUtils.oauthSetup(PropertyLoaderObj.getOAuthKeyStore(), PropertyLoaderObj.getOAuthProperty(), PropertyLoaderObj.getOAuthAppToken(), PropertyLoaderObj.getProperty("oAuthUsername"),PropertyLoaderObj.getProperty("oAuthPassword"));			           
+		}
+		else{
+			Log4jUtil.log("Invalid Execution Mode");
+		}
+
+		Log4jUtil.log("Step Begins: Wait 60 seconds, so the message can be processed");
+		Thread.sleep(60000);
+
+		Log4jUtil.log("Step Begins: Do a GET and get the message");
+		RestUtils.setupHttpGetRequest(PropertyLoaderObj.getProperty("GetAppointment").replaceAll("integrationID", integrationPracticeID) + "?since=" + since + ",0", PropertyLoaderObj.getResponsePath());
+
+		Log4jUtil.log("Step Begins: Validate message reply");
+		String appointmentID = RestUtils.isAppointmentReasonResponseXMLValid(PropertyLoaderObj.getResponsePath(), appointmentReason);
+		
+		logStep("Verify appointment request is reached to EPM/EHR Inbox");
+		CommonFlows.verifyAppointmentRequestReceived(appointmentID, appointmentReason,PropertyLoaderObj.getProperty("AppointmentStartTime"), PropertyLoaderObj.getProperty("AppointmentEndTime"), PropertyLoaderObj.getProperty("AppointmentDays"),practiceId);
+		
+		logStep("Schedule an appointment for Patient");
+		NGAPIUtils.updateLoginDefaultTo("EnterpriseGateway",enterpriseId,practiceId);
+		String EPMAppointmenttId =NGAPIFlows.postAppointment(person_id,locationName, providerName, eventName, resourceName,2,"",201);
+		
+		String appointmentResponse = "ApptResponse" + System.currentTimeMillis();
+		logStep("Send appointment response to Patient");
+		NGAPIUtils.updateLoginDefaultTo("EnterpriseGateway",enterpriseId,practiceId);
+		NGAPIFlows.postAppointmentResponse(appointmentID, EPMAppointmenttId, appointmentResponse);
+		
+		logStep("Verify appointment is booked and response is captured");
+		CommonFlows.verifyAppointmentBookedResponseCaptured(appointmentID, appointmentResponse);
+				
+		logStep("Verify processing status of appointment");
+		CommonFlows.verifyAppointmentProcessingStatus(PropertyLoaderObj, appointmentID, integrationPracticeID);
+		
+		String appointmentDate = DBUtils.executeQueryOnDB("NGCoreDB","select appt_date from appointments where appt_id ='"+EPMAppointmenttId+"'");
+		appointmentDate = appointmentDate.substring(0, 4)+"/"+appointmentDate.substring(4, 6)+"/"+appointmentDate.substring(6);
+				
+		appointmentDate = appointmentDate.replaceAll("/", "-")+"T00:00:00Z";
+        Date date = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss'Z'").parse(appointmentDate);
+		log("Appointment Date is "+new SimpleDateFormat("M/d/yy hh:mm").format(date));
+		appointmentDate = CommonUtils.changeESTtoIST(new SimpleDateFormat("M/d/yy hh:mm").format(date));
+		
+		log("Expected appointment Date is "+appointmentDate.substring(0,appointmentDate.lastIndexOf(" ")));
+		log("Expected appointment Time is "+appointmentDate.substring(appointmentDate.lastIndexOf(" ")+1));
+		CommonFlows.verifyAppointmentReceivedinPortal(PropertyLoaderObj, driver, url, username, appointmentDate.substring(0,appointmentDate.lastIndexOf(" ")),appointmentDate.substring(appointmentDate.lastIndexOf(" ")+1),appointmentResponse);
+		Log4jUtil.log("Test Case End: The patient is able to request for appointment and practice user is able to book appointment and send response to patient");
+	}
+	
+	@Test(enabled = true, groups = { "acceptance-INBOX" }, retryAnalyzer = RetryAnalyzer.class)
+	public void testInboxAppointmentSameSlot() throws Throwable{
+		log("Test Case: Verify the practice user is not able to book same slot which is already booked for patient");
+		log("Execution Environment: " + IHGUtil.getEnvironmentType());
+		log("Execution Browser: " + TestConfig.getBrowserType());
+		
+		logStep("Getting Existing User");
+		String username = PropertyLoaderObj.getProperty("CCDAUsername");
+    	String person_id = DBUtils.executeQueryOnDB("NGCoreDB","select person_id from person where email_address = '"+username+"'");
+    	String enterpriseId = null, practiceId = null, providerName = null, locationName = null , userId = null, integrationPracticeID= null, url =null;
+    	
+    	if(PropertyLoaderObj.getNGAPIexecutionMode().equalsIgnoreCase("QAMain")){
+    		enterpriseId= PropertyLoaderObj.getProperty("NGEnterpiseEnrollmentEnterprise1");
+    	    practiceId= PropertyLoaderObj.getProperty("NGEnterprise1Practice1");
+    	    providerName =PropertyLoaderObj.getProperty("NGE1P1Provider"); 
+    	    locationName =PropertyLoaderObj.getProperty("NGE1P1Location");
+    	    integrationPracticeID =PropertyLoaderObj.getProperty("integrationPracticeIDE1P1");
+    	    url = PropertyLoaderObj.getProperty("MFPortalURLPractice1");	
+		}
+		else if (PropertyLoaderObj.getNGAPIexecutionMode().equalsIgnoreCase("SIT")){
+			enterpriseId= PropertyLoaderObj.getProperty("NGMainEnterpriseID");
+		    practiceId= PropertyLoaderObj.getProperty("NGMainPracticeID");
+		    providerName =PropertyLoaderObj.getProperty("EPMProviderName"); 
+		    locationName =PropertyLoaderObj.getProperty("EPMLocationName");
+		    integrationPracticeID =PropertyLoaderObj.getProperty("integrationPracticeIDAMDC");
+		    url = PropertyLoaderObj.getProperty("url");			           
+		}
+		else{
+			Log4jUtil.log("Invalid Execution Mode");
+		}
+    	String eventName = PropertyLoaderObj.getProperty("EventName");
+		String resourceName = PropertyLoaderObj.getProperty("ResourceName");
+		
+		logStep("Schedule an appointment for Patient to same slot");
+		NGAPIUtils.updateLoginDefaultTo("EnterpriseGateway",enterpriseId,practiceId);
+		String EPMAppointmenttId =NGAPIFlows.postAppointment(person_id,locationName, providerName, eventName, resourceName,2,"",400);
+		log("Test Case End: The practice user is not able to book same slot which is already booked for patient");
+	}
+	
+	@Test(enabled = true, groups = { "acceptance-INBOX" }, retryAnalyzer = RetryAnalyzer.class)
+	public void testInboxAppointmentBookMultipleSlotsandDeleteAppointment() throws Throwable{
+		log("Test Case: Verify the practice user is able to book multiple appointments for patient and delete appointment from EPM appointment book");
+		log("Execution Environment: " + IHGUtil.getEnvironmentType());
+		log("Execution Browser: " + TestConfig.getBrowserType());
+		
+		logStep("Getting Existing User");
+		String username = PropertyLoaderObj.getProperty("CCDAUsername");
+    	String person_id = DBUtils.executeQueryOnDB("NGCoreDB","select person_id from person where email_address = '"+username+"'");
+    	String enterpriseId = null, practiceId = null, providerName = null, locationName = null , userId = null, integrationPracticeID= null, url =null;
+    	
+    	if(PropertyLoaderObj.getNGAPIexecutionMode().equalsIgnoreCase("QAMain")){
+    		enterpriseId= PropertyLoaderObj.getProperty("NGEnterpiseEnrollmentEnterprise1");
+    	    practiceId= PropertyLoaderObj.getProperty("NGEnterprise1Practice1");
+    	    providerName =PropertyLoaderObj.getProperty("NGE1P1Provider"); 
+    	    locationName =PropertyLoaderObj.getProperty("NGE1P1Location");
+    	    integrationPracticeID =PropertyLoaderObj.getProperty("integrationPracticeIDE1P1");
+    	    url = PropertyLoaderObj.getProperty("MFPortalURLPractice1");	
+		}
+		else if (PropertyLoaderObj.getNGAPIexecutionMode().equalsIgnoreCase("SIT")){
+			enterpriseId= PropertyLoaderObj.getProperty("NGMainEnterpriseID");
+		    practiceId= PropertyLoaderObj.getProperty("NGMainPracticeID");
+		    providerName =PropertyLoaderObj.getProperty("EPMProviderName"); 
+		    locationName =PropertyLoaderObj.getProperty("EPMLocationName");
+		    integrationPracticeID =PropertyLoaderObj.getProperty("integrationPracticeIDAMDC");
+		    url = PropertyLoaderObj.getProperty("url");			           
+		}
+		else{
+			Log4jUtil.log("Invalid Execution Mode");
+		}
+    	String eventName = PropertyLoaderObj.getProperty("EventName");
+		String resourceName = PropertyLoaderObj.getProperty("ResourceName");
+		
+		String apptTime ="01:30:00";
+		logStep("Schedule another appointment for Patient to different slot");
+		NGAPIUtils.updateLoginDefaultTo("EnterpriseGateway",enterpriseId,practiceId);
+		String EPMAppointmenttId =NGAPIFlows.postAppointment(person_id,locationName, providerName, eventName, resourceName,1,apptTime,201);
+		
+		logStep("Setup Oauth client" + PropertyLoaderObj.getResponsePath());
+    	if(PropertyLoaderObj.getNGAPIexecutionMode().equalsIgnoreCase("QAMain")){
+    		RestUtils.oauthSetup(PropertyLoaderObj.getOAuthKeyStore(), PropertyLoaderObj.getOAuthProperty(), PropertyLoaderObj.getOAuthAppToken(), PropertyLoaderObj.getProperty("oAuthUsername1"),PropertyLoaderObj.getProperty("oAuthPassword1"));
+		}
+		else if (PropertyLoaderObj.getNGAPIexecutionMode().equalsIgnoreCase("SIT")){
+			RestUtils.oauthSetup(PropertyLoaderObj.getOAuthKeyStore(), PropertyLoaderObj.getOAuthProperty(), PropertyLoaderObj.getOAuthAppToken(), PropertyLoaderObj.getProperty("oAuthUsername"),PropertyLoaderObj.getProperty("oAuthPassword"));			           
+		}
+		else{
+			Log4jUtil.log("Invalid Execution Mode");
+		}
+		
+		logStep("Verify processing status of appointment");
+		CommonFlows.verifyMFJOBStatusWithoutValidatingGetProcessingStatusCall(PropertyLoaderObj,EPMAppointmenttId,integrationPracticeID, "Appointment");
+		
+		String appointmentDate = DBUtils.executeQueryOnDB("NGCoreDB","select appt_date from appointments where appt_id ='"+EPMAppointmenttId+"'");
+		appointmentDate = appointmentDate.substring(0, 4)+"/"+appointmentDate.substring(4, 6)+"/"+appointmentDate.substring(6);
+		
+		appointmentDate = appointmentDate.replaceAll("/", "-")+"T"+apptTime+"Z";
+        Date date = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss'Z'").parse(appointmentDate);
+		log("Appointment Date is "+new SimpleDateFormat("M/d/yy hh:mm").format(date));
+		appointmentDate = CommonUtils.changeESTtoIST(new SimpleDateFormat("M/d/yy hh:mm").format(date));
+		
+		log("Expected appointment Date is "+appointmentDate.substring(0,appointmentDate.lastIndexOf(" ")));
+		log("Expected appointment Time is "+appointmentDate.substring(appointmentDate.lastIndexOf(" ")+1));
+		logStep("Verfiy appointment is received in Portal");
+        Thread.sleep(70000);
+		CommonFlows.verifyAppointmentReceivedinPortal(PropertyLoaderObj, driver, url, username, appointmentDate.substring(0,appointmentDate.lastIndexOf(" ")),appointmentDate.substring(appointmentDate.lastIndexOf(" ")+1),"");
+		
+		logStep("Delete booked appointment from EPM Appointment Book having appointment ID "+EPMAppointmenttId);
+		NGAPIUtils.updateLoginDefaultTo("EnterpriseGateway",enterpriseId,practiceId);
+		NGAPIFlows.deleteAppointment(EPMAppointmenttId);
+		
+		logStep("Verify appointment is deleted from EPM Appointment Book");
+		String deleteInd =DBUtils.executeQueryOnDB("NGCoreDB","select delete_ind from appointments where appt_id ='"+EPMAppointmenttId+"'");
+		CommonUtils.VerifyTwoValues(deleteInd,"equals","Y"); 
+		logStep("Appointment is deleted from EPM Appointment Book with delete Indicator "+deleteInd);
+		
+		logStep("Verify appointment is deleted from Portal");
+		CommonFlows.verifyAppointmentDeletedinPortal(PropertyLoaderObj, driver, url, username,appointmentDate.substring(0,appointmentDate.lastIndexOf(" ")),appointmentDate.substring(appointmentDate.lastIndexOf(" ")+1));		
+		log("Test Case End: The practice user is able to book multiple appointments for patient and delete appointment from EPM appointment book successfully");
 	}
 
 }

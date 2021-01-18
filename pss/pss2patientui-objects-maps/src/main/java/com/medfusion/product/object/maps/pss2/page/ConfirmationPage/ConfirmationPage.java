@@ -155,7 +155,7 @@ public class ConfirmationPage extends PSS2MainPage {
 		String nextDate1 = datetext.substring(00, 17);
 		String confirmdate = nextDate1.replace(" ", "");
 		StringBuffer str= new StringBuffer(confirmdate);
-		String str1 = str.insert(8, ' ').toString();
+		String str1 = str.insert(7, ' ').toString();
 		return str1;
 	}
 

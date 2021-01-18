@@ -55,6 +55,7 @@ public class LinkTab extends SettingsTab {
 	}
 
 	public void searchLinkandRemove(String provider) {
+		searchLink.clear();
 		searchLink.sendKeys(provider);
 		log("Successfully Search link");
 		removelink.click();

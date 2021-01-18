@@ -2602,8 +2602,8 @@ public class PatientPortal2AcceptanceTests extends BaseTestNGWebDriver {
 
 		logStep("Login to Practice Portal");
 		PracticeLoginPage practiceLogin = new PracticeLoginPage(driver, testData.getPortalUrl());
-		PracticeHomePage practiceHome = practiceLogin.login(testData.getProperty("doctorLogin1"),
-				testData.getProperty("doctorPassword1"));
+		PracticeHomePage practiceHome = practiceLogin.login(testData.getProperty("presDocUsername"),
+				testData.getProperty("presDocPassword"));
 
 		logStep("Click on Search");
 		PatientSearchPage patientSearchPage = practiceHome.clickPatientSearchLink();
@@ -2664,8 +2664,8 @@ public class PatientPortal2AcceptanceTests extends BaseTestNGWebDriver {
 
 		// Now start login with practice data
 		PracticeLoginPage practiceLogin1 = new PracticeLoginPage(driver, testData.getPortalUrl());
-		PracticeHomePage practiceHome1 = practiceLogin1.login(testData.getProperty("doctorLogin1"),
-				testData.getDoctorPassword());
+		PracticeHomePage practiceHome1 = practiceLogin1.login(testData.getProperty("presDocUsername"),
+				testData.getProperty("presDocPassword"));
 
 		logStep("Click On RxRenewal in Practice Portal");
 		RxRenewalSearchPage rxRenewalSearchPage = practiceHome1.clickonRxRenewal();
@@ -2694,7 +2694,7 @@ public class PatientPortal2AcceptanceTests extends BaseTestNGWebDriver {
 		logStep("Logout of Practice Portal");
 		practiceHome1.logOut();
 
-		JalapenoLoginEnrollment loginPage2 = new JalapenoLoginEnrollment(driver, testData.getProperty("url3"));
+		JalapenoLoginEnrollment loginPage2 = new JalapenoLoginEnrollment(driver, testData.getProperty("presPortalURl"));
 		JalapenoHomePage homePage2 = loginPage2.login(patientLogin, testData.getPassword());
 
 		JalapenoMessagesPage messagesPage = homePage2.showMessages(driver);
@@ -2862,8 +2862,8 @@ public class PatientPortal2AcceptanceTests extends BaseTestNGWebDriver {
 
 		logStep("Login to Practice Portal");
 		PracticeLoginPage practiceLogin = new PracticeLoginPage(driver, testData.getPortalUrl());
-		PracticeHomePage practiceHome = practiceLogin.login(testData.getProperty("doctorLogin1"),
-				testData.getProperty("doctorPassword1"));
+		PracticeHomePage practiceHome = practiceLogin.login(testData.getProperty("presDocUsername"),
+				testData.getProperty("presDocPassword"));
 
 		logStep("Click on Search");
 		PatientSearchPage patientSearchPage = practiceHome.clickPatientSearchLink();
@@ -2921,8 +2921,8 @@ public class PatientPortal2AcceptanceTests extends BaseTestNGWebDriver {
 
 		// Now start login with practice data
 		PracticeLoginPage dPracticeLogin1 = new PracticeLoginPage(driver, testData.getPortalUrl());
-		PracticeHomePage dPracticeHome11 = dPracticeLogin1.login(testData.getProperty("doctorLogin1"),
-				testData.getDoctorPassword());
+		PracticeHomePage dPracticeHome11 = dPracticeLogin1.login(testData.getProperty("presDocUsername"),
+				testData.getProperty("presDocPassword"));
 
 		logStep("Click On RxRenewal in Practice Portal");
 		RxRenewalSearchPage dRxRenewalSearchPage = dPracticeHome11.clickonRxRenewal();
@@ -2951,7 +2951,7 @@ public class PatientPortal2AcceptanceTests extends BaseTestNGWebDriver {
 		logStep("Logout of Practice Portal");
 		dPracticeHome11.logOut();
 
-		JalapenoLoginEnrollment dLoginPage2 = new JalapenoLoginEnrollment(driver, testData.getProperty("url3"));
+		JalapenoLoginEnrollment dLoginPage2 = new JalapenoLoginEnrollment(driver, testData.getProperty("presPortalURl"));
 		JalapenoHomePage dHomePage2 = dLoginPage2.login(patientLogin, testData.getPassword());
 
 		logStep("Switch to dependent");

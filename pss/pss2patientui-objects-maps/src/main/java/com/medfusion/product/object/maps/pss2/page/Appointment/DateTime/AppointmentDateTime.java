@@ -23,10 +23,10 @@ import com.medfusion.product.object.maps.pss2.page.Insurance.UpdateInsurancePage
 
 public class AppointmentDateTime extends PSS2MainPage {
 
-	@FindAll({@FindBy(xpath = "//div[@class='rbc-event-content']")})
+	@FindAll({ @FindBy(xpath = "//div[@class='rbc-event-content']") })
 	public List<WebElement> appointmentList;
 
-	@FindAll({@FindBy(xpath = "//a[@id='containerDiv']")})
+	@FindAll({ @FindBy(xpath = "//a[@id='containerDiv']") })
 	public List<WebElement> appointmentTimeList;
 
 	@FindBy(how = How.XPATH, using = "//*[@id=\"topdiv\"]/div[2]/div/div[2]/div[3]/div/div/div")
@@ -44,8 +44,6 @@ public class AppointmentDateTime extends PSS2MainPage {
 	public AppointmentDateTime(WebDriver driver) {
 		super(driver);
 	}
-
-
 
 	@Override
 	public boolean areBasicPageElementsPresent() {
@@ -77,6 +75,26 @@ public class AppointmentDateTime extends PSS2MainPage {
 		return PageFactory.initElements(driver, AppointmentDateTime.class);
 	}
 
+	/*----New Method For Future Date APPT----*/
+	public AppointmentDateTime selectFutureDate(Boolean nextMonthBooking) {
+		String dt = null;
+		if (nextMonthBooking) {
+			driver.findElement(By.className("rbc-next-month")).click();
+			driver.manage().timeouts().implicitlyWait(80, TimeUnit.SECONDS);
+		}
+		List<WebElement> appointmentList = driver.findElements(By.cssSelector(".rbc-event-content"));
+		for (int i = appointmentList.size() - 1; i >= 0; i--) {
+			if (appointmentList.get(i).isDisplayed()) {
+				log("Appointment Date selected=" + appointmentList.get(i).getText());
+				log("Value of i is " + i);
+				appointmentList.get(i).click();
+				dt = appointmentList.get(i).getText();
+				return PageFactory.initElements(driver, AppointmentDateTime.class);
+			}
+		}
+		return PageFactory.initElements(driver, AppointmentDateTime.class);
+	}
+
 	public String selectDate(Boolean nextMonthBooking) {
 		String dt = null;
 		if (nextMonthBooking) {
@@ -85,8 +103,7 @@ public class AppointmentDateTime extends PSS2MainPage {
 		}
 		List<WebElement> appointmentList = driver.findElements(By.cssSelector(".rbc-event-content"));
 		log("size is " + appointmentList.size());
-		for (int i = 0; i < appointmentList.size(); i++)
-		{
+		for (int i = 0; i < appointmentList.size(); i++) {
 			if (appointmentList.get(0).isDisplayed()) {
 				log("Appointment Date selected=" + appointmentList.get(0).getText());
 				appointmentList.get(0).click();
@@ -112,10 +129,27 @@ public class AppointmentDateTime extends PSS2MainPage {
 
 	public ConfirmationPage selectAppointmentDateTime(Boolean nextMonthBooking) {
 		List<WebElement> appointmentTimeList = driver.findElements(By.cssSelector(".time-btn"));
+		
 		for (int i = 0; i < appointmentTimeList.size(); i++) {
-			if (appointmentTimeList.get(i + 2).isDisplayed()) {
+			
+			if (appointmentTimeList.get(i).isDisplayed()) {
+
 				log("Appointment Time selected=" + appointmentTimeList.get(i).getText());
 				appointmentTimeList.get(i).click();
+				return PageFactory.initElements(driver, ConfirmationPage.class);
+			}
+		}
+		appointmentTimeList.clear();
+		return PageFactory.initElements(driver, ConfirmationPage.class);
+	}
+
+	public ConfirmationPage selectFutureApptDateTime(Boolean nextMonthBooking) {
+		List<WebElement> appointmentTimeList = driver.findElements(By.cssSelector(".time-btn"));
+		int slotsize = appointmentTimeList.size();
+		for (int i = 0; i < slotsize; i++) {
+			if (appointmentTimeList.get(slotsize - 1).isDisplayed()) {
+				log("Appointment Time selected=" + appointmentTimeList.get(slotsize - 1).getText());
+				appointmentTimeList.get(slotsize - 1).click();
 				return PageFactory.initElements(driver, ConfirmationPage.class);
 			}
 		}
@@ -139,9 +173,10 @@ public class AppointmentDateTime extends PSS2MainPage {
 	public UpdateInsurancePage selectAppointmentDateAndTime(WebDriver driver) {
 		log("Available time slots are " + appointmentTimeList.size());
 		for (int i = 0; i < appointmentTimeList.size(); i++) {
-			if (appointmentTimeList.get(i).isDisplayed()) {
-				log("Appointment Time selected=" + appointmentTimeList.get(i).getText());
-				appointmentTimeList.get(i).click();
+			int slotsize = appointmentTimeList.size();
+			if (appointmentTimeList.get(slotsize - 1).isDisplayed()) {
+				log("Appointment Time selected=" + appointmentTimeList.get(slotsize - 1).getText());
+				appointmentTimeList.get(slotsize - 1).click();
 			}
 		}
 		return PageFactory.initElements(driver, UpdateInsurancePage.class);
