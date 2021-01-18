@@ -41,7 +41,7 @@ public class ManageCancelReason extends PSS2MenuPage {
 			WebElement reasonType = driver.findElement(By.xpath("//tbody[1]/tr[" + i + "]/td[2]/span"));
 			Log4jUtil.log("Reason Type" + i + " -" + reasonType.getText());
 
-			if (reasonType.getText().contains("Cancellation")) {
+			if (reasonType.getText().contains("Cancellation") ||reasonType.getText().contains("Both")  ) {
 
 				WebElement cancellationReasonAdmin = driver.findElement(By.xpath("//tbody[1]/tr[" + i + "]/td[1]/span"));
 				commonMethods.highlightElement(cancellationReasonAdmin);

@@ -1596,7 +1596,7 @@ public class PSSPatientUtils {
 
 	public void rescheduleAPT(Appointment testData, WebDriver driver) throws Exception {
 		AppointmentDateTime aptDateTime = new AppointmentDateTime(driver);
-		aptDateTime = aptDateTime.selectFutureDate(testData.getIsNextDayBooking());
+		aptDateTime = aptDateTime.selectDt(testData.getIsNextDayBooking());
 		Thread.sleep(1000);
 		reBookAppointment(true, aptDateTime, testData, driver);
 	}
