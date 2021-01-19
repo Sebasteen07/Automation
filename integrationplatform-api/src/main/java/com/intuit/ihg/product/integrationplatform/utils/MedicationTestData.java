@@ -112,4 +112,9 @@ public class MedicationTestData {
 	public String getMFPatientID() {
 		return MedicationObj.MFPatientID;
 	}
+
+	public String getRemoveMedicationRestUrl() {
+		return MedicationObj.RemoveMedicationRestUrl;
+	}
+
 }

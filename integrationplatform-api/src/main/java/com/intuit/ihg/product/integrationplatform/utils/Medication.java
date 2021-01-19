@@ -25,5 +25,6 @@ public class Medication {
 	public String FirstName = "";
 	public String LastName = "";
 	public String MFPatientID = "";
+	public String RemoveMedicationRestUrl = "";
 
 }

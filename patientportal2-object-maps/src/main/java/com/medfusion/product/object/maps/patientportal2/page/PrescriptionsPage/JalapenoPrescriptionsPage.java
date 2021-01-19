@@ -1,18 +1,20 @@
 // Copyright 2018-2020 NXGN Management, LLC. All Rights Reserved.
 package com.medfusion.product.object.maps.patientportal2.page.PrescriptionsPage;
 
-import static org.junit.Assert.assertFalse;
-import static org.junit.Assert.assertTrue;
+import java.util.List;
 
+import org.openqa.selenium.By;
 import org.openqa.selenium.StaleElementReferenceException;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
+import org.openqa.selenium.support.FindAll;
 import org.openqa.selenium.support.FindBy;
 import org.openqa.selenium.support.How;
 import org.openqa.selenium.support.PageFactory;
 import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.openqa.selenium.support.ui.Select;
 
+import com.intuit.ifs.csscat.core.utils.Log4jUtil;
 import com.medfusion.common.utils.IHGUtil;
 import com.medfusion.common.utils.PropertyFileLoader;
 import com.medfusion.portal.utils.PortalConstants;
@@ -20,6 +22,8 @@ import com.medfusion.product.object.maps.patientportal2.page.JalapenoMenu;
 import com.medfusion.product.object.maps.patientportal2.page.HomePage.JalapenoHomePage;
 import com.medfusion.product.patientportal2.pojo.CreditCard;
 import com.medfusion.product.patientportal2.pojo.CreditCard.CardType;
+
+import junit.framework.Assert;
 
 public class JalapenoPrescriptionsPage extends JalapenoMenu {
 
@@ -110,10 +114,8 @@ public class JalapenoPrescriptionsPage extends JalapenoMenu {
 	@FindBy(how = How.XPATH, using = "//*[@class='feedback']/following::*[contains(text(),'Prescription Renewa')]")
 	public WebElement renewalConfirmationmessage;
 
-	@FindBy(how = How.ID, using = "medicationForm")
-	public WebElement Medicationlist;
-
-
+	@FindAll({@FindBy(how = How.XPATH, using = "//*[@id='medicationForm']/div[1]/div")})
+	public List<WebElement> Medicationlist;
 
 	public JalapenoPrescriptionsPage(WebDriver driver) {
 		super(driver);
@@ -255,14 +257,32 @@ public class JalapenoPrescriptionsPage extends JalapenoMenu {
 
 	public void validatemedication(String productName) {
 		driver.switchTo().frame("iframe");
-		assertTrue(Medicationlist.getText().contains(productName));
-		driver.switchTo().defaultContent();
 
+		for (int i = 1; i < Medicationlist.size(); i++) {
+			String medicationName = driver.findElement(By.xpath("//*[@id='medicationForm']/div[1]/div[" + i + "]")).getText();
+			if (medicationName.contains(productName)) {
+				log("Medication POSTED is visible on portal");
+				break;
+			} else {
+				continue;
+			}
+		}
+		driver.switchTo().defaultContent();
 	}
 
 	public void validateDeletedMedication(String productName) {
 		driver.switchTo().frame("iframe");
-		assertFalse(Medicationlist.getText().contains(productName));
+		for (int i = 1; i < Medicationlist.size(); i++) {
+			String medicationName = driver.findElement(By.xpath("//*[@id='medicationForm']/div[1]/div[" + i + "]")).getText();
+			if (medicationName.contains(productName)) {
+				Log4jUtil.log("Deleted medications is still visible on the Prescription page");
+				Assert.assertTrue(!medicationName.contains(productName));
+				break;
+			} else {
+				continue;
+			}
+		}
+
 		driver.switchTo().defaultContent();
 
 	}
