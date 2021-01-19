@@ -26,7 +26,7 @@ import com.intuit.ihg.product.integrationplatform.utils.PIDC;
 import com.intuit.ihg.product.integrationplatform.utils.PIDCTestData;
 import com.intuit.ihg.product.integrationplatform.utils.Payment;
 import com.intuit.ihg.product.integrationplatform.utils.PaymentTestData;
-import com.intuit.ihg.product.integrationplatform.utils.RemoveMedicationPayLoad;
+import com.intuit.ihg.product.integrationplatform.utils.RemoveMedicationPayload;
 import com.intuit.ihg.product.integrationplatform.utils.RestUtils;
 import com.intuit.ihg.product.integrationplatform.utils.StatementEventData;
 import com.intuit.ihg.product.integrationplatform.utils.StatementPreference;
@@ -1154,7 +1154,7 @@ public class IntegrationPlatformAcceptanceTests extends BaseTestNGWebDriver {
 	@Test(enabled = true, groups = {"AcceptanceTests"}, retryAnalyzer = RetryAnalyzer.class)
 	public void testAddMultipleMedicatiosandRemoveAll() throws Exception {
 
-		log("Test Case: End to end testing Medication Posted");
+		log("Test Case: End to end testing to remove all the Medications Posted");
 		log("Execution Environment: " + IHGUtil.getEnvironmentType());
 		log("Execution Browser: " + TestConfig.getBrowserType());
 		log("Step 1: Get Data from Excel");
@@ -1187,7 +1187,7 @@ public class IntegrationPlatformAcceptanceTests extends BaseTestNGWebDriver {
 		MedicationPayLoad MedicationObj = new MedicationPayLoad();
 		log("Step 3: Do medication Post Request to add the medication");
 
-		for (int i = 0; i < 5; i++) {
+		for (int i = 0; i < 3; i++) {
 
 		String MedicationID = MedicationPayLoad.randomNumbers(12);
 		log("MedicationID Posted is : " + MedicationID);
@@ -1220,7 +1220,7 @@ public class IntegrationPlatformAcceptanceTests extends BaseTestNGWebDriver {
 
 		log("Step 8: Post Same Medication with DELETED status to remove the medication from portal");
 
-		RemoveMedicationPayLoad RemoveMedicationObj = new RemoveMedicationPayLoad();
+		RemoveMedicationPayload RemoveMedicationObj = new RemoveMedicationPayload();
 		String payloadRemove = RemoveMedicationObj.getRemoveMedicationPayLoad(testData);
 		log("payload: " + payloadRemove);
 		String processingUrlDelete = RestUtils.setupHttpPostRequest(testData.getRemoveMedicationRestUrl(), payloadRemove, testData.getResponsePath());

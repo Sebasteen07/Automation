@@ -19,7 +19,7 @@ import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 
 
-public class RemoveMedicationPayLoad {
+public class RemoveMedicationPayload {
 	public String output = null;
 
 
