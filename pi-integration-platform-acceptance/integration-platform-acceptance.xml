@@ -11,11 +11,14 @@
 		<class name = "com.intuit.ihg.product.integrationplatform.test.IntegrationPlatformAcceptanceTests" />
 		<methods>
 	    		<exclude name="testEHDCsendCCD" />        		
-        		<exclude name="testPIDCPatientRegistration" />        		
-        		<exclude name="testE2EAppointmentRequest20" />
-				<exclude name="testE2E_OLBP20" />
+        		<include name="testPIDCPatientRegistration" />        		
+        		<include name="testE2EAppointmentRequest20" />
+				<include name="testE2E_OLBP20" />
 				<include name="testStatementPreference" />
 				<include name="testE2EBalancePresentment" />
+				<include name="testAddMedication" />
+				<include name="testAddMultipleMedicatiosandRemoveAll" />
+				<include name="testDeleteMedicationAdded" />
       	</methods>
       	<class name = "com.intuit.ihg.product.integrationplatform.test.IntegrationPlatformRegressionTests" />
 		<methods>
