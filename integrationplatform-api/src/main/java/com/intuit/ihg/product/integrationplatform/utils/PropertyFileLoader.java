@@ -1,13 +1,10 @@
 // Copyright 2016-2020 NXGN Management, LLC. All Rights Reserved.
 package com.intuit.ihg.product.integrationplatform.utils;
 
-import java.io.FileReader;
 import java.io.IOException;
 import java.io.InputStream;
-import java.net.URL;
 import java.util.Properties;
 
-import com.intuit.ifs.csscat.core.TestConfig;
 import com.medfusion.common.utils.IHGUtil;
 
 public class PropertyFileLoader {
@@ -419,13 +416,14 @@ public class PropertyFileLoader {
 	public String getPatientID() {
 		return property.getProperty("patientID");
 	}
-	
-	
 	public String getRestUrl1_20() {
 		return property.getProperty("restUrl1_20");
 	}
 	public String getRestUrl2_20() {
 		return property.getProperty("restUrl2_20");
+	}
+	public String getRestUrl3_20() {
+		return property.getProperty("restUrl3_20");
 	}
 	public String getPracticeId_PIDC_20() {
 		return property.getProperty("practiceId_PIDC_20");

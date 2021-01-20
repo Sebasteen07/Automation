@@ -150,22 +150,76 @@ public class PatientRegistrationUtils {
 		workingDir = workingDir + testData.getCsvFilePath();
 		Log4jUtil.log("Loading CSVfile : "+workingDir);
 		csvFileReader(testData,workingDir);
-		
+
 		Thread.sleep(600);
 		if (ChannelVersion.contains("v1")) {
 			replaceUnknownForv1(ChannelVersion, testData);
 		}
 		Log4jUtil.log("Payload Batchsize :"+testData.getBatchSize());
+
+		if(ChannelVersion.contains("v3")) {
+			sendPatientInvitePayloadV3 payloadObj = new sendPatientInvitePayloadV3();
+			String patient = payloadObj.getPIDCPayload(testData, portalVersion);
+
+			Log4jUtil.log(patient);
+
+			Thread.sleep(600);
+
+			Log4jUtil.log("Step 2: Setup Oauth client" + testData.getResponsePath());
+			RestUtils.oauthSetup(testData.getoAuthKeyStore(), testData.getoAuthProperty(), testData.getoAuthAppToken(), testData.getoAuthUsername(),
+					testData.getoAuthPassword());
+
+			Log4jUtil.log("Step 3: Do a POST call and get processing status URL");
+			String processingUrl = RestUtils.setupHttpPostRequest(testData.getRestUrl_20(), patient, testData.getResponsePath());
+
+			Boolean completed = checkMessageProcessingOntime(processingUrl, testData.getResponsePath());
+			Assert.assertTrue(completed, "Message processing was not completed in time");
+
+			Mailinator mail = new Mailinator();
+
+			for (int i = 0; i < Integer.parseInt(testData.getBatchSize()); i++) {
+				Thread.sleep(15000);
+				Log4jUtil.log("Patient No: " + (i + 1));
+				Log4jUtil.log(payloadObj.emailGroup.get(i) + "   :    " + PortalConstants.NewPatientActivationMessage + "     :   "
+						+ PortalConstants.NewPatientActivationMessageLinkText);
+				String activationUrl = mail.getLinkFromEmail(payloadObj.emailGroup.get(i), PortalConstants.NewPatientActivationMessage,
+						PortalConstants.NewPatientActivationMessageLinkText, 40);
+				Log4jUtil.log("Step 4: Moving to the link obtained from the email message");
+				Assert.assertNotNull(activationUrl, "Error: Activation link not found.");
+
+
+				if (portalVersion.contains("2.0")) {
+					registerPatient(activationUrl, payloadObj.emailGroup.get(i), testData.getPatientPassword(), testData.getSecretQuestion(), testData.getSecretAnswer(),
+							testData.getHomePhoneNo(), driver, payloadObj.zipGroup.get(i), testData.getBirthDay());
+				}
+				Thread.sleep(10000);
+			}
+
+
+			Log4jUtil.log("Step 8: Do a GET on PIDC Url to get registered patient");
+			Long since = timestamp / 1000L - 60 * 24;
+			Log4jUtil.log("Getting patients since timestamp: " + since);
+			RestUtils.setupHttpGetRequest(testData.getRestUrl_20() + "?since=" + since + ",0", testData.getResponsePath());
+			Thread.sleep(2000);
+
+			Log4jUtil.log("Step 9: Find the patient and check if he is registered");
+
+			RestUtils.isPatientRegistered(testData.getResponsePath(), payloadObj.firstNameGroup, payloadObj.firstNameGroup, payloadObj.lastNameGroup, null, testData);
+
+		}
+		else {
 		sendPatientInvitePayload payloadObj = new sendPatientInvitePayload();
-		String patient = payloadObj.getPIDCPayload(testData,portalVersion);
-		
+			String patient = payloadObj.getPIDCPayload(testData, portalVersion);
+
+		Log4jUtil.log(patient);
+
 		Thread.sleep(600);
 		
 		Log4jUtil.log("Step 2: Setup Oauth client" + testData.getResponsePath());
 		RestUtils.oauthSetup(testData.getoAuthKeyStore(), testData.getoAuthProperty(), testData.getoAuthAppToken(), testData.getoAuthUsername(), testData.getoAuthPassword());
 		
 		Log4jUtil.log("Step 3: Do a POST call and get processing status URL");
-		String processingUrl = RestUtils.setupHttpPostRequest(testData.getRestUrl(), patient, testData.getResponsePath());
+		String processingUrl = RestUtils.setupHttpPostRequest(testData.getRestUrl_20(), patient, testData.getResponsePath());
 		
 		Boolean completed = checkMessageProcessingOntime(processingUrl, testData.getResponsePath());
 		Assert.assertTrue(completed, "Message processing was not completed in time");
@@ -191,12 +245,13 @@ public class PatientRegistrationUtils {
 		Log4jUtil.log("Step 8: Do a GET on PIDC Url to get registered patient");
 		Long since = timestamp / 1000L - 60 * 24;
 		Log4jUtil.log("Getting patients since timestamp: " + since);
-		RestUtils.setupHttpGetRequest(testData.getRestUrl() + "?since=" + since + ",0", testData.getResponsePath());
+			RestUtils.setupHttpGetRequest(testData.getRestUrl_20() + "?since=" + since + ",0", testData.getResponsePath());
 		Thread.sleep(2000);
 
 		Log4jUtil.log("Step 9: Find the patient and check if he is registered");
 
 		RestUtils.isPatientRegistered(testData.getResponsePath(), payloadObj.firstNameGroup, payloadObj.firstNameGroup, payloadObj.lastNameGroup, null ,testData);
+		}
 	}
 	
 
