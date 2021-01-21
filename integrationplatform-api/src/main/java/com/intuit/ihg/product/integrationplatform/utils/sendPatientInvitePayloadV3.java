@@ -98,14 +98,6 @@ public class sendPatientInvitePayloadV3 {
 				PatientIdentifier.appendChild(PracticePatientId);
 				PracticePatientId.appendChild(doc.createTextNode(firstName));
 
-				// Element PatientAccountNumber = doc.createElement("PatientAccountNumber");
-				// PatientIdentifier.appendChild(PatientAccountNumber);
-				// PatientAccountNumber.appendChild(doc.createTextNode("PatientAccountNumber"));
-
-				// Element IntuitPatientId = doc.createElement("IntuitPatientId");
-				// PatientIdentifier.appendChild(IntuitPatientId);
-				// IntuitPatientId.appendChild(doc.createTextNode(String.valueOf("20941")));
-
 				Element PracticeIdentifier = doc.createElement("PracticeIdentifier");
 				Patient.appendChild(PracticeIdentifier);
 
@@ -120,9 +112,6 @@ public class sendPatientInvitePayloadV3 {
 				Element LastUpdateDate = doc.createElement("LastUpdateDate");
 				Patient.appendChild(LastUpdateDate);
 				LastUpdateDate.appendChild(doc.createTextNode("2001-12-31T12:00:00"));
-				// Element ResourceRequestId = doc.createElement("ResourceRequestId");
-				// Patient.appendChild(ResourceRequestId);
-				// ResourceRequestId.appendChild(doc.createTextNode("ResourceRequestId"));
 
 				// Name
 				Element Name = doc.createElement("Name");
@@ -137,8 +126,6 @@ public class sendPatientInvitePayloadV3 {
 				FirstName.appendChild(doc.createTextNode(firstName));
 
 				Element MiddleName = doc.createElement("MiddleName");
-				// Name.appendChild(MiddleName);
-				// MiddleName.appendChild(doc.createTextNode("MiddleName"));
 
 				Element LastName = doc.createElement("LastName");
 				Name.appendChild(LastName);
@@ -154,12 +141,10 @@ public class sendPatientInvitePayloadV3 {
 
 				Element Race = doc.createElement("Race");
 				Patient.appendChild(Race);
-				//Race.appendChild(doc.createTextNode(testData.getRace().get(i)));
 				Race.appendChild(doc.createTextNode(testData.patientDetailList.get(i+1).getRace()));
 				
 				Element Ethnicity = doc.createElement("Ethnicity");
 				Patient.appendChild(Ethnicity);
-				//System.out.println(i+"Race "+testData.getEthnicity().get(i));
 				Ethnicity.appendChild(doc.createTextNode(testData.patientDetailList.get(i+1).getEthnicity()));
 
 				Element Gender = doc.createElement("Gender");
@@ -173,7 +158,6 @@ public class sendPatientInvitePayloadV3 {
 					
 					Element ValueGI = doc.createElement("Value");
 					GenderIdentity.appendChild(ValueGI);
-					//ValueGI.appendChild(doc.createTextNode(testData.getGenderIdentity().get(i)));
 					ValueGI.appendChild(doc.createTextNode(testData.patientDetailList.get(i+1).getGenderIdentity()));
 					
 					Element CommentGI = doc.createElement("Comment");
@@ -382,8 +366,6 @@ public class sendPatientInvitePayloadV3 {
 				Patient.appendChild(Billing);
 
 				Element AccountNumber = doc.createElement("AccountNumber");
-				// Billing.appendChild(AccountNumber);
-				// AccountNumber.appendChild(doc.createTextNode("AccountNumber"));
 
 				Element Guarantor = doc.createElement("Guarantor");
 				Billing.appendChild(Guarantor);
