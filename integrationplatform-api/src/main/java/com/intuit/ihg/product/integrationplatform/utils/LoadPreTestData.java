@@ -158,7 +158,6 @@ public class LoadPreTestData {
 		testData.setResponsePath(propertyData.getResponsePath());
 		testData.setUsername(propertyData.getUserName());
 		testData.setPassword(propertyData.getPassword());
-		// testData.setRestUrl(propertyData.getRestUrl());
 		
 		testData.setBirthDay(propertyData.getBirthday());
 		testData.setZipCode(propertyData.getZipCode());
