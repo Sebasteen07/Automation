@@ -1,4 +1,4 @@
-// Copyright 2016-2020 NXGN Management, LLC. All Rights Reserved.
+// Copyright 2016-2021 NXGN Management, LLC. All Rights Reserved.
 package com.intuit.ihg.product.integrationplatform.utils;
 
 import java.io.IOException;
