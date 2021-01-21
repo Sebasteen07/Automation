@@ -158,7 +158,6 @@ public class LoadPreTestData {
 		testData.setResponsePath(propertyData.getResponsePath());
 		testData.setUsername(propertyData.getUserName());
 		testData.setPassword(propertyData.getPassword());
-		//testData.setRestUrl(propertyData.getRestUrl());	
 		
 		testData.setBirthDay(propertyData.getBirthday());
 		testData.setZipCode(propertyData.getZipCode());
@@ -185,6 +184,9 @@ public class LoadPreTestData {
 		}
 		if (channelVersion.contains("v2")) {
 			testData.setRestUrl_20(propertyData.getRestUrl2_20());
+		}
+		if (channelVersion.contains("v3")) {
+			testData.setRestUrl_20(propertyData.getRestUrl3_20());
 		}
 		
 		if(portalVersion.contains("1.0")) {
