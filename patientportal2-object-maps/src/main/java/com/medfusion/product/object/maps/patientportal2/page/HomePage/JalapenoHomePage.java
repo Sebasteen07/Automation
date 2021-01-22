@@ -400,7 +400,7 @@ public class JalapenoHomePage extends JalapenoMenu {
 
 	public void clickFeaturedAppointmentsReq() {
 		javascriptClick(sheduleanappointment);
-		IHGUtil.waitForElement(driver, 80, buttonContinue);
+		IHGUtil.waitForElement(driver, 4, buttonContinue);
 		javascriptClick(buttonContinue);
 	}
 
