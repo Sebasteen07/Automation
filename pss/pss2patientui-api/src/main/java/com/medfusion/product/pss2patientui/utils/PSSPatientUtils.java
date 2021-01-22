@@ -237,7 +237,14 @@ public class PSSPatientUtils {
 			aptDateTime.selectDate(testData.getIsNextDayBooking());
 		}
 		Thread.sleep(6000);
-		clickOnSubmitAppt(false, aptDateTime, testData, driver);
+		
+		if (testData.isAnonymousFlow()) {
+			Log4jUtil.log(" isAnonymousFlow is TRUE ");
+			bookAnonymousApt(aptDateTime, testData, driver);
+		} else {
+			Log4jUtil.log("This is not an Anonymous flow so comes is else block");
+			clickOnSubmitAppt(false, aptDateTime, testData, driver);
+		}
 	}
 
 	public void LTBFlow(HomePage homepage, Appointment testData, String startOrderOn, WebDriver driver)
