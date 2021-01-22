@@ -44,10 +44,10 @@ public class SecurityDetailsPage extends MedfusionPage {
 		@FindBy(how = How.ID, using = "phone_type")
 		private WebElement selectPhoneType;
 
-		@FindBy(how = How.XPATH, using = "//*[@id='preferredLocationId']/div[1]")
+		@FindBy(how = How.XPATH, using = "//*[@id='preferredLocationId_field']/mf-locations/div/ng-select")
 		private WebElement primaryLocationElement;
 
-		@FindBy(how = How.XPATH, using = "//*[@class='ng-dropdown-panel-items scroll-host']//span[1]")
+		@FindBy(how = How.XPATH, using = "//div[@class='ng-option ng-option-marked']")
 		private WebElement setLocation;
 
 		@FindBy(how = How.ID, using = "prevStep")

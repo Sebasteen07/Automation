@@ -1,9 +1,10 @@
-// Copyright 2018-2021 NXGN Management, LLC. All Rights Reserved.
+// Copyright 2021 NXGN Management, LLC. All Rights Reserved.
 package com.intuit.ihg.product.integrationplatform.utils;
 
 import java.io.StringWriter;
 import java.util.ArrayList;
 
+import javax.xml.XMLConstants;
 import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
 import javax.xml.transform.OutputKeys;
@@ -14,15 +15,14 @@ import javax.xml.transform.stream.StreamResult;
 
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
-import org.w3c.dom.Node;
 
 import com.intuit.ihg.product.integrationplatform.pojo.PIDCInfo;
 
-public class sendPatientInvitePayload {
+public class sendPatientInvitePayloadV3 {
 	static String output;
 
 	public String emailType;
-	public String version = "v1";
+	public String version = "v3";
 	public String firstName;
 	public String lastName;
 	public String email;
@@ -42,104 +42,29 @@ public class sendPatientInvitePayload {
 	
 
 	public  String getPIDCPayload(PIDCInfo testData,String portalVersion) {
-		
-		if (testData.getRestUrl().contains("v1")) {
-			version = "v1";
-		} else {
-			version = "v2";
-		}
+
 		DocumentBuilderFactory icFactory = DocumentBuilderFactory.newInstance();
 		DocumentBuilder icBuilder;
 		try {
 			icBuilder = icFactory.newDocumentBuilder();
 			Document doc = icBuilder.newDocument();
 
-			String schema = "http://schema.intuit.com/health/patient/v2";
-			if (version.contains("v1")) {
-				schema = "http://schema.intuit.com/health/patient/v1";
-			}
+			String schema = "http://schema.medfusion.com/health/patient/v3";
+
 			Thread.sleep(500);
-			Element mainRootElement = doc.createElementNS(schema, "ihg:PatientBatch");
-			mainRootElement.setAttributeNS("http://www.w3.org/2001/XMLSchema-instance", "xsi:schemaLocation", schema + " patient.xsd");
+			Element mainRootElement = doc.createElementNS(schema, "ns3:PatientBatch");
+			mainRootElement.setAttributeNS(XMLConstants.XMLNS_ATTRIBUTE_NS_URI, "xmlns:xsd", "http://www.w3.org/2001/XMLSchema");
+			mainRootElement.setAttributeNS(XMLConstants.XMLNS_ATTRIBUTE_NS_URI, "xmlns:xsi", "http://www.w3.org/2001/XMLSchema-instance");
+
 			doc.appendChild(mainRootElement);
 
-			// Start Creating BatchID and BatchSize Document
-			Element BatchId = doc.createElement("BatchId");
-			BatchId.appendChild(doc.createTextNode("BatchId"));
-			mainRootElement.appendChild(BatchId);
+			// Start Creating BatchSize Document
 
 			Element BatchSize = doc.createElement("BatchSize");
 			BatchSize.appendChild(doc.createTextNode(testData.getBatchSize()));
 			mainRootElement.appendChild(BatchSize);
-			// End BatchID and BatchSize
+			// End BatchSize
 
-			// Start Creating Sender Node
-			Element Sender = doc.createElement("Sender");
-			Sender.setAttribute("deviceLocalTime", "2001-12-31T12:00:00");
-			Sender.setAttribute("deviceName", "");
-			Sender.setAttribute("deviceUTCTime", "2001-12-31T12:00:00");
-			Sender.setAttribute("deviceVersion", "");
-			Sender.setAttribute("vendorName", "");
-
-			Node DeviceArguments = doc.createElement("DeviceArguments");
-			Sender.appendChild(DeviceArguments);
-			Node KeyValuePair = doc.createElement("KeyValuePair");
-			DeviceArguments.appendChild(KeyValuePair);
-
-			Node Key = doc.createElement("Key");
-			Key.appendChild(doc.createTextNode("Key"));
-			KeyValuePair.appendChild(Key);
-			Node Value = doc.createElement("Value");
-			Value.appendChild(doc.createTextNode("Value"));
-			KeyValuePair.appendChild(Value);
-
-			mainRootElement.appendChild(Sender);
-			// End Sender Node
-
-			// Start Creating Partner Node
-			Element Partner = doc.createElement("Partner");
-			Partner.setAttribute("deviceLocalTime", "2001-12-31T12:00:00");
-			Partner.setAttribute("deviceName", "");
-			Partner.setAttribute("deviceUTCTime", "2001-12-31T12:00:00");
-			Partner.setAttribute("deviceVersion", "");
-			Partner.setAttribute("vendorName", "");
-
-			DeviceArguments = doc.createElement("DeviceArguments");
-			Partner.appendChild(DeviceArguments);
-			KeyValuePair = doc.createElement("KeyValuePair");
-			DeviceArguments.appendChild(KeyValuePair);
-
-			Key = doc.createElement("Key");
-			Key.appendChild(doc.createTextNode("Key"));
-			KeyValuePair.appendChild(Key);
-			Value = doc.createElement("Value");
-			Value.appendChild(doc.createTextNode("Value"));
-			KeyValuePair.appendChild(Value);
-
-			mainRootElement.appendChild(Partner);
-
-			// Create Destination Node
-			Element Destination = doc.createElement("Destination");
-			Destination.setAttribute("deviceLocalTime", "2001-12-31T12:00:00");
-			Destination.setAttribute("deviceName", "");
-			Destination.setAttribute("deviceUTCTime", "2001-12-31T12:00:00");
-			Destination.setAttribute("deviceVersion", "");
-			Destination.setAttribute("vendorName", "");
-
-			DeviceArguments = doc.createElement("DeviceArguments");
-			Destination.appendChild(DeviceArguments);
-			KeyValuePair = doc.createElement("KeyValuePair");
-			DeviceArguments.appendChild(KeyValuePair);
-
-			Key = doc.createElement("Key");
-			Key.appendChild(doc.createTextNode("Value"));
-			KeyValuePair.appendChild(Key);
-			Value = doc.createElement("Value");
-			Value.appendChild(doc.createTextNode("Value"));
-			KeyValuePair.appendChild(Value);
-
-			mainRootElement.appendChild(Destination);
-			
 			zip = testData.getZipCode();
 
 			date = testData.getBirthDay(); //"01/01/1987";
@@ -174,14 +99,6 @@ public class sendPatientInvitePayload {
 				PatientIdentifier.appendChild(PracticePatientId);
 				PracticePatientId.appendChild(doc.createTextNode(firstName));
 
-				Element PatientAccountNumber = doc.createElement("PatientAccountNumber");
-				PatientIdentifier.appendChild(PatientAccountNumber);
-				PatientAccountNumber.appendChild(doc.createTextNode("PatientAccountNumber"));
-
-				Element IntuitPatientId = doc.createElement("IntuitPatientId");
-				PatientIdentifier.appendChild(IntuitPatientId);
-				IntuitPatientId.appendChild(doc.createTextNode(String.valueOf("20941")));
-
 				Element PracticeIdentifier = doc.createElement("PracticeIdentifier");
 				Patient.appendChild(PracticeIdentifier);
 
@@ -189,17 +106,13 @@ public class sendPatientInvitePayload {
 				PracticeIdentifier.appendChild(PracticeId);
 				PracticeId.appendChild(doc.createTextNode("PracticeId"));
 
-				Element IntuitPracticeId = doc.createElement("IntuitPracticeId");
-				PracticeIdentifier.appendChild(IntuitPracticeId);
-
-				IntuitPracticeId.appendChild(doc.createTextNode(testData.getPracticeId()));
+				Element IntegrationPracticeId = doc.createElement("IntegrationPracticeId");
+				PracticeIdentifier.appendChild(IntegrationPracticeId);
+				IntegrationPracticeId.appendChild(doc.createTextNode(testData.getPracticeId()));
 
 				Element LastUpdateDate = doc.createElement("LastUpdateDate");
 				Patient.appendChild(LastUpdateDate);
 				LastUpdateDate.appendChild(doc.createTextNode("2001-12-31T12:00:00"));
-				Element ResourceRequestId = doc.createElement("ResourceRequestId");
-				Patient.appendChild(ResourceRequestId);
-				ResourceRequestId.appendChild(doc.createTextNode("ResourceRequestId"));
 
 				// Name
 				Element Name = doc.createElement("Name");
@@ -214,8 +127,6 @@ public class sendPatientInvitePayload {
 				FirstName.appendChild(doc.createTextNode(firstName));
 
 				Element MiddleName = doc.createElement("MiddleName");
-				Name.appendChild(MiddleName);
-				MiddleName.appendChild(doc.createTextNode("MiddleName"));
 
 				Element LastName = doc.createElement("LastName");
 				Name.appendChild(LastName);
@@ -231,12 +142,10 @@ public class sendPatientInvitePayload {
 
 				Element Race = doc.createElement("Race");
 				Patient.appendChild(Race);
-				//Race.appendChild(doc.createTextNode(testData.getRace().get(i)));
 				Race.appendChild(doc.createTextNode(testData.patientDetailList.get(i+1).getRace()));
 				
 				Element Ethnicity = doc.createElement("Ethnicity");
 				Patient.appendChild(Ethnicity);
-				//System.out.println(i+"Race "+testData.getEthnicity().get(i));
 				Ethnicity.appendChild(doc.createTextNode(testData.patientDetailList.get(i+1).getEthnicity()));
 
 				Element Gender = doc.createElement("Gender");
@@ -250,7 +159,6 @@ public class sendPatientInvitePayload {
 					
 					Element ValueGI = doc.createElement("Value");
 					GenderIdentity.appendChild(ValueGI);
-					//ValueGI.appendChild(doc.createTextNode(testData.getGenderIdentity().get(i)));
 					ValueGI.appendChild(doc.createTextNode(testData.patientDetailList.get(i+1).getGenderIdentity()));
 					
 					Element CommentGI = doc.createElement("Comment");
@@ -459,8 +367,6 @@ public class sendPatientInvitePayload {
 				Patient.appendChild(Billing);
 
 				Element AccountNumber = doc.createElement("AccountNumber");
-				Billing.appendChild(AccountNumber);
-				AccountNumber.appendChild(doc.createTextNode("AccountNumber"));
 
 				Element Guarantor = doc.createElement("Guarantor");
 				Billing.appendChild(Guarantor);
@@ -725,7 +631,7 @@ public class sendPatientInvitePayload {
 
 				Prefix = doc.createElement("Prefix");
 				SubscriberName.appendChild(Prefix);
-				Prefix.appendChild(doc.createTextNode("Pefix"));
+				Prefix.appendChild(doc.createTextNode("Prefix"));
 
 				FirstName = doc.createElement("FirstName");
 				SubscriberName.appendChild(FirstName);

@@ -452,4 +452,59 @@ public class PracticePortalAcceptanceTests extends BaseTestNGWebDriver {
 
 	}
 
+	@Test(enabled = true, groups = { "AcceptanceTests" })
+	public void testOnlineBillPayRefundProcess() throws Exception {
+		logStep("Login to Practice Portal");
+		PracticeLoginPage practiceLogin = new PracticeLoginPage(driver, testData.getUrl());
+		PracticeHomePage practiceHome = practiceLogin.login(testData.getDoctorLogin(), testData.getDoctorPassword());
+
+		logStep("Click on Make Payment link.");
+		PayMyBillOnlinePage pPayMyBillOnlinePage = practiceHome.clickMakePaymentForPatient();
+
+		logStep("Search For Patient");
+		pPayMyBillOnlinePage.searchForPatient(testData.getProperty("onlineBillPayFirstName"),
+				testData.getProperty("onlineBillPayLastName"));
+
+		String amount = IHGUtil.createRandomNumericStringInRange(100, 500);
+		log("Random generated amount: " + amount);
+
+		int adjustedAmountRefund = Integer.parseInt(amount) - 10;
+		log("The Adjusted Amount After Refund: " + adjustedAmountRefund);
+
+		logStep("Set all the transaction details");
+		pPayMyBillOnlinePage.setTransactionsForOnlineBillPayProcess(PracticeConstants.LOCATION,
+				PracticeConstants.PROVIDER, PracticeConstants.CARD_NUMBER, amount,
+				PracticeConstants.PROCESS_CARD_HOLDER_NAME, PracticeConstants.CARD_NUMBER,
+				PracticeConstants.CARD_TYPE_VISA);
+
+		logStep("Verify the Payment Confirmation text");
+		IHGUtil.setFrame(driver, PracticeConstants.FRAME_NAME);
+		IHGUtil.waitForElement(driver, 20, pPayMyBillOnlinePage.paymentConfirmationText);
+		assertEquals(true, pPayMyBillOnlinePage.paymentConfirmationText.getText()
+				.contains(PracticeConstants.PAYMENT_SUCCESSFULL_TEXT));
+
+		logStep("Navigate to Patient Search Page.");
+		OnlineBillPaySearchPage onlineBillPay = new OnlineBillPaySearchPage(driver);
+		PatientSearchPage patientsearchPage = onlineBillPay.clickOnPatientSearchLink();
+
+		logStep("Search the patient in Patient Search page.");
+		patientsearchPage.searchPatient(PracticeConstants.PATIENT_FIRST_NAME, PracticeConstants.PATIENT_LAST_NAME);
+
+		logStep("Verify whether the transaction is present.");
+		assertTrue(patientsearchPage.isTransactionPresent(amount, PracticeConstants.PATIENT_FIRST_NAME,
+				PracticeConstants.PATIENT_LAST_NAME));
+
+		logStep("Select the particular Transaction from the Search Result.");
+		patientsearchPage.selectTheTransaction(amount, PracticeConstants.PATIENT_FIRST_NAME,
+				PracticeConstants.PATIENT_LAST_NAME);
+		assertFalse(pPayMyBillOnlinePage.isRefundTransactionPresent());
+
+		logStep("Click on Refund Payment Link and Refund the transaction.");
+		pPayMyBillOnlinePage.refundPayment("10", PracticeConstants.REFUND_COMMENT);
+		assertTrue(pPayMyBillOnlinePage.isRefundTransactionPresent());
+
+		logStep("Validate the Adjusted Amount after the Refund Amount");
+		assertTrue(pPayMyBillOnlinePage.getAdjustedAmount().equals("$" + adjustedAmountRefund + ".00"));
+
+	}
 }

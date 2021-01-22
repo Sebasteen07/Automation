@@ -948,8 +948,7 @@ public class IntegrationPlatformRegressionTests extends BaseTestNGWebDriver {
 
 	@DataProvider(name = "channelVersion")
 	public Object[][] channelVersionPIDC() {
-		Object[][] obj = new Object[][] { {"v1"}, {"v2"}}; 
-		//Object[][] obj = new Object[][] { {"v1"}};
+		Object[][] obj = new Object[][] {{"v1"}, {"v2"}, {"v3"}};
 		return obj;
 	}
 
@@ -3066,6 +3065,15 @@ public class IntegrationPlatformRegressionTests extends BaseTestNGWebDriver {
 	
 		aDUtils.checkAppointment(testData, driver);
 	
+	}
+
+
+	@Test(enabled = true, dataProvider = "portalVersion", groups = {"RegressionTests"}, retryAnalyzer = RetryAnalyzer.class)
+	public void testPIDCPatientRegistrationV3(String portalVersion) throws Exception {
+		log("Test Case: PIDC Patient Registration v3 channel for portal-" + portalVersion);
+		log("Execution Environment: " + IHGUtil.getEnvironmentType());
+		log("Execution Browser: " + TestConfig.getBrowserType());
+		PatientRegistrationUtils.pidcPatientRegistration("v3", driver, portalVersion);
 	}
 		
 }

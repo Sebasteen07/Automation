@@ -1557,7 +1557,7 @@ public class PatientPortal2AcceptanceTests extends BaseTestNGWebDriver {
 		JalapenoHomePage homePage = loginPage.login(localpatient.getUsername(), localpatient.getPassword());
 
 		logStep("Going to MyAccount page");
-		JalapenoMyAccountProfilePage myAccountPage = homePage.clickOnMyAccount();
+		JalapenoMyAccountProfilePage myAccountPage = homePage.goToAccountPage();
 		assertTrue(myAccountPage.checkExtendedGenderQuestion());
 		logStep("Log Out");
 		homePage.clickOnLogout();

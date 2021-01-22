@@ -92,7 +92,7 @@ public class JalapenoHomePage extends JalapenoMenu {
 	@FindBy(how = How.XPATH, using = "//*[@id=\"feature_bill_pay\"]/span")
 	private WebElement outstandingPatientBalance;
 
-	@FindBy(how = How.XPATH, using = "//button[@aria-label='Close']/span")
+	@FindBy(how = How.XPATH, using = "//blink-health//button/*[contains(text(),'×')]")
 	private WebElement blinkBannerHideButton;
 
 	@FindBy(how = How.ID, using = "actionButton")

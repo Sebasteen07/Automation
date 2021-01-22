@@ -5,6 +5,7 @@ import static org.testng.Assert.assertTrue;
 
 import java.util.List;
 
+import org.apache.tools.ant.taskdefs.Sleep;
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
@@ -167,8 +168,9 @@ public class PatientSearchPage extends BasePageObject {
 				+ "')]/ancestor::tr/td//a/span[contains(text(), '" + lName + ", " + fName + "')]")).isDisplayed();
 	}
 
-	public PayMyBillOnlinePage selectTheTransaction(String amount, String fName, String lName) {
+	public PayMyBillOnlinePage selectTheTransaction(String amount, String fName, String lName) throws InterruptedException {
 		IHGUtil.PrintMethodName();
+		Thread.sleep(10000);
 		driver.findElement(By.xpath("//table[@id='MfAjaxFallbackDefaultDataTable']//span[contains(text(), '" + amount
 				+ "')]/ancestor::tr/td//a/span[contains(text(), '" + lName + ", " + fName + "')]")).click();
 		return PageFactory.initElements(driver, PayMyBillOnlinePage.class);
