@@ -24,6 +24,8 @@ public class PSSPropertyFileLoader {
 		Log4jUtil.log("Loading data for GW appointment related cases..");
 		appointValues.setIsinsuranceVisible(false);
 		appointValues.setIsstartpointPresent(false);
+		appointValues.setAgeRuleMonthFirst(property.getProperty("ageRuleMonthFirstParameterGW"));
+		appointValues.setAgeRuleMonthSecond(property.getProperty("ageRuleMonthSecondParameterGW"));
 		appointValues.setLinkProvider(property.getProperty("linkProviderGW"));
 		appointValues.setAppointmenttype(property.getProperty("appointmenttypeGW"));
 		appointValues.setDatetime(property.getProperty("datetimeGW"));

@@ -16,6 +16,8 @@ import java.net.URLConnection;
 import java.text.DateFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
+import java.time.LocalDate;
+import java.time.Period;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Calendar;
@@ -1719,5 +1721,14 @@ public class PSSPatientUtils {
 		assertTrue(confirmationpage.areBasicPageElementsPresent());
 		ScheduledAppointmentAnonymous scheduledAppointmentAnonymous = confirmationpage.appointmentConfirmedAnonymous();
 		scheduledAppointmentAnonymous.backtoHomePage();
+	}
+
+	public int ageCurrentmonths() {
+		LocalDate pdate = LocalDate.of(2000, 01, 01);
+		LocalDate now = LocalDate.now();
+		Period diff = Period.between(pdate, now);
+		int yearmonth = diff.getYears() * 12;
+		int month = yearmonth + diff.getMonths();
+		return month;
 	}
 }
