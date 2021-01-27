@@ -590,7 +590,6 @@ public class PSSAdminUtils {
 		PSS2PracticeConfiguration psspracticeConfig = loginToAdminPortal(driver, adminuser);
 		Thread.sleep(2000);
 		LinkTab linkTab = psspracticeConfig.linksTab();
-		// linkTab.searchLinkandRemove(testData.getLinkProvider());
 		linkTab.addLink(testData.getLocation(), testData.getLinkProvider());
 		linkTab.getURL(testData.getLinkProvider());
 		testData.setUrlLinkGen(linkTab.getURL(testData.getLinkProvider()));
@@ -600,5 +599,23 @@ public class PSSAdminUtils {
 		adminpatientmatching.patientMatchingSelection();
 		Log4jUtil.log("adminSettings Step 5: Logout from PSS Admin Portal");
 		Thread.sleep(4000);
+	}
+
+	public void ageRule(WebDriver driver, AdminUser adminuser, Appointment appointment) throws Exception {
+		PSS2PracticeConfiguration psspracticeConfig = loginToAdminPortal(driver, adminuser);
+		psspracticeConfig = psspracticeConfig.gotoPracticeConfigTab();
+		PatientFlow patientflow = psspracticeConfig.gotoPatientFlowTab();
+		adminuser.setRule(patientflow.getRule());
+		Log4jUtil.log("rule= " + patientflow.getRule());
+		setRulesNoSpecialitySet1(patientflow);
+		AdminPatientMatching adminpatientmatching = patientflow.gotoPatientMatchingTab();
+		adminpatientmatching.patientMatchingSelection();
+		ManageResource manageResource = psspracticeConfig.gotoResource();
+		pageRefresh(driver);
+		manageResource.selectResource(appointment.getProvider());
+		manageResource.selectAppointmenttype(appointment.getAppointmenttype());
+		Log4jUtil.log("Status of Checkbox" + manageResource.checkBoxStatus());
+		manageResource.ageRule();
+		manageResource.ageRuleparameter(appointment.getAgeRuleMonthFirst(), appointment.getAgeRuleMonthSecond());
 	}
 }

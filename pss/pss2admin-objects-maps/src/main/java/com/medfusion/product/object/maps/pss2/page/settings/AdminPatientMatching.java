@@ -18,7 +18,7 @@ public class AdminPatientMatching extends SettingsTab {
 	private List<WebElement> patientMatchingList;
 
 	@FindBy(
-			xpath = "//body/app[1]/layout[1]/div[1]/main[1]/div[2]/div[1]/div[1]/div[1]/section[1]/div[1]/div[1]/div[2]/div[6]/div[2]/div[1]/patientmatch[1]/div[1]/div[2]/div[1]/button[1]")
+			xpath = "//*[@id='tab41']/patientmatch/div/div[3]/div/button")
 	private WebElement saveBtnPAtientMatching;
 
 	public AdminPatientMatching(WebDriver driver) {
