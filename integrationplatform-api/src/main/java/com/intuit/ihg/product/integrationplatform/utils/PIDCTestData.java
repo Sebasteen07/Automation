@@ -252,6 +252,17 @@ public class PIDCTestData {
 	public String getNewPatientPassword() {
 		return PidcObj.NewPassword;
 	}
-	
+
+	public String getRestv1Url() {
+		return PidcObj.Restv1Url;
+	}
+
+	public String getRestv2Url() {
+		return PidcObj.Restv2Url;
+	}
+
+	public String getRestv3Url() {
+		return PidcObj.Restv3Url;
+	}
 	
 }

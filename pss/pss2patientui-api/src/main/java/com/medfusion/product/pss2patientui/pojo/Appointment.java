@@ -86,6 +86,9 @@ public class Appointment {
 	private String maxperDay;
 	private String gmailUserName;
 	private String linkProvider;
+	private String ageRuleMonthFirst;
+	private String ageRuleMonthSecond;
+
 	
 
 	private Boolean isCancelButtonPresent;
@@ -93,7 +96,6 @@ public class Appointment {
 	private int displaySlotCountLength;
 	private Boolean isNextMonthSlotAvail;
 	private String nextDateAvaliable;
-
 	private int calanderDaysAvaiable;
 	private Boolean isCalanderDateDisplayed;
 	private Boolean isProviderImageDisplayed;
@@ -143,7 +145,22 @@ public class Appointment {
 		this.popUpMessege = popUpMessege;
 	}
 
-	
+	public String getAgeRuleMonthFirst() {
+		return ageRuleMonthFirst;
+	}
+
+	public void setAgeRuleMonthFirst(String ageRuleMonthFirst) {
+		this.ageRuleMonthFirst = ageRuleMonthFirst;
+	}
+
+	public String getAgeRuleMonthSecond() {
+		return ageRuleMonthSecond;
+	}
+
+	public void setAgeRuleMonthSecond(String ageRuleMonthSecond) {
+		this.ageRuleMonthSecond = ageRuleMonthSecond;
+	}
+
 	
 	
 	public boolean isFutureApt() {

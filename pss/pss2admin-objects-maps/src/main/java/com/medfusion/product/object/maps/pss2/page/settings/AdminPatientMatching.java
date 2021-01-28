@@ -19,7 +19,7 @@ public class AdminPatientMatching extends SettingsTab {
 	
 	@FindBy(xpath = "//patientmatch//div//div[3]//div//button[@class='btn btn-primary' and @style='margin-right:10px']")
 	private WebElement saveBtnPAtientMatching;	
-
+	
 	public AdminPatientMatching(WebDriver driver) {
 		super(driver);
 	}

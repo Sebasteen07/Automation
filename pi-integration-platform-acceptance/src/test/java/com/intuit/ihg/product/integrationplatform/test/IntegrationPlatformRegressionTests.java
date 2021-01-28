@@ -1250,7 +1250,9 @@ public class IntegrationPlatformRegressionTests extends BaseTestNGWebDriver {
 		log("Step 11: Setup Oauth client");
 		RestUtils.oauthSetup(testData.getoAuthKeyStore(), testData.getoAuthProperty(), testData.getoAuthAppToken(), testData.getoAuthUsername(),
 				testData.getoAuthPassword());
-		RestUtils.setupHttpGetRequest(testData.getRestUrl() + "?since=" + since + ",0", testData.getResponsePath());
+
+		RestUtils.setupHttpGetRequest(testData.getRestUrl_20() + "?since=" + since + ",0", testData.getResponsePath());
+
 		firstNameString = firstNameString.replaceAll("&amp;", "&");
 		List<String> patientData = new ArrayList<String>();
 		patientData.add(firstNameString);

@@ -1,4 +1,4 @@
-//Copyright 2013-2020 NXGN Management, LLC. All Rights Reserved.
+// Copyright 2013-2021 NXGN Management, LLC. All Rights Reserved.
 package com.intuit.ihg.product.integrationplatform.test;
 
 import static org.testng.Assert.assertNotNull;
@@ -6,6 +6,7 @@ import static org.testng.Assert.assertNotNull;
 import java.util.Random;
 
 import org.apache.commons.lang.StringUtils;
+import org.testng.annotations.DataProvider;
 import org.testng.annotations.Test;
 
 import com.intuit.ifs.csscat.core.BaseTestNGWebDriver;
@@ -191,10 +192,10 @@ public class IntegrationPlatformAcceptanceTests extends BaseTestNGWebDriver {
 	}
 
 
-	@Test(enabled = true, groups = {"AcceptanceTests"}, retryAnalyzer = RetryAnalyzer.class)
-	public void testPIDCPatientUpdate() throws Exception {
+	@Test(enabled = true, dataProvider = "channelVersion", groups = {"AcceptanceTests"}, retryAnalyzer = RetryAnalyzer.class)
+	public void testPIDCPatientUpdate(String version) throws Exception {
 		log("Test Case: PIDC Patient Update");
-		PIDCTestData testData = loadDataFromExcel();
+		PIDCTestData testData = loadDataFromExcel(version);
 
 		Long timestamp = System.currentTimeMillis();
 		log("Step 2: LogIn");
@@ -229,16 +230,30 @@ public class IntegrationPlatformAcceptanceTests extends BaseTestNGWebDriver {
 		// ten registered patients, so we can save traffic
 		// if max argument is ommited patient should be in first 100 patients
 		Long since = timestamp / 1000L - 60 * 24;
+		if (version.contains("v1")) {
+			log("Getting patients since timestamp: " + since);
+			RestUtils.setupHttpGetRequest(testData.getRestv1Url() + "?since=" + since + ",0", testData.getResponsePath());
 
+			log("Step 10: Check changes of address lines");
+			RestUtils.isPatientUpdated(testData.getResponsePath(), testData.getUserName(), firstLine, secondLine);
+		}
+		if (version.contains("v2")) {
 		log("Getting patients since timestamp: " + since);
-		RestUtils.setupHttpGetRequest(testData.getRestUrl() + "?since=" + since + ",0", testData.getResponsePath());
+			RestUtils.setupHttpGetRequest(testData.getRestv2Url() + "?since=" + since + ",0", testData.getResponsePath());
 
 		log("Step 10: Check changes of address lines");
 		RestUtils.isPatientUpdated(testData.getResponsePath(), testData.getUserName(), firstLine, secondLine);
+		}
+		if (version.contains("v3")) {
+			log("Getting patients since timestamp: " + since);
+			RestUtils.setupHttpGetRequest(testData.getRestv3Url() + "?since=" + since + ",0", testData.getResponsePath());
 
+			log("Step 10: Check changes of address lines");
+			RestUtils.isPatientUpdated(testData.getResponsePath(), testData.getUserName(), firstLine, secondLine);
+		}
 	}
 
-	private PIDCTestData loadDataFromExcel() throws Exception {
+	private PIDCTestData loadDataFromExcel(String version) throws Exception {
 		log("Execution Environment: " + IHGUtil.getEnvironmentType());
 		log("Execution Browser: " + TestConfig.getBrowserType());
 
@@ -264,6 +279,14 @@ public class IntegrationPlatformAcceptanceTests extends BaseTestNGWebDriver {
 		log("PatientPassword: " + testData.getPatientPassword());
 		log("SecretQuestion: " + testData.getSecretQuestion());
 		log("SecretAnswer: " + testData.getSecretAnswer());
+
+		if (version.contains("v1")) {
+			log("URL: " + testData.getRestv1Url());
+		} else if (version.contains("v2")) {
+			log("URL: " + testData.getRestv2Url());
+		} else {
+			log("URL: " + testData.getRestv3Url());
+		}
 
 		return testData;
 	}
@@ -1234,6 +1257,13 @@ public class IntegrationPlatformAcceptanceTests extends BaseTestNGWebDriver {
 			log("Step 22: Validate the response");
 			RestUtils.isStatementPreferenceCorrect(testData.getResponsePath(), memberId, statementPreference[i]);
 		}
+	}
+
+
+	@DataProvider(name = "channelVersion")
+	public Object[][] channelVersion() {
+		Object[][] obj = new Object[][] {{"v1"}, {"v2"}, {"v3"}};
+		return obj;
 	}
 
 
