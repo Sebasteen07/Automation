@@ -197,6 +197,8 @@ public class PSSPropertyFileLoader {
 
 	public void setAppointmentResponseGE(Appointment appointValues) {
 		Log4jUtil.log("Loading data for GE appointment related cases..");
+		appointValues.setAgeRuleMonthFirst(property.getProperty("ageRuleMonthFirstParameterGE"));
+		appointValues.setAgeRuleMonthSecond(property.getProperty("ageRuleMonthSecondParameterGE"));
 		appointValues.setLinkProvider(property.getProperty("linkProviderGE"));
 		appointValues.setMaxperDay(property.getProperty("maxperDayGE"));
 		appointValues.setAppointmenttype(property.getProperty("appointmenttypeGE"));

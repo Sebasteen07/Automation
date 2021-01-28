@@ -3869,7 +3869,7 @@ public class PSS2PatientPortalAcceptanceTests extends BaseTestNGWebDriver {
 
 	@Test(enabled = true, groups = {"AcceptanceTests"}, retryAnalyzer = RetryAnalyzer.class)
 	public void testAgeRuleGW() throws Exception {
-		log("Test To Verify Lead Time Functionality For GE Partner");
+		log("Test To Verify Age Rule Functionality for GW partner");
 		PSSPropertyFileLoader propertyData = new PSSPropertyFileLoader();
 		Appointment testData = new Appointment();
 		AdminUser adminuser = new AdminUser();
@@ -3916,7 +3916,7 @@ public class PSS2PatientPortalAcceptanceTests extends BaseTestNGWebDriver {
 		Thread.sleep(15000);
 		int i = Integer.parseInt(testData.getAgeRuleMonthFirst());
 		int j = Integer.parseInt(testData.getAgeRuleMonthSecond());
-		if (psspatientutils.ageCurrentmonths() > i && psspatientutils.ageCurrentmonths() < j) {
+		if (psspatientutils.ageCurrentmonths(testData) > i && psspatientutils.ageCurrentmonths(testData) < j) {
 			Provider provider = appointment.selectTypeOfProvider(testData.getAppointmenttype(), Boolean.valueOf(testData.getIsAppointmentPopup()));
 			Log4jUtil.log("Step 11: Verfiy Provider Page and Provider = " + testData.getProvider());
 			Thread.sleep(15000);
@@ -3927,6 +3927,68 @@ public class PSS2PatientPortalAcceptanceTests extends BaseTestNGWebDriver {
 			Log4jUtil.log("No Provider avaliable Beacuase age Rule");
 		}
 	}
+
+	@Test(enabled = true, groups = {"AcceptanceTests"}, retryAnalyzer = RetryAnalyzer.class)
+	public void testAgeRuleGE() throws Exception {
+		log("Test To Verify Age Rule Functionality for GE partner");
+		PSSPropertyFileLoader propertyData = new PSSPropertyFileLoader();
+		Appointment testData = new Appointment();
+		AdminUser adminuser = new AdminUser();
+		propertyData.setAdminGE(adminuser);
+		propertyData.setAppointmentResponseGE(testData);
+		PSSPatientUtils psspatientutils = new PSSPatientUtils();
+		PSSAdminUtils adminUtils = new PSSAdminUtils();
+		log("Login to PSS 2.0 Admin portal");
+		adminUtils.ageRule(driver, adminuser, testData);
+		log(testData.getUrlLoginLess());
+		log("Appointment Type- " + testData.getAppointmenttype());
+		log("Location- " + testData.getLocation());
+		log("Provider Name- " + testData.getProvider());
+		String rule = adminuser.getRule();
+		rule = rule.replaceAll(" ", "");
+		log("Rule -" + rule);
+		log("Step 3: Move to PSS patient Portal 2.0 to book an Appointment");
+		log("Step 4: Login to PSS Appointment");
+		DismissPage dismissPage = new DismissPage(driver, testData.getUrlLoginLess());
+		Thread.sleep(1000);
+		log("Step 5: LoginlessPatientInformation****");
+		log("Clicked on Dismiss");
+		LoginlessPatientInformation loginlessPatientInformation = dismissPage.clickDismiss();
+		log("Step 6: Fill Patient criteria");
+		log("First Name- " + testData.getFirstName());
+		log("Last Name- " + testData.getLastName());
+		log("Gender- " + testData.getGender());
+		log("Email- " + testData.getEmail());
+		log("Phone Number- " + testData.getPrimaryNumber());
+		log("Date Of Birth- " + testData.getDob());
+		Thread.sleep(3000);
+		HomePage homepage = loginlessPatientInformation.fillNewPatientForm(testData.getFirstName(), testData.getLastName(), testData.getDob(), testData.getEmail(),
+				testData.getGender(), testData.getZipCode(), testData.getPrimaryNumber());
+		log("Successfully upto Home page");
+		Location location = null;
+		StartAppointmentInOrder startappointmentInOrder = null;
+		startappointmentInOrder = homepage.skipInsurance(driver);
+		location = startappointmentInOrder.selectFirstLocation(PSSConstants.START_LOCATION);
+		Log4jUtil.log("Step 9: Verfiy Location Page and location =" + testData.getLocation());
+		assertTrue(location.areBasicPageElementsPresent());
+		AppointmentPage appointment = location.selectAppointment(testData.getLocation());
+		Log4jUtil.log("Step 10: Verfiy Appointment Page and appointment to be selected = " + testData.getAppointmenttype());
+		assertTrue(appointment.areBasicPageElementsPresent());
+		Thread.sleep(15000);
+		int i = Integer.parseInt(testData.getAgeRuleMonthFirst());
+		int j = Integer.parseInt(testData.getAgeRuleMonthSecond());
+		if (psspatientutils.ageCurrentmonths(testData) > i && psspatientutils.ageCurrentmonths(testData) < j) {
+			Provider provider = appointment.selectTypeOfProvider(testData.getAppointmenttype(), Boolean.valueOf(testData.getIsAppointmentPopup()));
+			Log4jUtil.log("Step 11: Verfiy Provider Page and Provider = " + testData.getProvider());
+			Thread.sleep(15000);
+			AppointmentDateTime aptDateTime = provider.searchForProviderFromList(testData.getProvider());
+			assertTrue(aptDateTime.areBasicPageElementsPresent());
+			String date = aptDateTime.selectDate(testData.getIsNextDayBooking());
+		} else {
+			Log4jUtil.log("No Provider avaliable Beacuase age Rule");
+		}
+	}
+
 }
 
 
