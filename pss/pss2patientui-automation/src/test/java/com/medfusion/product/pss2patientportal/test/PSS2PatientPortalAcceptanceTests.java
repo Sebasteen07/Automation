@@ -263,6 +263,8 @@ public class PSS2PatientPortalAcceptanceTests extends BaseTestNGWebDriver {
 			homepage = loginlessPatientInformation.fillNewPatientForm(testData.getFirstName(), testData.getLastName(), testData.getDob(), testData.getEmail(),
 					testData.getGender(), testData.getZipCode(), testData.getPrimaryNumber());
 		}
+		
+		homepage.btnStartSchedClick();
 		psspatientutils.selectAFlow(driver, rule, homepage, testData);
 	}
 
