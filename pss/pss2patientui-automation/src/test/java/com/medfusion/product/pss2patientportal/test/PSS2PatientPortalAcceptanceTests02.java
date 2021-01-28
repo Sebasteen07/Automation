@@ -50,7 +50,7 @@ public class PSS2PatientPortalAcceptanceTests02 extends BaseTestNGWebDriver {
 		psspatientutils.selectAFlow(driver, rule, homePage, testData);
 	}
 	
-	@Test(enabled = true, groups = {"AcceptanceTests"}, retryAnalyzer = RetryAnalyzer.class)
+	@Test(enabled = true, groups = {"AcceptanceTests"}, retryAnalyzer = RetryAnalyzer.class, dependsOnMethods="testE2EAnonymousAT")
 	public void testRescheduleAnonymousviaEmailAT() throws Exception {
 		
 		log("Test to verify if Reschedule an Appointment via Email Notification");		

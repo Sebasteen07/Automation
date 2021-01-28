@@ -1151,8 +1151,8 @@ public class PSSPatientUtils {
 			throws Exception {
 		Log4jUtil.log("selectAFlow method started");
 		Thread.sleep(1000);
-		testData.setIsInsuranceEnabled(false);
-		Thread.sleep(1000);
+		testData.setIsInsuranceEnabled(false);		
+		Thread.sleep(1000);			
 		if (rule.equalsIgnoreCase(PSSConstants.LBT)) {
 			LBTFlow(homepage, testData, Boolean.toString(testData.getIsInsuranceEnabled()), driver);
 		}
