@@ -263,6 +263,8 @@ public class PSSPropertyFileLoader {
 		appointValues.setUrlAnonymous(property.getProperty("urlAnonymousNG"));
 		Log4jUtil.log(appointValues.getUrlAnonymous());
 		appointValues.setIsInsuranceEnabled(true);
+		appointValues.setAgeRuleMonthFirst(property.getProperty("ageRuleMonthFirstParameterNG"));
+		appointValues.setAgeRuleMonthSecond(property.getProperty("ageRuleMonthSecondParameterNG"));
 		appointValues.setLinkProvider(property.getProperty("linkProviderNG"));
 		appointValues.setMaxperDay(property.getProperty("maxperDayNG"));
 		appointValues.setAppointmenttype(property.getProperty("appointmenttypeNG"));
