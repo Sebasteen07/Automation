@@ -256,8 +256,8 @@ public class JalapenoMyAccountProfilePage extends JalapenoMyAccountPage {
 		itemsToChange.put(address1Textbox, "address");
 		itemsToChange.put(cityTextbox, "city");
 		itemsToChange.put(zipCodeTextbox, "54321");
-		itemsToChange.put(race, "White");
-		itemsToChange.put(ethnicity, "Hispanic or Latino");
+		itemsToChange.put(race, " White ");
+		itemsToChange.put(ethnicity, " Hispanic or Latino ");
 
 		return updateAndValidateWebElements(itemsToChange, saveAccountChanges);
 	}
