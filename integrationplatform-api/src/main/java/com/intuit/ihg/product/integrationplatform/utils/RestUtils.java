@@ -3429,6 +3429,31 @@ public static void verifyPatientCCDFormInfo(String responsepath,List<String> lis
 		Log4jUtil.log("response is ok");
 		return appointmentID;
 	}
+	
+	public static String isPrescriptionRenewalRequestPresent(String xmlFileName, String reason) throws ParserConfigurationException, SAXException, IOException {
+		IHGUtil.PrintMethodName();
+		Document doc = buildDOMXML(xmlFileName); String PrescriptionID ="";
+		
+		Log4jUtil.log("finding Prescription reason");
+		boolean found = false;
+		NodeList nodes = doc.getElementsByTagName(IntegrationConstants.ADDITIONAL_INFO_TAG);
+		Node node = null;
+		for (int i = 0; i < nodes.getLength(); i++) {
+			node = nodes.item(i);
+			Log4jUtil.log("Searching: " + node.getChildNodes().item(0).getTextContent() + ", to be found: " + (reason));
+			if (node.getChildNodes().item(0).getTextContent().contains(reason)) {
+				found = true;
+				Log4jUtil.log("Reason is found.");				
+				Element Prescription = (Element) node.getParentNode().getParentNode().getParentNode();				
+				PrescriptionID = Prescription.getAttribute(IntegrationConstants.ID);				
+				Log4jUtil.log("Prescription ID is "+PrescriptionID);
+				break;
+			}
+		}
+		Assert.assertTrue(found, "Prescription Reason was not found in response XML");
+		Log4jUtil.log("response is ok");
+		return PrescriptionID;
+	}
 
 
 }
