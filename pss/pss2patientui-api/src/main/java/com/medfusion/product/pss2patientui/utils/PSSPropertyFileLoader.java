@@ -133,6 +133,8 @@ public class PSSPropertyFileLoader {
 
 	public void setAppointmentResponseAT(Appointment appointValues) {
 		Log4jUtil.log("Loading data for ATHENA appointment related cases..");
+		appointValues.setAgeRuleMonthFirst(property.getProperty("ageRuleMonthFirstParameterAT"));
+		appointValues.setAgeRuleMonthSecond(property.getProperty("ageRuleMonthSecondParameterAT"));
 		appointValues.setLinkProvider(property.getProperty("linkProviderAT"));
 		appointValues.setMaxperDay(property.getProperty("maxperDayAT"));
 		appointValues.setUrlAnonymous(property.getProperty("urlAnonymousAT"));
