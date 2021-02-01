@@ -41,7 +41,8 @@ public enum apiRoutes {
 	GetSecureMessage("api/secure-messages/secureMessageId"),
 	PostAppointmentResponse("api/appointments/requests/appointmentRequestId/responses"),
 	PostAppointment("api/appointments"),
-	DeleteAppointment("api/appointments/appointmentId");
+	DeleteAppointment("api/appointments/appointmentId"),
+	PutPrescriptionRenewalRequest("api/persons/personId/chart/medication-renewal-requests/medicationRenewalRequestId/status");
 	
 	private String routeURL;
 

@@ -3234,7 +3234,15 @@ public class NGIntegrationE2ESITTests extends BaseTestNGWebDriver{
 		log("Execution Environment: " + IHGUtil.getEnvironmentType());
 		log("Execution Browser: " + TestConfig.getBrowserType());
 		
-		NGAPIUtils.updateLoginDefaultTo("EnterpriseGateway",PropertyLoaderObj.getNGEnterpiseEnrollmentE1(), PropertyLoaderObj.getNGEnterpiseEnrollmentE1P1());
+		String enterpriseId= PropertyLoaderObj.getProperty("NGMainEnterpriseID");
+		String practiceId= PropertyLoaderObj.getProperty("NGMainPracticeID");
+	    String integrationPracticeId =PropertyLoaderObj.getProperty("integrationPracticeIDAMDC");
+	    String url = PropertyLoaderObj.getProperty("url");	
+	    String locationName =PropertyLoaderObj.getProperty("EPMLocationName"); 
+	    String providerName =PropertyLoaderObj.getProperty("EPMProviderName");
+	    String practiceName =PropertyLoaderObj.getProperty("practiceName");
+	    
+		NGAPIUtils.updateLoginDefaultTo("EnterpriseGateway",enterpriseId, practiceId);
 		logStep("Create the patient in NG EPM in Practice 1");
 	    NewPatient createPatient = NGPatient.patientUsingJSON(PropertyLoaderObj,"complete");
 		ObjectMapper objMap = new ObjectMapper();
@@ -3246,18 +3254,15 @@ public class NGIntegrationE2ESITTests extends BaseTestNGWebDriver{
 		String person_id=ngAPIUtils.setupNGHttpPostRequest("EnterpriseGateway",finalURL,requestbody , 201);
 		log("Step End: Person created with id "+person_id);
 		
-		enrollPatientWithoutGetProcessingStatusValidation(createPatient,person_id,PropertyLoaderObj.getProperty("practiceName1"),PropertyLoaderObj.getProperty("integrationPracticeIDE1P1"),PropertyLoaderObj.getNGEnterpiseEnrollmentE1(), PropertyLoaderObj.getNGEnterpiseEnrollmentE1P1());
-
-		String locationName =PropertyLoaderObj.getNGE1P1Location(); String providerName =PropertyLoaderObj.getNGE1P1Provider();
-	    String practiceId =PropertyLoaderObj.getNGEnterpiseEnrollmentE1P1(); String integrationPracticeId =PropertyLoaderObj.getProperty("integrationPracticeIDE1P1");
+		enrollPatientWithoutGetProcessingStatusValidation(createPatient,person_id,practiceName,integrationPracticeId,enterpriseId, practiceId);
 		
 	    Thread.sleep(40000);
 		CommonFlows.verifyCCDProcessingStatus(PropertyLoaderObj, person_id, practiceId, integrationPracticeId, 1);
 		
 		logStep("Verify the patient is able to receive CCD");
-		CommonFlows.IsCCDReceived(driver, PropertyLoaderObj.getProperty("MFPortalURLPractice1"),createPatient.getEmailAddress(), PropertyLoaderObj.getPassword(), "","");
+		CommonFlows.IsCCDReceived(driver, url,createPatient.getEmailAddress(), PropertyLoaderObj.getPassword(), "","");
 		
-        NGAPIUtils.updateLoginDefaultTo("EnterpriseGateway",PropertyLoaderObj.getNGEnterpiseEnrollmentE1(), PropertyLoaderObj.getNGEnterpiseEnrollmentE1P1());
+        NGAPIUtils.updateLoginDefaultTo("EnterpriseGateway",enterpriseId, practiceId);
 		logStep("Add Chart to patient");
 		NGAPIFlows.addCharttoProvider(locationName,providerName,person_id); 
 		
@@ -3272,7 +3277,7 @@ public class NGIntegrationE2ESITTests extends BaseTestNGWebDriver{
 		
 		logStep("Verify the patient is able to receive MSU CCD");
 		Thread.sleep(10000);
-		CommonFlows.IsCCDReceived(driver, PropertyLoaderObj.getProperty("MFPortalURLPractice1"),createPatient.getEmailAddress(), PropertyLoaderObj.getPassword(), "","");
+		CommonFlows.IsCCDReceived(driver, url,createPatient.getEmailAddress(), PropertyLoaderObj.getPassword(), "","");
 		log("Test Case End: The Patient is able to receive MSU CCD successfully");
 	    }
 
@@ -3282,7 +3287,15 @@ public class NGIntegrationE2ESITTests extends BaseTestNGWebDriver{
 		log("Execution Environment: " + IHGUtil.getEnvironmentType());
 		log("Execution Browser: " + TestConfig.getBrowserType());
 		
-		NGAPIUtils.updateLoginDefaultTo("EnterpriseGateway",PropertyLoaderObj.getNGEnterpiseEnrollmentE1(), PropertyLoaderObj.getNGEnterpiseEnrollmentE1P1());
+		String enterpriseId= PropertyLoaderObj.getProperty("NGMainEnterpriseID");
+		String practiceId= PropertyLoaderObj.getProperty("NGMainPracticeID");
+	    String integrationPracticeId =PropertyLoaderObj.getProperty("integrationPracticeIDAMDC");
+	    String url = PropertyLoaderObj.getProperty("url");	
+	    String locationName =PropertyLoaderObj.getProperty("EPMLocationName"); 
+	    String providerName =PropertyLoaderObj.getProperty("EPMProviderName");
+	    String practiceName =PropertyLoaderObj.getProperty("practiceName");
+		
+		NGAPIUtils.updateLoginDefaultTo("EnterpriseGateway",enterpriseId, practiceId);
 		logStep("Create the patient in NG EPM in Practice 1");
 	    NewPatient createPatient = NGPatient.patientUsingJSON(PropertyLoaderObj,"complete");
 		ObjectMapper objMap = new ObjectMapper();
@@ -3294,20 +3307,15 @@ public class NGIntegrationE2ESITTests extends BaseTestNGWebDriver{
 		String person_id=ngAPIUtils.setupNGHttpPostRequest("EnterpriseGateway",finalURL,requestbody , 201);
 		log("Step End: Person created with id "+person_id);
 		
-		enrollPatientWithoutGetProcessingStatusValidation(createPatient,person_id,PropertyLoaderObj.getProperty("practiceName1"),PropertyLoaderObj.getProperty("integrationPracticeIDE1P1"),PropertyLoaderObj.getNGEnterpiseEnrollmentE1(), PropertyLoaderObj.getNGEnterpiseEnrollmentE1P1());
-
-		String locationName =PropertyLoaderObj.getNGE1P1Location();
-		String providerName =PropertyLoaderObj.getNGE1P1Provider();
-	    String practiceId =PropertyLoaderObj.getNGEnterpiseEnrollmentE1P1();
-	    String integrationPracticeId =PropertyLoaderObj.getProperty("integrationPracticeIDE1P1");
-
+		enrollPatientWithoutGetProcessingStatusValidation(createPatient,person_id,practiceName,integrationPracticeId,enterpriseId, practiceId);
+		
 	    Thread.sleep(40000);
 		CommonFlows.verifyCCDProcessingStatus(PropertyLoaderObj, person_id, practiceId, integrationPracticeId, 1);
 		
 		logStep("Verify the patient is able to receive CCD");
-		CommonFlows.IsCCDReceived(driver, PropertyLoaderObj.getProperty("MFPortalURLPractice1"),createPatient.getEmailAddress(), PropertyLoaderObj.getPassword(), "","");
+		CommonFlows.IsCCDReceived(driver, url,createPatient.getEmailAddress(), PropertyLoaderObj.getPassword(), "","");
 		
-        NGAPIUtils.updateLoginDefaultTo("EnterpriseGateway",PropertyLoaderObj.getNGEnterpiseEnrollmentE1(), PropertyLoaderObj.getNGEnterpiseEnrollmentE1P1());
+        NGAPIUtils.updateLoginDefaultTo("EnterpriseGateway",enterpriseId, practiceId);
 		logStep("Adding Test data to patient CCD "+person_id);
 		   Log4jUtil.log("Step Begins: Add Chart to patient");
 		   NGAPIFlows.addCharttoProvider(locationName,providerName,person_id); 
@@ -3346,7 +3354,7 @@ public class NGIntegrationE2ESITTests extends BaseTestNGWebDriver{
 		
 		logStep("Verify the patient is able to receive Locked Encounter CCD");
 		Thread.sleep(10000);
-		CommonFlows.IsCCDReceived(driver, PropertyLoaderObj.getProperty("MFPortalURLPractice1"),createPatient.getEmailAddress(), PropertyLoaderObj.getPassword(), "EncounterHavingALLData","");
+		CommonFlows.IsCCDReceived(driver, url,createPatient.getEmailAddress(), PropertyLoaderObj.getPassword(), "EncounterHavingALLData","");
 		log("Test Case End: The Patient is able to receive Locked Encounter CCD successfully");
 	    }
 	
