@@ -18,6 +18,7 @@ import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.time.LocalDate;
 import java.time.Period;
+import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Calendar;
@@ -1723,12 +1724,17 @@ public class PSSPatientUtils {
 		scheduledAppointmentAnonymous.backtoHomePage();
 	}
 
-	public int ageCurrentmonths() {
-		LocalDate pdate = LocalDate.of(2000, 01, 01);
+	public int ageCurrentmonths(Appointment testData) {
+		DateTimeFormatter formatter = DateTimeFormatter.ofPattern("d-MMM-yyyy");
+		String date = testData.getDob();
+				//"23-Mar-2019";
+				LocalDate pdate = LocalDate.parse(date, formatter);
 		LocalDate now = LocalDate.now();
 		Period diff = Period.between(pdate, now);
 		int yearmonth = diff.getYears() * 12;
 		int month = yearmonth + diff.getMonths();
+		Log4jUtil.log("Total Month of patient from date of Birth is  " + month);
 		return month;
+
 	}
 }

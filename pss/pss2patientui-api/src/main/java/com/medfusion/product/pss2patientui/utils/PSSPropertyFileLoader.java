@@ -133,6 +133,8 @@ public class PSSPropertyFileLoader {
 
 	public void setAppointmentResponseAT(Appointment appointValues) {
 		Log4jUtil.log("Loading data for ATHENA appointment related cases..");
+		appointValues.setAgeRuleMonthFirst(property.getProperty("ageRuleMonthFirstParameterAT"));
+		appointValues.setAgeRuleMonthSecond(property.getProperty("ageRuleMonthSecondParameterAT"));
 		appointValues.setLinkProvider(property.getProperty("linkProviderAT"));
 		appointValues.setMaxperDay(property.getProperty("maxperDayAT"));
 		appointValues.setUrlAnonymous(property.getProperty("urlAnonymousAT"));
@@ -197,6 +199,8 @@ public class PSSPropertyFileLoader {
 
 	public void setAppointmentResponseGE(Appointment appointValues) {
 		Log4jUtil.log("Loading data for GE appointment related cases..");
+		appointValues.setAgeRuleMonthFirst(property.getProperty("ageRuleMonthFirstParameterGE"));
+		appointValues.setAgeRuleMonthSecond(property.getProperty("ageRuleMonthSecondParameterGE"));
 		appointValues.setLinkProvider(property.getProperty("linkProviderGE"));
 		appointValues.setMaxperDay(property.getProperty("maxperDayGE"));
 		appointValues.setAppointmenttype(property.getProperty("appointmenttypeGE"));
@@ -261,6 +265,8 @@ public class PSSPropertyFileLoader {
 		appointValues.setUrlAnonymous(property.getProperty("urlAnonymousNG"));
 		Log4jUtil.log(appointValues.getUrlAnonymous());
 		appointValues.setIsInsuranceEnabled(true);
+		appointValues.setAgeRuleMonthFirst(property.getProperty("ageRuleMonthFirstParameterNG"));
+		appointValues.setAgeRuleMonthSecond(property.getProperty("ageRuleMonthSecondParameterNG"));
 		appointValues.setLinkProvider(property.getProperty("linkProviderNG"));
 		appointValues.setMaxperDay(property.getProperty("maxperDayNG"));
 		appointValues.setAppointmenttype(property.getProperty("appointmenttypeNG"));
