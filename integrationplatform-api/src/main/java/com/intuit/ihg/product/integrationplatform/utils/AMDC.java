@@ -29,6 +29,7 @@ public class AMDC {
 	public String PatientName3="";
 	public String GmailUserName="";
 	public String GmailPassword="";
+	public String RestV3Url = "";
 	public String AllowReply = "";
 	public String Message = "";
 	public String PatientExternalId = "";
@@ -39,5 +40,5 @@ public class AMDC {
 	public String attachmentBody="";
 	public String allowOnce="";
 	public String downloadLocation="";
-	public String portalCategoryType="";
+	public String portalCategoryType = "";
 }
