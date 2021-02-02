@@ -66,7 +66,7 @@ public class JalapenoPayNowPage extends IHGUtil {
 	@FindBy(name = "buttons:submit")
 	private WebElement submitButton;
 
-	@FindBy(xpath = "//*[@id='payForm']/div[16]/div/div/div/iframe | //*[@id='payForm']/div[15]/div/div/div/iframe")
+	@FindBy(xpath = "//*[@id='g-recaptcha-response']/..")
 	private WebElement reCaptchaFrame;
 
 	@FindBy(xpath = ".//td[@class='table_text']/span")

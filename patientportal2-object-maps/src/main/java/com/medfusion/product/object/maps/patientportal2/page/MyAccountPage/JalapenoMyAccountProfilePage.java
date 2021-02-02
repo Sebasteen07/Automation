@@ -27,9 +27,8 @@ import com.medfusion.product.patientportal2.utils.PortalUtil;
 
 public class JalapenoMyAccountProfilePage extends JalapenoMyAccountPage {
 	public static final List<String> GENDER_IDENTITY_LIST =
-			Collections.unmodifiableList(Arrays.asList("Male", "Female", "Transgender female/Trans woman/Male-to-female (MTF)",
-					"Transgender male/Trans man/Female-to-male (FTM)", "Genderqueer, neither exclusively male nor female", "Additional gender category/(or other)"));
-
+			Collections.unmodifiableList(Arrays.asList(" Male ", " Female ", " Transgender female/Trans woman/Male-to-female (MTF) ", " Transgender male/Trans man/Female-to-male (FTM) ", " Genderqueer, neither exclusively male nor female ", " Additional gender category/(or other) "));
+	
 	@FindBy(how = How.XPATH, using = "//input[@id='address1']")
 	private WebElement address1Textbox;
 
