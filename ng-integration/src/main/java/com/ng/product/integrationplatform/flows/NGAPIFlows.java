@@ -25,6 +25,8 @@ import com.ng.product.integrationplatform.apiUtils.NGAPIUtils;
 import com.ng.product.integrationplatform.apiUtils.apiRoutes;
 import com.ng.product.integrationplatform.pojo.AcknowledgedProblem;
 import com.ng.product.integrationplatform.pojo.ObsPanel;
+import com.ng.product.integrationplatform.pojo.PrescriptionRenewalRequest;
+import com.ng.product.integrationplatform.pojo.PrescriptionRenewalRequestStatus;
 import com.ng.product.integrationplatform.pojo.Problem;
 import com.ng.product.integrationplatform.pojo.Allergy;
 import com.ng.product.integrationplatform.pojo.Appointment;
@@ -539,7 +541,9 @@ public class NGAPIFlows {
 			List<Attachment> attachmentList = new ArrayList<Attachment>();
 			
 			recipient.setId(personID);
-			recipient.setName(DBUtils.executeQueryOnDB("NGCoreDB","select first_name from person where person_id='"+personID+"'"));
+			String recipientLN = DBUtils.executeQueryOnDB("NGCoreDB","select last_name from person where person_id='"+personID+"'");
+			String recipientFN = DBUtils.executeQueryOnDB("NGCoreDB","select first_name from person where person_id='"+personID+"'");
+			recipient.setName(recipientLN + " " +recipientFN);
 			recipient.setType("Patient");
 			recipientList.add(recipient);
 			
@@ -557,7 +561,8 @@ public class NGAPIFlows {
 				String SecureMessageAlias = "SASHA_ALIAS";
 				message.setRoutingRuleType("Normal");
 				message.setAliasName(SecureMessageAlias);
-			} 
+			} else
+				message.setRoutingRuleType("-1");
 			
 			if(userID.isEmpty()){
 				userID = DBUtils.executeQueryOnDB("NGCoreDB",userIdQuery);}
@@ -740,6 +745,213 @@ public class NGAPIFlows {
 	} catch (Exception e) {
 		Log4jUtil.log(e.getMessage());
     }
+	}
+	
+	public static String putPrescriptionRenewalRequest(String personId,String RenewalRequestId,String RenewalResponse, String encounterType, String locationName, String ProviderName,String MedicationStatus, int expectedStatusCode) throws Throwable{
+		PrescriptionRenewalRequest prescriptionRenewalRequest = new PrescriptionRenewalRequest();	String epm_appt_id ="";	
+		try{			
+			String strSqlQueryForProvider= "select provider_id from provider_mstr where description='"+ProviderName+"'";
+			String strSqlQueryForLocation= "select location_id from location_mstr where location_name='"+locationName+"'";			
+			String strSqlQueryForPatientMed= "select patient_med_id from nxmd_med_renewal_items where transaction_id ='"+RenewalRequestId+"'";			
+			
+			List<PrescriptionRenewalRequestStatus> prescriptionRenewalRequestStatusList = new ArrayList<PrescriptionRenewalRequestStatus>();
+			PrescriptionRenewalRequestStatus prescriptionRenewalRequestStatus = new PrescriptionRenewalRequestStatus();
+			List<String> comments =new ArrayList<String>();
+			
+			comments.add(RenewalResponse);			
+			prescriptionRenewalRequest.setComments(comments);
+			
+			prescriptionRenewalRequestStatus.setStatus(MedicationStatus);
+			prescriptionRenewalRequestStatus.setPrescriptionId(DBUtils.executeQueryOnDB("NGCoreDB",strSqlQueryForPatientMed));			
+			prescriptionRenewalRequestStatusList.add(prescriptionRenewalRequestStatus);
+			
+			prescriptionRenewalRequest.setPrescriptionRenewalRequestStatus(prescriptionRenewalRequestStatusList);			
+			prescriptionRenewalRequest.setRenewalResponse(RenewalResponse);
+			prescriptionRenewalRequest.setResponseDate(sdf.format(new Date()));			
+			prescriptionRenewalRequest.setEncounterType(encounterType);
+			prescriptionRenewalRequest.setRenderingProviderId(DBUtils.executeQueryOnDB("NGCoreDB",strSqlQueryForProvider));
+			prescriptionRenewalRequest.setLocationId(DBUtils.executeQueryOnDB("NGCoreDB",strSqlQueryForLocation));
+			
+			
+			ObjectMapper mapper = new ObjectMapper();
+			mapper.setSerializationInclusion(Inclusion.NON_NULL);				
+	        String requestbody = mapper.defaultPrettyPrintingWriter().writeValueAsString(prescriptionRenewalRequest);
+	        Log4jUtil.log("Prescription Renewal Request body \n"+requestbody);			
+			
+			String prescriptionRenewalRequestURL =apiRoutes.valueOf("PutPrescriptionRenewalRequest").getRouteURL().replace("personId", personId).replace("medicationRenewalRequestId", RenewalRequestId); 
+			String finalURL = EnterprisebaseURL +prescriptionRenewalRequestURL;
+			epm_appt_id = NGAPIUtils.setupNGHttpPutRequest("EnterpriseGateway",finalURL,requestbody, expectedStatusCode);
+			Log4jUtil.log("Prescription Renewal Request is updated successsfully with ID "+epm_appt_id);			
+	} catch (Exception e) {
+		Log4jUtil.log(e.getMessage());
+    }
+		return epm_appt_id;
+	}
+	
+	public static String postBulkSecureMessage(String messageType,List<String> personIdList, String practiceID,String userID, String ProviderName, String locationName, String applicationName, String encounterType,String senderType,String encounterId,String attachmentName,String documentID) throws Throwable{
+		String comm_id = null;
+		try{
+			SecureMessage securemessage = new SecureMessage();
+			Message message = new Message();
+			Recipient recipient = new Recipient();
+			Attachment attachment = new Attachment();
+			List<Recipient> recipientList = new ArrayList<Recipient>();
+			List<Message> messageList = new ArrayList<Message>();
+			List<Attachment> attachmentList = new ArrayList<Attachment>();
+			
+//			recipient.setId(personID);
+//			recipient.setName(DBUtils.executeQueryOnDB("NGCoreDB","select first_name from person where person_id='"+personID+"'"));
+//			recipient.setType("Patient");
+//			recipientList.add(recipient);
+			////////////////////////
+			if(messageType.equalsIgnoreCase("Bulk")){
+				for(int i = 0; i < personIdList.size(); i++)
+				 {
+	                String personId = personIdList.get(i).toString();
+	                recipient.setId(personId);
+
+	                String first_name = DBUtils.executeQueryOnDB("NGCoreDB","select first_name from person where person_id='"+personId+"'");
+	                String last_name = DBUtils.executeQueryOnDB("NGCoreDB","select last_name from person where person_id='"+personId+"'");	                
+	                recipient.setName(last_name + ", " +first_name);
+	                recipient.setType("PatientGroup");
+	                
+	                recipientList.add(recipient);
+
+	                recipient = new Recipient();
+	            }
+			}
+           
+			////////////////////////
+			String userIdQuery="select top 1 user_id from user_mstr where practice_id='"+practiceID+"'";
+			String communicationMessageID =UUID.randomUUID().toString().toUpperCase();
+			
+			message.setId(communicationMessageID);
+			
+			if(messageType.equalsIgnoreCase("SentByOnlineProfile")){
+				String SecureMessageOnlineProfile = "AutomationOnlineProfile";
+				message.setRoutingRuleName(SecureMessageOnlineProfile);
+				message.setRoutingRuleType("OnlineProfile");
+				message.setRoutingRuleId(DBUtils.executeQueryOnDB("NGCoreDB","select row_id from ngweb_alias where name='"+SecureMessageOnlineProfile+"'"));				
+			} else if(messageType.equalsIgnoreCase("SentByAlias")){
+				String SecureMessageAlias = "SASHA_ALIAS";
+				message.setRoutingRuleType("Normal");
+				message.setAliasName(SecureMessageAlias);
+			} 
+			
+			if(userID.isEmpty()){
+				userID = DBUtils.executeQueryOnDB("NGCoreDB",userIdQuery);}
+			    String userFirstName =DBUtils.executeQueryOnDB("NGCoreDB","select first_name from user_mstr where user_id='"+userID+"'");
+			    String userLastName =DBUtils.executeQueryOnDB("NGCoreDB","select last_name from user_mstr where user_id='"+userID+"'");	
+			
+			    message.setSenderName(userFirstName+" "+userLastName);
+			    message.setSenderId(userID);
+						
+			if(encounterType.equalsIgnoreCase("OriginalUnlockedEncounter"))
+				message.setOriginalId(communicationMessageID);
+				
+			if(messageType.contains("ReplyToPortal")){
+				message.setParentId(messageType.substring(13).toUpperCase());
+			}
+			
+			if(messageType.contains("ReplyToPortal")){					
+		    	String subject = DBUtils.executeQueryOnDB("NGCoreDB","select subject from ngweb_communications where comm_id ='"+messageType.substring(13)+"'");
+		    	message.setSubject("RE: "+subject);
+			}
+			else
+				message.setSubject("Subject" + (new Date()).getTime());
+			message.setBody(messageType +"Body" + (new Date()).getTime());
+			message.setSentTimestamp(sdf.format(new Date()));
+			if(messageType.contains("ReplyToPortal")){
+				message.setCategory("Medication Questions Category");
+				message.setRepliedWhenTimestamp(sdf.format(new Date()));
+			}
+			else
+				message.setCategory("Practice Initiated");
+			message.setIsClinical(true);
+			message.setRecipients(recipientList);
+			
+			if(messageType.equalsIgnoreCase("HighPriority"))
+				message.setPriority("High");
+			else
+				message.setPriority("Normal");
+			
+			if(messageType.equalsIgnoreCase("DisableReply"))
+				message.setCanReply(true);
+			
+			if(messageType.equalsIgnoreCase("ReadReceiptRequested"))
+				message.setIsReadReceiptRequested(true);
+			
+			if(messageType.equalsIgnoreCase("UnreadNotificationRequested"))
+				message.setIsUnreadNotificationRequested(true);
+			
+			if(messageType.equalsIgnoreCase("SaveDraft"))
+				message.setIsDraft(true);
+			
+			if(messageType.equalsIgnoreCase("DelayedDelivery"))
+				message.setScheduledTimestamp(sdf.format(new Date()));
+			
+			if(messageType.equalsIgnoreCase("Bulk"))
+				message.setIsBulk(true); 
+			///////////////////////////
+			List<String> reportNames = new ArrayList<String>();
+			reportNames.add("AutoBulkReport");
+			message.setReportNames(reportNames);
+			
+			///////////////////////////////
+			if(attachmentName.equalsIgnoreCase("PatientEducation")){
+			attachment.setAttachmentId(UUID.randomUUID().toString().toUpperCase());
+			attachment.setDocumentId(documentID);
+			attachment.setName(DBUtils.executeQueryOnDB("NGCoreDB","select document_desc from patient_education where document_id ='"+documentID+"'"));
+			attachment.setType("PatientEducation");
+			String format = DBUtils.executeQueryOnDB("NGCoreDB","select file_format from patient_education where document_id ='"+documentID+"'");
+			if(format.contains("HTM"))
+				format = "HTML";
+			attachment.setFormat(format);
+			attachment.setContentBytes("2500");
+			
+			attachmentList.add(attachment);			
+			message.setAttachments(attachmentList);
+			}
+			else if(attachmentName.equalsIgnoreCase("PatientImage")){
+				attachment.setAttachmentId(UUID.randomUUID().toString().toUpperCase());
+				attachment.setDocumentId(documentID);
+				String imageName = DBUtils.executeQueryOnDB("NGCoreDB","select orig_image_file from patient_images where image_id ='"+documentID+"'");
+				attachment.setName(imageName);
+				attachment.setType("EmrImage");
+				attachment.setFormat(imageName.substring(imageName.lastIndexOf(".")).replace(".", ""));
+				attachment.setContentBytes("2500");
+				
+				attachmentList.add(attachment);			
+				message.setAttachments(attachmentList);
+			}
+			
+			messageList.add(message);
+			
+			securemessage.setSenderType(senderType);
+			securemessage.setEncounterType(encounterType);
+			
+			if(encounterType.equalsIgnoreCase("ExistingEncounter"))
+				securemessage.setEncounterId(encounterId);
+			
+			securemessage.setRenderingProviderId(DBUtils.executeQueryOnDB("NGCoreDB",strSqlQueryForRenderingProvider.replace("ProviderName",ProviderName)));
+			securemessage.setLocationId(DBUtils.executeQueryOnDB("NGCoreDB",strSqlQueryForLocation.replace("locationName", locationName)));
+			securemessage.setApplicationName(applicationName);
+			securemessage.setMessages(messageList);
+			
+			ObjectMapper mapper = new ObjectMapper();
+			mapper.setSerializationInclusion(Inclusion.NON_NULL);				
+	        String requestbody = mapper.defaultPrettyPrintingWriter().writeValueAsString(securemessage);
+	        Log4jUtil.log("Secure Message request body \n"+requestbody);
+			
+			String secureMessageURL =apiRoutes.valueOf("PostSecureMessage").getRouteURL(); 
+			String finalURL = EnterprisebaseURL +secureMessageURL;
+			NGAPIUtils.setupNGHttpPostRequest("EnterpriseGateway",finalURL,requestbody , 200);
+			comm_id = message.getId();
+			Log4jUtil.log("Communication Message created with id "+comm_id);		
+	} catch (Exception e) {
+		Log4jUtil.log(e.getMessage());
+    }
+		return comm_id;
 	}
 	
 }

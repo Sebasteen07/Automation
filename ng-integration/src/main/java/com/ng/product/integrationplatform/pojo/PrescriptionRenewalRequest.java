@@ -1,3 +1,10 @@
+// Copyright 2021 NXGN Management, LLC. All Rights Reserved.
+
+/************************
+ * 
+ * @author Narora
+ * 
+ ************************/
 package com.ng.product.integrationplatform.pojo;
 
 import java.util.List;
