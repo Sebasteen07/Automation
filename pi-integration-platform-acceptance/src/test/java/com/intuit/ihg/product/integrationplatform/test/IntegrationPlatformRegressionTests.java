@@ -35,6 +35,7 @@ import com.intuit.ihg.product.integrationplatform.utils.AMDC;
 import com.intuit.ihg.product.integrationplatform.utils.AMDCPayload;
 import com.intuit.ihg.product.integrationplatform.utils.AppointmentData;
 import com.intuit.ihg.product.integrationplatform.utils.AppointmentDataUtils;
+import com.intuit.ihg.product.integrationplatform.utils.AppontmentTypePayload;
 import com.intuit.ihg.product.integrationplatform.utils.BalancePayLoad;
 import com.intuit.ihg.product.integrationplatform.utils.BulkAdmin;
 import com.intuit.ihg.product.integrationplatform.utils.BulkMessagePayload;
@@ -3077,5 +3078,26 @@ public class IntegrationPlatformRegressionTests extends BaseTestNGWebDriver {
 		log("Execution Browser: " + TestConfig.getBrowserType());
 		PatientRegistrationUtils.pidcPatientRegistration("v3", driver, portalVersion);
 	}
+	
+	@Test(enabled = true, groups = {"RegressionTests"}, retryAnalyzer = RetryAnalyzer.class)
+	public void testAppoinmentType() throws Exception {
+		log("Test Case: To POST Appointment type");
+		log("Execution Environment: " + IHGUtil.getEnvironmentType());
+		log("Execution Browser: " + TestConfig.getBrowserType());
+
+		LoadPreTestData LoadPreTestDataObj = new LoadPreTestData();
+		AppointmentData testData = new AppointmentData();
+		LoadPreTestDataObj.loadAppointmentTypeFromProperty(testData);
+		AppointmentDataUtils aDUtils = new AppointmentDataUtils();
+		log("POST URL"+testData.AppointmentTypeUrl);
 		
+		log("Step 1: Setup Oauth client");
+		RestUtils.oauthSetup(testData.OAuthKeyStore, testData.OAuthProperty, testData.OAuthAppToken, testData.OAuthUsername, testData.OAuthPassword);
+		String appointmentType = AppontmentTypePayload.getAppontmentTypePayload(testData);
+		Thread.sleep(6000);
+		log("Wait to generate AppointmentType Payload");
+		log("Step 2: Do Message Post Request");
+		log("ResponsePath: " + testData.ResponsePath);
+		RestUtils.setupHttpPostRequest(testData.AppointmentTypeUrl, appointmentType, testData.ResponsePath);
+	}
 }

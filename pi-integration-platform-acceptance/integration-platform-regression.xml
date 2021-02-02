@@ -39,6 +39,7 @@
 				<include name="testErrorCasesDeleteMessage"/>
 				<include name="testDeleteP2PMessage"/>
 				<exclude name="testDeleteP2PMessageInMailBox"/>
+				<include name="testAppoinmentType"/>
       		</methods>
 	</classes>
 </test>
