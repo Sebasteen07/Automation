@@ -35,7 +35,7 @@ import com.intuit.ihg.product.integrationplatform.utils.AMDC;
 import com.intuit.ihg.product.integrationplatform.utils.AMDCPayload;
 import com.intuit.ihg.product.integrationplatform.utils.AppointmentData;
 import com.intuit.ihg.product.integrationplatform.utils.AppointmentDataUtils;
-import com.intuit.ihg.product.integrationplatform.utils.AppontmentTypePayload;
+import com.intuit.ihg.product.integrationplatform.utils.AppointmentTypePayload;
 import com.intuit.ihg.product.integrationplatform.utils.BalancePayLoad;
 import com.intuit.ihg.product.integrationplatform.utils.BulkAdmin;
 import com.intuit.ihg.product.integrationplatform.utils.BulkMessagePayload;
@@ -3093,7 +3093,7 @@ public class IntegrationPlatformRegressionTests extends BaseTestNGWebDriver {
 		
 		log("Step 1: Setup Oauth client");
 		RestUtils.oauthSetup(testData.OAuthKeyStore, testData.OAuthProperty, testData.OAuthAppToken, testData.OAuthUsername, testData.OAuthPassword);
-		String appointmentType = AppontmentTypePayload.getAppontmentTypePayload(testData);
+		String appointmentType = AppointmentTypePayload.getAppontmentTypePayload(testData);
 		Thread.sleep(6000);
 		log("Wait to generate AppointmentType Payload");
 		log("Step 2: Do Message Post Request");
