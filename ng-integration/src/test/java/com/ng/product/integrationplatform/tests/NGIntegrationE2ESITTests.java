@@ -4602,9 +4602,12 @@ public class NGIntegrationE2ESITTests extends BaseTestNGWebDriver{
     	String eventName = PropertyLoaderObj.getProperty("EventName");
 		String resourceName = PropertyLoaderObj.getProperty("ResourceName");
 		
+		String apptTime ="02:30:00";
 		logStep("Schedule an appointment for Patient to same slot");
 		NGAPIUtils.updateLoginDefaultTo("EnterpriseGateway",enterpriseId,practiceId);
-		String EPMAppointmenttId =NGAPIFlows.postAppointment(person_id,locationName, providerName, eventName, resourceName,2,"",400);
+		String EPMAppointmenttId =NGAPIFlows.postAppointment(person_id,locationName, providerName, eventName, resourceName,2,apptTime,201);
+		NGAPIUtils.updateLoginDefaultTo("EnterpriseGateway",enterpriseId,practiceId);
+		NGAPIFlows.postAppointment(person_id,locationName, providerName, eventName, resourceName,2,apptTime,400);
 		log("Test Case End: The practice user is not able to book same slot which is already booked for patient");
 	}
 	
