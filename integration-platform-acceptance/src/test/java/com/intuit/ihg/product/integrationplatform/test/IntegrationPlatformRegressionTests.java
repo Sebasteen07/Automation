@@ -3,9 +3,7 @@ package com.intuit.ihg.product.integrationplatform.test;
 
 
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
-import java.util.Random;
 
 import org.testng.annotations.DataProvider;
 import org.testng.annotations.Test;
@@ -185,7 +183,7 @@ public class IntegrationPlatformRegressionTests extends BaseTestNGWebDriver {
 
 	@DataProvider(name = "channelVersion")
 	 public Object[][] channelVersionPIDC() {
-		Object[][] obj = new Object[][] { {"v1"}, {"v2"}};
+		Object[][] obj = new Object[][] {{"v1"}, {"v2"}, {"v3"}};
 			return obj;
 	}
 	
