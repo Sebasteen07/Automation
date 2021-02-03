@@ -177,7 +177,6 @@ public class LoadPreTestData {
 		testData.setChooseCommunication(propertyData.getChooseCommunication());
 		testData.setInsurance_Type(propertyData.getInsurance_Type());
 		testData.setCsvFilePath(propertyData.getCSVFilePath());
-		// testData.setPortalVersion(propertyData.getPortalVersion());
 
 		if (channelVersion.contains("v1")) {
 			testData.setRestUrl_20(propertyData.getRestUrl1_20());
@@ -242,7 +241,6 @@ public class LoadPreTestData {
 		testData.OAuthKeyStore = propertyData.getOAuthKeyStore();
 		testData.ResponsePath = propertyData.getResponsePath();
 		testData.PracticeName = propertyData.getIntegrationPracticeID_AD();
-		// testData.PracticeName = propertyData.getPatientPracticeID_AD();
 		testData.URL = propertyData.getPracticeURL_AD();
 		testData.UserName = propertyData.getUserName_AD();
 		testData.Password = propertyData.getPassword_AD();
@@ -318,7 +316,6 @@ public class LoadPreTestData {
 			IllegalArgumentException, InvocationTargetException, NoSuchMethodException, SecurityException {
 
 		PropertyFileLoader propertyData = new PropertyFileLoader();
-		//
 		testData.OAuthProperty = propertyData.getOAuthProperty();
 		testData.OAuthKeyStore = propertyData.getOAuthKeyStore();
 		testData.OAuthAppToken = propertyData.getOAuthAppTokenAMDC();
