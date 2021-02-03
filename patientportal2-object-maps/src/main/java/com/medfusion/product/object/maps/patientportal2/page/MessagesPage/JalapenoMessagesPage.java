@@ -74,7 +74,7 @@ public class JalapenoMessagesPage extends JalapenoMenu {
 	private WebElement inboxMessageBody;
 	//a[text()='This is testing URL']
 	
-	@FindBy(how = How.XPATH, using = "//button[@class='btn btn-default ng-binding ng-scope']")
+	@FindBy(how = How.XPATH, using = "//button[contains(text(),'Archive')]")
 	private WebElement archiveButton;
 	
 	@FindBy(how = How.XPATH, using = "//span[@class='messageFrom']")
