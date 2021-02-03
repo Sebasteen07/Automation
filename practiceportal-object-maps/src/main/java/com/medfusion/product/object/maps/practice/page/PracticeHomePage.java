@@ -73,6 +73,7 @@ public class PracticeHomePage extends BasePageObject {
 
 	@FindBy(xpath = ".//a[contains(@href, 'home.vcs')]")
 	private WebElement virtualCardSwiper;
+	
 	@FindBy(linkText = "Patient Search")
 	private WebElement patientSearchLinkText;
 
@@ -81,6 +82,9 @@ public class PracticeHomePage extends BasePageObject {
 
 	@FindBy(linkText = "Quick Send")
 	private WebElement quickSendLinkText;
+	
+	@FindBy(linkText = "Build a Message")
+	private WebElement buildaMessageLinkText;
 
 	@FindBy(css = "a[href*='home.vcs']")
 	private WebElement virtualCardSwiperTab;
@@ -429,6 +433,19 @@ public class PracticeHomePage extends BasePageObject {
 		patientMessaging.click();
 		IHGUtil.waitForElementInDefaultFrame(driver, 10, quickSendLinkText);
 		quickSendLinkText.click();
+		return PageFactory.initElements(driver, PatientMessagingPage.class);
+
+	}
+	/**
+	 * @Description:Click Patient Messaging Tab And BuildMessage Link
+	 * @return
+	 */
+	public PatientMessagingPage clickPatienBuildtMessagingTab() {
+		IHGUtil.PrintMethodName();
+		IHGUtil.waitForElementInDefaultFrame(driver, 20, patientMessaging);
+		patientMessaging.click();
+		IHGUtil.waitForElementInDefaultFrame(driver, 10, buildaMessageLinkText);
+		buildaMessageLinkText.click();
 		return PageFactory.initElements(driver, PatientMessagingPage.class);
 
 	}

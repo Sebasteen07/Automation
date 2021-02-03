@@ -55,10 +55,10 @@ public class JalapenoMessagesPage extends JalapenoMenu {
 	@FindBy(how = How.XPATH, using = "//button[.='Archive']")
 	private WebElement archiveMessageButton;
 	
-	@FindBy(how = How.XPATH, using = "//*[@id=\"messageContainer\"]/div[3]/div[2]/div/span[4]")
+	@FindBy(how = How.XPATH, using = "//*[@id=\"messageContainer\"]/div[2]/div[2]/div/span[4]")
 	private WebElement lableSent;
 
-	@FindBy(how = How.XPATH, using = "//*[@id=\"messageContainer\"]/div[3]/div[2]/div[2]/a")
+	@FindBy(how = How.XPATH, using = "//*[@id=\"messageContainer\"]/div[2]/div[2]/div[2]/a")
 	private WebElement statementLinkText;
 
 	@FindBy(how = How.XPATH, using = "//div[@class='messageMetadata clearfix']/span[1]")
@@ -83,7 +83,7 @@ public class JalapenoMessagesPage extends JalapenoMenu {
 	private static final int maxCount = 15;
 	private static final String replyContent = "This is response to doctor's message";
 	
-	@FindBy(how = How.XPATH, using = "(//span[@class='messageSubject ng-binding'])[1]")
+	@FindBy(how = How.XPATH, using = "(//span[@class='messageSubject'])[1]")
 	private WebElement messageSubjectText;
 	
 	@FindBy(how = How.ID, using = "messages")
