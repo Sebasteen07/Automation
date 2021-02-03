@@ -58,6 +58,7 @@ import com.medfusion.product.object.maps.patientportal2.page.CreateAccount.Patie
 import com.medfusion.product.object.maps.patientportal2.page.CreateAccount.SecurityDetailsPage;
 import com.medfusion.product.object.maps.patientportal2.page.HomePage.JalapenoHomePage;
 import com.medfusion.product.object.maps.patientportal2.page.MessagesPage.JalapenoMessagesPage;
+import com.medfusion.product.object.maps.patientportal2.page.PrescriptionsPage.JalapenoPrescriptionsPage;
 import com.medfusion.product.object.maps.practice.page.PracticeHomePage;
 import com.medfusion.product.object.maps.practice.page.PracticeLoginPage;
 import com.medfusion.product.object.maps.practice.page.patientSearch.PatientSearchPage;
@@ -3899,31 +3900,7 @@ public class NGIntegrationE2ESITTests extends BaseTestNGWebDriver{
 	    
 	    logStep("Compose Message with Unread Notification and send it to enrolled patient with “Add to New Encounter(UnLocked)” option selected in Send & Chart button.");
         NGAPIUtils.updateLoginDefaultTo("EnterpriseGateway",enterpriseId,practiceId);    
-    	String comm_id =NGAPIFlows.postSecureMessage("UnreadNotificationRequested",person_id,practiceId,userId,providerName,locationName, "EHR", "NewUnLockedEncounter","PracticeUser","","","");		
-
-    	String subjectQuery ="select subject from ngweb_communications where comm_id ='"+comm_id+"'";
-    	String bodyQuery ="select body from ngweb_communications where comm_id ='"+comm_id+"'";	
-    	String subject = DBUtils.executeQueryOnDB("NGCoreDB",subjectQuery);
-    	String body = DBUtils.executeQueryOnDB("NGCoreDB",bodyQuery);
-    	
-    	logStep("Verify the processing status of message");
-    	CommonFlows.verifyMessageProcessingStatus(PropertyLoaderObj, person_id, practiceId, comm_id, integrationPracticeID,"");
-    	
-    	String messageDeliveryQuery = "select messageid from  message_delivery where message_groupid ='"+comm_id+"'";
-    	String messageID = DBUtils.executeQueryOnDB("MFAgentDB",messageDeliveryQuery);
-    	
-    	logStep("Setup Oauth client" + PropertyLoaderObj.getResponsePath());
-	    if(PropertyLoaderObj.getNGAPIexecutionMode().equalsIgnoreCase("QAMain")){
-	    	RestUtils.oauthSetup(PropertyLoaderObj.getOAuthKeyStore(), PropertyLoaderObj.getOAuthProperty(), PropertyLoaderObj.getOAuthAppToken(), PropertyLoaderObj.getProperty("oAuthUsername1"),PropertyLoaderObj.getProperty("oAuthPassword1"));
-	    }
-		else if (PropertyLoaderObj.getNGAPIexecutionMode().equalsIgnoreCase("SIT")){
-			RestUtils.oauthSetup(PropertyLoaderObj.getOAuthKeyStore(), PropertyLoaderObj.getOAuthProperty(), PropertyLoaderObj.getOAuthAppToken(), PropertyLoaderObj.getProperty("oAuthUsername"),PropertyLoaderObj.getProperty("oAuthPassword"));						           
-		}
-		else{
-			Log4jUtil.log("Invalid Execution Mode");
-		}
-	    
-	    CommonFlows.verifyMessageINInbox(PropertyLoaderObj,driver,url,username,PropertyLoaderObj.getPassword(),subject,body,comm_id,messageID,integrationPracticeID,"","");
+    	String comm_id =NGAPIFlows.postSecureMessage("UnreadNotificationRequested",person_id,practiceId,userId,providerName,locationName, "EHR", "NewUnLockedEncounter","PracticeUser","","","");    	
 	    log("Test Case End: The practice user is able to compose a message with 'Unread Notification' flag on and send it to enrolled patient with “Add to New Encounter(UnLocked)” option selected in Send & Chart button.");	
 	}
 	
@@ -4028,7 +4005,7 @@ public class NGIntegrationE2ESITTests extends BaseTestNGWebDriver{
 	    logStep("Compose Message and send it to enrolled patient by selecting Online Profile as sender of message.");
         NGAPIUtils.updateLoginDefaultTo("EnterpriseGateway",enterpriseId,practiceId);    
     	
-        String comm_id =NGAPIFlows.postSecureMessage("SentByOnlineProfile",person_id,practiceId,userId,providerName,locationName, "EHR", "NewUnLockedEncounter","PracticeUser","","","");		
+        String comm_id =NGAPIFlows.postSecureMessage("SentByOnlineProfile",person_id,practiceId,userId,providerName,locationName, "EHR", "DoNotAddToEncounter","PracticeUser","","","");		
 
     	String subjectQuery ="select subject from ngweb_communications where comm_id ='"+comm_id+"'";
     	String bodyQuery ="select body from ngweb_communications where comm_id ='"+comm_id+"'";	
@@ -4064,17 +4041,21 @@ public class NGIntegrationE2ESITTests extends BaseTestNGWebDriver{
 		log("Execution Environment: " + IHGUtil.getEnvironmentType());
 		log("Execution Browser: " + TestConfig.getBrowserType());		
 		
-		logStep("Getting Existing User");
-	    String username = PropertyLoaderObj.getProperty("CCDAUsername");
+		String questionText = IntegrationConstants.MESSAGE_REPLY;
+		String userId =PropertyLoaderObj.getProperty("SecureMessageUserID");
+		String userFirstName =DBUtils.executeQueryOnDB("NGCoreDB","select first_name from user_mstr where user_id='"+userId+"'");
+		String userLastName =DBUtils.executeQueryOnDB("NGCoreDB","select last_name from user_mstr where user_id='"+userId+"'");	
+		String userProviderName =userLastName+", Dr";
+
+		String username = PropertyLoaderObj.getProperty("CCDAUsername");
     	String person_id = DBUtils.executeQueryOnDB("NGCoreDB","select person_id from person where email_address = '"+username+"'");
-    	String enterpriseId = null, practiceId = null, providerName = null, locationName = null , userId = null, integrationPracticeID= null, url =null;
+    	String enterpriseId = null, practiceId = null, providerName = null, locationName = null , integrationPracticeID= null, url =null;
     	
     	if(PropertyLoaderObj.getNGAPIexecutionMode().equalsIgnoreCase("QAMain")){
     		enterpriseId= PropertyLoaderObj.getProperty("NGEnterpiseEnrollmentEnterprise1");
     	    practiceId= PropertyLoaderObj.getProperty("NGEnterprise1Practice1");
     	    providerName =PropertyLoaderObj.getProperty("NGE1P1Provider"); 
     	    locationName =PropertyLoaderObj.getProperty("NGE1P1Location");
-    	    userId =PropertyLoaderObj.getProperty("SecureMessageUserID");
     	    integrationPracticeID =PropertyLoaderObj.getProperty("integrationPracticeIDE1P1");
     	    url = PropertyLoaderObj.getProperty("MFPortalURLPractice1");	
 		}
@@ -4083,30 +4064,36 @@ public class NGIntegrationE2ESITTests extends BaseTestNGWebDriver{
 		    practiceId= PropertyLoaderObj.getProperty("NGMainPracticeID");
 		    providerName =PropertyLoaderObj.getProperty("EPMProviderName"); 
 		    locationName =PropertyLoaderObj.getProperty("EPMLocationName");
-		    userId =PropertyLoaderObj.getProperty("SecureMessageUserID");
 		    integrationPracticeID =PropertyLoaderObj.getProperty("integrationPracticeIDAMDC");
 		    url = PropertyLoaderObj.getProperty("url");			           
 		}
 		else{
 			Log4jUtil.log("Invalid Execution Mode");
 		}
-		 
-	    logStep("Compose Message and send it to enrolled patient by selecting Alias Name as sender of message.");
-        NGAPIUtils.updateLoginDefaultTo("EnterpriseGateway",enterpriseId,practiceId);    
+    	String userLocationName = PropertyLoaderObj.getProperty("PortalLocationName");
     	
-        String comm_id =NGAPIFlows.postSecureMessage("SentByAlias",person_id,practiceId,userId,providerName,locationName, "EHR", "NewUnLockedEncounter","PracticeUser","","","");		
+		long timestamp = System.currentTimeMillis();
+		Log4jUtil.log("Step Begins: Do a GET and get the read communication");
+		Long since = timestamp / 1000L - 60 * 24;
+		
+		logStep("Login patient");
+		NGLoginPage loginPage = new NGLoginPage(driver, PropertyLoaderObj.getProperty("url"));
+		JalapenoHomePage homePage = loginPage.login(PropertyLoaderObj.getProperty("CCDAUsername"),PropertyLoaderObj.getPassword());
 
-    	String subjectQuery ="select subject from ngweb_communications where comm_id ='"+comm_id+"'";
-    	String bodyQuery ="select body from ngweb_communications where comm_id ='"+comm_id+"'";	
-    	String subject = DBUtils.executeQueryOnDB("NGCoreDB",subjectQuery);
-    	String body = DBUtils.executeQueryOnDB("NGCoreDB",bodyQuery);
-    	
-    	logStep("Verify the processing status of message");
-    	CommonFlows.verifyMessageProcessingStatus(PropertyLoaderObj, person_id, practiceId, comm_id, integrationPracticeID,"");
-    	
-    	String messageDeliveryQuery = "select messageid from  message_delivery where message_groupid ='"+comm_id+"'";
-    	String messageID = DBUtils.executeQueryOnDB("MFAgentDB",messageDeliveryQuery);
-	
+		logStep("Click Ask A Question tab");
+		JalapenoAskAStaffV2Page1 askPage1 = homePage.openSpecificAskaQuestion(PropertyLoaderObj.getProperty("askAV2Name"));
+
+		String askaSubject = Long.toString(askPage1.getCreatedTimeStamp());
+
+		logStep("Fill question and continue");
+		JalapenoAskAStaffV2Page2 askPage2 = askPage1.NGfillAndContinue(askaSubject, questionText,userProviderName,userLocationName);
+
+		assertTrue(askaSubject.equals(askPage2.getSubject()),"Expected: " + askaSubject + ", found: " + askPage2.getSubject());
+		assertTrue(questionText.equals(askPage2.getQuestion()),"Expected: " + questionText + ", found: " + askPage2.getQuestion());
+
+		homePage = askPage2.submit();
+		homePage.LogoutfromNGMFPortal();
+
     	logStep("Setup Oauth client" + PropertyLoaderObj.getResponsePath());
     	if(PropertyLoaderObj.getNGAPIexecutionMode().equalsIgnoreCase("QAMain")){
     		RestUtils.oauthSetup(PropertyLoaderObj.getOAuthKeyStore(), PropertyLoaderObj.getOAuthProperty(), PropertyLoaderObj.getOAuthAppToken(), PropertyLoaderObj.getProperty("oAuthUsername1"),PropertyLoaderObj.getProperty("oAuthPassword1"));
@@ -4118,14 +4105,59 @@ public class NGIntegrationE2ESITTests extends BaseTestNGWebDriver{
 			Log4jUtil.log("Invalid Execution Mode");
 		}
 
-    	String replyMessageID = CommonFlows.verifyMessageINInbox(PropertyLoaderObj,driver,url,username,PropertyLoaderObj.getPassword(),subject,body,comm_id,messageID,integrationPracticeID,"SentByAlias","");
-	    Thread.sleep(60000);
+		Log4jUtil.log("Step Begins: Wait 60 seconds, so the message can be processed");
+		Thread.sleep(60000);
+
+		Log4jUtil.log("Step Begins: Do a GET and get the message");
+		RestUtils.setupHttpGetRequest(PropertyLoaderObj.getProperty("GetInboundMessage").replaceAll("integrationID", integrationPracticeID) + "?since=" + since + ",0", PropertyLoaderObj.getResponsePath());
+
+		Log4jUtil.log("Step Begins: Validate message reply");
+		String PatientFirstName = DBUtils.executeQueryOnDB("NGCoreDB","select first_name from person where person_id ='"+person_id+"'");
+		String PatientLastName = DBUtils.executeQueryOnDB("NGCoreDB","select last_name from person where person_id ='"+person_id+"'");
+		String expectedBody= "Dear "+PropertyLoaderObj.getProperty("practiceName")+",<br/><br/>"+IntegrationConstants.MESSAGE_REPLY+"<br/><br/>Thanks,<br>"+PatientFirstName+" "+PatientLastName;		
+		
+		String messageID = RestUtils.isReplyPresentReturnMessageID(PropertyLoaderObj.getResponsePath(), askaSubject,expectedBody);
+		
+		String expectedBodyinInbox= "Dear "+PropertyLoaderObj.getProperty("practiceName")+",\n"+IntegrationConstants.MESSAGE_REPLY+"\nThanks,\n"+PatientFirstName+" "+PatientLastName;		
+		Thread.sleep(60000);
+		Log4jUtil.log("Verify message received at NG core");
+		CommonFlows.verifyMessageReceivedAtNGCore(PropertyLoaderObj,messageID,askaSubject,expectedBodyinInbox.replace("\n", ""),PropertyLoaderObj.getProperty("askAV2Name"));
+		
+        NGAPIUtils.updateLoginDefaultTo("EnterpriseGateway",enterpriseId, practiceId);
+    	String comm_id =NGAPIFlows.postSecureMessage("ReplyToPortalUsingAliasName"+messageID,person_id,practiceId,userId,providerName,locationName, "EHR", "DoNotAddToEncounter","PracticeUser","","","");		
+    	
+    	Thread.sleep(60000);
+    	String subjectQuery ="select subject from ngweb_communications where comm_id ='"+comm_id+"'";
+    	String bodyQuery ="select body from ngweb_communications where comm_id ='"+comm_id+"'";	
+    	String subject = DBUtils.executeQueryOnDB("NGCoreDB",subjectQuery);
+    	String body = DBUtils.executeQueryOnDB("NGCoreDB",bodyQuery);
+    	
+    	logStep("Verify the processing status of message");
+    	CommonFlows.verifyMessageProcessingStatus(PropertyLoaderObj, person_id, practiceId, comm_id, integrationPracticeID,"");
+    	
+    	String messageDeliveryQuery = "select messageid from  message_delivery where message_groupid ='"+comm_id+"'";
+    	String messageIDAtMF = DBUtils.executeQueryOnDB("MFAgentDB",messageDeliveryQuery);
+    	
+    	logStep("Setup Oauth client" + PropertyLoaderObj.getResponsePath());
+    	if(PropertyLoaderObj.getNGAPIexecutionMode().equalsIgnoreCase("QAMain")){
+    		RestUtils.oauthSetup(PropertyLoaderObj.getOAuthKeyStore(), PropertyLoaderObj.getOAuthProperty(), PropertyLoaderObj.getOAuthAppToken(), PropertyLoaderObj.getProperty("oAuthUsername1"),PropertyLoaderObj.getProperty("oAuthPassword1"));
+		}
+		else if (PropertyLoaderObj.getNGAPIexecutionMode().equalsIgnoreCase("SIT")){
+			RestUtils.oauthSetup(PropertyLoaderObj.getOAuthKeyStore(), PropertyLoaderObj.getOAuthProperty(), PropertyLoaderObj.getOAuthAppToken(), PropertyLoaderObj.getProperty("oAuthUsername"),PropertyLoaderObj.getProperty("oAuthPassword"));			           
+		}
+		else{
+			Log4jUtil.log("Invalid Execution Mode");
+		}
+
+    	String replyMessageID =CommonFlows.verifyMessageINInbox(PropertyLoaderObj,driver,url,username,PropertyLoaderObj.getPassword(),subject,body,comm_id,messageIDAtMF,integrationPracticeID,"SentByAlias","");
+
+		Thread.sleep(60000);
 		CommonFlows.verifyReplyReceivedAtNGCore(replyMessageID,"Re: "+subject, JalapenoMessagesPage.getPatientReply());
 	    log("Test Case End: The practice user is able to send a message with Alias Name as sender of message and patient is able to reply to that message.");	
 	}
 
 	@Test(enabled = true, groups = { "acceptance-INBOX" }, retryAnalyzer = RetryAnalyzer.class)
-	public void testCOMAskAQuestion() throws Throwable{
+	public void testCOMAskAQuestionRepliedUsingOriginalUnlockedEncounter() throws Throwable{
 		log("Test Case : Verify the patient is able to ask a question from Practice User and practice user is able to reply to that message.");
 		String questionText = IntegrationConstants.MESSAGE_REPLY;
 		String userId =PropertyLoaderObj.getProperty("SecureMessageUserID");
@@ -4209,7 +4241,7 @@ public class NGIntegrationE2ESITTests extends BaseTestNGWebDriver{
 		CommonFlows.verifyMessageReceivedAtNGCore(PropertyLoaderObj,messageID,askaSubject,expectedBodyinInbox.replace("\n", ""),PropertyLoaderObj.getProperty("askAV2Name"));
 		
         NGAPIUtils.updateLoginDefaultTo("EnterpriseGateway",enterpriseId, practiceId);
-    	String comm_id =NGAPIFlows.postSecureMessage("ReplyToPortal"+messageID,person_id,practiceId,userId,providerName,locationName, "EHR", "NewLockedEncounter","PracticeUser","","","");		
+    	String comm_id =NGAPIFlows.postSecureMessage("ReplyToPortal"+messageID,person_id,practiceId,userId,providerName,locationName, "EHR", "OriginalUnlockedEncounter","PracticeUser","","","");		
     	
     	Thread.sleep(60000);
     	String subjectQuery ="select subject from ngweb_communications where comm_id ='"+comm_id+"'";
@@ -4239,8 +4271,8 @@ public class NGIntegrationE2ESITTests extends BaseTestNGWebDriver{
 	}
 	
 	@Test(enabled = true, groups = { "acceptance-INBOX" }, retryAnalyzer = RetryAnalyzer.class)
-	public void testCOMDelayedDeliverySecureMessageOriginalUnlockedEncounter() throws Throwable{
-		log("Test Case: Verify the practice user is able to compose a message with Delayed Delivery and send it to enrolled patient with “Original Unlocked Encounter” option selected in Send & Chart button.");
+	public void testCOMDelayedDeliverySecureMessageDoNotAddToChart() throws Throwable{
+		log("Test Case: Verify the practice user is able to compose a message with Delayed Delivery and send it to enrolled patient with “Do Not Add To Chart” option selected in Send & Chart button.");
 		log("Execution Environment: " + IHGUtil.getEnvironmentType());
 		log("Execution Browser: " + TestConfig.getBrowserType());		
 		
@@ -4271,9 +4303,9 @@ public class NGIntegrationE2ESITTests extends BaseTestNGWebDriver{
 			Log4jUtil.log("Invalid Execution Mode");
 		}
     	
-	    logStep("Compose Message with Delayed Delivery and send it to enrolled patient with “Original Unlocked Encounter” option selected in Send & Chart button.");
+	    logStep("Compose Message with Delayed Delivery and send it to enrolled patient with “Do Not Add To Chart” option selected in Send & Chart button.");
         NGAPIUtils.updateLoginDefaultTo("EnterpriseGateway",enterpriseId,practiceId);    
-    	String comm_id =NGAPIFlows.postSecureMessage("DelayedDelivery",person_id,practiceId,userId,providerName,locationName, "EHR", "OriginalUnlockedEncounter","PracticeUser","","","");		
+    	String comm_id =NGAPIFlows.postSecureMessage("DelayedDelivery",person_id,practiceId,userId,providerName,locationName, "EHR", "DoNotAddToEncounter","PracticeUser","","","");		
 
     	String subjectQuery ="select subject from ngweb_communications where comm_id ='"+comm_id+"'";
     	String bodyQuery ="select body from ngweb_communications where comm_id ='"+comm_id+"'";	
@@ -4298,7 +4330,7 @@ public class NGIntegrationE2ESITTests extends BaseTestNGWebDriver{
 		}
     	
 	    CommonFlows.verifyMessageINInbox(PropertyLoaderObj,driver,url,username,PropertyLoaderObj.getPassword(),subject,body,comm_id,messageID,integrationPracticeID,"","");
-	    log("Test Case End: The practice user is able to compose a message with Delayed Delivery and send it to enrolled patient with “Original Unlocked Encounter” option selected in Send & Chart button.");	
+	    log("Test Case End: The practice user is able to compose a message with Delayed Delivery and send it to enrolled patient with “Do Not Add To Chart” option selected in Send & Chart button.");	
 	}
 	
 	@Test(enabled = true, groups = { "acceptance-CCD" }, retryAnalyzer = RetryAnalyzer.class)
@@ -4655,5 +4687,5 @@ public class NGIntegrationE2ESITTests extends BaseTestNGWebDriver{
 		CommonFlows.verifyAppointmentDeletedinPortal(PropertyLoaderObj, driver, url, username,appointmentDate.substring(0,appointmentDate.lastIndexOf(" ")),appointmentDate.substring(appointmentDate.lastIndexOf(" ")+1));		
 		log("Test Case End: The practice user is able to book multiple appointments for patient and delete appointment from EPM appointment book successfully");
 	}
-
+	
 }

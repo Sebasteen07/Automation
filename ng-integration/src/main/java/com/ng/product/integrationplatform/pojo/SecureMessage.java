@@ -20,6 +20,7 @@ public class SecureMessage {
 	private String locationId;
 	private String applicationName;
 	private List<Message> messages = null;
+	private String messageType;
 
 	public String getSenderType() {
 	return senderType;
@@ -91,6 +92,14 @@ public class SecureMessage {
 
 	public void setMessages(List<Message> messages) {
 	this.messages = messages;
+	}
+	
+	public String getMessageType() {
+		return messageType;
+	}
+	
+	public void setMessageType(String messageType) {
+		this.messageType = messageType;
 	}
 
 	}

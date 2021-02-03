@@ -20,7 +20,7 @@
 	    		<include name="testCOMSecureMessageSentAndReplyUsingOnlineProfile"/> 
 	    		<include name="testCOMSecureMessageSentAndReplyUsingAliasName"/> 
 	    		<include name="testCOMAskAQuestion"/>
-	    	 	<include name="testCOMDelayedDeliverySecureMessageOriginalUnlockedEncounter"/>
+	    	 	<!-- <include name="testCOMDelayedDeliverySecureMessageOriginalUnlockedEncounter"/> -->
 	    	 	<include name="testInboxAppointment"/>
 	    	 	<include name="testInboxAppointmentSameSlot"/>
 	    	 	<include name="testInboxAppointmentBookMultipleSlotsandDeleteAppointment"/>

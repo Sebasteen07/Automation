@@ -555,11 +555,11 @@ public class NGAPIFlows {
 			if(messageType.equalsIgnoreCase("SentByOnlineProfile")){
 				String SecureMessageOnlineProfile = "AutomationOnlineProfile";
 				message.setRoutingRuleName(SecureMessageOnlineProfile);
-				message.setRoutingRuleType("OnlineProfile");
+				message.setRoutingRuleType("1");
 				message.setRoutingRuleId(DBUtils.executeQueryOnDB("NGCoreDB","select row_id from ngweb_alias where name='"+SecureMessageOnlineProfile+"'"));				
-			} else if(messageType.equalsIgnoreCase("SentByAlias")){
+			} else if(messageType.equalsIgnoreCase("ReplyToPortalUsingAliasName")){
 				String SecureMessageAlias = "SASHA_ALIAS";
-				message.setRoutingRuleType("Normal");
+				message.setRoutingRuleType("0");
 				message.setAliasName(SecureMessageAlias);
 			} else
 				message.setRoutingRuleType("-1");
@@ -579,15 +579,30 @@ public class NGAPIFlows {
 				message.setParentId(messageType.substring(13).toUpperCase());
 			}
 			
+			if(messageType.contains("ReplyToPortalUsingAliasName")){
+				message.setParentId(messageType.substring(13).toUpperCase());
+			}
+			
 			if(messageType.contains("ReplyToPortal")){					
 		    	String subject = DBUtils.executeQueryOnDB("NGCoreDB","select subject from ngweb_communications where comm_id ='"+messageType.substring(13)+"'");
+		    	message.setSubject("RE: "+subject);
+			} else if (messageType.contains("ReplyToPortalUsingAliasName")){					
+		    	String subject = DBUtils.executeQueryOnDB("NGCoreDB","select subject from ngweb_communications where comm_id ='"+messageType.substring(27)+"'");
 		    	message.setSubject("RE: "+subject);
 			}
 			else
 				message.setSubject("Subject" + (new Date()).getTime());
 			message.setBody(messageType +"Body" + (new Date()).getTime());
-			message.setSentTimestamp(sdf.format(new Date()));
+			
+			if(messageType.equalsIgnoreCase("DelayedDelivery"))
+				Log4jUtil.log("Delayed Delivery should be set");
+			else
+				message.setSentTimestamp(sdf.format(new Date()));
+			
 			if(messageType.contains("ReplyToPortal")){
+				message.setCategory("Medication Questions Category");
+				message.setRepliedWhenTimestamp(sdf.format(new Date()));
+			}else if (messageType.contains("ReplyToPortalUsingAliasName")){
 				message.setCategory("Medication Questions Category");
 				message.setRepliedWhenTimestamp(sdf.format(new Date()));
 			}
@@ -655,6 +670,13 @@ public class NGAPIFlows {
 			securemessage.setLocationId(DBUtils.executeQueryOnDB("NGCoreDB",strSqlQueryForLocation.replace("locationName", locationName)));
 			securemessage.setApplicationName(applicationName);
 			securemessage.setMessages(messageList);
+			
+			if(messageType.contains("ReplyToPortal")){
+				securemessage.setMessageType("1");
+			}
+			if(messageType.contains("ReplyToPortalUsingAliasName")){
+				securemessage.setMessageType("1");
+			}
 			
 			ObjectMapper mapper = new ObjectMapper();
 			mapper.setSerializationInclusion(Inclusion.NON_NULL);				
