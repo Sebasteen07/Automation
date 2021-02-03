@@ -4683,6 +4683,7 @@ public class NGIntegrationE2ESITTests extends BaseTestNGWebDriver{
 		CommonUtils.VerifyTwoValues(deleteInd,"equals","Y"); 
 		logStep("Appointment is deleted from EPM Appointment Book with delete Indicator "+deleteInd);
 		
+		Thread.sleep(90000);
 		logStep("Verify appointment is deleted from Portal");
 		CommonFlows.verifyAppointmentDeletedinPortal(PropertyLoaderObj, driver, url, username,appointmentDate.substring(0,appointmentDate.lastIndexOf(" ")),appointmentDate.substring(appointmentDate.lastIndexOf(" ")+1));		
 		log("Test Case End: The practice user is able to book multiple appointments for patient and delete appointment from EPM appointment book successfully");
