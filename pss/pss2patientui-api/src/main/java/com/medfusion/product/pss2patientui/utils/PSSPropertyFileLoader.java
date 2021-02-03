@@ -322,6 +322,7 @@ public class PSSPropertyFileLoader {
 		appointValues.setOldPatientPassword(property.getProperty("oldPatientPasswordNG"));
 		appointValues.setProviderImageAPI(property.getProperty("providerImageAPING"));
 		appointValues.setGmailUserName(property.getProperty("emailNG"));
+		appointValues.setPopUpMessege(property.getProperty("popUpMessege"));
 	}
 
 	public void setAppointmentResponseAthena(Appointment appointValues) {
