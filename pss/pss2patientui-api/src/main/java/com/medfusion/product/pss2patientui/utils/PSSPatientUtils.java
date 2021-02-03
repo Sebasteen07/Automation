@@ -1274,6 +1274,38 @@ public class PSSPatientUtils {
 
 		return PageFactory.initElements(driver, PatientIdentificationPage.class);
 	}
+	
+	public void deleteEmail_Mailinator(WebDriver driver, String url, String email) throws InterruptedException {
+
+		driver.manage().deleteAllCookies(); // delete all cookies
+		
+		driver.get(url);
+		driver.findElement(By.xpath("//input[@id='addOverlay']")).sendKeys(email);
+		driver.findElement(By.xpath("//button[@id='go-to-public']")).click();
+
+		WebDriverWait wait = new WebDriverWait(driver, 30);
+		wait.until(ExpectedConditions.visibilityOfElementLocated(By.xpath("//a[@class='ng-binding']")));
+		Thread.sleep(2000);
+		String subject_line="Your appointment is now scheduled";
+		if(driver.findElement(By.xpath("//a[@class='ng-binding']")).getText().contains(subject_line)) {
+			
+			driver.findElement(By.xpath("//td[@class='a-center ']/input")).click();
+		}
+		Thread.sleep(2000);
+
+		JavascriptExecutor js = (JavascriptExecutor) driver;
+		js.executeScript("window.scrollBy(550,0)", "");
+		Thread.sleep(1000);
+
+		driver.manage().deleteAllCookies();
+		driver.findElement(By.xpath("//button[@id='trash_but']")).click();
+		
+		
+		Thread.sleep(2000);
+
+	}
+
+
 
 	public void fillPatientDetails(Boolean insuranceSelected, Appointment testData,
 			LoginlessPatientInformation loginlesspatientinformation) throws InterruptedException {
