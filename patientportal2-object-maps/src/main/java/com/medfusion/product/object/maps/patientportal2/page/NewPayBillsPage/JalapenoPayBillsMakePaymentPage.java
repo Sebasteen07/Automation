@@ -91,10 +91,10 @@ public class JalapenoPayBillsMakePaymentPage extends JalapenoMenu {
 	@FindBy(how = How.XPATH, using = "//*[contains(@href,'#/payments/history/details')]/preceding-sibling::span[1]")
 	private WebElement confirmationNumberMsg;
 
-	@FindBy(how = How.XPATH, using = "(//tr[@data-ng-repeat='payment in payments']/td/a)[1]")
+	@FindBy(how = How.XPATH, using = "(//table[@class='table table-condensed']/tbody/tr/td/a)[1]")
 	private WebElement selectFirsttransaction;
 
-	@FindBy(how = How.XPATH, using = "//td[contains(text(),' ************')]")
+	@FindBy(how = How.XPATH, using = "//td[label[contains(text(),'Credit Card')]]/following-sibling::td")
 	private WebElement receiptCardDigit;
 
 	public JalapenoPayBillsMakePaymentPage(WebDriver driver) {
@@ -229,7 +229,7 @@ public class JalapenoPayBillsMakePaymentPage extends JalapenoMenu {
 	public void clickPaymentHistory() {
 		wait.until(ExpectedConditions.elementToBeClickable(payHistoryButton));
 		payHistoryButton.click();
-		wait.until(ExpectedConditions.elementToBeClickable(payHistoryButton));
+		wait.until(ExpectedConditions.elementToBeClickable(selectFirsttransaction));
 		selectFirsttransaction.click();
 
 	}
