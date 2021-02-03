@@ -24,6 +24,7 @@
 	    	 	<include name="testInboxAppointment"/>
 	    	 	<include name="testInboxAppointmentSameSlot"/>
 	    	 	<include name="testInboxAppointmentBookMultipleSlotsandDeleteAppointment"/>
+	    	 	<include name="testPP138SendPatientEducation"/>
       	</methods>
 	</classes>
 </test>

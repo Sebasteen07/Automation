@@ -4688,4 +4688,69 @@ public class NGIntegrationE2ESITTests extends BaseTestNGWebDriver{
 		log("Test Case End: The practice user is able to book multiple appointments for patient and delete appointment from EPM appointment book successfully");
 	}
 	
+	@Test(enabled = true, groups = { "acceptance-INBOX" }, retryAnalyzer = RetryAnalyzer.class)
+	public void testPP138SendPatientEducation() throws Throwable{
+		log("Test Case: Verify the practice user is able to send Patient Education document");
+		log("Execution Environment: " + IHGUtil.getEnvironmentType());
+		log("Execution Browser: " + TestConfig.getBrowserType());	
+		
+		logStep("Getting Existing User");
+	    String username = PropertyLoaderObj.getProperty("CCDAUsername");
+    	String person_id = DBUtils.executeQueryOnDB("NGCoreDB","select person_id from person where email_address = '"+username+"'");	
+	    String enterpriseId = null, practiceId = null, providerName = null, locationName = null , userId = null, integrationPracticeID= null, url =null;
+    	
+    	if(PropertyLoaderObj.getNGAPIexecutionMode().equalsIgnoreCase("QAMain")){
+    		enterpriseId= PropertyLoaderObj.getProperty("NGEnterpiseEnrollmentEnterprise1");
+    	    practiceId= PropertyLoaderObj.getProperty("NGEnterprise1Practice1");
+    	    providerName =PropertyLoaderObj.getProperty("NGE1P1Provider"); 
+    	    locationName =PropertyLoaderObj.getProperty("NGE1P1Location");
+    	    userId =PropertyLoaderObj.getProperty("SecureMessageUserID");
+    	    integrationPracticeID =PropertyLoaderObj.getProperty("integrationPracticeIDE1P1");
+    	    url = PropertyLoaderObj.getProperty("MFPortalURLPractice1");	
+		}
+		else if (PropertyLoaderObj.getNGAPIexecutionMode().equalsIgnoreCase("SIT")){
+			enterpriseId= PropertyLoaderObj.getProperty("NGMainEnterpriseID");
+		    practiceId= PropertyLoaderObj.getProperty("NGMainPracticeID");
+		    providerName =PropertyLoaderObj.getProperty("EPMProviderName"); 
+		    locationName =PropertyLoaderObj.getProperty("EPMLocationName");
+		    userId =PropertyLoaderObj.getProperty("SecureMessageUserID");
+		    integrationPracticeID =PropertyLoaderObj.getProperty("integrationPracticeIDAMDC");
+		    url = PropertyLoaderObj.getProperty("url");			           
+		}
+		else{
+			Log4jUtil.log("Invalid Execution Mode");
+		}
+	    
+    	String PEdocumentId = DBUtils.executeQueryOnDB("NGCoreDB","select top 1 document_id from patient_education where practice_id ='"+practiceId+"' and person_id ='"+person_id+"'");
+	    
+	    logStep("Compose Message with Patient Education Document and send it to enrolled patient with “Do not add to chart” option selected in Send & Chart button.");
+        NGAPIUtils.updateLoginDefaultTo("EnterpriseGateway",enterpriseId,practiceId);    
+    	String comm_id =NGAPIFlows.postSecureMessage("",person_id,practiceId,userId,providerName,locationName, "EHR", "DoNotAddToEncounter","PracticeUser","","PatientEducation",PEdocumentId);		
+
+    	String subjectQuery ="select subject from ngweb_communications where comm_id ='"+comm_id+"'";
+    	String bodyQuery ="select body from ngweb_communications where comm_id ='"+comm_id+"'";	
+    	String subject = DBUtils.executeQueryOnDB("NGCoreDB",subjectQuery);
+    	String body = DBUtils.executeQueryOnDB("NGCoreDB",bodyQuery);
+    	
+    	logStep("Verify the processing status of message");
+    	CommonFlows.verifyMessageProcessingStatus(PropertyLoaderObj, person_id, practiceId, comm_id, integrationPracticeID,"");
+    	
+    	String messageDeliveryQuery = "select messageid from  message_delivery where message_groupid ='"+comm_id+"'";
+    	String messageID = DBUtils.executeQueryOnDB("MFAgentDB",messageDeliveryQuery);
+    	
+    	String attachmentName =DBUtils.executeQueryOnDB("NGCoreDB","select document_desc from patient_education where document_id ='"+PEdocumentId+"'");		
+    	Thread.sleep(15000);
+    	logStep("Setup Oauth client" + PropertyLoaderObj.getResponsePath());
+	    if(PropertyLoaderObj.getNGAPIexecutionMode().equalsIgnoreCase("QAMain")){
+	    	RestUtils.oauthSetup(PropertyLoaderObj.getOAuthKeyStore(), PropertyLoaderObj.getOAuthProperty(), PropertyLoaderObj.getOAuthAppToken(), PropertyLoaderObj.getProperty("oAuthUsername1"),PropertyLoaderObj.getProperty("oAuthPassword1"));
+	    }
+		else if (PropertyLoaderObj.getNGAPIexecutionMode().equalsIgnoreCase("SIT")){
+			RestUtils.oauthSetup(PropertyLoaderObj.getOAuthKeyStore(), PropertyLoaderObj.getOAuthProperty(), PropertyLoaderObj.getOAuthAppToken(), PropertyLoaderObj.getProperty("oAuthUsername"),PropertyLoaderObj.getProperty("oAuthPassword"));						           
+		}
+		else{
+			Log4jUtil.log("Invalid Execution Mode");
+		}    
+	    CommonFlows.verifyMessageINInbox(PropertyLoaderObj,driver,url,username,PropertyLoaderObj.getPassword(),subject,body,comm_id,messageID,integrationPracticeID,"messageWithPE",attachmentName);
+	    log("Test Case End: The practice user is able to send Patient Education document successfully and patient is able to receive.");	
+	}
 }
