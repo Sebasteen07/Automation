@@ -4124,7 +4124,7 @@ public class NGIntegrationE2ESITTests extends BaseTestNGWebDriver{
 		CommonFlows.verifyMessageReceivedAtNGCore(PropertyLoaderObj,messageID,askaSubject,expectedBodyinInbox.replace("\n", ""),PropertyLoaderObj.getProperty("askAV2Name"));
 		
         NGAPIUtils.updateLoginDefaultTo("EnterpriseGateway",enterpriseId, practiceId);
-    	String comm_id =NGAPIFlows.postSecureMessage("ReplyToPortalUsingAliasName"+messageID,person_id,practiceId,userId,providerName,locationName, "EHR", "DoNotAddToEncounter","PracticeUser","","","");		
+    	String comm_id =NGAPIFlows.postSecureMessage("ReplyToASKAUsingAliasName"+messageID,person_id,practiceId,userId,providerName,locationName, "EHR", "DoNotAddToEncounter","PracticeUser","","","");		
     	
     	Thread.sleep(60000);
     	String subjectQuery ="select subject from ngweb_communications where comm_id ='"+comm_id+"'";

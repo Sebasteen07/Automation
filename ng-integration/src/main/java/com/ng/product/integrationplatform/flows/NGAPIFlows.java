@@ -557,10 +557,11 @@ public class NGAPIFlows {
 				message.setRoutingRuleName(SecureMessageOnlineProfile);
 				message.setRoutingRuleType("1");
 				message.setRoutingRuleId(DBUtils.executeQueryOnDB("NGCoreDB","select row_id from ngweb_alias where name='"+SecureMessageOnlineProfile+"'"));				
-			} else if(messageType.equalsIgnoreCase("ReplyToPortalUsingAliasName")){
+			} else if(messageType.contains("ReplyToASKAUsingAliasName")){
 				String SecureMessageAlias = "SASHA_ALIAS";
 				message.setRoutingRuleType("0");
 				message.setAliasName(SecureMessageAlias);
+				message.setRoutingRuleName("RoutingRuleName Check");
 			} else
 				message.setRoutingRuleType("-1");
 			
@@ -579,15 +580,15 @@ public class NGAPIFlows {
 				message.setParentId(messageType.substring(13).toUpperCase());
 			}
 			
-			if(messageType.contains("ReplyToPortalUsingAliasName")){
-				message.setParentId(messageType.substring(13).toUpperCase());
+			if(messageType.contains("ReplyToASKAUsingAliasName")){
+				message.setParentId(messageType.substring(25).toUpperCase());
 			}
 			
 			if(messageType.contains("ReplyToPortal")){					
 		    	String subject = DBUtils.executeQueryOnDB("NGCoreDB","select subject from ngweb_communications where comm_id ='"+messageType.substring(13)+"'");
 		    	message.setSubject("RE: "+subject);
-			} else if (messageType.contains("ReplyToPortalUsingAliasName")){					
-		    	String subject = DBUtils.executeQueryOnDB("NGCoreDB","select subject from ngweb_communications where comm_id ='"+messageType.substring(27)+"'");
+			} else if (messageType.contains("ReplyToASKAUsingAliasName")){					
+		    	String subject = DBUtils.executeQueryOnDB("NGCoreDB","select subject from ngweb_communications where comm_id ='"+messageType.substring(25)+"'");
 		    	message.setSubject("RE: "+subject);
 			}
 			else
@@ -602,7 +603,7 @@ public class NGAPIFlows {
 			if(messageType.contains("ReplyToPortal")){
 				message.setCategory("Medication Questions Category");
 				message.setRepliedWhenTimestamp(sdf.format(new Date()));
-			}else if (messageType.contains("ReplyToPortalUsingAliasName")){
+			}else if (messageType.contains("ReplyToASKAUsingAliasName")){
 				message.setCategory("Medication Questions Category");
 				message.setRepliedWhenTimestamp(sdf.format(new Date()));
 			}
@@ -674,7 +675,7 @@ public class NGAPIFlows {
 			if(messageType.contains("ReplyToPortal")){
 				securemessage.setMessageType("1");
 			}
-			if(messageType.contains("ReplyToPortalUsingAliasName")){
+			if(messageType.contains("ReplyToASKAUsingAliasName")){
 				securemessage.setMessageType("1");
 			}
 			
