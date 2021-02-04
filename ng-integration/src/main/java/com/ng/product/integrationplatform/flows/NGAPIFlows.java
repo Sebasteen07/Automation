@@ -26,7 +26,7 @@ import com.ng.product.integrationplatform.apiUtils.apiRoutes;
 import com.ng.product.integrationplatform.pojo.AcknowledgedProblem;
 import com.ng.product.integrationplatform.pojo.ObsPanel;
 import com.ng.product.integrationplatform.pojo.PrescriptionRenewalRequest;
-import com.ng.product.integrationplatform.pojo.PrescriptionRenewalRequestStatus;
+import com.ng.product.integrationplatform.pojo.Medications;
 import com.ng.product.integrationplatform.pojo.Problem;
 import com.ng.product.integrationplatform.pojo.Allergy;
 import com.ng.product.integrationplatform.pojo.Appointment;
@@ -572,7 +572,10 @@ public class NGAPIFlows {
 			
 			    message.setSenderName(userFirstName+" "+userLastName);
 			    message.setSenderId(userID);
-						
+			
+			if(messageType.contains("ReplyToASKAUsingAliasName"))
+			    message.setRoutingRuleId(userID);
+			    
 			if(encounterType.equalsIgnoreCase("OriginalUnlockedEncounter"))
 				message.setOriginalId(communicationMessageID);
 				
@@ -771,14 +774,14 @@ public class NGAPIFlows {
 	}
 	
 	public static String putPrescriptionRenewalRequest(String personId,String RenewalRequestId,String RenewalResponse, String encounterType, String locationName, String ProviderName,String MedicationStatus, int expectedStatusCode) throws Throwable{
-		PrescriptionRenewalRequest prescriptionRenewalRequest = new PrescriptionRenewalRequest();	String epm_appt_id ="";	
+		PrescriptionRenewalRequest prescriptionRenewalRequest = new PrescriptionRenewalRequest();	String prescription_response_id ="";	
 		try{			
 			String strSqlQueryForProvider= "select provider_id from provider_mstr where description='"+ProviderName+"'";
 			String strSqlQueryForLocation= "select location_id from location_mstr where location_name='"+locationName+"'";			
 			String strSqlQueryForPatientMed= "select patient_med_id from nxmd_med_renewal_items where transaction_id ='"+RenewalRequestId+"'";			
 			
-			List<PrescriptionRenewalRequestStatus> prescriptionRenewalRequestStatusList = new ArrayList<PrescriptionRenewalRequestStatus>();
-			PrescriptionRenewalRequestStatus prescriptionRenewalRequestStatus = new PrescriptionRenewalRequestStatus();
+			List<Medications> prescriptionRenewalRequestStatusList = new ArrayList<Medications>();
+			Medications prescriptionRenewalRequestStatus = new Medications();
 			List<String> comments =new ArrayList<String>();
 			
 			comments.add(RenewalResponse);			
@@ -788,13 +791,12 @@ public class NGAPIFlows {
 			prescriptionRenewalRequestStatus.setPrescriptionId(DBUtils.executeQueryOnDB("NGCoreDB",strSqlQueryForPatientMed));			
 			prescriptionRenewalRequestStatusList.add(prescriptionRenewalRequestStatus);
 			
-			prescriptionRenewalRequest.setPrescriptionRenewalRequestStatus(prescriptionRenewalRequestStatusList);			
+			prescriptionRenewalRequest.setMedications(prescriptionRenewalRequestStatusList);			
 			prescriptionRenewalRequest.setRenewalResponse(RenewalResponse);
 			prescriptionRenewalRequest.setResponseDate(sdf.format(new Date()));			
 			prescriptionRenewalRequest.setEncounterType(encounterType);
 			prescriptionRenewalRequest.setRenderingProviderId(DBUtils.executeQueryOnDB("NGCoreDB",strSqlQueryForProvider));
 			prescriptionRenewalRequest.setLocationId(DBUtils.executeQueryOnDB("NGCoreDB",strSqlQueryForLocation));
-			
 			
 			ObjectMapper mapper = new ObjectMapper();
 			mapper.setSerializationInclusion(Inclusion.NON_NULL);				
@@ -803,12 +805,12 @@ public class NGAPIFlows {
 			
 			String prescriptionRenewalRequestURL =apiRoutes.valueOf("PutPrescriptionRenewalRequest").getRouteURL().replace("personId", personId).replace("medicationRenewalRequestId", RenewalRequestId); 
 			String finalURL = EnterprisebaseURL +prescriptionRenewalRequestURL;
-			epm_appt_id = NGAPIUtils.setupNGHttpPutRequest("EnterpriseGateway",finalURL,requestbody, expectedStatusCode);
-			Log4jUtil.log("Prescription Renewal Request is updated successsfully with ID "+epm_appt_id);			
+			prescription_response_id = NGAPIUtils.setupNGHttpPutRequest("EnterpriseGateway",finalURL,requestbody, expectedStatusCode);
+			Log4jUtil.log("Prescription Renewal Request is updated successsfully with ID "+prescription_response_id);			
 	} catch (Exception e) {
 		Log4jUtil.log(e.getMessage());
     }
-		return epm_appt_id;
+		return prescription_response_id;
 	}
 	
 	public static String postBulkSecureMessage(String messageType,List<String> personIdList, String practiceID,String userID, String ProviderName, String locationName, String applicationName, String encounterType,String senderType,String encounterId,String attachmentName,String documentID) throws Throwable{

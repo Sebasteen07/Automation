@@ -17,7 +17,7 @@ private List<String> comments = null;
 private String encounterType;
 private String renderingProviderId;
 private String locationId;
-private List<PrescriptionRenewalRequestStatus> PrescriptionRenewalRequestStatus = null;
+private List<Medications> Medications = null;
 
 public String getRenewalResponse() {
 return renewalResponse;
@@ -67,12 +67,12 @@ public void setLocationId(String locationId) {
 this.locationId = locationId;
 }
 
-public List<PrescriptionRenewalRequestStatus> getPrescriptionRenewalRequestStatus() {
-return PrescriptionRenewalRequestStatus;
+public List<Medications> getMedications() {
+return Medications;
 }
 
-public void setPrescriptionRenewalRequestStatus(List<PrescriptionRenewalRequestStatus> PrescriptionRenewalRequestStatus) {
-this.PrescriptionRenewalRequestStatus = PrescriptionRenewalRequestStatus;
+public void setMedications(List<Medications> Medications) {
+this.Medications = Medications;
 }
 
 }

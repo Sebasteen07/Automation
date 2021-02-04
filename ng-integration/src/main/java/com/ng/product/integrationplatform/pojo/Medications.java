@@ -7,7 +7,7 @@
  ************************/
 package com.ng.product.integrationplatform.pojo;
 
-public class PrescriptionRenewalRequestStatus {
+public class Medications {
 
 private String status;
 private String prescriptionId;
