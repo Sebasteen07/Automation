@@ -19,6 +19,7 @@ import org.openqa.selenium.chrome.ChromeDriver;
 import org.openqa.selenium.firefox.FirefoxDriver;
 import org.openqa.selenium.support.PageFactory;
 import org.testng.Assert;
+import org.testng.SkipException;
 import org.testng.annotations.DataProvider;
 import org.testng.annotations.Test;
 
@@ -157,8 +158,10 @@ public class IntegrationPlatformRegressionTests extends BaseTestNGWebDriver {
 	}
 
 
-	@Test(enabled = true, groups = {"RegressionTests"}, retryAnalyzer = RetryAnalyzer.class)
-	public void testAMDCSecureMessages() throws Exception {
+	@Test(enabled = true, dataProvider = "channelVersion",groups = {"RegressionTests"}, retryAnalyzer = RetryAnalyzer.class)
+	public void testAMDCSecureMessages(String version) throws Exception {
+		if (version.contains("v2"))
+			throw new SkipException("Test skipped as version is:" + version);
 		log("Test Case: AMDC Secure Message with Read Communication");
 		log("Execution Environment: " + IHGUtil.getEnvironmentType());
 		log("Execution Browser: " + TestConfig.getBrowserType());
@@ -172,11 +175,39 @@ public class IntegrationPlatformRegressionTests extends BaseTestNGWebDriver {
 		RestUtils.oauthSetup(testData.OAuthKeyStore, testData.OAuthProperty, testData.OAuthAppToken, testData.OAuthUsername, testData.OAuthPassword);
 
 		testData.allowOnce = "true";
-		log("Step 3: Fill Message data");
 		long timestamp = System.currentTimeMillis();
+		String messageID = null;
+		
+		if(version=="v3") {
+			log("Step 3: Fill Message data");
+			String message = AMDCPayload.getAMDCV3Payload(testData);
+			
+			log("message :- " + message);
+			messageID = AMDCPayload.messageID;
+			log("Partner Message ID:" + messageID);
+			log("Step 4: Do Message Post Request");
+			log("responsePath: " + testData.ResponsePath);
+			String processingUrl = RestUtils.setupHttpPostRequest(testData.RestV3Url, message, testData.ResponsePath);
+
+			log("Step 5: Get processing status until it is completed");
+			boolean completed = false;
+			for (int i = 0; i < 3; i++) {
+				// wait 10 seconds so the message can be processed
+				Thread.sleep(60000);
+				RestUtils.setupHttpGetRequest(processingUrl, testData.ResponsePath);
+				if (RestUtils.isMessageProcessingCompleted(testData.ResponsePath)) {
+					completed = true;
+					break;
+				}
+			}
+			assertTrue(completed, "Message processing was not completed in time");
+		}
+		if(version=="v1") {
+		log("Step 3: Fill Message data");
 		String message = AMDCPayload.getAMDCPayload(testData);
+		
 		log("message :- " + message);
-		String messageID = AMDCPayload.messageID;
+		messageID = AMDCPayload.messageID;
 		log("Partner Message ID:" + messageID);
 
 		log("Step 4: Do Message Post Request");
@@ -195,7 +226,7 @@ public class IntegrationPlatformRegressionTests extends BaseTestNGWebDriver {
 			}
 		}
 		assertTrue(completed, "Message processing was not completed in time");
-
+		}
 		log("Step 6: Check secure message in patient email inbox");
 		String link = null;
 		String emailType = testData.GmailUserName.substring(testData.GmailUserName.indexOf("@") + 1);
@@ -242,11 +273,19 @@ public class IntegrationPlatformRegressionTests extends BaseTestNGWebDriver {
 		Thread.sleep(60000);
 
 		log("Getting messages since timestamp: " + since);
+		if(version=="v1") {
 		RestUtils.setupHttpGetRequest(testData.ReadCommuniationURL + "?since=" + since + ",0", testData.ResponsePath);
 
 		log("Step 13: Validate the message id and read time in response");
 		RestUtils.isReadCommunicationMessage(testData.ResponsePath, messageID, readdatetimestamp);
+		}
+		else if(version=="v3") {
+		RestUtils.setupHttpGetRequest(testData.ReadCommuniationURLV3 + "?since=" + since + ",0", testData.ResponsePath);
 
+		log("Step 13: Validate the message id and read time in response");
+		RestUtils.isReadCommunicationMessage(testData.ResponsePath, messageID, readdatetimestamp);
+			
+		}
 		log("Step 14: Reply to the message");
 		messagesPage.replyToMessage(driver);
 
@@ -255,12 +294,20 @@ public class IntegrationPlatformRegressionTests extends BaseTestNGWebDriver {
 
 		log("Step 15: Wait 60 seconds, so the message can be processed");
 		Thread.sleep(60000);
-
+		if(version=="v1") {
 		log("Step 16: Do a GET and get the message");
 		RestUtils.setupHttpGetRequest(testData.RestUrl + "?since=" + since + ",0", testData.ResponsePath);
 
 		log("Step 17: Validate message reply");
 		RestUtils.isReplyPresent(testData.ResponsePath, messageIdentifier);
+		}
+		if(version=="v3") {
+		log("Step 16: Do a GET and get the message");
+		RestUtils.setupHttpGetRequest(testData.RestV3Url + "?since=" + since + ",0", testData.ResponsePath);
+
+		log("Step 17: Validate message reply");
+		RestUtils.isReplyPresent(testData.ResponsePath, messageIdentifier);
+		}
 
 		log("Step 18: Move to  Health Record page");
 		//messagesPage.backToHomePage(driver);
