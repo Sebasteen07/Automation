@@ -4271,7 +4271,7 @@ public class NGIntegrationE2ESITTests extends BaseTestNGWebDriver{
 	}
 	
 	@Test(enabled = true, groups = { "acceptance-INBOX" }, retryAnalyzer = RetryAnalyzer.class)
-	public void testCOMDelayedDeliverySecureMessageDoNotAddToChart() throws Throwable{
+	public void testCOMSendSecureMessageDoNotAddToChart() throws Throwable{
 		log("Test Case: Verify the practice user is able to compose a message with Delayed Delivery and send it to enrolled patient with “Do Not Add To Chart” option selected in Send & Chart button.");
 		log("Execution Environment: " + IHGUtil.getEnvironmentType());
 		log("Execution Browser: " + TestConfig.getBrowserType());		
@@ -4305,7 +4305,7 @@ public class NGIntegrationE2ESITTests extends BaseTestNGWebDriver{
     	
 	    logStep("Compose Message with Delayed Delivery and send it to enrolled patient with “Do Not Add To Chart” option selected in Send & Chart button.");
         NGAPIUtils.updateLoginDefaultTo("EnterpriseGateway",enterpriseId,practiceId);    
-    	String comm_id =NGAPIFlows.postSecureMessage("DelayedDelivery",person_id,practiceId,userId,providerName,locationName, "EHR", "DoNotAddToEncounter","PracticeUser","","","");		
+    	String comm_id =NGAPIFlows.postSecureMessage("",person_id,practiceId,userId,providerName,locationName, "EHR", "DoNotAddToEncounter","PracticeUser","","","");		
 
     	String subjectQuery ="select subject from ngweb_communications where comm_id ='"+comm_id+"'";
     	String bodyQuery ="select body from ngweb_communications where comm_id ='"+comm_id+"'";	
@@ -4756,5 +4756,5 @@ public class NGIntegrationE2ESITTests extends BaseTestNGWebDriver{
 		}    
 	    CommonFlows.verifyMessageINInbox(PropertyLoaderObj,driver,url,username,PropertyLoaderObj.getPassword(),subject,body,comm_id,messageID,integrationPracticeID,"messageWithPE",attachmentName);
 	    log("Test Case End: The practice user is able to send Patient Education document successfully and patient is able to receive.");	
-	}
+	}	
 }
