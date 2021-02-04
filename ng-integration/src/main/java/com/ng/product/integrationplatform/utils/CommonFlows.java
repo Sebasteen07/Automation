@@ -315,9 +315,6 @@ public class CommonFlows {
 	   Log4jUtil.log("Step Begins: Add Problem to patient chart");
 	   String problem_id = NGAPIFlows.addProblem(locationName,providerName,  person_id,"420543008","55561003","Active");
 	
-	   Log4jUtil.log("Step Begins: Add procedure to created encounter and diagnosis");
-	   String procedure_id = NGAPIFlows.addProcedure(locationName,providerName, person_id, encounter_id,diagnosis_id);	
-
 	   Log4jUtil.log("Step Begins: Add Immunization to created encounter");
 	   String immunization_id = NGAPIFlows.addNewImmunizationsOrder(locationName,providerName,person_id,encounter_id);
 	
@@ -453,6 +450,9 @@ public class CommonFlows {
 		
 			verifyReadReceiptReceived(comm_id, readdatetimestamp);
 			verifyReadReceiptMessageReceived(comm_id, subject);
+		} else if (messageType.equalsIgnoreCase("UnReadNotificationRequested")){
+			String deliveryStatusATMF =DBUtils.executeQueryOnDB("MFAgentDB","select status from  message_delivery where message_groupid ='"+comm_id+"'");
+			CommonUtils.VerifyTwoValues(deliveryStatusATMF,"equals","NOTIFIED_FAILURE");
 		} else{
 			String deliveryStatusATMF =DBUtils.executeQueryOnDB("MFAgentDB","select status from  message_delivery where message_groupid ='"+comm_id+"'");
 			CommonUtils.VerifyTwoValues(deliveryStatusATMF,"equals","SENT");}
