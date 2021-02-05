@@ -160,7 +160,7 @@ public class IntegrationPlatformRegressionTests extends BaseTestNGWebDriver {
 
 	@Test(enabled = true, dataProvider = "channelVersion",groups = {"RegressionTests"}, retryAnalyzer = RetryAnalyzer.class)
 	public void testAMDCSecureMessages(String version) throws Exception {
-		if (version.contains("v2"))
+		if (version.equals("v2"))
 			throw new SkipException("Test skipped as version is:" + version);
 		log("Test Case: AMDC Secure Message with Read Communication");
 		log("Execution Environment: " + IHGUtil.getEnvironmentType());
