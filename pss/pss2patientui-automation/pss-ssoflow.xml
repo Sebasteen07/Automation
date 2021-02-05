@@ -30,6 +30,7 @@
 					<include name="testE2ELinkGenerationGW" />
 
 					<include name="testAcceptSameDayAT" />
+					<include name="testAcceptSameDayNG" />
 					<include name="testAcceptSameDayGE" />
 					<include name="testAcceptSameDayGW" />
 

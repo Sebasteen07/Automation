@@ -50,9 +50,6 @@ public class LinkTab extends SettingsTab {
 	@FindBy(how = How.XPATH, using = "//*[@class='fa fa-link']")
 	private WebElement copyLink;
 
-	// @FindBy(how = How.XPATH, using = "//*[@id='links']/div/div/div[2]/table/tbody[2]/tr/td")
-	// private WebElement noProviderConfigured;
-
 	@FindAll({@FindBy(xpath = "//*[@id='links']/div/div/div[2]/table/tbody[2]/tr/td")})
 	private List<WebElement> noProviderConfigured;
 
