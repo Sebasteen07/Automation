@@ -6,20 +6,25 @@
 			<class name="com.medfusion.product.pss2patientportal.test.PSS2PatientPortalAcceptanceTests" >
 			<methods>
 			
-					<include name="testRescheduleviaEmailNotifiicationAT" />
-					<include name="testRescheduleviaEmailNotifiicationGE" />
+					<!-- include name="testRescheduleviaEmailNotifiicationAT" -->
+					<!-- include name="testRescheduleviaEmailNotifiicationGE" -->
 					<include name="testRescheduleviaEmailNotifiicationGW" />
 					<include name="testRescheduleviaEmailNotifiicationNG" />
-			
-					<include name="testE2ELoginlessForNewPatientAT" />
-					<include name="testE2ELoginlessForNewPatientGE" />
-					<include name="testE2ELoginlessForNewPatientGW" />
-					<include name="testE2ELoginlessForNewPatientNG" />
 				
-					<include name="testRescheduleAppointmentAT" />
+					<!-- include name="testRescheduleAppointmentAT"  -->
 					<include name="testRescheduleAppointmentGE" />
 					<include name="testRescheduleAppointmentGW" />
 					<include name="testRescheduleAppointmentNG" />
+					
+					<!-- include name="testE2ELoginlessForExistingPatientAT" -->
+					<include name="testE2ELoginlessForExistingPatientGE" />
+					<include name="testE2ELoginlessForExistingPatientGW" />
+					<include name="testE2ELoginlessForExistingPatientNG" />	
+					
+					<include name="testE2ELoginlessForNewPatientAT" />
+					<include name="testE2ELoginlessForNewPatientGE" />
+					<include name="testE2ELoginlessForNewPatientGW" />
+					<include name="testE2ELoginlessForNewPatientNG" />	
 
 
 			</methods>

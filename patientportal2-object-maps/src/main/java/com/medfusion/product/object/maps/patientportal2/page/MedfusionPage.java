@@ -99,7 +99,7 @@ public abstract class MedfusionPage extends BasePageObject {
 		public void handleWeNeedToConfirmSomethingModal(){
 				log("Checking if some confirmation needed");
 				try{
-				while (isElementVisible(weNeedToConfirmSomethingModal, 110)){
+				while (isElementVisible(weNeedToConfirmSomethingModal, 6)){
 						log("We need to confirm something modal window shown");
 						okButton.click();
 

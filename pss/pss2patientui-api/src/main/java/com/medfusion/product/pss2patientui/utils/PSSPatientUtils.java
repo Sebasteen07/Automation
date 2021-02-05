@@ -24,6 +24,7 @@ import java.util.Calendar;
 import java.util.Collection;
 import java.util.Date;
 import java.util.HashSet;
+import java.util.List;
 import java.util.TimeZone;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
@@ -55,6 +56,7 @@ import com.medfusion.product.object.maps.pss2.page.ConfirmationPage.Confirmation
 import com.medfusion.product.object.maps.pss2.page.Insurance.UpdateInsurancePage;
 import com.medfusion.product.object.maps.pss2.page.Scheduled.ScheduledAppointment;
 import com.medfusion.product.object.maps.pss2.page.Scheduled.ScheduledAppointmentAnonymous;
+import com.medfusion.product.object.maps.pss2.page.util.CommonMethods;
 import com.medfusion.product.pss2patientui.pojo.AdminUser;
 import com.medfusion.product.pss2patientui.pojo.Appointment;
 
@@ -1278,19 +1280,31 @@ public class PSSPatientUtils {
 	public void deleteEmail_Mailinator(WebDriver driver, String url, String email) throws InterruptedException {
 
 		driver.manage().deleteAllCookies(); // delete all cookies
-		
+
 		driver.get(url);
+		driver.manage().window().maximize();
 		driver.findElement(By.xpath("//input[@id='addOverlay']")).sendKeys(email);
 		driver.findElement(By.xpath("//button[@id='go-to-public']")).click();
 
 		WebDriverWait wait = new WebDriverWait(driver, 30);
 		wait.until(ExpectedConditions.visibilityOfElementLocated(By.xpath("//a[@class='ng-binding']")));
 		Thread.sleep(2000);
-		String subject_line="Your appointment is now scheduled";
-		if(driver.findElement(By.xpath("//a[@class='ng-binding']")).getText().contains(subject_line)) {
-			
-			driver.findElement(By.xpath("//td[@class='a-center ']/input")).click();
+
+		List<WebElement> subList = driver.findElements(By.xpath("//a[@class='ng-binding']"));
+		List<WebElement> chkList = driver.findElements(By.xpath("//td[@class='a-center ']/input"));
+
+		String subject_line = "Your appointment is now scheduled";
+		for (int i = 0; i < subList.size(); i++) {
+
+			if (subList.get(i).getText().contains(subject_line)) {
+
+				Log4jUtil.log(subList.get(i).getText() + "---Text");
+				CommonMethods cm = new CommonMethods(driver);
+				cm.highlightElement(chkList.get(i));
+				chkList.get(i).click();
+			}
 		}
+
 		Thread.sleep(2000);
 
 		JavascriptExecutor js = (JavascriptExecutor) driver;
@@ -1299,8 +1313,7 @@ public class PSSPatientUtils {
 
 		driver.manage().deleteAllCookies();
 		driver.findElement(By.xpath("//button[@id='trash_but']")).click();
-		
-		
+
 		Thread.sleep(2000);
 
 	}

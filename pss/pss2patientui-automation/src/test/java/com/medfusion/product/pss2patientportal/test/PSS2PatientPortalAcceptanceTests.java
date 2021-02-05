@@ -663,6 +663,8 @@ public class PSS2PatientPortalAcceptanceTests extends BaseTestNGWebDriver {
 		Appointment testData = new Appointment();
 		AdminUser adminuser = new AdminUser();
 		PSSAdminUtils adminUtils = new PSSAdminUtils();
+		
+		AdminAppointment adminAppointment = new AdminAppointment(driver);
 
 		log("Step 1: Set the Test Data for NG ADMIN & APPOINTMENT-------");
 		propertyData.setAdminNG(adminuser);
@@ -676,7 +678,7 @@ public class PSS2PatientPortalAcceptanceTests extends BaseTestNGWebDriver {
 		log("Step 2: Fetch rule and settings from PSS 2.0 Admin portal");
 		log("--------Admin Setting for Loginless Flow Starts----------");
 
-		adminUtils.getInsuranceStateandRule(driver, adminuser, testData);
+		adminUtils.adminSettingsLoginless(driver, adminuser, testData, PSSConstants.LOGINLESS);
 		String rule = adminuser.getRule();
 		rule = rule.replaceAll(" ", "");
 		log("Rule -" + rule);
@@ -1314,9 +1316,11 @@ public class PSS2PatientPortalAcceptanceTests extends BaseTestNGWebDriver {
 		String confirmCancelmsg = "Are you sure you want to cancel your appointment?";
 
 		homepage.defaultcancelAppointment(popupmsg, confirmCancelmsg);
+		
+		psspatientutils.deleteEmail_Mailinator(driver, "https://www.mailinator.com/", testData.getEmail());
 	}
 
-	@Test(enabled = true, groups = {"AcceptanceTests"}, retryAnalyzer = RetryAnalyzer.class)
+	@Test(enabled = true, groups = {"AcceptanceTests"}, retryAnalyzer = RetryAnalyzer.class, dependsOnMethods = "testE2ELoginlessForExistingPatientGW")
 	public void testCancelFromEmailGW() throws Exception {
 		log("Test to verify if Cancel Appointment button available only after given hours.");
 		log("Step 1: Load test Data from External Property file.");
@@ -1472,6 +1476,8 @@ public class PSS2PatientPortalAcceptanceTests extends BaseTestNGWebDriver {
 
 			homepage.defaultcancelAppointmentviaEmail(popupmsg, confirmCancelmsg);
 		}
+		
+		psspatientutils.deleteEmail_Mailinator(driver, "https://www.mailinator.com/", testData.getEmail());
 	}
 
 	@Test(enabled = true, groups = {"AcceptanceTests"}, retryAnalyzer = RetryAnalyzer.class, dependsOnMethods = "testE2ELoginlessForExistingPatientAT")
@@ -1561,6 +1567,8 @@ public class PSS2PatientPortalAcceptanceTests extends BaseTestNGWebDriver {
 
 			homepage.defaultcancelAppointmentviaEmail(popupmsg, confirmCancelmsg);
 		}
+		
+		psspatientutils.deleteEmail_Mailinator(driver, "https://www.mailinator.com/", testData.getEmail());
 	}
 
 	@Test(enabled = true, groups = {"AcceptanceTests"}, retryAnalyzer = RetryAnalyzer.class, dependsOnMethods = "testE2ELoginlessForExistingPatientNG")
@@ -1650,6 +1658,8 @@ public class PSS2PatientPortalAcceptanceTests extends BaseTestNGWebDriver {
 
 			homepage.defaultcancelAppointmentviaEmail(popupmsg, confirmCancelmsg);
 		}
+		
+		psspatientutils.deleteEmail_Mailinator(driver, "https://www.mailinator.com/", testData.getEmail());
 	}
 
 	@Test(enabled = true, groups = {"AcceptanceTests"}, retryAnalyzer = RetryAnalyzer.class, dependsOnMethods = "testE2ELoginlessForExistingPatientGE")
@@ -1834,7 +1844,7 @@ public class PSS2PatientPortalAcceptanceTests extends BaseTestNGWebDriver {
 		AdminUser adminuser = new AdminUser();
 		PSSPatientUtils psspatientutils = new PSSPatientUtils();
 
-		psspatientutils.setTestData("GW", testData, adminuser);
+		psspatientutils.setTestData("GE", testData, adminuser);
 		
 		psspatientutils.deleteEmail_Mailinator(driver, "https://www.mailinator.com/", testData.getEmail());
 	}
@@ -1909,6 +1919,8 @@ public class PSS2PatientPortalAcceptanceTests extends BaseTestNGWebDriver {
 
 			homepage.defaultcancelAppointment(popupmsg, confirmCancelmsg);
 		}
+		
+		psspatientutils.deleteEmail_Mailinator(driver, "https://www.mailinator.com/", testData.getEmail());
 	}
 	
 	@Test(enabled = true, groups = {"AcceptanceTests"}, retryAnalyzer = RetryAnalyzer.class)
@@ -1977,6 +1989,8 @@ public class PSS2PatientPortalAcceptanceTests extends BaseTestNGWebDriver {
 
 			homepage.defaultcancelAppointment(popupmsg, confirmCancelmsg);
 		}
+		
+		psspatientutils.deleteEmail_Mailinator(driver, "https://www.mailinator.com/", testData.getEmail());
 	}
 
 	@Test(enabled = true, groups = {"AcceptanceTests"}, retryAnalyzer = RetryAnalyzer.class)
@@ -2045,6 +2059,8 @@ public class PSS2PatientPortalAcceptanceTests extends BaseTestNGWebDriver {
 
 			homepage.defaultcancelAppointment(popupmsg, confirmCancelmsg);
 		}
+		
+		psspatientutils.deleteEmail_Mailinator(driver, "https://www.mailinator.com/", testData.getEmail());
 
 	}
 
@@ -2108,6 +2124,8 @@ public class PSS2PatientPortalAcceptanceTests extends BaseTestNGWebDriver {
 
 		homepage.clickRescheduleLink();
 		psspatientutils.rescheduleAPT(testData, driver);
+		
+		psspatientutils.deleteEmail_Mailinator(driver, "https://www.mailinator.com/", testData.getEmail());
 
 	}
 	
@@ -2171,6 +2189,8 @@ public class PSS2PatientPortalAcceptanceTests extends BaseTestNGWebDriver {
 
 		homepage.clickRescheduleLink();
 		psspatientutils.rescheduleAPT(testData, driver);
+		
+		psspatientutils.deleteEmail_Mailinator(driver, "https://www.mailinator.com/", testData.getEmail());
 
 	}
 
@@ -2226,6 +2246,8 @@ public class PSS2PatientPortalAcceptanceTests extends BaseTestNGWebDriver {
 
 		homepage.clickRescheduleLink();
 		psspatientutils.rescheduleAPT(testData, driver);
+		
+		psspatientutils.deleteEmail_Mailinator(driver, "https://www.mailinator.com/", testData.getEmail());
 	}
 
 	@Test(enabled = true, groups = {"AcceptanceTests"}, retryAnalyzer = RetryAnalyzer.class)
@@ -2281,6 +2303,8 @@ public class PSS2PatientPortalAcceptanceTests extends BaseTestNGWebDriver {
 
 		homepage.clickRescheduleLink();
 		psspatientutils.rescheduleAPT(testData, driver);
+		
+		psspatientutils.deleteEmail_Mailinator(driver, "https://www.mailinator.com/", testData.getEmail());
 	}
 
 	@Test(enabled = true, groups = {"AcceptanceTests"}, retryAnalyzer = RetryAnalyzer.class, dependsOnMethods = "testE2ELoginlessForExistingPatientGE")
