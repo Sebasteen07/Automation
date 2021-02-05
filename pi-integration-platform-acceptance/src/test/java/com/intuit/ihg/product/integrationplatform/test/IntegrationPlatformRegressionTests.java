@@ -178,16 +178,16 @@ public class IntegrationPlatformRegressionTests extends BaseTestNGWebDriver {
 		long timestamp = System.currentTimeMillis();
 		String messageID = null;
 		
-		if(version=="v3") {
+		if(version.equals("v1")) {
 			log("Step 3: Fill Message data");
-			String message = AMDCPayload.getAMDCV3Payload(testData);
+			String message = AMDCPayload.getAMDCPayload(testData);
 			
 			log("message :- " + message);
 			messageID = AMDCPayload.messageID;
 			log("Partner Message ID:" + messageID);
 			log("Step 4: Do Message Post Request");
 			log("responsePath: " + testData.ResponsePath);
-			String processingUrl = RestUtils.setupHttpPostRequest(testData.RestV3Url, message, testData.ResponsePath);
+			String processingUrl = RestUtils.setupHttpPostRequest(testData.RestUrl, message, testData.ResponsePath);
 
 			log("Step 5: Get processing status until it is completed");
 			boolean completed = false;
@@ -202,9 +202,9 @@ public class IntegrationPlatformRegressionTests extends BaseTestNGWebDriver {
 			}
 			assertTrue(completed, "Message processing was not completed in time");
 		}
-		if(version=="v1") {
+		else  {
 		log("Step 3: Fill Message data");
-		String message = AMDCPayload.getAMDCPayload(testData);
+		String message = AMDCPayload.getAMDCV3Payload(testData);
 		
 		log("message :- " + message);
 		messageID = AMDCPayload.messageID;
@@ -212,7 +212,7 @@ public class IntegrationPlatformRegressionTests extends BaseTestNGWebDriver {
 
 		log("Step 4: Do Message Post Request");
 		log("responsePath: " + testData.ResponsePath);
-		String processingUrl = RestUtils.setupHttpPostRequest(testData.RestUrl, message, testData.ResponsePath);
+		String processingUrl = RestUtils.setupHttpPostRequest(testData.RestV3Url, message, testData.ResponsePath);
 
 		log("Step 5: Get processing status until it is completed");
 		boolean completed = false;
@@ -273,13 +273,13 @@ public class IntegrationPlatformRegressionTests extends BaseTestNGWebDriver {
 		Thread.sleep(60000);
 
 		log("Getting messages since timestamp: " + since);
-		if(version=="v1") {
+		if(version.equals("v1")) {
 		RestUtils.setupHttpGetRequest(testData.ReadCommuniationURL + "?since=" + since + ",0", testData.ResponsePath);
 
 		log("Step 13: Validate the message id and read time in response");
 		RestUtils.isReadCommunicationMessage(testData.ResponsePath, messageID, readdatetimestamp);
 		}
-		else if(version=="v3") {
+		else  {
 		RestUtils.setupHttpGetRequest(testData.ReadCommuniationURLV3 + "?since=" + since + ",0", testData.ResponsePath);
 
 		log("Step 13: Validate the message id and read time in response");
@@ -289,19 +289,16 @@ public class IntegrationPlatformRegressionTests extends BaseTestNGWebDriver {
 		log("Step 14: Reply to the message");
 		messagesPage.replyToMessage(driver);
 
-		// log("Logging out");
-		// homePage.clickOnLogout();
-
 		log("Step 15: Wait 60 seconds, so the message can be processed");
 		Thread.sleep(60000);
-		if(version=="v1") {
+		if(version.equals("v1"))  {
 		log("Step 16: Do a GET and get the message");
 		RestUtils.setupHttpGetRequest(testData.RestUrl + "?since=" + since + ",0", testData.ResponsePath);
 
 		log("Step 17: Validate message reply");
 		RestUtils.isReplyPresent(testData.ResponsePath, messageIdentifier);
 		}
-		if(version=="v3") {
+		else   {
 		log("Step 16: Do a GET and get the message");
 		RestUtils.setupHttpGetRequest(testData.RestV3Url + "?since=" + since + ",0", testData.ResponsePath);
 
@@ -310,28 +307,14 @@ public class IntegrationPlatformRegressionTests extends BaseTestNGWebDriver {
 		}
 
 		log("Step 18: Move to  Health Record page");
-		//messagesPage.backToHomePage(driver);
         messagesPage.clickOnMenuHome();
         Thread.sleep(4000);
-		//MedicalRecordSummariesPage MedicalRecordSummariesPageObject = homePage.clickOnMedicalRecordSummaries(driver);
         DocumentsPage MedicalRecordSummariesPageObject = homePage.goToDocumentsPage();
         
-		log("Step 19: Open Other Documents");
-		//MedicalRecordSummariesPageObject.gotoOtherDocumentTab();
-
-		/*
-		log("Step 20: Verify name, from and catagory type");
-		String attachmentData = MedicalRecordSummariesPageObject.getMessageAttachmentData();
-		log("attachment details " + MedicalRecordSummariesPageObject.getMessageAttachmentData());
-		Assert.assertTrue(attachmentData.contains(testData.fileName), "file name not found");
-		MedicalRecordSummariesPageObject.downloadSecureMessageAttachment();
-*/
 		
-		
-		log("Step 20: Verify name, from and catagory type "+testData.fileName);
+		log("Step 19: Open Other Documents and Verify name, from and catagory type "+testData.fileName);
 		boolean attachmentData = MedicalRecordSummariesPageObject.checkLastImportedFileName(testData.fileName);
         log("attachment details " + attachmentData);
-        //Assert.assertTrue(attachmentData.contains(testData.fileName), "file name not found");
         Thread.sleep(5000);
         MedicalRecordSummariesPageObject.downloadSecureMessageAttachment();
 		if (driver instanceof FirefoxDriver) {
@@ -353,7 +336,8 @@ public class IntegrationPlatformRegressionTests extends BaseTestNGWebDriver {
 			Assert.assertTrue(pdfMatch, "PDF Filecontent did not matched.");
 			log("Asserting for PDF match " + pdfMatch);
 		}
-		log("Logging out");
+		
+		log("Step 20: Logging out");
 		homePage.clickOnLogout();
 
 	}

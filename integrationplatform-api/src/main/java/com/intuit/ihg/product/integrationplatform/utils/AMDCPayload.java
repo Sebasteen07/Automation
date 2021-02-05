@@ -251,7 +251,6 @@ public class AMDCPayload {
 			}
 			Transformer transformer = TransformerFactory.newInstance().newTransformer();
 			transformer.setOutputProperty(OutputKeys.INDENT, "yes");
-			// transformer.setOutputProperty(OutputKeys.OMIT_XML_DECLARATION, "yes");
 			DOMSource source = new DOMSource(doc);
 
 			StringWriter writer = new StringWriter();
