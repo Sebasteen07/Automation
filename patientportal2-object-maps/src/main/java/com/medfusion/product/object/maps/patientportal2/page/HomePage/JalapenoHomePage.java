@@ -31,6 +31,7 @@ import com.medfusion.product.object.maps.patientportal2.page.AskAStaff.JalapenoA
 import com.medfusion.product.object.maps.patientportal2.page.AskAStaff.JalapenoAskAStaffV2Page1;
 import com.medfusion.product.object.maps.patientportal2.page.CcdPage.DocumentsPage;
 import com.medfusion.product.object.maps.patientportal2.page.CcdPage.MedicalRecordSummariesPage;
+import com.medfusion.product.object.maps.patientportal2.page.MedicationsPage.MedicationsHomePage;
 import com.medfusion.product.object.maps.patientportal2.page.MessagesPage.JalapenoMessagesPage;
 import com.medfusion.product.object.maps.patientportal2.page.NewPayBillsPage.JalapenoPayBillsMakePaymentPage;
 import com.medfusion.product.object.maps.patientportal2.page.PayBillsStatementPage.JalapenoPayBillsStatementPage;
@@ -58,6 +59,9 @@ public class JalapenoHomePage extends JalapenoMenu {
 
 	@FindBy(how = How.ID, using = "feature_rx_renewal")
 	private WebElement prescriptions;
+	
+	@FindBy(how=How.ID, using="feature_medications")
+	private WebElement medications;
 
 	@FindBy(how = How.ID, using = "feature_bill_pay")
 	private WebElement payments;
@@ -202,7 +206,12 @@ public class JalapenoHomePage extends JalapenoMenu {
 		prescriptions.click();
 		return PageFactory.initElements(driver, JalapenoPrescriptionsPage.class);
 	}
-
+	
+	public MedicationsHomePage clickOnMedications(WebDriver driver) {
+		IHGUtil.PrintMethodName();
+		javascriptClick(medications);
+		return PageFactory.initElements(driver, MedicationsHomePage.class);
+	}
 	public MedicalRecordSummariesPage clickOnMedicalRecordSummaries(WebDriver driver) {
 		log("Clicking on Medical Record Summaries button on dashboard");
 		 JavascriptExecutor jse = (JavascriptExecutor)driver;
