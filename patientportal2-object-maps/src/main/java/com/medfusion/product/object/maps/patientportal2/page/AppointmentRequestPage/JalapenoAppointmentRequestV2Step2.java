@@ -19,6 +19,9 @@ public class JalapenoAppointmentRequestV2Step2 extends JalapenoMenu {
 		@FindBy(how = How.ID, using = "firstAvailableBtn")
 		private WebElement firstAvailableTimeButton;
 
+		@FindBy(how = How.XPATH, using = "//label[@for='videoPreference']")
+		private WebElement videoVisit;
+		
 		@FindBy(how = How.XPATH, using = "//label[@for='timeofday_any']")
 		private WebElement timeOfDayAnyButton;
 
@@ -80,6 +83,7 @@ public class JalapenoAppointmentRequestV2Step2 extends JalapenoMenu {
 		public boolean areBasicPageElementsPresent() {
 				ArrayList<WebElement> webElementsList = new ArrayList<WebElement>();
 				webElementsList.add(firstAvailableTimeButton);
+				webElementsList.add(videoVisit);
 				webElementsList.add(timeOfDayAnyButton);
 				webElementsList.add(earlyMorningButton);
 				webElementsList.add(lateMorningButton);
@@ -101,9 +105,13 @@ public class JalapenoAppointmentRequestV2Step2 extends JalapenoMenu {
 		}
 
 		// sendKeys(" ") instead of click() because there is some problem with resolution 1024*768
-		public void fillAppointmentRequestForm(String appointmentReason) {
+		public void fillAppointmentRequestForm(String appointmentReason, boolean VideoPref) {
 				IHGUtil.PrintMethodName();
 
+				log("Considering video visit" +VideoPref );
+				javascriptClick(videoVisit);
+			
+				
 				log("Set Times of day: Early morning and Late afternoon");
 				javascriptClick(earlyMorningButton);
 				javascriptClick(lateAfternoonButton);

@@ -464,6 +464,8 @@ public class IntegrationPlatformAcceptanceTests extends BaseTestNGWebDriver {
 		log("Practice User Name: " + testData.getPracticeUserName());
 
 		String reason = "Reason" + timestamp;
+		
+		boolean VideoPref = true;
 
 		log("Step 2: LogIn");
 		JalapenoLoginPage loginPage = new JalapenoLoginPage(driver, testData.getUrl());
@@ -478,7 +480,7 @@ public class IntegrationPlatformAcceptanceTests extends BaseTestNGWebDriver {
 		log("Step 4: Complete Appointment Request Page");
 		JalapenoAppointmentRequestV2Step2 apptPage2 = apptPage1.continueToStep2(driver);
 
-		apptPage2.fillAppointmentRequestForm(reason);
+		apptPage2.fillAppointmentRequestForm(reason,VideoPref);
 		homePage = apptPage2.submitAppointment(driver);
 
 		log("Step 5: Check if thank you frame is displayd");
@@ -503,15 +505,12 @@ public class IntegrationPlatformAcceptanceTests extends BaseTestNGWebDriver {
 		// attribute format
 		RestUtils.setupHttpGetRequest(testData.getRestUrl() + "?since=" + since + ",0", testData.getResponsePath());
 
-		log("Step 9: Checking reason in the response xml");
-		RestUtils.isReasonResponseXMLValid(testData.getResponsePath(), reason);
-
+		log("Step 9: Checking reason and video preference in the response xml");
+		RestUtils.isReasonResponseXMLValid(testData.getResponsePath(), reason,VideoPref);
 		String arSMSubject = "Reply to Appointment Request";
-
 		String arSMBody = "This is reply to AR for " + reason;
-
 		String postXML =
-				RestUtils.findValueOfChildNode(testData.getResponsePath(), "AppointmentRequest", reason, arSMSubject, arSMBody, testData.getAppointmentPath());
+		RestUtils.findValueOfChildNode(testData.getResponsePath(), "AppointmentRequest", reason, VideoPref,arSMSubject, arSMBody, testData.getAppointmentPath());
 
 		// httpPostRequest method
 		log("Step 10: Do Message Post Request");

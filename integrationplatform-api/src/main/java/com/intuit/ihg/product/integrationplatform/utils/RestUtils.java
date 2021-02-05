@@ -212,13 +212,14 @@ public class RestUtils {
 	 * @throws IOException
 	 * @throws SAXException
 	 */
-	public static void isReasonResponseXMLValid(String xmlFileName, String reason) throws ParserConfigurationException, SAXException, IOException {
+	public static void isReasonResponseXMLValid(String xmlFileName, String reason,boolean VideoPref) throws ParserConfigurationException, SAXException, IOException {
 		IHGUtil.PrintMethodName();
 		Document doc = buildDOMXML(xmlFileName);
 
 		Log4jUtil.log("finding reason message");
 		boolean found = false;
 		NodeList nodes = doc.getElementsByTagName(IntegrationConstants.REASON);
+		NodeList nodes1 = doc.getElementsByTagName(IntegrationConstants.VIDEOPREFERENCE);
 		Node node = null;
 		for (int i = 0; i < nodes.getLength(); i++) {
 			node = nodes.item(i);
@@ -229,10 +230,17 @@ public class RestUtils {
 				break;
 			}
 		}
+		for (int i = 0; i < nodes1.getLength(); i++) {
+			node = nodes1.item(i);
+			Log4jUtil.log("Validating selection: " + node.getChildNodes().item(0).getTextContent() + ", to be found: " + (VideoPref));
+				//found = true;
+				Log4jUtil.log("Video visit is selected");
+		}
+		
 		Assert.assertTrue(found, "Reason was not found in response XML");
 		Log4jUtil.log("response is ok");
 	}
-
+	
 	/**
 	 * Reads the XML and checks Medication Details_
 	 * 
@@ -258,8 +266,8 @@ public class RestUtils {
 				Element ele = (Element) nodes.item(i).getParentNode();
 				Node nDosage = ele.getElementsByTagName(PortalConstants.Medication_Dosage).item(0);
 				Node nQuantity = ele.getElementsByTagName(PortalConstants.Quantity_Tag).item(0);
-				Node nRefillNumber = ele.getElementsByTagName(PortalConstants.Refill_Number_Tag).item(0);
 				Node nPrescriptionNumber = ele.getElementsByTagName(PortalConstants.Prescription_Number_Tag).item(0);
+				Node nRefillNumber = ele.getElementsByTagName(PortalConstants.Refill_Number_Tag).item(0);
 				Node nAdditionalInformation = ele.getElementsByTagName(PortalConstants.Additional_Information_Tag).item(0);
 				Assert.assertEquals(nDosage.getTextContent(), PortalConstants.Dosage.toString(), "The actual value of dosage doesnt equal the expected value");
 				Assert.assertEquals(nQuantity.getTextContent(), PortalConstants.Quantity.toString(), "The actual value of quantity doesnt equal the expected value");
@@ -744,11 +752,12 @@ public class RestUtils {
 	 * @throws ParseException
 	 * @throws DOMException
 	 */
-	public static String findValueOfChildNode(String xmlFileName, String parentNode, String reason, String subject, String reply, String appointment)
+	public static String findValueOfChildNode(String xmlFileName, String parentNode, String reason,boolean VideoPref, String subject, String reply, String appointment)
 			throws ParserConfigurationException, SAXException, IOException, TransformerException, DOMException, ParseException {
 
 		IHGUtil.PrintMethodName();
 		String getApt_req_id = null;
+		String getApt_req_id1 = null;
 		String updatedXML = null;
 		File xmlResponeFile = new File(xmlFileName);
 		DocumentBuilderFactory dbFactory = DocumentBuilderFactory.newInstance();
@@ -757,10 +766,12 @@ public class RestUtils {
 		doc.getDocumentElement().normalize();
 
 		NodeList pnode = doc.getElementsByTagName(parentNode);
+		int length = pnode.getLength();
 
 		for (int i = 0; i < pnode.getLength(); i++) {
 			Element element = (Element) pnode.item(i);
 			String reaString = element.getElementsByTagName("Reason").item(0).getFirstChild().getNodeValue();
+			String videoString = element.getElementsByTagName("VideoPreference").item(0).getFirstChild().getNodeValue();
 			if (reaString.equalsIgnoreCase(reason)) {
 				Node node = element.getElementsByTagName("Reason").item(0).getParentNode();
 				node = node.getParentNode();
@@ -768,6 +779,13 @@ public class RestUtils {
 					Attr attr = (Attr) node.getAttributes().getNamedItem("id");
 					getApt_req_id = attr.getValue();
 				}
+					Node node1 = element.getElementsByTagName("VideoPreference").item(0).getParentNode();
+					node1 = node1.getParentNode();
+					if (node1.hasAttributes()) {
+						Attr attr = (Attr) node1.getAttributes().getNamedItem("id");
+						getApt_req_id1 = attr.getValue();
+					}
+					
 				String getFrom = element.getElementsByTagName("From").item(0).getFirstChild().getNodeValue();
 				String getTo = element.getElementsByTagName("To").item(0).getFirstChild().getNodeValue();
 				element = (Element) element.getParentNode();
