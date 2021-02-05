@@ -590,6 +590,7 @@ public class PSSAdminUtils {
 		PSS2PracticeConfiguration psspracticeConfig = loginToAdminPortal(driver, adminuser);
 		Thread.sleep(2000);
 		LinkTab linkTab = psspracticeConfig.linksTab();
+		linkTab.searchLinkandRemove(testData.getLinkProvider());
 		linkTab.addLink(testData.getLocation(), testData.getLinkProvider());
 		linkTab.getURL(testData.getLinkProvider());
 		testData.setUrlLinkGen(linkTab.getURL(testData.getLinkProvider()));
