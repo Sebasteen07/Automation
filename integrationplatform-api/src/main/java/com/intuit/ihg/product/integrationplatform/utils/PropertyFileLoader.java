@@ -166,6 +166,12 @@ public class PropertyFileLoader {
 	public String getPatientExternalIdAMDC() {
 		return property.getProperty("patientExternalIdAMDC");
 	}
+	public String getRestUrlV3AMDC() {
+		return property.getProperty("restUrlV3AMDC");
+	}
+	public String getReadCommunicationUrlV3AMDC() {
+		return property.getProperty("readCommunicationUrlV3AMDC");
+	}
 	
 	//MU2 EVENTS
 	public String getPULLAPI_URL_MU2() {

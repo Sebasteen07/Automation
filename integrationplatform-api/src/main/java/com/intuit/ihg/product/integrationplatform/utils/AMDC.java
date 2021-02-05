@@ -30,6 +30,7 @@ public class AMDC {
 	public String GmailUserName="";
 	public String GmailPassword="";
 	public String RestV3Url = "";
+	public String ReadCommuniationURLV3 = "";
 	public String AllowReply = "";
 	public String Message = "";
 	public String PatientExternalId = "";
