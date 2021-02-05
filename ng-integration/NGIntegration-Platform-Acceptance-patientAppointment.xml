@@ -13,7 +13,8 @@
 	<classes>
 		<class name = "com.ng.product.integrationplatform.tests.NGIntegrationE2ESITTests" />
 		<methods>
-		        <include name="testInboxMultiPracticeAppointmentBookWithExistingPatient"/>   	
+		        <include name="testInboxMultiPracticeAppointmentBookWithExistingPatient"/>
+		        <include name="testInboxMultiPracticeAppointmentBookWithNewPatient"/>    	
       	</methods>
 	</classes>
 </test>
