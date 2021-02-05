@@ -111,7 +111,6 @@ public class JalapenoAppointmentRequestV2Step2 extends JalapenoMenu {
 				log("Considering video visit" +VideoPref );
 				javascriptClick(videoVisit);
 			
-				
 				log("Set Times of day: Early morning and Late afternoon");
 				javascriptClick(earlyMorningButton);
 				javascriptClick(lateAfternoonButton);
