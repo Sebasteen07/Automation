@@ -1,6 +1,8 @@
 // Copyright 2021 NXGN Management, LLC. All Rights Reserved.
 package com.medfusion.product.object.maps.patientportal2.page.MedicationsPage;
 
+import java.io.IOException;
+
 import org.openqa.selenium.Keys;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
@@ -9,6 +11,7 @@ import org.openqa.selenium.support.How;
 import org.openqa.selenium.support.PageFactory;
 
 import com.medfusion.common.utils.IHGUtil;
+import com.medfusion.common.utils.PropertyFileLoader;
 
 public class LocationAndProviderPage {
 	
@@ -30,11 +33,12 @@ public class LocationAndProviderPage {
 		PageFactory.initElements(driver, this);
 	}
 
-	public void chooseLocationAndProvider() throws InterruptedException {
+	public void chooseLocationAndProvider() throws InterruptedException, IOException {
+		PropertyFileLoader testData = new PropertyFileLoader();
 		locationDropdown.click();
-		locationDropdown.sendKeys("California");
+		locationDropdown.sendKeys(testData.getProperty("providerName"));
 		providerDropdown.click();
-		providerDropdown.sendKeys("Melissa Grand");
+		providerDropdown.sendKeys(testData.getProperty("providerLocation"));
 		btnContinue.click();	
 	}
 	
