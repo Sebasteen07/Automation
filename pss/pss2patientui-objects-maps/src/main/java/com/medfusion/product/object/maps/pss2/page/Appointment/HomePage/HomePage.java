@@ -183,7 +183,7 @@ public class HomePage extends PSS2MainPage {
 	public HomePage(WebDriver driver, String currentUrl) {
 		super(driver, currentUrl);
 		patientheader = PageFactory.initElements(driver, PSSPatientHeader.class);
-		//patientfooter = PageFactory.initElements(driver, PSSPatientFooter.class);
+		patientfooter = PageFactory.initElements(driver, PSSPatientFooter.class);
 		PageFactory.initElements(driver, this);
 	}
 
@@ -192,7 +192,6 @@ public class HomePage extends PSS2MainPage {
 	@Override
 	public boolean areBasicPageElementsPresent() {
 		if (selectSpecialityList.size() != 0) {
-			//IHGUtil.waitForElement(driver, 10, selectSpecialityList.get((selectSpecialityList.size() - 1)));
 			IHGUtil.waitForElement(driver, 6, selectSpecialityList.get((selectSpecialityList.size() - 1)));
 		}
 		ArrayList<WebElement> webElementsList = new ArrayList<WebElement>();
