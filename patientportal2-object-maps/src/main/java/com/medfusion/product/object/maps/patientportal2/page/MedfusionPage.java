@@ -105,7 +105,9 @@ public abstract class MedfusionPage extends BasePageObject {
              driver.manage().addCookie(ck);
 				log("Checking if some confirmation needed");
 				try{
-				while (isElementVisible(weNeedToConfirmSomethingModal, 80)){
+
+				while (isElementVisible(weNeedToConfirmSomethingModal, 6)){
+
 						log("We need to confirm something modal window shown");
 						okButton.click();
 
