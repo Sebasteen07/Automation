@@ -5,6 +5,7 @@ package com.medfusion.product.object.maps.patientportal2.page;
 import static java.lang.Thread.sleep;
 
 import java.awt.datatransfer.StringSelection;
+import java.sql.Date;
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.Map;
@@ -97,6 +98,7 @@ public abstract class MedfusionPage extends BasePageObject {
 		}
 		//handles modal dialogs in Portal (accepting NPP, statement preference selection)
 		public void handleWeNeedToConfirmSomethingModal(){
+			
 			 log("Trying to handle survey pop up by adding cookie");
              String name = "QSI_SI_0CUNpSFNBlJ5QGN_intercept";               
              String value = "true";
