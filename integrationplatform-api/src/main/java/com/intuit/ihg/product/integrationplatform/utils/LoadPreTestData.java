@@ -19,7 +19,6 @@ public class LoadPreTestData {
 		testData.EPracticeName = propertyData.getEPracticeNameCCD();
 		testData.ccdXMLPath = propertyData.getCCDPATH3();
 		testData.CCDPath = propertyData.getCCDPath();
-
 		testData.OAuthProperty = propertyData.getOAuthProperty();
 		testData.OAuthKeyStore = propertyData.getOAuthKeyStore();
 		testData.OAuthAppToken = propertyData.getOAuthAppTokenCCD();
@@ -554,7 +553,6 @@ public class LoadPreTestData {
 		testData.OAuthUsername = propertyData.getOAuthUsername_AD();
 		testData.OAuthPassword = propertyData.getoAuthPassword_AD();
 		testData.ResponsePath = propertyData.getResponsePath();
-		
 		testData.AppointmentTypeName = propertyData.getAppointmentTypeName();
 		testData.AppointmentTypeID = propertyData.getAppointmentTypeID();
 		testData.AppointmentCategoryName = propertyData.getAppointmentCategoryName();
@@ -563,6 +561,29 @@ public class LoadPreTestData {
 		testData.Comment = propertyData.getComment();
 		testData.AppointmentTypeUrl = propertyData.getAppointmentTypeUrl();
 		return testData;
+	}
 
+	public Pharmacies loadPharmaciesFromProperty(Pharmacies testData) throws IOException {
+		PropertyFileLoader propertyData = new PropertyFileLoader();
+		testData.OAuthProperty = propertyData.getOAuthProperty();
+		testData.OAuthKeyStore = propertyData.getOAuthKeyStore();
+		testData.ResponsePath = propertyData.getResponsePath();
+		testData.OAuthAppToken = propertyData.getOAuthAppToken_PH();
+		testData.OAuthUsername = propertyData.getOAuthUsername_PH();
+		testData.OAuthPassword = propertyData.getoAuthPassword_PH();
+		testData.UserName = propertyData.getPatientUsername_PH();
+		testData.Password = propertyData.getPatientPassword_PH();
+		testData.PharmacyRenewalUrl = propertyData.getPharmacyRenewalUrl();
+		testData.URL = propertyData.getpatientUrl();
+		testData.ExternalPharmacyId = propertyData.getExternalPharmacyId();
+		testData.Line1 = propertyData.getLine1();
+		testData.Line2 = propertyData.getLine2();
+		testData.City = propertyData.getCity_PH();
+		testData.State = propertyData.getState_PH();
+		testData.Country = propertyData.getCountry();
+		testData.ZipCode = propertyData.getZipCode_PH();
+		testData.PharmacyPhone = propertyData.getPharmacyPhone();
+		testData.PharmacyFaxNumber = propertyData.getPharmacyFaxNumber();
+		return testData;
 	}
 }
