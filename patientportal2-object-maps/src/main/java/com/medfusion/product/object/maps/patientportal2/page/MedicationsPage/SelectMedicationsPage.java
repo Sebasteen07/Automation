@@ -9,14 +9,14 @@ import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.FindBy;
 import org.openqa.selenium.support.How;
 import org.openqa.selenium.support.PageFactory;
-
+import com.intuit.ifs.csscat.core.pageobject.BasePageObject;
 import com.medfusion.common.utils.IHGUtil;
 import com.medfusion.common.utils.PropertyFileLoader;
 
-public class SelectMedicationsPage {
+public class SelectMedicationsPage  extends BasePageObject {
 	
 	public SelectMedicationsPage(WebDriver driver) {
-		super();
+		super(driver);
 		IHGUtil.PrintMethodName();
 		PageFactory.initElements(driver, this);
 	}
