@@ -4663,7 +4663,7 @@ public class NGIntegrationE2ESITTests extends BaseTestNGWebDriver{
 	 * 
 	 ************************/
 	@Test(enabled = true, groups = { "acceptance-INBOX-MULTI-PRACTICE" }, retryAnalyzer = RetryAnalyzer.class)
-	public void testInboxMultiPracticeAppointmentBookWithExistingPatient() throws Throwable {
+	public void testInboxMultiPracticeAppointmentBookWithExistingPatient1() throws Throwable {
 		log("Make sure Patient is enrolled in 2 Practices which are at Enterprise Level Enrollment Type");
 		log("Test Case: Verify the patient is able to perform multi-practice appointment scenario and verify the appointment status in NextGen database");
 		log("Execution Environment: " + IHGUtil.getEnvironmentType());
@@ -4736,6 +4736,224 @@ public class NGIntegrationE2ESITTests extends BaseTestNGWebDriver{
 		logStep("Check if thank you frame is displayd");
 		Thread.sleep(10000);
 		assertTrue(homePage.isTextDisplayed("Thank you"));
+		
+		// Switch the practice to request appointment for P2 practice
+		logStep("Switching to Second Practice to verify auto enrollment");
+        homePage.switchToPractice(PropertyLoaderObj.getProperty("practiceName2"));
+        Thread.sleep(40000);
+		
+		logStep("Navigate to appointment page");
+		homePage.clickOnAppointmentV3(driver);
+
+		logStep("Request for appointment");
+		// workaround for extra appointments list when multiple appointments solutions are on
+		try {
+
+			driver.findElement(By.id("appointmentSolutionBtn")).click();
+		} catch (WebDriverException e) {
+			System.out.println("Exception caught");// go on assuming we didn't find the extra page and button
+		}
+
+		NGAppointmentRequestV2Step1 appointmentRequestStep3 = PageFactory.initElements(driver, NGAppointmentRequestV2Step1.class);
+
+		logStep("Assess Elements and choose provider");
+		appointmentRequestStep3.chooseProvider(PropertyLoaderObj.getProperty("E1P2ProviderName"));
+
+		logStep("Continue to step 3: click continue and assess elements");
+		JalapenoAppointmentRequestV2Step2 appointmentRequestStep4 = appointmentRequestStep3.continueToStep2(driver);
+		assertTrue(appointmentRequestStep4.areBasicPageElementsPresent());
+
+		logStep("Fill details and submit");
+		appointmentRequestStep4.fillAppointmentRequestForm(appointmentReason);
+		homePage = appointmentRequestStep4.submitAppointment(driver);
+
+		logStep("Check if thank you frame is displayd");
+		Thread.sleep(10000);
+		assertTrue(homePage.isTextDisplayed("Thank you"));
+		
+		logStep("Navigate to Appointment Request History");
+		try{
+			NGAppointmentPage appointmentPage =homePage.clickOnAppointmentV3(driver);}
+		catch(Exception e){
+			Log4jUtil.log(e.getMessage());}
+		
+		Thread.sleep(5000);
+		NGAppointmentRequestV2HistoryPage historyPage = appointmentRequestStep1.goToHistory(driver);
+
+		logStep("Check elements and appointment request reason");
+		assertTrue(historyPage.areBasicPageElementsPresent());
+		assertTrue(historyPage.findAppointmentReasonAndOpen(appointmentReason));
+
+		logStep("Check appointment request details");
+		assertTrue(historyPage.checkAppointmentDetails(appointmentReason));
+		homePage = historyPage.clickOnMenuHome();
+		homePage.LogoutfromNGMFPortal();
+		
+		logStep("Setup Oauth client" + PropertyLoaderObj.getResponsePath());
+    	if(PropertyLoaderObj.getNGAPIexecutionMode().equalsIgnoreCase("QAMain")){
+    		RestUtils.oauthSetup(PropertyLoaderObj.getOAuthKeyStore(), PropertyLoaderObj.getOAuthProperty(), PropertyLoaderObj.getOAuthAppToken(), PropertyLoaderObj.getProperty("oAuthUsername1"),PropertyLoaderObj.getProperty("oAuthPassword1"));
+		}
+		else if (PropertyLoaderObj.getNGAPIexecutionMode().equalsIgnoreCase("SIT")){
+			RestUtils.oauthSetup(PropertyLoaderObj.getOAuthKeyStore(), PropertyLoaderObj.getOAuthProperty(), PropertyLoaderObj.getOAuthAppToken(), PropertyLoaderObj.getProperty("oAuthUsername"),PropertyLoaderObj.getProperty("oAuthPassword"));			           
+		}
+		else{
+			Log4jUtil.log("Invalid Execution Mode");
+		}
+
+		Log4jUtil.log("Step Begins: Wait 60 seconds, so the message can be processed");
+		Thread.sleep(60000);
+
+		Log4jUtil.log("Step Begins: Do a GET and get the message");
+		RestUtils.setupHttpGetRequest(PropertyLoaderObj.getProperty("GetAppointment").replaceAll("integrationID", integrationPracticeID) + "?since=" + since + ",0", PropertyLoaderObj.getResponsePath());
+
+		Log4jUtil.log("Step Begins: Validate message reply");
+		String appointmentID = RestUtils.isAppointmentReasonResponseXMLValid(PropertyLoaderObj.getResponsePath(), appointmentReason);
+		
+		logStep("Verify appointment request is reached to EPM/EHR Inbox");
+		CommonFlows.verifyAppointmentRequestReceived(appointmentID, appointmentReason,PropertyLoaderObj.getProperty("AppointmentStartTime"), PropertyLoaderObj.getProperty("AppointmentEndTime"), PropertyLoaderObj.getProperty("AppointmentDays"),practiceId);
+	}
+
+	@Test(enabled = true, groups = { "acceptance-INBOX-MULTI-PRACTICE" }, retryAnalyzer = RetryAnalyzer.class)
+	public void testInboxMultiPracticeAppointmentBookWithNewPatient() throws Throwable {
+		log("Test Case: Verify the patient is able to perform multi-practice appointment scenario and verify the appointment status in NextGen database");
+
+		log("Execution Environment: " + IHGUtil.getEnvironmentType());
+		log("Execution Browser: " + TestConfig.getBrowserType());
+		
+//		Long timestamp = System.currentTimeMillis();
+		NGAPIUtils.updateLoginDefaultTo("EnterpriseGateway",PropertyLoaderObj.getProperty("NGMainEnterpriseID"), PropertyLoaderObj.getProperty("NGEnterprise1Practice1"));
+		
+		String enterpriseId = null, practiceId = null, providerName = null, locationName = null, userId = null,
+				integrationPracticeID = null, url = null;
+
+		if (PropertyLoaderObj.getNGAPIexecutionMode().equalsIgnoreCase("QAMain")) {
+			enterpriseId = PropertyLoaderObj.getProperty("NGEnterpiseEnrollmentEnterprise1");
+			practiceId = PropertyLoaderObj.getProperty("NGEnterprise1Practice1");
+			providerName = PropertyLoaderObj.getProperty("NGE1P1Provider");
+			locationName = PropertyLoaderObj.getProperty("NGE1P1Location");
+			integrationPracticeID = PropertyLoaderObj.getProperty("integrationPracticeIDE1P1");
+			url = PropertyLoaderObj.getProperty("MFPortalURLPractice1");
+		} else if (PropertyLoaderObj.getNGAPIexecutionMode().equalsIgnoreCase("SIT")) {
+			enterpriseId = PropertyLoaderObj.getProperty("NGMainEnterpriseID");
+			practiceId = PropertyLoaderObj.getProperty("NGEnterprise1Practice1");
+			providerName = PropertyLoaderObj.getProperty("NGE1P1Provider");
+			locationName = PropertyLoaderObj.getProperty("NGE1P1Location");
+			integrationPracticeID = PropertyLoaderObj.getProperty("integrationPracticeIDE1P1");
+			url = PropertyLoaderObj.getProperty("MFPortalURLPractice1");
+		} else {
+			Log4jUtil.log("Invalid Execution Mode");
+		}
+		String eventName = PropertyLoaderObj.getProperty("EventName");
+		String resourceName = PropertyLoaderObj.getProperty("ResourceName");
+		
+		log("Create the patient in NG EPM");
+		NewPatient createPatient = NGPatient.patientUsingJSON(PropertyLoaderObj,"");
+		
+		ObjectMapper objMap = new ObjectMapper();
+        String requestbody = objMap.defaultPrettyPrintingWriter().writeValueAsString(createPatient);
+        log("Request Body is \n" + requestbody);
+		
+	    apiRoutes personURL =apiRoutes.valueOf("AddEnterprisePerson"); 
+		String finalURL =EnterprisebaseURL + personURL.getRouteURL();	
+		String person_id=ngAPIUtils.setupNGHttpPostRequest("EnterpriseGateway",finalURL,requestbody , 201);
+		log("Step End: Person created with id "+person_id);
+		
+		log("Using Post Enrollment call, Verify the MF agent trigger for new patient");
+		String PostEnrollmentURL = EnterprisebaseURL+ apiRoutes.valueOf("PostEnrollment").getRouteURL().replaceAll("personId", person_id);
+		ngAPIUtils.setupNGHttpPostRequest("EnterpriseGateway",PostEnrollmentURL,"" , 409);
+		log("Step End: MF agent initiate the enrollment automatically");
+		
+		log("Verify the enrollment status of patient after initiation of enrollment using Get Enrollment status call");
+		String getEnrollmentURL =EnterprisebaseURL+ apiRoutes.valueOf("GetEnrollmentStatus").getRouteURL().replaceAll("personId", person_id);
+		String GetEnrollmentStatusresponse =ngAPIUtils.setupNGHttpGetRequest("EnterpriseGateway",getEnrollmentURL,200);
+		
+		CommonUtils.VerifyTwoValues(CommonUtils.getResponseKeyValue(GetEnrollmentStatusresponse,"status"),"equals","1"); 
+		CommonUtils.VerifyTwoValues(CommonUtils.getResponseKeyValue(GetEnrollmentStatusresponse,"statusDescription"),"equals","Pending"); 
+		log("Step End: Patient enrollment status is "+CommonUtils.getResponseKeyValue(GetEnrollmentStatusresponse,"statusDescription"));
+				
+		Thread.sleep(120000);
+		List<ExpectedEmail> mails = new ArrayList<ExpectedEmail>();
+  		Mailinator mail = new Mailinator();
+			Thread.sleep(15000);
+			Log4jUtil.log(createPatient.getEmailAddress() + "   :    " + PortalConstants.NewPatientActivationMessage + "     :   " + PortalConstants.NewPatientActivationMessageLinkText);
+			Thread.sleep(60000);
+			String activationUrl = mail.getLinkFromEmail(createPatient.getEmailAddress(), PortalConstants.NewPatientActivationMessage, PortalConstants.NewPatientActivationMessageLinkText, 80);
+			Log4jUtil.log("Moving to the link obtained from the email message");
+			Assert.assertNotNull(activationUrl, "Error: Activation link not found.");
+			Thread.sleep(20000);
+			String sDate1 = PropertyLoaderObj.getProperty("DOBMonth")+"/"+PropertyLoaderObj.getProperty("DOBDay")+"/"+PropertyLoaderObj.getProperty("DOBYear");
+			log(sDate1);				
+			
+		log("Enroll the Patient to MedFusion Portal : step 1 - verifying identity");
+		PatientVerificationPage patientVerificationPage = new PatientVerificationPage(driver, activationUrl);
+		Thread.sleep(3000);
+		SecurityDetailsPage accountDetailsPage = patientVerificationPage.fillPatientInfoAndContinue(
+		createPatient.getZip(), PropertyLoaderObj.getDOBMonth(), PropertyLoaderObj.getDOBDay(), PropertyLoaderObj.getDOBYear());
+
+		log("Enroll the Patient to MedFusion Portal : step 2 - filling patient data");
+		JalapenoHomePage homePage = accountDetailsPage.fillAccountDetailsAndContinue(createPatient.getEmailAddress(), PropertyLoaderObj.getPassword(), PropertyLoaderObj.getSecretQuestion(), PropertyLoaderObj.getSecretAnswer(),PropertyLoaderObj.getPhoneNumber());
+
+		long timestamp = System.currentTimeMillis();
+		Long since = timestamp / 1000L - 60 * 24;
+		String appointmentReason = "Illness" + System.currentTimeMillis();
+
+		Log4jUtil.log("Detecting if Home Page is opened");
+		assertTrue(homePage.isHomeButtonPresent(driver));
+
+		logStep("Navigate to appointment page");
+		homePage.clickOnAppointmentV3(driver);
+
+		logStep("Request for appointment");
+		// workaround for extra appointments list when multiple appointments solutions
+		// are on
+		try {
+
+			driver.findElement(By.id("appointmentSolutionBtn")).click();
+		} catch (WebDriverException e) {
+			System.out.println("Exception caught");// go on assuming we didn't find the extra page and button
+		}
+
+		NGAppointmentRequestV2Step1 appointmentRequestStep1 = PageFactory.initElements(driver, NGAppointmentRequestV2Step1.class);
+
+		logStep("Assess Elements and choose provider");
+		appointmentRequestStep1.chooseProvider(PropertyLoaderObj.getProperty("E1P1ProviderName"));
+
+		logStep("Continue to step 2: click continue and assess elements");
+		JalapenoAppointmentRequestV2Step2 appointmentRequestStep2 = appointmentRequestStep1.continueToStep2(driver);
+		assertTrue(appointmentRequestStep2.areBasicPageElementsPresent());
+
+		logStep("Fill details and submit");
+		appointmentRequestStep2.fillAppointmentRequestForm(appointmentReason);
+		homePage = appointmentRequestStep2.submitAppointment(driver);
+
+		logStep("Check if thank you frame is displayd");
+		Thread.sleep(10000);
+		assertTrue(homePage.isTextDisplayed("Thank you"));
+		
+		
+		logStep("Create the chart in second practice");
+	    timestamp = System.currentTimeMillis();
+		NGAPIUtils.updateLoginDefaultTo("EnterpriseGateway",PropertyLoaderObj.getNGEnterpiseEnrollmentE1(), PropertyLoaderObj.getNGEnterpiseEnrollmentE1P2());
+		Instant testStart = Instant.now();
+		NGAPIFlows.addCharttoProvider(PropertyLoaderObj.getNGE1P3Location(),PropertyLoaderObj.getNGE1P3Provider(),person_id); 
+		
+		enrollPatientWithoutGetProcessingStatusValidation(createPatient, person_id, PropertyLoaderObj.getProperty("practiceName2"),PropertyLoaderObj.getProperty("integrationPracticeIDE1P2"),PropertyLoaderObj.getNGEnterpiseEnrollmentE1(), PropertyLoaderObj.getNGEnterpiseEnrollmentE1P2()); 
+		
+		Thread.sleep(60000);
+		mails.add(new ExpectedEmail(createPatient.getEmailAddress(), WELCOME_EMAIL_SUBJECT_PATIENT, WELCOME_EMAIL_BODY_PATTERN_PRACTICE.replace("PracticeName", PropertyLoaderObj.getProperty("practiceName1"))));
+		mails.add(new ExpectedEmail(createPatient.getEmailAddress(), WELCOME_EMAIL_SUBJECT_PATIENT, WELCOME_EMAIL_BODY_PATTERN_PRACTICE.replace("PracticeName", PropertyLoaderObj.getProperty("practiceName2"))));
+		assertTrue(new Mailinator().areAllMessagesInInbox(mails, 80));		
+		
+		Thread.sleep(10000);
+		logStep("Waiting for welcome mail at patient inbox from second practice");        
+        Email visitPortal = new Mailer(createPatient.getEmailAddress()).pollForNewEmailWithSubject(WELCOME_EMAIL_SUBJECT_PATIENT, 90, testSecondsTaken(testStart));
+		assertNotNull(visitPortal, "Error: No Welcome email found recent enough with specified subject: " + WELCOME_EMAIL_SUBJECT_PATIENT);
+		String portalUrlLink = Mailer.getLinkByText(visitPortal,WELCOME_EMAIL_BUTTON_TEXT);
+		log("Patient portal url is "+portalUrlLink);
+		assertTrue(portalUrlLink.length() > 0, "Error: No matching link found in patient welcome email!");
+		
+		Thread.sleep(20000);
+        driver.navigate().refresh();
 		
 		// Switch the practice to request appointment for P2 practice
 		logStep("Switching to Second Practice to verify auto enrollment");

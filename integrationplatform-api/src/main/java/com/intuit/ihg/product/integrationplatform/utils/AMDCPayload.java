@@ -177,6 +177,92 @@ public class AMDCPayload {
 		}
 		return output;
 	}
+	
+	public static String getAMDCV3Payload(AMDC testData) throws InterruptedException, IOException {
+		try {
+			DocumentBuilderFactory icFactory = DocumentBuilderFactory.newInstance();
+			DocumentBuilder icBuilder;
+			icBuilder = icFactory.newDocumentBuilder();
+			Document doc = icBuilder.newDocument();
+			String schema = "http://schema.medfusion.com/health/adminmessage/v3";
+			Thread.sleep(500);
+
+			Element mainRootElement = doc.createElementNS(schema, "p:AdministrativeMessages");
+			mainRootElement.setAttributeNS("http://www.w3.org/2001/XMLSchema-instance", "xsi:schemaLocation", schema + " AdministrativeMessages.xsd");
+			doc.appendChild(mainRootElement);
+
+			messageID = getUUID();
+			// SecureMessage
+			Element SecureMessage = doc.createElement("SecureMessage");
+			SecureMessage.setAttribute("messageId", messageID);
+			mainRootElement.appendChild(SecureMessage);
+
+			// From
+			Element From = doc.createElement("From");
+			From.appendChild(doc.createTextNode(testData.From));
+			SecureMessage.appendChild(From);
+			// To
+			Element To = doc.createElement("To");
+			To.appendChild(doc.createTextNode(testData.PatientExternalId));
+			SecureMessage.appendChild(To);
+			// Subject
+			long timestamp = System.currentTimeMillis();
+			 messageIdentifier = "Test " + timestamp;
+			Element Subject = doc.createElement("Subject");
+			Subject.appendChild(doc.createTextNode(messageIdentifier));
+			SecureMessage.appendChild(Subject);
+			
+			// AllowReply
+			Element AllowReply = doc.createElement("AllowReply");
+			AllowReply.appendChild(doc.createTextNode(testData.AllowReply));
+			SecureMessage.appendChild(AllowReply);
+			// Message
+			Element Message = doc.createElement("Message");
+			Message.appendChild(doc.createTextNode(testData.Message));
+			SecureMessage.appendChild(Message);
+			if(testData.allowAttachment.equalsIgnoreCase("true")) {
+				String[] catEnum = testData.categoryType.split(",");
+				int maxLength=1;
+				if(!testData.allowOnce.equalsIgnoreCase("true")) {
+					maxLength=catEnum.length;
+				}
+				for(int i=0;i<maxLength;i++) {
+					//Attachment
+					Element Attachment = doc.createElement("Attachment");
+					//FileName
+					Element FileName = doc.createElement("FileName");
+					FileName.appendChild(doc.createTextNode(i+testData.fileName));
+					Attachment.appendChild(FileName);
+					//MimeType
+					Element MimeType = doc.createElement("MimeType");
+					MimeType.appendChild(doc.createTextNode(testData.mimeType));
+					Attachment.appendChild(MimeType);
+					//Body
+					Element Body = doc.createElement("Body");
+					Body.appendChild(doc.createTextNode( ExternalFileReader.readFromFile(testData.attachmentBody)));
+					Attachment.appendChild(Body);
+					
+					Element Category = doc.createElement("Category");
+					Category.appendChild(doc.createTextNode(catEnum[i]));
+					Attachment.appendChild(Category);
+					
+					SecureMessage.appendChild(Attachment);
+				}
+			}
+			Transformer transformer = TransformerFactory.newInstance().newTransformer();
+			transformer.setOutputProperty(OutputKeys.INDENT, "yes");
+			DOMSource source = new DOMSource(doc);
+
+			StringWriter writer = new StringWriter();
+			transformer.transform(source, new StreamResult(writer));
+			output = writer.toString();
+		} catch (ParserConfigurationException pce) {
+			pce.printStackTrace();
+		} catch (TransformerException tfe) {
+			tfe.printStackTrace();
+		}
+		return output;
+	}
 
 	public static String getUUID() {
 		return UUID.randomUUID().toString();

@@ -74,7 +74,7 @@ public class JalapenoMessagesPage extends JalapenoMenu {
 	private WebElement inboxMessageBody;
 	//a[text()='This is testing URL']
 	
-	@FindBy(how = How.XPATH, using = "//button[@class='btn btn-default ng-binding ng-scope']")
+	@FindBy(how = How.XPATH, using = "//button[contains(text(),'Archive')]")
 	private WebElement archiveButton;
 	
 	@FindBy(how = How.XPATH, using = "//span[@class='messageFrom']")
@@ -83,7 +83,7 @@ public class JalapenoMessagesPage extends JalapenoMenu {
 	private static final int maxCount = 15;
 	private static final String replyContent = "This is response to doctor's message";
 	
-	@FindBy(how = How.XPATH, using = "(//span[@class='messageSubject ng-binding'])[1]")
+	@FindBy(how = How.XPATH, using = "(//span[@class='messageSubject'])[1]")
 	private WebElement messageSubjectText;
 	
 	@FindBy(how = How.ID, using = "messages")

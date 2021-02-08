@@ -6,6 +6,7 @@ import static org.testng.Assert.assertNotNull;
 import java.util.Random;
 
 import org.apache.commons.lang.StringUtils;
+import org.testng.SkipException;
 import org.testng.annotations.DataProvider;
 import org.testng.annotations.Test;
 
@@ -124,9 +125,10 @@ public class IntegrationPlatformAcceptanceTests extends BaseTestNGWebDriver {
 	 * log("Step 10: Checking validity of the response xml"); RestUtils.isReasonResponseXMLValid(testData.getResponsePath(), reason); }
 	 */
 
-	@Test(enabled = true, groups = {"AcceptanceTests"}, retryAnalyzer = RetryAnalyzer.class)
-	public void testAMDCAskQuestionPaid() throws Exception {
-
+	@Test(enabled = true, dataProvider = "channelVersion", groups = {"AcceptanceTests"}, retryAnalyzer = RetryAnalyzer.class)
+	public void testAMDCAskQuestionPaid(String version) throws Exception {
+		if (version.contains("v2"))
+			throw new SkipException("Test skipped as version is:" + version);
 		log("Test Case: AMDC Ask Question to your Staff");
 
 		log("Execution Environment: " + IHGUtil.getEnvironmentType());
@@ -148,6 +150,7 @@ public class IntegrationPlatformAcceptanceTests extends BaseTestNGWebDriver {
 		log("OAuthAppToken: " + testData.getOAuthAppToken());
 		log("OAuthUsername: " + testData.getOAuthUsername());
 		log("OAuthPassword: " + testData.getOAuthPassword());
+		log("RestV3Url: " + testData.getRestV3Url());
 
 		log("Step 2: LogIn");
 		JalapenoLoginPage loginPage = new JalapenoLoginPage(driver, testData.getUrl());
@@ -185,8 +188,14 @@ public class IntegrationPlatformAcceptanceTests extends BaseTestNGWebDriver {
 
 		// do the call and save xml, ",0" is there because of the since
 		// attribute format
-		RestUtils.setupHttpGetRequest(testData.getRestUrl() + "?since=" + since + ",0", testData.getResponsePath());
 
+		if (version.contains("v1")) {
+		RestUtils.setupHttpGetRequest(testData.getRestUrl() + "?since=" + since + ",0", testData.getResponsePath());
+		}
+		else if (version.contains("v3")) {
+			RestUtils.setupHttpGetRequest(testData.getRestV3Url() + "?since=" + since + ",0", testData.getResponsePath());
+		} 
+		
 		log("Step 10: Checking validity of the response xml");
 		RestUtils.isQuestionResponseXMLValid(testData.getResponsePath(), askStaff1.getCreatedTimeStamp());
 	}
@@ -776,9 +785,10 @@ public class IntegrationPlatformAcceptanceTests extends BaseTestNGWebDriver {
 
 	}
 
-	@Test(enabled = true, groups = {"AcceptanceTests"}, retryAnalyzer = RetryAnalyzer.class)
-	public void testAMDCAskQuestionUnpaid() throws Exception {
-
+	@Test(enabled = true, dataProvider = "channelVersion", groups = {"AcceptanceTests"}, retryAnalyzer = RetryAnalyzer.class)
+	public void testAMDCAskQuestionUnpaid(String version) throws Exception {
+		if (version.contains("v2"))
+			throw new SkipException("Test skipped as version is:" + version);
 		log("Test Case: AMDC Ask Question to your Doc");
 
 		log("Execution Environment: " + IHGUtil.getEnvironmentType());
@@ -836,8 +846,12 @@ public class IntegrationPlatformAcceptanceTests extends BaseTestNGWebDriver {
 		log("Getting messages since timestamp: " + since);
 
 		// do the call and save xml, ",0" is there because of the since
-		// attribute format
-		RestUtils.setupHttpGetRequest(testData.getRestUrl() + "?since=" + since + ",0", testData.getResponsePath());
+
+		if (version.contains("v1")) {
+			RestUtils.setupHttpGetRequest(testData.getRestUrl() + "?since=" + since + ",0", testData.getResponsePath());
+		} else if (version.contains("v3")) {
+			RestUtils.setupHttpGetRequest(testData.getRestV3Url() + "?since=" + since + ",0", testData.getResponsePath());
+		}
 
 		log("Step 10: Checking validity of the response xml");
 		RestUtils.isQuestionResponseXMLValid(testData.getResponsePath(), askStaff1.getCreatedTimeStamp());

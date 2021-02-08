@@ -212,7 +212,14 @@ public class PropertyFileLoader {
 		return property.getProperty("patientExternalIdAMDC");
 	}
 
-	// MU2 EVENTS
+	public String getRestUrlV3AMDC() {
+		return property.getProperty("restUrlV3AMDC");
+	}
+	public String getReadCommunicationUrlV3AMDC() {
+		return property.getProperty("readCommunicationUrlV3AMDC");
+	}
+	
+	//MU2 EVENTS
 	public String getPULLAPI_URL_MU2() {
 		return property.getProperty("pullAPI_URL_MU2");
 	}

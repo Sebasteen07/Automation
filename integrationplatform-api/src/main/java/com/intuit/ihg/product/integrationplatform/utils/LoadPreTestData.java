@@ -79,6 +79,9 @@ public class LoadPreTestData {
 		testData.attachmentBody = propertyData.getAttachmentBody();
 		testData.downloadLocation = propertyData.getDownloadFileLocation();
 		testData.portalCategoryType = propertyData.getPortalCategoryType();
+		testData.RestV3Url=propertyData.getRestUrlV3AMDC();
+		testData.ReadCommuniationURLV3 = propertyData.getReadCommunicationUrlV3AMDC();
+
 		return testData;
 	}
 
