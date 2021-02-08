@@ -166,6 +166,12 @@ public class PropertyFileLoader {
 	public String getPatientExternalIdAMDC() {
 		return property.getProperty("patientExternalIdAMDC");
 	}
+	public String getRestUrlV3AMDC() {
+		return property.getProperty("restUrlV3AMDC");
+	}
+	public String getReadCommunicationUrlV3AMDC() {
+		return property.getProperty("readCommunicationUrlV3AMDC");
+	}
 	
 	//MU2 EVENTS
 	public String getPULLAPI_URL_MU2() {
@@ -1519,4 +1525,28 @@ public class PropertyFileLoader {
 	public String getNGE2P2Location() {
 		return property.getProperty("NGE2P2Location");
 	}
+	
+	//AppoinmentType
+	public String getAppointmentTypeName() {
+		return property.getProperty("AppointmentTypeName");
+	}
+	public String getAppointmentTypeID() {
+		return property.getProperty("AppointmentTypeID");
+	}
+	public String getAppointmentCategoryName() {
+		return property.getProperty("AppointmentCategoryName");
+	}
+	public String getAppointmentCategoryID() {
+		return property.getProperty("AppointmentCategoryID");
+	}
+	public String getActiveFlag() {
+		return property.getProperty("ActiveFlag");
+	}
+	public String getComment() {
+		return property.getProperty("Comment");
+	}
+	public String getAppointmentTypeUrl() {
+		return property.getProperty("AppointmentTypeUrl");
+	}
+	
 }

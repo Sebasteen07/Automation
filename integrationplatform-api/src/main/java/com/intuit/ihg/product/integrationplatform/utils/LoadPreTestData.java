@@ -10,7 +10,7 @@ public class LoadPreTestData {
 	public EHDC loadEHDCDataFromProperty(EHDC testData) throws IOException {
 
 		PropertyFileLoader propertyData = new PropertyFileLoader();
-		
+
 		testData.URL = propertyData.getUrlCCD();
 		testData.PHR_URL = propertyData.getPHR_URL();
 		testData.UserName = propertyData.getUserNameCCD();
@@ -19,7 +19,7 @@ public class LoadPreTestData {
 		testData.EPracticeName = propertyData.getEPracticeNameCCD();
 		testData.ccdXMLPath = propertyData.getCCDPATH3();
 		testData.CCDPath = propertyData.getCCDPath();
-		
+
 		testData.OAuthProperty = propertyData.getOAuthProperty();
 		testData.OAuthKeyStore = propertyData.getOAuthKeyStore();
 		testData.OAuthAppToken = propertyData.getOAuthAppTokenCCD();
@@ -46,10 +46,10 @@ public class LoadPreTestData {
 		testData.City = propertyData.getCityCCD();
 		testData.State = propertyData.getStateCCD();
 		testData.Country = propertyData.getCountryCCD();
-		
+
 		return testData;
 	}
-	
+
 	public AMDC loadAMDCDataFromProperty(AMDC testData) throws IOException {
 
 		PropertyFileLoader propertyData = new PropertyFileLoader();
@@ -73,16 +73,19 @@ public class LoadPreTestData {
 		testData.PatientExternalId = propertyData.getPatientExternalIdAMDC();
 		testData.ResponsePath = propertyData.getResponsePath();
 		testData.IntegrationPracticeID = propertyData.getIntegrationPracticeID();
-		testData.allowAttachment=propertyData.getAllowAttachment();
-		testData.categoryType=propertyData.getCategoryType();
-		testData.fileName=propertyData.getFileNameAMDC();
-		testData.mimeType=propertyData.getMimeType();
-		testData.attachmentBody=propertyData.getAttachmentBody();
-		testData.downloadLocation=propertyData.getDownloadFileLocation();
-		testData.portalCategoryType= propertyData.getPortalCategoryType();
+		testData.allowAttachment = propertyData.getAllowAttachment();
+		testData.categoryType = propertyData.getCategoryType();
+		testData.fileName = propertyData.getFileNameAMDC();
+		testData.mimeType = propertyData.getMimeType();
+		testData.attachmentBody = propertyData.getAttachmentBody();
+		testData.downloadLocation = propertyData.getDownloadFileLocation();
+		testData.portalCategoryType = propertyData.getPortalCategoryType();
+		testData.RestV3Url=propertyData.getRestUrlV3AMDC();
+		testData.ReadCommuniationURLV3 = propertyData.getReadCommunicationUrlV3AMDC();
+
 		return testData;
 	}
-	
+
 	public MU2GetEventData loadAPITESTDATAFromProperty(MU2GetEventData testData) throws IOException {
 
 		PropertyFileLoader propertyData = new PropertyFileLoader();
@@ -94,71 +97,72 @@ public class LoadPreTestData {
 		testData.OAUTH_PASSWORD = propertyData.getOAuthPassword_MU2();
 		testData.PUSHAPI_URL = propertyData.getPUSHAPI_URL_MU2();
 		testData.PUSH_RESPONSEPATH = propertyData.getResponsePath();
-		testData.PORTAL_URL= propertyData.getPORTAL_URL_MU2();
-		testData.PORTAL_USERNAME= propertyData.getPORTAL_USERNAME_MU2();
-		testData.PORTAL_PASSWORD= propertyData.getPORTAL_PASSWORD_MU2();
-		testData.INTUIT_PATIENT_ID= propertyData.getINTUIT_PATIENT_ID_MU2();
-		testData.TRANSMIT_EMAIL= propertyData.getTRANSMIT_EMAIL_MU2();
-		testData.IMAGE_PATH= propertyData.getIMAGE_PATH_MU2();
-		testData.PATIENT_ID= propertyData.getPatient_ID_MU2();
-		testData.PATIENT_INVITE_RESTURL=propertyData.getPATIENT_INVITE_RESTURL();
-		testData.PATIENT_PRACTICEID=propertyData.getPATIENT_PRACTICEID();
-		testData.PATIENT_EXTERNAL_ID=propertyData.getPATIENT_EXTERNAL_ID();
-		testData.CCDPATH1=propertyData.getCCDPATH1();
-		testData.CCDPATH2=propertyData.getCCDPATH2();
-		testData.CCDPATH3=propertyData.getCCDPATH3();
-		testData.CCDPATH4=propertyData.getCCDPATH4();
-		
-		testData.HomePhoneNo=propertyData.getHomePhoneNo();
-		testData.SecretQuestion=propertyData.getSecretQuestion();
-		testData.SecretAnswer=propertyData.getSecretAnswer();
-		testData.BirthDay=propertyData.getBirthDay();
-		testData.PatientPassword=propertyData.getPatientPassword();
-		
+		testData.PORTAL_URL = propertyData.getPORTAL_URL_MU2();
+		testData.PORTAL_USERNAME = propertyData.getPORTAL_USERNAME_MU2();
+		testData.PORTAL_PASSWORD = propertyData.getPORTAL_PASSWORD_MU2();
+		testData.INTUIT_PATIENT_ID = propertyData.getINTUIT_PATIENT_ID_MU2();
+		testData.TRANSMIT_EMAIL = propertyData.getTRANSMIT_EMAIL_MU2();
+		testData.IMAGE_PATH = propertyData.getIMAGE_PATH_MU2();
+		testData.PATIENT_ID = propertyData.getPatient_ID_MU2();
+		testData.PATIENT_INVITE_RESTURL = propertyData.getPATIENT_INVITE_RESTURL();
+		testData.PATIENT_PRACTICEID = propertyData.getPATIENT_PRACTICEID();
+		testData.PATIENT_EXTERNAL_ID = propertyData.getPATIENT_EXTERNAL_ID();
+		testData.CCDPATH1 = propertyData.getCCDPATH1();
+		testData.CCDPATH2 = propertyData.getCCDPATH2();
+		testData.CCDPATH3 = propertyData.getCCDPATH3();
+		testData.CCDPATH4 = propertyData.getCCDPATH4();
+
+		testData.HomePhoneNo = propertyData.getHomePhoneNo();
+		testData.SecretQuestion = propertyData.getSecretQuestion();
+		testData.SecretAnswer = propertyData.getSecretAnswer();
+		testData.BirthDay = propertyData.getBirthDay();
+		testData.PatientPassword = propertyData.getPatientPassword();
+
 		testData.CCDMessageID1 = propertyData.getCCDMessageID1();
 		testData.CCDMessageID2 = propertyData.getCCDMessageID2();
 		testData.PatientExternalId_MU2 = propertyData.getPatientExternalId_MU2();
 		testData.PatientFirstName_MU2 = propertyData.getPatientFirstName_MU2();
-		testData.PatientLastName_MU2=propertyData.getPatientLastName_MU2();
+		testData.PatientLastName_MU2 = propertyData.getPatientLastName_MU2();
 		testData.Standard_Email = propertyData.getStandard_Email();
-		
+
 		testData.Standard_Email = propertyData.getStandard_Email();
-		
-		testData.patientUA_MU2=propertyData.getPatientUA_MU2();
-		testData.guardian_UserName_MU2=propertyData.getGuardian_UserName_MU2();
-		testData.guardian_Password_MU2=propertyData.getGuardian_Password_MU2();
-		testData.patientUA_ExternalPatientID_MU2=propertyData.getPatient_ExternalPatientID_MU2();
+
+		testData.patientUA_MU2 = propertyData.getPatientUA_MU2();
+		testData.guardian_UserName_MU2 = propertyData.getGuardian_UserName_MU2();
+		testData.guardian_Password_MU2 = propertyData.getGuardian_Password_MU2();
+		testData.patientUA_ExternalPatientID_MU2 = propertyData.getPatient_ExternalPatientID_MU2();
 		testData.intuit_PATIENT_ID_MU2_Guardian = propertyData.getPatientIntuItID_Guardian();
-		
-		testData.patientUA_MU2_Existing=propertyData.getPatientUA_MU2_Existing();
-		testData.guardian_UserName_MU2_Existing=propertyData.getGuardian_UserName_MU2_Existing();
-		testData.guardian_Password_MU2_Existing=propertyData.getGuardian_Password_MU2_Existing();
-		testData.patientUA_ExternalPatientID_MU2_Existing=propertyData.getPatient_ExternalPatientID_MU2_Existing();
+
+		testData.patientUA_MU2_Existing = propertyData.getPatientUA_MU2_Existing();
+		testData.guardian_UserName_MU2_Existing = propertyData.getGuardian_UserName_MU2_Existing();
+		testData.guardian_Password_MU2_Existing = propertyData.getGuardian_Password_MU2_Existing();
+		testData.patientUA_ExternalPatientID_MU2_Existing = propertyData.getPatient_ExternalPatientID_MU2_Existing();
 		testData.intuit_PATIENT_ID_MU2_Guardian_Existing = propertyData.getPatientIntuItID_GuardianExisting();
 		testData.secureEmailTransmitActivity = propertyData.getSecureEmailTransmitActivity();
 		testData.standardEmailTransmitActivity = propertyData.getStandardEmailTransmitActivity();
-		testData.patientUA_MU2_LastName=propertyData.getPatientUA_MU2_LastName();
-		testData.patientUA_MU2_LastName_Existing=propertyData.getPatientUA_MU2_LastName_Existing();		
-		testData.pdfFilePath=propertyData.getPdfFilePath();
-		testData.token=propertyData.getToken_MU();
-		
+		testData.patientUA_MU2_LastName = propertyData.getPatientUA_MU2_LastName();
+		testData.patientUA_MU2_LastName_Existing = propertyData.getPatientUA_MU2_LastName_Existing();
+		testData.pdfFilePath = propertyData.getPdfFilePath();
+		testData.token = propertyData.getToken_MU();
+
 		return testData;
 	}
-	
-	public PIDCInfo loadDataFromProperty(PIDCInfo testData, String channelVersion, String portalVersion) throws Exception {
+
+	public PIDCInfo loadDataFromProperty(PIDCInfo testData, String channelVersion, String portalVersion)
+			throws Exception {
 
 		PropertyFileLoader propertyData = new PropertyFileLoader();
-	
+
 		testData.setBatchSize(propertyData.getBatchSize());
 
 		testData.setoAuthProperty(propertyData.getOAuthProperty());
 		testData.setoAuthKeyStore(propertyData.getOAuthKeyStore());
-		
+
 		testData.setPatientPath(propertyData.getPatientPath());
 		testData.setResponsePath(propertyData.getResponsePath());
 		testData.setUsername(propertyData.getUserName());
 		testData.setPassword(propertyData.getPassword());
-		
+
 		testData.setBirthDay(propertyData.getBirthday());
 		testData.setZipCode(propertyData.getZipCode());
 		testData.setSSN(propertyData.getSSN());
@@ -176,9 +180,7 @@ public class LoadPreTestData {
 		testData.setChooseCommunication(propertyData.getChooseCommunication());
 		testData.setInsurance_Type(propertyData.getInsurance_Type());
 		testData.setCsvFilePath(propertyData.getCSVFilePath());
-		//testData.setPortalVersion(propertyData.getPortalVersion());
-		
-		
+
 		if (channelVersion.contains("v1")) {
 			testData.setRestUrl_20(propertyData.getRestUrl1_20());
 		}
@@ -188,8 +190,8 @@ public class LoadPreTestData {
 		if (channelVersion.contains("v3")) {
 			testData.setRestUrl_20(propertyData.getRestUrl3_20());
 		}
-		
-		if(portalVersion.contains("1.0")) {
+
+		if (portalVersion.contains("1.0")) {
 			if (channelVersion.contains("v1")) {
 				testData.setRestUrl(propertyData.getRestUrl1());
 			}
@@ -201,7 +203,7 @@ public class LoadPreTestData {
 			testData.setoAuthUsername(propertyData.getOAuthUsername());
 			testData.setoAuthPassword(propertyData.getOAuthPassword());
 		}
-		if(portalVersion.contains("2.0")) {
+		if (portalVersion.contains("2.0")) {
 			if (channelVersion.contains("v1")) {
 				testData.setRestUrl(propertyData.getRestUrl1_20());
 			}
@@ -212,59 +214,58 @@ public class LoadPreTestData {
 			testData.setoAuthAppToken(propertyData.getOAuthAppToken_20());
 			testData.setoAuthUsername(propertyData.getOAuthUsername_20());
 			testData.setoAuthPassword(propertyData.getOAuthPassword_20());
-			
+
 			testData.setFnameSC(propertyData.getFirstName_AD());
 			testData.setLnameSC(propertyData.getLastName_AD());
 			testData.setSecretQuestion(propertyData.getSecretQuestion());
 			testData.setSecretAnswer(propertyData.getSecretAnswer());
-			
+
 			testData.setPortalURL(propertyData.getUrl());
 			testData.setPracticeUserName(propertyData.getPracticeUserName());
 			testData.setPracticePassword(propertyData.getPracticePassword());
 			testData.setPracticeId_PIDC_20(propertyData.getPatientID());
 			testData.setPreferredLanguageType(propertyData.getLanguageType());
 		}
-		
+
 		return testData;
 	}
-	
+
 	public AppointmentData loadAppointmentDataFromProperty(AppointmentData testData) throws IOException {
 		PropertyFileLoader propertyData = new PropertyFileLoader();
-		testData.AppointmentPath= propertyData.getAppointmentRequestURL();
-		testData.EmailUserName= propertyData.getEmail_AD();
+		testData.AppointmentPath = propertyData.getAppointmentRequestURL();
+		testData.EmailUserName = propertyData.getEmail_AD();
 		testData.MFPatientId = propertyData.getMedfusionPatientId_AD();
 		testData.MFPracticeId = propertyData.getMedfusionPracticeId_AD();
 		testData.OAuthAppToken = propertyData.getOAuthAppToken_AD();
 		testData.OAuthUsername = propertyData.getOAuthUsername_AD();
 		testData.OAuthPassword = propertyData.getoAuthPassword_AD();
-		
+
 		testData.OAuthProperty = propertyData.getOAuthProperty();
 		testData.OAuthKeyStore = propertyData.getOAuthKeyStore();
 		testData.ResponsePath = propertyData.getResponsePath();
 		testData.PracticeName = propertyData.getIntegrationPracticeID_AD();
-		//testData.PracticeName = propertyData.getPatientPracticeID_AD();
 		testData.URL = propertyData.getPracticeURL_AD();
 		testData.UserName = propertyData.getUserName_AD();
 		testData.Password = propertyData.getPassword_AD();
 		testData.PatientPracticeId = propertyData.getPatientPracticeID_AD();
 		testData.PreviousAppointmentId = propertyData.getPreviousAppointmentId();
 		testData.PATIENT_EXTERNAL_ID = propertyData.getPATIENT_EXTERNAL_ID();
-		testData.PATIENT_INVITE_RESTURL=propertyData.getPATIENT_INVITE_RESTURL();
+		testData.PATIENT_INVITE_RESTURL = propertyData.getPATIENT_INVITE_RESTURL();
 		testData.From = propertyData.getProviderIdentifier_AD();
-		
+
 		testData.FirstName = propertyData.getFirstName_AD();
 		testData.LastName = propertyData.getLastName_AD();
-		testData.SecretQuestion=propertyData.getSecretQuestion();
-		testData.SecretAnswer=propertyData.getSecretAnswer();
-		testData.HomePhoneNo=propertyData.getHomePhoneNo();
-		testData.BatchSize=propertyData.getBatchSize_AD();
+		testData.SecretQuestion = propertyData.getSecretQuestion();
+		testData.SecretAnswer = propertyData.getSecretAnswer();
+		testData.HomePhoneNo = propertyData.getHomePhoneNo();
+		testData.BatchSize = propertyData.getBatchSize_AD();
 		testData.csvFilePath = propertyData.getCSVFILEPATH_AD();
 		testData.portalURL = propertyData.getPracticePortalURL_AD();
 		testData.practiceUserName = propertyData.getProtalUserName_AD();
 		testData.practicePassword = propertyData.getPortalPassword_AD();
 		return testData;
 	}
-	
+
 	public StatementEventData loadStatementEventDataFromProperty(StatementEventData testData) throws IOException {
 		PropertyFileLoader propertyData = new PropertyFileLoader();
 		testData.Url = propertyData.getUrl_SE();
@@ -283,7 +284,7 @@ public class LoadPreTestData {
 		testData.PatientID = propertyData.getPatientID_SE();
 		testData.MFPatientID = propertyData.getMFPatientID_SE();
 		testData.StatementEventURL = propertyData.getStatementEventURL();
-		
+
 		testData.StatementFormat = propertyData.getStatementFormat_SE();
 		testData.Address1 = propertyData.getAddress1_SE();
 		testData.Address2 = propertyData.getAddress2_SE();
@@ -313,24 +314,22 @@ public class LoadPreTestData {
 		testData.emailLinkText = propertyData.getEmailLinkText();
 		return testData;
 	}
-	
-	public BulkAdmin loadDataFromPropertyBulk(BulkAdmin testData) throws IOException, IllegalAccessException, IllegalArgumentException,
-	InvocationTargetException, NoSuchMethodException, SecurityException {
-		
+
+	public BulkAdmin loadDataFromPropertyBulk(BulkAdmin testData) throws IOException, IllegalAccessException,
+			IllegalArgumentException, InvocationTargetException, NoSuchMethodException, SecurityException {
+
 		PropertyFileLoader propertyData = new PropertyFileLoader();
-		//
 		testData.OAuthProperty = propertyData.getOAuthProperty();
 		testData.OAuthKeyStore = propertyData.getOAuthKeyStore();
 		testData.OAuthAppToken = propertyData.getOAuthAppTokenAMDC();
 		testData.OAuthUsername = propertyData.getOAuthUsernameAMDC();
 		testData.OAuthPassword = propertyData.getOAuthPasswordAMDC();
-		
+
 		testData.UserName = propertyData.getUserNameAMDC();
 		testData.Password = propertyData.getPasswordAMDC();
 		testData.RestUrl = propertyData.getRestUrlBulk();
 		testData.From = propertyData.getFromAMDC();
-		
-		
+
 		testData.ResponsePath = propertyData.getResponsePath();
 		testData.ReadCommuniationURL = propertyData.getReadCommunicationUrlAMDC();
 		testData.SecureMessage_AskaStaffXML = propertyData.getSecureMsgAskAStaff();
@@ -342,7 +341,7 @@ public class LoadPreTestData {
 		testData.PatientName1 = propertyData.getPatientName1AMDC();
 		testData.PatientName2 = propertyData.getPatientName2AMDC();
 		testData.PatientName3 = propertyData.getPatientName3AMDC();
-		
+
 		testData.GmailUserName = propertyData.getGmailUserNameAMDC();
 		testData.GmailPassword = propertyData.getGmailPasswordAMDC();
 		testData.Sender1 = propertyData.getSender1AMDC();
@@ -356,8 +355,8 @@ public class LoadPreTestData {
 		testData.resendPreviousMessage = propertyData.getresendPrevoiusMessage();
 		testData.ParamValue = propertyData.getParamValue1();
 		testData.ParamName = propertyData.getParamName1();
-		testData.categoryType=propertyData.getCategoryType();
-		
+		testData.categoryType = propertyData.getCategoryType();
+
 		testData.NumberOfParams = propertyData.getNumberOfParams();
 		testData.ParamValue1 = propertyData.getParamValue1();
 		testData.ParamName1 = propertyData.getParamName1();
@@ -365,40 +364,47 @@ public class LoadPreTestData {
 		testData.ParamName2 = propertyData.getParamName2();
 		testData.ParamValue3 = propertyData.getParamValue3();
 		testData.ParamName3 = propertyData.getParamName3();
-		
+
 		for (int j = 1; j <= Integer.parseInt(testData.NumberOfParams); j++) {
-			testData.PatientsUserNameArray[j - 1] = (String) propertyData.getClass().getMethod("getUserNameBulk" + j).invoke(propertyData);
-			testData.PatientsPasswordArray[j - 1] = (String) propertyData.getClass().getMethod("getPasswordBulk" + j).invoke(propertyData);
-			testData.PatientsIDArray[j - 1] = (String) propertyData.getClass().getMethod("getUserPatiendIDBulk" + j).invoke(propertyData);
-			testData.PatientEmailArray[j - 1] = (String) propertyData.getClass().getMethod("getUserEmailBulk" + j).invoke(propertyData);
+			testData.PatientsUserNameArray[j - 1] = (String) propertyData.getClass().getMethod("getUserNameBulk" + j)
+					.invoke(propertyData);
+			testData.PatientsPasswordArray[j - 1] = (String) propertyData.getClass().getMethod("getPasswordBulk" + j)
+					.invoke(propertyData);
+			testData.PatientsIDArray[j - 1] = (String) propertyData.getClass().getMethod("getUserPatiendIDBulk" + j)
+					.invoke(propertyData);
+			testData.PatientEmailArray[j - 1] = (String) propertyData.getClass().getMethod("getUserEmailBulk" + j)
+					.invoke(propertyData);
 		}
-		
+
 		for (int i = 1; i <= Integer.parseInt(testData.NumberOfParams); i++) {
-			testData.ParamNameArray[i - 1] = (String) propertyData.getClass().getMethod("getParamName" + i).invoke(propertyData);
-			testData.ParamValueArray[i - 1] = (String) propertyData.getClass().getMethod("getParamValue" + i).invoke(propertyData);
+			testData.ParamNameArray[i - 1] = (String) propertyData.getClass().getMethod("getParamName" + i)
+					.invoke(propertyData);
+			testData.ParamValueArray[i - 1] = (String) propertyData.getClass().getMethod("getParamValue" + i)
+					.invoke(propertyData);
 		}
-		
+
 		testData.oUserName = propertyData.getresendMessageToPatientUserName();
 		testData.oPassword = propertyData.getresendMessageToPatientPassword();
 		testData.oPatientID = propertyData.getresendMessageToPatientID();
 		testData.oEmailID = propertyData.getresendMessageToPatientEmail();
 		testData.MessageBulk = propertyData.getMessageBulk();
-		
+
 		testData.Subject = propertyData.getSubject();
 		testData.FileName = propertyData.getFileName();
 		testData.BulkEmailType = propertyData.getBulkEmailType();
 		testData.AddAttachment = propertyData.getAddAttachment();
 		testData.PatientExternalId = propertyData.getPatientExternalId();
-		
+
 		testData.categoryType = propertyData.getCategoryType();
 		testData.fileName = propertyData.getFileNameAMDC();
 		testData.mimeType = propertyData.getMimeType();
 		testData.attachmentBody = propertyData.getAttachmentBody();
 		testData.downloadLocation = propertyData.getDownloadFileLocation();
 		testData.portalCategoryType = propertyData.getPortalCategoryType();
-		
+
 		return testData;
-		}
+	}
+
 	public SendDirectMessage loadSendDirectMessageDataFromProperty(SendDirectMessage testData) throws IOException {
 		PropertyFileLoader propertyData = new PropertyFileLoader();
 		testData.RestUrl = propertyData.getRestURL_SDM();
@@ -409,29 +415,29 @@ public class LoadPreTestData {
 		testData.OAuthUsername = propertyData.getOAuthUsername_SDM();
 		testData.OAuthPassword = propertyData.getOAuthPassword_SDM();
 		testData.Subject = propertyData.getSubject_SDM();
-		testData.SecureDirectMessageURL=propertyData.getSecureEmailURL_SDM();
-		testData.SecureDirectMessageUsername=propertyData.getSecureEmailUsername_SDM();
-		testData.SecureDirectMessagePassword=propertyData.getSecureEmailPassword_SDM();
+		testData.SecureDirectMessageURL = propertyData.getSecureEmailURL_SDM();
+		testData.SecureDirectMessageUsername = propertyData.getSecureEmailUsername_SDM();
+		testData.SecureDirectMessagePassword = propertyData.getSecureEmailPassword_SDM();
 		testData.ApplicationName = propertyData.getApplicationName_SDM();
 		testData.MessageBody = propertyData.getMessageBody_SDM();
 		testData.FileName = propertyData.getFileName_SDM();
 		testData.PatientID = propertyData.getPatientId_SDM();
 		testData.XMLAttachmentFileLocation = propertyData.getAttachmentLocationXML_SDM();
-		testData.PDFAttachmentFileLocation=propertyData.getAttachmentLocationPDF_SDM();
+		testData.PDFAttachmentFileLocation = propertyData.getAttachmentLocationPDF_SDM();
 		testData.PNGAttachmentFileLocation = propertyData.getAttachmentLocationPNG_SDM();
 		testData.AttachmentType = propertyData.getAttachmentType_SDM();
 		testData.FromEmalID = propertyData.getFromSecureEmailID_SDM();
 		testData.ToEmalID = propertyData.getToSecureEmailID_SDM();
 		testData.TOCName = propertyData.getTOCName_SDM();
 		testData.MessageStatus = propertyData.getMessageStatus_SDM();
-		testData.unseenMessageHeader=propertyData.getUnseenMessageHeaderURL_SDM();
-		testData.unseenMessageBody=propertyData.getUnseenMessageBodyURL_SDM();
+		testData.unseenMessageHeader = propertyData.getUnseenMessageHeaderURL_SDM();
+		testData.unseenMessageBody = propertyData.getUnseenMessageBodyURL_SDM();
 		testData.messageStatusUpdate = propertyData.getMessageStatusUpdate_SDM();
-		testData.messageStatusToUpdate =propertyData.getMessageStatusToUpdate_SDM();
-		
-		testData.messageHeaderURL= propertyData.getMessageHeaderURL_SDM();
-		testData.invalidPracticeMessageHeaderURL=propertyData.getInvalidPracticeMessageHeaderURL_SDM();
-		testData.invalidEmailMessageHeaderURL=propertyData.getInvalidEmailMessageHeaderURL_SDM();
+		testData.messageStatusToUpdate = propertyData.getMessageStatusToUpdate_SDM();
+
+		testData.messageHeaderURL = propertyData.getMessageHeaderURL_SDM();
+		testData.invalidPracticeMessageHeaderURL = propertyData.getInvalidPracticeMessageHeaderURL_SDM();
+		testData.invalidEmailMessageHeaderURL = propertyData.getInvalidEmailMessageHeaderURL_SDM();
 		testData.invalidUID = propertyData.getInvalidUID_SDM();
 		testData.validPracticeID = propertyData.getValidPracticeID_SDM();
 
@@ -442,7 +448,7 @@ public class LoadPreTestData {
 	public DirectorySearch loadDirectorySearchDataFromProperty(DirectorySearch testData) throws IOException {
 		PropertyFileLoader propertyData = new PropertyFileLoader();
 		testData.RestUrl = propertyData.getRestURL_SD();
-		
+
 		testData.RestUrl = propertyData.getRestURL_SD();
 		testData.DirectAddressOrganization = propertyData.getDirectAddress_organization_DS();
 		testData.DirectAddressProvider = propertyData.getDirectAddress_provider_DS();
@@ -454,92 +460,112 @@ public class LoadPreTestData {
 		testData.ResponsePath = propertyData.getResponsePath();
 		testData.OAuthProperty = propertyData.getOAuthProperty();
 		testData.OAuthKeyStore = propertyData.getOAuthKeyStore();
-		
+
 		return testData;
 	}
-	public PatientFormsExportInfo loadFormsExportInfofromProperty(PatientFormsExportInfo testData) throws IOException
-	{
+
+	public PatientFormsExportInfo loadFormsExportInfofromProperty(PatientFormsExportInfo testData) throws IOException {
 		PropertyFileLoader propertyData = new PropertyFileLoader();
-		testData.url_FE=propertyData.geturl_FE();
-		testData.patientfilepath_FE=propertyData.getpatientfilepath_FE();
-		testData.practiceNew_URL_FE=propertyData.getpracticeNew_URL_FE();
-		testData.patient_url_FE=propertyData.getpatient_url_FE();
-		testData.patientFirstName_FE=propertyData.getpatientFirstName_FE();
-		testData.patientLastName_FE=propertyData.getpatientLastName_FE();
-		testData.patientEmailAddress1_FE=propertyData.getpatientEmailAddress1_FE();
-		testData.patientEmailCity_FE=propertyData.getpatientEmailCity_FE();
-		testData.patientphoneNumber_FE=propertyData.getpatientphoneNumber_FE();
-		testData.patientDOBDay1_FE=propertyData.getpatientDOBDay1_FE();
-		testData.patientDOBMonth_FE=propertyData.getpatientDOBMonth_FE();
-		testData.patientDOBMonthtext_FE=propertyData.getpatientDOBMonthText_FE();
-		testData.patientDOBYear_FE=propertyData.getpatientDOBYear_FE();
-		testData.patientAddress1_FE=propertyData.getpatientAddress1_FE();
-		testData.patientAddress2_FE=propertyData.getpatientAddress2_FE();
-		testData.patientCity_FE=propertyData.getpatientCity_FE();
-		testData.patientState_FE=propertyData.getpatientState_FE();
-		testData.patientZipCode1_FE=propertyData.getpatientZipCode1_FE();
-		testData.patientuserid_FE=propertyData.getpatientuserid_FE();
-		testData.patientPassword1_FE=propertyData.getpatientPassword1_FE();
-		testData.patientSecretQuestion_FE=propertyData.getpatientSecretQuestion_FE();
-		testData.patientSecretAnswer_FE=propertyData.getpatientSecretAnswer_FE();
-		testData.patientHomePhoneNo_FE=propertyData.getpatientHomePhoneNo_FE();
-		testData.patientethnicity_FE=propertyData.getpatientethnicity_FE();
-		testData.patientMaritalStatus_FE=propertyData.getpatientMaritalStatus_FE();
-		testData.patientWhoIs_FE=propertyData.getpatientWhoIs_FE();
-		testData.NameofPrimaryInsurance=propertyData.getNameofPrimaryInsurance();
-		testData.NameofsecondaryInsurance=propertyData.getNameofsecondaryInsurance();
-		testData.relFirstName=propertyData.getrelFirstNAme();
-		testData.relLastName=propertyData.getrelLastNAme();
-		testData.relation1=propertyData.getrelation1();
-		testData.phonenumber1=propertyData.getphonenumber1();
-		testData.phonetype1=propertyData.getphonetype1();
-		testData.tetanus1=propertyData.gettetanus1();
-		testData.HPV1=propertyData.getHPV1();
-		testData.Influenza1=propertyData.getInfluenza1();
-		testData.Pneumonia1=propertyData.getPneumonia1();
-		testData.SurgeryName=propertyData.getSurgeryName();
-		testData.SurgeryTimeFrame=propertyData.getSurgeryTimeFrame();
-		testData.HospitalizationReason=propertyData.getHospitalizationReason();
-		testData.HospitalizationTimeFrame=propertyData.getHospitalizationTimeFrame();
-		testData.Test=propertyData.getTest();
-		testData.TestTimeFrame=propertyData.getTestTimeFrame();
-		testData.NameofDoctorSpeciality=propertyData.getNameofDoctorSpeciality();
-		testData.NameDosage=propertyData.getNameDosage();
-		testData.FamilyMember=propertyData.getFamilyMember();
-		testData.OtherMedicalhistory=propertyData.getOtherMedicalhistory();
-		testData.times=propertyData.gettimes();
-		testData.exercise=propertyData.getexercise();
-		testData.day=propertyData.getday();
-		testData.ccd_url1_FE=propertyData.getccd_url1_FE();
-		testData.oAuthAppTokenCCD1_FE=propertyData.getoAuthAppTokenCCD1_FE();
-		testData.oAuthUsernameCCD1_FE=propertyData.getoAuthUsernameCCD1_FE();
-		testData.oAuthPasswordCCD1_FE=propertyData.getoAuthPasswordCCD1_FE();
-		testData.oAuthKeyStore1_FE=propertyData.getoAuthKeyStore1_FE();
-		testData.oAuthProperty1_FE=propertyData.getoAuthProperty1_FE();
-		testData.responsePath_CCD1_FE=propertyData.getresponsePath_CCD1_FE();
-		testData.practiceURL_FE=propertyData.getpracticeURL_FE();
-		testData.practiceUserName_FE=propertyData.getpracticeUserName_FE();
-		testData.practicePassword_FE=propertyData.getpracticePassword_FE();
-		testData.patientLocation_FE=propertyData.getpatientLocation_FE();
-		testData.patientProvider_FE=propertyData.getpatientProvider_FE();
-		testData.responsePDF_FE=propertyData.getresponsePDF_FE();
-		testData.ccd_PDfUrl_FE=propertyData.getccd_PDfUrl_FE();
-		testData.responsePDFBatch_FE=propertyData.getresponsePDFBatch_FE();
-		testData.uiPDFFile_FE=propertyData.getUIPDFFile_FE();
-		testData.downloadFileLocation=propertyData.getDownloadFileLocation();
-		testData.preCheckURL=propertyData.getPreCheckURL();
-		testData.preCheckPatientExternalID=propertyData.getPreCheckPatientExternalID();
-		testData.precheckAppointmentPayload=propertyData.getAppointmentPayload();
-		testData.appointmentRestUrl=propertyData.getPreCheckAppointmentRestUrl();
+		testData.url_FE = propertyData.geturl_FE();
+		testData.patientfilepath_FE = propertyData.getpatientfilepath_FE();
+		testData.practiceNew_URL_FE = propertyData.getpracticeNew_URL_FE();
+		testData.patient_url_FE = propertyData.getpatient_url_FE();
+		testData.patientFirstName_FE = propertyData.getpatientFirstName_FE();
+		testData.patientLastName_FE = propertyData.getpatientLastName_FE();
+		testData.patientEmailAddress1_FE = propertyData.getpatientEmailAddress1_FE();
+		testData.patientEmailCity_FE = propertyData.getpatientEmailCity_FE();
+		testData.patientphoneNumber_FE = propertyData.getpatientphoneNumber_FE();
+		testData.patientDOBDay1_FE = propertyData.getpatientDOBDay1_FE();
+		testData.patientDOBMonth_FE = propertyData.getpatientDOBMonth_FE();
+		testData.patientDOBMonthtext_FE = propertyData.getpatientDOBMonthText_FE();
+		testData.patientDOBYear_FE = propertyData.getpatientDOBYear_FE();
+		testData.patientAddress1_FE = propertyData.getpatientAddress1_FE();
+		testData.patientAddress2_FE = propertyData.getpatientAddress2_FE();
+		testData.patientCity_FE = propertyData.getpatientCity_FE();
+		testData.patientState_FE = propertyData.getpatientState_FE();
+		testData.patientZipCode1_FE = propertyData.getpatientZipCode1_FE();
+		testData.patientuserid_FE = propertyData.getpatientuserid_FE();
+		testData.patientPassword1_FE = propertyData.getpatientPassword1_FE();
+		testData.patientSecretQuestion_FE = propertyData.getpatientSecretQuestion_FE();
+		testData.patientSecretAnswer_FE = propertyData.getpatientSecretAnswer_FE();
+		testData.patientHomePhoneNo_FE = propertyData.getpatientHomePhoneNo_FE();
+		testData.patientethnicity_FE = propertyData.getpatientethnicity_FE();
+		testData.patientMaritalStatus_FE = propertyData.getpatientMaritalStatus_FE();
+		testData.patientWhoIs_FE = propertyData.getpatientWhoIs_FE();
+		testData.NameofPrimaryInsurance = propertyData.getNameofPrimaryInsurance();
+		testData.NameofsecondaryInsurance = propertyData.getNameofsecondaryInsurance();
+		testData.relFirstName = propertyData.getrelFirstNAme();
+		testData.relLastName = propertyData.getrelLastNAme();
+		testData.relation1 = propertyData.getrelation1();
+		testData.phonenumber1 = propertyData.getphonenumber1();
+		testData.phonetype1 = propertyData.getphonetype1();
+		testData.tetanus1 = propertyData.gettetanus1();
+		testData.HPV1 = propertyData.getHPV1();
+		testData.Influenza1 = propertyData.getInfluenza1();
+		testData.Pneumonia1 = propertyData.getPneumonia1();
+		testData.SurgeryName = propertyData.getSurgeryName();
+		testData.SurgeryTimeFrame = propertyData.getSurgeryTimeFrame();
+		testData.HospitalizationReason = propertyData.getHospitalizationReason();
+		testData.HospitalizationTimeFrame = propertyData.getHospitalizationTimeFrame();
+		testData.Test = propertyData.getTest();
+		testData.TestTimeFrame = propertyData.getTestTimeFrame();
+		testData.NameofDoctorSpeciality = propertyData.getNameofDoctorSpeciality();
+		testData.NameDosage = propertyData.getNameDosage();
+		testData.FamilyMember = propertyData.getFamilyMember();
+		testData.OtherMedicalhistory = propertyData.getOtherMedicalhistory();
+		testData.times = propertyData.gettimes();
+		testData.exercise = propertyData.getexercise();
+		testData.day = propertyData.getday();
+		testData.ccd_url1_FE = propertyData.getccd_url1_FE();
+		testData.oAuthAppTokenCCD1_FE = propertyData.getoAuthAppTokenCCD1_FE();
+		testData.oAuthUsernameCCD1_FE = propertyData.getoAuthUsernameCCD1_FE();
+		testData.oAuthPasswordCCD1_FE = propertyData.getoAuthPasswordCCD1_FE();
+		testData.oAuthKeyStore1_FE = propertyData.getoAuthKeyStore1_FE();
+		testData.oAuthProperty1_FE = propertyData.getoAuthProperty1_FE();
+		testData.responsePath_CCD1_FE = propertyData.getresponsePath_CCD1_FE();
+		testData.practiceURL_FE = propertyData.getpracticeURL_FE();
+		testData.practiceUserName_FE = propertyData.getpracticeUserName_FE();
+		testData.practicePassword_FE = propertyData.getpracticePassword_FE();
+		testData.patientLocation_FE = propertyData.getpatientLocation_FE();
+		testData.patientProvider_FE = propertyData.getpatientProvider_FE();
+		testData.responsePDF_FE = propertyData.getresponsePDF_FE();
+		testData.ccd_PDfUrl_FE = propertyData.getccd_PDfUrl_FE();
+		testData.responsePDFBatch_FE = propertyData.getresponsePDFBatch_FE();
+		testData.uiPDFFile_FE = propertyData.getUIPDFFile_FE();
+		testData.downloadFileLocation = propertyData.getDownloadFileLocation();
+		testData.preCheckURL = propertyData.getPreCheckURL();
+		testData.preCheckPatientExternalID = propertyData.getPreCheckPatientExternalID();
+		testData.precheckAppointmentPayload = propertyData.getAppointmentPayload();
+		testData.appointmentRestUrl = propertyData.getPreCheckAppointmentRestUrl();
 		testData.basicAccessToken = propertyData.getBasicAccesstokenPrecheck();
-		testData.preCheckZip=propertyData.getPreCheckZipCode();
-		testData.preCheckDOB=propertyData.getPreCheckDOB();
-		testData.preCheckPatientEmailID=propertyData.getPreCheckPatientEmailID_FE();
-		testData.preCheckPatientFirstName=propertyData.getPreCheckPatientFirstName_FE();
-		testData.preCheckGetPIDC=propertyData.getPreCheckGetPIDC();
-		testData.preCheckEmailSubject=propertyData.getPreCheckEmailSubject();
-		testData.preCheckEmailLink=propertyData.getPreCheckEmailLink();
-		testData.preCheckInsuranceImageType=propertyData.getPreCheckInsuranceImageType();
+		testData.preCheckZip = propertyData.getPreCheckZipCode();
+		testData.preCheckDOB = propertyData.getPreCheckDOB();
+		testData.preCheckPatientEmailID = propertyData.getPreCheckPatientEmailID_FE();
+		testData.preCheckPatientFirstName = propertyData.getPreCheckPatientFirstName_FE();
+		testData.preCheckGetPIDC = propertyData.getPreCheckGetPIDC();
+		testData.preCheckEmailSubject = propertyData.getPreCheckEmailSubject();
+		testData.preCheckEmailLink = propertyData.getPreCheckEmailLink();
+		testData.preCheckInsuranceImageType = propertyData.getPreCheckInsuranceImageType();
 		return testData;
-		}
+	}
+
+	public AppointmentData loadAppointmentTypeFromProperty(AppointmentData testData) throws IOException {
+		PropertyFileLoader propertyData = new PropertyFileLoader();
+		testData.OAuthProperty = propertyData.getOAuthProperty();
+		testData.OAuthKeyStore = propertyData.getOAuthKeyStore();
+		testData.OAuthAppToken = propertyData.getOAuthAppToken_AD();
+		testData.OAuthUsername = propertyData.getOAuthUsername_AD();
+		testData.OAuthPassword = propertyData.getoAuthPassword_AD();
+		testData.ResponsePath = propertyData.getResponsePath();
+		
+		testData.AppointmentTypeName = propertyData.getAppointmentTypeName();
+		testData.AppointmentTypeID = propertyData.getAppointmentTypeID();
+		testData.AppointmentCategoryName = propertyData.getAppointmentCategoryName();
+		testData.AppointmentCategoryID = propertyData.getAppointmentCategoryID();
+		testData.ActiveFlag = propertyData.getActiveFlag();
+		testData.Comment = propertyData.getComment();
+		testData.AppointmentTypeUrl = propertyData.getAppointmentTypeUrl();
+		return testData;
+
+	}
 }

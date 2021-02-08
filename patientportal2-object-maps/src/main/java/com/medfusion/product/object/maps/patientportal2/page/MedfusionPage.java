@@ -5,11 +5,11 @@ package com.medfusion.product.object.maps.patientportal2.page;
 import static java.lang.Thread.sleep;
 
 import java.awt.datatransfer.StringSelection;
+import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.Map;
 import java.util.Map.Entry;
 import java.util.Set;
-
 import org.apache.commons.lang.StringUtils;
 import org.apache.log4j.Level;
 import org.openqa.selenium.By;
@@ -97,9 +97,17 @@ public abstract class MedfusionPage extends BasePageObject {
 		}
 		//handles modal dialogs in Portal (accepting NPP, statement preference selection)
 		public void handleWeNeedToConfirmSomethingModal(){
+			 log("Trying to handle survey pop up by adding cookie");
+             String name = "QSI_SI_0CUNpSFNBlJ5QGN_intercept";               
+             String value = "true";
+             boolean isSecure = true;
+             Cookie ck = new Cookie(name,value);           
+             driver.manage().addCookie(ck);
 				log("Checking if some confirmation needed");
 				try{
+
 				while (isElementVisible(weNeedToConfirmSomethingModal, 6)){
+
 						log("We need to confirm something modal window shown");
 						okButton.click();
 

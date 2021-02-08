@@ -50,6 +50,9 @@ public class LinkTab extends SettingsTab {
 	@FindBy(how = How.XPATH, using = "//*[@class='fa fa-link']")
 	private WebElement copyLink;
 
+	@FindAll({@FindBy(xpath = "//*[@id='links']/div/div/div[2]/table/tbody[2]/tr/td")})
+	private List<WebElement> noProviderConfigured;
+
 	public LinkTab(WebDriver driver) {
 		super(driver);
 	}
@@ -57,8 +60,15 @@ public class LinkTab extends SettingsTab {
 	public void searchLinkandRemove(String provider) {
 		searchLink.clear();
 		searchLink.sendKeys(provider);
-		log("Successfully Search link");
-		removelink.click();
+		log("Search the Link for " + provider);
+		if (noProviderConfigured.size() > 0) {
+			searchLink.clear();
+			log("Link is Not avaliable For" + provider);
+		} else {
+			log("Link is avaliable For" + provider);
+			removelink.click();
+			log("Successfully Removed the link form link tab");
+		}
 	}
 
 	public void searchLink(String provider) throws InterruptedException {

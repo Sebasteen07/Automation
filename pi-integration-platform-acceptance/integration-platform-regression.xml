@@ -12,33 +12,30 @@
 		<methods>
 				<include name="testE2EBalancePresentmentAndStatement"/>
 				<include name="testE2EBalancePresentmentOnDemand"/>
-				<include name="testE2EPreCheckUpdatesAllInsuranceImageCards"/>
 				<include name="testPatientEGQUpdatesFromForms"/>
-	    		<include name="testE2EPreCheckUpdates1stDemo2ndALLINS"/>
-	    		<include name="testE2EPreCheckUpdates1stPrimaryINS2ndDemo"/>
-	    		<include name="testE2EPreCheckUpdatesNoChangeInDemographics"/>
-	    		<include name="testE2EPreCheckUpdatesBLANKInsurance"/>
 				<include name="testAMDCSecureMessagesWithAllCategoryTypes" />
 				<include name="testCCDE2EFormExportfromPracticeRegression" />
 	    		<include name="testEHDCSendCCD" />
 	    		<include name="testAMDCSecureMessages"/>
 	    		<include name="testMU2GetEventForNewPatient"/>
 	    		<include name="testPIDCPatientRegistrationV1"/>
-	    		<include name="testPIDCPatientRegistrationV2"/>    	
+	    		<include name="testPIDCPatientRegistrationV2"/>  
+	    		<include name="testPIDCPatientRegistrationV3"/>    	  	
 	    		<include name="testAppointmentRequestForNewSelfPatient"/>    	    	
 	    		<include name="testStatementEventForNewSelfPatient"/>
 	    		<include name="testBulkSecureMessage"/>
-	    		<exclude name="testSendDirectMessageAll"/>
-	    		<exclude name="testDirectorySearch"/>
+	    		<include name="testSendDirectMessageAll"/>
+	    		<include name="testDirectorySearch"/>
 	    		<include name="testOnDemandProvisionPIDC"/>
 				<include name="testPatientDemographicsUpdateWithSpecialCharacter"/>
 				<include name="testPatientRegistrationfromPractice"/>
 				<include name="testPIDCPatientDemographicsUpdate"/>
-				<exclude name="testUnseenMessageListAll"/>
+				<include name="testUnseenMessageListAll"/>
 				<include name="testErrorCasesUnseenMessageList"/>
 				<include name="testErrorCasesDeleteMessage"/>
 				<include name="testDeleteP2PMessage"/>
 				<exclude name="testDeleteP2PMessageInMailBox"/>
+				<include name="testAppoinmentType"/>
       		</methods>
 	</classes>
 </test>
