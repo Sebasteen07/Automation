@@ -220,4 +220,125 @@ public class BulkMessagePayload {
 	public static String getUUID() {
 		return UUID.randomUUID().toString();
 	}
+	
+	public static String getBulkMessageV3Payload(BulkAdmin testData) throws InterruptedException, IOException {
+		
+		try{
+			DocumentBuilderFactory icFactory = DocumentBuilderFactory.newInstance();
+			DocumentBuilder icBuilder;
+			icBuilder = icFactory.newDocumentBuilder();
+			Document doc = icBuilder.newDocument();
+			Long timestamp = System.currentTimeMillis();
+			String schema = "http://schema.medfusion.com/health/bulkSecureMessages/v3";
+			Thread.sleep(500);
+
+			Element mainRootElement = doc.createElementNS(schema, "p:BulkSecureMessages");
+			mainRootElement.setAttributeNS("http://www.w3.org/2001/XMLSchema-instance", "xsi:schemaLocation", schema + " bulkSecureMessages.xsd");
+			doc.appendChild(mainRootElement);
+
+			String BulkMessageIdValue = "";
+			if (checkWithPrevioudBulkMessageID) {
+				messageIdCounter++;
+				BulkMessageIdValue = testData.previousBulkMessageId;
+			}
+			else
+			{
+				BulkMessageIdValue = getUUID();
+			}
+			// BulkMessageId
+			Element BulkMessageId = doc.createElement("BulkMessageId");
+			BulkMessageId.appendChild(doc.createTextNode(BulkMessageIdValue));
+			mainRootElement.appendChild(BulkMessageId);
+			// From
+			Element From = doc.createElement("From");
+			From.appendChild(doc.createTextNode(testData.From));
+			mainRootElement.appendChild(From);
+			// Subject
+			subject = "Test " + timestamp;
+			testData.Subject = subject;
+			Element Subject = doc.createElement("Subject");
+			Subject.appendChild(doc.createTextNode(subject));
+			mainRootElement.appendChild(Subject);
+			// Message
+			String bulkMessage = String.format(testData.MessageBulk, timestamp);
+			Element Message = doc.createElement("Message");
+			Message.appendChild(doc.createTextNode(bulkMessage));
+			mainRootElement.appendChild(Message);
+			if (testData.AddAttachment.contains("yes")) {
+			// Attachment
+				for (int i = 1; i <= Integer.parseInt(testData.NumberOfAttachments); i++) {
+					String workingDir = System.getProperty("user.dir");
+					workingDir = workingDir + testData.AttachmentLocation + i + ".txt";
+					
+					String pdf = ExternalFileReader.readFromFile(workingDir);
+					Thread.sleep(3000);
+					Element Attachment = doc.createElement("Attachment");
+					mainRootElement.appendChild(Attachment);
+					if (testData.FileName == null) {
+						testData.FileName = "bulk";
+					}
+					Element FileName = doc.createElement("FileName");
+					Attachment.appendChild(FileName);
+					FileName.appendChild(doc.createTextNode(testData.FileName + i + ".pdf"));
+					Element Body = doc.createElement("Body");
+					Attachment.appendChild(Body);
+					Body.appendChild(doc.createTextNode(pdf));
+					String[] catValue = testData.categoryType.split(",");
+					Element Category = doc.createElement("Category");
+					Category.appendChild(doc.createTextNode(catValue[0]));
+					Attachment.appendChild(Category);
+				}
+				// End of Attachment
+			}
+			
+			Element Patients = doc.createElement("Patients");
+			mainRootElement.appendChild(Patients);
+			// Patients
+			for (int j = 0; j < Integer.parseInt(testData.MaxPatients); j++) {
+				messageId = getUUID();
+				Element Patient = doc.createElement("Patient");
+				Patients.appendChild(Patient);
+				Patient.setAttribute("messageId", messageId);
+
+				Element PracticePatientId = doc.createElement("PracticePatientId");
+				Patient.appendChild(PracticePatientId);
+				PracticePatientId.appendChild(doc.createTextNode(testData.PatientsIDArray[j]));
+				// Params
+				Element Params = doc.createElement("Params");
+				Patient.appendChild(Params);
+				// Param
+				for (int k = 1; k <= Integer.parseInt(testData.NumberOfParams); k++) {
+					// add different name value pair
+					Element Param = doc.createElement("Param");
+					Params.appendChild(Param);
+					// Name and Value Pair
+
+					Element Name = doc.createElement("Name");
+					Param.appendChild(Name);
+					Name.appendChild(doc.createTextNode(testData.ParamNameArray[k - 1]));
+					Element ValuePatient = doc.createElement("Value");
+					Param.appendChild(ValuePatient);
+					ValuePatient.appendChild(doc.createTextNode(testData.ParamValueArray[k - 1]));
+				}
+			}
+			// End patients
+
+		// write the content into XML file
+			Transformer transformer = TransformerFactory.newInstance().newTransformer();
+			transformer.setOutputProperty(OutputKeys.INDENT, "yes");
+			DOMSource source = new DOMSource(doc);
+
+
+			StringWriter writer = new StringWriter();
+			transformer.transform(source, new StreamResult(writer));
+			output = writer.toString();
+	  } catch (ParserConfigurationException pce) {
+		pce.printStackTrace();
+	  } catch (TransformerException tfe) {
+		tfe.printStackTrace();
+	  }
+		return output;
+	}
+
+	
 }

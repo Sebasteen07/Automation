@@ -861,6 +861,9 @@ public class PropertyFileLoader {
 		return property.getProperty("resendMessageToPatientEmail");
 	}
 	
+	public String getRestUrlV3Bulk() {
+		return property.getProperty("RestUrlV3Bulk");
+	}
 	//SendDirectMessage
 	public String getRestURL_SDM() {
 		return property.getProperty("restURL_SDM");
