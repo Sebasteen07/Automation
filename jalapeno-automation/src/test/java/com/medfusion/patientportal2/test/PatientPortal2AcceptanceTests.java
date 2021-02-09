@@ -123,6 +123,7 @@ public class PatientPortal2AcceptanceTests extends BaseTestNGWebDriver {
 	private static final String ACTIVATE_LINK_FRAGMENT = "activate";
 	private static final String GUARDIAN_INVITE_SUBJECT = "You are invited to create a Patient Portal guardian account at ";
 	private static final String questionText = "wat";
+	private static final String DRUG_DOSAGE="35 mg";
 	private static final String ErrorfilePath = System.getProperty("user.dir")
 			+ "\\src\\test\\resources\\File_Attachment\\Error_Files_Testing.pdf";
 	private static final String CorrectfilePath = System.getProperty("user.dir")
@@ -3163,7 +3164,7 @@ public class PatientPortal2AcceptanceTests extends BaseTestNGWebDriver {
 		rxRenewalSearchPage.clickProcessRxRenewal();
 		String subject = rxRenewalSearchPage.getSubject();
 		logStep("Verify Prescription Confirmation in Practice Portal");
-		rxRenewalSearchPage.verifyPrescriptionConfirmationSection(subject);
+		rxRenewalSearchPage.verifyPrescriptionConfirmationSection(subject,DRUG_DOSAGE);
 
 		logStep("Set Action Radio Button in Practice Portal");
 		rxRenewalSearchPage.setActionRadioButton();
