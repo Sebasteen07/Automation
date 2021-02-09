@@ -110,12 +110,24 @@ public class JalapenoPrescriptionsPage extends JalapenoMenu {
 	@FindBy(how = How.XPATH, using = "//span[contains(text(),'Add a Pharmacy')]/preceding-sibling::input[@name='pharmacyPanel:radioGroup']")
 	private WebElement addNewPharamcyRadioBtn;
 
-
 	@FindBy(how = How.XPATH, using = "//*[@class='feedback']/following::*[contains(text(),'Prescription Renewa')]")
 	public WebElement renewalConfirmationmessage;
 
-	@FindAll({@FindBy(how = How.XPATH, using = "//*[@id='medicationForm']/div[1]/div")})
+	@FindAll({ @FindBy(how = How.XPATH, using = "//*[@id='medicationForm']/div[1]/div") })
 	public List<WebElement> Medicationlist;
+
+	@FindBy(how = How.XPATH, using = "//select[@name='pharmacyPanel:radioGroup:pharmacySearchContainer:pharmacySearchList:select']")
+	private WebElement chooseOneDrpdown;
+
+	@FindAll({
+			@FindBy(how = How.XPATH, using = "//select[@name='pharmacyPanel:radioGroup:pharmacySearchContainer:pharmacySearchList:select']/optgroup[2]/option") })
+	public List<WebElement> optionFromOtherPharmacy;
+
+	@FindBy(how = How.XPATH, using = "//input[@name='pharmacyPanel:radioGroup:pharmacySearchContainer:pharmacySearchList']")
+	private WebElement chooseFromAList;
+
+	@FindBy(how = How.XPATH, using = "//div[@class='wicket-aa-container']/div/ul/li")
+	private WebElement textValueFromChooseFromAList;
 
 	public JalapenoPrescriptionsPage(WebDriver driver) {
 		super(driver);
@@ -155,7 +167,8 @@ public class JalapenoPrescriptionsPage extends JalapenoMenu {
 		}
 	}
 
-	public JalapenoHomePage fillThePrescription(WebDriver driver, String medication, String dosage, int quantity) throws InterruptedException {
+	public JalapenoHomePage fillThePrescription(WebDriver driver, String medication, String dosage, int quantity)
+			throws InterruptedException {
 
 		driver.switchTo().defaultContent();
 		driver.switchTo().frame("iframebody");
@@ -174,7 +187,6 @@ public class JalapenoPrescriptionsPage extends JalapenoMenu {
 		wait.until(ExpectedConditions.elementToBeClickable(continueButton));
 		javascriptClick(continueButton);
 		Thread.sleep(1000);
-
 
 		log("Click on Submit button");
 		wait.until(ExpectedConditions.elementToBeClickable(submitButton));
@@ -202,7 +214,6 @@ public class JalapenoPrescriptionsPage extends JalapenoMenu {
 		Select cardSelect = new Select(carddropdown);
 		cardSelect.selectByIndex(3);
 
-
 		Select monthSelect = new Select(monthdd);
 		monthSelect.selectByVisibleText(testData.getProperty("DOBMonthText"));
 
@@ -229,7 +240,6 @@ public class JalapenoPrescriptionsPage extends JalapenoMenu {
 		numberOfRefills.sendKeys(PortalConstants.No_Of_Refills);
 		prescriptionNumber.sendKeys(PortalConstants.Prescription_No);
 		additionalInformation.sendKeys(PortalConstants.Additional_Info);
-
 
 		log("Step 6: Insert Pharmacy Details");
 		jse.executeScript("window.scrollBy(0,200)", "");
@@ -259,7 +269,8 @@ public class JalapenoPrescriptionsPage extends JalapenoMenu {
 		driver.switchTo().frame("iframe");
 
 		for (int i = 1; i < Medicationlist.size(); i++) {
-			String medicationName = driver.findElement(By.xpath("//*[@id='medicationForm']/div[1]/div[" + i + "]")).getText();
+			String medicationName = driver.findElement(By.xpath("//*[@id='medicationForm']/div[1]/div[" + i + "]"))
+					.getText();
 			if (medicationName.contains(productName)) {
 				log("Medication POSTED is visible on portal");
 				break;
@@ -273,7 +284,8 @@ public class JalapenoPrescriptionsPage extends JalapenoMenu {
 	public void validateDeletedMedication(String productName) {
 		driver.switchTo().frame("iframe");
 		for (int i = 1; i < Medicationlist.size(); i++) {
-			String medicationName = driver.findElement(By.xpath("//*[@id='medicationForm']/div[1]/div[" + i + "]")).getText();
+			String medicationName = driver.findElement(By.xpath("//*[@id='medicationForm']/div[1]/div[" + i + "]"))
+					.getText();
 			if (medicationName.contains(productName)) {
 				Log4jUtil.log("Deleted medications is still visible on the Prescription page");
 				Assert.assertTrue(!medicationName.contains(productName));
@@ -284,6 +296,40 @@ public class JalapenoPrescriptionsPage extends JalapenoMenu {
 		}
 
 		driver.switchTo().defaultContent();
+	}
 
+	public void clickOnChooseOneDrpdown() {
+		log("Click on choose one Dropdown");
+		driver.switchTo().frame("iframebody");
+		chooseOneDrpdown.click();
+	}
+
+	public void verifyPharmacy(String pharmacy) {
+		List<WebElement> otherPharamacies = optionFromOtherPharmacy;
+		java.util.Iterator<WebElement> itr = otherPharamacies.iterator();
+		while (itr.hasNext()) {
+			WebElement ele = itr.next();
+			if (ele.getText().equalsIgnoreCase(pharmacy)) {
+				Assert.assertEquals(ele.getText(), pharmacy);
+				log("Pharamacy is visible on Portal");
+				break;
+			} else {
+				log("Pharamacy is not visible on Portal");
+			}
+		}
+	}
+
+	public void verifyPharamcy(String pharmacy, String sendPharmacyFirstWord) throws InterruptedException {
+		driver.switchTo().frame("iframebody");
+		chooseFromAList.sendKeys(sendPharmacyFirstWord);
+		Thread.sleep(5000);
+		log("Get text value from Choose from a list textbox");
+		String textValue = textValueFromChooseFromAList.getText();
+		if (textValue.equalsIgnoreCase(pharmacy)) {
+			Assert.assertEquals(textValue, pharmacy);
+			log("Pharamacy is visible on Portal");
+		} else {
+			log("Pharamacy is not visible on Portal");
+		}
 	}
 }
