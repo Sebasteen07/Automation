@@ -55,10 +55,10 @@ public class JalapenoMessagesPage extends JalapenoMenu {
 	@FindBy(how = How.XPATH, using = "//button[.='Archive']")
 	private WebElement archiveMessageButton;
 	
-	@FindBy(how = How.XPATH, using = "//*[@id=\"messageContainer\"]/div[3]/div[2]/div/span[4]")
+	@FindBy(how = How.XPATH, using = "//*[@id=\"messageContainer\"]/div[2]/div[2]/div/span[4]")
 	private WebElement lableSent;
 
-	@FindBy(how = How.XPATH, using = "//*[@id=\"messageContainer\"]/div[3]/div[2]/div[2]/a")
+	@FindBy(how = How.XPATH, using = "//*[@id=\"messageContainer\"]/div[2]/div[2]/div[2]/a")
 	private WebElement statementLinkText;
 
 	@FindBy(how = How.XPATH, using = "//div[@class='messageMetadata clearfix']/span[1]")
@@ -83,7 +83,7 @@ public class JalapenoMessagesPage extends JalapenoMenu {
 	private static final int maxCount = 15;
 	private static final String replyContent = "This is response to doctor's message";
 	
-	@FindBy(how = How.XPATH, using = "(//span[@class='messageSubject ng-binding'])[1]")
+	@FindBy(how = How.XPATH, using = "(//span[@class='messageSubject'])[1]")
 	private WebElement messageSubjectText;
 	
 	@FindBy(how = How.ID, using = "messages")
@@ -201,7 +201,7 @@ public class JalapenoMessagesPage extends JalapenoMenu {
 	public void goToInboxMessage() {
 		log("Navigating to Inbox folder");
 		inboxFolder.click();
-		IHGUtil.waitForElement(driver, 10000, archiveButton);
+		IHGUtil.waitForElement(driver, 1000, archiveButton);
 	
 		}
 	
@@ -358,6 +358,40 @@ public class JalapenoMessagesPage extends JalapenoMenu {
 			Assert.assertTrue(status, "Sender Name is not correct");
 			log("Sender Name is correct");
 			return status;
+	}
+	
+	public void verifyPrescriptionResponse(WebDriver driver, String prescritonRenewalResponse) {
+		IHGUtil.PrintMethodName();
+		WebElement element;
+		Boolean status= false;
+			try {
+				element = driver.findElement(By.xpath("//*[contains(text(),'" + prescritonRenewalResponse + "')]"));
+				Thread.sleep(5000);
+				if(element.isDisplayed()){
+					status= true;
+				    log("PrescritonRenewalResponse added by Practice is displayed in Portal");}
+			} catch (Exception ex) {
+				log("PrescritonRenewalResponse added by Practice is not displayed in Portal");
+				log(ex.getMessage());
+				Assert.assertTrue(status, "PrescritonRenewalResponse added by Practice is not displayed in Portal");
+			}
+	}
+	
+	public void verifyMedicationStatus(WebDriver driver, String renewalStatus) {
+		IHGUtil.PrintMethodName();
+		WebElement element;
+		Boolean status= false;
+			try {
+				element = driver.findElement(By.xpath("//*[contains(text(),'" + renewalStatus + "')]"));
+				Thread.sleep(5000);
+				if(element.isDisplayed()){
+					status= true;
+				    log("Medication status is "+renewalStatus);}
+			} catch (Exception ex) {
+				log("Medication status is not displayed in Prescription renewal message");
+				log(ex.getMessage());
+				Assert.assertTrue(status, "Medication status is not displayed in Prescription renewal message");
+			}
 	}
 }
 

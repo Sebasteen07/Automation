@@ -130,4 +130,8 @@ public class AMDCTestData {
 	public String getGmailPassword() {
 		return AmdcObj.GmailPassword;
 	}
+
+	public String getRestV3Url() {
+		return AmdcObj.RestV3Url;
+	}
 }

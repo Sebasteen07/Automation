@@ -18,12 +18,14 @@ import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.time.LocalDate;
 import java.time.Period;
+import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Calendar;
 import java.util.Collection;
 import java.util.Date;
 import java.util.HashSet;
+import java.util.List;
 import java.util.TimeZone;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
@@ -55,6 +57,7 @@ import com.medfusion.product.object.maps.pss2.page.ConfirmationPage.Confirmation
 import com.medfusion.product.object.maps.pss2.page.Insurance.UpdateInsurancePage;
 import com.medfusion.product.object.maps.pss2.page.Scheduled.ScheduledAppointment;
 import com.medfusion.product.object.maps.pss2.page.Scheduled.ScheduledAppointmentAnonymous;
+import com.medfusion.product.object.maps.pss2.page.util.CommonMethods;
 import com.medfusion.product.pss2patientui.pojo.AdminUser;
 import com.medfusion.product.pss2patientui.pojo.Appointment;
 
@@ -1274,6 +1277,49 @@ public class PSSPatientUtils {
 
 		return PageFactory.initElements(driver, PatientIdentificationPage.class);
 	}
+	
+	public void deleteEmail_Mailinator(WebDriver driver, String url, String email) throws InterruptedException {
+
+		driver.manage().deleteAllCookies(); // delete all cookies
+
+		driver.get(url);
+		driver.manage().window().maximize();
+		driver.findElement(By.xpath("//input[@id='addOverlay']")).sendKeys(email);
+		driver.findElement(By.xpath("//button[@id='go-to-public']")).click();
+
+		WebDriverWait wait = new WebDriverWait(driver, 30);
+		wait.until(ExpectedConditions.visibilityOfElementLocated(By.xpath("//a[@class='ng-binding']")));
+		Thread.sleep(2000);
+
+		List<WebElement> subList = driver.findElements(By.xpath("//a[@class='ng-binding']"));
+		List<WebElement> chkList = driver.findElements(By.xpath("//td[@class='a-center ']/input"));
+
+		String subject_line = "Your appointment is now scheduled";
+		for (int i = 0; i < subList.size(); i++) {
+
+			if (subList.get(i).getText().contains(subject_line)) {
+
+				Log4jUtil.log(subList.get(i).getText() + "---Text");
+				CommonMethods cm = new CommonMethods(driver);
+				cm.highlightElement(chkList.get(i));
+				chkList.get(i).click();
+			}
+		}
+
+		Thread.sleep(2000);
+
+		JavascriptExecutor js = (JavascriptExecutor) driver;
+		js.executeScript("window.scrollBy(550,0)", "");
+		Thread.sleep(1000);
+
+		driver.manage().deleteAllCookies();
+		driver.findElement(By.xpath("//button[@id='trash_but']")).click();
+
+		Thread.sleep(2000);
+
+	}
+
+
 
 	public void fillPatientDetails(Boolean insuranceSelected, Appointment testData,
 			LoginlessPatientInformation loginlesspatientinformation) throws InterruptedException {
@@ -1723,12 +1769,17 @@ public class PSSPatientUtils {
 		scheduledAppointmentAnonymous.backtoHomePage();
 	}
 
-	public int ageCurrentmonths() {
-		LocalDate pdate = LocalDate.of(2000, 01, 01);
+	public int ageCurrentmonths(Appointment testData) {
+		DateTimeFormatter formatter = DateTimeFormatter.ofPattern("d-MMM-yyyy");
+		String date = testData.getDob();
+				//"23-Mar-2019";
+				LocalDate pdate = LocalDate.parse(date, formatter);
 		LocalDate now = LocalDate.now();
 		Period diff = Period.between(pdate, now);
 		int yearmonth = diff.getYears() * 12;
 		int month = yearmonth + diff.getMonths();
+		Log4jUtil.log("Total Month of patient from date of Birth is  " + month);
 		return month;
+
 	}
 }

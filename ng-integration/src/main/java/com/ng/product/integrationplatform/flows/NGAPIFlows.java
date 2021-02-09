@@ -528,7 +528,7 @@ public class NGAPIFlows {
     }
 	}
 	
-	public static String postSecureMessage(String messageType,String personID, String practiceID,String userID, String ProviderName, String locationName, String applicationName, String encounterType,String senderType,String encounterId,String attachmentName,String documentID) throws Throwable{
+	public static String postSecureMessage(PropertyFileLoader PropertyLoaderObj,String messageType,String personID, String practiceID,String userID, String ProviderName, String locationName, String applicationName, String encounterType,String senderType,String encounterId,String attachmentName,String documentID) throws Throwable{
 		String comm_id = null;
 		String documentIdQuery= "select document_id from pxp_document_requests where document_desc='"+attachmentName+"'";
 		try{
@@ -543,7 +543,7 @@ public class NGAPIFlows {
 			recipient.setId(personID);
 			String recipientLN = DBUtils.executeQueryOnDB("NGCoreDB","select last_name from person where person_id='"+personID+"'");
 			String recipientFN = DBUtils.executeQueryOnDB("NGCoreDB","select first_name from person where person_id='"+personID+"'");
-			recipient.setName(recipientLN + " " +recipientFN);
+			recipient.setName(recipientLN + ", " +recipientFN);
 			recipient.setType("Patient");
 			recipientList.add(recipient);
 			
@@ -553,12 +553,12 @@ public class NGAPIFlows {
 			message.setId(communicationMessageID);
 			
 			if(messageType.equalsIgnoreCase("SentByOnlineProfile")){
-				String SecureMessageOnlineProfile = "AutomationOnlineProfile";
+				String SecureMessageOnlineProfile = PropertyLoaderObj.getProperty("SecureMessageOnlineProfile");
 				message.setRoutingRuleName(SecureMessageOnlineProfile);
 				message.setRoutingRuleType("1");
 				message.setRoutingRuleId(DBUtils.executeQueryOnDB("NGCoreDB","select row_id from ngweb_alias where name='"+SecureMessageOnlineProfile+"'"));				
 			} else if(messageType.contains("ReplyToASKAUsingAliasName")){
-				String SecureMessageAlias = "SASHA_ALIAS";
+				String SecureMessageAlias = PropertyLoaderObj.getProperty("SecureMessageAlias");
 				message.setRoutingRuleType("0");
 				message.setAliasName(SecureMessageAlias);
 				message.setRoutingRuleName("RoutingRuleName Check");
@@ -813,7 +813,7 @@ public class NGAPIFlows {
 		return prescription_response_id;
 	}
 	
-	public static String postBulkSecureMessage(String messageType,List<String> personIdList, String practiceID,String userID, String ProviderName, String locationName, String applicationName, String encounterType,String senderType,String encounterId,String attachmentName,String documentID) throws Throwable{
+	public static String postBulkSecureMessage(PropertyFileLoader PropertyLoaderObj,String messageType,List<String> personIdList, String practiceID,String userID, String ProviderName, String locationName, String applicationName, String encounterType,String senderType,String encounterId,String attachmentName,String documentID) throws Throwable{
 		String comm_id = null;
 		try{
 			SecureMessage securemessage = new SecureMessage();
@@ -823,13 +823,8 @@ public class NGAPIFlows {
 			List<Recipient> recipientList = new ArrayList<Recipient>();
 			List<Message> messageList = new ArrayList<Message>();
 			List<Attachment> attachmentList = new ArrayList<Attachment>();
-			
-//			recipient.setId(personID);
-//			recipient.setName(DBUtils.executeQueryOnDB("NGCoreDB","select first_name from person where person_id='"+personID+"'"));
-//			recipient.setType("Patient");
-//			recipientList.add(recipient);
-			////////////////////////
-			if(messageType.equalsIgnoreCase("Bulk")){
+						
+			if(messageType.contains("Bulk")){
 				for(int i = 0; i < personIdList.size(); i++)
 				 {
 	                String personId = personIdList.get(i).toString();
@@ -841,27 +836,27 @@ public class NGAPIFlows {
 	                recipient.setType("PatientGroup");
 	                
 	                recipientList.add(recipient);
-
 	                recipient = new Recipient();
 	            }
 			}
            
-			////////////////////////
 			String userIdQuery="select top 1 user_id from user_mstr where practice_id='"+practiceID+"'";
 			String communicationMessageID =UUID.randomUUID().toString().toUpperCase();
 			
 			message.setId(communicationMessageID);
 			
 			if(messageType.equalsIgnoreCase("SentByOnlineProfile")){
-				String SecureMessageOnlineProfile = "AutomationOnlineProfile";
+				String SecureMessageOnlineProfile = PropertyLoaderObj.getProperty("SecureMessageOnlineProfile");
 				message.setRoutingRuleName(SecureMessageOnlineProfile);
-				message.setRoutingRuleType("OnlineProfile");
+				message.setRoutingRuleType("1");
 				message.setRoutingRuleId(DBUtils.executeQueryOnDB("NGCoreDB","select row_id from ngweb_alias where name='"+SecureMessageOnlineProfile+"'"));				
-			} else if(messageType.equalsIgnoreCase("SentByAlias")){
-				String SecureMessageAlias = "SASHA_ALIAS";
-				message.setRoutingRuleType("Normal");
+			} else if(messageType.contains("ReplyToASKAUsingAliasName")){
+				String SecureMessageAlias = PropertyLoaderObj.getProperty("SecureMessageAlias");
+				message.setRoutingRuleType("0");
 				message.setAliasName(SecureMessageAlias);
-			} 
+				message.setRoutingRuleName("RoutingRuleName Check");
+			} else
+				message.setRoutingRuleType("-1");
 			
 			if(userID.isEmpty()){
 				userID = DBUtils.executeQueryOnDB("NGCoreDB",userIdQuery);}
@@ -870,7 +865,10 @@ public class NGAPIFlows {
 			
 			    message.setSenderName(userFirstName+" "+userLastName);
 			    message.setSenderId(userID);
-						
+			
+			if(messageType.contains("ReplyToASKAUsingAliasName"))
+			    message.setRoutingRuleId(userID);
+			    
 			if(encounterType.equalsIgnoreCase("OriginalUnlockedEncounter"))
 				message.setOriginalId(communicationMessageID);
 				
@@ -878,15 +876,30 @@ public class NGAPIFlows {
 				message.setParentId(messageType.substring(13).toUpperCase());
 			}
 			
+			if(messageType.contains("ReplyToASKAUsingAliasName")){
+				message.setParentId(messageType.substring(25).toUpperCase());
+			}
+			
 			if(messageType.contains("ReplyToPortal")){					
 		    	String subject = DBUtils.executeQueryOnDB("NGCoreDB","select subject from ngweb_communications where comm_id ='"+messageType.substring(13)+"'");
+		    	message.setSubject("RE: "+subject);
+			} else if (messageType.contains("ReplyToASKAUsingAliasName")){					
+		    	String subject = DBUtils.executeQueryOnDB("NGCoreDB","select subject from ngweb_communications where comm_id ='"+messageType.substring(25)+"'");
 		    	message.setSubject("RE: "+subject);
 			}
 			else
 				message.setSubject("Subject" + (new Date()).getTime());
 			message.setBody(messageType +"Body" + (new Date()).getTime());
-			message.setSentTimestamp(sdf.format(new Date()));
+			
+			if(messageType.equalsIgnoreCase("DelayedDelivery"))
+				Log4jUtil.log("Delayed Delivery should be set");
+			else
+				message.setSentTimestamp(sdf.format(new Date()));
+			
 			if(messageType.contains("ReplyToPortal")){
+				message.setCategory("Medication Questions Category");
+				message.setRepliedWhenTimestamp(sdf.format(new Date()));
+			}else if (messageType.contains("ReplyToASKAUsingAliasName")){
 				message.setCategory("Medication Questions Category");
 				message.setRepliedWhenTimestamp(sdf.format(new Date()));
 			}
@@ -895,34 +908,25 @@ public class NGAPIFlows {
 			message.setIsClinical(true);
 			message.setRecipients(recipientList);
 			
-			if(messageType.equalsIgnoreCase("HighPriority"))
-				message.setPriority("High");
-			else
-				message.setPriority("Normal");
-			
-			if(messageType.equalsIgnoreCase("DisableReply"))
-				message.setCanReply(true);
-			
-			if(messageType.equalsIgnoreCase("ReadReceiptRequested"))
-				message.setIsReadReceiptRequested(true);
-			
-			if(messageType.equalsIgnoreCase("UnreadNotificationRequested"))
-				message.setIsUnreadNotificationRequested(true);
-			
-			if(messageType.equalsIgnoreCase("SaveDraft"))
-				message.setIsDraft(true);
-			
-			if(messageType.equalsIgnoreCase("DelayedDelivery"))
-				message.setScheduledTimestamp(sdf.format(new Date()));
-			
-			if(messageType.equalsIgnoreCase("Bulk"))
+			if(messageType.contains("Bulk")){
 				message.setIsBulk(true); 
-			///////////////////////////
-			List<String> reportNames = new ArrayList<String>();
-			reportNames.add("AutoBulkReport");
-			message.setReportNames(reportNames);
+				List<String> reportNames = new ArrayList<String>();
+				reportNames.add("AutoBulkReport");
+				message.setReportNames(reportNames);
+			}
 			
-			///////////////////////////////
+			if(messageType.equalsIgnoreCase("Bulk1")){
+				message.setPriority("Normal");
+				message.setIsUnreadNotificationRequested(true);
+				message.setUnreadNotificationInterval(15);
+				message.setCanReply(true);
+			}
+			
+			if(messageType.equalsIgnoreCase("Bulk2")){
+				message.setPriority("High");
+				message.setIsReadReceiptRequested(true);
+			}
+			
 			if(attachmentName.equalsIgnoreCase("PatientEducation")){
 			attachment.setAttachmentId(UUID.randomUUID().toString().toUpperCase());
 			attachment.setDocumentId(documentID);
@@ -963,6 +967,13 @@ public class NGAPIFlows {
 			securemessage.setApplicationName(applicationName);
 			securemessage.setMessages(messageList);
 			
+			if(messageType.contains("ReplyToPortal")){
+				securemessage.setMessageType("1");
+			}
+			if(messageType.contains("ReplyToASKAUsingAliasName")){
+				securemessage.setMessageType("1");
+			}
+			
 			ObjectMapper mapper = new ObjectMapper();
 			mapper.setSerializationInclusion(Inclusion.NON_NULL);				
 	        String requestbody = mapper.defaultPrettyPrintingWriter().writeValueAsString(securemessage);
@@ -972,7 +983,8 @@ public class NGAPIFlows {
 			String finalURL = EnterprisebaseURL +secureMessageURL;
 			NGAPIUtils.setupNGHttpPostRequest("EnterpriseGateway",finalURL,requestbody , 200);
 			comm_id = message.getId();
-			Log4jUtil.log("Communication Message created with id "+comm_id);		
+			Log4jUtil.log("Bulk Communication Message created with id "+comm_id);
+			
 	} catch (Exception e) {
 		Log4jUtil.log(e.getMessage());
     }

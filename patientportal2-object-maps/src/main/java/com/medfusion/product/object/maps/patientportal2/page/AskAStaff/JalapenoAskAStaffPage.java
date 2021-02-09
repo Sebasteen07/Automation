@@ -1,5 +1,6 @@
 package com.medfusion.product.object.maps.patientportal2.page.AskAStaff;
 
+import java.text.DecimalFormat;
 import java.time.LocalDate;
 import java.time.Month;
 
@@ -15,6 +16,7 @@ import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.openqa.selenium.support.ui.Select;
 import org.openqa.selenium.support.ui.WebDriverWait;
 
+import com.intuit.ifs.csscat.core.utils.Log4jUtil;
 import com.medfusion.common.utils.IHGUtil;
 import com.medfusion.portal.utils.PortalUtil;
 import com.medfusion.product.object.maps.patientportal2.page.JalapenoMenu;
@@ -110,21 +112,23 @@ public class JalapenoAskAStaffPage extends JalapenoMenu {
 			log("Exception caught when attempting to remove existing card, something bad happened");
 			e.printStackTrace();
 		}
-
+		finally {
 		IHGUtil.waitForElement(driver, 20, creditCardAddButton);
 		creditCardAddButton.click();
 		cardName.sendKeys("Joffrey Baratheon Lannister");
 		cardNumber.sendKeys("4111111111111111");
 		LocalDate currentDate = LocalDate.now();
 		Month month = currentDate.getMonth().plus(1);
-		String cardMonth = Integer.toString(month.getValue());
+		DecimalFormat formatter = new DecimalFormat("00");
+			String cardMonth2 = formatter.format(month.getValue());
 		cardCVV.sendKeys("369");
 		cardZip.sendKeys("36969");
 		IHGUtil.waitForElement(driver, 5, cardDateMonth);
 		Select dropdownYear = new Select(cardDateYear);
 		dropdownYear.selectByIndex(2);
 		Select dropdownMonth = new Select(cardDateMonth);
-		dropdownMonth.selectByValue(cardMonth);
+		Log4jUtil.log("Month Value  : " + cardMonth2);
+		dropdownMonth.selectByValue(cardMonth2);
 		cardSubmitButton.click();
 		cvv.sendKeys("369");
 		IHGUtil.waitForElement(driver, 5, continueButton);
@@ -134,6 +138,7 @@ public class JalapenoAskAStaffPage extends JalapenoMenu {
 		// submitQuestionBut.click();
 		new WebDriverWait(driver, 20)
 				.until(ExpectedConditions.visibilityOfElementLocated(By.xpath("//*[contains(text(), 'Thank you for submitting your question')]")));
+		}
 		return true;
 	}
 

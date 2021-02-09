@@ -25,6 +25,9 @@
 	    	 	<include name="testInboxAppointmentSameSlot"/>
 	    	 	<include name="testInboxAppointmentBookMultipleSlotsandDeleteAppointment"/>
 	    	 	<include name="testPP138SendPatientEducation"/>
+	    	 	<include name="testInboxRequestPrescriptionRenewalApprovedbyPracticeUser"/>
+	    		<include name="testInboxRequestPrescriptionRenewalRejectedbyPracticeUser"/>
+	    		<include name="testCOMBulkSendSecureMessageDoNotAddToEncounterSendByPracticeUser"/>
       	</methods>
 	</classes>
 </test>
