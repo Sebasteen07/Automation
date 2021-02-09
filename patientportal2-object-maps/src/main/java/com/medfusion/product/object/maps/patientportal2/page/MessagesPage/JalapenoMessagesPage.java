@@ -201,7 +201,7 @@ public class JalapenoMessagesPage extends JalapenoMenu {
 	public void goToInboxMessage() {
 		log("Navigating to Inbox folder");
 		inboxFolder.click();
-		IHGUtil.waitForElement(driver, 10000, archiveButton);
+		IHGUtil.waitForElement(driver, 1000, archiveButton);
 	
 		}
 	
