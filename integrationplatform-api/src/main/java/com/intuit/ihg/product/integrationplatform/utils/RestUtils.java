@@ -209,7 +209,7 @@ public class RestUtils {
 	 * Reads the XML and checks REASON
 	 * 
 	 * @param xmlFileName XML to check
-	 * @param Long        timestamp of a sent Reason to check
+	 * @param Long timestamp of a sent Reason to check
 	 * @throws ParserConfigurationException
 	 * @throws IOException
 	 * @throws SAXException
