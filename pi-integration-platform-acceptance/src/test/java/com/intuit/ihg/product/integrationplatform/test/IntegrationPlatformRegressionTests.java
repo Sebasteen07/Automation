@@ -828,7 +828,6 @@ public class IntegrationPlatformRegressionTests extends BaseTestNGWebDriver {
 			testData.MaxPatients = "1";
 			testData.NumberOfAttachments = "1";
 		}
-<<<<<<< HEAD
 		RestUtils.oauthSetup(testData.OAuthKeyStore, testData.OAuthProperty, testData.OAuthAppToken, testData.OAuthUsername, testData.OAuthPassword);
 	
 		if(version.equals("v1")){
