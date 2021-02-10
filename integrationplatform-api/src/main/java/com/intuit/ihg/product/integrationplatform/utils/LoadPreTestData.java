@@ -363,6 +363,8 @@ public class LoadPreTestData {
 		testData.ParamName2 = propertyData.getParamName2();
 		testData.ParamValue3 = propertyData.getParamValue3();
 		testData.ParamName3 = propertyData.getParamName3();
+		testData.RestV3Url = propertyData.getRestUrlV3Bulk();
+
 
 		for (int j = 1; j <= Integer.parseInt(testData.NumberOfParams); j++) {
 			testData.PatientsUserNameArray[j - 1] = (String) propertyData.getClass().getMethod("getUserNameBulk" + j)
