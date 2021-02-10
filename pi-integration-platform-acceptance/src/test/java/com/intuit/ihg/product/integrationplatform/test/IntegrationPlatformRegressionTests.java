@@ -53,7 +53,7 @@ import com.intuit.ihg.product.integrationplatform.utils.P2PUnseenMessageList;
 import com.intuit.ihg.product.integrationplatform.utils.PatientFormsExportInfo;
 import com.intuit.ihg.product.integrationplatform.utils.PatientRegistrationUtils;
 import com.intuit.ihg.product.integrationplatform.utils.Pharmacies;
-import com.intuit.ihg.product.integrationplatform.utils.PharmacyPaylod;
+import com.intuit.ihg.product.integrationplatform.utils.PharmacyPayload;
 import com.intuit.ihg.product.integrationplatform.utils.PrecheckAppointmentUtils;
 import com.intuit.ihg.product.integrationplatform.utils.RestUtils;
 import com.intuit.ihg.product.integrationplatform.utils.SendDirectMessage;
@@ -209,7 +209,9 @@ public class IntegrationPlatformRegressionTests extends BaseTestNGWebDriver {
 		} else {
 			log("Step 3: Fill Message data");
 			String message = AMDCPayload.getAMDCV3Payload(testData);
-
+			log("message :- " + message);
+			messageID = AMDCPayload.messageID;
+			log("Partner Message ID:" + messageID);
 			log("message :- " + message);
 			messageID = AMDCPayload.messageID;
 			log("Partner Message ID:" + messageID);
@@ -806,8 +808,11 @@ public class IntegrationPlatformRegressionTests extends BaseTestNGWebDriver {
 		sEventObj.generateViewEvent(driver, testData, 'N');
 	}
 
-	@Test(enabled = true, groups = { "RegressionTests" }, retryAnalyzer = RetryAnalyzer.class)
-	public void testBulkSecureMessage() throws Exception {
+	@Test(enabled = true, dataProvider = "channelVersion", groups = {
+			"RegressionTests" }, retryAnalyzer = RetryAnalyzer.class)
+	public void testBulkSecureMessage(String version) throws Exception {
+		if (version.equals("v2"))
+			throw new SkipException("Test skipped as version is:" + version);
 		log("Test Case: Bulk Secure Message");
 		log("Execution Environment: " + IHGUtil.getEnvironmentType());
 		log("Execution Browser: " + TestConfig.getBrowserType());
@@ -830,30 +835,50 @@ public class IntegrationPlatformRegressionTests extends BaseTestNGWebDriver {
 		RestUtils.oauthSetup(testData.OAuthKeyStore, testData.OAuthProperty, testData.OAuthAppToken,
 				testData.OAuthUsername, testData.OAuthPassword);
 
-		log("Step 3: Fill Message data");
-		String message = BulkMessagePayload.getBulkMessagePayload(testData);
-		Thread.sleep(6000);
-
-		// log("message xml : " + message);
-		String messageID = BulkMessagePayload.messageId;
-		log("Partner Message ID:" + messageID);
-
-		log("Step 4: Do Message Post Request");
-		log("ResponsePath:- " + testData.ResponsePath);
-		String processingUrl = RestUtils.setupHttpPostRequest(testData.RestUrl, message, testData.ResponsePath);
-
-		log("Step 5: Get processing status until it is completed");
-		boolean completed = false;
-		for (int i = 0; i < 3; i++) {
-			// wait 10 seconds so the message can be processed
-			Thread.sleep(60000);
-			RestUtils.setupHttpGetRequest(processingUrl, testData.ResponsePath);
-			if (RestUtils.isMessageProcessingCompleted(testData.ResponsePath)) {
-				completed = true;
-				break;
+		if (version.equals("v1")) {
+			String messageID = BulkMessagePayload.messageId;
+			log("Partner Message ID:" + messageID);
+			log("Step 3: Fill Message data");
+			String message = BulkMessagePayload.getBulkMessagePayload(testData);
+			Thread.sleep(6000);
+			log("message xml : " + message);
+			log("Step 4: Do Message Post Request");
+			log("ResponsePath:- " + testData.ResponsePath);
+			String processingUrl = RestUtils.setupHttpPostRequest(testData.RestUrl, message, testData.ResponsePath);
+			log("Step 5: Get processing status until it is completed");
+			boolean completed = false;
+			for (int i = 0; i < 3; i++) {
+				// wait 10 seconds so the message can be processed
+				Thread.sleep(60000);
+				RestUtils.setupHttpGetRequest(processingUrl, testData.ResponsePath);
+				if (RestUtils.isMessageProcessingCompleted(testData.ResponsePath)) {
+					completed = true;
+					break;
+				}
 			}
+			assertTrue(completed == true, "Message processing was not completed in time");
+		} else {
+			String messageID = BulkMessagePayload.messageId;
+			log("Partner Message ID:" + messageID);
+			log("Step 3: Fill Message data");
+			String message = BulkMessagePayload.getBulkMessageV3Payload(testData);
+			log("message xml : " + message);
+			log("Step 4: Do Message Post Request");
+			log("ResponsePath:- " + testData.ResponsePath);
+			String processingUrl = RestUtils.setupHttpPostRequest(testData.RestV3Url, message, testData.ResponsePath);
+			log("Step 5: Get processing status until it is completed");
+			boolean completed = false;
+			for (int i = 0; i < 3; i++) {
+				// wait 10 seconds so the message can be processed
+				Thread.sleep(60000);
+				RestUtils.setupHttpGetRequest(processingUrl, testData.ResponsePath);
+				if (RestUtils.isMessageProcessingCompleted(testData.ResponsePath)) {
+					completed = true;
+					break;
+				}
+			}
+			assertTrue(completed == true, "Message processing was not completed in time");
 		}
-		assertTrue(completed == true, "Message processing was not completed in time");
 		log("testData.MaxPatients : " + testData.MaxPatients);
 
 		for (int i = 1; i <= Integer.parseInt(testData.MaxPatients); i++) {
@@ -881,13 +906,22 @@ public class IntegrationPlatformRegressionTests extends BaseTestNGWebDriver {
 			log("Click on messages solution");
 			JalapenoMessagesPage messagesPage = homePage.showMessages(driver);
 			assertTrue(messagesPage.areBasicPageElementsPresent(), "Inbox failed to load properly.");
-			log("Step 8: Find message in Inbox");
-			String messageIdentifier = BulkMessagePayload.subject;
-			log("message subject " + messageIdentifier);
-			log("Step 9: Log the message read time ");
 			long epoch = System.currentTimeMillis() / 1000;
-			log("Step 10: Validate message loads and is the right message");
-			assertTrue(messagesPage.isMessageDisplayed(driver, messageIdentifier));
+
+			log("Step 8: Find message in Inbox");
+			if (version.equals("v1")) {
+				String messageIdentifier = BulkMessagePayload.subject;
+				log("message subject " + messageIdentifier);
+				log("Step 9: Log the message read time ");
+				log("Step 10: Validate message loads and is the right message");
+				assertTrue(messagesPage.isMessageDisplayed(driver, messageIdentifier));
+			} else {
+				String messageIdentifier = BulkMessagePayload.subject;
+				log("message subject " + messageIdentifier);
+				log("Step 9: Log the message read time ");
+				log("Step 10: Validate message loads and is the right message");
+				assertTrue(messagesPage.isMessageDisplayed(driver, messageIdentifier));
+			}
 			log("Step 11: Check if attachment is present or not");
 			String readdatetimestamp = RestUtils.readTime(epoch);
 			log("Message Read Time:" + readdatetimestamp);
@@ -955,7 +989,7 @@ public class IntegrationPlatformRegressionTests extends BaseTestNGWebDriver {
 
 			BulkMessagePayload.checkWithPrevioudBulkMessageID = true;
 			log("Step 12: Start Bulk mass admin for patient with  No attachment but previous Message ID");
-			testBulkSecureMessage();
+			testBulkSecureMessage(version);
 		}
 	}
 
@@ -3252,7 +3286,7 @@ public class IntegrationPlatformRegressionTests extends BaseTestNGWebDriver {
 		log("Step 1: Setup Oauth client");
 		RestUtils.oauthSetup(testData.OAuthKeyStore, testData.OAuthProperty, testData.OAuthAppToken,
 				testData.OAuthUsername, testData.OAuthPassword);
-		String appointmentType = AppointmentTypePayload.getAppontmentTypePayload(testData);
+		String appointmentType = AppointmentTypePayload.getAppointmentTypePayload(testData);
 		Thread.sleep(6000);
 		log("Wait to generate AppointmentType Payload");
 		log("Step 2: Do Message Post Request");
@@ -3278,7 +3312,10 @@ public class IntegrationPlatformRegressionTests extends BaseTestNGWebDriver {
 		testData.Status = "NEW";
 		testData.PharmacyName = "AddedNewPharmacy";
 
-		String pharmacyRenewal = PharmacyPaylod.getPharmacyAddPayload(testData);
+		PharmacyPayload pharmacyObj = new PharmacyPayload();
+		String ExternalPharmacyId = PharmacyPayload.randomNumbers(14);
+		log("ExternalPharmacyId posted is : " + ExternalPharmacyId);
+		String pharmacyRenewal = pharmacyObj.getPharmacyAddPayload(testData, ExternalPharmacyId);
 		log("Payload: " + pharmacyRenewal);
 		Thread.sleep(6000);
 		log("Wait to generate Pharmacy Renewal Payload");
@@ -3347,18 +3384,22 @@ public class IntegrationPlatformRegressionTests extends BaseTestNGWebDriver {
 		RestUtils.oauthSetup(testData.OAuthKeyStore, testData.OAuthProperty, testData.OAuthAppToken,
 				testData.OAuthUsername, testData.OAuthPassword);
 
-		testData.Status = "UPDATE";
-		testData.PharmacyName = "UpdateAddedPharmacy";
+		log("Add Pharmacy with status 'NEW' ");
+		testData.Status = "NEW";
+		testData.PharmacyName = "AddedNewPharmacy";
 
-		String pharmacyRenewal = PharmacyPaylod.getPharmacyAddPayload(testData);
-		log("Payload: " + pharmacyRenewal);
+		PharmacyPayload pharmacyObj = new PharmacyPayload();
+		String ExternalPharmacyId = PharmacyPayload.randomNumbers(14);
+		log("ExternalPharmacyId posted is : " + ExternalPharmacyId);
+		String pharmacyNewPayload = pharmacyObj.getPharmacyAddPayload(testData, ExternalPharmacyId);
+		log("Payload: " + pharmacyNewPayload);
 		Thread.sleep(6000);
-		log("Wait to generate Pharmacy Renewal Payload");
+		log("Wait to generate Pharmacy New Payload");
 
-		log("Step 2: Do Message Post Request");
+		log("Step 2: Do NEW Pharmacy Post Request");
 		log("ResponsePath: " + testData.ResponsePath);
 		Log4jUtil.log("Generate Payload with Status as " + testData.Status);
-		String processingUrl = RestUtils.setupHttpPostRequest(testData.PharmacyRenewalUrl, pharmacyRenewal,
+		String processingUrl = RestUtils.setupHttpPostRequest(testData.PharmacyRenewalUrl, pharmacyNewPayload,
 				testData.ResponsePath);
 		Log4jUtil.log("processingUrl " + processingUrl);
 
@@ -3374,20 +3415,49 @@ public class IntegrationPlatformRegressionTests extends BaseTestNGWebDriver {
 		}
 		Assert.assertTrue(completed, "Message processing was not completed in time");
 
-		log("Step 3: Login to Patient Portal");
+		log("Update Pharmacy with status 'UPDATE' ");
+		testData.Status = "UPDATE";
+		testData.PharmacyName = "UpdateAddedPharmacy";
+
+		log("ExternalPharmacyId posted is : " + ExternalPharmacyId);
+		String updatePayload = pharmacyObj.getPharmacyAddPayload(testData, ExternalPharmacyId);
+		log("Payload: " + updatePayload);
+		Thread.sleep(6000);
+		log("Wait to generate Pharmacy Payload");
+
+		log("Step 3: Do UPDATE Pharmacy Post Request");
+		log("ResponsePath: " + testData.ResponsePath);
+		Log4jUtil.log("Generate Payload with Status as " + testData.Status);
+		String processingUpdateUrl = RestUtils.setupHttpPostRequest(testData.PharmacyRenewalUrl, updatePayload,
+				testData.ResponsePath);
+		Log4jUtil.log("processingUrl " + processingUpdateUrl);
+
+		Boolean completedStatus = false;
+		for (int i = 0; i < 3; i++) {
+			// wait 10 seconds so the message can be processed
+			Thread.sleep(60000);
+			RestUtils.setupHttpGetRequest(processingUrl, testData.ResponsePath);
+			if (RestUtils.isMessageProcessingCompleted(testData.ResponsePath)) {
+				completed = true;
+				break;
+			}
+		}
+		Assert.assertTrue(completed, "Message processing was not completed in time");
+
+		log("Step 4: Login to Patient Portal");
 		JalapenoLoginPage loginPage = new JalapenoLoginPage(driver, testData.URL);
 		JalapenoHomePage homePage = loginPage.login(testData.UserName, testData.Password);
 		JalapenoPrescriptionsPage JalapenoPrescriptionsPageObject = homePage.clickOnPrescriptions(driver);
 
-		log("Step 4: Click on Prescription and go to Prescription Page");
+		log("Step 5: Click on Prescription and go to Prescription Page");
 		Assert.assertTrue(JalapenoPrescriptionsPageObject.areBasicPageElementsPresent(),
 				"Failed to Load Health Record Summaries ");
 
-		log("Step 5: Click on Continue ");
+		log("Step 6: Click on Continue ");
 		JalapenoPrescriptionsPageObject.clickContinueButton(driver);
 		Thread.sleep(60000);
 
-		log("Step 6:verify added pharmacy is updated in the list");
+		log("Step 7:verify added pharmacy is updated in the list");
 		String addedPharamacy = testData.PharmacyName + ", " + testData.Line1 + ", " + testData.City + ", "
 				+ testData.State;
 		log("Added Pharamacy :- " + addedPharamacy);
