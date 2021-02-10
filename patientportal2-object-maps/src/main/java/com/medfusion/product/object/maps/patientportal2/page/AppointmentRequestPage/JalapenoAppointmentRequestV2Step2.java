@@ -105,10 +105,9 @@ public class JalapenoAppointmentRequestV2Step2 extends JalapenoMenu {
 
 	// sendKeys(" ") instead of click() because there is some problem with
 	// resolution 1024*768
-	public void fillAppointmentRequestForm(String appointmentReason, boolean VideoPref) {
+	public void fillAppointmentRequestForm(String appointmentReason) {
 		IHGUtil.PrintMethodName();
 
-		log("Considering video visit" + VideoPref);
 		javascriptClick(videoVisit);
 
 		log("Set Times of day: Early morning and Late afternoon");
