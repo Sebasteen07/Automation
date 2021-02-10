@@ -185,7 +185,6 @@ public class IntegrationPlatformRegressionTests extends BaseTestNGWebDriver {
 		if(version.equals("v1")) {
 			log("Step 3: Fill Message data");
 			String message = AMDCPayload.getAMDCPayload(testData);
-			
 			log("message :- " + message);
 			messageID = AMDCPayload.messageID;
 			log("Partner Message ID:" + messageID);
@@ -209,7 +208,6 @@ public class IntegrationPlatformRegressionTests extends BaseTestNGWebDriver {
 		else  {
 		log("Step 3: Fill Message data");
 		String message = AMDCPayload.getAMDCV3Payload(testData);
-		
 		log("message :- " + message);
 		messageID = AMDCPayload.messageID;
 		log("Partner Message ID:" + messageID);
@@ -807,8 +805,10 @@ public class IntegrationPlatformRegressionTests extends BaseTestNGWebDriver {
 		sEventObj.generateViewEvent(driver, testData, 'N');
 	}
 
-	@Test(enabled = true, groups = { "RegressionTests" }, retryAnalyzer = RetryAnalyzer.class)
-	public void testBulkSecureMessage() throws Exception {
+	@Test(enabled = true,dataProvider = "channelVersion", groups = {"RegressionTests"}, retryAnalyzer = RetryAnalyzer.class)
+	public void testBulkSecureMessage(String version) throws Exception {
+		if (version.equals("v2"))
+			throw new SkipException("Test skipped as version is:" + version);
 		log("Test Case: Bulk Secure Message");
 		log("Execution Environment: " + IHGUtil.getEnvironmentType());
 		log("Execution Browser: " + TestConfig.getBrowserType());
@@ -828,34 +828,54 @@ public class IntegrationPlatformRegressionTests extends BaseTestNGWebDriver {
 			testData.MaxPatients = "1";
 			testData.NumberOfAttachments = "1";
 		}
-		RestUtils.oauthSetup(testData.OAuthKeyStore, testData.OAuthProperty, testData.OAuthAppToken,
-				testData.OAuthUsername, testData.OAuthPassword);
-
-		log("Step 3: Fill Message data");
-		String message = BulkMessagePayload.getBulkMessagePayload(testData);
-		Thread.sleep(6000);
-
-		// log("message xml : " + message);
-		String messageID = BulkMessagePayload.messageId;
-		log("Partner Message ID:" + messageID);
-
-		log("Step 4: Do Message Post Request");
-		log("ResponsePath:- " + testData.ResponsePath);
-		String processingUrl = RestUtils.setupHttpPostRequest(testData.RestUrl, message, testData.ResponsePath);
-
-		log("Step 5: Get processing status until it is completed");
-		boolean completed = false;
-		for (int i = 0; i < 3; i++) {
-			// wait 10 seconds so the message can be processed
-			Thread.sleep(60000);
-			RestUtils.setupHttpGetRequest(processingUrl, testData.ResponsePath);
-			if (RestUtils.isMessageProcessingCompleted(testData.ResponsePath)) {
-				completed = true;
-				break;
+		RestUtils.oauthSetup(testData.OAuthKeyStore, testData.OAuthProperty, testData.OAuthAppToken, testData.OAuthUsername, testData.OAuthPassword);
+	
+		if(version.equals("v1")){
+			String messageID = BulkMessagePayload.messageId;
+			log("Partner Message ID:" + messageID);
+			log("Step 3: Fill Message data");
+			String message = BulkMessagePayload.getBulkMessagePayload(testData);
+			Thread.sleep(6000);
+			log("message xml : " + message);
+			log("Step 4: Do Message Post Request");
+			log("ResponsePath:- " + testData.ResponsePath);
+			String processingUrl = RestUtils.setupHttpPostRequest(testData.RestUrl, message, testData.ResponsePath);
+			log("Step 5: Get processing status until it is completed");
+			boolean completed = false;
+			for (int i = 0; i < 3; i++) {
+				// wait 10 seconds so the message can be processed
+				Thread.sleep(60000);
+				RestUtils.setupHttpGetRequest(processingUrl, testData.ResponsePath);
+				if (RestUtils.isMessageProcessingCompleted(testData.ResponsePath)) {
+					completed = true;
+					break;
+				}
 			}
+			assertTrue(completed == true, "Message processing was not completed in time");	
 		}
-		assertTrue(completed == true, "Message processing was not completed in time");
-		log("testData.MaxPatients : " + testData.MaxPatients);
+		else {
+			String messageID = BulkMessagePayload.messageId;
+			log("Partner Message ID:" + messageID);
+			log("Step 3: Fill Message data");
+			String message = BulkMessagePayload.getBulkMessageV3Payload(testData);
+			log("message xml : " + message);
+			log("Step 4: Do Message Post Request");
+			log("ResponsePath:- " + testData.ResponsePath);
+			String processingUrl = RestUtils.setupHttpPostRequest(testData.RestV3Url, message, testData.ResponsePath);
+			log("Step 5: Get processing status until it is completed");
+			boolean completed = false;
+			for (int i = 0; i < 3; i++) {
+				// wait 10 seconds so the message can be processed
+				Thread.sleep(60000);
+				RestUtils.setupHttpGetRequest(processingUrl, testData.ResponsePath);
+				if (RestUtils.isMessageProcessingCompleted(testData.ResponsePath)) {
+					completed = true;
+					break;
+				}
+			}
+			assertTrue(completed == true, "Message processing was not completed in time");
+		}
+				log("testData.MaxPatients : " + testData.MaxPatients);
 
 		for (int i = 1; i <= Integer.parseInt(testData.MaxPatients); i++) {
 			// Loop through different patients email and login to view the message.
@@ -882,13 +902,23 @@ public class IntegrationPlatformRegressionTests extends BaseTestNGWebDriver {
 			log("Click on messages solution");
 			JalapenoMessagesPage messagesPage = homePage.showMessages(driver);
 			assertTrue(messagesPage.areBasicPageElementsPresent(), "Inbox failed to load properly.");
-			log("Step 8: Find message in Inbox");
-			String messageIdentifier = BulkMessagePayload.subject;
-			log("message subject " + messageIdentifier);
-			log("Step 9: Log the message read time ");
 			long epoch = System.currentTimeMillis() / 1000;
-			log("Step 10: Validate message loads and is the right message");
-			assertTrue(messagesPage.isMessageDisplayed(driver, messageIdentifier));
+
+			log("Step 8: Find message in Inbox");
+			if(version.equals("v1")) {
+				String messageIdentifier = BulkMessagePayload.subject;			
+				log("message subject " + messageIdentifier);
+				log("Step 9: Log the message read time ");
+				log("Step 10: Validate message loads and is the right message");
+				assertTrue(messagesPage.isMessageDisplayed(driver, messageIdentifier));
+			}
+			else {
+				String messageIdentifier = BulkMessagePayload.subject;			
+				log("message subject " + messageIdentifier);
+				log("Step 9: Log the message read time ");
+				log("Step 10: Validate message loads and is the right message");
+				assertTrue(messagesPage.isMessageDisplayed(driver, messageIdentifier));		
+			}
 			log("Step 11: Check if attachment is present or not");
 			String readdatetimestamp = RestUtils.readTime(epoch);
 			log("Message Read Time:" + readdatetimestamp);
@@ -956,7 +986,7 @@ public class IntegrationPlatformRegressionTests extends BaseTestNGWebDriver {
 
 			BulkMessagePayload.checkWithPrevioudBulkMessageID = true;
 			log("Step 12: Start Bulk mass admin for patient with  No attachment but previous Message ID");
-			testBulkSecureMessage();
+			testBulkSecureMessage(version);
 		}
 	}
 
