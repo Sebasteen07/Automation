@@ -125,7 +125,7 @@ public class JalapenoPrescriptionsPage extends JalapenoMenu {
 
 	@FindBy(how = How.XPATH, using = "//input[@name='pharmacyPanel:radioGroup:pharmacySearchContainer:pharmacySearchList']")
 	private WebElement chooseFromAList;
-
+	
 	@FindBy(how = How.XPATH, using = "//div[@class='wicket-aa-container']/div/ul/li")
 	private WebElement textValueFromChooseFromAList;
 	

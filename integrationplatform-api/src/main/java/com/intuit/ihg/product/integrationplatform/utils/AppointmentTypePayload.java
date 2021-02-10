@@ -17,7 +17,7 @@ import org.w3c.dom.Node;
 public class AppointmentTypePayload {
 	static String output = null;
 
-	public static String getAppontmentTypePayload(AppointmentData testData) {
+	public static String getAppointmentTypePayload(AppointmentData testData) {
 		try {
 			DocumentBuilderFactory icFactory = DocumentBuilderFactory.newInstance();
 			DocumentBuilder icBuilder;
