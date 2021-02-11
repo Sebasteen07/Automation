@@ -610,13 +610,15 @@ public class IntegrationPlatformAcceptanceTests extends BaseTestNGWebDriver {
 
 	}
 
-	@Test(enabled = true, groups = {"AcceptanceTests"}, retryAnalyzer = RetryAnalyzer.class)
-	public void testPayNow() throws Exception {
-
+	@Test(enabled = true, dataProvider = "channelVersion", groups = {"AcceptanceTests"}, retryAnalyzer = RetryAnalyzer.class)
+	public void testPayNow(String version) throws Exception {
+		if (version.contains("v2"))
+			throw new SkipException("Test skipped as version is:" + version);
 		log("Test Case: testPayNow - No login payment");
 		log("Execution Environment: " + IHGUtil.getEnvironmentType());
 		log("Execution Browser: " + TestConfig.getBrowserType());
 
+		String lastTimestamp;
 		PayNow payNowData = new PayNow();
 		PayNowTestData testcasesData = new PayNowTestData(payNowData);
 		Long timestamp = System.currentTimeMillis();
@@ -647,23 +649,27 @@ public class IntegrationPlatformAcceptanceTests extends BaseTestNGWebDriver {
 				testcasesData.getOAuthPassword());
 
 		log("Step 8: Getting messages since timestamp: " + timestamp);
-		String lastTimestamp =
+		if(version.equals("v1")) {
+		lastTimestamp =
 				RestUtils.setupHttpGetRequest(testcasesData.getRestUrl() + "=payNowpayment" + "&since=" + timestamp, testcasesData.getResponsePath());
-
+		}
+		else {
+		lastTimestamp =
+				RestUtils.setupHttpGetRequest(testcasesData.getRestV3Url() + "=payNowpayment" + "&since=" + timestamp, testcasesData.getResponsePath());
+		}
+		
 		log("Step 9: Verify payment details");
 		RestUtils.verifyPayment(testcasesData.getResponsePath(), pNoLoginPaymentPage.GetAmountPrize() + ".00", IntegrationConstants.SUBMITTED,
 				IntegrationConstants.PAYNOWPAYMENT, confirmationNumber);
 
 		String paymentID = RestUtils.paymentID;
 		log("Payment ID :" + paymentID);
-
-		String postPayload =
-				RestUtils.preparePayment(testcasesData.getPaymentPath(), paymentID, pNoLoginPaymentPage.GetAmountPrize() + ".00", IntegrationConstants.PAYNOWPAYMENT);
-
-		log("Posted Payload :     " + postPayload);
+		String postPayload;
 		log("Step 10: Do a Post and get the message");
+		if(version.equals("v1")) {
+		postPayload =
+					RestUtils.preparePayment(testcasesData.getPaymentPath(), paymentID, pNoLoginPaymentPage.GetAmountPrize() + ".00", IntegrationConstants.PAYNOWPAYMENT);		
 		String processingUrl = RestUtils.setupHttpPostRequest(testcasesData.getRestUrl() + "=payNowpayment", postPayload, testcasesData.getResponsePath());
-
 		log("Step 11: Get processing status until it is completed");
 		boolean completed = false;
 		// wait 10 seconds so the message can be processed
@@ -672,8 +678,22 @@ public class IntegrationPlatformAcceptanceTests extends BaseTestNGWebDriver {
 		if (RestUtils.isMessageProcessingCompleted(testcasesData.getResponsePath())) {
 			completed = true;
 		}
-
 		verifyTrue(completed, "Message processing was not completed in time");
+		}
+		else {
+			postPayload =
+					RestUtils.preparePayment(testcasesData.getPaymentPathV3(), paymentID, pNoLoginPaymentPage.GetAmountPrize() + ".00", IntegrationConstants.PAYNOWPAYMENT);
+		String processingUrl = RestUtils.setupHttpPostRequest(testcasesData.getRestV3Url() + "=payNowpayment", postPayload, testcasesData.getResponsePath());
+		log("Step 11: Get processing status until it is completed");
+		boolean completed = false;
+		// wait 10 seconds so the message can be processed
+		Thread.sleep(60000);
+		RestUtils.setupHttpGetRequest(processingUrl, testcasesData.getResponsePath());
+		if (RestUtils.isMessageProcessingCompleted(testcasesData.getResponsePath())) {
+			completed = true;
+		}
+		verifyTrue(completed, "Message processing was not completed in time");
+		}
 		Thread.sleep(5000);
 		log("Verify Payment status in Practice Portal");
 		log("Step 12: Login to Practice Portal");
@@ -694,9 +714,14 @@ public class IntegrationPlatformAcceptanceTests extends BaseTestNGWebDriver {
 
 		log("Step 16: Logout of Practice Portal ");
 		practiceHome.logOut();
-
+		
 		log("Step 17: Verify Payment status in Get Response using the Timestamp received in response of Step 7");
-		RestUtils.setupHttpGetRequest(testcasesData.getRestUrl() + "=payNowpayment" + "&since=" + lastTimestamp, testcasesData.getResponsePath());
+		if(version.equals("v1")) {
+			RestUtils.setupHttpGetRequest(testcasesData.getRestUrl() + "=payNowpayment" + "&since=" + lastTimestamp, testcasesData.getResponsePath());
+		}
+		else {
+			RestUtils.setupHttpGetRequest(testcasesData.getRestV3Url() + "=payNowpayment" + "&since=" + lastTimestamp, testcasesData.getResponsePath());
+		}
 
 	}
 
