@@ -761,6 +761,10 @@ public class PropertyFileLoader {
 		return property.getProperty("restUrl_SE");
 	}
 
+	public String getRestV3Url_SE() {
+		return property.getProperty("restv3Url_SE");
+	}
+	
 	public String getOAuthAppToken_SE() {
 		return property.getProperty("oAuthAppToken_SE");
 	}
@@ -792,7 +796,11 @@ public class PropertyFileLoader {
 	public String getStatementEventURL() {
 		return property.getProperty("statementEventURL");
 	}
-
+	
+	public String getStatementEventV3URL() {
+		return property.getProperty("statementEventV3URL");
+	}
+	
 	public String getPaymentDueDate() {
 		return property.getProperty("paymentDueDate");
 	}
