@@ -272,6 +272,7 @@ public class LoadPreTestData {
 		testData.Password = propertyData.getPassword_SE();
 		testData.Email = propertyData.getEmail_SE();
 		testData.RestUrl = propertyData.getRestUrl_SE();
+		testData.RestV3Url = propertyData.getRestV3Url_SE();
 		testData.ResponsePath = propertyData.getResponsePath();
 		testData.OAuthAppToken = propertyData.getOAuthAppToken_SE();
 		testData.OAuthKeyStore = propertyData.getOAuthKeyStore();
@@ -283,7 +284,7 @@ public class LoadPreTestData {
 		testData.PatientID = propertyData.getPatientID_SE();
 		testData.MFPatientID = propertyData.getMFPatientID_SE();
 		testData.StatementEventURL = propertyData.getStatementEventURL();
-
+		testData.StatementEventV3URL = propertyData.getStatementEventV3URL();
 		testData.StatementFormat = propertyData.getStatementFormat_SE();
 		testData.Address1 = propertyData.getAddress1_SE();
 		testData.Address2 = propertyData.getAddress2_SE();

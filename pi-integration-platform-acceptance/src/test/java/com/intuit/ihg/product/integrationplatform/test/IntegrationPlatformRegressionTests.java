@@ -734,8 +734,10 @@ public class IntegrationPlatformRegressionTests extends BaseTestNGWebDriver {
 		Assert.assertEquals(patient.getFirstName(), patientExternalID, "Patient External ID Matched !");
 	}
 
-	@Test(enabled = true, groups = { "RegressionTests" }, retryAnalyzer = RetryAnalyzer.class)
-	public void testStatementEventForExistingPatient() throws Exception {
+	@Test(enabled = true,dataProvider = "channelVersion", groups = { "RegressionTests" }, retryAnalyzer = RetryAnalyzer.class)
+	public void testStatementEventForExistingPatient(String version) throws Exception {
+		if (version.equals("v2"))
+			throw new SkipException("Test skipped as version is:" + version);
 		log("Test Case: Post Statment and verify its Event for Existing Patient From Partner");
 		log("Recommended to use Firefox Browser for this test ");
 		log("Execution Environment: " + IHGUtil.getEnvironmentType());
@@ -747,12 +749,14 @@ public class IntegrationPlatformRegressionTests extends BaseTestNGWebDriver {
 		log("url is " + testData.Url);
 		log("Step 2: Call Statement Post");
 		StatementEventUtils sEventObj = new StatementEventUtils();
-		sEventObj.generateViewEvent(driver, testData, 'E');
+		sEventObj.generateViewEvent(driver, testData, 'E',version);
 
 	}
 
-	@Test(enabled = true, groups = { "RegressionTests" }, retryAnalyzer = RetryAnalyzer.class)
-	public void testStatementEventForNewSelfPatient() throws Exception {
+	@Test(enabled = true,dataProvider = "channelVersion", groups = { "RegressionTests" }, retryAnalyzer = RetryAnalyzer.class)
+	public void testStatementEventForNewSelfPatient(String version) throws Exception {
+		if (version.equals("v2"))
+			throw new SkipException("Test skipped as version is:" + version);
 		log("Test Case: POST Statement and Get Statement Event for New Patient From Partner");
 		log("Recommended to use Firefox Browser for this test ");
 		log("Execution Environment: " + IHGUtil.getEnvironmentType());
@@ -805,7 +809,7 @@ public class IntegrationPlatformRegressionTests extends BaseTestNGWebDriver {
 		testData.StatementType = "New";
 		testData.since = since;
 		log("Step 4: Call Statement Post");
-		sEventObj.generateViewEvent(driver, testData, 'N');
+		sEventObj.generateViewEvent(driver, testData, 'N', version);
 	}
 
 	@Test(enabled = true, dataProvider = "channelVersion", groups = {
