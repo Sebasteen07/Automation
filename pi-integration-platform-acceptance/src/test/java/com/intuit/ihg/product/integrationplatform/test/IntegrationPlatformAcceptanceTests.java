@@ -551,8 +551,8 @@ public class IntegrationPlatformAcceptanceTests extends BaseTestNGWebDriver {
 
 		log("Step 4: Complete Appointment Request Page");
 		JalapenoAppointmentRequestV2Step2 apptPage2 = apptPage1.continueToStep2(driver);
-
-		apptPage2.fillAppointmentRequestForm(reason, VideoPref);
+		
+		apptPage2.fillAppointmentRequestForm(reason);
 		homePage = apptPage2.submitAppointment(driver);
 
 		log("Step 5: Check if thank you frame is displayd");
