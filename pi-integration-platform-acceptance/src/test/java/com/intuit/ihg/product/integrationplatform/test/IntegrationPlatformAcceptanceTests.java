@@ -595,8 +595,6 @@ public class IntegrationPlatformAcceptanceTests extends BaseTestNGWebDriver {
 
 			log("Step 9: Checking reason and video preference in the response xml");
 			RestUtils.isReasonResponseXMLValid(testData.getResponsePath(), reason);
-			// String arSMSubject = "Reply to Appointment Request";
-			// String arSMBody = "This is reply to AR for " + reason;
 			String postXML = RestUtils.findValueOfChildNode(testData.getResponsePath(), "AppointmentRequest", reason, arSMSubject, arSMBody, testData.getAppointmentPath());
 			log("PostXML:" +postXML);
 			
@@ -637,8 +635,6 @@ public class IntegrationPlatformAcceptanceTests extends BaseTestNGWebDriver {
 
 			log("Step 9: Checking reason and video preference in the response xml");
 			RestUtils.isReasonResponseXMLValid(testData.getResponsePath(), reason);
-			// String arSMSubject = "Reply to Appointment Request";
-			// String arSMBody = "This is reply to AR for " + reason;
 			String postXML = RestUtils.findValueOfChildNode(testData.getResponsePath(), "AppointmentRequest", reason,
 					arSMSubject, arSMBody, testData.getAppointmentPathV3());
 			log("PostXML:" +postXML);
