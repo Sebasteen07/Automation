@@ -14,7 +14,8 @@
 		<class name = "com.ng.product.integrationplatform.tests.NGIntegrationE2ESITTests" />
 		<methods>
 		        <include name="testInboxMultiPracticeAppointmentBookWithExistingPatient"/>
-		        <include name="testInboxMultiPracticeAppointmentBookWithNewPatient"/>    	
+		        <include name="testInboxMultiPracticeAppointmentBookWithNewPatient"/>    
+		        <include name="testInboxAppointmentBookForDependentUsingExistingGuardianAccount"/>	
       	</methods>
 	</classes>
 </test>
