@@ -44,6 +44,12 @@ public class JalapenoAccountPage extends JalapenoMenu {
 
 		@FindBy(how = How.XPATH, using = "//*[@class='button primary ladda-button ng-binding inviteBtn pull-right']")
 		private WebElement sendInvitationButton;
+		
+		@FindBy(how = How.LINK_TEXT, using = "Unlink")
+		private WebElement unLink;
+		
+		@FindBy(how = How.XPATH, using = "//button[contains(text(),'Unlink')]")
+		private WebElement unLinkButton;
 
 		public JalapenoAccountPage(WebDriver driver) {
 				super(driver);
@@ -132,5 +138,17 @@ public class JalapenoAccountPage extends JalapenoMenu {
 
 			String fullName = fname + " " + lname;
 			waitUntilSuccessMessageLoads(wait, fullName);
+	}
+		
+		public void clickOnUnlinkDependentAccount(){
+
+			log("Trying to click on Dependent unlink link for Account");
+			WebDriverWait wait = new WebDriverWait(driver, 20);
+			wait.until(ExpectedConditions.visibilityOf(unLink));
+			unLink.click();
+			
+			log("Click on Unlik button");
+			wait.until(ExpectedConditions.visibilityOf(unLinkButton));
+			unLinkButton.click();
 	}
 }

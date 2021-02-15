@@ -526,5 +526,17 @@ public class JalapenoHomePage extends JalapenoMenu {
 		javascriptClick(appointments);
 		return PageFactory.initElements(driver, NGAppointmentPage.class);
 	}
+	
+	public boolean wasUnlikSuccessfull() {
+
+		try {
+			log("Looking for successfull message after unlink");
+			new WebDriverWait(driver, 30).until(ExpectedConditions.visibilityOf(driver.findElement(By.xpath("//*[contains(text(),'is no longer linked to your account.')]"))));
+			return driver.findElement(By.xpath("//*[contains(text(),'is no longer linked to your account.')]")).isDisplayed();
+		} catch (Exception e) {
+			log("Unlik of Dependent account was unsuccessfull");
+			return false;
+		}
+	}
 
 }

@@ -331,4 +331,9 @@ public abstract class JalapenoMenu extends MedfusionPage {
 
 		return PageFactory.initElements(driver, NGLoginPage.class);
 	}
+	
+	public void UnlinkDependentAccount() {
+		JalapenoAccountPage accountPage = clickOnAccount();
+		accountPage.clickOnUnlinkDependentAccount();
+	}
 }
