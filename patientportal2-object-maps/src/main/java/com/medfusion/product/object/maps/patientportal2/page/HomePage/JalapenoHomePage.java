@@ -132,6 +132,9 @@ public class JalapenoHomePage extends JalapenoMenu {
 
 	@FindBy(how = How.ID, using = "sentFolder")
 	private WebElement sentFolder;
+	
+	@FindBy(how = How.XPATH, using = "//*[contains(text(),'is no longer linked to your account.')]")
+	private WebElement unlinkSuccessfullMsg;
 
 	public JalapenoHomePage(WebDriver driver) {
 		super(driver);
@@ -540,10 +543,10 @@ public class JalapenoHomePage extends JalapenoMenu {
 
 		try {
 			log("Looking for successfull message after unlink");
-			new WebDriverWait(driver, 30).until(ExpectedConditions.visibilityOf(driver.findElement(By.xpath("//*[contains(text(),'is no longer linked to your account.')]"))));
-			return driver.findElement(By.xpath("//*[contains(text(),'is no longer linked to your account.')]")).isDisplayed();
+			new WebDriverWait(driver, 30).until(ExpectedConditions.visibilityOf(unlinkSuccessfullMsg));
+			return unlinkSuccessfullMsg.isDisplayed();
 		} catch (Exception e) {
-			log("Unlik of Dependent account was unsuccessfull");
+			log("Unlink of Dependent account was unsuccessfull");
 			return false;
 		}
 	}
