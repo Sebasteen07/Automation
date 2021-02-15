@@ -44,6 +44,7 @@ public class IntegrationConstants {
 
 	// Appointment Request constants
 	public static final String REASON = "Reason";
+	public static final String VIDEOPREFERENCE = "VideoPreference";
 	public static final String CREATED_TIME = "CreatedDateTime";
 	public static final String UPDATE_TIME = "UpdatedDateTime";
 	public static final String MESSAGE_THREAD_ID = "MessageThreadId";

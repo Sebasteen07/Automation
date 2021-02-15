@@ -315,9 +315,6 @@ public class CommonFlows {
 	   Log4jUtil.log("Step Begins: Add Problem to patient chart");
 	   String problem_id = NGAPIFlows.addProblem(locationName,providerName,  person_id,"420543008","55561003","Active");
 	
-	   Log4jUtil.log("Step Begins: Add procedure to created encounter and diagnosis");
-	   String procedure_id = NGAPIFlows.addProcedure(locationName,providerName, person_id, encounter_id,diagnosis_id);	
-
 	   Log4jUtil.log("Step Begins: Add Immunization to created encounter");
 	   String immunization_id = NGAPIFlows.addNewImmunizationsOrder(locationName,providerName,person_id,encounter_id);
 	
@@ -363,6 +360,8 @@ public class CommonFlows {
 			
 			if(messageType.equalsIgnoreCase("ReadReceiptRequested"))
 				CommonUtils.VerifyTwoValues(deliveryStatusATMF,"equals","READ_SENT");
+			else if(messageType.equalsIgnoreCase("UnReadRequested"))
+				CommonUtils.VerifyTwoValues(deliveryStatusATMF,"equals","UNREAD_SENT");
 			else
 				CommonUtils.VerifyTwoValues(deliveryStatusATMF,"equals","SENT");			
 			
@@ -429,7 +428,20 @@ public class CommonFlows {
 			messagesPage.verifySenderInfo(driver, userFirstName,userLastName);
 		}
 		
+		if(messageType.equalsIgnoreCase("BulkSentByPracticeUserReadReceiptRequested")){
+			String userId= DBUtils.executeQueryOnDB("NGCoreDB", "select sender_id from ngweb_communications where comm_id ='"+comm_id+"'");
+			String userFirstName =DBUtils.executeQueryOnDB("NGCoreDB","select first_name from user_mstr where user_id='"+userId+"'");
+			String userLastName =DBUtils.executeQueryOnDB("NGCoreDB","select last_name from user_mstr where user_id='"+userId+"'");	
+			String ExpectedSenderName =userLastName+", "+ userFirstName +"Dr";			
+			messagesPage.verifySenderInfo(driver, userFirstName,userLastName);
+		}
+		
 		if(messageType.equalsIgnoreCase("CannotReply")){
+			Boolean replyStatus = messagesPage.verifyReplyButton(driver);
+			Assert.assertTrue(replyStatus, "Reply Button is not displayed as expected");			
+		}
+		
+		if(messageType.equalsIgnoreCase("BulkCannotReply")){
 			Boolean replyStatus = messagesPage.verifyReplyButton(driver);
 			Assert.assertTrue(replyStatus, "Reply Button is not displayed as expected");			
 		}
@@ -442,6 +454,25 @@ public class CommonFlows {
 		Long since = timestamp / 1000L - 60 * 24;
 		
 		if(messageType.equalsIgnoreCase("ReadReceiptRequested")){
+			Log4jUtil.log("Step Begins: Wait 1 min, so the message can be processed");
+			Thread.sleep(60000);
+
+			Log4jUtil.log("Getting messages since timestamp: " + since);
+			RestUtils.setupHttpGetRequest(PropertyLoaderObj.getProperty("GetReadReceipt").replaceAll("integrationID", integrationID) + "?since=" + since + ",0", PropertyLoaderObj.getResponsePath());
+
+			Log4jUtil.log("Step Begins: Validate the message id and read time in response");
+			RestUtils.isReadCommunicationMessage(PropertyLoaderObj.getResponsePath(), messageID, readdatetimestamp);	
+		
+			verifyReadReceiptReceived(comm_id, readdatetimestamp);
+			verifyReadReceiptMessageReceived(comm_id, subject);
+		} else if (messageType.equalsIgnoreCase("UnReadNotificationRequested")){
+			String deliveryStatusATMF =DBUtils.executeQueryOnDB("MFAgentDB","select status from  message_delivery where message_groupid ='"+comm_id+"'");
+			CommonUtils.VerifyTwoValues(deliveryStatusATMF,"equals","NOTIFIED_FAILURE");
+		} else if(messageType.equalsIgnoreCase("BulkCannotReply")){
+			String deliveryStatusATMF =DBUtils.executeQueryOnDB("MFAgentDB","select status from  message_delivery where message_groupid ='"+comm_id+"'");
+			Log4jUtil.log("Message Status at MF agent "+deliveryStatusATMF);
+		} else if(messageType.equalsIgnoreCase("BulkSentByPracticeUserReadReceiptRequested")){
+
 			Log4jUtil.log("Step Begins: Wait 1 min, so the message can be processed");
 			Thread.sleep(60000);
 
@@ -472,6 +503,9 @@ public class CommonFlows {
 			replyMessageID = RestUtils.isReplyPresentReturnMessageID(PropertyLoaderObj.getResponsePath(), "Re: "+subject, IntegrationConstants.MESSAGE_REPLY);
 		}
 		
+		if(messageType.equalsIgnoreCase("BulkSentByPracticeUserReadReceiptRequested")){
+			replyMessageID = ReplyToMessage(PropertyLoaderObj, driver, messagesPage, timestamp, integrationID, subject);
+		}
 		if(messageType.equalsIgnoreCase("SentByPracticeUser")){
 			replyMessageID = ReplyToMessage(PropertyLoaderObj, driver, messagesPage, timestamp, integrationID, subject);
 		}
@@ -809,5 +843,35 @@ public class CommonFlows {
 		appointmentsPage.verifyAppointmentisDeleted(appointmentDate,appointmentTime);
 		Log4jUtil.log("Booked Appointment is deleted successfully");
   }
-
+      
+   public static void verifyPrescriptionRenewalRequestReceived(String renewalrequest_id,String Reason,String practiceId) throws Throwable{
+	   String ProcessingStatusQuery = "Select processing_status from nxmd_med_renewals where id ='"+renewalrequest_id+"'";	   
+	   String requestReasonQuery = "Select request_reason from nxmd_med_renewals where id ='"+renewalrequest_id+"'";  
+	   String PracticeIDinPrescriptionTable = "Select nx_practice_id from nxmd_med_renewals where id ='"+renewalrequest_id+"'";
+	   String practiceIdQuery ="select nx_practice_id from nxmd_practices where practice_id ='"+practiceId+"'";
+	   
+	   String ProcessingStatus = DBUtils.executeQueryOnDB("NGCoreDB",ProcessingStatusQuery);
+		if(ProcessingStatus.isEmpty() || ProcessingStatus.equals("NULL")){
+			for (int i = 0; i < arg_timeOut; i++) {
+				ProcessingStatus =DBUtils.executeQueryOnDB("NGCoreDB",ProcessingStatusQuery);
+				if (ProcessingStatus.equalsIgnoreCase("1")) {
+					Log4jUtil.log("Step End: Prescription Renewal request is reached to EPM/EHR Inbox from Portal.");
+	                break;
+	            } else {
+	                if (i == arg_timeOut - 1)
+	                    Thread.sleep(1000);
+	            }
+	        }
+		}
+		
+	   CommonUtils.VerifyTwoValues(ProcessingStatus,"equals","1");
+	   
+	   String requestReason = DBUtils.executeQueryOnDB("NGCoreDB",requestReasonQuery);
+	   CommonUtils.VerifyTwoValues(requestReason,"contains",Reason);
+	   
+	   String ExpectedPracticeID = DBUtils.executeQueryOnDB("NGCoreDB",practiceIdQuery);
+	   String ActualPracticeIDinDB = DBUtils.executeQueryOnDB("NGCoreDB",PracticeIDinPrescriptionTable);
+	   CommonUtils.VerifyTwoValues(ActualPracticeIDinDB,"equals",ExpectedPracticeID);
+	   Log4jUtil.log("Step End: The Prescription Renewal request is reached to EPM/EHR Inbox");
+	   }
 }

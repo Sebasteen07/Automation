@@ -36,6 +36,8 @@
 				<include name="testDeleteP2PMessage"/>
 				<exclude name="testDeleteP2PMessageInMailBox"/>
 				<include name="testAppoinmentType"/>
+				<include name="testAddPharmacies"/>
+				<include name="testUpdatePharmacies"/>
       		</methods>
 	</classes>
 </test>

@@ -5,6 +5,7 @@ public class StatementEventData {
 	public String UserName = "";
 	public String Password = "";
 	public String RestUrl = "";
+	public String RestV3Url = "";
 	public String ResponsePath = "";
 	
 	public String OAuthProperty = "";
@@ -21,6 +22,7 @@ public class StatementEventData {
 	public String MFPatientID = "";
 	public String Email = "";
 	public String StatementEventURL = "";
+	public String StatementEventV3URL = "";
 	public String StatementFormat="";
 	public String Address1="";
 	public String Address2="";

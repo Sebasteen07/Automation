@@ -19,7 +19,6 @@ public class LoadPreTestData {
 		testData.EPracticeName = propertyData.getEPracticeNameCCD();
 		testData.ccdXMLPath = propertyData.getCCDPATH3();
 		testData.CCDPath = propertyData.getCCDPath();
-
 		testData.OAuthProperty = propertyData.getOAuthProperty();
 		testData.OAuthKeyStore = propertyData.getOAuthKeyStore();
 		testData.OAuthAppToken = propertyData.getOAuthAppTokenCCD();
@@ -80,6 +79,9 @@ public class LoadPreTestData {
 		testData.attachmentBody = propertyData.getAttachmentBody();
 		testData.downloadLocation = propertyData.getDownloadFileLocation();
 		testData.portalCategoryType = propertyData.getPortalCategoryType();
+		testData.RestV3Url=propertyData.getRestUrlV3AMDC();
+		testData.ReadCommuniationURLV3 = propertyData.getReadCommunicationUrlV3AMDC();
+
 		return testData;
 	}
 
@@ -270,6 +272,7 @@ public class LoadPreTestData {
 		testData.Password = propertyData.getPassword_SE();
 		testData.Email = propertyData.getEmail_SE();
 		testData.RestUrl = propertyData.getRestUrl_SE();
+		testData.RestV3Url = propertyData.getRestV3Url_SE();
 		testData.ResponsePath = propertyData.getResponsePath();
 		testData.OAuthAppToken = propertyData.getOAuthAppToken_SE();
 		testData.OAuthKeyStore = propertyData.getOAuthKeyStore();
@@ -281,7 +284,7 @@ public class LoadPreTestData {
 		testData.PatientID = propertyData.getPatientID_SE();
 		testData.MFPatientID = propertyData.getMFPatientID_SE();
 		testData.StatementEventURL = propertyData.getStatementEventURL();
-
+		testData.StatementEventV3URL = propertyData.getStatementEventV3URL();
 		testData.StatementFormat = propertyData.getStatementFormat_SE();
 		testData.Address1 = propertyData.getAddress1_SE();
 		testData.Address2 = propertyData.getAddress2_SE();
@@ -361,6 +364,8 @@ public class LoadPreTestData {
 		testData.ParamName2 = propertyData.getParamName2();
 		testData.ParamValue3 = propertyData.getParamValue3();
 		testData.ParamName3 = propertyData.getParamName3();
+		testData.RestV3Url = propertyData.getRestUrlV3Bulk();
+
 
 		for (int j = 1; j <= Integer.parseInt(testData.NumberOfParams); j++) {
 			testData.PatientsUserNameArray[j - 1] = (String) propertyData.getClass().getMethod("getUserNameBulk" + j)
@@ -554,7 +559,6 @@ public class LoadPreTestData {
 		testData.OAuthUsername = propertyData.getOAuthUsername_AD();
 		testData.OAuthPassword = propertyData.getoAuthPassword_AD();
 		testData.ResponsePath = propertyData.getResponsePath();
-		
 		testData.AppointmentTypeName = propertyData.getAppointmentTypeName();
 		testData.AppointmentTypeID = propertyData.getAppointmentTypeID();
 		testData.AppointmentCategoryName = propertyData.getAppointmentCategoryName();
@@ -563,6 +567,29 @@ public class LoadPreTestData {
 		testData.Comment = propertyData.getComment();
 		testData.AppointmentTypeUrl = propertyData.getAppointmentTypeUrl();
 		return testData;
+	}
 
+	public Pharmacies loadPharmaciesFromProperty(Pharmacies testData) throws IOException {
+		PropertyFileLoader propertyData = new PropertyFileLoader();
+		testData.OAuthProperty = propertyData.getOAuthProperty();
+		testData.OAuthKeyStore = propertyData.getOAuthKeyStore();
+		testData.ResponsePath = propertyData.getResponsePath();
+		testData.OAuthAppToken = propertyData.getOAuthAppToken_PH();
+		testData.OAuthUsername = propertyData.getOAuthUsername_PH();
+		testData.OAuthPassword = propertyData.getoAuthPassword_PH();
+		testData.UserName = propertyData.getPatientUsername_PH();
+		testData.Password = propertyData.getPatientPassword_PH();
+		testData.PharmacyRenewalUrl = propertyData.getPharmacyRenewalUrl();
+		testData.URL = propertyData.getpatientUrl();
+		testData.ExternalPharmacyId = propertyData.getExternalPharmacyId();
+		testData.Line1 = propertyData.getLine1();
+		testData.Line2 = propertyData.getLine2();
+		testData.City = propertyData.getCity_PH();
+		testData.State = propertyData.getState_PH();
+		testData.Country = propertyData.getCountry();
+		testData.ZipCode = propertyData.getZipCode_PH();
+		testData.PharmacyPhone = propertyData.getPharmacyPhone();
+		testData.PharmacyFaxNumber = propertyData.getPharmacyFaxNumber();
+		return testData;
 	}
 }

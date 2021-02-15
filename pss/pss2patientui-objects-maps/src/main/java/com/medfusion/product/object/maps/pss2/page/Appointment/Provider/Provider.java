@@ -124,8 +124,9 @@ public class Provider extends PSS2MainPage {
 	public AppointmentDateTime searchForProviderFromList(String providerName) throws InterruptedException {
 		searchForProvider.sendKeys(providerName.trim());
 		log("providerList = " + providerList.size());
-		Thread.sleep(6000);
+		Thread.sleep(8000);
 		CommonMethods.highlightElement(providerList.get(0));
+		Thread.sleep(3000);
 		providerList.get(0).click();
 		log("Clicked on the Provider ");
 		return PageFactory.initElements(driver, AppointmentDateTime.class);

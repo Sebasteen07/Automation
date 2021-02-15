@@ -74,7 +74,7 @@ public class JalapenoMessagesPage extends JalapenoMenu {
 	private WebElement inboxMessageBody;
 	//a[text()='This is testing URL']
 	
-	@FindBy(how = How.XPATH, using = "//button[@class='btn btn-default ng-binding ng-scope']")
+	@FindBy(how = How.XPATH, using = "//button[contains(text(),'Archive')]")
 	private WebElement archiveButton;
 	
 	@FindBy(how = How.XPATH, using = "//span[@class='messageFrom']")
@@ -201,7 +201,7 @@ public class JalapenoMessagesPage extends JalapenoMenu {
 	public void goToInboxMessage() {
 		log("Navigating to Inbox folder");
 		inboxFolder.click();
-		IHGUtil.waitForElement(driver, 10000, archiveButton);
+		IHGUtil.waitForElement(driver, 1000, archiveButton);
 	
 		}
 	
@@ -358,6 +358,40 @@ public class JalapenoMessagesPage extends JalapenoMenu {
 			Assert.assertTrue(status, "Sender Name is not correct");
 			log("Sender Name is correct");
 			return status;
+	}
+	
+	public void verifyPrescriptionResponse(WebDriver driver, String prescritonRenewalResponse) {
+		IHGUtil.PrintMethodName();
+		WebElement element;
+		Boolean status= false;
+			try {
+				element = driver.findElement(By.xpath("//*[contains(text(),'" + prescritonRenewalResponse + "')]"));
+				Thread.sleep(5000);
+				if(element.isDisplayed()){
+					status= true;
+				    log("PrescritonRenewalResponse added by Practice is displayed in Portal");}
+			} catch (Exception ex) {
+				log("PrescritonRenewalResponse added by Practice is not displayed in Portal");
+				log(ex.getMessage());
+				Assert.assertTrue(status, "PrescritonRenewalResponse added by Practice is not displayed in Portal");
+			}
+	}
+	
+	public void verifyMedicationStatus(WebDriver driver, String renewalStatus) {
+		IHGUtil.PrintMethodName();
+		WebElement element;
+		Boolean status= false;
+			try {
+				element = driver.findElement(By.xpath("//*[contains(text(),'" + renewalStatus + "')]"));
+				Thread.sleep(5000);
+				if(element.isDisplayed()){
+					status= true;
+				    log("Medication status is "+renewalStatus);}
+			} catch (Exception ex) {
+				log("Medication status is not displayed in Prescription renewal message");
+				log(ex.getMessage());
+				Assert.assertTrue(status, "Medication status is not displayed in Prescription renewal message");
+			}
 	}
 }
 
