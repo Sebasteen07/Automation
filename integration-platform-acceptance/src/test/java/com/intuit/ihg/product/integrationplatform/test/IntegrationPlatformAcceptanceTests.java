@@ -725,9 +725,10 @@ public class IntegrationPlatformAcceptanceTests extends BaseTestNGWebDriver {
 
 	}
 
-	@Test(enabled = true, groups = {"AcceptanceTests"}, retryAnalyzer = RetryAnalyzer.class)
-	public void testVirtualCardSwiper() throws Exception {
-
+	@Test(enabled = true,dataProvider = "channelVersion", groups = {"AcceptanceTests"}, retryAnalyzer = RetryAnalyzer.class)
+	public void testVirtualCardSwiper(String version) throws Exception {
+		if (version.contains("v2"))
+			throw new SkipException("Test skipped as version is:" + version);
 		log("Test Case: Virtual Card Swiper");
 		log("Execution Environment: " + IHGUtil.getEnvironmentType());
 		log("Execution Browser: " + TestConfig.getBrowserType());
@@ -735,14 +736,14 @@ public class IntegrationPlatformAcceptanceTests extends BaseTestNGWebDriver {
 		PayNow payNowData = new PayNow();
 		PayNowTestData testcasesData = new PayNowTestData(payNowData);
 		Long timestamp = System.currentTimeMillis();
-
+		log("timestamp : "+timestamp);
+		String lastTimestamp;
 		log("Step 1: Login to Practice Portal");
 		PracticeLoginPage practiceLogin = new PracticeLoginPage(driver, testcasesData.getPracticeURL());
 		PracticeHomePage practiceHome = practiceLogin.login(testcasesData.getPracticeUserName(), testcasesData.getPracticePassword());
 		Thread.sleep(9000);
 		log("Step 2: Click on Virtual Card Swiper Tab ");
 		VirtualCardSwiperPage vcsPage = practiceHome.clickVirtualCardSwiperTab();
-
 		String Amount = IHGUtil.createRandomNumericString().substring(1, 4);
 		log("Step 3: Click on Charge Card ");
 		vcsPage.addCreditCardInfo("Test", "5105105105105100", "Visa", "12", "2022", Amount, "110", "12345", "Test0001", "Test Patient", "comment");
@@ -760,9 +761,9 @@ public class IntegrationPlatformAcceptanceTests extends BaseTestNGWebDriver {
 
 		// wait 30 seconds so the message can be processed
 		Thread.sleep(180000);
-
+		if(version.equals("v1")) {
 		log("Step 7: Getting messages since timestamp: " + timestamp);
-		String lastTimestamp = RestUtils.setupHttpGetRequest(testcasesData.getRestUrl() + "=vcsPayment" + "&since=" + timestamp, testcasesData.getResponsePath());
+		lastTimestamp = RestUtils.setupHttpGetRequest(testcasesData.getRestUrl() + "=vcsPayment" + "&since=" + timestamp, testcasesData.getResponsePath());
 
 		log("Step 8: Verify payment details");
 		RestUtils.verifyPayment(testcasesData.getResponsePath(), Amount + ".00", IntegrationConstants.SUBMITTED, IntegrationConstants.VCSPAYMENT, null);
@@ -783,8 +784,35 @@ public class IntegrationPlatformAcceptanceTests extends BaseTestNGWebDriver {
 		if (RestUtils.isMessageProcessingCompleted(testcasesData.getResponsePath())) {
 			completed = true;
 		}
-
 		verifyTrue(completed, "Message processing was not completed in time");
+		}
+		else  {
+		log("Step 7: Getting messages since timestamp: " + timestamp);
+		lastTimestamp = RestUtils.setupHttpGetRequest(testcasesData.getRestV3Url() + "=vcsPayment" + "&since=" + timestamp, testcasesData.getResponsePath());
+
+		log("Step 8: Verify payment details");
+		RestUtils.verifyPayment(testcasesData.getResponsePath(), Amount + ".00", IntegrationConstants.SUBMITTED, IntegrationConstants.VCSPAYMENT, null);
+
+		String paymentID = RestUtils.paymentID;
+		log("Payment ID :" + paymentID);
+
+		String postPayload = RestUtils.preparePayment(testcasesData.getPaymentPathV3(), paymentID, Amount + ".00", IntegrationConstants.VCSPAYMENT);
+
+		log("Step 9: Do a Post and get the message");
+
+		String processingUrl = RestUtils.setupHttpPostRequest(testcasesData.getRestV3Url() + "=vcsPayment", postPayload, testcasesData.getResponsePath());
+
+		log("Step 10: Get processing status until it is completed");
+		boolean completed = false;
+		// wait 10 seconds so the message can be processed
+		Thread.sleep(60000);
+		RestUtils.setupHttpGetRequest(processingUrl, testcasesData.getResponsePath());
+		if (RestUtils.isMessageProcessingCompleted(testcasesData.getResponsePath())) {
+		completed = true;
+		}
+		verifyTrue(completed, "Message processing was not completed in time");
+		}
+		
 		Thread.sleep(5000);
 		log("Step 11: Login to Practice Portal to search record");
 		practiceLogin = new PracticeLoginPage(driver, testcasesData.getPracticeURL());
@@ -806,7 +834,12 @@ public class IntegrationPlatformAcceptanceTests extends BaseTestNGWebDriver {
 		practiceHome.logOut();
 
 		log("Step 16: Verify Payment status in Get Response using the Timestamp received in response of Step 7");
-		RestUtils.setupHttpGetRequest(testcasesData.getRestUrl() + "=vcsPayment" + "&since=" + lastTimestamp, testcasesData.getResponsePath());
+		if(version.equals("v1")) {
+			RestUtils.setupHttpGetRequest(testcasesData.getRestUrl() + "=vcsPayment" + "&since=" + lastTimestamp, testcasesData.getResponsePath());
+		}
+		else {
+			RestUtils.setupHttpGetRequest(testcasesData.getRestV3Url() + "=vcsPayment" + "&since=" + lastTimestamp, testcasesData.getResponsePath());
+		}
 
 	}
 
