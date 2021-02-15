@@ -449,9 +449,10 @@ public class IntegrationPlatformAcceptanceTests extends BaseTestNGWebDriver {
 
 	}
 
-	@Test(enabled = true, groups = {"AcceptanceTests"}, retryAnalyzer = RetryAnalyzer.class)
-	public void testOnlineBillPayment() throws Exception {
-
+	@Test(enabled = true,dataProvider = "channelVersion", groups = {"AcceptanceTests"}, retryAnalyzer = RetryAnalyzer.class)
+	public void testOnlineBillPayment(String version) throws Exception {
+		if (version.contains("v2"))
+			throw new SkipException("Test skipped as version is:" + version);
 		log("Test Case: testOnlineBillPayment");
 		log("Execution Environment: " + IHGUtil.getEnvironmentType());
 		log("Execution Browser: " + TestConfig.getBrowserType());
@@ -466,7 +467,9 @@ public class IntegrationPlatformAcceptanceTests extends BaseTestNGWebDriver {
 		String name = "TestPatient CreditCard";
 		CreditCard creditCard = new CreditCard(CardType.Visa, name);
 		String CCLastDig = creditCard.getLastFourDigits();
-
+		String reply_Subject = "Test Message " + IHGUtil.createRandomNumericString();
+		String messageThreadID;
+		String lastTimestamp;
 		log("URL: " + testcasesData.getUrl());
 		log("USER NAME: " + testcasesData.getUserName());
 		log("Password: " + testcasesData.getPassword());
@@ -497,17 +500,16 @@ public class IntegrationPlatformAcceptanceTests extends BaseTestNGWebDriver {
 		log("Step 8: Setup Oauth client 2.O");
 		RestUtils.oauthSetup(testcasesData.getOAuthKeyStore(), testcasesData.getOAuthProperty(), testcasesData.getOAuthAppToken(), testcasesData.getOAuthUsername(),
 				testcasesData.getOAuthPassword());
-
+		if(version.equals("v1")) {
 		log("Step 9: Getting messages since timestamp: " + timestamp);
-		String lastTimestamp = RestUtils.setupHttpGetRequest(testcasesData.getRestUrl() + "?since=" + timestamp, testcasesData.getResponsePath());
+		lastTimestamp = RestUtils.setupHttpGetRequest(testcasesData.getRestUrl() + "?since=" + timestamp, testcasesData.getResponsePath());
 
 		log("Step 10: Verify payment details");
 		RestUtils.isPaymentAppeared(testcasesData.getResponsePath(), accountNumber, amount, CCLastDig, CCType, IntegrationConstants.SUBMITTED, confirmationNumber);
 
-		String messageThreadID = RestUtils.paymentID;
+		messageThreadID = RestUtils.paymentID;
 		log("Payment ID :" + messageThreadID);
 
-		String reply_Subject = "Test Message " + IHGUtil.createRandomNumericString();
 		String message = RestUtils.prepareSecureMessage(testcasesData.getcommunicationXML(), testcasesData.getFrom(), testcasesData.getUserName(), reply_Subject,
 				messageThreadID);
 		log("Payload to beposted for AM: " + message);
@@ -522,14 +524,40 @@ public class IntegrationPlatformAcceptanceTests extends BaseTestNGWebDriver {
 		if (RestUtils.isMessageProcessingCompleted(testcasesData.getResponsePath())) {
 			completed = true;
 		}
-
 		verifyTrue(completed, "Message processing was not completed in time");
+		}
+		
+		else {
+			log("Step 9: Getting messages since timestamp: " + timestamp);
+			lastTimestamp = RestUtils.setupHttpGetRequest(testcasesData.getRestV3Url() + "?since=" + timestamp, testcasesData.getResponsePath());
 
+			log("Step 10: Verify payment details");
+			RestUtils.isPaymentAppeared(testcasesData.getResponsePath(), accountNumber, amount, CCLastDig, CCType, IntegrationConstants.SUBMITTED, confirmationNumber);
+
+			messageThreadID = RestUtils.paymentID;
+			log("Payment ID :" + messageThreadID);
+
+			String message = RestUtils.prepareSecureMessage(testcasesData.getcommunicationXML(), testcasesData.getFrom(), testcasesData.getUserName(), reply_Subject,
+					messageThreadID);
+			log("Payload to beposted for AM: " + message);
+			log("Step 11: Do Message Post AMDC Request");
+			String processingUrl = RestUtils.setupHttpPostRequest(testcasesData.getCommRestUrl(), message, testcasesData.getResponsePath());
+
+			log("Step 12: Get processing status until it is completed");
+			boolean completed = false;
+			// wait 10 seconds so the message can be processed
+			Thread.sleep(60000);
+			RestUtils.setupHttpGetRequest(processingUrl, testcasesData.getResponsePath());
+			if (RestUtils.isMessageProcessingCompleted(testcasesData.getResponsePath())) {
+				completed = true;
+			}
+			verifyTrue(completed, "Message processing was not completed in time");	
+		}
 		log("Step 13: Check secure message in patient mailinator inbox");
 		Mailinator mail = new Mailinator();
 		String subject = "New message from PI Automation rsdk Integrated";
 		String messageLink = "Sign in to view this message";
-		String emailMessageLink = mail.getLinkFromEmail(testcasesData.getGmailUserName(), subject, messageLink, 20);
+		String emailMessageLink = mail.getLinkFromEmail(testcasesData.getUserName(), subject, messageLink, 20);
 
 		// patient Portal validation
 		log("Step 14: Login to Patient Portal");
@@ -566,12 +594,13 @@ public class IntegrationPlatformAcceptanceTests extends BaseTestNGWebDriver {
 		log("Logout from Patient Portal");
 		homePage.clickOnLogout();
 
+		if(version.equals("v1")) {
 		String postPayload = RestUtils.preparePayment(testcasesData.getPaymentPath(), messageThreadID, null, IntegrationConstants.BILLPAYMENT);
 
 		log("Post Payload is:  " + postPayload);
 		log("Step 20: Do a Post and get the message");
-		processingUrl = RestUtils.setupHttpPostRequest(testcasesData.getRestUrl(), postPayload, testcasesData.getResponsePath());
-
+		String processingUrl = RestUtils.setupHttpPostRequest(testcasesData.getRestUrl(), postPayload, testcasesData.getResponsePath());
+		boolean completed = false;
 		// wait 10 seconds so the message can be processed
 		Thread.sleep(60000);
 		RestUtils.setupHttpGetRequest(processingUrl, testcasesData.getResponsePath());
@@ -579,6 +608,23 @@ public class IntegrationPlatformAcceptanceTests extends BaseTestNGWebDriver {
 			completed = true;
 		}
 		verifyTrue(completed, "Message processing was not completed in time");
+		}
+		else {
+			String postPayload = RestUtils.preparePayment(testcasesData.getPaymentPathV3(), messageThreadID, null, IntegrationConstants.BILLPAYMENT);
+
+			log("Post Payload is:  " + postPayload);
+			log("Step 20: Do a Post and get the message");
+			String processingUrl = RestUtils.setupHttpPostRequest(testcasesData.getRestV3Url(), postPayload, testcasesData.getResponsePath());
+			boolean completed = false;
+			// wait 10 seconds so the message can be processed
+			Thread.sleep(60000);
+			RestUtils.setupHttpGetRequest(processingUrl, testcasesData.getResponsePath());
+			if (RestUtils.isMessageProcessingCompleted(testcasesData.getResponsePath())) {
+				completed = true;
+			}
+			verifyTrue(completed, "Message processing was not completed in time");
+			}
+		
 		Thread.sleep(5000);
 		log("Verify Payment status in Practice Portal");
 		log("Step 21: Login to Practice Portal");
@@ -604,10 +650,12 @@ public class IntegrationPlatformAcceptanceTests extends BaseTestNGWebDriver {
 		practiceHome.logOut();
 
 		log("Step 25: Verify Payment status in Get Response using the Timestamp received in response of Step 8");
+		if(version.equals("v1")) {
 		RestUtils.setupHttpGetRequest(testcasesData.getRestUrl() + "?since=" + lastTimestamp, testcasesData.getResponsePath());
-
-
-
+		}
+		else {
+		RestUtils.setupHttpGetRequest(testcasesData.getRestV3Url() + "?since=" + lastTimestamp, testcasesData.getResponsePath());
+		}
 	}
 
 	@Test(enabled = true, dataProvider = "channelVersion", groups = {"AcceptanceTests"}, retryAnalyzer = RetryAnalyzer.class)

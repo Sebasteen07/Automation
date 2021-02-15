@@ -100,5 +100,12 @@ public class PaymentTestData {
 	public String getPracticeName() {
 		return paymentObj.PracticeName;
 	}
-
+	
+	public String getRestV3Url() {
+		return paymentObj.RestV3Url;
+	}
+	
+	public String getPaymentPathV3() {
+		return paymentObj.PaymentPathV3;
+	}
 }
