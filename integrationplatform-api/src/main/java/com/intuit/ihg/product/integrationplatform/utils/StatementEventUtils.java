@@ -53,18 +53,42 @@ public class StatementEventUtils {
 	public static final String PracticeResourceId = "PracticeResourceId";
 	public static final String RESOURCE_TYPE = "EStatement";
 	
-	public void generateViewEvent(WebDriver driver,StatementEventData testData, char type) throws Exception {
+	public void generateViewEvent(WebDriver driver,StatementEventData testData, char type, String version) throws Exception {
 		
 		StatementsMessagePayload SMPObj = new StatementsMessagePayload();
-		String statement =SMPObj.getStatementsMessagePayload(testData);
 		
-		
+		if (version.equals("v1")) {
+			String statement =SMPObj.getStatementsMessagePayload(testData);		
+			Log4jUtil.log("Statement Step 1: Setup Oauth client");
+			RestUtils.oauthSetup(testData.OAuthKeyStore, testData.OAuthProperty, testData.OAuthAppToken, testData.OAuthUsername,
+					testData.OAuthPassword);
+			Log4jUtil.log("Payload :" + statement);
+			Log4jUtil.log("Statement Step 2: Do a POST call and get processing status URL");
+			String processingUrl = RestUtils.setupHttpPostRequest(testData.RestUrl, statement, testData.ResponsePath);
+			Log4jUtil.log("processing Status"+processingUrl);
+			
+			Log4jUtil.log("Statement Step 3: Get processing status until it is completed");
+			
+			boolean completed = false;
+			for (int i = 0; i < 1; i++) {
+				// wait 60 seconds so the message can be processed
+				Thread.sleep(60000);
+				RestUtils.setupHttpGetRequest(processingUrl, testData.ResponsePath);
+				if (RestUtils.isMessageProcessingCompleted(testData.ResponsePath)) {
+					completed = true;
+					break;
+				}
+			}
+			Assert.assertTrue(completed, "Message processing was not completed in time");	
+		}
+		else {		
+		String statementV3 =SMPObj.getStatementsMessageV3Payload(testData);		
 		Log4jUtil.log("Statement Step 1: Setup Oauth client");
 		RestUtils.oauthSetup(testData.OAuthKeyStore, testData.OAuthProperty, testData.OAuthAppToken, testData.OAuthUsername,
 				testData.OAuthPassword);
-		Log4jUtil.log("Payload-------------" + statement);
+		Log4jUtil.log("Payload :" + statementV3);
 		Log4jUtil.log("Statement Step 2: Do a POST call and get processing status URL");
-		String processingUrl = RestUtils.setupHttpPostRequest(testData.RestUrl, statement, testData.ResponsePath);
+		String processingUrl = RestUtils.setupHttpPostRequest(testData.RestV3Url, statementV3, testData.ResponsePath);
 		Log4jUtil.log("processing Status"+processingUrl);
 		
 		Log4jUtil.log("Statement Step 3: Get processing status until it is completed");
@@ -80,7 +104,7 @@ public class StatementEventUtils {
 			}
 		}
 		Assert.assertTrue(completed, "Message processing was not completed in time");
-		
+		}
 		if(testData.StatementType.equalsIgnoreCase("NEW") && !IHGUtil.getEnvironmentType().toString().equalsIgnoreCase("PROD")) {
 			Thread.sleep(2000);
 			Log4jUtil.log("step 6: Login to Practice Portal");
@@ -162,13 +186,19 @@ public class StatementEventUtils {
 	    driver.switchTo().defaultContent();
 	    jalapenoHomePage.clickOnLogout();
 	   
-	    Log4jUtil.log("Waiting for Statement Events to Sync");
-	    Thread.sleep(720000);	
-	    String getEvent =testData.StatementEventURL+timeStamp;
-	    Log4jUtil.log("Get Link"+getEvent);
-	    RestUtils.setupHttpGetRequest(getEvent, testData.ResponsePath);
-	   
-	   
+	    Log4jUtil.log("Waiting 12 minutes for Statement Events to Sync");
+	    Thread.sleep(720000);
+	    
+	    if(version.equals("v1")) {
+		    String getEvent =testData.StatementEventURL+timeStamp;
+		    Log4jUtil.log("Get Link"+getEvent);
+		    RestUtils.setupHttpGetRequest(getEvent, testData.ResponsePath);
+	    } 
+	    else {
+	    	String getEvent =testData.StatementEventV3URL+timeStamp;
+			Log4jUtil.log("Get Link :"+getEvent);
+			RestUtils.setupHttpGetRequest(getEvent, testData.ResponsePath);
+	    }	   
 	    Log4jUtil.log("transitTimeStamp :- "+transitTimeStamp1);  
 	    Thread.sleep(5000);
 	   
@@ -177,7 +207,7 @@ public class StatementEventUtils {
 			// verify "View" event in response XML and return Action Time stamp
 		Log4jUtil.log("Verification of EStatement '" + list.get(i) + "' event present in Pull API response xml");
 		ActionTimestamp = findEventInResonseXML(testData.ResponsePath, MU2Constants.EVENT, RESOURCE_TYPE, list.get(i),
-				timeStamp, testData.MFPatientID,testData.PatientID,testData.FirstName,testData.LastName,transitTimeStamp1);
+				timeStamp, testData.MFPatientID,testData.PatientID,testData.FirstName,testData.LastName,transitTimeStamp1,version);
 		Assert.assertNotNull(ActionTimestamp, "'" + list.get(i) + "' Event is not found in Response XML");
 		Log4jUtil.log("ActionTimestamp: "+ActionTimestamp);
 		Log4jUtil.log("TYPE FOUND: "+list.get(i));
@@ -188,7 +218,7 @@ public class StatementEventUtils {
 	}
 	
 	
-	public String findEventInResonseXML(String xmlFileName, String event, String resourceType, String action, Long timeStamp, String practicePatientID,String patientExternalId,String firstName,String lastName,long transmitTimestamp) {
+	public String findEventInResonseXML(String xmlFileName, String event, String resourceType, String action, Long timeStamp, String practicePatientID,String patientExternalId,String firstName,String lastName,long transmitTimestamp, String version) {
 		IHGUtil.PrintMethodName();
 
 		String ActionTimestamp = null;
@@ -220,7 +250,7 @@ public class StatementEventUtils {
 						 
 						if (getValue(MU2Constants.RESOURCE_TYPE_NODE, element).equalsIgnoreCase(resourceType)
 								&& getValue(MU2Constants.ACTION_NODE, element).equalsIgnoreCase(action)
-								&& getValue(MU2Constants.INTUIT_PATIENT_ID, element).equalsIgnoreCase(practicePatientID)
+								|| getValue(MU2Constants.INTUIT_PATIENT_ID, element).equalsIgnoreCase(practicePatientID)
 								&& getValue(PracticePatientId, element).equalsIgnoreCase(patientExternalId)
 								&& getValue(FirstName, element).equalsIgnoreCase(firstName)
 								&& getValue(LastName, element).equalsIgnoreCase(lastName)
@@ -232,13 +262,14 @@ public class StatementEventUtils {
 								if(transmitTimestamp < recordedTimeStamp && action.contains("View")) {
 									Log4jUtil.log("Event Generated From Paybill View");
 								}
-								Log4jUtil.log("Matching response medfusionId "+getValue(MU2Constants.INTUIT_PATIENT_ID, element)+" with "+practicePatientID);
+								if(version.equals("v1")) {
+									Log4jUtil.log("Matching response medfusionId "+getValue(MU2Constants.INTUIT_PATIENT_ID, element)+" with "+practicePatientID);
+								}
 								Log4jUtil.log("Matching response patientExternalId "+getValue(PracticePatientId, element)+" with "+patientExternalId);
 								Log4jUtil.log("Matching response firstName "+getValue(FirstName, element)+" with "+firstName);
 								Log4jUtil.log("Matching response lastName "+getValue(LastName, element)+" with "+lastName);
-								
-								ActionTimestamp = getValue(MU2Constants.EVENT_RECORDED_TIMESTAMP, element);
-							
+						
+								ActionTimestamp = getValue(MU2Constants.EVENT_RECORDED_TIMESTAMP, element);							
 							//break;
 						}
 					} else {

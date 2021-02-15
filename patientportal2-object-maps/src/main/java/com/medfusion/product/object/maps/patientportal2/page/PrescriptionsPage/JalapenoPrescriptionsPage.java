@@ -4,6 +4,7 @@ package com.medfusion.product.object.maps.patientportal2.page.PrescriptionsPage;
 import java.util.List;
 
 import org.openqa.selenium.By;
+import org.openqa.selenium.NoSuchElementException;
 import org.openqa.selenium.StaleElementReferenceException;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
@@ -125,19 +126,19 @@ public class JalapenoPrescriptionsPage extends JalapenoMenu {
 
 	@FindBy(how = How.XPATH, using = "//input[@name='pharmacyPanel:radioGroup:pharmacySearchContainer:pharmacySearchList']")
 	private WebElement chooseFromAList;
-	
+
 	@FindBy(how = How.XPATH, using = "//div[@class='wicket-aa-container']/div/ul/li")
 	private WebElement textValueFromChooseFromAList;
-	
+
 	@FindBy(how = How.XPATH, using = "(//div[@id='medicationForm']//input[@type='checkbox'])[1]")
 	public WebElement selectFirstMedication;
-	
+
 	@FindBy(how = How.NAME, using = "pharmacyPanel:radioGroup:pharmacySearchContainer:pharmacySearchList")
 	public WebElement PharmacyDropDown;
-	
+
 	@FindBy(how = How.XPATH, using = "(//*[contains(@name,'summaryAdditionalInfo')])[1]")
 	public WebElement addAdditionalInfo;
-	
+
 	@FindBy(how = How.XPATH, using = "//input[@name='pharmacyPanel:radioGroup']")
 	public WebElement PharmacyRadioButton;
 
@@ -344,8 +345,9 @@ public class JalapenoPrescriptionsPage extends JalapenoMenu {
 			log("Pharamacy is not visible on Portal");
 		}
 	}
-	
-	public void SelectProviderLocationclickContinueButton(WebDriver driver, String locationName,String ProviderName) throws InterruptedException {
+
+	public void SelectProviderLocationclickContinueButton(WebDriver driver, String locationName, String ProviderName)
+			throws InterruptedException {
 		IHGUtil.PrintMethodName();
 		driver.switchTo().frame("iframebody");
 
@@ -353,9 +355,9 @@ public class JalapenoPrescriptionsPage extends JalapenoMenu {
 		if (IHGUtil.exists(driver, 2, locationDropdown)) {
 			log("Selecting location");
 			Select locationSelect = new Select(locationDropdown);
-			locationSelect.selectByVisibleText(locationName);			
+			locationSelect.selectByVisibleText(locationName);
 			Thread.sleep(3000);
-			
+
 			log("Selecting provider");
 			try {
 				Select providerSelect = new Select(providerDropdown);
@@ -371,40 +373,44 @@ public class JalapenoPrescriptionsPage extends JalapenoMenu {
 			driver.switchTo().defaultContent();
 		}
 	}
-	
-	public JalapenoHomePage requestForPrescriptionRenewal(WebDriver driver, String prescritonRenewalRequestReason, String medicationToRenew) throws InterruptedException {
+
+	public JalapenoHomePage requestForPrescriptionRenewal(WebDriver driver, String prescritonRenewalRequestReason,
+			String medicationToRenew) throws InterruptedException {
 		IHGUtil.PrintMethodName();
 		driver.switchTo().defaultContent();
 		driver.switchTo().frame("iframebody");
 
 		log("Select medication to renew");
-		driver.findElement(By.xpath("//*[contains(text(),'"+medicationToRenew+"')]//parent::div//input[@type='checkbox']")).click();
+		driver.findElement(
+				By.xpath("//*[contains(text(),'" + medicationToRenew + "')]//parent::div//input[@type='checkbox']"))
+				.click();
 		log("Medication is selected");
-		
+
 		log("Add comments");
-		driver.findElement(By.xpath("//*[contains(text(),'"+medicationToRenew+"')]//parent::div//parent::div//textarea[contains(@name,'summaryAdditionalInfo')]")).sendKeys(prescritonRenewalRequestReason);
-		
+		driver.findElement(By.xpath("//*[contains(text(),'" + medicationToRenew
+				+ "')]//parent::div//parent::div//textarea[contains(@name,'summaryAdditionalInfo')]"))
+				.sendKeys(prescritonRenewalRequestReason);
+
 		log("Insert pharmacy information");
 		Thread.sleep(1000);
-		
+
 		wait.until(ExpectedConditions.elementToBeClickable(PharmacyRadioButton));
 		PharmacyRadioButton.click();
-		
-		try{
-		wait.until(ExpectedConditions.elementToBeClickable(PharmacyDropDown));
-		
-		Select providerSelect = new Select(PharmacyDropDown);
-		providerSelect.selectByIndex(1);
-		}
-		catch(Exception e){
+
+		try {
+			wait.until(ExpectedConditions.elementToBeClickable(PharmacyDropDown));
+
+			Select providerSelect = new Select(PharmacyDropDown);
+			providerSelect.selectByIndex(1);
+		} catch (Exception e) {
 			log(e.getMessage());
 		}
-		
+
 		log("Click on Continue button");
 		wait.until(ExpectedConditions.elementToBeClickable(continueButton));
 		javascriptClick(continueButton);
 		Thread.sleep(1000);
-		
+
 		log("Click on Submit button");
 		wait.until(ExpectedConditions.elementToBeClickable(submitButton));
 		javascriptClick(submitButton);
@@ -412,52 +418,61 @@ public class JalapenoPrescriptionsPage extends JalapenoMenu {
 		log("Return to Home Dashboard");
 		wait.until(ExpectedConditions.elementToBeClickable(homeButton));
 		javascriptClick(homeButton);
-		
+
 		driver.switchTo().defaultContent();
 		return PageFactory.initElements(driver, JalapenoHomePage.class);
 	}
-	
-	public JalapenoHomePage requestForMultiplePrescriptionRenewal(WebDriver driver, String prescritonRenewalRequestReason, String medicationToRenew, String SecondMedicationToRenew) throws InterruptedException {
+
+	public JalapenoHomePage requestForMultiplePrescriptionRenewal(WebDriver driver,
+			String prescritonRenewalRequestReason, String medicationToRenew, String SecondMedicationToRenew)
+			throws InterruptedException {
 		IHGUtil.PrintMethodName();
 		driver.switchTo().defaultContent();
 		driver.switchTo().frame("iframebody");
 
 		log("Select medication to renew");
-		driver.findElement(By.xpath("//*[contains(text(),'"+medicationToRenew+"')]//parent::div//input[@type='checkbox']")).click();
+		driver.findElement(
+				By.xpath("//*[contains(text(),'" + medicationToRenew + "')]//parent::div//input[@type='checkbox']"))
+				.click();
 		log("Medication is selected");
-		
+
 		log("Add comments");
-		driver.findElement(By.xpath("//*[contains(text(),'"+medicationToRenew+"')]//parent::div//parent::div//textarea[contains(@name,'summaryAdditionalInfo')]")).sendKeys(prescritonRenewalRequestReason);
-		
+		driver.findElement(By.xpath("//*[contains(text(),'" + medicationToRenew
+				+ "')]//parent::div//parent::div//textarea[contains(@name,'summaryAdditionalInfo')]"))
+				.sendKeys(prescritonRenewalRequestReason);
+
 		Thread.sleep(5000);
 		log("Select second medication to renew");
-		driver.findElement(By.xpath("//*[contains(text(),'"+SecondMedicationToRenew+"')]//parent::div//input[@type='checkbox']")).click();
+		driver.findElement(By
+				.xpath("//*[contains(text(),'" + SecondMedicationToRenew + "')]//parent::div//input[@type='checkbox']"))
+				.click();
 		log("Medication is selected");
-		
+
 		log("Add comments");
-		driver.findElement(By.xpath("//*[contains(text(),'"+SecondMedicationToRenew+"')]//parent::div//parent::div//textarea[contains(@name,'summaryAdditionalInfo')]")).sendKeys(prescritonRenewalRequestReason);
-		
+		driver.findElement(By.xpath("//*[contains(text(),'" + SecondMedicationToRenew
+				+ "')]//parent::div//parent::div//textarea[contains(@name,'summaryAdditionalInfo')]"))
+				.sendKeys(prescritonRenewalRequestReason);
+
 		log("Insert pharmacy information");
 		Thread.sleep(1000);
-		
+
 		wait.until(ExpectedConditions.elementToBeClickable(PharmacyRadioButton));
 		PharmacyRadioButton.click();
-		
-		try{
-		wait.until(ExpectedConditions.elementToBeClickable(PharmacyDropDown));
-		
-		Select providerSelect = new Select(PharmacyDropDown);
-		providerSelect.selectByIndex(1);
-		}
-		catch(Exception e){
+
+		try {
+			wait.until(ExpectedConditions.elementToBeClickable(PharmacyDropDown));
+
+			Select providerSelect = new Select(PharmacyDropDown);
+			providerSelect.selectByIndex(1);
+		} catch (Exception e) {
 			log(e.getMessage());
 		}
-		
+
 		log("Click on Continue button");
 		wait.until(ExpectedConditions.elementToBeClickable(continueButton));
 		javascriptClick(continueButton);
 		Thread.sleep(1000);
-		
+
 		log("Click on Submit button");
 		wait.until(ExpectedConditions.elementToBeClickable(submitButton));
 		javascriptClick(submitButton);
@@ -465,8 +480,42 @@ public class JalapenoPrescriptionsPage extends JalapenoMenu {
 		log("Return to Home Dashboard");
 		wait.until(ExpectedConditions.elementToBeClickable(homeButton));
 		javascriptClick(homeButton);
-		
+
 		driver.switchTo().defaultContent();
 		return PageFactory.initElements(driver, JalapenoHomePage.class);
+	}
+
+	public void verifyDeletedPharmacy(String pharmacy) {
+		List<WebElement> otherPharamacies = optionFromOtherPharmacy;
+		java.util.Iterator<WebElement> itr = otherPharamacies.iterator();
+		while (itr.hasNext()) {
+			WebElement ele = itr.next();
+			if (ele.getText().contains(pharmacy)) {
+				log("Deleted Pharmacy is visible on the Portal");
+				Assert.assertTrue(!ele.getText().contains(pharmacy));
+				break;
+			} else {
+				continue;
+			}
+		}
+	}
+
+	public void verifyDeletedPharamcy(String pharmacy, String sendPharmacyFirstWord) throws InterruptedException {
+		driver.switchTo().frame("iframebody");
+		String textValue = "";
+		chooseFromAList.sendKeys(sendPharmacyFirstWord);
+		Thread.sleep(5000);
+		try {
+			log("Trying to get text value from Choose from a list textbox");
+			textValue = textValueFromChooseFromAList.getText();
+		} catch (Exception e) {
+			log(e.getMessage());
+		}
+		if (textValue.contains(pharmacy)) {
+			log("Deleted Pharmacy is visible on the Portal");
+			Assert.assertTrue(!textValue.contains(pharmacy));
+		} else {
+			log("Pharamacy is not visible on Portal");
+		}
 	}
 }

@@ -1060,7 +1060,7 @@ public class IntegrationPlatformAcceptanceTests extends BaseTestNGWebDriver {
 		RestUtils.setupHttpGetRequest(testData.getRestUrl() + "?since=" + since + ",0", testData.getResponsePath());
 
 		log("Step 9: Checking reason in the response xml");
-		RestUtils.isReasonResponseXMLValid(testData.getResponsePath(), reason);
+		RestUtils.isReasonResponseXMLValid(testData.getResponsePath(), reason, true);
 
 		// String arSMSubject = "Reply to Appointment Request";
 		// String arSMBody = "This is reply to AR for " + reason;
@@ -1074,7 +1074,7 @@ public class IntegrationPlatformAcceptanceTests extends BaseTestNGWebDriver {
 
 
 		String postXML =
-				RestUtils.findValueOfChildNode(testData.getResponsePath(), "AppointmentRequest", reason, arSMSubject, arSMBody, testData.getAppointmentPath());
+				RestUtils.findValueOfChildNode(testData.getResponsePath(), "AppointmentRequest", reason, true, arSMSubject, arSMBody, testData.getAppointmentPath());
 
 		// httpPostRequest method
 		log("Step 10: Do Message Post Request");

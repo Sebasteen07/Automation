@@ -734,8 +734,10 @@ public class IntegrationPlatformRegressionTests extends BaseTestNGWebDriver {
 		Assert.assertEquals(patient.getFirstName(), patientExternalID, "Patient External ID Matched !");
 	}
 
-	@Test(enabled = true, groups = { "RegressionTests" }, retryAnalyzer = RetryAnalyzer.class)
-	public void testStatementEventForExistingPatient() throws Exception {
+	@Test(enabled = true,dataProvider = "channelVersion", groups = { "RegressionTests" }, retryAnalyzer = RetryAnalyzer.class)
+	public void testStatementEventForExistingPatient(String version) throws Exception {
+		if (version.equals("v2"))
+			throw new SkipException("Test skipped as version is:" + version);
 		log("Test Case: Post Statment and verify its Event for Existing Patient From Partner");
 		log("Recommended to use Firefox Browser for this test ");
 		log("Execution Environment: " + IHGUtil.getEnvironmentType());
@@ -747,12 +749,14 @@ public class IntegrationPlatformRegressionTests extends BaseTestNGWebDriver {
 		log("url is " + testData.Url);
 		log("Step 2: Call Statement Post");
 		StatementEventUtils sEventObj = new StatementEventUtils();
-		sEventObj.generateViewEvent(driver, testData, 'E');
+		sEventObj.generateViewEvent(driver, testData, 'E',version);
 
 	}
 
-	@Test(enabled = true, groups = { "RegressionTests" }, retryAnalyzer = RetryAnalyzer.class)
-	public void testStatementEventForNewSelfPatient() throws Exception {
+	@Test(enabled = true,dataProvider = "channelVersion", groups = { "RegressionTests" }, retryAnalyzer = RetryAnalyzer.class)
+	public void testStatementEventForNewSelfPatient(String version) throws Exception {
+		if (version.equals("v2"))
+			throw new SkipException("Test skipped as version is:" + version);
 		log("Test Case: POST Statement and Get Statement Event for New Patient From Partner");
 		log("Recommended to use Firefox Browser for this test ");
 		log("Execution Environment: " + IHGUtil.getEnvironmentType());
@@ -805,7 +809,7 @@ public class IntegrationPlatformRegressionTests extends BaseTestNGWebDriver {
 		testData.StatementType = "New";
 		testData.since = since;
 		log("Step 4: Call Statement Post");
-		sEventObj.generateViewEvent(driver, testData, 'N');
+		sEventObj.generateViewEvent(driver, testData, 'N', version);
 	}
 
 	@Test(enabled = true, dataProvider = "channelVersion", groups = {
@@ -3471,6 +3475,111 @@ public class IntegrationPlatformRegressionTests extends BaseTestNGWebDriver {
 			JalapenoPrescriptionsPageObject.clickOnChooseOneDrpdown();
 			Thread.sleep(6000);
 			JalapenoPrescriptionsPageObject.verifyPharmacy(addedPharamacy);
+		}
+	}
+
+	@Test(enabled = true, groups = { "RegressionTests" }, retryAnalyzer = RetryAnalyzer.class)
+	public void testDeletePharmacies() throws Exception {
+		log("Test Case: Delete Pharmacy");
+		log("Execution Environment: " + IHGUtil.getEnvironmentType());
+		log("Execution Browser: " + TestConfig.getBrowserType());
+
+		LoadPreTestData LoadPreTestDataObj = new LoadPreTestData();
+		Pharmacies testData = new Pharmacies();
+		LoadPreTestDataObj.loadPharmaciesFromProperty(testData);
+		log("POST URL: " + testData.PharmacyRenewalUrl);
+
+		log("Step 1: Setup Oauth client");
+		RestUtils.oauthSetup(testData.OAuthKeyStore, testData.OAuthProperty, testData.OAuthAppToken,
+				testData.OAuthUsername, testData.OAuthPassword);
+
+		log("Add Pharmacy with status 'NEW' ");
+		testData.Status = "NEW";
+		testData.PharmacyName = "AddedNewPharmacy";
+
+		PharmacyPayload pharmacyObj = new PharmacyPayload();
+		String ExternalPharmacyId = PharmacyPayload.randomNumbers(14);
+		log("ExternalPharmacyId posted is : " + ExternalPharmacyId);
+		String pharmacyNewPayload = pharmacyObj.getPharmacyAddPayload(testData, ExternalPharmacyId);
+		log("Payload: " + pharmacyNewPayload);
+		Thread.sleep(6000);
+		log("Wait to generate Pharmacy New Payload");
+
+		log("Step 2: Do NEW Pharmacy Post Request");
+		log("ResponsePath: " + testData.ResponsePath);
+		Log4jUtil.log("Generate Payload with Status as " + testData.Status);
+		String processingUrl = RestUtils.setupHttpPostRequest(testData.PharmacyRenewalUrl, pharmacyNewPayload,
+				testData.ResponsePath);
+		Log4jUtil.log("processingUrl " + processingUrl);
+
+		Boolean completed = false;
+		for (int i = 0; i < 3; i++) {
+			// wait 10 seconds so the message can be processed
+			Thread.sleep(60000);
+			RestUtils.setupHttpGetRequest(processingUrl, testData.ResponsePath);
+			if (RestUtils.isMessageProcessingCompleted(testData.ResponsePath)) {
+				completed = true;
+				break;
+			}
+		}
+		Assert.assertTrue(completed, "Message processing was not completed in time");
+
+		log("Delete Pharmacy with status 'DELETE' ");
+		testData.Status = "DELETE";
+
+		log("ExternalPharmacyId posted is : " + ExternalPharmacyId);
+		String deletePayload = pharmacyObj.getPharmacyAddPayload(testData, ExternalPharmacyId);
+		log("Payload: " + deletePayload);
+		Thread.sleep(6000);
+		log("Wait to generate Pharmacy Payload");
+
+		log("Step 3: Do DELETE Pharmacy Post Request");
+		log("ResponsePath: " + testData.ResponsePath);
+		Log4jUtil.log("Generate Payload with Status as " + testData.Status);
+		String processingDeleteUrl = RestUtils.setupHttpPostRequest(testData.PharmacyRenewalUrl, deletePayload,
+				testData.ResponsePath);
+		Log4jUtil.log("processingUrl " + processingDeleteUrl);
+
+		Boolean completedStatus = false;
+		for (int i = 0; i < 3; i++) {
+			// wait 10 seconds so the message can be processed
+			Thread.sleep(60000);
+			RestUtils.setupHttpGetRequest(processingUrl, testData.ResponsePath);
+			if (RestUtils.isMessageProcessingCompleted(testData.ResponsePath)) {
+				completed = true;
+				break;
+			}
+		}
+		Assert.assertTrue(completed, "Message processing was not completed in time");
+
+		log("Step 4: Login to Patient Portal");
+		JalapenoLoginPage loginPage = new JalapenoLoginPage(driver, testData.URL);
+		JalapenoHomePage homePage = loginPage.login(testData.UserName, testData.Password);
+		JalapenoPrescriptionsPage JalapenoPrescriptionsPageObject = homePage.clickOnPrescriptions(driver);
+
+		log("Step 5: Click on Prescription and go to Prescription Page");
+		Assert.assertTrue(JalapenoPrescriptionsPageObject.areBasicPageElementsPresent(),
+				"Failed to Load Health Record Summaries ");
+
+		log("Step 6: Click on Continue ");
+		JalapenoPrescriptionsPageObject.clickContinueButton(driver);
+		Thread.sleep(60000);
+
+		log("Step 7:verify added pharmacy is deleted in the list");
+		String deletedPharamacy = testData.PharmacyName + ", " + testData.Line1 + ", " + testData.City + ", "
+				+ testData.State;
+		log("Added Pharamacy :- " + deletedPharamacy);
+		JalapenoPrescriptionsPageObject.areBasicPageElementsPresent();
+		String env = IHGUtil.getEnvironmentType().toString();
+		if (env == "DEV3") {
+			String pharmacyFristWord = "Added";
+			JalapenoPrescriptionsPageObject.verifyDeletedPharamcy(deletedPharamacy, pharmacyFristWord);
+			log("Pharamacy is not visible on the Portal");
+		} else {
+			JalapenoPrescriptionsPageObject.clickOnChooseOneDrpdown();
+			Thread.sleep(6000);
+			JalapenoPrescriptionsPageObject.verifyDeletedPharmacy(deletedPharamacy);
+			log("Pharamacy is not visible on the Portal");
 		}
 	}
 }
