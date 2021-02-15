@@ -515,34 +515,46 @@ public class PatientPortal2AcceptanceTests extends BaseTestNGWebDriver {
 
 	@Test(enabled = true, groups = { "acceptance-solutions" }, retryAnalyzer = RetryAnalyzer.class)
 	public void testMessageArchiving() throws Exception {
+			String patientsEmail = IHGUtil.createRandomEmailAddress(testData.getEmail(), '.');
 
-		logStep("Login patient");
-		JalapenoLoginPage loginPage = new JalapenoLoginPage(driver, testData.getUrl());
-		JalapenoHomePage homePage = loginPage.login(testData.getUserId(), testData.getPassword());
+			logStep("Patient Activation on Practice Portal");
+			PatientActivationSearchTest patientActivationSearchTest = new PatientActivationSearchTest();
+			String unlockLinkPortal = patientActivationSearchTest.getPatientActivationLink(driver, testData, patientsEmail);
 
-		logStep("Click on messages solution");
-		JalapenoMessagesPage messagesPage = homePage.showMessages(driver);
-		assertTrue(messagesPage.areBasicPageElementsPresent());
-		assertTrue(messagesPage.returnSubjectMessage().length() > 0);
+			logStep("Finishing of patient activation: step 1 - verifying identity");
+			PatientVerificationPage patientVerificationPage = new PatientVerificationPage(driver, unlockLinkPortal);
+			SecurityDetailsPage accountDetailsPage = patientVerificationPage.fillPatientInfoAndContinue(
+					PracticeConstants.ZIP_CODE, PortalConstants.DateOfBirthMonthNumber, PortalConstants.DateOfBirthDay,
+					PortalConstants.DateOfBirthYear);
 
-		logStep("Go to archived messages tab");
-		messagesPage.goToArchivedMessages();
+			logStep("Finishing of patient activation: step 2 - filling patient data");
+			JalapenoHomePage jalapenoHomePage = accountDetailsPage.fillAccountDetailsAndContinue(
+					patientActivationSearchTest.getPatientIdString(), testData.getPassword(), testData);
 
-		int messageCount = messagesPage.MessageCount();
-		logStep("Go to Inbox messages tab");
-		messagesPage.goToInboxMessage();
+	        logStep("Click on messages solution");
+			JalapenoMessagesPage messagesPage = jalapenoHomePage.showMessages(driver);
+			assertTrue(messagesPage.areBasicPageElementsPresent());
+			assertTrue(messagesPage.returnSubjectMessage().length() > 0);
+			
+			logStep("Click on the archive button from inbox tab");
+			messagesPage.archiveMessage();
+			
+			logStep("Go to archived tab");
+			messagesPage.goToArchivedMessages();
 
-		logStep("Click on Archive Button on open email");
-		messagesPage.archiveOpenMessage();
+			int messageCount = messagesPage.MessageCount();
+		
+			logStep("Click on the unarchive button");
+			messagesPage.clickOnUnArchive();
+			
+		    logStep("Go to Inbox messages tab");
+			messagesPage.goToInboxMessage();
+			int y = messagesPage.MessageCount();
+			
+	        logStep("Message archicved Successfuly");
+			assertTrue(y == messageCount);
 
-		logStep("Click on Archived folder");
-		messagesPage.goToArchivedMessages();
-		int y = messagesPage.MessageCount();
-
-		logStep("Message archicved Successfuly");
-		assertTrue(y > messageCount);
-
-	}
+		}
 
 	@Test(enabled = true, groups = { "acceptance-solutions" }, retryAnalyzer = RetryAnalyzer.class)
 	public void testViewCCD() throws Exception {
