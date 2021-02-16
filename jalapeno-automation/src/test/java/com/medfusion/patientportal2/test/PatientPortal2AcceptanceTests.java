@@ -3184,5 +3184,88 @@ public class PatientPortal2AcceptanceTests extends BaseTestNGWebDriver {
 		assertTrue(messagesPage.isMessageDisplayed(driver, "RxRenewalSubject"));	
 	
 	}
+	
+	@Test(enabled = true, groups = { "acceptance-solutions" }, retryAnalyzer = RetryAnalyzer.class)
+	public void testMedicationsAddNewPharmacy() throws Exception {
+		
+		String name = "Medication Patient CreditCard";
+		CreditCard creditCard = new CreditCard(CardType.Mastercard, name);
+		
+		logStep("Load login page and login");
+		JalapenoLoginPage loginPage = new JalapenoLoginPage(driver, testData.getProperty("medPortalUrl"));
+		JalapenoHomePage homePage = loginPage.login(testData.getProperty("medUserid"), testData.getProperty("medPassword"));
+
+		logStep("Click on Medications");
+		homePage.clickOnMedications(driver);
+	
+		log("Initiating Medications 2.0 Request from Patient Portal");
+		MedicationsHomePage medPage= new MedicationsHomePage(driver);
+		medPage.clickOnRxRequest();
+		
+		logStep("Select Location and Provider");
+		LocationAndProviderPage select = new LocationAndProviderPage(driver);
+		select.chooseLocationAndProvider();
+		
+		logStep("Enter Credit Card Details");
+		PrescriptionFeePage feePage= new PrescriptionFeePage(driver);
+		feePage.fillRenewalFee(driver,creditCard);
+		
+		logStep("Select a pharmacy");
+		SelectPharmacyPage pharmaPage= new SelectPharmacyPage(driver);
+		pharmaPage.addNewPharmacy(driver);
+		
+		logStep("Select Medications");
+		SelectMedicationsPage selectMedPage= new SelectMedicationsPage(driver);
+		selectMedPage.selectMedications();
+		
+		logStep("Confirm Medication Request from Patient Portal");
+		MedicationsConfirmationPage confirmPage= new MedicationsConfirmationPage(driver);
+		String successMsg= confirmPage.confirmMedication(driver);
+		assertEquals(successMsg, "Your prescription request has been submitted.");
+		
+		homePage.clickOnLogout();
+
+		logStep("Login to Practice Portal");
+
+		// Now start login with practice data
+		PracticeLoginPage practiceLogin = new PracticeLoginPage(driver, testData.getPortalUrl());
+		PracticeHomePage practiceHome = practiceLogin.login(testData.getProperty("medDocUserid"), testData.getProperty("medDocPassword"));
+
+		logStep("Click On RxRenewal in Practice Portal");
+		RxRenewalSearchPage rxRenewalSearchPage = practiceHome.clickonRxRenewal();
+
+		logStep("Search for Today's RxRenewal in Practice Portal");
+		rxRenewalSearchPage.searchForRxRenewalToday();
+
+		logStep("Get the RxRenewal Details in Practice Portal");
+		rxRenewalSearchPage.getRxRenewalDetails();
+
+		logStep("Set the RxRenewal Fields in Practice Portal");
+		rxRenewalSearchPage.setRxRenewalFields();
+
+		logStep("Click On Process RxRenewal Button in Practice Portal");
+		rxRenewalSearchPage.clickProcessRxRenewal();
+		String subject = rxRenewalSearchPage.getSubject();
+		logStep("Verify Prescription Confirmation in Practice Portal");
+		rxRenewalSearchPage.verifyPrescriptionConfirmationSection(subject,DRUG_DOSAGE);
+
+		logStep("Set Action Radio Button in Practice Portal");
+		rxRenewalSearchPage.setActionRadioButton();
+
+		logStep("Verify Process Completed Text in Practice Portal");
+		rxRenewalSearchPage.verifyProcessCompleted();
+
+		logStep("Logout of Practice Portal");
+		practiceHome.logOut();
+
+		loginPage = new JalapenoLoginPage(driver, testData.getProperty("medPortalUrl"));
+		homePage = loginPage.login(testData.getProperty("medUserid"), testData.getProperty("medPassword"));
+
+		JalapenoMessagesPage messagesPage = homePage.showMessages(driver);
+
+		logStep("Looking for Medication approval from doctor");
+		assertTrue(messagesPage.isMessageDisplayed(driver, "RxRenewalSubject"));	
+	
+	}
 }
 
