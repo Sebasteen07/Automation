@@ -3104,7 +3104,6 @@ public class PatientPortal2AcceptanceTests extends BaseTestNGWebDriver {
 	
 	@Test(enabled = true, groups = { "acceptance-linkedaccounts" }, retryAnalyzer = RetryAnalyzer.class)
 	public void testUnlinkDependent() throws Exception {
-		Instant testStart = Instant.now();
 		String patientLogin = PortalUtil.generateUniqueUsername("login", testData); // guardian login
 		String patientLastName = patientLogin.replace("login", "last");
 		String patientEmail = patientLogin.replace("login", "mail") + "@mailinator.com";
@@ -3167,7 +3166,7 @@ public class PatientPortal2AcceptanceTests extends BaseTestNGWebDriver {
 		
 		logStep("Going to MyAccount page and unlink dependent");
 		jalapenoHomePage.UnlinkDependentAccount();
-		assertTrue(jalapenoHomePage.wasUnlikSuccessfull());
+		assertTrue(jalapenoHomePage.wasUnlikSuccessful());
 	}
 		
 	@Test(enabled = true, groups = { "acceptance-solutions" }, retryAnalyzer = RetryAnalyzer.class)
