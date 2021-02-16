@@ -595,14 +595,15 @@ public class IntegrationPlatformAcceptanceTests extends BaseTestNGWebDriver {
 
 			log("Step 9: Checking reason and video preference in the response xml");
 			RestUtils.isReasonResponseXMLValid(testData.getResponsePath(), reason);
-			String postXML = RestUtils.findValueOfChildNode(testData.getResponsePath(), "AppointmentRequest", reason, arSMSubject, arSMBody, testData.getAppointmentPath());
-			log("PostXML:" +postXML);
-			
+			String postXML = RestUtils.findValueOfChildNode(testData.getResponsePath(), "AppointmentRequest", reason,
+					arSMSubject, arSMBody, testData.getAppointmentPath());
+			log("PostXML:" + postXML);
+
 			// httpPostRequest method
 			log("Step 10: Do Message Post Request");
 			String processingUrl = RestUtils.setupHttpPostRequest(testData.getRestUrl(), postXML,
 					testData.getResponsePath());
-			log("ProcessingURL:" +processingUrl);
+			log("ProcessingURL:" + processingUrl);
 
 			log("Step 11: Get processing status until it is completed");
 			boolean completed = false;
@@ -637,14 +638,14 @@ public class IntegrationPlatformAcceptanceTests extends BaseTestNGWebDriver {
 			RestUtils.isReasonResponseXMLValid(testData.getResponsePath(), reason);
 			String postXML = RestUtils.findValueOfChildNode(testData.getResponsePath(), "AppointmentRequest", reason,
 					arSMSubject, arSMBody, testData.getAppointmentPathV3());
-			log("PostXML:" +postXML);
-			
+			log("PostXML:" + postXML);
+
 			// httpPostRequest method
 			log("Step 10: Do Message Post Request");
 			String processingUrl = RestUtils.setupHttpPostRequest(testData.getRestV3Url(), postXML,
 					testData.getResponsePath());
-			log("Processing URL:" +processingUrl);	
-			
+			log("Processing URL:" + processingUrl);
+
 			log("Step 11: Get processing status until it is completed");
 			boolean completed = false;
 			for (int i = 0; i < 3; i++) {
