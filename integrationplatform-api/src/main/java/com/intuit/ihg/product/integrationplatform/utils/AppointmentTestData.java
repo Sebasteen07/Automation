@@ -101,4 +101,12 @@ public class AppointmentTestData {
 		return AppointmentObj.PracticeName;
 	}
 
+	public String getRestV3Url() {
+		return AppointmentObj.RestV3Url;
+	}
+	
+	public String getAppointmentPathV3() {
+		return AppointmentObj.AppointmentPathV3;
+	}
+	
 }
