@@ -252,7 +252,6 @@ public class JalapenoMessagesPage extends JalapenoMenu {
 		javascriptClick(archiveFolder);
 		WebDriverWait wait= new WebDriverWait(driver, 5);
 		wait.until(ExpectedConditions.elementToBeClickable(msgSubject));
-		Thread.sleep(5000);
 		}
 
     public String returnSubjectMessage() {
@@ -264,7 +263,6 @@ public class JalapenoMessagesPage extends JalapenoMenu {
 	{
 		WebElement ul_element = driver.findElement(By.xpath("//ul[@id='messages']"));
         List<WebElement> li_All = ul_element.findElements(By.tagName("li"));
-        Thread.sleep(50000);
         return (li_All.size());      		
 		
 	}
@@ -281,7 +279,7 @@ public class JalapenoMessagesPage extends JalapenoMenu {
 		IHGUtil.PrintMethodName();
 		IHGUtil.waitForElement(driver, 60, archiveButton);
 		javascriptClick(archiveButton);
-		Thread.sleep(5000);
+		Thread.sleep(2000);
 	}
 	
 	public void verifyMessageContent(WebDriver driver, String subject,String body) {
@@ -407,7 +405,7 @@ public class JalapenoMessagesPage extends JalapenoMenu {
 			WebDriverWait wait= new WebDriverWait(driver, 5);
 			wait.until(ExpectedConditions.elementToBeClickable(unArchive));
 			unArchive.click();
-			Thread.sleep(5000);
+			
 			
 		
 	}
