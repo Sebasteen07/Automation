@@ -214,13 +214,14 @@ public class RestUtils {
 	 * @throws IOException
 	 * @throws SAXException
 	 */
-	public static void isReasonResponseXMLValid(String xmlFileName, String reason, boolean VideoPref)
+	public static void isReasonResponseXMLValid(String xmlFileName, String reason)
 			throws ParserConfigurationException, SAXException, IOException {
 		IHGUtil.PrintMethodName();
 		Document doc = buildDOMXML(xmlFileName);
 
 		Log4jUtil.log("finding reason message");
 		boolean found = false;
+		boolean VideoPref=false;
 		NodeList nodes = doc.getElementsByTagName(IntegrationConstants.REASON);
 		NodeList nodes1 = doc.getElementsByTagName(IntegrationConstants.VIDEOPREFERENCE);
 		Node node = null;
@@ -443,6 +444,7 @@ public class RestUtils {
 			HttpResponse resp = oauthClient.httpPostRequest(httpPostReq);
 
 			String sResp = EntityUtils.toString(resp.getEntity());
+			Log4jUtil.log("Check opst response: " +sResp);
 
 			Log4jUtil.log("Check for http 200/202 response");
 			Assert.assertTrue(
@@ -835,7 +837,7 @@ public class RestUtils {
 	 * @throws ParseException
 	 * @throws DOMException
 	 */
-	public static String findValueOfChildNode(String xmlFileName, String parentNode, String reason, boolean VideoPref,
+	public static String findValueOfChildNode(String xmlFileName, String parentNode, String reason,
 			String subject, String reply, String appointment) throws ParserConfigurationException, SAXException,
 			IOException, TransformerException, DOMException, ParseException {
 
