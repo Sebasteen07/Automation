@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="UTF-8"?><ns4:Prescriptions xmlns:ns4="http://schema.medfusion.com/health/prescriptions/v3">
+    <Prescription id="f9f48550-54a4-4961-b528-eb382260b5e3">
+        <Status>APPROVED</Status>
+	<CreatedDateTime>2021-02-16T02:36:00.874Z</CreatedDateTime>
+        <UpdatedDateTime>2021-02-16T02:36:00.874Z</UpdatedDateTime>
+        <PrescriptionRenewalRequest>
+            <From>mf06372019</From>
+            <To>23399eba-8227-4fa8-a47b-6b703ce51af5</To>
+            <RequestedProvider>3391682014</RequestedProvider>
+            <RequestedLocation>11111</RequestedLocation>
+            <PreferredInsurance>self</PreferredInsurance>
+            <Medication>
+		<MedicationRequestStatus>APPROVED</MedicationRequestStatus>
+                 <MedicationName>Albuterol Sulfate (5 MG/ML) 0.5% Inhalation Nebulization Solution1613442915141</MedicationName>
+                <MedicationDosage>21</MedicationDosage>
+                <Quantity>3</Quantity>
+                <RefillNumber>12.00</RefillNumber>
+                <PrescriptionNumber>#12345</PrescriptionNumber>
+                <AdditionalInformation>New prescription request</AdditionalInformation>
+                <SigCodes>
+                    <SigCode>
+                        <SigCodeAbbreviation>NDHV</SigCodeAbbreviation>
+                        <SigCodeMeaning>NDHV Daily</SigCodeMeaning>
+                    </SigCode>
+                </SigCodes>
+            </Medication>
+		<Pharmacy>
+                <PharmacyName>PharmacyName</PharmacyName>
+                <PharmacyPhone>3216549870</PharmacyPhone>
+                </Pharmacy>
+        </PrescriptionRenewalRequest>
+	    <Communication messageId="a229cd75-6663-4084-881a-ca83028c9390">
+            <From>23399eba-8227-4fa8-a47b-6b703ce51af5</From>
+            <To>mf06372019</To>
+            <Subject>Prescription Renewal</Subject>
+            <Sent>2021-02-16T02:36:00.874Z</Sent>
+            <MessageThreadId>a229cd75-6663-4084-881a-ca83028c9390</MessageThreadId>
+            <Message>Dear IHGQA Automation Integrated Oauth 2.0,&lt;br/&gt;&lt;br/&gt;I'm requesting a Prescription Renewal.&lt;br/&gt;&lt;br/&gt;Thanks,&lt;br&gt;mf06372019 TestPatient01</Message>
+        </Communication>
+    </Prescription>
+</ns4:Prescriptions>
