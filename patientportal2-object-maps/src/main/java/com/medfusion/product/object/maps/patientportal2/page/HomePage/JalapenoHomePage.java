@@ -132,6 +132,9 @@ public class JalapenoHomePage extends JalapenoMenu {
 
 	@FindBy(how = How.ID, using = "sentFolder")
 	private WebElement sentFolder;
+	
+	@FindBy(how = How.XPATH, using = "//*[contains(text(),'is no longer linked to your account.')]")
+	private WebElement unlinkSuccessfulMsg;
 
 	public JalapenoHomePage(WebDriver driver) {
 		super(driver);
@@ -534,6 +537,18 @@ public class JalapenoHomePage extends JalapenoMenu {
 		IHGUtil.PrintMethodName();
 		javascriptClick(appointments);
 		return PageFactory.initElements(driver, NGAppointmentPage.class);
+	}
+	
+	public boolean wasUnlikSuccessful() {
+
+		try {
+			log("Looking for successful message after unlink");
+			new WebDriverWait(driver, 30).until(ExpectedConditions.visibilityOf(unlinkSuccessfulMsg));
+			return unlinkSuccessfulMsg.isDisplayed();
+		} catch (Exception e) {
+			log("Unlink of Dependent account was unsuccessful");
+			return false;
+		}
 	}
 
 }

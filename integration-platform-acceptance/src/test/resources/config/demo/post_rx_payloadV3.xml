@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="UTF-8"?><ns4:Prescriptions xmlns:ns4="http://schema.medfusion.com/health/prescriptions/v3">
+    <Prescription id="7a070a77-c8b9-4aac-a15a-a68c2ec9e042">
+        <Status>APPROVED</Status>
+        <CreatedDateTime>2021-02-16T09:57:41.181Z</CreatedDateTime>
+        <UpdatedDateTime>2021-02-16T09:57:41.181Z</UpdatedDateTime>
+        <PrescriptionRenewalRequest>
+            <From>mf06172019</From>
+            <To>fbca8599-277f-41bf-9e63-633d334ec650</To>
+            <RequestedProvider>Pr228142015</RequestedProvider>
+            <RequestedLocation>111111</RequestedLocation>
+            <PreferredInsurance>self</PreferredInsurance>
+            <Medication>
+		<MedicationRequestStatus>APPROVED</MedicationRequestStatus>
+                <MedicationName>Albuterol Sulfate (5 MG/ML) 0.5% Inhalation Nebulization Solution1613469414767</MedicationName>
+                <MedicationDosage>21</MedicationDosage>
+                <Quantity>3</Quantity>
+                <RefillNumber>12.00</RefillNumber>
+                <PrescriptionNumber>#12345</PrescriptionNumber>
+                <AdditionalInformation>New prescription request</AdditionalInformation>
+                <SigCodes>
+                    <SigCode>
+                        <SigCodeAbbreviation>XONM</SigCodeAbbreviation>
+                        <SigCodeMeaning>XONM Daily</SigCodeMeaning>
+                    </SigCode>
+                </SigCodes>
+            </Medication>
+		<Pharmacy>
+                <PharmacyName>PharmacyName</PharmacyName>
+                <PharmacyPhone>3216549870</PharmacyPhone>
+                </Pharmacy>
+        </PrescriptionRenewalRequest>
+	   <Communication messageId="11623b2e-6824-4c0e-9ed2-0ceb6f6a5182">
+            <From>fbca8599-277f-41bf-9e63-633d334ec650</From>
+            <To>mf06172019</To>
+            <Subject>Prescription Renewal</Subject>
+            <Sent>2021-02-16T09:57:41.181Z</Sent>
+            <MessageThreadId>dc4c11c2-ea73-4385-b5e5-601da272b73b</MessageThreadId>
+            <AllowReply>true</AllowReply>
+            <Message>Dear IHGQA Automation Integrated Oauth 2.0,&lt;br/&gt;&lt;br/&gt;I'm requesting a Prescription Renewal.&lt;br/&gt;&lt;br/&gt;Thanks,&lt;br&gt;mf06172019 TestPatient01</Message>
+        </Communication>
+    </Prescription>
+</ns4:Prescriptions>
