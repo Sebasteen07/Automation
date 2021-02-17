@@ -101,5 +101,13 @@ public class PrescriptionTestData {
 	public String getPracticeName() {
 		return PrescriptionObj.PracticeName;
 	}
+	public String getRestV3Url() {
+		return PrescriptionObj.RestV3Url;
+	}
+	
+	public String getPrescriptionPathV3() {
+		return PrescriptionObj.PrescriptionPathV3;
+	}
+	
 
 }
