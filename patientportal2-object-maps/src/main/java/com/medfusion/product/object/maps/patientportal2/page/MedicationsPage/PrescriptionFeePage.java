@@ -1,7 +1,6 @@
 package com.medfusion.product.object.maps.patientportal2.page.MedicationsPage;
 
 import static com.intuit.ifs.csscat.core.BaseTestSoftAssert.assertTrue;
-import static org.testng.Assert.assertFalse;
 import java.util.ArrayList;
 
 import org.openqa.selenium.By;
@@ -13,7 +12,6 @@ import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.openqa.selenium.support.ui.Select;
 
 import com.medfusion.product.object.maps.patientportal2.page.JalapenoMenu;
-import com.medfusion.product.object.maps.patientportal2.page.NewPayBillsPage.JalapenoPayBillsMakePaymentPage;
 import com.medfusion.product.patientportal2.pojo.CreditCard;
 
 public class PrescriptionFeePage  extends JalapenoMenu {
