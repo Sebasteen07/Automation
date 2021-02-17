@@ -886,8 +886,10 @@ public class IntegrationPlatformAcceptanceTests extends BaseTestNGWebDriver {
 
 	}
 
-	@Test(enabled = true, groups = { "AcceptanceTests" }, retryAnalyzer = RetryAnalyzer.class)
-	public void testStatementPreference() throws Exception {
+	@Test(enabled = true, dataProvider = "channelVersion",groups = { "AcceptanceTests" }, retryAnalyzer = RetryAnalyzer.class)
+	public void testStatementPreference(String version) throws Exception {
+		if (version.equals("v2"))
+			throw new SkipException("Test skipped as version is:" + version);
 		log("Test Case: Statement Preference in Portal 2.0");
 		log("Execution Environment: " + IHGUtil.getEnvironmentType());
 		log("Execution Browser: " + TestConfig.getBrowserType());
@@ -909,6 +911,9 @@ public class IntegrationPlatformAcceptanceTests extends BaseTestNGWebDriver {
 		log("OAuthAppToken: " + testData.getOAuthAppToken());
 		log("OAuthUsername: " + testData.getOAuthUsername());
 		log("OAuthPassword: " + testData.getOAuthPassword());
+		log("Rest Url: " + testData.getRestUrlV3());
+		log("Statement Path: " + testData.getStatementPathV3());
+
 
 		Long timeStamp = System.currentTimeMillis();
 
@@ -956,14 +961,18 @@ public class IntegrationPlatformAcceptanceTests extends BaseTestNGWebDriver {
 		log("Step 11: Setup Oauth client");
 		RestUtils.oauthSetup(testData.getOAuthKeyStore(), testData.getOAuthProperty(), testData.getOAuthAppToken(),
 				testData.getOAuthUsername(), testData.getOAuthPassword());
-
+		String nextTimeStamp;
 		log("Step 12: Wait for 60 seconds");
 		Thread.sleep(60000);
-
+		if(version.equals("v1")) {
 		log("Step 13: Getting statement preference updates since timestamp: " + timeStamp);
-		String nextTimeStamp = RestUtils.setupHttpGetRequest(testData.getRestUrl() + "?since=" + timeStamp,
+		nextTimeStamp = RestUtils.setupHttpGetRequest(testData.getRestUrl() + "?since=" + timeStamp,
 				testData.getResponsePath());
-
+		}
+		else {
+		nextTimeStamp = RestUtils.setupHttpGetRequest(testData.getRestUrlV3() + "?since=" + timeStamp,
+				testData.getResponsePath());
+		}
 		log("Step 14: Validate the response");
 		RestUtils.isStatementPreferenceCorrect(testData.getResponsePath(), memberId, "PAPER");
 
@@ -976,12 +985,32 @@ public class IntegrationPlatformAcceptanceTests extends BaseTestNGWebDriver {
 				timeStamp = System.currentTimeMillis();
 			else
 				timeStamp = Long.valueOf(nextTimeStamp);
+			if(version.equals("v1")) {
+				String payload = RestUtils.preparePostStatementPreference(testData.getStatementPath(), memberId,
+						externalPatientId, statementPreference[i]);
 
-			String payload = RestUtils.preparePostStatementPreference(testData.getStatementPath(), memberId,
+				log("Step 16: Do POST Statement Preference API & set preference to " + statementPreference[i]);
+				String processingUrl = RestUtils.setupHttpPostRequest(testData.getRestUrl(), payload,
+						testData.getResponsePath());
+
+				log("Step 17: Get processing status until it is completed");
+				boolean completed = false;
+				for (int j = 0; j < 3; j++) {
+					Thread.sleep(60000);
+					RestUtils.setupHttpGetRequest(processingUrl, testData.getResponsePath());
+					if (RestUtils.isMessageProcessingCompleted(testData.getResponsePath())) {
+						completed = true;
+						break;
+					}
+				}
+				assertTrue(completed);
+			}
+			else {
+			String payload = RestUtils.preparePostStatementPreference(testData.getStatementPathV3(), memberId,
 					externalPatientId, statementPreference[i]);
 
 			log("Step 16: Do POST Statement Preference API & set preference to " + statementPreference[i]);
-			String processingUrl = RestUtils.setupHttpPostRequest(testData.getRestUrl(), payload,
+			String processingUrl = RestUtils.setupHttpPostRequest(testData.getRestUrlV3(), payload,
 					testData.getResponsePath());
 
 			log("Step 17: Get processing status until it is completed");
@@ -995,7 +1024,7 @@ public class IntegrationPlatformAcceptanceTests extends BaseTestNGWebDriver {
 				}
 			}
 			assertTrue(completed);
-
+			}
 			log("Step 18: Login to Patient Portal");
 			JalapenoLoginPage loginPage1 = new JalapenoLoginPage(driver, testData.getUrl());
 			JalapenoHomePage homePage1 = loginPage1.login(testData.getUserName(), testData.getPassword());
@@ -1012,9 +1041,14 @@ public class IntegrationPlatformAcceptanceTests extends BaseTestNGWebDriver {
 
 			log("Step 21: GET Statement Preference API");
 			log("Getting statement preference updates since timestamp: " + timeStamp);
+			if(version.equals("v1")) {
 			nextTimeStamp = RestUtils.setupHttpGetRequest(testData.getRestUrl() + "?since=" + timeStamp,
 					testData.getResponsePath());
-
+			}
+			else {
+			nextTimeStamp = RestUtils.setupHttpGetRequest(testData.getRestUrl() + "?since=" + timeStamp,
+					testData.getResponsePath());
+			}
 			log("Step 22: Validate the response");
 			RestUtils.isStatementPreferenceCorrect(testData.getResponsePath(), memberId, statementPreference[i]);
 		}
