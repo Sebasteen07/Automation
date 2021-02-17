@@ -3104,6 +3104,7 @@ public class PatientPortal2AcceptanceTests extends BaseTestNGWebDriver {
 	
 	@Test(enabled = true, groups = { "acceptance-linkedaccounts" }, retryAnalyzer = RetryAnalyzer.class)
 	public void testUnlinkDependent() throws Exception {
+		Instant testStart = Instant.now();
 		String patientLogin = PortalUtil.generateUniqueUsername("login", testData); // guardian login
 		String patientLastName = patientLogin.replace("login", "last");
 		String patientEmail = patientLogin.replace("login", "mail") + "@mailinator.com";
@@ -3166,7 +3167,15 @@ public class PatientPortal2AcceptanceTests extends BaseTestNGWebDriver {
 		
 		logStep("Going to MyAccount page and unlink dependent");
 		jalapenoHomePage.UnlinkDependentAccount();
-		assertTrue(jalapenoHomePage.wasUnlikSuccessful());
+		assertTrue(jalapenoHomePage.wasUnlinkSuccessful());
+		
+		logStep("Using mailinator Mailer to retrieve the latest emails for dependent");
+		String emailSubjectDependent = "Unlink notification of your account at "
+				+ testData.getPracticeName();
+		Email emailDependent = new Mailer(patientEmail).pollForNewEmailWithSubject(emailSubjectDependent, 30,
+				testSecondsTaken(testStart));
+		assertNotNull(emailDependent,
+				"Error: No email found for dependent recent enough and with specified subject: " + emailSubjectDependent);
 	}
 		
 	@Test(enabled = true, groups = { "acceptance-solutions" }, retryAnalyzer = RetryAnalyzer.class)

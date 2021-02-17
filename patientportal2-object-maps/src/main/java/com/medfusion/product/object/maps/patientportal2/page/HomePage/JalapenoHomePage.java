@@ -539,7 +539,7 @@ public class JalapenoHomePage extends JalapenoMenu {
 		return PageFactory.initElements(driver, NGAppointmentPage.class);
 	}
 	
-	public boolean wasUnlikSuccessful() {
+	public boolean wasUnlinkSuccessful() {
 
 		try {
 			log("Looking for successful message after unlink");
