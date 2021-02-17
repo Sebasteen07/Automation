@@ -263,7 +263,6 @@ public class JalapenoMessagesPage extends JalapenoMenu {
 	{
 		WebElement ul_element = driver.findElement(By.xpath("//ul[@id='messages']"));
         List<WebElement> li_All = ul_element.findElements(By.tagName("li"));
-        //Thread.sleep(50000);
         return (li_All.size());      		
 		
 	}
