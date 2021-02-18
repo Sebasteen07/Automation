@@ -41,5 +41,14 @@ public class LocationAndProviderPage {
 		btnContinue.click();	
 	}
 	
+	public void chooseLocationAndProviderwithoutFee() throws InterruptedException, IOException {
+		PropertyFileLoader testData = new PropertyFileLoader();
+		locationDropdown.click();
+		locationDropdown.sendKeys(testData.getProperty("providerwfName"));
+		providerDropdown.click();
+		providerDropdown.sendKeys(testData.getProperty("providerwfLocation"));
+		btnContinue.click();	
+	}
+	
 	
 }
