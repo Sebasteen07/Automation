@@ -22,8 +22,6 @@ import javax.xml.transform.stream.StreamResult;
 
 import org.junit.Assert;
 import org.openqa.selenium.WebDriver;
-import org.openqa.selenium.support.ui.Clock;
-import org.openqa.selenium.support.ui.SystemClock;
 import com.intuit.ifs.csscat.core.TestConfig;
 import com.intuit.ifs.csscat.core.utils.BrowserTypeUtil.BrowserType;
 import com.intuit.ifs.csscat.core.utils.Log4jUtil;
@@ -41,7 +39,6 @@ public class SupportUtil extends IHGUtil {
 
 	public static int timeout = 0;
 	public static String[] exeArg = null;
-	private static Clock clock = new SystemClock();
 	public static final int WAIT_INCR = 500; // 500 milliseconds
 
 	public SupportUtil(WebDriver driver) {
@@ -446,23 +443,4 @@ public class SupportUtil extends IHGUtil {
 		System.out.println("RESPONSE XML****" + responseXML_Str);
 
 	}
-
-	/**
-	 * Sleeps the specified amount of milliseconds
-	 * 
-	 * @param milliseconds
-	 */
-	public static void wait(int milliseconds) {
-
-		long endTime = clock.laterBy(milliseconds);
-		while (clock.isNowBefore(endTime)) {
-			try {
-				Thread.sleep(WAIT_INCR);
-			} catch (InterruptedException e) {
-				e.printStackTrace();
-			}
-		}
-	}
-
-
 }
