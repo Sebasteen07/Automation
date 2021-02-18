@@ -7,6 +7,7 @@ public class EHDC {
 	public String UserName = "";
 	public String Password = "";
 	public String RestUrl = "";
+	public String RestUrlV3 = "";
 	public String CCDPath = "";
 	public String ResponsePath = "";
 	public String OAuthProperty ="";

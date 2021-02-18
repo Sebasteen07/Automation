@@ -108,20 +108,24 @@ import com.medfusion.product.practice.api.pojo.Practice;
  */
 
 public class IntegrationPlatformRegressionTests extends BaseTestNGWebDriver {
-	@Test(enabled = true, groups = { "RegressionTests" }, retryAnalyzer = RetryAnalyzer.class)
-	public void testEHDCSendCCD() throws Exception {
+	@Test(enabled = true, dataProvider = "channelVersion", groups = { "RegressionTests" }, retryAnalyzer = RetryAnalyzer.class)
+	public void testEHDCSendCCD(String version) throws Exception {
+		if (version.equals("v2"))
+			throw new SkipException("Test skipped as version is:" + version);
 		log("Test Case: send a CCD and check in patient Portal");
 		log("Execution Environment: " + IHGUtil.getEnvironmentType());
 		log("Execution Browser: " + TestConfig.getBrowserType());
-
+		String ccd;
 		LoadPreTestData LoadPreTestDataObj = new LoadPreTestData();
 		EHDC testData = new EHDC();
 		LoadPreTestDataObj.loadEHDCDataFromProperty(testData);
 		log("Step 1: Setup Oauth client");
 		RestUtils.oauthSetup(testData.OAuthKeyStore, testData.OAuthProperty, testData.OAuthAppToken,
 				testData.OAuthUsername, testData.OAuthPassword);
-		String ccd = CCDPayload.getCCDPayload(testData);
+		if(version.equals("v1")) {
+		ccd = CCDPayload.getCCDPayload(testData);
 		Thread.sleep(6000);
+		log("Payload"+ccd);
 		log("Wait to generate CCD Payload");
 		log("Step 2: Do Message Post Request");
 		log("ResponsePath: " + testData.ResponsePath);
@@ -130,6 +134,20 @@ public class IntegrationPlatformRegressionTests extends BaseTestNGWebDriver {
 		log("Processing URL: " + processingUrl);
 		log("Step 3: Get processing status until it is completed");
 		Thread.sleep(60000);
+		}
+		else {
+		ccd = CCDPayload.getCCDPayloadV3(testData);
+		Thread.sleep(6000);
+		log("Payload"+ccd);
+		log("Wait to generate CCD Payload");
+		log("Step 2: Do Message Post Request");
+		log("ResponsePath: " + testData.ResponsePath);
+		String processingUrl = RestUtils.setupHttpPostRequest(testData.RestUrlV3, ccd, testData.ResponsePath);
+
+		log("Processing URL: " + processingUrl);
+		log("Step 3: Get processing status until it is completed");
+		Thread.sleep(60000);
+		}
 
 		log("Step 4: Login to Patient Portal");
 		JalapenoLoginPage loginPage = new JalapenoLoginPage(driver, testData.URL);

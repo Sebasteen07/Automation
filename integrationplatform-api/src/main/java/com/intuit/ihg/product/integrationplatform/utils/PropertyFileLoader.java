@@ -38,6 +38,10 @@ public class PropertyFileLoader {
 	public String getRestUrlCCD() {
 		return property.getProperty("restUrlCCD");
 	}
+	
+	public String getRestUrlV3CCD() {
+		return property.getProperty("restUrlV3CCD");
+	}
 
 	public String getEPracticeNameCCD() {
 		return property.getProperty("ePracticeNameCCD");

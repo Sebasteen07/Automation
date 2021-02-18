@@ -16,6 +16,7 @@ public class LoadPreTestData {
 		testData.UserName = propertyData.getUserNameCCD();
 		testData.Password = propertyData.getPasswordCCD();
 		testData.RestUrl = propertyData.getRestUrlCCD();
+		testData.RestUrlV3 = propertyData.getRestUrlV3CCD();
 		testData.EPracticeName = propertyData.getEPracticeNameCCD();
 		testData.ccdXMLPath = propertyData.getCCDPATH3();
 		testData.CCDPath = propertyData.getCCDPath();
