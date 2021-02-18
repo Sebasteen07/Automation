@@ -178,7 +178,6 @@ public class CCDPayload {
 			icBuilder = icFactory.newDocumentBuilder();
 			Document doc = icBuilder.newDocument();
 
-			//String schema = "http://schema.intuit.com/health/ccd/v1";
 			Element mainRootElement = doc.createElementNS("", "CcdExchange");
 			doc.appendChild(mainRootElement);
 
