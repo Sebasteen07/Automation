@@ -1,6 +1,8 @@
 // Copyright 2021 NXGN Management, LLC. All Rights Reserved.
 package com.medfusion.product.object.maps.patientportal2.page.MedicationsPage;
 
+import static org.junit.Assert.assertFalse;
+
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.FindBy;
@@ -33,6 +35,9 @@ public class MedicationsConfirmationPage {
 	
 	@FindBy(how = How.XPATH, using = "//a[@id='closebtn']")
 	private WebElement btnClose;
+	
+	@FindBy(how = How.XPATH, using = "//span[text()='Prescription renewal fee']")
+	private WebElement prescriptionRenewalFee;
 
 	public String confirmMedication(WebDriver driver) throws InterruptedException {
 
@@ -42,5 +47,17 @@ public class MedicationsConfirmationPage {
         return successMsg.getText();		
 	}
 	
+	public void prescriptionRenewalFee() {
+	
+		try {
+			assertFalse(prescriptionRenewalFee.isDisplayed());
+		}
+		catch (Exception e) {
+			System.out.println("Prescription Renewal fee is  not displayed");
+		}
+		
+		
+		
+	}
 
 }

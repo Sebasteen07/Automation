@@ -28,6 +28,7 @@ import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.PageFactory;
 import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.openqa.selenium.support.ui.WebDriverWait;
+import org.testng.Assert;
 import org.testng.annotations.*;
 import com.intuit.ifs.csscat.core.RetryAnalyzer;
 import com.intuit.ifs.csscat.core.pojo.ExpectedEmail;
@@ -3225,6 +3226,7 @@ public class PatientPortal2AcceptanceTests extends BaseTestNGWebDriver {
 		
 		logStep("Confirm Medication Request from Patient Portal");
 		MedicationsConfirmationPage confirmPage= new MedicationsConfirmationPage(driver);
+	
 		String successMsg= confirmPage.confirmMedication(driver);
 		assertEquals(successMsg, "Your prescription request has been submitted.");
 		
@@ -3302,6 +3304,7 @@ public class PatientPortal2AcceptanceTests extends BaseTestNGWebDriver {
 		SelectPharmacyPage pharmaPage= new SelectPharmacyPage(driver);
 		pharmaPage.addNewPharmacy(driver);
 		
+		
 		logStep("Select Medications");
 		SelectMedicationsPage selectMedPage= new SelectMedicationsPage(driver);
 		selectMedPage.selectMedications();
@@ -3359,7 +3362,6 @@ public class PatientPortal2AcceptanceTests extends BaseTestNGWebDriver {
 	@Test(enabled = true, groups = { "acceptance-solutions" }, retryAnalyzer = RetryAnalyzer.class)
 	public void testMedicationsWithoutRenewalFee() throws Exception {
 		
-		
 		logStep("Load login page and login");
 		JalapenoLoginPage loginPage = new JalapenoLoginPage(driver, testData.getProperty("medwfPortalUrl"));
 		JalapenoHomePage homePage = loginPage.login(testData.getProperty("medwfUserid"), testData.getProperty("medwfPassword"));
@@ -3375,6 +3377,7 @@ public class PatientPortal2AcceptanceTests extends BaseTestNGWebDriver {
 		LocationAndProviderPage select = new LocationAndProviderPage(driver);
 		select.chooseLocationAndProviderwithoutFee();
 		
+		
 		logStep("Select a pharmacy");
 		SelectPharmacyPage pharmaPage= new SelectPharmacyPage(driver);
 		pharmaPage.selectPharmacy();
@@ -3383,9 +3386,13 @@ public class PatientPortal2AcceptanceTests extends BaseTestNGWebDriver {
 		SelectMedicationsPage selectMedPage= new SelectMedicationsPage(driver);
 		selectMedPage.selectMedications();
 		
-		logStep("Confirm Medication Request from Patient Portal");
+		logStep("Validating Prescription Renewal Fee Text is not present");
 		MedicationsConfirmationPage confirmPage= new MedicationsConfirmationPage(driver);
-		String successMsg= confirmPage.confirmMedication(driver);
+		confirmPage.prescriptionRenewalFee();
+		
+		logStep("Confirm Medication Request from Patient Portal");
+		MedicationsConfirmationPage confirmPage1= new MedicationsConfirmationPage(driver);
+		String successMsg= confirmPage1.confirmMedication(driver);
 		assertEquals(successMsg, "Your prescription request has been submitted.");
 		
 		homePage.clickOnLogout();
