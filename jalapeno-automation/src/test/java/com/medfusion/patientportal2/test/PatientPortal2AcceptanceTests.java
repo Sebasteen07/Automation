@@ -3413,7 +3413,7 @@ public class PatientPortal2AcceptanceTests extends BaseTestNGWebDriver {
 		rxRenewalSearchPage.clickProcessRxRenewal();
 		String subject = rxRenewalSearchPage.getSubject();
 		logStep("Verify Prescription Confirmation in Practice Portal");
-		rxRenewalSearchPage.verifyPrescriptionConfirmationSection(subject);
+		rxRenewalSearchPage.verifyPrescriptionConfirmationSection(subject,DRUG_DOSAGE);
 
 		logStep("Set Action Radio Button in Practice Portal");
 		rxRenewalSearchPage.setActionRadioButton();
