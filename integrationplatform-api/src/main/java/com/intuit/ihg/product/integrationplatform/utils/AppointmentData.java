@@ -60,4 +60,6 @@ public class AppointmentData {
 	public String ActiveFlag="";
 	public String Comment="";
 	public String AppointmentTypeUrl="";
+	public String AppointmentRequestV3URL="";
+	public String PATIENT_INVITE_RESTV3URL="";
 }

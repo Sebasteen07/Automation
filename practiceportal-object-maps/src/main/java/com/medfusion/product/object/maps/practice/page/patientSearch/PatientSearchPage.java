@@ -13,6 +13,7 @@ import org.openqa.selenium.support.FindBy;
 import org.openqa.selenium.support.PageFactory;
 import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.openqa.selenium.support.ui.WebDriverWait;
+import org.testng.Assert;
 
 import com.intuit.ifs.csscat.core.pageobject.BasePageObject;
 import com.medfusion.common.utils.IHGUtil;
@@ -71,20 +72,29 @@ public class PatientSearchPage extends BasePageObject {
 
 	@FindBy(linkText = "Delete")
 	private WebElement deletePatient;
-	
+
 	@FindBy(xpath = "//input[@value='Delete']")
 	private WebElement confirmdeletePatient;
-	
+
 	@FindBy(xpath = "//*[text()='No Records were found']")
 	private WebElement checkdeletePatient;
-	
+
 	@FindBy(linkText = "Deactivate")
 	private WebElement deactivatePatient;
-	
+
 	@FindBy(xpath = "//input[@value='Deactivate']")
 	private WebElement confirmdeactivatePatient;
-	
+
 	private WebElement patient;
+
+	@FindBy(xpath = "//*[@name='emrid']")
+	private WebElement patientIdTextbox;
+
+	@FindBy(xpath = "//*[@id='content']/form/table/tbody/tr[7]/td[2]/input")
+	private WebElement updateInfo;
+
+	@FindBy(xpath = "//*[@id='dashboard']/fieldset[1]/table/tbody/tr[7]/td[2]/a")
+	private WebElement editPatientID;
 
 	/**
 	 * @Description:Set Patient First Name
@@ -115,8 +125,6 @@ public class PatientSearchPage extends BasePageObject {
 		email.clear();
 		email.sendKeys(PracticeConstants.PATIENT_EMAIL);
 	}
-
-
 
 	/**
 	 * @Description:Set Patient Search Fields
@@ -151,7 +159,7 @@ public class PatientSearchPage extends BasePageObject {
 		firstName.sendKeys(fName);
 		lastName.clear();
 		lastName.sendKeys(lName);
-		searchForPatient.click();	
+		searchForPatient.click();
 	}
 
 	public void searchForPatientInPatientSearch(String email) {
@@ -164,11 +172,14 @@ public class PatientSearchPage extends BasePageObject {
 	public boolean isTransactionPresent(String amount, String fName, String lName) {
 		IHGUtil.PrintMethodName();
 		log("Amount searched for: " + amount);
-		return driver.findElement(By.xpath("//table[@id='MfAjaxFallbackDefaultDataTable']//span[contains(text(), '" + amount
-				+ "')]/ancestor::tr/td//a/span[contains(text(), '" + lName + ", " + fName + "')]")).isDisplayed();
+		return driver
+				.findElement(By.xpath("//table[@id='MfAjaxFallbackDefaultDataTable']//span[contains(text(), '" + amount
+						+ "')]/ancestor::tr/td//a/span[contains(text(), '" + lName + ", " + fName + "')]"))
+				.isDisplayed();
 	}
 
-	public PayMyBillOnlinePage selectTheTransaction(String amount, String fName, String lName) throws InterruptedException {
+	public PayMyBillOnlinePage selectTheTransaction(String amount, String fName, String lName)
+			throws InterruptedException {
 		IHGUtil.PrintMethodName();
 		Thread.sleep(10000);
 		driver.findElement(By.xpath("//table[@id='MfAjaxFallbackDefaultDataTable']//span[contains(text(), '" + amount
@@ -193,7 +204,8 @@ public class PatientSearchPage extends BasePageObject {
 	}
 
 	public PatientDashboardPage changeEmail(String baseEmail) {
-		// create new email string from baseEmail@something.com to baseEmail+1234568@something.com
+		// create new email string from baseEmail@something.com to
+		// baseEmail+1234568@something.com
 		String concatEmailWith = "+" + String.valueOf(System.currentTimeMillis());
 		StringBuffer sbNewEmail = new StringBuffer(baseEmail);
 		sbNewEmail.insert(baseEmail.indexOf("@"), concatEmailWith);
@@ -244,7 +256,7 @@ public class PatientSearchPage extends BasePageObject {
 		Thread.sleep(2000);
 		searchForPatient.click();
 	}
-	
+
 	public void deletePatient() throws Exception {
 		IHGUtil.PrintMethodName();
 		IHGUtil.waitForElement(driver, 15, deletePatient);
@@ -252,19 +264,19 @@ public class PatientSearchPage extends BasePageObject {
 		IHGUtil.waitForElement(driver, 15, confirmdeletePatient);
 		confirmdeletePatient.click();
 	}
-	
-	public void verifyDeletedPatient(String fName,String lName) throws Exception {
+
+	public void verifyDeletedPatient(String fName, String lName) throws Exception {
 		IHGUtil.PrintMethodName();
-		searchForPatientInPatientSearch(fName , lName);
-		Boolean status =IHGUtil.waitForElement(driver, 15, checkdeletePatient);
-		if(status)
+		searchForPatientInPatientSearch(fName, lName);
+		Boolean status = IHGUtil.waitForElement(driver, 15, checkdeletePatient);
+		if (status)
 			log("Patient is deleted successfully");
-		else{
+		else {
 			log("Patient is not deleted");
 			assertTrue(status);
 		}
 	}
-	
+
 	public void deactivatePatient() throws Exception {
 		IHGUtil.PrintMethodName();
 		IHGUtil.waitForElement(driver, 15, deactivatePatient);
@@ -272,16 +284,37 @@ public class PatientSearchPage extends BasePageObject {
 		IHGUtil.waitForElement(driver, 15, confirmdeactivatePatient);
 		confirmdeactivatePatient.click();
 	}
-	
-	public void verifyDeactivatedPatient(String fName,String lName) throws Exception {
+
+	public void verifyDeactivatedPatient(String fName, String lName) throws Exception {
 		IHGUtil.PrintMethodName();
-		WebElement checkdeactivatePatient= driver.findElement((By.xpath("//*[contains(text(),'"+fName+" "+ lName +"(Deactivated)')]")));
-		Boolean status =IHGUtil.waitForElement(driver, 15, checkdeactivatePatient);
-		if(status)
+		WebElement checkdeactivatePatient = driver
+				.findElement((By.xpath("//*[contains(text(),'" + fName + " " + lName + "(Deactivated)')]")));
+		Boolean status = IHGUtil.waitForElement(driver, 15, checkdeactivatePatient);
+		if (status)
 			log("Patient is deactivated successfully");
-		else{
+		else {
 			log("Patient is not deactivated");
 			assertTrue(status);
 		}
+	}
+
+	public void sendPatientIDAndClickOnUpdate(String fName) {
+		IHGUtil.PrintMethodName();
+		patientIdTextbox.clear();
+		patientIdTextbox.sendKeys(fName);
+		updateInfo.click();
+	}
+
+	public void clickOnSearch() {
+		searchResult.click();
+	}
+
+	public void clickOnEdit() {
+		editPatientID.click();
+	}
+
+	public String verifypatientExternalID() {
+		String patientExternalID = patientIdTextbox.getAttribute("value");
+		return patientExternalID;
 	}
 }
