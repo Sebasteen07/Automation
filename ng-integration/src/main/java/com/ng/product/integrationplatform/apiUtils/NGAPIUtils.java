@@ -1,4 +1,5 @@
-// Copyright 2020 NXGN Management, LLC. All Rights Reserved.
+//Copyright 2013-2021 NXGN Management, LLC. All Rights Reserved.
+
 package com.ng.product.integrationplatform.apiUtils;
 import static org.testng.Assert.assertTrue;
 
@@ -121,7 +122,7 @@ public class NGAPIUtils {
 		loginDefaults.setPracticeId(PracticeID);
 		
 		ObjectMapper objMap = new ObjectMapper();
-        String requestbody = objMap.defaultPrettyPrintingWriter().writeValueAsString(loginDefaults);
+        String requestbody = objMap.writerWithDefaultPrettyPrinter().writeValueAsString(loginDefaults);
         Log4jUtil.log("Login Defaults request Body is \n" + requestbody);
              
 		StringEntity entity=new StringEntity(requestbody);
@@ -190,8 +191,6 @@ public class NGAPIUtils {
 
 	        String strLocationHeader="";
 	        String Email= EnterpriseEmail;
-	        Header[] httpHeaders;
-	        
 	        HttpPost httpPost = new HttpPost(argRouteURL);
 
 	        httpPost.addHeader("Accept", "*/*");
@@ -210,8 +209,6 @@ public class NGAPIUtils {
 	        	httpPost.addHeader("x-nge-site-id",XNGSessionID);
 	        }
 	        	        
-	        httpHeaders = httpPost.getAllHeaders();
-
 	        httpPost.setEntity(arg_Payload);
 	        httpResponse = httpClient.execute(httpPost);
 	        if (mode.equals("CAGateway")) {
@@ -250,8 +247,7 @@ public class NGAPIUtils {
 			Log4jUtil.log("\n Payload "+arg_Payload.toString());
 			Log4jUtil.log("PostURL "+argRouteURL);
 
-			Header[] httpHeaders;
-	        CloseableHttpResponse httpResponse = null;
+			CloseableHttpResponse httpResponse = null;
 	        CloseableHttpClient httpClient = HttpClients.createDefault();
 
 	        String strLocationHeader="";
@@ -309,8 +305,7 @@ public class NGAPIUtils {
 		try {
 	    HttpGet httpGet;
 		httpGet = new HttpGet(argRouteURL);	
-		Header[] httpHeaders;
-        CloseableHttpResponse httpResponse = null;
+		CloseableHttpResponse httpResponse = null;
         CloseableHttpClient httpClient = HttpClients.createDefault();
 		
 		String XNGDate = getXNGDate();
@@ -429,7 +424,7 @@ public class NGAPIUtils {
     		loginDefaults.setEnterpriseId(enterpriseID);
     		loginDefaults.setPracticeId(practiceID);
     		ObjectMapper objMap = new ObjectMapper();
-            String requestbody = objMap.defaultPrettyPrintingWriter().writeValueAsString(loginDefaults);
+            String requestbody = objMap.writerWithDefaultPrettyPrinter().writeValueAsString(loginDefaults);
             Log4jUtil.log("Login Defaults request Body is \n" + requestbody);
             
             String LogInDefaultsID =setupNGHttpPutRequest(mode,LogInDefaultsUrl,requestbody, 200);
@@ -438,7 +433,7 @@ public class NGAPIUtils {
             	Log4jUtil.log("Expected practice id "+practiceID+" is same as current practice ID "+currentPracticeID);
     }
 	
-	public static String getRelativeBaseUrl() throws IOException, JSONException{
+	public String getRelativeBaseUrl() throws IOException, JSONException{
 		String baseURL = apiRoutes.BaseURL.getRouteURL().toString();
 	    String response = setupNGHttpGetRequest("EnterpriseGateway",baseURL, 200);
 	    String relativeBaseURL ="";

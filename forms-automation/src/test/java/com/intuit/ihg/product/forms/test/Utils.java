@@ -1,4 +1,5 @@
-//Copyright 2013-2020 NXGN Management, LLC. All Rights Reserved.
+//Copyright 2013-2021 NXGN Management, LLC. All Rights Reserved.
+
 package com.intuit.ihg.product.forms.test;
 
 import static com.intuit.ifs.csscat.core.utils.Log4jUtil.log;
@@ -25,7 +26,6 @@ import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.openqa.selenium.support.ui.WebDriverWait;
 import org.testng.Assert;
 
-import com.intuit.ifs.csscat.core.TestConfig;
 import com.intuit.ihg.common.utils.downloads.RequestMethod;
 import com.intuit.ihg.common.utils.downloads.URLStatusChecker;
 import com.medfusion.common.utils.IHGUtil;
@@ -132,7 +132,7 @@ public class Utils {
 				fxProfile.setPreference("browser.download.manager.showWhenStarting", false);
 				fxProfile.setPreference("browser.download.dir", System.getProperty("user.dir"));
 				fxProfile.setPreference("browser.helperApps.neverAsk.saveToDisk", "text/plain");
-				FirefoxDriver driver = new FirefoxDriver(fxProfile);
+				FirefoxDriver driver = new FirefoxDriver();
 				driver.manage().timeouts().implicitlyWait(20, TimeUnit.SECONDS);
 				return driver;
 		}

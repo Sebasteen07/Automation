@@ -1,3 +1,5 @@
+//Copyright 2013-2021 NXGN Management, LLC. All Rights Reserved.
+
 package com.intuit.ihg.product.support.test;
 
 import java.io.BufferedWriter;
@@ -229,13 +231,13 @@ public class SupportTeamAcceptanceTests extends BaseTestNGWebDriver {
 		log("Getting the ccd file path");
 		String inputFilePath = SupportConstants.XML_REQUEST_PATH + "CCD_Updated.xml";
 		String inputXml = SupportUtil.fileToString(inputFilePath);
-		SupportUtil.wait(3000);
+		Thread.sleep(3000);
 
 		log("Updating the Input Xml with patient " + memberID + "'s details");
 		String updatedReqXmlInString =
 				SupportUtil.updateXML(inputXml, SupportConstants.TAG_INTUITPATIENT_ID, SupportConstants.REQUESTOR_INTUITPATIENTID_OLDVALUE, memberID);
 
-		SupportUtil.wait(2000);
+		Thread.sleep(2000);
 		log("Updated XML***************\n" + updatedReqXmlInString);
 
 		log("Post the ccd request");

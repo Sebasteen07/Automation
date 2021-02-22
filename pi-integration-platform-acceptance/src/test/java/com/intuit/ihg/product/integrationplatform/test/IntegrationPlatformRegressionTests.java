@@ -349,8 +349,10 @@ public class IntegrationPlatformRegressionTests extends BaseTestNGWebDriver {
 
 	}
 
-	@Test(enabled = true, groups = { "RegressionTests" }, retryAnalyzer = RetryAnalyzer.class)
-	public void testAMDCSecureMessagesWithAllCategoryTypes() throws Exception {
+	@Test(enabled = true, dataProvider = "channelVersion", groups = { "RegressionTests" }, retryAnalyzer = RetryAnalyzer.class)
+	public void testAMDCSecureMessagesWithAllCategoryTypes(String version) throws Exception {
+		if (version.equals("v2"))
+			throw new SkipException("Test skipped as version is:" + version);
 		log("Test Case: AMDC Secure Message with Read Communication");
 		log("Execution Environment: " + IHGUtil.getEnvironmentType());
 		log("Execution Browser: " + TestConfig.getBrowserType());
@@ -367,14 +369,26 @@ public class IntegrationPlatformRegressionTests extends BaseTestNGWebDriver {
 		testData.allowOnce = "false";
 		log("Step 3: Fill Message data");
 		long timestamp = System.currentTimeMillis();
-		String message = AMDCPayload.getAMDCPayload(testData);
+		String message;
+		if(version.equals("v1")) {
+		message= AMDCPayload.getAMDCPayload(testData);
+		}
+		else {
+		message= AMDCPayload.getAMDCV3Payload(testData);
+		}
 		log("message :- " + message);
 		String messageID = AMDCPayload.messageID;
 		log("Partner Message ID:" + messageID);
-
+		String processingUrl;
 		log("Step 4: Do Message Post Request");
 		log("responsePath: " + testData.ResponsePath);
-		String processingUrl = RestUtils.setupHttpPostRequest(testData.RestUrl, message, testData.ResponsePath);
+		if(version.equals("v1")) {
+		processingUrl = RestUtils.setupHttpPostRequest(testData.RestUrl, message, testData.ResponsePath);
+		}
+		else {
+		processingUrl = RestUtils.setupHttpPostRequest(testData.RestV3Url, message, testData.ResponsePath);
+
+		}
 
 		log("Step 5: Get processing status until it is completed");
 		boolean completed = false;
@@ -401,7 +415,7 @@ public class IntegrationPlatformRegressionTests extends BaseTestNGWebDriver {
 			Mailinator mail = new Mailinator();
 			String subject = "New message from " + testData.Sender3;
 			String messageLink = "Sign in to view this message";
-			link = mail.getLinkFromEmail(testData.GmailUserName, subject, messageLink, 5);
+			link = mail.getLinkFromEmail(testData.UserName, subject, messageLink, 5);
 
 		}
 		// Wait so that Link can be retrieved from the Email.
@@ -436,7 +450,12 @@ public class IntegrationPlatformRegressionTests extends BaseTestNGWebDriver {
 		Thread.sleep(60000);
 
 		log("Getting messages since timestamp: " + since);
+		if(version.equals("v1")) {
 		RestUtils.setupHttpGetRequest(testData.ReadCommuniationURL + "?since=" + since + ",0", testData.ResponsePath);
+		}
+		else {
+		RestUtils.setupHttpGetRequest(testData.ReadCommuniationURLV3 + "?since=" + since + ",0", testData.ResponsePath);
+		}
 
 		log("Step 13: Validate the message id and read time in response");
 		RestUtils.isReadCommunicationMessage(testData.ResponsePath, messageID, readdatetimestamp);
@@ -448,8 +467,12 @@ public class IntegrationPlatformRegressionTests extends BaseTestNGWebDriver {
 		Thread.sleep(60000);
 
 		log("Step 16: Do a GET and get the message");
+		if(version.equals("v1")) {
 		RestUtils.setupHttpGetRequest(testData.RestUrl + "?since=" + since + ",0", testData.ResponsePath);
-
+		}
+		else {
+		RestUtils.setupHttpGetRequest(testData.RestV3Url + "?since=" + since + ",0", testData.ResponsePath);
+		}
 		log("Step 17: Validate message reply");
 		RestUtils.isReplyPresent(testData.ResponsePath, messageIdentifier);
 
