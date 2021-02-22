@@ -90,6 +90,7 @@ public class LoadPreTestData {
 
 		PropertyFileLoader propertyData = new PropertyFileLoader();
 		testData.PULLAPI_URL = propertyData.getPULLAPI_URL_MU2();
+		testData.PULLAPI_URLV3 = propertyData.getPULLAPI_URLV3_MU2();
 		testData.OAUTH_PROPERTY = propertyData.getOAuthProperty();
 		testData.OAUTH_KEYSTORE = propertyData.getOAuthKeyStore();
 		testData.OAUTH_APPTOKEN = propertyData.getOAuthAppToken_MU2();

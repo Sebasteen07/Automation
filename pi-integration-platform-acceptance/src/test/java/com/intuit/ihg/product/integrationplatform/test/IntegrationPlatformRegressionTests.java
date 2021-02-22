@@ -509,8 +509,10 @@ public class IntegrationPlatformRegressionTests extends BaseTestNGWebDriver {
 
 	}
 
-	@Test(enabled = true, groups = { "RegressionTests" }, retryAnalyzer = RetryAnalyzer.class)
-	public void testMU2GetEventForExistingPatient() throws Exception {
+	@Test(enabled = true, dataProvider = "channelVersion", groups = { "RegressionTests" }, retryAnalyzer = RetryAnalyzer.class)
+	public void testMU2GetEventForExistingPatient(String version) throws Exception {
+		if (version.equals("v2"))
+			throw new SkipException("Test skipped as version is:" + version);
 		log("Test Case (testMU2GetEventForExistingPatient): Consolidated CCD related events verification in Pull Events");
 
 		log("Test case Environment: " + IHGUtil.getEnvironmentType());
@@ -520,11 +522,13 @@ public class IntegrationPlatformRegressionTests extends BaseTestNGWebDriver {
 		LoadPreTestDataObj.loadAPITESTDATAFromProperty(testData);
 
 		MU2Utils MU2UtilsObj = new MU2Utils();
-		MU2UtilsObj.mu2GetEvent(testData, driver);
+		MU2UtilsObj.mu2GetEvent(testData, driver,version);
 	}
 
-	@Test(enabled = true, groups = { "RegressionTests" }, retryAnalyzer = RetryAnalyzer.class)
-	public void testMU2GetEventForNewPatient() throws Exception {
+	@Test(enabled = true,dataProvider = "channelVersion", groups = { "RegressionTests" }, retryAnalyzer = RetryAnalyzer.class)
+	public void testMU2GetEventForNewPatient(String version) throws Exception {
+		if (version.equals("v2"))
+			throw new SkipException("Test skipped as version is:" + version);
 		log("Test Case (testMU2GetEventForNewPatient): Consolidated CCD related events verification for newly created patients");
 		log("Environment " + IHGUtil.getEnvironmentType());
 		log("Step 1:  Create Patient");
@@ -619,7 +623,7 @@ public class IntegrationPlatformRegressionTests extends BaseTestNGWebDriver {
 
 		log("Step 4:  Login Portal 2.0");
 
-		MU2UtilsObj.mu2GetEvent(testData, driver);
+		MU2UtilsObj.mu2GetEvent(testData, driver,version);
 	}
 
 	@DataProvider(name = "portalVersion")
@@ -2308,8 +2312,8 @@ public class IntegrationPlatformRegressionTests extends BaseTestNGWebDriver {
 		preAppointmentObj.verifyPatientDetail(testData, patientData);
 	}
 
-	@Test(enabled = true, groups = { "AcceptanceTests" }, retryAnalyzer = RetryAnalyzer.class)
-	public void testPatientMUEventForGuardian() throws Exception {
+	@Test(enabled = true,dataProvider = "channelVersion",  groups = { "AcceptanceTests" }, retryAnalyzer = RetryAnalyzer.class)
+	public void testPatientMUEventForGuardian(String version) throws Exception {
 		Log4jUtil.log(
 				"Test Case: Verification of CCD - VDT Events of patient account through Guardian account using ccd viewer.");
 		log("Test case Environment: " + IHGUtil.getEnvironmentType());
@@ -2330,11 +2334,11 @@ public class IntegrationPlatformRegressionTests extends BaseTestNGWebDriver {
 		Thread.sleep(8000);
 		testData.CCDMessageID1 = ccdDetail.get(0);
 		MU2Utils MU2UtilsObj = new MU2Utils();
-		MU2UtilsObj.mu2GetEventGuardian(testData, driver, false, true);
+		MU2UtilsObj.mu2GetEventGuardian(testData, driver, false, true, version);
 	}
 
-	@Test(enabled = true, groups = { "AcceptanceTests" }, retryAnalyzer = RetryAnalyzer.class)
-	public void testPatientMUEventForExistingGuardian() throws Exception {
+	@Test(enabled = true,dataProvider = "channelVersion",  groups = { "AcceptanceTests" }, retryAnalyzer = RetryAnalyzer.class)
+	public void testPatientMUEventForExistingGuardian(String version) throws Exception {
 		Log4jUtil.log(
 				"Test Case: Verification of CCD - VDT Events of patient account through an Existing Guardian account using ccd viewer.");
 		log("Test case Environment: " + IHGUtil.getEnvironmentType());
@@ -2358,11 +2362,11 @@ public class IntegrationPlatformRegressionTests extends BaseTestNGWebDriver {
 		testData.CCDMessageID1 = ccdDetail.get(0);
 
 		MU2Utils MU2UtilsObj = new MU2Utils();
-		MU2UtilsObj.mu2GetEventGuardian(testData, driver, true, true);
+		MU2UtilsObj.mu2GetEventGuardian(testData, driver, true, true, version);
 	}
 
-	@Test(enabled = true, groups = { "RegressionTests" }, retryAnalyzer = RetryAnalyzer.class)
-	public void testPatientMUEventForNewGuardian() throws Exception {
+	@Test(enabled = true, dataProvider = "channelVersion", groups = { "RegressionTests" }, retryAnalyzer = RetryAnalyzer.class)
+	public void testPatientMUEventForNewGuardian(String version) throws Exception {
 		Long timestamp = System.currentTimeMillis();
 		Log4jUtil.log(
 				"Test Case : Verification of CCD - VDT Events of New patient account through Guardian account using ccd viewer.");
@@ -2434,11 +2438,14 @@ public class IntegrationPlatformRegressionTests extends BaseTestNGWebDriver {
 		testData.PatientFirstName_MU2 = patientDetail.get(0);
 		testData.patientUA_MU2_LastName = patientDetail.get(1);
 
-		MU2UtilsObj.mu2GetEventGuardian(testData, driver, false, true);
+		MU2UtilsObj.mu2GetEventGuardian(testData, driver, false, true, patientID);
 	}
 
-	@Test(enabled = true, groups = { "AcceptanceTests" }, retryAnalyzer = RetryAnalyzer.class)
-	public void testMUEventForGuardianFromHealthRecord() throws Exception {
+	@Test(enabled = true, dataProvider = "channelVersion", groups = { "AcceptanceTests" }, retryAnalyzer = RetryAnalyzer.class)
+	public void testMUEventForGuardianFromHealthRecord(String version) throws Exception {
+		if (version.equals("v2"))
+			throw new SkipException("Test skipped as version is:" + version);
+
 		Log4jUtil.log(
 				"Test Case: Verification of CCD - VDT Events of patient account through Guardian account using Health Record Page.");
 		log("Test case Environment: " + IHGUtil.getEnvironmentType());
@@ -2467,11 +2474,13 @@ public class IntegrationPlatformRegressionTests extends BaseTestNGWebDriver {
 		testData.CCDMessageID2 = ccdDetail1.get(0);
 
 		MU2Utils MU2UtilsObj = new MU2Utils();
-		MU2UtilsObj.mu2GetEventGuardian(testData, driver, false, false);
+		MU2UtilsObj.mu2GetEventGuardian(testData, driver, false, false, version);
 	}
 
-	@Test(enabled = true, groups = { "AcceptanceTests" }, retryAnalyzer = RetryAnalyzer.class)
-	public void testMUEventForExistingGuardianFromHealthRecord() throws Exception {
+	@Test(enabled = true,dataProvider = "channelVersion",  groups = { "AcceptanceTests" }, retryAnalyzer = RetryAnalyzer.class)
+	public void testMUEventForExistingGuardianFromHealthRecord(String version) throws Exception {
+		if (version.equals("v2"))
+			throw new SkipException("Test skipped as version is:" + version);
 		Log4jUtil.log(
 				"Test Case: Verification of CCD - VDT Events of patient account through an Existing Guardian account using Health Record Page.");
 		log("Test case Environment: " + IHGUtil.getEnvironmentType());
@@ -2503,11 +2512,14 @@ public class IntegrationPlatformRegressionTests extends BaseTestNGWebDriver {
 
 		MU2Utils MU2UtilsObj = new MU2Utils();
 		//
-		MU2UtilsObj.mu2GetEventGuardian(testData, driver, true, false);
+		MU2UtilsObj.mu2GetEventGuardian(testData, driver, true, false, version);
 	}
 
-	@Test(enabled = true, groups = { "RegressionTests" }, retryAnalyzer = RetryAnalyzer.class)
-	public void testMUEventForNewGuardianFromHealthRecord() throws Exception {
+	@Test(enabled = true,dataProvider = "channelVersion",  groups = { "RegressionTests" }, retryAnalyzer = RetryAnalyzer.class)
+	public void testMUEventForNewGuardianFromHealthRecord(String version) throws Exception {
+		if (version.equals("v2"))
+			throw new SkipException("Test skipped as version is:" + version);
+
 		Long timestamp = System.currentTimeMillis();
 		Log4jUtil.log(
 				"Test Case : Verification of CCD - VDT Events of New patient account through Guardian account using Health Record Page.");
@@ -2604,7 +2616,7 @@ public class IntegrationPlatformRegressionTests extends BaseTestNGWebDriver {
 		testData.patientUA_MU2_LastName = patientDetail.get(1);
 
 		Thread.sleep(8000);
-		MU2UtilsObj.mu2GetEventGuardian(testData, driver, false, false);
+		MU2UtilsObj.mu2GetEventGuardian(testData, driver, false, false, version);
 	}
 
 	@Test(enabled = true, groups = { "AcceptanceTests" }, retryAnalyzer = RetryAnalyzer.class)

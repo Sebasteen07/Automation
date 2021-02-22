@@ -34,6 +34,7 @@ import org.w3c.dom.NodeList;
 import com.intuit.ifs.csscat.core.BaseTestSoftAssert;
 import com.intuit.ifs.csscat.core.utils.Log4jUtil;
 import com.intuit.ihg.product.mu2.utils.MU2Constants;
+import com.medfusion.common.utils.EnvironmentTypeUtil.EnvironmentType;
 import com.medfusion.common.utils.IHGUtil;
 import com.medfusion.product.object.maps.patientportal2.page.JalapenoLoginPage;
 import com.medfusion.product.object.maps.patientportal2.page.AccountPage.JalapenoAccountPage;
@@ -55,7 +56,7 @@ public class MU2Utils {
 	private String ActionTimestamp = null;
 	private List<String> portalTime = new ArrayList<String>();
 	
-	public void mu2GetEvent(MU2GetEventData testData,WebDriver driver)  throws Exception {
+	public void mu2GetEvent(MU2GetEventData testData,WebDriver driver, String version)  throws Exception {
 
 		long timestamp = System.currentTimeMillis();
 		Log4jUtil.log("TIME STAMP for MU2 Pull API SinceTime: " + Long.toString(timestamp));
@@ -94,12 +95,16 @@ public class MU2Utils {
 		Thread.sleep(5000);
 		long transmitTimestamp = System.currentTimeMillis();
 		Log4jUtil.log("TransmitTimestamp :"+transmitTimestamp);
+		 if((IHGUtil.getEnvironmentType().toString()== "DEV3"))
+		{
+		MedicalRecordSummariesPageObject.selectFirstVisibleCCD();
+		MedicalRecordSummariesPageObject.selectSecondVisibleCCD();
+		jse.executeScript("window.scrollBy(0,400)", "");
+		 }
 		MedicalRecordSummariesPageObject.sendFirstVisibleCCDUsingStandardEmail(testData.Standard_Email);
 		
 		Thread.sleep(5000);
-		
 		Log4jUtil.log("Page refreshing...");
-		
 		jse.executeScript("window.scrollBy(0,200)", "");
 		
 		//code to Download CCD on fire fox 
@@ -114,10 +119,10 @@ public class MU2Utils {
 		
 		homePage.clickOnLogout();
 		
-		getMUEventAndVerify(testData, timestamp,transmitTimestamp);
+		getMUEventAndVerify(testData, timestamp,transmitTimestamp,version);
 	}
 	
-	public void getMUEventAndVerify(MU2GetEventData testData,Long timestamp,Long transmitTimestamp) throws Exception {
+	public void getMUEventAndVerify(MU2GetEventData testData,Long timestamp,Long transmitTimestamp, String version) throws Exception {
 		
 		Log4jUtil.log("MU2GetEvent Step 7: Waiting for Events sync in DWH");
 		Thread.sleep(720000);
@@ -126,14 +131,21 @@ public class MU2Utils {
 		RestUtils.oauthSetup(testData.OAUTH_KEYSTORE, testData.OAUTH_PROPERTY, testData.OAUTH_APPTOKEN, testData.OAUTH_USERNAME,testData.OAUTH_PASSWORD);
 		
 		// Build new Rest URL with epoch milliseconds
-		Log4jUtil.log("Original PULL API URl: " + testData.PULLAPI_URL);
+		if(version.equals("v1")) {
+			Log4jUtil.log("Original PULL API URl: " + testData.PULLAPI_URL);
+			String restPullUrl = new StringBuilder(testData.PULLAPI_URL).append("&sinceTime=").append(timestamp).append("&maxEvents=40").toString();
+	        RestUtils.setupHttpGetRequest(restPullUrl, testData.PUSH_RESPONSEPATH);
+			Log4jUtil.log("Updated PULL API URL: " + restPullUrl);
 
-		String restPullUrl = new StringBuilder(testData.PULLAPI_URL).append("&sinceTime=").append(timestamp).append("&maxEvents=40").toString();
-		Log4jUtil.log("Updated PULL API URL: " + restPullUrl);
-
-		Log4jUtil.log("Step 9: Send Pull API HTTP GET Request and save response to " +testData.PUSH_RESPONSEPATH);
+		}
+		else {
+			Log4jUtil.log("Original PULL API URl: " + testData.PULLAPI_URLV3);
+			String restPullUrlV3 = new StringBuilder(testData.PULLAPI_URLV3).append("&sinceTime=").append(timestamp).append("&maxEvents=40").toString();
+	        RestUtils.setupHttpGetRequest(restPullUrlV3, testData.PUSH_RESPONSEPATH);
+			Log4jUtil.log("Updated PULL API URL: " + restPullUrlV3);
+		}
 		
-		RestUtils.setupHttpGetRequest(restPullUrl, testData.PUSH_RESPONSEPATH);
+		Log4jUtil.log("Step 9: Send Pull API HTTP GET Request and save response to " +testData.PUSH_RESPONSEPATH);
 		
 		Thread.sleep(5000);
 		
@@ -148,7 +160,7 @@ public class MU2Utils {
 			// verify "View" event in response XML and return Action Time stamp
 			Log4jUtil.log("Verification of CCD '" + list.get(i) + "' event present in Pull API response xml");
 			ActionTimestamp = findEventInResonseXML(testData.PUSH_RESPONSEPATH, MU2Constants.EVENT, MU2Constants.RESOURCE_TYPE, list.get(i),
-					timestamp, intuitPatientID1,testData.PatientExternalId_MU2,testData.PatientFirstName_MU2,testData.PatientLastName_MU2,transmitTimestamp);
+					timestamp, intuitPatientID1,testData.PatientExternalId_MU2,testData.PatientFirstName_MU2,testData.PatientLastName_MU2,transmitTimestamp,version);
 			if(!list.get(i).equalsIgnoreCase(MU2Constants.DOWNLOAD_ACTION)) {
 				Assert.assertNotNull(ActionTimestamp, "'" + list.get(i) + "' Event is not found in Response XML");
 			}
@@ -161,7 +173,7 @@ public class MU2Utils {
 		}
 	}
 
-	public String findEventInResonseXML(String xmlFileName, String event, String resourceType, String action, Long timeStamp, String practicePatientID,String patientExternalId,String firstName,String lastName,long transmitTimestamp) {
+	public String findEventInResonseXML(String xmlFileName, String event, String resourceType, String action, Long timeStamp, String practicePatientID,String patientExternalId,String firstName,String lastName,long transmitTimestamp, String version) {
 		IHGUtil.PrintMethodName();
 
 		String ActionTimestamp = null;
@@ -187,12 +199,15 @@ public class MU2Utils {
 						
 						if (getValue(MU2Constants.RESOURCE_TYPE_NODE, element).equalsIgnoreCase(resourceType)
 								&& getValue(MU2Constants.ACTION_NODE, element).equalsIgnoreCase(action)
-								&& getValue(MU2Constants.INTUIT_PATIENT_ID, element).equalsIgnoreCase(practicePatientID)
 								&& getValue(PracticePatientId, element).equalsIgnoreCase(patientExternalId)
 								&& getValue(FirstName, element).equalsIgnoreCase(firstName)
 								&& getValue(LastName, element).equalsIgnoreCase(lastName)
-								) {
-							
+								) 
+						if(version.equals("v1")){
+							getValue(MU2Constants.INTUIT_PATIENT_ID, element).equalsIgnoreCase(practicePatientID);
+						}
+						
+							{
 							if(action.contains("Transmit")){
 								Log4jUtil.log("transmitTimestamp "+transmitTimestamp+" compare with recordedTimeStamp "+recordedTimeStamp);
 							}
@@ -211,7 +226,9 @@ public class MU2Utils {
 									}
 								}
 								
-								Log4jUtil.log("Matching response medfusionId "+getValue(MU2Constants.INTUIT_PATIENT_ID, element)+" with "+practicePatientID);
+								if(version.equals("v1")){
+									Log4jUtil.log("Matching response medfusionId "+getValue(MU2Constants.INTUIT_PATIENT_ID, element)+" with "+practicePatientID);
+								}
 								Log4jUtil.log("Matching response patientExternalId "+getValue(PracticePatientId, element)+" with "+patientExternalId);
 								Log4jUtil.log("Matching response firstName "+getValue(FirstName, element)+" with "+firstName);
 								Log4jUtil.log("Matching response lastName "+getValue(LastName, element)+" with "+lastName);
@@ -233,8 +250,8 @@ public class MU2Utils {
 	}
 	
 	public static List<String> eventList() {
-		eventList.add(MU2Constants.TRANSMIT_ACTION);
 		eventList.add(MU2Constants.VIEW_ACTION);
+		eventList.add(MU2Constants.TRANSMIT_ACTION);
 		eventList.add(MU2Constants.DOWNLOAD_ACTION);
 		return eventList;
 	}
@@ -315,7 +332,7 @@ public class MU2Utils {
 		return medfusionID;
 	}
 	
-	public void mu2GetEventGuardian(MU2GetEventData testData,WebDriver driver,Boolean existingGuardian,Boolean isCCDViewer) throws Exception {
+	public void mu2GetEventGuardian(MU2GetEventData testData,WebDriver driver,Boolean existingGuardian,Boolean isCCDViewer,String version) throws Exception {
 		Long timestamp = System.currentTimeMillis();
 		Long transmitTimestamp = null;
 		String currentDate = new java.text.SimpleDateFormat("MM/dd/yyyy HH:mm a").format(new java.util.Date (timestamp));
@@ -426,7 +443,7 @@ public class MU2Utils {
 			Thread.sleep(5000);
 		}
 		
-		getMUEventAndVerify(testData, timestamp,transmitTimestamp);
+		getMUEventAndVerify(testData, timestamp,transmitTimestamp, username);
 		
 		Log4jUtil.log("mu2GetEventGuardian Step 10: Move to Account Activity page ");
 		
