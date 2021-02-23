@@ -434,7 +434,6 @@ public class AppointmentDataPayload {
 					utcFormat.setTimeZone(TimeZone.getTimeZone("UTC"));
 
 					Date date1 = utcFormat.parse(appointmentTime);
-					// DateFormat localFormat = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss.SSS");
 					DateFormat localFormat = new SimpleDateFormat("M-dd-yy h:mm a");
 					localFormat.setTimeZone(TimeZone.getDefault());
 
@@ -451,7 +450,6 @@ public class AppointmentDataPayload {
 				}
 
 				locationIdentifier[i] = testData.Location + timestamp;
-				// System.out.print("location : "+locationIdentifier[i]);
 				Node Location = doc.createElement("Location");
 				Location.appendChild(doc.createTextNode(locationIdentifier[i]));
 				Appointments.appendChild(Location);
@@ -582,11 +580,10 @@ public class AppointmentDataPayload {
 			transformer.setOutputProperty(OutputKeys.INDENT, "yes");
 
 			DOMSource source = new DOMSource(doc);
-
+ 
 			StringWriter writer = new StringWriter();
 			transformer.transform(source, new StreamResult(writer));
 			output = writer.toString();
-			// System.out.println(output);
 		} catch (ParserConfigurationException pce) {
 			pce.printStackTrace();
 			System.out.println("ParserConfigurationException, Unable to Parse");
@@ -594,8 +591,7 @@ public class AppointmentDataPayload {
 			e.printStackTrace();
 			System.out.println("TransformerException, Unable to Transform the DOM");
 		}
-		// System.out.print(output);
-		return output; 
+		return output;
 
 	}
 }
