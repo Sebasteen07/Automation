@@ -264,6 +264,8 @@ public class LoadPreTestData {
 		testData.portalURL = propertyData.getPracticePortalURL_AD();
 		testData.practiceUserName = propertyData.getProtalUserName_AD();
 		testData.practicePassword = propertyData.getPortalPassword_AD();
+		testData.AppointmentRequestV3URL = propertyData.getAppointmentRequestV3URL();
+		testData.PATIENT_INVITE_RESTV3URL = propertyData.getPATIENT_INVITE_RESTV3URL();
 		return testData;
 	}
 

@@ -3635,4 +3635,197 @@ public class IntegrationPlatformRegressionTests extends BaseTestNGWebDriver {
 			log("Pharamacy is not visible on the Portal");
 		}
 	}
+	@Test(enabled = true, groups = { "RegressionTests" }, retryAnalyzer = RetryAnalyzer.class)
+	public void testAppointmentRequestForExistingPatientV3() throws Exception {
+		log("Test Case: Appointment Request for Existing Patient From Partner");
+		log("Execution Environment: " + IHGUtil.getEnvironmentType());
+		log("Execution Browser: " + TestConfig.getBrowserType());
+		log("Step 1: Get Data from property file");
+		LoadPreTestData LoadPreTestDataObj = new LoadPreTestData();
+		AppointmentData testData = new AppointmentData();
+		LoadPreTestDataObj.loadAppointmentDataFromProperty(testData);
+		AppointmentDataUtils aDUtils = new AppointmentDataUtils();
+
+		String workingDir = System.getProperty("user.dir");
+		workingDir = workingDir + testData.csvFilePath;
+		aDUtils.csvFileReader(testData, workingDir);
+		
+		log("Step 2: Post NEW AppointMentData ");
+		testData.Status = "NEW";
+		testData.FirstName = testData.FirstName;
+		testData.LastName = testData.LastName;
+		testData.EmailUserName = testData.EmailUserName;
+		testData.BatchSize = "2";
+
+		testData.Time = testData.appointmentDetailList.get(1).getTime();
+		testData.appointmentType = "FUTURE";
+		testData.Location = "NEW";
+
+		testData.Type = testData.appointmentDetailList.get(1).getType();
+		testData.Reason = testData.appointmentDetailList.get(1).getReason();
+		testData.Description = testData.appointmentDetailList.get(1).getDescription();
+
+		log("Step 3: Setup Oauth client");
+		RestUtils.oauthSetup(testData.OAuthKeyStore, testData.OAuthProperty, testData.OAuthAppToken,
+				testData.OAuthUsername, testData.OAuthPassword);
+
+		aDUtils.checkAppointmentV3(testData, driver);
+		Thread.sleep(6000);
+		
+		log("Step 4: Post UPDATE AppointMentData ");
+		testData.Status = "UPDATE";
+		testData.Time = testData.appointmentDetailList.get(3).getTime();
+		testData.Location = "Update";
+		testData.appointmentType = "FUTURE";
+
+		testData.Type = testData.appointmentDetailList.get(3).getType();
+		testData.Reason = testData.appointmentDetailList.get(3).getReason();
+		testData.Description = testData.appointmentDetailList.get(3).getDescription();
+		testData.BatchSize = "1";
+
+		aDUtils.checkAppointmentV3(testData, driver);
+		Thread.sleep(3000);
+
+		log("Step 5: Post CANCEL AppointMentData ");
+		testData.Status = "CANCEL";
+		testData.Time = testData.appointmentDetailList.get(4).getTime();
+		testData.Location = "Cancel";
+		testData.appointmentType = "FUTURE";
+
+		testData.Type = testData.appointmentDetailList.get(4).getType();
+		testData.Reason = testData.appointmentDetailList.get(4).getReason();
+		testData.Description = testData.appointmentDetailList.get(4).getDescription();
+		testData.BatchSize = "1";
+
+		aDUtils.checkAppointmentV3(testData, driver);
+
+	}
+	
+	@Test(enabled = true, groups = { "RegressionTests" }, retryAnalyzer = RetryAnalyzer.class)
+	public void testAppointmentRequestForNewSelfPatientV3() throws Exception {
+		log("Test Case: Appointment Request for New Patient From Partner");
+		log("Execution Environment: " + IHGUtil.getEnvironmentType());
+		log("Execution Browser: " + TestConfig.getBrowserType());
+
+		AppointmentDataUtils aDUtils = new AppointmentDataUtils();
+		LoadPreTestData LoadPreTestDataObj = new LoadPreTestData();
+		AppointmentData testData = new AppointmentData();
+		LoadPreTestDataObj.loadAppointmentDataFromProperty(testData);
+
+		log("Step 1: Create patient");
+		PropertyFileLoader testDataPFL = new PropertyFileLoader();
+		JalapenoPatient patient = new JalapenoPatient(testDataPFL);
+		JalapenoLoginPage loginPage = new JalapenoLoginPage(driver, patient.getUrl());
+		Thread.sleep(5000);
+		PatientDemographicPage patientDemographicPage = loginPage.clickCreateANewAccountButton();
+		patientDemographicPage.fillInPatientData(patient);
+		SecurityDetailsPage accountDetailsPage = patientDemographicPage.continueToSecurityPage();
+		JalapenoHomePage homePage = accountDetailsPage.fillAccountDetailsAndContinue(patient.getEmail(),
+				patient.getPassword(), testDataPFL);
+
+		Long timestamp = System.currentTimeMillis();
+		Long since = timestamp / 1000L - 60 * 24;
+		Log4jUtil.log("Getting patients since timestamp: " + since);
+		Thread.sleep(6000);
+		homePage.clickOnLogout();
+
+		log("Step 2: Setup Oauth client");
+		RestUtils.oauthSetup(testData.OAuthKeyStore, testData.OAuthProperty, testData.OAuthAppToken,
+				testData.OAuthUsername, testData.OAuthPassword);
+
+		RestUtils.setupHttpGetRequest(testData.PATIENT_INVITE_RESTV3URL + "?since=" + since + ",0",
+				testData.ResponsePath);
+		Thread.sleep(2000);
+
+		String responseXML = RestUtils.prepareCCD(testData.ResponsePath);
+		String medfusionID = aDUtils.getMedfusionID(patient.getEmail(), responseXML);
+		log("medfusionID " + medfusionID);
+		
+		log("step 3: Login to Practice Portal");
+		Practice practice = new Practice();
+		practice.url = testData.portalURL;
+		practice.username = testData.practiceUserName;
+		practice.password = testData.practicePassword;
+
+		// Now start login with practice data
+		PracticeLoginPage practiceLogin = new PracticeLoginPage(driver, practice.url);
+		PracticeHomePage pPracticeHomePage = practiceLogin.login(practice.username, practice.password);
+
+		log("step 4: Click on Patient Search Link");
+		PatientSearchPage pPatientSearchPage = pPracticeHomePage.clickPatientSearchLink();
+
+		log("step 5:Set Patient Search Fields");
+		pPatientSearchPage.searchForPatientInPatientSearch(patient.getFirstName(), patient.getLastName());
+
+		log("step 6:Verify the Search Result");
+		IHGUtil.waitForElement(driver, 60, pPatientSearchPage.searchResult);
+		Assert.assertTrue(pPatientSearchPage.searchResult.getText().contains(patient.getFirstName()));
+		pPatientSearchPage.clickOnSearch();
+		Thread.sleep(3000);
+		pPatientSearchPage.clickOnEdit();
+		Thread.sleep(3000);
+		pPatientSearchPage.sendPatientIDAndClickOnUpdate(patient.getFirstName());
+		Thread.sleep(3000);
+		pPatientSearchPage.clickOnEdit();
+		Thread.sleep(3000);
+		String patientExternalID =pPatientSearchPage.verifypatientExternalID();
+		log("Actual patient ID " + patientExternalID);
+		log("Expected patient ID " + patient.getFirstName());
+		Assert.assertEquals(patient.getFirstName(), patientExternalID, "Patient External ID Matched !");
+		
+		String workingDir = System.getProperty("user.dir");
+		workingDir = workingDir + testData.csvFilePath;
+		aDUtils.csvFileReader(testData, workingDir);;
+
+		log("Step 7: Post New AppointMentData with MFPatientID");
+		testData.FirstName = patient.getFirstName();
+		testData.LastName = patient.getLastName();
+		testData.EmailUserName = patient.getEmail();
+		testData.PatientPracticeId = patient.getFirstName();
+		testData.MFPatientId = medfusionID;
+		testData.BatchSize = "1";
+		testData.Status = testData.appointmentDetailList.get(1).getStatus(); // "NEW";
+		testData.Time = testData.appointmentDetailList.get(1).getTime(); // "2017-02-13T21:30:00.000Z";
+		testData.Location = testData.appointmentDetailList.get(1).getLocation();
+		testData.appointmentType = "FUTURE";
+		testData.UserName = patient.getEmail();
+		testData.Password = patient.getPassword();
+
+		testData.Type = testData.appointmentDetailList.get(1).getType();
+		testData.Reason = testData.appointmentDetailList.get(1).getReason();
+		testData.Description = testData.appointmentDetailList.get(1).getDescription();
+
+		aDUtils.checkAppointmentV3(testData, driver);
+		Thread.sleep(6000);
+
+		log("Step 8: Post UPDATE AppointMentData ");
+		testData.Status = "UPDATE";
+		testData.Time = testData.appointmentDetailList.get(3).getTime(); // "2017-03-13T16:30:59.999Z";
+		testData.Location = testData.appointmentDetailList.get(3).getLocation();
+		testData.appointmentType = "FUTURE";
+		testData.PatientPracticeId = patient.getFirstName();
+		testData.BatchSize = "1";
+		testData.Type = testData.appointmentDetailList.get(3).getType();
+		testData.Reason = testData.appointmentDetailList.get(3).getReason();
+		testData.Description = testData.appointmentDetailList.get(3).getDescription();
+
+		aDUtils.checkAppointmentV3(testData, driver);
+
+		log("Step 9: Post CANCEL AppointMentData ");
+		Thread.sleep(3000);
+		testData.Status = "CANCEL";
+		testData.Time = testData.appointmentDetailList.get(4).getTime(); // "2017-03-13T16:30:59.999Z";
+		testData.Location = testData.appointmentDetailList.get(4).getLocation();
+		testData.appointmentType = "FUTURE";
+		testData.PatientPracticeId = patient.getFirstName();
+		testData.BatchSize = "1";
+
+		testData.Type = testData.appointmentDetailList.get(4).getType();
+		testData.Reason = testData.appointmentDetailList.get(4).getReason();
+		testData.Description = testData.appointmentDetailList.get(4).getDescription();
+
+		aDUtils.checkAppointmentV3(testData, driver);
+
+	}
+	
 }

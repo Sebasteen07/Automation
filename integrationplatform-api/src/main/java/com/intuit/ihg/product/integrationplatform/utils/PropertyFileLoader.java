@@ -219,11 +219,12 @@ public class PropertyFileLoader {
 	public String getRestUrlV3AMDC() {
 		return property.getProperty("restUrlV3AMDC");
 	}
+
 	public String getReadCommunicationUrlV3AMDC() {
 		return property.getProperty("readCommunicationUrlV3AMDC");
 	}
-	
-	//MU2 EVENTS
+
+	// MU2 EVENTS
 	public String getPULLAPI_URL_MU2() {
 		return property.getProperty("pullAPI_URL_MU2");
 	}
@@ -772,7 +773,7 @@ public class PropertyFileLoader {
 	public String getRestV3Url_SE() {
 		return property.getProperty("restv3Url_SE");
 	}
-	
+
 	public String getOAuthAppToken_SE() {
 		return property.getProperty("oAuthAppToken_SE");
 	}
@@ -804,11 +805,11 @@ public class PropertyFileLoader {
 	public String getStatementEventURL() {
 		return property.getProperty("statementEventURL");
 	}
-	
+
 	public String getStatementEventV3URL() {
 		return property.getProperty("statementEventV3URL");
 	}
-	
+
 	public String getPaymentDueDate() {
 		return property.getProperty("paymentDueDate");
 	}
@@ -1032,12 +1033,12 @@ public class PropertyFileLoader {
 	public String getresendMessageToPatientEmail() {
 		return property.getProperty("resendMessageToPatientEmail");
 	}
-	
+
 	public String getRestUrlV3Bulk() {
 		return property.getProperty("RestUrlV3Bulk");
 	}
-	
-	//SendDirectMessage
+
+	// SendDirectMessage
 
 	public String getRestURL_SDM() {
 		return property.getProperty("restURL_SDM");
@@ -1968,4 +1969,11 @@ public class PropertyFileLoader {
 		return property.getProperty("PharmacyFaxNumber");
 	}
 
+	public String getAppointmentRequestV3URL() {
+		return property.getProperty("appointmentRequestV3URL");
+	}
+
+	public String getPATIENT_INVITE_RESTV3URL() {
+		return property.getProperty("restUrlPIDCV3");
+	}
 }
