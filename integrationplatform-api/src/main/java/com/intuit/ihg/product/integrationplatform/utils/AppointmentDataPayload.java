@@ -423,8 +423,7 @@ public class AppointmentDataPayload {
 				Description.appendChild(doc.createTextNode(descriptionAppointment[i]));
 				Appointments.appendChild(Description);
 
-				String appointmentTime = time[i]; // "2017-02-07T15:30:59.999Z";
-				// appointmentTime = "2017-03-07T15:30:59.999Z";
+				String appointmentTime = time[i];
 				Node Time = doc.createElement("Time");
 				Time.appendChild(doc.createTextNode(appointmentTime));
 				Appointments.appendChild(Time);
@@ -440,8 +439,6 @@ public class AppointmentDataPayload {
 					localFormat.setTimeZone(TimeZone.getDefault());
 
 					formattedTime = localFormat.format(date1);
-					// System.out.println("Raw : " + formattedTime);
-
 					formattedTime = formattedTime.replace("-", "/");
 
 					String[] patientAppointmentTime = formattedTime.split(" ");
