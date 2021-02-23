@@ -23,6 +23,9 @@ public class Appointment {
 	private String speciality;
 	private String icsFilePath;
 	private String urlLoginLess;
+	private String urlLinkGen;
+
+
 	private String firstTimeUser;
 	private String primaryNumber;
 	private String patientUserName;
@@ -71,22 +74,51 @@ public class Appointment {
 	private String oldPatientUserName;
 	private String oldPatientPassword;
 
+	private int leadtimeDay;
+	private int leadtimeHour;
+	private int leadtimeMinute;
+
+
+	private String currentDate;
+	private String currentTimeZone;
+	private String businesshourStartTime;
+	private String businesshourEndTime;
+	private String maxperDay;
+	private String gmailUserName;
+	private String linkProvider;
+	
+
 	private Boolean isCancelButtonPresent;
+
 	private int displaySlotCountLength;
 	private Boolean isNextMonthSlotAvail;
+	private String nextDateAvaliable;
 
 	private int calanderDaysAvaiable;
 	private Boolean isCalanderDateDisplayed;
 	private Boolean isProviderImageDisplayed;
+
 	private Boolean isSearchLocationDisplayed;
 
 	private String providerImageAPI;
+
+	private String baseurl_BookRule;
+	private String baseurl_LocationRule;
+	private String baseurl_AvailableSlots;
+	private String baseurl_ScheduleAppointment;
+	private String baseurl_AppointmentType;
 
 	private String urlAnonymous;
 	private String urlAnonymousNG;
 	private boolean isAnonymousFlow = false;
 	private boolean isinsuranceVisible = false;
 	private boolean isstartpointPresent = false;
+	private boolean resourcetoggleStatus = false;
+	private boolean accepttoggleStatus = false;
+
+
+	private boolean showCancellationRescheduleReason = false;
+	private boolean showCancellationReasonPM = false;
 
 	public Appointment(String providerConfig, String usernameConfig, String passwordConfig, String datetimeConfig, String locationConfig,
 			String appointmentConfig, String specialityConfig) {
@@ -100,9 +132,163 @@ public class Appointment {
 	}
 
 	public Appointment() {}
+	
+	public boolean isResourcetoggleStatus() {
+		return resourcetoggleStatus;
+	}
+
+	public void setResourcetoggleStatus(boolean resourcetoggleStatus) {
+		this.resourcetoggleStatus = resourcetoggleStatus;
+	}
+
+	public boolean isAccepttoggleStatus() {
+		return accepttoggleStatus;
+	}
+
+	public void setAccepttoggleStatus(boolean accepttoggleStatus) {
+		this.accepttoggleStatus = accepttoggleStatus;
+	}
+
+
+	public String getGmailUserName() {
+		return gmailUserName;
+	}
+
+	public void setGmailUserName(String gmailUserName) {
+		this.gmailUserName = gmailUserName;
+	}
+
+
+	public String getMaxperDay() {
+		return maxperDay;
+	}
+
+	public void setMaxperDay(String maxperDay) {
+		this.maxperDay = maxperDay;
+	}
+
+	public String getBusinesshourStartTime() {
+		return businesshourStartTime;
+	}
+
+	public void setBusinesshourStartTime(String businesshourStartTime) {
+		this.businesshourStartTime = businesshourStartTime;
+	}
+
+	public String getBusinesshourEndTime() {
+		return businesshourEndTime;
+	}
+
+	public void setBusinesshourEndTime(String businesshourEndTime) {
+		this.businesshourEndTime = businesshourEndTime;
+	}
+
+	public String getCurrentTimeZone() {
+		return currentTimeZone;
+	}
+
+	public void setCurrentTimeZone(String currentTimeZone) {
+		this.currentTimeZone = currentTimeZone;
+	}
+
+	public String getNextDateAvaliable() {
+		return nextDateAvaliable;
+	}
+
+	public void setNextDateAvaliable(String nextDateAvaliable) {
+		this.nextDateAvaliable = nextDateAvaliable;
+	}
+
+	public String getBaseurl_BookRule() {
+		return baseurl_BookRule;
+	}
+
+	public void setBaseurl_BookRule(String baseurl_BookRule) {
+		this.baseurl_BookRule = baseurl_BookRule;
+	}
+
+	public String getBaseurl_LocationRule() {
+		return baseurl_LocationRule;
+	}
+
+	public void setBaseurl_LocationRule(String baseurl_LocationRule) {
+		this.baseurl_LocationRule = baseurl_LocationRule;
+	}
+
+	public String getBaseurl_AvailableSlots() {
+		return baseurl_AvailableSlots;
+	}
+
+	public void setBaseurl_AvailableSlots(String baseurl_AvailableSlots) {
+		this.baseurl_AvailableSlots = baseurl_AvailableSlots;
+	}
+
+	public String getBaseurl_ScheduleAppointment() {
+		return baseurl_ScheduleAppointment;
+	}
+
+	public void setBaseurl_ScheduleAppointment(String baseurl_ScheduleAppointment) {
+		this.baseurl_ScheduleAppointment = baseurl_ScheduleAppointment;
+	}
+
+	public String getBaseurl_AppointmentType() {
+		return baseurl_AppointmentType;
+	}
+
+	public void setBaseurl_AppointmentType(String baseurl_AppointmentType) {
+		this.baseurl_AppointmentType = baseurl_AppointmentType;
+	}
+
+	public boolean isShowCancellationRescheduleReason() {
+		return showCancellationRescheduleReason;
+	}
+
+	public void setShowCancellationRescheduleReason(boolean showCancellationRescheduleReason) {
+		this.showCancellationRescheduleReason = showCancellationRescheduleReason;
+	}
+
+	public boolean isShowCancellationReasonPM() {
+		return showCancellationReasonPM;
+	}
+
+	public void setShowCancellationReasonPM(boolean showCancellationReasonPM) {
+		this.showCancellationReasonPM = showCancellationReasonPM;
+	}
 
 	public boolean isIsstartpointPresent() {
 		return isstartpointPresent;
+	}
+
+	public int getLeadtimeDay() {
+		return leadtimeDay;
+	}
+
+	public void setLeadtimeDay(int leadtimeDay) {
+		this.leadtimeDay = leadtimeDay;
+	}
+
+	public int getLeadtimeHour() {
+		return leadtimeHour;
+	}
+
+	public void setLeadtimeHour(int leadtimeHour) {
+		this.leadtimeHour = leadtimeHour;
+	}
+
+	public int getLeadtimeMinute() {
+		return leadtimeMinute;
+	}
+
+	public void setLeadtimeMinute(int leadtimeMinute) {
+		this.leadtimeMinute = leadtimeMinute;
+	}
+
+	public String getCurrentDate() {
+		return currentDate;
+	}
+
+	public void setCurrentDate(String currentDate) {
+		this.currentDate = currentDate;
 	}
 
 	public void setIsstartpointPresent(boolean isstartpointPresent) {
@@ -163,6 +349,14 @@ public class Appointment {
 
 	public void setPassword(String password) {
 		this.password = password;
+	}
+
+	public String getLinkProvider() {
+		return linkProvider;
+	}
+
+	public void setLinkProvider(String linkProvider) {
+		this.linkProvider = linkProvider;
 	}
 
 	public String getLocation() {
@@ -275,6 +469,14 @@ public class Appointment {
 
 	public void setUrlLoginLess(String urlLoginLess) {
 		this.urlLoginLess = urlLoginLess;
+	}
+
+	public String getUrlLinkGen() {
+		return urlLinkGen;
+	}
+
+	public void setUrlLinkGen(String urlLinkGen) {
+		this.urlLinkGen = urlLinkGen;
 	}
 
 	public String getUrlIPD() {

@@ -32,9 +32,20 @@ public class AppointmentDateTime extends PSS2MainPage {
 	@FindBy(how = How.XPATH, using = "//*[@id=\"topdiv\"]/div[2]/div/div[2]/div[3]/div/div/div")
 	private WebElement scrollBarCalander;
 
+	@FindBy(how = How.XPATH, using = "//*[@class='rbc-event-content']")
+	private WebElement dateFirst;
+
+	@FindBy(how = How.XPATH, using = "//span[contains(text(),'No slots available')]")
+	private WebElement noslotsAvaliable;
+
+	@FindBy(how = How.XPATH, using = "//*[@class='rbc-date-cell rbc-now']")
+	private WebElement currentDaydisabled;
+
 	public AppointmentDateTime(WebDriver driver) {
 		super(driver);
 	}
+
+
 
 	@Override
 	public boolean areBasicPageElementsPresent() {
@@ -48,7 +59,7 @@ public class AppointmentDateTime extends PSS2MainPage {
 		return assessPageElements(webElementsList);
 	}
 
-	public String selectDate(Boolean nextMonthBooking) {
+	public AppointmentDateTime selectDt(Boolean nextMonthBooking) {
 		String dt = null;
 		if (nextMonthBooking) {
 			driver.findElement(By.className("rbc-next-month")).click();
@@ -60,7 +71,27 @@ public class AppointmentDateTime extends PSS2MainPage {
 				log("Appointment Date selected=" + appointmentList.get(i).getText());
 				appointmentList.get(i).click();
 				dt = appointmentList.get(i).getText();
-				return appointmentList.get(i).getText();
+				return PageFactory.initElements(driver, AppointmentDateTime.class);
+			}
+		}
+		return PageFactory.initElements(driver, AppointmentDateTime.class);
+	}
+
+	public String selectDate(Boolean nextMonthBooking) {
+		String dt = null;
+		if (nextMonthBooking) {
+			driver.findElement(By.className("rbc-next-month")).click();
+			driver.manage().timeouts().implicitlyWait(80, TimeUnit.SECONDS);
+		}
+		List<WebElement> appointmentList = driver.findElements(By.cssSelector(".rbc-event-content"));
+		log("size is " + appointmentList.size());
+		for (int i = 0; i < appointmentList.size(); i++)
+		{
+			if (appointmentList.get(0).isDisplayed()) {
+				log("Appointment Date selected=" + appointmentList.get(0).getText());
+				appointmentList.get(0).click();
+				dt = appointmentList.get(0).getText();
+				return appointmentList.get(0).getText();
 			}
 		}
 		return dt;
@@ -82,7 +113,7 @@ public class AppointmentDateTime extends PSS2MainPage {
 	public ConfirmationPage selectAppointmentDateTime(Boolean nextMonthBooking) {
 		List<WebElement> appointmentTimeList = driver.findElements(By.cssSelector(".time-btn"));
 		for (int i = 0; i < appointmentTimeList.size(); i++) {
-			if (appointmentTimeList.get(i).isDisplayed()) {
+			if (appointmentTimeList.get(i + 2).isDisplayed()) {
 				log("Appointment Time selected=" + appointmentTimeList.get(i).getText());
 				appointmentTimeList.get(i).click();
 				return PageFactory.initElements(driver, ConfirmationPage.class);
@@ -145,5 +176,66 @@ public class AppointmentDateTime extends PSS2MainPage {
 
 	public int getAppointmentDateList() {
 		return appointmentList.size();
+	}
+
+	public void getfirstdate() {
+		for (int i = 0; i < appointmentList.size(); i++) {
+			log("First Appointment is" + appointmentList.get(i));
+
+		}
+	}
+
+	public String getfirsttime() {
+		String time = "";
+		for (int i = 0; i < appointmentTimeList.size(); i++) {
+			time = appointmentTimeList.get(0).getText();
+		}
+		return time;
+
+	}
+
+	public String selectdateforreserve() {
+		log("Total Dates present on patientUI is " + getAppointmentDateList());
+		String dt = null;
+		List<WebElement> appointmentList = driver.findElements(By.cssSelector(".rbc-event-content"));
+		for (int i = 0; i < appointmentList.size(); i++) {
+			if (appointmentList.get(i).isDisplayed()) {
+				log("Appointment Date selected=" + appointmentList.get(i).getText());
+				appointmentList.get(i).click();
+				dt = appointmentList.get(i).getText();
+				return appointmentList.get(i).getText();
+			}
+		}
+		return dt;
+	}
+
+	public String gettextNoslot() {
+		String text = noslotsAvaliable.getText();
+		log("text is" + text);
+		return text;
+	}
+
+	public boolean disabledate() {
+		return currentDaydisabled.isDisplayed();
+	}
+
+	public String selectDateforMaxPDay(Boolean nextMonthBooking) {
+		String dt = null;
+		if (nextMonthBooking) {
+			driver.findElement(By.className("rbc-next-month")).click();
+			driver.manage().timeouts().implicitlyWait(80, TimeUnit.SECONDS);
+		}
+		List<WebElement> appointmentList = driver.findElements(By.cssSelector(".rbc-event-content"));
+		for (int i = 0; i < appointmentList.size(); i++) {
+			if (appointmentList.get(i).isDisplayed()) {
+				log("Appointment Date selected=" + appointmentList.get(i).getText());
+				appointmentList.get(i).click();
+				dt = appointmentList.get(i).getText();
+				log("Current date is disabled  " + disabledate());
+				assertTrue(disabledate());
+				return appointmentList.get(i).getText();
+			}
+		}
+		return dt;
 	}
 }

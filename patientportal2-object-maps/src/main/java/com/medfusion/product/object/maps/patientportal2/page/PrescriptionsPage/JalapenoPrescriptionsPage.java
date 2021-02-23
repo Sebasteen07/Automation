@@ -1,6 +1,8 @@
 // Copyright 2018-2020 NXGN Management, LLC. All Rights Reserved.
 package com.medfusion.product.object.maps.patientportal2.page.PrescriptionsPage;
 
+import static org.junit.Assert.assertTrue;
+
 import org.openqa.selenium.StaleElementReferenceException;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
@@ -46,7 +48,7 @@ public class JalapenoPrescriptionsPage extends JalapenoMenu {
 	@FindBy(how = How.XPATH, using = "//input[@type='radio']")
 	private WebElement radioButton;
 
-	@FindBy(how = How.XPATH, using = "//input[@value='radio2']")
+	@FindBy(how = How.XPATH, using = "//div[@class='fieldWrapper switchLabelAndField']//input")
 	private WebElement AddradioButton; // For add a New Pharmacy
 
 	@FindBy(how = How.LINK_TEXT, using = "Home")
@@ -106,6 +108,9 @@ public class JalapenoPrescriptionsPage extends JalapenoMenu {
 
 	@FindBy(how = How.XPATH, using = "//*[@class='feedback']/following::*[contains(text(),'Prescription Renewa')]")
 	public WebElement renewalConfirmationmessage;
+
+	@FindBy(how = How.XPATH, using = "//*[@id='idff']")
+	public WebElement Medicationlist;
 
 
 
@@ -209,7 +214,7 @@ public class JalapenoPrescriptionsPage extends JalapenoMenu {
 
 		driver.switchTo().defaultContent();
 		driver.switchTo().frame("iframebody");
-		jse.executeScript("window.scrollBy(0,350)", "");
+		jse.executeScript("window.scrollBy(0,650)", "");
 		addAnotherMedicationBtn.click();
 		jse.executeScript("window.scrollBy(0,350)", "");
 		IHGUtil.waitForElement(driver, 10, medicationNameField);
@@ -246,6 +251,9 @@ public class JalapenoPrescriptionsPage extends JalapenoMenu {
 		return createdTs;
 	}
 
-
+	public void validatemedication(String productName) {
+		driver.switchTo().frame("iframebody");
+		assertTrue(Medicationlist.getText().contains(productName));
+	}
 
 }

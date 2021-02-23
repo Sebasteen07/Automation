@@ -17,6 +17,7 @@ import java.util.UUID;
 
 import org.apache.commons.lang3.time.DateUtils;
 import org.codehaus.jackson.map.ObjectMapper;
+import org.codehaus.jackson.map.annotate.JsonSerialize.Inclusion;
 
 import com.intuit.ifs.csscat.core.utils.Log4jUtil;
 import com.intuit.ihg.product.integrationplatform.utils.PropertyFileLoader;
@@ -26,6 +27,9 @@ import com.ng.product.integrationplatform.pojo.AcknowledgedProblem;
 import com.ng.product.integrationplatform.pojo.ObsPanel;
 import com.ng.product.integrationplatform.pojo.Problem;
 import com.ng.product.integrationplatform.pojo.Allergy;
+import com.ng.product.integrationplatform.pojo.Appointment;
+import com.ng.product.integrationplatform.pojo.AppointmentResponse;
+import com.ng.product.integrationplatform.pojo.Attachment;
 import com.ng.product.integrationplatform.pojo.CCDRequest;
 import com.ng.product.integrationplatform.pojo.CCDRequestDetails;
 import com.ng.product.integrationplatform.pojo.ChartPojo;
@@ -37,8 +41,11 @@ import com.ng.product.integrationplatform.pojo.LabOrder;
 import com.ng.product.integrationplatform.pojo.LabOrderTest;
 import com.ng.product.integrationplatform.pojo.LabResult;
 import com.ng.product.integrationplatform.pojo.Medication;
+import com.ng.product.integrationplatform.pojo.Message;
 import com.ng.product.integrationplatform.pojo.NewPatient;
 import com.ng.product.integrationplatform.pojo.Procedure;
+import com.ng.product.integrationplatform.pojo.Recipient;
+import com.ng.product.integrationplatform.pojo.SecureMessage;
 import com.ng.product.integrationplatform.pojo.UpdateEncounter;
 import com.ng.product.integrationplatform.pojo.UpdateLabOrder;
 import com.ng.product.integrationplatform.utils.DBUtils;
@@ -517,5 +524,207 @@ public class NGAPIFlows {
 	} catch (Exception e) {
 		Log4jUtil.log(e.getMessage());
     }
+	}
+	
+	public static String postSecureMessage(String messageType,String personID, String practiceID,String userID, String ProviderName, String locationName, String applicationName, String encounterType,String senderType,String encounterId,String attachmentName,String documentID) throws Throwable{
+		String comm_id = null;
+		String documentIdQuery= "select document_id from pxp_document_requests where document_desc='"+attachmentName+"'";
+		try{
+			SecureMessage securemessage = new SecureMessage();
+			Message message = new Message();
+			Recipient recipient = new Recipient();
+			Attachment attachment = new Attachment();
+			List<Recipient> recipientList = new ArrayList<Recipient>();
+			List<Message> messageList = new ArrayList<Message>();
+			List<Attachment> attachmentList = new ArrayList<Attachment>();
+			
+			recipient.setId(personID);
+			recipient.setName(DBUtils.executeQueryOnDB("NGCoreDB","select first_name from person where person_id='"+personID+"'"));
+			recipient.setType("Patient");
+			recipientList.add(recipient);
+			
+			String userIdQuery="select top 1 user_id from user_mstr where practice_id='"+practiceID+"'";
+			String communicationMessageID =UUID.randomUUID().toString().toUpperCase();
+			
+			message.setId(communicationMessageID);
+			
+			if(messageType.equalsIgnoreCase("SentByOnlineProfile")){
+				String SecureMessageOnlineProfile = "AutomationOnlineProfile";
+				message.setRoutingRuleName(SecureMessageOnlineProfile);
+				message.setRoutingRuleType("OnlineProfile");
+				message.setRoutingRuleId(DBUtils.executeQueryOnDB("NGCoreDB","select row_id from ngweb_alias where name='"+SecureMessageOnlineProfile+"'"));				
+			} else if(messageType.equalsIgnoreCase("SentByAlias")){
+				String SecureMessageAlias = "SASHA_ALIAS";
+				message.setRoutingRuleType("Normal");
+				message.setAliasName(SecureMessageAlias);
+			} 
+			
+			if(userID.isEmpty()){
+				userID = DBUtils.executeQueryOnDB("NGCoreDB",userIdQuery);}
+			    String userFirstName =DBUtils.executeQueryOnDB("NGCoreDB","select first_name from user_mstr where user_id='"+userID+"'");
+			    String userLastName =DBUtils.executeQueryOnDB("NGCoreDB","select last_name from user_mstr where user_id='"+userID+"'");	
+			
+			    message.setSenderName(userFirstName+" "+userLastName);
+			    message.setSenderId(userID);
+						
+			if(encounterType.equalsIgnoreCase("OriginalUnlockedEncounter"))
+				message.setOriginalId(communicationMessageID);
+				
+			if(messageType.contains("ReplyToPortal")){
+				message.setParentId(messageType.substring(13).toUpperCase());
+			}
+			
+			if(messageType.contains("ReplyToPortal")){					
+		    	String subject = DBUtils.executeQueryOnDB("NGCoreDB","select subject from ngweb_communications where comm_id ='"+messageType.substring(13)+"'");
+		    	message.setSubject("RE: "+subject);
+			}
+			else
+				message.setSubject("Subject" + (new Date()).getTime());
+			message.setBody(messageType +"Body" + (new Date()).getTime());
+			message.setSentTimestamp(sdf.format(new Date()));
+			if(messageType.contains("ReplyToPortal")){
+				message.setCategory("Medication Questions Category");
+				message.setRepliedWhenTimestamp(sdf.format(new Date()));
+			}
+			else
+				message.setCategory("Practice Initiated");
+			message.setIsClinical(true);
+			message.setRecipients(recipientList);
+			
+			if(messageType.equalsIgnoreCase("HighPriority"))
+				message.setPriority("High");
+			else
+				message.setPriority("Normal");
+			
+			if(messageType.equalsIgnoreCase("DisableReply"))
+				message.setCanReply(true);
+			
+			if(messageType.equalsIgnoreCase("ReadReceiptRequested"))
+				message.setIsReadReceiptRequested(true);
+			
+			if(messageType.equalsIgnoreCase("UnreadNotificationRequested"))
+				message.setIsUnreadNotificationRequested(true);
+			
+			if(messageType.equalsIgnoreCase("SaveDraft"))
+				message.setIsDraft(true);
+			
+			if(messageType.equalsIgnoreCase("DelayedDelivery"))
+				message.setScheduledTimestamp(sdf.format(new Date()));
+			
+			if(attachmentName.equalsIgnoreCase("PatientEducation")){
+			attachment.setAttachmentId(UUID.randomUUID().toString().toUpperCase());
+			attachment.setDocumentId(documentID);
+			attachment.setName(DBUtils.executeQueryOnDB("NGCoreDB","select document_desc from patient_education where document_id ='"+documentID+"'"));
+			attachment.setType("PatientEducation");
+			String format = DBUtils.executeQueryOnDB("NGCoreDB","select file_format from patient_education where document_id ='"+documentID+"'");
+			if(format.contains("HTM"))
+				format = "HTML";
+			attachment.setFormat(format);
+			attachment.setContentBytes("2500");
+			
+			attachmentList.add(attachment);			
+			message.setAttachments(attachmentList);
+			}
+			else if(attachmentName.equalsIgnoreCase("PatientImage")){
+				attachment.setAttachmentId(UUID.randomUUID().toString().toUpperCase());
+				attachment.setDocumentId(documentID);
+				String imageName = DBUtils.executeQueryOnDB("NGCoreDB","select orig_image_file from patient_images where image_id ='"+documentID+"'");
+				attachment.setName(imageName);
+				attachment.setType("EmrImage");
+				attachment.setFormat(imageName.substring(imageName.lastIndexOf(".")).replace(".", ""));
+				attachment.setContentBytes("2500");
+				
+				attachmentList.add(attachment);			
+				message.setAttachments(attachmentList);
+			}
+			
+			messageList.add(message);
+			
+			securemessage.setSenderType(senderType);
+			securemessage.setEncounterType(encounterType);
+			
+			if(encounterType.equalsIgnoreCase("ExistingEncounter"))
+				securemessage.setEncounterId(encounterId);
+			
+			securemessage.setRenderingProviderId(DBUtils.executeQueryOnDB("NGCoreDB",strSqlQueryForRenderingProvider.replace("ProviderName",ProviderName)));
+			securemessage.setLocationId(DBUtils.executeQueryOnDB("NGCoreDB",strSqlQueryForLocation.replace("locationName", locationName)));
+			securemessage.setApplicationName(applicationName);
+			securemessage.setMessages(messageList);
+			
+			ObjectMapper mapper = new ObjectMapper();
+			mapper.setSerializationInclusion(Inclusion.NON_NULL);				
+	        String requestbody = mapper.defaultPrettyPrintingWriter().writeValueAsString(securemessage);
+	        Log4jUtil.log("Secure Message request body \n"+requestbody);
+			
+			String secureMessageURL =apiRoutes.valueOf("PostSecureMessage").getRouteURL(); 
+			String finalURL = EnterprisebaseURL +secureMessageURL;
+			NGAPIUtils.setupNGHttpPostRequest("EnterpriseGateway",finalURL,requestbody , 200);
+			comm_id = message.getId();
+			Log4jUtil.log("Communication Message created with id "+comm_id);		
+	} catch (Exception e) {
+		Log4jUtil.log(e.getMessage());
+    }
+		return comm_id;
+	}
+	
+	public static void postAppointmentResponse(String appointmentRequestId, String appointmentId, String message) throws Throwable{
+		AppointmentResponse appointmentResponse = new AppointmentResponse();		
+		try{			
+			appointmentResponse.setMessage(message);
+			appointmentResponse.setApprovedDate(sdf.format(new Date()));
+			appointmentResponse.setAppointmentId(appointmentId.toUpperCase());
+			appointmentResponse.setAppointmentStatus("Booked");
+			appointmentResponse.setSourceApplicationType(1);
+			
+			ObjectMapper mapper = new ObjectMapper();
+			mapper.setSerializationInclusion(Inclusion.NON_NULL);				
+	        String requestbody = mapper.defaultPrettyPrintingWriter().writeValueAsString(appointmentResponse);
+	        Log4jUtil.log("Appointment Response request body \n"+requestbody);			
+			
+			String appointmentResponseURL =apiRoutes.valueOf("PostAppointmentResponse").getRouteURL().replace("appointmentRequestId", appointmentRequestId); 
+			String finalURL = EnterprisebaseURL +appointmentResponseURL;
+			NGAPIUtils.setupNGHttpPostRequest("EnterpriseGateway",finalURL,requestbody, 201);
+			Log4jUtil.log("Appointment Response is sent successsfully");			
+	} catch (Exception e) {
+		Log4jUtil.log(e.getMessage());
+    }
+	}
+	
+	public static String postAppointment(String personId,String locationName, String ProviderName,String EventName, String ResourceName,int expectedStatusCode) throws Throwable{
+		Appointment appointment = new Appointment();	String epm_appt_id ="";	
+		try{			
+			String strSqlQueryForProvider= "select provider_id from provider_mstr where description='"+ProviderName+"'";
+			String strSqlQueryForLocation= "select location_id from location_mstr where location_name='"+locationName+"'";
+			String strSqlQueryForEvent= "select event_id from events where event ='"+EventName+"'";
+			String strSqlQueryForResource= "select resource_id from resources where description = '"+ResourceName+"'";			
+			String strSqlQueryForDuration= "select duration from events where event ='"+EventName+"'";
+						
+			appointment.setPersonId(personId);
+			appointment.setEventId(DBUtils.executeQueryOnDB("NGCoreDB",strSqlQueryForEvent).toLowerCase());
+			appointment.setLocationId(DBUtils.executeQueryOnDB("NGCoreDB",strSqlQueryForLocation));
+			appointment.setRenderingProviderId(DBUtils.executeQueryOnDB("NGCoreDB",strSqlQueryForProvider));
+			appointment.setDurationMinutes(DBUtils.executeQueryOnDB("NGCoreDB",strSqlQueryForDuration));
+			
+			String appointmentDate = sdf.format(DateUtils.addDays(new Date(), 1));
+			appointmentDate = appointmentDate.substring(0, appointmentDate.indexOf("T"));
+			appointment.setAppointmentDate(appointmentDate + "T00:00:00");
+			
+			List<String> resourceIds =new ArrayList<String>();
+			resourceIds.add(DBUtils.executeQueryOnDB("NGCoreDB",strSqlQueryForResource));			
+			appointment.setResourceIds(resourceIds);
+					
+			ObjectMapper mapper = new ObjectMapper();
+			mapper.setSerializationInclusion(Inclusion.NON_NULL);				
+	        String requestbody = mapper.defaultPrettyPrintingWriter().writeValueAsString(appointment);
+	        Log4jUtil.log("Appointment request body \n"+requestbody);			
+			
+			String appointmentURL =apiRoutes.valueOf("PostAppointment").getRouteURL(); 
+			String finalURL = EnterprisebaseURL +appointmentURL;
+			epm_appt_id = NGAPIUtils.setupNGHttpPostRequest("EnterpriseGateway",finalURL,requestbody, expectedStatusCode);
+			Log4jUtil.log("Appointment posted successsfully with ID "+epm_appt_id);			
+	} catch (Exception e) {
+		Log4jUtil.log(e.getMessage());
+    }
+		return epm_appt_id;
 	}
 }

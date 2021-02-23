@@ -24,6 +24,7 @@ public class PSSPropertyFileLoader {
 		Log4jUtil.log("Loading data for GW appointment related cases..");
 		appointValues.setIsinsuranceVisible(false);
 		appointValues.setIsstartpointPresent(false);
+		appointValues.setLinkProvider(property.getProperty("linkProviderGW"));
 		appointValues.setAppointmenttype(property.getProperty("appointmenttypeGW"));
 		appointValues.setDatetime(property.getProperty("datetimeGW"));
 		appointValues.setLocation(property.getProperty("locationGW"));
@@ -76,6 +77,7 @@ public class PSSPropertyFileLoader {
 		appointValues.setOldPatientUserName(property.getProperty("oldPatientUserNameGW"));
 		appointValues.setOldPatientPassword(property.getProperty("oldPatientPasswordGW"));
 		appointValues.setProviderImageAPI(property.getProperty("providerImageAPIGW"));
+		appointValues.setGmailUserName(property.getProperty("gmailUserNameGW"));
 	}
 
 	public void setAdminGW(AdminUser adminuser) {
@@ -128,6 +130,8 @@ public class PSSPropertyFileLoader {
 
 	public void setAppointmentResponseAT(Appointment appointValues) {
 		Log4jUtil.log("Loading data for ATHENA appointment related cases..");
+		appointValues.setLinkProvider(property.getProperty("linkProviderAT"));
+		appointValues.setMaxperDay(property.getProperty("maxperDayAT"));
 		appointValues.setUrlAnonymous(property.getProperty("urlAnonymousAT"));
 		Log4jUtil.log(appointValues.getUrlAnonymous());
 		appointValues.setIsInsuranceEnabled(true);
@@ -187,6 +191,8 @@ public class PSSPropertyFileLoader {
 
 	public void setAppointmentResponseGE(Appointment appointValues) {
 		Log4jUtil.log("Loading data for GE appointment related cases..");
+		appointValues.setLinkProvider(property.getProperty("linkProviderGE"));
+		appointValues.setMaxperDay(property.getProperty("maxperDayGE"));
 		appointValues.setAppointmenttype(property.getProperty("appointmenttypeGE"));
 		appointValues.setDatetime(property.getProperty("datetimeGE"));
 		appointValues.setLocation(property.getProperty("locationGE"));
@@ -239,6 +245,7 @@ public class PSSPropertyFileLoader {
 		appointValues.setOldPatientUserName(property.getProperty("oldPatientUserNameGE"));
 		appointValues.setOldPatientPassword(property.getProperty("oldPatientPasswordGE"));
 		appointValues.setProviderImageAPI(property.getProperty("providerImageAPIGE"));
+		appointValues.setGmailUserName(property.getProperty("emailGE"));
 	}
 
 	public void setAppointmentResponseNG(Appointment appointValues) {
@@ -246,6 +253,8 @@ public class PSSPropertyFileLoader {
 		appointValues.setUrlAnonymous(property.getProperty("urlAnonymousNG"));
 		Log4jUtil.log(appointValues.getUrlAnonymous());
 		appointValues.setIsInsuranceEnabled(true);
+		appointValues.setLinkProvider(property.getProperty("linkProviderNG"));
+		appointValues.setMaxperDay(property.getProperty("maxperDayNG"));
 		appointValues.setAppointmenttype(property.getProperty("appointmenttypeNG"));
 		appointValues.setDatetime(property.getProperty("datetimeNG"));
 		appointValues.setLocation(property.getProperty("locationNG"));
@@ -313,6 +322,14 @@ public class PSSPropertyFileLoader {
 		appointValues.setGender(property.getProperty("genderNG"));
 		appointValues.setZipCode(property.getProperty("zipCodeNG"));
 		appointValues.setPrimaryNumber(property.getProperty("primaryNumberNG"));
+	}
+	
+	public void setRestAPIData(Appointment appointValues) {
+		appointValues.setBaseurl_BookRule(property.getProperty("baseurl_BookRule"));
+		appointValues.setBaseurl_LocationRule(property.getProperty("baseurl_LocationRule"));
+		appointValues.setBaseurl_AppointmentType(property.getProperty("baseurl_AptType"));
+		appointValues.setBaseurl_AvailableSlots("baseurl_available_slots");
+		appointValues.setBaseurl_ScheduleAppointment("baseurl_ScheduleAppointment");		
 	}
 
 }

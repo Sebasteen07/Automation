@@ -1,7 +1,10 @@
+//Copyright 2013-2020 NXGN Management, LLC. All Rights Reserved.
 package com.intuit.ihg.product.sitegen.test;
 
 import java.io.IOException;
 
+import org.openqa.selenium.By;
+import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.PageFactory;
 import org.testng.annotations.BeforeClass;
 import org.testng.annotations.Test;
@@ -24,6 +27,8 @@ import com.intuit.ihg.product.object.maps.sitegen.page.personnel.ExportPersonnel
 import com.intuit.ihg.product.object.maps.sitegen.page.personnel.ImportOrExportProgressPage;
 import com.intuit.ihg.product.object.maps.sitegen.page.personnel.ImportPersonnelAndPhysiciansPage;
 import com.intuit.ihg.product.object.maps.sitegen.page.personnel.ManageYourPersonnelPage;
+import com.intuit.ihg.product.object.maps.sitegen.page.pharmacy.AddPharmacyPage;
+import com.intuit.ihg.product.object.maps.sitegen.page.pharmacy.ManageYourPharmacies;
 import com.intuit.ihg.product.object.maps.sitegen.page.physicians.AddPhysicianPage;
 import com.intuit.ihg.product.object.maps.sitegen.page.physicians.AddPhysicianStep2EditLocationInfoPage;
 import com.intuit.ihg.product.object.maps.sitegen.page.physicians.ManageYourPhysiciansPage;
@@ -486,5 +491,61 @@ public class SiteGenAcceptanceTests extends BaseTestNGWebDriver {
 
 		logStep("Click on Download link (Export staff) -- validate HTTP Status Code");
 		assertEquals(pExportPersonnel.clickLinkDownloadExportStaff(), 200, "Download of Export staff returned unexpected HTTP status code");
+	}
+	
+	@Test(enabled = true, groups = {"AcceptanceTests"}, retryAnalyzer = RetryAnalyzer.class)
+	public void testAddPharmacyAndValidateExternalSystemID() throws Exception {
+		
+		logStep("LogIn");
+		SiteGenLoginPage loginpage = new SiteGenLoginPage(driver, testData.getProperty("sitegenUrl"));
+		SiteGenHomePage pSiteGenHomePage = loginpage.login(testData.getProperty("automationUser"), testData.getProperty("automationPassword"));
+		logStep("Navigate to SiteGen HomePage");
+		SiteGenPracticeHomePage practiseHome = pSiteGenHomePage.clickLinkMedfusionSiteAdministration();
+		logStep("Navigate to Manage Your Pharamcies Page");
+		ManageYourPharmacies managePharmacyPage = practiseHome.clickOnPharmacy();
+	    logStep("Click on Pharmacies link in Sitegen Home Page");
+
+	    logStep("Click on Add New Pharmacy button");
+	    AddPharmacyPage addPharmaPage= managePharmacyPage.clickOnAddPharmacyButton();
+	    
+		String externalid= IHGUtil.createRandomNumericString(12);
+		
+	    String message=addPharmaPage.fillPharmacyDetails(externalid,true);
+	    assertTrue(message.contains("success"));
+	    
+	    logStep("Add one more Pharmacy with same External Pharmacy ID for same External System and Validate");
+	    AddPharmacyPage addPharmaPage2= managePharmacyPage.clickOnAddPharmacyButton();
+	    
+	    String message2=addPharmaPage2.fillPharmacyDetails(externalid,false);
+	    assertTrue(message2.contains("The External PharmacyID already exists for 88, please enter a unique value"));
+     
+}
+	@Test(enabled = true, groups = {"AcceptanceTests"}, retryAnalyzer = RetryAnalyzer.class)
+	public void testEditAndDeletePharmacy() throws Exception {
+		
+		logStep("Log In");
+		SiteGenLoginPage loginpage = new SiteGenLoginPage(driver, testData.getProperty("sitegenUrl"));
+		SiteGenHomePage pSiteGenHomePage = loginpage.login(testData.getProperty("automationUser"), testData.getProperty("automationPassword"));
+		
+		logStep("Navigate to SiteGen HomePage");
+		SiteGenPracticeHomePage practiceHome = pSiteGenHomePage.clickLinkMedfusionSiteAdministration();
+		
+		logStep("Navigate to Manage Your Pharamcies Page");
+		ManageYourPharmacies managePharmacyPage = practiceHome.clickOnPharmacy();
+	    
+		logStep("Click on Edit pharmacy Link and Edit the External Id");
+		
+		String PharmacyName = managePharmacyPage.clickonEditPharmacyLink();
+		String externalid= IHGUtil.createRandomNumericString(12);
+		AddPharmacyPage addPharma= new AddPharmacyPage(driver);
+	    addPharma.editPharmacy(externalid);
+	 
+		logStep("Click on Edit Pharmacy Link and Delete the Pharmacy");
+		managePharmacyPage.clickonEditPharmacyLink();
+		boolean isDeleted = addPharma.deletePharmacy(PharmacyName);
+		if(isDeleted)
+		{
+			logStep("Pharmacy is deleted succesfully");
+		}
 	}
 }

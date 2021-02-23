@@ -1,4 +1,4 @@
-//Copyright 2018-2020 NXGN Management, LLC. All Rights Reserved.
+// Copyright 2018-2020 NXGN Management, LLC. All Rights Reserved.
 package com.medfusion.product.object.maps.pss2.page.Resource;
 
 import java.util.List;
@@ -8,6 +8,7 @@ import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.FindAll;
 import org.openqa.selenium.support.FindBy;
 import org.openqa.selenium.support.How;
+import org.openqa.selenium.support.ui.Select;
 
 import com.medfusion.common.utils.IHGUtil;
 import com.medfusion.product.object.maps.pss2.page.PSS2MenuPage;
@@ -35,7 +36,7 @@ public class ManageResource extends PSS2MenuPage {
 	@FindBy(how = How.XPATH, using = "//a[contains(text(),'Specialty')]")
 	private WebElement editSpecialityTab;
 
-	@FindBy(how = How.XPATH, using = "//a[contains(text(),'Appointment Type')]")
+	@FindBy(how = How.XPATH, using = "//*[@class='nav-item']//a[@href='#tab43']")
 	private WebElement editAptTypeTab;
 
 	@FindBy(how = How.NAME, using = "slotSize")
@@ -77,6 +78,34 @@ public class ManageResource extends PSS2MenuPage {
 	@FindBy(how = How.XPATH, using = "//*[@id=\"tab23\"]/table/tbody/tr[1]/td[3]/div/label/input")
 	private WebElement resourceSearchedLocation;
 
+	@FindBy(how = How.XPATH, using = "//table/tbody/tr/td/a/span")
+	private WebElement resourceAppTypeclick;
+
+	@FindBy(how = How.XPATH, using = "//input[@id='leadTimedays']")
+	private WebElement leadDay;
+
+	@FindBy(how = How.XPATH, using = "//input[@id='leadTimehours']")
+	private WebElement leadHour;
+
+	@FindBy(how = How.XPATH, using = "//input[@id='leadTimemins']")
+	private WebElement leadMinut;
+
+	@FindBy(how = How.XPATH, using = "//*[@name='apptTypeReservedReason']")
+	private WebElement reservefor;
+	
+	@FindBy(how = How.XPATH, using = "//*[@class='col-xs-12']/div/button[1]")
+	private WebElement appointmenttypeSave;
+
+	@FindBy(how = How.ID, using = "maxPerDay")
+	private WebElement maxPerDay;
+
+	@FindBy(how = How.XPATH, using = "//div[@class='form-group row']//div[@class='col-md-12']//label[@for='allowSameDayAppts']/input")
+	private WebElement acceptToggle;
+
+	// @FindBy(how = How.XPATH, using = "//*[@id='tab43']/div/form/fieldset[1]/div[14]/div/label[1]/i")
+	@FindBy(how = How.XPATH, using = "//div[@class='col-md-12']//label[@for='allowSameDayAppts']")
+	private WebElement acceptToggleclick;
+
 	public ManageResource(WebDriver driver) {
 		super(driver);
 	}
@@ -90,10 +119,23 @@ public class ManageResource extends PSS2MenuPage {
 		searchResource.sendKeys(resourceName);
 	}
 
+	public void resourceSearchApt(String resourceName) {
+		resourceSearchApt.sendKeys(resourceName);
+	}
+
 	public void selectResource(String resourceName) {
 		searchResource(resourceName);
 		IHGUtil.waitForElement(driver, 60, searchedResourceName);
 		searchedResourceName.click();
+		log("clicked on Resource  ");
+	}
+
+	public void selectAppointmenttype(String ApptypeName) {
+		editAptTypeTab.click();
+		resourceSearchApt(ApptypeName);
+		IHGUtil.waitForElement(driver, 60, searchedResourceName);
+		resourceAppTypeclick.click();
+		log("clicked on Appointment type  ");
 	}
 
 	public Boolean isSharedPatientTrueForResource() {
@@ -117,4 +159,67 @@ public class ManageResource extends PSS2MenuPage {
 		log("Location Enabled for the resource ? " + enabledValue);
 		return enabledValue;
 	}
+
+	public void clickappointmenttype() {
+		editAptTypeTab.click();
+	}
+
+	public int getDay() {
+		String leadtimeDay = leadDay.getAttribute("value");
+		int leadday = Integer.parseInt(leadtimeDay);
+		return leadday;
+
+	}
+
+	public int getHour() {
+		String leadtimeHour = leadHour.getAttribute("value");
+		int ledhour = Integer.parseInt(leadtimeHour);
+		return ledhour;
+
+	}
+
+	public int getMinut() {
+		String leadtimeMinut = leadMinut.getAttribute("value");
+		int laeahour = Integer.parseInt(leadtimeMinut);
+		return laeahour;
+
+	}
+
+	public void reserveFor() {
+		Select objSelect = new Select(reservefor);
+		objSelect.selectByVisibleText("Same Day");
+		reservefor.click();
+		appointmenttypeSave.click();
+	}
+
+	public void notreserve() {
+		Select objSelect = new Select(reservefor);
+		objSelect.selectByVisibleText("Not Reserved");
+		reservefor.click();
+		appointmenttypeSave.click();
+	}
+
+	public void maxperDay(String maxvalue) {
+		maxPerDay.clear();
+		maxPerDay.sendKeys("0");
+		appointmenttypeSave.click();
+		maxPerDay.clear();
+		maxPerDay.sendKeys(maxvalue);
+		appointmenttypeSave.click();
+
+	}
+
+	public boolean acceptforStatus() {
+
+		log(acceptToggle.getAttribute("ng-reflect-model"));
+		boolean bool = Boolean.parseBoolean(acceptToggle.getAttribute("ng-reflect-model"));
+		return bool;
+	}
+
+	public void clickacceptsameday() {
+		acceptToggleclick.click();
+		appointmenttypeSave.click();
+		log("clicked on accceptfor sameday");
+	}
+
 }

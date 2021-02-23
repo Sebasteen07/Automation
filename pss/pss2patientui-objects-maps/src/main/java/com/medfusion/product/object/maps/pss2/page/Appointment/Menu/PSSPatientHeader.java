@@ -24,6 +24,9 @@ public class PSSPatientHeader extends PSS2MainPage {
 
 	@FindBy(how = How.ID, using = "logoutbutton")
 	private WebElement nameSettings;
+	
+	@FindBy(how = How.XPATH, using = "//span[@class='circle']")
+	private WebElement logoutCircle;
 
 	@FindBy(how = How.XPATH, using = "//*[@class='dropdown-menu']//a")
 	private WebElement logout;
@@ -51,7 +54,7 @@ public class PSSPatientHeader extends PSS2MainPage {
 		IHGUtil.waitForElement(driver, 60, logout);
 		logout.click();
 	}
-
+	
 	public void backToHomePage() {
 		companyLogo.click();
 	}

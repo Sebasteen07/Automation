@@ -19,7 +19,7 @@ public class AccessRules extends SettingsTab {
 	private WebElement checkNewPatient;
 
 	@FindBy(how = How.XPATH,
-			using = "//body/app[1]/layout[1]/div[1]/main[1]/div[2]/div[1]/div[1]/div[1]/section[1]/div[1]/div[1]/div[2]/div[2]/div[2]/div[1]/fieldset[3]/div[1]/label[1]")
+			using = "//body/app[1]/layout[1]/div[1]/main[1]/div[2]/div[1]/div[1]/div[1]/section[1]/div[1]/div[1]/div[2]/div[2]/div[2]/div[1]/fieldset[2]/div[1]/label")
 	private WebElement checkNewPatientLabel;
 
 	@FindBy(how = How.ID, using = "checkbox2")
@@ -53,7 +53,7 @@ public class AccessRules extends SettingsTab {
 	private WebElement enableOTP;
 
 	@FindBy(how = How.XPATH,
-			using = "//body/app[1]/layout[1]/div[1]/main[1]/div[2]/div[1]/div[1]/div[1]/section[1]/div[1]/div[1]/div[2]/div[2]/div[2]/div[1]/fieldset[3]/div[2]/label[1]")
+			using = "//body/app[1]/layout[1]/div[1]/main[1]/div[2]/div[1]/div[1]/div[1]/section[1]/div[1]/div[1]/div[2]/div[2]/div[2]/div[1]/fieldset[2]/div[2]/label")
 	private WebElement checkLoginlessExistingPatientLabel;
 
 	@FindBy(how = How.ID, using = "radio0")

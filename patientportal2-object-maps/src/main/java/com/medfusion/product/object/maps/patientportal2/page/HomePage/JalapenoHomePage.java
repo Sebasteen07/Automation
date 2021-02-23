@@ -25,6 +25,7 @@ import com.medfusion.product.object.maps.forms.page.questionnaires.PortalFormPag
 import com.medfusion.product.object.maps.patientportal2.page.JalapenoMenu;
 import com.medfusion.product.object.maps.patientportal2.page.AppointmentRequestPage.JalapenoAppointmentRequestPage;
 import com.medfusion.product.object.maps.patientportal2.page.AppointmentRequestPage.JalapenoAppointmentRequestV2Step1;
+import com.medfusion.product.object.maps.patientportal2.page.AppointmentRequestPage.NGAppointmentPage;
 import com.medfusion.product.object.maps.patientportal2.page.AppointmentsPage.JalapenoAppointmentsPage;
 import com.medfusion.product.object.maps.patientportal2.page.AskAStaff.JalapenoAskAStaffPage;
 import com.medfusion.product.object.maps.patientportal2.page.AskAStaff.JalapenoAskAStaffV2Page1;
@@ -39,6 +40,9 @@ import com.medfusion.product.object.maps.patientportal2.page.SymptomAssessment.J
 public class JalapenoHomePage extends JalapenoMenu {
 	@FindBy(how = How.ID, using = "feature_messaging")
 	private WebElement messages;
+	
+	@FindBy(how = How.XPATH, using = "//span[text()='Messages']")
+	private WebElement messagesSideBar;
 
 	@FindBy(how = How.XPATH, using = "//h3[contains(text(),'Schedule an Appointment')]")
 	private WebElement sheduleanappointment;
@@ -100,7 +104,7 @@ public class JalapenoHomePage extends JalapenoMenu {
 	@FindBy(how = How.XPATH, using = "//a[text()='Ask (paid)']")
 	private WebElement askPaid;
 
-	@FindBy(how = How.XPATH, using = "//i[@class='caret pull-right']")
+	@FindBy(how = How.XPATH, using = "//*[@aria-label='Select box activate']")
 	private WebElement practiceToggleSearch;
 
 	@FindBy(how = How.XPATH, using = "//input[@type='search']")
@@ -122,6 +126,8 @@ public class JalapenoHomePage extends JalapenoMenu {
 	@FindBy(how = How.XPATH, using = "//*[@id=\"feature_appointments\"]/div")
 	private WebElement nextAppointmentSchedule;
 
+	@FindBy(how = How.ID, using = "sentFolder")
+	private WebElement sentFolder;
 
 	public JalapenoHomePage(WebDriver driver) {
 		super(driver);
@@ -133,6 +139,16 @@ public class JalapenoHomePage extends JalapenoMenu {
 		WebDriverWait wait= new WebDriverWait(driver, 5);
 		wait.until(ExpectedConditions.elementToBeClickable(messages));
 		messages.click();
+		return PageFactory.initElements(driver, JalapenoMessagesPage.class);
+	}
+	
+	public JalapenoMessagesPage showMessagesSent(WebDriver driver) {
+		IHGUtil.PrintMethodName();
+		WebDriverWait wait= new WebDriverWait(driver, 20);
+		wait.until(ExpectedConditions.elementToBeClickable(messages));
+		messages.click();
+		wait.until(ExpectedConditions.elementToBeClickable(sentFolder));
+		sentFolder.click();
 		return PageFactory.initElements(driver, JalapenoMessagesPage.class);
 	}
 
@@ -453,7 +469,7 @@ public class JalapenoHomePage extends JalapenoMenu {
 		}
 	}
 	
-	public void switchToPractice(String practice){
+	public void switchToPractice(String practice) throws InterruptedException{
 		try{
 			WebElement verifySelectedPractice= driver.findElement((By.xpath("(//span[@title='"+practice+"'])[2]")));
 			Boolean status =IHGUtil.waitForElement(driver, 15, verifySelectedPractice);
@@ -465,7 +481,8 @@ public class JalapenoHomePage extends JalapenoMenu {
 			practiceToggleSearch.click();
 		 	practiceInput.sendKeys(practice);
 			practiceInput.sendKeys(Keys.ENTER);
-			IHGUtil.waitForElement(driver, 80, switchButtonContinue);
+			Thread.sleep(8000);
+			IHGUtil.waitForElement(driver, 90, switchButtonContinue);
 			switchButtonContinue.click();
 			log("Switch to the practice "+practice+" is completed");
 			}
@@ -488,6 +505,26 @@ public class JalapenoHomePage extends JalapenoMenu {
 		String nextAppointmentScheduleText = nextAppointmentSchedule.getText();
 		return nextAppointmentScheduleText;
 	}
-
+	
+	public JalapenoAskAStaffV2Page1 openSpecificAskaQuestion(String askaName) throws InterruptedException {
+		IHGUtil.PrintMethodName();
+		Thread.sleep(8000);
+		askAQuestion.click();
+		log("It clicked on the ASK a question in homepage");
+		try {
+			Thread.sleep(8000);
+			driver.findElement(By.xpath("//a[text()='"+askaName+"']")).click();
+		} catch (NoSuchElementException e) {
+			log("No question with the specified link text found! name: " + askaName);
+			e.printStackTrace();
+		}
+		return PageFactory.initElements(driver, JalapenoAskAStaffV2Page1.class);
+	}
+	
+	public NGAppointmentPage clickOnAppointmentV3(WebDriver driver) {
+		IHGUtil.PrintMethodName();
+		javascriptClick(appointments);
+		return PageFactory.initElements(driver, NGAppointmentPage.class);
+	}
 
 }

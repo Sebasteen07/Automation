@@ -1,3 +1,4 @@
+//Copyright 2013-2020 NXGN Management, LLC. All Rights Reserved.
 package com.intuit.ihg.product.sitegen.utils;
 
 /**
@@ -138,5 +139,10 @@ public class SitegenConstants {
 
 	public final static String FORMS_REGISTRATION_FORM_INITIAL_NAME = "General Registration and Health History";
 	public final static String FORMS_CUSTOM_FORM_INITIAL_NAME = "Custom Form";
+	
+	//Add new Pharmacy
+	public final static String PHARMACYNAME = "Automation Pharmacy";
+	public final static String PHARMACYLOCATION = "Automation-Location-1";
 }
+
 

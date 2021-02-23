@@ -12,6 +12,7 @@ import org.openqa.selenium.WebDriver;
 import org.testng.Assert;
 
 import com.intuit.ifs.csscat.core.utils.Log4jUtil;
+import com.intuit.ihg.product.integrationplatform.utils.IntegrationConstants;
 import com.intuit.ihg.product.integrationplatform.utils.PropertyFileLoader;
 import com.intuit.ihg.product.integrationplatform.utils.RestUtils;
 import com.medfusion.common.utils.IHGUtil;
@@ -29,7 +30,7 @@ import com.ng.product.integrationplatform.flows.NGAPIFlows;
 
 public class CommonFlows {
 
-	static int arg_timeOut=900; 
+	static int arg_timeOut=1800; 
 	
    public static void verifyMFJOBStatusWithoutValidatingGetProcessingStatusCall(PropertyFileLoader PropertyLoaderObj,String entityidentifier,String integrationID, String type) throws Throwable{
 		
@@ -38,6 +39,19 @@ public class CommonFlows {
         String emailStatus1 =DBUtils.executeQueryOnDB("MFAgentDB","select status from processingstatus_entity where entityidentifier ='"+entityidentifier+"'");
 		String jobStatus1 =DBUtils.executeQueryOnDB("MFAgentDB","select status from processingstatus where id = (select processingstatus_id from processingstatus_entity where entityidentifier ='"+entityidentifier+"')");
 
+		if(jobStatus1.isEmpty()){
+			for (int i = 0; i < arg_timeOut; i++) {
+				jobStatus1 =DBUtils.executeQueryOnDB("MFAgentDB","select status from processingstatus where id = (select processingstatus_id from processingstatus_entity where entityidentifier ='"+entityidentifier+"')");
+				if ((jobStatus1.equalsIgnoreCase("Pending")) || (jobStatus1.equalsIgnoreCase("COMPLETED"))) {
+					Log4jUtil.log("Step End: Request is sent to RSDK successfully");
+	                break;
+	            } else {
+	                if (i == arg_timeOut - 1)
+	                    Thread.sleep(1000);
+	            }
+	        }
+		}
+		
 		Log4jUtil.log("Status of MF agent job "+jobStatus1);
 		if(!jobStatus1.isEmpty()){
 			if(jobStatus1.equalsIgnoreCase("Pending"))
@@ -187,6 +201,8 @@ public class CommonFlows {
 	   Log4jUtil.log("Message Date" + IHGUtil.getEstTiming());
 	   Assert.assertTrue(messagesPage.isMessageDisplayed(driver, "You have a new health data summary"));
 	   Log4jUtil.log("CCD sent date & time is : " + messagesPage.returnMessageSentDate());
+	   
+	   messagesPage.OpenMessage(driver, "You have a new health data summary");
 
 	   Log4jUtil.log("Step Begins: Click on link View health data");
 	   NGCcdViewerPage ngCcdPage = messagesPage.findNGCcdMessage(driver);
@@ -312,4 +328,285 @@ public class CommonFlows {
 	   Log4jUtil.log("Step End: Test data added to patient CCD successfully to encounter "+encounter_id);
 	   return encounter_id;	   
    }
+   
+   public static void verifyMessageProcessingStatus(PropertyFileLoader PropertyLoaderObj,String person_id,String practice_id,String comm_id,String integrationID,String messageType) throws Throwable{
+	   String messageProcessingStatusQuery = "select processing_status from ngweb_comm_recpts where comm_id ='"+comm_id+"'";
+	   String messageDeliveryQuery = "select messageid from  message_delivery where message_groupid ='"+comm_id+"'";
+	   String messageDeliveryStatusQuery = "select status from  message_delivery where message_groupid ='"+comm_id+"'";
+	   String processing_status =DBUtils.executeQueryOnDB("NGCoreDB",messageProcessingStatusQuery);
+	   String deliveryStatusATMF="";
+
+		if(processing_status.equals("1")){
+			    Log4jUtil.log("Processing status is "+processing_status+" i.e. New - Message is created by patient and posted to MF agent.");
+			for (int i = 0; i < arg_timeOut; i++) {
+				processing_status =DBUtils.executeQueryOnDB("NGCoreDB",messageProcessingStatusQuery);
+	           if (processing_status.equals("2")) {
+	        	   Log4jUtil.log("Processing status is "+processing_status+" i.e. InProgress - MF agent posted message to RSDK");
+	               break;
+	           } else {
+	               if (i == arg_timeOut - 1)
+	                   Thread.sleep(1000);
+	           }
+	       }
+			CommonUtils.VerifyTwoValues(processing_status,"equals","2");
+		}
+		
+		if(processing_status.equals("2")){
+			Thread.sleep(40000);
+			String messageID=DBUtils.executeQueryOnDB("MFAgentDB",messageDeliveryQuery);
+			deliveryStatusATMF= DBUtils.executeQueryOnDB("MFAgentDB",messageDeliveryStatusQuery);
+			Assert.assertNotNull(deliveryStatusATMF);
+			verifyMFJOBStatusWithoutValidatingGetProcessingStatusCall(PropertyLoaderObj,messageID,integrationID,"Message");
+			deliveryStatusATMF= DBUtils.executeQueryOnDB("MFAgentDB",messageDeliveryStatusQuery);
+			
+			if(messageType.equalsIgnoreCase("ReadReceiptRequested"))
+				CommonUtils.VerifyTwoValues(deliveryStatusATMF,"equals","READ_SENT");
+			else
+				CommonUtils.VerifyTwoValues(deliveryStatusATMF,"equals","SENT");			
+			
+		for (int i = 0; i < arg_timeOut; i++) {
+			processing_status =DBUtils.executeQueryOnDB("NGCoreDB",messageProcessingStatusQuery);
+           if (processing_status.equals("3")) {
+        	   Log4jUtil.log("Step End: Processing status is "+processing_status+" i.e. Delivered - Message is sent to Portal successfully");
+               break;
+           } else {
+               if (i == arg_timeOut - 1)
+                   Thread.sleep(1000);
+           }
+       }
+		CommonUtils.VerifyTwoValues(processing_status,"equals","3");}
+		
+		if(processing_status.equals("3")){
+			Log4jUtil.log("Step End: Processing status is "+processing_status+" i.e. Delivered - Message is sent to Portal successfully");
+		}
+		else if(processing_status.equals("4")){
+			Log4jUtil.log("Step End: Processing status is "+processing_status+" i.e. Failed to send message to Portal");
+		}
+		CommonUtils.VerifyTwoValues(processing_status,"equals","3");
+	   }
+   
+   public static String verifyMessageINInbox(PropertyFileLoader PropertyLoaderObj,WebDriver driver,String URL,String username, String password, String subject, String body,String comm_id,String messageID,String integrationID, String messageType, String attachmentName) throws Throwable{
+	    long timestamp = System.currentTimeMillis(); String replyMessageID= "";
+	    Log4jUtil.log("Step Begins: Login to Patient Portal");
+	    NGLoginPage loginPage = new NGLoginPage(driver, URL);
+		JalapenoHomePage homePage = loginPage.login(username, password);
+		Log4jUtil.log("Detecting if Home Page is opened");
+		assertTrue(homePage.isHomeButtonPresent(driver));
+		Log4jUtil.log("Step Begins: Click on messages solution");
+		JalapenoMessagesPage messagesPage = homePage.showMessages(driver);
+		assertTrue(messagesPage.areBasicPageElementsPresent(), "Inbox failed to load properly.");
+		Log4jUtil.log("Step Begins: Find message in Inbox with message subject "+ subject);		
+		
+		Log4jUtil.log("Log the message read time ");
+		long epoch = System.currentTimeMillis() / 1000;
+
+		String readdatetimestamp = RestUtils.readTime(epoch);
+		Log4jUtil.log("Message Read Time:" + readdatetimestamp);
+
+		Log4jUtil.log("Step Begins: Validate message loads and is the right message");
+		assertTrue(messagesPage.isMessageDisplayed(driver, subject));
+
+		messagesPage.verifyMessageContent(driver, subject,body);
+		
+		if(messageType.equalsIgnoreCase("SentByPracticeUser")){
+			String userId= DBUtils.executeQueryOnDB("NGCoreDB", "select sender_id from ngweb_communications where comm_id ='"+comm_id+"'");
+			String userFirstName =DBUtils.executeQueryOnDB("NGCoreDB","select first_name from user_mstr where user_id='"+userId+"'");
+			String userLastName =DBUtils.executeQueryOnDB("NGCoreDB","select last_name from user_mstr where user_id='"+userId+"'");	
+			String ExpectedSenderName =userLastName+", "+ userFirstName +"Dr";			
+			messagesPage.verifySenderInfo(driver, userFirstName,userLastName);
+		}
+		if(messageType.equalsIgnoreCase("SentByAlias")){
+			String userFirstName ="Alias";
+			String userLastName ="Routing";
+			String ExpectedSenderName ="Routing, Alias Staff";			
+			messagesPage.verifySenderInfo(driver, userFirstName,userLastName);
+		}
+		if(messageType.equalsIgnoreCase("SentByOnlineProfile")){
+			String userFirstName ="Online";
+			String userLastName ="Profile";	
+			messagesPage.verifySenderInfo(driver, userFirstName,userLastName);
+		}
+		
+		if(messageType.equalsIgnoreCase("CannotReply")){
+			Boolean replyStatus = messagesPage.verifyReplyButton(driver);
+			Assert.assertTrue(replyStatus, "Reply Button is not displayed as expected");			
+		}
+		
+		if(messageType.equalsIgnoreCase("messageWithPE")){
+			messagesPage.verifyMessageAttachment(driver, attachmentName);
+		}
+		
+		Log4jUtil.log("Step Begins: Do a GET and get the read communication");
+		Long since = timestamp / 1000L - 60 * 24;
+		
+		if(messageType.equalsIgnoreCase("ReadReceiptRequested")){
+			Log4jUtil.log("Step Begins: Wait 1 min, so the message can be processed");
+			Thread.sleep(60000);
+
+			Log4jUtil.log("Getting messages since timestamp: " + since);
+			RestUtils.setupHttpGetRequest(PropertyLoaderObj.getProperty("GetReadReceipt").replaceAll("integrationID", integrationID) + "?since=" + since + ",0", PropertyLoaderObj.getResponsePath());
+
+			Log4jUtil.log("Step Begins: Validate the message id and read time in response");
+			RestUtils.isReadCommunicationMessage(PropertyLoaderObj.getResponsePath(), messageID, readdatetimestamp);	
+		
+			verifyReadReceiptReceived(comm_id, readdatetimestamp);
+			verifyReadReceiptMessageReceived(comm_id, subject);
+		} else{
+			String deliveryStatusATMF =DBUtils.executeQueryOnDB("MFAgentDB","select status from  message_delivery where message_groupid ='"+comm_id+"'");
+			CommonUtils.VerifyTwoValues(deliveryStatusATMF,"equals","SENT");}
+
+		if(messageType.equalsIgnoreCase("SendReply")){
+			Log4jUtil.log("Step Begins: Reply to the message");
+			Boolean replyStatus = messagesPage.replyToMessage(driver);
+			Assert.assertTrue(replyStatus, "Message sent to Practice User");
+
+			Log4jUtil.log("Step Begins: Wait 60 seconds, so the message can be processed");
+			Thread.sleep(60000);
+
+			Log4jUtil.log("Step Begins: Do a GET and get the message");
+			RestUtils.setupHttpGetRequest(PropertyLoaderObj.getProperty("GetInboundMessage").replaceAll("integrationID", integrationID) + "?since=" + since + ",0", PropertyLoaderObj.getResponsePath());
+
+			Log4jUtil.log("Step Begins: Validate message reply");
+			replyMessageID = RestUtils.isReplyPresentReturnMessageID(PropertyLoaderObj.getResponsePath(), "Re: "+subject, IntegrationConstants.MESSAGE_REPLY);
+		}
+		
+		if(messageType.equalsIgnoreCase("SentByPracticeUser")){
+			replyMessageID = ReplyToMessage(PropertyLoaderObj, driver, messagesPage, timestamp, integrationID, subject);
+		}
+		
+		if(messageType.equalsIgnoreCase("SentByAlias")){
+			replyMessageID = ReplyToMessage(PropertyLoaderObj, driver, messagesPage, timestamp, integrationID, subject);
+		}
+		if(messageType.equalsIgnoreCase("SentByOnlineProfile")){
+			replyMessageID = ReplyToMessage(PropertyLoaderObj, driver, messagesPage, timestamp, integrationID, subject);
+		}
+		
+		Log4jUtil.log("Logging out");
+		homePage.LogoutfromNGMFPortal();
+		return replyMessageID;
+   }
+   
+   public static String ReplyToMessage(PropertyFileLoader PropertyLoaderObj,WebDriver driver,JalapenoMessagesPage messagesPage,Long timestamp,String integrationID,String subject) throws Throwable{
+	    Long since = timestamp / 1000L - 60 * 24; String replyMessageID ="";
+	    Log4jUtil.log("Step Begins: Reply to the message");
+	    Boolean replyStatus = messagesPage.replyToMessage(driver);
+		Assert.assertTrue(replyStatus, "Message sent to Practice User");
+
+		Log4jUtil.log("Step Begins: Wait 60 seconds, so the message can be processed");
+		Thread.sleep(60000);
+
+		Log4jUtil.log("Step Begins: Do a GET and get the message");
+		RestUtils.setupHttpGetRequest(PropertyLoaderObj.getProperty("GetInboundMessage").replaceAll("integrationID", integrationID) + "?since=" + since + ",0", PropertyLoaderObj.getResponsePath());
+
+		Log4jUtil.log("Step Begins: Validate message reply");
+		replyMessageID = RestUtils.isReplyPresentReturnMessageID(PropertyLoaderObj.getResponsePath(), "Re: "+subject,IntegrationConstants.MESSAGE_REPLY);
+		return replyMessageID;
+   }
+   
+   public static void verifyReadReceiptReceived(String comm_id,String actualReadDateTimestamp) throws Throwable{
+	   String messageProcessingStatusQuery = "select processing_status from ngweb_comm_recpts where comm_id ='"+comm_id+"'";
+	   String messageDeliveryStatusQuery = "select status from  message_delivery where message_groupid ='"+comm_id+"'";
+	   String deliveryStatusATMF =DBUtils.executeQueryOnDB("MFAgentDB",messageDeliveryStatusQuery);
+
+	   if(deliveryStatusATMF.equalsIgnoreCase("READ_SENT")){
+		   Log4jUtil.log("Waiting for the Read Receipt notification to be sent");
+			for (int i = 0; i < arg_timeOut; i++) {
+				deliveryStatusATMF =DBUtils.executeQueryOnDB("MFAgentDB",messageDeliveryStatusQuery);
+				if (deliveryStatusATMF.equalsIgnoreCase("NOTIFIED")) {
+					Log4jUtil.log("Step End: RSDK sent the Read Receipt to MF agent and MF agent sent to NG successfully");
+	                break;
+	            } else {
+	                if (i == arg_timeOut - 1)
+	                    Thread.sleep(1000);
+	            }
+	        }
+			CommonUtils.VerifyTwoValues(deliveryStatusATMF,"equals","NOTIFIED");
+		}
+	   else if(deliveryStatusATMF.equalsIgnoreCase("NOTIFIED"))
+		   Log4jUtil.log("RSDK sent the Read Receipt to MF agent and MF agent sent to NG successfully");
+	   else	if(deliveryStatusATMF.equalsIgnoreCase("NOTIFIED_FAILURE"))
+		   Log4jUtil.log("Failed to send Read Receipt notification by RSDK");
+	   
+	   String processing_status =DBUtils.executeQueryOnDB("NGCoreDB",messageProcessingStatusQuery);
+		if(processing_status.equals("3")){
+			    Log4jUtil.log("Processing status is "+processing_status+" i.e. Message is delivered to Patient");
+			for (int i = 0; i < arg_timeOut; i++) {
+				processing_status =DBUtils.executeQueryOnDB("NGCoreDB",messageProcessingStatusQuery);
+	           if (processing_status.equals("5")) {
+	        	   Log4jUtil.log("Processing status is "+processing_status+" i.e. Read Receipt is received by Practice User");
+	               break;
+	           } else {
+	               if (i == arg_timeOut - 1)
+	                   Thread.sleep(1000);
+	           }
+	       }
+			CommonUtils.VerifyTwoValues(processing_status,"equals","5");
+		}
+		
+		if(processing_status.equals("4")){
+			Log4jUtil.log("Step End: Processing status is "+processing_status+" i.e. Failed to send message to Portal");
+		}
+		else if(processing_status.equals("5")){
+			Log4jUtil.log("Processing status is "+processing_status+" i.e. Read Receipt is received by Practice User");
+		}
+		CommonUtils.VerifyTwoValues(processing_status,"equals","5");
+		
+		String messageReadTimeStamp =DBUtils.executeQueryOnDB("NGCoreDB","select read_timestamp from ngweb_comm_recpts where comm_id ='"+comm_id+"'");
+		
+		Boolean ReadTimeStampStatus = false;	actualReadDateTimestamp = actualReadDateTimestamp.replace("T", " ");
+		actualReadDateTimestamp = actualReadDateTimestamp.substring(0, actualReadDateTimestamp.lastIndexOf("."));
+		if(messageReadTimeStamp.contains(actualReadDateTimestamp)){
+			ReadTimeStampStatus = true;
+			Log4jUtil.log("Read TimeStamp is added to ngweb_comm_recpts table "+actualReadDateTimestamp);}
+		Assert.assertTrue(ReadTimeStampStatus, "Read TimeStamp is not added to ngweb_comm_recpts table");
+	   }
+   
+   public static void verifyReadReceiptMessageReceived(String comm_id,String subject) throws Throwable{
+	   String ReadReceiptCommID = DBUtils.executeQueryOnDB("NGCoreDB","select comm_id from ngweb_communications where parent_id ='"+comm_id+"'");
+	   
+	   String ReadReceiptSubject = DBUtils.executeQueryOnDB("NGCoreDB","select subject from ngweb_communications where parent_id ='"+comm_id+"'");
+	   
+	   subject = "(Read receipt) RE: "+subject;
+	   CommonUtils.VerifyTwoValues(ReadReceiptSubject,"equals",subject);
+	   String ReadReceiptBody = DBUtils.executeQueryOnDB("NGCoreDB","select body from ngweb_communications where parent_id ='"+comm_id+"'");
+	   CommonUtils.VerifyTwoValues(ReadReceiptBody,"contains","This message was read by");
+   }
+   
+   public static void verifyMessageReceivedAtNGCore(PropertyFileLoader PropertyLoaderObj,String comm_id,String subject,String body,String comm_category) throws Throwable{
+	   String ActualSubject = DBUtils.executeQueryOnDB("NGCoreDB","select subject from ngweb_communications where comm_id ='"+comm_id+"'");
+	   CommonUtils.VerifyTwoValues(ActualSubject,"equals",subject);
+	   String ActualBody = DBUtils.executeQueryOnDB("NGCoreDB","select body from ngweb_communications where comm_id ='"+comm_id+"'");
+	   CommonUtils.VerifyTwoValues(ActualBody.replace("\r", "").replace("\n", ""),"equals",body);
+	   String senderType = DBUtils.executeQueryOnDB("NGCoreDB","select sender_type from ngweb_communications where comm_id ='"+comm_id+"'");
+	   CommonUtils.VerifyTwoValues(senderType,"equals","2");	   
+	   String bulk = DBUtils.executeQueryOnDB("NGCoreDB","select isBulk from ngweb_communications where comm_id ='"+comm_id+"'");
+	   CommonUtils.VerifyTwoValues(bulk,"equals","0");	   
+	   String actualCommCategory = DBUtils.executeQueryOnDB("NGCoreDB","select comm_category from ngweb_communications where comm_id ='"+comm_id+"'");
+	   CommonUtils.VerifyTwoValues(actualCommCategory,"equals",comm_category);
+   }
+   
+   public static void verifyReplyReceivedAtNGCore(String comm_id,String subject,String body) throws Throwable{
+	   String ActualSubject = DBUtils.executeQueryOnDB("NGCoreDB","select subject from ngweb_communications where parent_id ='"+comm_id+"'");
+	   if(ActualSubject.isEmpty()){
+			for (int i = 0; i < arg_timeOut; i++) {
+				ActualSubject = DBUtils.executeQueryOnDB("NGCoreDB","select subject from ngweb_communications where parent_id ='"+comm_id+"'");
+				if (!ActualSubject.isEmpty()) {
+					Log4jUtil.log("Message deilvered to NG Core");
+	                break;
+	            } else {
+	                if (i == arg_timeOut - 1)
+	                    Thread.sleep(1000);
+	            }
+	        }
+		}
+	   
+	   CommonUtils.VerifyTwoValues(ActualSubject,"equals",subject);
+	   String ActualBody = DBUtils.executeQueryOnDB("NGCoreDB","select body from ngweb_communications where comm_id ='"+comm_id+"'");
+	   CommonUtils.VerifyTwoValues(ActualBody.replace("\r", "").replace("\n", ""),"equals",body);
+	   String senderType = DBUtils.executeQueryOnDB("NGCoreDB","select sender_type from ngweb_communications where comm_id ='"+comm_id+"'");
+	   CommonUtils.VerifyTwoValues(senderType,"equals","2");	   
+	   String bulk = DBUtils.executeQueryOnDB("NGCoreDB","select isBulk from ngweb_communications where comm_id ='"+comm_id+"'");
+	   CommonUtils.VerifyTwoValues(bulk,"equals","0");
+   }
+
 }
