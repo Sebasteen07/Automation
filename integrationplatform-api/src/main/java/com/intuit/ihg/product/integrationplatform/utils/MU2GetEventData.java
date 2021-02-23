@@ -2,6 +2,7 @@ package com.intuit.ihg.product.integrationplatform.utils;
 
 public class MU2GetEventData {
 		public String PULLAPI_URL = "";
+		public String PULLAPI_URLV3 = "";
 		public String OAUTH_PROPERTY = "";
 		public String RESPONSEPATH = "";
 		public String OAUTH_KEYSTORE = "";

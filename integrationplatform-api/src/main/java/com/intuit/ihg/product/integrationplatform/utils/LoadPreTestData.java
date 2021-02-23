@@ -16,6 +16,7 @@ public class LoadPreTestData {
 		testData.UserName = propertyData.getUserNameCCD();
 		testData.Password = propertyData.getPasswordCCD();
 		testData.RestUrl = propertyData.getRestUrlCCD();
+		testData.RestUrlV3 = propertyData.getRestUrlV3CCD();
 		testData.EPracticeName = propertyData.getEPracticeNameCCD();
 		testData.ccdXMLPath = propertyData.getCCDPATH3();
 		testData.CCDPath = propertyData.getCCDPath();
@@ -89,6 +90,7 @@ public class LoadPreTestData {
 
 		PropertyFileLoader propertyData = new PropertyFileLoader();
 		testData.PULLAPI_URL = propertyData.getPULLAPI_URL_MU2();
+		testData.PULLAPI_URLV3 = propertyData.getPULLAPI_URLV3_MU2();
 		testData.OAUTH_PROPERTY = propertyData.getOAuthProperty();
 		testData.OAUTH_KEYSTORE = propertyData.getOAuthKeyStore();
 		testData.OAUTH_APPTOKEN = propertyData.getOAuthAppToken_MU2();
