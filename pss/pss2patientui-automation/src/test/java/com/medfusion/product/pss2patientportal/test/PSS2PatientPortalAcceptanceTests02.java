@@ -117,8 +117,7 @@ public class PSS2PatientPortalAcceptanceTests02 extends BaseTestNGWebDriver {
 		psspatientutils.setTestData("NG", testData, adminuser);
 		adminuser.setIsAnonymousFlow(true);
 		adminuser.setIsExisting(true);
-		
-		testData.setFutureApt(true);
+
 		testData.setAnonymousFlow(true);
 		
 		PSSAdminUtils adminUtils = new PSSAdminUtils();
