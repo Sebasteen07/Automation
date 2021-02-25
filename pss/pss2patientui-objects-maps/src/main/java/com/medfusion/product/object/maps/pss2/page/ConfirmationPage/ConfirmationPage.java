@@ -51,10 +51,10 @@ public class ConfirmationPage extends PSS2MainPage {
 	@FindAll({@FindBy(how = How.XPATH, using = "//div[@class=\"Select-menu\"]/div")})
 	private List<WebElement> rescheduleReasondropDownList;
 	
-	@FindBy(how = How.XPATH, using = "//span[contains(text(),\"You're about to confirm the following appointment.\")]")
+	@FindBy(how = How.XPATH, using = "//*[@class='confirmdetaiils']/div[1]/span")
 	private WebElement confirmaApptToolti;
 	
-	@FindBy(how = How.XPATH, using = "//h1[@class='h1color']//span[contains(text(),'Confirm your appointment')]")
+	@FindBy(how = How.XPATH, using = "//*[@id='confirmdatalist']/div/div[1]/h1/span")
 	private WebElement confirmApptHeading;
 	
 	@FindBy(how = How.XPATH, using = "//textarea[@class='form-control textareaconfirm']")

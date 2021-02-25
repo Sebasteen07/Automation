@@ -4280,6 +4280,7 @@ public class PSS2PatientPortalAcceptanceTests extends BaseTestNGWebDriver {
 		HomePage homepage = loginlessPatientInformation.fillNewPatientForm(testData.getFirstName(), testData.getLastName(), testData.getDob(), testData.getEmail(),
 				testData.getGender(), testData.getZipCode(), testData.getPrimaryNumber());
 		log("Successfully upto Home page");
+		homepage.btnStartSchedClick();
 		Location location = null;
 		StartAppointmentInOrder startappointmentInOrder = null;
 		startappointmentInOrder = homepage.skipInsurance(driver);
