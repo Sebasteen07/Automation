@@ -3,6 +3,7 @@ package com.medfusion.product.object.maps.patientportal2.page.MessagesPage;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.concurrent.TimeUnit;
 
 import org.openqa.selenium.By;
 import org.openqa.selenium.JavascriptExecutor;
@@ -11,6 +12,8 @@ import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.FindBy;
 import org.openqa.selenium.support.How;
 import org.openqa.selenium.support.PageFactory;
+import org.openqa.selenium.support.ui.ExpectedConditions;
+import org.openqa.selenium.support.ui.WebDriverWait;
 import org.testng.Assert;
 
 import com.medfusion.common.utils.IHGUtil;
@@ -28,13 +31,13 @@ public class JalapenoMessagesPage extends JalapenoMenu {
 	 * askAQuestionButton;
 	 */
 
-	@FindBy(how = How.ID, using = "inboxFolder")
+	@FindBy(how = How.XPATH, using = "//li[@id='inboxFolder']/a")
 	private WebElement inboxFolder;
 
 	@FindBy(how = How.ID, using = "sentFolder")
 	private WebElement sentFolder;
-
-	@FindBy(how = How.ID, using = "archiveFolder")
+    
+    @FindBy(how = How.XPATH, using = "//li[@id='archiveFolder']/a")
 	private WebElement archiveFolder;
 
 	@FindBy(how = How.ID, using = "replyButton")
@@ -52,7 +55,7 @@ public class JalapenoMessagesPage extends JalapenoMenu {
 	@FindBy(how = How.XPATH, using = "//a[.='View health data']")
 	private WebElement ccdDocument;
 
-	@FindBy(how = How.XPATH, using = "//button[.='Archive']")
+	@FindBy(how = How.XPATH, using = "//button[@class='btn btn-default'][2]")
 	private WebElement archiveMessageButton;
 	
 	@FindBy(how = How.XPATH, using = "//*[@id=\"messageContainer\"]/div[2]/div[2]/div/span[4]")
@@ -64,7 +67,7 @@ public class JalapenoMessagesPage extends JalapenoMenu {
 	@FindBy(how = How.XPATH, using = "//div[@class='messageMetadata clearfix']/span[1]")
 	private WebElement msgSubject;
 
-	@FindBy(xpath = "//a[text()='This is testing URL']")
+	@FindBy(xpath = "//div[@class='messageContent']//a")
 	private WebElement messageURL;
 
 	@FindBy(xpath = "//a[contains(text(),'QuickSend.pdf')]")
@@ -72,22 +75,24 @@ public class JalapenoMessagesPage extends JalapenoMenu {
 
 	@FindBy(xpath = "//div[@class='messageContent']")
 	private WebElement inboxMessageBody;
-	//a[text()='This is testing URL']
 	
-	@FindBy(how = How.XPATH, using = "//button[contains(text(),'Archive')]")
+	@FindBy(how = How.XPATH, using = "//button[@class='btn btn-default'][2]")
 	private WebElement archiveButton;
 	
-	@FindBy(how = How.XPATH, using = "//span[@class='messageFrom']")
+	@FindBy(how = How.XPATH, using = "//span[@class='messageFrom ng-binding']")
 	private WebElement senderName;
 
 	private static final int maxCount = 15;
 	private static final String replyContent = "This is response to doctor's message";
 	
-	@FindBy(how = How.XPATH, using = "(//span[@class='messageSubject'])[1]")
+	@FindBy(how = How.CSS, using = "span[class='messageSubject']")
 	private WebElement messageSubjectText;
 	
 	@FindBy(how = How.ID, using = "messages")
 	private WebElement messageList;
+	
+	@FindBy(how = How.XPATH, using = "//button[@class='btn btn-default']/img")
+	private WebElement unArchive;
 
 	@Override
 	public boolean areBasicPageElementsPresent() {
@@ -156,7 +161,8 @@ public class JalapenoMessagesPage extends JalapenoMenu {
 		replyButton.click();
 		replyBody.sendKeys(replyContent);
 		Thread.sleep(5000);
-		sendButton.click();
+		//sendButton.click();
+		javascriptClick(sendButton);
 		Thread.sleep(5000);
 		boolean value = isElementVisible(successMsg, 10);
 		System.out.println(value);
@@ -198,11 +204,12 @@ public class JalapenoMessagesPage extends JalapenoMenu {
 		log("Archiving open message, button is displayed? " + archiveMessageButton.isDisplayed());
 		archiveMessageButton.click();
 	}
-	public void goToInboxMessage() {
+	public void goToInboxMessage() throws InterruptedException {
 		log("Navigating to Inbox folder");
-		inboxFolder.click();
-		IHGUtil.waitForElement(driver, 1000, archiveButton);
-	
+		javascriptClick(inboxFolder);
+		WebDriverWait wait= new WebDriverWait(driver, 5);
+		wait.until(ExpectedConditions.elementToBeClickable(msgSubject));
+		Thread.sleep(5000);
 		}
 	
 
@@ -240,19 +247,19 @@ public class JalapenoMessagesPage extends JalapenoMenu {
 	}
 	
 	
-	public void goToArchivedMessages() {
+	public void goToArchivedMessages() throws InterruptedException {
 		log("Navigating to Archived folder");
-		archiveFolder.click();
-		IHGUtil.waitForElement(driver, 10000, msgSubject);
-		
+		javascriptClick(archiveFolder);
+		WebDriverWait wait= new WebDriverWait(driver, 5);
+		wait.until(ExpectedConditions.elementToBeClickable(msgSubject));
 		}
-	
+
     public String returnSubjectMessage() {
 	log("Getting email subject text");
 	return messageSubjectText.getText().toString();
 	
         }
-	public int MessageCount()
+	public int MessageCount() throws InterruptedException 
 	{
 		WebElement ul_element = driver.findElement(By.xpath("//ul[@id='messages']"));
         List<WebElement> li_All = ul_element.findElements(By.tagName("li"));
@@ -268,10 +275,11 @@ public class JalapenoMessagesPage extends JalapenoMenu {
 		return PageFactory.initElements(driver, NGCcdViewerPage.class);
 	}
 	
-	public void archiveMessage() {
+	public void archiveMessage() throws InterruptedException {
 		IHGUtil.PrintMethodName();
 		IHGUtil.waitForElement(driver, 60, archiveButton);
-		archiveButton.click();
+		javascriptClick(archiveButton);
+		Thread.sleep(2000);
 	}
 	
 	public void verifyMessageContent(WebDriver driver, String subject,String body) {
@@ -359,7 +367,6 @@ public class JalapenoMessagesPage extends JalapenoMenu {
 			log("Sender Name is correct");
 			return status;
 	}
-	
 	public void verifyPrescriptionResponse(WebDriver driver, String prescritonRenewalResponse) {
 		IHGUtil.PrintMethodName();
 		WebElement element;
@@ -391,7 +398,16 @@ public class JalapenoMessagesPage extends JalapenoMenu {
 				log("Medication status is not displayed in Prescription renewal message");
 				log(ex.getMessage());
 				Assert.assertTrue(status, "Medication status is not displayed in Prescription renewal message");
-			}
+			}}
+
+	public void clickOnUnArchive() throws InterruptedException {
+			log("Clicking on the unarchive from Archive Tab");
+			WebDriverWait wait= new WebDriverWait(driver, 5);
+			wait.until(ExpectedConditions.elementToBeClickable(unArchive));
+			unArchive.click();
+			
+			
+		
 	}
 }
 

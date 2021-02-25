@@ -84,5 +84,12 @@ public class StatementPreferenceTestData {
 	public String getLastName() {
 		return StmtPrefObj.LastName;
 	}
+	
+	public String getRestUrlV3() {
+		return StmtPrefObj.RestUrlV3;
+	}
 
+	public String getStatementPathV3() {
+		return StmtPrefObj.StatementPathV3;
+	}
 }

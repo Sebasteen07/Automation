@@ -85,4 +85,11 @@ public class PayNowTestData {
 		return payNowObj.Email;
 	}
 
+	public String getRestV3Url() {
+		return payNowObj.RestV3Url;
+	}
+	
+	public String getPaymentPathV3() {
+		return payNowObj.PaymentPathV3;
+	}
 }

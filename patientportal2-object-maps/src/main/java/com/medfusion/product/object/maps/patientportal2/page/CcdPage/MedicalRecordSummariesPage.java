@@ -68,7 +68,7 @@ public class MedicalRecordSummariesPage extends JalapenoMenu {
 	@FindBy(how = How.ID, using = "transmitButton")
 	private WebElement transmitButton;
 
-	@FindBy(how = How.XPATH, using = "//*[@class='notification-message']/p[@data-ng-if='vm.transmitSuccess']")
+	@FindBy(how = How.XPATH, using = "(//*/div[@class='notification-message']/p)[2]")
 	private WebElement successNotificationMessage;
 
 	// Adding new radioButton and acknowledgement check box

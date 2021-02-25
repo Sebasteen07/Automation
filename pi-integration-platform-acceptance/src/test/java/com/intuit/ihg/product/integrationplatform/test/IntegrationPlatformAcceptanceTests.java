@@ -4,6 +4,8 @@ package com.intuit.ihg.product.integrationplatform.test;
 import static org.testng.Assert.assertNotNull;
 
 import org.apache.commons.lang.StringUtils;
+import org.testng.SkipException;
+import org.testng.annotations.DataProvider;
 import org.testng.annotations.Test;
 
 import com.intuit.ifs.csscat.core.BaseTestNGWebDriver;
@@ -67,6 +69,12 @@ import com.medfusion.product.patientportal2.pojo.StatementPreferenceType;
  */
 
 public class IntegrationPlatformAcceptanceTests extends BaseTestNGWebDriver {
+
+	@DataProvider(name = "channelVersion")
+	public Object[][] channelVersionPIDC() {
+		Object[][] obj = new Object[][] { { "v1" }, { "v2" }, { "v3" } };
+		return obj;
+	}
 
 	@Test(enabled = true, groups = { "AcceptanceTests" }, retryAnalyzer = RetryAnalyzer.class)
 	public void testPIDCPatientRegistration() throws Exception {
@@ -509,8 +517,11 @@ public class IntegrationPlatformAcceptanceTests extends BaseTestNGWebDriver {
 	 * log("Step 20: Logout of Practice Portal"); practiceHome.logOut(); }
 	 */
 
-	@Test(enabled = true, groups = { "AcceptanceTests" }, retryAnalyzer = RetryAnalyzer.class)
-	public void testE2EAppointmentRequest20() throws Exception {
+	@Test(enabled = true, dataProvider = "channelVersion", groups = {
+			"AcceptanceTests" }, retryAnalyzer = RetryAnalyzer.class)
+	public void testE2EAppointmentRequest20(String version) throws Exception {
+		if (version.equals("v2"))
+			throw new SkipException("Test skipped as version is:" + version);
 
 		log("Test Case: End to end testing Appointment Request 2.0 for PI");
 		log("Execution Environment: " + IHGUtil.getEnvironmentType());
@@ -535,9 +546,13 @@ public class IntegrationPlatformAcceptanceTests extends BaseTestNGWebDriver {
 		log("OAuthPassword: " + testData.getOAuthPassword());
 		log("PracticePassword: " + testData.getPracticePassword());
 		log("Practice User Name: " + testData.getPracticeUserName());
+		log("RestV3 Url: " + testData.getRestV3Url());
+		log("AppointmentPathV3: " + testData.getAppointmentPathV3());
 
 		String reason = "Reason" + timestamp;
 		boolean VideoPref = true;
+		String arSMSubject = "Reply to Appointment Request";
+		String arSMBody = "This is reply to AR for " + reason;
 
 		log("Step 2: LogIn");
 		JalapenoLoginPage loginPage = new JalapenoLoginPage(driver, testData.getUrl());
@@ -551,7 +566,7 @@ public class IntegrationPlatformAcceptanceTests extends BaseTestNGWebDriver {
 
 		log("Step 4: Complete Appointment Request Page");
 		JalapenoAppointmentRequestV2Step2 apptPage2 = apptPage1.continueToStep2(driver);
-		
+
 		apptPage2.fillAppointmentRequestForm(reason);
 		homePage = apptPage2.submitAppointment(driver);
 
@@ -565,43 +580,86 @@ public class IntegrationPlatformAcceptanceTests extends BaseTestNGWebDriver {
 		RestUtils.oauthSetup(testData.getOAuthKeyStore(), testData.getOAuthProperty(), testData.getOAuthAppToken(),
 				testData.getOAuthUsername(), testData.getOAuthPassword());
 
-		log("Step 8: Get Appointment Rest call");
+		if (version.equals("v1")) {
+			log("Step 8: Get Appointment Rest call");
 
-		// get only messages from last hour in epoch time to avoid transferring
-		// lot of data
-		Long since = timestamp / 1000L - 60 * 24;
+			// get only messages from last hour in epoch time to avoid transferring
+			// lot of data
+			Long since = timestamp / 1000L - 60 * 24;
 
-		log("Getting messages since timestamp: " + since);
+			log("Getting messages since timestamp: " + since);
 
-		// do the call and save xml, ",0" is there because of the since
-		// attribute format
-		RestUtils.setupHttpGetRequest(testData.getRestUrl() + "?since=" + since + ",0", testData.getResponsePath());
+			// do the call and save xml, ",0" is there because of the since
+			// attribute format
+			RestUtils.setupHttpGetRequest(testData.getRestUrl() + "?since=" + since + ",0", testData.getResponsePath());
 
-		log("Step 9: Checking reason and video preference in the response xml");
-		RestUtils.isReasonResponseXMLValid(testData.getResponsePath(), reason, VideoPref);
-		String arSMSubject = "Reply to Appointment Request";
-		String arSMBody = "This is reply to AR for " + reason;
-		String postXML = RestUtils.findValueOfChildNode(testData.getResponsePath(), "AppointmentRequest", reason,
-				VideoPref, arSMSubject, arSMBody, testData.getAppointmentPath());
+			log("Step 9: Checking reason and video preference in the response xml");
+			RestUtils.isReasonResponseXMLValid(testData.getResponsePath(), reason);
+			String postXML = RestUtils.findValueOfChildNode(testData.getResponsePath(), "AppointmentRequest", reason,
+					arSMSubject, arSMBody, testData.getAppointmentPath());
+			log("PostXML:" + postXML);
 
-		// httpPostRequest method
-		log("Step 10: Do Message Post Request");
-		String processingUrl = RestUtils.setupHttpPostRequest(testData.getRestUrl(), postXML,
-				testData.getResponsePath());
+			// httpPostRequest method
+			log("Step 10: Do Message Post Request");
+			String processingUrl = RestUtils.setupHttpPostRequest(testData.getRestUrl(), postXML,
+					testData.getResponsePath());
+			log("ProcessingURL:" + processingUrl);
 
-		log("Step 11: Get processing status until it is completed");
-		boolean completed = false;
-		for (int i = 0; i < 3; i++) {
-			// wait 10 seconds so the message can be processed
-			Thread.sleep(120000);
-			RestUtils.setupHttpGetRequest(processingUrl, testData.getResponsePath());
-			if (RestUtils.isMessageProcessingCompleted(testData.getResponsePath())) {
-				completed = true;
-				break;
+			log("Step 11: Get processing status until it is completed");
+			boolean completed = false;
+			for (int i = 0; i < 3; i++) {
+				// wait 10 seconds so the message can be processed
+				Thread.sleep(120000);
+				RestUtils.setupHttpGetRequest(processingUrl, testData.getResponsePath());
+				if (RestUtils.isMessageProcessingCompleted(testData.getResponsePath())) {
+					completed = true;
+					break;
+				}
 			}
-		}
-		verifyTrue(completed, "Message processing was not completed in time");
 
+			verifyTrue(completed, "Message processing was not completed in time");
+		}
+
+		else {
+			log("Step 8: Get Appointment Rest call");
+
+			// get only messages from last hour in epoch time to avoid transferring
+			// lot of data
+			Long since = timestamp / 1000L - 60 * 24;
+
+			log("Getting messages since timestamp: " + since);
+
+			// do the call and save xml, ",0" is there because of the since
+			// attribute format
+			RestUtils.setupHttpGetRequest(testData.getRestV3Url() + "?since=" + since + ",0",
+					testData.getResponsePath());
+
+			log("Step 9: Checking reason and video preference in the response xml");
+			RestUtils.isReasonResponseXMLValid(testData.getResponsePath(), reason);
+			String postXML = RestUtils.findValueOfChildNode(testData.getResponsePath(), "AppointmentRequest", reason,
+					arSMSubject, arSMBody, testData.getAppointmentPathV3());
+			log("PostXML:" + postXML);
+
+			// httpPostRequest method
+			log("Step 10: Do Message Post Request");
+			String processingUrl = RestUtils.setupHttpPostRequest(testData.getRestV3Url(), postXML,
+					testData.getResponsePath());
+			log("Processing URL:" + processingUrl);
+
+			log("Step 11: Get processing status until it is completed");
+			boolean completed = false;
+			for (int i = 0; i < 3; i++) {
+				// wait 10 seconds so the message can be processed
+				Thread.sleep(120000);
+				RestUtils.setupHttpGetRequest(processingUrl, testData.getResponsePath());
+				if (RestUtils.isMessageProcessingCompleted(testData.getResponsePath())) {
+					completed = true;
+					break;
+				}
+			}
+
+			verifyTrue(completed, "Message processing was not completed in time");
+		}
 		log("Step 12: Check secure message in patient mailinator inbox");
 
 		Mailinator mail = new Mailinator();
@@ -828,8 +886,10 @@ public class IntegrationPlatformAcceptanceTests extends BaseTestNGWebDriver {
 
 	}
 
-	@Test(enabled = true, groups = { "AcceptanceTests" }, retryAnalyzer = RetryAnalyzer.class)
-	public void testStatementPreference() throws Exception {
+	@Test(enabled = true, dataProvider = "channelVersion",groups = { "AcceptanceTests" }, retryAnalyzer = RetryAnalyzer.class)
+	public void testStatementPreference(String version) throws Exception {
+		if (version.equals("v2"))
+			throw new SkipException("Test skipped as version is:" + version);
 		log("Test Case: Statement Preference in Portal 2.0");
 		log("Execution Environment: " + IHGUtil.getEnvironmentType());
 		log("Execution Browser: " + TestConfig.getBrowserType());
@@ -851,6 +911,9 @@ public class IntegrationPlatformAcceptanceTests extends BaseTestNGWebDriver {
 		log("OAuthAppToken: " + testData.getOAuthAppToken());
 		log("OAuthUsername: " + testData.getOAuthUsername());
 		log("OAuthPassword: " + testData.getOAuthPassword());
+		log("Rest Url: " + testData.getRestUrlV3());
+		log("Statement Path: " + testData.getStatementPathV3());
+
 
 		Long timeStamp = System.currentTimeMillis();
 
@@ -898,14 +961,18 @@ public class IntegrationPlatformAcceptanceTests extends BaseTestNGWebDriver {
 		log("Step 11: Setup Oauth client");
 		RestUtils.oauthSetup(testData.getOAuthKeyStore(), testData.getOAuthProperty(), testData.getOAuthAppToken(),
 				testData.getOAuthUsername(), testData.getOAuthPassword());
-
+		String nextTimeStamp;
 		log("Step 12: Wait for 60 seconds");
 		Thread.sleep(60000);
-
+		if(version.equals("v1")) {
 		log("Step 13: Getting statement preference updates since timestamp: " + timeStamp);
-		String nextTimeStamp = RestUtils.setupHttpGetRequest(testData.getRestUrl() + "?since=" + timeStamp,
+		nextTimeStamp = RestUtils.setupHttpGetRequest(testData.getRestUrl() + "?since=" + timeStamp,
 				testData.getResponsePath());
-
+		}
+		else {
+		nextTimeStamp = RestUtils.setupHttpGetRequest(testData.getRestUrlV3() + "?since=" + timeStamp,
+				testData.getResponsePath());
+		}
 		log("Step 14: Validate the response");
 		RestUtils.isStatementPreferenceCorrect(testData.getResponsePath(), memberId, "PAPER");
 
@@ -918,12 +985,32 @@ public class IntegrationPlatformAcceptanceTests extends BaseTestNGWebDriver {
 				timeStamp = System.currentTimeMillis();
 			else
 				timeStamp = Long.valueOf(nextTimeStamp);
+			if(version.equals("v1")) {
+				String payload = RestUtils.preparePostStatementPreference(testData.getStatementPath(), memberId,
+						externalPatientId, statementPreference[i]);
 
-			String payload = RestUtils.preparePostStatementPreference(testData.getStatementPath(), memberId,
+				log("Step 16: Do POST Statement Preference API & set preference to " + statementPreference[i]);
+				String processingUrl = RestUtils.setupHttpPostRequest(testData.getRestUrl(), payload,
+						testData.getResponsePath());
+
+				log("Step 17: Get processing status until it is completed");
+				boolean completed = false;
+				for (int j = 0; j < 3; j++) {
+					Thread.sleep(60000);
+					RestUtils.setupHttpGetRequest(processingUrl, testData.getResponsePath());
+					if (RestUtils.isMessageProcessingCompleted(testData.getResponsePath())) {
+						completed = true;
+						break;
+					}
+				}
+				assertTrue(completed);
+			}
+			else {
+			String payload = RestUtils.preparePostStatementPreference(testData.getStatementPathV3(), memberId,
 					externalPatientId, statementPreference[i]);
 
 			log("Step 16: Do POST Statement Preference API & set preference to " + statementPreference[i]);
-			String processingUrl = RestUtils.setupHttpPostRequest(testData.getRestUrl(), payload,
+			String processingUrl = RestUtils.setupHttpPostRequest(testData.getRestUrlV3(), payload,
 					testData.getResponsePath());
 
 			log("Step 17: Get processing status until it is completed");
@@ -937,7 +1024,7 @@ public class IntegrationPlatformAcceptanceTests extends BaseTestNGWebDriver {
 				}
 			}
 			assertTrue(completed);
-
+			}
 			log("Step 18: Login to Patient Portal");
 			JalapenoLoginPage loginPage1 = new JalapenoLoginPage(driver, testData.getUrl());
 			JalapenoHomePage homePage1 = loginPage1.login(testData.getUserName(), testData.getPassword());
@@ -954,9 +1041,14 @@ public class IntegrationPlatformAcceptanceTests extends BaseTestNGWebDriver {
 
 			log("Step 21: GET Statement Preference API");
 			log("Getting statement preference updates since timestamp: " + timeStamp);
+			if(version.equals("v1")) {
 			nextTimeStamp = RestUtils.setupHttpGetRequest(testData.getRestUrl() + "?since=" + timeStamp,
 					testData.getResponsePath());
-
+			}
+			else {
+			nextTimeStamp = RestUtils.setupHttpGetRequest(testData.getRestUrl() + "?since=" + timeStamp,
+					testData.getResponsePath());
+			}
 			log("Step 22: Validate the response");
 			RestUtils.isStatementPreferenceCorrect(testData.getResponsePath(), memberId, statementPreference[i]);
 		}

@@ -15,6 +15,7 @@ import org.openqa.selenium.support.PageFactory;
 import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.openqa.selenium.support.ui.Select;
 
+import com.intuit.ifs.csscat.core.TestConfig;
 import com.intuit.ifs.csscat.core.utils.Log4jUtil;
 import com.medfusion.common.utils.IHGUtil;
 import com.medfusion.common.utils.PropertyFileLoader;
@@ -243,10 +244,16 @@ public class JalapenoPrescriptionsPage extends JalapenoMenu {
 		driver.switchTo().defaultContent();
 		driver.switchTo().frame("iframebody");
 		jse.executeScript("window.scrollBy(0,650)", "");
-		addAnotherMedicationBtn.click();
+		String env = IHGUtil.getEnvironmentType().toString();
+		if (env == "DEV3") {
+			addAnotherMedicationBtn.click();
+		} else {
+			log("No Add another Medication button");
+		}
+		
 		jse.executeScript("window.scrollBy(0,350)", "");
-		IHGUtil.waitForElement(driver, 10, medicationNameField);
-		log("Step 5: Insert Medication Details");
+		IHGUtil.waitForElement(driver, 20, medicationNameField);
+		log("Step 4: Insert Medication Details");
 		medicationNameField.sendKeys(PortalConstants.MedicationName + "" + createdTs);
 		medicationDosage.sendKeys(PortalConstants.Dosage);
 		medicationQuantity.sendKeys(PortalConstants.Quantity);
@@ -254,7 +261,7 @@ public class JalapenoPrescriptionsPage extends JalapenoMenu {
 		prescriptionNumber.sendKeys(PortalConstants.Prescription_No);
 		additionalInformation.sendKeys(PortalConstants.Additional_Info);
 
-		log("Step 6: Insert Pharmacy Details");
+		log("Step 5: Insert Pharmacy Details");
 		jse.executeScript("window.scrollBy(0,200)", "");
 		Thread.sleep(2000);
 		// Clicking on Add a pharmacy radio button to add new Pharmacy

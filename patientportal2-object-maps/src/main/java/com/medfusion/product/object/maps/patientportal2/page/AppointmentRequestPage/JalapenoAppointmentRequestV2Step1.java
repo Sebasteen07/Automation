@@ -19,7 +19,7 @@ public class JalapenoAppointmentRequestV2Step1 extends JalapenoMenu {
 	@FindBy(how = How.ID, using = "history_button")
 	private WebElement previousAppoitmentRequestsButton;
 
-	@FindBy(how = How.CLASS_NAME, using = "provsearch")
+	@FindBy(how = How.ID, using = "provsearch")
 	private WebElement providerSearchInput;
 
 	@FindBy(how = How.ID, using = "showall")
