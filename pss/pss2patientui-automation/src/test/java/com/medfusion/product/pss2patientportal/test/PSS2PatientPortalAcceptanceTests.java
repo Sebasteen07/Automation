@@ -69,7 +69,7 @@ public class PSS2PatientPortalAcceptanceTests extends BaseTestNGWebDriver {
 		log("Provider Name- " + testData.getProvider());
 		log("Step 2: Fetch rule and settings from PSS 2.0 Admin portal");
 		log("--------Admin Setting for Loginless Flow Starts----------");
-		adminUtils.getInsuranceStateandRule(driver, adminuser, testData);
+		adminUtils.adminSettingsLoginless(driver, adminuser, testData, PSSConstants.LOGINLESS);
 
 		String rule = adminuser.getRule();
 		rule = rule.replaceAll(" ", "");
