@@ -46,6 +46,7 @@ public class LoadPreTestData {
 		testData.City = propertyData.getCityCCD();
 		testData.State = propertyData.getStateCCD();
 		testData.Country = propertyData.getCountryCCD();
+		testData.ccdXMLPathLargeSize = propertyData.getCCDPATHLargeSize();
 
 		return testData;
 	}
