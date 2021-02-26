@@ -53,7 +53,7 @@ import com.intuit.ihg.product.integrationplatform.utils.P2PUnseenMessageList;
 import com.intuit.ihg.product.integrationplatform.utils.PatientFormsExportInfo;
 import com.intuit.ihg.product.integrationplatform.utils.PatientRegistrationUtils;
 import com.intuit.ihg.product.integrationplatform.utils.Pharmacies;
-import com.intuit.ihg.product.integrationplatform.utils.PharmacyPaylod;
+import com.intuit.ihg.product.integrationplatform.utils.PharmacyPayload;
 import com.intuit.ihg.product.integrationplatform.utils.PrecheckAppointmentUtils;
 import com.intuit.ihg.product.integrationplatform.utils.RestUtils;
 import com.intuit.ihg.product.integrationplatform.utils.SendDirectMessage;
@@ -108,28 +108,46 @@ import com.medfusion.product.practice.api.pojo.Practice;
  */
 
 public class IntegrationPlatformRegressionTests extends BaseTestNGWebDriver {
-	@Test(enabled = true, groups = { "RegressionTests" }, retryAnalyzer = RetryAnalyzer.class)
-	public void testEHDCSendCCD() throws Exception {
+	@Test(enabled = true, dataProvider = "channelVersion", groups = {
+			"RegressionTests" }, retryAnalyzer = RetryAnalyzer.class)
+	public void testEHDCSendCCD(String version) throws Exception {
+		if (version.equals("v2"))
+			throw new SkipException("Test skipped as version is:" + version);
 		log("Test Case: send a CCD and check in patient Portal");
 		log("Execution Environment: " + IHGUtil.getEnvironmentType());
 		log("Execution Browser: " + TestConfig.getBrowserType());
-
+		String ccd;
 		LoadPreTestData LoadPreTestDataObj = new LoadPreTestData();
 		EHDC testData = new EHDC();
 		LoadPreTestDataObj.loadEHDCDataFromProperty(testData);
 		log("Step 1: Setup Oauth client");
 		RestUtils.oauthSetup(testData.OAuthKeyStore, testData.OAuthProperty, testData.OAuthAppToken,
 				testData.OAuthUsername, testData.OAuthPassword);
-		String ccd = CCDPayload.getCCDPayload(testData);
-		Thread.sleep(6000);
-		log("Wait to generate CCD Payload");
-		log("Step 2: Do Message Post Request");
-		log("ResponsePath: " + testData.ResponsePath);
-		String processingUrl = RestUtils.setupHttpPostRequest(testData.RestUrl, ccd, testData.ResponsePath);
+		if (version.equals("v1")) {
+			ccd = CCDPayload.getCCDPayload(testData);
+			Thread.sleep(6000);
+			log("Payload" + ccd);
+			log("Wait to generate CCD Payload");
+			log("Step 2: Do Message Post Request");
+			log("ResponsePath: " + testData.ResponsePath);
+			String processingUrl = RestUtils.setupHttpPostRequest(testData.RestUrl, ccd, testData.ResponsePath);
 
-		log("Processing URL: " + processingUrl);
-		log("Step 3: Get processing status until it is completed");
-		Thread.sleep(60000);
+			log("Processing URL: " + processingUrl);
+			log("Step 3: Get processing status until it is completed");
+			Thread.sleep(60000);
+		} else {
+			ccd = CCDPayload.getCCDPayloadV3(testData);
+			Thread.sleep(6000);
+			log("Payload" + ccd);
+			log("Wait to generate CCD Payload");
+			log("Step 2: Do Message Post Request");
+			log("ResponsePath: " + testData.ResponsePath);
+			String processingUrl = RestUtils.setupHttpPostRequest(testData.RestUrlV3, ccd, testData.ResponsePath);
+
+			log("Processing URL: " + processingUrl);
+			log("Step 3: Get processing status until it is completed");
+			Thread.sleep(60000);
+		}
 
 		log("Step 4: Login to Patient Portal");
 		JalapenoLoginPage loginPage = new JalapenoLoginPage(driver, testData.URL);
@@ -161,7 +179,8 @@ public class IntegrationPlatformRegressionTests extends BaseTestNGWebDriver {
 		loginPage = homePage.clickOnLogout();
 	}
 
-	@Test(enabled = true, dataProvider = "channelVersion",groups = {"RegressionTests"}, retryAnalyzer = RetryAnalyzer.class)
+	@Test(enabled = true, dataProvider = "channelVersion", groups = {
+			"RegressionTests" }, retryAnalyzer = RetryAnalyzer.class)
 	public void testAMDCSecureMessages(String version) throws Exception {
 		if (version.equals("v2"))
 			throw new SkipException("Test skipped as version is:" + version);
@@ -181,11 +200,11 @@ public class IntegrationPlatformRegressionTests extends BaseTestNGWebDriver {
 		testData.allowOnce = "true";
 		long timestamp = System.currentTimeMillis();
 		String messageID = null;
-		
-		if(version.equals("v1")) {
+
+		if (version.equals("v1")) {
 			log("Step 3: Fill Message data");
 			String message = AMDCPayload.getAMDCPayload(testData);
-			
+
 			log("message :- " + message);
 			messageID = AMDCPayload.messageID;
 			log("Partner Message ID:" + messageID);
@@ -205,31 +224,32 @@ public class IntegrationPlatformRegressionTests extends BaseTestNGWebDriver {
 				}
 			}
 			assertTrue(completed, "Message processing was not completed in time");
-		}
-		else  {
-		log("Step 3: Fill Message data");
-		String message = AMDCPayload.getAMDCV3Payload(testData);
-		
-		log("message :- " + message);
-		messageID = AMDCPayload.messageID;
-		log("Partner Message ID:" + messageID);
+		} else {
+			log("Step 3: Fill Message data");
+			String message = AMDCPayload.getAMDCV3Payload(testData);
+			log("message :- " + message);
+			messageID = AMDCPayload.messageID;
+			log("Partner Message ID:" + messageID);
+			log("message :- " + message);
+			messageID = AMDCPayload.messageID;
+			log("Partner Message ID:" + messageID);
 
-		log("Step 4: Do Message Post Request");
-		log("responsePath: " + testData.ResponsePath);
-		String processingUrl = RestUtils.setupHttpPostRequest(testData.RestV3Url, message, testData.ResponsePath);
+			log("Step 4: Do Message Post Request");
+			log("responsePath: " + testData.ResponsePath);
+			String processingUrl = RestUtils.setupHttpPostRequest(testData.RestV3Url, message, testData.ResponsePath);
 
-		log("Step 5: Get processing status until it is completed");
-		boolean completed = false;
-		for (int i = 0; i < 3; i++) {
-			// wait 10 seconds so the message can be processed
-			Thread.sleep(60000);
-			RestUtils.setupHttpGetRequest(processingUrl, testData.ResponsePath);
-			if (RestUtils.isMessageProcessingCompleted(testData.ResponsePath)) {
-				completed = true;
-				break;
+			log("Step 5: Get processing status until it is completed");
+			boolean completed = false;
+			for (int i = 0; i < 3; i++) {
+				// wait 10 seconds so the message can be processed
+				Thread.sleep(60000);
+				RestUtils.setupHttpGetRequest(processingUrl, testData.ResponsePath);
+				if (RestUtils.isMessageProcessingCompleted(testData.ResponsePath)) {
+					completed = true;
+					break;
+				}
 			}
-		}
-		assertTrue(completed, "Message processing was not completed in time");
+			assertTrue(completed, "Message processing was not completed in time");
 		}
 		log("Step 6: Check secure message in patient email inbox");
 		String link = null;
@@ -278,51 +298,50 @@ public class IntegrationPlatformRegressionTests extends BaseTestNGWebDriver {
 		Thread.sleep(60000);
 
 		log("Getting messages since timestamp: " + since);
-		if(version.equals("v1")) {
-		RestUtils.setupHttpGetRequest(testData.ReadCommuniationURL + "?since=" + since + ",0", testData.ResponsePath);
+		if (version.equals("v1")) {
+			RestUtils.setupHttpGetRequest(testData.ReadCommuniationURL + "?since=" + since + ",0",
+					testData.ResponsePath);
 
-		log("Step 13: Validate the message id and read time in response");
-		RestUtils.isReadCommunicationMessage(testData.ResponsePath, messageID, readdatetimestamp);
-		}
-		else  {
-		RestUtils.setupHttpGetRequest(testData.ReadCommuniationURLV3 + "?since=" + since + ",0", testData.ResponsePath);
+			log("Step 13: Validate the message id and read time in response");
+			RestUtils.isReadCommunicationMessage(testData.ResponsePath, messageID, readdatetimestamp);
+		} else {
+			RestUtils.setupHttpGetRequest(testData.ReadCommuniationURLV3 + "?since=" + since + ",0",
+					testData.ResponsePath);
 
-		log("Step 13: Validate the message id and read time in response");
-		RestUtils.isReadCommunicationMessage(testData.ResponsePath, messageID, readdatetimestamp);
-			
+			log("Step 13: Validate the message id and read time in response");
+			RestUtils.isReadCommunicationMessage(testData.ResponsePath, messageID, readdatetimestamp);
+
 		}
 		log("Step 14: Reply to the message");
 		messagesPage.replyToMessage(driver);
 
 		log("Step 15: Wait 60 seconds, so the message can be processed");
 		Thread.sleep(60000);
-		if(version.equals("v1"))  {
-		log("Step 16: Do a GET and get the message");
-		RestUtils.setupHttpGetRequest(testData.RestUrl + "?since=" + since + ",0", testData.ResponsePath);
+		if (version.equals("v1")) {
+			log("Step 16: Do a GET and get the message");
+			RestUtils.setupHttpGetRequest(testData.RestUrl + "?since=" + since + ",0", testData.ResponsePath);
 
-		log("Step 17: Validate message reply");
-		RestUtils.isReplyPresent(testData.ResponsePath, messageIdentifier);
-		}
-		else   {
-		log("Step 16: Do a GET and get the message");
-		RestUtils.setupHttpGetRequest(testData.RestV3Url + "?since=" + since + ",0", testData.ResponsePath);
+			log("Step 17: Validate message reply");
+			RestUtils.isReplyPresent(testData.ResponsePath, messageIdentifier);
+		} else {
+			log("Step 16: Do a GET and get the message");
+			RestUtils.setupHttpGetRequest(testData.RestV3Url + "?since=" + since + ",0", testData.ResponsePath);
 
-		log("Step 17: Validate message reply");
-		RestUtils.isReplyPresent(testData.ResponsePath, messageIdentifier);
+			log("Step 17: Validate message reply");
+			RestUtils.isReplyPresent(testData.ResponsePath, messageIdentifier);
 		}
 
 		log("Step 18: Move to  Health Record page");
 
-        messagesPage.clickOnMenuHome();
-        Thread.sleep(4000);
-        DocumentsPage MedicalRecordSummariesPageObject = homePage.goToDocumentsPage();
-        
-		
-		log("Step 19: Open Other Documents and Verify name, from and catagory type "+testData.fileName);
+		messagesPage.clickOnMenuHome();
+		Thread.sleep(4000);
+		DocumentsPage MedicalRecordSummariesPageObject = homePage.goToDocumentsPage();
+
+		log("Step 19: Open Other Documents and Verify name, from and catagory type " + testData.fileName);
 		boolean attachmentData = MedicalRecordSummariesPageObject.checkLastImportedFileName(testData.fileName);
-        log("attachment details " + attachmentData);
-        Thread.sleep(5000);
-        MedicalRecordSummariesPageObject.downloadSecureMessageAttachment();
+		log("attachment details " + attachmentData);
+		Thread.sleep(5000);
+		MedicalRecordSummariesPageObject.downloadSecureMessageAttachment();
 		if (driver instanceof FirefoxDriver) {
 			Robot rb = new Robot();
 			Thread.sleep(2000);
@@ -342,14 +361,17 @@ public class IntegrationPlatformRegressionTests extends BaseTestNGWebDriver {
 			Assert.assertTrue(pdfMatch, "PDF Filecontent did not matched.");
 			log("Asserting for PDF match " + pdfMatch);
 		}
-		
+
 		log("Step 20: Logging out");
 		homePage.clickOnLogout();
 
 	}
 
-	@Test(enabled = true, groups = { "RegressionTests" }, retryAnalyzer = RetryAnalyzer.class)
-	public void testAMDCSecureMessagesWithAllCategoryTypes() throws Exception {
+	@Test(enabled = true, dataProvider = "channelVersion", groups = {
+			"RegressionTests" }, retryAnalyzer = RetryAnalyzer.class)
+	public void testAMDCSecureMessagesWithAllCategoryTypes(String version) throws Exception {
+		if (version.equals("v2"))
+			throw new SkipException("Test skipped as version is:" + version);
 		log("Test Case: AMDC Secure Message with Read Communication");
 		log("Execution Environment: " + IHGUtil.getEnvironmentType());
 		log("Execution Browser: " + TestConfig.getBrowserType());
@@ -366,14 +388,24 @@ public class IntegrationPlatformRegressionTests extends BaseTestNGWebDriver {
 		testData.allowOnce = "false";
 		log("Step 3: Fill Message data");
 		long timestamp = System.currentTimeMillis();
-		String message = AMDCPayload.getAMDCPayload(testData);
+		String message;
+		if (version.equals("v1")) {
+			message = AMDCPayload.getAMDCPayload(testData);
+		} else {
+			message = AMDCPayload.getAMDCV3Payload(testData);
+		}
 		log("message :- " + message);
 		String messageID = AMDCPayload.messageID;
 		log("Partner Message ID:" + messageID);
-
+		String processingUrl;
 		log("Step 4: Do Message Post Request");
 		log("responsePath: " + testData.ResponsePath);
-		String processingUrl = RestUtils.setupHttpPostRequest(testData.RestUrl, message, testData.ResponsePath);
+		if (version.equals("v1")) {
+			processingUrl = RestUtils.setupHttpPostRequest(testData.RestUrl, message, testData.ResponsePath);
+		} else {
+			processingUrl = RestUtils.setupHttpPostRequest(testData.RestV3Url, message, testData.ResponsePath);
+
+		}
 
 		log("Step 5: Get processing status until it is completed");
 		boolean completed = false;
@@ -400,7 +432,7 @@ public class IntegrationPlatformRegressionTests extends BaseTestNGWebDriver {
 			Mailinator mail = new Mailinator();
 			String subject = "New message from " + testData.Sender3;
 			String messageLink = "Sign in to view this message";
-			link = mail.getLinkFromEmail(testData.GmailUserName, subject, messageLink, 5);
+			link = mail.getLinkFromEmail(testData.UserName, subject, messageLink, 5);
 
 		}
 		// Wait so that Link can be retrieved from the Email.
@@ -435,7 +467,13 @@ public class IntegrationPlatformRegressionTests extends BaseTestNGWebDriver {
 		Thread.sleep(60000);
 
 		log("Getting messages since timestamp: " + since);
-		RestUtils.setupHttpGetRequest(testData.ReadCommuniationURL + "?since=" + since + ",0", testData.ResponsePath);
+		if (version.equals("v1")) {
+			RestUtils.setupHttpGetRequest(testData.ReadCommuniationURL + "?since=" + since + ",0",
+					testData.ResponsePath);
+		} else {
+			RestUtils.setupHttpGetRequest(testData.ReadCommuniationURLV3 + "?since=" + since + ",0",
+					testData.ResponsePath);
+		}
 
 		log("Step 13: Validate the message id and read time in response");
 		RestUtils.isReadCommunicationMessage(testData.ResponsePath, messageID, readdatetimestamp);
@@ -447,8 +485,11 @@ public class IntegrationPlatformRegressionTests extends BaseTestNGWebDriver {
 		Thread.sleep(60000);
 
 		log("Step 16: Do a GET and get the message");
-		RestUtils.setupHttpGetRequest(testData.RestUrl + "?since=" + since + ",0", testData.ResponsePath);
-
+		if (version.equals("v1")) {
+			RestUtils.setupHttpGetRequest(testData.RestUrl + "?since=" + since + ",0", testData.ResponsePath);
+		} else {
+			RestUtils.setupHttpGetRequest(testData.RestV3Url + "?since=" + since + ",0", testData.ResponsePath);
+		}
 		log("Step 17: Validate message reply");
 		RestUtils.isReplyPresent(testData.ResponsePath, messageIdentifier);
 
@@ -467,8 +508,11 @@ public class IntegrationPlatformRegressionTests extends BaseTestNGWebDriver {
 
 	}
 
-	@Test(enabled = true, groups = { "RegressionTests" }, retryAnalyzer = RetryAnalyzer.class)
-	public void testMU2GetEventForExistingPatient() throws Exception {
+	@Test(enabled = true, dataProvider = "channelVersion", groups = {
+			"RegressionTests" }, retryAnalyzer = RetryAnalyzer.class)
+	public void testMU2GetEventForExistingPatient(String version) throws Exception {
+		if (version.equals("v2"))
+			throw new SkipException("Test skipped as version is:" + version);
 		log("Test Case (testMU2GetEventForExistingPatient): Consolidated CCD related events verification in Pull Events");
 
 		log("Test case Environment: " + IHGUtil.getEnvironmentType());
@@ -478,11 +522,14 @@ public class IntegrationPlatformRegressionTests extends BaseTestNGWebDriver {
 		LoadPreTestDataObj.loadAPITESTDATAFromProperty(testData);
 
 		MU2Utils MU2UtilsObj = new MU2Utils();
-		MU2UtilsObj.mu2GetEvent(testData, driver);
+		MU2UtilsObj.mu2GetEvent(testData, driver, version);
 	}
 
-	@Test(enabled = true, groups = { "RegressionTests" }, retryAnalyzer = RetryAnalyzer.class)
-	public void testMU2GetEventForNewPatient() throws Exception {
+	@Test(enabled = true, dataProvider = "channelVersion", groups = {
+			"RegressionTests" }, retryAnalyzer = RetryAnalyzer.class)
+	public void testMU2GetEventForNewPatient(String version) throws Exception {
+		if (version.equals("v2"))
+			throw new SkipException("Test skipped as version is:" + version);
 		log("Test Case (testMU2GetEventForNewPatient): Consolidated CCD related events verification for newly created patients");
 		log("Environment " + IHGUtil.getEnvironmentType());
 		log("Step 1:  Create Patient");
@@ -577,7 +624,7 @@ public class IntegrationPlatformRegressionTests extends BaseTestNGWebDriver {
 
 		log("Step 4:  Login Portal 2.0");
 
-		MU2UtilsObj.mu2GetEvent(testData, driver);
+		MU2UtilsObj.mu2GetEvent(testData, driver, version);
 	}
 
 	@DataProvider(name = "portalVersion")
@@ -733,8 +780,11 @@ public class IntegrationPlatformRegressionTests extends BaseTestNGWebDriver {
 		Assert.assertEquals(patient.getFirstName(), patientExternalID, "Patient External ID Matched !");
 	}
 
-	@Test(enabled = true, groups = { "RegressionTests" }, retryAnalyzer = RetryAnalyzer.class)
-	public void testStatementEventForExistingPatient() throws Exception {
+	@Test(enabled = true, dataProvider = "channelVersion", groups = {
+			"RegressionTests" }, retryAnalyzer = RetryAnalyzer.class)
+	public void testStatementEventForExistingPatient(String version) throws Exception {
+		if (version.equals("v2"))
+			throw new SkipException("Test skipped as version is:" + version);
 		log("Test Case: Post Statment and verify its Event for Existing Patient From Partner");
 		log("Recommended to use Firefox Browser for this test ");
 		log("Execution Environment: " + IHGUtil.getEnvironmentType());
@@ -746,12 +796,15 @@ public class IntegrationPlatformRegressionTests extends BaseTestNGWebDriver {
 		log("url is " + testData.Url);
 		log("Step 2: Call Statement Post");
 		StatementEventUtils sEventObj = new StatementEventUtils();
-		sEventObj.generateViewEvent(driver, testData, 'E');
+		sEventObj.generateViewEvent(driver, testData, 'E', version);
 
 	}
 
-	@Test(enabled = true, groups = { "RegressionTests" }, retryAnalyzer = RetryAnalyzer.class)
-	public void testStatementEventForNewSelfPatient() throws Exception {
+	@Test(enabled = true, dataProvider = "channelVersion", groups = {
+			"RegressionTests" }, retryAnalyzer = RetryAnalyzer.class)
+	public void testStatementEventForNewSelfPatient(String version) throws Exception {
+		if (version.equals("v2"))
+			throw new SkipException("Test skipped as version is:" + version);
 		log("Test Case: POST Statement and Get Statement Event for New Patient From Partner");
 		log("Recommended to use Firefox Browser for this test ");
 		log("Execution Environment: " + IHGUtil.getEnvironmentType());
@@ -804,11 +857,14 @@ public class IntegrationPlatformRegressionTests extends BaseTestNGWebDriver {
 		testData.StatementType = "New";
 		testData.since = since;
 		log("Step 4: Call Statement Post");
-		sEventObj.generateViewEvent(driver, testData, 'N');
+		sEventObj.generateViewEvent(driver, testData, 'N', version);
 	}
 
-	@Test(enabled = true, groups = { "RegressionTests" }, retryAnalyzer = RetryAnalyzer.class)
-	public void testBulkSecureMessage() throws Exception {
+	@Test(enabled = true, dataProvider = "channelVersion", groups = {
+			"RegressionTests" }, retryAnalyzer = RetryAnalyzer.class)
+	public void testBulkSecureMessage(String version) throws Exception {
+		if (version.equals("v2"))
+			throw new SkipException("Test skipped as version is:" + version);
 		log("Test Case: Bulk Secure Message");
 		log("Execution Environment: " + IHGUtil.getEnvironmentType());
 		log("Execution Browser: " + TestConfig.getBrowserType());
@@ -831,30 +887,50 @@ public class IntegrationPlatformRegressionTests extends BaseTestNGWebDriver {
 		RestUtils.oauthSetup(testData.OAuthKeyStore, testData.OAuthProperty, testData.OAuthAppToken,
 				testData.OAuthUsername, testData.OAuthPassword);
 
-		log("Step 3: Fill Message data");
-		String message = BulkMessagePayload.getBulkMessagePayload(testData);
-		Thread.sleep(6000);
-
-		// log("message xml : " + message);
-		String messageID = BulkMessagePayload.messageId;
-		log("Partner Message ID:" + messageID);
-
-		log("Step 4: Do Message Post Request");
-		log("ResponsePath:- " + testData.ResponsePath);
-		String processingUrl = RestUtils.setupHttpPostRequest(testData.RestUrl, message, testData.ResponsePath);
-
-		log("Step 5: Get processing status until it is completed");
-		boolean completed = false;
-		for (int i = 0; i < 3; i++) {
-			// wait 10 seconds so the message can be processed
-			Thread.sleep(60000);
-			RestUtils.setupHttpGetRequest(processingUrl, testData.ResponsePath);
-			if (RestUtils.isMessageProcessingCompleted(testData.ResponsePath)) {
-				completed = true;
-				break;
+		if (version.equals("v1")) {
+			String messageID = BulkMessagePayload.messageId;
+			log("Partner Message ID:" + messageID);
+			log("Step 3: Fill Message data");
+			String message = BulkMessagePayload.getBulkMessagePayload(testData);
+			Thread.sleep(6000);
+			log("message xml : " + message);
+			log("Step 4: Do Message Post Request");
+			log("ResponsePath:- " + testData.ResponsePath);
+			String processingUrl = RestUtils.setupHttpPostRequest(testData.RestUrl, message, testData.ResponsePath);
+			log("Step 5: Get processing status until it is completed");
+			boolean completed = false;
+			for (int i = 0; i < 3; i++) {
+				// wait 10 seconds so the message can be processed
+				Thread.sleep(60000);
+				RestUtils.setupHttpGetRequest(processingUrl, testData.ResponsePath);
+				if (RestUtils.isMessageProcessingCompleted(testData.ResponsePath)) {
+					completed = true;
+					break;
+				}
 			}
+			assertTrue(completed == true, "Message processing was not completed in time");
+		} else {
+			String messageID = BulkMessagePayload.messageId;
+			log("Partner Message ID:" + messageID);
+			log("Step 3: Fill Message data");
+			String message = BulkMessagePayload.getBulkMessageV3Payload(testData);
+			log("message xml : " + message);
+			log("Step 4: Do Message Post Request");
+			log("ResponsePath:- " + testData.ResponsePath);
+			String processingUrl = RestUtils.setupHttpPostRequest(testData.RestV3Url, message, testData.ResponsePath);
+			log("Step 5: Get processing status until it is completed");
+			boolean completed = false;
+			for (int i = 0; i < 3; i++) {
+				// wait 10 seconds so the message can be processed
+				Thread.sleep(60000);
+				RestUtils.setupHttpGetRequest(processingUrl, testData.ResponsePath);
+				if (RestUtils.isMessageProcessingCompleted(testData.ResponsePath)) {
+					completed = true;
+					break;
+				}
+			}
+			assertTrue(completed == true, "Message processing was not completed in time");
 		}
-		assertTrue(completed == true, "Message processing was not completed in time");
 		log("testData.MaxPatients : " + testData.MaxPatients);
 
 		for (int i = 1; i <= Integer.parseInt(testData.MaxPatients); i++) {
@@ -882,13 +958,22 @@ public class IntegrationPlatformRegressionTests extends BaseTestNGWebDriver {
 			log("Click on messages solution");
 			JalapenoMessagesPage messagesPage = homePage.showMessages(driver);
 			assertTrue(messagesPage.areBasicPageElementsPresent(), "Inbox failed to load properly.");
-			log("Step 8: Find message in Inbox");
-			String messageIdentifier = BulkMessagePayload.subject;
-			log("message subject " + messageIdentifier);
-			log("Step 9: Log the message read time ");
 			long epoch = System.currentTimeMillis() / 1000;
-			log("Step 10: Validate message loads and is the right message");
-			assertTrue(messagesPage.isMessageDisplayed(driver, messageIdentifier));
+
+			log("Step 8: Find message in Inbox");
+			if (version.equals("v1")) {
+				String messageIdentifier = BulkMessagePayload.subject;
+				log("message subject " + messageIdentifier);
+				log("Step 9: Log the message read time ");
+				log("Step 10: Validate message loads and is the right message");
+				assertTrue(messagesPage.isMessageDisplayed(driver, messageIdentifier));
+			} else {
+				String messageIdentifier = BulkMessagePayload.subject;
+				log("message subject " + messageIdentifier);
+				log("Step 9: Log the message read time ");
+				log("Step 10: Validate message loads and is the right message");
+				assertTrue(messagesPage.isMessageDisplayed(driver, messageIdentifier));
+			}
 			log("Step 11: Check if attachment is present or not");
 			String readdatetimestamp = RestUtils.readTime(epoch);
 			log("Message Read Time:" + readdatetimestamp);
@@ -956,7 +1041,7 @@ public class IntegrationPlatformRegressionTests extends BaseTestNGWebDriver {
 
 			BulkMessagePayload.checkWithPrevioudBulkMessageID = true;
 			log("Step 12: Start Bulk mass admin for patient with  No attachment but previous Message ID");
-			testBulkSecureMessage();
+			testBulkSecureMessage(version);
 		}
 	}
 
@@ -2230,8 +2315,9 @@ public class IntegrationPlatformRegressionTests extends BaseTestNGWebDriver {
 		preAppointmentObj.verifyPatientDetail(testData, patientData);
 	}
 
-	@Test(enabled = true, groups = { "AcceptanceTests" }, retryAnalyzer = RetryAnalyzer.class)
-	public void testPatientMUEventForGuardian() throws Exception {
+	@Test(enabled = true, dataProvider = "channelVersion", groups = {
+			"AcceptanceTests" }, retryAnalyzer = RetryAnalyzer.class)
+	public void testPatientMUEventForGuardian(String version) throws Exception {
 		Log4jUtil.log(
 				"Test Case: Verification of CCD - VDT Events of patient account through Guardian account using ccd viewer.");
 		log("Test case Environment: " + IHGUtil.getEnvironmentType());
@@ -2252,11 +2338,12 @@ public class IntegrationPlatformRegressionTests extends BaseTestNGWebDriver {
 		Thread.sleep(8000);
 		testData.CCDMessageID1 = ccdDetail.get(0);
 		MU2Utils MU2UtilsObj = new MU2Utils();
-		MU2UtilsObj.mu2GetEventGuardian(testData, driver, false, true);
+		MU2UtilsObj.mu2GetEventGuardian(testData, driver, false, true, version);
 	}
 
-	@Test(enabled = true, groups = { "AcceptanceTests" }, retryAnalyzer = RetryAnalyzer.class)
-	public void testPatientMUEventForExistingGuardian() throws Exception {
+	@Test(enabled = true, dataProvider = "channelVersion", groups = {
+			"AcceptanceTests" }, retryAnalyzer = RetryAnalyzer.class)
+	public void testPatientMUEventForExistingGuardian(String version) throws Exception {
 		Log4jUtil.log(
 				"Test Case: Verification of CCD - VDT Events of patient account through an Existing Guardian account using ccd viewer.");
 		log("Test case Environment: " + IHGUtil.getEnvironmentType());
@@ -2280,11 +2367,12 @@ public class IntegrationPlatformRegressionTests extends BaseTestNGWebDriver {
 		testData.CCDMessageID1 = ccdDetail.get(0);
 
 		MU2Utils MU2UtilsObj = new MU2Utils();
-		MU2UtilsObj.mu2GetEventGuardian(testData, driver, true, true);
+		MU2UtilsObj.mu2GetEventGuardian(testData, driver, true, true, version);
 	}
 
-	@Test(enabled = true, groups = { "RegressionTests" }, retryAnalyzer = RetryAnalyzer.class)
-	public void testPatientMUEventForNewGuardian() throws Exception {
+	@Test(enabled = true, dataProvider = "channelVersion", groups = {
+			"RegressionTests" }, retryAnalyzer = RetryAnalyzer.class)
+	public void testPatientMUEventForNewGuardian(String version) throws Exception {
 		Long timestamp = System.currentTimeMillis();
 		Log4jUtil.log(
 				"Test Case : Verification of CCD - VDT Events of New patient account through Guardian account using ccd viewer.");
@@ -2356,11 +2444,15 @@ public class IntegrationPlatformRegressionTests extends BaseTestNGWebDriver {
 		testData.PatientFirstName_MU2 = patientDetail.get(0);
 		testData.patientUA_MU2_LastName = patientDetail.get(1);
 
-		MU2UtilsObj.mu2GetEventGuardian(testData, driver, false, true);
+		MU2UtilsObj.mu2GetEventGuardian(testData, driver, false, true, patientID);
 	}
 
-	@Test(enabled = true, groups = { "AcceptanceTests" }, retryAnalyzer = RetryAnalyzer.class)
-	public void testMUEventForGuardianFromHealthRecord() throws Exception {
+	@Test(enabled = true, dataProvider = "channelVersion", groups = {
+			"AcceptanceTests" }, retryAnalyzer = RetryAnalyzer.class)
+	public void testMUEventForGuardianFromHealthRecord(String version) throws Exception {
+		if (version.equals("v2"))
+			throw new SkipException("Test skipped as version is:" + version);
+
 		Log4jUtil.log(
 				"Test Case: Verification of CCD - VDT Events of patient account through Guardian account using Health Record Page.");
 		log("Test case Environment: " + IHGUtil.getEnvironmentType());
@@ -2389,11 +2481,14 @@ public class IntegrationPlatformRegressionTests extends BaseTestNGWebDriver {
 		testData.CCDMessageID2 = ccdDetail1.get(0);
 
 		MU2Utils MU2UtilsObj = new MU2Utils();
-		MU2UtilsObj.mu2GetEventGuardian(testData, driver, false, false);
+		MU2UtilsObj.mu2GetEventGuardian(testData, driver, false, false, version);
 	}
 
-	@Test(enabled = true, groups = { "AcceptanceTests" }, retryAnalyzer = RetryAnalyzer.class)
-	public void testMUEventForExistingGuardianFromHealthRecord() throws Exception {
+	@Test(enabled = true, dataProvider = "channelVersion", groups = {
+			"AcceptanceTests" }, retryAnalyzer = RetryAnalyzer.class)
+	public void testMUEventForExistingGuardianFromHealthRecord(String version) throws Exception {
+		if (version.equals("v2"))
+			throw new SkipException("Test skipped as version is:" + version);
 		Log4jUtil.log(
 				"Test Case: Verification of CCD - VDT Events of patient account through an Existing Guardian account using Health Record Page.");
 		log("Test case Environment: " + IHGUtil.getEnvironmentType());
@@ -2425,11 +2520,15 @@ public class IntegrationPlatformRegressionTests extends BaseTestNGWebDriver {
 
 		MU2Utils MU2UtilsObj = new MU2Utils();
 		//
-		MU2UtilsObj.mu2GetEventGuardian(testData, driver, true, false);
+		MU2UtilsObj.mu2GetEventGuardian(testData, driver, true, false, version);
 	}
 
-	@Test(enabled = true, groups = { "RegressionTests" }, retryAnalyzer = RetryAnalyzer.class)
-	public void testMUEventForNewGuardianFromHealthRecord() throws Exception {
+	@Test(enabled = true, dataProvider = "channelVersion", groups = {
+			"RegressionTests" }, retryAnalyzer = RetryAnalyzer.class)
+	public void testMUEventForNewGuardianFromHealthRecord(String version) throws Exception {
+		if (version.equals("v2"))
+			throw new SkipException("Test skipped as version is:" + version);
+
 		Long timestamp = System.currentTimeMillis();
 		Log4jUtil.log(
 				"Test Case : Verification of CCD - VDT Events of New patient account through Guardian account using Health Record Page.");
@@ -2526,7 +2625,7 @@ public class IntegrationPlatformRegressionTests extends BaseTestNGWebDriver {
 		testData.patientUA_MU2_LastName = patientDetail.get(1);
 
 		Thread.sleep(8000);
-		MU2UtilsObj.mu2GetEventGuardian(testData, driver, false, false);
+		MU2UtilsObj.mu2GetEventGuardian(testData, driver, false, false, version);
 	}
 
 	@Test(enabled = true, groups = { "AcceptanceTests" }, retryAnalyzer = RetryAnalyzer.class)
@@ -3097,8 +3196,11 @@ public class IntegrationPlatformRegressionTests extends BaseTestNGWebDriver {
 		homePage.clickOnLogout();
 	}
 
-	@Test(enabled = true, groups = { "RegressionTests" }, retryAnalyzer = RetryAnalyzer.class)
-	public void testOnDemandHealthData() throws Exception {
+	@Test(enabled = true, dataProvider = "channelVersion", groups = {
+			"RegressionTests" }, retryAnalyzer = RetryAnalyzer.class)
+	public void testOnDemandHealthData(String version) throws Exception {
+		if (version.equals("v2"))
+			throw new SkipException("Test skipped as version is:" + version);
 		log("Test Case: Request health data OnDemand in patient Portal 2.0");
 		log("Execution Environment: " + IHGUtil.getEnvironmentType());
 		log("Execution Browser: " + TestConfig.getBrowserType());
@@ -3108,10 +3210,19 @@ public class IntegrationPlatformRegressionTests extends BaseTestNGWebDriver {
 		EHDC testData = new EHDC();
 		LoadPreTestDataObj.loadEHDCDataFromProperty(testData);
 
-		String restApiCall = testData.RestUrl;
-		restApiCall = restApiCall.replace("ccd", "healthdata");
-		log("restApiCall=" + restApiCall);
-
+		String restApiCall = "";
+		if (version.equals("v1")) {
+			log("For Channel version V1");
+			restApiCall = testData.RestUrl;
+			restApiCall = restApiCall.replace("ccd", "healthdata");
+			log("restApiCall=" + restApiCall);
+		} else {
+			log("For Channel version V3");
+			restApiCall = testData.RestUrlV3;
+			restApiCall = restApiCall.replace("ccd", "healthdata");
+			log("restApiCall=" + restApiCall);
+		}
+		
 		log("Step 2: Generate Since time for the GET API Call.");
 		LocalTime midnight = LocalTime.MIDNIGHT;
 		LocalDate today = LocalDate.now(ZoneId.of("America/New_York"));
@@ -3251,8 +3362,9 @@ public class IntegrationPlatformRegressionTests extends BaseTestNGWebDriver {
 		log("POST URL" + testData.AppointmentTypeUrl);
 
 		log("Step 1: Setup Oauth client");
-		RestUtils.oauthSetup(testData.OAuthKeyStore, testData.OAuthProperty, testData.OAuthAppToken, testData.OAuthUsername, testData.OAuthPassword);
-		String appointmentType = AppointmentTypePayload.getAppontmentTypePayload(testData);
+		RestUtils.oauthSetup(testData.OAuthKeyStore, testData.OAuthProperty, testData.OAuthAppToken,
+				testData.OAuthUsername, testData.OAuthPassword);
+		String appointmentType = AppointmentTypePayload.getAppointmentTypePayload(testData);
 		Thread.sleep(6000);
 		log("Wait to generate AppointmentType Payload");
 		log("Step 2: Do Message Post Request");
@@ -3274,15 +3386,18 @@ public class IntegrationPlatformRegressionTests extends BaseTestNGWebDriver {
 		log("Step 1: Setup Oauth client");
 		RestUtils.oauthSetup(testData.OAuthKeyStore, testData.OAuthProperty, testData.OAuthAppToken,
 				testData.OAuthUsername, testData.OAuthPassword);
-		
+
 		testData.Status = "NEW";
-		testData.PharmacyName="AddedNewPharmacy";
-		
-		String pharmacyRenewal = PharmacyPaylod.getPharmacyAddPayload(testData);
+		testData.PharmacyName = "AddedNewPharmacy";
+
+		PharmacyPayload pharmacyObj = new PharmacyPayload();
+		String ExternalPharmacyId = PharmacyPayload.randomNumbers(14);
+		log("ExternalPharmacyId posted is : " + ExternalPharmacyId);
+		String pharmacyRenewal = pharmacyObj.getPharmacyAddPayload(testData, ExternalPharmacyId);
 		log("Payload: " + pharmacyRenewal);
 		Thread.sleep(6000);
 		log("Wait to generate Pharmacy Renewal Payload");
-		
+
 		log("Step 2: Do Message Post Request");
 		log("ResponsePath: " + testData.ResponsePath);
 		Log4jUtil.log("Generate Payload with Status as " + testData.Status);
@@ -3306,7 +3421,7 @@ public class IntegrationPlatformRegressionTests extends BaseTestNGWebDriver {
 		JalapenoLoginPage loginPage = new JalapenoLoginPage(driver, testData.URL);
 		JalapenoHomePage homePage = loginPage.login(testData.UserName, testData.Password);
 		JalapenoPrescriptionsPage JalapenoPrescriptionsPageObject = homePage.clickOnPrescriptions(driver);
-	
+
 		log("Step 4: Click on Prescription and go to Prescription Page");
 		Assert.assertTrue(JalapenoPrescriptionsPageObject.areBasicPageElementsPresent(),
 				"Failed to Load Health Record Summaries ");
@@ -3314,22 +3429,426 @@ public class IntegrationPlatformRegressionTests extends BaseTestNGWebDriver {
 		log("Step 5: Click on Continue ");
 		JalapenoPrescriptionsPageObject.clickContinueButton(driver);
 		Thread.sleep(60000);
-		
+
 		log("Step 6:verify newly added pharmacy in the list");
 		String addedPharamacy = testData.PharmacyName + ", " + testData.Line1 + ", " + testData.City + ", "
 				+ testData.State;
 		log("Added Pharamacy :- " + addedPharamacy);
 		JalapenoPrescriptionsPageObject.areBasicPageElementsPresent();
-		String env=IHGUtil.getEnvironmentType().toString();
-		
-       if(env=="DEV3") {
-    	   String pharmacyFristWord="Added";
-    	   JalapenoPrescriptionsPageObject.verifyPharamcy(addedPharamacy,pharmacyFristWord );
-		}else {
+		String env = IHGUtil.getEnvironmentType().toString();
+
+		if (env == "DEV3") {
+			String pharmacyFristWord = "Added";
+			JalapenoPrescriptionsPageObject.verifyPharamcy(addedPharamacy, pharmacyFristWord);
+		} else {
 			JalapenoPrescriptionsPageObject.clickOnChooseOneDrpdown();
 			Thread.sleep(6000);
 			JalapenoPrescriptionsPageObject.verifyPharmacy(addedPharamacy);
 		}
 	}
-	
+
+	@Test(enabled = true, groups = { "RegressionTests" }, retryAnalyzer = RetryAnalyzer.class)
+	public void testUpdatePharmacies() throws Exception {
+		log("Test Case: Update Pharmacy");
+		log("Execution Environment: " + IHGUtil.getEnvironmentType());
+		log("Execution Browser: " + TestConfig.getBrowserType());
+
+		LoadPreTestData LoadPreTestDataObj = new LoadPreTestData();
+		Pharmacies testData = new Pharmacies();
+		LoadPreTestDataObj.loadPharmaciesFromProperty(testData);
+		log("POST URL: " + testData.PharmacyRenewalUrl);
+
+		log("Step 1: Setup Oauth client");
+		RestUtils.oauthSetup(testData.OAuthKeyStore, testData.OAuthProperty, testData.OAuthAppToken,
+				testData.OAuthUsername, testData.OAuthPassword);
+
+		log("Add Pharmacy with status 'NEW' ");
+		testData.Status = "NEW";
+		testData.PharmacyName = "AddedNewPharmacy";
+
+		PharmacyPayload pharmacyObj = new PharmacyPayload();
+		String ExternalPharmacyId = PharmacyPayload.randomNumbers(14);
+		log("ExternalPharmacyId posted is : " + ExternalPharmacyId);
+		String pharmacyNewPayload = pharmacyObj.getPharmacyAddPayload(testData, ExternalPharmacyId);
+		log("Payload: " + pharmacyNewPayload);
+		Thread.sleep(6000);
+		log("Wait to generate Pharmacy New Payload");
+
+		log("Step 2: Do NEW Pharmacy Post Request");
+		log("ResponsePath: " + testData.ResponsePath);
+		Log4jUtil.log("Generate Payload with Status as " + testData.Status);
+		String processingUrl = RestUtils.setupHttpPostRequest(testData.PharmacyRenewalUrl, pharmacyNewPayload,
+				testData.ResponsePath);
+		Log4jUtil.log("processingUrl " + processingUrl);
+
+		Boolean completed = false;
+		for (int i = 0; i < 3; i++) {
+			// wait 10 seconds so the message can be processed
+			Thread.sleep(60000);
+			RestUtils.setupHttpGetRequest(processingUrl, testData.ResponsePath);
+			if (RestUtils.isMessageProcessingCompleted(testData.ResponsePath)) {
+				completed = true;
+				break;
+			}
+		}
+		Assert.assertTrue(completed, "Message processing was not completed in time");
+
+		log("Update Pharmacy with status 'UPDATE' ");
+		testData.Status = "UPDATE";
+		testData.PharmacyName = "UpdateAddedPharmacy";
+
+		log("ExternalPharmacyId posted is : " + ExternalPharmacyId);
+		String updatePayload = pharmacyObj.getPharmacyAddPayload(testData, ExternalPharmacyId);
+		log("Payload: " + updatePayload);
+		Thread.sleep(6000);
+		log("Wait to generate Pharmacy Payload");
+
+		log("Step 3: Do UPDATE Pharmacy Post Request");
+		log("ResponsePath: " + testData.ResponsePath);
+		Log4jUtil.log("Generate Payload with Status as " + testData.Status);
+		String processingUpdateUrl = RestUtils.setupHttpPostRequest(testData.PharmacyRenewalUrl, updatePayload,
+				testData.ResponsePath);
+		Log4jUtil.log("processingUrl " + processingUpdateUrl);
+
+		Boolean completedStatus = false;
+		for (int i = 0; i < 3; i++) {
+			// wait 10 seconds so the message can be processed
+			Thread.sleep(60000);
+			RestUtils.setupHttpGetRequest(processingUrl, testData.ResponsePath);
+			if (RestUtils.isMessageProcessingCompleted(testData.ResponsePath)) {
+				completed = true;
+				break;
+			}
+		}
+		Assert.assertTrue(completed, "Message processing was not completed in time");
+
+		log("Step 4: Login to Patient Portal");
+		JalapenoLoginPage loginPage = new JalapenoLoginPage(driver, testData.URL);
+		JalapenoHomePage homePage = loginPage.login(testData.UserName, testData.Password);
+		JalapenoPrescriptionsPage JalapenoPrescriptionsPageObject = homePage.clickOnPrescriptions(driver);
+
+		log("Step 5: Click on Prescription and go to Prescription Page");
+		Assert.assertTrue(JalapenoPrescriptionsPageObject.areBasicPageElementsPresent(),
+				"Failed to Load Health Record Summaries ");
+
+		log("Step 6: Click on Continue ");
+		JalapenoPrescriptionsPageObject.clickContinueButton(driver);
+		Thread.sleep(60000);
+
+		log("Step 7:verify added pharmacy is updated in the list");
+		String addedPharamacy = testData.PharmacyName + ", " + testData.Line1 + ", " + testData.City + ", "
+				+ testData.State;
+		log("Added Pharamacy :- " + addedPharamacy);
+		JalapenoPrescriptionsPageObject.areBasicPageElementsPresent();
+		String env = IHGUtil.getEnvironmentType().toString();
+
+		if (env == "DEV3") {
+			String pharmacyFristWord = "Update";
+			JalapenoPrescriptionsPageObject.verifyPharamcy(addedPharamacy, pharmacyFristWord);
+		} else {
+			JalapenoPrescriptionsPageObject.clickOnChooseOneDrpdown();
+			Thread.sleep(6000);
+			JalapenoPrescriptionsPageObject.verifyPharmacy(addedPharamacy);
+		}
+	}
+
+	@Test(enabled = true, groups = { "RegressionTests" }, retryAnalyzer = RetryAnalyzer.class)
+	public void testDeletePharmacies() throws Exception {
+		log("Test Case: Delete Pharmacy");
+		log("Execution Environment: " + IHGUtil.getEnvironmentType());
+		log("Execution Browser: " + TestConfig.getBrowserType());
+
+		LoadPreTestData LoadPreTestDataObj = new LoadPreTestData();
+		Pharmacies testData = new Pharmacies();
+		LoadPreTestDataObj.loadPharmaciesFromProperty(testData);
+		log("POST URL: " + testData.PharmacyRenewalUrl);
+
+		log("Step 1: Setup Oauth client");
+		RestUtils.oauthSetup(testData.OAuthKeyStore, testData.OAuthProperty, testData.OAuthAppToken,
+				testData.OAuthUsername, testData.OAuthPassword);
+
+		log("Add Pharmacy with status 'NEW' ");
+		testData.Status = "NEW";
+		testData.PharmacyName = "AddedNewPharmacy";
+
+		PharmacyPayload pharmacyObj = new PharmacyPayload();
+		String ExternalPharmacyId = PharmacyPayload.randomNumbers(14);
+		log("ExternalPharmacyId posted is : " + ExternalPharmacyId);
+		String pharmacyNewPayload = pharmacyObj.getPharmacyAddPayload(testData, ExternalPharmacyId);
+		log("Payload: " + pharmacyNewPayload);
+		Thread.sleep(6000);
+		log("Wait to generate Pharmacy New Payload");
+
+		log("Step 2: Do NEW Pharmacy Post Request");
+		log("ResponsePath: " + testData.ResponsePath);
+		Log4jUtil.log("Generate Payload with Status as " + testData.Status);
+		String processingUrl = RestUtils.setupHttpPostRequest(testData.PharmacyRenewalUrl, pharmacyNewPayload,
+				testData.ResponsePath);
+		Log4jUtil.log("processingUrl " + processingUrl);
+
+		Boolean completed = false;
+		for (int i = 0; i < 3; i++) {
+			// wait 10 seconds so the message can be processed
+			Thread.sleep(60000);
+			RestUtils.setupHttpGetRequest(processingUrl, testData.ResponsePath);
+			if (RestUtils.isMessageProcessingCompleted(testData.ResponsePath)) {
+				completed = true;
+				break;
+			}
+		}
+		Assert.assertTrue(completed, "Message processing was not completed in time");
+
+		log("Delete Pharmacy with status 'DELETE' ");
+		testData.Status = "DELETE";
+
+		log("ExternalPharmacyId posted is : " + ExternalPharmacyId);
+		String deletePayload = pharmacyObj.getPharmacyAddPayload(testData, ExternalPharmacyId);
+		log("Payload: " + deletePayload);
+		Thread.sleep(6000);
+		log("Wait to generate Pharmacy Payload");
+
+		log("Step 3: Do DELETE Pharmacy Post Request");
+		log("ResponsePath: " + testData.ResponsePath);
+		Log4jUtil.log("Generate Payload with Status as " + testData.Status);
+		String processingDeleteUrl = RestUtils.setupHttpPostRequest(testData.PharmacyRenewalUrl, deletePayload,
+				testData.ResponsePath);
+		Log4jUtil.log("processingUrl " + processingDeleteUrl);
+
+		Boolean completedStatus = false;
+		for (int i = 0; i < 3; i++) {
+			// wait 10 seconds so the message can be processed
+			Thread.sleep(60000);
+			RestUtils.setupHttpGetRequest(processingUrl, testData.ResponsePath);
+			if (RestUtils.isMessageProcessingCompleted(testData.ResponsePath)) {
+				completed = true;
+				break;
+			}
+		}
+		Assert.assertTrue(completed, "Message processing was not completed in time");
+
+		log("Step 4: Login to Patient Portal");
+		JalapenoLoginPage loginPage = new JalapenoLoginPage(driver, testData.URL);
+		JalapenoHomePage homePage = loginPage.login(testData.UserName, testData.Password);
+		JalapenoPrescriptionsPage JalapenoPrescriptionsPageObject = homePage.clickOnPrescriptions(driver);
+
+		log("Step 5: Click on Prescription and go to Prescription Page");
+		Assert.assertTrue(JalapenoPrescriptionsPageObject.areBasicPageElementsPresent(),
+				"Failed to Load Health Record Summaries ");
+
+		log("Step 6: Click on Continue ");
+		JalapenoPrescriptionsPageObject.clickContinueButton(driver);
+		Thread.sleep(60000);
+
+		log("Step 7:verify added pharmacy is deleted in the list");
+		String deletedPharamacy = testData.PharmacyName + ", " + testData.Line1 + ", " + testData.City + ", "
+				+ testData.State;
+		log("Added Pharamacy :- " + deletedPharamacy);
+		JalapenoPrescriptionsPageObject.areBasicPageElementsPresent();
+		String env = IHGUtil.getEnvironmentType().toString();
+		if (env == "DEV3") {
+			String pharmacyFristWord = "Added";
+			JalapenoPrescriptionsPageObject.verifyDeletedPharamcy(deletedPharamacy, pharmacyFristWord);
+			log("Pharamacy is not visible on the Portal");
+		} else {
+			JalapenoPrescriptionsPageObject.clickOnChooseOneDrpdown();
+			Thread.sleep(6000);
+			JalapenoPrescriptionsPageObject.verifyDeletedPharmacy(deletedPharamacy);
+			log("Pharamacy is not visible on the Portal");
+		}
+	}
+
+	@Test(enabled = true, groups = { "RegressionTests" }, retryAnalyzer = RetryAnalyzer.class)
+	public void testAppointmentRequestForExistingPatientV3() throws Exception {
+		log("Test Case: Appointment Request for Existing Patient From Partner");
+		log("Execution Environment: " + IHGUtil.getEnvironmentType());
+		log("Execution Browser: " + TestConfig.getBrowserType());
+		log("Step 1: Get Data from property file");
+		LoadPreTestData LoadPreTestDataObj = new LoadPreTestData();
+		AppointmentData testData = new AppointmentData();
+		LoadPreTestDataObj.loadAppointmentDataFromProperty(testData);
+		AppointmentDataUtils aDUtils = new AppointmentDataUtils();
+
+		String workingDir = System.getProperty("user.dir");
+		workingDir = workingDir + testData.csvFilePath;
+		aDUtils.csvFileReader(testData, workingDir);
+
+		log("Step 2: Post NEW AppointMentData ");
+		testData.Status = "NEW";
+		testData.FirstName = testData.FirstName;
+		testData.LastName = testData.LastName;
+		testData.EmailUserName = testData.EmailUserName;
+		testData.BatchSize = "2";
+
+		testData.Time = testData.appointmentDetailList.get(1).getTime();
+		testData.appointmentType = "FUTURE";
+		testData.Location = "NEW";
+
+		testData.Type = testData.appointmentDetailList.get(1).getType();
+		testData.Reason = testData.appointmentDetailList.get(1).getReason();
+		testData.Description = testData.appointmentDetailList.get(1).getDescription();
+
+		log("Step 3: Setup Oauth client");
+		RestUtils.oauthSetup(testData.OAuthKeyStore, testData.OAuthProperty, testData.OAuthAppToken,
+				testData.OAuthUsername, testData.OAuthPassword);
+
+		aDUtils.checkAppointmentV3(testData, driver);
+		Thread.sleep(6000);
+
+		log("Step 4: Post UPDATE AppointMentData ");
+		testData.Status = "UPDATE";
+		testData.Time = testData.appointmentDetailList.get(3).getTime();
+		testData.Location = "Update";
+		testData.appointmentType = "FUTURE";
+
+		testData.Type = testData.appointmentDetailList.get(3).getType();
+		testData.Reason = testData.appointmentDetailList.get(3).getReason();
+		testData.Description = testData.appointmentDetailList.get(3).getDescription();
+		testData.BatchSize = "1";
+
+		aDUtils.checkAppointmentV3(testData, driver);
+		Thread.sleep(3000);
+
+		log("Step 5: Post CANCEL AppointMentData ");
+		testData.Status = "CANCEL";
+		testData.Time = testData.appointmentDetailList.get(4).getTime();
+		testData.Location = "Cancel";
+		testData.appointmentType = "FUTURE";
+
+		testData.Type = testData.appointmentDetailList.get(4).getType();
+		testData.Reason = testData.appointmentDetailList.get(4).getReason();
+		testData.Description = testData.appointmentDetailList.get(4).getDescription();
+		testData.BatchSize = "1";
+
+		aDUtils.checkAppointmentV3(testData, driver);
+
+	}
+
+	@Test(enabled = true, groups = { "RegressionTests" }, retryAnalyzer = RetryAnalyzer.class)
+	public void testAppointmentRequestForNewSelfPatientV3() throws Exception {
+		log("Test Case: Appointment Request for New Patient From Partner");
+		log("Execution Environment: " + IHGUtil.getEnvironmentType());
+		log("Execution Browser: " + TestConfig.getBrowserType());
+
+		AppointmentDataUtils aDUtils = new AppointmentDataUtils();
+		LoadPreTestData LoadPreTestDataObj = new LoadPreTestData();
+		AppointmentData testData = new AppointmentData();
+		LoadPreTestDataObj.loadAppointmentDataFromProperty(testData);
+
+		log("Step 1: Create patient");
+		PropertyFileLoader testDataPFL = new PropertyFileLoader();
+		JalapenoPatient patient = new JalapenoPatient(testDataPFL);
+		JalapenoLoginPage loginPage = new JalapenoLoginPage(driver, patient.getUrl());
+		Thread.sleep(5000);
+		PatientDemographicPage patientDemographicPage = loginPage.clickCreateANewAccountButton();
+		patientDemographicPage.fillInPatientData(patient);
+		SecurityDetailsPage accountDetailsPage = patientDemographicPage.continueToSecurityPage();
+		JalapenoHomePage homePage = accountDetailsPage.fillAccountDetailsAndContinue(patient.getEmail(),
+				patient.getPassword(), testDataPFL);
+
+		Long timestamp = System.currentTimeMillis();
+		Long since = timestamp / 1000L - 60 * 24;
+		Log4jUtil.log("Getting patients since timestamp: " + since);
+		Thread.sleep(6000);
+		homePage.clickOnLogout();
+
+		log("Step 2: Setup Oauth client");
+		RestUtils.oauthSetup(testData.OAuthKeyStore, testData.OAuthProperty, testData.OAuthAppToken,
+				testData.OAuthUsername, testData.OAuthPassword);
+
+		RestUtils.setupHttpGetRequest(testData.PATIENT_INVITE_RESTV3URL + "?since=" + since + ",0",
+				testData.ResponsePath);
+		Thread.sleep(2000);
+
+		String responseXML = RestUtils.prepareCCD(testData.ResponsePath);
+		String medfusionID = aDUtils.getMedfusionID(patient.getEmail(), responseXML);
+		log("medfusionID " + medfusionID);
+
+		log("step 3: Login to Practice Portal");
+		Practice practice = new Practice();
+		practice.url = testData.portalURL;
+		practice.username = testData.practiceUserName;
+		practice.password = testData.practicePassword;
+
+		// Now start login with practice data
+		PracticeLoginPage practiceLogin = new PracticeLoginPage(driver, practice.url);
+		PracticeHomePage pPracticeHomePage = practiceLogin.login(practice.username, practice.password);
+
+		log("step 4: Click on Patient Search Link");
+		PatientSearchPage pPatientSearchPage = pPracticeHomePage.clickPatientSearchLink();
+
+		log("step 5:Set Patient Search Fields");
+		pPatientSearchPage.searchForPatientInPatientSearch(patient.getFirstName(), patient.getLastName());
+
+		log("step 6:Verify the Search Result");
+		IHGUtil.waitForElement(driver, 60, pPatientSearchPage.searchResult);
+		Assert.assertTrue(pPatientSearchPage.searchResult.getText().contains(patient.getFirstName()));
+		pPatientSearchPage.clickOnSearch();
+		Thread.sleep(3000);
+		pPatientSearchPage.clickOnEdit();
+		Thread.sleep(3000);
+		pPatientSearchPage.sendPatientIDAndClickOnUpdate(patient.getFirstName());
+		Thread.sleep(3000);
+		pPatientSearchPage.clickOnEdit();
+		Thread.sleep(3000);
+		String patientExternalID = pPatientSearchPage.verifypatientExternalID();
+		log("Actual patient ID " + patientExternalID);
+		log("Expected patient ID " + patient.getFirstName());
+		Assert.assertEquals(patient.getFirstName(), patientExternalID, "Patient External ID Matched !");
+
+		String workingDir = System.getProperty("user.dir");
+		workingDir = workingDir + testData.csvFilePath;
+		aDUtils.csvFileReader(testData, workingDir);
+		;
+
+		log("Step 7: Post New AppointMentData with MFPatientID");
+		testData.FirstName = patient.getFirstName();
+		testData.LastName = patient.getLastName();
+		testData.EmailUserName = patient.getEmail();
+		testData.PatientPracticeId = patient.getFirstName();
+		testData.MFPatientId = medfusionID;
+		testData.BatchSize = "1";
+		testData.Status = testData.appointmentDetailList.get(1).getStatus(); // "NEW";
+		testData.Time = testData.appointmentDetailList.get(1).getTime(); // "2017-02-13T21:30:00.000Z";
+		testData.Location = testData.appointmentDetailList.get(1).getLocation();
+		testData.appointmentType = "FUTURE";
+		testData.UserName = patient.getEmail();
+		testData.Password = patient.getPassword();
+
+		testData.Type = testData.appointmentDetailList.get(1).getType();
+		testData.Reason = testData.appointmentDetailList.get(1).getReason();
+		testData.Description = testData.appointmentDetailList.get(1).getDescription();
+
+		aDUtils.checkAppointmentV3(testData, driver);
+		Thread.sleep(6000);
+
+		log("Step 8: Post UPDATE AppointMentData ");
+		testData.Status = "UPDATE";
+		testData.Time = testData.appointmentDetailList.get(3).getTime(); // "2017-03-13T16:30:59.999Z";
+		testData.Location = testData.appointmentDetailList.get(3).getLocation();
+		testData.appointmentType = "FUTURE";
+		testData.PatientPracticeId = patient.getFirstName();
+		testData.BatchSize = "1";
+		testData.Type = testData.appointmentDetailList.get(3).getType();
+		testData.Reason = testData.appointmentDetailList.get(3).getReason();
+		testData.Description = testData.appointmentDetailList.get(3).getDescription();
+
+		aDUtils.checkAppointmentV3(testData, driver);
+
+		log("Step 9: Post CANCEL AppointMentData ");
+		Thread.sleep(3000);
+		testData.Status = "CANCEL";
+		testData.Time = testData.appointmentDetailList.get(4).getTime(); // "2017-03-13T16:30:59.999Z";
+		testData.Location = testData.appointmentDetailList.get(4).getLocation();
+		testData.appointmentType = "FUTURE";
+		testData.PatientPracticeId = patient.getFirstName();
+		testData.BatchSize = "1";
+
+		testData.Type = testData.appointmentDetailList.get(4).getType();
+		testData.Reason = testData.appointmentDetailList.get(4).getReason();
+		testData.Description = testData.appointmentDetailList.get(4).getDescription();
+
+		aDUtils.checkAppointmentV3(testData, driver);
+
+	}
+
 }

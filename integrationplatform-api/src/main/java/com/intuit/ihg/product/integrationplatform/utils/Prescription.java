@@ -22,4 +22,6 @@ public class Prescription {
 	public String GmailUserName = "";
 	public String GmailPassword = "";
 	public String PracticeName = "";
+	public String RestV3Url = "";
+	public String PrescriptionPathV3 = "";
 }

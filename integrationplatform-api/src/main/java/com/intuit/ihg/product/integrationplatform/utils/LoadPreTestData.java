@@ -16,6 +16,7 @@ public class LoadPreTestData {
 		testData.UserName = propertyData.getUserNameCCD();
 		testData.Password = propertyData.getPasswordCCD();
 		testData.RestUrl = propertyData.getRestUrlCCD();
+		testData.RestUrlV3 = propertyData.getRestUrlV3CCD();
 		testData.EPracticeName = propertyData.getEPracticeNameCCD();
 		testData.ccdXMLPath = propertyData.getCCDPATH3();
 		testData.CCDPath = propertyData.getCCDPath();
@@ -89,6 +90,7 @@ public class LoadPreTestData {
 
 		PropertyFileLoader propertyData = new PropertyFileLoader();
 		testData.PULLAPI_URL = propertyData.getPULLAPI_URL_MU2();
+		testData.PULLAPI_URLV3 = propertyData.getPULLAPI_URLV3_MU2();
 		testData.OAUTH_PROPERTY = propertyData.getOAuthProperty();
 		testData.OAUTH_KEYSTORE = propertyData.getOAuthKeyStore();
 		testData.OAUTH_APPTOKEN = propertyData.getOAuthAppToken_MU2();
@@ -262,6 +264,8 @@ public class LoadPreTestData {
 		testData.portalURL = propertyData.getPracticePortalURL_AD();
 		testData.practiceUserName = propertyData.getProtalUserName_AD();
 		testData.practicePassword = propertyData.getPortalPassword_AD();
+		testData.AppointmentRequestV3URL = propertyData.getAppointmentRequestV3URL();
+		testData.PATIENT_INVITE_RESTV3URL = propertyData.getPATIENT_INVITE_RESTV3URL();
 		return testData;
 	}
 
@@ -272,6 +276,7 @@ public class LoadPreTestData {
 		testData.Password = propertyData.getPassword_SE();
 		testData.Email = propertyData.getEmail_SE();
 		testData.RestUrl = propertyData.getRestUrl_SE();
+		testData.RestV3Url = propertyData.getRestV3Url_SE();
 		testData.ResponsePath = propertyData.getResponsePath();
 		testData.OAuthAppToken = propertyData.getOAuthAppToken_SE();
 		testData.OAuthKeyStore = propertyData.getOAuthKeyStore();
@@ -283,7 +288,7 @@ public class LoadPreTestData {
 		testData.PatientID = propertyData.getPatientID_SE();
 		testData.MFPatientID = propertyData.getMFPatientID_SE();
 		testData.StatementEventURL = propertyData.getStatementEventURL();
-
+		testData.StatementEventV3URL = propertyData.getStatementEventV3URL();
 		testData.StatementFormat = propertyData.getStatementFormat_SE();
 		testData.Address1 = propertyData.getAddress1_SE();
 		testData.Address2 = propertyData.getAddress2_SE();
@@ -363,6 +368,8 @@ public class LoadPreTestData {
 		testData.ParamName2 = propertyData.getParamName2();
 		testData.ParamValue3 = propertyData.getParamValue3();
 		testData.ParamName3 = propertyData.getParamName3();
+		testData.RestV3Url = propertyData.getRestUrlV3Bulk();
+
 
 		for (int j = 1; j <= Integer.parseInt(testData.NumberOfParams); j++) {
 			testData.PatientsUserNameArray[j - 1] = (String) propertyData.getClass().getMethod("getUserNameBulk" + j)

@@ -108,7 +108,6 @@ public class JalapenoMyAccountPreferencesPage extends JalapenoMyAccountPage {
 
 				webElementsList.add(patientMessagingOptOut);
 				webElementsList.add(apptRemindersOptOut);
-				webElementsList.add(previousStep);
 				webElementsList.add(saveAccountChanges);
 
 				return assessPageElements(webElementsList);

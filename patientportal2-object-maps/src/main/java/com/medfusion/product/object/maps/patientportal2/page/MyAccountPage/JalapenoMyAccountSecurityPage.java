@@ -139,8 +139,7 @@ public class JalapenoMyAccountSecurityPage extends JalapenoMyAccountPage {
 				currentPasswordInput.sendKeys(currentPassword);
 				newPasswordInput.sendKeys(newPassword);
 				confirmPasswordInput.sendKeys(newPassword);
-				newPasswordInput.sendKeys();
-				javascriptClick(saveAccountChanges);
+				saveAccountChanges.click();
 				new WebDriverWait(driver, 15).until(ExpectedConditions.visibilityOf(passwordSuccessfulUpdateMessage));
 		}
 
