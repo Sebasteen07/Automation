@@ -4543,7 +4543,7 @@ public class NGIntegrationE2ESITTests extends BaseTestNGWebDriver{
 		logStep("Schedule an appointment for Patient");
 		String apptTime ="05:30:00";
 		NGAPIUtils.updateLoginDefaultTo("EnterpriseGateway",enterpriseId,practiceId);
-		String EPMAppointmenttId =NGAPIFlows.postAppointment(person_id,locationName, providerName, eventName, resourceName,2,apptTime,201);
+		String EPMAppointmenttId =NGAPIFlows.postAppointment(person_id,practiceId,locationName, providerName, eventName, resourceName,2,apptTime,201);
 		
 		String appointmentResponse = "ApptResponse" + System.currentTimeMillis();
 		logStep("Send appointment response to Patient");
@@ -4606,9 +4606,9 @@ public class NGIntegrationE2ESITTests extends BaseTestNGWebDriver{
 		String apptTime ="02:30:00";
 		logStep("Schedule an appointment for Patient to same slot");
 		NGAPIUtils.updateLoginDefaultTo("EnterpriseGateway",enterpriseId,practiceId);
-		String EPMAppointmenttId =NGAPIFlows.postAppointment(person_id,locationName, providerName, eventName, resourceName,2,apptTime,201);
+		String EPMAppointmenttId =NGAPIFlows.postAppointment(person_id,practiceId,locationName, providerName, eventName, resourceName,2,apptTime,201);
 		NGAPIUtils.updateLoginDefaultTo("EnterpriseGateway",enterpriseId,practiceId);
-		NGAPIFlows.postAppointment(person_id,locationName, providerName, eventName, resourceName,2,apptTime,400);
+		NGAPIFlows.postAppointment(person_id,practiceId,locationName, providerName, eventName, resourceName,2,apptTime,400);
 		log("Test Case End: The practice user is not able to book same slot which is already booked for patient");
 	}
 	
@@ -4648,7 +4648,7 @@ public class NGIntegrationE2ESITTests extends BaseTestNGWebDriver{
 		String apptTime ="01:30:00";
 		logStep("Schedule another appointment for Patient to different slot");
 		NGAPIUtils.updateLoginDefaultTo("EnterpriseGateway",enterpriseId,practiceId);
-		String EPMAppointmenttId =NGAPIFlows.postAppointment(person_id,locationName, providerName, eventName, resourceName,1,apptTime,201);
+		String EPMAppointmenttId =NGAPIFlows.postAppointment(person_id,practiceId,locationName, providerName, eventName, resourceName,1,apptTime,201);
 		
 		logStep("Setup Oauth client" + PropertyLoaderObj.getResponsePath());
     	if(PropertyLoaderObj.getNGAPIexecutionMode().equalsIgnoreCase("QAMain")){
@@ -5565,7 +5565,7 @@ public class NGIntegrationE2ESITTests extends BaseTestNGWebDriver{
 		logStep("Schedule an appointment for Patient");
 		String apptTime ="05:30:00";
 		NGAPIUtils.updateLoginDefaultTo("EnterpriseGateway",enterpriseId,practiceId);
-		String EPMAppointmenttId =NGAPIFlows.postAppointment(dependent_person_id,locationName, providerName, eventName, resourceName,2,apptTime,201);
+		String EPMAppointmenttId =NGAPIFlows.postAppointment(dependent_person_id,practiceId,locationName, providerName, eventName, resourceName,2,apptTime,201);
 		
 		String appointmentResponse = "ApptResponse" + System.currentTimeMillis();
 		logStep("Send appointment response to Patient");
@@ -5590,4 +5590,82 @@ public class NGIntegrationE2ESITTests extends BaseTestNGWebDriver{
 		log("Expected appointment Time is "+appointmentDate.substring(appointmentDate.lastIndexOf(" ")+1));
 		CommonFlows.verifyAppointmentReceivedinPortal(PropertyLoaderObj, driver, url, username, appointmentDate.substring(0,appointmentDate.lastIndexOf(" ")),appointmentDate.substring(appointmentDate.lastIndexOf(" ")+1),appointmentResponse);
 		Log4jUtil.log("Test Case End: The patient is able to request for appointment and practice user is able to book appointment and send response to patient");	}
+	
+	@Test(enabled = true, groups = { "acceptance-INBOX" }, retryAnalyzer = RetryAnalyzer.class)
+	public void testInboxRequestMultiplePrescriptionRenewal() throws Throwable{
+		log("Test Case: Verify the patient is able to request for multiple medications and Prescribed elsewhere medications");
+		log("Execution Environment: " + IHGUtil.getEnvironmentType());
+		log("Execution Browser: " + TestConfig.getBrowserType());
+		
+		logStep("Getting Existing User");
+		String username = PropertyLoaderObj.getProperty("CCDAUsername");
+    	String person_id = DBUtils.executeQueryOnDB("NGCoreDB","select person_id from person where email_address = '"+username+"'");
+    	String enterpriseId = null, practiceId = null, providerName = null, locationName = null , userId = null, integrationPracticeID= null, url =null;
+    	
+    	if(PropertyLoaderObj.getNGAPIexecutionMode().equalsIgnoreCase("QAMain")){
+    		enterpriseId= PropertyLoaderObj.getProperty("NGEnterpiseEnrollmentEnterprise1");
+    	    practiceId= PropertyLoaderObj.getProperty("NGEnterprise1Practice1");
+    	    providerName =PropertyLoaderObj.getProperty("NGE1P1Provider"); 
+    	    locationName =PropertyLoaderObj.getProperty("NGE1P1Location");
+    	    integrationPracticeID =PropertyLoaderObj.getProperty("integrationPracticeIDE1P1");
+    	    url = PropertyLoaderObj.getProperty("MFPortalURLPractice1");	
+		}
+		else if (PropertyLoaderObj.getNGAPIexecutionMode().equalsIgnoreCase("SIT")){
+			enterpriseId= PropertyLoaderObj.getProperty("NGMainEnterpriseID");
+		    practiceId= PropertyLoaderObj.getProperty("NGMainPracticeID");
+		    providerName =PropertyLoaderObj.getProperty("EPMProviderName"); 
+		    locationName =PropertyLoaderObj.getProperty("EPMLocationName");
+		    integrationPracticeID =PropertyLoaderObj.getProperty("integrationPracticeIDAMDC");
+		    url = PropertyLoaderObj.getProperty("url");			           
+		}
+		else{
+			Log4jUtil.log("Invalid Execution Mode");
+		}
+				
+    	long timestamp = System.currentTimeMillis();
+    	Long since = timestamp / 1000L - 60 * 24;
+		String prescritonRenewalRequestReason = "PrescriptionRenewalRequest" + System.currentTimeMillis();
+		String medicationToRenew = PropertyLoaderObj.getProperty("MedicationToRenew");
+		
+		logStep("Log into Portal");
+		NGLoginPage loginPage = new NGLoginPage(driver, url);
+		JalapenoHomePage homePage = loginPage.login(username, PropertyLoaderObj.getPassword());
+		
+		logStep("Navigate to Prescription Renewal Page");
+		JalapenoPrescriptionsPage prescriptionsPage = homePage.clickOnPrescriptions(driver);
+		Thread.sleep(10000);
+		
+		logStep("Select Location and Provider");
+		prescriptionsPage.SelectProviderLocationclickContinueButton(driver, PropertyLoaderObj.getProperty("PortalLocationName"),PropertyLoaderObj.getProperty("PortalProviderName"));
+
+		logStep("Request for Prescription Renewal from Portal");
+		homePage = prescriptionsPage.requestForMultiplePrescriptionRenewal(driver,prescritonRenewalRequestReason,medicationToRenew, PropertyLoaderObj.getProperty("SecondMedicationToRenew"));
+		
+		homePage.LogoutfromNGMFPortal();
+	
+		logStep("Setup Oauth client" + PropertyLoaderObj.getResponsePath());
+    	if(PropertyLoaderObj.getNGAPIexecutionMode().equalsIgnoreCase("QAMain")){
+    		RestUtils.oauthSetup(PropertyLoaderObj.getOAuthKeyStore(), PropertyLoaderObj.getOAuthProperty(), PropertyLoaderObj.getOAuthAppToken(), PropertyLoaderObj.getProperty("oAuthUsername1"),PropertyLoaderObj.getProperty("oAuthPassword1"));
+		}
+		else if (PropertyLoaderObj.getNGAPIexecutionMode().equalsIgnoreCase("SIT")){
+			RestUtils.oauthSetup(PropertyLoaderObj.getOAuthKeyStore(), PropertyLoaderObj.getOAuthProperty(), PropertyLoaderObj.getOAuthAppToken(), PropertyLoaderObj.getProperty("oAuthUsername"),PropertyLoaderObj.getProperty("oAuthPassword"));			           
+		}
+		else{
+			Log4jUtil.log("Invalid Execution Mode");
+		}
+    	
+    	Log4jUtil.log("Step Begins: Wait 60 seconds, so the message can be processed");
+		Thread.sleep(60000);
+
+		Log4jUtil.log("Step Begins: Do a GET Prescription Call and get the message");
+		RestUtils.setupHttpGetRequest(PropertyLoaderObj.getProperty("GetPrescription").replaceAll("integrationID", integrationPracticeID) + "?since=" + since + ",0", PropertyLoaderObj.getResponsePath());
+
+		Log4jUtil.log("Step Begins: Validate message reply");
+		String prescriptionID = RestUtils.isPrescriptionRenewalRequestPresent(PropertyLoaderObj.getResponsePath(), prescritonRenewalRequestReason);
+		
+		Thread.sleep(60000);
+		logStep("Verify Prescription Renewal request is reached to EPM/EHR Inbox");
+		CommonFlows.verifyPrescriptionRenewalRequestReceived(prescriptionID, "[#1:"+prescritonRenewalRequestReason+"][#2:"+prescritonRenewalRequestReason+"]",practiceId);	
+    	log("Test Case End: The patient is able to request for multiple medications and Prescribed elsewhere medications");
+	}
 }
