@@ -38,7 +38,7 @@ public class PropertyFileLoader {
 	public String getRestUrlCCD() {
 		return property.getProperty("restUrlCCD");
 	}
-	
+
 	public String getRestUrlV3CCD() {
 		return property.getProperty("restUrlV3CCD");
 	}
@@ -232,7 +232,7 @@ public class PropertyFileLoader {
 	public String getPULLAPI_URLV3_MU2() {
 		return property.getProperty("pullAPI_URLV3_MU2");
 	}
-	
+
 	public String getOAuthAppToken_MU2() {
 		return property.getProperty("oAuthAppToken_MU2");
 	}
@@ -1975,5 +1975,9 @@ public class PropertyFileLoader {
 
 	public String getPATIENT_INVITE_RESTV3URL() {
 		return property.getProperty("restUrlPIDCV3");
+	}
+
+	public String getCCDPATHLargeSize() {
+		return property.getProperty("ccdXMLPathLargeSize");
 	}
 }

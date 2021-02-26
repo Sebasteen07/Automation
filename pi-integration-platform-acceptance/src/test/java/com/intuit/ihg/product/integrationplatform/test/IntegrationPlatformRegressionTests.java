@@ -3,6 +3,7 @@ package com.intuit.ihg.product.integrationplatform.test;
 import java.awt.Robot;
 import java.awt.event.KeyEvent;
 import java.io.File;
+import java.lang.reflect.Method;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.LocalTime;
@@ -110,7 +111,7 @@ import com.medfusion.product.practice.api.pojo.Practice;
 public class IntegrationPlatformRegressionTests extends BaseTestNGWebDriver {
 	@Test(enabled = true, dataProvider = "channelVersion", groups = {
 			"RegressionTests" }, retryAnalyzer = RetryAnalyzer.class)
-	public void testEHDCSendCCD(String version) throws Exception {
+	public void testEHDCSendCCD(String version,Method method) throws Exception {
 		if (version.equals("v2"))
 			throw new SkipException("Test skipped as version is:" + version);
 		log("Test Case: send a CCD and check in patient Portal");
@@ -136,7 +137,7 @@ public class IntegrationPlatformRegressionTests extends BaseTestNGWebDriver {
 			log("Step 3: Get processing status until it is completed");
 			Thread.sleep(60000);
 		} else {
-			ccd = CCDPayload.getCCDPayloadV3(testData);
+			ccd = CCDPayload.getCCDPayloadV3(testData,method.getName());
 			Thread.sleep(6000);
 			log("Payload" + ccd);
 			log("Wait to generate CCD Payload");
@@ -3222,7 +3223,7 @@ public class IntegrationPlatformRegressionTests extends BaseTestNGWebDriver {
 			restApiCall = restApiCall.replace("ccd", "healthdata");
 			log("restApiCall=" + restApiCall);
 		}
-		
+
 		log("Step 2: Generate Since time for the GET API Call.");
 		LocalTime midnight = LocalTime.MIDNIGHT;
 		LocalDate today = LocalDate.now(ZoneId.of("America/New_York"));
@@ -3849,6 +3850,64 @@ public class IntegrationPlatformRegressionTests extends BaseTestNGWebDriver {
 
 		aDUtils.checkAppointmentV3(testData, driver);
 
+	}
+
+	@Test(enabled = true, groups = {
+			"RegressionTests" }, retryAnalyzer = RetryAnalyzer.class)
+	public void testEHDCSendCCDLargeSize(Method  method) throws Exception {
+		log("Test Case: send a CCD and check in patient Portal");
+		log("Execution Environment: " + IHGUtil.getEnvironmentType());
+		log("Execution Browser: " + TestConfig.getBrowserType());
+		log("Method Name: " + method.getName());
+
+		String ccd;
+		LoadPreTestData LoadPreTestDataObj = new LoadPreTestData();
+		EHDC testData = new EHDC();
+		LoadPreTestDataObj.loadEHDCDataFromProperty(testData);
+		log("Attachment File Path: " + testData.ccdXMLPathLargeSize);
+		log("Step 1: Setup Oauth client");
+		RestUtils.oauthSetup(testData.OAuthKeyStore, testData.OAuthProperty, testData.OAuthAppToken,
+				testData.OAuthUsername, testData.OAuthPassword);
+
+		ccd = CCDPayload.getCCDPayloadV3(testData,method.getName());
+		Thread.sleep(6000);
+		log("Payload" + ccd);
+		log("Wait to generate CCD Payload");
+		log("Step 2: Do Message Post Request");
+		log("ResponsePath: " + testData.ResponsePath);
+		String processingUrl = RestUtils.setupHttpPostRequest(testData.RestUrlV3, ccd, testData.ResponsePath);
+
+		log("Processing URL: " + processingUrl);
+		log("Step 3: Get processing status until it is completed");
+		Thread.sleep(60000);
+		log("Step 4: Login to Patient Portal");
+		JalapenoLoginPage loginPage = new JalapenoLoginPage(driver, testData.URL);
+		JalapenoHomePage homePage = loginPage.login(testData.UserName, testData.Password);
+
+		log("Detecting if Home Page is opened");
+		assertTrue(homePage.isHomeButtonPresent(driver));
+
+		log("Click on messages solution");
+		JalapenoMessagesPage messagesPage = homePage.showMessages(driver);
+		assertTrue(messagesPage.areBasicPageElementsPresent(), "Inbox failed to load properly.");
+
+		log("Step 5: Validate message subject and send date");
+		Thread.sleep(1000);
+		log("Message Date" + IHGUtil.getEstTiming());
+		assertTrue(messagesPage.isMessageDisplayed(driver, "You have a new health data summary"));
+		log("CCD sent date & time is : " + messagesPage.returnMessageSentDate());
+
+		log("Step 6: Click on link View health data");
+		JalapenoCcdViewerPage jalapenoCcdPage = messagesPage.findCcdMessage(driver);
+
+		log("Step 7: Verify if CCD Viewer is loaded and click Close Viewer");
+		assertTrue(jalapenoCcdPage.areBasicPageElementsPresent());
+		messagesPage = jalapenoCcdPage.closeCcd(driver);
+
+		log("Step 8: Logging out");
+		assertTrue(messagesPage.areBasicPageElementsPresent());
+		homePage = messagesPage.backToHomePage(driver);
+		loginPage = homePage.clickOnLogout();
 	}
 
 }
