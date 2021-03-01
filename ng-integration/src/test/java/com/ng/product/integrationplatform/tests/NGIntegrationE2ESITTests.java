@@ -4568,9 +4568,14 @@ public class NGIntegrationE2ESITTests extends BaseTestNGWebDriver{
 		log("Appointment Date is "+new SimpleDateFormat("M/d/yy hh:mm").format(date));
 		appointmentDate = CommonUtils.changeESTtoIST(new SimpleDateFormat("M/d/yy hh:mm").format(date));
 		
-		log("Expected appointment Date is "+appointmentDate.substring(0,appointmentDate.lastIndexOf(" ")));
-		log("Expected appointment Time is "+appointmentDate.substring(appointmentDate.lastIndexOf(" ")+1));
-		CommonFlows.verifyAppointmentReceivedinPortal(PropertyLoaderObj, driver, url, username, appointmentDate.substring(0,appointmentDate.lastIndexOf(" ")),appointmentDate.substring(appointmentDate.lastIndexOf(" ")+1),appointmentResponse);
+		log("Expected appointment Date is "+appointmentDate.substring(0,appointmentDate.lastIndexOf(" ")));		
+		String expectedTime =appointmentDate.substring(appointmentDate.lastIndexOf(" ")+1);
+		
+		if(expectedTime.startsWith("0"))
+			expectedTime = appointmentDate.substring(appointmentDate.lastIndexOf(" ")+2);
+		log("Expected appointment Time is "+expectedTime);
+		
+		CommonFlows.verifyAppointmentReceivedinPortal(PropertyLoaderObj, driver, url, username, appointmentDate.substring(0,appointmentDate.lastIndexOf(" ")),expectedTime,appointmentResponse);
 		Log4jUtil.log("Test Case End: The patient is able to request for appointment and practice user is able to book appointment and send response to patient");
 	}
 	
@@ -4677,10 +4682,15 @@ public class NGIntegrationE2ESITTests extends BaseTestNGWebDriver{
 		appointmentDate = CommonUtils.changeESTtoIST(new SimpleDateFormat("M/d/yy hh:mm").format(date));
 		
 		log("Expected appointment Date is "+appointmentDate.substring(0,appointmentDate.lastIndexOf(" ")));
-		log("Expected appointment Time is "+appointmentDate.substring(appointmentDate.lastIndexOf(" ")+1));
+		String expectedTime = appointmentDate.substring(appointmentDate.lastIndexOf(" ")+1);
+		
+		if(expectedTime.startsWith("0"))
+			expectedTime = appointmentDate.substring(appointmentDate.lastIndexOf(" ")+2);		
+		log("Expected appointment Time is "+expectedTime);
+		
 		logStep("Verfiy appointment is received in Portal");
         Thread.sleep(70000);
-		CommonFlows.verifyAppointmentReceivedinPortal(PropertyLoaderObj, driver, url, username, appointmentDate.substring(0,appointmentDate.lastIndexOf(" ")),appointmentDate.substring(appointmentDate.lastIndexOf(" ")+1),"");
+		CommonFlows.verifyAppointmentReceivedinPortal(PropertyLoaderObj, driver, url, username, appointmentDate.substring(0,appointmentDate.lastIndexOf(" ")),expectedTime,"");
 		
 		logStep("Delete booked appointment from EPM Appointment Book having appointment ID "+EPMAppointmenttId);
 		NGAPIUtils.updateLoginDefaultTo("EnterpriseGateway",enterpriseId,practiceId);
@@ -4693,7 +4703,7 @@ public class NGIntegrationE2ESITTests extends BaseTestNGWebDriver{
 		
 		Thread.sleep(90000);
 		logStep("Verify appointment is deleted from Portal");
-		CommonFlows.verifyAppointmentDeletedinPortal(PropertyLoaderObj, driver, url, username,appointmentDate.substring(0,appointmentDate.lastIndexOf(" ")),appointmentDate.substring(appointmentDate.lastIndexOf(" ")+1));		
+		CommonFlows.verifyAppointmentDeletedinPortal(PropertyLoaderObj, driver, url, username,appointmentDate.substring(0,appointmentDate.lastIndexOf(" ")),expectedTime);		
 		log("Test Case End: The practice user is able to book multiple appointments for patient and delete appointment from EPM appointment book successfully");
 	}
 	
