@@ -4563,7 +4563,7 @@ public class NGIntegrationE2ESITTests extends BaseTestNGWebDriver{
 		String appointmentDate = DBUtils.executeQueryOnDB("NGCoreDB","select appt_date from appointments where appt_id ='"+EPMAppointmenttId+"'");
 		appointmentDate = appointmentDate.substring(0, 4)+"/"+appointmentDate.substring(4, 6)+"/"+appointmentDate.substring(6);
 				
-		appointmentDate = appointmentDate.replaceAll("/", "-")+"T00:00:00Z";
+		appointmentDate = appointmentDate.replaceAll("/", "-")+"T"+apptTime+"Z";
         Date date = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss'Z'").parse(appointmentDate);
 		log("Appointment Date is "+new SimpleDateFormat("M/d/yy hh:mm").format(date));
 		appointmentDate = CommonUtils.changeESTtoIST(new SimpleDateFormat("M/d/yy hh:mm").format(date));
