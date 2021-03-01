@@ -3773,12 +3773,14 @@ public class NGIntegrationE2ESITTests extends BaseTestNGWebDriver{
 	    
 	    logStep("Compose Message with High Priority and send it to enrolled patient with “Do not add to chart” option selected in Send & Chart button.");
         NGAPIUtils.updateLoginDefaultTo("EnterpriseGateway",enterpriseId,practiceId);    
-    	String comm_id =NGAPIFlows.postSecureMessage(PropertyLoaderObj,"HighPriority",person_id,practiceId,userId,providerName,locationName, "EHR", "DoNotAddToEncounter","PracticeUser","","","");		
-
+    	String comm_id =NGAPIFlows.postSecureMessage(PropertyLoaderObj,"HighPriority",person_id,practiceId,userId,providerName,locationName, "EHR", "DoNotAddToEncounter","PracticeUser","","","");
+    	
     	String subjectQuery ="select subject from ngweb_communications where comm_id ='"+comm_id+"'";
-    	String bodyQuery ="select body from ngweb_communications where comm_id ='"+comm_id+"'";	
+    	String bodyQuery ="select body from ngweb_communications where comm_id ='"+comm_id+"'";
+    	String rootThreadIdQuery ="select root_thread_id from ngweb_communications where comm_id ='"+comm_id+"'";
     	String subject = DBUtils.executeQueryOnDB("NGCoreDB",subjectQuery);
     	String body = DBUtils.executeQueryOnDB("NGCoreDB",bodyQuery);
+    	String rootThreadId = DBUtils.executeQueryOnDB("NGCoreDB",rootThreadIdQuery);
     	
     	logStep("Verify the processing status of message");
     	CommonFlows.verifyMessageProcessingStatus(PropertyLoaderObj, person_id, practiceId, comm_id, integrationPracticeID,"");
@@ -3798,7 +3800,7 @@ public class NGIntegrationE2ESITTests extends BaseTestNGWebDriver{
 		}    
 	    String replyMessageID = CommonFlows.verifyMessageINInbox(PropertyLoaderObj,driver,url,username,PropertyLoaderObj.getPassword(),subject,body,comm_id,messageID,integrationPracticeID,"SentByPracticeUser","");
 	    Thread.sleep(60000);
-	    CommonFlows.verifyReplyReceivedAtNGCore(replyMessageID,"Re: "+subject, JalapenoMessagesPage.getPatientReply());
+	    CommonFlows.verifyReplyReceivedAtNGCore(replyMessageID,comm_id,rootThreadId.toUpperCase(),"Re: "+subject, JalapenoMessagesPage.getPatientReply());
 	    log("Test Case End: The practice user is able to compose a message with 'high priority' flag on and send it to enrolled patient with “Do not add to chart” option selected in Send & Chart button and patient reply to message sent by Practice User");	
 	}
 	
@@ -4008,9 +4010,11 @@ public class NGIntegrationE2ESITTests extends BaseTestNGWebDriver{
         String comm_id =NGAPIFlows.postSecureMessage(PropertyLoaderObj,"SentByOnlineProfile",person_id,practiceId,userId,providerName,locationName, "EHR", "DoNotAddToEncounter","PracticeUser","","","");		
 
     	String subjectQuery ="select subject from ngweb_communications where comm_id ='"+comm_id+"'";
-    	String bodyQuery ="select body from ngweb_communications where comm_id ='"+comm_id+"'";	
+    	String bodyQuery ="select body from ngweb_communications where comm_id ='"+comm_id+"'";
+    	String rootThreadIdQuery ="select root_thread_id from ngweb_communications where comm_id ='"+comm_id+"'";
     	String subject = DBUtils.executeQueryOnDB("NGCoreDB",subjectQuery);
     	String body = DBUtils.executeQueryOnDB("NGCoreDB",bodyQuery);
+    	String rootThreadId = DBUtils.executeQueryOnDB("NGCoreDB",rootThreadIdQuery);
     	
     	logStep("Verify the processing status of message");
     	CommonFlows.verifyMessageProcessingStatus(PropertyLoaderObj, person_id, practiceId, comm_id, integrationPracticeID,"");
@@ -4031,7 +4035,7 @@ public class NGIntegrationE2ESITTests extends BaseTestNGWebDriver{
 
     	String replyMessageID = CommonFlows.verifyMessageINInbox(PropertyLoaderObj,driver,url,username,PropertyLoaderObj.getPassword(),subject,body,comm_id,messageID,integrationPracticeID,"SentByOnlineProfile","");
 	    Thread.sleep(60000);
-		CommonFlows.verifyReplyReceivedAtNGCore(replyMessageID,"Re: "+subject, JalapenoMessagesPage.getPatientReply());
+		CommonFlows.verifyReplyReceivedAtNGCore(replyMessageID,comm_id,rootThreadId.toUpperCase(),"Re: "+subject, JalapenoMessagesPage.getPatientReply());
     	log("Test Case End: The practice user is able to send a message with Onine Profile as sender of message and patient is able to reply to that message.");	
 	}
 	
@@ -4152,7 +4156,7 @@ public class NGIntegrationE2ESITTests extends BaseTestNGWebDriver{
     	String replyMessageID =CommonFlows.verifyMessageINInbox(PropertyLoaderObj,driver,url,username,PropertyLoaderObj.getPassword(),subject,body,comm_id,messageIDAtMF,integrationPracticeID,"SentByAlias","");
 
 		Thread.sleep(60000);
-		CommonFlows.verifyReplyReceivedAtNGCore(replyMessageID, subject, JalapenoMessagesPage.getPatientReply());
+		CommonFlows.verifyReplyReceivedAtNGCore(replyMessageID, comm_id,messageID.toUpperCase(),"Re: "+ subject, JalapenoMessagesPage.getPatientReply());
 	    log("Test Case End: The practice user is able to send a message with Alias Name as sender of message and patient is able to reply to that message.");	
 	}
 
