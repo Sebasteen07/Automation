@@ -197,6 +197,7 @@ public class HomePage extends PSS2MainPage {
 	
 		ArrayList<WebElement> webElementsList = new ArrayList<WebElement>();
 		webElementsList.add(upCmgAptLabel);
+		webElementsList.add(pastAptLabel);
 		return assessPageElements(webElementsList);
 	}
 

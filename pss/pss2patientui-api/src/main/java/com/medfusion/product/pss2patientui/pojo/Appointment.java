@@ -117,11 +117,12 @@ public class Appointment {
 	private boolean isstartpointPresent = false;
 	private boolean resourcetoggleStatus = false;
 	private boolean accepttoggleStatus = false;
-
+ 
 
 	private boolean showCancellationRescheduleReason = false;
 	private boolean showCancellationReasonPM = false;
 	private boolean isFutureApt = false;
+	private boolean pcptoggleState = false;
 
 
 	public Appointment(String providerConfig, String usernameConfig, String passwordConfig, String datetimeConfig, String locationConfig,
@@ -136,6 +137,14 @@ public class Appointment {
 	}
 
 	public Appointment() {}
+	public boolean isPcptoggleState() {
+		return pcptoggleState;
+	}
+
+	public void setPcptoggleState(boolean pcptoggleState) {
+		this.pcptoggleState = pcptoggleState;
+	}
+
 
 	public String getPopUpMessege() {
 		return popUpMessege;

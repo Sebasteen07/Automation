@@ -50,6 +50,12 @@ public class AdminAppointment extends SettingsTab {
 
 	@FindBy(how = How.XPATH, using = "//body/app[1]/layout[1]/div[1]/main[1]/div[2]/div[1]/div[1]/div[1]/section[1]/div[1]/div[1]/div[2]/div[5]/div[1]/form[1]/div[3]/div[1]/div[1]/label[1]/i[1]")
 	private WebElement allowPCP;
+	
+	@FindBy(how = How.XPATH, using = "//*[@id='appt']/div/form[1]/div[3]/div/div/label[1]/i")
+	private WebElement allowPCP1;
+	
+	@FindBy(how = How.XPATH, using = "//input[@id='allowpcp']")
+	private WebElement allowPCPToggle;
 
 	@FindBy(how = How.ID, using = "searchlocation")
 	private WebElement searchLocation;
@@ -80,6 +86,9 @@ public class AdminAppointment extends SettingsTab {
 
 	@FindBy(how = How.XPATH, using = "//*[@id=\"appt\"]/form/fieldset/div/div/button")
 	private WebElement buttonSave;
+	
+	@FindBy(how = How.XPATH, using = "//*[@id='appt']/div/form[2]/fieldset/div/div/button")
+	private WebElement pcpbuttonSave;
 
 	public AdminAppointment(WebDriver driver) {
 		super(driver);
@@ -166,6 +175,21 @@ public class AdminAppointment extends SettingsTab {
 		 Thread.sleep(1000);
 	}
 
+	public boolean toggleAllowPCPONOF() throws InterruptedException {
+		pageDown();
+		log(allowPCPToggle.getAttribute("ng-reflect-model"));
+		boolean bool = Boolean.parseBoolean(allowPCPToggle.getAttribute("ng-reflect-model"));
+		return bool;
+	}
+	public void pcptoggleclick() throws InterruptedException {
+		// allowPCP.click();
+		javascriptClick(allowPCP1);
+		// allowPCP1.click();
+		log("Clicked on PCP ON....................");
+		pcpbuttonSave.click();
+		Thread.sleep(5000);
+		log("Clicked on Save Button...............");
+	}
 	public Boolean isShowCancellationRescheduleReason() {
 		// commonMethods.highlightElement(showCancelReschedReasonLabel);
 		String str = showCancelReschedReason.getAttribute("ng-reflect-model");

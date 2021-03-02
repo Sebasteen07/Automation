@@ -4491,6 +4491,25 @@ public class PSS2PatientPortalAcceptanceTests extends BaseTestNGWebDriver {
 			Log4jUtil.log("No Provider avaliable Beacuase age Rule");
 		}
 	}
+
+	@Test(enabled = true, groups = {"AcceptanceTests"}, retryAnalyzer = RetryAnalyzer.class)
+	public void testShareONGW() throws Exception {
+		log(" To Verify that PCP is followed for patient on PSS2.0 patient portal UI");
+		log("Step 1: Load test Data from External Property file.");
+		log("Step 1.1: set test data for existing patient. ");
+		PSSPropertyFileLoader propertyData = new PSSPropertyFileLoader();
+		Appointment testData = new Appointment();
+		AdminUser adminuser = new AdminUser();
+
+		propertyData.setAdminGW(adminuser);
+		propertyData.setAppointmentResponseGW(testData);
+		adminuser.setIsExisting(true);
+
+		PSSPatientUtils psspatientutils = new PSSPatientUtils();
+		PSSAdminUtils pssadminutils = new PSSAdminUtils();
+		pssadminutils.allowpcp(driver, adminuser, testData);
+
+}
 }
 
 
