@@ -19,13 +19,13 @@ public class NGAppointmentRequestV2Step1 extends JalapenoMenu {
 	@FindBy(how = How.XPATH, using = "//a[contains(text(),'Previous Requests')]")
 	private WebElement previousAppoitmentRequestsButton;
 
-	@FindBy(how = How.CLASS_NAME, using = "provsearch")
+	@FindBy(how = How.ID, using = "provsearch")
 	private WebElement providerSearchInput;
 
 	@FindBy(how = How.ID, using = "showall")
 	private WebElement showAllButton;
 
-	@FindBy(how = How.XPATH, using = "(//div[@id='locationProviderResultList']/ol/li[1]/ul/li/label/span)")
+	@FindBy(how = How.XPATH, using = "//div[@id='locationProviderResultList']/ol/li[1]/ul/li/label/span")
 	private WebElement doctorSelect;
 
 	@FindBy(how = How.ID, using = "cancel_button")
@@ -34,13 +34,13 @@ public class NGAppointmentRequestV2Step1 extends JalapenoMenu {
 	@FindBy(how = How.ID, using = "continue_button")
 	private WebElement continueButton;
 	
-	@FindBy(how = How.XPATH, using = "//*[contains(text(),'Enter provider name or location')]")
+	@FindBy(how = How.CLASS_NAME, using = "ng-select-container ng-appearance-outline")
 	private WebElement providerDropdown;
 	
-	@FindBy(how = How.XPATH, using = "//input[@type='search']")
+	@FindBy(how = How.XPATH, using = "//input[@role='combobox']")
 	private WebElement providerTextBox;
 	
-	@FindBy(how = How.CLASS_NAME, using = "ui-select-choices-row-inner")
+	@FindBy(how = How.XPATH, using = "//div[@role='option']")
 	private WebElement selectProvider;
 
 	public NGAppointmentRequestV2Step1(WebDriver driver) {
@@ -93,8 +93,6 @@ public class NGAppointmentRequestV2Step1 extends JalapenoMenu {
 	
 	public void chooseProvider(String providerName) throws InterruptedException {
 		IHGUtil.PrintMethodName();
-		providerDropdown.click();
-		Thread.sleep(5000);
 		providerTextBox.sendKeys(providerName);
 		Thread.sleep(3000);
 		selectProvider.click();

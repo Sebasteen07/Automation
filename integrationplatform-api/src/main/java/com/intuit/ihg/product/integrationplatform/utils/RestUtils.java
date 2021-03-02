@@ -3783,7 +3783,7 @@ public class RestUtils {
 		Assert.assertTrue(found, "CCDA Request was not found in the response XML");
 	}
 
-	public static String isReplyPresentReturnMessageID(String responsePath, String messageIdentifier,
+	public static String isReplyPresentReturnMessageThreadID(String responsePath, String messageIdentifier,
 			String expectedBody) throws ParserConfigurationException, SAXException, IOException {
 		Document doc = buildDOMXML(responsePath);
 
@@ -3863,6 +3863,32 @@ public class RestUtils {
 		Assert.assertTrue(found, "Prescription Reason was not found in response XML");
 		Log4jUtil.log("response is ok");
 		return PrescriptionID;
+	}
+	
+	public static String isReplyPresentReturnMessageID(String responsePath, String messageIdentifier,String expectedBody) throws ParserConfigurationException, SAXException, IOException {
+		Document doc = buildDOMXML(responsePath);
+
+		Log4jUtil.log("finding sent message");
+		boolean found = false;
+		String MessageID = null;
+		NodeList nodes = doc.getElementsByTagName(IntegrationConstants.QUESTION_SUBJECT);
+		Node node = null;
+		for (int i = 0; i < nodes.getLength(); i++) {
+			node = nodes.item(i);
+			Log4jUtil.log("Searching: " + node.getChildNodes().item(0).getTextContent() + ", to be found: "
+					+ (messageIdentifier.toString()));
+			if (node.getChildNodes().item(0).getTextContent().contains(messageIdentifier.toString())) {
+				Element question = (Element) node.getParentNode();
+				Node message = question.getElementsByTagName(IntegrationConstants.QUESTION_MESSAGE).item(0);
+				Assert.assertEquals(message.getChildNodes().item(0).getTextContent(), expectedBody,
+						"Received reply is not the same as sent");
+				MessageID = question.getAttribute(IntegrationConstants.MESSAGE_ID);
+				found = true;
+				break;
+			}
+		}
+		Assert.assertTrue(found, "Reply was not found in response XML");
+		return MessageID;
 	}
 
 }

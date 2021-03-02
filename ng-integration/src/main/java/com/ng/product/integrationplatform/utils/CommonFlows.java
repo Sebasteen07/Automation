@@ -634,11 +634,11 @@ public class CommonFlows {
 	   CommonUtils.VerifyTwoValues(actualCommCategory,"equals",comm_category);
    }
    
-   public static void verifyReplyReceivedAtNGCore(String comm_id,String subject,String body) throws Throwable{
-	   String ActualSubject = DBUtils.executeQueryOnDB("NGCoreDB","select subject from ngweb_communications where parent_id ='"+comm_id+"'");
+   public static void verifyReplyReceivedAtNGCore(String comm_id, String parentId, String rootThreadID, String subject,String body) throws Throwable{
+	   String ActualSubject = DBUtils.executeQueryOnDB("NGCoreDB","select subject from ngweb_communications where comm_id ='"+comm_id+"'");
 	   if(ActualSubject.isEmpty()){
 			for (int i = 0; i < arg_timeOut; i++) {
-				ActualSubject = DBUtils.executeQueryOnDB("NGCoreDB","select subject from ngweb_communications where parent_id ='"+comm_id+"'");
+				ActualSubject = DBUtils.executeQueryOnDB("NGCoreDB","select subject from ngweb_communications where comm_id ='"+comm_id+"'");
 				if (!ActualSubject.isEmpty()) {
 					Log4jUtil.log("Message deilvered to NG Core");
 	                break;
@@ -650,12 +650,17 @@ public class CommonFlows {
 		}
 	   
 	   CommonUtils.VerifyTwoValues(ActualSubject,"equals",subject);
-	   String ActualBody = DBUtils.executeQueryOnDB("NGCoreDB","select body from ngweb_communications where parent_id ='"+comm_id+"'");
+	   String ActualBody = DBUtils.executeQueryOnDB("NGCoreDB","select body from ngweb_communications where comm_id ='"+comm_id+"'");
 	   CommonUtils.VerifyTwoValues(ActualBody.replace("\r", "").replace("\n", ""),"equals",body);
-	   String senderType = DBUtils.executeQueryOnDB("NGCoreDB","select sender_type from ngweb_communications where parent_id ='"+comm_id+"'");
+	   String senderType = DBUtils.executeQueryOnDB("NGCoreDB","select sender_type from ngweb_communications where comm_id ='"+comm_id+"'");
 	   CommonUtils.VerifyTwoValues(senderType,"equals","2");	   
-	   String bulk = DBUtils.executeQueryOnDB("NGCoreDB","select isBulk from ngweb_communications where parent_id ='"+comm_id+"'");
+	   String bulk = DBUtils.executeQueryOnDB("NGCoreDB","select isBulk from ngweb_communications where comm_id ='"+comm_id+"'");
 	   CommonUtils.VerifyTwoValues(bulk,"equals","false");
+	   
+	   String ActualParentId = DBUtils.executeQueryOnDB("NGCoreDB","select parent_id from ngweb_communications where comm_id ='"+comm_id+"'");
+	   CommonUtils.VerifyTwoValues(ActualParentId,"equals",parentId);
+	   String ActualRootThreadID = DBUtils.executeQueryOnDB("NGCoreDB","select root_thread_id from ngweb_communications where comm_id ='"+comm_id+"'");
+	   CommonUtils.VerifyTwoValues(ActualRootThreadID,"equals",rootThreadID);
    }
    
    public static void verifyAppointmentRequestReceived(String appointment_id,String Reason,String StartTime, String EndTime, String Days, String practiceId) throws Throwable{
