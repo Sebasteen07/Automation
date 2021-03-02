@@ -16,6 +16,7 @@ public class LoadPreTestData {
 		testData.UserName = propertyData.getUserNameCCD();
 		testData.Password = propertyData.getPasswordCCD();
 		testData.RestUrl = propertyData.getRestUrlCCD();
+		testData.RestUrlV3 = propertyData.getRestUrlV3CCD();
 		testData.EPracticeName = propertyData.getEPracticeNameCCD();
 		testData.ccdXMLPath = propertyData.getCCDPATH3();
 		testData.CCDPath = propertyData.getCCDPath();
@@ -45,6 +46,7 @@ public class LoadPreTestData {
 		testData.City = propertyData.getCityCCD();
 		testData.State = propertyData.getStateCCD();
 		testData.Country = propertyData.getCountryCCD();
+		testData.ccdXMLPathLargeSize = propertyData.getCCDPATHLargeSize();
 
 		return testData;
 	}
@@ -89,6 +91,7 @@ public class LoadPreTestData {
 
 		PropertyFileLoader propertyData = new PropertyFileLoader();
 		testData.PULLAPI_URL = propertyData.getPULLAPI_URL_MU2();
+		testData.PULLAPI_URLV3 = propertyData.getPULLAPI_URLV3_MU2();
 		testData.OAUTH_PROPERTY = propertyData.getOAuthProperty();
 		testData.OAUTH_KEYSTORE = propertyData.getOAuthKeyStore();
 		testData.OAUTH_APPTOKEN = propertyData.getOAuthAppToken_MU2();
@@ -262,6 +265,8 @@ public class LoadPreTestData {
 		testData.portalURL = propertyData.getPracticePortalURL_AD();
 		testData.practiceUserName = propertyData.getProtalUserName_AD();
 		testData.practicePassword = propertyData.getPortalPassword_AD();
+		testData.AppointmentRequestV3URL = propertyData.getAppointmentRequestV3URL();
+		testData.PATIENT_INVITE_RESTV3URL = propertyData.getPATIENT_INVITE_RESTV3URL();
 		return testData;
 	}
 

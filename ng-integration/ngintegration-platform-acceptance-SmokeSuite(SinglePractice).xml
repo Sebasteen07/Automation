@@ -23,6 +23,7 @@
 	    		<include name="testAEnrollPatientHavingInvalidZipToMFPortal"/>
 	    		<include name="testADeactivatePatientEnrollment"/>
 	    		<include name="testALACreateTrustedRepresentativeOnly"/>
+	    		<include name="testBELEAutoPatientEnrollmentP2"/>
 	    		<include name="testCCDPracticeLevelEnrollmentOnDemandCCD"/>
 	    		<include name="testCCDMSUCCD"/> 
 	    		<include name="testCCDLockedEncounterCCD"/>

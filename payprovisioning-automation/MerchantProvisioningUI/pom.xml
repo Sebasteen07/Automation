@@ -1,0 +1,100 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
+    <modelVersion>4.0.0</modelVersion>
+
+   <parent>
+        <groupId>com.intuit.ihg</groupId>
+        <artifactId>ihg-depot-qa-parent-pom</artifactId>
+        <version>17.3.0rc-SNAPSHOT</version>
+    </parent>
+    
+    <groupId>com.mfpay</groupId>
+    <artifactId>MerchantProvisioningUI</artifactId>
+    <version>0.0.1-SNAPSHOT</version>
+    <packaging>jar</packaging>
+    <name>MerchantProvisioningUI</name>
+
+   <properties>
+    	<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+    	<payreporting.version>2.2-SNAPSHOT</payreporting.version>
+    </properties>
+    
+	<repositories>
+        <repository>
+            <id>IHG-nexus</id>
+            <name>IHG-nexus</name>
+            <url>http://maven.qhg.local/nexus/content/groups/qhg-dev/</url>
+        </repository>
+    </repositories>
+	
+	<dependencies>     
+ 
+        <dependency>
+        	<groupId>com.intuit.ifs.csscat.core</groupId>
+			<artifactId>Core</artifactId>
+			<version>2.3-SNAPSHOT</version>
+		</dependency>
+<dependency>
+			<groupId>org.slf4j</groupId>
+			<artifactId>slf4j-jdk14</artifactId>
+			<version>1.7.7</version>
+		</dependency>
+	</dependencies>
+	<build>
+		<plugins>
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-failsafe-plugin</artifactId>
+				<version>2.9</version>
+				<executions>
+					<execution>
+						<phase>integration-test</phase>
+						<configuration>
+							<failBuild>false</failBuild>
+							<!--<groups>${testGroups}</groups> -->
+							<systemPropertyVariables>
+								<testRoot>${basedir}</testRoot>
+								<org.uncommons.reportng.escape-output>false</org.uncommons.reportng.escape-output>
+								<testResultScreenshots>${test.result.screenshots}</testResultScreenshots>
+                                <testResultVideos>${test.result.videos}</testResultVideos>
+							</systemPropertyVariables>
+							<properties>
+								<usedefaultlisteners>false</usedefaultlisteners>
+								<workingDirectory>target/surefire-reports/</workingDirectory>
+							</properties>
+							<configfailurepolicy>continue</configfailurepolicy>
+						</configuration>
+						<goals>
+							<goal>integration-test</goal>
+						</goals>
+					</execution>
+				</executions>
+			</plugin>
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-jar-plugin</artifactId>
+				<version>2.3.2</version>
+				<executions>
+					<execution>
+						<phase>package</phase>
+						<goals>
+							<goal>test-jar</goal>
+						</goals>
+					</execution>
+				</executions>
+				<configuration>
+				 <source>1.7</source>
+                 <target>1.7</target>
+					<outputDirectory>target/autolab</outputDirectory>
+					<archive>
+						<manifest>
+							<mainClass>com.intuit.ifs.csscat.core.RunTestNGSuite</mainClass>
+						</manifest>
+					</archive>
+				</configuration>
+			</plugin>
+			
+		</plugins>
+	</build>
+</project>
