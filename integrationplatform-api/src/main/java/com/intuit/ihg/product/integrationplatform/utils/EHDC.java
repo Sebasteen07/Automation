@@ -37,5 +37,6 @@ public class EHDC {
 	public String Country = "";
 	public String PracticePatientId = "";
 	public String EPracticeName = "";
+	public String ccdXMLPathLargeSize="";
 	
 }

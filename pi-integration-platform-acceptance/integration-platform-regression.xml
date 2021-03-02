@@ -40,6 +40,7 @@
 				<include name="testUpdatePharmacies"/>
 				<include name="testAppointmentRequestForExistingPatientV3"/>
 				<include name="testAppointmentRequestForNewSelfPatientV3"/>
+				<include name="testEHDCSendCCDLargeSize"/>
       		</methods>
 	</classes>
 </test>

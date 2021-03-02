@@ -79,7 +79,7 @@ public class JalapenoMessagesPage extends JalapenoMenu {
 	@FindBy(how = How.XPATH, using = "//button[@class='btn btn-default'][2]")
 	private WebElement archiveButton;
 	
-	@FindBy(how = How.XPATH, using = "//span[@class='messageFrom ng-binding']")
+	@FindBy(how = How.XPATH, using = "//span[@class='messageFrom']")
 	private WebElement senderName;
 
 	private static final int maxCount = 15;

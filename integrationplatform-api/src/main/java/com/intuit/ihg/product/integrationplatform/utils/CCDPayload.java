@@ -32,7 +32,8 @@ public class CCDPayload {
 
 			String schema = "http://schema.intuit.com/health/ccd/v1";
 			Element mainRootElement = doc.createElementNS(schema, "CcdExchange");
-			mainRootElement.setAttributeNS("http://www.w3.org/2000/xmlns/", "xmlns:xsi", "http://www.w3.org/2001/XMLSchema-instance");
+			mainRootElement.setAttributeNS("http://www.w3.org/2000/xmlns/", "xmlns:xsi",
+					"http://www.w3.org/2001/XMLSchema-instance");
 			doc.appendChild(mainRootElement);
 
 			// CcdMessageHeaders
@@ -42,7 +43,7 @@ public class CCDPayload {
 			Sender.setAttribute("deviceName", testData.deviceName);
 			Sender.setAttribute("deviceVersion", testData.deviceVersion);
 			Sender.setAttribute("vendorName", testData.vendorName);
-			CcdMessageHeaders.appendChild(Sender);	
+			CcdMessageHeaders.appendChild(Sender);
 			Element LastUpdated = doc.createElement("LastUpdated");
 			LastUpdated.appendChild(doc.createTextNode("2012-11-21T04:49:50.6773194-08:00"));
 			CcdMessageHeaders.appendChild(LastUpdated);
@@ -136,16 +137,16 @@ public class CCDPayload {
 			Element PracticeProviderId = doc.createElement("PracticeProviderId");
 			PracticeProviderId.appendChild(doc.createTextNode(testData.From));
 			ProviderIdentifier.appendChild(PracticeProviderId);
-			
+
 			Element Ccd = doc.createElement("Ccd");
 			Ccd.setAttribute("xmlns", "");
 			mainRootElement.appendChild(Ccd);
-			
+
 			String workingDir = System.getProperty("user.dir");
 			workingDir = workingDir + testData.ccdXMLPath;
-			
+
 			CcdXmlString = ExternalFileReader.readFromFile(workingDir);
-					
+
 			Element CcdXml = doc.createElement("CcdXml");
 			CcdXml.appendChild(doc.createTextNode(CcdXmlString));
 			Ccd.appendChild(CcdXml);
@@ -166,12 +167,13 @@ public class CCDPayload {
 		}
 		return output;
 	}
-	
+
 	public static String getUUID() {
 		return UUID.randomUUID().toString();
 	}
-	
-	public static String getCCDPayloadV3(EHDC testData) throws InterruptedException, IOException, SAXException {
+
+	public static String getCCDPayloadV3(EHDC testData, String method)
+			throws InterruptedException, IOException, SAXException {
 		try {
 			DocumentBuilderFactory icFactory = DocumentBuilderFactory.newInstance();
 			DocumentBuilder icBuilder;
@@ -275,15 +277,19 @@ public class CCDPayload {
 			Element PracticeProviderId = doc.createElement("PracticeProviderId");
 			PracticeProviderId.appendChild(doc.createTextNode(testData.From));
 			ProviderIdentifier.appendChild(PracticeProviderId);
-					
+
 			Element Ccd = doc.createElement("Ccd");
 			mainRootElement.appendChild(Ccd);
-			
+
 			String workingDir = System.getProperty("user.dir");
-			workingDir = workingDir + testData.ccdXMLPath;
-			
+			if (method.equalsIgnoreCase("testEHDCSendCCD")) {
+				workingDir = workingDir + testData.ccdXMLPath;
+			} else {
+				workingDir = workingDir + testData.ccdXMLPathLargeSize;
+			}
 			CcdXmlString = ExternalFileReader.readFromFile(workingDir);
-					
+			System.out.println("Working directory " + workingDir);
+
 			Element CcdXml = doc.createElement("CcdXml");
 			CcdXml.appendChild(doc.createTextNode(CcdXmlString));
 			Ccd.appendChild(CcdXml);
@@ -304,6 +310,5 @@ public class CCDPayload {
 		}
 		return output;
 	}
-	
-	
+
 }
