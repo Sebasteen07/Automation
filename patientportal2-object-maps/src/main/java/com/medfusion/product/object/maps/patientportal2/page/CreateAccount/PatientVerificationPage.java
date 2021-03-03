@@ -13,6 +13,7 @@ import org.openqa.selenium.support.ui.Select;
 
 import com.medfusion.common.utils.IHGUtil;
 import com.medfusion.product.object.maps.patientportal2.page.MedfusionPage;
+import com.medfusion.product.object.maps.patientportal2.page.ForgotPasswordPage.JalapenoForgotPasswordPage;
 
 public class PatientVerificationPage extends MedfusionPage {
 
@@ -33,6 +34,9 @@ public class PatientVerificationPage extends MedfusionPage {
 
 		@FindBy(how = How.ID, using = "nextStep")
 		private WebElement continueButton;
+		
+		@FindBy(how = How.XPATH, using = "//a[contains(text(),'forgot my user name')]")
+		private WebElement clickForgotPasswordButton;
 
 		public PatientVerificationPage(WebDriver driver, String url) {
 				super(driver, url);
@@ -94,5 +98,12 @@ public class PatientVerificationPage extends MedfusionPage {
 				dobMonth.selectByValue(month);
 				dateOfBirthDayInput.sendKeys(day);
 				dateOfBirthYearInput.sendKeys(year);
+		}
+		
+		public void securityDetailsPageclickForgotPasswordButton() {
+			IHGUtil.PrintMethodName();
+			log("Clicking on Forgot Password button");
+			IHGUtil.waitForElement(driver, 60, clickForgotPasswordButton);
+			clickForgotPasswordButton.click();
 		}
 }

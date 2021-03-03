@@ -3,6 +3,8 @@ package com.medfusion.product.object.maps.patientportal2.page.ForgotPasswordPage
 import java.util.ArrayList;
 
 import com.medfusion.product.object.maps.patientportal2.page.MedfusionPage;
+import com.medfusion.product.object.maps.patientportal2.page.CreateAccount.AuthUserLinkAccountPage;
+
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.FindBy;
@@ -36,5 +38,13 @@ public class JalapenoForgotPasswordPage2 extends MedfusionPage {
 				javascriptClick(closeButton);
 				return PageFactory.initElements(driver, JalapenoLoginPage.class);
 		}
+		
+		public AuthUserLinkAccountPage clickOnCloseButton() {
+
+			IHGUtil.PrintMethodName();
+			log("Clicking on Close button");
+			javascriptClick(closeButton);
+			return PageFactory.initElements(driver, AuthUserLinkAccountPage.class);
+	}
 
 }
