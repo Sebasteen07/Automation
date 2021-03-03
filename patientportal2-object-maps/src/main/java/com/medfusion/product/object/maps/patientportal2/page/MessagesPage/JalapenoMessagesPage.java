@@ -164,7 +164,6 @@ public class JalapenoMessagesPage extends JalapenoMenu {
 		replyButton.click();
 		replyBody.sendKeys(replyContent);
 		Thread.sleep(5000);
-		// sendButton.click();
 		javascriptClick(sendButton);
 		Thread.sleep(5000);
 		boolean value = isElementVisible(successMsg, 10);

@@ -693,16 +693,12 @@ public class IntegrationPlatformAcceptanceTests extends BaseTestNGWebDriver {
 
 		log("Step 18: Click Appt Request tab");
 		ApptRequestSearchPage apptSearch = practiceHome.clickApptRequestTab();
-		// PerformanceReporter.getPageLoadDuration(driver,
-		// ApptRequestSearchPage.PAGE_NAME);
 
 		log("Step 19: Search for appt requests");
 		apptSearch.searchForApptRequests(2, null, null);
 		Thread.sleep(120000);
 		ApptRequestDetailStep1Page detailStep1 = apptSearch.getRequestDetails(reason);
 		assertNotNull(detailStep1, "The submitted patient request was not found in the practice");
-		// PerformanceReporter.getPageLoadDuration(driver,
-		// ApptRequestDetailStep1Page.PAGE_NAME);
 
 		String actualSMSubject = detailStep1.getPracticeMessageSubject();
 		assertTrue(actualSMSubject.contains(arSMSubject), "Expected Secure Message Subject containing [" + arSMSubject
