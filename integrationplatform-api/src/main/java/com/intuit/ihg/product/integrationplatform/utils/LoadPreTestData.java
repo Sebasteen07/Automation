@@ -212,6 +212,9 @@ public class LoadPreTestData {
 			if (channelVersion.contains("v2")) {
 				testData.setRestUrl(propertyData.getRestUrl2_20());
 			}
+			if (channelVersion.contains("v3")) {
+				testData.setRestUrl(propertyData.getRestUrl3_20());
+			}
 			testData.setPracticeId(propertyData.getPracticeId_PIDC_20());
 			testData.setoAuthAppToken(propertyData.getOAuthAppToken_20());
 			testData.setoAuthUsername(propertyData.getOAuthUsername_20());
