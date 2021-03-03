@@ -4627,6 +4627,16 @@ public class NGIntegrationE2ESITTests extends BaseTestNGWebDriver{
 		String resourceName = PropertyLoaderObj.getProperty("ResourceName");
 		
 		String apptTime ="09:30:00";
+		String begintime = apptTime.substring(0, 5).replaceAll(":", "");
+		String deleteINDQuery ="select top 1 delete_ind from appointments where person_id ='"+person_id+"' and begintime ='"+begintime+"' and practice_id ='"+practiceId+"'order by create_timestamp desc";
+		String deleteIND = DBUtils.executeQueryOnDB("NGCoreDB",deleteINDQuery);
+		String ApptIDQuery ="select top 1 appt_id from appointments where person_id ='"+person_id+"' and begintime ='"+begintime+"' and practice_id ='"+practiceId+"' order by create_timestamp desc";
+		
+		if(deleteIND.equalsIgnoreCase("N")){
+			NGAPIUtils.updateLoginDefaultTo("EnterpriseGateway",enterpriseId,practiceId);
+			NGAPIFlows.deleteAppointment(DBUtils.executeQueryOnDB("NGCoreDB",ApptIDQuery));
+		}		
+		
 		logStep("Schedule an appointment for Patient to same slot");
 		NGAPIUtils.updateLoginDefaultTo("EnterpriseGateway",enterpriseId,practiceId);
 		String EPMAppointmenttId =NGAPIFlows.postAppointment(person_id,practiceId,locationName, providerName, eventName, resourceName,2,apptTime,201);
