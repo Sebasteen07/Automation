@@ -437,9 +437,7 @@ public class RestUtils {
 			httpPostReq.addHeader("Content-Type", "application/xml");
 			httpPostReq.addHeader("Noun", "Encounter");
 			httpPostReq.addHeader("Verb", "Completed");
-			// httpPostReq.addHeader("ExternalSystemId", "79");
-			// GW CCD
-			// httpPostReq.addHeader("ExternalSystemId", "82");
+
 			Log4jUtil.log("Post Request Url4: ");
 			HttpResponse resp = oauthClient.httpPostRequest(httpPostReq);
 
