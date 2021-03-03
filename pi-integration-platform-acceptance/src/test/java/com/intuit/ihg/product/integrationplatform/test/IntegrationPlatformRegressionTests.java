@@ -53,6 +53,7 @@ import com.intuit.ihg.product.integrationplatform.utils.MU2Utils;
 import com.intuit.ihg.product.integrationplatform.utils.P2PUnseenMessageList;
 import com.intuit.ihg.product.integrationplatform.utils.PatientFormsExportInfo;
 import com.intuit.ihg.product.integrationplatform.utils.PatientRegistrationUtils;
+import com.intuit.ihg.product.integrationplatform.utils.Patient_Login;
 import com.intuit.ihg.product.integrationplatform.utils.Pharmacies;
 import com.intuit.ihg.product.integrationplatform.utils.PharmacyPayload;
 import com.intuit.ihg.product.integrationplatform.utils.PrecheckAppointmentUtils;
@@ -111,7 +112,7 @@ import com.medfusion.product.practice.api.pojo.Practice;
 public class IntegrationPlatformRegressionTests extends BaseTestNGWebDriver {
 	@Test(enabled = true, dataProvider = "channelVersion", groups = {
 			"RegressionTests" }, retryAnalyzer = RetryAnalyzer.class)
-	public void testEHDCSendCCD(String version,Method method) throws Exception {
+	public void testEHDCSendCCD(String version, Method method) throws Exception {
 		if (version.equals("v2"))
 			throw new SkipException("Test skipped as version is:" + version);
 		log("Test Case: send a CCD and check in patient Portal");
@@ -137,7 +138,7 @@ public class IntegrationPlatformRegressionTests extends BaseTestNGWebDriver {
 			log("Step 3: Get processing status until it is completed");
 			Thread.sleep(60000);
 		} else {
-			ccd = CCDPayload.getCCDPayloadV3(testData,method.getName());
+			ccd = CCDPayload.getCCDPayloadV3(testData, method.getName());
 			Thread.sleep(6000);
 			log("Payload" + ccd);
 			log("Wait to generate CCD Payload");
@@ -3852,9 +3853,8 @@ public class IntegrationPlatformRegressionTests extends BaseTestNGWebDriver {
 
 	}
 
-	@Test(enabled = true, groups = {
-			"RegressionTests" }, retryAnalyzer = RetryAnalyzer.class)
-	public void testEHDCSendCCDLargeSize(Method  method) throws Exception {
+	@Test(enabled = true, groups = { "RegressionTests" }, retryAnalyzer = RetryAnalyzer.class)
+	public void testEHDCSendCCDLargeSize(Method method) throws Exception {
 		log("Test Case: send a CCD and check in patient Portal");
 		log("Execution Environment: " + IHGUtil.getEnvironmentType());
 		log("Execution Browser: " + TestConfig.getBrowserType());
@@ -3869,7 +3869,7 @@ public class IntegrationPlatformRegressionTests extends BaseTestNGWebDriver {
 		RestUtils.oauthSetup(testData.OAuthKeyStore, testData.OAuthProperty, testData.OAuthAppToken,
 				testData.OAuthUsername, testData.OAuthPassword);
 
-		ccd = CCDPayload.getCCDPayloadV3(testData,method.getName());
+		ccd = CCDPayload.getCCDPayloadV3(testData, method.getName());
 		Thread.sleep(6000);
 		log("Payload" + ccd);
 		log("Wait to generate CCD Payload");
@@ -3910,4 +3910,63 @@ public class IntegrationPlatformRegressionTests extends BaseTestNGWebDriver {
 		loginPage = homePage.clickOnLogout();
 	}
 
+	@Test(enabled = true, groups = { "RegressionTests" }, retryAnalyzer = RetryAnalyzer.class)
+	public void testLastLoginEvent() throws Exception {
+
+		log("Test Case: Last Login event data");
+		log("Execution Environment: " + IHGUtil.getEnvironmentType());
+		log("Execution Browser: " + TestConfig.getBrowserType());
+
+		Long timestamp = System.currentTimeMillis();
+
+		log("Step 1: Get Data from property file");
+		LoadPreTestData LoadPreTestDataObj = new LoadPreTestData();
+		Patient_Login testData = new Patient_Login();
+
+		LoadPreTestDataObj.loadLogindata(testData);
+		log("Url: " + testData.Url);
+		log("User Name: " + testData.UserName);
+		log("Password: " + testData.Password);
+		log("RestUrlV3: " + testData.restUrlLogin_V3);
+		log("OAuthProperty: " + testData.OAuthProperty);
+		log("OAuthKeyStore: " + testData.OAuthKeyStore);
+		log("OAuthAppToken: " + testData.OAuthAppToken);
+		log("OAuthUsername: " + testData.OAuthUsername);
+		log("OAuthPassword: " + testData.OAuthPassword);
+		log("ResponsePath: " + testData.ResponsePath);
+
+		log("Step 2: LogIn");
+		JalapenoLoginPage loginPage = new JalapenoLoginPage(driver, testData.Url);
+		JalapenoHomePage homePage = loginPage.login(testData.UserName, testData.Password);
+
+		homePage.clickOnLogout();
+
+		log("Step 2: Setup Oauth client");
+		RestUtils.oauthSetup(testData.OAuthKeyStore, testData.OAuthProperty, testData.OAuthAppToken,
+				testData.OAuthUsername, testData.OAuthPassword);
+		Thread.sleep(2000);
+		//Long since = timestamp / 1000L - 60 * 24;
+
+		log("Step 3: Get processing status until it is completed");
+		boolean completed = false;
+		for (int j = 0; j < 3; j++) {
+			Thread.sleep(60000);
+
+			log("Getting messages since timestamp: " + timestamp);
+
+			RestUtils.setupHttpGetRequest(testData.restUrlLogin_V3 + timestamp, testData.ResponsePath);
+			
+			Thread.sleep(2000);
+			if (RestUtils.isMessageProcessingCompleted(testData.ResponsePath)) {
+				completed = true;
+				break;
+			}
+		}
+		assertTrue(completed);
+		log("Step 4: Validate Event login ");
+		String ResourceType_tag = "ConsumerLoginEvent";
+		RestUtils.isLoginEventValidated(testData.ResponsePath, ResourceType_tag, timestamp);
+		log("Step 5: Event login validated ");
+
+	}
 }

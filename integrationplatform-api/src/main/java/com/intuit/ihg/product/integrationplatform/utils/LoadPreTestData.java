@@ -81,7 +81,7 @@ public class LoadPreTestData {
 		testData.attachmentBody = propertyData.getAttachmentBody();
 		testData.downloadLocation = propertyData.getDownloadFileLocation();
 		testData.portalCategoryType = propertyData.getPortalCategoryType();
-		testData.RestV3Url=propertyData.getRestUrlV3AMDC();
+		testData.RestV3Url = propertyData.getRestUrlV3AMDC();
 		testData.ReadCommuniationURLV3 = propertyData.getReadCommunicationUrlV3AMDC();
 
 		return testData;
@@ -371,7 +371,6 @@ public class LoadPreTestData {
 		testData.ParamName3 = propertyData.getParamName3();
 		testData.RestV3Url = propertyData.getRestUrlV3Bulk();
 
-
 		for (int j = 1; j <= Integer.parseInt(testData.NumberOfParams); j++) {
 			testData.PatientsUserNameArray[j - 1] = (String) propertyData.getClass().getMethod("getUserNameBulk" + j)
 					.invoke(propertyData);
@@ -597,4 +596,21 @@ public class LoadPreTestData {
 		testData.PharmacyFaxNumber = propertyData.getPharmacyFaxNumber();
 		return testData;
 	}
+
+	public Patient_Login loadLogindata(Patient_Login testData) throws IOException {
+		PropertyFileLoader propertyData = new PropertyFileLoader();
+		testData.Url = propertyData.getPatienturl_Event();
+		testData.UserName = propertyData.getPatientUsername_Event();
+		testData.Password = propertyData.getPatientpassword_Event();
+		testData.restUrlLogin_V3 = propertyData.getPatientrestUrlLogin_V3_Event();
+		testData.OAuthProperty = propertyData.getPatientoAuthProperty_Event();
+		testData.OAuthKeyStore = propertyData.getPatientoAuthKeystore_Event();
+		testData.OAuthAppToken = propertyData.getPatientoAuthAppToken_Event();
+		testData.OAuthUsername = propertyData.getPatientoAuthUsername_Event();
+		testData.OAuthPassword = propertyData.getPatientoAuthPassword_Event();
+		testData.ResponsePath = propertyData.getPatientResponsePath_Event();
+
+		return testData;
+	}
+
 }
