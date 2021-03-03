@@ -47,7 +47,7 @@ public class SecurityDetailsPage extends MedfusionPage {
 		@FindBy(how = How.XPATH, using = "//*[@id='preferredLocationId_field']/mf-locations/div/ng-select")
 		private WebElement primaryLocationElement;
 
-		@FindBy(how = How.XPATH, using = "//div[@class='ng-option ng-option-marked']")
+		@FindBy(how = How.XPATH, using = "//span[text()='California']")
 		private WebElement setLocation;
 
 		@FindBy(how = How.ID, using = "prevStep")
