@@ -19,7 +19,7 @@ public class JalapenoAppointmentRequestV2Step2 extends JalapenoMenu {
 	@FindBy(how = How.ID, using = "firstAvailableBtn")
 	private WebElement firstAvailableTimeButton;
 
-	@FindBy(how = How.XPATH, using = "//label[@for='videoPreference']")
+	@FindBy(how = How.XPATH, using = "//label[@for='firstavail']")
 	private WebElement videoVisit;
 
 	@FindBy(how = How.XPATH, using = "//label[@for='timeofday_any']")
