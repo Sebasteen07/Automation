@@ -1,10 +1,5 @@
-<n:Appointments xmlns:admin="http://schema.intuit.com/health/admin/v1"
-	xmlns:common="http://schema.intuit.com/health/v1" xmlns:n="http://schema.intuit.com/health/appointments/v1"
-	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-	xsi:schemaLocation="http://schema.intuit.com/health/appointments/v1 C:\Users\Tejora\IHG_DEPOT\trunk\integration-platform\data-channels\admin-messages\reference\schemas\src\main\resources\Appointments.xsd">
-	<Sender deviceLocalTime="2001-12-17T09:30:47-05:00" deviceName="String"
-		deviceUTCTime="2001-12-17T09:30:47-05:00" deviceVersion="String"
-		vendorName="Text">
+<?xml version="1.0" encoding="UTF-8"?><n:Appointments xmlns:admin="http://schema.intuit.com/health/admin/v1" xmlns:common="http://schema.intuit.com/health/v1" xmlns:n="http://schema.intuit.com/health/appointments/v1" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://schema.intuit.com/health/appointments/v1 C:\Users\Tejora\IHG_DEPOT\trunk\integration-platform\data-channels\admin-messages\reference\schemas\src\main\resources\Appointments.xsd">
+	<Sender deviceLocalTime="2001-12-17T09:30:47-05:00" deviceName="String" deviceUTCTime="2001-12-17T09:30:47-05:00" deviceVersion="String" vendorName="Text">
 		<DeviceArguments>
 			<KeyValuePair>
 				<Key>String</Key>
@@ -12,9 +7,7 @@
 			</KeyValuePair>
 		</DeviceArguments>
 	</Sender>
-	<Partner deviceLocalTime="2001-12-17T09:30:47-05:00"
-		deviceName="String" deviceUTCTime="2001-12-17T09:30:47-05:00"
-		deviceVersion="String" vendorName="Text">
+	<Partner deviceLocalTime="2001-12-17T09:30:47-05:00" deviceName="String" deviceUTCTime="2001-12-17T09:30:47-05:00" deviceVersion="String" vendorName="Text">
 		<DeviceArguments>
 			<KeyValuePair>
 				<Key>String</Key>
@@ -22,9 +15,7 @@
 			</KeyValuePair>
 		</DeviceArguments>
 	</Partner>
-	<Destination deviceLocalTime="2001-12-17T09:30:47-05:00"
-		deviceName="String" deviceUTCTime="2001-12-17T09:30:47-05:00"
-		deviceVersion="String" vendorName="Text">
+	<Destination deviceLocalTime="2001-12-17T09:30:47-05:00" deviceName="String" deviceUTCTime="2001-12-17T09:30:47-05:00" deviceVersion="String" vendorName="Text">
 		<DeviceArguments>
 			<KeyValuePair>
 				<Key>String</Key>
@@ -32,13 +23,13 @@
 			</KeyValuePair>
 		</DeviceArguments>
 	</Destination>
-	<Appointment id="ebb434a1-a20f-4c1b-aa14-746f6c82ba5b">
+	<Appointment id="8b3b690d-2918-4154-b52f-cc4ddb398f55">
 		<Status>APPROVED</Status>
-		<CreatedDateTime>2014-12-23T10:01:52.416Z</CreatedDateTime>
-		<UpdatedDateTime>2014-12-23T10:01:52.416Z</UpdatedDateTime>
+		<CreatedDateTime>2021-03-03T05:50:29.654Z</CreatedDateTime>
+		<UpdatedDateTime>2021-03-03T05:50:29.654Z</UpdatedDateTime>
 		<AppointmentRequest>
-			<From>ihgqa.dev3.patient1</From>
-			<To>e7fb00ce-d9ea-43c2-b4f5-f48bd61d68af</To>
+			<From>mf.dev3.patient</From>
+			<To>6400c743-3e23-4501-9e0f-483a0a254819</To>
 			<RequestedProvider>sbose1</RequestedProvider>
 			<RequestedLocation>south</RequestedLocation>
 			<RequestedTimeframe>First Available</RequestedTimeframe>
@@ -48,18 +39,21 @@
 			<Reason>DE7928Reply</Reason>
 			<AdditionalInformation>DE7928Reply</AdditionalInformation>
 		</AppointmentRequest>
-		<Communication messageId="5a5346dc-4671-4355-9391-363fde625060">
-			<From>e7fb00ce-d9ea-43c2-b4f5-f48bd61d68af</From>
-			<To>ihgqa.dev3.patient1</To>
-			<Subject>arSMSubject</Subject>
-			<Sent>2014-12-23T10:06:52+05:30</Sent>
-			<MessageThreadId>ebb434a1-a20f-4c1b-aa14-746f6c82ba5b</MessageThreadId>
+		<Communication messageId="5a5346dc-4671-4355-9391-161267506863">
+			<From>6400c743-3e23-4501-9e0f-483a0a254819</From>
+			<To>mf.dev3.patient</To>
+			<Subject>Reply to Appointment Request</Subject>
+			<Sent>2021-03-03T05:31:29+05:30</Sent>
+			<MessageThreadId>8b3b690d-2918-4154-b52f-cc4ddb398f55</MessageThreadId>
 			<AllowReply>true</AllowReply>
 			<AllowAttachment>false</AllowAttachment>
-			<Message>arSMBody</Message>
+			<Message>This is reply to AR for Reason1614674926596</Message>
 		</Communication>
 		<ScheduledAppointment>
-			<ScheduledDateTime>2014-12-26T10:01:52+05:30</ScheduledDateTime>
+			<ScheduledDateTime>2021-03-06T05:31:29+05:30</ScheduledDateTime>
+            <ScheduledProvider>325312015</ScheduledProvider>
+            <ScheduledLocation>286322020</ScheduledLocation>
+            <Reason>Appointment Request for checking appointment details in Secure Message</Reason>
 		</ScheduledAppointment>
 	</Appointment>
 </n:Appointments>
