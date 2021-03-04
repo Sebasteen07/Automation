@@ -3354,6 +3354,25 @@ public class PatientPortal2AcceptanceTests extends BaseTestNGWebDriver {
 		assertTrue(messagesPage.isMessageDisplayed(driver, "RxRenewalSubject"));	
 	
 	}
+	@Test(enabled = true, groups = { "acceptance-basics" }, retryAnalyzer = RetryAnalyzer.class)
+	public void testPatientActivationInvalidZipCode() throws Exception {
+		String patientsEmail = IHGUtil.createRandomEmailAddress(testData.getEmail(), '.');
+        
+		logStep("Patient Activation on Practice Portal");
+		PatientActivationSearchTest patientActivationSearchTest = new PatientActivationSearchTest();
+		String unlockLinkPortal = patientActivationSearchTest.getPatientActivationLink(driver, testData, patientsEmail);
+
+		logStep("Finishing of patient activation: step 1 - verifying identity");
+		PatientVerificationPage patientVerificationPage = new PatientVerificationPage(driver, unlockLinkPortal);
+		
+		logStep("Provideing the Invalid Zip Code or DOB: step 2 - not verify the patient");
+		patientVerificationPage.fillPatientZipCodeDobInfoAndContinue(
+				PracticeConstants.INVALID_ZIP_CODE, PortalConstants.DateOfBirthMonthNumber, PortalConstants.DateOfBirthDay,
+				PortalConstants.DateOfBirthYear);
+		
+		logStep("Looking for the Error Message: step 3 - verifying the error message");
+		assertTrue(patientVerificationPage.isZipCodeDobErrorDisplayed());
+	}
 	
 	@Test(enabled = true, groups = { "acceptance-solutions" }, retryAnalyzer = RetryAnalyzer.class)
 	public void testMedicationsWithoutRenewalFee() throws Exception {
@@ -3518,5 +3537,6 @@ public class PatientPortal2AcceptanceTests extends BaseTestNGWebDriver {
 		assertTrue(loginPage.areBasicPageElementsPresent());
 		
 	}
+
 }
 

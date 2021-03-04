@@ -134,10 +134,10 @@ public class JalapenoAskAStaffV2Page1 extends JalapenoMenu {
 	@FindBy(how = How.ID, using = "attachments_error")
 	private WebElement fileUploadErrorMsg;
 	
-	@FindBy(how = How.XPATH, using = "(//span[@class='btn btn-default form-control ui-select-toggle'])[1]")
+	@FindBy(how = How.XPATH, using = "(//div[@class='ng-select-container ng-has-value'])[1]")
 	private WebElement LocationDropDown;
 	
-	@FindBy(how = How.XPATH, using = "(//span[@class='btn btn-default form-control ui-select-toggle'])[2]")
+	@FindBy(how = How.XPATH, using = "(//div[@class='ng-select-container'])[1]")
 	private WebElement ProviderDropDown;
 
 	private long createdTS;
@@ -494,12 +494,12 @@ public class JalapenoAskAStaffV2Page1 extends JalapenoMenu {
 		log("Selecting Location "+LocationName);
 		LocationDropDown.click();
 		Thread.sleep(4000);
-		driver.findElement(By.xpath("//div[contains(text(),'"+LocationName+"')]")).click();
+		driver.findElement(By.xpath("(//*[contains(text(),'"+LocationName+"')])[2]")).click();
 		Thread.sleep(4000);			
 		log("Selecting Provider "+ProviderName);
 		ProviderDropDown.click();
 		Thread.sleep(4000);
-		driver.findElement(By.xpath("//div[contains(text(),'"+ProviderName+"')]")).click();
+		driver.findElement(By.xpath("//*[contains(text(),'"+ProviderName+"')]")).click();
 		Thread.sleep(4000);	
 		log("Entering Question "+question);
 		questionBox.sendKeys(question);

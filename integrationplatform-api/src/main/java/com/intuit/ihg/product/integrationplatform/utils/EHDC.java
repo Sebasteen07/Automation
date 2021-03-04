@@ -7,7 +7,6 @@ public class EHDC {
 	public String UserName = "";
 	public String Password = "";
 	public String RestUrl = "";
-	public String RestUrlV3 = "";
 	public String CCDPath = "";
 	public String ResponsePath = "";
 	public String OAuthProperty ="";
@@ -37,5 +36,8 @@ public class EHDC {
 	public String Country = "";
 	public String PracticePatientId = "";
 	public String EPracticeName = "";
+	public String ccdXMLPathLargeSize="";
+	public String RestUrlV3 = "";
+
 	
 }

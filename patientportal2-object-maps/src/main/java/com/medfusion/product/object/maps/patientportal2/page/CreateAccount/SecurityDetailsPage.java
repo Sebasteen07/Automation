@@ -70,8 +70,8 @@ public class SecurityDetailsPage extends MedfusionPage {
 
 		@FindBy(how = How.XPATH, using = "//span[@id = 'userid_error_invalid'][contains(text(),'The user name you entered is already taken. Enter another user name.')]")
 		private WebElement usernameTakenError;
-
-		public SecurityDetailsPage(WebDriver driver) {
+		
+	    public SecurityDetailsPage(WebDriver driver) {
 				super(driver);
 		}
 
@@ -172,4 +172,4 @@ public class SecurityDetailsPage extends MedfusionPage {
 				}
 				return false;
 		}
-}
+		}
