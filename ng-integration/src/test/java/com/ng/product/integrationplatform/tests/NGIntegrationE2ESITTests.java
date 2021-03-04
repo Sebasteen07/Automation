@@ -4,6 +4,7 @@ package com.ng.product.integrationplatform.tests;
 import static org.testng.Assert.assertNotNull;
 
 import java.io.IOException;
+import java.text.DecimalFormat;
 import java.text.SimpleDateFormat;
 import java.time.Instant;
 import java.time.LocalDate;
@@ -62,9 +63,13 @@ import com.medfusion.product.object.maps.patientportal2.page.PrescriptionsPage.J
 import com.medfusion.product.object.maps.practice.page.PracticeHomePage;
 import com.medfusion.product.object.maps.practice.page.PracticeLoginPage;
 import com.medfusion.product.object.maps.practice.page.onlinebillpay.OnlineBillPaySearchPage;
+import com.medfusion.product.object.maps.practice.page.onlinebillpay.PayMyBillOnlinePage;
 import com.medfusion.product.object.maps.practice.page.patientSearch.PatientSearchPage;
+import com.medfusion.product.object.maps.practice.page.virtualCardSwiper.VirtualCardSwiperPage;
 import com.medfusion.product.patientportal2.pojo.CreditCard;
 import com.medfusion.product.patientportal2.pojo.CreditCard.CardType;
+import com.medfusion.product.practice.api.utils.PracticeConstants;
+import com.medfusion.product.practice.tests.VirtualCardSwiperTest;
 import com.medfusion.qa.mailinator.Email;
 import com.medfusion.qa.mailinator.Mailer;
 import com.ng.product.integrationplatform.apiUtils.NGAPIUtils;
@@ -4466,6 +4471,9 @@ public class NGIntegrationE2ESITTests extends BaseTestNGWebDriver{
     	String eventName = PropertyLoaderObj.getProperty("EventName");
 		String resourceName = PropertyLoaderObj.getProperty("ResourceName");
 		
+		String UpdateToEPMCategoryQuery ="update service_setting set value = 'EPM' where [key] = 'epmcategory' and practice_id = (select id from practice where extpracticeid ='"+practiceId+"')";
+		DBUtils.executeQueryOnDB("MFAgentDB",UpdateToEPMCategoryQuery);
+		
 		String apptTime ="08:30:00";
 		String begintime = apptTime.substring(0, 5).replaceAll(":", "");
 		String deleteINDQuery ="select top 1 delete_ind from appointments where person_id ='"+person_id+"' and begintime ='"+begintime+"' and practice_id ='"+practiceId+"'order by create_timestamp desc";
@@ -4558,10 +4566,12 @@ public class NGIntegrationE2ESITTests extends BaseTestNGWebDriver{
 		logStep("Verify appointment request is reached to EPM/EHR Inbox");
 		CommonFlows.verifyAppointmentRequestReceived(appointmentID, appointmentReason,PropertyLoaderObj.getProperty("AppointmentStartTime"), PropertyLoaderObj.getProperty("AppointmentEndTime"), PropertyLoaderObj.getProperty("AppointmentDays"),practiceId);
 		
+		DBUtils.executeQueryOnDB("MFAgentDB",UpdateToEPMCategoryQuery);
 		logStep("Schedule an appointment for Patient");		
 		NGAPIUtils.updateLoginDefaultTo("EnterpriseGateway",enterpriseId,practiceId);
 		String EPMAppointmenttId =NGAPIFlows.postAppointment(person_id,practiceId,locationName, providerName, eventName, resourceName,2,apptTime,201);
 		
+		DBUtils.executeQueryOnDB("MFAgentDB",UpdateToEPMCategoryQuery);
 		String appointmentResponse = "ApptResponse" + System.currentTimeMillis();
 		logStep("Send appointment response to Patient");
 		NGAPIUtils.updateLoginDefaultTo("EnterpriseGateway",enterpriseId,practiceId);
@@ -4687,8 +4697,11 @@ public class NGIntegrationE2ESITTests extends BaseTestNGWebDriver{
 		if(deleteIND.equalsIgnoreCase("N")){
 			NGAPIUtils.updateLoginDefaultTo("EnterpriseGateway",enterpriseId,practiceId);
 			NGAPIFlows.deleteAppointment(DBUtils.executeQueryOnDB("NGCoreDB",ApptIDQuery));
-		}			
-				
+		}
+		
+		String UpdateToEPMCategoryQuery ="update service_setting set value = 'EPM' where [key] = 'epmcategory' and practice_id = (select id from practice where extpracticeid ='"+practiceId+"')";
+		DBUtils.executeQueryOnDB("MFAgentDB",UpdateToEPMCategoryQuery);
+		
 		logStep("Schedule another appointment for Patient to different slot");
 		NGAPIUtils.updateLoginDefaultTo("EnterpriseGateway",enterpriseId,practiceId);
 		String EPMAppointmenttId =NGAPIFlows.postAppointment(person_id,practiceId,locationName, providerName, eventName, resourceName,1,apptTime,201);
@@ -4723,7 +4736,7 @@ public class NGIntegrationE2ESITTests extends BaseTestNGWebDriver{
 		log("Expected appointment Time is "+expectedTime);
 		
 		logStep("Verfiy appointment is received in Portal");
-        Thread.sleep(90000);
+        Thread.sleep(60000);
 		CommonFlows.verifyAppointmentReceivedinPortal(PropertyLoaderObj, driver, url, username, appointmentDate.substring(0,appointmentDate.lastIndexOf(" ")),expectedTime,"");
 		
 		logStep("Delete booked appointment from EPM Appointment Book having appointment ID "+EPMAppointmenttId);
@@ -5717,7 +5730,7 @@ public class NGIntegrationE2ESITTests extends BaseTestNGWebDriver{
     	log("Test Case End: The patient is able to request for multiple medications and Prescribed elsewhere medications");
 	}
 	
-	@Test(enabled = true, groups = { "acceptance-solutions" }, retryAnalyzer = RetryAnalyzer.class)
+	@Test(enabled = true, groups = { "Payment" }, retryAnalyzer = RetryAnalyzer.class)
 	public void testPaymentPayBills() throws Throwable {
 		log("Test Case: Verify the patient is able to pay the bill using Pay Bills and payment is being posted to NG");
 		log("Execution Environment: " + IHGUtil.getEnvironmentType());
@@ -5807,5 +5820,4 @@ public class NGIntegrationE2ESITTests extends BaseTestNGWebDriver{
 		CommonFlows.verifyPaymentPostedtoNG(PaymentComments,SourceId , person_id, "-"+actualAmount, "Payment type: BillPayment, Last 4 CC digits: "+creditCard.getLastFourDigits(),practiceId);
 		log("Test Case End: The patient is able to pay the bill using Pay Bills and payment is being posted to NG");
 	}
-	
 }

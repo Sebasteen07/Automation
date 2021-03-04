@@ -822,6 +822,7 @@ public class CommonFlows {
 		homePage.clickOnAppointmentV3(driver);
 		JalapenoAppointmentsPage appointmentsPage = PageFactory.initElements(driver, JalapenoAppointmentsPage.class);
 		
+		Thread.sleep(5000);
 		Log4jUtil.log("Step Begins: Verify booked appointment received in Portal");
 		Boolean appointmentStatus =appointmentsPage.verifyAppointment(appointmentDate,appointmentTime,PropertyLoaderObj.getProperty("ResourceName"));
 		Assert.assertTrue(appointmentStatus, "Booked Appointment didnot receive by Patient");
