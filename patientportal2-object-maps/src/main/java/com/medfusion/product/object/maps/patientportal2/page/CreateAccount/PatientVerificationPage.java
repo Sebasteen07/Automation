@@ -13,7 +13,6 @@ import org.openqa.selenium.support.ui.Select;
 
 import com.medfusion.common.utils.IHGUtil;
 import com.medfusion.product.object.maps.patientportal2.page.MedfusionPage;
-import com.medfusion.product.object.maps.patientportal2.page.ForgotPasswordPage.JalapenoForgotPasswordPage;
 
 public class PatientVerificationPage extends MedfusionPage {
 
