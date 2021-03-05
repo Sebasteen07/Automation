@@ -4575,7 +4575,7 @@ public class NGIntegrationE2ESITTests extends BaseTestNGWebDriver{
 		String appointmentResponse = "ApptResponse" + System.currentTimeMillis();
 		logStep("Send appointment response to Patient");
 		NGAPIUtils.updateLoginDefaultTo("EnterpriseGateway",enterpriseId,practiceId);
-		NGAPIFlows.postAppointmentResponse(appointmentID, EPMAppointmenttId, appointmentResponse);
+		NGAPIFlows.postAppointmentResponse(appointmentID, EPMAppointmenttId, appointmentResponse,apptTime,2);
 		
 		logStep("Verify appointment is booked and response is captured");
 		CommonFlows.verifyAppointmentBookedResponseCaptured(appointmentID, appointmentResponse);
@@ -4736,7 +4736,7 @@ public class NGIntegrationE2ESITTests extends BaseTestNGWebDriver{
 		log("Expected appointment Time is "+expectedTime);
 		
 		logStep("Verfiy appointment is received in Portal");
-        Thread.sleep(60000);
+        Thread.sleep(80000);
 		CommonFlows.verifyAppointmentReceivedinPortal(PropertyLoaderObj, driver, url, username, appointmentDate.substring(0,appointmentDate.lastIndexOf(" ")),expectedTime,"");
 		
 		logStep("Delete booked appointment from EPM Appointment Book having appointment ID "+EPMAppointmenttId);
@@ -5631,7 +5631,7 @@ public class NGIntegrationE2ESITTests extends BaseTestNGWebDriver{
 		String appointmentResponse = "ApptResponse" + System.currentTimeMillis();
 		logStep("Send appointment response to Patient");
 		NGAPIUtils.updateLoginDefaultTo("EnterpriseGateway",enterpriseId,practiceId);
-		NGAPIFlows.postAppointmentResponse(appointmentID, EPMAppointmenttId, appointmentResponse);
+		NGAPIFlows.postAppointmentResponse(appointmentID, EPMAppointmenttId, appointmentResponse,apptTime,2);
 		
 		logStep("Verify appointment is booked and response is captured");
 		CommonFlows.verifyAppointmentBookedResponseCaptured(appointmentID, appointmentResponse);
