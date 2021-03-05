@@ -780,7 +780,7 @@ public class PatientPortal2AcceptanceTests extends BaseTestNGWebDriver {
 		patientDemographicPage.tryToContinueToSecurityPage();
 
 		logStep("Checking that I am still on create account page due to healthKey check won't let me create patient with the same data");
-		patientDemographicPage = PageFactory.initElements(driver, PatientDemographicPage.class);		
+		patientDemographicPage = PageFactory.initElements(driver, PatientDemographicPage.class);	
 		assertTrue(patientDemographicPage.isInactiveAccountExistsErrorDisplayed());
 	}
 
