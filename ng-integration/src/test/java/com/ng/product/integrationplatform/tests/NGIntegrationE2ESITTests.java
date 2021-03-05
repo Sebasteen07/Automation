@@ -4589,8 +4589,8 @@ public class NGIntegrationE2ESITTests extends BaseTestNGWebDriver{
 		appointmentDate = appointmentDate.replaceAll("/", "-")+"T"+apptTime+"Z";
         Date date = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss'Z'").parse(appointmentDate);
 		log("Appointment Date is "+new SimpleDateFormat("M/d/yy hh:mm").format(date));
-		appointmentDate = CommonUtils.changeESTtoIST(new SimpleDateFormat("M/d/yy hh:mm").format(date));
-		
+//		appointmentDate = CommonUtils.changeESTtoIST(new SimpleDateFormat("M/d/yy hh:mm").format(date));
+		appointmentDate = new SimpleDateFormat("M/d/yy hh:mm").format(date);
 		log("Expected appointment Date is "+appointmentDate.substring(0,appointmentDate.lastIndexOf(" ")));		
 		String expectedTime =appointmentDate.substring(appointmentDate.lastIndexOf(" ")+1);
 		
@@ -4726,8 +4726,8 @@ public class NGIntegrationE2ESITTests extends BaseTestNGWebDriver{
 		appointmentDate = appointmentDate.replaceAll("/", "-")+"T"+apptTime+"Z";
         Date date = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss'Z'").parse(appointmentDate);
 		log("Appointment Date is "+new SimpleDateFormat("M/d/yy hh:mm").format(date));
-		appointmentDate = CommonUtils.changeESTtoIST(new SimpleDateFormat("M/d/yy hh:mm").format(date));
-		
+//		appointmentDate = CommonUtils.changeESTtoIST(new SimpleDateFormat("M/d/yy hh:mm").format(date));
+		appointmentDate = new SimpleDateFormat("M/d/yy hh:mm").format(date);
 		log("Expected appointment Date is "+appointmentDate.substring(0,appointmentDate.lastIndexOf(" ")));
 		String expectedTime = appointmentDate.substring(appointmentDate.lastIndexOf(" ")+1);
 		
