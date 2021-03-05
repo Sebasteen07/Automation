@@ -5,6 +5,8 @@ package com.medfusion.product.object.maps.patientportal2.page.CreateAccount;
 import java.util.ArrayList;
 
 import com.medfusion.pojos.Patient;
+
+import org.openqa.selenium.Keys;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.FindBy;
@@ -44,10 +46,10 @@ public class SecurityDetailsPage extends MedfusionPage {
 		@FindBy(how = How.ID, using = "phone_type")
 		private WebElement selectPhoneType;
 
-		@FindBy(how = How.XPATH, using = "//*[@id='preferredLocationId_field']/mf-locations/div/ng-select")
+		@FindBy(how = How.XPATH, using = "//*[@id='preferredLocationId']")
 		private WebElement primaryLocationElement;
-
-		@FindBy(how = How.XPATH, using = "//div[@class='ng-option ng-option-marked']")
+		
+		@FindBy(how = How.XPATH, using = "(//*[@class='ng-option'])[1]")
 		private WebElement setLocation;
 
 		@FindBy(how = How.ID, using = "prevStep")
@@ -70,8 +72,8 @@ public class SecurityDetailsPage extends MedfusionPage {
 
 		@FindBy(how = How.XPATH, using = "//span[@id = 'userid_error_invalid'][contains(text(),'The user name you entered is already taken. Enter another user name.')]")
 		private WebElement usernameTakenError;
-
-		public SecurityDetailsPage(WebDriver driver) {
+		
+	    public SecurityDetailsPage(WebDriver driver) {
 				super(driver);
 		}
 
@@ -109,6 +111,7 @@ public class SecurityDetailsPage extends MedfusionPage {
 				int statementPreference) {
 				IHGUtil.PrintMethodName();
 				fillAccountDetails(userId, password, secretQuestion, secretAnswer, phoneNumber, statementPreference);
+				IHGUtil.waitForElement(driver, 60, buttonFinishStep);
 				buttonFinishStep.click();
 				selectStatementIfRequired(statementPreference); //TODO move to handleWeNeedToConfirmSomethingModal
 				handleWeNeedToConfirmSomethingModal();
@@ -138,7 +141,8 @@ public class SecurityDetailsPage extends MedfusionPage {
 						log("Set primary location");
 						primaryLocationElement.click();
 						IHGUtil.waitForElement(driver, 60, setLocation);
-						setLocation.click();
+						javascriptClick(setLocation);
+
 				}
 		}
 
@@ -172,4 +176,4 @@ public class SecurityDetailsPage extends MedfusionPage {
 				}
 				return false;
 		}
-}
+		}

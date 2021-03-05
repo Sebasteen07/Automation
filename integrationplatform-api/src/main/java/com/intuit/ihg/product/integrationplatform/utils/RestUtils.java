@@ -209,7 +209,7 @@ public class RestUtils {
 	 * Reads the XML and checks REASON
 	 * 
 	 * @param xmlFileName XML to check
-	 * @param Long timestamp of a sent Reason to check
+	 * @param Long        timestamp of a sent Reason to check
 	 * @throws ParserConfigurationException
 	 * @throws IOException
 	 * @throws SAXException
@@ -221,7 +221,7 @@ public class RestUtils {
 
 		Log4jUtil.log("finding reason message");
 		boolean found = false;
-		boolean VideoPref=false;
+		boolean VideoPref = false;
 		NodeList nodes = doc.getElementsByTagName(IntegrationConstants.REASON);
 		NodeList nodes1 = doc.getElementsByTagName(IntegrationConstants.VIDEOPREFERENCE);
 		Node node = null;
@@ -437,14 +437,12 @@ public class RestUtils {
 			httpPostReq.addHeader("Content-Type", "application/xml");
 			httpPostReq.addHeader("Noun", "Encounter");
 			httpPostReq.addHeader("Verb", "Completed");
-			// httpPostReq.addHeader("ExternalSystemId", "79");
-			// GW CCD
-			// httpPostReq.addHeader("ExternalSystemId", "82");
+
 			Log4jUtil.log("Post Request Url4: ");
 			HttpResponse resp = oauthClient.httpPostRequest(httpPostReq);
 
 			String sResp = EntityUtils.toString(resp.getEntity());
-			Log4jUtil.log("Check opst response: " +sResp);
+			Log4jUtil.log("Check opst response: " + sResp);
 
 			Log4jUtil.log("Check for http 200/202 response");
 			Assert.assertTrue(
@@ -837,9 +835,9 @@ public class RestUtils {
 	 * @throws ParseException
 	 * @throws DOMException
 	 */
-	public static String findValueOfChildNode(String xmlFileName, String parentNode, String reason,
-			String subject, String reply, String appointment) throws ParserConfigurationException, SAXException,
-			IOException, TransformerException, DOMException, ParseException {
+	public static String findValueOfChildNode(String xmlFileName, String parentNode, String reason, String subject,
+			String reply, String appointment) throws ParserConfigurationException, SAXException, IOException,
+			TransformerException, DOMException, ParseException {
 
 		IHGUtil.PrintMethodName();
 		String getApt_req_id = null;
@@ -3864,8 +3862,9 @@ public class RestUtils {
 		Log4jUtil.log("response is ok");
 		return PrescriptionID;
 	}
-	
-	public static String isReplyPresentReturnMessageID(String responsePath, String messageIdentifier,String expectedBody) throws ParserConfigurationException, SAXException, IOException {
+
+	public static String isReplyPresentReturnMessageID(String responsePath, String messageIdentifier,
+			String expectedBody) throws ParserConfigurationException, SAXException, IOException {
 		Document doc = buildDOMXML(responsePath);
 
 		Log4jUtil.log("finding sent message");
@@ -3891,4 +3890,54 @@ public class RestUtils {
 		return MessageID;
 	}
 
+	public static void isLoginEventValidated(String xmlFileName, String ResourceType_tag, long timestamp) throws ParserConfigurationException, SAXException, IOException {
+		IHGUtil.PrintMethodName();
+		Document doc = buildDOMXML(xmlFileName);
+
+		Log4jUtil.log("finding Event Login Name");
+		boolean found = false;
+		NodeList nodes = doc.getElementsByTagName(IntegrationConstants.RESOURCETYPE);
+		NodeList nodes1 = doc.getElementsByTagName(IntegrationConstants.EVENTRECORDEDTIMESTAMP);
+		NodeList nodes2 = doc.getElementsByTagName(IntegrationConstants.PRACTICEPATIENTID_login);
+
+		Node node = null;
+		for (int i = 0; i < nodes.getLength(); i++) {
+			node = nodes1.item(i);
+			Log4jUtil.log("Searching: " + node.getChildNodes().item(0).getTextContent() + ", to be found: "
+					+ (timestamp));
+			long EventRecordedTimestamp = Long.parseLong(node.getChildNodes().item(0).getTextContent());
+			Log4jUtil.log("TimestampValue" + " " + timestamp);
+			Log4jUtil.log("Finding EventRecordedTimestamp" + " " + EventRecordedTimestamp);
+
+			if (EventRecordedTimestamp > timestamp) {
+				found = true;
+				Log4jUtil.log("EVENTRECORDEDTIMESTAMP value is greater than since time");
+				break;
+			}
+		}
+
+		for (int i = 0; i < nodes.getLength(); i++) {
+			node = nodes.item(i);
+			Log4jUtil.log("Searching: " + node.getChildNodes().item(0).getTextContent() + ", to be found: "
+					+ (ResourceType_tag.toString()));
+			if (node.getChildNodes().item(0).getTextContent().contains(ResourceType_tag.toString())) {
+				found = true;
+				Log4jUtil.log("Resource type is found.");
+				break;
+			}
+		}
+
+		for (int k = 0; k < nodes2.getLength(); k++) {
+			node = nodes2.item(k);
+			String NodeName = node.getNodeName();
+			Log4jUtil.log("Searching" + " " + NodeName);
+			if (NodeName.contains("PracticePatientId")) {
+				found = true;
+				Log4jUtil.log("PracticePatientId is found.");
+				break;
+			}
+
+		}
+
+	}
 }
