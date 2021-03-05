@@ -15,7 +15,9 @@
 				<include name="testPatientRegistrationfromPractice"/>
 				<include name="testPIDCPatientDemographicsUpdate"/>
 	    		<include name="testPIDCPatientRegistrationV1"/>
-	    		<include name="testPIDCPatientRegistrationV2"/>    	
+	    		<include name="testPIDCPatientRegistrationV2"/>    
+	    		<include name="testPIDCPatientRegistrationV3"/>    	
+	    			
       	</methods>
 	</classes>
 </test>
