@@ -143,6 +143,12 @@ public class JalapenoPrescriptionsPage extends JalapenoMenu {
 	@FindBy(how = How.XPATH, using = "//input[@name='pharmacyPanel:radioGroup']")
 	public WebElement PharmacyRadioButton;
 
+	@FindBy(how = How.XPATH, using = "//*[@id='rxrenewalform']/div[3]/div[2]/div")
+	public WebElement providerLocation;
+
+	@FindBy(how = How.XPATH, using = "//*[@id=\"rxrenewalform\"]/div[4]/div[2]/div")
+	public WebElement practiceProvider;
+
 	public JalapenoPrescriptionsPage(WebDriver driver) {
 		super(driver);
 		IHGUtil.PrintMethodName();
@@ -250,7 +256,6 @@ public class JalapenoPrescriptionsPage extends JalapenoMenu {
 		} else {
 			log("No Add another Medication button");
 		}
-		
 		jse.executeScript("window.scrollBy(0,350)", "");
 		IHGUtil.waitForElement(driver, 20, medicationNameField);
 		log("Step 4: Insert Medication Details");
@@ -524,5 +529,30 @@ public class JalapenoPrescriptionsPage extends JalapenoMenu {
 		} else {
 			log("Pharamacy is not visible on Portal");
 		}
+	}
+
+	public String getPracticeProvider(WebDriver driver) {
+		IHGUtil.PrintMethodName();
+		String env = IHGUtil.getEnvironmentType().toString();
+		if (env == "DEV3") {
+			driver.switchTo().defaultContent();
+			driver.switchTo().frame("iframebody");
+		} else {
+			log("getting Practice Provider");
+		}
+		String PracticeProvider = practiceProvider.getText();
+		return PracticeProvider;
+	}
+
+	public String getPracticeLocation(WebDriver driver) {
+		IHGUtil.PrintMethodName();
+		String env = IHGUtil.getEnvironmentType().toString();
+		if (env == "DEV3") {
+			driver.switchTo().frame("iframebody");
+		} else {
+			log("getting Practice Location");
+		}
+		String ProviderLocation = providerLocation.getText();
+		return ProviderLocation;
 	}
 }
