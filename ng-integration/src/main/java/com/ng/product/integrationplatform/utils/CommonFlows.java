@@ -298,7 +298,7 @@ public class CommonFlows {
    public static String addDataToCCD(String locationName, String providerName, String person_id, String practiceId) throws Throwable{
 	   Log4jUtil.log("Step Begins: Adding Test data to patient CCD "+person_id);
 	   Log4jUtil.log("Step Begins: Add Chart to patient");
-	   NGAPIFlows.addCharttoProvider(locationName,providerName,person_id); 
+//	   NGAPIFlows.addCharttoProvider(locationName,providerName,person_id); 
 	
 	   Log4jUtil.log("Step Begins: Add Encounter to patient chart");
 	   String encounter_id = NGAPIFlows.addEncounter(locationName,providerName,person_id); 

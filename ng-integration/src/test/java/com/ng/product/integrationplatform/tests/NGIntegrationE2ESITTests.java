@@ -497,8 +497,8 @@ public class NGIntegrationE2ESITTests extends BaseTestNGWebDriver{
 	String person_id=NGAPIUtils.setupNGHttpPostRequest("EnterpriseGateway",finalURL,requestbody , 201);
 	log("Step End: Guardian created with id "+person_id);
 	
-	String locationName = PropertyLoaderObj.getProperty("EPMLocationName");
-	String providerName = PropertyLoaderObj.getProperty("EPMProviderName");
+	String locationName = PropertyLoaderObj.getProperty("NGE1P1Location");
+	String providerName = PropertyLoaderObj.getProperty("NGE1P1Provider");
 	NGAPIFlows.addCharttoProvider(locationName,providerName,person_id);
 	
 	log("Step 2: Create the Dependent in NG EPM");
@@ -3302,6 +3302,8 @@ public class NGIntegrationE2ESITTests extends BaseTestNGWebDriver{
 		String person_id=ngAPIUtils.setupNGHttpPostRequest("EnterpriseGateway",finalURL,requestbody , 201);
 		log("Step End: Person created with id "+person_id);
 		
+		logStep("Add Chart to patient");
+		NGAPIUtils.updateLoginDefaultTo("EnterpriseGateway",enterpriseId, practiceId);
 		NGAPIFlows.addCharttoProvider(locationName,providerName,person_id);
 		
 		enrollPatientWithoutGetProcessingStatusValidation(createPatient,person_id,practiceName,integrationPracticeId,enterpriseId, practiceId);
@@ -3312,11 +3314,7 @@ public class NGIntegrationE2ESITTests extends BaseTestNGWebDriver{
 		logStep("Verify the patient is able to receive CCD");
 		CommonFlows.IsCCDReceived(driver, url,createPatient.getEmailAddress(), PropertyLoaderObj.getPassword(), "","");
 		
-        NGAPIUtils.updateLoginDefaultTo("EnterpriseGateway",enterpriseId, practiceId);
-		logStep("Add Chart to patient");
-		NGAPIFlows.addCharttoProvider(locationName,providerName,person_id); 
-		
-		logStep("Add Encounter to patient chart");
+        logStep("Add Encounter to patient chart");
 		String encounter_id = NGAPIFlows.addEncounter(locationName,providerName,person_id);
 		
 		logStep("Request for MSU CCD");
@@ -3358,6 +3356,7 @@ public class NGIntegrationE2ESITTests extends BaseTestNGWebDriver{
 		String person_id=ngAPIUtils.setupNGHttpPostRequest("EnterpriseGateway",finalURL,requestbody , 201);
 		log("Step End: Person created with id "+person_id);
 		
+		Log4jUtil.log("Step Begins: Add Chart to patient");
 		NGAPIFlows.addCharttoProvider(locationName,providerName,person_id);
 		
 		enrollPatientWithoutGetProcessingStatusValidation(createPatient,person_id,practiceName,integrationPracticeId,enterpriseId, practiceId);
@@ -3369,10 +3368,7 @@ public class NGIntegrationE2ESITTests extends BaseTestNGWebDriver{
 		CommonFlows.IsCCDReceived(driver, url,createPatient.getEmailAddress(), PropertyLoaderObj.getPassword(), "","");
 		
         NGAPIUtils.updateLoginDefaultTo("EnterpriseGateway",enterpriseId, practiceId);
-		logStep("Adding Test data to patient CCD "+person_id);
-		   Log4jUtil.log("Step Begins: Add Chart to patient");
-		   NGAPIFlows.addCharttoProvider(locationName,providerName,person_id); 
-		
+		logStep("Adding Test data to patient CCD "+person_id);	
 		   Log4jUtil.log("Step Begins: Add Encounter to patient chart");
 		   String encounter_id = NGAPIFlows.addEncounter(locationName,providerName,person_id); 
 		
