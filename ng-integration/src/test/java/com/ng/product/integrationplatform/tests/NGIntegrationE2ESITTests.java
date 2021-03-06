@@ -133,7 +133,7 @@ public class NGIntegrationE2ESITTests extends BaseTestNGWebDriver{
 		NGAPIUtils.updateLoginDefaultTo("EnterpriseGateway",PropertyLoaderObj.getProperty("NGMainEnterpriseID"), PropertyLoaderObj.getProperty("NGMainPracticeID"));
 		log("Step 1: Create the patient in NG EPM");
 		NewPatient createPatient = NGPatient.patientUsingJSON(PropertyLoaderObj,"");
-		
+		createPatient = NGPatient.addDataToPatientDemographics(PropertyLoaderObj, createPatient);
 		ObjectMapper objMap = new ObjectMapper();
         String requestbody = objMap.defaultPrettyPrintingWriter().writeValueAsString(createPatient);
         log("Request Body is \n" + requestbody);
@@ -142,6 +142,10 @@ public class NGIntegrationE2ESITTests extends BaseTestNGWebDriver{
 		String finalURL =EnterprisebaseURL + personURL.getRouteURL();	
 		String person_id=ngAPIUtils.setupNGHttpPostRequest("EnterpriseGateway",finalURL,requestbody , 201);
 		log("Step End: Person created with id "+person_id);
+		
+		String locationName = PropertyLoaderObj.getProperty("EPMLocationName");
+		String providerName = PropertyLoaderObj.getProperty("EPMProviderName");
+		NGAPIFlows.addCharttoProvider(locationName,providerName,person_id);
 		
 		log("Step 2: Using Post Enrollment call, Verify the MF agent trigger for new patient");
 		String PostEnrollmentURL = EnterprisebaseURL+ apiRoutes.valueOf("PostEnrollment").getRouteURL().replaceAll("personId", person_id);
@@ -481,6 +485,7 @@ public class NGIntegrationE2ESITTests extends BaseTestNGWebDriver{
 	log("Step 1: Create the Guardian in NG EPM");
 	NGAPIUtils.updateLoginDefaultTo("EnterpriseGateway",PropertyLoaderObj.getProperty("NGEnterpiseEnrollmentEnterprise1"), PropertyLoaderObj.getProperty("NGEnterprise1Practice1"));
 	NewPatient createPatient = NGPatient.patientUsingJSON(PropertyLoaderObj,"");
+	createPatient = NGPatient.addDataToPatientDemographics(PropertyLoaderObj, createPatient);
 	System.setProperty("ParentEmailAddress", createPatient.getEmailAddress());
 	
 	ObjectMapper objMap = new ObjectMapper();
@@ -492,15 +497,20 @@ public class NGIntegrationE2ESITTests extends BaseTestNGWebDriver{
 	String person_id=NGAPIUtils.setupNGHttpPostRequest("EnterpriseGateway",finalURL,requestbody , 201);
 	log("Step End: Guardian created with id "+person_id);
 	
+	String locationName = PropertyLoaderObj.getProperty("EPMLocationName");
+	String providerName = PropertyLoaderObj.getProperty("EPMProviderName");
+	NGAPIFlows.addCharttoProvider(locationName,providerName,person_id);
+	
 	log("Step 2: Create the Dependent in NG EPM");
 	NewPatient createdependent = NGPatient.patientUsingJSON(PropertyLoaderObj,"Dependent");
-	
+	createdependent = NGPatient.addDataToPatientDemographics(PropertyLoaderObj, createdependent);
     String dependentrequestbody = objMap.defaultPrettyPrintingWriter().writeValueAsString(createdependent);
     log("Dependent Request Body is \n" + dependentrequestbody);
 		
 	String dependentperson_id=NGAPIUtils.setupNGHttpPostRequest("EnterpriseGateway",finalURL,dependentrequestbody , 201);
 	log("Step End: Dependent created with id "+dependentperson_id);
 	
+	NGAPIFlows.addCharttoProvider(locationName,providerName,dependentperson_id);
 	log("Step 3: Using Post Enrollment call, Verify the MF agent trigger for new patient");
 	String PostEnrollmentURL = EnterprisebaseURL+ apiRoutes.valueOf("PostEnrollment").getRouteURL().replaceAll("personId", person_id);
 	NGAPIUtils.setupNGHttpPostRequest("EnterpriseGateway",PostEnrollmentURL,"" , 409);
@@ -653,12 +663,16 @@ public class NGIntegrationE2ESITTests extends BaseTestNGWebDriver{
 		log("Step 1: Create the Dependent in NG EPM");
 		NGAPIUtils.updateLoginDefaultTo("EnterpriseGateway",PropertyLoaderObj.getProperty("NGMainEnterpriseID"), PropertyLoaderObj.getProperty("NGMainPracticeID"));
 		NewPatient createdependent = NGPatient.patientUsingJSON(PropertyLoaderObj,"Dependent");
-		
+		createdependent = NGPatient.addDataToPatientDemographics(PropertyLoaderObj, createdependent);
 	    String dependentrequestbody = objMap.defaultPrettyPrintingWriter().writeValueAsString(createdependent);
 	    log("Dependent Request Body is \n" + dependentrequestbody);
 			
 		String dependentperson_id=NGAPIUtils.setupNGHttpPostRequest("EnterpriseGateway",finalURL,dependentrequestbody , 201);
 		log("Step End: Dependent created with id "+dependentperson_id);
+		
+		String locationName = PropertyLoaderObj.getProperty("EPMLocationName");
+		String providerName = PropertyLoaderObj.getProperty("EPMProviderName");
+		NGAPIFlows.addCharttoProvider(locationName,providerName,dependentperson_id);
 		
 		log("Step 2: Using Post Enrollment call, Verify the MF agent trigger for dependent");
 		String PostEnrollmentURL = EnterprisebaseURL+ apiRoutes.valueOf("PostEnrollment").getRouteURL().replaceAll("personId", dependentperson_id);
@@ -753,7 +767,7 @@ public class NGIntegrationE2ESITTests extends BaseTestNGWebDriver{
 		log("Step 1: Create the patient in NG EPM");
 		NGAPIUtils.updateLoginDefaultTo("EnterpriseGateway",PropertyLoaderObj.getProperty("NGMainEnterpriseID"), PropertyLoaderObj.getProperty("NGMainPracticeID"));
 		NewPatient createPatient = NGPatient.patientUsingJSON(PropertyLoaderObj,"");
-		
+		createPatient = NGPatient.addDataToPatientDemographics(PropertyLoaderObj, createPatient);
 		ObjectMapper objMap = new ObjectMapper();
         String requestbody = objMap.defaultPrettyPrintingWriter().writeValueAsString(createPatient);
         log("Request Body is \n" + requestbody);
@@ -762,6 +776,10 @@ public class NGIntegrationE2ESITTests extends BaseTestNGWebDriver{
 		String finalURL =EnterprisebaseURL + personURL.getRouteURL();	
 		String person_id=NGAPIUtils.setupNGHttpPostRequest("EnterpriseGateway",finalURL,requestbody , 201);
 		log("Step End: Person created with id "+person_id);
+		
+		String locationName = PropertyLoaderObj.getProperty("EPMLocationName");
+		String providerName = PropertyLoaderObj.getProperty("EPMProviderName");
+		NGAPIFlows.addCharttoProvider(locationName,providerName,person_id);
 		
 		log("Step 2: Using Post Enrollment call, Verify the MF agent trigger for new patient");
 		String PostEnrollmentURL = EnterprisebaseURL+ apiRoutes.valueOf("PostEnrollment").getRouteURL().replaceAll("personId", person_id);
@@ -810,10 +828,13 @@ public class NGIntegrationE2ESITTests extends BaseTestNGWebDriver{
 			
 		log("Step 8: Create the trusted patient in NG EPM");
 		NewPatient trustedPatient = NGPatient.patientUsingJSON(PropertyLoaderObj,"trustedPatient");	
+		trustedPatient = NGPatient.addDataToPatientDemographics(PropertyLoaderObj, trustedPatient);
 		String trustedPatientrequestbody = objMap.defaultPrettyPrintingWriter().writeValueAsString(trustedPatient);
 		log("Trusted Patient Request Body " +trustedPatientrequestbody);
 		String trustedperson_id= NGAPIUtils.setupNGHttpPostRequest("EnterpriseGateway",finalURL,trustedPatientrequestbody, 201);
 		log("Step End: Person created with id "+trustedperson_id);
+		
+		NGAPIFlows.addCharttoProvider(locationName,providerName,trustedperson_id);
 
 		log("Step 9 :Load login page and log in to Patient 1 account");
 		Thread.sleep(3000);
@@ -868,7 +889,7 @@ public class NGIntegrationE2ESITTests extends BaseTestNGWebDriver{
 		log("Step 1: Create the patient in NG EPM");
 		NGAPIUtils.updateLoginDefaultTo("EnterpriseGateway",PropertyLoaderObj.getProperty("NGMainEnterpriseID"), PropertyLoaderObj.getProperty("NGMainPracticeID"));
 		NewPatient createPatient = NGPatient.patientUsingJSON(PropertyLoaderObj,"invalidZIP");
-		
+		createPatient = NGPatient.addDataToPatientDemographics(PropertyLoaderObj, createPatient);
 		ObjectMapper objMap = new ObjectMapper();
         String requestbody = objMap.defaultPrettyPrintingWriter().writeValueAsString(createPatient);
         log("Request Body is \n" + requestbody);
@@ -877,6 +898,10 @@ public class NGIntegrationE2ESITTests extends BaseTestNGWebDriver{
 		String finalURL =EnterprisebaseURL + personURL.getRouteURL();	
 		String person_id=NGAPIUtils.setupNGHttpPostRequest("EnterpriseGateway",finalURL,requestbody , 201);
 		log("Step End: Person created with id "+person_id);
+		
+		String locationName = PropertyLoaderObj.getProperty("EPMLocationName");
+		String providerName = PropertyLoaderObj.getProperty("EPMProviderName");
+		NGAPIFlows.addCharttoProvider(locationName,providerName,person_id);
 		
 		log("Step 2: Using Post Enrollment call, Verify the MF agent trigger for new patient");
 		String PostEnrollmentURL = EnterprisebaseURL+ apiRoutes.valueOf("PostEnrollment").getRouteURL().replaceAll("personId", person_id);
@@ -980,7 +1005,7 @@ public class NGIntegrationE2ESITTests extends BaseTestNGWebDriver{
 		
 		log("Step 1: Create the patient in NG EPM");
 		NewPatient createPatient = NGPatient.patientUsingJSON(PropertyLoaderObj,"");
-		
+		createPatient = NGPatient.addDataToPatientDemographics(PropertyLoaderObj, createPatient);
 		ObjectMapper objMap = new ObjectMapper();
         String requestbody = objMap.defaultPrettyPrintingWriter().writeValueAsString(createPatient);
         log("Request Body is \n" + requestbody);
@@ -989,6 +1014,10 @@ public class NGIntegrationE2ESITTests extends BaseTestNGWebDriver{
 		String finalURL =EnterprisebaseURL + personURL.getRouteURL();	
 		String person_id=ngAPIUtils.setupNGHttpPostRequest("EnterpriseGateway",finalURL,requestbody , 201);
 		log("Step End: Person created with id "+person_id);
+		
+		String locationName = PropertyLoaderObj.getProperty("EPMLocationName");
+		String providerName = PropertyLoaderObj.getProperty("EPMProviderName");
+		NGAPIFlows.addCharttoProvider(locationName,providerName,person_id);
 		
 		log("Step 2: Using Post Enrollment call, Verify the MF agent trigger for new patient");
 		String PostEnrollmentURL = EnterprisebaseURL+ apiRoutes.valueOf("PostEnrollment").getRouteURL().replaceAll("personId", person_id);
@@ -2883,7 +2912,10 @@ public class NGIntegrationE2ESITTests extends BaseTestNGWebDriver{
 		
 		logStep("Created the patient in NG EPM Practice "+practiceId);
 		NewPatient createPatient = NGPatient.patientUsingJSON(PropertyLoaderObj,"complete");
+		createPatient = NGPatient.addDataToPatientDemographics(PropertyLoaderObj, createPatient);
 		String person_id= NGAPIFlows.CreatePatientinEPM(createPatient);	
+		
+		NGAPIFlows.addCharttoProvider(locationName,providerName,person_id);
 		
 		enrollPatientWithoutGetProcessingStatusValidation(createPatient, person_id, PropertyLoaderObj.getProperty("practiceName"),integrationPracticeId,enterpriseId, practiceId);
 		
@@ -2951,6 +2983,10 @@ public class NGIntegrationE2ESITTests extends BaseTestNGWebDriver{
 		String person_id=NGAPIUtils.setupNGHttpPostRequest("EnterpriseGateway",finalURL,requestbody , 201);
 		log("Step End: Guardian created with id "+person_id);
 		
+		String locName = PropertyLoaderObj.getProperty("EPMLocationName");
+		String provName = PropertyLoaderObj.getProperty("EPMProviderName");
+		NGAPIFlows.addCharttoProvider(locName,provName,person_id);
+		
 		logStep("Create the Dependent in NG EPM");
 		NewPatient createdependent = NGPatient.patientUsingJSON(PropertyLoaderObj,"Dependent");
 		createdependent = NGPatient.addDataToPatientDemographics(PropertyLoaderObj, createdependent);
@@ -2959,6 +2995,8 @@ public class NGIntegrationE2ESITTests extends BaseTestNGWebDriver{
 			
 		String dependentperson_id=NGAPIUtils.setupNGHttpPostRequest("EnterpriseGateway",finalURL,dependentrequestbody , 201);
 		log("Step End: Dependent created with id "+dependentperson_id);
+		
+		NGAPIFlows.addCharttoProvider(locName,provName,dependentperson_id);
 		
 		logStep("Using Post Enrollment call, Verify the MF agent trigger for new patient");
 		String PostEnrollmentURL = EnterprisebaseURL+ apiRoutes.valueOf("PostEnrollment").getRouteURL().replaceAll("personId", person_id);
@@ -3254,6 +3292,7 @@ public class NGIntegrationE2ESITTests extends BaseTestNGWebDriver{
 		NGAPIUtils.updateLoginDefaultTo("EnterpriseGateway",enterpriseId, practiceId);
 		logStep("Create the patient in NG EPM in Practice 1");
 	    NewPatient createPatient = NGPatient.patientUsingJSON(PropertyLoaderObj,"complete");
+	    createPatient = NGPatient.addDataToPatientDemographics(PropertyLoaderObj, createPatient);
 		ObjectMapper objMap = new ObjectMapper();
 	    String requestbody = objMap.defaultPrettyPrintingWriter().writeValueAsString(createPatient);
 	    log("Request Body is \n" + requestbody);
@@ -3262,6 +3301,8 @@ public class NGIntegrationE2ESITTests extends BaseTestNGWebDriver{
 		String finalURL =EnterprisebaseURL + personURL.getRouteURL();	
 		String person_id=ngAPIUtils.setupNGHttpPostRequest("EnterpriseGateway",finalURL,requestbody , 201);
 		log("Step End: Person created with id "+person_id);
+		
+		NGAPIFlows.addCharttoProvider(locationName,providerName,person_id);
 		
 		enrollPatientWithoutGetProcessingStatusValidation(createPatient,person_id,practiceName,integrationPracticeId,enterpriseId, practiceId);
 		
@@ -3307,6 +3348,7 @@ public class NGIntegrationE2ESITTests extends BaseTestNGWebDriver{
 		NGAPIUtils.updateLoginDefaultTo("EnterpriseGateway",enterpriseId, practiceId);
 		logStep("Create the patient in NG EPM in Practice 1");
 	    NewPatient createPatient = NGPatient.patientUsingJSON(PropertyLoaderObj,"complete");
+	    createPatient = NGPatient.addDataToPatientDemographics(PropertyLoaderObj, createPatient);
 		ObjectMapper objMap = new ObjectMapper();
 	    String requestbody = objMap.defaultPrettyPrintingWriter().writeValueAsString(createPatient);
 	    log("Request Body is \n" + requestbody);
@@ -3315,6 +3357,8 @@ public class NGIntegrationE2ESITTests extends BaseTestNGWebDriver{
 		String finalURL =EnterprisebaseURL + personURL.getRouteURL();	
 		String person_id=ngAPIUtils.setupNGHttpPostRequest("EnterpriseGateway",finalURL,requestbody , 201);
 		log("Step End: Person created with id "+person_id);
+		
+		NGAPIFlows.addCharttoProvider(locationName,providerName,person_id);
 		
 		enrollPatientWithoutGetProcessingStatusValidation(createPatient,person_id,practiceName,integrationPracticeId,enterpriseId, practiceId);
 		
