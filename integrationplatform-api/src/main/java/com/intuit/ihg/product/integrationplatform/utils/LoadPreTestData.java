@@ -320,6 +320,12 @@ public class LoadPreTestData {
 		testData.newPassword = propertyData.getNewPassword();
 		testData.emailSubjectBalance = propertyData.getEmailSubjectBalance();
 		testData.emailLinkText = propertyData.getEmailLinkText();
+		testData.StatementPdf_Detail = propertyData.getStatementPdfDetail();
+		testData.restUrlV3_Statement = propertyData.getStatementUrlV3();
+		testData.url_PatientStatement= propertyData.getPatientStatementUrl();
+		testData.oAuthAppToken_PatientSt= propertyData.getOAuthAppToken_Statement();
+		testData.oAuthAppUsername_PatientSt= propertyData.getOAuthAppUsername_Statement();
+		testData.oAuthAppPw_PatientSt= propertyData.getOAuthAppPassword_Statement();
 		return testData;
 	}
 

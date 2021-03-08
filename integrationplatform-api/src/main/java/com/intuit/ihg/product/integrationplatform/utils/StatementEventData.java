@@ -7,15 +7,13 @@ public class StatementEventData {
 	public String RestUrl = "";
 	public String RestV3Url = "";
 	public String ResponsePath = "";
-	
 	public String OAuthProperty = "";
 	public String OAuthKeyStore = "";
 	public String OAuthAppToken = "";
 	public String OAuthUsername = "";
 	public String OAuthPassword = "";
-	
 	public String StatementPath = "";
-	
+
 	public String FirstName = "";
 	public String LastName = "";
 	public String PatientID = "";
@@ -23,34 +21,40 @@ public class StatementEventData {
 	public String Email = "";
 	public String StatementEventURL = "";
 	public String StatementEventV3URL = "";
-	public String StatementFormat="";
-	public String Address1="";
-	public String Address2="";
-	public String City="";
-	public String State="";
-	public String ZipCode="";
-	
-	public String NewCharges="";
-	public String TotalCharges="";
-	public String AmountDue="";
-	public String BalanceForwardType="";
-	public String BalanceForwardAmount="";
-	public String OutstandingBalance="";
-	public String StatementComment="";
-	public String DunningMessage="";
-	public String PracticeProviderName="";
-	public String PaymentDueDate="";
-	public String RestURLPIDC="";
-	public String PracticeName="";
-	public String StatementType="";
-	public String portalURL="";
-	public String practiceUserName="";
-	public String practicePassword="";
-	public String emailSubject="";
+	public String StatementFormat = "";
+	public String Address1 = "";
+	public String Address2 = "";
+	public String City = "";
+	public String State = "";
+	public String ZipCode = "";
+
+	public String NewCharges = "";
+	public String TotalCharges = "";
+	public String AmountDue = "";
+	public String BalanceForwardType = "";
+	public String BalanceForwardAmount = "";
+	public String OutstandingBalance = "";
+	public String StatementComment = "";
+	public String DunningMessage = "";
+	public String PracticeProviderName = "";
+	public String PaymentDueDate = "";
+	public String RestURLPIDC = "";
+	public String PracticeName = "";
+	public String StatementType = "";
+	public String portalURL = "";
+	public String practiceUserName = "";
+	public String practicePassword = "";
+	public String emailSubject = "";
 	public long since;
-	public String balanceUrl="";
-	public String balanceIntegrationPracticeId="";
-	public String newPassword="";
-	public String emailSubjectBalance="";
-	public String emailLinkText="";
+	public String balanceUrl = "";
+	public String balanceIntegrationPracticeId = "";
+	public String newPassword = "";
+	public String emailSubjectBalance = "";
+	public String emailLinkText = "";
+	public String StatementPdf_Detail = "";
+	public String restUrlV3_Statement = "";
+	public String url_PatientStatement = "";
+	public String oAuthAppToken_PatientSt = "";
+	public String oAuthAppUsername_PatientSt = "";
+	public String oAuthAppPw_PatientSt = "";
 }
