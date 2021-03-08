@@ -123,8 +123,13 @@ public class Appointment {
 	private boolean showCancellationReasonPM = false;
 	private boolean isFutureApt = false;
 	private boolean pcptoggleState = false;
+	
+	private String accessTokenURL;
+	private String accessToken;
+	private String ng_adapterBaseURL;
 
 
+	
 	public Appointment(String providerConfig, String usernameConfig, String passwordConfig, String datetimeConfig, String locationConfig,
 			String appointmentConfig, String specialityConfig) {
 		this.username = usernameConfig;
@@ -143,6 +148,31 @@ public class Appointment {
 
 	public void setPcptoggleState(boolean pcptoggleState) {
 		this.pcptoggleState = pcptoggleState;
+	}
+	public String getNg_adapterBaseURL() {
+		return ng_adapterBaseURL;
+	}
+
+	public void setNg_adapterBaseURL(String ng_adapterBaseURL) {
+		this.ng_adapterBaseURL = ng_adapterBaseURL;
+	}
+
+	public String getAccessToken() {
+		return accessToken;
+	}
+
+	public void setAccessToken(String accessToken) {
+		this.accessToken = accessToken;
+	}
+
+	
+
+	public String getAccessTokenURL() {
+		return accessTokenURL;
+	}
+
+	public void setAccessTokenURL(String accessTokenURL) {
+		this.accessTokenURL = accessTokenURL;
 	}
 
 

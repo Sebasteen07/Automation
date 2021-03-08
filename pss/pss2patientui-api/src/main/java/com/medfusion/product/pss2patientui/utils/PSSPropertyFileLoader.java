@@ -345,7 +345,9 @@ public class PSSPropertyFileLoader {
 		appointValues.setBaseurl_LocationRule(property.getProperty("baseurl_LocationRule"));
 		appointValues.setBaseurl_AppointmentType(property.getProperty("baseurl_AptType"));
 		appointValues.setBaseurl_AvailableSlots("baseurl_available_slots");
-		appointValues.setBaseurl_ScheduleAppointment("baseurl_ScheduleAppointment");		
+		appointValues.setBaseurl_ScheduleAppointment("baseurl_ScheduleAppointment");
+		appointValues.setAccessTokenURL(property.getProperty("accessToken_BaseUrl"));
+		appointValues.setNg_adapterBaseURL(property.getProperty("baseurl"));
 	}
-
+	
 }

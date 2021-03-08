@@ -822,6 +822,7 @@ public class CommonFlows {
 		homePage.clickOnAppointmentV3(driver);
 		JalapenoAppointmentsPage appointmentsPage = PageFactory.initElements(driver, JalapenoAppointmentsPage.class);
 		
+		Thread.sleep(5000);
 		Log4jUtil.log("Step Begins: Verify booked appointment received in Portal");
 		Boolean appointmentStatus =appointmentsPage.verifyAppointment(appointmentDate,appointmentTime,PropertyLoaderObj.getProperty("ResourceName"));
 		Assert.assertTrue(appointmentStatus, "Booked Appointment didnot receive by Patient");
@@ -878,5 +879,80 @@ public class CommonFlows {
 	   String ActualPracticeIDinDB = DBUtils.executeQueryOnDB("NGCoreDB",PracticeIDinPrescriptionTable);
 	   CommonUtils.VerifyTwoValues(ActualPracticeIDinDB,"equals",ExpectedPracticeID);
 	   Log4jUtil.log("Step End: The Prescription Renewal request is reached to EPM/EHR Inbox");
+	   }
+   
+   public static void verifyPaymentReachedtoMFAgent(String comment,String actualType, String actualPatientNumber, String actualAccountNumber, String actualStatus,String actualAmount,String actualCardType) throws Throwable{
+	   Log4jUtil.log("Step Begins: Verify payment details at MF agent");
+	   String TypeQuery = "select type from payment where comment = '"+comment+"'";	   
+	   String PatientNumberQuery = "select patient_number from payment where comment = '"+comment+"'";	   
+	   String AccountNumberQuery = "select account_number from payment where comment = '"+comment+"'";	   
+	   String StatusQuery = "select status from payment where comment = '"+comment+"'";	   
+	   String AmountQuery = "select amount from payment where comment = '"+comment+"'";	   
+	   String CardTypeQuery = "select card_type from payment where comment = '"+comment+"'";	   
+	   
+	   String type = DBUtils.executeQueryOnDB("MFAgentDB",TypeQuery);
+	   if(type.isEmpty() || type.equals("NULL")){
+	       	for (int i = 0; i < arg_timeOut; i++) {
+	       		type = DBUtils.executeQueryOnDB("MFAgentDB",TypeQuery);
+		           if (type.equalsIgnoreCase(actualType)) {
+		        	   Log4jUtil.log("Payment is received by MF agent successfully");
+		               break;
+		           } else {
+		               if (i == arg_timeOut - 1)
+		                   Thread.sleep(1000);
+		           }
+		       }
+	       	CommonUtils.VerifyTwoValues(type,"equals",actualType);
+	    }
+		CommonUtils.VerifyTwoValues(type,"equals",actualType);
+	   
+		if(!actualPatientNumber.isEmpty()){
+			String PatientNumber = DBUtils.executeQueryOnDB("MFAgentDB",PatientNumberQuery);
+			CommonUtils.VerifyTwoValues(PatientNumber,"equals",actualPatientNumber);
+       }
+	   String AccountNumber = DBUtils.executeQueryOnDB("MFAgentDB",AccountNumberQuery);
+	   CommonUtils.VerifyTwoValues(AccountNumber,"equals",actualAccountNumber);
+	   String Status = DBUtils.executeQueryOnDB("MFAgentDB",StatusQuery);
+	   CommonUtils.VerifyTwoValues(Status,"equals",actualStatus);
+	   String Amount = DBUtils.executeQueryOnDB("MFAgentDB",AmountQuery);
+	   CommonUtils.VerifyTwoValues(Amount,"equals",actualAmount);
+	   String CardType = DBUtils.executeQueryOnDB("MFAgentDB",CardTypeQuery);
+	   CommonUtils.VerifyTwoValues(CardType,"equals",actualCardType);
+	   Log4jUtil.log("Step End: The payment details are verified at MF agent");
+	   }
+   
+   public static void verifyPaymentPostedtoNG(String comment,String actualSourceID, String actualPersonID, String actualAmount, String actualTrackingDesc,String actualPracticeID) throws Throwable{
+	   Log4jUtil.log("Step Begins: Verify payment is posted to NG");	   
+	   String SourceIDQuery = "select source_id from transactions where transaction_notes = '"+comment+"'";	   
+	   String PersonIDQuery = "select person_id from transactions where transaction_notes = '"+comment+"'";	   
+	   String AmountQuery = "select tran_amt from transactions where transaction_notes = '"+comment+"'";	   
+	   String TrackingDescQuery = "select tracking_desc_40 from transactions where transaction_notes = '"+comment+"'";   
+	   String PracticeIDQuery = "select practice_id from transactions where transaction_notes = '"+comment+"'";	   
+	   
+	   String person_id = DBUtils.executeQueryOnDB("NGCoreDB",PersonIDQuery);
+	   if(person_id.isEmpty() || person_id.equals("NULL")){
+	       	for (int i = 0; i < arg_timeOut; i++) {
+	       		person_id = DBUtils.executeQueryOnDB("NGCoreDB",PersonIDQuery);
+		           if (person_id.equalsIgnoreCase(actualPersonID)) {
+		        	   Log4jUtil.log("Payment is posted to NG");
+		               break;
+		           } else {
+		               if (i == arg_timeOut - 1)
+		                   Thread.sleep(1000);
+		           }
+		       }
+	       	CommonUtils.VerifyTwoValues(person_id,"equals",actualPersonID);
+	    }
+		CommonUtils.VerifyTwoValues(person_id,"equals",actualPersonID);
+	   
+	   String SourceID = DBUtils.executeQueryOnDB("NGCoreDB",SourceIDQuery);
+	   CommonUtils.VerifyTwoValues(SourceID,"equals",actualSourceID);
+	   String Amount = DBUtils.executeQueryOnDB("NGCoreDB",AmountQuery);
+	   CommonUtils.VerifyTwoValues(Amount,"equals",actualAmount);
+	   String TrackingDesc = DBUtils.executeQueryOnDB("NGCoreDB",TrackingDescQuery);
+	   CommonUtils.VerifyTwoValues(TrackingDesc,"equals",actualTrackingDesc);	   
+	   String PracticeID = DBUtils.executeQueryOnDB("NGCoreDB",PracticeIDQuery);
+	   CommonUtils.VerifyTwoValues(PracticeID,"equals",actualPracticeID);
+	   Log4jUtil.log("Step End: The payment is posted to NG successfully");
 	   }
 }

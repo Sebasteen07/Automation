@@ -16,6 +16,7 @@ import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.openqa.selenium.support.ui.WebDriverWait;
 import org.testng.Assert;
 
+import com.intuit.ifs.csscat.core.utils.Log4jUtil;
 import com.medfusion.common.utils.IHGUtil;
 import com.medfusion.product.object.maps.patientportal2.page.JalapenoMenu;
 import com.medfusion.product.object.maps.patientportal2.page.CcdPage.JalapenoCcdViewerPage;
@@ -96,6 +97,15 @@ public class JalapenoMessagesPage extends JalapenoMenu {
 
 	@FindBy(how = How.XPATH, using = "//h4[text()=' Your Appointment Details ']")
 	private WebElement yourAppointmentDetails;
+
+	@FindBy(how = How.XPATH, using = "//*[@id='rx_provider0']/span[2]")
+	private WebElement providerNameOnPortal;
+
+	@FindBy(how = How.XPATH, using = "//*[@id='rx_location0']/span[2]")
+	private WebElement locationOnPortal;
+
+	@FindBy(how = How.XPATH, using = "//*[@id='rx_pharmacy0']/span[2]")
+	private WebElement pharmacyOnPortal;
 
 	@Override
 	public boolean areBasicPageElementsPresent() {
@@ -426,5 +436,15 @@ public class JalapenoMessagesPage extends JalapenoMenu {
 			log(ex.getMessage());
 			Assert.assertTrue(status, "Your Appointment Details is not displayed in massage box");
 		}
+	}
+
+	public void checkProviderDetails(String providerName, String location) {
+		IHGUtil.PrintMethodName();
+		Log4jUtil.log("Searching: Provider Name is: " + providerName + ", and Actual Provider Name is: "
+				+ providerNameOnPortal.getText().toString());
+		Log4jUtil.log("Searching: Provider location is: " + location + ", and Actual Provider location is: "
+				+ locationOnPortal.getText().toString());
+		Assert.assertEquals(providerNameOnPortal.getText(), providerName, "Invalid Provider Name was found");
+		Assert.assertEquals(locationOnPortal.getText(), location, "Invalid Location was found");
 	}
 }
