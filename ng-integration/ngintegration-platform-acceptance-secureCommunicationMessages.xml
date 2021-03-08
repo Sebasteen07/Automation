@@ -28,6 +28,7 @@
 	    	 	<include name="testInboxRequestPrescriptionRenewalApprovedbyPracticeUser"/>
 	    		<include name="testInboxRequestPrescriptionRenewalRejectedbyPracticeUser"/>
 	    		<include name="testInboxRequestMultiplePrescriptionRenewal"/>
+	    		<include name="testPaymentPayBills"/>
 	    		<include name="testCOMBulkSendSecureMessageDoNotAddToEncounterSendByPracticeUser"/>
       	</methods>
 	</classes>

@@ -91,8 +91,10 @@ public class PatientDemographicPage extends MedfusionPage {
 	@FindBy(how = How.XPATH, using = ACTIVE_TAB_XPATH_SELECTOR + "//*[@id='nextStep']")
 	private WebElement buttonContinue;
 
-	@FindBy(how = How.XPATH, using = "//p[@data-ng-show = 'createAccountStep1_form.$error.inactiveAccount'][contains(text(),'Looks like we have previously invited you to join our portal. We just sent you another email invitation. Please check your email and click on the button to sign up.')]")
+	
+    @FindBy(how = How.XPATH, using = "//*[contains(text(),'Looks like we have previously invited you to join our portal. We just sent you another email invitation. Please check your email and click on the button to sign up.')]")
 	private WebElement inactiveAccountExistsError;
+	
 
 	@FindBy(how = How.XPATH, using = "//p[@id='dateofbirth-error']")
 	private WebElement StateAgeOutError;

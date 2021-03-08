@@ -108,7 +108,11 @@ public class JalapenoAppointmentsPage extends MedfusionPage {
 			Boolean status = false;
 			
 			for(int i =0;i<appointmentList.size();i++){
-				String XPath = "(//ul[contains(@class, 'myAccountList')]//div[@class='row'])["+(i+1)+"]";				
+				String XPath = "(//ul[contains(@class, 'myAccountList')]//div[@class='row'])["+(i+1)+"]";
+				
+				Log4jUtil.log("Row "+(i+1)+" Date " +driver.findElement(By.xpath(XPath+"//div[@class='col-sm-6 col-md-6 ng-binding'][1]")).getText());
+				Log4jUtil.log("Row "+(i+1)+" Time " +driver.findElement(By.xpath(XPath+"//div[@class='col-sm-6 col-md-6 ng-binding'][2]")).getText());
+				
 				if(driver.findElement(By.xpath(XPath+"//div[@class='col-sm-6 col-md-6 ng-binding'][1]")).getText().contains(appointmentDate) &&
 						driver.findElement(By.xpath(XPath+"//div[@class='col-sm-6 col-md-6 ng-binding'][2]")).getText().contains(appointmentTime)){	
 					Log4jUtil.log("Actual Date "+driver.findElement(By.xpath(XPath+"//div[@class='col-sm-6 col-md-6 ng-binding'][1]")).getText());
