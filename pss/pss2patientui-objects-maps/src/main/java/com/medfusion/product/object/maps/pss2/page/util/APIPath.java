@@ -10,6 +10,8 @@ public class APIPath {
 		public static final String Get_List_Appointment="/appointmenttypes/rule/26308";
 		public static final String Get_List_Slots="/availableslots/26308";
 		public static final String ScheduleAPPT="/scheduleappointment/26308";
+		public static final String cancelAppointment="/24249/cancelappointment/50151";
+		public static final String cancellationReason="/24249/cancellationreason";
 	}
 
 }
