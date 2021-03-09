@@ -362,4 +362,28 @@ public class StatementEventUtils {
 		Assert.assertTrue(completed, "Message processing was not completed in time");
 	}
 
+	public void postStatementV3(StatementEventData testData, String statement) throws Exception {
+		Log4jUtil.log("Statement Step 1: Setup Oauth client");
+
+		RestUtils.oauthSetup(testData.OAuthKeyStore, testData.OAuthProperty, testData.oAuthAppToken_PatientSt,
+				testData.oAuthAppUsername_PatientSt, testData.oAuthAppPw_PatientSt);
+
+		Log4jUtil.log("Statement Step 2: Do a POST call and get processing status URL");
+		String processingUrl = RestUtils.setupHttpPostRequest(testData.restUrlV3_Statement, statement,
+				testData.ResponsePath);
+		Log4jUtil.log("processing Status" + processingUrl);
+
+		Log4jUtil.log("Statement Step 3: Get processing status until it is completed");
+
+		boolean completed = false;
+		for (int i = 0; i < 1; i++) {
+			Thread.sleep(60000);
+			RestUtils.setupHttpGetRequest(processingUrl, testData.ResponsePath);
+			if (RestUtils.isMessageProcessingCompleted(testData.ResponsePath)) {
+				completed = true;
+				break;
+			}
+		}
+		Assert.assertTrue(completed, "Message processing was not completed in time");
+	}
 }
