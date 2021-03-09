@@ -30,7 +30,7 @@ public class StatementsMessagePayload {
 	public String billAccountNumber;
 	public String paymentPortalDueDate;
 	public String StatementPdf_Detail;
-	public static String StatementValueEncoded = "";
+	public static String StatementValueEncoded;
 
 	public String getStatementsMessagePayload(StatementEventData testData) throws ParseException {
 
