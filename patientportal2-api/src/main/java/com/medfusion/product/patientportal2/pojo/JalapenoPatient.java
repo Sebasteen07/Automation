@@ -1,3 +1,4 @@
+//  Copyright 2013-2021 NXGN Management, LLC. All Rights Reserved.
 package com.medfusion.product.patientportal2.pojo;
 
 import com.medfusion.common.utils.IHGUtil;
@@ -39,7 +40,7 @@ public class JalapenoPatient {
 
 				username = PortalUtil2.generateUniqueUsername(testData.getUserId(),testData);
 				email = username + "@mailinator.com";
-				firstName = testData.getFirstName() + PortalUtil2.createRandomNumber();
+				firstName = testData.getFirstName() + IHGUtil.createRandomNumber();
 				lastName = testData.getLastName();
 				password = testData.getPassword();
 				gender = Patient.GenderExtended.MALE;

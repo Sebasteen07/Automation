@@ -49,6 +49,20 @@ public class PortalUtil2 extends IHGUtil {
 
 		IHGUtil.setFrameChain(driver, frames);
 	}
+	
+	public static void acceptAlert(WebDriver driver) {
+		Alert alert = driver.switchTo().alert();
+		alert.accept();
+	}
+	
+	public static void setquestionnarieFrame(WebDriver pDriver) {
+		IHGUtil.PrintMethodName();		
+		try {
+			pDriver.switchTo().frame(pDriver.findElement(By.xpath("//div[@id='lightbox']/iframe[@title='Forms']")));
+		} catch (StaleElementReferenceException e) {
+			System.out.println("Stale element exception caught as expected. Frame should be correctly switched");
+		}
+	}
 
 	public static String generateUniqueUsername(String username, PropertyFileLoader testData) throws Exception {
 		long generatedTS = System.currentTimeMillis();

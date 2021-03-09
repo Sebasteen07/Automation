@@ -1,26 +1,32 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+<project xmlns="http://maven.apache.org/POM/4.0.0"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
 	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
 	<modelVersion>4.0.0</modelVersion>
-	
+
 	<parent>
-        <groupId>com.intuit.ihg</groupId>
-        <artifactId>ihg-depot-qa-parent-pom</artifactId>
-        <version>21.3.0-SNAPSHOT</version>
-    </parent>
-	
+		<groupId>com.intuit.ihg</groupId>
+		<artifactId>ihg-depot-qa-parent-pom</artifactId>
+		<version>21.3.0-SNAPSHOT</version>
+	</parent>
+
 	<artifactId>integrationplatform-api</artifactId>
-    <name>integrationplatform-api</name>
-    <packaging>jar</packaging>
-	
+	<name>integrationplatform-api</name>
+	<packaging>jar</packaging>
+
 	<repositories>
-        <repository>
-            <id>IHG-nexus</id>
-            <name>IHG-nexus</name>
-            <url>http://maven.qhg.local/nexus/content/groups/qhg-dev/</url>
-        </repository>
-    </repositories>
-	
+		<repository>
+			<id>IHG-nexus</id>
+			<name>IHG-nexus</name>
+			<url>http://maven.qhg.local/nexus/content/groups/qhg-dev/</url>
+		</repository>
+	</repositories>
+
+	<properties>
+		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+		<ihg.version>21.3.0-SNAPSHOT</ihg.version>
+	</properties>
+
 	<dependencies>
 		<dependency>
 			<groupId>com.intuit.ifs.csscat.core</groupId>
@@ -31,26 +37,36 @@
 					<artifactId>commons-io</artifactId>
 					<groupId>org.apache.commons</groupId>
 				</exclusion>
-				<exclusion> 
-			        <groupId>org.slf4j</groupId>
-			        <artifactId>slf4j-jdk14</artifactId>
-		      	</exclusion>
-		      	<exclusion> 
-			        <groupId>log4j</groupId>
-			        <artifactId>log4j</artifactId>
-      			</exclusion>
+				<exclusion>
+					<groupId>org.slf4j</groupId>
+					<artifactId>slf4j-jdk14</artifactId>
+				</exclusion>
+				<exclusion>
+					<groupId>log4j</groupId>
+					<artifactId>log4j</artifactId>
+				</exclusion>
 			</exclusions>
 		</dependency>
 		<dependency>
-  			<groupId>com.intuit.ihg</groupId>
-  			<artifactId>qa-automation-utils</artifactId>
-  			<version>21.3.0-SNAPSHOT</version>
-  		</dependency>
-  		 <dependency>
-  			<groupId>com.intuit.ihg</groupId>
-  			<artifactId>patientportal2-object-maps</artifactId>
-  			<version>21.3.0-SNAPSHOT</version>
-  		</dependency>
+			<groupId>com.intuit.ihg</groupId>
+			<artifactId>qa-automation-utils</artifactId>
+			<version>${ihg.version}</version>
+		</dependency>
+		<dependency>
+			<groupId>com.intuit.ihg</groupId>
+			<artifactId>patientportal2-object-maps</artifactId>
+			<version>${ihg.version}</version>
+		</dependency>
+		<dependency>
+			<groupId>com.intuit.ihg</groupId>
+			<artifactId>practiceportal-object-maps</artifactId>
+			<version>${ihg.version}</version>
+		</dependency>
+		<dependency>
+			<groupId>com.intuit.ihg</groupId>
+			<artifactId>patientportal2-api</artifactId>
+			<version>${ihg.version}</version>
+		</dependency>
 		<dependency>
 			<groupId>org.eclipse.jetty</groupId>
 			<artifactId>jetty-util</artifactId>
@@ -61,69 +77,57 @@
 			<artifactId>resteasy-jaxb-provider</artifactId>
 			<version>2.2.2.GA</version>
 		</dependency>
-
 		<dependency>
 			<groupId>org.jboss.resteasy</groupId>
 			<artifactId>resteasy-jaxrs</artifactId>
 			<version>2.2.2.GA</version>
 		</dependency>
-		
 		<dependency>
-		    <groupId>commons-io</groupId>
-		    <artifactId>commons-io</artifactId>
-		    <version>2.4</version>
-	    </dependency>
-		
-		<dependency>
-	      <groupId>com.intuit.qhg.hub.schemas</groupId>
-	      <artifactId>Messages</artifactId>
-	      <version>21.3.0-SNAPSHOT</version>
-	      <scope>compile</scope>
+			<groupId>commons-io</groupId>
+			<artifactId>commons-io</artifactId>
+			<version>2.4</version>
 		</dependency>
-		
-    	<dependency>
+		<dependency>
+			<groupId>com.intuit.qhg.hub.schemas</groupId>
+			<artifactId>Messages</artifactId>
+			<version>21.3.0-SNAPSHOT</version>
+			<scope>compile</scope>
+		</dependency>
+		<dependency>
 			<groupId>com.intuit.api.security</groupId>
 			<artifactId>oauth-core-client</artifactId>
 			<version>21.3.0-SNAPSHOT</version>
 		</dependency>
-		
-  		<dependency>
+		<dependency>
 			<groupId>com.jayway.awaitility</groupId>
 			<artifactId>awaitility</artifactId>
 			<version>1.3.2</version>
 		</dependency>
-		
-	  	<dependency>
-	  		<groupId>com.intuit.eh.core</groupId>
-	  		<artifactId>eh-core-dto</artifactId>
-	  		<version>21.3.0-SNAPSHOT</version>
-	  	</dependency>
-
-	  	<dependency>
-	  		<groupId>org.openhealthtools.mdht</groupId>
-	  		<artifactId>org.openhealthtools.mdht.uml.cda</artifactId>
-	  		<version>1.1.0.201205021531</version>
-	  	</dependency>
-	  	<dependency>
-	  		<groupId>org.eclipse.emf</groupId>
-	  		<artifactId>org.eclipse.emf.common</artifactId>
-	  		<version>2.9.1-v20130827-0309</version>
-	  	</dependency>
-	  	<dependency>
-	  		<groupId>org.eclipse.emf</groupId>
-	  		<artifactId>org.eclipse.emf.ecore</artifactId>
-	  		<version>2.9.1-v20130827-0309</version>
-	  	</dependency>
-        <dependency>
-            <groupId>org.apache.httpcomponents</groupId>
-            <artifactId>httpclient</artifactId>
-            <version>4.3.5</version>
-        </dependency>
-        <dependency>
-	  	 	<groupId>com.intuit.ihg</groupId>
-	  	 	<artifactId>practiceportal-object-maps</artifactId>
-	  	 	<version>21.3.0-SNAPSHOT</version>
-	  </dependency>
+		<dependency>
+			<groupId>com.intuit.eh.core</groupId>
+			<artifactId>eh-core-dto</artifactId>
+			<version>21.3.0-SNAPSHOT</version>
+		</dependency>
+		<dependency>
+			<groupId>org.openhealthtools.mdht</groupId>
+			<artifactId>org.openhealthtools.mdht.uml.cda</artifactId>
+			<version>1.1.0.201205021531</version>
+		</dependency>
+		<dependency>
+			<groupId>org.eclipse.emf</groupId>
+			<artifactId>org.eclipse.emf.common</artifactId>
+			<version>2.9.1-v20130827-0309</version>
+		</dependency>
+		<dependency>
+			<groupId>org.eclipse.emf</groupId>
+			<artifactId>org.eclipse.emf.ecore</artifactId>
+			<version>2.9.1-v20130827-0309</version>
+		</dependency>
+		<dependency>
+			<groupId>org.apache.httpcomponents</groupId>
+			<artifactId>httpclient</artifactId>
+			<version>4.3.5</version>
+		</dependency>
 	</dependencies>
 	<build>
 		<plugins>
@@ -140,16 +144,9 @@
 					</execution>
 				</executions>
 			</plugin>
-			<!-- <plugin>
-				<groupId>org.apache.maven.plugins</groupId>
-				<artifactId>maven-eclipse-plugin</artifactId>
-				<version>2.10</version>
-			</plugin>
-			<plugin>
-				<groupId>org.apache.maven.plugins</groupId>
-				<artifactId>maven-jar-plugin</artifactId>
-				<version>2.3.2</version>
-			</plugin> -->
+			<!-- <plugin> <groupId>org.apache.maven.plugins</groupId> <artifactId>maven-eclipse-plugin</artifactId> 
+				<version>2.10</version> </plugin> <plugin> <groupId>org.apache.maven.plugins</groupId> 
+				<artifactId>maven-jar-plugin</artifactId> <version>2.3.2</version> </plugin> -->
 		</plugins>
 	</build>
 </project>

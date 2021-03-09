@@ -53,7 +53,7 @@ public class JalapenoCreatePatientTest extends BaseTestNGWebDriver {
 	public void initPatientData(WebDriver driver, PropertyFileLoader testData) {
 		IHGUtil.PrintMethodName();
 
-		int randomize = PortalUtil2.createRandomNumber();
+		int randomize = IHGUtil.createRandomNumber();
 
 		// Setting data according to test purpose
 		if (email.isEmpty()) {
@@ -75,7 +75,7 @@ public class JalapenoCreatePatientTest extends BaseTestNGWebDriver {
 
 	/*
 	 * @Deprecated public JalapenoHomePage createPatient(WebDriver driver, PropertyFileLoader testData) throws InterruptedException { IHGUtil.PrintMethodName();
-	 * int randomize = PortalUtil.createRandomNumber();
+	 * int randomize = IHGUtil.createRandomNumber();
 	 * 
 	 * //Setting data according to test purpose if(email.isEmpty()) { email = IHGUtil.createRandomEmailAddress(testData.getEmail()); }
 	 * 

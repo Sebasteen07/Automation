@@ -1925,7 +1925,7 @@ public class EhcoreAPIAcceptanceTests extends BaseTestNGWebDriver {
 		msgDetails = EhcoreAPIUtil.verifyExpectedMessageProcStatus(0, response.getDataJobId(), TrackingEnumHolder.MESSAGE_STATUS.ERROR.toString(),
 				EhcoreAPIConstants.CCDEXPORT);
 		log("Verify the tracking DB status");
-		verifyTrue(EhcoreTrackingDBUtils.isActivityStatusCompleted(msgDetails.get(0).getQid().toString(), TrackingEnumHolder.ACTIVITY_TYPE.PERSIST.toString(),
+		assertTrue(EhcoreTrackingDBUtils.isActivityStatusCompleted(msgDetails.get(0).getQid().toString(), TrackingEnumHolder.ACTIVITY_TYPE.PERSIST.toString(),
 				EhcoreAPIConstants.RAWPERSISTANCE));
 
 		String obj_ref_id = EhcoreTrackingDBUtils.getObjRefDetails(msgDetails.get(0).getQid().toString(), TrackingEnumHolder.OBJECTSTORE_NODE_TYPE.RAW.toString());
@@ -1961,7 +1961,7 @@ public class EhcoreAPIAcceptanceTests extends BaseTestNGWebDriver {
 				EhcoreAPIConstants.CCDEXPORT);
 
 		log("Verify the Tracking DB response.");
-		verifyTrue(EhcoreTrackingDBUtils.isActivityStatusCompleted(msgDetails.get(0).getQid().toString(), TrackingEnumHolder.ACTIVITY_TYPE.RETRIEVE.toString(),
+		assertTrue(EhcoreTrackingDBUtils.isActivityStatusCompleted(msgDetails.get(0).getQid().toString(), TrackingEnumHolder.ACTIVITY_TYPE.RETRIEVE.toString(),
 				EhcoreAPIConstants.RAWRETRIEVAL));
 
 		log("Exiting checkRawMessageRetrieveForCCDExport test method ... ");
@@ -1993,7 +1993,7 @@ public class EhcoreAPIAcceptanceTests extends BaseTestNGWebDriver {
 		(), EhcoreAPIConstants.CCDEXPORT);
 
 		log("Verify the Tracking DB status");
-		verifyTrue(EhcoreTrackingDBUtils.isActivityStatusCompleted(msgDetails.get(0).getQid().toString(), TrackingEnumHolder.ACTIVITY_TYPE.TRANSLATE.toString
+		assertTrue(EhcoreTrackingDBUtils.isActivityStatusCompleted(msgDetails.get(0).getQid().toString(), TrackingEnumHolder.ACTIVITY_TYPE.TRANSLATE.toString
 
 		(), EhcoreAPIConstants.TRANSLATESIMPLECCDTOCCD));
 
@@ -2024,7 +2024,7 @@ public class EhcoreAPIAcceptanceTests extends BaseTestNGWebDriver {
 		(), EhcoreAPIConstants.CCDEXPORT);
 
 		log("Verify the DB status");
-		verifyTrue(EhcoreTrackingDBUtils.isActivityStatusCompleted(msgDetails.get(0).getQid().toString(), TrackingEnumHolder.ACTIVITY_TYPE.TRANSLATE.toString
+		assertTrue(EhcoreTrackingDBUtils.isActivityStatusCompleted(msgDetails.get(0).getQid().toString(), TrackingEnumHolder.ACTIVITY_TYPE.TRANSLATE.toString
 
 		(), EhcoreAPIConstants.TRANSLATECDMTOCCDEXCHANGE));
 
