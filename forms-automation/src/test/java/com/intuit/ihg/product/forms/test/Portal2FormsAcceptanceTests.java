@@ -23,7 +23,7 @@ import com.medfusion.product.object.maps.forms.page.FiltersFormPages;
 import com.medfusion.product.object.maps.forms.page.HealthFormListPage;
 import com.medfusion.product.object.maps.patientportal2.page.HomePage.JalapenoHomePage;
 import com.medfusion.product.object.maps.patientportal2.page.MyAccountPage.JalapenoMyAccountProfilePage;
-import com.medfusion.product.patientportal2.utils.PortalUtil;
+import com.medfusion.product.patientportal2.utils.PortalUtil2;
 
 public class Portal2FormsAcceptanceTests extends FormsAcceptanceTestsUtils {
 		private PropertyFileLoader testData;
@@ -34,7 +34,7 @@ public class Portal2FormsAcceptanceTests extends FormsAcceptanceTestsUtils {
 		//@BeforeMethod(alwaysRun = true, onlyForGroups = "commonPIpatient")
 		private void createCommonPatient() throws Exception {
 				if (patient == null) {
-						String username = PortalUtil.generateUniqueUsername(testData.getProperty("userid"), testData);
+						String username = PortalUtil2.generateUniqueUsername(testData.getProperty("userid"), testData);
 						String url = testData.getUrl();
 						patient = Utils.createPatientPI(driver, username, url, testData);
 				}

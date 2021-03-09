@@ -1,3 +1,4 @@
+// Copyright 2013-2021 NXGN Management, LLC. All Rights Reserved.
 package com.intuit.ihg.product.integrationplatform.test;
 
 import java.awt.Robot;
@@ -66,7 +67,6 @@ import com.intuit.ihg.product.integrationplatform.utils.StatementsMessagePayload
 import com.medfusion.common.utils.IHGUtil;
 import com.medfusion.common.utils.Mailinator;
 import com.medfusion.common.utils.PropertyFileLoader;
-import com.medfusion.portal.utils.PortalConstants;
 import com.medfusion.portal.utils.PortalUtil;
 import com.medfusion.product.object.maps.forms.page.HealthFormListPage;
 import com.medfusion.product.object.maps.forms.page.questionnaires.prereg_pages.FormBasicInfoPage;
@@ -99,6 +99,7 @@ import com.medfusion.product.object.maps.precheck.page.myInsurance.TertiaryInsur
 import com.medfusion.product.object.maps.precheck.page.myInsuranceImage.InsuranceImagePage;
 import com.medfusion.product.object.maps.precheck.page.verifyIdentity.VerifyIdentityPage;
 import com.medfusion.product.patientportal2.pojo.JalapenoPatient;
+import com.medfusion.product.patientportal2.utils.JalapenoConstants;
 import com.medfusion.product.practice.api.pojo.Practice;
 
 /**
@@ -555,8 +556,8 @@ public class IntegrationPlatformRegressionTests extends BaseTestNGWebDriver {
 		log("checking email for activation UrL link");
 		Thread.sleep(5000);
 		Mailinator mail = new Mailinator();
-		String activationUrl = mail.getLinkFromEmail(patientDetail.get(4), PortalConstants.NewPatientActivationMessage,
-				PortalConstants.NewPatientActivationMessageLinkText, 20);
+		String activationUrl = mail.getLinkFromEmail(patientDetail.get(4), JalapenoConstants.NEW_PATIENT_ACTIVATION_MESSAGE,
+				JalapenoConstants.NEW_PATIENT_ACTIVATION_MESSAGE_LINK_TEXT, 20);
 		assertTrue(activationUrl != null, "Error: Activation link not found.");
 
 		PatientRegistrationUtils.registerPatient(activationUrl, patientDetail.get(4), testData.PatientPassword,
@@ -2403,7 +2404,7 @@ public class IntegrationPlatformRegressionTests extends BaseTestNGWebDriver {
 		Mailinator mail = new Mailinator();
 		String activationUrl = mail.getLinkFromEmail(patientDetail.get(4),
 				"You are invited to create a Patient Portal guardian account at PI Automation rsdk Integrated",
-				PortalConstants.NewPatientActivationMessageLinkText, 20);
+				JalapenoConstants.NEW_PATIENT_ACTIVATION_MESSAGE_LINK_TEXT, 20);
 		assertTrue(activationUrl != null, "Error: Activation link not found.");
 
 		log("Step 4: Register under age patient");
@@ -2562,7 +2563,7 @@ public class IntegrationPlatformRegressionTests extends BaseTestNGWebDriver {
 		Mailinator mail = new Mailinator();
 		String activationUrl = mail.getLinkFromEmail(patientDetail.get(4),
 				"You are invited to create a Patient Portal guardian account at PI Automation rsdk Integrated",
-				PortalConstants.NewPatientActivationMessageLinkText, 20);
+				JalapenoConstants.NEW_PATIENT_ACTIVATION_MESSAGE_LINK_TEXT, 20);
 		assertTrue(activationUrl != null, "Error: Activation link not found.");
 
 		log("Step 4: Register under age patient");

@@ -13,11 +13,11 @@ public class JalapenoTestCaseData {
 		PortalBasic jalapeno = null;
 		ExcelSheetReader excelReader = null;
 
-		public JalapenoTestCaseData(PortalBasic jalapeno) throws Exception {
+		public JalapenoTestCaseData(PortalBasic portal) throws Exception {
 				String temp = IHGUtil.getEnvironmentType().toString();// which enviroment data need to picked
 				URL url = ClassLoader.getSystemResource("data-driven/IHG_CONFIG.xls"); // file name
 				excelReader = new ExcelSheetReader(url.getFile());// reading the entire file
-				jalapeno = (PortalBasic) excelReader.getSingleExcelRow(jalapeno, temp);// filtering the entire file
+				portal = (PortalBasic) excelReader.getSingleExcelRow(portal, temp);// filtering the entire file
 		}
 
 		public String getTitle() {

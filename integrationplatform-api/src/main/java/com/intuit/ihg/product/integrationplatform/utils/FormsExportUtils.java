@@ -52,7 +52,7 @@ import com.medfusion.product.object.maps.practice.page.PracticeHomePage;
 import com.medfusion.product.object.maps.practice.page.PracticeLoginPage;
 import com.medfusion.product.object.maps.practice.page.patientSearch.PatientDashboardPage;
 import com.medfusion.product.object.maps.practice.page.patientSearch.PatientSearchPage;
-import com.medfusion.product.patientportal1.utils.PortalUtil;
+import com.medfusion.product.patientportal2.utils.PortalUtil2;
 
 public class FormsExportUtils {
 	public List<String> list;
@@ -177,7 +177,7 @@ public class FormsExportUtils {
 
 			if(i==1)
 			{
-				PortalUtil.setPortalFrame(driver);
+				PortalUtil2.setPortalFrame(driver);
 				Log4jUtil.log("Step for patient with External ID: Downloading PDf file from Application");
 				Thread.sleep(6000);
 				healthListpage.getPDF();
@@ -311,14 +311,14 @@ public class FormsExportUtils {
 		
 		Log4jUtil.log("Step 14 : Fill in Basic Info of Patient");
 		if(!isFormTypePreCheck) {
-			PortalUtil.setPortalFrame(driver);
+			PortalUtil2.setPortalFrame(driver);
 		}
 		Thread.sleep(14000);
 		pFormBasicInfoPage.setBasicInfoFromFields_20(testData.state1,testData.phonetype1,testData.sex,isFormTypePreCheck);
 
 		Log4jUtil.log("Step 15: Fill in Emergency Contact info ");
 		if(!isFormTypePreCheck) {
-			PortalUtil.setPortalFrame(driver);
+			PortalUtil2.setPortalFrame(driver);
 		}
 		FormEmergencyContactPage paFormEmergencyContactPage = PageFactory.initElements(driver, FormEmergencyContactPage.class);
 		paFormEmergencyContactPage.fillEmergencyContactFormFields_20(testData.relFirstName, testData.relLastName, testData.relation1, testData.phonenumber1, testData.phonetype1,isFormTypePreCheck);
@@ -353,7 +353,7 @@ public class FormsExportUtils {
 		Thread.sleep(3000);
 		Log4jUtil.log("Step 21: Fill in No Allergies");
 		if(!isFormTypePreCheck) {
-			PortalUtil.setPortalFrame(driver);
+			PortalUtil2.setPortalFrame(driver);
 		}
 		FormAllergiesPage pFormAllergiesPage=PageFactory.initElements(driver, FormAllergiesPage.class);
 		Thread.sleep(5000);

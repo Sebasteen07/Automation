@@ -1,3 +1,4 @@
+//  Copyright 2013-2021 NXGN Management, LLC. All Rights Reserved.
 package com.medfusion.product.object.maps.forms.page.questionnaires.prereg_pages;
 
 import org.openqa.selenium.By;
@@ -8,9 +9,9 @@ import org.openqa.selenium.support.PageFactory;
 import org.openqa.selenium.support.ui.Select;
 
 import com.medfusion.common.utils.IHGUtil;
-import com.medfusion.portal.utils.PortalConstants;
 import com.medfusion.portal.utils.PortalUtil;
 import com.medfusion.product.object.maps.forms.page.questionnaires.PortalFormPage;
+import com.medfusion.product.patientportal2.utils.JalapenoConstants;
 
 public class FormEmergencyContactPage extends PortalFormPage {
 
@@ -137,13 +138,13 @@ public class FormEmergencyContactPage extends PortalFormPage {
 	 * @throws Exception
 	 */
 	public FormCurrentSymptomsPage fillEmergencyContactFormFields() throws Exception {
-		setFirstName(PortalConstants.FirstName);
+		setFirstName(JalapenoConstants.FIRST_NAME);
 
-		setLastName(PortalConstants.LastName);
+		setLastName(JalapenoConstants.LAST_NAME);
 
-		setRelation(PortalConstants.Relation);
+		setRelation(JalapenoConstants.RELATION);
 
-		setPrimaryPhone("1234567890", PortalConstants.Mobile);
+		setPrimaryPhone("1234567890", JalapenoConstants.MOBILE);
 
 		clickSaveContinue();
 

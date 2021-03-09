@@ -8,9 +8,9 @@ import org.openqa.selenium.support.PageFactory;
 import org.openqa.selenium.support.ui.Select;
 
 import com.medfusion.common.utils.IHGUtil;
-import com.medfusion.portal.utils.PortalConstants;
 import com.medfusion.portal.utils.PortalUtil;
 import com.medfusion.product.object.maps.forms.page.questionnaires.PortalFormPage;
+import com.medfusion.product.patientportal2.utils.JalapenoConstants;
 
 public class FormBasicInfoPage extends PortalFormPage {
 
@@ -265,11 +265,11 @@ public class FormBasicInfoPage extends PortalFormPage {
 	public FormEmergencyContactPage setBasicInfoFromFields() throws Exception {
 		setStreetAddress();
 		setCity();
-		setState(PortalConstants.State);
+		setState(JalapenoConstants.STATE);
 		setZip();
 		setPrimaryPhoneNumber();
-		setPrimaryPhoneType(PortalConstants.PrimaryPhoneType);
-		setSex(PortalConstants.Sex);
+		setPrimaryPhoneType(JalapenoConstants.PRIMARY_PHONE_TYPE);
+		setSex(JalapenoConstants.SEX);
 
 		return clickSaveContinue(FormEmergencyContactPage.class);
 	}
