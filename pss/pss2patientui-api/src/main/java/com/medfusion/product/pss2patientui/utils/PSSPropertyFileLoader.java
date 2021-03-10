@@ -257,6 +257,15 @@ public class PSSPropertyFileLoader {
 		appointValues.setProviderImageAPI(property.getProperty("providerImageAPIGE"));
 		appointValues.setGmailUserName(property.getProperty("emailGE"));
 		appointValues.setPopUpMessege(property.getProperty("popUpMessege"));
+		
+		appointValues.setFirstNameCarePatient(property.getProperty("firstNameCarePatientGE"));
+		appointValues.setLastNameCarePatient(property.getProperty("lastNameCarePatientGE"));
+		appointValues.setDobCarePatient(property.getProperty("dobCarePatientGE"));
+		appointValues.setGenderCarePatient(property.getProperty("genderCarePatientGE"));
+		appointValues.setEmailCarePatient(property.getProperty("emailCarePatientGE"));
+		appointValues.setPhoneCarePatient(property.getProperty("phoneCarePatientGE"));
+		appointValues.setZipCarePatient(property.getProperty("zipCarePatientGE"));
+		appointValues.setCareProvider(property.getProperty("providerCarePatientGE"));
 
 	}
 

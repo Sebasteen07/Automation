@@ -120,6 +120,16 @@ public class Provider extends PSS2MainPage {
 	public List<WebElement> getProviderNames() {
 		return providerList;
 	}
+	public String getProviderNamesfromProviderList(String providerName) {
+		searchForProvider.clear();
+		searchForProvider.sendKeys(providerName.trim());
+		log("providerList = " + providerList.size());
+		ArrayList<WebElement> webElementsList = new ArrayList<WebElement>();
+		webElementsList.add(providerList.get(0));
+		String provider=providerList.get(0).getText();
+		log("First provider is" +provider);
+		return provider;
+	}
 
 	public AppointmentDateTime searchForProviderFromList(String providerName) throws InterruptedException {
 		searchForProvider.sendKeys(providerName.trim());

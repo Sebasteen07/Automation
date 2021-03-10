@@ -619,6 +619,7 @@ public class PSSAdminUtils {
 		manageResource.ageRule();
 		manageResource.ageRuleparameter(appointment.getAgeRuleMonthFirst(), appointment.getAgeRuleMonthSecond());
 	}
+
 	public void allowpcp(WebDriver driver, AdminUser adminuser, Appointment appointment) throws Exception {
 		Log4jUtil.log("Step 2: Login to Admin portal.");
 		PSS2PracticeConfiguration pss2practiceconfig = loginToAdminPortal(driver, adminuser);
@@ -626,8 +627,9 @@ public class PSSAdminUtils {
 
 		Log4jUtil.log("Step 3: Clicking to Appointment tab.");
 		adminappointment.areBasicPageElementsPresent();
- 
-		Log4jUtil.log("Step 4: Checking the Enable care Team and Force Care Team is ON/OFF and set configuration accordingly.");
+
+		Log4jUtil.log(
+				"Step 4: Checking the Enable care Team and Force Care Team is ON/OFF and set configuration accordingly.");
 		adminappointment.toggleAllowPCPONOF();
 		appointment.setPcptoggleState(adminappointment.toggleAllowPCPONOF());
 		Log4jUtil.log("Status of PCP is " + appointment.isPcptoggleState());
@@ -638,10 +640,21 @@ public class PSSAdminUtils {
 		} else {
 			Log4jUtil.log("Status of PCP is Already OFF");
 		}
+		PatientFlow patientflow = pss2practiceconfig.gotoPatientFlowTab();
+		adminuser.setRule(patientflow.getRule());
+		Log4jUtil.log("rule= " + patientflow.getRule());
+		setRulesNoSpecialitySet1(patientflow);
+		AdminPatientMatching adminpatientmatching = patientflow.gotoPatientMatchingTab();
+		adminpatientmatching.patientMatchingSelection();
 		ManageResource manageResource = pss2practiceconfig.gotoResource();
 		pageRefresh(driver);
 		manageResource.selectResource(appointment.getProvider());
-		// manageResource.selectAppointmenttype(appointment.getAppointmenttype());
 		Log4jUtil.log("is share patient ON for resource " + manageResource.isSharedPatientTrueForResource());
+		if (manageResource.isSharedPatientTrueForResource() == true) {
+			manageResource.clickShareToggle();
+		} else {
+			Log4jUtil.log("Share Patient is already off");
+		}
+		
 	}
 }

@@ -67,6 +67,20 @@ public class Appointment {
 	private String isAgeRuleApplied;
 	private String underAgePatientUserName;
 	private String underAgePatientPassword;
+	
+	private String firstNameCarePatient;
+	private String lastNameCarePatient;
+	private String dobCarePatient;
+	private String genderCarePatient;
+	
+
+	private String emailCarePatient;
+	private String phoneCarePatient;
+	private String zipCarePatient;
+	private String careProvider;
+	
+
+
 
 	private Boolean isCancelApt = true;
 	private Boolean isInsuranceEnabled = false;
@@ -142,6 +156,72 @@ public class Appointment {
 	}
 
 	public Appointment() {}
+
+	public String getGenderCarePatient() {
+		return genderCarePatient;
+	}
+
+	public void setGenderCarePatient(String genderCarePatient) {
+		this.genderCarePatient = genderCarePatient;
+	}
+
+	public String getCareProvider() {
+		return careProvider;
+	}
+
+	public void setCareProvider(String careProvider) {
+		this.careProvider = careProvider;
+	}
+
+	public String getFirstNameCarePatient() {
+		return firstNameCarePatient;
+	}
+
+	public void setFirstNameCarePatient(String firstNameCarePatient) {
+		this.firstNameCarePatient = firstNameCarePatient;
+	}
+
+	public String getLastNameCarePatient() {
+		return lastNameCarePatient;
+	}
+
+	public void setLastNameCarePatient(String lastNameCarePatient) {
+		this.lastNameCarePatient = lastNameCarePatient;
+	}
+
+	public String getDobCarePatient() {
+		return dobCarePatient;
+	}
+
+	public void setDobCarePatient(String dobCarePatient) {
+		this.dobCarePatient = dobCarePatient;
+	}
+
+	
+
+	public String getEmailCarePatient() {
+		return emailCarePatient;
+	}
+
+	public void setEmailCarePatient(String emailCarePatient) {
+		this.emailCarePatient = emailCarePatient;
+	}
+
+	public String getPhoneCarePatient() {
+		return phoneCarePatient;
+	}
+
+	public void setPhoneCarePatient(String phoneCarePatient) {
+		this.phoneCarePatient = phoneCarePatient;
+	}
+
+	public String getZipCarePatient() {
+		return zipCarePatient;
+	}
+
+	public void setZipCarePatient(String zipCarePatient) {
+		this.zipCarePatient = zipCarePatient;
+	}
 	public boolean isPcptoggleState() {
 		return pcptoggleState;
 	}
