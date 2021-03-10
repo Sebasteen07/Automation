@@ -26,17 +26,17 @@ import com.medfusion.product.object.maps.pss2.page.AppointmentType.AppointmentPa
 import com.medfusion.product.object.maps.pss2.page.util.CommonMethods;
 
 public class Provider extends PSS2MainPage {
-	@FindAll({@FindBy(
-			xpath = "//*[@class='col-sm-6 col-xs-12 provider-width-btn'or @class='btn providerimage-btn handle-text-Overflow outer-div'or @class='btn providerimage-btn handle-text-Overflow outer-div ']")})
+	@FindAll({
+			@FindBy(xpath = "//*[@class='col-sm-6 col-xs-12 provider-width-btn'or @class='btn providerimage-btn handle-text-Overflow outer-div'or @class='btn providerimage-btn handle-text-Overflow outer-div ']") })
 	private List<WebElement> providerList;
 
-	@FindAll({@FindBy(xpath = "//body/div[@id='root']/div[1]/div[1]/div[1]/div[4]/div[2]/div[2]/a[1]/div[1]/div[2]")})
+	@FindAll({ @FindBy(xpath = "//body/div[@id='root']/div[1]/div[1]/div[1]/div[4]/div[2]/div[2]/a[1]/div[1]/div[2]") })
 	private WebElement providerNextavaliable;
 
 	@FindBy(how = How.ID, using = "providerserach")
 	private WebElement searchForProvider;
 
-	@FindAll({@FindBy(css = ".providerImage-width")})
+	@FindAll({ @FindBy(css = ".providerImage-width") })
 	private List<WebElement> providerImages;
 
 	public Provider(WebDriver driver) {
@@ -58,7 +58,8 @@ public class Provider extends PSS2MainPage {
 	public Location selectLocation(String providerName) {
 		log("in selectLocation providerList" + providerName);
 		for (int i = 0; i < providerList.size(); i++) {
-			log(providerList.get(i).getText() + " match " + providerList.get(i).getText().equalsIgnoreCase(providerName));
+			log(providerList.get(i).getText() + " match "
+					+ providerList.get(i).getText().equalsIgnoreCase(providerName));
 			if (providerList.get(i).getText().trim().equalsIgnoreCase(providerName.trim())) {
 				providerList.get(i).click();
 				return PageFactory.initElements(driver, Location.class);
@@ -71,7 +72,8 @@ public class Provider extends PSS2MainPage {
 		log("size= " + providerList.size());
 		log("Text= " + providerList.get(0).getText());
 		for (int i = 0; i < providerList.size(); i++) {
-			log(providerList.get(i).getText() + " match " + providerName + "= " + providerList.get(i).getText().trim().equalsIgnoreCase(providerName.trim()));
+			log(providerList.get(i).getText() + " match " + providerName + "= "
+					+ providerList.get(i).getText().trim().equalsIgnoreCase(providerName.trim()));
 			if (providerList.get(i).getText().trim().equalsIgnoreCase(providerName.trim())) {
 				providerList.get(i).click();
 				log("Clicked on the Provider");
@@ -87,7 +89,8 @@ public class Provider extends PSS2MainPage {
 		log("size= " + providerList.size());
 		log("Text= " + providerList.get(0).getText());
 		for (int i = 0; i < providerList.size(); i++) {
-			log(providerList.get(i).getText() + " match " + providerList.get(i).getText().equalsIgnoreCase(providerName));
+			log(providerList.get(i).getText() + " match "
+					+ providerList.get(i).getText().equalsIgnoreCase(providerName));
 			if (providerList.get(i).getText().contains(providerName)) {
 				providerList.get(i).click();
 				return PageFactory.initElements(driver, AppointmentDateTime.class);
@@ -98,8 +101,9 @@ public class Provider extends PSS2MainPage {
 
 	public boolean isViewallmessagesButtonPresent(WebDriver driver) throws InterruptedException {
 
-		FluentWait<WebDriver> wait = new FluentWait<WebDriver>(driver).withTimeout(30, TimeUnit.SECONDS).pollingEvery(3, TimeUnit.SECONDS)
-				.ignoring(NoSuchElementException.class).ignoring(NoSuchFrameException.class).ignoring(WebDriverException.class);
+		FluentWait<WebDriver> wait = new FluentWait<WebDriver>(driver).withTimeout(30, TimeUnit.SECONDS)
+				.pollingEvery(3, TimeUnit.SECONDS).ignoring(NoSuchElementException.class)
+				.ignoring(NoSuchFrameException.class).ignoring(WebDriverException.class);
 		boolean result = wait.until(new Function<WebDriver, Boolean>() {
 			@Override
 			public Boolean apply(WebDriver driver) {
@@ -120,14 +124,15 @@ public class Provider extends PSS2MainPage {
 	public List<WebElement> getProviderNames() {
 		return providerList;
 	}
+
 	public String getProviderNamesfromProviderList(String providerName) {
 		searchForProvider.clear();
 		searchForProvider.sendKeys(providerName.trim());
 		log("providerList = " + providerList.size());
 		ArrayList<WebElement> webElementsList = new ArrayList<WebElement>();
 		webElementsList.add(providerList.get(0));
-		String provider=providerList.get(0).getText();
-		log("First provider is" +provider);
+		String provider = providerList.get(0).getText();
+		log("First provider is" + provider);
 		return provider;
 	}
 

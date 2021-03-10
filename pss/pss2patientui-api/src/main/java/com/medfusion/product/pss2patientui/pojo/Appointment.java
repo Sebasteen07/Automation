@@ -67,20 +67,16 @@ public class Appointment {
 	private String isAgeRuleApplied;
 	private String underAgePatientUserName;
 	private String underAgePatientPassword;
-	
+
 	private String firstNameCarePatient;
 	private String lastNameCarePatient;
 	private String dobCarePatient;
 	private String genderCarePatient;
-	
 
 	private String emailCarePatient;
 	private String phoneCarePatient;
 	private String zipCarePatient;
 	private String careProvider;
-	
-
-
 
 	private Boolean isCancelApt = true;
 	private Boolean isInsuranceEnabled = false;
@@ -92,7 +88,6 @@ public class Appointment {
 	private int leadtimeHour;
 	private int leadtimeMinute;
 
-
 	private String currentDate;
 	private String currentTimeZone;
 	private String businesshourStartTime;
@@ -102,8 +97,6 @@ public class Appointment {
 	private String linkProvider;
 	private String ageRuleMonthFirst;
 	private String ageRuleMonthSecond;
-
-	
 
 	private Boolean isCancelButtonPresent;
 
@@ -131,21 +124,18 @@ public class Appointment {
 	private boolean isstartpointPresent = false;
 	private boolean resourcetoggleStatus = false;
 	private boolean accepttoggleStatus = false;
- 
 
 	private boolean showCancellationRescheduleReason = false;
 	private boolean showCancellationReasonPM = false;
 	private boolean isFutureApt = false;
 	private boolean pcptoggleState = false;
-	
+
 	private String accessTokenURL;
 	private String accessToken;
 	private String ng_adapterBaseURL;
 
-
-	
-	public Appointment(String providerConfig, String usernameConfig, String passwordConfig, String datetimeConfig, String locationConfig,
-			String appointmentConfig, String specialityConfig) {
+	public Appointment(String providerConfig, String usernameConfig, String passwordConfig, String datetimeConfig,
+			String locationConfig, String appointmentConfig, String specialityConfig) {
 		this.username = usernameConfig;
 		this.password = passwordConfig;
 		this.provider = providerConfig;
@@ -155,7 +145,8 @@ public class Appointment {
 		this.speciality = specialityConfig;
 	}
 
-	public Appointment() {}
+	public Appointment() {
+	}
 
 	public String getGenderCarePatient() {
 		return genderCarePatient;
@@ -197,8 +188,6 @@ public class Appointment {
 		this.dobCarePatient = dobCarePatient;
 	}
 
-	
-
 	public String getEmailCarePatient() {
 		return emailCarePatient;
 	}
@@ -222,6 +211,7 @@ public class Appointment {
 	public void setZipCarePatient(String zipCarePatient) {
 		this.zipCarePatient = zipCarePatient;
 	}
+
 	public boolean isPcptoggleState() {
 		return pcptoggleState;
 	}
@@ -229,6 +219,7 @@ public class Appointment {
 	public void setPcptoggleState(boolean pcptoggleState) {
 		this.pcptoggleState = pcptoggleState;
 	}
+
 	public String getNg_adapterBaseURL() {
 		return ng_adapterBaseURL;
 	}
@@ -245,8 +236,6 @@ public class Appointment {
 		this.accessToken = accessToken;
 	}
 
-	
-
 	public String getAccessTokenURL() {
 		return accessTokenURL;
 	}
@@ -254,7 +243,6 @@ public class Appointment {
 	public void setAccessTokenURL(String accessTokenURL) {
 		this.accessTokenURL = accessTokenURL;
 	}
-
 
 	public String getPopUpMessege() {
 		return popUpMessege;
@@ -280,8 +268,6 @@ public class Appointment {
 		this.ageRuleMonthSecond = ageRuleMonthSecond;
 	}
 
-	
-	
 	public boolean isFutureApt() {
 		return isFutureApt;
 	}
@@ -306,7 +292,6 @@ public class Appointment {
 		this.accepttoggleStatus = accepttoggleStatus;
 	}
 
-
 	public String getGmailUserName() {
 		return gmailUserName;
 	}
@@ -314,7 +299,6 @@ public class Appointment {
 	public void setGmailUserName(String gmailUserName) {
 		this.gmailUserName = gmailUserName;
 	}
-
 
 	public String getMaxperDay() {
 		return maxperDay;

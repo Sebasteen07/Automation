@@ -242,7 +242,7 @@ public class PSSPatientUtils {
 			aptDateTime.selectDate(testData.getIsNextDayBooking());
 		}
 		Thread.sleep(6000);
-		
+
 		if (testData.isAnonymousFlow()) {
 			Log4jUtil.log(" isAnonymousFlow is TRUE ");
 			bookAnonymousApt(aptDateTime, testData, driver);
@@ -1153,8 +1153,8 @@ public class PSSPatientUtils {
 			throws Exception {
 		Log4jUtil.log("selectAFlow method started");
 		Thread.sleep(1000);
-		testData.setIsInsuranceEnabled(false);		
-		Thread.sleep(1000);			
+		testData.setIsInsuranceEnabled(false);
+		Thread.sleep(1000);
 		if (rule.equalsIgnoreCase(PSSConstants.LBT)) {
 			LBTFlow(homepage, testData, Boolean.toString(testData.getIsInsuranceEnabled()), driver);
 		}
@@ -1277,7 +1277,7 @@ public class PSSPatientUtils {
 
 		return PageFactory.initElements(driver, PatientIdentificationPage.class);
 	}
-	
+
 	public void deleteEmail_Mailinator(WebDriver driver, String url, String email) throws InterruptedException {
 
 		driver.manage().deleteAllCookies(); // delete all cookies
@@ -1318,8 +1318,6 @@ public class PSSPatientUtils {
 		Thread.sleep(2000);
 
 	}
-
-
 
 	public void fillPatientDetails(Boolean insuranceSelected, Appointment testData,
 			LoginlessPatientInformation loginlesspatientinformation) throws InterruptedException {
@@ -1772,8 +1770,8 @@ public class PSSPatientUtils {
 	public int ageCurrentmonths(Appointment testData) {
 		DateTimeFormatter formatter = DateTimeFormatter.ofPattern("d-MMM-yyyy");
 		String date = testData.getDob();
-				//"23-Mar-2019";
-				LocalDate pdate = LocalDate.parse(date, formatter);
+		// "23-Mar-2019";
+		LocalDate pdate = LocalDate.parse(date, formatter);
 		LocalDate now = LocalDate.now();
 		Period diff = Period.between(pdate, now);
 		int yearmonth = diff.getYears() * 12;
@@ -1782,5 +1780,4 @@ public class PSSPatientUtils {
 		return month;
 
 	}
-	
 }
