@@ -28,7 +28,7 @@ public class JalapenoAppointmentRequestV2Step1 extends JalapenoMenu {
 	@FindBy(how = How.XPATH, using = "(//div[@id='locationProviderResultList']/ol/li[1]/ul/li/label/span)")
 	private WebElement doctorSelect;
 
-	@FindBy(how = How.ID, using = "cancel_button")
+	@FindBy(how = How.ID, using = "prevStep")
 	private WebElement cancelButton;
 
 	@FindBy(how = How.ID, using = "continue_button")
