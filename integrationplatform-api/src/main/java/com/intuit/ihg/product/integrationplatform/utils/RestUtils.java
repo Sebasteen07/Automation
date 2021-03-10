@@ -3890,7 +3890,8 @@ public class RestUtils {
 		return MessageID;
 	}
 
-	public static void isLoginEventValidated(String xmlFileName, String ResourceType_tag, long timestamp) throws ParserConfigurationException, SAXException, IOException {
+	public static void isLoginEventValidated(String xmlFileName, String ResourceType_tag, long timestamp)
+			throws ParserConfigurationException, SAXException, IOException {
 		IHGUtil.PrintMethodName();
 		Document doc = buildDOMXML(xmlFileName);
 
@@ -3903,8 +3904,8 @@ public class RestUtils {
 		Node node = null;
 		for (int i = 0; i < nodes.getLength(); i++) {
 			node = nodes1.item(i);
-			Log4jUtil.log("Searching: " + node.getChildNodes().item(0).getTextContent() + ", to be found: "
-					+ (timestamp));
+			Log4jUtil.log(
+					"Searching: " + node.getChildNodes().item(0).getTextContent() + ", to be found: " + (timestamp));
 			long EventRecordedTimestamp = Long.parseLong(node.getChildNodes().item(0).getTextContent());
 			Log4jUtil.log("TimestampValue" + " " + timestamp);
 			Log4jUtil.log("Finding EventRecordedTimestamp" + " " + EventRecordedTimestamp);

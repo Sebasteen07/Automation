@@ -210,4 +210,7 @@ public class IntegrationConstants {
 	public static final String EVENTRECORDEDTIMESTAMP = "EventRecordedTimestamp";
 	public static final String PRACTICEPATIENTID_login = "PracticePatientId";
 
+	//StatementMessagePayloadMini
+	
+	public static final String STATEMENTDATE = "StatementDate";
 }
