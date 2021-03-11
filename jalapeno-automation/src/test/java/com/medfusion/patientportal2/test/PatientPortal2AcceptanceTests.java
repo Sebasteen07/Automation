@@ -3457,7 +3457,7 @@ public class PatientPortal2AcceptanceTests extends BaseTestNGWebDriver {
 	@Test(enabled = true, groups = { "acceptance-basics", "commonpatient" }, retryAnalyzer = RetryAnalyzer.class)
 	public void testAuthUserLinkAccountForgotPassword() throws Exception {
 		Instant passwordResetStart = Instant.now();
-		String patientLogin = PortalUtil.generateUniqueUsername("login", testData); // guardian login
+		String patientLogin = PortalUtil2.generateUniqueUsername("login", testData); // guardian login
 		String patientLastName = patientLogin.replace("login", "last");
 		String patientEmail = patientLogin.replace("login", "mail") + "@mailinator.com";
 
@@ -3542,7 +3542,7 @@ public class PatientPortal2AcceptanceTests extends BaseTestNGWebDriver {
 		Instant testStart = Instant.now();
 		createCommonPatient();
 		Patient trustedPatient = PatientFactory.createJalapenoPatient(
-				PortalUtil.generateUniqueUsername(testData.getProperty("userid"), testData), testData);
+				PortalUtil2.generateUniqueUsername(testData.getProperty("userid"), testData), testData);
 		
 		logStep("Load login page");
 		JalapenoLoginPage loginPage = new JalapenoLoginPage(driver, testData.getUrl());
