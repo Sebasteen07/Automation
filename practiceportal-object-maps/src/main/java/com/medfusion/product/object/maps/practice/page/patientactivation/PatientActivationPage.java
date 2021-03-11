@@ -259,6 +259,7 @@ public class PatientActivationPage extends BasePageObject {
 
 	public void clickVerify() {
 		IHGUtil.PrintMethodName();
+		IHGUtil.waitForElement(driver, 60, btnVerified);
 		btnVerified.click();
 	}
 
