@@ -158,7 +158,6 @@ public class JalapenoAccountPage extends JalapenoMenu {
 			WebDriverWait wait = new WebDriverWait(driver, 20);
 			wait.until(ExpectedConditions.visibilityOf(unLink));
 			unLink.click();
-			
 			log("Click on Unlik button");
 			wait.until(ExpectedConditions.visibilityOf(unLinkButton));
 			unLinkButton.click();
