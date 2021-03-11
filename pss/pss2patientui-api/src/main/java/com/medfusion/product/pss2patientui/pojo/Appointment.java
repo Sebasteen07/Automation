@@ -109,8 +109,41 @@ public class Appointment {
 	private String baseurl_AvailableSlots;
 	private String baseurl_ScheduleAppointment;
 	private String baseurl_AppointmentType;
+	
+	private String practiceId;
+	private String basicURI;
+	private String practiceDisplayName;
+	private String patientId;
 
-	private String urlAnonymous;
+	public String getBasicURI() {
+		return basicURI;
+	}
+
+	public void setBasicURI(String basicURI) {
+		this.basicURI = basicURI;
+	}
+
+	//for REST Assured
+    private String accessTokenURL;
+    private String accessToken;
+
+
+	public String getAccessTokenURL() {
+		return accessTokenURL;
+	}
+
+	public void setAccessTokenURL(String accessTokenURL) {
+		this.accessTokenURL = accessTokenURL;
+	}
+
+	public String getAccessToken() {
+		return accessToken;
+	}
+
+	public void setAccessToken(String accessToken) {
+		this.accessToken = accessToken;
+	}
+
 	private String urlAnonymousNG;
 	private boolean isAnonymousFlow = false;
 	private boolean isinsuranceVisible = false;
@@ -136,6 +169,34 @@ public class Appointment {
 	}
 
 	public Appointment() {}
+	
+
+	public String getPatientId() {
+		return patientId;
+	}
+
+	public void setPatientId(String patientId) {
+		this.patientId = patientId;
+	}
+
+	private String urlAnonymous;
+	
+	public String getPracticeDisplayName() {
+		return practiceDisplayName;
+	}
+
+	public void setPracticeDisplayName(String practiceDisplayName) {
+		this.practiceDisplayName = practiceDisplayName;
+	}
+
+
+	public String getPracticeId() {
+		return practiceId;
+	}
+
+	public void setPracticeId(String practiceId) {
+		this.practiceId = practiceId;
+	}
 
 	public String getPopUpMessege() {
 		return popUpMessege;
