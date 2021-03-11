@@ -3949,7 +3949,7 @@ public class RestUtils {
 		Node prescrNode = doc.getElementsByTagName("Prescription").item(0);
 		Element prescrElem = (Element) prescrNode;
 		String PrescriptionId = prescrElem.getAttribute("id").toString();
-		System.out.println("Prescription Id : " + PrescriptionId);
+		Log4jUtil.log("Prescription Id : " + PrescriptionId);
 		return PrescriptionId;
 	}
 

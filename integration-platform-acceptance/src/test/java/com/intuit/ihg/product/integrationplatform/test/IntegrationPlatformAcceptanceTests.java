@@ -399,7 +399,7 @@ public class IntegrationPlatformAcceptanceTests extends BaseTestNGWebDriver {
 		log("Step 8: Setup Oauth client");
 		RestUtils.oauthSetup(testData.getOAuthKeyStore(), testData.getOAuthProperty(), testData.getOAuthAppToken(),
 				testData.getOAuthUsername(), testData.getOAuthPassword());
-		String prescriptionId = "";
+		String prescriptionId = null;
 		String sigCodes = "";
 		if (version.equals("v1")) {
 			log("For V1 endpoint");
