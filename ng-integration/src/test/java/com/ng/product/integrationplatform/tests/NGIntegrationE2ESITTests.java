@@ -1522,6 +1522,7 @@ public class NGIntegrationE2ESITTests extends BaseTestNGWebDriver{
 		logStep("Create the patient in NG EPM in first Practice");
 		NewPatient createPatient = NGPatient.patientUsingJSON(PropertyLoaderObj,"complete");
 		String personId= NGAPIFlows.CreatePatientinEPM(createPatient);
+		NGAPIFlows.addCharttoProvider(PropertyLoaderObj.getNGE1P1Location(),PropertyLoaderObj.getNGE1P1Provider(),personId);
 		
 		verifyProcessingStatusto3WithoutValidatingGetProcessingStatusCall(personId,PropertyLoaderObj.getNGEnterpiseEnrollmentE1P1(),PropertyLoaderObj.getProperty("integrationPracticeIDE1P1"));
 		log(createPatient.getEmailAddress() + "   :    " + INVITE_EMAIL_SUBJECT_PATIENT + PropertyLoaderObj.getProperty("practiceName1") + "     :   " + PortalConstants.NewPatientActivationMessageLinkText);
@@ -1584,6 +1585,7 @@ public class NGIntegrationE2ESITTests extends BaseTestNGWebDriver{
 		logStep("Create the patient in NG EPM Practice 1");
 		NewPatient createPatient = NGPatient.patientUsingJSON(PropertyLoaderObj,"complete");
 		String personId= NGAPIFlows.CreatePatientinEPM(createPatient);
+		NGAPIFlows.addCharttoProvider(PropertyLoaderObj.getNGE1P1Location(),PropertyLoaderObj.getNGE1P1Provider(),personId);
 		
 		logStep("Create the chart in second practice");
 		Long timestamp = System.currentTimeMillis();
@@ -1653,6 +1655,7 @@ public class NGIntegrationE2ESITTests extends BaseTestNGWebDriver{
 		logStep("Create the patient in NG EPM in Practice 1");
 		NewPatient createPatient = NGPatient.patientUsingJSON(PropertyLoaderObj,"complete");
 		String personId= NGAPIFlows.CreatePatientinEPM(createPatient);
+		NGAPIFlows.addCharttoProvider(PropertyLoaderObj.getNGE1P1Location(),PropertyLoaderObj.getNGE1P1Provider(),personId);
 		
 		logStep("Create the chart in second practice");
 		Long timestamp = System.currentTimeMillis();
@@ -1725,6 +1728,7 @@ public class NGIntegrationE2ESITTests extends BaseTestNGWebDriver{
 		logStep("Create the patient in NG EPM Practice 1");
 		NewPatient createPatient = NGPatient.patientUsingJSON(PropertyLoaderObj,"complete");
 		String personId= NGAPIFlows.CreatePatientinEPM(createPatient);
+		NGAPIFlows.addCharttoProvider(PropertyLoaderObj.getNGE1P1Location(),PropertyLoaderObj.getNGE1P1Provider(),personId);
 		
 		enrollPatientWithoutGetProcessingStatusValidation(createPatient,personId,PropertyLoaderObj.getProperty("practiceName1"),PropertyLoaderObj.getProperty("integrationPracticeIDE1P1"),PropertyLoaderObj.getNGEnterpiseEnrollmentE1(), PropertyLoaderObj.getNGEnterpiseEnrollmentE1P1());
 
@@ -1805,6 +1809,7 @@ public class NGIntegrationE2ESITTests extends BaseTestNGWebDriver{
 		logStep("Create the patient in NG EPM");
 		NewPatient createPatient = NGPatient.patientUsingJSON(PropertyLoaderObj,"complete");
 		String personId= NGAPIFlows.CreatePatientinEPM(createPatient);
+		NGAPIFlows.addCharttoProvider(PropertyLoaderObj.getNGE1P1Location(),PropertyLoaderObj.getNGE1P1Provider(),personId);
 		
         logStep("Create the chart in Practice 2");
 		NGAPIUtils.updateLoginDefaultTo("EnterpriseGateway",PropertyLoaderObj.getNGEnterpiseEnrollmentE1(), PropertyLoaderObj.getNGEnterpiseEnrollmentE1P2());
@@ -1893,6 +1898,7 @@ public class NGIntegrationE2ESITTests extends BaseTestNGWebDriver{
 		logStep("Create the patient in NG EPM");
 		NewPatient createPatient = NGPatient.patientUsingJSON(PropertyLoaderObj,"complete");
 		String personId= NGAPIFlows.CreatePatientinEPM(createPatient);
+		NGAPIFlows.addCharttoProvider(PropertyLoaderObj.getNGE1P1Location(),PropertyLoaderObj.getNGE1P1Provider(),personId);
 		
         logStep("Create the chart in Practice 2");
 		NGAPIUtils.updateLoginDefaultTo("EnterpriseGateway",PropertyLoaderObj.getNGEnterpiseEnrollmentE1(), PropertyLoaderObj.getNGEnterpiseEnrollmentE1P2());
@@ -1978,6 +1984,7 @@ public class NGIntegrationE2ESITTests extends BaseTestNGWebDriver{
 		logStep("Create the patient in NG EPM in Practice 1");
 		NewPatient createPatient = NGPatient.patientUsingJSON(PropertyLoaderObj,"complete");
 		String personId= NGAPIFlows.CreatePatientinEPM(createPatient);
+		NGAPIFlows.addCharttoProvider(PropertyLoaderObj.getNGE1P1Location(),PropertyLoaderObj.getNGE1P1Provider(),personId);
 		
 		enrollPatientWithoutGetProcessingStatusValidation(createPatient,personId,PropertyLoaderObj.getProperty("practiceName1"),PropertyLoaderObj.getProperty("integrationPracticeIDE1P1"),PropertyLoaderObj.getNGEnterpiseEnrollmentE1(), PropertyLoaderObj.getNGEnterpiseEnrollmentE1P1());
 		
@@ -1986,6 +1993,7 @@ public class NGIntegrationE2ESITTests extends BaseTestNGWebDriver{
 		NewPatient trustedPatient = NGPatient.patientUsingJSON(PropertyLoaderObj,"trustedPatient");		
 		String trustedperson_id=NGAPIFlows.CreatePatientinEPM(trustedPatient);
 		log("Step End: Person created with id "+trustedperson_id);
+		NGAPIFlows.addCharttoProvider(PropertyLoaderObj.getNGE1P4Location(),PropertyLoaderObj.getNGE1P4Provider(),trustedperson_id);
 		
 		logStep("Waiting for welcome mail at patient inbox from practice");        
   		log(createPatient.getEmailAddress() + "   :    " + WELCOME_EMAIL_SUBJECT_PATIENT + "     :   " + WELCOME_EMAIL_BUTTON_TEXT);
@@ -2051,6 +2059,7 @@ public class NGIntegrationE2ESITTests extends BaseTestNGWebDriver{
 		logStep("Create the patient in NG EPM in Practice 1");
 		NewPatient createPatient = NGPatient.patientUsingJSON(PropertyLoaderObj,"complete");
 		String personId= NGAPIFlows.CreatePatientinEPM(createPatient);
+		NGAPIFlows.addCharttoProvider(PropertyLoaderObj.getNGE1P1Location(),PropertyLoaderObj.getNGE1P1Provider(),personId);
 		
 		enrollPatientWithoutGetProcessingStatusValidation(createPatient,personId,PropertyLoaderObj.getProperty("practiceName1"),PropertyLoaderObj.getProperty("integrationPracticeIDE1P1"),PropertyLoaderObj.getNGEnterpiseEnrollmentE1(), PropertyLoaderObj.getNGEnterpiseEnrollmentE1P1());
 		
@@ -2062,6 +2071,7 @@ public class NGIntegrationE2ESITTests extends BaseTestNGWebDriver{
 		NewPatient trustedPatient = NGPatient.patientUsingJSON(PropertyLoaderObj,"trustedPatient");		
 		String trustedperson_id=NGAPIFlows.CreatePatientinEPM(trustedPatient);
 		log("Step End: Person created with id "+trustedperson_id);
+		NGAPIFlows.addCharttoProvider(PropertyLoaderObj.getNGE1P2Location(),PropertyLoaderObj.getNGE1P2Provider(),trustedperson_id);
 		
 		enrollPatientWithoutGetProcessingStatusValidation(trustedPatient,trustedperson_id,PropertyLoaderObj.getProperty("practiceName2"),PropertyLoaderObj.getProperty("integrationPracticeIDE1P2"),PropertyLoaderObj.getNGEnterpiseEnrollmentE1(), PropertyLoaderObj.getNGEnterpiseEnrollmentE1P2());
 		
@@ -2141,6 +2151,7 @@ public class NGIntegrationE2ESITTests extends BaseTestNGWebDriver{
 		logStep("Create the patient in NG EPM for Practice 5");
 		NewPatient createPatient = NGPatient.patientUsingJSON(PropertyLoaderObj,"complete");
 		String personId= NGAPIFlows.CreatePatientinEPM(createPatient);
+		NGAPIFlows.addCharttoProvider(PropertyLoaderObj.getNGE1P5Location(),PropertyLoaderObj.getNGE1P5Provider(),personId);
 		
 		enrollPatientWithoutGetProcessingStatusValidation(createPatient,personId,PropertyLoaderObj.getProperty("practiceName5"),PropertyLoaderObj.getProperty("integrationPracticeIDE1P5"),PropertyLoaderObj.getNGEnterpiseEnrollmentE1(), PropertyLoaderObj.getNGEnterpiseEnrollmentE1P5());
 		
@@ -2149,6 +2160,7 @@ public class NGIntegrationE2ESITTests extends BaseTestNGWebDriver{
 		NewPatient trustedPatient = NGPatient.patientUsingJSON(PropertyLoaderObj,"trustedPatient");		
 		String trustedperson_id=NGAPIFlows.CreatePatientinEPM(trustedPatient);
 		log("Step End: Person created with id "+trustedperson_id);
+		NGAPIFlows.addCharttoProvider(PropertyLoaderObj.getNGE1P4Location(),PropertyLoaderObj.getNGE1P4Provider(),trustedperson_id);
 		
 		enrollPatientWithoutGetProcessingStatusValidation(trustedPatient,trustedperson_id,PropertyLoaderObj.getProperty("practiceName4"),PropertyLoaderObj.getProperty("integrationPracticeIDE1P4"),PropertyLoaderObj.getNGEnterpiseEnrollmentE1(), PropertyLoaderObj.getNGEnterpiseEnrollmentE1P4());
 		
@@ -2230,6 +2242,7 @@ public class NGIntegrationE2ESITTests extends BaseTestNGWebDriver{
 		logStep("Create the patient in NG EPM in Enterprise 1 Practice 1");
 		NewPatient createPatient = NGPatient.patientUsingJSON(PropertyLoaderObj,"complete");
 		String personId= NGAPIFlows.CreatePatientinEPM(createPatient);
+		NGAPIFlows.addCharttoProvider(PropertyLoaderObj.getNGE1P1Location(),PropertyLoaderObj.getNGE1P1Provider(),personId);
 		
 		enrollPatientWithoutGetProcessingStatusValidation(createPatient, personId, PropertyLoaderObj.getProperty("practiceName1"),PropertyLoaderObj.getProperty("integrationPracticeIDE1P1"),PropertyLoaderObj.getNGEnterpiseEnrollmentE1(), PropertyLoaderObj.getNGEnterpiseEnrollmentE1P1());
 
@@ -2313,12 +2326,14 @@ public class NGIntegrationE2ESITTests extends BaseTestNGWebDriver{
 	System.setProperty("ParentEmailAddress", createPatient.getEmailAddress());
 	String person_id= NGAPIFlows.CreatePatientinEPM(createPatient);
 	log("Step End: Guardian created with id "+person_id);
+	NGAPIFlows.addCharttoProvider(PropertyLoaderObj.getNGE1P1Location(),PropertyLoaderObj.getNGE1P1Provider(),person_id);
 	
 	logStep("Create the Dependent in NG EPM Practice 1");
 	NewPatient createdependent = NGPatient.patientUsingJSON(PropertyLoaderObj,"Dependent");	
 	createdependent = NGPatient.addDataToPatientDemographics(PropertyLoaderObj, createdependent);
 	String dependentperson_id=NGAPIFlows.CreatePatientinEPM(createdependent);
 	log("Step End: Dependent created with id "+dependentperson_id);
+	NGAPIFlows.addCharttoProvider(PropertyLoaderObj.getNGE1P1Location(),PropertyLoaderObj.getNGE1P1Provider(),dependentperson_id);
 	
 	logStep("Using Post Enrollment call, Verify the MF agent trigger for new patient");
 	String PostEnrollmentURL = EnterprisebaseURL+ apiRoutes.valueOf("PostEnrollment").getRouteURL().replaceAll("personId", person_id);
@@ -2482,6 +2497,7 @@ public class NGIntegrationE2ESITTests extends BaseTestNGWebDriver{
 		createdependent = NGPatient.addDataToPatientDemographics(PropertyLoaderObj, createdependent);
 		String dependentperson_id=NGAPIFlows.CreatePatientinEPM(createdependent);
 		log("Step End: Dependent created with id "+dependentperson_id);
+		NGAPIFlows.addCharttoProvider(PropertyLoaderObj.getNGE1P1Location(),PropertyLoaderObj.getNGE1P1Provider(),dependentperson_id);
 		
 		logStep("Using Post Enrollment call, Verify the MF agent trigger for dependent");
 		String PostEnrollmentURL = EnterprisebaseURL+ apiRoutes.valueOf("PostEnrollment").getRouteURL().replaceAll("personId", dependentperson_id);

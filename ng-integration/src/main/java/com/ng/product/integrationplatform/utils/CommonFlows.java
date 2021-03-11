@@ -219,9 +219,9 @@ public class CommonFlows {
 	   else if(personType.equalsIgnoreCase("HavingSensitiveEncounterMSU"))
 	       ngCcdPage.verifySensitiveMSUCCDElementsContent(driver);
 	   else if(personType.equalsIgnoreCase("EncounterHavingALLData"))
-		   ngCcdPage.verifyCCDElementsContent(driver,"guaifenesin","Lipitor 10 mg tablet","Chest pain, unspecified","Panel Description: Glucose [Mass/volume] in Serum or Plasma","Chest pain, unspecified");
+		   ngCcdPage.verifyCCDElementsContent(driver,"guaifenesin","Lipitor 10 mg tablet","Anemia","Panel Description: Glucose [Mass/volume] in Serum or Plasma","Chest pain, unspecified");
 	   else if(personType.equalsIgnoreCase("HavingUnSignedOffResult"))
-		   ngCcdPage.verifyCCDElementsContent(driver,"guaifenesin","Lipitor 10 mg tablet","Chest pain, unspecified","","Chest pain, unspecified");
+		   ngCcdPage.verifyCCDElementsContent(driver,"guaifenesin","Lipitor 10 mg tablet","Anemia","","Chest pain, unspecified");
 	   
 	   messagesPage = ngCcdPage.closeCcd(driver);
 	
