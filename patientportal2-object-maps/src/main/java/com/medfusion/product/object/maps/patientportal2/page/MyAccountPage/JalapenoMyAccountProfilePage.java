@@ -1,4 +1,4 @@
-// Copyright 2013-2020 NXGN Management, LLC. All Rights Reserved.
+// Copyright 2013-2021 NXGN Management, LLC. All Rights Reserved.
 package com.medfusion.product.object.maps.patientportal2.page.MyAccountPage;
 
 import java.util.ArrayList;
@@ -22,7 +22,7 @@ import org.openqa.selenium.support.ui.WebDriverWait;
 
 import com.medfusion.common.utils.IHGUtil;
 import com.medfusion.pojos.Patient;
-import com.medfusion.product.patientportal2.utils.PortalUtil;
+import com.medfusion.product.patientportal2.utils.PortalUtil2;
 
 public class JalapenoMyAccountProfilePage extends JalapenoMyAccountPage {
 	public static final List<String> GENDER_IDENTITY_LIST = Collections.unmodifiableList(Arrays.asList(" Male ", " Female ",
@@ -399,6 +399,6 @@ public class JalapenoMyAccountProfilePage extends JalapenoMyAccountPage {
 
 	public void addInsuranceLink() {
 		IHGUtil.PrintMethodName();
-		PortalUtil.setPortalFrame(driver);
+		PortalUtil2.setPortalFrame(driver);
 	}
 }

@@ -1,3 +1,4 @@
+//  Copyright 2013-2021 NXGN Management, LLC. All Rights Reserved.
 package com.medfusion.product.object.maps.forms.page.questionnaires.prereg_pages;
 
 import org.openqa.selenium.By;
@@ -6,8 +7,8 @@ import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.FindBy;
 import org.openqa.selenium.support.PageFactory;
 
-import com.medfusion.portal.utils.PortalUtil;
 import com.medfusion.product.object.maps.forms.page.questionnaires.PortalFormPage;
+import com.medfusion.product.patientportal2.utils.PortalUtil2;
 
 public class FormInsurancePage extends PortalFormPage {
 
@@ -33,7 +34,7 @@ public class FormInsurancePage extends PortalFormPage {
 	 */
 
 	public void setSelfPay() throws Exception {
-		PortalUtil.PrintMethodName();
+		PortalUtil2.PrintMethodName();
 		selfPay.click();
 	}
 	public void setNameofPolicyHolderFirstname (String PrimaryInsurance,String PatientName) throws InterruptedException

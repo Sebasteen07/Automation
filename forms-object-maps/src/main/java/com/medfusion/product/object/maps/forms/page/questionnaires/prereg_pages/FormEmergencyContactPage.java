@@ -1,3 +1,4 @@
+//  Copyright 2013-2021 NXGN Management, LLC. All Rights Reserved.
 package com.medfusion.product.object.maps.forms.page.questionnaires.prereg_pages;
 
 import org.openqa.selenium.By;
@@ -8,9 +9,9 @@ import org.openqa.selenium.support.PageFactory;
 import org.openqa.selenium.support.ui.Select;
 
 import com.medfusion.common.utils.IHGUtil;
-import com.medfusion.portal.utils.PortalConstants;
-import com.medfusion.portal.utils.PortalUtil;
 import com.medfusion.product.object.maps.forms.page.questionnaires.PortalFormPage;
+import com.medfusion.product.patientportal2.utils.JalapenoConstants;
+import com.medfusion.product.patientportal2.utils.PortalUtil2;
 
 public class FormEmergencyContactPage extends PortalFormPage {
 
@@ -45,13 +46,13 @@ public class FormEmergencyContactPage extends PortalFormPage {
 	 * @throws Exception
 	 */
 	public void setFirstName(String input) throws Exception {
-		PortalUtil.PrintMethodName();
-		//PortalUtil.setquestionnarieFrame(driver);
+		PortalUtil2.PrintMethodName();
+		//PortalUtil2.setquestionnarieFrame(driver);
 		firstName.clear();
 		firstName.sendKeys(input);
 	}
 	public void setFirstName_20(String input,Boolean isFormTypePreCheck) throws Exception {
-		PortalUtil.PrintMethodName();
+		PortalUtil2.PrintMethodName();
 		if(!isFormTypePreCheck) {
 			WebElement W1=driver.findElement(By.xpath("//iframe[@title='Forms']"));
 			driver.switchTo().frame(W1);
@@ -67,13 +68,13 @@ public class FormEmergencyContactPage extends PortalFormPage {
 	 * @throws Exception
 	 */
 	public void setLastName(String input) throws Exception {
-		PortalUtil.PrintMethodName();
-		//PortalUtil.setquestionnarieFrame(driver);
+		PortalUtil2.PrintMethodName();
+		//PortalUtil2.setquestionnarieFrame(driver);
 		lastName.clear();
 		lastName.sendKeys(input);
 	}
 	public void setLastName_20(String input) throws Exception {
-		PortalUtil.PrintMethodName();
+		PortalUtil2.PrintMethodName();
 		lastName.clear();
 		lastName.sendKeys(input);
 		
@@ -84,13 +85,13 @@ public class FormEmergencyContactPage extends PortalFormPage {
 	 * @throws Exception
 	 */
 	public void setRelation(String type) throws Exception {
-		PortalUtil.PrintMethodName();
-		//PortalUtil.setquestionnarieFrame(driver);
+		PortalUtil2.PrintMethodName();
+		//PortalUtil2.setquestionnarieFrame(driver);
 		Select selector = new Select(relation);
 		selector.selectByVisibleText(type);
 	}
 	public void setRelation_20(String relation1) throws Exception {
-		PortalUtil.PrintMethodName();
+		PortalUtil2.PrintMethodName();
 		Select selector = new Select(relation);
 		selector.selectByVisibleText(relation1);
 		
@@ -103,15 +104,15 @@ public class FormEmergencyContactPage extends PortalFormPage {
 	 * @throws Exception
 	 */
 	public void setPrimaryPhone(String input, String phoneType) throws Exception {
-		PortalUtil.PrintMethodName();
-		//PortalUtil.setquestionnarieFrame(driver);
+		PortalUtil2.PrintMethodName();
+		//PortalUtil2.setquestionnarieFrame(driver);
 		primaryPhone.clear();
 		primaryPhone.sendKeys(input);
 		Select selector = new Select(primaryPhoneType);
 		selector.selectByVisibleText(phoneType);
 	}
 	public void setPrimaryPhone_20(String input, String phoneType) throws Exception {
-		PortalUtil.PrintMethodName();
+		PortalUtil2.PrintMethodName();
 		IHGUtil.waitForElement(driver, 10, primaryPhone);
 		primaryPhone.clear();
 		primaryPhone.sendKeys(input);
@@ -125,8 +126,8 @@ public class FormEmergencyContactPage extends PortalFormPage {
 	 * @throws Exception
 	 */
 	public void setEmail(String input) throws Exception {
-		PortalUtil.PrintMethodName();
-		//PortalUtil.setquestionnarieFrame(driver);
+		PortalUtil2.PrintMethodName();
+		//PortalUtil2.setquestionnarieFrame(driver);
 		email.clear();
 		email.sendKeys(input);
 	}
@@ -137,13 +138,13 @@ public class FormEmergencyContactPage extends PortalFormPage {
 	 * @throws Exception
 	 */
 	public FormCurrentSymptomsPage fillEmergencyContactFormFields() throws Exception {
-		setFirstName(PortalConstants.FirstName);
+		setFirstName(JalapenoConstants.FIRST_NAME);
 
-		setLastName(PortalConstants.LastName);
+		setLastName(JalapenoConstants.LAST_NAME);
 
-		setRelation(PortalConstants.Relation);
+		setRelation(JalapenoConstants.RELATION);
 
-		setPrimaryPhone("1234567890", PortalConstants.Mobile);
+		setPrimaryPhone("1234567890", JalapenoConstants.MOBILE);
 
 		clickSaveContinue();
 

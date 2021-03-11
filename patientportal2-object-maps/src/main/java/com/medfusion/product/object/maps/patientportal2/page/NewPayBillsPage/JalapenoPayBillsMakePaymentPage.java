@@ -250,22 +250,6 @@ public class JalapenoPayBillsMakePaymentPage extends JalapenoMenu {
 		}
 	}
 
-	// modified assess to see if it will work without waitForElement and moved
-	// allElementsDisplayed=true at the end
-	@Deprecated // same functionality as areBasicElementPresent
-	public boolean assessPayBillsMakePaymentPageElements() {
-
-		ArrayList<WebElement> webElementsList = new ArrayList<WebElement>();
-
-		webElementsList.add(paymentAmount);
-		webElementsList.add(payHistoryButton);
-		webElementsList.add(addNewCardButton);
-		webElementsList.add(accountNumber);
-		webElementsList.add(continueButton);
-
-		return new IHGUtil(driver).assessAllPageElements(webElementsList, this.getClass());
-	}
-
 	private boolean areAddNewCreditCardLightboxElementsPresent() {
 		ArrayList<WebElement> webElementsList = new ArrayList<WebElement>();
 		webElementsList.add(nameOnCard);
