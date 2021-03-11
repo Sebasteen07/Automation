@@ -1357,11 +1357,10 @@ public class IntegrationPlatformAcceptanceTests extends BaseTestNGWebDriver {
 			}
 		}
 		prescriptionsPage.clickOnMenuHome();
-		Thread.sleep(15000);
+		homePage.areBasicPageElementsPresent();
 		homePage.clickOnPrescriptions(driver);
-		Thread.sleep(15000);
+		prescriptionsPage.areBasicPageElementsPresent();
 		prescriptionsPage.clickContinueButton(driver);
-		Thread.sleep(15000);
 		log("Step 10: Verify Deleted medication is not visible on portal");
 		prescriptionsPage.validateDeletedMedication(productName);
 		log("Deleted medication is not visible on portal");
