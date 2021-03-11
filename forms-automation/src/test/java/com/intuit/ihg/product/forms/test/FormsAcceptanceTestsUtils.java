@@ -10,6 +10,7 @@ import com.intuit.ihg.product.object.maps.sitegen.page.discreteforms.pages.Welco
 import com.intuit.ihg.product.object.maps.sitegen.page.home.SiteGenPracticeHomePage;
 import com.intuit.ihg.product.sitegen.SiteGenSteps;
 import com.intuit.ihg.product.sitegen.utils.SitegenConstants;
+import com.medfusion.common.utils.IHGConstants;
 import com.medfusion.common.utils.IHGUtil;
 import com.medfusion.pojos.Patient;
 import com.medfusion.product.forms.pojo.Question;
@@ -353,7 +354,7 @@ public class FormsAcceptanceTestsUtils extends BaseTestNGWebDriver {
 				if (!searchFormsPage.isPageLoaded() && practiceLogin.isLoginPageLoaded()) {
 						searchFormsPage = practiceLogin.login(username, password).clickCustomFormTab();
 				}
-				driver.manage().timeouts().implicitlyWait(SitegenConstants.SELENIUM_IMPLICIT_WAIT_SECONDS, TimeUnit.SECONDS);
+				driver.manage().timeouts().implicitlyWait(IHGConstants.SELENIUM_IMPLICIT_WAIT_SECONDS, TimeUnit.SECONDS);
 
 				assertTrue(searchFormsPage.isPageLoaded(), SearchPatientFormsPage.PAGE_NAME + " failed to load.");
 				return searchFormsPage;
