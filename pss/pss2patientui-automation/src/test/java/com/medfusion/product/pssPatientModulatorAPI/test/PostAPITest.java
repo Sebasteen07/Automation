@@ -227,4 +227,39 @@ public class PostAPITest extends BaseTestNGWebDriver {
 		
 	}
 
+	@Test
+	public void cancelAppointmentGet() throws IOException {
+		PSSPropertyFileLoader propertyData = new PSSPropertyFileLoader();
+		Appointment testData = new Appointment();
+		HeaderConfig headerConfig = new HeaderConfig();
+		propertyData.setRestAPIData(testData);
+		propertyData.setRestAPIData(testData);
+		PostAPIRequest postAPIRequest = new PostAPIRequest();
+		log("Base URL is   "+testData.getBasicURI());
+		postAPIRequest.cancelAppointmentGET(testData.getBasicURI(),headerConfig.defaultHeader());
+	
+	}
+	@Test
+	public void cancelAppointmentPost() throws IOException {
+		PSSPropertyFileLoader propertyData = new PSSPropertyFileLoader();
+		Appointment testData = new Appointment();
+		Payload payload = new Payload();
+		HeaderConfig headerConfig = new HeaderConfig();
+		propertyData.setRestAPIData(testData);
+		PostAPIRequest postAPIRequest = new PostAPIRequest();
+		log("Base URL is   "+testData.getBasicURI());
+		postAPIRequest.cancelAppointmentPOST(testData.getBasicURI(),payload.cancelAppointment,headerConfig.defaultHeader());
+	
+	}
+	@Test
+	public void cancellationReasonGET() throws IOException {
+		PSSPropertyFileLoader propertyData = new PSSPropertyFileLoader();
+		Appointment testData = new Appointment();
+		HeaderConfig headerConfig = new HeaderConfig();
+		propertyData.setRestAPIData(testData);
+		PostAPIRequest postAPIRequest = new PostAPIRequest();
+		log("Base URL is   "+testData.getBasicURI());
+		postAPIRequest.cancellationReason(testData.getBasicURI(),headerConfig.defaultHeader());
+	
+	}
 }

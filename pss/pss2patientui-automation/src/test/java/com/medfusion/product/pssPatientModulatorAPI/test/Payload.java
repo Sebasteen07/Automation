@@ -37,6 +37,14 @@ public class Payload {
 			"    \"rule\": \"L,T,B\",\r\n" + 
 			"    \"leafNode\": null\r\n" + 
 			"}";
+	String cancelAppointment="{\r\n" + 
+			"  \"appointmentId\": \"59f90f71-f4b9-4752-9810-24792ad5412b\",\r\n" + 
+			"  \"cancellationMap\": {\r\n" + 
+			"    \"additionalProp1\": \"string\",\r\n" + 
+			"    \"additionalProp2\": \"string\",\r\n" + 
+			"    \"additionalProp3\": \"string\"\r\n" + 
+			"  }\r\n" + 
+			"}";
 	
 	String body1="[{\"group\":\"NG_WEBSERVICES\",\"key\":\"NGAPIBaseUrl\",\"value\":\"https://dev-nge-test-pss-nge-int-test.dev.mf.pxp.nextgenaws.net:7205/api\"}]";
 	String available_Slot_Payload ="{\"locationId\":\"283BB437-B0C6-4626-A7CC-57FD0D1D6574\",\r\n"

@@ -95,12 +95,11 @@ public class MU2Utils {
 		Thread.sleep(5000);
 		long transmitTimestamp = System.currentTimeMillis();
 		Log4jUtil.log("TransmitTimestamp :"+transmitTimestamp);
-		 if((IHGUtil.getEnvironmentType().toString()== "DEV3"))
-		{
+
 		MedicalRecordSummariesPageObject.selectFirstVisibleCCD();
 		MedicalRecordSummariesPageObject.selectSecondVisibleCCD();
 		jse.executeScript("window.scrollBy(0,400)", "");
-		 }
+		 
 		MedicalRecordSummariesPageObject.sendFirstVisibleCCDUsingStandardEmail(testData.Standard_Email);
 		
 		Thread.sleep(5000);

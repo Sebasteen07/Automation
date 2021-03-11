@@ -9,16 +9,15 @@ public class HeaderConfig {
 	public Map<String,String> defaultHeader(){
 		Map<String,String> df= new HashMap<String,String>();
 		df.put("content-type", "application/json");
-		return df;
-		
+		return df;		
 	}
 	
-	public Map<String,String> HeaderwithToken(String s){
-		Map<String,String> df= new HashMap<String,String>();
+	public Map<String, String> HeaderwithToken(String s) {
+		Map<String, String> df = new HashMap<String, String>();
 		df.put("content-type", "application/json");
-		df.put("Authorization", "Bearer "+s);		
+		df.put("Authorization", "Bearer " + s);
 		return df;
-		
+
 	}
 	
 	public Map<String,String> AWSHeader(){

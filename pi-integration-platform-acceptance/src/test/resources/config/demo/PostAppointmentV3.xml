@@ -1,16 +1,11 @@
-<?xml version="1.0" encoding="UTF-8"?>
-<n:Appointments
-    xmlns:admin="http://schema.medfusion.com/health/adminmessage/v3"
-    xmlns:common="http://schema.medfusion.com/health/v3"
-    xmlns:n="http://schema.medfusion.com/health/appointments/v3"
-    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://schema.medfusion.com/health/appointments/v3 C:\Users\Tejora\IHG_DEPOT\trunk\integration-platform\data-channels\admin-messages\reference\schemas\src\main\resources\AppointmentsV3.xsd">
-    <Appointment id="7dd4abff-ce2e-4c19-be95-2db9046091ab">
+<?xml version="1.0" encoding="UTF-8"?><n:Appointments xmlns:admin="http://schema.medfusion.com/health/adminmessage/v3" xmlns:common="http://schema.medfusion.com/health/v3" xmlns:n="http://schema.medfusion.com/health/appointments/v3" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://schema.medfusion.com/health/appointments/v3 C:\Users\Tejora\IHG_DEPOT\trunk\integration-platform\data-channels\admin-messages\reference\schemas\src\main\resources\AppointmentsV3.xsd">
+    <Appointment id="09cad306-c63e-4598-a2a5-ec3616d3596d">
         <Status>APPROVED</Status>
-        <CreatedDateTime>2020-05-20T11:31:41.380Z</CreatedDateTime>
-        <UpdatedDateTime>2020-05-20T11:31:41.380Z</UpdatedDateTime>
+        <CreatedDateTime>2021-03-02T10:12:43.214Z</CreatedDateTime>
+        <UpdatedDateTime>2021-03-02T10:12:43.214Z</UpdatedDateTime>
         <AppointmentRequest>
             <From>mf.demo.patient</From>
-            <To>f35ef388-5810-4c44-9815-88df3071b386</To>
+            <To>054e496b-5f73-429f-9bde-23a74dafd197</To>
             <RequestedProvider>325312015</RequestedProvider>
             <RequestedLocation>286322020</RequestedLocation>
             <RequestedTimeframe>Any</RequestedTimeframe>
@@ -19,16 +14,19 @@
             <Reason>Reason1613383950303</Reason>
             <VideoPreference>true</VideoPreference>
         </AppointmentRequest>
-        <Communication messageId="dc4e6067-042d-4d34-9efc-6c7bb9c3bc2d">
-             <From>mf.demo.patient</From>
-            <To>f35ef388-5810-4c44-9815-88df3071b386</To>
-            <Subject>Appointment Request</Subject>
-            <Sent>2021-02-15T10:13:50.117Z</Sent>
-            <MessageThreadId>c6a5e082-2b54-4075-a467-d3b0eb34b8d5</MessageThreadId>
-            <Message>Dear PI Automation rsdk Integrated,&lt;br/&gt;&lt;br/&gt;I'm requesting an 		            Appointment.&lt;br/&gt;&lt;br/&gt;Thanks,&lt;br/&gt;Medfusion Dev3 Patient</Message>
+        <Communication messageId="5a5346dc-4671-4355-9391-161467999645">
+             <From>054e496b-5f73-429f-9bde-23a74dafd197</From>
+            <To>mf.demo.patient</To>
+            <Subject>Reply to Appointment Request</Subject>
+            <Sent>2021-03-02T10:17:43+05:30</Sent>
+            <MessageThreadId>09cad306-c63e-4598-a2a5-ec3616d3596d</MessageThreadId>
+            <Message>This is reply to AR for Reason1614679878780</Message>
         </Communication>
 	<ScheduledAppointment>
-            <ScheduledDateTime>2020-06-23T11:31:41+05:30</ScheduledDateTime>
+            <ScheduledDateTime>2021-03-05T10:12:43+05:30</ScheduledDateTime>
+            <ScheduledProvider>236292015</ScheduledProvider>
+            <ScheduledLocation>159022016</ScheduledLocation>
+            <Reason>Appointment Request for checking appointment details in Secure Message</Reason>
         </ScheduledAppointment>
     </Appointment>
 </n:Appointments>

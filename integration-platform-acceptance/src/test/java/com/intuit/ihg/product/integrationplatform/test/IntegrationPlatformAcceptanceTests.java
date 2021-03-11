@@ -366,6 +366,12 @@ public class IntegrationPlatformAcceptanceTests extends BaseTestNGWebDriver {
 		Thread.sleep(15000);
 		prescriptionsPage.clickContinueButton(driver);
 		Thread.sleep(15000);
+		
+		log("Getting Provider Details");
+		String practiceLocation=prescriptionsPage.getPracticeLocation(driver);
+		log("Practce Location: " + practiceLocation);
+		String practiceProvider=prescriptionsPage.getPracticeProvider(driver);
+		log("Practice Provider Name :" + practiceProvider);
 
 		log("Getting Medication Name ");
 		long time = prescriptionsPage.getCreatedTs();
@@ -379,7 +385,7 @@ public class IntegrationPlatformAcceptanceTests extends BaseTestNGWebDriver {
 		log("Perscription Reply :" + rxSMBody);
 
 		prescriptionsPage.fillThePrescriptionforExisitngUser();
-
+		
 		log("Step 6 : Verify RxRenewal Confirmation Message");
 		IHGUtil.waitForElement(driver, 5, prescriptionsPage.renewalConfirmationmessage);
 		assertEquals(prescriptionsPage.renewalConfirmationmessage.getText(), PortalConstants.RenewalConfirmation);
@@ -497,37 +503,41 @@ public class IntegrationPlatformAcceptanceTests extends BaseTestNGWebDriver {
 		JalapenoLoginPage ploginPage = new JalapenoLoginPage(driver, emailMessageLink);
 		JalapenoHomePage phomePage = ploginPage.login(testData.getUserName(), testData.getPassword());
 		Thread.sleep(9000);
+		
 		log("Click on msessage box");
 		JalapenoMessagesPage inboxPage = phomePage.clickOnMenuMessages();
 		Thread.sleep(9000);
 
 		log("Step 15: Find message in Inbox");
 		boolean msg = inboxPage.isMessageDisplayed(driver, rxSMSubject);
-
-		log("Step 16: Logout of Patient Portal");
+		
+		log("Step 16: Verify Provider details on patient portal");
+		inboxPage.checkProviderDetails(practiceProvider, practiceLocation);
+		
+		log("Step 17: Logout of Patient Portal");
 		homePage.clickOnLogout();
 
-		log("Step 17: Login to Practice Portal");
+		log("Step 18: Login to Practice Portal");
 		Thread.sleep(6000);
 		PracticeLoginPage practiceLogin = new PracticeLoginPage(driver, testData.getPracticeURL());
 		PracticeHomePage practiceHome = practiceLogin.login(testData.getPracticeUserName(),
 				testData.getPracticePassword());
 
-		log("Step 18: Click On RxRenewal in Practice Portal");
+		log("Step 19: Click On RxRenewal in Practice Portal");
 		RxRenewalSearchPage rxRenewalSearchPage = practiceHome.clickonRxRenewal();
 		Thread.sleep(10000);
 
-		log("Step 19: Search for Today's RxRenewal in Practice Portal");
+		log("Step 20: Search for Today's RxRenewal in Practice Portal");
 		rxRenewalSearchPage.searchForRxRenewalToday(2);
 		Thread.sleep(10000);
 
-		log("Step 20: Get the RxRenewal Details in Practice Portal");
+		log("Step 21: Get the RxRenewal Details in Practice Portal");
 		rxRenewalSearchPage.getRxRenewalDetails();
 
-		log("Step 21: Set the RxRenewal Fields in Practice Portal");
+		log("Step 22: Set the RxRenewal Fields in Practice Portal");
 		rxRenewalSearchPage.checkMedicationDetails(medicationName, sigCodes);
 
-		log("Step 22: Logout of Practice Portal");
+		log("Step 23: Logout of Practice Portal");
 		practiceHome.logOut();
 
 	}
@@ -1169,6 +1179,7 @@ public class IntegrationPlatformAcceptanceTests extends BaseTestNGWebDriver {
 
 		String ccd = RestUtils.prepareCCD(testData.getCCDPath());
 
+		log("ccd    : "+ccd);
 		log("Step 2: Do Message Post Request");
 		String processingUrl = RestUtils.setupHttpPostRequest(testData.getRestUrl(), ccd, testData.getResponsePath());
 
@@ -1305,7 +1316,7 @@ public class IntegrationPlatformAcceptanceTests extends BaseTestNGWebDriver {
 
 		log("Step 12: Check secure message in patient gmail inbox");
 		Mailinator mail = new Mailinator();
-		String subject = "New message from IHGQA Automation Integrated Oauth 2.0";
+		String subject = "New message from "+testData.getPracticeName();
 		String messageLink = "Sign in to view this message";
 		String emailMessageLink = mail.getLinkFromEmail(testData.getUserName(), subject, messageLink, 5);
 
@@ -1493,7 +1504,6 @@ public class IntegrationPlatformAcceptanceTests extends BaseTestNGWebDriver {
 	@DataProvider(name = "channelVersion")
 	public Object[][] channelVersion() {
 		Object[][] obj = new Object[][] { { "v1" }, { "v2" }, { "v3" } };
-
 		return obj;
 	}
 

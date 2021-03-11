@@ -581,10 +581,12 @@ public class NGAPIFlows {
 				
 			if(messageType.contains("ReplyToPortal")){
 				message.setParentId(messageType.substring(13).toUpperCase());
+				message.setRootThreadId(messageType.substring(13).toUpperCase());
 			}
 			
 			if(messageType.contains("ReplyToASKAUsingAliasName")){
 				message.setParentId(messageType.substring(25).toUpperCase());
+				message.setRootThreadId(messageType.substring(25).toUpperCase());
 			}
 			
 			if(messageType.contains("ReplyToPortal")){					
@@ -702,7 +704,10 @@ public class NGAPIFlows {
 		AppointmentResponse appointmentResponse = new AppointmentResponse();		
 		try{			
 			appointmentResponse.setMessage(message);
-			appointmentResponse.setApprovedDate(sdf.format(new Date()));
+			
+			String date = sdf.format(new Date());
+			date = date.substring(0,date.lastIndexOf(":")-1);
+			appointmentResponse.setApprovedDate(date+"0:00Z");
 			appointmentResponse.setAppointmentId(appointmentId.toUpperCase());
 			appointmentResponse.setAppointmentStatus("Booked");
 			appointmentResponse.setSourceApplicationType(1);
@@ -721,13 +726,13 @@ public class NGAPIFlows {
     }
 	}
 	
-	public static String postAppointment(String personId,String locationName, String ProviderName,String EventName, String ResourceName,int appointmentDaytobeAdded,String time,int expectedStatusCode) throws Throwable{
+	public static String postAppointment(String personId,String practiceId,String locationName, String ProviderName,String EventName, String ResourceName,int appointmentDaytobeAdded,String time,int expectedStatusCode) throws Throwable{
 		Appointment appointment = new Appointment();	String epm_appt_id ="";	
 		try{			
 			String strSqlQueryForProvider= "select provider_id from provider_mstr where description='"+ProviderName+"'";
 			String strSqlQueryForLocation= "select location_id from location_mstr where location_name='"+locationName+"'";
-			String strSqlQueryForEvent= "select event_id from events where event ='"+EventName+"'";
-			String strSqlQueryForResource= "select resource_id from resources where description = '"+ResourceName+"'";			
+			String strSqlQueryForEvent= "select event_id from events where event ='"+EventName+"' and practice_id ='"+practiceId+"'"  ;
+			String strSqlQueryForResource= "select resource_id from resources where description = '"+ResourceName+"' and practice_id ='"+practiceId+"'";		
 			String strSqlQueryForDuration= "select duration from events where event ='"+EventName+"'";
 						
 			appointment.setPersonId(personId);

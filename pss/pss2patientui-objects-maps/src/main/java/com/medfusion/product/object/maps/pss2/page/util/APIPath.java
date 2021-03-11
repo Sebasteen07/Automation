@@ -20,11 +20,10 @@ public class APIPath {
 		public static final String Apt_Type="/24249/appointmenttypes";
 		
 		public static final String Cancel_Reason="/24249/cancellationreason";
-		
-		
-		
-		
-		
+
+		public static final String cancelAppointment="/24249/cancelappointment/50151";
+		public static final String cancellationReason="/24249/cancellationreason";
+
 	}
 
 }
