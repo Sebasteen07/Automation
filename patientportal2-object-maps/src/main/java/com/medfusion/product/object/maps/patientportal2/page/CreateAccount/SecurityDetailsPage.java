@@ -46,7 +46,7 @@ public class SecurityDetailsPage extends MedfusionPage {
 		@FindBy(how = How.ID, using = "phone_type")
 		private WebElement selectPhoneType;
 
-		@FindBy(how = How.XPATH, using = "//*[@id='preferredLocationId']")
+		@FindBy(how = How.TAG_NAME, using = "ng-select")
 		private WebElement primaryLocationElement;
 		
 		@FindBy(how = How.XPATH, using = "(//*[@class='ng-option'])[1]")
@@ -94,21 +94,21 @@ public class SecurityDetailsPage extends MedfusionPage {
 				return assessPageElements(webElementsList);
 		}
 
-		public JalapenoHomePage fillAccountDetailsAndContinue(Patient patient) {
+		public JalapenoHomePage fillAccountDetailsAndContinue(Patient patient) throws InterruptedException {
 				return fillAccountDetailsAndContinue(patient.getUsername(), patient.getPassword(), patient.getSecurityQuestion(), patient.getSecurityQuestionAnswer(),
 						patient.getPhoneMobile(), 2);
 		}
 
-		public JalapenoHomePage fillAccountDetailsAndContinue(String userId, String password, PropertyFileLoader testData) {
+		public JalapenoHomePage fillAccountDetailsAndContinue(String userId, String password, PropertyFileLoader testData) throws InterruptedException {
 				return fillAccountDetailsAndContinue(userId, password, testData.getSecretQuestion(), testData.getSecretAnswer(), testData.getPhoneNumber(), 2);
 		}
 
-		public JalapenoHomePage fillAccountDetailsAndContinue(String userId, String password, String secretQuestion, String secretAnswer, String phoneNumber) {
+		public JalapenoHomePage fillAccountDetailsAndContinue(String userId, String password, String secretQuestion, String secretAnswer, String phoneNumber) throws InterruptedException {
 				return fillAccountDetailsAndContinue(userId, password, secretQuestion, secretAnswer, phoneNumber, 2);
 		}
 
 		public JalapenoHomePage fillAccountDetailsAndContinue(String userId, String password, String secretQuestion, String secretAnswer, String phoneNumber,
-				int statementPreference) {
+				int statementPreference) throws InterruptedException {
 				IHGUtil.PrintMethodName();
 				fillAccountDetails(userId, password, secretQuestion, secretAnswer, phoneNumber, statementPreference);
 				IHGUtil.waitForElement(driver, 60, buttonFinishStep);
@@ -118,12 +118,12 @@ public class SecurityDetailsPage extends MedfusionPage {
 				return PageFactory.initElements(driver, JalapenoHomePage.class);
 		}
 
-		public void fillAccountDetailsAndContinueWithError(String userId, String password, PropertyFileLoader testData) {
+		public void fillAccountDetailsAndContinueWithError(String userId, String password, PropertyFileLoader testData) throws InterruptedException {
 				fillAccountDetails(userId, password, testData.getSecretQuestion(), testData.getSecretAnswer(), testData.getPhoneNumber(), 3);
 				javascriptClick(buttonFinishStep);
 		}
 
-		private void fillAccountDetails(String userId, String password, String secretQuestion, String secretAnswer, String phoneNumber, int statementPreference) {
+		private void fillAccountDetails(String userId, String password, String secretQuestion, String secretAnswer, String phoneNumber, int statementPreference) throws InterruptedException {
 				log("Setting User Name and Password as " + userId + "/" + password);
 				inputUserId.sendKeys(userId);
 				inputPassword.sendKeys(password);
@@ -135,7 +135,7 @@ public class SecurityDetailsPage extends MedfusionPage {
 				inputPhone1.sendKeys(phoneNumber.substring(0, 3));
 				inputPhone2.sendKeys(phoneNumber.substring(3, 6));
 				inputPhone3.sendKeys(phoneNumber.substring(6, 10));
-
+				scrollAndWait(0,300,3000);
 
 				if (new IHGUtil(driver).isRendered(primaryLocationElement)) {
 						log("Set primary location");
