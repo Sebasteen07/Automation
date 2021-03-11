@@ -3453,6 +3453,89 @@ public class PatientPortal2AcceptanceTests extends BaseTestNGWebDriver {
 		assertTrue(messagesPage.isMessageDisplayed(driver, "RxRenewalSubject"));	
 	
 	}
+	
+	@Test(enabled = true, groups = { "acceptance-basics", "commonpatient" }, retryAnalyzer = RetryAnalyzer.class)
+	public void testAuthUserLinkAccountForgotPassword() throws Exception {
+		Instant passwordResetStart = Instant.now();
+		String patientLogin = PortalUtil.generateUniqueUsername("login", testData); // guardian login
+		String patientLastName = patientLogin.replace("login", "last");
+		String patientEmail = patientLogin.replace("login", "mail") + "@mailinator.com";
+
+		logStep("Login to Practice Portal");
+		PracticeLoginPage practiceLogin = new PracticeLoginPage(driver, testData.getPortalUrl());
+		PracticeHomePage practiceHome = practiceLogin.login(testData.getDoctorLogin(), testData.getDoctorPassword());
+
+		logStep("Click on Search");
+		PatientSearchPage patientSearchPage = practiceHome.clickPatientSearchLink();
+
+		logStep("Click on Add new Patient");
+		PatientActivationPage patientActivationPage = patientSearchPage.clickOnAddNewPatient();
+
+		logStep("Register Guardian - Enter all the details and click on Register");
+		String patientUrl = patientActivationPage.setInitialDetailsAllFields("Guardian", patientLastName, "F",
+				patientLastName + "G", testData.getPhoneNumber(), patientEmail, testData.getDOBMonth(),
+				testData.getDOBDay(), testData.getDOBYear(), "address1", "address2", "city", "Alabama",
+				testData.getZipCode());
+
+		logStep("Register Dependent - Enter all the details and click on Register");
+		String guardianUrl = patientActivationPage.setInitialDetailsAllFields("Dependent", patientLastName, "M",
+				patientLastName + "D", testData.getPhoneNumber(), patientEmail, testData.getDOBMonth(),
+				testData.getDOBDay(), testData.getDOBYearUnderage(), "address1", "address2", "city", "Alabama",
+				testData.getZipCode());
+		assertTrue(patientActivationPage.checkGuardianUrl(guardianUrl));
+
+		logStep("Finishing of patient activation: step 1 - verifying identity");
+		PatientVerificationPage patientVerificationPage = new PatientVerificationPage(driver, patientUrl);
+		SecurityDetailsPage accountDetailsPage = patientVerificationPage.fillPatientInfoAndContinue(
+				testData.getZipCode(), testData.getDOBMonth(), testData.getDOBDay(), testData.getDOBYear());
+
+		logStep("Finishing of patient activation: step 2 - filling patient data");
+		JalapenoHomePage jalapenoHomePage = accountDetailsPage.fillAccountDetailsAndContinue(patientLogin,
+				testData.getPassword(), testData);
+
+		log("Login username of Guardian is " + patientLogin);
+
+		logStep("Detecting if Home Page is opened");
+		assertTrue(jalapenoHomePage.areBasicPageElementsPresent());
+
+		logStep("Identify Dependent without logging out the patient");
+		patientVerificationPage.getToThisPage(guardianUrl);
+		patientVerificationPage.fillDependentInfoAndContinue(
+				testData.getZipCode(), testData.getDOBMonth(), testData.getDOBDay(), testData.getDOBYearUnderage());
+		
+		logStep("Clicking on forgot username or password");
+		patientVerificationPage.securityDetailsPageclickForgotPasswordButton();
+		JalapenoForgotPasswordPage forgotPasswordPage = new JalapenoForgotPasswordPage(driver);
+		JalapenoForgotPasswordPage2 forgotPasswordPage2 = forgotPasswordPage.fillInDataPage(patientEmail);
+		logStep("Message was sent, closing");
+		forgotPasswordPage2.clickOnCloseButton();
+		
+		logStep("Logging into Mailinator and getting ResetPassword url");
+		String[] mailAddress = patientEmail.split("@");
+		String emailSubject = "Help with your user name or password";
+		String inEmail = "Reset Password Now";
+		Email receivedEmail = new Mailer(mailAddress[0]).pollForNewEmailWithSubject(emailSubject, 60,
+				testSecondsTaken(passwordResetStart));
+		String url = Mailer.getLinkByText(receivedEmail, inEmail);
+		if (!isInviteLinkFinal(url)) {
+			url = getRedirectUrl(url);
+		}
+		assertNotNull(url, "Url is null.");
+
+		JalapenoForgotPasswordPage3 forgotPasswordPage3 = new JalapenoForgotPasswordPage3(driver, url);
+		logStep("Redirecting to patient portal, filling secret answer as: " + testData.getSecretAnswer());
+		JalapenoForgotPasswordPage4 forgotPasswordPage4 = forgotPasswordPage3.fillInSecretAnswer(testData.getSecretAnswer());
+
+		logStep("Filling new password");
+		JalapenoHomePage homePage = forgotPasswordPage4.fillInNewPassword(testData.getPassword());
+		assertTrue(homePage.areBasicPageElementsPresent());
+
+		logStep("Logging out");
+		homePage.clickOnLogout();
+		JalapenoLoginPage loginPage = new JalapenoLoginPage(driver);
+		assertTrue(loginPage.areBasicPageElementsPresent());
+		
+	}
 
 }
 

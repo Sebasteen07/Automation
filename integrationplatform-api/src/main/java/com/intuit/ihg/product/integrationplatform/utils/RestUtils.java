@@ -3890,7 +3890,8 @@ public class RestUtils {
 		return MessageID;
 	}
 
-	public static void isLoginEventValidated(String xmlFileName, String ResourceType_tag, long timestamp) throws ParserConfigurationException, SAXException, IOException {
+	public static void isLoginEventValidated(String xmlFileName, String ResourceType_tag, long timestamp)
+			throws ParserConfigurationException, SAXException, IOException {
 		IHGUtil.PrintMethodName();
 		Document doc = buildDOMXML(xmlFileName);
 
@@ -3903,8 +3904,8 @@ public class RestUtils {
 		Node node = null;
 		for (int i = 0; i < nodes.getLength(); i++) {
 			node = nodes1.item(i);
-			Log4jUtil.log("Searching: " + node.getChildNodes().item(0).getTextContent() + ", to be found: "
-					+ (timestamp));
+			Log4jUtil.log(
+					"Searching: " + node.getChildNodes().item(0).getTextContent() + ", to be found: " + (timestamp));
 			long EventRecordedTimestamp = Long.parseLong(node.getChildNodes().item(0).getTextContent());
 			Log4jUtil.log("TimestampValue" + " " + timestamp);
 			Log4jUtil.log("Finding EventRecordedTimestamp" + " " + EventRecordedTimestamp);
@@ -3939,5 +3940,26 @@ public class RestUtils {
 
 		}
 
+	}
+
+	public static String getPrescriptionID(String xmlFileName)
+			throws ParserConfigurationException, SAXException, IOException {
+		IHGUtil.PrintMethodName();
+		Document doc = buildDOMXML(xmlFileName);
+		Node prescrNode = doc.getElementsByTagName("Prescription").item(0);
+		Element prescrElem = (Element) prescrNode;
+		String PrescriptionId = prescrElem.getAttribute("id").toString();
+		Log4jUtil.log("Prescription Id : " + PrescriptionId);
+		return PrescriptionId;
+	}
+
+	public static String getPrescriptionHeaderID(String xmlFileName)
+			throws ParserConfigurationException, SAXException, IOException {
+		IHGUtil.PrintMethodName();
+		Document doc = buildDOMXML(xmlFileName);
+		Node preHdNode = doc.getElementsByTagName("PrescriptionRequestIds").item(0);
+		String PrescriptionHeaderId = preHdNode.getChildNodes().item(0).getTextContent();
+		Log4jUtil.log("Searching Prescription Header ID: " + PrescriptionHeaderId);
+		return PrescriptionHeaderId;
 	}
 }

@@ -1354,11 +1354,14 @@ public class IntegrationPlatformAcceptanceTests extends BaseTestNGWebDriver {
 				break;
 			}
 		}
+		prescriptionsPage.clickOnMenuHome();
+		homePage.areBasicPageElementsPresent();
+		homePage.clickOnPrescriptions(driver);
+		prescriptionsPage.areBasicPageElementsPresent();
+		prescriptionsPage.clickContinueButton(driver);
 		log("Step 10: Verify Deleted medication is not visible on portal");
-
 		prescriptionsPage.validateDeletedMedication(productName);
 		log("Deleted medication is not visible on portal");
-
 		log("Step 11: Logout of Patient Portal");
 		prescriptionsPage.clickOnLogout();
 	}

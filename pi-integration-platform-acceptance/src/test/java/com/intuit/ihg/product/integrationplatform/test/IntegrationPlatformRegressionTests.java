@@ -3943,7 +3943,6 @@ public class IntegrationPlatformRegressionTests extends BaseTestNGWebDriver {
 		RestUtils.oauthSetup(testData.OAuthKeyStore, testData.OAuthProperty, testData.OAuthAppToken,
 				testData.OAuthUsername, testData.OAuthPassword);
 		Thread.sleep(2000);
-		//Long since = timestamp / 1000L - 60 * 24;
 
 		log("Step 3: Get processing status until it is completed");
 		boolean completed = false;
@@ -3953,7 +3952,7 @@ public class IntegrationPlatformRegressionTests extends BaseTestNGWebDriver {
 			log("Getting messages since timestamp: " + timestamp);
 
 			RestUtils.setupHttpGetRequest(testData.restUrlLogin_V3 + timestamp, testData.ResponsePath);
-			
+
 			Thread.sleep(2000);
 			if (RestUtils.isMessageProcessingCompleted(testData.ResponsePath)) {
 				completed = true;
@@ -3965,6 +3964,63 @@ public class IntegrationPlatformRegressionTests extends BaseTestNGWebDriver {
 		String ResourceType_tag = "ConsumerLoginEvent";
 		RestUtils.isLoginEventValidated(testData.ResponsePath, ResourceType_tag, timestamp);
 		log("Step 5: Event login validated ");
+
+	}
+
+	@Test(enabled = true, groups = { "RegressionTests" }, retryAnalyzer = RetryAnalyzer.class)
+	public void testStatementPayloadMinimum(Method method) throws Exception {
+		log("Test Case: To verify if the Statement payload is being posted with minimum payload");
+		log("Execution Environment: " + IHGUtil.getEnvironmentType());
+		log("Execution Browser: " + TestConfig.getBrowserType());
+		log("Method Name: " + method.getName());
+
+		StatementEventData testData = new StatementEventData();
+		log("Step 1: load data from external property file");
+		LoadPreTestData LoadPreTestDataObj = new LoadPreTestData();
+		LoadPreTestDataObj.loadStatementEventDataFromProperty(testData);
+		StatementEventUtils sEventObj = new StatementEventUtils();
+
+		Long timestamp = System.currentTimeMillis();
+		Long since = timestamp / 1000L;
+		Log4jUtil.log("Getting patients since timestamp: " + since);
+
+		LoadPreTestDataObj.loadStatementEventDataFromProperty(testData);
+		log("Url: " + testData.url_PatientStatement);
+		log("User Name: " + testData.UserName);
+		log("Password: " + testData.Password);
+		log("RestUrlV3: " + testData.restUrlV3_Statement);
+		log("OAuthProperty: " + testData.OAuthProperty);
+		log("OAuthKeyStore: " + testData.OAuthKeyStore);
+		log("OAuthAppToken: " + testData.oAuthAppToken_PatientSt);
+		log("OAuthUsername: " + testData.oAuthAppUsername_PatientSt);
+		log("OAuthPassword: " + testData.oAuthAppPw_PatientSt);
+		log("ResponsePath: " + testData.ResponsePath);
+		log("Attachment File Path: " + testData.StatementPdf_Detail);
+
+		String StatementMsgSubject = "Your Statement is Ready";
+		log("Statement Subject :" + StatementMsgSubject);
+
+		StatementsMessagePayload SMPObj = new StatementsMessagePayload();
+		String statement = SMPObj.getStatementsMessageV3MiniPayload(testData, method.getName());
+		Thread.sleep(6000);
+		log("Statement Payload----------------" + statement);
+		log("Step 2: Post statement to patient");
+		sEventObj.postStatementV3(testData, statement);
+
+		log("Step 3: Login to Patient Portal");
+		JalapenoLoginPage loginPage = new JalapenoLoginPage(driver, testData.url_PatientStatement);
+		JalapenoHomePage homePage = loginPage.login(testData.UserName, testData.Password);
+		Thread.sleep(9000);
+		log("Click on msessage box");
+		JalapenoMessagesPage inboxPage = homePage.clickOnMenuMessages();
+		Thread.sleep(9000);
+
+		log("Step 4: Find message in Inbox");
+		boolean msg = inboxPage.isMessageDisplayed(driver, StatementMsgSubject);
+		log("Message received in inbox");
+
+		log("Step 5: Logout of Patient Portal");
+		homePage.clickOnLogout();
 
 	}
 }

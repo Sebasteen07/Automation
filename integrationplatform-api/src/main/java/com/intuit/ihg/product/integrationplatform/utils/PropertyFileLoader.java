@@ -2021,4 +2021,28 @@ public class PropertyFileLoader {
 		return property.getProperty("restUrlLogin_V3");
 	}
 
+	public String getStatementPdfDetail() {
+		return property.getProperty("StatementPdfDetail_");
+	}
+
+	public String getStatementUrlV3() {
+		return property.getProperty("restUrlV3_Statement");
+	}
+
+	public String getPatientStatementUrl() {
+		return property.getProperty("url_PatientStatement");
+	}
+
+	public String getOAuthAppToken_Statement() {
+		return property.getProperty("oAuthAppToken_PatientStatement");
+	}
+
+	public String getOAuthAppUsername_Statement() {
+		return property.getProperty("oAuthUsername_PatientStatement");
+	}
+
+	public String getOAuthAppPassword_Statement() {
+		return property.getProperty("oAuthPassword_PatientStatement");
+	}
+
 }

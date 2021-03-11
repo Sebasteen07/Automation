@@ -12,6 +12,7 @@ import com.intuit.ifs.csscat.core.BaseTestNGWebDriver;
 import io.restassured.RestAssured;
 import io.restassured.builder.RequestSpecBuilder;
 import io.restassured.builder.ResponseSpecBuilder;
+import io.restassured.path.json.JsonPath;
 import io.restassured.response.Response;
 import io.restassured.specification.RequestSpecification;
 import io.restassured.specification.ResponseSpecification;
@@ -61,5 +62,53 @@ public class PostAPIRequest extends BaseTestNGWebDriver {
 		apiVerification.responseTimeValidation(response);
 		return response;
 	}
+	
+	public String accessToken(String baseurl) {
 
+		RestAssured.baseURI = baseurl;
+		Response response = RestAssured.given().get(baseurl).then().log().all()
+				.extract().response();
+
+		JSONObject jsonobject = new JSONObject(response.asString());
+
+		log("Status Code- " + response.getStatusCode());
+
+		APIVerification apiVerification = new APIVerification();
+
+		apiVerification.responseCodeValidation(response, 200);
+		ParseJSONFile.getKey(jsonobject, "accessToken");
+		apiVerification.responseKeyValidation(response, "accessToken");
+		apiVerification.responseTimeValidation(response);
+		
+		JsonPath jsonPathEvaluator = response.jsonPath();
+		String access_Token=jsonPathEvaluator.get("accessToken");
+		log("The Access Token is    "+jsonPathEvaluator.get("accessToken"));
+		
+		return access_Token;
+	}
+	
+	public Response cancelAppointmentGET(String baseurl, Map<String, String> Header) {
+		
+		RestAssured.baseURI = baseurl;
+		Response response = RestAssured.given().queryParam("additionalFields", "Cancel").queryParam("appointmentId", "8ce85b6a-268a-4ef1-9baa-446afd56367d").when().headers(Header).when().get(APIPath.apiPath.cancelAppointment).then().log().all()
+				.extract().response();
+		log("Status Code- " + response.getStatusCode());
+		return response;
+	}
+public Response cancelAppointmentPOST(String baseurl,String b,Map<String, String> Header) {
+		RestAssured.baseURI = baseurl;
+		Response response = RestAssured.given().queryParam("additionalFields", "Cancel").queryParam("appointmentId", "8ce85b6a-268a-4ef1-9baa-446afd56367d").when().headers(Header).body(b).when().post(APIPath.apiPath.cancelAppointment).then().log().all()
+				.extract().response();
+		log("Status Code- " + response.getStatusCode());
+		return response;
+	}
+public Response cancellationReason(String baseurl,Map<String, String> Header) {
+	RestAssured.baseURI = baseurl;
+	Response response = RestAssured.given().when().headers(Header).when().get(APIPath.apiPath.cancellationReason).then().log().all()
+			.extract().response();
+	log("Status Code- " + response.getStatusCode());
+	log("Body ------ " + response.body());
+
+	return response;
+}
 }
