@@ -129,6 +129,16 @@ public class Appointment {
 	private boolean showCancellationReasonPM = false;
 	private boolean isFutureApt = false;
 	private boolean pcptoggleState = false;
+	private boolean nextAvailiabletoggleStatus = false;
+
+
+	public boolean isNextAvailiabletoggleStatus() {
+		return nextAvailiabletoggleStatus;
+	}
+
+	public void setNextAvailiabletoggleStatus(boolean nextAvailiabletoggleStatus) {
+		this.nextAvailiabletoggleStatus = nextAvailiabletoggleStatus;
+	}
 
 	private String accessTokenURL;
 	private String accessToken;

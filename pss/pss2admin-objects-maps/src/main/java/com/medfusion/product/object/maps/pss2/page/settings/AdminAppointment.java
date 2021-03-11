@@ -62,6 +62,9 @@ public class AdminAppointment extends SettingsTab {
 
 	@FindBy(how = How.ID, using = "nextAvailable")
 	private WebElement nextavailable;
+	
+	@FindBy(how = How.XPATH, using = "//*[@id='nextavailable']")
+	private WebElement nextavailableStatus;
 
 	@FindBy(how = How.ID, using = "pastapptmonths")
 	private WebElement pastApptMonths;
@@ -247,6 +250,10 @@ public class AdminAppointment extends SettingsTab {
 		buttonSave.click();
 	}
 
+	public Boolean toggleNextAvailableStatus() {
+		return Boolean.valueOf(nextavailableStatus.getAttribute("ng-reflect-model"));
+	}
+	
 	public void toggleNextavailable() {
 		nextavailable.click();
 		buttonSave.click();

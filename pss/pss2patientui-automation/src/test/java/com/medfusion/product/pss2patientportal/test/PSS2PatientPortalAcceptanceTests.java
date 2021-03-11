@@ -3585,12 +3585,14 @@ public class PSS2PatientPortalAcceptanceTests extends BaseTestNGWebDriver {
 		log("Verify PSS2 patient portal elements");
 		assertTrue(homepage.areBasicPageElementsPresent());
 		log("Successfully upto Home page");
+		
 		Log4jUtil.log("Step 8: Select Provider for appointment.");
 		Provider provider = null;
 		StartAppointmentInOrder startappointmentInOrder = null;
 		int n = Integer.parseInt(testData.getMaxperDay());
 		for (int i = 0; i < n; i++) {
 			Log4jUtil.log("Book an appointment as per the max per day");
+			homepage.btnStartSchedClick();
 			startappointmentInOrder = homepage.skipInsurance(driver);
 			provider = startappointmentInOrder.selectFirstProvider(PSSConstants.START_PROVIDER);
 			Log4jUtil.log("clicked on provider ");
@@ -3610,6 +3612,7 @@ public class PSS2PatientPortalAcceptanceTests extends BaseTestNGWebDriver {
 			psspatientutils.clickOnSubmitAppt1(false, aptDateTime, testData, driver);
 		}
 		Log4jUtil.log("Max per day appointment booked and now verifying the current date is disabled or Not");
+		homepage.btnStartSchedClick();
 		startappointmentInOrder = homepage.skipInsurance(driver);
 		provider = startappointmentInOrder.selectFirstProvider(PSSConstants.START_PROVIDER);
 		Log4jUtil.log("clicked on provider ");
@@ -4695,6 +4698,67 @@ public class PSS2PatientPortalAcceptanceTests extends BaseTestNGWebDriver {
 
 		propertyData.setAdminGE(adminuser);
 		propertyData.setAppointmentResponseGE(testData);
+		adminuser.setIsExisting(true);
+
+		PSSAdminUtils pssadminutils = new PSSAdminUtils();
+		pssadminutils.allowpcp(driver, adminuser, testData);
+		log(testData.getUrlLoginLess());
+		log("Appointment Type- " + testData.getAppointmenttype());
+		log("Location- " + testData.getLocation());
+		log("Provider Name- " + testData.getProvider());
+		String rule = adminuser.getRule();
+		rule = rule.replaceAll(" ", "");
+		log("Rule -" + rule);
+		log("Step 3: Move to PSS patient Portal 2.0 to book an Appointment");
+		log("Step 4: Login to PSS Appointment");
+		DismissPage dismissPage = new DismissPage(driver, testData.getUrlLoginLess());
+		Thread.sleep(1000);
+		log("Step 5: LoginlessPatientInformation****");
+		log("Clicked on Dismiss");
+		LoginlessPatientInformation loginlessPatientInformation = dismissPage.clickDismiss();
+		log("Step 6: Fill Patient criteria");
+		log("First Name- " + testData.getFirstNameCarePatient());
+		log("Last Name- " + testData.getLastNameCarePatient());
+		log("Gender- " + testData.getGenderCarePatient());
+		log("Email- " + testData.getEmailCarePatient());
+		log("Phone Number- " + testData.getPhoneCarePatient());
+		log("Date Of Birth- " + testData.getDobCarePatient());
+		Thread.sleep(3000);
+		HomePage homepage = loginlessPatientInformation.fillNewPatientForm(testData.getFirstNameCarePatient(),
+				testData.getLastNameCarePatient(), testData.getDobCarePatient(), testData.getEmailCarePatient(),
+				testData.getGenderCarePatient(), testData.getZipCarePatient(), testData.getPhoneCarePatient());
+		log("Successfully upto Home page");
+		homepage.btnStartSchedClick();
+		Location location = null;
+		StartAppointmentInOrder startappointmentInOrder = null;
+		startappointmentInOrder = homepage.skipInsurance(driver);
+		location = startappointmentInOrder.selectFirstLocation(PSSConstants.START_LOCATION);
+		Log4jUtil.log("Step 9: Verfiy Location Page and location =" + testData.getLocation());
+		assertTrue(location.areBasicPageElementsPresent());
+		AppointmentPage appointment = location.selectAppointment(testData.getLocation());
+		Log4jUtil.log(
+				"Step 10: Verfiy Appointment Page and appointment to be selected = " + testData.getAppointmenttype());
+		assertTrue(appointment.areBasicPageElementsPresent());
+		Provider provider = appointment.selectTypeOfProvider(testData.getAppointmenttype(),
+				Boolean.valueOf(testData.getIsAppointmentPopup()));
+		Log4jUtil.log("Step 11: Verfiy Provider Page and Provider = " + testData.getProvider());
+		Thread.sleep(2000);
+		provider.getProviderNamesfromProviderList(testData.getProvider());
+		Log4jUtil.log("Provider is in dev3   " + testData.getCareProvider());
+		Log4jUtil.log("PCP is present on Patient UI When Share patient is OFF");
+		assertEquals(provider.getProviderNamesfromProviderList(testData.getProvider()), testData.getCareProvider());
+	}
+
+	@Test(enabled = true, groups = { "AcceptanceTests" }, retryAnalyzer = RetryAnalyzer.class)
+	public void testPCPShareONGW() throws Exception {
+		log(" To Verify that PCP When Share Patient is OFF");
+		log("Step 1: Load test Data from External Property file.");
+		PSSPropertyFileLoader propertyData = new PSSPropertyFileLoader();
+		Appointment testData = new Appointment();
+		AdminUser adminuser = new AdminUser();
+
+		propertyData.setAdminGW(adminuser);
+		propertyData.setAppointmentResponseGW(testData);
 		adminuser.setIsExisting(true);
 
 		PSSAdminUtils pssadminutils = new PSSAdminUtils();

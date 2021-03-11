@@ -81,6 +81,15 @@ public class PSSPropertyFileLoader {
 		appointValues.setProviderImageAPI(property.getProperty("providerImageAPIGW"));
 		appointValues.setGmailUserName(property.getProperty("gmailUserNameGW"));
 		appointValues.setPopUpMessege(property.getProperty("popUpMessege"));
+		
+		appointValues.setFirstNameCarePatient(property.getProperty("firstNameCarePatientGW"));
+		appointValues.setLastNameCarePatient(property.getProperty("lastNameCarePatientGW"));
+		appointValues.setDobCarePatient(property.getProperty("dobCarePatientGW"));
+		appointValues.setGenderCarePatient(property.getProperty("genderCarePatientGW"));
+		appointValues.setEmailCarePatient(property.getProperty("emailCarePatientGW"));
+		appointValues.setPhoneCarePatient(property.getProperty("phoneCarePatientGW"));
+		appointValues.setZipCarePatient(property.getProperty("zipCarePatientGW"));
+		appointValues.setCareProvider(property.getProperty("providerCarePatientGW"));
 	}
 
 	public void setAdminGW(AdminUser adminuser) {
