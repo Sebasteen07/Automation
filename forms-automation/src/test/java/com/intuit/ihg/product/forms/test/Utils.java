@@ -8,20 +8,18 @@ import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.TimeZone;
-import java.util.concurrent.TimeUnit;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 import com.intuit.ihg.common.utils.PatientFactory;
 import com.medfusion.pojos.Patient;
 import com.medfusion.product.patientportal2.implementedExternals.CreatePatient;
-import com.medfusion.product.patientportal2.utils.PortalUtil;
+import com.medfusion.product.patientportal2.pojo.PortalBasic;
+import com.medfusion.product.patientportal2.utils.PortalUtil2;
 import org.openqa.selenium.By;
 import org.openqa.selenium.NoSuchElementException;
 import org.openqa.selenium.StaleElementReferenceException;
 import org.openqa.selenium.WebDriver;
-import org.openqa.selenium.firefox.FirefoxDriver;
-import org.openqa.selenium.firefox.FirefoxProfile;
 import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.openqa.selenium.support.ui.WebDriverWait;
 import org.testng.Assert;
@@ -33,8 +31,7 @@ import com.medfusion.common.utils.PropertyFileLoader;
 import com.medfusion.product.object.maps.forms.page.HealthFormListPage;
 import com.medfusion.product.object.maps.patientportal2.page.JalapenoLoginPage;
 import com.medfusion.product.object.maps.patientportal2.page.HomePage.JalapenoHomePage;
-import com.medfusion.product.patientportal1.pojo.Portal;
-import com.medfusion.product.patientportal1.utils.TestcasesData;
+import com.medfusion.product.patientportal2.utils.JalapenoTestCaseData;
 
 public class Utils {
 
@@ -75,7 +72,7 @@ public class Utils {
 
 		public static JalapenoHomePage createAndLoginPatientPI(WebDriver driver, PropertyFileLoader testData, PracticeType practiceType) throws Exception {
 				String url = getPortalURL(practiceType, true, testData);
-				String username = PortalUtil.generateUniqueUsername(testData.getProperty("userid"), testData);
+				String username = PortalUtil2.generateUniqueUsername(testData.getProperty("userid"), testData);
 
 				log("Create patient");
 				Patient patient = createPatientPI(driver, username, url, testData);
@@ -120,34 +117,17 @@ public class Utils {
 				Assert.assertEquals(status.getDownloadStatusCode(pdfLink, RequestMethod.GET), 200);
 		}
 
-		/**
-		 * Initializes and returns Firefox specific driver which allows downloading All downloaded files will be present directly in working directory (usually the
-		 * root directory of project).
-		 *
-		 * @return Firefox specific driver which allows downloading
-		 */
-		public static WebDriver getFirefoxDriverForDownloading() {
-				FirefoxProfile fxProfile = new FirefoxProfile();
-				fxProfile.setPreference("browser.download.folderList", 2);
-				fxProfile.setPreference("browser.download.manager.showWhenStarting", false);
-				fxProfile.setPreference("browser.download.dir", System.getProperty("user.dir"));
-				fxProfile.setPreference("browser.helperApps.neverAsk.saveToDisk", "text/plain");
-				FirefoxDriver driver = new FirefoxDriver();
-				driver.manage().timeouts().implicitlyWait(20, TimeUnit.SECONDS);
-				return driver;
-		}
-
 		public static int getAutomationPracticeID() throws Exception {
 				return getAutomationPracticeID(PracticeType.PRIMARY);
 		}
 
 		public static int getAutomationPracticeID(PracticeType practiceType) throws Exception {
-				TestcasesData data = new TestcasesData(new Portal());
+				JalapenoTestCaseData data = new JalapenoTestCaseData(new PortalBasic());
 				switch (practiceType) {
 						case PRIMARY:
-								return getPracticeIDFromPIUrl(data.getFormsPIUrlPrimary());
+								return getPracticeIDFromPIUrl(data.getPIFormsUrl());
 						case SECONDARY:
-								return getPracticeIDFromPIUrl(data.getFormsPIUrlSecondary());
+								return getPracticeIDFromPIUrl(data.getPIFormsAltUrl());
 						default:
 								throw new IllegalArgumentException("unknown practice type");
 				}

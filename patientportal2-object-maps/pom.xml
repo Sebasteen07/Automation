@@ -1,50 +1,51 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+<project xmlns="http://maven.apache.org/POM/4.0.0"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
 	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
 	<modelVersion>4.0.0</modelVersion>
- 	
- 	<parent>
+
+	<parent>
+		<artifactId>ihg-depot-parent-pom</artifactId>
 		<groupId>com.intuit.ihg</groupId>
-		<artifactId>ihg-depot-qa-parent-pom</artifactId>
 		<version>21.3.0-SNAPSHOT</version>
 	</parent>
-	
+
 	<artifactId>patientportal2-object-maps</artifactId>
 	<packaging>jar</packaging>
 	<name>patientportal2-object-maps</name>
-  
-  	<repositories>
-        <repository>
-            <id>IHG-nexus</id>
-            <name>IHG-nexus</name>
-            <url>http://maven.qhg.local/nexus/content/groups/qhg-dev/</url>
-        </repository>
-    </repositories>
-    
+
+	<repositories>
+		<repository>
+			<id>IHG-nexus</id>
+			<name>IHG-nexus</name>
+			<url>http://maven.qhg.local/nexus/content/groups/qhg-dev/</url>
+		</repository>
+	</repositories>
+
 	<properties>
 		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
 		<ihg.version>21.3.0-SNAPSHOT</ihg.version>
 	</properties>
-  
+
 	<dependencies>
 		<dependency>
-  			<groupId>com.intuit.ihg</groupId>
-  			<artifactId>qa-automation-utils</artifactId>
-  			<version>${ihg.version}</version>
-  		</dependency>
-  		<dependency>
-  			<groupId>com.intuit.ihg</groupId>
-  			<artifactId>patientportal2-api</artifactId>
-  		<version>${ihg.version}</version>
-  	</dependency>
-  	<dependency>
-  			<groupId>com.intuit.ihg</groupId>
-  			<artifactId>forms-object-maps</artifactId>
-  		<version>${ihg.version}</version>
-  	</dependency>
-  	</dependencies>
-  	
-    <build>
+			<groupId>com.intuit.ihg</groupId>
+			<artifactId>qa-automation-utils</artifactId>
+			<version>${ihg.version}</version>
+		</dependency>
+		<dependency>
+			<groupId>com.intuit.ihg</groupId>
+			<artifactId>patientportal2-api</artifactId>
+			<version>${ihg.version}</version>
+		</dependency>
+		<dependency>
+			<groupId>com.intuit.ihg</groupId>
+			<artifactId>forms-object-maps</artifactId>
+			<version>${ihg.version}</version>
+		</dependency>
+	</dependencies>
+
+	<build>
 		<plugins>
 			<plugin>
 				<groupId>org.apache.maven.plugins</groupId>

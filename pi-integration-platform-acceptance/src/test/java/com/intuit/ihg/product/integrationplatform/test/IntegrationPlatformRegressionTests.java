@@ -1,3 +1,4 @@
+// Copyright 2013-2021 NXGN Management, LLC. All Rights Reserved.
 package com.intuit.ihg.product.integrationplatform.test;
 
 import java.awt.Robot;
@@ -66,8 +67,6 @@ import com.intuit.ihg.product.integrationplatform.utils.StatementsMessagePayload
 import com.medfusion.common.utils.IHGUtil;
 import com.medfusion.common.utils.Mailinator;
 import com.medfusion.common.utils.PropertyFileLoader;
-import com.medfusion.portal.utils.PortalConstants;
-import com.medfusion.portal.utils.PortalUtil;
 import com.medfusion.product.object.maps.forms.page.HealthFormListPage;
 import com.medfusion.product.object.maps.forms.page.questionnaires.prereg_pages.FormBasicInfoPage;
 import com.medfusion.product.object.maps.patientportal2.page.JalapenoLoginPage;
@@ -99,6 +98,8 @@ import com.medfusion.product.object.maps.precheck.page.myInsurance.TertiaryInsur
 import com.medfusion.product.object.maps.precheck.page.myInsuranceImage.InsuranceImagePage;
 import com.medfusion.product.object.maps.precheck.page.verifyIdentity.VerifyIdentityPage;
 import com.medfusion.product.patientportal2.pojo.JalapenoPatient;
+import com.medfusion.product.patientportal2.utils.JalapenoConstants;
+import com.medfusion.product.patientportal2.utils.PortalUtil2;
 import com.medfusion.product.practice.api.pojo.Practice;
 
 /**
@@ -555,8 +556,8 @@ public class IntegrationPlatformRegressionTests extends BaseTestNGWebDriver {
 		log("checking email for activation UrL link");
 		Thread.sleep(5000);
 		Mailinator mail = new Mailinator();
-		String activationUrl = mail.getLinkFromEmail(patientDetail.get(4), PortalConstants.NewPatientActivationMessage,
-				PortalConstants.NewPatientActivationMessageLinkText, 20);
+		String activationUrl = mail.getLinkFromEmail(patientDetail.get(4), JalapenoConstants.NEW_PATIENT_ACTIVATION_MESSAGE,
+				JalapenoConstants.NEW_PATIENT_ACTIVATION_MESSAGE_LINK_TEXT, 20);
 		assertTrue(activationUrl != null, "Error: Activation link not found.");
 
 		PatientRegistrationUtils.registerPatient(activationUrl, patientDetail.get(4), testData.PatientPassword,
@@ -2403,7 +2404,7 @@ public class IntegrationPlatformRegressionTests extends BaseTestNGWebDriver {
 		Mailinator mail = new Mailinator();
 		String activationUrl = mail.getLinkFromEmail(patientDetail.get(4),
 				"You are invited to create a Patient Portal guardian account at PI Automation rsdk Integrated",
-				PortalConstants.NewPatientActivationMessageLinkText, 20);
+				JalapenoConstants.NEW_PATIENT_ACTIVATION_MESSAGE_LINK_TEXT, 20);
 		assertTrue(activationUrl != null, "Error: Activation link not found.");
 
 		log("Step 4: Register under age patient");
@@ -2562,7 +2563,7 @@ public class IntegrationPlatformRegressionTests extends BaseTestNGWebDriver {
 		Mailinator mail = new Mailinator();
 		String activationUrl = mail.getLinkFromEmail(patientDetail.get(4),
 				"You are invited to create a Patient Portal guardian account at PI Automation rsdk Integrated",
-				PortalConstants.NewPatientActivationMessageLinkText, 20);
+				JalapenoConstants.NEW_PATIENT_ACTIVATION_MESSAGE_LINK_TEXT, 20);
 		assertTrue(activationUrl != null, "Error: Activation link not found.");
 
 		log("Step 4: Register under age patient");
@@ -2676,7 +2677,7 @@ public class IntegrationPlatformRegressionTests extends BaseTestNGWebDriver {
 				Thread.sleep(1000);
 				FormBasicInfoPage pFormBasicInfoPage = PageFactory.initElements(driver, FormBasicInfoPage.class);
 				if (i == 0 && k == 0) {
-					PortalUtil.setPortalFrame(driver);
+					PortalUtil2.setPortalFrame(driver);
 					log("Fill in Patient GI/SO value");
 					pFormBasicInfoPage.switchFrame();
 				}
@@ -3360,7 +3361,6 @@ public class IntegrationPlatformRegressionTests extends BaseTestNGWebDriver {
 		LoadPreTestData LoadPreTestDataObj = new LoadPreTestData();
 		AppointmentData testData = new AppointmentData();
 		LoadPreTestDataObj.loadAppointmentTypeFromProperty(testData);
-		AppointmentDataUtils aDUtils = new AppointmentDataUtils();
 		log("POST URL" + testData.AppointmentTypeUrl);
 
 		log("Step 1: Setup Oauth client");
@@ -3512,7 +3512,6 @@ public class IntegrationPlatformRegressionTests extends BaseTestNGWebDriver {
 				testData.ResponsePath);
 		Log4jUtil.log("processingUrl " + processingUpdateUrl);
 
-		Boolean completedStatus = false;
 		for (int i = 0; i < 3; i++) {
 			// wait 10 seconds so the message can be processed
 			Thread.sleep(60000);
@@ -3616,7 +3615,6 @@ public class IntegrationPlatformRegressionTests extends BaseTestNGWebDriver {
 				testData.ResponsePath);
 		Log4jUtil.log("processingUrl " + processingDeleteUrl);
 
-		Boolean completedStatus = false;
 		for (int i = 0; i < 3; i++) {
 			// wait 10 seconds so the message can be processed
 			Thread.sleep(60000);

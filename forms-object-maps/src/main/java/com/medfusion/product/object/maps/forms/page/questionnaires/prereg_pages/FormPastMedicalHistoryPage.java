@@ -1,3 +1,4 @@
+//  Copyright 2013-2021 NXGN Management, LLC. All Rights Reserved.
 package com.medfusion.product.object.maps.forms.page.questionnaires.prereg_pages;
 
 import org.openqa.selenium.By;
@@ -7,8 +8,8 @@ import org.openqa.selenium.support.FindBy;
 import org.openqa.selenium.support.ui.Select;
 
 import com.medfusion.common.utils.IHGUtil;
-import com.medfusion.portal.utils.PortalUtil;
 import com.medfusion.product.object.maps.forms.page.questionnaires.PortalFormPage;
+import com.medfusion.product.patientportal2.utils.PortalUtil2;
 
 public class FormPastMedicalHistoryPage extends PortalFormPage {
 
@@ -38,8 +39,8 @@ public class FormPastMedicalHistoryPage extends PortalFormPage {
 	 * @throws Exception
 	 */
 	public void setNoConditions() throws Exception {
-		PortalUtil.PrintMethodName();
-		PortalUtil.setquestionnarieFrame(driver);
+		PortalUtil2.PrintMethodName();
+		PortalUtil2.setquestionnarieFrame(driver);
 		noConditions.click();
 	}
 
