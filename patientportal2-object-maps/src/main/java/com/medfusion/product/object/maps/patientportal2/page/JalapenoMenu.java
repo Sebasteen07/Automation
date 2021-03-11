@@ -339,6 +339,6 @@ public abstract class JalapenoMenu extends MedfusionPage {
 	
 	public void unlinkTrustedRepresentativeAccount() {
 		JalapenoAccountPage accountPage = clickOnAccount();
-		accountPage.clickOnTrustedRepresentative();
+		accountPage.clickOnUnlinkTrustedRepresentative();
 	}
 }
