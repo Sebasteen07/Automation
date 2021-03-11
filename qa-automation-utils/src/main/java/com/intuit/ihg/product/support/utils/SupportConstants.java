@@ -1,9 +1,12 @@
-// Copyright 2013-2021 NXGN Management, LLC. All Rights Reserved.
 package com.intuit.ihg.product.support.utils;
 
 import com.medfusion.common.utils.IHGUtil;
 
 public class SupportConstants {
+
+	public final static int FIND_ELEMENTS_MAX_WAIT_SECONDS = 3;
+	public final static int SELENIUM_IMPLICIT_WAIT_SECONDS = 30;
+
 	public static final String TEST_FILE = "c:\temp\testfile.pdf";
 	public static final String TEST_DATA = "src/test/resources/testfiles/";
 	public static final String XML_REQUEST_PATH = TEST_DATA + IHGUtil.getEnvironmentType() + "/ccd/";

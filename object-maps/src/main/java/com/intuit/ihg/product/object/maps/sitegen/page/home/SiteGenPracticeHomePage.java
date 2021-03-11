@@ -26,7 +26,6 @@ import com.intuit.ihg.product.object.maps.sitegen.page.pharmacy.ManageYourPharma
 import com.intuit.ihg.product.object.maps.sitegen.page.physicians.ManageYourPhysiciansPage;
 import com.intuit.ihg.product.sitegen.utils.SitegenConstants;
 import com.intuti.ihg.product.object.maps.sitegen.page.medfusionadmin.PracticeInfoPage;
-import com.medfusion.common.utils.IHGConstants;
 import com.medfusion.common.utils.IHGUtil;
 
 /**
@@ -336,7 +335,7 @@ public class SiteGenPracticeHomePage extends BasePageObject {
 		driver.switchTo().defaultContent();
 		if (util.isRendered(logout)) {
 			System.out.println("DEBUG: LOGOUT ELEMENT FOUND.");
-			driver.manage().timeouts().implicitlyWait(IHGConstants.SELENIUM_IMPLICIT_WAIT_SECONDS, TimeUnit.SECONDS);
+			driver.manage().timeouts().implicitlyWait(SitegenConstants.SELENIUM_IMPLICIT_WAIT_SECONDS, TimeUnit.SECONDS);
 			try {
 				logout.click();
 			} catch (Exception e) {

@@ -12,6 +12,10 @@ import com.medfusion.common.utils.IHGUtil;
  */
 
 public class SmIntegrationConstants {
+
+	public final static int FIND_ELEMENTS_MAX_WAIT_SECONDS = 3;
+	public final static int SELENIUM_IMPLICIT_WAIT_SECONDS = 30;
+
 	// SM Constants
 	public final static String INTEGRATIONSTATUS_ID = "7";
 	public final static String INTEGRATIONSTATUS_ID_COLUMN = "intchangeintegrationstid";

@@ -1,4 +1,4 @@
-// Copyright 2013-2021 NXGN Management, LLC. All Rights Reserved.
+// Copyright 2016-2020 NXGN Management, LLC. All Rights Reserved.
 package com.intuit.ihg.product.integrationplatform.utils;
 
 /**
@@ -9,6 +9,9 @@ package com.intuit.ihg.product.integrationplatform.utils;
  */
 
 public class IntegrationConstants {
+
+	public final static int FIND_ELEMENTS_MAX_WAIT_SECONDS = 3;
+	public final static int SELENIUM_IMPLICIT_WAIT_SECONDS = 30;
 	public final static String QUESTION_SUBJECT = "Subject";
 	public final static String QUESTION_TYPE = "QuestionType";
 	public final static String QUESTION_MESSAGE = "Message";

@@ -1,7 +1,11 @@
-// Copyright 2013-2021 NXGN Management, LLC. All Rights Reserved.
 package com.intuit.ihg.product.phr.utils;
 
+
+
 public class PhrConstants {
+	public final static int FIND_ELEMENTS_MAX_WAIT_SECONDS = 3;
+	public final static int SELENIUM_IMPLICIT_WAIT_SECONDS = 30;
+
 	public static final String intuitPatientID = "47426";
 	public static final String ccd = "validCCD";
 	public static final String CONFIG_FILE = "PropFile";

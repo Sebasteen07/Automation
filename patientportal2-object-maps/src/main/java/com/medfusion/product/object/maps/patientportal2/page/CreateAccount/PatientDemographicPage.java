@@ -9,6 +9,7 @@ import java.time.Month;
 import java.util.ArrayList;
 
 import org.openqa.selenium.By;
+import org.openqa.selenium.Keys;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.FindBy;
@@ -22,6 +23,8 @@ import com.medfusion.product.object.maps.patientportal2.page.MedfusionPage;
 import com.medfusion.product.patientportal2.pojo.JalapenoPatient;
 
 public class PatientDemographicPage extends MedfusionPage {
+
+	private PropertyFileLoader testData;
 
 	public static final String ACTIVE_TAB_XPATH_SELECTOR = "//div[contains(@class,'tab-pane') and contains(@class,'active')]";
 
@@ -61,23 +64,23 @@ public class PatientDemographicPage extends MedfusionPage {
 	@FindBy(how = How.ID, using = "city")
 	private WebElement inputCity;
 
-	@FindBy(how = How.ID, using = "state")
+	@FindBy(how = How.XPATH, using = "//div[@class='ng-input']")
 	private WebElement inputState;
-
+	
 	@FindBy(how = How.XPATH, using = "//div[@class='ng-option ng-option-marked']")
 	private WebElement setState;
 
 	@FindBy(how = How.XPATH, using = "//span[@ng-click='$select.toggle($event)']")
 	private WebElement dropdownToggle;
 
-	@FindBy(how = How.XPATH, using = "/html/body/patient-web-angular/div[4]/div/div[2]/div[3]/div[1]/ui-view/div/div/div/div/div/div/div/div/create-account-first-page/div[3]/div/form/div[2]/div[4]/div[1]/div/mfusstates/div/ng-select/ng-dropdown-panel/div/div[2]/div[1]")
-	private WebElement setStateAlabama;
-
-	@FindBy(how = How.XPATH, using = "/html/body/patient-web-angular/div[4]/div/div[2]/div[3]/div[1]/ui-view/div/div/div/div/div/div/div/div/create-account-first-page/div[3]/div/form/div[2]/div[4]/div[1]/div/mfusstates/div/ng-select/ng-dropdown-panel/div/div[2]/div[2]")
+	@FindBy(how = How.XPATH, using = "//li[@class='ui-select-choices-group']/div[4]/span/div")
 	private WebElement setStateAlaska;
 
-	@FindBy(how = How.XPATH, using = "/html/body/patient-web-angular/div[4]/div/div[2]/div[3]/div[1]/ui-view/div/div/div/div/div/div/div/div/create-account-first-page/div[3]/div/form/div[2]/div[4]/div[1]/div/mfusstates/div/ng-select/ng-dropdown-panel/div/div[2]/div[13]")
+	@FindBy(how = How.XPATH, using = "//li[@class='ui-select-choices-group']/div[15]/span/div")
 	private WebElement setStateHawaii;
+
+	@FindBy(how = How.XPATH, using = "//input[@type='search']")
+	private WebElement setStatesendkeys;
 
 	@FindBy(how = How.XPATH, using = ACTIVE_TAB_XPATH_SELECTOR + "//*[@id='postalCode']")
 	private WebElement inputZipCode;
@@ -88,8 +91,10 @@ public class PatientDemographicPage extends MedfusionPage {
 	@FindBy(how = How.XPATH, using = ACTIVE_TAB_XPATH_SELECTOR + "//*[@id='nextStep']")
 	private WebElement buttonContinue;
 
-	@FindBy(how = How.XPATH, using = "//*[contains(text(),'Looks like we have previously invited you to join our portal. We just sent you another email invitation. Please check your email and click on the button to sign up.')]")
+	
+    @FindBy(how = How.XPATH, using = "//*[contains(text(),'Looks like we have previously invited you to join our portal. We just sent you another email invitation. Please check your email and click on the button to sign up.')]")
 	private WebElement inactiveAccountExistsError;
+	
 
 	@FindBy(how = How.XPATH, using = "//p[@id='dateofbirth-error']")
 	private WebElement StateAgeOutError;
@@ -101,7 +106,7 @@ public class PatientDemographicPage extends MedfusionPage {
 	private WebElement alaskaErrorMessage;
 
 	@FindBy(how = How.XPATH, using = "//span[text()='Accounts for patients under 20 must be activated by the practice.']")
-	private WebElement hawaiiErrorMessage;
+	private WebElement HuwaiiErrorMessage;
 
 	public PatientDemographicPage(WebDriver driver) {
 		super(driver);
@@ -274,56 +279,50 @@ public class PatientDemographicPage extends MedfusionPage {
 		updateWebElement(inputZipCode, zipCode);
 		inputState.click();
 
-		for (int i = 0; i <= 3;) {
+		for (int i = 0; i <= 3; i++) {
 
 			if (i == 0)
-				log("Verify patient not old enough for Alabama");
-			inputState.click();
-			selectState(state);
+
+				setStatesendkeys.sendKeys(state);
+			setStatesendkeys.sendKeys(Keys.ENTER);
 			assertTrue(albamaErrorMessage.getText()
 					.equals("Accounts for patients under 12 must be activated by the practice."));
 			log("The Error Message is eqauls" + albamaErrorMessage.getText());
 			Boolean value = buttonContinue.isEnabled();
-			assertFalse(value);
-			log("The continue button is not enabled = " + value);
+			log("The continue button is not enabled=" + value);
 
 			if (i == 1)
-				IHGUtil.waitForElement(driver, 10, inputState);
-			log("Verify patient not old enough for Alaska");
-			inputState.click();
-			selectState(State1);
-
+				IHGUtil.waitForElement(driver, 10, dropdownToggle);
+			dropdownToggle.click();
+			setStatesendkeys.sendKeys(State1);
+			setStatesendkeys.sendKeys(Keys.ENTER);
 			assertTrue(alaskaErrorMessage.getText()
 					.equals("Accounts for patients under 18 must be activated by the practice."));
 			log("The Error Message is eqauls" + alaskaErrorMessage.getText());
 
 			if (i == 2)
-				IHGUtil.waitForElement(driver, 10, inputState);
-			log("Verify patient not old enough for Hawaii");
-			inputState.click();
-			selectState(State2);
-
-			assertTrue(hawaiiErrorMessage.getText()
+				IHGUtil.waitForElement(driver, 10, dropdownToggle);
+			dropdownToggle.click();
+			setStatesendkeys.sendKeys(State2);
+			setStatesendkeys.sendKeys(Keys.ENTER);
+			assertTrue(HuwaiiErrorMessage.getText()
 					.equals("Accounts for patients under 20 must be activated by the practice."));
-			log("The Error Message is eqauls" + hawaiiErrorMessage.getText());
+			log("The Error Message is eqauls" + HuwaiiErrorMessage.getText());
 
 			if (i == 3)
 				IHGUtil.waitForElement(driver, 10, inputDateOfBirthYear);
-			log("Verify patient old enough for Alabama and can proceed");
 			inputDateOfBirthYear.clear();
 			inputDateOfBirthYear.sendKeys(testData.getDOBYear());
-			inputState.click();
-			selectState(state);
-			Boolean value2 = buttonContinue.isEnabled();
-			assertTrue(value2);
-			log("The continue button is not enabled = " + value2);
+			IHGUtil.waitForElement(driver, 10, dropdownToggle);
+			dropdownToggle.click();
+			setStatesendkeys.sendKeys(state);
+			setStatesendkeys.sendKeys(Keys.ENTER);
 			break;
 		}
 	}
 
-	public void fillInPatientDataPortal2(String firstName, String lastName, String email, String dobMonthText,
-			String dobDay, String dobYear, String zip, String address1, String address2, String state, String city,
-			String Gender) throws InterruptedException {
+	public void fillInPatientDataPortal2(String firstName, String lastName, String email, String dobMonthText, String dobDay, String dobYear,
+			String zip, String address1, String address2, String state, String city, String Gender) throws InterruptedException {
 		log("Gender Passed is:    " + Gender);
 		setName(firstName, lastName);
 		setEmail(email);
@@ -333,16 +332,7 @@ public class PatientDemographicPage extends MedfusionPage {
 		driver.findElement(By.xpath("//label[contains(text(), '" + Gender + "')]/preceding-sibling::input")).click();
 		IHGUtil.waitForElement(driver, 10, buttonContinue);
 		buttonContinue.click();
+
 	}
 
-	public void selectState(String state) {
-		log("State is " + state);
-		if (state.equals("Alabama")) {
-			setStateAlabama.click();
-		} else if (state.equals("Alaska")) {
-			setStateAlaska.click();
-		} else if (state.equals("Hawaii")) {
-			setStateHawaii.click();
-		}
-	}
 }

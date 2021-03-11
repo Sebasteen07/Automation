@@ -1,4 +1,3 @@
-// Copyright 2013-2021 NXGN Management, LLC. All Rights Reserved.
 package com.intuit.ihg.product.apiehcore.utils.constants;
 
 public class DataJobConstant {
