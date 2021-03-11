@@ -3941,4 +3941,25 @@ public class RestUtils {
 		}
 
 	}
+
+	public static String getPrescriptionID(String xmlFileName)
+			throws ParserConfigurationException, SAXException, IOException {
+		IHGUtil.PrintMethodName();
+		Document doc = buildDOMXML(xmlFileName);
+		Node prescrNode = doc.getElementsByTagName("Prescription").item(0);
+		Element prescrElem = (Element) prescrNode;
+		String PrescriptionId = prescrElem.getAttribute("id").toString();
+		Log4jUtil.log("Prescription Id : " + PrescriptionId);
+		return PrescriptionId;
+	}
+
+	public static String getPrescriptionHeaderID(String xmlFileName)
+			throws ParserConfigurationException, SAXException, IOException {
+		IHGUtil.PrintMethodName();
+		Document doc = buildDOMXML(xmlFileName);
+		Node preHdNode = doc.getElementsByTagName("PrescriptionRequestIds").item(0);
+		String PrescriptionHeaderId = preHdNode.getChildNodes().item(0).getTextContent();
+		Log4jUtil.log("Searching Prescription Header ID: " + PrescriptionHeaderId);
+		return PrescriptionHeaderId;
+	}
 }
