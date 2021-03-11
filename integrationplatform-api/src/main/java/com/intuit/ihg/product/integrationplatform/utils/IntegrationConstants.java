@@ -57,6 +57,8 @@ public class IntegrationConstants {
 	public static final String AR_SM_SUBJECT = "This is reply to Appointment";
 	public static final String AR_SM_BODY = "New Reply to AR for";
 	public static final String AR_REASON = "Carpel Tunnel";
+	public static final String APPOINTMENTID = "Appointment";
+	public static final String APPOINTMENTIDHEADER = "appointmentid";
 
 	// Prescription Constant
 	public static final String MEDICATION = "Medication";
