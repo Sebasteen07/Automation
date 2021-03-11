@@ -344,7 +344,6 @@ public class PSSPropertyFileLoader {
 		appointValues.setBaseurl_BookRule(property.getProperty("baseurl"));
 		appointValues.setBaseurl_LocationRule(property.getProperty("baseurl_LocationRule"));
 		appointValues.setBaseurl_AppointmentType(property.getProperty("baseurl_AptType"));
-<<<<<<< HEAD
 		appointValues.setBaseurl_AvailableSlots(property.getProperty("baseurl_available_slots"));
 		appointValues.setPracticeId("practiceIdNG");
 		appointValues.setBaseurl_ScheduleAppointment("baseurl_ScheduleAppointment");		
@@ -353,14 +352,6 @@ public class PSSPropertyFileLoader {
 		appointValues.setPracticeId(property.getProperty("practiceIdNG"));
 		appointValues.setPracticeDisplayName(property.getProperty("practiceDisplayNameNG"));
 		appointValues .setPatientId(property.getProperty("patientIdNG"));
-	
-	
-=======
-		appointValues.setBaseurl_AvailableSlots("baseurl_available_slots");
-		appointValues.setBaseurl_ScheduleAppointment("baseurl_ScheduleAppointment");
-		appointValues.setAccessTokenURL(property.getProperty("accessToken_BaseUrl"));
-		appointValues.setNg_adapterBaseURL(property.getProperty("baseurl"));
->>>>>>> 7f6adc13fc1b1793d7a65fd170076faeba32698a
 	}
 	
 }
