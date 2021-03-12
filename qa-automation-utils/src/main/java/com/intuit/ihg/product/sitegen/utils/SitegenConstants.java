@@ -143,6 +143,7 @@ public class SitegenConstants {
 	//Add new Pharmacy
 	public final static String PHARMACYNAME = "Automation Pharmacy";
 	public final static String PHARMACYLOCATION = "Automation-Location-1";
+	public final static String PHARMACYLOCATION1 = "Alaska";
 }
 
 
