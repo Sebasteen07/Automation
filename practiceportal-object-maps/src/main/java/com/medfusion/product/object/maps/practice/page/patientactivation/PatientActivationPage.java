@@ -50,12 +50,9 @@ public class PatientActivationPage extends BasePageObject {
 	@FindBy(css = "input[type='submit']")
 	private WebElement btnSubmit;
 
-	@FindBy(css = "input[onclick*='checkVerified()']")
+	@FindBy(xpath = "//input[@id='verifyButton']")
 	private WebElement btnVerified;
 	
-	@FindBy(xpath = "//input[@id='verifyButton']")
-	private WebElement verifiedBtn;
-
 	@FindBy(css = "input[onclick*='checkGenKey()']")
 	private WebElement btnGenerateKey;
 
@@ -176,7 +173,7 @@ public class PatientActivationPage extends BasePageObject {
 		Log4jUtil.log("Click on the Register Patient Button");
 		clickRegPatient();
 		Log4jUtil.log("Click on the Verify Button");
-		clickVerifyBtn();
+		clickVerify();
 
 		IHGUtil.waitForElement(driver, 10, unlockLink);
 		unlocklink = unlockLink.getText().trim();
@@ -261,13 +258,7 @@ public class PatientActivationPage extends BasePageObject {
 		btnVerified.click();
 	}
 	
-	public void clickVerifyBtn() {
-		IHGUtil.PrintMethodName();
-		IHGUtil.waitForElement(driver, 80, verifiedBtn);
-		verifiedBtn.click();
-	}
-
-	public void clickGetKey() {
+    public void clickGetKey() {
 		IHGUtil.PrintMethodName();
 		btnGenerateKey.click();
 	}
