@@ -19,11 +19,11 @@ import com.intuit.ifs.csscat.core.utils.Log4jUtil;
 import com.intuit.ihg.product.integrationplatform.pojo.PIDCInfo;
 import com.intuit.ihg.product.integrationplatform.pojo.PatientDetail;
 import com.medfusion.common.utils.Mailinator;
-import com.medfusion.portal.utils.PortalConstants;
 import com.medfusion.product.object.maps.patientportal2.page.CreateAccount.AuthUserLinkAccountPage;
 import com.medfusion.product.object.maps.patientportal2.page.CreateAccount.PatientVerificationPage;
 import com.medfusion.product.object.maps.patientportal2.page.CreateAccount.SecurityDetailsPage;
 import com.medfusion.product.object.maps.patientportal2.page.HomePage.JalapenoHomePage;
+import com.medfusion.product.patientportal2.utils.JalapenoConstants;
 
 public class PatientRegistrationUtils {
 	public static void registerPatient(String activationUrl, String EmailID, String PatientPassword, String SecretQuestion, String SecretAnswer,
@@ -184,10 +184,10 @@ public class PatientRegistrationUtils {
 			for (int i = 0; i < Integer.parseInt(testData.getBatchSize()); i++) {
 				Thread.sleep(15000);
 				Log4jUtil.log("Patient No: " + (i + 1));
-				Log4jUtil.log(payloadObj.emailGroup.get(i) + "   :    " + PortalConstants.NewPatientActivationMessage + "     :   "
-						+ PortalConstants.NewPatientActivationMessageLinkText);
-				String activationUrl = mail.getLinkFromEmail(payloadObj.emailGroup.get(i), PortalConstants.NewPatientActivationMessage,
-						PortalConstants.NewPatientActivationMessageLinkText, 40);
+				Log4jUtil.log(payloadObj.emailGroup.get(i) + "   :    " + JalapenoConstants.NEW_PATIENT_ACTIVATION_MESSAGE + "     :   "
+						+ JalapenoConstants.NEW_PATIENT_ACTIVATION_MESSAGE_LINK_TEXT);
+				String activationUrl = mail.getLinkFromEmail(payloadObj.emailGroup.get(i), JalapenoConstants.NEW_PATIENT_ACTIVATION_MESSAGE,
+						JalapenoConstants.NEW_PATIENT_ACTIVATION_MESSAGE_LINK_TEXT, 40);
 				Log4jUtil.log("Step 4: Moving to the link obtained from the email message");
 				Assert.assertNotNull(activationUrl, "Error: Activation link not found.");
 
@@ -232,10 +232,10 @@ public class PatientRegistrationUtils {
 			for (int i = 0; i < Integer.parseInt(testData.getBatchSize()); i++) {
 				Thread.sleep(15000);
 				Log4jUtil.log("Patient No: " + (i + 1));
-				Log4jUtil.log(payloadObj.emailGroup.get(i) + "   :    " + PortalConstants.NewPatientActivationMessage + "     :   "
-						+ PortalConstants.NewPatientActivationMessageLinkText);
-				String activationUrl = mail.getLinkFromEmail(payloadObj.emailGroup.get(i), PortalConstants.NewPatientActivationMessage,
-						PortalConstants.NewPatientActivationMessageLinkText, 40);
+				Log4jUtil.log(payloadObj.emailGroup.get(i) + "   :    " + JalapenoConstants.NEW_PATIENT_ACTIVATION_MESSAGE + "     :   "
+						+ JalapenoConstants.NEW_PATIENT_ACTIVATION_MESSAGE_LINK_TEXT);
+				String activationUrl = mail.getLinkFromEmail(payloadObj.emailGroup.get(i), JalapenoConstants.NEW_PATIENT_ACTIVATION_MESSAGE,
+						JalapenoConstants.NEW_PATIENT_ACTIVATION_MESSAGE_LINK_TEXT, 40);
 				Log4jUtil.log("Step 4: Moving to the link obtained from the email message");
 				Assert.assertNotNull(activationUrl, "Error: Activation link not found.");
 

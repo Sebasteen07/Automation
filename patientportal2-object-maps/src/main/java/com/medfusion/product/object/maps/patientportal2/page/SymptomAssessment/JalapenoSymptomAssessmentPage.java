@@ -1,3 +1,4 @@
+//  Copyright 2013-2021 NXGN Management, LLC. All Rights Reserved.
 package com.medfusion.product.object.maps.patientportal2.page.SymptomAssessment;
 
 import java.util.ArrayList;
@@ -14,7 +15,7 @@ import org.openqa.selenium.support.ui.Select;
 
 import com.medfusion.common.utils.IHGUtil;
 import com.medfusion.product.object.maps.patientportal2.page.HomePage.JalapenoHomePage;
-import com.medfusion.product.patientportal2.utils.PortalUtil;
+import com.medfusion.product.patientportal2.utils.PortalUtil2;
 
 @Deprecated //functionality is no longer supported (PP-819)
 public class JalapenoSymptomAssessmentPage extends JalapenoMenu {
@@ -58,7 +59,7 @@ public class JalapenoSymptomAssessmentPage extends JalapenoMenu {
 						String vals = "", valsex = "";
 						boolean flag = true;
 						IHGUtil.PrintMethodName();
-						PortalUtil.setPortalFrame(driver);
+						PortalUtil2.setPortalFrame(driver);
 						List<WebElement> list = driver.findElements(By.xpath("//select[@name='providers']/option"));
 						for (WebElement li : list) {
 								int count = 1;
@@ -106,7 +107,7 @@ public class JalapenoSymptomAssessmentPage extends JalapenoMenu {
 		 */
 		public void typeYourSymptom(String symptom) {
 				IHGUtil.PrintMethodName();
-				PortalUtil.setPortalFrame(driver);
+				PortalUtil2.setPortalFrame(driver);
 				txtSymptom.sendKeys(symptom);
 				btnContinue.click();
 		}
@@ -119,11 +120,11 @@ public class JalapenoSymptomAssessmentPage extends JalapenoMenu {
 		public void answerDoYouHaveSymptom() throws InterruptedException {
 				Thread.sleep(16000);
 				IHGUtil.PrintMethodName();
-				PortalUtil.setPortalFrame(driver);
+				PortalUtil2.setPortalFrame(driver);
 				driver.switchTo().frame("IMHInterviewFrame");
 				btnDontHaveCough.click();
 				Thread.sleep(16000);
-				PortalUtil.setPortalFrame(driver);
+				PortalUtil2.setPortalFrame(driver);
 		}
 
 		public JalapenoHomePage clickHome() {

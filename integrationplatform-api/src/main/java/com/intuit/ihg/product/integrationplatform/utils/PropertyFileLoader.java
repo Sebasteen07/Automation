@@ -38,7 +38,7 @@ public class PropertyFileLoader {
 	public String getRestUrlCCD() {
 		return property.getProperty("restUrlCCD");
 	}
-	
+
 	public String getRestUrlV3CCD() {
 		return property.getProperty("restUrlV3CCD");
 	}
@@ -232,7 +232,7 @@ public class PropertyFileLoader {
 	public String getPULLAPI_URLV3_MU2() {
 		return property.getProperty("pullAPI_URLV3_MU2");
 	}
-	
+
 	public String getOAuthAppToken_MU2() {
 		return property.getProperty("oAuthAppToken_MU2");
 	}
@@ -1976,4 +1976,73 @@ public class PropertyFileLoader {
 	public String getPATIENT_INVITE_RESTV3URL() {
 		return property.getProperty("restUrlPIDCV3");
 	}
+
+	public String getCCDPATHLargeSize() {
+		return property.getProperty("ccdXMLPathLargeSize");
+	}
+
+	public String getPatienturl_Event() {
+		return property.getProperty("patientUrl_LoginEvent");
+	}
+
+	public String getPatientUsername_Event() {
+		return property.getProperty("username_LoginEvent");
+	}
+
+	public String getPatientpassword_Event() {
+		return property.getProperty("password_LoginEvent");
+	}
+
+	public String getPatientoAuthAppToken_Event() {
+		return property.getProperty("oAuthAppToken_LoginEvent");
+	}
+
+	public String getPatientoAuthUsername_Event() {
+		return property.getProperty("oAuthUsername_Loginevent");
+	}
+
+	public String getPatientoAuthPassword_Event() {
+		return property.getProperty("oAuthPassword_Loginevent");
+	}
+
+	public String getPatientoAuthProperty_Event() {
+		return property.getProperty("oAuthProperty_Loginevent");
+	}
+
+	public String getPatientoAuthKeystore_Event() {
+		return property.getProperty("oAuthKeyStore_Loginevent");
+	}
+
+	public String getPatientResponsePath_Event() {
+		return property.getProperty("responsePath_Loginevent");
+	}
+
+	public String getPatientrestUrlLogin_V3_Event() {
+		return property.getProperty("restUrlLogin_V3");
+	}
+
+	public String getStatementPdfDetail() {
+		return property.getProperty("StatementPdfDetail_");
+	}
+
+	public String getStatementUrlV3() {
+		return property.getProperty("restUrlV3_Statement");
+	}
+
+	public String getPatientStatementUrl() {
+		return property.getProperty("url_PatientStatement");
+	}
+
+	public String getOAuthAppToken_Statement() {
+		return property.getProperty("oAuthAppToken_PatientStatement");
+	}
+
+	public String getOAuthAppUsername_Statement() {
+		return property.getProperty("oAuthUsername_PatientStatement");
+	}
+
+	public String getOAuthAppPassword_Statement() {
+		return property.getProperty("oAuthPassword_PatientStatement");
+	}
+
 }

@@ -14,9 +14,9 @@ import com.medfusion.product.object.maps.pss2.page.Appointment.Main.PSS2MainPage
 import com.medfusion.product.object.maps.pss2.page.util.CommonMethods;
 
 public class DismissPage extends PSS2MainPage {
-
-	@FindBy(how = How.XPATH, using = "//button[@class='dismissbuttons']//span[contains(text(),'Dismiss')]")
-	private WebElement dismissBtn;
+	
+	@FindBy(how = How.XPATH, using = "//div[@id='myModalsss']/div/div/div[3]/button[@type='button']")
+	private WebElement dismissBtn;	
 
 	@FindBy(how = How.XPATH, using = "//*[@class='announcementmessage']/div")
 	private WebElement popUpMessege;

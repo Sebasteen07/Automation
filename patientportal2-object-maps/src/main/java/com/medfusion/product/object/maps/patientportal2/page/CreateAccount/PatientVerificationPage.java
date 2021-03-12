@@ -33,6 +33,12 @@ public class PatientVerificationPage extends MedfusionPage {
 
 		@FindBy(how = How.ID, using = "nextStep")
 		private WebElement continueButton;
+		
+		@FindBy(how = How.XPATH, using = "//a[contains(text(),'forgot my user name')]")
+		private WebElement clickForgotPasswordButton;
+
+		@FindBy(how = How.XPATH, using = "//p[text()='The zip code and date of birth you have entered do not match our records. Please try again or contact our practice for help.']")
+		private WebElement zipcodedobnotmatchederror;
 
 		public PatientVerificationPage(WebDriver driver, String url) {
 				super(driver, url);
@@ -95,4 +101,23 @@ public class PatientVerificationPage extends MedfusionPage {
 				dateOfBirthDayInput.sendKeys(day);
 				dateOfBirthYearInput.sendKeys(year);
 		}
+		
+		public void securityDetailsPageclickForgotPasswordButton() {
+			IHGUtil.PrintMethodName();
+			log("Clicking on Forgot Password button");
+			IHGUtil.waitForElement(driver, 60, clickForgotPasswordButton);
+			clickForgotPasswordButton.click();
+		}
+
+		public void fillPatientZipCodeDobInfoAndContinue(String zipCode, String dobMonth, String dobDay, String dobYear) throws InterruptedException {
+			fillPatientIdentifyInfo(zipCode, dobMonth, dobDay, dobYear);
+			continueButton.click();
 }
+		public boolean isZipCodeDobErrorDisplayed() {
+			try {
+				log("Looking for inactive account already exists error on PatientDemographicsPage");
+				return zipcodedobnotmatchederror.isDisplayed();
+			} catch (Exception e) {
+			}
+			return false;
+		}}

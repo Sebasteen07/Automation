@@ -69,6 +69,7 @@ public class PracticeConstants {
 		public final static String EXPIRATION_MONTH = "December";
 		//public final static String EXPIRATION_YEAR = String.valueOf(2020+3);
 		public final static String ZIP_CODE = "94043";
+		public final static String INVALID_ZIP_CODE = "94042";
 		public final static String PROVIDER = "Geisel";
 		public final static String PAYMENT_COMMENT = "Test Comment";
 		public final static String PAYMENT_SUCCESSFULL_TEXT = "A payment was made for ihgqa automation";

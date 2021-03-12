@@ -1,3 +1,4 @@
+//  Copyright 2013-2021 NXGN Management, LLC. All Rights Reserved.
 package com.medfusion.product.object.maps.forms.page.questionnaires.prereg_pages;
 
 import org.openqa.selenium.By;
@@ -7,8 +8,8 @@ import org.openqa.selenium.support.FindBy;
 import org.openqa.selenium.support.PageFactory;
 import org.openqa.selenium.support.ui.Select;
 
-import com.medfusion.portal.utils.PortalUtil;
 import com.medfusion.product.object.maps.forms.page.questionnaires.PortalFormPage;
+import com.medfusion.product.patientportal2.utils.PortalUtil2;
 
 public class FormVaccinePage extends PortalFormPage {
 
@@ -40,13 +41,13 @@ public class FormVaccinePage extends PortalFormPage {
 	 * @throws Exception
 	 */
 	public void setTetanus(String type) throws Exception {
-		PortalUtil.PrintMethodName();
-		PortalUtil.setquestionnarieFrame(driver);
+		PortalUtil2.PrintMethodName();
+		PortalUtil2.setquestionnarieFrame(driver);
 		Select selector = new Select(tetanusvaccination);
 		selector.selectByVisibleText(type);
 	}
 	public void setTetanus_20(String type) throws Exception {
-		PortalUtil.PrintMethodName();
+		PortalUtil2.PrintMethodName();
 		Select selector = new Select(tetanusvaccination);
 		selector.selectByVisibleText(type);
 	}
@@ -56,13 +57,13 @@ public class FormVaccinePage extends PortalFormPage {
 	 * @throws Exception
 	 */
 	public void setHPV(String type) throws Exception {
-		PortalUtil.PrintMethodName();
-		PortalUtil.setquestionnarieFrame(driver);
+		PortalUtil2.PrintMethodName();
+		PortalUtil2.setquestionnarieFrame(driver);
 		Select selector = new Select(hpvvaccination);
 		selector.selectByVisibleText(type);
 	}
 	public void setHPV_20(String type) throws Exception {
-		PortalUtil.PrintMethodName();
+		PortalUtil2.PrintMethodName();
 		Select selector = new Select(hpvvaccination);
 		selector.selectByVisibleText(type);
 	}
@@ -72,13 +73,13 @@ public class FormVaccinePage extends PortalFormPage {
 	 * @throws Exception
 	 */
 	public void setInfluenza(String type) throws Exception {
-		PortalUtil.PrintMethodName();
-		PortalUtil.setquestionnarieFrame(driver);
+		PortalUtil2.PrintMethodName();
+		PortalUtil2.setquestionnarieFrame(driver);
 		Select selector = new Select(influeenzavaccination);
 		selector.selectByVisibleText(type);
 	}
 	public void setInfluenza_20(String type) throws Exception {
-		PortalUtil.PrintMethodName();
+		PortalUtil2.PrintMethodName();
 		Select selector = new Select(influeenzavaccination);
 		selector.selectByVisibleText(type);
 	}
@@ -88,13 +89,13 @@ public class FormVaccinePage extends PortalFormPage {
 	 * @throws Exception
 	 */
 	public void setPneumonia(String type) throws Exception {
-		PortalUtil.PrintMethodName();
-		PortalUtil.setquestionnarieFrame(driver);
+		PortalUtil2.PrintMethodName();
+		PortalUtil2.setquestionnarieFrame(driver);
 		Select selector = new Select(pneumoniavaccination);
 		selector.selectByVisibleText(type);
 	}
 	public void setPneumonia_20(String type) throws Exception {
-		PortalUtil.PrintMethodName();
+		PortalUtil2.PrintMethodName();
 		Select selector = new Select(pneumoniavaccination);
 		selector.selectByVisibleText(type);
 	}
@@ -105,8 +106,8 @@ public class FormVaccinePage extends PortalFormPage {
 	 * @throws Exception
 	 */
 	public void clickTetanus() throws Exception {
-		PortalUtil.PrintMethodName();
-		PortalUtil.setquestionnarieFrame(driver);
+		PortalUtil2.PrintMethodName();
+		PortalUtil2.setquestionnarieFrame(driver);
 		tdapimmunization.click();
 	}
 
