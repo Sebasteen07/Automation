@@ -9,7 +9,7 @@
         <CreatedDateTime>2020-05-20T11:31:41.380Z</CreatedDateTime>
         <UpdatedDateTime>2020-05-20T11:31:41.380Z</UpdatedDateTime>
         <AppointmentRequest>
-            <From>mf.demo.patient</From>
+            <From>mf.prod.patient</From>
             <To>f35ef388-5810-4c44-9815-88df3071b386</To>
             <RequestedProvider>325312015</RequestedProvider>
             <RequestedLocation>286322020</RequestedLocation>
@@ -20,8 +20,8 @@
             <VideoPreference>true</VideoPreference>
         </AppointmentRequest>
         <Communication messageId="dc4e6067-042d-4d34-9efc-6c7bb9c3bc2d">
-             <From>mf.dev3.patient</From>
-            <To>f35ef388-5810-4c44-9815-88df3071b386</To>
+             <From>f35ef388-5810-4c44-9815-88df3071b386</From>
+            <To>mf.prod.patient</To>
             <Subject>Appointment Request</Subject>
             <Sent>2021-02-15T10:13:50.117Z</Sent>
             <MessageThreadId>c6a5e082-2b54-4075-a467-d3b0eb34b8d5</MessageThreadId>
@@ -29,6 +29,9 @@
         </Communication>
 	<ScheduledAppointment>
             <ScheduledDateTime>2020-06-23T11:31:41+05:30</ScheduledDateTime>
+            <ScheduledProvider>3495332015</ScheduledProvider>
+            <ScheduledLocation>399872016</ScheduledLocation>
+            <Reason>Appointment Request for checking appointment details in Secure Message</Reason>
         </ScheduledAppointment>
     </Appointment>
 </n:Appointments>

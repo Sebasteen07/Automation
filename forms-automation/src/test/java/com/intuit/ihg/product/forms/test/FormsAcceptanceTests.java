@@ -41,9 +41,6 @@ public class FormsAcceptanceTests extends BaseTestNGWebDriver {
 
 		@Test
 		public void testFormExportImport() throws Exception {
-				driver.close();
-				driver = Utils.getFirefoxDriverForDownloading();
-
 				log("step 1: login to SG as superuser");
 				String automationPracticeID = String.valueOf(Utils.getPracticeIDFromPIUrl(testData.getProperty("portal2Url1")));
 				SiteGenHomePage sHomePage = new SiteGenLoginPage(driver, testData.getProperty("sitegenUrl")).clickOnLoginAsInternalEmployee();

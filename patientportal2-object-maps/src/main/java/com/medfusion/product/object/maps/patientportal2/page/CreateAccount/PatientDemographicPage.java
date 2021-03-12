@@ -66,7 +66,7 @@ public class PatientDemographicPage extends MedfusionPage {
 
 	@FindBy(how = How.XPATH, using = "//div[@class='ng-input']")
 	private WebElement inputState;
-	
+
 	@FindBy(how = How.XPATH, using = "//div[@class='ng-option ng-option-marked']")
 	private WebElement setState;
 
@@ -91,7 +91,7 @@ public class PatientDemographicPage extends MedfusionPage {
 	@FindBy(how = How.XPATH, using = ACTIVE_TAB_XPATH_SELECTOR + "//*[@id='nextStep']")
 	private WebElement buttonContinue;
 
-	@FindBy(how = How.XPATH, using = "//p[contains(text(),' Looks like we have previously invited you to join our portal. We just sent you another email invitation. Please check your email and click on the button to sign up. ')]")
+	@FindBy(how = How.XPATH, using = "//*[contains(text(),'Looks like we have previously invited you to join our portal. We just sent you another email invitation. Please check your email and click on the button to sign up.')]")
 	private WebElement inactiveAccountExistsError;
 
 	@FindBy(how = How.XPATH, using = "//p[@id='dateofbirth-error']")
@@ -319,8 +319,9 @@ public class PatientDemographicPage extends MedfusionPage {
 		}
 	}
 
-	public void fillInPatientDataPortal2(String firstName, String lastName, String email, String dobMonthText, String dobDay, String dobYear,
-			String zip, String address1, String address2, String state, String city, String Gender) throws InterruptedException {
+	public void fillInPatientDataPortal2(String firstName, String lastName, String email, String dobMonthText,
+			String dobDay, String dobYear, String zip, String address1, String address2, String state, String city,
+			String Gender) throws InterruptedException {
 		log("Gender Passed is:    " + Gender);
 		setName(firstName, lastName);
 		setEmail(email);

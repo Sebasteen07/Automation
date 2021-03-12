@@ -1,4 +1,4 @@
-//Copyright 2013-2020 NXGN Management, LLC. All Rights Reserved.
+//Copyright 2013-2021 NXGN Management, LLC. All Rights Reserved.
 package com.intuit.ihg.product.integrationplatform.test;
 
 
@@ -7,6 +7,7 @@ import java.util.List;
 
 import org.testng.annotations.DataProvider;
 import org.testng.annotations.Test;
+import org.testng.Assert;
 
 import com.intuit.ifs.csscat.core.BaseTestNGWebDriver;
 import com.intuit.ifs.csscat.core.RetryAnalyzer;
@@ -28,7 +29,7 @@ import com.medfusion.product.object.maps.practice.page.PracticeHomePage;
 import com.medfusion.product.object.maps.practice.page.PracticeLoginPage;
 import com.medfusion.product.object.maps.practice.page.patientSearch.PatientDashboardPage;
 import com.medfusion.product.object.maps.practice.page.patientSearch.PatientSearchPage;
-import com.medfusion.product.patientportal1.utils.PortalUtil;
+import com.medfusion.product.patientportal2.utils.PortalUtil2;
 
 /**
  * @author Vasudeo P
@@ -107,12 +108,12 @@ public class IntegrationPlatformRegressionTests extends BaseTestNGWebDriver {
 
 		Thread.sleep(8000);
 		log("Step 4: fill and complete the of Ask A Staff");
-		boolean askStaff2 = askStaff1.fillAndSubmitAskyourDocUnpaid(driver);
+		askStaff1.fillAndSubmitAskyourDocUnpaid(driver);
 
 
 		log("Step 6: Validate entry is on Ask A Staff History page");
 		homePage.clickOnAskADoc(driver);
-		boolean aasHistory = askStaff1.checkHistory(driver);
+		askStaff1.checkHistory(driver);
 		Thread.sleep(7000);
 
 		log("Step 7: Logout of Patient Portal");
@@ -156,7 +157,7 @@ public class IntegrationPlatformRegressionTests extends BaseTestNGWebDriver {
 				break;
 			}
 		}
-		verifyTrue(completed, "Message processing was not completed in time");
+		assertTrue(completed, "Message processing was not completed in time");
 
 		log("Step 13: Login to Patient Portal");
 		JalapenoLoginPage loginPage1 = new JalapenoLoginPage(driver, testData.getUrl());
@@ -240,7 +241,7 @@ public class IntegrationPlatformRegressionTests extends BaseTestNGWebDriver {
 		if (RestUtils.isMessageProcessingCompleted(testData.getResponsePath())) {
 			completed = true;
 		}
-		verifyTrue(completed, "Message processing was not completed in time");
+		assertTrue(completed, "Message processing was not completed in time");
 
 		for (int j = 0; j < 3; j++) {
 			log("Step 5: Login to Patient Portal");
@@ -283,7 +284,7 @@ public class IntegrationPlatformRegressionTests extends BaseTestNGWebDriver {
 		Long timestamp = System.currentTimeMillis();
 		Long since = timestamp / 1000;
 		String FirstName = "MFPatient" + IHGUtil.createRandomNumericString();
-		String email = PortalUtil.createRandomEmailAddress(testData.getEmail());
+		String email = PortalUtil2.createRandomEmailAddress(testData.getEmail());
 		String[] GI = testData.getGenderIdentityValues().split(",");
 		String zip = testData.getZipCode();
 		String date = testData.getBirthDay();
@@ -339,7 +340,7 @@ public class IntegrationPlatformRegressionTests extends BaseTestNGWebDriver {
 
 		log("Step 15: Verify the Search Result");
 		IHGUtil.waitForElement(driver, 30, pPatientSearchPage.searchResult);
-		verifyEquals(true, pPatientSearchPage.searchResult.getText().contains(FirstName));
+		assertEquals(true, pPatientSearchPage.searchResult.getText().contains(FirstName));
 
 		log("Step 16: Click on Patient");
 		PatientDashboardPage patientPage = pPatientSearchPage.clickOnPatient(FirstName, testData.getLastName());
@@ -371,7 +372,7 @@ public class IntegrationPlatformRegressionTests extends BaseTestNGWebDriver {
 				break;
 			}
 		}
-		verifyTrue(completed, "Message processing was not completed in time");
+		assertTrue(completed, "Message processing was not completed in time");
 
 		log("Step 21: Invoke Get PIDC for Practice in which patient has set External Patient ID in (Practice 1) to verify patient details ");
 
@@ -436,7 +437,7 @@ public class IntegrationPlatformRegressionTests extends BaseTestNGWebDriver {
 			found = true;
 			RestUtils.checkPatientRegistered(testData.getResponsePath(), updateData);
 		}
-		assertTrue(found, "Health Key Patient is not found in Get Response");
+		Assert.assertTrue(found, "Health Key Patient is not found in Get Response");
 
 		log("Step 6: Logout from Patient portal");
 		pMyAccountPage.clickOnLogout();

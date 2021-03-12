@@ -26,15 +26,7 @@ public class PayBillsPayment implements IPayBillsPayment {
 						// remove all cards just in case
 						payBillsPage.removeAllCards();
 
-						// page break = failed
-						if (!payBillsPage.assessPayBillsMakePaymentPageElements())
-								return "";
-
 						JalapenoPayBillsConfirmationPage confirmationPage = payBillsPage.fillPaymentInfo(amount, "" + patInfo.billingAccountNumber, creditCard, location);
-
-						// page break = failed
-						if (!confirmationPage.assessPayBillsConfirmationPageElements())
-								return "";
 
 						homePage = confirmationPage.commentAndSubmitPayment("Testing payment from number: " + patInfo.billingAccountNumber);
 						// page break = failed
@@ -62,15 +54,7 @@ public class PayBillsPayment implements IPayBillsPayment {
 						// remove all cards just in case
 						payBillsPage.removeAllCards();
 
-						// page break = failed
-						if (!payBillsPage.assessPayBillsMakePaymentPageElements())
-								return "";
-
 						JalapenoPayBillsConfirmationPage confirmationPage = payBillsPage.fillPaymentInfo(amount, "" + patInfo.billingAccountNumber, creditCard);
-
-						// page break = failed
-						if (!confirmationPage.assessPayBillsConfirmationPageElements())
-								return "";
 
 						homePage = confirmationPage.commentAndSubmitPayment("Testing payment from number: " + patInfo.billingAccountNumber);
 						// page break = failed

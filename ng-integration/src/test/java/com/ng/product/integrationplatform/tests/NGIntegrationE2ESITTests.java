@@ -1,4 +1,4 @@
-// Copyright 2020 NXGN Management, LLC. All Rights Reserved.
+// Copyright 2013-2021 NXGN Management, LLC. All Rights Reserved.
 package com.ng.product.integrationplatform.tests;
 
 import static org.testng.Assert.assertNotNull;
@@ -19,9 +19,7 @@ import java.util.List;
 import javax.xml.parsers.ParserConfigurationException;
 
 import org.codehaus.jackson.map.ObjectMapper;
-import org.json.JSONException;
 import org.openqa.selenium.By;
-import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebDriverException;
 import org.openqa.selenium.support.PageFactory;
 import org.testng.Assert;
@@ -40,8 +38,8 @@ import com.intuit.ihg.product.integrationplatform.utils.PropertyFileLoader;
 import com.intuit.ihg.product.integrationplatform.utils.RestUtils;
 import com.medfusion.common.utils.IHGUtil;
 import com.medfusion.common.utils.Mailinator;
-import com.medfusion.portal.utils.PortalConstants;
 import com.medfusion.product.object.maps.patientportal2.page.JalapenoLoginEnrollment;
+import com.medfusion.product.object.maps.patientportal2.page.JalapenoLoginPage;
 import com.medfusion.product.object.maps.patientportal2.page.NGLoginPage;
 import com.medfusion.product.object.maps.patientportal2.page.AccountPage.JalapenoAccountPage;
 import com.medfusion.product.object.maps.patientportal2.page.AppointmentRequestPage.JalapenoAppointmentRequestV2Step2;
@@ -50,18 +48,21 @@ import com.medfusion.product.object.maps.patientportal2.page.AppointmentRequestP
 import com.medfusion.product.object.maps.patientportal2.page.AppointmentRequestPage.NGAppointmentRequestV2Step1;
 import com.medfusion.product.object.maps.patientportal2.page.AskAStaff.JalapenoAskAStaffV2Page1;
 import com.medfusion.product.object.maps.patientportal2.page.AskAStaff.JalapenoAskAStaffV2Page2;
-import com.medfusion.product.object.maps.patientportal2.page.CcdPage.JalapenoCcdViewerPage;
 import com.medfusion.product.object.maps.patientportal2.page.CcdPage.MedicalRecordSummariesPage;
-import com.medfusion.product.object.maps.patientportal2.page.CcdPage.NGCcdViewerPage;
 import com.medfusion.product.object.maps.patientportal2.page.CreateAccount.AuthUserLinkAccountPage;
 import com.medfusion.product.object.maps.patientportal2.page.CreateAccount.PatientVerificationPage;
 import com.medfusion.product.object.maps.patientportal2.page.CreateAccount.SecurityDetailsPage;
 import com.medfusion.product.object.maps.patientportal2.page.HomePage.JalapenoHomePage;
 import com.medfusion.product.object.maps.patientportal2.page.MessagesPage.JalapenoMessagesPage;
+import com.medfusion.product.object.maps.patientportal2.page.NewPayBillsPage.JalapenoPayBillsConfirmationPage;
+import com.medfusion.product.object.maps.patientportal2.page.NewPayBillsPage.JalapenoPayBillsMakePaymentPage;
 import com.medfusion.product.object.maps.patientportal2.page.PrescriptionsPage.JalapenoPrescriptionsPage;
 import com.medfusion.product.object.maps.practice.page.PracticeHomePage;
 import com.medfusion.product.object.maps.practice.page.PracticeLoginPage;
 import com.medfusion.product.object.maps.practice.page.patientSearch.PatientSearchPage;
+import com.medfusion.product.patientportal2.pojo.CreditCard;
+import com.medfusion.product.patientportal2.pojo.CreditCard.CardType;
+import com.medfusion.product.patientportal2.utils.JalapenoConstants;
 import com.medfusion.qa.mailinator.Email;
 import com.medfusion.qa.mailinator.Mailer;
 import com.ng.product.integrationplatform.apiUtils.NGAPIUtils;
@@ -246,9 +247,9 @@ public class NGIntegrationE2ESITTests extends BaseTestNGWebDriver{
 		
   		Mailinator mail = new Mailinator();
 			Thread.sleep(15000);
-			Log4jUtil.log(createPatient.getEmailAddress() + "   :    " + PortalConstants.NewPatientActivationMessage + "     :   " + PortalConstants.NewPatientActivationMessageLinkText);
+			Log4jUtil.log(createPatient.getEmailAddress() + "   :    " + JalapenoConstants.NEW_PATIENT_ACTIVATION_MESSAGE + "     :   " + JalapenoConstants.NEW_PATIENT_ACTIVATION_MESSAGE_LINK_TEXT);
 			Thread.sleep(60000);
-			String activationUrl = mail.getLinkFromEmail(createPatient.getEmailAddress(), PortalConstants.NewPatientActivationMessage, PortalConstants.NewPatientActivationMessageLinkText, 80);
+			String activationUrl = mail.getLinkFromEmail(createPatient.getEmailAddress(), JalapenoConstants.NEW_PATIENT_ACTIVATION_MESSAGE, JalapenoConstants.NEW_PATIENT_ACTIVATION_MESSAGE_LINK_TEXT, 80);
 			Log4jUtil.log("Step 10: Moving to the link obtained from the email message");
 			Assert.assertNotNull(activationUrl, "Error: Activation link not found.");
 			Thread.sleep(20000);
@@ -531,15 +532,15 @@ public class NGIntegrationE2ESITTests extends BaseTestNGWebDriver{
 		Thread.sleep(15000);
 		log("Step 6: Verify the Guardian mail");
 		Thread.sleep(15000);
-		Log4jUtil.log(createPatient.getEmailAddress() + "   :    " + PortalConstants.NewPatientActivationMessage + "     :   " + PortalConstants.NewPatientActivationMessageLinkText);
+		Log4jUtil.log(createPatient.getEmailAddress() + "   :    " + JalapenoConstants.NEW_PATIENT_ACTIVATION_MESSAGE + "     :   " + JalapenoConstants.NEW_PATIENT_ACTIVATION_MESSAGE_LINK_TEXT);
 		Thread.sleep(60000);
-		String activationGuardianUrl = mail.getLinkFromEmail(createPatient.getEmailAddress(), PortalConstants.NewPatientActivationMessage, PortalConstants.NewPatientActivationMessageLinkText, 80);
+		String activationGuardianUrl = mail.getLinkFromEmail(createPatient.getEmailAddress(), JalapenoConstants.NEW_PATIENT_ACTIVATION_MESSAGE, JalapenoConstants.NEW_PATIENT_ACTIVATION_MESSAGE_LINK_TEXT, 80);
 		log("Step End: Guradian mail is received");
 		
 		log("Step 7: Verify the dependent mail");
-		Log4jUtil.log(createdependent.getEmailAddress() + "   :    " + NewDependentActivationMessage + "     :   " + PortalConstants.NewPatientActivationMessageLinkText);
+		Log4jUtil.log(createdependent.getEmailAddress() + "   :    " + NewDependentActivationMessage + "     :   " + JalapenoConstants.NEW_PATIENT_ACTIVATION_MESSAGE_LINK_TEXT);
 		Thread.sleep(60000);
-		String activationDependentUrl = mail.getLinkFromEmail(createdependent.getEmailAddress(), NewDependentActivationMessage, PortalConstants.NewPatientActivationMessageLinkText, 80);
+		String activationDependentUrl = mail.getLinkFromEmail(createdependent.getEmailAddress(), NewDependentActivationMessage, JalapenoConstants.NEW_PATIENT_ACTIVATION_MESSAGE_LINK_TEXT, 80);
 		log("Step End: Dependent mail is received");
 		
 		log("Step 8 : Enroll the Guardian to MedFusion Portal : step 1 - verifying identity");
@@ -676,9 +677,9 @@ public class NGIntegrationE2ESITTests extends BaseTestNGWebDriver{
 			Mailinator mail = new Mailinator();
 			Thread.sleep(15000);		
 			log("Step 6: Verify the dependent mail");
-			Log4jUtil.log(createdependent.getEmailAddress() + "   :    " + NewDependentActivationMessage + "     :   " + PortalConstants.NewPatientActivationMessageLinkText);
+			Log4jUtil.log(createdependent.getEmailAddress() + "   :    " + NewDependentActivationMessage + "     :   " + JalapenoConstants.NEW_PATIENT_ACTIVATION_MESSAGE_LINK_TEXT);
 			Thread.sleep(60000);
-			String activationDependentUrl = mail.getLinkFromEmail(createdependent.getEmailAddress(), NewDependentActivationMessage, PortalConstants.NewPatientActivationMessageLinkText, 80);
+			String activationDependentUrl = mail.getLinkFromEmail(createdependent.getEmailAddress(), NewDependentActivationMessage, JalapenoConstants.NEW_PATIENT_ACTIVATION_MESSAGE_LINK_TEXT, 80);
 			log("Step End: Dependent mail is received");
 			
 			log("Step 7 : Enroll the Dependent to MedFusion Portal");
@@ -776,9 +777,9 @@ public class NGIntegrationE2ESITTests extends BaseTestNGWebDriver{
 
   		Mailinator mail = new Mailinator();
 			Thread.sleep(15000);
-			Log4jUtil.log(createPatient.getEmailAddress() + "   :    " + PortalConstants.NewPatientActivationMessage + "     :   " + PortalConstants.NewPatientActivationMessageLinkText);
+			Log4jUtil.log(createPatient.getEmailAddress() + "   :    " + JalapenoConstants.NEW_PATIENT_ACTIVATION_MESSAGE + "     :   " + JalapenoConstants.NEW_PATIENT_ACTIVATION_MESSAGE_LINK_TEXT);
 			Thread.sleep(60000);
-			String activationUrl = mail.getLinkFromEmail(createPatient.getEmailAddress(), PortalConstants.NewPatientActivationMessage, PortalConstants.NewPatientActivationMessageLinkText, 40);
+			String activationUrl = mail.getLinkFromEmail(createPatient.getEmailAddress(), JalapenoConstants.NEW_PATIENT_ACTIVATION_MESSAGE, JalapenoConstants.NEW_PATIENT_ACTIVATION_MESSAGE_LINK_TEXT, 40);
 			Log4jUtil.log("Step 4: Moving to the link obtained from the email message- Patient 1");
 			Assert.assertNotNull(activationUrl, "Error: Activation link not found.");
 			Thread.sleep(20000);
@@ -1092,9 +1093,9 @@ public class NGIntegrationE2ESITTests extends BaseTestNGWebDriver{
 		Thread.sleep(60000);
   		Mailinator mail = new Mailinator();
 			Thread.sleep(15000);
-			Log4jUtil.log(createPatient.getEmailAddress() + "   :    " + PortalConstants.NewPatientActivationMessage + "     :   " + PortalConstants.NewPatientActivationMessageLinkText);
+			Log4jUtil.log(createPatient.getEmailAddress() + "   :    " + JalapenoConstants.NEW_PATIENT_ACTIVATION_MESSAGE + "     :   " + JalapenoConstants.NEW_PATIENT_ACTIVATION_MESSAGE_LINK_TEXT);
 			Thread.sleep(60000);
-			String activationUrl = mail.getLinkFromEmail(createPatient.getEmailAddress(), PortalConstants.NewPatientActivationMessage, PortalConstants.NewPatientActivationMessageLinkText, 80);
+			String activationUrl = mail.getLinkFromEmail(createPatient.getEmailAddress(), JalapenoConstants.NEW_PATIENT_ACTIVATION_MESSAGE, JalapenoConstants.NEW_PATIENT_ACTIVATION_MESSAGE_LINK_TEXT, 80);
 			Log4jUtil.log("Step 10: Moving to the link obtained from the email message");
 			Assert.assertNotNull(activationUrl, "Error: Activation link not found.");
 			Thread.sleep(20000);
@@ -1172,9 +1173,9 @@ public class NGIntegrationE2ESITTests extends BaseTestNGWebDriver{
 		Thread.sleep(120000);
   		Mailinator mail = new Mailinator();
 			Thread.sleep(15000);
-			Log4jUtil.log(createPatient.getEmailAddress() + "   :    " + PortalConstants.NewPatientActivationMessage + "     :   " + PortalConstants.NewPatientActivationMessageLinkText);
+			Log4jUtil.log(createPatient.getEmailAddress() + "   :    " + JalapenoConstants.NEW_PATIENT_ACTIVATION_MESSAGE + "     :   " + JalapenoConstants.NEW_PATIENT_ACTIVATION_MESSAGE_LINK_TEXT);
 			Thread.sleep(60000);
-			String activationUrl = mail.getLinkFromEmail(createPatient.getEmailAddress(), PortalConstants.NewPatientActivationMessage, PortalConstants.NewPatientActivationMessageLinkText, 80);
+			String activationUrl = mail.getLinkFromEmail(createPatient.getEmailAddress(), JalapenoConstants.NEW_PATIENT_ACTIVATION_MESSAGE, JalapenoConstants.NEW_PATIENT_ACTIVATION_MESSAGE_LINK_TEXT, 80);
 			Log4jUtil.log("Step 10: Moving to the link obtained from the email message");
 			Assert.assertNotNull(activationUrl, "Error: Activation link not found.");
 			Thread.sleep(20000);
@@ -1486,11 +1487,11 @@ public class NGIntegrationE2ESITTests extends BaseTestNGWebDriver{
 		String personId= NGAPIFlows.CreatePatientinEPM(createPatient);
 		
 		verifyProcessingStatusto3WithoutValidatingGetProcessingStatusCall(personId,PropertyLoaderObj.getNGEnterpiseEnrollmentE1P1(),PropertyLoaderObj.getProperty("integrationPracticeIDE1P1"));
-		log(createPatient.getEmailAddress() + "   :    " + INVITE_EMAIL_SUBJECT_PATIENT + PropertyLoaderObj.getProperty("practiceName1") + "     :   " + PortalConstants.NewPatientActivationMessageLinkText);
+		log(createPatient.getEmailAddress() + "   :    " + INVITE_EMAIL_SUBJECT_PATIENT + PropertyLoaderObj.getProperty("practiceName1") + "     :   " + JalapenoConstants.NEW_PATIENT_ACTIVATION_MESSAGE_LINK_TEXT);
 		Thread.sleep(60000);	
 		logStep("Logging into Mailinator and getting Patient Activation url for first Practice");
 	    String activationUrlP1 = new Mailinator().getLinkFromEmail(createPatient.getEmailAddress(),
-	                INVITE_EMAIL_SUBJECT_PATIENT + PropertyLoaderObj.getProperty("practiceName1"), PortalConstants.NewPatientActivationMessageLinkText, 40);
+	                INVITE_EMAIL_SUBJECT_PATIENT + PropertyLoaderObj.getProperty("practiceName1"), JalapenoConstants.NEW_PATIENT_ACTIVATION_MESSAGE_LINK_TEXT, 40);
 	    assertNotNull(activationUrlP1, "Error: Activation link not found.");
 
 	    logStep("Create the chart in second practice");
@@ -1713,11 +1714,11 @@ public class NGIntegrationE2ESITTests extends BaseTestNGWebDriver{
 
   		Mailinator mail = new Mailinator();
 			Thread.sleep(15000);
-			log(createPatient.getEmailAddress() + "   :    " + INVITE_EMAIL_SUBJECT_PATIENT + PropertyLoaderObj.getProperty("practiceName4") + "     :   " + PortalConstants.NewPatientActivationMessageLinkText);
+			log(createPatient.getEmailAddress() + "   :    " + INVITE_EMAIL_SUBJECT_PATIENT + PropertyLoaderObj.getProperty("practiceName4") + "     :   " + JalapenoConstants.NEW_PATIENT_ACTIVATION_MESSAGE_LINK_TEXT);
 			Thread.sleep(60000);	
 			logStep("Logging into Mailinator and getting Patient Activation url for first Practice");
 	        String activationUrl = mail.getLinkFromEmail(createPatient.getEmailAddress(),
-	                INVITE_EMAIL_SUBJECT_PATIENT + PropertyLoaderObj.getProperty("practiceName4"), PortalConstants.NewPatientActivationMessageLinkText, 80);
+	                INVITE_EMAIL_SUBJECT_PATIENT + PropertyLoaderObj.getProperty("practiceName4"), JalapenoConstants.NEW_PATIENT_ACTIVATION_MESSAGE_LINK_TEXT, 80);
 	        assertNotNull(activationUrl, "Error: Activation link not found.");
 
 	    logStep("Moving to the link obtained from the email message and enroll the Patient to MedFusion Portal : step 1 - verifying identity");
@@ -2218,11 +2219,11 @@ public class NGIntegrationE2ESITTests extends BaseTestNGWebDriver{
 		
   		Mailinator mail = new Mailinator();
 			Thread.sleep(15000);
-			log(createPatient.getEmailAddress() + "   :    " + INVITE_EMAIL_SUBJECT_PATIENT + PropertyLoaderObj.getProperty("E2practiceName1") + "     :   " + PortalConstants.NewPatientActivationMessageLinkText);
+			log(createPatient.getEmailAddress() + "   :    " + INVITE_EMAIL_SUBJECT_PATIENT + PropertyLoaderObj.getProperty("E2practiceName1") + "     :   " + JalapenoConstants.NEW_PATIENT_ACTIVATION_MESSAGE_LINK_TEXT);
 			Thread.sleep(60000);	
 			logStep("Logging into Mailinator and getting Patient Activation url for first Practice");
 	        String activationUrl = mail.getLinkFromEmail(createPatient.getEmailAddress(),
-	                INVITE_EMAIL_SUBJECT_PATIENT + PropertyLoaderObj.getProperty("E2practiceName1"), PortalConstants.NewPatientActivationMessageLinkText, 80);
+	                INVITE_EMAIL_SUBJECT_PATIENT + PropertyLoaderObj.getProperty("E2practiceName1"), JalapenoConstants.NEW_PATIENT_ACTIVATION_MESSAGE_LINK_TEXT, 80);
 	        assertNotNull(activationUrl, "Error: Activation link not found.");
 
 	    logStep("Moving to the link obtained from the email message and enroll the Patient to MedFusion Portal : step 1 - verifying identity");
@@ -2335,16 +2336,16 @@ public class NGIntegrationE2ESITTests extends BaseTestNGWebDriver{
 		Thread.sleep(15000);
 		logStep("Verify the Guardian mail");
 		Thread.sleep(15000);
-		Log4jUtil.log(createPatient.getEmailAddress() + "   :    " + INVITE_EMAIL_SUBJECT_PATIENT + PropertyLoaderObj.getProperty("practiceName1") + "     :   " + PortalConstants.NewPatientActivationMessageLinkText);
+		Log4jUtil.log(createPatient.getEmailAddress() + "   :    " + INVITE_EMAIL_SUBJECT_PATIENT + PropertyLoaderObj.getProperty("practiceName1") + "     :   " + JalapenoConstants.NEW_PATIENT_ACTIVATION_MESSAGE_LINK_TEXT);
 		Thread.sleep(60000);
-		String activationGuardianUrl = mail.getLinkFromEmail(createPatient.getEmailAddress(), INVITE_EMAIL_SUBJECT_PATIENT + PropertyLoaderObj.getProperty("practiceName1"), PortalConstants.NewPatientActivationMessageLinkText, 80);
+		String activationGuardianUrl = mail.getLinkFromEmail(createPatient.getEmailAddress(), INVITE_EMAIL_SUBJECT_PATIENT + PropertyLoaderObj.getProperty("practiceName1"), JalapenoConstants.NEW_PATIENT_ACTIVATION_MESSAGE_LINK_TEXT, 80);
 		assertNotNull(activationGuardianUrl,"Error: No Registeration email found with specified subject: " + INVITE_EMAIL_SUBJECT_PATIENT + PropertyLoaderObj.getProperty("practiceName1"));
 		log("Step End: Guradian mail is received");
 		
 		logStep("Verify the dependent mail");
-		Log4jUtil.log(createdependent.getEmailAddress() + "   :    " + NewDependentActivationMessage + PropertyLoaderObj.getProperty("practiceName1")+ "     :   " + PortalConstants.NewPatientActivationMessageLinkText);
+		Log4jUtil.log(createdependent.getEmailAddress() + "   :    " + NewDependentActivationMessage + PropertyLoaderObj.getProperty("practiceName1")+ "     :   " + JalapenoConstants.NEW_PATIENT_ACTIVATION_MESSAGE_LINK_TEXT);
 		Thread.sleep(60000);
-		String activationDependentUrl = mail.getLinkFromEmail(createdependent.getEmailAddress(), NewDependentActivationMessage + PropertyLoaderObj.getProperty("practiceName1"), PortalConstants.NewPatientActivationMessageLinkText, 80);
+		String activationDependentUrl = mail.getLinkFromEmail(createdependent.getEmailAddress(), NewDependentActivationMessage + PropertyLoaderObj.getProperty("practiceName1"), JalapenoConstants.NEW_PATIENT_ACTIVATION_MESSAGE_LINK_TEXT, 80);
 		assertNotNull(activationDependentUrl,"Error: No Registeration email found with specified subject: " + NewDependentActivationMessage + PropertyLoaderObj.getProperty("practiceName1"));
 		log("Step End: Dependent mail is received");
 		
@@ -2477,9 +2478,9 @@ public class NGIntegrationE2ESITTests extends BaseTestNGWebDriver{
 			Mailinator mail = new Mailinator();
 			Thread.sleep(15000);		
 			logStep("Verify the dependent mail");
-			Log4jUtil.log(createdependent.getEmailAddress() + "   :    " + NewDependentActivationMessage + "     :   " + PortalConstants.NewPatientActivationMessageLinkText);
+			Log4jUtil.log(createdependent.getEmailAddress() + "   :    " + NewDependentActivationMessage + "     :   " + JalapenoConstants.NEW_PATIENT_ACTIVATION_MESSAGE_LINK_TEXT);
 			Thread.sleep(60000);
-			String activationDependentUrl = mail.getLinkFromEmail(createdependent.getEmailAddress(), NewDependentActivationMessage, PortalConstants.NewPatientActivationMessageLinkText, 80);
+			String activationDependentUrl = mail.getLinkFromEmail(createdependent.getEmailAddress(), NewDependentActivationMessage, JalapenoConstants.NEW_PATIENT_ACTIVATION_MESSAGE_LINK_TEXT, 80);
 			log("Step End: Dependent mail is received");
 			
 			logStep("Enroll the Dependent to MedFusion Portal");
@@ -2585,11 +2586,11 @@ public class NGIntegrationE2ESITTests extends BaseTestNGWebDriver{
 		
   		Mailinator mail = new Mailinator();
 			Thread.sleep(15000);
-			log(createPatient.getEmailAddress() + "   :    " + INVITE_EMAIL_SUBJECT_PATIENT + practiceName + "     :   " + PortalConstants.NewPatientActivationMessageLinkText);
+			log(createPatient.getEmailAddress() + "   :    " + INVITE_EMAIL_SUBJECT_PATIENT + practiceName + "     :   " + JalapenoConstants.NEW_PATIENT_ACTIVATION_MESSAGE_LINK_TEXT);
 			Thread.sleep(60000);
 			logStep("Logging into Mailinator and getting Patient Activation url for first Practice");
 	        String activationUrl = mail.getLinkFromEmail(createPatient.getEmailAddress(),
-	                INVITE_EMAIL_SUBJECT_PATIENT + practiceName, PortalConstants.NewPatientActivationMessageLinkText, 80);
+	                INVITE_EMAIL_SUBJECT_PATIENT + practiceName, JalapenoConstants.NEW_PATIENT_ACTIVATION_MESSAGE_LINK_TEXT, 80);
 	        assertNotNull(activationUrl, "Error: Activation link not found.");
 
 	    logStep("Moving to the link obtained from the email message and enroll the Patient to MedFusion Portal : step 1 - verifying identity");
@@ -2719,11 +2720,11 @@ public class NGIntegrationE2ESITTests extends BaseTestNGWebDriver{
 		
 		Mailinator mail = new Mailinator();
 		Thread.sleep(15000);
-		log(createPatient.getEmailAddress() + "   :    " + INVITE_EMAIL_SUBJECT_PATIENT + practiceName + "     :   " + PortalConstants.NewPatientActivationMessageLinkText);
+		log(createPatient.getEmailAddress() + "   :    " + INVITE_EMAIL_SUBJECT_PATIENT + practiceName + "     :   " + JalapenoConstants.NEW_PATIENT_ACTIVATION_MESSAGE_LINK_TEXT);
 		Thread.sleep(60000);	
 		logStep("Logging into Mailinator and getting Patient Activation url for first Practice");
         String activationUrl = mail.getLinkFromEmail(createPatient.getEmailAddress(),
-                INVITE_EMAIL_SUBJECT_PATIENT + practiceName, PortalConstants.NewPatientActivationMessageLinkText, 80);
+                INVITE_EMAIL_SUBJECT_PATIENT + practiceName, JalapenoConstants.NEW_PATIENT_ACTIVATION_MESSAGE_LINK_TEXT, 80);
         assertNotNull(activationUrl, "Error: Activation link not found.");
 
         logStep("Moving to the link obtained from the email message and enroll the Patient to MedFusion Portal : step 1 - verifying identity");
@@ -2990,15 +2991,15 @@ public class NGIntegrationE2ESITTests extends BaseTestNGWebDriver{
 			Thread.sleep(15000);
 			logStep("Verify the Guardian mail");
 			Thread.sleep(15000);
-			Log4jUtil.log(createPatient.getEmailAddress() + "   :    " + PortalConstants.NewPatientActivationMessage + "     :   " + PortalConstants.NewPatientActivationMessageLinkText);
+			Log4jUtil.log(createPatient.getEmailAddress() + "   :    " + JalapenoConstants.NEW_PATIENT_ACTIVATION_MESSAGE + "     :   " + JalapenoConstants.NEW_PATIENT_ACTIVATION_MESSAGE_LINK_TEXT);
 			Thread.sleep(60000);
-			String activationGuardianUrl = mail.getLinkFromEmail(createPatient.getEmailAddress(), PortalConstants.NewPatientActivationMessage, PortalConstants.NewPatientActivationMessageLinkText, 80);
+			String activationGuardianUrl = mail.getLinkFromEmail(createPatient.getEmailAddress(), JalapenoConstants.NEW_PATIENT_ACTIVATION_MESSAGE, JalapenoConstants.NEW_PATIENT_ACTIVATION_MESSAGE_LINK_TEXT, 80);
 			log("Step End: Guradian mail is received");
 			
 			logStep("Verify the dependent mail");
-			Log4jUtil.log(createdependent.getEmailAddress() + "   :    " + NewDependentActivationMessage + "     :   " + PortalConstants.NewPatientActivationMessageLinkText);
+			Log4jUtil.log(createdependent.getEmailAddress() + "   :    " + NewDependentActivationMessage + "     :   " + JalapenoConstants.NEW_PATIENT_ACTIVATION_MESSAGE_LINK_TEXT);
 			Thread.sleep(60000);
-			String activationDependentUrl = mail.getLinkFromEmail(createdependent.getEmailAddress(), NewDependentActivationMessage, PortalConstants.NewPatientActivationMessageLinkText, 80);
+			String activationDependentUrl = mail.getLinkFromEmail(createdependent.getEmailAddress(), NewDependentActivationMessage, JalapenoConstants.NEW_PATIENT_ACTIVATION_MESSAGE_LINK_TEXT, 80);
 			log("Step End: Dependent mail is received");
 			
 			logStep("Enroll the Guardian to MedFusion Portal : step 1 - verifying identity");
@@ -4463,6 +4464,20 @@ public class NGIntegrationE2ESITTests extends BaseTestNGWebDriver{
     	String eventName = PropertyLoaderObj.getProperty("EventName");
 		String resourceName = PropertyLoaderObj.getProperty("ResourceName");
 		
+		String UpdateToEPMCategoryQuery ="update service_setting set value = 'EPM' where [key] = 'epmcategory' and practice_id = (select id from practice where extpracticeid ='"+practiceId+"')";
+		DBUtils.executeQueryOnDB("MFAgentDB",UpdateToEPMCategoryQuery);
+		
+		String apptTime ="08:30:00";
+		String begintime = apptTime.substring(0, 5).replaceAll(":", "");
+		String deleteINDQuery ="select top 1 delete_ind from appointments where person_id ='"+person_id+"' and begintime ='"+begintime+"' and practice_id ='"+practiceId+"'order by create_timestamp desc";
+		String deleteIND = DBUtils.executeQueryOnDB("NGCoreDB",deleteINDQuery);
+		String ApptIDQuery ="select top 1 appt_id from appointments where person_id ='"+person_id+"' and begintime ='"+begintime+"' and practice_id ='"+practiceId+"' order by create_timestamp desc";
+		
+		if(deleteIND.equalsIgnoreCase("N")){
+			NGAPIUtils.updateLoginDefaultTo("EnterpriseGateway",enterpriseId,practiceId);
+			NGAPIFlows.deleteAppointment(DBUtils.executeQueryOnDB("NGCoreDB",ApptIDQuery));
+		}			
+		
     	long timestamp = System.currentTimeMillis();
     	Long since = timestamp / 1000L - 60 * 24;
 		String appointmentReason = "Illness" + System.currentTimeMillis();
@@ -4544,11 +4559,12 @@ public class NGIntegrationE2ESITTests extends BaseTestNGWebDriver{
 		logStep("Verify appointment request is reached to EPM/EHR Inbox");
 		CommonFlows.verifyAppointmentRequestReceived(appointmentID, appointmentReason,PropertyLoaderObj.getProperty("AppointmentStartTime"), PropertyLoaderObj.getProperty("AppointmentEndTime"), PropertyLoaderObj.getProperty("AppointmentDays"),practiceId);
 		
-		logStep("Schedule an appointment for Patient");
-		String apptTime ="08:30:00";
+		DBUtils.executeQueryOnDB("MFAgentDB",UpdateToEPMCategoryQuery);
+		logStep("Schedule an appointment for Patient");		
 		NGAPIUtils.updateLoginDefaultTo("EnterpriseGateway",enterpriseId,practiceId);
 		String EPMAppointmenttId =NGAPIFlows.postAppointment(person_id,practiceId,locationName, providerName, eventName, resourceName,2,apptTime,201);
 		
+		DBUtils.executeQueryOnDB("MFAgentDB",UpdateToEPMCategoryQuery);
 		String appointmentResponse = "ApptResponse" + System.currentTimeMillis();
 		logStep("Send appointment response to Patient");
 		NGAPIUtils.updateLoginDefaultTo("EnterpriseGateway",enterpriseId,practiceId);
@@ -4575,6 +4591,7 @@ public class NGIntegrationE2ESITTests extends BaseTestNGWebDriver{
 			expectedTime = appointmentDate.substring(appointmentDate.lastIndexOf(" ")+2);
 		log("Expected appointment Time is "+expectedTime);
 		
+		Thread.sleep(60000);
 		CommonFlows.verifyAppointmentReceivedinPortal(PropertyLoaderObj, driver, url, username, appointmentDate.substring(0,appointmentDate.lastIndexOf(" ")),expectedTime,appointmentResponse);
 		Log4jUtil.log("Test Case End: The patient is able to request for appointment and practice user is able to book appointment and send response to patient");
 	}
@@ -4613,6 +4630,16 @@ public class NGIntegrationE2ESITTests extends BaseTestNGWebDriver{
 		String resourceName = PropertyLoaderObj.getProperty("ResourceName");
 		
 		String apptTime ="09:30:00";
+		String begintime = apptTime.substring(0, 5).replaceAll(":", "");
+		String deleteINDQuery ="select top 1 delete_ind from appointments where person_id ='"+person_id+"' and begintime ='"+begintime+"' and practice_id ='"+practiceId+"'order by create_timestamp desc";
+		String deleteIND = DBUtils.executeQueryOnDB("NGCoreDB",deleteINDQuery);
+		String ApptIDQuery ="select top 1 appt_id from appointments where person_id ='"+person_id+"' and begintime ='"+begintime+"' and practice_id ='"+practiceId+"' order by create_timestamp desc";
+		
+		if(deleteIND.equalsIgnoreCase("N")){
+			NGAPIUtils.updateLoginDefaultTo("EnterpriseGateway",enterpriseId,practiceId);
+			NGAPIFlows.deleteAppointment(DBUtils.executeQueryOnDB("NGCoreDB",ApptIDQuery));
+		}		
+		
 		logStep("Schedule an appointment for Patient to same slot");
 		NGAPIUtils.updateLoginDefaultTo("EnterpriseGateway",enterpriseId,practiceId);
 		String EPMAppointmenttId =NGAPIFlows.postAppointment(person_id,practiceId,locationName, providerName, eventName, resourceName,2,apptTime,201);
@@ -4655,6 +4682,19 @@ public class NGIntegrationE2ESITTests extends BaseTestNGWebDriver{
 		String resourceName = PropertyLoaderObj.getProperty("ResourceName");
 		
 		String apptTime ="10:30:00";
+		String begintime = apptTime.substring(0, 5).replaceAll(":", "");
+		String deleteINDQuery ="select top 1 delete_ind from appointments where person_id ='"+person_id+"' and begintime ='"+begintime+"' and practice_id ='"+practiceId+"'order by create_timestamp desc";
+		String deleteIND = DBUtils.executeQueryOnDB("NGCoreDB",deleteINDQuery);
+		String ApptIDQuery ="select top 1 appt_id from appointments where person_id ='"+person_id+"' and begintime ='"+begintime+"' and practice_id ='"+practiceId+"' order by create_timestamp desc";
+				
+		if(deleteIND.equalsIgnoreCase("N")){
+			NGAPIUtils.updateLoginDefaultTo("EnterpriseGateway",enterpriseId,practiceId);
+			NGAPIFlows.deleteAppointment(DBUtils.executeQueryOnDB("NGCoreDB",ApptIDQuery));
+		}
+		
+		String UpdateToEPMCategoryQuery ="update service_setting set value = 'EPM' where [key] = 'epmcategory' and practice_id = (select id from practice where extpracticeid ='"+practiceId+"')";
+		DBUtils.executeQueryOnDB("MFAgentDB",UpdateToEPMCategoryQuery);
+		
 		logStep("Schedule another appointment for Patient to different slot");
 		NGAPIUtils.updateLoginDefaultTo("EnterpriseGateway",enterpriseId,practiceId);
 		String EPMAppointmenttId =NGAPIFlows.postAppointment(person_id,practiceId,locationName, providerName, eventName, resourceName,1,apptTime,201);
@@ -4689,7 +4729,7 @@ public class NGIntegrationE2ESITTests extends BaseTestNGWebDriver{
 		log("Expected appointment Time is "+expectedTime);
 		
 		logStep("Verfiy appointment is received in Portal");
-        Thread.sleep(70000);
+        Thread.sleep(60000);
 		CommonFlows.verifyAppointmentReceivedinPortal(PropertyLoaderObj, driver, url, username, appointmentDate.substring(0,appointmentDate.lastIndexOf(" ")),expectedTime,"");
 		
 		logStep("Delete booked appointment from EPM Appointment Book having appointment ID "+EPMAppointmenttId);
@@ -4920,9 +4960,9 @@ public class NGIntegrationE2ESITTests extends BaseTestNGWebDriver{
 		List<ExpectedEmail> mails = new ArrayList<ExpectedEmail>();
 		Mailinator mail = new Mailinator();
 		Thread.sleep(15000);
-		Log4jUtil.log(createPatient.getEmailAddress() + "   :    " + PortalConstants.NewPatientActivationMessage + "     :   " + PortalConstants.NewPatientActivationMessageLinkText);
+		Log4jUtil.log(createPatient.getEmailAddress() + "   :    " + JalapenoConstants.NEW_PATIENT_ACTIVATION_MESSAGE + "     :   " + JalapenoConstants.NEW_PATIENT_ACTIVATION_MESSAGE_LINK_TEXT);
 		Thread.sleep(60000);
-		String activationUrl = mail.getLinkFromEmail(createPatient.getEmailAddress(), PortalConstants.NewPatientActivationMessage, PortalConstants.NewPatientActivationMessageLinkText, 80);
+		String activationUrl = mail.getLinkFromEmail(createPatient.getEmailAddress(), JalapenoConstants.NEW_PATIENT_ACTIVATION_MESSAGE, JalapenoConstants.NEW_PATIENT_ACTIVATION_MESSAGE_LINK_TEXT, 80);
 		Log4jUtil.log("Moving to the link obtained from the email message");
 		Assert.assertNotNull(activationUrl, "Error: Activation link not found.");
 		Thread.sleep(20000);
@@ -5681,5 +5721,96 @@ public class NGIntegrationE2ESITTests extends BaseTestNGWebDriver{
 		logStep("Verify Prescription Renewal request is reached to EPM/EHR Inbox");
 		CommonFlows.verifyPrescriptionRenewalRequestReceived(prescriptionID, "[#1:"+prescritonRenewalRequestReason+"][#2:"+prescritonRenewalRequestReason+"]",practiceId);	
     	log("Test Case End: The patient is able to request for multiple medications and Prescribed elsewhere medications");
+	}
+	
+	@Test(enabled = true, groups = { "Payment" }, retryAnalyzer = RetryAnalyzer.class)
+	public void testPaymentPayBills() throws Throwable {
+		log("Test Case: Verify the patient is able to pay the bill using Pay Bills and payment is being posted to NG");
+		log("Execution Environment: " + IHGUtil.getEnvironmentType());
+		log("Execution Browser: " + TestConfig.getBrowserType());
+		
+		logStep("Getting Existing User");
+		String username = PropertyLoaderObj.getProperty("CCDAUsername");
+    	String person_id = DBUtils.executeQueryOnDB("NGCoreDB","select person_id from person where email_address = '"+username+"'");
+    	String enterpriseId = null, practiceId = null, providerName = null, locationName = null , userId = null, integrationPracticeID= null, url =null;
+    	
+    	if(PropertyLoaderObj.getNGAPIexecutionMode().equalsIgnoreCase("QAMain")){
+    		enterpriseId= PropertyLoaderObj.getProperty("NGEnterpiseEnrollmentEnterprise1");
+    	    practiceId= PropertyLoaderObj.getProperty("NGEnterprise1Practice1");
+    	    providerName =PropertyLoaderObj.getProperty("NGE1P1Provider"); 
+    	    locationName =PropertyLoaderObj.getProperty("NGE1P1Location");
+    	    integrationPracticeID =PropertyLoaderObj.getProperty("integrationPracticeIDE1P1");
+    	    url = PropertyLoaderObj.getProperty("MFPortalURLPractice1");	
+		}
+		else if (PropertyLoaderObj.getNGAPIexecutionMode().equalsIgnoreCase("SIT")){
+			enterpriseId= PropertyLoaderObj.getProperty("NGMainEnterpriseID");
+		    practiceId= PropertyLoaderObj.getProperty("NGMainPracticeID");
+		    providerName =PropertyLoaderObj.getProperty("EPMProviderName"); 
+		    locationName =PropertyLoaderObj.getProperty("EPMLocationName");
+		    integrationPracticeID =PropertyLoaderObj.getProperty("integrationPracticeIDAMDC");
+		    url = PropertyLoaderObj.getProperty("url");			           
+		}
+		else{
+			Log4jUtil.log("Invalid Execution Mode");
+		}
+		
+    	String acctNBRQuery = "select acct_nbr from accounts where guar_id ='"+person_id+"' and practice_id='"+practiceId.trim()+"'";
+		logStep("Initiate payment data");
+		String accountNumber = DBUtils.executeQueryOnDB("NGCoreDB",acctNBRQuery);
+		String amount = IHGUtil.createRandomNumericString(3);
+		String name = "TestPatient CreditCard";
+		CreditCard creditCard = new CreditCard(CardType.Mastercard, name);
+
+		logStep("Load login page");
+		JalapenoLoginPage loginPage = new JalapenoLoginPage(driver, url);
+
+		JalapenoHomePage homePage = loginPage.login(username, PropertyLoaderObj.getPassword());
+		JalapenoPayBillsMakePaymentPage payBillsPage = homePage.clickOnNewPayBills(driver);
+		logStep("Remove all cards because Selenium can't see AddNewCard button");
+		payBillsPage.removeAllCards();
+		logStep("Check that no card is present");
+		assertFalse(payBillsPage.isAnyCardPresent());
+		assertTrue(payBillsPage.areBasicPageElementsPresent());
+
+		JalapenoPayBillsConfirmationPage confirmationPage = payBillsPage.fillPaymentInfo(amount, accountNumber,	creditCard);
+		assertTrue(confirmationPage.areBasicPageElementsPresent());
+		logStep("Verifying credit card ending");
+		assertTrue(confirmationPage.getCreditCardEnding().equals(creditCard.getLastFourDigits()));
+		
+		String PaymentComments = "Testing payment from number: " + accountNumber+" Current Timestamp "+(new Date()).getTime();
+		homePage = confirmationPage.commentAndSubmitPayment(PaymentComments);
+		assertTrue(homePage.wasPayBillsSuccessfull());
+		homePage.clickOnLogout();
+
+//		logStep("Login to Practice Portal");
+//		PracticeLoginPage practiceLogin = new PracticeLoginPage(driver, PropertyLoaderObj.getPortalUrl());
+//		PracticeHomePage practiceHome = practiceLogin.login(PropertyLoaderObj.getDoctorLogin(), PropertyLoaderObj.getDoctorPassword());
+//
+//		logStep("Click On Online BillPayment Tab in Practice Portal");
+//		OnlineBillPaySearchPage onlineBillPaySearchPage = practiceHome.clickOnlineBillPayTab();
+//
+//		logStep("Search Paid Bills By Current Date");
+//		onlineBillPaySearchPage.searchForBillPayToday();
+//
+//		logStep("Search For Today's Paid Bill By Account Number");
+//		onlineBillPaySearchPage.searchForBillPayment(accountNumber);
+//
+//		logStep("Get Bill Details");
+//		onlineBillPaySearchPage.getBillPayDetails();
+//
+//		logStep("Set Payment Communication Details");
+//		onlineBillPaySearchPage.setPaymentCommunicationDetails();
+//
+//		logStep("Logout of Practice Portal");
+//		practiceHome.logOut();
+		
+		String actualAmount = amount.charAt(0)+"."+amount.substring(1);
+		log("Actual Amount "+actualAmount);
+		CommonFlows.verifyPaymentReachedtoMFAgent(PaymentComments,"BillPayment", "", accountNumber,"POSTED", actualAmount,"MasterCard");
+		
+		String SourceIdQuery = "select acct_id from accounts where guar_id ='"+person_id+"' and practice_id='"+practiceId.trim()+"'";
+		String SourceId = DBUtils.executeQueryOnDB("NGCoreDB",SourceIdQuery);
+		CommonFlows.verifyPaymentPostedtoNG(PaymentComments,SourceId , person_id, "-"+actualAmount, "Payment type: BillPayment, Last 4 CC digits: "+creditCard.getLastFourDigits(),practiceId);
+		log("Test Case End: The patient is able to pay the bill using Pay Bills and payment is being posted to NG");
 	}
 }

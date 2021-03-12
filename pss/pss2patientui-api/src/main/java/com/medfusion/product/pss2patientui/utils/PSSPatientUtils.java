@@ -189,7 +189,14 @@ public class PSSPatientUtils {
 		}
 
 		Thread.sleep(6000);
-		clickOnSubmitAppt(false, aptDateTime, testData, driver);
+		if (testData.isAnonymousFlow()) {
+			Log4jUtil.log(" isAnonymousFlow is TRUE ");
+			bookAnonymousApt(aptDateTime, testData, driver);
+		} else {
+			Log4jUtil.log("This is not an Anonymous flow so comes is else block");
+			clickOnSubmitAppt(false, aptDateTime, testData, driver);
+		}
+
 	}
 
 	public void BTLFlow(HomePage homepage, Appointment testData, String startOrderOn, WebDriver driver)
@@ -1284,8 +1291,10 @@ public class PSSPatientUtils {
 
 		driver.get(url);
 		driver.manage().window().maximize();
-		driver.findElement(By.xpath("//input[@id='addOverlay']")).sendKeys(email);
-		driver.findElement(By.xpath("//button[@id='go-to-public']")).click();
+		Thread.sleep(2000);
+		driver.findElement(By.xpath("//input[@id='inbox_field']")).clear();
+		driver.findElement(By.xpath("//input[@id='inbox_field']")).sendKeys(email);
+		driver.findElement(By.xpath("//button[@id='go_inbox']")).click();
 
 		WebDriverWait wait = new WebDriverWait(driver, 30);
 		wait.until(ExpectedConditions.visibilityOfElementLocated(By.xpath("//a[@class='ng-binding']")));

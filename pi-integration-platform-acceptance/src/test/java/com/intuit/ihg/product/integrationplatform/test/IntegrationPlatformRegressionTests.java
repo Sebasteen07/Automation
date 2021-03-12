@@ -1,3 +1,4 @@
+// Copyright 2013-2021 NXGN Management, LLC. All Rights Reserved.
 package com.intuit.ihg.product.integrationplatform.test;
 
 import java.awt.Robot;
@@ -53,6 +54,7 @@ import com.intuit.ihg.product.integrationplatform.utils.MU2Utils;
 import com.intuit.ihg.product.integrationplatform.utils.P2PUnseenMessageList;
 import com.intuit.ihg.product.integrationplatform.utils.PatientFormsExportInfo;
 import com.intuit.ihg.product.integrationplatform.utils.PatientRegistrationUtils;
+import com.intuit.ihg.product.integrationplatform.utils.Patient_Login;
 import com.intuit.ihg.product.integrationplatform.utils.Pharmacies;
 import com.intuit.ihg.product.integrationplatform.utils.PharmacyPayload;
 import com.intuit.ihg.product.integrationplatform.utils.PrecheckAppointmentUtils;
@@ -65,8 +67,6 @@ import com.intuit.ihg.product.integrationplatform.utils.StatementsMessagePayload
 import com.medfusion.common.utils.IHGUtil;
 import com.medfusion.common.utils.Mailinator;
 import com.medfusion.common.utils.PropertyFileLoader;
-import com.medfusion.portal.utils.PortalConstants;
-import com.medfusion.portal.utils.PortalUtil;
 import com.medfusion.product.object.maps.forms.page.HealthFormListPage;
 import com.medfusion.product.object.maps.forms.page.questionnaires.prereg_pages.FormBasicInfoPage;
 import com.medfusion.product.object.maps.patientportal2.page.JalapenoLoginPage;
@@ -98,6 +98,8 @@ import com.medfusion.product.object.maps.precheck.page.myInsurance.TertiaryInsur
 import com.medfusion.product.object.maps.precheck.page.myInsuranceImage.InsuranceImagePage;
 import com.medfusion.product.object.maps.precheck.page.verifyIdentity.VerifyIdentityPage;
 import com.medfusion.product.patientportal2.pojo.JalapenoPatient;
+import com.medfusion.product.patientportal2.utils.JalapenoConstants;
+import com.medfusion.product.patientportal2.utils.PortalUtil2;
 import com.medfusion.product.practice.api.pojo.Practice;
 
 /**
@@ -111,7 +113,7 @@ import com.medfusion.product.practice.api.pojo.Practice;
 public class IntegrationPlatformRegressionTests extends BaseTestNGWebDriver {
 	@Test(enabled = true, dataProvider = "channelVersion", groups = {
 			"RegressionTests" }, retryAnalyzer = RetryAnalyzer.class)
-	public void testEHDCSendCCD(String version,Method method) throws Exception {
+	public void testEHDCSendCCD(String version, Method method) throws Exception {
 		if (version.equals("v2"))
 			throw new SkipException("Test skipped as version is:" + version);
 		log("Test Case: send a CCD and check in patient Portal");
@@ -137,7 +139,7 @@ public class IntegrationPlatformRegressionTests extends BaseTestNGWebDriver {
 			log("Step 3: Get processing status until it is completed");
 			Thread.sleep(60000);
 		} else {
-			ccd = CCDPayload.getCCDPayloadV3(testData,method.getName());
+			ccd = CCDPayload.getCCDPayloadV3(testData, method.getName());
 			Thread.sleep(6000);
 			log("Payload" + ccd);
 			log("Wait to generate CCD Payload");
@@ -554,8 +556,8 @@ public class IntegrationPlatformRegressionTests extends BaseTestNGWebDriver {
 		log("checking email for activation UrL link");
 		Thread.sleep(5000);
 		Mailinator mail = new Mailinator();
-		String activationUrl = mail.getLinkFromEmail(patientDetail.get(4), PortalConstants.NewPatientActivationMessage,
-				PortalConstants.NewPatientActivationMessageLinkText, 20);
+		String activationUrl = mail.getLinkFromEmail(patientDetail.get(4), JalapenoConstants.NEW_PATIENT_ACTIVATION_MESSAGE,
+				JalapenoConstants.NEW_PATIENT_ACTIVATION_MESSAGE_LINK_TEXT, 20);
 		assertTrue(activationUrl != null, "Error: Activation link not found.");
 
 		PatientRegistrationUtils.registerPatient(activationUrl, patientDetail.get(4), testData.PatientPassword,
@@ -2402,7 +2404,7 @@ public class IntegrationPlatformRegressionTests extends BaseTestNGWebDriver {
 		Mailinator mail = new Mailinator();
 		String activationUrl = mail.getLinkFromEmail(patientDetail.get(4),
 				"You are invited to create a Patient Portal guardian account at PI Automation rsdk Integrated",
-				PortalConstants.NewPatientActivationMessageLinkText, 20);
+				JalapenoConstants.NEW_PATIENT_ACTIVATION_MESSAGE_LINK_TEXT, 20);
 		assertTrue(activationUrl != null, "Error: Activation link not found.");
 
 		log("Step 4: Register under age patient");
@@ -2561,7 +2563,7 @@ public class IntegrationPlatformRegressionTests extends BaseTestNGWebDriver {
 		Mailinator mail = new Mailinator();
 		String activationUrl = mail.getLinkFromEmail(patientDetail.get(4),
 				"You are invited to create a Patient Portal guardian account at PI Automation rsdk Integrated",
-				PortalConstants.NewPatientActivationMessageLinkText, 20);
+				JalapenoConstants.NEW_PATIENT_ACTIVATION_MESSAGE_LINK_TEXT, 20);
 		assertTrue(activationUrl != null, "Error: Activation link not found.");
 
 		log("Step 4: Register under age patient");
@@ -2675,7 +2677,7 @@ public class IntegrationPlatformRegressionTests extends BaseTestNGWebDriver {
 				Thread.sleep(1000);
 				FormBasicInfoPage pFormBasicInfoPage = PageFactory.initElements(driver, FormBasicInfoPage.class);
 				if (i == 0 && k == 0) {
-					PortalUtil.setPortalFrame(driver);
+					PortalUtil2.setPortalFrame(driver);
 					log("Fill in Patient GI/SO value");
 					pFormBasicInfoPage.switchFrame();
 				}
@@ -3359,7 +3361,6 @@ public class IntegrationPlatformRegressionTests extends BaseTestNGWebDriver {
 		LoadPreTestData LoadPreTestDataObj = new LoadPreTestData();
 		AppointmentData testData = new AppointmentData();
 		LoadPreTestDataObj.loadAppointmentTypeFromProperty(testData);
-		AppointmentDataUtils aDUtils = new AppointmentDataUtils();
 		log("POST URL" + testData.AppointmentTypeUrl);
 
 		log("Step 1: Setup Oauth client");
@@ -3511,7 +3512,6 @@ public class IntegrationPlatformRegressionTests extends BaseTestNGWebDriver {
 				testData.ResponsePath);
 		Log4jUtil.log("processingUrl " + processingUpdateUrl);
 
-		Boolean completedStatus = false;
 		for (int i = 0; i < 3; i++) {
 			// wait 10 seconds so the message can be processed
 			Thread.sleep(60000);
@@ -3615,7 +3615,6 @@ public class IntegrationPlatformRegressionTests extends BaseTestNGWebDriver {
 				testData.ResponsePath);
 		Log4jUtil.log("processingUrl " + processingDeleteUrl);
 
-		Boolean completedStatus = false;
 		for (int i = 0; i < 3; i++) {
 			// wait 10 seconds so the message can be processed
 			Thread.sleep(60000);
@@ -3852,9 +3851,8 @@ public class IntegrationPlatformRegressionTests extends BaseTestNGWebDriver {
 
 	}
 
-	@Test(enabled = true, groups = {
-			"RegressionTests" }, retryAnalyzer = RetryAnalyzer.class)
-	public void testEHDCSendCCDLargeSize(Method  method) throws Exception {
+	@Test(enabled = true, groups = { "RegressionTests" }, retryAnalyzer = RetryAnalyzer.class)
+	public void testEHDCSendCCDLargeSize(Method method) throws Exception {
 		log("Test Case: send a CCD and check in patient Portal");
 		log("Execution Environment: " + IHGUtil.getEnvironmentType());
 		log("Execution Browser: " + TestConfig.getBrowserType());
@@ -3869,7 +3867,7 @@ public class IntegrationPlatformRegressionTests extends BaseTestNGWebDriver {
 		RestUtils.oauthSetup(testData.OAuthKeyStore, testData.OAuthProperty, testData.OAuthAppToken,
 				testData.OAuthUsername, testData.OAuthPassword);
 
-		ccd = CCDPayload.getCCDPayloadV3(testData,method.getName());
+		ccd = CCDPayload.getCCDPayloadV3(testData, method.getName());
 		Thread.sleep(6000);
 		log("Payload" + ccd);
 		log("Wait to generate CCD Payload");
@@ -3910,4 +3908,119 @@ public class IntegrationPlatformRegressionTests extends BaseTestNGWebDriver {
 		loginPage = homePage.clickOnLogout();
 	}
 
+	@Test(enabled = true, groups = { "RegressionTests" }, retryAnalyzer = RetryAnalyzer.class)
+	public void testLastLoginEvent() throws Exception {
+
+		log("Test Case: Last Login event data");
+		log("Execution Environment: " + IHGUtil.getEnvironmentType());
+		log("Execution Browser: " + TestConfig.getBrowserType());
+
+		Long timestamp = System.currentTimeMillis();
+
+		log("Step 1: Get Data from property file");
+		LoadPreTestData LoadPreTestDataObj = new LoadPreTestData();
+		Patient_Login testData = new Patient_Login();
+
+		LoadPreTestDataObj.loadLogindata(testData);
+		log("Url: " + testData.Url);
+		log("User Name: " + testData.UserName);
+		log("Password: " + testData.Password);
+		log("RestUrlV3: " + testData.restUrlLogin_V3);
+		log("OAuthProperty: " + testData.OAuthProperty);
+		log("OAuthKeyStore: " + testData.OAuthKeyStore);
+		log("OAuthAppToken: " + testData.OAuthAppToken);
+		log("OAuthUsername: " + testData.OAuthUsername);
+		log("OAuthPassword: " + testData.OAuthPassword);
+		log("ResponsePath: " + testData.ResponsePath);
+
+		log("Step 2: LogIn");
+		JalapenoLoginPage loginPage = new JalapenoLoginPage(driver, testData.Url);
+		JalapenoHomePage homePage = loginPage.login(testData.UserName, testData.Password);
+
+		homePage.clickOnLogout();
+
+		log("Step 2: Setup Oauth client");
+		RestUtils.oauthSetup(testData.OAuthKeyStore, testData.OAuthProperty, testData.OAuthAppToken,
+				testData.OAuthUsername, testData.OAuthPassword);
+		Thread.sleep(2000);
+
+		log("Step 3: Get processing status until it is completed");
+		boolean completed = false;
+		for (int j = 0; j < 3; j++) {
+			Thread.sleep(60000);
+
+			log("Getting messages since timestamp: " + timestamp);
+
+			RestUtils.setupHttpGetRequest(testData.restUrlLogin_V3 + timestamp, testData.ResponsePath);
+
+			Thread.sleep(2000);
+			if (RestUtils.isMessageProcessingCompleted(testData.ResponsePath)) {
+				completed = true;
+				break;
+			}
+		}
+		assertTrue(completed);
+		log("Step 4: Validate Event login ");
+		String ResourceType_tag = "ConsumerLoginEvent";
+		RestUtils.isLoginEventValidated(testData.ResponsePath, ResourceType_tag, timestamp);
+		log("Step 5: Event login validated ");
+
+	}
+
+	@Test(enabled = true, groups = { "RegressionTests" }, retryAnalyzer = RetryAnalyzer.class)
+	public void testStatementPayloadMinimum(Method method) throws Exception {
+		log("Test Case: To verify if the Statement payload is being posted with minimum payload");
+		log("Execution Environment: " + IHGUtil.getEnvironmentType());
+		log("Execution Browser: " + TestConfig.getBrowserType());
+		log("Method Name: " + method.getName());
+
+		StatementEventData testData = new StatementEventData();
+		log("Step 1: load data from external property file");
+		LoadPreTestData LoadPreTestDataObj = new LoadPreTestData();
+		LoadPreTestDataObj.loadStatementEventDataFromProperty(testData);
+		StatementEventUtils sEventObj = new StatementEventUtils();
+
+		Long timestamp = System.currentTimeMillis();
+		Long since = timestamp / 1000L;
+		Log4jUtil.log("Getting patients since timestamp: " + since);
+
+		LoadPreTestDataObj.loadStatementEventDataFromProperty(testData);
+		log("Url: " + testData.url_PatientStatement);
+		log("User Name: " + testData.UserName);
+		log("Password: " + testData.Password);
+		log("RestUrlV3: " + testData.restUrlV3_Statement);
+		log("OAuthProperty: " + testData.OAuthProperty);
+		log("OAuthKeyStore: " + testData.OAuthKeyStore);
+		log("OAuthAppToken: " + testData.oAuthAppToken_PatientSt);
+		log("OAuthUsername: " + testData.oAuthAppUsername_PatientSt);
+		log("OAuthPassword: " + testData.oAuthAppPw_PatientSt);
+		log("ResponsePath: " + testData.ResponsePath);
+		log("Attachment File Path: " + testData.StatementPdf_Detail);
+
+		String StatementMsgSubject = "Your Statement is Ready";
+		log("Statement Subject :" + StatementMsgSubject);
+
+		StatementsMessagePayload SMPObj = new StatementsMessagePayload();
+		String statement = SMPObj.getStatementsMessageV3MiniPayload(testData, method.getName());
+		Thread.sleep(6000);
+		log("Statement Payload----------------" + statement);
+		log("Step 2: Post statement to patient");
+		sEventObj.postStatementV3(testData, statement);
+
+		log("Step 3: Login to Patient Portal");
+		JalapenoLoginPage loginPage = new JalapenoLoginPage(driver, testData.url_PatientStatement);
+		JalapenoHomePage homePage = loginPage.login(testData.UserName, testData.Password);
+		Thread.sleep(9000);
+		log("Click on msessage box");
+		JalapenoMessagesPage inboxPage = homePage.clickOnMenuMessages();
+		Thread.sleep(9000);
+
+		log("Step 4: Find message in Inbox");
+		boolean msg = inboxPage.isMessageDisplayed(driver, StatementMsgSubject);
+		log("Message received in inbox");
+
+		log("Step 5: Logout of Patient Portal");
+		homePage.clickOnLogout();
+
+	}
 }

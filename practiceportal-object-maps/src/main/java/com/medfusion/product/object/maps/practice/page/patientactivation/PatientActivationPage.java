@@ -1,20 +1,13 @@
-//Copyright 2013-2020 NXGN Management, LLC. All Rights Reserved.
+//Copyright 2013-2021 NXGN Management, LLC. All Rights Reserved.
 package com.medfusion.product.object.maps.practice.page.patientactivation;
 
-import static org.testng.AssertJUnit.*;
-
 import java.io.IOException;
-import java.util.Hashtable;
-import java.util.Properties;
-
 import com.intuit.ifs.csscat.core.pageobject.BasePageObject;
 import com.intuit.ifs.csscat.core.utils.Log4jUtil;
 import com.medfusion.common.utils.IHGUtil;
 import com.medfusion.common.utils.PropertyFileLoader;
-import com.medfusion.portal.utils.PortalConstants;
+import com.medfusion.product.patientportal2.utils.JalapenoConstants;
 import com.medfusion.product.practice.api.utils.PracticeConstants;
-
-import junit.framework.Assert;
 
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
@@ -22,6 +15,7 @@ import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.FindBy;
 import org.openqa.selenium.support.How;
 import org.openqa.selenium.support.ui.Select;
+import org.testng.Assert;
 
 public class PatientActivationPage extends BasePageObject {
 
@@ -58,6 +52,9 @@ public class PatientActivationPage extends BasePageObject {
 
 	@FindBy(css = "input[onclick*='checkVerified()']")
 	private WebElement btnVerified;
+	
+	@FindBy(xpath = "//input[@id='verifyButton']")
+	private WebElement verifiedBtn;
 
 	@FindBy(css = "input[onclick*='checkGenKey()']")
 	private WebElement btnGenerateKey;
@@ -171,18 +168,19 @@ public class PatientActivationPage extends BasePageObject {
 		email.sendKeys(emailAddressString);
 		confirmEmail.sendKeys(emailAddressString);
 
-		setDOB(PortalConstants.DateOfBirthMonth, PortalConstants.DateOfBirthDay, PortalConstants.DateOfBirthYear);
+		setDOB(JalapenoConstants.DATE_OF_BIRTH_MONTH, JalapenoConstants.DATE_OF_BIRTH_DAY, JalapenoConstants.DATE_OF_BIRTH_YEAR);
 
 		AddLine1.sendKeys("5501 Dillard Dr");
 		City.sendKeys("Cary");
 		zip.sendKeys(PracticeConstants.ZIP_CODE);
-
+		Log4jUtil.log("Click on the Register Patient Button");
 		clickRegPatient();
-		clickVerify();
+		Log4jUtil.log("Click on the Verify Button");
+		clickVerifyBtn();
 
 		IHGUtil.waitForElement(driver, 10, unlockLink);
 		unlocklink = unlockLink.getText().trim();
-		Assert.assertTrue("### ERROR: Couldn't get unlock link", !unlocklink.isEmpty());
+		Assert.assertTrue(!unlocklink.isEmpty(), "### ERROR: Couldn't get unlock link");
 
 		Log4jUtil.log("#### The unlock link exists and the link is:" + unlocklink);
 		clickDone();
@@ -233,7 +231,7 @@ public class PatientActivationPage extends BasePageObject {
 
 		IHGUtil.waitForElement(driver, 10, unlockLink);
 		unlocklink = unlockLink.getText().trim();
-		assertNotNull("### ERROR: Couldn't get unlock link", unlocklink);
+		Assert.assertNotNull(unlocklink, "### ERROR: Couldn't get unlock link");
 
 		log("#### The unlock link exists and the link is:" + unlocklink);
 		clickDone();
@@ -259,7 +257,14 @@ public class PatientActivationPage extends BasePageObject {
 
 	public void clickVerify() {
 		IHGUtil.PrintMethodName();
+		IHGUtil.waitForElement(driver, 60, btnVerified);
 		btnVerified.click();
+	}
+	
+	public void clickVerifyBtn() {
+		IHGUtil.PrintMethodName();
+		IHGUtil.waitForElement(driver, 80, verifiedBtn);
+		verifiedBtn.click();
 	}
 
 	public void clickGetKey() {
@@ -295,7 +300,7 @@ public class PatientActivationPage extends BasePageObject {
 		Log4jUtil.log("Email is :" + emailAddressString);
 		email.sendKeys(emailAddressString);
 		confirmEmail.sendKeys(emailAddressString);
-		setDOB(PortalConstants.DateOfBirthMonth, PortalConstants.DateOfBirthDay, PortalConstants.DateOfBirthYear);
+		setDOB(JalapenoConstants.DATE_OF_BIRTH_MONTH, JalapenoConstants.DATE_OF_BIRTH_DAY, JalapenoConstants.DATE_OF_BIRTH_YEAR);
 		AddLine1.sendKeys(address1);
 		AddLine2.sendKeys(address2);
 		City.sendKeys(city);
@@ -309,7 +314,7 @@ public class PatientActivationPage extends BasePageObject {
 
 		IHGUtil.waitForElement(driver, 30, unlockLink);
 		unlocklink = unlockLink.getText().trim();
-		Assert.assertTrue("### ERROR: Couldn't get unlock link", !unlocklink.equals(""));
+		Assert.assertTrue(!unlocklink.equals(""), "### ERROR: Couldn't get unlock link");
 		String activationCode = unlockCode.getText();
 		Log4jUtil.log("Unlock Code :" + activationCode);
 
@@ -356,7 +361,7 @@ public class PatientActivationPage extends BasePageObject {
 		if(flag==1) {
 		IHGUtil.waitForElement(driver, 10, unlockLink);
 		unlocklink = unlockLink.getText().trim();
-		Assert.assertTrue("### ERROR: Couldn't get unlock link", !unlocklink.isEmpty());
+		Assert.assertTrue(!unlocklink.isEmpty(), "### ERROR: Couldn't get unlock link");
 		log("#### The unlock link exists and the link is:" + unlocklink);
 		
 		} else

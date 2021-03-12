@@ -704,7 +704,10 @@ public class NGAPIFlows {
 		AppointmentResponse appointmentResponse = new AppointmentResponse();		
 		try{			
 			appointmentResponse.setMessage(message);
-			appointmentResponse.setApprovedDate(sdf.format(new Date()));
+			
+			String date = sdf.format(new Date());
+			date = date.substring(0,date.lastIndexOf(":")-1);
+			appointmentResponse.setApprovedDate(date+"0:00Z");
 			appointmentResponse.setAppointmentId(appointmentId.toUpperCase());
 			appointmentResponse.setAppointmentStatus("Booked");
 			appointmentResponse.setSourceApplicationType(1);
