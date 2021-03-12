@@ -1,4 +1,4 @@
-//Copyright 2013-2020 NXGN Management, LLC. All Rights Reserved.
+//Copyright 2013-2021 NXGN Management, LLC. All Rights Reserved.
 package com.medfusion.product.object.maps.forms.page.questionnaires;
 
 import java.util.concurrent.TimeUnit;
@@ -15,7 +15,7 @@ import org.openqa.selenium.support.PageFactory;
 import org.openqa.selenium.support.ui.FluentWait;
 
 import com.medfusion.common.utils.IHGConstants;
-import com.medfusion.portal.utils.PortalUtil;
+import com.medfusion.product.patientportal2.utils.PortalUtil2;
 
 public class FormWelcomePage extends PortalFormPage {
 
@@ -41,12 +41,12 @@ public class FormWelcomePage extends PortalFormPage {
 		WebElement welcome = wdw.until(new Function<WebDriver, WebElement>() {
 			public WebElement apply(WebDriver driver) {
 				try {
-					PortalUtil.setPortalFrame(driver);
+					PortalUtil2.setPortalFrame(driver);
 				} catch (TimeoutException e) {					
 					log("portal frame not found and exception caught");
 				}
 				try {					
-					PortalUtil.setquestionnarieFrame(driver);
+					PortalUtil2.setquestionnarieFrame(driver);
 				} catch (NoSuchElementException e) {
 					driver.switchTo().defaultContent();
 					log("questionnaire frame not found and exception caught");

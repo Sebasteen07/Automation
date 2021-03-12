@@ -1,4 +1,4 @@
-//Copyright 2013-2020 NXGN Management, LLC. All Rights Reserved.
+//Copyright 2013-2021 NXGN Management, LLC. All Rights Reserved.
 package com.medfusion.patientportal2.test;
 
 import java.awt.Toolkit;
@@ -6,7 +6,6 @@ import java.awt.datatransfer.StringSelection;
 
 import com.intuit.ihg.common.utils.PatientFactory;
 import com.medfusion.pojos.Patient;
-import com.medfusion.portal.utils.PortalConstants;
 import org.testng.annotations.BeforeMethod;
 import org.testng.annotations.Test;
 
@@ -30,6 +29,7 @@ import com.medfusion.product.object.maps.patientportal2.page.MyAccountPage.Jalap
 import com.medfusion.product.object.maps.patientportal2.page.MyAccountPage.JalapenoMyAccountPreferencesPage;
 import com.medfusion.product.object.maps.patientportal2.page.MyAccountPage.JalapenoMyAccountProfilePage;
 import com.medfusion.product.object.maps.patientportal2.page.MyAccountPage.JalapenoMyAccountSecurityPage;
+import com.medfusion.product.patientportal2.utils.JalapenoConstants;
 import com.medfusion.product.practice.api.utils.PracticeConstants;
 import com.medfusion.product.practice.tests.PatientActivationSearchTest;
 
@@ -109,8 +109,8 @@ public class PatientPortal2MU3AcceptanceTests extends BaseTestNGWebDriver {
 				PatientVerificationPage patientVerificationPage = new PatientVerificationPage(driver, unlockLinkPortal);
 				StringSelection sourceVerificationPage = patientVerificationPage.getHtmlSource();
 				SecurityDetailsPage securityDetailPage = patientVerificationPage
-						.fillPatientInfoAndContinue(PracticeConstants.ZIP_CODE, PortalConstants.DateOfBirthMonthNumber, PortalConstants.DateOfBirthDay,
-								PortalConstants.DateOfBirthYear);
+						.fillPatientInfoAndContinue(PracticeConstants.ZIP_CODE, JalapenoConstants.DATE_OF_BIRTH_MONTH_NO, JalapenoConstants.DATE_OF_BIRTH_DAY,
+								JalapenoConstants.DATE_OF_BIRTH_YEAR);
 
 				logStep("Copy source of Account Details Page and validate");
 				AChecker achecker = copySourceNavigateToACheckerAndValidate(securityDetailPage);

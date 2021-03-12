@@ -53,6 +53,9 @@ public class JalapenoLoginPage extends MedfusionPage {
 
 	@FindBy(how = How.XPATH, using = "//span[@data-ng-show = 'notice.existingaccount_same']")
     private WebElement healthKeyMatchError;
+	
+	@FindBy(how = How.XPATH, using = "//*[contains(text(),'You are no longer able to sign in because you have been unlinked from all patient accounts. Please contact our practice if you need assistance.')]")
+	private WebElement trustedRepresentativeLoginError;
 
 	public JalapenoLoginPage(WebDriver driver, String url) {
 		super(driver, url);
@@ -180,6 +183,17 @@ public void unCheckRememberUserName()
 		rememberUserNameCheckbox.click();
 	}
 	}
+
+	public boolean isTrustedRepresentativeAccountErrorDisplayed() {
+	    try {
+	        log("Looking for You are no longer able to sign in error on loginPage");
+	        return trustedRepresentativeLoginError.isDisplayed();
+	    }
+	    catch (Exception e) {
+	    }
+	    return false;
+	}
+
 
 }
 
