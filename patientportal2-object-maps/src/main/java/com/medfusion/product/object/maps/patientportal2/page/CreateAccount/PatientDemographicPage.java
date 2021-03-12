@@ -1,4 +1,4 @@
-//Copyright 2013-2020 NXGN Management, LLC. All Rights Reserved.
+//Copyright 2013-2021 NXGN Management, LLC. All Rights Reserved.
 package com.medfusion.product.object.maps.patientportal2.page.CreateAccount;
 
 import static org.testng.Assert.assertFalse;
@@ -70,13 +70,13 @@ public class PatientDemographicPage extends MedfusionPage {
 	@FindBy(how = How.XPATH, using = "//span[@ng-click='$select.toggle($event)']")
 	private WebElement dropdownToggle;
 
-	@FindBy(how = How.XPATH, using = "/html/body/patient-web-angular/div[4]/div/div[2]/div[3]/div[1]/ui-view/div/div/div/div/div/div/div/div/create-account-first-page/div[3]/div/form/div[2]/div[4]/div[1]/div/mfusstates/div/ng-select/ng-dropdown-panel/div/div[2]/div[1]")
+	@FindBy(how = How.XPATH, using = "//mfusstates/div/ng-select/ng-dropdown-panel/div/div[2]/div[1]")
 	private WebElement setStateAlabama;
 
-	@FindBy(how = How.XPATH, using = "/html/body/patient-web-angular/div[4]/div/div[2]/div[3]/div[1]/ui-view/div/div/div/div/div/div/div/div/create-account-first-page/div[3]/div/form/div[2]/div[4]/div[1]/div/mfusstates/div/ng-select/ng-dropdown-panel/div/div[2]/div[2]")
+	@FindBy(how = How.XPATH, using = "//mfusstates/div/ng-select/ng-dropdown-panel/div/div[2]/div[2]")
 	private WebElement setStateAlaska;
 
-	@FindBy(how = How.XPATH, using = "/html/body/patient-web-angular/div[4]/div/div[2]/div[3]/div[1]/ui-view/div/div/div/div/div/div/div/div/create-account-first-page/div[3]/div/form/div[2]/div[4]/div[1]/div/mfusstates/div/ng-select/ng-dropdown-panel/div/div[2]/div[13]")
+	@FindBy(how = How.XPATH, using = "//mfusstates/div/ng-select/ng-dropdown-panel/div/div[2]/div[13]")
 	private WebElement setStateHawaii;
 
 	@FindBy(how = How.XPATH, using = ACTIVE_TAB_XPATH_SELECTOR + "//*[@id='postalCode']")
