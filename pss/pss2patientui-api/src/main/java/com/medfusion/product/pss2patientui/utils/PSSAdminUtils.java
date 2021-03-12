@@ -361,7 +361,7 @@ public class PSSAdminUtils {
 		Log4jUtil.log("Verify the Cancel Settings in ADMIN TAB");
 		boolean cancel1 = adminAppointment.isShowCancellationRescheduleReason();
 		Log4jUtil.log("verifying the settings of Cancel/Reschedule Reason : " + cancel1);
-		Thread.sleep(1000);
+		Thread.sleep(2000);
 		if (cancel1) {
 			Log4jUtil.log("Cancel/Reschedule Reason ALREADY turned ON..");
 			testData.setShowCancellationRescheduleReason(cancel1);
