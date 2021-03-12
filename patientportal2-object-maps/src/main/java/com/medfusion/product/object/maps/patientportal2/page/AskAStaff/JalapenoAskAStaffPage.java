@@ -1,3 +1,4 @@
+// Copyright 2013-2021 NXGN Management, LLC. All Rights Reserved.
 package com.medfusion.product.object.maps.patientportal2.page.AskAStaff;
 
 import java.text.DecimalFormat;
@@ -18,9 +19,9 @@ import org.openqa.selenium.support.ui.WebDriverWait;
 
 import com.intuit.ifs.csscat.core.utils.Log4jUtil;
 import com.medfusion.common.utils.IHGUtil;
-import com.medfusion.portal.utils.PortalUtil;
 import com.medfusion.product.object.maps.patientportal2.page.JalapenoMenu;
 import com.medfusion.product.object.maps.patientportal2.page.HomePage.JalapenoHomePage;
+import com.medfusion.product.patientportal2.utils.PortalUtil2;
 
 public class JalapenoAskAStaffPage extends JalapenoMenu {
 
@@ -104,7 +105,7 @@ public class JalapenoAskAStaffPage extends JalapenoMenu {
 			IHGUtil.waitForElement(driver, 2, removeCardOkButton);
 			removeCardOkButton.click();
 			log("Deleting already existing card");
-			PortalUtil.acceptAlert(driver);
+			PortalUtil2.acceptAlert(driver);
 			Thread.sleep(3000);
 		} catch (NoSuchElementException e) {
 			log("Element not found, patient does not have the card at the moment");

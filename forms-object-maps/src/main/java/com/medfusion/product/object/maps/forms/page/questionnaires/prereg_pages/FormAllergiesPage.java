@@ -1,3 +1,4 @@
+//  Copyright 2013-2021 NXGN Management, LLC. All Rights Reserved.
 package com.medfusion.product.object.maps.forms.page.questionnaires.prereg_pages;
 
 import org.openqa.selenium.By;
@@ -7,7 +8,7 @@ import org.openqa.selenium.support.FindBy;
 import org.openqa.selenium.support.PageFactory;
 
 import com.medfusion.common.utils.IHGUtil;
-import com.medfusion.portal.utils.PortalUtil;
+import com.medfusion.product.patientportal2.utils.PortalUtil2;
 import com.medfusion.product.object.maps.forms.page.questionnaires.PortalFormPage;
 
 public class FormAllergiesPage extends PortalFormPage {
@@ -39,8 +40,8 @@ public class FormAllergiesPage extends PortalFormPage {
 	 * @throws Exception
 	 */
 	public void setNoDrugAllergies() throws Exception {
-		PortalUtil.PrintMethodName();
-		PortalUtil.setquestionnarieFrame(driver);
+		PortalUtil2.PrintMethodName();
+		PortalUtil2.setquestionnarieFrame(driver);
 		noDrugAllergies.click();
 
 	}
@@ -50,13 +51,13 @@ public class FormAllergiesPage extends PortalFormPage {
 	 * @throws Exception
 	 */
 	public void setNoFoodAllergies() throws Exception {
-		PortalUtil.PrintMethodName();
-		PortalUtil.setquestionnarieFrame(driver);
+		PortalUtil2.PrintMethodName();
+		PortalUtil2.setquestionnarieFrame(driver);
 		noFoodAllergies.click();
 
 	}
 	public void setGeneralAnesthetic_20(Boolean isFormTypePreCheck) throws Exception {
-		PortalUtil.PrintMethodName();
+		PortalUtil2.PrintMethodName();
 		
 		if(!isFormTypePreCheck) {
 			WebElement W1=driver.findElement(By.xpath("//iframe[@title='Forms']"));
@@ -69,7 +70,7 @@ public class FormAllergiesPage extends PortalFormPage {
 		
 	}
 	public void setPeanuts_20() throws Exception {
-		PortalUtil.PrintMethodName();
+		PortalUtil2.PrintMethodName();
 		if(!peanuts.isSelected()) {
 			peanuts.click();
 		}
@@ -87,8 +88,8 @@ public class FormAllergiesPage extends PortalFormPage {
 	 * @throws Exception
 	 */
 	public void setNoEnvironmentalAllergies() throws Exception {
-		PortalUtil.PrintMethodName();
-		PortalUtil.setquestionnarieFrame(driver);
+		PortalUtil2.PrintMethodName();
+		PortalUtil2.setquestionnarieFrame(driver);
 		noEnvironmentalAllergies.click();
 	}
 

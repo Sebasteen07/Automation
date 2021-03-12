@@ -1,4 +1,4 @@
-// Copyright 2013-2020 NXGN Management, LLC. All Rights Reserved.
+// Copyright 2013-2021 NXGN Management, LLC. All Rights Reserved.
 package com.intuit.ihg.product.integrationplatform.test;
 
 import static org.testng.Assert.assertNotNull;
@@ -35,7 +35,6 @@ import com.intuit.ihg.product.integrationplatform.utils.StatementPreference;
 import com.intuit.ihg.product.integrationplatform.utils.StatementPreferenceTestData;
 import com.medfusion.common.utils.IHGUtil;
 import com.medfusion.common.utils.Mailinator;
-import com.medfusion.portal.utils.PortalConstants;
 import com.medfusion.product.object.maps.patientportal2.page.JalapenoLoginPage;
 import com.medfusion.product.object.maps.patientportal2.page.AppointmentRequestPage.JalapenoAppointmentRequestPage;
 import com.medfusion.product.object.maps.patientportal2.page.AppointmentRequestPage.JalapenoAppointmentRequestV2Step1;
@@ -60,6 +59,7 @@ import com.medfusion.product.object.maps.practice.page.patientSearch.PatientSear
 import com.medfusion.product.patientportal2.pojo.CreditCard;
 import com.medfusion.product.patientportal2.pojo.CreditCard.CardType;
 import com.medfusion.product.patientportal2.pojo.StatementPreferenceType;
+import com.medfusion.product.patientportal2.utils.JalapenoConstants;
 
 /**
  * @author dsalaskar
@@ -132,7 +132,7 @@ public class IntegrationPlatformAcceptanceTests extends BaseTestNGWebDriver {
 
 		// Searching for the link for patient activation in the Gmail Inbox
 		String activationUrl = gBot.findInboxEmailLink(testData.getGmailUsername(), testData.getGmailPassword(),
-				PortalConstants.NewPatientActivationMessage, "portal/#/user/activate", 3, false, true);
+				JalapenoConstants.NEW_PATIENT_ACTIVATION_MESSAGE, "portal/#/user/activate", 3, false, true);
 
 		log("Step 6: Moving to the link obtained from the email message");
 		assertNotNull(activationUrl, "Error: Activation link not found.");
@@ -255,7 +255,7 @@ public class IntegrationPlatformAcceptanceTests extends BaseTestNGWebDriver {
 				break;
 			}
 		}
-		verifyTrue(completed, "Message processing was not completed in time");
+		assertTrue(completed, "Message processing was not completed in time");
 
 		log("Step 6: Check secure message in patient gmail inbox");
 		// String link = RestUtils.verifyEmailNotification(testData.getGmailUserName(),
@@ -617,7 +617,7 @@ public class IntegrationPlatformAcceptanceTests extends BaseTestNGWebDriver {
 				}
 			}
 
-			verifyTrue(completed, "Message processing was not completed in time");
+			assertTrue(completed, "Message processing was not completed in time");
 		}
 
 		else {
@@ -658,7 +658,7 @@ public class IntegrationPlatformAcceptanceTests extends BaseTestNGWebDriver {
 				}
 			}
 
-			verifyTrue(completed, "Message processing was not completed in time");
+			assertTrue(completed, "Message processing was not completed in time");
 		}
 		log("Step 12: Check secure message in patient mailinator inbox");
 
@@ -748,7 +748,6 @@ public class IntegrationPlatformAcceptanceTests extends BaseTestNGWebDriver {
 
 		log("Step 4: Click on Make Payment Link ");
 		JalapenoPayBillsMakePaymentPage payBillsPage = homePage.clickOnNewPayBills(driver);
-		assertTrue(payBillsPage.assessPayBillsMakePaymentPageElements());
 
 		log("Step 5: Set Make Payments Fields ");
 		payBillsPage.removeAllCards();
@@ -756,7 +755,6 @@ public class IntegrationPlatformAcceptanceTests extends BaseTestNGWebDriver {
 				creditCard);
 
 		log("Step 6: fetch confirmation number ");
-		assertTrue(confirmationPage.assessPayBillsConfirmationPageElements());
 		homePage = confirmationPage.commentAndSubmitPayment("Testing payment from number: " + accountNumber);
 
 		log("Step 7: Logout of Patient Portal");
@@ -798,7 +796,7 @@ public class IntegrationPlatformAcceptanceTests extends BaseTestNGWebDriver {
 			completed = true;
 		}
 
-		verifyTrue(completed, "Message processing was not completed in time");
+		assertTrue(completed, "Message processing was not completed in time");
 
 		// wait 90 seconds so the email-notification is delivered
 		Thread.sleep(90000);
@@ -855,7 +853,7 @@ public class IntegrationPlatformAcceptanceTests extends BaseTestNGWebDriver {
 		if (RestUtils.isMessageProcessingCompleted(OLBPData.getResponsePath())) {
 			completed = true;
 		}
-		verifyTrue(completed, "Message processing was not completed in time");
+		assertTrue(completed, "Message processing was not completed in time");
 
 		log("Verify Payment status in Practice Portal");
 		log("Step 23: Login to Practice Portal");
@@ -1356,11 +1354,14 @@ public class IntegrationPlatformAcceptanceTests extends BaseTestNGWebDriver {
 				break;
 			}
 		}
+		prescriptionsPage.clickOnMenuHome();
+		homePage.areBasicPageElementsPresent();
+		homePage.clickOnPrescriptions(driver);
+		prescriptionsPage.areBasicPageElementsPresent();
+		prescriptionsPage.clickContinueButton(driver);
 		log("Step 10: Verify Deleted medication is not visible on portal");
-
 		prescriptionsPage.validateDeletedMedication(productName);
 		log("Deleted medication is not visible on portal");
-
 		log("Step 11: Logout of Patient Portal");
 		prescriptionsPage.clickOnLogout();
 	}

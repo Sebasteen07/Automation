@@ -5,7 +5,7 @@ import org.openqa.selenium.WebDriver;
 import com.intuit.ifs.csscat.core.BaseTestNGWebDriver;
 import com.medfusion.common.utils.IHGUtil;
 import com.medfusion.common.utils.PropertyFileLoader;
-import com.medfusion.product.patientportal2.utils.PortalUtil;
+import com.medfusion.product.patientportal2.utils.PortalUtil2;
 
 // TODO to delete? Probably not used anywhere
 public class JalapenoCreatePatientTest extends BaseTestNGWebDriver {
@@ -53,7 +53,7 @@ public class JalapenoCreatePatientTest extends BaseTestNGWebDriver {
 	public void initPatientData(WebDriver driver, PropertyFileLoader testData) {
 		IHGUtil.PrintMethodName();
 
-		int randomize = PortalUtil.createRandomNumber();
+		int randomize = IHGUtil.createRandomNumber();
 
 		// Setting data according to test purpose
 		if (email.isEmpty()) {
@@ -75,7 +75,7 @@ public class JalapenoCreatePatientTest extends BaseTestNGWebDriver {
 
 	/*
 	 * @Deprecated public JalapenoHomePage createPatient(WebDriver driver, PropertyFileLoader testData) throws InterruptedException { IHGUtil.PrintMethodName();
-	 * int randomize = PortalUtil.createRandomNumber();
+	 * int randomize = IHGUtil.createRandomNumber();
 	 * 
 	 * //Setting data according to test purpose if(email.isEmpty()) { email = IHGUtil.createRandomEmailAddress(testData.getEmail()); }
 	 * 
