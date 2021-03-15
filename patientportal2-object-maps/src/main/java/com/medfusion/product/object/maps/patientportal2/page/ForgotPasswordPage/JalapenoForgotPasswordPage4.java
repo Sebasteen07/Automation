@@ -3,13 +3,17 @@ package com.medfusion.product.object.maps.patientportal2.page.ForgotPasswordPage
 import java.util.ArrayList;
 
 import com.medfusion.product.object.maps.patientportal2.page.MedfusionPage;
+
+import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.FindBy;
 import org.openqa.selenium.support.How;
 import org.openqa.selenium.support.PageFactory;
+import org.openqa.selenium.support.ui.Select;
 
 import com.medfusion.common.utils.IHGUtil;
+import com.medfusion.common.utils.PropertyFileLoader;
 import com.medfusion.product.object.maps.patientportal2.page.HomePage.JalapenoHomePage;
 
 public class JalapenoForgotPasswordPage4 extends MedfusionPage {
@@ -28,6 +32,13 @@ public class JalapenoForgotPasswordPage4 extends MedfusionPage {
 
 		@FindBy(how = How.ID, using = "updateMissingInfoButton")
 		private WebElement okButton;
+		
+		@FindBy(how = How.ID, using = "secretAnswer_forgot")
+		public WebElement secretAnswer;
+		
+		@FindBy(how = How.XPATH, using = "//input[@name='secretAnswer']")
+		public WebElement answerSecret;
+			
 
 		public JalapenoForgotPasswordPage4(WebDriver driver) {
 				super(driver);
@@ -60,4 +71,24 @@ public class JalapenoForgotPasswordPage4 extends MedfusionPage {
 						okButton.click();
 				}
 		}
-}
+
+		public JalapenoHomePage fillInPassword(String password) throws Exception {
+			PropertyFileLoader testData = new PropertyFileLoader();
+			newPassword.sendKeys(password);
+			confirmPassword.sendKeys(password);
+
+			resetPasswordButton.click();
+			selectStatementIfRequired();
+			fillInSecretQuestionAndAnswer(testData.getProperty("resetPasswordSecurityQuestion"),testData.getProperty("resetPasswordSecurityAnswer"));
+			
+			return PageFactory.initElements(driver, JalapenoHomePage.class);
+		}
+		
+		public void fillInSecretQuestionAndAnswer(String secretQuestion, String secretAns) throws InterruptedException {
+				Select DDsecretQuestion = new Select(driver.findElement(By.name("secretQuestion")));
+				DDsecretQuestion.selectByVisibleText(secretQuestion);
+				answerSecret.sendKeys(secretAns);
+				okButton.click();
+			}			
+		}
+		

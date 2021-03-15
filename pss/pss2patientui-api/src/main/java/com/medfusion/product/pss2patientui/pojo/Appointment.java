@@ -116,8 +116,41 @@ public class Appointment {
 	private String baseurl_AvailableSlots;
 	private String baseurl_ScheduleAppointment;
 	private String baseurl_AppointmentType;
+	
+	private String practiceId;
+	private String basicURI;
+	private String practiceDisplayName;
+	private String patientId;
 
-	private String urlAnonymous;
+	public String getBasicURI() {
+		return basicURI;
+	}
+
+	public void setBasicURI(String basicURI) {
+		this.basicURI = basicURI;
+	}
+
+	//for REST Assured
+    private String accessTokenURL;
+    private String accessToken;
+
+
+	public String getAccessTokenURL() {
+		return accessTokenURL;
+	}
+
+	public void setAccessTokenURL(String accessTokenURL) {
+		this.accessTokenURL = accessTokenURL;
+	}
+
+	public String getAccessToken() {
+		return accessToken;
+	}
+
+	public void setAccessToken(String accessToken) {
+		this.accessToken = accessToken;
+	}
+
 	private String urlAnonymousNG;
 	private boolean isAnonymousFlow = false;
 	private boolean isinsuranceVisible = false;
@@ -137,15 +170,14 @@ public class Appointment {
 	}
 
 	public void setNextAvailiabletoggleStatus(boolean nextAvailiabletoggleStatus) {
-		this.nextAvailiabletoggleStatus = nextAvailiabletoggleStatus;
+	this.nextAvailiabletoggleStatus = nextAvailiabletoggleStatus;
 	}
 
-	private String accessTokenURL;
-	private String accessToken;
-	private String ng_adapterBaseURL;
+	
 
-	public Appointment(String providerConfig, String usernameConfig, String passwordConfig, String datetimeConfig,
-			String locationConfig, String appointmentConfig, String specialityConfig) {
+	
+	public Appointment(String providerConfig, String usernameConfig, String passwordConfig, String datetimeConfig, String locationConfig,
+			String appointmentConfig, String specialityConfig) {
 		this.username = usernameConfig;
 		this.password = passwordConfig;
 		this.provider = providerConfig;
@@ -155,8 +187,7 @@ public class Appointment {
 		this.speciality = specialityConfig;
 	}
 
-	public Appointment() {
-	}
+
 
 	public String getGenderCarePatient() {
 		return genderCarePatient;
@@ -230,28 +261,35 @@ public class Appointment {
 		this.pcptoggleState = pcptoggleState;
 	}
 
-	public String getNg_adapterBaseURL() {
-		return ng_adapterBaseURL;
+
+	public Appointment() {}
+
+	public String getPatientId() {
+		return patientId;
 	}
 
-	public void setNg_adapterBaseURL(String ng_adapterBaseURL) {
-		this.ng_adapterBaseURL = ng_adapterBaseURL;
+	public void setPatientId(String patientId) {
+		this.patientId = patientId;
 	}
 
-	public String getAccessToken() {
-		return accessToken;
+	private String urlAnonymous;
+	
+	public String getPracticeDisplayName() {
+		return practiceDisplayName;
 	}
 
-	public void setAccessToken(String accessToken) {
-		this.accessToken = accessToken;
+	public void setPracticeDisplayName(String practiceDisplayName) {
+		this.practiceDisplayName = practiceDisplayName;
 	}
 
-	public String getAccessTokenURL() {
-		return accessTokenURL;
+
+
+	public String getPracticeId() {
+		return practiceId;
 	}
 
-	public void setAccessTokenURL(String accessTokenURL) {
-		this.accessTokenURL = accessTokenURL;
+	public void setPracticeId(String practiceId) {
+		this.practiceId = practiceId;
 	}
 
 	public String getPopUpMessege() {

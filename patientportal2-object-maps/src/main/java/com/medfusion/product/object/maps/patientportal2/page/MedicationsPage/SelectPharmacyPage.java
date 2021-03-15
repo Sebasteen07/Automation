@@ -61,7 +61,7 @@ public class SelectPharmacyPage extends MedfusionPage {
 	@FindBy(how = How.ID, using = "city")
 	private WebElement pharmacyCity;
 	
-	@FindBy(how = How.XPATH, using = "//input[@title='State']")
+	@FindBy(how = How.XPATH, using = "//input[@title='stateLabel']")
 	private WebElement pharmacyState;
 	
 	@FindBy(how = How.ID, using = "zipcode")

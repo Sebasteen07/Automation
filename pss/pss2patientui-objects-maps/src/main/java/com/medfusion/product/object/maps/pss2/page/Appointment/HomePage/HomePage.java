@@ -159,8 +159,11 @@ public class HomePage extends PSS2MainPage {
 	@FindBy(how = How.XPATH, using = "//*[@id='closeAlertPopup']")
 	private WebElement dismissPopUp;
 
+	
 	@FindBy(how = How.XPATH, using = "//*[@id='upcomingevents']/h1/span")
-	private WebElement upCmgAptLabel;
+    private WebElement upCmgAptLabel;
+   
+    
 	
 	@FindBy(how = How.XPATH, using = "//*[@id='pastappointmentevent']/h1/span")
 	private WebElement pastAptLabel;
@@ -194,7 +197,7 @@ public class HomePage extends PSS2MainPage {
 
 	@Override
 	public boolean areBasicPageElementsPresent() {
-	
+
 		ArrayList<WebElement> webElementsList = new ArrayList<WebElement>();
 		webElementsList.add(upCmgAptLabel);
 		webElementsList.add(pastAptLabel);

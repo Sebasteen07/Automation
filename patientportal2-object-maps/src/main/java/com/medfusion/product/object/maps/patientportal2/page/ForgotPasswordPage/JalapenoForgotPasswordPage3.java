@@ -9,6 +9,7 @@ import org.openqa.selenium.support.FindBy;
 import org.openqa.selenium.support.How;
 import org.openqa.selenium.support.PageFactory;
 
+
 import com.medfusion.common.utils.IHGUtil;
 
 public class JalapenoForgotPasswordPage3 extends MedfusionPage {
@@ -21,11 +22,15 @@ public class JalapenoForgotPasswordPage3 extends MedfusionPage {
 
 		@FindBy(how = How.ID, using = "forgotEnterSecretAnswerFormContinueButton")
 		public WebElement continueAndResetButton;
+		
+		@FindBy(how = How.ID, using = "updateMissingInfoButton")
+		private WebElement okButton;
 
 		public JalapenoForgotPasswordPage3(WebDriver driver, String url) {
 				super(driver);
 				IHGUtil.PrintMethodName();;
 		}
+
 
 		@Override
 		public boolean areBasicPageElementsPresent() {
