@@ -1,3 +1,4 @@
+//Copyright 2013-2021 NXGN Management, LLC. All Rights Reserved.
 package com.medfusion.product.object.maps.patientportal2.page.ForgotPasswordPage;
 
 import java.util.ArrayList;
@@ -45,8 +46,6 @@ public class JalapenoForgotPasswordPage extends MedfusionPage {
 				log("Clicking on Continue button");
 
 				continueButton.click();
-
-				// waitForPageTitle(null, 60);
 
 				return PageFactory.initElements(driver, JalapenoForgotPasswordPage2.class);
 		}
