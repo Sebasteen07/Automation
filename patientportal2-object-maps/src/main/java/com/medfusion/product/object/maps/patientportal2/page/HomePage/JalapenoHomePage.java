@@ -36,7 +36,6 @@ import com.medfusion.product.object.maps.patientportal2.page.MessagesPage.Jalape
 import com.medfusion.product.object.maps.patientportal2.page.NewPayBillsPage.JalapenoPayBillsMakePaymentPage;
 import com.medfusion.product.object.maps.patientportal2.page.PayBillsStatementPage.JalapenoPayBillsStatementPage;
 import com.medfusion.product.object.maps.patientportal2.page.PrescriptionsPage.JalapenoPrescriptionsPage;
-import com.medfusion.product.object.maps.patientportal2.page.SymptomAssessment.JalapenoSymptomAssessmentPage;
 
 public class JalapenoHomePage extends JalapenoMenu {
 	@FindBy(how = How.ID, using = "feature_messaging")
@@ -371,12 +370,6 @@ public class JalapenoHomePage extends JalapenoMenu {
 			e.printStackTrace();
 		}
 		return PageFactory.initElements(driver, JalapenoAskAStaffV2Page1.class);
-	}
-
-	public JalapenoSymptomAssessmentPage clickOnSymptomAssessment(WebDriver driver) {
-		IHGUtil.PrintMethodName();
-		symptomAss.click();
-		return PageFactory.initElements(driver, JalapenoSymptomAssessmentPage.class);
 	}
 
 	public void faChangePatient() throws InterruptedException {

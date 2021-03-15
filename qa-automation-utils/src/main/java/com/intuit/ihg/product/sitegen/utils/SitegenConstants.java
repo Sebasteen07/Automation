@@ -1,4 +1,4 @@
-//Copyright 2013-2020 NXGN Management, LLC. All Rights Reserved.
+//Copyright 2013-2021 NXGN Management, LLC. All Rights Reserved.
 package com.intuit.ihg.product.sitegen.utils;
 
 /**
@@ -9,10 +9,6 @@ package com.intuit.ihg.product.sitegen.utils;
  */
 
 public class SitegenConstants {
-
-	public final static int FIND_ELEMENTS_MAX_WAIT_SECONDS = 3;
-	public final static int SELENIUM_IMPLICIT_WAIT_SECONDS = 30;
-
 	// US6144:- Testcase testLocation
 	public final static String PRACTICENAME = "SiteGenAutomation";
 	public final static String ADDRESS = "San Diego";
