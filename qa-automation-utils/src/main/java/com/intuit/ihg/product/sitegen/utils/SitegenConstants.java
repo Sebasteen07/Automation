@@ -45,8 +45,6 @@ public class SitegenConstants {
 	public final static String INTEGRATION_NAME = "Sitegen Automation";
 	public final static String REVIEWTYPE = "Never Review";
 
-
-
 	// for Custom Forms
 	public final static String FORMTYPE = "Custom Health Form";
 	public final static String FORMTITLE = "Auto CustomForm";
@@ -65,7 +63,6 @@ public class SitegenConstants {
 	public final static String FORMLAYOUTPAGE2 = "1";
 	public final static String FORMLAYOUTPAGE3 = "2";
 	public final static String FORMLAYOUTPAGE0 = "0";
-
 
 	// for Merchant AccountSetup for Practise through Paypal
 	public final static String PROCESSORVALUE1 = "PayPal";
@@ -139,11 +136,8 @@ public class SitegenConstants {
 
 	public final static String FORMS_REGISTRATION_FORM_INITIAL_NAME = "General Registration and Health History";
 	public final static String FORMS_CUSTOM_FORM_INITIAL_NAME = "Custom Form";
-	
-	//Add new Pharmacy
+
+	// Add new Pharmacy
 	public final static String PHARMACYNAME = "Automation Pharmacy";
 	public final static String PHARMACYLOCATION = "Automation-Location-1";
-	public final static String PHARMACYLOCATION1 = "Alaska";
 }
-
-

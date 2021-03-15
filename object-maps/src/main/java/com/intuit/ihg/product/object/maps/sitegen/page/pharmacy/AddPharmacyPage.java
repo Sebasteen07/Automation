@@ -78,7 +78,7 @@ public class AddPharmacyPage  extends BasePageObject{
 		txtPharmacyPhone.sendKeys(IHGUtil.createRandomNumericString(10));
 		
 		Select select = new Select(locationDropDown);
-		select.selectByVisibleText(SitegenConstants.PHARMACYLOCATION1);
+		select.selectByVisibleText(SitegenConstants.PHARMACYLOCATION);
 		
 		externalPharmacyId.sendKeys(externalid);
 		btnConfirmPharmacy.click();
