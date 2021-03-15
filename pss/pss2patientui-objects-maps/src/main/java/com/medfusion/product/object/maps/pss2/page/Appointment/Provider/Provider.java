@@ -135,6 +135,19 @@ public class Provider extends PSS2MainPage {
 		log("First provider is" + provider);
 		return provider;
 	}
+	
+	
+	public void getProvider(String providerName)
+	{
+		log("in select Provider from providerList" + providerName);
+		for (int i = 0; i < providerList.size(); i++) {
+			log(providerList.get(i).getText() + " match "
+					+ providerList.get(i).getText().equalsIgnoreCase(providerName));
+			if (providerList.get(i).getText().trim().equalsIgnoreCase(providerName.trim())) {
+				providerList.get(i).click();
+			}
+		}
+	}
 
 	public AppointmentDateTime searchForProviderFromList(String providerName) throws InterruptedException {
 		searchForProvider.sendKeys(providerName.trim());

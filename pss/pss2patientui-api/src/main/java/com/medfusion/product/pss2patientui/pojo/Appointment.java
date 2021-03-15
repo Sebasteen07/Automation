@@ -162,19 +162,6 @@ public class Appointment {
 	private boolean showCancellationReasonPM = false;
 	private boolean isFutureApt = false;
 	private boolean pcptoggleState = false;
-	private boolean nextAvailiabletoggleStatus = false;
-
-
-	public boolean isNextAvailiabletoggleStatus() {
-		return nextAvailiabletoggleStatus;
-	}
-
-	public void setNextAvailiabletoggleStatus(boolean nextAvailiabletoggleStatus) {
-	this.nextAvailiabletoggleStatus = nextAvailiabletoggleStatus;
-	}
-
-	
-
 	
 	public Appointment(String providerConfig, String usernameConfig, String passwordConfig, String datetimeConfig, String locationConfig,
 			String appointmentConfig, String specialityConfig) {
@@ -188,6 +175,10 @@ public class Appointment {
 	}
 
 
+
+
+	public Appointment() {}
+	
 
 	public String getGenderCarePatient() {
 		return genderCarePatient;
@@ -261,8 +252,6 @@ public class Appointment {
 		this.pcptoggleState = pcptoggleState;
 	}
 
-
-	public Appointment() {}
 
 	public String getPatientId() {
 		return patientId;

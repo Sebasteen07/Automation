@@ -653,29 +653,21 @@ public class PSSAdminUtils {
 		} else {
 			Log4jUtil.log("Status of PCP is Already OFF");
 		}
-		Log4jUtil.log("is Next Availiable ON  " + adminappointment.toggleNextAvailableStatus());
-		//appointment.setNextAvailiabletoggleStatus(adminappointment.toggleNextAvailableStatus());
-		if (adminappointment.toggleNextAvailableStatus() == true) {
-			Log4jUtil.log("Next Availiable Status is ON ");
-			adminappointment.toggleNextavailable();
-			Log4jUtil.log("Clicked For the OFF");
-		} else {
-			Log4jUtil.log("Next Availiable Status is Already OFF");
-		}
-//		PatientFlow patientflow = pss2practiceconfig.gotoPatientFlowTab();
-//		adminuser.setRule(patientflow.getRule());
-//		Log4jUtil.log("rule= " + patientflow.getRule());
-//		setRulesNoSpecialitySet1(patientflow);
-//		AdminPatientMatching adminpatientmatching = patientflow.gotoPatientMatchingTab();
-//		adminpatientmatching.patientMatchingSelection();
+		
+		PatientFlow patientflow = pss2practiceconfig.gotoPatientFlowTab();
+		adminuser.setRule(patientflow.getRule());
+		Log4jUtil.log("rule= " + patientflow.getRule());
+		setRulesNoSpecialitySet1(patientflow);
+		AdminPatientMatching adminpatientmatching = patientflow.gotoPatientMatchingTab();
+		adminpatientmatching.patientMatchingSelection();
 		ManageResource manageResource = pss2practiceconfig.gotoResource();
 		pageRefresh(driver);
 		manageResource.selectResource(appointment.getProvider());
 		Log4jUtil.log("is share patient ON for resource " + manageResource.isSharedPatientTrueForResource());
-		if (manageResource.isSharedPatientTrueForResource() == false) {
+		if (manageResource.isSharedPatientTrueForResource() == true) {
 			manageResource.clickShareToggle();
 		} else {
-			Log4jUtil.log("Share Patient is already ON");
+			Log4jUtil.log("Share Patient is already OFF");
 		}
 
 	}

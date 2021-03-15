@@ -4742,11 +4742,9 @@ public class PSS2PatientPortalAcceptanceTests extends BaseTestNGWebDriver {
 		Provider provider = appointment.selectTypeOfProvider(testData.getAppointmenttype(),
 				Boolean.valueOf(testData.getIsAppointmentPopup()));
 		Log4jUtil.log("Step 11: Verfiy Provider Page and Provider = " + testData.getProvider());
-		Thread.sleep(2000);
-		provider.getProviderNamesfromProviderList(testData.getProvider());
-		Log4jUtil.log("Provider is in dev3   " + testData.getCareProvider());
-		Log4jUtil.log("PCP is present on Patient UI When Share patient is OFF");
-		assertEquals(provider.getProviderNamesfromProviderList(testData.getProvider()), testData.getCareProvider());
+        Thread.sleep(2000);
+		provider.getProvider(testData.getCareProvider());
+
 	}
 
 	@Test(enabled = true, groups = { "AcceptanceTests" }, retryAnalyzer = RetryAnalyzer.class)
@@ -4804,9 +4802,6 @@ public class PSS2PatientPortalAcceptanceTests extends BaseTestNGWebDriver {
 				Boolean.valueOf(testData.getIsAppointmentPopup()));
 		Log4jUtil.log("Step 11: Verfiy Provider Page and Provider = " + testData.getProvider());
 		Thread.sleep(2000);
-		provider.getProviderNamesfromProviderList(testData.getProvider());
-		Log4jUtil.log("Provider is in dev3   " + testData.getCareProvider());
-		Log4jUtil.log("PCP is present on Patient UI When Share patient is OFF");
-		assertEquals(provider.getProviderNamesfromProviderList(testData.getProvider()), testData.getCareProvider());
+		provider.getProvider(testData.getCareProvider());
 	}
 }
