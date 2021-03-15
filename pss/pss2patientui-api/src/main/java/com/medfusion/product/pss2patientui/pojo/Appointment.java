@@ -108,20 +108,14 @@ public class Appointment {
 	private String baseurl_LocationRule;
 	private String baseurl_AvailableSlots;
 	private String baseurl_ScheduleAppointment;
-	private String baseurl_AppointmentType;
-	
+	private String baseurl_APT;
+
+
 	private String practiceId;
 	private String basicURI;
 	private String practiceDisplayName;
 	private String patientId;
 
-	public String getBasicURI() {
-		return basicURI;
-	}
-
-	public void setBasicURI(String basicURI) {
-		this.basicURI = basicURI;
-	}
 
 	//for REST Assured
     private String accessTokenURL;
@@ -168,6 +162,24 @@ public class Appointment {
 	}
 
 	public Appointment() {}
+	
+
+	public String getBasicURI() {
+		return basicURI;
+	}
+
+	public void setBasicURI(String basicURI) {
+		this.basicURI = basicURI;
+	}
+	
+	
+	public String getBaseurl_APT() {
+		return baseurl_APT;
+	}
+
+	public void setBaseurl_APT(String baseurl_APT) {
+		this.baseurl_APT = baseurl_APT;
+	}
 
 	public String getPatientId() {
 		return patientId;
@@ -327,14 +339,6 @@ public class Appointment {
 
 	public void setBaseurl_ScheduleAppointment(String baseurl_ScheduleAppointment) {
 		this.baseurl_ScheduleAppointment = baseurl_ScheduleAppointment;
-	}
-
-	public String getBaseurl_AppointmentType() {
-		return baseurl_AppointmentType;
-	}
-
-	public void setBaseurl_AppointmentType(String baseurl_AppointmentType) {
-		this.baseurl_AppointmentType = baseurl_AppointmentType;
 	}
 
 	public boolean isShowCancellationRescheduleReason() {
