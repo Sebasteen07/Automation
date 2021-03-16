@@ -50,9 +50,9 @@ public class PatientActivationPage extends BasePageObject {
 	@FindBy(css = "input[type='submit']")
 	private WebElement btnSubmit;
 
-	@FindBy(css = "input[onclick*='checkVerified()']")
+	@FindBy(xpath = "//input[@id='verifyButton']")
 	private WebElement btnVerified;
-
+	
 	@FindBy(css = "input[onclick*='checkGenKey()']")
 	private WebElement btnGenerateKey;
 
@@ -170,8 +170,9 @@ public class PatientActivationPage extends BasePageObject {
 		AddLine1.sendKeys("5501 Dillard Dr");
 		City.sendKeys("Cary");
 		zip.sendKeys(PracticeConstants.ZIP_CODE);
-
+		Log4jUtil.log("Click on the Register Patient Button");
 		clickRegPatient();
+		Log4jUtil.log("Click on the Verify Button");
 		clickVerify();
 
 		IHGUtil.waitForElement(driver, 10, unlockLink);
@@ -253,11 +254,10 @@ public class PatientActivationPage extends BasePageObject {
 
 	public void clickVerify() {
 		IHGUtil.PrintMethodName();
-		IHGUtil.waitForElement(driver, 60, btnVerified);
 		btnVerified.click();
 	}
-
-	public void clickGetKey() {
+	
+    public void clickGetKey() {
 		IHGUtil.PrintMethodName();
 		btnGenerateKey.click();
 	}

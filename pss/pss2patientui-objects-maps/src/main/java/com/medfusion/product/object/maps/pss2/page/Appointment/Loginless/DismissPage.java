@@ -15,7 +15,7 @@ import com.medfusion.product.object.maps.pss2.page.util.CommonMethods;
 
 public class DismissPage extends PSS2MainPage {
 	
-	@FindBy(how = How.XPATH, using = "//div[@id='myModalsss']/div/div/div[3]/button[@type='button']")
+	@FindBy(how = How.XPATH, using = "//*[@id='myModalsssloginpopup']/div/div/div[3]/button")
 	private WebElement dismissBtn;	
 
 	@FindBy(how = How.XPATH, using = "//*[@class='announcementmessage']/div")
