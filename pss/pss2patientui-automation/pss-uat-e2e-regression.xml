@@ -27,6 +27,35 @@
 					<include name="testE2ELoginlessForNewPatientGE" />
 					<include name="testE2ELoginlessForNewPatientGW" />
 					<include name="testE2ELoginlessForNewPatientNG" />
+					
+					<include name="testSSOFlowGW" />
+					<include name="testSSOFlowGE" />
+					<include name="testSSOFlowNG" />
+					<include name="testSSOFlowAT" />
+					
+					<include name="testE2ELinkGenandDeleteLinkAT" />
+					<include name="testE2ELinkGenandDeleteLinkNG" />
+					<include name="testE2ELinkGenandDeleteLinkGE" />
+					<include name="testE2ELinkGenandDeleteLinkGW" />
+					
+					<include name="testE2ELinkGenerationAT" />
+					<include name="testE2ELinkGenerationNG" />
+                    <include name="testE2ELinkGenerationGE" />
+					<include name="testE2ELinkGenerationGW" />
+
+					<include name="testAcceptSameDayAT" />
+					<include name="testAcceptSameDayNG" />
+					<include name="testAcceptSameDayGE" />
+					<include name="testAcceptSameDayGW" />
+
+					<include name="testMaxperDayAT" />
+					<include name="testMaxperDayGE" />
+					<include name="testMaxperDayNG" />
+
+
+					<include name="testLeadTimeGE" />
+					<include name="testLeadTimeGW" />
+					<include name="testLeadTimeGWReserveForSameDay" />
 
 
 				</methods>

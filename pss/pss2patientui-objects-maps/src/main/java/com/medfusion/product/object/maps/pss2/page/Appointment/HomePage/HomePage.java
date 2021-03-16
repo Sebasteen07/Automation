@@ -158,12 +158,15 @@ public class HomePage extends PSS2MainPage {
 
 	@FindBy(how = How.XPATH, using = "//*[@id='closeAlertPopup']")
 	private WebElement dismissPopUp;
+
 	
 	@FindBy(how = How.XPATH, using = "//*[@id='upcomingevents']/h1/span")
     private WebElement upCmgAptLabel;
    
-    @FindBy(how = How.XPATH, using = "//*[@id='pastappointmentevent']/h1/span")
-    private WebElement pastAptLabel;
+    
+	
+	@FindBy(how = How.XPATH, using = "//*[@id='pastappointmentevent']/h1/span")
+	private WebElement pastAptLabel;
 	
 	@FindBy(how = How.ID, using = "startScheduling")
 	private WebElement btnstartScheduling;
@@ -197,6 +200,7 @@ public class HomePage extends PSS2MainPage {
 
 		ArrayList<WebElement> webElementsList = new ArrayList<WebElement>();
 		webElementsList.add(upCmgAptLabel);
+		webElementsList.add(pastAptLabel);
 		return assessPageElements(webElementsList);
 	}
 
