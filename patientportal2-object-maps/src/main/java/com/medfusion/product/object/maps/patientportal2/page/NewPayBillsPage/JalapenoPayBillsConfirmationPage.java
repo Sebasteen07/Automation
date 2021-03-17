@@ -50,18 +50,6 @@ public class JalapenoPayBillsConfirmationPage extends JalapenoMenu {
 				return PageFactory.initElements(driver, JalapenoHomePage.class);
 		}
 
-		@Deprecated //same functionality as areBasicElementsPresent(), this method is used by integrations
-		public boolean assessPayBillsConfirmationPageElements() {
-
-				ArrayList<WebElement> webElementsList = new ArrayList<WebElement>();
-
-				webElementsList.add(comment);
-				webElementsList.add(submitPayment);
-				webElementsList.add(backButton);
-
-				return new IHGUtil(driver).assessAllPageElements(webElementsList, this.getClass());
-		}
-
 		public String getCreditCardEnding() {
 				return cardEnding.getText().substring(cardEnding.getText().length() - 4);
 		}

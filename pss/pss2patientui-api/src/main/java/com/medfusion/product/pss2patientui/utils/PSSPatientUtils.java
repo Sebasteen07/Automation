@@ -189,7 +189,14 @@ public class PSSPatientUtils {
 		}
 
 		Thread.sleep(6000);
-		clickOnSubmitAppt(false, aptDateTime, testData, driver);
+		if (testData.isAnonymousFlow()) {
+			Log4jUtil.log(" isAnonymousFlow is TRUE ");
+			bookAnonymousApt(aptDateTime, testData, driver);
+		} else {
+			Log4jUtil.log("This is not an Anonymous flow so comes is else block");
+			clickOnSubmitAppt(false, aptDateTime, testData, driver);
+		}
+
 	}
 
 	public void BTLFlow(HomePage homepage, Appointment testData, String startOrderOn, WebDriver driver)
@@ -242,7 +249,7 @@ public class PSSPatientUtils {
 			aptDateTime.selectDate(testData.getIsNextDayBooking());
 		}
 		Thread.sleep(6000);
-		
+
 		if (testData.isAnonymousFlow()) {
 			Log4jUtil.log(" isAnonymousFlow is TRUE ");
 			bookAnonymousApt(aptDateTime, testData, driver);
@@ -1153,8 +1160,8 @@ public class PSSPatientUtils {
 			throws Exception {
 		Log4jUtil.log("selectAFlow method started");
 		Thread.sleep(1000);
-		testData.setIsInsuranceEnabled(false);		
-		Thread.sleep(1000);			
+		testData.setIsInsuranceEnabled(false);
+		Thread.sleep(1000);
 		if (rule.equalsIgnoreCase(PSSConstants.LBT)) {
 			LBTFlow(homepage, testData, Boolean.toString(testData.getIsInsuranceEnabled()), driver);
 		}
@@ -1277,15 +1284,17 @@ public class PSSPatientUtils {
 
 		return PageFactory.initElements(driver, PatientIdentificationPage.class);
 	}
-	
+
 	public void deleteEmail_Mailinator(WebDriver driver, String url, String email) throws InterruptedException {
 
 		driver.manage().deleteAllCookies(); // delete all cookies
 
 		driver.get(url);
 		driver.manage().window().maximize();
-		driver.findElement(By.xpath("//input[@id='addOverlay']")).sendKeys(email);
-		driver.findElement(By.xpath("//button[@id='go-to-public']")).click();
+		Thread.sleep(2000);
+		driver.findElement(By.xpath("//input[@id='inbox_field']")).clear();
+		driver.findElement(By.xpath("//input[@id='inbox_field']")).sendKeys(email);
+		driver.findElement(By.xpath("//button[@id='go_inbox']")).click();
 
 		WebDriverWait wait = new WebDriverWait(driver, 30);
 		wait.until(ExpectedConditions.visibilityOfElementLocated(By.xpath("//a[@class='ng-binding']")));
@@ -1318,8 +1327,6 @@ public class PSSPatientUtils {
 		Thread.sleep(2000);
 
 	}
-
-
 
 	public void fillPatientDetails(Boolean insuranceSelected, Appointment testData,
 			LoginlessPatientInformation loginlesspatientinformation) throws InterruptedException {
@@ -1772,8 +1779,8 @@ public class PSSPatientUtils {
 	public int ageCurrentmonths(Appointment testData) {
 		DateTimeFormatter formatter = DateTimeFormatter.ofPattern("d-MMM-yyyy");
 		String date = testData.getDob();
-				//"23-Mar-2019";
-				LocalDate pdate = LocalDate.parse(date, formatter);
+		// "23-Mar-2019";
+		LocalDate pdate = LocalDate.parse(date, formatter);
 		LocalDate now = LocalDate.now();
 		Period diff = Period.between(pdate, now);
 		int yearmonth = diff.getYears() * 12;

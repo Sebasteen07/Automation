@@ -151,4 +151,15 @@ public class JalapenoAccountPage extends JalapenoMenu {
 			wait.until(ExpectedConditions.visibilityOf(unLinkButton));
 			unLinkButton.click();
 	}
+		
+		public void clickOnUnlinkTrustedRepresentative(){
+
+			log("Trying to click on Trusted Representative unlink link");
+			WebDriverWait wait = new WebDriverWait(driver, 20);
+			wait.until(ExpectedConditions.visibilityOf(unLink));
+			unLink.click();
+			log("Click on Unlik button");
+			wait.until(ExpectedConditions.visibilityOf(unLinkButton));
+			unLinkButton.click();
+	}
 }

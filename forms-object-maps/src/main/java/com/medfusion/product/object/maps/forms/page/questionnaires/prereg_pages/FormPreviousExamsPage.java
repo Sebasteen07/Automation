@@ -1,3 +1,4 @@
+//  Copyright 2013-2021 NXGN Management, LLC. All Rights Reserved.
 package com.medfusion.product.object.maps.forms.page.questionnaires.prereg_pages;
 
 import org.openqa.selenium.By;
@@ -9,8 +10,8 @@ import org.openqa.selenium.support.PageFactory;
 import org.openqa.selenium.support.ui.Select;
 
 import com.medfusion.common.utils.IHGUtil;
-import com.medfusion.portal.utils.PortalUtil;
 import com.medfusion.product.object.maps.forms.page.questionnaires.PortalFormPage;
+import com.medfusion.product.patientportal2.utils.PortalUtil2;
 
 public class FormPreviousExamsPage extends PortalFormPage {
 
@@ -36,8 +37,8 @@ public class FormPreviousExamsPage extends PortalFormPage {
 	 * @throws Exception
 	 */
 	public void setTest(String type) throws Exception {
-		PortalUtil.PrintMethodName();
-		PortalUtil.setquestionnarieFrame(driver);
+		PortalUtil2.PrintMethodName();
+		PortalUtil2.setquestionnarieFrame(driver);
 		examortestName.clear();
 		examortestName.sendKeys(type);
 		examortestName.sendKeys(Keys.TAB);
@@ -45,7 +46,7 @@ public class FormPreviousExamsPage extends PortalFormPage {
 		autoComplete.click();
 	}
 	public void setTest_20(String type) throws Exception {
-		PortalUtil.PrintMethodName();
+		PortalUtil2.PrintMethodName();
 		examortestName.clear();
 		examortestName.sendKeys(type);
 		examortestName.sendKeys(Keys.TAB);
@@ -57,13 +58,13 @@ public class FormPreviousExamsPage extends PortalFormPage {
 	 * @throws Exception
 	 */
 	public void setTestTimeFrame(String type) throws Exception {
-		PortalUtil.PrintMethodName();
-		PortalUtil.setquestionnarieFrame(driver);
+		PortalUtil2.PrintMethodName();
+		PortalUtil2.setquestionnarieFrame(driver);
 		Select selector = new Select(testTimeFrame);
 		selector.selectByVisibleText(type);
 	}
 	public void setTestTimeFrame_20(String type) throws Exception {
-		PortalUtil.PrintMethodName();
+		PortalUtil2.PrintMethodName();
 		Select selector = new Select(testTimeFrame);
 		selector.selectByVisibleText(type);
 	}

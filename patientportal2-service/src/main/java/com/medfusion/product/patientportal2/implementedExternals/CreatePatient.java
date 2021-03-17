@@ -1,4 +1,4 @@
-//Copyright 2013-2020 NXGN Management, LLC. All Rights Reserved.
+//Copyright 2013-2021 NXGN Management, LLC. All Rights Reserved.
 package com.medfusion.product.patientportal2.implementedExternals;
 
 import com.medfusion.pojos.Patient;
@@ -39,12 +39,7 @@ public class CreatePatient implements ICreatePatient {
 		JalapenoLoginPage loginPage = new JalapenoLoginPage(driver, url);
 		PatientDemographicPage patientDemographicPage = loginPage.clickCreateANewAccountButton();
 		patientDemographicPage.fillInPatientDataStateSpecific(patient);
-		SecurityDetailsPage accountDetailsPage = patientDemographicPage.continueToSecurityPage();
-		JalapenoHomePage homePage = accountDetailsPage.fillAccountDetailsAndContinue(patient);
-		homePage.clickOnLogout();
-		patient.setWasSelfRegistered(true);
 		return patient;
-
 	}
 
 }

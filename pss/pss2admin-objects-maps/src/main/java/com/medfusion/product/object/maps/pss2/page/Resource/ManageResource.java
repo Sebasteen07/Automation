@@ -24,7 +24,7 @@ public class ManageResource extends PSS2MenuPage {
 	@FindBy(how = How.XPATH, using = "//table/tbody/tr/td[2]/span/a")
 	private WebElement searchedResourceName;
 
-	@FindAll({@FindBy(xpath = "//*[@class=\"table table-hover \"]/tbody/tr")})
+	@FindAll({ @FindBy(xpath = "//*[@class=\"table table-hover \"]/tbody/tr") })
 	private List<WebElement> locationRowList;
 
 	@FindBy(how = How.XPATH, using = "//a[contains(text(),'General')]")
@@ -47,6 +47,9 @@ public class ManageResource extends PSS2MenuPage {
 
 	@FindBy(how = How.ID, using = "sharePatients")
 	private WebElement resourceSharePatients;
+
+	@FindBy(how = How.XPATH, using = "//*[@id='tab13']/form/fieldset[1]/div[10]/div/label[1]/i")
+	private WebElement resoureceSharePatientToggle;
 
 	@FindBy(how = How.ID, using = "search-specialty")
 	private WebElement resourceSearchSpeciality;
@@ -160,6 +163,12 @@ public class ManageResource extends PSS2MenuPage {
 
 	public Boolean isSharedPatientTrueForResource() {
 		return Boolean.valueOf(resourceSharePatients.getAttribute("ng-reflect-model"));
+	}
+
+	public void clickShareToggle() {
+		resoureceSharePatientToggle.click();
+		log("Clicked on SharePatient Toggle button");
+		resourceSave.click();
 	}
 
 	public Boolean isResourceActive() {

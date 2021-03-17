@@ -1,6 +1,5 @@
 package com.medfusion.product.object.maps.practice.page.askstaff;
 
-import com.medfusion.portal.utils.PortalConstants;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.FindBy;
@@ -10,6 +9,7 @@ import org.openqa.selenium.support.ui.Select;
 import com.intuit.ifs.csscat.core.pageobject.BasePageObject;
 import com.medfusion.common.utils.IHGUtil;
 import com.medfusion.product.practice.api.utils.PracticeConstants;
+import com.medfusion.product.patientportal2.utils.JalapenoConstants;
 import com.medfusion.product.practice.api.utils.PracticeUtil;
 
 public class AskAStaffQuestionDetailStep2Page extends BasePageObject {
@@ -161,7 +161,7 @@ public class AskAStaffQuestionDetailStep2Page extends BasePageObject {
 
 		IHGUtil.waitForElement(driver, 20, drugName);
 		drugName.sendKeys(PracticeConstants.MEDICATION_NAME);
-		dosage.sendKeys(PortalConstants.Dosage);
+		dosage.sendKeys(JalapenoConstants.DOSAGE);
 		quantity.sendKeys(PracticeConstants.QUANTITY);
 		Select selFrequency = new Select(frequency);
 		selFrequency.selectByVisibleText(PracticeConstants.FREQUENCY);

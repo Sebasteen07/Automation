@@ -27,6 +27,9 @@ public class PatientDashboardPage extends BasePageObject {
 
 	@FindBy(xpath = "//a[contains(.,'Send email with the username to the patient')]")
 	private WebElement userIdEmail;
+	
+	@FindBy(xpath = "//a[contains(.,'Send Password Reset Email To Patient')]")
+	private WebElement passwordResetLink;
 
 	@FindBy(xpath = "//strong[contains(text(),'Patient Id')]/../../td/a")
 	private WebElement editPatientID;
@@ -105,6 +108,13 @@ public class PatientDashboardPage extends BasePageObject {
 		userIdEmail.click();
 		return PageFactory.initElements(driver, PatientSearchPage.class);
 
+	}
+	
+	public PatientSearchPage sendResetPasswordLink() throws InterruptedException {
+		IHGUtil.PrintMethodName();
+		IHGUtil.waitForElement(driver, 10, passwordResetLink);
+		passwordResetLink.click();
+		return PageFactory.initElements(driver, PatientSearchPage.class);		
 	}
 
 	public String getFeedback() throws InterruptedException {
