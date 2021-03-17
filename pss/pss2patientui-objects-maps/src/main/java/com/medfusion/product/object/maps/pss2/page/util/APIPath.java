@@ -23,6 +23,12 @@ public class APIPath {
 
 		public static final String cancelAppointment="/24249/cancelappointment/50151";
 		public static final String cancellationReason="/24249/cancellationreason";
+		
+		public static final String rescheduleAppt="/24249/rescheduleappointment";
+		public static final String scheduleApptNG="/24249/scheduleappointment";
+		
+		
+		
 
 	}
 

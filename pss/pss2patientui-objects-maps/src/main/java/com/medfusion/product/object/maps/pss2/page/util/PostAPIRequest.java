@@ -50,7 +50,19 @@ public class PostAPIRequest extends BaseTestNGWebDriver {
 		aPIVerification.responseKeyValidation(response, "name");
 
 		return response;
+	}
+	
+	public Response rescheduleApptNG(String baseurl, String b, Map<String, String> Header) {
 
+		RestAssured.baseURI = baseurl;
+
+		Response response = given().log().all().headers(Header).body(b).post(APIPath.apiPath.rescheduleAppt).then().log().all().assertThat()
+				.statusCode(200).extract().response();
+		aPIVerification.responseCodeValidation(response, 200);
+
+		aPIVerification.responseTimeValidation(response);
+
+		return response;
 	}
 
 	public Response cancellationReason(String baseurl) {
@@ -173,6 +185,27 @@ public class PostAPIRequest extends BaseTestNGWebDriver {
 		apiVerification.responseKeyValidation(response, "categoryId");
 		apiVerification.responseTimeValidation(response);
 		return response;
+	}
+	
+	public String scheduleApptNG(String baseurl, String b, Map<String, String> Header) {
+
+		RestAssured.baseURI = baseurl;
+		Response response = given().when().headers(Header).body(b).log().all().when().post(APIPath.apiPath.scheduleApptNG)
+				.then().log().all().extract().response();
+
+		log("Status Code- " + response.getStatusCode());
+		
+		JSONObject js= new JSONObject(response.asString());
+		
+		String s=js.getString("id");
+		
+		log("Value of id - "+s);
+
+		APIVerification apiVerification = new APIVerification();
+
+		apiVerification.responseCodeValidation(response, 200);
+		apiVerification.responseTimeValidation(response);
+		return s;
 	}
 
 	public Response appointmenttypesRule(String baseurl, String b, Map<String, String> Header) {

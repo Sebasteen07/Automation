@@ -11,7 +11,6 @@ import com.medfusion.product.object.maps.pss2.page.util.PostAPIRequest;
 import com.medfusion.product.pss2patientui.pojo.Appointment;
 import com.medfusion.product.pss2patientui.utils.PSSPropertyFileLoader;
 
-
 public class PostAPITest extends BaseTestNGWebDriver {
 
 	@Test
@@ -37,7 +36,7 @@ public class PostAPITest extends BaseTestNGWebDriver {
 				headerConfig.HeaderwithToken(testData.getAccessToken()));
 
 	}
-	
+
 	@Test
 	public void Sched_ApptPatient_PatientPOST() throws IOException {
 
@@ -61,7 +60,7 @@ public class PostAPITest extends BaseTestNGWebDriver {
 				headerConfig.HeaderwithToken(testData.getAccessToken()));
 
 	}
-	
+
 	@Test
 	public void ApptTypePatient() throws IOException {
 
@@ -94,7 +93,7 @@ public class PostAPITest extends BaseTestNGWebDriver {
 		PSSPropertyFileLoader propertyData = new PSSPropertyFileLoader();
 		Appointment testData = new Appointment();
 		propertyData.setRestAPIData(testData);
-		
+
 		Thread.sleep(1000);
 
 		PostAPIRequest postAPIRequest = new PostAPIRequest();
@@ -106,7 +105,7 @@ public class PostAPITest extends BaseTestNGWebDriver {
 		postAPIRequest.nextAvailableNG(testData.getBasicURI(), Payload.nextAvailable_Payload(testData.getPatientId()),
 				headerConfig.defaultHeader());
 	}
-	
+
 	@Test
 	public void CancellationReasonGET() throws IOException {
 
@@ -114,10 +113,10 @@ public class PostAPITest extends BaseTestNGWebDriver {
 		Appointment testData = new Appointment();
 		propertyData.setRestAPIData(testData);
 		PostAPIRequest postAPIRequest = new PostAPIRequest();
-		
+
 		postAPIRequest.cancellationReason(testData.getBasicURI());
 	}
-	
+
 	@Test
 	public void TestPastApptNgPOST() throws IOException {
 
@@ -141,7 +140,7 @@ public class PostAPITest extends BaseTestNGWebDriver {
 				testData.getPracticeDisplayName(), testData.getPracticeId()), headerConfig.defaultHeader());
 
 	}
-	
+
 	@Test
 	public void nextAvailableSlotPost() throws IOException {
 
@@ -164,11 +163,8 @@ public class PostAPITest extends BaseTestNGWebDriver {
 		postAPIRequest.nextAvailableNG(testData.getBasicURI(), Payload.nextAvailable_Payload(testData.getPatientId()),
 				headerConfig.defaultHeader());
 
-//		postAPIRequest.pastApptNG(testData.getBasicURI(), Payload.past_appt_payload(testData.getPatientId(),
-//				testData.getPracticeDisplayName(), testData.getPracticeId()), headerConfig.defaultHeader());
-
 	}
-	
+
 	@Test(dependsOnMethods = "Access_tokenGET")
 	public void LocationListPOST() throws IOException {
 
@@ -192,7 +188,6 @@ public class PostAPITest extends BaseTestNGWebDriver {
 				headerConfig.HeaderwithToken(testData.getAccessToken()));
 	}
 
-	
 	@Test
 	public void AppointmentStatusGET() throws IOException {
 
@@ -201,58 +196,61 @@ public class PostAPITest extends BaseTestNGWebDriver {
 		Appointment testData = new Appointment();
 		propertyData.setRestAPIData(testData);
 		PostAPIRequest postAPIRequest = new PostAPIRequest();
-		
+
 		postAPIRequest.appointmentStatus(testData.getBasicURI(), headerConfig.defaultHeader());
 	}
-	
-	
+
 	@Test
 	public void AppointmentTypesGET() throws IOException {
 
-		
 		PSSPropertyFileLoader propertyData = new PSSPropertyFileLoader();
 		Appointment testData = new Appointment();
 		propertyData.setRestAPIData(testData);
 		PostAPIRequest postAPIRequest = new PostAPIRequest();
-		
+
 		postAPIRequest.appointmentType(testData.getBasicURI());
-		
-	}	
-	
-	@Test
-    public void Access_tokenGET() throws IOException {
- 
 
-        PSSPropertyFileLoader propertyData = new PSSPropertyFileLoader();
-        Appointment testData = new Appointment();
-        propertyData.setRestAPIData(testData);
-
-        PostAPIRequest postAPIRequest = new PostAPIRequest();
-    
-       String accessToken= postAPIRequest.getaccessToken(testData.getAccessTokenURL());
-        
-        testData.setAccessToken(accessToken);
-        
-        log("The Accesssc Toke is From the Test Method  "+testData.getAccessToken());
-    
-    }
+	}
 
 	@Test
-	public void scheduleAppointmentPOST() throws IOException {
+	public void Access_tokenGET() throws IOException {
+
+		PSSPropertyFileLoader propertyData = new PSSPropertyFileLoader();
+		Appointment testData = new Appointment();
+		propertyData.setRestAPIData(testData);
+
+		PostAPIRequest postAPIRequest = new PostAPIRequest();
+
+		String accessToken = postAPIRequest.getaccessToken(testData.getAccessTokenURL());
+
+		testData.setAccessToken(accessToken);
+
+		log("The Accesssc Toke is From the Test Method  " + testData.getAccessToken());
+
+	}
+
+	@Test
+	public void schedule_Resc_NGPOST() throws IOException {
 
 		HeaderConfig headerConfig = new HeaderConfig();
-
-		Payload payload = new Payload();
-
 		PSSPropertyFileLoader propertyData = new PSSPropertyFileLoader();
 		Appointment testData = new Appointment();
 		propertyData.setRestAPIData(testData);
 		PostAPIRequest postAPIRequest = new PostAPIRequest();
 
-		log("Endpoint url ---> " + testData.getBaseurl_BookRule());
+		log("Endpoint url ---> " + testData.getBasicURI());
 
-		postAPIRequest.sampleMethod(testData.getBaseurl_ScheduleAppointment(), payload.scheduleappt,
-				headerConfig.HeaderwithToken(testData.getAccessToken()));
+		log("Payload- " + Payload.schedule_Payload(testData.getSlotStartTime(), testData.getSlotEndTime()));
+
+		String appointmentId = postAPIRequest.scheduleApptNG(testData.getBasicURI(),
+				Payload.schedule_Payload(testData.getSlotStartTime(), testData.getSlotEndTime()),
+				headerConfig.defaultHeader());
+
+		postAPIRequest.rescheduleApptNG(testData.getBasicURI(),
+				Payload.reschedule_Payload(testData.getStartDateTime(), testData.getEndDateTime(),
+						testData.getPatientId(), testData.getFirstName(), testData.getLastName(), appointmentId),
+				headerConfig.defaultHeader());
+
 	}
 
 	@Test
@@ -267,20 +265,25 @@ public class PostAPITest extends BaseTestNGWebDriver {
 
 		postAPIRequest.appointmentType(testData.getBasicURI());
 	}
-	
+
 	@Test
-	public void PracticeStatusGET() throws IOException {
+	public void RescheduleApptNGPPOST() throws IOException {
 
 		HeaderConfig headerConfig = new HeaderConfig();
-
-		Payload payload = new Payload();
-
 		PSSPropertyFileLoader propertyData = new PSSPropertyFileLoader();
 		Appointment testData = new Appointment();
 		propertyData.setRestAPIData(testData);
-		
+
 		PostAPIRequest postAPIRequest = new PostAPIRequest();
-		
+
+		log("Base url- " + testData.getBasicURI());
+		log("Payload is -" + Payload.reschedule_Payload(testData.getStartDateTime(), testData.getEndDateTime(),
+				testData.getPatientId(), testData.getFirstName(), testData.getLastName(), testData.getApptid()));
+
+		postAPIRequest.rescheduleApptNG(testData.getBasicURI(),
+				Payload.reschedule_Payload(testData.getStartDateTime(), testData.getEndDateTime(),
+						testData.getPatientId(), testData.getFirstName(), testData.getLastName(), testData.getApptid()),
+				headerConfig.defaultHeader());
 
 	}
 
@@ -292,10 +295,11 @@ public class PostAPITest extends BaseTestNGWebDriver {
 		propertyData.setRestAPIData(testData);
 		propertyData.setRestAPIData(testData);
 		PostAPIRequest postAPIRequest = new PostAPIRequest();
-		log("Base URL is   "+testData.getBasicURI());
-		postAPIRequest.cancelAppointmentGET(testData.getBasicURI(),headerConfig.defaultHeader());
-	
+		log("Base URL is   " + testData.getBasicURI());
+		postAPIRequest.cancelAppointmentGET(testData.getBasicURI(), headerConfig.defaultHeader());
+
 	}
+
 	@Test
 	public void cancelAppointmentPost() throws IOException {
 		PSSPropertyFileLoader propertyData = new PSSPropertyFileLoader();
@@ -304,10 +308,12 @@ public class PostAPITest extends BaseTestNGWebDriver {
 		HeaderConfig headerConfig = new HeaderConfig();
 		propertyData.setRestAPIData(testData);
 		PostAPIRequest postAPIRequest = new PostAPIRequest();
-		log("Base URL is   "+testData.getBasicURI());
-		postAPIRequest.cancelAppointmentPOST(testData.getBasicURI(),payload.cancelAppointment,headerConfig.defaultHeader());
-	
+		log("Base URL is   " + testData.getBasicURI());
+		postAPIRequest.cancelAppointmentPOST(testData.getBasicURI(), payload.cancelAppointment,
+				headerConfig.defaultHeader());
+
 	}
+
 	@Test
 	public void cancellationReasonGET() throws IOException {
 		PSSPropertyFileLoader propertyData = new PSSPropertyFileLoader();
@@ -315,9 +321,9 @@ public class PostAPITest extends BaseTestNGWebDriver {
 		HeaderConfig headerConfig = new HeaderConfig();
 		propertyData.setRestAPIData(testData);
 		PostAPIRequest postAPIRequest = new PostAPIRequest();
-		log("Base URL is   "+testData.getBasicURI());
-		postAPIRequest.cancellationReason(testData.getBasicURI(),headerConfig.defaultHeader());
-	
+		log("Base URL is   " + testData.getBasicURI());
+		postAPIRequest.cancellationReason(testData.getBasicURI(), headerConfig.defaultHeader());
+
 	}
 
 }

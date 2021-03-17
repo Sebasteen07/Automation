@@ -122,8 +122,13 @@ public class Appointment {
 	private String basicURI;
 	private String practiceDisplayName;
 	private String patientId;
-
-
+	private String startDateTime;
+	private String endDateTime;
+	private String apptid;
+	private String slotStartTime;
+	private String slotEndTime;
+	
+	
 	//for REST Assured
     private String accessTokenURL;
     private String accessToken;
@@ -152,7 +157,47 @@ public class Appointment {
 	}
 
 	public Appointment() {}
-	
+		
+	public String getSlotStartTime() {
+		return slotStartTime;
+	}
+
+	public void setSlotStartTime(String slotStartTime) {
+		this.slotStartTime = slotStartTime;
+	}
+
+	public String getSlotEndTime() {
+		return slotEndTime;
+	}
+
+	public void setSlotEndTime(String slotEndTime) {
+		this.slotEndTime = slotEndTime;
+	}
+
+	public String getApptid() {
+		return apptid;
+	}
+
+	public void setApptid(String apptid) {
+		this.apptid = apptid;
+	}
+
+	public String getStartDateTime() {
+		return startDateTime;
+	}
+
+	public void setStartDateTime(String startDateTime) {
+		this.startDateTime = startDateTime;
+	}
+
+	public String getEndDateTime() {
+		return endDateTime;
+	}
+
+	public void setEndDateTime(String endDateTime) {
+		this.endDateTime = endDateTime;
+	}
+
 	public String getAccessTokenURL() {
 		return accessTokenURL;
 	}

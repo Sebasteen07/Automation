@@ -370,6 +370,13 @@ public class PSSPropertyFileLoader {
 		appointValues.setPracticeId(property.getProperty("practiceIdNG"));
 		appointValues.setPracticeDisplayName(property.getProperty("practiceDisplayNameNG"));
 		appointValues .setPatientId(property.getProperty("patientIdNG"));
+		appointValues.setStartDateTime(property.getProperty("startDateTime"));
+		appointValues.setEndDateTime(property.getProperty("endDateTime"));
+		appointValues.setApptid(property.getProperty("apptid"));
+		appointValues.setFirstName(property.getProperty("first"));
+		appointValues.setLastName(property.getProperty("first"));
+		appointValues.setSlotStartTime(property.getProperty("slotStartTime"));
+		appointValues.setSlotEndTime(property.getProperty("slotEndTime"));
 	}
 	
 }

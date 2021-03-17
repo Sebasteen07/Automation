@@ -120,5 +120,79 @@ public class Payload {
 		return nextAvailable;
 	}
 	
+	public static String reschedule_Payload(String startDateTime, String endDateTime, String patientid, String firstName, String lastName, String apptid) {
+		
+		String reschedule="{\r\n"
+				+ "\"locationId\":\"283BB437-B0C6-4626-A7CC-57FD0D1D6574\",\r\n"
+				+ "\"appointmentCategoryId\":\"8F563A6C-7098-4446-97E2-7EF9345ED469\",\r\n"
+				+ "\"appointmentTypeId\":\"86D0E00F-C136-4A24-BF7A-6C17E9AB35ED\",\r\n"
+				+ "\"duration\":0,\r\n"
+				+ "\"comments\":\"CustomQuestion:hello~(pss) 231365 02/23/2021 09:33:19~\",\r\n"
+				+ "\"startDateTime\":\""+startDateTime+"\",\r\n"
+				+ "\"endDateTime\":\""+endDateTime+"\",\r\n"
+				+ "\"patientId\":\""+patientid+"\",\r\n"
+				+ "\"resourceCategoryId\":\"10F8A2F7-4291-4855-BBFA-87AB3E3A6C60\",\r\n"
+				+ "\"resourceId\":\"6A6269EE-E9F3-4880-B36F-C90E51EB33CF\",\r\n"
+				+ "\"slotId\":\"0001\",\r\n"
+				+ "\"stackingFlag\":false,\r\n"
+				+ "\"schedulingDuration\":0,\r\n"
+				+ "\"additionalProperties\":{\r\n"
+				+ "\"FN\":\""+firstName+"\",\r\n"
+				+ "\"LN\":\""+lastName+"\"\r\n"
+				+ "},\r\n"
+				+ "\"notesProperties\":{\r\n"
+				+ "\"apptIndicatorWithConfirmationNo\":\"(pss) 231365 03/23/2021 09:33:19\",\r\n"
+				+ "\"customQuestion\":\"hello\"\r\n"
+				+ "},\r\n"
+				+ "\"existingAppointment\":{\r\n"
+				+ "\"duration\":0,\r\n"
+				+ "\"stackingFlag\":false,\r\n"
+				+ "\"schedulingDuration\":0,\r\n"
+				+ "\"appointmentId\":\""+apptid+"\"\r\n"
+				+ "},\r\n"
+				+ "\"rescheduleReason\":{\r\n"
+				+ "\"name\":\"otherCancelReason\"\r\n"
+				+ "},\r\n"
+				+ "\"practiceTimezone\":\"America/New_York\"\r\n"
+				+ "}";
+		
+		return reschedule;
+	}
+	
+	public static String schedule_Payload(String slotStartTime, String slotEndTime) {
+		
+		String schedule="{\r\n"
+				+ "  \"locationId\": \"283BB437-B0C6-4626-A7CC-57FD0D1D6574\",\r\n"
+				+ "  \"appointmentCategoryId\": \"8F563A6C-7098-4446-97E2-7EF9345ED469\",\r\n"
+				+ "  \"appointmentTypeId\": \"86D0E00F-C136-4A24-BF7A-6C17E9AB35ED\",\r\n"
+				+ "  \"duration\": 0,\r\n"
+				+ "  \"comments\": \"~(pss) 231701 03/12/2021 04:34:27~\",\r\n"
+				+ "  \"startDateTime\": \""+slotStartTime+"\",\r\n"
+				+ "  \"endDateTime\": \""+slotEndTime+"\",\r\n"
+				+ "  \"patientId\": \"50245\",\r\n"
+				+ "  \"resourceCategoryId\": \"10F8A2F7-4291-4855-BBFA-87AB3E3A6C60\",\r\n"
+				+ "  \"resourceId\": \"6A6269EE-E9F3-4880-B36F-C90E51EB33CF\",\r\n"
+				+ "  \"slotId\": \"0001\",\r\n"
+				+ "  \"stackingFlag\": false,\r\n"
+				+ "  \"schedulingDuration\": 0,\r\n"
+				+ "  \"additionalProperties\": {\r\n"
+				+ "    \"FN\": \"mai\",\r\n"
+				+ "    \"LN\": \"mai\",\r\n"
+				+ "    \"DOB\": \"01/01/2001\",\r\n"
+				+ "    \"GENDER\": \"F\",\r\n"
+				+ "    \"EMAIL\": \"Shweta.Sontakke@crossasyst.com\",\r\n"
+				+ "    \"PHONE\": \"961-992-1668\",\r\n"
+				+ "    \"ZIP\": \"12345\"\r\n"
+				+ "  },\r\n"
+				+ "  \"notesProperties\": {\r\n"
+				+ "    \"apptIndicatorWithConfirmationNo\": \"(pss) 231701 03/12/2021 04:34:27\"\r\n"
+				+ "  },\r\n"
+				+ "  \"practiceTimezone\": \"America/New_York\"\r\n"
+				+ "}";
+		
+		return schedule;
+	}
+	
+	
 
 }
