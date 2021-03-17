@@ -57,7 +57,7 @@ public class AddPharmacyPage  extends BasePageObject{
     @FindBy(xpath="//li[@class='sg_err_text']")
     private WebElement sameIDErrorMsg;
     
-    public static String  PharmacyName= SitegenConstants.PHARMACYNAME+IHGUtil.createRandomNumericString();
+    public static String pharmacyName = SitegenConstants.PHARMACYNAME + IHGUtil.createRandomNumericString();
     
 	public AddPharmacyPage(WebDriver driver) {
 		super(driver);
@@ -67,7 +67,7 @@ public class AddPharmacyPage  extends BasePageObject{
 	public String fillPharmacyDetails(String externalid,boolean flag) throws InterruptedException {
 		IHGUtil.PrintMethodName();
 		String successmsg= "Pharmacy added successfully";
-		txtPharmacyName.sendKeys(PharmacyName);
+		txtPharmacyName.sendKeys(pharmacyName);
 		txtPharmacyAddr.sendKeys(SitegenConstants.ADDRESS);
 		txtPharmacyCity.sendKeys(SitegenConstants.CITY);
 		
