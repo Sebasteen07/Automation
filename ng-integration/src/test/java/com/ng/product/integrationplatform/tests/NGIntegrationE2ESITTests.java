@@ -46,6 +46,8 @@ import com.medfusion.product.object.maps.patientportal2.page.AppointmentRequestP
 import com.medfusion.product.object.maps.patientportal2.page.AppointmentRequestPage.NGAppointmentPage;
 import com.medfusion.product.object.maps.patientportal2.page.AppointmentRequestPage.NGAppointmentRequestV2HistoryPage;
 import com.medfusion.product.object.maps.patientportal2.page.AppointmentRequestPage.NGAppointmentRequestV2Step1;
+import com.medfusion.product.object.maps.patientportal2.page.AskAStaff.JalapenoAskAStaffV2HistoryDetailPage;
+import com.medfusion.product.object.maps.patientportal2.page.AskAStaff.JalapenoAskAStaffV2HistoryListPage;
 import com.medfusion.product.object.maps.patientportal2.page.AskAStaff.JalapenoAskAStaffV2Page1;
 import com.medfusion.product.object.maps.patientportal2.page.AskAStaff.JalapenoAskAStaffV2Page2;
 import com.medfusion.product.object.maps.patientportal2.page.CcdPage.MedicalRecordSummariesPage;
@@ -59,10 +61,13 @@ import com.medfusion.product.object.maps.patientportal2.page.NewPayBillsPage.Jal
 import com.medfusion.product.object.maps.patientportal2.page.PrescriptionsPage.JalapenoPrescriptionsPage;
 import com.medfusion.product.object.maps.practice.page.PracticeHomePage;
 import com.medfusion.product.object.maps.practice.page.PracticeLoginPage;
+import com.medfusion.product.object.maps.practice.page.onlinebillpay.OnlineBillPaySearchPage;
+import com.medfusion.product.object.maps.practice.page.onlinebillpay.PayMyBillOnlinePage;
 import com.medfusion.product.object.maps.practice.page.patientSearch.PatientSearchPage;
 import com.medfusion.product.patientportal2.pojo.CreditCard;
 import com.medfusion.product.patientportal2.pojo.CreditCard.CardType;
 import com.medfusion.product.patientportal2.utils.JalapenoConstants;
+import com.medfusion.product.practice.api.utils.PracticeConstants;
 import com.medfusion.qa.mailinator.Email;
 import com.medfusion.qa.mailinator.Mailer;
 import com.ng.product.integrationplatform.apiUtils.NGAPIUtils;
@@ -93,6 +98,7 @@ public class NGIntegrationE2ESITTests extends BaseTestNGWebDriver{
 	private static final String INVITE_EMAIL_SUBJECT_PATIENT = "You're invited to create a Patient Portal account at ";
 	private static final String WELCOME_EMAIL_SUBJECT_PATIENT = "New Member Confirmation";
 	private static final String WELCOME_EMAIL_BODY_PATTERN_PRACTICE = "Thank you for creating an account with PracticeName";
+	private static final String PAYMENT_SUCCESSFULL_TEXT = "A payment was made for ";
 	
     int arg_timeOut=1800; 
     NGAPIUtils ngAPIUtils;
@@ -5286,7 +5292,7 @@ public class NGIntegrationE2ESITTests extends BaseTestNGWebDriver{
 		log("Execution Browser: " + TestConfig.getBrowserType());
 		
 		logStep("Getting Existing User");
-		String username = PropertyLoaderObj.getProperty("CCDAUsername");
+		String username = PropertyLoaderObj.getProperty("SingleGuarantorUser");
     	String person_id = DBUtils.executeQueryOnDB("NGCoreDB","select person_id from person where email_address = '"+username+"'");
     	String enterpriseId = null, practiceId = null, providerName = null, locationName = null , userId = null, integrationPracticeID= null, url =null;
     	
@@ -5391,7 +5397,7 @@ public class NGIntegrationE2ESITTests extends BaseTestNGWebDriver{
 		log("Execution Browser: " + TestConfig.getBrowserType());
 		
 		logStep("Getting Existing User");
-		String username = PropertyLoaderObj.getProperty("CCDAUsername");
+		String username = PropertyLoaderObj.getProperty("SingleGuarantorUser");
     	String person_id = DBUtils.executeQueryOnDB("NGCoreDB","select person_id from person where email_address = '"+username+"'");
     	String enterpriseId = null, practiceId = null, providerName = null, locationName = null , userId = null, integrationPracticeID= null, url =null;
     	
@@ -5711,7 +5717,7 @@ public class NGIntegrationE2ESITTests extends BaseTestNGWebDriver{
 		log("Execution Browser: " + TestConfig.getBrowserType());
 		
 		logStep("Getting Existing User");
-		String username = PropertyLoaderObj.getProperty("CCDAUsername");
+		String username = PropertyLoaderObj.getProperty("SingleGuarantorUser");
     	String person_id = DBUtils.executeQueryOnDB("NGCoreDB","select person_id from person where email_address = '"+username+"'");
     	String enterpriseId = null, practiceId = null, providerName = null, locationName = null , userId = null, integrationPracticeID= null, url =null;
     	
@@ -5791,22 +5797,16 @@ public class NGIntegrationE2ESITTests extends BaseTestNGWebDriver{
 		logStep("Getting Existing User");
 		String username = PropertyLoaderObj.getProperty("CCDAUsername");
     	String person_id = DBUtils.executeQueryOnDB("NGCoreDB","select person_id from person where email_address = '"+username+"'");
-    	String enterpriseId = null, practiceId = null, providerName = null, locationName = null , userId = null, integrationPracticeID= null, url =null;
+    	String enterpriseId, practiceId = null, url = null;
     	
     	if(PropertyLoaderObj.getNGAPIexecutionMode().equalsIgnoreCase("QAMain")){
     		enterpriseId= PropertyLoaderObj.getProperty("NGEnterpiseEnrollmentEnterprise1");
     	    practiceId= PropertyLoaderObj.getProperty("NGEnterprise1Practice1");
-    	    providerName =PropertyLoaderObj.getProperty("NGE1P1Provider"); 
-    	    locationName =PropertyLoaderObj.getProperty("NGE1P1Location");
-    	    integrationPracticeID =PropertyLoaderObj.getProperty("integrationPracticeIDE1P1");
     	    url = PropertyLoaderObj.getProperty("MFPortalURLPractice1");	
 		}
 		else if (PropertyLoaderObj.getNGAPIexecutionMode().equalsIgnoreCase("SIT")){
 			enterpriseId= PropertyLoaderObj.getProperty("NGMainEnterpriseID");
 		    practiceId= PropertyLoaderObj.getProperty("NGMainPracticeID");
-		    providerName =PropertyLoaderObj.getProperty("EPMProviderName"); 
-		    locationName =PropertyLoaderObj.getProperty("EPMLocationName");
-		    integrationPracticeID =PropertyLoaderObj.getProperty("integrationPracticeIDAMDC");
 		    url = PropertyLoaderObj.getProperty("url");			           
 		}
 		else{
@@ -5840,28 +5840,29 @@ public class NGIntegrationE2ESITTests extends BaseTestNGWebDriver{
 		homePage = confirmationPage.commentAndSubmitPayment(PaymentComments);
 		assertTrue(homePage.wasPayBillsSuccessfull());
 		homePage.clickOnLogout();
+		
+		Thread.sleep(10000);
+		logStep("Login to Practice Portal");
+		PracticeLoginPage practiceLogin = new PracticeLoginPage(driver, PropertyLoaderObj.getPortalUrl());
+		PracticeHomePage practiceHome = practiceLogin.login(PropertyLoaderObj.getDoctorLogin(), PropertyLoaderObj.getDoctorPassword());
 
-//		logStep("Login to Practice Portal");
-//		PracticeLoginPage practiceLogin = new PracticeLoginPage(driver, PropertyLoaderObj.getPortalUrl());
-//		PracticeHomePage practiceHome = practiceLogin.login(PropertyLoaderObj.getDoctorLogin(), PropertyLoaderObj.getDoctorPassword());
-//
-//		logStep("Click On Online BillPayment Tab in Practice Portal");
-//		OnlineBillPaySearchPage onlineBillPaySearchPage = practiceHome.clickOnlineBillPayTab();
-//
-//		logStep("Search Paid Bills By Current Date");
-//		onlineBillPaySearchPage.searchForBillPayToday();
-//
-//		logStep("Search For Today's Paid Bill By Account Number");
-//		onlineBillPaySearchPage.searchForBillPayment(accountNumber);
-//
-//		logStep("Get Bill Details");
-//		onlineBillPaySearchPage.getBillPayDetails();
-//
-//		logStep("Set Payment Communication Details");
-//		onlineBillPaySearchPage.setPaymentCommunicationDetails();
-//
-//		logStep("Logout of Practice Portal");
-//		practiceHome.logOut();
+		logStep("Click On Online BillPayment Tab in Practice Portal");
+		OnlineBillPaySearchPage onlineBillPaySearchPage = practiceHome.clickOnlineBillPayTab();
+
+		logStep("Search Paid Bills By Current Date");
+		onlineBillPaySearchPage.searchForBillPayToday();
+
+		logStep("Search For Today's Paid Bill By Account Number");
+		onlineBillPaySearchPage.searchForBillPayment(accountNumber);
+
+		logStep("Get Bill Details");
+		onlineBillPaySearchPage.getBillPayDetails();
+
+		logStep("Set Payment Communication Details");
+		onlineBillPaySearchPage.setPaymentCommunicationDetails();
+
+		logStep("Logout of Practice Portal");
+		practiceHome.logOut();
 		
 		String actualAmount = amount.charAt(0)+"."+amount.substring(1);
 		log("Actual Amount "+actualAmount);
@@ -5871,5 +5872,5 @@ public class NGIntegrationE2ESITTests extends BaseTestNGWebDriver{
 		String SourceId = DBUtils.executeQueryOnDB("NGCoreDB",SourceIdQuery);
 		CommonFlows.verifyPaymentPostedtoNG(PaymentComments,SourceId , person_id, "-"+actualAmount, "Payment type: BillPayment, Last 4 CC digits: "+creditCard.getLastFourDigits(),practiceId);
 		log("Test Case End: The patient is able to pay the bill using Pay Bills and payment is being posted to NG");
-	}
+	}	
 }
