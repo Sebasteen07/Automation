@@ -6,7 +6,6 @@ import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.FindBy;
 import org.openqa.selenium.support.PageFactory;
 import org.openqa.selenium.support.ui.Select;
-
 import com.intuit.ifs.csscat.core.pageobject.BasePageObject;
 import com.intuit.ihg.product.sitegen.utils.SitegenConstants;
 import com.medfusion.common.utils.IHGUtil;
@@ -43,8 +42,8 @@ public class AddPharmacyPage  extends BasePageObject{
     @FindBy(xpath="//select[@name='locations']")
 	private WebElement locationDropDown;
 	
-    @FindBy(xpath="//table/tbody/tr[16]/td[3]/input")
-	private WebElement externalPharmacyId;
+    @FindBy(xpath="//input[@name='extPharmacyId1']")
+   	private WebElement externalPharmacyId;
 	
     @FindBy(xpath="//input[@name='btn_confirm']")
 	private WebElement btnConfirmPharmacy;
@@ -58,6 +57,8 @@ public class AddPharmacyPage  extends BasePageObject{
     @FindBy(xpath="//li[@class='sg_err_text']")
     private WebElement sameIDErrorMsg;
     
+    public static String  PharmacyName= SitegenConstants.PHARMACYNAME+IHGUtil.createRandomNumericString();
+    
 	public AddPharmacyPage(WebDriver driver) {
 		super(driver);
 		PageFactory.initElements(driver, this);
@@ -66,7 +67,6 @@ public class AddPharmacyPage  extends BasePageObject{
 	public String fillPharmacyDetails(String externalid,boolean flag) throws InterruptedException {
 		IHGUtil.PrintMethodName();
 		String successmsg= "Pharmacy added successfully";
-		String PharmacyName= SitegenConstants.PHARMACYNAME+IHGUtil.createRandomNumericString();
 		txtPharmacyName.sendKeys(PharmacyName);
 		txtPharmacyAddr.sendKeys(SitegenConstants.ADDRESS);
 		txtPharmacyCity.sendKeys(SitegenConstants.CITY);
@@ -102,7 +102,6 @@ public class AddPharmacyPage  extends BasePageObject{
 	
 	public boolean deletePharmacy(String pharmaName) throws InterruptedException
 	{
-		System.out.println("Pharmacy  to be deleted  is " +pharmaName);
 		Thread.sleep(2000);
 		btnDelete.click();
 		ManageYourPharmacies managePage= new ManageYourPharmacies(driver);
@@ -110,5 +109,9 @@ public class AddPharmacyPage  extends BasePageObject{
 		return flag;
 		
 	}
+	
+	public String getPharmacyName() {
+		return txtPharmacyName.getText();
+}
 
 }

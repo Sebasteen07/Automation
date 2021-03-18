@@ -46,5 +46,78 @@ public class Payload {
 			"  }\r\n" + 
 			"}";
 	
+	String body1="[{\"group\":\"NG_WEBSERVICES\",\"key\":\"NGAPIBaseUrl\",\"value\":\"https://dev-nge-test-pss-nge-int-test.dev.mf.pxp.nextgenaws.net:7205/api\"}]";
+	String available_Slot_Payload ="{\"locationId\":\"283BB437-B0C6-4626-A7CC-57FD0D1D6574\",\r\n"
+			+ "   \"appointmentCategoryId\":\"8F563A6C-7098-4446-97E2-7EF9345ED469\",\r\n"
+			+ "   \"appointmentTypeId\":\"86D0E00F-C136-4A24-BF7A-6C17E9AB35ED\",\r\n"
+			+ "   \"startDate\":\"02/17/2021 10:00:00\",\r\n"
+			+ "   \"slotSize\":\"15\",\r\n"
+			+ "   \"patientId\":\"3665\",\r\n"
+			+ "   \"reservedForSameDay\":false,\r\n"
+			+ "   \"apptTypeAllocated\":true,\r\n"
+			+ "   \"nextAvailability\":false,\r\n"
+			+ "   \"stackingFlag\":false,\r\n"
+			+ "   \"preventScheduling\":0,\r\n"
+			+ "   \"sameDayAppointment\":false,\r\n"
+			+ "   \"contiguous\":false,\r\n"
+			+ "   \"maxPerDay\":0,\r\n"
+			+ "   \"leadTime\":0,\r\n"
+			+ "   \"slotCount\":1,\r\n"
+			+ "   \"allowSameDayAppts\":true,\r\n"
+			+ "   \"reservedForSameDate\":\"n\",\r\n"
+			+ "   \"appointmentTypeDBId\":\"205755\",\r\n"
+			+ "   \"locationDBId\":\"205605\"\r\n"
+			+ "}";
+	
+	public static String past_appt_payload(String patientId, String practiceDisplayName, String practiceId) {
+		
+		String past_appt="{\r\n"
+				+ "  \"additionalFields\": {},\r\n"
+				+ "  \"endDate\": \"03/03/2021 \",\r\n"
+				+ "  \"patientId\": \""+patientId+"\",\r\n"
+				+ "  \"practiceProvision\": {\r\n"
+				+ "    \"active\": true,\r\n"
+				+ "    \"practiceDisplayName\": \""+practiceDisplayName+"\",\r\n"
+				+ "    \"practiceId\": \""+practiceId+"\",\r\n"
+				+ "    \"practiceName\": \""+practiceDisplayName+"\",\r\n"
+				+ "    \"practiceTimezone\": \"America/New_York\"\r\n"
+				+ "  },\r\n"
+				+ "  \"startDate\": \"01/01/2021\"\r\n"
+				+ "}\r\n"
+				+ "";
+		
+		return past_appt;
+	}
+	
+
+	public static String nextAvailable_Payload(String patientId) {
+		
+		String nextAvailable="{\r\n"
+				+ "\r\n"
+				+ "\"locationId\": \"283BB437-B0C6-4626-A7CC-57FD0D1D6574\",\r\n"
+				+ "\"appointmentCategoryId\": \"8F563A6C-7098-4446-97E2-7EF9345ED469\",\r\n"
+				+ "\"appointmentTypeId\": \"86D0E00F-C136-4A24-BF7A-6C17E9AB35ED\",\r\n"
+				+ "\"startDate\": \"04/03/2021 00:49:32\",\r\n"
+				+ "\"slotSize\": \"15\",\r\n"
+				+ "\"patientId\": \""+patientId+"\",\r\n"
+				+ "\"reservedForSameDay\": false,\r\n"
+				+ "\"apptTypeAllocated\": true,\r\n"
+				+ "\"nextAvailability\": true,\r\n"
+				+ "\"stackingFlag\": false,\r\n"
+				+ "\"preventScheduling\": 0,\r\n"
+				+ "\"sameDayAppointment\": false,\r\n"
+				+ "\"contiguous\": false,\r\n"
+				+ "\"maxPerDay\": 0,\r\n"
+				+ "\"leadTime\": 0,\r\n"
+				+ "\"slotCount\": 1,\r\n"
+				+ "\"allowSameDayAppts\": true,\r\n"
+				+ "\"reservedForSameDate\": \"n\",\r\n"
+				+ "\"appointmentTypeDBId\": \"205755\",\r\n"
+				+ "\"locationDBId\": \"205605\"\r\n"
+				+ "}";
+		
+		return nextAvailable;
+	}
+	
 
 }

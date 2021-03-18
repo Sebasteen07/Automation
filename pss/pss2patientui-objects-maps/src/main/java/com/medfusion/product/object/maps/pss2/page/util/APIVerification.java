@@ -7,7 +7,7 @@ import org.json.JSONObject;
 import com.intuit.ifs.csscat.core.BaseTestNGWebDriver;
 
 import io.restassured.response.Response;
-import junit.framework.Assert;
+import org.testng.Assert;
 
 public class APIVerification extends BaseTestNGWebDriver {
 
@@ -27,9 +27,7 @@ public class APIVerification extends BaseTestNGWebDriver {
 			JSONArray arr = new JSONArray(response.getBody().asString());
 			for (int i = 0; i < arr.length(); i++) {
 				JSONObject obj = arr.getJSONObject(i);
-				for (int j = 0; j < obj.length(); j++) {
-					log("Validated values are " + obj.getString(key));
-				}
+				log("Validated key-> " + key + " value is-  " + obj.getString(key));
 			}
 		} catch (Exception e) {
 			log("Test Case Failed-Response not validated");
@@ -37,11 +35,9 @@ public class APIVerification extends BaseTestNGWebDriver {
 	}
 
 	public void responseTimeValidation(Response response) {
-
 		try {
 			long time = response.time();
-			log("Test Case Passed-Response- " + time);
-
+			log("Test Case Passed-Response Time in ms- " + time);
 		} catch (Exception e) {
 			log("Test Case Failed-Response Time not validated");
 		}

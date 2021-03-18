@@ -81,6 +81,15 @@ public class PSSPropertyFileLoader {
 		appointValues.setProviderImageAPI(property.getProperty("providerImageAPIGW"));
 		appointValues.setGmailUserName(property.getProperty("gmailUserNameGW"));
 		appointValues.setPopUpMessege(property.getProperty("popUpMessege"));
+		
+		appointValues.setFirstNameCarePatient(property.getProperty("firstNameCarePatientGW"));
+		appointValues.setLastNameCarePatient(property.getProperty("lastNameCarePatientGW"));
+		appointValues.setDobCarePatient(property.getProperty("dobCarePatientGW"));
+		appointValues.setGenderCarePatient(property.getProperty("genderCarePatientGW"));
+		appointValues.setEmailCarePatient(property.getProperty("emailCarePatientGW"));
+		appointValues.setPhoneCarePatient(property.getProperty("phoneCarePatientGW"));
+		appointValues.setZipCarePatient(property.getProperty("zipCarePatientGW"));
+		appointValues.setCareProvider(property.getProperty("providerCarePatientGW"));
 	}
 
 	public void setAdminGW(AdminUser adminuser) {
@@ -257,6 +266,15 @@ public class PSSPropertyFileLoader {
 		appointValues.setProviderImageAPI(property.getProperty("providerImageAPIGE"));
 		appointValues.setGmailUserName(property.getProperty("emailGE"));
 		appointValues.setPopUpMessege(property.getProperty("popUpMessege"));
+		
+		appointValues.setFirstNameCarePatient(property.getProperty("firstNameCarePatientGE"));
+		appointValues.setLastNameCarePatient(property.getProperty("lastNameCarePatientGE"));
+		appointValues.setDobCarePatient(property.getProperty("dobCarePatientGE"));
+		appointValues.setGenderCarePatient(property.getProperty("genderCarePatientGE"));
+		appointValues.setEmailCarePatient(property.getProperty("emailCarePatientGE"));
+		appointValues.setPhoneCarePatient(property.getProperty("phoneCarePatientGE"));
+		appointValues.setZipCarePatient(property.getProperty("zipCarePatientGE"));
+		appointValues.setCareProvider(property.getProperty("providerCarePatientGE"));
 
 	}
 
@@ -341,13 +359,17 @@ public class PSSPropertyFileLoader {
 	}
 	
 	public void setRestAPIData(Appointment appointValues) {
-		appointValues.setBaseurl_BookRule(property.getProperty("baseurl_BookRule"));
+		appointValues.setBaseurl_BookRule(property.getProperty("baseurl"));
 		appointValues.setBaseurl_LocationRule(property.getProperty("baseurl_LocationRule"));
 		appointValues.setBaseurl_AppointmentType(property.getProperty("baseurl_AptType"));
-		appointValues.setBaseurl_AvailableSlots("baseurl_available_slots");
-		appointValues.setBaseurl_ScheduleAppointment("baseurl_ScheduleAppointment");
+		appointValues.setBaseurl_AvailableSlots(property.getProperty("baseurl_available_slots"));
+		appointValues.setPracticeId("practiceIdNG");
+		appointValues.setBaseurl_ScheduleAppointment("baseurl_ScheduleAppointment");		
 		appointValues.setAccessTokenURL(property.getProperty("accessToken_BaseUrl"));
-		appointValues.setNg_adapterBaseURL(property.getProperty("baseurl"));
+		appointValues.setBasicURI(property.getProperty("baseurl"));
+		appointValues.setPracticeId(property.getProperty("practiceIdNG"));
+		appointValues.setPracticeDisplayName(property.getProperty("practiceDisplayNameNG"));
+		appointValues .setPatientId(property.getProperty("patientIdNG"));
 	}
 	
 }
