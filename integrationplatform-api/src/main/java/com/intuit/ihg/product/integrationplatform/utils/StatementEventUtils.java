@@ -105,7 +105,7 @@ public class StatementEventUtils {
 		}
 		Assert.assertTrue(completed, "Message processing was not completed in time");
 		}
-		if(testData.StatementType.equalsIgnoreCase("NEW") && !IHGUtil.getEnvironmentType().toString().equalsIgnoreCase("PROD")) {
+		if(null!=testData.StatementType&&(testData.StatementType.equalsIgnoreCase("NEW") && !IHGUtil.getEnvironmentType().toString().equalsIgnoreCase("PROD"))) {
 			Thread.sleep(2000);
 			Log4jUtil.log("step 6: Login to Practice Portal");
 			
