@@ -112,6 +112,8 @@ public class SecurityDetailsPage extends MedfusionPage {
 				IHGUtil.PrintMethodName();
 				fillAccountDetails(userId, password, secretQuestion, secretAnswer, phoneNumber, statementPreference);
 				IHGUtil.waitForElement(driver, 60, buttonFinishStep);
+				scrollAndWait(0,300,3000);
+				log("Clicking finish btn");
 				buttonFinishStep.click();
 				selectStatementIfRequired(statementPreference); //TODO move to handleWeNeedToConfirmSomethingModal
 				handleWeNeedToConfirmSomethingModal();
