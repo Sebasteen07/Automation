@@ -803,7 +803,7 @@ public class IntegrationPlatformAcceptanceTests extends BaseTestNGWebDriver {
 
 		log("Step 13: Check secure message in patient gmail inbox");
 		Mailinator mail = new Mailinator();
-		String subject = "New message from PI Automation rsdk Integrated";
+		String subject = "New message from " + OLBPData.getPracticeName();
 		String messageLink = "Sign in to view this message";
 		assertTrue(mail.isMessageInInbox(OLBPData.getUserName(), subject, messageLink, 5));
 
