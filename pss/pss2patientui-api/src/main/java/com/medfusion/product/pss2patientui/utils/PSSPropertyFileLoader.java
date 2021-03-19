@@ -27,6 +27,7 @@ public class PSSPropertyFileLoader {
 		appointValues.setAgeRuleMonthFirst(property.getProperty("ageRuleMonthFirstParameterGW"));
 		appointValues.setAgeRuleMonthSecond(property.getProperty("ageRuleMonthSecondParameterGW"));
 		appointValues.setLinkProvider(property.getProperty("linkProviderGW"));
+		appointValues.setLinkLocation(property.getProperty("linkLocationGW"));
 		appointValues.setAppointmenttype(property.getProperty("appointmenttypeGW"));
 		appointValues.setDatetime(property.getProperty("datetimeGW"));
 		appointValues.setLocation(property.getProperty("locationGW"));
@@ -81,7 +82,7 @@ public class PSSPropertyFileLoader {
 		appointValues.setProviderImageAPI(property.getProperty("providerImageAPIGW"));
 		appointValues.setGmailUserName(property.getProperty("gmailUserNameGW"));
 		appointValues.setPopUpMessege(property.getProperty("popUpMessege"));
-		
+
 		appointValues.setFirstNameCarePatient(property.getProperty("firstNameCarePatientGW"));
 		appointValues.setLastNameCarePatient(property.getProperty("lastNameCarePatientGW"));
 		appointValues.setDobCarePatient(property.getProperty("dobCarePatientGW"));
@@ -145,6 +146,8 @@ public class PSSPropertyFileLoader {
 		appointValues.setAgeRuleMonthFirst(property.getProperty("ageRuleMonthFirstParameterAT"));
 		appointValues.setAgeRuleMonthSecond(property.getProperty("ageRuleMonthSecondParameterAT"));
 		appointValues.setLinkProvider(property.getProperty("linkProviderAT"));
+		appointValues.setLinkLocation(property.getProperty("linkLocationAT"));
+
 		appointValues.setMaxperDay(property.getProperty("maxperDayAT"));
 		appointValues.setUrlAnonymous(property.getProperty("urlAnonymousAT"));
 		Log4jUtil.log(appointValues.getUrlAnonymous());
@@ -211,6 +214,8 @@ public class PSSPropertyFileLoader {
 		appointValues.setAgeRuleMonthFirst(property.getProperty("ageRuleMonthFirstParameterGE"));
 		appointValues.setAgeRuleMonthSecond(property.getProperty("ageRuleMonthSecondParameterGE"));
 		appointValues.setLinkProvider(property.getProperty("linkProviderGE"));
+		appointValues.setLinkLocation(property.getProperty("linkLocationGE"));
+
 		appointValues.setMaxperDay(property.getProperty("maxperDayGE"));
 		appointValues.setAppointmenttype(property.getProperty("appointmenttypeGE"));
 		appointValues.setDatetime(property.getProperty("datetimeGE"));
@@ -266,7 +271,7 @@ public class PSSPropertyFileLoader {
 		appointValues.setProviderImageAPI(property.getProperty("providerImageAPIGE"));
 		appointValues.setGmailUserName(property.getProperty("emailGE"));
 		appointValues.setPopUpMessege(property.getProperty("popUpMessege"));
-		
+
 		appointValues.setFirstNameCarePatient(property.getProperty("firstNameCarePatientGE"));
 		appointValues.setLastNameCarePatient(property.getProperty("lastNameCarePatientGE"));
 		appointValues.setDobCarePatient(property.getProperty("dobCarePatientGE"));
@@ -286,6 +291,7 @@ public class PSSPropertyFileLoader {
 		appointValues.setAgeRuleMonthFirst(property.getProperty("ageRuleMonthFirstParameterNG"));
 		appointValues.setAgeRuleMonthSecond(property.getProperty("ageRuleMonthSecondParameterNG"));
 		appointValues.setLinkProvider(property.getProperty("linkProviderNG"));
+		appointValues.setLinkLocation(property.getProperty("linkLocationNG"));
 		appointValues.setMaxperDay(property.getProperty("maxperDayNG"));
 		appointValues.setAppointmenttype(property.getProperty("appointmenttypeNG"));
 		appointValues.setDatetime(property.getProperty("datetimeNG"));
@@ -341,6 +347,15 @@ public class PSSPropertyFileLoader {
 		appointValues.setProviderImageAPI(property.getProperty("providerImageAPING"));
 		appointValues.setGmailUserName(property.getProperty("emailNG"));
 		appointValues.setPopUpMessege(property.getProperty("popUpMessege"));
+
+		appointValues.setFirstNameCarePatient(property.getProperty("firstNameCarePatientNG"));
+		appointValues.setLastNameCarePatient(property.getProperty("lastNameCarePatientNG"));
+		appointValues.setDobCarePatient(property.getProperty("dobCarePatientNG"));
+		appointValues.setGenderCarePatient(property.getProperty("genderCarePatientNG"));
+		appointValues.setEmailCarePatient(property.getProperty("emailCarePatientNG"));
+		appointValues.setPhoneCarePatient(property.getProperty("phoneCarePatientNG"));
+		appointValues.setZipCarePatient(property.getProperty("zipCarePatientNG"));
+		appointValues.setCareProvider(property.getProperty("providerCarePatientNG"));
 	}
 
 	public void setAppointmentResponseAthena(Appointment appointValues) {
@@ -357,19 +372,19 @@ public class PSSPropertyFileLoader {
 		appointValues.setZipCode(property.getProperty("zipCodeNG"));
 		appointValues.setPrimaryNumber(property.getProperty("primaryNumberNG"));
 	}
-	
+
 	public void setRestAPIData(Appointment appointValues) {
 		appointValues.setBaseurl_BookRule(property.getProperty("baseurl"));
 		appointValues.setBaseurl_LocationRule(property.getProperty("baseurl_LocationRule"));
 		appointValues.setBaseurl_AppointmentType(property.getProperty("baseurl_AptType"));
 		appointValues.setBaseurl_AvailableSlots(property.getProperty("baseurl_available_slots"));
 		appointValues.setPracticeId("practiceIdNG");
-		appointValues.setBaseurl_ScheduleAppointment("baseurl_ScheduleAppointment");		
+		appointValues.setBaseurl_ScheduleAppointment("baseurl_ScheduleAppointment");
 		appointValues.setAccessTokenURL(property.getProperty("accessToken_BaseUrl"));
 		appointValues.setBasicURI(property.getProperty("baseurl"));
 		appointValues.setPracticeId(property.getProperty("practiceIdNG"));
 		appointValues.setPracticeDisplayName(property.getProperty("practiceDisplayNameNG"));
-		appointValues .setPatientId(property.getProperty("patientIdNG"));
+		appointValues.setPatientId(property.getProperty("patientIdNG"));
 	}
-	
+
 }

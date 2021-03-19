@@ -16,10 +16,10 @@ public class AdminPatientMatching extends SettingsTab {
 
 	@FindAll({@FindBy(xpath = "//patientmatch//div//div//div//div//table[@class=\"table table-hover\"]/tbody[1]/tr")})
 	private List<WebElement> patientMatchingList;
-	
+
 	@FindBy(xpath = "//patientmatch//div//div[3]//div//button[@class='btn btn-primary' and @style='margin-right:10px']")
-	private WebElement saveBtnPAtientMatching;	
-	
+	private WebElement saveBtnPAtientMatching;
+
 	public AdminPatientMatching(WebDriver driver) {
 		super(driver);
 	}
