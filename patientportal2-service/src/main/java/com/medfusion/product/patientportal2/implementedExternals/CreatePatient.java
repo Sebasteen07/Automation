@@ -39,12 +39,7 @@ public class CreatePatient implements ICreatePatient {
 		JalapenoLoginPage loginPage = new JalapenoLoginPage(driver, url);
 		PatientDemographicPage patientDemographicPage = loginPage.clickCreateANewAccountButton();
 		patientDemographicPage.fillInPatientDataStateSpecific(patient);
-		SecurityDetailsPage accountDetailsPage = patientDemographicPage.continueToSecurityPage();
-		JalapenoHomePage homePage = accountDetailsPage.fillAccountDetailsAndContinue(patient);
-		homePage.clickOnLogout();
-		patient.setWasSelfRegistered(true);
 		return patient;
-
 	}
 
 }
