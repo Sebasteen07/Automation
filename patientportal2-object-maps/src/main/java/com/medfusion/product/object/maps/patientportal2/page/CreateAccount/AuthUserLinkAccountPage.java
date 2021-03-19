@@ -1,4 +1,4 @@
-// Copyright 2016-2020 NXGN Management, LLC. All Rights Reserved.
+// Copyright 2013-2021 NXGN Management, LLC. All Rights Reserved.
 package com.medfusion.product.object.maps.patientportal2.page.CreateAccount;
 
 import java.util.ArrayList;
@@ -75,10 +75,26 @@ public class AuthUserLinkAccountPage extends MedfusionPage {
 		Select relationshipPatient = new Select(relationshipFirstSelect);
 		relationshipPatient.selectByVisibleText(relationship);
 
-		new WebDriverWait(driver, 10).until(ExpectedConditions.elementToBeClickable(enterPortalButton));
+		wait.until(ExpectedConditions.elementToBeClickable(enterPortalButton));
 		enterPortalButton.click();
 
 		handleWeNeedToConfirmSomethingModal();
+
+		return PageFactory.initElements(driver, JalapenoHomePage.class);
+	}
+	
+	public JalapenoHomePage linkPatientToCreateTrustedRep(String login, String password, String relationship) {
+		IHGUtil.PrintMethodName();
+
+		userIdInput.sendKeys(login);
+		passwordInput.sendKeys(password);
+		log("Trusted Representative login / password: " + login + " / " + password);
+
+		Select relationshipPatient = new Select(relationshipFirstSelect);
+		relationshipPatient.selectByVisibleText(relationship);
+
+		wait.until(ExpectedConditions.elementToBeClickable(enterPortalButton));
+		enterPortalButton.click();
 
 		return PageFactory.initElements(driver, JalapenoHomePage.class);
 	}
