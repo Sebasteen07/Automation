@@ -105,7 +105,7 @@ public class StatementEventUtils {
 		}
 		Assert.assertTrue(completed, "Message processing was not completed in time");
 		}
-		if(testData.StatementType.equalsIgnoreCase("NEW") && !IHGUtil.getEnvironmentType().toString().equalsIgnoreCase("PROD")) {
+		
 			Thread.sleep(2000);
 			Log4jUtil.log("step 6: Login to Practice Portal");
 			
@@ -136,7 +136,7 @@ public class StatementEventUtils {
 			
 			Assert.assertEquals(SMPObj.patientID, externalPatientID, "Patient External ID Matched !");
 			pPracticeHomePage.logOut();
-		}
+		
 		
 		Mailinator mail = new Mailinator();
 		String link = mail.getLinkFromEmail(testData.Email, testData.emailSubject,testData.PracticeName, 20);

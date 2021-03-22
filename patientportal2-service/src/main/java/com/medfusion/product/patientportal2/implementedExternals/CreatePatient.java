@@ -25,6 +25,16 @@ public class CreatePatient implements ICreatePatient {
 		patient.setWasSelfRegistered(true);
 		return patient;
 	}
+	
+	public Patient registerPatient(WebDriver driver, Patient patient, String url) throws Exception {
+		JalapenoLoginPage loginPage = new JalapenoLoginPage(driver, url);
+		PatientDemographicPage patientDemographicPage = loginPage.clickCreateANewAccountButton();
+		patientDemographicPage.fillInPatientData(patient);
+		SecurityDetailsPage accountDetailsPage = patientDemographicPage.continueToSecurityPage();
+		accountDetailsPage.fillAccountDetailsAndContinue(patient);
+		patient.setWasSelfRegistered(true);
+		return patient;
+	}
 
 	public Patient selfRegisterUnderAgePatient(WebDriver driver, Patient patient, String url) throws Exception {
 		JalapenoLoginPage loginPage = new JalapenoLoginPage(driver, url);
