@@ -1,6 +1,10 @@
 package com.medfusion.product.practice.tests;
 
 import com.medfusion.common.utils.PropertyFileLoader;
+
+import static org.testng.Assert.assertEquals;
+import static org.testng.Assert.assertTrue;
+
 import org.openqa.selenium.WebDriver;
 
 import com.intuit.ifs.csscat.core.BaseTestNGWebDriver;
@@ -68,7 +72,7 @@ public class VirtualCardSwiperTest extends BaseTestNGWebDriver {
 				PracticeLoginPage practiceLogin = new PracticeLoginPage(driver, testData.getUrl());
 
 				logStep("Enter credentials and login");
-				PracticeHomePage practiceHome = practiceHome = practiceLogin.login(testData.getProperty("doctorLogin"), testData.getProperty("doctorPassword"));
+				PracticeHomePage practiceHome = practiceLogin.login(testData.getProperty("doctorLogin"), testData.getProperty("doctorPassword"));
 
 				logStep("Navigate to Virtual Card Swiper page.");
 				VirtualCardSwiperPage virtualCardSwiper = practiceHome.clickOnVirtualCardSwiper();

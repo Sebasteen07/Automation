@@ -66,7 +66,6 @@ public class JalapenoAccountPage extends JalapenoMenu {
 
 		public JalapenoMyAccountProfilePage clickOnEditMyAccount() {
 				log("Trying to click on Edit button for My Account");
-				WebDriverWait wait = new WebDriverWait(driver, 20);
 				wait.until(ExpectedConditions.visibilityOf(editMyAccountButton));
 				editMyAccountButton.click();
 
@@ -81,7 +80,6 @@ public class JalapenoAccountPage extends JalapenoMenu {
 		}
 
 		public void inviteTrustedRepresentative(Patient patient) {
-				WebDriverWait wait = new WebDriverWait(driver, 15);
 				wait.until(ExpectedConditions.visibilityOf(inviteNewButton));
 
 				inviteNewButton.click();

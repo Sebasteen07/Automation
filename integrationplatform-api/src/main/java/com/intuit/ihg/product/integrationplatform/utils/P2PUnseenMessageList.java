@@ -1,4 +1,8 @@
+//Copyright 2013-2021 NXGN Management, LLC. All Rights Reserved.
 package com.intuit.ihg.product.integrationplatform.utils;
+
+import static org.testng.Assert.assertEquals;
+import static org.testng.Assert.assertTrue;
 
 import java.io.IOException;
 import java.util.ArrayList;
@@ -9,7 +13,6 @@ import java.util.regex.Pattern;
 import javax.xml.parsers.ParserConfigurationException;
 import javax.xml.transform.TransformerException;
 
-import org.testng.Assert;
 import org.xml.sax.SAXException;
 
 import com.intuit.ifs.csscat.core.utils.Log4jUtil;
@@ -63,7 +66,7 @@ public class P2PUnseenMessageList {
 		
 		Log4jUtil.log("Step 15: Verify UnseenMessage and Match msgUID");
 		String msgUidNEW=RestUtils.verifyUnseenMessageListAndGetMessageUID(testData.ResponsePath,testData.Subject);
-		Assert.assertEquals(msgUid, msgUidNEW);
+		assertEquals(msgUid, msgUidNEW);
 	}
 	
 	public void ExtractErrorMessage(String xmlFileName,String PatternToMatch,String invalidMessage) throws IOException {
@@ -83,7 +86,7 @@ public class P2PUnseenMessageList {
 	    Log4jUtil.log("Error Message "+tagValues.get(0));
 	 	if(tagValues.get(0).contains(invalidMessage)) {
 	 		Log4jUtil.log("Error Response Matched");
-	 		Assert.assertTrue(true, "Error Response Matched");
+	 		assertTrue(true, "Error Response Matched");
 	 	}
 	}
 }

@@ -1,6 +1,8 @@
+//Copyright 2013-2021 NXGN Management, LLC. All Rights Reserved.
 package com.medfusion.product.object.maps.patientportal2.page.MedicationsPage;
 
-import static com.intuit.ifs.csscat.core.BaseTestSoftAssert.assertTrue;
+import static org.testng.Assert.assertTrue;
+
 import java.util.ArrayList;
 
 import org.openqa.selenium.By;

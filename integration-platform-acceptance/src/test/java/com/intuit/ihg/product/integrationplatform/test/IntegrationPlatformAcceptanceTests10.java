@@ -7,7 +7,7 @@ import java.io.IOException;
 
 import javax.xml.parsers.ParserConfigurationException;
 
-import org.testng.Assert;
+
 import org.testng.annotations.BeforeClass;
 import org.testng.annotations.Test;
 import org.xml.sax.SAXException;
@@ -240,7 +240,7 @@ public class IntegrationPlatformAcceptanceTests10 {
 				break;
 			}
 		}
-		Assert.assertTrue(completed, "Message processing was not completed in time");
+		assertTrue(completed, "Message processing was not completed in time");
 	}
 	
 	@Test(enabled = true, groups = {"AcceptanceTests"}, retryAnalyzer = RetryAnalyzer.class)

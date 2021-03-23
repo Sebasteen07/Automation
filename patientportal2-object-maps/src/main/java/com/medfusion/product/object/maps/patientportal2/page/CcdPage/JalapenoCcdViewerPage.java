@@ -1,5 +1,8 @@
-// Copyright 2013-2020 NXGN Management, LLC. All Rights Reserved.
+// Copyright 2013-2021 NXGN Management, LLC. All Rights Reserved.
 package com.medfusion.product.object.maps.patientportal2.page.CcdPage;
+
+import static org.testng.Assert.fail;
+import static org.testng.Assert.assertEquals;
 
 import java.io.IOException;
 import java.net.URISyntaxException;
@@ -12,7 +15,6 @@ import org.openqa.selenium.support.How;
 import org.openqa.selenium.support.PageFactory;
 import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.openqa.selenium.support.ui.WebDriverWait;
-import org.testng.Assert;
 
 import com.intuit.ihg.common.utils.downloads.RequestMethod;
 import com.intuit.ihg.common.utils.downloads.URLStatusChecker;
@@ -146,7 +148,7 @@ public class JalapenoCcdViewerPage extends MedfusionPage {
 
 		new WebDriverWait(driver, 15).until(ExpectedConditions.visibilityOf(resultMessageUnsecure));
 		log("Result: " + resultMessageUnsecure.getText());
-		Assert.assertEquals(resultMessageUnsecure.getText(), "E-mail address fields must match.");
+		assertEquals(resultMessageUnsecure.getText(), "E-mail address fields must match.");
 
 		log("Input the unsecure email address: " + emailAddress + " and correct confirmation e-mail");
 		unsecureAddressBox.clear();
@@ -235,7 +237,7 @@ public class JalapenoCcdViewerPage extends MedfusionPage {
 		if (ccdBasicInfo.isDisplayed() && closeButton.isDisplayed()) {
 			closeButton.click();
 		} else {
-			Assert.fail("CCD Viewer not present: Could not find CCD Basic Info/Close Viewer Button");
+			fail("CCD Viewer not present: Could not find CCD Basic Info/Close Viewer Button");
 		}
 	}
 

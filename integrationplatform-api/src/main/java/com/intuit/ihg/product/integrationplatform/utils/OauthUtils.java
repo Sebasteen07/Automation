@@ -1,6 +1,8 @@
+//Copyright 2013-2021 NXGN Management, LLC. All Rights Reserved.
 package com.intuit.ihg.product.integrationplatform.utils;
 
-import java.io.BufferedInputStream;
+import static org.testng.Assert.assertTrue;
+
 import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileInputStream;
@@ -9,7 +11,6 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.io.StringWriter;
-import java.io.UnsupportedEncodingException;
 import java.net.HttpURLConnection;
 import java.net.MalformedURLException;
 import java.net.URI;
@@ -39,7 +40,7 @@ import org.apache.http.entity.StringEntity;
 import org.apache.http.impl.client.DefaultHttpClient;
 import org.apache.http.params.CoreConnectionPNames;
 import org.apache.http.util.EntityUtils;
-import org.testng.Assert;
+
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 import org.w3c.dom.Node;
@@ -79,7 +80,7 @@ public class OauthUtils {
 			sResp = EntityUtils.toString(entity);
 			Log4jUtil.log("Check for http 200 response");
 			writeFile(responseFilePath, sResp);
-			Assert.assertTrue(resp.getStatusLine().getStatusCode() == 200,
+			assertTrue(resp.getStatusLine().getStatusCode() == 200,
 					"Get Request response is " + resp.getStatusLine().getStatusCode() + " instead of " + 200 + ". Response message received:\n" + sResp);
 		} else {
 			Log4jUtil.log("204 response found");
@@ -207,7 +208,7 @@ public class OauthUtils {
 		String sResp = EntityUtils.toString(resp.getEntity());
 
 		Log4jUtil.log("Check for http 200/202 response");
-		Assert.assertTrue(resp.getStatusLine().getStatusCode() == 200 || resp.getStatusLine().getStatusCode() == 202,
+		assertTrue(resp.getStatusLine().getStatusCode() == 200 || resp.getStatusLine().getStatusCode() == 202,
 				"Get Request response is " + resp.getStatusLine().getStatusCode() + " instead of 200/202. Response message:\n" + sResp);
 		Log4jUtil.log("Response Code" + resp.getStatusLine().getStatusCode());
 		writeFile(responseFilePath, sResp);

@@ -1,6 +1,8 @@
 //Copyright 2013-2021 NXGN Management, LLC. All Rights Reserved.
 package com.medfusion.patientportal2.test;
 
+import static org.testng.Assert.assertTrue;
+
 import java.awt.Toolkit;
 import java.awt.datatransfer.StringSelection;
 

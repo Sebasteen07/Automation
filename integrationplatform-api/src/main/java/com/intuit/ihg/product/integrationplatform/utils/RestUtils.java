@@ -1,6 +1,10 @@
 // Copyright 2013-2021 NXGN Management, LLC. All Rights Reserved.
 package com.intuit.ihg.product.integrationplatform.utils;
 
+import static org.testng.Assert.assertEquals;
+import static org.testng.Assert.assertTrue;
+import static org.testng.Assert.fail;
+
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileOutputStream;
@@ -49,7 +53,7 @@ import org.apache.http.impl.client.DefaultHttpClient;
 import org.apache.http.params.CoreConnectionPNames;
 import org.apache.http.util.EntityUtils;
 import org.jdom.JDOMException;
-import org.testng.Assert;
+
 import org.w3c.dom.Attr;
 import org.w3c.dom.DOMException;
 import org.w3c.dom.Document;
@@ -63,7 +67,6 @@ import com.intuit.api.security.client.IOAuthTwoLeggedClient;
 import com.intuit.api.security.client.OAuth20TokenManager;
 import com.intuit.api.security.client.OAuth2Client;
 import com.intuit.api.security.client.properties.OAuthPropertyManager;
-import com.intuit.ifs.csscat.core.BaseTestSoftAssert;
 import com.intuit.ifs.csscat.core.utils.Log4jUtil;
 import com.intuit.ihg.common.utils.mail.GmailBot;
 import com.intuit.ihg.product.integrationplatform.pojo.PIDCInfo;
@@ -109,7 +112,7 @@ public class RestUtils {
 		if (entity != null) {
 			sResp = EntityUtils.toString(entity);
 			Log4jUtil.log("Check for http 200 response");
-			Assert.assertTrue(resp.getStatusLine().getStatusCode() == 200, "Get Request response is "
+			assertTrue(resp.getStatusLine().getStatusCode() == 200, "Get Request response is "
 					+ resp.getStatusLine().getStatusCode() + " instead of 200. Response message received:\n" + sResp);
 			Thread.sleep(10000);
 			Log4jUtil.log("GET sResp=" + sResp);
@@ -174,7 +177,7 @@ public class RestUtils {
 				break;
 			}
 		}
-		Assert.assertTrue(found, "Question was not found in response XML");
+		assertTrue(found, "Question was not found in response XML");
 
 		Log4jUtil.log("finding QuestionType and Message element");
 		boolean questionTypefound = false;
@@ -195,8 +198,8 @@ public class RestUtils {
 
 			}
 		}
-		Assert.assertTrue(questionTypefound, "QuestionType element was not found in response XML");
-		Assert.assertTrue(messageFound, "Message element was not found in response XML");
+		assertTrue(questionTypefound, "QuestionType element was not found in response XML");
+		assertTrue(messageFound, "Message element was not found in response XML");
 		Log4jUtil.log("response is ok");
 	}
 
@@ -241,7 +244,7 @@ public class RestUtils {
 			Log4jUtil.log("Video visit is selected");
 		}
 
-		Assert.assertTrue(found, "Reason was not found in response XML");
+		assertTrue(found, "Reason was not found in response XML");
 		Log4jUtil.log("response is ok");
 	}
 
@@ -275,21 +278,21 @@ public class RestUtils {
 				Node nRefillNumber = ele.getElementsByTagName(JalapenoConstants.REFILL_NUMBER_TAG).item(0);
 				Node nAdditionalInformation = ele.getElementsByTagName(JalapenoConstants.ADDITIONAL_INFO_TAG)
 						.item(0);
-				Assert.assertEquals(nDosage.getTextContent(), JalapenoConstants.DOSAGE,
+				assertEquals(nDosage.getTextContent(), JalapenoConstants.DOSAGE,
 						"The actual value of dosage doesnt equal the expected value");
-				Assert.assertEquals(nQuantity.getTextContent(), JalapenoConstants.QUANTITY,
+				assertEquals(nQuantity.getTextContent(), JalapenoConstants.QUANTITY,
 						"The actual value of quantity doesnt equal the expected value");
-				Assert.assertEquals(nRefillNumber.getTextContent(), JalapenoConstants.NO_OF_REFILLS,
+				assertEquals(nRefillNumber.getTextContent(), JalapenoConstants.NO_OF_REFILLS,
 						"The actual value of refill no. doesnt equal the expected value");
-				Assert.assertEquals(nPrescriptionNumber.getTextContent(), JalapenoConstants.PRESCRIPTION_NO,
+				assertEquals(nPrescriptionNumber.getTextContent(), JalapenoConstants.PRESCRIPTION_NO,
 						"The actual value of prescription no. doesnt equal the expected value");
-				Assert.assertEquals(nAdditionalInformation.getTextContent(), JalapenoConstants.ADDITIONAL_INFO,
+				assertEquals(nAdditionalInformation.getTextContent(), JalapenoConstants.ADDITIONAL_INFO,
 						"The actual additional info doesnt equal the expected value");
 				found = true;
 				break;
 			}
 		}
-		Assert.assertTrue(found, "Medication Name was not found in response XML");
+		assertTrue(found, "Medication Name was not found in response XML");
 		Log4jUtil.log("response is ok");
 	}
 
@@ -445,7 +448,7 @@ public class RestUtils {
 			Log4jUtil.log("Check opst response: " + sResp);
 
 			Log4jUtil.log("Check for http 200/202 response");
-			Assert.assertTrue(
+			assertTrue(
 					resp.getStatusLine().getStatusCode() == 200 || resp.getStatusLine().getStatusCode() == 202,
 					"Get Request response is " + resp.getStatusLine().getStatusCode()
 							+ " instead of 200/202. Response message:\n" + sResp);
@@ -517,7 +520,7 @@ public class RestUtils {
 			if (!nodes.item(i).getTextContent().equals(IntegrationConstants.STATE_COMPLETED)) {
 				Log4jUtil.log("Error while processing response: " + Errornode.item(0).getTextContent());
 			}
-			Assert.assertTrue(nodes.item(i).getTextContent().equals(IntegrationConstants.STATE_COMPLETED),
+			assertTrue(nodes.item(i).getTextContent().equals(IntegrationConstants.STATE_COMPLETED),
 					"Processing Status is failed for No '" + i + "' message");
 		}
 		return true;
@@ -546,14 +549,14 @@ public class RestUtils {
 				Element homeAddress = (Element) patient.getElementsByTagName(IntegrationConstants.HOME_ADDRESS).item(0);
 				Node line1 = homeAddress.getElementsByTagName(IntegrationConstants.LINE1).item(0);
 				Node line2 = homeAddress.getElementsByTagName(IntegrationConstants.LINE2).item(0);
-				Assert.assertEquals(line1.getTextContent(), firstLine,
+				assertEquals(line1.getTextContent(), firstLine,
 						"The actual value of Line 1 address doesnt equal the updated value");
-				Assert.assertEquals(line2.getTextContent(), secondLine,
+				assertEquals(line2.getTextContent(), secondLine,
 						"The actual value of Line 2 address doesnt equal the updated value");
 				break;
 			}
 			if (i == nodes.getLength() - 1) {
-				Assert.fail("Patient was not Found");
+				fail("Patient was not Found");
 			}
 		}
 
@@ -587,13 +590,13 @@ public class RestUtils {
 			if (node.getChildNodes().item(0).getTextContent().contains(messageIdentifier.toString())) {
 				Element question = (Element) node.getParentNode();
 				Node message = question.getElementsByTagName(IntegrationConstants.QUESTION_MESSAGE).item(0);
-				Assert.assertEquals(message.getChildNodes().item(0).getTextContent(),
+				assertEquals(message.getChildNodes().item(0).getTextContent(),
 						IntegrationConstants.MESSAGE_REPLY, "Received reply is not the same as sent");
 				found = true;
 				break;
 			}
 		}
-		Assert.assertTrue(found, "Reply was not found in response XML");
+		assertTrue(found, "Reply was not found in response XML");
 	}
 
 	public static void isPatientRegistered(String xmlFileName, String practicePatientId, String firstName,
@@ -607,21 +610,21 @@ public class RestUtils {
 						+ ", and Actual External Patient ID is:" + patients.item(i).getTextContent().toString());
 				Element patient = (Element) patients.item(i).getParentNode().getParentNode();
 				Node status = patient.getElementsByTagName(IntegrationConstants.STATUS).item(0);
-				Assert.assertEquals(status.getTextContent(), IntegrationConstants.REGISTERED,
+				assertEquals(status.getTextContent(), IntegrationConstants.REGISTERED,
 						"Patient has different status than expected. Status is: " + status.getTextContent());
 				Node nfirstName = patient.getElementsByTagName(IntegrationConstants.FIRST_NAME).item(0);
 				Log4jUtil.log("Searching: Patient FirstName:" + firstName + ", and Actual Patient FirstName is:"
 						+ nfirstName.getTextContent().toString());
-				Assert.assertEquals(nfirstName.getTextContent(), firstName,
+				assertEquals(nfirstName.getTextContent(), firstName,
 						"Patient has different FirstName than expected. FirstName is: " + nfirstName.getTextContent());
 				Node nlastName = patient.getElementsByTagName(IntegrationConstants.LAST_NAME).item(0);
 				Log4jUtil.log("Searching: Patient LastName:" + lastName + ", and Actual Patient LastName is:"
 						+ nlastName.getTextContent().toString());
-				Assert.assertEquals(nlastName.getTextContent(), lastName,
+				assertEquals(nlastName.getTextContent(), lastName,
 						"Patient has different LastName than expected. LastName is: " + nlastName.getTextContent());
 				if (patientID != null) {
 					Node nPatientId = patient.getElementsByTagName(IntegrationConstants.MEDFUSIONID).item(0);
-					Assert.assertEquals(nPatientId.getTextContent(), patientID,
+					assertEquals(nPatientId.getTextContent(), patientID,
 							"Patient has different MedfusionPatientId than expected. MedfusionPatientId is: "
 									+ nPatientId.getTextContent());
 					Log4jUtil.log("Searching: Medfusion Patient ID:" + patientID
@@ -631,7 +634,7 @@ public class RestUtils {
 				break;
 			}
 		}
-		Assert.assertTrue(found, "Patient was not found in the response XML");
+		assertTrue(found, "Patient was not found in the response XML");
 
 	}
 
@@ -651,18 +654,18 @@ public class RestUtils {
 							+ ", and Actual External Patient ID is:" + patients.item(i).getTextContent().toString());
 					Element patient = (Element) patients.item(i).getParentNode().getParentNode();
 					Node status = patient.getElementsByTagName(IntegrationConstants.STATUS).item(0);
-					Assert.assertEquals(status.getTextContent(), IntegrationConstants.REGISTERED,
+					assertEquals(status.getTextContent(), IntegrationConstants.REGISTERED,
 							"Patient has different status than expected. Status is: " + status.getTextContent());
 					Node nfirstName = patient.getElementsByTagName(IntegrationConstants.FIRST_NAME).item(0);
 					Log4jUtil.log("Searching: Patient FirstName:" + firstName.get(j)
 							+ ", and Actual Patient FirstName is:" + nfirstName.getTextContent().toString());
-					Assert.assertEquals(nfirstName.getTextContent(), firstName.get(j),
+					assertEquals(nfirstName.getTextContent(), firstName.get(j),
 							"Patient has different FirstName than expected. FirstName is: "
 									+ nfirstName.getTextContent());
 					Node nlastName = patient.getElementsByTagName(IntegrationConstants.LAST_NAME).item(0);
 					Log4jUtil.log("Searching: Patient LastName:" + lastName.get(j) + ", and Actual Patient LastName is:"
 							+ nlastName.getTextContent().toString());
-					Assert.assertEquals(nlastName.getTextContent(), lastName.get(j),
+					assertEquals(nlastName.getTextContent(), lastName.get(j),
 							"Patient has different LastName than expected. LastName is: " + nlastName.getTextContent());
 
 					// Addition of Gender, Ethnicity, Race, PreferredCommunication,
@@ -670,17 +673,17 @@ public class RestUtils {
 					Node ngender = patient.getElementsByTagName(IntegrationConstants.GENDER).item(0);
 					Log4jUtil.log("Searching: Patient Gender:" + gender.get(j) + ", and Actual Patient Gedner is:"
 							+ ngender.getTextContent().toString());
-					Assert.assertEquals(ngender.getTextContent(), gender.get(j),
+					assertEquals(ngender.getTextContent(), gender.get(j),
 							"Patient has different Gender than expected. Gender is: " + ngender.getTextContent());
 					Node nrace = patient.getElementsByTagName(IntegrationConstants.RACE).item(0);
 					Log4jUtil.log("Searching: Patient Race:" + race.get(j) + ", and Actual Patient race is:"
 							+ nrace.getTextContent().toString());
-					Assert.assertEquals(nrace.getTextContent(), race.get(j),
+					assertEquals(nrace.getTextContent(), race.get(j),
 							"Patient has different race than expected. race is: " + nrace.getTextContent());
 					Node nethnicity = patient.getElementsByTagName(IntegrationConstants.ETHINICITY).item(0);
 					Log4jUtil.log("Searching: Patient Ethnicity:" + ethnicity.get(j)
 							+ ", and Actual Patient ethnicity is:" + nethnicity.getTextContent().toString());
-					Assert.assertEquals(nethnicity.getTextContent(), ethnicity.get(j),
+					assertEquals(nethnicity.getTextContent(), ethnicity.get(j),
 							"Patient has different ethnicity than expected. ethnicity is: "
 									+ nethnicity.getTextContent());
 					Node npreferredLanguage = patient.getElementsByTagName(IntegrationConstants.PREFERREDLANGUAGE)
@@ -688,7 +691,7 @@ public class RestUtils {
 					Log4jUtil.log("Searching: Patient Language:" + preferredLanguage.get(j)
 							+ ", and Actual Patient preferredLanguage is:"
 							+ npreferredLanguage.getTextContent().toString());
-					Assert.assertEquals(npreferredLanguage.getTextContent(), preferredLanguage.get(j),
+					assertEquals(npreferredLanguage.getTextContent(), preferredLanguage.get(j),
 							"Patient has different preferredLanguage than expected. preferredLanguage is: "
 									+ npreferredLanguage.getTextContent());
 					Node npreferredCommunication = patient
@@ -698,13 +701,13 @@ public class RestUtils {
 							+ npreferredCommunication.getTextContent().toString());
 					Log4jUtil.log(
 							"------------------------------------------------------------------------------------------------------:");
-					Assert.assertEquals(npreferredCommunication.getTextContent(), preferredCommunication.get(j),
+					assertEquals(npreferredCommunication.getTextContent(), preferredCommunication.get(j),
 							"Patient has different preferredCommunication than expected. preferredCommunication is: "
 									+ npreferredCommunication.getTextContent());
 
 					if (patientID != null) {
 						Node nPatientId = patient.getElementsByTagName(IntegrationConstants.MEDFUSIONID).item(0);
-						Assert.assertEquals(nPatientId.getTextContent(), patientID,
+						assertEquals(nPatientId.getTextContent(), patientID,
 								"Patient has different MedfusionPatientId than expected. MedfusionPatientId is: "
 										+ nPatientId.getTextContent());
 						Log4jUtil.log("Searching: Medfusion Patient ID:" + patientID
@@ -714,7 +717,7 @@ public class RestUtils {
 					break;
 				}
 		}
-		Assert.assertTrue(found, "Patient was not found in the response XML");
+		assertTrue(found, "Patient was not found in the response XML");
 
 	}
 
@@ -733,18 +736,18 @@ public class RestUtils {
 							+ ", and Actual External Patient ID is:" + patients.item(i).getTextContent().toString());
 					Element patient = (Element) patients.item(i).getParentNode().getParentNode();
 					Node status = patient.getElementsByTagName(IntegrationConstants.STATUS).item(0);
-					Assert.assertEquals(status.getTextContent(), IntegrationConstants.REGISTERED,
+					assertEquals(status.getTextContent(), IntegrationConstants.REGISTERED,
 							"Patient has different status than expected. Status is: " + status.getTextContent());
 					Node nfirstName = patient.getElementsByTagName(IntegrationConstants.FIRST_NAME).item(0);
 					Log4jUtil.log("Searching: Patient FirstName:" + firstName.get(j)
 							+ ", and Actual Patient FirstName is:" + nfirstName.getTextContent().toString());
-					Assert.assertEquals(nfirstName.getTextContent(), firstName.get(j),
+					assertEquals(nfirstName.getTextContent(), firstName.get(j),
 							"Patient has different FirstName than expected. FirstName is: "
 									+ nfirstName.getTextContent());
 					Node nlastName = patient.getElementsByTagName(IntegrationConstants.LAST_NAME).item(0);
 					Log4jUtil.log("Searching: Patient LastName:" + lastName.get(j) + ", and Actual Patient LastName is:"
 							+ nlastName.getTextContent().toString());
-					Assert.assertEquals(nlastName.getTextContent(), lastName.get(j),
+					assertEquals(nlastName.getTextContent(), lastName.get(j),
 							"Patient has different LastName than expected. LastName is: " + nlastName.getTextContent());
 
 					// Addition of Gender, Ethnicity, Race, PreferredCommunication,
@@ -752,17 +755,17 @@ public class RestUtils {
 					Node ngender = patient.getElementsByTagName(IntegrationConstants.GENDER).item(0);
 					Log4jUtil.log("Searching: Patient Gender:" + testData.patientDetailList.get(j + 1).getGender()
 							+ ", and Actual Patient Gedner is:" + ngender.getTextContent().toString());
-					Assert.assertEquals(ngender.getTextContent(), testData.patientDetailList.get(j + 1).getGender(),
+					assertEquals(ngender.getTextContent(), testData.patientDetailList.get(j + 1).getGender(),
 							"Patient has different Gender than expected. Gender is: " + ngender.getTextContent());
 					Node nrace = patient.getElementsByTagName(IntegrationConstants.RACE).item(0);
 					Log4jUtil.log("Searching: Patient Race:" + testData.patientDetailList.get(j + 1).getRace()
 							+ ", and Actual Patient race is:" + nrace.getTextContent().toString());
-					Assert.assertEquals(nrace.getTextContent(), testData.patientDetailList.get(j + 1).getRace(),
+					assertEquals(nrace.getTextContent(), testData.patientDetailList.get(j + 1).getRace(),
 							"Patient has different race than expected. race is: " + nrace.getTextContent());
 					Node nethnicity = patient.getElementsByTagName(IntegrationConstants.ETHINICITY).item(0);
 					Log4jUtil.log("Searching: Patient Ethnicity:" + testData.patientDetailList.get(j + 1).getEthnicity()
 							+ ", and Actual Patient ethnicity is:" + nethnicity.getTextContent().toString());
-					Assert.assertEquals(nethnicity.getTextContent(),
+					assertEquals(nethnicity.getTextContent(),
 							testData.patientDetailList.get(j + 1).getEthnicity(),
 							"Patient has different ethnicity than expected. ethnicity is: "
 									+ nethnicity.getTextContent());
@@ -772,7 +775,7 @@ public class RestUtils {
 							+ testData.patientDetailList.get(j + 1).getPreferredLanguage()
 							+ ", and Actual Patient preferredLanguage is:"
 							+ npreferredLanguage.getTextContent().toString());
-					Assert.assertEquals(npreferredLanguage.getTextContent(),
+					assertEquals(npreferredLanguage.getTextContent(),
 							testData.patientDetailList.get(j + 1).getPreferredLanguage(),
 							"Patient has different preferredLanguage than expected. preferredLanguage is: "
 									+ npreferredLanguage.getTextContent());
@@ -782,7 +785,7 @@ public class RestUtils {
 							+ testData.patientDetailList.get(j + 1).getPreferredCommunication()
 							+ ", and Actual Patient preferredCommunication is:"
 							+ npreferredCommunication.getTextContent().toString());
-					Assert.assertEquals(npreferredCommunication.getTextContent(),
+					assertEquals(npreferredCommunication.getTextContent(),
 							testData.patientDetailList.get(j + 1).getPreferredCommunication(),
 							"Patient has different preferredCommunication than expected. preferredCommunication is: "
 									+ npreferredCommunication.getTextContent());
@@ -794,14 +797,14 @@ public class RestUtils {
 					Log4jUtil.log("Searching: Patient State:"
 							+ testData.patientDetailList.get(j + 1).getStateNodeValue().trim()
 							+ ", and Actual Patient State is:" + nstateNodeValue.getTextContent().toString());
-					Assert.assertEquals(nstateNodeValue.getTextContent(),
+					assertEquals(nstateNodeValue.getTextContent(),
 							testData.patientDetailList.get(j + 1).getStateNodeValue().trim(),
 							"Patient has different State than expected. State is: " + nstateNodeValue.getTextContent());
 					Log4jUtil.log(
 							"------------------------------------------------------------------------------------------------------:");
 					if (patientID != null) {
 						Node nPatientId = patient.getElementsByTagName(IntegrationConstants.MEDFUSIONID).item(0);
-						Assert.assertEquals(nPatientId.getTextContent(), patientID,
+						assertEquals(nPatientId.getTextContent(), patientID,
 								"Patient has different MedfusionPatientId than expected. MedfusionPatientId is: "
 										+ nPatientId.getTextContent());
 						Log4jUtil.log("Searching: Medfusion Patient ID:" + patientID
@@ -811,7 +814,7 @@ public class RestUtils {
 					break;
 				}
 		}
-		Assert.assertTrue(found, "Patient was not found in the response XML");
+		assertTrue(found, "Patient was not found in the response XML");
 
 	}
 
@@ -1287,7 +1290,7 @@ public class RestUtils {
 		HttpResponse response = client.execute(request);
 		String sResp = EntityUtils.toString(response.getEntity());
 		Log4jUtil.log("Check for http 200/202 response");
-		Assert.assertTrue(
+		assertTrue(
 				response.getStatusLine().getStatusCode() == 200 || response.getStatusLine().getStatusCode() == 202,
 				"Get Request response is " + response.getStatusLine().getStatusCode()
 						+ " instead of 200/202. Response message:\n" + sResp);
@@ -1316,7 +1319,7 @@ public class RestUtils {
 
 		NodeList nodes = doc.getElementsByTagName(IntegrationConstants.TRANSPORTSTATUS);
 		{
-			Assert.assertTrue(nodes.item(0).getTextContent().equals(IntegrationConstants.CCDSTATUS),
+			assertTrue(nodes.item(0).getTextContent().equals(IntegrationConstants.CCDSTATUS),
 					"There should be 1 Status element in processing status response");
 		}
 		return true;
@@ -1345,16 +1348,16 @@ public class RestUtils {
 				NodeList node = doc.getElementsByTagName(IntegrationConstants.MEDFUSIONPATIENTID);
 				Log4jUtil.log("Searching: Medfusion Patient ID:" + medfusionID
 						+ ", and Actual Medfusion Patient ID is: " + node.item(i).getTextContent().toString());
-				Assert.assertTrue(node.item(i).getTextContent().equals(medfusionID),
+				assertTrue(node.item(i).getTextContent().equals(medfusionID),
 						"Medfusion Patient Id was not found");
 				node = doc.getElementsByTagName(IntegrationConstants.CCDTAG);
-				Assert.assertTrue(node.item(i).getTextContent().contains("<given>" + firstname + "</given>"),
+				assertTrue(node.item(i).getTextContent().contains("<given>" + firstname + "</given>"),
 						"CCD DATA was not Found");
 				Log4jUtil.log("Expected '" + "<given>" + firstname + "</given>" + "' is found in CCD XML.");
 				break;
 			}
 			if (i == nodes.getLength() - 1) {
-				Assert.fail("Patient was not found");
+				fail("Patient was not found");
 			}
 		}
 
@@ -1433,88 +1436,88 @@ public class RestUtils {
 
 				Log4jUtil.log("Checking Patient FirstName, Last Name, SSN, Gender");
 				Node FirstName = patient.getElementsByTagName(IntegrationConstants.FIRST_NAME).item(0);
-				Assert.assertEquals(FirstName.getTextContent(), list.get(0),
+				assertEquals(FirstName.getTextContent(), list.get(0),
 						"Patient has different FirstName than expected. FirstName is: " + FirstName.getTextContent());
 				Node LastName = patient.getElementsByTagName(IntegrationConstants.LAST_NAME).item(0);
-				Assert.assertEquals(LastName.getTextContent(), list.get(1),
+				assertEquals(LastName.getTextContent(), list.get(1),
 						"Patient has different LastName than expected. LastName is: " + LastName.getTextContent());
 				/*
 				 * Node SSN = patient.getElementsByTagName(IntegrationConstants.SSN).item(0);
-				 * Assert.assertEquals(SSN.getTextContent(), list.get(7),
+				 * assertEquals(SSN.getTextContent(), list.get(7),
 				 * "Patient has different SSN than expected. Gender is: " +
 				 * SSN.getTextContent());
 				 */
 				Node Gender = patient.getElementsByTagName(IntegrationConstants.GENDER).item(0);
-				Assert.assertEquals(Gender.getTextContent(), list.get(8),
+				assertEquals(Gender.getTextContent(), list.get(8),
 						"Patient has different Gender than expected. Gender is: " + Gender.getTextContent());
 				Log4jUtil.log("Checking Patient HomePhone, Email Address");
 				Node HomePhone = patient.getElementsByTagName(IntegrationConstants.HOMEPHONE).item(0);
-				Assert.assertEquals(HomePhone.getTextContent(), list.get(2),
+				assertEquals(HomePhone.getTextContent(), list.get(2),
 						"Patient has different HomePhone than expected. HomePhone is: " + HomePhone.getTextContent());
 				Node EmailAddress = patient.getElementsByTagName(IntegrationConstants.EMAIL_ADDRESS).item(0);
-				Assert.assertEquals(EmailAddress.getTextContent(), list.get(9),
+				assertEquals(EmailAddress.getTextContent(), list.get(9),
 						"Patient has different EmailAddress than expected. EmailAddress is: "
 								+ EmailAddress.getTextContent());
 				Log4jUtil.log("Checking Patient Address1, Address2, City, ZipCode");
 				Node Line1 = patient.getElementsByTagName(IntegrationConstants.LINE1).item(0);
-				Assert.assertEquals(Line1.getTextContent(), list.get(3),
+				assertEquals(Line1.getTextContent(), list.get(3),
 						"Patient has different Address1 than expected. Address2 is: " + Line1.getTextContent());
 				Node Line2 = patient.getElementsByTagName(IntegrationConstants.LINE2).item(0);
-				Assert.assertEquals(Line2.getTextContent(), list.get(4),
+				assertEquals(Line2.getTextContent(), list.get(4),
 						"Patient has different Address2 than expected. Address1 is: " + Line2.getTextContent());
 				Node City = patient.getElementsByTagName(IntegrationConstants.CITY).item(0);
-				Assert.assertEquals(City.getTextContent(), list.get(5),
+				assertEquals(City.getTextContent(), list.get(5),
 						"Patient has different City than expected. City is: " + City.getTextContent());
 				Node ZipCode = patient.getElementsByTagName(IntegrationConstants.ZIPCODE).item(0);
-				Assert.assertEquals(ZipCode.getTextContent(), list.get(6),
+				assertEquals(ZipCode.getTextContent(), list.get(6),
 						"Patient has different ZipCode than expected. ZipCode is: " + ZipCode.getTextContent());
 				if (insuranceName != null) {
 					String birthdate = convertDate(list.get(13)) + "T00:00:00";
 					Log4jUtil.log("Checking Patient Date of Birth, Middle Name");
 					Node DateOfBirth = patient.getElementsByTagName(IntegrationConstants.DATEOFBIRTH).item(0);
-					Assert.assertEquals(DateOfBirth.getTextContent(), birthdate,
+					assertEquals(DateOfBirth.getTextContent(), birthdate,
 							"Patient has different DateOfBirth than expected. DateOfBirth is: "
 									+ DateOfBirth.getTextContent());
 					Node MiddleName = patient.getElementsByTagName(IntegrationConstants.MIDDLENAME).item(0);
-					Assert.assertEquals(MiddleName.getTextContent(), list.get(10),
+					assertEquals(MiddleName.getTextContent(), list.get(10),
 							"Patient has different MiddleName than expected. MiddleName is: "
 									+ MiddleName.getTextContent());
 					Log4jUtil.log("Checking Patient Mobile No, WorkPhone");
 					Node MobilePhone = patient.getElementsByTagName(IntegrationConstants.MOBILEPHONE).item(0);
-					Assert.assertEquals(MobilePhone.getTextContent(), list.get(11),
+					assertEquals(MobilePhone.getTextContent(), list.get(11),
 							"Patient has different MobilePhone than expected. MobilePhone is: "
 									+ MobilePhone.getTextContent());
 					Node WorkPhone = patient.getElementsByTagName(IntegrationConstants.WORKPHONE).item(0);
-					Assert.assertEquals(WorkPhone.getTextContent(), list.get(12),
+					assertEquals(WorkPhone.getTextContent(), list.get(12),
 							"Patient has different WorkPhone than expected. WorkPhone is: "
 									+ WorkPhone.getTextContent());
 					Log4jUtil.log(
 							"Checking Patient Preferred Language, Race, Ethnicity, MaritalStatus, ChooseCommunication");
 					Node PreferredLanguage = patient.getElementsByTagName(IntegrationConstants.PREFERREDLANGUAGE)
 							.item(0);
-					Assert.assertEquals(PreferredLanguage.getTextContent(), list.get(20),
+					assertEquals(PreferredLanguage.getTextContent(), list.get(20),
 							"Patient has different PreferredLanguage than expected. PreferredLanguage is: "
 									+ PreferredLanguage.getTextContent());
 					Node Race = patient.getElementsByTagName(IntegrationConstants.RACE).item(0);
-					Assert.assertEquals(Race.getTextContent(), list.get(21),
+					assertEquals(Race.getTextContent(), list.get(21),
 							"Patient has different Race than expected. Race is: " + Race.getTextContent());
 					Node Ethnicity = patient.getElementsByTagName(IntegrationConstants.ETHINICITY).item(0);
-					Assert.assertEquals(Ethnicity.getTextContent(), list.get(22),
+					assertEquals(Ethnicity.getTextContent(), list.get(22),
 							"Patient has different Ethnicity than expected. Ethnicity is: "
 									+ Ethnicity.getTextContent());
 					Node MaritalStatus = patient.getElementsByTagName(IntegrationConstants.MARRITALSTATUS).item(0);
-					Assert.assertEquals(MaritalStatus.getTextContent(), list.get(23).toUpperCase(),
+					assertEquals(MaritalStatus.getTextContent(), list.get(23).toUpperCase(),
 							"Patient has different MaritalStatus than expected. MaritalStatus is: "
 									+ MaritalStatus.getTextContent());
 					Node ChooseCommunication = patient.getElementsByTagName(IntegrationConstants.CHOOSECOMMUNICATION)
 							.item(0);
-					Assert.assertEquals(ChooseCommunication.getTextContent(), list.get(24),
+					assertEquals(ChooseCommunication.getTextContent(), list.get(24),
 							"Patient has different ChooseCommunication than expected. ChooseCommunication is: "
 									+ ChooseCommunication.getTextContent());
 					/*
 					 * Node state =
 					 * patient.getElementsByTagName(IntegrationConstants.PROCESSING_STATE).item(0);
-					 * Assert.assertEquals(state.getTextContent(), list.get(25),
+					 * assertEquals(state.getTextContent(), list.get(25),
 					 * "Patient has different state than expected. state is: " +
 					 * state.getTextContent());
 					 */
@@ -1523,56 +1526,56 @@ public class RestUtils {
 					Node cNode = patient.getElementsByTagName(IntegrationConstants.PRIMARYINSURANCE).item(0);
 					Element ele = (Element) cNode;
 					Node PolicyNumber = ele.getElementsByTagName(IntegrationConstants.POLICYNUMBER).item(0);
-					Assert.assertEquals(PolicyNumber.getTextContent(), list.get(16),
+					assertEquals(PolicyNumber.getTextContent(), list.get(16),
 							"Patient has different PolicyNumber than expected. PolicyNumber is: "
 									+ PolicyNumber.getTextContent());
 					Node CompanyName = ele.getElementsByTagName(IntegrationConstants.COMPANYNAME).item(0);
-					Assert.assertEquals(CompanyName.getTextContent(), insuranceName,
+					assertEquals(CompanyName.getTextContent(), insuranceName,
 							"Patient has different Insurance Name than expected. CompanyName is: "
 									+ CompanyName.getTextContent());
 					Log4jUtil.log("Checking Patient Address1, Address2, City, ZipCode");
 					Node InsuranceAddressLine1 = ele.getElementsByTagName(IntegrationConstants.LINE1).item(0);
-					Assert.assertEquals(InsuranceAddressLine1.getTextContent(), list.get(3),
+					assertEquals(InsuranceAddressLine1.getTextContent(), list.get(3),
 							"Patient has different InsuranceAddressLine1 than expected. InsuranceAddressLine1 is: "
 									+ InsuranceAddressLine1.getTextContent());
 					Node InsuranceAddressLine2 = ele.getElementsByTagName(IntegrationConstants.LINE2).item(0);
-					Assert.assertEquals(InsuranceAddressLine2.getTextContent(), list.get(4),
+					assertEquals(InsuranceAddressLine2.getTextContent(), list.get(4),
 							"Patient has different InsuranceAddressLine2 than expected. InsuranceAddressLine1 is: "
 									+ InsuranceAddressLine2.getTextContent());
 					Node InsuranceCity = ele.getElementsByTagName(IntegrationConstants.CITY).item(0);
-					Assert.assertEquals(InsuranceCity.getTextContent(), list.get(5),
+					assertEquals(InsuranceCity.getTextContent(), list.get(5),
 							"Patient has different InsuranceCity than expected. InsuranceCity is: "
 									+ InsuranceCity.getTextContent());
 					Node InsuranceZipCode = ele.getElementsByTagName(IntegrationConstants.ZIPCODE).item(0);
-					Assert.assertEquals(InsuranceZipCode.getTextContent(), list.get(6),
+					assertEquals(InsuranceZipCode.getTextContent(), list.get(6),
 							"Patient has different InsuranceZipCode than expected. InsuranceZipCode is: "
 									+ InsuranceZipCode.getTextContent());
 					Log4jUtil.log("Checking Patient Relation To Subscriber, Subscriber Date Of Birth, Group Number");
 					Node PatientRelationToSubscriber = ele
 							.getElementsByTagName(IntegrationConstants.PATIENTRELATIONTOSUBSCRIBER).item(0);
-					Assert.assertEquals(PatientRelationToSubscriber.getTextContent(),
+					assertEquals(PatientRelationToSubscriber.getTextContent(),
 							list.get(26).toUpperCase(),
 							"Patient has different PatientRelationToSubscriber than expected. InsuranceZipCode is: "
 									+ PatientRelationToSubscriber.getTextContent());
 					Node SubscriberDateOfBirth = ele.getElementsByTagName(IntegrationConstants.SUBSCRIBERDATEOFBIRTH)
 							.item(0);
-					Assert.assertEquals(SubscriberDateOfBirth.getTextContent(), birthdate,
+					assertEquals(SubscriberDateOfBirth.getTextContent(), birthdate,
 							"Patient has different SubscriberDateOfBirth than expected. SubscriberDateOfBirth is: "
 									+ SubscriberDateOfBirth.getTextContent());
 					/*
 					 * Node ClaimsPhone =
 					 * ele.getElementsByTagName(IntegrationConstants.CLAIMSPHONE).item(0);
-					 * Assert.assertEquals(ClaimsPhone.getTextContent(), list.get(14),
+					 * assertEquals(ClaimsPhone.getTextContent(), list.get(14),
 					 * "Patient has different ClaimsPhone than expected. ClaimsPhone is: " +
 					 * ClaimsPhone.getTextContent()); Node SubscriberSocialSecurityNumber =
 					 * ele.getElementsByTagName(IntegrationConstants.SUBSCRIBERSSN).item(0);
-					 * Assert.assertEquals(SubscriberSocialSecurityNumber.getTextContent
+					 * assertEquals(SubscriberSocialSecurityNumber.getTextContent
 					 * (), list.get(15),
 					 * "Patient has different SubscriberSocialSecurityNumber than expected. SubscriberSocialSecurityNumber is: "
 					 * + SubscriberSocialSecurityNumber.getTextContent());
 					 */
 					Node GroupNumber = ele.getElementsByTagName(IntegrationConstants.GROUPNUMBER).item(0);
-					Assert.assertEquals(GroupNumber.getTextContent(), list.get(17),
+					assertEquals(GroupNumber.getTextContent(), list.get(17),
 							"Patient has different GroupNumber than expected. GroupNumber is: "
 									+ GroupNumber.getTextContent());
 					break;
@@ -1582,7 +1585,7 @@ public class RestUtils {
 
 		}
 
-		// Assert.assertTrue(found, "Patient was not found in the response XML");
+		// assertTrue(found, "Patient was not found in the response XML");
 
 	}
 
@@ -1713,7 +1716,7 @@ public class RestUtils {
 				Node paymentType = payment.getElementsByTagName(IntegrationConstants.PAYMENTTYPE).item(0);
 				Log4jUtil.log("Searching: Bill Payment Type:" + "BillPayment" + ", and Actual Bill Payment Type is:"
 						+ paymentType.getTextContent().toString());
-				Assert.assertEquals(paymentType.getTextContent(), "BillPayment",
+				assertEquals(paymentType.getTextContent(), "BillPayment",
 						"Bill Payment Type has different than expected. Type is: " + paymentType.getTextContent());
 				paymentType = paymentType.getParentNode();
 				if (paymentType.hasAttributes()) {
@@ -1723,24 +1726,24 @@ public class RestUtils {
 				Node paymentStatus = payment.getElementsByTagName(IntegrationConstants.PAYMENTSTATUS).item(0);
 				Log4jUtil.log("Searching: Payment Status:" + status + ", and Actual Payment Status is:"
 						+ paymentStatus.getTextContent().toString());
-				Assert.assertEquals(paymentStatus.getTextContent(), status,
+				assertEquals(paymentStatus.getTextContent(), status,
 						"Payment Status has different than expected. Type is: " + paymentStatus.getTextContent());
 				Log4jUtil.log("Checking Payment Amount & Card Last digit Information");
 				Node cNode = payment.getElementsByTagName(IntegrationConstants.PAYMENTINFO).item(0);
 				Element ele = (Element) cNode;
 				Node amount = ele.getElementsByTagName(IntegrationConstants.AMOUNT).item(0);
-				Assert.assertEquals(amount.getTextContent(), amt,
+				assertEquals(amount.getTextContent(), amt,
 						"Payment has different amount than expected. Amount is: " + amount.getTextContent());
 				Node digits = ele.getElementsByTagName(IntegrationConstants.LASTDIGITS).item(0);
-				Assert.assertEquals(digits.getTextContent(), CClastdig,
+				assertEquals(digits.getTextContent(), CClastdig,
 						"Payment has different last digit than expected. Amount is: " + digits.getTextContent());
 				Node ccType = ele.getElementsByTagName(IntegrationConstants.CCTYPE).item(0);
 				// Log4jUtil.log("Searching: CC Type:" + "Visa" + ", and Actual CC Type is:" +
 				// ccType.getTextContent().toString());
-				Assert.assertEquals(ccType.getTextContent(), CCtype,
+				assertEquals(ccType.getTextContent(), CCtype,
 						"Payment has different amount than expected. Amount is: " + ccType.getTextContent());
 				Node nconfirmationNumber = ele.getElementsByTagName(IntegrationConstants.CONFIRMNUMBER).item(0);
-				Assert.assertEquals(nconfirmationNumber.getTextContent(), confirmationNumber,
+				assertEquals(nconfirmationNumber.getTextContent(), confirmationNumber,
 						"Payment has different confirmation Number than expected. Confirmation Number is: "
 								+ nconfirmationNumber.getTextContent());
 
@@ -1749,7 +1752,7 @@ public class RestUtils {
 			}
 
 		}
-		Assert.assertTrue(found, "Payment Account Number Node was not found in the response XML");
+		assertTrue(found, "Payment Account Number Node was not found in the response XML");
 
 	}
 
@@ -1830,20 +1833,20 @@ public class RestUtils {
 						Log4jUtil.log("GI/SO node not presnt of v1");
 						found = true;
 					}
-					Assert.assertTrue(found, "Node Not Found");
+					assertTrue(found, "Node Not Found");
 					found = true;
 					break;
 				}
 				Log4jUtil.log(
 						"Expected Value: " + value + ", and Actual Value is: " + node.getTextContent().trim() + ".");
-				Assert.assertTrue(node.getTextContent().trim().equalsIgnoreCase(value), "Value mismatched");
+				assertTrue(node.getTextContent().trim().equalsIgnoreCase(value), "Value mismatched");
 
 				found = true;
 				break;
 			}
 
 		}
-		Assert.assertTrue(found, "Patient was not found in the response XML");
+		assertTrue(found, "Patient was not found in the response XML");
 
 	}
 
@@ -1869,7 +1872,7 @@ public class RestUtils {
 			Log4jUtil.log("Check for http 204 response");
 		}
 
-		Assert.assertTrue(resp.getStatusLine().getStatusCode() == 200 || resp.getStatusLine().getStatusCode() == 204,
+		assertTrue(resp.getStatusLine().getStatusCode() == 200 || resp.getStatusLine().getStatusCode() == 204,
 				"Get Request response is " + resp.getStatusLine().getStatusCode()
 						+ " instead of 200. Response message received:\n" + sResp);
 		writeFile(responseFilePath, sResp);
@@ -1939,7 +1942,7 @@ public class RestUtils {
 				Node paymentType = payment.getElementsByTagName(IntegrationConstants.PAYMENTTYPE).item(0);
 				Log4jUtil.log("Searching: Bill Payment Type:" + Type + ", and Actual Bill Payment Type is:"
 						+ paymentType.getTextContent().toString());
-				Assert.assertEquals(paymentType.getTextContent(), Type,
+				assertEquals(paymentType.getTextContent(), Type,
 						"Bill Payment Type has different than expected. Type is: " + paymentType.getTextContent());
 				paymentType = paymentType.getParentNode();
 				if (paymentType.hasAttributes()) {
@@ -1949,25 +1952,25 @@ public class RestUtils {
 				Node paymentStatus = payment.getElementsByTagName(IntegrationConstants.PAYMENTSTATUS).item(0);
 				Log4jUtil.log("Searching: Payment Status:" + status + ", and Actual Payment Status is:"
 						+ paymentStatus.getTextContent().toString());
-				Assert.assertEquals(paymentStatus.getTextContent(), status,
+				assertEquals(paymentStatus.getTextContent(), status,
 						"Payment Status has different than expected. Type is: " + paymentStatus.getTextContent());
 				Log4jUtil.log("Checking Payment Amount & Card Last digit Information");
 				Node cNode = payment.getElementsByTagName(IntegrationConstants.PAYMENTINFO).item(0);
 				Element ele = (Element) cNode;
 				/*
 				 * Node amount = ele.getElementsByTagName(IntegrationConstants.AMOUNT).item(0);
-				 * Assert.assertEquals(amount.getTextContent(), "100.00",
+				 * assertEquals(amount.getTextContent(), "100.00",
 				 * "Payment has different amount than expected. Amount is: " +
 				 * amount.getTextContent()); Node digits =
 				 * ele.getElementsByTagName(IntegrationConstants.LASTDIGITS).item(0);
-				 * Assert.assertEquals(digits.getTextContent(), "1111",
+				 * assertEquals(digits.getTextContent(), "1111",
 				 * "Payment has different last digit than expected. Amount is: " +
 				 * digits.getTextContent());
 				 */
 				Node ccType = ele.getElementsByTagName(IntegrationConstants.CCTYPE).item(0);
 				Log4jUtil.log("Searching: CC Type:" + "Visa" + ", and Actual CC Type is:"
 						+ ccType.getTextContent().toString());
-				Assert.assertEquals(ccType.getTextContent(), "Visa",
+				assertEquals(ccType.getTextContent(), "Visa",
 						"Payment has different amount than expected. Amount is: " + ccType.getTextContent());
 				if (confirmationNumber != null) {
 					/*
@@ -1976,7 +1979,7 @@ public class RestUtils {
 					 * Log4jUtil.log("Searching: Confirmation Number:" + confirmationNumber +
 					 * ", and Actual Confirmation Number is:" +
 					 * nconfirmationNumber.getTextContent().toString());
-					 * Assert.assertEquals(nconfirmationNumber.getTextContent(),
+					 * assertEquals(nconfirmationNumber.getTextContent(),
 					 * confirmationNumber,
 					 * "Payment has different confirmation Number than expected. Amount is: " +
 					 * nconfirmationNumber.getTextContent());
@@ -1987,7 +1990,7 @@ public class RestUtils {
 			}
 
 		}
-		Assert.assertTrue(found, "Payment Amount was not found in the response XML");
+		assertTrue(found, "Payment Amount was not found in the response XML");
 
 	}
 
@@ -2017,7 +2020,7 @@ public class RestUtils {
 			sResp = EntityUtils.toString(entity);
 			Log4jUtil.log("Check for http 200 response");
 			responseCode = resp.getStatusLine().getStatusCode();
-			Assert.assertTrue(resp.getStatusLine().getStatusCode() == 200,
+			assertTrue(resp.getStatusLine().getStatusCode() == 200,
 					"Get Request response is " + resp.getStatusLine().getStatusCode() + " instead of " + 200
 							+ ". Response message received:\n" + sResp);
 			writeFile(responseFilePath, sResp);
@@ -2056,14 +2059,14 @@ public class RestUtils {
 				Log4jUtil.log("Searching: Medfusion Patient First Name:" + updateData.get(0)
 						+ ", and Actual Medfusion Patient First Name is:"
 						+ nfirstName.item(i).getTextContent().toString());
-				Assert.assertEquals(nfirstName.item(i).getTextContent(), updateData.get(0),
+				assertEquals(nfirstName.item(i).getTextContent(), updateData.get(0),
 						"Medfusion Patient First Name has different than expected. First Name is: "
 								+ nfirstName.item(i).getTextContent());
 				Element nPatient = (Element) nfirstName.item(i).getParentNode().getParentNode();
 				Node nlastName = nPatient.getElementsByTagName(IntegrationConstants.LAST_NAME).item(0);
 				Log4jUtil.log("Searching: Patient Last Name:" + updateData.get(1) + ", and Actual Patient LastName is:"
 						+ nlastName.getTextContent().toString());
-				Assert.assertEquals(nlastName.getTextContent(), updateData.get(1),
+				assertEquals(nlastName.getTextContent(), updateData.get(1),
 						"Medfusion Patient Last Name has different than expected. Last Name is: "
 								+ nlastName.getTextContent());
 				try {
@@ -2072,7 +2075,7 @@ public class RestUtils {
 							Node nMiddleName = nPatient.getElementsByTagName(IntegrationConstants.MIDDLENAME).item(0);
 							Log4jUtil.log("Searching: Patient Middle Name:" + updateData.get(10)
 									+ ", and Actual Patient Middle Name is:" + nMiddleName.getTextContent().toString());
-							Assert.assertEquals(nMiddleName.getTextContent(), updateData.get(10),
+							assertEquals(nMiddleName.getTextContent(), updateData.get(10),
 									"Medfusion Patient Middle Name has different than expected. Middle Name is: "
 											+ nMiddleName.getTextContent());
 
@@ -2080,19 +2083,19 @@ public class RestUtils {
 						Node nAddress1 = nPatient.getElementsByTagName(IntegrationConstants.LINE1).item(0);
 						Log4jUtil.log("Searching: Patient Address1 :" + updateData.get(2)
 								+ ", and Actual Patient Address1 is:" + nAddress1.getTextContent().toString());
-						Assert.assertEquals(nAddress1.getTextContent(), updateData.get(2),
+						assertEquals(nAddress1.getTextContent(), updateData.get(2),
 								"Medfusion Patient Address1 has different than expected. Address1 is: "
 										+ nAddress1.getTextContent());
 						Node nAddress2 = nPatient.getElementsByTagName(IntegrationConstants.LINE2).item(0);
 						Log4jUtil.log("Searching: Patient Address2 :" + updateData.get(3)
 								+ ", and Actual Patient Address2 is:" + nAddress2.getTextContent().toString());
-						Assert.assertEquals(nAddress2.getTextContent(), updateData.get(3),
+						assertEquals(nAddress2.getTextContent(), updateData.get(3),
 								"Medfusion Patient Address2 has different than expected. Address2 is: "
 										+ nAddress2.getTextContent());
 						Node nHomePhone = nPatient.getElementsByTagName(IntegrationConstants.HOMEPHONE).item(0);
 						Log4jUtil.log("Searching: Patient Home Phone :" + updateData.get(4)
 								+ ", and Actual Patient Home Phone is:" + nHomePhone.getTextContent().toString());
-						Assert.assertEquals(nHomePhone.getTextContent(), updateData.get(4),
+						assertEquals(nHomePhone.getTextContent(), updateData.get(4),
 								"Medfusion Patient Home Phone has different than expected. HomePhone is: "
 										+ nHomePhone.getTextContent());
 						Node nDOB = nPatient.getElementsByTagName(IntegrationConstants.DATEOFBIRTH).item(0);
@@ -2101,12 +2104,12 @@ public class RestUtils {
 						Node nRace = nPatient.getElementsByTagName(IntegrationConstants.RACE).item(0);
 						Log4jUtil.log("Searching: Race Value :" + updateData.get(7)
 								+ ", and Actual Patient Date of Birth is:" + nRace.getTextContent().toString());
-						Assert.assertEquals(nRace.getTextContent(), updateData.get(7),
+						assertEquals(nRace.getTextContent(), updateData.get(7),
 								"Race has different than expected. Race is: " + nRace.getTextContent());
 						Node nEthnicity = nPatient.getElementsByTagName(IntegrationConstants.ETHINICITY).item(0);
 						Log4jUtil.log("Searching: Ethnicity Value :" + updateData.get(8) + ", and Actual Ethnicity is:"
 								+ nEthnicity.getTextContent().toString());
-						Assert.assertEquals(nEthnicity.getTextContent(), updateData.get(8),
+						assertEquals(nEthnicity.getTextContent(), updateData.get(8),
 								"Ethnicity has different than expected. Ethnicity is: " + nEthnicity.getTextContent());
 						if (updateData.get(9) != null) {
 							Node nChooseCommunication = nPatient
@@ -2114,7 +2117,7 @@ public class RestUtils {
 							Log4jUtil.log("Searching: Preferred Communication Value :" + updateData.get(9)
 									+ ", and Actual communication value is:"
 									+ nChooseCommunication.getTextContent().toString());
-							Assert.assertEquals(nChooseCommunication.getTextContent(), updateData.get(9),
+							assertEquals(nChooseCommunication.getTextContent(), updateData.get(9),
 									"Patient has different ChooseCommunication than expected. ChooseCommunication is: "
 											+ nChooseCommunication.getTextContent());
 						}
@@ -2127,7 +2130,7 @@ public class RestUtils {
 				break;
 			}
 		}
-		Assert.assertTrue(found, "Patient was not found in the response XML");
+		assertTrue(found, "Patient was not found in the response XML");
 
 	}
 
@@ -2156,40 +2159,40 @@ public class RestUtils {
 				Node cNode = patient.getElementsByTagName(IntegrationConstants.PRIMARYINSURANCE).item(0);
 				Element ele = (Element) cNode;
 				Node PolicyNumber = ele.getElementsByTagName(IntegrationConstants.POLICYNUMBER).item(0);
-				Assert.assertEquals(PolicyNumber.getTextContent(), insuranceData.get(16),
+				assertEquals(PolicyNumber.getTextContent(), insuranceData.get(16),
 						"Patient has different PolicyNumber than expected. PolicyNumber is: "
 								+ PolicyNumber.getTextContent());
 				Node CompanyName = ele.getElementsByTagName(IntegrationConstants.COMPANYNAME).item(0);
-				Assert.assertEquals(CompanyName.getTextContent(), insurance_Name,
+				assertEquals(CompanyName.getTextContent(), insurance_Name,
 						"Patient has different Insurance Name than expected. CompanyName is: "
 								+ CompanyName.getTextContent());
 				Log4jUtil.log("Checking Patient Address1, Address2, City, ZipCode");
 				Node InsuranceAddressLine1 = ele.getElementsByTagName(IntegrationConstants.LINE1).item(0);
-				Assert.assertEquals(InsuranceAddressLine1.getTextContent(), insuranceData.get(3),
+				assertEquals(InsuranceAddressLine1.getTextContent(), insuranceData.get(3),
 						"Patient has different InsuranceAddressLine1 than expected. InsuranceAddressLine1 is: "
 								+ InsuranceAddressLine1.getTextContent());
 				Node InsuranceAddressLine2 = ele.getElementsByTagName(IntegrationConstants.LINE2).item(0);
-				Assert.assertEquals(InsuranceAddressLine2.getTextContent(), insuranceData.get(4),
+				assertEquals(InsuranceAddressLine2.getTextContent(), insuranceData.get(4),
 						"Patient has different InsuranceAddressLine2 than expected. InsuranceAddressLine1 is: "
 								+ InsuranceAddressLine2.getTextContent());
 				Node InsuranceCity = ele.getElementsByTagName(IntegrationConstants.CITY).item(0);
-				Assert.assertEquals(InsuranceCity.getTextContent(), insuranceData.get(5),
+				assertEquals(InsuranceCity.getTextContent(), insuranceData.get(5),
 						"Patient has different InsuranceCity than expected. InsuranceCity is: "
 								+ InsuranceCity.getTextContent());
 				Node InsuranceZipCode = ele.getElementsByTagName(IntegrationConstants.ZIPCODE).item(0);
-				Assert.assertEquals(InsuranceZipCode.getTextContent(), insuranceData.get(6),
+				assertEquals(InsuranceZipCode.getTextContent(), insuranceData.get(6),
 						"Patient has different InsuranceZipCode than expected. InsuranceZipCode is: "
 								+ InsuranceZipCode.getTextContent());
 				Log4jUtil.log("Checking Patient Group Number");
 				Node GroupNumber = ele.getElementsByTagName(IntegrationConstants.GROUPNUMBER).item(0);
-				Assert.assertEquals(GroupNumber.getTextContent(), insuranceData.get(17),
+				assertEquals(GroupNumber.getTextContent(), insuranceData.get(17),
 						"Patient has different GroupNumber than expected. GroupNumber is: "
 								+ GroupNumber.getTextContent());
 				found = true;
 				break;
 			}
 		}
-		Assert.assertTrue(found, "Patient was not found in the response XML");
+		assertTrue(found, "Patient was not found in the response XML");
 	}
 
 	public static String verifyEmailNotification(String gmailUserName, String gmailPassword, String recipient,
@@ -2213,7 +2216,7 @@ public class RestUtils {
 			Log4jUtil.log("Error :" + e);
 		}
 
-		Assert.assertTrue(emailMessageLink.length() != 0,
+		assertTrue(emailMessageLink.length() != 0,
 				"New secure message was not found in patient inbox ");
 
 		Log4jUtil.log("Delete all messages from Inbox");
@@ -2391,13 +2394,13 @@ public class RestUtils {
 				Element pref = (Element) prefs.getElementsByTagName(IntegrationConstants.PREFERENCE).item(0);
 				Node pref_name = pref.getElementsByTagName(IntegrationConstants.PREF_NAME).item(0);
 				Node pref_value = pref.getElementsByTagName(IntegrationConstants.PREF_VALUE).item(0);
-				Assert.assertEquals(pref_name.getTextContent(), "STATEMENT_DELIVERY_PREF",
+				assertEquals(pref_name.getTextContent(), "STATEMENT_DELIVERY_PREF",
 						"Not on Statement Delivery Preference Node");
-				Assert.assertEquals(pref_value.getTextContent(), Pref, "Statement Delivery Preference does not match");
+				assertEquals(pref_value.getTextContent(), Pref, "Statement Delivery Preference does not match");
 				break;
 			}
 			if (i == nodes.getLength() - 1) {
-				Assert.fail("Patient was not Found");
+				fail("Patient was not Found");
 			}
 		}
 
@@ -2458,12 +2461,12 @@ public class RestUtils {
 		Element partnerElem = (Element) PartnerNode;
 		Log4jUtil.log("Verifying PartnerMessageId actual " + partnerElem.getTextContent().toString() + " with Expected "
 				+ PartnerMessageId);
-		Assert.assertEquals(partnerElem.getTextContent().toString(), PartnerMessageId);
+		assertEquals(partnerElem.getTextContent().toString(), PartnerMessageId);
 
 		Node StatusNode = doc.getElementsByTagName("StatusCode").item(0);
 		Element statusElem = (Element) StatusNode;
 		Log4jUtil.log("Verifying Status actual " + statusElem.getTextContent().toString() + " with Expected 200");
-		Assert.assertEquals(statusElem.getTextContent().toString(), "200");
+		assertEquals(statusElem.getTextContent().toString(), "200");
 
 		return mfElem.getTextContent().toString();
 	}
@@ -2475,7 +2478,7 @@ public class RestUtils {
 		NodeList messageStatusNode = doc.getElementsByTagName("messageStatus");
 		Log4jUtil.log("Verifying messageStatus actual  " + messageStatusNode.item(0).getTextContent()
 				+ " with expected as confirmed");
-		Assert.assertTrue(
+		assertTrue(
 				messageStatusNode.item(0).getTextContent().equalsIgnoreCase("confirmed")
 						|| messageStatusNode.item(0).getTextContent().equalsIgnoreCase("accepted"),
 				"Get Request response is " + messageStatusNode.item(0).getTextContent());
@@ -2483,16 +2486,16 @@ public class RestUtils {
 		NodeList fromAddressNode = doc.getElementsByTagName("fromAddress");
 		Log4jUtil.log("Verifying fromAddress actual " + fromAddressNode.item(0).getTextContent() + " with expected as "
 				+ fromAddress);
-		Assert.assertEquals(fromAddressNode.item(0).getTextContent(), fromAddress);
+		assertEquals(fromAddressNode.item(0).getTextContent(), fromAddress);
 
 		NodeList toAddressNode = doc.getElementsByTagName("toAddress");
 		Log4jUtil.log("Verifying toAddress actual  " + toAddressNode.item(0).getTextContent() + " with expected as "
 				+ toAddress);
-		Assert.assertEquals(toAddressNode.item(0).getTextContent(), toAddress);
+		assertEquals(toAddressNode.item(0).getTextContent(), toAddress);
 
 		NodeList StatusCode = doc.getElementsByTagName("StatusCode");
 		Log4jUtil.log("Verifying toAddress actual " + StatusCode.item(0).getTextContent() + " with expected as 200");
-		Assert.assertEquals(StatusCode.item(0).getTextContent(), "200");
+		assertEquals(StatusCode.item(0).getTextContent(), "200");
 	}
 
 	public static boolean isSendDirectMessageProcessed(String xmlFileName)
@@ -2502,7 +2505,7 @@ public class RestUtils {
 		Log4jUtil.log("Verifying messageStatus actual  " + messageStatusNode.item(0).getTextContent()
 				+ " with expected as confirmed");
 
-		Assert.assertTrue(
+		assertTrue(
 				messageStatusNode.item(0).getTextContent().equalsIgnoreCase("confirmed")
 						|| messageStatusNode.item(0).getTextContent().equalsIgnoreCase("accepted"),
 				"Get Request response is " + messageStatusNode.item(0).getTextContent());
@@ -2510,7 +2513,7 @@ public class RestUtils {
 		NodeList mdnConfirmationDateNode = doc.getElementsByTagName("mdnConfirmationDate");
 		Log4jUtil
 				.log("Verifying if mdnConfirmationDate is present " + mdnConfirmationDateNode.item(0).getTextContent());
-		Assert.assertTrue(!mdnConfirmationDateNode.item(0).getTextContent().isEmpty());
+		assertTrue(!mdnConfirmationDateNode.item(0).getTextContent().isEmpty());
 
 		return true;
 	}
@@ -2522,7 +2525,7 @@ public class RestUtils {
 		Document doc = buildUTFDOMXML(xmlFileName);
 		NodeList StatusCode = doc.getElementsByTagName("StatusCode");
 		Log4jUtil.log("Verifying StatusCode actual  " + StatusCode.item(0).getTextContent() + " with expected as 200");
-		Assert.assertEquals(StatusCode.item(0).getTextContent(), "200");
+		assertEquals(StatusCode.item(0).getTextContent(), "200");
 
 		NodeList nodes = doc.getElementsByTagName("DirectoryInfo");
 
@@ -2532,27 +2535,27 @@ public class RestUtils {
 			Element FirstNameElem = (Element) DirInfo.getElementsByTagName("FirstName").item(0);
 			if (firstName != null) {
 				Log4jUtil.log("FirstName : " + FirstNameElem.getTextContent() + "  :  " + firstName.trim());
-				Assert.assertTrue(
+				assertTrue(
 						FirstNameElem.getTextContent().toLowerCase().contains(firstName.trim().toLowerCase()));
 			}
 
 			Element LastNameElem = (Element) DirInfo.getElementsByTagName("LastName").item(0);
 			if (lastName != null) {
 				Log4jUtil.log("LastName : " + LastNameElem.getTextContent() + "  : " + lastName.trim());
-				Assert.assertEquals(LastNameElem.getTextContent().toLowerCase(), lastName.trim().toLowerCase());
+				assertEquals(LastNameElem.getTextContent().toLowerCase(), lastName.trim().toLowerCase());
 			}
 
 			Element OrgElem = (Element) DirInfo.getElementsByTagName("OrganizationName").item(0);
 			if (organizationName != null) {
 				Log4jUtil.log("OrganizationName : " + OrgElem.getTextContent() + "   :   " + organizationName.trim());
-				Assert.assertEquals(OrgElem.getTextContent().toLowerCase(), organizationName.trim().toLowerCase());
+				assertEquals(OrgElem.getTextContent().toLowerCase(), organizationName.trim().toLowerCase());
 			}
 
 			Element NationalProviderIdElem = (Element) DirInfo.getElementsByTagName("NationalProviderId").item(0);
 			if (nationalProvider != null) {
 				Log4jUtil.log("NationalProviderId : " + NationalProviderIdElem.getTextContent() + " : "
 						+ nationalProvider.trim());
-				Assert.assertEquals(NationalProviderIdElem.getTextContent().toLowerCase(),
+				assertEquals(NationalProviderIdElem.getTextContent().toLowerCase(),
 						nationalProvider.trim().toLowerCase());
 			}
 
@@ -2560,7 +2563,7 @@ public class RestUtils {
 			if (specialityType != null) {
 				Log4jUtil.log("SpecialtyType : " + SpecialtyTypeElem.getTextContent() + " specialityType "
 						+ specialityType.trim());
-				Assert.assertEquals(SpecialtyTypeElem.getTextContent().toLowerCase(),
+				assertEquals(SpecialtyTypeElem.getTextContent().toLowerCase(),
 						specialityType.trim().toLowerCase());
 			}
 
@@ -2569,7 +2572,7 @@ public class RestUtils {
 			if (classification != null) {
 				Log4jUtil.log("SpecialtyClassification : " + SpecialtyClassificationElem.getTextContent() + "  : "
 						+ classification.trim());
-				Assert.assertEquals(SpecialtyClassificationElem.getTextContent().toLowerCase(),
+				assertEquals(SpecialtyClassificationElem.getTextContent().toLowerCase(),
 						classification.trim().toLowerCase());
 			}
 
@@ -2578,33 +2581,32 @@ public class RestUtils {
 			if (specialization != null) {
 				Log4jUtil.log("SpecialtySpecialization : " + SpecialtySpecializationElem.getTextContent() + " : "
 						+ specialization.trim());
-				Assert.assertEquals(SpecialtySpecializationElem.getTextContent().toLowerCase(),
+				assertEquals(SpecialtySpecializationElem.getTextContent().toLowerCase(),
 						specialization.trim().toLowerCase());
 			}
 
 			Element StreetElem = (Element) DirInfo.getElementsByTagName("Street").item(0);
 			if (street != null) {
 				Log4jUtil.log("Street : " + StreetElem.getTextContent() + "  :  " + street.trim());
-				BaseTestSoftAssert
-						.assertTrue((StreetElem.getTextContent().toLowerCase().contains(street.trim().toLowerCase())));
+				assertTrue((StreetElem.getTextContent().toLowerCase().contains(street.trim().toLowerCase())));
 			}
 
 			Element CityElem = (Element) DirInfo.getElementsByTagName("City").item(0);
 			if (city != null) {
 				Log4jUtil.log("City : " + CityElem.getTextContent() + "  :  " + city.trim());
-				Assert.assertTrue(CityElem.getTextContent().toLowerCase().contains(city.trim().toLowerCase()));
+				assertTrue(CityElem.getTextContent().toLowerCase().contains(city.trim().toLowerCase()));
 			}
 
 			Element StateElem = (Element) DirInfo.getElementsByTagName("State").item(0);
 			if (state != null) {
 				Log4jUtil.log("State : " + StateElem.getTextContent() + "  :  " + state.trim());
-				Assert.assertEquals(StateElem.getTextContent().toLowerCase(), state.trim().toLowerCase());
+				assertEquals(StateElem.getTextContent().toLowerCase(), state.trim().toLowerCase());
 			}
 
 			Element ZipCodeElem = (Element) DirInfo.getElementsByTagName("ZipCode").item(0);
 			if (zipCode != null) {
 				Log4jUtil.log("ZipCode : " + ZipCodeElem.getTextContent() + "  :  " + zipCode.trim());
-				Assert.assertTrue(ZipCodeElem.getTextContent().toLowerCase().contains(zipCode.trim().toLowerCase()));
+				assertTrue(ZipCodeElem.getTextContent().toLowerCase().contains(zipCode.trim().toLowerCase()));
 			}
 
 			Element DirectAddressElem = (Element) DirInfo.getElementsByTagName("DirectAddress").item(0);
@@ -2639,7 +2641,7 @@ public class RestUtils {
 		Element statusElem = (Element) StatusNode;
 		Log4jUtil.log(
 				"Verifying Response Status actual " + statusElem.getTextContent().toString() + " with Expected 200");
-		Assert.assertEquals(statusElem.getTextContent().toString(), "200");
+		assertEquals(statusElem.getTextContent().toString(), "200");
 
 		NodeList MessageHeader = doc.getElementsByTagName("DirectMessageHeader");
 
@@ -2670,7 +2672,7 @@ public class RestUtils {
 		Node StatusNode = doc.getElementsByTagName("StatusCode").item(0);
 		Element statusElem = (Element) StatusNode;
 		Log4jUtil.log("Verifying Status actual " + statusElem.getTextContent().toString() + " with Expected 200");
-		Assert.assertEquals(statusElem.getTextContent().toString(), "200");
+		assertEquals(statusElem.getTextContent().toString(), "200");
 
 		NodeList MessageHeader = doc.getElementsByTagName("DirectMessageHeader");
 		for (int i = 0; i < MessageHeader.getLength(); i++) {
@@ -2696,32 +2698,32 @@ public class RestUtils {
 		Node StatusNode = doc.getElementsByTagName("StatusCode").item(0);
 		Element statusElem = (Element) StatusNode;
 		Log4jUtil.log("Verifying Status actual " + statusElem.getTextContent().toString() + " with Expected 200");
-		Assert.assertEquals(statusElem.getTextContent().toString(), "200");
+		assertEquals(statusElem.getTextContent().toString(), "200");
 
 		Node ToNode = doc.getElementsByTagName("Recipients").item(0);
 		Log4jUtil.log("Verifying Recipient Address actual : " + ToNode.getChildNodes().item(1).getTextContent()
 				+ " with Expected " + to);
 		if (ToNode.getChildNodes().item(1).getTextContent().contains(to)) {
-			Assert.assertTrue(true, "Recipents Matched !!");
+			assertTrue(true, "Recipents Matched !!");
 		}
 		Node FromNode = doc.getElementsByTagName("FromAddress").item(0);
 		Log4jUtil.log("Verifying From Address actual : " + FromNode.getChildNodes().item(1).getTextContent()
 				+ " with Expected " + from);
 		if (FromNode.getChildNodes().item(1).getTextContent().contains(to)) {
-			Assert.assertTrue(true, "From Address Matched !!");
+			assertTrue(true, "From Address Matched !!");
 		}
 
 		Node PublicSubject = doc.getElementsByTagName("PublicSubject").item(0);
 		Element subjectElem = (Element) PublicSubject;
 		Log4jUtil.log(
 				"Verifying Subject actual " + subjectElem.getTextContent().toString() + " with Expected " + subject);
-		Assert.assertEquals(subjectElem.getTextContent().toString(), subject);
+		assertEquals(subjectElem.getTextContent().toString(), subject);
 
 		Node BodyText = doc.getElementsByTagName("BodyText").item(0);
 		Element bodyElem = (Element) BodyText;
 		Log4jUtil
 				.log("Verifying Body actual " + bodyElem.getTextContent().toString() + " with Expected " + messageBody);
-		Assert.assertEquals(bodyElem.getTextContent().toString(), messageBody);
+		assertEquals(bodyElem.getTextContent().toString(), messageBody);
 
 		if (!fileName.contains("none")) {
 			Node Attachment = doc.getElementsByTagName("Attachment").item(0);
@@ -2729,19 +2731,19 @@ public class RestUtils {
 			Log4jUtil.log("Verifying Attachment actual " + Attachment.getChildNodes().item(0).getTextContent()
 					+ " with Expected " + fileName);
 			if (Attachment.getChildNodes().item(0).getTextContent().contains(fileName)) {
-				Assert.assertTrue(true, "Attachment Matched !!");
+				assertTrue(true, "Attachment Matched !!");
 			} else {
-				Assert.assertTrue(false, "Attachment Not Found !!");
+				assertTrue(false, "Attachment Not Found !!");
 			}
 			Log4jUtil.log("Verifying Attachment in response with Attachment in request body");
 			Boolean AttachmentMatch = matchBase64String(Attachment.getChildNodes().item(2).getTextContent(),
 					attachFile);
 			Log4jUtil.log("Attachment Matched " + AttachmentMatch);
-			Assert.assertTrue(AttachmentMatch, "Attachment Content Matched !!");
+			assertTrue(AttachmentMatch, "Attachment Content Matched !!");
 
 			if (!Attachment.getChildNodes().item(2).getTextContent().isEmpty()) {
 				Log4jUtil.log("Attachment Body not Empty");
-				Assert.assertTrue(true, "Attachment Found!!");
+				assertTrue(true, "Attachment Found!!");
 			}
 
 		}
@@ -2879,14 +2881,14 @@ public class RestUtils {
 			Log4jUtil.log("---------------Verifying Basic Information-------------------------");
 			Node SEXName = doc1.getElementsByTagName(IntegrationConstants.ADMINISTRATIVEGENDERCODE).item(0);
 			Attr attr = (Attr) SEXName.getAttributes().getNamedItem(IntegrationConstants.ATRRIBUTE1);
-			Assert.assertTrue(attr.getValue().equals("MALE"), "Gender values different from Expected");
+			assertTrue(attr.getValue().equals("MALE"), "Gender values different from Expected");
 			Log4jUtil.log("Verifying gender Value actual " + attr.getValue().toString().toLowerCase()
 					+ " with Expected " + list.get(21));
 			Log4jUtil.log("---------------Verifying Emergency Contacts Information---------------");
 			Node entityrel = doc1.getElementsByTagName(IntegrationConstants.ASSOCIATEDENTITY).item(0);
 			Element relation1 = (Element) entityrel;
 			Element relationname = (Element) relation1.getElementsByTagName("originalText").item(0);
-			Assert.assertEquals(relationname.getTextContent(), list.get(2),
+			assertEquals(relationname.getTextContent(), list.get(2),
 					"Relation Actual values are different from expected");
 			Log4jUtil.log("Verifying Relation actual " + relationname.getTextContent().toString() + " with Expected "
 					+ list.get(2));
@@ -2894,29 +2896,29 @@ public class RestUtils {
 			Element name = (Element) entitynode;
 
 			Element relfirstname1 = (Element) name.getElementsByTagName(IntegrationConstants.GIVENNAME).item(0);
-			Assert.assertEquals(relfirstname1.getTextContent(), list.get(0),
+			assertEquals(relfirstname1.getTextContent(), list.get(0),
 					"Relfirstname Actual values are different from expected");
 			Log4jUtil.log("Verifying RelFirstName actual " + relfirstname1.getTextContent().toString()
 					+ " with Expected " + list.get(0));
 			Element relLAstname1 = (Element) name.getElementsByTagName(IntegrationConstants.FAMILY).item(0);
-			Assert.assertEquals(relLAstname1.getTextContent(), list.get(1),
+			assertEquals(relLAstname1.getTextContent(), list.get(1),
 					"RelLAstname Actual values are different from expected");
 			Log4jUtil.log("Verifying RelLastName actual " + relLAstname1.getTextContent().toString() + " with Expected "
 					+ list.get(1));
 			Node assignedentity = doc1.getElementsByTagName(IntegrationConstants.DOCUMENTATIONOF).item(0);
-			Assert.assertEquals(assignedentity.getTextContent(), list.get(17),
+			assertEquals(assignedentity.getTextContent(), list.get(17),
 					"Providername's Actual values are different from expected");
 			Log4jUtil.log("Verifying Providers actual " + assignedentity.getTextContent().toString() + " with Expected "
 					+ list.get(17));
 			Node Insurancename1 = doc1.getElementsByTagName(IntegrationConstants.REPRESENTEDORGANIZATION).item(1);
 			Log4jUtil.log(
 					"---------------Verifying Primary and Secondary Insurance Information------------------------");
-			Assert.assertEquals(Insurancename1.getTextContent(), list.get(5),
+			assertEquals(Insurancename1.getTextContent(), list.get(5),
 					"PrimaryInsurance Actual values are different from expected");
 			Log4jUtil.log("Verifying PrimaryInsurance actual " + Insurancename1.getTextContent().toString()
 					+ " with Expected " + list.get(5));
 			Node Insurancename2 = doc1.getElementsByTagName(IntegrationConstants.REPRESENTEDORGANIZATION).item(2);
-			Assert.assertEquals(Insurancename2.getTextContent(), list.get(6),
+			assertEquals(Insurancename2.getTextContent(), list.get(6),
 					"SecondaryInsurance Actual values are different from expected");
 			Log4jUtil.log("Verifying SecondaryInsurance actual " + Insurancename2.getTextContent().toString()
 					+ " with Expected " + list.get(6));
@@ -2927,7 +2929,7 @@ public class RestUtils {
 			Element substancetext = (Element) Tetanus1.item(1);
 			Element substanceTetanus1 = (Element) substancetext
 					.getElementsByTagName(IntegrationConstants.ENTRYRELATIONSHIP).item(0);
-			Assert.assertEquals(substanceTetanus1.getTextContent(), list.get(7),
+			assertEquals(substanceTetanus1.getTextContent(), list.get(7),
 					"Tetanus Actual values are different from expected");
 			Log4jUtil.log("Verifying Tetanus actual " + substanceTetanus1.getTextContent().toString()
 					+ " with Expected " + list.get(7));
@@ -2935,7 +2937,7 @@ public class RestUtils {
 			Element substancetextHPV = (Element) Tetanus1.item(2);
 			Element substancetextHPV1 = (Element) substancetextHPV
 					.getElementsByTagName(IntegrationConstants.ENTRYRELATIONSHIP).item(0);
-			Assert.assertEquals(substancetextHPV1.getTextContent(), list.get(8),
+			assertEquals(substancetextHPV1.getTextContent(), list.get(8),
 					"HPV's Actual values are different from expected");
 			Log4jUtil.log("Verifying HPV's actual " + substancetextHPV1.getTextContent().toString() + " with Expected "
 					+ list.get(8));
@@ -2943,7 +2945,7 @@ public class RestUtils {
 			Element substancetextInfluenza = (Element) Tetanus1.item(3);
 			Element substancetextInfluenza1 = (Element) substancetextInfluenza
 					.getElementsByTagName(IntegrationConstants.ENTRYRELATIONSHIP).item(0);
-			Assert.assertEquals(substancetextInfluenza1.getTextContent(), list.get(9),
+			assertEquals(substancetextInfluenza1.getTextContent(), list.get(9),
 					"Influenza's Actual values are different from expected");
 			Log4jUtil.log("Verifying Influenza1 actual " + substancetextInfluenza1.getTextContent().toString()
 					+ " with Expected " + list.get(9));
@@ -2951,7 +2953,7 @@ public class RestUtils {
 			Element substancetextPneumonia = (Element) Tetanus1.item(4);
 			Element substancetextPneumonia1 = (Element) substancetextPneumonia
 					.getElementsByTagName(IntegrationConstants.ENTRYRELATIONSHIP).item(0);
-			Assert.assertEquals(substancetextPneumonia1.getTextContent(), list.get(10),
+			assertEquals(substancetextPneumonia1.getTextContent(), list.get(10),
 					"Pneumonia's Actual values are different from expected");
 			Log4jUtil.log("Verifying Pneumonia1 actual " + substancetextPneumonia1.getTextContent().toString()
 					+ " with Expected " + list.get(10));
@@ -2961,13 +2963,13 @@ public class RestUtils {
 			Node SurgeryName = doc1.getElementsByTagName(IntegrationConstants.COMPONENT).item(6);
 			Element surgery = (Element) SurgeryName;
 			Element SurgeryName1 = (Element) surgery.getElementsByTagName(IntegrationConstants.CONTENT).item(0);
-			Assert.assertTrue(SurgeryName1.getTextContent().contains(list.get(11)),
+			assertTrue(SurgeryName1.getTextContent().contains(list.get(11)),
 					"SurgeryName Actual values are different from expected");
 			Log4jUtil.log("Verifying SurgeryName actual " + SurgeryName1.getTextContent().toString() + " with Expected "
 					+ list.get(11));
 
 			Element SurgeryNametime = (Element) surgery.getElementsByTagName(IntegrationConstants.CONTENT).item(1);
-			Assert.assertEquals(SurgeryNametime.getTextContent().toLowerCase(), list.get(12),
+			assertEquals(SurgeryNametime.getTextContent().toLowerCase(), list.get(12),
 					"SurgeryNametime Actual values are different from expected");
 			Log4jUtil.log("Verifying Surgerytimeframe actual "
 					+ SurgeryNametime.getTextContent().toString().toLowerCase() + " with Expected " + list.get(12));
@@ -2976,14 +2978,14 @@ public class RestUtils {
 			Element Hospitalization1 = (Element) Hospitalization;
 			Element Hospitalizationreason = (Element) Hospitalization1
 					.getElementsByTagName(IntegrationConstants.CONTENT).item(0);
-			Assert.assertTrue(Hospitalizationreason.getTextContent().contains("Pneumococcal arthritis"),
+			assertTrue(Hospitalizationreason.getTextContent().contains("Pneumococcal arthritis"),
 					"Hospitalizationreason Actual values are different from expected");
 			Log4jUtil.log("Verifying Hospitalizationreason actual " + Hospitalizationreason.getTextContent().toString()
 					+ " with Expected " + list.get(13));
 
 			Element Hospitalizationreasontime = (Element) Hospitalization1
 					.getElementsByTagName(IntegrationConstants.CONTENT).item(1);
-			Assert.assertEquals(Hospitalizationreasontime.getTextContent().toLowerCase(), list.get(14),
+			assertEquals(Hospitalizationreasontime.getTextContent().toLowerCase(), list.get(14),
 					"Hospitalizationreasontime Actual values are different from expected");
 			Log4jUtil.log("Verifying Hospitalizationtimeframe actual "
 					+ Hospitalizationreasontime.getTextContent().toString().toLowerCase() + " with Expected "
@@ -2991,13 +2993,13 @@ public class RestUtils {
 
 			Log4jUtil.log("------------------Verifying PreviousTest Information-------------------------");
 			Element Testname = (Element) surgery.getElementsByTagName(IntegrationConstants.CONTENT).item(2);
-			Assert.assertEquals(Testname.getTextContent(), list.get(15),
+			assertEquals(Testname.getTextContent(), list.get(15),
 					"Test Actual values are different from expected");
 			Log4jUtil.log(
 					"Verifying Test actual " + Testname.getTextContent().toString() + " with Expected " + list.get(15));
 
 			Element Testtime = (Element) surgery.getElementsByTagName(IntegrationConstants.CONTENT).item(3);
-			Assert.assertEquals(Testtime.getTextContent().toLowerCase(), list.get(16),
+			assertEquals(Testtime.getTextContent().toLowerCase(), list.get(16),
 					"Testtime Actual values are different from expected");
 			Log4jUtil.log("Verifying Testtime actual " + Testtime.getTextContent().toString().toLowerCase()
 					+ " with Expected " + list.get(16));
@@ -3006,7 +3008,7 @@ public class RestUtils {
 			Node Dosage = doc1.getElementsByTagName(IntegrationConstants.COMPONENT).item(3);
 			Element Dosage1 = (Element) Dosage;
 			Element Dosagename = (Element) Dosage1.getElementsByTagName(IntegrationConstants.CONTENT).item(0);
-			Assert.assertTrue(Dosagename.getTextContent().contains("Crestor 20 mg Tab"),
+			assertTrue(Dosagename.getTextContent().contains("Crestor 20 mg Tab"),
 					"Dosage Actual values are different from expected");
 			Log4jUtil.log("Verifying Dosage actual " + Dosagename.getTextContent().toString() + " with Expected "
 					+ list.get(18));
@@ -3016,14 +3018,14 @@ public class RestUtils {
 			Element OtherMedicalhistory1 = (Element) OtherMedicalhistory;
 			Element OtherMedicalhistoryname = (Element) OtherMedicalhistory1
 					.getElementsByTagName(IntegrationConstants.CONTENT).item(0);
-			Assert.assertEquals(OtherMedicalhistoryname.getTextContent(), list.get(19),
+			assertEquals(OtherMedicalhistoryname.getTextContent(), list.get(19),
 					"OtherMedicalhistory Actual values are different from expected");
 			Log4jUtil.log("Verifying OtherMedical history actual " + OtherMedicalhistoryname.getTextContent().toString()
 					+ " with Expected " + list.get(19));
 
 			Element FamilyRelation1 = (Element) OtherMedicalhistory1.getElementsByTagName(IntegrationConstants.CONTENT)
 					.item(1);
-			Assert.assertEquals(FamilyRelation1.getTextContent(), list.get(20),
+			assertEquals(FamilyRelation1.getTextContent(), list.get(20),
 					"FamilyRelation Actual values are different from expected");
 			Log4jUtil.log("Verifying FamilyRelation history actual " + FamilyRelation1.getTextContent().toString()
 					+ " with Expected " + list.get(20));
@@ -3045,10 +3047,10 @@ public class RestUtils {
 			Node FormTypeValue = Forms.getElementsByTagName(IntegrationConstants.VALUE).item(i);
 			Node FormTypeKey = Forms.getElementsByTagName("Key").item(i);
 			if (FormTypeValue.getTextContent().contains(FormValue)) {
-				Assert.assertEquals(FormTypeValue.getTextContent(), FormValue, "Form Name is different from expected ");
+				assertEquals(FormTypeValue.getTextContent(), FormValue, "Form Name is different from expected ");
 			}
 			if (FormTypeValue.getTextContent().contains(IntegrationConstants.FORMTYPE)) {
-				Assert.assertTrue(FormTypeValue.getTextContent().contains(IntegrationConstants.FORMTYPE),
+				assertTrue(FormTypeValue.getTextContent().contains(IntegrationConstants.FORMTYPE),
 						"Form Type is different than expected");
 				break;
 			}
@@ -3117,12 +3119,12 @@ public class RestUtils {
 			for (int j = 0; j < MfmemberID.getLength(); j++) {
 				Element MedfusionID = (Element) MfmemberID.item(j);
 				if (MedfusionID.getTextContent().equals(medfusionID)) {
-					Assert.assertEquals(MedfusionID.getTextContent(), medfusionID,
+					assertEquals(MedfusionID.getTextContent(), medfusionID,
 							"Medfusion MemberID is  different from expected");
 					Log4jUtil.log("Verifying MedfusionMemberID " + MedfusionID.getTextContent() + " with Expected"
 							+ medfusionID);
 					Node ExternalID = member.getElementsByTagName(IntegrationConstants.PRACTICEPATIENTID).item(0);
-					Assert.assertEquals(ExternalID.getTextContent(), externalPatientID,
+					assertEquals(ExternalID.getTextContent(), externalPatientID,
 							"External patient ID is different from expected");
 					Log4jUtil.log("Verifying ExternalID " + ExternalID.getTextContent() + " with Expected"
 							+ externalPatientID);
@@ -3165,7 +3167,7 @@ public class RestUtils {
 		Log4jUtil.log("----------------------------");
 		Boolean pdfMatch = matchBase64String(pdfFromPortal, pdfFromGet);
 		Log4jUtil.log("Is Pdf Matched : " + pdfMatch);
-		Assert.assertTrue(pdfMatch, "Portal PDF Did not Matched with PDF in ccdExchangePdf call");
+		assertTrue(pdfMatch, "Portal PDF Did not Matched with PDF in ccdExchangePdf call");
 	}
 
 	public static int setupHttpDeleteRequestExceptOauth(String strUrl, String responseFilePath, String token)
@@ -3210,12 +3212,12 @@ public class RestUtils {
 				Boolean patientFound = node.item(i).getTextContent().contains("<given>" + firstname + "</given>");
 				Log4jUtil.log("Is Patient appeared = " + patientFound);
 				if (patientFound == true) {
-					Assert.assertTrue(patientFound, "Updated patient name appeared");
+					assertTrue(patientFound, "Updated patient name appeared");
 					break;
 				}
 			}
 			if (i == nodes.getLength() - 1) {
-				Assert.fail("Patient was not found");
+				fail("Patient was not found");
 			}
 		}
 	}
@@ -3233,7 +3235,7 @@ public class RestUtils {
 			Node lastUpdated = member.getElementsByTagName(IntegrationConstants.LASTUPDATED).item(0);
 			if ((i + 1) == nodes1.getLength()) {
 				Node ExternalID = member.getElementsByTagName(IntegrationConstants.PRACTICEPATIENTID).item(0);
-				Assert.assertEquals(ExternalID.getTextContent(), externalPatientID,
+				assertEquals(ExternalID.getTextContent(), externalPatientID,
 						"External patient ID is different from expected");
 				Log4jUtil.log(
 						"Verifying ExternalID " + ExternalID.getTextContent() + " with Expected" + externalPatientID);
@@ -3261,7 +3263,7 @@ public class RestUtils {
 		if (entity != null) {
 			sResp = EntityUtils.toString(entity);
 			Log4jUtil.log("Check for http 200 response");
-			Assert.assertTrue(
+			assertTrue(
 					resp.getStatusLine().getStatusCode() == 200 || resp.getStatusLine().getStatusCode() == 204,
 					"Get Request response is " + resp.getStatusLine().getStatusCode()
 							+ " instead of 200. Response message received:\n" + sResp);
@@ -3296,7 +3298,7 @@ public class RestUtils {
 		HttpResponse response = client.execute(request);
 		String sResp = EntityUtils.toString(response.getEntity());
 		Log4jUtil.log("Check for http 200/202 response");
-		Assert.assertTrue(
+		assertTrue(
 				response.getStatusLine().getStatusCode() == 200 || response.getStatusLine().getStatusCode() == 202,
 				"Get Request response is " + response.getStatusLine().getStatusCode()
 						+ " instead of 200/202. Response message:\n" + sResp);
@@ -3328,48 +3330,48 @@ public class RestUtils {
 					// Log4jUtil.log("Patient FirstName"+FirstName.getTextContent());
 					if (FirstName.getTextContent().equalsIgnoreCase(list.get(0).toString())) {
 
-						Assert.assertEquals(FirstName.getTextContent(), list.get(0),
+						assertEquals(FirstName.getTextContent(), list.get(0),
 								"Patient has different FirstName than expected. FirstName is: "
 										+ FirstName.getTextContent());
 						Node LastName = patient.getElementsByTagName(IntegrationConstants.LAST_NAME).item(0);
-						Assert.assertEquals(LastName.getTextContent(), list.get(1),
+						assertEquals(LastName.getTextContent(), list.get(1),
 								"Patient has different LastName than expected. LastName is: "
 										+ LastName.getTextContent());
 						Log4jUtil.log(
 								"Checking Patient Address1, Address2, MiddleName, DateOfBirth, City, State, Zipcode");
 						Node Line1 = patient.getElementsByTagName(IntegrationConstants.LINE1).item(0);
-						Assert.assertEquals(Line1.getTextContent(), list.get(2),
+						assertEquals(Line1.getTextContent(), list.get(2),
 								"Patient has different Address1 than expected. Address1 is: " + Line1.getTextContent());
 						Node Line2 = patient.getElementsByTagName(IntegrationConstants.LINE2).item(0);
-						Assert.assertEquals(Line2.getTextContent(), list.get(3),
+						assertEquals(Line2.getTextContent(), list.get(3),
 								"Patient has different Address2 than expected. Address2 is: " + Line2.getTextContent());
 						Node MiddleN = patient.getElementsByTagName(IntegrationConstants.MIDDLENAME).item(0);
-						Assert.assertEquals(MiddleN.getTextContent(), list.get(4),
+						assertEquals(MiddleN.getTextContent(), list.get(4),
 								"Patient has different MiddleName than expected. MiddleName is: "
 										+ MiddleN.getTextContent());
 						String bDate = list.get(5).toString().replaceAll("01 ", "01/");
 						String birthdate = convertDate(bDate) + "T00:00:00";
 						Log4jUtil.log("Checking Patient Date of Birth, Middle Name");
 						Node DateOfBirth = patient.getElementsByTagName(IntegrationConstants.DATEOFBIRTH).item(0);
-						Assert.assertEquals(DateOfBirth.getTextContent(), birthdate,
+						assertEquals(DateOfBirth.getTextContent(), birthdate,
 								"Patient has different DateOfBirth than expected. DateOfBirth is: "
 										+ DateOfBirth.getTextContent());
 
 						Node City = patient.getElementsByTagName(IntegrationConstants.CITY).item(0);
-						Assert.assertEquals(City.getTextContent(), list.get(6),
+						assertEquals(City.getTextContent(), list.get(6),
 								"Patient has different City than expected. City is: " + City.getTextContent());
 						Node State = patient.getElementsByTagName(IntegrationConstants.STATE).item(0);
-						Assert.assertEquals(State.getTextContent(), list.get(7),
+						assertEquals(State.getTextContent(), list.get(7),
 								"Patient has different State than expected. Stateis: " + State.getTextContent());
 						Node ZipCode = patient.getElementsByTagName(IntegrationConstants.ZIPCODE).item(0);
-						Assert.assertEquals(ZipCode.getTextContent(), list.get(8),
+						assertEquals(ZipCode.getTextContent(), list.get(8),
 								"Patient has different ZipCode than expected. ZipCode is: " + ZipCode.getTextContent());
 						Node HomePhone = patient.getElementsByTagName(IntegrationConstants.HOMEPHONE).item(0);
-						Assert.assertEquals(HomePhone.getTextContent(), list.get(9),
+						assertEquals(HomePhone.getTextContent(), list.get(9),
 								"Patient has different HomePhone than expected. HomePhone is: "
 										+ HomePhone.getTextContent());
 						Node EmailAddress = patient.getElementsByTagName(IntegrationConstants.EMAIL_ADDRESS).item(0);
-						Assert.assertEquals(EmailAddress.getTextContent(), list.get(10),
+						assertEquals(EmailAddress.getTextContent(), list.get(10),
 								"Patient has different EmailAddress than expected. EmailAddress is: "
 										+ EmailAddress.getTextContent());
 					} else {
@@ -3390,10 +3392,10 @@ public class RestUtils {
 				Log4jUtil.log("---------------------------------------------------------------------------------");
 				Log4jUtil.log("Verifying Precheck Patient Status");
 				Node PatientStatus = patient.getElementsByTagName(IntegrationConstants.STATUS).item(0);
-				Assert.assertEquals(PatientStatus.getTextContent(), list.get(11),
+				assertEquals(PatientStatus.getTextContent(), list.get(11),
 						"Patient has different status than expected. status is: " + PatientStatus.getTextContent());
 				Node PatientSource = patient.getElementsByTagName(IntegrationConstants.SOURCE).item(0);
-				Assert.assertEquals(PatientSource.getTextContent(), list.get(12),
+				assertEquals(PatientSource.getTextContent(), list.get(12),
 						"Patient has different source value than expected. source is: "
 								+ PatientSource.getTextContent());
 				Log4jUtil.log("---------------------------------------------------------------------------------");
@@ -3407,24 +3409,24 @@ public class RestUtils {
 					Log4jUtil.log(
 							"Patient Primary Insurance Details Insurance Name, Subscriber Name n ID, Group Number, Date Issued, Customer Service Phone Number");
 					Node CompanyName = eleP.getElementsByTagName(IntegrationConstants.COMPANYNAME).item(0);
-					Assert.assertEquals(CompanyName.getTextContent(), list.get(13),
+					assertEquals(CompanyName.getTextContent(), list.get(13),
 							"Patient has different Primary Insurance Name than expected. CompanyName is: "
 									+ CompanyName.getTextContent());
 					Node subNode = patient.getElementsByTagName(IntegrationConstants.SUBSCRIBERNAME).item(0);
 					Element eleSub = (Element) subNode;
 
 					Node SubscriberFirstName = eleSub.getElementsByTagName(IntegrationConstants.FIRSTNAME).item(0);
-					Assert.assertEquals(SubscriberFirstName.getTextContent(), list.get(14),
+					assertEquals(SubscriberFirstName.getTextContent(), list.get(14),
 							"Patient has different Primary Subscriber FirstName than expected. SubscriberFirstName is: "
 									+ SubscriberFirstName.getTextContent());
 
 					Node SubscriberId = eleP.getElementsByTagName(IntegrationConstants.SUBSCRIBERID).item(0);
-					Assert.assertEquals(SubscriberId.getTextContent(), list.get(15),
+					assertEquals(SubscriberId.getTextContent(), list.get(15),
 							"Patient has different Primary SubscriberId than expected. SubscriberId is: "
 									+ SubscriberId.getTextContent());
 
 					Node GroupNumber = eleP.getElementsByTagName(IntegrationConstants.GROUPNUMBER).item(0);
-					Assert.assertEquals(GroupNumber.getTextContent(), list.get(16),
+					assertEquals(GroupNumber.getTextContent(), list.get(16),
 							"Patient has different Primary GroupNumber than expected. GroupNumber is: "
 									+ GroupNumber.getTextContent());
 
@@ -3432,12 +3434,12 @@ public class RestUtils {
 					String effectiveD = convertDate(iDate) + "T00:00:00";
 
 					Node DateIssued = eleP.getElementsByTagName(IntegrationConstants.EFFECTIVEDATE).item(0);
-					Assert.assertEquals(DateIssued.getTextContent(), effectiveD,
+					assertEquals(DateIssued.getTextContent(), effectiveD,
 							"Patient has different Primary DateIssued than expected. DateIssued is: "
 									+ DateIssued.getTextContent());
 
 					Node ClaimsPhone = eleP.getElementsByTagName(IntegrationConstants.CLAIMSPHONE).item(0);
-					Assert.assertEquals(ClaimsPhone.getTextContent(), list.get(18),
+					assertEquals(ClaimsPhone.getTextContent(), list.get(18),
 							"Patient has different Primary ClaimsPhone than expected. DateIssued is: "
 									+ ClaimsPhone.getTextContent());
 				} else {
@@ -3456,24 +3458,24 @@ public class RestUtils {
 					Log4jUtil.log(
 							"Patient Secondary Insurance Details - Insurance Name, Subscriber Name n ID, Group Number, Date Issued, Customer Service Phone Number");
 					Node CompanyName = eleS.getElementsByTagName(IntegrationConstants.COMPANYNAME).item(0);
-					Assert.assertEquals(CompanyName.getTextContent(), list.get(19),
+					assertEquals(CompanyName.getTextContent(), list.get(19),
 							"Patient has different Primary Insurance Name than expected. CompanyName is: "
 									+ CompanyName.getTextContent());
 					Node subNode = patient.getElementsByTagName(IntegrationConstants.SUBSCRIBERNAME).item(1);
 					Element eleSub = (Element) subNode;
 
 					Node SubscriberFirstName = eleSub.getElementsByTagName(IntegrationConstants.FIRSTNAME).item(0);
-					Assert.assertEquals(SubscriberFirstName.getTextContent(), list.get(20),
+					assertEquals(SubscriberFirstName.getTextContent(), list.get(20),
 							"Patient has different Primary Subscriber FirstName than expected. SubscriberFirstName is: "
 									+ SubscriberFirstName.getTextContent());
 
 					Node SubscriberId = eleS.getElementsByTagName(IntegrationConstants.SUBSCRIBERID).item(0);
-					Assert.assertEquals(SubscriberId.getTextContent(), list.get(21),
+					assertEquals(SubscriberId.getTextContent(), list.get(21),
 							"Patient has different Primary SubscriberId than expected. SubscriberId is: "
 									+ SubscriberId.getTextContent());
 
 					Node GroupNumber = eleS.getElementsByTagName(IntegrationConstants.GROUPNUMBER).item(0);
-					Assert.assertEquals(GroupNumber.getTextContent(), list.get(22),
+					assertEquals(GroupNumber.getTextContent(), list.get(22),
 							"Patient has different Primary GroupNumber than expected. GroupNumber is: "
 									+ GroupNumber.getTextContent());
 
@@ -3481,12 +3483,12 @@ public class RestUtils {
 					String effectiveD = convertDate(iDate) + "T00:00:00";
 
 					Node DateIssued = eleS.getElementsByTagName(IntegrationConstants.EFFECTIVEDATE).item(0);
-					Assert.assertEquals(DateIssued.getTextContent(), effectiveD,
+					assertEquals(DateIssued.getTextContent(), effectiveD,
 							"Patient has different Primary DateIssued than expected. DateIssued is: "
 									+ DateIssued.getTextContent());
 
 					Node ClaimsPhone = eleS.getElementsByTagName(IntegrationConstants.CLAIMSPHONE).item(0);
-					Assert.assertEquals(ClaimsPhone.getTextContent(), list.get(24),
+					assertEquals(ClaimsPhone.getTextContent(), list.get(24),
 							"Patient has different Primary ClaimsPhone than expected. DateIssued is: "
 									+ ClaimsPhone.getTextContent());
 				} else {
@@ -3505,24 +3507,24 @@ public class RestUtils {
 					Log4jUtil.log(
 							"Patient Tertiary Insurance Details - Insurance Name, Subscriber Name n ID, Group Number, Date Issued, Customer Service Phone Number");
 					Node CompanyName = eleT.getElementsByTagName(IntegrationConstants.COMPANYNAME).item(0);
-					Assert.assertEquals(CompanyName.getTextContent(), list.get(25),
+					assertEquals(CompanyName.getTextContent(), list.get(25),
 							"Patient has different Primary Insurance Name than expected. CompanyName is: "
 									+ CompanyName.getTextContent());
 					Node subNode = patient.getElementsByTagName(IntegrationConstants.SUBSCRIBERNAME).item(2);
 					Element eleSub = (Element) subNode;
 
 					Node SubscriberFirstName = eleSub.getElementsByTagName(IntegrationConstants.FIRSTNAME).item(0);
-					Assert.assertEquals(SubscriberFirstName.getTextContent(), list.get(26),
+					assertEquals(SubscriberFirstName.getTextContent(), list.get(26),
 							"Patient has different Primary Subscriber FirstName than expected. SubscriberFirstName is: "
 									+ SubscriberFirstName.getTextContent());
 
 					Node SubscriberId = eleT.getElementsByTagName(IntegrationConstants.SUBSCRIBERID).item(0);
-					Assert.assertEquals(SubscriberId.getTextContent(), list.get(27),
+					assertEquals(SubscriberId.getTextContent(), list.get(27),
 							"Patient has different Primary SubscriberId than expected. SubscriberId is: "
 									+ SubscriberId.getTextContent());
 
 					Node GroupNumber = eleT.getElementsByTagName(IntegrationConstants.GROUPNUMBER).item(0);
-					Assert.assertEquals(GroupNumber.getTextContent(), list.get(28),
+					assertEquals(GroupNumber.getTextContent(), list.get(28),
 							"Patient has different Primary GroupNumber than expected. GroupNumber is: "
 									+ GroupNumber.getTextContent());
 
@@ -3530,12 +3532,12 @@ public class RestUtils {
 					String effectiveD = convertDate(iDate) + "T00:00:00";
 
 					Node DateIssued = eleT.getElementsByTagName(IntegrationConstants.EFFECTIVEDATE).item(0);
-					Assert.assertEquals(DateIssued.getTextContent(), effectiveD,
+					assertEquals(DateIssued.getTextContent(), effectiveD,
 							"Patient has different Primary DateIssued than expected. DateIssued is: "
 									+ DateIssued.getTextContent());
 
 					Node ClaimsPhone = eleT.getElementsByTagName(IntegrationConstants.CLAIMSPHONE).item(0);
-					Assert.assertEquals(ClaimsPhone.getTextContent(), list.get(30),
+					assertEquals(ClaimsPhone.getTextContent(), list.get(30),
 							"Patient has different Primary ClaimsPhone than expected. DateIssued is: "
 									+ ClaimsPhone.getTextContent());
 				} else {
@@ -3558,7 +3560,7 @@ public class RestUtils {
 			Element GenderIdentityEle = (Element) GenderIdentity;
 			Node EGQGINode = GenderIdentityEle.getElementsByTagName(IntegrationConstants.VALUE).item(0);
 			Log4jUtil.log("GI node value= " + EGQGINode.getTextContent() + "   EGQValue = " + EGQValue);
-			Assert.assertTrue(EGQGINode.getTextContent().trim().equalsIgnoreCase(EGQValue),
+			assertTrue(EGQGINode.getTextContent().trim().equalsIgnoreCase(EGQValue),
 					"Value mismatched");
 		}
 		if (EGQType == 'S') {
@@ -3566,7 +3568,7 @@ public class RestUtils {
 			Element SexualOrientationEle = (Element) SexualOrientation;
 			Node EGQSONode = SexualOrientationEle.getElementsByTagName(IntegrationConstants.VALUE).item(0);
 			Log4jUtil.log("SO node value = " + EGQSONode.getTextContent() + "   EGQValue = " + EGQValue);
-			Assert.assertTrue(EGQSONode.getTextContent().trim().equalsIgnoreCase(EGQValue),
+			assertTrue(EGQSONode.getTextContent().trim().equalsIgnoreCase(EGQValue),
 					"Value mismatched");
 		}
 	}
@@ -3644,15 +3646,15 @@ public class RestUtils {
 
 		Log4jUtil.log("Matching Actual FileName : " + InsuranceFileNameEle.getTextContent() + "   containing Expected "
 				+ fileName + " in order.");
-		Assert.assertTrue(InsuranceFileNameEle.getTextContent().contains(fileName), "File name did not Matched");
+		assertTrue(InsuranceFileNameEle.getTextContent().contains(fileName), "File name did not Matched");
 		Log4jUtil.log(
 				"Matching Actual FileType : " + InsuranceFileTypeEle.getTextContent() + " with Expected " + fileType);
-		Assert.assertTrue(InsuranceFileTypeEle.getTextContent().equalsIgnoreCase(fileType),
+		assertTrue(InsuranceFileTypeEle.getTextContent().equalsIgnoreCase(fileType),
 				"File type did not Matched");
 
 		Boolean base64FileMatch = matchBase64String(attachmentContentEle.getTextContent(), uploadedImagBase64);
 		Log4jUtil.log("Does insurance image card Matched : " + base64FileMatch);
-		Assert.assertTrue(base64FileMatch,
+		assertTrue(base64FileMatch,
 				"Image uploaded Did not Matched with image in the insurance detail api call.");
 	}
 
@@ -3679,7 +3681,7 @@ public class RestUtils {
 		NodeList nodes = doc.getElementsByTagName(IntegrationConstants.PATIENTID);
 		{
 			Log4jUtil.log(nodes.item(0).getTextContent() + " Expectd Patient Id and Actual PatientId  : " + patientId);
-			Assert.assertTrue(nodes.item(0).getTextContent().equals(patientId), "The Patient Id should match");
+			assertTrue(nodes.item(0).getTextContent().equals(patientId), "The Patient Id should match");
 		}
 		return true;
 	}
@@ -3697,17 +3699,17 @@ public class RestUtils {
 						+ ", and Actual External Patient ID is:" + patients.item(i).getTextContent().toString());
 				Element patient = (Element) patients.item(i).getParentNode().getParentNode();
 				Node status = patient.getElementsByTagName(IntegrationConstants.STATUS).item(0);
-				Assert.assertEquals(status.getTextContent(), IntegrationConstants.REGISTERED,
+				assertEquals(status.getTextContent(), IntegrationConstants.REGISTERED,
 						"Patient has different status than expected. Status is: " + status.getTextContent());
 
 				Node portalstatus = patient.getElementsByTagName(IntegrationConstants.PORTALSTATUS).item(0);
 				if (portalStatus.equalsIgnoreCase("DEACTIVATED")) {
-					Assert.assertEquals(portalstatus.getTextContent(), IntegrationConstants.DEACTIVATED,
+					assertEquals(portalstatus.getTextContent(), IntegrationConstants.DEACTIVATED,
 							"Patient has different portal status than expected. Portal Status is: "
 									+ portalstatus.getTextContent());
 					Log4jUtil.log("Patient Portal Status is: " + portalstatus.getTextContent());
 				} else if (portalStatus.equalsIgnoreCase("DELETED")) {
-					Assert.assertEquals(portalstatus.getTextContent(), IntegrationConstants.DELETED,
+					assertEquals(portalstatus.getTextContent(), IntegrationConstants.DELETED,
 							"Patient has different portal status than expected. Portal Status is: "
 									+ portalstatus.getTextContent());
 					Log4jUtil.log("Patient Portal Status is: " + portalstatus.getTextContent());
@@ -3718,16 +3720,16 @@ public class RestUtils {
 				Node nfirstName = patient.getElementsByTagName(IntegrationConstants.FIRST_NAME).item(0);
 				Log4jUtil.log("Searching: Patient FirstName:" + firstName + ", and Actual Patient FirstName is:"
 						+ nfirstName.getTextContent().toString());
-				Assert.assertEquals(nfirstName.getTextContent(), firstName,
+				assertEquals(nfirstName.getTextContent(), firstName,
 						"Patient has different FirstName than expected. FirstName is: " + nfirstName.getTextContent());
 				Node nlastName = patient.getElementsByTagName(IntegrationConstants.LAST_NAME).item(0);
 				Log4jUtil.log("Searching: Patient LastName:" + lastName + ", and Actual Patient LastName is:"
 						+ nlastName.getTextContent().toString());
-				Assert.assertEquals(nlastName.getTextContent(), lastName,
+				assertEquals(nlastName.getTextContent(), lastName,
 						"Patient has different LastName than expected. LastName is: " + nlastName.getTextContent());
 				if (patientID != null) {
 					Node nPatientId = patient.getElementsByTagName(IntegrationConstants.MEDFUSIONID).item(0);
-					Assert.assertEquals(nPatientId.getTextContent(), patientID,
+					assertEquals(nPatientId.getTextContent(), patientID,
 							"Patient has different MedfusionPatientId than expected. MedfusionPatientId is: "
 									+ nPatientId.getTextContent());
 					Log4jUtil.log("Searching: Medfusion Patient ID:" + patientID
@@ -3737,7 +3739,7 @@ public class RestUtils {
 				break;
 			}
 		}
-		Assert.assertTrue(found, "Patient was not found in the response XML");
+		assertTrue(found, "Patient was not found in the response XML");
 	}
 
 	public static boolean verifyRequestStartDateAndEndDate(String xmlFileName, String StartDate, String EndDate)
@@ -3750,14 +3752,14 @@ public class RestUtils {
 			Log4jUtil.log("Start Date for the Requested Health Data: " + StartDate);
 			Log4jUtil.log("Start Date returned in response: "
 					+ Startdatenodes.item(Startdatenodes.getLength() - 1).getTextContent().substring(0, 10));
-			Assert.assertTrue(Startdatenodes.item(Startdatenodes.getLength() - 1).getTextContent().substring(0, 10)
+			assertTrue(Startdatenodes.item(Startdatenodes.getLength() - 1).getTextContent().substring(0, 10)
 					.equals(StartDate), "Start date should matched");
 		}
 		{
 			Log4jUtil.log("End Date for the Requested Health Data: " + EndDate);
 			Log4jUtil.log("End Date returned in response: "
 					+ Enddatenodes.item(Enddatenodes.getLength() - 1).getTextContent().substring(0, 10));
-			Assert.assertTrue(
+			assertTrue(
 					Enddatenodes.item(Enddatenodes.getLength() - 1).getTextContent().substring(0, 10).equals(EndDate),
 					"End date should matched");
 		}
@@ -3778,7 +3780,7 @@ public class RestUtils {
 				break;
 			}
 		}
-		Assert.assertTrue(found, "CCDA Request was not found in the response XML");
+		assertTrue(found, "CCDA Request was not found in the response XML");
 	}
 
 	public static String isReplyPresentReturnMessageThreadID(String responsePath, String messageIdentifier,
@@ -3797,7 +3799,7 @@ public class RestUtils {
 			if (node.getChildNodes().item(0).getTextContent().contains(messageIdentifier.toString())) {
 				Element question = (Element) node.getParentNode();
 				Node message = question.getElementsByTagName(IntegrationConstants.QUESTION_MESSAGE).item(0);
-				Assert.assertEquals(message.getChildNodes().item(0).getTextContent(), expectedBody,
+				assertEquals(message.getChildNodes().item(0).getTextContent(), expectedBody,
 						"Received reply is not the same as sent");
 				Node messageId = question.getElementsByTagName("MessageThreadId").item(0);
 				MessageID = messageId.getChildNodes().item(0).getTextContent();
@@ -3805,7 +3807,7 @@ public class RestUtils {
 				break;
 			}
 		}
-		Assert.assertTrue(found, "Reply was not found in response XML");
+		assertTrue(found, "Reply was not found in response XML");
 		return MessageID;
 	}
 
@@ -3831,7 +3833,7 @@ public class RestUtils {
 				break;
 			}
 		}
-		Assert.assertTrue(found, "Reason was not found in response XML");
+		assertTrue(found, "Reason was not found in response XML");
 		Log4jUtil.log("response is ok");
 		return appointmentID;
 	}
@@ -3858,7 +3860,7 @@ public class RestUtils {
 				break;
 			}
 		}
-		Assert.assertTrue(found, "Prescription Reason was not found in response XML");
+		assertTrue(found, "Prescription Reason was not found in response XML");
 		Log4jUtil.log("response is ok");
 		return PrescriptionID;
 	}
@@ -3879,14 +3881,14 @@ public class RestUtils {
 			if (node.getChildNodes().item(0).getTextContent().contains(messageIdentifier.toString())) {
 				Element question = (Element) node.getParentNode();
 				Node message = question.getElementsByTagName(IntegrationConstants.QUESTION_MESSAGE).item(0);
-				Assert.assertEquals(message.getChildNodes().item(0).getTextContent(), expectedBody,
+				assertEquals(message.getChildNodes().item(0).getTextContent(), expectedBody,
 						"Received reply is not the same as sent");
 				MessageID = question.getAttribute(IntegrationConstants.MESSAGE_ID);
 				found = true;
 				break;
 			}
 		}
-		Assert.assertTrue(found, "Reply was not found in response XML");
+		assertTrue(found, "Reply was not found in response XML");
 		return MessageID;
 	}
 

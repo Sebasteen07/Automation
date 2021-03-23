@@ -1,4 +1,8 @@
+//Copyright 2013-2021 NXGN Management, LLC. All Rights Reserved.
 package com.intuit.ihg.product.integrationplatform.utils;
+
+import static org.testng.Assert.assertEquals;
+import static org.testng.Assert.assertTrue;
 
 import java.io.BufferedReader;
 import java.io.FileReader;
@@ -11,7 +15,6 @@ import java.util.regex.Pattern;
 
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
-import org.testng.Assert;
 
 import com.intuit.ifs.csscat.core.utils.Log4jUtil;
 import com.medfusion.product.object.maps.patientportal2.page.JalapenoLoginPage;
@@ -49,7 +52,7 @@ public class AppointmentDataUtils {
 				break;
 			}
 		}
-		Assert.assertTrue(completed, "Message processing was not completed in time");
+		assertTrue(completed, "Message processing was not completed in time");
 		Log4jUtil.log("Login to Patient Portal");
 		JalapenoLoginPage loginPage = new JalapenoLoginPage(driver, testData.URL);
 		JalapenoHomePage homePage = loginPage.login(testData.UserName, testData.Password);
@@ -115,8 +118,8 @@ public class AppointmentDataUtils {
 				Boolean Day = appointMentList.get(i).getText().contains(apObj.localDay[0]);
 				Boolean Time = appointMentList.get(i).getText().contains(apObj.localTime[0]);
 
-				Assert.assertTrue(location, "appointment Location is matched");
-				Assert.assertTrue(provider, "appointment Provdier is matched");
+				assertTrue(location, "appointment Location is matched");
+				assertTrue(provider, "appointment Provdier is matched");
 
 				Log4jUtil.log(provider + " " + location + " " + Day + " " + Time);
 
@@ -136,10 +139,10 @@ public class AppointmentDataUtils {
 					Log4jUtil.log(" updatedLocation  " + updatedLocation);
 					Log4jUtil.log(" updatedProvider  " + updatedProvider);
 					String headerColor = appointMentList.get(i).getCssValue("border-bottom-color");
-					Assert.assertEquals("rgba(255, 0, 0, 1)", headerColor, "Color Matched !");
+					assertEquals("rgba(255, 0, 0, 1)", headerColor, "Color Matched !");
 					Log4jUtil.log(" Canceled Color code  " + headerColor);
 				} else {
-					 //Assert.assertTrue(false, "appointmentData not found");
+					 //assertTrue(false, "appointmentData not found");
 				}
 			}
 		}
@@ -266,7 +269,7 @@ public class AppointmentDataUtils {
 				break;
 			}
 		}
-		Assert.assertTrue(completed, "Message processing was not completed in time");
+		assertTrue(completed, "Message processing was not completed in time");
 
 		Log4jUtil.log("Login to Patient Portal");
 		JalapenoLoginPage loginPage = new JalapenoLoginPage(driver, testData.URL);

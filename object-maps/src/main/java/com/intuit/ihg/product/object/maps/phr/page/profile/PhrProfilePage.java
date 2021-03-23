@@ -1,10 +1,13 @@
+//Copyright 2013-2021 NXGN Management, LLC. All Rights Reserved.
 package com.intuit.ihg.product.object.maps.phr.page.profile;
+
+import static org.testng.Assert.assertEquals;
 
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.FindBy;
 import org.openqa.selenium.support.PageFactory;
-import org.testng.Assert;
+
 
 import com.intuit.ifs.csscat.core.pageobject.BasePageObject;
 import com.medfusion.common.utils.IHGUtil;
@@ -51,22 +54,22 @@ public class PhrProfilePage extends BasePageObject {
 		log("Value of City: " + txtCity.getAttribute("value"));
 		log("Value of Zip: " + txtzipCode.getAttribute("value"));
 
-		Assert.assertEquals(txtCity.getAttribute("value"), city, "The City is not updated in PHR ##### ");
-		Assert.assertEquals(txtzipCode.getAttribute("value"), zip, "The Zip code is not updated in PHR  ##### ");
+		assertEquals(txtCity.getAttribute("value"), city, "The City is not updated in PHR ##### ");
+		assertEquals(txtzipCode.getAttribute("value"), zip, "The Zip code is not updated in PHR  ##### ");
 	}
 
 	public void assertMobilePhoneNumber(String phoneNumber) {
 		IHGUtil.PrintMethodName();
 		log("Value of Phone number: " + txtMobile.getAttribute("value"));
 
-		Assert.assertEquals(txtMobile.getAttribute("value").replaceAll("-", ""), phoneNumber, "Mobile Phone number is not updated in PHR ##### ");
+		assertEquals(txtMobile.getAttribute("value").replaceAll("-", ""), phoneNumber, "Mobile Phone number is not updated in PHR ##### ");
 	}
 
 	public void assertHomePhoneNumber(String phoneNumber) {
 		IHGUtil.PrintMethodName();
 		log("Value of Phone number: " + txtHomePhone.getAttribute("value"));
 
-		Assert.assertEquals(txtHomePhone.getAttribute("value").replaceAll("-", ""), phoneNumber, "Home Phone number is not updated in PHR ##### ");
+		assertEquals(txtHomePhone.getAttribute("value").replaceAll("-", ""), phoneNumber, "Home Phone number is not updated in PHR ##### ");
 	}
 
 
