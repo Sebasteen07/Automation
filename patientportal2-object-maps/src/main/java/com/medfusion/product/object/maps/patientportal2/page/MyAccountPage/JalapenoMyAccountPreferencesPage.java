@@ -142,7 +142,7 @@ public class JalapenoMyAccountPreferencesPage extends JalapenoMyAccountPage {
 		@Deprecated
 		public void setStatementLanguage(WebDriver driver, String statementLanguageType) throws InterruptedException {
 				setStatementLanguageT(statementLanguageType);
-				saveAccountChanges.click();
+				javascriptClick(saveAccountChanges);
 		}
 
 		//TODO move to JalapenoMyAccountPage
