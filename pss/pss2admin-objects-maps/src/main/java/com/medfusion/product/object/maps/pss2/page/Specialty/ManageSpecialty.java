@@ -33,6 +33,22 @@ public class ManageSpecialty extends PSS2MenuPage {
 	@FindBy(how = How.XPATH, using = "//*[@id='O']")
 	private WebElement genderRuleOtherStatus;
 
+	@FindBy(how = How.XPATH, using = "//*[@for='M']")
+	private WebElement genderMale;
+
+	@FindBy(how = How.XPATH, using = "//*[@for='F']")
+	private WebElement genderfeMale;
+
+	@FindBy(how = How.XPATH, using = "//*[@for='O']")
+	private WebElement genderother;
+
+	@FindBy(how = How.XPATH, using = "//*[@for='U']")
+	private WebElement gendeunknown;
+
+	@FindBy(how = How.XPATH, using = "//*[@id='content']/div[2]/div/div/div[2]/section/div/form/fieldset[2]/div/div/button[1]")
+	private WebElement saveButton;
+
+
 	@FindBy(how = How.XPATH, using = "//*[@id=\"content\"]/div[2]/div/div/div[2]/section/div/form/div[2]/label/strong")
 	private WebElement genderRuleClick;
 
@@ -86,6 +102,47 @@ public class ManageSpecialty extends PSS2MenuPage {
 	public void clickGender() {
 		genderRuleClick.click();
 		log("Clicked On Gender Rule");
+		saveButton.click();
 	}
 
+	public void selectgender() {
+		if (isMaleTrue() == false) {
+			genderMale.click();
+			log("male Checkbox Selected");
+
+		} else {
+			log("Male is already selected");
+		}
+		if (isFemaleTrue() == false) {
+			genderfeMale.click();
+			log("female Checkbox Selected");
+		} else {
+			log("female Male is already selected");
+
+		}
+		saveButton.click();
+		log("Clicked on Submit");
+	}
+
+
+
+	public void maleClick() {
+		genderMale.click();
+		saveButton.click();
+	}
+
+	public void femaleClick() {
+		genderfeMale.click();
+		saveButton.click();
+	}
+
+	public void otherClick() {
+		genderother.click();
+		saveButton.click();
+	}
+
+	public void unknownClick() {
+		gendeunknown.click();
+		saveButton.click();
+	}
 }

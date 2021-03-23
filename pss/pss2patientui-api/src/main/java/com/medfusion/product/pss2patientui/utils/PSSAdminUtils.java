@@ -696,11 +696,13 @@ public class PSSAdminUtils {
 		Log4jUtil.log("Step 2: Login to Admin portal.");
 		PSS2PracticeConfiguration pss2practiceconfig = loginToAdminPortal(driver, adminuser);
 		PatientFlow patientflow = pss2practiceconfig.gotoPatientFlowTab();
-		// adminuser.setRule(patientflow.getRule());
-		// Log4jUtil.log("rule= " + patientflow.getRule());
-		// setRulesNoSpecialitySet3(patientflow);
+		adminuser.setRule(patientflow.getRule());
+		Log4jUtil.log("rule= " + patientflow.getRule());
+		setRulesNoSpecialitySet3(patientflow);
 		AdminPatientMatching adminpatientmatching = patientflow.gotoPatientMatchingTab();
 		adminpatientmatching.patientMatchingSelection();
+		adminpatientmatching.gendermap();
+		adminpatientmatching.allToggleGendermap();
 		ManageSpecialty manageSpecialty = pss2practiceconfig.gotoSpeciality();
 		manageSpecialty.selectSpecility(appointment.getSpeciality());
 		manageSpecialty.isgenderRuleTrue();
@@ -708,22 +710,8 @@ public class PSSAdminUtils {
 		if (manageSpecialty.isgenderRuleTrue() == false) {
 			manageSpecialty.clickGender();
 		}
-		Log4jUtil.log("Male Status   " + manageSpecialty.isMaleTrue());
-		Log4jUtil.log("FeMale Status   " + manageSpecialty.isFemaleTrue());
-		Log4jUtil.log("Other Status   " + manageSpecialty.isOtherTrue());
-		Log4jUtil.log("Unknown Status   " + manageSpecialty.isUnknownTrue());
-		if (manageSpecialty.isFemaleTrue() == false) {
+		manageSpecialty.selectgender();
 
-		}
-		if (manageSpecialty.isOtherTrue() == false) {
-
-		}
-		if (manageSpecialty.isMaleTrue() == true) {
-
-		}
-		if (manageSpecialty.isUnknownTrue() == true) {
-
-		}
 
 	}
 }

@@ -43,4 +43,19 @@ public class Speciality extends PSS2MainPage {
 		log("Speciality not found.");
 		return null;
 	}
+
+	public String selectSpeciality1(String specialityName) {
+		String nameSpecility = "";
+		for (int i = 0; i < selectSpecialityList.size(); i++) {
+			if (selectSpecialityList.get(i).getText().contains(specialityName)) {
+				log("selectSpeciality Selected is " + selectSpecialityList.get(i).getText());
+				jse.executeScript("arguments[0].setAttribute('style', 'background: green; border: 3px solid blue;');", selectSpecialityList.get(i));
+				nameSpecility = selectSpecialityList.get(i).getText();
+				log("Specility Name is " + nameSpecility);
+
+			}
+		}
+		return nameSpecility;
+
+	}
 }
