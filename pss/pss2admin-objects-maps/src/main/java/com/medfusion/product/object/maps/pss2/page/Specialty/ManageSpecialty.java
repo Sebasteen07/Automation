@@ -14,7 +14,6 @@ public class ManageSpecialty extends PSS2MenuPage {
 	@FindBy(how = How.XPATH, using = "//*[@ng-reflect-ng-class='[object Object]']")
 	private WebElement specilityList;
 
-
 	@FindBy(how = How.ID, using = "search-specialty")
 	private WebElement searchSpecility;
 
@@ -33,30 +32,26 @@ public class ManageSpecialty extends PSS2MenuPage {
 	@FindBy(how = How.XPATH, using = "//*[@id='O']")
 	private WebElement genderRuleOtherStatus;
 
-	@FindBy(how = How.XPATH, using = "//*[@for='M']")
+	@FindBy(how = How.XPATH, using = "//label[contains(text(),'Male')]")
 	private WebElement genderMale;
 
-	@FindBy(how = How.XPATH, using = "//*[@for='F']")
+	@FindBy(how = How.XPATH, using = "//label[contains(text(),'Female')]")
 	private WebElement genderfeMale;
 
-	@FindBy(how = How.XPATH, using = "//*[@for='O']")
+	@FindBy(how = How.XPATH, using = "//label[contains(text(),'Other')]")
 	private WebElement genderother;
 
-	@FindBy(how = How.XPATH, using = "//*[@for='U']")
+	@FindBy(how = How.XPATH, using = "//label[contains(text(),'Unknown')]")
 	private WebElement gendeunknown;
 
 	@FindBy(how = How.XPATH, using = "//*[@id='content']/div[2]/div/div/div[2]/section/div/form/fieldset[2]/div/div/button[1]")
 	private WebElement saveButton;
 
-
-	@FindBy(how = How.XPATH, using = "//*[@id=\"content\"]/div[2]/div/div/div[2]/section/div/form/div[2]/label/strong")
+	@FindBy(how = How.XPATH, using = "//strong[contains(text(),'Gender Rule')]")
 	private WebElement genderRuleClick;
 
-	@FindBy(how = How.XPATH, using = "//*[@ng-reflect-ng-class='[object Object]']/td/span")
+	@FindBy(how = How.XPATH, using = "//table/tbody/tr")
 	private WebElement searchSpecilityName;
-
-	@FindBy(how = How.XPATH, using = "//*[@ng-reflect-ng-class='[object Object]']/td/span")
-	private WebElement searchSpecilityClick;
 
 	public ManageSpecialty(WebDriver driver) {
 		super(driver);
@@ -74,7 +69,7 @@ public class ManageSpecialty extends PSS2MenuPage {
 	public void selectSpecility(String resourceName) {
 		searchSpecility(resourceName);
 		IHGUtil.waitForElement(driver, 60, searchSpecilityName);
-		searchSpecilityClick.click();
+		searchSpecilityName.click();
 		log("clicked on Specility  ");
 	}
 
@@ -97,7 +92,6 @@ public class ManageSpecialty extends PSS2MenuPage {
 	public Boolean isUnknownTrue() {
 		return Boolean.valueOf(genderRuleUnknownStatus.getAttribute("ng-reflect-model"));
 	}
-
 
 	public void clickGender() {
 		genderRuleClick.click();
@@ -123,8 +117,6 @@ public class ManageSpecialty extends PSS2MenuPage {
 		saveButton.click();
 		log("Clicked on Submit");
 	}
-
-
 
 	public void maleClick() {
 		genderMale.click();
