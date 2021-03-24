@@ -129,7 +129,6 @@ public class AdminPatientMatching extends SettingsTab {
 			genderbox3click.click();
 		}
 		log("Successfully On the all gender map toggle button");
-
 	}
 }
 

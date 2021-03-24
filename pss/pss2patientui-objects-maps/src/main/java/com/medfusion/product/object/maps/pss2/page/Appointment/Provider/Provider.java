@@ -150,7 +150,7 @@ public class Provider extends PSS2MainPage {
 	public AppointmentDateTime getProviderandClick(String providerName) throws InterruptedException {
 		log("in select Provider from providerList" + providerName);
 		log("Size is " + providerList.size());
-		Thread.sleep(20000);
+		Thread.sleep(5000);
 		for (int i = 0; i < providerList.size(); i++) {
 			log(providerList.get(i).getText() + " match " + providerList.get(i).getText().contains(providerName));
 			if (providerList.get(i).getText().trim().contains(providerName.trim())) {
