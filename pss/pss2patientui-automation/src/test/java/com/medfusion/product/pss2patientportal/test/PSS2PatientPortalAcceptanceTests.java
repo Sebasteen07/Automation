@@ -4694,7 +4694,6 @@ public class PSS2PatientPortalAcceptanceTests extends BaseTestNGWebDriver {
 		homepage.btnStartSchedClick();
 		Speciality speciality = null;
 		speciality = homepage.skipInsuranceForSpeciality(driver);
-		Thread.sleep(100000);
 		speciality.selectSpeciality1(testData.getSpeciality());
 		Log4jUtil.log("Specility Name is....." + speciality.selectSpeciality1(testData.getSpeciality()));
 		assertEquals(speciality.selectSpeciality1(testData.getSpeciality()), testData.getSpeciality());

@@ -11,7 +11,7 @@ import com.medfusion.product.object.maps.pss2.page.PSS2MenuPage;
 
 public class ManageSpecialty extends PSS2MenuPage {
 
-	@FindBy(how = How.XPATH, using = "//*[@ng-reflect-ng-class='[object Object]']")
+	@FindBy(how = How.XPATH, using = "//table/tbody/tr/td/span")
 	private WebElement specilityList;
 
 	@FindBy(how = How.ID, using = "search-specialty")
@@ -44,7 +44,7 @@ public class ManageSpecialty extends PSS2MenuPage {
 	@FindBy(how = How.XPATH, using = "//label[contains(text(),'Unknown')]")
 	private WebElement gendeunknown;
 
-	@FindBy(how = How.XPATH, using = "//*[@id='content']/div[2]/div/div/div[2]/section/div/form/fieldset[2]/div/div/button[1]")
+	@FindBy(how = How.XPATH, using = "//button[contains(text(),'Save')]")
 	private WebElement saveButton;
 
 	@FindBy(how = How.XPATH, using = "//strong[contains(text(),'Gender Rule')]")
@@ -69,7 +69,7 @@ public class ManageSpecialty extends PSS2MenuPage {
 	public void selectSpecility(String resourceName) {
 		searchSpecility(resourceName);
 		IHGUtil.waitForElement(driver, 60, searchSpecilityName);
-		searchSpecilityName.click();
+		specilityList.click();
 		log("clicked on Specility  ");
 	}
 

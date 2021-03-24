@@ -56,6 +56,5 @@ public class Speciality extends PSS2MainPage {
 			}
 		}
 		return nameSpecility;
-
 	}
 }
