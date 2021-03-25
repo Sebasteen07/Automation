@@ -1,5 +1,7 @@
 package com.medfusion.product.object.maps.patientportal2.page.MyAccountPage;
 
+import static org.testng.Assert.assertTrue;
+
 import java.util.ArrayList;
 
 import org.openqa.selenium.By;
@@ -13,9 +15,6 @@ import org.openqa.selenium.support.ui.Select;
 import org.openqa.selenium.support.ui.WebDriverWait;
 
 import com.medfusion.common.utils.IHGUtil;
-
-import static com.intuit.ifs.csscat.core.BaseTestSoftAssert.assertTrue;
-
 
 public class JalapenoMyAccountSecurityPage extends JalapenoMyAccountPage {
 

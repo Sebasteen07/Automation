@@ -1,4 +1,7 @@
+//Copyright 2013-2021 NXGN Management, LLC. All Rights Reserved.
 package com.intuit.ihg.product.support.utils;
+
+import static org.testng.Assert.assertNotNull;
 
 import java.io.File;
 import java.io.FileInputStream;
@@ -20,7 +23,6 @@ import javax.xml.transform.TransformerFactory;
 import javax.xml.transform.dom.DOMSource;
 import javax.xml.transform.stream.StreamResult;
 
-import org.junit.Assert;
 import org.openqa.selenium.WebDriver;
 import com.intuit.ifs.csscat.core.TestConfig;
 import com.intuit.ifs.csscat.core.utils.BrowserTypeUtil.BrowserType;
@@ -111,7 +113,7 @@ public class SupportUtil extends IHGUtil {
 
 		WebPoster poster = new WebPoster();
 
-		Assert.assertNotNull("### Test property PHR_ALLSCRIPTS_ADAPTER_URL not defined", allScriptAdapterURL);
+		assertNotNull("### Test property PHR_ALLSCRIPTS_ADAPTER_URL not defined", allScriptAdapterURL);
 
 		log("Before setting the allscript adapter url#####");
 		poster.setServiceUrl(allScriptAdapterURL.trim());

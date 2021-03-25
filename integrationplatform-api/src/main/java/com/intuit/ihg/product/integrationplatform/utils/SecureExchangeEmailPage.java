@@ -1,4 +1,8 @@
+//Copyright 2013-2021 NXGN Management, LLC. All Rights Reserved.
 package com.intuit.ihg.product.integrationplatform.utils;
+
+import static org.testng.Assert.assertEquals;
+import static org.testng.Assert.assertTrue;
 
 import java.util.concurrent.TimeUnit;
 
@@ -9,7 +13,7 @@ import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.FindBy;
 import org.openqa.selenium.support.How;
 import org.openqa.selenium.support.PageFactory;
-import org.testng.Assert;
+
 
 import com.intuit.ifs.csscat.core.utils.Log4jUtil;
 import com.medfusion.common.utils.IHGUtil;
@@ -65,14 +69,14 @@ public class SecureExchangeEmailPage {
 
 		WebElement secureEmail = driver.findElement(By.xpath("//*[contains(text(),'" + subject + "')]"));
 		Log4jUtil.log("Verify Subject if matched actual " + secureEmail.getText() + " expected " + subject);
-		Assert.assertEquals(secureEmail.getText(), subject);
+		assertEquals(secureEmail.getText(), subject);
 
 		Log4jUtil.log("Secure Exchange Step 1: Verfiy Secure Message ");
 		secureEmail.click();
 		if (AttachmentType != null && !AttachmentType.isEmpty() && !AttachmentType.equalsIgnoreCase("none")) {
 			WebElement attachmentName = driver.findElement(By.xpath("//*[contains(text(),'" + fileName + "')]"));
 			Log4jUtil.log("Actual name is " + attachmentName.getText() + " should contain name: " + fileName);
-			Assert.assertTrue(attachmentName.getText().contains(fileName), "filename not matched");
+			assertTrue(attachmentName.getText().contains(fileName), "filename not matched");
 		}
 
 		if (AttachmentType.equalsIgnoreCase("xml")) {
@@ -105,7 +109,7 @@ public class SecureExchangeEmailPage {
 			// wait for TOC to load
 			WebElement tocName = driver.findElement(By.xpath("//*[@id=\"contentDiv_1_SET_1_XML_FILE_1\"]/h1"));
 			Log4jUtil.log("Verify the TOC name Actual " + tocName.getText() + " expected name is " + attachTOCName);
-			Assert.assertEquals(tocName.getText(), attachTOCName);
+			assertEquals(tocName.getText(), attachTOCName);
 			driver.close();
 			driver.switchTo().window(winHandleBefore);
 		}
@@ -127,7 +131,7 @@ public class SecureExchangeEmailPage {
 			WebElement secureSendEmail = driver.findElement(By.xpath("//*[contains(text(),'" + subject + "')]"));
 			IHGUtil.waitForElement(driver, 80, secureSendEmail);
 			Log4jUtil.log("Verify Subject if matched actual " + secureSendEmail.getText() + " expected " + subject);
-			Assert.assertEquals(secureSendEmail.getText(), subject);
+			assertEquals(secureSendEmail.getText(), subject);
 			WebElement secureSendEmailSelectCheckbox =
 					driver.findElement(By.xpath("//*[contains(text(),'" + subject + "')]/preceding::input[contains(@class,'ptSelectConversation-input')][1]"));
 			secureSendEmailSelectCheckbox.click();
@@ -140,11 +144,11 @@ public class SecureExchangeEmailPage {
 			String deletedMessage = deleteConf.getText();
 			deleteConfPopupClose.click();
 			Log4jUtil.log("Delete Message :   " + subject + "  " + deletedMessage);
-			Assert.assertEquals(deletedMessage, "Message moved successfully.");
+			assertEquals(deletedMessage, "Message moved successfully.");
 
 		} catch (Exception E) {
 			Log4jUtil.log("Exception caught " + E);
-			Assert.assertTrue(false);
+			assertTrue(false);
 		}
 		return PageFactory.initElements(driver, SecureExchangeEmailPage.class);
 	}

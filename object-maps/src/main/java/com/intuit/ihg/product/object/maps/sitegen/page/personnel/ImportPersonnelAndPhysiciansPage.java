@@ -1,4 +1,7 @@
+//Copyright 2013-2021 NXGN Management, LLC. All Rights Reserved.
 package com.intuit.ihg.product.object.maps.sitegen.page.personnel;
+
+import static org.testng.Assert.assertNotNull;
 
 import java.io.File;
 import java.text.ParseException;
@@ -12,7 +15,7 @@ import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.FindBy;
 import org.openqa.selenium.support.PageFactory;
-import org.testng.Assert;
+
 
 import com.intuit.ifs.csscat.core.pageobject.BasePageObject;
 import com.medfusion.common.utils.IHGUtil;
@@ -92,7 +95,7 @@ public class ImportPersonnelAndPhysiciansPage extends BasePageObject {
 		IHGUtil.PrintMethodName();
 		File url = new File(SitegenConstants.FILEPATH);
 		log("########################File Path" + url.getPath());
-		Assert.assertNotNull(url, "### getSystemResource returned null: [" + SitegenConstants.FILEPATH + "] ");
+		assertNotNull(url, "### getSystemResource returned null: [" + SitegenConstants.FILEPATH + "] ");
 		fileUploadimportStaffFile.sendKeys(url.getAbsolutePath());
 		btnimportStaff.click();
 		return PageFactory.initElements(driver, ImportOrExportProgressPage.class);

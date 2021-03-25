@@ -1,7 +1,9 @@
 // Copyright 2013-2021 NXGN Management, LLC. All Rights Reserved.
 package com.ng.product.integrationplatform.tests;
 
+import static org.testng.Assert.assertFalse;
 import static org.testng.Assert.assertNotNull;
+import static org.testng.Assert.assertTrue;
 
 import java.io.IOException;
 import java.text.SimpleDateFormat;
@@ -22,7 +24,7 @@ import org.codehaus.jackson.map.ObjectMapper;
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriverException;
 import org.openqa.selenium.support.PageFactory;
-import org.testng.Assert;
+
 import org.testng.annotations.BeforeClass;
 import org.testng.annotations.Test;
 import org.xml.sax.SAXException;
@@ -199,7 +201,7 @@ public class NGIntegrationE2ESITTests extends BaseTestNGWebDriver{
 
 //		String processingUrl=PropertyLoaderObj.getProcessingURL().replaceAll("integrationID", PropertyLoaderObj.getIntegrationPracticeID()).replaceAll("jobID", jobID.toLowerCase());
 //		Boolean completed = PatientRegistrationUtils.checkMessageProcessingOntime(processingUrl, PropertyLoaderObj.getResponsePath());
-//		Assert.assertTrue(completed, "Message processing was not completed in time");
+//		assertTrue(completed, "Message processing was not completed in time");
 	
 		Thread.sleep(60000);
 		log("Step 8: Verify the processing status of MF agent job after receiving the registration mail");
@@ -251,7 +253,7 @@ public class NGIntegrationE2ESITTests extends BaseTestNGWebDriver{
 			Thread.sleep(60000);
 			String activationUrl = mail.getLinkFromEmail(createPatient.getEmailAddress(), JalapenoConstants.NEW_PATIENT_ACTIVATION_MESSAGE, JalapenoConstants.NEW_PATIENT_ACTIVATION_MESSAGE_LINK_TEXT, 80);
 			Log4jUtil.log("Step 10: Moving to the link obtained from the email message");
-			Assert.assertNotNull(activationUrl, "Error: Activation link not found.");
+			assertNotNull(activationUrl, "Error: Activation link not found.");
 			Thread.sleep(20000);
 			String sDate1 = PropertyLoaderObj.getProperty("DOBMonth")+"/"+PropertyLoaderObj.getProperty("DOBDay")+"/"+PropertyLoaderObj.getProperty("DOBYear");
 			log(sDate1);				
@@ -698,7 +700,7 @@ public class NGIntegrationE2ESITTests extends BaseTestNGWebDriver{
 			
 			log("Step 10: Detecting if Home Page is opened");
 			Thread.sleep(2000);
-			Assert.assertTrue(jalapenoHomePage.isHomeButtonPresent(driver));		
+			assertTrue(jalapenoHomePage.isHomeButtonPresent(driver));		
 			
 			log("Step 11: Logout from Portal");
 			Thread.sleep(9000);
@@ -781,7 +783,7 @@ public class NGIntegrationE2ESITTests extends BaseTestNGWebDriver{
 			Thread.sleep(60000);
 			String activationUrl = mail.getLinkFromEmail(createPatient.getEmailAddress(), JalapenoConstants.NEW_PATIENT_ACTIVATION_MESSAGE, JalapenoConstants.NEW_PATIENT_ACTIVATION_MESSAGE_LINK_TEXT, 40);
 			Log4jUtil.log("Step 4: Moving to the link obtained from the email message- Patient 1");
-			Assert.assertNotNull(activationUrl, "Error: Activation link not found.");
+			assertNotNull(activationUrl, "Error: Activation link not found.");
 			Thread.sleep(20000);
 			String sDate1 = PropertyLoaderObj.getProperty("DOBMonth")+"/"+PropertyLoaderObj.getProperty("DOBDay")+"/"+PropertyLoaderObj.getProperty("DOBYear");
 			log(sDate1);
@@ -1044,7 +1046,7 @@ public class NGIntegrationE2ESITTests extends BaseTestNGWebDriver{
 
 //		String processingUrl=PropertyLoaderObj.getProcessingURL().replaceAll("integrationID", PropertyLoaderObj.getIntegrationPracticeID()).replaceAll("jobID", jobID.toLowerCase());
 //		Boolean completed = PatientRegistrationUtils.checkMessageProcessingOntime(processingUrl, PropertyLoaderObj.getResponsePath());
-//		Assert.assertTrue(completed, "Message processing was not completed in time");
+//		assertTrue(completed, "Message processing was not completed in time");
 	
 		Thread.sleep(60000);
 		log("Step 8: Verify the processing status of MF agent job after receiving the registration mail");
@@ -1097,7 +1099,7 @@ public class NGIntegrationE2ESITTests extends BaseTestNGWebDriver{
 			Thread.sleep(60000);
 			String activationUrl = mail.getLinkFromEmail(createPatient.getEmailAddress(), JalapenoConstants.NEW_PATIENT_ACTIVATION_MESSAGE, JalapenoConstants.NEW_PATIENT_ACTIVATION_MESSAGE_LINK_TEXT, 80);
 			Log4jUtil.log("Step 10: Moving to the link obtained from the email message");
-			Assert.assertNotNull(activationUrl, "Error: Activation link not found.");
+			assertNotNull(activationUrl, "Error: Activation link not found.");
 			Thread.sleep(20000);
 			String sDate1 = PropertyLoaderObj.getProperty("DOBMonth")+"/"+PropertyLoaderObj.getProperty("DOBDay")+"/"+PropertyLoaderObj.getProperty("DOBYear");
 			log(sDate1);				
@@ -1177,7 +1179,7 @@ public class NGIntegrationE2ESITTests extends BaseTestNGWebDriver{
 			Thread.sleep(60000);
 			String activationUrl = mail.getLinkFromEmail(createPatient.getEmailAddress(), JalapenoConstants.NEW_PATIENT_ACTIVATION_MESSAGE, JalapenoConstants.NEW_PATIENT_ACTIVATION_MESSAGE_LINK_TEXT, 80);
 			Log4jUtil.log("Step 10: Moving to the link obtained from the email message");
-			Assert.assertNotNull(activationUrl, "Error: Activation link not found.");
+			assertNotNull(activationUrl, "Error: Activation link not found.");
 			Thread.sleep(20000);
 			String sDate1 = PropertyLoaderObj.getProperty("DOBMonth")+"/"+PropertyLoaderObj.getProperty("DOBDay")+"/"+PropertyLoaderObj.getProperty("DOBYear");
 			log(sDate1);				
@@ -1243,7 +1245,7 @@ public class NGIntegrationE2ESITTests extends BaseTestNGWebDriver{
 
 //		String processingUrl=PropertyLoaderObj.getProcessingURL().replaceAll("integrationID", integrationID).replaceAll("jobID", jobID.toLowerCase());
 //		Boolean completed = PatientRegistrationUtils.checkMessageProcessingOntime(processingUrl, PropertyLoaderObj.getResponsePath());
-//		Assert.assertTrue(completed, "Message processing was not completed in time");
+//		assertTrue(completed, "Message processing was not completed in time");
 	
 		Thread.sleep(60000);
 		log("Step Begins: Verify the processing status of MF agent job after receiving the registration mail");
@@ -1368,7 +1370,7 @@ public class NGIntegrationE2ESITTests extends BaseTestNGWebDriver{
 
 		String processingUrl=PropertyLoaderObj.getProcessingURL().replaceAll("integrationID", integrationID).replaceAll("jobID", jobID.toLowerCase());
 		Boolean completed = PatientRegistrationUtils.checkMessageProcessingOntime(processingUrl, PropertyLoaderObj.getResponsePath());
-		Assert.assertTrue(completed, "Message processing was not completed in time");
+		assertTrue(completed, "Message processing was not completed in time");
 	
 		Thread.sleep(60000);
 		log("Step Begins: Verify the processing status of MF agent job after receiving the registration mail");
@@ -2499,7 +2501,7 @@ public class NGIntegrationE2ESITTests extends BaseTestNGWebDriver{
 			
 			logStep("Detecting if Home Page is opened");
 			Thread.sleep(2000);
-			Assert.assertTrue(jalapenoHomePage.isHomeButtonPresent(driver));		
+			assertTrue(jalapenoHomePage.isHomeButtonPresent(driver));		
 			
 			logStep("Logout from Portal");
 			Thread.sleep(9000);
@@ -2673,7 +2675,7 @@ public class NGIntegrationE2ESITTests extends BaseTestNGWebDriver{
 
 		String processingUrl=PropertyLoaderObj.getProcessingURL().replaceAll("integrationID", integrationID).replaceAll("jobID", jobID.toLowerCase());
 		Boolean completed = PatientRegistrationUtils.checkMessageProcessingOntime(processingUrl, PropertyLoaderObj.getResponsePath());
-		Assert.assertTrue(completed, "Message processing was not completed in time");
+		assertTrue(completed, "Message processing was not completed in time");
 	
 		logStep("Verify the processing status of MF agent job after receiving the registration mail");
 		String emailStatus =DBUtils.executeQueryOnDB("MFAgentDB","select status from processingstatus_entity where entityidentifier ='"+person_nbr.trim().replace("\t", "")+"'");
@@ -4383,7 +4385,7 @@ public class NGIntegrationE2ESITTests extends BaseTestNGWebDriver{
 		
 		Log4jUtil.log("Step Begins: Go to  Health Record Summaries");
 	    MedicalRecordSummariesPage MedicalRecordSummariesPageObject = homePage.clickOnMedicalRecordSummaries(driver);
-	    Assert.assertTrue(MedicalRecordSummariesPageObject.areBasicPageElementsPresent(), "Failed to Load Health Record Summaries ");		
+	    assertTrue(MedicalRecordSummariesPageObject.areBasicPageElementsPresent(), "Failed to Load Health Record Summaries ");		
 		
 		log("Step Begins: Click on Request Health Record");
 		MedicalRecordSummariesPageObject.selectHealthRecordRequestButton();
@@ -4964,7 +4966,7 @@ public class NGIntegrationE2ESITTests extends BaseTestNGWebDriver{
 		Thread.sleep(60000);
 		String activationUrl = mail.getLinkFromEmail(createPatient.getEmailAddress(), JalapenoConstants.NEW_PATIENT_ACTIVATION_MESSAGE, JalapenoConstants.NEW_PATIENT_ACTIVATION_MESSAGE_LINK_TEXT, 80);
 		Log4jUtil.log("Moving to the link obtained from the email message");
-		Assert.assertNotNull(activationUrl, "Error: Activation link not found.");
+		assertNotNull(activationUrl, "Error: Activation link not found.");
 		Thread.sleep(20000);
 		String sDate1 = PropertyLoaderObj.getProperty("DOBMonth")+"/"+PropertyLoaderObj.getProperty("DOBDay")+"/"+PropertyLoaderObj.getProperty("DOBYear");
 		log(sDate1);				

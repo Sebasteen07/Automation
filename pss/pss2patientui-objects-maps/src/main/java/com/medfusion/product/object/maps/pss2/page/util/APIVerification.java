@@ -1,20 +1,22 @@
 // Copyright 2020 NXGN Management, LLC. All Rights Reserved.
 package com.medfusion.product.object.maps.pss2.page.util;
 
+import static org.testng.Assert.assertEquals;
+
 import org.json.JSONArray;
 import org.json.JSONObject;
 
 import com.intuit.ifs.csscat.core.BaseTestNGWebDriver;
 
 import io.restassured.response.Response;
-import org.testng.Assert;
+
 
 public class APIVerification extends BaseTestNGWebDriver {
 
 	public void responseCodeValidation(Response response, int statuscode) {
 
 		try {
-			Assert.assertEquals(statuscode, response.getStatusCode());
+			assertEquals(statuscode, response.getStatusCode());
 			log("Status Code Validated as " + response.getStatusCode());
 		} catch (AssertionError e) {
 			log("Test Case-Failed");

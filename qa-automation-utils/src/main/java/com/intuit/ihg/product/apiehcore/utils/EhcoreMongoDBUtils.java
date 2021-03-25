@@ -1,4 +1,7 @@
+//Copyright 2013-2021 NXGN Management, LLC. All Rights Reserved.
 package com.intuit.ihg.product.apiehcore.utils;
+
+import static org.testng.Assert.fail;
 
 import java.io.File;
 import java.io.IOException;
@@ -11,7 +14,7 @@ import java.util.TreeMap;
 
 import org.apache.commons.io.FileUtils;
 import org.apache.log4j.Logger;
-import org.testng.Assert;
+
 
 import com.intuit.dc.framework.objectstore.exception.ObjectStoreException;
 import com.intuit.dc.framework.objectstore.mongo.config.MongoContext;
@@ -49,7 +52,7 @@ public class EhcoreMongoDBUtils {
 
 		} catch (ObjectStoreException objStoreExp) {
 			logger.error(objStoreExp.getMessage(), objStoreExp);
-			Assert.fail("Problem in connecting to  mongod instance " + objStoreExp.getMessage());
+			fail("Problem in connecting to  mongod instance " + objStoreExp.getMessage());
 		}
 		logger.debug(" *** actualCcd :" + obj_ref_id + " ***::" + actualCcd);
 
@@ -59,7 +62,7 @@ public class EhcoreMongoDBUtils {
 			FileUtils.writeStringToFile(new File(actualCcdFileName), actualCcd, false);
 		} catch (IOException e) {
 			logger.error(e.getMessage(), e);
-			Assert.fail("Failed to write actualCcd to file. " + e.getMessage());
+			fail("Failed to write actualCcd to file. " + e.getMessage());
 		}
 		// Compare Actual objStore Message with Expected CCD Message using XMLUnit .
 		EhcoreXmlUnitUtil.assertEqualsXML(expectedCcdFileName, actualCcdFileName);
@@ -115,10 +118,10 @@ public class EhcoreMongoDBUtils {
 
 		} catch (ObjectStoreException objStoreExp) {
 			logger.error(objStoreExp.getMessage(), objStoreExp);
-			Assert.fail(objStoreExp.getMessage());
+			fail(objStoreExp.getMessage());
 		} catch (Exception e) {
 			logger.error(e.getMessage(), e);
-			Assert.fail(e.getMessage());
+			fail(e.getMessage());
 		}
 		logger.debug("Exiting checkCDMRetrieve ... ");
 		return sortedMap;

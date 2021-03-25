@@ -1,6 +1,9 @@
 package com.intuit.ihg.product.forms.test;
 
 import static com.intuit.ihg.product.forms.test.Utils.loginPI;
+import static org.testng.Assert.assertEquals;
+import static org.testng.Assert.assertFalse;
+import static org.testng.Assert.assertTrue;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -71,9 +74,9 @@ public class Portal2FormsAcceptanceTests extends FormsAcceptanceTestsUtils {
 				homePage = loginPI(driver, PracticeType.SECONDARY, patient.getUsername(), patient.getPassword(), testData);
 				assertTrue(homePage.areMenuElementsPresent());
 				JalapenoMyAccountProfilePage pMyAccountPage = homePage.clickOnAccount().clickOnEditMyAccount();
-				assertEquals(pMyAccountPage.getDOByear(), Integer.valueOf(patient.getDOBYear()));
-				assertEquals(pMyAccountPage.getDOBmonth(), Integer.valueOf(patient.getDOBMonth()));
-				assertEquals(pMyAccountPage.getDOBday(), Integer.valueOf(patient.getDOBDay()));
+				assertEquals(pMyAccountPage.getDOByear(), patient.getDOBYear());
+				assertEquals(pMyAccountPage.getDOBmonth(), patient.getDOBMonth());
+				assertEquals(pMyAccountPage.getDOBday(), patient.getDOBDay());
 		}
 
 		@Test(groups = {"Forms"})

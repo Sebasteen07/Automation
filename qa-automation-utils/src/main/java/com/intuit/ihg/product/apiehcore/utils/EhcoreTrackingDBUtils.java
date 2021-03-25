@@ -1,4 +1,8 @@
+//Copyright 2013-2021 NXGN Management, LLC. All Rights Reserved.
 package com.intuit.ihg.product.apiehcore.utils;
+
+import static org.testng.Assert.assertNotNull;
+import static org.testng.Assert.fail;
 
 import java.sql.Connection;
 import java.sql.DriverManager;
@@ -8,7 +12,7 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 import org.apache.log4j.Logger;
-import org.testng.Assert;
+
 import com.intuit.dc.framework.tracking.constants.TrackingEnumHolder;
 import com.intuit.dc.framework.tracking.entity.DataJob;
 import com.intuit.dc.framework.tracking.entity.Message;
@@ -120,10 +124,10 @@ public class EhcoreTrackingDBUtils {
 				msg.setPrevMessageGuid(rs.getString("PREV_MESSAGE_GUID"));
 				// To get AS activity status using log session id
 				msg.setLogsessionId(rs.getString("LOGSESSION_ID"));
-				Assert.assertNotNull(rs.getString("DATA_JOB_GUID"));
-				Assert.assertNotNull(rs.getLong("MSG_ID"));
-				Assert.assertNotNull(rs.getString("MESSAGE_GUID"));
-				Assert.assertNotNull(rs.getString("MSG_TYPE"));
+				assertNotNull(rs.getString("DATA_JOB_GUID"));
+				assertNotNull(rs.getLong("MSG_ID"));
+				assertNotNull(rs.getString("MESSAGE_GUID"));
+				assertNotNull(rs.getString("MSG_TYPE"));
 
 				details.add(msg);
 			}
@@ -160,8 +164,8 @@ public class EhcoreTrackingDBUtils {
 				logger.debug("DataJob_Guid::" + rs.getString("DATA_JOB_GUID") + ",MessageGuid::" + rs.getString("MESSAGE_GUID"));
 				// To get AS activity status using log session id
 				djId = rs.getString("DATA_JOB_GUID");
-				Assert.assertNotNull(rs.getString("DATA_JOB_GUID"));
-				Assert.assertNotNull(rs.getString("MESSAGE_GUID"));
+				assertNotNull(rs.getString("DATA_JOB_GUID"));
+				assertNotNull(rs.getString("MESSAGE_GUID"));
 			}
 			stmt.close();
 			dbConnPs.close();
@@ -191,11 +195,11 @@ public class EhcoreTrackingDBUtils {
 			ResultSet rs = stmt.executeQuery();
 			while (rs.next()) {
 
-				Assert.assertNotNull(rs.getString("DATA_CHANNEL"));
-				Assert.assertNotNull(rs.getString("DATA_FEED"));
-				Assert.assertNotNull(rs.getString("MSG_TYPE"));
-				Assert.assertNotNull(rs.getString("JOB_STATUS_TYPE_CD"));
-				Assert.assertNotNull(rs.getString("JOB_TYPE"));
+				assertNotNull(rs.getString("DATA_CHANNEL"));
+				assertNotNull(rs.getString("DATA_FEED"));
+				assertNotNull(rs.getString("MSG_TYPE"));
+				assertNotNull(rs.getString("JOB_STATUS_TYPE_CD"));
+				assertNotNull(rs.getString("JOB_TYPE"));
 				djStatus = rs.getString("JOB_STATUS_TYPE_CD");
 			}
 			stmt.close();
@@ -233,8 +237,8 @@ public class EhcoreTrackingDBUtils {
 				else if (rs.getString("PROCESSING_STATUS_TYPE_CD").equalsIgnoreCase(TrackingEnumHolder.ACTIVITY_STATUS.ERROR.toString())) {
 					activityStatus = false;
 				}
-				Assert.assertNotNull(rs.getDate("PROCESSING_START_DT"));
-				Assert.assertNotNull(rs.getDate("PROCESSING_END_DT"));
+				assertNotNull(rs.getDate("PROCESSING_START_DT"));
+				assertNotNull(rs.getDate("PROCESSING_END_DT"));
 			}
 			stmt.close();
 			dbConnPs.close();
@@ -264,7 +268,7 @@ public class EhcoreTrackingDBUtils {
 			ResultSet rs = stmt.executeQuery();
 			while (rs.next()) {
 				objRefId = rs.getString("OBJECT_REF");
-				Assert.assertNotNull(rs.getString("MSG_GUID"));
+				assertNotNull(rs.getString("MSG_GUID"));
 			}
 			stmt.close();
 			dbConnPs.close();
@@ -309,7 +313,7 @@ public class EhcoreTrackingDBUtils {
 			stmt.close();
 		} catch (SQLException se) {
 			logger.error(se.getMessage(), se);
-			Assert.fail(se.getMessage());
+			fail(se.getMessage());
 		}
 		return status;
 	}
