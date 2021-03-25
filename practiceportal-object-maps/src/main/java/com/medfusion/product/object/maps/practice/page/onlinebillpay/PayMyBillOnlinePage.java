@@ -1,4 +1,4 @@
-//  Copyright 2013-2020 NXGN Management, LLC. All Rights Reserved.
+//  Copyright 2013-2021 NXGN Management, LLC. All Rights Reserved.
 package com.medfusion.product.object.maps.practice.page.onlinebillpay;
 
 import java.util.ArrayList;
@@ -32,7 +32,7 @@ public class PayMyBillOnlinePage extends BasePageObject {
 	@FindBy(xpath = "//table[@class='searchForm']//input[@value='Search']")
 	private WebElement searchForPatients;
 
-	@FindBy(xpath = "//table[@id='MfAjaxFallbackDefaultDataTable']//span[contains(text(),'automation, ihgqa')]")
+	@FindBy(xpath = "//table[@id='MfAjaxFallbackDefaultDataTable']")
 	private WebElement searchResult;
 
 	@FindBy(name = "locationList")
@@ -718,6 +718,71 @@ public class PayMyBillOnlinePage extends BasePageObject {
 		} else {
 			log("No previous card is displayed");
 		}
+	}
+	
+	public void setTransactionsForOnlineBillPayProcess(String location, String provider, String acctNum, String amount,
+			String cardHolderName, String cardNum, String cardTyp,String PaymentComment) throws Exception {
+		IHGUtil.PrintMethodName();
+		setLocation(location);
+		setPatientAccountNumber(acctNum);
+		setPaymentAmount(amount);
+
+		try {
+			setPaymentComment(PaymentComment);
+		} catch (Exception e) {
+			log("Payment Comment Field is not displayed");
+		}
+
+		clickDonotSaveTransaction();
+
+		IHGUtil.setFrame(driver, PracticeConstants.FRAME_NAME);
+		IHGUtil.waitForElement(driver, 30, cardHolder);
+		cardHolder.clear();
+		cardHolder.sendKeys(cardHolderName);
+		Thread.sleep(4000);
+
+		IHGUtil.waitForElement(driver, 30, cardNumber);
+		cardNumber.clear();
+		cardNumber.sendKeys(cardNum);
+		Thread.sleep(4000);
+
+		IHGUtil.setFrame(driver, PracticeConstants.FRAME_NAME);
+		Select sel = new Select(cardType);
+		sel.selectByVisibleText(cardTyp);
+
+		IHGUtil.setFrame(driver, PracticeConstants.FRAME_NAME);
+		Select selexp = new Select(expirationMonth);
+		selexp.selectByVisibleText(PracticeConstants.EXPIRATION_MONTH);
+		Select sele = new Select(expirationYear);
+		List<WebElement> dropdown = sele.getOptions();
+		for (int i = 0; i < dropdown.size(); i++) {
+			String drop_down_values = dropdown.get(i).getText();
+			String current_date = IHGUtil.getCurrentDate();
+			String Current_year = current_date.substring(0, 4);
+			int ExpirationYear = Integer.valueOf(Current_year);
+			String yearInString = String.valueOf(ExpirationYear + 2);
+			if (yearInString.equals(drop_down_values)) {
+				sele.selectByVisibleText(yearInString);
+				log("The" + yearInString + "and" + drop_down_values + " Matched");
+			}
+
+			else {
+
+				log("The" + yearInString + "and" + drop_down_values + "didnt Matched");
+
+			}
+		}
+		cvvCode.clear();
+		cvvCode.sendKeys(PracticeConstants.CVV);
+		zipCode.clear();
+		zipCode.sendKeys(PracticeConstants.ZIP_CODE);
+		IHGUtil.setFrame(driver, PracticeConstants.FRAME_NAME);
+		chooseProvider(provider);
+		payBillButton.click();
+		
+		IHGUtil.setFrame(driver, PracticeConstants.FRAME_NAME);
+		submitPaymentButton.click();
+		Thread.sleep(5000);
 	}
 
 }

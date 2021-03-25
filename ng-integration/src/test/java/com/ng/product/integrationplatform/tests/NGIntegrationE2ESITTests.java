@@ -4,6 +4,7 @@ package com.ng.product.integrationplatform.tests;
 import static org.testng.Assert.assertNotNull;
 
 import java.io.IOException;
+import java.text.DecimalFormat;
 import java.text.SimpleDateFormat;
 import java.time.Instant;
 import java.time.LocalDate;
@@ -64,6 +65,7 @@ import com.medfusion.product.object.maps.practice.page.PracticeLoginPage;
 import com.medfusion.product.object.maps.practice.page.onlinebillpay.OnlineBillPaySearchPage;
 import com.medfusion.product.object.maps.practice.page.onlinebillpay.PayMyBillOnlinePage;
 import com.medfusion.product.object.maps.practice.page.patientSearch.PatientSearchPage;
+import com.medfusion.product.object.maps.practice.page.virtualCardSwiper.VirtualCardSwiperPage;
 import com.medfusion.product.patientportal2.pojo.CreditCard;
 import com.medfusion.product.patientportal2.pojo.CreditCard.CardType;
 import com.medfusion.product.patientportal2.utils.JalapenoConstants;
@@ -5872,5 +5874,388 @@ public class NGIntegrationE2ESITTests extends BaseTestNGWebDriver{
 		String SourceId = DBUtils.executeQueryOnDB("NGCoreDB",SourceIdQuery);
 		CommonFlows.verifyPaymentPostedtoNG(PaymentComments,SourceId , person_id, "-"+actualAmount, "Payment type: BillPayment, Last 4 CC digits: "+creditCard.getLastFourDigits(),practiceId);
 		log("Test Case End: The patient is able to pay the bill using Pay Bills and payment is being posted to NG");
-	}	
+	}
+	
+	@Test(enabled = true, groups = { "Payment" }, retryAnalyzer = RetryAnalyzer.class)
+	public void testPaymentVirtualCardSwiper() throws Throwable {
+		log("Test Case: Verify the patient is able to pay using Virtual Card Swiper method and payment is being posted to NG");
+		logStep("Getting Existing User");
+		String username = PropertyLoaderObj.getProperty("CCDAUsername");
+    	String person_id = DBUtils.executeQueryOnDB("NGCoreDB","select person_id from person where email_address = '"+username+"'");
+    	String enterpriseId = null, practiceId = null;
+    	
+		if(PropertyLoaderObj.getNGAPIexecutionMode().equalsIgnoreCase("QAMain")){
+    		enterpriseId= PropertyLoaderObj.getProperty("NGEnterpiseEnrollmentEnterprise1");
+    	    practiceId= PropertyLoaderObj.getProperty("NGEnterprise1Practice1");	
+		}
+		else if (PropertyLoaderObj.getNGAPIexecutionMode().equalsIgnoreCase("SIT")){
+			enterpriseId= PropertyLoaderObj.getProperty("NGMainEnterpriseID");
+		    practiceId= PropertyLoaderObj.getProperty("NGMainPracticeID");	           
+		}
+		else{
+			Log4jUtil.log("Invalid Execution Mode");
+		}
+				
+		logStep("Initiate payment data");
+		String acctNBRQuery = "select acct_nbr from accounts where guar_id ='"+person_id+"' and practice_id='"+practiceId.trim()+"'";
+		String accountNumber = DBUtils.executeQueryOnDB("NGCoreDB",acctNBRQuery);
+		String FirstName = DBUtils.executeQueryOnDB("NGCoreDB","select first_name from person where email_address = '"+username+"'");
+		String amount = IHGUtil.createRandomNumericString().substring(0, 2);
+		String PaymentComment = PracticeConstants.PAYMENT_COMMENT.concat(IHGUtil.createRandomNumericString());
+		
+		DecimalFormat df=new DecimalFormat("0.00");
+		String ActualAmount = df.format(Integer.parseInt(amount));
+		log("Amount to be paid "+ActualAmount);
+		
+		logStep("Navigate to Login page");
+		PracticeLoginPage practiceLogin = new PracticeLoginPage(driver, PropertyLoaderObj.getPortalUrl());
+		PracticeHomePage practiceHome = practiceLogin.login(PropertyLoaderObj.getDoctorLogin(), PropertyLoaderObj.getDoctorPassword());
+				
+		logStep("Navigate to Virtual Card Swiper page.");
+		VirtualCardSwiperPage virtualCardSwiper = practiceHome.clickOnVirtualCardSwiper();
+		
+		logStep("Verify whether Virtual Card Swiper page is displayed.");
+		assertTrue(virtualCardSwiper.checkVirtualCardSwiperPage(), "Virtual Card Swiper page is not displayed properly.");	
+
+		logStep("Add card info and click on 'Click Here To Charge Card' button.");
+		virtualCardSwiper.addCreditCardInfo(PracticeConstants.CARD_NAME, PracticeConstants.CARD_NUMBER, PracticeConstants.CARD_TYPE_VISA, PracticeConstants.EXP_MONTH,
+								PracticeConstants.EXP_YEAR, amount, PracticeConstants.CVV, PracticeConstants.ZIP, accountNumber,
+								FirstName, PaymentComment,PropertyLoaderObj.getProperty("PortalLocationName"));
+		
+		logStep("Verify whether the payment is completed successfully.");
+		assertEquals(virtualCardSwiper.getPaymentCompletedSuccessMsg().contains(PracticeConstants.PAYMENT_COMPLETED_SUCCESS_MSG), true,
+				"The payment is completed properly.");
+		
+		CommonFlows.verifyPaymentReachedtoMFAgent(PaymentComment,"VCSPayment", "", accountNumber,"POSTED", ActualAmount,PracticeConstants.CARD_TYPE_VISA);
+		
+		String SourceIdQuery = "select acct_id from accounts where guar_id ='"+person_id+"' and practice_id='"+practiceId.trim()+"'";
+		String SourceId = DBUtils.executeQueryOnDB("NGCoreDB",SourceIdQuery);
+		CommonFlows.verifyPaymentPostedtoNG(PaymentComment,SourceId , person_id, "-"+ActualAmount, "Payment type: VCSPayment, Last 4 CC digits: "+PracticeConstants.CARD_NUMBER.substring(12),practiceId);
+		log("Test Case End: The patient is able to pay using Virtual Card Swiper method and payment is being posted to NG");
+	}
+	
+	@Test(enabled = true, groups = { "Payment" }, retryAnalyzer = RetryAnalyzer.class)
+	public void testPaymentOnlineBillPayProcess() throws Throwable {
+		log("Test Case: Verify the patient is able to pay using Online Bill Pay Process and payment is being posted to NG");
+		
+		logStep("Getting Existing User");
+		String username = PropertyLoaderObj.getProperty("CCDAUsername");
+    	String person_id = DBUtils.executeQueryOnDB("NGCoreDB","select person_id from person where email_address = '"+username+"'");
+    	String enterpriseId = null, practiceId = null;
+    	
+    	if(PropertyLoaderObj.getNGAPIexecutionMode().equalsIgnoreCase("QAMain")){
+    		enterpriseId= PropertyLoaderObj.getProperty("NGEnterpiseEnrollmentEnterprise1");
+    	    practiceId= PropertyLoaderObj.getProperty("NGEnterprise1Practice1");
+		}
+		else if (PropertyLoaderObj.getNGAPIexecutionMode().equalsIgnoreCase("SIT")){
+			enterpriseId= PropertyLoaderObj.getProperty("NGMainEnterpriseID");
+		    practiceId= PropertyLoaderObj.getProperty("NGMainPracticeID");		           
+		}
+		else{
+			Log4jUtil.log("Invalid Execution Mode");
+		}
+		   	    	
+    	logStep("Initiate payment data");
+    	String acctNBRQuery = "select acct_nbr from accounts where guar_id ='"+person_id+"' and practice_id='"+practiceId.trim()+"'";
+		String accountNumber = DBUtils.executeQueryOnDB("NGCoreDB",acctNBRQuery);
+		String firstName = DBUtils.executeQueryOnDB("NGCoreDB","select first_name from person where person_id = '"+person_id+"'");
+    	String lastName = DBUtils.executeQueryOnDB("NGCoreDB","select last_name from person where person_id = '"+person_id+"'");
+		String amount = IHGUtil.createRandomNumericString().substring(0, 2);
+		log("Random generated amount: " + amount);
+    	
+    	DecimalFormat df=new DecimalFormat("0.00");
+		String ActualAmount = df.format(Integer.parseInt(amount));
+		log("Amount to be paid "+ActualAmount);
+    	
+		logStep("Login to Practice Portal");
+		PracticeLoginPage practiceLogin = new PracticeLoginPage(driver, PropertyLoaderObj.getPortalUrl());
+		PracticeHomePage practiceHome = practiceLogin.login(PropertyLoaderObj.getDoctorLogin(), PropertyLoaderObj.getDoctorPassword());
+
+		logStep("Click on Make Payment link.");
+		PayMyBillOnlinePage pPayMyBillOnlinePage = practiceHome.clickMakePaymentForPatient();
+
+		logStep("Search For Patient");
+		pPayMyBillOnlinePage.searchForPatient(firstName, lastName);
+
+		String PaymentComment = PracticeConstants.PAYMENT_COMMENT.concat(IHGUtil.createRandomNumericString());
+		logStep("Set all the transaction details");		
+		pPayMyBillOnlinePage.setTransactionsForOnlineBillPayProcess(PropertyLoaderObj.getProperty("PortalLocationName"),PropertyLoaderObj.getProperty("PortalProviderName").replaceAll(", Dr", ""),
+				accountNumber,amount, PracticeConstants.PROCESS_CARD_HOLDER_NAME,PracticeConstants.CARD_NUM_MASTERCARD,	PracticeConstants.CARD_TYPE_MASTERCARD,
+				PaymentComment);
+
+		logStep("Verify the Payment Confirmation text");
+		IHGUtil.setFrame(driver, PracticeConstants.FRAME_NAME);
+		IHGUtil.waitForElement(driver, 20, pPayMyBillOnlinePage.paymentConfirmationText);
+		assertEquals(true, pPayMyBillOnlinePage.paymentConfirmationText.getText().contains(PAYMENT_SUCCESSFULL_TEXT + firstName +" "+ lastName));
+		
+		logStep("Navigate to Patient Search Page.");
+		OnlineBillPaySearchPage onlineBillPay = new OnlineBillPaySearchPage(driver);
+		PatientSearchPage patientsearchPage = onlineBillPay.clickOnPatientSearchLink();
+
+		logStep("Search the patient in Patient Search page.");
+		patientsearchPage.searchPatient(firstName, lastName);
+
+		logStep("Verify whether the transaction is present.");
+		assertTrue(patientsearchPage.isTransactionPresent(ActualAmount, firstName, lastName));
+
+		logStep("Select the particular Transaction from the Search Result.");
+		patientsearchPage.selectTheTransaction(ActualAmount, firstName, lastName);
+		assertFalse(pPayMyBillOnlinePage.isVoidTransactionPresent());
+		
+		CommonFlows.verifyPaymentReachedtoMFAgent(PaymentComment,"BillPayment", "", accountNumber,"POSTED", ActualAmount,PracticeConstants.CARD_TYPE_MASTERCARD);
+		
+		String SourceIdQuery = "select acct_id from accounts where guar_id ='"+person_id+"' and practice_id='"+practiceId.trim()+"'";
+		String SourceId = DBUtils.executeQueryOnDB("NGCoreDB",SourceIdQuery);
+		CommonFlows.verifyPaymentPostedtoNG(PaymentComment,SourceId , person_id, "-"+ActualAmount, "Payment type: BillPayment, Last 4 CC digits: "+PracticeConstants.CARD_NUM_MASTERCARD.substring(12),practiceId);
+		
+		log("Test Case End: The patient is able to pay using Online Bill Pay Process and payment is being posted to NG");
+	}
+	
+	@Test(enabled = true, groups = { "Payment" }, retryAnalyzer = RetryAnalyzer.class)
+	public void testPaymentBudgetPaymentProcess() throws Throwable {
+		log("Test case: Verify practice user is able to schedule budget payment plan to pay the patient bill");
+		String amount = "50";
+		String prepayamount = "10";
+		
+		logStep("Getting Existing User");
+		String username = PropertyLoaderObj.getProperty("CCDAUsername");
+    	String person_id = DBUtils.executeQueryOnDB("NGCoreDB","select person_id from person where email_address = '"+username+"'");
+    	String enterpriseId, practiceId = null;
+    	
+    	if(PropertyLoaderObj.getNGAPIexecutionMode().equalsIgnoreCase("QAMain")){
+    		enterpriseId= PropertyLoaderObj.getProperty("NGEnterpiseEnrollmentEnterprise1");
+    	    practiceId= PropertyLoaderObj.getProperty("NGEnterprise1Practice1");
+		}
+		else if (PropertyLoaderObj.getNGAPIexecutionMode().equalsIgnoreCase("SIT")){
+			enterpriseId= PropertyLoaderObj.getProperty("NGMainEnterpriseID");
+		    practiceId= PropertyLoaderObj.getProperty("NGMainPracticeID");
+		}
+		else{
+			Log4jUtil.log("Invalid Execution Mode");
+		}
+    	
+    	logStep("Initiate payment data");
+    	String acctNBRQuery = "select acct_nbr from accounts where guar_id ='"+person_id+"' and practice_id='"+practiceId.trim()+"'";
+		String accountNumber = DBUtils.executeQueryOnDB("NGCoreDB",acctNBRQuery);
+		String firstName = DBUtils.executeQueryOnDB("NGCoreDB","select first_name from person where person_id = '"+person_id+"'");
+    	String lastName = DBUtils.executeQueryOnDB("NGCoreDB","select last_name from person where person_id = '"+person_id+"'");
+    	
+		logStep("Login to Practice Portal");
+		PracticeLoginPage practiceLogin = new PracticeLoginPage(driver, PropertyLoaderObj.getPortalUrl());
+		PracticeHomePage practiceHome = practiceLogin.login(PropertyLoaderObj.getDoctorLogin(), PropertyLoaderObj.getDoctorPassword());
+
+		logStep("Click on Make Payment link.");
+		PayMyBillOnlinePage pPayMyBillOnlinePage = practiceHome.clickMakePaymentForPatient();
+
+		logStep("Search For Patient");
+		pPayMyBillOnlinePage.searchForPatient(firstName, lastName);
+		
+		logStep("Set all the transaction details");
+		pPayMyBillOnlinePage.setTransactionsForBudgetPaymentPlan(PropertyLoaderObj.getProperty("PortalLocationName"), PropertyLoaderObj.getProperty("PortalProviderName").replaceAll(", Dr", ""),
+				accountNumber, amount, prepayamount, PracticeConstants.PROCESS_CARD_HOLDER_NAME,
+				PracticeConstants.CARD_NUM_MASTERCARD, PracticeConstants.CARD_TYPE_MASTERCARD);
+
+		Thread.sleep(5000);
+		logStep("Verify the your Budget payment plan start date text");
+		assertTrue(pPayMyBillOnlinePage.getPaymentStartDateText().contains("Your payment plan start date is "
+				+ pPayMyBillOnlinePage.getPlanStartDate() + " recurring every other week."));
+
+		logStep("Verify the creditcard last four digit");
+		assertTrue(pPayMyBillOnlinePage.getCreditCardLastFourDigits().contains(PracticeConstants.CARD_NUM_MASTERCARD.substring(12)));
+
+		String EnddatePlanText = pPayMyBillOnlinePage.getPlanEndDate();
+
+		logStep("click to submit the Budget Payment Plan search");
+		pPayMyBillOnlinePage.clickOnSubmitPayment();
+
+		logStep("click on Budget Payment pLan to serach the Budget Payment done ");
+		practiceHome.budgetPaymentPlanSearch();
+
+		logStep("Searching of Budget Payment plan with patient firstName and lastName ");
+		pPayMyBillOnlinePage.budgetPaymentPlanSearchPatient(firstName, lastName);
+
+		logStep("Verify the BudgetPaymentPlan End Date and card ending");
+		assertTrue(pPayMyBillOnlinePage.getplanEndDateBudgetSearch().equals(EnddatePlanText));
+
+		logStep("Verify the creditcard last four digit in Budget Payment Plan Search");
+		assertTrue(pPayMyBillOnlinePage.getActiveBudgetPaymentCardDigit().contains(PracticeConstants.CARD_NUM_MASTERCARD.substring(12)));
+
+		logStep("Stop the Budget Payment Plan ");
+		pPayMyBillOnlinePage.clickOnStopBudgetPayment();
+		log("Test case End: The practice user is able to schedule budget payment plan to pay the patient bill");
+	}
+	
+	@Test(enabled = true, groups = { "Payment" }, retryAnalyzer = RetryAnalyzer.class)
+	public void testPaymentOnlineBillPayProcessforSingleGuarantor() throws Throwable {
+		log("Test Case: Verify payment is auto posted when Patient is having single guarantor while paying using One Time Payment method");
+		
+		logStep("Getting Existing User");
+		String username = PropertyLoaderObj.getProperty("SingleGuarantorUser");
+    	String person_id = DBUtils.executeQueryOnDB("NGCoreDB","select person_id from person where email_address = '"+username+"'");
+    	String enterpriseId = null, practiceId = null;
+    	
+    	if(PropertyLoaderObj.getNGAPIexecutionMode().equalsIgnoreCase("QAMain")){
+    		enterpriseId= PropertyLoaderObj.getProperty("NGEnterpiseEnrollmentEnterprise1");
+    	    practiceId= PropertyLoaderObj.getProperty("NGEnterprise1Practice1");
+		}
+		else if (PropertyLoaderObj.getNGAPIexecutionMode().equalsIgnoreCase("SIT")){
+			enterpriseId= PropertyLoaderObj.getProperty("NGMainEnterpriseID");
+		    practiceId= PropertyLoaderObj.getProperty("NGMainPracticeID");		           
+		}
+		else{
+			Log4jUtil.log("Invalid Execution Mode");
+		}
+		   	    	
+    	logStep("Initiate payment data");
+    	String invalidAccountNumber = "9999999";
+		String firstName = DBUtils.executeQueryOnDB("NGCoreDB","select first_name from person where person_id = '"+person_id+"'");
+    	String lastName = DBUtils.executeQueryOnDB("NGCoreDB","select last_name from person where person_id = '"+person_id+"'");
+		String amount = IHGUtil.createRandomNumericString().substring(0, 2);
+		log("Random generated amount: " + amount);
+    	
+    	DecimalFormat df=new DecimalFormat("0.00");
+		String ActualAmount = df.format(Integer.parseInt(amount));
+		log("Amount to be paid "+ActualAmount);
+    	
+		logStep("Login to Practice Portal");
+		PracticeLoginPage practiceLogin = new PracticeLoginPage(driver, PropertyLoaderObj.getPortalUrl());
+		PracticeHomePage practiceHome = practiceLogin.login(PropertyLoaderObj.getDoctorLogin(), PropertyLoaderObj.getDoctorPassword());
+
+		logStep("Click on Make Payment link.");
+		PayMyBillOnlinePage pPayMyBillOnlinePage = practiceHome.clickMakePaymentForPatient();
+
+		logStep("Search For Patient");
+		pPayMyBillOnlinePage.searchForPatient(firstName, lastName);
+
+		String PaymentComment = PracticeConstants.PAYMENT_COMMENT.concat(IHGUtil.createRandomNumericString());
+		logStep("Set all the transaction details");		
+		pPayMyBillOnlinePage.setTransactionsForOnlineBillPayProcess(PropertyLoaderObj.getProperty("PortalLocationName"),PropertyLoaderObj.getProperty("PortalProviderName").replaceAll(", Dr", ""),
+				invalidAccountNumber,amount, PracticeConstants.PROCESS_CARD_HOLDER_NAME,PracticeConstants.CARD_NUM_MASTERCARD,	PracticeConstants.CARD_TYPE_MASTERCARD,
+				PaymentComment);
+
+		logStep("Verify the Payment Confirmation text");
+		IHGUtil.setFrame(driver, PracticeConstants.FRAME_NAME);
+		IHGUtil.waitForElement(driver, 20, pPayMyBillOnlinePage.paymentConfirmationText);
+		assertEquals(true, pPayMyBillOnlinePage.paymentConfirmationText.getText().contains(PAYMENT_SUCCESSFULL_TEXT + firstName +" "+ lastName));
+		
+		String personNumber = DBUtils.executeQueryOnDB("NGCoreDB","select person_nbr from person where person_id = '"+person_id+"'");
+		String acctNBRQuery = "select acct_nbr from accounts where guar_id ='"+person_id+"' and practice_id='"+practiceId.trim()+"'";
+		String accountNumber = DBUtils.executeQueryOnDB("NGCoreDB",acctNBRQuery);
+		CommonFlows.verifyPaymentReachedtoMFAgent(PaymentComment,"BillPayment", personNumber.trim().replace("\t", ""), invalidAccountNumber,"POSTED", ActualAmount,PracticeConstants.CARD_TYPE_MASTERCARD);
+		
+		String SourceIdQuery = "select acct_id from accounts where guar_id ='"+person_id+"' and practice_id='"+practiceId.trim()+"'";
+		String SourceId = DBUtils.executeQueryOnDB("NGCoreDB",SourceIdQuery);
+		CommonFlows.verifyPaymentPostedtoNG(PaymentComment,SourceId , person_id, "-"+ActualAmount, "Payment type: BillPayment, Last 4 CC digits: "+PracticeConstants.CARD_NUM_MASTERCARD.substring(12),practiceId);
+		log("Test Case End: The payment is auto posted when Patient is having single guarantor while paying using One Time Payment method");
+	}
+	
+	@Test(enabled = true, groups = { "Payment" }, retryAnalyzer = RetryAnalyzer.class)
+	public void testPaymentOnlineBillPayProcessforMultipleGuarantors() throws Throwable {
+		log("Test Case: Verify payment is not auto posted when Patient is having multiple guarantors while paying using OLBP method and payment state is Pending");
+		
+		logStep("Getting Existing User");
+		String username = PropertyLoaderObj.getProperty("CCDAUsername");
+    	String person_id = DBUtils.executeQueryOnDB("NGCoreDB","select person_id from person where email_address = '"+username+"'");
+    	String enterpriseId = null, practiceId = null;
+    	
+    	if(PropertyLoaderObj.getNGAPIexecutionMode().equalsIgnoreCase("QAMain")){
+    		enterpriseId= PropertyLoaderObj.getProperty("NGEnterpiseEnrollmentEnterprise1");
+    	    practiceId= PropertyLoaderObj.getProperty("NGEnterprise1Practice1");
+		}
+		else if (PropertyLoaderObj.getNGAPIexecutionMode().equalsIgnoreCase("SIT")){
+			enterpriseId= PropertyLoaderObj.getProperty("NGMainEnterpriseID");
+		    practiceId= PropertyLoaderObj.getProperty("NGMainPracticeID");		           
+		}
+		else{
+			Log4jUtil.log("Invalid Execution Mode");
+		}
+		   	    	
+    	logStep("Initiate payment data");
+    	String invalidAccountNumber = "9999999";
+		String firstName = DBUtils.executeQueryOnDB("NGCoreDB","select first_name from person where person_id = '"+person_id+"'");
+    	String lastName = DBUtils.executeQueryOnDB("NGCoreDB","select last_name from person where person_id = '"+person_id+"'");
+		String amount = IHGUtil.createRandomNumericString().substring(0, 2);
+		log("Random generated amount: " + amount);
+    	
+    	DecimalFormat df=new DecimalFormat("0.00");
+		String ActualAmount = df.format(Integer.parseInt(amount));
+		log("Amount to be paid "+ActualAmount);
+    	
+		logStep("Login to Practice Portal");
+		PracticeLoginPage practiceLogin = new PracticeLoginPage(driver, PropertyLoaderObj.getPortalUrl());
+		PracticeHomePage practiceHome = practiceLogin.login(PropertyLoaderObj.getDoctorLogin(), PropertyLoaderObj.getDoctorPassword());
+
+		logStep("Click on Make Payment link.");
+		PayMyBillOnlinePage pPayMyBillOnlinePage = practiceHome.clickMakePaymentForPatient();
+
+		logStep("Search For Patient");
+		pPayMyBillOnlinePage.searchForPatient(firstName, lastName);
+
+		String PaymentComment = PracticeConstants.PAYMENT_COMMENT.concat(IHGUtil.createRandomNumericString());
+		logStep("Set all the transaction details");		
+		pPayMyBillOnlinePage.setTransactionsForOnlineBillPayProcess(PropertyLoaderObj.getProperty("PortalLocationName"),PropertyLoaderObj.getProperty("PortalProviderName").replaceAll(", Dr", ""),
+				invalidAccountNumber,amount, PracticeConstants.PROCESS_CARD_HOLDER_NAME,PracticeConstants.CARD_NUM_MASTERCARD,	PracticeConstants.CARD_TYPE_MASTERCARD,
+				PaymentComment);
+
+		logStep("Verify the Payment Confirmation text");
+		IHGUtil.setFrame(driver, PracticeConstants.FRAME_NAME);
+		IHGUtil.waitForElement(driver, 20, pPayMyBillOnlinePage.paymentConfirmationText);
+		assertEquals(true, pPayMyBillOnlinePage.paymentConfirmationText.getText().contains(PAYMENT_SUCCESSFULL_TEXT + firstName +" "+ lastName));
+				
+		CommonFlows.verifyPaymentReachedtoMFAgent(PaymentComment,"BillPayment", "", invalidAccountNumber,"PENDING", ActualAmount,PracticeConstants.CARD_TYPE_MASTERCARD);
+		log("Test Case End: Payment is not auto posted when Patient is having multiple guarantors while paying using OLBP method and payment state is Pending");
+	}
+	
+	@Test(enabled = true, groups = { "Payment" }, retryAnalyzer = RetryAnalyzer.class)
+	public void testPaymentVirtualCardSwiperforMultipleGuarantors() throws Throwable {
+		log("Test Case: Verify the Payment is not auto posted when Patient is having multiple guarantors while paying using VCS method and payment state is Pending");
+		logStep("Getting Existing User");
+		String username = PropertyLoaderObj.getProperty("CCDAUsername");
+    	String person_id = DBUtils.executeQueryOnDB("NGCoreDB","select person_id from person where email_address = '"+username+"'");
+    	String enterpriseId = null, practiceId = null;
+    	
+		if(PropertyLoaderObj.getNGAPIexecutionMode().equalsIgnoreCase("QAMain")){
+    		enterpriseId= PropertyLoaderObj.getProperty("NGEnterpiseEnrollmentEnterprise1");
+    	    practiceId= PropertyLoaderObj.getProperty("NGEnterprise1Practice1");	
+		}
+		else if (PropertyLoaderObj.getNGAPIexecutionMode().equalsIgnoreCase("SIT")){
+			enterpriseId= PropertyLoaderObj.getProperty("NGMainEnterpriseID");
+		    practiceId= PropertyLoaderObj.getProperty("NGMainPracticeID");	           
+		}
+		else{
+			Log4jUtil.log("Invalid Execution Mode");
+		}
+				
+		logStep("Initiate payment data");
+		String invalidAccountNumber = "9999999";
+		String FirstName = DBUtils.executeQueryOnDB("NGCoreDB","select first_name from person where email_address = '"+username+"'");
+		String amount = IHGUtil.createRandomNumericString().substring(0, 2);
+		String PaymentComment = PracticeConstants.PAYMENT_COMMENT.concat(IHGUtil.createRandomNumericString());
+		
+		DecimalFormat df=new DecimalFormat("0.00");
+		String ActualAmount = df.format(Integer.parseInt(amount));
+		log("Amount to be paid "+ActualAmount);
+		
+		logStep("Navigate to Login page");
+		PracticeLoginPage practiceLogin = new PracticeLoginPage(driver, PropertyLoaderObj.getPortalUrl());
+		PracticeHomePage practiceHome = practiceLogin.login(PropertyLoaderObj.getDoctorLogin(), PropertyLoaderObj.getDoctorPassword());
+				
+		logStep("Navigate to Virtual Card Swiper page.");
+		VirtualCardSwiperPage virtualCardSwiper = practiceHome.clickOnVirtualCardSwiper();
+		
+		logStep("Verify whether Virtual Card Swiper page is displayed.");
+		assertTrue(virtualCardSwiper.checkVirtualCardSwiperPage(), "Virtual Card Swiper page is not displayed properly.");	
+
+		logStep("Add card info and click on 'Click Here To Charge Card' button.");
+		virtualCardSwiper.addCreditCardInfo(PracticeConstants.CARD_NAME, PracticeConstants.CARD_NUMBER, PracticeConstants.CARD_TYPE_VISA, PracticeConstants.EXP_MONTH,
+								PracticeConstants.EXP_YEAR, amount, PracticeConstants.CVV, PracticeConstants.ZIP, invalidAccountNumber,
+								FirstName, PaymentComment,PropertyLoaderObj.getProperty("PortalLocationName"));
+		
+		logStep("Verify whether the payment is completed successfully.");
+		assertEquals(virtualCardSwiper.getPaymentCompletedSuccessMsg().contains(PracticeConstants.PAYMENT_COMPLETED_SUCCESS_MSG), true,
+				"The payment is completed properly.");
+		
+		CommonFlows.verifyPaymentReachedtoMFAgent(PaymentComment,"VCSPayment", "", invalidAccountNumber,"PENDING", ActualAmount,PracticeConstants.CARD_TYPE_VISA);
+		log("Test Case End: The Payment is not auto posted when Patient is having multiple guarantors while paying using VCS method and payment state is Pending");
+	}
 }
