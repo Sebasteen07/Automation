@@ -22,13 +22,14 @@ public class AppointmentPage extends PSS2MainPage {
 	@FindBy(how = How.XPATH, using = "//*[@class='form-control appointtype-search-control form-control-lg' or @id='searchappointmenttype1']")
 	private WebElement searchAppointment;
 
-	@FindBy(how = How.XPATH, using = "//*[@class='btn' or @class='appointtypewidthbtn' or @class='col-sm-6 col-xs-12 appointtypewidthbtn' or @class='btn appointmentType-btn handle-text-Overflow outer-div']")
+	@FindBy(how = How.XPATH,
+			using = "//*[@class='btn' or @class='appointtypewidthbtn' or @class='col-sm-6 col-xs-12 appointtypewidthbtn' or @class='btn appointmentType-btn handle-text-Overflow outer-div']")
 	private WebElement selectAppointment;
 
 	@FindBy(how = How.XPATH, using = "//div[3]//div[1]//div[1]//div[1]//div[1]//div[3]//a[1]")
 	private WebElement gotoNextStep;
 
-	@FindAll({@FindBy(xpath = "//div//button[@class='btn appointmentType-btn handle-text-Overflow outer-div']") })
+	@FindAll({@FindBy(xpath = "//div//button[@class='btn appointmentType-btn handle-text-Overflow outer-div']")})
 	private List<WebElement> appointmentTypeList;
 
 	public AppointmentPage(WebDriver driver) {
@@ -48,6 +49,19 @@ public class AppointmentPage extends PSS2MainPage {
 		javascriptClick(selectAppointment);
 		log("click on next step if present");
 		selectNextStep(isPopUpSelected);
+		return PageFactory.initElements(driver, AppointmentDateTime.class);
+	}
+
+	public AppointmentDateTime selectTypeOfAppointment1(String appointmentType, Boolean isPopUpSelected) {
+		log("appointmentTypeList " + appointmentTypeList.size());
+		for (int i = 0; i < appointmentTypeList.size(); i++) {
+			if (appointmentTypeList.get(i).getText().contains(appointmentType)) {
+				appointmentTypeList.get(i).click();
+				selectNextStep(isPopUpSelected);
+				return PageFactory.initElements(driver, AppointmentDateTime.class);
+			}
+		}
+		log("no matching appointment found ");
 		return PageFactory.initElements(driver, AppointmentDateTime.class);
 	}
 
@@ -81,8 +95,7 @@ public class AppointmentPage extends PSS2MainPage {
 		if (isPopUpSelected) {
 			log("is popup");
 			IHGUtil.waitForElement(driver, 60, gotoNextStep);
-			jse.executeScript("arguments[0].setAttribute('style', 'background: white; border: 5px solid blue;');",
-					gotoNextStep);
+			jse.executeScript("arguments[0].setAttribute('style', 'background: white; border: 5px solid blue;');", gotoNextStep);
 			gotoNextStep.click();
 			log("successfully clicked on next step");
 

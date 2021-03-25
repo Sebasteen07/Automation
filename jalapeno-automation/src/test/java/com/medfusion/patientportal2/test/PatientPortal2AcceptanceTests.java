@@ -74,6 +74,7 @@ import com.medfusion.product.object.maps.patientportal2.page.MyAccountPage.Jalap
 import com.medfusion.product.object.maps.patientportal2.page.NewPayBillsPage.JalapenoPayBillsConfirmationPage;
 import com.medfusion.product.object.maps.patientportal2.page.NewPayBillsPage.JalapenoPayBillsMakePaymentPage;
 import com.medfusion.product.object.maps.patientportal2.page.PrescriptionsPage.JalapenoPrescriptionsPage;
+import com.medfusion.product.object.maps.patientportal2.page.ThirdPartySso.ThirdPartySsoPage;
 import com.medfusion.product.object.maps.practice.page.PracticeHomePage;
 import com.medfusion.product.object.maps.practice.page.PracticeLoginPage;
 import com.medfusion.product.object.maps.practice.page.askstaff.AskAStaffQuestionDetailStep1Page;
@@ -3611,9 +3612,11 @@ public class PatientPortal2AcceptanceTests extends BaseTestNGWebDriver {
 		Thread.sleep(5000);
 		managepharmacy.clickOnAddPharmacyButton();
 
+
 		AddPharmacyPage addPharmacyPage = new AddPharmacyPage(driver);
 		String externalid = IHGUtil.createRandomNumericString(12);
 		addPharmacyPage.fillPharmacyDetails(externalid, true);
+
 
 		managepharmacy.confirmPharmacyInTable(pharmacyName);
 		log("This should print the pharmacy Name1  :" + pharmacyName);
@@ -3651,5 +3654,30 @@ public class PatientPortal2AcceptanceTests extends BaseTestNGWebDriver {
 		assertEquals(successMsg, "Your prescription request has been submitted.");
 
 		homePage.clickOnLogout();
+	}
+
+	@Test(enabled = true, groups = { "acceptance-solutions" }, retryAnalyzer = RetryAnalyzer.class)
+	public void testThirdPartySso() throws Exception {
+		logStep("Login patient");
+		JalapenoLoginPage loginPage = new JalapenoLoginPage(driver, testData.getProperty("url"));
+		JalapenoHomePage homePage = loginPage.login(testData.getProperty("userid"), testData.getProperty("password"));
+
+		logStep("Click on the Third Party SSO tab");
+		ThirdPartySsoPage thirdpartyssopage = homePage.clickOnThirdPartySso(driver);
+
+		logStep("Verify the Third Party SSO Pop up Screen");
+		assertTrue(thirdpartyssopage.isLeavingMedfusionBannerDisplay());
+		
+		logStep("Verify the Destination URL on SSO Pop up Screen");
+		assertTrue(thirdpartyssopage.isDestinationUrlDisplay());
+		
+		logStep("Verify the exist portal message on SSO Pop up Screen");
+		assertTrue(thirdpartyssopage.isExistPortalMessageDisplay());
+
+		logStep("Click on the continue button");
+		thirdpartyssopage.clickOnContinueButton();
+
+		logStep("Verify the New Tab Open");
+		assertTrue(thirdpartyssopage.isNewTabOpenDestinationUrl(driver));
 	}
 }
