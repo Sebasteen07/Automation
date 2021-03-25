@@ -35,16 +35,16 @@ public class AdminPatientMatching extends SettingsTab {
 	@FindBy(xpath = "//*[@id='gendermapcheckbox3']")
 	private WebElement genderbox3Status;
 
-	@FindBy(xpath = "//*[@id='tab43']/div/div/div/div/table/tbody/tr[1]/td[1]/div/label/i")
+	@FindBy(xpath = "//tbody/tr[1]/td[1]/div[1]/label[1]/i[1]")
 	private WebElement genderbox0click;
 
-	@FindBy(xpath = "//*[@id='tab43']/div/div/div/div/table/tbody/tr[2]/td[1]/div/label/i")
+	@FindBy(xpath = "//tbody/tr[2]/td[1]/div[1]/label[1]/i[1]")
 	private WebElement genderbox1click;
 
-	@FindBy(xpath = "//*[@id='tab43']/div/div/div/div/table/tbody/tr[3]/td[1]/div/label/i")
+	@FindBy(xpath = "//tbody/tr[3]/td[1]/div[1]/label[1]/i[1]")
 	private WebElement genderbox2click;
 
-	@FindBy(xpath = "//*[@id='tab43']/div/div/div/div/table/tbody/tr[4]/td[1]/div/label/i")
+	@FindBy(xpath = "//tbody/tr[4]/td[1]/div[1]/label[1]/i[1]")
 	private WebElement genderbox3click;
 
 
