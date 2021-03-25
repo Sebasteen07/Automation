@@ -3666,11 +3666,9 @@ public class PatientPortal2AcceptanceTests extends BaseTestNGWebDriver {
 		logStep("Load login page");
 		JalapenoLoginPage loginPage = new JalapenoLoginPage(driver, testData.getUrl());
 		JalapenoHomePage homePage = loginPage.login(patient.getUsername(), patient.getPassword());
-		assertTrue(homePage.areBasicPageElementsPresent());
 
 		logStep("Logging out");
 		loginPage = homePage.clickOnLogout();
-		assertTrue(loginPage.areBasicPageElementsPresent());
 
 		logStep("Login to Practice Portal");
 		PracticeLoginPage practiceLogin = new PracticeLoginPage(driver, testData.getPortalUrl());
