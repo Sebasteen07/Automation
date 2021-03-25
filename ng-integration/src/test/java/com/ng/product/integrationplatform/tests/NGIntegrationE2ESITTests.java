@@ -149,8 +149,8 @@ public class NGIntegrationE2ESITTests extends BaseTestNGWebDriver{
 		NGAPIFlows.addCharttoProvider(locationName,providerName,person_id);
 		
 		log("Step 2: Using Post Enrollment call, Verify the MF agent trigger for new patient");
-		String PostEnrollmentURL = EnterprisebaseURL+ apiRoutes.valueOf("PostEnrollment").getRouteURL().replaceAll("personId", person_id);
-		ngAPIUtils.setupNGHttpPostRequest("EnterpriseGateway",PostEnrollmentURL,"" , 409);
+		String postEnrollmentURL = EnterprisebaseURL+ apiRoutes.valueOf("PostEnrollment").getRouteURL().replaceAll("personId", person_id);
+		ngAPIUtils.setupNGHttpPostRequest("EnterpriseGateway",postEnrollmentURL,"" , 409);
 		log("Step End: MF agent initiate the enrollment automatically");
 		
 		log("Step 3: Verify the enrollment status of patient after initiation of enrollment using Get Enrollment status call");
@@ -300,17 +300,17 @@ public class NGIntegrationE2ESITTests extends BaseTestNGWebDriver{
 //        CommonUtils.VerifyTwoValues(externalid,"equals",person_nbr.trim().replace("\t", ""));
 //        log("Result: RSDK sent the enrollemnt status to MF agent "+externalid+" person is added to person table in MF agent DB");
 		
-        String GetEnrollmentStatusresponse2 =ngAPIUtils.setupNGHttpGetRequest("EnterpriseGateway",getEnrollmentURL,200);
-		CommonUtils.VerifyTwoValues(CommonUtils.getResponseKeyValue(GetEnrollmentStatusresponse2,"status"),"equals","9"); 
-		CommonUtils.VerifyTwoValues(CommonUtils.getResponseKeyValue(GetEnrollmentStatusresponse2,"statusDescription"),"equals","Completed"); 
-		log("Result: Patient enrollment status is "+CommonUtils.getResponseKeyValue(GetEnrollmentStatusresponse2,"statusDescription"));
+        String getEnrollmentStatusresponse2 =ngAPIUtils.setupNGHttpGetRequest("EnterpriseGateway",getEnrollmentURL,200);
+		CommonUtils.VerifyTwoValues(CommonUtils.getResponseKeyValue(getEnrollmentStatusresponse2,"status"),"equals","9"); 
+		CommonUtils.VerifyTwoValues(CommonUtils.getResponseKeyValue(getEnrollmentStatusresponse2,"statusDescription"),"equals","Completed"); 
+		log("Result: Patient enrollment status is "+CommonUtils.getResponseKeyValue(getEnrollmentStatusresponse2,"statusDescription"));
 		
 		log("Step 16: Verify the enrollment status in pxp_enrollments table");
 		String enrollment_status2 =DBUtils.executeQueryOnDB("NGCoreDB","select enrollment_status from pxp_enrollments where person_id = '"+person_id.trim()+"'");
 		CommonUtils.VerifyTwoValues(enrollment_status2,"equals","9");
 		String processing_status2 =DBUtils.executeQueryOnDB("NGCoreDB","select processing_status from pxp_enrollments where person_id = '"+person_id.trim()+"'");
 		CommonUtils.VerifyTwoValues(processing_status2,"equals","4");
-		log("Step End: Patient enrollment status is "+enrollment_status2+" which is "+CommonUtils.getResponseKeyValue(GetEnrollmentStatusresponse2,"statusDescription"));
+		log("Step End: Patient enrollment status is "+enrollment_status2+" which is "+CommonUtils.getResponseKeyValue(getEnrollmentStatusresponse2,"statusDescription"));
 				
 	}
 	
@@ -377,8 +377,8 @@ public class NGIntegrationE2ESITTests extends BaseTestNGWebDriver{
 		log("person created with id "+person_id);
 		
 		log("Step 2: Using Post Enrollment call, Verify the MF agent should not trigger for new patient");
-		String PostEnrollmentURL = EnterprisebaseURL+ apiRoutes.valueOf("PostEnrollment").getRouteURL().replaceAll("personId", person_id);
-		NGAPIUtils.setupNGHttpPostRequest("EnterpriseGateway",PostEnrollmentURL,"" , 400);
+		String postEnrollmentURL = EnterprisebaseURL+ apiRoutes.valueOf("PostEnrollment").getRouteURL().replaceAll("personId", person_id);
+		NGAPIUtils.setupNGHttpPostRequest("EnterpriseGateway",postEnrollmentURL,"" , 400);
 		log("MF agent doesnot initiate the enrollment automatically");
 		
 		log("Step 3: Verify the enrollment status of patient using Get Enrollment status call");
@@ -407,8 +407,8 @@ public class NGIntegrationE2ESITTests extends BaseTestNGWebDriver{
 		log("person created with id "+person_id);
 		
 		log("Step 2: Using Post Enrollment call, Verify the MF agent should not trigger for new patient");
-		String PostEnrollmentURL = EnterprisebaseURL+ apiRoutes.valueOf("PostEnrollment").getRouteURL().replaceAll("personId", person_id);
-		NGAPIUtils.setupNGHttpPostRequest("EnterpriseGateway",PostEnrollmentURL,"" , 400);
+		String postEnrollmentURL = EnterprisebaseURL+ apiRoutes.valueOf("PostEnrollment").getRouteURL().replaceAll("personId", person_id);
+		NGAPIUtils.setupNGHttpPostRequest("EnterpriseGateway",postEnrollmentURL,"" , 400);
 		log("MF agent doesnot initiate the enrollment automatically");
 		
 		log("Step 3: Verify the enrollment status of patient using Get Enrollment status call");
@@ -426,8 +426,8 @@ public class NGIntegrationE2ESITTests extends BaseTestNGWebDriver{
 		
 		String personId = registerNGPatienttoMFPortal();
 		String person_nbr =DBUtils.executeQueryOnDB("NGCoreDB","select person_nbr from person where person_id = '"+personId.trim()+"'");
-		String PatientFirstName =DBUtils.executeQueryOnDB("NGCoreDB","select first_name from person where person_id = '"+personId.trim()+"'");
-		String PatientLastName =DBUtils.executeQueryOnDB("NGCoreDB","select last_name from person where person_id = '"+personId.trim()+"'");
+		String patientFirstName =DBUtils.executeQueryOnDB("NGCoreDB","select first_name from person where person_id = '"+personId.trim()+"'");
+		String patientLastName =DBUtils.executeQueryOnDB("NGCoreDB","select last_name from person where person_id = '"+personId.trim()+"'");
 		
 		
 		log("Step 17: Login to Practice Portal");
@@ -436,13 +436,13 @@ public class NGIntegrationE2ESITTests extends BaseTestNGWebDriver{
 		log("Click on Search");
 		PatientSearchPage patientSearchPage = practiceHome.clickPatientSearchLink();
 		log("Search for Patient");
-		patientSearchPage.searchForPatientInPatientSearch(PatientFirstName,PatientLastName);
-		patientSearchPage.clickOnPatient(PatientFirstName,PatientLastName);
+		patientSearchPage.searchForPatientInPatientSearch(patientFirstName,patientLastName);
+		patientSearchPage.clickOnPatient(patientFirstName,patientLastName);
 		log("Delete the searched patient");
 		patientSearchPage.deletePatient();
-		patientSearchPage.verifyDeletedPatient(PatientFirstName,PatientLastName);
+		patientSearchPage.verifyDeletedPatient(patientFirstName,patientLastName);
 		
-		VerifyGetPIDCCall(timestamp, person_nbr, PatientFirstName, PatientLastName, "DELETED",PropertyLoaderObj.getIntegrationPracticeID());
+		VerifyGetPIDCCall(timestamp, person_nbr, patientFirstName, patientLastName, "DELETED",PropertyLoaderObj.getIntegrationPracticeID());
 		
 		Thread.sleep(60000);
 		log("Step 18: Verify the enrollment and processing status of patient in pxp enrollment table");	
@@ -468,11 +468,11 @@ public class NGIntegrationE2ESITTests extends BaseTestNGWebDriver{
         
 		log("Step 19: Verify the enrollment status of patient");
 		String getEnrollmentURL =EnterprisebaseURL+ apiRoutes.valueOf("GetEnrollmentStatus").getRouteURL().replaceAll("personId", personId);
-		String GetEnrollmentStatusresponse =NGAPIUtils.setupNGHttpGetRequest("EnterpriseGateway",getEnrollmentURL,200);
+		String getEnrollmentStatusresponse =NGAPIUtils.setupNGHttpGetRequest("EnterpriseGateway",getEnrollmentURL,200);
 		
-		CommonUtils.VerifyTwoValues(CommonUtils.getResponseKeyValue(GetEnrollmentStatusresponse,"status"),"equals","11"); 
-		CommonUtils.VerifyTwoValues(CommonUtils.getResponseKeyValue(GetEnrollmentStatusresponse,"statusDescription"),"equals","Account Deleted"); 
-		log("Step End: Patient enrollment status is "+enrollment_status+" which is "+CommonUtils.getResponseKeyValue(GetEnrollmentStatusresponse,"statusDescription"));
+		CommonUtils.VerifyTwoValues(CommonUtils.getResponseKeyValue(getEnrollmentStatusresponse,"status"),"equals","11"); 
+		CommonUtils.VerifyTwoValues(CommonUtils.getResponseKeyValue(getEnrollmentStatusresponse,"statusDescription"),"equals","Account Deleted"); 
+		log("Step End: Patient enrollment status is "+enrollment_status+" which is "+CommonUtils.getResponseKeyValue(getEnrollmentStatusresponse,"statusDescription"));
 		
 	}
 	
@@ -513,28 +513,28 @@ public class NGIntegrationE2ESITTests extends BaseTestNGWebDriver{
 	
 	NGAPIFlows.addCharttoProvider(locationName,providerName,dependentperson_id);
 	log("Step 3: Using Post Enrollment call, Verify the MF agent trigger for new patient");
-	String PostEnrollmentURL = EnterprisebaseURL+ apiRoutes.valueOf("PostEnrollment").getRouteURL().replaceAll("personId", person_id);
-	NGAPIUtils.setupNGHttpPostRequest("EnterpriseGateway",PostEnrollmentURL,"" , 409);
+	String postEnrollmentURL = EnterprisebaseURL+ apiRoutes.valueOf("PostEnrollment").getRouteURL().replaceAll("personId", person_id);
+	NGAPIUtils.setupNGHttpPostRequest("EnterpriseGateway",postEnrollmentURL,"" , 409);
 	
-	PostEnrollmentURL = EnterprisebaseURL+ apiRoutes.valueOf("PostEnrollment").getRouteURL().replaceAll("personId", dependentperson_id);
-	NGAPIUtils.setupNGHttpPostRequest("EnterpriseGateway",PostEnrollmentURL,"" , 409);
+	postEnrollmentURL = EnterprisebaseURL+ apiRoutes.valueOf("PostEnrollment").getRouteURL().replaceAll("personId", dependentperson_id);
+	NGAPIUtils.setupNGHttpPostRequest("EnterpriseGateway",postEnrollmentURL,"" , 409);
 	
 	log("Step End: MF agent initiate the enrollment automatically");
 
 	log("Step 4: Verify the enrollment status of guardian and dependent");
 	String getEnrollmentURL =EnterprisebaseURL+ apiRoutes.valueOf("GetEnrollmentStatus").getRouteURL().replaceAll("personId", person_id);
-	String GetEnrollmentStatusresponse =NGAPIUtils.setupNGHttpGetRequest("EnterpriseGateway",getEnrollmentURL,200);
+	String getEnrollmentStatusresponse =NGAPIUtils.setupNGHttpGetRequest("EnterpriseGateway",getEnrollmentURL,200);
 	
-	CommonUtils.VerifyTwoValues(CommonUtils.getResponseKeyValue(GetEnrollmentStatusresponse,"status"),"equals","1"); 
-	CommonUtils.VerifyTwoValues(CommonUtils.getResponseKeyValue(GetEnrollmentStatusresponse,"statusDescription"),"equals","Pending"); 
-	log("Step End: Guardian enrollment status is "+CommonUtils.getResponseKeyValue(GetEnrollmentStatusresponse,"statusDescription"));
+	CommonUtils.VerifyTwoValues(CommonUtils.getResponseKeyValue(getEnrollmentStatusresponse,"status"),"equals","1"); 
+	CommonUtils.VerifyTwoValues(CommonUtils.getResponseKeyValue(getEnrollmentStatusresponse,"statusDescription"),"equals","Pending"); 
+	log("Step End: Guardian enrollment status is "+CommonUtils.getResponseKeyValue(getEnrollmentStatusresponse,"statusDescription"));
 	
 	String getEnrollmentURL1 =EnterprisebaseURL+ apiRoutes.valueOf("GetEnrollmentStatus").getRouteURL().replaceAll("personId", dependentperson_id);
-	String GetEnrollmentStatusresponse1 =NGAPIUtils.setupNGHttpGetRequest("EnterpriseGateway",getEnrollmentURL1,200);
+	String getEnrollmentStatusresponse1 =NGAPIUtils.setupNGHttpGetRequest("EnterpriseGateway",getEnrollmentURL1,200);
 	
-	CommonUtils.VerifyTwoValues(CommonUtils.getResponseKeyValue(GetEnrollmentStatusresponse1,"status"),"equals","1"); 
-	CommonUtils.VerifyTwoValues(CommonUtils.getResponseKeyValue(GetEnrollmentStatusresponse1,"statusDescription"),"equals","Pending"); 
-	log("Step End: Dependent enrollment status is "+CommonUtils.getResponseKeyValue(GetEnrollmentStatusresponse1,"statusDescription"));
+	CommonUtils.VerifyTwoValues(CommonUtils.getResponseKeyValue(getEnrollmentStatusresponse1,"status"),"equals","1"); 
+	CommonUtils.VerifyTwoValues(CommonUtils.getResponseKeyValue(getEnrollmentStatusresponse1,"statusDescription"),"equals","Pending"); 
+	log("Step End: Dependent enrollment status is "+CommonUtils.getResponseKeyValue(getEnrollmentStatusresponse1,"statusDescription"));
          
 	log("Step 5: Verify the enrollment and processing status of patient in pxp_enrollment table");
 	String dependentperson_nbr =DBUtils.executeQueryOnDB("NGCoreDB","select person_nbr from person where person_id = '"+dependentperson_id.trim()+"'");
@@ -632,18 +632,18 @@ public class NGIntegrationE2ESITTests extends BaseTestNGWebDriver{
 		
 		log("Step 17: Verify the enrollment status of guardian and dependent");
 		getEnrollmentURL =EnterprisebaseURL+ apiRoutes.valueOf("GetEnrollmentStatus").getRouteURL().replaceAll("personId", person_id);
-		GetEnrollmentStatusresponse =NGAPIUtils.setupNGHttpGetRequest("EnterpriseGateway",getEnrollmentURL,200);
+		getEnrollmentStatusresponse =NGAPIUtils.setupNGHttpGetRequest("EnterpriseGateway",getEnrollmentURL,200);
 		
-		CommonUtils.VerifyTwoValues(CommonUtils.getResponseKeyValue(GetEnrollmentStatusresponse,"status"),"equals","9"); 
-		CommonUtils.VerifyTwoValues(CommonUtils.getResponseKeyValue(GetEnrollmentStatusresponse,"statusDescription"),"equals","Completed"); 
-		log("Step End: Guardian enrollment status is "+CommonUtils.getResponseKeyValue(GetEnrollmentStatusresponse,"statusDescription"));
+		CommonUtils.VerifyTwoValues(CommonUtils.getResponseKeyValue(getEnrollmentStatusresponse,"status"),"equals","9"); 
+		CommonUtils.VerifyTwoValues(CommonUtils.getResponseKeyValue(getEnrollmentStatusresponse,"statusDescription"),"equals","Completed"); 
+		log("Step End: Guardian enrollment status is "+CommonUtils.getResponseKeyValue(getEnrollmentStatusresponse,"statusDescription"));
 		
 		getEnrollmentURL1 =EnterprisebaseURL+ apiRoutes.valueOf("GetEnrollmentStatus").getRouteURL().replaceAll("personId", dependentperson_id);
-		GetEnrollmentStatusresponse1 =NGAPIUtils.setupNGHttpGetRequest("EnterpriseGateway",getEnrollmentURL1,200);
+		getEnrollmentStatusresponse1 =NGAPIUtils.setupNGHttpGetRequest("EnterpriseGateway",getEnrollmentURL1,200);
 		
-		CommonUtils.VerifyTwoValues(CommonUtils.getResponseKeyValue(GetEnrollmentStatusresponse1,"status"),"equals","9"); 
-		CommonUtils.VerifyTwoValues(CommonUtils.getResponseKeyValue(GetEnrollmentStatusresponse1,"statusDescription"),"equals","Completed"); 
-		log("Step End: Dependent enrollment status is "+CommonUtils.getResponseKeyValue(GetEnrollmentStatusresponse1,"statusDescription"));
+		CommonUtils.VerifyTwoValues(CommonUtils.getResponseKeyValue(getEnrollmentStatusresponse1,"status"),"equals","9"); 
+		CommonUtils.VerifyTwoValues(CommonUtils.getResponseKeyValue(getEnrollmentStatusresponse1,"statusDescription"),"equals","Completed"); 
+		log("Step End: Dependent enrollment status is "+CommonUtils.getResponseKeyValue(getEnrollmentStatusresponse1,"statusDescription"));
 		}
 	
 	@Test(enabled = true, groups = { "acceptance-patientEnrollmentPracticeLevel" }, retryAnalyzer = RetryAnalyzer.class)
@@ -676,18 +676,18 @@ public class NGIntegrationE2ESITTests extends BaseTestNGWebDriver{
 		NGAPIFlows.addCharttoProvider(locationName,providerName,dependentperson_id);
 		
 		log("Step 2: Using Post Enrollment call, Verify the MF agent trigger for dependent");
-		String PostEnrollmentURL = EnterprisebaseURL+ apiRoutes.valueOf("PostEnrollment").getRouteURL().replaceAll("personId", dependentperson_id);
-		NGAPIUtils.setupNGHttpPostRequest("EnterpriseGateway",PostEnrollmentURL,"" , 409);
+		String postEnrollmentURL = EnterprisebaseURL+ apiRoutes.valueOf("PostEnrollment").getRouteURL().replaceAll("personId", dependentperson_id);
+		NGAPIUtils.setupNGHttpPostRequest("EnterpriseGateway",postEnrollmentURL,"" , 409);
 		
 		log("Step End: MF agent initiate the enrollment automatically");
 
 		log("Step 3: Verify the enrollment status of dependent");		
 		String getEnrollmentURL1 =EnterprisebaseURL+ apiRoutes.valueOf("GetEnrollmentStatus").getRouteURL().replaceAll("personId", dependentperson_id);
-		String GetEnrollmentStatusresponse1 =NGAPIUtils.setupNGHttpGetRequest("EnterpriseGateway",getEnrollmentURL1,200);
+		String getEnrollmentStatusresponse1 =NGAPIUtils.setupNGHttpGetRequest("EnterpriseGateway",getEnrollmentURL1,200);
 		
-		CommonUtils.VerifyTwoValues(CommonUtils.getResponseKeyValue(GetEnrollmentStatusresponse1,"status"),"equals","1"); 
-		CommonUtils.VerifyTwoValues(CommonUtils.getResponseKeyValue(GetEnrollmentStatusresponse1,"statusDescription"),"equals","Pending"); 
-		log("Step End: Dependent enrollment status is "+CommonUtils.getResponseKeyValue(GetEnrollmentStatusresponse1,"statusDescription"));
+		CommonUtils.VerifyTwoValues(CommonUtils.getResponseKeyValue(getEnrollmentStatusresponse1,"status"),"equals","1"); 
+		CommonUtils.VerifyTwoValues(CommonUtils.getResponseKeyValue(getEnrollmentStatusresponse1,"statusDescription"),"equals","Pending"); 
+		log("Step End: Dependent enrollment status is "+CommonUtils.getResponseKeyValue(getEnrollmentStatusresponse1,"statusDescription"));
 	              
 		log("Step 4: Verify the enrollment and processing status of patient in pxp_enrollment table");
 		String dependentperson_nbr =DBUtils.executeQueryOnDB("NGCoreDB","select person_nbr from person where person_id = '"+dependentperson_id.trim()+"'");
@@ -751,11 +751,11 @@ public class NGIntegrationE2ESITTests extends BaseTestNGWebDriver{
 			
 			log("Step 13: Verify the enrollment status of dependent");
 			getEnrollmentURL1 =EnterprisebaseURL+ apiRoutes.valueOf("GetEnrollmentStatus").getRouteURL().replaceAll("personId", dependentperson_id);
-			GetEnrollmentStatusresponse1 =NGAPIUtils.setupNGHttpGetRequest("EnterpriseGateway",getEnrollmentURL1,200);
+			getEnrollmentStatusresponse1 =NGAPIUtils.setupNGHttpGetRequest("EnterpriseGateway",getEnrollmentURL1,200);
 			
-			CommonUtils.VerifyTwoValues(CommonUtils.getResponseKeyValue(GetEnrollmentStatusresponse1,"status"),"equals","9"); 
-			CommonUtils.VerifyTwoValues(CommonUtils.getResponseKeyValue(GetEnrollmentStatusresponse1,"statusDescription"),"equals","Completed"); 
-			log("Step End: Dependent enrollment status is "+CommonUtils.getResponseKeyValue(GetEnrollmentStatusresponse1,"statusDescription"));
+			CommonUtils.VerifyTwoValues(CommonUtils.getResponseKeyValue(getEnrollmentStatusresponse1,"status"),"equals","9"); 
+			CommonUtils.VerifyTwoValues(CommonUtils.getResponseKeyValue(getEnrollmentStatusresponse1,"statusDescription"),"equals","Completed"); 
+			log("Step End: Dependent enrollment status is "+CommonUtils.getResponseKeyValue(getEnrollmentStatusresponse1,"statusDescription"));
 	}
 
 	
@@ -783,17 +783,17 @@ public class NGIntegrationE2ESITTests extends BaseTestNGWebDriver{
 		NGAPIFlows.addCharttoProvider(locationName,providerName,person_id);
 		
 		log("Step 2: Using Post Enrollment call, Verify the MF agent trigger for new patient");
-		String PostEnrollmentURL = EnterprisebaseURL+ apiRoutes.valueOf("PostEnrollment").getRouteURL().replaceAll("personId", person_id);
-		NGAPIUtils.setupNGHttpPostRequest("EnterpriseGateway",PostEnrollmentURL,"" , 409);
+		String postEnrollmentURL = EnterprisebaseURL+ apiRoutes.valueOf("PostEnrollment").getRouteURL().replaceAll("personId", person_id);
+		NGAPIUtils.setupNGHttpPostRequest("EnterpriseGateway",postEnrollmentURL,"" , 409);
 		log("Step End: MF agent initiate the enrollment automatically");
 		
 		log("Step 3: Verify the enrollment status of patient after initiation of enrollment using Get Enrollment status call");
 		String getEnrollmentURL =EnterprisebaseURL+ apiRoutes.valueOf("GetEnrollmentStatus").getRouteURL().replaceAll("personId", person_id);
-		String GetEnrollmentStatusresponse =NGAPIUtils.setupNGHttpGetRequest("EnterpriseGateway",getEnrollmentURL,200);
+		String getEnrollmentStatusresponse =NGAPIUtils.setupNGHttpGetRequest("EnterpriseGateway",getEnrollmentURL,200);
 		
-		CommonUtils.VerifyTwoValues(CommonUtils.getResponseKeyValue(GetEnrollmentStatusresponse,"status"),"equals","1"); 
-		CommonUtils.VerifyTwoValues(CommonUtils.getResponseKeyValue(GetEnrollmentStatusresponse,"statusDescription"),"equals","Pending"); 
-		log("Step End: Patient enrollment status is "+CommonUtils.getResponseKeyValue(GetEnrollmentStatusresponse,"statusDescription"));
+		CommonUtils.VerifyTwoValues(CommonUtils.getResponseKeyValue(getEnrollmentStatusresponse,"status"),"equals","1"); 
+		CommonUtils.VerifyTwoValues(CommonUtils.getResponseKeyValue(getEnrollmentStatusresponse,"statusDescription"),"equals","Pending"); 
+		log("Step End: Patient enrollment status is "+CommonUtils.getResponseKeyValue(getEnrollmentStatusresponse,"statusDescription"));
 		
 		log("Verify the enrollment and processing status of patient in pxp_enrollment table");
 		String enrollment_status1 =DBUtils.executeQueryOnDB("NGCoreDB","select enrollment_status from pxp_enrollments where person_id = '"+person_id.trim()+"'");
@@ -905,8 +905,8 @@ public class NGIntegrationE2ESITTests extends BaseTestNGWebDriver{
 		NGAPIFlows.addCharttoProvider(locationName,providerName,person_id);
 		
 		log("Step 2: Using Post Enrollment call, Verify the MF agent trigger for new patient");
-		String PostEnrollmentURL = EnterprisebaseURL+ apiRoutes.valueOf("PostEnrollment").getRouteURL().replaceAll("personId", person_id);
-		NGAPIUtils.setupNGHttpPostRequest("EnterpriseGateway",PostEnrollmentURL,"" , 409);
+		String postEnrollmentURL = EnterprisebaseURL+ apiRoutes.valueOf("PostEnrollment").getRouteURL().replaceAll("personId", person_id);
+		NGAPIUtils.setupNGHttpPostRequest("EnterpriseGateway",postEnrollmentURL,"" , 409);
 		log("Step End: MF agent initiate the enrollment automatically");
     	
 		log("Step 3: Verify the enrollment status of patient in pxp_enrollment table");
@@ -930,11 +930,11 @@ public class NGIntegrationE2ESITTests extends BaseTestNGWebDriver{
 		
 		log("Step 4: Verify the enrollment status of patient");
 		String getEnrollmentURL =EnterprisebaseURL+ apiRoutes.valueOf("GetEnrollmentStatus").getRouteURL().replaceAll("personId", person_id);
-		String GetEnrollmentStatusresponse =NGAPIUtils.setupNGHttpGetRequest("EnterpriseGateway",getEnrollmentURL,200);
+		String getEnrollmentStatusresponse =NGAPIUtils.setupNGHttpGetRequest("EnterpriseGateway",getEnrollmentURL,200);
 		
-		CommonUtils.VerifyTwoValues(CommonUtils.getResponseKeyValue(GetEnrollmentStatusresponse,"status"),"equals","0"); 
-		CommonUtils.VerifyTwoValues(CommonUtils.getResponseKeyValue(GetEnrollmentStatusresponse,"statusDescription"),"equals","Not Enrolled"); 
-		log("Step End: Patient enrollment status is "+CommonUtils.getResponseKeyValue(GetEnrollmentStatusresponse,"statusDescription") +" and Error Message: "+CommonUtils.getResponseKeyValue(GetEnrollmentStatusresponse,"errorMessage"));
+		CommonUtils.VerifyTwoValues(CommonUtils.getResponseKeyValue(getEnrollmentStatusresponse,"status"),"equals","0"); 
+		CommonUtils.VerifyTwoValues(CommonUtils.getResponseKeyValue(getEnrollmentStatusresponse,"statusDescription"),"equals","Not Enrolled"); 
+		log("Step End: Patient enrollment status is "+CommonUtils.getResponseKeyValue(getEnrollmentStatusresponse,"statusDescription") +" and Error Message: "+CommonUtils.getResponseKeyValue(getEnrollmentStatusresponse,"errorMessage"));
 	}
 	
 	
@@ -948,8 +948,8 @@ public class NGIntegrationE2ESITTests extends BaseTestNGWebDriver{
 		
 		String personId = registerNGPatienttoMFPortal();
 		String person_nbr =DBUtils.executeQueryOnDB("NGCoreDB","select person_nbr from person where person_id = '"+personId.trim()+"'");
-		String PatientFirstName =DBUtils.executeQueryOnDB("NGCoreDB","select first_name from person where person_id = '"+personId.trim()+"'");
-		String PatientLastName =DBUtils.executeQueryOnDB("NGCoreDB","select last_name from person where person_id = '"+personId.trim()+"'");
+		String patientFirstName =DBUtils.executeQueryOnDB("NGCoreDB","select first_name from person where person_id = '"+personId.trim()+"'");
+		String patientLastName =DBUtils.executeQueryOnDB("NGCoreDB","select last_name from person where person_id = '"+personId.trim()+"'");
 		
 		log("Step 17: Login to Practice Portal");
 		Thread.sleep(3000);
@@ -958,14 +958,14 @@ public class NGIntegrationE2ESITTests extends BaseTestNGWebDriver{
 		log("Step Begins: Click on Search");
 		PatientSearchPage patientSearchPage = practiceHome.clickPatientSearchLink();
 		log("Step Begins: Search for Patient");
-		patientSearchPage.searchForPatientInPatientSearch(PatientFirstName,PatientLastName);
-		patientSearchPage.clickOnPatient(PatientFirstName,PatientLastName);
+		patientSearchPage.searchForPatientInPatientSearch(patientFirstName,patientLastName);
+		patientSearchPage.clickOnPatient(patientFirstName,patientLastName);
 		log("Step Begins: Deactivate the searched patient");
 		patientSearchPage.deactivatePatient();
 		log("Step Begins: Verify the Patient is deactivated from practive portal");
-		patientSearchPage.verifyDeactivatedPatient(PatientFirstName,PatientLastName);
+		patientSearchPage.verifyDeactivatedPatient(patientFirstName,patientLastName);
 		
-		VerifyGetPIDCCall(timestamp, person_nbr,PatientFirstName, PatientLastName,"DEACTIVATED",PropertyLoaderObj.getIntegrationPracticeID());
+		VerifyGetPIDCCall(timestamp, person_nbr,patientFirstName, patientLastName,"DEACTIVATED",PropertyLoaderObj.getIntegrationPracticeID());
 		
 		Thread.sleep(10000);
 		log("Step 18: Verify the enrollment and processing status of patient in pxp enrollment table");
@@ -991,11 +991,11 @@ public class NGIntegrationE2ESITTests extends BaseTestNGWebDriver{
         
 		log("Step 15: Verify the enrollment status of patient");
 		String getEnrollmentURL =EnterprisebaseURL+ apiRoutes.valueOf("GetEnrollmentStatus").getRouteURL().replaceAll("personId", personId);
-		String GetEnrollmentStatusresponse =NGAPIUtils.setupNGHttpGetRequest("EnterpriseGateway",getEnrollmentURL,200);
+		String getEnrollmentStatusresponse =NGAPIUtils.setupNGHttpGetRequest("EnterpriseGateway",getEnrollmentURL,200);
 		
-		CommonUtils.VerifyTwoValues(CommonUtils.getResponseKeyValue(GetEnrollmentStatusresponse,"status"),"equals","10"); 
-		CommonUtils.VerifyTwoValues(CommonUtils.getResponseKeyValue(GetEnrollmentStatusresponse,"statusDescription"),"equals","Deactivated"); 
-		log("Step End: Patient enrollment status is "+enrollment_status+" which is "+CommonUtils.getResponseKeyValue(GetEnrollmentStatusresponse,"statusDescription"));
+		CommonUtils.VerifyTwoValues(CommonUtils.getResponseKeyValue(getEnrollmentStatusresponse,"status"),"equals","10"); 
+		CommonUtils.VerifyTwoValues(CommonUtils.getResponseKeyValue(getEnrollmentStatusresponse,"statusDescription"),"equals","Deactivated"); 
+		log("Step End: Patient enrollment status is "+enrollment_status+" which is "+CommonUtils.getResponseKeyValue(getEnrollmentStatusresponse,"statusDescription"));
 		
 	}
 	
@@ -1021,8 +1021,8 @@ public class NGIntegrationE2ESITTests extends BaseTestNGWebDriver{
 		NGAPIFlows.addCharttoProvider(locationName,providerName,person_id);
 		
 		log("Step 2: Using Post Enrollment call, Verify the MF agent trigger for new patient");
-		String PostEnrollmentURL = EnterprisebaseURL+ apiRoutes.valueOf("PostEnrollment").getRouteURL().replaceAll("personId", person_id);
-		ngAPIUtils.setupNGHttpPostRequest("EnterpriseGateway",PostEnrollmentURL,"" , 409);
+		String postEnrollmentURL = EnterprisebaseURL+ apiRoutes.valueOf("PostEnrollment").getRouteURL().replaceAll("personId", person_id);
+		ngAPIUtils.setupNGHttpPostRequest("EnterpriseGateway",postEnrollmentURL,"" , 409);
 		log("Step End: MF agent initiate the enrollment automatically");
 		
 		log("Step 3: Verify the enrollment status of patient after initiation of enrollment using Get Enrollment status call");
@@ -1162,17 +1162,17 @@ public class NGIntegrationE2ESITTests extends BaseTestNGWebDriver{
 		verifyProcessingStatusto4(person_id);
 		
 		Log4jUtil.log("Step 15: Find the patient and check if he is registered");
-        String GetEnrollmentStatusresponse2 =ngAPIUtils.setupNGHttpGetRequest("EnterpriseGateway",getEnrollmentURL,200);
-		CommonUtils.VerifyTwoValues(CommonUtils.getResponseKeyValue(GetEnrollmentStatusresponse2,"status"),"equals","9"); 
-		CommonUtils.VerifyTwoValues(CommonUtils.getResponseKeyValue(GetEnrollmentStatusresponse2,"statusDescription"),"equals","Completed"); 
-		log("Result: Patient enrollment status is "+CommonUtils.getResponseKeyValue(GetEnrollmentStatusresponse2,"statusDescription"));
+        String getEnrollmentStatusresponse2 =ngAPIUtils.setupNGHttpGetRequest("EnterpriseGateway",getEnrollmentURL,200);
+		CommonUtils.VerifyTwoValues(CommonUtils.getResponseKeyValue(getEnrollmentStatusresponse2,"status"),"equals","9"); 
+		CommonUtils.VerifyTwoValues(CommonUtils.getResponseKeyValue(getEnrollmentStatusresponse2,"statusDescription"),"equals","Completed"); 
+		log("Result: Patient enrollment status is "+CommonUtils.getResponseKeyValue(getEnrollmentStatusresponse2,"statusDescription"));
 		
 		log("Step 16: Verify the enrollment status in pxp_enrollments table");
 		String enrollment_status2 =DBUtils.executeQueryOnDB("NGCoreDB","select enrollment_status from pxp_enrollments where person_id = '"+person_id.trim()+"'");
 		CommonUtils.VerifyTwoValues(enrollment_status2,"equals","9");
 		String processing_status2 =DBUtils.executeQueryOnDB("NGCoreDB","select processing_status from pxp_enrollments where person_id = '"+person_id.trim()+"'");
 		CommonUtils.VerifyTwoValues(processing_status2,"equals","4");
-		log("Step End: Patient enrollment status is "+enrollment_status2+" which is "+CommonUtils.getResponseKeyValue(GetEnrollmentStatusresponse2,"statusDescription"));
+		log("Step End: Patient enrollment status is "+enrollment_status2+" which is "+CommonUtils.getResponseKeyValue(getEnrollmentStatusresponse2,"statusDescription"));
 			
 		return person_id;
 	}
@@ -5838,8 +5838,8 @@ public class NGIntegrationE2ESITTests extends BaseTestNGWebDriver{
 		logStep("Verifying credit card ending");
 		assertTrue(confirmationPage.getCreditCardEnding().equals(creditCard.getLastFourDigits()));
 		
-		String PaymentComments = "Testing payment from number: " + accountNumber+" Current Timestamp "+(new Date()).getTime();
-		homePage = confirmationPage.commentAndSubmitPayment(PaymentComments);
+		String paymentComments = "Testing payment from number: " + accountNumber+" Current Timestamp "+(new Date()).getTime();
+		homePage = confirmationPage.commentAndSubmitPayment(paymentComments);
 		assertTrue(homePage.wasPayBillsSuccessfull());
 		homePage.clickOnLogout();
 		
@@ -5868,11 +5868,11 @@ public class NGIntegrationE2ESITTests extends BaseTestNGWebDriver{
 		
 		String actualAmount = amount.charAt(0)+"."+amount.substring(1);
 		log("Actual Amount "+actualAmount);
-		CommonFlows.verifyPaymentReachedtoMFAgent(PaymentComments,"BillPayment", "", accountNumber,"POSTED", actualAmount,"MasterCard");
+		CommonFlows.verifyPaymentReachedtoMFAgent(paymentComments,"BillPayment", "", accountNumber,"POSTED", actualAmount,"MasterCard");
 		
-		String SourceIdQuery = "select acct_id from accounts where guar_id ='"+person_id+"' and practice_id='"+practiceId.trim()+"'";
-		String SourceId = DBUtils.executeQueryOnDB("NGCoreDB",SourceIdQuery);
-		CommonFlows.verifyPaymentPostedtoNG(PaymentComments,SourceId , person_id, "-"+actualAmount, "Payment type: BillPayment, Last 4 CC digits: "+creditCard.getLastFourDigits(),practiceId);
+		String sourceIdQuery = "select acct_id from accounts where guar_id ='"+person_id+"' and practice_id='"+practiceId.trim()+"'";
+		String sourceId = DBUtils.executeQueryOnDB("NGCoreDB",sourceIdQuery);
+		CommonFlows.verifyPaymentPostedtoNG(paymentComments,sourceId , person_id, "-"+actualAmount, "Payment type: BillPayment, Last 4 CC digits: "+creditCard.getLastFourDigits(),practiceId);
 		log("Test Case End: The patient is able to pay the bill using Pay Bills and payment is being posted to NG");
 	}
 	
@@ -5899,13 +5899,13 @@ public class NGIntegrationE2ESITTests extends BaseTestNGWebDriver{
 		logStep("Initiate payment data");
 		String acctNBRQuery = "select acct_nbr from accounts where guar_id ='"+person_id+"' and practice_id='"+practiceId.trim()+"'";
 		String accountNumber = DBUtils.executeQueryOnDB("NGCoreDB",acctNBRQuery);
-		String FirstName = DBUtils.executeQueryOnDB("NGCoreDB","select first_name from person where email_address = '"+username+"'");
+		String firstName = DBUtils.executeQueryOnDB("NGCoreDB","select first_name from person where email_address = '"+username+"'");
 		String amount = IHGUtil.createRandomNumericString().substring(0, 2);
-		String PaymentComment = PracticeConstants.PAYMENT_COMMENT.concat(IHGUtil.createRandomNumericString());
+		String paymentComment = PracticeConstants.PAYMENT_COMMENT.concat(IHGUtil.createRandomNumericString());
 		
 		DecimalFormat df=new DecimalFormat("0.00");
-		String ActualAmount = df.format(Integer.parseInt(amount));
-		log("Amount to be paid "+ActualAmount);
+		String actualAmount = df.format(Integer.parseInt(amount));
+		log("Amount to be paid "+actualAmount);
 		
 		logStep("Navigate to Login page");
 		PracticeLoginPage practiceLogin = new PracticeLoginPage(driver, PropertyLoaderObj.getPortalUrl());
@@ -5920,17 +5920,17 @@ public class NGIntegrationE2ESITTests extends BaseTestNGWebDriver{
 		logStep("Add card info and click on 'Click Here To Charge Card' button.");
 		virtualCardSwiper.addCreditCardInfo(PracticeConstants.CARD_NAME, PracticeConstants.CARD_NUMBER, PracticeConstants.CARD_TYPE_VISA, PracticeConstants.EXP_MONTH,
 								PracticeConstants.EXP_YEAR, amount, PracticeConstants.CVV, PracticeConstants.ZIP, accountNumber,
-								FirstName, PaymentComment,PropertyLoaderObj.getProperty("PortalLocationName"));
+								firstName, paymentComment,PropertyLoaderObj.getProperty("PortalLocationName"));
 		
 		logStep("Verify whether the payment is completed successfully.");
 		assertEquals(virtualCardSwiper.getPaymentCompletedSuccessMsg().contains(PracticeConstants.PAYMENT_COMPLETED_SUCCESS_MSG), true,
 				"The payment is completed properly.");
 		
-		CommonFlows.verifyPaymentReachedtoMFAgent(PaymentComment,"VCSPayment", "", accountNumber,"POSTED", ActualAmount,PracticeConstants.CARD_TYPE_VISA);
+		CommonFlows.verifyPaymentReachedtoMFAgent(paymentComment,"VCSPayment", "", accountNumber,"POSTED", actualAmount,PracticeConstants.CARD_TYPE_VISA);
 		
 		String SourceIdQuery = "select acct_id from accounts where guar_id ='"+person_id+"' and practice_id='"+practiceId.trim()+"'";
 		String SourceId = DBUtils.executeQueryOnDB("NGCoreDB",SourceIdQuery);
-		CommonFlows.verifyPaymentPostedtoNG(PaymentComment,SourceId , person_id, "-"+ActualAmount, "Payment type: VCSPayment, Last 4 CC digits: "+PracticeConstants.CARD_NUMBER.substring(12),practiceId);
+		CommonFlows.verifyPaymentPostedtoNG(paymentComment,SourceId , person_id, "-"+actualAmount, "Payment type: VCSPayment, Last 4 CC digits: "+PracticeConstants.CARD_NUMBER.substring(12),practiceId);
 		log("Test Case End: The patient is able to pay using Virtual Card Swiper method and payment is being posted to NG");
 	}
 	
@@ -5964,8 +5964,8 @@ public class NGIntegrationE2ESITTests extends BaseTestNGWebDriver{
 		log("Random generated amount: " + amount);
     	
     	DecimalFormat df=new DecimalFormat("0.00");
-		String ActualAmount = df.format(Integer.parseInt(amount));
-		log("Amount to be paid "+ActualAmount);
+		String actualAmount = df.format(Integer.parseInt(amount));
+		log("Amount to be paid "+actualAmount);
     	
 		logStep("Login to Practice Portal");
 		PracticeLoginPage practiceLogin = new PracticeLoginPage(driver, PropertyLoaderObj.getPortalUrl());
@@ -5977,11 +5977,11 @@ public class NGIntegrationE2ESITTests extends BaseTestNGWebDriver{
 		logStep("Search For Patient");
 		pPayMyBillOnlinePage.searchForPatient(firstName, lastName);
 
-		String PaymentComment = PracticeConstants.PAYMENT_COMMENT.concat(IHGUtil.createRandomNumericString());
+		String paymentComment = PracticeConstants.PAYMENT_COMMENT.concat(IHGUtil.createRandomNumericString());
 		logStep("Set all the transaction details");		
 		pPayMyBillOnlinePage.setTransactionsForOnlineBillPayProcess(PropertyLoaderObj.getProperty("PortalLocationName"),PropertyLoaderObj.getProperty("PortalProviderName").replaceAll(", Dr", ""),
 				accountNumber,amount, PracticeConstants.PROCESS_CARD_HOLDER_NAME,PracticeConstants.CARD_NUM_MASTERCARD,	PracticeConstants.CARD_TYPE_MASTERCARD,
-				PaymentComment);
+				paymentComment);
 
 		logStep("Verify the Payment Confirmation text");
 		IHGUtil.setFrame(driver, PracticeConstants.FRAME_NAME);
@@ -5996,17 +5996,17 @@ public class NGIntegrationE2ESITTests extends BaseTestNGWebDriver{
 		patientsearchPage.searchPatient(firstName, lastName);
 
 		logStep("Verify whether the transaction is present.");
-		assertTrue(patientsearchPage.isTransactionPresent(ActualAmount, firstName, lastName));
+		assertTrue(patientsearchPage.isTransactionPresent(actualAmount, firstName, lastName));
 
 		logStep("Select the particular Transaction from the Search Result.");
-		patientsearchPage.selectTheTransaction(ActualAmount, firstName, lastName);
+		patientsearchPage.selectTheTransaction(actualAmount, firstName, lastName);
 		assertFalse(pPayMyBillOnlinePage.isVoidTransactionPresent());
 		
-		CommonFlows.verifyPaymentReachedtoMFAgent(PaymentComment,"BillPayment", "", accountNumber,"POSTED", ActualAmount,PracticeConstants.CARD_TYPE_MASTERCARD);
+		CommonFlows.verifyPaymentReachedtoMFAgent(paymentComment,"BillPayment", "", accountNumber,"POSTED", actualAmount,PracticeConstants.CARD_TYPE_MASTERCARD);
 		
 		String SourceIdQuery = "select acct_id from accounts where guar_id ='"+person_id+"' and practice_id='"+practiceId.trim()+"'";
 		String SourceId = DBUtils.executeQueryOnDB("NGCoreDB",SourceIdQuery);
-		CommonFlows.verifyPaymentPostedtoNG(PaymentComment,SourceId , person_id, "-"+ActualAmount, "Payment type: BillPayment, Last 4 CC digits: "+PracticeConstants.CARD_NUM_MASTERCARD.substring(12),practiceId);
+		CommonFlows.verifyPaymentPostedtoNG(paymentComment,SourceId , person_id, "-"+actualAmount, "Payment type: BillPayment, Last 4 CC digits: "+PracticeConstants.CARD_NUM_MASTERCARD.substring(12),practiceId);
 		
 		log("Test Case End: The patient is able to pay using Online Bill Pay Process and payment is being posted to NG");
 	}
@@ -6014,8 +6014,8 @@ public class NGIntegrationE2ESITTests extends BaseTestNGWebDriver{
 	@Test(enabled = true, groups = { "Payment" }, retryAnalyzer = RetryAnalyzer.class)
 	public void testPaymentBudgetPaymentProcess() throws Throwable {
 		log("Test case: Verify practice user is able to schedule budget payment plan to pay the patient bill");
-		String amount = "50";
-		String prepayamount = "10";
+		String amount = PropertyLoaderObj.getProperty("BudgetAmount");
+		String prepayamount = PropertyLoaderObj.getProperty("BudgetPrepayAmount");
 		
 		logStep("Getting Existing User");
 		String username = PropertyLoaderObj.getProperty("CCDAUsername");
@@ -6063,7 +6063,7 @@ public class NGIntegrationE2ESITTests extends BaseTestNGWebDriver{
 		logStep("Verify the creditcard last four digit");
 		assertTrue(pPayMyBillOnlinePage.getCreditCardLastFourDigits().contains(PracticeConstants.CARD_NUM_MASTERCARD.substring(12)));
 
-		String EnddatePlanText = pPayMyBillOnlinePage.getPlanEndDate();
+		String enddatePlanText = pPayMyBillOnlinePage.getPlanEndDate();
 
 		logStep("click to submit the Budget Payment Plan search");
 		pPayMyBillOnlinePage.clickOnSubmitPayment();
@@ -6075,7 +6075,7 @@ public class NGIntegrationE2ESITTests extends BaseTestNGWebDriver{
 		pPayMyBillOnlinePage.budgetPaymentPlanSearchPatient(firstName, lastName);
 
 		logStep("Verify the BudgetPaymentPlan End Date and card ending");
-		assertTrue(pPayMyBillOnlinePage.getplanEndDateBudgetSearch().equals(EnddatePlanText));
+		assertTrue(pPayMyBillOnlinePage.getplanEndDateBudgetSearch().equals(enddatePlanText));
 
 		logStep("Verify the creditcard last four digit in Budget Payment Plan Search");
 		assertTrue(pPayMyBillOnlinePage.getActiveBudgetPaymentCardDigit().contains(PracticeConstants.CARD_NUM_MASTERCARD.substring(12)));
@@ -6114,8 +6114,8 @@ public class NGIntegrationE2ESITTests extends BaseTestNGWebDriver{
 		log("Random generated amount: " + amount);
     	
     	DecimalFormat df=new DecimalFormat("0.00");
-		String ActualAmount = df.format(Integer.parseInt(amount));
-		log("Amount to be paid "+ActualAmount);
+		String actualAmount = df.format(Integer.parseInt(amount));
+		log("Amount to be paid "+actualAmount);
     	
 		logStep("Login to Practice Portal");
 		PracticeLoginPage practiceLogin = new PracticeLoginPage(driver, PropertyLoaderObj.getPortalUrl());
@@ -6127,11 +6127,11 @@ public class NGIntegrationE2ESITTests extends BaseTestNGWebDriver{
 		logStep("Search For Patient");
 		pPayMyBillOnlinePage.searchForPatient(firstName, lastName);
 
-		String PaymentComment = PracticeConstants.PAYMENT_COMMENT.concat(IHGUtil.createRandomNumericString());
+		String paymentComment = PracticeConstants.PAYMENT_COMMENT.concat(IHGUtil.createRandomNumericString());
 		logStep("Set all the transaction details");		
 		pPayMyBillOnlinePage.setTransactionsForOnlineBillPayProcess(PropertyLoaderObj.getProperty("PortalLocationName"),PropertyLoaderObj.getProperty("PortalProviderName").replaceAll(", Dr", ""),
 				invalidAccountNumber,amount, PracticeConstants.PROCESS_CARD_HOLDER_NAME,PracticeConstants.CARD_NUM_MASTERCARD,	PracticeConstants.CARD_TYPE_MASTERCARD,
-				PaymentComment);
+				paymentComment);
 
 		logStep("Verify the Payment Confirmation text");
 		IHGUtil.setFrame(driver, PracticeConstants.FRAME_NAME);
@@ -6141,11 +6141,11 @@ public class NGIntegrationE2ESITTests extends BaseTestNGWebDriver{
 		String personNumber = DBUtils.executeQueryOnDB("NGCoreDB","select person_nbr from person where person_id = '"+person_id+"'");
 		String acctNBRQuery = "select acct_nbr from accounts where guar_id ='"+person_id+"' and practice_id='"+practiceId.trim()+"'";
 		String accountNumber = DBUtils.executeQueryOnDB("NGCoreDB",acctNBRQuery);
-		CommonFlows.verifyPaymentReachedtoMFAgent(PaymentComment,"BillPayment", personNumber.trim().replace("\t", ""), invalidAccountNumber,"POSTED", ActualAmount,PracticeConstants.CARD_TYPE_MASTERCARD);
+		CommonFlows.verifyPaymentReachedtoMFAgent(paymentComment,"BillPayment", personNumber.trim().replace("\t", ""), invalidAccountNumber,"POSTED", actualAmount,PracticeConstants.CARD_TYPE_MASTERCARD);
 		
-		String SourceIdQuery = "select acct_id from accounts where guar_id ='"+person_id+"' and practice_id='"+practiceId.trim()+"'";
-		String SourceId = DBUtils.executeQueryOnDB("NGCoreDB",SourceIdQuery);
-		CommonFlows.verifyPaymentPostedtoNG(PaymentComment,SourceId , person_id, "-"+ActualAmount, "Payment type: BillPayment, Last 4 CC digits: "+PracticeConstants.CARD_NUM_MASTERCARD.substring(12),practiceId);
+		String sourceIdQuery = "select acct_id from accounts where guar_id ='"+person_id+"' and practice_id='"+practiceId.trim()+"'";
+		String sourceId = DBUtils.executeQueryOnDB("NGCoreDB",sourceIdQuery);
+		CommonFlows.verifyPaymentPostedtoNG(paymentComment,sourceId , person_id, "-"+actualAmount, "Payment type: BillPayment, Last 4 CC digits: "+PracticeConstants.CARD_NUM_MASTERCARD.substring(12),practiceId);
 		log("Test Case End: The payment is auto posted when Patient is having single guarantor while paying using One Time Payment method");
 	}
 	
@@ -6178,8 +6178,8 @@ public class NGIntegrationE2ESITTests extends BaseTestNGWebDriver{
 		log("Random generated amount: " + amount);
     	
     	DecimalFormat df=new DecimalFormat("0.00");
-		String ActualAmount = df.format(Integer.parseInt(amount));
-		log("Amount to be paid "+ActualAmount);
+		String actualAmount = df.format(Integer.parseInt(amount));
+		log("Amount to be paid "+actualAmount);
     	
 		logStep("Login to Practice Portal");
 		PracticeLoginPage practiceLogin = new PracticeLoginPage(driver, PropertyLoaderObj.getPortalUrl());
@@ -6191,18 +6191,18 @@ public class NGIntegrationE2ESITTests extends BaseTestNGWebDriver{
 		logStep("Search For Patient");
 		pPayMyBillOnlinePage.searchForPatient(firstName, lastName);
 
-		String PaymentComment = PracticeConstants.PAYMENT_COMMENT.concat(IHGUtil.createRandomNumericString());
+		String paymentComment = PracticeConstants.PAYMENT_COMMENT.concat(IHGUtil.createRandomNumericString());
 		logStep("Set all the transaction details");		
 		pPayMyBillOnlinePage.setTransactionsForOnlineBillPayProcess(PropertyLoaderObj.getProperty("PortalLocationName"),PropertyLoaderObj.getProperty("PortalProviderName").replaceAll(", Dr", ""),
 				invalidAccountNumber,amount, PracticeConstants.PROCESS_CARD_HOLDER_NAME,PracticeConstants.CARD_NUM_MASTERCARD,	PracticeConstants.CARD_TYPE_MASTERCARD,
-				PaymentComment);
+				paymentComment);
 
 		logStep("Verify the Payment Confirmation text");
 		IHGUtil.setFrame(driver, PracticeConstants.FRAME_NAME);
 		IHGUtil.waitForElement(driver, 20, pPayMyBillOnlinePage.paymentConfirmationText);
 		assertEquals(true, pPayMyBillOnlinePage.paymentConfirmationText.getText().contains(PAYMENT_SUCCESSFULL_TEXT + firstName +" "+ lastName));
 				
-		CommonFlows.verifyPaymentReachedtoMFAgent(PaymentComment,"BillPayment", "", invalidAccountNumber,"PENDING", ActualAmount,PracticeConstants.CARD_TYPE_MASTERCARD);
+		CommonFlows.verifyPaymentReachedtoMFAgent(paymentComment,"BillPayment", "", invalidAccountNumber,"PENDING", actualAmount,PracticeConstants.CARD_TYPE_MASTERCARD);
 		log("Test Case End: Payment is not auto posted when Patient is having multiple guarantors while paying using OLBP method and payment state is Pending");
 	}
 	
@@ -6228,13 +6228,13 @@ public class NGIntegrationE2ESITTests extends BaseTestNGWebDriver{
 				
 		logStep("Initiate payment data");
 		String invalidAccountNumber = "9999999";
-		String FirstName = DBUtils.executeQueryOnDB("NGCoreDB","select first_name from person where email_address = '"+username+"'");
+		String firstName = DBUtils.executeQueryOnDB("NGCoreDB","select first_name from person where email_address = '"+username+"'");
 		String amount = IHGUtil.createRandomNumericString().substring(0, 2);
-		String PaymentComment = PracticeConstants.PAYMENT_COMMENT.concat(IHGUtil.createRandomNumericString());
+		String paymentComment = PracticeConstants.PAYMENT_COMMENT.concat(IHGUtil.createRandomNumericString());
 		
 		DecimalFormat df=new DecimalFormat("0.00");
-		String ActualAmount = df.format(Integer.parseInt(amount));
-		log("Amount to be paid "+ActualAmount);
+		String actualAmount = df.format(Integer.parseInt(amount));
+		log("Amount to be paid "+actualAmount);
 		
 		logStep("Navigate to Login page");
 		PracticeLoginPage practiceLogin = new PracticeLoginPage(driver, PropertyLoaderObj.getPortalUrl());
@@ -6249,13 +6249,13 @@ public class NGIntegrationE2ESITTests extends BaseTestNGWebDriver{
 		logStep("Add card info and click on 'Click Here To Charge Card' button.");
 		virtualCardSwiper.addCreditCardInfo(PracticeConstants.CARD_NAME, PracticeConstants.CARD_NUMBER, PracticeConstants.CARD_TYPE_VISA, PracticeConstants.EXP_MONTH,
 								PracticeConstants.EXP_YEAR, amount, PracticeConstants.CVV, PracticeConstants.ZIP, invalidAccountNumber,
-								FirstName, PaymentComment,PropertyLoaderObj.getProperty("PortalLocationName"));
+								firstName, paymentComment,PropertyLoaderObj.getProperty("PortalLocationName"));
 		
 		logStep("Verify whether the payment is completed successfully.");
 		assertEquals(virtualCardSwiper.getPaymentCompletedSuccessMsg().contains(PracticeConstants.PAYMENT_COMPLETED_SUCCESS_MSG), true,
 				"The payment is completed properly.");
 		
-		CommonFlows.verifyPaymentReachedtoMFAgent(PaymentComment,"VCSPayment", "", invalidAccountNumber,"PENDING", ActualAmount,PracticeConstants.CARD_TYPE_VISA);
+		CommonFlows.verifyPaymentReachedtoMFAgent(paymentComment,"VCSPayment", "", invalidAccountNumber,"PENDING", actualAmount,PracticeConstants.CARD_TYPE_VISA);
 		log("Test Case End: The Payment is not auto posted when Patient is having multiple guarantors while paying using VCS method and payment state is Pending");
 	}
 }
