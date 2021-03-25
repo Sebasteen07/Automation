@@ -1,6 +1,7 @@
+//Copyright 2013-2021 NXGN Management, LLC. All Rights Reserved.
 package com.medfusion.rcm.utils;
 
-import org.junit.Assert;
+import static org.testng.Assert.assertNotNull;
 import org.openqa.selenium.WebDriver;
 
 import com.medfusion.common.utils.IHGUtil;
@@ -29,7 +30,7 @@ public class RCMUtil extends IHGUtil {
 
 		WebPoster poster = new WebPoster();
 
-		Assert.assertNotNull("### Test property rcmStatementRest not defined", rcmStatementRest);
+		assertNotNull("### Test property rcmStatementRest not defined", rcmStatementRest);
 		poster.setServiceUrl(rcmStatementRest.trim());
 
 		poster.setContentType("application/json;");

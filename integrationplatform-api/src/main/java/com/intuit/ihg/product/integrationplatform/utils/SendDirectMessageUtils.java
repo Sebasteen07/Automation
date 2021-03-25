@@ -1,7 +1,10 @@
+//Copyright 2013-2021 NXGN Management, LLC. All Rights Reserved.
 package com.intuit.ihg.product.integrationplatform.utils;
 
+import static org.testng.Assert.assertTrue;
+
 import org.openqa.selenium.WebDriver;
-import org.testng.Assert;
+
 
 import com.intuit.ifs.csscat.core.utils.Log4jUtil;
 
@@ -67,7 +70,7 @@ public class SendDirectMessageUtils {
 				break;
 			}
 		}
-		Assert.assertTrue(completed==true, "Message processing was not completed in time");
+		assertTrue(completed==true, "Message processing was not completed in time");
 		
 		Thread.sleep(800);
 		RestUtils.verifyDirectMessageGetStatus(testData.ResponsePath,mfMsgID,testData.FromEmalID,testData.ToEmalID);

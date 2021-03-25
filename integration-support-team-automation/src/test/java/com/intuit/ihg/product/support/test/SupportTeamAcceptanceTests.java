@@ -2,6 +2,8 @@
 
 package com.intuit.ihg.product.support.test;
 
+import static org.testng.Assert.assertNotNull;
+
 import java.io.BufferedWriter;
 import java.io.File;
 import java.io.FileWriter;
@@ -19,7 +21,7 @@ import net.medfusion.integrations.webservices.medfusion.objects.CommAttachment;
 import net.medfusion.integrations.webservices.medfusion.objects.CommDetail;
 import net.medfusion.integrations.webservices.medfusion.objects.Field;
 
-import org.testng.Assert;
+
 import org.testng.annotations.DataProvider;
 import org.testng.annotations.Test;
 
@@ -226,7 +228,7 @@ public class SupportTeamAcceptanceTests extends BaseTestNGWebDriver {
 
 		String url = testData.getAllScriptAdaptorUrl();
 
-		Assert.assertNotNull("### Test property WEBSERVICE_URL not defined", url);
+		assertNotNull("### Test property WEBSERVICE_URL not defined", url);
 
 		log("Getting the ccd file path");
 		String inputFilePath = SupportConstants.XML_REQUEST_PATH + "CCD_Updated.xml";

@@ -1,6 +1,7 @@
+//  Copyright 2013-2021 NXGN Management, LLC. All Rights Reserved.
 package com.medfusion.product.object.maps.patientportal2.page.MyAccountPage;
 
-import static org.testng.AssertJUnit.assertTrue;
+import static org.testng.Assert.assertTrue;
 
 import java.util.ArrayList;
 import java.util.List;

@@ -1,4 +1,9 @@
+// Copyright 2013-2021 NXGN Management, LLC. All Rights Reserved.
 package com.medfusion.rcm.tests;
+
+import static org.testng.Assert.assertFalse;
+import static org.testng.Assert.assertNotNull;
+import static org.testng.Assert.assertTrue;
 
 import java.io.File;
 import java.io.IOException;
@@ -6,7 +11,6 @@ import java.net.URL;
 import java.util.Random;
 import java.util.Scanner;
 
-import org.junit.Assert;
 import org.openqa.selenium.Alert;
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
@@ -387,7 +391,7 @@ public class RcmAcceptanceTests extends BaseTestNGWebDriver {
 
 	protected int postModifiedStatementToPatient(String filename, String endpoint, String env, String practicePatientId, String patientBalance, String prefix)
 			throws Exception {
-		Assert.assertNotNull("### Endpoint is null!", endpoint);
+		assertNotNull("### Endpoint is null!", endpoint);
 		IHGUtil.PrintMethodName();
 		int min = 111111;
 		int max = 999999;

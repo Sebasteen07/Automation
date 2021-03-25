@@ -1,7 +1,8 @@
-//Copyright 2013-2020 NXGN Management, LLC. All Rights Reserved.
+//Copyright 2013-2021 NXGN Management, LLC. All Rights Reserved.
 package com.medfusion.product.object.maps.patientportal2.page.CcdPage;
 
-import static org.testng.AssertJUnit.*;
+import static org.testng.Assert.assertTrue;
+
 import java.text.SimpleDateFormat;
 import java.time.Instant;
 import java.time.LocalDateTime;
@@ -23,7 +24,6 @@ import org.openqa.selenium.support.PageFactory;
 import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.openqa.selenium.support.ui.WebDriverWait;
 
-import com.medfusion.common.utils.IHGConstants;
 import com.medfusion.common.utils.IHGUtil;
 import com.medfusion.common.utils.MFDateUtil;
 
@@ -207,7 +207,7 @@ public class MedicalRecordSummariesPage extends JalapenoMenu {
 	}
 
 	public void careNexisValidation() {
-		String winHandleBefore = driver.getWindowHandle();
+		driver.getWindowHandle();
 		for (String winHandle : driver.getWindowHandles()) {
 			driver.switchTo().window(winHandle);
 		}
@@ -261,9 +261,8 @@ public class MedicalRecordSummariesPage extends JalapenoMenu {
 		filterCCDs(inst, inst);
 		new WebDriverWait(driver, 30).until(ExpectedConditions
 				.invisibilityOfElementLocated(By.xpath("//*[@data-ng-repeat='ccd in vm.ccdList'][3]//a")));
-		assertTrue("The first element in the list does not satisfy the filter!",
-				MFDateUtil.parseDateToUTCZonedTime(firstVisibleCCDDate.getText()).toInstant().equals(inst));
-
+		assertTrue(MFDateUtil.parseDateToUTCZonedTime(firstVisibleCCDDate.getText()).toInstant().equals(inst), 
+				"The first element in the list does not satisfy the filter!");
 	}
 
 	private String getDateFromTimeStamp(long timeStamp) {

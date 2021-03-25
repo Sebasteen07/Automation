@@ -22,7 +22,9 @@ import org.openqa.selenium.StaleElementReferenceException;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.openqa.selenium.support.ui.WebDriverWait;
-import org.testng.Assert;
+
+import static org.testng.Assert.assertEquals;
+import static org.testng.Assert.assertTrue;
 
 import com.intuit.ihg.common.utils.downloads.RequestMethod;
 import com.intuit.ihg.common.utils.downloads.URLStatusChecker;
@@ -92,7 +94,7 @@ public class Utils {
 				log("Date from web: " + submittedDate);
 				log("Current US date: " + now);
 				// date on web is max. 5 min after submit date
-				Assert.assertTrue(submittedDate.getTime() > (now.getTime() - 1000 * 60 * 5));
+				assertTrue(submittedDate.getTime() > (now.getTime() - 1000 * 60 * 5));
 		}
 
 		public static Date getCurrentESTTime() throws ParseException {
@@ -114,7 +116,7 @@ public class Utils {
 						log("PDF not found!");
 						throw f;
 				}
-				Assert.assertEquals(status.getDownloadStatusCode(pdfLink, RequestMethod.GET), 200);
+				assertEquals(status.getDownloadStatusCode(pdfLink, RequestMethod.GET), 200);
 		}
 
 		public static int getAutomationPracticeID() throws Exception {
