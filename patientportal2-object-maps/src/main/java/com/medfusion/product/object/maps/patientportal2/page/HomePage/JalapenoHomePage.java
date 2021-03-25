@@ -36,6 +36,7 @@ import com.medfusion.product.object.maps.patientportal2.page.MessagesPage.Jalape
 import com.medfusion.product.object.maps.patientportal2.page.NewPayBillsPage.JalapenoPayBillsMakePaymentPage;
 import com.medfusion.product.object.maps.patientportal2.page.PayBillsStatementPage.JalapenoPayBillsStatementPage;
 import com.medfusion.product.object.maps.patientportal2.page.PrescriptionsPage.JalapenoPrescriptionsPage;
+import com.medfusion.product.object.maps.patientportal2.page.ThirdPartySso.ThirdPartySsoPage;
 
 public class JalapenoHomePage extends JalapenoMenu {
 	@FindBy(how = How.ID, using = "feature_messaging")
@@ -134,6 +135,9 @@ public class JalapenoHomePage extends JalapenoMenu {
 	
 	@FindBy(how = How.XPATH, using = "//*[contains(text(),'is no longer linked to your account.')]")
 	private WebElement unlinkSuccessfulMsg;
+	
+	@FindBy(how=How.XPATH, using="//h3[text()='3 Party SSO']")
+	private WebElement thirdpartysso;
 
 	public JalapenoHomePage(WebDriver driver) {
 		super(driver);
@@ -543,5 +547,13 @@ public class JalapenoHomePage extends JalapenoMenu {
 			return false;
 		}
 	}
+	public ThirdPartySsoPage clickOnThirdPartySso(WebDriver driver) {
+		IHGUtil.PrintMethodName();
+		JavascriptExecutor js = (JavascriptExecutor) driver;
+		js.executeScript("arguments[0].scrollIntoView();", thirdpartysso);
+		javascriptClick(thirdpartysso);
+		return PageFactory.initElements(driver, ThirdPartySsoPage.class);
+	}
 
 }
+

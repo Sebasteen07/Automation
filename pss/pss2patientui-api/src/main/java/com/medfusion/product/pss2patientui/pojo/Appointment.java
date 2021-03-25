@@ -95,6 +95,16 @@ public class Appointment {
 	private String maxperDay;
 	private String gmailUserName;
 	private String linkProvider;
+	private String linkLocation;
+
+	public String getLinkLocation() {
+		return linkLocation;
+	}
+
+	public void setLinkLocation(String linkLocation) {
+		this.linkLocation = linkLocation;
+	}
+
 	private String ageRuleMonthFirst;
 	private String ageRuleMonthSecond;
 
@@ -116,7 +126,7 @@ public class Appointment {
 	private String baseurl_AvailableSlots;
 	private String baseurl_ScheduleAppointment;
 	private String baseurl_AppointmentType;
-	
+
 	private String practiceId;
 	private String basicURI;
 	private String practiceDisplayName;
@@ -130,9 +140,9 @@ public class Appointment {
 		this.basicURI = basicURI;
 	}
 
-	//for REST Assured
-    private String accessTokenURL;
-    private String accessToken;
+	// for REST Assured
+	private String accessTokenURL;
+	private String accessToken;
 
 
 	public String getAccessTokenURL() {
@@ -162,7 +172,7 @@ public class Appointment {
 	private boolean showCancellationReasonPM = false;
 	private boolean isFutureApt = false;
 	private boolean pcptoggleState = false;
-	
+
 	public Appointment(String providerConfig, String usernameConfig, String passwordConfig, String datetimeConfig, String locationConfig,
 			String appointmentConfig, String specialityConfig) {
 		this.username = usernameConfig;
@@ -176,9 +186,8 @@ public class Appointment {
 
 
 
-
 	public Appointment() {}
-	
+
 
 	public String getGenderCarePatient() {
 		return genderCarePatient;
@@ -262,7 +271,7 @@ public class Appointment {
 	}
 
 	private String urlAnonymous;
-	
+
 	public String getPracticeDisplayName() {
 		return practiceDisplayName;
 	}
