@@ -5845,7 +5845,6 @@ public class NGIntegrationE2ESITTests extends BaseTestNGWebDriver{
 		assertTrue(homePage.wasPayBillsSuccessfull());
 		homePage.clickOnLogout();
 		
-		Thread.sleep(10000);
 		logStep("Login to Practice Portal");
 		PracticeLoginPage practiceLogin = new PracticeLoginPage(driver, PropertyLoaderObj.getPortalUrl());
 		PracticeHomePage practiceHome = practiceLogin.login(PropertyLoaderObj.getDoctorLogin(), PropertyLoaderObj.getDoctorPassword());
@@ -6057,7 +6056,6 @@ public class NGIntegrationE2ESITTests extends BaseTestNGWebDriver{
 				accountNumber, amount, prepayamount, PracticeConstants.PROCESS_CARD_HOLDER_NAME,
 				PracticeConstants.CARD_NUM_MASTERCARD, PracticeConstants.CARD_TYPE_MASTERCARD);
 
-		Thread.sleep(5000);
 		logStep("Verify the your Budget payment plan start date text");
 		assertTrue(pPayMyBillOnlinePage.getPaymentStartDateText().contains("Your payment plan start date is "
 				+ pPayMyBillOnlinePage.getPlanStartDate() + " recurring every other week."));

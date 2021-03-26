@@ -739,13 +739,12 @@ public class PayMyBillOnlinePage extends BasePageObject {
 		IHGUtil.waitForElement(driver, 30, cardHolder);
 		cardHolder.clear();
 		cardHolder.sendKeys(cardHolderName);
-		Thread.sleep(4000);
-
-		IHGUtil.waitForElement(driver, 30, cardNumber);
+		
+		IHGUtil.waitForElement(driver, 40, cardNumber);
 		cardNumber.clear();
 		cardNumber.sendKeys(cardNum);
-		Thread.sleep(4000);
-
+		
+		IHGUtil.waitForElement(driver, 40, cardType);
 		IHGUtil.setFrame(driver, PracticeConstants.FRAME_NAME);
 		Select sel = new Select(cardType);
 		sel.selectByVisibleText(cardTyp);
@@ -782,7 +781,6 @@ public class PayMyBillOnlinePage extends BasePageObject {
 		
 		IHGUtil.setFrame(driver, PracticeConstants.FRAME_NAME);
 		submitPaymentButton.click();
-		Thread.sleep(5000);
 	}
 
 }
