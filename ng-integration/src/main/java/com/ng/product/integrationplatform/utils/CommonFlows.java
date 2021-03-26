@@ -287,8 +287,8 @@ public class CommonFlows {
 		Log4jUtil.log("Step Begins: Logout");
 		homePage.LogoutfromNGMFPortal();
 		Log4jUtil.log("ON Demand CCD is requested by patient successfully");
-	}
-
+		}
+         
 	public static void deactivatePatient(WebDriver driver, String URL, String Usermame, String Password, String FName,
 			String LName) throws Exception {
 		Log4jUtil.log("Step Begins: Login to Practice Portal");
@@ -304,8 +304,8 @@ public class CommonFlows {
 		patientSearchPage.deactivatePatient();
 		Log4jUtil.log("Step Begins: Verify the Patient is deactivated from practive portal");
 		patientSearchPage.verifyDeactivatedPatient(FName, LName);
-	}
-
+		}      
+   
 	public static void deletePatient(WebDriver driver, String URL, String Usermame, String Password, String FName,
 			String LName) throws Exception {
 		Log4jUtil.log("Step Begins: Login to Practice Portal");
@@ -325,7 +325,7 @@ public class CommonFlows {
 			throws Throwable {
 		Log4jUtil.log("Step Begins: Adding Test data to patient CCD " + person_id);
 		Log4jUtil.log("Step Begins: Add Chart to patient");
-		NGAPIFlows.addCharttoProvider(locationName, providerName, person_id);
+//		NGAPIFlows.addCharttoProvider(locationName, providerName, person_id);
 
 		Log4jUtil.log("Step Begins: Add Encounter to patient chart");
 		String encounter_id = NGAPIFlows.addEncounter(locationName, providerName, person_id);
