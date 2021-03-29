@@ -51,7 +51,7 @@ public class JalapenoLoginPage extends MedfusionPage {
 	@FindBy(how = How.ID, using = "updateMissingInfoButton")
 	private WebElement okButton;
 
-	@FindBy(how = How.XPATH, using = "//span[@data-ng-show = 'notice.existingaccount_same']")
+	@FindBy(how = How.XPATH, using = "//*[@id='same']")
     private WebElement healthKeyMatchError;
 	
 	@FindBy(how = How.XPATH, using = "//*[contains(text(),'You are no longer able to sign in because you have been unlinked from all patient accounts. Please contact our practice if you need assistance.')]")
