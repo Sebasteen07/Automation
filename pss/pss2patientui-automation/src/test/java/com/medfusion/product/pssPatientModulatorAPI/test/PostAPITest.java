@@ -126,7 +126,7 @@ public class PostAPITest extends BaseTestNGWebDriver {
 		propertyData.setRestAPIData(testData);
 		PostAPIRequest postAPIRequest = new PostAPIRequest();
 
-		log("Payload is as below-" + Payload.past_appt_payload("3665", "PSS - NG", "24249"));
+		log("Payload is as below-" + Payload.past_appt_payload(testData.getPatientId(), testData.getPracticeDisplayName(), testData.getPracticeId()));
 
 		log("Base URL- " + testData.getBasicURI());
 
@@ -249,6 +249,25 @@ public class PostAPITest extends BaseTestNGWebDriver {
 		postAPIRequest.rescheduleApptNG(testData.getBasicURI(),
 				Payload.reschedule_Payload(testData.getStartDateTime(), testData.getEndDateTime(),
 						testData.getPatientId(), testData.getFirstName(), testData.getLastName(), appointmentId),
+				headerConfig.defaultHeader());
+
+	}
+	
+	@Test
+	public void upcommingApptPOST() throws IOException {
+
+		HeaderConfig headerConfig = new HeaderConfig();
+		PSSPropertyFileLoader propertyData = new PSSPropertyFileLoader();
+		Appointment testData = new Appointment();
+		propertyData.setRestAPIData(testData);
+		PostAPIRequest postAPIRequest = new PostAPIRequest();
+
+		log("Endpoint url ---> " + testData.getBasicURI());
+
+		log("Payload- " + Payload.upcommingApt_Payload(testData.getPatientId(), testData.getPracticeId(), testData.getPracticeDisplayName()));
+
+		postAPIRequest.upcommingApptNG(testData.getBasicURI(),
+				Payload.upcommingApt_Payload(testData.getPatientId(), testData.getPracticeId(), testData.getPracticeDisplayName()),
 				headerConfig.defaultHeader());
 
 	}

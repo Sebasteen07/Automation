@@ -3,7 +3,7 @@ package com.medfusion.product.pssPatientModulatorAPI.test;
 
 public class Payload {
 	
-	String scheduleApptPatient="{\"slotId\":\"0001\",\"specialty\":null,\"book\":205665,\"appointmentType\":205755,\"location\":205605,\"startDateTime\":\"03/29/2021 02:00:00\",\"customQuestion\":null,\"insuranceInfo\":null,\"patientInfo\":{},\"allowDuplicatePatient\":false,\"updatePatientDetails\":{\"FN\":\"rt\",\"LN\":\"rt\",\"DOB\":\"01/01/2000\",\"GENDER\":\"M\",\"EMAIL\":\"Shweta.Sontakke@CrossAsyst.com\",\"PHONE\":null,\"INSID\":null,\"ADDR1\":null,\"ADDR2\":null,\"CITY\":null,\"STATE\":null,\"ZIP\":null},\"flow\":\"loginless\",\"appTypeDetail\":null,\"rule\":\"T,L,B\",\"leafNode\":null}";
+	String scheduleApptPatient="{\"slotId\":\"0001\",\"specialty\":null,\"book\":205665,\"appointmentType\":205755,\"location\":205605,\"startDateTime\":\"03/31/2021 02:00:00\",\"customQuestion\":null,\"insuranceInfo\":null,\"patientInfo\":{},\"allowDuplicatePatient\":false,\"updatePatientDetails\":{\"FN\":\"rt\",\"LN\":\"rt\",\"DOB\":\"01/01/2000\",\"GENDER\":\"M\",\"EMAIL\":\"Shweta.Sontakke@CrossAsyst.com\",\"PHONE\":null,\"INSID\":null,\"ADDR1\":null,\"ADDR2\":null,\"CITY\":null,\"STATE\":null,\"ZIP\":null},\"flow\":\"loginless\",\"appTypeDetail\":null,\"rule\":\"T,L,B\",\"leafNode\":null}";
 	String apptbody="{\"specialty\":null,\"location\":null,\"book\":null,\"appointmentType\":null,\"slotId\":null,\"patientType\":\"PT_EXISTING\",\"linkGenerationFlow\":false,\"patientDetails\":{\"FN\":\"rt\",\"LN\":\"rt\",\"DOB\":\"01/01/2000\",\"GENDER\":\"M\",\"EMAIL\":\"Shweta.Sontakke@CrossAsyst.com\",\"PHONE\":null,\"INSID\":null,\"ADDR1\":null,\"ADDR2\":null,\"CITY\":null,\"STATE\":null,\"ZIP\":null},\"flow\":\"loginless\"}";
 	String booklist="{\"specialty\":null,\"location\":null,\"book\":null,\"appointmentType\":null,\"slotId\":null,\"patientType\":\"PT_NEW\",\"linkGenerationFlow\":false,\"patientDetails\":{\"FN\":\"api\",\"LN\":\"api\",\"DOB\":\"01/01/2000\",\"GENDER\":\"M\",\"EMAIL\":null,\"PHONE\":null,\"INSID\":null,\"ADDR1\":null,\"ADDR2\":null,\"CITY\":null,\"STATE\":null,\"ZIP\":null,\"PHONE1\":null},\"flow\":\"loginless\"}";
 	String locationlist="{\"specialty\":null,\"location\":null,\"book\":null,\"appointmentType\":205902,\"slotId\":null,\"patientType\":\"PT_NEW\",\"linkGenerationFlow\":false,\"patientDetails\":{\"FN\":\"api\",\"LN\":\"api\",\"DOB\":\"01/01/2000\",\"GENDER\":\"M\",\"EMAIL\":null,\"PHONE\":null,\"INSID\":null,\"ADDR1\":null,\"ADDR2\":null,\"CITY\":null,\"STATE\":null,\"ZIP\":null,\"PHONE1\":null},\"flow\":\"loginless\"}";
@@ -74,7 +74,7 @@ public class Payload {
 		
 		String past_appt="{\r\n"
 				+ "  \"additionalFields\": {},\r\n"
-				+ "  \"endDate\": \"03/03/2021 \",\r\n"
+				+ "  \"endDate\": \"04/04/2021 \",\r\n"
 				+ "  \"patientId\": \""+patientId+"\",\r\n"
 				+ "  \"practiceProvision\": {\r\n"
 				+ "    \"active\": true,\r\n"
@@ -191,6 +191,23 @@ public class Payload {
 				+ "}";
 		
 		return schedule;
+	}
+	
+	public static String upcommingApt_Payload(String patientid, String practiceid, String practicedisplayname) {
+
+		String upcommingappt = "{\r\n"
+				+ "  \"patientId\": \""+patientid+"\",\r\n"
+				+ "  \"practiceProvision\": {\r\n"
+				+ "    \"active\": true,\r\n"
+				+ "    \"practiceDisplayName\": \""+practicedisplayname+"\",\r\n"
+				+ "    \"practiceId\": \""+practiceid+"\",\r\n"
+				+ "    \"practiceName\": \"PSS - NG\",\r\n"
+				+ "    \"practiceTimezone\": \"\"\r\n"
+				+ "  },\r\n"
+				+ "  \"startDate\": \"02/19/2021\",\r\n"
+				+ "  \"endDate\": \"03/19/2021\"\r\n"
+				+ "}";
+		return upcommingappt;
 	}
 	
 	

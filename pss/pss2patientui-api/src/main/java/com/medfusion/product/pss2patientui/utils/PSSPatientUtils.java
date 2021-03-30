@@ -302,7 +302,7 @@ public class PSSPatientUtils {
 				Boolean.valueOf(testData.getIsAppointmentPopup()));
 		Log4jUtil.log("Step 11: Verfiy Provider Page and Provider = " + testData.getProvider());
 		Thread.sleep(2000);
-		AppointmentDateTime aptDateTime = provider.searchForProviderFromList(testData.getProvider());
+		AppointmentDateTime aptDateTime = provider.getProviderandClick(testData.getProvider());
 		assertTrue(aptDateTime.areBasicPageElementsPresent());
 
 		Log4jUtil.log("Step 12: Select avaiable Date ");
@@ -365,7 +365,8 @@ public class PSSPatientUtils {
 		Log4jUtil.log("address = " + location.getAddressValue());
 		Log4jUtil.log("Step 11: Verfiy Provider Page and Provider = " + testData.getProvider());
 		assertTrue(provider.areBasicPageElementsPresent());
-		AppointmentDateTime aptDateTime = provider.searchForProviderFromList(testData.getProvider());
+
+		AppointmentDateTime aptDateTime = provider.getProviderandClick(testData.getProvider());
 		assertTrue(aptDateTime.areBasicPageElementsPresent());
 
 		Log4jUtil.log("Step 12: Select avaiable Date ");
@@ -1292,16 +1293,21 @@ public class PSSPatientUtils {
 		driver.get(url);
 		driver.manage().window().maximize();
 		Thread.sleep(2000);
-		driver.findElement(By.xpath("//input[@id='inbox_field']")).clear();
-		driver.findElement(By.xpath("//input[@id='inbox_field']")).sendKeys(email);
-		driver.findElement(By.xpath("//button[@id='go_inbox']")).click();
+		
+		CommonMethods cm = new CommonMethods(driver);
+		
+		driver.findElement(By.xpath("//input[@type='text']")).clear();
+		driver.findElement(By.xpath("//input[@type='text']")).sendKeys(email);
+		driver.findElement(By.xpath("//button[@id='go-to-public']")).click();
 
 		WebDriverWait wait = new WebDriverWait(driver, 30);
-		wait.until(ExpectedConditions.visibilityOfElementLocated(By.xpath("//a[@class='ng-binding']")));
+		wait.until(ExpectedConditions.visibilityOfElementLocated(By.xpath("//tr//td[@class='ng-binding'][2]")));
 		Thread.sleep(2000);
 
-		List<WebElement> subList = driver.findElements(By.xpath("//a[@class='ng-binding']"));
-		List<WebElement> chkList = driver.findElements(By.xpath("//td[@class='a-center ']/input"));
+		List<WebElement> subList = driver.findElements(By.xpath("//tr//td[@class='ng-binding'][2]"));
+		List<WebElement> chkList = driver.findElements(By.xpath("//tr/td/div"));
+		
+		WebElement btndelete=driver.findElement(By.xpath("//button[@aria-label='Delete Button']"));
 
 		String subject_line = "Your appointment is now scheduled";
 		for (int i = 0; i < subList.size(); i++) {
@@ -1309,7 +1315,7 @@ public class PSSPatientUtils {
 			if (subList.get(i).getText().contains(subject_line)) {
 
 				Log4jUtil.log(subList.get(i).getText() + "---Text");
-				CommonMethods cm = new CommonMethods(driver);
+				
 				cm.highlightElement(chkList.get(i));
 				chkList.get(i).click();
 			}
@@ -1322,8 +1328,8 @@ public class PSSPatientUtils {
 		Thread.sleep(1000);
 
 		driver.manage().deleteAllCookies();
-		driver.findElement(By.xpath("//button[@id='trash_but']")).click();
-
+		cm.highlightElement(btndelete);
+		btndelete.click();
 		Thread.sleep(2000);
 
 	}

@@ -38,6 +38,9 @@ public class Provider extends PSS2MainPage {
 
 	@FindAll({ @FindBy(css = ".providerImage-width") })
 	private List<WebElement> providerImages;
+	
+	@FindAll({ @FindBy (xpath="//div[@class='inner-div']/span")})
+	private List<WebElement> providernameLink;
 
 	public Provider(WebDriver driver) {
 		super(driver);
@@ -137,8 +140,7 @@ public class Provider extends PSS2MainPage {
 	}
 	
 	
-	public void getProvider(String providerName)
-	{
+	public void getProvider(String providerName) {
 		log("in select Provider from providerList" + providerName);
 		for (int i = 0; i < providerList.size(); i++) {
 			log(providerList.get(i).getText() + " match "
@@ -159,11 +161,30 @@ public class Provider extends PSS2MainPage {
 		log("Clicked on the Provider ");
 		return PageFactory.initElements(driver, AppointmentDateTime.class);
 	}
+	
+	public AppointmentDateTime getProviderandClick(String providerName) throws InterruptedException {
+		log("in select Provider from providerList" + providerName);
+		log("Size is " + providerList.size());
+		Thread.sleep(1000);
+		
+		for (int i = 0; i < providerList.size(); i++) {
+			log(providerList.get(i).getText() + " match " + providerList.get(i).getText().contains(providerName));
+			if (providerList.get(i).getText().trim().contains(providerName.trim())) {
+
+				CommonMethods.highlightElement(providerList.get(i));
+				Thread.sleep(5000);
+				providernameLink.get(i).click();
+				log("Clicked on Provider");
+				return PageFactory.initElements(driver, AppointmentDateTime.class);
+			}
+		}
+		return PageFactory.initElements(driver, AppointmentDateTime.class);
+	}
 
 	public int searchForProviderFromListt(String providerName) throws InterruptedException {
 		searchForProvider.sendKeys(providerName);
 		log("providerList = " + providerList.size());
-		Thread.sleep(6000);
+		Thread.sleep(1000);
 		return providerList.size();
 	}
 

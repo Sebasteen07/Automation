@@ -27,6 +27,8 @@ public class APIPath {
 		public static final String rescheduleAppt="/24249/rescheduleappointment";
 		public static final String scheduleApptNG="/24249/scheduleappointment";
 		
+		public static final String upcommingApptNG="/24249/upcomingappointments";
+		
 		
 		
 

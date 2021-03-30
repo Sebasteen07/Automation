@@ -651,7 +651,7 @@ public class PSSAdminUtils {
 			adminappointment.pcptoggleclick();
 			Log4jUtil.log("Status of PCP  OFF and Clicked on ON");
 		} else {
-			Log4jUtil.log("Status of PCP is Already OFF");
+			Log4jUtil.log("Status of PCP is Already ON");
 		}
 		
 		PatientFlow patientflow = pss2practiceconfig.gotoPatientFlowTab();

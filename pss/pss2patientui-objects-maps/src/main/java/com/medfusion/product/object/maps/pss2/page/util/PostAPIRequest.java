@@ -2,6 +2,10 @@
 package com.medfusion.product.object.maps.pss2.page.util;
 
 import static io.restassured.RestAssured.given;
+
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 import org.json.JSONObject;
@@ -11,6 +15,7 @@ import com.intuit.ifs.csscat.core.BaseTestNGWebDriver;
 import io.restassured.RestAssured;
 import io.restassured.path.json.JsonPath;
 import io.restassured.response.Response;
+import static org.hamcrest.Matchers.*;
 
 public class PostAPIRequest extends BaseTestNGWebDriver {
 
@@ -206,6 +211,28 @@ public class PostAPIRequest extends BaseTestNGWebDriver {
 		apiVerification.responseCodeValidation(response, 200);
 		apiVerification.responseTimeValidation(response);
 		return s;
+	}
+	
+	public String upcommingApptNG(String baseurl, String b, Map<String, String> Header) {
+
+		RestAssured.baseURI = baseurl;
+		String response = given().when().headers(Header).body(b).log().all().when().post(APIPath.apiPath.upcommingApptNG)
+				.then().log().all().assertThat().statusCode(200).body("book[0].resourceName", equalTo("Saif PSS")).body("location[0].name", equalTo("PSS WLA")).extract().response().asString();
+		
+		log("Response is - "+response);
+		
+		JsonPath js= new JsonPath(response.toString());
+		
+		String apptName=js.getString("appointmentTypes.name");
+		String resourceName=js.getString("book.resourceName");
+		String locationName=js.getString("location.name");
+		
+		log("APPOINTMENT TYPE - "+apptName);
+		log("resourceName - "+resourceName);
+		log("locationName - "+locationName);
+
+		return response;
+
 	}
 
 	public Response appointmenttypesRule(String baseurl, String b, Map<String, String> Header) {
