@@ -1,5 +1,7 @@
-// Copyright 2018-2020 NXGN Management, LLC. All Rights Reserved.
+// Copyright 2018-2021 NXGN Management, LLC. All Rights Reserved.
 package com.medfusion.product.pss2adminportal.test;
+
+import static org.testng.Assert.assertTrue;
 
 import org.testng.annotations.DataProvider;
 import org.testng.annotations.Test;

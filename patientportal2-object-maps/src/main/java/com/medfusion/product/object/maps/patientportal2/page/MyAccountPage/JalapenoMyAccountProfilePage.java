@@ -325,7 +325,7 @@ public class JalapenoMyAccountProfilePage extends JalapenoMyAccountPage {
 		select.selectByIndex(i);
 		WebElement option = select.getFirstSelectedOption();
 		changeValue = option.getText();
-		saveMyChanges.click();
+		javascriptClick(saveMyChanges);
 		return changeValue;
 	}
 
@@ -354,7 +354,7 @@ public class JalapenoMyAccountProfilePage extends JalapenoMyAccountPage {
 
 			break;
 		}
-		saveMyChanges.click();
+		javascriptClick(saveMyChanges);
 		return changeValue;
 	}
 

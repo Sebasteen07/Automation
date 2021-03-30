@@ -1,4 +1,4 @@
-// Copyright 2016-2020 NXGN Management, LLC. All Rights Reserved.
+// Copyright 2013-2021 NXGN Management, LLC. All Rights Reserved.
 package com.medfusion.product.object.maps.patientportal2.page.AccountPage;
 
 import java.util.ArrayList;
@@ -65,17 +65,14 @@ public class JalapenoAccountPage extends JalapenoMenu {
 		}
 
 		public JalapenoMyAccountProfilePage clickOnEditMyAccount() {
-
 				log("Trying to click on Edit button for My Account");
-				WebDriverWait wait = new WebDriverWait(driver, 20);
 				wait.until(ExpectedConditions.visibilityOf(editMyAccountButton));
 				editMyAccountButton.click();
 
 				return PageFactory.initElements(driver, JalapenoMyAccountProfilePage.class);
 		}
 
-		public JalapenoMyAccountProfilePage clickOnEdiDependentAccount() {
-
+		public JalapenoMyAccountProfilePage clickOnEditDependentAccount() {
 				log("Trying to click on Dependent Edit button for Account");
 				editDependentAccountButton.click();
 
@@ -83,7 +80,6 @@ public class JalapenoAccountPage extends JalapenoMenu {
 		}
 
 		public void inviteTrustedRepresentative(Patient patient) {
-				WebDriverWait wait = new WebDriverWait(driver, 15);
 				wait.until(ExpectedConditions.visibilityOf(inviteNewButton));
 
 				inviteNewButton.click();
@@ -126,7 +122,6 @@ public class JalapenoAccountPage extends JalapenoMenu {
 	    }
 		
 		public void inviteTrustedRepresentative(String fname, String lname,String email) {
-			WebDriverWait wait = new WebDriverWait(driver, 15);
 			wait.until(ExpectedConditions.visibilityOf(inviteNewButton));
 
 			inviteNewButton.click();
@@ -141,24 +136,21 @@ public class JalapenoAccountPage extends JalapenoMenu {
 	}
 		
 		public void clickOnUnlinkDependentAccount(){
-
 			log("Trying to click on Dependent unlink link for Account");
-			WebDriverWait wait = new WebDriverWait(driver, 20);
 			wait.until(ExpectedConditions.visibilityOf(unLink));
 			unLink.click();
 			
-			log("Click on Unlik button");
+			log("Click on Unlink button");
 			wait.until(ExpectedConditions.visibilityOf(unLinkButton));
 			unLinkButton.click();
 	}
 		
 		public void clickOnUnlinkTrustedRepresentative(){
-
 			log("Trying to click on Trusted Representative unlink link");
-			WebDriverWait wait = new WebDriverWait(driver, 20);
 			wait.until(ExpectedConditions.visibilityOf(unLink));
 			unLink.click();
-			log("Click on Unlik button");
+			
+			log("Click on Unlink button");
 			wait.until(ExpectedConditions.visibilityOf(unLinkButton));
 			unLinkButton.click();
 	}

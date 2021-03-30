@@ -1,4 +1,8 @@
+//Copyright 2013-2021 NXGN Management, LLC. All Rights Reserved.
 package com.intuit.ihg.product.apiehcore.utils;
+
+import static org.testng.Assert.assertTrue;
+import static org.testng.Assert.fail;
 
 import java.io.FileReader;
 import java.io.IOException;
@@ -10,10 +14,9 @@ import org.custommonkey.xmlunit.Difference;
 import org.custommonkey.xmlunit.DifferenceListener;
 import org.custommonkey.xmlunit.XMLUnit;
 import org.custommonkey.xmlunit.examples.RecursiveElementNameAndTextQualifier;
-import org.testng.Assert;
+
 import org.xml.sax.SAXException;
 
-import com.intuit.ihg.product.apiehcore.utils.EhcoreIgnoreElement;
 import com.intuit.ihg.product.apiehcore.utils.EhcoreXmlUnitUtil;
 
 public class EhcoreXmlUnitUtil {
@@ -66,13 +69,13 @@ public class EhcoreXmlUnitUtil {
 				Difference difference = (Difference) object;
 				logger.debug(difference);
 			}
-			Assert.assertTrue(diff.similar(), "Expected XML and Actual XML are not similar");
+			assertTrue(diff.similar(), "Expected XML and Actual XML are not similar");
 		} catch (SAXException e) {
 			e.printStackTrace();
-			Assert.fail(e.getMessage());
+			fail(e.getMessage());
 		} catch (IOException e) {
 			e.printStackTrace();
-			Assert.fail(e.getMessage());
+			fail(e.getMessage());
 		}
 		logger.debug(" *********** Exiting assertEqualsXML ************");
 	}

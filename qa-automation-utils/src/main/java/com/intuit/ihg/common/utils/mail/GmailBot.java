@@ -1,3 +1,4 @@
+//Copyright 2013-2021 NXGN Management, LLC. All Rights Reserved.
 package com.intuit.ihg.common.utils.mail;
 
 /**
@@ -10,7 +11,6 @@ package com.intuit.ihg.common.utils.mail;
  */
 
 import com.medfusion.common.utils.IHGUtil;
-import junit.framework.Assert;
 
 import javax.mail.*;
 import javax.mail.Flags.Flag;
@@ -18,7 +18,8 @@ import javax.mail.internet.MimeBodyPart;
 import javax.mail.internet.MimeUtility;
 import javax.mail.search.*;
 
-import org.eclipse.jetty.util.log.Log;
+import static org.testng.Assert.assertTrue;
+import static org.testng.Assert.fail;
 
 import java.io.IOException;
 import java.util.*;
@@ -567,7 +568,7 @@ public class GmailBot implements MailBot {
 				iStartURL = sPlainText.indexOf("http://");
 			}
 
-			Assert.assertTrue("### ERROR: Can't find https or http link in email.", iStartURL > -1);
+			assertTrue(iStartURL > -1, "### ERROR: Can't find https or http link in email.");
 
 			int iEndURL = sPlainText.indexOf("]", iStartURL);
 
@@ -629,7 +630,7 @@ public class GmailBot implements MailBot {
 
 					int iEndURL = sHREF.indexOf("\"", iStartURL + 1);
 
-					Assert.assertTrue("### ERROR: Can't find closing quote in HREF: [" + sHREF.substring(iStartURL) + "]", iEndURL > -1);
+					assertTrue(iEndURL > -1, "### ERROR: Can't find closing quote in HREF: [" + sHREF.substring(iStartURL) + "]");
 
 					sURL = sHREF.substring(iStartURL + 1, iEndURL);
 				}
@@ -644,7 +645,7 @@ public class GmailBot implements MailBot {
 
 					int iEndSingle = sURL.indexOf("\'", iStartSingle + 1);
 
-					Assert.assertTrue("### ERROR: Can't find closing single quote in URL.", iEndSingle > -1);
+					assertTrue(iEndSingle > -1, "### ERROR: Can't find closing single quote in URL.");
 
 					sURL = sURL.substring(iStartSingle + 1, iEndSingle);
 				}
@@ -672,7 +673,7 @@ public class GmailBot implements MailBot {
 
 				int iEndURL = sPlainText.indexOf("]", iStartURL + 1);
 
-				Assert.assertTrue("### ERROR: Can't find closing bracket for URL.", iEndURL > -1);
+				assertTrue(iEndURL > -1, "### ERROR: Can't find closing bracket for URL.");
 
 				sURL = sPlainText.substring(iStartURL + 1, iEndURL);
 
@@ -699,7 +700,7 @@ public class GmailBot implements MailBot {
 
 				int iEndURL = sPlainText.indexOf(" ", iStartURL + 1);
 
-				Assert.assertTrue("### ERROR: Can't find closing space for URL.", iEndURL > -1);
+				assertTrue(iEndURL > -1, "### ERROR: Can't find closing space for URL.");
 
 				sURL = sPlainText.substring(iStartURL + 1, iEndURL);
 
@@ -710,7 +711,7 @@ public class GmailBot implements MailBot {
 
 		} else {
 
-			Assert.fail("### ERROR: Unable to process content type for email.");
+			fail("### ERROR: Unable to process content type for email.");
 		}
 
 		// return sURL;
@@ -1266,7 +1267,7 @@ public class GmailBot implements MailBot {
 				iStartURL = sPlainText.indexOf("http://");
 			}
 
-			Assert.assertTrue("### ERROR: Can't find https or http link in email.", iStartURL > -1);
+			assertTrue(iStartURL > -1, "### ERROR: Can't find https or http link in email.");
 
 			int iEndURL = sPlainText.indexOf("]", iStartURL);
 
@@ -1330,7 +1331,7 @@ public class GmailBot implements MailBot {
 
 					int iEndURL = sHREF.indexOf("\"", iStartURL + 1);
 
-					Assert.assertTrue("### ERROR: Can't find closing quote in HREF: [" + sHREF.substring(iStartURL) + "]", iEndURL > -1);
+					assertTrue(iEndURL > -1, "### ERROR: Can't find closing quote in HREF: [" + sHREF.substring(iStartURL) + "]");
 
 					sURL = sHREF.substring(iStartURL + 1, iEndURL);
 				}
@@ -1345,7 +1346,7 @@ public class GmailBot implements MailBot {
 
 					int iEndSingle = sURL.indexOf("\'", iStartSingle + 1);
 
-					Assert.assertTrue("### ERROR: Can't find closing single quote in URL.", iEndSingle > -1);
+					assertTrue(iEndSingle > -1, "### ERROR: Can't find closing single quote in URL.");
 
 					sURL = sURL.substring(iStartSingle + 1, iEndSingle);
 				}
@@ -1373,7 +1374,7 @@ public class GmailBot implements MailBot {
 
 				int iEndURL = sPlainText.indexOf("]", iStartURL + 1);
 
-				Assert.assertTrue("### ERROR: Can't find closing bracket for URL.", iEndURL > -1);
+				assertTrue(iEndURL > -1, "### ERROR: Can't find closing bracket for URL.");
 
 				sURL = sPlainText.substring(iStartURL + 1, iEndURL);
 				System.out.println("URL+++++++====// No more <http... ====+++++:-  " + sURL);
@@ -1400,7 +1401,7 @@ public class GmailBot implements MailBot {
 
 				int iEndURL = sPlainText.indexOf(" ", iStartURL + 1);
 
-				Assert.assertTrue("### ERROR: Can't find closing space for URL.", iEndURL > -1);
+				assertTrue(iEndURL > -1, "### ERROR: Can't find closing space for URL.");
 
 				sURL = sPlainText.substring(iStartURL + 1, iEndURL);
 				System.out.println("URL+++++++====Search for http surrounded by spaces ====+++++:-  " + sURL);
@@ -1411,7 +1412,7 @@ public class GmailBot implements MailBot {
 
 		} else {
 
-			Assert.fail("### ERROR: Unable to process content type for email.");
+			fail("### ERROR: Unable to process content type for email.");
 		}
 
 		// return sURL;

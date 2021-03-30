@@ -1,10 +1,13 @@
+//Copyright 2013-2021 NXGN Management, LLC. All Rights Reserved.
 package com.intuit.ihg.product.object.maps.phr.page.messages;
+
+import static org.testng.Assert.fail;
 
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.FindBy;
 import org.openqa.selenium.support.PageFactory;
-import org.testng.Assert;
+
 
 import com.intuit.ifs.csscat.core.pageobject.BasePageObject;
 import com.medfusion.common.utils.IHGUtil;
@@ -65,7 +68,7 @@ public class PhrInboxMessage extends BasePageObject {
 		if (ccdBasicInfo.isDisplayed() && btnCloseViewer.isDisplayed()) {
 			btnCloseViewer.click();
 		} else {
-			Assert.fail("CCD Viewer not present: Could not find CCD Basic Info/Close Viewer Button");
+			fail("CCD Viewer not present: Could not find CCD Basic Info/Close Viewer Button");
 		}
 	}
 }

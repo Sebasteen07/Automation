@@ -1,12 +1,14 @@
-// Copyright 2018-2020 NXGN Management, LLC. All Rights Reserved.
+// Copyright 2013-2021 NXGN Management, LLC. All Rights Reserved.
 package com.medfusion.product.object.maps.pss2.page.Appointment.HomePage;
+
+import static org.testng.Assert.assertEquals;
 
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.FindBy;
 import org.openqa.selenium.support.How;
 import org.openqa.selenium.support.PageFactory;
-import org.testng.Assert;
+
 
 import com.medfusion.product.object.maps.pss2.page.Appointment.Main.PSS2MainPage;
 
@@ -24,7 +26,7 @@ public class SelectProfilePage extends PSS2MainPage {
 
 	@Override
 	public boolean areBasicPageElementsPresent() {
-		Assert.assertEquals("PSS2MainPage", selectProfileLabel.getText());
+		assertEquals("PSS2MainPage", selectProfileLabel.getText());
 		return true;
 	}
 

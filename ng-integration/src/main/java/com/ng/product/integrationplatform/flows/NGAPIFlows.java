@@ -700,14 +700,18 @@ public class NGAPIFlows {
 		return comm_id;
 	}
 	
-	public static void postAppointmentResponse(String appointmentRequestId, String appointmentId, String message) throws Throwable{
+	public static void postAppointmentResponse(String appointmentRequestId, String appointmentId, String message,String time,int appointmentDaytobeAdded) throws Throwable{
 		AppointmentResponse appointmentResponse = new AppointmentResponse();		
 		try{			
 			appointmentResponse.setMessage(message);
 			
-			String date = sdf.format(new Date());
-			date = date.substring(0,date.lastIndexOf(":")-1);
-			appointmentResponse.setApprovedDate(date+"0:00Z");
+			String date = sdf.format(DateUtils.addDays(new Date(), appointmentDaytobeAdded));
+			date = date.substring(0, date.indexOf("T"));
+			
+			if(time.isEmpty())
+				appointmentResponse.setApprovedDate(date + "T00:00:00");
+			else
+				appointmentResponse.setApprovedDate(date + "T"+time);
 			appointmentResponse.setAppointmentId(appointmentId.toUpperCase());
 			appointmentResponse.setAppointmentStatus("Booked");
 			appointmentResponse.setSourceApplicationType(1);

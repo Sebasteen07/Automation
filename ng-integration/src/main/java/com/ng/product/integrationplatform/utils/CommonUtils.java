@@ -1,6 +1,7 @@
-// Copyright 2020 NXGN Management, LLC. All Rights Reserved.
+//Copyright 2013-2021 NXGN Management, LLC. All Rights Reserved.
 package com.ng.product.integrationplatform.utils;
 
+import static org.testng.Assert.assertEquals;
 import static org.testng.Assert.assertTrue;
 
 import java.text.ParseException;
@@ -8,7 +9,7 @@ import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.TimeZone;
 
-import org.testng.Assert;
+
 
 import com.google.gson.JsonObject;
 import com.google.gson.JsonParser;
@@ -28,7 +29,7 @@ public class CommonUtils {
 				Log4jUtil.log("The text Value " + strValueToCompareWith + " matches as expected");
 			else{
 				Log4jUtil.log("The text value " + strValueToVerify + " does not matches as expected " + strValueToCompareWith + " value.");
-				Assert.assertEquals(strValueToVerify, strValueToCompareWith);
+				assertEquals(strValueToVerify, strValueToCompareWith);
 			}
 		} else if (strVerificationCondition.equalsIgnoreCase("contains")) {
 			if (strValueToVerify.contains(strValueToCompareWith))
