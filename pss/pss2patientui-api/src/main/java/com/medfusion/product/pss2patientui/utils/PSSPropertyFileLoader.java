@@ -374,17 +374,26 @@ public class PSSPropertyFileLoader {
 	}
 
 	public void setRestAPIData(Appointment appointValues) {
-		appointValues.setBaseurl_BookRule(property.getProperty("baseurl"));
-		appointValues.setBaseurl_LocationRule(property.getProperty("baseurl_LocationRule"));
-		appointValues.setBaseurl_AppointmentType(property.getProperty("baseurl_AptType"));
-		appointValues.setBaseurl_AvailableSlots(property.getProperty("baseurl_available_slots"));
-		appointValues.setPracticeId("practiceIdNG");
-		appointValues.setBaseurl_ScheduleAppointment("baseurl_ScheduleAppointment");
+
+		appointValues.setBaseurl_BookRule(property.getProperty("baseurl_bookRule_Patient"));
+		appointValues.setBaseurl_LocationRule(property.getProperty("baseurl_locationRule_Patient"));
+		appointValues.setBaseurl_APT(property.getProperty("baseurl_appttypeRule_Patient"));
+		appointValues.setBaseurl_AvailableSlots(property.getProperty("baseurl_availableslots_Patient"));
+		appointValues.setBaseurl_ScheduleAppointment(property.getProperty("baseurl_scheduleaptt_Patient"));
+		appointValues.setPracticeId("practiceIdNG");	
 		appointValues.setAccessTokenURL(property.getProperty("accessToken_BaseUrl"));
 		appointValues.setBasicURI(property.getProperty("baseurl"));
 		appointValues.setPracticeId(property.getProperty("practiceIdNG"));
 		appointValues.setPracticeDisplayName(property.getProperty("practiceDisplayNameNG"));
-		appointValues.setPatientId(property.getProperty("patientIdNG"));
+		appointValues .setPatientId(property.getProperty("patientIdNG"));
+		appointValues.setStartDateTime(property.getProperty("startDateTime"));
+		appointValues.setEndDateTime(property.getProperty("endDateTime"));
+		appointValues.setApptid(property.getProperty("apptid"));
+		appointValues.setFirstName(property.getProperty("first"));
+		appointValues.setLastName(property.getProperty("first"));
+		appointValues.setSlotStartTime(property.getProperty("slotStartTime"));
+		appointValues.setSlotEndTime(property.getProperty("slotEndTime"));
+
 	}
 
 }

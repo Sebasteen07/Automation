@@ -449,7 +449,7 @@ public class HomePage extends PSS2MainPage {
 
 			List<WebElement> cancelreasonlist = new ArrayList<WebElement>();
 
-			IHGUtil.waitForElement(driver, 5, cancelAppointmentdropdownbox);
+			IHGUtil.waitForElement(driver, 6, cancelAppointmentdropdownbox);
 			commonMethods.highlightElement(cancelAppointmentdropdownbox);
 
 			jse.executeScript("window.scrollBy(0,100)", "");
@@ -549,7 +549,7 @@ public class HomePage extends PSS2MainPage {
 			okCancelBtnviaEmail.click();
 			log("appointment cancelled Successfully...");
 		}
-		Thread.sleep(3000);
+		Thread.sleep(1000);
 
 		log("appointment cancelled...");
 	}

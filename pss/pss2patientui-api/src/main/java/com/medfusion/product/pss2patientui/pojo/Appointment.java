@@ -125,41 +125,24 @@ public class Appointment {
 	private String baseurl_LocationRule;
 	private String baseurl_AvailableSlots;
 	private String baseurl_ScheduleAppointment;
-	private String baseurl_AppointmentType;
+
+	private String baseurl_APT;
 
 	private String practiceId;
 	private String basicURI;
 	private String practiceDisplayName;
 	private String patientId;
 
-	public String getBasicURI() {
-		return basicURI;
-	}
-
-	public void setBasicURI(String basicURI) {
-		this.basicURI = basicURI;
-	}
-
-	// for REST Assured
-	private String accessTokenURL;
-	private String accessToken;
-
-
-	public String getAccessTokenURL() {
-		return accessTokenURL;
-	}
-
-	public void setAccessTokenURL(String accessTokenURL) {
-		this.accessTokenURL = accessTokenURL;
-	}
-
-	public String getAccessToken() {
-		return accessToken;
-	}
-
-	public void setAccessToken(String accessToken) {
-		this.accessToken = accessToken;
-	}
+	private String startDateTime;
+	private String endDateTime;
+	private String apptid;
+	private String slotStartTime;
+	private String slotEndTime;
+	
+	
+	//for REST Assured
+    private String accessTokenURL;
+    private String accessToken;    
 
 	private String urlAnonymousNG;
 	private boolean isAnonymousFlow = false;
@@ -184,10 +167,80 @@ public class Appointment {
 		this.speciality = specialityConfig;
 	}
 
-
-
 	public Appointment() {}
+		
+	public String getSlotStartTime() {
+		return slotStartTime;
+	}
 
+	public void setSlotStartTime(String slotStartTime) {
+		this.slotStartTime = slotStartTime;
+	}
+
+	public String getSlotEndTime() {
+		return slotEndTime;
+	}
+
+	public void setSlotEndTime(String slotEndTime) {
+		this.slotEndTime = slotEndTime;
+	}
+
+	public String getApptid() {
+		return apptid;
+	}
+
+	public void setApptid(String apptid) {
+		this.apptid = apptid;
+	}
+
+	public String getStartDateTime() {
+		return startDateTime;
+	}
+
+	public void setStartDateTime(String startDateTime) {
+		this.startDateTime = startDateTime;
+	}
+
+	public String getEndDateTime() {
+		return endDateTime;
+	}
+
+	public void setEndDateTime(String endDateTime) {
+		this.endDateTime = endDateTime;
+	}
+
+	public String getAccessTokenURL() {
+		return accessTokenURL;
+	}
+
+	public void setAccessTokenURL(String accessTokenURL) {
+		this.accessTokenURL = accessTokenURL;
+	}
+
+	public String getAccessToken() {
+		return accessToken;
+	}
+
+	public void setAccessToken(String accessToken) {
+		this.accessToken = accessToken;
+	}
+
+	public String getBasicURI() {
+		return basicURI;
+	}
+
+	public void setBasicURI(String basicURI) {
+		this.basicURI = basicURI;
+	}
+	
+	
+	public String getBaseurl_APT() {
+		return baseurl_APT;
+	}
+
+	public void setBaseurl_APT(String baseurl_APT) {
+		this.baseurl_APT = baseurl_APT;
+	}
 
 	public String getGenderCarePatient() {
 		return genderCarePatient;
@@ -260,7 +313,6 @@ public class Appointment {
 	public void setPcptoggleState(boolean pcptoggleState) {
 		this.pcptoggleState = pcptoggleState;
 	}
-
 
 	public String getPatientId() {
 		return patientId;
@@ -416,14 +468,6 @@ public class Appointment {
 
 	public void setBaseurl_ScheduleAppointment(String baseurl_ScheduleAppointment) {
 		this.baseurl_ScheduleAppointment = baseurl_ScheduleAppointment;
-	}
-
-	public String getBaseurl_AppointmentType() {
-		return baseurl_AppointmentType;
-	}
-
-	public void setBaseurl_AppointmentType(String baseurl_AppointmentType) {
-		this.baseurl_AppointmentType = baseurl_AppointmentType;
 	}
 
 	public boolean isShowCancellationRescheduleReason() {
