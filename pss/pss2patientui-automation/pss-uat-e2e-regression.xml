@@ -55,6 +55,8 @@
 
 					<include name="testLeadTimeGE" />
 					<include name="testLeadTimeGW" />
+					<include name="testLeadTimeAT" />
+					<include name="testLeadTimeNG" />
 					<include name="testLeadTimeGWReserveForSameDay" />
 
 

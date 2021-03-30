@@ -38,7 +38,6 @@ import org.openqa.selenium.support.PageFactory;
 import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.openqa.selenium.support.ui.WebDriverWait;
 
-
 import com.intuit.ifs.csscat.core.utils.Log4jUtil;
 import com.medfusion.product.object.maps.pss2.page.AppEntryPoint.StartAppointmentInOrder;
 import com.medfusion.product.object.maps.pss2.page.Appointment.Anonymous.AnonymousPatientInformation;
@@ -1068,8 +1067,7 @@ public class PSSPatientUtils {
 
 		Log4jUtil.log("Enter the Reschedule Reason");
 		confirmationpage.sendRescheduleReason();
-		assertEquals(confirmationpage.maxLengthRescheduleReason(), 500,
-				"The max length of Reschedule reason is not 500, so test case failed");
+		assertEquals(confirmationpage.maxLengthRescheduleReason(), 500, "The max length of Reschedule reason is not 500, so test case failed");
 
 		ScheduledAppointment scheduledappointment = confirmationpage.rescheduleAppointmentConfirmed();
 		Log4jUtil.log("appointment ID = " + scheduledappointment.getAppointmentID());
@@ -1545,11 +1543,11 @@ public class PSSPatientUtils {
 	}
 
 	public String currentDateandLeadDay(Appointment testData) {
-		TimeZone timeZone = TimeZone.getTimeZone("America/New_York");
+		TimeZone timeZone = TimeZone.getTimeZone(testData.getCurrentTimeZone());
 		String dateFormat = "dd MMMM,yyyy";
 		SimpleDateFormat f1 = new SimpleDateFormat(dateFormat);
 		Calendar c = Calendar.getInstance();
-		TimeZone time_zone = TimeZone.getTimeZone("America/New_York");
+		TimeZone time_zone = TimeZone.getTimeZone(testData.getCurrentTimeZone());
 		f1.setTimeZone(timeZone);
 		c.setTimeZone(time_zone);
 		c.add(Calendar.DATE, testData.getLeadtimeDay());
