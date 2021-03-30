@@ -1,5 +1,8 @@
-// Copyright 2018-2020 NXGN Management, LLC. All Rights Reserved.
+// Copyright 2013-2021 NXGN Management, LLC. All Rights Reserved.
 package com.medfusion.product.object.maps.patientportal2.page.PrescriptionsPage;
+
+import static org.testng.Assert.assertEquals;
+import static org.testng.Assert.assertTrue;
 
 import java.util.List;
 
@@ -13,7 +16,7 @@ import org.openqa.selenium.support.How;
 import org.openqa.selenium.support.PageFactory;
 import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.openqa.selenium.support.ui.Select;
-import org.testng.Assert;
+
 
 import com.intuit.ifs.csscat.core.utils.Log4jUtil;
 import com.medfusion.common.utils.IHGUtil;
@@ -310,7 +313,7 @@ public class JalapenoPrescriptionsPage extends JalapenoMenu {
 					.getText();
 			if (medicationName.contains(productName)) {
 				Log4jUtil.log("Deleted medications is still visible on the Prescription page");
-				Assert.assertTrue(!medicationName.contains(productName));
+				assertTrue(!medicationName.contains(productName));
 				break;
 			} else {
 				continue;
@@ -332,7 +335,7 @@ public class JalapenoPrescriptionsPage extends JalapenoMenu {
 		while (itr.hasNext()) {
 			WebElement ele = itr.next();
 			if (ele.getText().equalsIgnoreCase(pharmacy)) {
-				Assert.assertEquals(ele.getText(), pharmacy);
+				assertEquals(ele.getText(), pharmacy);
 				log("Pharamacy is visible on Portal");
 				break;
 			} else {
@@ -348,7 +351,7 @@ public class JalapenoPrescriptionsPage extends JalapenoMenu {
 		log("Get text value from Choose from a list textbox");
 		String textValue = textValueFromChooseFromAList.getText();
 		if (textValue.equalsIgnoreCase(pharmacy)) {
-			Assert.assertEquals(textValue, pharmacy);
+			assertEquals(textValue, pharmacy);
 			log("Pharamacy is visible on Portal");
 		} else {
 			log("Pharamacy is not visible on Portal");
@@ -501,7 +504,7 @@ public class JalapenoPrescriptionsPage extends JalapenoMenu {
 			WebElement ele = itr.next();
 			if (ele.getText().contains(pharmacy)) {
 				log("Deleted Pharmacy is visible on the Portal");
-				Assert.assertTrue(!ele.getText().contains(pharmacy));
+				assertTrue(!ele.getText().contains(pharmacy));
 				break;
 			} else {
 				continue;
@@ -522,7 +525,7 @@ public class JalapenoPrescriptionsPage extends JalapenoMenu {
 		}
 		if (textValue.contains(pharmacy)) {
 			log("Deleted Pharmacy is visible on the Portal");
-			Assert.assertTrue(!textValue.contains(pharmacy));
+			assertTrue(!textValue.contains(pharmacy));
 		} else {
 			log("Pharamacy is not visible on Portal");
 		}

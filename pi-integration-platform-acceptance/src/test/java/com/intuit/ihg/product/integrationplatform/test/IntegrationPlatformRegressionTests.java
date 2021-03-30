@@ -1,6 +1,10 @@
 // Copyright 2013-2021 NXGN Management, LLC. All Rights Reserved.
 package com.intuit.ihg.product.integrationplatform.test;
 
+import static org.testng.Assert.assertFalse;
+import static org.testng.Assert.assertEquals;
+import static org.testng.Assert.assertTrue;
+
 import java.awt.Robot;
 import java.awt.event.KeyEvent;
 import java.io.File;
@@ -20,7 +24,7 @@ import org.openqa.selenium.WebElement;
 import org.openqa.selenium.chrome.ChromeDriver;
 import org.openqa.selenium.firefox.FirefoxDriver;
 import org.openqa.selenium.support.PageFactory;
-import org.testng.Assert;
+
 import org.testng.SkipException;
 import org.testng.annotations.DataProvider;
 import org.testng.annotations.Test;
@@ -361,7 +365,7 @@ public class IntegrationPlatformRegressionTests extends BaseTestNGWebDriver {
 			String attachmentInPayload = ExternalFileReader.readFromFile(testData.attachmentBody);
 
 			Boolean pdfMatch = RestUtils.matchBase64String(pdfFileOnPortal, attachmentInPayload);
-			Assert.assertTrue(pdfMatch, "PDF Filecontent did not matched.");
+			assertTrue(pdfMatch, "PDF Filecontent did not matched.");
 			log("Asserting for PDF match " + pdfMatch);
 		}
 
@@ -766,7 +770,7 @@ public class IntegrationPlatformRegressionTests extends BaseTestNGWebDriver {
 
 		log("step 9:Verify the Search Result");
 		IHGUtil.waitForElement(driver, 60, pPatientSearchPage.searchResult);
-		Assert.assertTrue(pPatientSearchPage.searchResult.getText().contains(patient.getFirstName()));
+		assertTrue(pPatientSearchPage.searchResult.getText().contains(patient.getFirstName()));
 
 		String searchResult = "//*[@id=\"table-1\"]/tbody/tr/td[1]/a";
 		driver.findElement(By.xpath(searchResult)).click();
@@ -780,7 +784,7 @@ public class IntegrationPlatformRegressionTests extends BaseTestNGWebDriver {
 		log("Actual patient ID " + patientExternalID);
 		log("Expected patient ID " + patient.getFirstName());
 
-		Assert.assertEquals(patient.getFirstName(), patientExternalID, "Patient External ID Matched !");
+		assertEquals(patient.getFirstName(), patientExternalID, "Patient External ID Matched !");
 	}
 
 	@Test(enabled = true, dataProvider = "channelVersion", groups = {
@@ -998,7 +1002,7 @@ public class IntegrationPlatformRegressionTests extends BaseTestNGWebDriver {
 				log("Step 14: Verify name, from and catagory type");
 				String attachmentData = MedicalRecordSummariesPageObject.getMessageAttachmentData();
 				log("attachment details = " + MedicalRecordSummariesPageObject.getMessageAttachmentData());
-				Assert.assertTrue(attachmentData.contains(testData.FileName + i + ".pdf"), "file name not found");
+				assertTrue(attachmentData.contains(testData.FileName + i + ".pdf"), "file name not found");
 				MedicalRecordSummariesPageObject.downloadSecureMessageAttachment();
 				String UIPDF = System.getProperty("user.dir");
 				String home = System.getProperty("user.home");
@@ -1023,7 +1027,7 @@ public class IntegrationPlatformRegressionTests extends BaseTestNGWebDriver {
 					String attachmentInPayload = ExternalFileReader.readFromFile(workingDir);
 					Boolean pdfMatch = RestUtils.matchBase64String(pdfFileOnPortal, attachmentInPayload);
 					log("Is PDF Match " + pdfMatch);
-					Assert.assertTrue(pdfMatch, "PDF Filecontent did not matched.");
+					assertTrue(pdfMatch, "PDF Filecontent did not matched.");
 				}
 				if (driver instanceof ChromeDriver) {
 					File file = new File(home + "/Downloads/" + fileName + ".pdf");
@@ -1154,7 +1158,7 @@ public class IntegrationPlatformRegressionTests extends BaseTestNGWebDriver {
 
 			}
 		}
-		Assert.assertTrue(completed, "Message processing was not completed in time");
+		assertTrue(completed, "Message processing was not completed in time");
 
 		log("Step 6: Do a GET on PIDC Url to get registered patient for version " + version);
 		log("Getting patients since timestamp: " + since);
@@ -1405,7 +1409,7 @@ public class IntegrationPlatformRegressionTests extends BaseTestNGWebDriver {
 
 		log("Step 9: Detecting if Home Page is opened");
 		Thread.sleep(2000);
-		Assert.assertTrue(jalapenoHomePage.isHomeButtonPresent(driver));
+		assertTrue(jalapenoHomePage.isHomeButtonPresent(driver));
 
 		log("Step 10: Do a GET on PIDC Url to get registered patient for version " + version);
 		Long since = timestamp / 1000L - 60 * 24;
@@ -1464,7 +1468,7 @@ public class IntegrationPlatformRegressionTests extends BaseTestNGWebDriver {
 		RestUtils.setupHttpGetRequest(testData.unseenMessageHeader, testData.ResponsePath);
 		int NoOfUnreadMessage = RestUtils.readUnseenMessages(testData.ResponsePath, testData.messageStatusUpdate);
 		log("NoOfUnreadMessage : " + NoOfUnreadMessage);
-		Assert.assertEquals(NoOfUnreadMessage, 0);
+		assertEquals(NoOfUnreadMessage, 0);
 
 		log("Step 5 : Post New Secure Message ");
 		SendDirectMessageUtils SendDirectMessageUtilsObj = new SendDirectMessageUtils();
@@ -1505,7 +1509,7 @@ public class IntegrationPlatformRegressionTests extends BaseTestNGWebDriver {
 		RestUtils.setupHttpGetRequest(testData.unseenMessageHeader, testData.ResponsePath);
 		int NoOfUnreadMessage = RestUtils.readUnseenMessages(testData.ResponsePath, testData.messageStatusUpdate);
 		log("NoOfUnreadMessage : " + NoOfUnreadMessage);
-		Assert.assertEquals(NoOfUnreadMessage, 0);
+		assertEquals(NoOfUnreadMessage, 0);
 		P2PUnseenMessageList P2PUnseenMessageListObject = new P2PUnseenMessageList();
 		log("Step 5 : Post New Secure Message ");
 
@@ -1532,7 +1536,7 @@ public class IntegrationPlatformRegressionTests extends BaseTestNGWebDriver {
 
 		log("Step 3 : Get Unseen Message Header and Verify For Invalid PracticeID");
 		int responseCode = RestUtils.setupHttpGetRequestInvalid(invalidPracticeId, testData.ResponsePath);
-		Assert.assertEquals(responseCode, 400);
+		assertEquals(responseCode, 400);
 		P2PUnseenMessageListObject.ExtractErrorMessage(testData.ResponsePath, "<body>(.+?)</body>",
 				testData.invalidPracticeMessageHeaderURL);
 
@@ -1540,7 +1544,7 @@ public class IntegrationPlatformRegressionTests extends BaseTestNGWebDriver {
 		String invalidEmailID = testData.messageHeaderURL + testData.validPracticeID + "/directmessageheaders/"
 				+ testData.invalidEmailMessageHeaderURL;
 		int responseCodeE = RestUtils.setupHttpGetRequestInvalid(invalidEmailID, testData.ResponsePath);
-		Assert.assertEquals(responseCodeE, 400);
+		assertEquals(responseCodeE, 400);
 		P2PUnseenMessageListObject.ExtractErrorMessage(testData.ResponsePath, "<ErrorResponse>(.+?)</ErrorResponse>",
 				testData.invalidEmailMessageHeaderURL);
 
@@ -1549,7 +1553,7 @@ public class IntegrationPlatformRegressionTests extends BaseTestNGWebDriver {
 				+ testData.ToEmalID + "/message/" + testData.invalidUID;
 		log("getMessageBody :" + getMessageBody);
 		int responseCodeUid = RestUtils.setupHttpGetRequestInvalid(getMessageBody, testData.ResponsePath);
-		Assert.assertEquals(responseCodeUid, 400);
+		assertEquals(responseCodeUid, 400);
 		P2PUnseenMessageListObject.ExtractErrorMessage(testData.ResponsePath, "<ErrorResponse>(.+?)</ErrorResponse>",
 				testData.invalidUID);
 
@@ -1558,7 +1562,7 @@ public class IntegrationPlatformRegressionTests extends BaseTestNGWebDriver {
 				+ testData.invalidEmailMessageHeaderURL + "/message/1";
 		log("getMessageBodyInvalidEmail :" + getMessageBodyIE);
 		int responseCodeIEmail = RestUtils.setupHttpGetRequestInvalid(getMessageBodyIE, testData.ResponsePath);
-		Assert.assertEquals(responseCodeIEmail, 400);
+		assertEquals(responseCodeIEmail, 400);
 		P2PUnseenMessageListObject.ExtractErrorMessage(testData.ResponsePath, "<ErrorResponse>(.+?)</ErrorResponse>",
 				testData.invalidEmailMessageHeaderURL);
 
@@ -1568,7 +1572,7 @@ public class IntegrationPlatformRegressionTests extends BaseTestNGWebDriver {
 
 		int invalidResponseStatus = RestUtils.setupHttpPostInvalidRequest(invalidMessageUpdateStatusURL, "",
 				testData.ResponsePath);
-		Assert.assertEquals(invalidResponseStatus, 400);
+		assertEquals(invalidResponseStatus, 400);
 		P2PUnseenMessageListObject.ExtractErrorMessage(testData.ResponsePath, "<ErrorResponse>(.+?)</ErrorResponse>",
 				"UNREAD");
 
@@ -1576,7 +1580,7 @@ public class IntegrationPlatformRegressionTests extends BaseTestNGWebDriver {
 		String invalidMessageUIDURL = testData.messageHeaderURL + testData.validPracticeID + "/directmessage/"
 				+ testData.ToEmalID + "/message/" + testData.invalidUID + "/status/NEW";
 		int invalidResponseUID = RestUtils.setupHttpPostInvalidRequest(invalidMessageUIDURL, "", testData.ResponsePath);
-		Assert.assertEquals(invalidResponseUID, 400);
+		assertEquals(invalidResponseUID, 400);
 		P2PUnseenMessageListObject.ExtractErrorMessage(testData.ResponsePath, "<ErrorResponse>(.+?)</ErrorResponse>",
 				testData.invalidUID);
 	}
@@ -1597,7 +1601,7 @@ public class IntegrationPlatformRegressionTests extends BaseTestNGWebDriver {
 		int responseCodeInvalidMsgDelete = RestUtils.setupHttpDeleteRequestExceptOauth(invalidMessageUIDURLDelete,
 				testData.ResponsePath, testData.token);
 		log("responseCode for InvalidMsg Delete API is " + responseCodeInvalidMsgDelete);
-		Assert.assertEquals(responseCodeInvalidMsgDelete, 400);
+		assertEquals(responseCodeInvalidMsgDelete, 400);
 		P2PUnseenMessageListObject.ExtractErrorMessage(testData.ResponsePath, "<ErrorResponse>(.+?)</ErrorResponse>",
 				testData.invalidUID);
 
@@ -1607,7 +1611,7 @@ public class IntegrationPlatformRegressionTests extends BaseTestNGWebDriver {
 		int responseCodeInvalidEmailDelete = RestUtils.setupHttpDeleteRequestExceptOauth(invalidEmailIDDelete,
 				testData.ResponsePath, testData.token);
 		log("responseCode for InvalidEmailDelete is " + responseCodeInvalidEmailDelete);
-		Assert.assertEquals(responseCodeInvalidEmailDelete, 400);
+		assertEquals(responseCodeInvalidEmailDelete, 400);
 		P2PUnseenMessageListObject.ExtractErrorMessage(testData.ResponsePath, "<ErrorResponse>(.+?)</ErrorResponse>",
 				testData.invalidEmailMessageHeaderURL);
 
@@ -1647,7 +1651,7 @@ public class IntegrationPlatformRegressionTests extends BaseTestNGWebDriver {
 		int responseCode = RestUtils.setupHttpDeleteRequestExceptOauth(messageDeleteURL, testData.ResponsePath,
 				testData.token);
 		log("responseCode is " + responseCode + " message not found !!!");
-		Assert.assertEquals(responseCode, 400);
+		assertEquals(responseCode, 400);
 		P2PUnseenMessageListObject.ExtractErrorMessage(testData.ResponsePath, "<ErrorResponse>(.+?)</ErrorResponse>",
 				msgUid);
 
@@ -1696,7 +1700,7 @@ public class IntegrationPlatformRegressionTests extends BaseTestNGWebDriver {
 		String getMessageBody1 = testData.unseenMessageBody;
 		getMessageBody1 = getMessageBody1 + "/" + msgUid1;
 		log("msgUid1 is " + msgUid1);
-		Assert.assertTrue(!msgUid1.isEmpty(), "Message UUID not found ");
+		assertTrue(!msgUid1.isEmpty(), "Message UUID not found ");
 		String messageUpdateURL1 = testData.messageStatusUpdate + "/" + msgUid + "/status/"
 				+ testData.messageStatusToUpdate;
 		log("Step 8 : read messageURL 1 : " + messageUpdateURL1);
@@ -1712,13 +1716,13 @@ public class IntegrationPlatformRegressionTests extends BaseTestNGWebDriver {
 		int responseCode1 = RestUtils.setupHttpDeleteRequestExceptOauth(messageUpdateURL1, testData.ResponsePath,
 				testData.token);
 		log("responseCode1 is " + responseCode1);
-		Assert.assertEquals(responseCode1, 200);
+		assertEquals(responseCode1, 200);
 
 		log("Step 12: Post Unread message to delete with message Status as DELETE");
 		int responseCode2 = RestUtils.setupHttpDeleteRequestExceptOauth(messageUpdateURL2, testData.ResponsePath,
 				testData.token);
 		log("responseCode2 is " + responseCode2);
-		Assert.assertEquals(responseCode2, 200);
+		assertEquals(responseCode2, 200);
 
 		log("Step 13: Verify deletion of read message in get getMessageBody API " + messageUpdateURL1);
 		int responseCodeE = RestUtils.setupHttpDeleteRequestExceptOauth(messageUpdateURL1, testData.ResponsePath,
@@ -1742,12 +1746,12 @@ public class IntegrationPlatformRegressionTests extends BaseTestNGWebDriver {
 		log("Step 16 : Verify deleted read message in messageHeaders API");
 		String msgReadUid = RestUtils.verifyUnseenMessageListAndGetMessageUID(testData.ResponsePath, subject1);
 		log("Is Read Message UUID Empty :" + msgReadUid.isEmpty());
-		Assert.assertTrue(msgReadUid.isEmpty());
+		assertTrue(msgReadUid.isEmpty());
 
 		log("Step 17 : Verify deleted unread message in messageHeaders API");
 		String msgUnreadUid = RestUtils.verifyUnseenMessageListAndGetMessageUID(testData.ResponsePath, subject2);
 		log("Is Unread Message UUID Empty :" + msgUnreadUid.isEmpty());
-		Assert.assertTrue(msgUnreadUid.isEmpty());
+		assertTrue(msgUnreadUid.isEmpty());
 
 		log("Step 18 : Call Delete Message API from Sender Email Address");
 		String senderEmail = testData.messageHeaderURL + testData.validPracticeID + "/directmessage/"
@@ -1756,7 +1760,7 @@ public class IntegrationPlatformRegressionTests extends BaseTestNGWebDriver {
 		int senderEmailID = RestUtils.setupHttpDeleteRequestExceptOauth(senderEmail, testData.ResponsePath,
 				testData.token);
 		log("responseCode for InvalidEmailDelete is " + senderEmailID);
-		Assert.assertEquals(senderEmailID, 400);
+		assertEquals(senderEmailID, 400);
 		P2PUnseenMessageListObject.ExtractErrorMessage(testData.ResponsePath, "<ErrorResponse>(.+?)</ErrorResponse>",
 				subject1);
 	}
@@ -1848,7 +1852,7 @@ public class IntegrationPlatformRegressionTests extends BaseTestNGWebDriver {
 		Log4jUtil.log("Step 6: Download pre check form pdf");
 		log("Download pdf link " + PreCheckPdfLink);
 		log("Asserting FormsPdfLink for Precheck from ccdExchangeBatch and ccdExchangePdfBatch");
-		Assert.assertEquals(ccdExchangeBatchPdfLink, PreCheckPdfLink);
+		assertEquals(ccdExchangeBatchPdfLink, PreCheckPdfLink);
 		log("Do a ccdExchangePdf call with the link found in FormsPdfLink");
 		RestUtils.setupHttpGetRequestForPDF(PreCheckPdfLink, testData.responsePDF_FE);
 	}
@@ -2740,7 +2744,7 @@ public class IntegrationPlatformRegressionTests extends BaseTestNGWebDriver {
 						getpidcUrlv1 = getpidcUrlv1.replaceAll("v2", "v1");
 						String responseCodeValue = RestUtils.setupHttpGetRequestWithEmptyResponse(
 								getpidcUrlv1 + "?since=" + since + ",0", testData.responsePDFBatch_FE);
-						Assert.assertTrue(responseCodeValue.equalsIgnoreCase("204"),
+						assertTrue(responseCodeValue.equalsIgnoreCase("204"),
 								"get pidc v1 api call without 204");
 					}
 					Thread.sleep(12000);
@@ -2818,7 +2822,7 @@ public class IntegrationPlatformRegressionTests extends BaseTestNGWebDriver {
 				testData.responsePath_CCD1_FE);
 		ArrayList<String> insuranceImageLinks = RestUtils
 				.verifyInsuranceCardImageInGetPIDC(testData.responsePath_CCD1_FE, testData.preCheckPatientExternalID);
-		Assert.assertTrue(insuranceImageLinks.size() == 6, "link not found or more links found.");
+		assertTrue(insuranceImageLinks.size() == 6, "link not found or more links found.");
 		log("Step 14: Verify Front Image in the insuranceimage detail api call");
 		RestUtils.setupHttpGetRequestWithEmptyResponse(insuranceImageLinks.get(0), testData.responsePath_CCD1_FE);
 		String frontFileName = "PrimaryInsurance_Front_" + testData.preCheckPatientExternalID + "_";
@@ -2910,7 +2914,7 @@ public class IntegrationPlatformRegressionTests extends BaseTestNGWebDriver {
 				testData.responsePath_CCD1_FE);
 		ArrayList<String> insuranceImageLinks = RestUtils
 				.verifyInsuranceCardImageInGetPIDC(testData.responsePath_CCD1_FE, testData.preCheckPatientExternalID);
-		Assert.assertTrue(insuranceImageLinks.size() == 2, "link not found or more links found.");
+		assertTrue(insuranceImageLinks.size() == 2, "link not found or more links found.");
 
 		log("Step 14: Verify Front Image in the insuranceimage detail api call");
 		RestUtils.setupHttpGetRequestWithEmptyResponse(insuranceImageLinks.get(0), testData.responsePath_CCD1_FE);
@@ -3240,7 +3244,7 @@ public class IntegrationPlatformRegressionTests extends BaseTestNGWebDriver {
 
 		log("Step 4: Go to  Health Record Summaries");
 		MedicalRecordSummariesPage MedicalRecordSummariesPageObject = homePage.clickOnMedicalRecordSummaries(driver);
-		Assert.assertTrue(MedicalRecordSummariesPageObject.areBasicPageElementsPresent(),
+		assertTrue(MedicalRecordSummariesPageObject.areBasicPageElementsPresent(),
 				"Failed to Load Health Record Summaries ");
 
 		log("Step 5: Click on Request Health Record");
@@ -3417,7 +3421,7 @@ public class IntegrationPlatformRegressionTests extends BaseTestNGWebDriver {
 				break;
 			}
 		}
-		Assert.assertTrue(completed, "Message processing was not completed in time");
+		assertTrue(completed, "Message processing was not completed in time");
 
 		log("Step 3: Login to Patient Portal");
 		JalapenoLoginPage loginPage = new JalapenoLoginPage(driver, testData.URL);
@@ -3425,7 +3429,7 @@ public class IntegrationPlatformRegressionTests extends BaseTestNGWebDriver {
 		JalapenoPrescriptionsPage JalapenoPrescriptionsPageObject = homePage.clickOnPrescriptions(driver);
 
 		log("Step 4: Click on Prescription and go to Prescription Page");
-		Assert.assertTrue(JalapenoPrescriptionsPageObject.areBasicPageElementsPresent(),
+		assertTrue(JalapenoPrescriptionsPageObject.areBasicPageElementsPresent(),
 				"Failed to Load Health Record Summaries ");
 
 		log("Step 5: Click on Continue ");
@@ -3493,7 +3497,7 @@ public class IntegrationPlatformRegressionTests extends BaseTestNGWebDriver {
 				break;
 			}
 		}
-		Assert.assertTrue(completed, "Message processing was not completed in time");
+		assertTrue(completed, "Message processing was not completed in time");
 
 		log("Update Pharmacy with status 'UPDATE' ");
 		testData.Status = "UPDATE";
@@ -3521,7 +3525,7 @@ public class IntegrationPlatformRegressionTests extends BaseTestNGWebDriver {
 				break;
 			}
 		}
-		Assert.assertTrue(completed, "Message processing was not completed in time");
+		assertTrue(completed, "Message processing was not completed in time");
 
 		log("Step 4: Login to Patient Portal");
 		JalapenoLoginPage loginPage = new JalapenoLoginPage(driver, testData.URL);
@@ -3529,7 +3533,7 @@ public class IntegrationPlatformRegressionTests extends BaseTestNGWebDriver {
 		JalapenoPrescriptionsPage JalapenoPrescriptionsPageObject = homePage.clickOnPrescriptions(driver);
 
 		log("Step 5: Click on Prescription and go to Prescription Page");
-		Assert.assertTrue(JalapenoPrescriptionsPageObject.areBasicPageElementsPresent(),
+		assertTrue(JalapenoPrescriptionsPageObject.areBasicPageElementsPresent(),
 				"Failed to Load Health Record Summaries ");
 
 		log("Step 6: Click on Continue ");
@@ -3597,7 +3601,7 @@ public class IntegrationPlatformRegressionTests extends BaseTestNGWebDriver {
 				break;
 			}
 		}
-		Assert.assertTrue(completed, "Message processing was not completed in time");
+		assertTrue(completed, "Message processing was not completed in time");
 
 		log("Delete Pharmacy with status 'DELETE' ");
 		testData.Status = "DELETE";
@@ -3624,7 +3628,7 @@ public class IntegrationPlatformRegressionTests extends BaseTestNGWebDriver {
 				break;
 			}
 		}
-		Assert.assertTrue(completed, "Message processing was not completed in time");
+		assertTrue(completed, "Message processing was not completed in time");
 
 		log("Step 4: Login to Patient Portal");
 		JalapenoLoginPage loginPage = new JalapenoLoginPage(driver, testData.URL);
@@ -3632,7 +3636,7 @@ public class IntegrationPlatformRegressionTests extends BaseTestNGWebDriver {
 		JalapenoPrescriptionsPage JalapenoPrescriptionsPageObject = homePage.clickOnPrescriptions(driver);
 
 		log("Step 5: Click on Prescription and go to Prescription Page");
-		Assert.assertTrue(JalapenoPrescriptionsPageObject.areBasicPageElementsPresent(),
+		assertTrue(JalapenoPrescriptionsPageObject.areBasicPageElementsPresent(),
 				"Failed to Load Health Record Summaries ");
 
 		log("Step 6: Click on Continue ");
@@ -3781,7 +3785,7 @@ public class IntegrationPlatformRegressionTests extends BaseTestNGWebDriver {
 
 		log("step 6:Verify the Search Result");
 		IHGUtil.waitForElement(driver, 60, pPatientSearchPage.searchResult);
-		Assert.assertTrue(pPatientSearchPage.searchResult.getText().contains(patient.getFirstName()));
+		assertTrue(pPatientSearchPage.searchResult.getText().contains(patient.getFirstName()));
 		pPatientSearchPage.clickOnSearch();
 		Thread.sleep(3000);
 		pPatientSearchPage.clickOnEdit();
@@ -3793,7 +3797,7 @@ public class IntegrationPlatformRegressionTests extends BaseTestNGWebDriver {
 		String patientExternalID = pPatientSearchPage.verifypatientExternalID();
 		log("Actual patient ID " + patientExternalID);
 		log("Expected patient ID " + patient.getFirstName());
-		Assert.assertEquals(patient.getFirstName(), patientExternalID, "Patient External ID Matched !");
+		assertEquals(patient.getFirstName(), patientExternalID, "Patient External ID Matched !");
 
 		String workingDir = System.getProperty("user.dir");
 		workingDir = workingDir + testData.csvFilePath;
@@ -4011,12 +4015,13 @@ public class IntegrationPlatformRegressionTests extends BaseTestNGWebDriver {
 		JalapenoLoginPage loginPage = new JalapenoLoginPage(driver, testData.url_PatientStatement);
 		JalapenoHomePage homePage = loginPage.login(testData.UserName, testData.Password);
 		Thread.sleep(9000);
-		log("Click on msessage box");
+		log("Click on message box");
 		JalapenoMessagesPage inboxPage = homePage.clickOnMenuMessages();
 		Thread.sleep(9000);
 
 		log("Step 4: Find message in Inbox");
 		boolean msg = inboxPage.isMessageDisplayed(driver, StatementMsgSubject);
+		assertTrue(msg);
 		log("Message received in inbox");
 
 		log("Step 5: Logout of Patient Portal");

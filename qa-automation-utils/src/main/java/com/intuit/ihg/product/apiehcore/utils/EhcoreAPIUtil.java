@@ -1,5 +1,10 @@
+//Copyright 2013-2021 NXGN Management, LLC. All Rights Reserved.
 package com.intuit.ihg.product.apiehcore.utils;
 
+import static org.testng.Assert.assertEquals;
+import static org.testng.Assert.assertTrue;
+import static org.testng.Assert.fail;
+import static org.testng.Assert.assertNotNull;
 
 // import static com.intuit.ihg.eh.app.util.EHCoreTestUtil.updateCCD_Data;
 
@@ -50,13 +55,12 @@ import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.support.PageFactory;
 import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.openqa.selenium.support.ui.WebDriverWait;
-import org.testng.Assert;
+
 import org.xml.sax.ErrorHandler;
 import org.xml.sax.SAXException;
 import org.xml.sax.SAXParseException;
 
 import com.allscripts.uai.schemas._2010._02._15.AllscriptsMessageEnvelope;
-import com.intuit.ifs.csscat.core.BaseTestSoftAssert;
 import com.intuit.ifs.csscat.core.utils.Log4jUtil;
 import com.medfusion.common.utils.IHGUtil;
 import com.intuit.ihg.product.apiehcore.utils.EhcoreAPIUtil;
@@ -230,7 +234,7 @@ public class EhcoreAPIUtil extends IHGUtil {
 		} else if (protocol.equalsIgnoreCase("http")) {
 			conn = setupHttpConnection(url, requestType, requestXml, "valid", "", false);
 		} else {
-			Assert.fail("Protocol can only be http or https, found " + protocol);
+			fail("Protocol can only be http or https, found " + protocol);
 		}
 
 		// read response from output stream of connection
@@ -239,18 +243,18 @@ public class EhcoreAPIUtil extends IHGUtil {
 			if (conn != null) {
 				if (expectedResponse.equalsIgnoreCase(expectedResponseMessage_Datajob)) {
 					xmlResponse = readResponse(conn.getInputStream());
-					Assert.assertEquals(expectedHttpCode, conn.getResponseCode());
+					assertEquals(expectedHttpCode, conn.getResponseCode());
 					// validate the response against xsd
-					Assert.assertTrue(validateXML(DataJobConstant.DATAJOB_XSD, new String(fileToBytes(requestXml))));
+					assertTrue(validateXML(DataJobConstant.DATAJOB_XSD, new String(fileToBytes(requestXml))));
 
 				} else {
-					Assert.fail("expected Response Code :" + expectedResponse + " ,actual Response Code :" + conn.getResponseCode() + "are not same");
+					fail("expected Response Code :" + expectedResponse + " ,actual Response Code :" + conn.getResponseCode() + "are not same");
 				}
 				conn.disconnect();
 			}
 		} catch (IOException ioe) {
-			Assert.fail(ioe.getMessage(), ioe);
-			Assert.fail(ioe.getMessage());
+			fail(ioe.getMessage(), ioe);
+			fail(ioe.getMessage());
 		}
 		// unmarshall the response into Datajob object
 		return EhcoreAPIUtil.unmarshallFromString(xmlResponse);
@@ -279,7 +283,7 @@ public class EhcoreAPIUtil extends IHGUtil {
 		} else if (protocol.equalsIgnoreCase("http") && djId != "") {
 			conn = setupHttpConnection(url, EhcoreAPIConstants.POST_REQUEST, requestXml, contentType, djId, true);
 		} else {
-			Assert.fail("Protocol can only be http or https, found " + protocol);
+			fail("Protocol can only be http or https, found " + protocol);
 		}
 
 		// read response code and assert with expected Response.
@@ -287,21 +291,21 @@ public class EhcoreAPIUtil extends IHGUtil {
 			if (conn != null) {
 
 				if (expectedResponse.equalsIgnoreCase("InternalServerError")) {
-					Assert.assertEquals(expectedHttpCode_InternalError, conn.getResponseCode());
+					assertEquals(expectedHttpCode_InternalError, conn.getResponseCode());
 				} else if (expectedResponse.equalsIgnoreCase("UnsuportedType")) {
-					Assert.assertEquals(expectedHttpCode_UnSupportedType, conn.getResponseCode());
+					assertEquals(expectedHttpCode_UnSupportedType, conn.getResponseCode());
 				} else if (expectedResponse.equalsIgnoreCase(EhcoreAPIConstants.EXPECTEDRESPONSE_BADREQUEST)) {
-					Assert.assertEquals(expectedHttpCode_BadRequest, conn.getResponseCode());
+					assertEquals(expectedHttpCode_BadRequest, conn.getResponseCode());
 				} else if (expectedResponse.equalsIgnoreCase("NotFound")) {
-					Assert.assertEquals(expectedHttpCode_NotFound, conn.getResponseCode());
+					assertEquals(expectedHttpCode_NotFound, conn.getResponseCode());
 				} else {
-					Assert.fail("expected Response Code :" + expectedResponse + "and actual response code :" + conn.getResponseCode() + ", are not same");
+					fail("expected Response Code :" + expectedResponse + "and actual response code :" + conn.getResponseCode() + ", are not same");
 				}
 				conn.disconnect();
 			}
 		} catch (IOException ioe) {
-			Assert.fail(ioe.getMessage(), ioe);
-			Assert.fail(ioe.getMessage());
+			fail(ioe.getMessage(), ioe);
+			fail(ioe.getMessage());
 		}
 	}
 
@@ -323,21 +327,21 @@ public class EhcoreAPIUtil extends IHGUtil {
 			url = new URL(strUrl);
 			Log4jUtil.log("Created URL object");
 		} catch (MalformedURLException mue) {
-			Assert.fail(mue.getMessage(), mue);
-			Assert.fail(mue.getMessage());
+			fail(mue.getMessage(), mue);
+			fail(mue.getMessage());
 		}
 
-		Assert.assertNotNull(url);
+		assertNotNull(url);
 		HttpsURLConnection connection = null;
 		try {
 			Log4jUtil.log("Attempting to get secure connection");
 			connection = (HttpsURLConnection) url.openConnection();
 			Log4jUtil.log("Got connection");
 		} catch (IOException ioe) {
-			Assert.fail(ioe.getMessage(), ioe);
-			Assert.fail(ioe.getMessage());
+			fail(ioe.getMessage(), ioe);
+			fail(ioe.getMessage());
 		}
-		Assert.assertNotNull(connection);
+		assertNotNull(connection);
 		try {
 			connection.setDoInput(true);
 			connection.setDoOutput(true);
@@ -367,18 +371,18 @@ public class EhcoreAPIUtil extends IHGUtil {
 			} else if (reqMethod.equals(EhcoreAPIConstants.GET_REQUEST)) {
 				Log4jUtil.log("Path specified to XML input is null. Not writing anything " + "to the connection since its a \"Get\" request");
 			} else {
-				Assert.fail("No XML input file specified for the \"Post\" request");
-				Assert.fail("No XML input file specified for the \"Post\" request");
+				fail("No XML input file specified for the \"Post\" request");
+				fail("No XML input file specified for the \"Post\" request");
 			}
 
 			Log4jUtil.log("HTTPS response code: " + connection.getResponseCode());
 			Log4jUtil.log("HTTPS response message: " + connection.getResponseMessage());
 		} catch (ProtocolException pe) {
-			Assert.fail(pe.getMessage(), pe);
-			Assert.fail(pe.getMessage());
+			fail(pe.getMessage(), pe);
+			fail(pe.getMessage());
 		} catch (IOException ioe) {
-			Assert.fail(ioe.getMessage(), ioe);
-			Assert.fail(ioe.getMessage());
+			fail(ioe.getMessage(), ioe);
+			fail(ioe.getMessage());
 		}
 
 		return connection;
@@ -400,8 +404,8 @@ public class EhcoreAPIUtil extends IHGUtil {
 
 			long length = file.length();
 			if (length > Integer.MAX_VALUE) {
-				Assert.fail("File is too large to be processed: " + filePath);
-				Assert.fail("File is too large to be processed: " + filePath);
+				fail("File is too large to be processed: " + filePath);
+				fail("File is too large to be processed: " + filePath);
 			}
 			bytes = new byte[(int) length];
 
@@ -411,8 +415,8 @@ public class EhcoreAPIUtil extends IHGUtil {
 			}
 
 			if (offset != bytes.length) {
-				Assert.fail("Could not completely read file " + filePath);
-				Assert.fail("Could not completely read file " + filePath);
+				fail("Could not completely read file " + filePath);
+				fail("Could not completely read file " + filePath);
 			}
 			// Log4jUtil.log("Request &&&&: " + new String(bytes));
 			// Save actual to a file.
@@ -420,16 +424,16 @@ public class EhcoreAPIUtil extends IHGUtil {
 			try {
 				FileUtils.writeStringToFile(new File(actualCcdFileName), new String(bytes), false);
 			} catch (IOException e) {
-				Assert.fail(e.getMessage(), e);
-				Assert.fail("Failed to write actualCcd to file. " + e.getMessage());
+				fail(e.getMessage(), e);
+				fail("Failed to write actualCcd to file. " + e.getMessage());
 			}
 			is.close();
 		} catch (FileNotFoundException fnfe) {
-			Assert.fail(fnfe.getMessage(), fnfe);
-			Assert.fail(fnfe.getMessage());
+			fail(fnfe.getMessage(), fnfe);
+			fail(fnfe.getMessage());
 		} catch (IOException ioe) {
-			Assert.fail(ioe.getMessage(), ioe);
-			Assert.fail(ioe.getMessage());
+			fail(ioe.getMessage(), ioe);
+			fail(ioe.getMessage());
 		}
 		Log4jUtil.log("fileToBytes content::" + bytes.toString());
 		return bytes;
@@ -454,22 +458,22 @@ public class EhcoreAPIUtil extends IHGUtil {
 			url = new URL(strUrl);
 			Log4jUtil.log("Created URL object");
 		} catch (MalformedURLException mue) {
-			Assert.fail(mue.getMessage(), mue);
-			Assert.fail(mue.getMessage());
+			fail(mue.getMessage(), mue);
+			fail(mue.getMessage());
 		}
 
-		Assert.assertNotNull(url);
+		assertNotNull(url);
 		HttpURLConnection connection = null;
 		try {
 			Log4jUtil.log("Opening URL connection");
 			connection = (HttpURLConnection) url.openConnection();
 			Log4jUtil.log("URL connection established");
 		} catch (IOException ioe) {
-			Assert.fail(ioe.getMessage(), ioe);
-			Assert.fail(ioe.getMessage());
+			fail(ioe.getMessage(), ioe);
+			fail(ioe.getMessage());
 		}
 
-		Assert.assertNotNull(connection);
+		assertNotNull(connection);
 
 		try {
 			connection.setDoInput(true);
@@ -502,19 +506,19 @@ public class EhcoreAPIUtil extends IHGUtil {
 			} else if (reqMethod.equals(EhcoreAPIConstants.GET_REQUEST)) {
 				Log4jUtil.log("Path specified to XML input is null. Not writing anything to the connection since its a \"Get\" request");
 			} else {
-				Assert.fail("No XML input file specified for the \"Post\" request");
-				Assert.fail("No XML input file specified for the \"Post\" request");
+				fail("No XML input file specified for the \"Post\" request");
+				fail("No XML input file specified for the \"Post\" request");
 			}
 
 			Log4jUtil.log("HTTP response code: " + connection.getResponseCode());
 			Log4jUtil.log("HTTP response message: " + connection.getResponseMessage());
 
 		} catch (ProtocolException pe) {
-			Assert.fail(pe.getMessage(), pe);
-			Assert.fail(pe.getMessage());
+			fail(pe.getMessage(), pe);
+			fail(pe.getMessage());
 		} catch (IOException ioe) {
-			Assert.fail(ioe.getMessage(), ioe);
-			Assert.fail(ioe.getMessage());
+			fail(ioe.getMessage(), ioe);
+			fail(ioe.getMessage());
 		}
 		return connection;
 	}
@@ -536,8 +540,8 @@ public class EhcoreAPIUtil extends IHGUtil {
 			Log4jUtil.log("Response: " + response);
 			reader.close();
 		} catch (IOException ioe) {
-			Assert.fail(ioe.getMessage(), ioe);
-			Assert.fail(ioe.getMessage());
+			fail(ioe.getMessage(), ioe);
+			fail(ioe.getMessage());
 		}
 
 		return response.toString();
@@ -551,16 +555,16 @@ public class EhcoreAPIUtil extends IHGUtil {
 			try {
 				stream = new FileInputStream(new File(path));
 			} catch (FileNotFoundException e1) {
-				Assert.fail(e1.getMessage(), e1);
-				Assert.fail(e1.getMessage());
+				fail(e1.getMessage(), e1);
+				fail(e1.getMessage());
 			}
 			FileChannel fc = stream.getChannel();
 
 			try {
 				bb = fc.map(FileChannel.MapMode.READ_ONLY, 0, fc.size());
 			} catch (IOException e) {
-				Assert.fail(e.getMessage(), e);
-				Assert.fail(e.getMessage());
+				fail(e.getMessage(), e);
+				fail(e.getMessage());
 			}
 			/* Instead of using default, pass in a decoder. */
 			return Charset.defaultCharset().decode(bb).toString();
@@ -570,8 +574,8 @@ public class EhcoreAPIUtil extends IHGUtil {
 			try {
 				stream.close();
 			} catch (IOException e) {
-				Assert.fail(e.getMessage(), e);
-				Assert.fail(e.getMessage());
+				fail(e.getMessage(), e);
+				fail(e.getMessage());
 			}
 		}
 
@@ -608,7 +612,7 @@ public class EhcoreAPIUtil extends IHGUtil {
 		} else if (protocol.equalsIgnoreCase("http") && djId == "") {
 			conn = setupHttpConnection(url, EhcoreAPIConstants.POST_REQUEST, requestXml, "valid", djId, false);
 		} else {
-			Assert.fail("Protocol can only be http or https, found " + protocol);
+			fail("Protocol can only be http or https, found " + protocol);
 		}
 
 		// read response from output stream of connection
@@ -617,22 +621,22 @@ public class EhcoreAPIUtil extends IHGUtil {
 			if (conn != null) {
 				if (expectedResponse.equalsIgnoreCase(EhcoreAPIConstants.EXPECTEDRESPONSE_ACCEPTED) && conn.getResponseCode() == expectedHttpCodeAccepted) {
 					xmlResponse = readResponse(conn.getInputStream());
-					Assert.assertEquals(expectedHttpCodeAccepted, conn.getResponseCode());
+					assertEquals(expectedHttpCodeAccepted, conn.getResponseCode());
 					// validate the response against xsd
-					Assert.assertTrue(validateXML(EhcoreAPIConstants.PROCESSING_RESPONSE_XSD, xmlResponse), "Response XML is not valid");
+					assertTrue(validateXML(EhcoreAPIConstants.PROCESSING_RESPONSE_XSD, xmlResponse), "Response XML is not valid");
 				} else if (expectedResponse.equalsIgnoreCase(EhcoreAPIConstants.EXPECTEDRESPONSE_BADREQUEST) && conn.getResponseCode() == expectedHttpCode_BadRequest) {
-					Assert.assertEquals(expectedHttpCode_BadRequest, conn.getResponseCode());
+					assertEquals(expectedHttpCode_BadRequest, conn.getResponseCode());
 					xmlResponse = readResponse(conn.getErrorStream());
 					// validate the response against xsd
-					Assert.assertTrue(validateXML(EhcoreAPIConstants.PROCESSING_RESPONSE_XSD, xmlResponse), "Response XML is not valid");
+					assertTrue(validateXML(EhcoreAPIConstants.PROCESSING_RESPONSE_XSD, xmlResponse), "Response XML is not valid");
 				} else {
-					Assert.fail("expected response code :" + expectedResponse + ",actual response code :" + conn.getResponseCode() + ",are not same");
+					fail("expected response code :" + expectedResponse + ",actual response code :" + conn.getResponseCode() + ",are not same");
 				}
 				conn.disconnect();
 			}
 		} catch (IOException ioe) {
-			Assert.fail(ioe.getMessage(), ioe);
-			Assert.fail(ioe.getMessage());
+			fail(ioe.getMessage(), ioe);
+			fail(ioe.getMessage());
 		}
 		return EhcoreAPIUtil.unmarshallCCDResponse(xmlResponse);
 	}
@@ -660,7 +664,7 @@ public class EhcoreAPIUtil extends IHGUtil {
 		} else if (protocol.equalsIgnoreCase("http")) {
 			conn = setupHttpConnection(url, EhcoreAPIConstants.POST_REQUEST, requestXml, "valid", "", false);
 		} else {
-			Assert.fail("Protocol can only be http or https, found " + protocol);
+			fail("Protocol can only be http or https, found " + protocol);
 		}
 
 		boolean xmlResponse = false;
@@ -668,16 +672,16 @@ public class EhcoreAPIUtil extends IHGUtil {
 			if (conn != null) {
 				if (expectedResponse.equalsIgnoreCase(EhcoreAPIConstants.EXPECTEDRESPONSE_ACCEPTED)) {
 					xmlResponse = conn.getDoInput();
-					Assert.assertEquals(expectedHttpCodeAccepted, conn.getResponseCode());
+					assertEquals(expectedHttpCodeAccepted, conn.getResponseCode());
 				} else {
-					Assert.fail("expected response code :" + expectedResponse + ",actual response code :" + conn.getResponseCode() + "are not same");
+					fail("expected response code :" + expectedResponse + ",actual response code :" + conn.getResponseCode() + "are not same");
 				}
 
 				conn.disconnect();
 			}
 		} catch (IOException ioe) {
-			Assert.fail(ioe.getMessage(), ioe);
-			Assert.fail(ioe.getMessage());
+			fail(ioe.getMessage(), ioe);
+			fail(ioe.getMessage());
 		}
 
 		return xmlResponse;
@@ -702,7 +706,7 @@ public class EhcoreAPIUtil extends IHGUtil {
 			xmlFile = CCDImportConstants.CCD1 + "CCDExchange1.xml";
 			toXML = CCDImportConstants.SAMPLE_CCD + "testCCDExchange1.xml";
 			updateCCD_Data(xmlFile, toXML, UPN);
-			Assert.assertTrue(isValidXML(new String(fileToBytes(toXML))), "Request XML is not valid");
+			assertTrue(isValidXML(new String(fileToBytes(toXML))), "Request XML is not valid");
 			expectedResponse = EhcoreAPIConstants.EXPECTEDRESPONSE_ACCEPTED;
 
 		}
@@ -714,7 +718,7 @@ public class EhcoreAPIUtil extends IHGUtil {
 			xmlFile = CCDImportConstants.C_CCD + "ConsolidatedCCD1.xml";
 			toXML = CCDImportConstants.SAMPLE_CCD + "testConsolidatedCCD1.xml";
 			updateCCD_Data(xmlFile, toXML, UPN);
-			Assert.assertTrue(isValidXML(new String(fileToBytes(toXML))), "Request XML is not valid");
+			assertTrue(isValidXML(new String(fileToBytes(toXML))), "Request XML is not valid");
 			expectedResponse = EhcoreAPIConstants.EXPECTEDRESPONSE_ACCEPTED;
 		}
 		// No Known Consolidated CCD
@@ -725,7 +729,7 @@ public class EhcoreAPIUtil extends IHGUtil {
 			xmlFile = CCDImportConstants.C_CCD + "NoKnownC_CCD1.xml";
 			toXML = CCDImportConstants.SAMPLE_CCD + "testNoKnownC_CCD1.xml";
 			updateCCD_Data(xmlFile, toXML, UPN);
-			Assert.assertTrue(isValidXML(new String(fileToBytes(toXML))), "Request XML is not valid");
+			assertTrue(isValidXML(new String(fileToBytes(toXML))), "Request XML is not valid");
 			expectedResponse = EhcoreAPIConstants.EXPECTEDRESPONSE_ACCEPTED;
 		}
 
@@ -801,8 +805,8 @@ public class EhcoreAPIUtil extends IHGUtil {
 		try {
 			schema = getSchema(xsdFilePath);
 		} catch (Exception e) {
-			Assert.fail(e.getMessage(), e);
-			Assert.fail(e.getMessage());
+			fail(e.getMessage(), e);
+			fail(e.getMessage());
 		}
 		Validator validator = schema.newValidator();
 		final List<String> allErrors = new ArrayList<String>();
@@ -831,11 +835,11 @@ public class EhcoreAPIUtil extends IHGUtil {
 			try {
 				validator.validate(new StreamSource(new StringReader(xml)));
 			} catch (SAXException e) {
-				Assert.fail(e.getMessage(), e);
-				Assert.fail(e.getMessage());
+				fail(e.getMessage(), e);
+				fail(e.getMessage());
 			} catch (IOException e) {
-				Assert.fail(e.getMessage(), e);
-				Assert.fail(e.getMessage());
+				fail(e.getMessage(), e);
+				fail(e.getMessage());
 			}
 		}
 		allErrors.addAll(fatalErrors);
@@ -894,11 +898,11 @@ public class EhcoreAPIUtil extends IHGUtil {
 
 
 		ProcessingResponse response = processRequestCCDMessage(url, requestType, requestXml, djId, expectedResponse);
-		Assert.assertNotNull(response.getDataJobId());
-		Assert.assertNotNull(response.getMessageId());
+		assertNotNull(response.getDataJobId());
+		assertNotNull(response.getMessageId());
 		if (type.equalsIgnoreCase(EhcoreAPIConstants.INVALIDCCD)) {
-			Assert.assertEquals("Failure", response.getProcessingStatus());
-			Assert.assertNotNull(response.getResponseMessage());
+			assertEquals("Failure", response.getProcessingStatus());
+			assertNotNull(response.getResponseMessage());
 		}
 
 		return response;
@@ -913,8 +917,8 @@ public class EhcoreAPIUtil extends IHGUtil {
 			throws Exception {
 
 		ProcessingResponse response = processRequestCCDMessage(url, requestType, requestXml, djId, expectedResponse);
-		Assert.assertEquals(response.getProcessingStatus(), "Failure");
-		Assert.assertNotNull(response.getResponseMessage());
+		assertEquals(response.getProcessingStatus(), "Failure");
+		assertNotNull(response.getResponseMessage());
 
 		return response;
 	}
@@ -938,14 +942,14 @@ public class EhcoreAPIUtil extends IHGUtil {
 			marshaller.marshal(dj, os);
 			os.close();
 		} catch (JAXBException je) {
-			Assert.fail(je.getMessage(), je);
-			Assert.fail(je.getMessage());
+			fail(je.getMessage(), je);
+			fail(je.getMessage());
 		} catch (FileNotFoundException fnfe) {
-			Assert.fail(fnfe.getMessage(), fnfe);
-			Assert.fail(fnfe.getMessage());
+			fail(fnfe.getMessage(), fnfe);
+			fail(fnfe.getMessage());
 		} catch (IOException ioe) {
-			Assert.fail(ioe.getMessage(), ioe);
-			Assert.fail(ioe.getMessage());
+			fail(ioe.getMessage(), ioe);
+			fail(ioe.getMessage());
 		}
 	}
 
@@ -967,14 +971,14 @@ public class EhcoreAPIUtil extends IHGUtil {
 			marshaller.marshal(req, os);
 			os.close();
 		} catch (JAXBException je) {
-			Assert.fail(je.getMessage(), je);
-			Assert.fail(je.getMessage());
+			fail(je.getMessage(), je);
+			fail(je.getMessage());
 		} catch (FileNotFoundException fnfe) {
-			Assert.fail(fnfe.getMessage(), fnfe);
-			Assert.fail(fnfe.getMessage());
+			fail(fnfe.getMessage(), fnfe);
+			fail(fnfe.getMessage());
 		} catch (IOException ioe) {
-			Assert.fail(ioe.getMessage(), ioe);
-			Assert.fail(ioe.getMessage());
+			fail(ioe.getMessage(), ioe);
+			fail(ioe.getMessage());
 		}
 	}
 
@@ -996,16 +1000,16 @@ public class EhcoreAPIUtil extends IHGUtil {
 			dj = (DataJob) um.unmarshal(is);
 			is.close();
 		} catch (JAXBException je) {
-			Assert.fail(je.getMessage(), je);
-			Assert.fail(je.getMessage());
+			fail(je.getMessage(), je);
+			fail(je.getMessage());
 		} catch (FileNotFoundException fnfe) {
-			Assert.fail(fnfe.getMessage(), fnfe);
-			Assert.fail(fnfe.getMessage());
+			fail(fnfe.getMessage(), fnfe);
+			fail(fnfe.getMessage());
 		} catch (IOException ioe) {
-			Assert.fail(ioe.getMessage(), ioe);
-			Assert.fail(ioe.getMessage());
+			fail(ioe.getMessage(), ioe);
+			fail(ioe.getMessage());
 		}
-		Assert.assertNotNull(dj);
+		assertNotNull(dj);
 		return dj;
 	}
 
@@ -1024,13 +1028,13 @@ public class EhcoreAPIUtil extends IHGUtil {
 			JAXBElement<CcdExchange> result = unMarshaller.unmarshal(source, CcdExchange.class);
 			Ccd = (CcdExchange) result.getValue();
 		} catch (JAXBException je) {
-			Assert.fail(je.getMessage(), je);
-			Assert.fail(je.getMessage());
+			fail(je.getMessage(), je);
+			fail(je.getMessage());
 		} catch (FileNotFoundException e) {
-			Assert.fail(e.getMessage(), e);
-			Assert.fail(e.getMessage());
+			fail(e.getMessage(), e);
+			fail(e.getMessage());
 		}
-		Assert.assertNotNull(Ccd);
+		assertNotNull(Ccd);
 		return Ccd;
 
 	}
@@ -1054,16 +1058,16 @@ public class EhcoreAPIUtil extends IHGUtil {
 			req = (ReprocessRequest) um.unmarshal(is);
 			is.close();
 		} catch (JAXBException je) {
-			Assert.fail(je.getMessage(), je);
-			Assert.fail(je.getMessage());
+			fail(je.getMessage(), je);
+			fail(je.getMessage());
 		} catch (FileNotFoundException fnfe) {
-			Assert.fail(fnfe.getMessage(), fnfe);
-			Assert.fail(fnfe.getMessage());
+			fail(fnfe.getMessage(), fnfe);
+			fail(fnfe.getMessage());
 		} catch (IOException ioe) {
-			Assert.fail(ioe.getMessage(), ioe);
-			Assert.fail(ioe.getMessage());
+			fail(ioe.getMessage(), ioe);
+			fail(ioe.getMessage());
 		}
-		Assert.assertNotNull(req);
+		assertNotNull(req);
 		return req;
 	}
 
@@ -1105,14 +1109,14 @@ public class EhcoreAPIUtil extends IHGUtil {
 			marshaller.marshal(ccdExchangeRootElement, os);
 			os.close();
 		} catch (JAXBException je) {
-			Assert.fail(je.getMessage(), je);
-			Assert.fail(je.getMessage());
+			fail(je.getMessage(), je);
+			fail(je.getMessage());
 		} catch (FileNotFoundException fnfe) {
-			Assert.fail(fnfe.getMessage(), fnfe);
-			Assert.fail(fnfe.getMessage());
+			fail(fnfe.getMessage(), fnfe);
+			fail(fnfe.getMessage());
 		} catch (IOException ioe) {
-			Assert.fail(ioe.getMessage(), ioe);
-			Assert.fail(ioe.getMessage());
+			fail(ioe.getMessage(), ioe);
+			fail(ioe.getMessage());
 		}
 	}
 
@@ -1218,10 +1222,10 @@ public class EhcoreAPIUtil extends IHGUtil {
 			ByteArrayInputStream is = new ByteArrayInputStream(str.getBytes());
 			dj = (DataJob) um.unmarshal(is);
 		} catch (JAXBException je) {
-			Assert.fail(je.getMessage(), je);
-			Assert.fail(je.getMessage());
+			fail(je.getMessage(), je);
+			fail(je.getMessage());
 		}
-		Assert.assertNotNull(dj);
+		assertNotNull(dj);
 		return dj;
 	}
 
@@ -1243,10 +1247,10 @@ public class EhcoreAPIUtil extends IHGUtil {
 			ByteArrayInputStream is = new ByteArrayInputStream(str.getBytes());
 			res = (ProcessingResponse) um.unmarshal(is);
 		} catch (JAXBException je) {
-			Assert.fail(je.getMessage(), je);
-			Assert.fail(je.getMessage());
+			fail(je.getMessage(), je);
+			fail(je.getMessage());
 		}
-		Assert.assertNotNull(res);
+		assertNotNull(res);
 		return res;
 	}
 
@@ -1272,10 +1276,10 @@ public class EhcoreAPIUtil extends IHGUtil {
 			ByteArrayInputStream is = new ByteArrayInputStream(envelope.getBytes());
 			res = (AllscriptsMessageEnvelope) um.unmarshal(is);
 		} catch (JAXBException je) {
-			Assert.fail(je.getMessage(), je);
-			Assert.fail(je.getMessage());
+			fail(je.getMessage(), je);
+			fail(je.getMessage());
 		}
-		Assert.assertNotNull(res);
+		assertNotNull(res);
 		return res;
 	}
 
@@ -1317,8 +1321,8 @@ public class EhcoreAPIUtil extends IHGUtil {
 		try {
 			Thread.sleep(time * 1000);
 		} catch (InterruptedException ie) {
-			Assert.fail(ie.getMessage(), ie);
-			Assert.fail(ie.getMessage());
+			fail(ie.getMessage(), ie);
+			fail(ie.getMessage());
 		}
 	}
 
@@ -1336,13 +1340,13 @@ public class EhcoreAPIUtil extends IHGUtil {
 			JAXBElement<CCDMessageType> jaxbSimple = (JAXBElement<CCDMessageType>) unMarshaller.unmarshal(is);
 			ccdMessage = (CCDMessageType) jaxbSimple.getValue();
 		} catch (JAXBException je) {
-			Assert.fail(je.getMessage(), je);
-			Assert.fail(je.getMessage());
+			fail(je.getMessage(), je);
+			fail(je.getMessage());
 		} catch (FileNotFoundException e) {
-			Assert.fail(e.getMessage(), e);
-			Assert.fail(e.getMessage());
+			fail(e.getMessage(), e);
+			fail(e.getMessage());
 		}
-		Assert.assertNotNull(ccdMessage);
+		assertNotNull(ccdMessage);
 		return ccdMessage;
 	}
 
@@ -1385,14 +1389,14 @@ public class EhcoreAPIUtil extends IHGUtil {
 			marshaller.marshal(rootElement, os);
 			os.close();
 		} catch (JAXBException je) {
-			Assert.fail(je.getMessage(), je);
-			Assert.fail(je.getMessage());
+			fail(je.getMessage(), je);
+			fail(je.getMessage());
 		} catch (FileNotFoundException fnfe) {
-			Assert.fail(fnfe.getMessage(), fnfe);
-			Assert.fail(fnfe.getMessage());
+			fail(fnfe.getMessage(), fnfe);
+			fail(fnfe.getMessage());
 		} catch (IOException ioe) {
-			Assert.fail(ioe.getMessage(), ioe);
-			Assert.fail(ioe.getMessage());
+			fail(ioe.getMessage(), ioe);
+			fail(ioe.getMessage());
 		}
 	}
 
@@ -1414,10 +1418,10 @@ public class EhcoreAPIUtil extends IHGUtil {
 			ByteArrayInputStream is = new ByteArrayInputStream(str.getBytes());
 			response = (ProcessingResponse) um.unmarshal(is);
 		} catch (JAXBException je) {
-			Assert.fail(je.getMessage(), je);
-			Assert.fail(je.getMessage());
+			fail(je.getMessage(), je);
+			fail(je.getMessage());
 		}
-		Assert.assertNotNull(response);
+		assertNotNull(response);
 		return response;
 	}
 
@@ -1477,7 +1481,7 @@ public class EhcoreAPIUtil extends IHGUtil {
 
 		Log4jUtil.log("Total time taken for processing status to be updated " + (t_end - t_beg) / 1000);
 
-		Assert.assertTrue(isProcStatusAsExpected, "Expected Job_Status_Type " + expectedProcStatus + ", found " + actualStatus + " for DataJob Id " + djId);
+		assertTrue(isProcStatusAsExpected, "Expected Job_Status_Type " + expectedProcStatus + ", found " + actualStatus + " for DataJob Id " + djId);
 	}
 
 
@@ -1670,8 +1674,8 @@ public class EhcoreAPIUtil extends IHGUtil {
 	 * @param message the identifying message for the {@link AssertionError} (<code>null</code> okay)
 	 * @param object Object to check or <code>null</code>
 	 */
-	static public void assertNotNull(String message, Object object) {
-		BaseTestSoftAssert.assertTrue(object != null, message);
+	static public void assertIsNotNull(String message, Object object) {
+		assertTrue(object != null, message);
 	}
 
 	public static DataJob completeDataJob(String djId, String transStatus) throws Exception {
@@ -1684,11 +1688,11 @@ public class EhcoreAPIUtil extends IHGUtil {
 
 		DataJob dj = processRequest(url, EhcoreAPIConstants.POST_REQUEST, toXML, expectedResponseMessage_Datajob);
 
-		assertNotNull(null, dj.getDataJobId());
-		assertNotNull(null, dj.getDataChannel());
-		assertNotNull(null, dj.getDataFeed());
-		assertNotNull(null, dj.getMessageType());
-		assertNotNull(null, dj.getTransmissionStatus());
+		assertIsNotNull(null, dj.getDataJobId());
+		assertIsNotNull(null, dj.getDataChannel());
+		assertIsNotNull(null, dj.getDataFeed());
+		assertIsNotNull(null, dj.getMessageType());
+		assertIsNotNull(null, dj.getTransmissionStatus());
 
 		return dj;
 	}
@@ -1708,11 +1712,11 @@ public class EhcoreAPIUtil extends IHGUtil {
 		updateOpenDataJobXml(fromXML, transStatus, toXML);
 
 		DataJob dj = processRequest(url, EhcoreAPIConstants.POST_REQUEST, toXML, expectedResponseMessage_Datajob);
-		assertNotNull(null, dj.getDataJobId());
-		assertNotNull(null, dj.getDataChannel());
-		assertNotNull(null, dj.getDataFeed());
-		assertNotNull(null, dj.getMessageType());
-		assertNotNull(null, dj.getTransmissionStatus());
+		assertIsNotNull(null, dj.getDataJobId());
+		assertIsNotNull(null, dj.getDataChannel());
+		assertIsNotNull(null, dj.getDataFeed());
+		assertIsNotNull(null, dj.getMessageType());
+		assertIsNotNull(null, dj.getTransmissionStatus());
 
 		return dj;
 	}
@@ -1798,7 +1802,7 @@ public class EhcoreAPIUtil extends IHGUtil {
 
 		Log4jUtil.log("Total time taken for processing status to be updated ::" + (t_end - t_beg) / 1000);
 
-		Assert.assertTrue(isProcStatusAsExpected,
+		assertTrue(isProcStatusAsExpected,
 				"Expected Message processing_status_type ::" + expectedStatus + ", found " + actualStatus + " for DataJob Id " + djId);
 
 		return details;
@@ -1877,7 +1881,7 @@ public class EhcoreAPIUtil extends IHGUtil {
 		if (protocol.equalsIgnoreCase("http")) {
 			conn = setupHttpConnection(url, EhcoreAPIConstants.POST_REQUEST, requestXml, "validAS_CCD", "", false);
 		} else {
-			Assert.fail("Protocol can only be http or https, found " + protocol);
+			fail("Protocol can only be http or https, found " + protocol);
 		}
 
 		// read response from output stream of connection
@@ -1886,22 +1890,22 @@ public class EhcoreAPIUtil extends IHGUtil {
 			if (conn != null) {
 				if (expectedResponse.equalsIgnoreCase(expectedResponseMessage_Datajob) && conn.getResponseCode() == expectedHttpCode) {
 					xmlResponse = readResponse(conn.getInputStream());
-					Assert.assertEquals(expectedHttpCode, conn.getResponseCode());
+					assertEquals(expectedHttpCode, conn.getResponseCode());
 					// validate the response against xsd
 
 				} else if (expectedResponse.equalsIgnoreCase(EhcoreAPIConstants.EXPECTEDRESPONSE_BADREQUEST) && conn.getResponseCode() == expectedHttpCode_BadRequest) {
-					Assert.assertEquals(expectedHttpCode_BadRequest, conn.getResponseCode());
+					assertEquals(expectedHttpCode_BadRequest, conn.getResponseCode());
 					xmlResponse = readResponse(conn.getErrorStream());
 					// validate the response against xsd
-					Assert.assertTrue(validateXML(EhcoreAPIConstants.PROCESSING_RESPONSE_XSD, xmlResponse), "Response XML is not valid");
+					assertTrue(validateXML(EhcoreAPIConstants.PROCESSING_RESPONSE_XSD, xmlResponse), "Response XML is not valid");
 				} else {
-					Assert.fail("expected response code :" + expectedResponse + ",actual response code :" + conn.getResponseCode() + ",are not same");
+					fail("expected response code :" + expectedResponse + ",actual response code :" + conn.getResponseCode() + ",are not same");
 				}
 				conn.disconnect();
 			}
 		} catch (IOException ioe) {
-			Assert.fail(ioe.getMessage(), ioe);
-			Assert.fail(ioe.getMessage());
+			fail(ioe.getMessage(), ioe);
+			fail(ioe.getMessage());
 		}
 		return EhcoreAPIUtil.unmarshallAllScriptsCCDImportResponse(xmlResponse);
 	}
@@ -1947,7 +1951,7 @@ public class EhcoreAPIUtil extends IHGUtil {
 			if (conn != null) {
 				if (expectedCode.equalsIgnoreCase(EhcoreAPIConstants.EXPECTEDRESPONSE_ACCEPTED) && conn.getResponseCode() == expectedHttpCodeAccepted) { // EHCoreTestConsts.expectedResponse_Accepted
 					SimpleCCD = readResponse(conn.getInputStream());
-					Assert.assertEquals(expectedHttpCodeAccepted, conn.getResponseCode());
+					assertEquals(expectedHttpCodeAccepted, conn.getResponseCode());
 					// validate the response against xsd
 					// assertTrue("Response XML is not valid",validateXML(UtilConsts.PROCESSING_RESPONSE_XSD,xmlResponse));
 				} else {
@@ -1955,7 +1959,7 @@ public class EhcoreAPIUtil extends IHGUtil {
 				conn.disconnect();
 			}
 		} catch (IOException ioe) {
-			Assert.fail(ioe.getMessage(), ioe);
+			fail(ioe.getMessage(), ioe);
 			// fail(ioe.getMessage());
 		}
 		Log4jUtil.log(" *** SimpleCCD : ****" + SimpleCCD);
@@ -1965,8 +1969,8 @@ public class EhcoreAPIUtil extends IHGUtil {
 		try {
 			FileUtils.writeStringToFile(new File(actualCcd), SimpleCCD, false);
 		} catch (IOException e) {
-			Assert.fail(e.getMessage(), e);
-			Assert.fail("Failed to write actualCcd to file. " + e.getMessage());
+			fail(e.getMessage(), e);
+			fail("Failed to write actualCcd to file. " + e.getMessage());
 		}
 		// Compare Actual objStore Message with Expected CCD Message using XMLUnit . FAILRUES IN OLD FRAMEWORK TOOO
 		// EhcoreXmlUnitUtil.assertEqualsXML(expectedCcd, actualCcd); XML comparision check with Kavitha
@@ -2062,8 +2066,8 @@ public class EhcoreAPIUtil extends IHGUtil {
 				FileUtils.writeStringToFile(new File(actualCdmFileName), actualCdm, false);
 
 			} catch (IOException e) {
-				Assert.fail(e.getMessage(), e);
-				Assert.fail("Failed to write actualCdm to file. " + e.getMessage());
+				fail(e.getMessage(), e);
+				fail("Failed to write actualCdm to file. " + e.getMessage());
 			}
 			String expectedCdmFileName = expectedList.get(count);
 			EhcoreXmlUnitUtil.assertEqualsXML(expectedCdmFileName, actualCdmFileName);

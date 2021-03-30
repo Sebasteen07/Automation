@@ -1,5 +1,8 @@
-// Copyright 2018-2020 NXGN Management, LLC. All Rights Reserved.
+// Copyright 2013-2021 NXGN Management, LLC. All Rights Reserved.
 package com.medfusion.product.pss2patientportal.test;
+
+import static org.testng.Assert.assertEquals;
+import static org.testng.Assert.assertTrue;
 
 import java.util.ArrayList;
 
@@ -667,8 +670,6 @@ public class PSS2PatientPortalAcceptanceTests extends BaseTestNGWebDriver {
 		Appointment testData = new Appointment();
 		AdminUser adminuser = new AdminUser();
 		PSSAdminUtils adminUtils = new PSSAdminUtils();
-
-		AdminAppointment adminAppointment = new AdminAppointment(driver);
 
 		log("Step 1: Set the Test Data for NG ADMIN & APPOINTMENT-------");
 		propertyData.setAdminNG(adminuser);
@@ -2815,7 +2816,7 @@ public class PSS2PatientPortalAcceptanceTests extends BaseTestNGWebDriver {
 		adminappointment.toggleAllowPCP();
 		log("Step 2A:Success Toggle .");
 		Thread.sleep(1000);
-		PatientFlow patientflow = adminappointment.gotoPatientFlowTab();
+		adminappointment.gotoPatientFlowTab();
 		String rule = "S, T, L, B";
 		adminappointment.logout();
 		log("rule set in admin = " + rule);

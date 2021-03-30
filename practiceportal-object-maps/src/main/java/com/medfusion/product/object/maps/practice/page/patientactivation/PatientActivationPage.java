@@ -1,6 +1,9 @@
 //Copyright 2013-2021 NXGN Management, LLC. All Rights Reserved.
 package com.medfusion.product.object.maps.practice.page.patientactivation;
 
+import static org.testng.Assert.assertNotNull;
+import static org.testng.Assert.assertTrue;
+
 import java.io.IOException;
 import com.intuit.ifs.csscat.core.pageobject.BasePageObject;
 import com.intuit.ifs.csscat.core.utils.Log4jUtil;
@@ -15,7 +18,7 @@ import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.FindBy;
 import org.openqa.selenium.support.How;
 import org.openqa.selenium.support.ui.Select;
-import org.testng.Assert;
+
 
 public class PatientActivationPage extends BasePageObject {
 
@@ -177,7 +180,7 @@ public class PatientActivationPage extends BasePageObject {
 
 		IHGUtil.waitForElement(driver, 10, unlockLink);
 		unlocklink = unlockLink.getText().trim();
-		Assert.assertTrue(!unlocklink.isEmpty(), "### ERROR: Couldn't get unlock link");
+		assertTrue(!unlocklink.isEmpty(), "### ERROR: Couldn't get unlock link");
 
 		Log4jUtil.log("#### The unlock link exists and the link is:" + unlocklink);
 		clickDone();
@@ -228,7 +231,7 @@ public class PatientActivationPage extends BasePageObject {
 
 		IHGUtil.waitForElement(driver, 10, unlockLink);
 		unlocklink = unlockLink.getText().trim();
-		Assert.assertNotNull(unlocklink, "### ERROR: Couldn't get unlock link");
+		assertNotNull(unlocklink, "### ERROR: Couldn't get unlock link");
 
 		log("#### The unlock link exists and the link is:" + unlocklink);
 		clickDone();
@@ -304,7 +307,7 @@ public class PatientActivationPage extends BasePageObject {
 
 		IHGUtil.waitForElement(driver, 30, unlockLink);
 		unlocklink = unlockLink.getText().trim();
-		Assert.assertTrue(!unlocklink.equals(""), "### ERROR: Couldn't get unlock link");
+		assertTrue(!unlocklink.equals(""), "### ERROR: Couldn't get unlock link");
 		String activationCode = unlockCode.getText();
 		Log4jUtil.log("Unlock Code :" + activationCode);
 
@@ -351,7 +354,7 @@ public class PatientActivationPage extends BasePageObject {
 		if(flag==1) {
 		IHGUtil.waitForElement(driver, 10, unlockLink);
 		unlocklink = unlockLink.getText().trim();
-		Assert.assertTrue(!unlocklink.isEmpty(), "### ERROR: Couldn't get unlock link");
+		assertTrue(!unlocklink.isEmpty(), "### ERROR: Couldn't get unlock link");
 		log("#### The unlock link exists and the link is:" + unlocklink);
 		
 		} else

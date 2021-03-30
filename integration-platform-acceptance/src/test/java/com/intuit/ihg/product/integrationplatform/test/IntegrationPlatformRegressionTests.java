@@ -2,12 +2,15 @@
 package com.intuit.ihg.product.integrationplatform.test;
 
 
+import static org.testng.Assert.assertEquals;
+import static org.testng.Assert.assertTrue;
+
 import java.util.ArrayList;
 import java.util.List;
 
 import org.testng.annotations.DataProvider;
 import org.testng.annotations.Test;
-import org.testng.Assert;
+
 
 import com.intuit.ifs.csscat.core.BaseTestNGWebDriver;
 import com.intuit.ifs.csscat.core.RetryAnalyzer;
@@ -437,7 +440,7 @@ public class IntegrationPlatformRegressionTests extends BaseTestNGWebDriver {
 			found = true;
 			RestUtils.checkPatientRegistered(testData.getResponsePath(), updateData);
 		}
-		Assert.assertTrue(found, "Health Key Patient is not found in Get Response");
+		assertTrue(found, "Health Key Patient is not found in Get Response");
 
 		log("Step 6: Logout from Patient portal");
 		pMyAccountPage.clickOnLogout();

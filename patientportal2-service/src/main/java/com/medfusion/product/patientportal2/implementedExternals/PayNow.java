@@ -1,8 +1,8 @@
+//Copyright 2013-2021 NXGN Management, LLC. All Rights Reserved.
 package com.medfusion.product.patientportal2.implementedExternals;
 
-import static org.testng.AssertJUnit.assertTrue;
+import static org.testng.Assert.assertTrue;
 
-import com.medfusion.product.patientportal2.pojo.PortalBasic;
 import org.openqa.selenium.WebDriver;
 
 import com.medfusion.product.object.maps.patientportal2.page.JalapenoLoginPage;
@@ -10,6 +10,7 @@ import com.medfusion.product.object.maps.patientportal2.page.PayNow.JalapenoPayN
 import com.medfusion.product.object.maps.patientportal2.page.PayNow.JalapenoPayNowPage;
 import com.medfusion.product.patientportal2.flows.IPayNow;
 import com.medfusion.product.patientportal2.pojo.PayNowInfo;
+import com.medfusion.product.patientportal2.pojo.PortalBasic;
 
 public class PayNow implements IPayNow {
 

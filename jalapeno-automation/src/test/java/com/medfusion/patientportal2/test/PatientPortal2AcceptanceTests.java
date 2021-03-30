@@ -1,10 +1,7 @@
 //  Copyright 2013-2021 NXGN Management, LLC. All Rights Reserved.
 package com.medfusion.patientportal2.test;
 
-import static org.testng.Assert.assertEquals;
-import static org.testng.Assert.assertFalse;
-import static org.testng.Assert.assertTrue;
-import static org.testng.Assert.assertNotNull;
+import static org.testng.Assert.*;
 
 import java.io.File;
 import java.io.IOException;
@@ -3157,7 +3154,7 @@ public class PatientPortal2AcceptanceTests extends BaseTestNGWebDriver {
 		assertTrue(jalapenoHomePage.assessFamilyAccountElements(true));
 
 		logStep("Going to MyAccount page and unlink dependent");
-		jalapenoHomePage.UnlinkDependentAccount();
+		jalapenoHomePage.unlinkDependentAccount();
 		assertTrue(jalapenoHomePage.wasUnlinkSuccessful());
 
 		logStep("Using mailinator Mailer to retrieve the latest emails for dependent");
@@ -3658,6 +3655,38 @@ public class PatientPortal2AcceptanceTests extends BaseTestNGWebDriver {
 
 		homePage.clickOnLogout();
 	}
+	
+	@Test(enabled = true, groups = { "acceptance-basics", "commonpatient" }, retryAnalyzer = RetryAnalyzer.class)
+	public void testDeletePatient() throws Exception {
+
+		createCommonPatient();
+		logStep("Load login page");
+		JalapenoLoginPage loginPage = new JalapenoLoginPage(driver, testData.getUrl());
+		JalapenoHomePage homePage = loginPage.login(patient.getUsername(), patient.getPassword());
+
+		logStep("Logging out");
+		loginPage = homePage.clickOnLogout();
+
+		logStep("Login to Practice Portal");
+		PracticeLoginPage practiceLogin = new PracticeLoginPage(driver, testData.getPortalUrl());
+		PracticeHomePage practiceHome = practiceLogin.login(testData.getDoctorLogin(), testData.getDoctorPassword());
+
+		logStep("Delete registered patient");
+		PatientSearchPage patientSearchPage = practiceHome.clickPatientSearchLink();
+		patientSearchPage.searchForPatientInPatientSearch(patient.getEmail());
+		patientSearchPage.clickOnPatient(patient.getFirstName(), patient.getLastName());
+		patientSearchPage.deletePatient();
+
+		logStep("Load login page");
+		JalapenoLoginPage loginWithDeletedPatient = new JalapenoLoginPage(driver, testData.getUrl());
+		logStep("login with deleted patient details");
+		loginWithDeletedPatient.loginUnsuccessfuly(patient.getUsername(), patient.getPassword());
+		assertTrue(loginWithDeletedPatient.areBasicPageElementsPresent());
+
+		logStep("Looking for the Error Message and verifying the error message");
+		assertTrue(loginWithDeletedPatient.isDeletePatientErrorDisplayed());
+	}
+
 
 	@Test(enabled = true, groups = { "acceptance-solutions" }, retryAnalyzer = RetryAnalyzer.class)
 	public void testThirdPartySso() throws Exception {

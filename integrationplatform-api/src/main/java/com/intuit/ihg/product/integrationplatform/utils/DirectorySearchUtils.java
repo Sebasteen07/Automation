@@ -1,11 +1,14 @@
+//Copyright 2013-2021 NXGN Management, LLC. All Rights Reserved.
 package com.intuit.ihg.product.integrationplatform.utils;
+
+import static org.testng.Assert.assertTrue;
 
 import java.io.BufferedReader;
 import java.io.FileReader;
 import java.util.Arrays;
 import java.util.StringTokenizer;
 
-import org.testng.Assert;
+
 
 import com.intuit.ifs.csscat.core.TestConfig;
 import com.intuit.ifs.csscat.core.utils.Log4jUtil;
@@ -79,7 +82,7 @@ public class DirectorySearchUtils {
 		}
 		for(int i=0;i<maxSearchLength;i++){
 			String payload = DirectorySearchObject.getDirectSearchPayload(testData,i);
-			Assert.assertTrue(payload!=null);
+			assertTrue(payload!=null);
 			Log4jUtil.log("Step 4: Do Directory Search Post Request");
 			RestUtils.setupHttpPostRequest(testData.RestUrl, payload, testData.ResponsePath);
 			
