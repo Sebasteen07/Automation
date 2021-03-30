@@ -62,13 +62,13 @@ public class MedicalRecordSummariesPage extends JalapenoMenu {
 	@FindBy(how = How.XPATH, using = "//*[@id=\"ccdTable\"]/tbody[3]/tr/td[2]/a")
 	private WebElement thirdVisibleCCDDate;
 
-	@FindBy(how = How.ID, using = "emailAddress")
+	@FindBy(how = How.ID, using = "emailId")
 	private WebElement emailAddressInput;
 
 	@FindBy(how = How.ID, using = "transmitButton")
 	private WebElement transmitButton;
 
-	@FindBy(how = How.XPATH, using = "(//*/div[@class='notification-message']/p)[2]")
+	@FindBy(how = How.XPATH, using = "//*[contains(text(),'Your health data has been successfully sent.')]")
 	private WebElement successNotificationMessage;
 
 	// Adding new radioButton and acknowledgement check box
@@ -239,6 +239,7 @@ public class MedicalRecordSummariesPage extends JalapenoMenu {
 	}
 
 	public void setFilterToDefaultPositionAndCheckElements() {
+		IHGUtil.waitForElement(driver, 60, firstVisibleCCDDate);
 		filterCCDs(MFDateUtil.parseDateToUTCZonedTime(firstVisibleCCDDate.getText()).toInstant(), Instant.now());
 		assertTrue(areBasicPageElementsPresent());
 	}
