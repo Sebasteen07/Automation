@@ -9,6 +9,7 @@ import com.medfusion.common.utils.PropertyFileLoader;
 public class PaypalTransactions extends BaseRest {
 	
 	protected PropertyFileLoader testData;
+	Boolean flag = false;
 	
 	
 	@BeforeTest
@@ -21,28 +22,24 @@ public class PaypalTransactions extends BaseRest {
 	
 	@Test
 	public void makePaypalAuthorizeCapture() throws Exception {
-		Boolean flag = false;
 		makeAuthorizeCapture(testData.getProperty("paypalmmid"), flag);
 		
 	}
 	
 	@Test
 	public void makeAPaypalSale() throws Exception {
-		Boolean flag = false;
 		modulatorSale(testData.getProperty("paypalmmid"), flag);
 	
 	}
 	
 	@Test
 	public void voidAPaypalSale() throws Exception {
-		Boolean flag = false;
 		voidASale(testData.getProperty("paypalmmid"), flag);
 		
 	}
 	
 	@Test
 	public void refundAPaypalSale() throws Exception {
-		Boolean flag = false;
 		refundASale(testData.getProperty("paypalmmid"),testData.getProperty("fullrefundamount"), flag);
 		
 	}

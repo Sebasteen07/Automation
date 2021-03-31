@@ -11,6 +11,7 @@ import com.medfusion.common.utils.PropertyFileLoader;
 public class ElementTransactions extends BaseRest{
 	
 	protected static PropertyFileLoader testData;
+	Boolean flag = true;
 	
 	@BeforeTest
 	public void setUp() throws IOException{
@@ -21,35 +22,30 @@ public class ElementTransactions extends BaseRest{
 	
 	@Test
 	public void makeElementAuthorizeCapture() throws Exception {
-		Boolean flag = true;
 		makeAuthorizeCapture(testData.getProperty("elementmmid"), flag);
 		
 	}
 	
 	@Test
 	public void makeAnElementSale() throws Exception {
-		Boolean flag = true;
 		modulatorSale(testData.getProperty("elementmmid"), flag);
 	
 	}
 	
 	@Test
 	public void voidAnElementSale() throws Exception {
-		Boolean flag = true;
 		voidASale(testData.getProperty("elementmmid"), flag);
 		
 	}
 	
 	@Test
 	public void refundAnElementSale() throws Exception {
-		Boolean flag = true;
 		refundASale(testData.getProperty("elementmmid"),testData.getProperty("fullrefundamount"), flag);
 		
 	}
 	
 	@Test
 	public void partialRefundAnElementSale() throws Exception {
-		Boolean flag = true;
 		refundASale(testData.getProperty("elementmmid"),testData.getProperty("partialrefundamount"), flag);
 		
 	}

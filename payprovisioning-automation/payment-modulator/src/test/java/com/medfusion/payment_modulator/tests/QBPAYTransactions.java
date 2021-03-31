@@ -9,6 +9,7 @@ import com.medfusion.common.utils.PropertyFileLoader;
 public class QBPAYTransactions extends BaseRest {
 	
 	protected PropertyFileLoader testData;
+	Boolean flag = false;
 	
 	
 	@BeforeTest
@@ -22,28 +23,24 @@ public class QBPAYTransactions extends BaseRest {
 	
 	@Test
 	public void makeAQBPAYSale() throws Exception {
-		Boolean flag = false;
 		modulatorSale(testData.getProperty("qbpaymmid"), flag);
 	
 	}
 	
 	@Test
 	public void voidAQBPAYSale() throws Exception {
-		Boolean flag = false;
 		voidASale(testData.getProperty("qbpaymmid"), flag);
 		
 	}
 	
 	@Test
 	public void refundAQBPAYSale() throws Exception {
-		Boolean flag = false;
 		refundASale(testData.getProperty("qbpaymmid"),testData.getProperty("fullrefundamount"), flag);
 		
 	}
 	
 	@Test
 	public void partialRefundAQBPAYSale() throws Exception {
-		Boolean flag = false;
 		refundASale(testData.getProperty("qbpaymmid"),testData.getProperty("partialrefundamount"), flag);
 		
 	}
