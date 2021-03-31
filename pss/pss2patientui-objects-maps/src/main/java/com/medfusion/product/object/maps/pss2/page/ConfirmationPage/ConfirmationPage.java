@@ -72,12 +72,9 @@ public class ConfirmationPage extends PSS2MainPage {
 
 	CommonMethods commonMethods = new CommonMethods(driver);
 
-
 	@Override
 	public boolean areBasicPageElementsPresent() {
-
 		ArrayList<WebElement> webElementsList = new ArrayList<WebElement>();
-
 		commonMethods.highlightElement(confirmApptHeading);
 		webElementsList.add(confirmApptHeading);
 		webElementsList.add(confirmaApptToolti);
@@ -95,9 +92,7 @@ public class ConfirmationPage extends PSS2MainPage {
 
 		List<WebElement> rescheduleReasonlist = new ArrayList<WebElement>();
 		Actions act = new Actions(driver);
-
 		IHGUtil.waitForElement(driver, 5, dropdownReschedule);
-
 		selectArrow.click();
 
 		rescheduleReasonlist = rescheduleReasondropDownList;
