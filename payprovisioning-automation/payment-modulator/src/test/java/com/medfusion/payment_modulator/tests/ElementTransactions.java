@@ -52,7 +52,6 @@ public class ElementTransactions extends BaseRest{
 	
 	@Test
 	public void createChargeBack() throws Exception {
-		Boolean flag = true;
 		chargeBackASale(testData.getProperty("elementmmid"),testData.getProperty("chargebackfrommoduator"), flag);
 		
 	}

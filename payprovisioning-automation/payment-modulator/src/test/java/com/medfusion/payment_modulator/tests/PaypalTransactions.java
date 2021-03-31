@@ -46,7 +46,6 @@ public class PaypalTransactions extends BaseRest {
 	
 	@Test
 	public void partialRefundAPaypalSale() throws Exception {
-		Boolean flag = false;
 		refundASale(testData.getProperty("paypalmmid"),testData.getProperty("partialrefundamount"), flag);
 		
 	}
