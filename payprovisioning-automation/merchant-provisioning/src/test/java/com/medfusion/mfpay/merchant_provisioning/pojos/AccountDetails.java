@@ -7,7 +7,6 @@ import com.fasterxml.jackson.annotation.JsonAnyGetter;
 import com.fasterxml.jackson.annotation.JsonAnySetter;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonInclude;
-import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonPropertyOrder;
 import com.medfusion.mfpay.merchant_provisioning.utils.PracticeConstants;
 
@@ -24,7 +23,7 @@ import com.medfusion.mfpay.merchant_provisioning.utils.PracticeConstants;
 "accountNumber",
 "accountType",
 "checkingDepositType",
-"amexSid",
+"amexSid"
 })
 
 
@@ -48,89 +47,71 @@ public class AccountDetails {
 	}
 	
 	
-	@JsonProperty("preferredProcessor")
 	private String preferredProcessor;
-	@JsonProperty("routingNumber")
 	private String routingNumber;
-	@JsonProperty("federalTaxId")
 	private String federalTaxId;
-	@JsonProperty("checkingDepositType")
 	private String checkingDepositType;
-	@JsonProperty("accountType")
 	private String accountType;
-	@JsonProperty("accountNumber")
 	private String accountNumber;
-	@JsonProperty("worldPayAccountDetails")
 	private WorldPayAccountDetails worldPayAccountDetails;
 	@JsonIgnore
 	private Map<String, Object> additionalProperties = new HashMap<String, Object>();
 
-	@JsonProperty("preferredProcessor")
+
 	public String getPreferredProcessor() {
 	return preferredProcessor;
 	}
 
-	@JsonProperty("preferredProcessor")
+
 	public void setPreferredProcessor(String preferredProcessor) {
 	this.preferredProcessor = preferredProcessor;
 	}
 
-	@JsonProperty("routingNumber")
+
 	public String getRoutingNumber() {
 	return routingNumber;
 	}
 
-	@JsonProperty("routingNumber")
 	public void setRoutingNumber(String routingNumber) {
 	this.routingNumber = routingNumber;
 	}
 
-	@JsonProperty("federalTaxId")
 	public String getFederalTaxId() {
 	return federalTaxId;
 	}
 
-	@JsonProperty("federalTaxId")
 	public void setFederalTaxId(String federalTaxId) {
 	this.federalTaxId = federalTaxId;
 	}
 
-	@JsonProperty("checkingDepositType")
 	public String getCheckingDepositType() {
 	return checkingDepositType;
 	}
 
-	@JsonProperty("checkingDepositType")
 	public void setCheckingDepositType(String checkingDepositType) {
 	this.checkingDepositType = checkingDepositType;
 	}
 
-	@JsonProperty("accountType")
 	public String getAccountType() {
 	return accountType;
 	}
 
-	@JsonProperty("accountType")
 	public void setAccountType(String accountType) {
 	this.accountType = accountType;
 	}
 
-	@JsonProperty("accountNumber")
 	public String getAccountNumber() {
 	return accountNumber;
 	}
 
-	@JsonProperty("accountNumber")
 	public void setAccountNumber(String accountNumber) {
 	this.accountNumber = accountNumber;
 	}
 
-	@JsonProperty("worldPayAccountDetails")
 	public WorldPayAccountDetails getWorldPayAccountDetails() {
 	return worldPayAccountDetails;
 	}
 
-	@JsonProperty("worldPayAccountDetails")
 	public void setWorldPayAccountDetails(WorldPayAccountDetails worldPayAccountDetails) {
 	this.worldPayAccountDetails = worldPayAccountDetails;
 	}

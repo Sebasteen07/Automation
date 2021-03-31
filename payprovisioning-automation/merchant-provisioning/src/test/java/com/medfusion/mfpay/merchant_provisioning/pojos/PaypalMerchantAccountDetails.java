@@ -6,7 +6,6 @@ import java.util.HashMap;
 import java.util.Map;
 
 import com.fasterxml.jackson.annotation.JsonInclude;
-import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonPropertyOrder;
 import com.medfusion.mfpay.merchant_provisioning.utils.PracticeConstants;
 
@@ -17,27 +16,20 @@ import com.medfusion.mfpay.merchant_provisioning.utils.PracticeConstants;
 })
 public class PaypalMerchantAccountDetails {
 
-@JsonProperty("preferredProcessor")
 private String preferredProcessor;
-@JsonProperty("paypalAccountDetails")
 private PaypalMerchantAccountDetails paypalAccountDetails;
-
-@JsonProperty("preferredProcessor")
 public String getPreferredProcessor() {
 return preferredProcessor;
 }
 
-@JsonProperty("preferredProcessor")
 public void setPreferredProcessor(String preferredProcessor) {
 this.preferredProcessor = preferredProcessor;
 }
 
-@JsonProperty("paypalAccountDetails")
 public PaypalMerchantAccountDetails getPaypalAccountDetails() {
 return paypalAccountDetails;
 }
 
-@JsonProperty("paypalAccountDetails")
 public void setPaypalAccountDetails(PaypalMerchantAccountDetails paypalAccountDetails) {
 this.paypalAccountDetails = paypalAccountDetails;
 }

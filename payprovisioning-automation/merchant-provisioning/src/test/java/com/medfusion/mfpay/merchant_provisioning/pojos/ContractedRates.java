@@ -7,7 +7,6 @@ import com.fasterxml.jackson.annotation.JsonAnyGetter;
 import com.fasterxml.jackson.annotation.JsonAnySetter;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonInclude;
-import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonPropertyOrder;
 
 @JsonInclude(JsonInclude.Include.NON_NULL)
@@ -43,113 +42,89 @@ public class ContractedRates {
 		
 	}
 	
-	@JsonProperty("qualifiedFeePercent")
+
 	private Double qualifiedFeePercent;
-	@JsonProperty("midQualifiedFeePercent")
 	private Double midQualifiedFeePercent;
-	@JsonProperty("midQualifiedUpperBoundaryPercent")
 	private Double midQualifiedUpperBoundaryPercent;
-	@JsonProperty("perTransRefundFee")
 	private Integer perTransRefundFee;
-	@JsonProperty("qualifiedUpperBoundaryPercent")
 	private Double qualifiedUpperBoundaryPercent;
-	@JsonProperty("perTransAuthFee")
 	private Integer perTransAuthFee;
-	@JsonProperty("nonQualifiedUpperBoundaryPercent")
 	private Double nonQualifiedUpperBoundaryPercent;
-	@JsonProperty("amexPercent")
 	private Double amexPercent;
-	@JsonProperty("nonQualifiedFeePercent")
+
 	private Double nonQualifiedFeePercent;
 	@JsonIgnore
 	private Map<String, Object> additionalProperties = new HashMap<String, Object>();
 
-	@JsonProperty("qualifiedFeePercent")
 	public Double getQualifiedFeePercent() {
 	return qualifiedFeePercent;
 	}
 
-	@JsonProperty("qualifiedFeePercent")
 	public void setQualifiedFeePercent(Double qualifiedFeePercent) {
 	this.qualifiedFeePercent = qualifiedFeePercent;
 	}
 
-	@JsonProperty("midQualifiedFeePercent")
 	public Double getMidQualifiedFeePercent() {
 	return midQualifiedFeePercent;
 	}
 
-	@JsonProperty("midQualifiedFeePercent")
 	public void setMidQualifiedFeePercent(Double midQualifiedFeePercent) {
 	this.midQualifiedFeePercent = midQualifiedFeePercent;
 	}
 
-	@JsonProperty("midQualifiedUpperBoundaryPercent")
 	public Double getMidQualifiedUpperBoundaryPercent() {
 	return midQualifiedUpperBoundaryPercent;
 	}
 
-	@JsonProperty("midQualifiedUpperBoundaryPercent")
 	public void setMidQualifiedUpperBoundaryPercent(Double midQualifiedUpperBoundaryPercent) {
 	this.midQualifiedUpperBoundaryPercent = midQualifiedUpperBoundaryPercent;
 	}
 
-	@JsonProperty("perTransRefundFee")
 	public Integer getPerTransRefundFee() {
 	return perTransRefundFee;
 	}
 
-	@JsonProperty("perTransRefundFee")
 	public void setPerTransRefundFee(Integer perTransRefundFee) {
 	this.perTransRefundFee = perTransRefundFee;
 	}
 
-	@JsonProperty("qualifiedUpperBoundaryPercent")
 	public Double getQualifiedUpperBoundaryPercent() {
 	return qualifiedUpperBoundaryPercent;
 	}
 
-	@JsonProperty("qualifiedUpperBoundaryPercent")
 	public void setQualifiedUpperBoundaryPercent(Double qualifiedUpperBoundaryPercent) {
 	this.qualifiedUpperBoundaryPercent = qualifiedUpperBoundaryPercent;
 	}
 
-	@JsonProperty("perTransAuthFee")
 	public Integer getPerTransAuthFee() {
 	return perTransAuthFee;
 	}
 
-	@JsonProperty("perTransAuthFee")
 	public void setPerTransAuthFee(Integer perTransAuthFee) {
 	this.perTransAuthFee = perTransAuthFee;
 	}
 
-	@JsonProperty("nonQualifiedUpperBoundaryPercent")
 	public Double getNonQualifiedUpperBoundaryPercent() {
 	return nonQualifiedUpperBoundaryPercent;
 	}
 
-	@JsonProperty("nonQualifiedUpperBoundaryPercent")
 	public void setNonQualifiedUpperBoundaryPercent(Double nonQualifiedUpperBoundaryPercent) {
 	this.nonQualifiedUpperBoundaryPercent = nonQualifiedUpperBoundaryPercent;
 	}
 
-	@JsonProperty("amexPercent")
 	public Double getAmexPercent() {
 	return amexPercent;
 	}
 
-	@JsonProperty("amexPercent")
 	public void setAmexPercent(Double amexPercent) {
 	this.amexPercent = amexPercent;
 	}
 
-	@JsonProperty("nonQualifiedFeePercent")
 	public Double getNonQualifiedFeePercent() {
 	return nonQualifiedFeePercent;
 	}
 
-	@JsonProperty("nonQualifiedFeePercent")
+
 	public void setNonQualifiedFeePercent(Double nonQualifiedFeePercent) {
 	this.nonQualifiedFeePercent = nonQualifiedFeePercent;
 	}

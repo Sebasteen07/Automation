@@ -4,7 +4,6 @@ package com.medfusion.mfpay.merchant_provisioning.pojos;
 import java.util.HashMap;
 import java.util.Map;
 import com.fasterxml.jackson.annotation.JsonInclude;
-import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonPropertyOrder;
 import com.medfusion.mfpay.merchant_provisioning.utils.PracticeConstants;
 
@@ -17,44 +16,35 @@ import com.medfusion.mfpay.merchant_provisioning.utils.PracticeConstants;
 "accountNumber",
 "accountType",
 "checkingDepositType",
-"amexSid",
+"amexSid"
 })
 
 public class PaypalAccountDetails {
 
-@JsonProperty("paypalCardNotPresentUsername")
 private String paypalCardNotPresentUsername;
-@JsonProperty("paypalCardNotPresentPassword")
 private String paypalCardNotPresentPassword;
-@JsonProperty("paypalPartner")
 private String paypalPartner;
 
-@JsonProperty("paypalCardNotPresentUsername")
 public String getPaypalCardNotPresentUsername() {
 return paypalCardNotPresentUsername;
 }
 
-@JsonProperty("paypalCardNotPresentUsername")
 public void setPaypalCardNotPresentUsername(String paypalCardNotPresentUsername) {
 this.paypalCardNotPresentUsername = paypalCardNotPresentUsername;
 }
 
-@JsonProperty("paypalCardNotPresentPassword")
 public String getPaypalCardNotPresentPassword() {
 return paypalCardNotPresentPassword;
 }
 
-@JsonProperty("paypalCardNotPresentPassword")
 public void setPaypalCardNotPresentPassword(String paypalCardNotPresentPassword) {
 this.paypalCardNotPresentPassword = paypalCardNotPresentPassword;
 }
 
-@JsonProperty("paypalPartner")
 public String getPaypalPartner() {
 return paypalPartner;
 }
 
-@JsonProperty("paypalPartner")
 public void setPaypalPartner(String paypalPartner) {
 this.paypalPartner = paypalPartner;
 }

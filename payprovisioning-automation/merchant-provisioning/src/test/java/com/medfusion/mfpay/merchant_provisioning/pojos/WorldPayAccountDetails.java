@@ -11,7 +11,6 @@ import com.fasterxml.jackson.annotation.JsonAnyGetter;
 import com.fasterxml.jackson.annotation.JsonAnySetter;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonInclude;
-import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonPropertyOrder;
 
 @JsonInclude(JsonInclude.Include.NON_NULL)
@@ -57,101 +56,78 @@ public class WorldPayAccountDetails {
 				+ this.mccCode + "]";
 	}
 
-	@JsonProperty("billingDescriptor")
 	private String billingDescriptor;
-	@JsonProperty("mccCode")
 	private String mccCode;
-	@JsonProperty("ownershipType")
 	private String ownershipType;
-	@JsonProperty("businessEstablishedDate")
 	private String businessEstablishedDate;
-	@JsonProperty("websiteURL")
 	private String websiteURL;
-	@JsonProperty("chainCode")
 	private String chainCode;
-	@JsonProperty("beneficialOwners")
 	private List<Object> beneficialOwners;
-	@JsonProperty("businessType")
 	private String businessType;
+	
 	@JsonIgnore
 	private Map<String, Object> additionalProperties = new HashMap<String, Object>();
 
-	@JsonProperty("billingDescriptor")
 	public String getBillingDescriptor() {
 	return billingDescriptor;
 	}
 
-	@JsonProperty("billingDescriptor")
 	public void setBillingDescriptor(String billingDescriptor) {
 	this.billingDescriptor = billingDescriptor;
 	}
 
-	@JsonProperty("mccCode")
 	public String getMccCode() {
 	return mccCode;
 	}
 
-	@JsonProperty("mccCode")
 	public void setMccCode(String mccCode) {
 	this.mccCode = mccCode;
 	}
 
-	@JsonProperty("ownershipType")
 	public String getOwnershipType() {
 	return ownershipType;
 	}
 
-	@JsonProperty("ownershipType")
 	public void setOwnershipType(String ownershipType) {
 	this.ownershipType = ownershipType;
 	}
 
-	@JsonProperty("businessEstablishedDate")
 	public String getBusinessEstablishedDate() {
 	return businessEstablishedDate;
 	}
 
-	@JsonProperty("businessEstablishedDate")
 	public void setBusinessEstablishedDate(String businessEstablishedDate) {
 	this.businessEstablishedDate = businessEstablishedDate;
 	}
 
-	@JsonProperty("websiteURL")
 	public String getWebsiteURL() {
 	return websiteURL;
 	}
 
-	@JsonProperty("websiteURL")
 	public void setWebsiteURL(String websiteURL) {
 	this.websiteURL = websiteURL;
 	}
 
-	@JsonProperty("chainCode")
 	public String getChainCode() {
 	return chainCode;
 	}
 
-	@JsonProperty("chainCode")
 	public void setChainCode(String chainCode) {
 	this.chainCode = chainCode;
 	}
 
-	@JsonProperty("beneficialOwners")
 	public List<Object> getBeneficialOwners() {
 	return beneficialOwners;
 	}
 
-	@JsonProperty("beneficialOwners")
 	public void setBeneficialOwners(List<Object> beneficialOwners) {
 	this.beneficialOwners = beneficialOwners;
 	}
 
-	@JsonProperty("businessType")
 	public String getBusinessType() {
 	return businessType;
 	}
 
-	@JsonProperty("businessType")
 	public void setBusinessType(String businessType) {
 	this.businessType = businessType;
 	}

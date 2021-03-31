@@ -33,7 +33,7 @@ import com.fasterxml.jackson.annotation.JsonPropertyOrder;
 "acceptedCreditCards",
 "accountDetails",
 "merchantAddress",
-"payAPICustomer",
+"payAPICustomer"
 })
 
 public class Merchant {
@@ -98,229 +98,172 @@ public class Merchant {
 	}
 
 
-	@JsonProperty("id")
+
 	private Long id;
-	@JsonProperty("remitToAddress")
 	private RemitToAddress remitToAddress;
-	@JsonProperty("primaryContactPhoneNumber")
 	private String primaryContactPhoneNumber;
-	@JsonProperty("contractedRates")
 	private ContractedRates contractedRates;
-	@JsonProperty("primaryContactFirstName")
 	private String primaryContactFirstName;
-	@JsonProperty("primaryContactLastName")
 	private String primaryContactLastName;
-	@JsonProperty("customerAccountNumber")
 	private String customerAccountNumber;
-	@JsonProperty("merchantLegalName")
 	private String merchantLegalName;
-	@JsonProperty("acceptedCreditCards")
 	private String[] acceptedCreditCards ;
-	@JsonProperty("merchantName")
 	private String merchantName;
-	@JsonProperty("phoneNumber")
 	private String phoneNumber;
-	@JsonProperty("doingBusinessAs")
 	private String doingBusinessAs;
-	@JsonProperty("externalMerchantId")
 	private Integer externalMerchantId;
-	@JsonProperty("alsoKnownAsName")
 	private String alsoKnownAsName;
-	@JsonProperty("accountDetails")
 	private AccountDetails accountDetails;
-	@JsonProperty("merchantAddress")
 	private MerchantAddress merchantAddress;
-	@JsonProperty("payAPICustomer")
 	private PayAPICustomer payAPICustomer;
-	@JsonProperty("maxTransactionLimit")
 	private Integer maxTransactionLimit;
-	@JsonProperty("primaryContactEmail")
 	private String primaryContactEmail;
-	@JsonIgnore
 	private Map<String, Object> additionalProperties = new HashMap<String, Object>();
 
-	@JsonProperty("remitToAddress")
 	public RemitToAddress getRemitToAddress() {
 	return remitToAddress;
 	}
 
-	@JsonProperty("remitToAddress")
 	public void setRemitToAddress(RemitToAddress remitToAddress) {
 	this.remitToAddress = remitToAddress;
 	}
 
-	@JsonProperty("primaryContactPhoneNumber")
 	public String getPrimaryContactPhoneNumber() {
 	return primaryContactPhoneNumber;
 	}
 
-	@JsonProperty("primaryContactPhoneNumber")
 	public void setPrimaryContactPhoneNumber(String primaryContactPhoneNumber) {
 	this.primaryContactPhoneNumber = primaryContactPhoneNumber;
 	}
 	
-	@JsonProperty("id")
 	public Long getid() {
 	return id;
 	}
 
-
-	@JsonProperty("contractedRates")
 	public ContractedRates getContractedRates() {
 	return contractedRates;
 	}
 
-	@JsonProperty("contractedRates")
 	public void setContractedRates(ContractedRates contractedRates) {
 	this.contractedRates = contractedRates;
 	}
 
-	@JsonProperty("primaryContactFirstName")
 	public String getPrimaryContactFirstName() {
 	return primaryContactFirstName;
 	}
 
-	@JsonProperty("primaryContactFirstName")
 	public void setPrimaryContactFirstName(String primaryContactFirstName) {
 	this.primaryContactFirstName = primaryContactFirstName;
 	}
 
-	@JsonProperty("primaryContactLastName")
 	public String getPrimaryContactLastName() {
 	return primaryContactLastName;
 	}
 
-	@JsonProperty("primaryContactLastName")
 	public void setPrimaryContactLastName(String primaryContactLastName) {
 	this.primaryContactLastName = primaryContactLastName;
 	}
 
-	@JsonProperty("customerAccountNumber")
 	public String getCustomerAccountNumber() {
 	return customerAccountNumber;
 	}
 
-	@JsonProperty("customerAccountNumber")
 	public void setCustomerAccountNumber(String customerAccountNumber) {
 	this.customerAccountNumber = customerAccountNumber;
 	}
 
-	@JsonProperty("merchantLegalName")
 	public String getMerchantLegalName() {
 	return merchantLegalName;
 	}
 
-	@JsonProperty("merchantLegalName")
 	public void setMerchantLegalName(String merchantLegalName) {
 	this.merchantLegalName = merchantLegalName;
 	}
 
-	@JsonProperty("acceptedCreditCards")
 	public String[] getAcceptedCreditCards() {
 	return acceptedCreditCards;
 	}
 
-	@JsonProperty("acceptedCreditCards")
 	public void setAcceptedCreditCards(String[] cardArrayList) {
 	this.acceptedCreditCards = cardArrayList;
 	}
 
-	@JsonProperty("merchantName")
 	public String getMerchantName() {
 	return merchantName;
 	}
 
-	@JsonProperty("merchantName")
 	public void setMerchantName(String merchantName) {
 	this.merchantName = merchantName;
 	}
 
-	@JsonProperty("phoneNumber")
 	public String getPhoneNumber() {
 	return phoneNumber;
 	}
 
-	@JsonProperty("phoneNumber")
 	public void setPhoneNumber(String phoneNumber) {
 	this.phoneNumber = phoneNumber;
 	}
 
-	@JsonProperty("doingBusinessAs")
 	public String getDoingBusinessAs() {
 	return doingBusinessAs;
 	}
 
-	@JsonProperty("doingBusinessAs")
 	public void setDoingBusinessAs(String doingBusinessAs) {
 	this.doingBusinessAs = doingBusinessAs;
 	}
 
-	@JsonProperty("externalMerchantId")
 	public Integer getExternalMerchantId() {
 	return externalMerchantId;
 	}
 
-	@JsonProperty("externalMerchantId")
 	public void setExternalMerchantId(Integer externalMerchantId) {
 	this.externalMerchantId = externalMerchantId;
 	}
 
-	@JsonProperty("alsoKnownAsName")
 	public String getAlsoKnownAsName() {
 	return alsoKnownAsName;
 	}
 
-	@JsonProperty("alsoKnownAsName")
 	public void setAlsoKnownAsName(String alsoKnownAsName) {
 	this.alsoKnownAsName = alsoKnownAsName;
 	}
 
-	@JsonProperty("accountDetails")
 	public AccountDetails getAccountDetails() {
 	return accountDetails;
 	}
 
-	@JsonProperty("accountDetails")
 	public void setAccountDetails(AccountDetails accountDetails) {
 	this.accountDetails = accountDetails;
 	}
 
-	@JsonProperty("merchantAddress")
 	public MerchantAddress getMerchantAddress() {
 	return merchantAddress;
 	}
-
-	@JsonProperty("merchantAddress")
+	
 	public void setMerchantAddress(MerchantAddress merchantAddress) {
 	this.merchantAddress = merchantAddress;
 	}
 
-	@JsonProperty("payAPICustomer")
 	public PayAPICustomer getPayAPICustomer() {
 	return payAPICustomer;
 	}
 
-	@JsonProperty("payAPICustomer")
 	public void setPayAPICustomer(PayAPICustomer payAPICustomer) {
 	this.payAPICustomer = payAPICustomer;
 	}
 
-	@JsonProperty("maxTransactionLimit")
 	public Integer getMaxTransactionLimit() {
 	return maxTransactionLimit;
 	}
 
-	@JsonProperty("maxTransactionLimit")
 	public void setMaxTransactionLimit(Integer maxTransactionLimit) {
 	this.maxTransactionLimit = maxTransactionLimit;
 	}
 
-	@JsonProperty("primaryContactEmail")
 	public String getPrimaryContactEmail() {
 	return primaryContactEmail;
 	}
 
-	@JsonProperty("primaryContactEmail")
 	public void setPrimaryContactEmail(String primaryContactEmail) {
 	this.primaryContactEmail = primaryContactEmail;
 	}
