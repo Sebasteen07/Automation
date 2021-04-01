@@ -3,8 +3,10 @@
 <suite name="Suite">
   <test thread-count="5" name="ModulatorTests">
     <classes>
+      <class name="com.medfusion.gateway_proxy.utils.GatewayProxyUtils"/>
       <class name="com.medfusion.payment_modulator.tests.PaypalTransactions"/>
       <class name="com.medfusion.payment_modulator.tests.ElementTransactions"/>
+      <class name="com.medfusion.gateway_proxy.tests.GatewayProxyTransactionTests"/>
       <class name="com.medfusion.payment_modulator.tests.QBPAYTransactions"/>
     </classes>
   </test> <!-- ModulatorTests -->
