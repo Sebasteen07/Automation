@@ -2161,7 +2161,7 @@ public class PatientPortal2AcceptanceTests extends BaseTestNGWebDriver {
 		assertTrue(new Mailinator().areAllMessagesInInbox(mails, 60));
 
 		logStep("Load login page for the auto enrolled practice");
-		JalapenoLoginEnrollment loginPage = new JalapenoLoginEnrollment(driver, testData.getProperty("practiceUrl3"));
+		JalapenoLoginEnrollment loginPage = new JalapenoLoginEnrollment(driver, testData.getProperty("practiceUrl1"));
 		loginPage.login(patientActivationSearchTest1.getPatientIdString(), testData.getPassword());
 
 	}
@@ -2376,7 +2376,7 @@ public class PatientPortal2AcceptanceTests extends BaseTestNGWebDriver {
 		log("Waiting for welcome mail at patient inbox from second practice");
 		Instant testStart = Instant.now();
 		Email visitPortal = new Mailer(guardianpatientEmail).pollForNewEmailWithSubject(WELCOME_EMAIL_SUBJECT_PATIENT,
-				60, testSecondsTaken(testStart));
+				70, testSecondsTaken(testStart));
 		assertNotNull(visitPortal,
 				"Error: No Welcome email found recent enough with specified subject: " + WELCOME_EMAIL_SUBJECT_PATIENT);
 
@@ -2692,7 +2692,7 @@ public class PatientPortal2AcceptanceTests extends BaseTestNGWebDriver {
 		logStep("Logout of Practice Portal");
 		practiceHome1.logOut();
 
-		JalapenoLoginEnrollment loginPage2 = new JalapenoLoginEnrollment(driver, testData.getProperty("presPortalURl"));
+		JalapenoLoginEnrollment loginPage2 = new JalapenoLoginEnrollment(driver, testData.getProperty("presPortalUrl"));
 		JalapenoHomePage homePage2 = loginPage2.login(patientLogin, testData.getPassword());
 
 		JalapenoMessagesPage messagesPage = homePage2.showMessages(driver);
@@ -2950,7 +2950,7 @@ public class PatientPortal2AcceptanceTests extends BaseTestNGWebDriver {
 		dPracticeHome11.logOut();
 
 		JalapenoLoginEnrollment dLoginPage2 = new JalapenoLoginEnrollment(driver,
-				testData.getProperty("presPortalURl"));
+				testData.getProperty("presPortalUrl"));
 		JalapenoHomePage dHomePage2 = dLoginPage2.login(patientLogin, testData.getPassword());
 
 		logStep("Switch to dependent");
