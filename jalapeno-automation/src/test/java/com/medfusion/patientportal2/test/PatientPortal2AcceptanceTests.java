@@ -3381,7 +3381,7 @@ public class PatientPortal2AcceptanceTests extends BaseTestNGWebDriver {
 
 		logStep("Select Medications");
 		SelectMedicationsPage selectMedPage = new SelectMedicationsPage(driver);
-		selectMedPage.selectMedications();
+		selectMedPage.selectMedicationsWithoutRenewalFee();
 
 		logStep("Validating Prescription Renewal Fee Text is not present");
 		MedicationsConfirmationPage confirmPage = new MedicationsConfirmationPage(driver);
