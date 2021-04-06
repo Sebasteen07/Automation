@@ -398,13 +398,17 @@ public class PatientPortal2AcceptanceTests extends BaseTestNGWebDriver {
 
 	@Test(enabled = true, groups = { "acceptance-basics" }, retryAnalyzer = RetryAnalyzer.class)
 	public void testForgotPassword() throws Exception {
-		createCommonPatient();
+		String username = PortalUtil2.generateUniqueUsername(testData.getProperty("userid"), testData);
+		patient = PatientFactory.createJalapenoPatient(username, testData);
+		patient = new CreatePatient().selfRegisterPatient(driver, patient, testData.getUrl());
 		resetForgottenPasswordOrUsername(patient.getEmail());
 	}
 
 	@Test(enabled = true, groups = { "acceptance-basics" }, retryAnalyzer = RetryAnalyzer.class)
 	public void testPatientForgotUserIdCaseInsensitiveEmail() throws Exception {
-		createCommonPatient();
+		String username = PortalUtil2.generateUniqueUsername(testData.getProperty("userid"), testData);
+		patient = PatientFactory.createJalapenoPatient(username, testData);
+		patient = new CreatePatient().selfRegisterPatient(driver, patient, testData.getUrl());
 		String email = IHGUtil.mixCase(patient.getEmail());
 		resetForgottenPasswordOrUsername(email);
 	}
@@ -1452,7 +1456,9 @@ public class PatientPortal2AcceptanceTests extends BaseTestNGWebDriver {
 	 */
 	@Test(enabled = true, groups = { "acceptance-basics" }, retryAnalyzer = RetryAnalyzer.class)
 	public void testMyAccount() throws Exception {
-		createCommonPatient();
+		String username = PortalUtil2.generateUniqueUsername(testData.getProperty("userid"), testData);
+		patient = PatientFactory.createJalapenoPatient(username, testData);
+		patient = new CreatePatient().selfRegisterPatient(driver, patient, testData.getUrl());
 		logStep("Load login page");
 		JalapenoLoginPage loginPage = new JalapenoLoginPage(driver, testData.getUrl());
 		JalapenoHomePage homePage = loginPage.login(patient.getUsername(), patient.getPassword());
