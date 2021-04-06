@@ -396,13 +396,13 @@ public class PatientPortal2AcceptanceTests extends BaseTestNGWebDriver {
 		assertEquals(unlockLinkEmail, unlockLinkPortal, "!patient unlock links are not equal!");
 	}
 
-	@Test(enabled = true, groups = { "acceptance-basics", "commonpatient" }, retryAnalyzer = RetryAnalyzer.class)
+	@Test(enabled = true, groups = { "acceptance-basics" }, retryAnalyzer = RetryAnalyzer.class)
 	public void testForgotPassword() throws Exception {
 		createCommonPatient();
 		resetForgottenPasswordOrUsername(patient.getEmail());
 	}
 
-	@Test(enabled = true, groups = { "acceptance-basics", "commonpatient" }, retryAnalyzer = RetryAnalyzer.class)
+	@Test(enabled = true, groups = { "acceptance-basics" }, retryAnalyzer = RetryAnalyzer.class)
 	public void testPatientForgotUserIdCaseInsensitiveEmail() throws Exception {
 		createCommonPatient();
 		String email = IHGUtil.mixCase(patient.getEmail());
@@ -1450,7 +1450,7 @@ public class PatientPortal2AcceptanceTests extends BaseTestNGWebDriver {
 	 * 
 	 * @throws Exception
 	 */
-	@Test(enabled = true, groups = { "acceptance-basics", "commonpatient" }, retryAnalyzer = RetryAnalyzer.class)
+	@Test(enabled = true, groups = { "acceptance-basics" }, retryAnalyzer = RetryAnalyzer.class)
 	public void testMyAccount() throws Exception {
 		createCommonPatient();
 		logStep("Load login page");
