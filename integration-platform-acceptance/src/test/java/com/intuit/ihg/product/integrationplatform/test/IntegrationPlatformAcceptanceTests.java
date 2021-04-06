@@ -35,6 +35,7 @@ import com.intuit.ihg.product.integrationplatform.utils.StatementPreferenceTestD
 import com.medfusion.common.utils.IHGUtil;
 import com.medfusion.common.utils.Mailinator;
 import com.medfusion.product.object.maps.patientportal2.page.JalapenoLoginPage;
+import com.medfusion.product.object.maps.patientportal2.page.JalapenoMenu;
 import com.medfusion.product.object.maps.patientportal2.page.AppointmentRequestPage.JalapenoAppointmentRequestPage;
 import com.medfusion.product.object.maps.patientportal2.page.AppointmentRequestPage.JalapenoAppointmentRequestV2Step1;
 import com.medfusion.product.object.maps.patientportal2.page.AppointmentRequestPage.JalapenoAppointmentRequestV2Step2;
@@ -184,7 +185,7 @@ public class IntegrationPlatformAcceptanceTests extends BaseTestNGWebDriver {
 
 		Thread.sleep(8000);
 		log("Step 4: fill and complete the of Ask A Staff");
-		boolean askStaff2 = askStaff1.fillAndSubmitAskAStaff(driver);
+		askStaff1.fillAndSubmitAskAStaff(driver);
 
 		log("Step 6: Validate entry is on Ask A Staff History page");
 		homePage.clickOnAskAStaff(driver);
@@ -512,7 +513,7 @@ public class IntegrationPlatformAcceptanceTests extends BaseTestNGWebDriver {
 		Thread.sleep(9000);
 
 		log("Step 15: Find message in Inbox");
-		boolean msg = inboxPage.isMessageDisplayed(driver, rxSMSubject);
+		inboxPage.isMessageDisplayed(driver, rxSMSubject);
 
 		log("Step 16: Verify Provider details on patient portal");
 		inboxPage.checkProviderDetails(practiceProvider, practiceLocation);
@@ -679,7 +680,7 @@ public class IntegrationPlatformAcceptanceTests extends BaseTestNGWebDriver {
 
 		log("Step 7: Login to Patient Portal");
 		log("Link is " + emailMessageLink);
-		JalapenoLoginPage ploginPage = new JalapenoLoginPage(driver, emailMessageLink);
+		new JalapenoLoginPage(driver, emailMessageLink);
 		Thread.sleep(9000);
 		JalapenoHomePage phomePage = loginPage.login(testcasesData.getUserName(), testcasesData.getPassword());
 		assertTrue(phomePage.isHomeButtonPresent(driver));
@@ -691,7 +692,7 @@ public class IntegrationPlatformAcceptanceTests extends BaseTestNGWebDriver {
 		Long since = timestamp / 1000L - 60 * 24;
 
 		log("Step 15: Validate message loads and is the right message");
-		boolean msg = messagesPage.isMessageDisplayed(driver, reply_Subject);
+		messagesPage.isMessageDisplayed(driver, reply_Subject);
 
 		Thread.sleep(60000);
 		log("Step 16: Reply to the message");
@@ -1056,11 +1057,11 @@ public class IntegrationPlatformAcceptanceTests extends BaseTestNGWebDriver {
 
 		Thread.sleep(8000);
 		log("Step 4: fill and complete the of Ask A Staff");
-		boolean askStaff2 = askStaff1.fillAndSubmitAskyourDocUnpaid(driver);
+		askStaff1.fillAndSubmitAskyourDocUnpaid(driver);
 
 		log("Step 6: Validate entry is on Ask A Staff History page");
 		homePage.clickOnAskADoc(driver);
-		boolean aasHistory = askStaff1.checkHistory(driver);
+		askStaff1.checkHistory(driver);
 		Thread.sleep(7000);
 		// assertTrue(aasHistory);
 
@@ -1165,8 +1166,6 @@ public class IntegrationPlatformAcceptanceTests extends BaseTestNGWebDriver {
 		JalapenoMessagesPage messagesPage = homePage.showMessages(driver);
 		assertTrue(messagesPage.areBasicPageElementsPresent(), "Inbox failed to load properly.");
 
-		Long since = timestamp / 1000L - 60 * 24;
-
 		log("Step 8: Validate message loads and is the right message");
 		assertTrue(messagesPage.isMessageDisplayed(driver, Subject), "Message received with timestamp");
 
@@ -1207,6 +1206,7 @@ public class IntegrationPlatformAcceptanceTests extends BaseTestNGWebDriver {
 		log("Step 4:LogIn to Patient Portal ");
 		JalapenoLoginPage portalloginpage = new JalapenoLoginPage(driver, testData.getURL());
 		JalapenoHomePage homePage = portalloginpage.login(testData.getUserName(), testData.getPassword());
+		JalapenoMenu menuPage = new JalapenoHomePage(driver);
 
 		log("Step 5: Go to Inbox");
 		JalapenoMessagesPage inboxPage = homePage.clickOnMenuMessages();
@@ -1225,7 +1225,7 @@ public class IntegrationPlatformAcceptanceTests extends BaseTestNGWebDriver {
 
 		log("Step 8: Logging out");
 		assertTrue(inboxPage.areBasicPageElementsPresent());
-		homePage = inboxPage.backToHomePage(driver);
+		menuPage.clickOnMenuHome();
 		homePage.clickOnLogout();
 	}
 

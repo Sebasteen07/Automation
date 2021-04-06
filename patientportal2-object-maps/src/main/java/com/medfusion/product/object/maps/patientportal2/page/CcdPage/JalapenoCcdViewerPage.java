@@ -62,6 +62,7 @@ public class JalapenoCcdViewerPage extends MedfusionPage {
 	@FindBy(how = How.XPATH, using = "//div[@id='email_share']//span[@class='success']")
 	private WebElement resultMessageUnsecure;
 
+	// This isn't present for all CCDs
 	@FindBy(how = How.ID, using = "healthOverview")
 	private WebElement healthOverview;
 
@@ -101,21 +102,21 @@ public class JalapenoCcdViewerPage extends MedfusionPage {
 	@FindBy(how = How.ID, using = "idp6454816")
 	private WebElement insurance;
 
-	@FindBy(how = How.XPATH, using = "//*[@id=\"messageContainer\"]/div[3]/div[2]/div[2]/div/div/a")
-	private WebElement BtnViewHealthData;
-
+	@FindBy(how = How.XPATH, using = "//*[@id=\"messageContainer\"]/div[2]/div[2]/div[2]/div[1]/div/a")
+	private WebElement btnViewHealthData;
+	
 	@FindBy(id = "basicInfo")
 	private WebElement ccdBasicInfo;
 
 	public JalapenoCcdViewerPage(WebDriver driver) {
 		super(driver);
-		IHGUtil.PrintMethodName();;
+		IHGUtil.PrintMethodName();
 	}
 
 	public JalapenoMessagesPage closeCcd(WebDriver driver) {
 		log("Closing Ccd form, returning to Messages page");
 		closeButton.click();
-		IHGUtil.waitForElement(driver, 15, BtnViewHealthData);
+		IHGUtil.waitForElement(driver, 30, btnViewHealthData);
 		return PageFactory.initElements(driver, JalapenoMessagesPage.class);
 	}
 
@@ -211,8 +212,6 @@ public class JalapenoCcdViewerPage extends MedfusionPage {
 		webElementsList.add(savePdfButton);
 		webElementsList.add(saveRawButton);
 		webElementsList.add(sendDirectInformationLink);
-		// webElementsList.add(sendUnsecureInformationLink);
-		webElementsList.add(healthOverview);
 		webElementsList.add(basicInformation);
 		webElementsList.add(careTeamMembers);
 
@@ -225,9 +224,8 @@ public class JalapenoCcdViewerPage extends MedfusionPage {
 	 */
 	public void clickBtnViewHealthData() throws InterruptedException {
 		IHGUtil.PrintMethodName();
-		// PortalUtil.setPortalFrame(driver);
-		IHGUtil.waitForElement(driver, 60, BtnViewHealthData);
-		BtnViewHealthData.click();
+		IHGUtil.waitForElement(driver, 60, btnViewHealthData);
+		btnViewHealthData.click();
 	}
 
 	public void verifyCCDViewerAndClose() throws InterruptedException {

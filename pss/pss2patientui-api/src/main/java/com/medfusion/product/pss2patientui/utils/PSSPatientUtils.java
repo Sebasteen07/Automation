@@ -38,7 +38,6 @@ import org.openqa.selenium.support.PageFactory;
 import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.openqa.selenium.support.ui.WebDriverWait;
 
-
 import com.intuit.ifs.csscat.core.utils.Log4jUtil;
 import com.medfusion.product.object.maps.pss2.page.AppEntryPoint.StartAppointmentInOrder;
 import com.medfusion.product.object.maps.pss2.page.Appointment.Anonymous.AnonymousPatientInformation;
@@ -1069,8 +1068,7 @@ public class PSSPatientUtils {
 
 		Log4jUtil.log("Enter the Reschedule Reason");
 		confirmationpage.sendRescheduleReason();
-		assertEquals(confirmationpage.maxLengthRescheduleReason(), 500,
-				"The max length of Reschedule reason is not 500, so test case failed");
+		assertEquals(confirmationpage.maxLengthRescheduleReason(), 500, "The max length of Reschedule reason is not 500, so test case failed");
 
 		ScheduledAppointment scheduledappointment = confirmationpage.rescheduleAppointmentConfirmed();
 		Log4jUtil.log("appointment ID = " + scheduledappointment.getAppointmentID());
@@ -1551,8 +1549,8 @@ public class PSSPatientUtils {
 	}
 
 	public String currentDateandLeadDay(Appointment testData) {
-		TimeZone timeZone = TimeZone.getTimeZone("America/New_York");
-		String dateFormat = "MMMM dd,yyyy";
+		TimeZone timeZone = TimeZone.getTimeZone(testData.getCurrentTimeZone());
+		String dateFormat = "dd MMMM,yyyy";
 		SimpleDateFormat f1 = new SimpleDateFormat(dateFormat);
 		Calendar c = Calendar.getInstance();
 		TimeZone time_zone = TimeZone.getTimeZone(testData.getCurrentTimeZone());
@@ -1560,7 +1558,8 @@ public class PSSPatientUtils {
 		c.setTimeZone(time_zone);
 		c.add(Calendar.DATE, testData.getLeadtimeDay());
 		String currentDate = f1.format(c.getTime());
-		String currentleddate = currentDate.substring(00, 15);
+		Log4jUtil.log("Current Date is " + currentDate);
+		String currentleddate = currentDate.substring(0, 2);
 		return currentleddate;
 	}
 
@@ -1608,7 +1607,7 @@ public class PSSPatientUtils {
 		int MILLIS_IN_DAY = 1000 * 60 * 60 * 24;
 		Log4jUtil.log("current est date is  " + currentDateandLeadDay(testData));
 		String date = currentDateandLeadDay(testData);
-		String dateFormat = "MMMM dd,yyyy";
+		String dateFormat = "dd";
 		SimpleDateFormat f1 = new SimpleDateFormat(dateFormat);
 		java.util.Date dateSelectedFrom = null;
 		java.util.Date dateNextDate = null;

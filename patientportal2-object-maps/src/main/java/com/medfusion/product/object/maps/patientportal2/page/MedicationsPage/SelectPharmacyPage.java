@@ -37,13 +37,16 @@ public class SelectPharmacyPage extends MedfusionPage {
 	@FindBy(how = How.ID, using = "add-new-pharmacy")
 	private WebElement addPharmacy;
 
-	@FindBy(how = How.XPATH, using = "//div[@class='form-buttons ng-scope']/button[@type='button']")
+	//@FindBy(how = How.XPATH, using = "//div[@class='form-buttons ng-scope']/button[@type='button']")
+	@FindBy(how = How.XPATH, using = "//div[@class='form-buttons']/button[@type='button']")
 	private WebElement btnBack;
 
-	@FindBy(how = How.XPATH, using = "//button[@class='btn btn-primary ng-binding']")
+	//@FindBy(how = How.XPATH, using = "//button[@class='btn btn-primary ng-binding']")
+	@FindBy(how = How.XPATH, using = "//button[@class='btn btn-primary']")
 	private WebElement btnContinue;
 
 	@FindBy(how = How.XPATH, using = "//a[@class='add-pharmacy-options ng-binding'][2]")
+	//@FindBy(how = How.XPATH, using = "//a[@class='add-pharmacy-options'][2]")
 	private WebElement addYourPharmacy;
 
 	@FindBy(how = How.XPATH, using = "//a[text()='Providers suggested pharmacy']")
@@ -67,7 +70,7 @@ public class SelectPharmacyPage extends MedfusionPage {
 	@FindBy(how = How.ID, using = "city")
 	private WebElement pharmacyCity;
 
-	@FindBy(how = How.XPATH, using = "//input[@title='State']")
+	@FindBy(how = How.XPATH, using = "//input[@title='stateLabel']")
 	private WebElement pharmacyState;
 
 	@FindBy(how = How.ID, using = "zipcode")

@@ -78,16 +78,16 @@ public class JalapenoHomePage extends JalapenoMenu {
 	@FindBy(how = How.ID, using = "inprogressformbutton")
 	private WebElement continueRegistrationButton;
 
-	@FindBy(how = How.XPATH, using ="//span[@class='badge currentPatientBubble ng-binding']")
+	@FindBy(how = How.XPATH, using ="//span[@class='badge currentPatientBubble']")
 	private WebElement bubble;
 
-	@FindBy(how = How.ID, using = "currentPatientBubble-grp")
+	@FindBy(how = How.XPATH, using = "//span[@id='currentPatientBubble-grp']")
 	private WebElement mobileViewBubble;
 
-	@FindBy(how = How.XPATH, using = "//span[@class='badge listBadge listBadgedependent ng-binding']")
+	@FindBy(how = How.XPATH, using = "//li[@class='dependent-dropdown']")
 	private WebElement viewDifferentPatientButton;
 
-	@FindBy(how = How.XPATH, using = "//li[@class='open-top-grp ng-scope']")
+	@FindBy(how = How.XPATH, using = "//li[@class='open-top-grp dependent-dropdown']")
 	private WebElement mobileViewDifferentPatientButton;
 	
 	@FindBy(how = How.XPATH, using = "//a[contains(@class, 'success')]")
@@ -108,10 +108,10 @@ public class JalapenoHomePage extends JalapenoMenu {
 	@FindBy(how = How.XPATH, using = "//a[text()='Ask (paid)']")
 	private WebElement askPaid;
 
-	@FindBy(how = How.XPATH, using = "//*[@aria-label='Select box activate']")
+	@FindBy(how = How.XPATH, using = "//div[@class='practice-toggle-dropdown']//span[@class='ng-arrow-wrapper']")
 	private WebElement practiceToggleSearch;
 
-	@FindBy(how = How.XPATH, using = "//input[@type='search']")
+	@FindBy(how = How.XPATH, using = "//input[@type='text']")
 	private WebElement practiceInput;
 
 	@FindBy(how = How.XPATH, using = "//button[@id='switchingPracticeContinueButton']")
