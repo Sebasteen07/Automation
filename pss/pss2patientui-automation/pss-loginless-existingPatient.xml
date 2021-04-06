@@ -8,6 +8,12 @@
 				name="com.medfusion.product.pss2patientportal.test.PSS2PatientPortalAcceptanceTests">
 
 				<methods>
+				
+					<include name="testCancelFromEmailAT" />
+					<include name="testCancelFromEmailGE" />
+					<include name="testCancelFromEmailGW" />
+					<include name="testCancelFromEmailNG" />
+					
 					<include name="testCancelE2ETestingAT" />
 					<include name="testCancelE2ETestingGE" />
 					<include name="testCancelE2ETestingGW" />
@@ -18,10 +24,6 @@
 					<include name="testE2ELoginlessForExistingPatientGW" />
 					<include name="testE2ELoginlessForExistingPatientNG" />
 
-					<include name="testCancelFromEmailAT" />
-					<include name="testCancelFromEmailGE" />
-					<include name="testCancelFromEmailGW" />
-					<include name="testCancelFromEmailNG" />
 
 				</methods>
 			</class>

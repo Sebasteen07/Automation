@@ -7,6 +7,7 @@ import java.util.List;
 
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
+import org.testng.Assert;
 
 import com.intuit.ifs.csscat.core.utils.Log4jUtil;
 import com.medfusion.product.object.maps.pss2.page.PSS2MenuPage;
@@ -203,6 +204,16 @@ public class PSSAdminUtils {
 		Thread.sleep(6000);
 		driver.navigate().refresh();
 		Thread.sleep(14000);
+	}
+	
+	public void verifyTrue(boolean condition, String message) {
+		try {
+			Assert.assertTrue(condition, message);
+			Log4jUtil.log("Expected value: true" + " Actual value: " + condition + " - PASSED ");
+		} catch (Throwable e) {
+			Log4jUtil.log("Expected value: true" + " Actual value: " + condition + " - FAILED " + message);
+
+		}
 	}
 
 	public AdminUser setPracticeAdminAccount(String staffPracitceName) throws IOException {

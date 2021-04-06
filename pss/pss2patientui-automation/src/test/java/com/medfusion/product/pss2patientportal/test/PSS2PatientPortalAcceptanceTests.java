@@ -1,9 +1,6 @@
 // Copyright 2013-2021 NXGN Management, LLC. All Rights Reserved.
 package com.medfusion.product.pss2patientportal.test;
 
-import static org.testng.Assert.assertEquals;
-import static org.testng.Assert.assertTrue;
-
 import java.util.ArrayList;
 
 import org.testng.annotations.DataProvider;
@@ -1576,7 +1573,7 @@ public class PSS2PatientPortalAcceptanceTests extends BaseTestNGWebDriver {
 		psspatientutils.deleteEmail_Mailinator(driver, "https://www.mailinator.com/", testData.getEmail());
 	}
 
-	@Test(enabled = true, groups = {"AcceptanceTests"}, retryAnalyzer = RetryAnalyzer.class)
+	@Test(enabled = true, groups = {"AcceptanceTests"}, retryAnalyzer = RetryAnalyzer.class, dependsOnMethods="testE2ELoginlessForExistingPatientNG")
 	public void testCancelFromEmailNG() throws Exception {
 		log("Test to verify if Cancel Appointment button available only after given hours.");
 		log("Step 1: Load test Data from External Property file.");
@@ -1901,10 +1898,10 @@ public class PSS2PatientPortalAcceptanceTests extends BaseTestNGWebDriver {
 		log("Step 4: Verify if home page is loaded.");
 		homepage.areBasicPageElementsPresent();
 		log("Step 5: Verify Future appointment type for existence");
-		assertTrue(homepage.getFutureAppointmentListSize() > 0, "No Future Appointment found.");
+		pssadminutils.verifyTrue(homepage.getFutureAppointmentListSize() > 0, "No Future Appointment found.");		
 		log("Step 6: Verify Past appointment type for existence");
-		assertTrue(homepage.getPastAppointmentListSize() > 0, "No Past Appointment found.");
-
+		pssadminutils.verifyTrue(homepage.getPastAppointmentListSize() > 0, "No Past Appointment found.");		
+		
 		if (can1 == true & can2 == false) {
 
 			homepage.cancelAppointment("CANCEL");
@@ -1974,9 +1971,10 @@ public class PSS2PatientPortalAcceptanceTests extends BaseTestNGWebDriver {
 		log("Step 4: Verify if home page is loaded.");
 		homepage.areBasicPageElementsPresent();
 		log("Step 5: Verify Future appointment type for existence");
-		assertTrue(homepage.getFutureAppointmentListSize() > 0, "No Future Appointment found.");
+		pssadminutils.verifyTrue(homepage.getFutureAppointmentListSize() > 0, "No Future Appointment found.");		
+		
 		log("Step 6: Verify Past appointment type for existence");
-		assertTrue(homepage.getPastAppointmentListSize() > 0, "No Past Appointment found.");
+		pssadminutils.verifyTrue(homepage.getPastAppointmentListSize() > 0, "No Past Appointment found.");		
 
 		if (can1 == true & can2 == true) {
 
@@ -2040,11 +2038,14 @@ public class PSS2PatientPortalAcceptanceTests extends BaseTestNGWebDriver {
 		ScheduledAppointment scheduledAppointment = psspatientutils.selectAFlow(driver, rule, homepage, testData);
 
 		homepage = scheduledAppointment.backtoHomePage();
-
+		
 		log("Step 4: Verify if home page is loaded.");
 		homepage.areBasicPageElementsPresent();
 		log("Step 5: Verify Future appointment type for existence");
-		assertTrue(homepage.getFutureAppointmentListSize() > 0, "No Future Appointment found.");
+		pssadminutils.verifyTrue(homepage.getFutureAppointmentListSize() > 0, "No Future Appointment found.");		
+		
+		log("Step 6: Verify Past appointment type for existence");
+		pssadminutils.verifyTrue(homepage.getPastAppointmentListSize() > 0, "No Past Appointment found.");
 
 		if (can1 == true & can2 == true) {
 
@@ -2125,9 +2126,7 @@ public class PSS2PatientPortalAcceptanceTests extends BaseTestNGWebDriver {
 		homepage = scheduledAppointment.backtoHomePage();
 
 		homepage.clickRescheduleLink();
-		psspatientutils.rescheduleAPT(testData, driver);
-
-		psspatientutils.deleteEmail_Mailinator(driver, "https://www.mailinator.com/", testData.getEmail());
+		psspatientutils.rescheduleAPT(testData, driver);		
 
 	}
 
@@ -2190,9 +2189,7 @@ public class PSS2PatientPortalAcceptanceTests extends BaseTestNGWebDriver {
 		homepage = scheduledAppointment.backtoHomePage();
 
 		homepage.clickRescheduleLink();
-		psspatientutils.rescheduleAPT(testData, driver);
-
-		psspatientutils.deleteEmail_Mailinator(driver, "https://www.mailinator.com/", testData.getEmail());
+		psspatientutils.rescheduleAPT(testData, driver);		
 
 	}
 
@@ -2249,7 +2246,7 @@ public class PSS2PatientPortalAcceptanceTests extends BaseTestNGWebDriver {
 		homepage.clickRescheduleLink();
 		psspatientutils.rescheduleAPT(testData, driver);
 
-		psspatientutils.deleteEmail_Mailinator(driver, "https://www.mailinator.com/", testData.getEmail());
+		
 	}
 
 	@Test(enabled = true, groups = {"AcceptanceTests"}, retryAnalyzer = RetryAnalyzer.class)
@@ -2376,6 +2373,8 @@ public class PSS2PatientPortalAcceptanceTests extends BaseTestNGWebDriver {
 		cancelRescheduleDecisionPage.areBasicPageElementsPresent();
 		cancelRescheduleDecisionPage.clickReschedule();
 		psspatientutils.rescheduleAPT(testData, driver);
+		
+		psspatientutils.deleteEmail_Mailinator(driver, "https://www.mailinator.com/", testData.getEmail());
 
 	}
 
@@ -2446,6 +2445,8 @@ public class PSS2PatientPortalAcceptanceTests extends BaseTestNGWebDriver {
 		cancelRescheduleDecisionPage.areBasicPageElementsPresent();
 		cancelRescheduleDecisionPage.clickReschedule();
 		psspatientutils.rescheduleAPT(testData, driver);
+		
+		psspatientutils.deleteEmail_Mailinator(driver, "https://www.mailinator.com/", testData.getEmail());
 
 	}
 
@@ -2519,6 +2520,7 @@ public class PSS2PatientPortalAcceptanceTests extends BaseTestNGWebDriver {
 		cancelRescheduleDecisionPage.areBasicPageElementsPresent();
 		cancelRescheduleDecisionPage.clickReschedule();
 		psspatientutils.rescheduleAPT(testData, driver);
+		psspatientutils.deleteEmail_Mailinator(driver, "https://www.mailinator.com/", testData.getEmail());
 
 	}
 
@@ -2567,6 +2569,8 @@ public class PSS2PatientPortalAcceptanceTests extends BaseTestNGWebDriver {
 		cancelRescheduleDecisionPage.areBasicPageElementsPresent();
 		cancelRescheduleDecisionPage.clickReschedule();
 		psspatientutils.rescheduleAPT(testData, driver);
+		
+		psspatientutils.deleteEmail_Mailinator(driver, "https://www.mailinator.com/", testData.getEmail());
 
 	}
 
@@ -4698,6 +4702,7 @@ public class PSS2PatientPortalAcceptanceTests extends BaseTestNGWebDriver {
 		assertEquals(speciality.selectSpeciality1(testData.getSpeciality()), testData.getSpeciality());
 		Log4jUtil.log("Test Case Passed.....");
 	}
+
 }
 
 

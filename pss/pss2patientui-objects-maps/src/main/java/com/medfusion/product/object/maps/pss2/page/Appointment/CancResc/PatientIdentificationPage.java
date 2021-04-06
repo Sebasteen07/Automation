@@ -102,8 +102,9 @@ public class PatientIdentificationPage extends PSS2MainPage {
 		
 		driver.switchTo().frame(recaptchaFrame);
 		commonMethods.highlightElement(recaptchaBox);
-		recaptchaClick.click();
 		Thread.sleep(3000);
+		recaptchaClick.click();
+		Thread.sleep(6000);
 		driver.switchTo().parentFrame();
 
 		log("........Captcha clicked......");
