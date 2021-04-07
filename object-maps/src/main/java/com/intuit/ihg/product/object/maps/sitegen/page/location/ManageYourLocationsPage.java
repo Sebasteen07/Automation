@@ -1,11 +1,15 @@
+//Copyright 2013-2021 NXGN Management, LLC. All Rights Reserved.
 package com.intuit.ihg.product.object.maps.sitegen.page.location;
 
+
+import static org.testng.Assert.assertFalse;
+import static org.testng.Assert.assertTrue;
 
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.FindBy;
 import org.openqa.selenium.support.PageFactory;
-import org.testng.Assert;
+
 import com.intuit.ifs.csscat.core.pageobject.BasePageObject;
 import com.medfusion.common.utils.IHGUtil;
 import com.intuit.ihg.product.sitegen.utils.SitegenlUtil;
@@ -109,11 +113,11 @@ public class ManageYourLocationsPage extends BasePageObject {
 		if (checkTheData(practiceName, State) == true) {
 			lnkEditLocation.click();
 			EditSiteGenAutomationPage pEditSiteGenAutomationPage = PageFactory.initElements(driver, EditSiteGenAutomationPage.class);
-			Assert.assertTrue(pEditSiteGenAutomationPage.isSearchPageLoaded(), "Expected the Edit your location Page  to be loaded, but it was not.");
+			assertTrue(pEditSiteGenAutomationPage.isSearchPageLoaded(), "Expected the Edit your location Page  to be loaded, but it was not.");
 			pEditSiteGenAutomationPage.deleteLocation();
-			Assert.assertTrue(this.isSearchPageLoaded(), "Expected the Manage your location Page  to be loaded, but it was not.");
-			Assert.assertFalse(SitegenlUtil.verifyTextPresent(driver, practiceName, 1000), "Clean process is unable to clean data ,kindly check it manually");
-			Assert.assertFalse(SitegenlUtil.verifyTextPresent(driver, State, 1000), "Clean process is unable to clean data ,kindly check it manually");
+			assertTrue(this.isSearchPageLoaded(), "Expected the Manage your location Page  to be loaded, but it was not.");
+			assertFalse(SitegenlUtil.verifyTextPresent(driver, practiceName, 1000), "Clean process is unable to clean data ,kindly check it manually");
+			assertFalse(SitegenlUtil.verifyTextPresent(driver, State, 1000), "Clean process is unable to clean data ,kindly check it manually");
 		} else {
 			log("The data is already clean");
 		}

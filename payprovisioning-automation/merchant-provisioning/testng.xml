@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE suite SYSTEM "http://testng.org/testng-1.0.dtd">
+<suite name="Suite">
+  <test thread-count="5" name="Test">
+    <classes>
+      <class name="com.medfusion.mfpay.merchant_provisioning.tests.PartnersAsFinance"/>
+      <class name="com.medfusion.mfpay.merchant_provisioning.tests.ProvisioningRoles"/>
+      <class name="com.medfusion.mfpay.merchant_provisioning.tests.WPTestsAsImplementation"/>
+      <class name="com.medfusion.mfpay.merchant_provisioning.tests.MerchantResourceAsFinance"/>
+      <class name="com.medfusion.mfpay.merchant_provisioning.tests.UserResourceAsImplementation"/>
+    </classes>
+  </test> <!-- Test -->
+</suite> <!-- Suite -->

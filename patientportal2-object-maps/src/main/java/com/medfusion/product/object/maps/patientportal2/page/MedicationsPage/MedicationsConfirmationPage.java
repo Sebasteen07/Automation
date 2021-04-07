@@ -1,8 +1,9 @@
-// Copyright 2021 NXGN Management, LLC. All Rights Reserved.
+//  Copyright 2013-2021 NXGN Management, LLC. All Rights Reserved.
 package com.medfusion.product.object.maps.patientportal2.page.MedicationsPage;
 
-import static org.junit.Assert.assertFalse;
+import static org.testng.Assert.assertFalse;
 
+import org.openqa.selenium.JavascriptExecutor;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.FindBy;
@@ -47,8 +48,8 @@ public class MedicationsConfirmationPage {
 	
 	
 	public String confirmMedication(WebDriver driver) throws InterruptedException {
-
-		btnConfirm.click();
+		JavascriptExecutor ex = (JavascriptExecutor)driver;
+	    ex.executeScript("arguments[0].click();", btnConfirm);
 		System.out.println("Confirm button is clicked");
 		IHGUtil.waitForElement(driver, 10, confirmPopup);
         return successMsg.getText();		

@@ -1,6 +1,7 @@
 //Copyright 2013-2021 NXGN Management, LLC. All Rights Reserved.
-
 package com.ng.product.integrationplatform.apiUtils;
+
+import static org.testng.Assert.assertEquals;
 import static org.testng.Assert.assertTrue;
 
 import java.io.IOException;
@@ -25,7 +26,7 @@ import org.apache.http.util.EntityUtils;
 import org.codehaus.jackson.map.ObjectMapper;
 import org.json.JSONArray;
 import org.json.JSONException;
-import org.testng.Assert;
+
 
 import com.google.gson.JsonObject;
 import com.google.gson.JsonParser;
@@ -220,7 +221,7 @@ public class NGAPIUtils {
 	        	Log4jUtil.log("Patient created successfully");
 	        }else{
 	        	Log4jUtil.log("Unable to create patient");
-	            Assert.assertEquals(httpResponse.getStatusLine().getStatusCode(), ExpectedStatusCode);
+	            assertEquals(httpResponse.getStatusLine().getStatusCode(), ExpectedStatusCode);
 	        }
 	        
 	        for(Header headerRes: httpResponse.getAllHeaders()){
@@ -280,7 +281,7 @@ public class NGAPIUtils {
 	        	Log4jUtil.log("Post request completed successfully");
 	        }else{
 	        	Log4jUtil.log("Unable to post the request, Response is \n"+EntityUtils.toString(httpResponse.getEntity()));
-	            Assert.assertEquals(httpResponse.getStatusLine().getStatusCode(), ExpectedStatusCode);
+	            assertEquals(httpResponse.getStatusLine().getStatusCode(), ExpectedStatusCode);
 	        }}
 	        
 	        for(Header headerRes: httpResponse.getAllHeaders()){
@@ -337,7 +338,7 @@ public class NGAPIUtils {
 	    	Log4jUtil.log("Get request completed successfully");
         }else{
         	Log4jUtil.log("Unable to get the request");
-            Assert.assertEquals(httpResponse.getStatusLine().getStatusCode(), ExpectedStatusCode);
+            assertEquals(httpResponse.getStatusLine().getStatusCode(), ExpectedStatusCode);
         }}
 	
 	    HttpEntity entity = httpResponse.getEntity();
@@ -392,7 +393,7 @@ public class NGAPIUtils {
     		    	Log4jUtil.log("Put request completed successfully");
     	        }else{
     	        	Log4jUtil.log("Unable to put the request");
-    	            Assert.assertEquals(httpResponse.getStatusLine().getStatusCode(), ExpectedStatusCode);
+    	            assertEquals(httpResponse.getStatusLine().getStatusCode(), ExpectedStatusCode);
     	        }}
 
     	    for(Header headerRes: httpResponse.getAllHeaders()){
@@ -499,7 +500,7 @@ public class NGAPIUtils {
     		    	Log4jUtil.log("Delete request completed successfully");
     	        }else{
     	        	Log4jUtil.log("Unable to delete the request");
-    	            Assert.assertEquals(httpResponse.getStatusLine().getStatusCode(), ExpectedStatusCode);
+    	            assertEquals(httpResponse.getStatusLine().getStatusCode(), ExpectedStatusCode);
     	        }}
 		}catch (Exception E) {
 		Log4jUtil.log("Exception caught "+E.getMessage());

@@ -9,6 +9,8 @@ import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.FindBy;
 import org.openqa.selenium.support.How;
 import org.openqa.selenium.support.PageFactory;
+import org.openqa.selenium.support.ui.ExpectedConditions;
+
 import com.intuit.ifs.csscat.core.pageobject.BasePageObject;
 import com.medfusion.common.utils.IHGUtil;
 import com.medfusion.common.utils.PropertyFileLoader;
@@ -22,6 +24,9 @@ public class SelectMedicationsPage  extends BasePageObject {
 	}
 
 	@FindBy(how=How.XPATH,using="//div[@class='ng-input']/input")
+	private WebElement multiSelectMedicationWithoutRenewalFee;
+	
+	@FindBy(how=How.XPATH,using="//div[@class='ng-value-container']/following::input")
 	private WebElement multiSelectMedication;
 	 
 	@FindBy(how=How.XPATH,using="//ul[@class='list']/li[1]")
@@ -39,6 +44,7 @@ public class SelectMedicationsPage  extends BasePageObject {
 
 	public void selectMedications() throws IOException, InterruptedException {
 		PropertyFileLoader testData = new PropertyFileLoader();
+		wait.until(ExpectedConditions.visibilityOf(multiSelectMedication));
 		multiSelectMedication.sendKeys(testData.getProperty("medOne"));
 		Thread.sleep(2000);
 		multiSelectMedication.sendKeys(Keys.ENTER);	
@@ -50,5 +56,15 @@ public class SelectMedicationsPage  extends BasePageObject {
 		IHGUtil.waitForElement(driver, 5, availablemedicationcheckbx);	
 		availablemedicationcheckbx.click();
 		btnContinue.click();
+	}
+	public void selectMedicationsWithoutRenewalFee() throws IOException, InterruptedException {
+		PropertyFileLoader testData = new PropertyFileLoader();
+		wait.until(ExpectedConditions.visibilityOf(multiSelectMedicationWithoutRenewalFee));
+		multiSelectMedicationWithoutRenewalFee.sendKeys(testData.getProperty("medOne"));
+		Thread.sleep(2000);
+		multiSelectMedicationWithoutRenewalFee.sendKeys(Keys.ENTER);	
+		Thread.sleep(2000);
+		btnContinue.click();
+		
 	}
 }

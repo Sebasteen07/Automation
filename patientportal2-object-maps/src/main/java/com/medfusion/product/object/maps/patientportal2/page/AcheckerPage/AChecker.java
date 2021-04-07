@@ -1,7 +1,8 @@
-//Copyright 2013-2020 NXGN Management, LLC. All Rights Reserved.
+//Copyright 2013-2021 NXGN Management, LLC. All Rights Reserved.
 package com.medfusion.product.object.maps.patientportal2.page.AcheckerPage;
 
-import junit.framework.Assert;
+import static org.testng.Assert.assertEquals;
+
 import org.openqa.selenium.By;
 import org.openqa.selenium.Keys;
 import org.openqa.selenium.WebDriver;
@@ -10,6 +11,8 @@ import org.openqa.selenium.support.FindBy;
 import org.openqa.selenium.support.How;
 import org.openqa.selenium.support.PageFactory;
 import org.openqa.selenium.support.ui.ExpectedConditions;
+
+
 import com.intuit.ifs.csscat.core.pageobject.BasePageObject;
 
 /**
@@ -102,7 +105,7 @@ public class AChecker extends BasePageObject {
 		if (errors.isDisplayed()) {
 			log(errors.getText());
 		}
-		Assert.assertEquals(SUCCESS_MESSAGE, successMessage.getText());
+		assertEquals(successMessage.getText(), SUCCESS_MESSAGE);
 		System.out.println("We got the success Message");
 	}
 

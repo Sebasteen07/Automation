@@ -1,6 +1,7 @@
+//  Copyright 2013-2021 NXGN Management, LLC. All Rights Reserved.
 package com.intuit.ihg.product.object.maps.phr.page;
 
-import static org.testng.AssertJUnit.assertFalse;
+import static org.testng.Assert.assertFalse;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.support.PageFactory;
 import org.openqa.selenium.WebElement;
@@ -100,7 +101,7 @@ public class PhrLoginPage extends BasePageObject {
 		driver.get(sanitizedUrl);
 		maxWindow();
 		// See if SSL setup properly
-		assertFalse("### PHR SSL CERT ISSUE (Untrusted Connection) ?", driver.getTitle().contains("Untrusted Connection"));
+		assertFalse(driver.getTitle().contains("Untrusted Connection"), "### PHR SSL CERT ISSUE (Untrusted Connection) ?");
 		PageFactory.initElements(driver, this);
 	}
 

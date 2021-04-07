@@ -1,6 +1,6 @@
 package com.intuit.ihg.product.object.maps.sitegen.page.discreteforms.pages;
 
-import static org.testng.AssertJUnit.assertTrue;
+import static org.testng.Assert.assertTrue;
 
 import java.util.List;
 

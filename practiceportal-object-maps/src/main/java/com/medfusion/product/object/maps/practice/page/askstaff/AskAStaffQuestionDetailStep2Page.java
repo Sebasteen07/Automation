@@ -56,9 +56,12 @@ public class AskAStaffQuestionDetailStep2Page extends BasePageObject {
 
 	@FindBy(name = "cpt:topContainer:code")
 	private WebElement diagnosticCode;
-	// Ajax search starts after 3 letters, and again searches after each additional letter
-	// Setting this to 3 letters as when you add more it causes issues as each new search result
-	// unloads the result table from the DOM and adds it again, which causes issues with the script.
+	// Ajax search starts after 3 letters, and again searches after each additional
+	// letter
+	// Setting this to 3 letters as when you add more it causes issues as each new
+	// search result
+	// unloads the result table from the DOM and adds it again, which causes issues
+	// with the script.
 	private final String diagnosticCodeContent = "COU";
 	private final String diagnosticContent = "Cough";
 
@@ -70,6 +73,13 @@ public class AskAStaffQuestionDetailStep2Page extends BasePageObject {
 
 	@FindBy(name = "buttons:cancel")
 	private WebElement btnCancel;
+	
+	@FindBy(linkText = "Click here")
+	private WebElement clickhereToChargeCard;
+	
+	@FindBy(name = "payment:container:amount")
+	private WebElement inputAmountText;
+	
 
 	public AskAStaffQuestionDetailStep2Page(WebDriver driver) {
 		super(driver);
@@ -109,7 +119,8 @@ public class AskAStaffQuestionDetailStep2Page extends BasePageObject {
 	}
 
 	/**
-	 * Returns unique value that was added to subject to help with filtering in patient inbox
+	 * Returns unique value that was added to subject to help with filtering in
+	 * patient inbox
 	 * 
 	 * @return the created time stamp
 	 */
@@ -120,12 +131,14 @@ public class AskAStaffQuestionDetailStep2Page extends BasePageObject {
 	}
 
 	/**
-	 * Process the question. Note: The diagnostic code is handled automatically and will be set to "COUGH". The first item in the diagnostic code table that pops
+	 * Process the question. Note: The diagnostic code is handled automatically and
+	 * will be set to "COUGH". The first item in the diagnostic code table that pops
 	 * up will be selected.
 	 * 
-	 * @param subjectContent content to be put in reply subject to patient (a unique time stamp will be appended by this method and accessible via
-	 *        getCreatedTimeStamp())
-	 * @param bodyContent content to be put in reply body to patient
+	 * @param subjectContent content to be put in reply subject to patient (a unique
+	 *                       time stamp will be appended by this method and
+	 *                       accessible via getCreatedTimeStamp())
+	 * @param bodyContent    content to be put in reply body to patient
 	 * 
 	 * @return Ask A Staff Question Detail Step 3 page
 	 */
@@ -137,28 +150,23 @@ public class AskAStaffQuestionDetailStep2Page extends BasePageObject {
 			Select selectFrom = new Select(from);
 			selectFrom.selectByIndex(1);
 		}
-
 		subject.sendKeys(subjectContent + " " + createdTs);
 		body.sendKeys(bodyContent);
 		diagnosticCode.sendKeys(diagnosticCodeContent);
-//<<<<<<< Updated upstream
 		IHGUtil.waitForElement(driver, 30, diagnosticContentButton);
-//=======
-	
-//>>>>>>> Stashed changes
 		diagnosticContentButton.click();
 		btnProcess.click();
 		return PageFactory.initElements(driver, AskAStaffQuestionDetailStep3Page.class);
 	}
 
 	/**
-	 * Fills out the Prescription, Pharmacy and the rest is handled by the processAndCommunicate method Units stay default (capsule), Refills 0 and Do not fill
-	 * after = today
+	 * Fills out the Prescription, Pharmacy and the rest is handled by the
+	 * processAndCommunicate method Units stay default (capsule), Refills 0 and Do
+	 * not fill after = today
 	 */
 	public AskAStaffQuestionDetailStep3Page prescribeAndCommunicate(String subjectContent, String bodyContent) {
 		IHGUtil.PrintMethodName();
 		PracticeUtil.setPracticeFrame(driver);
-
 		IHGUtil.waitForElement(driver, 20, drugName);
 		drugName.sendKeys(PracticeConstants.MEDICATION_NAME);
 		dosage.sendKeys(JalapenoConstants.DOSAGE);
@@ -169,11 +177,35 @@ public class AskAStaffQuestionDetailStep2Page extends BasePageObject {
 			Select selPharmacy = new Select(pharmacy);
 			selPharmacy.selectByIndex(1);
 		}
-
 		IHGUtil.waitForElement(driver, 20, sendToTheCallinQueue);
 		sendToTheCallinQueue.click();
-
 		return processAndCommunicate(subjectContent, bodyContent);
 	}
+	
+	public AskAStaffQuestionDetailStep3Page chargeAmountAndCommunicate(String subjectContent, String bodyContent, String amount) {
+		IHGUtil.PrintMethodName();
+		PracticeUtil.setPracticeFrame(driver);
 
+		if (IHGUtil.exists(driver, from)) {
+			Select selectFrom = new Select(from);
+			selectFrom.selectByIndex(1);
+		}
+		subject.sendKeys(subjectContent + " " + createdTs);
+		body.sendKeys(bodyContent);
+		diagnosticCode.sendKeys(diagnosticCodeContent);
+		IHGUtil.waitForElement(driver, 30, diagnosticContentButton);
+		diagnosticContentButton.click();
+		chargeCreditCard(amount);
+		btnProcess.click();
+		return PageFactory.initElements(driver, AskAStaffQuestionDetailStep3Page.class);
+	}
+	
+	public void chargeCreditCard(String amount) {
+		IHGUtil.PrintMethodName();
+		PracticeUtil.setPracticeFrame(driver);
+		clickhereToChargeCard.click();
+		inputAmountText.clear();
+		inputAmountText.sendKeys(amount);
+		
+	}
 }

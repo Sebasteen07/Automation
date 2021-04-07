@@ -1,4 +1,7 @@
+//Copyright 2013-2021 NXGN Management, LLC. All Rights Reserved.
 package com.intuit.ihg.common.utils.ccd;
+
+import static org.testng.Assert.assertEquals;
 
 import java.io.BufferedReader;
 import java.io.ByteArrayInputStream;
@@ -21,7 +24,7 @@ import org.openhealthtools.mdht.uml.cda.ClinicalDocument;
 import org.openhealthtools.mdht.uml.cda.util.CDADiagnostic;
 import org.openhealthtools.mdht.uml.cda.util.CDAUtil;
 import org.openhealthtools.mdht.uml.cda.util.ValidationResult;
-import org.testng.Assert;
+
 
 import com.intuit.ihg.rest.RestUtils;
 
@@ -115,7 +118,7 @@ public class CCDTest {
 		request.body(MediaType.APPLICATION_FORM_URLENCODED_TYPE , postData);		
 		ClientResponse<String> response = request.post(String.class);		
 	
-		Assert.assertEquals(response.getStatus(), 200, "HTTP Status not what expected");
+		assertEquals(response.getStatus(), 200, "HTTP Status not what expected");
 		
 		//loop through response to print it and find a match on the accessToken xml node (it's expected to be in a single response line)
 		BufferedReader br = new BufferedReader(new InputStreamReader(new ByteArrayInputStream(response.getEntity().getBytes())));		

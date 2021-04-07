@@ -1,6 +1,7 @@
+//  Copyright 2013-2021 NXGN Management, LLC. All Rights Reserved.
 package com.medfusion.product.object.maps.patientportal2.page.MyAccountPage;
 
-import static org.testng.AssertJUnit.assertTrue;
+import static org.testng.Assert.assertTrue;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -28,22 +29,22 @@ public class JalapenoMyAccountPreferencesPage extends JalapenoMyAccountPage {
 		@FindBy(how = How.ID, using = "statementPreference")
 		private WebElement statementPreference;
 
-		@FindBy(how = How.XPATH, using = "//div[@name='preferredLanguage']")
+		@FindBy(how = How.XPATH, using = "//ng-select[@id='languages']")
 		private WebElement preferredLanguageSelect;
 		
 		@FindBy(how = How.XPATH, using = "//input[@id='preferredLanguage']")
 		private WebElement preferredLanguageSelectTextbox;
 
-		@FindBy(how = How.XPATH, using = "//div[contains(@input-id,'preferredLanguage')]//div[text()='English']")
+		@FindBy(how = How.XPATH, using = "//ng-select[@id='languages']//span[text()='English']")
 		private WebElement preferredLanguageEnglish;
 
 		@FindBy(how = How.NAME, using = "provider")
 		private WebElement preferredProvider;
 
-		@FindBy(how = How.XPATH, using = "//div[contains(@name,'provider')]//div/span/span/span/span[2]/span")
+		@FindBy(how = How.XPATH, using = "//ng-select[@id='listOfProviders']//span[2]")
 		private List<WebElement> selectedPreferredProviders;
 
-		@FindBy(how = How.XPATH, using = "//div[contains(@name,'provider')]//input")
+		@FindBy(how = How.XPATH, using = "//ng-select[@id='listOfProviders']//input")
 		private WebElement addPreferredProvider;
 
 		@FindBy(how = How.ID, using = "messagingOptOut")
@@ -55,8 +56,8 @@ public class JalapenoMyAccountPreferencesPage extends JalapenoMyAccountPage {
 		@FindBy(how = How.XPATH, using = "//p[text()='You have successfully updated your preferences.']")
 		private WebElement successfulUpdateMessage;
 
-		private static final String ADD_PREFERRED_PROVIDER_LOCATOR_TEMPLATE = "//div[contains(@name,'provider')]//div[text()='%s']";
-		private static final String REMOVE_PREFERRED_PROVIDER_LOCATOR = "//div[contains(@name,'provider')]//span[contains(@class,'close ui-select-match-close')]";
+		private static final String ADD_PREFERRED_PROVIDER_LOCATOR_TEMPLATE = "//ng-select[@id='listOfProviders']//span[text()='%s']";
+		private static final String REMOVE_PREFERRED_PROVIDER_LOCATOR = "//ng-select[@id='listOfProviders']//span[contains(text(),'×')]";
 
 		public JalapenoMyAccountPreferencesPage(WebDriver driver) {
 				super(driver);

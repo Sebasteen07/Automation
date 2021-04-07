@@ -16,10 +16,38 @@ public class AdminPatientMatching extends SettingsTab {
 
 	@FindAll({@FindBy(xpath = "//patientmatch//div//div//div//div//table[@class=\"table table-hover\"]/tbody[1]/tr")})
 	private List<WebElement> patientMatchingList;
-	
+
 	@FindBy(xpath = "//patientmatch//div//div[3]//div//button[@class='btn btn-primary' and @style='margin-right:10px']")
-	private WebElement saveBtnPAtientMatching;	
-	
+	private WebElement saveBtnPAtientMatching;
+
+	@FindBy(xpath = "//a[@id='tab43-tab']")
+	private WebElement genderMap;
+
+	@FindBy(xpath = "//*[@id='gendermapcheckbox0']")
+	private WebElement genderbox0Status;
+
+	@FindBy(xpath = "//*[@id='gendermapcheckbox1']")
+	private WebElement genderbox1Status;
+
+	@FindBy(xpath = "//*[@id='gendermapcheckbox2']")
+	private WebElement genderbox2Status;
+
+	@FindBy(xpath = "//*[@id='gendermapcheckbox3']")
+	private WebElement genderbox3Status;
+
+	@FindBy(xpath = "//tbody/tr[1]/td[1]/div[1]/label[1]/i[1]")
+	private WebElement genderbox0click;
+
+	@FindBy(xpath = "//tbody/tr[2]/td[1]/div[1]/label[1]/i[1]")
+	private WebElement genderbox1click;
+
+	@FindBy(xpath = "//tbody/tr[3]/td[1]/div[1]/label[1]/i[1]")
+	private WebElement genderbox2click;
+
+	@FindBy(xpath = "//tbody/tr[4]/td[1]/div[1]/label[1]/i[1]")
+	private WebElement genderbox3click;
+
+
 	public AdminPatientMatching(WebDriver driver) {
 		super(driver);
 	}
@@ -64,6 +92,43 @@ public class AdminPatientMatching extends SettingsTab {
 			}
 		}
 		saveBtnPAtientMatching.click();
+	}
+
+	public Boolean isgenderBox0True() {
+		return Boolean.valueOf(genderbox0Status.getAttribute("ng-reflect-model"));
+	}
+
+	public Boolean isgenderBox1True() {
+		return Boolean.valueOf(genderbox1Status.getAttribute("ng-reflect-model"));
+	}
+
+	public Boolean isgenderBox2True() {
+		return Boolean.valueOf(genderbox2Status.getAttribute("ng-reflect-model"));
+	}
+
+	public Boolean isgenderBox3True() {
+		return Boolean.valueOf(genderbox3Status.getAttribute("ng-reflect-model"));
+	}
+
+	public void gendermap() {
+		genderMap.click();
+		log("Clicked on Gender Map button");
+	}
+
+	public void allToggleGendermap() {
+		if (isgenderBox0True() == false) {
+			genderbox0click.click();
+		}
+		if (isgenderBox1True() == false) {
+			genderbox1click.click();
+		}
+		if (isgenderBox2True() == false) {
+			genderbox2click.click();
+		}
+		if (isgenderBox3True() == false) {
+			genderbox3click.click();
+		}
+		log("Successfully On the all gender map toggle button");
 	}
 }
 

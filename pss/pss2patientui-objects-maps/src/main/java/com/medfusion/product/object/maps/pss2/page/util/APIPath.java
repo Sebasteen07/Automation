@@ -7,7 +7,7 @@ public class APIPath {
 
 		public static final String Get_List_Location="/location/rule/26308";
 		public static final String Get_List_Book="/book/rule/26308";
-		public static final String Get_List_Appointment="/appointmenttypes/rule/26308";
+		public static final String Get_List_Appointment="/appointmenttypes/rule/50256";
 		public static final String Get_List_Slots="/availableslots/26308";
 		public static final String ScheduleAPPT="/scheduleappointment/26308";
 		
@@ -23,6 +23,14 @@ public class APIPath {
 
 		public static final String cancelAppointment="/24249/cancelappointment/50151";
 		public static final String cancellationReason="/24249/cancellationreason";
+		
+		public static final String rescheduleAppt="/24249/rescheduleappointment";
+		public static final String scheduleApptNG="/24249/scheduleappointment";
+		
+		public static final String upcommingApptNG="/24249/upcomingappointments";
+		
+		
+		
 
 	}
 
