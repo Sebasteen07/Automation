@@ -4167,7 +4167,8 @@ public class IntegrationPlatformRegressionTests extends BaseTestNGWebDriver {
 					break;
 				}
 			}
-			verifyTrue(completed, "Message processing was not completed in time");
+			assertTrue(completed, "Message processing was not completed in time");
+			
 		} else {
 			log("For V3 endpoint");
 			log("Step 9: Get Prescription Rest call");
@@ -4216,7 +4217,8 @@ public class IntegrationPlatformRegressionTests extends BaseTestNGWebDriver {
 					break;
 				}
 			}
-			verifyTrue(completed, "Message processing was not completed in time");
+		
+			assertTrue(completed, "Message processing was not completed in time");
 		}
 		// Patient portal validation
 		log("Step 13: Check secure message in patient mailinator inbox");
