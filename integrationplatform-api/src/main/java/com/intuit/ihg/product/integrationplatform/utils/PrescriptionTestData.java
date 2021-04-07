@@ -109,5 +109,8 @@ public class PrescriptionTestData {
 		return PrescriptionObj.PrescriptionPathV3;
 	}
 	
+	public String getPharmacyName() {
+		return PrescriptionObj.PharmacyName;
+	}
 
 }
