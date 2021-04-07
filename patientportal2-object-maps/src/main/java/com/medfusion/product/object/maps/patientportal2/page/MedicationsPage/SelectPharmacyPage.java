@@ -31,7 +31,7 @@ public class SelectPharmacyPage extends MedfusionPage {
 
 	}
 
-	@FindBy(how = How.XPATH, using = "//span[@class='pharmacy-radio-button']")
+	@FindBy(how = How.XPATH, using = "(//*[@class='pharmacy-radio-button'])[1]")
 	private WebElement radioPharmacy;
 
 	@FindBy(how = How.ID, using = "add-new-pharmacy")
@@ -186,6 +186,7 @@ public class SelectPharmacyPage extends MedfusionPage {
 		log("it clicked on the save and continue button ");
 		wait.until(ExpectedConditions.visibilityOf(popupContinueBtn));
 		popupContinueBtn.click();
+		radioPharmacy.click();
 		log("it clicked on the save and continue button ");
 		Thread.sleep(2000);//need to sleep because of modal disappearing time
 		btnContinue.click();

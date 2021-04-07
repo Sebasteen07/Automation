@@ -62,6 +62,8 @@ import com.intuit.ihg.product.integrationplatform.utils.Patient_Login;
 import com.intuit.ihg.product.integrationplatform.utils.Pharmacies;
 import com.intuit.ihg.product.integrationplatform.utils.PharmacyPayload;
 import com.intuit.ihg.product.integrationplatform.utils.PrecheckAppointmentUtils;
+import com.intuit.ihg.product.integrationplatform.utils.Prescription;
+import com.intuit.ihg.product.integrationplatform.utils.PrescriptionTestData;
 import com.intuit.ihg.product.integrationplatform.utils.RestUtils;
 import com.intuit.ihg.product.integrationplatform.utils.SendDirectMessage;
 import com.intuit.ihg.product.integrationplatform.utils.SendDirectMessageUtils;
@@ -82,6 +84,11 @@ import com.medfusion.product.object.maps.patientportal2.page.CreateAccount.Patie
 import com.medfusion.product.object.maps.patientportal2.page.CreateAccount.PatientVerificationPage;
 import com.medfusion.product.object.maps.patientportal2.page.CreateAccount.SecurityDetailsPage;
 import com.medfusion.product.object.maps.patientportal2.page.HomePage.JalapenoHomePage;
+import com.medfusion.product.object.maps.patientportal2.page.MedicationsPage.LocationAndProviderPage;
+import com.medfusion.product.object.maps.patientportal2.page.MedicationsPage.MedicationsConfirmationPage;
+import com.medfusion.product.object.maps.patientportal2.page.MedicationsPage.MedicationsHomePage;
+import com.medfusion.product.object.maps.patientportal2.page.MedicationsPage.SelectMedicationsPage;
+import com.medfusion.product.object.maps.patientportal2.page.MedicationsPage.SelectPharmacyPage;
 import com.medfusion.product.object.maps.patientportal2.page.MessagesPage.JalapenoMessagesPage;
 import com.medfusion.product.object.maps.patientportal2.page.MyAccountPage.JalapenoMyAccountPreferencesPage;
 import com.medfusion.product.object.maps.patientportal2.page.MyAccountPage.JalapenoMyAccountProfilePage;
@@ -92,6 +99,7 @@ import com.medfusion.product.object.maps.practice.page.PracticeLoginPage;
 import com.medfusion.product.object.maps.practice.page.patientSearch.PatientDashboardPage;
 import com.medfusion.product.object.maps.practice.page.patientSearch.PatientSearchPage;
 import com.medfusion.product.object.maps.practice.page.patientactivation.PatientActivationPage;
+import com.medfusion.product.object.maps.practice.page.rxrenewal.RxRenewalSearchPage;
 import com.medfusion.product.object.maps.precheck.page.myAppointmentPreCheck.MyAppointmentPage;
 import com.medfusion.product.object.maps.precheck.page.myAppointmentPreCheck.MyDemoGraphicsDetailPage;
 import com.medfusion.product.object.maps.precheck.page.myAppointmentPreCheck.MyInsuranceDetailPage;
@@ -1093,7 +1101,7 @@ public class IntegrationPlatformRegressionTests extends BaseTestNGWebDriver {
 
 	@DataProvider(name = "channelVersion")
 	public Object[][] channelVersionPIDC() {
-		Object[][] obj = new Object[][] { { "v1" }, { "v2" }, { "v3" } };
+		Object[][] obj = new Object[][] {  { "v3" } };
 		return obj;
 	}
 
@@ -4028,4 +4036,251 @@ public class IntegrationPlatformRegressionTests extends BaseTestNGWebDriver {
 		homePage.clickOnLogout();
 
 	}
+	
+	@Test(enabled = true, dataProvider = "channelVersion", groups = {
+			"AcceptanceTests" }, retryAnalyzer = RetryAnalyzer.class)
+	public void testE2ERxMedication20(String version) throws Exception {
+		if (version.contains("v2"))
+			throw new SkipException("Test skipped as version is:" + version);
+
+		log("Test Case: Rx Prescription Request");
+		log("Execution Environment: " + IHGUtil.getEnvironmentType());
+		log("Execution Browser: " + TestConfig.getBrowserType());
+
+		log("Step 1: Get Data from Excel");
+		Prescription prescription = new Prescription();
+		PrescriptionTestData testData = new PrescriptionTestData(prescription);
+		Long timestamp = System.currentTimeMillis();
+
+		log("Url: " + testData.getUrl());
+		log("User Name: " + testData.getUserName());
+		log("Password: " + testData.getPassword());
+		log("Rest Url: " + testData.getRestUrl());
+		log("Response Path: " + testData.getResponsePath());
+		log("From: " + testData.getFrom());
+		log("PrescriptionPath: " + testData.getPrescriptionPath());
+		log("OAuthProperty: " + testData.getOAuthProperty());
+		log("OAuthKeyStore: " + testData.getOAuthKeyStore());
+		log("OAuthAppToken: " + testData.getOAuthAppToken());
+		log("OAuthUsername: " + testData.getOAuthUsername());
+		log("OAuthPassword: " + testData.getOAuthPassword());
+		log("RestV3Url: " + testData.getRestV3Url());
+		log("PrescriptionPathV3: " + testData.getPrescriptionPathV3());
+		log("Pharamcy Name:" + testData.getPharmacyName());
+
+		log("Step 2: LogIn");
+		JalapenoLoginPage loginPage = new JalapenoLoginPage(driver, testData.getUrl());
+		JalapenoHomePage homePage = loginPage.login(testData.getUserName(), testData.getPassword());
+		Thread.sleep(9000);
+
+		log("Step 3: Click on PrescriptionRenewal Link ");
+		MedicationsHomePage medicationPage = homePage.clickOnMedications(driver);
+		Thread.sleep(15000);
+		medicationPage.clickOnRxRequest();
+		Thread.sleep(15000);
+		
+		LocationAndProviderPage select = new LocationAndProviderPage(driver);
+	
+		log("Getting Provider Details");
+		String practiceLocation = LocationAndProviderPage.getPracticeLocation();
+		log("Practce Location: " + practiceLocation);
+		String practiceProvider = LocationAndProviderPage.getPracticeProvider();
+		log("Practice Provider Name :" + practiceProvider);
+		
+		
+		logStep("Select a pharmacy");
+		SelectPharmacyPage pharmaPage = new SelectPharmacyPage(driver);
+		pharmaPage.addProviderSuggestedPharmacy(driver, testData.getPharmacyName());
+
+		logStep("Select Medications");
+		SelectMedicationsPage selectMedPage = new SelectMedicationsPage(driver);
+		selectMedPage.selectMedicationsFrmAvailable();
+
+		logStep("Validating Prescription Renewal Fee Text is not present");
+		MedicationsConfirmationPage confirmPage = new MedicationsConfirmationPage(driver);
+		
+		log("Step 6 : Confirm Medication Request from Patient Portal");
+		MedicationsConfirmationPage confirmPage1 = new MedicationsConfirmationPage(driver);
+		
+		log("Get the medication and pharmact details frm the confirmation page which submitting Rx Renewal request");
+		String MedicationDetails = confirmPage1.getMedicationdetails(driver);
+		String PharmacyDetails  = confirmPage1.getpharamcyDetails(driver);
+		
+		String successMsg = confirmPage1.confirmMedication(driver);
+		assertEquals(successMsg, "Your prescription request has been submitted.");
+
+		log("Step 7: Logout of Patient Portal");
+		homePage.clickOnLogout();
+		
+		long time = System.currentTimeMillis();
+		String rxSMSubject = IntegrationConstants.RXRENEWAL_SUBJECT_TAG.toString() + String.valueOf(time);
+		log("Perscription Subject :" + rxSMSubject);
+
+		String rxSMBody = IntegrationConstants.QUESTION_MESSAGE.toString() + "" + String.valueOf(time);
+		log("Perscription Reply :" + rxSMBody);
+
+		log("Step 8: Setup Oauth client");
+		RestUtils.oauthSetup(testData.getOAuthKeyStore(), testData.getOAuthProperty(), testData.getOAuthAppToken(),
+				testData.getOAuthUsername(), testData.getOAuthPassword());
+		String prescriptionId = null;
+		String sigCodes = "";
+		if (version.equals("v1")) {
+			log("For V1 endpoint");
+			log("Step 9: Get Prescription Rest call");
+			// get only messages from last hour in epoch time to avoid transferring
+			// lot of data
+			Long since = timestamp / 1000L - 60 * 24;
+
+			log("Getting messages since timestamp :" + since);
+
+			// do the call and save xml, ",0" is there because of the since
+			// attribute format
+			Thread.sleep(4000);
+			RestUtils.setupHttpGetRequest(testData.getRestUrl() + "?since=" + since + ",0", testData.getResponsePath());
+			log("Step 10: Checking validity of the response xml");
+
+			RestUtils.isMedicationDetailsResponseXMLValid(testData.getResponsePath(), MedicationDetails);
+
+			String postXML = RestUtils.findValueOfMedicationNode(testData.getResponsePath(), "Medication",
+					MedicationDetails, rxSMSubject, rxSMBody, testData.getPrescriptionPath());
+
+			String SigCodeAbbreviation = RestUtils.SigCodeAbbreviation;
+			String SigCodeMeaning = RestUtils.SigCodeMeaning;
+
+			sigCodes = SigCodeAbbreviation + " - " + SigCodeMeaning;
+
+			log("SigCodeAbbreviation :" + SigCodeAbbreviation);
+			log("SigCodeMeaning :" + SigCodeMeaning);
+
+			log("Step 11: Do Message Post Request" + postXML);
+			String processingUrl = RestUtils.setupHttpPostRequest(testData.getRestUrl(), postXML,
+					testData.getResponsePath());
+
+			log("Step 12: Get processing status until it is completed");
+			boolean completed = false;
+			for (int i = 0; i < 3; i++) {
+				// wait 10 seconds so the message can be processed
+				Thread.sleep(120000);
+				RestUtils.setupHttpGetRequest(processingUrl, testData.getResponsePath());
+				if (RestUtils.isMessageProcessingCompleted(testData.getResponsePath())) {
+					completed = true;
+					break;
+				}
+			}
+			verifyTrue(completed, "Message processing was not completed in time");
+		} else {
+			log("For V3 endpoint");
+			log("Step 9: Get Prescription Rest call");
+			// get only messages from last hour in epoch time to avoid transferring
+			// lot of data
+			Long since = timestamp / 1000L - 60 * 24;
+
+			log("Getting messages since timestamp :" + since);
+
+			// do the call and save xml, ",0" is there because of the since
+			// attribute format
+			Thread.sleep(4000);
+			RestUtils.setupHttpGetRequest(testData.getRestV3Url() + "?since=" + since + ",0",
+					testData.getResponsePath());
+			log("Step 10: Checking validity of the response xml");
+
+			RestUtils.isMedicationDetailsResponseXMLValid(testData.getResponsePath(), MedicationDetails);
+
+			String postXML = RestUtils.findValueOfMedicationNode(testData.getResponsePath(), "Medication",
+					MedicationDetails, rxSMSubject, rxSMBody, testData.getPrescriptionPathV3());
+
+			String SigCodeAbbreviation = RestUtils.SigCodeAbbreviation;
+			String SigCodeMeaning = RestUtils.SigCodeMeaning;
+
+			sigCodes = SigCodeAbbreviation + " - " + SigCodeMeaning;
+
+			log("SigCodeAbbreviation :" + SigCodeAbbreviation);
+			log("SigCodeMeaning :" + SigCodeMeaning);
+
+			log("Getting Prescription ID");
+			prescriptionId = RestUtils.getPrescriptionID(testData.getResponsePath());
+			log("Prescription ID: " + prescriptionId);
+
+			log("Step 11: Do Message Post Request" + postXML);
+			String processingUrl = RestUtils.setupHttpPostRequest(testData.getRestV3Url(), postXML,
+					testData.getResponsePath());
+
+			log("Step 12: Get processing status until it is completed");
+			boolean completed = false;
+			for (int i = 0; i < 3; i++) {
+				// wait 10 seconds so the message can be processed
+				Thread.sleep(120000);
+				RestUtils.setupHttpGetRequest(processingUrl, testData.getResponsePath());
+				if (RestUtils.isMessageProcessingCompleted(testData.getResponsePath())) {
+					completed = true;
+					break;
+				}
+			}
+			verifyTrue(completed, "Message processing was not completed in time");
+		}
+		// Patient portal validation
+		log("Step 13: Check secure message in patient mailinator inbox");
+		Mailinator mail = new Mailinator();
+		String subject = "New message from PI Automation rsdk Integrated";
+		String messageLink = "Sign in to view this message";
+		String emailMessageLink = mail.getLinkFromEmail(testData.getUserName(), subject, messageLink, 20);
+		log("Email message link " + emailMessageLink);
+
+		log("Step 14: Login to Patient Portal");
+		JalapenoLoginPage ploginPage = new JalapenoLoginPage(driver, emailMessageLink);
+		JalapenoHomePage phomePage = ploginPage.login(testData.getUserName(), testData.getPassword());
+		Thread.sleep(9000);
+
+		log("Click on msessage box");
+		JalapenoMessagesPage inboxPage = phomePage.clickOnMenuMessages();
+		Thread.sleep(9000);
+
+		log("Step 15: Find message in Inbox");
+		boolean msg = inboxPage.isMessageDisplayed(driver, rxSMSubject);
+
+		log("Step 17: Logout of Patient Portal");
+		homePage.clickOnLogout();
+
+		log("Step 18: Login to Practice Portal");
+		Thread.sleep(6000);
+		PracticeLoginPage practiceLogin = new PracticeLoginPage(driver, testData.getPracticeURL());
+		PracticeHomePage practiceHome = practiceLogin.login(testData.getPracticeUserName(),
+				testData.getPracticePassword());
+
+		log("Step 19: Click On RxRenewal in Practice Portal");
+		RxRenewalSearchPage rxRenewalSearchPage = practiceHome.clickonRxRenewal();
+		Thread.sleep(10000);
+
+		log("Step 20: Search for Today's RxRenewal in Practice Portal");
+		rxRenewalSearchPage.searchForRxRenewalToday(2);
+		Thread.sleep(10000);
+
+		log("Step 21: Get the RxRenewal Details in Practice Portal");
+		rxRenewalSearchPage.getRxRenewalDetails();
+
+		log("Step 22: Set the RxRenewal Fields in Practice Portal");
+		rxRenewalSearchPage.checkMedicationDetails(MedicationDetails, sigCodes);
+
+		log("Step 23: Logout of Practice Portal");
+		practiceHome.logOut();
+
+		if (version.equals("v3")) {
+			log("Step 24: Get PrescriptionHeader call");
+			// get only messages from last hour in epoch time to avoid transferring
+			// lot of data
+			Long since = timestamp / 1000L - 60 * 24;
+			log("Getting messages since timestamp :" + since);
+			log("For V3 endpoint");
+			String getStatusV3Url = testData.getRestV3Url().replaceAll("prescriptions", "prescriptionsHeaders");
+			log("getStatusUrl  :" + getStatusV3Url);
+			Thread.sleep(4000);
+			RestUtils.setupHttpGetRequest(getStatusV3Url + "?since=" + since + ",0", testData.getResponsePath());
+			log("Step 25: Verify PrescriptionHeader ID");
+			String PrescriptionHeaderID = RestUtils.getPrescriptionHeaderID(testData.getResponsePath());
+			log("Prescription ID: " + prescriptionId + "Prescription Header ID: " + PrescriptionHeaderID);
+			assertTrue(prescriptionId.contains(PrescriptionHeaderID), "Expected Prescription ID Body is["
+					+ prescriptionId + "]" + "but actual Prescription ID was [" + PrescriptionHeaderID + "]");
+		}
+	}
+
 }

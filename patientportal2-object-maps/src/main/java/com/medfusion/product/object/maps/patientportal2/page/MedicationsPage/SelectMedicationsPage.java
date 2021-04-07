@@ -37,6 +37,10 @@ public class SelectMedicationsPage  extends BasePageObject {
 	
 	@FindBy(how=How.XPATH,using="//div[@class='form-buttons ng-scope']/button[@type='button']")
 	private WebElement btnBack;
+	
+	@FindBy(how=How.XPATH,using="(//*[@class='list-item']/*[@class='checkbox'])[1]")
+	private WebElement availablemedicationcheckbx;
+	
 
 	public void selectMedications() throws IOException, InterruptedException {
 		PropertyFileLoader testData = new PropertyFileLoader();
@@ -46,7 +50,12 @@ public class SelectMedicationsPage  extends BasePageObject {
 		multiSelectMedication.sendKeys(Keys.ENTER);	
 		Thread.sleep(2000);
 		btnContinue.click();
-		
+	}
+	
+	public void selectMedicationsFrmAvailable() throws IOException, InterruptedException {
+		IHGUtil.waitForElement(driver, 5, availablemedicationcheckbx);	
+		availablemedicationcheckbx.click();
+		btnContinue.click();
 	}
 	public void selectMedicationsWithoutRenewalFee() throws IOException, InterruptedException {
 		PropertyFileLoader testData = new PropertyFileLoader();
