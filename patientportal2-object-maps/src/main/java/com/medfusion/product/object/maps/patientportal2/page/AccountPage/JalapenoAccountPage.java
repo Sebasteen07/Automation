@@ -21,13 +21,13 @@ import com.medfusion.product.object.maps.patientportal2.page.MyAccountPage.Jalap
 public class JalapenoAccountPage extends JalapenoMenu {
 
 		// won't work if linked accounts are disabled
-		@FindBy(how = How.XPATH, using = "//*[@id='frame']/div[2]/ul/li/div/div[3]/button")
+		@FindBy(how = How.XPATH, using = "//*[@id='frame']/div/ul/li/div/div[3]/button")
 		private WebElement editMyAccountButton;
 
-		@FindBy(how = How.XPATH, using = "//*[@id='frame']/div[3]/div/ul/li/div/div[3]/button")
+		@FindBy(how = How.XPATH, using = "//*[@id='frame']/div[2]/div/ul/li/div/div[3]/button")
 		private WebElement editDependentAccountButton;
 
-		@FindBy(how = How.XPATH, using = "//*[@id='frame']/div[3]/div/button")
+		@FindBy(how = How.XPATH, using = "//*[@id='frame']/div[2]/div/button")
 		private WebElement inviteNewButton;
 
 		@FindBy(how = How.ID, using = "trustedRepFirstName")
@@ -48,7 +48,7 @@ public class JalapenoAccountPage extends JalapenoMenu {
 		@FindBy(how = How.LINK_TEXT, using = "Unlink")
 		private WebElement unLink;
 		
-		@FindBy(how = How.XPATH, using = "//button[contains(text(),'Unlink')]")
+		@FindBy(how = How.XPATH, using = "//button/span[contains(text(),'Unlink')]")
 		private WebElement unLinkButton;
 
 		public JalapenoAccountPage(WebDriver driver) {
