@@ -116,10 +116,11 @@ public class JalapenoMyAccountSecurityPage extends JalapenoMyAccountPage {
 				findDivInMyAccountListWithTextValue(newEmail);
 		}
 
-		public void changeUserNameAndVerify(String currentPassword, String newUserName) {
+		public void changeUserNameAndVerify(String currentPassword, String newUserName) throws InterruptedException {
 				currentPasswordInput.sendKeys(currentPassword);
 				newUserNameInput.sendKeys(newUserName);
 				confirmUserNameInput.sendKeys(newUserName);
+				scrollAndWait(0,300,3000);
 				saveAccountChanges.click();
 				new WebDriverWait(driver, 15).until(ExpectedConditions.visibilityOf(userNameSuccessfulUpdateMessage));
 				findDivInMyAccountListWithTextValue(newUserName);

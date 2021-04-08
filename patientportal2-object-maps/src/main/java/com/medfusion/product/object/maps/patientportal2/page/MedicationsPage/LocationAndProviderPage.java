@@ -23,23 +23,30 @@ import com.medfusion.common.utils.PropertyFileLoader;
 public class LocationAndProviderPage {
     
     @FindBy(how=How.XPATH,using="//div[@class='ng-select-container ng-has-value']//input")
-    private WebElement locationDropdown;
+    private static WebElement locationDropdown;
     
     @FindBy(how=How.XPATH,using="//div[@class='ng-select-container ng-appearance-outline ng-has-value']//input")
-    private WebElement providerDropdown;
+    private static WebElement providerDropdown;
     
     @FindBy(how=How.XPATH,using="//div[@class='form-buttons ng-scope']/button[@type='button']")
-    private WebElement btnBack;
+    private static WebElement btnBack;
     
     @FindBy(how=How.XPATH,using="//button[@type='submit']")
-    private WebElement btnContinue;
+    private static WebElement btnContinue;
     
+    @FindBy(how=How.XPATH,using="(//*[@class='ng-value-label'])[1]")
+    private static WebElement selectedLocation;
+    
+    @FindBy(how=How.XPATH,using="(//*[@class='ng-value-label'])[2]")
+    private static WebElement selectedProvider;
+    
+    
+    		
     public LocationAndProviderPage(WebDriver driver) {
         super();
         IHGUtil.PrintMethodName();
         PageFactory.initElements(driver, this);
     }
-
  
 
     public void chooseLocationAndProvider() throws InterruptedException, IOException {
@@ -62,5 +69,19 @@ public class LocationAndProviderPage {
 
 	}
 
+	public static String  getPracticeLocation() {
+		String location = selectedLocation.getText();
+        locationDropdown.click();
+        locationDropdown.sendKeys(location);
+		return location;
+	}
 	
+	public static String  getPracticeProvider() {
+		String provider = selectedProvider.getText();
+		providerDropdown.click();
+		providerDropdown.sendKeys(provider);
+		btnContinue.click();
+		return provider;
+	}
+		
 }

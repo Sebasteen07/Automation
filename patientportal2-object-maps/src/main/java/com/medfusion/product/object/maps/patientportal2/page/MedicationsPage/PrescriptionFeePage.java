@@ -13,6 +13,7 @@ import org.openqa.selenium.support.How;
 import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.openqa.selenium.support.ui.Select;
 
+import com.medfusion.common.utils.IHGUtil;
 import com.medfusion.product.object.maps.patientportal2.page.JalapenoMenu;
 import com.medfusion.product.patientportal2.pojo.CreditCard;
 
@@ -30,10 +31,10 @@ public class PrescriptionFeePage  extends JalapenoMenu {
 	@FindBy(how=How.XPATH, using="//a[@class='creditCardRemoveButton credit-card-action-link ng-binding ng-scope']")
 	private WebElement cardRemovebtn;
 	
-	@FindBy(how=How.XPATH, using="//div[@class='form-buttons ng-scope']/button[@class='btn btn-secondary ng-binding']")
+	@FindBy(how=How.XPATH, using="//div[@class='form-buttons']/button[@class='btn btn-secondary']")
 	private WebElement btnBack;
 	
-	@FindBy(how=How.XPATH, using="//button[@class='btn btn-primary ng-binding']")
+	@FindBy(how=How.XPATH, using="//button[@class='btn btn-primary']")
 	private WebElement useThisCardBtn;
 	
 	@FindBy(how = How.ID, using = "nameOnCard")
@@ -65,6 +66,7 @@ public class PrescriptionFeePage  extends JalapenoMenu {
 	
 	public PrescriptionFeePage(WebDriver driver) {
 		super(driver);
+		IHGUtil.PrintMethodName();
 	}
 	
 	@Override
