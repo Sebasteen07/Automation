@@ -23,10 +23,10 @@ import com.medfusion.product.object.maps.pss2.page.Insurance.UpdateInsurancePage
 
 public class AppointmentDateTime extends PSS2MainPage {
 
-	@FindAll({ @FindBy(xpath = "//div[@class='rbc-event-content']") })
+	@FindAll({@FindBy(xpath = "//div[@class='rbc-event-content']")})
 	public List<WebElement> appointmentList;
 
-	@FindAll({ @FindBy(xpath = "//a[@id='containerDiv']") })
+	@FindAll({@FindBy(xpath = "//a[@id='containerDiv']")})
 	public List<WebElement> appointmentTimeList;
 
 	@FindBy(how = How.XPATH, using = "//*[@id=\"topdiv\"]/div[2]/div/div[2]/div[3]/div/div/div")
@@ -108,6 +108,7 @@ public class AppointmentDateTime extends PSS2MainPage {
 				log("Appointment Date selected=" + appointmentList.get(0).getText());
 				appointmentList.get(0).click();
 				dt = appointmentList.get(0).getText();
+				log("Date is " + dt);
 				return appointmentList.get(0).getText();
 			}
 		}
@@ -129,9 +130,9 @@ public class AppointmentDateTime extends PSS2MainPage {
 
 	public ConfirmationPage selectAppointmentDateTime(Boolean nextMonthBooking) {
 		List<WebElement> appointmentTimeList = driver.findElements(By.cssSelector(".time-btn"));
-		
+
 		for (int i = 0; i < appointmentTimeList.size(); i++) {
-			
+
 			if (appointmentTimeList.get(i).isDisplayed()) {
 
 				log("Appointment Time selected=" + appointmentTimeList.get(i).getText());
