@@ -498,9 +498,9 @@ public class PSSAdminUtils {
 		PSS2PracticeConfiguration psspracticeConfig = loginToAdminPortal(driver, adminuser);
 		psspracticeConfig = psspracticeConfig.gotoPracticeConfigTab();
 		PatientFlow patientflow = psspracticeConfig.gotoPatientFlowTab();
-		// adminuser.setRule(patientflow.getRule());
-		// Log4jUtil.log("rule= " + patientflow.getRule());
-		// setRulesNoSpecialitySet1(patientflow);
+		adminuser.setRule(patientflow.getRule());
+		Log4jUtil.log("rule= " + patientflow.getRule());
+		setRulesNoSpecialitySet1(patientflow);
 		appointment.setBusinesshourStartTime(psspracticeConfig.gettextbusineesHourStarttime());
 		appointment.setBusinesshourEndTime(psspracticeConfig.gettextbusineesHourEndtime());
 		Log4jUtil.log("Starttime is " + appointment.getBusinesshourStartTime());
@@ -528,6 +528,8 @@ public class PSSAdminUtils {
 		PSS2PracticeConfiguration psspracticeConfig = loginToAdminPortal(driver, adminuser);
 		PatientFlow patientflow = psspracticeConfig.gotoPatientFlowTab();
 		adminuser.setRule(patientflow.getRule());
+		Log4jUtil.log("rule= " + patientflow.getRule());
+		setRulesNoSpecialitySet1(patientflow);
 		Log4jUtil.log("rule= " + patientflow.getRule());
 		appointment.setResourcetoggleStatus(patientflow.resourcetoggleStatus());
 		Log4jUtil.log("Resource is Enabled= " + patientflow.resourcetoggleStatus());

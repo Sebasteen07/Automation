@@ -52,7 +52,7 @@ public class AppointmentPage extends PSS2MainPage {
 		return PageFactory.initElements(driver, AppointmentDateTime.class);
 	}
 
-	public AppointmentDateTime gettypeOfAppointment(String appointmentType, Boolean isPopUpSelected) {
+	public AppointmentDateTime selectAppointmentandClick(String appointmentType, Boolean isPopUpSelected) {
 		log("appointmentTypeList " + appointmentTypeList.size());
 		for (int i = 0; i < appointmentTypeList.size(); i++) {
 			if (appointmentTypeList.get(i).getText().contains(appointmentType)) {

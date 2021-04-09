@@ -116,7 +116,7 @@ public class PSSPatientUtils {
 		assertTrue(provider.areBasicPageElementsPresent());
 		AppointmentPage appointment = provider.selectAppointment(testData.getProvider());
 		Log4jUtil.log("Step 11: Verfiy Appointment Page and Appointment to be selected = " + testData.getAppointmenttype());
-		AppointmentDateTime aptDateTime = appointment.gettypeOfAppointment(testData.getAppointmenttype(), Boolean.valueOf(testData.getIsAppointmentPopup()));
+		AppointmentDateTime aptDateTime = appointment.selectAppointmentandClick(testData.getAppointmenttype(), Boolean.valueOf(testData.getIsAppointmentPopup()));
 		Log4jUtil.log("Step 12: Select avaiable Date ");
 
 		if (testData.isFutureApt()) {
@@ -172,7 +172,8 @@ public class PSSPatientUtils {
 		assertTrue(location.areBasicPageElementsPresent());
 		AppointmentPage appointmentpage = location.selectAppointment(testData.getLocation());
 		Log4jUtil.log("Step 11: Verfiy Appointment Page and Appointment to be selected = " + testData.getAppointmenttype());
-		AppointmentDateTime aptDateTime = appointmentpage.gettypeOfAppointment(testData.getAppointmenttype(), Boolean.valueOf(testData.getIsAppointmentPopup()));
+		AppointmentDateTime aptDateTime =
+				appointmentpage.selectAppointmentandClick(testData.getAppointmenttype(), Boolean.valueOf(testData.getIsAppointmentPopup()));
 
 		Log4jUtil.log("Step 12: Select avaiable Date ");
 		if (testData.isFutureApt()) {
@@ -707,7 +708,7 @@ public class PSSPatientUtils {
 		assertTrue(provider.areBasicPageElementsPresent());
 		AppointmentPage appointment = provider.selectAppointment(testData.getProvider());
 		Log4jUtil.log("Step 11: Verfiy Appointment Page and Appointment to be selected = " + testData.getAppointmenttype());
-		AppointmentDateTime aptDateTime = appointment.gettypeOfAppointment(testData.getAppointmenttype(), Boolean.valueOf(testData.getIsAppointmentPopup()));
+		AppointmentDateTime aptDateTime = appointment.selectAppointmentandClick(testData.getAppointmenttype(), Boolean.valueOf(testData.getIsAppointmentPopup()));
 		Log4jUtil.log("Step 12: Select avaiable Date ");
 
 		Log4jUtil.log("Step 12: Select avaiable Date ");
@@ -845,7 +846,8 @@ public class PSSPatientUtils {
 		assertTrue(location.areBasicPageElementsPresent());
 		AppointmentPage appointmentpage = location.selectAppointment(testData.getLocation());
 		Log4jUtil.log("Step 11: Verfiy Appointment Page and Appointment to be selected = " + testData.getAppointmenttype());
-		AppointmentDateTime aptDateTime = appointmentpage.gettypeOfAppointment(testData.getAppointmenttype(), Boolean.valueOf(testData.getIsAppointmentPopup()));
+		AppointmentDateTime aptDateTime =
+				appointmentpage.selectAppointmentandClick(testData.getAppointmenttype(), Boolean.valueOf(testData.getIsAppointmentPopup()));
 
 		Log4jUtil.log("Step 12: Select avaiable Date ");
 		if (testData.isFutureApt()) {
