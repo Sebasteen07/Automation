@@ -3723,7 +3723,6 @@ public class PatientPortal2AcceptanceTests extends BaseTestNGWebDriver {
 	public void testAskAChangeAmount() throws Exception {
 
 		logStep("Initiate payment data");
-		String errorSubject = "How can i able to complete the task today";
 		String askPaidAmount = "$ 2";
 		String askPaidChangeAmount="$ 5";
 		String accountNumber = IHGUtil.createRandomNumericString(8);
@@ -3741,7 +3740,7 @@ public class PatientPortal2AcceptanceTests extends BaseTestNGWebDriver {
 		String askaSubject = Long.toString(askPage1.getCreatedTimeStamp());
 		logStep("Fill question and continue");
 
-		askPage2 = askPage1.fillAndContinue(errorSubject, questionText, askaSubject);
+		askPage2 = askPage1.fillAndContinue(askaSubject,questionText);
 
 		logStep("Remove all cards because Selenium can't see AddNewCard button");
 		JalapenoAskAStaffV2Page1 askPaidPage = new JalapenoAskAStaffV2Page1(driver);

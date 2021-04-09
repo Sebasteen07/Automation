@@ -112,7 +112,7 @@ public class JalapenoAccountPage extends JalapenoMenu {
 
 		private void waitUntilSuccessMessageLoads(WebDriverWait wait, String fullName) {
 				wait.until(ExpectedConditions.presenceOfElementLocated(
-						By.xpath("//*[@data-ng-show='inviteSuccess' and contains(.,'You have successfully invited " + fullName + " to be your trusted representative')]")));
+						By.xpath("//p[contains(.,'You have successfully invited " + fullName + " to be your trusted representative')]")));
 		}
 		
 		private void fillLightboxInputs(String fname,String lname,String email) {
