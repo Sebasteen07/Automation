@@ -142,7 +142,7 @@ public class PatientPortal2AcceptanceTests extends BaseTestNGWebDriver {
 
 	// TODO uncomment and remove call from all associated tests after testng 7.0.0
 	// is released
-	//@BeforeMethod(alwaysRun = true, onlyForGroups = "commonpatient")
+	// @BeforeMethod(alwaysRun = true, onlyForGroups = "commonpatient")
 	public void createCommonPatient() throws Exception {
 		if (patient == null) {
 			String username = PortalUtil2.generateUniqueUsername(testData.getProperty("userid"), testData);
