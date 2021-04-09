@@ -57,14 +57,5 @@ public class SelectMedicationsPage  extends BasePageObject {
 		availablemedicationcheckbx.click();
 		btnContinue.click();
 	}
-	public void selectMedicationsWithoutRenewalFee() throws IOException, InterruptedException {
-		PropertyFileLoader testData = new PropertyFileLoader();
-		wait.until(ExpectedConditions.visibilityOf(multiSelectMedicationWithoutRenewalFee));
-		multiSelectMedicationWithoutRenewalFee.sendKeys(testData.getProperty("medOne"));
-		Thread.sleep(2000);
-		multiSelectMedicationWithoutRenewalFee.sendKeys(Keys.ENTER);	
-		Thread.sleep(2000);
-		btnContinue.click();
-		
-	}
+	
 }
