@@ -131,7 +131,7 @@ public class SecurityDetailsPage extends MedfusionPage {
 				selectSecretQuestion.sendKeys(secretQuestion);
 
 				inputSecretAnswer.sendKeys(secretAnswer);
-
+				Thread.sleep(3000);//To hold the execution for few sec
 				inputPhone1.sendKeys(phoneNumber.substring(0, 3));
 				inputPhone2.sendKeys(phoneNumber.substring(3, 6));
 				inputPhone3.sendKeys(phoneNumber.substring(6, 10));
