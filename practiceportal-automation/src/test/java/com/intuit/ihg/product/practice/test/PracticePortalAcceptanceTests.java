@@ -325,7 +325,7 @@ public class PracticePortalAcceptanceTests extends BaseTestNGWebDriver {
 		PayMyBillOnlinePage pPayMyBillOnlinePage = pPracticeHomePage.clickMakePaymentForPatient();
 
 		logStep("Search For Patient");
-		pPayMyBillOnlinePage.searchForPatient();
+		pPayMyBillOnlinePage.searchForPatient(PracticeConstants.PATIENT_FIRST_NAME, PracticeConstants.PATIENT_LAST_NAME);
 
 		logStep("Set Patient Transaction Fields");
 		pPayMyBillOnlinePage.setPatientTransactionFields();
