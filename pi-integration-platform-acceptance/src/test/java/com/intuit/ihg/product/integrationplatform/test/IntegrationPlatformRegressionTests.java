@@ -4139,7 +4139,7 @@ public class IntegrationPlatformRegressionTests extends BaseTestNGWebDriver {
 			RestUtils.setupHttpGetRequest(testData.getRestUrl() + "?since=" + since + ",0", testData.getResponsePath());
 			log("Step 10: Checking validity of the response xml");
 
-			RestUtils.isMedication20DetailsResponseXMLValid(testData.getResponsePath(), MedicationDetails);
+			RestUtils.isMedicationDetailsNewResponseXMLValid(testData.getResponsePath(), MedicationDetails);
 
 			String postXML = RestUtils.findValueOfMedicationNode(testData.getResponsePath(), "Medication",
 					MedicationDetails, rxSMSubject, rxSMBody, testData.getPrescriptionPath());
@@ -4185,9 +4185,9 @@ public class IntegrationPlatformRegressionTests extends BaseTestNGWebDriver {
 					testData.getResponsePath());
 			log("Step 10: Checking validity of the response xml");
 
-			RestUtils.isMedication20DetailsResponseXMLValid(testData.getResponsePath(), MedicationDetails);
+			RestUtils.isMedicationDetailsNewResponseXMLValid(testData.getResponsePath(), MedicationDetails);
 
-			String postXML = RestUtils.findValueOfMedication20Node(testData.getResponsePath(), "Medication",
+			String postXML = RestUtils.findValueOfMedicationNodeNew(testData.getResponsePath(), "Medication",
 					MedicationDetails, rxSMSubject, rxSMBody, testData.getPrescriptionPathV3());
 
 			log(postXML);
