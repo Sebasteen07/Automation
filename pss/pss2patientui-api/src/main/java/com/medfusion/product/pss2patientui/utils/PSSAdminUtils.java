@@ -530,7 +530,6 @@ public class PSSAdminUtils {
 		adminuser.setRule(patientflow.getRule());
 		Log4jUtil.log("rule= " + patientflow.getRule());
 		setRulesNoSpecialitySet1(patientflow);
-		Log4jUtil.log("rule= " + patientflow.getRule());
 		appointment.setResourcetoggleStatus(patientflow.resourcetoggleStatus());
 		Log4jUtil.log("Resource is Enabled= " + patientflow.resourcetoggleStatus());
 		if (patientflow.resourcetoggleStatus() == false) {
