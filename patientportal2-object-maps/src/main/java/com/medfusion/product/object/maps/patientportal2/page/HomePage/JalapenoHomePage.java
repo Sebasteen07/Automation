@@ -349,6 +349,7 @@ public class JalapenoHomePage extends JalapenoMenu {
 		IHGUtil.PrintMethodName();
 		Thread.sleep(8000);
 		askAQuestion.click();
+		Thread.sleep(1000);
 		log("It clicked on the ASK a question in homepage");
 		try {
 
