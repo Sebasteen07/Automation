@@ -12,7 +12,7 @@ public class JalapenoConstants {
 
 	// Medication Fields
 	public final static String MEDICATION_NAME = "Albuterol Sulfate (5 MG/ML) 0.5% Inhalation Nebulization Solution";
-	public final static String DOSAGE = "21";
+	public final static String DOSAGE = "100 MG";
 
 	// Added variables for Prescription test in Integration Platform
 	public final static String QUANTITY = "3";
