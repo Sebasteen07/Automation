@@ -1101,7 +1101,7 @@ public class IntegrationPlatformRegressionTests extends BaseTestNGWebDriver {
 
 	@DataProvider(name = "channelVersion")
 	public Object[][] channelVersionPIDC() {
-		Object[][] obj = new Object[][] {  { "v3" } };
+		Object[][] obj = new Object[][] { { "v1" }, { "v2" }, { "v3" } };
 		return obj;
 	}
 
@@ -4139,7 +4139,7 @@ public class IntegrationPlatformRegressionTests extends BaseTestNGWebDriver {
 			RestUtils.setupHttpGetRequest(testData.getRestUrl() + "?since=" + since + ",0", testData.getResponsePath());
 			log("Step 10: Checking validity of the response xml");
 
-			RestUtils.isMedicationDetailsResponseXMLValid(testData.getResponsePath(), MedicationDetails);
+			RestUtils.isMedication20DetailsResponseXMLValid(testData.getResponsePath(), MedicationDetails);
 
 			String postXML = RestUtils.findValueOfMedicationNode(testData.getResponsePath(), "Medication",
 					MedicationDetails, rxSMSubject, rxSMBody, testData.getPrescriptionPath());
@@ -4185,11 +4185,12 @@ public class IntegrationPlatformRegressionTests extends BaseTestNGWebDriver {
 					testData.getResponsePath());
 			log("Step 10: Checking validity of the response xml");
 
-			RestUtils.isMedicationDetailsResponseXMLValid(testData.getResponsePath(), MedicationDetails);
+			RestUtils.isMedication20DetailsResponseXMLValid(testData.getResponsePath(), MedicationDetails);
 
-			String postXML = RestUtils.findValueOfMedicationNode(testData.getResponsePath(), "Medication",
+			String postXML = RestUtils.findValueOfMedication20Node(testData.getResponsePath(), "Medication",
 					MedicationDetails, rxSMSubject, rxSMBody, testData.getPrescriptionPathV3());
 
+			log(postXML);
 			String SigCodeAbbreviation = RestUtils.SigCodeAbbreviation;
 			String SigCodeMeaning = RestUtils.SigCodeMeaning;
 
@@ -4223,7 +4224,7 @@ public class IntegrationPlatformRegressionTests extends BaseTestNGWebDriver {
 		// Patient portal validation
 		log("Step 13: Check secure message in patient mailinator inbox");
 		Mailinator mail = new Mailinator();
-		String subject = "New message from PI Automation rsdk Integrated";
+		String subject = "New message from "+testData.getPracticeName();
 		String messageLink = "Sign in to view this message";
 		String emailMessageLink = mail.getLinkFromEmail(testData.getUserName(), subject, messageLink, 20);
 		log("Email message link " + emailMessageLink);

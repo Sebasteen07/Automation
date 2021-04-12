@@ -25,9 +25,9 @@ import com.medfusion.pojos.Patient;
 import com.medfusion.product.patientportal2.utils.PortalUtil2;
 
 public class JalapenoMyAccountProfilePage extends JalapenoMyAccountPage {
-	public static final List<String> GENDER_IDENTITY_LIST = Collections.unmodifiableList(Arrays.asList(" Male ", " Female ",
-			" Transgender female/Trans woman/Male-to-female (MTF) ", " Transgender male/Trans man/Female-to-male (FTM) ",
-			" Genderqueer, neither exclusively male nor female ", " Additional gender category/(or other) "));
+	public static final List<String> GENDER_IDENTITY_LIST = Collections.unmodifiableList(Arrays.asList("Male", "Female",
+			"Transgender female/Trans woman/Male-to-female (MTF)", "Transgender male/Trans man/Female-to-male (FTM)",
+			"Genderqueer, neither exclusively male nor female", "Additional gender category/(or other)"));
 
 	@FindBy(how = How.XPATH, using = "//input[@id='address1']")
 	private WebElement address1Textbox;
@@ -113,7 +113,7 @@ public class JalapenoMyAccountProfilePage extends JalapenoMyAccountPage {
 		return getDOBmonth() + "/" + getDOBday() + "/" + getDOByear();
 	}
 
-	public boolean checkExtendedGenderQuestion() throws NoSuchElementException {
+	public boolean checkExtendedGenderQuestion() throws NoSuchElementException, InterruptedException {
 		// String genderValue = "";
 		new Select(ethnicity).selectByIndex(1);
 		new Select(race).selectByIndex(1);
@@ -127,7 +127,9 @@ public class JalapenoMyAccountProfilePage extends JalapenoMyAccountPage {
 			Select genderQuestionSelect = new Select(genderQuestion);
 			try {
 				log("Checking gender value: " + genderValue);
+				Thread.sleep(2000);
 				genderQuestionSelect.selectByVisibleText(genderValue);
+				Thread.sleep(2000);
 				log("Value " + genderValue + " is verified.");
 				javascriptClick(saveMyChanges);
 				IHGUtil.waitForElement(driver, 30, genderQuestion);

@@ -43,7 +43,7 @@ public class MedicationsConfirmationPage {
 	@FindBy(how = How.XPATH, using = "//*[@id='result-pharmacy']/div")
 	private WebElement pharamcyDetails;
 	
-	@FindBy(how = How.XPATH, using = "//*[@id='result-medications']/div")
+	@FindBy(how = How.XPATH, using = "(//*[@id='result-medications']/div/p)[1]")
 	private WebElement medicationdetails;
 	
 	
