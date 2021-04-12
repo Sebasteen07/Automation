@@ -3965,7 +3965,7 @@ public class RestUtils {
 		return PrescriptionHeaderId;
 	}
 	
-	public static void isMedication20DetailsResponseXMLValid(String xmlFileName, String medicationName)
+	public static void isMedicationDetailsNewResponseXMLValid(String xmlFileName, String medicationName)
 			throws ParserConfigurationException, SAXException, IOException {
 		IHGUtil.PrintMethodName();
 		Document doc = buildDOMXML(xmlFileName);
@@ -3991,7 +3991,7 @@ public class RestUtils {
 		Log4jUtil.log("response is ok");
 	}
 	
-	public static String findValueOfMedication20Node(String xmlFileName, String parentNode, String medication,
+	public static String findValueOfMedicationNodeNew(String xmlFileName, String parentNode, String medication,
 			String rxSMSubject, String rxSMBody, String prescriptionPath) throws ParserConfigurationException,
 			SAXException, IOException, DOMException, ParseException, TransformerException {
 		IHGUtil.PrintMethodName();
@@ -4038,7 +4038,7 @@ public class RestUtils {
 				String getUpdatedDateTime = element.getElementsByTagName("UpdatedDateTime").item(0).getFirstChild()
 						.getNodeValue();
 				Log4jUtil.log(medication_details.toString());
-				updatedXML = postMedication20Request(prescriptionPath, getPrescription_id, medication_details,
+				updatedXML = postMedicationRequestNew(prescriptionPath, getPrescription_id, medication_details,
 						getCreatedDateTime, getUpdatedDateTime, rxSMSubject, rxSMBody);
 				break;
 			}
@@ -4047,7 +4047,7 @@ public class RestUtils {
 		return updatedXML;
 	}
 	
-	private static String postMedication20Request(String prescriptionPath, String getPrescription_id,
+	private static String postMedicationRequestNew(String prescriptionPath, String getPrescription_id,
 			ArrayList<String> medication_details, String getCreatedDateTime, String getUpdatedDateTime,
 			String rxSMSubject, String rxSMBody) throws DOMException, ParseException, TransformerException,
 			ParserConfigurationException, SAXException, IOException {
