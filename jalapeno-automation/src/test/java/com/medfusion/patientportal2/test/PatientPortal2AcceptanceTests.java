@@ -120,7 +120,7 @@ public class PatientPortal2AcceptanceTests extends BaseTestNGWebDriver {
 	private static final String INVITE_LINK_FRAGMENT = "invite";
 	private static final String ACTIVATE_LINK_FRAGMENT = "activate";
 	private static final String GUARDIAN_INVITE_SUBJECT = "You are invited to create a Patient Portal guardian account at ";
-	private static final String questionText = "wat";
+	private static final String questionText = "What is the question";
 	private static final String DRUG_DOSAGE = "35 mg";
 	private static final String ErrorfilePath = System.getProperty("user.dir")
 			+ "\\src\\test\\resources\\File_Attachment\\Error_Files_Testing.pdf";
@@ -1627,7 +1627,7 @@ public class PatientPortal2AcceptanceTests extends BaseTestNGWebDriver {
 		JalapenoHomePage homePage = loginPage.login(localpatient.getUsername(), localpatient.getPassword());
 
 		logStep("Going to MyAccount page");
-		JalapenoMyAccountProfilePage myAccountPage = homePage.goToAccountPage();
+		JalapenoMyAccountProfilePage myAccountPage = homePage.clickOnMyAccount();
 		assertTrue(myAccountPage.checkExtendedGenderQuestion());
 		logStep("Log Out");
 		homePage.clickOnLogout();
@@ -1730,8 +1730,6 @@ public class PatientPortal2AcceptanceTests extends BaseTestNGWebDriver {
 	@Test(enabled = true, groups = { "acceptance-solutions" }, retryAnalyzer = RetryAnalyzer.class)
 	public void testAskAStaffPaid() throws Exception {
 
-		logStep("Initiate payment data");
-		String errorSubject = "How can i able to complete the task today";
 		String askPaidAmount = "$ 2";
 		String accountNumber = IHGUtil.createRandomNumericString(8);
 		String name = "TestPatient CreditCard";
@@ -1751,7 +1749,7 @@ public class PatientPortal2AcceptanceTests extends BaseTestNGWebDriver {
 		Thread.sleep(3000);
 		logStep("Fill question and continue");
 
-		askPage2 = askPage1.fillAndContinue(errorSubject, questionText, askaSubject);
+		askPage2 = askPage1.fillAndContinue(askaSubject,questionText);
 
 		logStep("Remove all cards because Selenium can't see AddNewCard button");
 		JalapenoAskAStaffV2Page1 askPaidPage = new JalapenoAskAStaffV2Page1(driver);
