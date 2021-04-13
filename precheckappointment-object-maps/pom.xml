@@ -10,22 +10,6 @@
   <packaging>jar</packaging>
   <name>precheckAppointment-object-maps</name>	
   
-  <repositories>
-	<repository>
-		<id>IHG-nexus</id>
-		<name>IHG-nexus</name>
-		<url>http://maven.qhg.local/nexus/content/groups/qhg-dev/</url>
-	</repository>
-  </repositories>
-  <properties>
-  <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
-	<ihg.version>21.3.0rc-SNAPSHOT</ihg.version>
-  </properties>
-
-	<artifactId>precheckAppointment-object-maps</artifactId>
-	<packaging>jar</packaging>
-	<name>precheckAppointment-object-maps</name>
-
 	<repositories>
 		<repository>
 			<id>IHG-nexus</id>
