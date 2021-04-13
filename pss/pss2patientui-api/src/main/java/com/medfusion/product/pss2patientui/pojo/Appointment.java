@@ -24,7 +24,7 @@ public class Appointment {
 	private String icsFilePath;
 	private String urlLoginLess;
 	private String urlLinkGen;
-
+	private String popUpMessege;
 
 	private String firstTimeUser;
 	private String primaryNumber;
@@ -86,6 +86,9 @@ public class Appointment {
 	private String maxperDay;
 	private String gmailUserName;
 	private String linkProvider;
+	private String ageRuleMonthFirst;
+	private String ageRuleMonthSecond;
+
 	
 
 	private Boolean isCancelButtonPresent;
@@ -93,7 +96,6 @@ public class Appointment {
 	private int displaySlotCountLength;
 	private Boolean isNextMonthSlotAvail;
 	private String nextDateAvaliable;
-
 	private int calanderDaysAvaiable;
 	private Boolean isCalanderDateDisplayed;
 	private Boolean isProviderImageDisplayed;
@@ -119,6 +121,8 @@ public class Appointment {
 
 	private boolean showCancellationRescheduleReason = false;
 	private boolean showCancellationReasonPM = false;
+	private boolean isFutureApt = false;
+
 
 	public Appointment(String providerConfig, String usernameConfig, String passwordConfig, String datetimeConfig, String locationConfig,
 			String appointmentConfig, String specialityConfig) {
@@ -132,7 +136,41 @@ public class Appointment {
 	}
 
 	public Appointment() {}
+
+	public String getPopUpMessege() {
+		return popUpMessege;
+	}
+
+	public void setPopUpMessege(String popUpMessege) {
+		this.popUpMessege = popUpMessege;
+	}
+
+	public String getAgeRuleMonthFirst() {
+		return ageRuleMonthFirst;
+	}
+
+	public void setAgeRuleMonthFirst(String ageRuleMonthFirst) {
+		this.ageRuleMonthFirst = ageRuleMonthFirst;
+	}
+
+	public String getAgeRuleMonthSecond() {
+		return ageRuleMonthSecond;
+	}
+
+	public void setAgeRuleMonthSecond(String ageRuleMonthSecond) {
+		this.ageRuleMonthSecond = ageRuleMonthSecond;
+	}
+
 	
+	
+	public boolean isFutureApt() {
+		return isFutureApt;
+	}
+
+	public void setFutureApt(boolean isFutureApt) {
+		this.isFutureApt = isFutureApt;
+	}
+
 	public boolean isResourcetoggleStatus() {
 		return resourcetoggleStatus;
 	}

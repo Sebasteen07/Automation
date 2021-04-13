@@ -65,5 +65,6 @@ public class BulkAdmin {
 	public String fileName = "";
 	public String mimeType = "";
 	public String portalCategoryType = "";
+	public String RestV3Url = "";
 
 }

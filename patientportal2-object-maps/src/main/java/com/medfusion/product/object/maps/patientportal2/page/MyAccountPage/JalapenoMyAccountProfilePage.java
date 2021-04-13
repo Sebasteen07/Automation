@@ -24,11 +24,10 @@ import com.medfusion.common.utils.IHGUtil;
 import com.medfusion.pojos.Patient;
 import com.medfusion.product.patientportal2.utils.PortalUtil;
 
-
 public class JalapenoMyAccountProfilePage extends JalapenoMyAccountPage {
-	public static final List<String> GENDER_IDENTITY_LIST =
-			Collections.unmodifiableList(Arrays.asList("Male", "Female", "Transgender female/Trans woman/Male-to-female (MTF)",
-					"Transgender male/Trans man/Female-to-male (FTM)", "Genderqueer, neither exclusively male nor female", "Additional gender category/(or other)"));
+	public static final List<String> GENDER_IDENTITY_LIST = Collections.unmodifiableList(Arrays.asList(" Male ", " Female ",
+			" Transgender female/Trans woman/Male-to-female (MTF) ", " Transgender male/Trans man/Female-to-male (FTM) ",
+			" Genderqueer, neither exclusively male nor female ", " Additional gender category/(or other) "));
 
 	@FindBy(how = How.XPATH, using = "//input[@id='address1']")
 	private WebElement address1Textbox;
@@ -256,8 +255,8 @@ public class JalapenoMyAccountProfilePage extends JalapenoMyAccountPage {
 		itemsToChange.put(address1Textbox, "address");
 		itemsToChange.put(cityTextbox, "city");
 		itemsToChange.put(zipCodeTextbox, "54321");
-		itemsToChange.put(race, "White");
-		itemsToChange.put(ethnicity, "Hispanic or Latino");
+		itemsToChange.put(race, " White ");
+		itemsToChange.put(ethnicity, " Hispanic or Latino ");
 
 		return updateAndValidateWebElements(itemsToChange, saveAccountChanges);
 	}
@@ -280,20 +279,20 @@ public class JalapenoMyAccountProfilePage extends JalapenoMyAccountPage {
 		Select select = null;
 		int size = 0;
 		switch (key) {
-			case 'R':
-				select = new Select(race);
-				break;
-			case 'E':
-				select = new Select(ethnicity);
-				break;
-			case 'G':
-				select = new Select(genderQuestion);
-				break;
-			case 'S':
-				select = new Select(sexualOrientation);
-				break;
-			default:
-				break;
+		case 'R':
+			select = new Select(race);
+			break;
+		case 'E':
+			select = new Select(ethnicity);
+			break;
+		case 'G':
+			select = new Select(genderQuestion);
+			break;
+		case 'S':
+			select = new Select(sexualOrientation);
+			break;
+		default:
+			break;
 		}
 
 		List<WebElement> element = select.getOptions();
@@ -307,21 +306,21 @@ public class JalapenoMyAccountProfilePage extends JalapenoMyAccountPage {
 		Select select = null;
 		String changeValue = null;
 		switch (key) {
-			case 'R':
-				select = new Select(race);
-				break;
-			case 'E':
-				select = new Select(ethnicity);
-				break;
-			case 'G':
-				select = new Select(genderQuestion);
-				break;
-			case 'S':
-				select = new Select(sexualOrientation);
-				break;
-			default:
+		case 'R':
+			select = new Select(race);
+			break;
+		case 'E':
+			select = new Select(ethnicity);
+			break;
+		case 'G':
+			select = new Select(genderQuestion);
+			break;
+		case 'S':
+			select = new Select(sexualOrientation);
+			break;
+		default:
 
-				break;
+			break;
 		}
 		select.selectByIndex(i);
 		WebElement option = select.getFirstSelectedOption();
@@ -330,31 +329,30 @@ public class JalapenoMyAccountProfilePage extends JalapenoMyAccountPage {
 		return changeValue;
 	}
 
-
 	public String updateGenderValue(int i, char key) {
 		IHGUtil.PrintMethodName();
 		String changeValue = null;
 		switch (key) {
-			case 'M':
-				changeValue = "Male";
-				new WebDriverWait(driver, 25).until(ExpectedConditions.visibilityOf(maleRadioButton));
-				if (!maleRadioButton.isSelected())
-					maleRadioButton.click();
+		case 'M':
+			changeValue = "Male";
+			new WebDriverWait(driver, 25).until(ExpectedConditions.visibilityOf(maleRadioButton));
+			if (!maleRadioButton.isSelected())
+				maleRadioButton.click();
 
-				break;
-			case 'F':
-				changeValue = "Female";
-				new WebDriverWait(driver, 25).until(ExpectedConditions.visibilityOf(femaleRadioButton));
-				femaleRadioButton.click();
-				break;
-			case 'D':
-				new WebDriverWait(driver, 25).until(ExpectedConditions.visibilityOf(declineToAnswerRadioButton));
-				declineToAnswerRadioButton.click();
-				changeValue = "Decline to answer";
-				break;
-			default:
+			break;
+		case 'F':
+			changeValue = "Female";
+			new WebDriverWait(driver, 25).until(ExpectedConditions.visibilityOf(femaleRadioButton));
+			femaleRadioButton.click();
+			break;
+		case 'D':
+			new WebDriverWait(driver, 25).until(ExpectedConditions.visibilityOf(declineToAnswerRadioButton));
+			declineToAnswerRadioButton.click();
+			changeValue = "Decline to answer";
+			break;
+		default:
 
-				break;
+			break;
 		}
 		saveMyChanges.click();
 		return changeValue;

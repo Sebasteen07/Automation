@@ -108,8 +108,8 @@ public class PSSAdminUtils {
 			testData.setUrlIPD(accessrule.getIDPUrl());
 		}
 		if (urlToUse.equalsIgnoreCase(PSSConstants.ANONYMOUS)) {
-			Log4jUtil.log("PSS Patient URL : " + accessrule.getIDPUrl());
-			testData.setUrlIPD(accessrule.getIDPUrl());
+			Log4jUtil.log("PSS Patient URL : " + accessrule.getAnonymousUrl());
+			testData.setUrlAnonymous(accessrule.getAnonymousUrl());
 		}
 		Log4jUtil.log("adminSettings Step 3: Navigate to Patient Flow tab in settings");
 		PatientFlow patientflow = accessrule.gotoPatientFlowTab();
@@ -144,7 +144,10 @@ public class PSSAdminUtils {
 		Log4jUtil.log("Status of Enable Anonymous Flow = " + accessrule.isEnableAnonymousSelected());
 		Log4jUtil.log("Status of Display Privacy policy = " + accessrule.isDisplayPrivacypolicyAnonymous());
 		Log4jUtil.log("Status of Allow Duplicate Patient " + accessrule.isAllowDuplicatePatientAnonymous());
-		Log4jUtil.log("Status of Enable OTP " + accessrule.isEnableOtpAnonymous());
+		
+		//OTP code will require in future release so commenting the code
+		//Log4jUtil.log("Status of Enable OTP " + accessrule.isEnableOtpAnonymous());
+		
 		if (urlToUse.equalsIgnoreCase(PSSConstants.LOGINLESS)) {
 			Log4jUtil.log("PSS Patient URL : " + accessrule.getLoginlessURL());
 			testData.setUrlLoginLess(accessrule.getLoginlessURL());
@@ -460,6 +463,10 @@ public class PSSAdminUtils {
 	public void reserveforDay(WebDriver driver, AdminUser adminuser, Appointment appointment) throws Exception {
 		PSS2PracticeConfiguration psspracticeConfig = loginToAdminPortal(driver, adminuser);
 		psspracticeConfig = psspracticeConfig.gotoPracticeConfigTab();
+		PatientFlow patientflow = psspracticeConfig.gotoPatientFlowTab();
+		adminuser.setRule(patientflow.getRule());
+		Log4jUtil.log("rule= " + patientflow.getRule());
+		setRulesNoSpecialitySet1(patientflow);
 		appointment.setBusinesshourStartTime(psspracticeConfig.gettextbusineesHourStarttime());
 		appointment.setBusinesshourEndTime(psspracticeConfig.gettextbusineesHourEndtime());
 		Log4jUtil.log("Starttime is " + appointment.getBusinesshourStartTime());
@@ -576,5 +583,40 @@ public class PSSAdminUtils {
 		adminpatientmatching.patientMatchingSelection();
 		Log4jUtil.log("adminSettings Step 5: Logout from PSS Admin Portal");
 		Thread.sleep(4000);
+	}
+
+	public void adminSettingLinkGenandDeleteLink(WebDriver driver, AdminUser adminuser, Appointment testData, String urlToUse) throws Exception {
+		Log4jUtil.log("****************ADMIN SETTINGS FOR Loginless FLOW**************************");
+		PSS2PracticeConfiguration psspracticeConfig = loginToAdminPortal(driver, adminuser);
+		Thread.sleep(2000);
+		LinkTab linkTab = psspracticeConfig.linksTab();
+		linkTab.searchLinkandRemove(testData.getLinkProvider());
+		linkTab.addLink(testData.getLocation(), testData.getLinkProvider());
+		linkTab.getURL(testData.getLinkProvider());
+		testData.setUrlLinkGen(linkTab.getURL(testData.getLinkProvider()));
+		linkTab.searchLinkandRemove(testData.getLinkProvider());
+		PatientFlow patientflow = psspracticeConfig.gotoPatientFlowTab();
+		AdminPatientMatching adminpatientmatching = patientflow.gotoPatientMatchingTab();
+		adminpatientmatching.patientMatchingSelection();
+		Log4jUtil.log("adminSettings Step 5: Logout from PSS Admin Portal");
+		Thread.sleep(4000);
+	}
+
+	public void ageRule(WebDriver driver, AdminUser adminuser, Appointment appointment) throws Exception {
+		PSS2PracticeConfiguration psspracticeConfig = loginToAdminPortal(driver, adminuser);
+		psspracticeConfig = psspracticeConfig.gotoPracticeConfigTab();
+		PatientFlow patientflow = psspracticeConfig.gotoPatientFlowTab();
+		adminuser.setRule(patientflow.getRule());
+		Log4jUtil.log("rule= " + patientflow.getRule());
+		setRulesNoSpecialitySet1(patientflow);
+		AdminPatientMatching adminpatientmatching = patientflow.gotoPatientMatchingTab();
+		adminpatientmatching.patientMatchingSelection();
+		ManageResource manageResource = psspracticeConfig.gotoResource();
+		pageRefresh(driver);
+		manageResource.selectResource(appointment.getProvider());
+		manageResource.selectAppointmenttype(appointment.getAppointmenttype());
+		Log4jUtil.log("Status of Checkbox" + manageResource.checkBoxStatus());
+		manageResource.ageRule();
+		manageResource.ageRuleparameter(appointment.getAgeRuleMonthFirst(), appointment.getAgeRuleMonthSecond());
 	}
 }

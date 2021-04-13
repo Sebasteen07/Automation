@@ -3,6 +3,7 @@ package com.medfusion.product.object.maps.pss2.page.Appointment.HomePage;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.NoSuchElementException;
 
 import org.openqa.selenium.By;
 import org.openqa.selenium.JavascriptExecutor;
@@ -152,8 +153,7 @@ public class HomePage extends PSS2MainPage {
 	@FindBy(how = How.XPATH, using = ".//*[@id='pastappointmentevent']/p/span")
 	private WebElement noPastText;
 
-	@FindAll({
-			@FindBy(xpath = "//body/div[@id='root']/div[1]/div[1]/div[1]/div[3]/div[1]/div[1]/div[1]/div[3]/button[1]") })
+	@FindAll({@FindBy(xpath = "//body/div[@id='root']/div[1]/div[1]/div[1]/div[3]/div[1]/div[1]/div[1]/div[3]/button[1]") })
 	private List<WebElement> dismissButtons;
 
 	@FindBy(how = How.XPATH, using = "//*[@id='closeAlertPopup']")
@@ -162,6 +162,11 @@ public class HomePage extends PSS2MainPage {
 	@FindBy(how = How.XPATH, using = "//*[@id=\"upcomingevents\"]/h2/span")
 	private WebElement upCmgAptLabel;
 	
+	@FindBy(how = How.ID, using = "startScheduling")
+	private WebElement btnstartScheduling;
+	
+	@FindAll({@FindBy(how = How.ID, using = "startScheduling")})
+	private List<WebElement> btnstartSchedulingList;
 	
 	@FindBy(how = How.XPATH, using = "//span[@class='circle']")
 	private WebElement logoutCircle;
@@ -187,7 +192,7 @@ public class HomePage extends PSS2MainPage {
 	@Override
 	public boolean areBasicPageElementsPresent() {
 		if (selectSpecialityList.size() != 0) {
-			IHGUtil.waitForElement(driver, 120, selectSpecialityList.get((selectSpecialityList.size() - 1)));
+			IHGUtil.waitForElement(driver, 6, selectSpecialityList.get((selectSpecialityList.size() - 1)));
 		}
 		ArrayList<WebElement> webElementsList = new ArrayList<WebElement>();
 		webElementsList.add(upCmgAptLabel);
@@ -276,6 +281,43 @@ public class HomePage extends PSS2MainPage {
 	public Boolean isInsuranceVisible() {
 		return insurancetext.isDisplayed();
 	}
+	
+	public boolean isbtnstartSchedulingPresent() throws InterruptedException {
+		boolean present = false;
+		try {
+			Thread.sleep(4000);
+			present = btnstartScheduling.isDisplayed();
+			Thread.sleep(4000);
+
+		} catch (NoSuchElementException e) {
+			throw new RuntimeException("This is where you put the message");
+		}
+		return present;
+	}
+	
+	public void btnStartSchedClick() throws InterruptedException {
+		if (isbtnstartSchedulingPresent() == true) {
+			commonMethods.highlightElement(btnstartScheduling);
+			btnstartScheduling.click();
+			log("Clicked on Start Scheduling Button successfully");
+		} else {
+			log("Start Scheduling Button is not present on the screen");
+		}
+	}
+	
+	public static boolean isElementPresent(By by, WebDriver driver) 
+    {
+      boolean present;
+      try
+        {
+    	  driver.findElement(by);
+          present = true;
+        }catch (NoSuchElementException e)
+        {
+          present = false;
+         }
+     return present;
+    }
 
 	public void popUPClick() {
 		for (int j = 0; j < dismissButtons.size(); j++) {

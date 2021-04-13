@@ -68,10 +68,13 @@ public abstract class JalapenoMenu extends MedfusionPage {
 
 	@FindBy(how = How.XPATH, using = "//li[@id='manageAccount_dropdownlog']/a")
 	private WebElement accountDropdownLinkedButton;
+	
+	@FindBy(how=How.XPATH,using="//li[@id='account']")
+	private WebElement myAccount;
 
-	@FindBy(how = How.LINK_TEXT, using = "My Account")
+	@FindBy(how = How.LINK_TEXT, using = "Account")
 	private WebElement myAccountButton;
-
+ 
 	@FindBy(how = How.LINK_TEXT, using = "My Account")
 	private WebElement myAccountDropdownButton;
 
@@ -205,7 +208,7 @@ public abstract class JalapenoMenu extends MedfusionPage {
 	public JalapenoMyAccountProfilePage clickOnMyAccount() {
 		log("Clicking on Account button - regular resolution");
 		try {
-			myAccountButton.click();
+			myAccount.click();
 		} catch (NoSuchElementException ex) {
 			log("Did not find Account button, trying mobile version size");
 			rightDropdownButton.click();
@@ -327,5 +330,10 @@ public abstract class JalapenoMenu extends MedfusionPage {
 		}
 
 		return PageFactory.initElements(driver, NGLoginPage.class);
+	}
+	
+	public void UnlinkDependentAccount() {
+		JalapenoAccountPage accountPage = clickOnAccount();
+		accountPage.clickOnUnlinkDependentAccount();
 	}
 }

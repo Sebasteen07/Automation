@@ -18,4 +18,7 @@ public class StatementPreference {
 	public String PracticePassword = "";
 	public String FirstName = "";
 	public String LastName = "";
+	public String RestUrlV3 = "";
+	public String StatementPathV3 = "";
+
 }

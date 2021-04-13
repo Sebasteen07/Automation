@@ -117,7 +117,7 @@ public class PayMyBillOnlinePage extends BasePageObject {
 	@FindBy(xpath = "//iframe[contains(@id,'_wicket_window_')]")
 	private WebElement iFrameRefundWindow;
 
-	@FindBy(id = "table-1")
+	@FindBy(xpath = "//table[@id='table-1']/tbody")
 	private WebElement transactionsList;
 
 	@FindBy(xpath = "//label[text()='Schedule budget payment plan']")
@@ -155,6 +155,9 @@ public class PayMyBillOnlinePage extends BasePageObject {
 
 	@FindBy(xpath = "//input[@value='Stop Budget Payments']")
 	private WebElement stopBudgetPayment;
+
+	@FindBy(xpath = "//td[label[text()='Adjusted Amount']]/following-sibling::td/span")
+	private WebElement adjustedAmount;
 
 	/**
 	 * @Description:Set First name
@@ -506,6 +509,7 @@ public class PayMyBillOnlinePage extends BasePageObject {
 	public void refundPayment(String refundAmount, String refundComment) throws Exception {
 		IHGUtil.PrintMethodName();
 		IHGUtil.setFrame(driver, "iframe");
+		IHGUtil.waitForElement(driver, 30, refundPayment);
 		refundPayment.click();
 		driver.switchTo().activeElement();
 		driver.switchTo().frame(iFrameRefundWindow);
@@ -520,6 +524,17 @@ public class PayMyBillOnlinePage extends BasePageObject {
 		if (new IHGUtil(driver).isRendered(transactionsList)) {
 			IHGUtil.waitForElement(driver, 30, transactionsList);
 			return transactionsList.getText().contains("Void") && transactionsList.getText().contains("$0.00");
+		} else
+			return false;
+
+	}
+
+	public boolean isRefundTransactionPresent() {
+		IHGUtil.PrintMethodName();
+		IHGUtil.setFrame(driver, "iframe");
+		if (new IHGUtil(driver).isRendered(transactionsList)) {
+			IHGUtil.waitForElement(driver, 30, transactionsList);
+			return transactionsList.getText().contains("Refund") && transactionsList.getText().contains("$10.00");
 		} else
 			return false;
 
@@ -627,6 +642,11 @@ public class PayMyBillOnlinePage extends BasePageObject {
 	public String getplanEndDateBudgetSearch() {
 		IHGUtil.waitForElement(driver, 60, planEndDateBudgetSearch);
 		return planEndDateBudgetSearch.getText();
+	}
+
+	public String getAdjustedAmount() {
+		IHGUtil.waitForElement(driver, 60, adjustedAmount);
+		return adjustedAmount.getText();
 	}
 
 	public void clickOnSubmitPayment() throws Exception {

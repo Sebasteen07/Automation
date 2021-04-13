@@ -24,6 +24,8 @@ public class PSSPropertyFileLoader {
 		Log4jUtil.log("Loading data for GW appointment related cases..");
 		appointValues.setIsinsuranceVisible(false);
 		appointValues.setIsstartpointPresent(false);
+		appointValues.setAgeRuleMonthFirst(property.getProperty("ageRuleMonthFirstParameterGW"));
+		appointValues.setAgeRuleMonthSecond(property.getProperty("ageRuleMonthSecondParameterGW"));
 		appointValues.setLinkProvider(property.getProperty("linkProviderGW"));
 		appointValues.setAppointmenttype(property.getProperty("appointmenttypeGW"));
 		appointValues.setDatetime(property.getProperty("datetimeGW"));
@@ -78,6 +80,7 @@ public class PSSPropertyFileLoader {
 		appointValues.setOldPatientPassword(property.getProperty("oldPatientPasswordGW"));
 		appointValues.setProviderImageAPI(property.getProperty("providerImageAPIGW"));
 		appointValues.setGmailUserName(property.getProperty("gmailUserNameGW"));
+		appointValues.setPopUpMessege(property.getProperty("popUpMessege"));
 	}
 
 	public void setAdminGW(AdminUser adminuser) {
@@ -130,6 +133,8 @@ public class PSSPropertyFileLoader {
 
 	public void setAppointmentResponseAT(Appointment appointValues) {
 		Log4jUtil.log("Loading data for ATHENA appointment related cases..");
+		appointValues.setAgeRuleMonthFirst(property.getProperty("ageRuleMonthFirstParameterAT"));
+		appointValues.setAgeRuleMonthSecond(property.getProperty("ageRuleMonthSecondParameterAT"));
 		appointValues.setLinkProvider(property.getProperty("linkProviderAT"));
 		appointValues.setMaxperDay(property.getProperty("maxperDayAT"));
 		appointValues.setUrlAnonymous(property.getProperty("urlAnonymousAT"));
@@ -187,10 +192,15 @@ public class PSSPropertyFileLoader {
 		appointValues.setOldPatientUserName(property.getProperty("oldPatientUserNameAT"));
 		appointValues.setOldPatientPassword(property.getProperty("oldPatientPasswordAT"));
 		appointValues.setProviderImageAPI(property.getProperty("providerImageAPIAT"));
+		appointValues.setGmailUserName(property.getProperty("emailAT"));
+		appointValues.setPopUpMessege(property.getProperty("popUpMessege"));
+
 	}
 
 	public void setAppointmentResponseGE(Appointment appointValues) {
 		Log4jUtil.log("Loading data for GE appointment related cases..");
+		appointValues.setAgeRuleMonthFirst(property.getProperty("ageRuleMonthFirstParameterGE"));
+		appointValues.setAgeRuleMonthSecond(property.getProperty("ageRuleMonthSecondParameterGE"));
 		appointValues.setLinkProvider(property.getProperty("linkProviderGE"));
 		appointValues.setMaxperDay(property.getProperty("maxperDayGE"));
 		appointValues.setAppointmenttype(property.getProperty("appointmenttypeGE"));
@@ -246,6 +256,8 @@ public class PSSPropertyFileLoader {
 		appointValues.setOldPatientPassword(property.getProperty("oldPatientPasswordGE"));
 		appointValues.setProviderImageAPI(property.getProperty("providerImageAPIGE"));
 		appointValues.setGmailUserName(property.getProperty("emailGE"));
+		appointValues.setPopUpMessege(property.getProperty("popUpMessege"));
+
 	}
 
 	public void setAppointmentResponseNG(Appointment appointValues) {
@@ -253,6 +265,8 @@ public class PSSPropertyFileLoader {
 		appointValues.setUrlAnonymous(property.getProperty("urlAnonymousNG"));
 		Log4jUtil.log(appointValues.getUrlAnonymous());
 		appointValues.setIsInsuranceEnabled(true);
+		appointValues.setAgeRuleMonthFirst(property.getProperty("ageRuleMonthFirstParameterNG"));
+		appointValues.setAgeRuleMonthSecond(property.getProperty("ageRuleMonthSecondParameterNG"));
 		appointValues.setLinkProvider(property.getProperty("linkProviderNG"));
 		appointValues.setMaxperDay(property.getProperty("maxperDayNG"));
 		appointValues.setAppointmenttype(property.getProperty("appointmenttypeNG"));
@@ -307,6 +321,8 @@ public class PSSPropertyFileLoader {
 		appointValues.setOldPatientUserName(property.getProperty("oldPatientUserNameNG"));
 		appointValues.setOldPatientPassword(property.getProperty("oldPatientPasswordNG"));
 		appointValues.setProviderImageAPI(property.getProperty("providerImageAPING"));
+		appointValues.setGmailUserName(property.getProperty("emailNG"));
+		appointValues.setPopUpMessege(property.getProperty("popUpMessege"));
 	}
 
 	public void setAppointmentResponseAthena(Appointment appointValues) {

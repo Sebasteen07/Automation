@@ -18,5 +18,6 @@ public class PayNow {
 	public String LastName = "";
 	public String Zip = "";
 	public String Email = "";
-
+	public String RestV3Url = "";
+	public String PaymentPathV3 = "";
 }

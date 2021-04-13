@@ -45,10 +45,21 @@ public class AppointmentData {
 	public String Description = "";
 	
 	public String appointmentType = "";
+
 	public ArrayList<AppointmentDetail> appointmentDetailList = new ArrayList<AppointmentDetail>();
 	public String csvFilePath="";
 	
 	public String portalURL="";
 	public String practiceUserName="";
 	public String practicePassword="";
+	
+	public String AppointmentTypeName="";
+	public String AppointmentTypeID="";
+	public String AppointmentCategoryName="";
+	public String AppointmentCategoryID="";
+	public String ActiveFlag="";
+	public String Comment="";
+	public String AppointmentTypeUrl="";
+	public String AppointmentRequestV3URL="";
+	public String PATIENT_INVITE_RESTV3URL="";
 }

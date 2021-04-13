@@ -92,7 +92,7 @@ public class ManageResource extends PSS2MenuPage {
 
 	@FindBy(how = How.XPATH, using = "//*[@name='apptTypeReservedReason']")
 	private WebElement reservefor;
-	
+
 	@FindBy(how = How.XPATH, using = "//*[@class='col-xs-12']/div/button[1]")
 	private WebElement appointmenttypeSave;
 
@@ -102,9 +102,29 @@ public class ManageResource extends PSS2MenuPage {
 	@FindBy(how = How.XPATH, using = "//div[@class='form-group row']//div[@class='col-md-12']//label[@for='allowSameDayAppts']/input")
 	private WebElement acceptToggle;
 
-	// @FindBy(how = How.XPATH, using = "//*[@id='tab43']/div/form/fieldset[1]/div[14]/div/label[1]/i")
 	@FindBy(how = How.XPATH, using = "//div[@class='col-md-12']//label[@for='allowSameDayAppts']")
 	private WebElement acceptToggleclick;
+
+	@FindBy(how = How.XPATH, using = "//strong[contains(text(),'Age Rule')]")
+	private WebElement ageRuleCheckbox;
+
+	@FindBy(how = How.XPATH, using = "/html/body/app/layout/div/main/div[2]/div/div/div[2]/section/div/div/div/div/div/div[4]/div/form/div[1]/input")
+	private WebElement ageRuleCheckboxStatus;
+
+	@FindBy(how = How.XPATH, using = "//*[@id='tab43']/div/form/div[2]/div[2]/select")
+	private WebElement ageruleDropFirst;
+
+	@FindBy(how = How.XPATH, using = "//*[@id='tab43']/div/form/div[2]/div[5]/select")
+	private WebElement ageruleDropSecond;
+
+	@FindBy(how = How.XPATH, using = "//*[@id='tab43']/div/form/div[2]/div[4]/select")
+	private WebElement ageruleAnd;
+
+	@FindBy(how = How.XPATH, using = "/html/body/app/layout/div/main/div[2]/div/div/div[2]/section/div/div/div/div/div/div[4]/div/form/div[2]/div[3]/input")
+	private WebElement sendMonthFirst;
+
+	@FindBy(how = How.XPATH, using = "/html/body/app/layout/div/main/div[2]/div/div/div[2]/section/div/div/div/div/div/div[4]/div/form/div[2]/div[6]/input")
+	private WebElement sendMonthsecond;
 
 	public ManageResource(WebDriver driver) {
 		super(driver);
@@ -222,4 +242,34 @@ public class ManageResource extends PSS2MenuPage {
 		log("clicked on accceptfor sameday");
 	}
 
+	public boolean checkBoxStatus() {
+		boolean bool = Boolean.parseBoolean(ageRuleCheckboxStatus.getAttribute("ng-reflect-model"));
+		log("CheckBox Status " + bool);
+		return bool;
+
+	}
+
+	public void ageRule() {
+		if (checkBoxStatus() == false) {
+			ageRuleCheckbox.click();
+			log("Clicked on Checkbox of Age Rule ");
+		} else {
+			log("Not clicked on Age Rule Check Box going to send value in textfield");
+		}
+	}
+
+	public void ageRuleparameter(String ageStartMonth, String ageEndMonths) {
+		Select select = new Select(ageruleDropFirst);
+		Select and = new Select(ageruleAnd);
+		Select select1 = new Select(ageruleDropSecond);
+		select.selectByVisibleText(">");
+		sendMonthFirst.clear();
+		sendMonthFirst.sendKeys(ageStartMonth);
+		and.selectByIndex(1);
+		select1.selectByVisibleText("<");
+		sendMonthsecond.clear();
+		sendMonthsecond.sendKeys(ageEndMonths);
+		log("SuccessFully Sent the Values in ageRule textfield");
+		appointmenttypeSave.click();
+	}
 }

@@ -16,19 +16,19 @@ import com.medfusion.common.utils.IHGUtil;
 
 public class NGAppointmentRequestV2HistoryPage extends JalapenoMenu {
 
-		@FindBy(how = How.XPATH, using = "(//div[@id='frame']/table)")
+		@FindBy(how = How.XPATH, using = "//div[contains(@class,'appointment history')]//table")
 		private WebElement fullTable;
 
-		@FindBy(how = How.XPATH, using = "//li[contains(@data-ng-show,'reason')]")
+		@FindBy(how = How.XPATH, using = "//label[text()='Reason']//parent::li")
 		private WebElement reason;
 
-		@FindBy(how = How.XPATH, using = "//li[contains(@data-ng-show,'preferredtime')]")
+		@FindBy(how = How.XPATH, using = "//label[text()='Preferred Time']//parent::li")
 		private WebElement preferredTime;
 
-		@FindBy(how = How.XPATH, using = "//li[contains(@data-ng-show,'requestedday')]")
+		@FindBy(how = How.XPATH, using = "//label[text()='Request Day']//parent::li")
 		private WebElement requestedDay;
 
-		@FindBy(how = How.XPATH, using = "//li[contains(@data-ng-show,'requestedtime')]")
+		@FindBy(how = How.XPATH, using = "//label[text()='Request Time']//parent::li")
 		private WebElement requestedTime;
 
 		@FindBy(how = How.ID, using = "back_button")

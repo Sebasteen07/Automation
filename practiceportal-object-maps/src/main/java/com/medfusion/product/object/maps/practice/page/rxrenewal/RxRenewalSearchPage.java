@@ -1,3 +1,4 @@
+//  Copyright 2013-2020 NXGN Management, LLC. All Rights Reserved.
 package com.medfusion.product.object.maps.practice.page.rxrenewal;
 
 import java.util.List;
@@ -178,9 +179,8 @@ public class RxRenewalSearchPage extends BasePageObject {
 		setSubject.sendKeys(subject);
 		setSubjectBody.sendKeys(PracticeConstants.MESSAGE_BODY);
 
-
 	}
-	
+
 	public void setRxRenewalFields(String user) {
 		IHGUtil.PrintMethodName();
 		PracticeUtil.setPracticeFrame(driver);
@@ -188,15 +188,14 @@ public class RxRenewalSearchPage extends BasePageObject {
 		setQuantity.sendKeys(PracticeConstants.QUANTITY);
 		Select startDaySelect = new Select(setFrequency);
 		startDaySelect.selectByVisibleText(PracticeConstants.FREQUENCY);
-		subject = createdTs + PracticeConstants.MESSAGE_SUBJECT+user;
+		subject = createdTs + PracticeConstants.MESSAGE_SUBJECT + user;
 		setSubject.sendKeys(subject);
 		setSubjectBody.sendKeys(PracticeConstants.MESSAGE_BODY);
-
 
 	}
 
 	/**
-	 * @throws InterruptedException 
+	 * @throws InterruptedException
 	 * @Description:Click on Process RxRenewal Button
 	 */
 	public void clickProcessRxRenewal() throws InterruptedException {
@@ -212,10 +211,9 @@ public class RxRenewalSearchPage extends BasePageObject {
 	public void verifyPrescriptionConfirmationSection(String subject) {
 		IHGUtil.PrintMethodName();
 		PracticeUtil.setPracticeFrame(driver);
-		IHGUtil.waitForElement(driver, 30,mediactionName);
+		IHGUtil.waitForElement(driver, 30, mediactionName);
 		BaseTestSoftAssert.verifyEquals(drug.getText(), PracticeConstants.DRUG);
 		BaseTestSoftAssert.verifyEquals(quantity.getText(), PracticeConstants.QUANTITY);
-		//WebDriverWait wait= new WebDriverWait(driver,20);
 		wait.until(ExpectedConditions.visibilityOf(frequency));
 		BaseTestSoftAssert.verifyEquals(frequency.getText(), PracticeConstants.FREQUENCY);
 		BaseTestSoftAssert.verifyEquals(subjectMessage.getText(), subject);
@@ -251,7 +249,7 @@ public class RxRenewalSearchPage extends BasePageObject {
 	public void searchForRxRenewalToday(int value) throws InterruptedException {
 		IHGUtil.PrintMethodName();
 		PracticeUtil.setPracticeFrame(driver);
-
+		Thread.sleep(10000);
 
 		Select endMonthSelect = new Select(endMonth);
 		Select startMonthSelect = new Select(startMonth);
@@ -283,10 +281,23 @@ public class RxRenewalSearchPage extends BasePageObject {
 	public void checkMedicationDetails(String medicationName, String sigCode) {
 		IHGUtil.PrintMethodName();
 		PracticeUtil.setPracticeFrame(driver);
-		Log4jUtil.log("Searching: Mediaction Name is:" + medicationName + ", and Actual Medication Name is:" + mediactionName.getText().toString());
-		Log4jUtil
-				.log("Searching: SigCode Abbreviation & Meaning is:" + sigCode + ", and Actual SigCode Abbreviation & Meaning is:" + frequency.getText().toString());
+		Log4jUtil.log("Searching: Mediaction Name is:" + medicationName + ", and Actual Medication Name is:"
+				+ mediactionName.getText().toString());
+		Log4jUtil.log("Searching: SigCode Abbreviation & Meaning is:" + sigCode
+				+ ", and Actual SigCode Abbreviation & Meaning is:" + frequency.getText().toString());
 		Assert.assertEquals(mediactionName.getText(), medicationName, "Invalid Medication Name was found");
 		Assert.assertEquals(frequency.getText(), sigCode, "Invalid SigCode Abbreviation & Meaning were found");
+	}
+
+	public void verifyPrescriptionConfirmationSection(String subject2, String drugDosage) {
+		IHGUtil.PrintMethodName();
+		PracticeUtil.setPracticeFrame(driver);
+		IHGUtil.waitForElement(driver, 30, mediactionName);
+		BaseTestSoftAssert.verifyEquals(drug.getText(), drugDosage);
+		BaseTestSoftAssert.verifyEquals(quantity.getText(), PracticeConstants.QUANTITY);
+		wait.until(ExpectedConditions.visibilityOf(frequency));
+		BaseTestSoftAssert.verifyEquals(frequency.getText(), PracticeConstants.FREQUENCY);
+		BaseTestSoftAssert.verifyEquals(subjectMessage.getText(), subject);
+		BaseTestSoftAssert.verifyEquals(bodyMessage.getText(), PracticeConstants.MESSAGE_BODY);
 	}
 }

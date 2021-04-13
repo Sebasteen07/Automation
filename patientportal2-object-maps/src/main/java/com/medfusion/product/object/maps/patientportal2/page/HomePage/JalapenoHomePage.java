@@ -31,6 +31,7 @@ import com.medfusion.product.object.maps.patientportal2.page.AskAStaff.JalapenoA
 import com.medfusion.product.object.maps.patientportal2.page.AskAStaff.JalapenoAskAStaffV2Page1;
 import com.medfusion.product.object.maps.patientportal2.page.CcdPage.DocumentsPage;
 import com.medfusion.product.object.maps.patientportal2.page.CcdPage.MedicalRecordSummariesPage;
+import com.medfusion.product.object.maps.patientportal2.page.MedicationsPage.MedicationsHomePage;
 import com.medfusion.product.object.maps.patientportal2.page.MessagesPage.JalapenoMessagesPage;
 import com.medfusion.product.object.maps.patientportal2.page.NewPayBillsPage.JalapenoPayBillsMakePaymentPage;
 import com.medfusion.product.object.maps.patientportal2.page.PayBillsStatementPage.JalapenoPayBillsStatementPage;
@@ -58,6 +59,9 @@ public class JalapenoHomePage extends JalapenoMenu {
 
 	@FindBy(how = How.ID, using = "feature_rx_renewal")
 	private WebElement prescriptions;
+	
+	@FindBy(how=How.ID, using="feature_medications")
+	private WebElement medications;
 
 	@FindBy(how = How.ID, using = "feature_bill_pay")
 	private WebElement payments;
@@ -92,7 +96,7 @@ public class JalapenoHomePage extends JalapenoMenu {
 	@FindBy(how = How.XPATH, using = "//*[@id=\"feature_bill_pay\"]/span")
 	private WebElement outstandingPatientBalance;
 
-	@FindBy(how = How.XPATH, using = "//mf-blink-banner//button/*[contains(text(),'×')]")
+	@FindBy(how = How.XPATH, using = "//blink-health//button/*[contains(text(),'×')]")
 	private WebElement blinkBannerHideButton;
 
 	@FindBy(how = How.ID, using = "actionButton")
@@ -128,6 +132,9 @@ public class JalapenoHomePage extends JalapenoMenu {
 
 	@FindBy(how = How.ID, using = "sentFolder")
 	private WebElement sentFolder;
+	
+	@FindBy(how = How.XPATH, using = "//*[contains(text(),'is no longer linked to your account.')]")
+	private WebElement unlinkSuccessfulMsg;
 
 	public JalapenoHomePage(WebDriver driver) {
 		super(driver);
@@ -202,7 +209,12 @@ public class JalapenoHomePage extends JalapenoMenu {
 		prescriptions.click();
 		return PageFactory.initElements(driver, JalapenoPrescriptionsPage.class);
 	}
-
+	
+	public MedicationsHomePage clickOnMedications(WebDriver driver) {
+		IHGUtil.PrintMethodName();
+		javascriptClick(medications);
+		return PageFactory.initElements(driver, MedicationsHomePage.class);
+	}
 	public MedicalRecordSummariesPage clickOnMedicalRecordSummaries(WebDriver driver) {
 		log("Clicking on Medical Record Summaries button on dashboard");
 		 JavascriptExecutor jse = (JavascriptExecutor)driver;
@@ -400,7 +412,7 @@ public class JalapenoHomePage extends JalapenoMenu {
 
 	public void clickFeaturedAppointmentsReq() {
 		javascriptClick(sheduleanappointment);
-		IHGUtil.waitForElement(driver, 80, buttonContinue);
+		IHGUtil.waitForElement(driver, 1, buttonContinue);
 		javascriptClick(buttonContinue);
 	}
 
@@ -525,6 +537,18 @@ public class JalapenoHomePage extends JalapenoMenu {
 		IHGUtil.PrintMethodName();
 		javascriptClick(appointments);
 		return PageFactory.initElements(driver, NGAppointmentPage.class);
+	}
+	
+	public boolean wasUnlinkSuccessful() {
+
+		try {
+			log("Looking for successful message after unlink");
+			new WebDriverWait(driver, 30).until(ExpectedConditions.visibilityOf(unlinkSuccessfulMsg));
+			return unlinkSuccessfulMsg.isDisplayed();
+		} catch (Exception e) {
+			log("Unlink of Dependent account was unsuccessful");
+			return false;
+		}
 	}
 
 }

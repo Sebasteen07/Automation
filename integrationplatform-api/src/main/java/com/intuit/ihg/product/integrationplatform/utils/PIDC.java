@@ -60,5 +60,8 @@ public class PIDC {
 	public String GI = "";
 	public String SO = "";
 	public String NewPassword = "";
+	public String Restv1Url = "";
+	public String Restv2Url = "";
+	public String Restv3Url = "";
 
 }

@@ -1,4 +1,5 @@
-// Copyright 2020 NXGN Management, LLC. All Rights Reserved.
+//Copyright 2013-2021 NXGN Management, LLC. All Rights Reserved.
+
 package com.ng.product.integrationplatform.apiUtils;
 import static org.testng.Assert.assertTrue;
 
@@ -12,6 +13,7 @@ import org.apache.http.Header;
 import org.apache.http.HttpEntity;
 import org.apache.http.client.ClientProtocolException;
 import org.apache.http.client.methods.CloseableHttpResponse;
+import org.apache.http.client.methods.HttpDelete;
 import org.apache.http.client.methods.HttpGet;
 import org.apache.http.client.methods.HttpPost;
 import org.apache.http.client.methods.HttpPut;
@@ -120,7 +122,7 @@ public class NGAPIUtils {
 		loginDefaults.setPracticeId(PracticeID);
 		
 		ObjectMapper objMap = new ObjectMapper();
-        String requestbody = objMap.defaultPrettyPrintingWriter().writeValueAsString(loginDefaults);
+        String requestbody = objMap.writerWithDefaultPrettyPrinter().writeValueAsString(loginDefaults);
         Log4jUtil.log("Login Defaults request Body is \n" + requestbody);
              
 		StringEntity entity=new StringEntity(requestbody);
@@ -189,8 +191,6 @@ public class NGAPIUtils {
 
 	        String strLocationHeader="";
 	        String Email= EnterpriseEmail;
-	        Header[] httpHeaders;
-	        
 	        HttpPost httpPost = new HttpPost(argRouteURL);
 
 	        httpPost.addHeader("Accept", "*/*");
@@ -209,8 +209,6 @@ public class NGAPIUtils {
 	        	httpPost.addHeader("x-nge-site-id",XNGSessionID);
 	        }
 	        	        
-	        httpHeaders = httpPost.getAllHeaders();
-
 	        httpPost.setEntity(arg_Payload);
 	        httpResponse = httpClient.execute(httpPost);
 	        if (mode.equals("CAGateway")) {
@@ -249,8 +247,7 @@ public class NGAPIUtils {
 			Log4jUtil.log("\n Payload "+arg_Payload.toString());
 			Log4jUtil.log("PostURL "+argRouteURL);
 
-			Header[] httpHeaders;
-	        CloseableHttpResponse httpResponse = null;
+			CloseableHttpResponse httpResponse = null;
 	        CloseableHttpClient httpClient = HttpClients.createDefault();
 
 	        String strLocationHeader="";
@@ -308,8 +305,7 @@ public class NGAPIUtils {
 		try {
 	    HttpGet httpGet;
 		httpGet = new HttpGet(argRouteURL);	
-		Header[] httpHeaders;
-        CloseableHttpResponse httpResponse = null;
+		CloseableHttpResponse httpResponse = null;
         CloseableHttpClient httpClient = HttpClients.createDefault();
 		
 		String XNGDate = getXNGDate();
@@ -428,7 +424,7 @@ public class NGAPIUtils {
     		loginDefaults.setEnterpriseId(enterpriseID);
     		loginDefaults.setPracticeId(practiceID);
     		ObjectMapper objMap = new ObjectMapper();
-            String requestbody = objMap.defaultPrettyPrintingWriter().writeValueAsString(loginDefaults);
+            String requestbody = objMap.writerWithDefaultPrettyPrinter().writeValueAsString(loginDefaults);
             Log4jUtil.log("Login Defaults request Body is \n" + requestbody);
             
             String LogInDefaultsID =setupNGHttpPutRequest(mode,LogInDefaultsUrl,requestbody, 200);
@@ -437,7 +433,7 @@ public class NGAPIUtils {
             	Log4jUtil.log("Expected practice id "+practiceID+" is same as current practice ID "+currentPracticeID);
     }
 	
-	public static String getRelativeBaseUrl() throws IOException, JSONException{
+	public String getRelativeBaseUrl() throws IOException, JSONException{
 		String baseURL = apiRoutes.BaseURL.getRouteURL().toString();
 	    String response = setupNGHttpGetRequest("EnterpriseGateway",baseURL, 200);
 	    String relativeBaseURL ="";
@@ -465,4 +461,48 @@ public class NGAPIUtils {
 	    
 	    return actualURL;
 	    }
+	
+	public static void setupNGHttpDeleteRequest(String mode, String argRouteURL, int ExpectedStatusCode) throws IOException {
+		IHGUtil.PrintMethodName();
+		Log4jUtil.log("DeleteURL "+argRouteURL);
+		try { 	
+    		CloseableHttpResponse httpResponse = null;
+            CloseableHttpClient httpClient = HttpClients.createDefault();            
+            HttpDelete htttpDelete = new HttpDelete(argRouteURL);               
+    		    	
+    		String XNGDate = getXNGDate();
+    		String Email= EnterpriseEmail;    		
+    		htttpDelete.addHeader("Accept", "*/*");
+    	    if(mode.equalsIgnoreCase("CAGateway")){
+    	    	htttpDelete.addHeader("Authorization", System.getProperty("BearerToken"));
+    	    	htttpDelete.addHeader("X-NG-SessionId",System.getProperty("XNGSessionId"));
+    	    	htttpDelete.addHeader("X-NG-Date", XNGDate);
+    		}
+            else if(mode.equalsIgnoreCase("EnterpriseGateway")){
+            	getAuthSignature(argRouteURL,"DELETE","", "");
+            	htttpDelete.addHeader("Authorization", "NEXTGEN-AMB-API-V2 Credential=" + Email.toLowerCase() + ", Signature="+ System.getProperty("AuthEnterpriseSignature"));
+            	htttpDelete.addHeader("X-NG-Date", EnterpriseSignature.NGTime);
+            	htttpDelete.addHeader("X-NG-Product", "NEXTGEN-AMB-API-V2");
+            	htttpDelete.addHeader("x-nge-site-id",XNGSessionID);
+            }
+    	    htttpDelete.setHeader("Content-type", "application/json");
+
+    		httpResponse = httpClient.execute(htttpDelete);
+    	
+    		if (mode.equals("CAGateway")) {
+    			htttpDelete.releaseConnection();
+    		}
+    	        
+    		Log4jUtil.log("Status code for Delete request "+httpResponse.getStatusLine().getStatusCode());
+    		if(ExpectedStatusCode!=0){
+    		    if(httpResponse.getStatusLine().getStatusCode()==ExpectedStatusCode){
+    		    	Log4jUtil.log("Delete request completed successfully");
+    	        }else{
+    	        	Log4jUtil.log("Unable to delete the request");
+    	            Assert.assertEquals(httpResponse.getStatusLine().getStatusCode(), ExpectedStatusCode);
+    	        }}
+		}catch (Exception E) {
+		Log4jUtil.log("Exception caught "+E.getMessage());
+	}
+    }
 }

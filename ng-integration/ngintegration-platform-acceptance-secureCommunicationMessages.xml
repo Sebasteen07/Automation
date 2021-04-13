@@ -19,8 +19,15 @@
 	    		<include name="testCOMDisableReplySecureMessageExistingEncounter"/> 
 	    		<include name="testCOMSecureMessageSentAndReplyUsingOnlineProfile"/> 
 	    		<include name="testCOMSecureMessageSentAndReplyUsingAliasName"/> 
-	    		<include name="testCOMAskAQuestion"/>
-	    	 	<include name="testCOMDelayedDeliverySecureMessageOriginalUnlockedEncounter"/>
+	    		<include name="testCOMAskAQuestionRepliedUsingOriginalUnlockedEncounter"/>
+	    	 	<include name="testCOMSendSecureMessageDoNotAddToChart"/>
+	    	 	<include name="testInboxAppointment"/>
+	    	 	<include name="testInboxAppointmentSameSlot"/>
+	    	 	<include name="testInboxAppointmentBookMultipleSlotsandDeleteAppointment"/>
+	    	 	<include name="testPP138SendPatientEducation"/>
+	    	 	<include name="testInboxRequestPrescriptionRenewalApprovedbyPracticeUser"/>
+	    		<include name="testInboxRequestPrescriptionRenewalRejectedbyPracticeUser"/>
+	    		<include name="testCOMBulkSendSecureMessageDoNotAddToEncounterSendByPracticeUser"/>
       	</methods>
 	</classes>
 </test>

@@ -11,6 +11,7 @@ import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.FindBy;
 import org.openqa.selenium.support.How;
+import org.testng.Assert;
 
 import com.intuit.ifs.csscat.core.utils.Log4jUtil;
 import com.medfusion.common.utils.IHGUtil;
@@ -102,15 +103,45 @@ public class JalapenoAppointmentsPage extends MedfusionPage {
 		}
 		
 		public boolean verifyAppointment(String appointmentDate,String appointmentTime,String appointmentProvider){
+			IHGUtil.PrintMethodName();
 			List<WebElement> appointmentList = getAppointments();
 			Boolean status = false;
-			WebElement date =appointmentList.get(1).findElement(By.xpath("//*[contains(text(),'"+appointmentDate+"')]"));
-			WebElement time =appointmentList.get(1).findElement(By.xpath("//*[contains(text(),'"+appointmentTime+"')]"));
-			WebElement provider =appointmentList.get(1).findElement(By.xpath("//*[contains(text(),'"+appointmentProvider+"')]"));
-			if(date.isDisplayed() && time.isDisplayed() && provider.isDisplayed()){
-				status = true;
-				Log4jUtil.log("Booked Appointment is posted successfully to Portal");
+			
+			for(int i =0;i<appointmentList.size();i++){
+				String XPath = "(//ul[contains(@class, 'myAccountList')]//div[@class='row'])["+(i+1)+"]";				
+				if(driver.findElement(By.xpath(XPath+"//div[@class='col-sm-6 col-md-6 ng-binding'][1]")).getText().contains(appointmentDate) &&
+						driver.findElement(By.xpath(XPath+"//div[@class='col-sm-6 col-md-6 ng-binding'][2]")).getText().contains(appointmentTime)){	
+					Log4jUtil.log("Actual Date "+driver.findElement(By.xpath(XPath+"//div[@class='col-sm-6 col-md-6 ng-binding'][1]")).getText());
+					Log4jUtil.log("Actual Time "+driver.findElement(By.xpath(XPath+"//div[@class='col-sm-6 col-md-6 ng-binding'][2]")).getText());
+					
+						WebElement provider =driver.findElement(By.xpath(XPath)).findElement(By.xpath("//*[contains(text(),'"+appointmentProvider+"')]"));
+						if(provider.isDisplayed()){
+							status = true;
+							Log4jUtil.log("Booked Appointment is received by Patient");
+							break;
+						}
+				}
 			}
 			return status;
+		}
+		
+		public boolean verifyAppointmentisDeleted(String appointmentDate, String appointmentTime){
+			IHGUtil.PrintMethodName();
+			List<WebElement> appointmentList = getAppointments();
+			Boolean status = true;
+			for(int i =0;i<appointmentList.size();i++){
+				String XPath = "(//ul[contains(@class, 'myAccountList')]//div[@class='row'])["+(i+1)+"]";
+					if(driver.findElement(By.xpath(XPath+"//div[@class='col-sm-6 col-md-6 ng-binding'][1]")).getText().contains(appointmentDate)){
+						Log4jUtil.log("Actual Date "+driver.findElement(By.xpath(XPath+"//div[@class='col-sm-6 col-md-6 ng-binding'][1]")).getText());
+						Log4jUtil.log("Actual Time "+driver.findElement(By.xpath(XPath+"//div[@class='col-sm-6 col-md-6 ng-binding'][2]")).getText());						
+						if(driver.findElement(By.xpath(XPath+"//div[@class='col-sm-6 col-md-6 ng-binding'][2]")).getText().contains(appointmentTime)){
+						status = false;	
+						Log4jUtil.log("Booked Appointment is not deleted");
+						break;
+						}
+				}
+			}
+			Assert.assertTrue(status, "Booked Appointment is not deleted");
+			return status;			
 		}
 }
