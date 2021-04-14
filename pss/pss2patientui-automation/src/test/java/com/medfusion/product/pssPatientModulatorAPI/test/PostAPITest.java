@@ -344,5 +344,222 @@ public class PostAPITest extends BaseTestNGWebDriver {
 		postAPIRequest.cancellationReason(testData.getBasicURI(), headerConfig.defaultHeader());
 
 	}
+	
+	@Test
+	public void careproviderAvailabilityPOST() throws IOException {
+		
+		PSSPropertyFileLoader propertyData = new PSSPropertyFileLoader();
+		Appointment testData = new Appointment();
+		HeaderConfig headerConfig = new HeaderConfig();
+		propertyData.setRestAPIData(testData);
+		PostAPIRequest postAPIRequest = new PostAPIRequest();
+		log("Base URL is   " + testData.getBasicURI());
+		postAPIRequest.careproviderAvailability(testData.getBasicURI(),Payload.careprovideravailability_Payload(),headerConfig.defaultHeader());
+
+	}
+	
+	@Test
+	public void insuranceCarrierGET() throws IOException {
+		
+		PSSPropertyFileLoader propertyData = new PSSPropertyFileLoader();
+		Appointment testData = new Appointment();
+		HeaderConfig headerConfig = new HeaderConfig();
+		propertyData.setRestAPIData(testData);
+		PostAPIRequest postAPIRequest = new PostAPIRequest();
+		log("Base URL is   " + testData.getBasicURI());
+		
+		postAPIRequest.insuranceCarrier(testData.getBasicURI(), headerConfig.defaultHeader());
+	}
+	
+	@Test
+	public void locationsListNGGET() throws IOException {
+		
+		PSSPropertyFileLoader propertyData = new PSSPropertyFileLoader();
+		Appointment testData = new Appointment();
+		HeaderConfig headerConfig = new HeaderConfig();
+		propertyData.setRestAPIData(testData);
+		PostAPIRequest postAPIRequest = new PostAPIRequest();
+		log("Base URL is   " + testData.getBasicURI());
+		
+		postAPIRequest.locations(testData.getBasicURI(), headerConfig.defaultHeader());
+	}
+	
+	@Test
+	public void addPatientPOST() throws IOException {
+		
+		PSSPropertyFileLoader propertyData = new PSSPropertyFileLoader();
+		Appointment testData = new Appointment();
+		HeaderConfig headerConfig = new HeaderConfig();
+		propertyData.setRestAPIData(testData);
+		PostAPIRequest postAPIRequest = new PostAPIRequest();
+		log("Base URL is   " + testData.getBasicURI());
+		
+		postAPIRequest.insuranceCarrier(testData.getBasicURI(), headerConfig.defaultHeader());
+	}
+	
+	@Test
+	public void demographicsGET() throws IOException {
+		
+		PSSPropertyFileLoader propertyData = new PSSPropertyFileLoader();
+		Appointment testData = new Appointment();
+		HeaderConfig headerConfig = new HeaderConfig();
+		propertyData.setRestAPIData(testData);
+		PostAPIRequest postAPIRequest = new PostAPIRequest();
+		log("Base URL is   " + testData.getBasicURI());
+		
+		postAPIRequest.demographics(testData.getBasicURI(), headerConfig.defaultHeader());
+	}
+	
+	@Test
+	public void lockoutGET() throws IOException {
+		
+		PSSPropertyFileLoader propertyData = new PSSPropertyFileLoader();
+		Appointment testData = new Appointment();
+		HeaderConfig headerConfig = new HeaderConfig();
+		propertyData.setRestAPIData(testData);
+		PostAPIRequest postAPIRequest = new PostAPIRequest();
+		log("Base URL is   " + testData.getBasicURI());
+		
+		postAPIRequest.lockout(testData.getBasicURI(), headerConfig.defaultHeader());
+	}
+	
+	@Test
+	public void matchPatientPOST() throws IOException {
+		
+		PSSPropertyFileLoader propertyData = new PSSPropertyFileLoader();
+		Appointment testData = new Appointment();
+		HeaderConfig headerConfig = new HeaderConfig();
+		propertyData.setRestAPIData(testData);
+		
+		Payload payload= new Payload();
+		PostAPIRequest postAPIRequest = new PostAPIRequest();
+		log("Base URL is   " + testData.getBasicURI());
+		
+		postAPIRequest.matchPatientPOST(testData.getBasicURI(),payload.matchpatient, headerConfig.defaultHeader());
+	}
+	
+	@Test
+	public void patientLastVisitGET() throws IOException {
+		
+		PSSPropertyFileLoader propertyData = new PSSPropertyFileLoader();
+		Appointment testData = new Appointment();
+		HeaderConfig headerConfig = new HeaderConfig();
+		propertyData.setRestAPIData(testData);
+		PostAPIRequest postAPIRequest = new PostAPIRequest();
+		log("Base URL is   " + testData.getBasicURI());
+		
+		postAPIRequest.patientLastVisit(testData.getBasicURI(), headerConfig.defaultHeader());
+	}
+	
+	@Test
+	public void patientRecordbyApptTypePOST() throws IOException {
+		
+		PSSPropertyFileLoader propertyData = new PSSPropertyFileLoader();
+		Appointment testData = new Appointment();
+		HeaderConfig headerConfig = new HeaderConfig();
+		propertyData.setRestAPIData(testData);
+		PostAPIRequest postAPIRequest = new PostAPIRequest();
+		log("Base URL is   " + testData.getBasicURI());
+		
+		postAPIRequest.patientRecordbyApptTypePOST(testData.getBasicURI(), Payload.patientrecordbyapptypes_payload(), headerConfig.defaultHeader());
+	}
+	
+	@Test
+	public void searchPatientPOST() throws IOException {
+		
+		PSSPropertyFileLoader propertyData = new PSSPropertyFileLoader();
+		Appointment testData = new Appointment();
+		HeaderConfig headerConfig = new HeaderConfig();
+		
+		Payload payload= new Payload();
+		propertyData.setRestAPIData(testData);
+		PostAPIRequest postAPIRequest = new PostAPIRequest();
+		log("Base URL is   " + testData.getBasicURI());
+		
+		postAPIRequest.searchpatient(testData.getBasicURI(),payload.searchpatient, headerConfig.defaultHeader());
+	}
+	
+	
+	@Test
+	public void patientStatusGET() throws IOException {
+		
+		PSSPropertyFileLoader propertyData = new PSSPropertyFileLoader();
+		Appointment testData = new Appointment();
+		HeaderConfig headerConfig = new HeaderConfig();
+		propertyData.setRestAPIData(testData);
+		PostAPIRequest postAPIRequest = new PostAPIRequest();
+		log("Base URL is   " + testData.getBasicURI());
+		
+		postAPIRequest.patietStatus(testData.getBasicURI(), headerConfig.defaultHeader());
+	}
+	
+	@Test
+	public void prerequisteappointmenttypesPOST() throws IOException {
+		PSSPropertyFileLoader propertyData = new PSSPropertyFileLoader();
+		Appointment testData = new Appointment();
+
+		HeaderConfig headerConfig = new HeaderConfig();
+		propertyData.setRestAPIData(testData);
+		PostAPIRequest postAPIRequest = new PostAPIRequest();
+		log("Base URL is   " + testData.getBasicURI());
+		
+		postAPIRequest.prerequisteappointmenttypesPOST(testData.getBasicURI(), Payload.prerequisteappointmenttypes_Payload(),
+				headerConfig.defaultHeader());
+	}
+	
+	@Test
+	public void patientrecordbybooksPOST() throws IOException {
+		PSSPropertyFileLoader propertyData = new PSSPropertyFileLoader();
+		Appointment testData = new Appointment();
+
+		HeaderConfig headerConfig = new HeaderConfig();
+		propertyData.setRestAPIData(testData);
+		PostAPIRequest postAPIRequest = new PostAPIRequest();
+		log("Base URL is   " + testData.getBasicURI());
+		
+		postAPIRequest.patientrecordbyBooks(testData.getBasicURI(), Payload.patientrecordbybooks_payload(),
+				headerConfig.defaultHeader());
+	}
+	
+	@Test
+	public void lastseenProviderPOST() throws IOException {
+		PSSPropertyFileLoader propertyData = new PSSPropertyFileLoader();
+		Appointment testData = new Appointment();
+		Payload payload= new Payload();
+		HeaderConfig headerConfig = new HeaderConfig();
+		propertyData.setRestAPIData(testData);
+		PostAPIRequest postAPIRequest = new PostAPIRequest();
+		
+		log("Base URL is   " + testData.getBasicURI());
+		
+		postAPIRequest.lastseenProvider(testData.getBasicURI(), payload.lastseenprovider,
+				headerConfig.defaultHeader());
+	}
+	
+	@Test
+	public void fetchNGBookListGET() throws IOException {
+		PSSPropertyFileLoader propertyData = new PSSPropertyFileLoader();
+		Appointment testData = new Appointment();
+		HeaderConfig headerConfig = new HeaderConfig();
+		propertyData.setRestAPIData(testData);
+		PostAPIRequest postAPIRequest = new PostAPIRequest();
+		
+		log("Base URL is   " + testData.getBasicURI());
+		
+		postAPIRequest.fetchNGBookList(testData.getBasicURI(),headerConfig.defaultHeader());
+	}
+	
+	@Test
+	public void fetchNGSpeciltyListGET() throws IOException {
+		PSSPropertyFileLoader propertyData = new PSSPropertyFileLoader();
+		Appointment testData = new Appointment();
+		HeaderConfig headerConfig = new HeaderConfig();
+		propertyData.setRestAPIData(testData);
+		PostAPIRequest postAPIRequest = new PostAPIRequest();
+		
+		log("Base URL is   " + testData.getBasicURI());
+		
+		postAPIRequest.fetchNGSpeciltyList(testData.getBasicURI(),headerConfig.defaultHeader());
+	}
 
 }
