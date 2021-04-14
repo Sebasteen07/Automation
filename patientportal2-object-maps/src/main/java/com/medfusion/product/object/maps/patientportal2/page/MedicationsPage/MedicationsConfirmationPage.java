@@ -39,7 +39,14 @@ public class MedicationsConfirmationPage {
 	
 	@FindBy(how = How.XPATH, using = "//span[text()='Prescription renewal fee']")
 	private WebElement prescriptionRenewalFee;
-
+	
+	@FindBy(how = How.XPATH, using = "//*[@id='result-pharmacy']/div")
+	private WebElement pharamcyDetails;
+	
+	@FindBy(how = How.XPATH, using = "(//*[@id='result-medications']/div/p)[1]")
+	private WebElement medicationdetails;
+	
+	
 	public String confirmMedication(WebDriver driver) throws InterruptedException {
 		JavascriptExecutor ex = (JavascriptExecutor)driver;
 	    ex.executeScript("arguments[0].click();", btnConfirm);
@@ -57,8 +64,15 @@ public class MedicationsConfirmationPage {
 			System.out.println("Prescription Renewal fee is  not displayed");
 		}
 		
-		
-		
+	}
+	
+	public String getMedicationdetails(WebDriver driver) throws InterruptedException {
+		String confirmMedicationDetails =  medicationdetails.getText() ;
+        return confirmMedicationDetails;		
 	}
 
+	public String getpharamcyDetails(WebDriver driver) throws InterruptedException {
+		String confirmPharamcyDetails =  pharamcyDetails.getText() ;
+        return confirmPharamcyDetails;		
+	}
 }

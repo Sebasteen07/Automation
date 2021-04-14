@@ -171,10 +171,11 @@ public class Provider extends PSS2MainPage {
 		for (int i = 0; i < providerList.size(); i++) {
 			log(providerList.get(i).getText() + " match " + providerList.get(i).getText().contains(providerName));
 			if (providerList.get(i).getText().trim().contains(providerName.trim())) {
-
 				CommonMethods.highlightElement(providerList.get(i));
+
 				IHGUtil.waitForElement(driver, 13, providernameLink.get(i));
 				providernameLink.get(i).click();
+
 				log("Clicked on Provider");
 				return PageFactory.initElements(driver, AppointmentDateTime.class);
 			}
@@ -197,7 +198,6 @@ public class Provider extends PSS2MainPage {
 		CommonMethods.highlightElement(providerList.get(0));
 		providerList.get(0).click();
 		log("Clicked on the Provider ");
-
 		return PageFactory.initElements(driver, AppointmentDateTime.class);
 	}
 

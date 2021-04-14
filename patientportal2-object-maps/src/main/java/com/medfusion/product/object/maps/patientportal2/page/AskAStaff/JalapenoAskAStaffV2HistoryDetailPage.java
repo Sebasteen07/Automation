@@ -12,7 +12,7 @@ import com.medfusion.product.object.maps.patientportal2.page.JalapenoMenu;
 
 public class JalapenoAskAStaffV2HistoryDetailPage extends JalapenoMenu {
 
-	@FindBy(how = How.ID, using = "backButton")
+	@FindBy(how = How.XPATH, using = "//a[text()='Back ']")
 	private WebElement backButton;
 
 	@FindBy(how = How.ID, using = "created_ts_value")

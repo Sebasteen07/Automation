@@ -120,7 +120,7 @@ public class PatientPortal2AcceptanceTests extends BaseTestNGWebDriver {
 	private static final String INVITE_LINK_FRAGMENT = "invite";
 	private static final String ACTIVATE_LINK_FRAGMENT = "activate";
 	private static final String GUARDIAN_INVITE_SUBJECT = "You are invited to create a Patient Portal guardian account at ";
-	private static final String questionText = "wat";
+	private static final String questionText = "What is the question";
 	private static final String DRUG_DOSAGE = "35 mg";
 	private static final String ErrorfilePath = System.getProperty("user.dir")
 			+ "\\src\\test\\resources\\File_Attachment\\Error_Files_Testing.pdf";
@@ -396,15 +396,19 @@ public class PatientPortal2AcceptanceTests extends BaseTestNGWebDriver {
 		assertEquals(unlockLinkEmail, unlockLinkPortal, "!patient unlock links are not equal!");
 	}
 
-	@Test(enabled = true, groups = { "acceptance-basics", "commonpatient" }, retryAnalyzer = RetryAnalyzer.class)
+	@Test(enabled = true, groups = { "acceptance-basics" }, retryAnalyzer = RetryAnalyzer.class)
 	public void testForgotPassword() throws Exception {
-		createCommonPatient();
+		String username = PortalUtil2.generateUniqueUsername(testData.getProperty("userid"), testData);
+		patient = PatientFactory.createJalapenoPatient(username, testData);
+		patient = new CreatePatient().selfRegisterPatient(driver, patient, testData.getUrl());
 		resetForgottenPasswordOrUsername(patient.getEmail());
 	}
 
-	@Test(enabled = true, groups = { "acceptance-basics", "commonpatient" }, retryAnalyzer = RetryAnalyzer.class)
+	@Test(enabled = true, groups = { "acceptance-basics" }, retryAnalyzer = RetryAnalyzer.class)
 	public void testPatientForgotUserIdCaseInsensitiveEmail() throws Exception {
-		createCommonPatient();
+		String username = PortalUtil2.generateUniqueUsername(testData.getProperty("userid"), testData);
+		patient = PatientFactory.createJalapenoPatient(username, testData);
+		patient = new CreatePatient().selfRegisterPatient(driver, patient, testData.getUrl());
 		String email = IHGUtil.mixCase(patient.getEmail());
 		resetForgottenPasswordOrUsername(email);
 	}
@@ -1450,9 +1454,11 @@ public class PatientPortal2AcceptanceTests extends BaseTestNGWebDriver {
 	 * 
 	 * @throws Exception
 	 */
-	@Test(enabled = true, groups = { "acceptance-basics", "commonpatient" }, retryAnalyzer = RetryAnalyzer.class)
+	@Test(enabled = true, groups = { "acceptance-basics" }, retryAnalyzer = RetryAnalyzer.class)
 	public void testMyAccount() throws Exception {
-		createCommonPatient();
+		String username = PortalUtil2.generateUniqueUsername(testData.getProperty("userid"), testData);
+		patient = PatientFactory.createJalapenoPatient(username, testData);
+		patient = new CreatePatient().selfRegisterPatient(driver, patient, testData.getUrl());
 		logStep("Load login page");
 		JalapenoLoginPage loginPage = new JalapenoLoginPage(driver, testData.getUrl());
 		JalapenoHomePage homePage = loginPage.login(patient.getUsername(), patient.getPassword());
@@ -1621,7 +1627,7 @@ public class PatientPortal2AcceptanceTests extends BaseTestNGWebDriver {
 		JalapenoHomePage homePage = loginPage.login(localpatient.getUsername(), localpatient.getPassword());
 
 		logStep("Going to MyAccount page");
-		JalapenoMyAccountProfilePage myAccountPage = homePage.goToAccountPage();
+		JalapenoMyAccountProfilePage myAccountPage = homePage.clickOnMyAccount();
 		assertTrue(myAccountPage.checkExtendedGenderQuestion());
 		logStep("Log Out");
 		homePage.clickOnLogout();
@@ -1724,8 +1730,6 @@ public class PatientPortal2AcceptanceTests extends BaseTestNGWebDriver {
 	@Test(enabled = true, groups = { "acceptance-solutions" }, retryAnalyzer = RetryAnalyzer.class)
 	public void testAskAStaffPaid() throws Exception {
 
-		logStep("Initiate payment data");
-		String errorSubject = "How can i able to complete the task today";
 		String askPaidAmount = "$ 2";
 		String accountNumber = IHGUtil.createRandomNumericString(8);
 		String name = "TestPatient CreditCard";
@@ -1745,7 +1749,7 @@ public class PatientPortal2AcceptanceTests extends BaseTestNGWebDriver {
 		Thread.sleep(3000);
 		logStep("Fill question and continue");
 
-		askPage2 = askPage1.fillAndContinue(errorSubject, questionText, askaSubject);
+		askPage2 = askPage1.fillAndContinue(askaSubject,questionText);
 
 		logStep("Remove all cards because Selenium can't see AddNewCard button");
 		JalapenoAskAStaffV2Page1 askPaidPage = new JalapenoAskAStaffV2Page1(driver);
@@ -3381,7 +3385,7 @@ public class PatientPortal2AcceptanceTests extends BaseTestNGWebDriver {
 
 		logStep("Select Medications");
 		SelectMedicationsPage selectMedPage = new SelectMedicationsPage(driver);
-		selectMedPage.selectMedicationsWithoutRenewalFee();
+		selectMedPage.selectMedications();
 
 		logStep("Validating Prescription Renewal Fee Text is not present");
 		MedicationsConfirmationPage confirmPage = new MedicationsConfirmationPage(driver);
@@ -3717,7 +3721,6 @@ public class PatientPortal2AcceptanceTests extends BaseTestNGWebDriver {
 	public void testAskAChangeAmount() throws Exception {
 
 		logStep("Initiate payment data");
-		String errorSubject = "How can i able to complete the task today";
 		String askPaidAmount = "$ 2";
 		String askPaidChangeAmount="$ 5";
 		String accountNumber = IHGUtil.createRandomNumericString(8);
@@ -3735,7 +3738,7 @@ public class PatientPortal2AcceptanceTests extends BaseTestNGWebDriver {
 		String askaSubject = Long.toString(askPage1.getCreatedTimeStamp());
 		logStep("Fill question and continue");
 
-		askPage2 = askPage1.fillAndContinue(errorSubject, questionText, askaSubject);
+		askPage2 = askPage1.fillAndContinue(askaSubject,questionText);
 
 		logStep("Remove all cards because Selenium can't see AddNewCard button");
 		JalapenoAskAStaffV2Page1 askPaidPage = new JalapenoAskAStaffV2Page1(driver);

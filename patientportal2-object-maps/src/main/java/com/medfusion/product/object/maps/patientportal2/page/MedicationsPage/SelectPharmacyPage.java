@@ -31,7 +31,7 @@ public class SelectPharmacyPage extends MedfusionPage {
 
 	}
 
-	@FindBy(how = How.XPATH, using = "//span[@class='pharmacy-radio-button']")
+	@FindBy(how = How.XPATH, using = "(//*[@class='pharmacy-radio-button'])[1]")
 	private WebElement radioPharmacy;
 
 	@FindBy(how = How.ID, using = "add-new-pharmacy")
@@ -45,8 +45,7 @@ public class SelectPharmacyPage extends MedfusionPage {
 	@FindBy(how = How.XPATH, using = "//button[@class='btn btn-primary']")
 	private WebElement btnContinue;
 
-	@FindBy(how = How.XPATH, using = "//a[@class='add-pharmacy-options ng-binding'][2]")
-	//@FindBy(how = How.XPATH, using = "//a[@class='add-pharmacy-options'][2]")
+	@FindBy(how = How.XPATH, using = "//a[@class='add-pharmacy-options'][2]")
 	private WebElement addYourPharmacy;
 
 	@FindBy(how = How.XPATH, using = "//a[text()='Providers suggested pharmacy']")
@@ -82,16 +81,16 @@ public class SelectPharmacyPage extends MedfusionPage {
 	@FindBy(how = How.XPATH, using = "//button[@class='close']")
 	private WebElement addPharmacyClosePopupbtn;
 	
-	@FindBy(how = How.XPATH, using = "//div[@class='modal-button']/button[@class='btn btn-primary ng-binding']")
+	@FindBy(how = How.XPATH, using = "//*[contains(text(),'Save & Continue')]")
 	private WebElement popupContinueBtn;
 
-	@FindBy(how = How.XPATH, using = "//span[@aria-label='Enter pharmacy name activate']")
+	@FindBy(how = How.XPATH, using = "//*[@id='pharmacyDetails']")
 	private WebElement EnterPharmacyNameActivate;
 
-	@FindBy(how = How.XPATH, using = "//input[@aria-label='Enter pharmacy name']")
+	@FindBy(how = How.XPATH, using = "//*[@class='ng-input']/input[@role='combobox']")
 	private WebElement enterPharmacyName;
 
-	@FindBy(how = How.XPATH, using = "//div[@class='ui-select-choices-row ng-scope active']")
+	@FindBy(how = How.XPATH, using = "//div[@class='ng-option ng-option-marked']")
 	private WebElement selectPharmacyName;
 	
 	WebDriverWait wait=new WebDriverWait(driver, 60);
@@ -186,6 +185,7 @@ public class SelectPharmacyPage extends MedfusionPage {
 		log("it clicked on the save and continue button ");
 		wait.until(ExpectedConditions.visibilityOf(popupContinueBtn));
 		popupContinueBtn.click();
+		radioPharmacy.click();
 		log("it clicked on the save and continue button ");
 		Thread.sleep(2000);//need to sleep because of modal disappearing time
 		btnContinue.click();
