@@ -116,7 +116,7 @@ public class PSSPatientUtils {
 		assertTrue(provider.areBasicPageElementsPresent());
 		AppointmentPage appointment = provider.selectAppointment(testData.getProvider());
 		Log4jUtil.log("Step 11: Verfiy Appointment Page and Appointment to be selected = " + testData.getAppointmenttype());
-		AppointmentDateTime aptDateTime = appointment.selectTypeOfAppointment(testData.getAppointmenttype(), Boolean.valueOf(testData.getIsAppointmentPopup()));
+		AppointmentDateTime aptDateTime = appointment.selectAppointmentandClick(testData.getAppointmenttype(), Boolean.valueOf(testData.getIsAppointmentPopup()));
 		Log4jUtil.log("Step 12: Select avaiable Date ");
 
 		if (testData.isFutureApt()) {
@@ -172,7 +172,8 @@ public class PSSPatientUtils {
 		assertTrue(location.areBasicPageElementsPresent());
 		AppointmentPage appointmentpage = location.selectAppointment(testData.getLocation());
 		Log4jUtil.log("Step 11: Verfiy Appointment Page and Appointment to be selected = " + testData.getAppointmenttype());
-		AppointmentDateTime aptDateTime = appointmentpage.selectTypeOfAppointment(testData.getAppointmenttype(), Boolean.valueOf(testData.getIsAppointmentPopup()));
+		AppointmentDateTime aptDateTime =
+				appointmentpage.selectAppointmentandClick(testData.getAppointmenttype(), Boolean.valueOf(testData.getIsAppointmentPopup()));
 
 		Log4jUtil.log("Step 12: Select avaiable Date ");
 		if (testData.isFutureApt()) {
@@ -570,7 +571,7 @@ public class PSSPatientUtils {
 		Log4jUtil.log("address = " + location.getAddressValue());
 		Log4jUtil.log("Step 11: Verfiy Provider Page and Provider = " + testData.getProvider());
 		assertTrue(provider.areBasicPageElementsPresent());
-		AppointmentDateTime aptDateTime = provider.searchForProviderFromList(testData.getProvider());
+		AppointmentDateTime aptDateTime = provider.getProviderandClick(testData.getProvider());
 		assertTrue(aptDateTime.areBasicPageElementsPresent());
 
 		Log4jUtil.log("Step 12: Select avaiable Date ");
@@ -639,7 +640,7 @@ public class PSSPatientUtils {
 		Provider provider = appointment.selectTypeOfProvider(testData.getAppointmenttype(), Boolean.valueOf(testData.getIsAppointmentPopup()));
 		Log4jUtil.log("Step 11: Verfiy Provider Page and Provider = " + testData.getProvider());
 		Thread.sleep(22000);
-		AppointmentDateTime aptDateTime = provider.searchForProviderFromList(testData.getProvider());
+		AppointmentDateTime aptDateTime = provider.getProviderandClick(testData.getProvider());
 		assertTrue(aptDateTime.areBasicPageElementsPresent());
 
 		Log4jUtil.log("Step 12: Select avaiable Date ");
@@ -707,7 +708,7 @@ public class PSSPatientUtils {
 		assertTrue(provider.areBasicPageElementsPresent());
 		AppointmentPage appointment = provider.selectAppointment(testData.getProvider());
 		Log4jUtil.log("Step 11: Verfiy Appointment Page and Appointment to be selected = " + testData.getAppointmenttype());
-		AppointmentDateTime aptDateTime = appointment.selectTypeOfAppointment(testData.getAppointmenttype(), Boolean.valueOf(testData.getIsAppointmentPopup()));
+		AppointmentDateTime aptDateTime = appointment.selectAppointmentandClick(testData.getAppointmenttype(), Boolean.valueOf(testData.getIsAppointmentPopup()));
 		Log4jUtil.log("Step 12: Select avaiable Date ");
 
 		Log4jUtil.log("Step 12: Select avaiable Date ");
@@ -845,7 +846,8 @@ public class PSSPatientUtils {
 		assertTrue(location.areBasicPageElementsPresent());
 		AppointmentPage appointmentpage = location.selectAppointment(testData.getLocation());
 		Log4jUtil.log("Step 11: Verfiy Appointment Page and Appointment to be selected = " + testData.getAppointmenttype());
-		AppointmentDateTime aptDateTime = appointmentpage.selectTypeOfAppointment(testData.getAppointmenttype(), Boolean.valueOf(testData.getIsAppointmentPopup()));
+		AppointmentDateTime aptDateTime =
+				appointmentpage.selectAppointmentandClick(testData.getAppointmenttype(), Boolean.valueOf(testData.getIsAppointmentPopup()));
 
 		Log4jUtil.log("Step 12: Select avaiable Date ");
 		if (testData.isFutureApt()) {
@@ -1236,9 +1238,9 @@ public class PSSPatientUtils {
 		driver.get(url);
 		driver.manage().window().maximize();
 		Thread.sleep(2000);
-		
+
 		CommonMethods cm = new CommonMethods(driver);
-		
+
 		driver.findElement(By.xpath("//input[@type='text']")).clear();
 		driver.findElement(By.xpath("//input[@type='text']")).sendKeys(email);
 		driver.findElement(By.xpath("//button[@id='go-to-public']")).click();
@@ -1249,8 +1251,8 @@ public class PSSPatientUtils {
 
 		List<WebElement> subList = driver.findElements(By.xpath("//tr//td[@class='ng-binding'][2]"));
 		List<WebElement> chkList = driver.findElements(By.xpath("//tr/td/div"));
-		
-		WebElement btndelete=driver.findElement(By.xpath("//button[@aria-label='Delete Button']"));
+
+		WebElement btndelete = driver.findElement(By.xpath("//button[@aria-label='Delete Button']"));
 
 		String subject_line = "Your appointment is now scheduled";
 		for (int i = 0; i < subList.size(); i++) {
@@ -1258,7 +1260,7 @@ public class PSSPatientUtils {
 			if (subList.get(i).getText().contains(subject_line)) {
 
 				Log4jUtil.log(subList.get(i).getText() + "---Text");
-				
+
 				cm.highlightElement(chkList.get(i));
 				chkList.get(i).click();
 			}

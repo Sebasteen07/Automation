@@ -7,7 +7,7 @@
 	<parent>
 		<artifactId>ihg-depot-parent-pom</artifactId>
 		<groupId>com.intuit.ihg</groupId>
-		<version>21.3.0-SNAPSHOT</version>
+		<version>21.4.0-SNAPSHOT</version>
 	</parent>
 
 	<artifactId>practiceportal-automation</artifactId>
@@ -24,7 +24,7 @@
 
 	<properties>
 		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
-		<ihg.version>21.3.0-SNAPSHOT</ihg.version>
+		<ihg.version>21.4.0-SNAPSHOT</ihg.version>
 	</properties>
 
 	<dependencies>
@@ -49,65 +49,65 @@
 			<version>${ihg.version}</version>
 		</dependency>
 		<dependency>
-        <groupId>com.intuit.ihg</groupId>
-        <artifactId>patientportal2-object-maps</artifactId>
-        <version>${ihg.version}</version>
-	</dependency>
-	</dependencies>
-	<build>
-		<plugins>
-			<plugin>
-				<groupId>org.apache.maven.plugins</groupId>
-				<artifactId>maven-failsafe-plugin</artifactId>
-				<version>2.9</version>
-				<executions>
-					<execution>
-						<phase>integration-test</phase>
-						<configuration>
-							<failBuild>false</failBuild>
-							<!--<groups>${testGroups}</groups> -->
-							<suiteXmlFiles>
-								<suiteXmlFile>${suite.xml}</suiteXmlFile>
-							</suiteXmlFiles>
-							<systemPropertyVariables>
-								<testRoot>${basedir}</testRoot>
-								<org.uncommons.reportng.escape-output>false</org.uncommons.reportng.escape-output>
-								<testResultScreenshots>true</testResultScreenshots>
-								<testResultVideos>true</testResultVideos>
-							</systemPropertyVariables>
-							<properties>
-								<usedefaultlisteners>false</usedefaultlisteners>
-								<workingDirectory>target/surefire-reports/</workingDirectory>
-							</properties>
-						</configuration>
-						<goals>
-							<goal>integration-test</goal>
-						</goals>
-					</execution>
-				</executions>
-			</plugin>
-			<plugin>
-				<groupId>org.apache.maven.plugins</groupId>
-				<artifactId>maven-jar-plugin</artifactId>
-				<version>2.3.2</version>
-				<executions>
-					<execution>
-						<phase>package</phase>
-						<goals>
-							<goal>test-jar</goal>
-						</goals>
-					</execution>
-				</executions>
-				<configuration>
-					<outputDirectory>target/autolab</outputDirectory>
-					<archive>
-						<manifest>
-							<mainClass>com.intuit.ifs.csscat.core.RunTestNGSuite</mainClass>
-						</manifest>
-					</archive>
-				</configuration>
-			</plugin>
-		</plugins>
-	</build>
+			<groupId>com.intuit.ihg</groupId>
+			<artifactId>patientportal2-object-maps</artifactId>
+			<version>${ihg.version}</version>
+		</dependency>
+    </dependencies>
+    <build>
+        <plugins>
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-failsafe-plugin</artifactId>
+                <version>2.9</version>
+                <executions>
+                    <execution>
+                        <phase>integration-test</phase>
+                        <configuration>
+                            <failBuild>false</failBuild>
+                            <!--<groups>${testGroups}</groups> -->
+                            <suiteXmlFiles>
+                                <suiteXmlFile>${suite.xml}</suiteXmlFile>
+                            </suiteXmlFiles>
+                            <systemPropertyVariables>
+                                <testRoot>${basedir}</testRoot>
+                                <org.uncommons.reportng.escape-output>false</org.uncommons.reportng.escape-output>
+                                <testResultScreenshots>true</testResultScreenshots>
+                                <testResultVideos>true</testResultVideos>
+							   </systemPropertyVariables>
+                            <properties>
+                                <usedefaultlisteners>false</usedefaultlisteners>
+                                <workingDirectory>target/surefire-reports/</workingDirectory>
+                            </properties>
+                        </configuration>
+                        <goals>
+                            <goal>integration-test</goal>
+                        </goals>
+                    </execution>
+                </executions>
+            </plugin>
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-jar-plugin</artifactId>
+                <version>2.3.2</version>
+                <executions>
+                    <execution>
+                        <phase>package</phase>
+                        <goals>
+                            <goal>test-jar</goal>
+                        </goals>
+                    </execution>
+                </executions>
+                <configuration>
+                    <outputDirectory>target/autolab</outputDirectory>
+                    <archive>
+                        <manifest>
+                            <mainClass>com.intuit.ifs.csscat.core.RunTestNGSuite</mainClass>
+                        </manifest>
+                    </archive>
+                </configuration>
+            </plugin>
+        </plugins>
+    </build>
 
 </project>

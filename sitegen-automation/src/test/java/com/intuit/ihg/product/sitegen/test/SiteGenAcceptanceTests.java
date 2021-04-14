@@ -517,7 +517,7 @@ public class SiteGenAcceptanceTests extends BaseTestNGWebDriver {
 	    AddPharmacyPage addPharmaPage2= managePharmacyPage.clickOnAddPharmacyButton();
 	    
 	    String message2=addPharmaPage2.fillPharmacyDetails(externalid,false);
-	    assertTrue(message2.contains("The External PharmacyID already exists for 88, please enter a unique value"));
+	    assertTrue(message2.contains("The External PharmacyID already exists for 22, please enter a unique value"));
      
 }
 	@Test(enabled = true, groups = {"AcceptanceTests"}, retryAnalyzer = RetryAnalyzer.class)
