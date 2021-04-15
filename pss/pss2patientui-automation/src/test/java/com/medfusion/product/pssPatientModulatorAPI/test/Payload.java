@@ -483,12 +483,5 @@ public class Payload {
 				+ "  \"resourceId\": null,\r\n"
 				+ "  \"slotCount\": 0\r\n"
 				+ "}";
-			
-		
-	
-	
-	
-	
-	
 
 }

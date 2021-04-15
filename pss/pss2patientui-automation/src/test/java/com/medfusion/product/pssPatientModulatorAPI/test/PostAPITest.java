@@ -555,10 +555,8 @@ public class PostAPITest extends BaseTestNGWebDriver {
 		Appointment testData = new Appointment();
 		HeaderConfig headerConfig = new HeaderConfig();
 		propertyData.setRestAPIData(testData);
-		PostAPIRequest postAPIRequest = new PostAPIRequest();
-		
-		log("Base URL is   " + testData.getBasicURI());
-		
+		PostAPIRequest postAPIRequest = new PostAPIRequest();		
+		log("Base URL is   " + testData.getBasicURI());		
 		postAPIRequest.fetchNGSpeciltyList(testData.getBasicURI(),headerConfig.defaultHeader());
 	}
 

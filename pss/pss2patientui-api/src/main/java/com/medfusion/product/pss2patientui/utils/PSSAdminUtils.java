@@ -205,16 +205,6 @@ public class PSSAdminUtils {
 		driver.navigate().refresh();
 		Thread.sleep(14000);
 	}
-	
-	public void verifyTrue(boolean condition, String message) {
-		try {
-			Assert.assertTrue(condition, message);
-			Log4jUtil.log("Expected value: true" + " Actual value: " + condition + " - PASSED ");
-		} catch (Throwable e) {
-			Log4jUtil.log("Expected value: true" + " Actual value: " + condition + " - FAILED " + message);
-
-		}
-	}
 
 	public AdminUser setPracticeAdminAccount(String staffPracitceName) throws IOException {
 		PSSPropertyFileLoader propertyData = new PSSPropertyFileLoader();
