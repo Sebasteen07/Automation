@@ -79,7 +79,7 @@ public class MedicalRecordSummariesPage extends JalapenoMenu {
 	@FindBy(how = How.ID, using = "unsecureTransmit")
 	private WebElement unsecureTransmit;
 
-	@FindBy(how = How.ID, using = "acknowledgement")
+	@FindBy(how = How.ID, using = "acknowledgementValue")
 	private WebElement acknowledgement;
 
 	@FindBy(how = How.ID, using = "plusLinkButton")
