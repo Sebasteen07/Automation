@@ -236,46 +236,43 @@ public class PatientPortal2AcceptanceTests extends BaseTestNGWebDriver {
 	}
 
 	@Test(enabled = true, groups = { "acceptance-basics" }, retryAnalyzer = RetryAnalyzer.class)
-	public void testLoginRememberUserName() throws Exception {
+	public void testLoginRememberUsername() throws Exception {
 		logStep("Load login page");
 		JalapenoLoginPage loginPage = new JalapenoLoginPage(driver, testData.getUrl());
 
 		logStep("Fill in credentials, Remember username unchecked and log in");
-		loginPage.unCheckRememberUserName();
-		JalapenoHomePage jalapenoHomePage = loginPage.RememberUserName(testData.getUserId(), testData.getPassword());
+		loginPage.selectRememberUsernameCheckbox("uncheck");
+		JalapenoHomePage jalapenoHomePage = loginPage.login(testData.getUserId(), testData.getPassword());
 
 		logStep("Log out");
 		loginPage = jalapenoHomePage.clickOnLogout();
 
-		logStep("Since remember username checkbox is not checked - user name field is empty");
+		logStep("Verify username textfield is empty");
 		assertTrue(loginPage.getUserNameFieldText().equals(""));
 
 		logStep("Fill in credentials, Remember username checked and log in");
-		loginPage.checkRememberUserName();
-		loginPage.RememberUserName(testData.getUserId(), testData.getPassword());
+		loginPage.selectRememberUsernameCheckbox("check");
+		loginPage.login(testData.getUserId(), testData.getPassword());
 
 		logStep("Log out");
 		loginPage = jalapenoHomePage.clickOnLogout();
 
-		logStep("Since remember username checkbox is checked - user name field is prepopulated");
-		String userNameText = loginPage.getUserNameFieldText();
-		assertTrue(loginPage.getUserNameFieldText().contains(userNameText));
-
+		logStep("Verify username textfield has previously signed in username");
+		assertTrue(loginPage.getUserNameFieldText().contains(testData.getUserId()));
 	}
 
 	@Test(enabled = true, groups = { "acceptance-basics" }, retryAnalyzer = RetryAnalyzer.class)
 	public void testLoginEmptyUserName() throws Exception {
 		logStep("Load login page");
 		JalapenoLoginPage loginPage = new JalapenoLoginPage(driver, testData.getUrl());
-		assertTrue(loginPage.areBasicPageElementsPresent());
 
 		logStep("Fill in empty credentials and log in");
 		loginPage.loginEmptyCredentials();
 
-		logStep("empty username error displayed");
+		logStep("Verify username error displayed");
 		assertTrue(loginPage.getUserErrorText().contentEquals("Please enter a user name."));
 
-		logStep("empty password error displayed");
+		logStep("Verify password error displayed");
 		assertTrue(loginPage.getPasswordErrorText().contentEquals("Please enter a password."));
 
 	}
@@ -1729,7 +1726,6 @@ public class PatientPortal2AcceptanceTests extends BaseTestNGWebDriver {
 
 	@Test(enabled = true, groups = { "acceptance-solutions" }, retryAnalyzer = RetryAnalyzer.class)
 	public void testAskAStaffPaid() throws Exception {
-
 		String askPaidAmount = "$ 2";
 		String accountNumber = IHGUtil.createRandomNumericString(8);
 		String name = "TestPatient CreditCard";
@@ -1749,7 +1745,7 @@ public class PatientPortal2AcceptanceTests extends BaseTestNGWebDriver {
 		Thread.sleep(3000);
 		logStep("Fill question and continue");
 
-		askPage2 = askPage1.fillAndContinue(askaSubject,questionText);
+		askPage2 = askPage1.fillAndContinue(askaSubject, questionText);
 
 		logStep("Remove all cards because Selenium can't see AddNewCard button");
 		JalapenoAskAStaffV2Page1 askPaidPage = new JalapenoAskAStaffV2Page1(driver);
@@ -3842,4 +3838,3 @@ public class PatientPortal2AcceptanceTests extends BaseTestNGWebDriver {
 		askHistoryDetail.clickOnLogout();
 	}
 }
-
