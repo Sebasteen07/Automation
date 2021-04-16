@@ -194,7 +194,7 @@ public class PSS2PatientPortalAcceptanceTests02 extends BaseTestNGWebDriver {
 
 	}
 	
-	@Test(enabled = true, groups = {"AcceptanceTests"}, retryAnalyzer = RetryAnalyzer.class, dependsOnMethods ="testE2EAnonymousNG" )
+	@Test(enabled = true, groups = {"AcceptanceTests"}, retryAnalyzer = RetryAnalyzer.class, dependsOnMethods="testE2EAnonymousNG")
 	public void testCancelAnonymousviaEmailNG() throws Exception {
 		log("Test to verify if Cancel Appointment button available only after given hours.");
 		log("Step 1: Load test Data from External Property file.");
@@ -285,7 +285,7 @@ public class PSS2PatientPortalAcceptanceTests02 extends BaseTestNGWebDriver {
 		psspatientutils.deleteEmail_Mailinator(driver, "https://www.mailinator.com/", "ast@mailinator.com");
 	}
 	
-	@Test(enabled = true, groups = {"AcceptanceTests"}, retryAnalyzer = RetryAnalyzer.class, dependsOnMethods ="testE2EAnonymousAT")
+	@Test(enabled = true, groups = {"AcceptanceTests"}, retryAnalyzer = RetryAnalyzer.class)
 	public void testCancelAnonymousviaEmailAT() throws Exception {
 		log("Test to verify if Cancel Appointment for anonymous flow for the Athena Partners.");
 		log("Step 1: Load test Data from External Property file.");
@@ -330,8 +330,8 @@ public class PSS2PatientPortalAcceptanceTests02 extends BaseTestNGWebDriver {
 		log("Step 9: Click on Cancel/Reschedule link from email");
 
 		Thread.sleep(2000);
-		if (patientIdentificationPage.isPopUP()) {
-			patientIdentificationPage.popUPClick();
+		if (patientIdentificationPage.isPopUPAn()) {
+			patientIdentificationPage.isPopUPAn();
 		}
 
 		log("Step 10: Fill Patient details for Identification");

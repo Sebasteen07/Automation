@@ -6,6 +6,7 @@ import static org.testng.Assert.*;
 import org.testng.annotations.DataProvider;
 import org.testng.annotations.Parameters;
 import org.testng.annotations.Test;
+import org.testng.asserts.SoftAssert;
 
 import com.intuit.ifs.csscat.core.BaseTestNGWebDriver;
 import com.intuit.ifs.csscat.core.RetryAnalyzer;
@@ -1573,7 +1574,7 @@ public class PSS2PatientPortalAcceptanceTests extends BaseTestNGWebDriver {
 		psspatientutils.deleteEmail_Mailinator(driver, "https://www.mailinator.com/", testData.getEmail());
 	}
 
-	@Test(enabled = true, groups = {"AcceptanceTests"}, retryAnalyzer = RetryAnalyzer.class)
+	@Test(enabled = true, groups = {"AcceptanceTests"}, retryAnalyzer = RetryAnalyzer.class, dependsOnMethods="testE2ELoginlessForExistingPatientNG")
 	public void testCancelFromEmailNG() throws Exception {
 		log("Test to verify if Cancel Appointment button available only after given hours.");
 		log("Step 1: Load test Data from External Property file.");
@@ -1860,11 +1861,13 @@ public class PSS2PatientPortalAcceptanceTests extends BaseTestNGWebDriver {
 		AdminUser adminuser = new AdminUser();
 		PSSPatientUtils psspatientutils = new PSSPatientUtils();
 		PSSAdminUtils pssadminutils = new PSSAdminUtils();
+		SoftAssert softAssertion= new SoftAssert();
 
 		AdminAppointment adminAppointment = new AdminAppointment(driver);
 
-		psspatientutils.setTestData("GE", testData, adminuser);
+		psspatientutils.setTestData("GE", testData, adminuser);	
 
+		log("Step 2: Check the cancel reschedule settings in Admin UI");
 		ArrayList<String> adminCancelReasonList = pssadminutils.getCancelRescheduleSettings(driver, adminuser, testData, adminAppointment);
 
 		log("isShowCancellationRescheduleReason --" + testData.isShowCancellationRescheduleReason());
@@ -1873,8 +1876,8 @@ public class PSS2PatientPortalAcceptanceTests extends BaseTestNGWebDriver {
 		boolean can1 = testData.isShowCancellationRescheduleReason();
 		boolean can2 = testData.isShowCancellationReasonPM();
 
+		log("Step 3: Get the rule details from admin");
 		String rule = adminuser.getRule();
-
 		log("rule set in admin = " + rule);
 		rule = rule.replaceAll(" ", "");
 
@@ -1895,13 +1898,11 @@ public class PSS2PatientPortalAcceptanceTests extends BaseTestNGWebDriver {
 
 		homepage = scheduledAppointment.backtoHomePage();
 
-		log("Step 4: Verify if home page is loaded.");
+		log("Step 6: Verify if home page is loaded.");
 		homepage.areBasicPageElementsPresent();
-		log("Step 5: Verify Future appointment type for existence");
-		assertTrue(homepage.getFutureAppointmentListSize() > 0, "No Future Appointment found.");
-		log("Step 6: Verify Past appointment type for existence");
-		assertTrue(homepage.getPastAppointmentListSize() > 0, "No Past Appointment found.");
-
+		assertTrue(homepage.getFutureAppointmentListSize() > 0, "No Future Appointment found.");			
+		softAssertion.assertTrue(homepage.getPastAppointmentListSize() > 0, "No Past Appointment found.");		
+		
 		if (can1 == true & can2 == false) {
 
 			homepage.cancelAppointment("CANCEL");
@@ -1933,21 +1934,23 @@ public class PSS2PatientPortalAcceptanceTests extends BaseTestNGWebDriver {
 		AdminUser adminuser = new AdminUser();
 		PSSPatientUtils psspatientutils = new PSSPatientUtils();
 		PSSAdminUtils pssadminutils = new PSSAdminUtils();
+		SoftAssert softAssertion= new SoftAssert();
 
 		AdminAppointment adminAppointment = new AdminAppointment(driver);
 
 		psspatientutils.setTestData("NG", testData, adminuser);
 
+		log("Step 2: Check the admin settings for cancel an appointment");
 		ArrayList<String> adminCancelReasonList = pssadminutils.getCancelRescheduleSettings(driver, adminuser, testData, adminAppointment);
 
 		log("isShowCancellationRescheduleReason --" + testData.isShowCancellationRescheduleReason());
 		log("isShowCancellationReasonPM ---" + testData.isShowCancellationReasonPM());
 
 		boolean can1 = testData.isShowCancellationRescheduleReason();
-		boolean can2 = testData.isShowCancellationReasonPM();
+		boolean can2 = testData.isShowCancellationReasonPM();		
 
+		log("Step 3: Get the rule details");
 		String rule = adminuser.getRule();
-
 		log("rule set in admin = " + rule);
 		rule = rule.replaceAll(" ", "");
 
@@ -1961,6 +1964,7 @@ public class PSS2PatientPortalAcceptanceTests extends BaseTestNGWebDriver {
 
 		Thread.sleep(1000);
 
+		log("Step 6: Login to Patient Portal and book an future appointment****");		
 		HomePage homepage = loginlessPatientInformation.fillNewPatientForm(testData.getFirstName(), testData.getLastName(), testData.getDob(), testData.getEmail(),
 				testData.getGender(), testData.getZipCode(), testData.getPrimaryNumber());
 		homepage.btnStartSchedClick();
@@ -1968,13 +1972,12 @@ public class PSS2PatientPortalAcceptanceTests extends BaseTestNGWebDriver {
 
 		homepage = scheduledAppointment.backtoHomePage();
 
-		log("Step 4: Verify if home page is loaded.");
+		log("Step 7: Verify if home page is loaded.");
 		homepage.areBasicPageElementsPresent();
-		log("Step 5: Verify Future appointment type for existence");
-		assertTrue(homepage.getFutureAppointmentListSize() > 0, "No Future Appointment found.");
-		log("Step 6: Verify Past appointment type for existence");
-		assertTrue(homepage.getPastAppointmentListSize() > 0, "No Past Appointment found.");
+		assertTrue(homepage.getFutureAppointmentListSize() > 0, "No Future Appointment found.");		
+		softAssertion.assertTrue(homepage.getPastAppointmentListSize() > 0, "No Past Appointment found.");			
 
+		log("Step 8: Now cancel an appointent as per the settings in admin UI");
 		if (can1 == true & can2 == true) {
 
 			log("True- True Conditions follow");
@@ -2002,11 +2005,13 @@ public class PSS2PatientPortalAcceptanceTests extends BaseTestNGWebDriver {
 		AdminUser adminuser = new AdminUser();
 		PSSPatientUtils psspatientutils = new PSSPatientUtils();
 		PSSAdminUtils pssadminutils = new PSSAdminUtils();
+		SoftAssert softAssertion= new SoftAssert();
 
 		AdminAppointment adminAppointment = new AdminAppointment(driver);
 
 		psspatientutils.setTestData("AT", testData, adminuser);
 
+		log("Step 2: Check the admin settings for cancel");
 		ArrayList<String> adminCancelReasonList = pssadminutils.getCancelRescheduleSettings(driver, adminuser, testData, adminAppointment);
 
 		log("isShowCancellationRescheduleReason --" + testData.isShowCancellationRescheduleReason());
@@ -2015,8 +2020,8 @@ public class PSS2PatientPortalAcceptanceTests extends BaseTestNGWebDriver {
 		boolean can1 = testData.isShowCancellationRescheduleReason();
 		boolean can2 = testData.isShowCancellationReasonPM();
 
+		log("Step 3: Get the rule details");
 		String rule = adminuser.getRule();
-
 		log("rule set in admin = " + rule);
 		rule = rule.replaceAll(" ", "");
 
@@ -2037,11 +2042,11 @@ public class PSS2PatientPortalAcceptanceTests extends BaseTestNGWebDriver {
 		ScheduledAppointment scheduledAppointment = psspatientutils.selectAFlow(driver, rule, homepage, testData);
 
 		homepage = scheduledAppointment.backtoHomePage();
-
-		log("Step 4: Verify if home page is loaded.");
+		
+		log("Step 6: Verify if home page is loaded.");
 		homepage.areBasicPageElementsPresent();
-		log("Step 5: Verify Future appointment type for existence");
 		assertTrue(homepage.getFutureAppointmentListSize() > 0, "No Future Appointment found.");
+		softAssertion.assertTrue(homepage.getPastAppointmentListSize() > 0, "No Past Appointment found.");
 
 		if (can1 == true & can2 == true) {
 
@@ -2122,9 +2127,7 @@ public class PSS2PatientPortalAcceptanceTests extends BaseTestNGWebDriver {
 		homepage = scheduledAppointment.backtoHomePage();
 
 		homepage.clickRescheduleLink();
-		psspatientutils.rescheduleAPT(testData, driver);
-
-		psspatientutils.deleteEmail_Mailinator(driver, "https://www.mailinator.com/", testData.getEmail());
+		psspatientutils.rescheduleAPT(testData, driver);		
 
 	}
 
@@ -2187,9 +2190,7 @@ public class PSS2PatientPortalAcceptanceTests extends BaseTestNGWebDriver {
 		homepage = scheduledAppointment.backtoHomePage();
 
 		homepage.clickRescheduleLink();
-		psspatientutils.rescheduleAPT(testData, driver);
-
-		psspatientutils.deleteEmail_Mailinator(driver, "https://www.mailinator.com/", testData.getEmail());
+		psspatientutils.rescheduleAPT(testData, driver);		
 
 	}
 
@@ -2246,7 +2247,7 @@ public class PSS2PatientPortalAcceptanceTests extends BaseTestNGWebDriver {
 		homepage.clickRescheduleLink();
 		psspatientutils.rescheduleAPT(testData, driver);
 
-		psspatientutils.deleteEmail_Mailinator(driver, "https://www.mailinator.com/", testData.getEmail());
+		
 	}
 
 	@Test(enabled = true, groups = {"AcceptanceTests"}, retryAnalyzer = RetryAnalyzer.class)
@@ -2373,6 +2374,8 @@ public class PSS2PatientPortalAcceptanceTests extends BaseTestNGWebDriver {
 		cancelRescheduleDecisionPage.areBasicPageElementsPresent();
 		cancelRescheduleDecisionPage.clickReschedule();
 		psspatientutils.rescheduleAPT(testData, driver);
+		
+		psspatientutils.deleteEmail_Mailinator(driver, "https://www.mailinator.com/", testData.getEmail());
 
 	}
 
@@ -2443,6 +2446,8 @@ public class PSS2PatientPortalAcceptanceTests extends BaseTestNGWebDriver {
 		cancelRescheduleDecisionPage.areBasicPageElementsPresent();
 		cancelRescheduleDecisionPage.clickReschedule();
 		psspatientutils.rescheduleAPT(testData, driver);
+		
+		psspatientutils.deleteEmail_Mailinator(driver, "https://www.mailinator.com/", testData.getEmail());
 
 	}
 
@@ -2516,6 +2521,7 @@ public class PSS2PatientPortalAcceptanceTests extends BaseTestNGWebDriver {
 		cancelRescheduleDecisionPage.areBasicPageElementsPresent();
 		cancelRescheduleDecisionPage.clickReschedule();
 		psspatientutils.rescheduleAPT(testData, driver);
+		psspatientutils.deleteEmail_Mailinator(driver, "https://www.mailinator.com/", testData.getEmail());
 
 	}
 
@@ -2564,6 +2570,8 @@ public class PSS2PatientPortalAcceptanceTests extends BaseTestNGWebDriver {
 		cancelRescheduleDecisionPage.areBasicPageElementsPresent();
 		cancelRescheduleDecisionPage.clickReschedule();
 		psspatientutils.rescheduleAPT(testData, driver);
+		
+		psspatientutils.deleteEmail_Mailinator(driver, "https://www.mailinator.com/", testData.getEmail());
 
 	}
 
@@ -4866,7 +4874,6 @@ public class PSS2PatientPortalAcceptanceTests extends BaseTestNGWebDriver {
 		
 
 	}
-
 }
 
 
