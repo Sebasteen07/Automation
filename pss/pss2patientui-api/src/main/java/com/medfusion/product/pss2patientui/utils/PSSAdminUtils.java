@@ -712,7 +712,21 @@ public class PSSAdminUtils {
 			manageSpecialty.clickGender();
 		}
 		manageSpecialty.selectgender();
-
+	}
+	public void agerulewithSpeciality(WebDriver driver, AdminUser adminuser, Appointment appointment) throws Exception {
+		Log4jUtil.log("Step 2: Login to Admin portal.");
+		PSS2PracticeConfiguration pss2practiceconfig = loginToAdminPortal(driver, adminuser);
+		PatientFlow patientflow = pss2practiceconfig.gotoPatientFlowTab();
+		adminuser.setRule(patientflow.getRule());
+		Log4jUtil.log("rule= " + patientflow.getRule());
+		setRulesNoSpecialitySet3(patientflow);
+		AdminPatientMatching adminpatientmatching = patientflow.gotoPatientMatchingTab();
+		adminpatientmatching.patientMatchingSelection();
+		ManageSpecialty manageSpecialty = pss2practiceconfig.gotoSpeciality();
+		manageSpecialty.selectSpecility(appointment.getSpeciality());
+		Log4jUtil.log("Status of Checkbox" + manageSpecialty.checkBoxStatus());
+		manageSpecialty.ageRule();
+		manageSpecialty.ageRuleparameter(appointment.getAgeRuleMonthFirst(), appointment.getAgeRuleMonthSecond());
 
 	}
 }
