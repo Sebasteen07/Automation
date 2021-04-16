@@ -211,7 +211,6 @@ public class JalapenoCcdViewerPage extends MedfusionPage {
 		webElementsList.add(closeButton);
 		webElementsList.add(savePdfButton);
 		webElementsList.add(saveRawButton);
-		webElementsList.add(sendDirectInformationLink);
 		webElementsList.add(basicInformation);
 		webElementsList.add(careTeamMembers);
 
