@@ -39,6 +39,7 @@ import com.intuit.ifs.csscat.core.utils.Log4jUtil;
 import com.intuit.ihg.product.mu2.utils.MU2Constants;
 import com.medfusion.common.utils.IHGUtil;
 import com.medfusion.product.object.maps.patientportal2.page.JalapenoLoginPage;
+import com.medfusion.product.object.maps.patientportal2.page.JalapenoMenu;
 import com.medfusion.product.object.maps.patientportal2.page.AccountPage.JalapenoAccountPage;
 import com.medfusion.product.object.maps.patientportal2.page.CcdPage.JalapenoCcdViewerPage;
 import com.medfusion.product.object.maps.patientportal2.page.CcdPage.MedicalRecordSummariesPage;
@@ -83,7 +84,6 @@ public class MU2Utils {
 		
 		Log4jUtil.log("MU2GetEvent Step 2: Go to Health Record Summaries");
 		MedicalRecordSummariesPage MedicalRecordSummariesPageObject = homePage.clickOnMedicalRecordSummaries(driver);
-		assertTrue(MedicalRecordSummariesPageObject.areBasicPageElementsPresent(), "Failed to Load Health Record Summaries ");
 		
 		MedicalRecordSummariesPageObject.setFilterToDefaultPositionAndCheckElementsNew();
 		
@@ -359,6 +359,7 @@ public class MU2Utils {
 		Log4jUtil.log("mu2GetEventGuardian Step 1: Login to Patient Portal");
 		JalapenoLoginPage loginPage = new JalapenoLoginPage(driver, testData.PORTAL_URL);
 		JalapenoHomePage homePage = loginPage.login(username, testData.PatientPassword);
+		JalapenoMenu menuPage = new JalapenoHomePage(driver);
 		ccdMessageList.add(testData.CCDMessageID1);
 		Log4jUtil.log("Detecting if Home Page is opened");
 		Thread.sleep(7000);
@@ -371,7 +372,6 @@ public class MU2Utils {
 		if(isCCDViewer==true) {
 			Log4jUtil.log("mu2GetEventGuardian Step 2: Click on messages solution");
 			JalapenoMessagesPage messagesPage = homePage.showMessages(driver);
-			assertTrue(messagesPage.areBasicPageElementsPresent(), "Inbox failed to load properly.");
 	
 			Log4jUtil.log("mu2GetEventGuardian Step 3: Validate message subject and send date");
 			Thread.sleep(1000);
@@ -383,7 +383,6 @@ public class MU2Utils {
 			JalapenoCcdViewerPage jalapenoCcdPage = messagesPage.findCcdMessage(driver);
 			Thread.sleep(7000);
 			Log4jUtil.log("mu2GetEventGuardian Step 5: Verify if CCD Viewer is loaded and click Close Viewer");
-			assertTrue(jalapenoCcdPage.areBasicPageElementsPresent());
 			
 			Log4jUtil.log("mu2GetEventGuardian Step 6: SecureEmail event Generated "+testData.TRANSMIT_EMAIL);
 			Boolean isSecureMessageTransmit = jalapenoCcdPage.sendInformationToDirectEmail(testData.TRANSMIT_EMAIL);
@@ -404,14 +403,12 @@ public class MU2Utils {
 			Thread.sleep(4000);
 			performRobotTask(driver,true);
 			messagesPage = jalapenoCcdPage.closeCcd(driver);
-			assertTrue(messagesPage.areBasicPageElementsPresent());
-			homePage = messagesPage.backToHomePage(driver);
+			menuPage.clickOnMenuHome();
 		}
 		if(isCCDViewer == false) {
 			ccdMessageList.add(testData.CCDMessageID2);
 			Log4jUtil.log("mu2GetEventGuardian Step 2: Go to Health Record Summaries");
 			MedicalRecordSummariesPage MedicalRecordSummariesPageObject = homePage.clickOnMedicalRecordSummaries(driver);
-			assertTrue(MedicalRecordSummariesPageObject.areBasicPageElementsPresent(), "Failed to Load Health Record Summaries ");
 			
 			MedicalRecordSummariesPageObject.setFilterToDefaultPositionAndCheckElementsNew();
 			

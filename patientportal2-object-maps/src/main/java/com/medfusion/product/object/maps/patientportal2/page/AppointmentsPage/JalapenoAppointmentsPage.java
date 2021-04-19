@@ -44,16 +44,6 @@ public class JalapenoAppointmentsPage extends MedfusionPage {
 				IHGUtil.PrintMethodName();
 		}
 
-		@Override
-		public boolean areBasicPageElementsPresent() {
-				ArrayList<WebElement> webElementsList = new ArrayList<WebElement>();
-				webElementsList.add(upcomingAppointmentsButton);
-				webElementsList.add(pastAppointmentsButton);
-				webElementsList.add(previousAppointmentsRequestsButton);
-				webElementsList.add(appointmentSolutionButton);
-				return assessPageElements(webElementsList);
-		}
-
 		public List<WebElement> getAppointments() {
 				IHGUtil util = new IHGUtil(driver);
 				if (util.isFoundBy(By.id(NO_APPOINTMENTS_TEXT_ID), 5)) {
@@ -84,10 +74,6 @@ public class JalapenoAppointmentsPage extends MedfusionPage {
 		}
 
 		public boolean assessAppointmentsPageElementsNoAppointments() {
-				if (!areBasicPageElementsPresent()) {
-						return false;
-				}
-
 				ArrayList<WebElement> webElementsList = new ArrayList<WebElement>();
 				webElementsList.add(noAppointmentsText);
 

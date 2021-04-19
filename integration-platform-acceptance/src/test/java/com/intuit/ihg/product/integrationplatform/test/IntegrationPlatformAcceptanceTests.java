@@ -597,11 +597,9 @@ public class IntegrationPlatformAcceptanceTests extends BaseTestNGWebDriver {
 		payBillsPage.removeAllCards();
 		logStep("Check that no card is present");
 		assertFalse(payBillsPage.isAnyCardPresent());
-		assertTrue(payBillsPage.areBasicPageElementsPresent());
 
 		JalapenoPayBillsConfirmationPage confirmationPage = payBillsPage.fillPaymentInfo(amount, accountNumber,
 				creditCard);
-		assertTrue(confirmationPage.areBasicPageElementsPresent());
 		logStep("Verifying credit card ending");
 		assertTrue(confirmationPage.getCreditCardEnding().equals(creditCard.getLastFourDigits()));
 
@@ -687,8 +685,6 @@ public class IntegrationPlatformAcceptanceTests extends BaseTestNGWebDriver {
 
 		Thread.sleep(9000);
 		JalapenoMessagesPage messagesPage = phomePage.showMessages(driver);
-		assertTrue(messagesPage.areBasicPageElementsPresent(), "Inbox failed to load properly.");
-
 		Long since = timestamp / 1000L - 60 * 24;
 
 		log("Step 15: Validate message loads and is the right message");
@@ -1164,7 +1160,6 @@ public class IntegrationPlatformAcceptanceTests extends BaseTestNGWebDriver {
 
 		Thread.sleep(9000);
 		JalapenoMessagesPage messagesPage = homePage.showMessages(driver);
-		assertTrue(messagesPage.areBasicPageElementsPresent(), "Inbox failed to load properly.");
 
 		log("Step 8: Validate message loads and is the right message");
 		assertTrue(messagesPage.isMessageDisplayed(driver, Subject), "Message received with timestamp");
@@ -1210,7 +1205,6 @@ public class IntegrationPlatformAcceptanceTests extends BaseTestNGWebDriver {
 
 		log("Step 5: Go to Inbox");
 		JalapenoMessagesPage inboxPage = homePage.clickOnMenuMessages();
-		assertTrue(inboxPage.areBasicPageElementsPresent(), "Inbox failed to load properly.");
 
 		log("Step 5: Validate message subject and send date");
 		assertTrue(inboxPage.isMessageDisplayed(driver, "You have a new health data summary"));
@@ -1220,11 +1214,9 @@ public class IntegrationPlatformAcceptanceTests extends BaseTestNGWebDriver {
 		JalapenoCcdViewerPage jalapenoCcdPage = inboxPage.findCcdMessage(driver);
 
 		log("Step 7: Verify if CCD Viewer is loaded and click Close Viewer");
-		assertTrue(jalapenoCcdPage.areBasicPageElementsPresent());
 		inboxPage = jalapenoCcdPage.closeCcd(driver);
 
 		log("Step 8: Logging out");
-		assertTrue(inboxPage.areBasicPageElementsPresent());
 		menuPage.clickOnMenuHome();
 		homePage.clickOnLogout();
 	}
@@ -1344,7 +1336,6 @@ public class IntegrationPlatformAcceptanceTests extends BaseTestNGWebDriver {
 
 		log("Step 14:Click on messages solution");
 		JalapenoMessagesPage messagesPage = homePage2.showMessages(driver);
-		assertTrue(messagesPage.areBasicPageElementsPresent(), "Inbox failed to load properly.");
 
 		log("Step 15: Find & validate message in Inbox");
 		assertTrue(messagesPage.isMessageDisplayed(driver, arSMSubject));

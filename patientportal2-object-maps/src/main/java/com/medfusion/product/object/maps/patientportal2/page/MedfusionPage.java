@@ -5,8 +5,6 @@ package com.medfusion.product.object.maps.patientportal2.page;
 import static java.lang.Thread.sleep;
 
 import java.awt.datatransfer.StringSelection;
-import java.sql.Date;
-import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.Map;
 import java.util.Map.Entry;
@@ -66,10 +64,6 @@ public abstract class MedfusionPage extends BasePageObject {
 				//System.out.println("Size of window after maximizing: " + driver.manage().window().getSize());
 				printCookies();
 				PageFactory.initElements(driver, this);
-
-				if (!areBasicPageElementsPresent()) {
-						throw new UnsupportedOperationException("Page was not successfully loaded");
-				}
 		}
 
 		public void printCookies() {
@@ -80,11 +74,6 @@ public abstract class MedfusionPage extends BasePageObject {
 				}
 				log("--------------------------", Level.DEBUG);
 		}
-
-		/**
-		 * Will check basic elements in page constructor. Should be properly overwritten if you want to make this check
-		 */
-		public abstract boolean areBasicPageElementsPresent();
 
 		public boolean isElementVisible(WebElement element, int timeOutInSeconds){
 				try{
@@ -102,7 +91,6 @@ public abstract class MedfusionPage extends BasePageObject {
 			 log("Trying to handle survey pop up by adding cookie");
              String name = "QSI_SI_0CUNpSFNBlJ5QGN_intercept";               
              String value = "true";
-             boolean isSecure = true;
              Cookie ck = new Cookie(name,value);           
              driver.manage().addCookie(ck);
 				log("Checking if some confirmation needed");

@@ -103,17 +103,6 @@ public class JalapenoMyAccountPreferencesPage extends JalapenoMyAccountPage {
 				}
 		}
 
-		@Override
-		public boolean areBasicPageElementsPresent() {
-				ArrayList<WebElement> webElementsList = new ArrayList<WebElement>();
-
-				webElementsList.add(patientMessagingOptOut);
-				webElementsList.add(apptRemindersOptOut);
-				webElementsList.add(saveAccountChanges);
-
-				return assessPageElements(webElementsList);
-		}
-
 		@Deprecated
 		public boolean areStatementPreferenceAndPreferedLocationElementsPresent() {
 				ArrayList<WebElement> webElementsList = new ArrayList<WebElement>();

@@ -55,15 +55,7 @@ public class JalapenoAccountPage extends JalapenoMenu {
 				super(driver);
 				IHGUtil.PrintMethodName();
 		}
-
-		@Override
-		public boolean areBasicPageElementsPresent() {
-				ArrayList<WebElement> webElementList = new ArrayList<WebElement>();
-				webElementList.add(editMyAccountButton);
-				webElementList.add(inviteNewButton);
-				return assessPageElements(webElementList);
-		}
-
+		
 		public JalapenoMyAccountProfilePage clickOnEditMyAccount() {
 				log("Trying to click on Edit button for My Account");
 				wait.until(ExpectedConditions.visibilityOf(editMyAccountButton));

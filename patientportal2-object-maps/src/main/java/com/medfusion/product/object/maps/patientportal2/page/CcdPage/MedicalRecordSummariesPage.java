@@ -134,20 +134,6 @@ public class MedicalRecordSummariesPage extends JalapenoMenu {
 		super(driver);
 	}
 
-	@Override
-	public boolean areBasicPageElementsPresent() {
-		ArrayList<WebElement> webElementsList = new ArrayList<WebElement>();
-		webElementsList.add(fromDate);
-		webElementsList.add(toDate);
-		webElementsList.add(selectAll);
-		webElementsList.add(emailButton);
-		webElementsList.add(downloadButton);
-		webElementsList.add(firstVisibleCCDCheckbox);
-		webElementsList.add(firstVisibleCCDDate);
-
-		return assessPageElements(webElementsList);
-	}
-
 	public void sendCCDIfNewestIsOlderThan(int days) {
 		// added for investigation why it is failing on locals outside of US and what
 		// zone is used on Jenkins where it is working
@@ -241,7 +227,6 @@ public class MedicalRecordSummariesPage extends JalapenoMenu {
 	public void setFilterToDefaultPositionAndCheckElements() {
 		IHGUtil.waitForElement(driver, 60, firstVisibleCCDDate);
 		filterCCDs(MFDateUtil.parseDateToUTCZonedTime(firstVisibleCCDDate.getText()).toInstant(), Instant.now());
-		assertTrue(areBasicPageElementsPresent());
 	}
 
 	private boolean areEmailLightboxElementsPresent() {
@@ -317,7 +302,6 @@ public class MedicalRecordSummariesPage extends JalapenoMenu {
 
 	public void setFilterToDefaultPositionAndCheckElementsNew() {
 		filterCCDs(getOnlyDateFromElementNew(firstVisibleCCDDate), getDateFromTimeStamp(System.currentTimeMillis()));
-		assertTrue(areBasicPageElementsPresent());
 	}
 
 	private String getOnlyDateFromElementNew(WebElement element) {

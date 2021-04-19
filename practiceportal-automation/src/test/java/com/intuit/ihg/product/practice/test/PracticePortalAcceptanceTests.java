@@ -555,9 +555,7 @@ public class PracticePortalAcceptanceTests extends BaseTestNGWebDriver {
 		assertNotNull(url, "Error: Reset Password link not found.");
 		
 		JalapenoForgotPasswordPage4 forgotPasswordPage = new JalapenoForgotPasswordPage4(driver);
-		JalapenoHomePage homePage= forgotPasswordPage.fillInPassword(testData.getProperty("newPassword"));
-		assertTrue(homePage.areBasicPageElementsPresent());
-	
+		forgotPasswordPage.fillInPassword(testData.getProperty("newPassword"));	
 	}
 
 	private String getRedirectUrl(String originUrl) {

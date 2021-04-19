@@ -156,12 +156,6 @@ public class JalapenoPrescriptionsPage extends JalapenoMenu {
 
 	}
 
-	@Override
-	public boolean areBasicPageElementsPresent() {
-		log("Method areBasicPageElementsPresent() is not implemented, so it is considered that all expected elements are present.");
-		return true;
-	}
-
 	public void clickContinueButton(WebDriver driver) {
 		driver.switchTo().frame("iframebody");
 

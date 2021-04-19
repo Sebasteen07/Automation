@@ -4,7 +4,6 @@ package com.medfusion.product.object.maps.patientportal2.page.MessagesPage;
 import static org.testng.Assert.assertEquals;
 import static org.testng.Assert.assertTrue;
 
-import java.util.ArrayList;
 import java.util.List;
 
 import org.openqa.selenium.By;
@@ -108,17 +107,6 @@ public class JalapenoMessagesPage extends JalapenoMenu {
 
 	@FindBy(how = How.XPATH, using = "//*[@id='rx_pharmacy0']/span[2]")
 	private WebElement pharmacyOnPortal;
-
-	@Override
-	public boolean areBasicPageElementsPresent() {
-		ArrayList<WebElement> webElementsList = new ArrayList<WebElement>();
-
-		webElementsList.add(inboxFolder);
-		webElementsList.add(sentFolder);
-		webElementsList.add(archiveFolder);
-
-		return assessPageElements(webElementsList);
-	}
 
 	public JalapenoMessagesPage(WebDriver driver) {
 		super(driver);

@@ -53,7 +53,6 @@ public class PhrProfilePage extends BasePageObject {
 		IHGUtil.PrintMethodName();
 		log("Value of City: " + txtCity.getAttribute("value"));
 		log("Value of Zip: " + txtzipCode.getAttribute("value"));
-
 		assertEquals(txtCity.getAttribute("value"), city, "The City is not updated in PHR ##### ");
 		assertEquals(txtzipCode.getAttribute("value"), zip, "The Zip code is not updated in PHR  ##### ");
 	}
@@ -61,53 +60,14 @@ public class PhrProfilePage extends BasePageObject {
 	public void assertMobilePhoneNumber(String phoneNumber) {
 		IHGUtil.PrintMethodName();
 		log("Value of Phone number: " + txtMobile.getAttribute("value"));
-
 		assertEquals(txtMobile.getAttribute("value").replaceAll("-", ""), phoneNumber, "Mobile Phone number is not updated in PHR ##### ");
 	}
 
 	public void assertHomePhoneNumber(String phoneNumber) {
 		IHGUtil.PrintMethodName();
 		log("Value of Phone number: " + txtHomePhone.getAttribute("value"));
-
 		assertEquals(txtHomePhone.getAttribute("value").replaceAll("-", ""), phoneNumber, "Home Phone number is not updated in PHR ##### ");
 	}
-
-
-	/**
-	 * The method will modify data in the PHR site with Primary User Data ie from Portal sheet
-	 * 
-	 * @param secondayCity [the data is from Portal sheet]
-	 * @param secondaryzip [the data is from Portal sheet]
-	 * @throws Exception
-	 */
-
-	public void setCityZip(String portalCity, String portalZip) throws Exception {
-		IHGUtil.PrintMethodName();
-		log("Setting the City to " + portalCity);
-		log("Setting the ZIP to " + portalZip);
-		txtCity.clear();
-		txtCity.sendKeys(portalCity);
-		txtzipCode.clear();
-		txtzipCode.sendKeys(portalZip);
-		saveChanges();
-	}
-
-	public void setMobilePhoneNumber(String phoneNumber) throws Exception {
-		IHGUtil.PrintMethodName();
-		log("Setting the Mobile Phone number to " + phoneNumber);
-		txtMobile.clear();
-		txtMobile.sendKeys(phoneNumber.substring(0, 3) + "-" + phoneNumber.substring(3, 6) + "-" + phoneNumber.substring(6));
-		saveChanges();
-	}
-
-	public void setHomePhoneNumber(String phoneNumber) throws Exception {
-		IHGUtil.PrintMethodName();
-		log("Setting the Home Phone number to " + phoneNumber);
-		txtHomePhone.clear();
-		txtHomePhone.sendKeys(phoneNumber.substring(0, 3) + "-" + phoneNumber.substring(3, 6) + "-" + phoneNumber.substring(6));
-		saveChanges();
-	}
-
 
 	/**
 	 * Click on log out button and return PHR LogIn page
@@ -115,15 +75,8 @@ public class PhrProfilePage extends BasePageObject {
 	 * @return
 	 */
 	public PhrLoginPage clickLogout() {
-
 		IHGUtil.PrintMethodName();
 		btnLogout.click();
 		return PageFactory.initElements(driver, PhrLoginPage.class);
 	}
-
-	public void saveChanges() {
-		btnSaveChanges.click();
-		IHGUtil.waitForElementByXpath(driver, ".//*[@class='info']", 30);
-	}
-
 }

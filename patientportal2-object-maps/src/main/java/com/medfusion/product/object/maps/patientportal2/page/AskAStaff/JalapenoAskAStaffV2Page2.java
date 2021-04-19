@@ -1,3 +1,4 @@
+// Copyright 2013-2021 NXGN Management, LLC. All Rights Reserved.
 package com.medfusion.product.object.maps.patientportal2.page.AskAStaff;
 
 import com.medfusion.product.object.maps.patientportal2.page.JalapenoMenu;
@@ -23,13 +24,6 @@ public class JalapenoAskAStaffV2Page2 extends JalapenoMenu {
 
 		public JalapenoAskAStaffV2Page2(WebDriver driver) {
 				super(driver);
-		}
-
-		@Override
-		public boolean areBasicPageElementsPresent() {
-				//TODO
-				log("Method areBasicPageElementsPresent() is not implemented, so it is considered that all expected elements are present.");
-				return true;
 		}
 
 		public String getSubject() {
