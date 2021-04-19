@@ -341,7 +341,7 @@ public class PSS2PatientPortalAcceptanceTests extends BaseTestNGWebDriver {
 					testData.getGender(), testData.getZipCode(), testData.getPrimaryNumber());
 		}
 		homepage.btnStartSchedClick();
-		psspatientutils.selectAFlow(driver, rule, homepage, testData);
+		psspatientutils.selectAFlow(driver, rule, homepage, testData);	
 	}
 
 
@@ -4901,11 +4901,9 @@ public class PSS2PatientPortalAcceptanceTests extends BaseTestNGWebDriver {
 		int j = Integer.parseInt(testData.getAgeRuleMonthSecond());
 		if (psspatientutils.ageCurrentmonths(testData) > i && psspatientutils.ageCurrentmonths(testData) < j) {
 			speciality.selectSpeciality1(testData.getSpeciality());
-			Log4jUtil.log("Specility Name is....." + speciality.selectSpeciality1(testData.getSpeciality()));
 			assertEquals(speciality.selectSpeciality1(testData.getSpeciality()), testData.getSpeciality());
-			Log4jUtil.log("Test Case Passed.....");
 		} else {
-			Log4jUtil.log("No Specility avaliable Beacuase age Rule");
+			assertNotEquals(speciality.selectSpeciality1(testData.getSpeciality()), testData.getSpeciality());
 		}
 	}
 }
