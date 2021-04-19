@@ -1,4 +1,4 @@
-// Copyright 2018-2020 NXGN Management, LLC. All Rights Reserved.
+// Copyright 2013-2021 NXGN Management, LLC. All Rights Reserved.
 package com.medfusion.product.object.maps.pss2.page.ConfirmationPage;
 
 import java.util.ArrayList;
@@ -71,16 +71,6 @@ public class ConfirmationPage extends PSS2MainPage {
 	}
 
 	CommonMethods commonMethods = new CommonMethods(driver);
-
-	@Override
-	public boolean areBasicPageElementsPresent() {
-		ArrayList<WebElement> webElementsList = new ArrayList<WebElement>();
-		commonMethods.highlightElement(confirmApptHeading);
-		webElementsList.add(confirmApptHeading);
-		webElementsList.add(confirmaApptToolti);
-		return assessPageElements(webElementsList);
-
-	}
 
 	public void sendRescheduleReason() throws InterruptedException {
 		commonMethods.highlightElement(rescheduleReasonInputBox);

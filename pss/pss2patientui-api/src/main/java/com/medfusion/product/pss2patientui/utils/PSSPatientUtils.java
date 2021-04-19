@@ -1,4 +1,4 @@
-// Copyright 2018-2020 NXGN Management, LLC. All Rights Reserved.
+// Copyright 2013-2021 NXGN Management, LLC. All Rights Reserved.
 package com.medfusion.product.pss2patientui.utils;
 
 import static org.testng.Assert.assertEquals;
@@ -110,10 +110,8 @@ public class PSSPatientUtils {
 		}
 
 		Log4jUtil.log("Step 9: Verfiy location Page and location =" + testData.getLocation());
-		assertTrue(location.areBasicPageElementsPresent());
 		Provider provider = location.searchProvider(testData.getLocation());
 		Log4jUtil.log("Step 10: Verfiy Provider Page and provider to be selected = " + testData.getProvider());
-		assertTrue(provider.areBasicPageElementsPresent());
 		AppointmentPage appointment = provider.selectAppointment(testData.getProvider());
 		Log4jUtil.log("Step 11: Verfiy Appointment Page and Appointment to be selected = " + testData.getAppointmenttype());
 		AppointmentDateTime aptDateTime = appointment.selectAppointmentandClick(testData.getAppointmenttype(), Boolean.valueOf(testData.getIsAppointmentPopup()));
@@ -166,10 +164,8 @@ public class PSSPatientUtils {
 		}
 
 		Log4jUtil.log("Step 9: Verfiy Provider Page and provider =" + testData.getProvider());
-		assertTrue(provider.areBasicPageElementsPresent());
 		Location location = provider.selectLocation(testData.getProvider());
 		Log4jUtil.log("Step 10: Verfiy Location Page and location to be selected = " + testData.getLocation());
-		assertTrue(location.areBasicPageElementsPresent());
 		AppointmentPage appointmentpage = location.selectAppointment(testData.getLocation());
 		Log4jUtil.log("Step 11: Verfiy Appointment Page and Appointment to be selected = " + testData.getAppointmenttype());
 		AppointmentDateTime aptDateTime =
@@ -225,11 +221,9 @@ public class PSSPatientUtils {
 
 		Log4jUtil.log("Step 9: Verfiy Provider Page and provider =" + testData.getProvider());
 		Log4jUtil.log("going to choose an provider");
-		assertTrue(provider.areBasicPageElementsPresent());
 		Log4jUtil.log("basic element are present");
 		AppointmentPage appointmentpage = provider.selectAppointment(testData.getProvider());
 		Log4jUtil.log("Step 10: Verfiy Appointment Page and appointment to be selected = " + testData.getAppointmenttype());
-		assertTrue(appointmentpage.areBasicPageElementsPresent());
 		Location location = appointmentpage.selectTypeOfLocation(testData.getAppointmenttype(), true);
 		Log4jUtil.log("Step 11: Verfiy Location Page and location = " + testData.getAppointmenttype());
 		AppointmentDateTime aptDateTime = location.selectDatTime(testData.getLocation());
@@ -283,16 +277,13 @@ public class PSSPatientUtils {
 
 		}
 		Log4jUtil.log("Step 9: Verfiy Location Page and location =" + testData.getLocation());
-		assertTrue(location.areBasicPageElementsPresent());
 		AppointmentPage appointment = location.selectAppointment(testData.getLocation());
 		Log4jUtil.log("Step 10: Verfiy Appointment Page and appointment to be selected = " + testData.getAppointmenttype());
-		assertTrue(appointment.areBasicPageElementsPresent());
 		Thread.sleep(15000);
 		Provider provider = appointment.selectTypeOfProvider(testData.getAppointmenttype(), Boolean.valueOf(testData.getIsAppointmentPopup()));
 		Log4jUtil.log("Step 11: Verfiy Provider Page and Provider = " + testData.getProvider());
 		Thread.sleep(2000);
 		AppointmentDateTime aptDateTime = provider.getProviderandClick(testData.getProvider());
-		assertTrue(aptDateTime.areBasicPageElementsPresent());
 
 		Log4jUtil.log("Step 12: Select avaiable Date ");
 		if (testData.isFutureApt()) {
@@ -344,17 +335,12 @@ public class PSSPatientUtils {
 			appointment = homepage.appointmentpage();
 		}
 		Log4jUtil.log("Step 9: Verfiy Appointment Page and appointment =" + testData.getAppointmenttype());
-		assertTrue(appointment.areBasicPageElementsPresent());
 		Location location = appointment.selectTypeOfLocation(testData.getAppointmenttype(), Boolean.valueOf(testData.getIsAppointmentPopup()));
 		Log4jUtil.log("Step 10: Verfiy Location Page and location to be selected = " + testData.getLocation());
-		assertTrue(location.areBasicPageElementsPresent());
 		Provider provider = location.searchProvider(testData.getLocation());
 		Log4jUtil.log("address = " + location.getAddressValue());
 		Log4jUtil.log("Step 11: Verfiy Provider Page and Provider = " + testData.getProvider());
-		assertTrue(provider.areBasicPageElementsPresent());
-
 		AppointmentDateTime aptDateTime = provider.getProviderandClick(testData.getProvider());
-		assertTrue(aptDateTime.areBasicPageElementsPresent());
 
 		Log4jUtil.log("Step 12: Select avaiable Date ");
 		if (testData.isFutureApt()) {
@@ -439,9 +425,7 @@ public class PSSPatientUtils {
 		Log4jUtil.log("Step 10: Verfiy Provider Page and Provider = " + testData.getProvider());
 		Location location = provider.selectLocation(testData.getProvider());
 		Log4jUtil.log("Step 11: Verfiy Location Page and location to be selected = " + testData.getLocation());
-		Log4jUtil.log("Location Page loaded ? " + location.areBasicPageElementsPresent());
 		AppointmentDateTime aptDateTime = location.selectDatTime(testData.getLocation());
-		Log4jUtil.log("aptDateTime Page loaded ? " + aptDateTime.areBasicPageElementsPresent());
 
 		Log4jUtil.log("Step 12: Select avaiable Date ");
 		if (testData.isFutureApt()) {
@@ -563,16 +547,12 @@ public class PSSPatientUtils {
 			}
 		}
 		Log4jUtil.log("Step 9: Verfiy Appointment Page and appointment =" + testData.getAppointmenttype());
-		assertTrue(appointment.areBasicPageElementsPresent());
 		Location location = appointment.selectTypeOfLocation(testData.getAppointmenttype(), Boolean.valueOf(testData.getIsAppointmentPopup()));
 		Log4jUtil.log("Step 10: Verfiy Location Page and location to be selected = " + testData.getLocation());
-		assertTrue(location.areBasicPageElementsPresent());
 		Provider provider = location.searchProvider(testData.getLocation());
 		Log4jUtil.log("address = " + location.getAddressValue());
 		Log4jUtil.log("Step 11: Verfiy Provider Page and Provider = " + testData.getProvider());
-		assertTrue(provider.areBasicPageElementsPresent());
 		AppointmentDateTime aptDateTime = provider.getProviderandClick(testData.getProvider());
-		assertTrue(aptDateTime.areBasicPageElementsPresent());
 
 		Log4jUtil.log("Step 12: Select avaiable Date ");
 		if (testData.isFutureApt()) {
@@ -632,16 +612,13 @@ public class PSSPatientUtils {
 
 		}
 		Log4jUtil.log("Step 9: Verfiy Location Page and location =" + testData.getLocation());
-		assertTrue(location.areBasicPageElementsPresent());
 		AppointmentPage appointment = location.selectAppointment(testData.getLocation());
 		Log4jUtil.log("Step 10: Verfiy Appointment Page and appointment to be selected = " + testData.getAppointmenttype());
-		assertTrue(appointment.areBasicPageElementsPresent());
 		Thread.sleep(15000);
 		Provider provider = appointment.selectTypeOfProvider(testData.getAppointmenttype(), Boolean.valueOf(testData.getIsAppointmentPopup()));
 		Log4jUtil.log("Step 11: Verfiy Provider Page and Provider = " + testData.getProvider());
 		Thread.sleep(22000);
 		AppointmentDateTime aptDateTime = provider.getProviderandClick(testData.getProvider());
-		assertTrue(aptDateTime.areBasicPageElementsPresent());
 
 		Log4jUtil.log("Step 12: Select avaiable Date ");
 		if (testData.isFutureApt()) {
@@ -702,10 +679,8 @@ public class PSSPatientUtils {
 
 		}
 		Log4jUtil.log("Step 9: Verfiy location Page and location =" + testData.getLocation());
-		assertTrue(location.areBasicPageElementsPresent());
 		Provider provider = location.searchProvider(testData.getLocation());
 		Log4jUtil.log("Step 10: Verfiy Provider Page and provider to be selected = " + testData.getProvider());
-		assertTrue(provider.areBasicPageElementsPresent());
 		AppointmentPage appointment = provider.selectAppointment(testData.getProvider());
 		Log4jUtil.log("Step 11: Verfiy Appointment Page and Appointment to be selected = " + testData.getAppointmenttype());
 		AppointmentDateTime aptDateTime = appointment.selectAppointmentandClick(testData.getAppointmenttype(), Boolean.valueOf(testData.getIsAppointmentPopup()));
@@ -771,11 +746,9 @@ public class PSSPatientUtils {
 		}
 		Log4jUtil.log("Step 9: Verfiy Provider Page and provider =" + testData.getProvider());
 		Log4jUtil.log("going to choose an provider");
-		assertTrue(provider.areBasicPageElementsPresent());
 		Log4jUtil.log("basic element are present");
 		AppointmentPage appointmentpage = provider.selectAppointment(testData.getProvider());
 		Log4jUtil.log("Step 10: Verfiy Appointment Page and appointment to be selected = " + testData.getAppointmenttype());
-		assertTrue(appointmentpage.areBasicPageElementsPresent());
 		Location location = appointmentpage.selectTypeOfLocation(testData.getAppointmenttype(), true);
 		Log4jUtil.log("Step 11: Verfiy Location Page and location = " + testData.getAppointmenttype());
 		AppointmentDateTime aptDateTime = location.selectDatTime(testData.getLocation());
@@ -840,10 +813,8 @@ public class PSSPatientUtils {
 
 		}
 		Log4jUtil.log("Step 9: Verfiy Provider Page and provider =" + testData.getProvider());
-		assertTrue(provider.areBasicPageElementsPresent());
 		Location location = provider.selectLocation(testData.getProvider());
 		Log4jUtil.log("Step 10: Verfiy Location Page and location to be selected = " + testData.getLocation());
-		assertTrue(location.areBasicPageElementsPresent());
 		AppointmentPage appointmentpage = location.selectAppointment(testData.getLocation());
 		Log4jUtil.log("Step 11: Verfiy Appointment Page and Appointment to be selected = " + testData.getAppointmenttype());
 		AppointmentDateTime aptDateTime =
@@ -1003,7 +974,6 @@ public class PSSPatientUtils {
 
 	public void appointmentToScheduledAnonymous(ConfirmationPage confirmationpage, Appointment testData) throws Exception {
 		Log4jUtil.log("Step 13: Verify if Appointment is scheduled and download ics file");
-		assertTrue(confirmationpage.areBasicPageElementsPresent());
 		String aptScheduledAt = confirmationpage.getAppointmentDetails().get((confirmationpage.getAppointmentDetails().size() - 1)).getText();
 		Log4jUtil.log(">> " + aptScheduledAt);
 		for (WebElement ele : confirmationpage.getAppointmentDetails()) {
@@ -1011,7 +981,6 @@ public class PSSPatientUtils {
 		}
 		ScheduledAppointmentAnonymous scheduledAppointmentAnonymous = confirmationpage.appointmentConfirmedAnonymous();
 		Log4jUtil.log("appointment ID = " + scheduledAppointmentAnonymous.getAppointmentID());
-		assertTrue(scheduledAppointmentAnonymous.areBasicPageElementsPresent());
 		Log4jUtil.log("Add to calendar option is displayed and is clickable.");
 		scheduledAppointmentAnonymous.downloadCalander();
 		Thread.sleep(2000);
@@ -1020,7 +989,6 @@ public class PSSPatientUtils {
 
 	public void appointmentToScheduled(ConfirmationPage confirmationpage, Appointment testData) throws Exception {
 		Log4jUtil.log("Step 13: Verify if Appointment is scheduled and download ics file");
-		assertTrue(confirmationpage.areBasicPageElementsPresent());
 		String aptScheduledAt = confirmationpage.getAppointmentDetails().get((confirmationpage.getAppointmentDetails().size() - 1)).getText();
 		Log4jUtil.log(">> " + aptScheduledAt);
 		for (WebElement ele : confirmationpage.getAppointmentDetails()) {
@@ -1028,7 +996,6 @@ public class PSSPatientUtils {
 		}
 		ScheduledAppointment scheduledappointment = confirmationpage.appointmentConfirmed();
 		Log4jUtil.log("appointment ID = " + scheduledappointment.getAppointmentID());
-		assertTrue(scheduledappointment.areBasicPageElementsPresent());
 		Log4jUtil.log("Add to calendar option is displayed and is clickable.");
 		scheduledappointment.downloadCalander();
 		Thread.sleep(2000);
@@ -1038,7 +1005,6 @@ public class PSSPatientUtils {
 	public void appointmentToRescheduled(ConfirmationPage confirmationpage, Appointment testData) throws Exception {
 
 		Log4jUtil.log("Step 13: Verify if Appointment is scheduled and download ics file");
-		assertTrue(confirmationpage.areBasicPageElementsPresent());
 
 		String aptScheduledAt = confirmationpage.getAppointmentDetails().get((confirmationpage.getAppointmentDetails().size() - 1)).getText();
 		Log4jUtil.log(">> " + aptScheduledAt);
@@ -1049,7 +1015,6 @@ public class PSSPatientUtils {
 
 		ScheduledAppointment scheduledappointment = confirmationpage.rescheduleAppointmentConfirmed();
 		Log4jUtil.log("appointment ID = " + scheduledappointment.getAppointmentID());
-		assertTrue(scheduledappointment.areBasicPageElementsPresent());
 		Log4jUtil.log("Add to calendar option is displayed and is clickable.");
 		scheduledappointment.downloadCalander();
 		Thread.sleep(2000);
@@ -1059,7 +1024,6 @@ public class PSSPatientUtils {
 	public void apptRescheduledwithTextReason(ConfirmationPage confirmationpage, Appointment testData) throws Exception {
 
 		Log4jUtil.log("Step 13: Verify if Appointment is scheduled and download ics file");
-		assertTrue(confirmationpage.areBasicPageElementsPresent());
 
 		String aptScheduledAt = confirmationpage.getAppointmentDetails().get((confirmationpage.getAppointmentDetails().size() - 1)).getText();
 		Log4jUtil.log(">> " + aptScheduledAt);
@@ -1074,7 +1038,6 @@ public class PSSPatientUtils {
 
 		ScheduledAppointment scheduledappointment = confirmationpage.rescheduleAppointmentConfirmed();
 		Log4jUtil.log("appointment ID = " + scheduledappointment.getAppointmentID());
-		assertTrue(scheduledappointment.areBasicPageElementsPresent());
 		Log4jUtil.log("Add to calendar option is displayed and is clickable.");
 		scheduledappointment.downloadCalander();
 		Thread.sleep(2000);
@@ -1084,7 +1047,6 @@ public class PSSPatientUtils {
 	public void apptRescheduledDropdownReason(ConfirmationPage confirmationpage, Appointment testData) throws Exception {
 
 		Log4jUtil.log("Step 13: Verify if Appointment is scheduled and download ics file");
-		assertTrue(confirmationpage.areBasicPageElementsPresent());
 
 		String aptScheduledAt = confirmationpage.getAppointmentDetails().get((confirmationpage.getAppointmentDetails().size() - 1)).getText();
 		Log4jUtil.log(">> " + aptScheduledAt);
@@ -1097,7 +1059,6 @@ public class PSSPatientUtils {
 
 		ScheduledAppointment scheduledappointment = confirmationpage.rescheduleAppointmentConfirmed();
 		Log4jUtil.log("appointment ID = " + scheduledappointment.getAppointmentID());
-		assertTrue(scheduledappointment.areBasicPageElementsPresent());
 		Log4jUtil.log("Add to calendar option is displayed and is clickable.");
 		scheduledappointment.downloadCalander();
 		Thread.sleep(2000);
@@ -1297,7 +1258,6 @@ public class PSSPatientUtils {
 	public void navigateFromHomePage(String ruleType, WebDriver driver, Appointment testData, String toSelect) throws InterruptedException {
 		if (!ruleType.equalsIgnoreCase(PSSConstants.SPECIALITY)) {
 			HomePage homepage = new HomePage(driver);
-			homepage.areBasicPageElementsPresent();
 			if (toSelect.equalsIgnoreCase(PSSConstants.START_PROVIDER)) {
 				homepage.selectProvider(testData.getProvider());
 			}
@@ -1309,9 +1269,7 @@ public class PSSPatientUtils {
 			}
 		} else {
 			HomePageSpeciality homepage = new HomePageSpeciality(driver);
-			homepage.areBasicPageElementsPresent();
 			StartAppointmentInOrder startappointmentinorder = homepage.selectSpeciality(testData.getSpeciality());
-			startappointmentinorder.areBasicPageElementsPresent();
 
 			if (toSelect.equalsIgnoreCase(PSSConstants.START_APPOINTMENT)) {
 				startappointmentinorder.selectFirstAppointment(PSSConstants.START_APPOINTMENT);
@@ -1384,7 +1342,6 @@ public class PSSPatientUtils {
 		appointment.selectTypeOfLocation(testData.getAppointmenttype(), Boolean.valueOf(testData.getIsAppointmentPopup()));
 		location.searchProvider(testData.getLocation());
 		AppointmentDateTime aptDateTime = provider.selectDateTime(testData.getProvider());
-		assertTrue(aptDateTime.areBasicPageElementsPresent());
 		aptDateTime.selectDate(testData.getIsNextDayBooking());
 		Thread.sleep(9000);
 		aptDateTime.getScrollBarDetails();
@@ -1401,7 +1358,6 @@ public class PSSPatientUtils {
 		Thread.sleep(12000);
 		Log4jUtil.log("Select Provider page ");
 		Provider provider = homepage.selectProvider(PSSConstants.START_PROVIDER);
-		Log4jUtil.log("Search for Provider with Age Rule Applied :" + provider.areBasicPageElementsPresent());
 		Thread.sleep(6000);
 		int providerSize = provider.searchForProviderFromListt(testData.getProvider());
 		if (isUnderAge) {
@@ -1426,7 +1382,6 @@ public class PSSPatientUtils {
 	public void selectFlowBasedOnProvider(Appointment testData, HomePage homepage) throws Exception {
 		Log4jUtil.log("In Provider page ");
 		Provider provider = homepage.selectProvider(PSSConstants.START_PROVIDER);
-		Log4jUtil.log("Search for Provider with Age Rule Applied :" + provider.areBasicPageElementsPresent());
 		Thread.sleep(6000);
 		String[] providerType = testData.getAssociatedProvider1().split(",");
 		AppointmentPage appointment = provider.selectAppointment(providerType[0]);
@@ -1436,7 +1391,6 @@ public class PSSPatientUtils {
 		String[] LocType = testData.getAssociatedLocation1().split(",");
 		Log4jUtil.log("Location to be selected. = " + LocType[0]);
 		AppointmentDateTime aptDateTime = location.selectDatTime(LocType[0]);
-		assertTrue(aptDateTime.areBasicPageElementsPresent());
 		Log4jUtil.log("Appropriate Scheduling Calander is displayed.");
 		aptDateTime.selectDate(testData.getIsNextDayBooking());
 		Thread.sleep(9000);
@@ -1451,7 +1405,6 @@ public class PSSPatientUtils {
 		String[] LocType2 = testData.getAssociatedLocation2().split(",");
 		Log4jUtil.log("Location to be selected. = " + LocType2[0]);
 		location.selectDatTime(LocType2[0]);
-		assertTrue(aptDateTime.areBasicPageElementsPresent());
 		Log4jUtil.log("Appropriate Scheduling Calander is displayed.");
 		aptDateTime.selectDate(testData.getIsNextDayBooking());
 		Thread.sleep(9000);
@@ -1466,7 +1419,6 @@ public class PSSPatientUtils {
 		String[] LocType3 = testData.getAssociatedLocation1().split(",");
 		Log4jUtil.log("Location to be selected. = " + LocType3[0]);
 		location.selectDatTime(LocType3[0]);
-		assertTrue(aptDateTime.areBasicPageElementsPresent());
 		Log4jUtil.log("Appropriate Scheduling Calander is displayed.");
 		aptDateTime.selectDate(testData.getIsNextDayBooking());
 		Thread.sleep(9000);
@@ -1712,7 +1664,6 @@ public class PSSPatientUtils {
 	}
 
 	public void backtohomePage(ConfirmationPage confirmationpage, Appointment testData) throws Exception {
-		assertTrue(confirmationpage.areBasicPageElementsPresent());
 		ScheduledAppointmentAnonymous scheduledAppointmentAnonymous = confirmationpage.appointmentConfirmedAnonymous();
 		scheduledAppointmentAnonymous.backtoHomePage();
 	}

@@ -217,7 +217,6 @@ public class CommonFlows {
 
 		Log4jUtil.log("Step Begins: Click on messages solution");
 		JalapenoMessagesPage messagesPage = homePage.showMessages(driver);
-//		assertTrue(messagesPage.areBasicPageElementsPresent(), "Inbox failed to load properly."); -- Removed this method, so will need to be rewritten
 
 		Log4jUtil.log("Step Begins: Validate message subject and send date");
 		Thread.sleep(1000);
@@ -229,9 +228,6 @@ public class CommonFlows {
 
 		Log4jUtil.log("Step Begins: Click on link View health data");
 		NGCcdViewerPage ngCcdPage = messagesPage.findNGCcdMessage(driver);
-
-		Log4jUtil.log("Step Begins: Verify if CCD Viewer is loaded");
-//		assertTrue(ngCcdPage.areBasicPageElementsPresent()); -- Removed this method, so will need to be rewritten
 
 		Log4jUtil.log("Step Begins: Verify all elements are present in CCD Viewer and click Close Viewer");
 		ngCcdPage.verifyCCDPageElementsPresent();

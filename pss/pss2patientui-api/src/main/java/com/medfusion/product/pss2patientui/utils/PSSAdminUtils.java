@@ -1,4 +1,4 @@
-// Copyright 2018-2020 NXGN Management, LLC. All Rights Reserved.
+// Copyright 2013-2021 NXGN Management, LLC. All Rights Reserved.
 package com.medfusion.product.pss2patientui.utils;
 
 import java.io.IOException;
@@ -7,8 +7,6 @@ import java.util.List;
 
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
-import org.testng.Assert;
-
 import com.intuit.ifs.csscat.core.utils.Log4jUtil;
 import com.medfusion.product.object.maps.pss2.page.PSS2MenuPage;
 import com.medfusion.product.object.maps.pss2.page.AppointmentType.ManageAppointmentType;
@@ -60,7 +58,6 @@ public class PSSAdminUtils {
 		}
 		Log4jUtil.log("adminSettings Step 3: Navigate to Patient Flow tab in settings");
 		PatientFlow patientflow = accessrule.gotoPatientFlowTab();
-		Log4jUtil.log("are basic elements present " + patientflow.areBasicPageElementsPresent());
 		Log4jUtil.log("adminSettings Step 4: Fetch the list of Rules");
 		Log4jUtil.log("length " + patientflow.ruleLength());
 		Log4jUtil.log("Rule length : " + patientflow.getRule());
@@ -116,7 +113,6 @@ public class PSSAdminUtils {
 		}
 		Log4jUtil.log("adminSettings Step 3: Navigate to Patient Flow tab in settings");
 		PatientFlow patientflow = accessrule.gotoPatientFlowTab();
-		Log4jUtil.log("are basic elements present " + patientflow.areBasicPageElementsPresent());
 
 		Log4jUtil.log("adminSettings Step 4: Fetch the list of Rules");
 		adminuser.setRule(patientflow.getRule());
@@ -167,7 +163,6 @@ public class PSSAdminUtils {
 		Log4jUtil.log("Click on Save Button");
 		Log4jUtil.log("adminSettings Step 3: Navigate to Patient Flow tab in settings");
 		PatientFlow patientflow = accessrule.gotoPatientFlowTab();
-		Log4jUtil.log("are basic elements present " + patientflow.areBasicPageElementsPresent());
 		Log4jUtil.log("adminSettings Step 4: Fetch the list of Rules");
 		Log4jUtil.log("length " + patientflow.ruleLength());
 		Log4jUtil.log("Rule length : " + patientflow.getRule());
@@ -244,8 +239,7 @@ public class PSSAdminUtils {
 		for (int i = 0; i < mappointmenttype.aptNameList().size(); i++) {
 			Log4jUtil.log("appointment names = " + mappointmenttype.aptNameList().get(i).getText());
 		}
-		ManageResource mresource = mappointmenttype.gotoResource();
-		mresource.areBasicPageElementsPresent();
+		mappointmenttype.gotoResource();
 	}
 
 	public void setRuleWithoutSpeciality(WebDriver driver, AdminUser adminuser) throws Exception {
@@ -359,7 +353,6 @@ public class PSSAdminUtils {
 		Log4jUtil.log("Patient Flow page Show Insurance= " + patientflow.isInsuranceToBeDisplayed());
 		Thread.sleep(6000);
 		InsuranceCarrier insurancecarrier = patientflow.gotoInsuranceCarrierTab();
-		Log4jUtil.log("Basic elements of Insurance carrier page located? " + insurancecarrier.areBasicPageElementsPresent());
 		insurancecarrier.enableshowInsuranceAtStart();
 		insurancecarrier.logout();
 
@@ -388,7 +381,6 @@ public class PSSAdminUtils {
 		testData.setIsstartpointPresent(patientflow.isstartpagepresent());
 		Log4jUtil.log("StartPage is Visible= " + patientflow.isstartpagepresent());
 		adminAppointment = patientflow.gotoAdminAppointmentTab();
-		adminAppointment.areBasicPageElementsPresent();
 		Log4jUtil.log("Step 3: Set the Cancellation & rescheduling lead time (hrs)- " + PSSConstants.CANCEL_APT_UPTO_HRS);
 		adminAppointment.updateCancelAppointmentSettings(PSSConstants.CANCEL_APT_UPTO_HRS);
 		Log4jUtil.log("Step 4: Fetch the status of cancel settings from Admin");
@@ -430,7 +422,6 @@ public class PSSAdminUtils {
 		testData.setIsstartpointPresent(patientflow.isstartpagepresent());
 		Log4jUtil.log("StartPage is Visible= " + patientflow.isstartpagepresent());
 		adminAppointment = patientflow.gotoAdminAppointmentTab();
-		adminAppointment.areBasicPageElementsPresent();
 		Log4jUtil.log("Step 3: Set the Cancellation & rescheduling lead time (hrs)- " + PSSConstants.CANCEL_APT_UPTO_HRS);
 		adminAppointment.updateCancelAppointmentSettings(PSSConstants.CANCEL_APT_UPTO_HRS);
 		Log4jUtil.log("Step 4: Fetch the status of cancel settings from Admin");
@@ -659,10 +650,9 @@ public class PSSAdminUtils {
 	public void allowpcp(WebDriver driver, AdminUser adminuser, Appointment appointment) throws Exception {
 		Log4jUtil.log("Step 2: Login to Admin portal.");
 		PSS2PracticeConfiguration pss2practiceconfig = loginToAdminPortal(driver, adminuser);
-		AdminAppointment adminappointment = pss2practiceconfig.gotoAdminAppointmentTab();
 
 		Log4jUtil.log("Step 3: Clicking to Appointment tab.");
-		adminappointment.areBasicPageElementsPresent();
+		AdminAppointment adminappointment = pss2practiceconfig.gotoAdminAppointmentTab();
 
 		Log4jUtil.log("Step 4: Checking the Enable care Team and Force Care Team is ON/OFF and set configuration accordingly.");
 		adminappointment.toggleAllowPCPONOF();

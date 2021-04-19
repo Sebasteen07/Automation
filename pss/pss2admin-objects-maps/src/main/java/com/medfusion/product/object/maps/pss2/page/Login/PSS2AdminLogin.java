@@ -1,7 +1,5 @@
-// Copyright 2018-2020 NXGN Management, LLC. All Rights Reserved.
+// Copyright 2013-2021 NXGN Management, LLC. All Rights Reserved.
 package com.medfusion.product.object.maps.pss2.page.Login;
-
-import java.util.ArrayList;
 
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
@@ -9,7 +7,6 @@ import org.openqa.selenium.support.FindBy;
 import org.openqa.selenium.support.How;
 import org.openqa.selenium.support.PageFactory;
 
-import com.medfusion.common.utils.IHGUtil;
 import com.medfusion.product.object.maps.pss2.page.Appointment.Main.PSS2MainPage;
 import com.medfusion.product.object.maps.pss2.page.settings.PSS2PracticeConfiguration;
 import com.medfusion.product.object.maps.pss2.page.util.CommonMethods;
@@ -34,15 +31,6 @@ public class PSS2AdminLogin extends PSS2MainPage {
 	}
 
 	CommonMethods commonMethods = new CommonMethods(driver);
-
-	@Override
-	public boolean areBasicPageElementsPresent() {
-		ArrayList<WebElement> webElementsList = new ArrayList<WebElement>();
-		webElementsList.add(inputUserName);
-		webElementsList.add(inputPassword);
-		webElementsList.add(buttonLogin);
-		return new IHGUtil(driver).assessAllPageElements(webElementsList, this.getClass());
-	}
 
 	public PSS2PracticeConfiguration login(String username, String pass) {
 		commonMethods.highlightElement(inputUserName);

@@ -1,7 +1,5 @@
-// Copyright 2018-2020 NXGN Management, LLC. All Rights Reserved.
+// Copyright 2013-2021 NXGN Management, LLC. All Rights Reserved.
 package com.medfusion.product.object.maps.pss2.page.Appointment.Main;
-
-import java.util.ArrayList;
 
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
@@ -38,17 +36,6 @@ public class CreateNewAccountIDP extends PSS2MainPage {
 
 	public CreateNewAccountIDP(WebDriver driver) {
 		super(driver);
-	}
-
-	@Override
-	public boolean areBasicPageElementsPresent() {
-		ArrayList<WebElement> webElementsList = new ArrayList<WebElement>();
-		webElementsList.add(inputUsername);
-		webElementsList.add(inputPassword);
-		webElementsList.add(acceptTOC);
-		webElementsList.add(buttonCreateAccount);
-		webElementsList.add(returnToLoginPage);
-		return new IHGUtil(driver).assessAllPageElements(webElementsList, this.getClass());
 	}
 
 	public void createNewAccount(String email, String password) {

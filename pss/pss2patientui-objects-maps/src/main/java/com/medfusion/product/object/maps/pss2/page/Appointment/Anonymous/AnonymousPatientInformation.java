@@ -1,7 +1,5 @@
-// Copyright 2020 NXGN Management, LLC. All Rights Reserved.
+// Copyright 2013-2021 NXGN Management, LLC. All Rights Reserved.
 package com.medfusion.product.object.maps.pss2.page.Appointment.Anonymous;
-
-import java.util.ArrayList;
 
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
@@ -10,7 +8,6 @@ import org.openqa.selenium.support.How;
 import org.openqa.selenium.support.PageFactory;
 import org.openqa.selenium.support.ui.Select;
 
-import com.medfusion.common.utils.IHGUtil;
 import com.medfusion.product.object.maps.pss2.page.Appointment.Main.PSS2MainPage;
 import com.medfusion.product.object.maps.pss2.page.ConfirmationPage.ConfirmationPage;
 import com.medfusion.product.object.maps.pss2.page.util.CommonMethods;
@@ -59,16 +56,6 @@ public class AnonymousPatientInformation extends PSS2MainPage {
 	}
 
 	CommonMethods commonMethods = new CommonMethods(driver);
-
-	@Override
-	public boolean areBasicPageElementsPresent() {
-		ArrayList<WebElement> webElementsList = new ArrayList<WebElement>();
-		commonMethods.highlightElement(logoAthena);
-		webElementsList.add(logoAthena);
-		commonMethods.highlightElement(pageHeading);
-		webElementsList.add(pageHeading);
-		return new IHGUtil(driver).assessAllPageElements(webElementsList, this.getClass());
-	}
 
 	public ConfirmationPage fillPatientForm(String firstName, String lastName, String dob, String email, String gender, String phoneNumber)
 			throws InterruptedException {
