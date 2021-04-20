@@ -70,13 +70,13 @@ public class CommonUtils {
 	    return formatter.format(date);
 	}
 	
-	public static String fetchTokenValueFromJsonObject(String filepath, String filename, String tokenkey) {
+	public static String fetchTokenValueFromJsonObject(String filePath, String fileName, String tokenKey) {
 
         String tokenValue = "";
         try {
-            String jsonString = new String(Files.readAllBytes(Paths.get(filepath + filename + ".json")));
+            String jsonString = new String(Files.readAllBytes(Paths.get(filePath + fileName + ".json")));
             JSONObject jsonObject = new JSONObject(jsonString);
-            tokenValue = jsonObject.get(tokenkey).toString();
+            tokenValue = jsonObject.get(tokenKey).toString();
         } catch (Exception e) {
         	Log4jUtil.log(e.getMessage());
         }
