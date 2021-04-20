@@ -714,8 +714,7 @@ public class PSSAdminUtils {
 		}
 		manageSpecialty.selectgender();
 	}
-	public void agerulewithSpeciality(WebDriver driver, AdminUser adminuser, Appointment appointment) throws Exception {
-		Log4jUtil.log("Step 2: Login to Admin portal.");
+	public void ageRuleWithSpeciality(WebDriver driver, AdminUser adminuser, Appointment appointment) throws Exception {
 		PSS2PracticeConfiguration pss2practiceconfig = loginToAdminPortal(driver, adminuser);
 		PatientFlow patientflow = pss2practiceconfig.gotoPatientFlowTab();
 		adminuser.setRule(patientflow.getRule());

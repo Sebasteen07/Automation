@@ -4873,7 +4873,8 @@ public class PSS2PatientPortalAcceptanceTests extends BaseTestNGWebDriver {
 		PSSPatientUtils psspatientutils = new PSSPatientUtils();
 		PSSAdminUtils pssadminutils = new PSSAdminUtils();
 		psspatientutils.setTestData(partnerPractice, testData, adminuser);
-		pssadminutils.agerulewithSpeciality(driver, adminuser, testData);
+		log("Step 2:  Move to PSS admin portal and add the Age Rule in Speciality tab");
+		pssadminutils.ageRuleWithSpeciality(driver, adminuser, testData);
 		String rule = adminuser.getRule();
 		rule = rule.replaceAll(" ", "");
 		log("Rule -" + rule);
@@ -4883,17 +4884,10 @@ public class PSS2PatientPortalAcceptanceTests extends BaseTestNGWebDriver {
 		log("Step 5: LoginlessPatientInformation****");
 		log("Clicked on Dismiss");
 		LoginlessPatientInformation loginlessPatientInformation = dismissPage.clickDismiss();
-		log("Step 6: Fill Patient criteria");
-		log("First Name- " + testData.getFirstName());
-		log("Last Name- " + testData.getLastName());
-		log("Gender- " + testData.getGender());
-		log("Email- " + testData.getEmail());
-		log("Phone Number- " + testData.getPrimaryNumber());
-		log("Date Of Birth- " + testData.getDob());
 		HomePage homepage = loginlessPatientInformation.fillNewPatientForm(testData.getFirstName(),
 				testData.getLastName(), testData.getDob(), testData.getEmail(), testData.getGender(),
 				testData.getZipCode(), testData.getPrimaryNumber());
-		log("Successfully upto Home page");
+		log("Successfully upto Home page On The Patient Portal");
 		homepage.btnStartSchedClick();
 		Speciality speciality = null;
 		speciality = homepage.skipInsuranceForSpeciality(driver);

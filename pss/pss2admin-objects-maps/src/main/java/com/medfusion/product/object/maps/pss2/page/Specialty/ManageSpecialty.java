@@ -61,19 +61,19 @@ public class ManageSpecialty extends PSS2MenuPage {
 	private WebElement ageRuleCheckbox;
 
 	@FindBy(how = How.XPATH, using = "//*[@id='content']/div[2]/div/div/div[2]/section/div/form/div[2]/div[2]/select")
-	private WebElement ageruleDropFirst;
+	private WebElement ageRuleDropFirst;
 
 	@FindBy(how = How.XPATH, using = "//*[@id='content']/div[2]/div/div/div[2]/section/div/form/div[2]/div[5]/select")
-	private WebElement ageruleDropSecond;
+	private WebElement ageRuleDropSecond;
 
 	@FindBy(how = How.XPATH, using = "//*[@id='content']/div[2]/div/div/div[2]/section/div/form/div[2]/div[4]/select")
-	private WebElement ageruleAnd;
+	private WebElement ageRuleAnd;
 
 	@FindBy(how = How.XPATH, using = "//div[@class='col-md-3 col-xs-3']//input[@name='leftVal']")
 	private WebElement sendMonthFirst;
 
 	@FindBy(how = How.XPATH, using = "//div[@class='col-md-3 col-xs-3']//input[@name='rightVal']")
-	private WebElement sendMonthsecond;
+	private WebElement sendMonthSecond;
 
 
 	public ManageSpecialty(WebDriver driver) {
@@ -178,16 +178,16 @@ public class ManageSpecialty extends PSS2MenuPage {
 	}
 
 	public void ageRuleparameter(String ageStartMonth, String ageEndMonths) {
-		Select select = new Select(ageruleDropFirst);
-		Select and = new Select(ageruleAnd);
-		Select select1 = new Select(ageruleDropSecond);
+		Select select = new Select(ageRuleDropFirst);
+		Select and = new Select(ageRuleAnd);
+		Select select1 = new Select(ageRuleDropSecond);
 		select.selectByVisibleText(">");
 		sendMonthFirst.clear();
 		sendMonthFirst.sendKeys(ageStartMonth);
 		and.selectByIndex(1);
 		select1.selectByVisibleText("<");
-		sendMonthsecond.clear();
-		sendMonthsecond.sendKeys(ageEndMonths);
+		sendMonthSecond.clear();
+		sendMonthSecond.sendKeys(ageEndMonths);
 		log("SuccessFully Sent the Values in ageRule textfield");
 		saveButton.click();
 	}
