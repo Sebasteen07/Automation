@@ -514,12 +514,10 @@ public class JalapenoAskAStaffV2Page1 extends JalapenoMenu {
         log("Selecting Location "+LocationName);
         IHGUtil.waitForElement(driver, 30, LocationDropDown);
         LocationDropDown.click();
-        IHGUtil.waitForElement(driver, 30, driver.findElement(By.xpath("(//*[contains(text(),'"+LocationName+"')])[2]")));
         driver.findElement(By.xpath("(//*[contains(text(),'"+LocationName+"')])[2]")).click();
         IHGUtil.waitForElement(driver, 30, ProviderDropDown);
         log("Selecting Provider "+ProviderName);
         ProviderDropDown.click();
-        IHGUtil.waitForElement(driver, 30, driver.findElement(By.xpath("//*[contains(text(),'"+ProviderName+"')]")));
         driver.findElement(By.xpath("//*[contains(text(),'"+ProviderName+"')]")).click();
         IHGUtil.waitForElement(driver, 30, questionBox);   
         log("Entering Question "+question);
