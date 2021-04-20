@@ -239,10 +239,10 @@ public class CommonFlows {
 		else if (personType.equalsIgnoreCase("HavingSensitiveEncounterMSU"))
 			ngCcdPage.verifySensitiveMSUCCDElementsContent(driver);
 		else if (personType.equalsIgnoreCase("EncounterHavingALLData"))
-			ngCcdPage.verifyCCDElementsContent(driver, "guaifenesin", "Lipitor 10 mg tablet", "Chest pain, unspecified",
+			ngCcdPage.verifyCCDElementsContent(driver, "guaifenesin", "Lipitor 10 mg tablet", "Anemia",
 					"Panel Description: Glucose [Mass/volume] in Serum or Plasma", "Chest pain, unspecified");
 		else if (personType.equalsIgnoreCase("HavingUnSignedOffResult"))
-			ngCcdPage.verifyCCDElementsContent(driver, "guaifenesin", "Lipitor 10 mg tablet", "Chest pain, unspecified",
+			ngCcdPage.verifyCCDElementsContent(driver, "guaifenesin", "Lipitor 10 mg tablet", "Anemia",
 					"", "Chest pain, unspecified");
 
 		messagesPage = ngCcdPage.closeCcd(driver);
@@ -443,7 +443,7 @@ public class CommonFlows {
 
 		Log4jUtil.log("Log the message read time ");
 		long epoch = System.currentTimeMillis() / 1000;
-
+		
 		String readdatetimestamp = RestUtils.readTime(epoch);
 		Log4jUtil.log("Message Read Time:" + readdatetimestamp);
 
@@ -1081,5 +1081,126 @@ public class CommonFlows {
 		String PracticeID = DBUtils.executeQueryOnDB("NGCoreDB", PracticeIDQuery);
 		CommonUtils.VerifyTwoValues(PracticeID, "equals", actualPracticeID);
 		Log4jUtil.log("Step End: The payment is posted to NG successfully");
+	}
+	
+	public static void verifyAttachmentReceivedInMessageAtNGCore(PropertyFileLoader PropertyLoaderObj,String comm_id,String format,
+            String AttachmentName) throws Throwable{
+        Log4jUtil.log("Step Begins: Verify attachment is received in message");
+        String ActualFormat = DBUtils.executeQueryOnDB("NGCoreDB","select format from pxp_comm_attachment_data where comm_id ='"+comm_id+"'");
+        CommonUtils.VerifyTwoValues(ActualFormat,"equals",format);
+        
+        String ActualAttachmentData = DBUtils.executeQueryOnDB("NGCoreDB","select attachment_data from pxp_comm_attachment_data where comm_id ='"+comm_id+"'");
+        assertTrue((!ActualAttachmentData.isEmpty()), "Attachment is received");
+        
+        String AttachmentIdPxp = DBUtils.executeQueryOnDB("NGCoreDB","select attachment_id from pxp_comm_attachment_data where comm_id ='"+comm_id+"'");
+        String AttachmentIdNG = DBUtils.executeQueryOnDB("NGCoreDB","select attachment_id from ngweb_comm_attachments where comm_id ='"+comm_id+"'");
+        CommonUtils.VerifyTwoValues(AttachmentIdPxp.toUpperCase(),"equals",AttachmentIdNG.toUpperCase());
+        
+        String ActualAttachmentName = DBUtils.executeQueryOnDB("NGCoreDB","select attachment_name from ngweb_comm_attachments where comm_id ='"+comm_id+"'");
+        CommonUtils.VerifyTwoValues(ActualAttachmentName,"equals",AttachmentName);
+        Log4jUtil.log("Step End: The attachment is received in message");
+        }
+	
+	public static void verifyMultipleAttachmentsReceivedInMessageAtNGCore(PropertyFileLoader PropertyLoaderObj,String comm_id,String format,
+            String attachmentName) throws Throwable{
+        Log4jUtil.log("Step Begins: Verify attachment is received in message");        
+        String actualattachmentId = DBUtils.executeQueryOnDB("NGCoreDB","select attachment_id from ngweb_comm_attachments where comm_id ='"+comm_id+"' and attachment_name ='"+attachmentName+"'");
+                
+        String actualFormat = DBUtils.executeQueryOnDB("NGCoreDB","select format from pxp_comm_attachment_data where comm_id ='"+comm_id+"' and attachment_id ='"+actualattachmentId+"'");
+        CommonUtils.VerifyTwoValues(actualFormat,"equals",format);
+        
+        String actualAttachmentData = DBUtils.executeQueryOnDB("NGCoreDB","select attachment_data from pxp_comm_attachment_data where comm_id ='"+comm_id+"' and attachment_id ='"+actualattachmentId+"'");
+        assertTrue((!actualAttachmentData.isEmpty()), "Attachment is received");        
+        Log4jUtil.log("Step End: The attachment is received in message");
+        }
+	
+	public static void verifyDocumentInsertedIntoTables(String requestId, String comments) throws Throwable {		
+		String documentContentQuery = "select content from pxp_documents where request_id ='"+requestId+"'";
+		String documentRequestsQuery = "select name from pxp_document_requests where request_id ='"+requestId+"'";
+		String documentHistoryQuery = "select emr_doc_id from ngweb_document_history where comments ='"+comments+"'";
+		
+		String documentContent = DBUtils.executeQueryOnDB("NGCoreDB", documentContentQuery);
+		String documentRequests = DBUtils.executeQueryOnDB("NGCoreDB", documentRequestsQuery);
+		String documentHistory = DBUtils.executeQueryOnDB("NGCoreDB", documentHistoryQuery);
+		
+		if((documentContent.isEmpty() && documentRequests.isEmpty() && documentHistory.isEmpty()) || ((documentContent == null)
+				&& (documentRequests == null) && (documentHistory == null)))
+			Log4jUtil.log("Document is not added into tables");
+		else
+			Log4jUtil.log("Document is added into tables successfully");
+		}
+			
+	public static void verifyDocumentProcessingStatus(PropertyFileLoader PropertyLoaderObj, String requestId,
+			String practice_id, String integrationID) throws Throwable {
+		
+		String documentRequestsQuery = "select status from pxp_document_requests where request_id ='"+requestId+"' and practice_id='" + practice_id.trim() + "'";
+		String processing_status = DBUtils.executeQueryOnDB("NGCoreDB", documentRequestsQuery);
+		
+		if ((processing_status.equals("2")) || (processing_status.equals("4"))) {
+			if (processing_status.equals("2")) {
+				Log4jUtil.log("Processing status is " + processing_status + " i.e. Document is added into table.");
+			for (int i = 0; i < arg_timeOut; i++) {
+				processing_status = DBUtils.executeQueryOnDB("NGCoreDB", documentRequestsQuery);
+				if (processing_status.equals("4")) {
+					Log4jUtil.log("Step End: Processing status is " + processing_status
+							+ " i.e. EHR Document has been posted to MF agent");
+					break;
+				} else {
+					if (i == arg_timeOut - 1)
+						Thread.sleep(1000);
+				}
+			}
+			CommonUtils.VerifyTwoValues(processing_status,"equals","4");
+		}
+			verifyMFJOBStatusWithoutValidatingGetProcessingStatusCall(PropertyLoaderObj, requestId, integrationID,
+					"EHR Document");
+			
+			for (int i = 0; i < arg_timeOut; i++) {
+				processing_status = DBUtils.executeQueryOnDB("NGCoreDB", documentRequestsQuery);
+				if (processing_status.equals("6")) {
+					Log4jUtil.log("Step End: Processing status is " + processing_status
+							+ " i.e. RSDK has posted EHR Document to portal");
+					break;
+				} else {
+					if (i == arg_timeOut - 1)
+						Thread.sleep(1000);
+				}
+			}
+		} else if (processing_status.equals("6")) {
+			Log4jUtil
+					.log("Step End: Processing status is " + processing_status + " i.e. RSDK has posted EHR Document to portal");
+		} else if (processing_status.equals("3")) {
+			Log4jUtil.log("Step End: Processing status is " + processing_status	+ " i.e. Failed to generate EHR Document");
+		} else if (processing_status.equals("5")) {
+			Log4jUtil.log(
+					"Step End: Processing status is " + processing_status + " i.e. Failed to post EHR Document to MF Agent");
+		} else if (processing_status.equals("7")) {
+			Log4jUtil.log(
+					"Step End: Processing status is " + processing_status + " i.e. Failed to deliver EHR Document to Portal");
+		}
+		CommonUtils.VerifyTwoValues(processing_status, "equals", "6");
+	}
+	
+	public static void verifyPatientDocumentReceivedINInbox(PropertyFileLoader PropertyLoaderObj, WebDriver driver, String URL,
+			String username, String password, String subject, String body, String attachmentName) throws Throwable {
+		Log4jUtil.log("Step Begins: Login to Patient Portal");
+		NGLoginPage loginPage = new NGLoginPage(driver, URL);
+		JalapenoHomePage homePage = loginPage.login(username, password);
+		Log4jUtil.log("Detecting if Home Page is opened");
+		assertTrue(homePage.isHomeButtonPresent(driver));
+		Log4jUtil.log("Step Begins: Click on messages solution");
+		JalapenoMessagesPage messagesPage = homePage.showMessages(driver);
+		assertTrue(messagesPage.areBasicPageElementsPresent(), "Inbox failed to load properly.");
+		Log4jUtil.log("Step Begins: Find message in Inbox with message subject " + subject);
+			
+		Log4jUtil.log("Step Begins: Validate message loads and is the right message");
+		assertTrue(messagesPage.isMessageDisplayed(driver, subject));
+
+		messagesPage.verifyMessageContent(driver, subject, body);
+		Log4jUtil.log("Step Begins:Verify attachment in message");
+		messagesPage.verifyMessageAttachment(driver, attachmentName);
+		
+		Log4jUtil.log("Logging out");
+		homePage.LogoutfromNGMFPortal();
 	}
 }
