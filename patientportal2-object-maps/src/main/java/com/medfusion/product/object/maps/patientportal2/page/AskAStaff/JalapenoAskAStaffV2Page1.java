@@ -510,9 +510,9 @@ public class JalapenoAskAStaffV2Page1 extends JalapenoMenu {
         if (subject != null && !subject.trim().isEmpty()) {
             subjectBox.clear();
             subjectBox.sendKeys(subject);
-            Thread.sleep(1000);
         }
         log("Selecting Location "+LocationName);
+        IHGUtil.waitForElement(driver, 30, LocationDropDown);
         LocationDropDown.click();
         IHGUtil.waitForElement(driver, 30, driver.findElement(By.xpath("(//*[contains(text(),'"+LocationName+"')])[2]")));
         driver.findElement(By.xpath("(//*[contains(text(),'"+LocationName+"')])[2]")).click();

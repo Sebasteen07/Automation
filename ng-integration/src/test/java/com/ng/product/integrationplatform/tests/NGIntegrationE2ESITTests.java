@@ -6294,10 +6294,10 @@ public class NGIntegrationE2ESITTests extends BaseTestNGWebDriver{
             Log4jUtil.log("Invalid Execution Mode");
         }
         
-        String ErrorfilePath = System.getProperty("user.dir")+ "\\src\\test\\resources\\File_Attachment\\Error_Files_Testing.pdf";
-        String CorrectfilePath = System.getProperty("user.dir")+ "\\src\\test\\resources\\File_Attachment\\sw-test-academy.txt";
+        String errorfilePath = System.getProperty("user.dir")+ "\\src\\test\\resources\\File_Attachment\\Error_Files_Testing.pdf";
+        String correctfilePath = System.getProperty("user.dir")+ "\\src\\test\\resources\\File_Attachment\\sw-test-academy.txt";
         
-        Log4jUtil.log("CorrectfilePath "+CorrectfilePath);        
+        Log4jUtil.log("CorrectfilePath "+correctfilePath);        
         String userLocationName = PropertyLoaderObj.getProperty("PortalLocationName");
         long timestamp = System.currentTimeMillis();
         Log4jUtil.log("Step Begins: Do a GET and get the read communication");
@@ -6316,7 +6316,7 @@ public class NGIntegrationE2ESITTests extends BaseTestNGWebDriver{
         JalapenoAskAStaffV2Page2 askPage2 = askPage1.NGfillASKADetails(askaSubject, questionText,userProviderName,userLocationName);
 
         logStep("Add Attachment and remove Attachment ");
-        askPage1.uploadFileWithRobotRepeat(ErrorfilePath, CorrectfilePath);
+        askPage1.uploadFileWithRobotRepeat(errorfilePath, correctfilePath);
         
         logStep("Remove All the Attachment Except one and click on continue button ");
         askPage1.removeAttachment();
@@ -6368,13 +6368,13 @@ public class NGIntegrationE2ESITTests extends BaseTestNGWebDriver{
         RestUtils.setupHttpGetRequest(PropertyLoaderObj.getProperty("GetInboundMessage").replaceAll("integrationID", integrationPracticeID) + "?since=" + since + ",0", PropertyLoaderObj.getResponsePath());
         
         Log4jUtil.log("Step Begins: Validate message reply");
-        String PatientFirstName = DBUtils.executeQueryOnDB("NGCoreDB","select first_name from person where person_id ='"+person_id+"'");
-        String PatientLastName = DBUtils.executeQueryOnDB("NGCoreDB","select last_name from person where person_id ='"+person_id+"'");
-        String expectedBody= "Dear "+PropertyLoaderObj.getProperty("practiceName")+",<br/><br/>"+IntegrationConstants.MESSAGE_REPLY+"<br/><br/>Thanks,<br>"+PatientFirstName+" "+PatientLastName;        
+        String patientFirstName = DBUtils.executeQueryOnDB("NGCoreDB","select first_name from person where person_id ='"+person_id+"'");
+        String patientLastName = DBUtils.executeQueryOnDB("NGCoreDB","select last_name from person where person_id ='"+person_id+"'");
+        String expectedBody= "Dear "+PropertyLoaderObj.getProperty("practiceName")+",<br/><br/>"+IntegrationConstants.MESSAGE_REPLY+"<br/><br/>Thanks,<br>"+patientFirstName+" "+patientLastName;        
         
         String messageID = RestUtils.isReplyPresentReturnMessageID(PropertyLoaderObj.getResponsePath(), askaSubject,expectedBody);
         
-        String expectedBodyinInbox= "Dear "+PropertyLoaderObj.getProperty("practiceName")+",\n"+IntegrationConstants.MESSAGE_REPLY+"\nThanks,\n"+PatientFirstName+" "+PatientLastName;    
+        String expectedBodyinInbox= "Dear "+PropertyLoaderObj.getProperty("practiceName")+",\n"+IntegrationConstants.MESSAGE_REPLY+"\nThanks,\n"+patientFirstName+" "+patientLastName;    
         
         Thread.sleep(60000);
         
@@ -6427,21 +6427,14 @@ public class NGIntegrationE2ESITTests extends BaseTestNGWebDriver{
         logStep("Getting Existing User");
         String username = PropertyLoaderObj.getProperty("CCDAUsername");
         String person_id = DBUtils.executeQueryOnDB("NGCoreDB","select person_id from person where email_address = '"+username+"'");
-        String enterpriseId = null, practiceId = null, providerName = null, locationName = null , integrationPracticeID= null, url =null;
+        String integrationPracticeID= null, url =null;
         
         if(PropertyLoaderObj.getNGAPIexecutionMode().equalsIgnoreCase("QAMain")){
-            enterpriseId= PropertyLoaderObj.getProperty("NGEnterpiseEnrollmentEnterprise1");
-            practiceId= PropertyLoaderObj.getProperty("NGEnterprise1Practice1");
-            providerName =PropertyLoaderObj.getProperty("NGE1P1Provider"); 
-            locationName =PropertyLoaderObj.getProperty("NGE1P1Location");
             integrationPracticeID =PropertyLoaderObj.getProperty("integrationPracticeIDE1P1");
             url = PropertyLoaderObj.getProperty("MFPortalURLPractice1");    
         }
         else if (PropertyLoaderObj.getNGAPIexecutionMode().equalsIgnoreCase("SIT")){
-            enterpriseId= PropertyLoaderObj.getProperty("NGMainEnterpriseID");
-            practiceId= PropertyLoaderObj.getProperty("NGMainPracticeID");
-            providerName =PropertyLoaderObj.getProperty("EPMProviderName"); 
-            locationName =PropertyLoaderObj.getProperty("EPMLocationName");
+            
             integrationPracticeID =PropertyLoaderObj.getProperty("integrationPracticeIDAMDC");
             url = PropertyLoaderObj.getProperty("url");                       
         }
@@ -6504,13 +6497,13 @@ public class NGIntegrationE2ESITTests extends BaseTestNGWebDriver{
         RestUtils.setupHttpGetRequest(PropertyLoaderObj.getProperty("GetInboundMessage").replaceAll("integrationID", integrationPracticeID) + "?since=" + since + ",0", PropertyLoaderObj.getResponsePath());
         
         Log4jUtil.log("Step Begins: Validate message reply");
-        String PatientFirstName = DBUtils.executeQueryOnDB("NGCoreDB","select first_name from person where person_id ='"+person_id+"'");
-        String PatientLastName = DBUtils.executeQueryOnDB("NGCoreDB","select last_name from person where person_id ='"+person_id+"'");
-        String expectedBody= "Dear "+PropertyLoaderObj.getProperty("practiceName")+",<br/><br/>"+IntegrationConstants.MESSAGE_REPLY+"<br/><br/>Thanks,<br>"+PatientFirstName+" "+PatientLastName;        
+        String patientFirstName = DBUtils.executeQueryOnDB("NGCoreDB","select first_name from person where person_id ='"+person_id+"'");
+        String patientLastName = DBUtils.executeQueryOnDB("NGCoreDB","select last_name from person where person_id ='"+person_id+"'");
+        String expectedBody= "Dear "+PropertyLoaderObj.getProperty("practiceName")+",<br/><br/>"+IntegrationConstants.MESSAGE_REPLY+"<br/><br/>Thanks,<br>"+patientFirstName+" "+patientLastName;        
         
         String messageID = RestUtils.isReplyPresentReturnMessageID(PropertyLoaderObj.getResponsePath(), askaSubject,expectedBody);
         
-        String expectedBodyinInbox= "Dear "+PropertyLoaderObj.getProperty("practiceName")+",\n"+IntegrationConstants.MESSAGE_REPLY+"\nThanks,\n"+PatientFirstName+" "+PatientLastName;    
+        String expectedBodyinInbox= "Dear "+PropertyLoaderObj.getProperty("practiceName")+",\n"+IntegrationConstants.MESSAGE_REPLY+"\nThanks,\n"+patientFirstName+" "+patientLastName;    
         
         Thread.sleep(60000);        
         CommonFlows.verifyMessageReceivedAtNGCore(PropertyLoaderObj,messageID,askaSubject,expectedBodyinInbox.replace("\n", ""),PropertyLoaderObj.getProperty("askAV2Name"));
@@ -6538,21 +6531,13 @@ public class NGIntegrationE2ESITTests extends BaseTestNGWebDriver{
         logStep("Getting Existing User");
         String username = PropertyLoaderObj.getProperty("CCDAUsername");
         String person_id = DBUtils.executeQueryOnDB("NGCoreDB","select person_id from person where email_address = '"+username+"'");
-        String enterpriseId = null, practiceId = null, providerName = null, locationName = null , integrationPracticeID= null, url =null;
+        String integrationPracticeID= null, url =null;
         
         if(PropertyLoaderObj.getNGAPIexecutionMode().equalsIgnoreCase("QAMain")){
-            enterpriseId= PropertyLoaderObj.getProperty("NGEnterpiseEnrollmentEnterprise1");
-            practiceId= PropertyLoaderObj.getProperty("NGEnterprise1Practice1");
-            providerName =PropertyLoaderObj.getProperty("NGE1P1Provider"); 
-            locationName =PropertyLoaderObj.getProperty("NGE1P1Location");
             integrationPracticeID =PropertyLoaderObj.getProperty("integrationPracticeIDE1P1");
             url = PropertyLoaderObj.getProperty("MFPortalURLPractice1");    
         }
         else if (PropertyLoaderObj.getNGAPIexecutionMode().equalsIgnoreCase("SIT")){
-            enterpriseId= PropertyLoaderObj.getProperty("NGMainEnterpriseID");
-            practiceId= PropertyLoaderObj.getProperty("NGMainPracticeID");
-            providerName =PropertyLoaderObj.getProperty("EPMProviderName"); 
-            locationName =PropertyLoaderObj.getProperty("EPMLocationName");
             integrationPracticeID =PropertyLoaderObj.getProperty("integrationPracticeIDAMDC");
             url = PropertyLoaderObj.getProperty("url");                       
         }
@@ -6612,13 +6597,13 @@ public class NGIntegrationE2ESITTests extends BaseTestNGWebDriver{
         RestUtils.setupHttpGetRequest(PropertyLoaderObj.getProperty("GetInboundMessage").replaceAll("integrationID", integrationPracticeID) + "?since=" + since + ",0", PropertyLoaderObj.getResponsePath());
         
         Log4jUtil.log("Step Begins: Validate message reply");
-        String PatientFirstName = DBUtils.executeQueryOnDB("NGCoreDB","select first_name from person where person_id ='"+person_id+"'");
-        String PatientLastName = DBUtils.executeQueryOnDB("NGCoreDB","select last_name from person where person_id ='"+person_id+"'");
-        String expectedBody= "Dear "+PropertyLoaderObj.getProperty("practiceName")+",<br/><br/>"+IntegrationConstants.MESSAGE_REPLY+"<br/><br/>Thanks,<br>"+PatientFirstName+" "+PatientLastName;        
+        String patientFirstName = DBUtils.executeQueryOnDB("NGCoreDB","select first_name from person where person_id ='"+person_id+"'");
+        String patientLastName = DBUtils.executeQueryOnDB("NGCoreDB","select last_name from person where person_id ='"+person_id+"'");
+        String expectedBody= "Dear "+PropertyLoaderObj.getProperty("practiceName")+",<br/><br/>"+IntegrationConstants.MESSAGE_REPLY+"<br/><br/>Thanks,<br>"+patientFirstName+" "+patientLastName;        
         
         String messageID = RestUtils.isReplyPresentReturnMessageID(PropertyLoaderObj.getResponsePath(), askaSubject,expectedBody);
         
-        String expectedBodyinInbox= "Dear "+PropertyLoaderObj.getProperty("practiceName")+",\n"+IntegrationConstants.MESSAGE_REPLY+"\nThanks,\n"+PatientFirstName+" "+PatientLastName;    
+        String expectedBodyinInbox= "Dear "+PropertyLoaderObj.getProperty("practiceName")+",\n"+IntegrationConstants.MESSAGE_REPLY+"\nThanks,\n"+patientFirstName+" "+patientLastName;    
         
         Thread.sleep(60000);        
         CommonFlows.verifyMessageReceivedAtNGCore(PropertyLoaderObj,messageID,askaSubject,expectedBodyinInbox.replace("\n", ""),PropertyLoaderObj.getProperty("askAV2Name"));
@@ -6637,21 +6622,17 @@ public class NGIntegrationE2ESITTests extends BaseTestNGWebDriver{
         logStep("Getting Existing User");
         String username = PropertyLoaderObj.getProperty("CCDAUsername");
         String person_id = DBUtils.executeQueryOnDB("NGCoreDB","select person_id from person where email_address = '"+username+"'");
-        String enterpriseId = null, practiceId = null, providerName = null, locationName = null , integrationPracticeID= null, url =null;
+        String enterpriseId = null, practiceId = null, integrationPracticeID= null, url =null;
         
         if(PropertyLoaderObj.getNGAPIexecutionMode().equalsIgnoreCase("QAMain")){
             enterpriseId= PropertyLoaderObj.getProperty("NGEnterpiseEnrollmentEnterprise1");
             practiceId= PropertyLoaderObj.getProperty("NGEnterprise1Practice1");
-            providerName =PropertyLoaderObj.getProperty("NGE1P1Provider"); 
-            locationName =PropertyLoaderObj.getProperty("NGE1P1Location");
             integrationPracticeID =PropertyLoaderObj.getProperty("integrationPracticeIDE1P1");
             url = PropertyLoaderObj.getProperty("MFPortalURLPractice1");
         }
         else if (PropertyLoaderObj.getNGAPIexecutionMode().equalsIgnoreCase("SIT")){
             enterpriseId= PropertyLoaderObj.getProperty("NGMainEnterpriseID");
             practiceId= PropertyLoaderObj.getProperty("NGMainPracticeID");
-            providerName =PropertyLoaderObj.getProperty("EPMProviderName"); 
-            locationName =PropertyLoaderObj.getProperty("EPMLocationName");
             integrationPracticeID =PropertyLoaderObj.getProperty("integrationPracticeIDAMDC");
             url = PropertyLoaderObj.getProperty("url");      
         }
@@ -6668,7 +6649,7 @@ public class NGIntegrationE2ESITTests extends BaseTestNGWebDriver{
         String pxpDocType =PropertyLoaderObj.getProperty("PXPDocType");
         
         String sourceFile = System.getProperty("user.dir")+ "\\src\\test\\resources\\EHRAttachment\\";
-        String content =CommonUtils.FetchTokenValueFromJsonObject(sourceFile, "EHRAttachmentData", "PEContent");        
+        String content =CommonUtils.fetchTokenValueFromJsonObject(sourceFile, "EHRAttachmentData", "PEContent");        
 
         logStep("Inserting Patient Education Document into tables");
         DBUtils.executeQueryOnDB("NGCoreDB","INSERT INTO pxp_documents(request_id, document_id, document_type, content, delete_ind, created_by,"
@@ -6676,25 +6657,25 @@ public class NGIntegrationE2ESITTests extends BaseTestNGWebDriver{
         		+"VALUES ('"+requestId+"','"+documentId+"','"+pxpDocType+"', "
         		+ "CONVERT(VARBINARY(256),'"+content+"'),'0', '0' , getutcdate(), '0', getutcdate())");
         
-        String Comments = "SendingDocument"+(new Date()).getTime();
+        String comments = "SendingDocument"+(new Date()).getTime();
         DBUtils.executeQueryOnDB("NGCoreDB","INSERT INTO pxp_document_requests(request_id, enterprise_id, practice_id, person_id, document_id, document_type, format,"
         		+       "name, document_desc, status, created_by, create_timestamp, modified_by, modify_timestamp, create_timestamp_tz,modify_timestamp_tz)"
         		+"VALUES ('"+requestId+"', '"+enterpriseId+"', '"+practiceId+"', '"+person_id+"', '"+documentId+"',"
         		+"'"+docType+"', '"+docFormat+"', '"+docName+"', "
-        		+"'"+Comments+"', '2','0', getutcdate(),'0', getutcdate(), Null, Null)");
+        		+"'"+comments+"', '2','0', getutcdate(),'0', getutcdate(), Null, Null)");
         				
         DBUtils.executeQueryOnDB("NGCoreDB","INSERT INTO ngweb_document_history(row_id, emr_doc_id, nx_doc_id, person_id, read_when, read_by, delete_ind, "
         		+ "comments,created_by, create_timestamp, modified_by, modify_timestamp, create_timestamp_tz, modify_timestamp_tz)"
         		+" VALUES (newid(), '"+documentId+"', newid(), '"+person_id+"', NULL, NULL, 'N',"
-        		+"'"+Comments+"', '0',getutcdate(), '0', getutcdate(), Null, Null)");
+        		+"'"+comments+"', '0',getutcdate(), '0', getutcdate(), Null, Null)");
         
         logStep("Verify Patient Education Document is inserted into tables");
-        CommonFlows.verifyDocumentInsertedIntoTables(requestId, Comments);
+        CommonFlows.verifyDocumentInsertedIntoTables(requestId, comments);
         
         logStep("Verify Patient Education Document status");
         CommonFlows.verifyDocumentProcessingStatus(PropertyLoaderObj, requestId, practiceId, integrationPracticeID);
         
-        String body = Comments+"\n\n"+DocReceivedText;
+        String body = comments+"\n\n"+DocReceivedText;
         CommonFlows.verifyPatientDocumentReceivedINInbox(PropertyLoaderObj,driver,url,username,PropertyLoaderObj.getPassword(),
         		PropertyLoaderObj.getProperty("DocSubject"), body, docName+"."+docFormat.trim());
         
@@ -6708,21 +6689,17 @@ public class NGIntegrationE2ESITTests extends BaseTestNGWebDriver{
         logStep("Getting Existing User");
         String username = PropertyLoaderObj.getProperty("CCDAUsername");
         String person_id = DBUtils.executeQueryOnDB("NGCoreDB","select person_id from person where email_address = '"+username+"'");
-        String enterpriseId = null, practiceId = null, providerName = null, locationName = null , integrationPracticeID= null, url =null;
+        String enterpriseId = null, practiceId = null, integrationPracticeID= null, url =null;
         
         if(PropertyLoaderObj.getNGAPIexecutionMode().equalsIgnoreCase("QAMain")){
             enterpriseId= PropertyLoaderObj.getProperty("NGEnterpiseEnrollmentEnterprise1");
             practiceId= PropertyLoaderObj.getProperty("NGEnterprise1Practice1");
-            providerName =PropertyLoaderObj.getProperty("NGE1P1Provider"); 
-            locationName =PropertyLoaderObj.getProperty("NGE1P1Location");
             integrationPracticeID =PropertyLoaderObj.getProperty("integrationPracticeIDE1P1");
             url = PropertyLoaderObj.getProperty("MFPortalURLPractice1");
         }
         else if (PropertyLoaderObj.getNGAPIexecutionMode().equalsIgnoreCase("SIT")){
             enterpriseId= PropertyLoaderObj.getProperty("NGMainEnterpriseID");
             practiceId= PropertyLoaderObj.getProperty("NGMainPracticeID");
-            providerName =PropertyLoaderObj.getProperty("EPMProviderName"); 
-            locationName =PropertyLoaderObj.getProperty("EPMLocationName");
             integrationPracticeID =PropertyLoaderObj.getProperty("integrationPracticeIDAMDC");
             url = PropertyLoaderObj.getProperty("url");      
         }
@@ -6739,7 +6716,7 @@ public class NGIntegrationE2ESITTests extends BaseTestNGWebDriver{
         String pxpDocType =PropertyLoaderObj.getProperty("PXPDocType");
         
         String sourceFile = System.getProperty("user.dir")+ "\\src\\test\\resources\\EHRAttachment\\";
-        String content =CommonUtils.FetchTokenValueFromJsonObject(sourceFile, "EHRAttachmentData", "EHRDocument");        
+        String content =CommonUtils.fetchTokenValueFromJsonObject(sourceFile, "EHRAttachmentData", "EHRDocument");        
 
         logStep("Inserting EHR Document into tables");
         DBUtils.executeQueryOnDB("NGCoreDB","INSERT INTO pxp_documents(request_id, document_id, document_type, content, delete_ind, created_by,"
@@ -6747,25 +6724,25 @@ public class NGIntegrationE2ESITTests extends BaseTestNGWebDriver{
         		+"VALUES ('"+requestId+"','"+documentId+"','"+pxpDocType+"', "
         		+ "CONVERT(VARBINARY(256),'"+content+"'),'0', '0' , getutcdate(), '0', getutcdate())");
         
-        String Comments = "SendingDocument"+(new Date()).getTime();
+        String comments = "SendingDocument"+(new Date()).getTime();
         DBUtils.executeQueryOnDB("NGCoreDB","INSERT INTO pxp_document_requests(request_id, enterprise_id, practice_id, person_id, document_id, document_type, format,"
         		+       "name, document_desc, status, created_by, create_timestamp, modified_by, modify_timestamp, create_timestamp_tz,modify_timestamp_tz)"
         		+"VALUES ('"+requestId+"', '"+enterpriseId+"', '"+practiceId+"', '"+person_id+"', '"+documentId+"',"
         		+"'"+docType+"', '"+docFormat+"', '"+docName+"', "
-        		+"'"+Comments+"', '2','0', getutcdate(),'0', getutcdate(), Null, Null)");
+        		+"'"+comments+"', '2','0', getutcdate(),'0', getutcdate(), Null, Null)");
         				
         DBUtils.executeQueryOnDB("NGCoreDB","INSERT INTO ngweb_document_history(row_id, emr_doc_id, nx_doc_id, person_id, read_when, read_by, delete_ind, "
         		+ "comments,created_by, create_timestamp, modified_by, modify_timestamp, create_timestamp_tz, modify_timestamp_tz)"
         		+" VALUES (newid(), '"+documentId+"', newid(), '"+person_id+"', NULL, NULL, 'N',"
-        		+"'"+Comments+"', '0',getutcdate(), '0', getutcdate(), Null, Null)");
+        		+"'"+comments+"', '0',getutcdate(), '0', getutcdate(), Null, Null)");
         
         logStep("Verify EHR Document is inserted into tables");
-        CommonFlows.verifyDocumentInsertedIntoTables(requestId, Comments);
+        CommonFlows.verifyDocumentInsertedIntoTables(requestId, comments);
         
         logStep("Verify EHR Document status");
         CommonFlows.verifyDocumentProcessingStatus(PropertyLoaderObj, requestId, practiceId, integrationPracticeID);
         
-        String body = Comments+"\n\n"+DocReceivedText;
+        String body = comments+"\n\n"+DocReceivedText;
         CommonFlows.verifyPatientDocumentReceivedINInbox(PropertyLoaderObj,driver,url,username,PropertyLoaderObj.getPassword(),
         		PropertyLoaderObj.getProperty("DocSubject"), body, docName+".pdf");        
         log("Test Case End: The practice user is able to send the EHR Document.");
@@ -6778,21 +6755,17 @@ public class NGIntegrationE2ESITTests extends BaseTestNGWebDriver{
         logStep("Getting Existing User");
         String username = PropertyLoaderObj.getProperty("CCDAUsername");
         String person_id = DBUtils.executeQueryOnDB("NGCoreDB","select person_id from person where email_address = '"+username+"'");
-        String enterpriseId = null, practiceId = null, providerName = null, locationName = null , integrationPracticeID= null, url =null;
+        String enterpriseId = null, practiceId = null, integrationPracticeID= null, url =null;
         
         if(PropertyLoaderObj.getNGAPIexecutionMode().equalsIgnoreCase("QAMain")){
             enterpriseId= PropertyLoaderObj.getProperty("NGEnterpiseEnrollmentEnterprise1");
             practiceId= PropertyLoaderObj.getProperty("NGEnterprise1Practice1");
-            providerName =PropertyLoaderObj.getProperty("NGE1P1Provider"); 
-            locationName =PropertyLoaderObj.getProperty("NGE1P1Location");
             integrationPracticeID =PropertyLoaderObj.getProperty("integrationPracticeIDE1P1");
             url = PropertyLoaderObj.getProperty("MFPortalURLPractice1");
         }
         else if (PropertyLoaderObj.getNGAPIexecutionMode().equalsIgnoreCase("SIT")){
             enterpriseId= PropertyLoaderObj.getProperty("NGMainEnterpriseID");
             practiceId= PropertyLoaderObj.getProperty("NGMainPracticeID");
-            providerName =PropertyLoaderObj.getProperty("EPMProviderName"); 
-            locationName =PropertyLoaderObj.getProperty("EPMLocationName");
             integrationPracticeID =PropertyLoaderObj.getProperty("integrationPracticeIDAMDC");
             url = PropertyLoaderObj.getProperty("url");      
         }
@@ -6809,7 +6782,7 @@ public class NGIntegrationE2ESITTests extends BaseTestNGWebDriver{
         String pxpDocType =PropertyLoaderObj.getProperty("PXPDocType");
         
         String sourceFile = System.getProperty("user.dir")+ "\\src\\test\\resources\\EHRAttachment\\";
-        String content =CommonUtils.FetchTokenValueFromJsonObject(sourceFile, "EHRAttachmentData", "JPGImage");        
+        String content =CommonUtils.fetchTokenValueFromJsonObject(sourceFile, "EHRAttachmentData", "JPGImage");        
 
         logStep("Inserting ICS Image into tables");
         DBUtils.executeQueryOnDB("NGCoreDB","INSERT INTO pxp_documents(request_id, document_id, document_type, content, delete_ind, created_by,"
@@ -6817,25 +6790,25 @@ public class NGIntegrationE2ESITTests extends BaseTestNGWebDriver{
         		+"VALUES ('"+requestId+"','"+documentId+"','"+pxpDocType+"', "
         		+ "CONVERT(VARBINARY(256),'"+content+"'),'0', '0' , getutcdate(), '0', getutcdate())");
         
-        String Comments = "SendingDocument"+(new Date()).getTime();
+        String comments = "SendingDocument"+(new Date()).getTime();
         DBUtils.executeQueryOnDB("NGCoreDB","INSERT INTO pxp_document_requests(request_id, enterprise_id, practice_id, person_id, document_id, document_type, format,"
         		+       "name, document_desc, status, created_by, create_timestamp, modified_by, modify_timestamp, create_timestamp_tz,modify_timestamp_tz)"
         		+"VALUES ('"+requestId+"', '"+enterpriseId+"', '"+practiceId+"', '"+person_id+"', '"+documentId+"',"
         		+"'"+docType+"', '"+docFormat+"', '"+docName+"', "
-        		+"'"+Comments+"', '2','0', getutcdate(),'0', getutcdate(), Null, Null)");
+        		+"'"+comments+"', '2','0', getutcdate(),'0', getutcdate(), Null, Null)");
         				
         DBUtils.executeQueryOnDB("NGCoreDB","INSERT INTO ngweb_document_history(row_id, emr_doc_id, nx_doc_id, person_id, read_when, read_by, delete_ind, "
         		+ "comments,created_by, create_timestamp, modified_by, modify_timestamp, create_timestamp_tz, modify_timestamp_tz)"
         		+" VALUES (newid(), '"+documentId+"', newid(), '"+person_id+"', NULL, NULL, 'N',"
-        		+"'"+Comments+"', '0',getutcdate(), '0', getutcdate(), Null, Null)");
+        		+"'"+comments+"', '0',getutcdate(), '0', getutcdate(), Null, Null)");
         
         logStep("Verify ICS Image is inserted into tables");
-        CommonFlows.verifyDocumentInsertedIntoTables(requestId, Comments);
+        CommonFlows.verifyDocumentInsertedIntoTables(requestId, comments);
         
         logStep("Verify ICS Image status");
         CommonFlows.verifyDocumentProcessingStatus(PropertyLoaderObj, requestId, practiceId, integrationPracticeID);
         
-        String body = Comments+"\n\n"+DocReceivedText;
+        String body = comments+"\n\n"+DocReceivedText;
         CommonFlows.verifyPatientDocumentReceivedINInbox(PropertyLoaderObj,driver,url,username,PropertyLoaderObj.getPassword(),
         		PropertyLoaderObj.getProperty("DocSubject"), body, docName+"."+docFormat.trim());
         
@@ -6849,21 +6822,17 @@ public class NGIntegrationE2ESITTests extends BaseTestNGWebDriver{
         logStep("Getting Existing User");
         String username = PropertyLoaderObj.getProperty("CCDAUsername");
         String person_id = DBUtils.executeQueryOnDB("NGCoreDB","select person_id from person where email_address = '"+username+"'");
-        String enterpriseId = null, practiceId = null, providerName = null, locationName = null , integrationPracticeID= null, url =null;
+        String enterpriseId = null, practiceId = null , integrationPracticeID= null, url =null;
         
         if(PropertyLoaderObj.getNGAPIexecutionMode().equalsIgnoreCase("QAMain")){
             enterpriseId= PropertyLoaderObj.getProperty("NGEnterpiseEnrollmentEnterprise1");
             practiceId= PropertyLoaderObj.getProperty("NGEnterprise1Practice1");
-            providerName =PropertyLoaderObj.getProperty("NGE1P1Provider"); 
-            locationName =PropertyLoaderObj.getProperty("NGE1P1Location");
             integrationPracticeID =PropertyLoaderObj.getProperty("integrationPracticeIDE1P1");
             url = PropertyLoaderObj.getProperty("MFPortalURLPractice1");
         }
         else if (PropertyLoaderObj.getNGAPIexecutionMode().equalsIgnoreCase("SIT")){
             enterpriseId= PropertyLoaderObj.getProperty("NGMainEnterpriseID");
             practiceId= PropertyLoaderObj.getProperty("NGMainPracticeID");
-            providerName =PropertyLoaderObj.getProperty("EPMProviderName"); 
-            locationName =PropertyLoaderObj.getProperty("EPMLocationName");
             integrationPracticeID =PropertyLoaderObj.getProperty("integrationPracticeIDAMDC");
             url = PropertyLoaderObj.getProperty("url");      
         }
@@ -6880,7 +6849,7 @@ public class NGIntegrationE2ESITTests extends BaseTestNGWebDriver{
         String pxpDocType =PropertyLoaderObj.getProperty("PXPDocType");
         
         String sourceFile = System.getProperty("user.dir")+ "\\src\\test\\resources\\EHRAttachment\\";
-        String content =CommonUtils.FetchTokenValueFromJsonObject(sourceFile, "EHRAttachmentData", "BMPImage");        
+        String content =CommonUtils.fetchTokenValueFromJsonObject(sourceFile, "EHRAttachmentData", "BMPImage");        
 
         logStep("Inserting image into tables");
         DBUtils.executeQueryOnDB("NGCoreDB","INSERT INTO pxp_documents(request_id, document_id, document_type, content, delete_ind, created_by,"
@@ -6888,25 +6857,25 @@ public class NGIntegrationE2ESITTests extends BaseTestNGWebDriver{
         		+"VALUES ('"+requestId+"','"+documentId+"','"+pxpDocType+"', "
         		+ "CONVERT(VARBINARY(256),'"+content+"'),'0', '0' , getutcdate(), '0', getutcdate())");
         
-        String Comments = "SendingDocument"+(new Date()).getTime();
+        String comments = "SendingDocument"+(new Date()).getTime();
         DBUtils.executeQueryOnDB("NGCoreDB","INSERT INTO pxp_document_requests(request_id, enterprise_id, practice_id, person_id, document_id, document_type, format,"
         		+       "name, document_desc, status, created_by, create_timestamp, modified_by, modify_timestamp, create_timestamp_tz,modify_timestamp_tz)"
         		+"VALUES ('"+requestId+"', '"+enterpriseId+"', '"+practiceId+"', '"+person_id+"', '"+documentId+"',"
         		+"'"+docType+"', '"+docFormat+"', '"+docName+"', "
-        		+"'"+Comments+"', '2','0', getutcdate(),'0', getutcdate(), Null, Null)");
+        		+"'"+comments+"', '2','0', getutcdate(),'0', getutcdate(), Null, Null)");
         				
         DBUtils.executeQueryOnDB("NGCoreDB","INSERT INTO ngweb_document_history(row_id, emr_doc_id, nx_doc_id, person_id, read_when, read_by, delete_ind, "
         		+ "comments,created_by, create_timestamp, modified_by, modify_timestamp, create_timestamp_tz, modify_timestamp_tz)"
         		+" VALUES (newid(), '"+documentId+"', newid(), '"+person_id+"', NULL, NULL, 'N',"
-        		+"'"+Comments+"', '0',getutcdate(), '0', getutcdate(), Null, Null)");
+        		+"'"+comments+"', '0',getutcdate(), '0', getutcdate(), Null, Null)");
         
         logStep("Verify image is inserted into tables");
-        CommonFlows.verifyDocumentInsertedIntoTables(requestId, Comments);
+        CommonFlows.verifyDocumentInsertedIntoTables(requestId, comments);
         
         logStep("Verify image status");
         CommonFlows.verifyDocumentProcessingStatus(PropertyLoaderObj, requestId, practiceId, integrationPracticeID);
         
-        String body = Comments+"\n\n"+DocReceivedText;//Comments referral_request_ltr //br//br Document received please open the attachment to review.
+        String body = comments+"\n\n"+DocReceivedText;
         CommonFlows.verifyPatientDocumentReceivedINInbox(PropertyLoaderObj,driver,url,username,PropertyLoaderObj.getPassword(),
         		PropertyLoaderObj.getProperty("DocSubject"), body, docName+"."+docFormat.trim());
         
@@ -6920,21 +6889,17 @@ public class NGIntegrationE2ESITTests extends BaseTestNGWebDriver{
         logStep("Getting Existing User");
         String username = PropertyLoaderObj.getProperty("CCDAUsername");
         String person_id = DBUtils.executeQueryOnDB("NGCoreDB","select person_id from person where email_address = '"+username+"'");
-        String enterpriseId = null, practiceId = null, providerName = null, locationName = null , integrationPracticeID= null, url =null;
+        String enterpriseId = null, practiceId = null, integrationPracticeID= null, url =null;
         
         if(PropertyLoaderObj.getNGAPIexecutionMode().equalsIgnoreCase("QAMain")){
             enterpriseId= PropertyLoaderObj.getProperty("NGEnterpiseEnrollmentEnterprise1");
             practiceId= PropertyLoaderObj.getProperty("NGEnterprise1Practice1");
-            providerName =PropertyLoaderObj.getProperty("NGE1P1Provider"); 
-            locationName =PropertyLoaderObj.getProperty("NGE1P1Location");
             integrationPracticeID =PropertyLoaderObj.getProperty("integrationPracticeIDE1P1");
             url = PropertyLoaderObj.getProperty("MFPortalURLPractice1");    
         }
         else if (PropertyLoaderObj.getNGAPIexecutionMode().equalsIgnoreCase("SIT")){
             enterpriseId= PropertyLoaderObj.getProperty("NGMainEnterpriseID");
             practiceId= PropertyLoaderObj.getProperty("NGMainPracticeID");
-            providerName =PropertyLoaderObj.getProperty("EPMProviderName"); 
-            locationName =PropertyLoaderObj.getProperty("EPMLocationName");
             integrationPracticeID =PropertyLoaderObj.getProperty("integrationPracticeIDAMDC");
             url = PropertyLoaderObj.getProperty("url");                       
         }
@@ -6951,7 +6916,7 @@ public class NGIntegrationE2ESITTests extends BaseTestNGWebDriver{
         String pxpDocType =PropertyLoaderObj.getProperty("PXPDocType");
         
         String sourceFile = System.getProperty("user.dir")+ "\\src\\test\\resources\\EHRAttachment\\";
-        String content =CommonUtils.FetchTokenValueFromJsonObject(sourceFile, "EHRAttachmentData", "ReferralLetter");
+        String content =CommonUtils.fetchTokenValueFromJsonObject(sourceFile, "EHRAttachmentData", "ReferralLetter");
         
         logStep("Inserting Referral Letter into tables");
         DBUtils.executeQueryOnDB("NGCoreDB","INSERT INTO pxp_documents(request_id, document_id, document_type, content, delete_ind, created_by,"
@@ -6959,28 +6924,28 @@ public class NGIntegrationE2ESITTests extends BaseTestNGWebDriver{
         		+"VALUES ('"+requestId+"','"+documentId+"','"+pxpDocType+"', "
         		+ "CONVERT(VARBINARY(256),'"+content+"'),'0', '0' , getutcdate(), '0', getutcdate())");
         
-        String Comments = "SendingDocument"+(new Date()).getTime();
+        String comments = "SendingDocument"+(new Date()).getTime();
         DBUtils.executeQueryOnDB("NGCoreDB","INSERT INTO pxp_document_requests(request_id, enterprise_id, practice_id, person_id, document_id, document_type, format,"
         		+       "name, document_desc, status, created_by, create_timestamp, modified_by, modify_timestamp, create_timestamp_tz,modify_timestamp_tz)"
         		+"VALUES ('"+requestId+"', '"+enterpriseId+"', '"+practiceId+"', '"+person_id+"', '"+documentId+"',"
         		+"'"+docType+"', '"+docFormat+"', '"+docName+"', "
-        		+"'"+Comments+"', '2','0', getutcdate(),'0', getutcdate(), Null, Null)");
+        		+"'"+comments+"', '2','0', getutcdate(),'0', getutcdate(), Null, Null)");
         
         DBUtils.executeQueryOnDB("NGCoreDB","INSERT INTO ngweb_document_history(row_id, emr_doc_id, nx_doc_id, person_id, read_when, read_by, delete_ind, "
         		+ "comments,created_by, create_timestamp, modified_by, modify_timestamp, create_timestamp_tz, modify_timestamp_tz)"
         		+" VALUES (newid(), '"+documentId+"', newid(), '"+person_id+"', NULL, NULL, 'N',"
-        		+"'"+Comments+"', '0',getutcdate(), '0', getutcdate(), Null, Null)");
+        		+"'"+comments+"', '0',getutcdate(), '0', getutcdate(), Null, Null)");
         
         logStep("Verify Referral Letter is inserted into tables");
-        CommonFlows.verifyDocumentInsertedIntoTables(requestId, Comments);
+        CommonFlows.verifyDocumentInsertedIntoTables(requestId, comments);
         
         logStep("Verify Referral Letter status");
         CommonFlows.verifyDocumentProcessingStatus(PropertyLoaderObj, requestId, practiceId, integrationPracticeID);
         
-        String body = Comments+"\n\n"+DocReceivedText;
+        String body = comments+"\n\n"+DocReceivedText;
         CommonFlows.verifyPatientDocumentReceivedINInbox(PropertyLoaderObj,driver,url,username,PropertyLoaderObj.getPassword(),
         		PropertyLoaderObj.getProperty("DocSubject"), body, docName+".pdf");
         
         log("Test Case End: The practice user is able to send the Referral Letter.");
-    }
+    }    
 }

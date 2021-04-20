@@ -70,16 +70,16 @@ public class CommonUtils {
 	    return formatter.format(date);
 	}
 	
-	public static String FetchTokenValueFromJsonObject(String filepath, String filename, String Tokenkey) {
+	public static String fetchTokenValueFromJsonObject(String filepath, String filename, String tokenkey) {
 
-        String TokenValue = "";
+        String tokenValue = "";
         try {
             String jsonString = new String(Files.readAllBytes(Paths.get(filepath + filename + ".json")));
             JSONObject jsonObject = new JSONObject(jsonString);
-            TokenValue = jsonObject.get(Tokenkey).toString();
+            tokenValue = jsonObject.get(tokenkey).toString();
         } catch (Exception e) {
         	Log4jUtil.log(e.getMessage());
         }
-        return TokenValue;
+        return tokenValue;
     }
 }
