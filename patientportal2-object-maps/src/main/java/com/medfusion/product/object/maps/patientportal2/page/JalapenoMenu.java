@@ -75,7 +75,7 @@ public abstract class JalapenoMenu extends MedfusionPage {
 	@FindBy(how = How.LINK_TEXT, using = "Account")
 	private WebElement myAccountButton;
  
-	@FindBy(how = How.LINK_TEXT, using = "My Account")
+	@FindBy(how = How.XPATH, using = "//li[@id='account_dropdown']/a")
 	private WebElement myAccountDropdownButton;
 
 	@FindBy(how = How.ID, using = "open-top-loggedIn-grp")
@@ -205,14 +205,14 @@ public abstract class JalapenoMenu extends MedfusionPage {
 		return PageFactory.initElements(driver, JalapenoAccountPage.class);
 	}
 
-	public JalapenoMyAccountProfilePage clickOnMyAccount() {
+	public JalapenoMyAccountProfilePage clickOnMyAccount() throws InterruptedException {
 		log("Clicking on Account button - regular resolution");
 		try {
 			myAccount.click();
-		} catch (NoSuchElementException ex) {
+		} catch (ElementNotInteractableException ex) {
 			log("Did not find Account button, trying mobile version size");
-			rightDropdownButton.click();
-			new WebDriverWait(driver, 10).until(ExpectedConditions.visibilityOf(myAccountButton));
+			javascriptClick(rightDropdownButton);
+			new WebDriverWait(driver, 15).until(ExpectedConditions.visibilityOf(myAccountDropdownButton));
 			myAccountDropdownButton.click();
 		}
 		return PageFactory.initElements(driver, JalapenoMyAccountProfilePage.class);
@@ -332,7 +332,7 @@ public abstract class JalapenoMenu extends MedfusionPage {
 		return PageFactory.initElements(driver, NGLoginPage.class);
 	}
 	
-	public void UnlinkDependentAccount() {
+	public void unlinkDependentAccount() {
 		JalapenoAccountPage accountPage = clickOnAccount();
 		accountPage.clickOnUnlinkDependentAccount();
 	}

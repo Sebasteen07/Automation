@@ -1,4 +1,4 @@
-//Copyright 2013-2020 NXGN Management, LLC. All Rights Reserved.
+//Copyright 2013-2021 NXGN Management, LLC. All Rights Reserved.
 package com.medfusion.product.object.maps.patientportal2.page.AskAStaff;
 
 import org.openqa.selenium.By;
@@ -12,18 +12,16 @@ import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.openqa.selenium.support.ui.Select;
 import org.openqa.selenium.support.ui.WebDriverWait;
 
-import com.medfusion.common.utils.IHGConstants;
 import com.medfusion.common.utils.IHGUtil;
 import com.medfusion.product.object.maps.patientportal2.page.JalapenoMenu;
 import com.medfusion.product.patientportal2.pojo.CreditCard;
 import com.medfusion.product.patientportal2.pojo.CreditCard.CardType;
 
-import static com.intuit.ifs.csscat.core.BaseTestSoftAssert.assertTrue;
+import static org.testng.Assert.assertTrue;
 
 import java.awt.AWTException;
 import java.awt.Robot;
 import java.awt.Toolkit;
-import java.awt.datatransfer.Clipboard;
 import java.awt.datatransfer.StringSelection;
 import java.awt.event.KeyEvent;
 import java.util.ArrayList;
@@ -48,7 +46,7 @@ public class JalapenoAskAStaffV2Page1 extends JalapenoMenu {
 	@FindBy(how = How.XPATH, using = "//div[text()=' Payment Details ']")
 	private WebElement paymentDetails;
 
-	@FindBy(how = How.ID, using = "attachments")
+    @FindBy(how = How.XPATH, using = "//button[@aria-labelledby='attachments_label']")
 	private WebElement attachmnetFiles;
 
 	// Custom component, use click -> sendkeys sequence to manipulate
@@ -125,10 +123,10 @@ public class JalapenoAskAStaffV2Page1 extends JalapenoMenu {
 	@FindBy(how = How.XPATH, using = "//span[text()='sw-test-academy.txt']")
 	private WebElement properFileName;
 
-	@FindBy(how = How.XPATH, using = "//a[@class='attachmentRemoveLink pull-right ng-binding']")
+    @FindBy(how = How.XPATH, using = "//a[@class='attachmentRemoveLink pull-right']")
 	private WebElement errorFileRemove;
 
-	@FindBy(how = How.XPATH, using = "//a[@class='attachmentRemoveLink pull-right ng-binding']")
+    @FindBy(how = How.XPATH, using = "//a[@class='attachmentRemoveLink pull-right']")
 	private WebElement fileRemovbutton;
 
 	@FindBy(how = How.ID, using = "attachments_error")
@@ -352,7 +350,7 @@ public class JalapenoAskAStaffV2Page1 extends JalapenoMenu {
 
 	private ArrayList<WebElement> getRemoveAttachment() {
 		return (ArrayList<WebElement>) driver
-				.findElements(By.xpath("//tr[contains(@class, 'attachmentItem ng-scope')]"));
+                .findElements(By.xpath("//tr[contains(@class, 'attachmentItem')]"));
 	}
 
 	public void removeAttachment() throws InterruptedException {
@@ -364,7 +362,7 @@ public class JalapenoAskAStaffV2Page1 extends JalapenoMenu {
 			int removeButton = 0;
 
 			ArrayList<WebElement> removeButtons = (ArrayList<WebElement>) driver
-					.findElements(By.xpath("//a[@class='attachmentRemoveLink pull-right ng-binding']"));
+                    .findElements(By.xpath("//a[@class='attachmentRemoveLink pull-right']"));
 			for (int i = 0; i < removeButtons.size() - 1; i++) {
 				if (removeButtons.get(i).isDisplayed()) {
 					fileRemovbutton.click();
@@ -505,6 +503,44 @@ public class JalapenoAskAStaffV2Page1 extends JalapenoMenu {
 		questionBox.sendKeys(question);
 		Thread.sleep(10000);
 		continueButton.click();
+		return PageFactory.initElements(driver, JalapenoAskAStaffV2Page2.class);
+	}
+	
+    public JalapenoAskAStaffV2Page2 NGfillASKADetails(String subject, String question,String ProviderName,String LocationName) throws InterruptedException {
+        if (subject != null && !subject.trim().isEmpty()) {
+            subjectBox.clear();
+            subjectBox.sendKeys(subject);
+        }
+        log("Selecting Location "+LocationName);
+        IHGUtil.waitForElement(driver, 30, LocationDropDown);
+        LocationDropDown.click();
+        driver.findElement(By.xpath("(//*[contains(text(),'"+LocationName+"')])[2]")).click();
+        IHGUtil.waitForElement(driver, 30, ProviderDropDown);
+        log("Selecting Provider "+ProviderName);
+        ProviderDropDown.click();
+        driver.findElement(By.xpath("//*[contains(text(),'"+ProviderName+"')]")).click();
+        IHGUtil.waitForElement(driver, 30, questionBox);   
+        log("Entering Question "+question);
+        questionBox.sendKeys(question);
+		return PageFactory.initElements(driver, JalapenoAskAStaffV2Page2.class);
+    }
+    
+    public void uploadFile(String filePath,String fileName) throws InterruptedException {
+    	setClipboardData(filePath);
+    	Thread.sleep(5000);
+    	log("Path of File " + filePath);
+    	JalapenoAskAStaffV2Page1 ref = new JalapenoAskAStaffV2Page1(driver);
+    	ref.uploadFileWithRobot(filePath, "");
+    	
+    	String fileAttached = driver.findElement(By.xpath("//span[text()='"+fileName+"']")).getText();
+    	log("Uploaded file  " + fileAttached);
+				assertTrue(fileAttached.equals(fileName),
+						"Expected: " + fileAttached + ", found: " + fileName);
+		}
+    
+    public JalapenoAskAStaffV2Page2 clickContinue() throws InterruptedException {
+    	IHGUtil.waitForElement(driver, 30, continueButton);
+    	continueButton.click();
 		return PageFactory.initElements(driver, JalapenoAskAStaffV2Page2.class);
 	}
 

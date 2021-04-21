@@ -1,7 +1,7 @@
 // Copyright 2013-2021 NXGN Management, LLC. All Rights Reserved.
 package com.intuit.ihg.product.integrationplatform.test;
 
-import static org.testng.Assert.assertNotNull;
+import static org.testng.Assert.*;
 
 import org.apache.commons.lang.StringUtils;
 import org.testng.SkipException;
@@ -88,7 +88,7 @@ public class IntegrationPlatformAcceptanceTests extends BaseTestNGWebDriver {
 		String practicePatientId = "Patient" + timestamp;
 		String firstName = "Name" + timestamp;
 		String lastName = "TestPatient1" + timestamp;
-		String email = IHGUtil.createRandomEmailAddress(testData.getEmail());
+		String email = firstName + "@mailinator.com";
 		String zip = testData.getZipCode();
 		String date = testData.getBirthDay();
 
@@ -126,13 +126,16 @@ public class IntegrationPlatformAcceptanceTests extends BaseTestNGWebDriver {
 			}
 		}
 		assertTrue(completed, "Message processing was not completed in time");
-		// comment code for optimization
-		GmailBot gBot = new GmailBot();
-		log("Step 5: Checking for the activation link inside the patient Gmail inbox");
+		
+		log("Step 5: Checking for the activation link inside the patient mailinator inbox");
+		// Searching for the link for patient activation in the mailinator Inbox
 
-		// Searching for the link for patient activation in the Gmail Inbox
-		String activationUrl = gBot.findInboxEmailLink(testData.getGmailUsername(), testData.getGmailPassword(),
-				JalapenoConstants.NEW_PATIENT_ACTIVATION_MESSAGE, "portal/#/user/activate", 3, false, true);
+		Mailinator mail = new Mailinator();
+		String subject = "New message from PI Automation rsdk Integrated" ;
+		String messageLink = "Sign in to view this message";
+		String activationUrl = mail.getLinkFromEmail(email,JalapenoConstants.NEW_PATIENT_ACTIVATION_MESSAGE,
+				JalapenoConstants.NEW_PATIENT_ACTIVATION_MESSAGE_LINK_TEXT, 40);
+
 
 		log("Step 6: Moving to the link obtained from the email message");
 		assertNotNull(activationUrl, "Error: Activation link not found.");
@@ -319,7 +322,7 @@ public class IntegrationPlatformAcceptanceTests extends BaseTestNGWebDriver {
 
 		log("Step 17: Validate message reply");
 		RestUtils.isReplyPresent(testData.getResponsePath(), messageIdentifier);
-
+		 
 	}
 
 	@Test(enabled = true, groups = { "AcceptanceTests" }, retryAnalyzer = RetryAnalyzer.class)
@@ -803,7 +806,7 @@ public class IntegrationPlatformAcceptanceTests extends BaseTestNGWebDriver {
 
 		log("Step 13: Check secure message in patient gmail inbox");
 		Mailinator mail = new Mailinator();
-		String subject = "New message from PI Automation rsdk Integrated";
+		String subject = "New message from " + OLBPData.getPracticeName();
 		String messageLink = "Sign in to view this message";
 		assertTrue(mail.isMessageInInbox(OLBPData.getUserName(), subject, messageLink, 5));
 

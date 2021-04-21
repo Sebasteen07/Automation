@@ -1,8 +1,9 @@
-// Copyright 2021 NXGN Management, LLC. All Rights Reserved.
+//  Copyright 2013-2021 NXGN Management, LLC. All Rights Reserved.
 package com.medfusion.product.object.maps.patientportal2.page.MedicationsPage;
 
-import static org.junit.Assert.assertFalse;
+import static org.testng.Assert.assertFalse;
 
+import org.openqa.selenium.JavascriptExecutor;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.FindBy;
@@ -38,10 +39,17 @@ public class MedicationsConfirmationPage {
 	
 	@FindBy(how = How.XPATH, using = "//span[text()='Prescription renewal fee']")
 	private WebElement prescriptionRenewalFee;
-
+	
+	@FindBy(how = How.XPATH, using = "//*[@id='result-pharmacy']/div")
+	private WebElement pharamcyDetails;
+	
+	@FindBy(how = How.XPATH, using = "(//*[@id='result-medications']/div/p)[1]")
+	private WebElement medicationdetails;
+	
+	
 	public String confirmMedication(WebDriver driver) throws InterruptedException {
-
-		btnConfirm.click();
+		JavascriptExecutor ex = (JavascriptExecutor)driver;
+	    ex.executeScript("arguments[0].click();", btnConfirm);
 		System.out.println("Confirm button is clicked");
 		IHGUtil.waitForElement(driver, 10, confirmPopup);
         return successMsg.getText();		
@@ -56,8 +64,15 @@ public class MedicationsConfirmationPage {
 			System.out.println("Prescription Renewal fee is  not displayed");
 		}
 		
-		
-		
+	}
+	
+	public String getMedicationdetails(WebDriver driver) throws InterruptedException {
+		String confirmMedicationDetails =  medicationdetails.getText() ;
+        return confirmMedicationDetails;		
 	}
 
+	public String getpharamcyDetails(WebDriver driver) throws InterruptedException {
+		String confirmPharamcyDetails =  pharamcyDetails.getText() ;
+        return confirmPharamcyDetails;		
+	}
 }

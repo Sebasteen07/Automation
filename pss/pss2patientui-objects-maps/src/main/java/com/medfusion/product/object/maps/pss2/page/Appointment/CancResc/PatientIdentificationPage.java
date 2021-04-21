@@ -41,7 +41,7 @@ public class PatientIdentificationPage extends PSS2MainPage {
 	@FindBy(how = How.XPATH, using = "//span[contains(text(),'Submit')]")
 	private WebElement buttonNext;
 	
-	@FindBy(how = How.XPATH, using = "//div[@id='myModalsss']//button[@class='dismissbuttons']")
+	@FindBy(how = How.XPATH, using = "//*[@id='myModalsssloginpopup']/div/div/div[3]/button")
 	private WebElement dismissButtons;
 	
 	@FindBy(how = How.XPATH, using = "//div[@id='myModalsss']/div/div/div[3]/button/span")
@@ -102,8 +102,9 @@ public class PatientIdentificationPage extends PSS2MainPage {
 		
 		driver.switchTo().frame(recaptchaFrame);
 		commonMethods.highlightElement(recaptchaBox);
-		recaptchaClick.click();
 		Thread.sleep(3000);
+		recaptchaClick.click();
+		Thread.sleep(6000);
 		driver.switchTo().parentFrame();
 
 		log("........Captcha clicked......");

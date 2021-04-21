@@ -1,7 +1,8 @@
-//Copyright 2013-2020 NXGN Management, LLC. All Rights Reserved.
+//Copyright 2013-2021 NXGN Management, LLC. All Rights Reserved.
 package com.medfusion.product.object.maps.patientportal2.page.CcdPage;
 
-import static org.testng.AssertJUnit.*;
+import static org.testng.Assert.assertTrue;
+
 import java.text.SimpleDateFormat;
 import java.time.Instant;
 import java.time.LocalDateTime;
@@ -23,7 +24,6 @@ import org.openqa.selenium.support.PageFactory;
 import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.openqa.selenium.support.ui.WebDriverWait;
 
-import com.medfusion.common.utils.IHGConstants;
 import com.medfusion.common.utils.IHGUtil;
 import com.medfusion.common.utils.MFDateUtil;
 
@@ -62,13 +62,13 @@ public class MedicalRecordSummariesPage extends JalapenoMenu {
 	@FindBy(how = How.XPATH, using = "//*[@id=\"ccdTable\"]/tbody[3]/tr/td[2]/a")
 	private WebElement thirdVisibleCCDDate;
 
-	@FindBy(how = How.ID, using = "emailAddress")
+	@FindBy(how = How.ID, using = "emailId")
 	private WebElement emailAddressInput;
 
 	@FindBy(how = How.ID, using = "transmitButton")
 	private WebElement transmitButton;
 
-	@FindBy(how = How.XPATH, using = "(//*/div[@class='notification-message']/p)[2]")
+	@FindBy(how = How.XPATH, using = "//*[contains(text(),'Your health data has been successfully sent.')]")
 	private WebElement successNotificationMessage;
 
 	// Adding new radioButton and acknowledgement check box
@@ -79,7 +79,7 @@ public class MedicalRecordSummariesPage extends JalapenoMenu {
 	@FindBy(how = How.ID, using = "unsecureTransmit")
 	private WebElement unsecureTransmit;
 
-	@FindBy(how = How.ID, using = "acknowledgement")
+	@FindBy(how = How.ID, using = "acknowledgementValue")
 	private WebElement acknowledgement;
 
 	@FindBy(how = How.ID, using = "plusLinkButton")
@@ -207,7 +207,7 @@ public class MedicalRecordSummariesPage extends JalapenoMenu {
 	}
 
 	public void careNexisValidation() {
-		String winHandleBefore = driver.getWindowHandle();
+		driver.getWindowHandle();
 		for (String winHandle : driver.getWindowHandles()) {
 			driver.switchTo().window(winHandle);
 		}
@@ -239,6 +239,7 @@ public class MedicalRecordSummariesPage extends JalapenoMenu {
 	}
 
 	public void setFilterToDefaultPositionAndCheckElements() {
+		IHGUtil.waitForElement(driver, 60, firstVisibleCCDDate);
 		filterCCDs(MFDateUtil.parseDateToUTCZonedTime(firstVisibleCCDDate.getText()).toInstant(), Instant.now());
 		assertTrue(areBasicPageElementsPresent());
 	}
@@ -261,9 +262,8 @@ public class MedicalRecordSummariesPage extends JalapenoMenu {
 		filterCCDs(inst, inst);
 		new WebDriverWait(driver, 30).until(ExpectedConditions
 				.invisibilityOfElementLocated(By.xpath("//*[@data-ng-repeat='ccd in vm.ccdList'][3]//a")));
-		assertTrue("The first element in the list does not satisfy the filter!",
-				MFDateUtil.parseDateToUTCZonedTime(firstVisibleCCDDate.getText()).toInstant().equals(inst));
-
+		assertTrue(MFDateUtil.parseDateToUTCZonedTime(firstVisibleCCDDate.getText()).toInstant().equals(inst), 
+				"The first element in the list does not satisfy the filter!");
 	}
 
 	private String getDateFromTimeStamp(long timeStamp) {

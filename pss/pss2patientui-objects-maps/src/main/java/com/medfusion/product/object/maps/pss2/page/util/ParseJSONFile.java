@@ -8,10 +8,11 @@ import org.json.JSONObject;
 
 public class ParseJSONFile {
 
-	public static void parseObject(JSONObject json, String key) {
+	public static String parseObject(JSONObject json, String key) {
 
-		System.out.println("Status of key present or not- " + json.has(key));
-		System.out.println("Value of key- " + json.get(key));
+		System.out.println("Value of " + key + "- " + json.get(key));
+		String KEY=(String) json.get(key);
+		return KEY;
 	}
 
 	public static void getKey(JSONObject json, String key) {
@@ -21,7 +22,7 @@ public class ParseJSONFile {
 		String nextkey;
 
 		if (!exists) {
-			System.out.println("Next key is not present so coming in !exist block");
+
 			keys = json.keys();
 			while (keys.hasNext()) {
 				nextkey = (String) keys.next();
@@ -33,7 +34,7 @@ public class ParseJSONFile {
 						}
 
 					} else if (json.get(nextkey) instanceof JSONArray) {
-						System.out.println("I am in JSON ARRAY");
+
 						JSONArray jarr = json.getJSONArray(nextkey);
 						for (int i = 0; i < jarr.length(); i++) {
 

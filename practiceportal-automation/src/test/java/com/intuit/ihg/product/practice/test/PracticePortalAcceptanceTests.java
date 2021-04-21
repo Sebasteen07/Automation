@@ -1,4 +1,4 @@
-//  Copyright 2013-2020 NXGN Management, LLC. All Rights Reserved.
+//  Copyright 2013-2021 NXGN Management, LLC. All Rights Reserved.
 package com.intuit.ihg.product.practice.test;
 
 import org.testng.annotations.BeforeClass;
@@ -26,7 +26,8 @@ import com.medfusion.qa.mailinator.Mailer;
 import com.medfusion.product.object.maps.patientportal2.page.ForgotPasswordPage.JalapenoForgotPasswordPage4;
 import com.medfusion.product.object.maps.patientportal2.page.HomePage.JalapenoHomePage;
 
-import static org.testng.Assert.assertNotNull;
+import static org.testng.Assert.*;
+
 import java.io.IOException;
 import java.time.Instant;
 import java.time.temporal.ChronoUnit;
@@ -324,7 +325,7 @@ public class PracticePortalAcceptanceTests extends BaseTestNGWebDriver {
 		PayMyBillOnlinePage pPayMyBillOnlinePage = pPracticeHomePage.clickMakePaymentForPatient();
 
 		logStep("Search For Patient");
-		pPayMyBillOnlinePage.searchForPatient();
+		pPayMyBillOnlinePage.searchForPatient(PracticeConstants.PATIENT_FIRST_NAME, PracticeConstants.PATIENT_LAST_NAME);
 
 		logStep("Set Patient Transaction Fields");
 		pPayMyBillOnlinePage.setPatientTransactionFields();

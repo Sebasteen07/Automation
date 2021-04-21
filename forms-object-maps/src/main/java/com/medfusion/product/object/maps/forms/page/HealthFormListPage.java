@@ -1,9 +1,10 @@
+//  Copyright 2013-2021 NXGN Management, LLC. All Rights Reserved.
 package com.medfusion.product.object.maps.forms.page;
 
 import java.io.IOException;
+import java.time.Duration;
 import java.util.Date;
 import java.util.List;
-import java.util.concurrent.TimeUnit;
 import java.util.function.Function;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
@@ -29,7 +30,7 @@ public class HealthFormListPage extends BasePageObject {
 	public HealthFormListPage(WebDriver driver) {
 		super(driver);
 		IHGUtil.PrintMethodName();
-		//driver.manage().window().maximize();
+		// driver.manage().window().maximize();
 		IHGUtil.setFrame(driver, "iframe");
 		PageFactory.initElements(driver, this);
 	}
@@ -38,8 +39,8 @@ public class HealthFormListPage extends BasePageObject {
 
 	@FindBy(xpath = "//iframe[@title='Forms']")
 	private WebElement newFormIframe;
-	
-	@FindBy(xpath ="//iframe[@title='Forms']")
+
+	@FindBy(xpath = "//iframe[@title='Forms']")
 	private WebElement iframeforms;
 
 	@FindBy(xpath = "//li[@id='signout'] | //a[./text()='Logout'] | //a[./text()='Log Out']")
@@ -50,21 +51,21 @@ public class HealthFormListPage extends BasePageObject {
 
 	@FindBy(xpath = "//span[./text()='Home'] | //*[./text()='my patient page'] | //*[./text()='My Patient Page']")
 	private WebElement homeLink;
-	
-	@FindBy(xpath= "//a[text()='Continue']")
+
+	@FindBy(xpath = "//a[text()='Continue']")
 	private WebElement Continuebutton1;
-	
-	@FindBy(xpath="//li/a[text()='General Registration and Health History']")
+
+	@FindBy(xpath = "//li/a[text()='General Registration and Health History']")
 	public static WebElement healthFormsRegistrationLink;
-	
-	@FindBy(xpath="//li/a[text()='General Registration and Health History Updated']")
+
+	@FindBy(xpath = "//li/a[text()='General Registration and Health History Updated']")
 	public static WebElement healthFormsRegistrationLinkUpdated;
-	
-	@FindBy(linkText="View as PDF")
+
+	@FindBy(linkText = "View as PDF")
 	private static WebElement pdfLinkText;
-	
+
 	private static String formValueNew;
-	
+
 	public FormWelcomePage openDiscreteForm(String selectedForm) throws Exception {
 		log("Waiting up to 50 seconds for forms to display");
 		WebDriverWait wait = new WebDriverWait(driver, 50);
@@ -72,17 +73,11 @@ public class HealthFormListPage extends BasePageObject {
 		Thread.sleep(3000);
 		try {
 			driver.findElement(newFormIframeXpath);
-		} catch (NoSuchElementException ex){
+		} catch (NoSuchElementException ex) {
 			driver.switchTo().defaultContent();
 		}
 		driver.switchTo().frame(newFormIframe);
 		return PageFactory.initElements(driver, FormWelcomePage.class);
-	}
-
-	public OldCustomFormPages openOldCustomForm(String formName) throws InterruptedException {
-		javascriptClick(driver.findElement(By.linkText(formName)));
-		Thread.sleep(3000);
-		return PageFactory.initElements(driver, OldCustomFormPages.class);
 	}
 
 	public void clickOnHealthForms() {
@@ -91,41 +86,35 @@ public class HealthFormListPage extends BasePageObject {
 		javascriptClick(healthFormsLink);
 		IHGUtil.setFrame(driver, "iframe");
 	}
-	public void clickOnHealthFormsRegistrationLink() throws InterruptedException{
+
+	public void clickOnHealthFormsRegistrationLink() throws InterruptedException {
 		log("Clicking On General Registration and Health History ");
 		IHGUtil.waitForElement(driver, 30, healthFormsRegistrationLink);
 		healthFormsRegistrationLink.click();
 		Thread.sleep(7000);
-		formValueNew=healthFormsRegistrationLink.getText();
-		//WebDriverWait wait = new WebDriverWait(driver,50);
+		formValueNew = healthFormsRegistrationLink.getText();
 		driver.switchTo().frame(iframeforms);
-		//wait.until(ExpectedConditions.visibilityOf(Continuebutton1));
+		// wait.until(ExpectedConditions.visibilityOf(Continuebutton1));
 		IHGUtil.waitForElement(driver, 80, Continuebutton1);
 		Continuebutton1.click();
 	}
-	public String getFormName()
-	{
+
+	public String getFormName() {
 		return formValueNew;
-	}
-	public String getPDFDownloadLink(String formName) throws Exception {
-		WebDriverWait wait = new WebDriverWait(driver, 10, 1000);
-		return wait.until(ExpectedConditions.elementToBeClickable(By.xpath("(//li[./a[starts-with(./text(), '" + formName + "')]]//a)[2]"))).getAttribute("href");
 	}
 
 	public void logout() throws InterruptedException, IOException {
-		FluentWait<WebDriver> wait = new FluentWait<WebDriver>(driver)
-				.withTimeout(30, TimeUnit.SECONDS)
-				.pollingEvery(3, TimeUnit.SECONDS)
-				.ignoring(NoSuchElementException.class)
+		FluentWait<WebDriver> wait = new FluentWait<WebDriver>(driver).withTimeout(Duration.ofSeconds(30))
+				.pollingEvery(Duration.ofSeconds(3)).ignoring(NoSuchElementException.class)
 				.ignoring(NoSuchFrameException.class);
-		
+
 		WebElement logout = wait.until(new Function<WebDriver, WebElement>() {
-			     public WebElement apply(WebDriver driver) {
-			    	IHGUtil.setFrame(driver, "iframebody");		
-			 		return driver.findElement(By.xpath("//li[@id='signout'] | //a[./text()='Logout'] | //a[./text()='Log Out']"));
-			       }
-			     }
-				);
+			public WebElement apply(WebDriver driver) {
+				IHGUtil.setFrame(driver, "iframebody");
+				return driver.findElement(
+						By.xpath("//li[@id='signout'] | //a[./text()='Logout'] | //a[./text()='Log Out']"));
+			}
+		});
 		javascriptClick(logout);
 	}
 
@@ -152,8 +141,8 @@ public class HealthFormListPage extends BasePageObject {
 				hours = hours + 12;
 			}
 			Calendar c = Calendar.getInstance();
-			c.set(Integer.parseInt(matcher.group(3)), Integer.parseInt(matcher.group(1)) - 1, Integer.parseInt(matcher.group(2)), hours,
-					Integer.parseInt(matcher.group(5)));
+			c.set(Integer.parseInt(matcher.group(3)), Integer.parseInt(matcher.group(1)) - 1,
+					Integer.parseInt(matcher.group(2)), hours, Integer.parseInt(matcher.group(5)));
 			return c.getTime();
 		}
 		throw new IllegalStateException("Date not found");
@@ -162,7 +151,8 @@ public class HealthFormListPage extends BasePageObject {
 	private String getFormInfo(String formName) {
 		String formInfo;
 		try {
-			formInfo = driver.findElement(By.xpath("//li[./a/text()='" + formName + "']/table/tbody/tr/td/span")).getText();
+			formInfo = driver.findElement(By.xpath("//li[./a/text()='" + formName + "']/table/tbody/tr/td/span"))
+					.getText();
 		} catch (NoSuchElementException f) {
 			log("Info about form named '" + formName + "' not found");
 			throw f;
@@ -174,22 +164,22 @@ public class HealthFormListPage extends BasePageObject {
 		IHGUtil.setDefaultFrame(driver);
 		javascriptClick(homeLink);
 	}
-	
+
 	public void getPDF() {
 		IHGUtil.waitForElement(driver, 90, pdfLinkText);
 		pdfLinkText.click();
 	}
-	
-	public void clickOnHealthFormsRegistrationLinkUpdated(int i) throws InterruptedException{
+
+	public void clickOnHealthFormsRegistrationLinkUpdated(int i) throws InterruptedException {
 		log("Clicking On General Registration and Health History Updated ");
 		IHGUtil.waitForElement(driver, 60, healthFormsRegistrationLinkUpdated);
 		healthFormsRegistrationLinkUpdated.click();
 		driver.switchTo().frame(iframeforms);
 		List<WebElement> continueButtonClick = driver.findElements(By.xpath("//a[text()='Continue']"));
-		if(i==0 && !continueButtonClick.isEmpty()) {
+		if (i == 0 && !continueButtonClick.isEmpty()) {
 			IHGUtil.waitForElement(driver, 60, Continuebutton1);
 			javascriptClick(Continuebutton1);
 		}
-		
+
 	}
 }

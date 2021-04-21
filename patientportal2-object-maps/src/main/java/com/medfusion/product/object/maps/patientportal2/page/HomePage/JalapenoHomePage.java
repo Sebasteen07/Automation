@@ -36,6 +36,7 @@ import com.medfusion.product.object.maps.patientportal2.page.MessagesPage.Jalape
 import com.medfusion.product.object.maps.patientportal2.page.NewPayBillsPage.JalapenoPayBillsMakePaymentPage;
 import com.medfusion.product.object.maps.patientportal2.page.PayBillsStatementPage.JalapenoPayBillsStatementPage;
 import com.medfusion.product.object.maps.patientportal2.page.PrescriptionsPage.JalapenoPrescriptionsPage;
+import com.medfusion.product.object.maps.patientportal2.page.ThirdPartySso.ThirdPartySsoPage;
 
 public class JalapenoHomePage extends JalapenoMenu {
 	@FindBy(how = How.ID, using = "feature_messaging")
@@ -77,16 +78,16 @@ public class JalapenoHomePage extends JalapenoMenu {
 	@FindBy(how = How.ID, using = "inprogressformbutton")
 	private WebElement continueRegistrationButton;
 
-	@FindBy(how = How.XPATH, using ="//span[@class='badge currentPatientBubble ng-binding']")
+	@FindBy(how = How.XPATH, using ="//span[@class='badge currentPatientBubble']")
 	private WebElement bubble;
 
-	@FindBy(how = How.ID, using = "currentPatientBubble-grp")
+	@FindBy(how = How.XPATH, using = "//span[@id='currentPatientBubble-grp']")
 	private WebElement mobileViewBubble;
 
-	@FindBy(how = How.XPATH, using = "//span[@class='badge listBadge listBadgedependent ng-binding']")
+	@FindBy(how = How.XPATH, using = "//li[@class='dependent-dropdown']")
 	private WebElement viewDifferentPatientButton;
 
-	@FindBy(how = How.XPATH, using = "//li[@class='open-top-grp ng-scope']")
+	@FindBy(how = How.XPATH, using = "//li[@class='open-top-grp dependent-dropdown']")
 	private WebElement mobileViewDifferentPatientButton;
 	
 	@FindBy(how = How.XPATH, using = "//a[contains(@class, 'success')]")
@@ -107,10 +108,10 @@ public class JalapenoHomePage extends JalapenoMenu {
 	@FindBy(how = How.XPATH, using = "//a[text()='Ask (paid)']")
 	private WebElement askPaid;
 
-	@FindBy(how = How.XPATH, using = "//*[@aria-label='Select box activate']")
+	@FindBy(how = How.XPATH, using = "//div[@class='practice-toggle-dropdown']//span[@class='ng-arrow-wrapper']")
 	private WebElement practiceToggleSearch;
 
-	@FindBy(how = How.XPATH, using = "//input[@type='search']")
+	@FindBy(how = How.XPATH, using = "//input[@type='text']")
 	private WebElement practiceInput;
 
 	@FindBy(how = How.XPATH, using = "//button[@id='switchingPracticeContinueButton']")
@@ -134,6 +135,9 @@ public class JalapenoHomePage extends JalapenoMenu {
 	
 	@FindBy(how = How.XPATH, using = "//*[contains(text(),'is no longer linked to your account.')]")
 	private WebElement unlinkSuccessfulMsg;
+	
+	@FindBy(how=How.XPATH, using="//h3[text()='3 Party SSO']")
+	private WebElement thirdpartysso;
 
 	public JalapenoHomePage(WebDriver driver) {
 		super(driver);
@@ -345,6 +349,7 @@ public class JalapenoHomePage extends JalapenoMenu {
 		IHGUtil.PrintMethodName();
 		Thread.sleep(8000);
 		askAQuestion.click();
+		Thread.sleep(1000);
 		log("It clicked on the ASK a question in homepage");
 		try {
 
@@ -543,5 +548,13 @@ public class JalapenoHomePage extends JalapenoMenu {
 			return false;
 		}
 	}
+	public ThirdPartySsoPage clickOnThirdPartySso(WebDriver driver) {
+		IHGUtil.PrintMethodName();
+		JavascriptExecutor js = (JavascriptExecutor) driver;
+		js.executeScript("arguments[0].scrollIntoView();", thirdpartysso);
+		javascriptClick(thirdpartysso);
+		return PageFactory.initElements(driver, ThirdPartySsoPage.class);
+	}
 
 }
+

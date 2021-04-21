@@ -1,11 +1,13 @@
+//Copyright 2013-2021 NXGN Management, LLC. All Rights Reserved.
 package com.intuit.ihg.product.object.maps.phr.page;
+
+import static org.testng.Assert.assertEquals;
 
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.Locale;
 import java.util.TimeZone;
 
-import org.junit.Assert;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.FindBy;
@@ -156,7 +158,7 @@ public class PhrDocumentsPage extends BasePageObject {
 			clickOnSendToShareWithAnotherDoctor();
 			Thread.sleep(20000);
 			String textBoxResponseMsg = getResponseAfterSending();
-			Assert.assertEquals(myDirectResponses[i], textBoxResponseMsg);
+			assertEquals(myDirectResponses[i], textBoxResponseMsg);
 			enterDirectAddress().clear();
 		}
 	}
@@ -168,7 +170,7 @@ public class PhrDocumentsPage extends BasePageObject {
 			clickOnSendToShareWithAnotherDoctor();
 			Thread.sleep(20000);
 			String textBoxResponseMsg = getResponseAfterSending();
-			Assert.assertEquals(myDirectResponsesDev3[i], textBoxResponseMsg);
+			assertEquals(myDirectResponsesDev3[i], textBoxResponseMsg);
 			enterDirectAddress().clear();
 		}
 	}

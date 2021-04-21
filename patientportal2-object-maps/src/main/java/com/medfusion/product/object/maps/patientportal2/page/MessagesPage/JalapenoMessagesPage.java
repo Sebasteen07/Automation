@@ -1,6 +1,9 @@
 //Copyright 2013-2021 NXGN Management, LLC. All Rights Reserved.
 package com.medfusion.product.object.maps.patientportal2.page.MessagesPage;
 
+import static org.testng.Assert.assertEquals;
+import static org.testng.Assert.assertTrue;
+
 import java.util.ArrayList;
 import java.util.List;
 
@@ -13,7 +16,7 @@ import org.openqa.selenium.support.How;
 import org.openqa.selenium.support.PageFactory;
 import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.openqa.selenium.support.ui.WebDriverWait;
-import org.testng.Assert;
+
 
 import com.intuit.ifs.csscat.core.utils.Log4jUtil;
 import com.medfusion.common.utils.IHGUtil;
@@ -179,7 +182,7 @@ public class JalapenoMessagesPage extends JalapenoMenu {
 		System.out.println(value);
 
 		try {
-			IHGUtil.waitForElementByXpath(driver, "//*[contains(text(),'Your reply was successfully sent')]", 30);
+			wait.until(ExpectedConditions.visibilityOf(successMsg));
 			log("Message sent");
 			return true;
 		} catch (Exception e) {
@@ -307,7 +310,7 @@ public class JalapenoMessagesPage extends JalapenoMenu {
 			log("Message with subject " + subject + "is not clickable");
 			log(ex.getMessage());
 		}
-		Assert.assertEquals(actualBody, body);
+		assertEquals(actualBody, body);
 	}
 
 	public void OpenMessage(WebDriver driver, String subject) {
@@ -338,7 +341,7 @@ public class JalapenoMessagesPage extends JalapenoMenu {
 		} catch (Exception ex) {
 			log("Message with subject " + attachmentName + "is not clickable");
 			log(ex.getMessage());
-			Assert.assertTrue(status, "Attachment is not found in message");
+			assertTrue(status, "Attachment is not found in message");
 		}
 	}
 
@@ -354,7 +357,7 @@ public class JalapenoMessagesPage extends JalapenoMenu {
 			status = true;
 			log("Reply Button is not displayed");
 			log(ex.getMessage());
-			Assert.assertTrue(status, "Reply Button is not displayed");
+			assertTrue(status, "Reply Button is not displayed");
 		}
 		return status;
 	}
@@ -373,7 +376,7 @@ public class JalapenoMessagesPage extends JalapenoMenu {
 			log("Sender Name is not correct");
 			log(ex.getMessage());
 		}
-		Assert.assertTrue(status, "Sender Name is not correct");
+		assertTrue(status, "Sender Name is not correct");
 		log("Sender Name is correct");
 		return status;
 	}
@@ -392,7 +395,7 @@ public class JalapenoMessagesPage extends JalapenoMenu {
 		} catch (Exception ex) {
 			log("PrescritonRenewalResponse added by Practice is not displayed in Portal");
 			log(ex.getMessage());
-			Assert.assertTrue(status, "PrescritonRenewalResponse added by Practice is not displayed in Portal");
+			assertTrue(status, "PrescritonRenewalResponse added by Practice is not displayed in Portal");
 		}
 	}
 
@@ -410,7 +413,7 @@ public class JalapenoMessagesPage extends JalapenoMenu {
 		} catch (Exception ex) {
 			log("Medication status is not displayed in Prescription renewal message");
 			log(ex.getMessage());
-			Assert.assertTrue(status, "Medication status is not displayed in Prescription renewal message");
+			assertTrue(status, "Medication status is not displayed in Prescription renewal message");
 		}
 	}
 
@@ -433,7 +436,7 @@ public class JalapenoMessagesPage extends JalapenoMenu {
 		} catch (Exception ex) {
 			log("Your Appointment Details is not displayed");
 			log(ex.getMessage());
-			Assert.assertTrue(status, "Your Appointment Details is not displayed in massage box");
+			assertTrue(status, "Your Appointment Details is not displayed in massage box");
 		}
 	}
 
@@ -443,7 +446,7 @@ public class JalapenoMessagesPage extends JalapenoMenu {
 				+ providerNameOnPortal.getText().toString());
 		Log4jUtil.log("Searching: Provider location is: " + location + ", and Actual Provider location is: "
 				+ locationOnPortal.getText().toString());
-		Assert.assertEquals(providerNameOnPortal.getText(), providerName, "Invalid Provider Name was found");
-		Assert.assertEquals(locationOnPortal.getText(), location, "Invalid Location was found");
+		assertEquals(providerNameOnPortal.getText(), providerName, "Invalid Provider Name was found");
+		assertEquals(locationOnPortal.getText(), location, "Invalid Location was found");
 	}
 }

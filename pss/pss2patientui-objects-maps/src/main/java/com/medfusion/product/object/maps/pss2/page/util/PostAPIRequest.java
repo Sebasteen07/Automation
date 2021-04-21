@@ -2,49 +2,25 @@
 package com.medfusion.product.object.maps.pss2.page.util;
 
 import static io.restassured.RestAssured.given;
+
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
+import org.json.JSONArray;
 import org.json.JSONObject;
 
 import com.intuit.ifs.csscat.core.BaseTestNGWebDriver;
 
 import io.restassured.RestAssured;
-import io.restassured.builder.RequestSpecBuilder;
-import io.restassured.builder.ResponseSpecBuilder;
 import io.restassured.path.json.JsonPath;
 import io.restassured.response.Response;
-import io.restassured.specification.RequestSpecification;
-import io.restassured.specification.ResponseSpecification;
+import static org.hamcrest.Matchers.*;
 
 public class PostAPIRequest extends BaseTestNGWebDriver {
 
-	RequestSpecification req = new RequestSpecBuilder().setContentType("application/json")
-			.setBaseUri("https://dev3-pss.dev.medfusion.net/pss-patient-modulator/v1").build();
-
-	ResponseSpecification res = new ResponseSpecBuilder().expectStatusCode(200).expectContentType("application/json")
-			.build();
-
 	APIVerification aPIVerification = new APIVerification();
-
-	public Response sampleMethod02(String baseurl, String b, Map<String, String> Header) {
-
-		Response response = given().log().all().queryParam("appointmentId", "4d63a3fd-a2d1-41bd-a64e-a64d4107b14a")
-				.queryParams("patientId", "3665").queryParam("startDateTime", "02/17/2021 10:00:00").spec(req)
-				.headers(Header).get("/24249/appointmentstatus").then().log().all().spec(res).extract().response();
-
-		JSONObject jsonobject = new JSONObject(response.asString());
-
-		log(response.asString());
-		log("Status Code- " + response.getStatusCode());
-
-		APIVerification apiVerification = new APIVerification();
-
-		apiVerification.responseCodeValidation(response, 200);
-		ParseJSONFile.getKey(jsonobject, "slotTime");
-		ParseJSONFile.getKey(jsonobject, "SlotId");
-		apiVerification.responseTimeValidation(response);
-		return response;
-	}
 
 	public JsonPath appointmentStatus(String baseurl, Map<String, String> Header) {
 
@@ -80,7 +56,19 @@ public class PostAPIRequest extends BaseTestNGWebDriver {
 		aPIVerification.responseKeyValidation(response, "name");
 
 		return response;
+	}
+	
+	public Response rescheduleApptNG(String baseurl, String b, Map<String, String> Header) {
 
+		RestAssured.baseURI = baseurl;
+
+		Response response = given().log().all().headers(Header).body(b).post(APIPath.apiPath.rescheduleAppt).then().log().all().assertThat()
+				.statusCode(200).extract().response();
+		aPIVerification.responseCodeValidation(response, 200);
+
+		aPIVerification.responseTimeValidation(response);
+
+		return response;
 	}
 
 	public Response cancellationReason(String baseurl) {
@@ -129,25 +117,6 @@ public class PostAPIRequest extends BaseTestNGWebDriver {
 
 	}
 
-	public Response sampleMethod01(String baseurl, String b, Map<String, String> Header) {
-
-		Response response = given().log().all().spec(req).headers(Header).body(b).post("/24249/availableslots/3665")
-				.then().log().all().spec(res).extract().response();
-
-		JSONObject jsonobject = new JSONObject(response.asString());
-
-		log(response.asString());
-		log("Status Code- " + response.getStatusCode());
-
-		APIVerification apiVerification = new APIVerification();
-
-		apiVerification.responseCodeValidation(response, 200);
-		ParseJSONFile.getKey(jsonobject, "slotTime");
-		ParseJSONFile.getKey(jsonobject, "SlotId");
-		apiVerification.responseTimeValidation(response);
-		return response;
-	}
-
 	public Response sampleMethod(String baseurl, String b, Map<String, String> Header) {
 
 		RestAssured.baseURI = baseurl;
@@ -163,6 +132,124 @@ public class PostAPIRequest extends BaseTestNGWebDriver {
 		apiVerification.responseCodeValidation(response, 200);
 		ParseJSONFile.getKey(jsonobject, "name");
 		apiVerification.responseKeyValidation(response, "name");
+		apiVerification.responseTimeValidation(response);
+		return response;
+	}
+
+	public Response locationList(String baseurl, String b, Map<String, String> Header) {
+
+		RestAssured.baseURI = baseurl;
+		Response response = RestAssured.given().when().headers(Header).body(b).log().all().when()
+				.post(APIPath.apiPath.Get_List_Location).then().log().all().extract().response();
+
+		JSONObject jsonobject = new JSONObject(response.asString());
+
+		log("Status Code- " + response.getStatusCode());
+
+		APIVerification apiVerification = new APIVerification();
+
+		apiVerification.responseCodeValidation(response, 200);
+		ParseJSONFile.getKey(jsonobject, "name");
+		apiVerification.responseKeyValidation(response, "name");
+		apiVerification.responseTimeValidation(response);
+		return response;
+	}
+
+	public Response bookList(String baseurl, String b, Map<String, String> Header) {
+
+		RestAssured.baseURI = baseurl;
+		Response response = RestAssured.given().when().headers(Header).body(b).log().all().when()
+				.post(APIPath.apiPath.Get_List_Book).then().log().all().extract().response();
+
+		JSONObject jsonobject = new JSONObject(response.asString());
+
+		log("Status Code- " + response.getStatusCode());
+
+		APIVerification apiVerification = new APIVerification();
+
+		apiVerification.responseCodeValidation(response, 200);
+		ParseJSONFile.getKey(jsonobject, "displayName");
+		apiVerification.responseKeyValidation(response, "name");
+		apiVerification.responseTimeValidation(response);
+		return response;
+	}
+
+	public Response scheduleApptPatient(String baseurl, String b, Map<String, String> Header) {
+
+		RestAssured.baseURI = baseurl;
+		Response response = given().when().headers(Header).body(b).log().all().when().post(APIPath.apiPath.ScheduleAPPT)
+				.then().log().all().extract().response();
+
+		JSONObject jsonobject = new JSONObject(response.asString());
+
+		log("Status Code- " + response.getStatusCode());
+
+		APIVerification apiVerification = new APIVerification();
+
+		apiVerification.responseCodeValidation(response, 200);
+		ParseJSONFile.getKey(jsonobject, "displayName");
+		apiVerification.responseKeyValidation(response, "categoryId");
+		apiVerification.responseTimeValidation(response);
+		return response;
+	}
+	
+	public String scheduleApptNG(String baseurl, String b, Map<String, String> Header) {
+
+		RestAssured.baseURI = baseurl;
+		Response response = given().when().headers(Header).body(b).log().all().when().post(APIPath.apiPath.scheduleApptNG)
+				.then().log().all().extract().response();
+
+		log("Status Code- " + response.getStatusCode());
+		
+		JSONObject js= new JSONObject(response.asString());
+		
+		String s=js.getString("id");
+		
+		log("Value of id - "+s);
+
+		APIVerification apiVerification = new APIVerification();
+
+		apiVerification.responseCodeValidation(response, 200);
+		apiVerification.responseTimeValidation(response);
+		return s;
+	}
+	
+	public String upcommingApptNG(String baseurl, String b, Map<String, String> Header) {
+
+		RestAssured.baseURI = baseurl;
+		String response = given().when().headers(Header).body(b).log().all().when().post(APIPath.apiPath.upcommingApptNG)
+				.then().log().all().assertThat().statusCode(200).body("book[0].resourceName", equalTo("Dinesh PSS")).body("location[0].name", equalTo("PSS WLA")).extract().response().asString();
+		
+		log("Response is - "+response);
+		
+		JsonPath js= new JsonPath(response.toString());
+		
+		String apptName=js.getString("appointmentTypes.name");
+		String resourceName=js.getString("book.resourceName");
+		String locationName=js.getString("location.name");
+		
+		log("APPOINTMENT TYPE - "+apptName);
+		log("resourceName - "+resourceName);
+		log("locationName - "+locationName);
+
+		return response;
+
+	}
+
+	public Response appointmenttypesRule(String baseurl, String b, Map<String, String> Header) {
+
+		RestAssured.baseURI = baseurl;
+		Response response = given().when().headers(Header).body(b).log().all().when()
+				.post(APIPath.apiPath.Get_List_Appointment).then().log().all().extract().response();
+
+		JSONObject jsonobject = new JSONObject(response.asString());
+
+		log("Status Code- " + response.getStatusCode());
+
+		APIVerification apiVerification = new APIVerification();
+
+		apiVerification.responseCodeValidation(response, 200);
+		ParseJSONFile.getKey(jsonobject, "displayName");
 		apiVerification.responseTimeValidation(response);
 		return response;
 	}
@@ -190,7 +277,8 @@ public class PostAPIRequest extends BaseTestNGWebDriver {
 	public String getaccessToken(String baseurl) {
 
 		RestAssured.baseURI = baseurl;
-		Response response = RestAssured.given().get(baseurl).then().log().all().extract().response();
+		Response response = given().log().all().header("flowType", "LOGINLESS").get("/accesstoken").then().log().all()
+				.extract().response();
 
 		JSONObject jsonobject = new JSONObject(response.asString());
 
@@ -251,11 +339,250 @@ public class PostAPIRequest extends BaseTestNGWebDriver {
 		log("Status Code- " + response.getStatusCode());
 		return response;
 	}
+	
+	public Response prerequisteappointmenttypesPOST(String baseurl, String b, Map<String, String> Header) {
+		RestAssured.baseURI = baseurl;
+		Response response = RestAssured.given().log().all().when().headers(Header).body(b)
+				.when().post(APIPath.apiPath.prerequisteappointmenttypesNG).then().log().all().extract().response();
+		log("Status Code- " + response.getStatusCode());
+		return response;
+	}
 
 	public Response cancellationReason(String baseurl, Map<String, String> Header) {
 		RestAssured.baseURI = baseurl;
 		Response response = RestAssured.given().when().headers(Header).when().get(APIPath.apiPath.cancellationReason)
 				.then().log().all().extract().response();
+		log("Status Code- " + response.getStatusCode());
+		log("Body ------ " + response.body());
+
+		return response;
+	}
+
+	public Response careproviderAvailability(String baseurl, String b, Map<String, String> Header) {
+		RestAssured.baseURI = baseurl;
+		Response response = RestAssured.given().log().all().when().headers(Header).body(b).when()
+				.post(APIPath.apiPath.careprovideravailabilityNG).then().log().all().extract().response();
+		aPIVerification.responseCodeValidation(response, 200);
+		aPIVerification.responseTimeValidation(response);
+		
+		JSONObject jsonobject = new JSONObject(response.asString());
+		
+		ParseJSONFile.getKey(jsonobject, "resourceId");
+		ParseJSONFile.getKey(jsonobject, "nextAvailabledate");
+
+		return response;
+	}
+	
+	public Response insuranceCarrier(String baseurl, Map<String, String> Header) {
+		RestAssured.baseURI = baseurl;
+		Response response = RestAssured.given().when().headers(Header).when().get(APIPath.apiPath.insurancecarrierNG)
+				.then().log().all().extract().response();
+		log("Status Code- " + response.getStatusCode());
+		log("Body ------ " + response.body());
+		aPIVerification.responseCodeValidation(response, 200);
+		aPIVerification.responseTimeValidation(response);
+		
+		JSONArray  jsonarray = new JSONArray (response.asString());		
+		
+		JSONObject jsonobject= new JSONObject();
+
+		int i = 0;
+		while (i < jsonarray.length()) {
+
+			jsonobject = jsonarray.getJSONObject(i);
+			ParseJSONFile.getKey(jsonobject, "name");
+			i++;
+		}	
+
+		return response;
+	}
+	
+	public Response locations(String baseurl, Map<String, String> Header) {
+		RestAssured.baseURI = baseurl;
+		Response response = RestAssured.given().when().headers(Header).when().get(APIPath.apiPath.locationsNG)
+				.then().log().all().extract().response();
+		log("Status Code- " + response.getStatusCode());
+		log("Body ------ " + response.body());
+		aPIVerification.responseCodeValidation(response, 200);
+		aPIVerification.responseTimeValidation(response);
+		
+		JSONArray  jsonarray = new JSONArray (response.asString());		
+		
+		JSONObject jsonobject= new JSONObject();
+
+		int i = 0;
+		while (i < jsonarray.length()) {
+
+			jsonobject = jsonarray.getJSONObject(i);
+			ParseJSONFile.getKey(jsonobject, "name");
+			i++;
+		}	
+
+		return response;
+	}
+	
+	public Response demographics(String baseurl, Map<String, String> Header) {
+		RestAssured.baseURI = baseurl;
+		Response response = RestAssured.given().queryParam("patientId", "50302").headers(Header).when().get(APIPath.apiPath.demographicNG)
+				.then().log().all().extract().response();
+		log("Status Code- " + response.getStatusCode());
+		log("Body ------> " + response.body());
+		
+		aPIVerification.responseCodeValidation(response, 200);
+		aPIVerification.responseTimeValidation(response);
+	
+		JSONObject jsonobject= new JSONObject(response.asString());
+		ParseJSONFile.getKey(jsonobject, "firstName");
+		ParseJSONFile.getKey(jsonobject, "lastName");	
+		ParseJSONFile.getKey(jsonobject, "emailAddress");
+		ParseJSONFile.getKey(jsonobject, "gender");
+
+		return response;
+	}
+	
+	public Response lockout(String baseurl, Map<String, String> Header) {
+		RestAssured.baseURI = baseurl;
+		Response response = RestAssured.given().headers(Header).when().get(APIPath.apiPath.lockoutNG)
+				.then().log().all().extract().response();
+		log("Status Code- " + response.getStatusCode());
+		log("Body ------> " + response.body());
+		
+		aPIVerification.responseCodeValidation(response, 200);
+		aPIVerification.responseTimeValidation(response);
+	
+		JSONArray  jsonarray = new JSONArray (response.asString());		
+		
+		JSONObject jsonobject= new JSONObject();
+
+		int i = 0;
+		while (i < jsonarray.length()) {
+
+			jsonobject = jsonarray.getJSONObject(i);
+			ParseJSONFile.getKey(jsonobject, "key");
+			ParseJSONFile.getKey(jsonobject, "type");
+			i++;
+		}	
+
+		return response;
+	}
+	
+	public Response patientLastVisit(String baseurl, Map<String, String> Header) {
+		RestAssured.baseURI = baseurl;
+		Response response = RestAssured.given().queryParam("patientId", "50056").headers(Header).when().get(APIPath.apiPath.patientLastVisistNG)
+				.then().log().all().extract().response();
+		log("Status Code- " + response.getStatusCode());
+		log("Body ------> " + response.body());
+		
+		aPIVerification.responseCodeValidation(response, 200);
+		aPIVerification.responseTimeValidation(response);
+	
+		JSONObject jsonobject= new JSONObject(response.asString());
+		ParseJSONFile.getKey(jsonobject, "lastVisitDateTime");
+		return response;
+	}
+	
+	public Response patietStatus(String baseurl, Map<String, String> Header) {
+		RestAssured.baseURI = baseurl;
+		Response response = RestAssured.given().headers(Header).when().get(APIPath.apiPath.patientStatusNG)
+				.then().log().all().extract().response();
+		log("Status Code- " + response.getStatusCode());
+		log("Body ------> " + response.body());
+		
+		aPIVerification.responseCodeValidation(response, 200);
+		aPIVerification.responseTimeValidation(response);
+	
+		JSONArray  jsonarray = new JSONArray (response.asString());		
+		
+		JSONObject jsonobject= new JSONObject();
+
+		int i = 0;
+		while (i < jsonarray.length()) {
+
+			jsonobject = jsonarray.getJSONObject(i);
+			ParseJSONFile.getKey(jsonobject, "key");
+			ParseJSONFile.getKey(jsonobject, "value");
+			i++;
+		}	
+
+		return response;
+	}
+	
+	public Response matchPatientPOST(String baseurl, String b, Map<String, String> Header) {
+		RestAssured.baseURI = baseurl;
+		Response response = RestAssured.given().log().all().when().headers(Header).body(b)
+				.when().post(APIPath.apiPath.patientMatchNG).then().log().all().extract().response();
+		log("Status Code- " + response.getStatusCode());
+		return response;
+	}
+	
+	public Response patientRecordbyApptTypePOST(String baseurl, String b, Map<String, String> Header) {
+		RestAssured.baseURI = baseurl;
+		Response response = RestAssured.given().log().all().when().headers(Header).body(b)
+				.when().post(APIPath.apiPath.patientrecordbyapptypesNG).then().log().all().extract().response();
+		log("Status Code- " + response.getStatusCode());		
+		
+		aPIVerification.responseCodeValidation(response, 200);
+		aPIVerification.responseTimeValidation(response);
+	
+		JSONObject jsonobject= new JSONObject(response.asString());
+		ParseJSONFile.getKey(jsonobject, "patientRecord");
+		ParseJSONFile.getKey(jsonobject, "appointmentTypeId");
+		return response;
+	}
+	
+	public Response searchpatient(String baseurl, String b, Map<String, String> Header) {
+		RestAssured.baseURI = baseurl;
+		Response response = RestAssured.given().log().all().when().headers(Header).body(b)
+				.when().post(APIPath.apiPath.searchpatientNG).then().log().all().extract().response();
+		log("Status Code- " + response.getStatusCode());
+		return response;
+	}
+	
+	public Response patientrecordbyBooks(String baseurl, String b, Map<String, String> Header) {
+		RestAssured.baseURI = baseurl;
+		Response response = RestAssured.given().log().all().when().headers(Header).body(b)
+				.when().post(APIPath.apiPath.patientrecordbybooksNG).then().log().all().extract().response();
+		log("Status Code- " + response.getStatusCode());
+		
+		aPIVerification.responseCodeValidation(response, 200);
+		aPIVerification.responseTimeValidation(response);
+	
+		JSONObject jsonobject= new JSONObject(response.asString());
+		ParseJSONFile.getKey(jsonobject, "patientRecord");
+		ParseJSONFile.getKey(jsonobject, "bookId");
+		
+		return response;
+	}
+	
+	public Response lastseenProvider(String baseurl, String b, Map<String, String> Header) {
+		RestAssured.baseURI = baseurl;
+		Response response = RestAssured.given().log().all().when().headers(Header).body(b)
+				.when().post(APIPath.apiPath.lastseenproviderNG).then().log().all().extract().response();
+		log("Status Code- " + response.getStatusCode());
+		
+		aPIVerification.responseCodeValidation(response, 200);
+		aPIVerification.responseTimeValidation(response);
+	
+		JSONObject jsonobject= new JSONObject(response.asString());
+		ParseJSONFile.getKey(jsonobject, "lastSeenDateTime");
+		ParseJSONFile.getKey(jsonobject, "resourceId");
+		
+		return response;
+	}
+	
+	public Response fetchNGBookList(String baseurl, Map<String, String> Header) {
+		RestAssured.baseURI = baseurl;
+		Response response = RestAssured.given().when().headers(Header).when().get(APIPath.apiPath.booklistNG)
+				.then().log().all().assertThat().statusCode(200).extract().response();
+		log("Status Code- " + response.getStatusCode());
+		log("Body ------ " + response.body());
+
+		return response;
+	}
+	public Response fetchNGSpeciltyList(String baseurl, Map<String, String> Header) {
+		RestAssured.baseURI = baseurl;
+		Response response = RestAssured.given().when().headers(Header).when().get(APIPath.apiPath.specialtyNG)
+				.then().log().all().assertThat().statusCode(204).extract().response();
 		log("Status Code- " + response.getStatusCode());
 		log("Body ------ " + response.body());
 

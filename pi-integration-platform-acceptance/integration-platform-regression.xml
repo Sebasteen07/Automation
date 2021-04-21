@@ -38,9 +38,14 @@
 				<include name="testAppoinmentType"/>
 				<include name="testAddPharmacies"/>
 				<include name="testUpdatePharmacies"/>
+				<include name="testDeletePharmacies"/>
 				<include name="testAppointmentRequestForExistingPatientV3"/>
 				<include name="testAppointmentRequestForNewSelfPatientV3"/>
 				<include name="testEHDCSendCCDLargeSize"/>
+				<include name="testE2ERxMedication20"/>
+				<include name="testAppointmentRequestForExistingPatient"/>
+				<include name="testLastLoginEvent"/>
+				<include name="testOnDemandHealthData"/>
       		</methods>
 	</classes>
 </test>

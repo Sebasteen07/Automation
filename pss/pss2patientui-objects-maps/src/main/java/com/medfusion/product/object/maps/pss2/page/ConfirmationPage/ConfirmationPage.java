@@ -32,72 +32,67 @@ public class ConfirmationPage extends PSS2MainPage {
 
 	@FindBy(how = How.XPATH, using = "//body/div[@id='root']/div[1]/div[1]/div[1]/div[4]/div[2]/div[1]/div[3]/div[1]/div[3]/div[1]/div[2]/div[1]")
 	private WebElement timeConfirmation;
-	
+
 	@FindBy(how = How.XPATH, using = "//div[@id='confirmdatalist']/div/div/h1/span[contains(text(),'Appointment to')]")
 	private WebElement rescheduleApptHeading;
-	
+
 	@FindBy(how = How.XPATH, using = "//span[normalize-space()='Provide a cancelation reason']")
 	private WebElement rescheduleReasonLabel;
-	
+
 	@FindBy(how = How.XPATH, using = "//input[@id='cancelReasonText']")
 	private WebElement rescheduleReasonInputBox;
-	
+
 	@FindBy(how = How.XPATH, using = "//span/span[@class=\"Select-arrow\"]")
 	private WebElement selectArrow;
-	
+
 	@FindBy(how = How.XPATH, using = "//div[@class='Select-placeholder']")
-	private WebElement dropdownReschedule;	
-	
+	private WebElement dropdownReschedule;
+
 	@FindAll({@FindBy(how = How.XPATH, using = "//div[@class=\"Select-menu\"]/div")})
 	private List<WebElement> rescheduleReasondropDownList;
-	
+
 	@FindBy(how = How.XPATH, using = "//*[@class='confirmdetaiils']/div[1]/span")
 	private WebElement confirmaApptToolti;
-	
+
 	@FindBy(how = How.XPATH, using = "//*[@id='confirmdatalist']/div/div[1]/h1/span")
 	private WebElement confirmApptHeading;
-	
+
 	@FindBy(how = How.XPATH, using = "//textarea[@class='form-control textareaconfirm']")
 	private WebElement confirmApptReasonInputBox;
-	
+
 	@FindBy(how = How.XPATH, using = "//span[contains(text(),'Confirmation number')]")
 	private WebElement confirmationNumberLabelPreviousAppt;
-	
+
 	@FindBy(how = How.XPATH, using = "//span[contains(text(),'Confirmation number')]/following-sibling::div")
-	private WebElement confirmationNumberPreviousAppt;	
+	private WebElement confirmationNumberPreviousAppt;
 
 	public ConfirmationPage(WebDriver driver) {
 		super(driver);
 	}
 
 	CommonMethods commonMethods = new CommonMethods(driver);
-	
 
 	@Override
 	public boolean areBasicPageElementsPresent() {
-
-		ArrayList<WebElement> webElementsList = new ArrayList<WebElement>();	
-		
+		ArrayList<WebElement> webElementsList = new ArrayList<WebElement>();
 		commonMethods.highlightElement(confirmApptHeading);
 		webElementsList.add(confirmApptHeading);
 		webElementsList.add(confirmaApptToolti);
 		return assessPageElements(webElementsList);
-		
+
 	}
-	
+
 	public void sendRescheduleReason() throws InterruptedException {
 		commonMethods.highlightElement(rescheduleReasonInputBox);
 		rescheduleReasonInputBox.sendKeys("Rescheduling the appointment because I want to change the date and time");
-		Thread.sleep(1000);				
+		Thread.sleep(1000);
 	}
-	
+
 	public void selectRescheduleReason() throws InterruptedException {
 
 		List<WebElement> rescheduleReasonlist = new ArrayList<WebElement>();
 		Actions act = new Actions(driver);
-		
 		IHGUtil.waitForElement(driver, 5, dropdownReschedule);
-		
 		selectArrow.click();
 
 		rescheduleReasonlist = rescheduleReasondropDownList;
@@ -109,7 +104,7 @@ public class ConfirmationPage extends PSS2MainPage {
 
 			log("There " + length + " number of reschedule reason ");
 			for (WebElement a : rescheduleReasonlist) {
-				log(a.getText());			
+				log(a.getText());
 			}
 			log("Selected Reschedule Reason- " + rescheduleReasonlist.get(1).getText());
 
@@ -118,9 +113,9 @@ public class ConfirmationPage extends PSS2MainPage {
 
 		Thread.sleep(1000);
 	}
-	
+
 	public int maxLengthRescheduleReason() throws InterruptedException {
-		String l=rescheduleReasonInputBox.getAttribute("maxlength");	
+		String l = rescheduleReasonInputBox.getAttribute("maxlength");
 		return Integer.parseInt(l);
 	}
 
@@ -129,13 +124,13 @@ public class ConfirmationPage extends PSS2MainPage {
 		buttonAllGood.click();
 		return PageFactory.initElements(driver, ScheduledAppointment.class);
 	}
-	
+
 	public ScheduledAppointment rescheduleAppointmentConfirmed() throws InterruptedException {
-		commonMethods.highlightElement(buttonAllGood);		
+		commonMethods.highlightElement(buttonAllGood);
 		jse.executeScript("window.scrollBy(0,550)", "");
 		Thread.sleep(1000);
 		jse.executeScript("arguments[0].click();", buttonAllGood);
-		log("Click on Everything is Correct button");		
+		log("Click on Everything is Correct button");
 		return PageFactory.initElements(driver, ScheduledAppointment.class);
 	}
 
@@ -152,10 +147,12 @@ public class ConfirmationPage extends PSS2MainPage {
 
 	public String dateConfirm() {
 		String datetext = DateConfirmation.getText();
-		String nextDate1 = datetext.substring(00, 17);
+		String nextDate1 = datetext.substring(5, 8);
 		String confirmdate = nextDate1.replace(" ", "");
-		StringBuffer str= new StringBuffer(confirmdate);
-		String str1 = str.insert(7, ' ').toString();
+		StringBuffer str = new StringBuffer(confirmdate);
+		log("Confirmation date is   " + str);
+		String str1 = str.toString();
+		log("after convert to string" + str1);
 		return str1;
 	}
 

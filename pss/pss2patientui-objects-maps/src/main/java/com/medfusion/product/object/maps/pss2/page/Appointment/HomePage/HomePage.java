@@ -1,5 +1,7 @@
-// Copyright 2018-2020 NXGN Management, LLC. All Rights Reserved.
+// Copyright 2013-2021 NXGN Management, LLC. All Rights Reserved.
 package com.medfusion.product.object.maps.pss2.page.Appointment.HomePage;
+
+import static org.testng.Assert.assertEquals;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -14,7 +16,7 @@ import org.openqa.selenium.support.FindAll;
 import org.openqa.selenium.support.FindBy;
 import org.openqa.selenium.support.How;
 import org.openqa.selenium.support.PageFactory;
-import org.testng.Assert;
+
 
 import com.medfusion.common.utils.IHGUtil;
 import com.medfusion.product.object.maps.pss2.page.AppEntryPoint.StartAppointmentInOrder;
@@ -447,7 +449,7 @@ public class HomePage extends PSS2MainPage {
 
 			List<WebElement> cancelreasonlist = new ArrayList<WebElement>();
 
-			IHGUtil.waitForElement(driver, 5, cancelAppointmentdropdownbox);
+			IHGUtil.waitForElement(driver, 6, cancelAppointmentdropdownbox);
 			commonMethods.highlightElement(cancelAppointmentdropdownbox);
 
 			jse.executeScript("window.scrollBy(0,100)", "");
@@ -468,7 +470,7 @@ public class HomePage extends PSS2MainPage {
 				k++;
 			}
 
-			Assert.assertEquals(text, listAdminCancelReason, "The List are not atching Hence test case failed");
+			assertEquals(text, listAdminCancelReason, "The List are not atching Hence test case failed");
 			log("The Cancel list from Admin and the Cancel list from Patient UI matched");
 			log("The Cancel reasons are displaying as per the Admin COnfig");
 
@@ -527,7 +529,7 @@ public class HomePage extends PSS2MainPage {
 			k++;
 		}
 
-		Assert.assertEquals(text, listAdminCancelReason, "The List are not atching Hence test case failed");
+		assertEquals(text, listAdminCancelReason, "The List are not atching Hence test case failed");
 		log("The Cancel list from Admin and the Cancel list from Patient UI matched");
 		log("The Cancel reasons are displaying as per the Admin COnfig");
 
@@ -547,7 +549,7 @@ public class HomePage extends PSS2MainPage {
 			okCancelBtnviaEmail.click();
 			log("appointment cancelled Successfully...");
 		}
-		Thread.sleep(3000);
+		Thread.sleep(1000);
 
 		log("appointment cancelled...");
 	}
@@ -613,9 +615,9 @@ public class HomePage extends PSS2MainPage {
 			commonMethods.highlightElement(cancelAppointmentPopupMSGviaEmail);
 			commonMethods.highlightElement(cancelConfirmationviaEmail);
 
-			Assert.assertEquals(cancelAppointmentPopupMSGviaEmail.getText().trim(), popupTextMessage.trim(), "Text not matched");
+			assertEquals(cancelAppointmentPopupMSGviaEmail.getText().trim(), popupTextMessage.trim(), "Text not matched");
 			
-			Assert.assertEquals(cancelConfirmationviaEmail.getText().trim(), cancelConfirmMessage.trim());
+			assertEquals(cancelConfirmationviaEmail.getText().trim(), cancelConfirmMessage.trim());
 
 			Thread.sleep(1000);
 			jse.executeScript("window.scrollBy(0,400)", "");
@@ -648,9 +650,9 @@ public class HomePage extends PSS2MainPage {
 
 			String cancelAppointmentPopUpMessage = cancelAppointmentPopup.getText();
 
-			Assert.assertEquals(cancelAppointmentPopUpMessage.trim(), popupTextMessage.trim(), "Text not matched");
+			assertEquals(cancelAppointmentPopUpMessage.trim(), popupTextMessage.trim(), "Text not matched");
 
-			Assert.assertEquals(cancelAppointmentPopupMSG.getText().trim(), cancelConfirmMessage.trim());
+			assertEquals(cancelAppointmentPopupMSG.getText().trim(), cancelConfirmMessage.trim());
 
 			Thread.sleep(1000);
 			jse.executeScript("window.scrollBy(0,400)", "");

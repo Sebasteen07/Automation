@@ -1,4 +1,7 @@
+//Copyright 2013-2021 NXGN Management, LLC. All Rights Reserved.
 package com.intuit.ihg.product.mu2.utils;
+
+import static org.testng.Assert.assertTrue;
 
 import java.io.BufferedReader;
 import java.io.File;
@@ -23,7 +26,7 @@ import org.apache.http.HttpResponse;
 import org.apache.http.client.HttpClient;
 import org.apache.http.client.methods.HttpGet;
 import org.apache.http.impl.client.DefaultHttpClient;
-import org.testng.Assert;
+
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 import org.w3c.dom.Node;
@@ -59,7 +62,7 @@ public class UtilityFunctions {
 				httpGetReq.addHeader("Content-Type", "application/xml");
 				resp = client.execute(httpGetReq);
 				Log4jUtil.log("Check for Push API 202 response");
-				Assert.assertTrue(isSuccessfulResponse(resp, MU2Constants.PUSH_API_EXPECTED_RESPONSE), "Push API response is not 202");
+				assertTrue(isSuccessfulResponse(resp, MU2Constants.PUSH_API_EXPECTED_RESPONSE), "Push API response is not 202");
 			} else {
 
 				IOAuthTwoLeggedClient oauthClient = new OAuthTwoLeggedClient();
@@ -67,7 +70,7 @@ public class UtilityFunctions {
 				HttpGet httpGetReq = new HttpGet(strUrl);
 				resp = oauthClient.httpGetRequest(httpGetReq);
 				Log4jUtil.log("Check for Pull API 200 response");
-				Assert.assertTrue(isSuccessfulResponse(resp, MU2Constants.PULL_API_EXPECTED_RESPONSE), "Pull API response is not 200");
+				assertTrue(isSuccessfulResponse(resp, MU2Constants.PULL_API_EXPECTED_RESPONSE), "Pull API response is not 200");
 			}
 
 			HttpEntity entity = resp.getEntity();

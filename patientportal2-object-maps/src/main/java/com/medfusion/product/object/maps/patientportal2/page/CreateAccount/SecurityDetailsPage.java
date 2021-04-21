@@ -1,12 +1,10 @@
-//  Copyright 2013-2021 NXGN Management, LLC. All Rights Reserved.
-
+//Copyright 2013-2021 NXGN Management, LLC. All Rights Reserved.
 package com.medfusion.product.object.maps.patientportal2.page.CreateAccount;
 
 import java.util.ArrayList;
 
 import com.medfusion.pojos.Patient;
 
-import org.openqa.selenium.Keys;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.FindBy;
@@ -112,6 +110,8 @@ public class SecurityDetailsPage extends MedfusionPage {
 				IHGUtil.PrintMethodName();
 				fillAccountDetails(userId, password, secretQuestion, secretAnswer, phoneNumber, statementPreference);
 				IHGUtil.waitForElement(driver, 60, buttonFinishStep);
+				scrollAndWait(0,300,3000);
+				log("Clicking finish btn");
 				buttonFinishStep.click();
 				selectStatementIfRequired(statementPreference); //TODO move to handleWeNeedToConfirmSomethingModal
 				handleWeNeedToConfirmSomethingModal();
@@ -131,7 +131,8 @@ public class SecurityDetailsPage extends MedfusionPage {
 				selectSecretQuestion.sendKeys(secretQuestion);
 
 				inputSecretAnswer.sendKeys(secretAnswer);
-
+				Thread.sleep(3000);//To hold the execution for few sec
+				scrollAndWait(0,300,2000);
 				inputPhone1.sendKeys(phoneNumber.substring(0, 3));
 				inputPhone2.sendKeys(phoneNumber.substring(3, 6));
 				inputPhone3.sendKeys(phoneNumber.substring(6, 10));

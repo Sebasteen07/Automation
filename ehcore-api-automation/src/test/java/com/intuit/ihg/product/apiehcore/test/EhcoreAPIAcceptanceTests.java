@@ -1,4 +1,10 @@
+//Copyright 2013-2021 NXGN Management, LLC. All Rights Reserved.
 package com.intuit.ihg.product.apiehcore.test;
+
+import static org.testng.Assert.assertEquals;
+import static org.testng.Assert.assertFalse;
+import static org.testng.Assert.assertTrue;
+import static org.testng.Assert.fail;
 
 import java.sql.Connection;
 import java.util.ArrayList;
@@ -9,7 +15,7 @@ import java.util.UUID;
 
 import com.allscripts.uai.schemas._2010._02._15.AllscriptsMessageEnvelope;
 
-import org.testng.Assert;
+
 import org.testng.annotations.Test;
 
 import com.intuit.dc.framework.tracking.constants.TrackingEnumHolder;
@@ -1537,7 +1543,7 @@ public class EhcoreAPIAcceptanceTests extends BaseTestNGWebDriver {
 			EhcoreAPIUtil.verifyMongoDBResponseUsingAPI(TrackingEnumHolder.OBJECTSTORE_NODE_TYPE.SNAPSHOT.toString(), obj_ref_id, expectedCcd);
 
 		} else {
-			Assert.fail("Error in Snapshot Message Retrieve for Subject ID ::" + msgDetails.get(0).getSubjectId() + "Datajob id ::" + dj.getDataJobId());
+			fail("Error in Snapshot Message Retrieve for Subject ID ::" + msgDetails.get(0).getSubjectId() + "Datajob id ::" + dj.getDataJobId());
 		}
 
 		log("Exiting checkSnapshotMessageWithNoUpdates test method ... ");
@@ -3712,7 +3718,7 @@ public class EhcoreAPIAcceptanceTests extends BaseTestNGWebDriver {
 			EhcoreAPIUtil.verifyMongoDBResponseUsingAPI(TrackingEnumHolder.OBJECTSTORE_NODE_TYPE.SNAPSHOT.toString(), obj_ref_id, expectedCcd_entity);
 
 		} else {
-			Assert.fail("Error in Snapshot Message Retrieve for Subject ID ::" + msgDetails.get(0).getSubjectId() + "Datajob id ::" + dj.getDataJobId());
+			fail("Error in Snapshot Message Retrieve for Subject ID ::" + msgDetails.get(0).getSubjectId() + "Datajob id ::" + dj.getDataJobId());
 		}
 
 		log("Exiting checkSnapshotMessageWithNoUpdates test method ... ");
@@ -3774,7 +3780,7 @@ public class EhcoreAPIAcceptanceTests extends BaseTestNGWebDriver {
 			(), obj_ref_id, expectedCcd_element);
 
 		} else {
-			Assert.fail("Error in Snapshot Message Retrieve for Subject ID ::" + msgDetails.get(0).getSubjectId() + "Datajob id ::" + dj.getDataJobId());
+			fail("Error in Snapshot Message Retrieve for Subject ID ::" + msgDetails.get(0).getSubjectId() + "Datajob id ::" + dj.getDataJobId());
 		}
 
 		log("Exiting checkSnapshotMessageWithNoUpdates test method ... ");
@@ -3831,7 +3837,7 @@ public class EhcoreAPIAcceptanceTests extends BaseTestNGWebDriver {
 			EhcoreAPIUtil.verifyMongoDBResponseUsingAPI(TrackingEnumHolder.OBJECTSTORE_NODE_TYPE.SNAPSHOT.toString(), obj_ref_id, expectedCcd);
 
 		} else {
-			Assert.fail("Error in Snapshot Message Retrieve for Subject ID ::" + msgDetails.get(0).getSubjectId() + "Datajob id ::" + dj.getDataJobId());
+			fail("Error in Snapshot Message Retrieve for Subject ID ::" + msgDetails.get(0).getSubjectId() + "Datajob id ::" + dj.getDataJobId());
 		}
 
 		log("Exiting checkSnapshotMessageWithNoUpdates test method ... ");
@@ -3896,7 +3902,7 @@ public class EhcoreAPIAcceptanceTests extends BaseTestNGWebDriver {
 			EhcoreAPIUtil.verifyMongoDBResponseUsingAPI(TrackingEnumHolder.OBJECTSTORE_NODE_TYPE.SNAPSHOT.toString(), obj_ref_id, expectedCcd);
 
 		} else {
-			Assert.fail("Error in Snapshot Message Retrieve for Subject ID ::" + msgDetails.get(0).getSubjectId() + "Datajob id ::" + dj.getDataJobId());
+			fail("Error in Snapshot Message Retrieve for Subject ID ::" + msgDetails.get(0).getSubjectId() + "Datajob id ::" + dj.getDataJobId());
 		}
 
 		log("Exiting checkSnapshotMessageWithNoUpdates test method ... ");
@@ -3951,7 +3957,7 @@ public class EhcoreAPIAcceptanceTests extends BaseTestNGWebDriver {
 			EhcoreAPIUtil.verifyMongoDBResponseUsingAPI(TrackingEnumHolder.OBJECTSTORE_NODE_TYPE.SNAPSHOT.toString(), obj_ref_id, expected_C_Ccd);
 
 		} else {
-			Assert.fail("Error in Snapshot Message Retrieve for Subject ID ::" + msgDetails.get(0).getSubjectId() + "Datajob id ::" + dj.getDataJobId());
+			fail("Error in Snapshot Message Retrieve for Subject ID ::" + msgDetails.get(0).getSubjectId() + "Datajob id ::" + dj.getDataJobId());
 		}
 
 		log("Exiting testSnapshotMessageWithNoUpdates_C_CCD test method ... ");
@@ -4006,7 +4012,7 @@ public class EhcoreAPIAcceptanceTests extends BaseTestNGWebDriver {
 			EhcoreAPIUtil.verifyMongoDBResponseUsingAPI(TrackingEnumHolder.OBJECTSTORE_NODE_TYPE.SNAPSHOT.toString(), obj_ref_id, expectedCcd_entity);
 
 		} else {
-			Assert.fail("Error in Snapshot Message Retrieve for Subject ID ::" + msgDetails.get(0).getSubjectId() + "Datajob id ::" + dj.getDataJobId());
+			fail("Error in Snapshot Message Retrieve for Subject ID ::" + msgDetails.get(0).getSubjectId() + "Datajob id ::" + dj.getDataJobId());
 		}
 
 		log("Exiting testSnapshotMessageWithNoUpdates_C_CCD test method ... ");
@@ -4060,7 +4066,7 @@ public class EhcoreAPIAcceptanceTests extends BaseTestNGWebDriver {
 			EhcoreAPIUtil.verifyMongoDBResponseUsingAPI(TrackingEnumHolder.OBJECTSTORE_NODE_TYPE.SNAPSHOT.toString(), obj_ref_id, expectedCcd);
 
 		} else {
-			Assert.fail("Error in Snapshot Message Retrieve for Subject ID ::" + msgDetails.get(0).getSubjectId() + "Datajob id ::" + dj.getDataJobId());
+			fail("Error in Snapshot Message Retrieve for Subject ID ::" + msgDetails.get(0).getSubjectId() + "Datajob id ::" + dj.getDataJobId());
 		}
 
 		log("Exiting testSnapshotMessageWithNoUpdates_C_CCD test method ... ");
@@ -4122,7 +4128,7 @@ public class EhcoreAPIAcceptanceTests extends BaseTestNGWebDriver {
 			EhcoreAPIUtil.verifyMongoDBResponseUsingAPI(TrackingEnumHolder.OBJECTSTORE_NODE_TYPE.SNAPSHOT.toString(), obj_ref_id, expectedC_Ccd);
 
 		} else {
-			Assert.fail("Error in Snapshot Message Retrieve for Subject ID ::" + msgDetails.get(0).getSubjectId() + "Datajob id ::" + dj.getDataJobId());
+			fail("Error in Snapshot Message Retrieve for Subject ID ::" + msgDetails.get(0).getSubjectId() + "Datajob id ::" + dj.getDataJobId());
 		}
 
 		log("Exiting testSnapshotMessageWithNoUpdates_C_CCD test method ... ");
