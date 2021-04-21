@@ -1,3 +1,4 @@
+//  Copyright 2013-2021 NXGN Management, LLC. All Rights Reserved.
 package com.intuit.ihg.product.object.maps.sitegen.page.customforms;
 
 import org.openqa.selenium.By;
@@ -5,6 +6,7 @@ import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.FindBy;
 import org.openqa.selenium.support.PageFactory;
+import org.openqa.selenium.support.ui.ExpectedConditions;
 
 import com.intuit.ifs.csscat.core.pageobject.BasePageObject;
 import com.intuit.ihg.product.sitegen.utils.SitegenlUtil;
@@ -76,7 +78,7 @@ public class CustomFormPreviewPage extends BasePageObject {
 		log("Waiting for Publish link");
 		SitegenlUtil.setSiteGenFrame(driver);
 		try {
-			IHGUtil.waitForLinkByText(driver, publishLinkText, waitTimeout);
+			wait.until(ExpectedConditions.visibilityOf(publishLink));
 		} catch (Exception e) {
 			e.printStackTrace();
 			throw new InterruptedException("Publish link not found, taking too long, or something very bad happened");
@@ -88,7 +90,7 @@ public class CustomFormPreviewPage extends BasePageObject {
 		log("Waiting for any Unpublish link");
 
 		try {
-			IHGUtil.waitForLinkByText(driver, unpublishLinkText, waitTimeout);
+			wait.until(ExpectedConditions.visibilityOf(unPublishLink));
 		} catch (Exception e) {
 			e.printStackTrace();
 			throw new InterruptedException("Unpublish link not found, taking too long, or something very bad happened");
