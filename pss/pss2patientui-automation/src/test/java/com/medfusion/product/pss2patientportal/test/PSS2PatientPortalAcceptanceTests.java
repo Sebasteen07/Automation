@@ -341,7 +341,7 @@ public class PSS2PatientPortalAcceptanceTests extends BaseTestNGWebDriver {
 					testData.getGender(), testData.getZipCode(), testData.getPrimaryNumber());
 		}
 		homepage.btnStartSchedClick();
-		psspatientutils.selectAFlow(driver, rule, homepage, testData);
+		psspatientutils.selectAFlow(driver, rule, homepage, testData);	
 	}
 
 
@@ -4860,6 +4860,46 @@ public class PSS2PatientPortalAcceptanceTests extends BaseTestNGWebDriver {
 		Log4jUtil.log("Test Case Passed.....");
 	}
 
+	@Test(enabled = true, dataProvider = "partnerType", groups = {"AcceptanceTests" }, retryAnalyzer = RetryAnalyzer.class)
+	public void testageRulewithSpeciality(String partnerPractice) throws Exception {
+		log(" VeriFy Gender Rule with the Specility for GW PArtner");
+		log("Step 1: Load test Data from External Property file.");
+		PSSPropertyFileLoader propertyData = new PSSPropertyFileLoader();
+		Appointment testData = new Appointment();
+		AdminUser adminuser = new AdminUser();
+		propertyData.setAdminGW(adminuser);
+		propertyData.setAppointmentResponseGW(testData);
+		adminuser.setIsExisting(true);
+		PSSPatientUtils psspatientutils = new PSSPatientUtils();
+		PSSAdminUtils pssadminutils = new PSSAdminUtils();
+		psspatientutils.setTestData(partnerPractice, testData, adminuser);
+		log("Step 2:  Move to PSS admin portal and add the Age Rule in Speciality tab");
+		pssadminutils.ageRuleWithSpeciality(driver, adminuser, testData);
+		String rule = adminuser.getRule();
+		rule = rule.replaceAll(" ", "");
+		log("Rule -" + rule);
+		log("Step 3: Move to PSS patient Portal 2.0 to book an Appointment");
+		log("Step 4: Login to PSS Appointment");
+		DismissPage dismissPage = new DismissPage(driver, testData.getUrlLoginLess());
+		log("Step 5: LoginlessPatientInformation****");
+		log("Clicked on Dismiss");
+		LoginlessPatientInformation loginlessPatientInformation = dismissPage.clickDismiss();
+		HomePage homepage = loginlessPatientInformation.fillNewPatientForm(testData.getFirstName(),
+				testData.getLastName(), testData.getDob(), testData.getEmail(), testData.getGender(),
+				testData.getZipCode(), testData.getPrimaryNumber());
+		log("Successfully upto Home page On The Patient Portal");
+		homepage.btnStartSchedClick();
+		Speciality speciality = null;
+		speciality = homepage.skipInsuranceForSpeciality(driver);
+		int i = Integer.parseInt(testData.getAgeRuleMonthFirst());
+		int j = Integer.parseInt(testData.getAgeRuleMonthSecond());
+		if (psspatientutils.ageCurrentmonths(testData) > i && psspatientutils.ageCurrentmonths(testData) < j) {
+			speciality.selectSpeciality1(testData.getSpeciality());
+			assertEquals(speciality.selectSpeciality1(testData.getSpeciality()), testData.getSpeciality());
+		} else {
+			assertNotEquals(speciality.selectSpeciality1(testData.getSpeciality()), testData.getSpeciality());
+		}
+	}
 }
 
 
