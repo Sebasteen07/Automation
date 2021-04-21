@@ -104,9 +104,12 @@ public class AppointmentTestData {
 	public String getRestV3Url() {
 		return AppointmentObj.RestV3Url;
 	}
-	
+
 	public String getAppointmentPathV3() {
 		return AppointmentObj.AppointmentPathV3;
 	}
-	
+
+	public String getRestUrlV3Headers() {
+		return AppointmentObj.RestUrlV3Headers;
+	}
 }
