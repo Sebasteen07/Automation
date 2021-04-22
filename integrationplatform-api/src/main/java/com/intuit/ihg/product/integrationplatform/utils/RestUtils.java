@@ -259,7 +259,7 @@ public class RestUtils {
 			}
 		}
 
-		Assert.assertTrue(found, "Appointment Id was not verified in response XML");
+		assertTrue(found, "Appointment Id was not verified in response XML");
 		Log4jUtil.log("response is ok");
 		return AppointmentId;
 	}
