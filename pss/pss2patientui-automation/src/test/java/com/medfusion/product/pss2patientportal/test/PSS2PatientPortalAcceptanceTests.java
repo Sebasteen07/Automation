@@ -4900,6 +4900,21 @@ public class PSS2PatientPortalAcceptanceTests extends BaseTestNGWebDriver {
 			assertNotEquals(speciality.selectSpeciality1(testData.getSpeciality()), testData.getSpeciality());
 		}
 	}
+	
+
+	@Test(enabled = true, groups = {"AcceptanceTests"}, retryAnalyzer = RetryAnalyzer.class)
+	public void testTimeMark() throws Exception {
+		log(" VeriFy Gender Rule with the Specility for GW PArtner");
+		log("Step 1: Load test Data from External Property file.");
+		PSSPropertyFileLoader propertyData = new PSSPropertyFileLoader();
+		Appointment testData = new Appointment();
+		AdminUser adminuser = new AdminUser();
+		propertyData.setAdminGW(adminuser);
+		propertyData.setAppointmentResponseGW(testData);
+		adminuser.setIsExisting(true);
+		PSSAdminUtils pssadminutils = new PSSAdminUtils();
+		pssadminutils.timeMark(driver, adminuser, testData);
+	}
 }
 
 

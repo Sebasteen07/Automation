@@ -96,9 +96,9 @@ public class ManageResource extends PSS2MenuPage {
 	@FindBy(how = How.XPATH, using = "//*[@name='apptTypeReservedReason']")
 	private WebElement reservefor;
 
-	@FindBy(how = How.XPATH, using = "//*[@class='col-xs-12']/div/button[1]")
+	@FindBy(how = How.XPATH, using = "//*[@id='tab43']/div/form/fieldset[3]/div/div/button[1]")
 	private WebElement appointmenttypeSave;
-
+	
 	@FindBy(how = How.ID, using = "maxPerDay")
 	private WebElement maxPerDay;
 
@@ -128,6 +128,9 @@ public class ManageResource extends PSS2MenuPage {
 
 	@FindBy(how = How.XPATH, using = "/html/body/app/layout/div/main/div[2]/div/div/div[2]/section/div/div/div/div/div/div[4]/div/form/div[2]/div[6]/input")
 	private WebElement sendMonthsecond;
+	
+	@FindBy(how = How.XPATH, using = "//*[@name='apptTimeMark']")
+	private WebElement timeMarkOption;
 
 	public ManageResource(WebDriver driver) {
 		super(driver);
@@ -281,4 +284,12 @@ public class ManageResource extends PSS2MenuPage {
 		log("SuccessFully Sent the Values in ageRule textfield");
 		appointmenttypeSave.click();
 	}
+
+	public void timeMark() {
+		Select selectOptions = new Select(timeMarkOption);
+		selectOptions.selectByValue("15");
+		timeMarkOption.click();
+		appointmenttypeSave.click();
+	}
+
 }

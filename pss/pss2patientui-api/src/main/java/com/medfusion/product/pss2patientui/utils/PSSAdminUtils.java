@@ -729,4 +729,21 @@ public class PSSAdminUtils {
 		manageSpecialty.ageRuleparameter(appointment.getAgeRuleMonthFirst(), appointment.getAgeRuleMonthSecond());
 
 	}
+	public void timeMark(WebDriver driver, AdminUser adminuser, Appointment appointment) throws Exception
+	{
+		PSS2PracticeConfiguration psspracticeConfig = loginToAdminPortal(driver, adminuser);
+		psspracticeConfig = psspracticeConfig.gotoPracticeConfigTab();
+		PatientFlow patientflow = psspracticeConfig.gotoPatientFlowTab();
+		adminuser.setRule(patientflow.getRule());
+		Log4jUtil.log("rule= " + patientflow.getRule());
+		setRulesNoSpecialitySet1(patientflow);
+		AdminPatientMatching adminpatientmatching = patientflow.gotoPatientMatchingTab();
+    	adminpatientmatching.patientMatchingSelection();
+		ManageResource manageResource = psspracticeConfig.gotoResource();
+		pageRefresh(driver);
+		manageResource.selectResource(appointment.getProvider());
+		manageResource.selectAppointmenttype(appointment.getAppointmenttype());
+		manageResource.timeMark();
+		
+	}
 }
