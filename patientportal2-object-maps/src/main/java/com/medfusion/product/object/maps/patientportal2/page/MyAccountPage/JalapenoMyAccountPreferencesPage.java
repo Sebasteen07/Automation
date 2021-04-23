@@ -53,7 +53,7 @@ public class JalapenoMyAccountPreferencesPage extends JalapenoMyAccountPage {
 		@FindBy(how = How.ID, using = "apptRemindersOptOut")
 		private WebElement apptRemindersOptOut;
 
-		@FindBy(how = How.XPATH, using = "//p[text()='You have successfully updated your preferences.']")
+		@FindBy(how = How.XPATH, using = "//*[text()='You have successfully updated your preferences.']")
 		private WebElement successfulUpdateMessage;
 
 		private static final String ADD_PREFERRED_PROVIDER_LOCATOR_TEMPLATE = "//ng-select[@id='listOfProviders']//span[text()='%s']";
