@@ -60,13 +60,13 @@ public abstract class JalapenoMenu extends MedfusionPage {
 
 	// please note that bellow links are not the same, each lead to different page
 	// (based on Linked Account settings)
-	@FindBy(how = How.XPATH, using = "//li[@id='manageAccount']/a")
+	@FindBy(how = How.XPATH, using = "//li[@id='account' or @id='manageAccount']/a")
 	private WebElement accountButton;
 
-	@FindBy(how = How.XPATH, using = "//li[@id='manageAccount_dropdown']/a")
+	@FindBy(how = How.XPATH, using = "//li[@id='account_dropdown' or @id='manageAccount_dropdown']/a")
 	private WebElement accountDropdownButton;
 
-	@FindBy(how = How.XPATH, using = "//li[@id='manageAccount_dropdownlog']/a")
+	@FindBy(how = How.XPATH, using = "//li[@id='account_dropdownlog' or @id='manageAccount_dropdown']/a")
 	private WebElement accountDropdownLinkedButton;
 	
 	@FindBy(how=How.XPATH,using="//li[@id='account']")
