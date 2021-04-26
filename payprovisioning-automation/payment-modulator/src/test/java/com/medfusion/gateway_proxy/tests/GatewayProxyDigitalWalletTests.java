@@ -3,6 +3,10 @@ package com.medfusion.gateway_proxy.tests;
 
 import com.medfusion.common.utils.PropertyFileLoader;
 import com.medfusion.gateway_proxy.helpers.GatewayProxyDigitalWalletResource;
+import com.medfusion.gateway_proxy.utils.DigitalWalletUtils;
+import io.restassured.path.json.JsonPath;
+import io.restassured.response.Response;
+import org.testng.Assert;
 import org.testng.annotations.BeforeTest;
 import org.testng.annotations.Test;
 
@@ -19,8 +23,14 @@ public class GatewayProxyDigitalWalletTests extends GatewayProxyBaseTest{
 
     @Test
     public void addNewCardAndCreateWallet() throws Exception {
-        GatewayProxyDigitalWalletResource digitalwallet = new GatewayProxyDigitalWalletResource();
-        digitalwallet.createNewWallet();
+        GatewayProxyDigitalWalletResource digitalWallet = new GatewayProxyDigitalWalletResource();
+        Response response = digitalWallet.createNewWallet();
 
+        JsonPath jsonpath = new JsonPath(response.asString());
+        Assert.assertTrue(!jsonpath.get("externalWalletId").toString().isEmpty());
+        Assert.assertTrue(!jsonpath.get("walletCards[0].externalCardId").toString().isEmpty());
+        Assert.assertEquals("VI-1111-1226", jsonpath.get("walletCards[0].cardAlias"));
+
+        DigitalWalletUtils.saveWalletDetails(jsonpath.get("externalWalletId").toString(),jsonpath.get("walletCards[0].externalCardId").toString());
     }
 }

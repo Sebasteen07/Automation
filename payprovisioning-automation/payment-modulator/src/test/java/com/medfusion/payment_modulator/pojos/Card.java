@@ -130,16 +130,16 @@ public class Card {
 		return cardmap;
 	}
 
-	public static List<Map<String, Object>> getCardsListDigitalWallet(String cardHolderName, String type, String cardnumber, String expirationnumber, String cardAlias, String zipCode){
-		Map<String, Object> cardmap = new HashMap<String, Object>();
-		cardmap.put("cardHolderName", cardHolderName);
-		cardmap.put("cardType", type);
-		cardmap.put("cardNumber", cardnumber);
-		cardmap.put("cardExpiryDate", expirationnumber);
-		cardmap.put("cardAlias", cardAlias);
-		cardmap.put("billingAddress", BillToAddress.getBillingAdressMap(zipCode));
+	public static List<Map<String, Object>> getCardsListDigitalWallet(String cardHolderName, String type, String cardNumber, String expirationNumber, String cardAlias, String zipCode){
+		Map<String, Object> cardMap = new HashMap<String, Object>();
+		cardMap.put("cardHolderName", cardHolderName);
+		cardMap.put("cardType", type);
+		cardMap.put("cardNumber", cardNumber);
+		cardMap.put("cardExpiryDate", expirationNumber);
+		cardMap.put("cardAlias", cardAlias);
+		cardMap.put("billingAddress", BillToAddress.getBillingAdressMap(zipCode));
 		List<Map<String, Object>> cards = new ArrayList<Map<String, Object>>();
-		cards.add(cardmap);
+		cards.add(cardMap);
 		return cards;
 	}
 

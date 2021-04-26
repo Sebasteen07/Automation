@@ -11,18 +11,18 @@ import java.util.Properties;
 public class DigitalWalletUtils {
 
 
-    public static void saveWalletDetails(String value1, String value2) throws FileNotFoundException, IOException {
+    public static void saveWalletDetails(String externalWalletId, String externalCardId) throws FileNotFoundException, IOException {
         Properties property = new Properties();
         String env = IHGUtil.getEnvironmentType().toString();
         String propertyFileNameString = env + ".properties";
-        String filename = "src/test/resources/data-driven/"+propertyFileNameString;
-        FileInputStream configStream = new FileInputStream(filename);
+        String fileName = "src/test/resources/data-driven/"+propertyFileNameString;
+        FileInputStream configStream = new FileInputStream(fileName);
         property.load(configStream);
         configStream.close();
 
-        property.setProperty("externalWalletId",value1 );
-        property.setProperty("externalCardId",value2 );
-        FileOutputStream output = new FileOutputStream(filename);
+        property.setProperty("externalWalletId", externalWalletId);
+        property.setProperty("externalCardId", externalCardId);
+        FileOutputStream output = new FileOutputStream(fileName);
         property.store(output, null);
         output.close();
     }

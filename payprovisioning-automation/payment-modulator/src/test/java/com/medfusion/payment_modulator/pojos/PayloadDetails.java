@@ -150,9 +150,9 @@ public class PayloadDetails {
 		return chargebackmap;
 	}
 
-	public static Map<String, Object> getPayloadForAddingCardToDigitalWallet(String cardHolderName, String type, String cardnumber, String expirationnumber, String cardAlias, String zipCode){
+	public static Map<String, Object> getPayloadForAddingCardToDigitalWallet(String cardHolderName, String type, String cardNumber, String expirationNumber, String cardAlias, String zipCode){
 		Map<String, Object> cardsMap = new HashMap<String, Object>();
-		cardsMap.put("cards", Card.getCardsListDigitalWallet(cardHolderName, type, cardnumber, expirationnumber, cardAlias, zipCode));
+		cardsMap.put("cards", Card.getCardsListDigitalWallet(cardHolderName, type, cardNumber, expirationNumber, cardAlias, zipCode));
 		return cardsMap;
 		}
 
