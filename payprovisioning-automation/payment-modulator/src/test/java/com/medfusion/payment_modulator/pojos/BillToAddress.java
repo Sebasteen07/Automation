@@ -131,4 +131,10 @@ public class BillToAddress {
 		return addressmap;
 	}
 
+	public static Map<String, Object> getBillingAdressMap(String zipCode){
+		Map<String, Object> billingAdressMap = new HashMap<String, Object>();
+		billingAdressMap.put("zipCode", zipCode);
+		return billingAdressMap;
+	}
+
 }
