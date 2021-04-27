@@ -5969,6 +5969,16 @@ public class NGIntegrationE2ESITTests extends BaseTestNGWebDriver{
     	DecimalFormat df=new DecimalFormat("0.00");
 		String actualAmount = df.format(Integer.parseInt(amount));
 		log("Amount to be paid "+actualAmount);
+		
+		String cardNumber = null, cardType =null;
+		if(PropertyLoaderObj.getProperty("PaymentCardType").equalsIgnoreCase("Visa")) {
+			cardNumber = PracticeConstants.CARD_NUMBER;	
+			cardType = PracticeConstants.CARD_TYPE_VISA;
+		}
+		else if(PropertyLoaderObj.getProperty("PaymentCardType").equalsIgnoreCase("MasterCard")) {
+			cardNumber = PracticeConstants.CARD_NUM_MASTERCARD;	
+			cardType = PracticeConstants.CARD_TYPE_MASTERCARD;
+		}		
     	
 		logStep("Login to Practice Portal");
 		PracticeLoginPage practiceLogin = new PracticeLoginPage(driver, PropertyLoaderObj.getPortalUrl());
@@ -5983,7 +5993,7 @@ public class NGIntegrationE2ESITTests extends BaseTestNGWebDriver{
 		String paymentComment = PracticeConstants.PAYMENT_COMMENT.concat(IHGUtil.createRandomNumericString());
 		logStep("Set all the transaction details");		
 		pPayMyBillOnlinePage.setTransactionsForOnlineBillPayProcess(PropertyLoaderObj.getProperty("PortalLocationName"),PropertyLoaderObj.getProperty("PortalProviderName").replaceAll(", Dr", ""),
-				accountNumber,amount, PracticeConstants.PROCESS_CARD_HOLDER_NAME,PracticeConstants.CARD_NUM_MASTERCARD,	PracticeConstants.CARD_TYPE_MASTERCARD,
+				accountNumber,amount, PracticeConstants.PROCESS_CARD_HOLDER_NAME,cardNumber, cardType,
 				paymentComment);
 
 		logStep("Verify the Payment Confirmation text");
@@ -6005,11 +6015,11 @@ public class NGIntegrationE2ESITTests extends BaseTestNGWebDriver{
 		patientsearchPage.selectTheTransaction(actualAmount, firstName, lastName);
 		assertFalse(pPayMyBillOnlinePage.isVoidTransactionPresent());
 		
-		CommonFlows.verifyPaymentReachedtoMFAgent(paymentComment,"BillPayment", "", accountNumber,"POSTED", actualAmount,PracticeConstants.CARD_TYPE_MASTERCARD);
+		CommonFlows.verifyPaymentReachedtoMFAgent(paymentComment,"BillPayment", "", accountNumber,"POSTED", actualAmount,cardType);
 		
 		String SourceIdQuery = "select acct_id from accounts where guar_id ='"+person_id+"' and practice_id='"+practiceId.trim()+"'";
 		String SourceId = DBUtils.executeQueryOnDB("NGCoreDB",SourceIdQuery);
-		CommonFlows.verifyPaymentPostedtoNG(paymentComment,SourceId , person_id, "-"+actualAmount, "Payment type: BillPayment, Last 4 CC digits: "+PracticeConstants.CARD_NUM_MASTERCARD.substring(12),practiceId);
+		CommonFlows.verifyPaymentPostedtoNG(paymentComment,SourceId , person_id, "-"+actualAmount, "Payment type: BillPayment, Last 4 CC digits: "+cardNumber.substring(12),practiceId);
 		
 		log("Test Case End: The patient is able to pay using Online Bill Pay Process and payment is being posted to NG");
 	}
@@ -6043,6 +6053,16 @@ public class NGIntegrationE2ESITTests extends BaseTestNGWebDriver{
 		String firstName = DBUtils.executeQueryOnDB("NGCoreDB","select first_name from person where person_id = '"+person_id+"'");
     	String lastName = DBUtils.executeQueryOnDB("NGCoreDB","select last_name from person where person_id = '"+person_id+"'");
     	
+    	String cardNumber = null, cardType =null;
+		if(PropertyLoaderObj.getProperty("PaymentCardType").equalsIgnoreCase("Visa")) {
+			cardNumber = PracticeConstants.CARD_NUMBER;
+			cardType = PracticeConstants.CARD_TYPE_VISA;
+		}
+		else if(PropertyLoaderObj.getProperty("PaymentCardType").equalsIgnoreCase("MasterCard")) {
+			cardNumber = PracticeConstants.CARD_NUM_MASTERCARD;	
+			cardType = PracticeConstants.CARD_TYPE_MASTERCARD;
+		}
+    	
 		logStep("Login to Practice Portal");
 		PracticeLoginPage practiceLogin = new PracticeLoginPage(driver, PropertyLoaderObj.getPortalUrl());
 		PracticeHomePage practiceHome = practiceLogin.login(PropertyLoaderObj.getDoctorLogin(), PropertyLoaderObj.getDoctorPassword());
@@ -6056,14 +6076,14 @@ public class NGIntegrationE2ESITTests extends BaseTestNGWebDriver{
 		logStep("Set all the transaction details");
 		pPayMyBillOnlinePage.setTransactionsForBudgetPaymentPlan(PropertyLoaderObj.getProperty("PortalLocationName"), PropertyLoaderObj.getProperty("PortalProviderName").replaceAll(", Dr", ""),
 				accountNumber, amount, prepayamount, PracticeConstants.PROCESS_CARD_HOLDER_NAME,
-				PracticeConstants.CARD_NUM_MASTERCARD, PracticeConstants.CARD_TYPE_MASTERCARD);
+				cardNumber, cardType);
 
 		logStep("Verify the your Budget payment plan start date text");
 		assertTrue(pPayMyBillOnlinePage.getPaymentStartDateText().contains("Your payment plan start date is "
 				+ pPayMyBillOnlinePage.getPlanStartDate() + " recurring every other week."));
 
 		logStep("Verify the creditcard last four digit");
-		assertTrue(pPayMyBillOnlinePage.getCreditCardLastFourDigits().contains(PracticeConstants.CARD_NUM_MASTERCARD.substring(12)));
+		assertTrue(pPayMyBillOnlinePage.getCreditCardLastFourDigits().contains(cardNumber.substring(12)));
 
 		String enddatePlanText = pPayMyBillOnlinePage.getPlanEndDate();
 
@@ -6080,7 +6100,7 @@ public class NGIntegrationE2ESITTests extends BaseTestNGWebDriver{
 		assertTrue(pPayMyBillOnlinePage.getplanEndDateBudgetSearch().equals(enddatePlanText));
 
 		logStep("Verify the creditcard last four digit in Budget Payment Plan Search");
-		assertTrue(pPayMyBillOnlinePage.getActiveBudgetPaymentCardDigit().contains(PracticeConstants.CARD_NUM_MASTERCARD.substring(12)));
+		assertTrue(pPayMyBillOnlinePage.getActiveBudgetPaymentCardDigit().contains(cardNumber.substring(12)));
 
 		logStep("Stop the Budget Payment Plan ");
 		pPayMyBillOnlinePage.clickOnStopBudgetPayment();
@@ -6119,6 +6139,16 @@ public class NGIntegrationE2ESITTests extends BaseTestNGWebDriver{
 		String actualAmount = df.format(Integer.parseInt(amount));
 		log("Amount to be paid "+actualAmount);
     	
+		String cardNumber = null, cardType =null;
+		if(PropertyLoaderObj.getProperty("PaymentCardType").equalsIgnoreCase("Visa")) {
+			cardNumber = PracticeConstants.CARD_NUMBER;	
+			cardType = PracticeConstants.CARD_TYPE_VISA;
+		}
+		else if(PropertyLoaderObj.getProperty("PaymentCardType").equalsIgnoreCase("MasterCard")) {
+			cardNumber = PracticeConstants.CARD_NUM_MASTERCARD;	
+			cardType = PracticeConstants.CARD_TYPE_MASTERCARD;
+		}
+		
 		logStep("Login to Practice Portal");
 		PracticeLoginPage practiceLogin = new PracticeLoginPage(driver, PropertyLoaderObj.getPortalUrl());
 		PracticeHomePage practiceHome = practiceLogin.login(PropertyLoaderObj.getDoctorLogin(), PropertyLoaderObj.getDoctorPassword());
@@ -6132,7 +6162,7 @@ public class NGIntegrationE2ESITTests extends BaseTestNGWebDriver{
 		String paymentComment = PracticeConstants.PAYMENT_COMMENT.concat(IHGUtil.createRandomNumericString());
 		logStep("Set all the transaction details");		
 		pPayMyBillOnlinePage.setTransactionsForOnlineBillPayProcess(PropertyLoaderObj.getProperty("PortalLocationName"),PropertyLoaderObj.getProperty("PortalProviderName").replaceAll(", Dr", ""),
-				invalidAccountNumber,amount, PracticeConstants.PROCESS_CARD_HOLDER_NAME,PracticeConstants.CARD_NUM_MASTERCARD,	PracticeConstants.CARD_TYPE_MASTERCARD,
+				invalidAccountNumber,amount, PracticeConstants.PROCESS_CARD_HOLDER_NAME,cardNumber,	cardType,
 				paymentComment);
 
 		logStep("Verify the Payment Confirmation text");
@@ -6143,11 +6173,11 @@ public class NGIntegrationE2ESITTests extends BaseTestNGWebDriver{
 		String personNumber = DBUtils.executeQueryOnDB("NGCoreDB","select person_nbr from person where person_id = '"+person_id+"'");
 		String acctNBRQuery = "select acct_nbr from accounts where guar_id ='"+person_id+"' and practice_id='"+practiceId.trim()+"'";
 		String accountNumber = DBUtils.executeQueryOnDB("NGCoreDB",acctNBRQuery);
-		CommonFlows.verifyPaymentReachedtoMFAgent(paymentComment,"BillPayment", personNumber.trim().replace("\t", ""), invalidAccountNumber,"POSTED", actualAmount,PracticeConstants.CARD_TYPE_MASTERCARD);
+		CommonFlows.verifyPaymentReachedtoMFAgent(paymentComment,"BillPayment", personNumber.trim().replace("\t", ""), invalidAccountNumber,"POSTED", actualAmount,cardType);
 		
 		String sourceIdQuery = "select acct_id from accounts where guar_id ='"+person_id+"' and practice_id='"+practiceId.trim()+"'";
 		String sourceId = DBUtils.executeQueryOnDB("NGCoreDB",sourceIdQuery);
-		CommonFlows.verifyPaymentPostedtoNG(paymentComment,sourceId , person_id, "-"+actualAmount, "Payment type: BillPayment, Last 4 CC digits: "+PracticeConstants.CARD_NUM_MASTERCARD.substring(12),practiceId);
+		CommonFlows.verifyPaymentPostedtoNG(paymentComment,sourceId , person_id, "-"+actualAmount, "Payment type: BillPayment, Last 4 CC digits: "+cardNumber.substring(12),practiceId);
 		log("Test Case End: The payment is auto posted when Patient is having single guarantor while paying using One Time Payment method");
 	}
 	
@@ -6182,6 +6212,16 @@ public class NGIntegrationE2ESITTests extends BaseTestNGWebDriver{
     	DecimalFormat df=new DecimalFormat("0.00");
 		String actualAmount = df.format(Integer.parseInt(amount));
 		log("Amount to be paid "+actualAmount);
+		
+		String cardNumber = null, cardType =null;
+		if(PropertyLoaderObj.getProperty("PaymentCardType").equalsIgnoreCase("Visa")) {
+			cardNumber = PracticeConstants.CARD_NUMBER;	
+			cardType = PracticeConstants.CARD_TYPE_VISA;
+		}
+		else if(PropertyLoaderObj.getProperty("PaymentCardType").equalsIgnoreCase("MasterCard")) {
+			cardNumber = PracticeConstants.CARD_NUM_MASTERCARD;	
+			cardType = PracticeConstants.CARD_TYPE_MASTERCARD;
+		}
     	
 		logStep("Login to Practice Portal");
 		PracticeLoginPage practiceLogin = new PracticeLoginPage(driver, PropertyLoaderObj.getPortalUrl());
@@ -6196,7 +6236,7 @@ public class NGIntegrationE2ESITTests extends BaseTestNGWebDriver{
 		String paymentComment = PracticeConstants.PAYMENT_COMMENT.concat(IHGUtil.createRandomNumericString());
 		logStep("Set all the transaction details");		
 		pPayMyBillOnlinePage.setTransactionsForOnlineBillPayProcess(PropertyLoaderObj.getProperty("PortalLocationName"),PropertyLoaderObj.getProperty("PortalProviderName").replaceAll(", Dr", ""),
-				invalidAccountNumber,amount, PracticeConstants.PROCESS_CARD_HOLDER_NAME,PracticeConstants.CARD_NUM_MASTERCARD,	PracticeConstants.CARD_TYPE_MASTERCARD,
+				invalidAccountNumber,amount, PracticeConstants.PROCESS_CARD_HOLDER_NAME,cardNumber,	cardType,
 				paymentComment);
 
 		logStep("Verify the Payment Confirmation text");
@@ -6204,7 +6244,7 @@ public class NGIntegrationE2ESITTests extends BaseTestNGWebDriver{
 		IHGUtil.waitForElement(driver, 20, pPayMyBillOnlinePage.paymentConfirmationText);
 		assertEquals(true, pPayMyBillOnlinePage.paymentConfirmationText.getText().contains(PAYMENT_SUCCESSFULL_TEXT + firstName +" "+ lastName));
 				
-		CommonFlows.verifyPaymentReachedtoMFAgent(paymentComment,"BillPayment", "", invalidAccountNumber,"PENDING", actualAmount,PracticeConstants.CARD_TYPE_MASTERCARD);
+		CommonFlows.verifyPaymentReachedtoMFAgent(paymentComment,"BillPayment", "", invalidAccountNumber,"PENDING", actualAmount,cardType);
 		log("Test Case End: Payment is not auto posted when Patient is having multiple guarantors while paying using OLBP method and payment state is Pending");
 	}
 	
@@ -6682,6 +6722,7 @@ public class NGIntegrationE2ESITTests extends BaseTestNGWebDriver{
         CommonFlows.verifyPatientDocumentReceivedINInbox(PropertyLoaderObj,driver,url,username,PropertyLoaderObj.getPassword(),
         		PropertyLoaderObj.getProperty("DocSubject"), body, docName+"."+docFormat.trim());
         
+        CommonFlows.verifyDocumentReadStatus(requestId);        
         log("Test Case End: The practice user is able to send the Patient Education Document.");
     }
     
