@@ -1203,4 +1203,46 @@ public class CommonFlows {
 		Log4jUtil.log("Logging out");
 		homePage.LogoutfromNGMFPortal();
 	}
+	
+	public static void verifyIMHState(String documentId) throws Throwable {
+		Log4jUtil.log("Step Begins: Verify current status of IMH");
+		String currentStateQuery = "select current_state from ngweb_imh_question_state where id = '"+documentId+"'";
+		String currentState = DBUtils.executeQueryOnDB("NGCoreDB", currentStateQuery);
+				
+		if (currentState.equals("1")) {
+			for (int i = 0; i < arg_timeOut; i++) {
+				currentState = DBUtils.executeQueryOnDB("NGCoreDB", currentStateQuery);
+				if (currentState.equals("2")) {
+					Log4jUtil.log("IMH response is received to NG");
+					break;
+				} else {
+					if (i == arg_timeOut - 1)
+						Thread.sleep(1000);
+				}
+			}
+			CommonUtils.VerifyTwoValues(currentState, "equals", "2");
+		}
+		CommonUtils.VerifyTwoValues(currentState, "equals", "2");
+	}
+	
+	public static void verifyDocumentReadStatus(String requestId) throws Throwable {
+		Log4jUtil.log("Step Begins: Verify read status of document");			
+		String documentRequestsQuery = "select status from pxp_document_requests where request_id ='"+requestId+"'";
+		String processingStatus = DBUtils.executeQueryOnDB("NGCoreDB", documentRequestsQuery);
+		
+		if (processingStatus.equals("6")) {
+			for (int i = 0; i < arg_timeOut; i++) {
+				processingStatus = DBUtils.executeQueryOnDB("NGCoreDB", documentRequestsQuery);
+				if (processingStatus.equals("8")) {
+					Log4jUtil.log("Document is read by patient");
+					break;
+				} else {
+					if (i == arg_timeOut - 1)
+						Thread.sleep(1000);
+				}
+			}
+			CommonUtils.VerifyTwoValues(processingStatus, "equals", "8");
+		}
+		CommonUtils.VerifyTwoValues(processingStatus, "equals", "8");
+	}
 }

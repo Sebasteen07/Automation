@@ -124,11 +124,17 @@ public class MedicalRecordSummariesPage extends JalapenoMenu {
 	@FindBy(how = How.XPATH, using = "//span[text()='Fever']")
 	private WebElement fever;
 
-	@FindBy(how = How.XPATH, using = "(//input[@id='select-all'])[1]")
+	@FindBy(how = How.XPATH, using = "(//input[@id='select-all'])[2]")
 	private WebElement requestCompleteRecord;
 
 	@FindBy(how = How.ID, using = "requestCcdContinueButton")
 	private WebElement requestRecord;
+	
+	@FindBy(how = How.XPATH, using = "(//input[@id='from-date'])[2]")
+	private WebElement requestHealthRecordFromDate;
+
+	@FindBy(how = How.XPATH, using = "(//input[@id='to-date'])[2]")
+	private WebElement requestHealthRecordToDate;
 
 	public MedicalRecordSummariesPage(WebDriver driver) {
 		super(driver);
@@ -274,8 +280,8 @@ public class MedicalRecordSummariesPage extends JalapenoMenu {
 	}
 
 	public void filterCCDs(String fromDate, String toDate) {
-		updateWebElement(this.fromDate, fromDate);
-		updateWebElement(this.toDate, toDate);
+		updateWebElement(this.requestHealthRecordFromDate, fromDate);
+		updateWebElement(this.requestHealthRecordToDate, toDate);
 	}
 
 	private void filterCCDs(Instant from, Instant to) {
@@ -304,6 +310,7 @@ public class MedicalRecordSummariesPage extends JalapenoMenu {
 	}
 
 	public void selectHealthRecordRequestButton() {
+		IHGUtil.waitForElement(driver, 60, healthRecordRequestButton);
 		healthRecordRequestButton.click();
 	}
 
