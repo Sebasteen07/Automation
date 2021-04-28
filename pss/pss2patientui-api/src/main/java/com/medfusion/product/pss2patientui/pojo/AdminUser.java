@@ -12,7 +12,8 @@ public class AdminUser {
 	private Boolean isLoginlessFlow;
 	private Boolean isAnonymousFlow;
 	private Boolean isstartpointPresent;
-
+	private Boolean enableProvdiderPresent= false;
+	private Boolean lastQuestionMandatory=false;	
 
 	public Boolean getIsstartpointPresent() {
 		return isstartpointPresent;
@@ -25,6 +26,22 @@ public class AdminUser {
 	private String practiceId;
 
 	public AdminUser() {}
+
+	public Boolean getEnableProvdiderPresent() {
+		return enableProvdiderPresent;
+	}
+
+	public Boolean getLastQuestionMandatory() {
+		return lastQuestionMandatory;
+	}
+
+	public void setLastQuestionMandatory(Boolean lastQuestionMandatory) {
+		this.lastQuestionMandatory = lastQuestionMandatory;
+	}
+
+	public void setEnableProvdiderPresent(Boolean enableProvdiderPresent) {
+		this.enableProvdiderPresent = enableProvdiderPresent;
+	}
 
 	public Boolean getIsAnonymousFlow() {
 		return isAnonymousFlow;

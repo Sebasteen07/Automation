@@ -38,6 +38,7 @@ import org.openqa.selenium.support.PageFactory;
 import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.openqa.selenium.support.ui.WebDriverWait;
 
+import com.intuit.ifs.csscat.core.BaseTestNGWebDriver;
 import com.intuit.ifs.csscat.core.utils.Log4jUtil;
 import com.medfusion.product.object.maps.pss2.page.AppEntryPoint.StartAppointmentInOrder;
 import com.medfusion.product.object.maps.pss2.page.Appointment.Anonymous.AnonymousPatientInformation;
@@ -62,7 +63,7 @@ import com.medfusion.product.pss2patientui.pojo.Appointment;
 
 import net.fortuna.ical4j.data.ParserException;
 
-public class PSSPatientUtils {
+public class PSSPatientUtils extends BaseTestNGWebDriver{
 
 	public void readICSFile(String path) throws IOException, ParserException {
 		Log4jUtil.log("Reading ICS file for the given path. " + path);
@@ -1009,6 +1010,9 @@ public class PSSPatientUtils {
 		for (WebElement ele : confirmationpage.getAppointmentDetails()) {
 			Log4jUtil.log("apt Details= " + ele.getText());
 		}
+		if(testData.isLastQuestionOptional() == true) {
+			confirmationpage.enterLastQuestion();
+		}
 		ScheduledAppointmentAnonymous scheduledAppointmentAnonymous = confirmationpage.appointmentConfirmedAnonymous();
 		Log4jUtil.log("appointment ID = " + scheduledAppointmentAnonymous.getAppointmentID());
 		assertTrue(scheduledAppointmentAnonymous.areBasicPageElementsPresent());
@@ -1729,5 +1733,72 @@ public class PSSPatientUtils {
 		Log4jUtil.log("Total Month of patient from date of Birth is  " + month);
 		return month;
 
+	}
+	
+	public void TLBLastQuestion(HomePage homepage, Appointment testData, WebDriver driver) throws Exception {
+		logStep("Select Appointment for appointment.");
+		AppointmentPage appointment;
+		StartAppointmentInOrder startappointmentInOrder = null;
+		logStep("Insurance is Enabled " + testData.isIsinsuranceVisible());
+		logStep("startpage is Visible " + testData.isIsstartpointPresent());
+		if (testData.isIsinsuranceVisible()) {
+			Thread.sleep(3500);
+			logStep("insurance is present on home Page going to skip insurance page");
+			startappointmentInOrder = homepage.skipInsurance(driver);
+			if (testData.isIsstartpointPresent()) {
+
+				logStep("Starting point is present after insurance skipped ");
+				appointment = startappointmentInOrder.selectFirstAppointment(PSSConstants.START_APPOINTMENT);
+				logStep("Successfully clicked on  " + PSSConstants.START_APPOINTMENT);
+			} else {
+				appointment = homepage.appointmentpage();
+				logStep("Starting point not Present going to select next provider ");
+			}
+		}
+
+		else if (testData.isIsstartpointPresent()) {
+			startappointmentInOrder = homepage.startpage();
+			logStep("in else part  click on  " + PSSConstants.START_APPOINTMENT);
+			appointment = startappointmentInOrder.selectFirstAppointment(PSSConstants.START_APPOINTMENT);
+			logStep("clicked on Appointment ");
+		} else {
+			logStep("Start point not present");
+			appointment = homepage.appointmentpage();
+		}
+		logStep("Verfiy Appointment Page and appointment =" + testData.getAppointmenttype());
+		assertTrue(appointment.areBasicPageElementsPresent());
+		Location location = appointment.selectTypeOfLocation(testData.getAppointmenttype(),
+				Boolean.valueOf(testData.getIsAppointmentPopup()));
+		logStep("Verfiy Location Page and location to be selected = " + testData.getLocation());
+		assertTrue(location.areBasicPageElementsPresent());
+		Provider provider = location.searchProvider(testData.getLocation());
+		logStep("address = " + location.getAddressValue());
+		logStep("Verfiy Provider Page and Provider = " + testData.getProvider());
+		assertTrue(provider.areBasicPageElementsPresent());
+
+		AppointmentDateTime aptDateTime = provider.getProviderandClick(testData.getProvider());
+		assertTrue(aptDateTime.areBasicPageElementsPresent());
+		aptDateTime.selectFutureDate(testData.getIsNextDayBooking());
+
+		Thread.sleep(6000);
+		logStep("Verify Confirmation page and Scheduled page");
+		ConfirmationPage confirmationpage = aptDateTime.selectAppointmentDateTime(testData.getIsNextDayBooking());
+
+		assertTrue(confirmationpage.areBasicPageElementsPresent());
+		String aptScheduledAt = confirmationpage.getAppointmentDetails()
+				.get((confirmationpage.getAppointmentDetails().size() - 1)).getText();
+		log(">> " + aptScheduledAt);
+		for (WebElement ele : confirmationpage.getAppointmentDetails()) {
+			log("apt Details= " + ele.getText());
+		}
+		confirmationpage.appointmentConfirmedAnonymous();
+
+		logStep("Verify the ");
+		confirmationpage.validateLastQueReqErrorMsg();
+
+		logStep("Heading of last question is " + confirmationpage.getHeadingLastQuestin());
+
+		confirmationpage.validateLengthLastQueReq();
+		appointmentToScheduledAnonymous(confirmationpage, testData);
 	}
 }

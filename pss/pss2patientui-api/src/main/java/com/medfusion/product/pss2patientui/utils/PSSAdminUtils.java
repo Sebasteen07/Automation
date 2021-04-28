@@ -5,10 +5,12 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.openqa.selenium.JavascriptExecutor;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.testng.Assert;
 
+import com.intuit.ifs.csscat.core.BaseTestNGWebDriver;
 import com.intuit.ifs.csscat.core.utils.Log4jUtil;
 import com.medfusion.product.object.maps.pss2.page.PSS2MenuPage;
 import com.medfusion.product.object.maps.pss2.page.AppointmentType.ManageAppointmentType;
@@ -27,7 +29,7 @@ import com.medfusion.product.object.maps.pss2.page.settings.PatientFlow;
 import com.medfusion.product.pss2patientui.pojo.AdminUser;
 import com.medfusion.product.pss2patientui.pojo.Appointment;
 
-public class PSSAdminUtils {
+public class PSSAdminUtils extends BaseTestNGWebDriver{
 
 	public void adminSettings(WebDriver driver, AdminUser adminuser, Appointment testData, String urlToUse) throws Exception {
 		PSS2PracticeConfiguration psspracticeConfig = loginToAdminPortal(driver, adminuser);
@@ -203,7 +205,7 @@ public class PSSAdminUtils {
 	public void pageRefresh(WebDriver driver) throws InterruptedException {
 		Thread.sleep(6000);
 		driver.navigate().refresh();
-		Thread.sleep(14000);
+		Thread.sleep(6000);
 	}
 
 	public AdminUser setPracticeAdminAccount(String staffPracitceName) throws IOException {
@@ -714,6 +716,71 @@ public class PSSAdminUtils {
 		}
 		manageSpecialty.selectgender();
 
-
 	}
+	
+	public void lastQuestionEnable(WebDriver driver, AdminUser adminuser, Appointment appointment, String urlToUse) throws Exception {
+
+		PSS2PracticeConfiguration psspracticeConfig = loginToAdminPortal(driver, adminuser);
+	
+		AccessRules accessrule =psspracticeConfig.gotoAccessTab();
+		
+		if (urlToUse.equalsIgnoreCase(PSSConstants.LOGINLESS)) {
+			log("PSS Patient URL : " + accessrule.getLoginlessURL());
+			appointment.setUrlLoginLess(accessrule.getLoginlessURL());
+		}
+		if (urlToUse.equalsIgnoreCase(PSSConstants.ANONYMOUS)) {
+			log("PSS Patient URL : " + accessrule.getAnonymousUrl());
+			appointment.setUrlAnonymous(accessrule.getAnonymousUrl());
+		}
+		PatientFlow patientflow =accessrule.gotoPatientFlowTab();
+		
+		setRulesNoSpecialitySet1(patientflow);	
+		
+		adminuser.setRule(patientflow.getRule());
+		log("rule= " + patientflow.getRule());
+		
+		appointment.setIsinsuranceVisible(patientflow.insuracetogglestatus());
+		log("Insurance is Enabled= " + patientflow.insuracetogglestatus());
+		appointment.setIsstartpointPresent(patientflow.isstartpagepresent());
+		log("StartPage is Visible= " + patientflow.isstartpagepresent());
+		
+		AdminPatientMatching adminpatientmatching = patientflow.gotoPatientMatchingTab();
+		adminpatientmatching.patientMatchingSelection();
+		
+		ManageResource manageResource = psspracticeConfig.gotoResource();
+		pageRefresh(driver);
+		manageResource.selectResource(appointment.getProvider());
+		
+		log("Scroll down the page");
+		manageResource.pagedown();
+		
+		log("Last Question Enable Status- "+manageResource.lastQuestionEnableStatus());
+		
+		if(manageResource.lastQuestionEnableStatus() == false) {
+			manageResource.enableLastQuestion();
+		}
+		manageResource.selectAppointmenttype(appointment.getAppointmenttype());
+		manageResource.pagedown();
+		
+		log("Last QUestion Required Status- "+manageResource.lastQuestionRequiredStatus());
+		
+		if (adminuser.getLastQuestionMandatory() == true) {
+			if (manageResource.lastQuestionRequiredStatus() == false) {
+				manageResource.enableLastQuestionRequired();
+			}
+		} else {
+
+			if (manageResource.lastQuestionRequiredStatus() == true) {
+				manageResource.disableLastQuestionRequired();
+			}
+
+		}		
+		manageResource.pageup();
+		manageResource.clickBackArraow();
+		manageResource.clickGeneralTab();
+		
+		log("Last Question Required settings are turn on successfully");
+		patientflow.logout();
+	}
+
 }

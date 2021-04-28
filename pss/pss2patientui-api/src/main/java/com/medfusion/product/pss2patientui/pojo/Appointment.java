@@ -96,10 +96,12 @@ public class Appointment {
 	private String gmailUserName;
 	private String linkProvider;
 	private String linkLocation;
+	private boolean lastQuestionOptional=false;
 
 	public String getLinkLocation() {
 		return linkLocation;
 	}
+
 
 	public void setLinkLocation(String linkLocation) {
 		this.linkLocation = linkLocation;
@@ -168,6 +170,15 @@ public class Appointment {
 	}
 
 	public Appointment() {}
+	
+
+	public boolean isLastQuestionOptional() {
+		return lastQuestionOptional;
+	}
+
+	public void setLastQuestionOptional(boolean lastQuestionOptional) {
+		this.lastQuestionOptional = lastQuestionOptional;
+	}
 		
 	public String getSlotStartTime() {
 		return slotStartTime;
