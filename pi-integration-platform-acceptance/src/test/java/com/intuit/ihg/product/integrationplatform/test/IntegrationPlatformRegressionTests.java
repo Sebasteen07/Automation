@@ -4292,11 +4292,11 @@ public class IntegrationPlatformRegressionTests extends BaseTestNGWebDriver {
 	
 	@Test(enabled = true, groups = { "RegressionTests" }, retryAnalyzer = RetryAnalyzer.class)
 	public void testAMDCSecureMessageWithAttachmentRefID() throws Exception {
-		logStep("Test Case: testAMDCSecureMessagewithAttachmentrefID");
-		logStep("Execution Environment: " + IHGUtil.getEnvironmentType());
-		logStep("Execution Browser: " + TestConfig.getBrowserType());
+		log("Test Case: testAMDCSecureMessagewithAttachmentrefID");
+		log("Execution Environment: " + IHGUtil.getEnvironmentType());
+		log("Execution Browser: " + TestConfig.getBrowserType());
 
-		logStep("Step 1: Get TestData from both Property files AMDC and Attachment");
+		logStep("Get TestData from both Property files AMDC and Attachment");
 		
 		LoadPreTestData LoadPreTestDataObj = new LoadPreTestData();
 		
@@ -4306,44 +4306,44 @@ public class IntegrationPlatformRegressionTests extends BaseTestNGWebDriver {
 		AMDC AMDCtestData = new AMDC();
 		LoadPreTestDataObj.loadAMDCDataFromProperty(AMDCtestData);
 
-		logStep("Step 2: Setup Oauth client");
+		logStep("Setup Oauth client");
 		RestUtils.oauthSetup(AMDCtestData.OAuthKeyStore, AMDCtestData.OAuthProperty, AMDCtestData.OAuthAppToken,
 				AMDCtestData.OAuthUsername, AMDCtestData.OAuthPassword);
 
-		logStep("Step 3: Prepare Attachemnt Payload");
+		logStep("Prepare Attachemnt Payload");
 		AttachmentPayload AttachmentObj = new AttachmentPayload();
 		
 		String externalAttachmentID = PharmacyPayload.randomNumbers(14);
-		logStep("externalAttachmentID posted is : " + externalAttachmentID);
+		log("externalAttachmentID posted is : " + externalAttachmentID);
 		String attachmentName = "TestResults_"+externalAttachmentID+".pdf";
 
-		logStep("attachmentName : "+attachmentName);
+		log("attachmentName : "+attachmentName);
 		String attahcmentPayload = AttachmentPayload.getAttachmentPayload(AttchamenttestData, externalAttachmentID);
 		
 		logStep("Attachment Payload: " + attahcmentPayload);
 
-		logStep("Step 4: Do Attachment Post Request");
-		logStep("ResponsePath: " + AMDCtestData.ResponsePath);
+		logStep("Do Attachment Post Request");
+		log("ResponsePath: " + AMDCtestData.ResponsePath);
 		
 		RestUtils.setupHttpPostRequest(AttchamenttestData.RestUrl, attahcmentPayload,
 				AMDCtestData.ResponsePath);
 
 		String attachmentRefId = RestUtils.getAttachmentRefId(AMDCtestData.ResponsePath);
-		logStep("Attachment Ref ID : "+attachmentRefId);
+		log("Attachment Ref ID : "+attachmentRefId);
 		
-		logStep("Step 5: Fill Message data");
+		logStep("Fill Message data");
 		String messageID;
 
 		String message = AMDCPayload.getAMDCAttachmentPayload(AMDCtestData, attachmentRefId);
-		logStep("message :- " + message);
+		log("message :- " + message);
 		messageID = AMDCPayload.messageID;
-		logStep("Partner Message ID:" + messageID);
+		log("Partner Message ID:" + messageID);
 		
-		logStep("Step 6: Do Message Post Request");
-		logStep("responsePath: " + AMDCtestData.ResponsePath);
+		logStep(" Do Message Post Request");
+		log("responsePath: " + AMDCtestData.ResponsePath);
 		String processingUrl = RestUtils.setupHttpPostRequest(AMDCtestData.RestV3Url, message, AMDCtestData.ResponsePath);
 
-		logStep("Step 7: Get processing status until it is completed");
+		logStep("Get processing status until it is completed");
 		boolean completed = false;
 		for (int i = 0; i < 3; i++) {
 			// wait 10 seconds so the message can be processed
@@ -4355,7 +4355,7 @@ public class IntegrationPlatformRegressionTests extends BaseTestNGWebDriver {
 			}
 			assertTrue(completed, "Message processing was not completed in time");
 		}
-		logStep("Step 8: Validate if patient has received the email for the secure message sent");
+		logStep(" Validate if patient has received the email for the secure message sent");
 		Mailinator mail = new Mailinator();
 		String subject = "New message from " + AMDCtestData.Sender3;
 		String messageLink = "Sign in to view this message";
@@ -4365,43 +4365,47 @@ public class IntegrationPlatformRegressionTests extends BaseTestNGWebDriver {
 		Thread.sleep(5000);
 		assertTrue(link != null, "AMDC Secure Message link not found in mail.");
 		link = link.replace("login?redirectoptout=true", "login");
-		logStep("Step 9: Login to Patient Portal");
-		logStep("Link is " + link);
+		logStep("Login to Patient Portal");
+		log("Link is " + link);
 		JalapenoLoginPage loginPage = new JalapenoLoginPage(driver, link);
 		JalapenoHomePage homePage = loginPage.login(AMDCtestData.UserName, AMDCtestData.Password);
+		
 		logStep("Detecting if Home Page is opened");
 		assertTrue(homePage.isHomeButtonPresent(driver));
+		
 		logStep("Click on messages solution");
 		JalapenoMessagesPage messagesPage = homePage.showMessages(driver);
 		assertTrue(messagesPage.areBasicPageElementsPresent(), "Inbox failed to load properly.");
-		logStep("Step 10: Find message in Inbox");
+		
+		logStep("Find message in Inbox");
 		String messageIdentifier = AMDCPayload.messageIdentifier;
 		
-		logStep("Step 11: Validate the attachment name recieved in the secure message sent with attachment ref id ");
+		logStep(" Validate the attachment name recieved in the secure message sent with attachment ref id ");
 		messagesPage.validateSecureMessageAttachment(attachmentName);
 
-		logStep("message subject " + messageIdentifier);
+		log("message subject " + messageIdentifier);
+		
 		logStep("Log the message read time ");
 		long epoch = System.currentTimeMillis() / 1000;
 		
 		String readdatetimestamp = RestUtils.readTime(epoch);
-		logStep("Message Read Time:" + readdatetimestamp);
+		log("Message Read Time:" + readdatetimestamp);
 		
-		logStep("Step 12: Validate message loads and is the right message");
+		logStep("Validate message loads and is the right message");
 		assertTrue(messagesPage.isMessageDisplayed(driver, messageIdentifier));
 
 		Long since = System.currentTimeMillis() / 1000L - 60 * 24;
 
-		logStep("Step 13: Reply to the message");
+		logStep("Reply to the message");
 		messagesPage.replyToMessage(driver);
 
-		logStep("Step 14: Wait 60 seconds, so the message can be processed");
+		logStep("Wait 60 seconds, so the message can be processed");
 		Thread.sleep(60000);
 
-		logStep("Step 15: Do a GET and get the message");
+		logStep("Do a GET and get the message");
 		RestUtils.setupHttpGetRequest(AMDCtestData.RestV3Url + "?since=" + since + ",0", AMDCtestData.ResponsePath);
 
-		logStep("Step 16: Validate message reply");
+		logStep("Validate message reply");
 		RestUtils.isReplyPresent(AMDCtestData.ResponsePath, messageIdentifier);
 }
 }
