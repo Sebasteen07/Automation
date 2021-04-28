@@ -7027,7 +7027,7 @@ public class NGIntegrationE2ESITTests extends BaseTestNGWebDriver{
     	String userLocationName = PropertyLoaderObj.getProperty("PortalLocationName");
     	
 		long timestamp = System.currentTimeMillis();
-		Log4jUtil.log("Step Begins: Do a GET and get the read communication");
+		logStep("Do a GET and get the read communication");
 		Long since = timestamp / 1000L - 60 * 24;
 		
 		logStep("Login patient");
@@ -7059,13 +7059,13 @@ public class NGIntegrationE2ESITTests extends BaseTestNGWebDriver{
 			Log4jUtil.log("Invalid Execution Mode");
 		}
 
-		Log4jUtil.log("Step Begins: Wait 60 seconds, so the message can be processed");
+    	logStep("Wait 60 seconds, so the message can be processed");
 		Thread.sleep(60000);
 
-		Log4jUtil.log("Step Begins: Do a GET and get the message");
+		logStep("Do a GET and get the message");
 		RestUtils.setupHttpGetRequest(PropertyLoaderObj.getProperty("GetInboundMessage").replaceAll("integrationID", integrationPracticeID) + "?since=" + since + ",0", PropertyLoaderObj.getResponsePath());
 
-		Log4jUtil.log("Step Begins: Validate message reply");
+		logStep("Validate message reply");
 		String patientFirstName = DBUtils.executeQueryOnDB("NGCoreDB","select first_name from person where person_id ='"+person_id+"'");
 		String patientLastName = DBUtils.executeQueryOnDB("NGCoreDB","select last_name from person where person_id ='"+person_id+"'");
 		String expectedBody= "Dear "+PropertyLoaderObj.getProperty("practiceName")+",<br/><br/>"+IntegrationConstants.MESSAGE_REPLY+"<br/><br/>Thanks,<br>"+patientFirstName+" "+patientLastName;		
