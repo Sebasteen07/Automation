@@ -56,6 +56,7 @@ import com.medfusion.product.object.maps.patientportal2.page.CreateAccount.AuthU
 import com.medfusion.product.object.maps.patientportal2.page.CreateAccount.PatientVerificationPage;
 import com.medfusion.product.object.maps.patientportal2.page.CreateAccount.SecurityDetailsPage;
 import com.medfusion.product.object.maps.patientportal2.page.HomePage.JalapenoHomePage;
+import com.medfusion.product.object.maps.patientportal2.page.MessagesPage.IMHPage;
 import com.medfusion.product.object.maps.patientportal2.page.MessagesPage.JalapenoMessagesPage;
 import com.medfusion.product.object.maps.patientportal2.page.NewPayBillsPage.JalapenoPayBillsConfirmationPage;
 import com.medfusion.product.object.maps.patientportal2.page.NewPayBillsPage.JalapenoPayBillsMakePaymentPage;
@@ -1994,7 +1995,8 @@ public class NGIntegrationE2ESITTests extends BaseTestNGWebDriver{
 		
 		NGAPIUtils.updateLoginDefaultTo("EnterpriseGateway",PropertyLoaderObj.getNGEnterpiseEnrollmentE1(), PropertyLoaderObj.getNGEnterpiseEnrollmentE1P4());
 		logStep("Create the trusted patient in NG EPM");
-		NewPatient trustedPatient = NGPatient.patientUsingJSON(PropertyLoaderObj,"trustedPatient");		
+		NewPatient trustedPatient = NGPatient.patientUsingJSON(PropertyLoaderObj,"trustedPatient");	
+		trustedPatient = NGPatient.addDataToPatientDemographics(PropertyLoaderObj, trustedPatient);
 		String trustedperson_id=NGAPIFlows.CreatePatientinEPM(trustedPatient);
 		log("Step End: Person created with id "+trustedperson_id);
 		NGAPIFlows.addCharttoProvider(PropertyLoaderObj.getNGE1P4Location(),PropertyLoaderObj.getNGE1P4Provider(),trustedperson_id);
@@ -2072,7 +2074,8 @@ public class NGIntegrationE2ESITTests extends BaseTestNGWebDriver{
         NGAPIFlows.addCharttoProvider(PropertyLoaderObj.getNGE1P2Location(),PropertyLoaderObj.getNGE1P2Provider(),personId);		
 		
 		logStep("Create the trusted patient in NG EPM in practice 2");
-		NewPatient trustedPatient = NGPatient.patientUsingJSON(PropertyLoaderObj,"trustedPatient");		
+		NewPatient trustedPatient = NGPatient.patientUsingJSON(PropertyLoaderObj,"trustedPatient");	
+		trustedPatient = NGPatient.addDataToPatientDemographics(PropertyLoaderObj, trustedPatient);
 		String trustedperson_id=NGAPIFlows.CreatePatientinEPM(trustedPatient);
 		log("Step End: Person created with id "+trustedperson_id);
 		NGAPIFlows.addCharttoProvider(PropertyLoaderObj.getNGE1P2Location(),PropertyLoaderObj.getNGE1P2Provider(),trustedperson_id);
@@ -2162,6 +2165,7 @@ public class NGIntegrationE2ESITTests extends BaseTestNGWebDriver{
 		NGAPIUtils.updateLoginDefaultTo("EnterpriseGateway",PropertyLoaderObj.getNGEnterpiseEnrollmentE1(), PropertyLoaderObj.getNGEnterpiseEnrollmentE1P4());
 		logStep("Create the trusted patient in NG EPM for Practice 4");
 		NewPatient trustedPatient = NGPatient.patientUsingJSON(PropertyLoaderObj,"trustedPatient");		
+		trustedPatient = NGPatient.addDataToPatientDemographics(PropertyLoaderObj, trustedPatient);
 		String trustedperson_id=NGAPIFlows.CreatePatientinEPM(trustedPatient);
 		log("Step End: Person created with id "+trustedperson_id);
 		NGAPIFlows.addCharttoProvider(PropertyLoaderObj.getNGE1P4Location(),PropertyLoaderObj.getNGE1P4Provider(),trustedperson_id);
@@ -4450,8 +4454,7 @@ public class NGIntegrationE2ESITTests extends BaseTestNGWebDriver{
 		JalapenoHomePage homePage = loginPage.login(username, PropertyLoaderObj.getPassword());
 		
 		Log4jUtil.log("Step Begins: Go to  Health Record Summaries");
-	    MedicalRecordSummariesPage MedicalRecordSummariesPageObject = homePage.clickOnMedicalRecordSummaries(driver);
-	    assertTrue(MedicalRecordSummariesPageObject.areBasicPageElementsPresent(), "Failed to Load Health Record Summaries ");		
+	    MedicalRecordSummariesPage MedicalRecordSummariesPageObject = homePage.clickOnMedicalRecordSummaries(driver);	
 		
 		log("Step Begins: Click on Request Health Record");
 		MedicalRecordSummariesPageObject.selectHealthRecordRequestButton();
@@ -5966,6 +5969,16 @@ public class NGIntegrationE2ESITTests extends BaseTestNGWebDriver{
     	DecimalFormat df=new DecimalFormat("0.00");
 		String actualAmount = df.format(Integer.parseInt(amount));
 		log("Amount to be paid "+actualAmount);
+		
+		String cardNumber = null, cardType =null;
+		if(PropertyLoaderObj.getProperty("PaymentCardType").equalsIgnoreCase("Visa")) {
+			cardNumber = PracticeConstants.CARD_NUMBER;	
+			cardType = PracticeConstants.CARD_TYPE_VISA;
+		}
+		else if(PropertyLoaderObj.getProperty("PaymentCardType").equalsIgnoreCase("MasterCard")) {
+			cardNumber = PracticeConstants.CARD_NUM_MASTERCARD;	
+			cardType = PracticeConstants.CARD_TYPE_MASTERCARD;
+		}		
     	
 		logStep("Login to Practice Portal");
 		PracticeLoginPage practiceLogin = new PracticeLoginPage(driver, PropertyLoaderObj.getPortalUrl());
@@ -5980,7 +5993,7 @@ public class NGIntegrationE2ESITTests extends BaseTestNGWebDriver{
 		String paymentComment = PracticeConstants.PAYMENT_COMMENT.concat(IHGUtil.createRandomNumericString());
 		logStep("Set all the transaction details");		
 		pPayMyBillOnlinePage.setTransactionsForOnlineBillPayProcess(PropertyLoaderObj.getProperty("PortalLocationName"),PropertyLoaderObj.getProperty("PortalProviderName").replaceAll(", Dr", ""),
-				accountNumber,amount, PracticeConstants.PROCESS_CARD_HOLDER_NAME,PracticeConstants.CARD_NUM_MASTERCARD,	PracticeConstants.CARD_TYPE_MASTERCARD,
+				accountNumber,amount, PracticeConstants.PROCESS_CARD_HOLDER_NAME,cardNumber, cardType,
 				paymentComment);
 
 		logStep("Verify the Payment Confirmation text");
@@ -6002,11 +6015,11 @@ public class NGIntegrationE2ESITTests extends BaseTestNGWebDriver{
 		patientsearchPage.selectTheTransaction(actualAmount, firstName, lastName);
 		assertFalse(pPayMyBillOnlinePage.isVoidTransactionPresent());
 		
-		CommonFlows.verifyPaymentReachedtoMFAgent(paymentComment,"BillPayment", "", accountNumber,"POSTED", actualAmount,PracticeConstants.CARD_TYPE_MASTERCARD);
+		CommonFlows.verifyPaymentReachedtoMFAgent(paymentComment,"BillPayment", "", accountNumber,"POSTED", actualAmount,cardType);
 		
 		String SourceIdQuery = "select acct_id from accounts where guar_id ='"+person_id+"' and practice_id='"+practiceId.trim()+"'";
 		String SourceId = DBUtils.executeQueryOnDB("NGCoreDB",SourceIdQuery);
-		CommonFlows.verifyPaymentPostedtoNG(paymentComment,SourceId , person_id, "-"+actualAmount, "Payment type: BillPayment, Last 4 CC digits: "+PracticeConstants.CARD_NUM_MASTERCARD.substring(12),practiceId);
+		CommonFlows.verifyPaymentPostedtoNG(paymentComment,SourceId , person_id, "-"+actualAmount, "Payment type: BillPayment, Last 4 CC digits: "+cardNumber.substring(12),practiceId);
 		
 		log("Test Case End: The patient is able to pay using Online Bill Pay Process and payment is being posted to NG");
 	}
@@ -6040,6 +6053,16 @@ public class NGIntegrationE2ESITTests extends BaseTestNGWebDriver{
 		String firstName = DBUtils.executeQueryOnDB("NGCoreDB","select first_name from person where person_id = '"+person_id+"'");
     	String lastName = DBUtils.executeQueryOnDB("NGCoreDB","select last_name from person where person_id = '"+person_id+"'");
     	
+    	String cardNumber = null, cardType =null;
+		if(PropertyLoaderObj.getProperty("PaymentCardType").equalsIgnoreCase("Visa")) {
+			cardNumber = PracticeConstants.CARD_NUMBER;
+			cardType = PracticeConstants.CARD_TYPE_VISA;
+		}
+		else if(PropertyLoaderObj.getProperty("PaymentCardType").equalsIgnoreCase("MasterCard")) {
+			cardNumber = PracticeConstants.CARD_NUM_MASTERCARD;	
+			cardType = PracticeConstants.CARD_TYPE_MASTERCARD;
+		}
+    	
 		logStep("Login to Practice Portal");
 		PracticeLoginPage practiceLogin = new PracticeLoginPage(driver, PropertyLoaderObj.getPortalUrl());
 		PracticeHomePage practiceHome = practiceLogin.login(PropertyLoaderObj.getDoctorLogin(), PropertyLoaderObj.getDoctorPassword());
@@ -6053,14 +6076,14 @@ public class NGIntegrationE2ESITTests extends BaseTestNGWebDriver{
 		logStep("Set all the transaction details");
 		pPayMyBillOnlinePage.setTransactionsForBudgetPaymentPlan(PropertyLoaderObj.getProperty("PortalLocationName"), PropertyLoaderObj.getProperty("PortalProviderName").replaceAll(", Dr", ""),
 				accountNumber, amount, prepayamount, PracticeConstants.PROCESS_CARD_HOLDER_NAME,
-				PracticeConstants.CARD_NUM_MASTERCARD, PracticeConstants.CARD_TYPE_MASTERCARD);
+				cardNumber, cardType);
 
 		logStep("Verify the your Budget payment plan start date text");
 		assertTrue(pPayMyBillOnlinePage.getPaymentStartDateText().contains("Your payment plan start date is "
 				+ pPayMyBillOnlinePage.getPlanStartDate() + " recurring every other week."));
 
 		logStep("Verify the creditcard last four digit");
-		assertTrue(pPayMyBillOnlinePage.getCreditCardLastFourDigits().contains(PracticeConstants.CARD_NUM_MASTERCARD.substring(12)));
+		assertTrue(pPayMyBillOnlinePage.getCreditCardLastFourDigits().contains(cardNumber.substring(12)));
 
 		String enddatePlanText = pPayMyBillOnlinePage.getPlanEndDate();
 
@@ -6077,7 +6100,7 @@ public class NGIntegrationE2ESITTests extends BaseTestNGWebDriver{
 		assertTrue(pPayMyBillOnlinePage.getplanEndDateBudgetSearch().equals(enddatePlanText));
 
 		logStep("Verify the creditcard last four digit in Budget Payment Plan Search");
-		assertTrue(pPayMyBillOnlinePage.getActiveBudgetPaymentCardDigit().contains(PracticeConstants.CARD_NUM_MASTERCARD.substring(12)));
+		assertTrue(pPayMyBillOnlinePage.getActiveBudgetPaymentCardDigit().contains(cardNumber.substring(12)));
 
 		logStep("Stop the Budget Payment Plan ");
 		pPayMyBillOnlinePage.clickOnStopBudgetPayment();
@@ -6116,6 +6139,16 @@ public class NGIntegrationE2ESITTests extends BaseTestNGWebDriver{
 		String actualAmount = df.format(Integer.parseInt(amount));
 		log("Amount to be paid "+actualAmount);
     	
+		String cardNumber = null, cardType =null;
+		if(PropertyLoaderObj.getProperty("PaymentCardType").equalsIgnoreCase("Visa")) {
+			cardNumber = PracticeConstants.CARD_NUMBER;	
+			cardType = PracticeConstants.CARD_TYPE_VISA;
+		}
+		else if(PropertyLoaderObj.getProperty("PaymentCardType").equalsIgnoreCase("MasterCard")) {
+			cardNumber = PracticeConstants.CARD_NUM_MASTERCARD;	
+			cardType = PracticeConstants.CARD_TYPE_MASTERCARD;
+		}
+		
 		logStep("Login to Practice Portal");
 		PracticeLoginPage practiceLogin = new PracticeLoginPage(driver, PropertyLoaderObj.getPortalUrl());
 		PracticeHomePage practiceHome = practiceLogin.login(PropertyLoaderObj.getDoctorLogin(), PropertyLoaderObj.getDoctorPassword());
@@ -6129,7 +6162,7 @@ public class NGIntegrationE2ESITTests extends BaseTestNGWebDriver{
 		String paymentComment = PracticeConstants.PAYMENT_COMMENT.concat(IHGUtil.createRandomNumericString());
 		logStep("Set all the transaction details");		
 		pPayMyBillOnlinePage.setTransactionsForOnlineBillPayProcess(PropertyLoaderObj.getProperty("PortalLocationName"),PropertyLoaderObj.getProperty("PortalProviderName").replaceAll(", Dr", ""),
-				invalidAccountNumber,amount, PracticeConstants.PROCESS_CARD_HOLDER_NAME,PracticeConstants.CARD_NUM_MASTERCARD,	PracticeConstants.CARD_TYPE_MASTERCARD,
+				invalidAccountNumber,amount, PracticeConstants.PROCESS_CARD_HOLDER_NAME,cardNumber,	cardType,
 				paymentComment);
 
 		logStep("Verify the Payment Confirmation text");
@@ -6140,11 +6173,11 @@ public class NGIntegrationE2ESITTests extends BaseTestNGWebDriver{
 		String personNumber = DBUtils.executeQueryOnDB("NGCoreDB","select person_nbr from person where person_id = '"+person_id+"'");
 		String acctNBRQuery = "select acct_nbr from accounts where guar_id ='"+person_id+"' and practice_id='"+practiceId.trim()+"'";
 		String accountNumber = DBUtils.executeQueryOnDB("NGCoreDB",acctNBRQuery);
-		CommonFlows.verifyPaymentReachedtoMFAgent(paymentComment,"BillPayment", personNumber.trim().replace("\t", ""), invalidAccountNumber,"POSTED", actualAmount,PracticeConstants.CARD_TYPE_MASTERCARD);
+		CommonFlows.verifyPaymentReachedtoMFAgent(paymentComment,"BillPayment", personNumber.trim().replace("\t", ""), invalidAccountNumber,"POSTED", actualAmount,cardType);
 		
 		String sourceIdQuery = "select acct_id from accounts where guar_id ='"+person_id+"' and practice_id='"+practiceId.trim()+"'";
 		String sourceId = DBUtils.executeQueryOnDB("NGCoreDB",sourceIdQuery);
-		CommonFlows.verifyPaymentPostedtoNG(paymentComment,sourceId , person_id, "-"+actualAmount, "Payment type: BillPayment, Last 4 CC digits: "+PracticeConstants.CARD_NUM_MASTERCARD.substring(12),practiceId);
+		CommonFlows.verifyPaymentPostedtoNG(paymentComment,sourceId , person_id, "-"+actualAmount, "Payment type: BillPayment, Last 4 CC digits: "+cardNumber.substring(12),practiceId);
 		log("Test Case End: The payment is auto posted when Patient is having single guarantor while paying using One Time Payment method");
 	}
 	
@@ -6179,6 +6212,16 @@ public class NGIntegrationE2ESITTests extends BaseTestNGWebDriver{
     	DecimalFormat df=new DecimalFormat("0.00");
 		String actualAmount = df.format(Integer.parseInt(amount));
 		log("Amount to be paid "+actualAmount);
+		
+		String cardNumber = null, cardType =null;
+		if(PropertyLoaderObj.getProperty("PaymentCardType").equalsIgnoreCase("Visa")) {
+			cardNumber = PracticeConstants.CARD_NUMBER;	
+			cardType = PracticeConstants.CARD_TYPE_VISA;
+		}
+		else if(PropertyLoaderObj.getProperty("PaymentCardType").equalsIgnoreCase("MasterCard")) {
+			cardNumber = PracticeConstants.CARD_NUM_MASTERCARD;	
+			cardType = PracticeConstants.CARD_TYPE_MASTERCARD;
+		}
     	
 		logStep("Login to Practice Portal");
 		PracticeLoginPage practiceLogin = new PracticeLoginPage(driver, PropertyLoaderObj.getPortalUrl());
@@ -6193,7 +6236,7 @@ public class NGIntegrationE2ESITTests extends BaseTestNGWebDriver{
 		String paymentComment = PracticeConstants.PAYMENT_COMMENT.concat(IHGUtil.createRandomNumericString());
 		logStep("Set all the transaction details");		
 		pPayMyBillOnlinePage.setTransactionsForOnlineBillPayProcess(PropertyLoaderObj.getProperty("PortalLocationName"),PropertyLoaderObj.getProperty("PortalProviderName").replaceAll(", Dr", ""),
-				invalidAccountNumber,amount, PracticeConstants.PROCESS_CARD_HOLDER_NAME,PracticeConstants.CARD_NUM_MASTERCARD,	PracticeConstants.CARD_TYPE_MASTERCARD,
+				invalidAccountNumber,amount, PracticeConstants.PROCESS_CARD_HOLDER_NAME,cardNumber,	cardType,
 				paymentComment);
 
 		logStep("Verify the Payment Confirmation text");
@@ -6201,7 +6244,7 @@ public class NGIntegrationE2ESITTests extends BaseTestNGWebDriver{
 		IHGUtil.waitForElement(driver, 20, pPayMyBillOnlinePage.paymentConfirmationText);
 		assertEquals(true, pPayMyBillOnlinePage.paymentConfirmationText.getText().contains(PAYMENT_SUCCESSFULL_TEXT + firstName +" "+ lastName));
 				
-		CommonFlows.verifyPaymentReachedtoMFAgent(paymentComment,"BillPayment", "", invalidAccountNumber,"PENDING", actualAmount,PracticeConstants.CARD_TYPE_MASTERCARD);
+		CommonFlows.verifyPaymentReachedtoMFAgent(paymentComment,"BillPayment", "", invalidAccountNumber,"PENDING", actualAmount,cardType);
 		log("Test Case End: Payment is not auto posted when Patient is having multiple guarantors while paying using OLBP method and payment state is Pending");
 	}
 	
@@ -6679,6 +6722,7 @@ public class NGIntegrationE2ESITTests extends BaseTestNGWebDriver{
         CommonFlows.verifyPatientDocumentReceivedINInbox(PropertyLoaderObj,driver,url,username,PropertyLoaderObj.getPassword(),
         		PropertyLoaderObj.getProperty("DocSubject"), body, docName+"."+docFormat.trim());
         
+        CommonFlows.verifyDocumentReadStatus(requestId);        
         log("Test Case End: The practice user is able to send the Patient Education Document.");
     }
     
@@ -6947,5 +6991,349 @@ public class NGIntegrationE2ESITTests extends BaseTestNGWebDriver{
         		PropertyLoaderObj.getProperty("DocSubject"), body, docName+".pdf");
         
         log("Test Case End: The practice user is able to send the Referral Letter.");
-    }    
+    }        
+
+    @Test(enabled = true, groups = { "acceptance-INBOX" }, retryAnalyzer = RetryAnalyzer.class)
+	public void testPP139SendEHRImageWhileReplyingMessage() throws Throwable{
+		log("Test Case : Verify the practice user is able to send the EHR Images while replying to the patient message");
+		String questionText = IntegrationConstants.MESSAGE_REPLY;
+		String userId =PropertyLoaderObj.getProperty("SecureMessageUserID");
+		String userLastName =DBUtils.executeQueryOnDB("NGCoreDB","select last_name from user_mstr where user_id='"+userId+"'");	
+		String userProviderName =userLastName+", Dr";
+
+		String username = PropertyLoaderObj.getProperty("CCDAUsername");
+    	String person_id = DBUtils.executeQueryOnDB("NGCoreDB","select person_id from person where email_address = '"+username+"'");
+    	String enterpriseId = null, practiceId = null, providerName = null, locationName = null , integrationPracticeID= null, url =null;
+    	
+    	if(PropertyLoaderObj.getNGAPIexecutionMode().equalsIgnoreCase("QAMain")){
+    		enterpriseId= PropertyLoaderObj.getProperty("NGEnterpiseEnrollmentEnterprise1");
+    	    practiceId= PropertyLoaderObj.getProperty("NGEnterprise1Practice1");
+    	    providerName =PropertyLoaderObj.getProperty("NGE1P1Provider"); 
+    	    locationName =PropertyLoaderObj.getProperty("NGE1P1Location");
+    	    integrationPracticeID =PropertyLoaderObj.getProperty("integrationPracticeIDE1P1");
+    	    url = PropertyLoaderObj.getProperty("MFPortalURLPractice1");	
+		}
+		else if (PropertyLoaderObj.getNGAPIexecutionMode().equalsIgnoreCase("SIT")){
+			enterpriseId= PropertyLoaderObj.getProperty("NGMainEnterpriseID");
+		    practiceId= PropertyLoaderObj.getProperty("NGMainPracticeID");
+		    providerName =PropertyLoaderObj.getProperty("EPMProviderName"); 
+		    locationName =PropertyLoaderObj.getProperty("EPMLocationName");
+		    integrationPracticeID =PropertyLoaderObj.getProperty("integrationPracticeIDAMDC");
+		    url = PropertyLoaderObj.getProperty("url");			           
+		}
+		else{
+			Log4jUtil.log("Invalid Execution Mode");
+		}
+    	String userLocationName = PropertyLoaderObj.getProperty("PortalLocationName");
+    	
+		long timestamp = System.currentTimeMillis();
+		logStep("Do a GET and get the read communication");
+		Long since = timestamp / 1000L - 60 * 24;
+		
+		logStep("Login patient");
+		NGLoginPage loginPage = new NGLoginPage(driver, url);
+		JalapenoHomePage homePage = loginPage.login(PropertyLoaderObj.getProperty("CCDAUsername"),PropertyLoaderObj.getPassword());
+
+		logStep("Click Ask A Question tab");
+		JalapenoAskAStaffV2Page1 askPage1 = homePage.openSpecificAskaQuestion(PropertyLoaderObj.getProperty("askAV2Name"));
+
+		String askaSubject = Long.toString(askPage1.getCreatedTimeStamp());
+
+		logStep("Fill question and continue");
+		JalapenoAskAStaffV2Page2 askPage2 = askPage1.NGfillAndContinue(askaSubject, questionText,userProviderName,userLocationName);
+
+		assertTrue(askaSubject.equals(askPage2.getSubject()),"Expected: " + askaSubject + ", found: " + askPage2.getSubject());
+		assertTrue(questionText.equals(askPage2.getQuestion()),"Expected: " + questionText + ", found: " + askPage2.getQuestion());
+
+		homePage = askPage2.submit();
+		homePage.LogoutfromNGMFPortal();
+
+    	logStep("Setup Oauth client" + PropertyLoaderObj.getResponsePath());
+    	if(PropertyLoaderObj.getNGAPIexecutionMode().equalsIgnoreCase("QAMain")){
+    		RestUtils.oauthSetup(PropertyLoaderObj.getOAuthKeyStore(), PropertyLoaderObj.getOAuthProperty(), PropertyLoaderObj.getOAuthAppToken(), PropertyLoaderObj.getProperty("oAuthUsername1"),PropertyLoaderObj.getProperty("oAuthPassword1"));
+		}
+		else if (PropertyLoaderObj.getNGAPIexecutionMode().equalsIgnoreCase("SIT")){
+			RestUtils.oauthSetup(PropertyLoaderObj.getOAuthKeyStore(), PropertyLoaderObj.getOAuthProperty(), PropertyLoaderObj.getOAuthAppToken(), PropertyLoaderObj.getProperty("oAuthUsername"),PropertyLoaderObj.getProperty("oAuthPassword"));			           
+		}
+		else{
+			Log4jUtil.log("Invalid Execution Mode");
+		}
+
+    	logStep("Wait 60 seconds, so the message can be processed");
+		Thread.sleep(60000);
+
+		logStep("Do a GET and get the message");
+		RestUtils.setupHttpGetRequest(PropertyLoaderObj.getProperty("GetInboundMessage").replaceAll("integrationID", integrationPracticeID) + "?since=" + since + ",0", PropertyLoaderObj.getResponsePath());
+
+		logStep("Validate message reply");
+		String patientFirstName = DBUtils.executeQueryOnDB("NGCoreDB","select first_name from person where person_id ='"+person_id+"'");
+		String patientLastName = DBUtils.executeQueryOnDB("NGCoreDB","select last_name from person where person_id ='"+person_id+"'");
+		String expectedBody= "Dear "+PropertyLoaderObj.getProperty("practiceName")+",<br/><br/>"+IntegrationConstants.MESSAGE_REPLY+"<br/><br/>Thanks,<br>"+patientFirstName+" "+patientLastName;		
+		
+		String messageID = RestUtils.isReplyPresentReturnMessageID(PropertyLoaderObj.getResponsePath(), askaSubject,expectedBody);
+		
+		String expectedBodyinInbox= "Dear "+PropertyLoaderObj.getProperty("practiceName")+",\n"+IntegrationConstants.MESSAGE_REPLY+"\nThanks,\n"+patientFirstName+" "+patientLastName;		
+		Thread.sleep(60000);
+		CommonFlows.verifyMessageReceivedAtNGCore(PropertyLoaderObj,messageID,askaSubject,expectedBodyinInbox.replace("\n", ""),PropertyLoaderObj.getProperty("askAV2Name"));
+		
+		String peImageId = DBUtils.executeQueryOnDB("NGCoreDB","select top 1 image_id from patient_images where practice_id ='"+practiceId+"' and person_id ='"+person_id+"'");
+		NGAPIUtils.updateLoginDefaultTo("EnterpriseGateway",enterpriseId, practiceId);
+    	String comm_id =NGAPIFlows.postSecureMessage(PropertyLoaderObj,"ReplyToPortal"+messageID,person_id,practiceId,userId,providerName,locationName, "EHR", "DoNotAddToEncounter","PracticeUser","","PatientImage",peImageId);		
+    	
+    	Thread.sleep(60000);
+    	String subjectQuery ="select subject from ngweb_communications where comm_id ='"+comm_id+"'";
+    	String bodyQuery ="select body from ngweb_communications where comm_id ='"+comm_id+"'";	
+    	String subject = DBUtils.executeQueryOnDB("NGCoreDB",subjectQuery);
+    	String body = DBUtils.executeQueryOnDB("NGCoreDB",bodyQuery);
+    	
+    	logStep("Verify the processing status of message");
+    	CommonFlows.verifyMessageProcessingStatus(PropertyLoaderObj, person_id, practiceId, comm_id, integrationPracticeID,"");
+    	
+    	String messageDeliveryQuery = "select messageid from  message_delivery where message_groupid ='"+comm_id+"'";
+    	String messageIDAtMF = DBUtils.executeQueryOnDB("MFAgentDB",messageDeliveryQuery);
+    	
+    	String attachmentName =DBUtils.executeQueryOnDB("NGCoreDB","select orig_image_file from patient_images where image_id ='"+peImageId+"'");		
+    	logStep("Setup Oauth client" + PropertyLoaderObj.getResponsePath());
+    	if(PropertyLoaderObj.getNGAPIexecutionMode().equalsIgnoreCase("QAMain")){
+    		RestUtils.oauthSetup(PropertyLoaderObj.getOAuthKeyStore(), PropertyLoaderObj.getOAuthProperty(), PropertyLoaderObj.getOAuthAppToken(), PropertyLoaderObj.getProperty("oAuthUsername1"),PropertyLoaderObj.getProperty("oAuthPassword1"));
+		}
+		else if (PropertyLoaderObj.getNGAPIexecutionMode().equalsIgnoreCase("SIT")){
+			RestUtils.oauthSetup(PropertyLoaderObj.getOAuthKeyStore(), PropertyLoaderObj.getOAuthProperty(), PropertyLoaderObj.getOAuthAppToken(), PropertyLoaderObj.getProperty("oAuthUsername"),PropertyLoaderObj.getProperty("oAuthPassword"));			           
+		}
+		else{
+			Log4jUtil.log("Invalid Execution Mode");
+		}
+
+	    CommonFlows.verifyMessageINInbox(PropertyLoaderObj,driver,url,username,PropertyLoaderObj.getPassword(),subject,body,comm_id,messageIDAtMF,integrationPracticeID,"messageWithPE",attachmentName);
+	    log("Test Case End: The practice user is able to send the EHR Images while replying to the patient message");
+	}
+    
+    @Test(enabled = true, groups = { "acceptance-INBOX" }, retryAnalyzer = RetryAnalyzer.class)
+	public void testPP139SendEHRImageByCommunication() throws Throwable{
+		log("Test Case: Verify the practice user is able to send EHR Image as an attachment of communication message");
+		log("Execution Environment: " + IHGUtil.getEnvironmentType());
+		log("Execution Browser: " + TestConfig.getBrowserType());	
+		
+		logStep("Getting Existing User");
+	    String username = PropertyLoaderObj.getProperty("CCDAUsername");
+    	String person_id = DBUtils.executeQueryOnDB("NGCoreDB","select person_id from person where email_address = '"+username+"'");	
+	    String enterpriseId = null, practiceId = null, providerName = null, locationName = null , userId = null, integrationPracticeID= null, url =null;
+	    userId =PropertyLoaderObj.getProperty("SecureMessageUserID");
+	    
+    	if(PropertyLoaderObj.getNGAPIexecutionMode().equalsIgnoreCase("QAMain")){
+    		enterpriseId= PropertyLoaderObj.getProperty("NGEnterpiseEnrollmentEnterprise1");
+    	    practiceId= PropertyLoaderObj.getProperty("NGEnterprise1Practice1");
+    	    providerName =PropertyLoaderObj.getProperty("NGE1P1Provider"); 
+    	    locationName =PropertyLoaderObj.getProperty("NGE1P1Location");    	    
+    	    integrationPracticeID =PropertyLoaderObj.getProperty("integrationPracticeIDE1P1");
+    	    url = PropertyLoaderObj.getProperty("MFPortalURLPractice1");	
+		}
+		else if (PropertyLoaderObj.getNGAPIexecutionMode().equalsIgnoreCase("SIT")){
+			enterpriseId= PropertyLoaderObj.getProperty("NGMainEnterpriseID");
+		    practiceId= PropertyLoaderObj.getProperty("NGMainPracticeID");
+		    providerName =PropertyLoaderObj.getProperty("EPMProviderName"); 
+		    locationName =PropertyLoaderObj.getProperty("EPMLocationName");
+		    integrationPracticeID =PropertyLoaderObj.getProperty("integrationPracticeIDAMDC");
+		    url = PropertyLoaderObj.getProperty("url");			           
+		}
+		else{
+			Log4jUtil.log("Invalid Execution Mode");
+		}
+	    
+    	String peImageId = DBUtils.executeQueryOnDB("NGCoreDB","select top 1 image_id from patient_images where practice_id ='"+practiceId+"' and person_id ='"+person_id+"'");
+	    
+	    logStep("Compose Message with EHR Image and send it to enrolled patient with “Do not add to chart” option selected in Send & Chart button.");
+        NGAPIUtils.updateLoginDefaultTo("EnterpriseGateway",enterpriseId,practiceId);    
+    	String comm_id =NGAPIFlows.postSecureMessage(PropertyLoaderObj,"",person_id,practiceId,userId,providerName,locationName, "EPM", "DoNotAddToEncounter","PracticeUser","","PatientImage",peImageId);		
+
+    	String subjectQuery ="select subject from ngweb_communications where comm_id ='"+comm_id+"'";
+    	String bodyQuery ="select body from ngweb_communications where comm_id ='"+comm_id+"'";	
+    	String subject = DBUtils.executeQueryOnDB("NGCoreDB",subjectQuery);
+    	String body = DBUtils.executeQueryOnDB("NGCoreDB",bodyQuery);
+    	
+    	logStep("Verify the processing status of message");
+    	CommonFlows.verifyMessageProcessingStatus(PropertyLoaderObj, person_id, practiceId, comm_id, integrationPracticeID,"");
+    	
+    	String messageDeliveryQuery = "select messageid from  message_delivery where message_groupid ='"+comm_id+"'";
+    	String messageID = DBUtils.executeQueryOnDB("MFAgentDB",messageDeliveryQuery);
+    	
+    	String attachmentName =DBUtils.executeQueryOnDB("NGCoreDB","select orig_image_file from patient_images where image_id ='"+peImageId+"'");		
+    	Thread.sleep(15000);
+    	logStep("Setup Oauth client" + PropertyLoaderObj.getResponsePath());
+	    if(PropertyLoaderObj.getNGAPIexecutionMode().equalsIgnoreCase("QAMain")){
+	    	RestUtils.oauthSetup(PropertyLoaderObj.getOAuthKeyStore(), PropertyLoaderObj.getOAuthProperty(), PropertyLoaderObj.getOAuthAppToken(), PropertyLoaderObj.getProperty("oAuthUsername1"),PropertyLoaderObj.getProperty("oAuthPassword1"));
+	    }
+		else if (PropertyLoaderObj.getNGAPIexecutionMode().equalsIgnoreCase("SIT")){
+			RestUtils.oauthSetup(PropertyLoaderObj.getOAuthKeyStore(), PropertyLoaderObj.getOAuthProperty(), PropertyLoaderObj.getOAuthAppToken(), PropertyLoaderObj.getProperty("oAuthUsername"),PropertyLoaderObj.getProperty("oAuthPassword"));						           
+		}
+		else{
+			Log4jUtil.log("Invalid Execution Mode");
+		}
+	    CommonFlows.verifyMessageINInbox(PropertyLoaderObj,driver,url,username,PropertyLoaderObj.getPassword(),subject,body,comm_id,messageID,integrationPracticeID,"messageWithPE",attachmentName);
+	    log("Test Case End: The practice user is able to send EHR Image as an attachment of communication message");	
+	}
+    
+    @Test(enabled = true, groups = { "acceptance-INBOX" }, retryAnalyzer = RetryAnalyzer.class)
+	public void testPP139SendIMHByCommunication() throws Throwable{
+		log("Test Case: Verify the practice user is able to send IMH as an attachment of communication message");
+		log("Execution Environment: " + IHGUtil.getEnvironmentType());
+		log("Execution Browser: " + TestConfig.getBrowserType());	
+		
+		logStep("Getting Existing User");
+	    String username = PropertyLoaderObj.getProperty("CCDAUsername");
+    	String person_id = DBUtils.executeQueryOnDB("NGCoreDB","select person_id from person where email_address = '"+username+"'");
+    	String firstName = DBUtils.executeQueryOnDB("NGCoreDB","select first_name from person where person_id = '"+person_id+"'");
+    	String lastName = DBUtils.executeQueryOnDB("NGCoreDB","select last_name from person where person_id = '"+person_id+"'");
+    	
+	    String enterpriseId = null, practiceId = null, providerName = null, locationName = null , userId = null, integrationPracticeID= null, url =null;
+	    userId =PropertyLoaderObj.getProperty("SecureMessageUserID");
+	    
+    	if(PropertyLoaderObj.getNGAPIexecutionMode().equalsIgnoreCase("QAMain")){
+    		enterpriseId= PropertyLoaderObj.getProperty("NGEnterpiseEnrollmentEnterprise1");
+    	    practiceId= PropertyLoaderObj.getProperty("NGEnterprise1Practice1");
+    	    providerName =PropertyLoaderObj.getProperty("NGE1P1Provider"); 
+    	    locationName =PropertyLoaderObj.getProperty("NGE1P1Location");    	    
+    	    integrationPracticeID =PropertyLoaderObj.getProperty("integrationPracticeIDE1P1");
+    	    url = PropertyLoaderObj.getProperty("MFPortalURLPractice1");	
+		}
+		else if (PropertyLoaderObj.getNGAPIexecutionMode().equalsIgnoreCase("SIT")){
+			enterpriseId= PropertyLoaderObj.getProperty("NGMainEnterpriseID");
+		    practiceId= PropertyLoaderObj.getProperty("NGMainPracticeID");
+		    providerName =PropertyLoaderObj.getProperty("EPMProviderName"); 
+		    locationName =PropertyLoaderObj.getProperty("EPMLocationName");
+		    integrationPracticeID =PropertyLoaderObj.getProperty("integrationPracticeIDAMDC");
+		    url = PropertyLoaderObj.getProperty("url");			           
+		}
+		else{
+			Log4jUtil.log("Invalid Execution Mode");
+		}
+	    
+	    String attachmentName = PropertyLoaderObj.getProperty("IMH");
+    	
+	    logStep("Compose Message with IMH and send it to enrolled patient with “Do not add to chart” option selected in Send & Chart button.");
+        NGAPIUtils.updateLoginDefaultTo("EnterpriseGateway",enterpriseId,practiceId);    
+    	String comm_id =NGAPIFlows.postSecureMessage(PropertyLoaderObj,"",person_id,practiceId,userId,providerName,locationName, "EHR", "DoNotAddToEncounter","PracticeUser","","IMH",attachmentName);		
+
+    	String subjectQuery ="select subject from ngweb_communications where comm_id ='"+comm_id+"'";
+    	String bodyQuery ="select body from ngweb_communications where comm_id ='"+comm_id+"'";	
+    	String subject = DBUtils.executeQueryOnDB("NGCoreDB",subjectQuery);
+    	String body = DBUtils.executeQueryOnDB("NGCoreDB",bodyQuery);
+    	
+    	logStep("Verify the processing status of message");
+    	CommonFlows.verifyMessageProcessingStatus(PropertyLoaderObj, person_id, practiceId, comm_id, integrationPracticeID,"");
+    	
+		logStep("Login to Patient Portal");
+		NGLoginPage loginPage = new NGLoginPage(driver, url);
+		JalapenoHomePage homePage = loginPage.login(username, PropertyLoaderObj.getPassword());
+		
+		logStep("Detecting if Home Page is opened");
+		assertTrue(homePage.isHomeButtonPresent(driver));
+		
+		logStep("Click on messages solution");
+		JalapenoMessagesPage messagesPage = homePage.showMessages(driver);
+		assertTrue(messagesPage.areBasicPageElementsPresent(), "Inbox failed to load properly.");
+		
+		logStep("Find message in Inbox with message subject " + subject);
+		assertTrue(messagesPage.isMessageDisplayed(driver, subject));
+		
+		logStep("Verify message content and attachement" + subject);
+		messagesPage.verifyMessageContent(driver, subject, body+"\n"+attachmentName);
+		messagesPage.verifyMessageAttachment(driver, attachmentName);
+		
+		logStep("Filling the IMH Form");
+		IMHPage imhPage = new IMHPage(driver);
+		imhPage.fillIMH(driver, attachmentName,firstName,lastName,PropertyLoaderObj.getProperty("DOBMonth"),
+				PropertyLoaderObj.getProperty("DOBDay"),PropertyLoaderObj.getProperty("DOBYear"),PropertyLoaderObj.getProperty("IMHForm"));
+		
+		String deliveryStatusATMF = DBUtils.executeQueryOnDB("MFAgentDB",
+					"select status from  message_delivery where message_groupid ='" + comm_id + "'");
+		CommonUtils.VerifyTwoValues(deliveryStatusATMF, "equals", "SENT");		
+	    log("Test Case End: The practice user is able to send IMH as an attachment of communication message");	
+	}
+       
+    @Test(enabled = true, groups = { "acceptance-INBOX" }, retryAnalyzer = RetryAnalyzer.class)
+    public void testPP139SendIMH() throws Throwable {
+    	log("Test Case: Verify the practice user is able to send the IMH Form.");
+        
+        logStep("Getting Existing User");
+        String username = PropertyLoaderObj.getProperty("CCDAUsername");
+        String person_id = DBUtils.executeQueryOnDB("NGCoreDB","select person_id from person where email_address = '"+username+"'");        
+        String firstName = DBUtils.executeQueryOnDB("NGCoreDB","select first_name from person where person_id = '"+person_id+"'");
+    	String lastName = DBUtils.executeQueryOnDB("NGCoreDB","select last_name from person where person_id = '"+person_id+"'");
+        String enterpriseId = null, practiceId = null, integrationPracticeID= null, providerName=null, locationName=null, url =null;
+        
+        if(PropertyLoaderObj.getNGAPIexecutionMode().equalsIgnoreCase("QAMain")){
+            enterpriseId= PropertyLoaderObj.getProperty("NGEnterpiseEnrollmentEnterprise1");
+            practiceId= PropertyLoaderObj.getProperty("NGEnterprise1Practice1");
+            integrationPracticeID =PropertyLoaderObj.getProperty("integrationPracticeIDE1P1");
+            url = PropertyLoaderObj.getProperty("MFPortalURLPractice1");
+            providerName =PropertyLoaderObj.getProperty("NGE1P1Provider"); 
+    	    locationName =PropertyLoaderObj.getProperty("NGE1P1Location");
+        }
+        else if (PropertyLoaderObj.getNGAPIexecutionMode().equalsIgnoreCase("SIT")){
+            enterpriseId= PropertyLoaderObj.getProperty("NGMainEnterpriseID");
+            practiceId= PropertyLoaderObj.getProperty("NGMainPracticeID");
+            integrationPracticeID =PropertyLoaderObj.getProperty("integrationPracticeIDAMDC");
+            url = PropertyLoaderObj.getProperty("url");
+            providerName =PropertyLoaderObj.getProperty("EPMProviderName"); 
+		    locationName =PropertyLoaderObj.getProperty("EPMLocationName");
+        }
+        else{
+            Log4jUtil.log("Invalid Execution Mode");
+        }
+        
+        logStep("Getting IMH Form Data");
+        String requestId = DBUtils.executeQueryOnDB("NGCoreDB","select newid()");
+        String documentId = DBUtils.executeQueryOnDB("NGCoreDB","select newid()");
+        String docType = PropertyLoaderObj.getProperty("IMHDocType");
+        String docFormat =PropertyLoaderObj.getProperty("IMHFormat");
+        String docName =PropertyLoaderObj.getProperty("IMH");      
+
+        String nxPracticeId = DBUtils.executeQueryOnDB("NGCoreDB","select nx_practice_id from nxmd_practices where practice_id = '"+practiceId+"'");
+        String providerId = DBUtils.executeQueryOnDB("NGCoreDB","select provider_id from provider_mstr where description = '"+providerName+"'");
+        String locationId = DBUtils.executeQueryOnDB("NGCoreDB","select location_id from location_mstr where location_name = '"+locationName+"'");
+        
+        logStep("Inserting IMH Form into tables");
+        DBUtils.executeQueryOnDB("NGCoreDB","INSERT INTO ngweb_imh_question_state(id, patient_id, nx_practice_id, practice_id, "
+        		+ "provider_id, location_id, complaint, current_state,"
+        		+ "reminder_notification_sent, delete_ind, modified_by, create_timestamp, modify_timestamp,"
+        		+ "        		date_completed, created_by)"
+        		+"VALUES ('"+documentId+"', '"+person_id+"','"+nxPracticeId+"','"+practiceId+"','"+providerId+"','"+locationId+"','"+docName+"', "
+        		+ "'1',Null,'N', '0' , getutcdate(), getutcdate(),Null, '0')");
+        
+        String comments = "SendingDocument"+(new Date()).getTime();
+        DBUtils.executeQueryOnDB("NGCoreDB","INSERT INTO pxp_document_requests(request_id, enterprise_id, practice_id, person_id, document_id, document_type, format,"
+        		+       "name, document_desc, status, created_by, create_timestamp, modified_by, modify_timestamp, create_timestamp_tz,modify_timestamp_tz)"
+        		+"VALUES ('"+requestId+"', '"+enterpriseId+"', '"+practiceId+"', '"+person_id+"', '"+documentId+"',"
+        		+"'"+docType+"', '"+docFormat+"', '"+docName+"', "
+        		+"'"+comments+"', '2','0', getutcdate(),'0', getutcdate(), Null, Null)");
+               
+        logStep("Verify IMH Form status");
+        CommonFlows.verifyDocumentProcessingStatus(PropertyLoaderObj, requestId, practiceId, integrationPracticeID);
+                
+        logStep("Login to Patient Portal");
+		NGLoginPage loginPage = new NGLoginPage(driver, url);
+		JalapenoHomePage homePage = loginPage.login(username, PropertyLoaderObj.getPassword());
+		
+		logStep("Detecting if Home Page is opened");
+		assertTrue(homePage.isHomeButtonPresent(driver));
+		
+		logStep("Click on messages solution");
+		JalapenoMessagesPage messagesPage = homePage.showMessages(driver);
+		assertTrue(messagesPage.areBasicPageElementsPresent(), "Inbox failed to load properly.");
+		
+		logStep("Find message in Inbox with message subject " + docName);
+		assertTrue(messagesPage.isMessageDisplayed(driver, docName));
+		
+		logStep("Verify message content and attachement" + docName);
+		messagesPage.verifyMessageAttachment(driver, docName);
+		
+		logStep("Filling the IMH Form");
+		IMHPage imhPage = new IMHPage(driver);
+		imhPage.fillIMH(driver, docName,firstName,lastName,PropertyLoaderObj.getProperty("DOBMonth"),
+				PropertyLoaderObj.getProperty("DOBDay"),PropertyLoaderObj.getProperty("DOBYear"),PropertyLoaderObj.getProperty("IMHForm"));
+	
+		CommonFlows.verifyIMHState(documentId);        
+        log("Test Case End: The practice user is able to send the IMH Form.");
+    }
 }
