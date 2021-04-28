@@ -123,7 +123,6 @@ public class PhrProfilePage extends BasePageObject {
 
 	public void saveChanges() {
 		btnSaveChanges.click();
-		IHGUtil.waitForElementByXpath(driver, ".//*[@class='info']", 30);
 	}
 
 }

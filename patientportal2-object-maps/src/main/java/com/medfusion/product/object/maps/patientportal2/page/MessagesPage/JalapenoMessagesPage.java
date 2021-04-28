@@ -182,7 +182,7 @@ public class JalapenoMessagesPage extends JalapenoMenu {
 		System.out.println(value);
 
 		try {
-			IHGUtil.waitForElementByXpath(driver, "//*[contains(text(),'Your reply was successfully sent')]", 30);
+			wait.until(ExpectedConditions.visibilityOf(successMsg));
 			log("Message sent");
 			return true;
 		} catch (Exception e) {

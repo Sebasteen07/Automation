@@ -715,15 +715,15 @@ public class PSSAdminUtils extends BaseTestNGWebDriver{
 			manageSpecialty.clickGender();
 		}
 		manageSpecialty.selectgender();
-
 	}
 	
-	public void lastQuestionEnable(WebDriver driver, AdminUser adminuser, Appointment appointment, String urlToUse) throws Exception {
+	public void lastQuestionEnable(WebDriver driver, AdminUser adminuser, Appointment appointment, String urlToUse)
+			throws Exception {
 
 		PSS2PracticeConfiguration psspracticeConfig = loginToAdminPortal(driver, adminuser);
-	
-		AccessRules accessrule =psspracticeConfig.gotoAccessTab();
-		
+
+		AccessRules accessrule = psspracticeConfig.gotoAccessTab();
+
 		if (urlToUse.equalsIgnoreCase(PSSConstants.LOGINLESS)) {
 			log("PSS Patient URL : " + accessrule.getLoginlessURL());
 			appointment.setUrlLoginLess(accessrule.getLoginlessURL());
@@ -732,38 +732,38 @@ public class PSSAdminUtils extends BaseTestNGWebDriver{
 			log("PSS Patient URL : " + accessrule.getAnonymousUrl());
 			appointment.setUrlAnonymous(accessrule.getAnonymousUrl());
 		}
-		PatientFlow patientflow =accessrule.gotoPatientFlowTab();
-		
-		setRulesNoSpecialitySet1(patientflow);	
-		
+		PatientFlow patientflow = accessrule.gotoPatientFlowTab();
+
+		setRulesNoSpecialitySet1(patientflow);
+
 		adminuser.setRule(patientflow.getRule());
 		log("rule= " + patientflow.getRule());
-		
+
 		appointment.setIsinsuranceVisible(patientflow.insuracetogglestatus());
 		log("Insurance is Enabled= " + patientflow.insuracetogglestatus());
 		appointment.setIsstartpointPresent(patientflow.isstartpagepresent());
 		log("StartPage is Visible= " + patientflow.isstartpagepresent());
-		
+
 		AdminPatientMatching adminpatientmatching = patientflow.gotoPatientMatchingTab();
 		adminpatientmatching.patientMatchingSelection();
-		
+
 		ManageResource manageResource = psspracticeConfig.gotoResource();
 		pageRefresh(driver);
 		manageResource.selectResource(appointment.getProvider());
-		
+
 		log("Scroll down the page");
 		manageResource.pagedown();
-		
-		log("Last Question Enable Status- "+manageResource.lastQuestionEnableStatus());
-		
-		if(manageResource.lastQuestionEnableStatus() == false) {
+
+		log("Last Question Enable Status- " + manageResource.lastQuestionEnableStatus());
+
+		if (manageResource.lastQuestionEnableStatus() == false) {
 			manageResource.enableLastQuestion();
 		}
 		manageResource.selectAppointmenttype(appointment.getAppointmenttype());
 		manageResource.pagedown();
-		
-		log("Last QUestion Required Status- "+manageResource.lastQuestionRequiredStatus());
-		
+
+		log("Last QUestion Required Status- " + manageResource.lastQuestionRequiredStatus());
+
 		if (adminuser.getLastQuestionMandatory() == true) {
 			if (manageResource.lastQuestionRequiredStatus() == false) {
 				manageResource.enableLastQuestionRequired();
@@ -773,14 +773,30 @@ public class PSSAdminUtils extends BaseTestNGWebDriver{
 			if (manageResource.lastQuestionRequiredStatus() == true) {
 				manageResource.disableLastQuestionRequired();
 			}
-
-		}		
+		}
 		manageResource.pageup();
 		manageResource.clickBackArraow();
 		manageResource.clickGeneralTab();
-		
+
 		log("Last Question Required settings are turn on successfully");
 		patientflow.logout();
 	}
+	
+	public void ageRuleWithSpeciality(WebDriver driver, AdminUser adminuser, Appointment appointment) throws Exception {
+		PSS2PracticeConfiguration pss2practiceconfig = loginToAdminPortal(driver, adminuser);
+		PatientFlow patientflow = pss2practiceconfig.gotoPatientFlowTab();
+		adminuser.setRule(patientflow.getRule());
+		Log4jUtil.log("rule= " + patientflow.getRule());
+		setRulesNoSpecialitySet3(patientflow);
+		AdminPatientMatching adminpatientmatching = patientflow.gotoPatientMatchingTab();
+		adminpatientmatching.patientMatchingSelection();
+		ManageSpecialty manageSpecialty = pss2practiceconfig.gotoSpeciality();
+		manageSpecialty.selectSpecility(appointment.getSpeciality());
+		Log4jUtil.log("Status of Checkbox" + manageSpecialty.checkBoxStatus());
+		manageSpecialty.ageRule();
+		manageSpecialty.ageRuleparameter(appointment.getAgeRuleMonthFirst(), appointment.getAgeRuleMonthSecond());
+
+	}		
+
 
 }

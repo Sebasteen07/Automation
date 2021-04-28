@@ -577,9 +577,9 @@ public class IntegrationPlatformAcceptanceTests extends BaseTestNGWebDriver {
 		Long timestamp = System.currentTimeMillis();
 		String accountNumber = IHGUtil.createRandomNumericString();
 		String amount = "100.00";
-		String CCType = "Visa";
+		String CCType = "MasterCard";
 		String name = "TestPatient CreditCard";
-		CreditCard creditCard = new CreditCard(CardType.Visa, name);
+		CreditCard creditCard = new CreditCard(CardType.Mastercard, name);
 		String CCLastDig = creditCard.getLastFourDigits();
 		String reply_Subject = "Test Message " + IHGUtil.createRandomNumericString();
 		String messageThreadID;
@@ -1524,4 +1524,63 @@ public class IntegrationPlatformAcceptanceTests extends BaseTestNGWebDriver {
 		return obj;
 	}
 
+	@Test(enabled = true, groups = { "AcceptanceTests" }, retryAnalyzer = RetryAnalyzer.class)
+	public void testAppointmentID() throws Exception {
+
+		log("Test Case: Validate Appointment Request Id");
+
+		log("Execution Environment: " + IHGUtil.getEnvironmentType());
+		log("Execution Browser: " + TestConfig.getBrowserType());
+
+		Long timestamp = System.currentTimeMillis();
+		log("Step 1: Get Data from Excel");
+		Appointment aptData = new Appointment();
+		AppointmentTestData testData = new AppointmentTestData(aptData);
+
+		log("Url: " + testData.getUrl());
+		log("User Name: " + testData.getUserName());
+		log("Password: " + testData.getPassword());
+		log("Response Path: " + testData.getResponsePath());
+		log("From: " + testData.getFrom());
+		log("OAuthProperty: " + testData.getOAuthProperty());
+		log("OAuthKeyStore: " + testData.getOAuthKeyStore());
+		log("OAuthAppToken: " + testData.getOAuthAppToken());
+		log("OAuthUsername: " + testData.getOAuthUsername());
+		log("OAuthPassword: " + testData.getOAuthPassword());
+		log("RestV3 Url: " + testData.getRestV3Url());
+		log("ApointmentPathV3: " + testData.getAppointmentPathV3());
+		log("RestV3Headers Url: " + testData.getRestUrlV3Headers());
+
+		log("Step 2: Setup Oauth client");
+		RestUtils.oauthSetup(testData.getOAuthKeyStore(), testData.getOAuthProperty(), testData.getOAuthAppToken(),
+				testData.getOAuthUsername(), testData.getOAuthPassword());
+
+		log("Step 3: Get Appointment Rest call");
+
+		Long since = timestamp / 1000L - 60 * 24;
+
+		log("Getting messages since timestamp: " + since);
+		RestUtils.setupHttpGetRequest(testData.getRestV3Url() + "?since=" + since + ",0", testData.getResponsePath());
+
+		log("Step 4: Checking Appointment Id in the response xml");
+
+		String GetApptId = RestUtils.GetAppointmentId(testData.getResponsePath());
+		log("AppointmnetId:" + GetApptId);
+
+		String AppointmentId = GetApptId;
+
+		log("Step 5: Get Appointment Rest call");
+		log("Getting messages since timestamp: " + since);
+		RestUtils.setupHttpGetRequest(testData.getRestUrlV3Headers() + "?since=" + since + ",0",
+				testData.getResponsePath());
+
+		log("Step 4: Verifying Appointment Id in the response xml");
+
+		String VerifyApptId = RestUtils.VerifyAppointmentId(testData.getResponsePath(), AppointmentId);
+		log("AppointmentIdHeader:" + VerifyApptId);
+
+	}
+
 }
+
+

@@ -47,6 +47,8 @@ import com.medfusion.product.object.maps.patientportal2.page.AppointmentRequestP
 import com.medfusion.product.object.maps.patientportal2.page.AppointmentRequestPage.NGAppointmentPage;
 import com.medfusion.product.object.maps.patientportal2.page.AppointmentRequestPage.NGAppointmentRequestV2HistoryPage;
 import com.medfusion.product.object.maps.patientportal2.page.AppointmentRequestPage.NGAppointmentRequestV2Step1;
+import com.medfusion.product.object.maps.patientportal2.page.AskAStaff.JalapenoAskAStaffV2HistoryDetailPage;
+import com.medfusion.product.object.maps.patientportal2.page.AskAStaff.JalapenoAskAStaffV2HistoryListPage;
 import com.medfusion.product.object.maps.patientportal2.page.AskAStaff.JalapenoAskAStaffV2Page1;
 import com.medfusion.product.object.maps.patientportal2.page.AskAStaff.JalapenoAskAStaffV2Page2;
 import com.medfusion.product.object.maps.patientportal2.page.CcdPage.MedicalRecordSummariesPage;
@@ -99,6 +101,7 @@ public class NGIntegrationE2ESITTests extends BaseTestNGWebDriver{
 	private static final String WELCOME_EMAIL_SUBJECT_PATIENT = "New Member Confirmation";
 	private static final String WELCOME_EMAIL_BODY_PATTERN_PRACTICE = "Thank you for creating an account with PracticeName";
 	private static final String PAYMENT_SUCCESSFULL_TEXT = "A payment was made for ";
+	private static final String DocReceivedText ="Document received please open the attachment to review.";
 	
     int arg_timeOut=1800; 
     NGAPIUtils ngAPIUtils;
@@ -5818,7 +5821,7 @@ public class NGIntegrationE2ESITTests extends BaseTestNGWebDriver{
 		String accountNumber = DBUtils.executeQueryOnDB("NGCoreDB",acctNBRQuery);
 		String amount = IHGUtil.createRandomNumericString(3);
 		String name = "TestPatient CreditCard";
-		CreditCard creditCard = new CreditCard(CardType.Mastercard, name);
+		CreditCard creditCard = new CreditCard(CardType.Discover, name);
 
 		logStep("Load login page");
 		JalapenoLoginPage loginPage = new JalapenoLoginPage(driver, url);
@@ -5865,7 +5868,7 @@ public class NGIntegrationE2ESITTests extends BaseTestNGWebDriver{
 		
 		String actualAmount = amount.charAt(0)+"."+amount.substring(1);
 		log("Actual Amount "+actualAmount);
-		CommonFlows.verifyPaymentReachedtoMFAgent(paymentComments,"BillPayment", "", accountNumber,"POSTED", actualAmount,"MasterCard");
+		CommonFlows.verifyPaymentReachedtoMFAgent(paymentComments,"BillPayment", "", accountNumber,"POSTED", actualAmount,"Discover");
 		
 		String sourceIdQuery = "select acct_id from accounts where guar_id ='"+person_id+"' and practice_id='"+practiceId.trim()+"'";
 		String sourceId = DBUtils.executeQueryOnDB("NGCoreDB",sourceIdQuery);
@@ -6254,4 +6257,695 @@ public class NGIntegrationE2ESITTests extends BaseTestNGWebDriver{
 		CommonFlows.verifyPaymentReachedtoMFAgent(paymentComment,"VCSPayment", "", invalidAccountNumber,"PENDING", actualAmount,PracticeConstants.CARD_TYPE_VISA);
 		log("Test Case End: The Payment is not auto posted when Patient is having multiple guarantors while paying using VCS method and payment state is Pending");
 	}
+	
+    @Test(enabled = true, groups = { "acceptance-INBOX" }, retryAnalyzer = RetryAnalyzer.class)
+    public void testPP19AskAttachment() throws Throwable {
+    	log("Test Case: Verify patient is able to send attachments from portal to practice provider via Ask A Question option and practice user is able to reply to that message.");
+        String expectedCorrectFileText = "sw-test-academy.txt";
+        
+        String questionText = IntegrationConstants.MESSAGE_REPLY;
+        String userId =PropertyLoaderObj.getProperty("SecureMessageUserID");
+        String userFirstName =DBUtils.executeQueryOnDB("NGCoreDB","select first_name from user_mstr where user_id='"+userId+"'");
+        String userLastName =DBUtils.executeQueryOnDB("NGCoreDB","select last_name from user_mstr where user_id='"+userId+"'");    
+        String userProviderName =userLastName+", Dr";
+        
+        logStep("Getting Existing User");
+        String username = PropertyLoaderObj.getProperty("CCDAUsername");
+        String person_id = DBUtils.executeQueryOnDB("NGCoreDB","select person_id from person where email_address = '"+username+"'");
+        String enterpriseId = null, practiceId = null, providerName = null, locationName = null , integrationPracticeID= null, url =null;
+        
+        if(PropertyLoaderObj.getNGAPIexecutionMode().equalsIgnoreCase("QAMain")){
+            enterpriseId= PropertyLoaderObj.getProperty("NGEnterpiseEnrollmentEnterprise1");
+            practiceId= PropertyLoaderObj.getProperty("NGEnterprise1Practice1");
+            providerName =PropertyLoaderObj.getProperty("NGE1P1Provider"); 
+            locationName =PropertyLoaderObj.getProperty("NGE1P1Location");
+            integrationPracticeID =PropertyLoaderObj.getProperty("integrationPracticeIDE1P1");
+            url = PropertyLoaderObj.getProperty("MFPortalURLPractice1");    
+        }
+        else if (PropertyLoaderObj.getNGAPIexecutionMode().equalsIgnoreCase("SIT")){
+            enterpriseId= PropertyLoaderObj.getProperty("NGMainEnterpriseID");
+            practiceId= PropertyLoaderObj.getProperty("NGMainPracticeID");
+            providerName =PropertyLoaderObj.getProperty("EPMProviderName"); 
+            locationName =PropertyLoaderObj.getProperty("EPMLocationName");
+            integrationPracticeID =PropertyLoaderObj.getProperty("integrationPracticeIDAMDC");
+            url = PropertyLoaderObj.getProperty("url");                       
+        }
+        else{
+            Log4jUtil.log("Invalid Execution Mode");
+        }
+        
+        String errorfilePath = System.getProperty("user.dir")+ "\\src\\test\\resources\\File_Attachment\\Error_Files_Testing.pdf";
+        String correctfilePath = System.getProperty("user.dir")+ "\\src\\test\\resources\\File_Attachment\\sw-test-academy.txt";
+        
+        Log4jUtil.log("CorrectfilePath "+correctfilePath);        
+        String userLocationName = PropertyLoaderObj.getProperty("PortalLocationName");
+        long timestamp = System.currentTimeMillis();
+        Log4jUtil.log("Step Begins: Do a GET and get the read communication");
+        Long since = timestamp / 1000L - 60 * 24;
+        
+        logStep("Login patient");
+        JalapenoLoginPage loginPage = new JalapenoLoginPage(driver, url);
+        JalapenoHomePage homePage = loginPage.login(username, PropertyLoaderObj.getPassword());
+
+        logStep("Click Ask A Staff tab");
+        JalapenoAskAStaffV2Page1 askPage1 = homePage.openSpecificAskaQuestion(PropertyLoaderObj.getProperty("askAV2Name"));
+
+        String askaSubject = Long.toString(askPage1.getCreatedTimeStamp());    
+        
+        logStep("Fill question and continue");
+        JalapenoAskAStaffV2Page2 askPage2 = askPage1.NGfillASKADetails(askaSubject, questionText,userProviderName,userLocationName);
+
+        logStep("Add Attachment and remove Attachment ");
+        askPage1.uploadFileWithRobotRepeat(errorfilePath, correctfilePath);
+        
+        logStep("Remove All the Attachment Except one and click on continue button ");
+        askPage1.removeAttachment();
+        
+        logStep("Verify Uploaded file name in submit page ");
+        assertTrue(expectedCorrectFileText.equals(askPage1.getProperFileText()),
+            "Expected: " + expectedCorrectFileText + ", found: " + askPage1.getProperFileText());
+        
+        logStep("Verify Subject in submit page ");
+        assertTrue(askaSubject.equals(askPage2.getSubject()),"Expected: " + askaSubject + ", found: " + askPage2.getSubject());
+        
+        logStep("Verify Quesion in Submit paget ");
+        assertTrue(questionText.equals(askPage2.getQuestion()),"Expected: " + questionText + ", found: " + askPage2.getQuestion());
+        homePage = askPage2.submit();
+        
+        logStep("Go back to the aska and check question history");
+        askPage1 = homePage.openSpecificAskaQuestion(PropertyLoaderObj.getProperty("askAV2Name"));        
+        JalapenoAskAStaffV2HistoryListPage askHistoryList = askPage1.clickOnHistory();
+        
+        logStep("Find history entry by subject/reason and navigate to detail");
+        JalapenoAskAStaffV2HistoryDetailPage askHistoryDetail = askHistoryList.goToDetailByReason(askaSubject);
+        
+        logStep("Verify the subject and question in history detail match submission");
+        assertTrue(askaSubject.equals(askHistoryDetail.getRequestDetailSubject()),
+        		"Expected: " + askaSubject + ", found: " + askHistoryDetail.getRequestDetailSubject());
+        assertTrue(questionText.equals(askHistoryDetail.getRequestDetailQuestion()),
+        		"Expected: " + questionText + ", found: " + askHistoryDetail.getRequestDetailQuestion());
+        assertTrue("Open".equals(askHistoryDetail.getRequestDetailStatus()),
+        		"Expected: Open" + ", found: " + askHistoryDetail.getRequestDetailStatus());
+        
+        assertTrue(expectedCorrectFileText.equals(askHistoryDetail.getRequestAttachedFile()),
+        		"Expected: " + expectedCorrectFileText + ", found: " + askHistoryDetail.getRequestAttachedFile());
+        
+        logStep("Logout patient");
+        askHistoryDetail.clickOnLogout();
+        
+        logStep("Setup Oauth client" + PropertyLoaderObj.getResponsePath());
+        if(PropertyLoaderObj.getNGAPIexecutionMode().equalsIgnoreCase("QAMain"))
+        	RestUtils.oauthSetup(PropertyLoaderObj.getOAuthKeyStore(), PropertyLoaderObj.getOAuthProperty(), PropertyLoaderObj.getOAuthAppToken(), PropertyLoaderObj.getProperty("oAuthUsername1"),PropertyLoaderObj.getProperty("oAuthPassword1"));
+        else if (PropertyLoaderObj.getNGAPIexecutionMode().equalsIgnoreCase("SIT"))
+        	RestUtils.oauthSetup(PropertyLoaderObj.getOAuthKeyStore(), PropertyLoaderObj.getOAuthProperty(), PropertyLoaderObj.getOAuthAppToken(), PropertyLoaderObj.getProperty("oAuthUsername"),PropertyLoaderObj.getProperty("oAuthPassword"));
+        else
+        Log4jUtil.log("Invalid Execution Mode");
+        
+        Log4jUtil.log("Step Begins: Wait 60 seconds, so the message can be processed");
+        Thread.sleep(60000);
+        
+        Log4jUtil.log("Step Begins: Do a GET and get the message");
+        RestUtils.setupHttpGetRequest(PropertyLoaderObj.getProperty("GetInboundMessage").replaceAll("integrationID", integrationPracticeID) + "?since=" + since + ",0", PropertyLoaderObj.getResponsePath());
+        
+        Log4jUtil.log("Step Begins: Validate message reply");
+        String patientFirstName = DBUtils.executeQueryOnDB("NGCoreDB","select first_name from person where person_id ='"+person_id+"'");
+        String patientLastName = DBUtils.executeQueryOnDB("NGCoreDB","select last_name from person where person_id ='"+person_id+"'");
+        String expectedBody= "Dear "+PropertyLoaderObj.getProperty("practiceName")+",<br/><br/>"+IntegrationConstants.MESSAGE_REPLY+"<br/><br/>Thanks,<br>"+patientFirstName+" "+patientLastName;        
+        
+        String messageID = RestUtils.isReplyPresentReturnMessageID(PropertyLoaderObj.getResponsePath(), askaSubject,expectedBody);
+        
+        String expectedBodyinInbox= "Dear "+PropertyLoaderObj.getProperty("practiceName")+",\n"+IntegrationConstants.MESSAGE_REPLY+"\nThanks,\n"+patientFirstName+" "+patientLastName;    
+        
+        Thread.sleep(60000);
+        
+        CommonFlows.verifyMessageReceivedAtNGCore(PropertyLoaderObj,messageID,askaSubject,expectedBodyinInbox.replace("\n", ""),PropertyLoaderObj.getProperty("askAV2Name"));
+        
+        CommonFlows.verifyAttachmentReceivedInMessageAtNGCore(PropertyLoaderObj,messageID,"txt ",expectedCorrectFileText.substring(0,expectedCorrectFileText.lastIndexOf(".")));
+        
+        NGAPIUtils.updateLoginDefaultTo("EnterpriseGateway",enterpriseId, practiceId);
+        String encounter_id = NGAPIFlows.addEncounter(locationName,providerName,person_id);
+        String comm_id =NGAPIFlows.postSecureMessage(PropertyLoaderObj,"ReplyToPortal"+messageID,person_id,practiceId,userId,providerName,locationName, "EHR", "ExistingEncounter","PracticeUser",encounter_id,"",""); 
+        
+        Thread.sleep(60000);
+        String subjectQuery ="select subject from ngweb_communications where comm_id ='"+comm_id+"'";
+        String bodyQuery ="select body from ngweb_communications where comm_id ='"+comm_id+"'"; 
+        String subject = DBUtils.executeQueryOnDB("NGCoreDB",subjectQuery);
+        String body = DBUtils.executeQueryOnDB("NGCoreDB",bodyQuery);
+        
+        logStep("Verify the processing status of message");
+        CommonFlows.verifyMessageProcessingStatus(PropertyLoaderObj, person_id, practiceId, comm_id, integrationPracticeID,"");
+        
+        String messageDeliveryQuery = "select messageid from  message_delivery where message_groupid ='"+comm_id+"'";
+        String messageIDAtMF = DBUtils.executeQueryOnDB("MFAgentDB",messageDeliveryQuery);
+        
+        logStep("Setup Oauth client" + PropertyLoaderObj.getResponsePath());
+        if(PropertyLoaderObj.getNGAPIexecutionMode().equalsIgnoreCase("QAMain"))
+        	RestUtils.oauthSetup(PropertyLoaderObj.getOAuthKeyStore(), PropertyLoaderObj.getOAuthProperty(), PropertyLoaderObj.getOAuthAppToken(), PropertyLoaderObj.getProperty("oAuthUsername1"),PropertyLoaderObj.getProperty("oAuthPassword1"));
+        else if (PropertyLoaderObj.getNGAPIexecutionMode().equalsIgnoreCase("SIT"))
+        	RestUtils.oauthSetup(PropertyLoaderObj.getOAuthKeyStore(), PropertyLoaderObj.getOAuthProperty(), PropertyLoaderObj.getOAuthAppToken(), PropertyLoaderObj.getProperty("oAuthUsername"),PropertyLoaderObj.getProperty("oAuthPassword"));
+        else
+        	Log4jUtil.log("Invalid Execution Mode");
+        
+        CommonFlows.verifyMessageINInbox(PropertyLoaderObj,driver,url,username,PropertyLoaderObj.getPassword(),subject,body,comm_id,messageIDAtMF,integrationPracticeID,"","");
+        log("Test Case End: The patient is able to ask a question with attachment and practice user is able to reply to that message.");
+    }
+    
+    @Test(enabled = true, groups = { "acceptance-INBOX" }, retryAnalyzer = RetryAnalyzer.class)
+    public void testPP19SendDifferentTypeOfAttachments() throws Throwable {
+    	log("Test Case: Verify patient is able to send different type of attachments from portal to practice provider via Ask A Question option.");
+        String expectedCorrectFileText1 = "TIFFImage.tiff";
+        String expectedCorrectFileText2 = "SampleDoc.docx";
+        String expectedCorrectFileText3 = "SamplePDF.pdf";
+        String expectedCorrectFileText4 = "PNGImage.png";
+        
+        String questionText = IntegrationConstants.MESSAGE_REPLY;
+        String userId =PropertyLoaderObj.getProperty("SecureMessageUserID");
+        String userFirstName =DBUtils.executeQueryOnDB("NGCoreDB","select first_name from user_mstr where user_id='"+userId+"'");
+        String userLastName =DBUtils.executeQueryOnDB("NGCoreDB","select last_name from user_mstr where user_id='"+userId+"'");    
+        String userProviderName =userLastName+", Dr";
+        
+        logStep("Getting Existing User");
+        String username = PropertyLoaderObj.getProperty("CCDAUsername");
+        String person_id = DBUtils.executeQueryOnDB("NGCoreDB","select person_id from person where email_address = '"+username+"'");
+        String integrationPracticeID= null, url =null;
+        
+        if(PropertyLoaderObj.getNGAPIexecutionMode().equalsIgnoreCase("QAMain")){
+            integrationPracticeID =PropertyLoaderObj.getProperty("integrationPracticeIDE1P1");
+            url = PropertyLoaderObj.getProperty("MFPortalURLPractice1");    
+        }
+        else if (PropertyLoaderObj.getNGAPIexecutionMode().equalsIgnoreCase("SIT")){
+            
+            integrationPracticeID =PropertyLoaderObj.getProperty("integrationPracticeIDAMDC");
+            url = PropertyLoaderObj.getProperty("url");                       
+        }
+        else{
+            Log4jUtil.log("Invalid Execution Mode");
+        }
+        
+        //.jpeg, .tif, .doc        
+        String tiffFile = System.getProperty("user.dir")+ "\\src\\test\\resources\\File_Attachment\\TIFFImage.tiff";
+        String docFile = System.getProperty("user.dir")+ "\\src\\test\\resources\\File_Attachment\\SampleDoc.docx";
+        String pdfFile = System.getProperty("user.dir")+ "\\src\\test\\resources\\File_Attachment\\SamplePDF.pdf";
+        String pngFile = System.getProperty("user.dir")+ "\\src\\test\\resources\\File_Attachment\\PNGImage.png";
+        
+        String userLocationName = PropertyLoaderObj.getProperty("PortalLocationName");
+        long timestamp = System.currentTimeMillis();
+        Log4jUtil.log("Step Begins: Do a GET and get the read communication");
+        Long since = timestamp / 1000L - 60 * 24;
+        
+        logStep("Login patient");
+        JalapenoLoginPage loginPage = new JalapenoLoginPage(driver, url);
+        JalapenoHomePage homePage = loginPage.login(username, PropertyLoaderObj.getPassword());
+
+        logStep("Click Ask A Staff tab");
+        JalapenoAskAStaffV2Page1 askPage1 = homePage.openSpecificAskaQuestion(PropertyLoaderObj.getProperty("askAV2Name"));
+
+        String askaSubject = Long.toString(askPage1.getCreatedTimeStamp());    
+        
+        logStep("Fill question and continue");
+        askPage1.NGfillASKADetails(askaSubject, questionText,userProviderName,userLocationName);
+
+        logStep("Add Attachments of Tiff, Doc, PDF, PNG types");
+        askPage1.uploadFile(tiffFile,tiffFile.substring(tiffFile.lastIndexOf("\\")+1));        
+        askPage1.uploadFile(docFile,docFile.substring(docFile.lastIndexOf("\\")+1));        
+        askPage1.uploadFile(pdfFile,pdfFile.substring(pdfFile.lastIndexOf("\\")+1));        
+        askPage1.uploadFile(pngFile,pngFile.substring(pngFile.lastIndexOf("\\")+1));
+        
+        JalapenoAskAStaffV2Page2 askPage2 = askPage1.clickContinue();
+        logStep("Verify Subject in submit page");
+        assertTrue(askaSubject.equals(askPage2.getSubject()),"Expected: " + askaSubject + ", found: " + askPage2.getSubject());
+        
+        logStep("Verify Quesion in Submit page");
+        assertTrue(questionText.equals(askPage2.getQuestion()),"Expected: " + questionText + ", found: " + askPage2.getQuestion());
+        homePage = askPage2.submit();
+        
+        logStep("Logout patient");
+        homePage.LogoutfromNGMFPortal();
+        
+        logStep("Setup Oauth client" + PropertyLoaderObj.getResponsePath());
+        if(PropertyLoaderObj.getNGAPIexecutionMode().equalsIgnoreCase("QAMain"))
+        	RestUtils.oauthSetup(PropertyLoaderObj.getOAuthKeyStore(), PropertyLoaderObj.getOAuthProperty(), PropertyLoaderObj.getOAuthAppToken(), PropertyLoaderObj.getProperty("oAuthUsername1"),PropertyLoaderObj.getProperty("oAuthPassword1"));
+        else if (PropertyLoaderObj.getNGAPIexecutionMode().equalsIgnoreCase("SIT"))
+        	RestUtils.oauthSetup(PropertyLoaderObj.getOAuthKeyStore(), PropertyLoaderObj.getOAuthProperty(), PropertyLoaderObj.getOAuthAppToken(), PropertyLoaderObj.getProperty("oAuthUsername"),PropertyLoaderObj.getProperty("oAuthPassword"));
+        else
+        	Log4jUtil.log("Invalid Execution Mode");
+        
+        Log4jUtil.log("Step Begins: Wait 60 seconds, so the message can be processed");
+        Thread.sleep(60000);
+        
+        Log4jUtil.log("Step Begins: Do a GET and get the message");
+        RestUtils.setupHttpGetRequest(PropertyLoaderObj.getProperty("GetInboundMessage").replaceAll("integrationID", integrationPracticeID) + "?since=" + since + ",0", PropertyLoaderObj.getResponsePath());
+        
+        Log4jUtil.log("Step Begins: Validate message reply");
+        String patientFirstName = DBUtils.executeQueryOnDB("NGCoreDB","select first_name from person where person_id ='"+person_id+"'");
+        String patientLastName = DBUtils.executeQueryOnDB("NGCoreDB","select last_name from person where person_id ='"+person_id+"'");
+        String expectedBody= "Dear "+PropertyLoaderObj.getProperty("practiceName")+",<br/><br/>"+IntegrationConstants.MESSAGE_REPLY+"<br/><br/>Thanks,<br>"+patientFirstName+" "+patientLastName;        
+        
+        String messageID = RestUtils.isReplyPresentReturnMessageID(PropertyLoaderObj.getResponsePath(), askaSubject,expectedBody);
+        
+        String expectedBodyinInbox= "Dear "+PropertyLoaderObj.getProperty("practiceName")+",\n"+IntegrationConstants.MESSAGE_REPLY+"\nThanks,\n"+patientFirstName+" "+patientLastName;    
+        
+        Thread.sleep(60000);        
+        CommonFlows.verifyMessageReceivedAtNGCore(PropertyLoaderObj,messageID,askaSubject,expectedBodyinInbox.replace("\n", ""),PropertyLoaderObj.getProperty("askAV2Name"));
+        
+        CommonFlows.verifyMultipleAttachmentsReceivedInMessageAtNGCore(PropertyLoaderObj,messageID,"tiff",expectedCorrectFileText1.substring(0,expectedCorrectFileText1.lastIndexOf(".")));
+        CommonFlows.verifyMultipleAttachmentsReceivedInMessageAtNGCore(PropertyLoaderObj,messageID,"pdf ",expectedCorrectFileText2.substring(0,expectedCorrectFileText2.lastIndexOf(".")));
+        CommonFlows.verifyMultipleAttachmentsReceivedInMessageAtNGCore(PropertyLoaderObj,messageID,"pdf ",expectedCorrectFileText3.substring(0,expectedCorrectFileText3.lastIndexOf(".")));
+        CommonFlows.verifyMultipleAttachmentsReceivedInMessageAtNGCore(PropertyLoaderObj,messageID,"png ",expectedCorrectFileText4.substring(0,expectedCorrectFileText4.lastIndexOf(".")));
+        log("Test Case End: The patient is able to send different type of attachments from portal to practice provider via Ask A Question option.");
+    }
+    
+    @Test(enabled = true, groups = { "acceptance-INBOX" }, retryAnalyzer = RetryAnalyzer.class)
+    public void testPP19Send2MBAttachments() throws Throwable {
+    	log("Test Case: Verify patient is able to send 2 MB attachments from portal to practice provider via Ask A Question option.");
+        String expectedCorrectFileText1 = "1.7MB File.txt";
+        String expectedCorrectFileText2 = "BMPImage.bmp";
+        String expectedCorrectFileText3 = "JPGImage.jpg";
+        
+        String questionText = IntegrationConstants.MESSAGE_REPLY;
+        String userId =PropertyLoaderObj.getProperty("SecureMessageUserID");
+        String userFirstName =DBUtils.executeQueryOnDB("NGCoreDB","select first_name from user_mstr where user_id='"+userId+"'");
+        String userLastName =DBUtils.executeQueryOnDB("NGCoreDB","select last_name from user_mstr where user_id='"+userId+"'");    
+        String userProviderName =userLastName+", Dr";
+        
+        logStep("Getting Existing User");
+        String username = PropertyLoaderObj.getProperty("CCDAUsername");
+        String person_id = DBUtils.executeQueryOnDB("NGCoreDB","select person_id from person where email_address = '"+username+"'");
+        String integrationPracticeID= null, url =null;
+        
+        if(PropertyLoaderObj.getNGAPIexecutionMode().equalsIgnoreCase("QAMain")){
+            integrationPracticeID =PropertyLoaderObj.getProperty("integrationPracticeIDE1P1");
+            url = PropertyLoaderObj.getProperty("MFPortalURLPractice1");    
+        }
+        else if (PropertyLoaderObj.getNGAPIexecutionMode().equalsIgnoreCase("SIT")){
+            integrationPracticeID =PropertyLoaderObj.getProperty("integrationPracticeIDAMDC");
+            url = PropertyLoaderObj.getProperty("url");                       
+        }
+        else{
+            Log4jUtil.log("Invalid Execution Mode");
+        }
+        
+        String jpgFile = System.getProperty("user.dir")+ "\\src\\test\\resources\\File_Attachment\\JPGImage.jpg";
+        String bmpFile = System.getProperty("user.dir")+ "\\src\\test\\resources\\File_Attachment\\BMPImage.bmp";
+        String txtFile = System.getProperty("user.dir")+ "\\src\\test\\resources\\File_Attachment\\1.7MB File.txt";
+        
+        String userLocationName = PropertyLoaderObj.getProperty("PortalLocationName");
+        long timestamp = System.currentTimeMillis();
+        Log4jUtil.log("Step Begins: Do a GET and get the read communication");
+        Long since = timestamp / 1000L - 60 * 24;
+        
+        logStep("Login patient");
+        JalapenoLoginPage loginPage = new JalapenoLoginPage(driver, url);
+        JalapenoHomePage homePage = loginPage.login(username, PropertyLoaderObj.getPassword());
+
+        logStep("Click Ask A Staff tab");
+        JalapenoAskAStaffV2Page1 askPage1 = homePage.openSpecificAskaQuestion(PropertyLoaderObj.getProperty("askAV2Name"));
+
+        String askaSubject = Long.toString(askPage1.getCreatedTimeStamp());    
+        
+        logStep("Fill question and continue");
+        askPage1.NGfillASKADetails(askaSubject, questionText,userProviderName,userLocationName);
+
+        logStep("Add Attachments of JPG, BMP, txt types of 2 MB");
+        askPage1.uploadFile(jpgFile,jpgFile.substring(jpgFile.lastIndexOf("\\")+1));        
+        askPage1.uploadFile(bmpFile,bmpFile.substring(bmpFile.lastIndexOf("\\")+1));        
+        askPage1.uploadFile(txtFile,txtFile.substring(txtFile.lastIndexOf("\\")+1));
+        
+        JalapenoAskAStaffV2Page2 askPage2 = askPage1.clickContinue();
+        logStep("Verify Subject in submit page");
+        assertTrue(askaSubject.equals(askPage2.getSubject()),"Expected: " + askaSubject + ", found: " + askPage2.getSubject());
+        
+        logStep("Verify Quesion in Submit page");
+        assertTrue(questionText.equals(askPage2.getQuestion()),"Expected: " + questionText + ", found: " + askPage2.getQuestion());
+        homePage = askPage2.submit();
+        
+        logStep("Logout patient");
+        homePage.LogoutfromNGMFPortal();
+        
+        logStep("Setup Oauth client" + PropertyLoaderObj.getResponsePath());
+        if(PropertyLoaderObj.getNGAPIexecutionMode().equalsIgnoreCase("QAMain"))
+        	RestUtils.oauthSetup(PropertyLoaderObj.getOAuthKeyStore(), PropertyLoaderObj.getOAuthProperty(), PropertyLoaderObj.getOAuthAppToken(), PropertyLoaderObj.getProperty("oAuthUsername1"),PropertyLoaderObj.getProperty("oAuthPassword1"));
+        else if (PropertyLoaderObj.getNGAPIexecutionMode().equalsIgnoreCase("SIT"))
+        	RestUtils.oauthSetup(PropertyLoaderObj.getOAuthKeyStore(), PropertyLoaderObj.getOAuthProperty(), PropertyLoaderObj.getOAuthAppToken(), PropertyLoaderObj.getProperty("oAuthUsername"),PropertyLoaderObj.getProperty("oAuthPassword"));
+        else
+        Log4jUtil.log("Invalid Execution Mode");
+        
+        Log4jUtil.log("Step Begins: Wait 60 seconds, so the message can be processed");
+        Thread.sleep(60000);
+        
+        Log4jUtil.log("Step Begins: Do a GET and get the message");
+        RestUtils.setupHttpGetRequest(PropertyLoaderObj.getProperty("GetInboundMessage").replaceAll("integrationID", integrationPracticeID) + "?since=" + since + ",0", PropertyLoaderObj.getResponsePath());
+        
+        Log4jUtil.log("Step Begins: Validate message reply");
+        String patientFirstName = DBUtils.executeQueryOnDB("NGCoreDB","select first_name from person where person_id ='"+person_id+"'");
+        String patientLastName = DBUtils.executeQueryOnDB("NGCoreDB","select last_name from person where person_id ='"+person_id+"'");
+        String expectedBody= "Dear "+PropertyLoaderObj.getProperty("practiceName")+",<br/><br/>"+IntegrationConstants.MESSAGE_REPLY+"<br/><br/>Thanks,<br>"+patientFirstName+" "+patientLastName;        
+        
+        String messageID = RestUtils.isReplyPresentReturnMessageID(PropertyLoaderObj.getResponsePath(), askaSubject,expectedBody);
+        
+        String expectedBodyinInbox= "Dear "+PropertyLoaderObj.getProperty("practiceName")+",\n"+IntegrationConstants.MESSAGE_REPLY+"\nThanks,\n"+patientFirstName+" "+patientLastName;    
+        
+        Thread.sleep(60000);        
+        CommonFlows.verifyMessageReceivedAtNGCore(PropertyLoaderObj,messageID,askaSubject,expectedBodyinInbox.replace("\n", ""),PropertyLoaderObj.getProperty("askAV2Name"));
+        
+        CommonFlows.verifyMultipleAttachmentsReceivedInMessageAtNGCore(PropertyLoaderObj,messageID,"txt ",expectedCorrectFileText1.substring(0,expectedCorrectFileText1.lastIndexOf(".")));        
+        CommonFlows.verifyMultipleAttachmentsReceivedInMessageAtNGCore(PropertyLoaderObj,messageID,"bmp ",expectedCorrectFileText2.substring(0,expectedCorrectFileText2.lastIndexOf(".")));        
+        CommonFlows.verifyMultipleAttachmentsReceivedInMessageAtNGCore(PropertyLoaderObj,messageID,"jpg ",expectedCorrectFileText3.substring(0,expectedCorrectFileText3.lastIndexOf(".")));
+        
+        log("Test Case End: The patient is able to send 2 MB attachments from portal to practice provider via Ask A Question option.");
+    }
+    
+    @Test(enabled = true, groups = { "acceptance-INBOX" }, retryAnalyzer = RetryAnalyzer.class)
+    public void testPP138SendPEDocument() throws Throwable {
+    	log("Test Case: Verify the practice user is able to send the Patient Education Document.");
+        
+        logStep("Getting Existing User");
+        String username = PropertyLoaderObj.getProperty("CCDAUsername");
+        String person_id = DBUtils.executeQueryOnDB("NGCoreDB","select person_id from person where email_address = '"+username+"'");
+        String enterpriseId = null, practiceId = null, integrationPracticeID= null, url =null;
+        
+        if(PropertyLoaderObj.getNGAPIexecutionMode().equalsIgnoreCase("QAMain")){
+            enterpriseId= PropertyLoaderObj.getProperty("NGEnterpiseEnrollmentEnterprise1");
+            practiceId= PropertyLoaderObj.getProperty("NGEnterprise1Practice1");
+            integrationPracticeID =PropertyLoaderObj.getProperty("integrationPracticeIDE1P1");
+            url = PropertyLoaderObj.getProperty("MFPortalURLPractice1");
+        }
+        else if (PropertyLoaderObj.getNGAPIexecutionMode().equalsIgnoreCase("SIT")){
+            enterpriseId= PropertyLoaderObj.getProperty("NGMainEnterpriseID");
+            practiceId= PropertyLoaderObj.getProperty("NGMainPracticeID");
+            integrationPracticeID =PropertyLoaderObj.getProperty("integrationPracticeIDAMDC");
+            url = PropertyLoaderObj.getProperty("url");      
+        }
+        else{
+            Log4jUtil.log("Invalid Execution Mode");
+        }
+        
+        logStep("Getting Patient Education Document Data");
+        String requestId = DBUtils.executeQueryOnDB("NGCoreDB","select newid()");
+        String documentId = DBUtils.executeQueryOnDB("NGCoreDB","select newid()");
+        String docType = PropertyLoaderObj.getProperty("EHRPEDocType");
+        String docFormat =PropertyLoaderObj.getProperty("EHRPEFormat");
+        String docName =PropertyLoaderObj.getProperty("EHRPEName");        
+        String pxpDocType =PropertyLoaderObj.getProperty("PXPDocType");
+        
+        String sourceFile = System.getProperty("user.dir")+ "\\src\\test\\resources\\EHRAttachment\\";
+        String content =CommonUtils.fetchTokenValueFromJsonObject(sourceFile, "EHRAttachmentData", "PEContent");        
+
+        logStep("Inserting Patient Education Document into tables");
+        DBUtils.executeQueryOnDB("NGCoreDB","INSERT INTO pxp_documents(request_id, document_id, document_type, content, delete_ind, created_by,"
+        		+ "create_timestamp,modified_by, modify_timestamp)"
+        		+"VALUES ('"+requestId+"','"+documentId+"','"+pxpDocType+"', "
+        		+ "CONVERT(VARBINARY(256),'"+content+"'),'0', '0' , getutcdate(), '0', getutcdate())");
+        
+        String comments = "SendingDocument"+(new Date()).getTime();
+        DBUtils.executeQueryOnDB("NGCoreDB","INSERT INTO pxp_document_requests(request_id, enterprise_id, practice_id, person_id, document_id, document_type, format,"
+        		+       "name, document_desc, status, created_by, create_timestamp, modified_by, modify_timestamp, create_timestamp_tz,modify_timestamp_tz)"
+        		+"VALUES ('"+requestId+"', '"+enterpriseId+"', '"+practiceId+"', '"+person_id+"', '"+documentId+"',"
+        		+"'"+docType+"', '"+docFormat+"', '"+docName+"', "
+        		+"'"+comments+"', '2','0', getutcdate(),'0', getutcdate(), Null, Null)");
+        				
+        DBUtils.executeQueryOnDB("NGCoreDB","INSERT INTO ngweb_document_history(row_id, emr_doc_id, nx_doc_id, person_id, read_when, read_by, delete_ind, "
+        		+ "comments,created_by, create_timestamp, modified_by, modify_timestamp, create_timestamp_tz, modify_timestamp_tz)"
+        		+" VALUES (newid(), '"+documentId+"', newid(), '"+person_id+"', NULL, NULL, 'N',"
+        		+"'"+comments+"', '0',getutcdate(), '0', getutcdate(), Null, Null)");
+        
+        logStep("Verify Patient Education Document is inserted into tables");
+        CommonFlows.verifyDocumentInsertedIntoTables(requestId, comments);
+        
+        logStep("Verify Patient Education Document status");
+        CommonFlows.verifyDocumentProcessingStatus(PropertyLoaderObj, requestId, practiceId, integrationPracticeID);
+        
+        String body = comments+"\n\n"+DocReceivedText;
+        CommonFlows.verifyPatientDocumentReceivedINInbox(PropertyLoaderObj,driver,url,username,PropertyLoaderObj.getPassword(),
+        		PropertyLoaderObj.getProperty("DocSubject"), body, docName+"."+docFormat.trim());
+        
+        log("Test Case End: The practice user is able to send the Patient Education Document.");
+    }
+    
+    @Test(enabled = true, groups = { "acceptance-INBOX" }, retryAnalyzer = RetryAnalyzer.class)
+    public void testPP139SendEHRDocument() throws Throwable {
+    	log("Test Case: Verify the practice user is able to send the EHR Document.");
+        
+        logStep("Getting Existing User");
+        String username = PropertyLoaderObj.getProperty("CCDAUsername");
+        String person_id = DBUtils.executeQueryOnDB("NGCoreDB","select person_id from person where email_address = '"+username+"'");
+        String enterpriseId = null, practiceId = null, integrationPracticeID= null, url =null;
+        
+        if(PropertyLoaderObj.getNGAPIexecutionMode().equalsIgnoreCase("QAMain")){
+            enterpriseId= PropertyLoaderObj.getProperty("NGEnterpiseEnrollmentEnterprise1");
+            practiceId= PropertyLoaderObj.getProperty("NGEnterprise1Practice1");
+            integrationPracticeID =PropertyLoaderObj.getProperty("integrationPracticeIDE1P1");
+            url = PropertyLoaderObj.getProperty("MFPortalURLPractice1");
+        }
+        else if (PropertyLoaderObj.getNGAPIexecutionMode().equalsIgnoreCase("SIT")){
+            enterpriseId= PropertyLoaderObj.getProperty("NGMainEnterpriseID");
+            practiceId= PropertyLoaderObj.getProperty("NGMainPracticeID");
+            integrationPracticeID =PropertyLoaderObj.getProperty("integrationPracticeIDAMDC");
+            url = PropertyLoaderObj.getProperty("url");      
+        }
+        else{
+            Log4jUtil.log("Invalid Execution Mode");
+        }
+        
+        logStep("Getting EHR Document Data");
+        String requestId = DBUtils.executeQueryOnDB("NGCoreDB","select newid()");
+        String documentId = DBUtils.executeQueryOnDB("NGCoreDB","select newid()");
+        String docType = PropertyLoaderObj.getProperty("EHRDocumentDocType");
+        String docFormat =PropertyLoaderObj.getProperty("EHRDocumentFormat");
+        String docName =PropertyLoaderObj.getProperty("EHRDocumentName");        
+        String pxpDocType =PropertyLoaderObj.getProperty("PXPDocType");
+        
+        String sourceFile = System.getProperty("user.dir")+ "\\src\\test\\resources\\EHRAttachment\\";
+        String content =CommonUtils.fetchTokenValueFromJsonObject(sourceFile, "EHRAttachmentData", "EHRDocument");        
+
+        logStep("Inserting EHR Document into tables");
+        DBUtils.executeQueryOnDB("NGCoreDB","INSERT INTO pxp_documents(request_id, document_id, document_type, content, delete_ind, created_by,"
+        		+ "create_timestamp,modified_by, modify_timestamp)"
+        		+"VALUES ('"+requestId+"','"+documentId+"','"+pxpDocType+"', "
+        		+ "CONVERT(VARBINARY(256),'"+content+"'),'0', '0' , getutcdate(), '0', getutcdate())");
+        
+        String comments = "SendingDocument"+(new Date()).getTime();
+        DBUtils.executeQueryOnDB("NGCoreDB","INSERT INTO pxp_document_requests(request_id, enterprise_id, practice_id, person_id, document_id, document_type, format,"
+        		+       "name, document_desc, status, created_by, create_timestamp, modified_by, modify_timestamp, create_timestamp_tz,modify_timestamp_tz)"
+        		+"VALUES ('"+requestId+"', '"+enterpriseId+"', '"+practiceId+"', '"+person_id+"', '"+documentId+"',"
+        		+"'"+docType+"', '"+docFormat+"', '"+docName+"', "
+        		+"'"+comments+"', '2','0', getutcdate(),'0', getutcdate(), Null, Null)");
+        				
+        DBUtils.executeQueryOnDB("NGCoreDB","INSERT INTO ngweb_document_history(row_id, emr_doc_id, nx_doc_id, person_id, read_when, read_by, delete_ind, "
+        		+ "comments,created_by, create_timestamp, modified_by, modify_timestamp, create_timestamp_tz, modify_timestamp_tz)"
+        		+" VALUES (newid(), '"+documentId+"', newid(), '"+person_id+"', NULL, NULL, 'N',"
+        		+"'"+comments+"', '0',getutcdate(), '0', getutcdate(), Null, Null)");
+        
+        logStep("Verify EHR Document is inserted into tables");
+        CommonFlows.verifyDocumentInsertedIntoTables(requestId, comments);
+        
+        logStep("Verify EHR Document status");
+        CommonFlows.verifyDocumentProcessingStatus(PropertyLoaderObj, requestId, practiceId, integrationPracticeID);
+        
+        String body = comments+"\n\n"+DocReceivedText;
+        CommonFlows.verifyPatientDocumentReceivedINInbox(PropertyLoaderObj,driver,url,username,PropertyLoaderObj.getPassword(),
+        		PropertyLoaderObj.getProperty("DocSubject"), body, docName+".pdf");        
+        log("Test Case End: The practice user is able to send the EHR Document.");
+    }
+    
+    @Test(enabled = true, groups = { "acceptance-INBOX" }, retryAnalyzer = RetryAnalyzer.class)
+    public void testPP139SendICSImage() throws Throwable {
+    	log("Test Case: Verify the practice user is able to send the ICS Image.");
+        
+        logStep("Getting Existing User");
+        String username = PropertyLoaderObj.getProperty("CCDAUsername");
+        String person_id = DBUtils.executeQueryOnDB("NGCoreDB","select person_id from person where email_address = '"+username+"'");
+        String enterpriseId = null, practiceId = null, integrationPracticeID= null, url =null;
+        
+        if(PropertyLoaderObj.getNGAPIexecutionMode().equalsIgnoreCase("QAMain")){
+            enterpriseId= PropertyLoaderObj.getProperty("NGEnterpiseEnrollmentEnterprise1");
+            practiceId= PropertyLoaderObj.getProperty("NGEnterprise1Practice1");
+            integrationPracticeID =PropertyLoaderObj.getProperty("integrationPracticeIDE1P1");
+            url = PropertyLoaderObj.getProperty("MFPortalURLPractice1");
+        }
+        else if (PropertyLoaderObj.getNGAPIexecutionMode().equalsIgnoreCase("SIT")){
+            enterpriseId= PropertyLoaderObj.getProperty("NGMainEnterpriseID");
+            practiceId= PropertyLoaderObj.getProperty("NGMainPracticeID");
+            integrationPracticeID =PropertyLoaderObj.getProperty("integrationPracticeIDAMDC");
+            url = PropertyLoaderObj.getProperty("url");      
+        }
+        else{
+            Log4jUtil.log("Invalid Execution Mode");
+        }
+        
+        logStep("Getting ICS Image Data");
+        String requestId = DBUtils.executeQueryOnDB("NGCoreDB","select newid()");
+        String documentId = DBUtils.executeQueryOnDB("NGCoreDB","select newid()");
+        String docType = PropertyLoaderObj.getProperty("ICSImageDocType");
+        String docFormat =PropertyLoaderObj.getProperty("ICSImageFormat");
+        String docName =PropertyLoaderObj.getProperty("ICSImageName");        
+        String pxpDocType =PropertyLoaderObj.getProperty("PXPDocType");
+        
+        String sourceFile = System.getProperty("user.dir")+ "\\src\\test\\resources\\EHRAttachment\\";
+        String content =CommonUtils.fetchTokenValueFromJsonObject(sourceFile, "EHRAttachmentData", "JPGImage");        
+
+        logStep("Inserting ICS Image into tables");
+        DBUtils.executeQueryOnDB("NGCoreDB","INSERT INTO pxp_documents(request_id, document_id, document_type, content, delete_ind, created_by,"
+        		+ "create_timestamp,modified_by, modify_timestamp)"
+        		+"VALUES ('"+requestId+"','"+documentId+"','"+pxpDocType+"', "
+        		+ "CONVERT(VARBINARY(256),'"+content+"'),'0', '0' , getutcdate(), '0', getutcdate())");
+        
+        String comments = "SendingDocument"+(new Date()).getTime();
+        DBUtils.executeQueryOnDB("NGCoreDB","INSERT INTO pxp_document_requests(request_id, enterprise_id, practice_id, person_id, document_id, document_type, format,"
+        		+       "name, document_desc, status, created_by, create_timestamp, modified_by, modify_timestamp, create_timestamp_tz,modify_timestamp_tz)"
+        		+"VALUES ('"+requestId+"', '"+enterpriseId+"', '"+practiceId+"', '"+person_id+"', '"+documentId+"',"
+        		+"'"+docType+"', '"+docFormat+"', '"+docName+"', "
+        		+"'"+comments+"', '2','0', getutcdate(),'0', getutcdate(), Null, Null)");
+        				
+        DBUtils.executeQueryOnDB("NGCoreDB","INSERT INTO ngweb_document_history(row_id, emr_doc_id, nx_doc_id, person_id, read_when, read_by, delete_ind, "
+        		+ "comments,created_by, create_timestamp, modified_by, modify_timestamp, create_timestamp_tz, modify_timestamp_tz)"
+        		+" VALUES (newid(), '"+documentId+"', newid(), '"+person_id+"', NULL, NULL, 'N',"
+        		+"'"+comments+"', '0',getutcdate(), '0', getutcdate(), Null, Null)");
+        
+        logStep("Verify ICS Image is inserted into tables");
+        CommonFlows.verifyDocumentInsertedIntoTables(requestId, comments);
+        
+        logStep("Verify ICS Image status");
+        CommonFlows.verifyDocumentProcessingStatus(PropertyLoaderObj, requestId, practiceId, integrationPracticeID);
+        
+        String body = comments+"\n\n"+DocReceivedText;
+        CommonFlows.verifyPatientDocumentReceivedINInbox(PropertyLoaderObj,driver,url,username,PropertyLoaderObj.getPassword(),
+        		PropertyLoaderObj.getProperty("DocSubject"), body, docName+"."+docFormat.trim());
+        
+        log("Test Case End: The practice user is able to send the ICS Image.");
+    }
+    
+    @Test(enabled = true, groups = { "acceptance-INBOX" }, retryAnalyzer = RetryAnalyzer.class)
+    public void testPP139SendEHRImage() throws Throwable {
+    	log("Test Case: Verify the practice user is able to send the EHR Image.");
+        
+        logStep("Getting Existing User");
+        String username = PropertyLoaderObj.getProperty("CCDAUsername");
+        String person_id = DBUtils.executeQueryOnDB("NGCoreDB","select person_id from person where email_address = '"+username+"'");
+        String enterpriseId = null, practiceId = null , integrationPracticeID= null, url =null;
+        
+        if(PropertyLoaderObj.getNGAPIexecutionMode().equalsIgnoreCase("QAMain")){
+            enterpriseId= PropertyLoaderObj.getProperty("NGEnterpiseEnrollmentEnterprise1");
+            practiceId= PropertyLoaderObj.getProperty("NGEnterprise1Practice1");
+            integrationPracticeID =PropertyLoaderObj.getProperty("integrationPracticeIDE1P1");
+            url = PropertyLoaderObj.getProperty("MFPortalURLPractice1");
+        }
+        else if (PropertyLoaderObj.getNGAPIexecutionMode().equalsIgnoreCase("SIT")){
+            enterpriseId= PropertyLoaderObj.getProperty("NGMainEnterpriseID");
+            practiceId= PropertyLoaderObj.getProperty("NGMainPracticeID");
+            integrationPracticeID =PropertyLoaderObj.getProperty("integrationPracticeIDAMDC");
+            url = PropertyLoaderObj.getProperty("url");      
+        }
+        else{
+            Log4jUtil.log("Invalid Execution Mode");
+        }
+        
+        logStep("Getting Image Data");
+        String requestId = DBUtils.executeQueryOnDB("NGCoreDB","select newid()");
+        String documentId = PropertyLoaderObj.getProperty("EHRImageDocumentId");
+        String docType = PropertyLoaderObj.getProperty("EHRImageDocType");
+        String docFormat =PropertyLoaderObj.getProperty("EHRImageFormat");
+        String docName =PropertyLoaderObj.getProperty("EHRImageName");        
+        String pxpDocType =PropertyLoaderObj.getProperty("PXPDocType");
+        
+        String sourceFile = System.getProperty("user.dir")+ "\\src\\test\\resources\\EHRAttachment\\";
+        String content =CommonUtils.fetchTokenValueFromJsonObject(sourceFile, "EHRAttachmentData", "BMPImage");        
+
+        logStep("Inserting image into tables");
+        DBUtils.executeQueryOnDB("NGCoreDB","INSERT INTO pxp_documents(request_id, document_id, document_type, content, delete_ind, created_by,"
+        		+ "create_timestamp,modified_by, modify_timestamp)"
+        		+"VALUES ('"+requestId+"','"+documentId+"','"+pxpDocType+"', "
+        		+ "CONVERT(VARBINARY(256),'"+content+"'),'0', '0' , getutcdate(), '0', getutcdate())");
+        
+        String comments = "SendingDocument"+(new Date()).getTime();
+        DBUtils.executeQueryOnDB("NGCoreDB","INSERT INTO pxp_document_requests(request_id, enterprise_id, practice_id, person_id, document_id, document_type, format,"
+        		+       "name, document_desc, status, created_by, create_timestamp, modified_by, modify_timestamp, create_timestamp_tz,modify_timestamp_tz)"
+        		+"VALUES ('"+requestId+"', '"+enterpriseId+"', '"+practiceId+"', '"+person_id+"', '"+documentId+"',"
+        		+"'"+docType+"', '"+docFormat+"', '"+docName+"', "
+        		+"'"+comments+"', '2','0', getutcdate(),'0', getutcdate(), Null, Null)");
+        				
+        DBUtils.executeQueryOnDB("NGCoreDB","INSERT INTO ngweb_document_history(row_id, emr_doc_id, nx_doc_id, person_id, read_when, read_by, delete_ind, "
+        		+ "comments,created_by, create_timestamp, modified_by, modify_timestamp, create_timestamp_tz, modify_timestamp_tz)"
+        		+" VALUES (newid(), '"+documentId+"', newid(), '"+person_id+"', NULL, NULL, 'N',"
+        		+"'"+comments+"', '0',getutcdate(), '0', getutcdate(), Null, Null)");
+        
+        logStep("Verify image is inserted into tables");
+        CommonFlows.verifyDocumentInsertedIntoTables(requestId, comments);
+        
+        logStep("Verify image status");
+        CommonFlows.verifyDocumentProcessingStatus(PropertyLoaderObj, requestId, practiceId, integrationPracticeID);
+        
+        String body = comments+"\n\n"+DocReceivedText;
+        CommonFlows.verifyPatientDocumentReceivedINInbox(PropertyLoaderObj,driver,url,username,PropertyLoaderObj.getPassword(),
+        		PropertyLoaderObj.getProperty("DocSubject"), body, docName+"."+docFormat.trim());
+        
+        log("Test Case End: The practice user is able to send the EHR Image.");        
+    }
+    
+    @Test(enabled = true, groups = { "acceptance-INBOX" }, retryAnalyzer = RetryAnalyzer.class)
+    public void testPP139SendReferralLetter() throws Throwable {
+    	log("Test Case: Verify the practice user is able to send the Referral Letter.");
+                
+        logStep("Getting Existing User");
+        String username = PropertyLoaderObj.getProperty("CCDAUsername");
+        String person_id = DBUtils.executeQueryOnDB("NGCoreDB","select person_id from person where email_address = '"+username+"'");
+        String enterpriseId = null, practiceId = null, integrationPracticeID= null, url =null;
+        
+        if(PropertyLoaderObj.getNGAPIexecutionMode().equalsIgnoreCase("QAMain")){
+            enterpriseId= PropertyLoaderObj.getProperty("NGEnterpiseEnrollmentEnterprise1");
+            practiceId= PropertyLoaderObj.getProperty("NGEnterprise1Practice1");
+            integrationPracticeID =PropertyLoaderObj.getProperty("integrationPracticeIDE1P1");
+            url = PropertyLoaderObj.getProperty("MFPortalURLPractice1");    
+        }
+        else if (PropertyLoaderObj.getNGAPIexecutionMode().equalsIgnoreCase("SIT")){
+            enterpriseId= PropertyLoaderObj.getProperty("NGMainEnterpriseID");
+            practiceId= PropertyLoaderObj.getProperty("NGMainPracticeID");
+            integrationPracticeID =PropertyLoaderObj.getProperty("integrationPracticeIDAMDC");
+            url = PropertyLoaderObj.getProperty("url");                       
+        }
+        else{
+            Log4jUtil.log("Invalid Execution Mode");
+        }
+        
+        logStep("Getting Referral Letter Data");
+        String requestId = DBUtils.executeQueryOnDB("NGCoreDB","select newid()");
+        String documentId =DBUtils.executeQueryOnDB("NGCoreDB","select newid()");
+        String docType = PropertyLoaderObj.getProperty("EHRReferralLetterDocType");
+        String docFormat =PropertyLoaderObj.getProperty("EHRReferralLetterFormat");
+        String docName =PropertyLoaderObj.getProperty("EHRReferralLetterName");
+        String pxpDocType =PropertyLoaderObj.getProperty("PXPDocType");
+        
+        String sourceFile = System.getProperty("user.dir")+ "\\src\\test\\resources\\EHRAttachment\\";
+        String content =CommonUtils.fetchTokenValueFromJsonObject(sourceFile, "EHRAttachmentData", "ReferralLetter");
+        
+        logStep("Inserting Referral Letter into tables");
+        DBUtils.executeQueryOnDB("NGCoreDB","INSERT INTO pxp_documents(request_id, document_id, document_type, content, delete_ind, created_by,"
+        		+ "create_timestamp,modified_by, modify_timestamp)"
+        		+"VALUES ('"+requestId+"','"+documentId+"','"+pxpDocType+"', "
+        		+ "CONVERT(VARBINARY(256),'"+content+"'),'0', '0' , getutcdate(), '0', getutcdate())");
+        
+        String comments = "SendingDocument"+(new Date()).getTime();
+        DBUtils.executeQueryOnDB("NGCoreDB","INSERT INTO pxp_document_requests(request_id, enterprise_id, practice_id, person_id, document_id, document_type, format,"
+        		+       "name, document_desc, status, created_by, create_timestamp, modified_by, modify_timestamp, create_timestamp_tz,modify_timestamp_tz)"
+        		+"VALUES ('"+requestId+"', '"+enterpriseId+"', '"+practiceId+"', '"+person_id+"', '"+documentId+"',"
+        		+"'"+docType+"', '"+docFormat+"', '"+docName+"', "
+        		+"'"+comments+"', '2','0', getutcdate(),'0', getutcdate(), Null, Null)");
+        
+        DBUtils.executeQueryOnDB("NGCoreDB","INSERT INTO ngweb_document_history(row_id, emr_doc_id, nx_doc_id, person_id, read_when, read_by, delete_ind, "
+        		+ "comments,created_by, create_timestamp, modified_by, modify_timestamp, create_timestamp_tz, modify_timestamp_tz)"
+        		+" VALUES (newid(), '"+documentId+"', newid(), '"+person_id+"', NULL, NULL, 'N',"
+        		+"'"+comments+"', '0',getutcdate(), '0', getutcdate(), Null, Null)");
+        
+        logStep("Verify Referral Letter is inserted into tables");
+        CommonFlows.verifyDocumentInsertedIntoTables(requestId, comments);
+        
+        logStep("Verify Referral Letter status");
+        CommonFlows.verifyDocumentProcessingStatus(PropertyLoaderObj, requestId, practiceId, integrationPracticeID);
+        
+        String body = comments+"\n\n"+DocReceivedText;
+        CommonFlows.verifyPatientDocumentReceivedINInbox(PropertyLoaderObj,driver,url,username,PropertyLoaderObj.getPassword(),
+        		PropertyLoaderObj.getProperty("DocSubject"), body, docName+".pdf");
+        
+        log("Test Case End: The practice user is able to send the Referral Letter.");
+    }    
 }
