@@ -4169,5 +4169,14 @@ public class RestUtils {
 		return domToString(doc);
 
 	}
+	
+	public static String getAttachmentRefId(String responseFilePath)
+			throws ParserConfigurationException, SAXException, IOException {
+		IHGUtil.PrintMethodName();
+		Document doc = buildDOMXML(responseFilePath);
+		Node InternalAttachmentID = doc.getElementsByTagName("InternalAttachmentID").item(0);
+		String attchmentRefId = InternalAttachmentID.getTextContent().toString();
+		return attchmentRefId;
+	}
 
 }

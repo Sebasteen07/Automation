@@ -46,6 +46,7 @@
 				<include name="testAppointmentRequestForExistingPatient"/>
 				<include name="testLastLoginEvent"/>
 				<include name="testOnDemandHealthData"/>
+				<include name="testAMDCSecureMessagewithAttachmentrefID"/>
       		</methods>
 	</classes>
 </test>

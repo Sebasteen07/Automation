@@ -13,6 +13,7 @@
 	    		<include name="testAMDCSecureMessagesWithAllCategoryTypes" />
 	    		<include name="testAMDCSecureMessages"/>
 	    		<include name="testBulkSecureMessage"/>
+	    		<include name="testAMDCSecureMessagewithAttachmentrefID"/>
       	</methods>
 	</classes>
 </test>
