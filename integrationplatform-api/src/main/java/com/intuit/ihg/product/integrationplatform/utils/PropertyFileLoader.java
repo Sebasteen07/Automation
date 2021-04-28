@@ -2048,11 +2048,11 @@ public class PropertyFileLoader {
 	// Attachment
 		
 		public String getRestUrlAttachment() {
-			return property.getProperty("restUrlAttachment");
+			return property.getProperty("rest.url.attachment");
 		}
 
 		public String getPatientExternalIdAttachment() {
-			return property.getProperty("patientExternalIdAttachment");
+			return property.getProperty("patient.externalId.attachment");
 			}
 		
 		public String getMessageAttachment() {
