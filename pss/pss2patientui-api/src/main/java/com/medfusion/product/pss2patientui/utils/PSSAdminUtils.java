@@ -743,7 +743,7 @@ public class PSSAdminUtils {
 		pageRefresh(driver);
 		manageResource.selectResource(appointment.getProvider());
 		manageResource.selectAppointmenttype(appointment.getAppointmenttype());
-		manageResource.timeMark();
+		manageResource.timeMark(appointment.getTimeMarkValue());
 		
 	}
 }

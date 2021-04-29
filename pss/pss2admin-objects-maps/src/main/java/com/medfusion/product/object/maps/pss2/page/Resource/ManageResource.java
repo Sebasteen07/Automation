@@ -35,8 +35,8 @@ public class ManageResource extends PSS2MenuPage {
 
 	@FindBy(how = How.XPATH, using = "//a[contains(text(),'Specialty')]")
 	private WebElement editSpecialityTab;
-
-	@FindBy(how = How.XPATH, using = "//*[@class='nav-item']//a[@href='#tab43']")
+	
+	@FindBy(how = How.XPATH, using = "//*[@id='tabs3']/li[4]/a")
 	private WebElement editAptTypeTab;
 
 	@FindBy(how = How.NAME, using = "slotSize")
@@ -285,9 +285,9 @@ public class ManageResource extends PSS2MenuPage {
 		appointmenttypeSave.click();
 	}
 
-	public void timeMark() {
+	public void timeMark(String timeMarkValue) {
 		Select selectOptions = new Select(timeMarkOption);
-		selectOptions.selectByValue("15");
+		selectOptions.selectByValue(timeMarkValue);
 		timeMarkOption.click();
 		appointmenttypeSave.click();
 	}

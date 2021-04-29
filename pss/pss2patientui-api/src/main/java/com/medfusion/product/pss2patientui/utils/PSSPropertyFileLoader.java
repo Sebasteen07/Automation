@@ -24,6 +24,7 @@ public class PSSPropertyFileLoader {
 		Log4jUtil.log("Loading data for GW appointment related cases..");
 		appointValues.setIsinsuranceVisible(false);
 		appointValues.setIsstartpointPresent(false);
+		appointValues.setTimeMarkValue(property.getProperty("timeMarkValue.GW"));
 		appointValues.setAgeRuleMonthFirst(property.getProperty("ageRuleMonthFirstParameterGW"));
 		appointValues.setAgeRuleMonthSecond(property.getProperty("ageRuleMonthSecondParameterGW"));
 		appointValues.setLinkProvider(property.getProperty("linkProviderGW"));
@@ -56,7 +57,7 @@ public class PSSPropertyFileLoader {
 		appointValues.setEmaiSubject(property.getProperty("emaiSubject"));
 		appointValues.setFindInEmail(property.getProperty("findInEmail"));
 		appointValues.setRetries(property.getProperty("retries"));
-		appointValues.setIsAppointmentPopup(property.getProperty("isAppointmentPopupGW"));
+		appointValues.setIsAppointmentPopup(property.getProperty("isAppointmentPopup.GW"));
 		appointValues.setAppointmentScheduledFromPM(property.getProperty("appointmentScheduledAtPMGW"));
 		appointValues.setCancellationPolicyText(property.getProperty("cancellationPolicyTextGW"));
 		appointValues.setAppointmentList(property.getProperty("appointmentListGW"));
@@ -143,6 +144,7 @@ public class PSSPropertyFileLoader {
 
 	public void setAppointmentResponseAT(Appointment appointValues) {
 		Log4jUtil.log("Loading data for ATHENA appointment related cases..");
+		appointValues.setTimeMarkValue(property.getProperty("timeMarkValue.AT"));
 		appointValues.setAgeRuleMonthFirst(property.getProperty("ageRuleMonthFirstParameterAT"));
 		appointValues.setAgeRuleMonthSecond(property.getProperty("ageRuleMonthSecondParameterAT"));
 		appointValues.setLinkProvider(property.getProperty("linkProviderAT"));
@@ -180,7 +182,7 @@ public class PSSPropertyFileLoader {
 		appointValues.setEmaiSubject(property.getProperty("emaiSubject"));
 		appointValues.setFindInEmail(property.getProperty("findInEmail"));
 		appointValues.setRetries(property.getProperty("retries"));
-		appointValues.setIsAppointmentPopup(property.getProperty("isAppointmentPopupAT"));
+		appointValues.setIsAppointmentPopup(property.getProperty("isAppointmentPopup.AT"));
 		appointValues.setAppointmentScheduledFromPM(property.getProperty("appointmentScheduledAtPMAT"));
 		appointValues.setCancellationPolicyText(property.getProperty("cancellationPolicyTextAT"));
 		appointValues.setAppointmentList(property.getProperty("appointmentListAT"));
@@ -211,6 +213,7 @@ public class PSSPropertyFileLoader {
 
 	public void setAppointmentResponseGE(Appointment appointValues) {
 		Log4jUtil.log("Loading data for GE appointment related cases..");
+		appointValues.setTimeMarkValue(property.getProperty("timeMarkValue.GE"));
 		appointValues.setAgeRuleMonthFirst(property.getProperty("ageRuleMonthFirstParameterGE"));
 		appointValues.setAgeRuleMonthSecond(property.getProperty("ageRuleMonthSecondParameterGE"));
 		appointValues.setLinkProvider(property.getProperty("linkProviderGE"));
@@ -245,7 +248,7 @@ public class PSSPropertyFileLoader {
 		appointValues.setEmaiSubject(property.getProperty("emaiSubject"));
 		appointValues.setFindInEmail(property.getProperty("findInEmail"));
 		appointValues.setRetries(property.getProperty("retries"));
-		appointValues.setIsAppointmentPopup(property.getProperty("isAppointmentPopupGE"));
+		appointValues.setIsAppointmentPopup(property.getProperty("isAppointmentPopup.GE"));
 		appointValues.setAppointmentScheduledFromPM(property.getProperty("appointmentScheduledAtPMGE"));
 		appointValues.setCancellationPolicyText(property.getProperty("cancellationPolicyTextGE"));
 		appointValues.setAppointmentList(property.getProperty("appointmentListGE"));
@@ -288,6 +291,7 @@ public class PSSPropertyFileLoader {
 		appointValues.setUrlAnonymous(property.getProperty("urlAnonymousNG"));
 		Log4jUtil.log(appointValues.getUrlAnonymous());
 		appointValues.setIsInsuranceEnabled(true);
+		appointValues.setTimeMarkValue(property.getProperty("timeMarkValue.NG"));
 		appointValues.setAgeRuleMonthFirst(property.getProperty("ageRuleMonthFirstParameterNG"));
 		appointValues.setAgeRuleMonthSecond(property.getProperty("ageRuleMonthSecondParameterNG"));
 		appointValues.setLinkProvider(property.getProperty("linkProviderNG"));
@@ -321,7 +325,7 @@ public class PSSPropertyFileLoader {
 		appointValues.setEmaiSubject(property.getProperty("emaiSubject"));
 		appointValues.setFindInEmail(property.getProperty("findInEmail"));
 		appointValues.setRetries(property.getProperty("retries"));
-		appointValues.setIsAppointmentPopup(property.getProperty("isAppointmentPopupNG"));
+		appointValues.setIsAppointmentPopup(property.getProperty("isAppointmentPopup.NG"));
 		appointValues.setAppointmentScheduledFromPM(property.getProperty("appointmentScheduledAtPMNG"));
 		appointValues.setCancellationPolicyText(property.getProperty("cancellationPolicyTextNG"));
 		appointValues.setAppointmentList(property.getProperty("appointmentListNG"));
