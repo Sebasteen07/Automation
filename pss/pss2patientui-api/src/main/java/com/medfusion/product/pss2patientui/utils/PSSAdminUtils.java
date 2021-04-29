@@ -717,37 +717,37 @@ public class PSSAdminUtils extends BaseTestNGWebDriver{
 		manageSpecialty.selectgender();
 	}
 	
-	public void lastQuestionEnable(WebDriver driver, AdminUser adminuser, Appointment appointment, String urlToUse)
+	public void lastQuestionEnable(WebDriver driver, AdminUser adminUser, Appointment appointment, String urlToUse)
 			throws Exception {
 
-		PSS2PracticeConfiguration psspracticeConfig = loginToAdminPortal(driver, adminuser);
+		PSS2PracticeConfiguration pssPracticeConfig = loginToAdminPortal(driver, adminUser);
 
-		AccessRules accessrule = psspracticeConfig.gotoAccessTab();
+		AccessRules accessRule = pssPracticeConfig.gotoAccessTab();
 
 		if (urlToUse.equalsIgnoreCase(PSSConstants.LOGINLESS)) {
-			log("PSS Patient URL : " + accessrule.getLoginlessURL());
-			appointment.setUrlLoginLess(accessrule.getLoginlessURL());
+			log("PSS Patient URL : " + accessRule.getLoginlessURL());
+			appointment.setUrlLoginLess(accessRule.getLoginlessURL());
 		}
 		if (urlToUse.equalsIgnoreCase(PSSConstants.ANONYMOUS)) {
-			log("PSS Patient URL : " + accessrule.getAnonymousUrl());
-			appointment.setUrlAnonymous(accessrule.getAnonymousUrl());
+			log("PSS Patient URL : " + accessRule.getAnonymousUrl());
+			appointment.setUrlAnonymous(accessRule.getAnonymousUrl());
 		}
-		PatientFlow patientflow = accessrule.gotoPatientFlowTab();
+		PatientFlow patientFlow = accessRule.gotoPatientFlowTab();
 
-		setRulesNoSpecialitySet1(patientflow);
+		setRulesNoSpecialitySet1(patientFlow);
 
-		adminuser.setRule(patientflow.getRule());
-		log("rule= " + patientflow.getRule());
+		adminUser.setRule(patientFlow.getRule());
+		log("rule= " + patientFlow.getRule());
 
-		appointment.setIsinsuranceVisible(patientflow.insuracetogglestatus());
-		log("Insurance is Enabled= " + patientflow.insuracetogglestatus());
-		appointment.setIsstartpointPresent(patientflow.isstartpagepresent());
-		log("StartPage is Visible= " + patientflow.isstartpagepresent());
+		appointment.setIsinsuranceVisible(patientFlow.insuracetogglestatus());
+		log("Insurance is Enabled= " + patientFlow.insuracetogglestatus());
+		appointment.setIsstartpointPresent(patientFlow.isstartpagepresent());
+		log("StartPage is Visible= " + patientFlow.isstartpagepresent());
 
-		AdminPatientMatching adminpatientmatching = patientflow.gotoPatientMatchingTab();
+		AdminPatientMatching adminpatientmatching = patientFlow.gotoPatientMatchingTab();
 		adminpatientmatching.patientMatchingSelection();
 
-		ManageResource manageResource = psspracticeConfig.gotoResource();
+		ManageResource manageResource = pssPracticeConfig.gotoResource();
 		pageRefresh(driver);
 		manageResource.selectResource(appointment.getProvider());
 
@@ -764,7 +764,7 @@ public class PSSAdminUtils extends BaseTestNGWebDriver{
 
 		log("Last QUestion Required Status- " + manageResource.lastQuestionRequiredStatus());
 
-		if (adminuser.getLastQuestionMandatory() == true) {
+		if (adminUser.getLastQuestionMandatory() == true) {
 			if (manageResource.lastQuestionRequiredStatus() == false) {
 				manageResource.enableLastQuestionRequired();
 			}
@@ -779,7 +779,7 @@ public class PSSAdminUtils extends BaseTestNGWebDriver{
 		manageResource.clickGeneralTab();
 
 		log("Last Question Required settings are turn on successfully");
-		patientflow.logout();
+		patientFlow.logout();
 	}
 	
 	public void ageRuleWithSpeciality(WebDriver driver, AdminUser adminuser, Appointment appointment) throws Exception {

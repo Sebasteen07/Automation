@@ -1793,7 +1793,7 @@ public class PSSPatientUtils extends BaseTestNGWebDriver{
 		}
 		confirmationpage.appointmentConfirmedAnonymous();
 
-		logStep("Verify the ");
+		logStep("Verify the Error message when Last Question Required kept blank and try to book an appointment");
 		confirmationpage.validateLastQueReqErrorMsg();
 
 		logStep("Heading of last question is " + confirmationpage.getHeadingLastQuestin());

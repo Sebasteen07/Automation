@@ -131,19 +131,19 @@ public class ManageResource extends PSS2MenuPage {
 	private WebElement sendMonthsecond;
 
 	@FindBy(how = How.XPATH, using = "//label[@for='lastQuestRequired']//i")
-	private WebElement lastquestionRequiredtoggleClick;
+	private WebElement lastQuestionRequiredToggleClick;
 
 	@FindBy(how = How.XPATH, using = "//label[@for='lastQuestRequired']//input")
-	private WebElement lastquestionRequiredtogglebtn;
+	private WebElement lastQuestionRequiredTogglebtn;
 
 	@FindBy(how = How.XPATH, using = "//button[@class='btn btn-primary'][normalize-space()='Save']")
-	private WebElement bookaptSaveBtn;
+	private WebElement bookAptSaveBtn;
 
 	@FindBy(how = How.XPATH, using = "//label[@for='acceptComment']//input")
-	private WebElement lastquestionEnabletogglebtn;
+	private WebElement lastQuestionEnableTogglebtn;
 
 	@FindBy(how = How.XPATH, using = "//label[@for='acceptComment']//i")
-	private WebElement lastquestionEnabletoggleClick;
+	private WebElement lastQuestionEnableToggleClick;
 
 	@FindBy(how = How.XPATH, using = "//i[@class='glyphicon glyphicon-circle-arrow-left']")
 	private WebElement backArrow;
@@ -304,62 +304,62 @@ public class ManageResource extends PSS2MenuPage {
 	}
 
 	public void disableLastQuestionRequired() throws InterruptedException {
-		IHGUtil.waitForElement(driver, 1, lastquestionRequiredtoggleClick);
-		commonMethods.highlightElement(lastquestionRequiredtoggleClick);
-		jse.executeScript("arguments[0].click();", lastquestionRequiredtogglebtn);
-		log("Status of Last Question Required after TURN OFF- " + lastquestionRequiredtogglebtn.isSelected());
-		while (lastquestionRequiredtogglebtn.isSelected() == true) {
-			jse.executeScript("arguments[0].click();", lastquestionRequiredtogglebtn);
+		IHGUtil.waitForElement(driver, 1, lastQuestionRequiredToggleClick);
+		commonMethods.highlightElement(lastQuestionRequiredToggleClick);
+		jse.executeScript("arguments[0].click();", lastQuestionRequiredTogglebtn);
+		log("Status of Last Question Required after TURN OFF- " + lastQuestionRequiredTogglebtn.isSelected());
+		while (lastQuestionRequiredTogglebtn.isSelected() == true) {
+			jse.executeScript("arguments[0].click();", lastQuestionRequiredTogglebtn);
 		}
 		jse.executeScript("window.scrollBy(0,1000)", "");
-		IHGUtil.waitForElement(driver, 3, bookaptSaveBtn);
-		commonMethods.highlightElement(bookaptSaveBtn);
-		bookaptSaveBtn.click();
+		IHGUtil.waitForElement(driver, 3, bookAptSaveBtn);
+		commonMethods.highlightElement(bookAptSaveBtn);
+		bookAptSaveBtn.click();
 		log("TURN OFF the Last Question Required toggle button as it was enable previously");
 	}
 
 	public void enableLastQuestionRequired() throws InterruptedException {
 
-		IHGUtil.waitForElement(driver, 1, lastquestionRequiredtoggleClick);
-		jse.executeScript("window.scrollBy(0,800)", "");
+		IHGUtil.waitForElement(driver, 1, lastQuestionRequiredToggleClick);
+		pageDown();
 
-		commonMethods.highlightElement(lastquestionRequiredtoggleClick);
-		jse.executeScript("arguments[0].click();", lastquestionRequiredtogglebtn);
-		log("Status of Last Question Required after TURN ON- " + lastquestionRequiredtogglebtn.isSelected());
+		commonMethods.highlightElement(lastQuestionRequiredToggleClick);
+		jse.executeScript("arguments[0].click();", lastQuestionRequiredTogglebtn);
+		log("Status of Last Question Required after TURN ON- " + lastQuestionRequiredTogglebtn.isSelected());
 
-		while (lastquestionRequiredtogglebtn.isSelected() == false) {
-			jse.executeScript("arguments[0].click();", lastquestionRequiredtogglebtn);
+		while (lastQuestionRequiredTogglebtn.isSelected() == false) {
+			jse.executeScript("arguments[0].click();", lastQuestionRequiredTogglebtn);
 		}
 		jse.executeScript("window.scrollBy(0,1000)", "");
-		IHGUtil.waitForElement(driver, 3, bookaptSaveBtn);
-		commonMethods.highlightElement(bookaptSaveBtn);
-		bookaptSaveBtn.click();
+		IHGUtil.waitForElement(driver, 3, bookAptSaveBtn);
+		commonMethods.highlightElement(bookAptSaveBtn);
+		bookAptSaveBtn.click();
 		log("TURN ON the Last Question Required toggle button as it was disabled previously");
 	}
 
 	public void enableLastQuestion() throws InterruptedException {
 
-		IHGUtil.waitForElement(driver, 1, lastquestionEnabletoggleClick);
-		jse.executeScript("window.scrollBy(0,800)", "");
+		IHGUtil.waitForElement(driver, 1, lastQuestionEnableToggleClick);
+		pageDown();
 
-		commonMethods.highlightElement(lastquestionEnabletoggleClick);
-		jse.executeScript("arguments[0].click();", lastquestionEnabletogglebtn);
-		log("Status of Last Question Enable after TURN ON- " + lastquestionEnabletogglebtn.isSelected());
+		commonMethods.highlightElement(lastQuestionEnableToggleClick);
+		jse.executeScript("arguments[0].click();", lastQuestionEnableTogglebtn);
+		log("Status of Last Question Enable after TURN ON- " + lastQuestionEnableTogglebtn.isSelected());
 
-		while (lastquestionEnabletogglebtn.isSelected() == false) {
-			jse.executeScript("arguments[0].click();", lastquestionEnabletogglebtn);
+		while (lastQuestionEnableTogglebtn.isSelected() == false) {
+			jse.executeScript("arguments[0].click();", lastQuestionEnableTogglebtn);
 		}
 		log("TURN ON the Last Question Enable toggle button as it was disabled previously");
 	}
 
-	public void pagedown() throws InterruptedException {
+	public void pageDown() throws InterruptedException {
 		Thread.sleep(1000);
 		// This will scroll down the page by 800 pixel vertical
 		jse.executeScript("window.scrollBy(0,800)");
 		Thread.sleep(1000);
 	}
 
-	public void pageup() throws InterruptedException {
+	public void pageUp() throws InterruptedException {
 		Thread.sleep(1000);
 		// This will scroll up the page by 600 pixel vertical
 		jse.executeScript("window.scrollBy(600,0)");
@@ -382,14 +382,14 @@ public class ManageResource extends PSS2MenuPage {
 
 	public boolean lastQuestionRequiredStatus() {
 
-		commonMethods.highlightElement(lastquestionRequiredtoggleClick);
-		boolean bool = lastquestionRequiredtogglebtn.isSelected();
+		commonMethods.highlightElement(lastQuestionRequiredToggleClick);
+		boolean bool = lastQuestionRequiredTogglebtn.isSelected();
 		return bool;
 	}
 
 	public boolean lastQuestionEnableStatus() {
-		commonMethods.highlightElement(lastquestionEnabletoggleClick);
-		boolean bool = lastquestionEnabletogglebtn.isSelected();
+		commonMethods.highlightElement(lastQuestionEnableToggleClick);
+		boolean bool = lastQuestionEnableTogglebtn.isSelected();
 		return bool;
 	}
 

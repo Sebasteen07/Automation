@@ -718,20 +718,20 @@ public class PSS2PatientPortalAcceptanceTests extends BaseTestNGWebDriver {
 		logStep("Test To Verify Last Question Required of on the confirmation screen Functionality");
 		PSSPropertyFileLoader propertyData = new PSSPropertyFileLoader();
 		Appointment testData = new Appointment();
-		AdminUser adminuser = new AdminUser();
+		AdminUser adminUser = new AdminUser();
 		
-		propertyData.setAdminNG(adminuser);
+		propertyData.setAdminNG(adminUser);
 		propertyData.setAppointmentResponseNG(testData);
-		adminuser.setLastQuestionMandatory(true);
+		adminUser.setLastQuestionMandatory(true);
 		
 		PSSPatientUtils psspatientutils = new PSSPatientUtils();
 		PSSAdminUtils adminUtils = new PSSAdminUtils();
 		
 		logStep("Login to PSS 2.0 Admin portal and do the seetings for Last Question Required");
-		adminUtils.lastQuestionEnable(driver, adminuser, testData, PSSConstants.LOGINLESS);
+		adminUtils.lastQuestionEnable(driver, adminUser, testData, PSSConstants.LOGINLESS);
 		
 		logStep("Fetch the rules set in Admin");
-		String rule = adminuser.getRule();
+		String rule = adminUser.getRule();
 		logStep("rule are " + rule);
 		rule = rule.replaceAll(" ", "");
 		
@@ -744,8 +744,7 @@ public class PSS2PatientPortalAcceptanceTests extends BaseTestNGWebDriver {
 
 		logStep("Patient details are as mentioned below-");
 		log("Demographic Details- "+testData.getFirstName()+" "+testData.getLastName()+" "+testData.getDob()+" "+testData.getGender()+" "+testData.getEmail()+" "+testData.getPrimaryNumber()+" "+testData.getZipCode());
-		Thread.sleep(3000);
-
+		
 		HomePage homepage = loginlessPatientInformation.fillNewPatientForm(testData.getFirstName(), testData.getLastName(), testData.getDob(), testData.getEmail(),
 				testData.getGender(), testData.getZipCode(), testData.getPrimaryNumber());
 		
@@ -760,20 +759,20 @@ public class PSS2PatientPortalAcceptanceTests extends BaseTestNGWebDriver {
 		logStep("Test To Verify Last Question Required of on the confirmation screen Functionality");
 		PSSPropertyFileLoader propertyData = new PSSPropertyFileLoader();
 		Appointment testData = new Appointment();
-		AdminUser adminuser = new AdminUser();
+		AdminUser adminUser = new AdminUser();
 		
-		propertyData.setAdminGE(adminuser);
+		propertyData.setAdminGE(adminUser);
 		propertyData.setAppointmentResponseGE(testData);
-		adminuser.setLastQuestionMandatory(true);
+		adminUser.setLastQuestionMandatory(true);
 		
 		PSSPatientUtils psspatientutils = new PSSPatientUtils();
 		PSSAdminUtils adminUtils = new PSSAdminUtils();
 		
 		logStep("Login to PSS 2.0 Admin portal and do the seetings for Last Question Required");
-		adminUtils.lastQuestionEnable(driver, adminuser, testData, PSSConstants.LOGINLESS);
+		adminUtils.lastQuestionEnable(driver, adminUser, testData, PSSConstants.LOGINLESS);
 		
 		logStep("Fetch the rules set in Admin");
-		String rule = adminuser.getRule();
+		String rule = adminUser.getRule();
 		logStep("rule are " + rule);
 		rule = rule.replaceAll(" ", "");
 		
@@ -786,8 +785,7 @@ public class PSS2PatientPortalAcceptanceTests extends BaseTestNGWebDriver {
 
 		logStep("Patient details are as mentioned below-");
 		log("Demographic Details- "+testData.getFirstName()+" "+testData.getLastName()+" "+testData.getDob()+" "+testData.getGender()+" "+testData.getEmail()+" "+testData.getPrimaryNumber()+" "+testData.getZipCode());
-		Thread.sleep(3000);
-
+		
 		HomePage homepage = loginlessPatientInformation.fillNewPatientForm(testData.getFirstName(), testData.getLastName(), testData.getDob(), testData.getEmail(),
 				testData.getGender(), testData.getZipCode(), testData.getPrimaryNumber());
 		
@@ -802,20 +800,20 @@ public class PSS2PatientPortalAcceptanceTests extends BaseTestNGWebDriver {
 		logStep("Test To Verify Last Question Required of on the confirmation screen Functionality");
 		PSSPropertyFileLoader propertyData = new PSSPropertyFileLoader();
 		Appointment testData = new Appointment();
-		AdminUser adminuser = new AdminUser();
+		AdminUser adminUser = new AdminUser();
 		
-		propertyData.setAdminAT(adminuser);
+		propertyData.setAdminAT(adminUser);
 		propertyData.setAppointmentResponseAT(testData);
-		adminuser.setLastQuestionMandatory(true);
+		adminUser.setLastQuestionMandatory(true);
 		
 		PSSPatientUtils psspatientutils = new PSSPatientUtils();
 		PSSAdminUtils adminUtils = new PSSAdminUtils();
 		
 		logStep("Login to PSS 2.0 Admin portal and do the seetings for Last Question Required");
-		adminUtils.lastQuestionEnable(driver, adminuser, testData, PSSConstants.LOGINLESS);
+		adminUtils.lastQuestionEnable(driver, adminUser, testData, PSSConstants.LOGINLESS);
 		
 		logStep("Fetch the rules set in Admin");
-		String rule = adminuser.getRule();
+		String rule = adminUser.getRule();
 		logStep("rule are " + rule);
 		rule = rule.replaceAll(" ", "");
 		
@@ -828,8 +826,7 @@ public class PSS2PatientPortalAcceptanceTests extends BaseTestNGWebDriver {
 
 		logStep("Patient details are as mentioned below-");
 		log("Demographic Details- "+testData.getFirstName()+" "+testData.getLastName()+" "+testData.getDob()+" "+testData.getGender()+" "+testData.getEmail()+" "+testData.getPrimaryNumber()+" "+testData.getZipCode());
-		Thread.sleep(3000);
-
+		
 		HomePage homepage = loginlessPatientInformation.fillNewPatientForm(testData.getFirstName(), testData.getLastName(), testData.getDob(), testData.getEmail(),
 				testData.getGender(), testData.getZipCode(), testData.getPrimaryNumber());
 		
@@ -844,9 +841,9 @@ public class PSS2PatientPortalAcceptanceTests extends BaseTestNGWebDriver {
 		logStep("Test To Verify Last Question Required of on the confirmation screen Functionality");
 		PSSPropertyFileLoader propertyData = new PSSPropertyFileLoader();
 		Appointment testData = new Appointment();
-		AdminUser adminuser = new AdminUser();
+		AdminUser adminUser = new AdminUser();
 		
-		propertyData.setAdminGW(adminuser);
+		propertyData.setAdminGW(adminUser);
 		propertyData.setAppointmentResponseGW(testData);
 		
 		
@@ -854,10 +851,10 @@ public class PSS2PatientPortalAcceptanceTests extends BaseTestNGWebDriver {
 		PSSAdminUtils adminUtils = new PSSAdminUtils();
 		
 		logStep("Login to PSS 2.0 Admin portal and do the seetings for Last Question Required");
-		adminUtils.lastQuestionEnable(driver, adminuser, testData, PSSConstants.LOGINLESS);
+		adminUtils.lastQuestionEnable(driver, adminUser, testData, PSSConstants.LOGINLESS);
 		
 		logStep("Fetch the rules set in Admin");
-		String rule = adminuser.getRule();
+		String rule = adminUser.getRule();
 		logStep("rule are " + rule);
 		rule = rule.replaceAll(" ", "");
 		
@@ -870,8 +867,7 @@ public class PSS2PatientPortalAcceptanceTests extends BaseTestNGWebDriver {
 
 		logStep("Patient details are as mentioned below-");
 		log("Demographic Details- "+testData.getFirstName()+" "+testData.getLastName()+" "+testData.getDob()+" "+testData.getGender()+" "+testData.getEmail()+" "+testData.getPrimaryNumber()+" "+testData.getZipCode());
-		Thread.sleep(3000);
-
+		
 		HomePage homepage = loginlessPatientInformation.fillNewPatientForm(testData.getFirstName(), testData.getLastName(), testData.getDob(), testData.getEmail(),
 				testData.getGender(), testData.getZipCode(), testData.getPrimaryNumber());
 		
@@ -886,19 +882,19 @@ public class PSS2PatientPortalAcceptanceTests extends BaseTestNGWebDriver {
 		logStep("Test To Verify Last Question Required of on the confirmation screen Functionality");
 		PSSPropertyFileLoader propertyData = new PSSPropertyFileLoader();
 		Appointment testData = new Appointment();
-		AdminUser adminuser = new AdminUser();
+		AdminUser adminUser = new AdminUser();
 		
-		propertyData.setAdminNG(adminuser);
+		propertyData.setAdminNG(adminUser);
 		propertyData.setAppointmentResponseNG(testData);
 		
 		PSSPatientUtils psspatientutils = new PSSPatientUtils();
 		PSSAdminUtils adminUtils = new PSSAdminUtils();
 		
 		logStep("Login to PSS 2.0 Admin portal and do the seetings for Last Question Required");
-		adminUtils.lastQuestionEnable(driver, adminuser, testData, PSSConstants.LOGINLESS);
+		adminUtils.lastQuestionEnable(driver, adminUser, testData, PSSConstants.LOGINLESS);
 		
 		logStep("Fetch the rules set in Admin");
-		String rule = adminuser.getRule();
+		String rule = adminUser.getRule();
 		logStep("rule are " + rule);
 		rule = rule.replaceAll(" ", "");
 		
@@ -932,19 +928,19 @@ public class PSS2PatientPortalAcceptanceTests extends BaseTestNGWebDriver {
 		logStep("Test To Verify Last Question Required of on the confirmation screen Functionality");
 		PSSPropertyFileLoader propertyData = new PSSPropertyFileLoader();
 		Appointment testData = new Appointment();
-		AdminUser adminuser = new AdminUser();
+		AdminUser adminUser = new AdminUser();
 		
-		propertyData.setAdminAT(adminuser);
+		propertyData.setAdminAT(adminUser);
 		propertyData.setAppointmentResponseAT(testData);
 		
 		PSSPatientUtils psspatientutils = new PSSPatientUtils();
 		PSSAdminUtils adminUtils = new PSSAdminUtils();
 		
 		logStep("Login to PSS 2.0 Admin portal and do the seetings for Last Question Required");
-		adminUtils.lastQuestionEnable(driver, adminuser, testData, PSSConstants.LOGINLESS);
+		adminUtils.lastQuestionEnable(driver, adminUser, testData, PSSConstants.LOGINLESS);
 		
 		logStep("Fetch the rules set in Admin");
-		String rule = adminuser.getRule();
+		String rule = adminUser.getRule();
 		logStep("rule are " + rule);
 		rule = rule.replaceAll(" ", "");
 		
@@ -973,19 +969,19 @@ public class PSS2PatientPortalAcceptanceTests extends BaseTestNGWebDriver {
 		logStep("Test To Verify Last Question Required of on the confirmation screen Functionality");
 		PSSPropertyFileLoader propertyData = new PSSPropertyFileLoader();
 		Appointment testData = new Appointment();
-		AdminUser adminuser = new AdminUser();
+		AdminUser adminUser = new AdminUser();
 		
-		propertyData.setAdminGE(adminuser);
+		propertyData.setAdminGE(adminUser);
 		propertyData.setAppointmentResponseGE(testData);
 		
 		PSSPatientUtils psspatientutils = new PSSPatientUtils();
 		PSSAdminUtils adminUtils = new PSSAdminUtils();
 		
 		logStep("Login to PSS 2.0 Admin portal and do the seetings for Last Question Required");
-		adminUtils.lastQuestionEnable(driver, adminuser, testData, PSSConstants.LOGINLESS);
+		adminUtils.lastQuestionEnable(driver, adminUser, testData, PSSConstants.LOGINLESS);
 		
 		logStep("Fetch the rules set in Admin");
-		String rule = adminuser.getRule();
+		String rule = adminUser.getRule();
 		logStep("rule are " + rule);
 		rule = rule.replaceAll(" ", "");
 		
@@ -1014,19 +1010,19 @@ public class PSS2PatientPortalAcceptanceTests extends BaseTestNGWebDriver {
 		logStep("Test To Verify Last Question Required of on the confirmation screen Functionality");
 		PSSPropertyFileLoader propertyData = new PSSPropertyFileLoader();
 		Appointment testData = new Appointment();
-		AdminUser adminuser = new AdminUser();
+		AdminUser adminUser = new AdminUser();
 		
-		propertyData.setAdminGW(adminuser);
+		propertyData.setAdminGW(adminUser);
 		propertyData.setAppointmentResponseGW(testData);
 		
 		PSSPatientUtils psspatientutils = new PSSPatientUtils();
 		PSSAdminUtils adminUtils = new PSSAdminUtils();
 		
 		logStep("Login to PSS 2.0 Admin portal and do the seetings for Last Question Required");
-		adminUtils.lastQuestionEnable(driver, adminuser, testData, PSSConstants.LOGINLESS);
+		adminUtils.lastQuestionEnable(driver, adminUser, testData, PSSConstants.LOGINLESS);
 		
 		logStep("Fetch the rules set in Admin");
-		String rule = adminuser.getRule();
+		String rule = adminUser.getRule();
 		logStep("rule are " + rule);
 		rule = rule.replaceAll(" ", "");
 		
@@ -1055,9 +1051,9 @@ public class PSS2PatientPortalAcceptanceTests extends BaseTestNGWebDriver {
 		logStep("Test To Verify Last Question Required of on the confirmation screen Functionality");
 		PSSPropertyFileLoader propertyData = new PSSPropertyFileLoader();
 		Appointment testData = new Appointment();
-		AdminUser adminuser = new AdminUser();
+		AdminUser adminUser = new AdminUser();
 		
-		propertyData.setAdminNG(adminuser);
+		propertyData.setAdminNG(adminUser);
 		propertyData.setAppointmentResponseNG(testData);
 		testData.setLastQuestionOptional(true);
 		
@@ -1065,10 +1061,10 @@ public class PSS2PatientPortalAcceptanceTests extends BaseTestNGWebDriver {
 		PSSAdminUtils adminUtils = new PSSAdminUtils();
 		
 		logStep("Login to PSS 2.0 Admin portal and do the seetings for Last Question Required");
-		adminUtils.lastQuestionEnable(driver, adminuser, testData, PSSConstants.LOGINLESS);
+		adminUtils.lastQuestionEnable(driver, adminUser, testData, PSSConstants.LOGINLESS);
 		
 		logStep("Fetch the rules set in Admin");
-		String rule = adminuser.getRule();
+		String rule = adminUser.getRule();
 		logStep("rule are " + rule);
 		rule = rule.replaceAll(" ", "");
 		
@@ -1097,9 +1093,9 @@ public class PSS2PatientPortalAcceptanceTests extends BaseTestNGWebDriver {
 		logStep("Test To Verify Last Question Required of on the confirmation screen Functionality");
 		PSSPropertyFileLoader propertyData = new PSSPropertyFileLoader();
 		Appointment testData = new Appointment();
-		AdminUser adminuser = new AdminUser();
+		AdminUser adminUser = new AdminUser();
 		
-		propertyData.setAdminNG(adminuser);
+		propertyData.setAdminNG(adminUser);
 		propertyData.setAppointmentResponseNG(testData);
 		testData.setLastQuestionOptional(true);
 		
@@ -1107,10 +1103,10 @@ public class PSS2PatientPortalAcceptanceTests extends BaseTestNGWebDriver {
 		PSSAdminUtils adminUtils = new PSSAdminUtils();
 		
 		logStep("Login to PSS 2.0 Admin portal and do the seetings for Last Question Required");
-		adminUtils.lastQuestionEnable(driver, adminuser, testData, PSSConstants.LOGINLESS);
+		adminUtils.lastQuestionEnable(driver, adminUser, testData, PSSConstants.LOGINLESS);
 		
 		logStep("Fetch the rules set in Admin");
-		String rule = adminuser.getRule();
+		String rule = adminUser.getRule();
 		logStep("rule are " + rule);
 		rule = rule.replaceAll(" ", "");
 		
@@ -1139,9 +1135,9 @@ public class PSS2PatientPortalAcceptanceTests extends BaseTestNGWebDriver {
 		logStep("Test To Verify Last Question Required of on the confirmation screen Functionality");
 		PSSPropertyFileLoader propertyData = new PSSPropertyFileLoader();
 		Appointment testData = new Appointment();
-		AdminUser adminuser = new AdminUser();
+		AdminUser adminUser = new AdminUser();
 		
-		propertyData.setAdminNG(adminuser);
+		propertyData.setAdminNG(adminUser);
 		propertyData.setAppointmentResponseNG(testData);
 		testData.setLastQuestionOptional(true);
 		
@@ -1149,10 +1145,10 @@ public class PSS2PatientPortalAcceptanceTests extends BaseTestNGWebDriver {
 		PSSAdminUtils adminUtils = new PSSAdminUtils();
 		
 		logStep("Login to PSS 2.0 Admin portal and do the seetings for Last Question Required");
-		adminUtils.lastQuestionEnable(driver, adminuser, testData, PSSConstants.LOGINLESS);
+		adminUtils.lastQuestionEnable(driver, adminUser, testData, PSSConstants.LOGINLESS);
 		
 		logStep("Fetch the rules set in Admin");
-		String rule = adminuser.getRule();
+		String rule = adminUser.getRule();
 		logStep("rule are " + rule);
 		rule = rule.replaceAll(" ", "");
 		
@@ -1181,9 +1177,9 @@ public class PSS2PatientPortalAcceptanceTests extends BaseTestNGWebDriver {
 		logStep("Test To Verify Last Question Required of on the confirmation screen Functionality");
 		PSSPropertyFileLoader propertyData = new PSSPropertyFileLoader();
 		Appointment testData = new Appointment();
-		AdminUser adminuser = new AdminUser();
+		AdminUser adminUser = new AdminUser();
 		
-		propertyData.setAdminNG(adminuser);
+		propertyData.setAdminNG(adminUser);
 		propertyData.setAppointmentResponseNG(testData);
 		testData.setLastQuestionOptional(true);
 		
@@ -1191,10 +1187,10 @@ public class PSS2PatientPortalAcceptanceTests extends BaseTestNGWebDriver {
 		PSSAdminUtils adminUtils = new PSSAdminUtils();
 		
 		logStep("Login to PSS 2.0 Admin portal and do the seetings for Last Question Required");
-		adminUtils.lastQuestionEnable(driver, adminuser, testData, PSSConstants.LOGINLESS);
+		adminUtils.lastQuestionEnable(driver, adminUser, testData, PSSConstants.LOGINLESS);
 		
 		logStep("Fetch the rules set in Admin");
-		String rule = adminuser.getRule();
+		String rule = adminUser.getRule();
 		logStep("rule are " + rule);
 		rule = rule.replaceAll(" ", "");
 		
