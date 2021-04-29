@@ -14,10 +14,10 @@ import com.medfusion.product.object.maps.pss2.page.util.CommonMethods;
 
 public class AdminPatientMatching extends SettingsTab {
 
-	@FindAll({@FindBy(xpath = "//patientmatch//div//div//div//div//table[@class=\"table table-hover\"]/tbody[1]/tr")})
+	@FindAll({@FindBy(xpath = "//*[@id=\"tab41\"]/patientmatch/div/div[2]/div/div/table/tbody/tr")})
 	private List<WebElement> patientMatchingList;
-
-	@FindBy(xpath = "//patientmatch//div//div[3]//div//button[@class='btn btn-primary' and @style='margin-right:10px']")
+	
+	@FindBy(xpath = "//div[@id='tab41']//button[@type='submit'][normalize-space()='Save']")
 	private WebElement saveBtnPAtientMatching;
 
 	@FindBy(xpath = "//a[@id='tab43-tab']")
@@ -68,26 +68,36 @@ public class AdminPatientMatching extends SettingsTab {
 		list.add("Sex assigned at birth");
 		list.add("Email Address");
 		log("List ------>" + list);
-		for (int i = 0; i < patientMatchingList.size(); i++) {
-			log("Size of patientMatchingList -- " + patientMatchingList.size());
+		log("Size of patientMatchingList -- " + patientMatchingList.size());
+		
+		for (int i = 4; i < patientMatchingList.size(); i++) {			
 			log("Value of i --> " + i);
 			WebElement toSelect = driver.findElement(By.xpath("//input[@id='pmm" + i + "']"));
-			WebElement label =
-					driver.findElement(By.xpath("//patientmatch//div//div//div//div//table[@class='table table-hover']/tbody[1]/tr[" + (i + 1) + "]/td[1]"));
+			WebElement searchCheckbox = driver.findElement(By.xpath("//input[@id='pmm" + i + "']/following-sibling::label"));
+			WebElement label = driver.findElement(By
+					.xpath("//*[@id=\"tab41\"]/patientmatch/div/div[2]/div/div/table/tbody/tr[" + (i + 1) + "]/td[1]"));
 			WebElement matchingCriteria = driver.findElement(By.xpath("//input[@id='pi" + i + "']"));
+			
 			String labelText = label.getText();
-			String valueOfSearch = toSelect.getAttribute("ng-reflect-model");
-			log("LABEL " + labelText + " " + valueOfSearch + "  " + "MATCHING CRITERIA " + matchingCriteria.getAttribute("ng-reflect-model"));
+			
+			boolean valueOfSearchStatus = toSelect.isSelected();
+			boolean matchingCriteriaStatus = matchingCriteria.isEnabled();
+			
+			log("LABEL " + labelText + " " + valueOfSearchStatus + "  " + "MATCHING CRITERIA "+ matchingCriteriaStatus);
 			log("-------");
 			if (list.contains(labelText)) {
 				log("Patient Matching Criteria is available in list and can be changed");
-				if (valueOfSearch.equalsIgnoreCase("false")) {
+
+				if (valueOfSearchStatus == false) {
+
 					commonMethods.highlightElement(toSelect);
 					Thread.sleep(1000);
-					jse.executeScript("arguments[0].click();", toSelect);
+					jse.executeScript("arguments[0].click();", searchCheckbox);
+					Thread.sleep(3000);
 					log("Patient Matching Criteria Added " + labelText);
-					log("LABEL " + labelText + " " + toSelect.getAttribute("ng-reflect-model") + "  " + "MATCHING CRITERIA "
-							+ matchingCriteria.getAttribute("ng-reflect-model"));
+					Thread.sleep(3000);
+					log("LABEL " + labelText + " Search Criteria->" + valueOfSearchStatus + " MATCHING CRITERIA-> "
+							+ matchingCriteriaStatus);
 				}
 			}
 		}

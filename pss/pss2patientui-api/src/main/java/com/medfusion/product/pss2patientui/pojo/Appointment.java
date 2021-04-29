@@ -97,14 +97,6 @@ public class Appointment {
 	private String linkProvider;
 	private String linkLocation;
 
-	public String getLinkLocation() {
-		return linkLocation;
-	}
-
-	public void setLinkLocation(String linkLocation) {
-		this.linkLocation = linkLocation;
-	}
-
 	private String ageRuleMonthFirst;
 	private String ageRuleMonthSecond;
 
@@ -138,11 +130,10 @@ public class Appointment {
 	private String apptid;
 	private String slotStartTime;
 	private String slotEndTime;
-	
-	
-	//for REST Assured
-    private String accessTokenURL;
-    private String accessToken;    
+
+	// for REST Assured
+	private String accessTokenURL;
+	private String accessToken;
 
 	private String urlAnonymousNG;
 	private boolean isAnonymousFlow = false;
@@ -156,8 +147,10 @@ public class Appointment {
 	private boolean isFutureApt = false;
 	private boolean pcptoggleState = false;
 
-	public Appointment(String providerConfig, String usernameConfig, String passwordConfig, String datetimeConfig, String locationConfig,
-			String appointmentConfig, String specialityConfig) {
+	private String timeMarkValue;
+
+	public Appointment(String providerConfig, String usernameConfig, String passwordConfig, String datetimeConfig,
+			String locationConfig, String appointmentConfig, String specialityConfig) {
 		this.username = usernameConfig;
 		this.password = passwordConfig;
 		this.provider = providerConfig;
@@ -167,7 +160,24 @@ public class Appointment {
 		this.speciality = specialityConfig;
 	}
 
-	public Appointment() {}
+	public Appointment() {
+	}
+
+	public String getTimeMarkValue() {
+		return timeMarkValue;
+	}
+
+	public void setTimeMarkValue(String timeMarkValue) {
+		this.timeMarkValue = timeMarkValue;
+	}
+
+	public String getLinkLocation() {
+		return linkLocation;
+	}
+
+	public void setLinkLocation(String linkLocation) {
+		this.linkLocation = linkLocation;
+	}
 		
 	public String getSlotStartTime() {
 		return slotStartTime;
