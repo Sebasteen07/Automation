@@ -365,4 +365,37 @@ public class PatientActivationPage extends BasePageObject {
 		
 	}
 
+	public void setInitialDetailsWithPatientId(int flag, String patientEmail,String patientIdString) throws IOException {
+		PropertyFileLoader testData=new PropertyFileLoader();
+		String firstNameString= "Automation"+ IHGUtil.createRandomNumericString();
+		String lastNameString = "Tester" + IHGUtil.createRandomNumericString();
+		IHGUtil.PrintMethodName();
+		log("New Random First Name is " + firstNameString);
+		firstName.sendKeys(firstNameString);
+		lastName.sendKeys(lastNameString);
+		male.click();
+		patientId.sendKeys(patientIdString);
+		setDOB(testData.getDOBMonthText(), testData.getDOBDay(),testData.getDOBYear());
+
+		log("New Random Email is " + patientEmail);
+		email.sendKeys(patientEmail);
+		confirmEmail.sendKeys(patientEmail);
+		zip.sendKeys(PracticeConstants.ZIP);
+
+		clickRegPatient();
+		clickVerify();
+		
+		if(flag==1) {
+		IHGUtil.waitForElement(driver, 10, unlockLink);
+		unlocklink = unlockLink.getText().trim();
+		assertTrue(!unlocklink.isEmpty(), "### ERROR: Couldn't get unlock link");
+		log("#### The unlock link exists and the link is:" + unlocklink);
+		
+		} else
+		{
+			log("Patient activation link is not present- Auto enrolled");
+		}
+		clickDone();
+	}
+
 }
