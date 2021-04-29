@@ -1,0 +1,431 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<testng-results skipped="0" failed="0" ignored="0" total="1" passed="1">
+  <reporter-output>
+    <line>
+      <![CDATA[<pre>
+testRoot: C:\Users\Java\Documents\qa-automation_development\qa-automation\payprovisioning-automation\MerchantProvisioningUI
+testConfigFile: null
+testResultVideos: C:\Users\Java\Documents\qa-automation_development\qa-automation\payprovisioning-automation\MerchantProvisioningUI\target\failsafe-reports\videos
+testResultScreenshots: C:\Users\Java\Documents\qa-automation_development\qa-automation\payprovisioning-automation\MerchantProvisioningUI\target\failsafe-reports\screenshots
+selenium.browser: chrome
+client os.type: windows
+clear.browser.cache: true
+enable.video.recording: true
+capture.screenshot: true
+reporting.full.stack.trace: false
+isJavascriptCaptureEnabled: false
+isProxyEnabled: false
+logger.level: null
+firefox.profile: null
+firefox.assumeUntrustedCertificateIssuer: true (default = false)
+firefox.acceptUntrustedCertificates: true (default = true)
+firefox.isenableNativeEventEnabled: false
+firefox.downloadable.mime.types: application/excel,application/x-excel,application/x-msexcel,application/vnd.ms-excel,text/comma-separated-values,application/csv,image/jpeg,text/csv,application/x-ofx,application/vnd.intu.qfx,application/vnd.intu.qbo
+firefox.download.location: C:\Users\Java\Documents\qa-automation_development\qa-automation\payprovisioning-automation\MerchantProvisioningUI\target\firefox-download
+</pre><br/>]]>
+    </line>
+    <line>
+      <![CDATA[Test case: navigatingToMerchantSearch<br/>]]>
+    </line>
+    <line>
+      <![CDATA[Execution Environment: DEV3<br/>]]>
+    </line>
+    <line>
+      <![CDATA[Execution Browser: chrome<br/>]]>
+    </line>
+    <line>
+      <![CDATA[Resetting step counter<br/>]]>
+    </line>
+    <line>
+      <![CDATA[Execution Environment: DEV3<br/>]]>
+    </line>
+    <line>
+      <![CDATA[Execution Browser: chrome<br/>]]>
+    </line>
+    <line>
+      <![CDATA[Getting Test Data<br/>]]>
+    </line>
+    <line>
+      <![CDATA[step 1: Navigating to Merchant provisioning<br/>]]>
+    </line>
+    <line>
+      <![CDATA[Loading login page<br/>]]>
+    </line>
+    <line>
+      <![CDATA[URL: http://d3-py-pay01.dev.medfusion.net/#/user/login<br/>]]>
+    </line>
+    <line>
+      <![CDATA[Checking all elements on LoginPage<br/>]]>
+    </line>
+    <line>
+      <![CDATA[Expected value: true Actual value: true - PASSED<br/>]]>
+    </line>
+    <line>
+      <![CDATA[step 2: Login into merchant provisioning<br/>]]>
+    </line>
+    <line>
+      <![CDATA[step 3: Navigating to search Merchant<br/>]]>
+    </line>
+    <line>
+      <![CDATA[Checking all elements on MerchantSearchPage<br/>]]>
+    </line>
+    <line>
+      <![CDATA[Expected value: true Actual value: true - PASSED<br/>]]>
+    </line>
+    <line>
+      <![CDATA[mmid = 2560791218<br/>]]>
+    </line>
+    <line>
+      <![CDATA[mmid = 2560808937<br/>]]>
+    </line>
+    <line>
+      <![CDATA[mmid = 2560809259<br/>]]>
+    </line>
+    <line>
+      <![CDATA[mmid = 2560809219<br/>]]>
+    </line>
+    <line>
+      <![CDATA[mmid = 2560809257<br/>]]>
+    </line>
+    <line>
+      <![CDATA[mmid = 2560809237<br/>]]>
+    </line>
+    <line>
+      <![CDATA[mmid = 2560805517<br/>]]>
+    </line>
+    <line>
+      <![CDATA[mmid = 2560805637<br/>]]>
+    </line>
+    <line>
+      <![CDATA[mmid = 2560797957<br/>]]>
+    </line>
+    <line>
+      <![CDATA[mmid = 2560809137<br/>]]>
+    </line>
+    <line>
+      <![CDATA[mmid = 2560799017<br/>]]>
+    </line>
+    <line>
+      <![CDATA[mmid = 2560795757<br/>]]>
+    </line>
+    <line>
+      <![CDATA[mmid = 2560805797<br/>]]>
+    </line>
+    <line>
+      <![CDATA[mmid = 2560805777<br/>]]>
+    </line>
+    <line>
+      <![CDATA[mmid = 2560805817<br/>]]>
+    </line>
+    <line>
+      <![CDATA[mmid = 2560808944<br/>]]>
+    </line>
+    <line>
+      <![CDATA[mmid = 2560806957<br/>]]>
+    </line>
+    <line>
+      <![CDATA[mmid = 2560807838<br/>]]>
+    </line>
+    <line>
+      <![CDATA[mmid = 2560808817<br/>]]>
+    </line>
+    <line>
+      <![CDATA[mmid = 2560806058<br/>]]>
+    </line>
+    <line>
+      <![CDATA[mmid = 2560806037<br/>]]>
+    </line>
+    <line>
+      <![CDATA[mmid = 2560808237<br/>]]>
+    </line>
+    <line>
+      <![CDATA[mmid = 2560807797<br/>]]>
+    </line>
+    <line>
+      <![CDATA[mmid = 2560807877<br/>]]>
+    </line>
+    <line>
+      <![CDATA[mmid = 2560800877<br/>]]>
+    </line>
+    <line>
+      <![CDATA[mmid = 2560805837<br/>]]>
+    </line>
+    <line>
+      <![CDATA[mmid = 2560805878<br/>]]>
+    </line>
+    <line>
+      <![CDATA[mmid = 2560805897<br/>]]>
+    </line>
+    <line>
+      <![CDATA[mmid = 2560805917<br/>]]>
+    </line>
+    <line>
+      <![CDATA[mmid = 2560805979<br/>]]>
+    </line>
+    <line>
+      <![CDATA[mmid = 2560806120<br/>]]>
+    </line>
+    <line>
+      <![CDATA[mmid = 2560806057<br/>]]>
+    </line>
+    <line>
+      <![CDATA[mmid = 2560806077<br/>]]>
+    </line>
+    <line>
+      <![CDATA[mmid = 2560805937<br/>]]>
+    </line>
+    <line>
+      <![CDATA[mmid = 2560806837<br/>]]>
+    </line>
+    <line>
+      <![CDATA[mmid = 2560798957<br/>]]>
+    </line>
+    <line>
+      <![CDATA[mmid = 2560806937<br/>]]>
+    </line>
+    <line>
+      <![CDATA[Assert valuefalse<br/>]]>
+    </line>
+    <line>
+      <![CDATA[TEST RESULT:<br/>]]>
+    </line>
+  </reporter-output>
+  <suite name="Default suite" duration-ms="14655" started-at="2021-04-29T16:50:16 IST" finished-at="2021-04-29T16:50:30 IST">
+    <groups>
+    </groups>
+    <test name="Default test" duration-ms="14655" started-at="2021-04-29T16:50:16 IST" finished-at="2021-04-29T16:50:30 IST">
+      <class name="provisioningtests.SearchMerchantTest">
+        <test-method status="PASS" signature="beforeSuite()[pri:0, instance:provisioningtests.SearchMerchantTest@29ba4338]" name="beforeSuite" is-config="true" duration-ms="58" started-at="2021-04-29T16:50:15 IST" finished-at="2021-04-29T16:50:16 IST">
+          <reporter-output>
+            <line>
+              <![CDATA[<pre>
+testRoot: C:\Users\Java\Documents\qa-automation_development\qa-automation\payprovisioning-automation\MerchantProvisioningUI
+testConfigFile: null
+testResultVideos: C:\Users\Java\Documents\qa-automation_development\qa-automation\payprovisioning-automation\MerchantProvisioningUI\target\failsafe-reports\videos
+testResultScreenshots: C:\Users\Java\Documents\qa-automation_development\qa-automation\payprovisioning-automation\MerchantProvisioningUI\target\failsafe-reports\screenshots
+selenium.browser: chrome
+client os.type: windows
+clear.browser.cache: true
+enable.video.recording: true
+capture.screenshot: true
+reporting.full.stack.trace: false
+isJavascriptCaptureEnabled: false
+isProxyEnabled: false
+logger.level: null
+firefox.profile: null
+firefox.assumeUntrustedCertificateIssuer: true (default = false)
+firefox.acceptUntrustedCertificates: true (default = true)
+firefox.isenableNativeEventEnabled: false
+firefox.downloadable.mime.types: application/excel,application/x-excel,application/x-msexcel,application/vnd.ms-excel,text/comma-separated-values,application/csv,image/jpeg,text/csv,application/x-ofx,application/vnd.intu.qfx,application/vnd.intu.qbo
+firefox.download.location: C:\Users\Java\Documents\qa-automation_development\qa-automation\payprovisioning-automation\MerchantProvisioningUI\target\firefox-download
+</pre><br/>]]>
+            </line>
+          </reporter-output>
+        </test-method> <!-- beforeSuite -->
+        <test-method status="PASS" signature="setUp()[pri:0, instance:provisioningtests.SearchMerchantTest@29ba4338]" name="setUp" is-config="true" duration-ms="2" started-at="2021-04-29T16:50:16 IST" finished-at="2021-04-29T16:50:16 IST">
+          <reporter-output>
+          </reporter-output>
+        </test-method> <!-- setUp -->
+        <test-method status="PASS" signature="testSetup(java.lang.reflect.Method)[pri:0, instance:provisioningtests.SearchMerchantTest@29ba4338]" name="testSetup" is-config="true" duration-ms="1915" started-at="2021-04-29T16:50:16 IST" finished-at="2021-04-29T16:50:17 IST">
+          <params>
+            <param index="0">
+              <value>
+                <![CDATA[public void provisioningtests.SearchMerchantTest.navigatingToMerchantSearch() throws java.io.IOException,java.lang.NullPointerException,java.lang.InterruptedException]]>
+              </value>
+            </param>
+          </params>
+          <reporter-output>
+            <line>
+              <![CDATA[Test case: navigatingToMerchantSearch<br/>]]>
+            </line>
+            <line>
+              <![CDATA[Execution Environment: DEV3<br/>]]>
+            </line>
+            <line>
+              <![CDATA[Execution Browser: chrome<br/>]]>
+            </line>
+            <line>
+              <![CDATA[Resetting step counter<br/>]]>
+            </line>
+          </reporter-output>
+        </test-method> <!-- testSetup -->
+        <test-method status="PASS" signature="logIntoMP()[pri:0, instance:provisioningtests.SearchMerchantTest@29ba4338]" name="logIntoMP" is-config="true" duration-ms="6937" started-at="2021-04-29T16:50:17 IST" finished-at="2021-04-29T16:50:24 IST">
+          <reporter-output>
+            <line>
+              <![CDATA[Execution Environment: DEV3<br/>]]>
+            </line>
+            <line>
+              <![CDATA[Execution Browser: chrome<br/>]]>
+            </line>
+            <line>
+              <![CDATA[Getting Test Data<br/>]]>
+            </line>
+            <line>
+              <![CDATA[step 1: Navigating to Merchant provisioning<br/>]]>
+            </line>
+            <line>
+              <![CDATA[Loading login page<br/>]]>
+            </line>
+            <line>
+              <![CDATA[URL: http://d3-py-pay01.dev.medfusion.net/#/user/login<br/>]]>
+            </line>
+            <line>
+              <![CDATA[Checking all elements on LoginPage<br/>]]>
+            </line>
+            <line>
+              <![CDATA[Expected value: true Actual value: true - PASSED<br/>]]>
+            </line>
+            <line>
+              <![CDATA[step 2: Login into merchant provisioning<br/>]]>
+            </line>
+          </reporter-output>
+        </test-method> <!-- logIntoMP -->
+        <test-method status="PASS" signature="navigatingToMerchantSearch()[pri:0, instance:provisioningtests.SearchMerchantTest@29ba4338]" name="navigatingToMerchantSearch" duration-ms="5011" started-at="2021-04-29T16:50:24 IST" finished-at="2021-04-29T16:50:29 IST">
+          <reporter-output>
+            <line>
+              <![CDATA[step 3: Navigating to search Merchant<br/>]]>
+            </line>
+            <line>
+              <![CDATA[Checking all elements on MerchantSearchPage<br/>]]>
+            </line>
+            <line>
+              <![CDATA[Expected value: true Actual value: true - PASSED<br/>]]>
+            </line>
+            <line>
+              <![CDATA[mmid = 2560791218<br/>]]>
+            </line>
+            <line>
+              <![CDATA[mmid = 2560808937<br/>]]>
+            </line>
+            <line>
+              <![CDATA[mmid = 2560809259<br/>]]>
+            </line>
+            <line>
+              <![CDATA[mmid = 2560809219<br/>]]>
+            </line>
+            <line>
+              <![CDATA[mmid = 2560809257<br/>]]>
+            </line>
+            <line>
+              <![CDATA[mmid = 2560809237<br/>]]>
+            </line>
+            <line>
+              <![CDATA[mmid = 2560805517<br/>]]>
+            </line>
+            <line>
+              <![CDATA[mmid = 2560805637<br/>]]>
+            </line>
+            <line>
+              <![CDATA[mmid = 2560797957<br/>]]>
+            </line>
+            <line>
+              <![CDATA[mmid = 2560809137<br/>]]>
+            </line>
+            <line>
+              <![CDATA[mmid = 2560799017<br/>]]>
+            </line>
+            <line>
+              <![CDATA[mmid = 2560795757<br/>]]>
+            </line>
+            <line>
+              <![CDATA[mmid = 2560805797<br/>]]>
+            </line>
+            <line>
+              <![CDATA[mmid = 2560805777<br/>]]>
+            </line>
+            <line>
+              <![CDATA[mmid = 2560805817<br/>]]>
+            </line>
+            <line>
+              <![CDATA[mmid = 2560808944<br/>]]>
+            </line>
+            <line>
+              <![CDATA[mmid = 2560806957<br/>]]>
+            </line>
+            <line>
+              <![CDATA[mmid = 2560807838<br/>]]>
+            </line>
+            <line>
+              <![CDATA[mmid = 2560808817<br/>]]>
+            </line>
+            <line>
+              <![CDATA[mmid = 2560806058<br/>]]>
+            </line>
+            <line>
+              <![CDATA[mmid = 2560806037<br/>]]>
+            </line>
+            <line>
+              <![CDATA[mmid = 2560808237<br/>]]>
+            </line>
+            <line>
+              <![CDATA[mmid = 2560807797<br/>]]>
+            </line>
+            <line>
+              <![CDATA[mmid = 2560807877<br/>]]>
+            </line>
+            <line>
+              <![CDATA[mmid = 2560800877<br/>]]>
+            </line>
+            <line>
+              <![CDATA[mmid = 2560805837<br/>]]>
+            </line>
+            <line>
+              <![CDATA[mmid = 2560805878<br/>]]>
+            </line>
+            <line>
+              <![CDATA[mmid = 2560805897<br/>]]>
+            </line>
+            <line>
+              <![CDATA[mmid = 2560805917<br/>]]>
+            </line>
+            <line>
+              <![CDATA[mmid = 2560805979<br/>]]>
+            </line>
+            <line>
+              <![CDATA[mmid = 2560806120<br/>]]>
+            </line>
+            <line>
+              <![CDATA[mmid = 2560806057<br/>]]>
+            </line>
+            <line>
+              <![CDATA[mmid = 2560806077<br/>]]>
+            </line>
+            <line>
+              <![CDATA[mmid = 2560805937<br/>]]>
+            </line>
+            <line>
+              <![CDATA[mmid = 2560806837<br/>]]>
+            </line>
+            <line>
+              <![CDATA[mmid = 2560798957<br/>]]>
+            </line>
+            <line>
+              <![CDATA[mmid = 2560806937<br/>]]>
+            </line>
+            <line>
+              <![CDATA[Assert valuefalse<br/>]]>
+            </line>
+          </reporter-output>
+        </test-method> <!-- navigatingToMerchantSearch -->
+        <test-method status="PASS" signature="postTestCase(org.testng.ITestResult)[pri:0, instance:provisioningtests.SearchMerchantTest@29ba4338]" name="postTestCase" is-config="true" duration-ms="759" started-at="2021-04-29T16:50:29 IST" finished-at="2021-04-29T16:50:30 IST">
+          <params>
+            <param index="0">
+              <value>
+                <![CDATA[[TestResult name=navigatingToMerchantSearch status=SUCCESS method=SearchMerchantTest.navigatingToMerchantSearch()[pri:0, instance:provisioningtests.SearchMerchantTest@29ba4338] output=step 3: Navigating to search Merchant<br/>]]]>
+              </value>
+            </param>
+          </params>
+          <reporter-output>
+            <line>
+              <![CDATA[TEST RESULT:<br/>]]>
+            </line>
+          </reporter-output>
+        </test-method> <!-- postTestCase -->
+        <test-method status="PASS" signature="tearDown()[pri:0, instance:provisioningtests.SearchMerchantTest@29ba4338]" name="tearDown" is-config="true" duration-ms="1" started-at="2021-04-29T16:50:30 IST" finished-at="2021-04-29T16:50:30 IST">
+          <reporter-output>
+          </reporter-output>
+        </test-method> <!-- tearDown -->
+      </class> <!-- provisioningtests.SearchMerchantTest -->
+    </test> <!-- Default test -->
+  </suite> <!-- Default suite -->
+</testng-results>
