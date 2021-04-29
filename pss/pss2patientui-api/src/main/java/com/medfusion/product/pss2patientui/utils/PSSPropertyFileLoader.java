@@ -57,7 +57,7 @@ public class PSSPropertyFileLoader {
 		appointValues.setEmaiSubject(property.getProperty("emaiSubject"));
 		appointValues.setFindInEmail(property.getProperty("findInEmail"));
 		appointValues.setRetries(property.getProperty("retries"));
-		appointValues.setIsAppointmentPopup(property.getProperty("isAppointmentPopup.GW"));
+		appointValues.setIsAppointmentPopup(property.getProperty("is.appointment.popup.gw"));
 		appointValues.setAppointmentScheduledFromPM(property.getProperty("appointmentScheduledAtPMGW"));
 		appointValues.setCancellationPolicyText(property.getProperty("cancellationPolicyTextGW"));
 		appointValues.setAppointmentList(property.getProperty("appointmentListGW"));
@@ -182,7 +182,7 @@ public class PSSPropertyFileLoader {
 		appointValues.setEmaiSubject(property.getProperty("emaiSubject"));
 		appointValues.setFindInEmail(property.getProperty("findInEmail"));
 		appointValues.setRetries(property.getProperty("retries"));
-		appointValues.setIsAppointmentPopup(property.getProperty("isAppointmentPopup.AT"));
+		appointValues.setIsAppointmentPopup(property.getProperty("is.appointment.popup.at"));
 		appointValues.setAppointmentScheduledFromPM(property.getProperty("appointmentScheduledAtPMAT"));
 		appointValues.setCancellationPolicyText(property.getProperty("cancellationPolicyTextAT"));
 		appointValues.setAppointmentList(property.getProperty("appointmentListAT"));
@@ -248,7 +248,7 @@ public class PSSPropertyFileLoader {
 		appointValues.setEmaiSubject(property.getProperty("emaiSubject"));
 		appointValues.setFindInEmail(property.getProperty("findInEmail"));
 		appointValues.setRetries(property.getProperty("retries"));
-		appointValues.setIsAppointmentPopup(property.getProperty("isAppointmentPopup.GE"));
+		appointValues.setIsAppointmentPopup(property.getProperty("is.appointment.popup.ge"));
 		appointValues.setAppointmentScheduledFromPM(property.getProperty("appointmentScheduledAtPMGE"));
 		appointValues.setCancellationPolicyText(property.getProperty("cancellationPolicyTextGE"));
 		appointValues.setAppointmentList(property.getProperty("appointmentListGE"));
@@ -325,7 +325,7 @@ public class PSSPropertyFileLoader {
 		appointValues.setEmaiSubject(property.getProperty("emaiSubject"));
 		appointValues.setFindInEmail(property.getProperty("findInEmail"));
 		appointValues.setRetries(property.getProperty("retries"));
-		appointValues.setIsAppointmentPopup(property.getProperty("isAppointmentPopup.NG"));
+		appointValues.setIsAppointmentPopup(property.getProperty("is.appointment.popup.ng"));
 		appointValues.setAppointmentScheduledFromPM(property.getProperty("appointmentScheduledAtPMNG"));
 		appointValues.setCancellationPolicyText(property.getProperty("cancellationPolicyTextNG"));
 		appointValues.setAppointmentList(property.getProperty("appointmentListNG"));

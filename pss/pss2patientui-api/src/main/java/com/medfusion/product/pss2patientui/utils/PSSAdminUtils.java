@@ -731,15 +731,15 @@ public class PSSAdminUtils {
 	}
 	public void timeMark(WebDriver driver, AdminUser adminUser, Appointment appointment) throws Exception
 	{
-		PSS2PracticeConfiguration psspracticeConfig = loginToAdminPortal(driver, adminUser);
-		psspracticeConfig = psspracticeConfig.gotoPracticeConfigTab();
-		PatientFlow patientFlow = psspracticeConfig.gotoPatientFlowTab();
+		PSS2PracticeConfiguration pssPracticeConfig = loginToAdminPortal(driver, adminUser);
+		pssPracticeConfig = pssPracticeConfig.gotoPracticeConfigTab();
+		PatientFlow patientFlow =pssPracticeConfig.gotoPatientFlowTab();
 		adminUser.setRule(patientFlow.getRule());
 		Log4jUtil.log("rule= " + patientFlow.getRule());
 		setRulesNoSpecialitySet1(patientFlow);
 		AdminPatientMatching adminPatientMatching = patientFlow.gotoPatientMatchingTab();
 		adminPatientMatching.patientMatchingSelection();
-		ManageResource manageResource = psspracticeConfig.gotoResource();
+		ManageResource manageResource = pssPracticeConfig.gotoResource();
 		pageRefresh(driver);
 		manageResource.selectResource(appointment.getProvider());
 		manageResource.selectAppointmenttype(appointment.getAppointmenttype());
