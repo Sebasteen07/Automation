@@ -169,5 +169,31 @@ public class PatientActivationSearchTest extends BaseTestNGWebDriver {
 
 		return unlockLink;
 }
+	public String getPatientActivationLinkWithPatientId(int flag, WebDriver driver,String doctorLogin, String doctorPassword, String url,String patientEmail,String patientId) throws Exception {
+		logStep("Login to Practice Portal");
+		PracticeLoginPage practiceLogin = new PracticeLoginPage(driver, url);
+		PracticeHomePage practiceHome = practiceLogin.login(doctorLogin, doctorPassword);
 
+		logStep("Click on Patient Search");
+		PatientSearchPage patientSearchPage = practiceHome.clickPatientSearchLink();
+
+		logStep("Click on Add new Patient");
+		PatientActivationPage patientActivationPage = patientSearchPage.clickOnAddNewPatient();
+
+		logStep("Enter all the details and click on Register");
+		patientActivationPage.setInitialDetailsWithPatientId(flag,patientEmail,patientId);
+
+		log("Moving to linkUrl to finish Create Patient procedure");
+		unlockLink = patientActivationPage.getUnlockLink();
+		log("Unlock link from practice portal is " +unlockLink);
+		firstNameString = patientActivationPage.getFirstNameString();
+		lastNameString = patientActivationPage.getLastNameString();
+		patientIdString = patientId;
+		zipCodeString = patientActivationPage.getZipCodeString();
+		emailAddressString = patientActivationPage.getEmailAddressString();
+
+		driver.switchTo().defaultContent();
+
+		return unlockLink;
+}
 }
