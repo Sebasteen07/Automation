@@ -2170,7 +2170,6 @@ public class PatientPortal2AcceptanceTests extends BaseTestNGWebDriver {
 	public void testAutoEnrollmentSamePatientid() throws Exception {
 		PropertyFileLoader testData = new PropertyFileLoader();
 		String firstPatientEmail = IHGUtil.createRandomEmailAddress(testData.getEmail(), '.');
-		//String secondPatientEmail= IHGUtil.createRandomEmailAddress(testData.getEmail(), '.');
 		String patientId= "SamePatientID" + IHGUtil.createRandomNumericString();
 
 		logStep("Patient Activation at First Practice Portal");
