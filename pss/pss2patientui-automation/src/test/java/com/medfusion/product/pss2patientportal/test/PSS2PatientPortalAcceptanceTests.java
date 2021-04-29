@@ -4927,7 +4927,7 @@ public class PSS2PatientPortalAcceptanceTests extends BaseTestNGWebDriver {
 				testData.getLastName(), testData.getDob(), testData.getEmail(), testData.getGender(),
 				testData.getZipCode(), testData.getPrimaryNumber());
 		homePage.btnStartSchedClick();
-		psspatientutils.timeMarkLTB(homePage, testData, driver);
+		psspatientutils.timeMarkLTBRule(homePage, testData, driver);
 
 	}
 	@Test(enabled = true, groups = {"AcceptanceTests"}, retryAnalyzer = RetryAnalyzer.class)
@@ -4956,7 +4956,7 @@ public class PSS2PatientPortalAcceptanceTests extends BaseTestNGWebDriver {
 				testData.getLastName(), testData.getDob(), testData.getEmail(), testData.getGender(),
 				testData.getZipCode(), testData.getPrimaryNumber());
 		homePage.btnStartSchedClick();
-		psspatientutils.timeMarkLTB(homePage, testData, driver);
+		psspatientutils.timeMarkLTBRule(homePage, testData, driver);
 
 	}
 	@Test(enabled = true, groups = {"AcceptanceTests"}, retryAnalyzer = RetryAnalyzer.class)
@@ -4985,7 +4985,7 @@ public class PSS2PatientPortalAcceptanceTests extends BaseTestNGWebDriver {
 				testData.getLastName(), testData.getDob(), testData.getEmail(), testData.getGender(),
 				testData.getZipCode(), testData.getPrimaryNumber());
 		homePage.btnStartSchedClick();
-		psspatientutils.timeMarkLTB(homePage, testData, driver);
+		psspatientutils.timeMarkLTBRule(homePage, testData, driver);
 
 	}
 	@Test(enabled = true, groups = {"AcceptanceTests"}, retryAnalyzer = RetryAnalyzer.class)
@@ -5014,7 +5014,7 @@ public class PSS2PatientPortalAcceptanceTests extends BaseTestNGWebDriver {
 				testData.getLastName(), testData.getDob(), testData.getEmail(), testData.getGender(),
 				testData.getZipCode(), testData.getPrimaryNumber());
 		homePage.btnStartSchedClick();
-		psspatientutils.timeMarkLTB(homePage, testData, driver);
+		psspatientutils.timeMarkLTBRule(homePage, testData, driver);
 
 	}
 }
