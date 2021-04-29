@@ -4318,7 +4318,7 @@ public class IntegrationPlatformRegressionTests extends BaseTestNGWebDriver {
 		String attachmentName = "TestResults_"+externalAttachmentID+".pdf";
 
 		log("attachmentName : "+attachmentName);
-		String attahcmentPayload = AttachmentPayload.getAttachmentPayload(AttchamenttestData, externalAttachmentID);
+		String attahcmentPayload = AttachmentPayload.getAttachmentPayload(AttchamenttestData,AMDCtestData, externalAttachmentID);
 		
 		logStep("Attachment Payload: " + attahcmentPayload);
 

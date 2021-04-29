@@ -2054,9 +2054,6 @@ public class PropertyFileLoader {
 		public String getPatientExternalIdAttachment() {
 			return property.getProperty("patient.externalId.attachment");
 			}
-		
-		public String getMessageAttachment() {
-			return property.getProperty("attacmentBody");
-		}
+
 		
 }

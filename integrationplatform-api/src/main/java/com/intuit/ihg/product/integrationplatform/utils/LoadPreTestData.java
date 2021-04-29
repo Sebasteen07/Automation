@@ -629,7 +629,6 @@ public class LoadPreTestData {
 
 		testData.RestUrl = propertyData.getRestUrlAttachment();
 		testData.PatientExternalId = propertyData.getPatientExternalIdAttachment();
-		testData.attachmentBytes = propertyData.getMessageAttachment();
 
 
 		return testData;
