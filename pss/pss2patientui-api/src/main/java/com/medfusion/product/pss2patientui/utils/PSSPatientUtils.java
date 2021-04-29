@@ -1731,12 +1731,12 @@ public class PSSPatientUtils extends BaseTestNGWebDriver{
 		return month;
 
 	}
-	public void timeMarkLTB(HomePage homePage, Appointment testData, WebDriver driver) throws InterruptedException
+	public void timeMarkLTBRule(HomePage homePage, Appointment testData, WebDriver driver) throws InterruptedException
 	{
 		Location location = null;
-		StartAppointmentInOrder startappointmentInOrder = null;
-		startappointmentInOrder = homePage.skipInsurance(driver);
-		location = startappointmentInOrder.selectFirstLocation(PSSConstants.START_LOCATION);
+		StartAppointmentInOrder startAppointmentInOrder = null;
+		startAppointmentInOrder = homePage.skipInsurance(driver);
+		location = startAppointmentInOrder.selectFirstLocation(PSSConstants.START_LOCATION);
 		log("Verfiy Location Page and location =" + testData.getLocation());
 		assertTrue(location.areBasicPageElementsPresent());
 		AppointmentPage appointment = location.selectAppointment(testData.getLocation());
