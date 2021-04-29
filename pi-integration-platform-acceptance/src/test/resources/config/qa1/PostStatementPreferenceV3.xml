@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<ns3:StatementPreferences xmlns:ns2="http://schema.medfusion.com/health/securePayments/v3" xmlns:ns3="http://schema.medfusion.com/statementPreferences/v3">
+    <StatementPreference>
+        <PracticePatientId>medfusiontesting172856872</PracticePatientId>
+        <MedfusionMemberId>1093349</MedfusionMemberId>
+        <Preferences>
+            <Preference>
+                <Name>STATEMENT_DELIVERY_PREF</Name>
+                <Value>BOTH</Value>
+            </Preference>
+        </Preferences>
+    </StatementPreference>
+</ns3:StatementPreferences>

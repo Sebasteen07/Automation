@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="UTF-8"?><ns4:Prescriptions xmlns:ns4="http://schema.medfusion.com/health/prescriptions/v3">
+     <Prescription id="f3fa9a1d-5fb7-45f7-bf84-262f5c92906e">
+        <Status>APPROVED</Status>
+        <CreatedDateTime>2021-02-16T06:53:13.037Z</CreatedDateTime>
+        <UpdatedDateTime>2021-02-16T06:53:13.037Z</UpdatedDateTime>
+        <PrescriptionRenewalRequest>
+            <From>mf.dev3.patient</From>
+            <To>6400c743-3e23-4501-9e0f-483a0a254819</To>
+            <RequestedProvider>325312015</RequestedProvider>
+            <RequestedLocation>288192020</RequestedLocation>
+            <PreferredInsurance>self</PreferredInsurance>
+            <Medication>
+		<MedicationRequestStatus>APPROVED</MedicationRequestStatus>
+                <MedicationName>Albuterol Sulfate (5 MG/ML) 0.5% Inhalation Nebulization Solution1613458345011</MedicationName>
+                <MedicationDosage>21</MedicationDosage>
+                <Quantity>3</Quantity>
+                <RefillNumber>12.00</RefillNumber>
+                <PrescriptionNumber>#12345</PrescriptionNumber>
+                <AdditionalInformation>New prescription request</AdditionalInformation>
+                <SigCodes>
+                    <SigCode>
+                        <SigCodeAbbreviation>QYLY</SigCodeAbbreviation>
+                        <SigCodeMeaning>QYLY Daily</SigCodeMeaning>
+                    </SigCode>
+                </SigCodes>
+            </Medication>
+		<Pharmacy>
+                <PharmacyName>PharmacyName</PharmacyName>
+                <PharmacyPhone>3216549870</PharmacyPhone>
+                </Pharmacy>
+        </PrescriptionRenewalRequest>
+	   <Communication messageId="f3fa9a1d-5fb7-45f7-bf84-262f5c92906e">
+            <From>6400c743-3e23-4501-9e0f-483a0a254819</From>
+            <To>mf.dev3.patient</To>
+            <Subject>Prescription Renewal</Subject>
+            <Sent>2021-02-16T06:53:13.037Z</Sent>
+            <MessageThreadId>f3fa9a1d-5fb7-45f7-bf84-262f5c92906e</MessageThreadId>
+            <AllowReply>true</AllowReply>
+            <Message>Dear PI Automation rsdk Integrated,&lt;br/&gt;&lt;br/&gt;I'm requesting a Prescription Renewal.&lt;br/&gt;&lt;br/&gt;Thanks,&lt;br&gt;Medfusion Dev3 Patient</Message>
+        </Communication>
+    </Prescription>
+</ns4:Prescriptions>
