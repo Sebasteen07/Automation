@@ -1003,20 +1003,20 @@ public class PSSPatientUtils extends BaseTestNGWebDriver{
 	}
 
 	public void appointmentToScheduledAnonymous(ConfirmationPage confirmationpage, Appointment testData) throws Exception {
-		Log4jUtil.log("Step 13: Verify if Appointment is scheduled and download ics file");
+		log("Step 13: Verify if Appointment is scheduled and download ics file");
 		assertTrue(confirmationpage.areBasicPageElementsPresent());
 		String aptScheduledAt = confirmationpage.getAppointmentDetails().get((confirmationpage.getAppointmentDetails().size() - 1)).getText();
-		Log4jUtil.log(">> " + aptScheduledAt);
+		log(">> " + aptScheduledAt);
 		for (WebElement ele : confirmationpage.getAppointmentDetails()) {
-			Log4jUtil.log("apt Details= " + ele.getText());
+			log("apt Details= " + ele.getText());
 		}
 		if(testData.isLastQuestionOptional() == true) {
 			confirmationpage.enterLastQuestion();
 		}
 		ScheduledAppointmentAnonymous scheduledAppointmentAnonymous = confirmationpage.appointmentConfirmedAnonymous();
-		Log4jUtil.log("appointment ID = " + scheduledAppointmentAnonymous.getAppointmentID());
+		log("appointment ID = " + scheduledAppointmentAnonymous.getAppointmentID());
 		assertTrue(scheduledAppointmentAnonymous.areBasicPageElementsPresent());
-		Log4jUtil.log("Add to calendar option is displayed and is clickable.");
+		log("Add to calendar option is displayed and is clickable.");
 		scheduledAppointmentAnonymous.downloadCalander();
 		Thread.sleep(2000);
 		readICSFile(filePath());
@@ -1736,44 +1736,44 @@ public class PSSPatientUtils extends BaseTestNGWebDriver{
 	}
 	
 	public void TLBLastQuestion(HomePage homepage, Appointment testData, WebDriver driver) throws Exception {
-		logStep("Select Appointment for appointment.");
+		log("Select Appointment for appointment.");
 		AppointmentPage appointment;
 		StartAppointmentInOrder startappointmentInOrder = null;
-		logStep("Insurance is Enabled " + testData.isIsinsuranceVisible());
-		logStep("startpage is Visible " + testData.isIsstartpointPresent());
+		log("Insurance is Enabled " + testData.isIsinsuranceVisible());
+		log("startpage is Visible " + testData.isIsstartpointPresent());
 		if (testData.isIsinsuranceVisible()) {
 			Thread.sleep(3500);
-			logStep("insurance is present on home Page going to skip insurance page");
+			log("insurance is present on home Page going to skip insurance page");
 			startappointmentInOrder = homepage.skipInsurance(driver);
 			if (testData.isIsstartpointPresent()) {
 
-				logStep("Starting point is present after insurance skipped ");
+				log("Starting point is present after insurance skipped ");
 				appointment = startappointmentInOrder.selectFirstAppointment(PSSConstants.START_APPOINTMENT);
-				logStep("Successfully clicked on  " + PSSConstants.START_APPOINTMENT);
+				log("Successfully clicked on  " + PSSConstants.START_APPOINTMENT);
 			} else {
 				appointment = homepage.appointmentpage();
-				logStep("Starting point not Present going to select next provider ");
+				log("Starting point not Present going to select next provider ");
 			}
 		}
 
 		else if (testData.isIsstartpointPresent()) {
 			startappointmentInOrder = homepage.startpage();
-			logStep("in else part  click on  " + PSSConstants.START_APPOINTMENT);
+			log("in else part  click on  " + PSSConstants.START_APPOINTMENT);
 			appointment = startappointmentInOrder.selectFirstAppointment(PSSConstants.START_APPOINTMENT);
-			logStep("clicked on Appointment ");
+			log("clicked on Appointment ");
 		} else {
-			logStep("Start point not present");
+			log("Start point not present");
 			appointment = homepage.appointmentpage();
 		}
-		logStep("Verfiy Appointment Page and appointment =" + testData.getAppointmenttype());
+		log("Verfiy Appointment Page and appointment =" + testData.getAppointmenttype());
 		assertTrue(appointment.areBasicPageElementsPresent());
 		Location location = appointment.selectTypeOfLocation(testData.getAppointmenttype(),
 				Boolean.valueOf(testData.getIsAppointmentPopup()));
-		logStep("Verfiy Location Page and location to be selected = " + testData.getLocation());
+		log("Verfiy Location Page and location to be selected = " + testData.getLocation());
 		assertTrue(location.areBasicPageElementsPresent());
 		Provider provider = location.searchProvider(testData.getLocation());
-		logStep("address = " + location.getAddressValue());
-		logStep("Verfiy Provider Page and Provider = " + testData.getProvider());
+		log("address = " + location.getAddressValue());
+		log("Verfiy Provider Page and Provider = " + testData.getProvider());
 		assertTrue(provider.areBasicPageElementsPresent());
 
 		AppointmentDateTime aptDateTime = provider.getProviderandClick(testData.getProvider());
@@ -1781,7 +1781,7 @@ public class PSSPatientUtils extends BaseTestNGWebDriver{
 		aptDateTime.selectFutureDate(testData.getIsNextDayBooking());
 
 		Thread.sleep(6000);
-		logStep("Verify Confirmation page and Scheduled page");
+		log("Verify Confirmation page and Scheduled page");
 		ConfirmationPage confirmationpage = aptDateTime.selectAppointmentDateTime(testData.getIsNextDayBooking());
 
 		assertTrue(confirmationpage.areBasicPageElementsPresent());
@@ -1793,10 +1793,10 @@ public class PSSPatientUtils extends BaseTestNGWebDriver{
 		}
 		confirmationpage.appointmentConfirmedAnonymous();
 
-		logStep("Verify the Error message when Last Question Required kept blank and try to book an appointment");
+		log("Verify the Error message when Last Question Required kept blank and try to book an appointment");
 		confirmationpage.validateLastQueReqErrorMsg();
 
-		logStep("Heading of last question is " + confirmationpage.getHeadingLastQuestin());
+		log("Heading of last question is " + confirmationpage.getHeadingLastQuestin());
 
 		confirmationpage.validateLengthLastQueReq();
 		appointmentToScheduledAnonymous(confirmationpage, testData);

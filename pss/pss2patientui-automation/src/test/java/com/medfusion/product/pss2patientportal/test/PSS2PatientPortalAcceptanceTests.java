@@ -737,8 +737,7 @@ public class PSS2PatientPortalAcceptanceTests extends BaseTestNGWebDriver {
 		
 		logStep("Login to PSS Appointment");
 		DismissPage dismissPage = new DismissPage(driver, testData.getUrlLoginLess());
-		Thread.sleep(1000);
-
+		
 		logStep("Clicked on Dismiss");
 		LoginlessPatientInformation loginlessPatientInformation = dismissPage.clickDismiss();
 
@@ -778,8 +777,7 @@ public class PSS2PatientPortalAcceptanceTests extends BaseTestNGWebDriver {
 		
 		logStep("Login to PSS Appointment");
 		DismissPage dismissPage = new DismissPage(driver, testData.getUrlLoginLess());
-		Thread.sleep(1000);
-
+	
 		logStep("Clicked on Dismiss");
 		LoginlessPatientInformation loginlessPatientInformation = dismissPage.clickDismiss();
 
@@ -819,8 +817,7 @@ public class PSS2PatientPortalAcceptanceTests extends BaseTestNGWebDriver {
 		
 		logStep("Login to PSS Appointment");
 		DismissPage dismissPage = new DismissPage(driver, testData.getUrlLoginLess());
-		Thread.sleep(1000);
-
+		
 		logStep("Clicked on Dismiss");
 		LoginlessPatientInformation loginlessPatientInformation = dismissPage.clickDismiss();
 
@@ -860,8 +857,7 @@ public class PSS2PatientPortalAcceptanceTests extends BaseTestNGWebDriver {
 		
 		logStep("Login to PSS Appointment");
 		DismissPage dismissPage = new DismissPage(driver, testData.getUrlLoginLess());
-		Thread.sleep(1000);
-
+		
 		logStep("Clicked on Dismiss");
 		LoginlessPatientInformation loginlessPatientInformation = dismissPage.clickDismiss();
 
