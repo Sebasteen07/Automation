@@ -4408,4 +4408,114 @@ public class IntegrationPlatformRegressionTests extends BaseTestNGWebDriver {
 		logStep("Validate message reply");
 		RestUtils.isReplyPresent(AMDCtestData.ResponsePath, messageIdentifier);
 }
+	@Test(enabled = true, groups = { "RegressionTests" }, retryAnalyzer = RetryAnalyzer.class)
+	public void testBulkAdminMessageWithAttachmentRefID() throws Exception {
+		log("Test Case: testBulkAdminMessageWithAttachmentRefID");
+		log("Execution Environment: " + IHGUtil.getEnvironmentType());
+		log("Execution Browser: " + TestConfig.getBrowserType());
+
+		logStep("Get TestData from both Property files Bulk Admin and Attachment");
+		
+		LoadPreTestData LoadPreTestDataObj = new LoadPreTestData();
+		
+		Attachment AttchamenttestData = new Attachment();
+		LoadPreTestDataObj.loadAttachmentDataFromProperty(AttchamenttestData);
+		
+		BulkAdmin BulkMessagetestData = new BulkAdmin();
+		LoadPreTestDataObj.loadDataFromPropertyBulk(BulkMessagetestData);
+		
+		AMDC testData = new AMDC();
+		LoadPreTestDataObj.loadAMDCDataFromProperty(testData);
+	
+		logStep("Setup Oauth client");
+		RestUtils.oauthSetup(BulkMessagetestData.OAuthKeyStore, BulkMessagetestData.OAuthProperty, BulkMessagetestData.OAuthAppToken,
+				BulkMessagetestData.OAuthUsername, BulkMessagetestData.OAuthPassword);
+
+		logStep("Prepare Attachemnt Payload");
+		AttachmentPayload AttachmentObj = new AttachmentPayload();
+		
+		String externalAttachmentID = PharmacyPayload.randomNumbers(14);
+		log("externalAttachmentID posted is : " + externalAttachmentID);
+		String attachmentName = "TestResults_"+externalAttachmentID+".pdf";
+
+		log("attachmentName : "+attachmentName);
+		String attahcmentPayload = AttachmentPayload.getAttachmentPayload(AttchamenttestData,testData, externalAttachmentID);
+		
+		log("Attachment Payload: " + attahcmentPayload);
+
+		logStep("Do Attachment Post Request");
+		log("ResponsePath: " + BulkMessagetestData.ResponsePath);
+		
+		RestUtils.setupHttpPostRequest(AttchamenttestData.RestUrl, attahcmentPayload,
+				BulkMessagetestData.ResponsePath);
+
+		String attachmentRefId = RestUtils.getAttachmentRefId(BulkMessagetestData.ResponsePath);
+		
+		log("Attachment Ref ID : "+attachmentRefId);
+	
+		String messageID = BulkMessagePayload.messageId;
+		log("Partner Message ID:" + messageID);
+		logStep("Fill Message data");
+		String message = BulkMessagePayload.getBulkMessageAttachmentPayload(BulkMessagetestData, attachmentRefId);
+		log("message xml : " + message);
+		logStep("Do Message Post Request");
+		log("ResponsePath:- " + BulkMessagetestData.ResponsePath);
+		String processingUrl = RestUtils.setupHttpPostRequest(BulkMessagetestData.RestV3Url, message, BulkMessagetestData.ResponsePath);
+		logStep("Get processing status until it is completed");
+		boolean completed = false;
+		for (int i = 0; i < 3; i++) {
+			// wait 10 seconds so the message can be processed
+			Thread.sleep(60000);
+			RestUtils.setupHttpGetRequest(processingUrl, BulkMessagetestData.ResponsePath);
+			if (RestUtils.isMessageProcessingCompleted(BulkMessagetestData.ResponsePath)) {
+				completed = true;
+				break;
+			}
+		}
+		assertTrue(completed == true, "Message processing was not completed in time");
+	
+		log("testData.MaxPatients : " + BulkMessagetestData.MaxPatients);
+
+		for (int i = 1; i <= Integer.parseInt(BulkMessagetestData.MaxPatients); i++) {
+			// Loop through different patients email and login to view the message.
+			log("Patient is - " + BulkMessagetestData.PatientsUserNameArray[i - 1]);
+			String subject = "New message from PI Automation rsdk Integrated";
+			logStep("Check secure message in patient Email inbox");
+
+			String link = "";
+			Mailinator mail = new Mailinator();
+			String email = BulkMessagetestData.PatientEmailArray[i - 1];
+			String messageLink = "Sign in to view this message";
+			link = mail.getLinkFromEmail(email, subject, messageLink, 20);
+
+			link = link.replace("login?redirectoptout=true", "login");
+			logStep("Login to Patient Portal");
+			log("Link is " + link);
+			JalapenoLoginPage loginPage = new JalapenoLoginPage(driver, link);
+			JalapenoHomePage homePage = loginPage.login(BulkMessagetestData.PatientsUserNameArray[i - 1],
+					BulkMessagetestData.PatientsPasswordArray[i - 1]);
+
+			Thread.sleep(5000);
+			log("Detecting if Home Page is opened");
+			assertTrue(homePage.isHomeButtonPresent(driver));
+			logStep("Click on messages solution");
+			JalapenoMessagesPage messagesPage = homePage.showMessages(driver);
+			assertTrue(messagesPage.areBasicPageElementsPresent(), "Inbox failed to load properly.");
+			long epoch = System.currentTimeMillis() / 1000;
+
+			logStep("Find message in Inbox");
+			
+			String messageIdentifier = BulkMessagePayload.subject;
+			log("message subject " + messageIdentifier);
+			log("Log the message read time ");
+			logStep("Validate message loads and is the right message");
+			assertTrue(messagesPage.isMessageDisplayed(driver, messageIdentifier));
+			
+			logStep("Check if attachment is present or not");
+			messagesPage.validateSecureMessageAttachment(attachmentName);
+			logStep("Logout");
+			homePage.clickOnLogout();
+		}
+	}
+
 }
