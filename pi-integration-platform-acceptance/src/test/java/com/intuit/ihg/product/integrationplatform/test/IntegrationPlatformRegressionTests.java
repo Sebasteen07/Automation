@@ -4416,75 +4416,75 @@ public class IntegrationPlatformRegressionTests extends BaseTestNGWebDriver {
 
 		logStep("Get TestData from both Property files Bulk Admin and Attachment");
 		
-		LoadPreTestData LoadPreTestDataObj = new LoadPreTestData();
+		LoadPreTestData loadPreTestDataObj = new LoadPreTestData();
 		
-		Attachment AttchamenttestData = new Attachment();
-		LoadPreTestDataObj.loadAttachmentDataFromProperty(AttchamenttestData);
+		Attachment attchamentTestData = new Attachment();
+		loadPreTestDataObj.loadAttachmentDataFromProperty(attchamentTestData);
 		
-		BulkAdmin BulkMessagetestData = new BulkAdmin();
-		LoadPreTestDataObj.loadDataFromPropertyBulk(BulkMessagetestData);
+		BulkAdmin bulkMessageTestData = new BulkAdmin();
+		loadPreTestDataObj.loadDataFromPropertyBulk(bulkMessageTestData);
 		
 		AMDC testData = new AMDC();
-		LoadPreTestDataObj.loadAMDCDataFromProperty(testData);
+		loadPreTestDataObj.loadAMDCDataFromProperty(testData);
 	
 		logStep("Setup Oauth client");
-		RestUtils.oauthSetup(BulkMessagetestData.OAuthKeyStore, BulkMessagetestData.OAuthProperty, BulkMessagetestData.OAuthAppToken,
-				BulkMessagetestData.OAuthUsername, BulkMessagetestData.OAuthPassword);
+		RestUtils.oauthSetup(bulkMessageTestData.OAuthKeyStore, bulkMessageTestData.OAuthProperty, bulkMessageTestData.OAuthAppToken,
+				bulkMessageTestData.OAuthUsername, bulkMessageTestData.OAuthPassword);
 
 		logStep("Prepare Attachemnt Payload");
-		AttachmentPayload AttachmentObj = new AttachmentPayload();
+		AttachmentPayload attachmentObj = new AttachmentPayload();
 		
 		String externalAttachmentID = PharmacyPayload.randomNumbers(14);
 		log("externalAttachmentID posted is : " + externalAttachmentID);
 		String attachmentName = "TestResults_"+externalAttachmentID+".pdf";
 
 		log("attachmentName : "+attachmentName);
-		String attahcmentPayload = AttachmentPayload.getAttachmentPayload(AttchamenttestData,testData, externalAttachmentID);
+		String attahcmentPayload = AttachmentPayload.getAttachmentPayload(attchamentTestData,testData, externalAttachmentID);
 		
 		log("Attachment Payload: " + attahcmentPayload);
 
 		logStep("Do Attachment Post Request");
-		log("ResponsePath: " + BulkMessagetestData.ResponsePath);
+		log("ResponsePath: " + bulkMessageTestData.ResponsePath);
 		
-		RestUtils.setupHttpPostRequest(AttchamenttestData.RestUrl, attahcmentPayload,
-				BulkMessagetestData.ResponsePath);
+		RestUtils.setupHttpPostRequest(attchamentTestData.RestUrl, attahcmentPayload,
+				bulkMessageTestData.ResponsePath);
 
-		String attachmentRefId = RestUtils.getAttachmentRefId(BulkMessagetestData.ResponsePath);
+		String attachmentRefId = RestUtils.getAttachmentRefId(bulkMessageTestData.ResponsePath);
 		
 		log("Attachment Ref ID : "+attachmentRefId);
 	
 		String messageID = BulkMessagePayload.messageId;
 		log("Partner Message ID:" + messageID);
 		logStep("Fill Message data");
-		String message = BulkMessagePayload.getBulkMessageAttachmentPayload(BulkMessagetestData, attachmentRefId);
+		String message = BulkMessagePayload.getBulkMessageAttachmentPayload(bulkMessageTestData, attachmentRefId);
 		log("message xml : " + message);
 		logStep("Do Message Post Request");
-		log("ResponsePath:- " + BulkMessagetestData.ResponsePath);
-		String processingUrl = RestUtils.setupHttpPostRequest(BulkMessagetestData.RestV3Url, message, BulkMessagetestData.ResponsePath);
+		log("ResponsePath:- " + bulkMessageTestData.ResponsePath);
+		String processingUrl = RestUtils.setupHttpPostRequest(bulkMessageTestData.RestV3Url, message, bulkMessageTestData.ResponsePath);
 		logStep("Get processing status until it is completed");
 		boolean completed = false;
 		for (int i = 0; i < 3; i++) {
 			// wait 10 seconds so the message can be processed
 			Thread.sleep(60000);
-			RestUtils.setupHttpGetRequest(processingUrl, BulkMessagetestData.ResponsePath);
-			if (RestUtils.isMessageProcessingCompleted(BulkMessagetestData.ResponsePath)) {
+			RestUtils.setupHttpGetRequest(processingUrl, bulkMessageTestData.ResponsePath);
+			if (RestUtils.isMessageProcessingCompleted(bulkMessageTestData.ResponsePath)) {
 				completed = true;
 				break;
 			}
 		}
 		assertTrue(completed == true, "Message processing was not completed in time");
 	
-		log("testData.MaxPatients : " + BulkMessagetestData.MaxPatients);
+		log("testData.MaxPatients : " + bulkMessageTestData.MaxPatients);
 
-		for (int i = 1; i <= Integer.parseInt(BulkMessagetestData.MaxPatients); i++) {
+		for (int i = 1; i <= Integer.parseInt(bulkMessageTestData.MaxPatients); i++) {
 			// Loop through different patients email and login to view the message.
-			log("Patient is - " + BulkMessagetestData.PatientsUserNameArray[i - 1]);
+			log("Patient is - " + bulkMessageTestData.PatientsUserNameArray[i - 1]);
 			String subject = "New message from PI Automation rsdk Integrated";
 			logStep("Check secure message in patient Email inbox");
 
 			String link = "";
 			Mailinator mail = new Mailinator();
-			String email = BulkMessagetestData.PatientEmailArray[i - 1];
+			String email = bulkMessageTestData.PatientEmailArray[i - 1];
 			String messageLink = "Sign in to view this message";
 			link = mail.getLinkFromEmail(email, subject, messageLink, 20);
 
@@ -4492,8 +4492,8 @@ public class IntegrationPlatformRegressionTests extends BaseTestNGWebDriver {
 			logStep("Login to Patient Portal");
 			log("Link is " + link);
 			JalapenoLoginPage loginPage = new JalapenoLoginPage(driver, link);
-			JalapenoHomePage homePage = loginPage.login(BulkMessagetestData.PatientsUserNameArray[i - 1],
-					BulkMessagetestData.PatientsPasswordArray[i - 1]);
+			JalapenoHomePage homePage = loginPage.login(bulkMessageTestData.PatientsUserNameArray[i - 1],
+					bulkMessageTestData.PatientsPasswordArray[i - 1]);
 
 			Thread.sleep(5000);
 			log("Detecting if Home Page is opened");
