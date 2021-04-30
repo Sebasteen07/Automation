@@ -30,12 +30,10 @@ public class GatewayProxyDigitalWalletTests extends GatewayProxyBaseTest{
 	  JsonPath jsonpath = new JsonPath(response.asString());
 	  
 	  Assert.assertTrue(!jsonpath.get("externalWalletId").toString().isEmpty());
-	  Assert.assertTrue(!jsonpath.get("walletCards[0].externalCardId").toString().
-	  isEmpty());
+	  Assert.assertTrue(!jsonpath.get("walletCards[0].externalCardId").toString().isEmpty());
 	  Assert.assertEquals("VI-1111-1226",jsonpath.get("walletCards[0].cardAlias"));
 	  
-	  DigitalWalletUtils.saveWalletDetails(jsonpath.get("externalWalletId").
-	  toString(),jsonpath.get("walletCards[0].externalCardId").toString());
+	  DigitalWalletUtils.saveWalletDetails(jsonpath.get("externalWalletId").toString(),jsonpath.get("walletCards[0].externalCardId").toString());
 	  
 	  }	 
 	  
