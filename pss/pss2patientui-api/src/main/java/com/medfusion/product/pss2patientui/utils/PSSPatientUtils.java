@@ -1003,7 +1003,7 @@ public class PSSPatientUtils extends BaseTestNGWebDriver{
 	}
 
 	public void appointmentToScheduledAnonymous(ConfirmationPage confirmationpage, Appointment testData) throws Exception {
-		log("Step 13: Verify if Appointment is scheduled and download ics file");
+		log("Verify if Appointment is scheduled and download ics file");
 		assertTrue(confirmationpage.areBasicPageElementsPresent());
 		String aptScheduledAt = confirmationpage.getAppointmentDetails().get((confirmationpage.getAppointmentDetails().size() - 1)).getText();
 		log(">> " + aptScheduledAt);
@@ -1765,26 +1765,22 @@ public class PSSPatientUtils extends BaseTestNGWebDriver{
 			log("Start point not present");
 			appointment = homepage.appointmentpage();
 		}
-		log("Verfiy Appointment Page and appointment =" + testData.getAppointmenttype());
-		assertTrue(appointment.areBasicPageElementsPresent());
+		log("Appointment to be selected =" + testData.getAppointmenttype());		
 		Location location = appointment.selectTypeOfLocation(testData.getAppointmenttype(),
 				Boolean.valueOf(testData.getIsAppointmentPopup()));
-		log("Verfiy Location Page and location to be selected = " + testData.getLocation());
-		assertTrue(location.areBasicPageElementsPresent());
+		log("Location to be selected = " + testData.getLocation());
+		
 		Provider provider = location.searchProvider(testData.getLocation());
 		log("address = " + location.getAddressValue());
-		log("Verfiy Provider Page and Provider = " + testData.getProvider());
-		assertTrue(provider.areBasicPageElementsPresent());
+		log("Provider  to be selected = " + testData.getProvider());	
 
 		AppointmentDateTime aptDateTime = provider.getProviderandClick(testData.getProvider());
-		assertTrue(aptDateTime.areBasicPageElementsPresent());
+
 		aptDateTime.selectFutureDate(testData.getIsNextDayBooking());
 
 		Thread.sleep(6000);
 		log("Verify Confirmation page and Scheduled page");
 		ConfirmationPage confirmationPage = aptDateTime.selectAppointmentDateTime(testData.getIsNextDayBooking());
-
-		assertTrue(confirmationPage.areBasicPageElementsPresent());
 		String aptScheduledAt = confirmationPage.getAppointmentDetails()
 				.get((confirmationPage.getAppointmentDetails().size() - 1)).getText();
 		log(">> " + aptScheduledAt);

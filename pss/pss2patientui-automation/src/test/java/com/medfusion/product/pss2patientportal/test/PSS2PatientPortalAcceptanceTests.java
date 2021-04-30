@@ -715,7 +715,7 @@ public class PSS2PatientPortalAcceptanceTests extends BaseTestNGWebDriver {
 	
 	@Test(enabled = true, groups = {"AcceptanceTests"}, retryAnalyzer = RetryAnalyzer.class)
 	public void testLastQuestionRequiredNG() throws Exception {
-		log("Test To Verify Last Question Required of on the confirmation screen Functionality");
+		
 		PSSPropertyFileLoader propertyData = new PSSPropertyFileLoader();
 		Appointment testData = new Appointment();
 		AdminUser adminUser = new AdminUser();
@@ -724,7 +724,7 @@ public class PSS2PatientPortalAcceptanceTests extends BaseTestNGWebDriver {
 		propertyData.setAppointmentResponseNG(testData);
 		adminUser.setLastQuestionMandatory(true);
 		
-		PSSPatientUtils psspatientutils = new PSSPatientUtils();
+		PSSPatientUtils pssPatientUtils = new PSSPatientUtils();
 		PSSAdminUtils adminUtils = new PSSAdminUtils();
 		
 		logStep("Login to PSS 2.0 Admin portal and do the seetings for Last Question Required");
@@ -732,7 +732,7 @@ public class PSS2PatientPortalAcceptanceTests extends BaseTestNGWebDriver {
 		
 		logStep("Fetch the rules set in Admin");
 		String rule = adminUser.getRule();
-		logStep("rule are " + rule);
+		log("rule are " + rule);
 		rule = rule.replaceAll(" ", "");
 		
 		logStep("Login to PSS Appointment");
@@ -747,15 +747,15 @@ public class PSS2PatientPortalAcceptanceTests extends BaseTestNGWebDriver {
 		HomePage homepage = loginlessPatientInformation.fillNewPatientForm(testData.getFirstName(), testData.getLastName(), testData.getDob(), testData.getEmail(),
 				testData.getGender(), testData.getZipCode(), testData.getPrimaryNumber());
 		
-		log("Start booking an appointment in PSS---> PATIENT UI STEPS ");
+		logStep("Start booking an appointment in PSS---> PATIENT UI STEPS ");
 		homepage.btnStartSchedClick();
-		psspatientutils.TLBLastQuestion(homepage, testData, driver);
+		pssPatientUtils.TLBLastQuestion(homepage, testData, driver);
 		
 	}
 
 	@Test(enabled = true, groups = {"AcceptanceTests"}, retryAnalyzer = RetryAnalyzer.class)
 	public void testLastQuestionRequiredGE() throws Exception {
-		log("Test To Verify Last Question Required of on the confirmation screen Functionality");
+		
 		PSSPropertyFileLoader propertyData = new PSSPropertyFileLoader();
 		Appointment testData = new Appointment();
 		AdminUser adminUser = new AdminUser();
@@ -764,7 +764,7 @@ public class PSS2PatientPortalAcceptanceTests extends BaseTestNGWebDriver {
 		propertyData.setAppointmentResponseGE(testData);
 		adminUser.setLastQuestionMandatory(true);
 		
-		PSSPatientUtils psspatientutils = new PSSPatientUtils();
+		PSSPatientUtils pssPatientUtils = new PSSPatientUtils();
 		PSSAdminUtils adminUtils = new PSSAdminUtils();
 		
 		logStep("Login to PSS 2.0 Admin portal and do the seetings for Last Question Required");
@@ -772,7 +772,7 @@ public class PSS2PatientPortalAcceptanceTests extends BaseTestNGWebDriver {
 		
 		logStep("Fetch the rules set in Admin");
 		String rule = adminUser.getRule();
-		logStep("rule are " + rule);
+		log("rule are " + rule);
 		rule = rule.replaceAll(" ", "");
 		
 		logStep("Login to PSS Appointment");
@@ -787,15 +787,15 @@ public class PSS2PatientPortalAcceptanceTests extends BaseTestNGWebDriver {
 		HomePage homepage = loginlessPatientInformation.fillNewPatientForm(testData.getFirstName(), testData.getLastName(), testData.getDob(), testData.getEmail(),
 				testData.getGender(), testData.getZipCode(), testData.getPrimaryNumber());
 		
-		log("Start booking an appointment in PSS---> PATIENT UI STEPS ");
+		logStep("Start booking an appointment in PSS---> PATIENT UI STEPS ");
 		homepage.btnStartSchedClick();
-		psspatientutils.TLBLastQuestion(homepage, testData, driver);
+		pssPatientUtils.TLBLastQuestion(homepage, testData, driver);
 		
 	}
 	
 	@Test(enabled = true, groups = {"AcceptanceTests"}, retryAnalyzer = RetryAnalyzer.class)
 	public void testLastQuestionRequiredAT() throws Exception {
-		log("Test To Verify Last Question Required of on the confirmation screen Functionality");
+		
 		PSSPropertyFileLoader propertyData = new PSSPropertyFileLoader();
 		Appointment testData = new Appointment();
 		AdminUser adminUser = new AdminUser();
@@ -804,7 +804,7 @@ public class PSS2PatientPortalAcceptanceTests extends BaseTestNGWebDriver {
 		propertyData.setAppointmentResponseAT(testData);
 		adminUser.setLastQuestionMandatory(true);
 		
-		PSSPatientUtils psspatientutils = new PSSPatientUtils();
+		PSSPatientUtils pssPatientUtils = new PSSPatientUtils();
 		PSSAdminUtils adminUtils = new PSSAdminUtils();
 		
 		logStep("Login to PSS 2.0 Admin portal and do the seetings for Last Question Required");
@@ -812,7 +812,7 @@ public class PSS2PatientPortalAcceptanceTests extends BaseTestNGWebDriver {
 		
 		logStep("Fetch the rules set in Admin");
 		String rule = adminUser.getRule();
-		logStep("rule are " + rule);
+		log("rule are " + rule);
 		rule = rule.replaceAll(" ", "");
 		
 		logStep("Login to PSS Appointment");
@@ -827,15 +827,15 @@ public class PSS2PatientPortalAcceptanceTests extends BaseTestNGWebDriver {
 		HomePage homepage = loginlessPatientInformation.fillNewPatientForm(testData.getFirstName(), testData.getLastName(), testData.getDob(), testData.getEmail(),
 				testData.getGender(), testData.getZipCode(), testData.getPrimaryNumber());
 		
-		log("Start booking an appointment in PSS---> PATIENT UI STEPS ");
+		logStep("Start booking an appointment in PSS---> PATIENT UI STEPS ");
 		homepage.btnStartSchedClick();
-		psspatientutils.TLBLastQuestion(homepage, testData, driver);
+		pssPatientUtils.TLBLastQuestion(homepage, testData, driver);
 		
 	}
 	
 	@Test(enabled = true, groups = {"AcceptanceTests"}, retryAnalyzer = RetryAnalyzer.class)
 	public void testLastQuestionRequiredGW() throws Exception {
-		log("Test To Verify Last Question Required of on the confirmation screen Functionality");
+		
 		PSSPropertyFileLoader propertyData = new PSSPropertyFileLoader();
 		Appointment testData = new Appointment();
 		AdminUser adminUser = new AdminUser();
@@ -844,7 +844,7 @@ public class PSS2PatientPortalAcceptanceTests extends BaseTestNGWebDriver {
 		propertyData.setAppointmentResponseGW(testData);
 		
 		
-		PSSPatientUtils psspatientutils = new PSSPatientUtils();
+		PSSPatientUtils pssPatientUtils = new PSSPatientUtils();
 		PSSAdminUtils adminUtils = new PSSAdminUtils();
 		
 		logStep("Login to PSS 2.0 Admin portal and do the seetings for Last Question Required");
@@ -852,7 +852,7 @@ public class PSS2PatientPortalAcceptanceTests extends BaseTestNGWebDriver {
 		
 		logStep("Fetch the rules set in Admin");
 		String rule = adminUser.getRule();
-		logStep("rule are " + rule);
+		log("rule are " + rule);
 		rule = rule.replaceAll(" ", "");
 		
 		logStep("Login to PSS Appointment");
@@ -867,15 +867,15 @@ public class PSS2PatientPortalAcceptanceTests extends BaseTestNGWebDriver {
 		HomePage homepage = loginlessPatientInformation.fillNewPatientForm(testData.getFirstName(), testData.getLastName(), testData.getDob(), testData.getEmail(),
 				testData.getGender(), testData.getZipCode(), testData.getPrimaryNumber());
 		
-		log("Start booking an appointment in PSS---> PATIENT UI STEPS ");
+		logStep("Start booking an appointment in PSS---> PATIENT UI STEPS ");
 		homepage.btnStartSchedClick();
-		psspatientutils.TLBLastQuestion(homepage, testData, driver);
+		pssPatientUtils.TLBLastQuestion(homepage, testData, driver);
 		
 	}
 	
 	@Test(enabled = true, groups = {"AcceptanceTests"}, retryAnalyzer = RetryAnalyzer.class)
 	public void testBookApptWithoutLastQuestionNG() throws Exception {
-		log("Test To Verify Last Question Required of on the confirmation screen Functionality");
+		
 		PSSPropertyFileLoader propertyData = new PSSPropertyFileLoader();
 		Appointment testData = new Appointment();
 		AdminUser adminUser = new AdminUser();
@@ -891,7 +891,7 @@ public class PSS2PatientPortalAcceptanceTests extends BaseTestNGWebDriver {
 		
 		logStep("Fetch the rules set in Admin");
 		String rule = adminUser.getRule();
-		logStep("rule are " + rule);
+		log("rule are " + rule);
 		rule = rule.replaceAll(" ", "");
 		
 		logStep("Login to PSS Appointment");
@@ -906,14 +906,14 @@ public class PSS2PatientPortalAcceptanceTests extends BaseTestNGWebDriver {
 		HomePage homepage = loginlessPatientInformation.fillNewPatientForm(testData.getFirstName(), testData.getLastName(), testData.getDob(), testData.getEmail(),
 				testData.getGender(), testData.getZipCode(), testData.getPrimaryNumber());
 		
-		log("Start booking an appointment in PSS---> PATIENT UI STEPS ");
+		logStep("Start booking an appointment in PSS---> PATIENT UI STEPS ");
 		homepage.btnStartSchedClick();
 		psspatientutils.selectAFlow(driver, rule, homepage, testData);		
 	}
 	
 	@Test(enabled = true, groups = {"AcceptanceTests"}, retryAnalyzer = RetryAnalyzer.class)
 	public void testBookApptWithoutLastQuestionAT() throws Exception {
-		log("Test To Verify Last Question Required of on the confirmation screen Functionality");
+		
 		PSSPropertyFileLoader propertyData = new PSSPropertyFileLoader();
 		Appointment testData = new Appointment();
 		AdminUser adminUser = new AdminUser();
@@ -929,7 +929,7 @@ public class PSS2PatientPortalAcceptanceTests extends BaseTestNGWebDriver {
 		
 		logStep("Fetch the rules set in Admin");
 		String rule = adminUser.getRule();
-		logStep("rule are " + rule);
+		log("rule are " + rule);
 		rule = rule.replaceAll(" ", "");
 		
 		logStep("Login to PSS Appointment");
@@ -944,7 +944,7 @@ public class PSS2PatientPortalAcceptanceTests extends BaseTestNGWebDriver {
 		HomePage homepage = loginlessPatientInformation.fillNewPatientForm(testData.getFirstName(), testData.getLastName(), testData.getDob(), testData.getEmail(),
 				testData.getGender(), testData.getZipCode(), testData.getPrimaryNumber());
 		
-		log("Start booking an appointment in PSS---> PATIENT UI STEPS ");
+		logStep("Start booking an appointment in PSS---> PATIENT UI STEPS ");
 		homepage.btnStartSchedClick();
 		psspatientutils.selectAFlow(driver, rule, homepage, testData);
 		
@@ -952,7 +952,7 @@ public class PSS2PatientPortalAcceptanceTests extends BaseTestNGWebDriver {
 	
 	@Test(enabled = true, groups = {"AcceptanceTests"}, retryAnalyzer = RetryAnalyzer.class)
 	public void testBookApptWithoutLastQuestionGE() throws Exception {
-		log("Test To Verify Last Question Required of on the confirmation screen Functionality");
+		
 		PSSPropertyFileLoader propertyData = new PSSPropertyFileLoader();
 		Appointment testData = new Appointment();
 		AdminUser adminUser = new AdminUser();
@@ -968,7 +968,7 @@ public class PSS2PatientPortalAcceptanceTests extends BaseTestNGWebDriver {
 		
 		logStep("Fetch the rules set in Admin");
 		String rule = adminUser.getRule();
-		logStep("rule are " + rule);
+		log("rule are " + rule);
 		rule = rule.replaceAll(" ", "");
 		
 		logStep("Login to PSS Appointment");
@@ -983,7 +983,7 @@ public class PSS2PatientPortalAcceptanceTests extends BaseTestNGWebDriver {
 		HomePage homepage = loginlessPatientInformation.fillNewPatientForm(testData.getFirstName(), testData.getLastName(), testData.getDob(), testData.getEmail(),
 				testData.getGender(), testData.getZipCode(), testData.getPrimaryNumber());
 		
-		log("Start booking an appointment in PSS---> PATIENT UI STEPS ");
+		logStep("Start booking an appointment in PSS---> PATIENT UI STEPS ");
 		homepage.btnStartSchedClick();
 		psspatientutils.selectAFlow(driver, rule, homepage, testData);
 		
@@ -991,7 +991,7 @@ public class PSS2PatientPortalAcceptanceTests extends BaseTestNGWebDriver {
 	
 	@Test(enabled = true, groups = {"AcceptanceTests"}, retryAnalyzer = RetryAnalyzer.class)
 	public void testBookApptWithoutLastQuestionGW() throws Exception {
-		log("Test To Verify Last Question Required of on the confirmation screen Functionality");
+		
 		PSSPropertyFileLoader propertyData = new PSSPropertyFileLoader();
 		Appointment testData = new Appointment();
 		AdminUser adminUser = new AdminUser();
@@ -1007,7 +1007,7 @@ public class PSS2PatientPortalAcceptanceTests extends BaseTestNGWebDriver {
 		
 		logStep("Fetch the rules set in Admin");
 		String rule = adminUser.getRule();
-		logStep("rule are " + rule);
+		log("rule are " + rule);
 		rule = rule.replaceAll(" ", "");
 		
 		logStep("Login to PSS Appointment");
@@ -1022,7 +1022,7 @@ public class PSS2PatientPortalAcceptanceTests extends BaseTestNGWebDriver {
 		HomePage homepage = loginlessPatientInformation.fillNewPatientForm(testData.getFirstName(), testData.getLastName(), testData.getDob(), testData.getEmail(),
 				testData.getGender(), testData.getZipCode(), testData.getPrimaryNumber());
 		
-		log("Start booking an appointment in PSS---> PATIENT UI STEPS ");
+		logStep("Start booking an appointment in PSS---> PATIENT UI STEPS ");
 		homepage.btnStartSchedClick();
 		psspatientutils.selectAFlow(driver, rule, homepage, testData);
 		
@@ -1030,7 +1030,7 @@ public class PSS2PatientPortalAcceptanceTests extends BaseTestNGWebDriver {
 	
 	@Test(enabled = true, groups = {"AcceptanceTests"}, retryAnalyzer = RetryAnalyzer.class)
 	public void testBookApptWithLastQuestionNG() throws Exception {
-		log("Test To Verify Last Question Required of on the confirmation screen Functionality");
+		
 		PSSPropertyFileLoader propertyData = new PSSPropertyFileLoader();
 		Appointment testData = new Appointment();
 		AdminUser adminUser = new AdminUser();
@@ -1047,7 +1047,7 @@ public class PSS2PatientPortalAcceptanceTests extends BaseTestNGWebDriver {
 		
 		logStep("Fetch the rules set in Admin");
 		String rule = adminUser.getRule();
-		logStep("rule are " + rule);
+		log("rule are " + rule);
 		rule = rule.replaceAll(" ", "");
 		
 		logStep("Login to PSS Appointment");
@@ -1062,7 +1062,7 @@ public class PSS2PatientPortalAcceptanceTests extends BaseTestNGWebDriver {
 		HomePage homepage = loginlessPatientInformation.fillNewPatientForm(testData.getFirstName(), testData.getLastName(), testData.getDob(), testData.getEmail(),
 				testData.getGender(), testData.getZipCode(), testData.getPrimaryNumber());
 		
-		log("Start booking an appointment in PSS---> PATIENT UI STEPS ");
+		logStep("Start booking an appointment in PSS---> PATIENT UI STEPS ");
 		homepage.btnStartSchedClick();
 		psspatientutils.selectAFlow(driver, rule, homepage, testData);
 		
@@ -1070,7 +1070,6 @@ public class PSS2PatientPortalAcceptanceTests extends BaseTestNGWebDriver {
 	
 	@Test(enabled = true, groups = {"AcceptanceTests"}, retryAnalyzer = RetryAnalyzer.class)
 	public void testBookApptWithLastQuestionAT() throws Exception {
-		log("Test To Verify Last Question Required of on the confirmation screen Functionality");
 		PSSPropertyFileLoader propertyData = new PSSPropertyFileLoader();
 		Appointment testData = new Appointment();
 		AdminUser adminUser = new AdminUser();
@@ -1087,7 +1086,7 @@ public class PSS2PatientPortalAcceptanceTests extends BaseTestNGWebDriver {
 		
 		logStep("Fetch the rules set in Admin");
 		String rule = adminUser.getRule();
-		logStep("rule are " + rule);
+		log("rule are " + rule);
 		rule = rule.replaceAll(" ", "");
 		
 		logStep("Login to PSS Appointment");
@@ -1102,7 +1101,7 @@ public class PSS2PatientPortalAcceptanceTests extends BaseTestNGWebDriver {
 		HomePage homepage = loginlessPatientInformation.fillNewPatientForm(testData.getFirstName(), testData.getLastName(), testData.getDob(), testData.getEmail(),
 				testData.getGender(), testData.getZipCode(), testData.getPrimaryNumber());
 		
-		log("Start booking an appointment in PSS---> PATIENT UI STEPS ");
+		logStep("Start booking an appointment in PSS---> PATIENT UI STEPS ");
 		homepage.btnStartSchedClick();
 		psspatientutils.selectAFlow(driver, rule, homepage, testData);
 		
@@ -1110,7 +1109,7 @@ public class PSS2PatientPortalAcceptanceTests extends BaseTestNGWebDriver {
 	
 	@Test(enabled = true, groups = {"AcceptanceTests"}, retryAnalyzer = RetryAnalyzer.class)
 	public void testBookApptWithLastQuestionGW() throws Exception {
-		log("Test To Verify Last Question Required of on the confirmation screen Functionality");
+		
 		PSSPropertyFileLoader propertyData = new PSSPropertyFileLoader();
 		Appointment testData = new Appointment();
 		AdminUser adminUser = new AdminUser();
@@ -1127,7 +1126,7 @@ public class PSS2PatientPortalAcceptanceTests extends BaseTestNGWebDriver {
 		
 		logStep("Fetch the rules set in Admin");
 		String rule = adminUser.getRule();
-		logStep("rule are " + rule);
+		log("rule are " + rule);
 		rule = rule.replaceAll(" ", "");
 		
 		logStep("Login to PSS Appointment");
@@ -1142,7 +1141,7 @@ public class PSS2PatientPortalAcceptanceTests extends BaseTestNGWebDriver {
 		HomePage homepage = loginlessPatientInformation.fillNewPatientForm(testData.getFirstName(), testData.getLastName(), testData.getDob(), testData.getEmail(),
 				testData.getGender(), testData.getZipCode(), testData.getPrimaryNumber());
 		
-		log("Start booking an appointment in PSS---> PATIENT UI STEPS ");
+		logStep("Start booking an appointment in PSS---> PATIENT UI STEPS ");
 		homepage.btnStartSchedClick();
 		psspatientutils.selectAFlow(driver, rule, homepage, testData);
 		
@@ -1150,7 +1149,7 @@ public class PSS2PatientPortalAcceptanceTests extends BaseTestNGWebDriver {
 	
 	@Test(enabled = true, groups = {"AcceptanceTests"}, retryAnalyzer = RetryAnalyzer.class)
 	public void testBookApptWithLastQuestionGE() throws Exception {
-		log("Test To Verify Last Question Required of on the confirmation screen Functionality");
+		
 		PSSPropertyFileLoader propertyData = new PSSPropertyFileLoader();
 		Appointment testData = new Appointment();
 		AdminUser adminUser = new AdminUser();
@@ -1167,7 +1166,7 @@ public class PSS2PatientPortalAcceptanceTests extends BaseTestNGWebDriver {
 		
 		logStep("Fetch the rules set in Admin");
 		String rule = adminUser.getRule();
-		logStep("rule are " + rule);
+		log("rule are " + rule);
 		rule = rule.replaceAll(" ", "");
 		
 		logStep("Login to PSS Appointment");
@@ -1182,7 +1181,7 @@ public class PSS2PatientPortalAcceptanceTests extends BaseTestNGWebDriver {
 		HomePage homepage = loginlessPatientInformation.fillNewPatientForm(testData.getFirstName(), testData.getLastName(), testData.getDob(), testData.getEmail(),
 				testData.getGender(), testData.getZipCode(), testData.getPrimaryNumber());
 		
-		log("Start booking an appointment in PSS---> PATIENT UI STEPS ");
+		logStep("Start booking an appointment in PSS---> PATIENT UI STEPS ");
 		homepage.btnStartSchedClick();
 		psspatientutils.selectAFlow(driver, rule, homepage, testData);
 		

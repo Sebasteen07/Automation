@@ -203,7 +203,6 @@ public class PSSAdminUtils extends BaseTestNGWebDriver{
 	}
 
 	public void pageRefresh(WebDriver driver) throws InterruptedException {
-		Thread.sleep(6000);
 		driver.navigate().refresh();
 		Thread.sleep(6000);
 	}
