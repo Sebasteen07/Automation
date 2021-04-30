@@ -314,7 +314,7 @@ public class ManageResource extends PSS2MenuPage {
 		while (lastQuestionRequiredTogglebtn.isSelected() == true) {
 			jse.executeScript("arguments[0].click();", lastQuestionRequiredTogglebtn);
 		}
-		jse.executeScript("window.scrollBy(0,1000)", "");
+		pageDown(1000);
 		IHGUtil.waitForElement(driver, 3, bookAptSaveBtn);
 		commonMethods.highlightElement(bookAptSaveBtn);
 		bookAptSaveBtn.click();
@@ -333,7 +333,7 @@ public class ManageResource extends PSS2MenuPage {
 		while (lastQuestionRequiredTogglebtn.isSelected() == false) {
 			jse.executeScript("arguments[0].click();", lastQuestionRequiredTogglebtn);
 		}
-		jse.executeScript("window.scrollBy(0,1000)", "");
+		pageDown(1000);
 		IHGUtil.waitForElement(driver, 3, bookAptSaveBtn);
 		commonMethods.highlightElement(bookAptSaveBtn);
 		bookAptSaveBtn.click();
@@ -375,10 +375,10 @@ public class ManageResource extends PSS2MenuPage {
 		backArrow.click();
 	}
 
-	public void clickGeneralTab() {
+	public void clickGeneralTab() throws InterruptedException {
 		commonMethods.highlightElement(editGeneralTab);
 		editGeneralTab.click();
-		jse.executeScript("window.scrollBy(0,1500)", "");
+		pageDown(1500);
 		commonMethods.highlightElement(resourceSave);
 		resourceSave.click();
 	}
