@@ -21,16 +21,38 @@ public class GatewayProxyDigitalWalletTests extends GatewayProxyBaseTest{
         setupResponsetSpecBuilder();
     }
 
-    @Test
-    public void addNewCardAndCreateWallet() throws Exception {
-        GatewayProxyDigitalWalletResource digitalWallet = new GatewayProxyDigitalWalletResource();
-        Response response = digitalWallet.createNewWallet();
-
-        JsonPath jsonpath = new JsonPath(response.asString());
-        Assert.assertTrue(!jsonpath.get("externalWalletId").toString().isEmpty());
-        Assert.assertTrue(!jsonpath.get("walletCards[0].externalCardId").toString().isEmpty());
-        Assert.assertEquals("VI-1111-1226", jsonpath.get("walletCards[0].cardAlias"));
-
-        DigitalWalletUtils.saveWalletDetails(jsonpath.get("externalWalletId").toString(),jsonpath.get("walletCards[0].externalCardId").toString());
+	
+	
+	  @Test public void addNewCardAndCreateWallet() throws Exception {
+	  GatewayProxyDigitalWalletResource digitalWallet = new
+	  GatewayProxyDigitalWalletResource(); Response response
+	  =digitalWallet.createNewWallet();
+	  
+	  JsonPath jsonpath = new JsonPath(response.asString());
+	  
+	  Assert.assertTrue(!jsonpath.get("externalWalletId").toString().isEmpty());
+	  Assert.assertTrue(!jsonpath.get("walletCards[0].externalCardId").toString().
+	  isEmpty());
+	  Assert.assertEquals("VI-1111-1226",jsonpath.get("walletCards[0].cardAlias"));
+	  
+	  DigitalWalletUtils.saveWalletDetails(jsonpath.get("externalWalletId").
+	  toString(),jsonpath.get("walletCards[0].externalCardId").toString());
+	  
+	  }	 
+	  
+    @Test(dependsOnMethods="addNewCardAndCreateWallet")
+   
+    public void getListOfCardsInWallet() throws Exception{
+    	   	
+    	GatewayProxyDigitalWalletResource digitalWallet = new GatewayProxyDigitalWalletResource();
+    	Response response = digitalWallet.getListOfCardsInWallet();
+    	JsonPath jsonpath = new JsonPath(response.asString());
+   		 	
+    	Assert.assertTrue(!jsonpath.get("externalWalletId").toString().isEmpty());
+    	Assert.assertTrue(!jsonpath.get("walletCards[0].cardExpiryDate").toString().isEmpty());
+    	
+    	String cardNumber = testData.getProperty("cardnumber");   
+    	String aliasToVerify = testData.getProperty("type") + "-"+ cardNumber.substring(cardNumber.length() - 4) + "-"+testData.getProperty("expirationnumber");
+    	Assert.assertEquals(aliasToVerify,jsonpath.get("walletCards[0].cardAlias"));    	
     }
 }
