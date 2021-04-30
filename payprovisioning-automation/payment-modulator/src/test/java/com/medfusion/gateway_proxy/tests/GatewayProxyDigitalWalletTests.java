@@ -21,12 +21,11 @@ public class GatewayProxyDigitalWalletTests extends GatewayProxyBaseTest{
         setupResponsetSpecBuilder();
     }
 
-	
-	
-	  @Test public void addNewCardAndCreateWallet() throws Exception {
-	  GatewayProxyDigitalWalletResource digitalWallet = new
-	  GatewayProxyDigitalWalletResource(); Response response
-	  =digitalWallet.createNewWallet();
+	  @Test 
+	  public void addNewCardAndCreateWallet() throws Exception {
+		  
+	  GatewayProxyDigitalWalletResource digitalWallet = new GatewayProxyDigitalWalletResource(); 
+	  Response response =digitalWallet.createNewWallet();
 	  
 	  JsonPath jsonpath = new JsonPath(response.asString());
 	  
