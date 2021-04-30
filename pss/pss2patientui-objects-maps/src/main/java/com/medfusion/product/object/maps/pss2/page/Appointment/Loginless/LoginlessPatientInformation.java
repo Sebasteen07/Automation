@@ -142,12 +142,13 @@ public class LoginlessPatientInformation extends PSS2MainPage {
 	public HomePage fillNewPatientForm(String firstName, String lastName, String dob, String email, String gender, String zipCodeValue, String phoneNumber)
 			throws InterruptedException {
 
+		IHGUtil.waitForElement(driver, 5, inputFirstName);
 		commonMethods.highlightElement(inputFirstName);
 		inputFirstName.sendKeys(firstName);
-		log("firstName= " + firstName);
+		
 		commonMethods.highlightElement(inputLastName);
 		inputLastName.sendKeys(lastName);
-		log("lastName= " + lastName);
+		
 		commonMethods.highlightElement(dateOfBirth);
 		datePicker.click();
 		log("datePicker clicked ");
@@ -158,6 +159,7 @@ public class LoginlessPatientInformation extends PSS2MainPage {
 		}
 		DateMatcher dateMatcher = new DateMatcher();
 		dateMatcher.selectDate(dob, driver);
+		
 		commonMethods.highlightElement(selectGender);
 		selectGender.click();
 		Select selectGenderType = new Select(selectGender);
@@ -167,12 +169,13 @@ public class LoginlessPatientInformation extends PSS2MainPage {
 		} catch (InterruptedException e) {
 			e.printStackTrace();
 		}
-		commonMethods.highlightElement(inputPrimaryPhoneNumber);
-		log("phoneNumber= " + phoneNumber);
+		
+		commonMethods.highlightElement(inputPrimaryPhoneNumber);		
 		inputPrimaryPhoneNumber.sendKeys(phoneNumber);
+		
 		commonMethods.highlightElement(inputEmail);
 		inputEmail.sendKeys(email);
-		log("Email id used= " + email);
+		
 		jse.executeScript("window.scrollTo(0, 300)");
 		Thread.sleep(3000);
 		commonMethods.highlightElement(inputZip);

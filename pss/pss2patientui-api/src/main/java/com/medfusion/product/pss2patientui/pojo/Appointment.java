@@ -96,6 +96,8 @@ public class Appointment {
 	private String gmailUserName;
 	private String linkProvider;
 	private String linkLocation;
+	private boolean lastQuestionOptional=false;
+
 
 	private String ageRuleMonthFirst;
 	private String ageRuleMonthSecond;
@@ -160,7 +162,15 @@ public class Appointment {
 		this.speciality = specialityConfig;
 	}
 
-	public Appointment() {
+	public Appointment() {}
+	
+
+	public boolean isLastQuestionOptional() {
+		return lastQuestionOptional;
+	}
+
+	public void setLastQuestionOptional(boolean lastQuestionOptional) {
+		this.lastQuestionOptional = lastQuestionOptional;
 	}
 
 	public String getTimeMarkValue() {
@@ -177,6 +187,7 @@ public class Appointment {
 
 	public void setLinkLocation(String linkLocation) {
 		this.linkLocation = linkLocation;
+
 	}
 		
 	public String getSlotStartTime() {

@@ -21,7 +21,7 @@ import com.medfusion.product.oject.maps.pss2.page.CareTeam.ManageCareTeam;
 
 public class PSS2MenuPage extends PSS2MainPage {
 
-	@FindBy(how = How.XPATH, using = "//a[@class='nav-link dropdown-toggle']/i")
+	@FindBy(how = How.XPATH, using = "//a[@class='nav-link dropdown-toggle']//*[local-name()='svg']")
 	private WebElement settingsLogout;
 
 	@FindBy(how = How.XPATH, using = "//li[@class='nav-item dropdown open show']/ul")
