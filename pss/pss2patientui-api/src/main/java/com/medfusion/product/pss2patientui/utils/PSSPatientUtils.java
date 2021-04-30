@@ -1738,17 +1738,17 @@ public class PSSPatientUtils extends BaseTestNGWebDriver{
 	public void TLBLastQuestion(HomePage homepage, Appointment testData, WebDriver driver) throws Exception {
 		log("Select Appointment for appointment.");
 		AppointmentPage appointment;
-		StartAppointmentInOrder startappointmentInOrder = null;
+		StartAppointmentInOrder startAppointmentInOrder = null;
 		log("Insurance is Enabled " + testData.isIsinsuranceVisible());
 		log("startpage is Visible " + testData.isIsstartpointPresent());
 		if (testData.isIsinsuranceVisible()) {
 			Thread.sleep(3500);
 			log("insurance is present on home Page going to skip insurance page");
-			startappointmentInOrder = homepage.skipInsurance(driver);
+			startAppointmentInOrder = homepage.skipInsurance(driver);
 			if (testData.isIsstartpointPresent()) {
 
 				log("Starting point is present after insurance skipped ");
-				appointment = startappointmentInOrder.selectFirstAppointment(PSSConstants.START_APPOINTMENT);
+				appointment = startAppointmentInOrder.selectFirstAppointment(PSSConstants.START_APPOINTMENT);
 				log("Successfully clicked on  " + PSSConstants.START_APPOINTMENT);
 			} else {
 				appointment = homepage.appointmentpage();
@@ -1757,9 +1757,9 @@ public class PSSPatientUtils extends BaseTestNGWebDriver{
 		}
 
 		else if (testData.isIsstartpointPresent()) {
-			startappointmentInOrder = homepage.startpage();
+			startAppointmentInOrder = homepage.startpage();
 			log("in else part  click on  " + PSSConstants.START_APPOINTMENT);
-			appointment = startappointmentInOrder.selectFirstAppointment(PSSConstants.START_APPOINTMENT);
+			appointment = startAppointmentInOrder.selectFirstAppointment(PSSConstants.START_APPOINTMENT);
 			log("clicked on Appointment ");
 		} else {
 			log("Start point not present");
@@ -1782,24 +1782,24 @@ public class PSSPatientUtils extends BaseTestNGWebDriver{
 
 		Thread.sleep(6000);
 		log("Verify Confirmation page and Scheduled page");
-		ConfirmationPage confirmationpage = aptDateTime.selectAppointmentDateTime(testData.getIsNextDayBooking());
+		ConfirmationPage confirmationPage = aptDateTime.selectAppointmentDateTime(testData.getIsNextDayBooking());
 
-		assertTrue(confirmationpage.areBasicPageElementsPresent());
-		String aptScheduledAt = confirmationpage.getAppointmentDetails()
-				.get((confirmationpage.getAppointmentDetails().size() - 1)).getText();
+		assertTrue(confirmationPage.areBasicPageElementsPresent());
+		String aptScheduledAt = confirmationPage.getAppointmentDetails()
+				.get((confirmationPage.getAppointmentDetails().size() - 1)).getText();
 		log(">> " + aptScheduledAt);
-		for (WebElement ele : confirmationpage.getAppointmentDetails()) {
+		for (WebElement ele : confirmationPage.getAppointmentDetails()) {
 			log("apt Details= " + ele.getText());
 		}
-		confirmationpage.appointmentConfirmedAnonymous();
+		confirmationPage.appointmentConfirmedAnonymous();
 
 		log("Verify the Error message when Last Question Required kept blank and try to book an appointment");
-		confirmationpage.validateLastQueReqErrorMsg();
+		confirmationPage.validateLastQueReqErrorMsg();
 
-		log("Heading of last question is " + confirmationpage.getHeadingLastQuestin());
+		log("Heading of last question is " + confirmationPage.getHeadingLastQuestin());
 
-		confirmationpage.validateLengthLastQueReq();
-		appointmentToScheduledAnonymous(confirmationpage, testData);
+		confirmationPage.validateLengthLastQueReq();
+		appointmentToScheduledAnonymous(confirmationPage, testData);
 	}
 	
 	public void timeMarkLTBRule(HomePage homePage, Appointment testData, WebDriver driver) throws InterruptedException

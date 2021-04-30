@@ -167,9 +167,9 @@ public class ConfirmationPage extends PSS2MainPage {
 	public void validateLengthLastQueReq() throws InterruptedException {
 		String lastquestion = RandomStringUtils.randomAlphabetic(160);
 		lastQueInputBox.sendKeys(lastquestion);
-		String lengthlastque = lastQueInputBox.getAttribute("maxlength");
-		Assert.assertEquals(Integer.parseInt(lengthlastque), 150, "The Length of last question is not 150");
-		log("The length of last question is validated- " + lengthlastque);
+		String lengthLastque = lastQueInputBox.getAttribute("maxlength");
+		Assert.assertEquals(Integer.parseInt(lengthLastque), 150, "The Length of last question is not 150");
+		log("The length of last question is validated- " + lengthLastque);
 	}
 	
 	public String getHeadingLastQuestin() throws InterruptedException {
