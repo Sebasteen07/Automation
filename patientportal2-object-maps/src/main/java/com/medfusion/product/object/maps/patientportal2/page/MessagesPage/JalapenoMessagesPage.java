@@ -108,6 +108,9 @@ public class JalapenoMessagesPage extends JalapenoMenu {
 
 	@FindBy(how = How.XPATH, using = "//*[@id='rx_pharmacy0']/span[2]")
 	private WebElement pharmacyOnPortal;
+	
+	@FindBy(how=How.XPATH, using="//*[@class='attachments']/child::*/a")
+	private WebElement messageBodyAttachmentlink;
 
 	@Override
 	public boolean areBasicPageElementsPresent() {
@@ -448,5 +451,13 @@ public class JalapenoMessagesPage extends JalapenoMenu {
 				+ locationOnPortal.getText().toString());
 		assertEquals(providerNameOnPortal.getText(), providerName, "Invalid Provider Name was found");
 		assertEquals(locationOnPortal.getText(), location, "Invalid Location was found");
+	}
+	
+	public void validateSecureMessageAttachment(String attachmentNamepayload) {
+		IHGUtil.PrintMethodName();
+		String attachmentName = messageBodyAttachmentlink.getText();
+		log("Attachment received in secure message : "+attachmentName);
+		assertTrue(attachmentName.equals(attachmentNamepayload), "Appropriate attachment is received in the message");
+
 	}
 }

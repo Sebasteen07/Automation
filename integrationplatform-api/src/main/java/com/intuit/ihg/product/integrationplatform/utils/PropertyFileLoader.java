@@ -2045,4 +2045,15 @@ public class PropertyFileLoader {
 		return property.getProperty("oAuthPassword_PatientStatement");
 	}
 
+	// Attachment
+		
+		public String getRestUrlAttachment() {
+			return property.getProperty("rest.url.attachment");
+		}
+
+		public String getPatientExternalIdAttachment() {
+			return property.getProperty("patient.externalId.attachment");
+			}
+
+		
 }

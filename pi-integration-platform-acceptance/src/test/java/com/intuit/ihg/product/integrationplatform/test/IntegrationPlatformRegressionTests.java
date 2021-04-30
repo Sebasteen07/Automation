@@ -40,9 +40,12 @@ import com.intuit.ihg.product.integrationplatform.implementedExternals.SendPatie
 import com.intuit.ihg.product.integrationplatform.pojo.PIDCInfo;
 import com.intuit.ihg.product.integrationplatform.utils.AMDC;
 import com.intuit.ihg.product.integrationplatform.utils.AMDCPayload;
+import com.intuit.ihg.product.integrationplatform.utils.AMDCTestData;
 import com.intuit.ihg.product.integrationplatform.utils.AppointmentData;
 import com.intuit.ihg.product.integrationplatform.utils.AppointmentDataUtils;
 import com.intuit.ihg.product.integrationplatform.utils.AppointmentTypePayload;
+import com.intuit.ihg.product.integrationplatform.utils.Attachment;
+import com.intuit.ihg.product.integrationplatform.utils.AttachmentPayload;
 import com.intuit.ihg.product.integrationplatform.utils.BalancePayLoad;
 import com.intuit.ihg.product.integrationplatform.utils.BulkAdmin;
 import com.intuit.ihg.product.integrationplatform.utils.BulkMessagePayload;
@@ -4286,4 +4289,123 @@ public class IntegrationPlatformRegressionTests extends BaseTestNGWebDriver {
 		}
 	}
 
+	
+	@Test(enabled = true, groups = { "RegressionTests" }, retryAnalyzer = RetryAnalyzer.class)
+	public void testAMDCSecureMessageWithAttachmentRefID() throws Exception {
+		log("Test Case: testAMDCSecureMessagewithAttachmentrefID");
+		log("Execution Environment: " + IHGUtil.getEnvironmentType());
+		log("Execution Browser: " + TestConfig.getBrowserType());
+
+		logStep("Get TestData from both Property files AMDC and Attachment");
+		
+		LoadPreTestData LoadPreTestDataObj = new LoadPreTestData();
+		
+		Attachment AttchamenttestData = new Attachment();
+		LoadPreTestDataObj.loadAttachmentDataFromProperty(AttchamenttestData);
+		
+		AMDC AMDCtestData = new AMDC();
+		LoadPreTestDataObj.loadAMDCDataFromProperty(AMDCtestData);
+
+		logStep("Setup Oauth client");
+		RestUtils.oauthSetup(AMDCtestData.OAuthKeyStore, AMDCtestData.OAuthProperty, AMDCtestData.OAuthAppToken,
+				AMDCtestData.OAuthUsername, AMDCtestData.OAuthPassword);
+
+		logStep("Prepare Attachemnt Payload");
+		AttachmentPayload AttachmentObj = new AttachmentPayload();
+		
+		String externalAttachmentID = PharmacyPayload.randomNumbers(14);
+		log("externalAttachmentID posted is : " + externalAttachmentID);
+		String attachmentName = "TestResults_"+externalAttachmentID+".pdf";
+
+		log("attachmentName : "+attachmentName);
+		String attahcmentPayload = AttachmentPayload.getAttachmentPayload(AttchamenttestData,AMDCtestData, externalAttachmentID);
+		
+		logStep("Attachment Payload: " + attahcmentPayload);
+
+		logStep("Do Attachment Post Request");
+		log("ResponsePath: " + AMDCtestData.ResponsePath);
+		
+		RestUtils.setupHttpPostRequest(AttchamenttestData.RestUrl, attahcmentPayload,
+				AMDCtestData.ResponsePath);
+
+		String attachmentRefId = RestUtils.getAttachmentRefId(AMDCtestData.ResponsePath);
+		log("Attachment Ref ID : "+attachmentRefId);
+		
+		logStep("Fill Message data");
+		String messageID;
+
+		String message = AMDCPayload.getAMDCAttachmentPayload(AMDCtestData, attachmentRefId);
+		log("message :- " + message);
+		messageID = AMDCPayload.messageID;
+		log("Partner Message ID:" + messageID);
+		
+		logStep(" Do Message Post Request");
+		log("responsePath: " + AMDCtestData.ResponsePath);
+		String processingUrl = RestUtils.setupHttpPostRequest(AMDCtestData.RestV3Url, message, AMDCtestData.ResponsePath);
+
+		logStep("Get processing status until it is completed");
+		boolean completed = false;
+		for (int i = 0; i < 3; i++) {
+			// wait 10 seconds so the message can be processed
+			Thread.sleep(60000);
+			RestUtils.setupHttpGetRequest(processingUrl, AMDCtestData.ResponsePath);
+			if (RestUtils.isMessageProcessingCompleted(AMDCtestData.ResponsePath)) {
+				completed = true;
+				break;
+			}
+			assertTrue(completed, "Message processing was not completed in time");
+		}
+		logStep(" Validate if patient has received the email for the secure message sent");
+		Mailinator mail = new Mailinator();
+		String subject = "New message from " + AMDCtestData.Sender3;
+		String messageLink = "Sign in to view this message";
+		String link = mail.getLinkFromEmail(AMDCtestData.UserName, subject, messageLink, 10);
+		
+		// Wait so that Link can be retrieved from the Email.
+		Thread.sleep(5000);
+		assertTrue(link != null, "AMDC Secure Message link not found in mail.");
+		link = link.replace("login?redirectoptout=true", "login");
+		logStep("Login to Patient Portal");
+		log("Link is " + link);
+		JalapenoLoginPage loginPage = new JalapenoLoginPage(driver, link);
+		JalapenoHomePage homePage = loginPage.login(AMDCtestData.UserName, AMDCtestData.Password);
+		
+		logStep("Detecting if Home Page is opened");
+		assertTrue(homePage.isHomeButtonPresent(driver));
+		
+		logStep("Click on messages solution");
+		JalapenoMessagesPage messagesPage = homePage.showMessages(driver);
+		assertTrue(messagesPage.areBasicPageElementsPresent(), "Inbox failed to load properly.");
+		
+		logStep("Find message in Inbox");
+		String messageIdentifier = AMDCPayload.messageIdentifier;
+		
+		logStep(" Validate the attachment name recieved in the secure message sent with attachment ref id ");
+		messagesPage.validateSecureMessageAttachment(attachmentName);
+
+		log("message subject " + messageIdentifier);
+		
+		logStep("Log the message read time ");
+		long epoch = System.currentTimeMillis() / 1000;
+		
+		String readdatetimestamp = RestUtils.readTime(epoch);
+		log("Message Read Time:" + readdatetimestamp);
+		
+		logStep("Validate message loads and is the right message");
+		assertTrue(messagesPage.isMessageDisplayed(driver, messageIdentifier));
+
+		Long since = System.currentTimeMillis() / 1000L - 60 * 24;
+
+		logStep("Reply to the message");
+		messagesPage.replyToMessage(driver);
+
+		logStep("Wait 60 seconds, so the message can be processed");
+		Thread.sleep(60000);
+
+		logStep("Do a GET and get the message");
+		RestUtils.setupHttpGetRequest(AMDCtestData.RestV3Url + "?since=" + since + ",0", AMDCtestData.ResponsePath);
+
+		logStep("Validate message reply");
+		RestUtils.isReplyPresent(AMDCtestData.ResponsePath, messageIdentifier);
+}
 }

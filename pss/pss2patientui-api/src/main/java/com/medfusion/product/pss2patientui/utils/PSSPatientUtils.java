@@ -1801,4 +1801,35 @@ public class PSSPatientUtils extends BaseTestNGWebDriver{
 		confirmationpage.validateLengthLastQueReq();
 		appointmentToScheduledAnonymous(confirmationpage, testData);
 	}
+	
+	public void timeMarkLTBRule(HomePage homePage, Appointment testData, WebDriver driver) throws InterruptedException
+	{
+		Location location = null;
+		StartAppointmentInOrder startAppointmentInOrder = null;
+		startAppointmentInOrder = homePage.skipInsurance(driver);
+		location = startAppointmentInOrder.selectFirstLocation(PSSConstants.START_LOCATION);
+		log("Verfiy Location Page and location =" + testData.getLocation());
+		assertTrue(location.areBasicPageElementsPresent());
+		AppointmentPage appointment = location.selectAppointment(testData.getLocation());
+		log(" Verfiy Appointment Page and appointment to be selected = " + testData.getAppointmenttype());
+		assertTrue(appointment.areBasicPageElementsPresent());
+		Thread.sleep(15000);
+		Provider provider = appointment.selectTypeOfProvider(testData.getAppointmenttype(),
+				Boolean.valueOf(testData.getIsAppointmentPopup()));
+		log("Verfiy Provider Page and Provider = " + testData.getProvider());
+		AppointmentDateTime aptDateTime = provider.getProviderandClick(testData.getProvider());
+		assertTrue(aptDateTime.areBasicPageElementsPresent());
+		aptDateTime.selectDate(testData.getIsNextDayBooking());
+		log("Appointment minute " + aptDateTime.getFirstTimeWithMinute());
+		log("Value  is " + testData.getTimeMarkValue());
+		if (testData.getTimeMarkValue().equalsIgnoreCase("0")) {
+			log("Default Slot is Selected ");
+		} else if (testData.getTimeMarkValue().equalsIgnoreCase("60")) {
+			String timeForHour = testData.getTimeMarkValue().replace('6', '0');
+			assertEquals(aptDateTime.getFirstTimeWithMinute(), timeForHour);
+		} else {
+			assertEquals(aptDateTime.getFirstTimeWithMinute(), testData.getTimeMarkValue());
+		}
+	}
+
 }

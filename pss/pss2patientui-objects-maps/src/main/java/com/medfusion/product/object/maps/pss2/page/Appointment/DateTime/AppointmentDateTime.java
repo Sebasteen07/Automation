@@ -274,4 +274,12 @@ public class AppointmentDateTime extends PSS2MainPage {
 		}
 		return dt;
 	}
+	public String getFirstTimeWithMinute() {
+		String time = "";
+		for (int i = 0; i < appointmentTimeList.size(); i++) {
+			time = appointmentTimeList.get(0).getText();
+		}
+		return time.substring(3,5);
+
+	}
 }
