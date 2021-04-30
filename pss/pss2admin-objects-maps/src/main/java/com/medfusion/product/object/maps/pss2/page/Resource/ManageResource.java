@@ -70,7 +70,7 @@ public class ManageResource extends PSS2MenuPage {
 	@FindBy(how = How.ID, using = "isageRule")
 	private WebElement resourceAgeRuleChecked;
 
-	@FindBy(how = How.XPATH, using = "//button[@type=\"submit\"]")
+	@FindBy(how = How.XPATH, using = "//button[@type='submit']")
 	private WebElement resourceSave;
 
 	@FindBy(how = How.XPATH, using = "//button[@type=\"button\"]")
@@ -148,7 +148,7 @@ public class ManageResource extends PSS2MenuPage {
 	@FindBy(how = How.XPATH, using = "//label[@for='acceptComment']//i")
 	private WebElement lastQuestionEnableToggleClick;
 
-	@FindBy(how = How.XPATH, using = "//i[@class='glyphicon glyphicon-circle-arrow-left']")
+	@FindBy(how = How.XPATH, using = "//a[@title='Back']//*[local-name()='svg']")
 	private WebElement backArrow;
 
 	public ManageResource(WebDriver driver) {
@@ -324,7 +324,7 @@ public class ManageResource extends PSS2MenuPage {
 	public void enableLastQuestionRequired() throws InterruptedException {
 
 		IHGUtil.waitForElement(driver, 1, lastQuestionRequiredToggleClick);
-		pageDown();
+		pageDown(800);
 
 		commonMethods.highlightElement(lastQuestionRequiredToggleClick);
 		jse.executeScript("arguments[0].click();", lastQuestionRequiredTogglebtn);
@@ -343,7 +343,7 @@ public class ManageResource extends PSS2MenuPage {
 	public void enableLastQuestion() throws InterruptedException {
 
 		IHGUtil.waitForElement(driver, 1, lastQuestionEnableToggleClick);
-		pageDown();
+		pageDown(800);
 
 		commonMethods.highlightElement(lastQuestionEnableToggleClick);
 		jse.executeScript("arguments[0].click();", lastQuestionEnableTogglebtn);
@@ -355,22 +355,22 @@ public class ManageResource extends PSS2MenuPage {
 		log("TURN ON the Last Question Enable toggle button as it was disabled previously");
 	}
 
-	public void pageDown() throws InterruptedException {
+	public void pageDown(int d) throws InterruptedException {
 		Thread.sleep(1000);
 		// This will scroll down the page by 800 pixel vertical
-		jse.executeScript("window.scrollBy(0,800)");
+		jse.executeScript("window.scrollBy(0,"+d+")");
 		Thread.sleep(1000);
 	}
 
-	public void pageUp() throws InterruptedException {
+	public void pageUp(int t) throws InterruptedException {
 		Thread.sleep(1000);
 		// This will scroll up the page by 600 pixel vertical
-		jse.executeScript("window.scrollBy(600,0)");
+		jse.executeScript("window.scrollBy("+t+",0)");
 		Thread.sleep(1000);
 	}
 
-	public void clickBackArraow() {
-		jse.executeScript("window.scrollBy(600,0)");
+	public void clickBackArraow() throws InterruptedException {
+		pageUp(1500);
 		commonMethods.highlightElement(backArrow);
 		backArrow.click();
 	}

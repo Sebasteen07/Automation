@@ -752,7 +752,7 @@ public class PSSAdminUtils extends BaseTestNGWebDriver{
 		manageResource.selectResource(appointment.getProvider());
 
 		log("Scroll down the page");
-		manageResource.pageDown();
+		manageResource.pageDown(800);
 
 		log("Last Question Enable Status- " + manageResource.lastQuestionEnableStatus());
 
@@ -760,7 +760,7 @@ public class PSSAdminUtils extends BaseTestNGWebDriver{
 			manageResource.enableLastQuestion();
 		}
 		manageResource.selectAppointmenttype(appointment.getAppointmenttype());
-		manageResource.pageDown();
+		manageResource.pageDown(800);
 
 		log("Last QUestion Required Status- " + manageResource.lastQuestionRequiredStatus());
 
@@ -774,7 +774,7 @@ public class PSSAdminUtils extends BaseTestNGWebDriver{
 				manageResource.disableLastQuestionRequired();
 			}
 		}
-		manageResource.pageUp();
+		manageResource.pageUp(100);
 		manageResource.clickBackArraow();
 		manageResource.clickGeneralTab();
 
