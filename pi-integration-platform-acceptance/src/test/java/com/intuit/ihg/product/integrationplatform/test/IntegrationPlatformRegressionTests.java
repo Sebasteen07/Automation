@@ -4311,7 +4311,6 @@ public class IntegrationPlatformRegressionTests extends BaseTestNGWebDriver {
 				AMDCtestData.OAuthUsername, AMDCtestData.OAuthPassword);
 
 		logStep("Prepare Attachemnt Payload");
-		AttachmentPayload AttachmentObj = new AttachmentPayload();
 		
 		String externalAttachmentID = PharmacyPayload.randomNumbers(14);
 		log("externalAttachmentID posted is : " + externalAttachmentID);
@@ -4395,6 +4394,9 @@ public class IntegrationPlatformRegressionTests extends BaseTestNGWebDriver {
 		assertTrue(messagesPage.isMessageDisplayed(driver, messageIdentifier));
 
 		Long since = System.currentTimeMillis() / 1000L - 60 * 24;
+		
+		logStep("Validate priority status flag displayed for the message recieved");
+		assertTrue(messagesPage.isPriorityFlagDisplayedTrue(driver, messageIdentifier));
 
 		logStep("Reply to the message");
 		messagesPage.replyToMessage(driver);
@@ -4511,6 +4513,9 @@ public class IntegrationPlatformRegressionTests extends BaseTestNGWebDriver {
 			logStep("Validate message loads and is the right message");
 			assertTrue(messagesPage.isMessageDisplayed(driver, messageIdentifier));
 			
+			logStep("Validate priority status flag Not displayed for the message recieved");
+			assertTrue(messagesPage.isPriorityFlagDisplayedFalse(driver, messageIdentifier));
+
 			logStep("Check if attachment is present or not");
 			messagesPage.validateSecureMessageAttachment(attachmentName);
 			logStep("Logout");
