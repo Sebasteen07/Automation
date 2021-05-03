@@ -53,7 +53,7 @@ public class AttachmentPayload {
 			
 			// AttachmentType
 			Element attachmentName = doc.createElement("AttachmentName");
-			String attachmentNameText = "TestResults_"+externalAttachmentID+".pdf";
+			String attachmentNameText = "TestResults_"+externalAttachmentIDText+".pdf";
 			attachmentName.setTextContent(attachmentNameText);
 			mainRootElement.appendChild(attachmentName);
 		
