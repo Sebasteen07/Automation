@@ -21,7 +21,7 @@ public class AttachmentPayload {
 	static String output;
 	
 
-	public static String getAttachmentPayload(Attachment testData,AMDC aMDCtestData, String externalAttachmentID) throws InterruptedException, IOException {
+	public static String getAttachmentPayload(Attachment testData,AMDC aMDCtestData, String externalAttachmentIDText) throws InterruptedException, IOException {
 		try {
 			DocumentBuilderFactory icFactory = DocumentBuilderFactory.newInstance();
 			DocumentBuilder icBuilder;
@@ -35,32 +35,32 @@ public class AttachmentPayload {
 			doc.appendChild(mainRootElement);
 			
 			// ExternalPatientId
-			Element ExternalPatientId = doc.createElement("ExternalPatientId");
-			ExternalPatientId.setTextContent(testData.PatientExternalId);
-			mainRootElement.appendChild(ExternalPatientId);
+			Element externalPatientId = doc.createElement("ExternalPatientId");
+			externalPatientId.setTextContent(testData.patientExternalId);
+			mainRootElement.appendChild(externalPatientId);
 
 			// ExternalAttachmentID
 		
 			 
-			Element ExternalAttachmentID = doc.createElement("ExternalAttachmentID");
-			ExternalAttachmentID.setTextContent(externalAttachmentID);
-			mainRootElement.appendChild(ExternalAttachmentID);
+			Element externalAttachmentID = doc.createElement("ExternalAttachmentID");
+			externalAttachmentID.setTextContent(externalAttachmentIDText);
+			mainRootElement.appendChild(externalAttachmentID);
 			
 			// AttachmentType
-			Element AttachmentType = doc.createElement("AttachmentType");
-			AttachmentType.setTextContent("image/pdf");
-			mainRootElement.appendChild(AttachmentType);
+			Element attachmentType = doc.createElement("AttachmentType");
+			attachmentType.setTextContent("image/pdf");
+			mainRootElement.appendChild(attachmentType);
 			
 			// AttachmentType
-			Element AttachmentName = doc.createElement("AttachmentName");
-			String attachmentName = "TestResults_"+externalAttachmentID+".pdf";
-			AttachmentName.setTextContent(attachmentName);
-			mainRootElement.appendChild(AttachmentName);
+			Element attachmentName = doc.createElement("AttachmentName");
+			String attachmentNameText = "TestResults_"+externalAttachmentID+".pdf";
+			attachmentName.setTextContent(attachmentNameText);
+			mainRootElement.appendChild(attachmentName);
 		
 			// AttachmentBytes
-			Element AttachmentBytes = doc.createElement("AttachmentBytes");
-			AttachmentBytes.setTextContent(ExternalFileReader.readFromFile(aMDCtestData.attachmentBody));
-			mainRootElement.appendChild(AttachmentBytes);
+			Element attachmentBytes = doc.createElement("AttachmentBytes");
+			attachmentBytes.setTextContent(ExternalFileReader.readFromFile(aMDCtestData.attachmentBody));
+			mainRootElement.appendChild(attachmentBytes);
 			
 			Transformer transformer = TransformerFactory.newInstance().newTransformer();
 			transformer.setOutputProperty(OutputKeys.INDENT, "yes");

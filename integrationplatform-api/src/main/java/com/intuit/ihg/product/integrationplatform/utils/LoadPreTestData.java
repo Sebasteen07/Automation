@@ -627,8 +627,8 @@ public class LoadPreTestData {
 
 		PropertyFileLoader propertyData = new PropertyFileLoader();
 
-		testData.RestUrl = propertyData.getRestUrlAttachment();
-		testData.PatientExternalId = propertyData.getPatientExternalIdAttachment();
+		testData.restUrl = propertyData.getRestUrlAttachment();
+		testData.patientExternalId = propertyData.getPatientExternalIdAttachment();
 
 
 		return testData;

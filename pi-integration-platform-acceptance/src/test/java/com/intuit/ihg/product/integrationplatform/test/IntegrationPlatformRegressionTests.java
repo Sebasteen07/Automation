@@ -4298,13 +4298,13 @@ public class IntegrationPlatformRegressionTests extends BaseTestNGWebDriver {
 
 		logStep("Get TestData from both Property files AMDC and Attachment");
 		
-		LoadPreTestData LoadPreTestDataObj = new LoadPreTestData();
+		LoadPreTestData loadPreTestDataObj = new LoadPreTestData();
 		
-		Attachment AttchamenttestData = new Attachment();
-		LoadPreTestDataObj.loadAttachmentDataFromProperty(AttchamenttestData);
+		Attachment attchamentTestData = new Attachment();
+		loadPreTestDataObj.loadAttachmentDataFromProperty(attchamentTestData);
 		
 		AMDC AMDCtestData = new AMDC();
-		LoadPreTestDataObj.loadAMDCDataFromProperty(AMDCtestData);
+		loadPreTestDataObj.loadAMDCDataFromProperty(AMDCtestData);
 
 		logStep("Setup Oauth client");
 		RestUtils.oauthSetup(AMDCtestData.OAuthKeyStore, AMDCtestData.OAuthProperty, AMDCtestData.OAuthAppToken,
@@ -4317,14 +4317,14 @@ public class IntegrationPlatformRegressionTests extends BaseTestNGWebDriver {
 		String attachmentName = "TestResults_"+externalAttachmentID+".pdf";
 
 		log("attachmentName : "+attachmentName);
-		String attahcmentPayload = AttachmentPayload.getAttachmentPayload(AttchamenttestData,AMDCtestData, externalAttachmentID);
+		String attahcmentPayload = AttachmentPayload.getAttachmentPayload(attchamentTestData,AMDCtestData, externalAttachmentID);
 		
 		logStep("Attachment Payload: " + attahcmentPayload);
 
 		logStep("Do Attachment Post Request");
 		log("ResponsePath: " + AMDCtestData.ResponsePath);
 		
-		RestUtils.setupHttpPostRequest(AttchamenttestData.RestUrl, attahcmentPayload,
+		RestUtils.setupHttpPostRequest(attchamentTestData.restUrl, attahcmentPayload,
 				AMDCtestData.ResponsePath);
 
 		String attachmentRefId = RestUtils.getAttachmentRefId(AMDCtestData.ResponsePath);
@@ -4448,7 +4448,7 @@ public class IntegrationPlatformRegressionTests extends BaseTestNGWebDriver {
 		logStep("Do Attachment Post Request");
 		log("ResponsePath: " + bulkMessageTestData.ResponsePath);
 		
-		RestUtils.setupHttpPostRequest(attchamentTestData.RestUrl, attahcmentPayload,
+		RestUtils.setupHttpPostRequest(attchamentTestData.restUrl, attahcmentPayload,
 				bulkMessageTestData.ResponsePath);
 
 		String attachmentRefId = RestUtils.getAttachmentRefId(bulkMessageTestData.ResponsePath);
