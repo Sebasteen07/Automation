@@ -1,17 +1,8 @@
 package provisioningtests;
 
 import java.io.IOException;
-import java.util.List;
-
-import org.openqa.selenium.By;
-import org.openqa.selenium.WebElement;
-import org.openqa.selenium.remote.server.handler.ClickElement;
-import org.testng.annotations.AfterMethod;
 import org.testng.annotations.BeforeMethod;
-import org.testng.annotations.Test;
-
 import pageobjects.LoginPage;
-
 import com.intuit.ifs.csscat.core.BaseTestNGWebDriver;
 import com.intuit.ifs.csscat.core.TestConfig;
 import com.medfusion.common.utils.IHGUtil;
@@ -23,17 +14,16 @@ public class ProvisioningBaseTest extends BaseTestNGWebDriver {
 
 	@BeforeMethod
 	public void logIntoMP() throws IOException, NullPointerException, InterruptedException {
-		log("Execution Environment: " + IHGUtil.getEnvironmentType());
-		log("Execution Browser: " + TestConfig.getBrowserType());
-		log("Getting Test Data");
+		logStep("Execution Environment: " + IHGUtil.getEnvironmentType());
+		logStep("Execution Browser: " + TestConfig.getBrowserType());
+		logStep("Getting Test Data");
 		testData = new PropertyFileLoader();
 
-		log("step 1: Navigating to Merchant provisioning");
-		LoginPage loginPage = new LoginPage(driver, testData.getProperty("provisioningurl"));
-		assertTrue(loginPage.assessLoginPageElements());
+		logStep("Navigating to Merchant provisioning");
+		LoginPage loginPage = new LoginPage(driver, testData.getProperty("provisioning.url"));
 
-		log("step 2: Login into merchant provisioning");
-		loginPage.login(testData.getProperty("username"), testData.getProperty("password"));
+		logStep("Login into merchant provisioning");
+		loginPage.login(testData.getProperty("user.name"), testData.getProperty("password"));
 		loginPage.loginbtn.click();
 
 	}
