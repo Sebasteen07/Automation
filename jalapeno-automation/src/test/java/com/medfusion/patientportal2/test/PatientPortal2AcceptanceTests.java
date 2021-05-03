@@ -3905,4 +3905,50 @@ public class PatientPortal2AcceptanceTests extends BaseTestNGWebDriver {
 		assertTrue(jalapenoHomePage.areBasicPageElementsPresent());
 		logStep("Auto Enrollment to Second Practice is completed");
 	}
+	
+	@Test(enabled = true, groups = { "acceptance-solutions" }, retryAnalyzer = RetryAnalyzer.class)
+	public void testCcdDemographicValidation() throws Exception {
+
+		logStep("Load login page");
+		JalapenoLoginPage jalapenoLoginPage = new JalapenoLoginPage(driver, testData.getUrl());
+
+		JalapenoHomePage jalapenoHomePage = jalapenoLoginPage.login(testData.getCCDPatientUsername(),
+				testData.getPassword());
+
+		JalapenoMessagesPage jalapenoMessagesPage = jalapenoHomePage.showMessages(driver);
+		JalapenoCcdViewerPage jalapenoCcdPage = jalapenoMessagesPage.findCcdMessage(driver);
+
+		assertTrue(testData.getProperty("patHeaderName").equals(jalapenoCcdPage.getHeaderName()),
+				"Expected:"+ testData.getProperty("patHeaderName") + ", found: " + jalapenoCcdPage.getHeaderName());
+
+		assertTrue(testData.getProperty("patName").equals(jalapenoCcdPage.getPatientName()),
+				"Expected:"+ testData.getProperty("patName") + ", found: " + jalapenoCcdPage.getPatientName());
+
+		assertTrue(testData.getProperty("patEmail").equals(jalapenoCcdPage.getPatientEmail()),
+				"Expected:"+ testData.getProperty("patEmail") + ", found: " + jalapenoCcdPage.getPatientEmail());
+
+		assertTrue(testData.getProperty("patDob").equals(jalapenoCcdPage.getPatientDOB()),
+				"Expected:"+ testData.getProperty("patDob") + ", found: " + jalapenoCcdPage.getPatientDOB());
+
+		assertTrue(testData.getProperty("patEthnicity").equals(jalapenoCcdPage.getPatientEthnicity()),
+				"Expected:"+ testData.getProperty("patEthnicity") + ", found: " + jalapenoCcdPage.getPatientEthnicity());
+
+		assertTrue(testData.getProperty("patMartitalStatus").equals(jalapenoCcdPage.getPatientMaritialStatus()),
+				"Expected:"+ testData.getProperty("patMartitalStatus") + ", found: " + jalapenoCcdPage.getPatientMaritialStatus());
+
+		assertTrue(testData.getProperty("patCareTeamMember").equals(jalapenoCcdPage.getPatientCareTeamMember()),
+				"Expected:"+ testData.getProperty("patCareTeamMember") + ", found: " + jalapenoCcdPage.getPatientCareTeamMember());
+		
+		assertTrue(testData.getProperty("patPhone").equals(jalapenoCcdPage.getPatientPhoneNumber()),
+				"Expected:"+ testData.getProperty("patPhone") + ", found: " + jalapenoCcdPage.getPatientPhoneNumber());
+		
+		jalapenoMessagesPage = jalapenoCcdPage.closeCcd(driver);
+		jalapenoHomePage = jalapenoMessagesPage.clickOnMenuHome();
+
+		logStep("Logging out");
+		jalapenoLoginPage = jalapenoHomePage.clickOnLogout();
+
+	}
+
+
 }
