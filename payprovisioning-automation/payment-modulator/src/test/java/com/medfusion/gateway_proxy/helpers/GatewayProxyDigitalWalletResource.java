@@ -28,4 +28,17 @@ public class GatewayProxyDigitalWalletResource extends GatewayProxyBaseTest {
                 .then().spec(responseSpec).and().extract().response();
         return response;
     }
+    
+    
+    public Response getListOfCardsInWallet() throws IOException{
+    	
+    	 testData = new PropertyFileLoader();
+
+    	 Response response = given().that().spec(requestSpec).when().get(testData.getProperty("testpaycustomeruuid")+
+                 "/wallets/" + testData.getProperty("externalWalletId"))
+                 .then().spec(responseSpec).and().extract().response();
+                   
+    	 return response;
+    	 
+    }
 }
