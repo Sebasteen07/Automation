@@ -4298,34 +4298,33 @@ public class IntegrationPlatformRegressionTests extends BaseTestNGWebDriver {
 
 		logStep("Get TestData from both Property files AMDC and Attachment");
 		
-		LoadPreTestData LoadPreTestDataObj = new LoadPreTestData();
+		LoadPreTestData loadPreTestDataObj = new LoadPreTestData();
 		
-		Attachment AttchamenttestData = new Attachment();
-		LoadPreTestDataObj.loadAttachmentDataFromProperty(AttchamenttestData);
+		Attachment attchamentTestData = new Attachment();
+		loadPreTestDataObj.loadAttachmentDataFromProperty(attchamentTestData);
 		
 		AMDC AMDCtestData = new AMDC();
-		LoadPreTestDataObj.loadAMDCDataFromProperty(AMDCtestData);
+		loadPreTestDataObj.loadAMDCDataFromProperty(AMDCtestData);
 
 		logStep("Setup Oauth client");
 		RestUtils.oauthSetup(AMDCtestData.OAuthKeyStore, AMDCtestData.OAuthProperty, AMDCtestData.OAuthAppToken,
 				AMDCtestData.OAuthUsername, AMDCtestData.OAuthPassword);
 
 		logStep("Prepare Attachemnt Payload");
-		AttachmentPayload AttachmentObj = new AttachmentPayload();
 		
 		String externalAttachmentID = PharmacyPayload.randomNumbers(14);
 		log("externalAttachmentID posted is : " + externalAttachmentID);
 		String attachmentName = "TestResults_"+externalAttachmentID+".pdf";
 
 		log("attachmentName : "+attachmentName);
-		String attahcmentPayload = AttachmentPayload.getAttachmentPayload(AttchamenttestData,AMDCtestData, externalAttachmentID);
+		String attahcmentPayload = AttachmentPayload.getAttachmentPayload(attchamentTestData,AMDCtestData, externalAttachmentID);
 		
 		logStep("Attachment Payload: " + attahcmentPayload);
 
 		logStep("Do Attachment Post Request");
 		log("ResponsePath: " + AMDCtestData.ResponsePath);
 		
-		RestUtils.setupHttpPostRequest(AttchamenttestData.RestUrl, attahcmentPayload,
+		RestUtils.setupHttpPostRequest(attchamentTestData.restUrl, attahcmentPayload,
 				AMDCtestData.ResponsePath);
 
 		String attachmentRefId = RestUtils.getAttachmentRefId(AMDCtestData.ResponsePath);
@@ -4395,6 +4394,9 @@ public class IntegrationPlatformRegressionTests extends BaseTestNGWebDriver {
 		assertTrue(messagesPage.isMessageDisplayed(driver, messageIdentifier));
 
 		Long since = System.currentTimeMillis() / 1000L - 60 * 24;
+		
+		logStep("Validate priority status flag displayed for the message recieved");
+		assertTrue(messagesPage.isPriorityFlagDisplayedTrue(driver, messageIdentifier));
 
 		logStep("Reply to the message");
 		messagesPage.replyToMessage(driver);
@@ -4446,7 +4448,7 @@ public class IntegrationPlatformRegressionTests extends BaseTestNGWebDriver {
 		logStep("Do Attachment Post Request");
 		log("ResponsePath: " + bulkMessageTestData.ResponsePath);
 		
-		RestUtils.setupHttpPostRequest(attchamentTestData.RestUrl, attahcmentPayload,
+		RestUtils.setupHttpPostRequest(attchamentTestData.restUrl, attahcmentPayload,
 				bulkMessageTestData.ResponsePath);
 
 		String attachmentRefId = RestUtils.getAttachmentRefId(bulkMessageTestData.ResponsePath);
@@ -4511,6 +4513,9 @@ public class IntegrationPlatformRegressionTests extends BaseTestNGWebDriver {
 			logStep("Validate message loads and is the right message");
 			assertTrue(messagesPage.isMessageDisplayed(driver, messageIdentifier));
 			
+			logStep("Validate priority status flag Not displayed for the message recieved");
+			assertTrue(messagesPage.isPriorityFlagDisplayedFalse(driver, messageIdentifier));
+
 			logStep("Check if attachment is present or not");
 			messagesPage.validateSecureMessageAttachment(attachmentName);
 			logStep("Logout");

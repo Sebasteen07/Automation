@@ -9,6 +9,7 @@ import java.util.List;
 
 import org.openqa.selenium.By;
 import org.openqa.selenium.JavascriptExecutor;
+import org.openqa.selenium.NoSuchElementException;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.FindBy;
@@ -459,5 +460,29 @@ public class JalapenoMessagesPage extends JalapenoMenu {
 		log("Attachment received in secure message : "+attachmentName);
 		assertTrue(attachmentName.equals(attachmentNamepayload), "Appropriate attachment is received in the message");
 
+	}
+	
+	public boolean isPriorityFlagDisplayedTrue(WebDriver driver, String subject) {
+		IHGUtil.PrintMethodName();
+		WebElement element;
+		element = driver.findElement(By.xpath("//*/ul/li/a/*[contains(text(),'" + subject + "')]/following-sibling::*[@class='prioritystatus']/img"));
+		String priorityFlagStatus = driver.findElement(By.xpath("//*/ul/li/a/*[contains(text(),'" + subject + "')]/following-sibling::*[@class='prioritystatus']/img")).getAttribute("alt");
+		log("Priority Flag for Message with subject "+subject+" has "+priorityFlagStatus);
+		return element.isDisplayed();
+	}
+	
+	public boolean isPriorityFlagDisplayedFalse(WebDriver driver, String subject) {
+		IHGUtil.PrintMethodName();
+		try {
+		driver.findElement(By.xpath("//*/ul/li/a/*[contains(text(),'" + subject + "')]/following-sibling::*[@class='prioritystatus']/img"));
+		log("Priority Flag for Message with subject "+subject+" is displayed");
+		return false ;
+		}
+		catch(NoSuchElementException ex)
+		{
+			log("Priority Flag for Message with subject "+subject+" is not displayed");
+			log(ex.getMessage());
+		}
+		return true;
 	}
 }
