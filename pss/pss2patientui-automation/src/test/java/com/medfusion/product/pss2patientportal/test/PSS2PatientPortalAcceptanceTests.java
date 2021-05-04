@@ -5017,5 +5017,61 @@ public class PSS2PatientPortalAcceptanceTests extends BaseTestNGWebDriver {
 		psspatientutils.timeMarkLTBRule(homePage, testData, driver);
 
 	}
+	
+	@Test(enabled = true, groups = {"AcceptanceTests"}, retryAnalyzer = RetryAnalyzer.class)
+	public void testE2ELinkGenerationWithProviderGW() throws Exception {
+		log("Link Generation with location and Provider for GW");
+		PSSPropertyFileLoader propertyData = new PSSPropertyFileLoader();
+		Appointment testData = new Appointment();
+		AdminUser adminuser = new AdminUser();
+		PSSNewPatient pssNewPatient = new PSSNewPatient();
+		propertyData.setAdminGE(adminuser);
+		propertyData.setAppointmentResponseGE(testData);
+		log("-----Loaded the test data for New Patient----------");
+		pssNewPatient.createPatientDetails(testData);
+		log(testData.getUrlLoginLess());
+		log("Step 2: Fetch rule and settings from PSS 2.0 Admin portal");
+		PSSAdminUtils adminUtils = new PSSAdminUtils();
+		adminUtils.linkGenerationWithProvider(driver, adminuser, testData, PSSConstants.LOGINLESS);
+//		String rule = adminuser.getRule();
+//		rule = rule.replaceAll(" ", "");
+//		log("Step 3: Move to PSS patient Portal 2.0 to book an Appointment");
+//		log("Step 4: Login to PSS Appointment");
+//		log("Link GEneration link is   " + testData.getUrlLinkGen());
+//		DismissPage dismissPage = new DismissPage(driver, testData.getUrlLinkGen());
+//		Thread.sleep(1000);
+//		LoginlessPatientInformation loginlessPatientInformation = dismissPage.clickDismiss();
+//		
+//		Boolean insuranceSelected = adminuser.getIsInsuranceDisplayed();
+//		log("insuranceSelected--> " + insuranceSelected);
+//		HomePage homepage;
+//		insuranceSelected = false;
+//		log("insuranceSelected--> " + insuranceSelected);
+//		if (insuranceSelected) {
+//			log("insuranceSelected--> ON");
+//			NewPatientInsuranceInfo newpatientinsuranceinfo = loginlessPatientInformation.fillPatientForm(testData.getFirstName(), testData.getLastName(),
+//					testData.getDob(), testData.getEmail(), testData.getGender(), testData.getZipCode(), testData.getPrimaryNumber());
+//			homepage = newpatientinsuranceinfo.fillNewPatientInsuranceInfo(PSSConstants.INSURANCE_CARRIER, PSSConstants.INSURANCE_MEMBERID,
+//					PSSConstants.INSURANCE_GROUPID, PSSConstants.INSURANCE_PRIMARYPHONE);
+//		} else {
+//			log("insuranceSelected--> OFF");
+//			homepage = loginlessPatientInformation.fillNewPatientForm(testData.getFirstName(), testData.getLastName(), testData.getDob(), testData.getEmail(),
+//					testData.getGender(), testData.getZipCode(), testData.getPrimaryNumber());
+//		}
+//		Log4jUtil.log("Step 8: Select Appointment for appointment.");
+//		homepage.btnStartSchedClick();
+//		AppointmentPage appointment = homepage.skipInsurancepage(driver);
+//		Log4jUtil.log("Step 9: Verfiy Appointment Page and appointment =" + testData.getAppointmenttype());
+//		assertTrue(appointment.areBasicPageElementsPresent());
+//
+//		AppointmentDateTime aptDateTime = appointment.selectAppointmentandClick(testData.getAppointmenttype(), Boolean.valueOf(testData.getIsAppointmentPopup()));
+//		aptDateTime.selectDate(testData.getIsNextDayBooking());
+//
+//		assertTrue(aptDateTime.areBasicPageElementsPresent());
+//		aptDateTime.selectDate(testData.getIsNextDayBooking());
+//		Thread.sleep(6000);
+
+		Log4jUtil.log("Test Case Passed");
+	}
 }
 

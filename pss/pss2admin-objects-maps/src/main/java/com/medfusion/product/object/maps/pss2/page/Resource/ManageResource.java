@@ -30,7 +30,7 @@ public class ManageResource extends PSS2MenuPage {
 	@FindBy(how = How.XPATH, using = "//a[contains(text(),'General')]")
 	private WebElement editGeneralTab;
 
-	@FindBy(how = How.XPATH, using = "//a[contains(text(),'Location')]")
+	@FindBy(how = How.XPATH, using = "//*[@id='tabs3']/li[2]/a")
 	private WebElement editLocationTab;
 
 	@FindBy(how = How.XPATH, using = "//a[contains(text(),'Specialty')]")
@@ -131,6 +131,9 @@ public class ManageResource extends PSS2MenuPage {
 	
 	@FindBy(how = How.XPATH, using = "//*[@name='apptTimeMark']")
 	private WebElement timeMarkOption;
+	
+	@FindBy(how = How.XPATH, using = "//*[@id='tab13']/form/fieldset[1]/div[10]/div/label[1]/i")
+	private WebElement locatonToggleState;
 
 	public ManageResource(WebDriver driver) {
 		super(driver);
@@ -167,6 +170,7 @@ public class ManageResource extends PSS2MenuPage {
 	public Boolean isSharedPatientTrueForResource() {
 		return Boolean.valueOf(resourceSharePatients.getAttribute("ng-reflect-model"));
 	}
+	
 
 	public void clickShareToggle() {
 		resoureceSharePatientToggle.click();
@@ -291,5 +295,13 @@ public class ManageResource extends PSS2MenuPage {
 		timeMarkOption.click();
 		appointmenttypeSave.click();
 	}
+	public void clickLocation()
+	{
+		editLocationTab.click();
+	}
+	public Boolean isLocationActive() {
+		return Boolean.valueOf(locatonToggleState.getAttribute("ng-reflect-model"));
+	}
+
 
 }

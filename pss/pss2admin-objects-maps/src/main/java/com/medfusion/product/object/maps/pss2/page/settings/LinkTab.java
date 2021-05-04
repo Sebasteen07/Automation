@@ -17,7 +17,7 @@ import org.openqa.selenium.support.ui.Select;
 
 public class LinkTab extends SettingsTab {
 
-	@FindBy(how = How.XPATH, using = "//*[@id='links']/div/div/legend/strong/a/i")
+	@FindBy(how = How.XPATH, using = "//a[@title='Add Link']")
 	private WebElement linkplusButton;
 
 	@FindBy(how = How.XPATH, using = "//input[@id='search-link']")
@@ -41,16 +41,16 @@ public class LinkTab extends SettingsTab {
 	@FindBy(how = How.XPATH, using = "//a[contains(text(),'100')]")
 	private WebElement lastpage100;
 
-	@FindAll({@FindBy(xpath = "//*[@class='multiselect-item-checkbox']")})
+	@FindAll({@FindBy(xpath = "//*[@class='multiselect-item-checkbox ng-star-inserted']")})
 	private List<WebElement> checklistLocation;
 
-	@FindBy(how = How.XPATH, using = "//tbody/tr/td[5]/a[1]/i[1]")
+	@FindBy(how = How.XPATH, using = "//tbody/tr/td[5]/a[1]")
 	private WebElement removelink;
 
 	@FindBy(how = How.XPATH, using = "//*[@class='fa fa-link']")
 	private WebElement copyLink;
 
-	@FindAll({@FindBy(xpath = "//*[@id='links']/div/div/div[2]/table/tbody[2]/tr/td")})
+	@FindAll({@FindBy(xpath = "//*[@class='mat-paginator-range-actions']/div")})
 	private List<WebElement> noProviderConfigured;
 
 	public LinkTab(WebDriver driver) {
@@ -120,4 +120,34 @@ public class LinkTab extends SettingsTab {
 	public void removelink() {
 		lastpage100.click();
 	}
+
+	public void addLinkForProvider(String providerConfig) throws InterruptedException {
+		linkplusButton.click();
+		log("Clicked on link plus button");
+		clickdropType.click();
+		log("Clicked on type  button");
+		Select type = new Select(typeselect);
+		type.selectByVisibleText("LOGINLESS");
+		resourceselect.click();
+		log("LocationTypeList " + checklistLocation.size());
+		for (int i = 0; i < checklistLocation.size(); i++) {
+			if (checklistLocation.get(i).getText().contains(providerConfig)) {
+				checklistLocation.get(i).click();
+				log("Location checkbox selected");
+			}
+		}
+//		Thread.sleep(3000);
+//		resourceselect.click();
+//		log("ProviderTypeList " + checklistLocation.size());
+//		for (int i = 0; i < checklistLocation.size(); i++) {
+//			if (checklistLocation.get(i).getText().contains(providerConfig)) {
+//				checklistLocation.get(i).click();
+//				log("Provider checkbox selected");
+//
+//			}
+//		}
+		createLinkButton.click();
+		log("Clicked on Create link Button");
+	}
+
 }
