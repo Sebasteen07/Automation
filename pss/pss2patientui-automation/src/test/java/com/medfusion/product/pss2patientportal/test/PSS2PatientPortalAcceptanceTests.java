@@ -712,6 +712,480 @@ public class PSS2PatientPortalAcceptanceTests extends BaseTestNGWebDriver {
 		psspatientutils.selectAFlow(driver, rule, homepage, testData);
 
 	}
+	
+	@Test(enabled = true, groups = {"AcceptanceTests"}, retryAnalyzer = RetryAnalyzer.class)
+	public void testLastQuestionRequiredNG() throws Exception {
+		
+		PSSPropertyFileLoader propertyData = new PSSPropertyFileLoader();
+		Appointment testData = new Appointment();
+		AdminUser adminUser = new AdminUser();
+		
+		propertyData.setAdminNG(adminUser);
+		propertyData.setAppointmentResponseNG(testData);
+		adminUser.setLastQuestionMandatory(true);
+		
+		PSSPatientUtils pssPatientUtils = new PSSPatientUtils();
+		PSSAdminUtils adminUtils = new PSSAdminUtils();
+		
+		logStep("Login to PSS 2.0 Admin portal and do the seetings for Last Question Required");
+		adminUtils.lastQuestionEnable(driver, adminUser, testData, PSSConstants.LOGINLESS);
+		
+		logStep("Fetch the rules set in Admin");
+		String rule = adminUser.getRule();
+		log("rule are " + rule);
+		rule = rule.replaceAll(" ", "");
+		
+		logStep("Login to PSS Appointment");
+		DismissPage dismissPage = new DismissPage(driver, testData.getUrlLoginLess());
+		
+		logStep("Clicked on Dismiss");
+		LoginlessPatientInformation loginlessPatientInformation = dismissPage.clickDismiss();
+
+		logStep("Patient details are as mentioned below-");
+		log("Demographic Details- "+testData.getFirstName()+" "+testData.getLastName()+" "+testData.getDob()+" "+testData.getGender()+" "+testData.getEmail()+" "+testData.getPrimaryNumber()+" "+testData.getZipCode());
+		
+		HomePage homepage = loginlessPatientInformation.fillNewPatientForm(testData.getFirstName(), testData.getLastName(), testData.getDob(), testData.getEmail(),
+				testData.getGender(), testData.getZipCode(), testData.getPrimaryNumber());
+		
+		logStep("Start booking an appointment in PSS---> PATIENT UI STEPS ");
+		homepage.btnStartSchedClick();
+		pssPatientUtils.TLBLastQuestion(homepage, testData, driver);
+		
+	}
+
+	@Test(enabled = true, groups = {"AcceptanceTests"}, retryAnalyzer = RetryAnalyzer.class)
+	public void testLastQuestionRequiredGE() throws Exception {
+		
+		PSSPropertyFileLoader propertyData = new PSSPropertyFileLoader();
+		Appointment testData = new Appointment();
+		AdminUser adminUser = new AdminUser();
+		
+		propertyData.setAdminGE(adminUser);
+		propertyData.setAppointmentResponseGE(testData);
+		adminUser.setLastQuestionMandatory(true);
+		
+		PSSPatientUtils pssPatientUtils = new PSSPatientUtils();
+		PSSAdminUtils adminUtils = new PSSAdminUtils();
+		
+		logStep("Login to PSS 2.0 Admin portal and do the seetings for Last Question Required");
+		adminUtils.lastQuestionEnable(driver, adminUser, testData, PSSConstants.LOGINLESS);
+		
+		logStep("Fetch the rules set in Admin");
+		String rule = adminUser.getRule();
+		log("rule are " + rule);
+		rule = rule.replaceAll(" ", "");
+		
+		logStep("Login to PSS Appointment");
+		DismissPage dismissPage = new DismissPage(driver, testData.getUrlLoginLess());
+	
+		logStep("Clicked on Dismiss");
+		LoginlessPatientInformation loginlessPatientInformation = dismissPage.clickDismiss();
+
+		logStep("Patient details are as mentioned below-");
+		log("Demographic Details- "+testData.getFirstName()+" "+testData.getLastName()+" "+testData.getDob()+" "+testData.getGender()+" "+testData.getEmail()+" "+testData.getPrimaryNumber()+" "+testData.getZipCode());
+		
+		HomePage homepage = loginlessPatientInformation.fillNewPatientForm(testData.getFirstName(), testData.getLastName(), testData.getDob(), testData.getEmail(),
+				testData.getGender(), testData.getZipCode(), testData.getPrimaryNumber());
+		
+		logStep("Start booking an appointment in PSS---> PATIENT UI STEPS ");
+		homepage.btnStartSchedClick();
+		pssPatientUtils.TLBLastQuestion(homepage, testData, driver);
+		
+	}
+	
+	@Test(enabled = true, groups = {"AcceptanceTests"}, retryAnalyzer = RetryAnalyzer.class)
+	public void testLastQuestionRequiredAT() throws Exception {
+		
+		PSSPropertyFileLoader propertyData = new PSSPropertyFileLoader();
+		Appointment testData = new Appointment();
+		AdminUser adminUser = new AdminUser();
+		
+		propertyData.setAdminAT(adminUser);
+		propertyData.setAppointmentResponseAT(testData);
+		adminUser.setLastQuestionMandatory(true);
+		
+		PSSPatientUtils pssPatientUtils = new PSSPatientUtils();
+		PSSAdminUtils adminUtils = new PSSAdminUtils();
+		
+		logStep("Login to PSS 2.0 Admin portal and do the seetings for Last Question Required");
+		adminUtils.lastQuestionEnable(driver, adminUser, testData, PSSConstants.LOGINLESS);
+		
+		logStep("Fetch the rules set in Admin");
+		String rule = adminUser.getRule();
+		log("rule are " + rule);
+		rule = rule.replaceAll(" ", "");
+		
+		logStep("Login to PSS Appointment");
+		DismissPage dismissPage = new DismissPage(driver, testData.getUrlLoginLess());
+		
+		logStep("Clicked on Dismiss");
+		LoginlessPatientInformation loginlessPatientInformation = dismissPage.clickDismiss();
+
+		logStep("Patient details are as mentioned below-");
+		log("Demographic Details- "+testData.getFirstName()+" "+testData.getLastName()+" "+testData.getDob()+" "+testData.getGender()+" "+testData.getEmail()+" "+testData.getPrimaryNumber()+" "+testData.getZipCode());
+		
+		HomePage homepage = loginlessPatientInformation.fillNewPatientForm(testData.getFirstName(), testData.getLastName(), testData.getDob(), testData.getEmail(),
+				testData.getGender(), testData.getZipCode(), testData.getPrimaryNumber());
+		
+		logStep("Start booking an appointment in PSS---> PATIENT UI STEPS ");
+		homepage.btnStartSchedClick();
+		pssPatientUtils.TLBLastQuestion(homepage, testData, driver);
+		
+	}
+	
+	@Test(enabled = true, groups = {"AcceptanceTests"}, retryAnalyzer = RetryAnalyzer.class)
+	public void testLastQuestionRequiredGW() throws Exception {
+		
+		PSSPropertyFileLoader propertyData = new PSSPropertyFileLoader();
+		Appointment testData = new Appointment();
+		AdminUser adminUser = new AdminUser();
+		
+		propertyData.setAdminGW(adminUser);
+		propertyData.setAppointmentResponseGW(testData);
+		
+		
+		PSSPatientUtils pssPatientUtils = new PSSPatientUtils();
+		PSSAdminUtils adminUtils = new PSSAdminUtils();
+		
+		logStep("Login to PSS 2.0 Admin portal and do the seetings for Last Question Required");
+		adminUtils.lastQuestionEnable(driver, adminUser, testData, PSSConstants.LOGINLESS);
+		
+		logStep("Fetch the rules set in Admin");
+		String rule = adminUser.getRule();
+		log("rule are " + rule);
+		rule = rule.replaceAll(" ", "");
+		
+		logStep("Login to PSS Appointment");
+		DismissPage dismissPage = new DismissPage(driver, testData.getUrlLoginLess());
+		
+		logStep("Clicked on Dismiss");
+		LoginlessPatientInformation loginlessPatientInformation = dismissPage.clickDismiss();
+
+		logStep("Patient details are as mentioned below-");
+		log("Demographic Details- "+testData.getFirstName()+" "+testData.getLastName()+" "+testData.getDob()+" "+testData.getGender()+" "+testData.getEmail()+" "+testData.getPrimaryNumber()+" "+testData.getZipCode());
+		
+		HomePage homepage = loginlessPatientInformation.fillNewPatientForm(testData.getFirstName(), testData.getLastName(), testData.getDob(), testData.getEmail(),
+				testData.getGender(), testData.getZipCode(), testData.getPrimaryNumber());
+		
+		logStep("Start booking an appointment in PSS---> PATIENT UI STEPS ");
+		homepage.btnStartSchedClick();
+		pssPatientUtils.TLBLastQuestion(homepage, testData, driver);
+		
+	}
+	
+	@Test(enabled = true, groups = {"AcceptanceTests"}, retryAnalyzer = RetryAnalyzer.class)
+	public void testBookApptWithoutLastQuestionNG() throws Exception {
+		
+		PSSPropertyFileLoader propertyData = new PSSPropertyFileLoader();
+		Appointment testData = new Appointment();
+		AdminUser adminUser = new AdminUser();
+		
+		propertyData.setAdminNG(adminUser);
+		propertyData.setAppointmentResponseNG(testData);
+		
+		PSSPatientUtils psspatientutils = new PSSPatientUtils();
+		PSSAdminUtils adminUtils = new PSSAdminUtils();
+		
+		logStep("Login to PSS 2.0 Admin portal and do the seetings for Last Question Required");
+		adminUtils.lastQuestionEnable(driver, adminUser, testData, PSSConstants.LOGINLESS);
+		
+		logStep("Fetch the rules set in Admin");
+		String rule = adminUser.getRule();
+		log("rule are " + rule);
+		rule = rule.replaceAll(" ", "");
+		
+		logStep("Login to PSS Appointment");
+		DismissPage dismissPage = new DismissPage(driver, testData.getUrlLoginLess());
+		
+		logStep("Clicked on Dismiss");
+		LoginlessPatientInformation loginlessPatientInformation = dismissPage.clickDismiss();
+
+		logStep("Patient details are as mentioned below-");
+		log("Demographic Details- "+testData.getFirstName()+" "+testData.getLastName()+" "+testData.getDob()+" "+testData.getGender()+" "+testData.getEmail()+" "+testData.getPrimaryNumber()+" "+testData.getZipCode());
+		
+		HomePage homepage = loginlessPatientInformation.fillNewPatientForm(testData.getFirstName(), testData.getLastName(), testData.getDob(), testData.getEmail(),
+				testData.getGender(), testData.getZipCode(), testData.getPrimaryNumber());
+		
+		logStep("Start booking an appointment in PSS---> PATIENT UI STEPS ");
+		homepage.btnStartSchedClick();
+		psspatientutils.selectAFlow(driver, rule, homepage, testData);		
+	}
+	
+	@Test(enabled = true, groups = {"AcceptanceTests"}, retryAnalyzer = RetryAnalyzer.class)
+	public void testBookApptWithoutLastQuestionAT() throws Exception {
+		
+		PSSPropertyFileLoader propertyData = new PSSPropertyFileLoader();
+		Appointment testData = new Appointment();
+		AdminUser adminUser = new AdminUser();
+		
+		propertyData.setAdminAT(adminUser);
+		propertyData.setAppointmentResponseAT(testData);
+		
+		PSSPatientUtils psspatientutils = new PSSPatientUtils();
+		PSSAdminUtils adminUtils = new PSSAdminUtils();
+		
+		logStep("Login to PSS 2.0 Admin portal and do the seetings for Last Question Required");
+		adminUtils.lastQuestionEnable(driver, adminUser, testData, PSSConstants.LOGINLESS);
+		
+		logStep("Fetch the rules set in Admin");
+		String rule = adminUser.getRule();
+		log("rule are " + rule);
+		rule = rule.replaceAll(" ", "");
+		
+		logStep("Login to PSS Appointment");
+		DismissPage dismissPage = new DismissPage(driver, testData.getUrlLoginLess());
+		
+		logStep("Clicked on Dismiss");
+		LoginlessPatientInformation loginlessPatientInformation = dismissPage.clickDismiss();
+
+		logStep("Patient details are as mentioned below-");
+		log("Demographic Details- "+testData.getFirstName()+" "+testData.getLastName()+" "+testData.getDob()+" "+testData.getGender()+" "+testData.getEmail()+" "+testData.getPrimaryNumber()+" "+testData.getZipCode());
+		
+		HomePage homepage = loginlessPatientInformation.fillNewPatientForm(testData.getFirstName(), testData.getLastName(), testData.getDob(), testData.getEmail(),
+				testData.getGender(), testData.getZipCode(), testData.getPrimaryNumber());
+		
+		logStep("Start booking an appointment in PSS---> PATIENT UI STEPS ");
+		homepage.btnStartSchedClick();
+		psspatientutils.selectAFlow(driver, rule, homepage, testData);
+		
+	}
+	
+	@Test(enabled = true, groups = {"AcceptanceTests"}, retryAnalyzer = RetryAnalyzer.class)
+	public void testBookApptWithoutLastQuestionGE() throws Exception {
+		
+		PSSPropertyFileLoader propertyData = new PSSPropertyFileLoader();
+		Appointment testData = new Appointment();
+		AdminUser adminUser = new AdminUser();
+		
+		propertyData.setAdminGE(adminUser);
+		propertyData.setAppointmentResponseGE(testData);
+		
+		PSSPatientUtils psspatientutils = new PSSPatientUtils();
+		PSSAdminUtils adminUtils = new PSSAdminUtils();
+		
+		logStep("Login to PSS 2.0 Admin portal and do the seetings for Last Question Required");
+		adminUtils.lastQuestionEnable(driver, adminUser, testData, PSSConstants.LOGINLESS);
+		
+		logStep("Fetch the rules set in Admin");
+		String rule = adminUser.getRule();
+		log("rule are " + rule);
+		rule = rule.replaceAll(" ", "");
+		
+		logStep("Login to PSS Appointment");
+		DismissPage dismissPage = new DismissPage(driver, testData.getUrlLoginLess());
+		
+		logStep("Clicked on Dismiss");
+		LoginlessPatientInformation loginlessPatientInformation = dismissPage.clickDismiss();
+
+		logStep("Patient details are as mentioned below-");
+		log("Demographic Details- "+testData.getFirstName()+" "+testData.getLastName()+" "+testData.getDob()+" "+testData.getGender()+" "+testData.getEmail()+" "+testData.getPrimaryNumber()+" "+testData.getZipCode());
+		
+		HomePage homepage = loginlessPatientInformation.fillNewPatientForm(testData.getFirstName(), testData.getLastName(), testData.getDob(), testData.getEmail(),
+				testData.getGender(), testData.getZipCode(), testData.getPrimaryNumber());
+		
+		logStep("Start booking an appointment in PSS---> PATIENT UI STEPS ");
+		homepage.btnStartSchedClick();
+		psspatientutils.selectAFlow(driver, rule, homepage, testData);
+		
+	}
+	
+	@Test(enabled = true, groups = {"AcceptanceTests"}, retryAnalyzer = RetryAnalyzer.class)
+	public void testBookApptWithoutLastQuestionGW() throws Exception {
+		
+		PSSPropertyFileLoader propertyData = new PSSPropertyFileLoader();
+		Appointment testData = new Appointment();
+		AdminUser adminUser = new AdminUser();
+		
+		propertyData.setAdminGW(adminUser);
+		propertyData.setAppointmentResponseGW(testData);
+		
+		PSSPatientUtils psspatientutils = new PSSPatientUtils();
+		PSSAdminUtils adminUtils = new PSSAdminUtils();
+		
+		logStep("Login to PSS 2.0 Admin portal and do the seetings for Last Question Required");
+		adminUtils.lastQuestionEnable(driver, adminUser, testData, PSSConstants.LOGINLESS);
+		
+		logStep("Fetch the rules set in Admin");
+		String rule = adminUser.getRule();
+		log("rule are " + rule);
+		rule = rule.replaceAll(" ", "");
+		
+		logStep("Login to PSS Appointment");
+		DismissPage dismissPage = new DismissPage(driver, testData.getUrlLoginLess());
+		
+		logStep("Clicked on Dismiss");
+		LoginlessPatientInformation loginlessPatientInformation = dismissPage.clickDismiss();
+
+		logStep("Patient details are as mentioned below-");
+		log("Demographic Details- "+testData.getFirstName()+" "+testData.getLastName()+" "+testData.getDob()+" "+testData.getGender()+" "+testData.getEmail()+" "+testData.getPrimaryNumber()+" "+testData.getZipCode());
+		
+		HomePage homepage = loginlessPatientInformation.fillNewPatientForm(testData.getFirstName(), testData.getLastName(), testData.getDob(), testData.getEmail(),
+				testData.getGender(), testData.getZipCode(), testData.getPrimaryNumber());
+		
+		logStep("Start booking an appointment in PSS---> PATIENT UI STEPS ");
+		homepage.btnStartSchedClick();
+		psspatientutils.selectAFlow(driver, rule, homepage, testData);
+		
+	}
+	
+	@Test(enabled = true, groups = {"AcceptanceTests"}, retryAnalyzer = RetryAnalyzer.class)
+	public void testBookApptWithLastQuestionNG() throws Exception {
+		
+		PSSPropertyFileLoader propertyData = new PSSPropertyFileLoader();
+		Appointment testData = new Appointment();
+		AdminUser adminUser = new AdminUser();
+		
+		propertyData.setAdminNG(adminUser);
+		propertyData.setAppointmentResponseNG(testData);
+		testData.setLastQuestionOptional(true);
+		
+		PSSPatientUtils psspatientutils = new PSSPatientUtils();
+		PSSAdminUtils adminUtils = new PSSAdminUtils();
+		
+		logStep("Login to PSS 2.0 Admin portal and do the seetings for Last Question Required");
+		adminUtils.lastQuestionEnable(driver, adminUser, testData, PSSConstants.LOGINLESS);
+		
+		logStep("Fetch the rules set in Admin");
+		String rule = adminUser.getRule();
+		log("rule are " + rule);
+		rule = rule.replaceAll(" ", "");
+		
+		logStep("Login to PSS Appointment");
+		DismissPage dismissPage = new DismissPage(driver, testData.getUrlLoginLess());
+		
+		logStep("Clicked on Dismiss");
+		LoginlessPatientInformation loginlessPatientInformation = dismissPage.clickDismiss();
+
+		logStep("Patient details are as mentioned below-");
+		log("Demographic Details- "+testData.getFirstName()+" "+testData.getLastName()+" "+testData.getDob()+" "+testData.getGender()+" "+testData.getEmail()+" "+testData.getPrimaryNumber()+" "+testData.getZipCode());
+		
+		HomePage homepage = loginlessPatientInformation.fillNewPatientForm(testData.getFirstName(), testData.getLastName(), testData.getDob(), testData.getEmail(),
+				testData.getGender(), testData.getZipCode(), testData.getPrimaryNumber());
+		
+		logStep("Start booking an appointment in PSS---> PATIENT UI STEPS ");
+		homepage.btnStartSchedClick();
+		psspatientutils.selectAFlow(driver, rule, homepage, testData);
+		
+	}
+	
+	@Test(enabled = true, groups = {"AcceptanceTests"}, retryAnalyzer = RetryAnalyzer.class)
+	public void testBookApptWithLastQuestionAT() throws Exception {
+		PSSPropertyFileLoader propertyData = new PSSPropertyFileLoader();
+		Appointment testData = new Appointment();
+		AdminUser adminUser = new AdminUser();
+		
+		propertyData.setAdminNG(adminUser);
+		propertyData.setAppointmentResponseNG(testData);
+		testData.setLastQuestionOptional(true);
+		
+		PSSPatientUtils psspatientutils = new PSSPatientUtils();
+		PSSAdminUtils adminUtils = new PSSAdminUtils();
+		
+		logStep("Login to PSS 2.0 Admin portal and do the seetings for Last Question Required");
+		adminUtils.lastQuestionEnable(driver, adminUser, testData, PSSConstants.LOGINLESS);
+		
+		logStep("Fetch the rules set in Admin");
+		String rule = adminUser.getRule();
+		log("rule are " + rule);
+		rule = rule.replaceAll(" ", "");
+		
+		logStep("Login to PSS Appointment");
+		DismissPage dismissPage = new DismissPage(driver, testData.getUrlLoginLess());
+		
+		logStep("Clicked on Dismiss");
+		LoginlessPatientInformation loginlessPatientInformation = dismissPage.clickDismiss();
+
+		logStep("Patient details are as mentioned below-");
+		log("Demographic Details- "+testData.getFirstName()+" "+testData.getLastName()+" "+testData.getDob()+" "+testData.getGender()+" "+testData.getEmail()+" "+testData.getPrimaryNumber()+" "+testData.getZipCode());		
+
+		HomePage homepage = loginlessPatientInformation.fillNewPatientForm(testData.getFirstName(), testData.getLastName(), testData.getDob(), testData.getEmail(),
+				testData.getGender(), testData.getZipCode(), testData.getPrimaryNumber());
+		
+		logStep("Start booking an appointment in PSS---> PATIENT UI STEPS ");
+		homepage.btnStartSchedClick();
+		psspatientutils.selectAFlow(driver, rule, homepage, testData);
+		
+	}
+	
+	@Test(enabled = true, groups = {"AcceptanceTests"}, retryAnalyzer = RetryAnalyzer.class)
+	public void testBookApptWithLastQuestionGW() throws Exception {
+		
+		PSSPropertyFileLoader propertyData = new PSSPropertyFileLoader();
+		Appointment testData = new Appointment();
+		AdminUser adminUser = new AdminUser();
+		
+		propertyData.setAdminNG(adminUser);
+		propertyData.setAppointmentResponseNG(testData);
+		testData.setLastQuestionOptional(true);
+		
+		PSSPatientUtils psspatientutils = new PSSPatientUtils();
+		PSSAdminUtils adminUtils = new PSSAdminUtils();
+		
+		logStep("Login to PSS 2.0 Admin portal and do the seetings for Last Question Required");
+		adminUtils.lastQuestionEnable(driver, adminUser, testData, PSSConstants.LOGINLESS);
+		
+		logStep("Fetch the rules set in Admin");
+		String rule = adminUser.getRule();
+		log("rule are " + rule);
+		rule = rule.replaceAll(" ", "");
+		
+		logStep("Login to PSS Appointment");
+		DismissPage dismissPage = new DismissPage(driver, testData.getUrlLoginLess());
+		
+		logStep("Clicked on Dismiss");
+		LoginlessPatientInformation loginlessPatientInformation = dismissPage.clickDismiss();
+
+		logStep("Patient details are as mentioned below-");
+		log("Demographic Details- "+testData.getFirstName()+" "+testData.getLastName()+" "+testData.getDob()+" "+testData.getGender()+" "+testData.getEmail()+" "+testData.getPrimaryNumber()+" "+testData.getZipCode());
+		
+		HomePage homepage = loginlessPatientInformation.fillNewPatientForm(testData.getFirstName(), testData.getLastName(), testData.getDob(), testData.getEmail(),
+				testData.getGender(), testData.getZipCode(), testData.getPrimaryNumber());
+		
+		logStep("Start booking an appointment in PSS---> PATIENT UI STEPS ");
+		homepage.btnStartSchedClick();
+		psspatientutils.selectAFlow(driver, rule, homepage, testData);
+		
+	}
+	
+	@Test(enabled = true, groups = {"AcceptanceTests"}, retryAnalyzer = RetryAnalyzer.class)
+	public void testBookApptWithLastQuestionGE() throws Exception {
+		
+		PSSPropertyFileLoader propertyData = new PSSPropertyFileLoader();
+		Appointment testData = new Appointment();
+		AdminUser adminUser = new AdminUser();
+		
+		propertyData.setAdminNG(adminUser);
+		propertyData.setAppointmentResponseNG(testData);
+		testData.setLastQuestionOptional(true);
+		
+		PSSPatientUtils psspatientutils = new PSSPatientUtils();
+		PSSAdminUtils adminUtils = new PSSAdminUtils();
+		
+		logStep("Login to PSS 2.0 Admin portal and do the seetings for Last Question Required");
+		adminUtils.lastQuestionEnable(driver, adminUser, testData, PSSConstants.LOGINLESS);
+		
+		logStep("Fetch the rules set in Admin");
+		String rule = adminUser.getRule();
+		log("rule are " + rule);
+		rule = rule.replaceAll(" ", "");
+		
+		logStep("Login to PSS Appointment");
+		DismissPage dismissPage = new DismissPage(driver, testData.getUrlLoginLess());
+		
+		logStep("Clicked on Dismiss");
+		LoginlessPatientInformation loginlessPatientInformation = dismissPage.clickDismiss();
+
+		logStep("Patient details are as mentioned below-");
+		log("Demographic Details- "+testData.getFirstName()+" "+testData.getLastName()+" "+testData.getDob()+" "+testData.getGender()+" "+testData.getEmail()+" "+testData.getPrimaryNumber()+" "+testData.getZipCode());
+		
+		HomePage homepage = loginlessPatientInformation.fillNewPatientForm(testData.getFirstName(), testData.getLastName(), testData.getDob(), testData.getEmail(),
+				testData.getGender(), testData.getZipCode(), testData.getPrimaryNumber());
+		
+		logStep("Start booking an appointment in PSS---> PATIENT UI STEPS ");
+		homepage.btnStartSchedClick();
+		psspatientutils.selectAFlow(driver, rule, homepage, testData);
+		
+	}
 
 	@Test(enabled = true, groups = {"AcceptanceTests"}, retryAnalyzer = RetryAnalyzer.class)
 	public void testE2ELoginlessForExistingPatientAT() throws Exception {
@@ -4900,7 +5374,8 @@ public class PSS2PatientPortalAcceptanceTests extends BaseTestNGWebDriver {
 			assertNotEquals(speciality.selectSpeciality1(testData.getSpeciality()), testData.getSpeciality());
 		}
 	}
-	
+
+
 	@Test(enabled = true, groups = {"AcceptanceTests"}, retryAnalyzer = RetryAnalyzer.class)
 	public void testTimeMarkGW() throws Exception {
 		log(" VeriFy TimeMark Feature For The All Partner");

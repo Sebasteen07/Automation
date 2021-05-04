@@ -12,6 +12,7 @@ import org.openqa.selenium.support.ui.Select;
 
 import com.medfusion.common.utils.IHGUtil;
 import com.medfusion.product.object.maps.pss2.page.PSS2MenuPage;
+import com.medfusion.product.object.maps.pss2.page.util.CommonMethods;
 
 public class ManageResource extends PSS2MenuPage {
 
@@ -69,7 +70,7 @@ public class ManageResource extends PSS2MenuPage {
 	@FindBy(how = How.ID, using = "isageRule")
 	private WebElement resourceAgeRuleChecked;
 
-	@FindBy(how = How.XPATH, using = "//button[@type=\"submit\"]")
+	@FindBy(how = How.XPATH, using = "//button[@type='submit']")
 	private WebElement resourceSave;
 
 	@FindBy(how = How.XPATH, using = "//button[@type=\"button\"]")
@@ -135,6 +136,24 @@ public class ManageResource extends PSS2MenuPage {
 	@FindBy(how = How.XPATH, using = "//*[@id='tab13']/form/fieldset[1]/div[10]/div/label[1]/i")
 	private WebElement locatonToggleState;
 
+	@FindBy(how = How.XPATH, using = "//label[@for='lastQuestRequired']//i")
+	private WebElement lastQuestionRequiredToggleClick;
+
+	@FindBy(how = How.XPATH, using = "//label[@for='lastQuestRequired']//input")
+	private WebElement lastQuestionRequiredTogglebtn;
+
+	@FindBy(how = How.XPATH, using = "//button[@class='btn btn-primary'][normalize-space()='Save']")
+	private WebElement bookAptSaveBtn;
+
+	@FindBy(how = How.XPATH, using = "//label[@for='acceptComment']//input")
+	private WebElement lastQuestionEnableTogglebtn;
+
+	@FindBy(how = How.XPATH, using = "//label[@for='acceptComment']//i")
+	private WebElement lastQuestionEnableToggleClick;
+
+	@FindBy(how = How.XPATH, using = "//a[@title='Back']//*[local-name()='svg']")
+	private WebElement backArrow;
+
 	public ManageResource(WebDriver driver) {
 		super(driver);
 	}
@@ -151,6 +170,8 @@ public class ManageResource extends PSS2MenuPage {
 	public void resourceSearchApt(String resourceName) {
 		resourceSearchApt.sendKeys(resourceName);
 	}
+
+	CommonMethods commonMethods = new CommonMethods(driver);
 
 	public void selectResource(String resourceName) {
 		searchResource(resourceName);
@@ -289,11 +310,102 @@ public class ManageResource extends PSS2MenuPage {
 		appointmenttypeSave.click();
 	}
 
+	public void disableLastQuestionRequired() throws InterruptedException {
+		IHGUtil.waitForElement(driver, 1, lastQuestionRequiredToggleClick);
+		commonMethods.highlightElement(lastQuestionRequiredToggleClick);
+		jse.executeScript("arguments[0].click();", lastQuestionRequiredTogglebtn);
+		log("Status of Last Question Required after TURN OFF- " + lastQuestionRequiredTogglebtn.isSelected());
+		while (lastQuestionRequiredTogglebtn.isSelected() == true) {
+			jse.executeScript("arguments[0].click();", lastQuestionRequiredTogglebtn);
+		}
+		pageDown(1000);
+		IHGUtil.waitForElement(driver, 3, bookAptSaveBtn);
+		commonMethods.highlightElement(bookAptSaveBtn);
+		bookAptSaveBtn.click();
+		log("TURN OFF the Last Question Required toggle button as it was enable previously");
+	}
+
+	public void enableLastQuestionRequired() throws InterruptedException {
+
+		IHGUtil.waitForElement(driver, 1, lastQuestionRequiredToggleClick);
+		pageDown(800);
+
+		commonMethods.highlightElement(lastQuestionRequiredToggleClick);
+		jse.executeScript("arguments[0].click();", lastQuestionRequiredTogglebtn);
+		log("Status of Last Question Required after TURN ON- " + lastQuestionRequiredTogglebtn.isSelected());
+
+		while (lastQuestionRequiredTogglebtn.isSelected() == false) {
+			jse.executeScript("arguments[0].click();", lastQuestionRequiredTogglebtn);
+		}
+		pageDown(1000);
+		IHGUtil.waitForElement(driver, 3, bookAptSaveBtn);
+		commonMethods.highlightElement(bookAptSaveBtn);
+		bookAptSaveBtn.click();
+		log("TURN ON the Last Question Required toggle button as it was disabled previously");
+	}
+
+	public void enableLastQuestion() throws InterruptedException {
+
+		IHGUtil.waitForElement(driver, 1, lastQuestionEnableToggleClick);
+		pageDown(800);
+
+		commonMethods.highlightElement(lastQuestionEnableToggleClick);
+		jse.executeScript("arguments[0].click();", lastQuestionEnableTogglebtn);
+		log("Status of Last Question Enable after TURN ON- " + lastQuestionEnableTogglebtn.isSelected());
+
+		while (lastQuestionEnableTogglebtn.isSelected() == false) {
+			jse.executeScript("arguments[0].click();", lastQuestionEnableTogglebtn);
+		}
+		log("TURN ON the Last Question Enable toggle button as it was disabled previously");
+	}
+
+	public void pageDown(int d) throws InterruptedException {
+		Thread.sleep(1000);
+		// This will scroll down the page by 800 pixel vertical
+		jse.executeScript("window.scrollBy(0,"+d+")");
+		Thread.sleep(1000);
+	}
+
+	public void pageUp(int t) throws InterruptedException {
+		Thread.sleep(1000);
+		// This will scroll up the page by 600 pixel vertical
+		jse.executeScript("window.scrollBy("+t+",0)");
+		Thread.sleep(1000);
+	}
+
+	public void clickBackArraow() throws InterruptedException {
+		pageUp(1500);
+		commonMethods.highlightElement(backArrow);
+		backArrow.click();
+	}
+
+	public void clickGeneralTab() throws InterruptedException {
+		commonMethods.highlightElement(editGeneralTab);
+		editGeneralTab.click();
+		pageDown(1500);
+		commonMethods.highlightElement(resourceSave);
+		resourceSave.click();
+	}
+
+	public boolean lastQuestionRequiredStatus() {
+
+		commonMethods.highlightElement(lastQuestionRequiredToggleClick);
+		boolean bool = lastQuestionRequiredTogglebtn.isSelected();
+		return bool;
+	}
+
+	public boolean lastQuestionEnableStatus() {
+		commonMethods.highlightElement(lastQuestionEnableToggleClick);
+		boolean bool = lastQuestionEnableTogglebtn.isSelected();
+		return bool;
+	}
+
 	public void timeMark(String timeMarkValue) {
 		Select selectOptions = new Select(timeMarkOption);
 		selectOptions.selectByValue(timeMarkValue);
 		timeMarkOption.click();
 		appointmenttypeSave.click();
+
 	}
 	public void clickLocation()
 	{

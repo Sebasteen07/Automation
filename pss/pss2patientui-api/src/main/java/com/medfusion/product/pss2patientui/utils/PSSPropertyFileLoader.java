@@ -301,7 +301,7 @@ public class PSSPropertyFileLoader {
 		appointValues.setDatetime(property.getProperty("datetimeNG"));
 		appointValues.setLocation(property.getProperty("locationNG"));
 		appointValues.setPassword(property.getProperty("passwordNG"));
-		appointValues.setProvider(property.getProperty("providerNG"));
+		appointValues.setProvider(property.getProperty("provider.ng"));
 		appointValues.setSpeciality(property.getProperty("specialityNG"));
 		appointValues.setUsername(property.getProperty("usernameNG"));
 		appointValues.setUrlLoginLess(property.getProperty("urlLoginLessNG"));

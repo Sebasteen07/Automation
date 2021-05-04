@@ -5,10 +5,12 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.openqa.selenium.JavascriptExecutor;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.testng.Assert;
 
+import com.intuit.ifs.csscat.core.BaseTestNGWebDriver;
 import com.intuit.ifs.csscat.core.utils.Log4jUtil;
 import com.medfusion.product.object.maps.pss2.page.PSS2MenuPage;
 import com.medfusion.product.object.maps.pss2.page.AppointmentType.ManageAppointmentType;
@@ -27,7 +29,7 @@ import com.medfusion.product.object.maps.pss2.page.settings.PatientFlow;
 import com.medfusion.product.pss2patientui.pojo.AdminUser;
 import com.medfusion.product.pss2patientui.pojo.Appointment;
 
-public class PSSAdminUtils {
+public class PSSAdminUtils extends BaseTestNGWebDriver{
 
 	public void adminSettings(WebDriver driver, AdminUser adminuser, Appointment testData, String urlToUse) throws Exception {
 		PSS2PracticeConfiguration psspracticeConfig = loginToAdminPortal(driver, adminuser);
@@ -201,9 +203,8 @@ public class PSSAdminUtils {
 	}
 
 	public void pageRefresh(WebDriver driver) throws InterruptedException {
-		Thread.sleep(6000);
 		driver.navigate().refresh();
-		Thread.sleep(14000);
+		Thread.sleep(6000);
 	}
 
 	public AdminUser setPracticeAdminAccount(String staffPracitceName) throws IOException {
@@ -714,6 +715,72 @@ public class PSSAdminUtils {
 		}
 		manageSpecialty.selectgender();
 	}
+	
+	public void lastQuestionEnable(WebDriver driver, AdminUser adminUser, Appointment appointment, String urlToUse)
+			throws Exception {
+
+		PSS2PracticeConfiguration pssPracticeConfig = loginToAdminPortal(driver, adminUser);
+
+		AccessRules accessRule = pssPracticeConfig.gotoAccessTab();
+
+		if (urlToUse.equalsIgnoreCase(PSSConstants.LOGINLESS)) {
+			log("PSS Patient URL : " + accessRule.getLoginlessURL());
+			appointment.setUrlLoginLess(accessRule.getLoginlessURL());
+		}
+		if (urlToUse.equalsIgnoreCase(PSSConstants.ANONYMOUS)) {
+			log("PSS Patient URL : " + accessRule.getAnonymousUrl());
+			appointment.setUrlAnonymous(accessRule.getAnonymousUrl());
+		}
+		PatientFlow patientFlow = accessRule.gotoPatientFlowTab();
+
+		setRulesNoSpecialitySet1(patientFlow);
+
+		adminUser.setRule(patientFlow.getRule());
+		log("rule= " + patientFlow.getRule());
+
+		appointment.setIsinsuranceVisible(patientFlow.insuracetogglestatus());
+		log("Insurance is Enabled= " + patientFlow.insuracetogglestatus());
+		appointment.setIsstartpointPresent(patientFlow.isstartpagepresent());
+		log("StartPage is Visible= " + patientFlow.isstartpagepresent());
+
+		AdminPatientMatching adminPatientMatching = patientFlow.gotoPatientMatchingTab();
+		adminPatientMatching.patientMatchingSelection();
+
+		ManageResource manageResource = pssPracticeConfig.gotoResource();
+		pageRefresh(driver);
+		manageResource.selectResource(appointment.getProvider());
+
+		log("Scroll down the page");
+		manageResource.pageDown(800);
+
+		log("Last Question Enable Status- " + manageResource.lastQuestionEnableStatus());
+
+		if (manageResource.lastQuestionEnableStatus() == false) {
+			manageResource.enableLastQuestion();
+		}
+		manageResource.selectAppointmenttype(appointment.getAppointmenttype());
+		manageResource.pageDown(800);
+
+		log("Last QUestion Required Status- " + manageResource.lastQuestionRequiredStatus());
+
+		if (adminUser.getLastQuestionMandatory() == true) {
+			if (manageResource.lastQuestionRequiredStatus() == false) {
+				manageResource.enableLastQuestionRequired();
+			}
+		} else {
+
+			if (manageResource.lastQuestionRequiredStatus() == true) {
+				manageResource.disableLastQuestionRequired();
+			}
+		}
+		manageResource.pageUp(100);
+		manageResource.clickBackArraow();
+		manageResource.clickGeneralTab();
+
+		log("Last Question Required settings are turn on successfully");
+		patientFlow.logout();
+	}
+	
 	public void ageRuleWithSpeciality(WebDriver driver, AdminUser adminuser, Appointment appointment) throws Exception {
 		PSS2PracticeConfiguration pss2practiceconfig = loginToAdminPortal(driver, adminuser);
 		PatientFlow patientflow = pss2practiceconfig.gotoPatientFlowTab();
@@ -727,6 +794,7 @@ public class PSSAdminUtils {
 		Log4jUtil.log("Status of Checkbox" + manageSpecialty.checkBoxStatus());
 		manageSpecialty.ageRule();
 		manageSpecialty.ageRuleparameter(appointment.getAgeRuleMonthFirst(), appointment.getAgeRuleMonthSecond());
+
 
 	}
 	public void timeMark(WebDriver driver, AdminUser adminUser, Appointment appointment) throws Exception
