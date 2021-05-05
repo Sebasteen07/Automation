@@ -581,6 +581,8 @@ public class PSSAdminUtils extends BaseTestNGWebDriver{
 		PatientFlow patientflow = psspracticeConfig.gotoPatientFlowTab();
 		setRulesNoSpecialitySet1(patientflow);
 		adminuser.setRule(patientflow.getRule());
+		AdminPatientMatching adminpatientmatching = patientflow.gotoPatientMatchingTab();
+		adminpatientmatching.patientMatchingSelection();
 		ManageResource manageResource = psspracticeConfig.gotoResource();
 		pageRefresh(driver);
 		manageResource.selectResource(appointment.getProvider());
@@ -824,17 +826,16 @@ public class PSSAdminUtils extends BaseTestNGWebDriver{
 		
 		
 		
-//		LinkTab linkTab = psspracticeConfig.linksTab();
-//		Log4jUtil.log("Clicked On LinkTab");
-		//linkTab.searchLinkandRemove(testData.getLinkProvider());
-//		linkTab.addLinkForProvider(testData.getLinkProvider());
-		//linkTab.getURL(testData.getLinkProvider());
-//		testData.setUrlLinkGen("https://dev3-pss.dev.medfusion.net/psspatient/login/c6adef6d-4f9f-447a-9131-a4a360765f83");
-//		PatientFlow patientflow = psspracticeConfig.gotoPatientFlowTab();
-//		AdminPatientMatching adminpatientmatching = patientflow.gotoPatientMatchingTab();
-//		adminpatientmatching.patientMatchingSelection();
-//		Log4jUtil.log("adminSettings Step 5: Logout from PSS Admin Portal");
-//		Thread.sleep(4000);
+		LinkTab linkTab = psspracticeConfig.linksTab();
+		Log4jUtil.log("Clicked On LinkTab");
+		linkTab.searchLinkandRemove(testData.getLinkProvider());
+		linkTab.addLinkForProvider(testData.getLinkProvider());
+		linkTab.getURL(testData.getLinkProvider());
+		testData.setUrlLinkGen("https://dev3-pss.dev.medfusion.net/psspatient/login/c6adef6d-4f9f-447a-9131-a4a360765f83");
+		PatientFlow patientflow = psspracticeConfig.gotoPatientFlowTab();
+		AdminPatientMatching adminpatientmatching = patientflow.gotoPatientMatchingTab();
+		adminpatientmatching.patientMatchingSelection();
+		Log4jUtil.log("adminSettings Step 5: Logout from PSS Admin Portal");
 	}
 
 }

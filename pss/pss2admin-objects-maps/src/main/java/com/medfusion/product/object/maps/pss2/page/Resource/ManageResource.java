@@ -103,7 +103,7 @@ public class ManageResource extends PSS2MenuPage {
 	@FindBy(how = How.ID, using = "maxPerDay")
 	private WebElement maxPerDay;
 
-	@FindBy(how = How.XPATH, using = "//div[@class='form-group row']//div[@class='col-md-12']//label[@for='allowSameDayAppts']/input")
+	@FindBy(how = How.XPATH, using = "//input[@id=\"allowSameDayAppts\"]")
 	private WebElement acceptToggle;
 
 	@FindBy(how = How.XPATH, using = "//div[@class='col-md-12']//label[@for='allowSameDayAppts']")
@@ -269,7 +269,7 @@ public class ManageResource extends PSS2MenuPage {
 	public boolean acceptforStatus() {
 
 		log(acceptToggle.getAttribute("ng-reflect-model"));
-		boolean bool = Boolean.parseBoolean(acceptToggle.getAttribute("ng-reflect-model"));
+		boolean bool = acceptToggle.isSelected();
 		return bool;
 	}
 
