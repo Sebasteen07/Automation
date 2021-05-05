@@ -3949,6 +3949,38 @@ public class PatientPortal2AcceptanceTests extends BaseTestNGWebDriver {
 		jalapenoLoginPage = jalapenoHomePage.clickOnLogout();
 
 	}
+	
+	@Test(enabled = true, groups = { "acceptance-linkedaccounts" }, retryAnalyzer = RetryAnalyzer.class)
+	public void testSelfTrustedRepresentative() throws Exception {
+		createPatient();
+		String email = testData.getTrustedRepEmail() + IHGUtil.createRandomNumber() + "@mailinator.com";
+
+		logStep("Go to account page");
+		JalapenoHomePage homePage = new JalapenoHomePage(driver);
+		JalapenoAccountPage accountPage = homePage.clickOnAccount();
+
+		logStep("Invite Trusted Representative");
+		accountPage.inviteTrustedRepresentative(testData.getTrustedRepFirstName(), testData.getTrustedRepLastName(),
+				email);
+
+		logStep("Waiting for invitation email");
+		String patientUrl = new Mailinator().getLinkFromEmail(email, INVITE_EMAIL_SUBJECT_REPRESENTATIVE,
+				INVITE_EMAIL_BUTTON_TEXT, 15);
+		assertNotNull(patientUrl, "Error: Activation patients link not found.");
+
+		logStep("Redirecting to verification page");
+		PatientVerificationPage patientVerificationPage = new PatientVerificationPage(driver, patientUrl);
+
+		logStep("Identify patient");
+		AuthUserLinkAccountPage linkAccountPage = patientVerificationPage.fillDependentInfoAndContinue(
+				patient.getZipCode(), patient.getDOBMonth(), patient.getDOBDay(), patient.getDOBYear());
+
+		logStep("Continue registration - linking same patient as trusted representative");
+		linkAccountPage.linkSamePatientAsSelfTrustedRep(patient.getUsername(),
+				patient.getPassword(), "Spouse");
+
+		assertTrue(linkAccountPage.isSelfTrustedRepresentativeErrorDisplayed());
+	}
 
 
 }

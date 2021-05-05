@@ -44,6 +44,9 @@ public class AuthUserLinkAccountPage extends MedfusionPage {
 
 	@FindBy(how = How.ID, using = "nextStep")
 	private WebElement enterPortalButton;
+	
+	@FindBy(how = How.XPATH, using = "//div[@class='notification error']")
+	private WebElement selfTrustedRepresentativeError;
 
 	public AuthUserLinkAccountPage(WebDriver driver) {
 		super(driver);
@@ -126,5 +129,28 @@ public class AuthUserLinkAccountPage extends MedfusionPage {
 		wait.until(ExpectedConditions.presenceOfElementLocated(By.xpath("//*[contains(text(),'" + name + "')]")));
 		wait.until(ExpectedConditions.presenceOfElementLocated(By.xpath("//*[contains(text(),'" + lastname + "')]")));
 		wait.until(ExpectedConditions.textToBePresentInElementValue(emailInput, email));
+	}
+	
+	public void linkSamePatientAsSelfTrustedRep(String login, String password, String relationship) {
+		IHGUtil.PrintMethodName();
+
+		userIdInput.sendKeys(login);
+		passwordInput.sendKeys(password);
+		log("Trusted Representative login / password: " + login + " / " + password);
+
+		Select relationshipPatient = new Select(relationshipFirstSelect);
+		relationshipPatient.selectByVisibleText(relationship);
+
+		wait.until(ExpectedConditions.elementToBeClickable(enterPortalButton));
+		enterPortalButton.click();
+	}
+	
+	public boolean isSelfTrustedRepresentativeErrorDisplayed() {
+		try {
+			log("Looking for Trusted Representative Error");
+			return selfTrustedRepresentativeError.isDisplayed();
+		} catch (Exception e) {
+		}
+		return false;
 	}
 }
