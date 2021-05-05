@@ -374,7 +374,7 @@ public class BulkMessagePayload {
 			
 			//priority
 			Element Priority = doc.createElement("Priority");
-			Priority.appendChild(doc.createTextNode("true"));
+			Priority.appendChild(doc.createTextNode("false"));
 			mainRootElement.appendChild(Priority);
 			
 			// AllowReply
