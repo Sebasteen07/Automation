@@ -1659,6 +1659,7 @@ public class IntegrationPlatformRegressionTests extends BaseTestNGWebDriver {
 
 		log("Step 6 : execute Delete API and Verify the response");
 		String messageDeleteURL = testData.messageStatusUpdate + "/" + msgUid + "/delete";
+		RestUtils.setupHttpDeleteRequestExceptOauth(messageDeleteURL, testData.ResponsePath,testData.token);
 		int responseCode = RestUtils.setupHttpDeleteRequestExceptOauth(messageDeleteURL, testData.ResponsePath,
 				testData.token);
 		log("responseCode is " + responseCode + " message not found !!!");
