@@ -2171,13 +2171,13 @@ public class PatientPortal2AcceptanceTests extends BaseTestNGWebDriver {
 	public void testAutoEnrollmentSamePatientid() throws Exception {
 		PropertyFileLoader testData = new PropertyFileLoader();
 		String firstPatientEmail = IHGUtil.createRandomEmailAddress(testData.getEmail(), '.');
-		String patientId = "SamePatientID" + IHGUtil.createRandomNumericString();
+		String patientId= "SamePatientID" + IHGUtil.createRandomNumericString();
 
 		logStep("Patient Activation at First Practice Portal");
 		PatientActivationSearchTest patientActivationSearchTest = new PatientActivationSearchTest();
 		String unlockLinkPortal = patientActivationSearchTest.getPatientActivationLinkWithPatientId(1, driver,
 				testData.getProperty("doctorLogin1"), testData.getProperty("doctorPassword1"),
-				testData.getProperty("portalUrl"), firstPatientEmail, patientId);
+				testData.getProperty("portalUrl"),firstPatientEmail,patientId);
 		logStep("Activation Link of First Practice is " + unlockLinkPortal);
 
 		logStep("Logging into Mailinator and getting Patient Activation url for first Practice");
@@ -2209,7 +2209,7 @@ public class PatientPortal2AcceptanceTests extends BaseTestNGWebDriver {
 		PatientActivationSearchTest patientActivationSearchTest12 = new PatientActivationSearchTest();
 		patientActivationSearchTest12.getPatientActivationLinkWithPatientId(0, driver,
 				testData.getProperty("doctorLoginPractice2"), testData.getProperty("doctorPasswordPractice2"),
-				testData.getPortalUrl(), firstPatientEmail, patientId);
+				testData.getPortalUrl(),firstPatientEmail,patientId);
 
 		log("Waiting for welcome mail at patient inbox from second practice");
 		Instant testStart = Instant.now();
@@ -3612,9 +3612,11 @@ public class PatientPortal2AcceptanceTests extends BaseTestNGWebDriver {
 		Thread.sleep(5000);
 		managepharmacy.clickOnAddPharmacyButton();
 
+
 		AddPharmacyPage addPharmacyPage = new AddPharmacyPage(driver);
 		String externalid = IHGUtil.createRandomNumericString(12);
 		addPharmacyPage.fillPharmacyDetails(externalid, true);
+
 
 		managepharmacy.confirmPharmacyInTable(pharmacyName);
 		log("This should print the pharmacy Name1  :" + pharmacyName);
@@ -3653,7 +3655,7 @@ public class PatientPortal2AcceptanceTests extends BaseTestNGWebDriver {
 
 		homePage.clickOnLogout();
 	}
-
+	
 	@Test(enabled = true, groups = { "acceptance-basics", "commonpatient" }, retryAnalyzer = RetryAnalyzer.class)
 	public void testDeletePatient() throws Exception {
 
@@ -3685,6 +3687,7 @@ public class PatientPortal2AcceptanceTests extends BaseTestNGWebDriver {
 		assertTrue(loginWithDeletedPatient.isDeletePatientErrorDisplayed());
 	}
 
+
 	@Test(enabled = true, groups = { "acceptance-solutions" }, retryAnalyzer = RetryAnalyzer.class)
 	public void testThirdPartySso() throws Exception {
 		logStep("Login patient");
@@ -3696,10 +3699,10 @@ public class PatientPortal2AcceptanceTests extends BaseTestNGWebDriver {
 
 		logStep("Verify the Third Party SSO Pop up Screen");
 		assertTrue(thirdpartyssopage.isLeavingMedfusionBannerDisplay());
-
+		
 		logStep("Verify the Destination URL on SSO Pop up Screen");
 		assertTrue(thirdpartyssopage.isDestinationUrlDisplay());
-
+		
 		logStep("Verify the exist portal message on SSO Pop up Screen");
 		assertTrue(thirdpartyssopage.isExistPortalMessageDisplay());
 
@@ -3715,7 +3718,7 @@ public class PatientPortal2AcceptanceTests extends BaseTestNGWebDriver {
 
 		logStep("Initiate payment data");
 		String askPaidAmount = "$ 2";
-		String askPaidChangeAmount = "$ 5";
+		String askPaidChangeAmount="$ 5";
 		String accountNumber = IHGUtil.createRandomNumericString(8);
 		String name = "TestPatient CreditCard";
 		CreditCard creditCard = new CreditCard(CardType.Mastercard, name);
@@ -3731,7 +3734,7 @@ public class PatientPortal2AcceptanceTests extends BaseTestNGWebDriver {
 		String askaSubject = Long.toString(askPage1.getCreatedTimeStamp());
 		logStep("Fill question and continue");
 
-		askPage2 = askPage1.fillAndContinue(askaSubject, questionText);
+		askPage2 = askPage1.fillAndContinue(askaSubject,questionText);
 
 		logStep("Remove all cards because Selenium can't see AddNewCard button");
 		JalapenoAskAStaffV2Page1 askPaidPage = new JalapenoAskAStaffV2Page1(driver);
@@ -3744,7 +3747,7 @@ public class PatientPortal2AcceptanceTests extends BaseTestNGWebDriver {
 		assertTrue(askPaidPage.areBasicPageElementsPresent());
 
 		JalapenoAskPayBillsConfirmationPage confirmationPage = askPaidPage.fillPaymentInfo(accountNumber, creditCard);
-
+		
 		assertTrue(confirmationPage.areBasicPageElementsPresent());
 
 		askPage2 = new JalapenoAskAStaffV2Page2(driver);
@@ -3752,7 +3755,7 @@ public class PatientPortal2AcceptanceTests extends BaseTestNGWebDriver {
 
 		logStep("Go back to the aska and check question history");
 		askPage1 = homePage.openSpecificAskaPaidV2(testData.getProperty("askAV2Name"));
-
+		
 		JalapenoAskAStaffV2HistoryListPage askHistoryList = askPage1.clickOnHistory();
 
 		logStep("Find history entry by subject/reason and navigate to detail");
@@ -3787,7 +3790,7 @@ public class PatientPortal2AcceptanceTests extends BaseTestNGWebDriver {
 
 		logStep("Respond to patient question and change the practice amount ");
 		AskAStaffQuestionDetailStep3Page detailStep3 = detailStep2.chargeAmountAndCommunicate("Automated Test",
-				"This message was generated by an automated test", askPaidChangeAmount.replace("$ ", ""));
+				"This message was generated by an automated test", askPaidChangeAmount.replace("$ ",""));
 
 		logStep("Confirm response details to patient");
 		AskAStaffQuestionDetailStep4Page detailStep4 = detailStep3.confirmProcessedQuestion();
@@ -3834,7 +3837,7 @@ public class PatientPortal2AcceptanceTests extends BaseTestNGWebDriver {
 		logStep("Logout patient");
 		askHistoryDetail.clickOnLogout();
 	}
-
+	
 	public void testPatientAutoEnrollment() throws Exception {
 		PropertyFileLoader testData = new PropertyFileLoader();
 		String patientsEmail = IHGUtil.createRandomEmailAddress(testData.getEmail(), '.');
@@ -3903,7 +3906,7 @@ public class PatientPortal2AcceptanceTests extends BaseTestNGWebDriver {
 		assertTrue(jalapenoHomePage.areBasicPageElementsPresent());
 		logStep("Auto Enrollment to Second Practice is completed");
 	}
-
+	
 	@Test(enabled = true, groups = { "acceptance-solutions" }, retryAnalyzer = RetryAnalyzer.class)
 	public void testCcdDemographicValidation() throws Exception {
 
@@ -3917,31 +3920,29 @@ public class PatientPortal2AcceptanceTests extends BaseTestNGWebDriver {
 		JalapenoCcdViewerPage jalapenoCcdPage = jalapenoMessagesPage.findCcdMessage(driver);
 
 		assertTrue(testData.getProperty("patHeaderName").equals(jalapenoCcdPage.getHeaderName()),
-				"Expected:" + testData.getProperty("patHeaderName") + ", found: " + jalapenoCcdPage.getHeaderName());
+				"Expected:"+ testData.getProperty("patHeaderName") + ", found: " + jalapenoCcdPage.getHeaderName());
 
 		assertTrue(testData.getProperty("patName").equals(jalapenoCcdPage.getPatientName()),
-				"Expected:" + testData.getProperty("patName") + ", found: " + jalapenoCcdPage.getPatientName());
+				"Expected:"+ testData.getProperty("patName") + ", found: " + jalapenoCcdPage.getPatientName());
 
 		assertTrue(testData.getProperty("patEmail").equals(jalapenoCcdPage.getPatientEmail()),
-				"Expected:" + testData.getProperty("patEmail") + ", found: " + jalapenoCcdPage.getPatientEmail());
+				"Expected:"+ testData.getProperty("patEmail") + ", found: " + jalapenoCcdPage.getPatientEmail());
 
 		assertTrue(testData.getProperty("patDob").equals(jalapenoCcdPage.getPatientDOB()),
-				"Expected:" + testData.getProperty("patDob") + ", found: " + jalapenoCcdPage.getPatientDOB());
+				"Expected:"+ testData.getProperty("patDob") + ", found: " + jalapenoCcdPage.getPatientDOB());
 
-		assertTrue(testData.getProperty("patEthnicity").equals(jalapenoCcdPage.getPatientEthnicity()), "Expected:"
-				+ testData.getProperty("patEthnicity") + ", found: " + jalapenoCcdPage.getPatientEthnicity());
+		assertTrue(testData.getProperty("patEthnicity").equals(jalapenoCcdPage.getPatientEthnicity()),
+				"Expected:"+ testData.getProperty("patEthnicity") + ", found: " + jalapenoCcdPage.getPatientEthnicity());
 
 		assertTrue(testData.getProperty("patMartitalStatus").equals(jalapenoCcdPage.getPatientMaritialStatus()),
-				"Expected:" + testData.getProperty("patMartitalStatus") + ", found: "
-						+ jalapenoCcdPage.getPatientMaritialStatus());
+				"Expected:"+ testData.getProperty("patMartitalStatus") + ", found: " + jalapenoCcdPage.getPatientMaritialStatus());
 
 		assertTrue(testData.getProperty("patCareTeamMember").equals(jalapenoCcdPage.getPatientCareTeamMember()),
-				"Expected:" + testData.getProperty("patCareTeamMember") + ", found: "
-						+ jalapenoCcdPage.getPatientCareTeamMember());
-
+				"Expected:"+ testData.getProperty("patCareTeamMember") + ", found: " + jalapenoCcdPage.getPatientCareTeamMember());
+		
 		assertTrue(testData.getProperty("patPhone").equals(jalapenoCcdPage.getPatientPhoneNumber()),
-				"Expected:" + testData.getProperty("patPhone") + ", found: " + jalapenoCcdPage.getPatientPhoneNumber());
-
+				"Expected:"+ testData.getProperty("patPhone") + ", found: " + jalapenoCcdPage.getPatientPhoneNumber());
+		
 		jalapenoMessagesPage = jalapenoCcdPage.closeCcd(driver);
 		jalapenoHomePage = jalapenoMessagesPage.clickOnMenuHome();
 
@@ -3949,7 +3950,7 @@ public class PatientPortal2AcceptanceTests extends BaseTestNGWebDriver {
 		jalapenoLoginPage = jalapenoHomePage.clickOnLogout();
 
 	}
-
+	
 	@Test(enabled = true, groups = { "acceptance-solutions" }, retryAnalyzer = RetryAnalyzer.class)
 	public void testAppoinmentScheduling() throws Exception {
 		logStep("Login patient");
@@ -3975,5 +3976,4 @@ public class PatientPortal2AcceptanceTests extends BaseTestNGWebDriver {
 		logStep("Verify the New Tab Open");
 		assertTrue(appoinmentschedulingpage.isNewTabOpenDestinationUrl(driver));
 	}
-
 }
