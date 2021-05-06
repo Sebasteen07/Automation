@@ -36,6 +36,7 @@ import com.medfusion.product.object.maps.patientportal2.page.MessagesPage.Jalape
 import com.medfusion.product.object.maps.patientportal2.page.NewPayBillsPage.JalapenoPayBillsMakePaymentPage;
 import com.medfusion.product.object.maps.patientportal2.page.PayBillsStatementPage.JalapenoPayBillsStatementPage;
 import com.medfusion.product.object.maps.patientportal2.page.PrescriptionsPage.JalapenoPrescriptionsPage;
+import com.medfusion.product.object.maps.patientportal2.page.ScheduleAppoinment.JalapenoAppoinmentSchedulingPage;
 import com.medfusion.product.object.maps.patientportal2.page.ThirdPartySso.ThirdPartySsoPage;
 
 public class JalapenoHomePage extends JalapenoMenu {
@@ -138,6 +139,9 @@ public class JalapenoHomePage extends JalapenoMenu {
 	
 	@FindBy(how=How.XPATH, using="//h3[text()='3 Party SSO']")
 	private WebElement thirdpartysso;
+	
+	@FindBy(how = How.XPATH, using = "//h3[contains(text(),'Schedule an Appointment')]")
+	private WebElement appoinmentscheduling;
 
 	public JalapenoHomePage(WebDriver driver) {
 		super(driver);
@@ -554,6 +558,12 @@ public class JalapenoHomePage extends JalapenoMenu {
 		js.executeScript("arguments[0].scrollIntoView();", thirdpartysso);
 		javascriptClick(thirdpartysso);
 		return PageFactory.initElements(driver, ThirdPartySsoPage.class);
+	}
+	public JalapenoAppoinmentSchedulingPage clickOnAppoinmentScheduled(WebDriver driver) throws InterruptedException {
+		IHGUtil.PrintMethodName();
+		javascriptClick(appoinmentscheduling);
+		return PageFactory.initElements(driver, JalapenoAppoinmentSchedulingPage.class);
+
 	}
 
 }
