@@ -135,6 +135,9 @@ public class MedicalRecordSummariesPage extends JalapenoMenu {
 
 	@FindBy(how = How.XPATH, using = "(//input[@id='to-date'])[2]")
 	private WebElement requestHealthRecordToDate;
+	
+	@FindBy(how = How.XPATH, using = "//*[contains(text(),'Request complete record')]")
+	private WebElement requestHealthRecord;
 
 	public MedicalRecordSummariesPage(WebDriver driver) {
 		super(driver);
@@ -401,5 +404,9 @@ public class MedicalRecordSummariesPage extends JalapenoMenu {
 		requestCompleteRecord.click();
 		IHGUtil.waitForElement(driver, 60, requestRecord);
 		requestRecord.click();
+	}
+	
+	public void clickRequestHealthRecord() {
+		requestHealthRecord.click();
 	}
 }
