@@ -1,8 +1,6 @@
 package pageobjects;
 
 import static org.testng.Assert.assertFalse;
-import static org.testng.Assert.assertTrue;
-
 import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
@@ -17,11 +15,8 @@ import org.openqa.selenium.support.How;
 import org.openqa.selenium.support.PageFactory;
 import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.openqa.selenium.support.ui.WebDriverWait;
-
 import com.medfusion.common.utils.IHGUtil;
-import com.intuit.ifs.csscat.core.BaseTestNGWebDriver;
 import com.intuit.ifs.csscat.core.utils.Log4jUtil;
-import com.medfusion.common.utils.PropertyFileLoader;
 
 public class MerchantSearchPage extends NavigationMenu {
 
@@ -65,10 +60,10 @@ public class MerchantSearchPage extends NavigationMenu {
 		return util.assessAllPageElements(webElementsList, MerchantSearchPage.class);
 	}
 
-	public void findByPracticeID(String practiceID) throws InterruptedException {
+	public void findByPracticeID(String practiceid) throws InterruptedException {
 		WebDriverWait wait = new WebDriverWait(driver, 10);
 		wait.until(ExpectedConditions.elementToBeClickable(searchField));
-		searchField.sendKeys(practiceID);
+		searchField.sendKeys(practiceid);
 	}
 
 	public void searchButtonClick() {

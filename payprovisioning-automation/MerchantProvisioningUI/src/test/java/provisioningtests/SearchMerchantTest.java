@@ -13,10 +13,10 @@ public class SearchMerchantTest extends ProvisioningBaseTest {
 	public void testDuplicateRecords() throws IOException, NullPointerException, InterruptedException {
 
 		PropertyFileLoader testData = new PropertyFileLoader();
-		logStep("step 3: Navigating to search Merchant");
+		log("Navigating to search Merchant");
 		MerchantSearchPage merchantSearchPage = PageFactory.initElements(driver, MerchantSearchPage.class);
 		Thread.sleep(2000);
-		merchantSearchPage.findByPracticeID(testData.getProperty("practice_ID"));
+		merchantSearchPage.findByPracticeID(testData.getProperty("practiceid"));
 		merchantSearchPage.searchButtonClick();
 		driver.manage().timeouts().implicitlyWait(20, TimeUnit.SECONDS);
 		merchantSearchPage.duplicateRecords();
