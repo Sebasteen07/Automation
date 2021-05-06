@@ -293,8 +293,6 @@ public class MedicalRecordSummariesPage extends JalapenoMenu {
 
 		updateWebElement(this.fromDate, fromString);
 		fromDate.sendKeys(Keys.ENTER);
-		// I'm afraid it's vital to wait a little bit here, to allow update after the
-		// first element is set
 		try {
 			Thread.sleep(1000);
 		} catch (InterruptedException e) {
@@ -303,6 +301,14 @@ public class MedicalRecordSummariesPage extends JalapenoMenu {
 		}
 		updateWebElement(this.toDate, toString);
 		toDate.sendKeys(Keys.ENTER);
+		try {
+			Thread.sleep(2000);
+		} catch (InterruptedException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		toDate.sendKeys(Keys.TAB);
+
 	}
 
 	public void selectDownload() {
