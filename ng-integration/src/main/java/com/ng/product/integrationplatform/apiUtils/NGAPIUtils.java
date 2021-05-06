@@ -511,8 +511,7 @@ public class NGAPIUtils {
 		IHGUtil.PrintMethodName();
 		Log4jUtil.log("GetURL "+argRouteURL);
 		try {
-	    HttpGet httpGet;
-		httpGet = new HttpGet(argRouteURL);	
+	    HttpGet httpGet = new HttpGet(argRouteURL);	
 		CloseableHttpResponse httpResponse = null;
         CloseableHttpClient httpClient = HttpClients.createDefault();
 		

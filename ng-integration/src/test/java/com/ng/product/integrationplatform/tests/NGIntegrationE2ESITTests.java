@@ -7341,8 +7341,7 @@ public class NGIntegrationE2ESITTests extends BaseTestNGWebDriver{
     }
     
     @Test(enabled = true, groups = { "acceptance-PAM" }, retryAnalyzer = RetryAnalyzer.class)
-    public void testPP174PAM() throws Throwable {
-    	log("Test Case : Verify user enrolled to MF Portal (Single Practice) is able to access Health Record on the third party app");
+    public void testPP174PAMSinglePracticeUser() throws Throwable {
     	
     	String username = PropertyLoaderObj.getProperty("CCDAUsername");
     	logStep("Get access token for user");
@@ -7359,8 +7358,6 @@ public class NGIntegrationE2ESITTests extends BaseTestNGWebDriver{
     	String patientLastName = CommonFlows.getPAMLastName(response);
     	
     	assertEquals(patientLastName, actualPatientLastName, "The last name matches with DB value.");
-    	
-    	log("Test Case End: The user enrolled to MF Portal (Single Practice) is able to access Health Record on the third party app");    	    	
-    }
+    	}
     
 }

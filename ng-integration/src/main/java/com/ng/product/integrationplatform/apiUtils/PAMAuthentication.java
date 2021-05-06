@@ -224,10 +224,10 @@ public class PAMAuthentication {
 		responsecode = httpResponse.getStatusLine().getStatusCode();
 		
 		StringBuilder sb6 =  getSessionData(httpResponse, responsecode);
-		JSONObject Jobject = new JSONObject(sb6.toString());
-		Log4jUtil.log("After 6th call Response is " +Jobject);
-		accessToken =  (String) Jobject.get("access_token");
-		Log4jUtil.log("Refresh token is " +Jobject.get("refresh_token").toString());				
+		JSONObject jObject = new JSONObject(sb6.toString());
+		Log4jUtil.log("After 6th call Response is " +jObject);
+		accessToken =  (String) jObject.get("access_token");
+		Log4jUtil.log("Refresh token is " +jObject.get("refresh_token").toString());				
 		Log4jUtil.log("Access token is "+accessToken);	
 		
 		} catch (Exception e) {
