@@ -134,9 +134,6 @@ public class ManageResource extends PSS2MenuPage {
 	@FindBy(how = How.XPATH, using = "//*[@name='apptTimeMark']")
 	private WebElement timeMarkOption;
 
-	@FindBy(how = How.XPATH, using = "//*[@id='tab13']/form/fieldset[1]/div[10]/div/label[1]/i")
-	private WebElement locatonToggleState;
-
 	@FindBy(how = How.XPATH, using = "//label[@for='lastQuestRequired']//i")
 	private WebElement lastQuestionRequiredToggleClick;
 
@@ -174,6 +171,7 @@ public class ManageResource extends PSS2MenuPage {
 	}
 
 	public void searchResource(String resourceName) {
+		log("Enter the Resource name and search resource");
 		searchResource.sendKeys(resourceName);
 	}
 
@@ -417,30 +415,20 @@ public class ManageResource extends PSS2MenuPage {
 
 	}
 	
-	public Boolean isLocationActive() {
-		return Boolean.valueOf(locatonToggleState.getAttribute("ng-reflect-model"));
-	}
-
 	public void clickLocation() throws InterruptedException {
 		commonMethods.highlightElement(resourceLocationTab);
 		resourceLocationTab.click();
 		log("Clicked On Location ");
-		Thread.sleep(3000);
-
 	}
 
 	public void offAllLocationToggle() throws InterruptedException {
 		log("The size of toggle button in webpage is" + locationToggleStatus.size());
 		for (int t = 1; t < locationToggleClick.size(); t++) {
-
 			WebElement locationchk = driver
 					.findElement(By.xpath("//div[@id='tab23']/table/tbody/tr[" + t + "]/td[3]/div/div/label/i"));
-
 			WebElement locationchkStatus = driver
 					.findElement(By.xpath("//div[@id='tab23']/table/tbody/tr[" + t + "]/td[3]/div/div/label/input"));
-
 			if (locationchkStatus.isSelected() == true) {
-
 				log("the Value of t is " + t);
 				commonMethods.highlightElement(locationchk);
 				locationchk.click();
@@ -449,5 +437,4 @@ public class ManageResource extends PSS2MenuPage {
 			}
 		}
 	}
-
 }

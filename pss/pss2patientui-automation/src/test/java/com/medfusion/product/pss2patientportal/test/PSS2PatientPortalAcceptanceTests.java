@@ -5503,7 +5503,6 @@ public class PSS2PatientPortalAcceptanceTests extends BaseTestNGWebDriver {
 		propertyData.setAdminGE(adminUser);
 		propertyData.setAppointmentResponseGE(testData);
 		pssNewPatient.createPatientDetails(testData);
-		log(testData.getUrlLoginLess());
 		PSSAdminUtils adminUtils = new PSSAdminUtils();
 		logStep("Login To admin portal and Generate link for Provider");
 		adminUtils.linkGenerationWithProvider(driver, adminUser, testData, PSSConstants.LOGINLESS);
@@ -5515,27 +5514,27 @@ public class PSS2PatientPortalAcceptanceTests extends BaseTestNGWebDriver {
 		Thread.sleep(3000);
 		Boolean insuranceSelected = adminUser.getIsInsuranceDisplayed();
 		log("insuranceSelected--> " + insuranceSelected);
-		HomePage homepage;
+		HomePage homePage;
 		insuranceSelected = false;
 		log("insuranceSelected--> " + insuranceSelected);
 		if (insuranceSelected) {
 			log("insuranceSelected--> ON");
-			NewPatientInsuranceInfo newpatientinsuranceinfo = loginlessPatientInformation.fillPatientForm(testData.getFirstName(), testData.getLastName(),
+			NewPatientInsuranceInfo newPatientInsuranceInfo = loginlessPatientInformation.fillPatientForm(testData.getFirstName(), testData.getLastName(),
 					testData.getDob(), testData.getEmail(), testData.getGender(), testData.getZipCode(), testData.getPrimaryNumber());
-			homepage = newpatientinsuranceinfo.fillNewPatientInsuranceInfo(PSSConstants.INSURANCE_CARRIER, PSSConstants.INSURANCE_MEMBERID,
+			homePage = newPatientInsuranceInfo.fillNewPatientInsuranceInfo(PSSConstants.INSURANCE_CARRIER, PSSConstants.INSURANCE_MEMBERID,
 					PSSConstants.INSURANCE_GROUPID, PSSConstants.INSURANCE_PRIMARYPHONE);
 		} else {
 			log("insuranceSelected--> OFF");
-			homepage = loginlessPatientInformation.fillNewPatientForm(testData.getFirstName(), testData.getLastName(), testData.getDob(), testData.getEmail(),
+			homePage = loginlessPatientInformation.fillNewPatientForm(testData.getFirstName(), testData.getLastName(), testData.getDob(), testData.getEmail(),
 					testData.getGender(), testData.getZipCode(), testData.getPrimaryNumber());
 		}
-		homepage.btnStartSchedClick();
-		StartAppointmentInOrder startappointmentInOrder = null;
-		startappointmentInOrder = homepage.skipInsurance(driver);
-	    startappointmentInOrder.selectFirstLocation(PSSConstants.START_LOCATION);
+		homePage.btnStartSchedClick();
+		StartAppointmentInOrder startAppointmentInOrder = null;
+		startAppointmentInOrder = homePage.skipInsurance(driver);
+		startAppointmentInOrder.selectFirstLocation(PSSConstants.START_LOCATION);
 		log("Verfiy Location Page and location =" + testData.getLocation());
-		String popUp=startappointmentInOrder.locationPopUp();
-		log("Location popUp messege is  "+popUp);
+		String popUp=startAppointmentInOrder.locationPopUp();
+		log("Location popup messege is  "+popUp);
 		log("Expected messege is    "+testData.getPopUpMessege());
 		assertEquals(testData.getPopUpMessege(),popUp);
 }

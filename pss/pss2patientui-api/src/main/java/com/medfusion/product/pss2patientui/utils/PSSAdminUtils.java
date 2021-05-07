@@ -612,7 +612,6 @@ public class PSSAdminUtils extends BaseTestNGWebDriver{
 		Log4jUtil.log("****************ADMIN SETTINGS FOR Loginless FLOW**************************");
 		PSS2PracticeConfiguration psspracticeConfig = loginToAdminPortal(driver, adminuser);
 		LinkTab linkTab = psspracticeConfig.linksTab();
-		Log4jUtil.log("Clicked On LinkTab");
 		linkTab.searchLinkandRemove(testData.getLinkProvider());
 		linkTab.addLink(testData.getLinkLocation(), testData.getLinkProvider());
 		linkTab.getURL(testData.getLinkProvider());
@@ -826,14 +825,15 @@ public class PSSAdminUtils extends BaseTestNGWebDriver{
 		Log4jUtil.log("Clicked On LinkTab");
 		linkTab.addLinkForProvider(testData.getLinkProvider());
 		testData.setLinkProviderURL(testData.getLinkProviderURL());
-		PatientFlow patientflow = pssPracticeConfig.gotoPatientFlowTab();
-		AdminPatientMatching adminpatientmatching = patientflow.gotoPatientMatchingTab();
-		adminpatientmatching.patientMatchingSelection();
+	    patientFlow = pssPracticeConfig.gotoPatientFlowTab();
+		AdminPatientMatching adminPatientMatching = patientFlow.gotoPatientMatchingTab();
+		adminPatientMatching.patientMatchingSelection();
 		ManageResource manageResource = pssPracticeConfig.gotoResource();
 		pageRefresh(driver);
 		manageResource.selectResource(testData.getLinkProvider());
 		manageResource.clickLocation();
 		manageResource.offAllLocationToggle();
+		patientFlow.logout();
 	}
 
 }

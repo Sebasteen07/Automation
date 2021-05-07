@@ -41,7 +41,7 @@ public class LinkTab extends SettingsTab {
 	@FindBy(how = How.XPATH, using = "//a[contains(text(),'100')]")
 	private WebElement lastpage100;
 
-	@FindAll({@FindBy(xpath = "//*[@class='multiselect-item-checkbox ng-star-inserted']")})
+	@FindAll({ @FindBy(xpath = "//*[@class='multiselect-item-checkbox ng-star-inserted']") })
 	private List<WebElement> checklistLocation;
 
 	@FindBy(how = How.XPATH, using = "//tbody/tr/td[5]/a[1]")
@@ -50,7 +50,7 @@ public class LinkTab extends SettingsTab {
 	@FindBy(how = How.XPATH, using = "//*[@class='fa fa-link']")
 	private WebElement copyLink;
 
-	@FindAll({@FindBy(xpath = "//*[@class='mat-paginator-range-actions']/div")})
+	@FindAll({ @FindBy(xpath = "//*[@class='mat-paginator-range-actions']/div") })
 	private List<WebElement> noProviderConfigured;
 
 	public LinkTab(WebDriver driver) {
@@ -108,7 +108,8 @@ public class LinkTab extends SettingsTab {
 		log("Clicked on Create link Button");
 	}
 
-	public String getURL(String provider) throws InterruptedException, HeadlessException, UnsupportedFlavorException, IOException {
+	public String getURL(String provider)
+			throws InterruptedException, HeadlessException, UnsupportedFlavorException, IOException {
 		searchLink(provider);
 		copyLink.click();
 		String link = (String) Toolkit.getDefaultToolkit().getSystemClipboard().getData(DataFlavor.stringFlavor);
@@ -129,23 +130,13 @@ public class LinkTab extends SettingsTab {
 		Select type = new Select(typeselect);
 		type.selectByVisibleText("LOGINLESS");
 		resourceselect.click();
-		log("LocationTypeList " + checklistLocation.size());
+		log("Resource Type List " + checklistLocation.size());
 		for (int i = 0; i < checklistLocation.size(); i++) {
 			if (checklistLocation.get(i).getText().contains(providerConfig)) {
 				checklistLocation.get(i).click();
-				log("Location checkbox selected");
+				log("Resource checkbox selected");
 			}
 		}
-//		Thread.sleep(3000);
-//		resourceselect.click();
-//		log("ProviderTypeList " + checklistLocation.size());
-//		for (int i = 0; i < checklistLocation.size(); i++) {
-//			if (checklistLocation.get(i).getText().contains(providerConfig)) {
-//				checklistLocation.get(i).click();
-//				log("Provider checkbox selected");
-//
-//			}
-//		}
 		createLinkButton.click();
 		log("Clicked on Create link Button");
 	}
