@@ -7,6 +7,8 @@ import static org.testng.Assert.assertTrue;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.support.PageFactory;
 
+import com.google.gson.JsonObject;
+import com.google.gson.JsonParser;
 import com.intuit.ifs.csscat.core.utils.Log4jUtil;
 import com.intuit.ihg.product.integrationplatform.utils.IntegrationConstants;
 import com.intuit.ihg.product.integrationplatform.utils.PropertyFileLoader;
@@ -942,7 +944,7 @@ public class CommonFlows {
 		Thread.sleep(5000);
 		Log4jUtil.log("Step Begins: Verify booked appointment received in Portal");
 		Boolean appointmentStatus = appointmentsPage.verifyAppointment(appointmentDate, appointmentTime,
-				PropertyLoaderObj.getProperty("ResourceName"));
+				PropertyLoaderObj.getProperty("EPMProviderName"));
 		assertTrue(appointmentStatus, "Booked Appointment didnot receive by Patient");
 
 		driver.navigate().back();
@@ -1244,5 +1246,25 @@ public class CommonFlows {
 			CommonUtils.VerifyTwoValues(processingStatus, "equals", "8");
 		}
 		CommonUtils.VerifyTwoValues(processingStatus, "equals", "8");
+	}
+	
+	public static String getPAMLastName(String response) {	    	
+    	JsonObject jObj = new JsonParser().parse(response).getAsJsonObject();  
+    	jObj.remove("url");
+    	     
+    	String entryValue = jObj.get("entry").toString();    	
+    	entryValue = entryValue.substring(1, entryValue.length()-1);
+    	Log4jUtil.log("Value of Entry Key is " + entryValue);
+    	
+    	jObj = new JsonParser().parse(entryValue).getAsJsonObject();  
+    	String resourcevalue = jObj.get("resource").toString();
+    	Log4jUtil.log("Value of Resource Key is " + resourcevalue);
+    	 
+    	String namevalue = CommonUtils.getResponseKeyValue(resourcevalue,"name");
+    	namevalue = namevalue.substring(1, namevalue.length()-1);    	
+    	String lastName = CommonUtils.getResponseKeyValue(namevalue,"family");
+    	Log4jUtil.log("LastName is " + lastName);
+    	
+		return lastName;
 	}
 }

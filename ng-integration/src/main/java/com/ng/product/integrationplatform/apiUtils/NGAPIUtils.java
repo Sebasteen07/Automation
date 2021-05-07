@@ -506,4 +506,38 @@ public class NGAPIUtils {
 		Log4jUtil.log("Exception caught "+E.getMessage());
 	}
     }
+		
+	public static String setupPAMHttpGetRequest(String argRouteURL,String accessToken, int expectedStatusCode) throws IOException {
+		IHGUtil.PrintMethodName();
+		Log4jUtil.log("GetURL "+argRouteURL);
+		try {
+	    HttpGet httpGet = new HttpGet(argRouteURL);	
+		CloseableHttpResponse httpResponse = null;
+        CloseableHttpClient httpClient = HttpClients.createDefault();
+		
+     	httpGet.addHeader("Accept", "*/*");
+     	httpGet.addHeader("Authorization", "Bearer "+accessToken);
+		httpResponse = httpClient.execute(httpGet);
+     	
+	    httpGet.releaseConnection();
+	            
+	    Log4jUtil.log("Status code of Get request "+httpResponse.getStatusLine().getStatusCode());
+	    if(expectedStatusCode!=0){
+	    if(httpResponse.getStatusLine().getStatusCode()==expectedStatusCode){
+	    	Log4jUtil.log("Get request completed successfully");
+        }else{
+        	Log4jUtil.log("Unable to get the request");
+            assertEquals(httpResponse.getStatusLine().getStatusCode(), expectedStatusCode);
+        }}
+	
+	    HttpEntity entity = httpResponse.getEntity();
+        String response = EntityUtils.toString(entity);
+        Log4jUtil.log("Get PAM Response \n"+response);
+       return response;
+		}catch (Exception e) {
+		Log4jUtil.log("Exception caught "+e.getMessage());
+	}
+	return null;
+    }
+
 }

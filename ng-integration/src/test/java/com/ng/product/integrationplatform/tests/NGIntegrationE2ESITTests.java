@@ -74,7 +74,9 @@ import com.medfusion.product.practice.api.utils.PracticeConstants;
 import com.medfusion.qa.mailinator.Email;
 import com.medfusion.qa.mailinator.Mailer;
 import com.ng.product.integrationplatform.apiUtils.NGAPIUtils;
+import com.ng.product.integrationplatform.apiUtils.PAMAuthentication;
 import com.ng.product.integrationplatform.apiUtils.apiRoutes;
+import com.ng.product.integrationplatform.apiUtils.pamAPIRoutes;
 import com.ng.product.integrationplatform.flows.NGAPIFlows;
 import com.ng.product.integrationplatform.flows.NGPatient;
 import com.ng.product.integrationplatform.pojo.NewPatient;
@@ -4464,6 +4466,7 @@ public class NGIntegrationE2ESITTests extends BaseTestNGWebDriver{
 		MedicalRecordSummariesPageObject.filterCCDs(MedicalRecordSummariesPageObject.get3MonthsOldDateinYYYY_MM_DDFormat(), MedicalRecordSummariesPageObject.getTodaysDateinYYYY_MM_DDFormat());
 		log(MedicalRecordSummariesPageObject.get3MonthsOldDateinYYYY_MM_DDFormat());
 		log(MedicalRecordSummariesPageObject.getTodaysDateinYYYY_MM_DDFormat());
+		MedicalRecordSummariesPageObject.clickRequestHealthRecord();
 		MedicalRecordSummariesPageObject.requestCcdOnDemandFromPopUp();
 		Thread.sleep(5000);
 		
@@ -7336,4 +7339,25 @@ public class NGIntegrationE2ESITTests extends BaseTestNGWebDriver{
 		CommonFlows.verifyIMHState(documentId);        
         log("Test Case End: The practice user is able to send the IMH Form.");
     }
+    
+    @Test(enabled = true, groups = { "acceptance-PAM" }, retryAnalyzer = RetryAnalyzer.class)
+    public void testPP174PAMSinglePracticeUser() throws Throwable {
+    	
+    	String username = PropertyLoaderObj.getProperty("CCDAUsername");
+    	logStep("Get access token for user");
+    	String accessToken = PAMAuthentication.getAccessToken(username, PropertyLoaderObj.getPassword());
+    	
+    	logStep("Get the patient details using Get call");
+    	String routeURL = pamAPIRoutes.valueOf("PAMPatient").getRouteURL();
+    	String response = NGAPIUtils.setupPAMHttpGetRequest(routeURL, accessToken, 200);
+    	
+    	logStep("Get last name of person from DB");
+    	String actualPatientLastName =DBUtils.executeQueryOnDB("NGCoreDB","select last_name from person where email_address = '"+username+"'");
+    	
+    	logStep("Get last name of person using PAM api");
+    	String patientLastName = CommonFlows.getPAMLastName(response);
+    	
+    	assertEquals(patientLastName, actualPatientLastName, "The last name matches with DB value.");
+    	}
+    
 }
