@@ -816,26 +816,24 @@ public class PSSAdminUtils extends BaseTestNGWebDriver{
 		manageResource.timeMark(appointment.getTimeMarkValue());
 		
 	}
-	public void linkGenerationWithProvider(WebDriver driver, AdminUser adminuser, Appointment testData, String urlToUse) throws Exception {
-		Log4jUtil.log("****************ADMIN SETTINGS FOR Loginless FLOW**************************");
-		PSS2PracticeConfiguration psspracticeConfig = loginToAdminPortal(driver, adminuser);
-		ManageResource manageResource = psspracticeConfig.gotoResource();
+	public void linkGenerationWithProvider(WebDriver driver, AdminUser adminUser, Appointment testData, String urlToUse) throws Exception {
+		PSS2PracticeConfiguration pssPracticeConfig = loginToAdminPortal(driver, adminUser);
+		PatientFlow patientFlow =pssPracticeConfig.gotoPatientFlowTab();
+		adminUser.setRule(patientFlow.getRule());
+		Log4jUtil.log("rule= " + patientFlow.getRule());
+		setRulesNoSpecialitySet1(patientFlow);
+		LinkTab linkTab = pssPracticeConfig.linksTab();
+		Log4jUtil.log("Clicked On LinkTab");
+		linkTab.addLinkForProvider(testData.getLinkProvider());
+		testData.setLinkProviderURL(testData.getLinkProviderURL());
+		PatientFlow patientflow = pssPracticeConfig.gotoPatientFlowTab();
+		AdminPatientMatching adminpatientmatching = patientflow.gotoPatientMatchingTab();
+		adminpatientmatching.patientMatchingSelection();
+		ManageResource manageResource = pssPracticeConfig.gotoResource();
 		pageRefresh(driver);
 		manageResource.selectResource(testData.getLinkProvider());
 		manageResource.clickLocation();
-		
-		
-		
-		LinkTab linkTab = psspracticeConfig.linksTab();
-		Log4jUtil.log("Clicked On LinkTab");
-		linkTab.searchLinkandRemove(testData.getLinkProvider());
-		linkTab.addLinkForProvider(testData.getLinkProvider());
-		linkTab.getURL(testData.getLinkProvider());
-		testData.setUrlLinkGen("https://dev3-pss.dev.medfusion.net/psspatient/login/c6adef6d-4f9f-447a-9131-a4a360765f83");
-		PatientFlow patientflow = psspracticeConfig.gotoPatientFlowTab();
-		AdminPatientMatching adminpatientmatching = patientflow.gotoPatientMatchingTab();
-		adminpatientmatching.patientMatchingSelection();
-		Log4jUtil.log("adminSettings Step 5: Logout from PSS Admin Portal");
+		manageResource.offAllLocationToggle();
 	}
 
 }

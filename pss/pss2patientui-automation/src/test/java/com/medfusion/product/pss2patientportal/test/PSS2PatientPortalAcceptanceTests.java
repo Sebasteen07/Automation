@@ -5498,18 +5498,46 @@ public class PSS2PatientPortalAcceptanceTests extends BaseTestNGWebDriver {
 		log("Link Generation with location and Provider for GW");
 		PSSPropertyFileLoader propertyData = new PSSPropertyFileLoader();
 		Appointment testData = new Appointment();
-		AdminUser adminuser = new AdminUser();
+		AdminUser adminUser = new AdminUser();
 		PSSNewPatient pssNewPatient = new PSSNewPatient();
-		propertyData.setAdminGE(adminuser);
+		propertyData.setAdminGE(adminUser);
 		propertyData.setAppointmentResponseGE(testData);
-		log("-----Loaded the test data for New Patient----------");
 		pssNewPatient.createPatientDetails(testData);
 		log(testData.getUrlLoginLess());
-		log("Step 2: Fetch rule and settings from PSS 2.0 Admin portal");
 		PSSAdminUtils adminUtils = new PSSAdminUtils();
-		adminUtils.linkGenerationWithProvider(driver, adminuser, testData, PSSConstants.LOGINLESS);
-
-		Log4jUtil.log("Test Case Passed");
-	}
+		logStep("Login To admin portal and Generate link for Provider");
+		adminUtils.linkGenerationWithProvider(driver, adminUser, testData, PSSConstants.LOGINLESS);
+		logStep("Move to PSS patient Portal 2.0 to book an Appointment");
+		log("Link GEneration link is   " + testData.getLinkProviderURL());
+		DismissPage dismissPage = new DismissPage(driver, testData.getLinkProviderURL());
+		Thread.sleep(1000);
+		LoginlessPatientInformation loginlessPatientInformation = dismissPage.clickDismiss();
+		Thread.sleep(3000);
+		Boolean insuranceSelected = adminUser.getIsInsuranceDisplayed();
+		log("insuranceSelected--> " + insuranceSelected);
+		HomePage homepage;
+		insuranceSelected = false;
+		log("insuranceSelected--> " + insuranceSelected);
+		if (insuranceSelected) {
+			log("insuranceSelected--> ON");
+			NewPatientInsuranceInfo newpatientinsuranceinfo = loginlessPatientInformation.fillPatientForm(testData.getFirstName(), testData.getLastName(),
+					testData.getDob(), testData.getEmail(), testData.getGender(), testData.getZipCode(), testData.getPrimaryNumber());
+			homepage = newpatientinsuranceinfo.fillNewPatientInsuranceInfo(PSSConstants.INSURANCE_CARRIER, PSSConstants.INSURANCE_MEMBERID,
+					PSSConstants.INSURANCE_GROUPID, PSSConstants.INSURANCE_PRIMARYPHONE);
+		} else {
+			log("insuranceSelected--> OFF");
+			homepage = loginlessPatientInformation.fillNewPatientForm(testData.getFirstName(), testData.getLastName(), testData.getDob(), testData.getEmail(),
+					testData.getGender(), testData.getZipCode(), testData.getPrimaryNumber());
+		}
+		homepage.btnStartSchedClick();
+		StartAppointmentInOrder startappointmentInOrder = null;
+		startappointmentInOrder = homepage.skipInsurance(driver);
+	    startappointmentInOrder.selectFirstLocation(PSSConstants.START_LOCATION);
+		log("Verfiy Location Page and location =" + testData.getLocation());
+		String popUp=startappointmentInOrder.locationPopUp();
+		log("Location popUp messege is  "+popUp);
+		log("Expected messege is    "+testData.getPopUpMessege());
+		assertEquals(testData.getPopUpMessege(),popUp);
+}
 }
 

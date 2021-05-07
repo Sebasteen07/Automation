@@ -213,6 +213,7 @@ public class PSSPropertyFileLoader {
 
 	public void setAppointmentResponseGE(Appointment appointValues) {
 		Log4jUtil.log("Loading data for GE appointment related cases..");
+		appointValues.setLinkProviderURL(property.getProperty("linkproviderURL.GE"));
 		appointValues.setTimeMarkValue(property.getProperty("timeMarkValue.GE"));
 		appointValues.setAgeRuleMonthFirst(property.getProperty("ageRuleMonthFirstParameterGE"));
 		appointValues.setAgeRuleMonthSecond(property.getProperty("ageRuleMonthSecondParameterGE"));
