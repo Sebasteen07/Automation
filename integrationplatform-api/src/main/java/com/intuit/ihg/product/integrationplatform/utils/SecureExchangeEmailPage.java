@@ -56,9 +56,17 @@ public class SecureExchangeEmailPage {
 
 	@FindBy(how = How.XPATH, using = "//div[@class='modal-body']/button")
 	public WebElement deleteConfPopupClose;
-
-
-
+	
+	@FindBy(how = How.ID, using = "Trash")
+	public WebElement trashFolder;
+	
+	@FindBy(how = How.XPATH, using = "//*[@data-original-title='Permanent Delete']")
+	public WebElement permanentDeleteBtn;
+	
+	@FindBy(how = How.XPATH, using = "//button[@data-bb-handler='confirm']")
+	public WebElement confirmPermanentDeleteOnPopup;
+	
+	
 	public SecureExchangeEmailPage(WebDriver driver) {
 		this.driver = driver;
 		PageFactory.initElements(driver, this);
@@ -145,7 +153,32 @@ public class SecureExchangeEmailPage {
 			deleteConfPopupClose.click();
 			Log4jUtil.log("Delete Message :   " + subject + "  " + deletedMessage);
 			assertEquals(deletedMessage, "Message moved successfully.");
-
+			trashFolder.click();
+			Thread.sleep(3000);
+			WebElement secureSendEmailInTrash = driver.findElement(By.xpath("//*[contains(text(),'" + subject + "')]"));
+			Log4jUtil.log("Verify Subject if matched actual " + secureSendEmailInTrash.getText() + " expected " + subject);
+			assertEquals(secureSendEmailInTrash.getText(), subject);
+			WebElement secureSendEmailSelectCheckboxInTrash =
+					driver.findElement(By.xpath("//*[contains(text(),'" + subject + "')]/preceding::input[contains(@class,'ptSelectConversation-input')][1]"));
+			jse.executeScript("arguments[0].click();", secureSendEmailSelectCheckboxInTrash);
+			IHGUtil.waitForElement(driver, 80, permanentDeleteBtn);
+			permanentDeleteBtn.click();
+			IHGUtil.waitForElement(driver, 80, deleteConf);
+			Log4jUtil.log("Clicked on delete button successfully and popup appeared");
+			String permanentDeleteMessage  = deleteConf.getText();
+			assertEquals(permanentDeleteMessage, "Do you want to permanently delete this email? You will not be able to retrieve them once it has been deleted.");
+			Thread.sleep(2000);
+			jse.executeScript("arguments[0].click();", confirmPermanentDeleteOnPopup);
+			Thread.sleep(2000);
+			Log4jUtil.log("Clicked on Confirm delete button successfully and popup appeared");
+			String permanentDeleteConfMessage  = deleteConf.getText();
+			Log4jUtil.log("Delete Message :   " + subject + "  " + permanentDeleteConfMessage);
+			assertEquals(permanentDeleteConfMessage, "Message deleted successfully.");
+			deleteConfPopupClose.click();
+			Log4jUtil.log("Clicked on Close btn on popup");
+			//Wait for half minute to sync the deleted message
+			Thread.sleep(30000);
+			
 		} catch (Exception E) {
 			Log4jUtil.log("Exception caught " + E);
 			assertTrue(false);

@@ -74,6 +74,7 @@ import com.medfusion.product.object.maps.patientportal2.page.MyAccountPage.Jalap
 import com.medfusion.product.object.maps.patientportal2.page.NewPayBillsPage.JalapenoPayBillsConfirmationPage;
 import com.medfusion.product.object.maps.patientportal2.page.NewPayBillsPage.JalapenoPayBillsMakePaymentPage;
 import com.medfusion.product.object.maps.patientportal2.page.PrescriptionsPage.JalapenoPrescriptionsPage;
+import com.medfusion.product.object.maps.patientportal2.page.ScheduleAppoinment.JalapenoAppoinmentSchedulingPage;
 import com.medfusion.product.object.maps.patientportal2.page.ThirdPartySso.ThirdPartySsoPage;
 import com.medfusion.product.object.maps.practice.page.PracticeHomePage;
 import com.medfusion.product.object.maps.practice.page.PracticeLoginPage;
@@ -3981,6 +3982,30 @@ public class PatientPortal2AcceptanceTests extends BaseTestNGWebDriver {
 
 		assertTrue(linkAccountPage.isSelfTrustedRepresentativeErrorDisplayed());
 	}
+	
+	@Test(enabled = true, groups = { "acceptance-solutions" }, retryAnalyzer = RetryAnalyzer.class)
+	public void testAppoinmentScheduling() throws Exception {
+		logStep("Login patient");
+		JalapenoLoginPage loginPage = new JalapenoLoginPage(driver, testData.getProperty("medPortalUrl"));
+		JalapenoHomePage homePage = loginPage.login(testData.getProperty("medUserid"),
+				testData.getProperty("medPassword"));
+		
+		logStep("Click on the Appoinment Scheduling tab");
+		JalapenoAppoinmentSchedulingPage appoinmentschedulingpage = homePage.clickOnAppoinmentScheduled(driver);
 
+		logStep("Verify the Scheduled an appoinment Pop up Screen");
+		assertTrue(appoinmentschedulingpage.isScheduledAnAppoinmentPopUpDisplay());
 
+		logStep("Verify the message on a Pop up Screen");
+		assertTrue(appoinmentschedulingpage.isPopUpMessageDisplay());
+
+		logStep("Verify the exist portal button on pop up Screen");
+		assertTrue(appoinmentschedulingpage.isClosePopUpMessageDisplay());
+
+		logStep("Click on the continue button");
+		appoinmentschedulingpage.clickOnContinueButton();
+
+		logStep("Verify the New Tab Open");
+		assertTrue(appoinmentschedulingpage.isNewTabOpenDestinationUrl(driver));
+	}
 }

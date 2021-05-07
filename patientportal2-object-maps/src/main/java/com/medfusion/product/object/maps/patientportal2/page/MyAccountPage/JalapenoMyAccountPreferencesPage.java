@@ -32,7 +32,7 @@ public class JalapenoMyAccountPreferencesPage extends JalapenoMyAccountPage {
 		@FindBy(how = How.XPATH, using = "//ng-select[@id='languages']")
 		private WebElement preferredLanguageSelect;
 		
-		@FindBy(how = How.XPATH, using = "//input[@id='preferredLanguage']")
+		@FindBy(how = How.XPATH, using = "//input[@title='languages']")
 		private WebElement preferredLanguageSelectTextbox;
 
 		@FindBy(how = How.XPATH, using = "//ng-select[@id='languages']//span[text()='English']")
