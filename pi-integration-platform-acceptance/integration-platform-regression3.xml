@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<suite name = "Integration-Platform-Regression" verbose = "2" >
+<listeners>
+  <listener class-name="com.intuit.ifs.csscat.core.TestValidationErrorListener" />
+  <listener class-name="org.uncommons.reportng.HTMLReporter" />
+  <listener class-name="org.uncommons.reportng.JUnitXMLReporter" />
+</listeners>
+ 	
+<test name = "Integration-Platform-Regression" >
+	<classes>
+		<class name = "com.intuit.ihg.product.integrationplatform.test.IntegrationPlatformRegressionTests" />
+		<methods>
+				<include name="testAppoinmentType"/>
+				<include name="testAddPharmacies"/>
+				<include name="testUpdatePharmacies"/>
+				<include name="testDeletePharmacies"/>
+				<include name="testAppointmentRequestForExistingPatientV3"/>
+				<include name="testAppointmentRequestForNewSelfPatientV3"/>
+				<include name="testEHDCSendCCDLargeSize"/>
+				<include name="testE2ERxMedication20"/>
+				<include name="testAppointmentRequestForExistingPatient"/>
+				<include name="testLastLoginEvent"/>
+				<include name="testOnDemandHealthData"/>
+				<include name="testAMDCSecureMessageWithAttachmentRefID"/>
+				<include name="testBulkAdminMessageWithAttachmentRefID"/>
+      		</methods>
+	</classes>
+</test>
+</suite>
