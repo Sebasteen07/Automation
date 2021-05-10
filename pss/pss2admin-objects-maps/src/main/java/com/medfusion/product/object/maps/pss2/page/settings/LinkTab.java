@@ -30,7 +30,7 @@ public class LinkTab extends SettingsTab {
 	private WebElement typeSelect;
 
 	@FindBy(how = How.XPATH, using = "//*[@id='links']/div[1]/div[2]/div[2]/ng-multiselect-dropdown/div/div[1]/span/span[2]/span")
-	private WebElement locationselect;
+	private WebElement locationSelect;
 
 	@FindBy(how = How.XPATH, using = "//*[@id='links']/div[1]/div[2]/div[3]/ng-multiselect-dropdown/div/div[1]/span/span[2]/span")
 	private WebElement resourceSelect;
@@ -86,7 +86,7 @@ public class LinkTab extends SettingsTab {
 		log("Clicked on type  button");
 		Select type = new Select(typeSelect);
 		type.selectByVisibleText("LOGINLESS");
-		locationselect.click();
+		locationSelect.click();
 		log("LocationTypeList " + checklistLocation.size());
 		for (int i = 0; i < checklistLocation.size(); i++) {
 			if (checklistLocation.get(i).getText().contains(locationConfig)) {
@@ -135,6 +135,25 @@ public class LinkTab extends SettingsTab {
 			if (checklistLocation.get(i).getText().contains(providerConfig)) {
 				checklistLocation.get(i).click();
 				log("Resource checkbox selected");
+			}
+		}
+		createLinkButton.click();
+		log("Clicked on Create link Button");
+	}
+	
+	public void addLinkForLocation(String locationConfig) throws InterruptedException {
+		linkPlusButton.click();
+		log("Clicked on link plus button");
+		clickDropType.click();
+		log("Clicked on type  button");
+		Select type = new Select(typeSelect);
+		type.selectByVisibleText("LOGINLESS");
+		locationSelect.click();
+		log("Location Type List size " + checklistLocation.size());
+		for (int i = 0; i < checklistLocation.size(); i++) {
+			if (checklistLocation.get(i).getText().contains(locationConfig)) {
+				checklistLocation.get(i).click();
+				log("Location checkbox selected");
 			}
 		}
 		createLinkButton.click();

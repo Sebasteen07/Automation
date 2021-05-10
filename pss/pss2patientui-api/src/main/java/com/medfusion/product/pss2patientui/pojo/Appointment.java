@@ -151,6 +151,9 @@ public class Appointment {
 
 	private String timeMarkValue;
 	private String linkProviderURL;
+	private String linkLocationURL;
+
+	
 
 	public Appointment(String providerConfig, String usernameConfig, String passwordConfig, String datetimeConfig,
 			String locationConfig, String appointmentConfig, String specialityConfig) {
@@ -163,9 +166,16 @@ public class Appointment {
 		this.speciality = specialityConfig;
 	}
 
+	public Appointment() {
+	}
 
-	public Appointment() {}
-	
+	public String getLinkLocationURL() {
+		return linkLocationURL;
+	}
+
+	public void setLinkLocationURL(String linkLocationURL) {
+		this.linkLocationURL = linkLocationURL;
+	}
 
 	public String getLinkProviderURL() {
 		return linkProviderURL;
