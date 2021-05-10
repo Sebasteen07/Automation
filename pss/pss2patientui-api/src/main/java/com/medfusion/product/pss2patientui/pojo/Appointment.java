@@ -97,7 +97,10 @@ public class Appointment {
 	private String linkProvider;
 	private String linkLocation;
 	private boolean lastQuestionOptional=false;
-
+	
+	private String memberID;
+	private String groupID;
+	private String insurancePhone;
 
 	private String ageRuleMonthFirst;
 	private String ageRuleMonthSecond;
@@ -164,6 +167,30 @@ public class Appointment {
 	}
 
 	public Appointment() {}	
+
+	public String getMemberID() {
+		return memberID;
+	}
+
+	public void setMemberID(String memberID) {
+		this.memberID = memberID;
+	}
+
+	public String getGroupID() {
+		return groupID;
+	}
+
+	public void setGroupID(String groupID) {
+		this.groupID = groupID;
+	}
+
+	public String getInsurancePhone() {
+		return insurancePhone;
+	}
+
+	public void setInsurancePhone(String insurancePhone) {
+		this.insurancePhone = insurancePhone;
+	}
 
 	public boolean isInsuranceDetails() {
 		return insuranceDetails;

@@ -5531,12 +5531,12 @@ public class PSS2PatientPortalAcceptanceTests extends BaseTestNGWebDriver {
 		logStep("Enter the Demographic Details");
 		log("Demographic Details- "+testData.getFirstName()+" "+testData.getLastName()+" "+testData.getDob()+" "+testData.getGender()+" "+testData.getEmail()+" "+testData.getPrimaryNumber()+" "+testData.getZipCode());
 
-		HomePage homepage = loginlessPatientInformation.fillNewPatientForm(testData.getFirstName(), testData.getLastName(), testData.getDob(), testData.getEmail(),
+		HomePage homePage = loginlessPatientInformation.fillNewPatientForm(testData.getFirstName(), testData.getLastName(), testData.getDob(), testData.getEmail(),
 				testData.getGender(), testData.getZipCode(), testData.getPrimaryNumber());
 		
 		logStep("Book an appointment flow started");
-		homepage.btnStartSchedClick();
-		pssPatientUtils.selectAFlow(driver, rule, homepage, testData);
+		homePage.btnStartSchedClick();
+		pssPatientUtils.selectAFlow(driver, rule, homePage, testData);
 	}
 	
 	@Test(enabled = true, groups = {"AcceptanceTests"}, retryAnalyzer = RetryAnalyzer.class)
@@ -5577,12 +5577,12 @@ public class PSS2PatientPortalAcceptanceTests extends BaseTestNGWebDriver {
 		logStep("Enter the Demographic Details");
 		log("Demographic Details- "+testData.getFirstName()+" "+testData.getLastName()+" "+testData.getDob()+" "+testData.getGender()+" "+testData.getEmail()+" "+testData.getPrimaryNumber()+" "+testData.getZipCode());
 
-		HomePage homepage = loginlessPatientInformation.fillNewPatientForm(testData.getFirstName(), testData.getLastName(), testData.getDob(), testData.getEmail(),
+		HomePage homePage = loginlessPatientInformation.fillNewPatientForm(testData.getFirstName(), testData.getLastName(), testData.getDob(), testData.getEmail(),
 				testData.getGender(), testData.getZipCode(), testData.getPrimaryNumber());
 		
 		logStep("Book an appointment flow started");
-		homepage.btnStartSchedClick();
-		pssPatientUtils.selectAFlow(driver, rule, homepage, testData);
+		homePage.btnStartSchedClick();
+		pssPatientUtils.selectAFlow(driver, rule, homePage, testData);
 	}
 	
 	@Test(enabled = true, groups = {"AcceptanceTests"}, retryAnalyzer = RetryAnalyzer.class)
@@ -5623,12 +5623,12 @@ public class PSS2PatientPortalAcceptanceTests extends BaseTestNGWebDriver {
 		logStep("Enter the Demographic Details");
 		log("Demographic Details- "+testData.getFirstName()+" "+testData.getLastName()+" "+testData.getDob()+" "+testData.getGender()+" "+testData.getEmail()+" "+testData.getPrimaryNumber()+" "+testData.getZipCode());
 
-		HomePage homepage = loginlessPatientInformation.fillNewPatientForm(testData.getFirstName(), testData.getLastName(), testData.getDob(), testData.getEmail(),
+		HomePage homePage = loginlessPatientInformation.fillNewPatientForm(testData.getFirstName(), testData.getLastName(), testData.getDob(), testData.getEmail(),
 				testData.getGender(), testData.getZipCode(), testData.getPrimaryNumber());
 		
 		logStep("Book an appointment flow started");
-		homepage.btnStartSchedClick();
-		pssPatientUtils.selectAFlow(driver, rule, homepage, testData);
+		homePage.btnStartSchedClick();
+		pssPatientUtils.selectAFlow(driver, rule, homePage, testData);
 	}
 	
 	@Test(enabled = true, groups = {"AcceptanceTests"}, retryAnalyzer = RetryAnalyzer.class)
@@ -5669,12 +5669,12 @@ public class PSS2PatientPortalAcceptanceTests extends BaseTestNGWebDriver {
 		logStep("Enter the Demographic Details");
 		log("Demographic Details- "+testData.getFirstName()+" "+testData.getLastName()+" "+testData.getDob()+" "+testData.getGender()+" "+testData.getEmail()+" "+testData.getPrimaryNumber()+" "+testData.getZipCode());
 
-		HomePage homepage = loginlessPatientInformation.fillNewPatientForm(testData.getFirstName(), testData.getLastName(), testData.getDob(), testData.getEmail(),
+		HomePage homePage = loginlessPatientInformation.fillNewPatientForm(testData.getFirstName(), testData.getLastName(), testData.getDob(), testData.getEmail(),
 				testData.getGender(), testData.getZipCode(), testData.getPrimaryNumber());
 		
 		logStep("Book an appointment flow started");
-		homepage.btnStartSchedClick();
-		pssPatientUtils.selectAFlow(driver, rule, homepage, testData);
+		homePage.btnStartSchedClick();
+		pssPatientUtils.selectAFlow(driver, rule, homePage, testData);
 	}
 	
 	

@@ -27,9 +27,6 @@ public class AccessRules extends SettingsTab {
 
 	@FindBy(how = How.XPATH, using = "//label[@for='showPrivacyPolicyMessageConfig']//i")
 	private WebElement checkShowPrivacyPolicyPage;
-
-//	@FindBy(how = How.XPATH, using = "//input[@id='showPrivacyPolicyMessageConfig']")
-//	private WebElement displayPrivacyPolicyLoginless;
 	
 	@FindBy(how = How.XPATH, using = "//label[@for='showPrivacyPolicyMessageConfig']//input")
 	private WebElement displayPrivacyPolicyLoginless;	

@@ -92,6 +92,9 @@ public class PSSPropertyFileLoader {
 		appointValues.setPhoneCarePatient(property.getProperty("phoneCarePatientGW"));
 		appointValues.setZipCarePatient(property.getProperty("zipCarePatientGW"));
 		appointValues.setCareProvider(property.getProperty("providerCarePatientGW"));
+		appointValues.setMemberID(property.getProperty("memberID"));
+		appointValues.setGroupID(property.getProperty("groupID"));
+		appointValues.setInsurancePhone(property.getProperty("insrancePhone"));
 	}
 
 	public void setAdminGW(AdminUser adminuser) {
@@ -208,6 +211,9 @@ public class PSSPropertyFileLoader {
 		appointValues.setProviderImageAPI(property.getProperty("providerImageAPIAT"));
 		appointValues.setGmailUserName(property.getProperty("emailAT"));
 		appointValues.setPopUpMessege(property.getProperty("popUpMessege"));
+		appointValues.setMemberID(property.getProperty("memberID"));
+		appointValues.setGroupID(property.getProperty("groupID"));
+		appointValues.setInsurancePhone(property.getProperty("insrancePhone"));
 
 	}
 
@@ -283,6 +289,9 @@ public class PSSPropertyFileLoader {
 		appointValues.setPhoneCarePatient(property.getProperty("phoneCarePatientGE"));
 		appointValues.setZipCarePatient(property.getProperty("zipCarePatientGE"));
 		appointValues.setCareProvider(property.getProperty("providerCarePatientGE"));
+		appointValues.setMemberID(property.getProperty("memberID"));
+		appointValues.setGroupID(property.getProperty("groupID"));
+		appointValues.setInsurancePhone(property.getProperty("insrancePhone"));
 
 	}
 
@@ -360,6 +369,9 @@ public class PSSPropertyFileLoader {
 		appointValues.setPhoneCarePatient(property.getProperty("phoneCarePatientNG"));
 		appointValues.setZipCarePatient(property.getProperty("zipCarePatientNG"));
 		appointValues.setCareProvider(property.getProperty("providerCarePatientNG"));
+		appointValues.setMemberID(property.getProperty("memberID"));
+		appointValues.setGroupID(property.getProperty("groupID"));
+		appointValues.setInsurancePhone(property.getProperty("insrancePhone"));
 	}
 
 	public void setAppointmentResponseAthena(Appointment appointValues) {

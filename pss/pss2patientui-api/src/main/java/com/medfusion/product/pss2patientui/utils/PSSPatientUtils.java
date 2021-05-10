@@ -322,7 +322,8 @@ public class PSSPatientUtils extends BaseTestNGWebDriver{
 		if (testData.isIsinsuranceVisible()) {
 
 			if (testData.isInsuranceDetails() == true) {
-				homepage.updateInsuranceInfo(driver, "12345", "6666", "7989123456");
+				log("Member ID- "+testData.getMemberID() +" Group Id- "+testData.getGroupID()+" Phone Number- "+testData.getInsurancePhone());
+				homepage.updateInsuranceInfo(driver, testData.getMemberID() , testData.getGroupID(), testData.getInsurancePhone());
 
 			} else {
 				log("insurance is present on home Page going to skip insurance page");

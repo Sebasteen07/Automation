@@ -193,8 +193,6 @@ public class ManageResource extends PSS2MenuPage {
 		commonMethods.highlightElement(resourceLocationTab);
 		resourceLocationTab.click();
 		log("Clicked On Location ");
-		Thread.sleep(3000);
-
 	}
  
 
@@ -212,7 +210,6 @@ public class ManageResource extends PSS2MenuPage {
 
 				log("the Value of t is " + t);
 				commonMethods.highlightElement(locationchk);
-				Thread.sleep(3000);
 				locationchk.click();
 				log("The Value of the Toggle status after turn off is " + locationchkStatus.isSelected());
 				log("Clicked on The True Value");
