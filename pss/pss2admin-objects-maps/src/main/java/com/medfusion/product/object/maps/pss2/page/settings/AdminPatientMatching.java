@@ -23,16 +23,16 @@ public class AdminPatientMatching extends SettingsTab {
 	@FindBy(xpath = "//a[@id='tab43-tab']")
 	private WebElement genderMap;
 
-	@FindBy(xpath = "//*[@id='gendermapcheckbox0']")
+	@FindBy(xpath = "//label[@for='gendermapcheckbox0']//input")
 	private WebElement genderbox0Status;
 
-	@FindBy(xpath = "//*[@id='gendermapcheckbox1']")
+	@FindBy(xpath = "//label[@for='gendermapcheckbox1']//input")
 	private WebElement genderbox1Status;
 
-	@FindBy(xpath = "//*[@id='gendermapcheckbox2']")
+	@FindBy(xpath = "//label[@for='gendermapcheckbox2']//input")
 	private WebElement genderbox2Status;
 
-	@FindBy(xpath = "//*[@id='gendermapcheckbox3']")
+	@FindBy(xpath = "//label[@for='gendermapcheckbox3']//input")
 	private WebElement genderbox3Status;
 
 	@FindBy(xpath = "//tbody/tr[1]/td[1]/div[1]/label[1]/i[1]")
@@ -105,19 +105,19 @@ public class AdminPatientMatching extends SettingsTab {
 	}
 
 	public Boolean isgenderBox0True() {
-		return Boolean.valueOf(genderbox0Status.getAttribute("ng-reflect-model"));
+		return genderbox0Status.isSelected();
 	}
 
 	public Boolean isgenderBox1True() {
-		return Boolean.valueOf(genderbox1Status.getAttribute("ng-reflect-model"));
+		return genderbox1Status.isSelected();
 	}
 
 	public Boolean isgenderBox2True() {
-		return Boolean.valueOf(genderbox2Status.getAttribute("ng-reflect-model"));
+		return genderbox2Status.isSelected();
 	}
 
 	public Boolean isgenderBox3True() {
-		return Boolean.valueOf(genderbox3Status.getAttribute("ng-reflect-model"));
+		return genderbox3Status.isSelected();
 	}
 
 	public void gendermap() {
@@ -134,9 +134,6 @@ public class AdminPatientMatching extends SettingsTab {
 		}
 		if (isgenderBox2True() == false) {
 			genderbox2click.click();
-		}
-		if (isgenderBox3True() == false) {
-			genderbox3click.click();
 		}
 		log("Successfully On the all gender map toggle button");
 	}

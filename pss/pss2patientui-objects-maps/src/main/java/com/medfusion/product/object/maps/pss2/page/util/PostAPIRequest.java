@@ -258,7 +258,7 @@ public class PostAPIRequest extends BaseTestNGWebDriver {
 
 		RestAssured.baseURI = "http://d3-ns-app02.dev.medfusion.net:8083/pss-ng-adapter";
 
-		Response response = given().log().all().headers(Header).body(b).when().post("/24249/availableslots").then()
+		Response response = given().log().all().headers(Header).body(b).when().post("/24293/availableslots").then()
 				.log().all().extract().response();
 		log("Response is as below" + response.asString());
 
@@ -269,7 +269,7 @@ public class PostAPIRequest extends BaseTestNGWebDriver {
 		APIVerification apiVerification = new APIVerification();
 
 		apiVerification.responseCodeValidation(response, 200);
-		ParseJSONFile.getKey(jsonobject, "availableSlots");
+		ParseJSONFile.getKey(jsonobject, "startDateTime");
 		apiVerification.responseTimeValidation(response);
 		return response;
 	}

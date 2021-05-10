@@ -150,6 +150,7 @@ public class Appointment {
 	private boolean pcptoggleState = false;
 
 	private String timeMarkValue;
+	private boolean insuranceDetails = false;
 
 	public Appointment(String providerConfig, String usernameConfig, String passwordConfig, String datetimeConfig,
 			String locationConfig, String appointmentConfig, String specialityConfig) {
@@ -162,8 +163,15 @@ public class Appointment {
 		this.speciality = specialityConfig;
 	}
 
-	public Appointment() {}
-	
+	public Appointment() {}	
+
+	public boolean isInsuranceDetails() {
+		return insuranceDetails;
+	}
+
+	public void setInsuranceDetails(boolean insuranceDetails) {
+		this.insuranceDetails = insuranceDetails;
+	}
 
 	public boolean isLastQuestionOptional() {
 		return lastQuestionOptional;
