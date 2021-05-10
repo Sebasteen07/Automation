@@ -25,11 +25,11 @@ public class AccessRules extends SettingsTab {
 	@FindBy(how = How.ID, using = "checkbox2")
 	private WebElement checkShowInsurancePage;
 
-	@FindBy(how = How.XPATH, using = "//fieldset//i")
+	@FindBy(how = How.XPATH, using = "//label[@for='showPrivacyPolicyMessageConfig']//i")
 	private WebElement checkShowPrivacyPolicyPage;
-
-	@FindBy(how = How.XPATH, using = "//input[@id='showPrivacyPolicyMessageConfig']")
-	private WebElement displayPrivacyPolicyLoginless;
+	
+	@FindBy(how = How.XPATH, using = "//label[@for='showPrivacyPolicyMessageConfig']//input")
+	private WebElement displayPrivacyPolicyLoginless;	
 
 	@FindBy(how = How.XPATH,
 			using = "//body/app[1]/layout[1]/div[1]/main[1]/div[2]/div[1]/div[1]/div[1]/section[1]/div[1]/div[1]/div[2]/div[2]/div[2]/div[1]/fieldset[1]/div[1]/div[1]/label[1]/i[1]")
@@ -129,10 +129,10 @@ public class AccessRules extends SettingsTab {
 		return checkShowInsurancePage.isSelected() ? "true" : "false"; // .getCssValue("background-color"); // .getAttribute("ng-reflect-model");
 	}
 
-	public String isLLPrivacyPolicySelected() {
+	public boolean isLLPrivacyPolicySelected() {
 		commonMethods.highlightElement(displayPrivacyPolicyLoginlesseLabel);
 		commonMethods.highlightElement(displayPrivacyPolicyLoginlessCheck);
-		return displayPrivacyPolicyLoginless.getAttribute("ng-reflect-model");
+		return displayPrivacyPolicyLoginless.isSelected();
 	}
 
 	public String isEnableOTPSelected() {

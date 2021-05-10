@@ -283,6 +283,7 @@ public class PSSPatientUtils extends BaseTestNGWebDriver{
 			location = homepage.locationpage();
 
 		}
+		Thread.sleep(3000);
 		Log4jUtil.log("Step 9: Verfiy Location Page and location =" + testData.getLocation());
 		assertTrue(location.areBasicPageElementsPresent());
 		AppointmentPage appointment = location.selectAppointment(testData.getLocation());
@@ -314,65 +315,66 @@ public class PSSPatientUtils extends BaseTestNGWebDriver{
 	}
 
 	public void TLBFlow(HomePage homepage, Appointment testData, String startOrderOn, WebDriver driver) throws Exception {
-		Log4jUtil.log("Step 8: Select Appointment for appointment.");
 		AppointmentPage appointment;
 		StartAppointmentInOrder startappointmentInOrder = null;
-		Log4jUtil.log("Insurance is Enabled " + testData.isIsinsuranceVisible());
-		Log4jUtil.log("startpage is Visible " + testData.isIsstartpointPresent());
+		log("Insurance is Enabled " + testData.isIsinsuranceVisible());
+		log("startpage is Visible " + testData.isIsstartpointPresent());
 		if (testData.isIsinsuranceVisible()) {
-			Thread.sleep(3500);
-			Log4jUtil.log("insurance is present on home Page going to skip insurance page");
-			startappointmentInOrder = homepage.skipInsurance(driver);
-			if (testData.isIsstartpointPresent()) {
 
-				Log4jUtil.log("Starting point is present after insurance skipped ");
-				appointment = startappointmentInOrder.selectFirstAppointment(PSSConstants.START_APPOINTMENT);
-				Log4jUtil.log("Successfully clicked on  " + PSSConstants.START_APPOINTMENT);
+			if (testData.isInsuranceDetails() == true) {
+				log("Member ID- "+testData.getMemberID() +" Group Id- "+testData.getGroupID()+" Phone Number- "+testData.getInsurancePhone());
+				homepage.updateInsuranceInfo(driver, testData.getMemberID() , testData.getGroupID(), testData.getInsurancePhone());
+
 			} else {
-				appointment = homepage.appointmentpage();
-				Log4jUtil.log("Starting point not Present going to select next provider ");
+				log("insurance is present on home Page going to skip insurance page");
+				startappointmentInOrder = homepage.skipInsurance(driver);
 			}
 
-		}
-
-		else if (testData.isIsstartpointPresent()) {
+			if (testData.isIsstartpointPresent()) {
+				log("Starting point is present after insurance skipped ");
+				appointment = startappointmentInOrder.selectFirstAppointment(PSSConstants.START_APPOINTMENT);
+				log("Successfully clicked on  " + PSSConstants.START_APPOINTMENT);
+			} else {
+				appointment = homepage.appointmentpage();
+				log("Starting point not Present going to select next provider ");
+			}
+		} else if (testData.isIsstartpointPresent()) {
 			startappointmentInOrder = homepage.startpage();
-			Log4jUtil.log("in else part  click on  " + PSSConstants.START_APPOINTMENT);
+			log("in else part  click on  " + PSSConstants.START_APPOINTMENT);
 			appointment = startappointmentInOrder.selectFirstAppointment(PSSConstants.START_APPOINTMENT);
-			Log4jUtil.log("clicked on Appointment ");
+			log("clicked on Appointment ");
 		} else {
-			Log4jUtil.log("Start point not present");
+			log("Start point not present");
 			appointment = homepage.appointmentpage();
 		}
-		Log4jUtil.log("Step 9: Verfiy Appointment Page and appointment =" + testData.getAppointmenttype());
+		
+		log("Verfiy Appointment Page and appointment =" + testData.getAppointmenttype());
 		assertTrue(appointment.areBasicPageElementsPresent());
 		Location location = appointment.selectTypeOfLocation(testData.getAppointmenttype(), Boolean.valueOf(testData.getIsAppointmentPopup()));
-		Log4jUtil.log("Step 10: Verfiy Location Page and location to be selected = " + testData.getLocation());
+		log("Verfiy Location Page and location to be selected = " + testData.getLocation());
 		assertTrue(location.areBasicPageElementsPresent());
 		Provider provider = location.searchProvider(testData.getLocation());
-		Log4jUtil.log("address = " + location.getAddressValue());
-		Log4jUtil.log("Step 11: Verfiy Provider Page and Provider = " + testData.getProvider());
+		log("address = " + location.getAddressValue());
+		log("Verfiy Provider Page and Provider = " + testData.getProvider());
 		assertTrue(provider.areBasicPageElementsPresent());
 
 		AppointmentDateTime aptDateTime = provider.getProviderandClick(testData.getProvider());
 		assertTrue(aptDateTime.areBasicPageElementsPresent());
 
-		Log4jUtil.log("Step 12: Select avaiable Date ");
+		log("Select avaiable Date ");
 		if (testData.isFutureApt()) {
 			aptDateTime.selectFutureDate(testData.getIsNextDayBooking());
 		} else {
 			aptDateTime.selectDate(testData.getIsNextDayBooking());
 		}
-
-		Thread.sleep(6000);
 		if (testData.isAnonymousFlow()) {
-			Log4jUtil.log(" isAnonymousFlow is TRUE ");
+			log(" isAnonymousFlow is TRUE ");
 			bookAnonymousApt(aptDateTime, testData, driver);
 		} else {
-			Log4jUtil.log("This is not an Anonymous flow so comes is else block");
+			log("This is not an Anonymous flow so comes is else block");
 			clickOnSubmitAppt(false, aptDateTime, testData, driver);
 		}
-		Log4jUtil.log("Test Case Passed");
+		log("Test Case Passed");
 	}
 
 	public void TBLFlow(HomePage homepage, Appointment testData, String startOrderOn, WebDriver driver) throws Exception {

@@ -102,7 +102,7 @@ public class PostAPITest extends BaseTestNGWebDriver {
 
 		log(Payload.nextAvailable_Payload(testData.getPatientId()));
 
-		postAPIRequest.nextAvailableNG(testData.getBasicURI(), Payload.nextAvailable_Payload(testData.getPatientId()),
+		postAPIRequest.availableSlots(testData.getBasicURI(), Payload.nextAvailable_Payload(testData.getPatientId()),
 				headerConfig.defaultHeader());
 	}
 
