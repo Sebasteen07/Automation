@@ -24,6 +24,7 @@ import org.openqa.selenium.support.PageFactory;
 import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.openqa.selenium.support.ui.WebDriverWait;
 
+import com.intuit.ifs.csscat.core.utils.Log4jUtil;
 import com.medfusion.common.utils.IHGUtil;
 import com.medfusion.common.utils.MFDateUtil;
 
@@ -280,18 +281,25 @@ public class MedicalRecordSummariesPage extends JalapenoMenu {
 	}
 
 	public void filterCCDs(String fromDate, String toDate) {
-		updateWebElement(this.requestHealthRecordFromDate, fromDate);
-		updateWebElement(this.requestHealthRecordToDate, toDate);
+		updateWebElement(this.fromDate, fromDate);
+		updateWebElement(this.toDate, toDate);
 	}
-
+	
+	public void onDemandFilterCCDs(String fromDate, String toDate) {
+		updateWebElement(requestHealthRecordFromDate, fromDate);
+		updateWebElement(requestHealthRecordToDate, toDate);
+		requestHealthRecordToDate.sendKeys(Keys.TAB);
+	}
+	
 	private void filterCCDs(Instant from, Instant to) {
 		String fromString = MFDateUtil.getShortUSDateLocal(from);
 		String toString = MFDateUtil.getShortUSDateLocal(to);
 
-		log("Instant TO ISO:" + from.toString() + " parsed to:" + fromString.toString());
-		log("Instant FROM ISO:" + to.toString() + " parsed to:" + toString.toString());
+		Log4jUtil.log("Instant TO ISO:" + from.toString() + " parsed to:" + fromString.toString());
+		Log4jUtil.log("Instant FROM ISO:" + to.toString() + " parsed to:" + toString.toString());
 
 		updateWebElement(this.fromDate, fromString);
+		Log4jUtil.log("From Date is updated to Past Date");
 		fromDate.sendKeys(Keys.ENTER);
 		try {
 			Thread.sleep(1000);
@@ -300,6 +308,7 @@ public class MedicalRecordSummariesPage extends JalapenoMenu {
 			e.printStackTrace();
 		}
 		updateWebElement(this.toDate, toString);
+		Log4jUtil.log("To Date is updated to Current Date");
 		toDate.sendKeys(Keys.ENTER);
 		try {
 			Thread.sleep(2000);
@@ -307,7 +316,6 @@ public class MedicalRecordSummariesPage extends JalapenoMenu {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
-		toDate.sendKeys(Keys.TAB);
 
 	}
 

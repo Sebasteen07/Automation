@@ -223,7 +223,7 @@ public class IntegrationPlatformAcceptanceTests extends BaseTestNGWebDriver {
 		RestUtils.isQuestionResponseXMLValid(testData.getResponsePath(), askStaff1.getCreatedTimeStamp());
 	}
 
-	@Test(enabled = true, dataProvider = "channelVersion", groups = {
+	@Test(enabled = true, dataProvider = "channelVersionPIDC", groups = {
 			"AcceptanceTests" }, retryAnalyzer = RetryAnalyzer.class)
 	public void testPIDCPatientUpdate(String version) throws Exception {
 		log("Test Case: PIDC Patient Update");
@@ -1520,10 +1520,16 @@ public class IntegrationPlatformAcceptanceTests extends BaseTestNGWebDriver {
 
 	@DataProvider(name = "channelVersion")
 	public Object[][] channelVersion() {
-		Object[][] obj = new Object[][] { { "v1" }, { "v2" }, { "v3" } };
+		Object[][] obj = new Object[][] { { "v1" }, { "v3" } };
 		return obj;
 	}
 
+	@DataProvider(name = "channelVersionPIDC")
+	public Object[][] channelVersionPIDC() {
+		Object[][] obj = new Object[][] { { "v1" }, { "v2" }, { "v3" } };
+		return obj;
+	}
+	
 	@Test(enabled = true, groups = { "AcceptanceTests" }, retryAnalyzer = RetryAnalyzer.class)
 	public void testAppointmentID() throws Exception {
 
