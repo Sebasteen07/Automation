@@ -1102,13 +1102,19 @@ public class IntegrationPlatformRegressionTests extends BaseTestNGWebDriver {
 		SendDirectMessageUtilsObj.sendSecureDirectMessage(driver, typeOfAttachmentUsed);
 	}
 
-	@DataProvider(name = "channelVersion")
+	@DataProvider(name = "channelVersionPIDC")
 	public Object[][] channelVersionPIDC() {
-		Object[][] obj = new Object[][] { { "v1" }, { "v2" }, { "v3" } };
+		Object[][] obj = new Object[][] {{ "v1" } ,{ "v2" } ,{ "v3" } };
+		return obj;
+	}
+	
+	@DataProvider(name = "channelVersion")
+	public Object[][] channelVersion() {
+		Object[][] obj = new Object[][] {{ "v1" } ,{ "v3" } };
 		return obj;
 	}
 
-	@Test(enabled = true, dataProvider = "channelVersion", groups = {
+	@Test(enabled = true, dataProvider = "channelVersionPIDC", groups = {
 			"RegressionTests" }, retryAnalyzer = RetryAnalyzer.class)
 	public void testOnDemandProvisionPIDC(String version) throws Exception {
 		log("Test Case: Test OnDemand Provision with PIDC");
@@ -1180,7 +1186,7 @@ public class IntegrationPlatformRegressionTests extends BaseTestNGWebDriver {
 				patient.getLastName(), medfusionID);
 	}
 
-	@Test(enabled = true, dataProvider = "channelVersion", groups = {
+	@Test(enabled = true, dataProvider = "channelVersionPIDC", groups = {
 			"RegressionTests" }, retryAnalyzer = RetryAnalyzer.class)
 	public void testPIDCPatientDemographicsUpdate(String version) throws Exception {
 		log("Test Case: PIDC Patient Update for Race, Ethnicity, Gender and Language all the values for Version "
@@ -1249,8 +1255,9 @@ public class IntegrationPlatformRegressionTests extends BaseTestNGWebDriver {
 					}
 				}
 			}
-		}
+			driver.navigate().refresh();
 
+		}
 		String updatedGIValue = accountProfilePageObject.updateDropDownValue(0, 'G');
 		String updatedSOValue = accountProfilePageObject.updateDropDownValue(0, 'S');
 		log("Gender Identity is " + updatedGIValue + " and Sexual Orientation is " + updatedSOValue + " for version"
@@ -1321,7 +1328,7 @@ public class IntegrationPlatformRegressionTests extends BaseTestNGWebDriver {
 		}
 	}
 
-	@Test(enabled = true, dataProvider = "channelVersion", groups = {
+	@Test(enabled = true, dataProvider = "channelVersionPIDC", groups = {
 			"RegressionTests" }, retryAnalyzer = RetryAnalyzer.class)
 	public void testPatientDemographicsUpdateWithSpecialCharacter(String version) throws Exception {
 		log("Step 1: Test Case: Patient Update with special character data");
@@ -1368,7 +1375,7 @@ public class IntegrationPlatformRegressionTests extends BaseTestNGWebDriver {
 		RestUtils.checkPatientRegistered(testData.getResponsePath(), patientData);
 	}
 
-	@Test(enabled = true, dataProvider = "channelVersion", groups = {
+	@Test(enabled = true, dataProvider = "channelVersionPIDC", groups = {
 			"RegressionTests" }, retryAnalyzer = RetryAnalyzer.class)
 	public void testPatientRegistrationfromPractice(String version) throws Exception {
 		log("Test Case: Patient Registration from Practice Portal" + version);
@@ -1659,6 +1666,7 @@ public class IntegrationPlatformRegressionTests extends BaseTestNGWebDriver {
 
 		log("Step 6 : execute Delete API and Verify the response");
 		String messageDeleteURL = testData.messageStatusUpdate + "/" + msgUid + "/delete";
+		RestUtils.setupHttpDeleteRequestExceptOauth(messageDeleteURL, testData.ResponsePath,testData.token);
 		int responseCode = RestUtils.setupHttpDeleteRequestExceptOauth(messageDeleteURL, testData.ResponsePath,
 				testData.token);
 		log("responseCode is " + responseCode + " message not found !!!");
@@ -2686,7 +2694,7 @@ public class IntegrationPlatformRegressionTests extends BaseTestNGWebDriver {
 			log("Total number of values in '" + dropValues[k] + "' field drop-down:" + count);
 			for (int i = 0; i < count; i++) {
 				Long timestamp = System.currentTimeMillis();
-				Thread.sleep(8000);
+				Thread.sleep(5000);
 				log("Navigate to HealthForms ");
 				healthListpage.clickOnHealthFormsRegistrationLinkUpdated(k + i);
 				Thread.sleep(1000);
@@ -2710,12 +2718,12 @@ public class IntegrationPlatformRegressionTests extends BaseTestNGWebDriver {
 				log("updated Value on portal = " + updatedValue);
 				Thread.sleep(2000);
 				pFormBasicInfoPage.saveAndContinue();
-				Thread.sleep(4000);
+				Thread.sleep(2000);
 				pFormBasicInfoPage.submitForm();
 
 				if (!updatedValue.equalsIgnoreCase("Choose...")) {
 					log("Wait for Values to get reflected in the API Call.. ");
-					Thread.sleep(12000);
+					Thread.sleep(5000);
 					char dropValue = dropValues[k].charAt(0);
 					if (dropValue == 'G') {
 						dropValue = 'I';
@@ -2757,9 +2765,11 @@ public class IntegrationPlatformRegressionTests extends BaseTestNGWebDriver {
 								getpidcUrlv1 + "?since=" + since + ",0", testData.responsePDFBatch_FE);
 						assertTrue(responseCodeValue.equalsIgnoreCase("204"),
 								"get pidc v1 api call without 204");
+						
 					}
-					Thread.sleep(12000);
+					Thread.sleep(4000);
 				}
+				
 			}
 		}
 		log("Logout from patient portal");
@@ -4520,7 +4530,7 @@ public class IntegrationPlatformRegressionTests extends BaseTestNGWebDriver {
 			messagesPage.validateSecureMessageAttachment(attachmentName);
 			logStep("Logout");
 			homePage.clickOnLogout();
-		}
+		}		
 	}
 
 }
