@@ -5493,6 +5493,7 @@ public class PSS2PatientPortalAcceptanceTests extends BaseTestNGWebDriver {
 
 	}
 	
+	@Test(enabled = true, groups = {"AcceptanceTests"}, retryAnalyzer = RetryAnalyzer.class)
 	public void testLoginlessWithInsuranceAT() throws Exception {
 
 		PSSPropertyFileLoader propertyData = new PSSPropertyFileLoader();
