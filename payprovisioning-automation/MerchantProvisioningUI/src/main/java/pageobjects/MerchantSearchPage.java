@@ -60,10 +60,10 @@ public class MerchantSearchPage extends NavigationMenu {
 		return util.assessAllPageElements(webElementsList, MerchantSearchPage.class);
 	}
 
-	public void findByPracticeID(String practiceid) throws InterruptedException {
+	public void findByPracticeID(String practiceId) throws InterruptedException {
 		WebDriverWait wait = new WebDriverWait(driver, 10);
 		wait.until(ExpectedConditions.elementToBeClickable(searchField));
-		searchField.sendKeys(practiceid);
+		searchField.sendKeys(practiceId);
 	}
 
 	public void searchButtonClick() {

@@ -14,15 +14,15 @@ public class ProvisioningBaseTest extends BaseTestNGWebDriver {
 
 	@BeforeMethod
 	public void logIntoMP() throws IOException, NullPointerException, InterruptedException {
-		log("Execution Environment: " + IHGUtil.getEnvironmentType());
-		log("Execution Browser: " + TestConfig.getBrowserType());
-		log("Getting Test Data");
+		logStep("Execution Environment: " + IHGUtil.getEnvironmentType());
+		logStep("Execution Browser: " + TestConfig.getBrowserType());
+		logStep("Getting Test Data");
 		testData = new PropertyFileLoader();
 
-		log("Navigating to Merchant provisioning");
+		logStep("Navigating to Merchant provisioning");
 		LoginPage loginPage = new LoginPage(driver, testData.getProperty("provisioning.url"));
 
-		log("Login into merchant provisioning");
+		logStep("Login into merchant provisioning");
 		loginPage.login(testData.getProperty("user.name"), testData.getProperty("password"));
 		loginPage.loginbtn.click();
 
