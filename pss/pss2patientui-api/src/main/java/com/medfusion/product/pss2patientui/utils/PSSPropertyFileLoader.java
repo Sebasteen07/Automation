@@ -120,9 +120,9 @@ public class PSSPropertyFileLoader {
 
 	public void setAdminNG(AdminUser adminuser) {
 		adminuser.setAdminUrl(property.getProperty("adminurl"));
-		adminuser.setUser(property.getProperty("adminusernameNG"));
-		adminuser.setPassword(property.getProperty("adminpasswordNG"));
-		adminuser.setPracticeId(property.getProperty("practiceIdNG"));
+		adminuser.setUser(property.getProperty("admin.user.name.NG"));
+		adminuser.setPassword(property.getProperty("admin.password.NG"));
+		adminuser.setPracticeId(property.getProperty("practice.id.NG"));
 		adminuser.setRule(property.getProperty("rule"));
 		adminuser.setPracticeId(property.getProperty("practiceIdNG"));
 	}
