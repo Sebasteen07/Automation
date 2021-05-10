@@ -716,19 +716,18 @@ public class HomePage extends PSS2MainPage {
 		return PageFactory.initElements(driver, Speciality.class);
 	}
 
-	public StartAppointmentInOrder updateInsuranceInfo(WebDriver driver, String insuranceName, String memberID,
-			String groupID, String phone) {
+	public StartAppointmentInOrder updateInsuranceInfo(WebDriver driver, String memberID,
+			String groupID, String phone) throws InterruptedException {
 		log("In updateInsuranceInfo of HomePage.");
-		UpdateInsurancePage updateinsurancepage = PageFactory.initElements(driver, UpdateInsurancePage.class);
-		updateinsurancepage.selectInsurance(insuranceName, memberID, groupID, phone);
+		UpdateInsurancePage updateInsurancePage = PageFactory.initElements(driver, UpdateInsurancePage.class);
+		updateInsurancePage.selectInsurance(memberID, groupID, phone);
 		return PageFactory.initElements(driver, StartAppointmentInOrder.class);
 	}
 
-	public Speciality updateInsuranceForSpeciality(WebDriver driver, String insuranceName, String memberID,
-			String groupID, String phone) {
+	public Speciality updateInsuranceForSpeciality(WebDriver driver, String memberID,String groupID, String phone) throws InterruptedException {
 		log("In updateInsuranceForSpeciality of HomePage.");
-		UpdateInsurancePage updateinsurancepage = PageFactory.initElements(driver, UpdateInsurancePage.class);
-		updateinsurancepage.selectInsurance(insuranceName, memberID, groupID, phone);
+		UpdateInsurancePage updateInsurancePage = PageFactory.initElements(driver, UpdateInsurancePage.class);
+		updateInsurancePage.selectInsurance(memberID, groupID, phone);
 		return PageFactory.initElements(driver, Speciality.class);
 	}
 

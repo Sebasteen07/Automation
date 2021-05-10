@@ -73,6 +73,9 @@ public class ManageResource extends PSS2MenuPage {
 
 	@FindBy(how = How.XPATH, using = "//button[@type='submit']")
 	private WebElement resourceSave;
+	
+	@FindBy(how = How.XPATH, using = "//a[normalize-space()='Location']")
+	private WebElement resourceLocationTab;	
 
 	@FindBy(how = How.XPATH, using = "//button[@type=\"button\"]")
 	private WebElement resourceCancel;
@@ -104,10 +107,11 @@ public class ManageResource extends PSS2MenuPage {
 	@FindBy(how = How.ID, using = "maxPerDay")
 	private WebElement maxPerDay;
 
-	@FindBy(how = How.XPATH, using = "//input[@id=\"allowSameDayAppts\"]")
+
+	@FindBy(how = How.XPATH, using = "//label[@for='allowSameDayAppts']//input")
 	private WebElement acceptToggle;
 
-	@FindBy(how = How.XPATH, using = "//div[@class='col-md-12']//label[@for='allowSameDayAppts']")
+	@FindBy(how = How.XPATH, using = "//div[@class='col-md-12']//label[@for='allowSameDayAppts']/i")
 	private WebElement acceptToggleclick;
 
 	@FindBy(how = How.XPATH, using = "//strong[contains(text(),'Age Rule')]")
@@ -151,16 +155,14 @@ public class ManageResource extends PSS2MenuPage {
 
 	@FindBy(how = How.XPATH, using = "//a[@title='Back']//*[local-name()='svg']")
 	private WebElement backArrow;
-
+	
 	@FindAll({ @FindBy(xpath = "//div[@id='tab23']/table/tbody/tr/td[3]/div/div/label/input") })
 	private List<WebElement> locationToggleStatus;
 
 	@FindAll({ @FindBy(xpath = "//div[@id='tab23']/table/tbody/tr/td[3]/div/div/label/i") })
 	private List<WebElement> locationToggleClick;
 
-	@FindBy(how = How.XPATH, using = "//a[normalize-space()='Location']")
-	private WebElement resourceLocationTab;
-
+	
 	public ManageResource(WebDriver driver) {
 		super(driver);
 	}
@@ -170,8 +172,10 @@ public class ManageResource extends PSS2MenuPage {
 		return true;
 	}
 
-	public void searchResource(String resourceName) {
-		log("Enter the Resource name and search resource");
+
+	public void searchResource(String resourceName){
+		IHGUtil.waitForElement(driver, 6, searchResource);
+		log("Enter the resource in search box "+resourceName);
 		searchResource.sendKeys(resourceName);
 	}
 
@@ -181,11 +185,34 @@ public class ManageResource extends PSS2MenuPage {
 
 	CommonMethods commonMethods = new CommonMethods(driver);
 
-	public void selectResource(String resourceName) {
+	public void selectResource(String resourceName) throws InterruptedException {
 		searchResource(resourceName);
 		IHGUtil.waitForElement(driver, 60, searchedResourceName);
 		searchedResourceName.click();
 		log("clicked on Resource  ");
+	} 
+ 
+	public void clickLocation() throws InterruptedException {
+		commonMethods.highlightElement(resourceLocationTab);
+		resourceLocationTab.click();
+		log("Clicked On Location ");
+	}
+
+	public void offAllLocationToggle() throws InterruptedException {
+		log("The size of toggle button in webpage is" + locationToggleStatus.size());
+		for (int t = 1; t < locationToggleClick.size(); t++) {
+			WebElement locationchk = driver
+					.findElement(By.xpath("//div[@id='tab23']/table/tbody/tr[" + t + "]/td[3]/div/div/label/i"));
+			WebElement locationchkStatus = driver
+					.findElement(By.xpath("//div[@id='tab23']/table/tbody/tr[" + t + "]/td[3]/div/div/label/input"));
+			if (locationchkStatus.isSelected() == true) {
+				log("the Value of t is " + t);
+				commonMethods.highlightElement(locationchk);
+				locationchk.click();
+				log("The Value of the Toggle status after turn off is " + locationchkStatus.isSelected());
+				log("Clicked on The True Value");
+			}
+		}
 	}
 
 	public void selectAppointmenttype(String ApptypeName) {
@@ -275,8 +302,8 @@ public class ManageResource extends PSS2MenuPage {
 
 	public boolean acceptforStatus() {
 
-		log(acceptToggle.getAttribute("ng-reflect-model"));
 		boolean bool = acceptToggle.isSelected();
+		log("Status of Accept for the Same Day -" + bool);
 		return bool;
 	}
 
@@ -415,26 +442,5 @@ public class ManageResource extends PSS2MenuPage {
 
 	}
 	
-	public void clickLocation() throws InterruptedException {
-		commonMethods.highlightElement(resourceLocationTab);
-		resourceLocationTab.click();
-		log("Clicked On Location ");
-	}
-
-	public void offAllLocationToggle() throws InterruptedException {
-		log("The size of toggle button in webpage is" + locationToggleStatus.size());
-		for (int t = 1; t < locationToggleClick.size(); t++) {
-			WebElement locationchk = driver
-					.findElement(By.xpath("//div[@id='tab23']/table/tbody/tr[" + t + "]/td[3]/div/div/label/i"));
-			WebElement locationchkStatus = driver
-					.findElement(By.xpath("//div[@id='tab23']/table/tbody/tr[" + t + "]/td[3]/div/div/label/input"));
-			if (locationchkStatus.isSelected() == true) {
-				log("the Value of t is " + t);
-				commonMethods.highlightElement(locationchk);
-				locationchk.click();
-				log("The Value of the Toggle status after turn off is " + locationchkStatus.isSelected());
-				log("Clicked on The True Value");
-			}
-		}
-	}
+	
 }

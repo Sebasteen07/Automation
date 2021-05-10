@@ -136,9 +136,6 @@ public class AdminPatientMatching extends SettingsTab {
 		if (isgenderBox2True() == false) {
 			genderbox2click.click();
 		}
-		if (isgenderBox3True() == false) {
-			genderbox3click.click();
-		}
 		log("Successfully On the all gender map toggle button");
 	}
 }

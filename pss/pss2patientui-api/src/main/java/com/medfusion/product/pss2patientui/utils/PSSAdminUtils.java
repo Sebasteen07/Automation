@@ -40,7 +40,7 @@ public class PSSAdminUtils extends BaseTestNGWebDriver{
 		Log4jUtil.log("isLLExistingPatientSelected " + accessrule.isLLExistingPatientSelected());
 		if (accessrule.isLLNewPatientSelected().equalsIgnoreCase("true")) {
 			Log4jUtil.log("isLLPrivacyPolicySelected " + accessrule.isLLPrivacyPolicySelected());
-			if (accessrule.isLLPrivacyPolicySelected().equalsIgnoreCase("true")) {
+			if (accessrule.isLLPrivacyPolicySelected() == true) {
 				accessrule.loginlessPrivacyPolicyClick();
 			}
 		} else {
@@ -86,7 +86,7 @@ public class PSSAdminUtils extends BaseTestNGWebDriver{
 		Log4jUtil.log("Existing_Patient Select Checkbox = " + accessrule.isLLExistingPatientSelected());
 		if (accessrule.isLLNewPatientSelected().equalsIgnoreCase("true")) {
 			Log4jUtil.log("isLLPrivacyPolicySelected " + accessrule.isLLPrivacyPolicySelected());
-			if (accessrule.isLLPrivacyPolicySelected().equalsIgnoreCase("false")) {
+			if (accessrule.isLLPrivacyPolicySelected() == false) {
 				accessrule.loginlessPrivacyPolicyClick();
 				Log4jUtil.log("PrivacyPolicySelected is set TRUE");
 			}
@@ -601,6 +601,7 @@ public class PSSAdminUtils extends BaseTestNGWebDriver{
 			appointment.setAccepttoggleStatus(manageResource.acceptforStatus());
 			Log4jUtil.log("Status for AcceptFor Same day is   " + appointment.isAccepttoggleStatus());
 		}
+		pageRefresh(driver);
 		ManageLocation manageLocation = psspracticeConfig.gotoLocation();
 		manageLocation.selectlocation(appointment.getLocation());
 		appointment.setCurrentTimeZone(manageLocation.getTimezone());

@@ -18,7 +18,7 @@ public class ManageSpecialty extends PSS2MenuPage {
 	@FindBy(how = How.ID, using = "search-specialty")
 	private WebElement searchSpecility;
 	
-	@FindBy(how = How.XPATH, using = "//*[@id='myonoffswitch']")
+	@FindBy(how = How.XPATH, using = "//input[@id='myonoffswitch']")
 	private WebElement ageRuleCheckboxStatus;
 
 	@FindBy(how = How.ID, using = "onoffgender")
@@ -163,7 +163,7 @@ public class ManageSpecialty extends PSS2MenuPage {
 	
 
 	public boolean checkBoxStatus() {
-		boolean bool = Boolean.parseBoolean(ageRuleCheckboxStatus.getAttribute("ng-reflect-model"));
+		boolean bool = ageRuleCheckboxStatus.isSelected();
 		log("CheckBox Status " + bool);
 		return bool;
 
