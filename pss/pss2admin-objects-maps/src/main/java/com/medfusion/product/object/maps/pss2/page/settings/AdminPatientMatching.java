@@ -14,9 +14,9 @@ import com.medfusion.product.object.maps.pss2.page.util.CommonMethods;
 
 public class AdminPatientMatching extends SettingsTab {
 
-	@FindAll({@FindBy(xpath = "//*[@id=\"tab41\"]/patientmatch/div/div[2]/div/div/table/tbody/tr")})
+	@FindAll({ @FindBy(xpath = "//*[@id=\"tab41\"]/patientmatch/div/div[2]/div/div/table/tbody/tr") })
 	private List<WebElement> patientMatchingList;
-	
+
 	@FindBy(xpath = "//div[@id='tab41']//button[@type='submit'][normalize-space()='Save']")
 	private WebElement saveBtnPAtientMatching;
 
@@ -47,7 +47,6 @@ public class AdminPatientMatching extends SettingsTab {
 	@FindBy(xpath = "//tbody/tr[4]/td[1]/div[1]/label[1]/i[1]")
 	private WebElement genderbox3click;
 
-
 	public AdminPatientMatching(WebDriver driver) {
 		super(driver);
 	}
@@ -69,21 +68,23 @@ public class AdminPatientMatching extends SettingsTab {
 		list.add("Email Address");
 		log("List ------>" + list);
 		log("Size of patientMatchingList -- " + patientMatchingList.size());
-		
-		for (int i = 4; i < patientMatchingList.size(); i++) {			
+
+		for (int i = 4; i < patientMatchingList.size(); i++) {
 			log("Value of i --> " + i);
 			WebElement toSelect = driver.findElement(By.xpath("//input[@id='pmm" + i + "']"));
-			WebElement searchCheckbox = driver.findElement(By.xpath("//input[@id='pmm" + i + "']/following-sibling::label"));
+			WebElement searchCheckbox = driver
+					.findElement(By.xpath("//input[@id='pmm" + i + "']/following-sibling::label"));
 			WebElement label = driver.findElement(By
 					.xpath("//*[@id=\"tab41\"]/patientmatch/div/div[2]/div/div/table/tbody/tr[" + (i + 1) + "]/td[1]"));
 			WebElement matchingCriteria = driver.findElement(By.xpath("//input[@id='pi" + i + "']"));
-			
+
 			String labelText = label.getText();
-			
+
 			boolean valueOfSearchStatus = toSelect.isSelected();
 			boolean matchingCriteriaStatus = matchingCriteria.isEnabled();
-			
-			log("LABEL " + labelText + " " + valueOfSearchStatus + "  " + "MATCHING CRITERIA "+ matchingCriteriaStatus);
+
+			log("LABEL " + labelText + " " + valueOfSearchStatus + "  " + "MATCHING CRITERIA "
+					+ matchingCriteriaStatus);
 			log("-------");
 			if (list.contains(labelText)) {
 				log("Patient Matching Criteria is available in list and can be changed");
@@ -138,5 +139,3 @@ public class AdminPatientMatching extends SettingsTab {
 		log("Successfully On the all gender map toggle button");
 	}
 }
-
-

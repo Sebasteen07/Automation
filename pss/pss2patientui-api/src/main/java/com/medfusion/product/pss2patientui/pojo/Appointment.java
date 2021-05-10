@@ -153,6 +153,9 @@ public class Appointment {
 	private boolean pcptoggleState = false;
 
 	private String timeMarkValue;
+	private String linkProviderURL;
+
+	
 	private boolean insuranceDetails = false;
 
 	public Appointment(String providerConfig, String usernameConfig, String passwordConfig, String datetimeConfig,
@@ -200,6 +203,14 @@ public class Appointment {
 		this.insuranceDetails = insuranceDetails;
 	}
 
+	public String getLinkProviderURL() {
+		return linkProviderURL;
+	}
+
+	public void setLinkProviderURL(String linkProviderURL) {
+		this.linkProviderURL = linkProviderURL;
+	}
+	
 	public boolean isLastQuestionOptional() {
 		return lastQuestionOptional;
 	}

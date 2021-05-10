@@ -97,7 +97,7 @@ public class ManageSpecialty extends PSS2MenuPage {
 	}
 
 	public Boolean isgenderRuleTrue() {
-		return Boolean.valueOf(genderRuleStatus.getAttribute("ng-reflect-model"));
+		return genderRuleStatus.isSelected();
 	}
 
 	public Boolean isMaleTrue() {

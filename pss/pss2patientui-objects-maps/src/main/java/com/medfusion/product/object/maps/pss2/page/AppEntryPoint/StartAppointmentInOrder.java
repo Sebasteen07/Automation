@@ -24,6 +24,9 @@ public class StartAppointmentInOrder extends PSS2MainPage {
 
 	@FindBy(how = How.XPATH, using = "//span[contains(text(),'Choose a starting point')]")
 	private WebElement chooseStartPoint;
+	
+	@FindBy(how = How.XPATH, using = "//*[@id='locationRestrict']/div/div/div[2]/pre/div")
+	private WebElement locationPopUp;
 
 
 	public StartAppointmentInOrder(WebDriver driver) {
@@ -79,4 +82,10 @@ public class StartAppointmentInOrder extends PSS2MainPage {
 		return chooseStartPoint.isDisplayed();
 	}
 
+	public String locationPopUp()
+	{
+		IHGUtil.waitForElement(driver,10 , locationPopUp);
+		String popUpMessage=locationPopUp.getText();
+		return popUpMessage;
+	}
 }

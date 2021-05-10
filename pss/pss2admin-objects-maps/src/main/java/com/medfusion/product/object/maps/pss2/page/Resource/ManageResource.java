@@ -32,12 +32,12 @@ public class ManageResource extends PSS2MenuPage {
 	@FindBy(how = How.XPATH, using = "//a[contains(text(),'General')]")
 	private WebElement editGeneralTab;
 
-	@FindBy(how = How.XPATH, using = "//a[contains(text(),'Location')]")
+	@FindBy(how = How.XPATH, using = "//*[@id='tabs3']/li[2]/a")
 	private WebElement editLocationTab;
 
 	@FindBy(how = How.XPATH, using = "//a[contains(text(),'Specialty')]")
 	private WebElement editSpecialityTab;
-	
+
 	@FindBy(how = How.XPATH, using = "//*[@id='tabs3']/li[4]/a")
 	private WebElement editAptTypeTab;
 
@@ -103,9 +103,10 @@ public class ManageResource extends PSS2MenuPage {
 
 	@FindBy(how = How.XPATH, using = "//*[@id='tab43']/div/form/fieldset[3]/div/div/button[1]")
 	private WebElement appointmenttypeSave;
-	
+
 	@FindBy(how = How.ID, using = "maxPerDay")
 	private WebElement maxPerDay;
+
 
 	@FindBy(how = How.XPATH, using = "//label[@for='allowSameDayAppts']//input")
 	private WebElement acceptToggle;
@@ -133,7 +134,7 @@ public class ManageResource extends PSS2MenuPage {
 
 	@FindBy(how = How.XPATH, using = "/html/body/app/layout/div/main/div[2]/div/div/div[2]/section/div/div/div/div/div/div[4]/div/form/div[2]/div[6]/input")
 	private WebElement sendMonthsecond;
-	
+
 	@FindBy(how = How.XPATH, using = "//*[@name='apptTimeMark']")
 	private WebElement timeMarkOption;
 
@@ -155,12 +156,13 @@ public class ManageResource extends PSS2MenuPage {
 	@FindBy(how = How.XPATH, using = "//a[@title='Back']//*[local-name()='svg']")
 	private WebElement backArrow;
 	
-    @FindAll({ @FindBy(xpath = "//div[@id='tab23']/table/tbody/tr/td[3]/div/div/label/input") })
-    private List<WebElement> locationToggleStatus;
-    
-    @FindAll({ @FindBy(xpath = "//div[@id='tab23']/table/tbody/tr/td[3]/div/div/label/i") })
-    private List<WebElement> locationToggleClick;
+	@FindAll({ @FindBy(xpath = "//div[@id='tab23']/table/tbody/tr/td[3]/div/div/label/input") })
+	private List<WebElement> locationToggleStatus;
 
+	@FindAll({ @FindBy(xpath = "//div[@id='tab23']/table/tbody/tr/td[3]/div/div/label/i") })
+	private List<WebElement> locationToggleClick;
+
+	
 	public ManageResource(WebDriver driver) {
 		super(driver);
 	}
@@ -169,6 +171,7 @@ public class ManageResource extends PSS2MenuPage {
 	public boolean areBasicPageElementsPresent() {
 		return true;
 	}
+
 
 	public void searchResource(String resourceName){
 		IHGUtil.waitForElement(driver, 6, searchResource);
@@ -194,20 +197,15 @@ public class ManageResource extends PSS2MenuPage {
 		resourceLocationTab.click();
 		log("Clicked On Location ");
 	}
- 
 
 	public void offAllLocationToggle() throws InterruptedException {
 		log("The size of toggle button in webpage is" + locationToggleStatus.size());
 		for (int t = 1; t < locationToggleClick.size(); t++) {
-
 			WebElement locationchk = driver
 					.findElement(By.xpath("//div[@id='tab23']/table/tbody/tr[" + t + "]/td[3]/div/div/label/i"));
-
 			WebElement locationchkStatus = driver
 					.findElement(By.xpath("//div[@id='tab23']/table/tbody/tr[" + t + "]/td[3]/div/div/label/input"));
-
 			if (locationchkStatus.isSelected() == true) {
-
 				log("the Value of t is " + t);
 				commonMethods.highlightElement(locationchk);
 				locationchk.click();
@@ -216,7 +214,6 @@ public class ManageResource extends PSS2MenuPage {
 			}
 		}
 	}
-    
 
 	public void selectAppointmenttype(String ApptypeName) {
 		editAptTypeTab.click();
@@ -398,14 +395,14 @@ public class ManageResource extends PSS2MenuPage {
 	public void pageDown(int d) throws InterruptedException {
 		Thread.sleep(1000);
 		// This will scroll down the page by 800 pixel vertical
-		jse.executeScript("window.scrollBy(0,"+d+")");
+		jse.executeScript("window.scrollBy(0," + d + ")");
 		Thread.sleep(1000);
 	}
 
 	public void pageUp(int t) throws InterruptedException {
 		Thread.sleep(1000);
 		// This will scroll up the page by 600 pixel vertical
-		jse.executeScript("window.scrollBy("+t+",0)");
+		jse.executeScript("window.scrollBy(" + t + ",0)");
 		Thread.sleep(1000);
 	}
 

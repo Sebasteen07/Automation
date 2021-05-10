@@ -581,6 +581,8 @@ public class PSSAdminUtils extends BaseTestNGWebDriver{
 		PatientFlow patientflow = psspracticeConfig.gotoPatientFlowTab();
 		setRulesNoSpecialitySet1(patientflow);
 		adminuser.setRule(patientflow.getRule());
+		AdminPatientMatching adminpatientmatching = patientflow.gotoPatientMatchingTab();
+		adminpatientmatching.patientMatchingSelection();
 		ManageResource manageResource = psspracticeConfig.gotoResource();
 		pageRefresh(driver);
 		manageResource.selectResource(appointment.getProvider());
@@ -610,7 +612,6 @@ public class PSSAdminUtils extends BaseTestNGWebDriver{
 	public void adminSettingLinkGeneration(WebDriver driver, AdminUser adminuser, Appointment testData, String urlToUse) throws Exception {
 		Log4jUtil.log("****************ADMIN SETTINGS FOR Loginless FLOW**************************");
 		PSS2PracticeConfiguration psspracticeConfig = loginToAdminPortal(driver, adminuser);
-		Thread.sleep(2000);
 		LinkTab linkTab = psspracticeConfig.linksTab();
 		linkTab.searchLinkandRemove(testData.getLinkProvider());
 		linkTab.addLink(testData.getLinkLocation(), testData.getLinkProvider());
@@ -815,5 +816,25 @@ public class PSSAdminUtils extends BaseTestNGWebDriver{
 		manageResource.timeMark(appointment.getTimeMarkValue());
 		
 	}
-
+	public void linkGenerationWithProvider(WebDriver driver, AdminUser adminUser, Appointment testData, String urlToUse) throws Exception {
+		PSS2PracticeConfiguration pssPracticeConfig = loginToAdminPortal(driver, adminUser);
+		PatientFlow patientFlow =pssPracticeConfig.gotoPatientFlowTab();
+		adminUser.setRule(patientFlow.getRule());
+		Log4jUtil.log("rule= " + patientFlow.getRule());
+		setRulesNoSpecialitySet1(patientFlow);
+		LinkTab linkTab = pssPracticeConfig.linksTab();
+		Log4jUtil.log("Clicked On LinkTab");
+		linkTab.addLinkForProvider(testData.getLinkProvider());
+		testData.setLinkProviderURL(testData.getLinkProviderURL());
+	    patientFlow = pssPracticeConfig.gotoPatientFlowTab();
+		AdminPatientMatching adminPatientMatching = patientFlow.gotoPatientMatchingTab();
+		adminPatientMatching.patientMatchingSelection();
+		ManageResource manageResource = pssPracticeConfig.gotoResource();
+		pageRefresh(driver);
+		manageResource.selectResource(testData.getLinkProvider());
+		manageResource.clickLocation();
+		manageResource.offAllLocationToggle();
+		patientFlow.logout();
+	}
+	
 }
