@@ -85,7 +85,7 @@ public class StartAppointmentInOrder extends PSS2MainPage {
 	public String locationPopUp()
 	{
 		IHGUtil.waitForElement(driver,10 , locationPopUp);
-		String popUpMessege=locationPopUp.getText();
-		return popUpMessege;
+		String popUpMessage=locationPopUp.getText();
+		return popUpMessage;
 	}
 }

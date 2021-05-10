@@ -18,22 +18,22 @@ import org.openqa.selenium.support.ui.Select;
 public class LinkTab extends SettingsTab {
 
 	@FindBy(how = How.XPATH, using = "//a[@title='Add Link']")
-	private WebElement linkplusButton;
+	private WebElement linkPlusButton;
 
 	@FindBy(how = How.XPATH, using = "//input[@id='search-link']")
 	private WebElement searchLink;
 
 	@FindBy(how = How.XPATH, using = "//*[@class='form-group col-lg-3 col-xs-6']/div")
-	private WebElement clickdropType;
+	private WebElement clickDropType;
 
 	@FindBy(how = How.XPATH, using = "//select[@name='logintype']")
-	private WebElement typeselect;
+	private WebElement typeSelect;
 
 	@FindBy(how = How.XPATH, using = "//*[@id='links']/div[1]/div[2]/div[2]/ng-multiselect-dropdown/div/div[1]/span/span[2]/span")
 	private WebElement locationselect;
 
 	@FindBy(how = How.XPATH, using = "//*[@id='links']/div[1]/div[2]/div[3]/ng-multiselect-dropdown/div/div[1]/span/span[2]/span")
-	private WebElement resourceselect;
+	private WebElement resourceSelect;
 
 	@FindBy(how = How.XPATH, using = "//*[@id='links']/div[1]/div[3]/fieldset/div[1]/button")
 	private WebElement createLinkButton;
@@ -80,11 +80,11 @@ public class LinkTab extends SettingsTab {
 	}
 
 	public void addLink(String locationConfig, String providerConfig) throws InterruptedException {
-		linkplusButton.click();
+		linkPlusButton.click();
 		log("Clicked on link plus button");
-		clickdropType.click();
+		clickDropType.click();
 		log("Clicked on type  button");
-		Select type = new Select(typeselect);
+		Select type = new Select(typeSelect);
 		type.selectByVisibleText("LOGINLESS");
 		locationselect.click();
 		log("LocationTypeList " + checklistLocation.size());
@@ -95,7 +95,7 @@ public class LinkTab extends SettingsTab {
 			}
 		}
 		Thread.sleep(3000);
-		resourceselect.click();
+		resourceSelect.click();
 		log("ProviderTypeList " + checklistLocation.size());
 		for (int i = 0; i < checklistLocation.size(); i++) {
 			if (checklistLocation.get(i).getText().contains(providerConfig)) {
@@ -123,14 +123,14 @@ public class LinkTab extends SettingsTab {
 	}
 
 	public void addLinkForProvider(String providerConfig) throws InterruptedException {
-		linkplusButton.click();
+		linkPlusButton.click();
 		log("Clicked on link plus button");
-		clickdropType.click();
+		clickDropType.click();
 		log("Clicked on type  button");
-		Select type = new Select(typeselect);
+		Select type = new Select(typeSelect);
 		type.selectByVisibleText("LOGINLESS");
-		resourceselect.click();
-		log("Resource Type List " + checklistLocation.size());
+		resourceSelect.click();
+		log("Resource Type List size " + checklistLocation.size());
 		for (int i = 0; i < checklistLocation.size(); i++) {
 			if (checklistLocation.get(i).getText().contains(providerConfig)) {
 				checklistLocation.get(i).click();
