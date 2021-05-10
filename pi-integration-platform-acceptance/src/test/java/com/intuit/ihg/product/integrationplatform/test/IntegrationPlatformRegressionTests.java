@@ -3273,8 +3273,7 @@ public class IntegrationPlatformRegressionTests extends BaseTestNGWebDriver {
 		Thread.sleep(6000);
 
 		log("Step 6: Selecting the date range for the health Data Request");
-
-		MedicalRecordSummariesPageObject.filterCCDs(
+		MedicalRecordSummariesPageObject.onDemandFilterCCDs(
 				MedicalRecordSummariesPageObject.get3MonthsOldDateinYYYY_MM_DDFormat(),
 				MedicalRecordSummariesPageObject.getTodaysDateinYYYY_MM_DDFormat());
 		log(MedicalRecordSummariesPageObject.get3MonthsOldDateinYYYY_MM_DDFormat());
