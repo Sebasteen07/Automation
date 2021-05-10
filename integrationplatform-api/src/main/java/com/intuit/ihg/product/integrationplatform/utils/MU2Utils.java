@@ -75,16 +75,15 @@ public class MU2Utils {
 		
 		JalapenoLoginPage loginPage = new JalapenoLoginPage(driver, testData.PORTAL_URL);
 		JalapenoHomePage homePage = loginPage.login(testData.PORTAL_USERNAME, testData.PORTAL_PASSWORD);
-		
-		Thread.sleep(10000);
-		
+				
 		Log4jUtil.log("Detecting if Home Page is opened");
 		assertTrue(homePage.isHomeButtonPresent(driver));
 		
 		Log4jUtil.log("MU2GetEvent Step 2: Go to Health Record Summaries");
 		MedicalRecordSummariesPage MedicalRecordSummariesPageObject = homePage.clickOnMedicalRecordSummaries(driver);
 		assertTrue(MedicalRecordSummariesPageObject.areBasicPageElementsPresent(), "Failed to Load Health Record Summaries ");
-		
+		Thread.sleep(5000);
+
 		MedicalRecordSummariesPageObject.setFilterToDefaultPositionAndCheckElementsNew();
 		
 		Log4jUtil.log("MU2GetEvent Step 3: Select first and second CCD from the list");

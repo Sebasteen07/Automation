@@ -283,10 +283,16 @@ public class MedicalRecordSummariesPage extends JalapenoMenu {
 	}
 
 	public void filterCCDs(String fromDate, String toDate) {
-		updateWebElement(this.requestHealthRecordFromDate, fromDate);
-		updateWebElement(this.requestHealthRecordToDate, toDate);
+		updateWebElement(this.fromDate, fromDate);
+		updateWebElement(this.toDate, toDate);
 	}
-
+	
+	public void onDemandFilterCCDs(String fromDate, String toDate) {
+		updateWebElement(requestHealthRecordFromDate, fromDate);
+		updateWebElement(requestHealthRecordToDate, toDate);
+		requestHealthRecordToDate.sendKeys(Keys.TAB);
+	}
+	
 	private void filterCCDs(Instant from, Instant to) {
 		String fromString = MFDateUtil.getShortUSDateLocal(from);
 		String toString = MFDateUtil.getShortUSDateLocal(to);
@@ -295,6 +301,7 @@ public class MedicalRecordSummariesPage extends JalapenoMenu {
 		log("Instant FROM ISO:" + to.toString() + " parsed to:" + toString.toString());
 
 		updateWebElement(this.fromDate, fromString);
+		log("From Date is updated to Past Date");
 		fromDate.sendKeys(Keys.ENTER);
 		try {
 			Thread.sleep(1000);
@@ -303,6 +310,7 @@ public class MedicalRecordSummariesPage extends JalapenoMenu {
 			e.printStackTrace();
 		}
 		updateWebElement(this.toDate, toString);
+		log("To Date is updated to Current Date");
 		toDate.sendKeys(Keys.ENTER);
 		try {
 			Thread.sleep(2000);
@@ -310,7 +318,6 @@ public class MedicalRecordSummariesPage extends JalapenoMenu {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
-		toDate.sendKeys(Keys.TAB);
 
 	}
 

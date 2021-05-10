@@ -118,11 +118,11 @@ public class FormsExportUtils {
 			patientDemographicPage.fillInPatientData(firstName,lastName,email,testData.patientDOBMonthtext_FE,testData.patientDOBDay1_FE,testData.patientDOBYear_FE,Patient.GenderExtended.FEMALE,Zipcode ,testData.patientAddress1_FE, testData.patientAddress2_FE, testData.patientCity_FE, testData.patientState_FE);
 			SecurityDetailsPage accountDetailsPage = patientDemographicPage.continueToSecurityPage();
 			JalapenoHomePage jalapenoHomePage = accountDetailsPage.fillAccountDetailsAndContinue(username,testData.patientPassword1_FE,testData.patientSecretQuestion_FE,testData.patientSecretAnswer_FE,testData.patientHomePhoneNo_FE,3);
-			Thread.sleep(10000);
+			Thread.sleep(5000);
 			JalapenoMenu jalapenoMenuPage=new JalapenoHomePage (driver);
 
 			Log4jUtil.log("Step 3: Logout");
-			Thread.sleep(12000);
+			Thread.sleep(5000);
 			jalapenoMenuPage.clickOnLogout();
 
 			if(i==1)
@@ -162,7 +162,7 @@ public class FormsExportUtils {
             Log4jUtil.log("Step 12: Click on Registration button ");
 			HealthFormListPage healthListpage= new HealthFormListPage(driver);
 			
-			Thread.sleep(9000);
+			Thread.sleep(5000);
 			Log4jUtil.log("Step 13 : Navigate to HealthForms");
 			healthListpage.clickOnHealthFormsRegistrationLink();
 		
@@ -208,8 +208,8 @@ public class FormsExportUtils {
 			}
 		
 			Log4jUtil.log("Step 28: Wait 120 seconds, so the message can be processed");
-			Thread.sleep(60000);
-			
+			//Thread.sleep(60000);
+			Thread.sleep(20000);
 			Log4jUtil.log("Step 29: Setup Oauth client");
 			RestUtils.oauthSetup(testData.oAuthKeyStore1_FE, testData.oAuthProperty1_FE, testData.oAuthAppTokenCCD1_FE, testData.oAuthUsernameCCD1_FE, testData.oAuthPasswordCCD1_FE);
 
@@ -249,7 +249,7 @@ public class FormsExportUtils {
 
 			}
 			
-			Thread.sleep(5000);
+			Thread.sleep(3000);
 			String GetPatientPDfURL= "";
 			if(i==2) {
 				Log4jUtil.log("Step 31 :Verify Patients CCD Data in ResponseXML");
@@ -280,7 +280,7 @@ public class FormsExportUtils {
 				
 			if(i==2 && testType==1) {
 				getURL = testData.ccd_url1_FE + "Batch";
-				Thread.sleep(10000);
+				Thread.sleep(6000);
 				Log4jUtil.log("Step 34: Verify 204 response when no new forms is present");
 				long timeStamp204 = System.currentTimeMillis();
 				Long sinceTime = timeStamp204 / 1000;
@@ -291,11 +291,12 @@ public class FormsExportUtils {
 				RestUtils.setupHttpGetRequestExceptOauth(ccdExchangeBatchURL, testData.responsePath_CCD1_FE);
 			}
 
-			Thread.sleep(6000);
+			Thread.sleep(4000);
 			Log4jUtil.log("Step 34: Logout from patient portal");
 			driver.switchTo().defaultContent();
 			jalapenoMenuPage.clickOnMenuHome();
 			jalapenoMenuPage.clickOnLogout();
+			driver.navigate().refresh();
 			
 		}
 		
@@ -335,13 +336,13 @@ public class FormsExportUtils {
 
 		Log4jUtil.log("Step 18: Set Providers Details");
 		FormOtherProvidersPage pFormOtherProvidersPage=PageFactory.initElements(driver, FormOtherProvidersPage.class);
-		Thread.sleep(6000);
+		Thread.sleep(2000);
 		pFormOtherProvidersPage.setProvidername(testData.NameofDoctorSpeciality);
 		Save.click();
 
 		Log4jUtil.log("Step 19:Fill in CurrentSymptomspage Info ");
 		FormCurrentSymptomsPage pFormCurrentSymptomsPage=PageFactory.initElements(driver, FormCurrentSymptomsPage.class);
-		Thread.sleep(5000);
+		Thread.sleep(2000);
 		pFormCurrentSymptomsPage.setBasicSymptoms();
 		Thread.sleep(3000);
 		Save.click();
