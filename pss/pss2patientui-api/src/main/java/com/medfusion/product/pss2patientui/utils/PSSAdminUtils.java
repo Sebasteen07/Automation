@@ -837,17 +837,4 @@ public class PSSAdminUtils extends BaseTestNGWebDriver{
 		patientFlow.logout();
 	}
 	
-	public void linkGenerationWithLocation(WebDriver driver, AdminUser adminUser, Appointment testData, String urlToUse) throws Exception {
-		PSS2PracticeConfiguration pssPracticeConfig = loginToAdminPortal(driver, adminUser);
-		PatientFlow patientFlow =pssPracticeConfig.gotoPatientFlowTab();
-		adminUser.setRule(patientFlow.getRule());
-		Log4jUtil.log("rule= " + patientFlow.getRule());
-		setRulesNoSpecialitySet1(patientFlow);
-		LinkTab linkTab = pssPracticeConfig.linksTab();
-		linkTab.addLinkForLocation(testData.getLinkLocation());
-		testData.setLinkProviderURL(testData.getLinkLocation());
-	    patientFlow = pssPracticeConfig.gotoPatientFlowTab();
-		patientFlow.logout();
-	}
-
 }
