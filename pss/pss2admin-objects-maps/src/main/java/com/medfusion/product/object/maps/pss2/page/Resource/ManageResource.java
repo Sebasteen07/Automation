@@ -301,7 +301,6 @@ public class ManageResource extends PSS2MenuPage {
 	}
 
 	public boolean acceptforStatus() {
-
 		boolean bool = acceptToggle.isSelected();
 		log("Status of Accept for the Same Day -" + bool);
 		return bool;
@@ -441,6 +440,5 @@ public class ManageResource extends PSS2MenuPage {
 		appointmenttypeSave.click();
 
 	}
-	
-	
+
 }

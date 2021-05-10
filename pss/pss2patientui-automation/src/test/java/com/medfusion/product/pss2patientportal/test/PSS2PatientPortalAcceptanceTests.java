@@ -5493,189 +5493,6 @@ public class PSS2PatientPortalAcceptanceTests extends BaseTestNGWebDriver {
 
 	}
 	
-	@Test(enabled = true, groups = {"AcceptanceTests"}, retryAnalyzer = RetryAnalyzer.class)
-	public void testE2ELinkGenWithProviGW() throws Exception {
-		log("provider link is created with the newly/existing associated provider without associating any location For GW");
-		PSSPropertyFileLoader propertyData = new PSSPropertyFileLoader();
-		Appointment testData = new Appointment();
-		AdminUser adminUser = new AdminUser();
-		PSSNewPatient pssNewPatient = new PSSNewPatient();
-		propertyData.setAdminGW(adminUser);
-		propertyData.setAppointmentResponseGW(testData);
-		pssNewPatient.createPatientDetails(testData);
-		PSSAdminUtils adminUtils = new PSSAdminUtils();
-		logStep("Login To admin portal and Generate link for Provider");
-		adminUtils.linkGenerationWithProvider(driver, adminUser, testData, PSSConstants.LOGINLESS);
-		logStep("Move to PSS patient Portal 2.0 to book an Appointment");
-		log("link is   " + testData.getLinkProviderURL());
-		DismissPage dismissPage = new DismissPage(driver, testData.getLinkProviderURL());
-		Thread.sleep(1000);
-		LoginlessPatientInformation loginlessPatientInformation = dismissPage.clickDismiss();
-		Thread.sleep(3000);
-		Boolean insuranceSelected = adminUser.getIsInsuranceDisplayed();
-		log("insuranceSelected--> " + insuranceSelected);
-		HomePage homePage;
-		insuranceSelected = false;
-		log("insuranceSelected--> " + insuranceSelected);
-		if (insuranceSelected) {
-			log("insuranceSelected--> ON");
-			NewPatientInsuranceInfo newPatientInsuranceInfo = loginlessPatientInformation.fillPatientForm(testData.getFirstName(), testData.getLastName(),
-					testData.getDob(), testData.getEmail(), testData.getGender(), testData.getZipCode(), testData.getPrimaryNumber());
-			homePage = newPatientInsuranceInfo.fillNewPatientInsuranceInfo(PSSConstants.INSURANCE_CARRIER, PSSConstants.INSURANCE_MEMBERID,
-					PSSConstants.INSURANCE_GROUPID, PSSConstants.INSURANCE_PRIMARYPHONE);
-		} else {
-			log("insuranceSelected--> OFF");
-			homePage = loginlessPatientInformation.fillNewPatientForm(testData.getFirstName(), testData.getLastName(), testData.getDob(), testData.getEmail(),
-					testData.getGender(), testData.getZipCode(), testData.getPrimaryNumber());
-		}
-		homePage.btnStartSchedClick();
-		StartAppointmentInOrder startAppointmentInOrder = null;
-		startAppointmentInOrder = homePage.skipInsurance(driver);
-		startAppointmentInOrder.selectFirstLocation(PSSConstants.START_LOCATION);
-		log("Verfiy Location Page and location =" + testData.getLocation());
-		String popUp=startAppointmentInOrder.locationPopUp();
-		log("Location popup messege is  "+popUp);
-		log("Expected messege is    "+testData.getPopUpMessege());
-		assertEquals(testData.getPopUpMessege(),popUp);
-}
-	@Test(enabled = true, groups = {"AcceptanceTests"}, retryAnalyzer = RetryAnalyzer.class)
-	public void testE2ELinkGenWithProviGE() throws Exception {
-		log("provider link is created with the newly/existing associated provider without associating any location For GE");
-		PSSPropertyFileLoader propertyData = new PSSPropertyFileLoader();
-		Appointment testData = new Appointment();
-		AdminUser adminUser = new AdminUser();
-		PSSNewPatient pssNewPatient = new PSSNewPatient();
-		propertyData.setAdminGE(adminUser);
-		propertyData.setAppointmentResponseGE(testData);
-		pssNewPatient.createPatientDetails(testData);
-		PSSAdminUtils adminUtils = new PSSAdminUtils();
-		logStep("Login To admin portal and Generate link for Provider");
-		adminUtils.linkGenerationWithProvider(driver, adminUser, testData, PSSConstants.LOGINLESS);
-		logStep("Move to PSS patient Portal 2.0 to book an Appointment");
-		log("link is   " + testData.getLinkProviderURL());
-		DismissPage dismissPage = new DismissPage(driver, testData.getLinkProviderURL());
-		Thread.sleep(1000);
-		LoginlessPatientInformation loginlessPatientInformation = dismissPage.clickDismiss();
-		Thread.sleep(3000);
-		Boolean insuranceSelected = adminUser.getIsInsuranceDisplayed();
-		log("insuranceSelected--> " + insuranceSelected);
-		HomePage homePage;
-		insuranceSelected = false;
-		log("insuranceSelected--> " + insuranceSelected);
-		if (insuranceSelected) {
-			log("insuranceSelected--> ON");
-			NewPatientInsuranceInfo newPatientInsuranceInfo = loginlessPatientInformation.fillPatientForm(testData.getFirstName(), testData.getLastName(),
-					testData.getDob(), testData.getEmail(), testData.getGender(), testData.getZipCode(), testData.getPrimaryNumber());
-			homePage = newPatientInsuranceInfo.fillNewPatientInsuranceInfo(PSSConstants.INSURANCE_CARRIER, PSSConstants.INSURANCE_MEMBERID,
-					PSSConstants.INSURANCE_GROUPID, PSSConstants.INSURANCE_PRIMARYPHONE);
-		} else {
-			log("insuranceSelected--> OFF");
-			homePage = loginlessPatientInformation.fillNewPatientForm(testData.getFirstName(), testData.getLastName(), testData.getDob(), testData.getEmail(),
-					testData.getGender(), testData.getZipCode(), testData.getPrimaryNumber());
-		}
-		homePage.btnStartSchedClick();
-		StartAppointmentInOrder startAppointmentInOrder = null;
-		startAppointmentInOrder = homePage.skipInsurance(driver);
-		startAppointmentInOrder.selectFirstLocation(PSSConstants.START_LOCATION);
-		log("Verfiy Location Page and location =" + testData.getLocation());
-		String popUp=startAppointmentInOrder.locationPopUp();
-		log("Location popup messege is  "+popUp);
-		log("Expected messege is    "+testData.getPopUpMessege());
-		assertEquals(testData.getPopUpMessege(),popUp);
-}
-	@Test(enabled = true, groups = {"AcceptanceTests"}, retryAnalyzer = RetryAnalyzer.class)
-	public void testE2ELinkGenWithProviNG() throws Exception {
-		log("provider link is created with the newly/existing associated provider without associating any location For NG");
-		PSSPropertyFileLoader propertyData = new PSSPropertyFileLoader();
-		Appointment testData = new Appointment();
-		AdminUser adminUser = new AdminUser();
-		PSSNewPatient pssNewPatient = new PSSNewPatient();
-		propertyData.setAdminNG(adminUser);
-		propertyData.setAppointmentResponseNG(testData);
-		pssNewPatient.createPatientDetails(testData);
-		PSSAdminUtils adminUtils = new PSSAdminUtils();
-		logStep("Login To admin portal and Generate link for Provider");
-		adminUtils.linkGenerationWithProvider(driver, adminUser, testData, PSSConstants.LOGINLESS);
-		logStep("Move to PSS patient Portal 2.0 to book an Appointment");
-		log("link is   " + testData.getLinkProviderURL());
-		DismissPage dismissPage = new DismissPage(driver, testData.getLinkProviderURL());
-		Thread.sleep(1000);
-		LoginlessPatientInformation loginlessPatientInformation = dismissPage.clickDismiss();
-		Thread.sleep(3000);
-		Boolean insuranceSelected = adminUser.getIsInsuranceDisplayed();
-		log("insuranceSelected--> " + insuranceSelected);
-		HomePage homePage;
-		insuranceSelected = false;
-		log("insuranceSelected--> " + insuranceSelected);
-		if (insuranceSelected) {
-			log("insuranceSelected--> ON");
-			NewPatientInsuranceInfo newPatientInsuranceInfo = loginlessPatientInformation.fillPatientForm(testData.getFirstName(), testData.getLastName(),
-					testData.getDob(), testData.getEmail(), testData.getGender(), testData.getZipCode(), testData.getPrimaryNumber());
-			homePage = newPatientInsuranceInfo.fillNewPatientInsuranceInfo(PSSConstants.INSURANCE_CARRIER, PSSConstants.INSURANCE_MEMBERID,
-					PSSConstants.INSURANCE_GROUPID, PSSConstants.INSURANCE_PRIMARYPHONE);
-		} else {
-			log("insuranceSelected--> OFF");
-			homePage = loginlessPatientInformation.fillNewPatientForm(testData.getFirstName(), testData.getLastName(), testData.getDob(), testData.getEmail(),
-					testData.getGender(), testData.getZipCode(), testData.getPrimaryNumber());
-		}
-		homePage.btnStartSchedClick();
-		StartAppointmentInOrder startAppointmentInOrder = null;
-		startAppointmentInOrder = homePage.skipInsurance(driver);
-		startAppointmentInOrder.selectFirstLocation(PSSConstants.START_LOCATION);
-		log("Verfiy Location Page and location =" + testData.getLocation());
-		String popUp=startAppointmentInOrder.locationPopUp();
-		log("Location popup messege is  "+popUp);
-		log("Expected messege is    "+testData.getPopUpMessege());
-		assertEquals(testData.getPopUpMessege(),popUp);
-}
-	
-	@Test(enabled = true, groups = {"AcceptanceTests"}, retryAnalyzer = RetryAnalyzer.class)
-	public void testE2ELinkGenWithProviAT() throws Exception {
-		log("provider link is created with the newly/existing associated provider without associating any location For AT");
-		PSSPropertyFileLoader propertyData = new PSSPropertyFileLoader();
-		Appointment testData = new Appointment();
-		AdminUser adminUser = new AdminUser();
-		PSSNewPatient pssNewPatient = new PSSNewPatient();
-		propertyData.setAdminAT(adminUser);
-		propertyData.setAppointmentResponseAT(testData);
-		pssNewPatient.createPatientDetails(testData);
-		PSSAdminUtils adminUtils = new PSSAdminUtils();
-		logStep("Login To admin portal and Generate link for Provider");
-		adminUtils.linkGenerationWithProvider(driver, adminUser, testData, PSSConstants.LOGINLESS);
-		logStep("Move to PSS patient Portal 2.0 to book an Appointment");
-		log("link is   " + testData.getLinkProviderURL());
-		DismissPage dismissPage = new DismissPage(driver, testData.getLinkProviderURL());
-		Thread.sleep(1000);
-		LoginlessPatientInformation loginlessPatientInformation = dismissPage.clickDismiss();
-		Thread.sleep(3000);
-		Boolean insuranceSelected = adminUser.getIsInsuranceDisplayed();
-		log("insuranceSelected--> " + insuranceSelected);
-		HomePage homePage;
-		insuranceSelected = false;
-		log("insuranceSelected--> " + insuranceSelected);
-		if (insuranceSelected) {
-			log("insuranceSelected--> ON");
-			NewPatientInsuranceInfo newPatientInsuranceInfo = loginlessPatientInformation.fillPatientForm(testData.getFirstName(), testData.getLastName(),
-					testData.getDob(), testData.getEmail(), testData.getGender(), testData.getZipCode(), testData.getPrimaryNumber());
-			homePage = newPatientInsuranceInfo.fillNewPatientInsuranceInfo(PSSConstants.INSURANCE_CARRIER, PSSConstants.INSURANCE_MEMBERID,
-					PSSConstants.INSURANCE_GROUPID, PSSConstants.INSURANCE_PRIMARYPHONE);
-		} else {
-			log("insuranceSelected--> OFF");
-			homePage = loginlessPatientInformation.fillNewPatientForm(testData.getFirstName(), testData.getLastName(), testData.getDob(), testData.getEmail(),
-					testData.getGender(), testData.getZipCode(), testData.getPrimaryNumber());
-		}
-		homePage.btnStartSchedClick();
-		StartAppointmentInOrder startAppointmentInOrder = null;
-		startAppointmentInOrder = homePage.skipInsurance(driver);
-		startAppointmentInOrder.selectFirstLocation(PSSConstants.START_LOCATION);
-		log("Verfiy Location Page and location =" + testData.getLocation());
-		String popUp=startAppointmentInOrder.locationPopUp();
-		log("Location popup messege is  "+popUp);
-		log("Expected messege is    "+testData.getPopUpMessege());
-		assertEquals(testData.getPopUpMessege(),popUp);
-}
-	
-	
 	public void testLoginlessWithInsuranceAT() throws Exception {
 
 		PSSPropertyFileLoader propertyData = new PSSPropertyFileLoader();
@@ -5858,8 +5675,200 @@ public class PSS2PatientPortalAcceptanceTests extends BaseTestNGWebDriver {
 		homePage.btnStartSchedClick();
 		pssPatientUtils.selectAFlow(driver, rule, homePage, testData);
 	}
-	
-	
 
+	@Test(enabled = true, groups = { "AcceptanceTests" }, retryAnalyzer = RetryAnalyzer.class)
+	public void testE2ELinkGenWithProviGW() throws Exception {
+		log("provider link is created with the newly/existing associated provider without associating any location For GW");
+		PSSPropertyFileLoader propertyData = new PSSPropertyFileLoader();
+		Appointment testData = new Appointment();
+		AdminUser adminUser = new AdminUser();
+		PSSNewPatient pssNewPatient = new PSSNewPatient();
+		propertyData.setAdminGW(adminUser);
+		propertyData.setAppointmentResponseGW(testData);
+		pssNewPatient.createPatientDetails(testData);
+		PSSAdminUtils adminUtils = new PSSAdminUtils();
+		logStep("Login To admin portal and Generate link for Provider");
+		adminUtils.linkGenerationWithProvider(driver, adminUser, testData, PSSConstants.LOGINLESS);
+		logStep("Move to PSS patient Portal 2.0 to book an Appointment");
+		log("link is   " + testData.getLinkProviderURL());
+		DismissPage dismissPage = new DismissPage(driver, testData.getLinkProviderURL());
+		Thread.sleep(1000);
+		LoginlessPatientInformation loginlessPatientInformation = dismissPage.clickDismiss();
+		Thread.sleep(3000);
+		Boolean insuranceSelected = adminUser.getIsInsuranceDisplayed();
+		log("insuranceSelected--> " + insuranceSelected);
+		HomePage homePage;
+		insuranceSelected = false;
+		log("insuranceSelected--> " + insuranceSelected);
+		if (insuranceSelected) {
+			log("insuranceSelected--> ON");
+			NewPatientInsuranceInfo newPatientInsuranceInfo = loginlessPatientInformation.fillPatientForm(
+					testData.getFirstName(), testData.getLastName(), testData.getDob(), testData.getEmail(),
+					testData.getGender(), testData.getZipCode(), testData.getPrimaryNumber());
+			homePage = newPatientInsuranceInfo.fillNewPatientInsuranceInfo(PSSConstants.INSURANCE_CARRIER,
+					PSSConstants.INSURANCE_MEMBERID, PSSConstants.INSURANCE_GROUPID,
+					PSSConstants.INSURANCE_PRIMARYPHONE);
+		} else {
+			log("insuranceSelected--> OFF");
+			homePage = loginlessPatientInformation.fillNewPatientForm(testData.getFirstName(), testData.getLastName(),
+					testData.getDob(), testData.getEmail(), testData.getGender(), testData.getZipCode(),
+					testData.getPrimaryNumber());
+		}
+		homePage.btnStartSchedClick();
+		StartAppointmentInOrder startAppointmentInOrder = null;
+		startAppointmentInOrder = homePage.skipInsurance(driver);
+		startAppointmentInOrder.selectFirstLocation(PSSConstants.START_LOCATION);
+		log("Verfiy Location Page and location =" + testData.getLocation());
+		String popUp = startAppointmentInOrder.locationPopUp();
+		log("Location popup message is  " + popUp);
+		log("Expected message is    " + testData.getPopUpMessege());
+		assertEquals(testData.getPopUpMessege(), popUp);
+	}
+
+	@Test(enabled = true, groups = { "AcceptanceTests" }, retryAnalyzer = RetryAnalyzer.class)
+	public void testE2ELinkGenWithProviGE() throws Exception {
+		log("provider link is created with the newly/existing associated provider without associating any location For GE");
+		PSSPropertyFileLoader propertyData = new PSSPropertyFileLoader();
+		Appointment testData = new Appointment();
+		AdminUser adminUser = new AdminUser();
+		PSSNewPatient pssNewPatient = new PSSNewPatient();
+		propertyData.setAdminGE(adminUser);
+		propertyData.setAppointmentResponseGE(testData);
+		pssNewPatient.createPatientDetails(testData);
+		PSSAdminUtils adminUtils = new PSSAdminUtils();
+		logStep("Login To admin portal and Generate link for Provider");
+		adminUtils.linkGenerationWithProvider(driver, adminUser, testData, PSSConstants.LOGINLESS);
+		logStep("Move to PSS patient Portal 2.0 to book an Appointment");
+		log("link is   " + testData.getLinkProviderURL());
+		DismissPage dismissPage = new DismissPage(driver, testData.getLinkProviderURL());
+		Thread.sleep(1000);
+		LoginlessPatientInformation loginlessPatientInformation = dismissPage.clickDismiss();
+		Thread.sleep(3000);
+		Boolean insuranceSelected = adminUser.getIsInsuranceDisplayed();
+		log("insuranceSelected--> " + insuranceSelected);
+		HomePage homePage;
+		insuranceSelected = false;
+		log("insuranceSelected--> " + insuranceSelected);
+		if (insuranceSelected) {
+			log("insuranceSelected--> ON");
+			NewPatientInsuranceInfo newPatientInsuranceInfo = loginlessPatientInformation.fillPatientForm(
+					testData.getFirstName(), testData.getLastName(), testData.getDob(), testData.getEmail(),
+					testData.getGender(), testData.getZipCode(), testData.getPrimaryNumber());
+			homePage = newPatientInsuranceInfo.fillNewPatientInsuranceInfo(PSSConstants.INSURANCE_CARRIER,
+					PSSConstants.INSURANCE_MEMBERID, PSSConstants.INSURANCE_GROUPID,
+					PSSConstants.INSURANCE_PRIMARYPHONE);
+		} else {
+			log("insuranceSelected--> OFF");
+			homePage = loginlessPatientInformation.fillNewPatientForm(testData.getFirstName(), testData.getLastName(),
+					testData.getDob(), testData.getEmail(), testData.getGender(), testData.getZipCode(),
+					testData.getPrimaryNumber());
+		}
+		homePage.btnStartSchedClick();
+		StartAppointmentInOrder startAppointmentInOrder = null;
+		startAppointmentInOrder = homePage.skipInsurance(driver);
+		startAppointmentInOrder.selectFirstLocation(PSSConstants.START_LOCATION);
+		log("Verfiy Location Page and location =" + testData.getLocation());
+		String popUp = startAppointmentInOrder.locationPopUp();
+		log("Location popup message is  " + popUp);
+		log("Expected message is    " + testData.getPopUpMessege());
+		assertEquals(testData.getPopUpMessege(), popUp);
+	}
+
+	@Test(enabled = true, groups = { "AcceptanceTests" }, retryAnalyzer = RetryAnalyzer.class)
+	public void testE2ELinkGenWithProviNG() throws Exception {
+		log("provider link is created with the newly/existing associated provider without associating any location For NG");
+		PSSPropertyFileLoader propertyData = new PSSPropertyFileLoader();
+		Appointment testData = new Appointment();
+		AdminUser adminUser = new AdminUser();
+		PSSNewPatient pssNewPatient = new PSSNewPatient();
+		propertyData.setAdminNG(adminUser);
+		propertyData.setAppointmentResponseNG(testData);
+		pssNewPatient.createPatientDetails(testData);
+		PSSAdminUtils adminUtils = new PSSAdminUtils();
+		logStep("Login To admin portal and Generate link for Provider");
+		adminUtils.linkGenerationWithProvider(driver, adminUser, testData, PSSConstants.LOGINLESS);
+		logStep("Move to PSS patient Portal 2.0 to book an Appointment");
+		log("link is   " + testData.getLinkProviderURL());
+		DismissPage dismissPage = new DismissPage(driver, testData.getLinkProviderURL());
+		Thread.sleep(1000);
+		LoginlessPatientInformation loginlessPatientInformation = dismissPage.clickDismiss();
+		Thread.sleep(3000);
+		Boolean insuranceSelected = adminUser.getIsInsuranceDisplayed();
+		log("insuranceSelected--> " + insuranceSelected);
+		HomePage homePage;
+		insuranceSelected = false;
+		log("insuranceSelected--> " + insuranceSelected);
+		if (insuranceSelected) {
+			log("insuranceSelected--> ON");
+			NewPatientInsuranceInfo newPatientInsuranceInfo = loginlessPatientInformation.fillPatientForm(
+					testData.getFirstName(), testData.getLastName(), testData.getDob(), testData.getEmail(),
+					testData.getGender(), testData.getZipCode(), testData.getPrimaryNumber());
+			homePage = newPatientInsuranceInfo.fillNewPatientInsuranceInfo(PSSConstants.INSURANCE_CARRIER,
+					PSSConstants.INSURANCE_MEMBERID, PSSConstants.INSURANCE_GROUPID,
+					PSSConstants.INSURANCE_PRIMARYPHONE);
+		} else {
+			log("insuranceSelected--> OFF");
+			homePage = loginlessPatientInformation.fillNewPatientForm(testData.getFirstName(), testData.getLastName(),
+					testData.getDob(), testData.getEmail(), testData.getGender(), testData.getZipCode(),
+					testData.getPrimaryNumber());
+		}
+		homePage.btnStartSchedClick();
+		StartAppointmentInOrder startAppointmentInOrder = null;
+		startAppointmentInOrder = homePage.skipInsurance(driver);
+		startAppointmentInOrder.selectFirstLocation(PSSConstants.START_LOCATION);
+		log("Verfiy Location Page and location =" + testData.getLocation());
+		String popUp = startAppointmentInOrder.locationPopUp();
+		log("Location popup message is  " + popUp);
+		log("Expected message is    " + testData.getPopUpMessege());
+		assertEquals(testData.getPopUpMessege(), popUp);
+	}
+
+	@Test(enabled = true, groups = { "AcceptanceTests" }, retryAnalyzer = RetryAnalyzer.class)
+	public void testE2ELinkGenWithProviAT() throws Exception {
+		log("provider link is created with the newly/existing associated provider without associating any location For AT");
+		PSSPropertyFileLoader propertyData = new PSSPropertyFileLoader();
+		Appointment testData = new Appointment();
+		AdminUser adminUser = new AdminUser();
+		PSSNewPatient pssNewPatient = new PSSNewPatient();
+		propertyData.setAdminAT(adminUser);
+		propertyData.setAppointmentResponseAT(testData);
+		pssNewPatient.createPatientDetails(testData);
+		PSSAdminUtils adminUtils = new PSSAdminUtils();
+		logStep("Login To admin portal and Generate link for Provider");
+		adminUtils.linkGenerationWithProvider(driver, adminUser, testData, PSSConstants.LOGINLESS);
+		logStep("Move to PSS patient Portal 2.0 to book an Appointment");
+		log("link is   " + testData.getLinkProviderURL());
+		DismissPage dismissPage = new DismissPage(driver, testData.getLinkProviderURL());
+		Thread.sleep(1000);
+		LoginlessPatientInformation loginlessPatientInformation = dismissPage.clickDismiss();
+		Thread.sleep(3000);
+		Boolean insuranceSelected = adminUser.getIsInsuranceDisplayed();
+		log("insuranceSelected--> " + insuranceSelected);
+		HomePage homePage;
+		insuranceSelected = false;
+		log("insuranceSelected--> " + insuranceSelected);
+		if (insuranceSelected) {
+			log("insuranceSelected--> ON");
+			NewPatientInsuranceInfo newPatientInsuranceInfo = loginlessPatientInformation.fillPatientForm(
+					testData.getFirstName(), testData.getLastName(), testData.getDob(), testData.getEmail(),
+					testData.getGender(), testData.getZipCode(), testData.getPrimaryNumber());
+			homePage = newPatientInsuranceInfo.fillNewPatientInsuranceInfo(PSSConstants.INSURANCE_CARRIER,
+					PSSConstants.INSURANCE_MEMBERID, PSSConstants.INSURANCE_GROUPID,
+					PSSConstants.INSURANCE_PRIMARYPHONE);
+		} else {
+			log("insuranceSelected--> OFF");
+			homePage = loginlessPatientInformation.fillNewPatientForm(testData.getFirstName(), testData.getLastName(),
+					testData.getDob(), testData.getEmail(), testData.getGender(), testData.getZipCode(),
+					testData.getPrimaryNumber());
+		}
+		homePage.btnStartSchedClick();
+		StartAppointmentInOrder startAppointmentInOrder = null;
+		startAppointmentInOrder = homePage.skipInsurance(driver);
+		startAppointmentInOrder.selectFirstLocation(PSSConstants.START_LOCATION);
+		log("Verfiy Location Page and location =" + testData.getLocation());
+		String popUp = startAppointmentInOrder.locationPopUp();
+		log("Location popup message is  " + popUp);
+		log("Expected message is    " + testData.getPopUpMessege());
+		assertEquals(testData.getPopUpMessege(), popUp);
+	}
 }
-
