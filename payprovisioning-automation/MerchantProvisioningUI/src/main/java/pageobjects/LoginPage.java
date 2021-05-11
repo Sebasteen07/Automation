@@ -21,7 +21,7 @@ public class LoginPage extends BasePageObject {
 	public WebElement passWord;
 
 	@FindBy(how = How.ID, using = "loginButton")
-	public WebElement loginbtn;
+	public WebElement loginButton;
 
 	@FindBy(how = How.XPATH, using = "//h1[contains(text(),'Welcome')]")
 	public WebElement welcomeText;
@@ -47,7 +47,7 @@ public class LoginPage extends BasePageObject {
 		ArrayList<WebElement> webElementsList = new ArrayList<WebElement>();
 		webElementsList.add(userName);
 		webElementsList.add(passWord);
-		webElementsList.add(loginbtn);
+		webElementsList.add(loginButton);
 		webElementsList.add(welcomeText);
 		webElementsList.add(homePageText);
 		IHGUtil util = new IHGUtil(driver);
@@ -62,7 +62,7 @@ public class LoginPage extends BasePageObject {
 		passWord.clear();
 		passWord.sendKeys(password);
 
-		loginbtn.click();
+		loginButton.click();
 
 	}
 }

@@ -17,16 +17,16 @@ public class NavigationMenu {
 	public WebElement menuBarButton;
 
 	@FindBy(how = How.XPATH, using = "//body/div[2]/nav[1]/ul[1]/li[5]/a[1]")
-	public WebElement ACHbutton;
+	public WebElement achButton;
 
 	@FindBy(how = How.XPATH, using = "//body/div[2]/nav[1]/ul[1]/li[6]/a[1]")
-	public WebElement Ledgerbutton;
+	public WebElement ledgerButton;
 
 	@FindBy(how = How.XPATH, using = "//body/div[2]/nav[1]/ul[1]/li[7]/a[1]")
-	public WebElement SettlementButton;
+	public WebElement settlementButton;
 
 	@FindBy(how = How.XPATH, using = "//body/div[2]/nav[1]/ul[1]/li[8]/a[1]")
-	public WebElement Feesbutton;
+	public WebElement feesButton;
 
 	// Fill in the rest
 

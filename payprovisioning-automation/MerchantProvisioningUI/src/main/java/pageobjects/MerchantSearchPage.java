@@ -42,7 +42,7 @@ public class MerchantSearchPage extends NavigationMenu {
 	private List<WebElement> tableColumn;
 
 	@FindAll({ @FindBy(how = How.XPATH, using = "//tbody/tr") })
-	private List<WebElement> MMIDRow;
+	private List<WebElement> mmidRow;
 
 	public MerchantSearchPage(WebDriver driver) {
 		super(driver);
@@ -76,7 +76,7 @@ public class MerchantSearchPage extends NavigationMenu {
 		WebElement merchantIDRow = merchantSearchTable.findElement(By.xpath("//tbody/tr"));
 
 		List<WebElement> col = tableColumn;
-		List<WebElement> rows = MMIDRow;
+		List<WebElement> rows = mmidRow;
 
 		int noOfCol = col.size();
 		int noOfRows = rows.size();

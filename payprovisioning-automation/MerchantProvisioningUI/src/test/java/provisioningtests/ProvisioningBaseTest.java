@@ -24,7 +24,7 @@ public class ProvisioningBaseTest extends BaseTestNGWebDriver {
 
 		logStep("Login into merchant provisioning");
 		loginPage.login(testData.getProperty("user.name"), testData.getProperty("password"));
-		loginPage.loginbtn.click();
+		loginPage.loginButton.click();
 
 	}
 }
