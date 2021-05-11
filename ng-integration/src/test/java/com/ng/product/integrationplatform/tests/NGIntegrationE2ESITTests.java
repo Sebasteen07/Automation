@@ -4463,10 +4463,9 @@ public class NGIntegrationE2ESITTests extends BaseTestNGWebDriver{
 		Thread.sleep(6000);
 			
 		log("Step Begins: Selecting the date range for the health Data Request");		
-		MedicalRecordSummariesPageObject.filterCCDs(MedicalRecordSummariesPageObject.get3MonthsOldDateinYYYY_MM_DDFormat(), MedicalRecordSummariesPageObject.getTodaysDateinYYYY_MM_DDFormat());
+		MedicalRecordSummariesPageObject.onDemandFilterCCDs(MedicalRecordSummariesPageObject.get3MonthsOldDateinYYYY_MM_DDFormat(), MedicalRecordSummariesPageObject.getTodaysDateinYYYY_MM_DDFormat());
 		log(MedicalRecordSummariesPageObject.get3MonthsOldDateinYYYY_MM_DDFormat());
 		log(MedicalRecordSummariesPageObject.getTodaysDateinYYYY_MM_DDFormat());
-		MedicalRecordSummariesPageObject.clickRequestHealthRecord();
 		MedicalRecordSummariesPageObject.requestCcdOnDemandFromPopUp();
 		Thread.sleep(5000);
 		
