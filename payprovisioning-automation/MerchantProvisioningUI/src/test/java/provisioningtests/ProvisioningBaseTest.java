@@ -14,8 +14,8 @@ public class ProvisioningBaseTest extends BaseTestNGWebDriver {
 
 	@BeforeMethod
 	public void logIntoMP() throws IOException, NullPointerException, InterruptedException {
-		logStep("Execution Environment: " + IHGUtil.getEnvironmentType());
-		logStep("Execution Browser: " + TestConfig.getBrowserType());
+		log("Execution Environment: " + IHGUtil.getEnvironmentType());
+		log("Execution Browser: " + TestConfig.getBrowserType());
 		logStep("Getting Test Data");
 		testData = new PropertyFileLoader();
 
