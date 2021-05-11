@@ -836,5 +836,26 @@ public class PSSAdminUtils extends BaseTestNGWebDriver{
 		manageResource.offAllLocationToggle();
 		patientFlow.logout();
 	}
+	public void linkGenerationWithLocation(WebDriver driver, AdminUser adminUser, Appointment testData, String urlToUse) throws Exception {
+		PSS2PracticeConfiguration pssPracticeConfig = loginToAdminPortal(driver, adminUser);
+		AdminAppointment adminAppointment = pssPracticeConfig.gotoAdminAppointmentTab();
+		if (adminAppointment.toggleNextAvailableStatus() == false) {
+			adminAppointment.toggleNextavailableClick();
+		}
+		PatientFlow patientFlow = pssPracticeConfig.gotoPatientFlowTab();
+		testData.setIsinsuranceVisible(patientFlow.insuracetogglestatus());
+		log("Insurance Status= " + patientFlow.insuracetogglestatus());
+		adminUser.setRule(patientFlow.getRule());
+		Log4jUtil.log("rule= " + patientFlow.getRule());
+		setRulesNoSpecialitySet1(patientFlow);
+		LinkTab linkTab = pssPracticeConfig.linksTab();
+		linkTab.addLinkForLocation(testData.getLinkLocation());
+		testData.setLinkLocationURL(testData.getLinkLocationURL());
+		log("Location link is    " + testData.getLinkLocationURL());
+		AdminPatientMatching adminPatientMatching = patientFlow.gotoPatientMatchingTab();
+		adminPatientMatching.patientMatchingSelection();
+		adminPatientMatching.logout();
+
+	}
 	
 }

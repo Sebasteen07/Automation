@@ -5872,4 +5872,148 @@ public class PSS2PatientPortalAcceptanceTests extends BaseTestNGWebDriver {
 		log("Expected message is    " + testData.getPopUpMessege());
 		assertEquals(testData.getPopUpMessege(), popUp);
 	}
+	
+	@Test(enabled = true, groups = { "AcceptanceTests" }, retryAnalyzer = RetryAnalyzer.class)
+	public void testE2ELinkLocationGE() throws Exception {
+		log("Link Generation : Next Available is display with location or Provider GE");
+		PSSPropertyFileLoader propertyData = new PSSPropertyFileLoader();
+		Appointment testData = new Appointment();
+		AdminUser adminUser = new AdminUser();
+		PSSNewPatient pssNewPatient = new PSSNewPatient();
+		propertyData.setAdminGE(adminUser);
+		propertyData.setAppointmentResponseGE(testData);
+		pssNewPatient.createPatientDetails(testData);
+		PSSAdminUtils adminUtils = new PSSAdminUtils();
+		logStep("Login To admin portal and Generate link for Provider");
+		adminUtils.linkGenerationWithLocation(driver, adminUser, testData, PSSConstants.LOGINLESS);
+		log("Location link is " + testData.getLinkLocationURL());
+		logStep("Move to PSS patient Portal 2.0 to book an Appointment");
+		log("link is   " + testData.getLinkLocationURL());
+		DismissPage dismissPage = new DismissPage(driver, testData.getLinkLocationURL());
+		Thread.sleep(1000);
+		LoginlessPatientInformation loginlessPatientInformation = dismissPage.clickDismiss();
+		Thread.sleep(3000);
+		HomePage homePage = loginlessPatientInformation.fillNewPatientForm(testData.getFirstName(),
+				testData.getLastName(), testData.getDob(), testData.getEmail(), testData.getGender(),
+				testData.getZipCode(), testData.getPrimaryNumber());
+		homePage.btnStartSchedClick();
+		AppointmentPage appointment;
+		StartAppointmentInOrder startAppointmentInOrder = null;
+		startAppointmentInOrder = homePage.skipInsurance(driver);
+		appointment = startAppointmentInOrder.selectFirstAppointment(PSSConstants.START_APPOINTMENT);
+		log("Verfiy Appointment Page and appointment =" + testData.getAppointmenttype());
+		assertTrue(appointment.areBasicPageElementsPresent());
+		Location location = appointment.selectTypeOfLocation(testData.getAppointmenttype(),
+				Boolean.valueOf(testData.getIsAppointmentPopup()));
+		log("Verfiy Location Page and location to be selected = " + testData.getLocation());
+		assertTrue(location.areBasicPageElementsPresent());
+	}
+	
+	@Test(enabled = true, groups = { "AcceptanceTests" }, retryAnalyzer = RetryAnalyzer.class)
+	public void testE2ELinkLocationGW() throws Exception {
+		log("Link Generation : Next Available is display with location or Provider GW");
+		PSSPropertyFileLoader propertyData = new PSSPropertyFileLoader();
+		Appointment testData = new Appointment();
+		AdminUser adminUser = new AdminUser();
+		PSSNewPatient pssNewPatient = new PSSNewPatient();
+		propertyData.setAdminGW(adminUser);
+		propertyData.setAppointmentResponseGW(testData);
+		pssNewPatient.createPatientDetails(testData);
+		PSSAdminUtils adminUtils = new PSSAdminUtils();
+		logStep("Login To admin portal and Generate link for Provider");
+		adminUtils.linkGenerationWithLocation(driver, adminUser, testData, PSSConstants.LOGINLESS);
+		log("Location link is " + testData.getLinkLocationURL());
+		logStep("Move to PSS patient Portal 2.0 to book an Appointment");
+		log("link is   " + testData.getLinkLocationURL());
+		DismissPage dismissPage = new DismissPage(driver, testData.getLinkLocationURL());
+		Thread.sleep(1000);
+		LoginlessPatientInformation loginlessPatientInformation = dismissPage.clickDismiss();
+		Thread.sleep(3000);
+		HomePage homePage = loginlessPatientInformation.fillNewPatientForm(testData.getFirstName(),
+				testData.getLastName(), testData.getDob(), testData.getEmail(), testData.getGender(),
+				testData.getZipCode(), testData.getPrimaryNumber());
+		homePage.btnStartSchedClick();
+		AppointmentPage appointment;
+		StartAppointmentInOrder startAppointmentInOrder = null;
+		startAppointmentInOrder = homePage.skipInsurance(driver);
+		appointment = startAppointmentInOrder.selectFirstAppointment(PSSConstants.START_APPOINTMENT);
+		log("Verfiy Appointment Page and appointment =" + testData.getAppointmenttype());
+		assertTrue(appointment.areBasicPageElementsPresent());
+		Location location = appointment.selectTypeOfLocation(testData.getAppointmenttype(),
+				Boolean.valueOf(testData.getIsAppointmentPopup()));
+		log("Verfiy Location Page and location to be selected = " + testData.getLocation());
+		assertTrue(location.areBasicPageElementsPresent());
+	}
+	
+	@Test(enabled = true, groups = { "AcceptanceTests" }, retryAnalyzer = RetryAnalyzer.class)
+	public void testE2ELinkLocationAT() throws Exception {
+		log("Link Generation : Next Available is display with location or Provider AT");
+		PSSPropertyFileLoader propertyData = new PSSPropertyFileLoader();
+		Appointment testData = new Appointment();
+		AdminUser adminUser = new AdminUser();
+		PSSNewPatient pssNewPatient = new PSSNewPatient();
+		propertyData.setAdminAT(adminUser);
+		propertyData.setAppointmentResponseAT(testData);
+		pssNewPatient.createPatientDetails(testData);
+		PSSAdminUtils adminUtils = new PSSAdminUtils();
+		logStep("Login To admin portal and Generate link for Provider");
+		adminUtils.linkGenerationWithLocation(driver, adminUser, testData, PSSConstants.LOGINLESS);
+		log("Location link is " + testData.getLinkLocationURL());
+		logStep("Move to PSS patient Portal 2.0 to book an Appointment");
+		log("link is   " + testData.getLinkLocationURL());
+		DismissPage dismissPage = new DismissPage(driver, testData.getLinkLocationURL());
+		Thread.sleep(1000);
+		LoginlessPatientInformation loginlessPatientInformation = dismissPage.clickDismiss();
+		Thread.sleep(3000);
+		HomePage homePage = loginlessPatientInformation.fillNewPatientForm(testData.getFirstName(),
+				testData.getLastName(), testData.getDob(), testData.getEmail(), testData.getGender(),
+				testData.getZipCode(), testData.getPrimaryNumber());
+		homePage.btnStartSchedClick();
+		AppointmentPage appointment;
+		StartAppointmentInOrder startAppointmentInOrder = null;
+		startAppointmentInOrder = homePage.skipInsurance(driver);
+		appointment = startAppointmentInOrder.selectFirstAppointment(PSSConstants.START_APPOINTMENT);
+		log("Verfiy Appointment Page and appointment =" + testData.getAppointmenttype());
+		assertTrue(appointment.areBasicPageElementsPresent());
+		Location location = appointment.selectTypeOfLocation(testData.getAppointmenttype(),
+				Boolean.valueOf(testData.getIsAppointmentPopup()));
+		log("Verfiy Location Page and location to be selected = " + testData.getLocation());
+		assertTrue(location.areBasicPageElementsPresent());
+	}
+	
+	@Test(enabled = true, groups = { "AcceptanceTests" }, retryAnalyzer = RetryAnalyzer.class)
+	public void testE2ELinkLocationNG() throws Exception {
+		log("Link Generation : Next Available is display with location or Provider NG");
+		PSSPropertyFileLoader propertyData = new PSSPropertyFileLoader();
+		Appointment testData = new Appointment();
+		AdminUser adminUser = new AdminUser();
+		PSSNewPatient pssNewPatient = new PSSNewPatient();
+		propertyData.setAdminNG(adminUser);
+		propertyData.setAppointmentResponseNG(testData);
+		pssNewPatient.createPatientDetails(testData);
+		PSSAdminUtils adminUtils = new PSSAdminUtils();
+		logStep("Login To admin portal and Generate link for Provider");
+		adminUtils.linkGenerationWithLocation(driver, adminUser, testData, PSSConstants.LOGINLESS);
+		log("Location link is " + testData.getLinkLocationURL());
+		logStep("Move to PSS patient Portal 2.0 to book an Appointment");
+		log("link is   " + testData.getLinkLocationURL());
+		DismissPage dismissPage = new DismissPage(driver, testData.getLinkLocationURL());
+		Thread.sleep(1000);
+		LoginlessPatientInformation loginlessPatientInformation = dismissPage.clickDismiss();
+		Thread.sleep(3000);
+		HomePage homePage = loginlessPatientInformation.fillNewPatientForm(testData.getFirstName(),
+				testData.getLastName(), testData.getDob(), testData.getEmail(), testData.getGender(),
+				testData.getZipCode(), testData.getPrimaryNumber());
+		homePage.btnStartSchedClick();
+		AppointmentPage appointment;
+		StartAppointmentInOrder startAppointmentInOrder = null;
+		startAppointmentInOrder = homePage.skipInsurance(driver);
+		appointment = startAppointmentInOrder.selectFirstAppointment(PSSConstants.START_APPOINTMENT);
+		log("Verfiy Appointment Page and appointment =" + testData.getAppointmenttype());
+		assertTrue(appointment.areBasicPageElementsPresent());
+		Location location = appointment.selectTypeOfLocation(testData.getAppointmenttype(),
+				Boolean.valueOf(testData.getIsAppointmentPopup()));
+		log("Verfiy Location Page and location to be selected = " + testData.getLocation());
+		assertTrue(location.areBasicPageElementsPresent());
+	}
 }

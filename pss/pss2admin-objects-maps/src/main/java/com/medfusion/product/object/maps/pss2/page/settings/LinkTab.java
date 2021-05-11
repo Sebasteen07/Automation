@@ -41,7 +41,7 @@ public class LinkTab extends SettingsTab {
 	@FindBy(how = How.XPATH, using = "//a[contains(text(),'100')]")
 	private WebElement lastpage100;
 
-	@FindAll({ @FindBy(xpath = "//*[@class='multiselect-item-checkbox ng-star-inserted']") })
+	@FindAll({ @FindBy(xpath = "//div[@class='dropdown-list']/ul/li/div") })
 	private List<WebElement> checklistLocation;
 
 	@FindBy(how = How.XPATH, using = "//tbody/tr/td[5]/a[1]")
@@ -140,4 +140,23 @@ public class LinkTab extends SettingsTab {
 		createLinkButton.click();
 		log("Clicked on Create link Button");
 	}	
+	public void addLinkForLocation(String locationConfig) throws InterruptedException {
+		linkPlusButton.click();
+		log("Clicked on link plus button");
+		clickDropType.click();
+		log("Clicked on type  button");
+		Select type = new Select(typeSelect);
+		type.selectByVisibleText("LOGINLESS");
+		locationSelect.click();
+		log("Location Type List size " + checklistLocation.size());
+		for (int i = 0; i < checklistLocation.size(); i++) {
+			if (checklistLocation.get(i).getText().contains(locationConfig)) {
+				checklistLocation.get(i).click();
+				log("Location checkbox selected");
+			}
+		}
+		createLinkButton.click();
+		log("Clicked on Create link Button");
+	}
+
 }
