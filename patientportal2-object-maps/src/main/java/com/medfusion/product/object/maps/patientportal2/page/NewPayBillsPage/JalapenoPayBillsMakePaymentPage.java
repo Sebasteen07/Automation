@@ -168,6 +168,14 @@ public class JalapenoPayBillsMakePaymentPage extends JalapenoMenu {
 		paymentAmount.clear();
 		paymentAmount.sendKeys(amount);
 		
+		try {
+			cardNumber.sendKeys(accNumber);
+		}
+		catch(Exception e)
+		{
+			log(e.getMessage());
+		}
+		
 		log("Insert CVV code: " + creditCard.getCvvCode());
 		wait.until(ExpectedConditions.visibilityOf(confirmCVV));
 
