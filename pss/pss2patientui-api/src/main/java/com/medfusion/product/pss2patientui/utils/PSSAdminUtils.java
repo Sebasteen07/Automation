@@ -259,7 +259,6 @@ public class PSSAdminUtils extends BaseTestNGWebDriver{
 
 	public void setRulesNoSpecialitySet1(PatientFlow patientflow) throws InterruptedException {
 		patientflow.removeAllRules();
-		Thread.sleep(2000);
 		Log4jUtil.log("-----------------------------------------------------------------------------------------");
 		patientflow.addNewRulesButton();
 		patientflow.selectRuleName("AppointmentType");
