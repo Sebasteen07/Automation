@@ -3953,6 +3953,7 @@ public class PatientPortal2AcceptanceTests extends BaseTestNGWebDriver {
 	
 	@Test(enabled = true, groups = { "acceptance-linkedaccounts" }, retryAnalyzer = RetryAnalyzer.class)
 	public void testSelfTrustedRepresentative() throws Exception {
+		patient=null;
 		createPatient();
 		String email = testData.getTrustedRepEmail() + IHGUtil.createRandomNumber() + "@mailinator.com";
 
