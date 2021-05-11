@@ -259,6 +259,7 @@ public class PSSAdminUtils extends BaseTestNGWebDriver{
 
 	public void setRulesNoSpecialitySet1(PatientFlow patientflow) throws InterruptedException {
 		patientflow.removeAllRules();
+		Thread.sleep(2000);
 		Log4jUtil.log("-----------------------------------------------------------------------------------------");
 		patientflow.addNewRulesButton();
 		patientflow.selectRuleName("AppointmentType");
@@ -834,6 +835,18 @@ public class PSSAdminUtils extends BaseTestNGWebDriver{
 		manageResource.selectResource(testData.getLinkProvider());
 		manageResource.clickLocation();
 		manageResource.offAllLocationToggle();
+		patientFlow.logout();
+	}
+	public void linkGenerationWithLocation(WebDriver driver, AdminUser adminUser, Appointment testData, String urlToUse) throws Exception {
+		PSS2PracticeConfiguration pssPracticeConfig = loginToAdminPortal(driver, adminUser);
+		PatientFlow patientFlow =pssPracticeConfig.gotoPatientFlowTab();
+		adminUser.setRule(patientFlow.getRule());
+		Log4jUtil.log("rule= " + patientFlow.getRule());
+		setRulesNoSpecialitySet1(patientFlow);
+		LinkTab linkTab = pssPracticeConfig.linksTab();
+		linkTab.addLinkForLocation(testData.getLinkLocation());
+		testData.setLinkProviderURL(testData.getLinkLocation());
+	    patientFlow = pssPracticeConfig.gotoPatientFlowTab();
 		patientFlow.logout();
 	}
 	

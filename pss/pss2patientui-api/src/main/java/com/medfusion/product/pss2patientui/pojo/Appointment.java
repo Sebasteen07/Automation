@@ -154,6 +154,7 @@ public class Appointment {
 
 	private String timeMarkValue;
 	private String linkProviderURL;
+	private String linkLocationURL;
 
 	
 	private boolean insuranceDetails = false;
@@ -203,6 +204,14 @@ public class Appointment {
 		this.insuranceDetails = insuranceDetails;
 	}
 
+	public String getLinkLocationURL() {
+		return linkLocationURL;
+	}
+	
+	public void setLinkLocationURL(String linkLocationURL) {
+		this.linkLocationURL = linkLocationURL;
+	}
+	
 	public String getLinkProviderURL() {
 		return linkProviderURL;
 	}

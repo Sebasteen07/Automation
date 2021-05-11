@@ -5872,4 +5872,20 @@ public class PSS2PatientPortalAcceptanceTests extends BaseTestNGWebDriver {
 		log("Expected message is    " + testData.getPopUpMessege());
 		assertEquals(testData.getPopUpMessege(), popUp);
 	}
+	
+	@Test(enabled = true, groups = {"AcceptanceTests"}, retryAnalyzer = RetryAnalyzer.class)
+	public void testE2ELinkWithLocation() throws Exception {
+		log("provider link is created with the newly/existing associated provider without associating any location For AT");
+		PSSPropertyFileLoader propertyData = new PSSPropertyFileLoader();
+		Appointment testData = new Appointment();
+		AdminUser adminUser = new AdminUser();
+		PSSNewPatient pssNewPatient = new PSSNewPatient();
+		propertyData.setAdminGW(adminUser);
+		propertyData.setAppointmentResponseGW(testData);
+		pssNewPatient.createPatientDetails(testData);
+		PSSAdminUtils adminUtils = new PSSAdminUtils();
+		logStep("Login To admin portal and Generate link for Provider");
+		adminUtils.linkGenerationWithLocation(driver, adminUser, testData, PSSConstants.LOGINLESS);
+
+}
 }
