@@ -41,7 +41,7 @@ public class LinkTab extends SettingsTab {
 	@FindBy(how = How.XPATH, using = "//a[contains(text(),'100')]")
 	private WebElement lastpage100;
 
-	@FindAll({ @FindBy(xpath = "//*[@class='multiselect-item-checkbox ng-star-inserted']") })
+	@FindAll({ @FindBy(xpath = "//div[@class='dropdown-list']/ul/li/div") })
 	private List<WebElement> checklistLocation;
 
 	@FindBy(how = How.XPATH, using = "//tbody/tr/td[5]/a[1]")
