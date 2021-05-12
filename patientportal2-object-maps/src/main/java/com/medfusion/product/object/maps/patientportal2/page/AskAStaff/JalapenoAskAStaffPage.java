@@ -90,7 +90,7 @@ public class JalapenoAskAStaffPage extends JalapenoMenu {
 		IHGUtil.PrintMethodName();
 
 		log("Fill message and continue");
-		new WebDriverWait(driver, 20).until(ExpectedConditions.visibilityOfElementLocated(By.xpath("//*[@id='viewContent']")));
+		IHGUtil.waitForElement(driver, 10, subject);
 		subject.sendKeys("Ola! " + this.getCreatedTimeStamp());
 		question.sendKeys("Ola Doc! Please help meh.");
 		Thread.sleep(3000);
@@ -166,7 +166,7 @@ public class JalapenoAskAStaffPage extends JalapenoMenu {
 		IHGUtil.PrintMethodName();
 
 		log("Fill message and continue");
-		new WebDriverWait(driver, 20).until(ExpectedConditions.visibilityOfElementLocated(By.xpath("//*[@id='viewContent']")));
+		IHGUtil.waitForElement(driver, 10, subject);
 		subject.sendKeys("Ola! " + this.getCreatedTimeStamp());
 		question.sendKeys("Ola Doc! Please help meh.");
 		Thread.sleep(3000);
