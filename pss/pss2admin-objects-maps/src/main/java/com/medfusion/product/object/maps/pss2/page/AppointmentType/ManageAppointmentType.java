@@ -1,4 +1,4 @@
-//Copyright 2018-2020 NXGN Management, LLC. All Rights Reserved.
+//Copyright 2013-2021 NXGN Management, LLC. All Rights Reserved.
 package com.medfusion.product.object.maps.pss2.page.AppointmentType;
 
 import java.util.List;
@@ -42,11 +42,6 @@ public class ManageAppointmentType extends PSS2MenuPage {
 
 	public ManageAppointmentType(WebDriver driver) {
 		super(driver);
-	}
-
-	@Override
-	public boolean areBasicPageElementsPresent() {
-		return false;
 	}
 
 	public void searchByAptTypeName(String appointmentName) {

@@ -1,4 +1,4 @@
-// Copyright 2018-2020 NXGN Management, LLC. All Rights Reserved.
+// Copyright 2013-2021 NXGN Management, LLC. All Rights Reserved.
 package com.medfusion.product.object.maps.pss2.page.Appointment.HomePage;
 
 import java.util.List;
@@ -186,10 +186,5 @@ public class HomePageSpeciality extends PSS2MainPage {
 
 	public void waitForPageToLoad() {
 		IHGUtil.waitForElement(driver, 120, selectSpecialityList.get((selectSpecialityList.size() - 1)));
-	}
-
-	@Override
-	public boolean areBasicPageElementsPresent() {
-		return false;
 	}
 }

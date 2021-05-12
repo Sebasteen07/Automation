@@ -105,18 +105,6 @@ public class JalapenoPayBillsMakePaymentPage extends JalapenoMenu {
 		PageFactory.initElements(driver, this);
 	}
 
-	@Override
-	public boolean areBasicPageElementsPresent() {
-		ArrayList<WebElement> webElementsList = new ArrayList<WebElement>();
-
-		webElementsList.add(paymentAmount);
-		webElementsList.add(payHistoryButton);
-		webElementsList.add(addNewCardButton);
-		webElementsList.add(accountNumber);
-		webElementsList.add(continueButton);
-		return assessPageElements(webElementsList);
-	}
-
 	private void fillNewCardInformation(CreditCard card) throws InterruptedException {
 		log("Verify all elements of lightbox are visible");
 		assertTrue(areAddNewCreditCardLightboxElementsPresent());

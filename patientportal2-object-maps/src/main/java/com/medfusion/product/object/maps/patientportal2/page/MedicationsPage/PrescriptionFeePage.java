@@ -68,24 +68,6 @@ public class PrescriptionFeePage  extends JalapenoMenu {
 		super(driver);
 		IHGUtil.PrintMethodName();
 	}
-	
-	@Override
-	public boolean areBasicPageElementsPresent() {
-		ArrayList<WebElement> webElementsList = new ArrayList<WebElement>();
-
-		webElementsList.add(addNewCardBtn);
-		webElementsList.add(btnBack);
-		webElementsList.add(useThisCardBtn); 
-		
-		if(isElementVisible(cardEditBtn, 1))
-		{
-		webElementsList.add(inputCVV);
-		webElementsList.add(cardEditBtn);
-		webElementsList.add(cardRemovebtn);
-		}
-		
-		return assessPageElements(webElementsList);
-	}
 
 	public void fillRenewalFee(WebDriver driver, CreditCard card) throws InterruptedException {
 		removeAllCards();

@@ -1,4 +1,4 @@
-// Copyright 2018-2020 NXGN Management, LLC. All Rights Reserved.
+// Copyright 2013-2021 NXGN Management, LLC. All Rights Reserved.
 package com.medfusion.product.object.maps.pss2.page.Location;
 
 import java.util.List;
@@ -47,11 +47,6 @@ public class ManageLocation extends PSS2MenuPage {
 	public void showMoreLocation() {
 		IHGUtil.waitForElement(driver, 120, locationSearch);
 		javascriptClick(show50Location);
-	}
-
-	@Override
-	public boolean areBasicPageElementsPresent() {
-		return false;
 	}
 
 	public void searchlocation(String locationname) {

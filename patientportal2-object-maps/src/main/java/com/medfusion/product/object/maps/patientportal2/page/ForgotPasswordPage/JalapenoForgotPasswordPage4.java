@@ -1,6 +1,5 @@
+// Copyright 2013-2021 NXGN Management, LLC. All Rights Reserved.
 package com.medfusion.product.object.maps.patientportal2.page.ForgotPasswordPage;
-
-import java.util.ArrayList;
 
 import com.medfusion.product.object.maps.patientportal2.page.MedfusionPage;
 
@@ -45,16 +44,6 @@ public class JalapenoForgotPasswordPage4 extends MedfusionPage {
 				IHGUtil.PrintMethodName();
 				log("Loading ForgotPasswordPage4");
 		}
-
-		@Override
-		public boolean areBasicPageElementsPresent() {
-				ArrayList<WebElement> webElementsList = new ArrayList<WebElement>();
-				webElementsList.add(newPassword);
-				webElementsList.add(confirmPassword);
-				webElementsList.add(resetPasswordButton);
-				return assessPageElements(webElementsList);
-		}
-
 
 		public JalapenoHomePage fillInNewPassword(String password) {
 				newPassword.sendKeys(password);

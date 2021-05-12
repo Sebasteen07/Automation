@@ -1,4 +1,4 @@
-// Copyright 2021 NXGN Management, LLC. All Rights Reserved.
+// Copyright 2013-2021 NXGN Management, LLC. All Rights Reserved.
 package com.medfusion.product.object.maps.patientportal2.page.MedicationsPage;
 
 import static org.testng.Assert.assertFalse;
@@ -6,12 +6,10 @@ import static org.testng.Assert.assertTrue;
 import java.io.IOException;
 import java.util.ArrayList;
 
-import org.openqa.selenium.By;
 import org.openqa.selenium.JavascriptExecutor;
 import org.openqa.selenium.Keys;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
-import org.openqa.selenium.remote.server.handler.FindElement;
 import org.openqa.selenium.support.FindBy;
 import org.openqa.selenium.support.How;
 import org.openqa.selenium.support.PageFactory;
@@ -94,15 +92,6 @@ public class SelectPharmacyPage extends MedfusionPage {
 	private WebElement selectPharmacyName;
 	
 	WebDriverWait wait=new WebDriverWait(driver, 60);
-
-	@Override
-	public boolean areBasicPageElementsPresent() {
-		ArrayList<WebElement> webElementsList = new ArrayList<WebElement>();
-		webElementsList.add(btnBack);
-		webElementsList.add(btnContinue);
-		webElementsList.add(addPharmacy);
-		return assessPageElements(webElementsList);
-	}
 	
 	private boolean areBasicPopUpPageElementsPresent() {
 		ArrayList<WebElement> webElementsList = new ArrayList<WebElement>();
@@ -166,7 +155,6 @@ public class SelectPharmacyPage extends MedfusionPage {
 
 	public void addProviderSuggestedPharmacy(WebDriver driver, String enterPharmacy)
 			throws IOException, InterruptedException {
-		PropertyFileLoader testData = new PropertyFileLoader();
 		IHGUtil.PrintMethodName();
 		Thread.sleep(8000);//need to sleep because of modal disappearing time
 		JavascriptExecutor js = (JavascriptExecutor) driver;

@@ -1,3 +1,4 @@
+// Copyright 2013-2021 NXGN Management, LLC. All Rights Reserved.
 package com.medfusion.product.object.maps.pss2.page.Appointment.HomePage;
 
 import java.util.List;
@@ -16,11 +17,6 @@ public class ChoodStartingPoint extends PSS2MainPage {
 
 	public ChoodStartingPoint(WebDriver driver) {
 		super(driver);
-	}
-
-	@Override
-	public boolean areBasicPageElementsPresent() {
-		return true;
 	}
 
 	public void chooseRule(String choosePoint) {

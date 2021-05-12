@@ -99,7 +99,6 @@ public class NGPatient {
             
             if(mode.equalsIgnoreCase("complete")){
             String strAddressLine1 = propertyLoaderObj.getProperty("Address1");
-            String strAddressLine2 = propertyLoaderObj.getProperty("Address2");
             String strCity = propertyLoaderObj.getProperty("City");
             String strState = propertyLoaderObj.getProperty("State");
             
@@ -130,7 +129,7 @@ public class NGPatient {
 	
 	public static String CreateNGPatient(NewPatient argPayload) throws IOException{
 		ObjectMapper objMap = new ObjectMapper();
-		String PatientRequestbody = objMap.defaultPrettyPrintingWriter().writeValueAsString(argPayload);
+		String PatientRequestbody = objMap.writerWithDefaultPrettyPrinter().writeValueAsString(argPayload);
         System.out.println("Request Body is \n" + PatientRequestbody);
 		
         apiRoutes baseURL = apiRoutes.valueOf("BaseCAGatewayURL");
@@ -145,7 +144,6 @@ public class NGPatient {
 	public static NewPatient addDataToPatientDemographics(PropertyFileLoader propertyLoaderObj,NewPatient newpatient) throws Throwable{
         try{
             String strAddressLine1 = propertyLoaderObj.getProperty("Address1");
-            String strAddressLine2 = propertyLoaderObj.getProperty("Address2");
             String strCity = propertyLoaderObj.getProperty("City");
             String strState = propertyLoaderObj.getProperty("State");
             
