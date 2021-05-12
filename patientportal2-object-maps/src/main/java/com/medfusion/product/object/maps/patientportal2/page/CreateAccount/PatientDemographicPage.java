@@ -6,7 +6,6 @@ import static org.testng.Assert.assertTrue;
 
 import java.io.IOException;
 import java.time.Month;
-import java.util.ArrayList;
 
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
@@ -105,29 +104,6 @@ public class PatientDemographicPage extends MedfusionPage {
 
 	public PatientDemographicPage(WebDriver driver) {
 		super(driver);
-	}
-
-	@Override
-	public boolean areBasicPageElementsPresent() {
-
-		ArrayList<WebElement> webElementsList = new ArrayList<WebElement>();
-		webElementsList.add(inputPatientFirstName);
-		webElementsList.add(inputPatientLastName);
-		webElementsList.add(inputEmailAddresss);
-		webElementsList.add(inputDateOfBirthMonth);
-		webElementsList.add(inputDateOfBirthDay);
-		webElementsList.add(inputDateOfBirthYear);
-		webElementsList.add(maleGender);
-		webElementsList.add(femaleGender);
-		webElementsList.add(inputAddress1);
-		webElementsList.add(inputAddress2);
-		webElementsList.add(inputCity);
-		webElementsList.add(inputState);
-		webElementsList.add(inputZipCode);
-		webElementsList.add(buttonCancel);
-		webElementsList.add(buttonContinue);
-
-		return assessPageElements(webElementsList);
 	}
 
 	private String convertDOBMonthToText(String monthNumber) {

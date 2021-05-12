@@ -1,8 +1,6 @@
 //Copyright 2013-2021 NXGN Management, LLC. All Rights Reserved.
 package com.medfusion.product.object.maps.patientportal2.page.CreateAccount;
 
-import java.util.ArrayList;
-
 import com.medfusion.pojos.Patient;
 
 import org.openqa.selenium.WebDriver;
@@ -73,23 +71,6 @@ public class SecurityDetailsPage extends MedfusionPage {
 		
 	    public SecurityDetailsPage(WebDriver driver) {
 				super(driver);
-		}
-
-		@Override
-		public boolean areBasicPageElementsPresent() {
-
-				ArrayList<WebElement> webElementsList = new ArrayList<WebElement>();
-				webElementsList.add(inputUserId);
-				webElementsList.add(inputPassword);
-				webElementsList.add(selectSecretQuestion);
-				webElementsList.add(inputSecretAnswer);
-				webElementsList.add(inputPhone1);
-				webElementsList.add(inputPhone2);
-				webElementsList.add(inputPhone3);
-				webElementsList.add(selectPhoneType);
-				webElementsList.add(buttonFinishStep);
-
-				return assessPageElements(webElementsList);
 		}
 
 		public JalapenoHomePage fillAccountDetailsAndContinue(Patient patient) throws InterruptedException {

@@ -1,4 +1,4 @@
-//Copyright 2018-2020 NXGN Management, LLC. All Rights Reserved.
+//Copyright 2013-2021 NXGN Management, LLC. All Rights Reserved.
 package com.medfusion.product.object.maps.pss2.page.Appointment.Main;
 
 import java.util.List;
@@ -45,11 +45,6 @@ public class ExistingPatient extends PSS2MainPage {
 
 	public ExistingPatient(WebDriver driver, String url) {
 		super(driver, url);
-	}
-
-	@Override
-	public boolean areBasicPageElementsPresent() {
-		return true;
 	}
 
 	public HomePage login(String userame, String lastname, String dob, String email, String gender, String zipCode) {

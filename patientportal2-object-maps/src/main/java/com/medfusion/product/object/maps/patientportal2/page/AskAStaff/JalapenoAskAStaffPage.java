@@ -75,13 +75,6 @@ public class JalapenoAskAStaffPage extends JalapenoMenu {
 		createdTS = System.currentTimeMillis();
 	}
 
-	@Override
-	public boolean areBasicPageElementsPresent() {
-		// TODO
-		log("Method areBasicPageElementsPresent() is not implemented, so it is considered that all expected elements are present.");
-		return true;
-	}
-
 	public long getCreatedTimeStamp() {
 		return createdTS;
 	}

@@ -1,8 +1,6 @@
 //Copyright 2013-2021 NXGN Management, LLC. All Rights Reserved.
 package com.medfusion.patientportal2.test;
 
-import static org.testng.Assert.assertTrue;
-
 import java.awt.Toolkit;
 import java.awt.datatransfer.StringSelection;
 
@@ -69,7 +67,6 @@ public class PatientPortal2MU3AcceptanceTests extends BaseTestNGWebDriver {
 
 				logStep("Click on messages solution");
 				JalapenoMessagesPage messagesPage = homePage.showMessages(driver);
-				assertTrue(messagesPage.areBasicPageElementsPresent());
 
 				copySourceNavigateToACheckerAndValidate(messagesPage);
 		}
@@ -164,7 +161,6 @@ public class PatientPortal2MU3AcceptanceTests extends BaseTestNGWebDriver {
 
 				logStep("Click on Health record menu");
 				MedicalRecordSummariesPage healthRecordPage = homePage.clickOnMedicalRecordSummaries(driver);
-				assertTrue(healthRecordPage.areBasicPageElementsPresent());
 
 				logStep("Copy source of Health Record Page and validate");
 				copySourceNavigateToACheckerAndValidate(healthRecordPage);
@@ -178,7 +174,6 @@ public class PatientPortal2MU3AcceptanceTests extends BaseTestNGWebDriver {
 
 				logStep("Click on messages solution");
 				JalapenoMessagesPage messagesPage = homePage.showMessages(driver);
-				assertTrue(messagesPage.areBasicPageElementsPresent());
 
 				logStep("Click on View health data");
 				JalapenoCcdViewerPage ccdViewerPage = messagesPage.findCcdMessage(driver);

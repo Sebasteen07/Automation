@@ -1,4 +1,4 @@
-// Copyright 2018-2020 NXGN Management, LLC. All Rights Reserved.
+// Copyright 2013-2021 NXGN Management, LLC. All Rights Reserved.
 package com.medfusion.product.object.maps.pss2.page.settings;
 
 import java.util.ArrayList;
@@ -49,11 +49,6 @@ public class AdminPatientMatching extends SettingsTab {
 
 	public AdminPatientMatching(WebDriver driver) {
 		super(driver);
-	}
-
-	@Override
-	public boolean areBasicPageElementsPresent() {
-		return false;
 	}
 
 	CommonMethods commonMethods = new CommonMethods(driver);

@@ -1,7 +1,6 @@
 // Copyright 2013-2021 NXGN Management, LLC. All Rights Reserved.
 package com.medfusion.product.object.maps.patientportal2.page.MyAccountPage;
 
-import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.HashMap;
@@ -235,21 +234,6 @@ public class JalapenoMyAccountProfilePage extends JalapenoMyAccountPage {
 		activityTab.click();
 		return PageFactory.initElements(driver, JalapenoMyAccountActivityPage.class);
 
-	}
-
-	@Override
-	public boolean areBasicPageElementsPresent() {
-		ArrayList<WebElement> webElementsList = new ArrayList<WebElement>();
-		webElementsList.add(profileTab);
-		// webElementsList.add(securityTab);
-		webElementsList.add(preferencesTab);
-		webElementsList.add(address1Textbox);
-		webElementsList.add(cityTextbox);
-		webElementsList.add(zipCodeTextbox);
-		webElementsList.add(maleRadioButton);
-		webElementsList.add(saveMyChanges);
-
-		return assessPageElements(webElementsList);
 	}
 
 	public boolean modifyAndValidatePageContent() throws InterruptedException {

@@ -68,18 +68,20 @@ public class JalapenoLoginPage extends MedfusionPage {
 	public JalapenoLoginPage(WebDriver driver) {
 		super(driver);
 	}
-
-	@Override
-	public boolean areBasicPageElementsPresent() {
+	
+	public boolean assessPageElements() {
 
 		ArrayList<WebElement> webElementsList = new ArrayList<WebElement>();
+
 		webElementsList.add(inputUserName);
 		webElementsList.add(inputPassword);
-		webElementsList.add(forgotUserOrPasswordButton);
 		webElementsList.add(buttonSignIn);
-		webElementsList.add(buttonCreateANewAccount);
 		webElementsList.add(rememberUserNameCheckbox);
-		return assessPageElements(webElementsList);
+		webElementsList.add(buttonPayNow);
+		webElementsList.add(buttonCreateANewAccount);
+		webElementsList.add(forgotUserOrPasswordButton);
+
+		return new IHGUtil(driver).assessAllPageElements(webElementsList, this.getClass());
 	}
 
 	public JalapenoHomePage login(String username, String password) {

@@ -130,8 +130,6 @@ public class IntegrationPlatformAcceptanceTests extends BaseTestNGWebDriver {
 		// Searching for the link for patient activation in the mailinator Inbox
 
 		Mailinator mail = new Mailinator();
-		String subject = "New message from PI Automation rsdk Integrated" ;
-		String messageLink = "Sign in to view this message";
 		String activationUrl = mail.getLinkFromEmail(email,JalapenoConstants.NEW_PATIENT_ACTIVATION_MESSAGE,
 				JalapenoConstants.NEW_PATIENT_ACTIVATION_MESSAGE_LINK_TEXT, 40);
 
@@ -277,7 +275,6 @@ public class IntegrationPlatformAcceptanceTests extends BaseTestNGWebDriver {
 
 		log("Click on messages solution");
 		JalapenoMessagesPage messagesPage = homePage.showMessages(driver);
-		assertTrue(messagesPage.areBasicPageElementsPresent(), "Inbox failed to load properly.");
 
 		log("Step 8: Find message in Inbox");
 		String messageIdentifier = "Test " + Long.toString(timestamp);
@@ -364,7 +361,6 @@ public class IntegrationPlatformAcceptanceTests extends BaseTestNGWebDriver {
 
 		log("Click on messages solution");
 		JalapenoMessagesPage messagesPage = homePage.showMessages(driver);
-		assertTrue(messagesPage.areBasicPageElementsPresent(), "Inbox failed to load properly.");
 
 		log("Step 5: Validate message subject and send date");
 		Thread.sleep(1000);
@@ -376,11 +372,9 @@ public class IntegrationPlatformAcceptanceTests extends BaseTestNGWebDriver {
 		JalapenoCcdViewerPage jalapenoCcdPage = messagesPage.findCcdMessage(driver);
 
 		log("Step 7: Verify if CCD Viewer is loaded and click Close Viewer");
-		assertTrue(jalapenoCcdPage.areBasicPageElementsPresent());
 		messagesPage = jalapenoCcdPage.closeCcd(driver);
 
 		log("Step 8: Logging out");
-		assertTrue(messagesPage.areBasicPageElementsPresent());
 		homePage = messagesPage.backToHomePage(driver);
 		loginPage = homePage.clickOnLogout();
 		/*
@@ -452,7 +446,6 @@ public class IntegrationPlatformAcceptanceTests extends BaseTestNGWebDriver {
 		log("AppointmentPathV3: " + testData.getAppointmentPathV3());
 
 		String reason = "Reason" + timestamp;
-		boolean VideoPref = true;
 		String arSMSubject = "Reply to Appointment Request";
 		String arSMBody = "This is reply to AR for " + reason;
 
@@ -578,7 +571,6 @@ public class IntegrationPlatformAcceptanceTests extends BaseTestNGWebDriver {
 
 		log("Step 14:Click on messages solution");
 		JalapenoMessagesPage messagesPage = homePage2.showMessages(driver);
-		assertTrue(messagesPage.areBasicPageElementsPresent(), "Inbox failed to load properly.");
 
 		log("Step 15: Find & validate message in Inbox");
 		assertTrue(messagesPage.isMessageDisplayed(driver, arSMSubject));
@@ -719,7 +711,6 @@ public class IntegrationPlatformAcceptanceTests extends BaseTestNGWebDriver {
 
 		log("Step 16: Click on messages solution");
 		JalapenoMessagesPage messagesPage = inboxPage.showMessages(driver);
-		assertTrue(messagesPage.areBasicPageElementsPresent(), "Inbox failed to load properly.");
 
 		log("Step 17: Validate message loads and is the right message");
 		assertTrue(messagesPage.isMessageDisplayed(driver, reply_Subject));
@@ -1257,9 +1248,7 @@ public class IntegrationPlatformAcceptanceTests extends BaseTestNGWebDriver {
 			}
 		}
 		prescriptionsPage.clickOnMenuHome();
-		homePage.areBasicPageElementsPresent();
 		homePage.clickOnPrescriptions(driver);
-		prescriptionsPage.areBasicPageElementsPresent();
 		prescriptionsPage.clickContinueButton(driver);
 		log("Step 10: Verify Deleted medication is not visible on portal");
 		prescriptionsPage.validateDeletedMedication(productName);
