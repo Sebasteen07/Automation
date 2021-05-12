@@ -168,8 +168,9 @@ public class JalapenoPayBillsMakePaymentPage extends JalapenoMenu {
 		paymentAmount.clear();
 		paymentAmount.sendKeys(amount);
 		
+		log("Insert account number: " + accNumber);
 		try {
-			cardNumber.sendKeys(accNumber);
+			accountNumber.sendKeys(accNumber);
 		}
 		catch(Exception e)
 		{
