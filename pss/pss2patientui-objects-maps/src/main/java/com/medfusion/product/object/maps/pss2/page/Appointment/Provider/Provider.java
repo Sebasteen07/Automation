@@ -164,7 +164,7 @@ public class Provider extends PSS2MainPage {
 				CommonMethods.highlightElement(providerList.get(i));
 
 				IHGUtil.waitForElement(driver, 13, providernameLink.get(i));
-				providernameLink.get(i).click();
+				providerList.get(i).click();
 
 				log("Clicked on Provider");
 				return PageFactory.initElements(driver, AppointmentDateTime.class);

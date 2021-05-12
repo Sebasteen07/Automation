@@ -621,5 +621,17 @@ public class LoadPreTestData {
 
 		return testData;
 	}
+	
+	
+	public Attachment loadAttachmentDataFromProperty(Attachment testData) throws IOException {
+
+		PropertyFileLoader propertyData = new PropertyFileLoader();
+
+		testData.restUrl = propertyData.getRestUrlAttachment();
+		testData.patientExternalId = propertyData.getPatientExternalIdAttachment();
+
+
+		return testData;
+	}
 
 }

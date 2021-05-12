@@ -217,6 +217,53 @@ public class RestUtils {
 	 * @throws IOException
 	 * @throws SAXException
 	 */
+	
+	public static String GetAppointmentId(String xmlFileName)
+			throws ParserConfigurationException, SAXException, IOException {
+		IHGUtil.PrintMethodName();
+		Document doc = buildDOMXML(xmlFileName);
+
+		String Id = "";
+		Log4jUtil.log("Finding Appointment Id");
+		NodeList nodes = doc.getElementsByTagName(IntegrationConstants.APPOINTMENTID);
+		Node node = null;
+		for (int i = 0; i < nodes.getLength(); i++) {
+			node = nodes.item(i);
+			Element element = (Element) node;
+			Id = element.getAttribute("id");
+			Log4jUtil.log("Appointment Id is :" + Id);
+		}
+		Log4jUtil.log("response is ok");
+		return Id;
+	}
+
+	public static String VerifyAppointmentId(String xmlFileName, String AppointmentId)
+			throws ParserConfigurationException, SAXException, IOException {
+		IHGUtil.PrintMethodName();
+		Document doc = buildDOMXML(xmlFileName);
+
+		Log4jUtil.log("Finding Appointment Id");
+		boolean found = false;
+		NodeList nodes = doc.getElementsByTagName(IntegrationConstants.APPOINTMENTIDHEADER);
+		Node node = null;
+		for (int i = 0; i < nodes.getLength(); i++) {
+			node = nodes.item(i);
+			Log4jUtil.log("Searching: " + node.getChildNodes().item(0).getTextContent() + ", to be found: "
+					+ (AppointmentId));
+			AppointmentId = node.getChildNodes().item(0).getTextContent();
+			Log4jUtil.log("AppointmentId header :" + " " + AppointmentId);
+			if (node.getChildNodes().item(0).getTextContent().contains(AppointmentId)) {
+				found = true;
+				Log4jUtil.log("Appointment Id verified is found and verified.");
+				break;
+			}
+		}
+
+		assertTrue(found, "Appointment Id was not verified in response XML");
+		Log4jUtil.log("response is ok");
+		return AppointmentId;
+	}
+
 	public static void isReasonResponseXMLValid(String xmlFileName, String reason)
 			throws ParserConfigurationException, SAXException, IOException {
 		IHGUtil.PrintMethodName();
@@ -4091,6 +4138,15 @@ public class RestUtils {
 
 		return domToString(doc);
 
+	}
+	
+	public static String getAttachmentRefId(String responseFilePath)
+			throws ParserConfigurationException, SAXException, IOException {
+		IHGUtil.PrintMethodName();
+		Document doc = buildDOMXML(responseFilePath);
+		Node InternalAttachmentID = doc.getElementsByTagName("InternalAttachmentID").item(0);
+		String attchmentRefId = InternalAttachmentID.getTextContent().toString();
+		return attchmentRefId;
 	}
 
 }

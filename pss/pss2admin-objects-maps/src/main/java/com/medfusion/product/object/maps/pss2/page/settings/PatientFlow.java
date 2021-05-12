@@ -20,9 +20,9 @@ public class PatientFlow extends SettingsTab {
 	@FindBy(how = How.XPATH, using = "/html/body/app/layout/div/main/div[2]/div/div/div/section/div/div/div[2]/div[3]/div[3]/div/table/tbody/tr/td[2]/span")
 	private WebElement specialityRule;
 
-	@FindBy(how = How.XPATH, using = "//div[@class='form-group row']//div[@class='col-md-12 col-xs-12']//input")
+	@FindBy(how = How.XPATH, using = "//label[@for='showinsurance']/input")
 	private WebElement insuranceToggle;
-
+	
 	@FindBy(how = How.XPATH, using = "//div[@id='flow']//div//div[@class='col-md-12 col-xs-12']/div/label/i")
 	private WebElement insuranceToggleCheckBox;
 
@@ -173,8 +173,8 @@ public class PatientFlow extends SettingsTab {
 
 		commonMethods.highlightElement(insuranceToggleLabe);
 		commonMethods.highlightElement(insuranceToggleCheckBox);
-		log(insuranceToggle.getAttribute("ng-reflect-model"));
-		boolean bool = Boolean.parseBoolean(insuranceToggle.getAttribute("ng-reflect-model"));
+		log("Status of Insurance Toggle- "+insuranceToggle.isSelected());
+		boolean bool = insuranceToggle.isSelected();
 		return bool;
 	}
 

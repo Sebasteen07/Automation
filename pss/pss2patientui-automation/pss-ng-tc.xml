@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE suite SYSTEM "https://testng.org/testng-1.0.dtd">
+<suite name="Suite">
+	<test thread-count="5" name="Test">
+		<classes>
+
+			<class
+				name="com.medfusion.product.pss2patientportal.test.PSS2PatientPortalAcceptanceTests">
+				<methods>
+					<include name="testE2ELoginlessForNewPatientNG" />
+					<include name="testE2ELoginlessForExistingPatientNG" />
+					<include name="testLoginlessWithInsuranceNG" />
+					<include name="testLastQuestionRequiredNG" />
+					<include name="testCancelFromEmailNG()" />
+					<include name="testCancelE2ETestingNG()" />
+					<include name="testBookApptWithLastQuestionNG()" />
+					<include name="testRescheduleAppointmentNG" />
+					<include name="testBookApptWithoutLastQuestionNG()" />
+					<include name="testSSOFlowNG()" />
+				</methods>
+			</class>
+		</classes>
+	</test> <!-- Test -->
+</suite> <!-- Suite -->

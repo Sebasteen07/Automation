@@ -10,7 +10,7 @@ private String locationId;
 private List<String> resourceIds = null;
 private String appointmentDate;
 private String durationMinutes;
-private String details;
+private String details="";
 private String description;
 private Boolean procedureWithResident =false;
 private Boolean allowDoubleBooking =false;

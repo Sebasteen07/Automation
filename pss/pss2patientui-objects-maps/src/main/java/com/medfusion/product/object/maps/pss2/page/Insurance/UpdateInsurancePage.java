@@ -1,13 +1,19 @@
-// Copyright 2013-2021 NXGN Management, LLC. All Rights Reserved.
+// Copyright 2018-2020 NXGN Management, LLC. All Rights Reserved.
 package com.medfusion.product.object.maps.pss2.page.Insurance;
+
+import java.util.ArrayList;
+import java.util.List;
 
 import org.openqa.selenium.Keys;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
+import org.openqa.selenium.interactions.Actions;
+import org.openqa.selenium.support.FindAll;
 import org.openqa.selenium.support.FindBy;
 import org.openqa.selenium.support.How;
 import org.openqa.selenium.support.PageFactory;
 
+import com.medfusion.common.utils.IHGUtil;
 import com.medfusion.product.object.maps.pss2.page.Appointment.HomePage.HomePage;
 import com.medfusion.product.object.maps.pss2.page.Appointment.Main.PSS2MainPage;
 import com.medfusion.product.object.maps.pss2.page.ConfirmationPage.ConfirmationPage;
@@ -15,10 +21,10 @@ import com.medfusion.product.object.maps.pss2.page.util.CommonMethods;
 
 public class UpdateInsurancePage extends PSS2MainPage {
 
-	@FindBy(how = How.XPATH, using = "//*[@id=\"pssinsurance\"]/div[1]/form/div[1]/div/div/div/div[2]/input")
-	private WebElement selectInsuranceCarrier;
+	@FindBy(how = How.XPATH, using = "//div[@id=\"react-select-3--value\"]")
+	private WebElement insuranceCarrier;
 
-	@FindBy(how = How.XPATH, using = "//*[@id=\"pssinsurance\"]/div[1]/form/div[1]/div/div/span")
+	@FindBy(how = How.XPATH, using = "//span[@class='Select-arrow']")
 	private WebElement selectArrow;
 
 	@FindBy(how = How.ID, using = "insurancecarrier")
@@ -38,12 +44,30 @@ public class UpdateInsurancePage extends PSS2MainPage {
 
 	@FindBy(how = How.ID, using = "updateinfo")
 	private WebElement buttonUpdateInsuranceInfo;
+	
+	@FindBy(how = How.XPATH, using = "//div[@class='Select-placeholder']")
+	private WebElement dropdownInsuranceCar;
+	
+	@FindAll({@FindBy(how = How.XPATH, using = "//div[@class=\"Select-menu\"]/div")})
+	private List<WebElement> insuranceCarrierDropDownList;
 
 	public UpdateInsurancePage(WebDriver driver) {
 		super(driver);
 	}
 
 	CommonMethods commonMethods = new CommonMethods(driver);
+
+	@Override
+	public boolean areBasicPageElementsPresent() {
+		ArrayList<WebElement> webElementsList = new ArrayList<WebElement>();
+		webElementsList.add(inputInsuranceCarrier);
+		webElementsList.add(inputMemberID);
+		webElementsList.add(inputGroupID);
+		webElementsList.add(inputInsurancePhone);
+		webElementsList.add(buttonDontUpdateInsurance);
+		webElementsList.add(buttonUpdateInsuranceInfo);
+		return new IHGUtil(driver).assessAllPageElements(webElementsList, this.getClass());
+	}
 
 	public ConfirmationPage skipInsuranceUpdate() throws InterruptedException {
 		jse.executeScript("window.scrollBy(0,350)", "");
@@ -68,16 +92,39 @@ public class UpdateInsurancePage extends PSS2MainPage {
 		commonMethods.highlightElement(buttonDontUpdateInsurance);
 		buttonDontUpdateInsurance.click();
 	}
+	
+	public void selectInsuranceCarrier() throws InterruptedException {
+		List<WebElement> insuranceCarrierList = new ArrayList<WebElement>();
+		Actions act = new Actions(driver);
+		IHGUtil.waitForElement(driver, 5, dropdownInsuranceCar);
+		commonMethods.highlightElement(dropdownInsuranceCar);
+		selectArrow.click();
+		insuranceCarrierList = insuranceCarrierDropDownList;
+		log("Save all the reschedule reason in rescheduleReasonlist ");
+		if (insuranceCarrierList.size() > 0) {
+			int length = insuranceCarrierList.size();
+			log("There " + length + " number of reschedule reason ");
+			for (WebElement a : insuranceCarrierList) {
+				log(" Insurance Carrier - "+a.getText());
+			}
+			log("Selected Insurance Carrier Reason- " + insuranceCarrierList.get(length - 1).getText());
+			act.moveToElement(insuranceCarrierList.get(length - 1)).click().build().perform();
+		}
+	}
 
-	public void selectInsurance(String insuranceName, String memberID, String groupID, String phoneNumber) {
+	public void selectInsurance(String memberID, String groupID, String phoneNumber) throws InterruptedException {
 		log("In selectInsurance of UpdateInsurance page.");
-		selectInsuranceCarrier.sendKeys(insuranceName, Keys.TAB);
+		selectInsuranceCarrier();
 		inputMemberID.clear();
+		commonMethods.highlightElement(inputMemberID);
 		inputMemberID.sendKeys(memberID);
 		inputGroupID.clear();
+		commonMethods.highlightElement(inputGroupID);
 		inputGroupID.sendKeys(groupID);
 		inputInsurancePhone.clear();
+		commonMethods.highlightElement(inputInsurancePhone);
 		inputInsurancePhone.sendKeys(phoneNumber);
+		commonMethods.highlightElement(buttonUpdateInsuranceInfo);
 		buttonUpdateInsuranceInfo.click();
 	}
 }

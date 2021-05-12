@@ -8,6 +8,7 @@ import org.openqa.selenium.support.FindBy;
 import org.openqa.selenium.support.How;
 import org.openqa.selenium.support.PageFactory;
 
+import com.medfusion.common.utils.IHGUtil;
 import com.medfusion.product.object.maps.pss2.page.Appointment.CancResc.PatientIdentificationPage;
 import com.medfusion.product.object.maps.pss2.page.Appointment.HomePage.HomePage;
 import com.medfusion.product.object.maps.pss2.page.Appointment.Main.PSS2MainPage;
@@ -29,6 +30,7 @@ public class DismissPage extends PSS2MainPage {
 	CommonMethods commonMethods = new CommonMethods(driver);
 
 	public LoginlessPatientInformation clickDismiss() {
+		IHGUtil.waitForElement(driver, 5, dismissBtn);
 		commonMethods.highlightElement(dismissBtn);
 		dismissBtn.click();
 		return PageFactory.initElements(driver, LoginlessPatientInformation.class);

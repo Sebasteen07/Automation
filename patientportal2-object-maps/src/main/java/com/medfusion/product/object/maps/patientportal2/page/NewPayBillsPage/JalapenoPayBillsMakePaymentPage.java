@@ -83,13 +83,13 @@ public class JalapenoPayBillsMakePaymentPage extends JalapenoMenu {
 	@FindBy(how = How.XPATH, using = "//*[@id=\"balanceDue\"]/span/strong")
 	private WebElement balanceDue;
 
-	@FindBy(how = How.XPATH, using = "//*[@id=\"viewContent\"]/ui-view/div[6]/span")
+	@FindBy(how = How.XPATH, using = "//*[@id='headerElements']/following-sibling::span/strong")
 	private WebElement outstandingInsuranceBalance;
 
 	@FindBy(how = How.XPATH, using = "//*[@id=\"balanceDue\"]/span")
 	private WebElement balanceDueDate;
 
-	@FindBy(how = How.XPATH, using = "//*[contains(@href,'#/payments/history/details')]/preceding-sibling::span[1]")
+	@FindBy(how = How.XPATH, using = "//*[contains(@href,'#/payments/history/details')]/preceding-sibling::span[3]")
 	private WebElement confirmationNumberMsg;
 
 	@FindBy(how = How.XPATH, using = "(//table[@class='table table-condensed']/tbody/tr/td/a)[1]")
@@ -153,11 +153,17 @@ public class JalapenoPayBillsMakePaymentPage extends JalapenoMenu {
 		fillNewCardInformation(creditCard);
 
 		log("Insert Payment amount: " + amount);
+		paymentAmount.clear();
 		paymentAmount.sendKeys(amount);
-
-		log("Insert account number: " + accNumber);
-		accountNumber.sendKeys(accNumber);
-
+		
+		try {
+			cardNumber.sendKeys(accNumber);
+		}
+		catch(Exception e)
+		{
+			log(e.getMessage());
+		}
+		
 		log("Insert CVV code: " + creditCard.getCvvCode());
 		wait.until(ExpectedConditions.visibilityOf(confirmCVV));
 

@@ -96,14 +96,11 @@ public class Appointment {
 	private String gmailUserName;
 	private String linkProvider;
 	private String linkLocation;
-
-	public String getLinkLocation() {
-		return linkLocation;
-	}
-
-	public void setLinkLocation(String linkLocation) {
-		this.linkLocation = linkLocation;
-	}
+	private boolean lastQuestionOptional=false;
+	
+	private String memberID;
+	private String groupID;
+	private String insurancePhone;
 
 	private String ageRuleMonthFirst;
 	private String ageRuleMonthSecond;
@@ -138,11 +135,10 @@ public class Appointment {
 	private String apptid;
 	private String slotStartTime;
 	private String slotEndTime;
-	
-	
-	//for REST Assured
-    private String accessTokenURL;
-    private String accessToken;    
+
+	// for REST Assured
+	private String accessTokenURL;
+	private String accessToken;
 
 	private String urlAnonymousNG;
 	private boolean isAnonymousFlow = false;
@@ -156,8 +152,15 @@ public class Appointment {
 	private boolean isFutureApt = false;
 	private boolean pcptoggleState = false;
 
-	public Appointment(String providerConfig, String usernameConfig, String passwordConfig, String datetimeConfig, String locationConfig,
-			String appointmentConfig, String specialityConfig) {
+	private String timeMarkValue;
+	private String linkProviderURL;
+	private String linkLocationURL;
+
+	
+	private boolean insuranceDetails = false;
+
+	public Appointment(String providerConfig, String usernameConfig, String passwordConfig, String datetimeConfig,
+			String locationConfig, String appointmentConfig, String specialityConfig) {
 		this.username = usernameConfig;
 		this.password = passwordConfig;
 		this.provider = providerConfig;
@@ -167,7 +170,80 @@ public class Appointment {
 		this.speciality = specialityConfig;
 	}
 
-	public Appointment() {}
+	public Appointment() {}	
+
+	public String getMemberID() {
+		return memberID;
+	}
+
+	public void setMemberID(String memberID) {
+		this.memberID = memberID;
+	}
+
+	public String getGroupID() {
+		return groupID;
+	}
+
+	public void setGroupID(String groupID) {
+		this.groupID = groupID;
+	}
+
+	public String getInsurancePhone() {
+		return insurancePhone;
+	}
+
+	public void setInsurancePhone(String insurancePhone) {
+		this.insurancePhone = insurancePhone;
+	}
+
+	public boolean isInsuranceDetails() {
+		return insuranceDetails;
+	}
+
+	public void setInsuranceDetails(boolean insuranceDetails) {
+		this.insuranceDetails = insuranceDetails;
+	}
+
+	public String getLinkLocationURL() {
+		return linkLocationURL;
+	}
+	
+	public void setLinkLocationURL(String linkLocationURL) {
+		this.linkLocationURL = linkLocationURL;
+	}
+	
+	public String getLinkProviderURL() {
+		return linkProviderURL;
+	}
+
+	public void setLinkProviderURL(String linkProviderURL) {
+		this.linkProviderURL = linkProviderURL;
+	}
+	
+	public boolean isLastQuestionOptional() {
+		return lastQuestionOptional;
+	}
+
+	public void setLastQuestionOptional(boolean lastQuestionOptional) {
+		this.lastQuestionOptional = lastQuestionOptional;
+	}
+
+	public String getTimeMarkValue() {
+		return timeMarkValue;
+	}
+
+	public void setTimeMarkValue(String timeMarkValue) {
+		this.timeMarkValue = timeMarkValue;
+	}
+
+	public String getLinkLocation() {
+		return linkLocation;
+	}
+
+	public void setLinkLocation(String linkLocation) {
+		this.linkLocation = linkLocation;
+
+	}
 		
 	public String getSlotStartTime() {
 		return slotStartTime;

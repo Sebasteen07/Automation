@@ -654,13 +654,22 @@ public class NGAPIFlows {
 				attachment.setAttachmentId(UUID.randomUUID().toString().toUpperCase());
 				attachment.setDocumentId(documentID);
 				String imageName = DBUtils.executeQueryOnDB("NGCoreDB","select orig_image_file from patient_images where image_id ='"+documentID+"'");
-				attachment.setName(imageName);
+				attachment.setName(imageName.substring(0, imageName.lastIndexOf(".")));
 				attachment.setType("EmrImage");
 				attachment.setFormat(imageName.substring(imageName.lastIndexOf(".")).replace(".", ""));
 				attachment.setContentBytes("2500");
 				
 				attachmentList.add(attachment);			
 				message.setAttachments(attachmentList);
+			}
+			else if(attachmentName.equalsIgnoreCase("IMH")) {
+				attachment.setAttachmentId(UUID.randomUUID().toString().toUpperCase());
+				attachment.setName(documentID);
+				attachment.setType("Imh");
+				attachment.setFormat("pdf");
+				
+				attachmentList.add(attachment);			
+				message.setAttachments(attachmentList);			
 			}
 			
 			messageList.add(message);

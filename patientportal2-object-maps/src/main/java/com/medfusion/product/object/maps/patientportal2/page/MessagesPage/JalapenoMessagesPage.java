@@ -8,6 +8,7 @@ import java.util.List;
 
 import org.openqa.selenium.By;
 import org.openqa.selenium.JavascriptExecutor;
+import org.openqa.selenium.NoSuchElementException;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.FindBy;
@@ -107,6 +108,9 @@ public class JalapenoMessagesPage extends JalapenoMenu {
 
 	@FindBy(how = How.XPATH, using = "//*[@id='rx_pharmacy0']/span[2]")
 	private WebElement pharmacyOnPortal;
+	
+	@FindBy(how=How.XPATH, using="//*[@class='attachments']/child::*/a")
+	private WebElement messageBodyAttachmentlink;
 
 	public JalapenoMessagesPage(WebDriver driver) {
 		super(driver);
@@ -436,5 +440,37 @@ public class JalapenoMessagesPage extends JalapenoMenu {
 				+ locationOnPortal.getText().toString());
 		assertEquals(providerNameOnPortal.getText(), providerName, "Invalid Provider Name was found");
 		assertEquals(locationOnPortal.getText(), location, "Invalid Location was found");
+	}
+	
+	public void validateSecureMessageAttachment(String attachmentNamepayload) {
+		IHGUtil.PrintMethodName();
+		String attachmentName = messageBodyAttachmentlink.getText();
+		log("Attachment received in secure message : "+attachmentName);
+		assertTrue(attachmentName.equals(attachmentNamepayload), "Appropriate attachment is received in the message");
+
+	}
+	
+	public boolean isPriorityFlagDisplayedTrue(WebDriver driver, String subject) {
+		IHGUtil.PrintMethodName();
+		WebElement element;
+		element = driver.findElement(By.xpath("//*/ul/li/a/*[contains(text(),'" + subject + "')]/following-sibling::*[@class='prioritystatus']/img"));
+		String priorityFlagStatus = driver.findElement(By.xpath("//*/ul/li/a/*[contains(text(),'" + subject + "')]/following-sibling::*[@class='prioritystatus']/img")).getAttribute("alt");
+		log("Priority Flag for Message with subject "+subject+" has "+priorityFlagStatus);
+		return element.isDisplayed();
+	}
+	
+	public boolean isPriorityFlagDisplayedFalse(WebDriver driver, String subject) {
+		IHGUtil.PrintMethodName();
+		try {
+		driver.findElement(By.xpath("//*/ul/li/a/*[contains(text(),'" + subject + "')]/following-sibling::*[@class='prioritystatus']/img"));
+		log("Priority Flag for Message with subject "+subject+" is displayed");
+		return false ;
+		}
+		catch(NoSuchElementException ex)
+		{
+			log("Priority Flag for Message with subject "+subject+" is not displayed");
+			log(ex.getMessage());
+		}
+		return true;
 	}
 }

@@ -18,7 +18,7 @@ import com.medfusion.product.oject.maps.pss2.page.CareTeam.ManageCareTeam;
 
 public class PSS2MenuPage extends PSS2MainPage {
 
-	@FindBy(how = How.XPATH, using = "//a[@class='nav-link dropdown-toggle']/i")
+	@FindBy(how = How.XPATH, using = "//a[@class='nav-link dropdown-toggle']//*[local-name()='svg']")
 	private WebElement settingsLogout;
 
 	@FindBy(how = How.XPATH, using = "//li[@class='nav-item dropdown open show']/ul")
@@ -36,15 +36,15 @@ public class PSS2MenuPage extends PSS2MainPage {
 	@FindBy(how = How.XPATH, using = "//a[@href=\"#/app/appointmenttype\"]")
 	private WebElement linkAppointmenttype;
 
-	@FindBy(how = How.XPATH, using = "//body/app[1]/layout[1]/nav[1]/div[1]/div[1]/ul[1]/li[2]/a[1]/span[1]/i[1]")
+	@FindBy(how = How.XPATH, using = "//*[@href='#/app/resource']")
 	private WebElement linkResource;
 
 	@FindBy(how = How.XPATH, using = "//a[@href='#/app/careteam']")
 	private WebElement linkCareTeam;
 
-	@FindBy(how = How.XPATH, using = "//a[@href=\"#/app/location\"]")
+	@FindBy(how = How.XPATH, using = "//*[@href='#/app/location']")
 	private WebElement linkLocation;
-
+	
 	@FindBy(how = How.XPATH, using = "//a[@href='#/app/cancelreason']")
 	private WebElement linkCancelReason;
 
@@ -81,7 +81,7 @@ public class PSS2MenuPage extends PSS2MainPage {
 	}
 
 	public ManageResource gotoResource() {
-		linkResource.click();
+		javascriptClick(linkResource);
 		log("Resource Tab clicked.....");
 		return PageFactory.initElements(driver, ManageResource.class);
 	}

@@ -133,7 +133,6 @@ public class SecurityDetailsPage extends MedfusionPage {
 				if (new IHGUtil(driver).exists(electronicPaymentPreference)) {
 						log("Statement delivery preference lightbox is displayed");
 
-						new WebDriverWait(driver, 15).until(ExpectedConditions.elementToBeClickable(okButton));
 						if (deliveryPref == 1) {
 								paperPaymentPreference.click();
 						} else if (deliveryPref == 2) {
@@ -141,6 +140,8 @@ public class SecurityDetailsPage extends MedfusionPage {
 						} else if (deliveryPref == 3) {
 								bothPaymentPreference.click();
 						}
+						new WebDriverWait(driver, 15).until(ExpectedConditions.elementToBeClickable(okButton));
+
 						okButton.click();
 
 						/*
