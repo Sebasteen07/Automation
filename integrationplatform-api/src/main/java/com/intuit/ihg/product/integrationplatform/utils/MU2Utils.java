@@ -82,7 +82,6 @@ public class MU2Utils {
 		
 		Log4jUtil.log("MU2GetEvent Step 2: Go to Health Record Summaries");
 		MedicalRecordSummariesPage MedicalRecordSummariesPageObject = homePage.clickOnMedicalRecordSummaries(driver);
-		assertTrue(MedicalRecordSummariesPageObject.areBasicPageElementsPresent(), "Failed to Load Health Record Summaries ");
 		Thread.sleep(5000);
 
 		MedicalRecordSummariesPageObject.setFilterToDefaultPositionAndCheckElementsNew();

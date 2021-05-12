@@ -1178,7 +1178,6 @@ public class CommonFlows {
 		assertTrue(homePage.isHomeButtonPresent(driver));
 		Log4jUtil.log("Step Begins: Click on messages solution");
 		JalapenoMessagesPage messagesPage = homePage.showMessages(driver);
-		assertTrue(messagesPage.areBasicPageElementsPresent(), "Inbox failed to load properly.");
 		Log4jUtil.log("Step Begins: Find message in Inbox with message subject " + subject);
 			
 		Log4jUtil.log("Step Begins: Validate message loads and is the right message");

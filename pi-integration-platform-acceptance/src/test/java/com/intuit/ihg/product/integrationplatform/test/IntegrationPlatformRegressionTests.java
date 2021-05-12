@@ -4364,7 +4364,6 @@ public class IntegrationPlatformRegressionTests extends BaseTestNGWebDriver {
 		
 		logStep("Click on messages solution");
 		JalapenoMessagesPage messagesPage = homePage.showMessages(driver);
-		assertTrue(messagesPage.areBasicPageElementsPresent(), "Inbox failed to load properly.");
 		
 		logStep("Find message in Inbox");
 		String messageIdentifier = AMDCPayload.messageIdentifier;
@@ -4492,8 +4491,6 @@ public class IntegrationPlatformRegressionTests extends BaseTestNGWebDriver {
 			assertTrue(homePage.isHomeButtonPresent(driver));
 			logStep("Click on messages solution");
 			JalapenoMessagesPage messagesPage = homePage.showMessages(driver);
-			assertTrue(messagesPage.areBasicPageElementsPresent(), "Inbox failed to load properly.");
-			long epoch = System.currentTimeMillis() / 1000;
 
 			logStep("Find message in Inbox");
 			

@@ -3793,9 +3793,6 @@ public class PatientPortal2AcceptanceTests extends BaseTestNGWebDriver {
 		JalapenoHomePage jalapenoHomePage = accountDetailsPage.fillAccountDetailsAndContinue(
 				patientActivationSearchTest.getPatientIdString(), testData.getPassword(), testData);
 
-		logStep("Detecting if Home Page is opened");
-		assertTrue(jalapenoHomePage.areBasicPageElementsPresent());
-
 		logStep("Patient Activation on Second Practice Portal- Patient Activation link will not be present");
 		PatientActivationSearchTest patientActivationSearchTest12 = new PatientActivationSearchTest();
 		patientActivationSearchTest12.getPatientActivationPortalLink(0, driver, patientsEmail,
@@ -3818,13 +3815,9 @@ public class PatientPortal2AcceptanceTests extends BaseTestNGWebDriver {
 		JalapenoLoginEnrollment loginPage = new JalapenoLoginEnrollment(driver, portalUrlLink);
 		loginPage.login(patientActivationSearchTest.getPatientIdString(), testData.getPassword());
 
-		logStep("Detecting if Home Page is opened");
-		assertTrue(jalapenoHomePage.areBasicPageElementsPresent());
-
 		logStep("Switching to Second Practice to verify auto enrollment");
 		jalapenoHomePage.switchPractice(testData.getProperty("practiceName1"));
-
-		assertTrue(jalapenoHomePage.areBasicPageElementsPresent());
+		
 		logStep("Auto Enrollment to Second Practice is completed");
 	}
 	

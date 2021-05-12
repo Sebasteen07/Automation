@@ -140,7 +140,7 @@ public class NGIntegrationE2ESITTests extends BaseTestNGWebDriver{
 		NewPatient createPatient = NGPatient.patientUsingJSON(PropertyLoaderObj,"");
 		createPatient = NGPatient.addDataToPatientDemographics(PropertyLoaderObj, createPatient);
 		ObjectMapper objMap = new ObjectMapper();
-        String requestbody = objMap.defaultPrettyPrintingWriter().writeValueAsString(createPatient);
+        String requestbody = objMap.writerWithDefaultPrettyPrinter().writeValueAsString(createPatient);
         log("Request Body is \n" + requestbody);
 		
 	    apiRoutes personURL =apiRoutes.valueOf("AddEnterprisePerson"); 
@@ -284,7 +284,6 @@ public class NGIntegrationE2ESITTests extends BaseTestNGWebDriver{
 
 		log("Step 13: Detecting if Home Page is opened and logout");
 		Thread.sleep(4000);
-		assertTrue(jalapenoHomePage.areBasicPageElementsPresent());
 		jalapenoHomePage.LogoutfromNGMFPortal();
 		
 		Thread.sleep(20000);
@@ -329,7 +328,7 @@ public class NGIntegrationE2ESITTests extends BaseTestNGWebDriver{
 		NewPatient createPatient = NGPatient.patientUsingJSON(PropertyLoaderObj,"withoutFirstName");
 		
 		ObjectMapper objMap = new ObjectMapper();
-        String requestbody = objMap.defaultPrettyPrintingWriter().writeValueAsString(createPatient);
+        String requestbody = objMap.writerWithDefaultPrettyPrinter().writeValueAsString(createPatient);
         log("Request Body is \n" + requestbody);
 		
 	    apiRoutes personURL =apiRoutes.valueOf("AddEnterprisePerson"); 
@@ -340,22 +339,22 @@ public class NGIntegrationE2ESITTests extends BaseTestNGWebDriver{
 		log("Step Begins: Create the patient in NG EPM without Last Name");
 		NewPatient createPatient1 = NGPatient.patientUsingJSON(PropertyLoaderObj,"withoutLastName");
 		
-		log("Request Body is \n" + objMap.defaultPrettyPrintingWriter().writeValueAsString(createPatient1));
-	    ngAPIUtils.setupNGHttpPostRequest("EnterpriseGateway",finalURL,objMap.defaultPrettyPrintingWriter().writeValueAsString(createPatient1) , 400);
+		log("Request Body is \n" + objMap.writerWithDefaultPrettyPrinter().writeValueAsString(createPatient1));
+	    ngAPIUtils.setupNGHttpPostRequest("EnterpriseGateway",finalURL,objMap.writerWithDefaultPrettyPrinter().writeValueAsString(createPatient1) , 400);
 		log("Step End: Person should not be created");
 		
 		log("Step Begins: Create the patient in NG EPM without Dob");
 		NewPatient createPatient2 = NGPatient.patientUsingJSON(PropertyLoaderObj,"withoutDOB");
 		
-		log("Request Body is \n" + objMap.defaultPrettyPrintingWriter().writeValueAsString(createPatient2));
-	    ngAPIUtils.setupNGHttpPostRequest("EnterpriseGateway",finalURL,objMap.defaultPrettyPrintingWriter().writeValueAsString(createPatient2) , 400);
+		log("Request Body is \n" + objMap.writerWithDefaultPrettyPrinter().writeValueAsString(createPatient2));
+	    ngAPIUtils.setupNGHttpPostRequest("EnterpriseGateway",finalURL,objMap.writerWithDefaultPrettyPrinter().writeValueAsString(createPatient2) , 400);
 		log("Step End: Person should not be created");
 		
 		log("Step Begins: Create the patient in NG EPM without Gender");
 		NewPatient createPatient3 = NGPatient.patientUsingJSON(PropertyLoaderObj,"withoutSex");
-		log("Request Body is \n" + objMap.defaultPrettyPrintingWriter().writeValueAsString(createPatient3));
+		log("Request Body is \n" + objMap.writerWithDefaultPrettyPrinter().writeValueAsString(createPatient3));
 		
-	    ngAPIUtils.setupNGHttpPostRequest("EnterpriseGateway",finalURL,objMap.defaultPrettyPrintingWriter().writeValueAsString(createPatient3) , 400);
+	    ngAPIUtils.setupNGHttpPostRequest("EnterpriseGateway",finalURL,objMap.writerWithDefaultPrettyPrinter().writeValueAsString(createPatient3) , 400);
 		log("Step End: Person should not be created");
 					
 	}
@@ -372,7 +371,7 @@ public class NGIntegrationE2ESITTests extends BaseTestNGWebDriver{
 		NewPatient createPatient = NGPatient.patientUsingJSON(PropertyLoaderObj,"withoutEmailaddress");
 		
 		ObjectMapper objMap = new ObjectMapper();
-        String requestbody = objMap.defaultPrettyPrintingWriter().writeValueAsString(createPatient);
+        String requestbody = objMap.writerWithDefaultPrettyPrinter().writeValueAsString(createPatient);
         log("Request Body is \n" + requestbody);
 		
 	    apiRoutes personURL =apiRoutes.valueOf("AddEnterprisePerson"); 
@@ -402,7 +401,7 @@ public class NGIntegrationE2ESITTests extends BaseTestNGWebDriver{
 		NewPatient createPatient = NGPatient.patientUsingJSON(PropertyLoaderObj,"withoutZip");
 		
 		ObjectMapper objMap = new ObjectMapper();
-        String requestbody = objMap.defaultPrettyPrintingWriter().writeValueAsString(createPatient);
+        String requestbody = objMap.writerWithDefaultPrettyPrinter().writeValueAsString(createPatient);
         log("Request Body is \n" + requestbody);
 		
 	    apiRoutes personURL =apiRoutes.valueOf("AddEnterprisePerson"); 
@@ -494,7 +493,7 @@ public class NGIntegrationE2ESITTests extends BaseTestNGWebDriver{
 	System.setProperty("ParentEmailAddress", createPatient.getEmailAddress());
 	
 	ObjectMapper objMap = new ObjectMapper();
-    String requestbody = objMap.defaultPrettyPrintingWriter().writeValueAsString(createPatient);
+    String requestbody = objMap.writerWithDefaultPrettyPrinter().writeValueAsString(createPatient);
     log("Guardian Request Body is \n" + requestbody);
 	
     apiRoutes personURL =apiRoutes.valueOf("AddEnterprisePerson"); 
@@ -509,7 +508,7 @@ public class NGIntegrationE2ESITTests extends BaseTestNGWebDriver{
 	log("Step 2: Create the Dependent in NG EPM");
 	NewPatient createdependent = NGPatient.patientUsingJSON(PropertyLoaderObj,"Dependent");
 	createdependent = NGPatient.addDataToPatientDemographics(PropertyLoaderObj, createdependent);
-    String dependentrequestbody = objMap.defaultPrettyPrintingWriter().writeValueAsString(createdependent);
+    String dependentrequestbody = objMap.writerWithDefaultPrettyPrinter().writeValueAsString(createdependent);
     log("Dependent Request Body is \n" + dependentrequestbody);
 		
 	String dependentperson_id=NGAPIUtils.setupNGHttpPostRequest("EnterpriseGateway",finalURL,dependentrequestbody , 201);
@@ -574,9 +573,6 @@ public class NGIntegrationE2ESITTests extends BaseTestNGWebDriver{
 		String patientLogin=createPatient.getEmailAddress();
 		log("Step 9 : Enroll the Guardian to MedFusion Portal : step 2 - filling patient data");
 		JalapenoHomePage jalapenoHomePage = accountDetailsPage.fillAccountDetailsAndContinue(createPatient.getEmailAddress(), PropertyLoaderObj.getPassword(), PropertyLoaderObj.getSecretQuestion(), PropertyLoaderObj.getSecretAnswer(),PropertyLoaderObj.getPhoneNumber());
-
-		log("Step 10: Detecting if Home Page is opened");
-		assertTrue(jalapenoHomePage.areBasicPageElementsPresent());
 
 		log("Step 11: Identify Dependent without logging out the patient");
 		patientVerificationPage.getToThisPage(activationDependentUrl);
@@ -669,7 +665,7 @@ public class NGIntegrationE2ESITTests extends BaseTestNGWebDriver{
 		NGAPIUtils.updateLoginDefaultTo("EnterpriseGateway",PropertyLoaderObj.getProperty("NGMainEnterpriseID"), PropertyLoaderObj.getProperty("NGMainPracticeID"));
 		NewPatient createdependent = NGPatient.patientUsingJSON(PropertyLoaderObj,"Dependent");
 		createdependent = NGPatient.addDataToPatientDemographics(PropertyLoaderObj, createdependent);
-	    String dependentrequestbody = objMap.defaultPrettyPrintingWriter().writeValueAsString(createdependent);
+	    String dependentrequestbody = objMap.writerWithDefaultPrettyPrinter().writeValueAsString(createdependent);
 	    log("Dependent Request Body is \n" + dependentrequestbody);
 			
 		String dependentperson_id=NGAPIUtils.setupNGHttpPostRequest("EnterpriseGateway",finalURL,dependentrequestbody , 201);
@@ -774,7 +770,7 @@ public class NGIntegrationE2ESITTests extends BaseTestNGWebDriver{
 		NewPatient createPatient = NGPatient.patientUsingJSON(PropertyLoaderObj,"");
 		createPatient = NGPatient.addDataToPatientDemographics(PropertyLoaderObj, createPatient);
 		ObjectMapper objMap = new ObjectMapper();
-        String requestbody = objMap.defaultPrettyPrintingWriter().writeValueAsString(createPatient);
+        String requestbody = objMap.writerWithDefaultPrettyPrinter().writeValueAsString(createPatient);
         log("Request Body is \n" + requestbody);
 		
 	    apiRoutes personURL =apiRoutes.valueOf("AddEnterprisePerson"); 
@@ -826,15 +822,14 @@ public class NGIntegrationE2ESITTests extends BaseTestNGWebDriver{
 			log("Step 6 : Enroll the Guardian to MedFusion Portal : step 2 - filling patient data");
 			JalapenoHomePage jalapenoHomePage = accountDetailsPage.fillAccountDetailsAndContinue(createPatient.getEmailAddress(), PropertyLoaderObj.getPassword(), PropertyLoaderObj.getSecretQuestion(), PropertyLoaderObj.getSecretAnswer(),PropertyLoaderObj.getPhoneNumber());
 
-			log("Step 7: Detecting if Home Page is opened and logout");
-			assertTrue(jalapenoHomePage.areBasicPageElementsPresent());
+			log("Step 7: Logout");
 			NGLoginPage loginPage= jalapenoHomePage.LogoutfromNGMFPortal();
 
 			
 		log("Step 8: Create the trusted patient in NG EPM");
 		NewPatient trustedPatient = NGPatient.patientUsingJSON(PropertyLoaderObj,"trustedPatient");	
 		trustedPatient = NGPatient.addDataToPatientDemographics(PropertyLoaderObj, trustedPatient);
-		String trustedPatientrequestbody = objMap.defaultPrettyPrintingWriter().writeValueAsString(trustedPatient);
+		String trustedPatientrequestbody = objMap.writerWithDefaultPrettyPrinter().writeValueAsString(trustedPatient);
 		log("Trusted Patient Request Body " +trustedPatientrequestbody);
 		String trustedperson_id= NGAPIUtils.setupNGHttpPostRequest("EnterpriseGateway",finalURL,trustedPatientrequestbody, 201);
 		log("Step End: Person created with id "+trustedperson_id);
@@ -896,7 +891,7 @@ public class NGIntegrationE2ESITTests extends BaseTestNGWebDriver{
 		NewPatient createPatient = NGPatient.patientUsingJSON(PropertyLoaderObj,"invalidZIP");
 		createPatient = NGPatient.addDataToPatientDemographics(PropertyLoaderObj, createPatient);
 		ObjectMapper objMap = new ObjectMapper();
-        String requestbody = objMap.defaultPrettyPrintingWriter().writeValueAsString(createPatient);
+        String requestbody = objMap.writerWithDefaultPrettyPrinter().writeValueAsString(createPatient);
         log("Request Body is \n" + requestbody);
 		
 	    apiRoutes personURL =apiRoutes.valueOf("AddEnterprisePerson"); 
@@ -1012,7 +1007,7 @@ public class NGIntegrationE2ESITTests extends BaseTestNGWebDriver{
 		NewPatient createPatient = NGPatient.patientUsingJSON(PropertyLoaderObj,"");
 		createPatient = NGPatient.addDataToPatientDemographics(PropertyLoaderObj, createPatient);
 		ObjectMapper objMap = new ObjectMapper();
-        String requestbody = objMap.defaultPrettyPrintingWriter().writeValueAsString(createPatient);
+        String requestbody = objMap.writerWithDefaultPrettyPrinter().writeValueAsString(createPatient);
         log("Request Body is \n" + requestbody);
 		
 	    apiRoutes personURL =apiRoutes.valueOf("AddEnterprisePerson"); 
@@ -1190,7 +1185,7 @@ public class NGIntegrationE2ESITTests extends BaseTestNGWebDriver{
 		NewPatient createPatient = NGPatient.patientUsingJSON(PropertyLoaderObj,"");
 		
 		ObjectMapper objMap = new ObjectMapper();
-        String requestbody = objMap.defaultPrettyPrintingWriter().writeValueAsString(createPatient);
+        String requestbody = objMap.writerWithDefaultPrettyPrinter().writeValueAsString(createPatient);
         log("Request Body is \n" + requestbody);
 		
 	    apiRoutes personURL =apiRoutes.valueOf("AddEnterprisePerson"); 
@@ -1475,7 +1470,7 @@ public class NGIntegrationE2ESITTests extends BaseTestNGWebDriver{
 		NGAPIUtils.updateLoginDefaultTo("EnterpriseGateway",PropertyLoaderObj.getNGEnterpiseEnrollmentE1(), PropertyLoaderObj.getNGEnterpiseEnrollmentE1P1());
 		logStep("Create the patient in NG EPM first practice");
 		NewPatient createPatient = NGPatient.patientUsingJSON(PropertyLoaderObj,"complete");
-		String personId= NGAPIFlows.CreatePatientinEPM(createPatient);
+		String personId= NGAPIFlows.createPatientinEPM(createPatient);
 		NGAPIFlows.addCharttoProvider(PropertyLoaderObj.getNGE1P1Location(),PropertyLoaderObj.getNGE1P1Provider(),personId);
 		NGAPIFlows.addEncounter(PropertyLoaderObj.getNGE1P1Location(),PropertyLoaderObj.getNGE1P1Provider(),personId); 
 		
@@ -1497,9 +1492,6 @@ public class NGIntegrationE2ESITTests extends BaseTestNGWebDriver{
 		logStep("Log into Practice2 Portal");
 		JalapenoLoginEnrollment loginPage = new JalapenoLoginEnrollment(driver,visitPortal);
 		JalapenoHomePage homePage = loginPage.login(createPatient.getEmailAddress(), PropertyLoaderObj.getPassword());
-			   
-        logStep("Detecting if Home Page is opened");
-        assertTrue(homePage.areBasicPageElementsPresent());
     
         logStep("Switching to First Practice to verify auto enrollment");
         homePage.switchToPractice(PropertyLoaderObj.getProperty("practiceName1"));
@@ -1507,7 +1499,6 @@ public class NGIntegrationE2ESITTests extends BaseTestNGWebDriver{
         driver.navigate().refresh();
         homePage.switchToPractice(PropertyLoaderObj.getProperty("practiceName2"));
         Thread.sleep(20000);
-        assertTrue(homePage.areBasicPageElementsPresent());
         
         String person_nbr =DBUtils.executeQueryOnDB("NGCoreDB","select person_nbr from person where person_id = '"+personId.trim()+"'");
         Log4jUtil.log("Step Begins: Setup Oauth client" + PropertyLoaderObj.getResponsePath());
@@ -1528,7 +1519,7 @@ public class NGIntegrationE2ESITTests extends BaseTestNGWebDriver{
 		NGAPIUtils.updateLoginDefaultTo("EnterpriseGateway",PropertyLoaderObj.getNGEnterpiseEnrollmentE1(), PropertyLoaderObj.getNGEnterpiseEnrollmentE1P1());
 		logStep("Create the patient in NG EPM in first Practice");
 		NewPatient createPatient = NGPatient.patientUsingJSON(PropertyLoaderObj,"complete");
-		String personId= NGAPIFlows.CreatePatientinEPM(createPatient);
+		String personId= NGAPIFlows.createPatientinEPM(createPatient);
 		NGAPIFlows.addCharttoProvider(PropertyLoaderObj.getNGE1P1Location(),PropertyLoaderObj.getNGE1P1Provider(),personId);
 		
 		verifyProcessingStatusto3WithoutValidatingGetProcessingStatusCall(personId,PropertyLoaderObj.getNGEnterpiseEnrollmentE1P1(),PropertyLoaderObj.getProperty("integrationPracticeIDE1P1"));
@@ -1563,14 +1554,10 @@ public class NGIntegrationE2ESITTests extends BaseTestNGWebDriver{
 		logStep("Load login page for the auto enrolled Practice2 Portal");
 		JalapenoLoginEnrollment loginPage = new JalapenoLoginEnrollment(driver,portalUrlLink);
 		JalapenoHomePage homePage = loginPage.login(createPatient.getEmailAddress(), PropertyLoaderObj.getPassword());
-
-        logStep("Detecting if Home Page is opened");
-        assertTrue(homePage.areBasicPageElementsPresent());
     
         logStep("Switching to First Practice to verify auto enrollment");
         homePage.switchToPractice(PropertyLoaderObj.getProperty("practiceName1"));
         Thread.sleep(40000);
-        assertTrue(homePage.areBasicPageElementsPresent());
         driver.navigate().refresh();
         homePage.switchToPractice(PropertyLoaderObj.getProperty("practiceName3"));        
 
@@ -1591,7 +1578,7 @@ public class NGIntegrationE2ESITTests extends BaseTestNGWebDriver{
 		NGAPIUtils.updateLoginDefaultTo("EnterpriseGateway",PropertyLoaderObj.getNGEnterpiseEnrollmentE1(), PropertyLoaderObj.getNGEnterpiseEnrollmentE1P1());
 		logStep("Create the patient in NG EPM Practice 1");
 		NewPatient createPatient = NGPatient.patientUsingJSON(PropertyLoaderObj,"complete");
-		String personId= NGAPIFlows.CreatePatientinEPM(createPatient);
+		String personId= NGAPIFlows.createPatientinEPM(createPatient);
 		NGAPIFlows.addCharttoProvider(PropertyLoaderObj.getNGE1P1Location(),PropertyLoaderObj.getNGE1P1Provider(),personId);
 		
 		logStep("Create the chart in second practice");
@@ -1613,9 +1600,6 @@ public class NGIntegrationE2ESITTests extends BaseTestNGWebDriver{
 		logStep("Load login page for the auto enrolled Practice2 Portal");
 		JalapenoLoginEnrollment loginPage = new JalapenoLoginEnrollment(driver,portalUrlLink);
 		JalapenoHomePage homePage = loginPage.login(createPatient.getEmailAddress(), PropertyLoaderObj.getPassword());
-			   
-        logStep("Detecting if Home Page is opened");
-        assertTrue(homePage.areBasicPageElementsPresent());
     
         logStep("Switching to First Practice to verify auto enrollment");
         homePage.switchToPractice(PropertyLoaderObj.getProperty("practiceName1"));
@@ -1635,9 +1619,6 @@ public class NGIntegrationE2ESITTests extends BaseTestNGWebDriver{
 		logStep("Log into Practice2 Portal");
 		loginPage = new JalapenoLoginEnrollment(driver,PropertyLoaderObj.getProperty("MFPortalURLPractice1"));
 		homePage = loginPage.login(createPatient.getEmailAddress(), PropertyLoaderObj.getPassword());
-			   
-		logStep("Detecting if Home Page is opened");
-        assertTrue(homePage.areBasicPageElementsPresent());
     
         log("Verify the Multiple Practice Toggle is not displayed");
         homePage.VerifyMuiltiplePracticeToggle();
@@ -1661,7 +1642,7 @@ public class NGIntegrationE2ESITTests extends BaseTestNGWebDriver{
 		NGAPIUtils.updateLoginDefaultTo("EnterpriseGateway",PropertyLoaderObj.getNGEnterpiseEnrollmentE1(), PropertyLoaderObj.getNGEnterpiseEnrollmentE1P1());
 		logStep("Create the patient in NG EPM in Practice 1");
 		NewPatient createPatient = NGPatient.patientUsingJSON(PropertyLoaderObj,"complete");
-		String personId= NGAPIFlows.CreatePatientinEPM(createPatient);
+		String personId= NGAPIFlows.createPatientinEPM(createPatient);
 		NGAPIFlows.addCharttoProvider(PropertyLoaderObj.getNGE1P1Location(),PropertyLoaderObj.getNGE1P1Provider(),personId);
 		
 		logStep("Create the chart in second practice");
@@ -1683,9 +1664,6 @@ public class NGIntegrationE2ESITTests extends BaseTestNGWebDriver{
 		logStep("Log into Practice2 Portal");
 		JalapenoLoginEnrollment loginPage = new JalapenoLoginEnrollment(driver,portalUrlLink);
 		JalapenoHomePage homePage = loginPage.login(createPatient.getEmailAddress(), PropertyLoaderObj.getPassword());
-			   
-		logStep("Detecting if Home Page is opened");
-        assertTrue(homePage.areBasicPageElementsPresent());
     
         logStep("Switching to First Practice to verify auto enrollment");
         homePage.switchToPractice(PropertyLoaderObj.getProperty("practiceName3"));
@@ -1709,9 +1687,6 @@ public class NGIntegrationE2ESITTests extends BaseTestNGWebDriver{
 		logStep("Log into Practice2 Portal");
 		loginPage = new JalapenoLoginEnrollment(driver,PropertyLoaderObj.getProperty("MFPortalURLPractice1"));
 		homePage = loginPage.login(createPatient.getEmailAddress(), PropertyLoaderObj.getPassword());
-			   
-		logStep("Detecting if Home Page is opened");
-        assertTrue(homePage.areBasicPageElementsPresent());
     
         logStep("Verify the Multiple Practice Toggle is not displayed");
         homePage.VerifyMuiltiplePracticeToggle();
@@ -1734,7 +1709,7 @@ public class NGIntegrationE2ESITTests extends BaseTestNGWebDriver{
 		NGAPIUtils.updateLoginDefaultTo("EnterpriseGateway",PropertyLoaderObj.getNGEnterpiseEnrollmentE1(), PropertyLoaderObj.getNGEnterpiseEnrollmentE1P1());
 		logStep("Create the patient in NG EPM Practice 1");
 		NewPatient createPatient = NGPatient.patientUsingJSON(PropertyLoaderObj,"complete");
-		String personId= NGAPIFlows.CreatePatientinEPM(createPatient);
+		String personId= NGAPIFlows.createPatientinEPM(createPatient);
 		NGAPIFlows.addCharttoProvider(PropertyLoaderObj.getNGE1P1Location(),PropertyLoaderObj.getNGE1P1Provider(),personId);
 		
 		enrollPatientWithoutGetProcessingStatusValidation(createPatient,personId,PropertyLoaderObj.getProperty("practiceName1"),PropertyLoaderObj.getProperty("integrationPracticeIDE1P1"),PropertyLoaderObj.getNGEnterpiseEnrollmentE1(), PropertyLoaderObj.getNGEnterpiseEnrollmentE1P1());
@@ -1792,9 +1767,6 @@ public class NGIntegrationE2ESITTests extends BaseTestNGWebDriver{
 		logStep("Log into Practice4 Portal");
 		JalapenoLoginEnrollment loginPage = new JalapenoLoginEnrollment(driver,portalUrlLink);
 		JalapenoHomePage homePage = loginPage.login(createPatient.getFirstName(), PropertyLoaderObj.getPassword());
-			   
-        logStep("Detecting if Home Page is opened");
-        assertTrue(homePage.areBasicPageElementsPresent());
     
         logStep("Verify the Multiple Practice Toggle is not displayed");
         homePage.VerifyMuiltiplePracticeToggle();
@@ -1815,7 +1787,7 @@ public class NGIntegrationE2ESITTests extends BaseTestNGWebDriver{
 		NGAPIUtils.updateLoginDefaultTo("EnterpriseGateway",PropertyLoaderObj.getNGEnterpiseEnrollmentE1(), PropertyLoaderObj.getNGEnterpiseEnrollmentE1P1());
 		logStep("Create the patient in NG EPM");
 		NewPatient createPatient = NGPatient.patientUsingJSON(PropertyLoaderObj,"complete");
-		String personId= NGAPIFlows.CreatePatientinEPM(createPatient);
+		String personId= NGAPIFlows.createPatientinEPM(createPatient);
 		NGAPIFlows.addCharttoProvider(PropertyLoaderObj.getNGE1P1Location(),PropertyLoaderObj.getNGE1P1Provider(),personId);
 		
         logStep("Create the chart in Practice 2");
@@ -1841,9 +1813,6 @@ public class NGIntegrationE2ESITTests extends BaseTestNGWebDriver{
 		logStep("Load login page for the auto enrolled Practice2 Portal");
 		JalapenoLoginEnrollment loginPage = new JalapenoLoginEnrollment(driver,portalUrlLink);
 		JalapenoHomePage homePage = loginPage.login(createPatient.getEmailAddress(), PropertyLoaderObj.getPassword());
-			   
-        logStep("Detecting if Home Page is opened");
-        assertTrue(homePage.areBasicPageElementsPresent());
     
         logStep("Switching to First Practice to verify auto enrollment");
         homePage.switchToPractice(PropertyLoaderObj.getProperty("practiceName1"));
@@ -1854,7 +1823,6 @@ public class NGIntegrationE2ESITTests extends BaseTestNGWebDriver{
         driver.navigate().refresh();
         homePage.switchToPractice(PropertyLoaderObj.getProperty("practiceName3"));
         Thread.sleep(30000);
-        assertTrue(homePage.areBasicPageElementsPresent());	
       
         logStep("Detecting if Home Page is opened and logout");
 		homePage.LogoutfromNGMFPortal();
@@ -1874,16 +1842,12 @@ public class NGIntegrationE2ESITTests extends BaseTestNGWebDriver{
 		logStep("Log into Practice Portal");
 		loginPage = new JalapenoLoginEnrollment(driver,PropertyLoaderObj.getProperty("MFPortalURLPractice1"));
 		homePage = loginPage.login(createPatient.getEmailAddress(), PropertyLoaderObj.getPassword());
-			   
-        logStep("Detecting if Home Page is opened");
-        assertTrue(homePage.areBasicPageElementsPresent());
     
         logStep("Switching to First Practice to verify auto enrollment");
         homePage.switchToPractice(PropertyLoaderObj.getProperty("practiceName1"));
         Thread.sleep(40000);
         driver.navigate().refresh();
         homePage.switchToPractice(PropertyLoaderObj.getProperty("practiceName3"));
-        assertTrue(homePage.areBasicPageElementsPresent());
     
         String person_nbr =DBUtils.executeQueryOnDB("NGCoreDB","select person_nbr from person where person_id = '"+personId.trim()+"'");
 //        VerifyGetPIDCCall(timestamp, person_nbr,createPatient.getFirstName(), createPatient.getLastName(),"DELETED", PropertyLoaderObj.getProperty("integrationPracticeIDE1P2"));
@@ -1904,7 +1868,7 @@ public class NGIntegrationE2ESITTests extends BaseTestNGWebDriver{
 		NGAPIUtils.updateLoginDefaultTo("EnterpriseGateway",PropertyLoaderObj.getNGEnterpiseEnrollmentE1(), PropertyLoaderObj.getNGEnterpiseEnrollmentE1P1());
 		logStep("Create the patient in NG EPM");
 		NewPatient createPatient = NGPatient.patientUsingJSON(PropertyLoaderObj,"complete");
-		String personId= NGAPIFlows.CreatePatientinEPM(createPatient);
+		String personId= NGAPIFlows.createPatientinEPM(createPatient);
 		NGAPIFlows.addCharttoProvider(PropertyLoaderObj.getNGE1P1Location(),PropertyLoaderObj.getNGE1P1Provider(),personId);
 		
         logStep("Create the chart in Practice 2");
@@ -1930,9 +1894,6 @@ public class NGIntegrationE2ESITTests extends BaseTestNGWebDriver{
 		logStep("Load login page for the auto enrolled Practice2 Portal");
 		JalapenoLoginEnrollment loginPage = new JalapenoLoginEnrollment(driver,portalUrlLink);
 		JalapenoHomePage homePage = loginPage.login(createPatient.getEmailAddress(), PropertyLoaderObj.getPassword());
-			   
-        logStep("Detecting if Home Page is opened");
-        assertTrue(homePage.areBasicPageElementsPresent());
     
         logStep("Switching to First Practice to verify auto enrollment");
         homePage.switchToPractice(PropertyLoaderObj.getProperty("practiceName1"));
@@ -1942,7 +1903,6 @@ public class NGIntegrationE2ESITTests extends BaseTestNGWebDriver{
         Thread.sleep(40000);
         driver.navigate().refresh();
         homePage.switchToPractice(PropertyLoaderObj.getProperty("practiceName3"));
-        assertTrue(homePage.areBasicPageElementsPresent());	
 	
         logStep("Login to Practice Portal");
 		PracticeLoginPage practiceLogin = new PracticeLoginPage(driver, PropertyLoaderObj.getPortalUrl());
@@ -1960,16 +1920,12 @@ public class NGIntegrationE2ESITTests extends BaseTestNGWebDriver{
 		logStep("Log into Practice Portal");
 		loginPage = new JalapenoLoginEnrollment(driver,PropertyLoaderObj.getProperty("MFPortalURLPractice1"));
 		homePage = loginPage.login(createPatient.getEmailAddress(), PropertyLoaderObj.getPassword());
-		
-        logStep("Detecting if Home Page is opened");
-        assertTrue(homePage.areBasicPageElementsPresent());
     
         logStep("Switching to First Practice to verify auto enrollment");
         homePage.switchToPractice(PropertyLoaderObj.getProperty("practiceName1"));
         Thread.sleep(40000);
         driver.navigate().refresh();
         homePage.switchToPractice(PropertyLoaderObj.getProperty("practiceName3"));
-        assertTrue(homePage.areBasicPageElementsPresent());
     
         String person_nbr =DBUtils.executeQueryOnDB("NGCoreDB","select person_nbr from person where person_id = '"+personId.trim()+"'");
 //        VerifyGetPIDCCall(timestamp, person_nbr,createPatient.getFirstName(), createPatient.getLastName(),"DEACTIVATED", PropertyLoaderObj.getProperty("integrationPracticeIDE1P2"));
@@ -1990,7 +1946,7 @@ public class NGIntegrationE2ESITTests extends BaseTestNGWebDriver{
 		NGAPIUtils.updateLoginDefaultTo("EnterpriseGateway",PropertyLoaderObj.getNGEnterpiseEnrollmentE1(), PropertyLoaderObj.getNGEnterpiseEnrollmentE1P1());
 		logStep("Create the patient in NG EPM in Practice 1");
 		NewPatient createPatient = NGPatient.patientUsingJSON(PropertyLoaderObj,"complete");
-		String personId= NGAPIFlows.CreatePatientinEPM(createPatient);
+		String personId= NGAPIFlows.createPatientinEPM(createPatient);
 		NGAPIFlows.addCharttoProvider(PropertyLoaderObj.getNGE1P1Location(),PropertyLoaderObj.getNGE1P1Provider(),personId);
 		
 		enrollPatientWithoutGetProcessingStatusValidation(createPatient,personId,PropertyLoaderObj.getProperty("practiceName1"),PropertyLoaderObj.getProperty("integrationPracticeIDE1P1"),PropertyLoaderObj.getNGEnterpiseEnrollmentE1(), PropertyLoaderObj.getNGEnterpiseEnrollmentE1P1());
@@ -1999,7 +1955,7 @@ public class NGIntegrationE2ESITTests extends BaseTestNGWebDriver{
 		logStep("Create the trusted patient in NG EPM");
 		NewPatient trustedPatient = NGPatient.patientUsingJSON(PropertyLoaderObj,"trustedPatient");	
 		trustedPatient = NGPatient.addDataToPatientDemographics(PropertyLoaderObj, trustedPatient);
-		String trustedperson_id=NGAPIFlows.CreatePatientinEPM(trustedPatient);
+		String trustedperson_id=NGAPIFlows.createPatientinEPM(trustedPatient);
 		log("Step End: Person created with id "+trustedperson_id);
 		NGAPIFlows.addCharttoProvider(PropertyLoaderObj.getNGE1P4Location(),PropertyLoaderObj.getNGE1P4Provider(),trustedperson_id);
 		
@@ -2066,7 +2022,7 @@ public class NGIntegrationE2ESITTests extends BaseTestNGWebDriver{
 		NGAPIUtils.updateLoginDefaultTo("EnterpriseGateway",PropertyLoaderObj.getNGEnterpiseEnrollmentE1(), PropertyLoaderObj.getNGEnterpiseEnrollmentE1P1());
 		logStep("Create the patient in NG EPM in Practice 1");
 		NewPatient createPatient = NGPatient.patientUsingJSON(PropertyLoaderObj,"complete");
-		String personId= NGAPIFlows.CreatePatientinEPM(createPatient);
+		String personId= NGAPIFlows.createPatientinEPM(createPatient);
 		NGAPIFlows.addCharttoProvider(PropertyLoaderObj.getNGE1P1Location(),PropertyLoaderObj.getNGE1P1Provider(),personId);
 		
 		enrollPatientWithoutGetProcessingStatusValidation(createPatient,personId,PropertyLoaderObj.getProperty("practiceName1"),PropertyLoaderObj.getProperty("integrationPracticeIDE1P1"),PropertyLoaderObj.getNGEnterpiseEnrollmentE1(), PropertyLoaderObj.getNGEnterpiseEnrollmentE1P1());
@@ -2078,7 +2034,7 @@ public class NGIntegrationE2ESITTests extends BaseTestNGWebDriver{
 		logStep("Create the trusted patient in NG EPM in practice 2");
 		NewPatient trustedPatient = NGPatient.patientUsingJSON(PropertyLoaderObj,"trustedPatient");	
 		trustedPatient = NGPatient.addDataToPatientDemographics(PropertyLoaderObj, trustedPatient);
-		String trustedperson_id=NGAPIFlows.CreatePatientinEPM(trustedPatient);
+		String trustedperson_id=NGAPIFlows.createPatientinEPM(trustedPatient);
 		log("Step End: Person created with id "+trustedperson_id);
 		NGAPIFlows.addCharttoProvider(PropertyLoaderObj.getNGE1P2Location(),PropertyLoaderObj.getNGE1P2Provider(),trustedperson_id);
 		
@@ -2159,7 +2115,7 @@ public class NGIntegrationE2ESITTests extends BaseTestNGWebDriver{
 		NGAPIUtils.updateLoginDefaultTo("EnterpriseGateway",PropertyLoaderObj.getNGEnterpiseEnrollmentE1(), PropertyLoaderObj.getNGEnterpiseEnrollmentE1P5());
 		logStep("Create the patient in NG EPM for Practice 5");
 		NewPatient createPatient = NGPatient.patientUsingJSON(PropertyLoaderObj,"complete");
-		String personId= NGAPIFlows.CreatePatientinEPM(createPatient);
+		String personId= NGAPIFlows.createPatientinEPM(createPatient);
 		NGAPIFlows.addCharttoProvider(PropertyLoaderObj.getNGE1P5Location(),PropertyLoaderObj.getNGE1P5Provider(),personId);
 		
 		enrollPatientWithoutGetProcessingStatusValidation(createPatient,personId,PropertyLoaderObj.getProperty("practiceName5"),PropertyLoaderObj.getProperty("integrationPracticeIDE1P5"),PropertyLoaderObj.getNGEnterpiseEnrollmentE1(), PropertyLoaderObj.getNGEnterpiseEnrollmentE1P5());
@@ -2168,7 +2124,7 @@ public class NGIntegrationE2ESITTests extends BaseTestNGWebDriver{
 		logStep("Create the trusted patient in NG EPM for Practice 4");
 		NewPatient trustedPatient = NGPatient.patientUsingJSON(PropertyLoaderObj,"trustedPatient");		
 		trustedPatient = NGPatient.addDataToPatientDemographics(PropertyLoaderObj, trustedPatient);
-		String trustedperson_id=NGAPIFlows.CreatePatientinEPM(trustedPatient);
+		String trustedperson_id=NGAPIFlows.createPatientinEPM(trustedPatient);
 		log("Step End: Person created with id "+trustedperson_id);
 		NGAPIFlows.addCharttoProvider(PropertyLoaderObj.getNGE1P4Location(),PropertyLoaderObj.getNGE1P4Provider(),trustedperson_id);
 		
@@ -2251,7 +2207,7 @@ public class NGIntegrationE2ESITTests extends BaseTestNGWebDriver{
 		NGAPIUtils.updateLoginDefaultTo("EnterpriseGateway",PropertyLoaderObj.getNGEnterpiseEnrollmentE1(), PropertyLoaderObj.getNGEnterpiseEnrollmentE1P1());
 		logStep("Create the patient in NG EPM in Enterprise 1 Practice 1");
 		NewPatient createPatient = NGPatient.patientUsingJSON(PropertyLoaderObj,"complete");
-		String personId= NGAPIFlows.CreatePatientinEPM(createPatient);
+		String personId= NGAPIFlows.createPatientinEPM(createPatient);
 		NGAPIFlows.addCharttoProvider(PropertyLoaderObj.getNGE1P1Location(),PropertyLoaderObj.getNGE1P1Provider(),personId);
 		
 		enrollPatientWithoutGetProcessingStatusValidation(createPatient, personId, PropertyLoaderObj.getProperty("practiceName1"),PropertyLoaderObj.getProperty("integrationPracticeIDE1P1"),PropertyLoaderObj.getNGEnterpiseEnrollmentE1(), PropertyLoaderObj.getNGEnterpiseEnrollmentE1P1());
@@ -2309,9 +2265,6 @@ public class NGIntegrationE2ESITTests extends BaseTestNGWebDriver{
 		logStep("Load login page for the Enterprise 2 Practice 1 Portal");
 		JalapenoLoginEnrollment loginPage = new JalapenoLoginEnrollment(driver,portalUrlLink);
 		JalapenoHomePage homePage = loginPage.login(createPatient.getFirstName(), PropertyLoaderObj.getPassword());
-			   
-        logStep("Detecting if Home Page is opened");
-        assertTrue(homePage.areBasicPageElementsPresent());
     
         logStep("Verify the Multiple Practice Toggle is not displayed");
         homePage.VerifyMuiltiplePracticeToggle();
@@ -2328,20 +2281,18 @@ public class NGIntegrationE2ESITTests extends BaseTestNGWebDriver{
 	log("Test Case:  Verify the patient enrollment e2e workflow when a Guardian is having an existing MF account in Enterprise 1 and practice 1");
 	log("Execution Environment: " + IHGUtil.getEnvironmentType());
 	log("Execution Browser: " + TestConfig.getBrowserType());
-	Long timestamp = System.currentTimeMillis();
-	
 	NGAPIUtils.updateLoginDefaultTo("EnterpriseGateway",PropertyLoaderObj.getNGEnterpiseEnrollmentE1(), PropertyLoaderObj.getNGEnterpiseEnrollmentE1P1());
 	logStep("Create the Guardian in NG EPM Practice 1");
 	NewPatient createPatient = NGPatient.patientUsingJSON(PropertyLoaderObj,"complete");
 	System.setProperty("ParentEmailAddress", createPatient.getEmailAddress());
-	String person_id= NGAPIFlows.CreatePatientinEPM(createPatient);
+	String person_id= NGAPIFlows.createPatientinEPM(createPatient);
 	log("Step End: Guardian created with id "+person_id);
 	NGAPIFlows.addCharttoProvider(PropertyLoaderObj.getNGE1P1Location(),PropertyLoaderObj.getNGE1P1Provider(),person_id);
 	
 	logStep("Create the Dependent in NG EPM Practice 1");
 	NewPatient createdependent = NGPatient.patientUsingJSON(PropertyLoaderObj,"Dependent");	
 	createdependent = NGPatient.addDataToPatientDemographics(PropertyLoaderObj, createdependent);
-	String dependentperson_id=NGAPIFlows.CreatePatientinEPM(createdependent);
+	String dependentperson_id=NGAPIFlows.createPatientinEPM(createdependent);
 	log("Step End: Dependent created with id "+dependentperson_id);
 	NGAPIFlows.addCharttoProvider(PropertyLoaderObj.getNGE1P1Location(),PropertyLoaderObj.getNGE1P1Provider(),dependentperson_id);
 	
@@ -2421,9 +2372,6 @@ public class NGIntegrationE2ESITTests extends BaseTestNGWebDriver{
 		logStep("Enroll the Guardian to MedFusion Portal : step 2 - filling patient data");
 		JalapenoHomePage jalapenoHomePage = accountDetailsPage.fillAccountDetailsAndContinue(createPatient.getEmailAddress(), PropertyLoaderObj.getPassword(), PropertyLoaderObj.getSecretQuestion(), PropertyLoaderObj.getSecretAnswer(),PropertyLoaderObj.getPhoneNumber());
 
-		logStep("Detecting if Home Page is opened");
-		assertTrue(jalapenoHomePage.areBasicPageElementsPresent());
-
 		logStep("Identify Dependent without logging out the patient");
 		patientVerificationPage.getToThisPage(activationDependentUrl);
 		AuthUserLinkAccountPage linkAccountPage = patientVerificationPage.fillDependentInfoAndContinue(
@@ -2449,9 +2397,6 @@ public class NGIntegrationE2ESITTests extends BaseTestNGWebDriver{
 			
 		JalapenoLoginEnrollment loginPage = new JalapenoLoginEnrollment(driver,portalUrlLink);
 		JalapenoHomePage homePage = loginPage.login(createPatient.getEmailAddress(), PropertyLoaderObj.getPassword());
-			   
-        logStep("Detecting if Home Page is opened");
-        assertTrue(homePage.areBasicPageElementsPresent());
         	
         logStep("Switching to Second Practice to verify auto enrollment");
         homePage.switchToPractice(PropertyLoaderObj.getProperty("practiceName1"));
@@ -2460,23 +2405,19 @@ public class NGIntegrationE2ESITTests extends BaseTestNGWebDriver{
         driver.navigate().refresh();
         homePage.switchToPractice(PropertyLoaderObj.getProperty("practiceName2"));
         Thread.sleep(40000);
-        assertTrue(homePage.areBasicPageElementsPresent());
         driver.navigate().refresh();
         homePage.switchToPractice(PropertyLoaderObj.getProperty("practiceName3"));
         Thread.sleep(20000);
-        assertTrue(homePage.areBasicPageElementsPresent());
         
         logStep("Switching to dependent account to verify auto enrollment");
         homePage.faChangePatient();
         Thread.sleep(10000);
-        assertTrue(homePage.areBasicPageElementsPresent());
         homePage.switchToPractice(PropertyLoaderObj.getProperty("practiceName1"));
         Thread.sleep(40000);
 		assertTrue(homePage.assessFamilyAccountElements(true));
         driver.navigate().refresh();
         homePage.switchToPractice(PropertyLoaderObj.getProperty("practiceName2"));
         Thread.sleep(40000);
-        assertTrue(homePage.areBasicPageElementsPresent());
         logStep("Auto Enrolment of Guardian and Dependent to Second and third Practice is completed");
 		
 //		VerifyGetPIDCCall(timestamp, dependentperson_nbr,createdependent.getFirstName(), createdependent.getLastName(),"Registered");
@@ -2505,7 +2446,7 @@ public class NGIntegrationE2ESITTests extends BaseTestNGWebDriver{
 		logStep("Create the Dependent in NG EPM Practice 1");
 		NewPatient createdependent = NGPatient.patientUsingJSON(PropertyLoaderObj,"Dependent");	
 		createdependent = NGPatient.addDataToPatientDemographics(PropertyLoaderObj, createdependent);
-		String dependentperson_id=NGAPIFlows.CreatePatientinEPM(createdependent);
+		String dependentperson_id=NGAPIFlows.createPatientinEPM(createdependent);
 		log("Step End: Dependent created with id "+dependentperson_id);
 		NGAPIFlows.addCharttoProvider(PropertyLoaderObj.getNGE1P1Location(),PropertyLoaderObj.getNGE1P1Provider(),dependentperson_id);
 		
@@ -2610,9 +2551,6 @@ public class NGIntegrationE2ESITTests extends BaseTestNGWebDriver{
 				
 			loginPage = new NGLoginPage(driver,portalUrlLink);
 			JalapenoHomePage homePage = loginPage.login(createdependent.getEmailAddress(), PropertyLoaderObj.getPassword());
-				   
-	        logStep("Detecting if Home Page is opened");
-	        assertTrue(homePage.areBasicPageElementsPresent());
 		
 	        logStep("Switching to Second Practice to verify auto enrollment");
 	        homePage.switchToPractice(PropertyLoaderObj.getProperty("practiceName1"));
@@ -2622,7 +2560,6 @@ public class NGIntegrationE2ESITTests extends BaseTestNGWebDriver{
 	        Thread.sleep(40000);
             driver.navigate().refresh();
 	        homePage.switchToPractice(PropertyLoaderObj.getProperty("practiceName3"));
-	        assertTrue(homePage.areBasicPageElementsPresent());
 	        log("Auto Enrolment of Dependent to Second Practice is completed");						
 			
 	        verifyPatientEnrollmentStatus(dependentperson_id,PropertyLoaderObj.getNGEnterpiseEnrollmentE1P3(),PropertyLoaderObj.getNGEnterpiseEnrollmentE1());
@@ -2940,7 +2877,7 @@ public class NGIntegrationE2ESITTests extends BaseTestNGWebDriver{
 		logStep("Created the patient in NG EPM Practice "+practiceId);
 		NewPatient createPatient = NGPatient.patientUsingJSON(PropertyLoaderObj,"complete");
 		createPatient = NGPatient.addDataToPatientDemographics(PropertyLoaderObj, createPatient);
-		String person_id= NGAPIFlows.CreatePatientinEPM(createPatient);	
+		String person_id= NGAPIFlows.createPatientinEPM(createPatient);	
 		
 		NGAPIFlows.addCharttoProvider(locationName,providerName,person_id);
 		
@@ -3002,7 +2939,7 @@ public class NGIntegrationE2ESITTests extends BaseTestNGWebDriver{
 		System.setProperty("ParentEmailAddress", createPatient.getEmailAddress());
 		
 		ObjectMapper objMap = new ObjectMapper();
-	    String requestbody = objMap.defaultPrettyPrintingWriter().writeValueAsString(createPatient);
+	    String requestbody = objMap.writerWithDefaultPrettyPrinter().writeValueAsString(createPatient);
 	    log("Guardian Request Body is \n" + requestbody);
 		
 	    apiRoutes personURL =apiRoutes.valueOf("AddEnterprisePerson"); 
@@ -3017,7 +2954,7 @@ public class NGIntegrationE2ESITTests extends BaseTestNGWebDriver{
 		logStep("Create the Dependent in NG EPM");
 		NewPatient createdependent = NGPatient.patientUsingJSON(PropertyLoaderObj,"Dependent");
 		createdependent = NGPatient.addDataToPatientDemographics(PropertyLoaderObj, createdependent);
-	    String dependentrequestbody = objMap.defaultPrettyPrintingWriter().writeValueAsString(createdependent);
+	    String dependentrequestbody = objMap.writerWithDefaultPrettyPrinter().writeValueAsString(createdependent);
 	    log("Dependent Request Body is \n" + dependentrequestbody);
 			
 		String dependentperson_id=NGAPIUtils.setupNGHttpPostRequest("EnterpriseGateway",finalURL,dependentrequestbody , 201);
@@ -3083,9 +3020,6 @@ public class NGIntegrationE2ESITTests extends BaseTestNGWebDriver{
 			String patientLogin=createPatient.getEmailAddress();
 			logStep("Enroll the Guardian to MedFusion Portal : step 2 - filling patient data");
 			JalapenoHomePage jalapenoHomePage = accountDetailsPage.fillAccountDetailsAndContinue(createPatient.getEmailAddress(), PropertyLoaderObj.getPassword(), PropertyLoaderObj.getSecretQuestion(), PropertyLoaderObj.getSecretAnswer(),PropertyLoaderObj.getPhoneNumber());
-
-			logStep("Detecting if Home Page is opened");
-			assertTrue(jalapenoHomePage.areBasicPageElementsPresent());
 
 			logStep("Identify Dependent without logging out the patient");
 			patientVerificationPage.getToThisPage(activationDependentUrl);
@@ -3198,14 +3132,14 @@ public class NGIntegrationE2ESITTests extends BaseTestNGWebDriver{
 		NGAPIUtils.updateLoginDefaultTo("EnterpriseGateway",PropertyLoaderObj.getNGEnterpiseEnrollmentE1(), PropertyLoaderObj.getNGEnterpiseEnrollmentE1P1());
 		logStep("Create the patient in NG EPM in Practice 1");
 		NewPatient createPatient = NGPatient.patientUsingJSON(PropertyLoaderObj,"complete");
-		String personId= NGAPIFlows.CreatePatientinEPM(createPatient);
+		String personId= NGAPIFlows.createPatientinEPM(createPatient);
 		
 		enrollPatientWithoutGetProcessingStatusValidation(createPatient,personId,PropertyLoaderObj.getProperty("practiceName1"),PropertyLoaderObj.getProperty("integrationPracticeIDE1P1"),PropertyLoaderObj.getNGEnterpiseEnrollmentE1(), PropertyLoaderObj.getNGEnterpiseEnrollmentE1P1());
 		
 		NGAPIUtils.updateLoginDefaultTo("EnterpriseGateway",PropertyLoaderObj.getNGEnterpiseEnrollmentE1(), PropertyLoaderObj.getNGEnterpiseEnrollmentE1P4());
 		logStep("Create the trusted patient in NG EPM");
 		NewPatient trustedPatient = NGPatient.patientUsingJSON(PropertyLoaderObj,"trustedPatient");		
-		String trustedperson_id=NGAPIFlows.CreatePatientinEPM(trustedPatient);
+		String trustedperson_id=NGAPIFlows.createPatientinEPM(trustedPatient);
 		log("Step End: Person created with id "+trustedperson_id);
 		
 		logStep("Waiting for welcome mail at patient inbox from practice");        
@@ -3321,7 +3255,7 @@ public class NGIntegrationE2ESITTests extends BaseTestNGWebDriver{
 	    NewPatient createPatient = NGPatient.patientUsingJSON(PropertyLoaderObj,"complete");
 	    createPatient = NGPatient.addDataToPatientDemographics(PropertyLoaderObj, createPatient);
 		ObjectMapper objMap = new ObjectMapper();
-	    String requestbody = objMap.defaultPrettyPrintingWriter().writeValueAsString(createPatient);
+	    String requestbody = objMap.writerWithDefaultPrettyPrinter().writeValueAsString(createPatient);
 	    log("Request Body is \n" + requestbody);
 
 	    apiRoutes personURL =apiRoutes.valueOf("AddEnterprisePerson"); 
@@ -3345,7 +3279,7 @@ public class NGIntegrationE2ESITTests extends BaseTestNGWebDriver{
 		String encounter_id = NGAPIFlows.addEncounter(locationName,providerName,person_id);
 		
 		logStep("Request for MSU CCD");
-		NGAPIFlows.PostCCDRequest(locationName,providerName, person_id,"MedicalSummaryUtility", encounter_id);
+		NGAPIFlows.postCCDRequest(locationName,providerName, person_id,"MedicalSummaryUtility", encounter_id);
 		
 		Thread.sleep(60000);
 		CommonFlows.verifyCCDProcessingStatus(PropertyLoaderObj, person_id, practiceId, integrationPracticeId, 5);
@@ -3375,7 +3309,7 @@ public class NGIntegrationE2ESITTests extends BaseTestNGWebDriver{
 	    NewPatient createPatient = NGPatient.patientUsingJSON(PropertyLoaderObj,"complete");
 	    createPatient = NGPatient.addDataToPatientDemographics(PropertyLoaderObj, createPatient);
 		ObjectMapper objMap = new ObjectMapper();
-	    String requestbody = objMap.defaultPrettyPrintingWriter().writeValueAsString(createPatient);
+	    String requestbody = objMap.writerWithDefaultPrettyPrinter().writeValueAsString(createPatient);
 	    log("Request Body is \n" + requestbody);
 
 	    apiRoutes personURL =apiRoutes.valueOf("AddEnterprisePerson"); 
@@ -3423,7 +3357,7 @@ public class NGIntegrationE2ESITTests extends BaseTestNGWebDriver{
 		   Log4jUtil.log("Step End: Test data added to patient CCD successfully to encounter "+encounter_id);
 		   
 		logStep("Request for Locked Encounter CCD");
-		NGAPIFlows.PostCCDRequest(locationName,providerName, person_id,"LockedEncounter", encounter_id);
+		NGAPIFlows.postCCDRequest(locationName,providerName, person_id,"LockedEncounter", encounter_id);
 		
 		Thread.sleep(60000);
 		CommonFlows.verifyCCDProcessingStatus(PropertyLoaderObj, person_id, practiceId, integrationPracticeId, 4);
@@ -3487,7 +3421,7 @@ public class NGIntegrationE2ESITTests extends BaseTestNGWebDriver{
 		  Log4jUtil.log("Step End: Test data added to patient CCD successfully to encounter without signing off lab order"+encounter_id);
 		
 		logStep("Request for Locked Encounter CCD");
-		NGAPIFlows.PostCCDRequest(locationName,providerName, person_id,"LockedEncounter", encounter_id);
+		NGAPIFlows.postCCDRequest(locationName,providerName, person_id,"LockedEncounter", encounter_id);
 		
 		Thread.sleep(60000);
 		CommonFlows.verifyCCDProcessingStatus(PropertyLoaderObj, person_id, practiceId, integrationPracticeId, 4);
@@ -3504,7 +3438,7 @@ public class NGIntegrationE2ESITTests extends BaseTestNGWebDriver{
 			NGAPIUtils.updateLoginDefaultTo("EnterpriseGateway",enterpriseID, practiceID);
 			Log4jUtil.log("Create the Patient in NG EPM");
 			NewPatient createPatient = NGPatient.patientUsingJSON(PropertyLoaderObj,"complete");
-		    String requestbody = new ObjectMapper().defaultPrettyPrintingWriter().writeValueAsString(createPatient);
+		    String requestbody = new ObjectMapper().writerWithDefaultPrettyPrinter().writeValueAsString(createPatient);
 		    Log4jUtil.log("Common Patient Request Body is \n" + requestbody);
 			String finalURL =EnterprisebaseURL + apiRoutes.valueOf("AddEnterprisePerson").getRouteURL();	
 			person_id=NGAPIUtils.setupNGHttpPostRequest("EnterpriseGateway",finalURL,requestbody , 201);
@@ -3572,7 +3506,7 @@ public class NGIntegrationE2ESITTests extends BaseTestNGWebDriver{
 //		NGAPIFlows.checkOutEncounter(person_id, encounter_id);
 		
 //		logStep("Request for Locked Encounter CCD");
-//		NGAPIFlows.PostCCDRequest(locationName,providerName, person_id,"LockedEncounter", encounter_id);
+//		NGAPIFlows.postCCDRequest(locationName,providerName, person_id,"LockedEncounter", encounter_id);
 //				
 //		Thread.sleep(60000);
 //		CommonFlows.verifyCCDProcessingStatus(PropertyLoaderObj, person_id, practiceId, integrationPracticeId, 4);
@@ -3582,7 +3516,7 @@ public class NGIntegrationE2ESITTests extends BaseTestNGWebDriver{
 //		CommonFlows.IsCCDReceived(driver,URL,username, PropertyLoaderObj.getPassword(), "HavingSensitiveEncounterMSU","");
 		
 		logStep("Request for MSU CCD");
-		NGAPIFlows.PostCCDRequest(locationName,providerName, person_id,"MedicalSummaryUtility", encounter_id);
+		NGAPIFlows.postCCDRequest(locationName,providerName, person_id,"MedicalSummaryUtility", encounter_id);
 		
 		Thread.sleep(60000);
 		CommonFlows.verifyCCDProcessingStatus(PropertyLoaderObj, person_id, practiceId, integrationPracticeId, 5);
@@ -3634,7 +3568,7 @@ public class NGIntegrationE2ESITTests extends BaseTestNGWebDriver{
 		NGAPIUtils.updateLoginDefaultTo("EnterpriseGateway",PropertyLoaderObj.getNGEnterpiseEnrollmentE1(), PropertyLoaderObj.getNGEnterpiseEnrollmentE1P1());
 		logStep("Create the patient in NG EPM in Practice 1");
 		NewPatient createPatient = NGPatient.patientUsingJSON(PropertyLoaderObj,"complete");
-		String personId= NGAPIFlows.CreatePatientinEPM(createPatient);
+		String personId= NGAPIFlows.createPatientinEPM(createPatient);
 		
 		enrollPatientWithoutGetProcessingStatusValidation(createPatient,personId,PropertyLoaderObj.getProperty("practiceName1"),PropertyLoaderObj.getProperty("integrationPracticeIDE1P1"),PropertyLoaderObj.getNGEnterpiseEnrollmentE1(), PropertyLoaderObj.getNGEnterpiseEnrollmentE1P1());
 		
@@ -3645,7 +3579,7 @@ public class NGIntegrationE2ESITTests extends BaseTestNGWebDriver{
 		logStep("Create the trusted patient in NG EPM in practice 2");
 		NewPatient trustedPatient = NGPatient.patientUsingJSON(PropertyLoaderObj,"trustedPatient");	
 		trustedPatient = NGPatient.addDataToPatientDemographics(PropertyLoaderObj, trustedPatient);
-		String trustedperson_id=NGAPIFlows.CreatePatientinEPM(trustedPatient);
+		String trustedperson_id=NGAPIFlows.createPatientinEPM(trustedPatient);
 		log("Step End: Person created with id "+trustedperson_id);
 		
 		enrollPatientWithoutGetProcessingStatusValidation(trustedPatient,trustedperson_id,PropertyLoaderObj.getProperty("practiceName2"),PropertyLoaderObj.getProperty("integrationPracticeIDE1P2"),PropertyLoaderObj.getNGEnterpiseEnrollmentE1(), PropertyLoaderObj.getNGEnterpiseEnrollmentE1P2());
@@ -4581,7 +4515,6 @@ public class NGIntegrationE2ESITTests extends BaseTestNGWebDriver{
 
 		logStep("Continue to step 2: click continue and assess elements");
 		JalapenoAppointmentRequestV2Step2 appointmentRequestStep2 = appointmentRequestStep1.continueToStep2(driver);
-		assertTrue(appointmentRequestStep2.areBasicPageElementsPresent());
 
 		logStep("Fill details and submit");
 		appointmentRequestStep2.fillAppointmentRequestForm(appointmentReason);
@@ -4600,8 +4533,7 @@ public class NGIntegrationE2ESITTests extends BaseTestNGWebDriver{
 		Thread.sleep(5000);
 		NGAppointmentRequestV2HistoryPage historyPage = appointmentRequestStep1.goToHistory(driver);
 
-		logStep("Check elements and appointment request reason");
-		assertTrue(historyPage.areBasicPageElementsPresent());
+		logStep("Check appointment request reason");
 		assertTrue(historyPage.findAppointmentReasonAndOpen(appointmentReason));
 
 		logStep("Check appointment request details");
@@ -4885,9 +4817,8 @@ public class NGIntegrationE2ESITTests extends BaseTestNGWebDriver{
 		logStep("Assess Elements and choose provider");
 		appointmentRequestStep1.chooseProvider(PropertyLoaderObj.getProperty("E1P1ProviderName"));
 
-		logStep("Continue to step 2: click continue and assess elements");
+		logStep("Continue to step 2: click continue");
 		JalapenoAppointmentRequestV2Step2 appointmentRequestStep2 = appointmentRequestStep1.continueToStep2(driver);
-		assertTrue(appointmentRequestStep2.areBasicPageElementsPresent());
 
 		logStep("Fill details and submit");
 		appointmentRequestStep2.fillAppointmentRequestForm(appointmentReason);
@@ -4920,7 +4851,6 @@ public class NGIntegrationE2ESITTests extends BaseTestNGWebDriver{
 
 		logStep("Continue to step 3: click continue and assess elements");
 		JalapenoAppointmentRequestV2Step2 appointmentRequestStep4 = appointmentRequestStep3.continueToStep2(driver);
-		assertTrue(appointmentRequestStep4.areBasicPageElementsPresent());
 
 		logStep("Fill details and submit");
 		appointmentRequestStep4.fillAppointmentRequestForm(appointmentReason);
@@ -4939,8 +4869,7 @@ public class NGIntegrationE2ESITTests extends BaseTestNGWebDriver{
 		Thread.sleep(5000);
 		NGAppointmentRequestV2HistoryPage historyPage = appointmentRequestStep1.goToHistory(driver);
 
-		logStep("Check elements and appointment request reason");
-		assertTrue(historyPage.areBasicPageElementsPresent());
+		logStep("Check appointment request reason");
 		assertTrue(historyPage.findAppointmentReasonAndOpen(appointmentReason));
 
 		logStep("Check appointment request details");
@@ -5008,7 +4937,7 @@ public class NGIntegrationE2ESITTests extends BaseTestNGWebDriver{
 		NewPatient createPatient = NGPatient.patientUsingJSON(PropertyLoaderObj,"");
 				
 		ObjectMapper objMap = new ObjectMapper();
-		String requestbody = objMap.defaultPrettyPrintingWriter().writeValueAsString(createPatient);
+		String requestbody = objMap.writerWithDefaultPrettyPrinter().writeValueAsString(createPatient);
 		log("Request Body is \n" + requestbody);
 				
 		apiRoutes personURL =apiRoutes.valueOf("AddEnterprisePerson"); 
@@ -5074,7 +5003,6 @@ public class NGIntegrationE2ESITTests extends BaseTestNGWebDriver{
 
 		logStep("Continue to step 2: click continue and assess elements");
 		JalapenoAppointmentRequestV2Step2 appointmentRequestStep2 = appointmentRequestStep1.continueToStep2(driver);
-		assertTrue(appointmentRequestStep2.areBasicPageElementsPresent());
 
 		logStep("Fill details and submit");
 		appointmentRequestStep2.fillAppointmentRequestForm(appointmentReason);
@@ -5131,7 +5059,6 @@ public class NGIntegrationE2ESITTests extends BaseTestNGWebDriver{
 
 		logStep("Continue to step 3: click continue and assess elements");
 		JalapenoAppointmentRequestV2Step2 appointmentRequestStep4 = appointmentRequestStep3.continueToStep2(driver);
-		assertTrue(appointmentRequestStep4.areBasicPageElementsPresent());
 
 		logStep("Fill details and submit");
 		appointmentRequestStep4.fillAppointmentRequestForm(appointmentReason);
@@ -5150,7 +5077,6 @@ public class NGIntegrationE2ESITTests extends BaseTestNGWebDriver{
 		NGAppointmentRequestV2HistoryPage historyPage = appointmentRequestStep1.goToHistory(driver);
 
 		logStep("Check elements and appointment request reason");
-		assertTrue(historyPage.areBasicPageElementsPresent());
 		assertTrue(historyPage.findAppointmentReasonAndOpen(appointmentReason));
 
 		logStep("Check appointment request details");
@@ -5632,9 +5558,8 @@ public class NGIntegrationE2ESITTests extends BaseTestNGWebDriver{
 		logStep("Assess Elements and choose provider");
 		appointmentRequestStep1.chooseProvider(PropertyLoaderObj.getProperty("ProviderName"));
 
-		logStep("Continue to step 2: click continue and assess elements");
+		logStep("Continue to step 2: click continue");
 		JalapenoAppointmentRequestV2Step2 appointmentRequestStep2 = appointmentRequestStep1.continueToStep2(driver);
-		assertTrue(appointmentRequestStep2.areBasicPageElementsPresent());
 
 		logStep("Fill details and submit");
 		appointmentRequestStep2.fillAppointmentRequestForm(appointmentReason);
@@ -5654,7 +5579,6 @@ public class NGIntegrationE2ESITTests extends BaseTestNGWebDriver{
 		NGAppointmentRequestV2HistoryPage historyPage = appointmentRequestStep1.goToHistory(driver);
 
 		logStep("Check elements and appointment request reason");
-		assertTrue(historyPage.areBasicPageElementsPresent());
 		assertTrue(historyPage.findAppointmentReasonAndOpen(appointmentReason));
 
 		logStep("Check appointment request details");
@@ -5837,10 +5761,8 @@ public class NGIntegrationE2ESITTests extends BaseTestNGWebDriver{
 		payBillsPage.removeAllCards();
 		logStep("Check that no card is present");
 		assertFalse(payBillsPage.isAnyCardPresent());
-		assertTrue(payBillsPage.areBasicPageElementsPresent());
 
 		JalapenoPayBillsConfirmationPage confirmationPage = payBillsPage.fillPaymentInfo(amount, accountNumber,	creditCard);
-		assertTrue(confirmationPage.areBasicPageElementsPresent());
 		logStep("Verifying credit card ending");
 		assertTrue(confirmationPage.getCreditCardEnding().equals(creditCard.getLastFourDigits()));
 		
@@ -7233,7 +7155,6 @@ public class NGIntegrationE2ESITTests extends BaseTestNGWebDriver{
 		
 		logStep("Click on messages solution");
 		JalapenoMessagesPage messagesPage = homePage.showMessages(driver);
-		assertTrue(messagesPage.areBasicPageElementsPresent(), "Inbox failed to load properly.");
 		
 		logStep("Find message in Inbox with message subject " + subject);
 		assertTrue(messagesPage.isMessageDisplayed(driver, subject));
@@ -7322,7 +7243,6 @@ public class NGIntegrationE2ESITTests extends BaseTestNGWebDriver{
 		
 		logStep("Click on messages solution");
 		JalapenoMessagesPage messagesPage = homePage.showMessages(driver);
-		assertTrue(messagesPage.areBasicPageElementsPresent(), "Inbox failed to load properly.");
 		
 		logStep("Find message in Inbox with message subject " + docName);
 		assertTrue(messagesPage.isMessageDisplayed(driver, docName));
