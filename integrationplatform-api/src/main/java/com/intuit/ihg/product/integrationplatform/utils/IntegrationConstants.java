@@ -38,6 +38,8 @@ public class IntegrationConstants {
 	public static final String PORTALSTATUS = "PortalStatus";
 	public static final String DEACTIVATED = "DEACTIVATED";
 	public static final String DELETED = "DELETED";
+	public static final String STATE_ERRORED = "ERROR";
+
 
 	// Appointment Request constants
 	public static final String REASON = "Reason";
