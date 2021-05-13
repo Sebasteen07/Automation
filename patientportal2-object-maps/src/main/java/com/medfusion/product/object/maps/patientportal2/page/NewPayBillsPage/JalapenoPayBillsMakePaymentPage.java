@@ -89,7 +89,7 @@ public class JalapenoPayBillsMakePaymentPage extends JalapenoMenu {
 	@FindBy(how = How.XPATH, using = "//*[@id=\"balanceDue\"]/span")
 	private WebElement balanceDueDate;
 
-	@FindBy(how = How.XPATH, using = "//*[contains(@href,'#/payments/history/details')]/preceding-sibling::span[3]")
+	@FindBy(how = How.XPATH, using = "//*[contains(@href,'#/payments/history/details')]/preceding-sibling::span[1]")
 	private WebElement confirmationNumberMsg;
 
 	@FindBy(how = How.XPATH, using = "(//table[@class='table table-condensed']/tbody/tr/td/a)[1]")

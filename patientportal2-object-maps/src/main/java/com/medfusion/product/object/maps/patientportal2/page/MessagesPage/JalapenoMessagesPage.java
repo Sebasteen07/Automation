@@ -432,8 +432,11 @@ public class JalapenoMessagesPage extends JalapenoMenu {
 		}
 	}
 
-	public void checkProviderDetails(String providerName, String location) {
+	public void checkProviderDetails(String providerName1, String location) {
 		IHGUtil.PrintMethodName();
+		int index =providerName1.lastIndexOf(',');
+		String providerName = providerName1.substring(0, index) + providerName1.substring(index + 1);
+		
 		Log4jUtil.log("Searching: Provider Name is: " + providerName + ", and Actual Provider Name is: "
 				+ providerNameOnPortal.getText().toString());
 		Log4jUtil.log("Searching: Provider location is: " + location + ", and Actual Provider location is: "
