@@ -35,6 +35,7 @@ import com.intuit.ihg.product.object.maps.sitegen.page.home.SiteGenPracticeHomeP
 import com.intuit.ihg.product.object.maps.sitegen.page.pharmacy.AddPharmacyPage;
 import static com.intuit.ihg.product.object.maps.sitegen.page.pharmacy.AddPharmacyPage.pharmacyName;
 import com.intuit.ihg.product.object.maps.sitegen.page.pharmacy.ManageYourPharmacies;
+import com.intuti.ihg.product.object.maps.sitegen.page.onlineBillPay.EstatementPage;
 import com.medfusion.common.utils.IHGUtil;
 import com.medfusion.common.utils.Mailinator;
 import com.medfusion.common.utils.PropertyFileLoader;
@@ -214,7 +215,7 @@ public class PatientPortal2AcceptanceTests extends BaseTestNGWebDriver {
 	public void testAssessLoginPageElements() {
 		log("Load login page");
 		JalapenoLoginPage jalapenoLoginPage = new JalapenoLoginPage(driver, testData.getUrl());
-		
+
 		log("Assessing login page elements");
 		jalapenoLoginPage.assessPageElements();
 	}
@@ -454,8 +455,6 @@ public class PatientPortal2AcceptanceTests extends BaseTestNGWebDriver {
 		PatientMessagingPage patientMessagingPage = practiceHome.clickPatientMessagingTab();
 		ArrayList<String> practicePortalMessage = patientMessagingPage.setFieldsAndPublishMessage(testData,
 				"TestingMessage", messageSubject);
-
-		Thread.sleep(250000);
 
 		logStep("Login patient");
 		JalapenoLoginPage loginPage = new JalapenoLoginPage(driver, testData.getUrl());
@@ -2135,13 +2134,13 @@ public class PatientPortal2AcceptanceTests extends BaseTestNGWebDriver {
 	public void testAutoEnrollmentSamePatientid() throws Exception {
 		PropertyFileLoader testData = new PropertyFileLoader();
 		String firstPatientEmail = IHGUtil.createRandomEmailAddress(testData.getEmail(), '.');
-		String patientId= "SamePatientID" + IHGUtil.createRandomNumericString();
+		String patientId = "SamePatientID" + IHGUtil.createRandomNumericString();
 
 		logStep("Patient Activation at First Practice Portal");
 		PatientActivationSearchTest patientActivationSearchTest = new PatientActivationSearchTest();
 		String unlockLinkPortal = patientActivationSearchTest.getPatientActivationLinkWithPatientId(1, driver,
 				testData.getProperty("doctorLogin1"), testData.getProperty("doctorPassword1"),
-				testData.getProperty("portalUrl"),firstPatientEmail,patientId);
+				testData.getProperty("portalUrl"), firstPatientEmail, patientId);
 		logStep("Activation Link of First Practice is " + unlockLinkPortal);
 
 		logStep("Logging into Mailinator and getting Patient Activation url for first Practice");
@@ -2172,7 +2171,7 @@ public class PatientPortal2AcceptanceTests extends BaseTestNGWebDriver {
 		PatientActivationSearchTest patientActivationSearchTest12 = new PatientActivationSearchTest();
 		patientActivationSearchTest12.getPatientActivationLinkWithPatientId(0, driver,
 				testData.getProperty("doctorLoginPractice2"), testData.getProperty("doctorPasswordPractice2"),
-				testData.getPortalUrl(),firstPatientEmail,patientId);
+				testData.getPortalUrl(), firstPatientEmail, patientId);
 
 		log("Waiting for welcome mail at patient inbox from second practice");
 		Instant testStart = Instant.now();
@@ -3758,7 +3757,7 @@ public class PatientPortal2AcceptanceTests extends BaseTestNGWebDriver {
 		logStep("Logout patient");
 		askHistoryDetail.clickOnLogout();
 	}
-	
+
 	public void testPatientAutoEnrollment() throws Exception {
 		PropertyFileLoader testData = new PropertyFileLoader();
 		String patientsEmail = IHGUtil.createRandomEmailAddress(testData.getEmail(), '.');
@@ -3817,10 +3816,10 @@ public class PatientPortal2AcceptanceTests extends BaseTestNGWebDriver {
 
 		logStep("Switching to Second Practice to verify auto enrollment");
 		jalapenoHomePage.switchPractice(testData.getProperty("practiceName1"));
-		
+
 		logStep("Auto Enrollment to Second Practice is completed");
 	}
-	
+
 	@Test(enabled = true, groups = { "acceptance-solutions" }, retryAnalyzer = RetryAnalyzer.class)
 	public void testCcdDemographicValidation() throws Exception {
 
@@ -3834,29 +3833,31 @@ public class PatientPortal2AcceptanceTests extends BaseTestNGWebDriver {
 		JalapenoCcdViewerPage jalapenoCcdPage = jalapenoMessagesPage.findCcdMessage(driver);
 
 		assertTrue(testData.getProperty("patHeaderName").equals(jalapenoCcdPage.getHeaderName()),
-				"Expected:"+ testData.getProperty("patHeaderName") + ", found: " + jalapenoCcdPage.getHeaderName());
+				"Expected:" + testData.getProperty("patHeaderName") + ", found: " + jalapenoCcdPage.getHeaderName());
 
 		assertTrue(testData.getProperty("patName").equals(jalapenoCcdPage.getPatientName()),
-				"Expected:"+ testData.getProperty("patName") + ", found: " + jalapenoCcdPage.getPatientName());
+				"Expected:" + testData.getProperty("patName") + ", found: " + jalapenoCcdPage.getPatientName());
 
 		assertTrue(testData.getProperty("patEmail").equals(jalapenoCcdPage.getPatientEmail()),
-				"Expected:"+ testData.getProperty("patEmail") + ", found: " + jalapenoCcdPage.getPatientEmail());
+				"Expected:" + testData.getProperty("patEmail") + ", found: " + jalapenoCcdPage.getPatientEmail());
 
 		assertTrue(testData.getProperty("patDob").equals(jalapenoCcdPage.getPatientDOB()),
-				"Expected:"+ testData.getProperty("patDob") + ", found: " + jalapenoCcdPage.getPatientDOB());
+				"Expected:" + testData.getProperty("patDob") + ", found: " + jalapenoCcdPage.getPatientDOB());
 
-		assertTrue(testData.getProperty("patEthnicity").equals(jalapenoCcdPage.getPatientEthnicity()),
-				"Expected:"+ testData.getProperty("patEthnicity") + ", found: " + jalapenoCcdPage.getPatientEthnicity());
+		assertTrue(testData.getProperty("patEthnicity").equals(jalapenoCcdPage.getPatientEthnicity()), "Expected:"
+				+ testData.getProperty("patEthnicity") + ", found: " + jalapenoCcdPage.getPatientEthnicity());
 
 		assertTrue(testData.getProperty("patMartitalStatus").equals(jalapenoCcdPage.getPatientMaritialStatus()),
-				"Expected:"+ testData.getProperty("patMartitalStatus") + ", found: " + jalapenoCcdPage.getPatientMaritialStatus());
+				"Expected:" + testData.getProperty("patMartitalStatus") + ", found: "
+						+ jalapenoCcdPage.getPatientMaritialStatus());
 
 		assertTrue(testData.getProperty("patCareTeamMember").equals(jalapenoCcdPage.getPatientCareTeamMember()),
-				"Expected:"+ testData.getProperty("patCareTeamMember") + ", found: " + jalapenoCcdPage.getPatientCareTeamMember());
-		
+				"Expected:" + testData.getProperty("patCareTeamMember") + ", found: "
+						+ jalapenoCcdPage.getPatientCareTeamMember());
+
 		assertTrue(testData.getProperty("patPhone").equals(jalapenoCcdPage.getPatientPhoneNumber()),
-				"Expected:"+ testData.getProperty("patPhone") + ", found: " + jalapenoCcdPage.getPatientPhoneNumber());
-		
+				"Expected:" + testData.getProperty("patPhone") + ", found: " + jalapenoCcdPage.getPatientPhoneNumber());
+
 		jalapenoMessagesPage = jalapenoCcdPage.closeCcd(driver);
 		jalapenoHomePage = jalapenoMessagesPage.clickOnMenuHome();
 
@@ -3864,10 +3865,10 @@ public class PatientPortal2AcceptanceTests extends BaseTestNGWebDriver {
 		jalapenoLoginPage = jalapenoHomePage.clickOnLogout();
 
 	}
-	
+
 	@Test(enabled = true, groups = { "acceptance-linkedaccounts" }, retryAnalyzer = RetryAnalyzer.class)
 	public void testSelfTrustedRepresentative() throws Exception {
-		patient=null;
+		patient = null;
 		createPatient();
 		String email = testData.getTrustedRepEmail() + IHGUtil.createRandomNumber() + "@mailinator.com";
 
@@ -3892,19 +3893,18 @@ public class PatientPortal2AcceptanceTests extends BaseTestNGWebDriver {
 				patient.getZipCode(), patient.getDOBMonth(), patient.getDOBDay(), patient.getDOBYear());
 
 		logStep("Continue registration - linking same patient as trusted representative");
-		linkAccountPage.linkSamePatientAsSelfTrustedRep(patient.getUsername(),
-				patient.getPassword(), "Spouse");
+		linkAccountPage.linkSamePatientAsSelfTrustedRep(patient.getUsername(), patient.getPassword(), "Spouse");
 
 		assertTrue(linkAccountPage.isSelfTrustedRepresentativeErrorDisplayed());
 	}
-	
+
 	@Test(enabled = true, groups = { "acceptance-solutions" }, retryAnalyzer = RetryAnalyzer.class)
 	public void testAppoinmentScheduling() throws Exception {
 		logStep("Login patient");
 		JalapenoLoginPage loginPage = new JalapenoLoginPage(driver, testData.getProperty("medPortalUrl"));
 		JalapenoHomePage homePage = loginPage.login(testData.getProperty("medUserid"),
 				testData.getProperty("medPassword"));
-		
+
 		logStep("Click on the Appoinment Scheduling tab");
 		JalapenoAppoinmentSchedulingPage appoinmentschedulingpage = homePage.clickOnAppoinmentScheduled(driver);
 
@@ -3922,5 +3922,99 @@ public class PatientPortal2AcceptanceTests extends BaseTestNGWebDriver {
 
 		logStep("Verify the New Tab Open");
 		assertTrue(appoinmentschedulingpage.isNewTabOpenDestinationUrl(driver));
+	}
+	
+	/*
+	 * SCENARIO1- where a patient having statement Paper+Electronic will get update
+	 * to Electronic after updating the job with estatement configuration
+	 */
+
+	@Test(enabled = true, groups = { "acceptance-solutions" }, retryAnalyzer = RetryAnalyzer.class)
+	public void testSatementPreferenceUpdatingToElectronic() throws Exception {
+		SiteGenLoginPage loginpage;
+		SiteGenHomePage pSiteGenHomePage;
+		SiteGenPracticeHomePage pSiteGenPracticeHomePage;
+		EstatementPage estatement;
+		JalapenoLoginPage loginPage;
+		JalapenoHomePage homePage;
+		JalapenoAccountPage accountPage;
+		JalapenoMyAccountPreferencesPage myAccountSecurityPage;
+		JalapenoMyAccountProfilePage myAccountPage;
+
+		logStep("Login to sitegen as Admin user");
+		loginpage = new SiteGenLoginPage(driver, testData.getProperty("sitegenUrl"));
+		pSiteGenHomePage = loginpage.login(testData.getProperty("sitegenAdminUser"), testData.getProperty("sitegenPasswordUser"));
+				
+		logStep("Navigate to SiteGen PracticeHomePage");
+		pSiteGenPracticeHomePage = pSiteGenHomePage.clickLinkMedfusionSiteAdministration();
+		logStep("Check if SiteGen Practice Homepage elements are present ");
+		assertTrue(pSiteGenPracticeHomePage.isSearchPageLoaded(), "Expected the SiteGen Practice HomePage  to be loaded, but it was not.");
+			
+		logStep("Click on online bill pay and Navigate to Estatement");
+		pSiteGenPracticeHomePage.clickOnOnlineBillPay();
+		
+		logStep("Doing the configuration setting for estatement and setting up the default delivery option");
+		estatement = new EstatementPage(driver);
+		estatement.enableStatementDelivery("check");
+		estatement.bothPaperAndElectronic("check");
+		estatement.disablePaperOnly("uncheck");
+		Thread.sleep(2000);//Waiting for the update of default delivery options
+		estatement.defaultDeliveryOption("Paper + Electronic");
+		estatement.submitButton();
+
+		logStep("Creating a patient from patient portal");
+		if (patient == null) {
+			String username = PortalUtil2.generateUniqueUsername(testData.getProperty("userid"), testData);
+			patient = PatientFactory.createJalapenoPatient(username, testData);
+			patient = new CreatePatient().selfRegisterPatientWithPreference(driver, patient,
+					testData.getProperty("statementUrl"), 3);
+		}
+		
+		logStep("Go to login and enter to patient portal");
+		loginPage = new JalapenoLoginPage(driver, testData.getProperty("statementUrl"));
+		homePage = loginPage.login(patient.getUsername(), patient.getPassword());
+		
+		logStep("Go to security tab on my account page");
+		accountPage = homePage.clickOnAccount();
+		myAccountPage = accountPage.clickOnEditMyAccount();
+		myAccountPage.clickOnLogout();
+		
+		logStep("Navigate to Preference page and validate the preferencer has been updated to Paper + Electronic");
+		myAccountSecurityPage = myAccountPage.goToPreferencesTab(driver);
+		assertEquals("Paper + Electronic", myAccountSecurityPage.getSelectedStatementPreference());
+
+		logStep("Again login back to Sitegen for estamenet Setting ");
+		loginpage = new SiteGenLoginPage(driver, testData.getProperty("sitegenUrl"));
+		pSiteGenHomePage = loginpage.login(testData.getProperty("sitegenAdminUser"), testData.getProperty("sitegenPasswordUser"));
+				
+		logStep("Navigate to SiteGen PracticeHomePage");
+		pSiteGenPracticeHomePage = pSiteGenHomePage.clickLinkMedfusionSiteAdministration();
+		logStep("Check if SiteGen Practice Homepage elements are present ");
+		assertTrue(pSiteGenPracticeHomePage.isSearchPageLoaded(), "Expected the SiteGen Practice HomePage  to be loaded, but it was not.");
+		
+		logStep("Clicking on online Bill Pay and Navigate to Estatement");
+		pSiteGenPracticeHomePage.clickOnOnlineBillPay();
+		
+		logStep("Setting up the estatement configuration and setting the default delivery option to estatement");
+		estatement = new EstatementPage(driver);
+		estatement.enableStatementDelivery("check");
+		estatement.bothPaperAndElectronic("uncheck");
+		estatement.disablePaperOnly("check");
+		Thread.sleep(2000);//Waiting for the update of default delivery options
+		estatement.defaultDeliveryOption("eStatement");
+		estatement.submitButton();
+
+		logStep("Load login back to patient portal  page");
+		loginPage = new JalapenoLoginPage(driver, testData.getProperty("statementUrl"));
+		homePage = loginPage.login(patient.getUsername(), patient.getPassword());
+
+		logStep("Go to security tab on my account page");
+		accountPage = homePage.clickOnAccount();
+	    myAccountPage = accountPage.clickOnEditMyAccount();
+		
+		logStep("Navigate to Preference page and validate the preferencer has been updated to Electronically");
+		myAccountSecurityPage = myAccountPage.goToPreferencesTab(driver);
+		assertEquals("Electronically", myAccountSecurityPage.getStatementPreferenceafterUpdate());
+
 	}
 }
