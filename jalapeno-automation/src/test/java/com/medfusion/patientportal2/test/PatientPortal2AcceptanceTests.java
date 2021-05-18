@@ -3929,7 +3929,7 @@ public class PatientPortal2AcceptanceTests extends BaseTestNGWebDriver {
 	 * to Electronic after updating the job with estatement configuration
 	 */
 
-	@Test(enabled = true, groups = { "acceptance-solutions" }, retryAnalyzer = RetryAnalyzer.class)
+	@Test(enabled = true, groups = { "acceptance-basics", "commonpatient" }, retryAnalyzer = RetryAnalyzer.class)
 	public void testSatementPreferenceUpdatingToElectronic() throws Exception {
 		SiteGenLoginPage loginpage;
 		SiteGenHomePage pSiteGenHomePage;
