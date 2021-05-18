@@ -3958,7 +3958,7 @@ public class PatientPortal2AcceptanceTests extends BaseTestNGWebDriver {
 		estatement.enableStatementDelivery("check");
 		estatement.bothPaperAndElectronic("check");
 		estatement.disablePaperOnly("uncheck");
-		Thread.sleep(2000);//Waiting for the update of default delivery options
+		Thread.sleep(5000);//Waiting for the update of default delivery options
 		estatement.defaultDeliveryOption("Paper + Electronic");
 		estatement.submitButton();
 
@@ -3977,12 +3977,13 @@ public class PatientPortal2AcceptanceTests extends BaseTestNGWebDriver {
 		logStep("Go to security tab on my account page");
 		accountPage = homePage.clickOnAccount();
 		myAccountPage = accountPage.clickOnEditMyAccount();
-		myAccountPage.clickOnLogout();
+		
 		
 		logStep("Navigate to Preference page and validate the preferencer has been updated to Paper + Electronic");
 		myAccountSecurityPage = myAccountPage.goToPreferencesTab(driver);
 		assertEquals("Paper + Electronic", myAccountSecurityPage.getSelectedStatementPreference());
-
+		myAccountPage.clickOnLogout();
+		
 		logStep("Again login back to Sitegen for estamenet Setting ");
 		loginpage = new SiteGenLoginPage(driver, testData.getProperty("sitegenUrl"));
 		pSiteGenHomePage = loginpage.login(testData.getProperty("sitegenAdminUser"), testData.getProperty("sitegenPasswordUser"));
@@ -4000,7 +4001,7 @@ public class PatientPortal2AcceptanceTests extends BaseTestNGWebDriver {
 		estatement.enableStatementDelivery("check");
 		estatement.bothPaperAndElectronic("uncheck");
 		estatement.disablePaperOnly("check");
-		Thread.sleep(2000);//Waiting for the update of default delivery options
+		Thread.sleep(5000);//Waiting for the update of default delivery options
 		estatement.defaultDeliveryOption("eStatement");
 		estatement.submitButton();
 
