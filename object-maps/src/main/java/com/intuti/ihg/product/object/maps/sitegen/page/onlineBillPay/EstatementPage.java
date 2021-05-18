@@ -1,6 +1,7 @@
 //  Copyright 2013-2021 NXGN Management, LLC. All Rights Reserved.
 package com.intuti.ihg.product.object.maps.sitegen.page.onlineBillPay;
 
+import org.openqa.selenium.JavascriptExecutor;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.FindBy;
@@ -25,6 +26,8 @@ public class EstatementPage extends BasePageObject {
 
 	@FindBy(xpath = "//input[@value='Submit']")
 	private WebElement submitButton;
+	
+	JavascriptExecutor js = (JavascriptExecutor) driver;
 
 	public EstatementPage(WebDriver driver) {
 		super(driver);
@@ -79,6 +82,7 @@ public class EstatementPage extends BasePageObject {
 
 	public void submitButton() {
 		IHGUtil.waitForElement(driver, 20, submitButton);
+		js.executeScript("window.scrollBy(0,1000)");
 		submitButton.click();
 	}
 }
