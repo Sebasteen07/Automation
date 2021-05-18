@@ -27,7 +27,6 @@ public class EstatementPage extends BasePageObject {
 	@FindBy(xpath = "//input[@value='Submit']")
 	private WebElement submitButton;
 	
-	JavascriptExecutor js = (JavascriptExecutor) driver;
 
 	public EstatementPage(WebDriver driver) {
 		super(driver);
@@ -80,9 +79,9 @@ public class EstatementPage extends BasePageObject {
 		return DefaultOption;
 	}
 
-	public void submitButton() {
+	public void submitButton() throws InterruptedException {
 		IHGUtil.waitForElement(driver, 20, submitButton);
-		js.executeScript("window.scrollBy(0,1000)");
+		scrollAndWait(0, 500, 10);
 		submitButton.click();
 	}
 }
