@@ -2270,7 +2270,7 @@ public class PatientPortal2AcceptanceTests extends BaseTestNGWebDriver {
 		String guardianFirstName = "BetaGuardian" + IHGUtil.createRandomNumericString();
 		String guardianLogin = PortalUtil2.generateUniqueUsername("login", testData);
 
-		logStep("Guardian Patient Activation at Practice Portal1");
+		logStep("Guardian Patient Activation at Practice Portal");
 		PatientActivationSearchTest patientActivationSearchTest = new PatientActivationSearchTest();
 		String unlockLinkPortal = patientActivationSearchTest.getPatientActivationPortalLink(1, driver,
 				guardianpatientEmail, testData.getProperty("doctorLogin1"), testData.getProperty("doctorPassword1"),
