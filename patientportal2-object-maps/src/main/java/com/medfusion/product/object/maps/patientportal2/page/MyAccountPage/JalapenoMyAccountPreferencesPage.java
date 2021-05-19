@@ -160,6 +160,7 @@ public class JalapenoMyAccountPreferencesPage extends JalapenoMyAccountPage {
 	}
 
 	public String getSelectedStatementPreference() {
+		new WebDriverWait(driver, 30).until(ExpectedConditions.elementToBeClickable(selectedStatementPreference));
 		Select select = new Select(selectedStatementPreference);
 		WebElement webelement = select.getFirstSelectedOption();
 		System.out.println(webelement.getText());
