@@ -2270,7 +2270,7 @@ public class PatientPortal2AcceptanceTests extends BaseTestNGWebDriver {
 		String guardianFirstName = "BetaGuardian" + IHGUtil.createRandomNumericString();
 		String guardianLogin = PortalUtil2.generateUniqueUsername("login", testData);
 
-		logStep("Guardian Patient Activation at Practice Portal1");
+		logStep("Guardian Patient Activation at Practice Portal");
 		PatientActivationSearchTest patientActivationSearchTest = new PatientActivationSearchTest();
 		String unlockLinkPortal = patientActivationSearchTest.getPatientActivationPortalLink(1, driver,
 				guardianpatientEmail, testData.getProperty("doctorLogin1"), testData.getProperty("doctorPassword1"),
@@ -3274,22 +3274,26 @@ public class PatientPortal2AcceptanceTests extends BaseTestNGWebDriver {
 
 	@Test(enabled = true, groups = { "acceptance-basics" }, retryAnalyzer = RetryAnalyzer.class)
 	public void testPatientActivationInvalidZipCode() throws Exception {
-		String patientsEmail = IHGUtil.createRandomEmailAddress(testData.getEmail(), '.');
+		String guardianpatientEmail = IHGUtil.createRandomEmailAddress(testData.getEmail(), '.');
+		String guardianFirstName = "Guardian" + IHGUtil.createRandomNumericString();
 
-		logStep("Patient Activation on Practice Portal");
+		logStep("Patient Activation at Practice Portal1");
 		PatientActivationSearchTest patientActivationSearchTest = new PatientActivationSearchTest();
-		String unlockLinkPortal = patientActivationSearchTest.getPatientActivationLink(driver, testData, patientsEmail);
 
-		logStep("Finishing of patient activation: step 1 - verifying identity");
+		logStep("Finishing of patient activation: step 1 - Filling the patient details");
+		String unlockLinkPortal = patientActivationSearchTest.getPatientActivationPortalLink(1, driver,
+				guardianpatientEmail, testData.getProperty("doctorLogin1"), testData.getProperty("doctorPassword1"),
+				testData.getPortalUrl(), guardianFirstName);
+
+		logStep("Finishing of patient activation: step 2 - verifying identity with invalid zipcode and valid date of birth");
 		PatientVerificationPage patientVerificationPage = new PatientVerificationPage(driver, unlockLinkPortal);
-
-		logStep("Provideing the Invalid Zip Code or DOB: step 2 - not verify the patient");
-		patientVerificationPage.fillPatientZipCodeDobInfoAndContinue(PracticeConstants.INVALID_ZIP_CODE,
+		patientVerificationPage.fillPatientInfoAndContinue(PracticeConstants.INVALID_ZIP_CODE,
 				JalapenoConstants.DATE_OF_BIRTH_MONTH_NO, JalapenoConstants.DATE_OF_BIRTH_DAY,
 				JalapenoConstants.DATE_OF_BIRTH_YEAR);
 
 		logStep("Looking for the Error Message: step 3 - verifying the error message");
 		assertTrue(patientVerificationPage.isZipCodeDobErrorDisplayed());
+
 	}
 
 	@Test(enabled = true, groups = { "acceptance-solutions" }, retryAnalyzer = RetryAnalyzer.class)
