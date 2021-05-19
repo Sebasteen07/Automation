@@ -2270,7 +2270,7 @@ public class PatientPortal2AcceptanceTests extends BaseTestNGWebDriver {
 		String guardianFirstName = "BetaGuardian" + IHGUtil.createRandomNumericString();
 		String guardianLogin = PortalUtil2.generateUniqueUsername("login", testData);
 
-		logStep("Guardian Patient Activation at Practice Portal1");
+		logStep("Guardian Patient Activation at Practice Portal");
 		PatientActivationSearchTest patientActivationSearchTest = new PatientActivationSearchTest();
 		String unlockLinkPortal = patientActivationSearchTest.getPatientActivationPortalLink(1, driver,
 				guardianpatientEmail, testData.getProperty("doctorLogin1"), testData.getProperty("doctorPassword1"),
@@ -3274,22 +3274,26 @@ public class PatientPortal2AcceptanceTests extends BaseTestNGWebDriver {
 
 	@Test(enabled = true, groups = { "acceptance-basics" }, retryAnalyzer = RetryAnalyzer.class)
 	public void testPatientActivationInvalidZipCode() throws Exception {
-		String patientsEmail = IHGUtil.createRandomEmailAddress(testData.getEmail(), '.');
+		String guardianpatientEmail = IHGUtil.createRandomEmailAddress(testData.getEmail(), '.');
+		String guardianFirstName = "Guardian" + IHGUtil.createRandomNumericString();
 
-		logStep("Patient Activation on Practice Portal");
+		logStep("Patient Activation at Practice Portal1");
 		PatientActivationSearchTest patientActivationSearchTest = new PatientActivationSearchTest();
-		String unlockLinkPortal = patientActivationSearchTest.getPatientActivationLink(driver, testData, patientsEmail);
 
-		logStep("Finishing of patient activation: step 1 - verifying identity");
+		logStep("Finishing of patient activation: step 1 - Filling the patient details");
+		String unlockLinkPortal = patientActivationSearchTest.getPatientActivationPortalLink(1, driver,
+				guardianpatientEmail, testData.getProperty("doctorLogin1"), testData.getProperty("doctorPassword1"),
+				testData.getPortalUrl(), guardianFirstName);
+
+		logStep("Finishing of patient activation: step 2 - verifying identity with invalid zipcode and valid date of birth");
 		PatientVerificationPage patientVerificationPage = new PatientVerificationPage(driver, unlockLinkPortal);
-
-		logStep("Provideing the Invalid Zip Code or DOB: step 2 - not verify the patient");
-		patientVerificationPage.fillPatientZipCodeDobInfoAndContinue(PracticeConstants.INVALID_ZIP_CODE,
+		patientVerificationPage.fillPatientInfoAndContinue(PracticeConstants.INVALID_ZIP_CODE,
 				JalapenoConstants.DATE_OF_BIRTH_MONTH_NO, JalapenoConstants.DATE_OF_BIRTH_DAY,
 				JalapenoConstants.DATE_OF_BIRTH_YEAR);
 
 		logStep("Looking for the Error Message: step 3 - verifying the error message");
 		assertTrue(patientVerificationPage.isZipCodeDobErrorDisplayed());
+
 	}
 
 	@Test(enabled = true, groups = { "acceptance-solutions" }, retryAnalyzer = RetryAnalyzer.class)
@@ -3943,7 +3947,7 @@ public class PatientPortal2AcceptanceTests extends BaseTestNGWebDriver {
 
 		logStep("Login to sitegen as Admin user");
 		loginpage = new SiteGenLoginPage(driver, testData.getProperty("sitegenUrl"));
-		pSiteGenHomePage = loginpage.login(testData.getProperty("sitegenAdminUser"), testData.getProperty("sitegenPasswordUser"));
+		pSiteGenHomePage = loginpage.login(testData.getProperty("jalpenoSitegenAdmin"), testData.getProperty("jalapenoSitegenPassword"));
 				
 		logStep("Navigate to SiteGen PracticeHomePage");
 		pSiteGenPracticeHomePage = pSiteGenHomePage.clickLinkMedfusionSiteAdministration();
@@ -3962,19 +3966,15 @@ public class PatientPortal2AcceptanceTests extends BaseTestNGWebDriver {
 		estatement.defaultDeliveryOption("Paper + Electronic");
 		estatement.submitButton();
 
-		logStep("Creating a patient from patient portal");
-		if (patient == null) {
-			String username = PortalUtil2.generateUniqueUsername(testData.getProperty("userid"), testData);
-			patient = PatientFactory.createJalapenoPatient(username, testData);
-			patient = new CreatePatient().selfRegisterPatientWithPreference(driver, patient,
-					testData.getProperty("statementUrl"), 3);
-		}
+		String username = PortalUtil2.generateUniqueUsername(testData.getProperty("userid"), testData);
+		patient = PatientFactory.createJalapenoPatient(username, testData);
+		patient = new CreatePatient().selfRegisterPatientWithPreference(driver, patient, testData.getUrl(), 3);
 		
-		logStep("Go to login and enter to patient portal");
-		loginPage = new JalapenoLoginPage(driver, testData.getProperty("statementUrl"));
+		logStep("Load login page");
+		loginPage = new JalapenoLoginPage(driver, testData.getUrl());
 		homePage = loginPage.login(patient.getUsername(), patient.getPassword());
 		
-		logStep("Go to security tab on my account page");
+		logStep("Go to Account tab on my account page");
 		accountPage = homePage.clickOnAccount();
 		myAccountPage = accountPage.clickOnEditMyAccount();
 		
@@ -3986,7 +3986,7 @@ public class PatientPortal2AcceptanceTests extends BaseTestNGWebDriver {
 		
 		logStep("Again login back to Sitegen for estamenet Setting ");
 		loginpage = new SiteGenLoginPage(driver, testData.getProperty("sitegenUrl"));
-		pSiteGenHomePage = loginpage.login(testData.getProperty("sitegenAdminUser"), testData.getProperty("sitegenPasswordUser"));
+		pSiteGenHomePage = loginpage.login(testData.getProperty("jalpenoSitegenAdmin"), testData.getProperty("jalapenoSitegenPassword"));
 				
 		logStep("Navigate to SiteGen PracticeHomePage");
 		pSiteGenPracticeHomePage = pSiteGenHomePage.clickLinkMedfusionSiteAdministration();
@@ -4005,8 +4005,8 @@ public class PatientPortal2AcceptanceTests extends BaseTestNGWebDriver {
 		estatement.defaultDeliveryOption("eStatement");
 		estatement.submitButton();
 
-		logStep("Load login back to patient portal  page");
-		loginPage = new JalapenoLoginPage(driver, testData.getProperty("statementUrl"));
+		logStep("Load login page");
+		loginPage = new JalapenoLoginPage(driver, testData.getUrl());
 		homePage = loginPage.login(patient.getUsername(), patient.getPassword());
 
 		logStep("Go to security tab on my account page");

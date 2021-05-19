@@ -224,6 +224,7 @@ public class JalapenoMyAccountProfilePage extends JalapenoMyAccountPage {
 
 	public JalapenoMyAccountPreferencesPage goToPreferencesTab(WebDriver driver) {
 		log("Click on Preferences");
+		new WebDriverWait(driver, 30).until(ExpectedConditions.elementToBeClickable(preferencesTab));
 		preferencesTab.click();
 
 		return PageFactory.initElements(driver, JalapenoMyAccountPreferencesPage.class);
