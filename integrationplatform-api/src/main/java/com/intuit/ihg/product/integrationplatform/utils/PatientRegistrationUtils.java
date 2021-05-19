@@ -289,4 +289,64 @@ public class PatientRegistrationUtils {
 		return completed;
 
 	}
+	
+	public static void pidcPatientRegistrationJSONPayload(String ChannelVersion, WebDriver driver, String portalVersion) throws Exception {
+		LoadPreTestData LoadPreTestDataObj = new LoadPreTestData();
+		PIDCInfo testData = new PIDCInfo();
+		
+		Long timestamp = System.currentTimeMillis();
+		LoadPreTestDataObj.loadDataFromProperty(testData, ChannelVersion, portalVersion);
+		String workingDir = System.getProperty("user.dir");
+		workingDir = workingDir + testData.getCsvFilePath();
+		Log4jUtil.log("Loading CSVfile : " + workingDir);
+		csvFileReader(testData, workingDir);
+		Log4jUtil.log("Payload Batchsize : "+testData.getBatchSize());
+		sendPatientInvitePayloadV3 payloadObj = new sendPatientInvitePayloadV3();
+		String patient = payloadObj.getPIDCJSONPayload(testData, portalVersion);
+
+		Log4jUtil.log(patient);
+
+		Log4jUtil.log("Step 2: Setup Oauth client" + testData.getResponsePath());
+		RestUtils.oauthSetup(testData.getoAuthKeyStore(), testData.getoAuthProperty(), testData.getoAuthAppToken(), testData.getoAuthUsername(),
+					testData.getoAuthPassword());
+		Log4jUtil.log(testData.getToken());
+
+		Log4jUtil.log("Step 3: Do a POST call and get processing status URL");
+		String processingUrl = RestUtils.setupHttpJSONPostRequest(testData.getRestUrl_20(), patient, testData.getResponsePath(), testData.getToken());
+
+		Boolean completed = checkMessageProcessingOntime(processingUrl, testData.getResponsePath());
+		assertTrue(completed, "Message processing was not completed in time");
+
+		Mailinator mail = new Mailinator();
+
+		for (int i = 0; i < Integer.parseInt(testData.getBatchSize()); i++) {
+			Thread.sleep(15000);
+			Log4jUtil.log("Patient No: " + (i + 1));
+			Log4jUtil.log(payloadObj.emailGroup.get(i) + "   :    " + JalapenoConstants.NEW_PATIENT_ACTIVATION_MESSAGE + "     :   "
+					+ JalapenoConstants.NEW_PATIENT_ACTIVATION_MESSAGE_LINK_TEXT);
+			String activationUrl = mail.getLinkFromEmail(payloadObj.emailGroup.get(i), JalapenoConstants.NEW_PATIENT_ACTIVATION_MESSAGE,
+						JalapenoConstants.NEW_PATIENT_ACTIVATION_MESSAGE_LINK_TEXT, 40);
+			Log4jUtil.log("Step 4: Moving to the link obtained from the email message");
+			assertNotNull(activationUrl, "Error: Activation link not found.");
+
+			if (portalVersion.contains("2.0")) {
+				registerPatient(activationUrl, payloadObj.emailGroup.get(i), testData.getPatientPassword(), testData.getSecretQuestion(), testData.getSecretAnswer(),
+							testData.getHomePhoneNo(), driver, payloadObj.zipGroup.get(i), testData.getBirthDay());
+				}
+			Thread.sleep(10000);
+			}
+
+			Log4jUtil.log("Step 8: Do a GET on PIDC Url to get registered patient");
+			Long since = timestamp / 1000L - 60 * 24;
+			Log4jUtil.log("Getting patients since timestamp: " + since);
+			RestUtils.setupHttpGetRequest(testData.getRestUrl_20() + "?since=" + since + ",0", testData.getResponsePath());
+			Thread.sleep(2000);
+
+			Log4jUtil.log("Step 9: Find the patient and check if he is registered");
+
+			RestUtils.isPatientRegistered(testData.getResponsePath(), payloadObj.firstNameGroup, payloadObj.firstNameGroup, payloadObj.lastNameGroup, null, testData);
+	}
+
+
+
 }

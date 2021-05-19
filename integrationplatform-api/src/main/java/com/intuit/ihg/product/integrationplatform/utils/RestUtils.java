@@ -3314,9 +3314,8 @@ public class RestUtils {
 		request.setEntity(new StringEntity(payload));
 		request.setHeader("Noun", "Encounter");
 		request.setHeader("Verb", "Completed");
-		request.addHeader("Authorization", accessToken);
+		request.addHeader("Authorization", "Bearer "+accessToken);
 		request.addHeader("Content-Type", "application/json");
-		Log4jUtil.log("Post Request Url4: ");
 		HttpResponse response = client.execute(request);
 		String sResp = EntityUtils.toString(response.getEntity());
 		Log4jUtil.log("Check for http 200/202 response");

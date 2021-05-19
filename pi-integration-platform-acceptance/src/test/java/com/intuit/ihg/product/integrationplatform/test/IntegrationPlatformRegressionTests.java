@@ -4509,5 +4509,13 @@ public class IntegrationPlatformRegressionTests extends BaseTestNGWebDriver {
 			homePage.clickOnLogout();
 		}		
 	}
-
+	
+		@Test(enabled = true, dataProvider = "portalVersion", groups = { "RegressionTests" }, retryAnalyzer = RetryAnalyzer.class)	
+		
+		public void testPIDCPatientRegistrationJSONV3(String portalVersion) throws Exception {
+		log("Test Case: PIDC Patient Registration for V3 channel using JSON Payload");
+		log("Execution Environment: " + IHGUtil.getEnvironmentType());
+		log("Execution Browser: " + TestConfig.getBrowserType());
+		PatientRegistrationUtils.pidcPatientRegistrationJSONPayload("v3", driver, portalVersion);
+}
 }
