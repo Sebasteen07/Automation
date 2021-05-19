@@ -422,16 +422,16 @@ public class PSSPropertyFileLoader {
 	public void setRestAPIDataGE(Appointment appointValues) {
 		appointValues.setBasicURI(property.getProperty("base.url.ge"));
 		appointValues.setPracticeId(property.getProperty("practiceid.ge"));
-		appointValues.setPracticeDisplayName(property.getProperty("practicedisplayname.ge"));
+		appointValues.setPracticeDisplayName(property.getProperty("practice.display.name.ge"));
 		appointValues.setPatientId(property.getProperty("patientid.ge"));
-		appointValues.setStartDateTime(property.getProperty("startdatetime.ge"));
-		appointValues.setEndDateTime(property.getProperty("enddatetime.ge"));
+		appointValues.setStartDateTime(property.getProperty("start.date.time.ge"));
+		appointValues.setEndDateTime(property.getProperty("end.date.time.ge"));
 		appointValues.setLocationId(property.getProperty("locationid.ge"));
-		appointValues.setPatientId(property.getProperty("patientid.availableslots.ge"));
+		appointValues.setPatientId(property.getProperty("patientid.available.slots.ge"));
 		appointValues.setResourceId(property.getProperty("resourceid.ge"));
 		appointValues.setSlotId(property.getProperty("slotid.ge"));
 		appointValues.setApptid(property.getProperty("apptid.ge"));
-		appointValues.setSlotSize(property.getProperty("slotsize.ge"));
+		appointValues.setSlotSize(property.getProperty("slot.size.ge"));
 	}
 
 }
