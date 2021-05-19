@@ -47,9 +47,17 @@ public class AppointmentDataUtils {
 			// wait 10 seconds so the message can be processed
 			Thread.sleep(60000);
 			RestUtils.setupHttpGetRequest(processingUrl, testData.ResponsePath);
-			if (RestUtils.isMessageProcessingCompleted(testData.ResponsePath)) {
+			if(testData.BatchSize.equalsIgnoreCase("1")) {
+				if (RestUtils.isMessageProcessingCompleted(testData.ResponsePath)) {
 				completed = true;
 				break;
+				}
+			}
+			else if(testData.BatchSize.equalsIgnoreCase("2")) {
+				if (RestUtils.isResponseContainsErrorNode(testData.ResponsePath)) {
+					completed = true;
+					break;
+			}
 			}
 		}
 		assertTrue(completed, "Message processing was not completed in time");
@@ -73,11 +81,6 @@ public class AppointmentDataUtils {
 			Thread.sleep(8000);
 		}
 
-		if (testData.appointmentType == "PAST" || testData.BatchSize.equalsIgnoreCase("2")) {
-			Log4jUtil.log("calling past ");
-			// JAPage.goToUpcomingAppointments();
-			pastAppointment(JAPage, apObj, testData);
-		}
 		homePage.clickOnLogout();
 	}
 
@@ -264,9 +267,17 @@ public class AppointmentDataUtils {
 			// wait 10 seconds so the message can be processed
 			Thread.sleep(60000);
 			RestUtils.setupHttpGetRequest(processingUrl, testData.ResponsePath);
-			if (RestUtils.isMessageProcessingCompleted(testData.ResponsePath)) {
+			if(testData.BatchSize.equalsIgnoreCase("1")) {
+				if (RestUtils.isMessageProcessingCompleted(testData.ResponsePath)) {
 				completed = true;
 				break;
+				}
+			}
+			else if(testData.BatchSize.equalsIgnoreCase("2")) {
+				if (RestUtils.isResponseContainsErrorNode(testData.ResponsePath)) {
+					completed = true;
+					break;
+			}
 			}
 		}
 		assertTrue(completed, "Message processing was not completed in time");
@@ -291,10 +302,6 @@ public class AppointmentDataUtils {
 			Thread.sleep(8000);
 		}
 
-		if (testData.appointmentType == "PAST" || testData.BatchSize.equalsIgnoreCase("2")) {
-			Log4jUtil.log("calling past ");
-			pastAppointment(JAPage, apObj, testData);
-		}
 		Log4jUtil.log("Logout");
 		homePage.clickOnLogout();
 	}
