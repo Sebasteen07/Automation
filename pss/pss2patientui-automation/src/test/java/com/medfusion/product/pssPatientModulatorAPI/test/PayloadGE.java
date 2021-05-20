@@ -221,4 +221,197 @@ public class PayloadGE {
 				+ "}";
 		return nextAvailableSlots;
 	}
+	
+	public  String addPatientPayload() {
+		
+		String addPatient="{\r\n" + 
+				"\r\n" + 
+				"  \"address\": {\r\n" + 
+				"    \"address1\": null,\r\n" + 
+				"    \"address2\": null,\r\n" + 
+				"    \"city\": null,\r\n" + 
+				"    \"country\": null,\r\n" + 
+				"    \"state\": null,\r\n" + 
+				"    \"zipCode\": \"90231\"\r\n" + 
+				"  },\r\n" + 
+				"  \"alertNotes\": null,\r\n" + 
+				"  \"billingNotes\": [\r\n" + 
+				"    \"string\"\r\n" + 
+				"  ],\r\n" + 
+				"  \"dateOfBirth\": \"01/28/1997\",\r\n" + 
+				"  \"emailAddress\": \"rima.karmakar@crossasyst.com\",\r\n" + 
+				"  \"firstName\": \"Test\",\r\n" + 
+				"  \"gender\": \"M\",\r\n" + 
+				"  \"id\": \"string\",\r\n" + 
+				"  \"isPatient\": true,\r\n" + 
+				"  \"lastName\": \"APIThree\",\r\n" + 
+				"  \"maritalStatus\": null,\r\n" + 
+				"  \"patientAlertNotes\": [\r\n" + 
+				"    \"string\"\r\n" + 
+				"  ],\r\n" + 
+				"  \"patientCreationDate\": null,\r\n" + 
+				"  \"phoneMapProperties\": {},\r\n" + 
+				"  \"phoneNumber\": null,\r\n" + 
+				"  \"phoneNumber2\": null,\r\n" + 
+				"  \"preferredLanguage\": \"English\",\r\n" + 
+				"  \"primaryCareProvider\": null,\r\n" + 
+				"  \"responsibleProvider\": null,\r\n" + 
+				"  \"status\": \"string\"\r\n" + 
+				"}";
+		
+		return addPatient;
+	}
+	
+public  String careProviderAvailabilityPayload(String startDateTime, String endDateTime,String resourceId,String slotSize,String locationId,String appointmentTypeId) {
+		
+	String careProAvailability=" {\r\n" + 
+			"  \"appointmentTypeCatId\": null,\r\n" + 
+			"  \"appointmentTypeId\": \""+appointmentTypeId+"\",\r\n" + 
+			"  \"careProvider\": [\r\n" + 
+			"    {\r\n" + 
+			"      \"nextAvailabledate\": null,\r\n" + 
+			"      \"resourceCatId\": null,\r\n" + 
+			"      \"resourceId\": \""+resourceId+"\",\r\n" + 
+			"      \"slotSize\": \""+slotSize+"\"\r\n" + 
+			"    }\r\n" + 
+			"  ],\r\n" + 
+			"  \"endDateTime\": \""+endDateTime+"\",\r\n" + 
+			"  \"locationId\": \""+locationId+"\",\r\n" + 
+			"  \"startDateTime\": \""+startDateTime+"\"\r\n" + 
+			"}";
+	
+	return careProAvailability;
+	}
+
+public  String matchPatientPayload() {
+	
+	String  matchPatient="{\r\n" + 
+			"    \"patientMatches\": [\r\n" + 
+			"        {\r\n" + 
+			"            \"entity\": \"Email Address\",\r\n" + 
+			"            \"isMandatory\": true,\r\n" + 
+			"            \"code\": \"EMAIL\",\r\n" + 
+			"            \"value\": \"GECare111@mailinator.com\",\r\n" + 
+			"            \"selected\": true,\r\n" + 
+			"            \"search\": true\r\n" + 
+			"        },\r\n" + 
+			"        {\r\n" + 
+			"            \"entity\": \"First Name\",\r\n" + 
+			"            \"isMandatory\": true,\r\n" + 
+			"            \"code\": \"FN\",\r\n" + 
+			"            \"value\": \"GECare111\",\r\n" + 
+			"            \"selected\": true,\r\n" + 
+			"            \"search\": true\r\n" + 
+			"        },\r\n" + 
+			"        {\r\n" + 
+			"            \"entity\": \"Gender\",\r\n" + 
+			"            \"isMandatory\": false,\r\n" + 
+			"            \"code\": \"GENDER\",\r\n" + 
+			"            \"value\": \"M\",\r\n" + 
+			"            \"selected\": true,\r\n" + 
+			"            \"search\": false\r\n" + 
+			"        },\r\n" + 
+			"        {\r\n" + 
+			"            \"entity\": \"Date Of Birth\",\r\n" + 
+			"            \"isMandatory\": true,\r\n" + 
+			"            \"code\": \"DOB\",\r\n" + 
+			"            \"value\": \"01/01/2000\",\r\n" + 
+			"            \"selected\": true,\r\n" + 
+			"            \"search\": true\r\n" + 
+			"        },\r\n" + 
+			"        {\r\n" + 
+			"            \"entity\": \"Last Name\",\r\n" + 
+			"            \"isMandatory\": true,\r\n" + 
+			"            \"code\": \"LN\",\r\n" + 
+			"            \"value\": \"GECare111\",\r\n" + 
+			"            \"selected\": true,\r\n" + 
+			"            \"search\": true\r\n" + 
+			"        }\r\n" + 
+			"    ],\r\n" + 
+			"    \"maxCriteria\": \"4\",\r\n" + 
+			"    \"allowDuplicatePatient\": false\r\n" + 
+			"}";
+	
+	return  matchPatient;
+}
+
+public  String searchPatientPayload() {
+	
+	String searchPatient="{\r\n" + 
+			"        \"id\": \"27574\",\r\n" + 
+			"        \"firstName\": \"Test\",\r\n" + 
+			"        \"lastName\": \"APIThree\",\r\n" + 
+			"        \"dateOfBirth\": \"01/28/1997\",\r\n" + 
+			"        \"emailAddress\": \"rima.karmakar@crossasyst.com\",\r\n" + 
+			"        \"gender\": \"M\",\r\n" + 
+			"        \"status\": \"A\",\r\n" + 
+			"        \"address\": {\r\n" + 
+			"            \"zipCode\": \"90231\"\r\n" + 
+			"        }\r\n" + 
+			"    },\r\n" + 
+			"    {\r\n" + 
+			"        \"id\": \"27582\",\r\n" + 
+			"        \"firstName\": \"Test\",\r\n" + 
+			"        \"lastName\": \"APIThree\",\r\n" + 
+			"        \"dateOfBirth\": \"01/28/1997\",\r\n" + 
+			"        \"emailAddress\": \"rima.karmakar@crossasyst.com\",\r\n" + 
+			"        \"gender\": \"M\",\r\n" + 
+			"        \"status\": \"A\",\r\n" + 
+			"        \"address\": {\r\n" + 
+			"            \"zipCode\": \"90231\"\r\n" + 
+			"        }\r\n" + 
+			"    },\r\n" + 
+			"    {\r\n" + 
+			"        \"id\": \"27583\",\r\n" + 
+			"        \"firstName\": \"Test\",\r\n" + 
+			"        \"lastName\": \"APIThree\",\r\n" + 
+			"        \"dateOfBirth\": \"01/28/1997\",\r\n" + 
+			"        \"emailAddress\": \"rima.karmakar@crossasyst.com\",\r\n" + 
+			"        \"gender\": \"M\",\r\n" + 
+			"        \"status\": \"A\",\r\n" + 
+			"        \"address\": {\r\n" + 
+			"            \"zipCode\": \"90231\"\r\n" + 
+			"        }\r\n" + 
+			"    },\r\n" + 
+			"    {\r\n" + 
+			"        \"id\": \"27584\",\r\n" + 
+			"        \"firstName\": \"Test\",\r\n" + 
+			"        \"lastName\": \"APIThree\",\r\n" + 
+			"        \"dateOfBirth\": \"01/28/1997\",\r\n" + 
+			"        \"emailAddress\": \"rima.karmakar@crossasyst.com\",\r\n" + 
+			"        \"gender\": \"M\",\r\n" + 
+			"        \"status\": \"A\",\r\n" + 
+			"        \"address\": {\r\n" + 
+			"            \"zipCode\": \"90231\"\r\n" + 
+			"        }\r\n" + 
+			"    },\r\n" + 
+			"    {\r\n" + 
+			"        \"id\": \"27585\",\r\n" + 
+			"        \"firstName\": \"Test\",\r\n" + 
+			"        \"lastName\": \"APIThree\",\r\n" + 
+			"        \"dateOfBirth\": \"01/28/1997\",\r\n" + 
+			"        \"emailAddress\": \"rima.karmakar@crossasyst.com\",\r\n" + 
+			"        \"gender\": \"M\",\r\n" + 
+			"        \"status\": \"A\",\r\n" + 
+			"        \"address\": {\r\n" + 
+			"            \"zipCode\": \"90231\"\r\n" + 
+			"        }\r\n" + 
+			"    },\r\n" + 
+			"    {\r\n" + 
+			"        \"id\": \"27586\",\r\n" + 
+			"        \"firstName\": \"Test\",\r\n" + 
+			"        \"lastName\": \"APIThree\",\r\n" + 
+			"        \"dateOfBirth\": \"01/28/1997\",\r\n" + 
+			"        \"emailAddress\": \"rima.karmakar@crossasyst.com\",\r\n" + 
+			"        \"gender\": \"M\",\r\n" + 
+			"        \"status\": \"A\",\r\n" + 
+			"        \"address\": {\r\n" + 
+			"            \"zipCode\": \"90231\"\r\n" + 
+			"        }\r\n" + 
+			"    }\r\n" + 
+			"]";
+	
+	return searchPatient;
+}
+
 }
