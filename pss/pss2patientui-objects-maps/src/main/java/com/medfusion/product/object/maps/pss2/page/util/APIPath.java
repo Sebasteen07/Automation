@@ -65,14 +65,14 @@ public class APIPath {
 		public static final String RESCHEDUL_APPT = "/24248/rescheduleappointment";
 		public static final String AVAILABLE_SLOTS = "/24248/availableslots";
 		public static final String NEXT_AVAILABLE_SLOTS = "/24248/nextavailableslots";
-		public static final String ADDPATIENTGE="/24333/addpatient";
-		public static final String CAREPROVIDERGE="/24333/careprovideravailability";
-		public static final String DEMOGRAPHICSGE="/24248/demographics";
-		public static final String HEALTHOPERATIONGE="/actuator/health";
-		public static final String MATCHPATIENTGE="/24333/matchpatient";
-		public static final String PATIENTLASTVISITGE="/24333/patientlastvisit/26854";
-		public static final String PREREQUISTEAPPOINTMENTTYPESGETGE="/24333/prerequisteappointmenttypes";
-		public static final String SEARCHPATIENTGE="/24333/searchpatient";
+		public static final String ADD_PATIENT="/24333/addpatient";
+		public static final String CAREPROVIDER="/24333/careprovideravailability";
+		public static final String DEMOGRAPHICS="/24248/demographics";
+		public static final String HEALTH_OPERATION="/actuator/health";
+		public static final String MATCH_PATIENT="/24333/matchpatient";
+		public static final String PATIENT_LASTVISIT="/24333/patientlastvisit/26854";
+		public static final String PREREQUISTE_APPOINTMENTTYPESGET="/24333/prerequisteappointmenttypes";
+		public static final String SEARCH_PATIENT="/24333/searchpatient";
 
 
 
