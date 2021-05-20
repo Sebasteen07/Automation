@@ -74,10 +74,6 @@ public class NGIntegrationE2EPayment_SendChartItemTests extends BaseTestNGWebDri
 
 	@Test(enabled = true, groups = { "Payment" }, retryAnalyzer = RetryAnalyzer.class)
 	public void testPaymentPayBills() throws Throwable {
-		log("Test Case: Verify the patient is able to pay the bill using Pay Bills and payment is being posted to NG");
-		log("Execution Environment: " + IHGUtil.getEnvironmentType());
-		log("Execution Browser: " + TestConfig.getBrowserType());
-
 		logStep("Getting Existing User");
 		String username = propertyLoaderObj.getProperty("CCDAUsername");
 		String person_id = DBUtils.executeQueryOnDB("NGCoreDB",
@@ -156,12 +152,10 @@ public class NGIntegrationE2EPayment_SendChartItemTests extends BaseTestNGWebDri
 		String sourceId = DBUtils.executeQueryOnDB("NGCoreDB", sourceIdQuery);
 		CommonFlows.verifyPaymentPostedtoNG(paymentComments, sourceId, person_id, "-" + actualAmount,
 				"Payment type: BillPayment, Last 4 CC digits: " + creditCard.getLastFourDigits(), practiceId);
-		log("Test Case End: The patient is able to pay the bill using Pay Bills and payment is being posted to NG");
 	}
 
 	@Test(enabled = true, groups = { "Payment" }, retryAnalyzer = RetryAnalyzer.class)
 	public void testPaymentVirtualCardSwiper() throws Throwable {
-		log("Test Case: Verify the patient is able to pay using Virtual Card Swiper method and payment is being posted to NG");
 		logStep("Getting Existing User");
 		String username = propertyLoaderObj.getProperty("CCDAUsername");
 		String person_id = DBUtils.executeQueryOnDB("NGCoreDB",
@@ -220,13 +214,10 @@ public class NGIntegrationE2EPayment_SendChartItemTests extends BaseTestNGWebDri
 		CommonFlows.verifyPaymentPostedtoNG(paymentComment, SourceId, person_id, "-" + actualAmount,
 				"Payment type: VCSPayment, Last 4 CC digits: " + PracticeConstants.CARD_NUMBER.substring(12),
 				practiceId);
-		log("Test Case End: The patient is able to pay using Virtual Card Swiper method and payment is being posted to NG");
 	}
 
 	@Test(enabled = true, groups = { "Payment" }, retryAnalyzer = RetryAnalyzer.class)
 	public void testPaymentOnlineBillPayProcess() throws Throwable {
-		log("Test Case: Verify the patient is able to pay using Online Bill Pay Process and payment is being posted to NG");
-
 		logStep("Getting Existing User");
 		String username = propertyLoaderObj.getProperty("CCDAUsername");
 		String person_id = DBUtils.executeQueryOnDB("NGCoreDB",
@@ -310,13 +301,10 @@ public class NGIntegrationE2EPayment_SendChartItemTests extends BaseTestNGWebDri
 		String sourceId = DBUtils.executeQueryOnDB("NGCoreDB", sourceIdQuery);
 		CommonFlows.verifyPaymentPostedtoNG(paymentComment, sourceId, person_id, "-" + actualAmount,
 				"Payment type: BillPayment, Last 4 CC digits: " + cardNumber.substring(12), practiceId);
-
-		log("Test Case End: The patient is able to pay using Online Bill Pay Process and payment is being posted to NG");
 	}
 
 	@Test(enabled = true, groups = { "Payment" }, retryAnalyzer = RetryAnalyzer.class)
 	public void testPaymentBudgetPaymentProcess() throws Throwable {
-		log("Test case: Verify practice user is able to schedule budget payment plan to pay the patient bill");
 		String amount = propertyLoaderObj.getProperty("BudgetAmount");
 		String prepayamount = propertyLoaderObj.getProperty("BudgetPrepayAmount");
 
@@ -394,13 +382,10 @@ public class NGIntegrationE2EPayment_SendChartItemTests extends BaseTestNGWebDri
 
 		logStep("Stop the Budget Payment Plan ");
 		pPayMyBillOnlinePage.clickOnStopBudgetPayment();
-		log("Test case End: The practice user is able to schedule budget payment plan to pay the patient bill");
 	}
 
 	@Test(enabled = true, groups = { "Payment" }, retryAnalyzer = RetryAnalyzer.class)
 	public void testPaymentOnlineBillPayProcessforSingleGuarantor() throws Throwable {
-		log("Test Case: Verify payment is auto posted when Patient is having single guarantor while paying using One Time Payment method");
-
 		logStep("Getting Existing User");
 		String username = propertyLoaderObj.getProperty("SingleGuarantorUser");
 		String personId = DBUtils.executeQueryOnDB("NGCoreDB",
@@ -470,13 +455,10 @@ public class NGIntegrationE2EPayment_SendChartItemTests extends BaseTestNGWebDri
 		String sourceId = DBUtils.executeQueryOnDB("NGCoreDB", sourceIdQuery);
 		CommonFlows.verifyPaymentPostedtoNG(paymentComment, sourceId, personId, "-" + actualAmount,
 				"Payment type: BillPayment, Last 4 CC digits: " + cardNumber.substring(12), practiceId);
-		log("Test Case End: The payment is auto posted when Patient is having single guarantor while paying using One Time Payment method");
 	}
 
 	@Test(enabled = true, groups = { "Payment" }, retryAnalyzer = RetryAnalyzer.class)
 	public void testPaymentOnlineBillPayProcessforMultipleGuarantors() throws Throwable {
-		log("Test Case: Verify payment is not auto posted when Patient is having multiple guarantors while paying using OLBP method and payment state is Pending");
-
 		logStep("Getting Existing User");
 		String username = propertyLoaderObj.getProperty("CCDAUsername");
 		String personId = DBUtils.executeQueryOnDB("NGCoreDB",
@@ -529,12 +511,10 @@ public class NGIntegrationE2EPayment_SendChartItemTests extends BaseTestNGWebDri
 
 		CommonFlows.verifyPaymentReachedtoMFAgent(paymentComment, "BillPayment", "", invalidAccountNumber, "PENDING",
 				actualAmount, cardType);
-		log("Test Case End: Payment is not auto posted when Patient is having multiple guarantors while paying using OLBP method and payment state is Pending");
 	}
 
 	@Test(enabled = true, groups = { "Payment" }, retryAnalyzer = RetryAnalyzer.class)
 	public void testPaymentVirtualCardSwiperforMultipleGuarantors() throws Throwable {
-		log("Test Case: Verify the Payment is not auto posted when Patient is having multiple guarantors while paying using VCS method and payment state is Pending");
 		logStep("Getting Existing User");
 		String username = propertyLoaderObj.getProperty("CCDAUsername");
 
@@ -573,13 +553,10 @@ public class NGIntegrationE2EPayment_SendChartItemTests extends BaseTestNGWebDri
 
 		CommonFlows.verifyPaymentReachedtoMFAgent(paymentComment, "VCSPayment", "", invalidAccountNumber, "PENDING",
 				actualAmount, PracticeConstants.CARD_TYPE_VISA);
-		log("Test Case End: The Payment is not auto posted when Patient is having multiple guarantors while paying using VCS method and payment state is Pending");
 	}
 
 	@Test(enabled = true, groups = { "acceptance-INBOX" }, retryAnalyzer = RetryAnalyzer.class)
 	public void testPP139SendEHRDocument() throws Throwable {
-		log("Test Case: Verify the practice user is able to send the EHR Document.");
-
 		logStep("Getting Existing User");
 		String username = propertyLoaderObj.getProperty("CCDAUsername");
 		String personId = DBUtils.executeQueryOnDB("NGCoreDB",
@@ -641,13 +618,10 @@ public class NGIntegrationE2EPayment_SendChartItemTests extends BaseTestNGWebDri
 		String body = comments + "\n\n" + DOCUMENT_RECEIVEDTEXT;
 		CommonFlows.verifyPatientDocumentReceivedINInbox(propertyLoaderObj, driver, url, username,
 				propertyLoaderObj.getPassword(), propertyLoaderObj.getProperty("DocSubject"), body, docName + ".pdf");
-		log("Test Case End: The practice user is able to send the EHR Document.");
 	}
 
 	@Test(enabled = true, groups = { "acceptance-INBOX" }, retryAnalyzer = RetryAnalyzer.class)
 	public void testPP139SendICSImage() throws Throwable {
-		log("Test Case: Verify the practice user is able to send the ICS Image.");
-
 		logStep("Getting Existing User");
 		String username = propertyLoaderObj.getProperty("CCDAUsername");
 		String personId = DBUtils.executeQueryOnDB("NGCoreDB",
@@ -710,14 +684,10 @@ public class NGIntegrationE2EPayment_SendChartItemTests extends BaseTestNGWebDri
 		CommonFlows.verifyPatientDocumentReceivedINInbox(propertyLoaderObj, driver, url, username,
 				propertyLoaderObj.getPassword(), propertyLoaderObj.getProperty("DocSubject"), body,
 				docName + "." + docFormat.trim());
-
-		log("Test Case End: The practice user is able to send the ICS Image.");
 	}
 
 	@Test(enabled = true, groups = { "acceptance-INBOX" }, retryAnalyzer = RetryAnalyzer.class)
 	public void testPP139SendEHRImage() throws Throwable {
-		log("Test Case: Verify the practice user is able to send the EHR Image.");
-
 		logStep("Getting Existing User");
 		String username = propertyLoaderObj.getProperty("CCDAUsername");
 		String personId = DBUtils.executeQueryOnDB("NGCoreDB",
@@ -780,14 +750,10 @@ public class NGIntegrationE2EPayment_SendChartItemTests extends BaseTestNGWebDri
 		CommonFlows.verifyPatientDocumentReceivedINInbox(propertyLoaderObj, driver, url, username,
 				propertyLoaderObj.getPassword(), propertyLoaderObj.getProperty("DocSubject"), body,
 				docName + "." + docFormat.trim());
-
-		log("Test Case End: The practice user is able to send the EHR Image.");
 	}
 
 	@Test(enabled = true, groups = { "acceptance-INBOX" }, retryAnalyzer = RetryAnalyzer.class)
 	public void testPP139SendReferralLetter() throws Throwable {
-		log("Test Case: Verify the practice user is able to send the Referral Letter.");
-
 		logStep("Getting Existing User");
 		String username = propertyLoaderObj.getProperty("CCDAUsername");
 		String personId = DBUtils.executeQueryOnDB("NGCoreDB",
@@ -849,13 +815,10 @@ public class NGIntegrationE2EPayment_SendChartItemTests extends BaseTestNGWebDri
 		String body = comments + "\n\n" + DOCUMENT_RECEIVEDTEXT;
 		CommonFlows.verifyPatientDocumentReceivedINInbox(propertyLoaderObj, driver, url, username,
 				propertyLoaderObj.getPassword(), propertyLoaderObj.getProperty("DocSubject"), body, docName + ".pdf");
-
-		log("Test Case End: The practice user is able to send the Referral Letter.");
 	}
 
 	@Test(enabled = true, groups = { "acceptance-INBOX" }, retryAnalyzer = RetryAnalyzer.class)
 	public void testPP139SendEHRImageWhileReplyingMessage() throws Throwable {
-		log("Test Case : Verify the practice user is able to send the EHR Images while replying to the patient message");
 		String questionText = IntegrationConstants.MESSAGE_REPLY;
 		String userId = propertyLoaderObj.getProperty("SecureMessageUserID");
 		String userLastName = DBUtils.executeQueryOnDB("NGCoreDB",
@@ -993,15 +956,10 @@ public class NGIntegrationE2EPayment_SendChartItemTests extends BaseTestNGWebDri
 
 		CommonFlows.verifyMessageINInbox(propertyLoaderObj, driver, url, username, propertyLoaderObj.getPassword(),
 				subject, body, comm_id, messageIDAtMF, integrationPracticeID, "messageWithPE", attachmentName);
-		log("Test Case End: The practice user is able to send the EHR Images while replying to the patient message");
 	}
 
 	@Test(enabled = true, groups = { "acceptance-INBOX" }, retryAnalyzer = RetryAnalyzer.class)
 	public void testPP139SendEHRImageByCommunication() throws Throwable {
-		log("Test Case: Verify the practice user is able to send EHR Image as an attachment of communication message");
-		log("Execution Environment: " + IHGUtil.getEnvironmentType());
-		log("Execution Browser: " + TestConfig.getBrowserType());
-
 		logStep("Getting Existing User");
 		String username = propertyLoaderObj.getProperty("CCDAUsername");
 		String personId = DBUtils.executeQueryOnDB("NGCoreDB",
@@ -1067,15 +1025,10 @@ public class NGIntegrationE2EPayment_SendChartItemTests extends BaseTestNGWebDri
 		}
 		CommonFlows.verifyMessageINInbox(propertyLoaderObj, driver, url, username, propertyLoaderObj.getPassword(),
 				subject, body, comm_id, messageID, integrationPracticeID, "messageWithPE", attachmentName);
-		log("Test Case End: The practice user is able to send EHR Image as an attachment of communication message");
 	}
 
 	@Test(enabled = true, groups = { "acceptance-INBOX" }, retryAnalyzer = RetryAnalyzer.class)
 	public void testPP139SendIMHByCommunication() throws Throwable {
-		log("Test Case: Verify the practice user is able to send IMH as an attachment of communication message");
-		log("Execution Environment: " + IHGUtil.getEnvironmentType());
-		log("Execution Browser: " + TestConfig.getBrowserType());
-
 		logStep("Getting Existing User");
 		String username = propertyLoaderObj.getProperty("CCDAUsername");
 		String person_id = DBUtils.executeQueryOnDB("NGCoreDB",
@@ -1149,13 +1102,10 @@ public class NGIntegrationE2EPayment_SendChartItemTests extends BaseTestNGWebDri
 		String deliveryStatusATMF = DBUtils.executeQueryOnDB("MFAgentDB",
 				"select status from  message_delivery where message_groupid ='" + comm_id + "'");
 		CommonUtils.VerifyTwoValues(deliveryStatusATMF, "equals", "SENT");
-		log("Test Case End: The practice user is able to send IMH as an attachment of communication message");
 	}
 
 	@Test(enabled = true, groups = { "acceptance-INBOX" }, retryAnalyzer = RetryAnalyzer.class)
 	public void testPP139SendIMH() throws Throwable {
-		log("Test Case: Verify the practice user is able to send the IMH Form.");
-
 		logStep("Getting Existing User");
 		String username = propertyLoaderObj.getProperty("CCDAUsername");
 		String person_id = DBUtils.executeQueryOnDB("NGCoreDB",
@@ -1242,6 +1192,5 @@ public class NGIntegrationE2EPayment_SendChartItemTests extends BaseTestNGWebDri
 				propertyLoaderObj.getProperty("IMHForm"));
 
 		CommonFlows.verifyIMHState(documentId);
-		log("Test Case End: The practice user is able to send the IMH Form.");
 	}
 }

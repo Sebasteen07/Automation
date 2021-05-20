@@ -13,7 +13,7 @@
 	<classes>
 		<class name = "com.ng.product.integrationplatform.tests.NGIntegrationE2EInboxTests" />
 		<methods>
-	    		<include name="testCOMHighPrioritySecureMessageDoNotAddToEncounterSendByPracticeUser"/>
+	    		<include name="testCOMHighPrioritySecureMessageDoNotAddToEncounterSendByPracticeUserReplyByPatient"/>
 	    		<include name="testCOMReadReceiptSecureMessageNewLockedEncounter"/>   
 	    		<include name="testCOMUnreadNotificationSecureMessageNewUnLockedEncounter"/> 
 	    		<include name="testCOMDisableReplySecureMessageExistingEncounter"/> 
@@ -21,14 +21,14 @@
 	    		<include name="testCOMSecureMessageSentAndReplyUsingAliasName"/> 
 	    		<include name="testCOMAskAQuestionRepliedUsingOriginalUnlockedEncounter"/>
 	    	 	<include name="testCOMSendSecureMessageDoNotAddToChart"/>
-	    	 	<include name="testInboxAppointment"/>
+	    	 	<include name="testInboxSendAppointmentRequestBookAppointmentSendResponse"/>
 	    	 	<include name="testInboxAppointmentSameSlot"/>
-	    	 	<include name="testInboxAppointmentBookMultipleSlotsandDeleteAppointment"/>
-	    	 	<include name="testPP138SendPatientEducation"/>
+	    	 	<include name="testInboxAppointmentBookMultipleSlotsandDeleteAppointmentVerifyInPortal"/>
+	    	 	<include name="testPP138SendPatientEducationByCommunicationMessage"/>
 	    	 	<include name="testInboxRequestPrescriptionRenewalApprovedbyPracticeUser"/>
 	    		<include name="testInboxRequestPrescriptionRenewalRejectedbyPracticeUser"/>
 	    		<include name="testInboxRequestMultiplePrescriptionRenewal"/>
-	    		<include name="testCOMBulkSendSecureMessageDoNotAddToEncounterSendByPracticeUser"/>
+	    		<include name="testCOMBulkSendMessageWithNormalPriorityUnReadDisbaleReplyDoNotAddToEncounterSendByPracticeUser"/>
       	</methods>
 	</classes>
 </test>

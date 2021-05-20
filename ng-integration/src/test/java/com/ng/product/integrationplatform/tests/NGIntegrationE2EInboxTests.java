@@ -71,11 +71,7 @@ public class NGIntegrationE2EInboxTests extends BaseTestNGWebDriver {
 	}
 
 	@Test(enabled = true, groups = { "acceptance-INBOX" }, retryAnalyzer = RetryAnalyzer.class)
-	public void testCOMHighPrioritySecureMessageDoNotAddToEncounterSendByPracticeUser() throws Throwable {
-		log("Test Case: Verify the practice user is able to compose a message with 'high priority' flag on and send it to enrolled patient with “Do not add to chart” option selected in Send & Chart button and patient reply to message sent by Practice User");
-		log("Execution Environment: " + IHGUtil.getEnvironmentType());
-		log("Execution Browser: " + TestConfig.getBrowserType());
-
+	public void testCOMHighPrioritySecureMessageDoNotAddToEncounterSendByPracticeUserReplyByPatient() throws Throwable {
 		logStep("Getting Existing User");
 		String username = propertyLoaderObj.getProperty("CCDAUsername");
 		String person_id = DBUtils.executeQueryOnDB("NGCoreDB",
@@ -141,15 +137,10 @@ public class NGIntegrationE2EInboxTests extends BaseTestNGWebDriver {
 		Thread.sleep(60000);
 		CommonFlows.verifyReplyReceivedAtNGCore(replyMessageID, comm_id, rootThreadId.toUpperCase(), "Re: " + subject,
 				JalapenoMessagesPage.getPatientReply());
-		log("Test Case End: The practice user is able to compose a message with 'high priority' flag on and send it to enrolled patient with “Do not add to chart” option selected in Send & Chart button and patient reply to message sent by Practice User");
 	}
 
 	@Test(enabled = true, groups = { "acceptance-INBOX" }, retryAnalyzer = RetryAnalyzer.class)
 	public void testCOMReadReceiptSecureMessageNewLockedEncounter() throws Throwable {
-		log("Test Case: Verify the practice user is able to compose a message with 'Read Receipt' flag on and send it to enrolled patient with “Add to New Encounter(Locked)” option selected in Send & Chart button.");
-		log("Execution Environment: " + IHGUtil.getEnvironmentType());
-		log("Execution Browser: " + TestConfig.getBrowserType());
-
 		logStep("Getting Existing User");
 		String username = propertyLoaderObj.getProperty("CCDAUsername");
 		String person_id = DBUtils.executeQueryOnDB("NGCoreDB",
@@ -210,15 +201,10 @@ public class NGIntegrationE2EInboxTests extends BaseTestNGWebDriver {
 
 		CommonFlows.verifyMessageINInbox(propertyLoaderObj, driver, url, username, propertyLoaderObj.getPassword(),
 				subject, body, comm_id, messageID, integrationPracticeID, "ReadReceiptRequested", "");
-		log("Test Case End: The practice user is able to compose a message with 'Read Receipt' flag on and send it to enrolled patient with “Add to New Encounter(Locked)” option selected in Send & Chart button.");
 	}
 
 	@Test(enabled = true, groups = { "acceptance-INBOX" }, retryAnalyzer = RetryAnalyzer.class)
 	public void testCOMUnreadNotificationSecureMessageNewUnLockedEncounter() throws Throwable {
-		log("Test Case: Verify the practice user is able to compose a message with 'Unread Notification' flag on and send it to enrolled patient with “Add to New Encounter(UnLocked)” option selected in Send & Chart button.");
-		log("Execution Environment: " + IHGUtil.getEnvironmentType());
-		log("Execution Browser: " + TestConfig.getBrowserType());
-
 		logStep("Getting Existing User");
 		String username = propertyLoaderObj.getProperty("CCDAUsername");
 		String person_id = DBUtils.executeQueryOnDB("NGCoreDB",
@@ -245,15 +231,10 @@ public class NGIntegrationE2EInboxTests extends BaseTestNGWebDriver {
 		NGAPIUtils.updateLoginDefaultTo("EnterpriseGateway", enterpriseId, practiceId);
 		NGAPIFlows.postSecureMessage(propertyLoaderObj, "UnreadNotificationRequested", person_id, practiceId, userId,
 				providerName, locationName, "EHR", "NewUnLockedEncounter", "PracticeUser", "", "", "");
-		log("Test Case End: The practice user is able to compose a message with 'Unread Notification' flag on and send it to enrolled patient with “Add to New Encounter(UnLocked)” option selected in Send & Chart button.");
 	}
 
 	@Test(enabled = true, groups = { "acceptance-INBOX" }, retryAnalyzer = RetryAnalyzer.class)
 	public void testCOMDisableReplySecureMessageExistingEncounter() throws Throwable {
-		log("Test Case: Verify the practice user is able to compose a message with 'Cann't Reply' flag on and send it to enrolled patient with “Existing Encounter” option selected in Send & Chart button.");
-		log("Execution Environment: " + IHGUtil.getEnvironmentType());
-		log("Execution Browser: " + TestConfig.getBrowserType());
-
 		logStep("Getting Existing User");
 		String username = propertyLoaderObj.getProperty("CCDAUsername");
 		String person_id = DBUtils.executeQueryOnDB("NGCoreDB",
@@ -316,15 +297,10 @@ public class NGIntegrationE2EInboxTests extends BaseTestNGWebDriver {
 
 		CommonFlows.verifyMessageINInbox(propertyLoaderObj, driver, url, username, propertyLoaderObj.getPassword(),
 				subject, body, comm_id, messageID, integrationPracticeID, "CannotReply", "");
-		log("Test Case End: The practice user is able to compose a message with 'Cann't Reply' flag on and send it to enrolled patient with “Existing Encounter” option selected in Send & Chart button.");
 	}
 
 	@Test(enabled = true, groups = { "acceptance-INBOX" }, retryAnalyzer = RetryAnalyzer.class)
 	public void testCOMSecureMessageSentAndReplyUsingOnlineProfile() throws Throwable {
-		log("Test Case: Verify the practice user is able to send a message with Onine Profile as sender of message and patient is able to reply to that message");
-		log("Execution Environment: " + IHGUtil.getEnvironmentType());
-		log("Execution Browser: " + TestConfig.getBrowserType());
-
 		logStep("Getting Existing User");
 		String username = propertyLoaderObj.getProperty("CCDAUsername");
 		String person_id = DBUtils.executeQueryOnDB("NGCoreDB",
@@ -392,15 +368,10 @@ public class NGIntegrationE2EInboxTests extends BaseTestNGWebDriver {
 		Thread.sleep(60000);
 		CommonFlows.verifyReplyReceivedAtNGCore(replyMessageID, comm_id, rootThreadId.toUpperCase(), "Re: " + subject,
 				JalapenoMessagesPage.getPatientReply());
-		log("Test Case End: The practice user is able to send a message with Onine Profile as sender of message and patient is able to reply to that message.");
 	}
 
 	@Test(enabled = true, groups = { "acceptance-INBOX" }, retryAnalyzer = RetryAnalyzer.class)
 	public void testCOMSecureMessageSentAndReplyUsingAliasName() throws Throwable {
-		log("Test Case: Verify the practice user is able to send a message with Alias Name as sender of message and patient is able to reply to that message.");
-		log("Execution Environment: " + IHGUtil.getEnvironmentType());
-		log("Execution Browser: " + TestConfig.getBrowserType());
-
 		String questionText = IntegrationConstants.MESSAGE_REPLY;
 		String userId = propertyLoaderObj.getProperty("SecureMessageUserID");
 		String userLastName = DBUtils.executeQueryOnDB("NGCoreDB",
@@ -539,12 +510,10 @@ public class NGIntegrationE2EInboxTests extends BaseTestNGWebDriver {
 		Thread.sleep(60000);
 		CommonFlows.verifyReplyReceivedAtNGCore(replyMessageID, comm_id, messageID.toUpperCase(), "Re: " + subject,
 				JalapenoMessagesPage.getPatientReply());
-		log("Test Case End: The practice user is able to send a message with Alias Name as sender of message and patient is able to reply to that message.");
 	}
 
 	@Test(enabled = true, groups = { "acceptance-INBOX" }, retryAnalyzer = RetryAnalyzer.class)
 	public void testCOMAskAQuestionRepliedUsingOriginalUnlockedEncounter() throws Throwable {
-		log("Test Case : Verify the patient is able to ask a question from Practice User and practice user is able to reply to that message.");
 		String questionText = IntegrationConstants.MESSAGE_REPLY;
 		String userId = propertyLoaderObj.getProperty("SecureMessageUserID");
 		DBUtils.executeQueryOnDB("NGCoreDB", "select first_name from user_mstr where user_id='" + userId + "'");
@@ -678,15 +647,10 @@ public class NGIntegrationE2EInboxTests extends BaseTestNGWebDriver {
 
 		CommonFlows.verifyMessageINInbox(propertyLoaderObj, driver, url, username, propertyLoaderObj.getPassword(),
 				subject, body, comm_id, messageIDAtMF, integrationPracticeID, "", "");
-		log("Test Case End: The patient is able to ask a question from Practice User and practice user is able to reply to that message.");
 	}
 
 	@Test(enabled = true, groups = { "acceptance-INBOX" }, retryAnalyzer = RetryAnalyzer.class)
 	public void testCOMSendSecureMessageDoNotAddToChart() throws Throwable {
-		log("Test Case: Verify the practice user is able to compose a message with Delayed Delivery and send it to enrolled patient with “Do Not Add To Chart” option selected in Send & Chart button.");
-		log("Execution Environment: " + IHGUtil.getEnvironmentType());
-		log("Execution Browser: " + TestConfig.getBrowserType());
-
 		logStep("Getting Existing User");
 		String username = propertyLoaderObj.getProperty("CCDAUsername");
 		String person_id = DBUtils.executeQueryOnDB("NGCoreDB",
@@ -747,15 +711,10 @@ public class NGIntegrationE2EInboxTests extends BaseTestNGWebDriver {
 
 		CommonFlows.verifyMessageINInbox(propertyLoaderObj, driver, url, username, propertyLoaderObj.getPassword(),
 				subject, body, comm_id, messageID, integrationPracticeID, "", "");
-		log("Test Case End: The practice user is able to compose a message with Delayed Delivery and send it to enrolled patient with “Do Not Add To Chart” option selected in Send & Chart button.");
 	}
 
 	@Test(enabled = true, groups = { "acceptance-INBOX" }, retryAnalyzer = RetryAnalyzer.class)
-	public void testInboxAppointment() throws Throwable {
-		log("Test Case: Verify the patient is able to request for appointment and practice user is able to book appointment and send response to patient");
-		log("Execution Environment: " + IHGUtil.getEnvironmentType());
-		log("Execution Browser: " + TestConfig.getBrowserType());
-
+	public void testInboxSendAppointmentRequestBookAppointmentSendResponse() throws Throwable {
 		logStep("Getting Existing User");
 		String username = propertyLoaderObj.getProperty("CCDAUsername");
 		String person_id = DBUtils.executeQueryOnDB("NGCoreDB",
@@ -931,16 +890,10 @@ public class NGIntegrationE2EInboxTests extends BaseTestNGWebDriver {
 		Thread.sleep(60000);
 		CommonFlows.verifyAppointmentReceivedinPortal(propertyLoaderObj, driver, url, username,
 				appointmentDate.substring(0, appointmentDate.lastIndexOf(" ")), expectedTime, appointmentResponse);
-		Log4jUtil.log(
-				"Test Case End: The patient is able to request for appointment and practice user is able to book appointment and send response to patient");
 	}
 
 	@Test(enabled = true, groups = { "acceptance-INBOX" }, retryAnalyzer = RetryAnalyzer.class)
 	public void testInboxAppointmentSameSlot() throws Throwable {
-		log("Test Case: Verify the practice user is not able to book same slot which is already booked for patient");
-		log("Execution Environment: " + IHGUtil.getEnvironmentType());
-		log("Execution Browser: " + TestConfig.getBrowserType());
-
 		logStep("Getting Existing User");
 		String username = propertyLoaderObj.getProperty("CCDAUsername");
 		String person_id = DBUtils.executeQueryOnDB("NGCoreDB",
@@ -985,15 +938,10 @@ public class NGIntegrationE2EInboxTests extends BaseTestNGWebDriver {
 		NGAPIUtils.updateLoginDefaultTo("EnterpriseGateway", enterpriseId, practiceId);
 		NGAPIFlows.postAppointment(person_id, practiceId, locationName, providerName, eventName, resourceName, 2,
 				apptTime, 400);
-		log("Test Case End: The practice user is not able to book same slot which is already booked for patient");
 	}
 
 	@Test(enabled = true, groups = { "acceptance-INBOX" }, retryAnalyzer = RetryAnalyzer.class)
-	public void testInboxAppointmentBookMultipleSlotsandDeleteAppointment() throws Throwable {
-		log("Test Case: Verify the practice user is able to book multiple appointments for patient and delete appointment from EPM appointment book");
-		log("Execution Environment: " + IHGUtil.getEnvironmentType());
-		log("Execution Browser: " + TestConfig.getBrowserType());
-
+	public void testInboxAppointmentBookMultipleSlotsandDeleteAppointmentVerifyInPortal() throws Throwable {
 		logStep("Getting Existing User");
 		String username = propertyLoaderObj.getProperty("CCDAUsername");
 		String person_id = DBUtils.executeQueryOnDB("NGCoreDB",
@@ -1098,15 +1046,10 @@ public class NGIntegrationE2EInboxTests extends BaseTestNGWebDriver {
 		logStep("Verify appointment is deleted from Portal");
 		CommonFlows.verifyAppointmentDeletedinPortal(propertyLoaderObj, driver, url, username,
 				appointmentDate.substring(0, appointmentDate.lastIndexOf(" ")), expectedTime);
-		log("Test Case End: The practice user is able to book multiple appointments for patient and delete appointment from EPM appointment book successfully");
 	}
 
 	@Test(enabled = true, groups = { "acceptance-INBOX" }, retryAnalyzer = RetryAnalyzer.class)
-	public void testPP138SendPatientEducation() throws Throwable {
-		log("Test Case: Verify the practice user is able to send Patient Education document");
-		log("Execution Environment: " + IHGUtil.getEnvironmentType());
-		log("Execution Browser: " + TestConfig.getBrowserType());
-
+	public void testPP138SendPatientEducationByCommunicationMessage() throws Throwable {
 		logStep("Getting Existing User");
 		String username = propertyLoaderObj.getProperty("CCDAUsername");
 		String person_id = DBUtils.executeQueryOnDB("NGCoreDB",
@@ -1174,15 +1117,10 @@ public class NGIntegrationE2EInboxTests extends BaseTestNGWebDriver {
 		}
 		CommonFlows.verifyMessageINInbox(propertyLoaderObj, driver, url, username, propertyLoaderObj.getPassword(),
 				subject, body, comm_id, messageID, integrationPracticeID, "messageWithPE", attachmentName);
-		log("Test Case End: The practice user is able to send Patient Education document successfully and patient is able to receive.");
 	}
 
 	@Test(enabled = true, groups = { "acceptance-INBOX" }, retryAnalyzer = RetryAnalyzer.class)
 	public void testInboxPrescription() throws Throwable {
-		log("Test Case: Add the medication for the prescription renewal");
-		log("Execution Environment: " + IHGUtil.getEnvironmentType());
-		log("Execution Browser: " + TestConfig.getBrowserType());
-
 		logStep("Getting Existing User");
 		String username = propertyLoaderObj.getProperty("CCDAUsername");
 		String person_id = DBUtils.executeQueryOnDB("NGCoreDB",
@@ -1224,10 +1162,6 @@ public class NGIntegrationE2EInboxTests extends BaseTestNGWebDriver {
 
 	@Test(enabled = true, groups = { "acceptance-INBOX" }, retryAnalyzer = RetryAnalyzer.class)
 	public void testInboxRequestPrescriptionRenewalApprovedbyPracticeUser() throws Throwable {
-		log("Test Case: Verify the patient is able to request for prescription renewal and Practice User is able to approve the medication");
-		log("Execution Environment: " + IHGUtil.getEnvironmentType());
-		log("Execution Browser: " + TestConfig.getBrowserType());
-
 		logStep("Getting Existing User");
 		String username = propertyLoaderObj.getProperty("SingleGuarantorUser");
 		String person_id = DBUtils.executeQueryOnDB("NGCoreDB",
@@ -1335,15 +1269,10 @@ public class NGIntegrationE2EInboxTests extends BaseTestNGWebDriver {
 		messagesPage.verifyMedicationStatus(driver, "Approved");
 
 		messagesPage.archiveMessage();
-		log("Test Case End: The patient is able to request for prescription renewal and Practice User is able to approve the medication");
 	}
 
 	@Test(enabled = true, groups = { "acceptance-INBOX" }, retryAnalyzer = RetryAnalyzer.class)
 	public void testInboxRequestPrescriptionRenewalRejectedbyPracticeUser() throws Throwable {
-		log("Test Case: Verify the patient is able to request for prescription renewal and Practice User is able to reject the medication");
-		log("Execution Environment: " + IHGUtil.getEnvironmentType());
-		log("Execution Browser: " + TestConfig.getBrowserType());
-
 		logStep("Getting Existing User");
 		String username = propertyLoaderObj.getProperty("SingleGuarantorUser");
 		String person_id = DBUtils.executeQueryOnDB("NGCoreDB",
@@ -1448,15 +1377,11 @@ public class NGIntegrationE2EInboxTests extends BaseTestNGWebDriver {
 		messagesPage.verifyPrescriptionResponse(driver, prescritonRenewalResponse);
 
 		messagesPage.archiveMessage();
-		log("Test Case End: The patient is able to request for prescription renewal and Practice User is able to reject the medication");
 	}
 
 	@Test(enabled = true, groups = { "acceptance-INBOX" }, retryAnalyzer = RetryAnalyzer.class)
-	public void testCOMBulkSendSecureMessageDoNotAddToEncounterSendByPracticeUser() throws Throwable {
-		log("Test Case: Verify the practice user is able to compose a message with normal priority, enable flag for unread notification, disable reply and send it to more than one patient enrolled in MF patient portal");
-		log("Execution Environment: " + IHGUtil.getEnvironmentType());
-		log("Execution Browser: " + TestConfig.getBrowserType());
-
+	public void testCOMBulkSendMessageWithNormalPriorityUnReadDisbaleReplyDoNotAddToEncounterSendByPracticeUser()
+			throws Throwable {
 		logStep("Getting Existing User");
 		String person_id = propertyLoaderObj.getProperty("PersonId1");
 		String username = DBUtils.executeQueryOnDB("NGCoreDB",
@@ -1521,15 +1446,10 @@ public class NGIntegrationE2EInboxTests extends BaseTestNGWebDriver {
 		CommonFlows.verifyMessageINInbox(propertyLoaderObj, driver, url, username,
 				propertyLoaderObj.getProperty("BulkPassword"), subject, body, comm_id, messageID, integrationPracticeID,
 				"BulkCannotReply", "");
-		log("Test Case End: The practice user is able to compose a message with normal priority, enable flag for unread notification, disable reply and send it to more than one patient enrolled in MF patient portal");
 	}
 
 	@Test(enabled = true, groups = { "acceptance-INBOX" }, retryAnalyzer = RetryAnalyzer.class)
 	public void testInboxRequestMultiplePrescriptionRenewal() throws Throwable {
-		log("Test Case: Verify the patient is able to request for multiple medications and Prescribed elsewhere medications");
-		log("Execution Environment: " + IHGUtil.getEnvironmentType());
-		log("Execution Browser: " + TestConfig.getBrowserType());
-
 		logStep("Getting Existing User");
 		String username = propertyLoaderObj.getProperty("SingleGuarantorUser");
 		DBUtils.executeQueryOnDB("NGCoreDB", "select person_id from person where email_address = '" + username + "'");
@@ -1607,12 +1527,10 @@ public class NGIntegrationE2EInboxTests extends BaseTestNGWebDriver {
 		logStep("Verify Prescription Renewal request is reached to EPM/EHR Inbox");
 		CommonFlows.verifyPrescriptionRenewalRequestReceived(prescriptionID,
 				"[#1:" + prescritonRenewalRequestReason + "][#2:" + prescritonRenewalRequestReason + "]", practiceId);
-		log("Test Case End: The patient is able to request for multiple medications and Prescribed elsewhere medications");
 	}
 
 	@Test(enabled = true, groups = { "acceptance-INBOX" }, retryAnalyzer = RetryAnalyzer.class)
-	public void testPP19AskAttachment() throws Throwable {
-		log("Test Case: Verify patient is able to send attachments from portal to practice provider via Ask A Question option and practice user is able to reply to that message.");
+	public void testPP19SendAttachmentByASKAReplyByPracticeUser() throws Throwable {
 		String expectedCorrectFileText = "sw-test-academy.txt";
 
 		String questionText = IntegrationConstants.MESSAGE_REPLY;
@@ -1794,7 +1712,6 @@ public class NGIntegrationE2EInboxTests extends BaseTestNGWebDriver {
 
 	@Test(enabled = true, groups = { "acceptance-INBOX" }, retryAnalyzer = RetryAnalyzer.class)
 	public void testPP19SendDifferentTypeOfAttachments() throws Throwable {
-		log("Test Case: Verify patient is able to send different type of attachments from portal to practice provider via Ask A Question option.");
 		String expectedCorrectFileText1 = "TIFFImage.tiff";
 		String expectedCorrectFileText2 = "SampleDoc.docx";
 		String expectedCorrectFileText3 = "SamplePDF.pdf";
@@ -1914,12 +1831,10 @@ public class NGIntegrationE2EInboxTests extends BaseTestNGWebDriver {
 				expectedCorrectFileText3.substring(0, expectedCorrectFileText3.lastIndexOf(".")));
 		CommonFlows.verifyMultipleAttachmentsReceivedInMessageAtNGCore(propertyLoaderObj, messageID, "png ",
 				expectedCorrectFileText4.substring(0, expectedCorrectFileText4.lastIndexOf(".")));
-		log("Test Case End: The patient is able to send different type of attachments from portal to practice provider via Ask A Question option.");
 	}
 
 	@Test(enabled = true, groups = { "acceptance-INBOX" }, retryAnalyzer = RetryAnalyzer.class)
 	public void testPP19Send2MBAttachments() throws Throwable {
-		log("Test Case: Verify patient is able to send 2 MB attachments from portal to practice provider via Ask A Question option.");
 		String expectedCorrectFileText1 = "1.7MB File.txt";
 		String expectedCorrectFileText2 = "BMPImage.bmp";
 		String expectedCorrectFileText3 = "JPGImage.jpg";
@@ -2032,8 +1947,6 @@ public class NGIntegrationE2EInboxTests extends BaseTestNGWebDriver {
 				expectedCorrectFileText2.substring(0, expectedCorrectFileText2.lastIndexOf(".")));
 		CommonFlows.verifyMultipleAttachmentsReceivedInMessageAtNGCore(propertyLoaderObj, messageID, "jpg ",
 				expectedCorrectFileText3.substring(0, expectedCorrectFileText3.lastIndexOf(".")));
-
-		log("Test Case End: The patient is able to send 2 MB attachments from portal to practice provider via Ask A Question option.");
 	}
 
 }
