@@ -45,6 +45,9 @@ public class AuthUserLinkAccountPage extends MedfusionPage {
 	
 	@FindBy(how = How.XPATH, using = "//div[@class='notification error']")
 	private WebElement selfTrustedRepresentativeError;
+	
+	@FindBy(how = How.XPATH, using = "//*[contains(text(),'The user name and/or password you entered is incorrect. Please try again.')]")
+	private WebElement msgIncorrectUsernamePasswordError;
 
 	public AuthUserLinkAccountPage(WebDriver driver) {
 		super(driver);
@@ -131,6 +134,15 @@ public class AuthUserLinkAccountPage extends MedfusionPage {
 		try {
 			log("Looking for Trusted Representative Error");
 			return selfTrustedRepresentativeError.isDisplayed();
+		} catch (Exception e) {
+		}
+		return false;
+	}
+	
+	public boolean isIncorrectUsernamePasswordErrorDisplayed() {
+		try {
+			log("Looking for Incorrect Username or Password Error");
+			return msgIncorrectUsernamePasswordError.isDisplayed();
 		} catch (Exception e) {
 		}
 		return false;
