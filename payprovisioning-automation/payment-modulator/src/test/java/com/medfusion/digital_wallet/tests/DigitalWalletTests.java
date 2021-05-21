@@ -32,7 +32,7 @@ public class DigitalWalletTests extends DigitalWalletBaseTest{
         DigitalWalletResource digitalWallet = new DigitalWalletResource();
         String fromMonth = (testData.getProperty("fromMonth")).substring(5,7) + (testData.getProperty("fromMonth")).substring(2,4);
         String toMonth = (testData.getProperty("toMonth")).substring(5,7) + (testData.getProperty("toMonth")).substring(2,4);
-        Response response = digitalWallet.getCountExpiringCards(fromMonth, toMonth);
+        Response response = digitalWallet.getCountOfExpiringCards(fromMonth, toMonth);
 
         JsonPath jsonPath = new JsonPath(response.asString());
         String totalCardsInDb = DBUtils.executeQueryOnDB("pay_walt","SELECT COUNT(wallet_id) FROM public.wallet_card;");

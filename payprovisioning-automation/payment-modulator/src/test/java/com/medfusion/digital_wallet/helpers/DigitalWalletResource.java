@@ -13,7 +13,7 @@ public class DigitalWalletResource extends DigitalWalletBaseTest {
 
     protected PropertyFileLoader testData;
 
-    public Response getCountExpiringCards(String fromMonth, String toMonth) throws IOException {
+    public Response getCountOfExpiringCards(String fromMonth, String toMonth) throws IOException {
         testData = new PropertyFileLoader();
 
         Response response = given().that().spec(requestSpec)
