@@ -15,21 +15,19 @@ public class GatewayProxyDigitalWalletResource extends GatewayProxyBaseTest {
 
     protected PropertyFileLoader testData;
 
-    public Response createNewWallet() throws IOException {
+    public Response createNewWallet(String consumerName, String cardType, String cardNumber, String expiryDate, String cardAlias, String zipcode) throws IOException {
         testData = new PropertyFileLoader();
-        Map<String, Object> digitalWallet = PayloadDetails.getPayloadForAddingCardToDigitalWallet(testData.getProperty("consumername"),
-                testData.getProperty("type"), testData.getProperty("cardnumber"),
-                testData.getProperty("expirationnumber"), testData.getProperty("cardalias"),
-                testData.getProperty("zipcode"));
+        Map<String, Object> digitalWallet = PayloadDetails.getPayloadForAddingCardToDigitalWallet(consumerName, cardType, cardNumber, expiryDate, cardAlias, zipcode );
 
         Response response = given().spec(requestSpec).
                 body(digitalWallet).when().post(testData.getProperty("testpaycustomeruuid")+
                 "/wallets")
-                .then().spec(responseSpec).and().extract().response();
+                .then().extract().response();
+
         return response;
     }
-    
-    
+
+
     public Response getListOfCardsInWallet() throws IOException{
     	
     	 testData = new PropertyFileLoader();
