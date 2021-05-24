@@ -11,7 +11,7 @@
  	
 <test name = "NGIntegration-Platform-Acceptance-PatientMultiPracticeEnrollment" >
 	<classes>
-		<class name = "com.ng.product.integrationplatform.tests.NGIntegrationE2ESITTests" />
+		<class name = "com.ng.product.integrationplatform.tests.NGIntegrationE2EEnterpriseEnrollmentTests" />
 		<methods>
 		        <include name="testBELEAutoPatientEnrollmentP2"/>
 	    		<include name="testBELEAutoPatientEnrollmentP1"/>   
