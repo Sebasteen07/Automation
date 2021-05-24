@@ -1591,7 +1591,7 @@ public class NGIntegrationE2EEnrollment_CCDTests extends BaseTestNGWebDriver {
 				"select person_nbr from person where person_id = '" + person_id + "'");
 
 		logStep("Verify CCD received in the Get Api Call.");
-		RestUtils.getRequestIdForOnDemandCCDRequest(propertyLoaderObj.getResponsePath(),
+		RestUtils.verifyOnDemandRequestSubmitted(propertyLoaderObj.getResponsePath(),
 				person_nbr.trim().replace("\t", ""));
 
 		Thread.sleep(60000);
