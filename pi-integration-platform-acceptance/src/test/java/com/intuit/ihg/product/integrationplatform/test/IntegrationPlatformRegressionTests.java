@@ -1114,7 +1114,7 @@ public class IntegrationPlatformRegressionTests extends BaseTestNGWebDriver {
 	
 	@DataProvider(name = "channelVersion")
 	public Object[][] channelVersion() {
-		Object[][] obj = new Object[][] {{ "v3" } };
+		Object[][] obj = new Object[][] {{ "v1" } ,{ "v3" } };
 		return obj;
 	}
 

@@ -4045,7 +4045,7 @@ public class RestUtils {
 						.add(element.getElementsByTagName("To").item(0).getFirstChild().getNodeValue().toString());
 				medication_details
 						.add(element.getElementsByTagName("From").item(0).getFirstChild().getNodeValue().toString());
-				//medication_details.add(element.getElementsByTagName("AdditionalInformation").item(0).getTextContent().toString());
+				medication_details.add(element.getElementsByTagName("AdditionalInformation").item(0).getTextContent().toString());
 				medication_details.add(element.getElementsByTagName("ExternalMedicationId").item(0).getTextContent().toString());
 				medication_details.add(element.getElementsByTagName("ExternalSystemId").item(0).getTextContent().toString());
 				node = node.getParentNode().getParentNode();
