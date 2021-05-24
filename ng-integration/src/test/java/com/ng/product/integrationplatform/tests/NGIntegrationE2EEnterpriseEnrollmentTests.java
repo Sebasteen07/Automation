@@ -4,11 +4,6 @@ package com.ng.product.integrationplatform.tests;
 import static org.testng.Assert.*;
 
 import java.time.Instant;
-import java.time.LocalDate;
-import java.time.LocalDateTime;
-import java.time.LocalTime;
-import java.time.ZoneId;
-import java.time.ZonedDateTime;
 import java.time.temporal.ChronoUnit;
 import java.util.ArrayList;
 import java.util.Date;
@@ -42,7 +37,6 @@ import com.ng.product.integrationplatform.flows.NGAPIFlows;
 import com.ng.product.integrationplatform.flows.NGPatient;
 import com.ng.product.integrationplatform.flows.PatientEnrollment;
 import com.ng.product.integrationplatform.pojo.NewPatient;
-import com.ng.product.integrationplatform.utils.CommonFlows;
 import com.ng.product.integrationplatform.utils.CommonUtils;
 import com.ng.product.integrationplatform.utils.DBUtils;
 
@@ -1185,7 +1179,6 @@ public class NGIntegrationE2EEnterpriseEnrollmentTests extends BaseTestNGWebDriv
 		assertTrue(homePage.assessFamilyAccountElements(true));
 		logStep("Auto Enrolment of Guardian and Dependent to Second and third Practice is completed");
 
-//		PatientEnrollment.VerifyGetPIDCCall(propertyLoaderObj, timestamp, dependentperson_nbr,createdependent.getFirstName(), createdependent.getLastName(),"Registered");
 		PatientEnrollment.verifyPatientEnrollmentStatus(enterprisebaseURL, ngAPIUtils, person_id,
 				propertyLoaderObj.getNGEnterpiseEnrollmentE1P1(), propertyLoaderObj.getNGEnterpiseEnrollmentE1());
 		PatientEnrollment.verifyPatientEnrollmentStatus(enterprisebaseURL, ngAPIUtils, dependentperson_id,
@@ -1294,8 +1287,6 @@ public class NGIntegrationE2EEnterpriseEnrollmentTests extends BaseTestNGWebDriv
 		logStep("Logout from Portal");
 		Thread.sleep(9000);
 		NGLoginPage loginPage = jalapenoHomePage.LogoutfromNGMFPortal();
-
-//			PatientEnrollment.VerifyGetPIDCCall(propertyLoaderObj, timestamp, dependentperson_nbr,createdependent.getFirstName(), createdependent.getLastName(),"Registered");
 
 		logStep("Verify the enrollment and processing status of dependent in pxp_enrollment table");
 		String dependentprocessing_status = DBUtils.executeQueryOnDB("NGCoreDB",
