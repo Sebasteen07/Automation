@@ -16,7 +16,7 @@
 		        <include name="testBELEAutoPatientEnrollmentP2"/>
 	    		<include name="testBELEAutoPatientEnrollmentP1"/>   
 	    		<include name="testBELEDeleteP3AutoPatientEnrollmentP1"/> 
-	    		<include name="testBELEDeactivateReactivateP3AutoPatientEnrollmentP1"/> 
+	    		<include name="testBELEDeactivateP3AutoPatientEnrollmentP1"/> 
 	    		<include name="testBELEPatientEnrollmentPracticeLevelE1P4"/> 
 	    		<include name="testBELEDeleteP2PatientEnrolledP1P2P3"/> 
 	    		<include name="testBELEDeactivateP2PatientEnrolledP1P2P3"/>
