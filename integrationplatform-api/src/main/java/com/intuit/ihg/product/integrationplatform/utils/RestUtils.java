@@ -3981,7 +3981,7 @@ public class RestUtils {
 		return PrescriptionHeaderId;
 	}
 	
-	public static void isMedicationDetailsNewResponseXMLValid(String xmlFileName, String medicationName)
+	public static void isMedicationDetailsNewResponseXMLValid(String xmlFileName, String medicationName, String additionalComment)
 			throws ParserConfigurationException, SAXException, IOException {
 		IHGUtil.PrintMethodName();
 		Document doc = buildDOMXML(xmlFileName);
@@ -3996,9 +3996,11 @@ public class RestUtils {
 					+ (medicationName));
 			if (node.getChildNodes().item(0).getTextContent().contains(medicationName)) {
 				Element ele = (Element) nodes.item(i).getParentNode();
-				Node nDosage = ele.getElementsByTagName(JalapenoConstants.MEDICATION_DOSAGE).item(0);
+				Node nDosage = ele.getElementsByTagName(IntegrationConstants.DOSAGE_TAG).item(0);
+				Node additionalCommentNode =ele.getElementsByTagName(IntegrationConstants.ADDITIONAL_INFO_TAG).item(0);
 				assertEquals(nDosage.getTextContent(), JalapenoConstants.DOSAGE,
 						"The actual value of dosage doesnt equal the expected value");
+				assertEquals(additionalCommentNode.getTextContent(),additionalComment,"The actual value of Additional commnet doesnt equal the expected value");
 				found = true;
 				break;
 			}
@@ -4024,6 +4026,8 @@ public class RestUtils {
 
 		for (int i = 0; i < pnode.getLength(); i++) {
 			Element element = (Element) pnode.item(i);
+			String medicationId = element.getElementsByTagName("ExternalMedicationId").item(0).getTextContent();
+			
 			String reaString = element.getElementsByTagName("MedicationName").item(0).getFirstChild().getNodeValue();
 			if (reaString.equalsIgnoreCase(medication)) {
 				Node node = element.getElementsByTagName("MedicationName").item(0).getParentNode();
@@ -4041,7 +4045,11 @@ public class RestUtils {
 						.add(element.getElementsByTagName("To").item(0).getFirstChild().getNodeValue().toString());
 				medication_details
 						.add(element.getElementsByTagName("From").item(0).getFirstChild().getNodeValue().toString());
+				//medication_details.add(element.getElementsByTagName("AdditionalInformation").item(0).getTextContent().toString());
+				medication_details.add(element.getElementsByTagName("ExternalMedicationId").item(0).getTextContent().toString());
+				medication_details.add(element.getElementsByTagName("ExternalSystemId").item(0).getTextContent().toString());
 				node = node.getParentNode().getParentNode();
+				
 				Log4jUtil.log("Node name for prescription:"+node.getNodeName());
 				if (node.hasAttributes()) {
 					Attr attr = (Attr) node.getAttributes().getNamedItem("id");
@@ -4099,15 +4107,20 @@ public class RestUtils {
 		Node nRefillNumber = element.getElementsByTagName(IntegrationConstants.REFILL_NUMBER_TAG).item(0);
 		Node nPrescriptionNumber = element.getElementsByTagName(IntegrationConstants.PRESCRIPTION_NUMBER_TAG).item(0);
 		Node nAdditionalInformation = element.getElementsByTagName(IntegrationConstants.ADDITIONAL_INFO_TAG).item(0);
+		Node nExternalMedicationID = element.getElementsByTagName(IntegrationConstants.EXTERNAL_MEDICATION_ID).item(0);
+		Node nExternalSystemID = element.getElementsByTagName(IntegrationConstants.EXTERNAL_SYSTEM_ID).item(0);
+
 		
-		nAdditionalInformation.setTextContent((String) IntegrationConstants.ADDITIONAL_INFO);
 		nPrescriptionNumber.setTextContent((String) IntegrationConstants.PRESCRIPTION_NO);
 		nRefillNumber.setTextContent((String) IntegrationConstants.NO_OF_REFILLS);
 		nQuantity.setTextContent((String) IntegrationConstants.QUANTITY);
 		nMedicationDosage.setTextContent(medication_details.get(1));
 		nMedicationName.setTextContent(medication_details.get(0));
+		nAdditionalInformation.setTextContent(medication_details.get(6));
+		nExternalMedicationID.setTextContent(medication_details.get(7));
+		nExternalSystemID.setTextContent(medication_details.get(8));
 
-		String SigCode = generateRandomString();
+		String SigCode = "IWVH";
 		Node nSigCodeAbbreviation = element.getElementsByTagName("SigCodeAbbreviation").item(0);
 		Node nSigCodeMeaning = element.getElementsByTagName("SigCodeMeaning").item(0);
 

@@ -22,7 +22,7 @@ public class MedicationsConfirmationPage {
 	@FindBy(how = How.ID, using = "additional-comment")
 	private WebElement textComment;
 	
-	@FindBy(how = How.XPATH, using = "//button[@class='btn btn-primary ng-binding']")
+	@FindBy(how = How.XPATH, using = "//*[@id='confirm-rxRequest-page']/following-sibling::*/button[2]")
 	private WebElement btnConfirm;
 	
 	@FindBy(how = How.XPATH, using = "//div[@class='form-buttons ng-scope']/button[@type='button']")
@@ -31,7 +31,7 @@ public class MedicationsConfirmationPage {
 	@FindBy(how = How.XPATH, using = "//div[@class='modal-content']")
 	private WebElement confirmPopup;
 	
-	@FindBy(how = How.XPATH, using = "//div[@class='modal-header ng-scope']//p")
+	@FindBy(how = How.XPATH, using = "//*[@id='confirmation']/following-sibling::p")
 	private WebElement successMsg;
 	
 	@FindBy(how = How.XPATH, using = "//a[@id='closebtn']")
@@ -52,7 +52,9 @@ public class MedicationsConfirmationPage {
 	    ex.executeScript("arguments[0].click();", btnConfirm);
 		System.out.println("Confirm button is clicked");
 		IHGUtil.waitForElement(driver, 10, confirmPopup);
-        return successMsg.getText();		
+		String successMsgOnPopup = successMsg.getText();
+		btnClose.click();
+        return successMsgOnPopup;		
 	}
 	
 	public void prescriptionRenewalFee() {
@@ -64,6 +66,11 @@ public class MedicationsConfirmationPage {
 			System.out.println("Prescription Renewal fee is  not displayed");
 		}
 		
+	}
+	
+	public void setAdditionalComments(WebDriver driver, String comment) {
+		IHGUtil.waitForElement(driver, 0, textComment);
+		textComment.sendKeys(comment);
 	}
 	
 	public String getMedicationdetails(WebDriver driver) throws InterruptedException {
