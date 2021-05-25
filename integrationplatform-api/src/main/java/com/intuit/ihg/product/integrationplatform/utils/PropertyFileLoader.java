@@ -20,131 +20,135 @@ public class PropertyFileLoader {
 
 	// CCD
 	public String getResponsePath() {
-		return property.getProperty("responsePath");
+		return property.getProperty("responsepath");
 	}
 
 	public String getOAuthProperty() {
-		return property.getProperty("oAuthProperty");
+		return property.getProperty("oauth.property");
 	}
 
 	public String getOAuthKeyStore() {
-		return property.getProperty("oAuthKeyStore");
+		return property.getProperty("oauth.keystore");
 	}
 
 	public String getPHR_URL() {
-		return property.getProperty("phr_URL");
+		return property.getProperty("phr.url");
 	}
 
 	public String getRestUrlCCD() {
-		return property.getProperty("restUrlCCD");
+		return property.getProperty("resturl.ccd");
 	}
 
 	public String getRestUrlV3CCD() {
-		return property.getProperty("restUrlV3CCD");
+		return property.getProperty("resturlv3.ccd");
 	}
 
 	public String getEPracticeNameCCD() {
-		return property.getProperty("ePracticeNameCCD");
+		return property.getProperty("epracticename.ccd");
 	}
 
 	public String getCCDXMLPath() {
-		return property.getProperty("ccdXMLPath");
+		return property.getProperty("ccdxmlpath");
 	}
 
+	public String getCCDPATHLargeSize() {
+		return property.getProperty("ccdxmlpath.largesize");
+	}
+	
 	public String getCCDPath() {
-		return property.getProperty("ccdPath");
+		return property.getProperty("ccdpath");
 	}
 
 	public String getCCDZIP() {
-		return property.getProperty("zipCCD");
+		return property.getProperty("zip.ccd");
 	}
 
 	public String getUserNameCCD() {
-		return property.getProperty("userNameCCD");
+		return property.getProperty("username.ccd");
 	}
 
 	public String getPasswordCCD() {
-		return property.getProperty("passwordCCD");
+		return property.getProperty("password.ccd");
 	}
 
 	public String getdeviceNameCCD() {
-		return property.getProperty("deviceNameCCD");
+		return property.getProperty("devicename.ccd");
 	}
 
 	public String getdeviceVersionCCD() {
-		return property.getProperty("deviceVersionCCD");
+		return property.getProperty("deviceversion.ccd");
 	}
 
 	public String getvendorNameCCD() {
-		return property.getProperty("vendorNameCCD");
+		return property.getProperty("vendorname.ccd");
 	}
 
 	public String getMessageIdCCD() {
-		return property.getProperty("messageIdCCD");
+		return property.getProperty("messageid.ccd");
 	}
 
 	public String getPrefixCCD() {
-		return property.getProperty("prefixCCD");
+		return property.getProperty("prefix.ccd");
 	}
 
 	public String getFirstNameCCD() {
-		return property.getProperty("firstNameCCD");
+		return property.getProperty("firstname.ccd");
 	}
 
 	public String getMiddleNameCCD() {
-		return property.getProperty("middleNameCCD");
+		return property.getProperty("middlename.ccd");
 	}
 
 	public String getLastNameCCD() {
-		return property.getProperty("lastNameCCD");
+		return property.getProperty("lastname.ccd");
 	}
 
 	public String getLine1CCD() {
-		return property.getProperty("line1CCD");
+		return property.getProperty("line1.ccd");
 	}
 
 	public String getLine2CCD() {
-		return property.getProperty("line2CCD");
+		return property.getProperty("line2.ccd");
 	}
 
 	public String getCityCCD() {
-		return property.getProperty("cityCCD");
+		return property.getProperty("city.ccd");
 	}
 
 	public String getStateCCD() {
-		return property.getProperty("stateCCD");
+		return property.getProperty("state.ccd");
 	}
 
 	public String getCountryCCD() {
-		return property.getProperty("countryCCD");
+		return property.getProperty("country.ccd");
 	}
 
 	public String getPracticePatientIdCCD() {
-		return property.getProperty("practicePatientId");
+		return property.getProperty("practice.patientid");
 	}
 
 	public String getOAuthAppTokenCCD() {
-		return property.getProperty("oAuthAppTokenCCD");
+		return property.getProperty("oauth.apptoken.ccd");
 	}
 
 	public String getOAuthUsernameCCD() {
-		return property.getProperty("oAuthUsernameCCD");
+		return property.getProperty("oauth.username.ccd");
 	}
 
 	public String getOAuthPasswordCCD() {
-		return property.getProperty("oAuthPasswordCCD");
+		return property.getProperty("oauth.password.ccd");
 	}
 
 	public String getUrlCCD() {
-		return property.getProperty("urlCCD");
+		return property.getProperty("url.ccd");
 	}
 
 	public String getFromCCD() {
-		return property.getProperty("fromCCD");
+		return property.getProperty("from.ccd");
 	}
 
 	public String getIntegrationPracticeIDCCD() {
-		return property.getProperty("integrationPracticeIDCCD");
+		return property.getProperty("integration.practiceid.ccd");
 	}
 
 	// AMDC
@@ -177,7 +181,7 @@ public class PropertyFileLoader {
 	}
 
 	public String getResponsePathAMDC() {
-		return property.getProperty("responsePathAMDC");
+		return property.getProperty("responsepathAMDC");
 	}
 
 	public String getFromAMDC() {
@@ -290,19 +294,19 @@ public class PropertyFileLoader {
 	}
 
 	public String getCCDPATH1() {
-		return property.getProperty("ccdXMLPath1");
+		return property.getProperty("ccdxmlpath1");
 	}
 
 	public String getCCDPATH2() {
-		return property.getProperty("ccdXMLPath2");
+		return property.getProperty("ccdxmlpath2");
 	}
 
 	public String getCCDPATH3() {
-		return property.getProperty("ccdXMLPath3");
+		return property.getProperty("ccdxmlpath3");
 	}
 
 	public String getCCDPATH4() {
-		return property.getProperty("ccdXMLPath4");
+		return property.getProperty("ccdxmlpath4");
 	}
 
 	public String getHomePhoneNo() {
@@ -837,11 +841,11 @@ public class PropertyFileLoader {
 	// BULK
 
 	public String getOAuthPropertyAMDC() {
-		return property.getProperty("oAuthPropertyAMDC");
+		return property.getProperty("oauth.propertyAMDC");
 	}
 
 	public String getOAuthKeyStoreAMDC() {
-		return property.getProperty("oAuthKeyStoreAMDC");
+		return property.getProperty("oauth.keystoreAMDC");
 	}
 
 	public String getSecureMessagePathAMDC() {
@@ -1438,11 +1442,11 @@ public class PropertyFileLoader {
 	}
 
 	public String getoAuthProperty1_FE() {
-		return property.getProperty("oAuthProperty1_FE");
+		return property.getProperty("oauth.property1_FE");
 	}
 
 	public String getresponsePath_CCD1_FE() {
-		return property.getProperty("responsePath_CCD1_FE");
+		return property.getProperty("responsepath_CCD1_FE");
 	}
 
 	public String getpracticeURL_FE() {
@@ -1977,10 +1981,6 @@ public class PropertyFileLoader {
 		return property.getProperty("restUrlPIDCV3");
 	}
 
-	public String getCCDPATHLargeSize() {
-		return property.getProperty("ccdXMLPathLargeSize");
-	}
-
 	public String getPatienturl_Event() {
 		return property.getProperty("patientUrl_LoginEvent");
 	}
@@ -2006,15 +2006,15 @@ public class PropertyFileLoader {
 	}
 
 	public String getPatientoAuthProperty_Event() {
-		return property.getProperty("oAuthProperty_Loginevent");
+		return property.getProperty("oauth.property_Loginevent");
 	}
 
 	public String getPatientoAuthKeystore_Event() {
-		return property.getProperty("oAuthKeyStore_Loginevent");
+		return property.getProperty("oauth.keystore_Loginevent");
 	}
 
 	public String getPatientResponsePath_Event() {
-		return property.getProperty("responsePath_Loginevent");
+		return property.getProperty("responsepath_Loginevent");
 	}
 
 	public String getPatientrestUrlLogin_V3_Event() {
