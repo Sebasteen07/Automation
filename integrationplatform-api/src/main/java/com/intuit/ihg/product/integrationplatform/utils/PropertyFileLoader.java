@@ -153,79 +153,79 @@ public class PropertyFileLoader {
 
 	// AMDC
 	public String geturlAMDC() {
-		return property.getProperty("urlAMDC");
+		return property.getProperty("url.amdc");
 	}
 
 	public String getOAuthAppTokenAMDC() {
-		return property.getProperty("oAuthAppTokenAMDC");
+		return property.getProperty("oauth.apptoken.amdc");
 	}
 
 	public String getOAuthUsernameAMDC() {
-		return property.getProperty("oAuthUsernameAMDC");
+		return property.getProperty("oauth.username.amdc");
 	}
 
 	public String getOAuthPasswordAMDC() {
-		return property.getProperty("oAuthPasswordAMDC");
+		return property.getProperty("oauth.password.amdc");
 	}
 
 	public String getUserNameAMDC() {
-		return property.getProperty("userNameAMDC");
+		return property.getProperty("username.amdc");
 	}
 
 	public String getPasswordAMDC() {
-		return property.getProperty("passwordAMDC");
+		return property.getProperty("password.amdc");
 	}
 
 	public String getRestUrlAMDC() {
-		return property.getProperty("restUrlAMDC");
+		return property.getProperty("resturl.amdc");
 	}
 
 	public String getResponsePathAMDC() {
-		return property.getProperty("responsepathAMDC");
+		return property.getProperty("responsepath.amdc");
 	}
 
 	public String getFromAMDC() {
-		return property.getProperty("fromAMDC");
+		return property.getProperty("from.amdc");
 	}
 
 	public String getReadCommunicationUrlAMDC() {
-		return property.getProperty("readCommunicationUrlAMDC");
+		return property.getProperty("readcommunicationurl.amdc");
 	}
 
 	public String getSender3AMDC() {
-		return property.getProperty("sender3AMDC");
+		return property.getProperty("sender3.amdc");
 	}
 
 	public String getIntegrationPracticeID() {
-		return property.getProperty("integrationPracticeIDAMDC");
+		return property.getProperty("integrationpracticeid.amdc");
 	}
 
 	public String getGmailUserNameAMDC() {
-		return property.getProperty("gmailUserNameAMDC");
+		return property.getProperty("gmailusername.amdc");
 	}
 
 	public String getGmailPasswordAMDC() {
-		return property.getProperty("gmailPasswordAMDC");
+		return property.getProperty("gmailpassword.amdc");
 	}
 
 	public String getAllowReply() {
-		return property.getProperty("allowReply");
+		return property.getProperty("allowreply");
 	}
 
 	public String getMessageAMDC() {
-		return property.getProperty("messageAMDC");
+		return property.getProperty("message.amdc");
 	}
 
 	public String getPatientExternalIdAMDC() {
-		return property.getProperty("patientExternalIdAMDC");
+		return property.getProperty("patientexternalid.amdc");
 	}
 
 	public String getRestUrlV3AMDC() {
-		return property.getProperty("restUrlV3AMDC");
+		return property.getProperty("resturlv3.amdc");
 	}
 
 	public String getReadCommunicationUrlV3AMDC() {
-		return property.getProperty("readCommunicationUrlV3AMDC");
+		return property.getProperty("readCommunicationurlv3.amdc");
 	}
 
 	// MU2 EVENTS
@@ -1509,27 +1509,27 @@ public class PropertyFileLoader {
 	}
 
 	public String getAllowAttachment() {
-		return property.getProperty("allowAttachment");
+		return property.getProperty("allowattachment");
 	}
 
 	public String getCategoryType() {
-		return property.getProperty("categoryType");
+		return property.getProperty("categorytype");
 	}
 
 	public String getFileNameAMDC() {
-		return property.getProperty("fileNameAMDC");
+		return property.getProperty("filename.amdc");
 	}
 
 	public String getMimeType() {
-		return property.getProperty("mineType");
+		return property.getProperty("minetype");
 	}
 
 	public String getAttachmentBody() {
-		return property.getProperty("attacmentBody");
+		return property.getProperty("attachmentbody");
 	}
 
 	public String getPortalCategoryType() {
-		return property.getProperty("portalCategoryType");
+		return property.getProperty("portalcategorytype");
 	}
 
 	public String getAppointmentPayload() {
