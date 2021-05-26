@@ -25,10 +25,10 @@ public class DigitalWalletAPIUtils {
         RestAssured.useRelaxedHTTPSValidation();
 
         //For some reason it is adding a semicolon at the end of value we get from property file so chopping it
-        String grant_type = StringUtils.chop(testData.getProperty("grant_type"));
-        String client_id = StringUtils.chop(testData.getProperty("client_id"));
-        String client_secret = StringUtils.chop(testData.getProperty("client_secret"));
-        String systemToken = StringUtils.chop(testData.getProperty("systemToken"));
+        String grant_type = StringUtils.chop(testData.getProperty("grant.type"));
+        String client_id = StringUtils.chop(testData.getProperty("client.id"));
+        String client_secret = StringUtils.chop(testData.getProperty("client.secret"));
+        String systemToken = StringUtils.chop(testData.getProperty("system.token"));
 
         String body = String.format("grant_type=%s&client_id=%s&client_secret=%s", grant_type, client_id, client_secret);
 

@@ -23,7 +23,7 @@ public class DigitalWalletBaseTest {
     public static void setupRequestSpecBuilder() throws Exception
     {
         testData = new PropertyFileLoader();
-        RestAssured.baseURI = testData.getProperty("digitalwalletbaseurl");
+        RestAssured.baseURI = testData.getProperty("digitalwallet.baseurl");
         requestSpec	 = new RequestSpecBuilder()
                 .setContentType(ContentType.JSON)
                 .addHeader("Authorization","Bearer "+ DigitalWalletAPIUtils.getTokenForCustomer())
@@ -39,12 +39,5 @@ public class DigitalWalletBaseTest {
                 .expectContentType(ContentType.JSON)
                 .build();
 
-    }
-
-    public static void setupResponsetSpecBuilderForBadRequest(){
-        responseSpec = new ResponseSpecBuilder()
-                .expectStatusCode(400)
-                .expectContentType(ContentType.JSON)
-                .build();
     }
 }
