@@ -19,10 +19,10 @@ public class DBUtils {
 
         if (strDBName.equalsIgnoreCase("pay_walt")) {
             //For some reason it is adding a semicolon at the end of value we get from property file so chopping it
-            String dbHostName = StringUtils.chop(testData.getProperty("PostGRESQLServerDbHostName"));
-            String dbName = StringUtils.chop(testData.getProperty("PostGRESQLServerDbName"));
-            String dbUserName = StringUtils.chop(testData.getProperty("PostGRESQLServerDbUserName"));
-            String dbPassword = StringUtils.chop(testData.getProperty("PostGRESQLServerDbPassword"));
+            String dbHostName = StringUtils.chop(testData.getProperty("postgres.sqlserver.dbhostname"));
+            String dbName = StringUtils.chop(testData.getProperty("postgres.sqlserver.dbname"));
+            String dbUserName = StringUtils.chop(testData.getProperty("postgres.sqlserver.dbusername"));
+            String dbPassword = StringUtils.chop(testData.getProperty("postgres.sqlserver.dbpassword"));
 
             connection = DatabaseConnection.makeDBConnection("PostGRESQLServer", dbHostName, dbName, dbUserName, dbPassword);
         }
