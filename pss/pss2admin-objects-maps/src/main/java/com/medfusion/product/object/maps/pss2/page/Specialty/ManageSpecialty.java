@@ -60,13 +60,13 @@ public class ManageSpecialty extends PSS2MenuPage {
 	@FindBy(how = How.XPATH, using = "//strong[contains(text(),'Age Rule')]")
 	private WebElement ageRuleCheckbox;
 
-	@FindBy(how = How.XPATH, using = "//*[@id='content']/div[2]/div/div/div[2]/section/div/form/div[2]/div[2]/select")
+	@FindBy(how = How.XPATH, using = "//select[@name='leftToken']")
 	private WebElement ageRuleDropFirst;
 
-	@FindBy(how = How.XPATH, using = "//*[@id='content']/div[2]/div/div/div[2]/section/div/form/div[2]/div[5]/select")
+	@FindBy(how = How.XPATH, using = "//select[@name='rightToken']")
 	private WebElement ageRuleDropSecond;
 
-	@FindBy(how = How.XPATH, using = "//*[@id='content']/div[2]/div/div/div[2]/section/div/form/div[2]/div[4]/select")
+	@FindBy(how = How.XPATH, using = "//select[@name='condition']")
 	private WebElement ageRuleAnd;
 
 	@FindBy(how = How.XPATH, using = "//div[@class='col-md-3 col-xs-3']//input[@name='leftVal']")

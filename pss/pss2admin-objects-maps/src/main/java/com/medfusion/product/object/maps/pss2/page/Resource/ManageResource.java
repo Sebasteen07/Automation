@@ -117,7 +117,7 @@ public class ManageResource extends PSS2MenuPage {
 	@FindBy(how = How.XPATH, using = "//strong[contains(text(),'Age Rule')]")
 	private WebElement ageRuleCheckbox;
 
-	@FindBy(how = How.XPATH, using = "/html/body/app/layout/div/main/div[2]/div/div/div[2]/section/div/div/div/div/div/div[4]/div/form/div[1]/input")
+	@FindBy(how = How.XPATH, using = "//input[@id='resourceappointmenttypeisageRule']")
 	private WebElement ageRuleCheckboxStatus;
 
 	@FindBy(how = How.XPATH, using = "//*[@id='tab43']/div/form/div[2]/div[2]/select")
@@ -129,10 +129,10 @@ public class ManageResource extends PSS2MenuPage {
 	@FindBy(how = How.XPATH, using = "//*[@id='tab43']/div/form/div[2]/div[4]/select")
 	private WebElement ageruleAnd;
 
-	@FindBy(how = How.XPATH, using = "/html/body/app/layout/div/main/div[2]/div/div/div[2]/section/div/div/div/div/div/div[4]/div/form/div[2]/div[3]/input")
+	@FindBy(how = How.XPATH, using = "//input[@id='line1' and @name='leftVal']")
 	private WebElement sendMonthFirst;
 
-	@FindBy(how = How.XPATH, using = "/html/body/app/layout/div/main/div[2]/div/div/div[2]/section/div/div/div/div/div/div[4]/div/form/div[2]/div[6]/input")
+	@FindBy(how = How.XPATH, using = "//input[@id='line1' and @name='rightVal']")
 	private WebElement sendMonthsecond;
 
 	@FindBy(how = How.XPATH, using = "//*[@name='apptTimeMark']")
@@ -307,10 +307,8 @@ public class ManageResource extends PSS2MenuPage {
 	}
 
 	public boolean checkBoxStatus() {
-		boolean bool = Boolean.parseBoolean(ageRuleCheckboxStatus.getAttribute("ng-reflect-model"));
-		log("CheckBox Status " + bool);
-		return bool;
-
+		log("Status of the age rule checkbox  " + ageRuleCheckboxStatus.isSelected());
+		return ageRuleCheckboxStatus.isSelected();
 	}
 
 	public void ageRule() {

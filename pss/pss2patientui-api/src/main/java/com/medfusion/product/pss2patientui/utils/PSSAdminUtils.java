@@ -64,7 +64,7 @@ public class PSSAdminUtils extends BaseTestNGWebDriver{
 		Log4jUtil.log("length " + patientflow.ruleLength());
 		Log4jUtil.log("Rule length : " + patientflow.getRule());
 		Log4jUtil.log("Insurance Displayed ? " + patientflow.isIsuranceDisplayed());
-		if (patientflow.isIsuranceDisplayed().equalsIgnoreCase("true")) {
+		if (patientflow.isIsuranceDisplayed()==true) {
 			adminuser.setIsInsuranceDisplayed(false);
 		}
 		AdminPatientMatching adminpatientmatching = patientflow.gotoPatientMatchingTab();
@@ -177,7 +177,7 @@ public class PSSAdminUtils extends BaseTestNGWebDriver{
 			adminuser.setRule(patientflow.getRule());
 		}
 		Log4jUtil.log("Insurance Displayed ? " + patientflow.isIsuranceDisplayed());
-		if (patientflow.isIsuranceDisplayed().equalsIgnoreCase("true")) {
+		if (patientflow.isIsuranceDisplayed()==true) {
 			adminuser.setIsInsuranceDisplayed(false);
 		}
 		AdminPatientMatching adminpatientmatching = patientflow.gotoPatientMatchingTab();

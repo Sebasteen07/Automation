@@ -47,10 +47,10 @@ public class LinkTab extends SettingsTab {
 	@FindBy(how = How.XPATH, using = "//tbody/tr/td[5]/a[1]")
 	private WebElement removelink;
 
-	@FindBy(how = How.XPATH, using = "//*[@class='fa fa-link']")
+	@FindBy(how = How.XPATH, using = "//a[@title='Copy Link']")
 	private WebElement copyLink;
 
-	@FindAll({ @FindBy(xpath = "//*[@class='mat-paginator-range-actions']/div") })
+	@FindAll({ @FindBy(xpath = "//*[@class='mat-paginator-range-actions']/div[contains(text(),' 0 of 0')]") })
 	private List<WebElement> noProviderConfigured;
 
 	public LinkTab(WebDriver driver) {
@@ -86,10 +86,12 @@ public class LinkTab extends SettingsTab {
 		log("Clicked on type  button");
 		Select type = new Select(typeSelect);
 		type.selectByVisibleText("LOGINLESS");
+		Thread.sleep(2000);
 		locationSelect.click();
 		log("LocationTypeList " + checklistLocation.size());
 		for (int i = 0; i < checklistLocation.size(); i++) {
 			if (checklistLocation.get(i).getText().contains(locationConfig)) {
+				Thread.sleep(2000);
 				checklistLocation.get(i).click();
 				log("Location checkbox selected");
 			}
@@ -99,6 +101,7 @@ public class LinkTab extends SettingsTab {
 		log("ProviderTypeList " + checklistLocation.size());
 		for (int i = 0; i < checklistLocation.size(); i++) {
 			if (checklistLocation.get(i).getText().contains(providerConfig)) {
+				Thread.sleep(2000);
 				checklistLocation.get(i).click();
 				log("Provider checkbox selected");
 

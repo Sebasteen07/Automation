@@ -4751,16 +4751,10 @@ public class PSS2PatientPortalAcceptanceTests extends BaseTestNGWebDriver {
 		}
 		Log4jUtil.log("Step 8: Select Appointment for appointment.");
 		homepage.btnStartSchedClick();
-		AppointmentPage appointment = homepage.skipInsurancepage(driver);
-		Log4jUtil.log("Step 9: Verfiy Appointment Page and appointment =" + testData.getAppointmenttype());
-
-		AppointmentDateTime aptDateTime = appointment.selectAppointmentandClick(testData.getAppointmenttype(),
-				Boolean.valueOf(testData.getIsAppointmentPopup()));
-		aptDateTime.selectDate(testData.getIsNextDayBooking());
-
-		aptDateTime.selectDate(testData.getIsNextDayBooking());
-		Thread.sleep(6000);
-
+		homepage.getLocationText();
+		homepage.getProviderText();
+		assertEquals(homepage.getLocationText(), testData.getLocation());
+		assertEquals(homepage.getProviderText(), testData.getProvider());
 		Log4jUtil.log("Test Case Passed");
 	}
 

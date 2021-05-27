@@ -87,7 +87,7 @@ public class AdminAppointment extends SettingsTab {
 	@FindBy(how = How.XPATH, using = "//div[@id='basic']//div//fieldset//button[@class='btn btn-primary'][contains(text(),'Save')]")
 	private WebElement buttonSaveResourceConfg;
 
-	@FindBy(how = How.XPATH, using = "//*[@id=\"appt\"]/form/fieldset/div/div/button")
+	@FindBy(how = How.XPATH, using = "//*[@id='appt']/form/fieldset/div/div/button")
 	private WebElement buttonSave;
 
 	@FindBy(how = How.XPATH, using = "//*[@id='appt']/div/form[2]/fieldset/div/div/button")
@@ -168,6 +168,7 @@ public class AdminAppointment extends SettingsTab {
 		commonMethods.highlightElement(cancelAppointment);
 		cancelAppointment.sendKeys(cancelHoursBefore);
 		commonMethods.highlightElement(buttonSave);
+		Thread.sleep(3000);
 		buttonSave.click();
 		Thread.sleep(1000);
 	}
