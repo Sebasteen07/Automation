@@ -7,8 +7,6 @@
 		<groupId>com.intuit.ihg</groupId>
 		<artifactId>ihg-depot-parent-pom</artifactId>
 		<version>21.4.0-SNAPSHOT</version>
-		<artifactId>ihg-depot-qa-parent-pom</artifactId>
-		<version>21.2.0</version>
 	</parent>
 	<artifactId>phr-portal-automation</artifactId>
 	<name>phr-portal-automation</name>
@@ -26,8 +24,6 @@ http://maven.qhg.local/nexus/content/groups/qhg-dev/
 		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
 		<!-- <qa-automation-utils.version>21.4.0-SNAPSHOT</qa-automation-utils.version> -->
 		<ihg.version>21.4.0-SNAPSHOT</ihg.version>
-		<!-- <qa-automation-utils.version>21.2.0</qa-automation-utils.version> -->
-		<ihg.version>21.2.0</ihg.version>
 	</properties>
 	<dependencies>
 		<dependency>
