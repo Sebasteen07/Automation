@@ -325,9 +325,7 @@ public class NGIntegrationE2EEnterpriseEnrollmentTests extends BaseTestNGWebDriv
 		logStep("Log into Practice2 Portal");
 		JalapenoLoginEnrollment loginPage = new JalapenoLoginEnrollment(driver, portalUrlLink);
 		JalapenoHomePage homePage = loginPage.login(createPatient.getEmailAddress(), propertyLoaderObj.getPassword());
-
-		logStep("Switching to First Practice to verify auto enrollment");
-		homePage.switchToPractice(propertyLoaderObj.getProperty("practiceName3"));
+		homePage.LogoutfromNGMFPortal();
 
 		logStep("Login to Practice Portal");
 		Thread.sleep(3000);
@@ -505,9 +503,6 @@ public class NGIntegrationE2EEnterpriseEnrollmentTests extends BaseTestNGWebDriv
 		JalapenoLoginEnrollment loginPage = new JalapenoLoginEnrollment(driver, portalUrlLink);
 		JalapenoHomePage homePage = loginPage.login(createPatient.getEmailAddress(), propertyLoaderObj.getPassword());
 
-		logStep("Switching to First Practice to verify auto enrollment");
-		homePage.switchToPractice(propertyLoaderObj.getProperty("practiceName1"));
-
 		logStep("Detecting if Home Page is opened and logout");
 		homePage.LogoutfromNGMFPortal();
 
@@ -577,9 +572,8 @@ public class NGIntegrationE2EEnterpriseEnrollmentTests extends BaseTestNGWebDriv
 		logStep("Load login page for the auto enrolled Practice2 Portal");
 		JalapenoLoginEnrollment loginPage = new JalapenoLoginEnrollment(driver, portalUrlLink);
 		JalapenoHomePage homePage = loginPage.login(createPatient.getEmailAddress(), propertyLoaderObj.getPassword());
-
-		logStep("Switching to First Practice to verify auto enrollment");
-		homePage.switchToPractice(propertyLoaderObj.getProperty("practiceName1"));
+		
+		homePage.LogoutfromNGMFPortal();
 
 		logStep("Login to Practice Portal");
 		PracticeLoginPage practiceLogin = new PracticeLoginPage(driver, propertyLoaderObj.getPortalUrl());

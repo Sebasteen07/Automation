@@ -15,11 +15,9 @@ import org.testng.annotations.BeforeClass;
 import org.testng.annotations.Test;
 import com.intuit.ifs.csscat.core.BaseTestNGWebDriver;
 import com.intuit.ifs.csscat.core.RetryAnalyzer;
-import com.intuit.ifs.csscat.core.TestConfig;
 import com.intuit.ifs.csscat.core.utils.Log4jUtil;
 import com.intuit.ihg.product.integrationplatform.utils.PropertyFileLoader;
 import com.intuit.ihg.product.integrationplatform.utils.RestUtils;
-import com.medfusion.common.utils.IHGUtil;
 import com.medfusion.common.utils.Mailinator;
 import com.medfusion.product.object.maps.patientportal2.page.NGLoginPage;
 import com.medfusion.product.object.maps.patientportal2.page.AccountPage.JalapenoAccountPage;
@@ -2107,18 +2105,6 @@ public class NGIntegrationE2EEnrollment_CCDTests extends BaseTestNGWebDriver {
 		Log4jUtil.log("Step End: Test data added to patient CCD successfully to encounter " + encounter_id);
 
 		NGAPIFlows.updateToSensitiveEncounter(locationName, providerName, person_id, encounter_id);
-//		NGAPIFlows.checkINEncounter(person_id, encounter_id);
-//		NGAPIFlows.checkOutEncounter(person_id, encounter_id);
-
-//		logStep("Request for Locked Encounter CCD");
-//		NGAPIFlows.postCCDRequest(locationName,providerName, person_id,"LockedEncounter", encounter_id);
-//				
-//		Thread.sleep(60000);
-//		CommonFlows.verifyCCDProcessingStatus(propertyLoaderObj, person_id, practiceId, integrationPracticeId, 4);
-//		
-//		logStep("Verify the patient is able to receive Locked Encounter CCD");
-//		Thread.sleep(10000);
-//		CommonFlows.IsCCDReceived(driver,URL,username, propertyLoaderObj.getPassword(), "HavingSensitiveEncounterMSU","");
 
 		logStep("Request for MSU CCD");
 		NGAPIFlows.postCCDRequest(locationName, providerName, person_id, "MedicalSummaryUtility", encounter_id);
