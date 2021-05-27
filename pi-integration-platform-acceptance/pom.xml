@@ -7,6 +7,8 @@
 	  <groupId>com.intuit.ihg</groupId>
 	  <artifactId>ihg-depot-parent-pom</artifactId>
 	  <version>21.4.0-SNAPSHOT</version>
+	  <artifactId>ihg-depot-qa-parent-pom</artifactId>
+	  <version>21.2.0</version>
 </parent>
 
   <artifactId>pi-integration-platform-automation</artifactId>
@@ -17,6 +19,8 @@
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
         <ihg.version>21.4.0-SNAPSHOT</ihg.version>
         <dcf-version>21.4.0-SNAPSHOT</dcf-version>
+        <ihg.version>21.2.0</ihg.version>
+        <dcf-version>21.2.0</dcf-version>
   </properties>
   
   <repositories>
@@ -144,11 +148,13 @@
 				<groupId>com.intuit.ihg</groupId>
 				<artifactId>integrationplatform-service</artifactId>
 				<version>21.4.0-SNAPSHOT</version>
+				<version>21.2.0</version>
 			  </dependency>
 			  <dependency>
 				<groupId>com.intuit.ihg</groupId>
 				<artifactId>precheckAppointment-object-maps</artifactId>
 				<version>21.4.0-SNAPSHOT</version>
+				<version>21.2.0</version>
 			  </dependency>
 			  
     </dependencies>

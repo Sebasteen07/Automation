@@ -1,29 +1,26 @@
-<project xmlns="http://maven.apache.org/POM/4.0.0"
-	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+<!-- Copyright 2013-2021 NXGN Management, LLC. All Rights Reserved. -->
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
 	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
 	<modelVersion>4.0.0</modelVersion>
-  
-<parent>
-	  <groupId>com.intuit.ihg</groupId>
-	  <artifactId>ihg-depot-parent-pom</artifactId>
-	  <version>21.4.0-SNAPSHOT</version>
-	  <artifactId>ihg-depot-qa-parent-pom</artifactId>
-	  <version>21.2.0</version>
-</parent>
 
-  <artifactId>integration-platform-automation</artifactId>
-  <name>integration-platform-automation</name>
-  <description>Integration Platform Acceptance Automation</description>
-  
-  <properties>
-        <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
-        <ihg.version>21.4.0-SNAPSHOT</ihg.version>
-        <dcf-version>21.4.0-SNAPSHOT</dcf-version>
-        <ihg.version>21.2.0</ihg.version>
-        <dcf-version>21.2.0</dcf-version>
-  </properties>
-  
-  <repositories>
+	<parent>
+		<groupId>com.intuit.ihg</groupId>
+		<artifactId>ihg-depot-qa-parent-pom</artifactId>
+		<version>21.2.0</version>
+	</parent>
+
+	<artifactId>service-mediator-automation</artifactId>
+	<name>service mediator automation</name>
+	<description>Service Mediator Automation</description>
+
+	<properties>
+		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+		<ihg.version>21.2.0</ihg.version>
+		<dcf-version>21.2.0</dcf-version>
+		<messages-version>21.2.0</messages-version>
+	</properties>
+
+	<repositories>
 		<repository>
 			<id>IHG-nexus</id>
 			<name>IHG-nexus</name>
@@ -37,6 +34,8 @@
 			<artifactId>qa-automation-utils</artifactId>
 			<version>${ihg.version}</version>
 		</dependency>
+
+		
 		<dependency>
 			<groupId>com.intuit.api.security</groupId>
 			<artifactId>oauth-core-common</artifactId>
@@ -66,6 +65,12 @@
 			<version>${dcf-version}</version>
 			<type>jar</type>
 		</dependency>
+		<dependency>
+			<groupId>postgresql</groupId>
+			<artifactId>postgresql</artifactId>
+			<version>9.1-901.jdbc4</version>
+		</dependency>
+
 		<dependency>
 			<groupId>com.intuit.framework.dc.services.tracking</groupId>
 			<artifactId>datachannel-framework-services-tracking</artifactId>
@@ -110,32 +115,17 @@
 		</dependency>
 		<dependency>
 			<groupId>com.intuit.ihg</groupId>
-			<artifactId>patientportal2-api</artifactId>
+			<artifactId>object-maps</artifactId>
 			<version>${ihg.version}</version>
 		</dependency>
 		<dependency>
 			<groupId>com.intuit.ihg</groupId>
-			<artifactId>practiceportal-object-maps</artifactId>
-			<version>${ihg.version}</version>
-		</dependency>
-		<dependency>
-			<groupId>com.intuit.ihg</groupId>
-			<artifactId>integrationplatform-api</artifactId>
+			<artifactId>patientportal1-api</artifactId>
 			<version>${ihg.version}</version>
 		</dependency>
 	</dependencies>
-
-
-
 	<build>
 		<plugins>
-			<plugin>
-				<artifactId>maven-surefire-plugin</artifactId>
-				<version>2.10</version>
-				<configuration>
-					<skipTests>true</skipTests>
-				</configuration>
-			</plugin>
 			<plugin>
 				<groupId>org.apache.maven.plugins</groupId>
 				<artifactId>maven-failsafe-plugin</artifactId>
@@ -145,16 +135,15 @@
 						<phase>integration-test</phase>
 						<configuration>
 							<failBuild>false</failBuild>
-							<!-- <groups>${testGroups}</groups> -->
+							<!--<groups>${testGroups}</groups> -->
 							<suiteXmlFiles>
-								<suiteXmlFile>${suite.xml}</suiteXmlFile>
+								<suiteXmlFile>sm-integration-acceptance.xml</suiteXmlFile>
 							</suiteXmlFiles>
 							<systemPropertyVariables>
 								<testRoot>${basedir}</testRoot>
 								<org.uncommons.reportng.escape-output>false</org.uncommons.reportng.escape-output>
-								<!-- <testResultScreenshots>${test.result.screenshots}</testResultScreenshots> 
-									<testResultVideos>${test.result.videos}</testResultVideos> <testResultScreenshots>true</testResultScreenshots> 
-									<testResultVideos>true</testResultVideos> -->
+								<testResultScreenshots>true</testResultScreenshots>
+								<testResultVideos>true</testResultVideos>
 							</systemPropertyVariables>
 							<properties>
 								<usedefaultlisteners>false</usedefaultlisteners>
@@ -186,13 +175,41 @@
 							<mainClass>com.intuit.ifs.csscat.core.RunTestNGSuite</mainClass>
 						</manifest>
 					</archive>
-
 				</configuration>
 			</plugin>
-
+			
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-compiler-plugin</artifactId>
+				<version>3.8.1</version>
+			</plugin>
+			<plugin>
+				<artifactId>maven-resources-plugin</artifactId>
+				<version>2.4</version>
+				<executions>
+					<execution>
+						<id>copy-resources</id>
+						<phase>test-compile</phase>
+						<goals>
+							<goal>copy-resources</goal>
+						</goals>
+						<configuration>
+							<outputDirectory>target/test-classes</outputDirectory>
+							<resources>
+								<resource>
+									<directory>${basedir}/src/test/resources/testfiles/${execution.env}</directory>
+							   </resource>
+						</resources>
+						</configuration>
+					</execution>
+				</executions>
+			</plugin>
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-eclipse-plugin</artifactId>
+				<version>2.9</version>
+			</plugin>
+			
 		</plugins>
-
-
-
 	</build>
 </project>
