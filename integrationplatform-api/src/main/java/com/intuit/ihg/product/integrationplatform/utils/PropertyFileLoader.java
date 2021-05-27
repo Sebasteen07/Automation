@@ -230,67 +230,67 @@ public class PropertyFileLoader {
 
 	// MU2 EVENTS
 	public String getPULLAPI_URL_MU2() {
-		return property.getProperty("pullAPI_URL_MU2");
+		return property.getProperty("pullapi.url.mu2");
 	}
 
 	public String getPULLAPI_URLV3_MU2() {
-		return property.getProperty("pullAPI_URLV3_MU2");
+		return property.getProperty("pullapi.urlv3.mu2");
 	}
 
 	public String getOAuthAppToken_MU2() {
-		return property.getProperty("oAuthAppToken_MU2");
+		return property.getProperty("oauth.apptoken.mu2");
 	}
 
 	public String getOAuthUsername_MU2() {
-		return property.getProperty("oAuthUsername_MU2");
+		return property.getProperty("oauth.username.mu2");
 	}
 
 	public String getOAuthPassword_MU2() {
-		return property.getProperty("oAuthPassword_MU2");
+		return property.getProperty("oauth.password.mu2");
 	}
 
 	public String getPUSHAPI_URL_MU2() {
-		return property.getProperty("pushAPI_URL_MU2");
+		return property.getProperty("pushapi.url.mu2");
 	}
 
 	public String getPORTAL_URL_MU2() {
-		return property.getProperty("portal_URL_MU2");
+		return property.getProperty("portal.url.mu2");
 	}
 
 	public String getPORTAL_USERNAME_MU2() {
-		return property.getProperty("portal_USERNAME_MU2");
+		return property.getProperty("portal.username.mu2");
 	}
 
 	public String getPORTAL_PASSWORD_MU2() {
-		return property.getProperty("portal_PASSWORD_MU2");
+		return property.getProperty("portal.password.mu2");
 	}
 
 	public String getINTUIT_PATIENT_ID_MU2() {
-		return property.getProperty("intuit_PATIENT_ID_MU2");
+		return property.getProperty("intuit.patient.id.mu2");
 	}
 
 	public String getTRANSMIT_EMAIL_MU2() {
-		return property.getProperty("transmit_EMAIL_MU2");
+		return property.getProperty("transmit.email.mu2");
 	}
 
 	public String getIMAGE_PATH_MU2() {
-		return property.getProperty("image_PATH_MU2");
+		return property.getProperty("image.path.mu2");
 	}
 
 	public String getPatient_ID_MU2() {
-		return property.getProperty("patient_ID_MU2");
+		return property.getProperty("patient.id.mu2");
 	}
 
 	public String getPATIENT_INVITE_RESTURL() {
-		return property.getProperty("restUrlPIDC");
+		return property.getProperty("resturlpidc");
 	}
 
 	public String getPATIENT_PRACTICEID() {
-		return property.getProperty("practiceIdPIDC");
+		return property.getProperty("practiceidpidc");
 	}
 
 	public String getPATIENT_EXTERNAL_ID() {
-		return property.getProperty("externalSystemIDPIDC");
+		return property.getProperty("externalsystemidpidc");
 	}
 
 	public String getCCDPATH1() {
@@ -310,105 +310,105 @@ public class PropertyFileLoader {
 	}
 
 	public String getHomePhoneNo() {
-		return property.getProperty("homePhoneNo");
+		return property.getProperty("homephoneno");
 	}
 
 	public String getSecretQuestion() {
-		return property.getProperty("secretQuestion");
+		return property.getProperty("secretquestion");
 	}
 
 	public String getSecretAnswer() {
-		return property.getProperty("secretAnswer");
+		return property.getProperty("secretanswer");
 	}
 
 	public String getBirthDay() {
-		return property.getProperty("birthDay");
+		return property.getProperty("birthday");
 	}
 
 	public String getPatientPassword() {
-		return property.getProperty("patientPassword");
+		return property.getProperty("patientpassword");
 	}
 
 	public String getCCDMessageID1() {
-		return property.getProperty("ccdMessageID1");
+		return property.getProperty("ccdmessageid1");
 	}
 
 	public String getCCDMessageID2() {
-		return property.getProperty("ccdMessageID2");
+		return property.getProperty("ccdmessageid2");
 	}
 
 	public String getPatientExternalId_MU2() {
-		return property.getProperty("patientExternalId_MU2");
+		return property.getProperty("patientexternalid.mu2");
 	}
 
 	public String getPatientFirstName_MU2() {
-		return property.getProperty("patientFirstName_MU2");
+		return property.getProperty("patientfirstname.mu2");
 	}
 
 	public String getPatientLastName_MU2() {
-		return property.getProperty("patientLastName_MU2");
+		return property.getProperty("patientlastname.mu2");
 	}
 
 	// Guardian New
 	public String getPatientUA_MU2() {
-		return property.getProperty("patientUA_MU2");
+		return property.getProperty("patientua.mu2");
 	}
 
 	public String getGuardian_UserName_MU2() {
-		return property.getProperty("guardian_UserName_MU2");
+		return property.getProperty("guardian.username.mu2");
 	}
 
 	public String getGuardian_Password_MU2() {
-		return property.getProperty("guardian_Password_MU2");
+		return property.getProperty("guardian.password.mu2");
 	}
 
 	public String getPatient_ExternalPatientID_MU2() {
-		return property.getProperty("patientUA_ExternalPatientID_MU2");
+		return property.getProperty("patientua.externalpatientid.mu2");
 	}
 
 	public String getPatientIntuItID_Guardian() {
-		return property.getProperty("intuit_PATIENT_ID_MU2_Guardian");
+		return property.getProperty("intuit.patient.id.mu2.guardian");
 	}
 
 	// Guardian Existing
 	public String getPatientUA_MU2_Existing() {
-		return property.getProperty("patientUA_MU2_Existing");
+		return property.getProperty("patientua.mu2.existing");
 	}
 
 	public String getGuardian_UserName_MU2_Existing() {
-		return property.getProperty("guardian_UserName_MU2_Existing");
+		return property.getProperty("guardian.username.mu2.existing");
 	}
 
 	public String getGuardian_Password_MU2_Existing() {
-		return property.getProperty("guardian_Password_MU2_Existing");
+		return property.getProperty("guardian.password.mu2.existing");
 	}
 
 	public String getPatient_ExternalPatientID_MU2_Existing() {
-		return property.getProperty("patientUA_ExternalPatientID_MU2_Existing");
+		return property.getProperty("patientua.externalpatientid.mu2.existing");
 	}
 
 	public String getPatientIntuItID_GuardianExisting() {
-		return property.getProperty("intuit_PATIENT_ID_MU2_Guardian_Existing");
+		return property.getProperty("intuit.patient.id.mu2.guardian.existing");
 	}
 
 	public String getSecureEmailTransmitActivity() {
-		return property.getProperty("secureEmailTransmitActivity");
+		return property.getProperty("secure.emailtransmit.activity");
 	}
 
 	public String getStandardEmailTransmitActivity() {
-		return property.getProperty("standardEmailTransmitActivity");
+		return property.getProperty("standard.emailtransmit.activity");
 	}
 
 	public String getPatientUA_MU2_LastName() {
-		return property.getProperty("patientUA_LastName");
+		return property.getProperty("patientua.lastname");
 	}
 
 	public String getPatientUA_MU2_LastName_Existing() {
-		return property.getProperty("patientUA_LastName_Existing");
+		return property.getProperty("patientua.lastname.existing");
 	}
 
 	public String getPdfFilePath() {
-		return property.getProperty("pdfFile");
+		return property.getProperty("pdffile");
 	}
 
 	// PIDC
@@ -425,43 +425,43 @@ public class PropertyFileLoader {
 	}
 
 	public String getRestUrl() {
-		return property.getProperty("restUrl");
+		return property.getProperty("resturl");
 	}
 
 	public String getRestUrl1() {
-		return property.getProperty("restUrl1");
+		return property.getProperty("resturl1");
 	}
 
 	public String getRestUrl2() {
-		return property.getProperty("restUrl2");
+		return property.getProperty("resturl2");
 	}
 
 	public String getPatientPath() {
-		return property.getProperty("patientPath");
+		return property.getProperty("patientpath");
 	}
 
 	public String getOAuthAppToken() {
-		return property.getProperty("oAuthAppToken");
+		return property.getProperty("oauth.apptoken");
 	}
 
 	public String getOAuthUsername() {
-		return property.getProperty("oAuthUsername");
+		return property.getProperty("oauth.username");
 	}
 
 	public String getOAuthPassword() {
-		return property.getProperty("oAuthPassword");
+		return property.getProperty("oauth.password");
 	}
 
 	public String getBirthday() {
-		return property.getProperty("birthDay");
+		return property.getProperty("birthday");
 	}
 
 	public String getZipCode() {
-		return property.getProperty("zipCode");
+		return property.getProperty("zipcode");
 	}
 
 	public String getSSN() {
-		return property.getProperty("SSN");
+		return property.getProperty("ssn");
 	}
 
 	public String getEmail() {
@@ -477,7 +477,7 @@ public class PropertyFileLoader {
 	}
 
 	public String getPreferredLanguage() {
-		return property.getProperty("preferredLanguage");
+		return property.getProperty("preferredlanguage");
 	}
 
 	public String getEthnicity() {
@@ -485,79 +485,79 @@ public class PropertyFileLoader {
 	}
 
 	public String getMaritalStatus() {
-		return property.getProperty("maritalStatus");
+		return property.getProperty("maritalstatus");
 	}
 
 	public String getChooseCommunication() {
-		return property.getProperty("chooseCommunication");
+		return property.getProperty("choosecommunication");
 	}
 
 	public String getInsurance_Type() {
-		return property.getProperty("insurance_Type");
+		return property.getProperty("insurance.type");
 	}
 
 	public String getBatchSize() {
-		return property.getProperty("batchSize");
+		return property.getProperty("batchsize");
 	}
 
 	public String getPracticeURL() {
-		return property.getProperty("practiceURL");
+		return property.getProperty("practiceurl");
 	}
 
 	public String getPortalVersion() {
-		return property.getProperty("portalVersion");
+		return property.getProperty("portalversion");
 	}
 
 	public String getCSVFilePath() {
-		return property.getProperty("csvFilePath");
+		return property.getProperty("csvfilepath");
 	}
 
 	public String getPracticeId_PIDC() {
-		return property.getProperty("practiceId_PIDC");
+		return property.getProperty("practiceid.pidc");
 	}
 
 	public String getPatientID() {
-		return property.getProperty("patientID");
+		return property.getProperty("patientid");
 	}
 
 	public String getRestUrl1_20() {
-		return property.getProperty("restUrl1_20");
+		return property.getProperty("resturl1.20");
 	}
 
 	public String getRestUrl2_20() {
-		return property.getProperty("restUrl2_20");
+		return property.getProperty("resturl1.20");
 	}
 
 	public String getRestUrl3_20() {
-		return property.getProperty("restUrl3_20");
+		return property.getProperty("resturl1.20");
 	}
 
 	public String getPracticeId_PIDC_20() {
-		return property.getProperty("practiceId_PIDC_20");
+		return property.getProperty("practiceid.pidc.20");
 	}
 
 	public String getOAuthAppToken_20() {
-		return property.getProperty("oAuthAppToken_20");
+		return property.getProperty("oauth.apptoken.20");
 	}
 
 	public String getOAuthUsername_20() {
-		return property.getProperty("oAuthUsername_20");
+		return property.getProperty("oauth.username.20");
 	}
 
 	public String getOAuthPassword_20() {
-		return property.getProperty("oAuthPassword_20");
+		return property.getProperty("oauth.password.20");
 	}
 
 	public String getStandard_Email() {
-		return property.getProperty("standard_Email");
+		return property.getProperty("standard.email");
 	}
 
 	public String getPracticeUserName() {
-		return property.getProperty("practiceUserName");
+		return property.getProperty("practiceusername");
 	}
 
 	public String getPracticePassword() {
-		return property.getProperty("practicePassword");
+		return property.getProperty("practicepassword");
 	}
 
 	public String getCity() {
@@ -569,307 +569,307 @@ public class PropertyFileLoader {
 	}
 
 	public String getLastName() {
-		return property.getProperty("lnameSC");
+		return property.getProperty("lnamesc");
 	}
 
 	public String getLanguageType() {
-		return property.getProperty("preferredLanguage");
+		return property.getProperty("preferredlanguage");
 	}
 	// PIDC END
 
 	// Appointment Data Request from partner
 	public String getAppointmentRequestURL() {
-		return property.getProperty("appointmentRequestURL");
+		return property.getProperty("appointmentrequesturl");
 	}
 
 	public String getOAuthAppToken_AD() {
-		return property.getProperty("oAuthAppToken_AD");
+		return property.getProperty("oauth.apptoken.ad");
 	}
 
 	public String getOAuthUsername_AD() {
-		return property.getProperty("oAuthUsername_AD");
+		return property.getProperty("oauth.username.ad");
 	}
 
 	public String getoAuthPassword_AD() {
-		return property.getProperty("oAuthPassword_AD");
+		return property.getProperty("oauth.password.ad");
 	}
 
 	public String getIntegrationPracticeID_AD() {
-		return property.getProperty("integrationPracticeID_AD");
+		return property.getProperty("integrationpracticeid.ad");
 	}
 
 	public String getMedfusionPracticeId_AD() {
-		return property.getProperty("medfusionPracticeId_AD");
+		return property.getProperty("medfusionpracticeid.ad");
 	}
 
 	public String getUserName_AD() {
-		return property.getProperty("userName_AD");
+		return property.getProperty("username.ad");
 	}
 
 	public String getPassword_AD() {
-		return property.getProperty("password_AD");
+		return property.getProperty("password.ad");
 	}
 
 	public String getPatientPracticeID_AD() {
-		return property.getProperty("patientPracticeID_AD");
+		return property.getProperty("patientpracticeid.ad");
 	}
 
 	public String getMedfusionPatientId_AD() {
-		return property.getProperty("medfusionPatientId_AD");
+		return property.getProperty("medfusionpatientid.ad");
 	}
 
 	public String getEmail_AD() {
-		return property.getProperty("email_AD");
+		return property.getProperty("email.ad");
 	}
 
 	public String getProviderIdentifier_AD() {
-		return property.getProperty("providerIdentifier_AD");
+		return property.getProperty("provideridentifier.ad");
 	}
 
 	public String getProviderName_AD() {
-		return property.getProperty("providerName_AD");
+		return property.getProperty("providername.ad");
 	}
 
 	public String getAppointmentTime_AD() {
-		return property.getProperty("appointmentTime_AD");
+		return property.getProperty("appointmenttime.ad");
 	}
 
 	public String getAppointmentLocation_AD() {
-		return property.getProperty("appointmentLocation_AD");
+		return property.getProperty("appointmentlocation.ad");
 	}
 
 	public String getAppointmentStatus_AD() {
-		return property.getProperty("appointmentStatus_AD");
+		return property.getProperty("appointmentstatus.ad");
 	}
 
 	public String getAppointmentDescription_AD() {
-		return property.getProperty("appointmentDescription_AD");
+		return property.getProperty("appointmentdescription.ad");
 	}
 
 	public String getAppointmentReason_AD() {
-		return property.getProperty("appointmentReason_AD");
+		return property.getProperty("appointmentreason.ad");
 	}
 
 	public String getAppointmentType_AD() {
-		return property.getProperty("appointmentType_AD");
+		return property.getProperty("appointmenttype.ad");
 	}
 
 	public String getPracticeURL_AD() {
-		return property.getProperty("practiceURL_AD");
+		return property.getProperty("practiceurl.ad");
 	}
 
 	public String getPreviousAppointmentId() {
-		return property.getProperty("previousAppointmentId");
+		return property.getProperty("previousappointmentid");
 	}
 
 	public String getFirstName_AD() {
-		return property.getProperty("firstName_AD");
+		return property.getProperty("firstname.ad");
 	}
 
 	public String getLastName_AD() {
-		return property.getProperty("lastName_AD");
+		return property.getProperty("lastname.ad");
 	}
 
 	public String getBatchSize_AD() {
-		return property.getProperty("batchSize");
+		return property.getProperty("batchsize.ad");
 	}
 
 	public String getCSVFILEPATH_AD() {
-		return property.getProperty("csvFilePath_AD");
+		return property.getProperty("csvfilepath.ad");
 	}
 
 	public String getPracticePortalURL_AD() {
-		return property.getProperty("portalUrl");
+		return property.getProperty("portalurl");
 	}
 
 	public String getProtalUserName_AD() {
-		return property.getProperty("portalUserName");
+		return property.getProperty("portalusername");
 	}
 
 	public String getPortalPassword_AD() {
-		return property.getProperty("portalPassword");
+		return property.getProperty("portalpassword");
 	}
 
 	// Start POST STATEMENT & Get EVENT
 	// Set Payload Atttributes
 
 	public String getStatementFormat_SE() {
-		return property.getProperty("statementFormat_SE");
+		return property.getProperty("statementformat.se");
 	}
 
 	public String getAddress1_SE() {
-		return property.getProperty("address1_SE");
+		return property.getProperty("address1.se");
 	}
 
 	public String getAddress2_SE() {
-		return property.getProperty("address2_SE");
+		return property.getProperty("address2.se");
 	}
 
 	public String getCity_SE() {
-		return property.getProperty("city_SE");
+		return property.getProperty("city.se");
 	}
 
 	public String getState_SE() {
-		return property.getProperty("state_SE");
+		return property.getProperty("state.se");
 	}
 
 	public String getZipCode_SE() {
-		return property.getProperty("zipCode_SE");
+		return property.getProperty("zipcode.se");
 	}
 
 	public String getNewCharges_SE() {
-		return property.getProperty("newCharges_SE");
+		return property.getProperty("newcharges.se");
 	}
 
 	public String getTotalCharges_SE() {
-		return property.getProperty("totalCharges_SE");
+		return property.getProperty("totalcharges.se");
 	}
 
 	public String getAmountDue_SE() {
-		return property.getProperty("amountDue_SE");
+		return property.getProperty("amountdue.se");
 	}
 
 	public String getBalanceForwardType_SE() {
-		return property.getProperty("balanceForwardType_SE");
+		return property.getProperty("balanceforwardtype.se");
 	}
 
 	public String getBalanceForwardAmount_SE() {
-		return property.getProperty("balanceForwardAmount_SE");
+		return property.getProperty("balanceforwardamount.se");
 	}
 
 	public String getOutstandingBalance_SE() {
-		return property.getProperty("outstandingBalance_SE");
+		return property.getProperty("outstandingbalance.se");
 	}
 
 	public String getStatementComment_SE() {
-		return property.getProperty("statementComment_SE");
+		return property.getProperty("statementcomment.se");
 	}
 
 	public String getDunningMessage_SE() {
-		return property.getProperty("dunningMessage_SE");
+		return property.getProperty("dunningmessage.se");
 	}
 
 	public String getPracticeProviderName_SE() {
-		return property.getProperty("practiceProviderName_SE");
+		return property.getProperty("practiceprovidername.se");
 	}
 
 	// set application attributes
 	public String getUrl_SE() {
-		return property.getProperty("url_SE");
+		return property.getProperty("url.se");
 	}
 
 	public String getUserName_SE() {
-		return property.getProperty("userName_SE");
+		return property.getProperty("username.se");
 	}
 
 	public String getPassword_SE() {
-		return property.getProperty("password_SE");
+		return property.getProperty("password.se");
 	}
 
 	public String getEmail_SE() {
-		return property.getProperty("email_SE");
+		return property.getProperty("email.se");
 	}
 
 	public String getRestUrl_SE() {
-		return property.getProperty("restUrl_SE");
+		return property.getProperty("resturl.se");
 	}
 
 	public String getRestV3Url_SE() {
-		return property.getProperty("restv3Url_SE");
+		return property.getProperty("restv3url.se");
 	}
 
 	public String getOAuthAppToken_SE() {
-		return property.getProperty("oAuthAppToken_SE");
+		return property.getProperty("oauth.apptoken.se");
 	}
 
 	public String getOAuthUsername_SE() {
-		return property.getProperty("oAuthUsername_SE");
+		return property.getProperty("oauth.username.se");
 	}
 
 	public String getOAuthPassword_SE() {
-		return property.getProperty("oAuthPassword_SE");
+		return property.getProperty("oauth.password.se");
 	}
 
 	public String getFirstName_SE() {
-		return property.getProperty("firstName_SE");
+		return property.getProperty("firstname.se");
 	}
 
 	public String getLastName_SE() {
-		return property.getProperty("lastName_SE");
+		return property.getProperty("lastname.se");
 	}
 
 	public String getPatientID_SE() {
-		return property.getProperty("patientID_SE");
+		return property.getProperty("patientid.se");
 	}
 
 	public String getMFPatientID_SE() {
-		return property.getProperty("mfPatientID_SE");
+		return property.getProperty("mfpatientid.se");
 	}
 
 	public String getStatementEventURL() {
-		return property.getProperty("statementEventURL");
+		return property.getProperty("statementeventurl");
 	}
 
 	public String getStatementEventV3URL() {
-		return property.getProperty("statementEventV3URL");
+		return property.getProperty("statementeventv3url");
 	}
 
 	public String getPaymentDueDate() {
-		return property.getProperty("paymentDueDate");
+		return property.getProperty("paymentduedate");
 	}
 
 	public String getRestUrlPIDC_SE() {
-		return property.getProperty("restUrlPIDC_SE");
+		return property.getProperty("resturlpidc.se");
 	}
 
 	public String getPracticeName_SE() {
-		return property.getProperty("practiceName_SE");
+		return property.getProperty("practicename.se");
 	}
 
 	public String getStatementEmailSubject() {
-		return property.getProperty("statementEmailSubject");
+		return property.getProperty("statementemailsubject");
 	}
 
 	public String getPortalUserName_SE() {
-		return property.getProperty("portalUserName_SE");
+		return property.getProperty("portalusername.se");
 	}
 
 	public String getPortalPassword_SE() {
-		return property.getProperty("portalPassword_SE");
+		return property.getProperty("portalpassword.se");
 	}
 
 	// BULK
 
 	public String getOAuthPropertyAMDC() {
-		return property.getProperty("oauth.propertyAMDC");
+		return property.getProperty("oauth.property.amdc");
 	}
 
 	public String getOAuthKeyStoreAMDC() {
-		return property.getProperty("oauth.keystoreAMDC");
+		return property.getProperty("oauth.keystore.amdc");
 	}
 
 	public String getSecureMessagePathAMDC() {
-		return property.getProperty("secureMessagePathAMDC");
+		return property.getProperty("securemessagepath.amdc");
 	}
 
 	public String getSecureMsgAskAStaff() {
-		return property.getProperty("secureMsgAskAStaff");
+		return property.getProperty("securemsgaskastaff");
 	}
 
 	public String getBatch_SecureMessage() {
-		return property.getProperty("batch_secureMessage");
+		return property.getProperty("batch.secureMessage");
 	}
 
 	public String getUserName1AMDC() {
-		return property.getProperty("userName1AMDC");
+		return property.getProperty("username1amdc");
 	}
 
 	public String getFrom1AMDC() {
-		return property.getProperty("from1AMDC");
+		return property.getProperty("from1amdc");
 	}
 
 	public String getUserName2AMDC() {
-		return property.getProperty("userName2AMDC");
+		return property.getProperty("username2amdc");
 	}
 
 	public String getUserName3AMDC() {
@@ -877,444 +877,444 @@ public class PropertyFileLoader {
 	}
 
 	public String getSender1AMDC() {
-		return property.getProperty("sender1AMDC");
+		return property.getProperty("sender1amdc");
 	}
 
 	public String getSender2AMDC() {
-		return property.getProperty("sender2AMDC");
+		return property.getProperty("sender2amdc");
 	}
 
 	public String getPatientName1AMDC() {
-		return property.getProperty("patientName1AMDC");
+		return property.getProperty("patientname1amdc");
 	}
 
 	public String getPatientName2AMDC() {
-		return property.getProperty("patientName2AMDC");
+		return property.getProperty("patientname2amdc");
 	}
 
 	public String getPatientName3AMDC() {
-		return property.getProperty("patientName3AMDC");
+		return property.getProperty("patientname3amdc");
 	}
 
 	public String getRestUrlBulk() {
-		return property.getProperty("RestUrlBulk");
+		return property.getProperty("resturlbulk");
 	}
 
 	public String getAttachmentLocation() {
-		return property.getProperty("AttachmentLocation");
+		return property.getProperty("attachmentlocation");
 	}
 
 	public String getNumberOfAttachments() {
-		return property.getProperty("NumberOfAttachments");
+		return property.getProperty("numberofattachments");
 	}
 
 	public String getMaxPatients() {
-		return property.getProperty("MaxPatients");
+		return property.getProperty("maxpatients");
 	}
 
 	public String getFileName() {
-		return property.getProperty("FileName");
+		return property.getProperty("filename");
 	}
 
 	public String getSubject() {
-		return property.getProperty("SubjectBulk");
+		return property.getProperty("subjectbulk");
 	}
 
 	public String getMessageBulk() {
-		return property.getProperty("MessageBulk");
+		return property.getProperty("messagebulk");
 	}
 
 	public String getresendPrevoiusMessage() {
-		return property.getProperty("resendPrevoiusMessage");
+		return property.getProperty("resendprevoiusmessage");
 	}
 
 	public String getpreviousBulkMessageId() {
-		return property.getProperty("previousBulkMessageId");
+		return property.getProperty("previousbulkmessageid");
 	}
 
 	public String getNumberOfParams() {
-		return property.getProperty("NumberOfParams");
+		return property.getProperty("numberofparams");
 	}
 
 	public String getAddAttachment() {
-		return property.getProperty("AddAttachment");
+		return property.getProperty("addattachment");
 	}
 
 	public String getParamName1() {
-		return property.getProperty("ParamName1");
+		return property.getProperty("paramname1");
 	}
 
 	public String getParamValue1() {
-		return property.getProperty("ParamValue1");
+		return property.getProperty("paramvalue1");
 	}
 
 	public String getParamValue2() {
 
-		return property.getProperty("ParamValue2");
+		return property.getProperty("paramvalue2");
 	}
 
 	public String getParamName2() {
-		return property.getProperty("ParamName2");
+		return property.getProperty("paramname2");
 	}
 
 	public String getParamValue3() {
 
-		return property.getProperty("ParamValue3");
+		return property.getProperty("paramvalue3");
 	}
 
 	public String getParamName3() {
-		return property.getProperty("ParamName3");
+		return property.getProperty("paramname3");
 	}
 
 	public String getBulkEmailType() {
-		return property.getProperty("BulkEmailType");
+		return property.getProperty("bulkemailtype");
 	}
 
 	public String getPatientExternalId() {
-		return property.getProperty("PatientExternalId");
+		return property.getProperty("patientexternalid");
 	}
 
 	public String getUserNameBulk1() {
-		return property.getProperty("UserNameBulk1");
+		return property.getProperty("usernamebulk1");
 	}
 
 	public String getUserNameBulk2() {
-		return property.getProperty("UserNameBulk2");
+		return property.getProperty("usernamebulk2");
 	}
 
 	public String getUserNameBulk3() {
-		return property.getProperty("UserNameBulk3");
+		return property.getProperty("usernamebulk3");
 	}
 
 	public String getPasswordBulk1() {
-		return property.getProperty("PasswordBulk1");
+		return property.getProperty("passwordbulk1");
 	}
 
 	public String getPasswordBulk2() {
-		return property.getProperty("PasswordBulk2");
+		return property.getProperty("passwordbulk2");
 	}
 
 	public String getPasswordBulk3() {
-		return property.getProperty("PasswordBulk3");
+		return property.getProperty("passwordbulk3");
 	}
 
 	public String getUserPatiendIDBulk1() {
-		return property.getProperty("PatientExternalId1");
+		return property.getProperty("patientexternalid1");
 	}
 
 	public String getUserPatiendIDBulk2() {
-		return property.getProperty("PatientExternalId2");
+		return property.getProperty("patientexternalid2");
 	}
 
 	public String getUserPatiendIDBulk3() {
-		return property.getProperty("PatientExternalId3");
+		return property.getProperty("patientexternalid3");
 	}
 
 	public String getUserEmailBulk1() {
-		return property.getProperty("PatientEmailId1");
+		return property.getProperty("patientemailid1");
 	}
 
 	public String getUserEmailBulk2() {
-		return property.getProperty("PatientEmailId2");
+		return property.getProperty("patientemailid2");
 	}
 
 	public String getUserEmailBulk3() {
-		return property.getProperty("PatientEmailId3");
+		return property.getProperty("patientemailid3");
 	}
 
 	public String getresendMessageToPatientUserName() {
-		return property.getProperty("resendMessageToPatientUserName");
+		return property.getProperty("resendmessagetopatientusername");
 	}
 
 	public String getresendMessageToPatientPassword() {
-		return property.getProperty("resendMessageToPatientPassword");
+		return property.getProperty("resendmessagetopatientpassword");
 	}
 
 	public String getresendMessageToPatientID() {
-		return property.getProperty("resendMessageToPatientID");
+		return property.getProperty("resendmessagetopatientid");
 	}
 
 	public String getresendMessageToPatientEmail() {
-		return property.getProperty("resendMessageToPatientEmail");
+		return property.getProperty("resendmessagetopatientemail");
 	}
 
 	public String getRestUrlV3Bulk() {
-		return property.getProperty("RestUrlV3Bulk");
+		return property.getProperty("resturlv3bulk");
 	}
 
 	// SendDirectMessage
 
 	public String getRestURL_SDM() {
-		return property.getProperty("restURL_SDM");
+		return property.getProperty("resturl.sdm");
 	}
 
 	public String getSecureEmailURL_SDM() {
-		return property.getProperty("secureEmailURL_SDM");
+		return property.getProperty("secureemailurl.sdm");
 	}
 
 	public String getSecureEmailUsername_SDM() {
-		return property.getProperty("secureEmailUsername_SDM");
+		return property.getProperty("secureemailusername.sdm");
 	}
 
 	public String getSecureEmailPassword_SDM() {
-		return property.getProperty("secureEmailPassword_SDM");
+		return property.getProperty("secureemailpassword.sdm");
 	}
 
 	public String getFromSecureEmailID_SDM() {
-		return property.getProperty("fromSecureEmailID_SDM");
+		return property.getProperty("fromsecureemailid.sdm");
 	}
 
 	public String getToSecureEmailID_SDM() {
-		return property.getProperty("toSecureEmailID_SDM");
+		return property.getProperty("tosecureemailid.sdm");
 	}
 
 	public String getApplicationName_SDM() {
-		return property.getProperty("applicationName_SDM");
+		return property.getProperty("applicationname.sdm");
 	}
 
 	public String getSubject_SDM() {
-		return property.getProperty("subject_SDM");
+		return property.getProperty("subject.sdm");
 	}
 
 	public String getMessageBody_SDM() {
-		return property.getProperty("messageBody_SDM");
+		return property.getProperty("messagebody.sdm");
 	}
 
 	public String getPatientId_SDM() {
-		return property.getProperty("patientId_SDM");
+		return property.getProperty("patientid.sdm");
 	}
 
 	public String getAttachmentType_SDM() {
-		return property.getProperty("attachmentType_SDM");
+		return property.getProperty("attachmenttype.sdm");
 	}
 
 	public String getFileName_SDM() {
-		return property.getProperty("fileName_SDM");
+		return property.getProperty("filename.sdm");
 	}
 
 	public String getAttachmentLocationXML_SDM() {
-		return property.getProperty("attachmentLocationXML_SDM");
+		return property.getProperty("attachmentlocationxml.sdm");
 	}
 
 	public String getAttachmentLocationPDF_SDM() {
-		return property.getProperty("attachmentLocationPDF_SDM");
+		return property.getProperty("attachmentlocationpdf.sdm");
 	}
 
 	public String getAttachmentLocationPNG_SDM() {
-		return property.getProperty("attachmentLocationPNG_SDM");
+		return property.getProperty("attachmentlocationpng.sdm");
 	}
 
 	public String getOAuthAppToken_SDM() {
-		return property.getProperty("oAuthAppToken_SDM");
+		return property.getProperty("oauth.apptoken.sdm");
 	}
 
 	public String getOAuthUsername_SDM() {
-		return property.getProperty("oAuthUsername_SDM");
+		return property.getProperty("oauth.username.sdm");
 	}
 
 	public String getOAuthPassword_SDM() {
-		return property.getProperty("oAuthPassword_SDM");
+		return property.getProperty("oauth.password.sdm");
 	}
 
 	public String getTOCName_SDM() {
-		return property.getProperty("tocName_SDM");
+		return property.getProperty("tocname.sdm");
 	}
 
 	public String getMessageStatus_SDM() {
-		return property.getProperty("messageStatus_SDM");
+		return property.getProperty("messagestatus.sdm");
 	}
 
 	public String getUnseenMessageHeaderURL_SDM() {
-		return property.getProperty("unseenMessageHeaderURL");
+		return property.getProperty("unseenmessageheaderurl");
 	}
 
 	public String getUnseenMessageBodyURL_SDM() {
-		return property.getProperty("unseenMessageBodyURL");
+		return property.getProperty("unseenmessagebodyurl");
 	}
 
 	public String getMessageStatusUpdate_SDM() {
-		return property.getProperty("messageStatusUpdateURL");
+		return property.getProperty("messagestatusupdateurl");
 	}
 
 	public String getMessageStatusToUpdate_SDM() {
-		return property.getProperty("messageStatusToUpdate");
+		return property.getProperty("messagestatustoupdate");
 	}
 
 	public String getMessageHeaderURL_SDM() {
-		return property.getProperty("messageHeaderURL");
+		return property.getProperty("messageheaderurl");
 	}
 
 	public String getInvalidPracticeMessageHeaderURL_SDM() {
-		return property.getProperty("invalidPracticeMessageHeaderURL");
+		return property.getProperty("invalidpracticemessageheaderurl");
 	}
 
 	public String getInvalidEmailMessageHeaderURL_SDM() {
-		return property.getProperty("invalidEmailMessageHeaderURL");
+		return property.getProperty("invalidemailmessageheaderurl");
 	}
 
 	public String getInvalidUID_SDM() {
-		return property.getProperty("invalidUID");
+		return property.getProperty("invaliduid");
 	}
 
 	public String getValidPracticeID_SDM() {
-		return property.getProperty("validPracticeID");
+		return property.getProperty("validpracticeid");
 	}
 
 	// Directory Search
 	public String getRestURL_SD() {
-		return property.getProperty("restUrl_DS");
+		return property.getProperty("resturl.ds");
 	}
 
 	public String getDirectAddress_organization_DS() {
-		return property.getProperty("directAddress_organization_DS");
+		return property.getProperty("directaddress.organization.ds");
 	}
 
 	public String getDirectAddress_provider_DS() {
-		return property.getProperty("directAddress_provider_DS");
+		return property.getProperty("directaddress.provider.ds");
 	}
 
 	public String getOAuthAppToken_DS() {
-		return property.getProperty("oAuthAppToken_DS");
+		return property.getProperty("oauth.apptoken.ds");
 	}
 
 	public String getOAuthUsername_DS() {
-		return property.getProperty("oAuthUsername_DS");
+		return property.getProperty("oauth.username.ds");
 	}
 
 	public String getOAuthPassword_DS() {
-		return property.getProperty("oAuthPassword_DS");
+		return property.getProperty("oauth.password.ds");
 	}
 
 	public String getSearchLength() {
-		return property.getProperty("searchLength");
+		return property.getProperty("searchlength");
 	}
 
 	public String getCSVFilePath_DS() {
-		return property.getProperty("csvFilePath_DS");
+		return property.getProperty("csvfilepath.ds");
 	}
 
 	// PatientFormsExportInfo
 	public String geturl_FE() {
-		return property.getProperty("url_FE");
+		return property.getProperty("url.fe");
 	}
 
 	public String getpracticeNew_URL_FE() {
-		return property.getProperty("practiceNew_URL_FE");
+		return property.getProperty("practicenew.url.fe");
 	}
 
 	public String getpatient_url_FE() {
-		return property.getProperty("patient_url_FE");
+		return property.getProperty("patient.url.fe");
 	}
 
 	public String getpatientfilepath_FE() {
-		return property.getProperty("patientfilepath_FE");
+		return property.getProperty("patientfilepath.fe");
 	}
 
 	public String getpatientFirstName_FE() {
-		return property.getProperty("patientFirstName_FE");
+		return property.getProperty("patientfirstname.fe");
 	}
 
 	public String getpatientLastName_FE() {
-		return property.getProperty("patientLastName_FE");
+		return property.getProperty("patientlastname.fe");
 	}
 
 	public String getpatientEmailAddress1_FE() {
-		return property.getProperty("patientEmailAddress1_FE");
+		return property.getProperty("patientemailaddress1.fe");
 	}
 
 	public String getpatientEmailCity_FE() {
-		return property.getProperty("patientEmailCity_FE");
+		return property.getProperty("patientemailcity.fe");
 	}
 
 	public String getpatientphoneNumber_FE() {
-		return property.getProperty("patientphoneNumber_FE");
+		return property.getProperty("patientphonenumber.fe");
 	}
 
 	public String getpatientDOBDay1_FE() {
-		return property.getProperty("patientDOBDay1_FE");
+		return property.getProperty("patientdobday1.fe");
 	}
 
 	public String getpatientDOBMonth_FE() {
-		return property.getProperty("patientDOBMonth_FE");
+		return property.getProperty("patientdobmonth.fe");
 	}
 
 	public String getpatientDOBYear_FE() {
-		return property.getProperty("patientDOBYear_FE");
+		return property.getProperty("patientdobyear.fe");
 	}
 
 	public String getpatientDOBMonthText_FE() {
-		return property.getProperty("patientDOBMonthText_FE");
+		return property.getProperty("patientdobmonthtext.fe");
 	}
 
 	public String getpatientZipCode1_FE() {
-		return property.getProperty("getpatientZipCode1_FE");
+		return property.getProperty("getpatientzipcode1.fe");
 	}
 
 	public String getpatientSecretQuestion_FE() {
-		return property.getProperty("patientSecretQuestion_FE");
+		return property.getProperty("patientsecretquestion.fe");
 	}
 
 	public String getpatientuserid_FE() {
-		return property.getProperty("patientuserid_FE");
+		return property.getProperty("patientuserid.fe");
 	}
 
 	public String getpatientPassword1_FE() {
-		return property.getProperty("patientPassword1_FE");
+		return property.getProperty("patientpassword1.fe");
 	}
 
 	public String getpatientSecretAnswer_FE() {
-		return property.getProperty("patientSecretAnswer_FE");
+		return property.getProperty("patientsecretanswer.fe");
 	}
 
 	public String getpatientAddress1_FE() {
-		return property.getProperty("patientAddress1_FE");
+		return property.getProperty("patientaddress1.fe");
 	}
 
 	public String getpatientAddress2_FE() {
-		return property.getProperty("patientAddress2_FE");
+		return property.getProperty("patientaddress2.fe");
 	}
 
 	public String getpatientCity_FE() {
-		return property.getProperty("patientCity_FE");
+		return property.getProperty("patientcity.fe");
 	}
 
 	public String getpatientState_FE() {
-		return property.getProperty("patientState_FE");
+		return property.getProperty("patientstate.fe");
 	}
 
 	public String getpatientHomePhoneNo_FE() {
-		return property.getProperty("patientHomePhoneNo_FE");
+		return property.getProperty("patienthomephoneno.fe");
 	}
 
 	public String getpatientethnicity_FE() {
-		return property.getProperty("patientethnicity_FE");
+		return property.getProperty("patientethnicity.fe");
 	}
 
 	public String getpatientMaritalStatus_FE() {
-		return property.getProperty("patientMaritalStatus_FE");
+		return property.getProperty("patientmaritalstatus.fe");
 	}
 
 	public String getpatientWhoIs_FE() {
-		return property.getProperty("patientWhoIs_FE");
+		return property.getProperty("patientwhois.fe");
 	}
 
 	public String getNameofPrimaryInsurance() {
-		return property.getProperty("NameofPrimaryInsurance");
+		return property.getProperty("nameofprimaryinsurance");
 	}
 
 	public String getNameofsecondaryInsurance() {
 
-		return property.getProperty("NameofsecondaryInsurance");
+		return property.getProperty("nameofsecondaryinsurance");
 	}
 
 	public String getrelFirstNAme() {
 
-		return property.getProperty("relFirstNAme");
+		return property.getProperty("relfirstname");
 	}
 
 	public String getrelLastNAme() {
 
-		return property.getProperty("relLastNAme");
+		return property.getProperty("rellastname");
 	}
 
 	public String getrelation1() {
@@ -1339,67 +1339,67 @@ public class PropertyFileLoader {
 
 	public String getHPV1() {
 
-		return property.getProperty("HPV1");
+		return property.getProperty("hpv1");
 	}
 
 	public String getInfluenza1() {
 
-		return property.getProperty("Influenza1");
+		return property.getProperty("influenza1");
 	}
 
 	public String getPneumonia1() {
 
-		return property.getProperty("Pneumonia1");
+		return property.getProperty("pneumonia1");
 	}
 
 	public String getSurgeryName() {
 
-		return property.getProperty("SurgeryName");
+		return property.getProperty("surgeryname");
 	}
 
 	public String getSurgeryTimeFrame() {
 
-		return property.getProperty("SurgeryTimeFrame");
+		return property.getProperty("surgerytimeframe");
 	}
 
 	public String getHospitalizationReason() {
 
-		return property.getProperty("HospitalizationReason");
+		return property.getProperty("hospitalizationreason");
 	}
 
 	public String getHospitalizationTimeFrame() {
 
-		return property.getProperty("HospitalizationTimeFrame");
+		return property.getProperty("hospitalizationtimeframe");
 	}
 
 	public String getTest() {
 
-		return property.getProperty("Test");
+		return property.getProperty("test");
 	}
 
 	public String getTestTimeFrame() {
 
-		return property.getProperty("TestTimeFrame");
+		return property.getProperty("testtimeframe");
 	}
 
 	public String getNameofDoctorSpeciality() {
 
-		return property.getProperty("NameofDoctorSpeciality");
+		return property.getProperty("nameofdoctorspeciality");
 	}
 
 	public String getNameDosage() {
 
-		return property.getProperty("NameDosage");
+		return property.getProperty("namedosage");
 	}
 
 	public String getFamilyMember() {
 
-		return property.getProperty("FamilyMember");
+		return property.getProperty("familymember");
 	}
 
 	public String getOtherMedicalhistory() {
 
-		return property.getProperty("OtherMedicalhistory");
+		return property.getProperty("othermedicalhistory");
 	}
 
 	public String getsex() {
@@ -1422,70 +1422,70 @@ public class PropertyFileLoader {
 	}
 
 	public String getccd_url1_FE() {
-		return property.getProperty("ccd_url1_FE");
+		return property.getProperty("ccd.url1.fe");
 	}
 
 	public String getoAuthAppTokenCCD1_FE() {
-		return property.getProperty("oAuthAppTokenCCD1_FE");
+		return property.getProperty("oauth.apptoken.ccd1.fe");
 	}
 
 	public String getoAuthUsernameCCD1_FE() {
-		return property.getProperty("oAuthUsernameCCD1_FE");
+		return property.getProperty("oauth.username.ccd1.fe");
 	}
 
 	public String getoAuthPasswordCCD1_FE() {
-		return property.getProperty("oAuthPasswordCCD1_FE");
+		return property.getProperty("oauth.password.ccd1.fe");
 	}
 
 	public String getoAuthKeyStore1_FE() {
-		return property.getProperty("oAuthAppTokenCCD1_FE");
+		return property.getProperty("oauth.keystore1.fe");
 	}
 
 	public String getoAuthProperty1_FE() {
-		return property.getProperty("oauth.property1_FE");
+		return property.getProperty("oauth.property1.fe");
 	}
 
 	public String getresponsePath_CCD1_FE() {
-		return property.getProperty("responsepath_CCD1_FE");
+		return property.getProperty("responsepath.ccd1.fe");
 	}
 
 	public String getpracticeURL_FE() {
-		return property.getProperty("practiceURL_FE");
+		return property.getProperty("practiceurl.fe");
 	}
 
 	public String getpracticeUserName_FE() {
-		return property.getProperty("practiceUserName_FE");
+		return property.getProperty("practiceusername.fe");
 
 	}
 
 	public String getpracticePassword_FE() {
-		return property.getProperty("practicePassword_FE");
+		return property.getProperty("practicepassword.fe");
 	}
 
 	public String getpatientLocation_FE() {
 
-		return property.getProperty("patientLocation_FE");
+		return property.getProperty("patientlocation.fe");
 	}
 
 	public String getpatientProvider_FE() {
-		return property.getProperty("patientProvider_FE");
+		return property.getProperty("patientprovider.fe");
 
 	}
 
 	public String getresponsePDF_FE() {
-		return property.getProperty("responsePDF_FE");
+		return property.getProperty("responsepdf.fe");
 	}
 
 	public String getccd_PDfUrl_FE() {
-		return property.getProperty("ccd_PDfUrl_FE");
+		return property.getProperty("ccd.pdfurl.fe");
 	}
 
 	public String getresponsePDFBatch_FE() {
-		return property.getProperty("responsePDFBatch_FE");
+		return property.getProperty("responsepdfbatch.fe");
 	}
 
 	public String getUIPDFFile_FE() {
-		return property.getProperty("uiPDFFile_FE");
+		return property.getProperty("uipdffile.fe");
 	}
 
 	public String getday() {
@@ -1495,17 +1495,17 @@ public class PropertyFileLoader {
 
 	public String getDownloadFileLocation() {
 
-		return property.getProperty("downloadFileLocation");
+		return property.getProperty("downloadfilelocation");
 	}
 
 	public String getPreCheckURL() {
 
-		return property.getProperty("preCheckURL_FE");
+		return property.getProperty("precheckurl.fe");
 	}
 
 	public String getPreCheckPatientExternalID() {
 
-		return property.getProperty("preCheckPatientExternalID_FE");
+		return property.getProperty("precheckpatientexternalid.fe");
 	}
 
 	public String getAllowAttachment() {
@@ -1533,75 +1533,75 @@ public class PropertyFileLoader {
 	}
 
 	public String getAppointmentPayload() {
-		return property.getProperty("precheckAppointmentPayload");
+		return property.getProperty("precheckappointmentpayload");
 	}
 
 	public String getPreCheckAppointmentRestUrl() {
-		return property.getProperty("appointmentRestURL");
+		return property.getProperty("appointmentresturl");
 	}
 
 	public String getBasicAccesstokenPrecheck() {
-		return property.getProperty("basicAcessTokenPrecheck");
+		return property.getProperty("basicacesstokenprecheck");
 	}
 
 	public String getPreCheckZipCode() {
-		return property.getProperty("preCheckZipCode");
+		return property.getProperty("precheckzipcode");
 	}
 
 	public String getPreCheckDOB() {
-		return property.getProperty("preCheckDOB");
+		return property.getProperty("precheckdob");
 	}
 
 	public String getPreCheckPatientEmailID_FE() {
-		return property.getProperty("preCheckPatientEmailID_FE");
+		return property.getProperty("precheckpatientemailid.fe");
 	}
 
 	public String getPreCheckPatientFirstName_FE() {
-		return property.getProperty("preCheckPatientFirstName_FE");
+		return property.getProperty("precheckpatientfirstname.fe");
 	}
 
 	public String getPreCheckGetPIDC() {
-		return property.getProperty("preCheckGetPIDC");
+		return property.getProperty("precheckgetpidc");
 	}
 
 	public String getPreCheckEmailSubject() {
-		return property.getProperty("preCheckEmailSubject");
+		return property.getProperty("precheckemailsubject");
 	}
 
 	public String getPreCheckEmailLink() {
-		return property.getProperty("preCheckEmailLink");
+		return property.getProperty("precheckemaillink");
 	}
 
 	public String getPreCheckInsuranceImageType() {
-		return property.getProperty("preCheckImageInsuranceType");
+		return property.getProperty("precheckimageinsurancetype");
 	}
 
 	public String getBalanceUrl() {
-		return property.getProperty("balanceUrl");
+		return property.getProperty("balanceurl");
 	}
 
 	public String getBalanceIntegrationPracticeId() {
-		return property.getProperty("balanceIntegrationPracticeId");
+		return property.getProperty("balanceintegrationpracticeid");
 	}
 
 	public String getNewPassword() {
-		return property.getProperty("newPassword");
+		return property.getProperty("newpassword");
 	}
 
 	public String getEmailSubjectBalance() {
-		return property.getProperty("emailSubjectBalance");
+		return property.getProperty("emailsubjectbalance");
 	}
 
 	public String getEmailLinkText() {
-		return property.getProperty("emailLinkText");
+		return property.getProperty("emaillinktext");
 	}
 
 	public String getToken_MU() {
-		return property.getProperty("token_MU");
+		return property.getProperty("token.mu");
 	}
 
 	public String getDeleteToken() {
-		return property.getProperty("token_p2p");
+		return property.getProperty("token.p2p");
 	}
 
 	// DB
@@ -1877,96 +1877,96 @@ public class PropertyFileLoader {
 
 	// AppoinmentType
 	public String getAppointmentTypeName() {
-		return property.getProperty("AppointmentTypeName");
+		return property.getProperty("appointmenttypename");
 	}
 
 	public String getAppointmentTypeID() {
-		return property.getProperty("AppointmentTypeID");
+		return property.getProperty("appointmenttypeid");
 	}
 
 	public String getAppointmentCategoryName() {
-		return property.getProperty("AppointmentCategoryName");
+		return property.getProperty("appointmentcategoryname");
 	}
 
 	public String getAppointmentCategoryID() {
-		return property.getProperty("AppointmentCategoryID");
+		return property.getProperty("appointmentcategoryid");
 	}
 
 	public String getActiveFlag() {
-		return property.getProperty("ActiveFlag");
+		return property.getProperty("activeflag");
 	}
 
 	public String getComment() {
-		return property.getProperty("Comment");
+		return property.getProperty("comment");
 	}
 
 	public String getAppointmentTypeUrl() {
-		return property.getProperty("AppointmentTypeUrl");
+		return property.getProperty("appointmenttypeurl");
 	}
 
 	// Pharmacies
 	public String getOAuthAppToken_PH() {
-		return property.getProperty("oAuthAppToken_PH");
+		return property.getProperty("oauth.apptoken.ph");
 	}
 
 	public String getOAuthUsername_PH() {
-		return property.getProperty("oAuthUsername_PH");
+		return property.getProperty("oauth.username.ph");
 	}
 
 	public String getoAuthPassword_PH() {
-		return property.getProperty("oAuthPassword_PH");
+		return property.getProperty("oauth.password.ph");
 	}
 
 	public String getPatientUsername_PH() {
-		return property.getProperty("usename_PH");
+		return property.getProperty("username.ph");
 	}
 
 	public String getPatientPassword_PH() {
-		return property.getProperty("password_PH");
+		return property.getProperty("password.ph");
 	}
 
 	public String getPharmacyRenewalUrl() {
-		return property.getProperty("PharmacyRenewalUrl");
+		return property.getProperty("pharmacyrenewalurl");
 	}
 
 	public String getpatientUrl() {
-		return property.getProperty("patientUrl");
+		return property.getProperty("patienturl");
 	}
 
 	public String getPharmacyName() {
-		return property.getProperty("PharmacyName");
+		return property.getProperty("pharmacyname");
 	}
 
 	public String getExternalPharmacyId() {
-		return property.getProperty("ExternalPharmacyId");
+		return property.getProperty("externalpharmacyid");
 	}
 
 	public String getLine1() {
-		return property.getProperty("Line1");
+		return property.getProperty("line1");
 	}
 
 	public String getLine2() {
-		return property.getProperty("Line2");
+		return property.getProperty("line2");
 	}
 
 	public String getCity_PH() {
-		return property.getProperty("City_PH");
+		return property.getProperty("city.ph");
 	}
 
 	public String getState_PH() {
-		return property.getProperty("State_PH");
+		return property.getProperty("state.ph");
 	}
 
 	public String getCountry() {
-		return property.getProperty("Country");
+		return property.getProperty("country");
 	}
 
 	public String getZipCode_PH() {
-		return property.getProperty("ZipCode_PH");
+		return property.getProperty("zipcode.ph");
 	}
 
 	public String getPharmacyPhone() {
-		return property.getProperty("PharmacyPhone");
+		return property.getProperty("pharmacyphone");
 	}
 
 	public String getPharmacyFaxNumber() {
@@ -1974,75 +1974,75 @@ public class PropertyFileLoader {
 	}
 
 	public String getAppointmentRequestV3URL() {
-		return property.getProperty("appointmentRequestV3URL");
+		return property.getProperty("appointmentrequestv3url");
 	}
 
 	public String getPATIENT_INVITE_RESTV3URL() {
-		return property.getProperty("restUrlPIDCV3");
+		return property.getProperty("restUrlpidcV3");
 	}
 
 	public String getPatienturl_Event() {
-		return property.getProperty("patientUrl_LoginEvent");
+		return property.getProperty("patienturl.loginevent");
 	}
 
 	public String getPatientUsername_Event() {
-		return property.getProperty("username_LoginEvent");
+		return property.getProperty("username.loginevent");
 	}
 
 	public String getPatientpassword_Event() {
-		return property.getProperty("password_LoginEvent");
+		return property.getProperty("password.loginevent");
 	}
 
 	public String getPatientoAuthAppToken_Event() {
-		return property.getProperty("oAuthAppToken_LoginEvent");
+		return property.getProperty("oauth.apptoken.loginevent");
 	}
 
 	public String getPatientoAuthUsername_Event() {
-		return property.getProperty("oAuthUsername_Loginevent");
+		return property.getProperty("oauth.username.loginevent");
 	}
 
 	public String getPatientoAuthPassword_Event() {
-		return property.getProperty("oAuthPassword_Loginevent");
+		return property.getProperty("oauth.password.loginevent");
 	}
 
 	public String getPatientoAuthProperty_Event() {
-		return property.getProperty("oauth.property_Loginevent");
+		return property.getProperty("oauth.property.loginevent");
 	}
 
 	public String getPatientoAuthKeystore_Event() {
-		return property.getProperty("oauth.keystore_Loginevent");
+		return property.getProperty("oauth.keystore.loginevent");
 	}
 
 	public String getPatientResponsePath_Event() {
-		return property.getProperty("responsepath_Loginevent");
+		return property.getProperty("responsepath.loginevent");
 	}
 
 	public String getPatientrestUrlLogin_V3_Event() {
-		return property.getProperty("restUrlLogin_V3");
+		return property.getProperty("resturllogin.v3");
 	}
 
 	public String getStatementPdfDetail() {
-		return property.getProperty("StatementPdfDetail_");
+		return property.getProperty("statementpdfdetail");
 	}
 
 	public String getStatementUrlV3() {
-		return property.getProperty("restUrlV3_Statement");
+		return property.getProperty("resturlv3.statement");
 	}
 
 	public String getPatientStatementUrl() {
-		return property.getProperty("url_PatientStatement");
+		return property.getProperty("url.patientstatement");
 	}
 
 	public String getOAuthAppToken_Statement() {
-		return property.getProperty("oAuthAppToken_PatientStatement");
+		return property.getProperty("oauth.apptoken.patientstatement");
 	}
 
 	public String getOAuthAppUsername_Statement() {
-		return property.getProperty("oAuthUsername_PatientStatement");
+		return property.getProperty("oauth.username.patientstatement");
 	}
 
 	public String getOAuthAppPassword_Statement() {
-		return property.getProperty("oAuthPassword_PatientStatement");
+		return property.getProperty("oauth.password.patientstatement");
 	}
 
 	// Attachment
