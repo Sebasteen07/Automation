@@ -69,14 +69,16 @@ public class LocationAndProviderPage {
 
 	}
 
-	public static String  getPracticeLocation() {
+	public  String  getPracticeLocation(WebDriver driver) {
+		
+		IHGUtil.waitForElement(driver, 10, selectedLocation);
 		String location = selectedLocation.getText();
         locationDropdown.click();
         locationDropdown.sendKeys(location);
 		return location;
 	}
 	
-	public static String  getPracticeProvider() {
+	public  String  getPracticeProvider() {
 		String provider = selectedProvider.getText();
 		providerDropdown.click();
 		providerDropdown.sendKeys(provider);

@@ -23,6 +23,8 @@
                         <SigCodeMeaning>QYLY Daily</SigCodeMeaning>
                     </SigCode>
                 </SigCodes>
+		<ExternalMedicationId>202105930029</ExternalMedicationId>
+		<ExternalSystemId>88</ExternalSystemId>
             </Medication>
 		<Pharmacy>
                 <PharmacyName>PharmacyName</PharmacyName>

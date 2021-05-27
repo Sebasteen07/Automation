@@ -40,7 +40,7 @@ public class SelectPharmacyPage extends MedfusionPage {
 	private WebElement btnBack;
 
 	//@FindBy(how = How.XPATH, using = "//button[@class='btn btn-primary ng-binding']")
-	@FindBy(how = How.XPATH, using = "//button[@class='btn btn-primary']")
+	@FindBy(how = How.XPATH, using = "//*[contains(text(),'Continue')]")
 	private WebElement btnContinue;
 
 	@FindBy(how = How.XPATH, using = "//a[@class='add-pharmacy-options'][2]")
@@ -131,6 +131,7 @@ public class SelectPharmacyPage extends MedfusionPage {
 		Thread.sleep(2000);
 		addPharmacy.click();
 		log("Click on Add Your Pharmacy button from the popup");
+		Thread.sleep(2000);
 		addYourPharmacy.click();
 		log("Verify all the popup elements are present");
 		assertTrue(arePopupPageElementsPresent());
@@ -162,7 +163,6 @@ public class SelectPharmacyPage extends MedfusionPage {
 		log("Click on Add a Pharmacy button");
 		wait.until(ExpectedConditions.visibilityOf(addPharmacy));
 		addPharmacy.click();
-		assertTrue(areBasicPopUpPageElementsPresent());
 		wait.until(ExpectedConditions.visibilityOf(addProviderSuggestPharmacy));
 		javascriptClick(addProviderSuggestPharmacy);
 		log("Click on Enter Pharmacy Name Activate TextBox");
