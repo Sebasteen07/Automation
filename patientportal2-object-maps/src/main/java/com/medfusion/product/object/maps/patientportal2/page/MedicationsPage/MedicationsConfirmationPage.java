@@ -49,6 +49,7 @@ public class MedicationsConfirmationPage {
 	
 	public String confirmMedication(WebDriver driver) throws InterruptedException {
 		JavascriptExecutor ex = (JavascriptExecutor)driver;
+		Thread.sleep(3000);
 	    ex.executeScript("arguments[0].click();", btnConfirm);
 		System.out.println("Confirm button is clicked");
 		IHGUtil.waitForElement(driver, 10, confirmPopup);
