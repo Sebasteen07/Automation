@@ -3541,6 +3541,7 @@ public class PatientPortal2AcceptanceTests extends BaseTestNGWebDriver {
 
 		ManageYourPharmacies managepharmacy = new ManageYourPharmacies(driver);
 		managepharmacy.removeAllPharmacy();
+		driver.get(driver.getCurrentUrl());
 		assertFalse(managepharmacy.isAnyPharmacyPresent());
 		Thread.sleep(5000);
 		managepharmacy.clickOnAddPharmacyButton();

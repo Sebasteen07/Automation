@@ -131,6 +131,7 @@ public class SelectPharmacyPage extends MedfusionPage {
 		Thread.sleep(2000);
 		addPharmacy.click();
 		log("Click on Add Your Pharmacy button from the popup");
+		Thread.sleep(2000);
 		addYourPharmacy.click();
 		log("Verify all the popup elements are present");
 		assertTrue(arePopupPageElementsPresent());
