@@ -110,6 +110,7 @@ public class SecurityDetailsPage extends MedfusionPage {
 		}
 
 		private void fillAccountDetails(String userId, String password, String secretQuestion, String secretAnswer, String phoneNumber, int statementPreference) throws InterruptedException {
+			    new WebDriverWait(driver, 25).until(ExpectedConditions.elementToBeClickable(buttonPreviousStep));
 				log("Setting User Name and Password as " + userId + "/" + password);
 				inputUserId.sendKeys(userId);
 				inputPassword.sendKeys(password);
