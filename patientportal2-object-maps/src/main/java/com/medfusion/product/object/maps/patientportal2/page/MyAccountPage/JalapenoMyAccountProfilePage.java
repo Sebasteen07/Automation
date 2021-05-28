@@ -189,7 +189,7 @@ public class JalapenoMyAccountProfilePage extends JalapenoMyAccountPage {
 	public boolean checkZipCode(String zipCode) {
 
 		log("Checking ZipCode textbox");
-
+		new WebDriverWait(driver, 25).until(ExpectedConditions.textToBePresentInElementValue(zipCodeTextbox, zipCode));
 		String savedZipCode = zipCodeTextbox.getAttribute("value");
 
 		if (!StringUtils.equals(zipCode, savedZipCode)) {
