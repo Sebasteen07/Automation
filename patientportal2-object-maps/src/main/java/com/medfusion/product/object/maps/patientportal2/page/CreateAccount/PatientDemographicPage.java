@@ -156,7 +156,8 @@ public class PatientDemographicPage extends MedfusionPage {
 	public void fillInPatientData(String firstName, String lastName, String email, String dobMonthText, String dobDay,
 			String dobYear, Patient.GenderExtended gender, String zipCode, String address1, String address2,
 			String city, String state) throws Exception {
-		new WebDriverWait(driver, 25).until(ExpectedConditions.elementToBeClickable(buttonCancel));
+		Thread.sleep(4000);//To hold the execution for few sec
+		new WebDriverWait(driver, 25).until(ExpectedConditions.elementToBeClickable(maleGender));
 		setName(firstName, lastName);
 		setEmail(email);
 		setDateOfBirth(dobMonthText, dobDay, dobYear);
