@@ -21,7 +21,7 @@ import com.medfusion.product.object.maps.patientportal2.page.MyAccountPage.Jalap
 public class JalapenoAccountPage extends JalapenoMenu {
 
 		// won't work if linked accounts are disabled
-		@FindBy(how = How.XPATH, using = "//*[@id='authUserBadge']/..//*[contains(text(),'Edit')]")
+		@FindBy(how = How.XPATH, using = "//*[contains(text(),'Edit')]")
 		private WebElement editMyAccountButton;
 
 		@FindBy(how = How.XPATH, using = "//*[contains(text(),'Dependents')]/..//*[contains(text(),'Edit')]")
