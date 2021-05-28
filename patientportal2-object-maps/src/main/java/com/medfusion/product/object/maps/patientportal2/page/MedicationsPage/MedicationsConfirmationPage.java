@@ -9,6 +9,9 @@ import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.FindBy;
 import org.openqa.selenium.support.How;
 import org.openqa.selenium.support.PageFactory;
+import org.openqa.selenium.support.ui.ExpectedConditions;
+import org.openqa.selenium.support.ui.WebDriverWait;
+
 import com.medfusion.common.utils.IHGUtil;
 
 public class MedicationsConfirmationPage {
@@ -50,6 +53,7 @@ public class MedicationsConfirmationPage {
 	public String confirmMedication(WebDriver driver) throws InterruptedException {
 		JavascriptExecutor ex = (JavascriptExecutor)driver;
 		Thread.sleep(3000);
+		new WebDriverWait(driver, 25).until(ExpectedConditions.elementToBeClickable(btnConfirm));
 	    ex.executeScript("arguments[0].click();", btnConfirm);
 		System.out.println("Confirm button is clicked");
 		IHGUtil.waitForElement(driver, 10, confirmPopup);
