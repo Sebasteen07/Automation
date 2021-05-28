@@ -56,6 +56,7 @@ public class NGIntegrationE2EPayment_SendChartItemTests extends BaseTestNGWebDri
 
 	private static final String PAYMENT_SUCCESSFULL_TEXT = "A payment was made for ";
 	private static final String DOCUMENT_RECEIVEDTEXT = "Document received please open the attachment to review.";
+	private static final String DOC_RECEIVED_TEXT = "Document received please open the attachment to review.";
 
 	@BeforeClass(alwaysRun = true)
 	public void prepareTestData() throws Throwable {
@@ -1192,5 +1193,73 @@ public class NGIntegrationE2EPayment_SendChartItemTests extends BaseTestNGWebDri
 				propertyLoaderObj.getProperty("IMHForm"));
 
 		CommonFlows.verifyIMHState(documentId);
+	}
+
+	@Test(enabled = true, groups = { "acceptance-INBOX" }, retryAnalyzer = RetryAnalyzer.class)
+	public void testPP138SendPEDocument() throws Throwable {
+		logStep("Getting Existing User");
+		String username = propertyLoaderObj.getProperty("CCDAUsername");
+		String person_id = DBUtils.executeQueryOnDB("NGCoreDB",
+				"select person_id from person where email_address = '" + username + "'");
+		String enterpriseId = null, practiceId = null, integrationPracticeID = null, url = null;
+
+		if (propertyLoaderObj.getNGAPIexecutionMode().equalsIgnoreCase("QAMain")) {
+			enterpriseId = propertyLoaderObj.getProperty("NGEnterpiseEnrollmentEnterprise1");
+			practiceId = propertyLoaderObj.getProperty("NGEnterprise1Practice1");
+			integrationPracticeID = propertyLoaderObj.getProperty("integrationPracticeIDE1P1");
+			url = propertyLoaderObj.getProperty("MFPortalURLPractice1");
+		} else if (propertyLoaderObj.getNGAPIexecutionMode().equalsIgnoreCase("SIT")) {
+			enterpriseId = propertyLoaderObj.getProperty("NGMainEnterpriseID");
+			practiceId = propertyLoaderObj.getProperty("NGMainPracticeID");
+			integrationPracticeID = propertyLoaderObj.getProperty("integrationPracticeIDAMDC");
+			url = propertyLoaderObj.getProperty("url");
+		} else {
+			Log4jUtil.log("Invalid Execution Mode");
+		}
+
+		logStep("Getting Patient Education Document Data");
+		String requestId = DBUtils.executeQueryOnDB("NGCoreDB", "select newid()");
+		String documentId = DBUtils.executeQueryOnDB("NGCoreDB", "select newid()");
+		String docType = propertyLoaderObj.getProperty("EHRPEDocType");
+		String docFormat = propertyLoaderObj.getProperty("EHRPEFormat");
+		String docName = propertyLoaderObj.getProperty("EHRPEName");
+		String pxpDocType = propertyLoaderObj.getProperty("PXPDocType");
+
+		String sourceFile = System.getProperty("user.dir") + "\\src\\test\\resources\\EHRAttachment\\";
+		String content = CommonUtils.fetchTokenValueFromJsonObject(sourceFile, "EHRAttachmentData", "PEContent");
+
+		logStep("Inserting Patient Education Document into tables");
+		DBUtils.executeQueryOnDB("NGCoreDB",
+				"INSERT INTO pxp_documents(request_id, document_id, document_type, content, delete_ind, created_by,"
+						+ "create_timestamp,modified_by, modify_timestamp)" + "VALUES ('" + requestId + "','"
+						+ documentId + "','" + pxpDocType + "', " + "CONVERT(VARBINARY(256),'" + content
+						+ "'),'0', '0' , getutcdate(), '0', getutcdate())");
+
+		String comments = "SendingDocument" + (new Date()).getTime();
+		DBUtils.executeQueryOnDB("NGCoreDB",
+				"INSERT INTO pxp_document_requests(request_id, enterprise_id, practice_id, person_id, document_id, document_type, format,"
+						+ "name, document_desc, status, created_by, create_timestamp, modified_by, modify_timestamp, create_timestamp_tz,modify_timestamp_tz)"
+						+ "VALUES ('" + requestId + "', '" + enterpriseId + "', '" + practiceId + "', '" + person_id
+						+ "', '" + documentId + "'," + "'" + docType + "', '" + docFormat + "', '" + docName + "', "
+						+ "'" + comments + "', '2','0', getutcdate(),'0', getutcdate(), Null, Null)");
+
+		DBUtils.executeQueryOnDB("NGCoreDB",
+				"INSERT INTO ngweb_document_history(row_id, emr_doc_id, nx_doc_id, person_id, read_when, read_by, delete_ind, "
+						+ "comments,created_by, create_timestamp, modified_by, modify_timestamp, create_timestamp_tz, modify_timestamp_tz)"
+						+ " VALUES (newid(), '" + documentId + "', newid(), '" + person_id + "', NULL, NULL, 'N'," + "'"
+						+ comments + "', '0',getutcdate(), '0', getutcdate(), Null, Null)");
+
+		logStep("Verify Patient Education Document is inserted into tables");
+		CommonFlows.verifyDocumentInsertedIntoTables(requestId, comments);
+
+		logStep("Verify Patient Education Document status");
+		CommonFlows.verifyDocumentProcessingStatus(propertyLoaderObj, requestId, practiceId, integrationPracticeID);
+
+		String body = comments + "\n\n" + DOC_RECEIVED_TEXT;
+		CommonFlows.verifyPatientDocumentReceivedINInbox(propertyLoaderObj, driver, url, username,
+				propertyLoaderObj.getPassword(), propertyLoaderObj.getProperty("DocSubject"), body,
+				docName + "." + docFormat.trim());
+
+		CommonFlows.verifyDocumentReadStatus(requestId);
 	}
 }
