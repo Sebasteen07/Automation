@@ -53,7 +53,7 @@ public class SecurityDetailsPage extends MedfusionPage {
 
 		@FindBy(how = How.ID, using = "finishStep")
 		private WebElement buttonFinishStep;
-
+		
 		@FindBy(how = How.ID, using = "paymentPreference_Electronic")
 		private WebElement electronicPaymentPreference;
 
@@ -133,11 +133,11 @@ public class SecurityDetailsPage extends MedfusionPage {
 				}
 		}
 
-		public void selectStatementIfRequired(int deliveryPref) {
+		public void selectStatementIfRequired(int deliveryPref) throws InterruptedException {
 
 				if (new IHGUtil(driver).exists(electronicPaymentPreference)) {
 						log("Statement delivery preference lightbox is displayed");
-
+						Thread.sleep(3000);//waiting for the Statement delivery preference box to load
 						if (deliveryPref == 1) {
 								paperPaymentPreference.click();
 						} else if (deliveryPref == 2) {

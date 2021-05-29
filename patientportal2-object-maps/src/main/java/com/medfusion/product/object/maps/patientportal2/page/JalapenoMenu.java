@@ -178,7 +178,7 @@ public abstract class JalapenoMenu extends MedfusionPage {
 		return PageFactory.initElements(driver, HealthFormListPage.class);
 	}
 
-	public JalapenoMyAccountProfilePage goToAccountPage() {
+	public JalapenoMyAccountProfilePage goToAccountPage() throws InterruptedException {
 		JalapenoAccountPage accountPage = clickOnAccount();
 		return accountPage.clickOnEditMyAccount();
 	}

@@ -35,7 +35,7 @@ public class JalapenoForgotPasswordPage4 extends MedfusionPage {
 		@FindBy(how = How.ID, using = "secretAnswer_forgot")
 		public WebElement secretAnswer;
 		
-		@FindBy(how = How.XPATH, using = "//input[@name='secretAnswer']")
+		@FindBy(how = How.XPATH, using = "//input[@name='securityAnswer']")
 		public WebElement answerSecret;
 			
 
@@ -45,7 +45,7 @@ public class JalapenoForgotPasswordPage4 extends MedfusionPage {
 				log("Loading ForgotPasswordPage4");
 		}
 
-		public JalapenoHomePage fillInNewPassword(String password) {
+		public JalapenoHomePage fillInNewPassword(String password) throws InterruptedException {
 				newPassword.sendKeys(password);
 				confirmPassword.sendKeys(password);
 
@@ -54,8 +54,9 @@ public class JalapenoForgotPasswordPage4 extends MedfusionPage {
 				return PageFactory.initElements(driver, JalapenoHomePage.class);
 		}
 
-		private void selectStatementIfRequired() {
+		private void selectStatementIfRequired() throws InterruptedException {
 				if (new IHGUtil(driver).exists(electronicPaymentPreference)) {
+					Thread.sleep(3000);
 						electronicPaymentPreference.click();
 						okButton.click();
 				}
