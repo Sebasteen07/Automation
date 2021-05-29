@@ -6,9 +6,13 @@ import static org.testng.Assert.assertFalse;
 import org.openqa.selenium.JavascriptExecutor;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
+import org.openqa.selenium.interactions.Actions;
 import org.openqa.selenium.support.FindBy;
 import org.openqa.selenium.support.How;
 import org.openqa.selenium.support.PageFactory;
+import org.openqa.selenium.support.ui.ExpectedConditions;
+import org.openqa.selenium.support.ui.WebDriverWait;
+
 import com.medfusion.common.utils.IHGUtil;
 
 public class MedicationsConfirmationPage {
@@ -48,11 +52,10 @@ public class MedicationsConfirmationPage {
 	
 	
 	public String confirmMedication(WebDriver driver) throws InterruptedException {
-		JavascriptExecutor ex = (JavascriptExecutor)driver;
-		Thread.sleep(3000);
-	    ex.executeScript("arguments[0].click();", btnConfirm);
+		JavascriptExecutor executor = (JavascriptExecutor) driver;
+		executor.executeScript("arguments[0].click();", btnConfirm);
 		System.out.println("Confirm button is clicked");
-		IHGUtil.waitForElement(driver, 10, confirmPopup);
+		IHGUtil.waitForElement(driver, 15, confirmPopup);
 		String successMsgOnPopup = successMsg.getText();
 		btnClose.click();
         return successMsgOnPopup;		

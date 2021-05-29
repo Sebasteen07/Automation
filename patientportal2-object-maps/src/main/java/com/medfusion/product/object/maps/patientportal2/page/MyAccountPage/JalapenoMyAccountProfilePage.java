@@ -154,7 +154,7 @@ public class JalapenoMyAccountProfilePage extends JalapenoMyAccountPage {
 	public boolean checkForAddress(WebDriver driver, String addressLine1, String city, String zipCode) {
 
 		log("Checking address in My Account");
-
+		new WebDriverWait(driver, 25).until(ExpectedConditions.textToBePresentInElementValue(address1Textbox, addressLine1));
 		String savedAddressLine1 = address1Textbox.getAttribute("value");
 		String savedCity = cityTextbox.getAttribute("value");
 		String savedZipCode = zipCodeTextbox.getAttribute("value");
@@ -189,7 +189,7 @@ public class JalapenoMyAccountProfilePage extends JalapenoMyAccountPage {
 	public boolean checkZipCode(String zipCode) {
 
 		log("Checking ZipCode textbox");
-
+		new WebDriverWait(driver, 25).until(ExpectedConditions.textToBePresentInElementValue(zipCodeTextbox, zipCode));
 		String savedZipCode = zipCodeTextbox.getAttribute("value");
 
 		if (!StringUtils.equals(zipCode, savedZipCode)) {

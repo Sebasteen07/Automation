@@ -13,6 +13,8 @@ import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.FindBy;
 import org.openqa.selenium.support.How;
 import org.openqa.selenium.support.PageFactory;
+import org.openqa.selenium.support.ui.ExpectedConditions;
+import org.openqa.selenium.support.ui.WebDriverWait;
 
 import com.medfusion.common.utils.IHGUtil;
 import com.medfusion.common.utils.PropertyFileLoader;
@@ -154,6 +156,7 @@ public class PatientDemographicPage extends MedfusionPage {
 	public void fillInPatientData(String firstName, String lastName, String email, String dobMonthText, String dobDay,
 			String dobYear, Patient.GenderExtended gender, String zipCode, String address1, String address2,
 			String city, String state) throws Exception {
+		new WebDriverWait(driver, 25).until(ExpectedConditions.elementToBeClickable(maleGender));
 		setName(firstName, lastName);
 		setEmail(email);
 		setDateOfBirth(dobMonthText, dobDay, dobYear);
@@ -196,6 +199,7 @@ public class PatientDemographicPage extends MedfusionPage {
 
 	private void setGender(Patient.GenderExtended gender) {
 		if (gender == Patient.GenderExtended.MALE) {
+			new WebDriverWait(driver, 25).until(ExpectedConditions.elementToBeClickable(maleGender));
 			maleGender.click();
 		} else if (gender == Patient.GenderExtended.FEMALE) {
 			femaleGender.click();
