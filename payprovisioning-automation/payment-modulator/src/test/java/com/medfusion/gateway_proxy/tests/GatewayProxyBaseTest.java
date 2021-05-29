@@ -26,7 +26,6 @@ public class GatewayProxyBaseTest extends GatewayProxyUtils{
 		RestAssured.baseURI = testData.getProperty("proxybaseurl");
 		requestSpec	 = new RequestSpecBuilder()
 	   .setContentType(ContentType.JSON)
-	   .addHeader("Authorization","Bearer "+ GatewayProxyUtils.getTokenForCustomer())
 	   .addFilter(new ResponseLoggingFilter())
 	   .addFilter(new RequestLoggingFilter())
 	   .build();
