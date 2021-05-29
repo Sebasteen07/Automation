@@ -9,7 +9,9 @@ import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.FindBy;
 import org.openqa.selenium.support.How;
 import org.openqa.selenium.support.PageFactory;
+import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.openqa.selenium.support.ui.Select;
+import org.openqa.selenium.support.ui.WebDriverWait;
 
 import com.medfusion.common.utils.IHGUtil;
 import com.medfusion.common.utils.PropertyFileLoader;
@@ -31,6 +33,9 @@ public class JalapenoForgotPasswordPage4 extends MedfusionPage {
 
 		@FindBy(how = How.ID, using = "updateMissingInfoButton")
 		private WebElement okButton;
+		
+		@FindBy(how = How.ID, using = "updateMissingInformationForm")
+		private WebElement statementDailougeBox;
 		
 		@FindBy(how = How.ID, using = "secretAnswer_forgot")
 		public WebElement secretAnswer;
@@ -55,8 +60,8 @@ public class JalapenoForgotPasswordPage4 extends MedfusionPage {
 		}
 
 		private void selectStatementIfRequired() throws InterruptedException {
-				if (new IHGUtil(driver).exists(electronicPaymentPreference)) {
-					Thread.sleep(3000);
+			if (new IHGUtil(driver).exists(statementDailougeBox))  {
+				new WebDriverWait(driver, 10).until(ExpectedConditions.elementToBeClickable(electronicPaymentPreference));
 						electronicPaymentPreference.click();
 						okButton.click();
 				}
