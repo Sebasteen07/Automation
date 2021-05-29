@@ -54,6 +54,9 @@ public class SecurityDetailsPage extends MedfusionPage {
 		@FindBy(how = How.ID, using = "finishStep")
 		private WebElement buttonFinishStep;
 		
+		@FindBy(how = How.ID, using = "updateMissingInformationForm")
+		private WebElement statementDailougeBox;
+		
 		@FindBy(how = How.ID, using = "paymentPreference_Electronic")
 		private WebElement electronicPaymentPreference;
 
@@ -135,14 +138,16 @@ public class SecurityDetailsPage extends MedfusionPage {
 
 		public void selectStatementIfRequired(int deliveryPref) throws InterruptedException {
 
-				if (new IHGUtil(driver).exists(electronicPaymentPreference)) {
+				if (new IHGUtil(driver).exists(statementDailougeBox)) {
 						log("Statement delivery preference lightbox is displayed");
-						Thread.sleep(3000);//waiting for the Statement delivery preference box to load
 						if (deliveryPref == 1) {
+							new WebDriverWait(driver, 10).until(ExpectedConditions.elementToBeClickable(paperPaymentPreference));
 								paperPaymentPreference.click();
 						} else if (deliveryPref == 2) {
+							new WebDriverWait(driver, 10).until(ExpectedConditions.elementToBeClickable(electronicPaymentPreference));
 								electronicPaymentPreference.click();
 						} else if (deliveryPref == 3) {
+							new WebDriverWait(driver, 10).until(ExpectedConditions.elementToBeClickable(bothPaymentPreference));
 								bothPaymentPreference.click();
 						}
 						new WebDriverWait(driver, 15).until(ExpectedConditions.elementToBeClickable(okButton));
