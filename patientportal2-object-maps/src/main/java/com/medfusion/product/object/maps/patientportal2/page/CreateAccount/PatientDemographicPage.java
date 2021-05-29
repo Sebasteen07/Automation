@@ -199,6 +199,7 @@ public class PatientDemographicPage extends MedfusionPage {
 
 	private void setGender(Patient.GenderExtended gender) {
 		if (gender == Patient.GenderExtended.MALE) {
+			new WebDriverWait(driver, 25).until(ExpectedConditions.elementToBeClickable(maleGender));
 			maleGender.click();
 		} else if (gender == Patient.GenderExtended.FEMALE) {
 			femaleGender.click();

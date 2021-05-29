@@ -142,6 +142,7 @@ public class SecurityDetailsPage extends MedfusionPage {
 						if (deliveryPref == 1) {
 								paperPaymentPreference.click();
 						} else if (deliveryPref == 2) {
+							new WebDriverWait(driver, 10).until(ExpectedConditions.elementToBeClickable(electronicPaymentPreference));
 								electronicPaymentPreference.click();
 						} else if (deliveryPref == 3) {
 								bothPaymentPreference.click();
