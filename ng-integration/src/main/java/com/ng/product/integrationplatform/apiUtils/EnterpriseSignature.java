@@ -24,7 +24,6 @@ public class EnterpriseSignature {
     public static String requestData;
     public static String NGTime;
 
-    @SuppressWarnings("deprecation")
     public static String SignatureGeneration(String username, String password, String email, String finalURl,
                                              String body, String queryString, String requestMethod) {
         try {

@@ -1,7 +1,5 @@
-//Copyright 2020 NXGN Management, LLC. All Rights Reserved.
+//Copyright 2020-2021 NXGN Management, LLC. All Rights Reserved.
 package com.medfusion.product.object.maps.patientportal2.page.AppointmentRequestPage;
-
-import java.util.ArrayList;
 
 import com.medfusion.product.object.maps.patientportal2.page.JalapenoMenu;
 import org.openqa.selenium.By;
@@ -41,14 +39,6 @@ public class NGAppointmentRequestV2HistoryPage extends JalapenoMenu {
 		public NGAppointmentRequestV2HistoryPage(WebDriver driver) {
 				super(driver);
 				IHGUtil.PrintMethodName();
-		}
-
-		@Override
-		public boolean areBasicPageElementsPresent() {
-				ArrayList<WebElement> webElementsList = new ArrayList<WebElement>();
-				webElementsList.add(fullTable);
-				webElementsList.add(Upcoming);
-				return assessPageElements(webElementsList);
 		}
 
 		public boolean findAppointmentReasonAndOpen(String appointmentReason) {

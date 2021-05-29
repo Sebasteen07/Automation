@@ -1,6 +1,5 @@
+// Copyright 2013-2021 NXGN Management, LLC. All Rights Reserved.
 package com.medfusion.product.object.maps.patientportal2.page.AppointmentRequestPage;
-
-import java.util.ArrayList;
 
 import org.openqa.selenium.By;
 import org.openqa.selenium.StaleElementReferenceException;
@@ -56,14 +55,6 @@ public class JalapenoAppointmentRequestPage extends JalapenoMenu {
 				super(driver);
 				IHGUtil.PrintMethodName();
 		}
-
-		@Override
-		public boolean areBasicPageElementsPresent() {
-				ArrayList<WebElement> webElementsList = new ArrayList<WebElement>();
-				//webElementsList.add(requestTab); //TODO it is failing because the page is iframed
-				return assessPageElements(webElementsList);
-		}
-
 
 		public void clickOnContinueButton(WebDriver driver) throws InterruptedException {
 				log("Click on Continue button");

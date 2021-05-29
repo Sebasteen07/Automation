@@ -1,9 +1,9 @@
-// Copyright 2018-2020 NXGN Management, LLC. All Rights Reserved.
+// Copyright 2013-2021 NXGN Management, LLC. All Rights Reserved.
 package com.medfusion.product.object.maps.pss2.page.Appointment.Provider;
 
+import java.time.Duration;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.concurrent.TimeUnit;
 import java.util.function.Function;
 
 import org.openqa.selenium.By;
@@ -47,16 +47,6 @@ public class Provider extends PSS2MainPage {
 
 	public Provider(WebDriver driver) {
 		super(driver);
-	}
-
-	@Override
-	public boolean areBasicPageElementsPresent() {
-		log("inside the are basic element");
-		ArrayList<WebElement> webElementsList = new ArrayList<WebElement>();
-		log("Checking provider list");
-		webElementsList.add(providerList.get(0));
-		log("First provider is" + providerList.get(0).getText());
-		return new IHGUtil(driver).assessAllPageElements(webElementsList, this.getClass());
 	}
 
 	CommonMethods CommonMethods = new CommonMethods(driver);
@@ -107,8 +97,8 @@ public class Provider extends PSS2MainPage {
 
 	public boolean isViewallmessagesButtonPresent(WebDriver driver) throws InterruptedException {
 
-		FluentWait<WebDriver> wait = new FluentWait<WebDriver>(driver).withTimeout(30, TimeUnit.SECONDS)
-				.pollingEvery(3, TimeUnit.SECONDS).ignoring(NoSuchElementException.class)
+		FluentWait<WebDriver> wait = new FluentWait<WebDriver>(driver).withTimeout(Duration.ofSeconds(60))
+				.pollingEvery(Duration.ofSeconds(3)).ignoring(NoSuchElementException.class)
 				.ignoring(NoSuchFrameException.class).ignoring(WebDriverException.class);
 		boolean result = wait.until(new Function<WebDriver, Boolean>() {
 			@Override

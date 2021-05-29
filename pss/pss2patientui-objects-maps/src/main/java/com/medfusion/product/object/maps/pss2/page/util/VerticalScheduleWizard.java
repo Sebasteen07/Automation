@@ -1,4 +1,4 @@
-// Copyright 2018-2020 NXGN Management, LLC. All Rights Reserved.
+// Copyright 2013-2021 NXGN Management, LLC. All Rights Reserved.
 package com.medfusion.product.object.maps.pss2.page.util;
 
 import java.util.List;
@@ -19,11 +19,6 @@ public class VerticalScheduleWizard extends PSS2MainPage {
 	public VerticalScheduleWizard(WebDriver driver) {
 		super(driver);
 		PageFactory.initElements(driver, VerticalScheduleWizard.class);
-	}
-
-	@Override
-	public boolean areBasicPageElementsPresent() {
-		return false;
 	}
 
 	public List<WebElement> getVerticalFlowList() {

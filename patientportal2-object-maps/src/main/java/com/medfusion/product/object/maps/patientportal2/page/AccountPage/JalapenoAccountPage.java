@@ -21,7 +21,7 @@ import com.medfusion.product.object.maps.patientportal2.page.MyAccountPage.Jalap
 public class JalapenoAccountPage extends JalapenoMenu {
 
 		// won't work if linked accounts are disabled
-		@FindBy(how = How.XPATH, using = "//*[@id='authUserBadge']/..//*[contains(text(),'Edit')]")
+		@FindBy(how = How.XPATH, using = "//*[contains(text(),'Edit')]")
 		private WebElement editMyAccountButton;
 
 		@FindBy(how = How.XPATH, using = "//*[contains(text(),'Dependents')]/..//*[contains(text(),'Edit')]")
@@ -55,15 +55,7 @@ public class JalapenoAccountPage extends JalapenoMenu {
 				super(driver);
 				IHGUtil.PrintMethodName();
 		}
-
-		@Override
-		public boolean areBasicPageElementsPresent() {
-				ArrayList<WebElement> webElementList = new ArrayList<WebElement>();
-				webElementList.add(editMyAccountButton);
-				webElementList.add(inviteNewButton);
-				return assessPageElements(webElementList);
-		}
-
+		
 		public JalapenoMyAccountProfilePage clickOnEditMyAccount() {
 				log("Trying to click on Edit button for My Account");
 				wait.until(ExpectedConditions.visibilityOf(editMyAccountButton));

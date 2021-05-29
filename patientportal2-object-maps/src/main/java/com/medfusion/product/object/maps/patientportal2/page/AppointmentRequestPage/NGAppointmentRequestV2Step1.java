@@ -1,4 +1,4 @@
-//Copyright 2020 NXGN Management, LLC. All Rights Reserved.
+//Copyright 2020-2021 NXGN Management, LLC. All Rights Reserved.
 package com.medfusion.product.object.maps.patientportal2.page.AppointmentRequestPage;
 
 import java.util.ArrayList;
@@ -46,14 +46,6 @@ public class NGAppointmentRequestV2Step1 extends JalapenoMenu {
 	public NGAppointmentRequestV2Step1(WebDriver driver) {
 		super(driver);
 		IHGUtil.PrintMethodName();
-	}
-
-	@Override
-	public boolean areBasicPageElementsPresent() {
-		ArrayList<WebElement> webElementsList = new ArrayList<WebElement>();
-		webElementsList.add(providerSearchInput);
-		webElementsList.add(showAllButton);
-		return assessPageElements(webElementsList);
 	}
 
 	@Deprecated // same functionality as areBasicPageElementsPresent; used by integrations

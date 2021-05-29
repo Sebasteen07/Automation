@@ -32,16 +32,6 @@ public class JalapenoAppoinmentSchedulingPage extends JalapenoMenu {
 		IHGUtil.PrintMethodName();
 	}
 
-	@Override
-	public boolean areBasicPageElementsPresent() {
-		ArrayList<WebElement> webElementsList = new ArrayList<WebElement>();
-		webElementsList.add(continueButton);
-		webElementsList.add(scheduledanappoinmentheader);
-		webElementsList.add(popupmessage);
-		webElementsList.add(closepopupmessage);
-		return assessPageElements(webElementsList);
-	}
-
 	public void clickOnContinueButton() {
 		IHGUtil.waitForElement(driver, 80, continueButton);
 		javascriptClick(continueButton);

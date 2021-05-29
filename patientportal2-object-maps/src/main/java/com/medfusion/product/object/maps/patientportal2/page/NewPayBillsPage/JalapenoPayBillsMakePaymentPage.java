@@ -89,7 +89,7 @@ public class JalapenoPayBillsMakePaymentPage extends JalapenoMenu {
 	@FindBy(how = How.XPATH, using = "//*[@id=\"balanceDue\"]/span")
 	private WebElement balanceDueDate;
 
-	@FindBy(how = How.XPATH, using = "//*[contains(@href,'#/payments/history/details')]/preceding-sibling::span[3]")
+	@FindBy(how = How.XPATH, using = "//*[contains(@href,'#/payments/history/details')]/preceding-sibling::span[1]")
 	private WebElement confirmationNumberMsg;
 
 	@FindBy(how = How.XPATH, using = "(//table[@class='table table-condensed']/tbody/tr/td/a)[1]")
@@ -103,18 +103,6 @@ public class JalapenoPayBillsMakePaymentPage extends JalapenoMenu {
 		IHGUtil.PrintMethodName();
 		driver.manage().window().maximize();
 		PageFactory.initElements(driver, this);
-	}
-
-	@Override
-	public boolean areBasicPageElementsPresent() {
-		ArrayList<WebElement> webElementsList = new ArrayList<WebElement>();
-
-		webElementsList.add(paymentAmount);
-		webElementsList.add(payHistoryButton);
-		webElementsList.add(addNewCardButton);
-		webElementsList.add(accountNumber);
-		webElementsList.add(continueButton);
-		return assessPageElements(webElementsList);
 	}
 
 	private void fillNewCardInformation(CreditCard card) throws InterruptedException {
@@ -168,8 +156,9 @@ public class JalapenoPayBillsMakePaymentPage extends JalapenoMenu {
 		paymentAmount.clear();
 		paymentAmount.sendKeys(amount);
 		
+		log("Insert account number: " + accNumber);
 		try {
-			cardNumber.sendKeys(accNumber);
+			accountNumber.sendKeys(accNumber);
 		}
 		catch(Exception e)
 		{

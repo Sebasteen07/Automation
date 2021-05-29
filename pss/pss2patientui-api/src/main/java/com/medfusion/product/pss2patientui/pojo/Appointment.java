@@ -135,6 +135,10 @@ public class Appointment {
 	private String apptid;
 	private String slotStartTime;
 	private String slotEndTime;
+	private String locationId;
+	private String resourceId;
+	private String slotId;
+	private String slotSize;
 
 	// for REST Assured
 	private String accessTokenURL;
@@ -1178,4 +1182,35 @@ public class Appointment {
 		this.providerImageAPI = providerImageAPI;
 	}
 
+	public String getLocationId() {
+		return locationId;
+	}
+
+	public void setLocationId(String locationId) {
+		this.locationId = locationId;
+	}
+
+	public String getResourceId() {
+		return resourceId;
+	}
+
+	public void setResourceId(String resourceId) {
+		this.resourceId = resourceId;
+	}
+
+	public String getSlotId() {
+		return slotId;
+	}
+
+	public void setSlotId(String slotId) {
+		this.slotId = slotId;
+	}
+	
+	public String getSlotSize() {
+		return slotSize;
+	}
+
+	public void setSlotSize(String slotSize) {
+		this.slotSize = slotSize;
+	}
 }

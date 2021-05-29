@@ -197,15 +197,6 @@ public class HomePage extends PSS2MainPage {
 
 	CommonMethods commonMethods = new CommonMethods(driver);
 
-	@Override
-	public boolean areBasicPageElementsPresent() {
-
-		ArrayList<WebElement> webElementsList = new ArrayList<WebElement>();
-		webElementsList.add(upCmgAptLabel);
-		webElementsList.add(pastAptLabel);
-		return assessPageElements(webElementsList);
-	}
-
 	public StartAppointmentInOrder selectSpeciality(String specialityText) {
 		log(selectSpecialityList.size() + " specialityText " + specialityText);
 		for (int i = 0; i < selectSpecialityList.size(); i++) {

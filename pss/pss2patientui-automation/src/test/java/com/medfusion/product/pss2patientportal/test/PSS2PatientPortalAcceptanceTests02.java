@@ -1,4 +1,4 @@
-// Copyright 2020 NXGN Management, LLC. All Rights Reserved.
+// Copyright 2013-2021 NXGN Management, LLC. All Rights Reserved.
 package com.medfusion.product.pss2patientportal.test;
 
 import java.util.ArrayList;
@@ -9,8 +9,6 @@ import org.testng.annotations.Test;
 import com.intuit.ifs.csscat.core.BaseTestNGWebDriver;
 import com.intuit.ifs.csscat.core.RetryAnalyzer;
 import com.medfusion.common.utils.Mailinator;
-import com.medfusion.product.object.maps.patientportal2.page.JalapenoLoginPage;
-import com.medfusion.product.object.maps.patientportal2.page.HomePage.JalapenoHomePage;
 import com.medfusion.product.object.maps.pss2.page.Appointment.Anonymous.AnonymousDismissPage;
 import com.medfusion.product.object.maps.pss2.page.Appointment.CancResc.CancelRescheduleDecisionPage;
 import com.medfusion.product.object.maps.pss2.page.Appointment.CancResc.PatientIdentificationPage;
@@ -20,7 +18,6 @@ import com.medfusion.product.pss2patientui.pojo.AdminUser;
 import com.medfusion.product.pss2patientui.pojo.Appointment;
 import com.medfusion.product.pss2patientui.utils.PSSAdminUtils;
 import com.medfusion.product.pss2patientui.utils.PSSPatientUtils;
-import com.medfusion.product.pss2patientui.utils.PSSPropertyFileLoader;
 
 public class PSS2PatientPortalAcceptanceTests02 extends BaseTestNGWebDriver {
 
@@ -103,7 +100,6 @@ public class PSS2PatientPortalAcceptanceTests02 extends BaseTestNGWebDriver {
 		
 		log("Step 11: Verify the appointment details and click on Cancel button");
 		CancelRescheduleDecisionPage cancelRescheduleDecisionPage =patientIdentificationPage.fillPatientForm(testData.getFirstName(), testData.getLastName());
-		cancelRescheduleDecisionPage.areBasicPageElementsPresent();
 		cancelRescheduleDecisionPage.clickReschedule();
 		psspatientutils.rescheduleAPT( testData, driver);
 
@@ -188,7 +184,6 @@ public class PSS2PatientPortalAcceptanceTests02 extends BaseTestNGWebDriver {
 		
 		log("Step 11: Verify the appointment details and click on Cancel button");
 		CancelRescheduleDecisionPage cancelRescheduleDecisionPage =patientIdentificationPage.fillPatientForm(testData.getFirstName(), testData.getLastName());
-		cancelRescheduleDecisionPage.areBasicPageElementsPresent();
 		cancelRescheduleDecisionPage.clickReschedule();
 		psspatientutils.rescheduleAPT( testData, driver);
 
@@ -250,7 +245,6 @@ public class PSS2PatientPortalAcceptanceTests02 extends BaseTestNGWebDriver {
 
 		log("Step 11: Verify the appointment details and click on Cancel button");
 		CancelRescheduleDecisionPage cancelRescheduleDecisionPage = patientIdentificationPage.fillPatientForm(testData.getFirstName(), testData.getLastName());
-		cancelRescheduleDecisionPage.areBasicPageElementsPresent();
 		homepage = cancelRescheduleDecisionPage.clickCancel();
 
 		if (can1 == true & can2 == false) {
@@ -341,7 +335,6 @@ public class PSS2PatientPortalAcceptanceTests02 extends BaseTestNGWebDriver {
 
 		log("Step 11: Verify the appointment details and click on Cancel button");
 		CancelRescheduleDecisionPage cancelRescheduleDecisionPage = patientIdentificationPage.fillPatientForm(testData.getFirstName(), testData.getLastName());
-		cancelRescheduleDecisionPage.areBasicPageElementsPresent();
 		homepage = cancelRescheduleDecisionPage.clickCancel();
 
 		if (can1 == true & can2 == false) {

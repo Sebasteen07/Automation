@@ -1,3 +1,4 @@
+// Copyright 2013-2021 NXGN Management, LLC. All Rights Reserved.
 package com.medfusion.product.object.maps.patientportal2.page.PayBillsStatementPage;
 
 import com.medfusion.product.object.maps.patientportal2.page.MedfusionPage;
@@ -42,13 +43,6 @@ public class JalapenoPayBillsStatementPage extends MedfusionPage {
 		public JalapenoPayBillsStatementPage(WebDriver driver) {
 				super(driver);
 				IHGUtil.PrintMethodName();
-		}
-
-		@Override
-		public boolean areBasicPageElementsPresent() {
-				//TODO
-				log("Method areBasicPageElementsPresent() is not implemented, so it is considered that all expected elements are present.");
-				return true;
 		}
 
 		public JalapenoLoginPage logout(WebDriver driver) {

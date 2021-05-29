@@ -73,6 +73,7 @@ public class PIDCInfo {
 	private String oAuthUsername_20 = "";
 	private String oAuthPassword_20 = "";
 	private String preferredLanguageType="";
+	private String token;
 	
 	public String getRestUrl() {
 		return restUrl;
@@ -618,6 +619,14 @@ public class PIDCInfo {
 
 	public void setStateNodeValue(ArrayList<String> stateNodeValue) {
 		this.stateNodeValue = stateNodeValue;
+	}
+	
+	public String getToken() {
+		return token;
+	}
+
+	public void setToken(String token) {
+		this.token = token;
 	}
 
 }

@@ -167,12 +167,6 @@ public class ManageResource extends PSS2MenuPage {
 		super(driver);
 	}
 
-	@Override
-	public boolean areBasicPageElementsPresent() {
-		return true;
-	}
-
-
 	public void searchResource(String resourceName){
 		IHGUtil.waitForElement(driver, 6, searchResource);
 		log("Enter the resource in search box "+resourceName);

@@ -1,7 +1,6 @@
 // Copyright 2013-2021 NXGN Management, LLC. All Rights Reserved.
 package com.medfusion.product.object.maps.patientportal2.page.MyAccountPage;
 
-import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.HashMap;
@@ -155,7 +154,7 @@ public class JalapenoMyAccountProfilePage extends JalapenoMyAccountPage {
 	public boolean checkForAddress(WebDriver driver, String addressLine1, String city, String zipCode) {
 
 		log("Checking address in My Account");
-
+		new WebDriverWait(driver, 25).until(ExpectedConditions.textToBePresentInElementValue(address1Textbox, addressLine1));
 		String savedAddressLine1 = address1Textbox.getAttribute("value");
 		String savedCity = cityTextbox.getAttribute("value");
 		String savedZipCode = zipCodeTextbox.getAttribute("value");
@@ -190,7 +189,7 @@ public class JalapenoMyAccountProfilePage extends JalapenoMyAccountPage {
 	public boolean checkZipCode(String zipCode) {
 
 		log("Checking ZipCode textbox");
-
+		new WebDriverWait(driver, 25).until(ExpectedConditions.textToBePresentInElementValue(zipCodeTextbox, zipCode));
 		String savedZipCode = zipCodeTextbox.getAttribute("value");
 
 		if (!StringUtils.equals(zipCode, savedZipCode)) {
@@ -225,6 +224,7 @@ public class JalapenoMyAccountProfilePage extends JalapenoMyAccountPage {
 
 	public JalapenoMyAccountPreferencesPage goToPreferencesTab(WebDriver driver) {
 		log("Click on Preferences");
+		new WebDriverWait(driver, 30).until(ExpectedConditions.elementToBeClickable(preferencesTab));
 		preferencesTab.click();
 
 		return PageFactory.initElements(driver, JalapenoMyAccountPreferencesPage.class);
@@ -235,21 +235,6 @@ public class JalapenoMyAccountProfilePage extends JalapenoMyAccountPage {
 		activityTab.click();
 		return PageFactory.initElements(driver, JalapenoMyAccountActivityPage.class);
 
-	}
-
-	@Override
-	public boolean areBasicPageElementsPresent() {
-		ArrayList<WebElement> webElementsList = new ArrayList<WebElement>();
-		webElementsList.add(profileTab);
-		// webElementsList.add(securityTab);
-		webElementsList.add(preferencesTab);
-		webElementsList.add(address1Textbox);
-		webElementsList.add(cityTextbox);
-		webElementsList.add(zipCodeTextbox);
-		webElementsList.add(maleRadioButton);
-		webElementsList.add(saveMyChanges);
-
-		return assessPageElements(webElementsList);
 	}
 
 	public boolean modifyAndValidatePageContent() throws InterruptedException {

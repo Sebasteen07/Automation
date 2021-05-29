@@ -3,6 +3,8 @@ package com.medfusion.product.object.maps.patientportal2.page;
 
 import java.util.ArrayList;
 
+import org.openqa.selenium.By;
+import org.openqa.selenium.JavascriptExecutor;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.FindBy;
@@ -68,18 +70,20 @@ public class JalapenoLoginPage extends MedfusionPage {
 	public JalapenoLoginPage(WebDriver driver) {
 		super(driver);
 	}
-
-	@Override
-	public boolean areBasicPageElementsPresent() {
+	
+	public boolean assessPageElements() {
 
 		ArrayList<WebElement> webElementsList = new ArrayList<WebElement>();
+
 		webElementsList.add(inputUserName);
 		webElementsList.add(inputPassword);
-		webElementsList.add(forgotUserOrPasswordButton);
 		webElementsList.add(buttonSignIn);
-		webElementsList.add(buttonCreateANewAccount);
 		webElementsList.add(rememberUserNameCheckbox);
-		return assessPageElements(webElementsList);
+		webElementsList.add(buttonPayNow);
+		webElementsList.add(buttonCreateANewAccount);
+		webElementsList.add(forgotUserOrPasswordButton);
+
+		return new IHGUtil(driver).assessAllPageElements(webElementsList, this.getClass());
 	}
 
 	public JalapenoHomePage login(String username, String password) {
@@ -117,12 +121,12 @@ public class JalapenoLoginPage extends MedfusionPage {
 
 	}
 
-	public PatientDemographicPage clickCreateANewAccountButton() {
+	public PatientDemographicPage clickCreateANewAccountButton() throws InterruptedException {
 
 		IHGUtil.PrintMethodName();
 		log("Clicking on Create a new account button");
-		new WebDriverWait(driver, 20).until(ExpectedConditions.elementToBeClickable(buttonCreateANewAccount));
-		buttonCreateANewAccount.click();
+		JavascriptExecutor executor = (JavascriptExecutor) driver;
+		executor.executeScript("arguments[0].click();", buttonCreateANewAccount);    
 		return PageFactory.initElements(driver, PatientDemographicPage.class);
 	}
 

@@ -26,6 +26,23 @@ public class CreatePatient implements ICreatePatient {
 		return patient;
 	}
 	
+	/*
+	 * This method is used when we need to pass the statement delivery option 
+	 * from testScript.In this we can pass the Statement delivery 
+	 * value to get selected and proceed to patient portal
+	 */
+	
+	public Patient selfRegisterPatientWithPreference(WebDriver driver, Patient patient, String url,int statementValue) throws Exception {
+		JalapenoLoginPage loginPage = new JalapenoLoginPage(driver, url);
+		PatientDemographicPage patientDemographicPage = loginPage.clickCreateANewAccountButton();
+		patientDemographicPage.fillInPatientData(patient);
+		SecurityDetailsPage accountDetailsPage = patientDemographicPage.continueToSecurityPage();
+		JalapenoHomePage homePage = accountDetailsPage.fillAccountDetailsAndContinueWithStatement(patient, statementValue);
+		homePage.clickOnLogout();
+		patient.setWasSelfRegistered(true);
+		return patient;
+	}
+	
 	public Patient registerPatient(WebDriver driver, Patient patient, String url) throws Exception {
 		JalapenoLoginPage loginPage = new JalapenoLoginPage(driver, url);
 		PatientDemographicPage patientDemographicPage = loginPage.clickCreateANewAccountButton();

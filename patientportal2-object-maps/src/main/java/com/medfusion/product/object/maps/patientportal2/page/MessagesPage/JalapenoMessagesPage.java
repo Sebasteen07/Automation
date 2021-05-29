@@ -4,7 +4,6 @@ package com.medfusion.product.object.maps.patientportal2.page.MessagesPage;
 import static org.testng.Assert.assertEquals;
 import static org.testng.Assert.assertTrue;
 
-import java.util.ArrayList;
 import java.util.List;
 
 import org.openqa.selenium.By;
@@ -112,17 +111,6 @@ public class JalapenoMessagesPage extends JalapenoMenu {
 	
 	@FindBy(how=How.XPATH, using="//*[@class='attachments']/child::*/a")
 	private WebElement messageBodyAttachmentlink;
-
-	@Override
-	public boolean areBasicPageElementsPresent() {
-		ArrayList<WebElement> webElementsList = new ArrayList<WebElement>();
-
-		webElementsList.add(inboxFolder);
-		webElementsList.add(sentFolder);
-		webElementsList.add(archiveFolder);
-
-		return assessPageElements(webElementsList);
-	}
 
 	public JalapenoMessagesPage(WebDriver driver) {
 		super(driver);
@@ -444,8 +432,11 @@ public class JalapenoMessagesPage extends JalapenoMenu {
 		}
 	}
 
-	public void checkProviderDetails(String providerName, String location) {
+	public void checkProviderDetails(String providerName1, String location) {
 		IHGUtil.PrintMethodName();
+		int index =providerName1.lastIndexOf(',');
+		String providerName = providerName1.substring(0, index) + providerName1.substring(index + 1);
+		
 		Log4jUtil.log("Searching: Provider Name is: " + providerName + ", and Actual Provider Name is: "
 				+ providerNameOnPortal.getText().toString());
 		Log4jUtil.log("Searching: Provider location is: " + location + ", and Actual Provider location is: "

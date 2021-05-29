@@ -252,9 +252,7 @@ public class IntegrationPlatformRegressionTests extends BaseTestNGWebDriver {
 			JalapenoHomePage homePage = loginPage.login(valuedData.get(1), testData.getPassword());
 
 			log("Step 6: Go to Inbox");
-
 			JalapenoMessagesPage inboxPage = homePage.clickOnMenuMessages();
-			assertTrue(inboxPage.areBasicPageElementsPresent(), "Inbox failed to load properly.");
 
 			log("Step 7: Find message in Inbox");
 			String messageIdentifier = valuedData.get(2).toString();
