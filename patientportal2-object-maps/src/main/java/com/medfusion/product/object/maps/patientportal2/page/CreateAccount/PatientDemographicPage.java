@@ -44,10 +44,10 @@ public class PatientDemographicPage extends MedfusionPage {
 	@FindBy(how = How.XPATH, using = ACTIVE_TAB_XPATH_SELECTOR + "//*[@id='birthDate_year']")
 	private WebElement inputDateOfBirthYear;
 
-	@FindBy(how = How.ID, using = "gender_male")
+	@FindBy(how = How.XPATH, using = "//input[@value='M']")
 	private WebElement maleGender;
-
-	@FindBy(how = How.ID, using = "gender_female")
+	
+	@FindBy(how = How.XPATH, using = "//input[@value='F']")
 	private WebElement femaleGender;
 
 	@FindBy(how = How.ID, using = "gender_decline")
@@ -156,10 +156,10 @@ public class PatientDemographicPage extends MedfusionPage {
 	public void fillInPatientData(String firstName, String lastName, String email, String dobMonthText, String dobDay,
 			String dobYear, Patient.GenderExtended gender, String zipCode, String address1, String address2,
 			String city, String state) throws Exception {
-		new WebDriverWait(driver, 25).until(ExpectedConditions.elementToBeClickable(maleGender));
 		setName(firstName, lastName);
 		setEmail(email);
 		setDateOfBirth(dobMonthText, dobDay, dobYear);
+		scrollAndWait(0, 500, 10);
 		setGender(gender);
 		setAddress(address1, address2, city, state, zipCode);
 	}
@@ -199,11 +199,15 @@ public class PatientDemographicPage extends MedfusionPage {
 
 	private void setGender(Patient.GenderExtended gender) {
 		if (gender == Patient.GenderExtended.MALE) {
+<<<<<<< Updated upstream
 			maleGender.click();
+=======
+			javascriptClick(maleGender);
+>>>>>>> Stashed changes
 		} else if (gender == Patient.GenderExtended.FEMALE) {
-			femaleGender.click();
+			javascriptClick(femaleGender);
 		} else if (gender == Patient.GenderExtended.DECLINED) {
-			declinedGender.click();
+			javascriptClick(declinedGender);
 		}
 	}
 
