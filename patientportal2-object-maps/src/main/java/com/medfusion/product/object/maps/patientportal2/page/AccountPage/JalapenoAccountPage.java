@@ -3,6 +3,7 @@ package com.medfusion.product.object.maps.patientportal2.page.AccountPage;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.concurrent.TimeUnit;
 
 import com.medfusion.pojos.Patient;
 import com.medfusion.product.object.maps.patientportal2.page.JalapenoMenu;
@@ -56,11 +57,11 @@ public class JalapenoAccountPage extends JalapenoMenu {
 				IHGUtil.PrintMethodName();
 		}
 		
-		public JalapenoMyAccountProfilePage clickOnEditMyAccount() {
+		public JalapenoMyAccountProfilePage clickOnEditMyAccount() throws InterruptedException {
 				log("Trying to click on Edit button for My Account");
 				wait.until(ExpectedConditions.visibilityOf(editMyAccountButton));
 				editMyAccountButton.click();
-
+				Thread.sleep(3000);//Hold the execution for the MY Account Page to load.
 				return PageFactory.initElements(driver, JalapenoMyAccountProfilePage.class);
 		}
 
@@ -129,7 +130,7 @@ public class JalapenoAccountPage extends JalapenoMenu {
 		
 		public void clickOnUnlinkDependentAccount(){
 			log("Trying to click on Dependent unlink link for Account");
-			wait.until(ExpectedConditions.visibilityOf(unLink));
+			new WebDriverWait(driver, 10).until(ExpectedConditions.visibilityOf(unLink));
 			unLink.click();
 			
 			log("Click on Unlink button");
