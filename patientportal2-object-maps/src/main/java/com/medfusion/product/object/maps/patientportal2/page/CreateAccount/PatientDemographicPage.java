@@ -199,11 +199,8 @@ public class PatientDemographicPage extends MedfusionPage {
 
 	private void setGender(Patient.GenderExtended gender) {
 		if (gender == Patient.GenderExtended.MALE) {
-<<<<<<< Updated upstream
 			maleGender.click();
-=======
 			javascriptClick(maleGender);
->>>>>>> Stashed changes
 		} else if (gender == Patient.GenderExtended.FEMALE) {
 			javascriptClick(femaleGender);
 		} else if (gender == Patient.GenderExtended.DECLINED) {
