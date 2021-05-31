@@ -10,15 +10,13 @@ import org.openqa.selenium.interactions.Actions;
 import org.openqa.selenium.support.FindBy;
 import org.openqa.selenium.support.How;
 import org.openqa.selenium.support.PageFactory;
-import org.openqa.selenium.support.ui.ExpectedConditions;
-import org.openqa.selenium.support.ui.WebDriverWait;
-
+import com.intuit.ifs.csscat.core.pageobject.BasePageObject;
 import com.medfusion.common.utils.IHGUtil;
 
-public class MedicationsConfirmationPage {
+public class MedicationsConfirmationPage extends BasePageObject{
 	
 	public MedicationsConfirmationPage(WebDriver driver) {
-		super();
+		super(driver);
 		IHGUtil.PrintMethodName();
 		PageFactory.initElements(driver, this);
 	}
@@ -52,9 +50,9 @@ public class MedicationsConfirmationPage {
 	
 	
 	public String confirmMedication(WebDriver driver) throws InterruptedException {
-		JavascriptExecutor executor = (JavascriptExecutor) driver;
+		
 		Thread.sleep(3000);
-		executor.executeScript("arguments[0].click();", btnConfirm);
+		javascriptClick(btnConfirm);
 		System.out.println("Confirm button is clicked");
 		IHGUtil.waitForElement(driver, 15, confirmPopup);
 		String successMsgOnPopup = successMsg.getText();
