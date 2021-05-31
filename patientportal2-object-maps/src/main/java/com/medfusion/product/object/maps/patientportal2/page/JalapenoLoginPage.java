@@ -70,7 +70,7 @@ public class JalapenoLoginPage extends MedfusionPage {
 	public JalapenoLoginPage(WebDriver driver) {
 		super(driver);
 	}
-	
+
 	public boolean assessPageElements() {
 
 		ArrayList<WebElement> webElementsList = new ArrayList<WebElement>();
@@ -90,6 +90,7 @@ public class JalapenoLoginPage extends MedfusionPage {
 		makeLogin(username, password);
 		log("User is logged in");
 		handleWeNeedToConfirmSomethingModal();
+		driver.navigate().refresh();
 		return PageFactory.initElements(driver, JalapenoHomePage.class);
 	}
 
@@ -126,7 +127,7 @@ public class JalapenoLoginPage extends MedfusionPage {
 		IHGUtil.PrintMethodName();
 		log("Clicking on Create a new account button");
 		JavascriptExecutor executor = (JavascriptExecutor) driver;
-		executor.executeScript("arguments[0].click();", buttonCreateANewAccount);    
+		executor.executeScript("arguments[0].click();", buttonCreateANewAccount);
 		return PageFactory.initElements(driver, PatientDemographicPage.class);
 	}
 
@@ -161,8 +162,7 @@ public class JalapenoLoginPage extends MedfusionPage {
 	public void selectRememberUsernameCheckbox(String option) {
 		if (option == "check" && !rememberUserNameCheckbox.isSelected()) {
 			rememberUserNameCheckbox.click();
-		} 
-		else if (option == "uncheck" && rememberUserNameCheckbox.isSelected()) {
+		} else if (option == "uncheck" && rememberUserNameCheckbox.isSelected()) {
 			rememberUserNameCheckbox.click();
 		}
 	}
