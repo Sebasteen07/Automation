@@ -434,4 +434,11 @@ public class PSSPropertyFileLoader {
 		appointValues.setSlotSize(property.getProperty("slot.size.ge"));
 	}
 
+	public void setRestAPIDataPatientModulator(Appointment appointValues) {
+		appointValues.setAccessTokenURL(property.getProperty("access.token.base.url"));
+		appointValues.setBasicURI(property.getProperty("base.url.patient.modulator"));
+		appointValues.setBaseUrlHealth(property.getProperty("base.url.health"));
+		appointValues.setApptTypeNextAvailableAccessTokenUrl(property.getProperty("appt.type.next.available.access.token.url"));
+		appointValues.setBookByNextAvailableAccessTokenUrl(property.getProperty("book.by.next.available.access.token.url"));
+	}
 }

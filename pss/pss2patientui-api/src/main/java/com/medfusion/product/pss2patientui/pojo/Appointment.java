@@ -96,8 +96,8 @@ public class Appointment {
 	private String gmailUserName;
 	private String linkProvider;
 	private String linkLocation;
-	private boolean lastQuestionOptional=false;
-	
+	private boolean lastQuestionOptional = false;
+
 	private String memberID;
 	private String groupID;
 	private String insurancePhone;
@@ -139,6 +139,9 @@ public class Appointment {
 	private String resourceId;
 	private String slotId;
 	private String slotSize;
+	private String baseUrlHealth;
+	private String apptTypeNextAvailableAccessTokenUrl;
+	private String bookByNextAvailableAccessTokenUrl;
 
 	// for REST Assured
 	private String accessTokenURL;
@@ -160,11 +163,11 @@ public class Appointment {
 	private String linkProviderURL;
 	private String linkLocationURL;
 
-	
+
 	private boolean insuranceDetails = false;
 
-	public Appointment(String providerConfig, String usernameConfig, String passwordConfig, String datetimeConfig,
-			String locationConfig, String appointmentConfig, String specialityConfig) {
+	public Appointment(String providerConfig, String usernameConfig, String passwordConfig, String datetimeConfig, String locationConfig,
+			String appointmentConfig, String specialityConfig) {
 		this.username = usernameConfig;
 		this.password = passwordConfig;
 		this.provider = providerConfig;
@@ -174,7 +177,7 @@ public class Appointment {
 		this.speciality = specialityConfig;
 	}
 
-	public Appointment() {}	
+	public Appointment() {}
 
 	public String getMemberID() {
 		return memberID;
@@ -211,11 +214,11 @@ public class Appointment {
 	public String getLinkLocationURL() {
 		return linkLocationURL;
 	}
-	
+
 	public void setLinkLocationURL(String linkLocationURL) {
 		this.linkLocationURL = linkLocationURL;
 	}
-	
+
 	public String getLinkProviderURL() {
 		return linkProviderURL;
 	}
@@ -223,7 +226,7 @@ public class Appointment {
 	public void setLinkProviderURL(String linkProviderURL) {
 		this.linkProviderURL = linkProviderURL;
 	}
-	
+
 	public boolean isLastQuestionOptional() {
 		return lastQuestionOptional;
 	}
@@ -248,7 +251,7 @@ public class Appointment {
 		this.linkLocation = linkLocation;
 
 	}
-		
+
 	public String getSlotStartTime() {
 		return slotStartTime;
 	}
@@ -312,8 +315,8 @@ public class Appointment {
 	public void setBasicURI(String basicURI) {
 		this.basicURI = basicURI;
 	}
-	
-	
+
+
 	public String getBaseurl_APT() {
 		return baseurl_APT;
 	}
@@ -1205,7 +1208,7 @@ public class Appointment {
 	public void setSlotId(String slotId) {
 		this.slotId = slotId;
 	}
-	
+
 	public String getSlotSize() {
 		return slotSize;
 	}
@@ -1213,4 +1216,29 @@ public class Appointment {
 	public void setSlotSize(String slotSize) {
 		this.slotSize = slotSize;
 	}
+
+	public String getBaseUrlHealth() {
+		return baseUrlHealth;
+	}
+
+	public void setBaseUrlHealth(String baseUrl_Health) {
+		this.baseUrlHealth = baseUrl_Health;
+	}
+
+	public String getApptTypeNextAvailableAccessTokenUrl() {
+		return apptTypeNextAvailableAccessTokenUrl;
+	}
+
+	public void setApptTypeNextAvailableAccessTokenUrl(String apptTypeNextAvailableAccessTokenUrl) {
+		this.apptTypeNextAvailableAccessTokenUrl = apptTypeNextAvailableAccessTokenUrl;
+	}
+
+	public String getBookByNextAvailableAccessTokenUrl() {
+		return bookByNextAvailableAccessTokenUrl;
+	}
+
+	public void setBookByNextAvailableAccessTokenUrl(String bookByNextAvailableAccessTokenUrl) {
+		this.bookByNextAvailableAccessTokenUrl = bookByNextAvailableAccessTokenUrl;
+	}
+
 }

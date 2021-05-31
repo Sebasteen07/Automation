@@ -173,15 +173,20 @@ public class PayloadGE {
 	
     public static String availableSlotsPayload(String patientId, String locationId, String startDate, String slotSize  ) {
 		String availableSlots="{\r\n"
-				+ "    \"locationId\": \""+locationId+"\",\r\n"
+				+ "    \"locationId\": \"3\",\r\n"
 				+ "    \"appointmentCategoryId\": null,\r\n"
-				+ "    \"appointmentTypeId\": null,\r\n"
-				+ "    \"startDate\": \""+startDate+"\",\r\n"
-				+ "    \"slotSize\": \""+slotSize+"\",\r\n"
-				+ "    \"patientId\": \""+patientId+"\",\r\n"
+				+ "    \"appointmentTypeId\": \"158\",\r\n"
+				+ "    \"resourceCategoryId\": null,\r\n"
+				+ "    \"resourceId\": \"551\",\r\n"
+				+ "    \"preferredDuration\": null,\r\n"
+				+ "    \"duration\": null,\r\n"
+				+ "    \"startDate\": \"05/19/2021 09:21:38\",\r\n"
+				+ "    \"endDate\": null,\r\n"
+				+ "    \"slotSize\": 5,\r\n"
+				+ "    \"patientId\": null,\r\n"
 				+ "    \"reservedForSameDay\": false,\r\n"
-				+ "    \"apptTypeAllocated\": true,\r\n"
-				+ "    \"nextAvailability\": true,\r\n"
+				+ "    \"apptTypeAllocated\": false,\r\n"
+				+ "    \"nextAvailability\": false,\r\n"
 				+ "    \"stackingFlag\": false,\r\n"
 				+ "    \"preventScheduling\": 0,\r\n"
 				+ "    \"sameDayAppointment\": false,\r\n"
@@ -191,39 +196,17 @@ public class PayloadGE {
 				+ "    \"slotCount\": 1,\r\n"
 				+ "    \"allowSameDayAppts\": true,\r\n"
 				+ "    \"reservedForSameDate\": \"n\",\r\n"
-				+ "    \"appointmentTypeDBId\": \"203607\",\r\n"
-				+ "    \"locationDBId\": \"203905\"\r\n"
+				+ "    \"appointmentTypeDBId\": \"203950\",\r\n"
+				+ "    \"locationDBId\": \"204200\",\r\n"
+				+ "    \"providerDBId\": \"204202\",\r\n"
+				+ "    \"practiceTimezone\": \"America/New_York\",\r\n"
+				+ "    \"extApptId\": null,\r\n"
+				+ "    \"nextAvailable\": false\r\n"
 				+ "}";
 		return availableSlots;
-    }
-    
-	public static String nextAvailableSlotsPayload(String patientId, String apptid, String locationId,String resourceid,String startDate, String slotSize ) {
-		String nextAvailableSlots="{\r\n"
-				+ "  \"appointmentCategoryId\": null,\r\n"
-				+ "  \"appointmentTypeId\": null,\r\n"
-				+ "  \"apptTypeAllocated\": true,\r\n"
-				+ "  \"contiguous\": false,\r\n"
-				+ "  \"extApptId\": \""+apptid+",\r\n"
-				+ "  \"leadTime\": 0,\r\n"
-				+ "  \"locationId\": \""+locationId+"\",\r\n"
-				+ "  \"maxPerDay\": 0,\r\n"
-				+ "  \"nextAvailability\": true,\r\n"
-				+ "  \"patientId\": \""+patientId+"\",\r\n"
-				+ "  \"preventScheduling\": 0,\r\n"
-				+ "  \"reservedForSameDay\": false,\r\n"
-				+ "  \"resourceCategoryId\": null,\r\n"
-				+ "  \"resourceId\": \""+resourceid+"\",\r\n"
-				+ "  \"sameDayAppointment\": false,\r\n"
-				+ "  \"slotCount\": 1,\r\n"
-				+ "  \"slotSize\": \""+slotSize+"\",\r\n"
-				+ "  \"stackingFlag\": false,\r\n"
-				+ "  \"startDate\": \""+startDate+"\"\r\n"
-				+ "}";
-		return nextAvailableSlots;
 	}
-	
-	public  String addPatientPayload() {
-		
+    
+	public String addPatientPayload() {
 		String addPatient="{\r\n" + 
 				"\r\n" + 
 				"  \"address\": {\r\n" + 

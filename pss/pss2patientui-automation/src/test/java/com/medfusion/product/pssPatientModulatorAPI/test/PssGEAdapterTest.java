@@ -80,17 +80,6 @@ public class PssGEAdapterTest extends BaseTestNGWebDriver {
 	}
 
 	@Test
-	public void CancellationReasonGET() throws IOException {
-		HeaderConfig headerConfig = new HeaderConfig();
-		PSSPropertyFileLoader propertyData = new PSSPropertyFileLoader();
-		Appointment testData = new Appointment();
-		propertyData.setRestAPIDataGE(testData);
-		PostAPIRequestGE postAPIRequest = new PostAPIRequestGE();
-		log("Base URL is   " + testData.getBasicURI());
-		postAPIRequest.cancellationReason(testData.getBasicURI(), headerConfig.defaultHeader());
-	}
-
-	@Test
 	public void insuranceCarrierGET() throws IOException {
 		HeaderConfig headerConfig = new HeaderConfig();
 		PSSPropertyFileLoader propertyData = new PSSPropertyFileLoader();
@@ -99,17 +88,6 @@ public class PssGEAdapterTest extends BaseTestNGWebDriver {
 		PostAPIRequestGE postAPIRequest = new PostAPIRequestGE();
 		log("Base URL is   " + testData.getBasicURI());
 		postAPIRequest.insuranceCarrier(testData.getBasicURI(), headerConfig.defaultHeader());
-	}
-
-	@Test
-	public void specialtyGET() throws IOException {
-		HeaderConfig headerConfig = new HeaderConfig();
-		PSSPropertyFileLoader propertyData = new PSSPropertyFileLoader();
-		Appointment testData = new Appointment();
-		propertyData.setRestAPIDataGE(testData);
-		PostAPIRequestGE postAPIRequest = new PostAPIRequestGE();
-		log("Base URL is   " + testData.getBasicURI());
-		postAPIRequest.specialty(testData.getBasicURI(), headerConfig.defaultHeader());
 	}
 
 	@Test
@@ -150,7 +128,7 @@ public class PssGEAdapterTest extends BaseTestNGWebDriver {
 		HeaderConfig headerConfig = new HeaderConfig();
 		PSSPropertyFileLoader propertyData = new PSSPropertyFileLoader();
 		Appointment testData = new Appointment();
-		propertyData.setRestAPIData(testData);
+		propertyData.setRestAPIDataGE(testData);
 		PostAPIRequestGE postAPIRequest = new PostAPIRequestGE();
 		log("Base URL is   " + testData.getBasicURI());
 		postAPIRequest.appointmentStatus(testData.getBasicURI(), headerConfig.defaultHeader());
@@ -270,25 +248,6 @@ public class PssGEAdapterTest extends BaseTestNGWebDriver {
 		postAPIRequest.availableSlots(testData.getBasicURI(),
 				PayloadGE.availableSlotsPayload(testData.getPatientId(), testData.getLocationId(), testData.getStartDateTime(), testData.getSlotSize()),
 				headerConfig.defaultHeader());
-	}
-
-	@Test
-	public void nextAvailableSlotPost() throws IOException {
-		HeaderConfig headerConfig = new HeaderConfig();
-		PSSPropertyFileLoader propertyData = new PSSPropertyFileLoader();
-		Appointment testData = new Appointment();
-		propertyData.setRestAPIDataGE(testData);
-		PostAPIRequestGE postAPIRequest = new PostAPIRequestGE();
-
-		log("Base URL- " + testData.getBasicURI());
-		log("Payload is as below-" + PayloadGE.nextAvailableSlotsPayload(testData.getPatientId(), testData.getApptid(), testData.getLocation(),
-				testData.getResourceId(), testData.getStartDateTime(), testData.getSlotSize()));
-
-		log("Patient Id- " + testData.getPatientId());
-
-		postAPIRequest.nextAvailableSlots(testData.getBasicURI(), PayloadGE.nextAvailableSlotsPayload(testData.getPatientId(), testData.getApptid(),
-				testData.getLocation(), testData.getResourceId(), testData.getStartDateTime(), testData.getSlotSize()), headerConfig.defaultHeader());
-
 	}
 	
 	@Test
