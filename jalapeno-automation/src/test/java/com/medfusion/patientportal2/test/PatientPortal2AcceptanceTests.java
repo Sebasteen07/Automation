@@ -405,7 +405,7 @@ public class PatientPortal2AcceptanceTests extends BaseTestNGWebDriver {
 		resetForgottenPasswordOrUsername(email);
 	}
 
-	private void resetForgottenPasswordOrUsername(String email) {
+	private void resetForgottenPasswordOrUsername(String email) throws InterruptedException {
 		Instant passwordResetStart = Instant.now();
 		logStep("Load login page");
 		JalapenoLoginPage loginPage = new JalapenoLoginPage(driver, testData.getUrl());
@@ -3541,6 +3541,7 @@ public class PatientPortal2AcceptanceTests extends BaseTestNGWebDriver {
 
 		ManageYourPharmacies managepharmacy = new ManageYourPharmacies(driver);
 		managepharmacy.removeAllPharmacy();
+		driver.get(driver.getCurrentUrl());
 		assertFalse(managepharmacy.isAnyPharmacyPresent());
 		Thread.sleep(5000);
 		managepharmacy.clickOnAddPharmacyButton();

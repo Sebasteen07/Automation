@@ -49,13 +49,13 @@ public class JalapenoMyAccountProfilePage extends JalapenoMyAccountPage {
 	@FindBy(how = How.XPATH, using = "//input[@id='gender_unknown']")
 	private WebElement declineToAnswerRadioButton;
 
-	@FindBy(how = How.ID, using = "birthDate_year")
+	@FindBy(how = How.XPATH, using = "//input[@name='birthDate_year']")
 	private WebElement DOByear;
 
-	@FindBy(how = How.ID, using = "birthDate_month")
+	@FindBy(how = How.XPATH, using = "//select[@name='birthDate_month']")
 	private WebElement DOBmonth;
 
-	@FindBy(how = How.ID, using = "birthDate_day")
+	@FindBy(how = How.XPATH, using = "//input[@name='birthDate_day']")
 	private WebElement DOBday;
 
 	@FindBy(how = How.ID, using = "state")
@@ -96,16 +96,18 @@ public class JalapenoMyAccountProfilePage extends JalapenoMyAccountPage {
 		IHGUtil.PrintMethodName();
 	}
 
-	public int getDOBday() {
-		return Integer.parseInt(DOBday.getAttribute("value"));
+	public String getDOBday() {
+		return DOBday.getAttribute("value");
 	}
 
-	public int getDOByear() {
-		return Integer.parseInt(DOByear.getAttribute("value"));
+	public String getDOByear() {
+		return DOByear.getAttribute("value");
 	}
 
-	public int getDOBmonth() {
-		return Integer.parseInt(DOBmonth.getAttribute("value"));
+	public String getDOBmonth() {
+		Select sc = new Select(DOBmonth);
+		String webelementDOBMonth = sc.getFirstSelectedOption().getAttribute("value").replaceFirst("0", "");
+		return webelementDOBMonth;
 	}
 
 	public String getDOB() {
@@ -154,7 +156,7 @@ public class JalapenoMyAccountProfilePage extends JalapenoMyAccountPage {
 	public boolean checkForAddress(WebDriver driver, String addressLine1, String city, String zipCode) {
 
 		log("Checking address in My Account");
-
+		new WebDriverWait(driver, 25).until(ExpectedConditions.textToBePresentInElementValue(address1Textbox, addressLine1));
 		String savedAddressLine1 = address1Textbox.getAttribute("value");
 		String savedCity = cityTextbox.getAttribute("value");
 		String savedZipCode = zipCodeTextbox.getAttribute("value");
@@ -189,7 +191,7 @@ public class JalapenoMyAccountProfilePage extends JalapenoMyAccountPage {
 	public boolean checkZipCode(String zipCode) {
 
 		log("Checking ZipCode textbox");
-
+		new WebDriverWait(driver, 25).until(ExpectedConditions.textToBePresentInElementValue(zipCodeTextbox, zipCode));
 		String savedZipCode = zipCodeTextbox.getAttribute("value");
 
 		if (!StringUtils.equals(zipCode, savedZipCode)) {

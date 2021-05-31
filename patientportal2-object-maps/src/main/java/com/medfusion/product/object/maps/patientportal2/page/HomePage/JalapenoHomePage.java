@@ -409,6 +409,7 @@ public class JalapenoHomePage extends JalapenoMenu {
 
 	public void switchPractice(String practice) {
 		log("Clicking on Practice toggle Search");
+		driver.navigate().refresh();
 		practiceToggleSearch.click();
 		practiceInput.sendKeys(practice);
 		practiceInput.sendKeys(Keys.ENTER);
