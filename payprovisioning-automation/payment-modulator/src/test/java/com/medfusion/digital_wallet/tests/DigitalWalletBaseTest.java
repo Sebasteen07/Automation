@@ -17,8 +17,6 @@ import io.restassured.specification.ResponseSpecification;
 public class DigitalWalletBaseTest {
     protected static PropertyFileLoader testData;
     public static RequestSpecification requestSpec;
-    public static ResponseSpecification responseSpec;
-
 
     public static void setupRequestSpecBuilder() throws Exception
     {
@@ -26,18 +24,9 @@ public class DigitalWalletBaseTest {
         RestAssured.baseURI = testData.getProperty("digitalwallet.baseurl");
         requestSpec	 = new RequestSpecBuilder()
                 .setContentType(ContentType.JSON)
-                .addHeader("Authorization","Bearer "+ DigitalWalletAPIUtils.getTokenForCustomer())
                 .addFilter(new ResponseLoggingFilter())
                 .addFilter(new RequestLoggingFilter())
                 .build();
     }
 
-    public static void setupResponsetSpecBuilder()
-    {
-        responseSpec = new ResponseSpecBuilder()
-                .expectStatusCode(200)
-                .expectContentType(ContentType.JSON)
-                .build();
-
-    }
 }

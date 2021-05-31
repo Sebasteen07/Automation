@@ -13,13 +13,13 @@ public class DigitalWalletResource extends DigitalWalletBaseTest {
 
     protected PropertyFileLoader testData;
 
-    public Response getCountOfExpiringCards(String fromMonth, String toMonth) throws IOException {
+    public Response getCountOfExpiringCards(String token, String fromMonth, String toMonth) throws IOException {
         testData = new PropertyFileLoader();
 
-        Response response = given().that().spec(requestSpec)
+        Response response = given().that().spec(requestSpec).header("Authorization","Bearer "+ token)
                 .when()
                 .get("cards-to-expire-count?fromMonth=" + fromMonth + "&toMonth=" + toMonth + "")
-                .then().spec(responseSpec).and()
+                .then()
                 .extract()
                 .response();
         return response;
