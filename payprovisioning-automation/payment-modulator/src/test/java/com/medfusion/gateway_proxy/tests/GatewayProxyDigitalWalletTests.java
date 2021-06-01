@@ -1,6 +1,7 @@
 // Copyright 2013-2021 NXGN Management, LLC. All Rights Reserved.
 package com.medfusion.gateway_proxy.tests;
 
+import com.medfusion.common.utils.IHGUtil;
 import com.medfusion.common.utils.PropertyFileLoader;
 import com.medfusion.gateway_proxy.helpers.GatewayProxyDigitalWalletResource;
 import com.medfusion.gateway_proxy.utils.GatewayProxyDigitalWalletUtils;
@@ -85,5 +86,41 @@ public class GatewayProxyDigitalWalletTests extends GatewayProxyBaseTest {
         String aliasToVerify = testData.getProperty("type") + "-" + cardNumber.substring(cardNumber.length() - 4) + "-"
                 + testData.getProperty("expirationnumber");
         Assert.assertEquals(aliasToVerify, jsonPath.get("walletCards[0].cardAlias"));
+    }
+
+    @Test
+    public void updateZipcodeOfWalletWithValidAuth() throws Exception {
+        GatewayProxyDigitalWalletResource digitalWallet = new GatewayProxyDigitalWalletResource();
+        String token = GatewayProxyUtils.getTokenForCustomer();
+        String zipcode = IHGUtil.createRandomZip();
+
+        Response response = digitalWallet.updateZipcode(token, testData.getProperty("testpaycustomeruuid"), testData.getProperty("wallet"),testData.getProperty("card"),zipcode);
+        Assert.assertTrue(response.getStatusCode() == 200);
+
+        JsonPath jsonPath = new JsonPath(response.asString());
+        Assert.assertEquals(zipcode, jsonPath.get("zipCode"));
+    }
+
+    @Test
+    public void updateZipcodeOfWalletWithInvalidAuth() throws Exception {
+        GatewayProxyDigitalWalletResource digitalWallet = new GatewayProxyDigitalWalletResource();
+        String token = GatewayProxyUtils.getTokenForCustomer();
+        String zipcode = IHGUtil.createRandomZip();
+
+        Response response = digitalWallet.updateZipcode(token+"gcnj", testData.getProperty("testpaycustomeruuid"), testData.getProperty("wallet"),testData.getProperty("card"),zipcode);
+        Assert.assertTrue(response.getStatusCode() == 401);
+    }
+
+    @Test
+    public void updateZipcodeOfWalletWithInvalidZipcode() throws Exception {
+        GatewayProxyDigitalWalletResource digitalWallet = new GatewayProxyDigitalWalletResource();
+        String token = GatewayProxyUtils.getTokenForCustomer();
+
+        Response response  = digitalWallet.updateZipcode(token, testData.getProperty("testpaycustomeruuid"), testData.getProperty("wallet"),testData.getProperty("card"),"9800");
+        Assert.assertTrue(response.getStatusCode() == 400);
+        JsonPath jsonPath = new JsonPath(response.asString());
+        Assert.assertEquals("Bad Request", jsonPath.get("error"));
+        Assert.assertTrue(!jsonPath.get("message").toString().isEmpty());
+        Assert.assertEquals("Zip code should be either 5 or 9 digits", jsonPath.get("message"));
     }
 }

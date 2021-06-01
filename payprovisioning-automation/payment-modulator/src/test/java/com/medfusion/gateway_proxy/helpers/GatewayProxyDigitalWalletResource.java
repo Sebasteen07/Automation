@@ -4,6 +4,7 @@ package com.medfusion.gateway_proxy.helpers;
 import com.medfusion.common.utils.PropertyFileLoader;
 import com.medfusion.gateway_proxy.tests.GatewayProxyBaseTest;
 import com.medfusion.gateway_proxy.utils.GatewayProxyUtils;
+import com.medfusion.payment_modulator.pojos.BillToAddress;
 import com.medfusion.payment_modulator.pojos.PayloadDetails;
 import io.restassured.response.Response;
 
@@ -40,5 +41,15 @@ public class GatewayProxyDigitalWalletResource extends GatewayProxyBaseTest {
                    
     	 return response;
     	 
+    }
+
+    public Response updateZipcode(String token, String customeruuid, String walletId, String card, String zipcode) throws Exception {
+        testData = new PropertyFileLoader();
+        Map<String, Object> zipcodePayload = BillToAddress.getBillingAdressMap(zipcode);
+
+        Response response = given().spec(requestSpec).header("Authorization","Bearer "+ token).
+                body(zipcodePayload).when().patch(customeruuid+"/wallets/"+walletId+"/cards/"+card)
+                .then().extract().response();
+        return response;
     }
 }
