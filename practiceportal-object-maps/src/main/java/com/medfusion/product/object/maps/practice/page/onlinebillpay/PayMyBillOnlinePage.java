@@ -496,6 +496,7 @@ public class PayMyBillOnlinePage extends BasePageObject {
 		IHGUtil.PrintMethodName();
 		IHGUtil.setFrame(driver, "iframe");
 		IHGUtil.waitForElement(driver, 50, voidPaymentButton);
+		scrollAndWait(0, 400, 10);
 		voidPaymentButton.click();
 		System.out.println("THE VOID ELEMENT GOT CLICKED");
 		Thread.sleep(8000);

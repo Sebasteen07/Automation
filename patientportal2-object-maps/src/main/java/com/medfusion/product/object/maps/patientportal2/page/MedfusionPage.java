@@ -38,7 +38,7 @@ public abstract class MedfusionPage extends BasePageObject {
 		@FindBy(how = How.XPATH, using = "/html")
 		private WebElement ccdViewerHtmlTag;
 
-		@FindBy(how = How.ID,using = "updateMissingInformation_form")
+		@FindBy(how = How.ID,using = "updateMissingInformationForm")
 		private WebElement weNeedToConfirmSomethingModal;
 
 		@FindBy(how = How.ID, using = "updateMissingInfoButton")
