@@ -51,8 +51,14 @@ public class JalapenoLoginPage extends MedfusionPage {
 	@FindBy(how = How.ID, using = "updateMissingInfoButton")
 	private WebElement okButton;
 
-	@FindBy(how = How.XPATH, using = "//span[@data-ng-show = 'notice.existingaccount_same']")
+	@FindBy(how = How.XPATH, using = "//*[@id='same']")
     private WebElement healthKeyMatchError;
+	
+	@FindBy(how = How.XPATH, using = "//*[contains(text(),'You are no longer able to sign in because you have been unlinked from all patient accounts. Please contact our practice if you need assistance.')]")
+	private WebElement trustedRepresentativeLoginError;
+	
+	@FindBy(how = How.XPATH, using = "//span[contains(text(),'Your account is no longer active. Please contact our practice in order re-activate it.')]")
+	private WebElement deletePatientLoginError;
 
 	public JalapenoLoginPage(WebDriver driver, String url) {
 		super(driver, url);
@@ -180,6 +186,27 @@ public void unCheckRememberUserName()
 		rememberUserNameCheckbox.click();
 	}
 	}
+
+	public boolean isTrustedRepresentativeAccountErrorDisplayed() {
+	    try {
+	        log("Looking for You are no longer able to sign in error on loginPage");
+	        return trustedRepresentativeLoginError.isDisplayed();
+	    }
+	    catch (Exception e) {
+	    }
+	    return false;
+	}
+	
+	public boolean isDeletePatientErrorDisplayed() {
+	    try {
+	        log("Looking for Your account is no longer active error on loginPage");
+	        return deletePatientLoginError.isDisplayed();
+	    }
+	    catch (Exception e) {
+	    }
+	    return false;
+	}
+
 
 }
 

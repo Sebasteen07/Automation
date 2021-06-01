@@ -2,50 +2,41 @@
   <modelVersion>4.0.0</modelVersion>
   <parent>
 	  <groupId>com.intuit.ihg</groupId>
-	  <artifactId>ihg-depot-qa-parent-pom</artifactId>
-	  <version>21.2.0</version>
+	  <artifactId>ihg-depot-parent-pom</artifactId>
+	  <version>21.3.0</version>
   </parent>
 
-  <artifactId>pss2patientui-api</artifactId>
-  <repositories>
-        <repository>
-            <id>IHG-nexus</id>
-            <name>IHG-nexus</name>
-            <url>http://maven.qhg.local/nexus/content/groups/qhg-dev/</url>
-        </repository>
-    </repositories>
-    
 	<properties>
 		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
-		<ihg.version>21.2.0</ihg.version>
+		<ihg.version>21.3.0</ihg.version>
 	</properties>
-  
+
 	<dependencies>
 		<dependency>
-  			<groupId>com.intuit.ihg</groupId>
-  			<artifactId>qa-automation-utils</artifactId>
-  			<version>${ihg.version}</version>
-  		</dependency>
-  		<dependency>
-            <groupId>com.intuit.ihg</groupId>
-            <artifactId>pss2-objects-maps</artifactId>
-            <version>${ihg.version}</version>
-        </dependency>
-        <dependency>
-            <groupId>com.intuit.ihg</groupId>
-            <artifactId>pss2admin-objects-maps</artifactId>
-            <version>${ihg.version}</version>
-        </dependency>
-		<dependency>
-		    <groupId>org.mnode.ical4j</groupId>
-		    <artifactId>ical4j</artifactId>
-		    <version>1.0.2</version>
+			<groupId>com.intuit.ihg</groupId>
+			<artifactId>qa-automation-utils</artifactId>
+			<version>${ihg.version}</version>
 		</dependency>
 		<dependency>
-	  		<groupId>com.intuit.ihg</groupId>
-	  		<artifactId>patientportal2-object-maps</artifactId>
-	  		<version>${ihg.version}</version>
-	    </dependency>		        
-  	</dependencies>
-  
+			<groupId>com.intuit.ihg</groupId>
+			<artifactId>pss2-objects-maps</artifactId>
+			<version>${ihg.version}</version>
+		</dependency>
+		<dependency>
+			<groupId>com.intuit.ihg</groupId>
+			<artifactId>pss2admin-objects-maps</artifactId>
+			<version>${ihg.version}</version>
+		</dependency>
+		<dependency>
+			<groupId>org.mnode.ical4j</groupId>
+			<artifactId>ical4j</artifactId>
+			<version>1.0.2</version>
+		</dependency>
+		<dependency>
+			<groupId>com.intuit.ihg</groupId>
+			<artifactId>patientportal2-object-maps</artifactId>
+			<version>${ihg.version}</version>
+		</dependency>
+	</dependencies>
+
 </project>

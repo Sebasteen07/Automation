@@ -1,3 +1,4 @@
+// Copyright 2013-2021 NXGN Management, LLC. All Rights Reserved.
 package com.medfusion.product.object.maps.forms.page.questionnaires.prereg_pages;
 
 import org.openqa.selenium.By;
@@ -8,9 +9,9 @@ import org.openqa.selenium.support.PageFactory;
 import org.openqa.selenium.support.ui.Select;
 
 import com.medfusion.common.utils.IHGUtil;
-import com.medfusion.portal.utils.PortalConstants;
-import com.medfusion.portal.utils.PortalUtil;
 import com.medfusion.product.object.maps.forms.page.questionnaires.PortalFormPage;
+import com.medfusion.product.patientportal2.utils.JalapenoConstants;
+import com.medfusion.product.patientportal2.utils.PortalUtil2;
 
 public class FormBasicInfoPage extends PortalFormPage {
 
@@ -84,13 +85,13 @@ public class FormBasicInfoPage extends PortalFormPage {
 	 * @throws Exception
 	 */
 	public void setStreetAddress() throws Exception {
-		PortalUtil.PrintMethodName();
+		PortalUtil2.PrintMethodName();
 
 		address.clear();
 		address.sendKeys(IHGUtil.createRandomStreet());
 	}
 	public void setStreetAddress_20() throws Exception {
-		PortalUtil.PrintMethodName();
+		PortalUtil2.PrintMethodName();
 		IHGUtil.waitForElement(driver, 60, address);
 		address.clear();
 		address.sendKeys(IHGUtil.createRandomStreet());
@@ -102,13 +103,13 @@ public class FormBasicInfoPage extends PortalFormPage {
 	 * @throws Exception
 	 */
 	public void setCity() throws Exception {
-		PortalUtil.PrintMethodName();
+		PortalUtil2.PrintMethodName();
 
 		city.clear();
 		city.sendKeys(IHGUtil.createRandomCity());
 	}
 	public void setCity_20() throws Exception {
-		PortalUtil.PrintMethodName();
+		PortalUtil2.PrintMethodName();
 		city.clear();
 		city.sendKeys(IHGUtil.createRandomCity());
 	}
@@ -118,13 +119,13 @@ public class FormBasicInfoPage extends PortalFormPage {
 	 * @throws Exception
 	 */
 	public void setState(String type) throws Exception {
-		PortalUtil.PrintMethodName();
+		PortalUtil2.PrintMethodName();
 
 		Select selector = new Select(state);
 		selector.selectByVisibleText(type);
 	}
 	public void setState_20(String type) throws Exception {
-		PortalUtil.PrintMethodName();
+		PortalUtil2.PrintMethodName();
 		Select selector = new Select(state);
 		selector.selectByVisibleText(type);
 	}
@@ -135,13 +136,13 @@ public class FormBasicInfoPage extends PortalFormPage {
 	 * @throws Exception
 	 */
 	public void setZip() throws Exception {
-		PortalUtil.PrintMethodName();
+		PortalUtil2.PrintMethodName();
 
 		zip.clear();
 		zip.sendKeys(IHGUtil.createRandomZip());
 	}
 	public void setZip_20() throws Exception {
-		PortalUtil.PrintMethodName();
+		PortalUtil2.PrintMethodName();
 		zip.clear();
 		zip.sendKeys(IHGUtil.createRandomZip());
 	}
@@ -151,13 +152,13 @@ public class FormBasicInfoPage extends PortalFormPage {
 	 * @throws Exception
 	 */
 	public void setPrimaryPhoneNumber() throws Exception {
-		PortalUtil.PrintMethodName();
+		PortalUtil2.PrintMethodName();
 
 		primaryPhone.clear();
 		primaryPhone.sendKeys("919-555-" + IHGUtil.createRandomNumericString(4));
 	}
 	public void setPrimaryPhoneNumber_20() throws Exception {
-		PortalUtil.PrintMethodName();
+		PortalUtil2.PrintMethodName();
 		primaryPhone.clear();
 		primaryPhone.sendKeys("919-555-" + IHGUtil.createRandomNumericString(4));
 	}
@@ -167,13 +168,13 @@ public class FormBasicInfoPage extends PortalFormPage {
 	 * @throws Exception
 	 */
 	public void setPrimaryPhoneType(String type) throws Exception {
-		PortalUtil.PrintMethodName();
+		PortalUtil2.PrintMethodName();
 
 		Select selector = new Select(primaryPhoneType);
 		selector.selectByVisibleText(type);
 	}
 	public void setPrimaryPhoneType_20(String type) throws Exception {
-		PortalUtil.PrintMethodName();
+		PortalUtil2.PrintMethodName();
 		Select selector = new Select(primaryPhoneType);
 		selector.selectByVisibleText(type);
 	}
@@ -183,11 +184,11 @@ public class FormBasicInfoPage extends PortalFormPage {
 	 * @throws Exception
 	 */
 	public void setSex(String type) {
-		PortalUtil.PrintMethodName();
+		PortalUtil2.PrintMethodName();
 		new Select(gender).selectByVisibleText(type);
 	}
 	public void setSex_20(String type) throws Exception {
-		PortalUtil.PrintMethodName();		
+		PortalUtil2.PrintMethodName();		
 		focusSelectAndSelectByValue(gender,type);
 	}
 	/**
@@ -196,7 +197,7 @@ public class FormBasicInfoPage extends PortalFormPage {
 	 * @throws Exception
 	 */
 	public void setMaritalStatus(String type) throws Exception {
-		PortalUtil.PrintMethodName();
+		PortalUtil2.PrintMethodName();
 		Select selector = new Select(maritalStatus);
 		selector.selectByVisibleText(type);
 	}
@@ -207,7 +208,7 @@ public class FormBasicInfoPage extends PortalFormPage {
 	 * @throws Exception
 	 */
 	public void setPreferredCommunication(String type) throws Exception {
-		PortalUtil.PrintMethodName();
+		PortalUtil2.PrintMethodName();
 		Select selector = new Select(preferredCommunication);
 		selector.selectByVisibleText(type);
 	}
@@ -218,7 +219,7 @@ public class FormBasicInfoPage extends PortalFormPage {
 	 * @throws Exception
 	 */
 	public void setPreferredLanguage(String type) throws Exception {
-		PortalUtil.PrintMethodName();
+		PortalUtil2.PrintMethodName();
 		Select selector = new Select(preferredLanguage);
 		selector.selectByVisibleText(type);
 	}
@@ -229,7 +230,7 @@ public class FormBasicInfoPage extends PortalFormPage {
 	 * @throws Exception
 	 */
 	public void setRace(String type) throws Exception {
-		PortalUtil.PrintMethodName();
+		PortalUtil2.PrintMethodName();
 		Select selector = new Select(race);
 		selector.selectByVisibleText(type);
 	}
@@ -240,7 +241,7 @@ public class FormBasicInfoPage extends PortalFormPage {
 	 * @throws Exception
 	 */
 	public void setEthnicity(String type) throws Exception {
-		PortalUtil.PrintMethodName();
+		PortalUtil2.PrintMethodName();
 		Select selector = new Select(ethnicity);
 		selector.selectByVisibleText(type);
 	}
@@ -251,7 +252,7 @@ public class FormBasicInfoPage extends PortalFormPage {
 	 * @throws Exception
 	 */
 	public void setWhoIsFillingOutForm(String type) throws Exception {
-		PortalUtil.PrintMethodName();
+		PortalUtil2.PrintMethodName();
 
 		Select selector = new Select(whoIsFillingOutForm);
 		selector.selectByVisibleText(type);
@@ -265,11 +266,11 @@ public class FormBasicInfoPage extends PortalFormPage {
 	public FormEmergencyContactPage setBasicInfoFromFields() throws Exception {
 		setStreetAddress();
 		setCity();
-		setState(PortalConstants.State);
+		setState(JalapenoConstants.STATE);
 		setZip();
 		setPrimaryPhoneNumber();
-		setPrimaryPhoneType(PortalConstants.PrimaryPhoneType);
-		setSex(PortalConstants.Sex);
+		setPrimaryPhoneType(JalapenoConstants.PRIMARY_PHONE_TYPE);
+		setSex(JalapenoConstants.SEX);
 
 		return clickSaveContinue(FormEmergencyContactPage.class);
 	}

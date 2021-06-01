@@ -1,4 +1,8 @@
+//Copyright 2013-2021 NXGN Management, LLC. All Rights Reserved.
 package com.intuit.ihg.product.integrationplatform.utils;
+
+import static org.testng.Assert.assertNotNull;
+import static org.testng.Assert.assertTrue;
 
 import java.awt.AWTException;
 import java.awt.Robot;
@@ -25,16 +29,14 @@ import org.apache.commons.lang.StringEscapeUtils;
 import org.openqa.selenium.JavascriptExecutor;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.firefox.FirefoxDriver;
-import org.testng.Assert;
+
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 import org.w3c.dom.Node;
 import org.w3c.dom.NodeList;
 
-import com.intuit.ifs.csscat.core.BaseTestSoftAssert;
 import com.intuit.ifs.csscat.core.utils.Log4jUtil;
 import com.intuit.ihg.product.mu2.utils.MU2Constants;
-import com.medfusion.common.utils.EnvironmentTypeUtil.EnvironmentType;
 import com.medfusion.common.utils.IHGUtil;
 import com.medfusion.product.object.maps.patientportal2.page.JalapenoLoginPage;
 import com.medfusion.product.object.maps.patientportal2.page.AccountPage.JalapenoAccountPage;
@@ -77,11 +79,11 @@ public class MU2Utils {
 		Thread.sleep(10000);
 		
 		Log4jUtil.log("Detecting if Home Page is opened");
-		Assert.assertTrue(homePage.isHomeButtonPresent(driver));
+		assertTrue(homePage.isHomeButtonPresent(driver));
 		
 		Log4jUtil.log("MU2GetEvent Step 2: Go to Health Record Summaries");
 		MedicalRecordSummariesPage MedicalRecordSummariesPageObject = homePage.clickOnMedicalRecordSummaries(driver);
-		Assert.assertTrue(MedicalRecordSummariesPageObject.areBasicPageElementsPresent(), "Failed to Load Health Record Summaries ");
+		assertTrue(MedicalRecordSummariesPageObject.areBasicPageElementsPresent(), "Failed to Load Health Record Summaries ");
 		
 		MedicalRecordSummariesPageObject.setFilterToDefaultPositionAndCheckElementsNew();
 		
@@ -95,12 +97,11 @@ public class MU2Utils {
 		Thread.sleep(5000);
 		long transmitTimestamp = System.currentTimeMillis();
 		Log4jUtil.log("TransmitTimestamp :"+transmitTimestamp);
-		 if((IHGUtil.getEnvironmentType().toString()== "DEV3"))
-		{
+
 		MedicalRecordSummariesPageObject.selectFirstVisibleCCD();
 		MedicalRecordSummariesPageObject.selectSecondVisibleCCD();
 		jse.executeScript("window.scrollBy(0,400)", "");
-		 }
+		 
 		MedicalRecordSummariesPageObject.sendFirstVisibleCCDUsingStandardEmail(testData.Standard_Email);
 		
 		Thread.sleep(5000);
@@ -162,7 +163,7 @@ public class MU2Utils {
 			ActionTimestamp = findEventInResonseXML(testData.PUSH_RESPONSEPATH, MU2Constants.EVENT, MU2Constants.RESOURCE_TYPE, list.get(i),
 					timestamp, intuitPatientID1,testData.PatientExternalId_MU2,testData.PatientFirstName_MU2,testData.PatientLastName_MU2,transmitTimestamp,version);
 			if(!list.get(i).equalsIgnoreCase(MU2Constants.DOWNLOAD_ACTION)) {
-				Assert.assertNotNull(ActionTimestamp, "'" + list.get(i) + "' Event is not found in Response XML");
+				assertNotNull(ActionTimestamp, "'" + list.get(i) + "' Event is not found in Response XML");
 			}
 			
 			Log4jUtil.log("ActionTimestamp: "+ActionTimestamp);
@@ -361,32 +362,32 @@ public class MU2Utils {
 		ccdMessageList.add(testData.CCDMessageID1);
 		Log4jUtil.log("Detecting if Home Page is opened");
 		Thread.sleep(7000);
-		Assert.assertTrue(homePage.isHomeButtonPresent(driver));
+		assertTrue(homePage.isHomeButtonPresent(driver));
 		if(existingGuardian) {
 			homePage.faChangePatient();
-			Assert.assertTrue(homePage.assessFamilyAccountElements(true));
+			assertTrue(homePage.assessFamilyAccountElements(true));
 		}
 		
 		if(isCCDViewer==true) {
 			Log4jUtil.log("mu2GetEventGuardian Step 2: Click on messages solution");
 			JalapenoMessagesPage messagesPage = homePage.showMessages(driver);
-			Assert.assertTrue(messagesPage.areBasicPageElementsPresent(), "Inbox failed to load properly.");
+			assertTrue(messagesPage.areBasicPageElementsPresent(), "Inbox failed to load properly.");
 	
 			Log4jUtil.log("mu2GetEventGuardian Step 3: Validate message subject and send date");
 			Thread.sleep(1000);
 			Log4jUtil.log("Message Date" + IHGUtil.getEstTiming());
-			Assert.assertTrue(messagesPage.isMessageDisplayed(driver, "You have a new health data summary"));
+			assertTrue(messagesPage.isMessageDisplayed(driver, "You have a new health data summary"));
 			Log4jUtil.log("CCD sent date & time is : " + messagesPage.returnMessageSentDate());
 	
 			Log4jUtil.log("mu2GetEventGuardian Step 4: Click on link View health data");
 			JalapenoCcdViewerPage jalapenoCcdPage = messagesPage.findCcdMessage(driver);
 			Thread.sleep(7000);
 			Log4jUtil.log("mu2GetEventGuardian Step 5: Verify if CCD Viewer is loaded and click Close Viewer");
-			Assert.assertTrue(jalapenoCcdPage.areBasicPageElementsPresent());
+			assertTrue(jalapenoCcdPage.areBasicPageElementsPresent());
 			
 			Log4jUtil.log("mu2GetEventGuardian Step 6: SecureEmail event Generated "+testData.TRANSMIT_EMAIL);
 			Boolean isSecureMessageTransmit = jalapenoCcdPage.sendInformationToDirectEmail(testData.TRANSMIT_EMAIL);
-			Assert.assertTrue(isSecureMessageTransmit);
+			assertTrue(isSecureMessageTransmit);
 			Log4jUtil.log("isSecureMessageTransmit :"+isSecureMessageTransmit);
 			transmitTimestamp = System.currentTimeMillis();
 			Log4jUtil.log("transmitTimestamp "+transmitTimestamp);
@@ -403,14 +404,14 @@ public class MU2Utils {
 			Thread.sleep(4000);
 			performRobotTask(driver,true);
 			messagesPage = jalapenoCcdPage.closeCcd(driver);
-			Assert.assertTrue(messagesPage.areBasicPageElementsPresent());
+			assertTrue(messagesPage.areBasicPageElementsPresent());
 			homePage = messagesPage.backToHomePage(driver);
 		}
 		if(isCCDViewer == false) {
 			ccdMessageList.add(testData.CCDMessageID2);
 			Log4jUtil.log("mu2GetEventGuardian Step 2: Go to Health Record Summaries");
 			MedicalRecordSummariesPage MedicalRecordSummariesPageObject = homePage.clickOnMedicalRecordSummaries(driver);
-			Assert.assertTrue(MedicalRecordSummariesPageObject.areBasicPageElementsPresent(), "Failed to Load Health Record Summaries ");
+			assertTrue(MedicalRecordSummariesPageObject.areBasicPageElementsPresent(), "Failed to Load Health Record Summaries ");
 			
 			MedicalRecordSummariesPageObject.setFilterToDefaultPositionAndCheckElementsNew();
 			
@@ -449,7 +450,7 @@ public class MU2Utils {
 		
 		JalapenoAccountPage accountPage= homePage.clickOnAccount();
 		Thread.sleep(15000);
-		JalapenoMyAccountProfilePage accountProfilePage= accountPage.clickOnEdiDependentAccount();
+		JalapenoMyAccountProfilePage accountProfilePage= accountPage.clickOnEditDependentAccount();
 		Thread.sleep(12000);
 		accountProfilePage.goToActivityTab(driver);
 		Thread.sleep(30000);
@@ -464,36 +465,36 @@ public class MU2Utils {
 		List<Object> viewList = IHGUtil.searchResultsSubstring(driver, "//*[@id='frame']/table/tbody",
 				new ArrayList<String>(Arrays.asList(MU2Constants.ACCOUNT_ACTIVITY_VIEWED, portalTime.get(1))));
 		if (!viewList.isEmpty()) {
-			BaseTestSoftAssert.assertTrue(((Boolean) viewList.get(1)).booleanValue());
+			assertTrue(((Boolean) viewList.get(1)).booleanValue());
 
 		} else {
-			BaseTestSoftAssert.assertTrue(false, "Health Information Viewed event not present");
+			assertTrue(false, "Health Information Viewed event not present");
 		}
 		Log4jUtil.log("mu2GetEventGuardian Step 12: Validate 'Download' Event in Account Activty list");
 		List<Object> downloadList = IHGUtil.searchResultsSubstring(driver, "//*[@id='frame']/table/tbody",
 				new ArrayList<String>(Arrays.asList(MU2Constants.ACCOUNT_ACTIVITY_DOWNLOADED, portalTime.get(2))));
 		if (!downloadList.isEmpty()) {
-			BaseTestSoftAssert.assertTrue(((Boolean) downloadList.get(1)).booleanValue());
+			assertTrue(((Boolean) downloadList.get(1)).booleanValue());
 		} else {
-			BaseTestSoftAssert.assertTrue(false, "Health Information Downloaded event not present");
+			assertTrue(false, "Health Information Downloaded event not present");
 		}
 
 		Log4jUtil.log("mu2GetEventGuardian Step 13: Validate 'Secure Email Transmit' Event in Account Activty Page list ");
 		List<Object> transmitListSecure = IHGUtil.searchResultsSubstring(driver, "//*[@id='frame']/table/tbody",
 				new ArrayList<String>(Arrays.asList(testData.secureEmailTransmitActivity+" "+testData.TRANSMIT_EMAIL+".", generateDate(messageTimeStampList.get(0)))));
 		if (!transmitListSecure.isEmpty()) {
-			BaseTestSoftAssert.assertTrue(((Boolean) transmitListSecure.get(1)).booleanValue());
+			assertTrue(((Boolean) transmitListSecure.get(1)).booleanValue());
 		} else {
-			BaseTestSoftAssert.assertTrue(false, "Health Information Transmitted event not present");
+			assertTrue(false, "Health Information Transmitted event not present");
 		}
 		
 		Log4jUtil.log("mu2GetEventGuardian Step 14: Validate 'Standard Email Transmit' Event in Account Activty Page list ");
 		List<Object> transmitListStandard = IHGUtil.searchResultsSubstring(driver, "//*[@id='frame']/table/tbody",
 				new ArrayList<String>(Arrays.asList(testData.standardEmailTransmitActivity+" "+testData.Standard_Email+".", generateDate(messageTimeStampList.get(1)))));
 		if (!transmitListStandard.isEmpty()) {
-			BaseTestSoftAssert.assertTrue(((Boolean) transmitListStandard.get(1)).booleanValue());
+			assertTrue(((Boolean) transmitListStandard.get(1)).booleanValue());
 		} else {
-			BaseTestSoftAssert.assertTrue(false, "Health Information Transmitted event not present");
+			assertTrue(false, "Health Information Transmitted event not present");
 		}
 
 		

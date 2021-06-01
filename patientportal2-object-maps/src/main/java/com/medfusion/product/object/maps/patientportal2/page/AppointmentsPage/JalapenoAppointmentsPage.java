@@ -1,5 +1,7 @@
-//Copyright 2013-2020 NXGN Management, LLC. All Rights Reserved.
+//Copyright 2013-2021 NXGN Management, LLC. All Rights Reserved.
 package com.medfusion.product.object.maps.patientportal2.page.AppointmentsPage;
+
+import static org.testng.Assert.assertTrue;
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -11,7 +13,6 @@ import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.FindBy;
 import org.openqa.selenium.support.How;
-import org.testng.Assert;
 
 import com.intuit.ifs.csscat.core.utils.Log4jUtil;
 import com.medfusion.common.utils.IHGUtil;
@@ -82,15 +83,6 @@ public class JalapenoAppointmentsPage extends MedfusionPage {
 				}
 		}
 
-		private ArrayList<WebElement> getBasicAppointmentsPageElements() {
-				ArrayList<WebElement> webElementsList = new ArrayList<WebElement>();
-				webElementsList.add(upcomingAppointmentsButton);
-				webElementsList.add(pastAppointmentsButton);
-				webElementsList.add(previousAppointmentsRequestsButton);
-				webElementsList.add(appointmentSolutionButton);
-				return webElementsList;
-		}
-
 		public boolean assessAppointmentsPageElementsNoAppointments() {
 				if (!areBasicPageElementsPresent()) {
 						return false;
@@ -108,7 +100,11 @@ public class JalapenoAppointmentsPage extends MedfusionPage {
 			Boolean status = false;
 			
 			for(int i =0;i<appointmentList.size();i++){
-				String XPath = "(//ul[contains(@class, 'myAccountList')]//div[@class='row'])["+(i+1)+"]";				
+				String XPath = "(//ul[contains(@class, 'myAccountList')]//div[@class='row'])["+(i+1)+"]";
+				
+				Log4jUtil.log("Row "+(i+1)+" Date " +driver.findElement(By.xpath(XPath+"//div[@class='col-sm-6 col-md-6 ng-binding'][1]")).getText());
+				Log4jUtil.log("Row "+(i+1)+" Time " +driver.findElement(By.xpath(XPath+"//div[@class='col-sm-6 col-md-6 ng-binding'][2]")).getText());
+				
 				if(driver.findElement(By.xpath(XPath+"//div[@class='col-sm-6 col-md-6 ng-binding'][1]")).getText().contains(appointmentDate) &&
 						driver.findElement(By.xpath(XPath+"//div[@class='col-sm-6 col-md-6 ng-binding'][2]")).getText().contains(appointmentTime)){	
 					Log4jUtil.log("Actual Date "+driver.findElement(By.xpath(XPath+"//div[@class='col-sm-6 col-md-6 ng-binding'][1]")).getText());
@@ -141,7 +137,7 @@ public class JalapenoAppointmentsPage extends MedfusionPage {
 						}
 				}
 			}
-			Assert.assertTrue(status, "Booked Appointment is not deleted");
+			assertTrue(status, "Booked Appointment is not deleted");
 			return status;			
 		}
 }

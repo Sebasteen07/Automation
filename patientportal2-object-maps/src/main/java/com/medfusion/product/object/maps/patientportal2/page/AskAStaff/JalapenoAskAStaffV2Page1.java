@@ -1,4 +1,4 @@
-//Copyright 2013-2020 NXGN Management, LLC. All Rights Reserved.
+//Copyright 2013-2021 NXGN Management, LLC. All Rights Reserved.
 package com.medfusion.product.object.maps.patientportal2.page.AskAStaff;
 
 import org.openqa.selenium.By;
@@ -12,18 +12,16 @@ import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.openqa.selenium.support.ui.Select;
 import org.openqa.selenium.support.ui.WebDriverWait;
 
-import com.medfusion.common.utils.IHGConstants;
 import com.medfusion.common.utils.IHGUtil;
 import com.medfusion.product.object.maps.patientportal2.page.JalapenoMenu;
 import com.medfusion.product.patientportal2.pojo.CreditCard;
 import com.medfusion.product.patientportal2.pojo.CreditCard.CardType;
 
-import static com.intuit.ifs.csscat.core.BaseTestSoftAssert.assertTrue;
+import static org.testng.Assert.assertTrue;
 
 import java.awt.AWTException;
 import java.awt.Robot;
 import java.awt.Toolkit;
-import java.awt.datatransfer.Clipboard;
 import java.awt.datatransfer.StringSelection;
 import java.awt.event.KeyEvent;
 import java.util.ArrayList;
@@ -134,10 +132,10 @@ public class JalapenoAskAStaffV2Page1 extends JalapenoMenu {
 	@FindBy(how = How.ID, using = "attachments_error")
 	private WebElement fileUploadErrorMsg;
 	
-	@FindBy(how = How.XPATH, using = "(//span[@class='btn btn-default form-control ui-select-toggle'])[1]")
+	@FindBy(how = How.XPATH, using = "(//div[@class='ng-select-container ng-has-value'])[1]")
 	private WebElement LocationDropDown;
 	
-	@FindBy(how = How.XPATH, using = "(//span[@class='btn btn-default form-control ui-select-toggle'])[2]")
+	@FindBy(how = How.XPATH, using = "(//div[@class='ng-select-container'])[1]")
 	private WebElement ProviderDropDown;
 
 	private long createdTS;
@@ -494,12 +492,12 @@ public class JalapenoAskAStaffV2Page1 extends JalapenoMenu {
 		log("Selecting Location "+LocationName);
 		LocationDropDown.click();
 		Thread.sleep(4000);
-		driver.findElement(By.xpath("//div[contains(text(),'"+LocationName+"')]")).click();
+		driver.findElement(By.xpath("(//*[contains(text(),'"+LocationName+"')])[2]")).click();
 		Thread.sleep(4000);			
 		log("Selecting Provider "+ProviderName);
 		ProviderDropDown.click();
 		Thread.sleep(4000);
-		driver.findElement(By.xpath("//div[contains(text(),'"+ProviderName+"')]")).click();
+		driver.findElement(By.xpath("//*[contains(text(),'"+ProviderName+"')]")).click();
 		Thread.sleep(4000);	
 		log("Entering Question "+question);
 		questionBox.sendKeys(question);

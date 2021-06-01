@@ -1,10 +1,12 @@
-// Copyright 2018-2020 NXGN Management, LLC. All Rights Reserved.
+// Copyright 2013-2021 NXGN Management, LLC. All Rights Reserved.
 package com.medfusion.product.object.maps.patientportal2.page.PrescriptionsPage;
+
+import static org.testng.Assert.assertEquals;
+import static org.testng.Assert.assertTrue;
 
 import java.util.List;
 
 import org.openqa.selenium.By;
-import org.openqa.selenium.NoSuchElementException;
 import org.openqa.selenium.StaleElementReferenceException;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
@@ -15,17 +17,15 @@ import org.openqa.selenium.support.PageFactory;
 import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.openqa.selenium.support.ui.Select;
 
-import com.intuit.ifs.csscat.core.TestConfig;
+
 import com.intuit.ifs.csscat.core.utils.Log4jUtil;
 import com.medfusion.common.utils.IHGUtil;
 import com.medfusion.common.utils.PropertyFileLoader;
-import com.medfusion.portal.utils.PortalConstants;
 import com.medfusion.product.object.maps.patientportal2.page.JalapenoMenu;
 import com.medfusion.product.object.maps.patientportal2.page.HomePage.JalapenoHomePage;
 import com.medfusion.product.patientportal2.pojo.CreditCard;
 import com.medfusion.product.patientportal2.pojo.CreditCard.CardType;
-
-import junit.framework.Assert;
+import com.medfusion.product.patientportal2.utils.JalapenoConstants;
 
 public class JalapenoPrescriptionsPage extends JalapenoMenu {
 
@@ -143,6 +143,12 @@ public class JalapenoPrescriptionsPage extends JalapenoMenu {
 	@FindBy(how = How.XPATH, using = "//input[@name='pharmacyPanel:radioGroup']")
 	public WebElement PharmacyRadioButton;
 
+	@FindBy(how = How.XPATH, using = "//*[@id='rxrenewalform']/div[3]/div[2]/div")
+	public WebElement providerLocation;
+
+	@FindBy(how = How.XPATH, using = "//*[@id=\"rxrenewalform\"]/div[4]/div[2]/div")
+	public WebElement practiceProvider;
+
 	public JalapenoPrescriptionsPage(WebDriver driver) {
 		super(driver);
 		IHGUtil.PrintMethodName();
@@ -250,16 +256,15 @@ public class JalapenoPrescriptionsPage extends JalapenoMenu {
 		} else {
 			log("No Add another Medication button");
 		}
-		
 		jse.executeScript("window.scrollBy(0,350)", "");
 		IHGUtil.waitForElement(driver, 20, medicationNameField);
 		log("Step 4: Insert Medication Details");
-		medicationNameField.sendKeys(PortalConstants.MedicationName + "" + createdTs);
-		medicationDosage.sendKeys(PortalConstants.Dosage);
-		medicationQuantity.sendKeys(PortalConstants.Quantity);
-		numberOfRefills.sendKeys(PortalConstants.No_Of_Refills);
-		prescriptionNumber.sendKeys(PortalConstants.Prescription_No);
-		additionalInformation.sendKeys(PortalConstants.Additional_Info);
+		medicationNameField.sendKeys(JalapenoConstants.MEDICATION_NAME + "" + createdTs);
+		medicationDosage.sendKeys(JalapenoConstants.DOSAGE);
+		medicationQuantity.sendKeys(JalapenoConstants.QUANTITY);
+		numberOfRefills.sendKeys(JalapenoConstants.NO_OF_REFILLS);
+		prescriptionNumber.sendKeys(JalapenoConstants.PRESCRIPTION_NO);
+		additionalInformation.sendKeys(JalapenoConstants.ADDITIONAL_INFO);
 
 		log("Step 5: Insert Pharmacy Details");
 		jse.executeScript("window.scrollBy(0,200)", "");
@@ -308,7 +313,7 @@ public class JalapenoPrescriptionsPage extends JalapenoMenu {
 					.getText();
 			if (medicationName.contains(productName)) {
 				Log4jUtil.log("Deleted medications is still visible on the Prescription page");
-				Assert.assertTrue(!medicationName.contains(productName));
+				assertTrue(!medicationName.contains(productName));
 				break;
 			} else {
 				continue;
@@ -330,7 +335,7 @@ public class JalapenoPrescriptionsPage extends JalapenoMenu {
 		while (itr.hasNext()) {
 			WebElement ele = itr.next();
 			if (ele.getText().equalsIgnoreCase(pharmacy)) {
-				Assert.assertEquals(ele.getText(), pharmacy);
+				assertEquals(ele.getText(), pharmacy);
 				log("Pharamacy is visible on Portal");
 				break;
 			} else {
@@ -346,7 +351,7 @@ public class JalapenoPrescriptionsPage extends JalapenoMenu {
 		log("Get text value from Choose from a list textbox");
 		String textValue = textValueFromChooseFromAList.getText();
 		if (textValue.equalsIgnoreCase(pharmacy)) {
-			Assert.assertEquals(textValue, pharmacy);
+			assertEquals(textValue, pharmacy);
 			log("Pharamacy is visible on Portal");
 		} else {
 			log("Pharamacy is not visible on Portal");
@@ -499,7 +504,7 @@ public class JalapenoPrescriptionsPage extends JalapenoMenu {
 			WebElement ele = itr.next();
 			if (ele.getText().contains(pharmacy)) {
 				log("Deleted Pharmacy is visible on the Portal");
-				Assert.assertTrue(!ele.getText().contains(pharmacy));
+				assertTrue(!ele.getText().contains(pharmacy));
 				break;
 			} else {
 				continue;
@@ -520,9 +525,34 @@ public class JalapenoPrescriptionsPage extends JalapenoMenu {
 		}
 		if (textValue.contains(pharmacy)) {
 			log("Deleted Pharmacy is visible on the Portal");
-			Assert.assertTrue(!textValue.contains(pharmacy));
+			assertTrue(!textValue.contains(pharmacy));
 		} else {
 			log("Pharamacy is not visible on Portal");
 		}
+	}
+
+	public String getPracticeProvider(WebDriver driver) {
+		IHGUtil.PrintMethodName();
+		String env = IHGUtil.getEnvironmentType().toString();
+		if (env == "DEV3") {
+			driver.switchTo().defaultContent();
+			driver.switchTo().frame("iframebody");
+		} else {
+			log("getting Practice Provider");
+		}
+		String PracticeProvider = practiceProvider.getText();
+		return PracticeProvider;
+	}
+
+	public String getPracticeLocation(WebDriver driver) {
+		IHGUtil.PrintMethodName();
+		String env = IHGUtil.getEnvironmentType().toString();
+		if (env == "DEV3") {
+			driver.switchTo().frame("iframebody");
+		} else {
+			log("getting Practice Location");
+		}
+		String ProviderLocation = providerLocation.getText();
+		return ProviderLocation;
 	}
 }

@@ -1,6 +1,7 @@
+//  Copyright 2013-2021 NXGN Management, LLC. All Rights Reserved.
 package com.medfusion.rcm.service;
 
-import org.junit.Assert;
+import static org.testng.Assert.*;
 
 import com.intuit.ihg.common.utils.WebPoster;
 import com.medfusion.common.utils.IHGUtil;
@@ -15,10 +16,10 @@ public class StatementService {
 
         WebPoster poster = new WebPoster();
                 
-        Assert.assertNotNull( 
+        assertNotNull( 
                 "### PropertyFileLoader loaded a null base statement mfss post url", 
                 testData.getProperty("mfssPostEndpoint"));
-        Assert.assertNotNull( 
+        assertNotNull( 
                 "### PatientInfo supplied a null memberId", 
                 patInfo.memberId); 
         String url = testData.getProperty("mfssPostEndpoint") + patInfo.memberId + "/statements";
@@ -42,10 +43,10 @@ public class StatementService {
 
         WebPoster poster = new WebPoster();
                 
-        Assert.assertNotNull( 
+        assertNotNull( 
                 "### PropertyFileLoader loaded a null base statement mfis post url", 
                 testData.getProperty("mfisPostEndpoint"));
-        Assert.assertNotNull( 
+        assertNotNull( 
                 "### PatientInfo supplied a null memberId", 
                 patInfo.memberId); 
         String url = testData.getProperty("mfisPostEndpoint") + patInfo.memberId + "/statements";

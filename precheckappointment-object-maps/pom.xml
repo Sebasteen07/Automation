@@ -2,34 +2,34 @@
   <modelVersion>4.0.0</modelVersion>
   <parent>
     <groupId>com.intuit.ihg</groupId>
-    <artifactId>ihg-depot-qa-parent-pom</artifactId>
-    <version>21.2.0</version>
+    <artifactId>ihg-depot-parent-pom</artifactId>
+    <version>21.3.0</version>
   </parent>
   <groupId>com.intuit.ihg</groupId>
   <artifactId>precheckAppointment-object-maps</artifactId>
   <packaging>jar</packaging>
   <name>precheckAppointment-object-maps</name>	
   
-  <repositories>
-	<repository>
-		<id>IHG-nexus</id>
-		<name>IHG-nexus</name>
-		<url>http://maven.qhg.local/nexus/content/groups/qhg-dev/</url>
-	</repository>
-  </repositories>
-  <properties>
-  <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
-	<ihg.version>21.2.0</ihg.version>
-  </properties>
+	<repositories>
+		<repository>
+			<id>IHG-nexus</id>
+			<name>IHG-nexus</name>
+			<url>http://maven.qhg.local/nexus/content/groups/qhg-dev/</url>
+		</repository>
+	</repositories>
+	<properties>
+		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+		<ihg.version>21.3.0</ihg.version>
+	</properties>
 
-  <dependencies>
-	<dependency>
- 		<groupId>com.intuit.ihg</groupId>
- 		<artifactId>qa-automation-utils</artifactId>
- 		<version>${ihg.version}</version>
- 	</dependency>
-  </dependencies>
-  <build>
+	<dependencies>
+		<dependency>
+			<groupId>com.intuit.ihg</groupId>
+			<artifactId>qa-automation-utils</artifactId>
+			<version>${ihg.version}</version>
+		</dependency>
+	</dependencies>
+	<build>
 		<plugins>
 			<plugin>
 				<groupId>org.apache.maven.plugins</groupId>
@@ -53,5 +53,5 @@
 				</configuration>
 			</plugin>
 		</plugins>
-	</build>	
+	</build>
 </project>

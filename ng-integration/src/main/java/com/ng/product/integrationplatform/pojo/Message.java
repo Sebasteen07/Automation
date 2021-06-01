@@ -39,6 +39,8 @@ private List<Attachment> attachments = null;
 private Boolean isBulk =false;
 private List<String> reportNames = null;
 
+private String rootThreadId;
+
 public String getId() {
 return id;
 }
@@ -245,5 +247,13 @@ return reportNames;
 
 public void setReportNames(List<String> reportNames) {
 this.reportNames = reportNames;
+}
+
+public String getRootThreadId() {
+return rootThreadId;
+}
+
+public void setRootThreadId(String rootThreadId) {
+this.rootThreadId = rootThreadId;
 }
 }

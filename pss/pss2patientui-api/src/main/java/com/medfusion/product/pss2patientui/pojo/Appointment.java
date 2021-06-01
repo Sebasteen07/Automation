@@ -68,6 +68,16 @@ public class Appointment {
 	private String underAgePatientUserName;
 	private String underAgePatientPassword;
 
+	private String firstNameCarePatient;
+	private String lastNameCarePatient;
+	private String dobCarePatient;
+	private String genderCarePatient;
+
+	private String emailCarePatient;
+	private String phoneCarePatient;
+	private String zipCarePatient;
+	private String careProvider;
+
 	private Boolean isCancelApt = true;
 	private Boolean isInsuranceEnabled = false;
 
@@ -78,7 +88,6 @@ public class Appointment {
 	private int leadtimeHour;
 	private int leadtimeMinute;
 
-
 	private String currentDate;
 	private String currentTimeZone;
 	private String businesshourStartTime;
@@ -86,10 +95,18 @@ public class Appointment {
 	private String maxperDay;
 	private String gmailUserName;
 	private String linkProvider;
+	private String linkLocation;
+
+	public String getLinkLocation() {
+		return linkLocation;
+	}
+
+	public void setLinkLocation(String linkLocation) {
+		this.linkLocation = linkLocation;
+	}
+
 	private String ageRuleMonthFirst;
 	private String ageRuleMonthSecond;
-
-	
 
 	private Boolean isCancelButtonPresent;
 
@@ -108,9 +125,25 @@ public class Appointment {
 	private String baseurl_LocationRule;
 	private String baseurl_AvailableSlots;
 	private String baseurl_ScheduleAppointment;
-	private String baseurl_AppointmentType;
 
-	private String urlAnonymous;
+	private String baseurl_APT;
+
+	private String practiceId;
+	private String basicURI;
+	private String practiceDisplayName;
+	private String patientId;
+
+	private String startDateTime;
+	private String endDateTime;
+	private String apptid;
+	private String slotStartTime;
+	private String slotEndTime;
+	
+	
+	//for REST Assured
+    private String accessTokenURL;
+    private String accessToken;    
+
 	private String urlAnonymousNG;
 	private boolean isAnonymousFlow = false;
 	private boolean isinsuranceVisible = false;
@@ -118,11 +151,10 @@ public class Appointment {
 	private boolean resourcetoggleStatus = false;
 	private boolean accepttoggleStatus = false;
 
-
 	private boolean showCancellationRescheduleReason = false;
 	private boolean showCancellationReasonPM = false;
 	private boolean isFutureApt = false;
-
+	private boolean pcptoggleState = false;
 
 	public Appointment(String providerConfig, String usernameConfig, String passwordConfig, String datetimeConfig, String locationConfig,
 			String appointmentConfig, String specialityConfig) {
@@ -136,6 +168,179 @@ public class Appointment {
 	}
 
 	public Appointment() {}
+		
+	public String getSlotStartTime() {
+		return slotStartTime;
+	}
+
+	public void setSlotStartTime(String slotStartTime) {
+		this.slotStartTime = slotStartTime;
+	}
+
+	public String getSlotEndTime() {
+		return slotEndTime;
+	}
+
+	public void setSlotEndTime(String slotEndTime) {
+		this.slotEndTime = slotEndTime;
+	}
+
+	public String getApptid() {
+		return apptid;
+	}
+
+	public void setApptid(String apptid) {
+		this.apptid = apptid;
+	}
+
+	public String getStartDateTime() {
+		return startDateTime;
+	}
+
+	public void setStartDateTime(String startDateTime) {
+		this.startDateTime = startDateTime;
+	}
+
+	public String getEndDateTime() {
+		return endDateTime;
+	}
+
+	public void setEndDateTime(String endDateTime) {
+		this.endDateTime = endDateTime;
+	}
+
+	public String getAccessTokenURL() {
+		return accessTokenURL;
+	}
+
+	public void setAccessTokenURL(String accessTokenURL) {
+		this.accessTokenURL = accessTokenURL;
+	}
+
+	public String getAccessToken() {
+		return accessToken;
+	}
+
+	public void setAccessToken(String accessToken) {
+		this.accessToken = accessToken;
+	}
+
+	public String getBasicURI() {
+		return basicURI;
+	}
+
+	public void setBasicURI(String basicURI) {
+		this.basicURI = basicURI;
+	}
+	
+	
+	public String getBaseurl_APT() {
+		return baseurl_APT;
+	}
+
+	public void setBaseurl_APT(String baseurl_APT) {
+		this.baseurl_APT = baseurl_APT;
+	}
+
+	public String getGenderCarePatient() {
+		return genderCarePatient;
+	}
+
+	public void setGenderCarePatient(String genderCarePatient) {
+		this.genderCarePatient = genderCarePatient;
+	}
+
+	public String getCareProvider() {
+		return careProvider;
+	}
+
+	public void setCareProvider(String careProvider) {
+		this.careProvider = careProvider;
+	}
+
+	public String getFirstNameCarePatient() {
+		return firstNameCarePatient;
+	}
+
+	public void setFirstNameCarePatient(String firstNameCarePatient) {
+		this.firstNameCarePatient = firstNameCarePatient;
+	}
+
+	public String getLastNameCarePatient() {
+		return lastNameCarePatient;
+	}
+
+	public void setLastNameCarePatient(String lastNameCarePatient) {
+		this.lastNameCarePatient = lastNameCarePatient;
+	}
+
+	public String getDobCarePatient() {
+		return dobCarePatient;
+	}
+
+	public void setDobCarePatient(String dobCarePatient) {
+		this.dobCarePatient = dobCarePatient;
+	}
+
+	public String getEmailCarePatient() {
+		return emailCarePatient;
+	}
+
+	public void setEmailCarePatient(String emailCarePatient) {
+		this.emailCarePatient = emailCarePatient;
+	}
+
+	public String getPhoneCarePatient() {
+		return phoneCarePatient;
+	}
+
+	public void setPhoneCarePatient(String phoneCarePatient) {
+		this.phoneCarePatient = phoneCarePatient;
+	}
+
+	public String getZipCarePatient() {
+		return zipCarePatient;
+	}
+
+	public void setZipCarePatient(String zipCarePatient) {
+		this.zipCarePatient = zipCarePatient;
+	}
+
+	public boolean isPcptoggleState() {
+		return pcptoggleState;
+	}
+
+	public void setPcptoggleState(boolean pcptoggleState) {
+		this.pcptoggleState = pcptoggleState;
+	}
+
+	public String getPatientId() {
+		return patientId;
+	}
+
+	public void setPatientId(String patientId) {
+		this.patientId = patientId;
+	}
+
+	private String urlAnonymous;
+
+	public String getPracticeDisplayName() {
+		return practiceDisplayName;
+	}
+
+	public void setPracticeDisplayName(String practiceDisplayName) {
+		this.practiceDisplayName = practiceDisplayName;
+	}
+
+
+
+	public String getPracticeId() {
+		return practiceId;
+	}
+
+	public void setPracticeId(String practiceId) {
+		this.practiceId = practiceId;
+	}
 
 	public String getPopUpMessege() {
 		return popUpMessege;
@@ -161,8 +366,6 @@ public class Appointment {
 		this.ageRuleMonthSecond = ageRuleMonthSecond;
 	}
 
-	
-	
 	public boolean isFutureApt() {
 		return isFutureApt;
 	}
@@ -187,7 +390,6 @@ public class Appointment {
 		this.accepttoggleStatus = accepttoggleStatus;
 	}
 
-
 	public String getGmailUserName() {
 		return gmailUserName;
 	}
@@ -195,7 +397,6 @@ public class Appointment {
 	public void setGmailUserName(String gmailUserName) {
 		this.gmailUserName = gmailUserName;
 	}
-
 
 	public String getMaxperDay() {
 		return maxperDay;
@@ -267,14 +468,6 @@ public class Appointment {
 
 	public void setBaseurl_ScheduleAppointment(String baseurl_ScheduleAppointment) {
 		this.baseurl_ScheduleAppointment = baseurl_ScheduleAppointment;
-	}
-
-	public String getBaseurl_AppointmentType() {
-		return baseurl_AppointmentType;
-	}
-
-	public void setBaseurl_AppointmentType(String baseurl_AppointmentType) {
-		this.baseurl_AppointmentType = baseurl_AppointmentType;
 	}
 
 	public boolean isShowCancellationRescheduleReason() {

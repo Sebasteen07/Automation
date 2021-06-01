@@ -1,6 +1,9 @@
 package com.intuit.ihg.product.forms.test;
 
 import static com.intuit.ihg.product.forms.test.Utils.loginPI;
+import static org.testng.Assert.assertEquals;
+import static org.testng.Assert.assertFalse;
+import static org.testng.Assert.assertTrue;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -23,7 +26,7 @@ import com.medfusion.product.object.maps.forms.page.FiltersFormPages;
 import com.medfusion.product.object.maps.forms.page.HealthFormListPage;
 import com.medfusion.product.object.maps.patientportal2.page.HomePage.JalapenoHomePage;
 import com.medfusion.product.object.maps.patientportal2.page.MyAccountPage.JalapenoMyAccountProfilePage;
-import com.medfusion.product.patientportal2.utils.PortalUtil;
+import com.medfusion.product.patientportal2.utils.PortalUtil2;
 
 public class Portal2FormsAcceptanceTests extends FormsAcceptanceTestsUtils {
 		private PropertyFileLoader testData;
@@ -34,7 +37,7 @@ public class Portal2FormsAcceptanceTests extends FormsAcceptanceTestsUtils {
 		//@BeforeMethod(alwaysRun = true, onlyForGroups = "commonPIpatient")
 		private void createCommonPatient() throws Exception {
 				if (patient == null) {
-						String username = PortalUtil.generateUniqueUsername(testData.getProperty("userid"), testData);
+						String username = PortalUtil2.generateUniqueUsername(testData.getProperty("userid"), testData);
 						String url = testData.getUrl();
 						patient = Utils.createPatientPI(driver, username, url, testData);
 				}
@@ -71,9 +74,9 @@ public class Portal2FormsAcceptanceTests extends FormsAcceptanceTestsUtils {
 				homePage = loginPI(driver, PracticeType.SECONDARY, patient.getUsername(), patient.getPassword(), testData);
 				assertTrue(homePage.areMenuElementsPresent());
 				JalapenoMyAccountProfilePage pMyAccountPage = homePage.clickOnAccount().clickOnEditMyAccount();
-				assertEquals(pMyAccountPage.getDOByear(), Integer.valueOf(patient.getDOBYear()));
-				assertEquals(pMyAccountPage.getDOBmonth(), Integer.valueOf(patient.getDOBMonth()));
-				assertEquals(pMyAccountPage.getDOBday(), Integer.valueOf(patient.getDOBDay()));
+				assertEquals(pMyAccountPage.getDOByear(), patient.getDOBYear());
+				assertEquals(pMyAccountPage.getDOBmonth(), patient.getDOBMonth());
+				assertEquals(pMyAccountPage.getDOBday(), patient.getDOBDay());
 		}
 
 		@Test(groups = {"Forms"})

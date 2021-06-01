@@ -1,5 +1,8 @@
-// Copyright 2018-2021 NXGN Management, LLC. All Rights Reserved.
+// Copyright 2013-2021 NXGN Management, LLC. All Rights Reserved.
 package com.intuit.ihg.product.integrationplatform.utils;
+
+import static org.testng.Assert.assertNotNull;
+import static org.testng.Assert.assertTrue;
 
 import java.io.BufferedReader;
 import java.io.FileReader;
@@ -12,18 +15,18 @@ import java.util.StringTokenizer;
 import javax.xml.parsers.ParserConfigurationException;
 
 import org.openqa.selenium.WebDriver;
-import org.testng.Assert;
+
 import org.xml.sax.SAXException;
 
 import com.intuit.ifs.csscat.core.utils.Log4jUtil;
 import com.intuit.ihg.product.integrationplatform.pojo.PIDCInfo;
 import com.intuit.ihg.product.integrationplatform.pojo.PatientDetail;
 import com.medfusion.common.utils.Mailinator;
-import com.medfusion.portal.utils.PortalConstants;
 import com.medfusion.product.object.maps.patientportal2.page.CreateAccount.AuthUserLinkAccountPage;
 import com.medfusion.product.object.maps.patientportal2.page.CreateAccount.PatientVerificationPage;
 import com.medfusion.product.object.maps.patientportal2.page.CreateAccount.SecurityDetailsPage;
 import com.medfusion.product.object.maps.patientportal2.page.HomePage.JalapenoHomePage;
+import com.medfusion.product.patientportal2.utils.JalapenoConstants;
 
 public class PatientRegistrationUtils {
 	public static void registerPatient(String activationUrl, String EmailID, String PatientPassword, String SecretQuestion, String SecretAnswer,
@@ -40,7 +43,7 @@ public class PatientRegistrationUtils {
 
 		Log4jUtil.log("Step 7: Detecting if Home Page is opened");
 		Thread.sleep(2000);
-		Assert.assertTrue(jalapenoHomePage.isHomeButtonPresent(driver));
+		assertTrue(jalapenoHomePage.isHomeButtonPresent(driver));
 
 		Log4jUtil.log("Logging out");
 		Thread.sleep(9000);
@@ -61,7 +64,7 @@ public class PatientRegistrationUtils {
 				accountDetailsPage1.fillAccountDetailsAndContinue(EmailID, PatientPassword, SecretQuestion, SecretAnswer, RegisterTelephone);
 		Log4jUtil.log("Step 7: Detecting if Home Page is opened");
 		Thread.sleep(7000);
-		Assert.assertTrue(jalapenoHomePage.isHomeButtonPresent(driver));
+		assertTrue(jalapenoHomePage.isHomeButtonPresent(driver));
 
 		Log4jUtil.log("Logging out");
 		Thread.sleep(9000);
@@ -177,19 +180,19 @@ public class PatientRegistrationUtils {
 			String processingUrl = RestUtils.setupHttpPostRequest(testData.getRestUrl_20(), patient, testData.getResponsePath());
 
 			Boolean completed = checkMessageProcessingOntime(processingUrl, testData.getResponsePath());
-			Assert.assertTrue(completed, "Message processing was not completed in time");
+			assertTrue(completed, "Message processing was not completed in time");
 
 			Mailinator mail = new Mailinator();
 
 			for (int i = 0; i < Integer.parseInt(testData.getBatchSize()); i++) {
 				Thread.sleep(15000);
 				Log4jUtil.log("Patient No: " + (i + 1));
-				Log4jUtil.log(payloadObj.emailGroup.get(i) + "   :    " + PortalConstants.NewPatientActivationMessage + "     :   "
-						+ PortalConstants.NewPatientActivationMessageLinkText);
-				String activationUrl = mail.getLinkFromEmail(payloadObj.emailGroup.get(i), PortalConstants.NewPatientActivationMessage,
-						PortalConstants.NewPatientActivationMessageLinkText, 40);
+				Log4jUtil.log(payloadObj.emailGroup.get(i) + "   :    " + JalapenoConstants.NEW_PATIENT_ACTIVATION_MESSAGE + "     :   "
+						+ JalapenoConstants.NEW_PATIENT_ACTIVATION_MESSAGE_LINK_TEXT);
+				String activationUrl = mail.getLinkFromEmail(payloadObj.emailGroup.get(i), JalapenoConstants.NEW_PATIENT_ACTIVATION_MESSAGE,
+						JalapenoConstants.NEW_PATIENT_ACTIVATION_MESSAGE_LINK_TEXT, 40);
 				Log4jUtil.log("Step 4: Moving to the link obtained from the email message");
-				Assert.assertNotNull(activationUrl, "Error: Activation link not found.");
+				assertNotNull(activationUrl, "Error: Activation link not found.");
 
 
 				if (portalVersion.contains("2.0")) {
@@ -225,19 +228,19 @@ public class PatientRegistrationUtils {
 			String processingUrl = RestUtils.setupHttpPostRequest(testData.getRestUrl_20(), patient, testData.getResponsePath());
 
 			Boolean completed = checkMessageProcessingOntime(processingUrl, testData.getResponsePath());
-			Assert.assertTrue(completed, "Message processing was not completed in time");
+			assertTrue(completed, "Message processing was not completed in time");
 
 			Mailinator mail = new Mailinator();
 
 			for (int i = 0; i < Integer.parseInt(testData.getBatchSize()); i++) {
 				Thread.sleep(15000);
 				Log4jUtil.log("Patient No: " + (i + 1));
-				Log4jUtil.log(payloadObj.emailGroup.get(i) + "   :    " + PortalConstants.NewPatientActivationMessage + "     :   "
-						+ PortalConstants.NewPatientActivationMessageLinkText);
-				String activationUrl = mail.getLinkFromEmail(payloadObj.emailGroup.get(i), PortalConstants.NewPatientActivationMessage,
-						PortalConstants.NewPatientActivationMessageLinkText, 40);
+				Log4jUtil.log(payloadObj.emailGroup.get(i) + "   :    " + JalapenoConstants.NEW_PATIENT_ACTIVATION_MESSAGE + "     :   "
+						+ JalapenoConstants.NEW_PATIENT_ACTIVATION_MESSAGE_LINK_TEXT);
+				String activationUrl = mail.getLinkFromEmail(payloadObj.emailGroup.get(i), JalapenoConstants.NEW_PATIENT_ACTIVATION_MESSAGE,
+						JalapenoConstants.NEW_PATIENT_ACTIVATION_MESSAGE_LINK_TEXT, 40);
 				Log4jUtil.log("Step 4: Moving to the link obtained from the email message");
-				Assert.assertNotNull(activationUrl, "Error: Activation link not found.");
+				assertNotNull(activationUrl, "Error: Activation link not found.");
 
 
 				if (portalVersion.contains("2.0")) {

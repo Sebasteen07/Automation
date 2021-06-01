@@ -1,4 +1,4 @@
-// Copyright 2013-2020 NXGN Management, LLC. All Rights Reserved.
+// Copyright 2013-2021 NXGN Management, LLC. All Rights Reserved.
 package com.medfusion.product.object.maps.patientportal2.page.MyAccountPage;
 
 import java.util.ArrayList;
@@ -22,12 +22,12 @@ import org.openqa.selenium.support.ui.WebDriverWait;
 
 import com.medfusion.common.utils.IHGUtil;
 import com.medfusion.pojos.Patient;
-import com.medfusion.product.patientportal2.utils.PortalUtil;
+import com.medfusion.product.patientportal2.utils.PortalUtil2;
 
 public class JalapenoMyAccountProfilePage extends JalapenoMyAccountPage {
-	public static final List<String> GENDER_IDENTITY_LIST = Collections.unmodifiableList(Arrays.asList(" Male ", " Female ",
-			" Transgender female/Trans woman/Male-to-female (MTF) ", " Transgender male/Trans man/Female-to-male (FTM) ",
-			" Genderqueer, neither exclusively male nor female ", " Additional gender category/(or other) "));
+	public static final List<String> GENDER_IDENTITY_LIST = Collections.unmodifiableList(Arrays.asList("Male", "Female",
+			"Transgender female/Trans woman/Male-to-female (MTF)", "Transgender male/Trans man/Female-to-male (FTM)",
+			"Genderqueer, neither exclusively male nor female", "Additional gender category/(or other)"));
 
 	@FindBy(how = How.XPATH, using = "//input[@id='address1']")
 	private WebElement address1Textbox;
@@ -113,7 +113,7 @@ public class JalapenoMyAccountProfilePage extends JalapenoMyAccountPage {
 		return getDOBmonth() + "/" + getDOBday() + "/" + getDOByear();
 	}
 
-	public boolean checkExtendedGenderQuestion() throws NoSuchElementException {
+	public boolean checkExtendedGenderQuestion() throws NoSuchElementException, InterruptedException {
 		// String genderValue = "";
 		new Select(ethnicity).selectByIndex(1);
 		new Select(race).selectByIndex(1);
@@ -127,7 +127,9 @@ public class JalapenoMyAccountProfilePage extends JalapenoMyAccountPage {
 			Select genderQuestionSelect = new Select(genderQuestion);
 			try {
 				log("Checking gender value: " + genderValue);
+				Thread.sleep(2000);
 				genderQuestionSelect.selectByVisibleText(genderValue);
+				Thread.sleep(2000);
 				log("Value " + genderValue + " is verified.");
 				javascriptClick(saveMyChanges);
 				IHGUtil.waitForElement(driver, 30, genderQuestion);
@@ -255,8 +257,8 @@ public class JalapenoMyAccountProfilePage extends JalapenoMyAccountPage {
 		itemsToChange.put(address1Textbox, "address");
 		itemsToChange.put(cityTextbox, "city");
 		itemsToChange.put(zipCodeTextbox, "54321");
-		itemsToChange.put(race, " White ");
-		itemsToChange.put(ethnicity, " Hispanic or Latino ");
+		itemsToChange.put(race, "White");
+		itemsToChange.put(ethnicity, "Hispanic or Latino");
 
 		return updateAndValidateWebElements(itemsToChange, saveAccountChanges);
 	}
@@ -325,7 +327,7 @@ public class JalapenoMyAccountProfilePage extends JalapenoMyAccountPage {
 		select.selectByIndex(i);
 		WebElement option = select.getFirstSelectedOption();
 		changeValue = option.getText();
-		saveMyChanges.click();
+		javascriptClick(saveMyChanges);
 		return changeValue;
 	}
 
@@ -354,7 +356,7 @@ public class JalapenoMyAccountProfilePage extends JalapenoMyAccountPage {
 
 			break;
 		}
-		saveMyChanges.click();
+		javascriptClick(saveMyChanges);
 		return changeValue;
 	}
 
@@ -399,6 +401,6 @@ public class JalapenoMyAccountProfilePage extends JalapenoMyAccountPage {
 
 	public void addInsuranceLink() {
 		IHGUtil.PrintMethodName();
-		PortalUtil.setPortalFrame(driver);
+		PortalUtil2.setPortalFrame(driver);
 	}
 }

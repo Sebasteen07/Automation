@@ -15,6 +15,7 @@ import com.medfusion.product.object.maps.pss2.page.CancelReason.ManageCancelReas
 import com.medfusion.product.object.maps.pss2.page.Location.ManageLocation;
 import com.medfusion.product.object.maps.pss2.page.Login.PSS2AdminLogin;
 import com.medfusion.product.object.maps.pss2.page.Resource.ManageResource;
+import com.medfusion.product.object.maps.pss2.page.Specialty.ManageSpecialty;
 import com.medfusion.product.object.maps.pss2.page.settings.AccessRules;
 import com.medfusion.product.object.maps.pss2.page.settings.AdminAppointment;
 import com.medfusion.product.object.maps.pss2.page.settings.AdminPatientMatching;
@@ -91,7 +92,8 @@ public class PSSAdminUtils {
 				accessrule.selectLLExistingPatient();
 			}
 		}
-		// Log4jUtil.log("------------Set OTP Settings off for loginless flow----------");
+		// Log4jUtil.log("------------Set OTP Settings off for loginless
+		// flow----------");
 		// if (accessrule.isEnableOTPSelected().equalsIgnoreCase("true")) {
 		// Log4jUtil.log("Status of EnableOTP is " + accessrule.isEnableOTPSelected());
 		// accessrule.clickEnableOTP();
@@ -144,10 +146,10 @@ public class PSSAdminUtils {
 		Log4jUtil.log("Status of Enable Anonymous Flow = " + accessrule.isEnableAnonymousSelected());
 		Log4jUtil.log("Status of Display Privacy policy = " + accessrule.isDisplayPrivacypolicyAnonymous());
 		Log4jUtil.log("Status of Allow Duplicate Patient " + accessrule.isAllowDuplicatePatientAnonymous());
-		
-		//OTP code will require in future release so commenting the code
-		//Log4jUtil.log("Status of Enable OTP " + accessrule.isEnableOtpAnonymous());
-		
+
+		// OTP code will require in future release so commenting the code
+		// Log4jUtil.log("Status of Enable OTP " + accessrule.isEnableOtpAnonymous());
+
 		if (urlToUse.equalsIgnoreCase(PSSConstants.LOGINLESS)) {
 			Log4jUtil.log("PSS Patient URL : " + accessrule.getLoginlessURL());
 			testData.setUrlLoginLess(accessrule.getLoginlessURL());
@@ -311,6 +313,38 @@ public class PSSAdminUtils {
 		Log4jUtil.log("--------------------------------WAIT FOR RULE BLT TO BE ADDED--------------------------------");
 	}
 
+	public void setRulesNoSpecialitySet3(PatientFlow patientflow) throws InterruptedException {
+		patientflow.removeAllRules();
+		Log4jUtil.log("-----------------------------------------------------------------------------------------");
+		patientflow.addNewRulesButton();
+		patientflow.selectRuleName("AppointmentType");
+		patientflow.addNewRules(PSSConstants.RULE_SPECIALITY_VALUE);
+		patientflow.addNewRules(PSSConstants.RULE_APPOINTMENT_VALUE);
+		patientflow.addNewRules(PSSConstants.RULE_PROVIDER_VALUE);
+		patientflow.addNewRules(PSSConstants.RULE_LOCATION_VALUE);
+		patientflow.saveRule();
+		Thread.sleep(8000);
+		Log4jUtil.log("--------------------------------WAIT FOR RULE TBL TO BE ADDED--------------------------------");
+		patientflow.addNewRulesButton();
+		patientflow.selectRuleName("Location");
+		patientflow.addNewRules(PSSConstants.RULE_SPECIALITY_VALUE);
+		patientflow.addNewRules(PSSConstants.RULE_LOCATION_VALUE);
+		patientflow.addNewRules(PSSConstants.RULE_PROVIDER_VALUE);
+		patientflow.addNewRules(PSSConstants.RULE_APPOINTMENT_VALUE);
+		patientflow.saveRule();
+		Thread.sleep(8000);
+		Log4jUtil.log("--------------------------------WAIT FOR RULE LBT TO BE ADDED--------------------------------");
+		patientflow.addNewRulesButton();
+		patientflow.selectRuleName("Provider");
+		patientflow.addNewRules(PSSConstants.RULE_SPECIALITY_VALUE);
+		patientflow.addNewRules(PSSConstants.RULE_PROVIDER_VALUE);
+		patientflow.addNewRules(PSSConstants.RULE_LOCATION_VALUE);
+		patientflow.addNewRules(PSSConstants.RULE_APPOINTMENT_VALUE);
+		patientflow.saveRule();
+		Thread.sleep(8000);
+		Log4jUtil.log("--------------------------------WAIT FOR RULE BLT TO BE ADDED--------------------------------");
+	}
+
 	public void setInsuranceState(WebDriver driver, AdminUser adminuser) throws Exception {
 		PSS2PracticeConfiguration psspracticeConfig = loginToAdminPortal(driver, adminuser);
 		PatientFlow patientflow = psspracticeConfig.gotoPatientFlowTab();
@@ -361,7 +395,7 @@ public class PSSAdminUtils {
 		Log4jUtil.log("Verify the Cancel Settings in ADMIN TAB");
 		boolean cancel1 = adminAppointment.isShowCancellationRescheduleReason();
 		Log4jUtil.log("verifying the settings of Cancel/Reschedule Reason : " + cancel1);
-		Thread.sleep(1000);
+		Thread.sleep(2000);
 		if (cancel1) {
 			Log4jUtil.log("Cancel/Reschedule Reason ALREADY turned ON..");
 			testData.setShowCancellationRescheduleReason(cancel1);
@@ -495,6 +529,7 @@ public class PSSAdminUtils {
 		PatientFlow patientflow = psspracticeConfig.gotoPatientFlowTab();
 		adminuser.setRule(patientflow.getRule());
 		Log4jUtil.log("rule= " + patientflow.getRule());
+		setRulesNoSpecialitySet1(patientflow);
 		appointment.setResourcetoggleStatus(patientflow.resourcetoggleStatus());
 		Log4jUtil.log("Resource is Enabled= " + patientflow.resourcetoggleStatus());
 		if (patientflow.resourcetoggleStatus() == false) {
@@ -575,7 +610,7 @@ public class PSSAdminUtils {
 		Thread.sleep(2000);
 		LinkTab linkTab = psspracticeConfig.linksTab();
 		linkTab.searchLinkandRemove(testData.getLinkProvider());
-		linkTab.addLink(testData.getLocation(), testData.getLinkProvider());
+		linkTab.addLink(testData.getLinkLocation(), testData.getLinkProvider());
 		linkTab.getURL(testData.getLinkProvider());
 		testData.setUrlLinkGen(linkTab.getURL(testData.getLinkProvider()));
 		PatientFlow patientflow = psspracticeConfig.gotoPatientFlowTab();
@@ -591,7 +626,7 @@ public class PSSAdminUtils {
 		Thread.sleep(2000);
 		LinkTab linkTab = psspracticeConfig.linksTab();
 		linkTab.searchLinkandRemove(testData.getLinkProvider());
-		linkTab.addLink(testData.getLocation(), testData.getLinkProvider());
+		linkTab.addLink(testData.getLinkLocation(), testData.getLinkProvider());
 		linkTab.getURL(testData.getLinkProvider());
 		testData.setUrlLinkGen(linkTab.getURL(testData.getLinkProvider()));
 		linkTab.searchLinkandRemove(testData.getLinkProvider());
@@ -618,5 +653,66 @@ public class PSSAdminUtils {
 		Log4jUtil.log("Status of Checkbox" + manageResource.checkBoxStatus());
 		manageResource.ageRule();
 		manageResource.ageRuleparameter(appointment.getAgeRuleMonthFirst(), appointment.getAgeRuleMonthSecond());
+	}
+
+	public void allowpcp(WebDriver driver, AdminUser adminuser, Appointment appointment) throws Exception {
+		Log4jUtil.log("Step 2: Login to Admin portal.");
+		PSS2PracticeConfiguration pss2practiceconfig = loginToAdminPortal(driver, adminuser);
+		AdminAppointment adminappointment = pss2practiceconfig.gotoAdminAppointmentTab();
+
+		Log4jUtil.log("Step 3: Clicking to Appointment tab.");
+		adminappointment.areBasicPageElementsPresent();
+
+		Log4jUtil.log("Step 4: Checking the Enable care Team and Force Care Team is ON/OFF and set configuration accordingly.");
+		adminappointment.toggleAllowPCPONOF();
+		appointment.setPcptoggleState(adminappointment.toggleAllowPCPONOF());
+		Log4jUtil.log("Status of PCP is " + appointment.isPcptoggleState());
+		if (appointment.isPcptoggleState() == false) {
+			Log4jUtil.log("Status of PCP  OFF");
+			adminappointment.pcptoggleclick();
+			Log4jUtil.log("Status of PCP  OFF and Clicked on ON");
+		} else {
+			Log4jUtil.log("Status of PCP is Already ON");
+		}
+
+		PatientFlow patientflow = pss2practiceconfig.gotoPatientFlowTab();
+		adminuser.setRule(patientflow.getRule());
+		Log4jUtil.log("rule= " + patientflow.getRule());
+		setRulesNoSpecialitySet1(patientflow);
+		AdminPatientMatching adminpatientmatching = patientflow.gotoPatientMatchingTab();
+		adminpatientmatching.patientMatchingSelection();
+		ManageResource manageResource = pss2practiceconfig.gotoResource();
+		pageRefresh(driver);
+		manageResource.selectResource(appointment.getProvider());
+		Log4jUtil.log("is share patient ON for resource " + manageResource.isSharedPatientTrueForResource());
+		if (manageResource.isSharedPatientTrueForResource() == true) {
+			manageResource.clickShareToggle();
+		} else {
+			Log4jUtil.log("Share Patient is already OFF");
+		}
+
+	}
+
+	public void genderRule(WebDriver driver, AdminUser adminuser, Appointment appointment) throws Exception {
+		Log4jUtil.log("Step 2: Login to Admin portal.");
+		PSS2PracticeConfiguration pss2practiceconfig = loginToAdminPortal(driver, adminuser);
+		PatientFlow patientflow = pss2practiceconfig.gotoPatientFlowTab();
+		adminuser.setRule(patientflow.getRule());
+		Log4jUtil.log("rule= " + patientflow.getRule());
+		setRulesNoSpecialitySet3(patientflow);
+		AdminPatientMatching adminpatientmatching = patientflow.gotoPatientMatchingTab();
+		adminpatientmatching.patientMatchingSelection();
+		adminpatientmatching.gendermap();
+		adminpatientmatching.allToggleGendermap();
+		ManageSpecialty manageSpecialty = pss2practiceconfig.gotoSpeciality();
+		manageSpecialty.selectSpecility(appointment.getSpeciality());
+		manageSpecialty.isgenderRuleTrue();
+		Log4jUtil.log("Gender Rule Status  " + manageSpecialty.isgenderRuleTrue());
+		if (manageSpecialty.isgenderRuleTrue() == false) {
+			manageSpecialty.clickGender();
+		}
+		manageSpecialty.selectgender();
+
+
 	}
 }

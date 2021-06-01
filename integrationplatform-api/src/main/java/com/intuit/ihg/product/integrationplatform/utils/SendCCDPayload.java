@@ -1,6 +1,7 @@
+//Copyright 2013-2021 NXGN Management, LLC. All Rights Reserved.
 package com.intuit.ihg.product.integrationplatform.utils;
 
-
+import static org.testng.Assert.assertTrue;
 
 import java.io.BufferedReader;
 import java.io.FileReader;
@@ -19,7 +20,7 @@ import javax.xml.transform.stream.StreamResult;
 
 import org.apache.commons.lang.RandomStringUtils;
 import org.apache.commons.lang.StringEscapeUtils;
-import org.testng.Assert;
+
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 import org.xml.sax.SAXException;
@@ -29,8 +30,8 @@ import com.intuit.ihg.product.integrationplatform.pojo.EHDCInfo;
 public class SendCCDPayload {
 
 	static String output;
-	public static String ccdMessageID = "";
-	public static String CcdXmlString = "";
+	public static String ccdMessageID;
+	public static String CcdXmlString;
 
 	public static String getCCDPayload(EHDCInfo testData) throws InterruptedException, IOException, SAXException {
 		try {
@@ -172,13 +173,13 @@ public class SendCCDPayload {
 			output = writer.toString();
 		} catch (ParserConfigurationException pce) {
 			pce.printStackTrace();
-			Assert.assertTrue(false, "ParserConfigurationException: Issue while parsing the xml");
+			assertTrue(false, "ParserConfigurationException: Issue while parsing the xml");
 		} catch (TransformerException tfe) {
 			tfe.printStackTrace();
-			Assert.assertTrue(false, "TransformerException: Issue while Transforming the dom");
+			assertTrue(false, "TransformerException: Issue while Transforming the dom");
 		} catch (NullPointerException NPE) {
 			NPE.printStackTrace();
-			Assert.assertTrue(false, "Check if all input values are defined");
+			assertTrue(false, "Check if all input values are defined");
 		}
 		return output;
 	}

@@ -1,5 +1,5 @@
+// Copyright 2013-2021 NXGN Management, LLC. All Rights Reserved.
 package com.intuit.ihg.product.sitegen.utils;
-
 
 import java.awt.AWTException;
 import java.awt.Robot;
@@ -116,7 +116,7 @@ public class SitegenlUtil extends IHGUtil {
 	// driver.manage()
 	// .timeouts()
 	// .implicitlyWait(
-	// SitegenConstants.SELENIUM_IMPLICIT_WAIT_SECONDS,
+	// IHGConstants.SELENIUM_IMPLICIT_WAIT_SECONDS,
 	// TimeUnit.SECONDS);
 	// try{
 	// logout.click();

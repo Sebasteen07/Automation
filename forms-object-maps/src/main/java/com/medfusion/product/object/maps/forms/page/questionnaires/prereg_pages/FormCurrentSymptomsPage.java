@@ -1,3 +1,4 @@
+//  Copyright 2013-2021 NXGN Management, LLC. All Rights Reserved.
 package com.medfusion.product.object.maps.forms.page.questionnaires.prereg_pages;
 
 import org.openqa.selenium.By;
@@ -8,8 +9,8 @@ import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.openqa.selenium.support.ui.WebDriverWait;
 
 import com.medfusion.common.utils.IHGUtil;
-import com.medfusion.portal.utils.PortalUtil;
 import com.medfusion.product.object.maps.forms.page.questionnaires.PortalFormPage;
+import com.medfusion.product.patientportal2.utils.PortalUtil2;
 
 public class FormCurrentSymptomsPage extends PortalFormPage {
 
@@ -68,18 +69,18 @@ public class FormCurrentSymptomsPage extends PortalFormPage {
 	 * @throws Exception
 	 */
 	public void setNoSymptoms() throws Exception {
-		PortalUtil.PrintMethodName();
+		PortalUtil2.PrintMethodName();
 		noSymptoms.click();
 	}
 
 	public void setNoMaleSymptoms() throws Exception {
-		PortalUtil.PrintMethodName();
+		PortalUtil2.PrintMethodName();
 		scrollAndWait(0, 0, 500);
 		noMaleSymptoms.click();
 	}
 	
 	public void setNoFemaleSymptoms() throws Exception {
-		PortalUtil.PrintMethodName();
+		PortalUtil2.PrintMethodName();
 		scrollAndWait(0, 0, 500);
 		noFemaleSymptoms.click();
 	}

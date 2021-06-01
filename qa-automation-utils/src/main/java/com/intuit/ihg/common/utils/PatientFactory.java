@@ -1,8 +1,9 @@
+//  Copyright 2013-2021 NXGN Management, LLC. All Rights Reserved.
 package com.intuit.ihg.common.utils;
 
+import com.medfusion.common.utils.IHGUtil;
 import com.medfusion.common.utils.PropertyFileLoader;
 import com.medfusion.pojos.Patient;
-import com.medfusion.portal.utils.PortalUtil;
 
 public class PatientFactory {
 
@@ -10,7 +11,7 @@ public class PatientFactory {
 				Patient patient = new Patient();
 				patient.setUsername(username);
 				patient.setEmail(username + "@mailinator.com");
-				patient.setFirstName(testData.getProperty("FirstName") + PortalUtil.createRandomNumber());
+				patient.setFirstName(testData.getProperty("FirstName") + IHGUtil.createRandomNumber());
 				patient.setLastName(testData.getProperty("LastName"));
 				patient.setPassword(testData.getProperty("password"));
 				patient.setGender(Patient.GenderExtended.MALE); //TODO

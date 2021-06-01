@@ -30,6 +30,9 @@ public class Provider extends PSS2MainPage {
 			xpath = "//*[@class='col-sm-6 col-xs-12 provider-width-btn'or @class='btn providerimage-btn handle-text-Overflow outer-div'or @class='btn providerimage-btn handle-text-Overflow outer-div ']")})
 	private List<WebElement> providerList;
 
+	@FindAll({@FindBy(xpath = "//div[@id='providerwizard']/div/a/div/span")})
+	private List<WebElement> providerList1;
+
 	@FindAll({@FindBy(xpath = "//body/div[@id='root']/div[1]/div[1]/div[1]/div[4]/div[2]/div[2]/a[1]/div[1]/div[2]")})
 	private WebElement providerNextavaliable;
 
@@ -38,6 +41,9 @@ public class Provider extends PSS2MainPage {
 
 	@FindAll({@FindBy(css = ".providerImage-width")})
 	private List<WebElement> providerImages;
+
+	@FindAll({@FindBy(xpath = "//div[@class='inner-div']/span")})
+	private List<WebElement> providernameLink;
 
 	public Provider(WebDriver driver) {
 		super(driver);
@@ -121,6 +127,27 @@ public class Provider extends PSS2MainPage {
 		return providerList;
 	}
 
+	public String getProviderNamesfromProviderList(String providerName) {
+		searchForProvider.clear();
+		searchForProvider.sendKeys(providerName.trim());
+		log("providerList = " + providerList.size());
+		ArrayList<WebElement> webElementsList = new ArrayList<WebElement>();
+		webElementsList.add(providerList.get(0));
+		String provider = providerList.get(0).getText();
+		log("First provider is" + provider);
+		return provider;
+	}
+
+	public void getProvider(String providerName) {
+		log("in select Provider from providerList" + providerName);
+		for (int i = 0; i < providerList.size(); i++) {
+			log(providerList.get(i).getText() + " match " + providerList.get(i).getText().equalsIgnoreCase(providerName));
+			if (providerList.get(i).getText().trim().equalsIgnoreCase(providerName.trim())) {
+				providerList.get(i).click();
+			}
+		}
+	}
+
 	public AppointmentDateTime searchForProviderFromList(String providerName) throws InterruptedException {
 		searchForProvider.sendKeys(providerName.trim());
 		log("providerList = " + providerList.size());
@@ -132,10 +159,30 @@ public class Provider extends PSS2MainPage {
 		return PageFactory.initElements(driver, AppointmentDateTime.class);
 	}
 
+
+	public AppointmentDateTime getProviderandClick(String providerName) throws InterruptedException {
+		log("in select Provider from providerList" + providerName);
+		log("Size is " + providerList.size());
+		Thread.sleep(1000);
+		for (int i = 0; i < providerList.size(); i++) {
+			log(providerList.get(i).getText() + " match " + providerList.get(i).getText().contains(providerName));
+			if (providerList.get(i).getText().trim().contains(providerName.trim())) {
+				CommonMethods.highlightElement(providerList.get(i));
+				IHGUtil.waitForElement(driver, 13, providerList.get(i));
+				providerList.get(i).click();
+				log("Clicked on Provider");
+				return PageFactory.initElements(driver, AppointmentDateTime.class);
+			}
+		}
+		return PageFactory.initElements(driver, AppointmentDateTime.class);
+	}
+
+
+
 	public int searchForProviderFromListt(String providerName) throws InterruptedException {
 		searchForProvider.sendKeys(providerName);
 		log("providerList = " + providerList.size());
-		Thread.sleep(6000);
+		Thread.sleep(1000);
 		return providerList.size();
 	}
 
@@ -147,7 +194,6 @@ public class Provider extends PSS2MainPage {
 		CommonMethods.highlightElement(providerList.get(0));
 		providerList.get(0).click();
 		log("Clicked on the Provider ");
-
 		return PageFactory.initElements(driver, AppointmentDateTime.class);
 	}
 

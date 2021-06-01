@@ -1,4 +1,4 @@
-//  Copyright 2013-2020 NXGN Management, LLC. All Rights Reserved.
+//  Copyright 2013-2021 NXGN Management, LLC. All Rights Reserved.
 package com.intuit.ihg.product.practice.test;
 
 import org.testng.annotations.BeforeClass;
@@ -21,7 +21,16 @@ import com.medfusion.product.practice.api.utils.PracticeConstants;
 import com.medfusion.product.practice.api.utils.PracticeUtil;
 import com.medfusion.product.practice.api.utils.ReadFilePath;
 import com.medfusion.product.practice.tests.VirtualCardSwiperTest;
+import com.medfusion.qa.mailinator.Email;
+import com.medfusion.qa.mailinator.Mailer;
+import com.medfusion.product.object.maps.patientportal2.page.ForgotPasswordPage.JalapenoForgotPasswordPage4;
+import com.medfusion.product.object.maps.patientportal2.page.HomePage.JalapenoHomePage;
+
+import static org.testng.Assert.*;
+
 import java.io.IOException;
+import java.time.Instant;
+import java.time.temporal.ChronoUnit;
 
 public class PracticePortalAcceptanceTests extends BaseTestNGWebDriver {
 
@@ -316,7 +325,7 @@ public class PracticePortalAcceptanceTests extends BaseTestNGWebDriver {
 		PayMyBillOnlinePage pPayMyBillOnlinePage = pPracticeHomePage.clickMakePaymentForPatient();
 
 		logStep("Search For Patient");
-		pPayMyBillOnlinePage.searchForPatient();
+		pPayMyBillOnlinePage.searchForPatient(PracticeConstants.PATIENT_FIRST_NAME, PracticeConstants.PATIENT_LAST_NAME);
 
 		logStep("Set Patient Transaction Fields");
 		pPayMyBillOnlinePage.setPatientTransactionFields();
@@ -507,4 +516,66 @@ public class PracticePortalAcceptanceTests extends BaseTestNGWebDriver {
 		assertTrue(pPayMyBillOnlinePage.getAdjustedAmount().equals("$" + adjustedAmountRefund + ".00"));
 
 	}
-}
+	
+	@Test(enabled = true, groups = { "AcceptanceTests" }, retryAnalyzer = RetryAnalyzer.class)
+	public void testSendPasswordResetEmail() throws Exception {
+		Instant passwordResetStart = Instant.now();
+		logStep("Login to Practice Portal");
+		PracticeLoginPage practiceLogin = new PracticeLoginPage(driver, testData.getUrl());
+		PracticeHomePage pPracticeHomePage = practiceLogin.login(testData.getProperty("doctor2Login"),
+				testData.getProperty("doctor2Password"));
+
+		logStep("Click on Patient Search Link");
+		PatientSearchPage pPatientSearchPage = pPracticeHomePage.clickPatientSearchLink();
+
+		logStep("Set Patient Search Fields");
+		pPatientSearchPage.searchForPatientInPatientSearch(testData.getProperty("forgotPasswordFirstName"),
+				testData.getProperty("forgotPasswordLastName"));
+		PatientDashboardPage pPatientDashboardPage = pPatientSearchPage.clickOnPatient(
+				testData.getProperty("forgotPasswordFirstName"), testData.getProperty("forgotPasswordLastName"));
+
+		logStep("Send Password Reset Email to Patient");
+		pPatientSearchPage = pPatientDashboardPage.sendResetPasswordLink();
+
+		logStep("Click Send Email");
+		pPatientDashboardPage = pPatientSearchPage.sendPasswordResetEmail();
+		assertTrue(pPatientDashboardPage.getFeedback().contains("Password reset email sent to Patient"),
+				"No success message on send!");
+		
+		logStep("Access Mailinator and check for Reset Password Link");
+		String[] mailAddress = testData.getProperty("forgotPasswordMail").split("@");
+		String emailSubject = "Help with your user name or password";
+		String inEmail = "Reset Password Now";
+		Email receivedEmail = new Mailer(mailAddress[0]).pollForNewEmailWithSubject(emailSubject, 60,
+				passwordResetStart.until(Instant.now(), ChronoUnit.SECONDS));
+		String resetPasswordLink = Mailer.getLinkByText(receivedEmail, inEmail);
+		System.out.println("Link from mail is" +resetPasswordLink );
+		String url = getRedirectUrl(resetPasswordLink);
+		System.out.println("Redirected url is" +url);
+		assertNotNull(url, "Error: Reset Password link not found.");
+		
+		JalapenoForgotPasswordPage4 forgotPasswordPage = new JalapenoForgotPasswordPage4(driver);
+		JalapenoHomePage homePage= forgotPasswordPage.fillInPassword(testData.getProperty("newPassword"));
+		assertTrue(homePage.areBasicPageElementsPresent());
+	
+	}
+
+	private String getRedirectUrl(String originUrl) {
+		log("Navigating to input URL and checking redirection for 10 seconds");
+		driver.get(originUrl);
+		for (int i = 0; i < 10; i++) {
+			if (!driver.getCurrentUrl().equals(originUrl)) {
+				log("Found redirected URL: " + driver.getCurrentUrl());
+				return driver.getCurrentUrl();
+			}
+			try {
+				Thread.sleep(1000);
+			} catch (InterruptedException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+		}
+		return originUrl;
+	}
+	}
+	

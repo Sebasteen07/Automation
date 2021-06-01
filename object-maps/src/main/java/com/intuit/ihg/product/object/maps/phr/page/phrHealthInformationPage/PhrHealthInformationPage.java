@@ -6,15 +6,14 @@ import java.util.List;
 import java.util.NoSuchElementException;
 import java.util.concurrent.TimeUnit;
 
-import junit.framework.Assert;
-
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.FindBy;
 import org.openqa.selenium.support.PageFactory;
+import static org.testng.Assert.assertTrue;
+import static org.testng.Assert.assertFalse;
 
-import com.intuit.ifs.csscat.core.BaseTestSoftAssert;
 import com.intuit.ifs.csscat.core.pageobject.BasePageObject;
 import com.medfusion.common.utils.IHGUtil;
 import com.intuit.ihg.product.object.maps.phr.page.PhrConditionsAndDiagnosesPage;
@@ -124,9 +123,9 @@ public class PhrHealthInformationPage extends BasePageObject {
 		List<Object> list = IHGUtil.searchResultTable(driver, "//table[@id='custom_table_list_id']/tbody",
 				new ArrayList<String>(Arrays.asList("UroXatral (alfuzosin), Extende...")));
 		if (!list.isEmpty()) {
-			BaseTestSoftAssert.assertTrue(((Boolean) list.get(1)).booleanValue());
+			assertTrue(((Boolean) list.get(1)).booleanValue());
 		} else {
-			BaseTestSoftAssert.assertTrue(false, "Mediaction Not Found");
+			assertTrue(false, "Mediaction Not Found");
 		}
 	}
 
@@ -158,7 +157,7 @@ public class PhrHealthInformationPage extends BasePageObject {
 				}
 			}
 		} catch (NoSuchElementException e) {
-			Assert.assertFalse(visible);
+			assertFalse(visible);
 			log("Medications Not Present in the Table");
 		}
 	}
@@ -281,9 +280,9 @@ public class PhrHealthInformationPage extends BasePageObject {
 		List<Object> list =
 				IHGUtil.searchResultTable(driver, "//table[@id='custom_table_list_id']/tbody", new ArrayList<String>(Arrays.asList("Abdominal Surgery")));
 		if (!list.isEmpty()) {
-			BaseTestSoftAssert.assertTrue(((Boolean) list.get(1)).booleanValue());
+			assertTrue(((Boolean) list.get(1)).booleanValue());
 		} else {
-			BaseTestSoftAssert.assertTrue(false, "Surgery Not Found");
+			assertTrue(false, "Surgery Not Found");
 		}
 	}
 
@@ -334,9 +333,9 @@ public class PhrHealthInformationPage extends BasePageObject {
 		List<Object> list = IHGUtil.searchResultTable(driver, "//table[@id='custom_table_list_id']/tbody",
 				new ArrayList<String>(Arrays.asList("Adenovirus - Type 4, live, ora...")));
 		if (!list.isEmpty()) {
-			BaseTestSoftAssert.assertTrue(((Boolean) list.get(1)).booleanValue());
+			assertTrue(((Boolean) list.get(1)).booleanValue());
 		} else {
-			BaseTestSoftAssert.assertTrue(false, "immunization Not Found");
+			assertTrue(false, "immunization Not Found");
 		}
 	}
 

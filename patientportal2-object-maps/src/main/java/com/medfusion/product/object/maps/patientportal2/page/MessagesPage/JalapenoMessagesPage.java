@@ -1,9 +1,11 @@
-//Copyright 2013-2020 NXGN Management, LLC. All Rights Reserved.
+//Copyright 2013-2021 NXGN Management, LLC. All Rights Reserved.
 package com.medfusion.product.object.maps.patientportal2.page.MessagesPage;
+
+import static org.testng.Assert.assertEquals;
+import static org.testng.Assert.assertTrue;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.concurrent.TimeUnit;
 
 import org.openqa.selenium.By;
 import org.openqa.selenium.JavascriptExecutor;
@@ -14,8 +16,9 @@ import org.openqa.selenium.support.How;
 import org.openqa.selenium.support.PageFactory;
 import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.openqa.selenium.support.ui.WebDriverWait;
-import org.testng.Assert;
 
+
+import com.intuit.ifs.csscat.core.utils.Log4jUtil;
 import com.medfusion.common.utils.IHGUtil;
 import com.medfusion.product.object.maps.patientportal2.page.JalapenoMenu;
 import com.medfusion.product.object.maps.patientportal2.page.CcdPage.JalapenoCcdViewerPage;
@@ -36,8 +39,8 @@ public class JalapenoMessagesPage extends JalapenoMenu {
 
 	@FindBy(how = How.ID, using = "sentFolder")
 	private WebElement sentFolder;
-    
-    @FindBy(how = How.XPATH, using = "//li[@id='archiveFolder']/a")
+
+	@FindBy(how = How.XPATH, using = "//li[@id='archiveFolder']/a")
 	private WebElement archiveFolder;
 
 	@FindBy(how = How.ID, using = "replyButton")
@@ -57,7 +60,7 @@ public class JalapenoMessagesPage extends JalapenoMenu {
 
 	@FindBy(how = How.XPATH, using = "//button[@class='btn btn-default'][2]")
 	private WebElement archiveMessageButton;
-	
+
 	@FindBy(how = How.XPATH, using = "//*[@id=\"messageContainer\"]/div[2]/div[2]/div/span[4]")
 	private WebElement lableSent;
 
@@ -75,24 +78,36 @@ public class JalapenoMessagesPage extends JalapenoMenu {
 
 	@FindBy(xpath = "//div[@class='messageContent']")
 	private WebElement inboxMessageBody;
-	
+
 	@FindBy(how = How.XPATH, using = "//button[@class='btn btn-default'][2]")
 	private WebElement archiveButton;
-	
-	@FindBy(how = How.XPATH, using = "//span[@class='messageFrom ng-binding']")
+
+	@FindBy(how = How.XPATH, using = "//span[@class='messageFrom']")
 	private WebElement senderName;
 
 	private static final int maxCount = 15;
 	private static final String replyContent = "This is response to doctor's message";
-	
+
 	@FindBy(how = How.CSS, using = "span[class='messageSubject']")
 	private WebElement messageSubjectText;
-	
+
 	@FindBy(how = How.ID, using = "messages")
 	private WebElement messageList;
-	
+
 	@FindBy(how = How.XPATH, using = "//button[@class='btn btn-default']/img")
 	private WebElement unArchive;
+
+	@FindBy(how = How.XPATH, using = "//h4[text()=' Your Appointment Details ']")
+	private WebElement yourAppointmentDetails;
+
+	@FindBy(how = How.XPATH, using = "//*[@id='rx_provider0']/span[2]")
+	private WebElement providerNameOnPortal;
+
+	@FindBy(how = How.XPATH, using = "//*[@id='rx_location0']/span[2]")
+	private WebElement locationOnPortal;
+
+	@FindBy(how = How.XPATH, using = "//*[@id='rx_pharmacy0']/span[2]")
+	private WebElement pharmacyOnPortal;
 
 	@Override
 	public boolean areBasicPageElementsPresent() {
@@ -161,7 +176,6 @@ public class JalapenoMessagesPage extends JalapenoMenu {
 		replyButton.click();
 		replyBody.sendKeys(replyContent);
 		Thread.sleep(5000);
-		//sendButton.click();
 		javascriptClick(sendButton);
 		Thread.sleep(5000);
 		boolean value = isElementVisible(successMsg, 10);
@@ -204,14 +218,14 @@ public class JalapenoMessagesPage extends JalapenoMenu {
 		log("Archiving open message, button is displayed? " + archiveMessageButton.isDisplayed());
 		archiveMessageButton.click();
 	}
+
 	public void goToInboxMessage() throws InterruptedException {
 		log("Navigating to Inbox folder");
 		javascriptClick(inboxFolder);
-		WebDriverWait wait= new WebDriverWait(driver, 5);
+		WebDriverWait wait = new WebDriverWait(driver, 5);
 		wait.until(ExpectedConditions.elementToBeClickable(msgSubject));
 		Thread.sleep(5000);
-		}
-	
+	}
 
 	public String returnMessageSentDate() {
 		IHGUtil.PrintMethodName();
@@ -245,28 +259,27 @@ public class JalapenoMessagesPage extends JalapenoMenu {
 	public String getAttachmentPdfFile() {
 		return attachmentPdfFile.getText();
 	}
-	
-	
+
 	public void goToArchivedMessages() throws InterruptedException {
 		log("Navigating to Archived folder");
 		javascriptClick(archiveFolder);
-		WebDriverWait wait= new WebDriverWait(driver, 5);
+		WebDriverWait wait = new WebDriverWait(driver, 5);
 		wait.until(ExpectedConditions.elementToBeClickable(msgSubject));
-		}
-
-    public String returnSubjectMessage() {
-	log("Getting email subject text");
-	return messageSubjectText.getText().toString();
-	
-        }
-	public int MessageCount() throws InterruptedException 
-	{
-		WebElement ul_element = driver.findElement(By.xpath("//ul[@id='messages']"));
-        List<WebElement> li_All = ul_element.findElements(By.tagName("li"));
-        return (li_All.size());      		
-		
 	}
-	
+
+	public String returnSubjectMessage() {
+		log("Getting email subject text");
+		return messageSubjectText.getText().toString();
+
+	}
+
+	public int MessageCount() throws InterruptedException {
+		WebElement ul_element = driver.findElement(By.xpath("//ul[@id='messages']"));
+		List<WebElement> li_All = ul_element.findElements(By.tagName("li"));
+		return (li_All.size());
+
+	}
+
 	public NGCcdViewerPage findNGCcdMessage(WebDriver driver) {
 		IHGUtil.PrintMethodName();
 
@@ -274,140 +287,166 @@ public class JalapenoMessagesPage extends JalapenoMenu {
 
 		return PageFactory.initElements(driver, NGCcdViewerPage.class);
 	}
-	
+
 	public void archiveMessage() throws InterruptedException {
 		IHGUtil.PrintMethodName();
 		IHGUtil.waitForElement(driver, 60, archiveButton);
 		javascriptClick(archiveButton);
 		Thread.sleep(2000);
 	}
-	
-	public void verifyMessageContent(WebDriver driver, String subject,String body) {
+
+	public void verifyMessageContent(WebDriver driver, String subject, String body) {
 		IHGUtil.PrintMethodName();
 		WebElement element;
-		String actualBody =null;
-			try {
-				element = driver.findElement(By.xpath("//*/ul/li/a/span[contains(text(),'" + subject + "')]"));
-				log("Message with subject \"" + subject + "\" displayed. Clicking to message");
-				Thread.sleep(10000);
-				((JavascriptExecutor) driver).executeScript("arguments[0].click();", element);
-				Thread.sleep(10000);
-				actualBody= getMessageBody();
-			} catch (Exception ex) {
-				log("Message with subject " + subject+"is not clickable");
-				log(ex.getMessage());
-			}
-			Assert.assertEquals(actualBody, body);
+		String actualBody = null;
+		try {
+			element = driver.findElement(By.xpath("//*/ul/li/a/span[contains(text(),'" + subject + "')]"));
+			log("Message with subject \"" + subject + "\" displayed. Clicking to message");
+			Thread.sleep(10000);
+			((JavascriptExecutor) driver).executeScript("arguments[0].click();", element);
+			Thread.sleep(10000);
+			actualBody = getMessageBody();
+		} catch (Exception ex) {
+			log("Message with subject " + subject + "is not clickable");
+			log(ex.getMessage());
+		}
+		assertEquals(actualBody, body);
 	}
-	
+
 	public void OpenMessage(WebDriver driver, String subject) {
 		IHGUtil.PrintMethodName();
 		WebElement element;
-			try {
-				element = driver.findElement(By.xpath("//*/ul/li/a/span[contains(text(),'" + subject + "')]"));
-				log("Message with subject \"" + subject + "\" displayed. Clicking to message");
-				Thread.sleep(10000);
-				((JavascriptExecutor) driver).executeScript("arguments[0].click();", element);
-				Thread.sleep(5000);
-			} catch (Exception ex) {
-				log("Message with subject " + subject+"is not clickable");
-				log(ex.getMessage());
-			}
+		try {
+			element = driver.findElement(By.xpath("//*/ul/li/a/span[contains(text(),'" + subject + "')]"));
+			log("Message with subject \"" + subject + "\" displayed. Clicking to message");
+			Thread.sleep(10000);
+			((JavascriptExecutor) driver).executeScript("arguments[0].click();", element);
+			Thread.sleep(5000);
+		} catch (Exception ex) {
+			log("Message with subject " + subject + "is not clickable");
+			log(ex.getMessage());
+		}
 	}
-	
+
 	public void verifyMessageAttachment(WebDriver driver, String attachmentName) {
 		IHGUtil.PrintMethodName();
 		WebElement element;
-		Boolean status= false;
-			try {
-				element = driver.findElement(By.xpath("//a[contains(text(),'" + attachmentName + "')]"));
-				log("Message with subject \"" + attachmentName + "\" displayed. Clicking to message");
-				Thread.sleep(10000);
-				if(element.isDisplayed())
-					status= true;
-			} catch (Exception ex) {
-				log("Message with subject " + attachmentName+"is not clickable");
-				log(ex.getMessage());
-				Assert.assertTrue(status, "Attachment is not found in message");
-			}
+		Boolean status = false;
+		try {
+			element = driver.findElement(By.xpath("//a[contains(text(),'" + attachmentName + "')]"));
+			log("Message with subject \"" + attachmentName + "\" displayed. Clicking to message");
+			Thread.sleep(10000);
+			if (element.isDisplayed())
+				status = true;
+		} catch (Exception ex) {
+			log("Message with subject " + attachmentName + "is not clickable");
+			log(ex.getMessage());
+			assertTrue(status, "Attachment is not found in message");
+		}
 	}
-	
+
 	public Boolean verifyReplyButton(WebDriver driver) {
 		IHGUtil.PrintMethodName();
-		Boolean status= false;
-			try {
-				log("Verify Reply Button should not be displayed");
-				Thread.sleep(5000);
-				if(replyButton.isDisplayed())
-					status= false;
-			} catch (Exception ex) {
-				status= true;
-				log("Reply Button is not displayed");
-				log(ex.getMessage());
-				Assert.assertTrue(status, "Reply Button is not displayed");
-			}
-			return status;
+		Boolean status = false;
+		try {
+			log("Verify Reply Button should not be displayed");
+			Thread.sleep(5000);
+			if (replyButton.isDisplayed())
+				status = false;
+		} catch (Exception ex) {
+			status = true;
+			log("Reply Button is not displayed");
+			log(ex.getMessage());
+			assertTrue(status, "Reply Button is not displayed");
+		}
+		return status;
 	}
-	
-	public Boolean verifySenderInfo(WebDriver driver,String senderFirstName, String senderLastName) {
+
+	public Boolean verifySenderInfo(WebDriver driver, String senderFirstName, String senderLastName) {
 		IHGUtil.PrintMethodName();
-		Boolean status= false;
-			try {
-				log("Verify Sender Name");
-				Thread.sleep(5000);
-				String acutalSenderName = senderName.getText();
-				if((acutalSenderName.contains(senderFirstName))&&((acutalSenderName.contains(senderLastName))))			
-					status= true;
-			} catch (Exception ex) {
-				status= false;
-				log("Sender Name is not correct");
-				log(ex.getMessage());
-			}
-			Assert.assertTrue(status, "Sender Name is not correct");
-			log("Sender Name is correct");
-			return status;
+		Boolean status = false;
+		try {
+			log("Verify Sender Name");
+			Thread.sleep(5000);
+			String acutalSenderName = senderName.getText();
+			if ((acutalSenderName.contains(senderFirstName)) && ((acutalSenderName.contains(senderLastName))))
+				status = true;
+		} catch (Exception ex) {
+			status = false;
+			log("Sender Name is not correct");
+			log(ex.getMessage());
+		}
+		assertTrue(status, "Sender Name is not correct");
+		log("Sender Name is correct");
+		return status;
 	}
+
 	public void verifyPrescriptionResponse(WebDriver driver, String prescritonRenewalResponse) {
 		IHGUtil.PrintMethodName();
 		WebElement element;
-		Boolean status= false;
-			try {
-				element = driver.findElement(By.xpath("//*[contains(text(),'" + prescritonRenewalResponse + "')]"));
-				Thread.sleep(5000);
-				if(element.isDisplayed()){
-					status= true;
-				    log("PrescritonRenewalResponse added by Practice is displayed in Portal");}
-			} catch (Exception ex) {
-				log("PrescritonRenewalResponse added by Practice is not displayed in Portal");
-				log(ex.getMessage());
-				Assert.assertTrue(status, "PrescritonRenewalResponse added by Practice is not displayed in Portal");
+		Boolean status = false;
+		try {
+			element = driver.findElement(By.xpath("//*[contains(text(),'" + prescritonRenewalResponse + "')]"));
+			Thread.sleep(5000);
+			if (element.isDisplayed()) {
+				status = true;
+				log("PrescritonRenewalResponse added by Practice is displayed in Portal");
 			}
+		} catch (Exception ex) {
+			log("PrescritonRenewalResponse added by Practice is not displayed in Portal");
+			log(ex.getMessage());
+			assertTrue(status, "PrescritonRenewalResponse added by Practice is not displayed in Portal");
+		}
 	}
-	
+
 	public void verifyMedicationStatus(WebDriver driver, String renewalStatus) {
 		IHGUtil.PrintMethodName();
 		WebElement element;
-		Boolean status= false;
-			try {
-				element = driver.findElement(By.xpath("//*[contains(text(),'" + renewalStatus + "')]"));
-				Thread.sleep(5000);
-				if(element.isDisplayed()){
-					status= true;
-				    log("Medication status is "+renewalStatus);}
-			} catch (Exception ex) {
-				log("Medication status is not displayed in Prescription renewal message");
-				log(ex.getMessage());
-				Assert.assertTrue(status, "Medication status is not displayed in Prescription renewal message");
-			}}
+		Boolean status = false;
+		try {
+			element = driver.findElement(By.xpath("//*[contains(text(),'" + renewalStatus + "')]"));
+			Thread.sleep(5000);
+			if (element.isDisplayed()) {
+				status = true;
+				log("Medication status is " + renewalStatus);
+			}
+		} catch (Exception ex) {
+			log("Medication status is not displayed in Prescription renewal message");
+			log(ex.getMessage());
+			assertTrue(status, "Medication status is not displayed in Prescription renewal message");
+		}
+	}
 
 	public void clickOnUnArchive() throws InterruptedException {
-			log("Clicking on the unarchive from Archive Tab");
-			WebDriverWait wait= new WebDriverWait(driver, 5);
-			wait.until(ExpectedConditions.elementToBeClickable(unArchive));
-			unArchive.click();
-			
-			
-		
+		log("Clicking on the unarchive from Archive Tab");
+		WebDriverWait wait = new WebDriverWait(driver, 5);
+		wait.until(ExpectedConditions.elementToBeClickable(unArchive));
+		unArchive.click();
+	}
+
+	public void isYourAppointmentDetailsDisplayed(WebDriver driver) throws InterruptedException {
+		IHGUtil.PrintMethodName();
+		Boolean status = false;
+		try {
+			Thread.sleep(5000);
+			if (yourAppointmentDetails.isDisplayed()) {
+				status = true;
+				log("Your Appointment Details is displayed");
+			}
+		} catch (Exception ex) {
+			log("Your Appointment Details is not displayed");
+			log(ex.getMessage());
+			assertTrue(status, "Your Appointment Details is not displayed in massage box");
+		}
+	}
+
+	public void checkProviderDetails(String providerName, String location) {
+		IHGUtil.PrintMethodName();
+		Log4jUtil.log("Searching: Provider Name is: " + providerName + ", and Actual Provider Name is: "
+				+ providerNameOnPortal.getText().toString());
+		Log4jUtil.log("Searching: Provider location is: " + location + ", and Actual Provider location is: "
+				+ locationOnPortal.getText().toString());
+		assertEquals(providerNameOnPortal.getText(), providerName, "Invalid Provider Name was found");
+		assertEquals(locationOnPortal.getText(), location, "Invalid Location was found");
 	}
 }
-

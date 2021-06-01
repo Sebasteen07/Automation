@@ -1,14 +1,16 @@
+//Copyright 2013-2021 NXGN Management, LLC. All Rights Reserved.
 package com.intuit.ihg.product.object.maps.phr.page;
+
+import static org.testng.Assert.assertFalse;
 
 import java.util.List;
 import java.util.NoSuchElementException;
-
-import junit.framework.Assert;
 
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.FindBy;
+
 
 import com.intuit.ifs.csscat.core.pageobject.BasePageObject;
 import com.medfusion.common.utils.IHGUtil;
@@ -118,7 +120,7 @@ public class PhrAlleryPage extends BasePageObject {
 				}
 			}
 		} catch (NoSuchElementException e) {
-			Assert.assertFalse(visible);
+			assertFalse(visible);
 			System.out.println("###No such element is present");
 		}
 	}

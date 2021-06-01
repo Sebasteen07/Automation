@@ -1,9 +1,10 @@
-// Copyright 2020 NXGN Management, LLC. All Rights Reserved.
+// Copyright 2013-2021 NXGN Management, LLC. All Rights Reserved.
 package com.ng.product.integrationplatform.tests;
 
-import static org.testng.Assert.assertNotNull;
+import static org.testng.Assert.*;
 
 import java.io.IOException;
+import java.text.DecimalFormat;
 import java.text.SimpleDateFormat;
 import java.time.Instant;
 import java.time.LocalDate;
@@ -19,12 +20,10 @@ import java.util.List;
 import javax.xml.parsers.ParserConfigurationException;
 
 import org.codehaus.jackson.map.ObjectMapper;
-import org.json.JSONException;
 import org.openqa.selenium.By;
-import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebDriverException;
 import org.openqa.selenium.support.PageFactory;
-import org.testng.Assert;
+
 import org.testng.annotations.BeforeClass;
 import org.testng.annotations.Test;
 import org.xml.sax.SAXException;
@@ -40,8 +39,8 @@ import com.intuit.ihg.product.integrationplatform.utils.PropertyFileLoader;
 import com.intuit.ihg.product.integrationplatform.utils.RestUtils;
 import com.medfusion.common.utils.IHGUtil;
 import com.medfusion.common.utils.Mailinator;
-import com.medfusion.portal.utils.PortalConstants;
 import com.medfusion.product.object.maps.patientportal2.page.JalapenoLoginEnrollment;
+import com.medfusion.product.object.maps.patientportal2.page.JalapenoLoginPage;
 import com.medfusion.product.object.maps.patientportal2.page.NGLoginPage;
 import com.medfusion.product.object.maps.patientportal2.page.AccountPage.JalapenoAccountPage;
 import com.medfusion.product.object.maps.patientportal2.page.AppointmentRequestPage.JalapenoAppointmentRequestV2Step2;
@@ -50,18 +49,25 @@ import com.medfusion.product.object.maps.patientportal2.page.AppointmentRequestP
 import com.medfusion.product.object.maps.patientportal2.page.AppointmentRequestPage.NGAppointmentRequestV2Step1;
 import com.medfusion.product.object.maps.patientportal2.page.AskAStaff.JalapenoAskAStaffV2Page1;
 import com.medfusion.product.object.maps.patientportal2.page.AskAStaff.JalapenoAskAStaffV2Page2;
-import com.medfusion.product.object.maps.patientportal2.page.CcdPage.JalapenoCcdViewerPage;
 import com.medfusion.product.object.maps.patientportal2.page.CcdPage.MedicalRecordSummariesPage;
-import com.medfusion.product.object.maps.patientportal2.page.CcdPage.NGCcdViewerPage;
 import com.medfusion.product.object.maps.patientportal2.page.CreateAccount.AuthUserLinkAccountPage;
 import com.medfusion.product.object.maps.patientportal2.page.CreateAccount.PatientVerificationPage;
 import com.medfusion.product.object.maps.patientportal2.page.CreateAccount.SecurityDetailsPage;
 import com.medfusion.product.object.maps.patientportal2.page.HomePage.JalapenoHomePage;
 import com.medfusion.product.object.maps.patientportal2.page.MessagesPage.JalapenoMessagesPage;
+import com.medfusion.product.object.maps.patientportal2.page.NewPayBillsPage.JalapenoPayBillsConfirmationPage;
+import com.medfusion.product.object.maps.patientportal2.page.NewPayBillsPage.JalapenoPayBillsMakePaymentPage;
 import com.medfusion.product.object.maps.patientportal2.page.PrescriptionsPage.JalapenoPrescriptionsPage;
 import com.medfusion.product.object.maps.practice.page.PracticeHomePage;
 import com.medfusion.product.object.maps.practice.page.PracticeLoginPage;
+import com.medfusion.product.object.maps.practice.page.onlinebillpay.OnlineBillPaySearchPage;
+import com.medfusion.product.object.maps.practice.page.onlinebillpay.PayMyBillOnlinePage;
 import com.medfusion.product.object.maps.practice.page.patientSearch.PatientSearchPage;
+import com.medfusion.product.object.maps.practice.page.virtualCardSwiper.VirtualCardSwiperPage;
+import com.medfusion.product.patientportal2.pojo.CreditCard;
+import com.medfusion.product.patientportal2.pojo.CreditCard.CardType;
+import com.medfusion.product.patientportal2.utils.JalapenoConstants;
+import com.medfusion.product.practice.api.utils.PracticeConstants;
 import com.medfusion.qa.mailinator.Email;
 import com.medfusion.qa.mailinator.Mailer;
 import com.ng.product.integrationplatform.apiUtils.NGAPIUtils;
@@ -92,6 +98,7 @@ public class NGIntegrationE2ESITTests extends BaseTestNGWebDriver{
 	private static final String INVITE_EMAIL_SUBJECT_PATIENT = "You're invited to create a Patient Portal account at ";
 	private static final String WELCOME_EMAIL_SUBJECT_PATIENT = "New Member Confirmation";
 	private static final String WELCOME_EMAIL_BODY_PATTERN_PRACTICE = "Thank you for creating an account with PracticeName";
+	private static final String PAYMENT_SUCCESSFULL_TEXT = "A payment was made for ";
 	
     int arg_timeOut=1800; 
     NGAPIUtils ngAPIUtils;
@@ -125,7 +132,7 @@ public class NGIntegrationE2ESITTests extends BaseTestNGWebDriver{
 		NGAPIUtils.updateLoginDefaultTo("EnterpriseGateway",PropertyLoaderObj.getProperty("NGMainEnterpriseID"), PropertyLoaderObj.getProperty("NGMainPracticeID"));
 		log("Step 1: Create the patient in NG EPM");
 		NewPatient createPatient = NGPatient.patientUsingJSON(PropertyLoaderObj,"");
-		
+		createPatient = NGPatient.addDataToPatientDemographics(PropertyLoaderObj, createPatient);
 		ObjectMapper objMap = new ObjectMapper();
         String requestbody = objMap.defaultPrettyPrintingWriter().writeValueAsString(createPatient);
         log("Request Body is \n" + requestbody);
@@ -135,9 +142,13 @@ public class NGIntegrationE2ESITTests extends BaseTestNGWebDriver{
 		String person_id=ngAPIUtils.setupNGHttpPostRequest("EnterpriseGateway",finalURL,requestbody , 201);
 		log("Step End: Person created with id "+person_id);
 		
+		String locationName = PropertyLoaderObj.getProperty("EPMLocationName");
+		String providerName = PropertyLoaderObj.getProperty("EPMProviderName");
+		NGAPIFlows.addCharttoProvider(locationName,providerName,person_id);
+		
 		log("Step 2: Using Post Enrollment call, Verify the MF agent trigger for new patient");
-		String PostEnrollmentURL = EnterprisebaseURL+ apiRoutes.valueOf("PostEnrollment").getRouteURL().replaceAll("personId", person_id);
-		ngAPIUtils.setupNGHttpPostRequest("EnterpriseGateway",PostEnrollmentURL,"" , 409);
+		String postEnrollmentURL = EnterprisebaseURL+ apiRoutes.valueOf("PostEnrollment").getRouteURL().replaceAll("personId", person_id);
+		ngAPIUtils.setupNGHttpPostRequest("EnterpriseGateway",postEnrollmentURL,"" , 409);
 		log("Step End: MF agent initiate the enrollment automatically");
 		
 		log("Step 3: Verify the enrollment status of patient after initiation of enrollment using Get Enrollment status call");
@@ -198,7 +209,7 @@ public class NGIntegrationE2ESITTests extends BaseTestNGWebDriver{
 
 //		String processingUrl=PropertyLoaderObj.getProcessingURL().replaceAll("integrationID", PropertyLoaderObj.getIntegrationPracticeID()).replaceAll("jobID", jobID.toLowerCase());
 //		Boolean completed = PatientRegistrationUtils.checkMessageProcessingOntime(processingUrl, PropertyLoaderObj.getResponsePath());
-//		Assert.assertTrue(completed, "Message processing was not completed in time");
+//		assertTrue(completed, "Message processing was not completed in time");
 	
 		Thread.sleep(60000);
 		log("Step 8: Verify the processing status of MF agent job after receiving the registration mail");
@@ -246,11 +257,11 @@ public class NGIntegrationE2ESITTests extends BaseTestNGWebDriver{
 		
   		Mailinator mail = new Mailinator();
 			Thread.sleep(15000);
-			Log4jUtil.log(createPatient.getEmailAddress() + "   :    " + PortalConstants.NewPatientActivationMessage + "     :   " + PortalConstants.NewPatientActivationMessageLinkText);
+			Log4jUtil.log(createPatient.getEmailAddress() + "   :    " + JalapenoConstants.NEW_PATIENT_ACTIVATION_MESSAGE + "     :   " + JalapenoConstants.NEW_PATIENT_ACTIVATION_MESSAGE_LINK_TEXT);
 			Thread.sleep(60000);
-			String activationUrl = mail.getLinkFromEmail(createPatient.getEmailAddress(), PortalConstants.NewPatientActivationMessage, PortalConstants.NewPatientActivationMessageLinkText, 80);
+			String activationUrl = mail.getLinkFromEmail(createPatient.getEmailAddress(), JalapenoConstants.NEW_PATIENT_ACTIVATION_MESSAGE, JalapenoConstants.NEW_PATIENT_ACTIVATION_MESSAGE_LINK_TEXT, 80);
 			Log4jUtil.log("Step 10: Moving to the link obtained from the email message");
-			Assert.assertNotNull(activationUrl, "Error: Activation link not found.");
+			assertNotNull(activationUrl, "Error: Activation link not found.");
 			Thread.sleep(20000);
 			String sDate1 = PropertyLoaderObj.getProperty("DOBMonth")+"/"+PropertyLoaderObj.getProperty("DOBDay")+"/"+PropertyLoaderObj.getProperty("DOBYear");
 			log(sDate1);				
@@ -287,17 +298,17 @@ public class NGIntegrationE2ESITTests extends BaseTestNGWebDriver{
 //        CommonUtils.VerifyTwoValues(externalid,"equals",person_nbr.trim().replace("\t", ""));
 //        log("Result: RSDK sent the enrollemnt status to MF agent "+externalid+" person is added to person table in MF agent DB");
 		
-        String GetEnrollmentStatusresponse2 =ngAPIUtils.setupNGHttpGetRequest("EnterpriseGateway",getEnrollmentURL,200);
-		CommonUtils.VerifyTwoValues(CommonUtils.getResponseKeyValue(GetEnrollmentStatusresponse2,"status"),"equals","9"); 
-		CommonUtils.VerifyTwoValues(CommonUtils.getResponseKeyValue(GetEnrollmentStatusresponse2,"statusDescription"),"equals","Completed"); 
-		log("Result: Patient enrollment status is "+CommonUtils.getResponseKeyValue(GetEnrollmentStatusresponse2,"statusDescription"));
+        String getEnrollmentStatusresponse2 =ngAPIUtils.setupNGHttpGetRequest("EnterpriseGateway",getEnrollmentURL,200);
+		CommonUtils.VerifyTwoValues(CommonUtils.getResponseKeyValue(getEnrollmentStatusresponse2,"status"),"equals","9"); 
+		CommonUtils.VerifyTwoValues(CommonUtils.getResponseKeyValue(getEnrollmentStatusresponse2,"statusDescription"),"equals","Completed"); 
+		log("Result: Patient enrollment status is "+CommonUtils.getResponseKeyValue(getEnrollmentStatusresponse2,"statusDescription"));
 		
 		log("Step 16: Verify the enrollment status in pxp_enrollments table");
 		String enrollment_status2 =DBUtils.executeQueryOnDB("NGCoreDB","select enrollment_status from pxp_enrollments where person_id = '"+person_id.trim()+"'");
 		CommonUtils.VerifyTwoValues(enrollment_status2,"equals","9");
 		String processing_status2 =DBUtils.executeQueryOnDB("NGCoreDB","select processing_status from pxp_enrollments where person_id = '"+person_id.trim()+"'");
 		CommonUtils.VerifyTwoValues(processing_status2,"equals","4");
-		log("Step End: Patient enrollment status is "+enrollment_status2+" which is "+CommonUtils.getResponseKeyValue(GetEnrollmentStatusresponse2,"statusDescription"));
+		log("Step End: Patient enrollment status is "+enrollment_status2+" which is "+CommonUtils.getResponseKeyValue(getEnrollmentStatusresponse2,"statusDescription"));
 				
 	}
 	
@@ -364,8 +375,8 @@ public class NGIntegrationE2ESITTests extends BaseTestNGWebDriver{
 		log("person created with id "+person_id);
 		
 		log("Step 2: Using Post Enrollment call, Verify the MF agent should not trigger for new patient");
-		String PostEnrollmentURL = EnterprisebaseURL+ apiRoutes.valueOf("PostEnrollment").getRouteURL().replaceAll("personId", person_id);
-		NGAPIUtils.setupNGHttpPostRequest("EnterpriseGateway",PostEnrollmentURL,"" , 400);
+		String postEnrollmentURL = EnterprisebaseURL+ apiRoutes.valueOf("PostEnrollment").getRouteURL().replaceAll("personId", person_id);
+		NGAPIUtils.setupNGHttpPostRequest("EnterpriseGateway",postEnrollmentURL,"" , 400);
 		log("MF agent doesnot initiate the enrollment automatically");
 		
 		log("Step 3: Verify the enrollment status of patient using Get Enrollment status call");
@@ -394,8 +405,8 @@ public class NGIntegrationE2ESITTests extends BaseTestNGWebDriver{
 		log("person created with id "+person_id);
 		
 		log("Step 2: Using Post Enrollment call, Verify the MF agent should not trigger for new patient");
-		String PostEnrollmentURL = EnterprisebaseURL+ apiRoutes.valueOf("PostEnrollment").getRouteURL().replaceAll("personId", person_id);
-		NGAPIUtils.setupNGHttpPostRequest("EnterpriseGateway",PostEnrollmentURL,"" , 400);
+		String postEnrollmentURL = EnterprisebaseURL+ apiRoutes.valueOf("PostEnrollment").getRouteURL().replaceAll("personId", person_id);
+		NGAPIUtils.setupNGHttpPostRequest("EnterpriseGateway",postEnrollmentURL,"" , 400);
 		log("MF agent doesnot initiate the enrollment automatically");
 		
 		log("Step 3: Verify the enrollment status of patient using Get Enrollment status call");
@@ -413,8 +424,8 @@ public class NGIntegrationE2ESITTests extends BaseTestNGWebDriver{
 		
 		String personId = registerNGPatienttoMFPortal();
 		String person_nbr =DBUtils.executeQueryOnDB("NGCoreDB","select person_nbr from person where person_id = '"+personId.trim()+"'");
-		String PatientFirstName =DBUtils.executeQueryOnDB("NGCoreDB","select first_name from person where person_id = '"+personId.trim()+"'");
-		String PatientLastName =DBUtils.executeQueryOnDB("NGCoreDB","select last_name from person where person_id = '"+personId.trim()+"'");
+		String patientFirstName =DBUtils.executeQueryOnDB("NGCoreDB","select first_name from person where person_id = '"+personId.trim()+"'");
+		String patientLastName =DBUtils.executeQueryOnDB("NGCoreDB","select last_name from person where person_id = '"+personId.trim()+"'");
 		
 		
 		log("Step 17: Login to Practice Portal");
@@ -423,13 +434,13 @@ public class NGIntegrationE2ESITTests extends BaseTestNGWebDriver{
 		log("Click on Search");
 		PatientSearchPage patientSearchPage = practiceHome.clickPatientSearchLink();
 		log("Search for Patient");
-		patientSearchPage.searchForPatientInPatientSearch(PatientFirstName,PatientLastName);
-		patientSearchPage.clickOnPatient(PatientFirstName,PatientLastName);
+		patientSearchPage.searchForPatientInPatientSearch(patientFirstName,patientLastName);
+		patientSearchPage.clickOnPatient(patientFirstName,patientLastName);
 		log("Delete the searched patient");
 		patientSearchPage.deletePatient();
-		patientSearchPage.verifyDeletedPatient(PatientFirstName,PatientLastName);
+		patientSearchPage.verifyDeletedPatient(patientFirstName,patientLastName);
 		
-		VerifyGetPIDCCall(timestamp, person_nbr, PatientFirstName, PatientLastName, "DELETED",PropertyLoaderObj.getIntegrationPracticeID());
+		VerifyGetPIDCCall(timestamp, person_nbr, patientFirstName, patientLastName, "DELETED",PropertyLoaderObj.getIntegrationPracticeID());
 		
 		Thread.sleep(60000);
 		log("Step 18: Verify the enrollment and processing status of patient in pxp enrollment table");	
@@ -455,11 +466,11 @@ public class NGIntegrationE2ESITTests extends BaseTestNGWebDriver{
         
 		log("Step 19: Verify the enrollment status of patient");
 		String getEnrollmentURL =EnterprisebaseURL+ apiRoutes.valueOf("GetEnrollmentStatus").getRouteURL().replaceAll("personId", personId);
-		String GetEnrollmentStatusresponse =NGAPIUtils.setupNGHttpGetRequest("EnterpriseGateway",getEnrollmentURL,200);
+		String getEnrollmentStatusresponse =NGAPIUtils.setupNGHttpGetRequest("EnterpriseGateway",getEnrollmentURL,200);
 		
-		CommonUtils.VerifyTwoValues(CommonUtils.getResponseKeyValue(GetEnrollmentStatusresponse,"status"),"equals","11"); 
-		CommonUtils.VerifyTwoValues(CommonUtils.getResponseKeyValue(GetEnrollmentStatusresponse,"statusDescription"),"equals","Account Deleted"); 
-		log("Step End: Patient enrollment status is "+enrollment_status+" which is "+CommonUtils.getResponseKeyValue(GetEnrollmentStatusresponse,"statusDescription"));
+		CommonUtils.VerifyTwoValues(CommonUtils.getResponseKeyValue(getEnrollmentStatusresponse,"status"),"equals","11"); 
+		CommonUtils.VerifyTwoValues(CommonUtils.getResponseKeyValue(getEnrollmentStatusresponse,"statusDescription"),"equals","Account Deleted"); 
+		log("Step End: Patient enrollment status is "+enrollment_status+" which is "+CommonUtils.getResponseKeyValue(getEnrollmentStatusresponse,"statusDescription"));
 		
 	}
 	
@@ -473,6 +484,7 @@ public class NGIntegrationE2ESITTests extends BaseTestNGWebDriver{
 	log("Step 1: Create the Guardian in NG EPM");
 	NGAPIUtils.updateLoginDefaultTo("EnterpriseGateway",PropertyLoaderObj.getProperty("NGEnterpiseEnrollmentEnterprise1"), PropertyLoaderObj.getProperty("NGEnterprise1Practice1"));
 	NewPatient createPatient = NGPatient.patientUsingJSON(PropertyLoaderObj,"");
+	createPatient = NGPatient.addDataToPatientDemographics(PropertyLoaderObj, createPatient);
 	System.setProperty("ParentEmailAddress", createPatient.getEmailAddress());
 	
 	ObjectMapper objMap = new ObjectMapper();
@@ -484,38 +496,43 @@ public class NGIntegrationE2ESITTests extends BaseTestNGWebDriver{
 	String person_id=NGAPIUtils.setupNGHttpPostRequest("EnterpriseGateway",finalURL,requestbody , 201);
 	log("Step End: Guardian created with id "+person_id);
 	
+	String locationName = PropertyLoaderObj.getProperty("NGE1P1Location");
+	String providerName = PropertyLoaderObj.getProperty("NGE1P1Provider");
+	NGAPIFlows.addCharttoProvider(locationName,providerName,person_id);
+	
 	log("Step 2: Create the Dependent in NG EPM");
 	NewPatient createdependent = NGPatient.patientUsingJSON(PropertyLoaderObj,"Dependent");
-	
+	createdependent = NGPatient.addDataToPatientDemographics(PropertyLoaderObj, createdependent);
     String dependentrequestbody = objMap.defaultPrettyPrintingWriter().writeValueAsString(createdependent);
     log("Dependent Request Body is \n" + dependentrequestbody);
 		
 	String dependentperson_id=NGAPIUtils.setupNGHttpPostRequest("EnterpriseGateway",finalURL,dependentrequestbody , 201);
 	log("Step End: Dependent created with id "+dependentperson_id);
 	
+	NGAPIFlows.addCharttoProvider(locationName,providerName,dependentperson_id);
 	log("Step 3: Using Post Enrollment call, Verify the MF agent trigger for new patient");
-	String PostEnrollmentURL = EnterprisebaseURL+ apiRoutes.valueOf("PostEnrollment").getRouteURL().replaceAll("personId", person_id);
-	NGAPIUtils.setupNGHttpPostRequest("EnterpriseGateway",PostEnrollmentURL,"" , 409);
+	String postEnrollmentURL = EnterprisebaseURL+ apiRoutes.valueOf("PostEnrollment").getRouteURL().replaceAll("personId", person_id);
+	NGAPIUtils.setupNGHttpPostRequest("EnterpriseGateway",postEnrollmentURL,"" , 409);
 	
-	PostEnrollmentURL = EnterprisebaseURL+ apiRoutes.valueOf("PostEnrollment").getRouteURL().replaceAll("personId", dependentperson_id);
-	NGAPIUtils.setupNGHttpPostRequest("EnterpriseGateway",PostEnrollmentURL,"" , 409);
+	postEnrollmentURL = EnterprisebaseURL+ apiRoutes.valueOf("PostEnrollment").getRouteURL().replaceAll("personId", dependentperson_id);
+	NGAPIUtils.setupNGHttpPostRequest("EnterpriseGateway",postEnrollmentURL,"" , 409);
 	
 	log("Step End: MF agent initiate the enrollment automatically");
 
 	log("Step 4: Verify the enrollment status of guardian and dependent");
 	String getEnrollmentURL =EnterprisebaseURL+ apiRoutes.valueOf("GetEnrollmentStatus").getRouteURL().replaceAll("personId", person_id);
-	String GetEnrollmentStatusresponse =NGAPIUtils.setupNGHttpGetRequest("EnterpriseGateway",getEnrollmentURL,200);
+	String getEnrollmentStatusresponse =NGAPIUtils.setupNGHttpGetRequest("EnterpriseGateway",getEnrollmentURL,200);
 	
-	CommonUtils.VerifyTwoValues(CommonUtils.getResponseKeyValue(GetEnrollmentStatusresponse,"status"),"equals","1"); 
-	CommonUtils.VerifyTwoValues(CommonUtils.getResponseKeyValue(GetEnrollmentStatusresponse,"statusDescription"),"equals","Pending"); 
-	log("Step End: Guardian enrollment status is "+CommonUtils.getResponseKeyValue(GetEnrollmentStatusresponse,"statusDescription"));
+	CommonUtils.VerifyTwoValues(CommonUtils.getResponseKeyValue(getEnrollmentStatusresponse,"status"),"equals","1"); 
+	CommonUtils.VerifyTwoValues(CommonUtils.getResponseKeyValue(getEnrollmentStatusresponse,"statusDescription"),"equals","Pending"); 
+	log("Step End: Guardian enrollment status is "+CommonUtils.getResponseKeyValue(getEnrollmentStatusresponse,"statusDescription"));
 	
 	String getEnrollmentURL1 =EnterprisebaseURL+ apiRoutes.valueOf("GetEnrollmentStatus").getRouteURL().replaceAll("personId", dependentperson_id);
-	String GetEnrollmentStatusresponse1 =NGAPIUtils.setupNGHttpGetRequest("EnterpriseGateway",getEnrollmentURL1,200);
+	String getEnrollmentStatusresponse1 =NGAPIUtils.setupNGHttpGetRequest("EnterpriseGateway",getEnrollmentURL1,200);
 	
-	CommonUtils.VerifyTwoValues(CommonUtils.getResponseKeyValue(GetEnrollmentStatusresponse1,"status"),"equals","1"); 
-	CommonUtils.VerifyTwoValues(CommonUtils.getResponseKeyValue(GetEnrollmentStatusresponse1,"statusDescription"),"equals","Pending"); 
-	log("Step End: Dependent enrollment status is "+CommonUtils.getResponseKeyValue(GetEnrollmentStatusresponse1,"statusDescription"));
+	CommonUtils.VerifyTwoValues(CommonUtils.getResponseKeyValue(getEnrollmentStatusresponse1,"status"),"equals","1"); 
+	CommonUtils.VerifyTwoValues(CommonUtils.getResponseKeyValue(getEnrollmentStatusresponse1,"statusDescription"),"equals","Pending"); 
+	log("Step End: Dependent enrollment status is "+CommonUtils.getResponseKeyValue(getEnrollmentStatusresponse1,"statusDescription"));
          
 	log("Step 5: Verify the enrollment and processing status of patient in pxp_enrollment table");
 	String dependentperson_nbr =DBUtils.executeQueryOnDB("NGCoreDB","select person_nbr from person where person_id = '"+dependentperson_id.trim()+"'");
@@ -531,15 +548,15 @@ public class NGIntegrationE2ESITTests extends BaseTestNGWebDriver{
 		Thread.sleep(15000);
 		log("Step 6: Verify the Guardian mail");
 		Thread.sleep(15000);
-		Log4jUtil.log(createPatient.getEmailAddress() + "   :    " + PortalConstants.NewPatientActivationMessage + "     :   " + PortalConstants.NewPatientActivationMessageLinkText);
+		Log4jUtil.log(createPatient.getEmailAddress() + "   :    " + JalapenoConstants.NEW_PATIENT_ACTIVATION_MESSAGE + "     :   " + JalapenoConstants.NEW_PATIENT_ACTIVATION_MESSAGE_LINK_TEXT);
 		Thread.sleep(60000);
-		String activationGuardianUrl = mail.getLinkFromEmail(createPatient.getEmailAddress(), PortalConstants.NewPatientActivationMessage, PortalConstants.NewPatientActivationMessageLinkText, 80);
+		String activationGuardianUrl = mail.getLinkFromEmail(createPatient.getEmailAddress(), JalapenoConstants.NEW_PATIENT_ACTIVATION_MESSAGE, JalapenoConstants.NEW_PATIENT_ACTIVATION_MESSAGE_LINK_TEXT, 80);
 		log("Step End: Guradian mail is received");
 		
 		log("Step 7: Verify the dependent mail");
-		Log4jUtil.log(createdependent.getEmailAddress() + "   :    " + NewDependentActivationMessage + "     :   " + PortalConstants.NewPatientActivationMessageLinkText);
+		Log4jUtil.log(createdependent.getEmailAddress() + "   :    " + NewDependentActivationMessage + "     :   " + JalapenoConstants.NEW_PATIENT_ACTIVATION_MESSAGE_LINK_TEXT);
 		Thread.sleep(60000);
-		String activationDependentUrl = mail.getLinkFromEmail(createdependent.getEmailAddress(), NewDependentActivationMessage, PortalConstants.NewPatientActivationMessageLinkText, 80);
+		String activationDependentUrl = mail.getLinkFromEmail(createdependent.getEmailAddress(), NewDependentActivationMessage, JalapenoConstants.NEW_PATIENT_ACTIVATION_MESSAGE_LINK_TEXT, 80);
 		log("Step End: Dependent mail is received");
 		
 		log("Step 8 : Enroll the Guardian to MedFusion Portal : step 1 - verifying identity");
@@ -613,18 +630,18 @@ public class NGIntegrationE2ESITTests extends BaseTestNGWebDriver{
 		
 		log("Step 17: Verify the enrollment status of guardian and dependent");
 		getEnrollmentURL =EnterprisebaseURL+ apiRoutes.valueOf("GetEnrollmentStatus").getRouteURL().replaceAll("personId", person_id);
-		GetEnrollmentStatusresponse =NGAPIUtils.setupNGHttpGetRequest("EnterpriseGateway",getEnrollmentURL,200);
+		getEnrollmentStatusresponse =NGAPIUtils.setupNGHttpGetRequest("EnterpriseGateway",getEnrollmentURL,200);
 		
-		CommonUtils.VerifyTwoValues(CommonUtils.getResponseKeyValue(GetEnrollmentStatusresponse,"status"),"equals","9"); 
-		CommonUtils.VerifyTwoValues(CommonUtils.getResponseKeyValue(GetEnrollmentStatusresponse,"statusDescription"),"equals","Completed"); 
-		log("Step End: Guardian enrollment status is "+CommonUtils.getResponseKeyValue(GetEnrollmentStatusresponse,"statusDescription"));
+		CommonUtils.VerifyTwoValues(CommonUtils.getResponseKeyValue(getEnrollmentStatusresponse,"status"),"equals","9"); 
+		CommonUtils.VerifyTwoValues(CommonUtils.getResponseKeyValue(getEnrollmentStatusresponse,"statusDescription"),"equals","Completed"); 
+		log("Step End: Guardian enrollment status is "+CommonUtils.getResponseKeyValue(getEnrollmentStatusresponse,"statusDescription"));
 		
 		getEnrollmentURL1 =EnterprisebaseURL+ apiRoutes.valueOf("GetEnrollmentStatus").getRouteURL().replaceAll("personId", dependentperson_id);
-		GetEnrollmentStatusresponse1 =NGAPIUtils.setupNGHttpGetRequest("EnterpriseGateway",getEnrollmentURL1,200);
+		getEnrollmentStatusresponse1 =NGAPIUtils.setupNGHttpGetRequest("EnterpriseGateway",getEnrollmentURL1,200);
 		
-		CommonUtils.VerifyTwoValues(CommonUtils.getResponseKeyValue(GetEnrollmentStatusresponse1,"status"),"equals","9"); 
-		CommonUtils.VerifyTwoValues(CommonUtils.getResponseKeyValue(GetEnrollmentStatusresponse1,"statusDescription"),"equals","Completed"); 
-		log("Step End: Dependent enrollment status is "+CommonUtils.getResponseKeyValue(GetEnrollmentStatusresponse1,"statusDescription"));
+		CommonUtils.VerifyTwoValues(CommonUtils.getResponseKeyValue(getEnrollmentStatusresponse1,"status"),"equals","9"); 
+		CommonUtils.VerifyTwoValues(CommonUtils.getResponseKeyValue(getEnrollmentStatusresponse1,"statusDescription"),"equals","Completed"); 
+		log("Step End: Dependent enrollment status is "+CommonUtils.getResponseKeyValue(getEnrollmentStatusresponse1,"statusDescription"));
 		}
 	
 	@Test(enabled = true, groups = { "acceptance-patientEnrollmentPracticeLevel" }, retryAnalyzer = RetryAnalyzer.class)
@@ -645,26 +662,30 @@ public class NGIntegrationE2ESITTests extends BaseTestNGWebDriver{
 		log("Step 1: Create the Dependent in NG EPM");
 		NGAPIUtils.updateLoginDefaultTo("EnterpriseGateway",PropertyLoaderObj.getProperty("NGMainEnterpriseID"), PropertyLoaderObj.getProperty("NGMainPracticeID"));
 		NewPatient createdependent = NGPatient.patientUsingJSON(PropertyLoaderObj,"Dependent");
-		
+		createdependent = NGPatient.addDataToPatientDemographics(PropertyLoaderObj, createdependent);
 	    String dependentrequestbody = objMap.defaultPrettyPrintingWriter().writeValueAsString(createdependent);
 	    log("Dependent Request Body is \n" + dependentrequestbody);
 			
 		String dependentperson_id=NGAPIUtils.setupNGHttpPostRequest("EnterpriseGateway",finalURL,dependentrequestbody , 201);
 		log("Step End: Dependent created with id "+dependentperson_id);
 		
+		String locationName = PropertyLoaderObj.getProperty("EPMLocationName");
+		String providerName = PropertyLoaderObj.getProperty("EPMProviderName");
+		NGAPIFlows.addCharttoProvider(locationName,providerName,dependentperson_id);
+		
 		log("Step 2: Using Post Enrollment call, Verify the MF agent trigger for dependent");
-		String PostEnrollmentURL = EnterprisebaseURL+ apiRoutes.valueOf("PostEnrollment").getRouteURL().replaceAll("personId", dependentperson_id);
-		NGAPIUtils.setupNGHttpPostRequest("EnterpriseGateway",PostEnrollmentURL,"" , 409);
+		String postEnrollmentURL = EnterprisebaseURL+ apiRoutes.valueOf("PostEnrollment").getRouteURL().replaceAll("personId", dependentperson_id);
+		NGAPIUtils.setupNGHttpPostRequest("EnterpriseGateway",postEnrollmentURL,"" , 409);
 		
 		log("Step End: MF agent initiate the enrollment automatically");
 
 		log("Step 3: Verify the enrollment status of dependent");		
 		String getEnrollmentURL1 =EnterprisebaseURL+ apiRoutes.valueOf("GetEnrollmentStatus").getRouteURL().replaceAll("personId", dependentperson_id);
-		String GetEnrollmentStatusresponse1 =NGAPIUtils.setupNGHttpGetRequest("EnterpriseGateway",getEnrollmentURL1,200);
+		String getEnrollmentStatusresponse1 =NGAPIUtils.setupNGHttpGetRequest("EnterpriseGateway",getEnrollmentURL1,200);
 		
-		CommonUtils.VerifyTwoValues(CommonUtils.getResponseKeyValue(GetEnrollmentStatusresponse1,"status"),"equals","1"); 
-		CommonUtils.VerifyTwoValues(CommonUtils.getResponseKeyValue(GetEnrollmentStatusresponse1,"statusDescription"),"equals","Pending"); 
-		log("Step End: Dependent enrollment status is "+CommonUtils.getResponseKeyValue(GetEnrollmentStatusresponse1,"statusDescription"));
+		CommonUtils.VerifyTwoValues(CommonUtils.getResponseKeyValue(getEnrollmentStatusresponse1,"status"),"equals","1"); 
+		CommonUtils.VerifyTwoValues(CommonUtils.getResponseKeyValue(getEnrollmentStatusresponse1,"statusDescription"),"equals","Pending"); 
+		log("Step End: Dependent enrollment status is "+CommonUtils.getResponseKeyValue(getEnrollmentStatusresponse1,"statusDescription"));
 	              
 		log("Step 4: Verify the enrollment and processing status of patient in pxp_enrollment table");
 		String dependentperson_nbr =DBUtils.executeQueryOnDB("NGCoreDB","select person_nbr from person where person_id = '"+dependentperson_id.trim()+"'");
@@ -676,9 +697,9 @@ public class NGIntegrationE2ESITTests extends BaseTestNGWebDriver{
 			Mailinator mail = new Mailinator();
 			Thread.sleep(15000);		
 			log("Step 6: Verify the dependent mail");
-			Log4jUtil.log(createdependent.getEmailAddress() + "   :    " + NewDependentActivationMessage + "     :   " + PortalConstants.NewPatientActivationMessageLinkText);
+			Log4jUtil.log(createdependent.getEmailAddress() + "   :    " + NewDependentActivationMessage + "     :   " + JalapenoConstants.NEW_PATIENT_ACTIVATION_MESSAGE_LINK_TEXT);
 			Thread.sleep(60000);
-			String activationDependentUrl = mail.getLinkFromEmail(createdependent.getEmailAddress(), NewDependentActivationMessage, PortalConstants.NewPatientActivationMessageLinkText, 80);
+			String activationDependentUrl = mail.getLinkFromEmail(createdependent.getEmailAddress(), NewDependentActivationMessage, JalapenoConstants.NEW_PATIENT_ACTIVATION_MESSAGE_LINK_TEXT, 80);
 			log("Step End: Dependent mail is received");
 			
 			log("Step 7 : Enroll the Dependent to MedFusion Portal");
@@ -697,7 +718,7 @@ public class NGIntegrationE2ESITTests extends BaseTestNGWebDriver{
 			
 			log("Step 10: Detecting if Home Page is opened");
 			Thread.sleep(2000);
-			Assert.assertTrue(jalapenoHomePage.isHomeButtonPresent(driver));		
+			assertTrue(jalapenoHomePage.isHomeButtonPresent(driver));		
 			
 			log("Step 11: Logout from Portal");
 			Thread.sleep(9000);
@@ -728,11 +749,11 @@ public class NGIntegrationE2ESITTests extends BaseTestNGWebDriver{
 			
 			log("Step 13: Verify the enrollment status of dependent");
 			getEnrollmentURL1 =EnterprisebaseURL+ apiRoutes.valueOf("GetEnrollmentStatus").getRouteURL().replaceAll("personId", dependentperson_id);
-			GetEnrollmentStatusresponse1 =NGAPIUtils.setupNGHttpGetRequest("EnterpriseGateway",getEnrollmentURL1,200);
+			getEnrollmentStatusresponse1 =NGAPIUtils.setupNGHttpGetRequest("EnterpriseGateway",getEnrollmentURL1,200);
 			
-			CommonUtils.VerifyTwoValues(CommonUtils.getResponseKeyValue(GetEnrollmentStatusresponse1,"status"),"equals","9"); 
-			CommonUtils.VerifyTwoValues(CommonUtils.getResponseKeyValue(GetEnrollmentStatusresponse1,"statusDescription"),"equals","Completed"); 
-			log("Step End: Dependent enrollment status is "+CommonUtils.getResponseKeyValue(GetEnrollmentStatusresponse1,"statusDescription"));
+			CommonUtils.VerifyTwoValues(CommonUtils.getResponseKeyValue(getEnrollmentStatusresponse1,"status"),"equals","9"); 
+			CommonUtils.VerifyTwoValues(CommonUtils.getResponseKeyValue(getEnrollmentStatusresponse1,"statusDescription"),"equals","Completed"); 
+			log("Step End: Dependent enrollment status is "+CommonUtils.getResponseKeyValue(getEnrollmentStatusresponse1,"statusDescription"));
 	}
 
 	
@@ -745,7 +766,7 @@ public class NGIntegrationE2ESITTests extends BaseTestNGWebDriver{
 		log("Step 1: Create the patient in NG EPM");
 		NGAPIUtils.updateLoginDefaultTo("EnterpriseGateway",PropertyLoaderObj.getProperty("NGMainEnterpriseID"), PropertyLoaderObj.getProperty("NGMainPracticeID"));
 		NewPatient createPatient = NGPatient.patientUsingJSON(PropertyLoaderObj,"");
-		
+		createPatient = NGPatient.addDataToPatientDemographics(PropertyLoaderObj, createPatient);
 		ObjectMapper objMap = new ObjectMapper();
         String requestbody = objMap.defaultPrettyPrintingWriter().writeValueAsString(createPatient);
         log("Request Body is \n" + requestbody);
@@ -755,18 +776,22 @@ public class NGIntegrationE2ESITTests extends BaseTestNGWebDriver{
 		String person_id=NGAPIUtils.setupNGHttpPostRequest("EnterpriseGateway",finalURL,requestbody , 201);
 		log("Step End: Person created with id "+person_id);
 		
+		String locationName = PropertyLoaderObj.getProperty("EPMLocationName");
+		String providerName = PropertyLoaderObj.getProperty("EPMProviderName");
+		NGAPIFlows.addCharttoProvider(locationName,providerName,person_id);
+		
 		log("Step 2: Using Post Enrollment call, Verify the MF agent trigger for new patient");
-		String PostEnrollmentURL = EnterprisebaseURL+ apiRoutes.valueOf("PostEnrollment").getRouteURL().replaceAll("personId", person_id);
-		NGAPIUtils.setupNGHttpPostRequest("EnterpriseGateway",PostEnrollmentURL,"" , 409);
+		String postEnrollmentURL = EnterprisebaseURL+ apiRoutes.valueOf("PostEnrollment").getRouteURL().replaceAll("personId", person_id);
+		NGAPIUtils.setupNGHttpPostRequest("EnterpriseGateway",postEnrollmentURL,"" , 409);
 		log("Step End: MF agent initiate the enrollment automatically");
 		
 		log("Step 3: Verify the enrollment status of patient after initiation of enrollment using Get Enrollment status call");
 		String getEnrollmentURL =EnterprisebaseURL+ apiRoutes.valueOf("GetEnrollmentStatus").getRouteURL().replaceAll("personId", person_id);
-		String GetEnrollmentStatusresponse =NGAPIUtils.setupNGHttpGetRequest("EnterpriseGateway",getEnrollmentURL,200);
+		String getEnrollmentStatusresponse =NGAPIUtils.setupNGHttpGetRequest("EnterpriseGateway",getEnrollmentURL,200);
 		
-		CommonUtils.VerifyTwoValues(CommonUtils.getResponseKeyValue(GetEnrollmentStatusresponse,"status"),"equals","1"); 
-		CommonUtils.VerifyTwoValues(CommonUtils.getResponseKeyValue(GetEnrollmentStatusresponse,"statusDescription"),"equals","Pending"); 
-		log("Step End: Patient enrollment status is "+CommonUtils.getResponseKeyValue(GetEnrollmentStatusresponse,"statusDescription"));
+		CommonUtils.VerifyTwoValues(CommonUtils.getResponseKeyValue(getEnrollmentStatusresponse,"status"),"equals","1"); 
+		CommonUtils.VerifyTwoValues(CommonUtils.getResponseKeyValue(getEnrollmentStatusresponse,"statusDescription"),"equals","Pending"); 
+		log("Step End: Patient enrollment status is "+CommonUtils.getResponseKeyValue(getEnrollmentStatusresponse,"statusDescription"));
 		
 		log("Verify the enrollment and processing status of patient in pxp_enrollment table");
 		String enrollment_status1 =DBUtils.executeQueryOnDB("NGCoreDB","select enrollment_status from pxp_enrollments where person_id = '"+person_id.trim()+"'");
@@ -776,11 +801,11 @@ public class NGIntegrationE2ESITTests extends BaseTestNGWebDriver{
 
   		Mailinator mail = new Mailinator();
 			Thread.sleep(15000);
-			Log4jUtil.log(createPatient.getEmailAddress() + "   :    " + PortalConstants.NewPatientActivationMessage + "     :   " + PortalConstants.NewPatientActivationMessageLinkText);
+			Log4jUtil.log(createPatient.getEmailAddress() + "   :    " + JalapenoConstants.NEW_PATIENT_ACTIVATION_MESSAGE + "     :   " + JalapenoConstants.NEW_PATIENT_ACTIVATION_MESSAGE_LINK_TEXT);
 			Thread.sleep(60000);
-			String activationUrl = mail.getLinkFromEmail(createPatient.getEmailAddress(), PortalConstants.NewPatientActivationMessage, PortalConstants.NewPatientActivationMessageLinkText, 40);
+			String activationUrl = mail.getLinkFromEmail(createPatient.getEmailAddress(), JalapenoConstants.NEW_PATIENT_ACTIVATION_MESSAGE, JalapenoConstants.NEW_PATIENT_ACTIVATION_MESSAGE_LINK_TEXT, 40);
 			Log4jUtil.log("Step 4: Moving to the link obtained from the email message- Patient 1");
-			Assert.assertNotNull(activationUrl, "Error: Activation link not found.");
+			assertNotNull(activationUrl, "Error: Activation link not found.");
 			Thread.sleep(20000);
 			String sDate1 = PropertyLoaderObj.getProperty("DOBMonth")+"/"+PropertyLoaderObj.getProperty("DOBDay")+"/"+PropertyLoaderObj.getProperty("DOBYear");
 			log(sDate1);
@@ -802,10 +827,13 @@ public class NGIntegrationE2ESITTests extends BaseTestNGWebDriver{
 			
 		log("Step 8: Create the trusted patient in NG EPM");
 		NewPatient trustedPatient = NGPatient.patientUsingJSON(PropertyLoaderObj,"trustedPatient");	
+		trustedPatient = NGPatient.addDataToPatientDemographics(PropertyLoaderObj, trustedPatient);
 		String trustedPatientrequestbody = objMap.defaultPrettyPrintingWriter().writeValueAsString(trustedPatient);
 		log("Trusted Patient Request Body " +trustedPatientrequestbody);
 		String trustedperson_id= NGAPIUtils.setupNGHttpPostRequest("EnterpriseGateway",finalURL,trustedPatientrequestbody, 201);
 		log("Step End: Person created with id "+trustedperson_id);
+		
+		NGAPIFlows.addCharttoProvider(locationName,providerName,trustedperson_id);
 
 		log("Step 9 :Load login page and log in to Patient 1 account");
 		Thread.sleep(3000);
@@ -860,7 +888,7 @@ public class NGIntegrationE2ESITTests extends BaseTestNGWebDriver{
 		log("Step 1: Create the patient in NG EPM");
 		NGAPIUtils.updateLoginDefaultTo("EnterpriseGateway",PropertyLoaderObj.getProperty("NGMainEnterpriseID"), PropertyLoaderObj.getProperty("NGMainPracticeID"));
 		NewPatient createPatient = NGPatient.patientUsingJSON(PropertyLoaderObj,"invalidZIP");
-		
+		createPatient = NGPatient.addDataToPatientDemographics(PropertyLoaderObj, createPatient);
 		ObjectMapper objMap = new ObjectMapper();
         String requestbody = objMap.defaultPrettyPrintingWriter().writeValueAsString(createPatient);
         log("Request Body is \n" + requestbody);
@@ -870,9 +898,13 @@ public class NGIntegrationE2ESITTests extends BaseTestNGWebDriver{
 		String person_id=NGAPIUtils.setupNGHttpPostRequest("EnterpriseGateway",finalURL,requestbody , 201);
 		log("Step End: Person created with id "+person_id);
 		
+		String locationName = PropertyLoaderObj.getProperty("EPMLocationName");
+		String providerName = PropertyLoaderObj.getProperty("EPMProviderName");
+		NGAPIFlows.addCharttoProvider(locationName,providerName,person_id);
+		
 		log("Step 2: Using Post Enrollment call, Verify the MF agent trigger for new patient");
-		String PostEnrollmentURL = EnterprisebaseURL+ apiRoutes.valueOf("PostEnrollment").getRouteURL().replaceAll("personId", person_id);
-		NGAPIUtils.setupNGHttpPostRequest("EnterpriseGateway",PostEnrollmentURL,"" , 409);
+		String postEnrollmentURL = EnterprisebaseURL+ apiRoutes.valueOf("PostEnrollment").getRouteURL().replaceAll("personId", person_id);
+		NGAPIUtils.setupNGHttpPostRequest("EnterpriseGateway",postEnrollmentURL,"" , 409);
 		log("Step End: MF agent initiate the enrollment automatically");
     	
 		log("Step 3: Verify the enrollment status of patient in pxp_enrollment table");
@@ -896,11 +928,11 @@ public class NGIntegrationE2ESITTests extends BaseTestNGWebDriver{
 		
 		log("Step 4: Verify the enrollment status of patient");
 		String getEnrollmentURL =EnterprisebaseURL+ apiRoutes.valueOf("GetEnrollmentStatus").getRouteURL().replaceAll("personId", person_id);
-		String GetEnrollmentStatusresponse =NGAPIUtils.setupNGHttpGetRequest("EnterpriseGateway",getEnrollmentURL,200);
+		String getEnrollmentStatusresponse =NGAPIUtils.setupNGHttpGetRequest("EnterpriseGateway",getEnrollmentURL,200);
 		
-		CommonUtils.VerifyTwoValues(CommonUtils.getResponseKeyValue(GetEnrollmentStatusresponse,"status"),"equals","0"); 
-		CommonUtils.VerifyTwoValues(CommonUtils.getResponseKeyValue(GetEnrollmentStatusresponse,"statusDescription"),"equals","Not Enrolled"); 
-		log("Step End: Patient enrollment status is "+CommonUtils.getResponseKeyValue(GetEnrollmentStatusresponse,"statusDescription") +" and Error Message: "+CommonUtils.getResponseKeyValue(GetEnrollmentStatusresponse,"errorMessage"));
+		CommonUtils.VerifyTwoValues(CommonUtils.getResponseKeyValue(getEnrollmentStatusresponse,"status"),"equals","0"); 
+		CommonUtils.VerifyTwoValues(CommonUtils.getResponseKeyValue(getEnrollmentStatusresponse,"statusDescription"),"equals","Not Enrolled"); 
+		log("Step End: Patient enrollment status is "+CommonUtils.getResponseKeyValue(getEnrollmentStatusresponse,"statusDescription") +" and Error Message: "+CommonUtils.getResponseKeyValue(getEnrollmentStatusresponse,"errorMessage"));
 	}
 	
 	
@@ -914,8 +946,8 @@ public class NGIntegrationE2ESITTests extends BaseTestNGWebDriver{
 		
 		String personId = registerNGPatienttoMFPortal();
 		String person_nbr =DBUtils.executeQueryOnDB("NGCoreDB","select person_nbr from person where person_id = '"+personId.trim()+"'");
-		String PatientFirstName =DBUtils.executeQueryOnDB("NGCoreDB","select first_name from person where person_id = '"+personId.trim()+"'");
-		String PatientLastName =DBUtils.executeQueryOnDB("NGCoreDB","select last_name from person where person_id = '"+personId.trim()+"'");
+		String patientFirstName =DBUtils.executeQueryOnDB("NGCoreDB","select first_name from person where person_id = '"+personId.trim()+"'");
+		String patientLastName =DBUtils.executeQueryOnDB("NGCoreDB","select last_name from person where person_id = '"+personId.trim()+"'");
 		
 		log("Step 17: Login to Practice Portal");
 		Thread.sleep(3000);
@@ -924,14 +956,14 @@ public class NGIntegrationE2ESITTests extends BaseTestNGWebDriver{
 		log("Step Begins: Click on Search");
 		PatientSearchPage patientSearchPage = practiceHome.clickPatientSearchLink();
 		log("Step Begins: Search for Patient");
-		patientSearchPage.searchForPatientInPatientSearch(PatientFirstName,PatientLastName);
-		patientSearchPage.clickOnPatient(PatientFirstName,PatientLastName);
+		patientSearchPage.searchForPatientInPatientSearch(patientFirstName,patientLastName);
+		patientSearchPage.clickOnPatient(patientFirstName,patientLastName);
 		log("Step Begins: Deactivate the searched patient");
 		patientSearchPage.deactivatePatient();
 		log("Step Begins: Verify the Patient is deactivated from practive portal");
-		patientSearchPage.verifyDeactivatedPatient(PatientFirstName,PatientLastName);
+		patientSearchPage.verifyDeactivatedPatient(patientFirstName,patientLastName);
 		
-		VerifyGetPIDCCall(timestamp, person_nbr,PatientFirstName, PatientLastName,"DEACTIVATED",PropertyLoaderObj.getIntegrationPracticeID());
+		VerifyGetPIDCCall(timestamp, person_nbr,patientFirstName, patientLastName,"DEACTIVATED",PropertyLoaderObj.getIntegrationPracticeID());
 		
 		Thread.sleep(10000);
 		log("Step 18: Verify the enrollment and processing status of patient in pxp enrollment table");
@@ -957,11 +989,11 @@ public class NGIntegrationE2ESITTests extends BaseTestNGWebDriver{
         
 		log("Step 15: Verify the enrollment status of patient");
 		String getEnrollmentURL =EnterprisebaseURL+ apiRoutes.valueOf("GetEnrollmentStatus").getRouteURL().replaceAll("personId", personId);
-		String GetEnrollmentStatusresponse =NGAPIUtils.setupNGHttpGetRequest("EnterpriseGateway",getEnrollmentURL,200);
+		String getEnrollmentStatusresponse =NGAPIUtils.setupNGHttpGetRequest("EnterpriseGateway",getEnrollmentURL,200);
 		
-		CommonUtils.VerifyTwoValues(CommonUtils.getResponseKeyValue(GetEnrollmentStatusresponse,"status"),"equals","10"); 
-		CommonUtils.VerifyTwoValues(CommonUtils.getResponseKeyValue(GetEnrollmentStatusresponse,"statusDescription"),"equals","Deactivated"); 
-		log("Step End: Patient enrollment status is "+enrollment_status+" which is "+CommonUtils.getResponseKeyValue(GetEnrollmentStatusresponse,"statusDescription"));
+		CommonUtils.VerifyTwoValues(CommonUtils.getResponseKeyValue(getEnrollmentStatusresponse,"status"),"equals","10"); 
+		CommonUtils.VerifyTwoValues(CommonUtils.getResponseKeyValue(getEnrollmentStatusresponse,"statusDescription"),"equals","Deactivated"); 
+		log("Step End: Patient enrollment status is "+enrollment_status+" which is "+CommonUtils.getResponseKeyValue(getEnrollmentStatusresponse,"statusDescription"));
 		
 	}
 	
@@ -972,7 +1004,7 @@ public class NGIntegrationE2ESITTests extends BaseTestNGWebDriver{
 		
 		log("Step 1: Create the patient in NG EPM");
 		NewPatient createPatient = NGPatient.patientUsingJSON(PropertyLoaderObj,"");
-		
+		createPatient = NGPatient.addDataToPatientDemographics(PropertyLoaderObj, createPatient);
 		ObjectMapper objMap = new ObjectMapper();
         String requestbody = objMap.defaultPrettyPrintingWriter().writeValueAsString(createPatient);
         log("Request Body is \n" + requestbody);
@@ -982,9 +1014,13 @@ public class NGIntegrationE2ESITTests extends BaseTestNGWebDriver{
 		String person_id=ngAPIUtils.setupNGHttpPostRequest("EnterpriseGateway",finalURL,requestbody , 201);
 		log("Step End: Person created with id "+person_id);
 		
+		String locationName = PropertyLoaderObj.getProperty("EPMLocationName");
+		String providerName = PropertyLoaderObj.getProperty("EPMProviderName");
+		NGAPIFlows.addCharttoProvider(locationName,providerName,person_id);
+		
 		log("Step 2: Using Post Enrollment call, Verify the MF agent trigger for new patient");
-		String PostEnrollmentURL = EnterprisebaseURL+ apiRoutes.valueOf("PostEnrollment").getRouteURL().replaceAll("personId", person_id);
-		ngAPIUtils.setupNGHttpPostRequest("EnterpriseGateway",PostEnrollmentURL,"" , 409);
+		String postEnrollmentURL = EnterprisebaseURL+ apiRoutes.valueOf("PostEnrollment").getRouteURL().replaceAll("personId", person_id);
+		ngAPIUtils.setupNGHttpPostRequest("EnterpriseGateway",postEnrollmentURL,"" , 409);
 		log("Step End: MF agent initiate the enrollment automatically");
 		
 		log("Step 3: Verify the enrollment status of patient after initiation of enrollment using Get Enrollment status call");
@@ -1043,7 +1079,7 @@ public class NGIntegrationE2ESITTests extends BaseTestNGWebDriver{
 
 //		String processingUrl=PropertyLoaderObj.getProcessingURL().replaceAll("integrationID", PropertyLoaderObj.getIntegrationPracticeID()).replaceAll("jobID", jobID.toLowerCase());
 //		Boolean completed = PatientRegistrationUtils.checkMessageProcessingOntime(processingUrl, PropertyLoaderObj.getResponsePath());
-//		Assert.assertTrue(completed, "Message processing was not completed in time");
+//		assertTrue(completed, "Message processing was not completed in time");
 	
 		Thread.sleep(60000);
 		log("Step 8: Verify the processing status of MF agent job after receiving the registration mail");
@@ -1092,11 +1128,11 @@ public class NGIntegrationE2ESITTests extends BaseTestNGWebDriver{
 		Thread.sleep(60000);
   		Mailinator mail = new Mailinator();
 			Thread.sleep(15000);
-			Log4jUtil.log(createPatient.getEmailAddress() + "   :    " + PortalConstants.NewPatientActivationMessage + "     :   " + PortalConstants.NewPatientActivationMessageLinkText);
+			Log4jUtil.log(createPatient.getEmailAddress() + "   :    " + JalapenoConstants.NEW_PATIENT_ACTIVATION_MESSAGE + "     :   " + JalapenoConstants.NEW_PATIENT_ACTIVATION_MESSAGE_LINK_TEXT);
 			Thread.sleep(60000);
-			String activationUrl = mail.getLinkFromEmail(createPatient.getEmailAddress(), PortalConstants.NewPatientActivationMessage, PortalConstants.NewPatientActivationMessageLinkText, 80);
+			String activationUrl = mail.getLinkFromEmail(createPatient.getEmailAddress(), JalapenoConstants.NEW_PATIENT_ACTIVATION_MESSAGE, JalapenoConstants.NEW_PATIENT_ACTIVATION_MESSAGE_LINK_TEXT, 80);
 			Log4jUtil.log("Step 10: Moving to the link obtained from the email message");
-			Assert.assertNotNull(activationUrl, "Error: Activation link not found.");
+			assertNotNull(activationUrl, "Error: Activation link not found.");
 			Thread.sleep(20000);
 			String sDate1 = PropertyLoaderObj.getProperty("DOBMonth")+"/"+PropertyLoaderObj.getProperty("DOBDay")+"/"+PropertyLoaderObj.getProperty("DOBYear");
 			log(sDate1);				
@@ -1124,17 +1160,17 @@ public class NGIntegrationE2ESITTests extends BaseTestNGWebDriver{
 		verifyProcessingStatusto4(person_id);
 		
 		Log4jUtil.log("Step 15: Find the patient and check if he is registered");
-        String GetEnrollmentStatusresponse2 =ngAPIUtils.setupNGHttpGetRequest("EnterpriseGateway",getEnrollmentURL,200);
-		CommonUtils.VerifyTwoValues(CommonUtils.getResponseKeyValue(GetEnrollmentStatusresponse2,"status"),"equals","9"); 
-		CommonUtils.VerifyTwoValues(CommonUtils.getResponseKeyValue(GetEnrollmentStatusresponse2,"statusDescription"),"equals","Completed"); 
-		log("Result: Patient enrollment status is "+CommonUtils.getResponseKeyValue(GetEnrollmentStatusresponse2,"statusDescription"));
+        String getEnrollmentStatusresponse2 =ngAPIUtils.setupNGHttpGetRequest("EnterpriseGateway",getEnrollmentURL,200);
+		CommonUtils.VerifyTwoValues(CommonUtils.getResponseKeyValue(getEnrollmentStatusresponse2,"status"),"equals","9"); 
+		CommonUtils.VerifyTwoValues(CommonUtils.getResponseKeyValue(getEnrollmentStatusresponse2,"statusDescription"),"equals","Completed"); 
+		log("Result: Patient enrollment status is "+CommonUtils.getResponseKeyValue(getEnrollmentStatusresponse2,"statusDescription"));
 		
 		log("Step 16: Verify the enrollment status in pxp_enrollments table");
 		String enrollment_status2 =DBUtils.executeQueryOnDB("NGCoreDB","select enrollment_status from pxp_enrollments where person_id = '"+person_id.trim()+"'");
 		CommonUtils.VerifyTwoValues(enrollment_status2,"equals","9");
 		String processing_status2 =DBUtils.executeQueryOnDB("NGCoreDB","select processing_status from pxp_enrollments where person_id = '"+person_id.trim()+"'");
 		CommonUtils.VerifyTwoValues(processing_status2,"equals","4");
-		log("Step End: Patient enrollment status is "+enrollment_status2+" which is "+CommonUtils.getResponseKeyValue(GetEnrollmentStatusresponse2,"statusDescription"));
+		log("Step End: Patient enrollment status is "+enrollment_status2+" which is "+CommonUtils.getResponseKeyValue(getEnrollmentStatusresponse2,"statusDescription"));
 			
 		return person_id;
 	}
@@ -1172,11 +1208,11 @@ public class NGIntegrationE2ESITTests extends BaseTestNGWebDriver{
 		Thread.sleep(120000);
   		Mailinator mail = new Mailinator();
 			Thread.sleep(15000);
-			Log4jUtil.log(createPatient.getEmailAddress() + "   :    " + PortalConstants.NewPatientActivationMessage + "     :   " + PortalConstants.NewPatientActivationMessageLinkText);
+			Log4jUtil.log(createPatient.getEmailAddress() + "   :    " + JalapenoConstants.NEW_PATIENT_ACTIVATION_MESSAGE + "     :   " + JalapenoConstants.NEW_PATIENT_ACTIVATION_MESSAGE_LINK_TEXT);
 			Thread.sleep(60000);
-			String activationUrl = mail.getLinkFromEmail(createPatient.getEmailAddress(), PortalConstants.NewPatientActivationMessage, PortalConstants.NewPatientActivationMessageLinkText, 80);
+			String activationUrl = mail.getLinkFromEmail(createPatient.getEmailAddress(), JalapenoConstants.NEW_PATIENT_ACTIVATION_MESSAGE, JalapenoConstants.NEW_PATIENT_ACTIVATION_MESSAGE_LINK_TEXT, 80);
 			Log4jUtil.log("Step 10: Moving to the link obtained from the email message");
-			Assert.assertNotNull(activationUrl, "Error: Activation link not found.");
+			assertNotNull(activationUrl, "Error: Activation link not found.");
 			Thread.sleep(20000);
 			String sDate1 = PropertyLoaderObj.getProperty("DOBMonth")+"/"+PropertyLoaderObj.getProperty("DOBDay")+"/"+PropertyLoaderObj.getProperty("DOBYear");
 			log(sDate1);				
@@ -1242,7 +1278,7 @@ public class NGIntegrationE2ESITTests extends BaseTestNGWebDriver{
 
 //		String processingUrl=PropertyLoaderObj.getProcessingURL().replaceAll("integrationID", integrationID).replaceAll("jobID", jobID.toLowerCase());
 //		Boolean completed = PatientRegistrationUtils.checkMessageProcessingOntime(processingUrl, PropertyLoaderObj.getResponsePath());
-//		Assert.assertTrue(completed, "Message processing was not completed in time");
+//		assertTrue(completed, "Message processing was not completed in time");
 	
 		Thread.sleep(60000);
 		log("Step Begins: Verify the processing status of MF agent job after receiving the registration mail");
@@ -1367,7 +1403,7 @@ public class NGIntegrationE2ESITTests extends BaseTestNGWebDriver{
 
 		String processingUrl=PropertyLoaderObj.getProcessingURL().replaceAll("integrationID", integrationID).replaceAll("jobID", jobID.toLowerCase());
 		Boolean completed = PatientRegistrationUtils.checkMessageProcessingOntime(processingUrl, PropertyLoaderObj.getResponsePath());
-		Assert.assertTrue(completed, "Message processing was not completed in time");
+		assertTrue(completed, "Message processing was not completed in time");
 	
 		Thread.sleep(60000);
 		log("Step Begins: Verify the processing status of MF agent job after receiving the registration mail");
@@ -1434,6 +1470,8 @@ public class NGIntegrationE2ESITTests extends BaseTestNGWebDriver{
 		logStep("Create the patient in NG EPM first practice");
 		NewPatient createPatient = NGPatient.patientUsingJSON(PropertyLoaderObj,"complete");
 		String personId= NGAPIFlows.CreatePatientinEPM(createPatient);
+		NGAPIFlows.addCharttoProvider(PropertyLoaderObj.getNGE1P1Location(),PropertyLoaderObj.getNGE1P1Provider(),personId);
+		NGAPIFlows.addEncounter(PropertyLoaderObj.getNGE1P1Location(),PropertyLoaderObj.getNGE1P1Provider(),personId); 
 		
 		enrollPatientWithoutGetProcessingStatusValidation(createPatient,personId,PropertyLoaderObj.getProperty("practiceName1"),PropertyLoaderObj.getProperty("integrationPracticeIDE1P1"),PropertyLoaderObj.getNGEnterpiseEnrollmentE1(), PropertyLoaderObj.getNGEnterpiseEnrollmentE1P1());
 		Thread.sleep(60000);
@@ -1442,6 +1480,7 @@ public class NGIntegrationE2ESITTests extends BaseTestNGWebDriver{
 		NGAPIUtils.updateLoginDefaultTo("EnterpriseGateway",PropertyLoaderObj.getNGEnterpiseEnrollmentE1(), PropertyLoaderObj.getNGEnterpiseEnrollmentE1P2());
 		Instant testStart = Instant.now();
 		NGAPIFlows.addCharttoProvider(PropertyLoaderObj.getNGE1P2Location(),PropertyLoaderObj.getNGE1P2Provider(),personId); 
+		NGAPIFlows.addEncounter(PropertyLoaderObj.getNGE1P2Location(),PropertyLoaderObj.getNGE1P2Provider(),personId);
 		
 		Thread.sleep(90000);
         logStep("Waiting for welcome mail at patient inbox from second practice");  
@@ -1484,13 +1523,14 @@ public class NGIntegrationE2ESITTests extends BaseTestNGWebDriver{
 		logStep("Create the patient in NG EPM in first Practice");
 		NewPatient createPatient = NGPatient.patientUsingJSON(PropertyLoaderObj,"complete");
 		String personId= NGAPIFlows.CreatePatientinEPM(createPatient);
+		NGAPIFlows.addCharttoProvider(PropertyLoaderObj.getNGE1P1Location(),PropertyLoaderObj.getNGE1P1Provider(),personId);
 		
 		verifyProcessingStatusto3WithoutValidatingGetProcessingStatusCall(personId,PropertyLoaderObj.getNGEnterpiseEnrollmentE1P1(),PropertyLoaderObj.getProperty("integrationPracticeIDE1P1"));
-		log(createPatient.getEmailAddress() + "   :    " + INVITE_EMAIL_SUBJECT_PATIENT + PropertyLoaderObj.getProperty("practiceName1") + "     :   " + PortalConstants.NewPatientActivationMessageLinkText);
+		log(createPatient.getEmailAddress() + "   :    " + INVITE_EMAIL_SUBJECT_PATIENT + PropertyLoaderObj.getProperty("practiceName1") + "     :   " + JalapenoConstants.NEW_PATIENT_ACTIVATION_MESSAGE_LINK_TEXT);
 		Thread.sleep(60000);	
 		logStep("Logging into Mailinator and getting Patient Activation url for first Practice");
 	    String activationUrlP1 = new Mailinator().getLinkFromEmail(createPatient.getEmailAddress(),
-	                INVITE_EMAIL_SUBJECT_PATIENT + PropertyLoaderObj.getProperty("practiceName1"), PortalConstants.NewPatientActivationMessageLinkText, 40);
+	                INVITE_EMAIL_SUBJECT_PATIENT + PropertyLoaderObj.getProperty("practiceName1"), JalapenoConstants.NEW_PATIENT_ACTIVATION_MESSAGE_LINK_TEXT, 40);
 	    assertNotNull(activationUrlP1, "Error: Activation link not found.");
 
 	    logStep("Create the chart in second practice");
@@ -1546,6 +1586,7 @@ public class NGIntegrationE2ESITTests extends BaseTestNGWebDriver{
 		logStep("Create the patient in NG EPM Practice 1");
 		NewPatient createPatient = NGPatient.patientUsingJSON(PropertyLoaderObj,"complete");
 		String personId= NGAPIFlows.CreatePatientinEPM(createPatient);
+		NGAPIFlows.addCharttoProvider(PropertyLoaderObj.getNGE1P1Location(),PropertyLoaderObj.getNGE1P1Provider(),personId);
 		
 		logStep("Create the chart in second practice");
 		Long timestamp = System.currentTimeMillis();
@@ -1615,6 +1656,7 @@ public class NGIntegrationE2ESITTests extends BaseTestNGWebDriver{
 		logStep("Create the patient in NG EPM in Practice 1");
 		NewPatient createPatient = NGPatient.patientUsingJSON(PropertyLoaderObj,"complete");
 		String personId= NGAPIFlows.CreatePatientinEPM(createPatient);
+		NGAPIFlows.addCharttoProvider(PropertyLoaderObj.getNGE1P1Location(),PropertyLoaderObj.getNGE1P1Provider(),personId);
 		
 		logStep("Create the chart in second practice");
 		Long timestamp = System.currentTimeMillis();
@@ -1687,6 +1729,7 @@ public class NGIntegrationE2ESITTests extends BaseTestNGWebDriver{
 		logStep("Create the patient in NG EPM Practice 1");
 		NewPatient createPatient = NGPatient.patientUsingJSON(PropertyLoaderObj,"complete");
 		String personId= NGAPIFlows.CreatePatientinEPM(createPatient);
+		NGAPIFlows.addCharttoProvider(PropertyLoaderObj.getNGE1P1Location(),PropertyLoaderObj.getNGE1P1Provider(),personId);
 		
 		enrollPatientWithoutGetProcessingStatusValidation(createPatient,personId,PropertyLoaderObj.getProperty("practiceName1"),PropertyLoaderObj.getProperty("integrationPracticeIDE1P1"),PropertyLoaderObj.getNGEnterpiseEnrollmentE1(), PropertyLoaderObj.getNGEnterpiseEnrollmentE1P1());
 
@@ -1713,11 +1756,11 @@ public class NGIntegrationE2ESITTests extends BaseTestNGWebDriver{
 
   		Mailinator mail = new Mailinator();
 			Thread.sleep(15000);
-			log(createPatient.getEmailAddress() + "   :    " + INVITE_EMAIL_SUBJECT_PATIENT + PropertyLoaderObj.getProperty("practiceName4") + "     :   " + PortalConstants.NewPatientActivationMessageLinkText);
+			log(createPatient.getEmailAddress() + "   :    " + INVITE_EMAIL_SUBJECT_PATIENT + PropertyLoaderObj.getProperty("practiceName4") + "     :   " + JalapenoConstants.NEW_PATIENT_ACTIVATION_MESSAGE_LINK_TEXT);
 			Thread.sleep(60000);	
 			logStep("Logging into Mailinator and getting Patient Activation url for first Practice");
 	        String activationUrl = mail.getLinkFromEmail(createPatient.getEmailAddress(),
-	                INVITE_EMAIL_SUBJECT_PATIENT + PropertyLoaderObj.getProperty("practiceName4"), PortalConstants.NewPatientActivationMessageLinkText, 80);
+	                INVITE_EMAIL_SUBJECT_PATIENT + PropertyLoaderObj.getProperty("practiceName4"), JalapenoConstants.NEW_PATIENT_ACTIVATION_MESSAGE_LINK_TEXT, 80);
 	        assertNotNull(activationUrl, "Error: Activation link not found.");
 
 	    logStep("Moving to the link obtained from the email message and enroll the Patient to MedFusion Portal : step 1 - verifying identity");
@@ -1767,6 +1810,7 @@ public class NGIntegrationE2ESITTests extends BaseTestNGWebDriver{
 		logStep("Create the patient in NG EPM");
 		NewPatient createPatient = NGPatient.patientUsingJSON(PropertyLoaderObj,"complete");
 		String personId= NGAPIFlows.CreatePatientinEPM(createPatient);
+		NGAPIFlows.addCharttoProvider(PropertyLoaderObj.getNGE1P1Location(),PropertyLoaderObj.getNGE1P1Provider(),personId);
 		
         logStep("Create the chart in Practice 2");
 		NGAPIUtils.updateLoginDefaultTo("EnterpriseGateway",PropertyLoaderObj.getNGEnterpiseEnrollmentE1(), PropertyLoaderObj.getNGEnterpiseEnrollmentE1P2());
@@ -1855,6 +1899,7 @@ public class NGIntegrationE2ESITTests extends BaseTestNGWebDriver{
 		logStep("Create the patient in NG EPM");
 		NewPatient createPatient = NGPatient.patientUsingJSON(PropertyLoaderObj,"complete");
 		String personId= NGAPIFlows.CreatePatientinEPM(createPatient);
+		NGAPIFlows.addCharttoProvider(PropertyLoaderObj.getNGE1P1Location(),PropertyLoaderObj.getNGE1P1Provider(),personId);
 		
         logStep("Create the chart in Practice 2");
 		NGAPIUtils.updateLoginDefaultTo("EnterpriseGateway",PropertyLoaderObj.getNGEnterpiseEnrollmentE1(), PropertyLoaderObj.getNGEnterpiseEnrollmentE1P2());
@@ -1940,6 +1985,7 @@ public class NGIntegrationE2ESITTests extends BaseTestNGWebDriver{
 		logStep("Create the patient in NG EPM in Practice 1");
 		NewPatient createPatient = NGPatient.patientUsingJSON(PropertyLoaderObj,"complete");
 		String personId= NGAPIFlows.CreatePatientinEPM(createPatient);
+		NGAPIFlows.addCharttoProvider(PropertyLoaderObj.getNGE1P1Location(),PropertyLoaderObj.getNGE1P1Provider(),personId);
 		
 		enrollPatientWithoutGetProcessingStatusValidation(createPatient,personId,PropertyLoaderObj.getProperty("practiceName1"),PropertyLoaderObj.getProperty("integrationPracticeIDE1P1"),PropertyLoaderObj.getNGEnterpiseEnrollmentE1(), PropertyLoaderObj.getNGEnterpiseEnrollmentE1P1());
 		
@@ -1948,6 +1994,7 @@ public class NGIntegrationE2ESITTests extends BaseTestNGWebDriver{
 		NewPatient trustedPatient = NGPatient.patientUsingJSON(PropertyLoaderObj,"trustedPatient");		
 		String trustedperson_id=NGAPIFlows.CreatePatientinEPM(trustedPatient);
 		log("Step End: Person created with id "+trustedperson_id);
+		NGAPIFlows.addCharttoProvider(PropertyLoaderObj.getNGE1P4Location(),PropertyLoaderObj.getNGE1P4Provider(),trustedperson_id);
 		
 		logStep("Waiting for welcome mail at patient inbox from practice");        
   		log(createPatient.getEmailAddress() + "   :    " + WELCOME_EMAIL_SUBJECT_PATIENT + "     :   " + WELCOME_EMAIL_BUTTON_TEXT);
@@ -2013,6 +2060,7 @@ public class NGIntegrationE2ESITTests extends BaseTestNGWebDriver{
 		logStep("Create the patient in NG EPM in Practice 1");
 		NewPatient createPatient = NGPatient.patientUsingJSON(PropertyLoaderObj,"complete");
 		String personId= NGAPIFlows.CreatePatientinEPM(createPatient);
+		NGAPIFlows.addCharttoProvider(PropertyLoaderObj.getNGE1P1Location(),PropertyLoaderObj.getNGE1P1Provider(),personId);
 		
 		enrollPatientWithoutGetProcessingStatusValidation(createPatient,personId,PropertyLoaderObj.getProperty("practiceName1"),PropertyLoaderObj.getProperty("integrationPracticeIDE1P1"),PropertyLoaderObj.getNGEnterpiseEnrollmentE1(), PropertyLoaderObj.getNGEnterpiseEnrollmentE1P1());
 		
@@ -2024,6 +2072,7 @@ public class NGIntegrationE2ESITTests extends BaseTestNGWebDriver{
 		NewPatient trustedPatient = NGPatient.patientUsingJSON(PropertyLoaderObj,"trustedPatient");		
 		String trustedperson_id=NGAPIFlows.CreatePatientinEPM(trustedPatient);
 		log("Step End: Person created with id "+trustedperson_id);
+		NGAPIFlows.addCharttoProvider(PropertyLoaderObj.getNGE1P2Location(),PropertyLoaderObj.getNGE1P2Provider(),trustedperson_id);
 		
 		enrollPatientWithoutGetProcessingStatusValidation(trustedPatient,trustedperson_id,PropertyLoaderObj.getProperty("practiceName2"),PropertyLoaderObj.getProperty("integrationPracticeIDE1P2"),PropertyLoaderObj.getNGEnterpiseEnrollmentE1(), PropertyLoaderObj.getNGEnterpiseEnrollmentE1P2());
 		
@@ -2103,6 +2152,7 @@ public class NGIntegrationE2ESITTests extends BaseTestNGWebDriver{
 		logStep("Create the patient in NG EPM for Practice 5");
 		NewPatient createPatient = NGPatient.patientUsingJSON(PropertyLoaderObj,"complete");
 		String personId= NGAPIFlows.CreatePatientinEPM(createPatient);
+		NGAPIFlows.addCharttoProvider(PropertyLoaderObj.getNGE1P5Location(),PropertyLoaderObj.getNGE1P5Provider(),personId);
 		
 		enrollPatientWithoutGetProcessingStatusValidation(createPatient,personId,PropertyLoaderObj.getProperty("practiceName5"),PropertyLoaderObj.getProperty("integrationPracticeIDE1P5"),PropertyLoaderObj.getNGEnterpiseEnrollmentE1(), PropertyLoaderObj.getNGEnterpiseEnrollmentE1P5());
 		
@@ -2111,6 +2161,7 @@ public class NGIntegrationE2ESITTests extends BaseTestNGWebDriver{
 		NewPatient trustedPatient = NGPatient.patientUsingJSON(PropertyLoaderObj,"trustedPatient");		
 		String trustedperson_id=NGAPIFlows.CreatePatientinEPM(trustedPatient);
 		log("Step End: Person created with id "+trustedperson_id);
+		NGAPIFlows.addCharttoProvider(PropertyLoaderObj.getNGE1P4Location(),PropertyLoaderObj.getNGE1P4Provider(),trustedperson_id);
 		
 		enrollPatientWithoutGetProcessingStatusValidation(trustedPatient,trustedperson_id,PropertyLoaderObj.getProperty("practiceName4"),PropertyLoaderObj.getProperty("integrationPracticeIDE1P4"),PropertyLoaderObj.getNGEnterpiseEnrollmentE1(), PropertyLoaderObj.getNGEnterpiseEnrollmentE1P4());
 		
@@ -2192,6 +2243,7 @@ public class NGIntegrationE2ESITTests extends BaseTestNGWebDriver{
 		logStep("Create the patient in NG EPM in Enterprise 1 Practice 1");
 		NewPatient createPatient = NGPatient.patientUsingJSON(PropertyLoaderObj,"complete");
 		String personId= NGAPIFlows.CreatePatientinEPM(createPatient);
+		NGAPIFlows.addCharttoProvider(PropertyLoaderObj.getNGE1P1Location(),PropertyLoaderObj.getNGE1P1Provider(),personId);
 		
 		enrollPatientWithoutGetProcessingStatusValidation(createPatient, personId, PropertyLoaderObj.getProperty("practiceName1"),PropertyLoaderObj.getProperty("integrationPracticeIDE1P1"),PropertyLoaderObj.getNGEnterpiseEnrollmentE1(), PropertyLoaderObj.getNGEnterpiseEnrollmentE1P1());
 
@@ -2218,11 +2270,11 @@ public class NGIntegrationE2ESITTests extends BaseTestNGWebDriver{
 		
   		Mailinator mail = new Mailinator();
 			Thread.sleep(15000);
-			log(createPatient.getEmailAddress() + "   :    " + INVITE_EMAIL_SUBJECT_PATIENT + PropertyLoaderObj.getProperty("E2practiceName1") + "     :   " + PortalConstants.NewPatientActivationMessageLinkText);
+			log(createPatient.getEmailAddress() + "   :    " + INVITE_EMAIL_SUBJECT_PATIENT + PropertyLoaderObj.getProperty("E2practiceName1") + "     :   " + JalapenoConstants.NEW_PATIENT_ACTIVATION_MESSAGE_LINK_TEXT);
 			Thread.sleep(60000);	
 			logStep("Logging into Mailinator and getting Patient Activation url for first Practice");
 	        String activationUrl = mail.getLinkFromEmail(createPatient.getEmailAddress(),
-	                INVITE_EMAIL_SUBJECT_PATIENT + PropertyLoaderObj.getProperty("E2practiceName1"), PortalConstants.NewPatientActivationMessageLinkText, 80);
+	                INVITE_EMAIL_SUBJECT_PATIENT + PropertyLoaderObj.getProperty("E2practiceName1"), JalapenoConstants.NEW_PATIENT_ACTIVATION_MESSAGE_LINK_TEXT, 80);
 	        assertNotNull(activationUrl, "Error: Activation link not found.");
 
 	    logStep("Moving to the link obtained from the email message and enroll the Patient to MedFusion Portal : step 1 - verifying identity");
@@ -2275,12 +2327,14 @@ public class NGIntegrationE2ESITTests extends BaseTestNGWebDriver{
 	System.setProperty("ParentEmailAddress", createPatient.getEmailAddress());
 	String person_id= NGAPIFlows.CreatePatientinEPM(createPatient);
 	log("Step End: Guardian created with id "+person_id);
+	NGAPIFlows.addCharttoProvider(PropertyLoaderObj.getNGE1P1Location(),PropertyLoaderObj.getNGE1P1Provider(),person_id);
 	
 	logStep("Create the Dependent in NG EPM Practice 1");
 	NewPatient createdependent = NGPatient.patientUsingJSON(PropertyLoaderObj,"Dependent");	
 	createdependent = NGPatient.addDataToPatientDemographics(PropertyLoaderObj, createdependent);
 	String dependentperson_id=NGAPIFlows.CreatePatientinEPM(createdependent);
 	log("Step End: Dependent created with id "+dependentperson_id);
+	NGAPIFlows.addCharttoProvider(PropertyLoaderObj.getNGE1P1Location(),PropertyLoaderObj.getNGE1P1Provider(),dependentperson_id);
 	
 	logStep("Using Post Enrollment call, Verify the MF agent trigger for new patient");
 	String PostEnrollmentURL = EnterprisebaseURL+ apiRoutes.valueOf("PostEnrollment").getRouteURL().replaceAll("personId", person_id);
@@ -2335,16 +2389,16 @@ public class NGIntegrationE2ESITTests extends BaseTestNGWebDriver{
 		Thread.sleep(15000);
 		logStep("Verify the Guardian mail");
 		Thread.sleep(15000);
-		Log4jUtil.log(createPatient.getEmailAddress() + "   :    " + INVITE_EMAIL_SUBJECT_PATIENT + PropertyLoaderObj.getProperty("practiceName1") + "     :   " + PortalConstants.NewPatientActivationMessageLinkText);
+		Log4jUtil.log(createPatient.getEmailAddress() + "   :    " + INVITE_EMAIL_SUBJECT_PATIENT + PropertyLoaderObj.getProperty("practiceName1") + "     :   " + JalapenoConstants.NEW_PATIENT_ACTIVATION_MESSAGE_LINK_TEXT);
 		Thread.sleep(60000);
-		String activationGuardianUrl = mail.getLinkFromEmail(createPatient.getEmailAddress(), INVITE_EMAIL_SUBJECT_PATIENT + PropertyLoaderObj.getProperty("practiceName1"), PortalConstants.NewPatientActivationMessageLinkText, 80);
+		String activationGuardianUrl = mail.getLinkFromEmail(createPatient.getEmailAddress(), INVITE_EMAIL_SUBJECT_PATIENT + PropertyLoaderObj.getProperty("practiceName1"), JalapenoConstants.NEW_PATIENT_ACTIVATION_MESSAGE_LINK_TEXT, 80);
 		assertNotNull(activationGuardianUrl,"Error: No Registeration email found with specified subject: " + INVITE_EMAIL_SUBJECT_PATIENT + PropertyLoaderObj.getProperty("practiceName1"));
 		log("Step End: Guradian mail is received");
 		
 		logStep("Verify the dependent mail");
-		Log4jUtil.log(createdependent.getEmailAddress() + "   :    " + NewDependentActivationMessage + PropertyLoaderObj.getProperty("practiceName1")+ "     :   " + PortalConstants.NewPatientActivationMessageLinkText);
+		Log4jUtil.log(createdependent.getEmailAddress() + "   :    " + NewDependentActivationMessage + PropertyLoaderObj.getProperty("practiceName1")+ "     :   " + JalapenoConstants.NEW_PATIENT_ACTIVATION_MESSAGE_LINK_TEXT);
 		Thread.sleep(60000);
-		String activationDependentUrl = mail.getLinkFromEmail(createdependent.getEmailAddress(), NewDependentActivationMessage + PropertyLoaderObj.getProperty("practiceName1"), PortalConstants.NewPatientActivationMessageLinkText, 80);
+		String activationDependentUrl = mail.getLinkFromEmail(createdependent.getEmailAddress(), NewDependentActivationMessage + PropertyLoaderObj.getProperty("practiceName1"), JalapenoConstants.NEW_PATIENT_ACTIVATION_MESSAGE_LINK_TEXT, 80);
 		assertNotNull(activationDependentUrl,"Error: No Registeration email found with specified subject: " + NewDependentActivationMessage + PropertyLoaderObj.getProperty("practiceName1"));
 		log("Step End: Dependent mail is received");
 		
@@ -2444,6 +2498,7 @@ public class NGIntegrationE2ESITTests extends BaseTestNGWebDriver{
 		createdependent = NGPatient.addDataToPatientDemographics(PropertyLoaderObj, createdependent);
 		String dependentperson_id=NGAPIFlows.CreatePatientinEPM(createdependent);
 		log("Step End: Dependent created with id "+dependentperson_id);
+		NGAPIFlows.addCharttoProvider(PropertyLoaderObj.getNGE1P1Location(),PropertyLoaderObj.getNGE1P1Provider(),dependentperson_id);
 		
 		logStep("Using Post Enrollment call, Verify the MF agent trigger for dependent");
 		String PostEnrollmentURL = EnterprisebaseURL+ apiRoutes.valueOf("PostEnrollment").getRouteURL().replaceAll("personId", dependentperson_id);
@@ -2477,9 +2532,9 @@ public class NGIntegrationE2ESITTests extends BaseTestNGWebDriver{
 			Mailinator mail = new Mailinator();
 			Thread.sleep(15000);		
 			logStep("Verify the dependent mail");
-			Log4jUtil.log(createdependent.getEmailAddress() + "   :    " + NewDependentActivationMessage + "     :   " + PortalConstants.NewPatientActivationMessageLinkText);
+			Log4jUtil.log(createdependent.getEmailAddress() + "   :    " + NewDependentActivationMessage + "     :   " + JalapenoConstants.NEW_PATIENT_ACTIVATION_MESSAGE_LINK_TEXT);
 			Thread.sleep(60000);
-			String activationDependentUrl = mail.getLinkFromEmail(createdependent.getEmailAddress(), NewDependentActivationMessage, PortalConstants.NewPatientActivationMessageLinkText, 80);
+			String activationDependentUrl = mail.getLinkFromEmail(createdependent.getEmailAddress(), NewDependentActivationMessage, JalapenoConstants.NEW_PATIENT_ACTIVATION_MESSAGE_LINK_TEXT, 80);
 			log("Step End: Dependent mail is received");
 			
 			logStep("Enroll the Dependent to MedFusion Portal");
@@ -2498,7 +2553,7 @@ public class NGIntegrationE2ESITTests extends BaseTestNGWebDriver{
 			
 			logStep("Detecting if Home Page is opened");
 			Thread.sleep(2000);
-			Assert.assertTrue(jalapenoHomePage.isHomeButtonPresent(driver));		
+			assertTrue(jalapenoHomePage.isHomeButtonPresent(driver));		
 			
 			logStep("Logout from Portal");
 			Thread.sleep(9000);
@@ -2585,11 +2640,11 @@ public class NGIntegrationE2ESITTests extends BaseTestNGWebDriver{
 		
   		Mailinator mail = new Mailinator();
 			Thread.sleep(15000);
-			log(createPatient.getEmailAddress() + "   :    " + INVITE_EMAIL_SUBJECT_PATIENT + practiceName + "     :   " + PortalConstants.NewPatientActivationMessageLinkText);
+			log(createPatient.getEmailAddress() + "   :    " + INVITE_EMAIL_SUBJECT_PATIENT + practiceName + "     :   " + JalapenoConstants.NEW_PATIENT_ACTIVATION_MESSAGE_LINK_TEXT);
 			Thread.sleep(60000);
 			logStep("Logging into Mailinator and getting Patient Activation url for first Practice");
 	        String activationUrl = mail.getLinkFromEmail(createPatient.getEmailAddress(),
-	                INVITE_EMAIL_SUBJECT_PATIENT + practiceName, PortalConstants.NewPatientActivationMessageLinkText, 80);
+	                INVITE_EMAIL_SUBJECT_PATIENT + practiceName, JalapenoConstants.NEW_PATIENT_ACTIVATION_MESSAGE_LINK_TEXT, 80);
 	        assertNotNull(activationUrl, "Error: Activation link not found.");
 
 	    logStep("Moving to the link obtained from the email message and enroll the Patient to MedFusion Portal : step 1 - verifying identity");
@@ -2672,7 +2727,7 @@ public class NGIntegrationE2ESITTests extends BaseTestNGWebDriver{
 
 		String processingUrl=PropertyLoaderObj.getProcessingURL().replaceAll("integrationID", integrationID).replaceAll("jobID", jobID.toLowerCase());
 		Boolean completed = PatientRegistrationUtils.checkMessageProcessingOntime(processingUrl, PropertyLoaderObj.getResponsePath());
-		Assert.assertTrue(completed, "Message processing was not completed in time");
+		assertTrue(completed, "Message processing was not completed in time");
 	
 		logStep("Verify the processing status of MF agent job after receiving the registration mail");
 		String emailStatus =DBUtils.executeQueryOnDB("MFAgentDB","select status from processingstatus_entity where entityidentifier ='"+person_nbr.trim().replace("\t", "")+"'");
@@ -2719,11 +2774,11 @@ public class NGIntegrationE2ESITTests extends BaseTestNGWebDriver{
 		
 		Mailinator mail = new Mailinator();
 		Thread.sleep(15000);
-		log(createPatient.getEmailAddress() + "   :    " + INVITE_EMAIL_SUBJECT_PATIENT + practiceName + "     :   " + PortalConstants.NewPatientActivationMessageLinkText);
+		log(createPatient.getEmailAddress() + "   :    " + INVITE_EMAIL_SUBJECT_PATIENT + practiceName + "     :   " + JalapenoConstants.NEW_PATIENT_ACTIVATION_MESSAGE_LINK_TEXT);
 		Thread.sleep(60000);	
 		logStep("Logging into Mailinator and getting Patient Activation url for first Practice");
         String activationUrl = mail.getLinkFromEmail(createPatient.getEmailAddress(),
-                INVITE_EMAIL_SUBJECT_PATIENT + practiceName, PortalConstants.NewPatientActivationMessageLinkText, 80);
+                INVITE_EMAIL_SUBJECT_PATIENT + practiceName, JalapenoConstants.NEW_PATIENT_ACTIVATION_MESSAGE_LINK_TEXT, 80);
         assertNotNull(activationUrl, "Error: Activation link not found.");
 
         logStep("Moving to the link obtained from the email message and enroll the Patient to MedFusion Portal : step 1 - verifying identity");
@@ -2875,7 +2930,10 @@ public class NGIntegrationE2ESITTests extends BaseTestNGWebDriver{
 		
 		logStep("Created the patient in NG EPM Practice "+practiceId);
 		NewPatient createPatient = NGPatient.patientUsingJSON(PropertyLoaderObj,"complete");
+		createPatient = NGPatient.addDataToPatientDemographics(PropertyLoaderObj, createPatient);
 		String person_id= NGAPIFlows.CreatePatientinEPM(createPatient);	
+		
+		NGAPIFlows.addCharttoProvider(locationName,providerName,person_id);
 		
 		enrollPatientWithoutGetProcessingStatusValidation(createPatient, person_id, PropertyLoaderObj.getProperty("practiceName"),integrationPracticeId,enterpriseId, practiceId);
 		
@@ -2943,6 +3001,10 @@ public class NGIntegrationE2ESITTests extends BaseTestNGWebDriver{
 		String person_id=NGAPIUtils.setupNGHttpPostRequest("EnterpriseGateway",finalURL,requestbody , 201);
 		log("Step End: Guardian created with id "+person_id);
 		
+		String locName = PropertyLoaderObj.getProperty("EPMLocationName");
+		String provName = PropertyLoaderObj.getProperty("EPMProviderName");
+		NGAPIFlows.addCharttoProvider(locName,provName,person_id);
+		
 		logStep("Create the Dependent in NG EPM");
 		NewPatient createdependent = NGPatient.patientUsingJSON(PropertyLoaderObj,"Dependent");
 		createdependent = NGPatient.addDataToPatientDemographics(PropertyLoaderObj, createdependent);
@@ -2951,6 +3013,8 @@ public class NGIntegrationE2ESITTests extends BaseTestNGWebDriver{
 			
 		String dependentperson_id=NGAPIUtils.setupNGHttpPostRequest("EnterpriseGateway",finalURL,dependentrequestbody , 201);
 		log("Step End: Dependent created with id "+dependentperson_id);
+		
+		NGAPIFlows.addCharttoProvider(locName,provName,dependentperson_id);
 		
 		logStep("Using Post Enrollment call, Verify the MF agent trigger for new patient");
 		String PostEnrollmentURL = EnterprisebaseURL+ apiRoutes.valueOf("PostEnrollment").getRouteURL().replaceAll("personId", person_id);
@@ -2990,15 +3054,15 @@ public class NGIntegrationE2ESITTests extends BaseTestNGWebDriver{
 			Thread.sleep(15000);
 			logStep("Verify the Guardian mail");
 			Thread.sleep(15000);
-			Log4jUtil.log(createPatient.getEmailAddress() + "   :    " + PortalConstants.NewPatientActivationMessage + "     :   " + PortalConstants.NewPatientActivationMessageLinkText);
+			Log4jUtil.log(createPatient.getEmailAddress() + "   :    " + JalapenoConstants.NEW_PATIENT_ACTIVATION_MESSAGE + "     :   " + JalapenoConstants.NEW_PATIENT_ACTIVATION_MESSAGE_LINK_TEXT);
 			Thread.sleep(60000);
-			String activationGuardianUrl = mail.getLinkFromEmail(createPatient.getEmailAddress(), PortalConstants.NewPatientActivationMessage, PortalConstants.NewPatientActivationMessageLinkText, 80);
+			String activationGuardianUrl = mail.getLinkFromEmail(createPatient.getEmailAddress(), JalapenoConstants.NEW_PATIENT_ACTIVATION_MESSAGE, JalapenoConstants.NEW_PATIENT_ACTIVATION_MESSAGE_LINK_TEXT, 80);
 			log("Step End: Guradian mail is received");
 			
 			logStep("Verify the dependent mail");
-			Log4jUtil.log(createdependent.getEmailAddress() + "   :    " + NewDependentActivationMessage + "     :   " + PortalConstants.NewPatientActivationMessageLinkText);
+			Log4jUtil.log(createdependent.getEmailAddress() + "   :    " + NewDependentActivationMessage + "     :   " + JalapenoConstants.NEW_PATIENT_ACTIVATION_MESSAGE_LINK_TEXT);
 			Thread.sleep(60000);
-			String activationDependentUrl = mail.getLinkFromEmail(createdependent.getEmailAddress(), NewDependentActivationMessage, PortalConstants.NewPatientActivationMessageLinkText, 80);
+			String activationDependentUrl = mail.getLinkFromEmail(createdependent.getEmailAddress(), NewDependentActivationMessage, JalapenoConstants.NEW_PATIENT_ACTIVATION_MESSAGE_LINK_TEXT, 80);
 			log("Step End: Dependent mail is received");
 			
 			logStep("Enroll the Guardian to MedFusion Portal : step 1 - verifying identity");
@@ -3246,6 +3310,7 @@ public class NGIntegrationE2ESITTests extends BaseTestNGWebDriver{
 		NGAPIUtils.updateLoginDefaultTo("EnterpriseGateway",enterpriseId, practiceId);
 		logStep("Create the patient in NG EPM in Practice 1");
 	    NewPatient createPatient = NGPatient.patientUsingJSON(PropertyLoaderObj,"complete");
+	    createPatient = NGPatient.addDataToPatientDemographics(PropertyLoaderObj, createPatient);
 		ObjectMapper objMap = new ObjectMapper();
 	    String requestbody = objMap.defaultPrettyPrintingWriter().writeValueAsString(createPatient);
 	    log("Request Body is \n" + requestbody);
@@ -3255,6 +3320,10 @@ public class NGIntegrationE2ESITTests extends BaseTestNGWebDriver{
 		String person_id=ngAPIUtils.setupNGHttpPostRequest("EnterpriseGateway",finalURL,requestbody , 201);
 		log("Step End: Person created with id "+person_id);
 		
+		logStep("Add Chart to patient");
+		NGAPIUtils.updateLoginDefaultTo("EnterpriseGateway",enterpriseId, practiceId);
+		NGAPIFlows.addCharttoProvider(locationName,providerName,person_id);
+		
 		enrollPatientWithoutGetProcessingStatusValidation(createPatient,person_id,practiceName,integrationPracticeId,enterpriseId, practiceId);
 		
 	    Thread.sleep(40000);
@@ -3263,11 +3332,7 @@ public class NGIntegrationE2ESITTests extends BaseTestNGWebDriver{
 		logStep("Verify the patient is able to receive CCD");
 		CommonFlows.IsCCDReceived(driver, url,createPatient.getEmailAddress(), PropertyLoaderObj.getPassword(), "","");
 		
-        NGAPIUtils.updateLoginDefaultTo("EnterpriseGateway",enterpriseId, practiceId);
-		logStep("Add Chart to patient");
-		NGAPIFlows.addCharttoProvider(locationName,providerName,person_id); 
-		
-		logStep("Add Encounter to patient chart");
+        logStep("Add Encounter to patient chart");
 		String encounter_id = NGAPIFlows.addEncounter(locationName,providerName,person_id);
 		
 		logStep("Request for MSU CCD");
@@ -3299,6 +3364,7 @@ public class NGIntegrationE2ESITTests extends BaseTestNGWebDriver{
 		NGAPIUtils.updateLoginDefaultTo("EnterpriseGateway",enterpriseId, practiceId);
 		logStep("Create the patient in NG EPM in Practice 1");
 	    NewPatient createPatient = NGPatient.patientUsingJSON(PropertyLoaderObj,"complete");
+	    createPatient = NGPatient.addDataToPatientDemographics(PropertyLoaderObj, createPatient);
 		ObjectMapper objMap = new ObjectMapper();
 	    String requestbody = objMap.defaultPrettyPrintingWriter().writeValueAsString(createPatient);
 	    log("Request Body is \n" + requestbody);
@@ -3307,6 +3373,9 @@ public class NGIntegrationE2ESITTests extends BaseTestNGWebDriver{
 		String finalURL =EnterprisebaseURL + personURL.getRouteURL();	
 		String person_id=ngAPIUtils.setupNGHttpPostRequest("EnterpriseGateway",finalURL,requestbody , 201);
 		log("Step End: Person created with id "+person_id);
+		
+		Log4jUtil.log("Step Begins: Add Chart to patient");
+		NGAPIFlows.addCharttoProvider(locationName,providerName,person_id);
 		
 		enrollPatientWithoutGetProcessingStatusValidation(createPatient,person_id,practiceName,integrationPracticeId,enterpriseId, practiceId);
 		
@@ -3317,10 +3386,7 @@ public class NGIntegrationE2ESITTests extends BaseTestNGWebDriver{
 		CommonFlows.IsCCDReceived(driver, url,createPatient.getEmailAddress(), PropertyLoaderObj.getPassword(), "","");
 		
         NGAPIUtils.updateLoginDefaultTo("EnterpriseGateway",enterpriseId, practiceId);
-		logStep("Adding Test data to patient CCD "+person_id);
-		   Log4jUtil.log("Step Begins: Add Chart to patient");
-		   NGAPIFlows.addCharttoProvider(locationName,providerName,person_id); 
-		
+		logStep("Adding Test data to patient CCD "+person_id);	
 		   Log4jUtil.log("Step Begins: Add Encounter to patient chart");
 		   String encounter_id = NGAPIFlows.addEncounter(locationName,providerName,person_id); 
 		
@@ -3773,12 +3839,14 @@ public class NGIntegrationE2ESITTests extends BaseTestNGWebDriver{
 	    
 	    logStep("Compose Message with High Priority and send it to enrolled patient with “Do not add to chart” option selected in Send & Chart button.");
         NGAPIUtils.updateLoginDefaultTo("EnterpriseGateway",enterpriseId,practiceId);    
-    	String comm_id =NGAPIFlows.postSecureMessage(PropertyLoaderObj,"HighPriority",person_id,practiceId,userId,providerName,locationName, "EHR", "DoNotAddToEncounter","PracticeUser","","","");		
-
+    	String comm_id =NGAPIFlows.postSecureMessage(PropertyLoaderObj,"HighPriority",person_id,practiceId,userId,providerName,locationName, "EHR", "DoNotAddToEncounter","PracticeUser","","","");
+    	
     	String subjectQuery ="select subject from ngweb_communications where comm_id ='"+comm_id+"'";
-    	String bodyQuery ="select body from ngweb_communications where comm_id ='"+comm_id+"'";	
+    	String bodyQuery ="select body from ngweb_communications where comm_id ='"+comm_id+"'";
+    	String rootThreadIdQuery ="select root_thread_id from ngweb_communications where comm_id ='"+comm_id+"'";
     	String subject = DBUtils.executeQueryOnDB("NGCoreDB",subjectQuery);
     	String body = DBUtils.executeQueryOnDB("NGCoreDB",bodyQuery);
+    	String rootThreadId = DBUtils.executeQueryOnDB("NGCoreDB",rootThreadIdQuery);
     	
     	logStep("Verify the processing status of message");
     	CommonFlows.verifyMessageProcessingStatus(PropertyLoaderObj, person_id, practiceId, comm_id, integrationPracticeID,"");
@@ -3798,7 +3866,7 @@ public class NGIntegrationE2ESITTests extends BaseTestNGWebDriver{
 		}    
 	    String replyMessageID = CommonFlows.verifyMessageINInbox(PropertyLoaderObj,driver,url,username,PropertyLoaderObj.getPassword(),subject,body,comm_id,messageID,integrationPracticeID,"SentByPracticeUser","");
 	    Thread.sleep(60000);
-	    CommonFlows.verifyReplyReceivedAtNGCore(replyMessageID,"Re: "+subject, JalapenoMessagesPage.getPatientReply());
+	    CommonFlows.verifyReplyReceivedAtNGCore(replyMessageID,comm_id,rootThreadId.toUpperCase(),"Re: "+subject, JalapenoMessagesPage.getPatientReply());
 	    log("Test Case End: The practice user is able to compose a message with 'high priority' flag on and send it to enrolled patient with “Do not add to chart” option selected in Send & Chart button and patient reply to message sent by Practice User");	
 	}
 	
@@ -4008,9 +4076,11 @@ public class NGIntegrationE2ESITTests extends BaseTestNGWebDriver{
         String comm_id =NGAPIFlows.postSecureMessage(PropertyLoaderObj,"SentByOnlineProfile",person_id,practiceId,userId,providerName,locationName, "EHR", "DoNotAddToEncounter","PracticeUser","","","");		
 
     	String subjectQuery ="select subject from ngweb_communications where comm_id ='"+comm_id+"'";
-    	String bodyQuery ="select body from ngweb_communications where comm_id ='"+comm_id+"'";	
+    	String bodyQuery ="select body from ngweb_communications where comm_id ='"+comm_id+"'";
+    	String rootThreadIdQuery ="select root_thread_id from ngweb_communications where comm_id ='"+comm_id+"'";
     	String subject = DBUtils.executeQueryOnDB("NGCoreDB",subjectQuery);
     	String body = DBUtils.executeQueryOnDB("NGCoreDB",bodyQuery);
+    	String rootThreadId = DBUtils.executeQueryOnDB("NGCoreDB",rootThreadIdQuery);
     	
     	logStep("Verify the processing status of message");
     	CommonFlows.verifyMessageProcessingStatus(PropertyLoaderObj, person_id, practiceId, comm_id, integrationPracticeID,"");
@@ -4031,7 +4101,7 @@ public class NGIntegrationE2ESITTests extends BaseTestNGWebDriver{
 
     	String replyMessageID = CommonFlows.verifyMessageINInbox(PropertyLoaderObj,driver,url,username,PropertyLoaderObj.getPassword(),subject,body,comm_id,messageID,integrationPracticeID,"SentByOnlineProfile","");
 	    Thread.sleep(60000);
-		CommonFlows.verifyReplyReceivedAtNGCore(replyMessageID,"Re: "+subject, JalapenoMessagesPage.getPatientReply());
+		CommonFlows.verifyReplyReceivedAtNGCore(replyMessageID,comm_id,rootThreadId.toUpperCase(),"Re: "+subject, JalapenoMessagesPage.getPatientReply());
     	log("Test Case End: The practice user is able to send a message with Onine Profile as sender of message and patient is able to reply to that message.");	
 	}
 	
@@ -4152,7 +4222,7 @@ public class NGIntegrationE2ESITTests extends BaseTestNGWebDriver{
     	String replyMessageID =CommonFlows.verifyMessageINInbox(PropertyLoaderObj,driver,url,username,PropertyLoaderObj.getPassword(),subject,body,comm_id,messageIDAtMF,integrationPracticeID,"SentByAlias","");
 
 		Thread.sleep(60000);
-		CommonFlows.verifyReplyReceivedAtNGCore(replyMessageID, subject, JalapenoMessagesPage.getPatientReply());
+		CommonFlows.verifyReplyReceivedAtNGCore(replyMessageID, comm_id,messageID.toUpperCase(),"Re: "+ subject, JalapenoMessagesPage.getPatientReply());
 	    log("Test Case End: The practice user is able to send a message with Alias Name as sender of message and patient is able to reply to that message.");	
 	}
 
@@ -4378,7 +4448,7 @@ public class NGIntegrationE2ESITTests extends BaseTestNGWebDriver{
 		
 		Log4jUtil.log("Step Begins: Go to  Health Record Summaries");
 	    MedicalRecordSummariesPage MedicalRecordSummariesPageObject = homePage.clickOnMedicalRecordSummaries(driver);
-	    Assert.assertTrue(MedicalRecordSummariesPageObject.areBasicPageElementsPresent(), "Failed to Load Health Record Summaries ");		
+	    assertTrue(MedicalRecordSummariesPageObject.areBasicPageElementsPresent(), "Failed to Load Health Record Summaries ");		
 		
 		log("Step Begins: Click on Request Health Record");
 		MedicalRecordSummariesPageObject.selectHealthRecordRequestButton();
@@ -4458,6 +4528,20 @@ public class NGIntegrationE2ESITTests extends BaseTestNGWebDriver{
 		}
     	String eventName = PropertyLoaderObj.getProperty("EventName");
 		String resourceName = PropertyLoaderObj.getProperty("ResourceName");
+		
+		String UpdateToEPMCategoryQuery ="update service_setting set value = 'EPM' where [key] = 'epmcategory' and practice_id = (select id from practice where extpracticeid ='"+practiceId+"')";
+		DBUtils.executeQueryOnDB("MFAgentDB",UpdateToEPMCategoryQuery);
+		
+		String apptTime ="08:30:00";
+		String begintime = apptTime.substring(0, 5).replaceAll(":", "");
+		String deleteINDQuery ="select top 1 delete_ind from appointments where person_id ='"+person_id+"' and begintime ='"+begintime+"' and practice_id ='"+practiceId+"'order by create_timestamp desc";
+		String deleteIND = DBUtils.executeQueryOnDB("NGCoreDB",deleteINDQuery);
+		String ApptIDQuery ="select top 1 appt_id from appointments where person_id ='"+person_id+"' and begintime ='"+begintime+"' and practice_id ='"+practiceId+"' order by create_timestamp desc";
+		
+		if(deleteIND.equalsIgnoreCase("N")){
+			NGAPIUtils.updateLoginDefaultTo("EnterpriseGateway",enterpriseId,practiceId);
+			NGAPIFlows.deleteAppointment(DBUtils.executeQueryOnDB("NGCoreDB",ApptIDQuery));
+		}			
 		
     	long timestamp = System.currentTimeMillis();
     	Long since = timestamp / 1000L - 60 * 24;
@@ -4540,15 +4624,16 @@ public class NGIntegrationE2ESITTests extends BaseTestNGWebDriver{
 		logStep("Verify appointment request is reached to EPM/EHR Inbox");
 		CommonFlows.verifyAppointmentRequestReceived(appointmentID, appointmentReason,PropertyLoaderObj.getProperty("AppointmentStartTime"), PropertyLoaderObj.getProperty("AppointmentEndTime"), PropertyLoaderObj.getProperty("AppointmentDays"),practiceId);
 		
-		logStep("Schedule an appointment for Patient");
-		String apptTime ="05:30:00";
+		DBUtils.executeQueryOnDB("MFAgentDB",UpdateToEPMCategoryQuery);
+		logStep("Schedule an appointment for Patient");		
 		NGAPIUtils.updateLoginDefaultTo("EnterpriseGateway",enterpriseId,practiceId);
-		String EPMAppointmenttId =NGAPIFlows.postAppointment(person_id,locationName, providerName, eventName, resourceName,2,apptTime,201);
+		String EPMAppointmenttId =NGAPIFlows.postAppointment(person_id,practiceId,locationName, providerName, eventName, resourceName,2,apptTime,201);
 		
+		DBUtils.executeQueryOnDB("MFAgentDB",UpdateToEPMCategoryQuery);
 		String appointmentResponse = "ApptResponse" + System.currentTimeMillis();
 		logStep("Send appointment response to Patient");
 		NGAPIUtils.updateLoginDefaultTo("EnterpriseGateway",enterpriseId,practiceId);
-		NGAPIFlows.postAppointmentResponse(appointmentID, EPMAppointmenttId, appointmentResponse);
+		NGAPIFlows.postAppointmentResponse(appointmentID, EPMAppointmenttId, appointmentResponse,apptTime,2);
 		
 		logStep("Verify appointment is booked and response is captured");
 		CommonFlows.verifyAppointmentBookedResponseCaptured(appointmentID, appointmentResponse);
@@ -4559,14 +4644,20 @@ public class NGIntegrationE2ESITTests extends BaseTestNGWebDriver{
 		String appointmentDate = DBUtils.executeQueryOnDB("NGCoreDB","select appt_date from appointments where appt_id ='"+EPMAppointmenttId+"'");
 		appointmentDate = appointmentDate.substring(0, 4)+"/"+appointmentDate.substring(4, 6)+"/"+appointmentDate.substring(6);
 				
-		appointmentDate = appointmentDate.replaceAll("/", "-")+"T00:00:00Z";
+		appointmentDate = appointmentDate.replaceAll("/", "-")+"T"+apptTime+"Z";
         Date date = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss'Z'").parse(appointmentDate);
 		log("Appointment Date is "+new SimpleDateFormat("M/d/yy hh:mm").format(date));
-		appointmentDate = CommonUtils.changeESTtoIST(new SimpleDateFormat("M/d/yy hh:mm").format(date));
+//		appointmentDate = CommonUtils.changeESTtoIST(new SimpleDateFormat("M/d/yy hh:mm").format(date));
+		appointmentDate = new SimpleDateFormat("M/d/yy hh:mm").format(date);
+		log("Expected appointment Date is "+appointmentDate.substring(0,appointmentDate.lastIndexOf(" ")));		
+		String expectedTime =appointmentDate.substring(appointmentDate.lastIndexOf(" ")+1);
 		
-		log("Expected appointment Date is "+appointmentDate.substring(0,appointmentDate.lastIndexOf(" ")));
-		log("Expected appointment Time is "+appointmentDate.substring(appointmentDate.lastIndexOf(" ")+1));
-		CommonFlows.verifyAppointmentReceivedinPortal(PropertyLoaderObj, driver, url, username, appointmentDate.substring(0,appointmentDate.lastIndexOf(" ")),appointmentDate.substring(appointmentDate.lastIndexOf(" ")+1),appointmentResponse);
+		if(expectedTime.startsWith("0"))
+			expectedTime = appointmentDate.substring(appointmentDate.lastIndexOf(" ")+2);
+		log("Expected appointment Time is "+expectedTime);
+		
+		Thread.sleep(60000);
+		CommonFlows.verifyAppointmentReceivedinPortal(PropertyLoaderObj, driver, url, username, appointmentDate.substring(0,appointmentDate.lastIndexOf(" ")),expectedTime,appointmentResponse);
 		Log4jUtil.log("Test Case End: The patient is able to request for appointment and practice user is able to book appointment and send response to patient");
 	}
 	
@@ -4603,12 +4694,22 @@ public class NGIntegrationE2ESITTests extends BaseTestNGWebDriver{
     	String eventName = PropertyLoaderObj.getProperty("EventName");
 		String resourceName = PropertyLoaderObj.getProperty("ResourceName");
 		
-		String apptTime ="02:30:00";
+		String apptTime ="09:30:00";
+		String begintime = apptTime.substring(0, 5).replaceAll(":", "");
+		String deleteINDQuery ="select top 1 delete_ind from appointments where person_id ='"+person_id+"' and begintime ='"+begintime+"' and practice_id ='"+practiceId+"'order by create_timestamp desc";
+		String deleteIND = DBUtils.executeQueryOnDB("NGCoreDB",deleteINDQuery);
+		String ApptIDQuery ="select top 1 appt_id from appointments where person_id ='"+person_id+"' and begintime ='"+begintime+"' and practice_id ='"+practiceId+"' order by create_timestamp desc";
+		
+		if(deleteIND.equalsIgnoreCase("N")){
+			NGAPIUtils.updateLoginDefaultTo("EnterpriseGateway",enterpriseId,practiceId);
+			NGAPIFlows.deleteAppointment(DBUtils.executeQueryOnDB("NGCoreDB",ApptIDQuery));
+		}		
+		
 		logStep("Schedule an appointment for Patient to same slot");
 		NGAPIUtils.updateLoginDefaultTo("EnterpriseGateway",enterpriseId,practiceId);
-		String EPMAppointmenttId =NGAPIFlows.postAppointment(person_id,locationName, providerName, eventName, resourceName,2,apptTime,201);
+		String EPMAppointmenttId =NGAPIFlows.postAppointment(person_id,practiceId,locationName, providerName, eventName, resourceName,2,apptTime,201);
 		NGAPIUtils.updateLoginDefaultTo("EnterpriseGateway",enterpriseId,practiceId);
-		NGAPIFlows.postAppointment(person_id,locationName, providerName, eventName, resourceName,2,apptTime,400);
+		NGAPIFlows.postAppointment(person_id,practiceId,locationName, providerName, eventName, resourceName,2,apptTime,400);
 		log("Test Case End: The practice user is not able to book same slot which is already booked for patient");
 	}
 	
@@ -4645,10 +4746,23 @@ public class NGIntegrationE2ESITTests extends BaseTestNGWebDriver{
     	String eventName = PropertyLoaderObj.getProperty("EventName");
 		String resourceName = PropertyLoaderObj.getProperty("ResourceName");
 		
-		String apptTime ="01:30:00";
+		String apptTime ="10:30:00";
+		String begintime = apptTime.substring(0, 5).replaceAll(":", "");
+		String deleteINDQuery ="select top 1 delete_ind from appointments where person_id ='"+person_id+"' and begintime ='"+begintime+"' and practice_id ='"+practiceId+"'order by create_timestamp desc";
+		String deleteIND = DBUtils.executeQueryOnDB("NGCoreDB",deleteINDQuery);
+		String ApptIDQuery ="select top 1 appt_id from appointments where person_id ='"+person_id+"' and begintime ='"+begintime+"' and practice_id ='"+practiceId+"' order by create_timestamp desc";
+				
+		if(deleteIND.equalsIgnoreCase("N")){
+			NGAPIUtils.updateLoginDefaultTo("EnterpriseGateway",enterpriseId,practiceId);
+			NGAPIFlows.deleteAppointment(DBUtils.executeQueryOnDB("NGCoreDB",ApptIDQuery));
+		}
+		
+		String UpdateToEPMCategoryQuery ="update service_setting set value = 'EPM' where [key] = 'epmcategory' and practice_id = (select id from practice where extpracticeid ='"+practiceId+"')";
+		DBUtils.executeQueryOnDB("MFAgentDB",UpdateToEPMCategoryQuery);
+		
 		logStep("Schedule another appointment for Patient to different slot");
 		NGAPIUtils.updateLoginDefaultTo("EnterpriseGateway",enterpriseId,practiceId);
-		String EPMAppointmenttId =NGAPIFlows.postAppointment(person_id,locationName, providerName, eventName, resourceName,1,apptTime,201);
+		String EPMAppointmenttId =NGAPIFlows.postAppointment(person_id,practiceId,locationName, providerName, eventName, resourceName,1,apptTime,201);
 		
 		logStep("Setup Oauth client" + PropertyLoaderObj.getResponsePath());
     	if(PropertyLoaderObj.getNGAPIexecutionMode().equalsIgnoreCase("QAMain")){
@@ -4670,13 +4784,18 @@ public class NGIntegrationE2ESITTests extends BaseTestNGWebDriver{
 		appointmentDate = appointmentDate.replaceAll("/", "-")+"T"+apptTime+"Z";
         Date date = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss'Z'").parse(appointmentDate);
 		log("Appointment Date is "+new SimpleDateFormat("M/d/yy hh:mm").format(date));
-		appointmentDate = CommonUtils.changeESTtoIST(new SimpleDateFormat("M/d/yy hh:mm").format(date));
-		
+//		appointmentDate = CommonUtils.changeESTtoIST(new SimpleDateFormat("M/d/yy hh:mm").format(date));
+		appointmentDate = new SimpleDateFormat("M/d/yy hh:mm").format(date);
 		log("Expected appointment Date is "+appointmentDate.substring(0,appointmentDate.lastIndexOf(" ")));
-		log("Expected appointment Time is "+appointmentDate.substring(appointmentDate.lastIndexOf(" ")+1));
+		String expectedTime = appointmentDate.substring(appointmentDate.lastIndexOf(" ")+1);
+		
+		if(expectedTime.startsWith("0"))
+			expectedTime = appointmentDate.substring(appointmentDate.lastIndexOf(" ")+2);		
+		log("Expected appointment Time is "+expectedTime);
+		
 		logStep("Verfiy appointment is received in Portal");
-        Thread.sleep(70000);
-		CommonFlows.verifyAppointmentReceivedinPortal(PropertyLoaderObj, driver, url, username, appointmentDate.substring(0,appointmentDate.lastIndexOf(" ")),appointmentDate.substring(appointmentDate.lastIndexOf(" ")+1),"");
+        Thread.sleep(80000);
+		CommonFlows.verifyAppointmentReceivedinPortal(PropertyLoaderObj, driver, url, username, appointmentDate.substring(0,appointmentDate.lastIndexOf(" ")),expectedTime,"");
 		
 		logStep("Delete booked appointment from EPM Appointment Book having appointment ID "+EPMAppointmenttId);
 		NGAPIUtils.updateLoginDefaultTo("EnterpriseGateway",enterpriseId,practiceId);
@@ -4689,7 +4808,7 @@ public class NGIntegrationE2ESITTests extends BaseTestNGWebDriver{
 		
 		Thread.sleep(90000);
 		logStep("Verify appointment is deleted from Portal");
-		CommonFlows.verifyAppointmentDeletedinPortal(PropertyLoaderObj, driver, url, username,appointmentDate.substring(0,appointmentDate.lastIndexOf(" ")),appointmentDate.substring(appointmentDate.lastIndexOf(" ")+1));		
+		CommonFlows.verifyAppointmentDeletedinPortal(PropertyLoaderObj, driver, url, username,appointmentDate.substring(0,appointmentDate.lastIndexOf(" ")),expectedTime);		
 		log("Test Case End: The practice user is able to book multiple appointments for patient and delete appointment from EPM appointment book successfully");
 	}
 	
@@ -4906,11 +5025,11 @@ public class NGIntegrationE2ESITTests extends BaseTestNGWebDriver{
 		List<ExpectedEmail> mails = new ArrayList<ExpectedEmail>();
 		Mailinator mail = new Mailinator();
 		Thread.sleep(15000);
-		Log4jUtil.log(createPatient.getEmailAddress() + "   :    " + PortalConstants.NewPatientActivationMessage + "     :   " + PortalConstants.NewPatientActivationMessageLinkText);
+		Log4jUtil.log(createPatient.getEmailAddress() + "   :    " + JalapenoConstants.NEW_PATIENT_ACTIVATION_MESSAGE + "     :   " + JalapenoConstants.NEW_PATIENT_ACTIVATION_MESSAGE_LINK_TEXT);
 		Thread.sleep(60000);
-		String activationUrl = mail.getLinkFromEmail(createPatient.getEmailAddress(), PortalConstants.NewPatientActivationMessage, PortalConstants.NewPatientActivationMessageLinkText, 80);
+		String activationUrl = mail.getLinkFromEmail(createPatient.getEmailAddress(), JalapenoConstants.NEW_PATIENT_ACTIVATION_MESSAGE, JalapenoConstants.NEW_PATIENT_ACTIVATION_MESSAGE_LINK_TEXT, 80);
 		Log4jUtil.log("Moving to the link obtained from the email message");
-		Assert.assertNotNull(activationUrl, "Error: Activation link not found.");
+		assertNotNull(activationUrl, "Error: Activation link not found.");
 		Thread.sleep(20000);
 		String sDate1 = PropertyLoaderObj.getProperty("DOBMonth")+"/"+PropertyLoaderObj.getProperty("DOBDay")+"/"+PropertyLoaderObj.getProperty("DOBYear");
 		log(sDate1);				
@@ -5173,7 +5292,7 @@ public class NGIntegrationE2ESITTests extends BaseTestNGWebDriver{
 		log("Execution Browser: " + TestConfig.getBrowserType());
 		
 		logStep("Getting Existing User");
-		String username = PropertyLoaderObj.getProperty("CCDAUsername");
+		String username = PropertyLoaderObj.getProperty("SingleGuarantorUser");
     	String person_id = DBUtils.executeQueryOnDB("NGCoreDB","select person_id from person where email_address = '"+username+"'");
     	String enterpriseId = null, practiceId = null, providerName = null, locationName = null , userId = null, integrationPracticeID= null, url =null;
     	
@@ -5278,7 +5397,7 @@ public class NGIntegrationE2ESITTests extends BaseTestNGWebDriver{
 		log("Execution Browser: " + TestConfig.getBrowserType());
 		
 		logStep("Getting Existing User");
-		String username = PropertyLoaderObj.getProperty("CCDAUsername");
+		String username = PropertyLoaderObj.getProperty("SingleGuarantorUser");
     	String person_id = DBUtils.executeQueryOnDB("NGCoreDB","select person_id from person where email_address = '"+username+"'");
     	String enterpriseId = null, practiceId = null, providerName = null, locationName = null , userId = null, integrationPracticeID= null, url =null;
     	
@@ -5565,12 +5684,12 @@ public class NGIntegrationE2ESITTests extends BaseTestNGWebDriver{
 		logStep("Schedule an appointment for Patient");
 		String apptTime ="05:30:00";
 		NGAPIUtils.updateLoginDefaultTo("EnterpriseGateway",enterpriseId,practiceId);
-		String EPMAppointmenttId =NGAPIFlows.postAppointment(dependent_person_id,locationName, providerName, eventName, resourceName,2,apptTime,201);
+		String EPMAppointmenttId =NGAPIFlows.postAppointment(dependent_person_id,practiceId,locationName, providerName, eventName, resourceName,2,apptTime,201);
 		
 		String appointmentResponse = "ApptResponse" + System.currentTimeMillis();
 		logStep("Send appointment response to Patient");
 		NGAPIUtils.updateLoginDefaultTo("EnterpriseGateway",enterpriseId,practiceId);
-		NGAPIFlows.postAppointmentResponse(appointmentID, EPMAppointmenttId, appointmentResponse);
+		NGAPIFlows.postAppointmentResponse(appointmentID, EPMAppointmenttId, appointmentResponse,apptTime,2);
 		
 		logStep("Verify appointment is booked and response is captured");
 		CommonFlows.verifyAppointmentBookedResponseCaptured(appointmentID, appointmentResponse);
@@ -5590,4 +5709,549 @@ public class NGIntegrationE2ESITTests extends BaseTestNGWebDriver{
 		log("Expected appointment Time is "+appointmentDate.substring(appointmentDate.lastIndexOf(" ")+1));
 		CommonFlows.verifyAppointmentReceivedinPortal(PropertyLoaderObj, driver, url, username, appointmentDate.substring(0,appointmentDate.lastIndexOf(" ")),appointmentDate.substring(appointmentDate.lastIndexOf(" ")+1),appointmentResponse);
 		Log4jUtil.log("Test Case End: The patient is able to request for appointment and practice user is able to book appointment and send response to patient");	}
+	
+	@Test(enabled = true, groups = { "acceptance-INBOX" }, retryAnalyzer = RetryAnalyzer.class)
+	public void testInboxRequestMultiplePrescriptionRenewal() throws Throwable{
+		log("Test Case: Verify the patient is able to request for multiple medications and Prescribed elsewhere medications");
+		log("Execution Environment: " + IHGUtil.getEnvironmentType());
+		log("Execution Browser: " + TestConfig.getBrowserType());
+		
+		logStep("Getting Existing User");
+		String username = PropertyLoaderObj.getProperty("SingleGuarantorUser");
+    	String person_id = DBUtils.executeQueryOnDB("NGCoreDB","select person_id from person where email_address = '"+username+"'");
+    	String enterpriseId = null, practiceId = null, providerName = null, locationName = null , userId = null, integrationPracticeID= null, url =null;
+    	
+    	if(PropertyLoaderObj.getNGAPIexecutionMode().equalsIgnoreCase("QAMain")){
+    		enterpriseId= PropertyLoaderObj.getProperty("NGEnterpiseEnrollmentEnterprise1");
+    	    practiceId= PropertyLoaderObj.getProperty("NGEnterprise1Practice1");
+    	    providerName =PropertyLoaderObj.getProperty("NGE1P1Provider"); 
+    	    locationName =PropertyLoaderObj.getProperty("NGE1P1Location");
+    	    integrationPracticeID =PropertyLoaderObj.getProperty("integrationPracticeIDE1P1");
+    	    url = PropertyLoaderObj.getProperty("MFPortalURLPractice1");	
+		}
+		else if (PropertyLoaderObj.getNGAPIexecutionMode().equalsIgnoreCase("SIT")){
+			enterpriseId= PropertyLoaderObj.getProperty("NGMainEnterpriseID");
+		    practiceId= PropertyLoaderObj.getProperty("NGMainPracticeID");
+		    providerName =PropertyLoaderObj.getProperty("EPMProviderName"); 
+		    locationName =PropertyLoaderObj.getProperty("EPMLocationName");
+		    integrationPracticeID =PropertyLoaderObj.getProperty("integrationPracticeIDAMDC");
+		    url = PropertyLoaderObj.getProperty("url");			           
+		}
+		else{
+			Log4jUtil.log("Invalid Execution Mode");
+		}
+				
+    	long timestamp = System.currentTimeMillis();
+    	Long since = timestamp / 1000L - 60 * 24;
+		String prescritonRenewalRequestReason = "PrescriptionRenewalRequest" + System.currentTimeMillis();
+		String medicationToRenew = PropertyLoaderObj.getProperty("MedicationToRenew");
+		
+		logStep("Log into Portal");
+		NGLoginPage loginPage = new NGLoginPage(driver, url);
+		JalapenoHomePage homePage = loginPage.login(username, PropertyLoaderObj.getPassword());
+		
+		logStep("Navigate to Prescription Renewal Page");
+		JalapenoPrescriptionsPage prescriptionsPage = homePage.clickOnPrescriptions(driver);
+		Thread.sleep(10000);
+		
+		logStep("Select Location and Provider");
+		prescriptionsPage.SelectProviderLocationclickContinueButton(driver, PropertyLoaderObj.getProperty("PortalLocationName"),PropertyLoaderObj.getProperty("PortalProviderName"));
+
+		logStep("Request for Prescription Renewal from Portal");
+		homePage = prescriptionsPage.requestForMultiplePrescriptionRenewal(driver,prescritonRenewalRequestReason,medicationToRenew, PropertyLoaderObj.getProperty("SecondMedicationToRenew"));
+		
+		homePage.LogoutfromNGMFPortal();
+	
+		logStep("Setup Oauth client" + PropertyLoaderObj.getResponsePath());
+    	if(PropertyLoaderObj.getNGAPIexecutionMode().equalsIgnoreCase("QAMain")){
+    		RestUtils.oauthSetup(PropertyLoaderObj.getOAuthKeyStore(), PropertyLoaderObj.getOAuthProperty(), PropertyLoaderObj.getOAuthAppToken(), PropertyLoaderObj.getProperty("oAuthUsername1"),PropertyLoaderObj.getProperty("oAuthPassword1"));
+		}
+		else if (PropertyLoaderObj.getNGAPIexecutionMode().equalsIgnoreCase("SIT")){
+			RestUtils.oauthSetup(PropertyLoaderObj.getOAuthKeyStore(), PropertyLoaderObj.getOAuthProperty(), PropertyLoaderObj.getOAuthAppToken(), PropertyLoaderObj.getProperty("oAuthUsername"),PropertyLoaderObj.getProperty("oAuthPassword"));			           
+		}
+		else{
+			Log4jUtil.log("Invalid Execution Mode");
+		}
+    	
+    	Log4jUtil.log("Step Begins: Wait 60 seconds, so the message can be processed");
+		Thread.sleep(60000);
+
+		Log4jUtil.log("Step Begins: Do a GET Prescription Call and get the message");
+		RestUtils.setupHttpGetRequest(PropertyLoaderObj.getProperty("GetPrescription").replaceAll("integrationID", integrationPracticeID) + "?since=" + since + ",0", PropertyLoaderObj.getResponsePath());
+
+		Log4jUtil.log("Step Begins: Validate message reply");
+		String prescriptionID = RestUtils.isPrescriptionRenewalRequestPresent(PropertyLoaderObj.getResponsePath(), prescritonRenewalRequestReason);
+		
+		Thread.sleep(60000);
+		logStep("Verify Prescription Renewal request is reached to EPM/EHR Inbox");
+		CommonFlows.verifyPrescriptionRenewalRequestReceived(prescriptionID, "[#1:"+prescritonRenewalRequestReason+"][#2:"+prescritonRenewalRequestReason+"]",practiceId);	
+    	log("Test Case End: The patient is able to request for multiple medications and Prescribed elsewhere medications");
+	}
+	
+	@Test(enabled = true, groups = { "Payment" }, retryAnalyzer = RetryAnalyzer.class)
+	public void testPaymentPayBills() throws Throwable {
+		log("Test Case: Verify the patient is able to pay the bill using Pay Bills and payment is being posted to NG");
+		log("Execution Environment: " + IHGUtil.getEnvironmentType());
+		log("Execution Browser: " + TestConfig.getBrowserType());
+		
+		logStep("Getting Existing User");
+		String username = PropertyLoaderObj.getProperty("CCDAUsername");
+    	String person_id = DBUtils.executeQueryOnDB("NGCoreDB","select person_id from person where email_address = '"+username+"'");
+    	String enterpriseId, practiceId = null, url = null;
+    	
+    	if(PropertyLoaderObj.getNGAPIexecutionMode().equalsIgnoreCase("QAMain")){
+    		enterpriseId= PropertyLoaderObj.getProperty("NGEnterpiseEnrollmentEnterprise1");
+    	    practiceId= PropertyLoaderObj.getProperty("NGEnterprise1Practice1");
+    	    url = PropertyLoaderObj.getProperty("MFPortalURLPractice1");	
+		}
+		else if (PropertyLoaderObj.getNGAPIexecutionMode().equalsIgnoreCase("SIT")){
+			enterpriseId= PropertyLoaderObj.getProperty("NGMainEnterpriseID");
+		    practiceId= PropertyLoaderObj.getProperty("NGMainPracticeID");
+		    url = PropertyLoaderObj.getProperty("url");			           
+		}
+		else{
+			Log4jUtil.log("Invalid Execution Mode");
+		}
+		
+    	String acctNBRQuery = "select acct_nbr from accounts where guar_id ='"+person_id+"' and practice_id='"+practiceId.trim()+"'";
+		logStep("Initiate payment data");
+		String accountNumber = DBUtils.executeQueryOnDB("NGCoreDB",acctNBRQuery);
+		String amount = IHGUtil.createRandomNumericString(3);
+		String name = "TestPatient CreditCard";
+		CreditCard creditCard = new CreditCard(CardType.Mastercard, name);
+
+		logStep("Load login page");
+		JalapenoLoginPage loginPage = new JalapenoLoginPage(driver, url);
+
+		JalapenoHomePage homePage = loginPage.login(username, PropertyLoaderObj.getPassword());
+		JalapenoPayBillsMakePaymentPage payBillsPage = homePage.clickOnNewPayBills(driver);
+		logStep("Remove all cards because Selenium can't see AddNewCard button");
+		payBillsPage.removeAllCards();
+		logStep("Check that no card is present");
+		assertFalse(payBillsPage.isAnyCardPresent());
+		assertTrue(payBillsPage.areBasicPageElementsPresent());
+
+		JalapenoPayBillsConfirmationPage confirmationPage = payBillsPage.fillPaymentInfo(amount, accountNumber,	creditCard);
+		assertTrue(confirmationPage.areBasicPageElementsPresent());
+		logStep("Verifying credit card ending");
+		assertTrue(confirmationPage.getCreditCardEnding().equals(creditCard.getLastFourDigits()));
+		
+		String paymentComments = "Testing payment from number: " + accountNumber+" Current Timestamp "+(new Date()).getTime();
+		homePage = confirmationPage.commentAndSubmitPayment(paymentComments);
+		assertTrue(homePage.wasPayBillsSuccessfull());
+		homePage.clickOnLogout();
+		
+		logStep("Login to Practice Portal");
+		PracticeLoginPage practiceLogin = new PracticeLoginPage(driver, PropertyLoaderObj.getPortalUrl());
+		PracticeHomePage practiceHome = practiceLogin.login(PropertyLoaderObj.getDoctorLogin(), PropertyLoaderObj.getDoctorPassword());
+
+		logStep("Click On Online BillPayment Tab in Practice Portal");
+		OnlineBillPaySearchPage onlineBillPaySearchPage = practiceHome.clickOnlineBillPayTab();
+
+		logStep("Search Paid Bills By Current Date");
+		onlineBillPaySearchPage.searchForBillPayToday();
+
+		logStep("Search For Today's Paid Bill By Account Number");
+		onlineBillPaySearchPage.searchForBillPayment(accountNumber);
+
+		logStep("Get Bill Details");
+		onlineBillPaySearchPage.getBillPayDetails();
+
+		logStep("Set Payment Communication Details");
+		onlineBillPaySearchPage.setPaymentCommunicationDetails();
+
+		logStep("Logout of Practice Portal");
+		practiceHome.logOut();
+		
+		String actualAmount = amount.charAt(0)+"."+amount.substring(1);
+		log("Actual Amount "+actualAmount);
+		CommonFlows.verifyPaymentReachedtoMFAgent(paymentComments,"BillPayment", "", accountNumber,"POSTED", actualAmount,"MasterCard");
+		
+		String sourceIdQuery = "select acct_id from accounts where guar_id ='"+person_id+"' and practice_id='"+practiceId.trim()+"'";
+		String sourceId = DBUtils.executeQueryOnDB("NGCoreDB",sourceIdQuery);
+		CommonFlows.verifyPaymentPostedtoNG(paymentComments,sourceId , person_id, "-"+actualAmount, "Payment type: BillPayment, Last 4 CC digits: "+creditCard.getLastFourDigits(),practiceId);
+		log("Test Case End: The patient is able to pay the bill using Pay Bills and payment is being posted to NG");
+	}
+	
+	@Test(enabled = true, groups = { "Payment" }, retryAnalyzer = RetryAnalyzer.class)
+	public void testPaymentVirtualCardSwiper() throws Throwable {
+		log("Test Case: Verify the patient is able to pay using Virtual Card Swiper method and payment is being posted to NG");
+		logStep("Getting Existing User");
+		String username = PropertyLoaderObj.getProperty("CCDAUsername");
+    	String person_id = DBUtils.executeQueryOnDB("NGCoreDB","select person_id from person where email_address = '"+username+"'");
+    	String enterpriseId = null, practiceId = null;
+    	
+		if(PropertyLoaderObj.getNGAPIexecutionMode().equalsIgnoreCase("QAMain")){
+    		enterpriseId= PropertyLoaderObj.getProperty("NGEnterpiseEnrollmentEnterprise1");
+    	    practiceId= PropertyLoaderObj.getProperty("NGEnterprise1Practice1");	
+		}
+		else if (PropertyLoaderObj.getNGAPIexecutionMode().equalsIgnoreCase("SIT")){
+			enterpriseId= PropertyLoaderObj.getProperty("NGMainEnterpriseID");
+		    practiceId= PropertyLoaderObj.getProperty("NGMainPracticeID");	           
+		}
+		else{
+			Log4jUtil.log("Invalid Execution Mode");
+		}
+				
+		logStep("Initiate payment data");
+		String acctNBRQuery = "select acct_nbr from accounts where guar_id ='"+person_id+"' and practice_id='"+practiceId.trim()+"'";
+		String accountNumber = DBUtils.executeQueryOnDB("NGCoreDB",acctNBRQuery);
+		String firstName = DBUtils.executeQueryOnDB("NGCoreDB","select first_name from person where email_address = '"+username+"'");
+		String amount = IHGUtil.createRandomNumericString().substring(0, 2);
+		String paymentComment = PracticeConstants.PAYMENT_COMMENT.concat(IHGUtil.createRandomNumericString());
+		
+		DecimalFormat df=new DecimalFormat("0.00");
+		String actualAmount = df.format(Integer.parseInt(amount));
+		log("Amount to be paid "+actualAmount);
+		
+		logStep("Navigate to Login page");
+		PracticeLoginPage practiceLogin = new PracticeLoginPage(driver, PropertyLoaderObj.getPortalUrl());
+		PracticeHomePage practiceHome = practiceLogin.login(PropertyLoaderObj.getDoctorLogin(), PropertyLoaderObj.getDoctorPassword());
+				
+		logStep("Navigate to Virtual Card Swiper page.");
+		VirtualCardSwiperPage virtualCardSwiper = practiceHome.clickOnVirtualCardSwiper();
+		
+		logStep("Verify whether Virtual Card Swiper page is displayed.");
+		assertTrue(virtualCardSwiper.checkVirtualCardSwiperPage(), "Virtual Card Swiper page is not displayed properly.");	
+
+		logStep("Add card info and click on 'Click Here To Charge Card' button.");
+		virtualCardSwiper.addCreditCardInfo(PracticeConstants.CARD_NAME, PracticeConstants.CARD_NUMBER, PracticeConstants.CARD_TYPE_VISA, PracticeConstants.EXP_MONTH,
+								PracticeConstants.EXP_YEAR, amount, PracticeConstants.CVV, PracticeConstants.ZIP, accountNumber,
+								firstName, paymentComment,PropertyLoaderObj.getProperty("PortalLocationName"));
+		
+		logStep("Verify whether the payment is completed successfully.");
+		assertEquals(virtualCardSwiper.getPaymentCompletedSuccessMsg().contains(PracticeConstants.PAYMENT_COMPLETED_SUCCESS_MSG), true,
+				"The payment is completed properly.");
+		
+		CommonFlows.verifyPaymentReachedtoMFAgent(paymentComment,"VCSPayment", "", accountNumber,"POSTED", actualAmount,PracticeConstants.CARD_TYPE_VISA);
+		
+		String SourceIdQuery = "select acct_id from accounts where guar_id ='"+person_id+"' and practice_id='"+practiceId.trim()+"'";
+		String SourceId = DBUtils.executeQueryOnDB("NGCoreDB",SourceIdQuery);
+		CommonFlows.verifyPaymentPostedtoNG(paymentComment,SourceId , person_id, "-"+actualAmount, "Payment type: VCSPayment, Last 4 CC digits: "+PracticeConstants.CARD_NUMBER.substring(12),practiceId);
+		log("Test Case End: The patient is able to pay using Virtual Card Swiper method and payment is being posted to NG");
+	}
+	
+	@Test(enabled = true, groups = { "Payment" }, retryAnalyzer = RetryAnalyzer.class)
+	public void testPaymentOnlineBillPayProcess() throws Throwable {
+		log("Test Case: Verify the patient is able to pay using Online Bill Pay Process and payment is being posted to NG");
+		
+		logStep("Getting Existing User");
+		String username = PropertyLoaderObj.getProperty("CCDAUsername");
+    	String person_id = DBUtils.executeQueryOnDB("NGCoreDB","select person_id from person where email_address = '"+username+"'");
+    	String enterpriseId = null, practiceId = null;
+    	
+    	if(PropertyLoaderObj.getNGAPIexecutionMode().equalsIgnoreCase("QAMain")){
+    		enterpriseId= PropertyLoaderObj.getProperty("NGEnterpiseEnrollmentEnterprise1");
+    	    practiceId= PropertyLoaderObj.getProperty("NGEnterprise1Practice1");
+		}
+		else if (PropertyLoaderObj.getNGAPIexecutionMode().equalsIgnoreCase("SIT")){
+			enterpriseId= PropertyLoaderObj.getProperty("NGMainEnterpriseID");
+		    practiceId= PropertyLoaderObj.getProperty("NGMainPracticeID");		           
+		}
+		else{
+			Log4jUtil.log("Invalid Execution Mode");
+		}
+		   	    	
+    	logStep("Initiate payment data");
+    	String acctNBRQuery = "select acct_nbr from accounts where guar_id ='"+person_id+"' and practice_id='"+practiceId.trim()+"'";
+		String accountNumber = DBUtils.executeQueryOnDB("NGCoreDB",acctNBRQuery);
+		String firstName = DBUtils.executeQueryOnDB("NGCoreDB","select first_name from person where person_id = '"+person_id+"'");
+    	String lastName = DBUtils.executeQueryOnDB("NGCoreDB","select last_name from person where person_id = '"+person_id+"'");
+		String amount = IHGUtil.createRandomNumericString().substring(0, 2);
+		log("Random generated amount: " + amount);
+    	
+    	DecimalFormat df=new DecimalFormat("0.00");
+		String actualAmount = df.format(Integer.parseInt(amount));
+		log("Amount to be paid "+actualAmount);
+    	
+		logStep("Login to Practice Portal");
+		PracticeLoginPage practiceLogin = new PracticeLoginPage(driver, PropertyLoaderObj.getPortalUrl());
+		PracticeHomePage practiceHome = practiceLogin.login(PropertyLoaderObj.getDoctorLogin(), PropertyLoaderObj.getDoctorPassword());
+
+		logStep("Click on Make Payment link.");
+		PayMyBillOnlinePage pPayMyBillOnlinePage = practiceHome.clickMakePaymentForPatient();
+
+		logStep("Search For Patient");
+		pPayMyBillOnlinePage.searchForPatient(firstName, lastName);
+
+		String paymentComment = PracticeConstants.PAYMENT_COMMENT.concat(IHGUtil.createRandomNumericString());
+		logStep("Set all the transaction details");		
+		pPayMyBillOnlinePage.setTransactionsForOnlineBillPayProcess(PropertyLoaderObj.getProperty("PortalLocationName"),PropertyLoaderObj.getProperty("PortalProviderName").replaceAll(", Dr", ""),
+				accountNumber,amount, PracticeConstants.PROCESS_CARD_HOLDER_NAME,PracticeConstants.CARD_NUM_MASTERCARD,	PracticeConstants.CARD_TYPE_MASTERCARD,
+				paymentComment);
+
+		logStep("Verify the Payment Confirmation text");
+		IHGUtil.setFrame(driver, PracticeConstants.FRAME_NAME);
+		IHGUtil.waitForElement(driver, 20, pPayMyBillOnlinePage.paymentConfirmationText);
+		assertEquals(true, pPayMyBillOnlinePage.paymentConfirmationText.getText().contains(PAYMENT_SUCCESSFULL_TEXT + firstName +" "+ lastName));
+		
+		logStep("Navigate to Patient Search Page.");
+		OnlineBillPaySearchPage onlineBillPay = new OnlineBillPaySearchPage(driver);
+		PatientSearchPage patientsearchPage = onlineBillPay.clickOnPatientSearchLink();
+
+		logStep("Search the patient in Patient Search page.");
+		patientsearchPage.searchPatient(firstName, lastName);
+
+		logStep("Verify whether the transaction is present.");
+		assertTrue(patientsearchPage.isTransactionPresent(actualAmount, firstName, lastName));
+
+		logStep("Select the particular Transaction from the Search Result.");
+		patientsearchPage.selectTheTransaction(actualAmount, firstName, lastName);
+		assertFalse(pPayMyBillOnlinePage.isVoidTransactionPresent());
+		
+		CommonFlows.verifyPaymentReachedtoMFAgent(paymentComment,"BillPayment", "", accountNumber,"POSTED", actualAmount,PracticeConstants.CARD_TYPE_MASTERCARD);
+		
+		String SourceIdQuery = "select acct_id from accounts where guar_id ='"+person_id+"' and practice_id='"+practiceId.trim()+"'";
+		String SourceId = DBUtils.executeQueryOnDB("NGCoreDB",SourceIdQuery);
+		CommonFlows.verifyPaymentPostedtoNG(paymentComment,SourceId , person_id, "-"+actualAmount, "Payment type: BillPayment, Last 4 CC digits: "+PracticeConstants.CARD_NUM_MASTERCARD.substring(12),practiceId);
+		
+		log("Test Case End: The patient is able to pay using Online Bill Pay Process and payment is being posted to NG");
+	}
+	
+	@Test(enabled = true, groups = { "Payment" }, retryAnalyzer = RetryAnalyzer.class)
+	public void testPaymentBudgetPaymentProcess() throws Throwable {
+		log("Test case: Verify practice user is able to schedule budget payment plan to pay the patient bill");
+		String amount = PropertyLoaderObj.getProperty("BudgetAmount");
+		String prepayamount = PropertyLoaderObj.getProperty("BudgetPrepayAmount");
+		
+		logStep("Getting Existing User");
+		String username = PropertyLoaderObj.getProperty("CCDAUsername");
+    	String person_id = DBUtils.executeQueryOnDB("NGCoreDB","select person_id from person where email_address = '"+username+"'");
+    	String enterpriseId, practiceId = null;
+    	
+    	if(PropertyLoaderObj.getNGAPIexecutionMode().equalsIgnoreCase("QAMain")){
+    		enterpriseId= PropertyLoaderObj.getProperty("NGEnterpiseEnrollmentEnterprise1");
+    	    practiceId= PropertyLoaderObj.getProperty("NGEnterprise1Practice1");
+		}
+		else if (PropertyLoaderObj.getNGAPIexecutionMode().equalsIgnoreCase("SIT")){
+			enterpriseId= PropertyLoaderObj.getProperty("NGMainEnterpriseID");
+		    practiceId= PropertyLoaderObj.getProperty("NGMainPracticeID");
+		}
+		else{
+			Log4jUtil.log("Invalid Execution Mode");
+		}
+    	
+    	logStep("Initiate payment data");
+    	String acctNBRQuery = "select acct_nbr from accounts where guar_id ='"+person_id+"' and practice_id='"+practiceId.trim()+"'";
+		String accountNumber = DBUtils.executeQueryOnDB("NGCoreDB",acctNBRQuery);
+		String firstName = DBUtils.executeQueryOnDB("NGCoreDB","select first_name from person where person_id = '"+person_id+"'");
+    	String lastName = DBUtils.executeQueryOnDB("NGCoreDB","select last_name from person where person_id = '"+person_id+"'");
+    	
+		logStep("Login to Practice Portal");
+		PracticeLoginPage practiceLogin = new PracticeLoginPage(driver, PropertyLoaderObj.getPortalUrl());
+		PracticeHomePage practiceHome = practiceLogin.login(PropertyLoaderObj.getDoctorLogin(), PropertyLoaderObj.getDoctorPassword());
+
+		logStep("Click on Make Payment link.");
+		PayMyBillOnlinePage pPayMyBillOnlinePage = practiceHome.clickMakePaymentForPatient();
+
+		logStep("Search For Patient");
+		pPayMyBillOnlinePage.searchForPatient(firstName, lastName);
+		
+		logStep("Set all the transaction details");
+		pPayMyBillOnlinePage.setTransactionsForBudgetPaymentPlan(PropertyLoaderObj.getProperty("PortalLocationName"), PropertyLoaderObj.getProperty("PortalProviderName").replaceAll(", Dr", ""),
+				accountNumber, amount, prepayamount, PracticeConstants.PROCESS_CARD_HOLDER_NAME,
+				PracticeConstants.CARD_NUM_MASTERCARD, PracticeConstants.CARD_TYPE_MASTERCARD);
+
+		logStep("Verify the your Budget payment plan start date text");
+		assertTrue(pPayMyBillOnlinePage.getPaymentStartDateText().contains("Your payment plan start date is "
+				+ pPayMyBillOnlinePage.getPlanStartDate() + " recurring every other week."));
+
+		logStep("Verify the creditcard last four digit");
+		assertTrue(pPayMyBillOnlinePage.getCreditCardLastFourDigits().contains(PracticeConstants.CARD_NUM_MASTERCARD.substring(12)));
+
+		String enddatePlanText = pPayMyBillOnlinePage.getPlanEndDate();
+
+		logStep("click to submit the Budget Payment Plan search");
+		pPayMyBillOnlinePage.clickOnSubmitPayment();
+
+		logStep("click on Budget Payment pLan to serach the Budget Payment done ");
+		practiceHome.budgetPaymentPlanSearch();
+
+		logStep("Searching of Budget Payment plan with patient firstName and lastName ");
+		pPayMyBillOnlinePage.budgetPaymentPlanSearchPatient(firstName, lastName);
+
+		logStep("Verify the BudgetPaymentPlan End Date and card ending");
+		assertTrue(pPayMyBillOnlinePage.getplanEndDateBudgetSearch().equals(enddatePlanText));
+
+		logStep("Verify the creditcard last four digit in Budget Payment Plan Search");
+		assertTrue(pPayMyBillOnlinePage.getActiveBudgetPaymentCardDigit().contains(PracticeConstants.CARD_NUM_MASTERCARD.substring(12)));
+
+		logStep("Stop the Budget Payment Plan ");
+		pPayMyBillOnlinePage.clickOnStopBudgetPayment();
+		log("Test case End: The practice user is able to schedule budget payment plan to pay the patient bill");
+	}
+	
+	@Test(enabled = true, groups = { "Payment" }, retryAnalyzer = RetryAnalyzer.class)
+	public void testPaymentOnlineBillPayProcessforSingleGuarantor() throws Throwable {
+		log("Test Case: Verify payment is auto posted when Patient is having single guarantor while paying using One Time Payment method");
+		
+		logStep("Getting Existing User");
+		String username = PropertyLoaderObj.getProperty("SingleGuarantorUser");
+    	String person_id = DBUtils.executeQueryOnDB("NGCoreDB","select person_id from person where email_address = '"+username+"'");
+    	String enterpriseId = null, practiceId = null;
+    	
+    	if(PropertyLoaderObj.getNGAPIexecutionMode().equalsIgnoreCase("QAMain")){
+    		enterpriseId= PropertyLoaderObj.getProperty("NGEnterpiseEnrollmentEnterprise1");
+    	    practiceId= PropertyLoaderObj.getProperty("NGEnterprise1Practice1");
+		}
+		else if (PropertyLoaderObj.getNGAPIexecutionMode().equalsIgnoreCase("SIT")){
+			enterpriseId= PropertyLoaderObj.getProperty("NGMainEnterpriseID");
+		    practiceId= PropertyLoaderObj.getProperty("NGMainPracticeID");		           
+		}
+		else{
+			Log4jUtil.log("Invalid Execution Mode");
+		}
+		   	    	
+    	logStep("Initiate payment data");
+    	String invalidAccountNumber = "9999999";
+		String firstName = DBUtils.executeQueryOnDB("NGCoreDB","select first_name from person where person_id = '"+person_id+"'");
+    	String lastName = DBUtils.executeQueryOnDB("NGCoreDB","select last_name from person where person_id = '"+person_id+"'");
+		String amount = IHGUtil.createRandomNumericString().substring(0, 2);
+		log("Random generated amount: " + amount);
+    	
+    	DecimalFormat df=new DecimalFormat("0.00");
+		String actualAmount = df.format(Integer.parseInt(amount));
+		log("Amount to be paid "+actualAmount);
+    	
+		logStep("Login to Practice Portal");
+		PracticeLoginPage practiceLogin = new PracticeLoginPage(driver, PropertyLoaderObj.getPortalUrl());
+		PracticeHomePage practiceHome = practiceLogin.login(PropertyLoaderObj.getDoctorLogin(), PropertyLoaderObj.getDoctorPassword());
+
+		logStep("Click on Make Payment link.");
+		PayMyBillOnlinePage pPayMyBillOnlinePage = practiceHome.clickMakePaymentForPatient();
+
+		logStep("Search For Patient");
+		pPayMyBillOnlinePage.searchForPatient(firstName, lastName);
+
+		String paymentComment = PracticeConstants.PAYMENT_COMMENT.concat(IHGUtil.createRandomNumericString());
+		logStep("Set all the transaction details");		
+		pPayMyBillOnlinePage.setTransactionsForOnlineBillPayProcess(PropertyLoaderObj.getProperty("PortalLocationName"),PropertyLoaderObj.getProperty("PortalProviderName").replaceAll(", Dr", ""),
+				invalidAccountNumber,amount, PracticeConstants.PROCESS_CARD_HOLDER_NAME,PracticeConstants.CARD_NUM_MASTERCARD,	PracticeConstants.CARD_TYPE_MASTERCARD,
+				paymentComment);
+
+		logStep("Verify the Payment Confirmation text");
+		IHGUtil.setFrame(driver, PracticeConstants.FRAME_NAME);
+		IHGUtil.waitForElement(driver, 20, pPayMyBillOnlinePage.paymentConfirmationText);
+		assertEquals(true, pPayMyBillOnlinePage.paymentConfirmationText.getText().contains(PAYMENT_SUCCESSFULL_TEXT + firstName +" "+ lastName));
+		
+		String personNumber = DBUtils.executeQueryOnDB("NGCoreDB","select person_nbr from person where person_id = '"+person_id+"'");
+		String acctNBRQuery = "select acct_nbr from accounts where guar_id ='"+person_id+"' and practice_id='"+practiceId.trim()+"'";
+		String accountNumber = DBUtils.executeQueryOnDB("NGCoreDB",acctNBRQuery);
+		CommonFlows.verifyPaymentReachedtoMFAgent(paymentComment,"BillPayment", personNumber.trim().replace("\t", ""), invalidAccountNumber,"POSTED", actualAmount,PracticeConstants.CARD_TYPE_MASTERCARD);
+		
+		String sourceIdQuery = "select acct_id from accounts where guar_id ='"+person_id+"' and practice_id='"+practiceId.trim()+"'";
+		String sourceId = DBUtils.executeQueryOnDB("NGCoreDB",sourceIdQuery);
+		CommonFlows.verifyPaymentPostedtoNG(paymentComment,sourceId , person_id, "-"+actualAmount, "Payment type: BillPayment, Last 4 CC digits: "+PracticeConstants.CARD_NUM_MASTERCARD.substring(12),practiceId);
+		log("Test Case End: The payment is auto posted when Patient is having single guarantor while paying using One Time Payment method");
+	}
+	
+	@Test(enabled = true, groups = { "Payment" }, retryAnalyzer = RetryAnalyzer.class)
+	public void testPaymentOnlineBillPayProcessforMultipleGuarantors() throws Throwable {
+		log("Test Case: Verify payment is not auto posted when Patient is having multiple guarantors while paying using OLBP method and payment state is Pending");
+		
+		logStep("Getting Existing User");
+		String username = PropertyLoaderObj.getProperty("CCDAUsername");
+    	String person_id = DBUtils.executeQueryOnDB("NGCoreDB","select person_id from person where email_address = '"+username+"'");
+    	String enterpriseId = null, practiceId = null;
+    	
+    	if(PropertyLoaderObj.getNGAPIexecutionMode().equalsIgnoreCase("QAMain")){
+    		enterpriseId= PropertyLoaderObj.getProperty("NGEnterpiseEnrollmentEnterprise1");
+    	    practiceId= PropertyLoaderObj.getProperty("NGEnterprise1Practice1");
+		}
+		else if (PropertyLoaderObj.getNGAPIexecutionMode().equalsIgnoreCase("SIT")){
+			enterpriseId= PropertyLoaderObj.getProperty("NGMainEnterpriseID");
+		    practiceId= PropertyLoaderObj.getProperty("NGMainPracticeID");		           
+		}
+		else{
+			Log4jUtil.log("Invalid Execution Mode");
+		}
+		   	    	
+    	logStep("Initiate payment data");
+    	String invalidAccountNumber = "9999999";
+		String firstName = DBUtils.executeQueryOnDB("NGCoreDB","select first_name from person where person_id = '"+person_id+"'");
+    	String lastName = DBUtils.executeQueryOnDB("NGCoreDB","select last_name from person where person_id = '"+person_id+"'");
+		String amount = IHGUtil.createRandomNumericString().substring(0, 2);
+		log("Random generated amount: " + amount);
+    	
+    	DecimalFormat df=new DecimalFormat("0.00");
+		String actualAmount = df.format(Integer.parseInt(amount));
+		log("Amount to be paid "+actualAmount);
+    	
+		logStep("Login to Practice Portal");
+		PracticeLoginPage practiceLogin = new PracticeLoginPage(driver, PropertyLoaderObj.getPortalUrl());
+		PracticeHomePage practiceHome = practiceLogin.login(PropertyLoaderObj.getDoctorLogin(), PropertyLoaderObj.getDoctorPassword());
+
+		logStep("Click on Make Payment link.");
+		PayMyBillOnlinePage pPayMyBillOnlinePage = practiceHome.clickMakePaymentForPatient();
+
+		logStep("Search For Patient");
+		pPayMyBillOnlinePage.searchForPatient(firstName, lastName);
+
+		String paymentComment = PracticeConstants.PAYMENT_COMMENT.concat(IHGUtil.createRandomNumericString());
+		logStep("Set all the transaction details");		
+		pPayMyBillOnlinePage.setTransactionsForOnlineBillPayProcess(PropertyLoaderObj.getProperty("PortalLocationName"),PropertyLoaderObj.getProperty("PortalProviderName").replaceAll(", Dr", ""),
+				invalidAccountNumber,amount, PracticeConstants.PROCESS_CARD_HOLDER_NAME,PracticeConstants.CARD_NUM_MASTERCARD,	PracticeConstants.CARD_TYPE_MASTERCARD,
+				paymentComment);
+
+		logStep("Verify the Payment Confirmation text");
+		IHGUtil.setFrame(driver, PracticeConstants.FRAME_NAME);
+		IHGUtil.waitForElement(driver, 20, pPayMyBillOnlinePage.paymentConfirmationText);
+		assertEquals(true, pPayMyBillOnlinePage.paymentConfirmationText.getText().contains(PAYMENT_SUCCESSFULL_TEXT + firstName +" "+ lastName));
+				
+		CommonFlows.verifyPaymentReachedtoMFAgent(paymentComment,"BillPayment", "", invalidAccountNumber,"PENDING", actualAmount,PracticeConstants.CARD_TYPE_MASTERCARD);
+		log("Test Case End: Payment is not auto posted when Patient is having multiple guarantors while paying using OLBP method and payment state is Pending");
+	}
+	
+	@Test(enabled = true, groups = { "Payment" }, retryAnalyzer = RetryAnalyzer.class)
+	public void testPaymentVirtualCardSwiperforMultipleGuarantors() throws Throwable {
+		log("Test Case: Verify the Payment is not auto posted when Patient is having multiple guarantors while paying using VCS method and payment state is Pending");
+		logStep("Getting Existing User");
+		String username = PropertyLoaderObj.getProperty("CCDAUsername");
+    	String person_id = DBUtils.executeQueryOnDB("NGCoreDB","select person_id from person where email_address = '"+username+"'");
+    	String enterpriseId = null, practiceId = null;
+    	
+		if(PropertyLoaderObj.getNGAPIexecutionMode().equalsIgnoreCase("QAMain")){
+    		enterpriseId= PropertyLoaderObj.getProperty("NGEnterpiseEnrollmentEnterprise1");
+    	    practiceId= PropertyLoaderObj.getProperty("NGEnterprise1Practice1");	
+		}
+		else if (PropertyLoaderObj.getNGAPIexecutionMode().equalsIgnoreCase("SIT")){
+			enterpriseId= PropertyLoaderObj.getProperty("NGMainEnterpriseID");
+		    practiceId= PropertyLoaderObj.getProperty("NGMainPracticeID");	           
+		}
+		else{
+			Log4jUtil.log("Invalid Execution Mode");
+		}
+				
+		logStep("Initiate payment data");
+		String invalidAccountNumber = "9999999";
+		String firstName = DBUtils.executeQueryOnDB("NGCoreDB","select first_name from person where email_address = '"+username+"'");
+		String amount = IHGUtil.createRandomNumericString().substring(0, 2);
+		String paymentComment = PracticeConstants.PAYMENT_COMMENT.concat(IHGUtil.createRandomNumericString());
+		
+		DecimalFormat df=new DecimalFormat("0.00");
+		String actualAmount = df.format(Integer.parseInt(amount));
+		log("Amount to be paid "+actualAmount);
+		
+		logStep("Navigate to Login page");
+		PracticeLoginPage practiceLogin = new PracticeLoginPage(driver, PropertyLoaderObj.getPortalUrl());
+		PracticeHomePage practiceHome = practiceLogin.login(PropertyLoaderObj.getDoctorLogin(), PropertyLoaderObj.getDoctorPassword());
+				
+		logStep("Navigate to Virtual Card Swiper page.");
+		VirtualCardSwiperPage virtualCardSwiper = practiceHome.clickOnVirtualCardSwiper();
+		
+		logStep("Verify whether Virtual Card Swiper page is displayed.");
+		assertTrue(virtualCardSwiper.checkVirtualCardSwiperPage(), "Virtual Card Swiper page is not displayed properly.");	
+
+		logStep("Add card info and click on 'Click Here To Charge Card' button.");
+		virtualCardSwiper.addCreditCardInfo(PracticeConstants.CARD_NAME, PracticeConstants.CARD_NUMBER, PracticeConstants.CARD_TYPE_VISA, PracticeConstants.EXP_MONTH,
+								PracticeConstants.EXP_YEAR, amount, PracticeConstants.CVV, PracticeConstants.ZIP, invalidAccountNumber,
+								firstName, paymentComment,PropertyLoaderObj.getProperty("PortalLocationName"));
+		
+		logStep("Verify whether the payment is completed successfully.");
+		assertEquals(virtualCardSwiper.getPaymentCompletedSuccessMsg().contains(PracticeConstants.PAYMENT_COMPLETED_SUCCESS_MSG), true,
+				"The payment is completed properly.");
+		
+		CommonFlows.verifyPaymentReachedtoMFAgent(paymentComment,"VCSPayment", "", invalidAccountNumber,"PENDING", actualAmount,PracticeConstants.CARD_TYPE_VISA);
+		log("Test Case End: The Payment is not auto posted when Patient is having multiple guarantors while paying using VCS method and payment state is Pending");
+	}
 }

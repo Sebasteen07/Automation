@@ -1,4 +1,4 @@
-// Copyright 2016-2020 NXGN Management, LLC. All Rights Reserved.
+// Copyright 2013-2021 NXGN Management, LLC. All Rights Reserved.
 package com.intuit.ihg.product.integrationplatform.utils;
 
 /**
@@ -9,9 +9,6 @@ package com.intuit.ihg.product.integrationplatform.utils;
  */
 
 public class IntegrationConstants {
-
-	public final static int FIND_ELEMENTS_MAX_WAIT_SECONDS = 3;
-	public final static int SELENIUM_IMPLICIT_WAIT_SECONDS = 30;
 	public final static String QUESTION_SUBJECT = "Subject";
 	public final static String QUESTION_TYPE = "QuestionType";
 	public final static String QUESTION_MESSAGE = "Message";
@@ -80,6 +77,10 @@ public class IntegrationConstants {
 	public static final String REFILL_NUMBER_TAG = "RefillNumber";
 	public static final String PRESCRIPTION_NUMBER_TAG = "PrescriptionNumber";
 	public static final String ADDITIONAL_INFO_TAG = "AdditionalInformation";
+	
+	//new added variables for post prescription API
+	public static final String RXRENEWAL_SUBJECT_TAG = "Prescription Renewal Approved";
+	public final static String MEDICATIONNAME = "Albuterol Sulfate (5 MG/ML) 0.5% Inhalation Nebulization Solution";
 
 	// Read Communication
 	public static final String READCOMMUNICATION = "ReadCommunication";
@@ -111,12 +112,12 @@ public class IntegrationConstants {
 	public static final String CHOOSECOMMUNICATION = "PreferredCommunication";
 	public static final String GENDERIDENTITY = "GenderIdentity";
 	public static final String SEXUALORIENTATION = "SexualOrientation";
-	
+
 	public static final String PATIENTRELATIONTOSUBSCRIBER = "PatientRelationToSubscriber";
 
 	public static final String PRIMARYINSURANCE = "PrimaryInsurance";
-	public static final String SECONDARYINSURANCE ="SecondaryInsurance";
-	public static final String TERTIARYINSURANCE ="TertiaryInsurance";
+	public static final String SECONDARYINSURANCE = "SecondaryInsurance";
+	public static final String TERTIARYINSURANCE = "TertiaryInsurance";
 	public static final String POLICYNUMBER = "PolicyNumber";
 	public static final String COMPANYNAME = "CompanyName";
 	public static final String SUBSCRIBERNAME = "SubscriberName";
@@ -125,10 +126,10 @@ public class IntegrationConstants {
 	public static final String EFFECTIVEDATE = "EffectiveDate";
 	public static final String INSURANCEIMAGES = "InsuranceImages";
 	public static final String FRONTIMAGELINK = "FrontImageLink";
-	public static final String BACKIMAGELINK= "BackImageLink";
+	public static final String BACKIMAGELINK = "BackImageLink";
 	public static final String FILENAME = "fileName";
 	public static final String MIMETYPE = "mimeType";
-	
+
 	public static final String DATEOFBIRTH = "DateOfBirth";
 	public static final String SUBSCRIBERDATEOFBIRTH = "SubscriberDateOfBirth";
 	public static final String CLAIMSPHONE = "ClaimsPhone";
@@ -153,7 +154,7 @@ public class IntegrationConstants {
 	public static final String VCSPAYMENT = "VCS Payment";
 	public static final String BILLPAYMENT = "BillPayment";
 	public static final String SOURCE = "Source";
-	
+
 	// Email notification constant
 	public static final String EMAIL_BODY_LINK = "fuseaction=com.start";
 	public static final String PI_EMAIL_BODY_LINK = "portal/#/user";
@@ -166,45 +167,51 @@ public class IntegrationConstants {
 	public static final String PREF_NAME = "Name";
 	public static final String PREF_VALUE = "Value";
 
-
 //CCD Information Constant
-		public static final String ASSOCIATEDPERSON="associatedPerson";
-		public static final String ASSIGNEDPERSON ="assignedPerson";
-		public static final String ASSIGNEDENTITY ="assignedEntity";
-		public static final String ASSOCIATEDENTITY="associatedEntity";
-		public static final String GIVENNAME ="given";
-		public static final String FAMILY= "family";
-		public static final String DOCUMENTATIONOF = "documentationOf";
-		public static final String REPRESENTEDORGANIZATION= "representedOrganization";
-		public static final String SUBSTANCEADMINISTRATION ="substanceAdministration";
-		public static final String ENTRYRELATIONSHIP="entryRelationship";
-		public static final String COMPONENT= "component";
-		public static final String CONTENT="content";
-		public static final String ADMINISTRATIVEGENDERCODE="administrativeGenderCode";
-		public static final String ATRRIBUTE1="displayName";
-		
-		//CCD PDFBatch Constants
-		public static final String PATIENTFORM="PatientForm";
-		public static final String MEDFUSIONMEMBERID ="MedfusionMemberId";
-		public static final String PRACTICEPATIENTID="PracticePatientId";
-		public static final String PDFURLLINK="PdfUrlLink";
-		public static final String LASTUPDATED="LastUpdated";
-		
-		//CCD HeaderDetails Constants
-		public static final String CCDMESSAGEHEADERS="CcdMessageHeaders";
-		public static final String ROUTINGMAP="RoutingMap";
-		public static final String VALUE ="Value";
-		public static final String KEYVALUEPAIR ="KeyValuePair";
-		public static final String FORMTYPE="pre-reg";
-		public static final String NEXTURI="next-uri";
-		public static final String STATE = "State";
-		
-		//onDemand Health Data
-		public static final String PATIENTID = "PatientId";
-		public static final String PRACTICEID = "PracticeId";
-		public static final String HEALTHDATA = "HealthData";
-		public static final String STARTDATE = "StartDate";
-		public static final String ENDDATE = "EndDate";
-		
-}
+	public static final String ASSOCIATEDPERSON = "associatedPerson";
+	public static final String ASSIGNEDPERSON = "assignedPerson";
+	public static final String ASSIGNEDENTITY = "assignedEntity";
+	public static final String ASSOCIATEDENTITY = "associatedEntity";
+	public static final String GIVENNAME = "given";
+	public static final String FAMILY = "family";
+	public static final String DOCUMENTATIONOF = "documentationOf";
+	public static final String REPRESENTEDORGANIZATION = "representedOrganization";
+	public static final String SUBSTANCEADMINISTRATION = "substanceAdministration";
+	public static final String ENTRYRELATIONSHIP = "entryRelationship";
+	public static final String COMPONENT = "component";
+	public static final String CONTENT = "content";
+	public static final String ADMINISTRATIVEGENDERCODE = "administrativeGenderCode";
+	public static final String ATRRIBUTE1 = "displayName";
 
+	// CCD PDFBatch Constants
+	public static final String PATIENTFORM = "PatientForm";
+	public static final String MEDFUSIONMEMBERID = "MedfusionMemberId";
+	public static final String PRACTICEPATIENTID = "PracticePatientId";
+	public static final String PDFURLLINK = "PdfUrlLink";
+	public static final String LASTUPDATED = "LastUpdated";
+
+	// CCD HeaderDetails Constants
+	public static final String CCDMESSAGEHEADERS = "CcdMessageHeaders";
+	public static final String ROUTINGMAP = "RoutingMap";
+	public static final String VALUE = "Value";
+	public static final String KEYVALUEPAIR = "KeyValuePair";
+	public static final String FORMTYPE = "pre-reg";
+	public static final String NEXTURI = "next-uri";
+	public static final String STATE = "State";
+
+	// onDemand Health Data
+	public static final String PATIENTID = "PatientId";
+	public static final String PRACTICEID = "PracticeId";
+	public static final String HEALTHDATA = "HealthData";
+	public static final String STARTDATE = "StartDate";
+	public static final String ENDDATE = "EndDate";
+
+	// Login Event Data
+	public static final String RESOURCETYPE = "ResourceType";
+	public static final String EVENTRECORDEDTIMESTAMP = "EventRecordedTimestamp";
+	public static final String PRACTICEPATIENTID_login = "PracticePatientId";
+
+	//StatementMessagePayloadMini
+	
+	public static final String STATEMENTDATE = "StatementDate";
+}

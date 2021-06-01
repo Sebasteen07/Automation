@@ -1,6 +1,8 @@
+//Copyright 2013-2021 NXGN Management, LLC. All Rights Reserved.
 package com.medfusion.product.object.maps.practice.page.patientSearch;
 
-import static org.testng.AssertJUnit.assertTrue;
+import static org.testng.Assert.assertEquals;
+import static org.testng.Assert.assertTrue;
 
 import org.openqa.selenium.By;
 import org.openqa.selenium.NoSuchElementException;
@@ -11,12 +13,10 @@ import org.openqa.selenium.support.PageFactory;
 import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.openqa.selenium.support.ui.WebDriverWait;
 
-import com.intuit.ifs.csscat.core.BaseTestSoftAssert;
+
 import com.intuit.ifs.csscat.core.pageobject.BasePageObject;
 import com.medfusion.common.utils.IHGUtil;
 import com.medfusion.product.object.maps.practice.page.customform.ViewPatientFormPage;
-
-import junit.framework.Assert;
 
 public class PatientDashboardPage extends BasePageObject {
 	@FindBy(xpath = "//a[contains(.,'Send Password Reset Email To Patient')]")
@@ -27,6 +27,9 @@ public class PatientDashboardPage extends BasePageObject {
 
 	@FindBy(xpath = "//a[contains(.,'Send email with the username to the patient')]")
 	private WebElement userIdEmail;
+
+	@FindBy(xpath = "//a[contains(.,'Send Password Reset Email To Patient')]")
+	private WebElement passwordResetLink;
 
 	@FindBy(xpath = "//strong[contains(text(),'Patient Id')]/../../td/a")
 	private WebElement editPatientID;
@@ -72,14 +75,14 @@ public class PatientDashboardPage extends BasePageObject {
 
 	@FindBy(xpath = "//*[contains(text(),'Post age-out invitation has been sent successfully')]")
 	private WebElement postAgeOutInvitationInfoMessage;
-	
-	@FindBy(xpath= "//strong[contains(text(),'Patient Id')]/../../td/a")
+
+	@FindBy(xpath = "//strong[contains(text(),'Patient Id')]/../../td/a")
 	private WebElement ediPatientID1;
-	
-	@FindBy(xpath= "//td/b[contains(text(),'Patient Id for')]/../../td[2]/input")
+
+	@FindBy(xpath = "//td/b[contains(text(),'Patient Id for')]/../../td[2]/input")
 	private WebElement txtexternalIDPM;
-	
-	@FindBy(xpath= "//strong[contains(text(),'Patient Id')]/../../td[2]")
+
+	@FindBy(xpath = "//strong[contains(text(),'Patient Id')]/../../td[2]")
 	private WebElement lblPatientID1;
 
 	private WebElement feedback;
@@ -94,7 +97,6 @@ public class PatientDashboardPage extends BasePageObject {
 		PageFactory.initElements(driver, this);
 	}
 
-
 	/**
 	 * @throws InterruptedException
 	 * @Description:click on Patient with name
@@ -105,6 +107,13 @@ public class PatientDashboardPage extends BasePageObject {
 		userIdEmail.click();
 		return PageFactory.initElements(driver, PatientSearchPage.class);
 
+	}
+
+	public PatientSearchPage sendResetPasswordLink() throws InterruptedException {
+		IHGUtil.PrintMethodName();
+		IHGUtil.waitForElement(driver, 10, passwordResetLink);
+		passwordResetLink.click();
+		return PageFactory.initElements(driver, PatientSearchPage.class);
 	}
 
 	public String getFeedback() throws InterruptedException {
@@ -134,11 +143,11 @@ public class PatientDashboardPage extends BasePageObject {
 		txtexternalID.sendKeys(emrID);
 		btnUpdateInfo.click();
 		IHGUtil.waitForElement(driver, 30, lblPatientID);
-		Assert.assertTrue("patient ID is not set", lblPatientID.getText().contains(emrID));
+		assertTrue(lblPatientID1.getText().contains(emrID), "patient ID is not set");
 		return emrID;
 	}
-	public String setExternalPatientID_20()
-	{
+
+	public String setExternalPatientID_20() {
 		IHGUtil.PrintMethodName();
 		ediPatientID1.click();
 		medfusionID();
@@ -149,7 +158,7 @@ public class PatientDashboardPage extends BasePageObject {
 		txtexternalIDPM.sendKeys(emrID);
 		btnUpdateInfo.click();
 		IHGUtil.waitForElement(driver, 60, lblPatientID1);
-		Assert.assertTrue("patient ID is not set", lblPatientID1.getText().contains(emrID));
+		assertTrue(lblPatientID1.getText().contains(emrID), "patient ID is not set");
 		return emrID;
 	}
 
@@ -173,7 +182,7 @@ public class PatientDashboardPage extends BasePageObject {
 		IHGUtil.waitForElement(driver, 60, editPatientID);
 		editPatientID.click();
 	}
-	
+
 	public void editPatientLink_20() {
 		IHGUtil.PrintMethodName();
 		IHGUtil.waitForElement(driver, 60, editPatientID);
@@ -215,9 +224,9 @@ public class PatientDashboardPage extends BasePageObject {
 		editPatientID.click();
 		IHGUtil.waitForElement(driver, 120, externalID);
 		String External_ID = externalID.getAttribute("value").toString() + externalID1.getAttribute("value").toString();
-		BaseTestSoftAssert.verifyEquals(External_ID, configExternalID,
+		assertEquals(External_ID, configExternalID,
 				"Patient has different External patient ID than expected. External patient ID is: " + External_ID);
-		Assert.assertTrue("External patient ID is not set", External_ID.equalsIgnoreCase(configExternalID));
+		assertTrue(External_ID.equalsIgnoreCase(configExternalID), "External patient ID is not set");
 		return externalID.getAttribute("value").toString();
 	}
 
@@ -230,26 +239,27 @@ public class PatientDashboardPage extends BasePageObject {
 	public void verifyDetails(String patientID, String fName, String lName) {
 		IHGUtil.PrintMethodName();
 		IHGUtil.waitForElement(driver, 60, patientName);
-		BaseTestSoftAssert.verifyEquals(patientName.getText(), (fName + " " + lName + "   Edit"), "First Name & Last Name did not matched");
-		BaseTestSoftAssert.verifyEquals(lblPatientID.getText(), (patientID + "   Edit"), "PatientID did not matched");
-		BaseTestSoftAssert.verifyEquals(lblPatientSource.getText(), patientSource, "Patient Source did not matched");
-		BaseTestSoftAssert.verifyEquals(lblPatientStatus.getText(), patientStatus, "Patient Status did not matched");
-
+		assertEquals(patientName.getText(), (fName + " " + lName + "   Edit"),
+				"First Name & Last Name did not matched");
+		assertEquals(lblPatientID.getText(), (patientID + "   Edit"), "PatientID did not matched");
+		assertEquals(lblPatientSource.getText(), patientSource, "Patient Source did not matched");
+		assertEquals(lblPatientStatus.getText(), patientStatus, "Patient Status did not matched");
 	}
-
 
 	public void sendPostAgeOutInvitation() {
 		new WebDriverWait(driver, 10).until(ExpectedConditions.elementToBeClickable(postAgeOutInviteButton));
 		javascriptClick(postAgeOutInviteButton);
 		new WebDriverWait(driver, 30).until(ExpectedConditions.elementToBeClickable(sendPostAgeOutInviteButton));
 		javascriptClick(sendPostAgeOutInviteButton);
-		log("Check if info message is present");		
-		assertTrue(new WebDriverWait(driver, 30).until(ExpectedConditions.visibilityOf(postAgeOutInvitationInfoMessage)).isDisplayed());
+		log("Check if info message is present");
+		assertTrue(new WebDriverWait(driver, 30).until(ExpectedConditions.visibilityOf(postAgeOutInvitationInfoMessage))
+				.isDisplayed());
 	}
 
 	public boolean verifySubmittedForm(String formName) {
 		try {
-			return driver.findElement(By.xpath("//table[@class='encounters']//td[contains(text(),'" + formName + "')]")).isDisplayed();
+			return driver.findElement(By.xpath("//table[@class='encounters']//td[contains(text(),'" + formName + "')]"))
+					.isDisplayed();
 		} catch (NoSuchElementException ex) {
 			return false;
 		}
@@ -265,7 +275,7 @@ public class PatientDashboardPage extends BasePageObject {
 		patientID = txtexternalIDPM.getAttribute("value").toString();
 		return patientID;
 	}
-	
+
 	public String getExternalPatientID() {
 		IHGUtil.PrintMethodName();
 		ediPatientID1.click();

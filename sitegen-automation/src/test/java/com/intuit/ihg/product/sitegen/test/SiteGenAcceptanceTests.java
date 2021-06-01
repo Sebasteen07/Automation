@@ -1,10 +1,12 @@
-//Copyright 2013-2020 NXGN Management, LLC. All Rights Reserved.
+//Copyright 2013-2021 NXGN Management, LLC. All Rights Reserved.
 package com.intuit.ihg.product.sitegen.test;
+
+import static org.testng.Assert.assertFalse;
+import static org.testng.Assert.assertEquals;
+import static org.testng.Assert.assertTrue;
 
 import java.io.IOException;
 
-import org.openqa.selenium.By;
-import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.PageFactory;
 import org.testng.annotations.BeforeClass;
 import org.testng.annotations.Test;
@@ -37,6 +39,7 @@ import com.intuit.ifs.csscat.core.RetryAnalyzer;
 import com.medfusion.common.utils.IHGUtil;
 import com.medfusion.common.utils.PropertyFileLoader;
 import com.intuit.ihg.product.sitegen.utils.SitegenConstants;
+import static com.intuit.ihg.product.sitegen.utils.SitegenlUtil.verifyTextPresent;
 
 public class SiteGenAcceptanceTests extends BaseTestNGWebDriver {
 	private PropertyFileLoader testData;
@@ -71,9 +74,9 @@ public class SiteGenAcceptanceTests extends BaseTestNGWebDriver {
 		SiteGenPracticeHomePage pSiteGenPracticeHomePage = pSiteGenHomePage.clickLinkMedfusionSiteAdministration();
 		logStep("Check if SiteGen Practice Homepage elements are present ");
 		assertTrue(pSiteGenPracticeHomePage.isSearchPageLoaded(), "Expected the SiteGen Practice HomePage  to be loaded, but it was not.");
-		assertTrue(verifyTextPresent(driver, "Administrator - Setup/Access"));
-		assertTrue(verifyTextPresent(driver, "Portal Solutions"));
-		assertTrue(verifyTextPresent(driver, "Additional Configurations"));
+		assertTrue(verifyTextPresent(driver, "Administrator - Setup/Access", 15), "Text not found!");	
+		assertTrue(verifyTextPresent(driver, "Portal Solutions", 15), "Text not found!");
+		assertTrue(verifyTextPresent(driver, "Additional Configurations", 15), "Text not found!");
 		logStep("Logout");
 		loginpage = pSiteGenPracticeHomePage.clicklogout();
 		assertTrue(loginpage.isSearchPageLoaded(), "Expected the SiteGen login Page  to be loaded, but it was not.");
@@ -115,8 +118,8 @@ public class SiteGenAcceptanceTests extends BaseTestNGWebDriver {
 
 		logStep("Verify if the Location got added");
 		assertTrue(pManageYourLocationsPage.isSearchPageLoaded(), "Expected the SiteGen Manage your location Page  to be loaded, but it was not.");
-		assertTrue(verifyTextPresent(driver, SitegenConstants.STATE));
-		assertTrue(verifyTextPresent(driver, SitegenConstants.PRACTICENAME));
+		assertTrue(verifyTextPresent(driver, SitegenConstants.STATE, 15), "Text not found!");
+		assertTrue(verifyTextPresent(driver, SitegenConstants.PRACTICENAME, 15), "Text not found!");
 
 		logStep("Test case passed, cleaning test data - remove all locations");
 		pManageYourLocationsPage.cleaningTestdata(SitegenConstants.PRACTICENAME, SitegenConstants.STATE);
@@ -175,9 +178,9 @@ public class SiteGenAcceptanceTests extends BaseTestNGWebDriver {
 				"Expected the Add Physician Step2 Edit Location Information Page  to be loaded, but it was not.");
 
 		logStep("Assert if  Physicians added or not");
-		assertTrue(verifyTextPresent(driver, "Information Updated"), "Physician was not added correctly");
+		assertTrue(verifyTextPresent(driver, "Information Updated", 15), "Physician was not added correctly");
 		String provider = SitegenConstants.FIRSTNAME + " " + lastName;
-		assertTrue(verifyTextPresent(driver, "Edit Location Information for " + provider), "Physician was not added correctly");
+		assertTrue(verifyTextPresent(driver, "Edit Location Information for " + provider, 15), "Physician was not added correctly");
 
 		logStep("Test case passed, cleaning test data");
 		logStep("Test data cleaning process is going to start");
@@ -192,17 +195,14 @@ public class SiteGenAcceptanceTests extends BaseTestNGWebDriver {
 		logStep("Click on button Delete Physician");
 		pAddPhysicianStep2EditLocationInfoPage = pAddPhysicianPage.deletePhysician();
 		logStep("Verify if confirmation of deleting physician is shown");
-		assertTrue(verifyTextPresent(driver, "Are you sure you wish to permanently delete: " + provider + "?"));
+		assertTrue(verifyTextPresent(driver, "Are you sure you wish to permanently delete: " + provider + "?", 15), "Text not found!");
 
 		logStep("Confirm delete operation");
 		pManageYourPhysiciansPage = pAddPhysicianStep2EditLocationInfoPage.deletePhysican();
 		assertTrue(pManageYourPhysiciansPage.isSearchPageLoaded(), "Expected the Manage Your Physicians Page  to be loaded, but it was not.");
 
 		logStep("Assert if physician deleted or not");
-		assertTrue(verifyTextPresent(driver, "Information Updated"));
-		// assertFalse(verifyTextPresent(driver,pManageYourPhysiciansPage.getProviderName(lastName,SitegenConstants.FIRSTNAME, SitegenConstants.TITLE)));
-		assertFalse(verifyTextPresent(driver, "Edit Physician"));
-
+		assertTrue(verifyTextPresent(driver, "Information Updated", 15), "Text not found!");
 	}
 
 	/**
@@ -338,7 +338,7 @@ public class SiteGenAcceptanceTests extends BaseTestNGWebDriver {
 		logStep("Click btn SaveAndContinue");
 		pViewIntegrationsPage = pCreateIntegrationStep2Page.clickbtnSaveAndContinue();
 		logStep("Assert if New IntegrationEngine is added or not");
-		assertTrue(verifyTextPresent(driver, "Integration '" + SitegenConstants.INTEGRATION_NAME + "' updated successfully."));
+		assertTrue(verifyTextPresent(driver, "Integration '" + SitegenConstants.INTEGRATION_NAME + "' updated successfully.", 15), "Text not found!");
 
 		logStep("Verify if Integrations Engine is added or not");
 		assertTrue(pViewIntegrationsPage.verifyIfIntegrationsEngineIsAdded(SitegenConstants.INTEGRATION_NAME), "INTEGRATION_Engine not added");
@@ -469,7 +469,7 @@ public class SiteGenAcceptanceTests extends BaseTestNGWebDriver {
 
 		logStep("Import the csv file from the test\resource\testfile location");
 		ImportOrExportProgressPage pImportOrExportProgressPage = pImportPersonnelAndPhysicians.clickbtnimportStaffFile();
-		assertTrue(verifyTextPresent(driver, "Import/Export Progress"), "Import/Export Progress text is not present on Import/Export Progress");
+		assertTrue(verifyTextPresent(driver, "Import/Export Progress", 15), "Import/Export Progress text is not present on Import/Export Progress");
 
 		logStep("Wait so it can be imported and click on Link List All Personnel");
 		Thread.sleep(3000);
@@ -517,7 +517,7 @@ public class SiteGenAcceptanceTests extends BaseTestNGWebDriver {
 	    AddPharmacyPage addPharmaPage2= managePharmacyPage.clickOnAddPharmacyButton();
 	    
 	    String message2=addPharmaPage2.fillPharmacyDetails(externalid,false);
-	    assertTrue(message2.contains("The External PharmacyID already exists for 88, please enter a unique value"));
+	    assertTrue(message2.contains("The External PharmacyID already exists for 22, please enter a unique value"));
      
 }
 	@Test(enabled = true, groups = {"AcceptanceTests"}, retryAnalyzer = RetryAnalyzer.class)

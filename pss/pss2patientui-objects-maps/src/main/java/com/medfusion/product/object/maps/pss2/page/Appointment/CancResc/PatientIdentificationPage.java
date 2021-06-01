@@ -41,7 +41,7 @@ public class PatientIdentificationPage extends PSS2MainPage {
 	@FindBy(how = How.XPATH, using = "//span[contains(text(),'Submit')]")
 	private WebElement buttonNext;
 	
-	@FindBy(how = How.XPATH, using = "//button[@type='button']//span[contains(text(),'Dismiss')]")
+	@FindBy(how = How.XPATH, using = "//*[@id='myModalsssloginpopup']/div/div/div[3]/button")
 	private WebElement dismissButtons;
 	
 	@FindBy(how = How.XPATH, using = "//div[@id='myModalsss']/div/div/div[3]/button/span")

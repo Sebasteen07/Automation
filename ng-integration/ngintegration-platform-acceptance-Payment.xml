@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<!-- Copyright 2020 NXGN Management, LLC. All Rights Reserved. -->
+
+<suite name = "NGIntegration-Platform-Acceptance-Payment" verbose = "2" >
+<listeners>
+  <listener class-name="com.intuit.ifs.csscat.core.TestValidationErrorListener" />
+  <listener class-name="org.uncommons.reportng.HTMLReporter" />
+  <listener class-name="org.uncommons.reportng.JUnitXMLReporter" />
+</listeners>
+ 	
+<test name = "NGIntegration-Platform-Acceptance-Payment" >
+	<classes>
+		<class name = "com.ng.product.integrationplatform.tests.NGIntegrationE2ESITTests" />
+		<methods>
+	    		<include name="testPaymentPayBills"/>
+	    		<include name="testPaymentVirtualCardSwiper"/> 
+	    		<include name="testPaymentOnlineBillPayProcess"/>
+	    		<include name="testPaymentBudgetPaymentProcess"/>
+	    		<include name="testPaymentOnlineBillPayProcessforSingleGuarantor"/>
+	    		<include name="testPaymentOnlineBillPayProcessforMultipleGuarantors"/> 
+	    		<include name="testPaymentVirtualCardSwiperforMultipleGuarantors"/>	   	    			    		
+	    	</methods>
+	</classes>
+</test>
+</suite>

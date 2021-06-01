@@ -1,4 +1,4 @@
-// Copyright 2013-2020 NXGN Management, LLC. All Rights Reserved.
+// Copyright 2013-2021 NXGN Management, LLC. All Rights Reserved.
 package com.medfusion.product.object.maps.patientportal2.page.PayNow;
 
 import java.util.ArrayList;
@@ -10,11 +10,11 @@ import org.openqa.selenium.support.PageFactory;
 import org.openqa.selenium.support.ui.Select;
 
 import com.medfusion.common.utils.IHGUtil;
-import com.medfusion.portal.utils.PortalConstants;
 import com.medfusion.product.patientportal2.pojo.CreditCard;
 import com.medfusion.product.patientportal2.pojo.CreditCard.CardType;
 import com.medfusion.product.patientportal2.pojo.PayNowInfo;
-import com.medfusion.product.patientportal2.utils.PortalUtil;
+import com.medfusion.product.patientportal2.utils.JalapenoConstants;
+import com.medfusion.product.patientportal2.utils.PortalUtil2;
 
 public class JalapenoPayNowPage extends IHGUtil {
 
@@ -119,9 +119,9 @@ public class JalapenoPayNowPage extends IHGUtil {
 		dateOfBirthInput.sendKeys("01/11/1987");
 
 		Select cardTypeSelect = new Select(this.cardTypeSelect);
-		cardTypeSelect.selectByVisibleText(PortalConstants.CreditCardType);
-		cardNumberInput.sendKeys(PortalConstants.CreditCardNumber);
-		selectExpirationDate("1", PortalConstants.Year);
+		cardTypeSelect.selectByVisibleText(JalapenoConstants.CREDIT_CARD_TYPE);
+		cardNumberInput.sendKeys(JalapenoConstants.CREDIT_CARD_NUMBER);
+		selectExpirationDate("1", JalapenoConstants.YEAR);
 
 		amountInput.sendKeys(amountToBePaid);
 		cvvCodeInput.sendKeys("123");
@@ -218,7 +218,7 @@ public class JalapenoPayNowPage extends IHGUtil {
 
 	public String readConfirmationNumber() {
 		IHGUtil.PrintMethodName();
-		PortalUtil.setPortalFrame(driver);
+		PortalUtil2.setPortalFrame(driver);
 		String confirmationNumber = txtConfirmationNumber.getText().toString();
 		return confirmationNumber.substring(confirmationNumber.indexOf("confirmation number is ") + "confirmation number is ".length(),
 				confirmationNumber.indexOf(". Please retain"));

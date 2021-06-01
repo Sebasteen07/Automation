@@ -1,4 +1,9 @@
+// Copyright 2013-2021 NXGN Management, LLC. All Rights Reserved.
 package com.medfusion.rcm.tests;
+
+import static org.testng.Assert.assertFalse;
+import static org.testng.Assert.assertNotNull;
+import static org.testng.Assert.assertTrue;
 
 import java.io.File;
 import java.io.IOException;
@@ -6,8 +11,6 @@ import java.net.URL;
 import java.util.Random;
 import java.util.Scanner;
 
-import com.medfusion.portal.utils.PortalConstants;
-import org.junit.Assert;
 import org.openqa.selenium.Alert;
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
@@ -31,6 +34,7 @@ import com.medfusion.product.object.maps.patientportal2.page.CreateAccount.Secur
 import com.medfusion.product.object.maps.patientportal2.page.CreateAccount.PatientVerificationPage;
 import com.medfusion.product.object.maps.patientportal2.page.HomePage.JalapenoHomePage;
 import com.medfusion.product.object.maps.patientportal2.page.MessagesPage.JalapenoMessagesPage;
+import com.medfusion.product.patientportal2.utils.JalapenoConstants;
 import com.medfusion.product.practice.api.flows.IPatientActivation;
 import com.medfusion.product.practice.api.pojo.PatientInfo;
 import com.medfusion.product.practice.api.utils.PracticeConstants;
@@ -353,8 +357,8 @@ public class RcmAcceptanceTests extends BaseTestNGWebDriver {
 			@SuppressWarnings("unused")
 			WebElement activationZipCode = (new WebDriverWait(driver, 50)).until(ExpectedConditions.presenceOfElementLocated(By.id("postalCode")));
 			driver.manage().window().maximize();
-			accountDetailsPage = patientVerificationPage.fillPatientInfoAndContinue(PracticeConstants.ZIP_CODE, PortalConstants.DateOfBirthMonthNumber,
-					PortalConstants.DateOfBirthDay, PortalConstants.DateOfBirthYear);
+			accountDetailsPage = patientVerificationPage.fillPatientInfoAndContinue(PracticeConstants.ZIP_CODE, JalapenoConstants.DATE_OF_BIRTH_MONTH_NO,
+					JalapenoConstants.DATE_OF_BIRTH_DAY, JalapenoConstants.DATE_OF_BIRTH_YEAR);
 			checkAlert(driver);
 
 
@@ -370,8 +374,8 @@ public class RcmAcceptanceTests extends BaseTestNGWebDriver {
 			@SuppressWarnings("unused")
 			WebElement activationZipCode = (new WebDriverWait(driver, 50)).until(ExpectedConditions.presenceOfElementLocated(By.id("postalCode")));
 			driver.manage().window().maximize();
-			accountDetailsPage = patientVerificationPage.fillPatientInfoAndContinue(PracticeConstants.ZIP_CODE, PortalConstants.DateOfBirthMonthNumber,
-					PortalConstants.DateOfBirthDay, PortalConstants.DateOfBirthYear);
+			accountDetailsPage = patientVerificationPage.fillPatientInfoAndContinue(PracticeConstants.ZIP_CODE, JalapenoConstants.DATE_OF_BIRTH_MONTH_NO,
+					JalapenoConstants.DATE_OF_BIRTH_DAY, JalapenoConstants.DATE_OF_BIRTH_YEAR);
 
 			log("Finishing of patient activation: step 2 - filling patient data");
 			jalapenoHomePage = accountDetailsPage.fillAccountDetailsAndContinue(newPat.firstName, testData.getPassword(), testData.getSecretQuestion(),
@@ -387,7 +391,7 @@ public class RcmAcceptanceTests extends BaseTestNGWebDriver {
 
 	protected int postModifiedStatementToPatient(String filename, String endpoint, String env, String practicePatientId, String patientBalance, String prefix)
 			throws Exception {
-		Assert.assertNotNull("### Endpoint is null!", endpoint);
+		assertNotNull("### Endpoint is null!", endpoint);
 		IHGUtil.PrintMethodName();
 		int min = 111111;
 		int max = 999999;

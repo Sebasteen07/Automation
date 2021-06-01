@@ -1,6 +1,7 @@
+//Copyright 2013-2021 NXGN Management, LLC. All Rights Reserved.
 package com.medfusion.product.object.maps.patientportal2.page.NewPayBillsPage;
 
-import static com.intuit.ifs.csscat.core.BaseTestSoftAssert.assertTrue;
+import static org.testng.Assert.assertTrue;
 
 import java.util.ArrayList;
 
@@ -248,22 +249,6 @@ public class JalapenoPayBillsMakePaymentPage extends JalapenoMenu {
 			log("Unknown card type was inserted");
 			return false;
 		}
-	}
-
-	// modified assess to see if it will work without waitForElement and moved
-	// allElementsDisplayed=true at the end
-	@Deprecated // same functionality as areBasicElementPresent
-	public boolean assessPayBillsMakePaymentPageElements() {
-
-		ArrayList<WebElement> webElementsList = new ArrayList<WebElement>();
-
-		webElementsList.add(paymentAmount);
-		webElementsList.add(payHistoryButton);
-		webElementsList.add(addNewCardButton);
-		webElementsList.add(accountNumber);
-		webElementsList.add(continueButton);
-
-		return new IHGUtil(driver).assessAllPageElements(webElementsList, this.getClass());
 	}
 
 	private boolean areAddNewCreditCardLightboxElementsPresent() {

@@ -1,9 +1,10 @@
+//  Copyright 2013-2021 NXGN Management, LLC. All Rights Reserved.
 package com.medfusion.product.patientportal2.pojo;
 
 import com.medfusion.common.utils.IHGUtil;
 import com.medfusion.common.utils.PropertyFileLoader;
 import com.medfusion.pojos.Patient;
-import com.medfusion.product.patientportal2.utils.PortalUtil;
+import com.medfusion.product.patientportal2.utils.PortalUtil2;
 
 public class JalapenoPatient {
 
@@ -37,9 +38,9 @@ public class JalapenoPatient {
 		public JalapenoPatient(PropertyFileLoader testData) throws NullPointerException, Exception {
 				IHGUtil.PrintMethodName();
 
-				username = PortalUtil.generateUniqueUsername(testData.getUserId(),testData);
+				username = PortalUtil2.generateUniqueUsername(testData.getUserId(),testData);
 				email = username + "@mailinator.com";
-				firstName = testData.getFirstName() + PortalUtil.createRandomNumber();
+				firstName = testData.getFirstName() + IHGUtil.createRandomNumber();
 				lastName = testData.getLastName();
 				password = testData.getPassword();
 				gender = Patient.GenderExtended.MALE;
@@ -54,27 +55,6 @@ public class JalapenoPatient {
 				address2 = "U bobra 12";
 				city = "Mamlasov";
 				state = "Alabama";
-		}
-
-		// not used anywhere, too heavy, probably should be deleted
-		public JalapenoPatient(String email, String password, String url, String firstName, String lastName, Patient.GenderExtended gender, String dOBDay,
-				String dOBMonth, String dOBMonthText, String dOBYear, String zipCode, String address1, String address2, String city, String state) {
-				super();
-				this.email = email;
-				this.password = password;
-				this.url = url;
-				this.firstName = firstName;
-				this.lastName = lastName;
-				this.gender = gender;
-				DOBDay = dOBDay;
-				DOBMonth = dOBMonth;
-				DOBMonthText = dOBMonthText;
-				DOBYear = dOBYear;
-				ZipCode = zipCode;
-				this.address1 = address1;
-				this.address2 = address2;
-				this.city = city;
-				this.state = state;
 		}
 
 		public String getEmail() {

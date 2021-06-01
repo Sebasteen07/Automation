@@ -13,7 +13,7 @@ import org.openqa.selenium.support.FindBy;
 import org.openqa.selenium.support.PageFactory;
 import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.openqa.selenium.support.ui.WebDriverWait;
-import org.testng.Assert;
+
 
 import com.intuit.ifs.csscat.core.pageobject.BasePageObject;
 import com.medfusion.common.utils.IHGUtil;
@@ -95,6 +95,9 @@ public class PatientSearchPage extends BasePageObject {
 
 	@FindBy(xpath = "//*[@id='dashboard']/fieldset[1]/table/tbody/tr[7]/td[2]/a")
 	private WebElement editPatientID;
+	
+	@FindBy(xpath = "//input[@type='submit']")
+	private WebElement emailPasswordReset;
 
 	/**
 	 * @Description:Set Patient First Name
@@ -200,6 +203,13 @@ public class PatientSearchPage extends BasePageObject {
 		IHGUtil.PrintMethodName();
 		IHGUtil.waitForElement(driver, 10, emailUserName);
 		emailUserName.click();
+		return PageFactory.initElements(driver, PatientDashboardPage.class);
+	}
+	
+	public PatientDashboardPage sendPasswordResetEmail() throws InterruptedException {
+		IHGUtil.PrintMethodName();
+		IHGUtil.waitForElement(driver, 10, emailPasswordReset);
+		emailPasswordReset.click();
 		return PageFactory.initElements(driver, PatientDashboardPage.class);
 	}
 

@@ -1,4 +1,8 @@
+//Copyright 2013-2021 NXGN Management, LLC. All Rights Reserved.
 package com.intuit.ihg.common.utils;
+
+import static org.testng.Assert.assertEquals;
+import static org.testng.Assert.assertNotNull;
 
 import java.io.BufferedReader;
 import java.io.ByteArrayInputStream;
@@ -20,7 +24,7 @@ import org.apache.http.params.HttpParams;
 import org.apache.http.util.EntityUtils;
 import org.jboss.resteasy.client.ClientRequest;
 import org.jboss.resteasy.client.ClientResponse;
-import org.testng.Assert;
+
 
 import com.medfusion.common.utils.IHGUtil;
 
@@ -89,7 +93,7 @@ public class WebPoster {
 	public void postFromResourceFile(String sResourceFile) throws Exception {
 
 		IHGUtil.PrintMethodName();
-		Assert.assertNotNull("### Test error - serviceUrl not set", serviceUrl);
+		assertNotNull("### Test error - serviceUrl not set", serviceUrl);
 
 		System.out.println("### SERVICE URL: " + serviceUrl);
 		System.out.println("### POSTING RESOURCE: " + sResourceFile);
@@ -101,7 +105,7 @@ public class WebPoster {
 		// This method locates the resource through the system class loader
 		URL url = ClassLoader.getSystemResource(sResourceFile);
 
-		Assert.assertNotNull(url, "### getSystemResource returned null: [" + sResourceFile + "] ");
+		assertNotNull(url, "### getSystemResource returned null: [" + sResourceFile + "] ");
 
 		// adding headers to request
 		for (Map.Entry<String, String> entry : headerMap.entrySet()) {
@@ -123,7 +127,7 @@ public class WebPoster {
 			ClientResponse<String> response = request.post(String.class);
 
 			// asserting if reponse code is 200
-			Assert.assertEquals(response.getStatus(), expectedStatusCode, "HTTP Status not what expected");
+			assertEquals(response.getStatus(), expectedStatusCode, "HTTP Status not what expected");
 
 			// printing the response to the console
 			BufferedReader br = new BufferedReader(new InputStreamReader(new ByteArrayInputStream(response.getEntity().getBytes())));
@@ -160,7 +164,7 @@ public class WebPoster {
 	public String smpostFromResourceFile(String sResourceFile, String xmldata) throws Exception {
 
 		IHGUtil.PrintMethodName();
-		Assert.assertNotNull("### Test error - serviceUrl not set", serviceUrl);
+		assertNotNull("### Test error - serviceUrl not set", serviceUrl);
 
 		System.out.println("### SERVICE URL: " + serviceUrl);
 		System.out.println("### POSTING RESOURCE: " + sResourceFile);
@@ -187,7 +191,7 @@ public class WebPoster {
 			ClientResponse<String> response = request.post(String.class);
 
 			// asserting if reponse code is 200
-			Assert.assertEquals(response.getStatus(), expectedStatusCode, "HTTP Status not what expected");
+			assertEquals(response.getStatus(), expectedStatusCode, "HTTP Status not what expected");
 			System.out.println(response.getEntity().toString());
 
 			String str = response.getEntity().toString();
@@ -211,7 +215,7 @@ public class WebPoster {
 	public String postFromString(String payload) throws Exception {
 
 		IHGUtil.PrintMethodName();
-		Assert.assertNotNull("### Test error - serviceUrl not set", serviceUrl);
+		assertNotNull("### Test error - serviceUrl not set", serviceUrl);
 
 		System.out.println("### SERVICE URL: " + serviceUrl);
 		System.out.println("### POSTING PAYLOAD: " + payload);
@@ -237,7 +241,7 @@ public class WebPoster {
 			ClientResponse<String> response = request.post(String.class);
 
 			// asserting if reponse code is as expected
-			Assert.assertEquals(response.getStatus(), expectedStatusCode, "HTTP Status not what expected");
+			assertEquals(response.getStatus(), expectedStatusCode, "HTTP Status not what expected");
 			System.out.println(response.getEntity().toString());
 
 			String str = response.getEntity().toString();
@@ -265,7 +269,7 @@ public class WebPoster {
 		HttpConnectionParams.setSoTimeout(params, timeoutMillis * 10);
 		HttpPost postRequest = new HttpPost(serviceUrl);
 		IHGUtil.PrintMethodName();
-		Assert.assertNotNull("### Test error - serviceUrl not set", serviceUrl);
+		assertNotNull("### Test error - serviceUrl not set", serviceUrl);
 
 		System.out.println("### SERVICE URL: " + serviceUrl);
 		System.out.println("### POSTING PAYLOAD: " + payload);
@@ -292,7 +296,7 @@ public class WebPoster {
 			String str = EntityUtils.toString(response.getEntity());
 
 			// asserting if reponse code is as expected
-			Assert.assertEquals(response.getStatusLine().getStatusCode(), expectedStatusCode, "HTTP Status not what expected");
+			assertEquals(response.getStatusLine().getStatusCode(), expectedStatusCode, "HTTP Status not what expected");
 			System.out.println(str);
 
 			return str;
@@ -332,7 +336,7 @@ public class WebPoster {
 			}
 			ClientResponse<String> response = request.get(String.class);
 
-			Assert.assertEquals(response.getStatus(), expectedStatusCode, "HTTP Status not what expected");
+			assertEquals(response.getStatus(), expectedStatusCode, "HTTP Status not what expected");
 
 			BufferedReader br = new BufferedReader(new InputStreamReader(new ByteArrayInputStream(response.getEntity().getBytes())));
 
@@ -377,7 +381,7 @@ public class WebPoster {
 			}
 			ClientResponse<String> response = request.get(String.class);
 
-			Assert.assertEquals(response.getStatus(), expectedStatusCode, "HTTP Status not what expected");
+			assertEquals(response.getStatus(), expectedStatusCode, "HTTP Status not what expected");
 
 			BufferedReader br = new BufferedReader(new InputStreamReader(new ByteArrayInputStream(response.getEntity().getBytes())));
 

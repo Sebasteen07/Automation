@@ -1,4 +1,4 @@
-//Copyright 2013-2020 NXGN Management, LLC. All Rights Reserved.
+//Copyright 2013-2021 NXGN Management, LLC. All Rights Reserved.
 package com.intuit.ihg.product.sitegen.utils;
 
 /**
@@ -9,10 +9,6 @@ package com.intuit.ihg.product.sitegen.utils;
  */
 
 public class SitegenConstants {
-
-	public final static int FIND_ELEMENTS_MAX_WAIT_SECONDS = 3;
-	public final static int SELENIUM_IMPLICIT_WAIT_SECONDS = 30;
-
 	// US6144:- Testcase testLocation
 	public final static String PRACTICENAME = "SiteGenAutomation";
 	public final static String ADDRESS = "San Diego";
@@ -45,8 +41,6 @@ public class SitegenConstants {
 	public final static String INTEGRATION_NAME = "Sitegen Automation";
 	public final static String REVIEWTYPE = "Never Review";
 
-
-
 	// for Custom Forms
 	public final static String FORMTYPE = "Custom Health Form";
 	public final static String FORMTITLE = "Auto CustomForm";
@@ -65,7 +59,6 @@ public class SitegenConstants {
 	public final static String FORMLAYOUTPAGE2 = "1";
 	public final static String FORMLAYOUTPAGE3 = "2";
 	public final static String FORMLAYOUTPAGE0 = "0";
-
 
 	// for Merchant AccountSetup for Practise through Paypal
 	public final static String PROCESSORVALUE1 = "PayPal";
@@ -139,10 +132,8 @@ public class SitegenConstants {
 
 	public final static String FORMS_REGISTRATION_FORM_INITIAL_NAME = "General Registration and Health History";
 	public final static String FORMS_CUSTOM_FORM_INITIAL_NAME = "Custom Form";
-	
-	//Add new Pharmacy
+
+	// Add new Pharmacy
 	public final static String PHARMACYNAME = "Automation Pharmacy";
 	public final static String PHARMACYLOCATION = "Automation-Location-1";
 }
-
-

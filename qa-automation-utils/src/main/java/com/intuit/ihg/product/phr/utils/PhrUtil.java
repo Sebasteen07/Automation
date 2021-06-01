@@ -1,4 +1,7 @@
+//Copyright 2013-2021 NXGN Management, LLC. All Rights Reserved.
 package com.intuit.ihg.product.phr.utils;
+
+import static org.testng.Assert.assertNotNull;
 
 import java.io.File;
 import java.io.IOException;
@@ -6,7 +9,6 @@ import java.net.JarURLConnection;
 import java.net.URL;
 import java.net.URLConnection;
 
-import org.junit.Assert;
 import org.openqa.selenium.WebDriver;
 
 import com.intuit.ifs.csscat.core.TestConfig;
@@ -94,7 +96,7 @@ public class PhrUtil extends IHGUtil {
 
 		WebPoster poster = new WebPoster();
 
-		Assert.assertNotNull("### Test property PHR_ALLSCRIPTS_ADAPTER_URL not defined", allScriptAdapterURL);
+		assertNotNull("### Test property PHR_ALLSCRIPTS_ADAPTER_URL not defined", allScriptAdapterURL);
 
 		log("Before setting the allscript adapter url#####");
 		poster.setServiceUrl(allScriptAdapterURL.trim());
@@ -134,7 +136,7 @@ public class PhrUtil extends IHGUtil {
 
 		WebPoster poster = new WebPoster();
 
-		Assert.assertNotNull("### Test property PHR_EHDC_ADAPTER_URL not defined", EHDCAdapterURL);
+		assertNotNull("### Test property PHR_EHDC_ADAPTER_URL not defined", EHDCAdapterURL);
 
 		log("Before setting the EHDC adapter url#####");
 		poster.setServiceUrl(EHDCAdapterURL.trim());
@@ -173,7 +175,7 @@ public class PhrUtil extends IHGUtil {
 		
 		WebPoster poster = new WebPoster();
 
-		Assert.assertNotNull("### Test property PHR_EHDC_ADAPTER_URL not defined", testData.getProperty("EHDCAdapterURL"));
+		assertNotNull("### Test property PHR_EHDC_ADAPTER_URL not defined", testData.getProperty("EHDCAdapterURL"));
 		poster.setServiceUrl(testData.getProperty("EHDCAdapterURL"));
 		poster.setContentType("application/xml;");
 		poster.setExpectedStatusCode(202); // HTTP Status Code
