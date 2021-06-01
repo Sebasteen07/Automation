@@ -9,7 +9,6 @@ import org.testng.annotations.BeforeClass;
 import org.testng.annotations.Test;
 import com.intuit.ifs.csscat.core.BaseTestNGWebDriver;
 import com.intuit.ifs.csscat.core.RetryAnalyzer;
-import com.intuit.ifs.csscat.core.TestConfig;
 import com.intuit.ifs.csscat.core.utils.Log4jUtil;
 import com.intuit.ihg.product.integrationplatform.utils.IntegrationConstants;
 import com.intuit.ihg.product.integrationplatform.utils.PropertyFileLoader;
@@ -572,7 +571,7 @@ public class NGIntegrationE2EPayment_SendChartItemTests extends BaseTestNGWebDri
 		} else if (propertyLoaderObj.getNGAPIexecutionMode().equalsIgnoreCase("SIT")) {
 			enterpriseId = propertyLoaderObj.getProperty("NGMainEnterpriseID");
 			practiceId = propertyLoaderObj.getProperty("NGMainPracticeID");
-			integrationPracticeID = propertyLoaderObj.getProperty("integrationPracticeIDAMDC");
+			integrationPracticeID = propertyLoaderObj.getProperty("integrationpracticeid.amdc");
 			url = propertyLoaderObj.getProperty("url");
 		} else {
 			Log4jUtil.log("Invalid Execution Mode");
@@ -637,7 +636,7 @@ public class NGIntegrationE2EPayment_SendChartItemTests extends BaseTestNGWebDri
 		} else if (propertyLoaderObj.getNGAPIexecutionMode().equalsIgnoreCase("SIT")) {
 			enterpriseId = propertyLoaderObj.getProperty("NGMainEnterpriseID");
 			practiceId = propertyLoaderObj.getProperty("NGMainPracticeID");
-			integrationPracticeID = propertyLoaderObj.getProperty("integrationPracticeIDAMDC");
+			integrationPracticeID = propertyLoaderObj.getProperty("integrationpracticeid.amdc");
 			url = propertyLoaderObj.getProperty("url");
 		} else {
 			Log4jUtil.log("Invalid Execution Mode");
@@ -703,7 +702,7 @@ public class NGIntegrationE2EPayment_SendChartItemTests extends BaseTestNGWebDri
 		} else if (propertyLoaderObj.getNGAPIexecutionMode().equalsIgnoreCase("SIT")) {
 			enterpriseId = propertyLoaderObj.getProperty("NGMainEnterpriseID");
 			practiceId = propertyLoaderObj.getProperty("NGMainPracticeID");
-			integrationPracticeID = propertyLoaderObj.getProperty("integrationPracticeIDAMDC");
+			integrationPracticeID = propertyLoaderObj.getProperty("integrationpracticeid.amdc");
 			url = propertyLoaderObj.getProperty("url");
 		} else {
 			Log4jUtil.log("Invalid Execution Mode");
@@ -769,7 +768,7 @@ public class NGIntegrationE2EPayment_SendChartItemTests extends BaseTestNGWebDri
 		} else if (propertyLoaderObj.getNGAPIexecutionMode().equalsIgnoreCase("SIT")) {
 			enterpriseId = propertyLoaderObj.getProperty("NGMainEnterpriseID");
 			practiceId = propertyLoaderObj.getProperty("NGMainPracticeID");
-			integrationPracticeID = propertyLoaderObj.getProperty("integrationPracticeIDAMDC");
+			integrationPracticeID = propertyLoaderObj.getProperty("integrationpracticeid.amdc");
 			url = propertyLoaderObj.getProperty("url");
 		} else {
 			Log4jUtil.log("Invalid Execution Mode");
@@ -844,7 +843,7 @@ public class NGIntegrationE2EPayment_SendChartItemTests extends BaseTestNGWebDri
 			practiceId = propertyLoaderObj.getProperty("NGMainPracticeID");
 			providerName = propertyLoaderObj.getProperty("EPMProviderName");
 			locationName = propertyLoaderObj.getProperty("EPMLocationName");
-			integrationPracticeID = propertyLoaderObj.getProperty("integrationPracticeIDAMDC");
+			integrationPracticeID = propertyLoaderObj.getProperty("integrationpracticeid.amdc");
 			url = propertyLoaderObj.getProperty("url");
 		} else {
 			Log4jUtil.log("Invalid Execution Mode");
@@ -885,8 +884,8 @@ public class NGIntegrationE2EPayment_SendChartItemTests extends BaseTestNGWebDri
 					propertyLoaderObj.getProperty("oAuthPassword1"));
 		} else if (propertyLoaderObj.getNGAPIexecutionMode().equalsIgnoreCase("SIT")) {
 			RestUtils.oauthSetup(propertyLoaderObj.getOAuthKeyStore(), propertyLoaderObj.getOAuthProperty(),
-					propertyLoaderObj.getOAuthAppToken(), propertyLoaderObj.getProperty("oAuthUsername"),
-					propertyLoaderObj.getProperty("oAuthPassword"));
+					propertyLoaderObj.getOAuthAppToken(), propertyLoaderObj.getProperty("oauth.username"),
+					propertyLoaderObj.getProperty("oauth.password"));
 		} else {
 			Log4jUtil.log("Invalid Execution Mode");
 		}
@@ -949,8 +948,8 @@ public class NGIntegrationE2EPayment_SendChartItemTests extends BaseTestNGWebDri
 					propertyLoaderObj.getProperty("oAuthPassword1"));
 		} else if (propertyLoaderObj.getNGAPIexecutionMode().equalsIgnoreCase("SIT")) {
 			RestUtils.oauthSetup(propertyLoaderObj.getOAuthKeyStore(), propertyLoaderObj.getOAuthProperty(),
-					propertyLoaderObj.getOAuthAppToken(), propertyLoaderObj.getProperty("oAuthUsername"),
-					propertyLoaderObj.getProperty("oAuthPassword"));
+					propertyLoaderObj.getOAuthAppToken(), propertyLoaderObj.getProperty("oauth.username"),
+					propertyLoaderObj.getProperty("oauth.password"));
 		} else {
 			Log4jUtil.log("Invalid Execution Mode");
 		}
@@ -981,7 +980,7 @@ public class NGIntegrationE2EPayment_SendChartItemTests extends BaseTestNGWebDri
 			practiceId = propertyLoaderObj.getProperty("NGMainPracticeID");
 			providerName = propertyLoaderObj.getProperty("EPMProviderName");
 			locationName = propertyLoaderObj.getProperty("EPMLocationName");
-			integrationPracticeID = propertyLoaderObj.getProperty("integrationPracticeIDAMDC");
+			integrationPracticeID = propertyLoaderObj.getProperty("integrationpracticeid.amdc");
 			url = propertyLoaderObj.getProperty("url");
 		} else {
 			Log4jUtil.log("Invalid Execution Mode");
@@ -1019,8 +1018,8 @@ public class NGIntegrationE2EPayment_SendChartItemTests extends BaseTestNGWebDri
 					propertyLoaderObj.getProperty("oAuthPassword1"));
 		} else if (propertyLoaderObj.getNGAPIexecutionMode().equalsIgnoreCase("SIT")) {
 			RestUtils.oauthSetup(propertyLoaderObj.getOAuthKeyStore(), propertyLoaderObj.getOAuthProperty(),
-					propertyLoaderObj.getOAuthAppToken(), propertyLoaderObj.getProperty("oAuthUsername"),
-					propertyLoaderObj.getProperty("oAuthPassword"));
+					propertyLoaderObj.getOAuthAppToken(), propertyLoaderObj.getProperty("oauth.username"),
+					propertyLoaderObj.getProperty("oauth.password"));
 		} else {
 			Log4jUtil.log("Invalid Execution Mode");
 		}
@@ -1055,7 +1054,7 @@ public class NGIntegrationE2EPayment_SendChartItemTests extends BaseTestNGWebDri
 			practiceId = propertyLoaderObj.getProperty("NGMainPracticeID");
 			providerName = propertyLoaderObj.getProperty("EPMProviderName");
 			locationName = propertyLoaderObj.getProperty("EPMLocationName");
-			integrationPracticeID = propertyLoaderObj.getProperty("integrationPracticeIDAMDC");
+			integrationPracticeID = propertyLoaderObj.getProperty("integrationpracticeid.amdc");
 			url = propertyLoaderObj.getProperty("url");
 		} else {
 			Log4jUtil.log("Invalid Execution Mode");
@@ -1128,7 +1127,7 @@ public class NGIntegrationE2EPayment_SendChartItemTests extends BaseTestNGWebDri
 		} else if (propertyLoaderObj.getNGAPIexecutionMode().equalsIgnoreCase("SIT")) {
 			enterpriseId = propertyLoaderObj.getProperty("NGMainEnterpriseID");
 			practiceId = propertyLoaderObj.getProperty("NGMainPracticeID");
-			integrationPracticeID = propertyLoaderObj.getProperty("integrationPracticeIDAMDC");
+			integrationPracticeID = propertyLoaderObj.getProperty("integrationpracticeid.amdc");
 			url = propertyLoaderObj.getProperty("url");
 			providerName = propertyLoaderObj.getProperty("EPMProviderName");
 			locationName = propertyLoaderObj.getProperty("EPMLocationName");
@@ -1211,7 +1210,7 @@ public class NGIntegrationE2EPayment_SendChartItemTests extends BaseTestNGWebDri
 		} else if (propertyLoaderObj.getNGAPIexecutionMode().equalsIgnoreCase("SIT")) {
 			enterpriseId = propertyLoaderObj.getProperty("NGMainEnterpriseID");
 			practiceId = propertyLoaderObj.getProperty("NGMainPracticeID");
-			integrationPracticeID = propertyLoaderObj.getProperty("integrationPracticeIDAMDC");
+			integrationPracticeID = propertyLoaderObj.getProperty("integrationpracticeid.amdc");
 			url = propertyLoaderObj.getProperty("url");
 		} else {
 			Log4jUtil.log("Invalid Execution Mode");

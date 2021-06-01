@@ -91,7 +91,7 @@ public class NGIntegrationE2EInboxTests extends BaseTestNGWebDriver {
 			providerName = propertyLoaderObj.getProperty("EPMProviderName");
 			locationName = propertyLoaderObj.getProperty("EPMLocationName");
 			userId = propertyLoaderObj.getProperty("SecureMessageUserID");
-			integrationPracticeID = propertyLoaderObj.getProperty("integrationPracticeIDAMDC");
+			integrationPracticeID = propertyLoaderObj.getProperty("integrationpracticeid.amdc");
 			url = propertyLoaderObj.getProperty("url");
 		} else {
 			Log4jUtil.log("Invalid Execution Mode");
@@ -124,8 +124,8 @@ public class NGIntegrationE2EInboxTests extends BaseTestNGWebDriver {
 					propertyLoaderObj.getProperty("oAuthPassword1"));
 		} else if (propertyLoaderObj.getNGAPIexecutionMode().equalsIgnoreCase("SIT")) {
 			RestUtils.oauthSetup(propertyLoaderObj.getOAuthKeyStore(), propertyLoaderObj.getOAuthProperty(),
-					propertyLoaderObj.getOAuthAppToken(), propertyLoaderObj.getProperty("oAuthUsername"),
-					propertyLoaderObj.getProperty("oAuthPassword"));
+					propertyLoaderObj.getOAuthAppToken(), propertyLoaderObj.getProperty("oauth.username"),
+					propertyLoaderObj.getProperty("oauth.password"));
 		} else {
 			Log4jUtil.log("Invalid Execution Mode");
 		}
@@ -160,7 +160,7 @@ public class NGIntegrationE2EInboxTests extends BaseTestNGWebDriver {
 			providerName = propertyLoaderObj.getProperty("EPMProviderName");
 			locationName = propertyLoaderObj.getProperty("EPMLocationName");
 			userId = propertyLoaderObj.getProperty("SecureMessageUserID");
-			integrationPracticeID = propertyLoaderObj.getProperty("integrationPracticeIDAMDC");
+			integrationPracticeID = propertyLoaderObj.getProperty("integrationpracticeid.amdc");
 			url = propertyLoaderObj.getProperty("url");
 		} else {
 			Log4jUtil.log("Invalid Execution Mode");
@@ -191,8 +191,8 @@ public class NGIntegrationE2EInboxTests extends BaseTestNGWebDriver {
 					propertyLoaderObj.getProperty("oAuthPassword1"));
 		} else if (propertyLoaderObj.getNGAPIexecutionMode().equalsIgnoreCase("SIT")) {
 			RestUtils.oauthSetup(propertyLoaderObj.getOAuthKeyStore(), propertyLoaderObj.getOAuthProperty(),
-					propertyLoaderObj.getOAuthAppToken(), propertyLoaderObj.getProperty("oAuthUsername"),
-					propertyLoaderObj.getProperty("oAuthPassword"));
+					propertyLoaderObj.getOAuthAppToken(), propertyLoaderObj.getProperty("oauth.username"),
+					propertyLoaderObj.getProperty("oauth.password"));
 		} else {
 			Log4jUtil.log("Invalid Execution Mode");
 		}
@@ -254,7 +254,7 @@ public class NGIntegrationE2EInboxTests extends BaseTestNGWebDriver {
 			providerName = propertyLoaderObj.getProperty("EPMProviderName");
 			locationName = propertyLoaderObj.getProperty("EPMLocationName");
 			userId = propertyLoaderObj.getProperty("SecureMessageUserID");
-			integrationPracticeID = propertyLoaderObj.getProperty("integrationPracticeIDAMDC");
+			integrationPracticeID = propertyLoaderObj.getProperty("integrationpracticeid.amdc");
 			url = propertyLoaderObj.getProperty("url");
 		} else {
 			Log4jUtil.log("Invalid Execution Mode");
@@ -287,8 +287,8 @@ public class NGIntegrationE2EInboxTests extends BaseTestNGWebDriver {
 					propertyLoaderObj.getProperty("oAuthPassword1"));
 		} else if (propertyLoaderObj.getNGAPIexecutionMode().equalsIgnoreCase("SIT")) {
 			RestUtils.oauthSetup(propertyLoaderObj.getOAuthKeyStore(), propertyLoaderObj.getOAuthProperty(),
-					propertyLoaderObj.getOAuthAppToken(), propertyLoaderObj.getProperty("oAuthUsername"),
-					propertyLoaderObj.getProperty("oAuthPassword"));
+					propertyLoaderObj.getOAuthAppToken(), propertyLoaderObj.getProperty("oauth.username"),
+					propertyLoaderObj.getProperty("oauth.password"));
 		} else {
 			Log4jUtil.log("Invalid Execution Mode");
 		}
@@ -320,7 +320,7 @@ public class NGIntegrationE2EInboxTests extends BaseTestNGWebDriver {
 			providerName = propertyLoaderObj.getProperty("EPMProviderName");
 			locationName = propertyLoaderObj.getProperty("EPMLocationName");
 			userId = propertyLoaderObj.getProperty("SecureMessageUserID");
-			integrationPracticeID = propertyLoaderObj.getProperty("integrationPracticeIDAMDC");
+			integrationPracticeID = propertyLoaderObj.getProperty("integrationpracticeid.amdc");
 			url = propertyLoaderObj.getProperty("url");
 		} else {
 			Log4jUtil.log("Invalid Execution Mode");
@@ -354,8 +354,8 @@ public class NGIntegrationE2EInboxTests extends BaseTestNGWebDriver {
 					propertyLoaderObj.getProperty("oAuthPassword1"));
 		} else if (propertyLoaderObj.getNGAPIexecutionMode().equalsIgnoreCase("SIT")) {
 			RestUtils.oauthSetup(propertyLoaderObj.getOAuthKeyStore(), propertyLoaderObj.getOAuthProperty(),
-					propertyLoaderObj.getOAuthAppToken(), propertyLoaderObj.getProperty("oAuthUsername"),
-					propertyLoaderObj.getProperty("oAuthPassword"));
+					propertyLoaderObj.getOAuthAppToken(), propertyLoaderObj.getProperty("oauth.username"),
+					propertyLoaderObj.getProperty("oauth.password"));
 		} else {
 			Log4jUtil.log("Invalid Execution Mode");
 		}
@@ -394,7 +394,7 @@ public class NGIntegrationE2EInboxTests extends BaseTestNGWebDriver {
 			practiceId = propertyLoaderObj.getProperty("NGMainPracticeID");
 			providerName = propertyLoaderObj.getProperty("EPMProviderName");
 			locationName = propertyLoaderObj.getProperty("EPMLocationName");
-			integrationPracticeID = propertyLoaderObj.getProperty("integrationPracticeIDAMDC");
+			integrationPracticeID = propertyLoaderObj.getProperty("integrationpracticeid.amdc");
 			url = propertyLoaderObj.getProperty("url");
 		} else {
 			Log4jUtil.log("Invalid Execution Mode");
@@ -435,8 +435,8 @@ public class NGIntegrationE2EInboxTests extends BaseTestNGWebDriver {
 					propertyLoaderObj.getProperty("oAuthPassword1"));
 		} else if (propertyLoaderObj.getNGAPIexecutionMode().equalsIgnoreCase("SIT")) {
 			RestUtils.oauthSetup(propertyLoaderObj.getOAuthKeyStore(), propertyLoaderObj.getOAuthProperty(),
-					propertyLoaderObj.getOAuthAppToken(), propertyLoaderObj.getProperty("oAuthUsername"),
-					propertyLoaderObj.getProperty("oAuthPassword"));
+					propertyLoaderObj.getOAuthAppToken(), propertyLoaderObj.getProperty("oauth.username"),
+					propertyLoaderObj.getProperty("oauth.password"));
 		} else {
 			Log4jUtil.log("Invalid Execution Mode");
 		}
@@ -495,8 +495,8 @@ public class NGIntegrationE2EInboxTests extends BaseTestNGWebDriver {
 					propertyLoaderObj.getProperty("oAuthPassword1"));
 		} else if (propertyLoaderObj.getNGAPIexecutionMode().equalsIgnoreCase("SIT")) {
 			RestUtils.oauthSetup(propertyLoaderObj.getOAuthKeyStore(), propertyLoaderObj.getOAuthProperty(),
-					propertyLoaderObj.getOAuthAppToken(), propertyLoaderObj.getProperty("oAuthUsername"),
-					propertyLoaderObj.getProperty("oAuthPassword"));
+					propertyLoaderObj.getOAuthAppToken(), propertyLoaderObj.getProperty("oauth.username"),
+					propertyLoaderObj.getProperty("oauth.password"));
 		} else {
 			Log4jUtil.log("Invalid Execution Mode");
 		}
@@ -537,7 +537,7 @@ public class NGIntegrationE2EInboxTests extends BaseTestNGWebDriver {
 			practiceId = propertyLoaderObj.getProperty("NGMainPracticeID");
 			providerName = propertyLoaderObj.getProperty("EPMProviderName");
 			locationName = propertyLoaderObj.getProperty("EPMLocationName");
-			integrationPracticeID = propertyLoaderObj.getProperty("integrationPracticeIDAMDC");
+			integrationPracticeID = propertyLoaderObj.getProperty("integrationpracticeid.amdc");
 			url = propertyLoaderObj.getProperty("url");
 		} else {
 			Log4jUtil.log("Invalid Execution Mode");
@@ -578,8 +578,8 @@ public class NGIntegrationE2EInboxTests extends BaseTestNGWebDriver {
 					propertyLoaderObj.getProperty("oAuthPassword1"));
 		} else if (propertyLoaderObj.getNGAPIexecutionMode().equalsIgnoreCase("SIT")) {
 			RestUtils.oauthSetup(propertyLoaderObj.getOAuthKeyStore(), propertyLoaderObj.getOAuthProperty(),
-					propertyLoaderObj.getOAuthAppToken(), propertyLoaderObj.getProperty("oAuthUsername"),
-					propertyLoaderObj.getProperty("oAuthPassword"));
+					propertyLoaderObj.getOAuthAppToken(), propertyLoaderObj.getProperty("oauth.username"),
+					propertyLoaderObj.getProperty("oauth.password"));
 		} else {
 			Log4jUtil.log("Invalid Execution Mode");
 		}
@@ -637,8 +637,8 @@ public class NGIntegrationE2EInboxTests extends BaseTestNGWebDriver {
 					propertyLoaderObj.getProperty("oAuthPassword1"));
 		} else if (propertyLoaderObj.getNGAPIexecutionMode().equalsIgnoreCase("SIT")) {
 			RestUtils.oauthSetup(propertyLoaderObj.getOAuthKeyStore(), propertyLoaderObj.getOAuthProperty(),
-					propertyLoaderObj.getOAuthAppToken(), propertyLoaderObj.getProperty("oAuthUsername"),
-					propertyLoaderObj.getProperty("oAuthPassword"));
+					propertyLoaderObj.getOAuthAppToken(), propertyLoaderObj.getProperty("oauth.username"),
+					propertyLoaderObj.getProperty("oauth.password"));
 		} else {
 			Log4jUtil.log("Invalid Execution Mode");
 		}
@@ -670,7 +670,7 @@ public class NGIntegrationE2EInboxTests extends BaseTestNGWebDriver {
 			providerName = propertyLoaderObj.getProperty("EPMProviderName");
 			locationName = propertyLoaderObj.getProperty("EPMLocationName");
 			userId = propertyLoaderObj.getProperty("SecureMessageUserID");
-			integrationPracticeID = propertyLoaderObj.getProperty("integrationPracticeIDAMDC");
+			integrationPracticeID = propertyLoaderObj.getProperty("integrationpracticeid.amdc");
 			url = propertyLoaderObj.getProperty("url");
 		} else {
 			Log4jUtil.log("Invalid Execution Mode");
@@ -701,8 +701,8 @@ public class NGIntegrationE2EInboxTests extends BaseTestNGWebDriver {
 					propertyLoaderObj.getProperty("oAuthPassword1"));
 		} else if (propertyLoaderObj.getNGAPIexecutionMode().equalsIgnoreCase("SIT")) {
 			RestUtils.oauthSetup(propertyLoaderObj.getOAuthKeyStore(), propertyLoaderObj.getOAuthProperty(),
-					propertyLoaderObj.getOAuthAppToken(), propertyLoaderObj.getProperty("oAuthUsername"),
-					propertyLoaderObj.getProperty("oAuthPassword"));
+					propertyLoaderObj.getOAuthAppToken(), propertyLoaderObj.getProperty("oauth.username"),
+					propertyLoaderObj.getProperty("oauth.password"));
 		} else {
 			Log4jUtil.log("Invalid Execution Mode");
 		}
@@ -732,7 +732,7 @@ public class NGIntegrationE2EInboxTests extends BaseTestNGWebDriver {
 			practiceId = propertyLoaderObj.getProperty("NGMainPracticeID");
 			providerName = propertyLoaderObj.getProperty("EPMProviderName");
 			locationName = propertyLoaderObj.getProperty("EPMLocationName");
-			integrationPracticeID = propertyLoaderObj.getProperty("integrationPracticeIDAMDC");
+			integrationPracticeID = propertyLoaderObj.getProperty("integrationpracticeid.amdc");
 			url = propertyLoaderObj.getProperty("url");
 		} else {
 			Log4jUtil.log("Invalid Execution Mode");
@@ -825,8 +825,8 @@ public class NGIntegrationE2EInboxTests extends BaseTestNGWebDriver {
 					propertyLoaderObj.getProperty("oAuthPassword1"));
 		} else if (propertyLoaderObj.getNGAPIexecutionMode().equalsIgnoreCase("SIT")) {
 			RestUtils.oauthSetup(propertyLoaderObj.getOAuthKeyStore(), propertyLoaderObj.getOAuthProperty(),
-					propertyLoaderObj.getOAuthAppToken(), propertyLoaderObj.getProperty("oAuthUsername"),
-					propertyLoaderObj.getProperty("oAuthPassword"));
+					propertyLoaderObj.getOAuthAppToken(), propertyLoaderObj.getProperty("oauth.username"),
+					propertyLoaderObj.getProperty("oauth.password"));
 		} else {
 			Log4jUtil.log("Invalid Execution Mode");
 		}
@@ -959,7 +959,7 @@ public class NGIntegrationE2EInboxTests extends BaseTestNGWebDriver {
 			practiceId = propertyLoaderObj.getProperty("NGMainPracticeID");
 			providerName = propertyLoaderObj.getProperty("EPMProviderName");
 			locationName = propertyLoaderObj.getProperty("EPMLocationName");
-			integrationPracticeID = propertyLoaderObj.getProperty("integrationPracticeIDAMDC");
+			integrationPracticeID = propertyLoaderObj.getProperty("integrationpracticeid.amdc");
 			url = propertyLoaderObj.getProperty("url");
 		} else {
 			Log4jUtil.log("Invalid Execution Mode");
@@ -998,8 +998,8 @@ public class NGIntegrationE2EInboxTests extends BaseTestNGWebDriver {
 					propertyLoaderObj.getProperty("oAuthPassword1"));
 		} else if (propertyLoaderObj.getNGAPIexecutionMode().equalsIgnoreCase("SIT")) {
 			RestUtils.oauthSetup(propertyLoaderObj.getOAuthKeyStore(), propertyLoaderObj.getOAuthProperty(),
-					propertyLoaderObj.getOAuthAppToken(), propertyLoaderObj.getProperty("oAuthUsername"),
-					propertyLoaderObj.getProperty("oAuthPassword"));
+					propertyLoaderObj.getOAuthAppToken(), propertyLoaderObj.getProperty("oauth.username"),
+					propertyLoaderObj.getProperty("oauth.password"));
 		} else {
 			Log4jUtil.log("Invalid Execution Mode");
 		}
@@ -1069,7 +1069,7 @@ public class NGIntegrationE2EInboxTests extends BaseTestNGWebDriver {
 			providerName = propertyLoaderObj.getProperty("EPMProviderName");
 			locationName = propertyLoaderObj.getProperty("EPMLocationName");
 			userId = propertyLoaderObj.getProperty("SecureMessageUserID");
-			integrationPracticeID = propertyLoaderObj.getProperty("integrationPracticeIDAMDC");
+			integrationPracticeID = propertyLoaderObj.getProperty("integrationpracticeid.amdc");
 			url = propertyLoaderObj.getProperty("url");
 		} else {
 			Log4jUtil.log("Invalid Execution Mode");
@@ -1108,8 +1108,8 @@ public class NGIntegrationE2EInboxTests extends BaseTestNGWebDriver {
 					propertyLoaderObj.getProperty("oAuthPassword1"));
 		} else if (propertyLoaderObj.getNGAPIexecutionMode().equalsIgnoreCase("SIT")) {
 			RestUtils.oauthSetup(propertyLoaderObj.getOAuthKeyStore(), propertyLoaderObj.getOAuthProperty(),
-					propertyLoaderObj.getOAuthAppToken(), propertyLoaderObj.getProperty("oAuthUsername"),
-					propertyLoaderObj.getProperty("oAuthPassword"));
+					propertyLoaderObj.getOAuthAppToken(), propertyLoaderObj.getProperty("oauth.username"),
+					propertyLoaderObj.getProperty("oauth.password"));
 		} else {
 			Log4jUtil.log("Invalid Execution Mode");
 		}
@@ -1137,7 +1137,7 @@ public class NGIntegrationE2EInboxTests extends BaseTestNGWebDriver {
 			practiceId = propertyLoaderObj.getProperty("NGMainPracticeID");
 			providerName = propertyLoaderObj.getProperty("EPMProviderName");
 			locationName = propertyLoaderObj.getProperty("EPMLocationName");
-			integrationPracticeID = propertyLoaderObj.getProperty("integrationPracticeIDAMDC");
+			integrationPracticeID = propertyLoaderObj.getProperty("integrationpracticeid.amdc");
 		} else {
 			Log4jUtil.log("Invalid Execution Mode");
 		}
@@ -1179,7 +1179,7 @@ public class NGIntegrationE2EInboxTests extends BaseTestNGWebDriver {
 			practiceId = propertyLoaderObj.getProperty("NGMainPracticeID");
 			providerName = propertyLoaderObj.getProperty("EPMProviderName");
 			locationName = propertyLoaderObj.getProperty("EPMLocationName");
-			integrationPracticeID = propertyLoaderObj.getProperty("integrationPracticeIDAMDC");
+			integrationPracticeID = propertyLoaderObj.getProperty("integrationpracticeid.amdc");
 			url = propertyLoaderObj.getProperty("url");
 		} else {
 			Log4jUtil.log("Invalid Execution Mode");
@@ -1216,8 +1216,8 @@ public class NGIntegrationE2EInboxTests extends BaseTestNGWebDriver {
 					propertyLoaderObj.getProperty("oAuthPassword1"));
 		} else if (propertyLoaderObj.getNGAPIexecutionMode().equalsIgnoreCase("SIT")) {
 			RestUtils.oauthSetup(propertyLoaderObj.getOAuthKeyStore(), propertyLoaderObj.getOAuthProperty(),
-					propertyLoaderObj.getOAuthAppToken(), propertyLoaderObj.getProperty("oAuthUsername"),
-					propertyLoaderObj.getProperty("oAuthPassword"));
+					propertyLoaderObj.getOAuthAppToken(), propertyLoaderObj.getProperty("oauth.username"),
+					propertyLoaderObj.getProperty("oauth.password"));
 		} else {
 			Log4jUtil.log("Invalid Execution Mode");
 		}
@@ -1290,7 +1290,7 @@ public class NGIntegrationE2EInboxTests extends BaseTestNGWebDriver {
 			practiceId = propertyLoaderObj.getProperty("NGMainPracticeID");
 			providerName = propertyLoaderObj.getProperty("EPMProviderName");
 			locationName = propertyLoaderObj.getProperty("EPMLocationName");
-			integrationPracticeID = propertyLoaderObj.getProperty("integrationPracticeIDAMDC");
+			integrationPracticeID = propertyLoaderObj.getProperty("integrationpracticeid.amdc");
 			url = propertyLoaderObj.getProperty("url");
 		} else {
 			Log4jUtil.log("Invalid Execution Mode");
@@ -1327,8 +1327,8 @@ public class NGIntegrationE2EInboxTests extends BaseTestNGWebDriver {
 					propertyLoaderObj.getProperty("oAuthPassword1"));
 		} else if (propertyLoaderObj.getNGAPIexecutionMode().equalsIgnoreCase("SIT")) {
 			RestUtils.oauthSetup(propertyLoaderObj.getOAuthKeyStore(), propertyLoaderObj.getOAuthProperty(),
-					propertyLoaderObj.getOAuthAppToken(), propertyLoaderObj.getProperty("oAuthUsername"),
-					propertyLoaderObj.getProperty("oAuthPassword"));
+					propertyLoaderObj.getOAuthAppToken(), propertyLoaderObj.getProperty("oauth.username"),
+					propertyLoaderObj.getProperty("oauth.password"));
 		} else {
 			Log4jUtil.log("Invalid Execution Mode");
 		}
@@ -1401,7 +1401,7 @@ public class NGIntegrationE2EInboxTests extends BaseTestNGWebDriver {
 			providerName = propertyLoaderObj.getProperty("EPMProviderName");
 			locationName = propertyLoaderObj.getProperty("EPMLocationName");
 			userId = propertyLoaderObj.getProperty("SecureMessageUserID");
-			integrationPracticeID = propertyLoaderObj.getProperty("integrationPracticeIDAMDC");
+			integrationPracticeID = propertyLoaderObj.getProperty("integrationpracticeid.amdc");
 			url = propertyLoaderObj.getProperty("url");
 		} else {
 			Log4jUtil.log("Invalid Execution Mode");
@@ -1436,8 +1436,8 @@ public class NGIntegrationE2EInboxTests extends BaseTestNGWebDriver {
 					propertyLoaderObj.getProperty("oAuthPassword1"));
 		} else if (propertyLoaderObj.getNGAPIexecutionMode().equalsIgnoreCase("SIT")) {
 			RestUtils.oauthSetup(propertyLoaderObj.getOAuthKeyStore(), propertyLoaderObj.getOAuthProperty(),
-					propertyLoaderObj.getOAuthAppToken(), propertyLoaderObj.getProperty("oAuthUsername"),
-					propertyLoaderObj.getProperty("oAuthPassword"));
+					propertyLoaderObj.getOAuthAppToken(), propertyLoaderObj.getProperty("oauth.username"),
+					propertyLoaderObj.getProperty("oauth.password"));
 		} else {
 			Log4jUtil.log("Invalid Execution Mode");
 		}
@@ -1465,7 +1465,7 @@ public class NGIntegrationE2EInboxTests extends BaseTestNGWebDriver {
 			practiceId = propertyLoaderObj.getProperty("NGMainPracticeID");
 			propertyLoaderObj.getProperty("EPMProviderName");
 			propertyLoaderObj.getProperty("EPMLocationName");
-			integrationPracticeID = propertyLoaderObj.getProperty("integrationPracticeIDAMDC");
+			integrationPracticeID = propertyLoaderObj.getProperty("integrationpracticeid.amdc");
 			url = propertyLoaderObj.getProperty("url");
 		} else {
 			Log4jUtil.log("Invalid Execution Mode");
@@ -1502,8 +1502,8 @@ public class NGIntegrationE2EInboxTests extends BaseTestNGWebDriver {
 					propertyLoaderObj.getProperty("oAuthPassword1"));
 		} else if (propertyLoaderObj.getNGAPIexecutionMode().equalsIgnoreCase("SIT")) {
 			RestUtils.oauthSetup(propertyLoaderObj.getOAuthKeyStore(), propertyLoaderObj.getOAuthProperty(),
-					propertyLoaderObj.getOAuthAppToken(), propertyLoaderObj.getProperty("oAuthUsername"),
-					propertyLoaderObj.getProperty("oAuthPassword"));
+					propertyLoaderObj.getOAuthAppToken(), propertyLoaderObj.getProperty("oauth.username"),
+					propertyLoaderObj.getProperty("oauth.password"));
 		} else {
 			Log4jUtil.log("Invalid Execution Mode");
 		}
@@ -1556,7 +1556,7 @@ public class NGIntegrationE2EInboxTests extends BaseTestNGWebDriver {
 			practiceId = propertyLoaderObj.getProperty("NGMainPracticeID");
 			providerName = propertyLoaderObj.getProperty("EPMProviderName");
 			locationName = propertyLoaderObj.getProperty("EPMLocationName");
-			integrationPracticeID = propertyLoaderObj.getProperty("integrationPracticeIDAMDC");
+			integrationPracticeID = propertyLoaderObj.getProperty("integrationpracticeid.amdc");
 			url = propertyLoaderObj.getProperty("url");
 		} else {
 			Log4jUtil.log("Invalid Execution Mode");
@@ -1634,8 +1634,8 @@ public class NGIntegrationE2EInboxTests extends BaseTestNGWebDriver {
 					propertyLoaderObj.getProperty("oAuthPassword1"));
 		else if (propertyLoaderObj.getNGAPIexecutionMode().equalsIgnoreCase("SIT"))
 			RestUtils.oauthSetup(propertyLoaderObj.getOAuthKeyStore(), propertyLoaderObj.getOAuthProperty(),
-					propertyLoaderObj.getOAuthAppToken(), propertyLoaderObj.getProperty("oAuthUsername"),
-					propertyLoaderObj.getProperty("oAuthPassword"));
+					propertyLoaderObj.getOAuthAppToken(), propertyLoaderObj.getProperty("oauth.username"),
+					propertyLoaderObj.getProperty("oauth.password"));
 		else
 			Log4jUtil.log("Invalid Execution Mode");
 
@@ -1698,8 +1698,8 @@ public class NGIntegrationE2EInboxTests extends BaseTestNGWebDriver {
 					propertyLoaderObj.getProperty("oAuthPassword1"));
 		else if (propertyLoaderObj.getNGAPIexecutionMode().equalsIgnoreCase("SIT"))
 			RestUtils.oauthSetup(propertyLoaderObj.getOAuthKeyStore(), propertyLoaderObj.getOAuthProperty(),
-					propertyLoaderObj.getOAuthAppToken(), propertyLoaderObj.getProperty("oAuthUsername"),
-					propertyLoaderObj.getProperty("oAuthPassword"));
+					propertyLoaderObj.getOAuthAppToken(), propertyLoaderObj.getProperty("oauth.username"),
+					propertyLoaderObj.getProperty("oauth.password"));
 		else
 			Log4jUtil.log("Invalid Execution Mode");
 
@@ -1732,7 +1732,7 @@ public class NGIntegrationE2EInboxTests extends BaseTestNGWebDriver {
 			url = propertyLoaderObj.getProperty("MFPortalURLPractice1");
 		} else if (propertyLoaderObj.getNGAPIexecutionMode().equalsIgnoreCase("SIT")) {
 
-			integrationPracticeID = propertyLoaderObj.getProperty("integrationPracticeIDAMDC");
+			integrationPracticeID = propertyLoaderObj.getProperty("integrationpracticeid.amdc");
 			url = propertyLoaderObj.getProperty("url");
 		} else {
 			Log4jUtil.log("Invalid Execution Mode");
@@ -1788,8 +1788,8 @@ public class NGIntegrationE2EInboxTests extends BaseTestNGWebDriver {
 					propertyLoaderObj.getProperty("oAuthPassword1"));
 		else if (propertyLoaderObj.getNGAPIexecutionMode().equalsIgnoreCase("SIT"))
 			RestUtils.oauthSetup(propertyLoaderObj.getOAuthKeyStore(), propertyLoaderObj.getOAuthProperty(),
-					propertyLoaderObj.getOAuthAppToken(), propertyLoaderObj.getProperty("oAuthUsername"),
-					propertyLoaderObj.getProperty("oAuthPassword"));
+					propertyLoaderObj.getOAuthAppToken(), propertyLoaderObj.getProperty("oauth.username"),
+					propertyLoaderObj.getProperty("oauth.password"));
 		else
 			Log4jUtil.log("Invalid Execution Mode");
 
@@ -1853,7 +1853,7 @@ public class NGIntegrationE2EInboxTests extends BaseTestNGWebDriver {
 			integrationPracticeID = propertyLoaderObj.getProperty("integrationPracticeIDE1P1");
 			url = propertyLoaderObj.getProperty("MFPortalURLPractice1");
 		} else if (propertyLoaderObj.getNGAPIexecutionMode().equalsIgnoreCase("SIT")) {
-			integrationPracticeID = propertyLoaderObj.getProperty("integrationPracticeIDAMDC");
+			integrationPracticeID = propertyLoaderObj.getProperty("integrationpracticeid.amdc");
 			url = propertyLoaderObj.getProperty("url");
 		} else {
 			Log4jUtil.log("Invalid Execution Mode");
@@ -1906,8 +1906,8 @@ public class NGIntegrationE2EInboxTests extends BaseTestNGWebDriver {
 					propertyLoaderObj.getProperty("oAuthPassword1"));
 		else if (propertyLoaderObj.getNGAPIexecutionMode().equalsIgnoreCase("SIT"))
 			RestUtils.oauthSetup(propertyLoaderObj.getOAuthKeyStore(), propertyLoaderObj.getOAuthProperty(),
-					propertyLoaderObj.getOAuthAppToken(), propertyLoaderObj.getProperty("oAuthUsername"),
-					propertyLoaderObj.getProperty("oAuthPassword"));
+					propertyLoaderObj.getOAuthAppToken(), propertyLoaderObj.getProperty("oauth.username"),
+					propertyLoaderObj.getProperty("oauth.password"));
 		else
 			Log4jUtil.log("Invalid Execution Mode");
 
