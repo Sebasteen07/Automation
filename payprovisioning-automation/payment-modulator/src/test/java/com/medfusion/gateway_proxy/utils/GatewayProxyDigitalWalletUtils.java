@@ -8,7 +8,7 @@ import java.io.FileOutputStream;
 import java.io.IOException;
 import java.util.Properties;
 
-public class DigitalWalletUtils {
+public class GatewayProxyDigitalWalletUtils {
 
 
     public static void saveWalletDetails(String externalWalletId, String externalCardId) throws FileNotFoundException, IOException {
