@@ -21,7 +21,7 @@ public class GatewayProxyDigitalWalletResource extends GatewayProxyBaseTest {
 
 		testData = new PropertyFileLoader();
 
-		Response response = given().spec(requestSpec).header("Authorization", "Bearer " + token).when().delete(
+		Response response = given().spec(requestSpec).auth().oauth2(token).when().delete(
 				testData.getProperty("testpaycustomeruuid") + "/wallets/" + walletId + "/cards/" + externalcardId)
 				.then().extract().response();
 
@@ -34,30 +34,32 @@ public class GatewayProxyDigitalWalletResource extends GatewayProxyBaseTest {
 		Map<String, Object> digitalWallet = PayloadDetails.getPayloadForAddingCardToDigitalWallet(consumerName,
 				cardType, cardNumber, expiryDate, cardAlias, zipcode);
 
-		Response response = given().spec(requestSpec).header("Authorization", "Bearer " + token).body(digitalWallet)
+		Response response = given().spec(requestSpec).auth().oauth2(token).body(digitalWallet)
 				.when().post(testData.getProperty("testpaycustomeruuid") + "/wallets").then().extract().response();
 
 		return response;
 	}
 
-	public Response getListOfCardsInWallet(String token) throws IOException {
 
-		testData = new PropertyFileLoader();
 
-		Response response = given().that().spec(requestSpec).header("Authorization", "Bearer " + token).when().get(
-				testData.getProperty("testpaycustomeruuid") + "/wallets/" + testData.getProperty("externalWalletId"))
-				.then().and().extract().response();
-
-		return response;
-
-	}
-
+	
+	  public Response getListOfCardsInWallet(String token) throws IOException {
+	  
+	  testData = new PropertyFileLoader();
+	 
+	  Response response = given().that().spec(requestSpec).auth().oauth2(token).when().get( testData.getProperty("testpaycustomeruuid") +
+	  "/wallets/" + testData.getProperty("externalWalletId"))
+	  .then().and().extract().response();
+	  
+	  return response;
+	  
+	  }
 	public Response updateZipcode(String token, String customeruuid, String walletId, String card, String zipcode)
 			throws Exception {
 		testData = new PropertyFileLoader();
 		Map<String, Object> zipcodePayload = BillToAddress.getBillingAdressMap(zipcode);
 
-		Response response = given().spec(requestSpec).header("Authorization", "Bearer " + token).body(zipcodePayload)
+		Response response = given().spec(requestSpec).auth().oauth2(token).body(zipcodePayload)
 				.when().patch(customeruuid + "/wallets/" + walletId + "/cards/" + card).then().extract().response();
 		return response;
 	}
