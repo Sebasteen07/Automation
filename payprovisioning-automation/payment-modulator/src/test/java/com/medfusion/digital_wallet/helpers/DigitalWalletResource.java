@@ -18,7 +18,7 @@ public class DigitalWalletResource extends DigitalWalletBaseTest {
 
         Response response = given().that().spec(requestSpec).header("Authorization","Bearer "+ token)
                 .when()
-                .get("cards-to-expire-count?fromMonth=" + fromMonth + "&toMonth=" + toMonth + "")
+                .get("cards-to-expire-count?fromMonth=" + fromMonth + "&toMonth=" + toMonth)
                 .then()
                 .extract()
                 .response();
