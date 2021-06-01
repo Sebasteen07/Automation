@@ -1,4 +1,4 @@
-//Copyright 2020 NXGN Management, LLC. All Rights Reserved.
+//Copyright 2013-2021 NXGN Management, LLC. All Rights Reserved.
 package com.medfusion.product.object.maps.pss2.page.CancelReason;
 
 import java.util.ArrayList;
@@ -21,11 +21,6 @@ public class ManageCancelReason extends PSS2MenuPage {
 	public ManageCancelReason(WebDriver driver) {
 		super(driver);
 
-	}
-
-	@Override
-	public boolean areBasicPageElementsPresent() {
-		return true;
 	}
 
 	CommonMethods commonMethods = new CommonMethods(driver);

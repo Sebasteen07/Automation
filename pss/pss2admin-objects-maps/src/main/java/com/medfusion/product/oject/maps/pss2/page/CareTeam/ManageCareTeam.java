@@ -1,9 +1,8 @@
+// Copyright 2013-2021 NXGN Management, LLC. All Rights Reserved.
 package com.medfusion.product.oject.maps.pss2.page.CareTeam;
 
 import java.util.List;
-import java.util.concurrent.TimeUnit;
 
-import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.interactions.Actions;
@@ -81,11 +80,6 @@ public class ManageCareTeam extends PSS2MenuPage {
 
 	public ManageCareTeam(WebDriver driver) {
 		super(driver);
-	}
-
-	@Override
-	public boolean areBasicPageElementsPresent() {
-		return true;
 	}
 
 	public void DesendingListCARETEAM() {

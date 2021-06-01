@@ -1,7 +1,5 @@
-// Copyright 2018-2020 NXGN Management, LLC. All Rights Reserved.
+// Copyright 2013-2021 NXGN Management, LLC. All Rights Reserved.
 package com.medfusion.product.object.maps.pss2.page.Appointment.Menu;
-
-import java.util.ArrayList;
 
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
@@ -33,16 +31,6 @@ public class PSSPatientHeader extends PSS2MainPage {
 
 	public PSSPatientHeader(WebDriver driver) {
 		super(driver);
-	}
-
-	@Override
-	public boolean areBasicPageElementsPresent() {
-		log("Verifying PSS Patient Header Elements");
-		ArrayList<WebElement> webElementsList = new ArrayList<WebElement>();
-		webElementsList.add(companyLogo);
-		webElementsList.add(flagImage);
-		webElementsList.add(languageText);
-		return new IHGUtil(driver).assessAllPageElements(webElementsList, this.getClass());
 	}
 
 	public void logout() throws InterruptedException {

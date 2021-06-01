@@ -1,13 +1,12 @@
 // Copyright 2013-2021 NXGN Management, LLC. All Rights Reserved.
 package com.medfusion.mfpay.merchant_provisioning.utils;
 
-import org.openqa.selenium.internal.Base64Encoder;
+import org.apache.commons.codec.binary.Base64;
 
 public class User extends ProvisioningUtils{
 
-
     public static String getCredentialsEncodedInBase(String role) {
-        Base64Encoder encoder = new Base64Encoder();
+        Base64 encoder = new Base64();
         if(role.equalsIgnoreCase("FINANCE")){
         return "Basic " + encoder.encode((FINANCE_USER + ":" + FINANCE_PASS).getBytes());
         }

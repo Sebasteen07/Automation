@@ -58,6 +58,8 @@ import com.intuit.ihg.product.integrationplatform.utils.IntegrationConstants;
 import com.intuit.ihg.product.integrationplatform.utils.LoadPreTestData;
 import com.intuit.ihg.product.integrationplatform.utils.MU2GetEventData;
 import com.intuit.ihg.product.integrationplatform.utils.MU2Utils;
+import com.intuit.ihg.product.integrationplatform.utils.Medication;
+import com.intuit.ihg.product.integrationplatform.utils.MedicationTestData;
 import com.intuit.ihg.product.integrationplatform.utils.P2PUnseenMessageList;
 import com.intuit.ihg.product.integrationplatform.utils.PatientFormsExportInfo;
 import com.intuit.ihg.product.integrationplatform.utils.PatientRegistrationUtils;
@@ -66,6 +68,8 @@ import com.intuit.ihg.product.integrationplatform.utils.Pharmacies;
 import com.intuit.ihg.product.integrationplatform.utils.PharmacyPayload;
 import com.intuit.ihg.product.integrationplatform.utils.PrecheckAppointmentUtils;
 import com.intuit.ihg.product.integrationplatform.utils.Prescription;
+import com.intuit.ihg.product.integrationplatform.utils.Prescription20;
+import com.intuit.ihg.product.integrationplatform.utils.Prescription20TestData;
 import com.intuit.ihg.product.integrationplatform.utils.PrescriptionTestData;
 import com.intuit.ihg.product.integrationplatform.utils.RestUtils;
 import com.intuit.ihg.product.integrationplatform.utils.SendDirectMessage;
@@ -176,7 +180,6 @@ public class IntegrationPlatformRegressionTests extends BaseTestNGWebDriver {
 
 		log("Click on messages solution");
 		JalapenoMessagesPage messagesPage = homePage.showMessages(driver);
-		assertTrue(messagesPage.areBasicPageElementsPresent(), "Inbox failed to load properly.");
 
 		log("Step 5: Validate message subject and send date");
 		Thread.sleep(1000);
@@ -188,11 +191,9 @@ public class IntegrationPlatformRegressionTests extends BaseTestNGWebDriver {
 		JalapenoCcdViewerPage jalapenoCcdPage = messagesPage.findCcdMessage(driver);
 
 		log("Step 7: Verify if CCD Viewer is loaded and click Close Viewer");
-		assertTrue(jalapenoCcdPage.areBasicPageElementsPresent());
 		messagesPage = jalapenoCcdPage.closeCcd(driver);
 
 		log("Step 8: Logging out");
-		assertTrue(messagesPage.areBasicPageElementsPresent());
 		homePage = messagesPage.backToHomePage(driver);
 		loginPage = homePage.clickOnLogout();
 	}
@@ -296,7 +297,6 @@ public class IntegrationPlatformRegressionTests extends BaseTestNGWebDriver {
 		assertTrue(homePage.isHomeButtonPresent(driver));
 		log("Click on messages solution");
 		JalapenoMessagesPage messagesPage = homePage.showMessages(driver);
-		assertTrue(messagesPage.areBasicPageElementsPresent(), "Inbox failed to load properly.");
 		log("Step 8: Find message in Inbox");
 		String messageIdentifier = AMDCPayload.messageIdentifier;
 		log("message subject " + messageIdentifier);
@@ -458,17 +458,22 @@ public class IntegrationPlatformRegressionTests extends BaseTestNGWebDriver {
 		assertTrue(link != null, "AMDC Secure Message link not found in mail.");
 		link = link.replace("login?redirectoptout=true", "login");
 		log("Step 7: Login to Patient Portal");
+		
 		log("Link is " + link);
 		JalapenoLoginPage loginPage = new JalapenoLoginPage(driver, link);
 		JalapenoHomePage homePage = loginPage.login(testData.UserName, testData.Password);
+		
 		log("Detecting if Home Page is opened");
 		assertTrue(homePage.isHomeButtonPresent(driver));
+		
 		log("Click on messages solution");
 		JalapenoMessagesPage messagesPage = homePage.showMessages(driver);
-		assertTrue(messagesPage.areBasicPageElementsPresent(), "Inbox failed to load properly.");
+
 		log("Step 8: Find message in Inbox");
 		String messageIdentifier = AMDCPayload.messageIdentifier;
+		
 		log("message subject " + messageIdentifier);
+		
 		log("Step 9: Log the message read time ");
 		long epoch = System.currentTimeMillis() / 1000;
 
@@ -975,7 +980,6 @@ public class IntegrationPlatformRegressionTests extends BaseTestNGWebDriver {
 			assertTrue(homePage.isHomeButtonPresent(driver));
 			log("Click on messages solution");
 			JalapenoMessagesPage messagesPage = homePage.showMessages(driver);
-			assertTrue(messagesPage.areBasicPageElementsPresent(), "Inbox failed to load properly.");
 			long epoch = System.currentTimeMillis() / 1000;
 
 			log("Step 8: Find message in Inbox");
@@ -3265,8 +3269,6 @@ public class IntegrationPlatformRegressionTests extends BaseTestNGWebDriver {
 
 		log("Step 4: Go to  Health Record Summaries");
 		MedicalRecordSummariesPage MedicalRecordSummariesPageObject = homePage.clickOnMedicalRecordSummaries(driver);
-		assertTrue(MedicalRecordSummariesPageObject.areBasicPageElementsPresent(),
-				"Failed to Load Health Record Summaries ");
 
 		log("Step 5: Click on Request Health Record");
 		MedicalRecordSummariesPageObject.selectHealthRecordRequestButton();
@@ -3446,11 +3448,9 @@ public class IntegrationPlatformRegressionTests extends BaseTestNGWebDriver {
 		log("Step 3: Login to Patient Portal");
 		JalapenoLoginPage loginPage = new JalapenoLoginPage(driver, testData.URL);
 		JalapenoHomePage homePage = loginPage.login(testData.UserName, testData.Password);
-		JalapenoPrescriptionsPage JalapenoPrescriptionsPageObject = homePage.clickOnPrescriptions(driver);
 
 		log("Step 4: Click on Prescription and go to Prescription Page");
-		assertTrue(JalapenoPrescriptionsPageObject.areBasicPageElementsPresent(),
-				"Failed to Load Health Record Summaries ");
+		JalapenoPrescriptionsPage JalapenoPrescriptionsPageObject = homePage.clickOnPrescriptions(driver);
 
 		log("Step 5: Click on Continue ");
 		JalapenoPrescriptionsPageObject.clickContinueButton(driver);
@@ -3460,7 +3460,6 @@ public class IntegrationPlatformRegressionTests extends BaseTestNGWebDriver {
 		String addedPharamacy = testData.PharmacyName + ", " + testData.Line1 + ", " + testData.City + ", "
 				+ testData.State;
 		log("Added Pharamacy :- " + addedPharamacy);
-		JalapenoPrescriptionsPageObject.areBasicPageElementsPresent();
 		String env = IHGUtil.getEnvironmentType().toString();
 
 		if (env == "DEV3") {
@@ -3550,11 +3549,9 @@ public class IntegrationPlatformRegressionTests extends BaseTestNGWebDriver {
 		log("Step 4: Login to Patient Portal");
 		JalapenoLoginPage loginPage = new JalapenoLoginPage(driver, testData.URL);
 		JalapenoHomePage homePage = loginPage.login(testData.UserName, testData.Password);
-		JalapenoPrescriptionsPage JalapenoPrescriptionsPageObject = homePage.clickOnPrescriptions(driver);
 
 		log("Step 5: Click on Prescription and go to Prescription Page");
-		assertTrue(JalapenoPrescriptionsPageObject.areBasicPageElementsPresent(),
-				"Failed to Load Health Record Summaries ");
+		JalapenoPrescriptionsPage JalapenoPrescriptionsPageObject = homePage.clickOnPrescriptions(driver);
 
 		log("Step 6: Click on Continue ");
 		JalapenoPrescriptionsPageObject.clickContinueButton(driver);
@@ -3564,7 +3561,6 @@ public class IntegrationPlatformRegressionTests extends BaseTestNGWebDriver {
 		String addedPharamacy = testData.PharmacyName + ", " + testData.Line1 + ", " + testData.City + ", "
 				+ testData.State;
 		log("Added Pharamacy :- " + addedPharamacy);
-		JalapenoPrescriptionsPageObject.areBasicPageElementsPresent();
 		String env = IHGUtil.getEnvironmentType().toString();
 
 		if (env == "DEV3") {
@@ -3652,13 +3648,11 @@ public class IntegrationPlatformRegressionTests extends BaseTestNGWebDriver {
 
 		log("Step 4: Login to Patient Portal");
 		JalapenoLoginPage loginPage = new JalapenoLoginPage(driver, testData.URL);
-		JalapenoHomePage homePage = loginPage.login(testData.UserName, testData.Password);
-		JalapenoPrescriptionsPage JalapenoPrescriptionsPageObject = homePage.clickOnPrescriptions(driver);
+		JalapenoHomePage homePage = loginPage.login(testData.UserName, testData.Password);		
 
 		log("Step 5: Click on Prescription and go to Prescription Page");
-		assertTrue(JalapenoPrescriptionsPageObject.areBasicPageElementsPresent(),
-				"Failed to Load Health Record Summaries ");
-
+		JalapenoPrescriptionsPage JalapenoPrescriptionsPageObject = homePage.clickOnPrescriptions(driver);
+		
 		log("Step 6: Click on Continue ");
 		JalapenoPrescriptionsPageObject.clickContinueButton(driver);
 		Thread.sleep(60000);
@@ -3667,7 +3661,6 @@ public class IntegrationPlatformRegressionTests extends BaseTestNGWebDriver {
 		String deletedPharamacy = testData.PharmacyName + ", " + testData.Line1 + ", " + testData.City + ", "
 				+ testData.State;
 		log("Added Pharamacy :- " + deletedPharamacy);
-		JalapenoPrescriptionsPageObject.areBasicPageElementsPresent();
 		String env = IHGUtil.getEnvironmentType().toString();
 		if (env == "DEV3") {
 			String pharmacyFristWord = "Added";
@@ -3911,7 +3904,6 @@ public class IntegrationPlatformRegressionTests extends BaseTestNGWebDriver {
 
 		log("Click on messages solution");
 		JalapenoMessagesPage messagesPage = homePage.showMessages(driver);
-		assertTrue(messagesPage.areBasicPageElementsPresent(), "Inbox failed to load properly.");
 
 		log("Step 5: Validate message subject and send date");
 		Thread.sleep(1000);
@@ -3923,11 +3915,9 @@ public class IntegrationPlatformRegressionTests extends BaseTestNGWebDriver {
 		JalapenoCcdViewerPage jalapenoCcdPage = messagesPage.findCcdMessage(driver);
 
 		log("Step 7: Verify if CCD Viewer is loaded and click Close Viewer");
-		assertTrue(jalapenoCcdPage.areBasicPageElementsPresent());
 		messagesPage = jalapenoCcdPage.closeCcd(driver);
 
 		log("Step 8: Logging out");
-		assertTrue(messagesPage.areBasicPageElementsPresent());
 		homePage = messagesPage.backToHomePage(driver);
 		loginPage = homePage.clickOnLogout();
 	}
@@ -4059,18 +4049,17 @@ public class IntegrationPlatformRegressionTests extends BaseTestNGWebDriver {
 		log("Execution Environment: " + IHGUtil.getEnvironmentType());
 		log("Execution Browser: " + TestConfig.getBrowserType());
 
-		log("Step 1: Get Data from Excel");
-		Prescription prescription = new Prescription();
-		PrescriptionTestData testData = new PrescriptionTestData(prescription);
+		logStep("Get Data from Excel");
+		Prescription20 prescription20 = new Prescription20();
+		Prescription20TestData testData = new Prescription20TestData(prescription20);
 		Long timestamp = System.currentTimeMillis();
-
+		Long since;
 		log("Url: " + testData.getUrl());
 		log("User Name: " + testData.getUserName());
 		log("Password: " + testData.getPassword());
 		log("Rest Url: " + testData.getRestUrl());
 		log("Response Path: " + testData.getResponsePath());
 		log("From: " + testData.getFrom());
-		log("PrescriptionPath: " + testData.getPrescriptionPath());
 		log("OAuthProperty: " + testData.getOAuthProperty());
 		log("OAuthKeyStore: " + testData.getOAuthKeyStore());
 		log("OAuthAppToken: " + testData.getOAuthAppToken());
@@ -4080,23 +4069,24 @@ public class IntegrationPlatformRegressionTests extends BaseTestNGWebDriver {
 		log("PrescriptionPathV3: " + testData.getPrescriptionPathV3());
 		log("Pharamcy Name:" + testData.getPharmacyName());
 
-		log("Step 2: LogIn");
+		logStep("Login to the patient portal");
 		JalapenoLoginPage loginPage = new JalapenoLoginPage(driver, testData.getUrl());
 		JalapenoHomePage homePage = loginPage.login(testData.getUserName(), testData.getPassword());
 		Thread.sleep(9000);
 
-		log("Step 3: Click on PrescriptionRenewal Link ");
+		since = timestamp / 1000L;
+
+		logStep("Click on PrescriptionRenewal Link ");
 		MedicationsHomePage medicationPage = homePage.clickOnMedications(driver);
 		Thread.sleep(15000);
 		medicationPage.clickOnRxRequest();
 		Thread.sleep(15000);
-		
-		LocationAndProviderPage select = new LocationAndProviderPage(driver);
 	
-		log("Getting Provider Details");
-		String practiceLocation = LocationAndProviderPage.getPracticeLocation();
+		logStep("Getting Provider Details");
+		LocationAndProviderPage selectLocationAndProviderPage = new LocationAndProviderPage(driver);
+		String practiceLocation = selectLocationAndProviderPage.getPracticeLocation(driver);
 		log("Practce Location: " + practiceLocation);
-		String practiceProvider = LocationAndProviderPage.getPracticeProvider();
+		String practiceProvider = selectLocationAndProviderPage.getPracticeProvider();
 		log("Practice Provider Name :" + practiceProvider);
 		
 		
@@ -4107,41 +4097,42 @@ public class IntegrationPlatformRegressionTests extends BaseTestNGWebDriver {
 		logStep("Select Medications");
 		SelectMedicationsPage selectMedPage = new SelectMedicationsPage(driver);
 		selectMedPage.selectMedicationsFrmAvailable();
-
-		logStep("Validating Prescription Renewal Fee Text is not present");
-		MedicationsConfirmationPage confirmPage = new MedicationsConfirmationPage(driver);
 		
-		log("Step 6 : Confirm Medication Request from Patient Portal");
+		logStep("Confirm Medication Request from Patient Portal");
 		MedicationsConfirmationPage confirmPage1 = new MedicationsConfirmationPage(driver);
 		
-		log("Get the medication and pharmact details frm the confirmation page which submitting Rx Renewal request");
+		logStep("Get the medication and pharmact details frm the confirmation page which submitting Rx Renewal request");
 		String MedicationDetails = confirmPage1.getMedicationdetails(driver);
-		String PharmacyDetails  = confirmPage1.getpharamcyDetails(driver);
+		confirmPage1.getpharamcyDetails(driver);
+		
+		logStep("Set the additional comment in Rx renewal Comment section");
+		String additionalComment = MedicationDetails+"Rx renewal request comment";
+		confirmPage1.setAdditionalComments(driver, additionalComment);
 		
 		String successMsg = confirmPage1.confirmMedication(driver);
 		assertEquals(successMsg, "Your prescription request has been submitted.");
 
-		log("Step 7: Logout of Patient Portal");
+		logStep("Logout of Patient Portal");
 		homePage.clickOnLogout();
 		
 		long time = System.currentTimeMillis();
 		String rxSMSubject = IntegrationConstants.RXRENEWAL_SUBJECT_TAG.toString() + String.valueOf(time);
-		log("Perscription Subject :" + rxSMSubject);
+		logStep("Perscription Subject :" + rxSMSubject);
 
 		String rxSMBody = IntegrationConstants.QUESTION_MESSAGE.toString() + "" + String.valueOf(time);
 		log("Perscription Reply :" + rxSMBody);
 
-		log("Step 8: Setup Oauth client");
+		logStep("Setup Oauth client");
 		RestUtils.oauthSetup(testData.getOAuthKeyStore(), testData.getOAuthProperty(), testData.getOAuthAppToken(),
 				testData.getOAuthUsername(), testData.getOAuthPassword());
 		String prescriptionId = null;
 		String sigCodes = "";
 		if (version.equals("v1")) {
 			log("For V1 endpoint");
-			log("Step 9: Get Prescription Rest call");
+			logStep("Get Prescription Rest call");
 			// get only messages from last hour in epoch time to avoid transferring
 			// lot of data
-			Long since = timestamp / 1000L - 60 * 24;
+			//Long since = timestamp / 1000L - 60 * 24;
 
 			log("Getting messages since timestamp :" + since);
 
@@ -4149,12 +4140,12 @@ public class IntegrationPlatformRegressionTests extends BaseTestNGWebDriver {
 			// attribute format
 			Thread.sleep(4000);
 			RestUtils.setupHttpGetRequest(testData.getRestUrl() + "?since=" + since + ",0", testData.getResponsePath());
-			log("Step 10: Checking validity of the response xml");
+			logStep("Checking validity of the response xml");
 
-			RestUtils.isMedicationDetailsNewResponseXMLValid(testData.getResponsePath(), MedicationDetails);
+			RestUtils.isMedicationDetailsNewResponseXMLValid(testData.getResponsePath(), MedicationDetails, additionalComment);
 
 			String postXML = RestUtils.findValueOfMedicationNode(testData.getResponsePath(), "Medication",
-					MedicationDetails, rxSMSubject, rxSMBody, testData.getPrescriptionPath());
+					MedicationDetails, rxSMSubject, rxSMBody, testData.getPrescriptionPathV3());
 
 			String SigCodeAbbreviation = RestUtils.SigCodeAbbreviation;
 			String SigCodeMeaning = RestUtils.SigCodeMeaning;
@@ -4164,11 +4155,11 @@ public class IntegrationPlatformRegressionTests extends BaseTestNGWebDriver {
 			log("SigCodeAbbreviation :" + SigCodeAbbreviation);
 			log("SigCodeMeaning :" + SigCodeMeaning);
 
-			log("Step 11: Do Message Post Request" + postXML);
+			logStep("Do Message Post Request" + postXML);
 			String processingUrl = RestUtils.setupHttpPostRequest(testData.getRestUrl(), postXML,
 					testData.getResponsePath());
 
-			log("Step 12: Get processing status until it is completed");
+			logStep("Get processing status until it is completed");
 			boolean completed = false;
 			for (int i = 0; i < 3; i++) {
 				// wait 10 seconds so the message can be processed
@@ -4183,10 +4174,10 @@ public class IntegrationPlatformRegressionTests extends BaseTestNGWebDriver {
 			
 		} else {
 			log("For V3 endpoint");
-			log("Step 9: Get Prescription Rest call");
+			logStep("Get Prescription Rest call");
 			// get only messages from last hour in epoch time to avoid transferring
 			// lot of data
-			Long since = timestamp / 1000L - 60 * 24;
+			since = timestamp / 1000L;
 
 			log("Getting messages since timestamp :" + since);
 
@@ -4195,9 +4186,9 @@ public class IntegrationPlatformRegressionTests extends BaseTestNGWebDriver {
 			Thread.sleep(4000);
 			RestUtils.setupHttpGetRequest(testData.getRestV3Url() + "?since=" + since + ",0",
 					testData.getResponsePath());
-			log("Step 10: Checking validity of the response xml");
+			logStep("Checking validity of the response xml");
 
-			RestUtils.isMedicationDetailsNewResponseXMLValid(testData.getResponsePath(), MedicationDetails);
+			RestUtils.isMedicationDetailsNewResponseXMLValid(testData.getResponsePath(), MedicationDetails, additionalComment);
 
 			String postXML = RestUtils.findValueOfMedicationNodeNew(testData.getResponsePath(), "Medication",
 					MedicationDetails, rxSMSubject, rxSMBody, testData.getPrescriptionPathV3());
@@ -4215,11 +4206,11 @@ public class IntegrationPlatformRegressionTests extends BaseTestNGWebDriver {
 			prescriptionId = RestUtils.getPrescriptionID(testData.getResponsePath());
 			log("Prescription ID: " + prescriptionId);
 
-			log("Step 11: Do Message Post Request" + postXML);
+			logStep("Do Message Post Request" + postXML);
 			String processingUrl = RestUtils.setupHttpPostRequest(testData.getRestV3Url(), postXML,
 					testData.getResponsePath());
 
-			log("Step 12: Get processing status until it is completed");
+			logStep("Get processing status until it is completed");
 			boolean completed = false;
 			for (int i = 0; i < 3; i++) {
 				// wait 10 seconds so the message can be processed
@@ -4234,63 +4225,62 @@ public class IntegrationPlatformRegressionTests extends BaseTestNGWebDriver {
 			assertTrue(completed, "Message processing was not completed in time");
 		}
 		// Patient portal validation
-		log("Step 13: Check secure message in patient mailinator inbox");
+		logStep("Check secure message in patient mailinator inbox");
 		Mailinator mail = new Mailinator();
 		String subject = "New message from "+testData.getPracticeName();
 		String messageLink = "Sign in to view this message";
 		String emailMessageLink = mail.getLinkFromEmail(testData.getUserName(), subject, messageLink, 20);
 		log("Email message link " + emailMessageLink);
 
-		log("Step 14: Login to Patient Portal");
+		logStep("Login to Patient Portal");
 		JalapenoLoginPage ploginPage = new JalapenoLoginPage(driver, emailMessageLink);
 		JalapenoHomePage phomePage = ploginPage.login(testData.getUserName(), testData.getPassword());
 		Thread.sleep(9000);
 
-		log("Click on msessage box");
+		logStep("Click on msessage box");
 		JalapenoMessagesPage inboxPage = phomePage.clickOnMenuMessages();
 		Thread.sleep(9000);
 
-		log("Step 15: Find message in Inbox");
-		boolean msg = inboxPage.isMessageDisplayed(driver, rxSMSubject);
+		logStep("Find message in Inbox");
+		inboxPage.isMessageDisplayed(driver, rxSMSubject);
 
-		log("Step 17: Logout of Patient Portal");
+		logStep("Logout of Patient Portal");
 		homePage.clickOnLogout();
 
-		log("Step 18: Login to Practice Portal");
+		logStep("Login to Practice Portal");
 		Thread.sleep(6000);
 		PracticeLoginPage practiceLogin = new PracticeLoginPage(driver, testData.getPracticeURL());
 		PracticeHomePage practiceHome = practiceLogin.login(testData.getPracticeUserName(),
 				testData.getPracticePassword());
 
-		log("Step 19: Click On RxRenewal in Practice Portal");
+		logStep("Click On RxRenewal in Practice Portal");
 		RxRenewalSearchPage rxRenewalSearchPage = practiceHome.clickonRxRenewal();
 		Thread.sleep(10000);
 
-		log("Step 20: Search for Today's RxRenewal in Practice Portal");
+		logStep("Search for Today's RxRenewal in Practice Portal");
 		rxRenewalSearchPage.searchForRxRenewalToday(2);
 		Thread.sleep(10000);
 
-		log("Step 21: Get the RxRenewal Details in Practice Portal");
+		logStep("Get the RxRenewal Details in Practice Portal");
 		rxRenewalSearchPage.getRxRenewalDetails();
 
-		log("Step 22: Set the RxRenewal Fields in Practice Portal");
+		logStep("Set the RxRenewal Fields in Practice Portal");
 		rxRenewalSearchPage.checkMedicationDetails(MedicationDetails, sigCodes);
 
-		log("Step 23: Logout of Practice Portal");
+		logStep("Logout of Practice Portal");
 		practiceHome.logOut();
 
 		if (version.equals("v3")) {
-			log("Step 24: Get PrescriptionHeader call");
+			logStep("Get PrescriptionHeader call");
 			// get only messages from last hour in epoch time to avoid transferring
 			// lot of data
-			Long since = timestamp / 1000L - 60 * 24;
+			//Long since = timestamp / 1000L;
 			log("Getting messages since timestamp :" + since);
-			log("For V3 endpoint");
 			String getStatusV3Url = testData.getRestV3Url().replaceAll("prescriptions", "prescriptionsHeaders");
 			log("getStatusUrl  :" + getStatusV3Url);
 			Thread.sleep(4000);
 			RestUtils.setupHttpGetRequest(getStatusV3Url + "?since=" + since + ",0", testData.getResponsePath());
-			log("Step 25: Verify PrescriptionHeader ID");
+			logStep("Verify PrescriptionHeader ID");
 			String PrescriptionHeaderID = RestUtils.getPrescriptionHeaderID(testData.getResponsePath());
 			log("Prescription ID: " + prescriptionId + "Prescription Header ID: " + PrescriptionHeaderID);
 			assertTrue(prescriptionId.contains(PrescriptionHeaderID), "Expected Prescription ID Body is["
@@ -4383,7 +4373,6 @@ public class IntegrationPlatformRegressionTests extends BaseTestNGWebDriver {
 		
 		logStep("Click on messages solution");
 		JalapenoMessagesPage messagesPage = homePage.showMessages(driver);
-		assertTrue(messagesPage.areBasicPageElementsPresent(), "Inbox failed to load properly.");
 		
 		logStep("Find message in Inbox");
 		String messageIdentifier = AMDCPayload.messageIdentifier;
@@ -4511,8 +4500,6 @@ public class IntegrationPlatformRegressionTests extends BaseTestNGWebDriver {
 			assertTrue(homePage.isHomeButtonPresent(driver));
 			logStep("Click on messages solution");
 			JalapenoMessagesPage messagesPage = homePage.showMessages(driver);
-			assertTrue(messagesPage.areBasicPageElementsPresent(), "Inbox failed to load properly.");
-			long epoch = System.currentTimeMillis() / 1000;
 
 			logStep("Find message in Inbox");
 			
@@ -4531,5 +4518,13 @@ public class IntegrationPlatformRegressionTests extends BaseTestNGWebDriver {
 			homePage.clickOnLogout();
 		}		
 	}
-
+	
+		@Test(enabled = true, dataProvider = "portalVersion", groups = { "RegressionTests" }, retryAnalyzer = RetryAnalyzer.class)	
+		
+		public void testPIDCPatientRegistrationJSONV3(String portalVersion) throws Exception {
+		log("Test Case: Test to validate the patient Invite E2E workflow with the JSON payload for V3 endpoint");
+		log("Execution Environment: " + IHGUtil.getEnvironmentType());
+		log("Execution Browser: " + TestConfig.getBrowserType());
+		PatientRegistrationUtils.pidcPatientRegistrationJSONPayload("v3", driver, portalVersion);
+}
 }

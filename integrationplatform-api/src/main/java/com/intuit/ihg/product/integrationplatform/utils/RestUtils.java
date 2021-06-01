@@ -891,7 +891,6 @@ public class RestUtils {
 
 		IHGUtil.PrintMethodName();
 		String getApt_req_id = null;
-		String getApt_req_id1 = null;
 		String updatedXML = null;
 		File xmlResponeFile = new File(xmlFileName);
 		DocumentBuilderFactory dbFactory = DocumentBuilderFactory.newInstance();
@@ -900,12 +899,9 @@ public class RestUtils {
 		doc.getDocumentElement().normalize();
 
 		NodeList pnode = doc.getElementsByTagName(parentNode);
-		int length = pnode.getLength();
-
 		for (int i = 0; i < pnode.getLength(); i++) {
 			Element element = (Element) pnode.item(i);
 			String reaString = element.getElementsByTagName("Reason").item(0).getFirstChild().getNodeValue();
-			String videoString = element.getElementsByTagName("VideoPreference").item(0).getFirstChild().getNodeValue();
 			if (reaString.equalsIgnoreCase(reason)) {
 				Node node = element.getElementsByTagName("Reason").item(0).getParentNode();
 				node = node.getParentNode();
@@ -916,8 +912,7 @@ public class RestUtils {
 				Node node1 = element.getElementsByTagName("VideoPreference").item(0).getParentNode();
 				node1 = node1.getParentNode();
 				if (node1.hasAttributes()) {
-					Attr attr = (Attr) node1.getAttributes().getNamedItem("id");
-					getApt_req_id1 = attr.getValue();
+					node1.getAttributes().getNamedItem("id");
 				}
 
 				String getFrom = element.getElementsByTagName("From").item(0).getFirstChild().getNodeValue();
@@ -1941,7 +1936,7 @@ public class RestUtils {
 	 * @throws IOException
 	 * @throws TransformerException
 	 */
-	public static String generateBatchAMDC(String xmlFileName, List newdata)
+	public static String generateBatchAMDC(String xmlFileName, List<?> newdata)
 			throws ParserConfigurationException, SAXException, IOException, TransformerException {
 		IHGUtil.PrintMethodName();
 		Document doc = buildDOMXML(xmlFileName);
@@ -2655,11 +2650,6 @@ public class RestUtils {
 				Log4jUtil.log("ZipCode : " + ZipCodeElem.getTextContent() + "  :  " + zipCode.trim());
 				assertTrue(ZipCodeElem.getTextContent().toLowerCase().contains(zipCode.trim().toLowerCase()));
 			}
-
-			Element DirectAddressElem = (Element) DirInfo.getElementsByTagName("DirectAddress").item(0);
-			if (directAddress != null) {
-				//
-			}
 		}
 		return true;
 	}
@@ -2901,8 +2891,6 @@ public class RestUtils {
 			IHGUtil.PrintMethodName();
 			Document doc = buildDOMXML(responsepath);
 			Log4jUtil.log("finding CCDFORM INFO");
-			boolean found = false;
-
 			NodeList nodes = doc.getElementsByTagName(IntegrationConstants.CCDTAG);
 			Node node2 = nodes.item(0);
 
@@ -2924,7 +2912,6 @@ public class RestUtils {
 			DocumentBuilderFactory factory = DocumentBuilderFactory.newInstance();
 			DocumentBuilder docBuilder = factory.newDocumentBuilder();
 			Document doc1 = docBuilder.parse(resultFile.getAbsolutePath());
-			Element ele1 = doc1.getDocumentElement();
 			Log4jUtil.log("---------------Verifying Basic Information-------------------------");
 			Node SEXName = doc1.getElementsByTagName(IntegrationConstants.ADMINISTRATIVEGENDERCODE).item(0);
 			Attr attr = (Attr) SEXName.getAttributes().getNamedItem(IntegrationConstants.ATRRIBUTE1);
@@ -3084,7 +3071,6 @@ public class RestUtils {
 			throws ParserConfigurationException, SAXException, IOException {
 		IHGUtil.PrintMethodName();
 		Document doc = buildDOMXML(responsepath);
-		boolean found = false;
 		Node CcdMessageHeaders = doc.getElementsByTagName(IntegrationConstants.CCDMESSAGEHEADERS).item(0);
 		Element ccdheaders = (Element) CcdMessageHeaders;
 		Node Formname = ccdheaders.getElementsByTagName(IntegrationConstants.ROUTINGMAP).item(0);
@@ -3092,7 +3078,6 @@ public class RestUtils {
 		NodeList KeyValuePairList = doc.getElementsByTagName(IntegrationConstants.KEYVALUEPAIR);
 		for (int i = 0; i < KeyValuePairList.getLength(); i++) {
 			Node FormTypeValue = Forms.getElementsByTagName(IntegrationConstants.VALUE).item(i);
-			Node FormTypeKey = Forms.getElementsByTagName("Key").item(i);
 			if (FormTypeValue.getTextContent().contains(FormValue)) {
 				assertEquals(FormTypeValue.getTextContent(), FormValue, "Form Name is different from expected ");
 			}
@@ -3109,7 +3094,6 @@ public class RestUtils {
 		IHGUtil.PrintMethodName();
 		Document doc = buildDOMXML(responsepath);
 		Log4jUtil.log("finding CCDFORM INFO");
-		boolean found = false;
 		String PDfURL1 = "";
 		NodeList CcdMessageHeaders = doc.getElementsByTagName("ns2:CcdExchange");
 		for (int i = 0; i < CcdMessageHeaders.getLength(); i++) {
@@ -3129,9 +3113,6 @@ public class RestUtils {
 							Node Formname = ccdheaders.getElementsByTagName(IntegrationConstants.ROUTINGMAP).item(0);
 							Element Forms = (Element) Formname;
 							Node FormURL = Forms.getElementsByTagName(IntegrationConstants.KEYVALUEPAIR).item(2);
-							Element URL = (Element) FormURL;
-							Node Value1 = URL.getElementsByTagName(IntegrationConstants.VALUE).item(0);
-
 							NodeList KeyValuePairList = doc.getElementsByTagName(IntegrationConstants.KEYVALUEPAIR);
 							for (int m = 0; i < KeyValuePairList.getLength(); m++) {
 								Node FormTypeValue = Forms.getElementsByTagName(IntegrationConstants.VALUE).item(m);
@@ -3157,8 +3138,6 @@ public class RestUtils {
 		IHGUtil.PrintMethodName();
 		Document doc = buildDOMXML(responsepath);
 		Log4jUtil.log("Getting CCDPDFBatch URL INFO");
-		boolean found = false;
-		String PatientPDFUrl = "";
 		NodeList nodes1 = doc.getElementsByTagName(IntegrationConstants.PATIENTFORM);
 		for (int i = 0; i < nodes1.getLength(); i++) {
 			Element member = (Element) nodes1.item(i);
@@ -3178,7 +3157,6 @@ public class RestUtils {
 					Node GetPDFUrl = member.getElementsByTagName(IntegrationConstants.PDFURLLINK).item(0);
 					String PDFURL = GetPDFUrl.getTextContent();
 					Log4jUtil.log("Get URL is" + PDFURL);
-					PatientPDFUrl = PDFURL;
 				}
 			}
 		}
@@ -3195,7 +3173,6 @@ public class RestUtils {
 		httpGetReq.getParams().setParameter(CoreConnectionPNames.CONNECTION_TIMEOUT, 60000)
 				.setParameter(CoreConnectionPNames.SO_TIMEOUT, 60000);
 		InputStream is = resp.getEntity().getContent();
-		File downloadfile = new File(responseFilePath);
 		byte[] byteArray = IOUtils.toByteArray(is);
 		FileOutputStream fos = new FileOutputStream(responseFilePath);
 		fos.write(byteArray);
@@ -3274,12 +3251,10 @@ public class RestUtils {
 			JDOMException {
 		IHGUtil.PrintMethodName();
 		Document doc = buildDOMXML(responsepath);
-		boolean found = false;
 		String PatientPDFUrl = "";
 		NodeList nodes1 = doc.getElementsByTagName(IntegrationConstants.PATIENTFORM);
 		for (int i = 0; i < nodes1.getLength(); i++) {
 			Element member = (Element) nodes1.item(i);
-			Node lastUpdated = member.getElementsByTagName(IntegrationConstants.LASTUPDATED).item(0);
 			if ((i + 1) == nodes1.getLength()) {
 				Node ExternalID = member.getElementsByTagName(IntegrationConstants.PRACTICEPATIENTID).item(0);
 				assertEquals(ExternalID.getTextContent(), externalPatientID,
@@ -3339,9 +3314,8 @@ public class RestUtils {
 		request.setEntity(new StringEntity(payload));
 		request.setHeader("Noun", "Encounter");
 		request.setHeader("Verb", "Completed");
-		request.addHeader("Authorization", accessToken);
+		request.addHeader("Authorization", "Bearer "+accessToken);
 		request.addHeader("Content-Type", "application/json");
-		Log4jUtil.log("Post Request Url4: ");
 		HttpResponse response = client.execute(request);
 		String sResp = EntityUtils.toString(response.getEntity());
 		Log4jUtil.log("Check for http 200/202 response");
@@ -3360,7 +3334,7 @@ public class RestUtils {
 	}
 
 	public static void verifyPatientDetailsForPrecheckAppointment(String xmlFileName, String practicePatientId,
-			List list) throws ParserConfigurationException, SAXException, IOException, ParseException {
+			List<?> list) throws ParserConfigurationException, SAXException, IOException, ParseException {
 		IHGUtil.PrintMethodName();
 		Document doc = buildDOMXML(xmlFileName);
 		NodeList patients = doc.getElementsByTagName(IntegrationConstants.PRACTICE_PATIENT_ID);
@@ -3626,7 +3600,6 @@ public class RestUtils {
 		ArrayList<String> consolidatedList = new ArrayList<String>();
 		Document doc = buildDOMXML(xmlFileName);
 		NodeList patients = doc.getElementsByTagName(IntegrationConstants.PRACTICE_PATIENT_ID);
-		boolean found = false;
 		for (int i = 0; i < patients.getLength(); i++) {
 			if (patients.item(i).getTextContent().equals(practicePatientId)) {
 				Element patient = (Element) patients.item(i).getParentNode().getParentNode();
@@ -3945,7 +3918,6 @@ public class RestUtils {
 		Document doc = buildDOMXML(xmlFileName);
 
 		Log4jUtil.log("finding Event Login Name");
-		boolean found = false;
 		NodeList nodes = doc.getElementsByTagName(IntegrationConstants.RESOURCETYPE);
 		NodeList nodes1 = doc.getElementsByTagName(IntegrationConstants.EVENTRECORDEDTIMESTAMP);
 		NodeList nodes2 = doc.getElementsByTagName(IntegrationConstants.PRACTICEPATIENTID_login);
@@ -3960,7 +3932,6 @@ public class RestUtils {
 			Log4jUtil.log("Finding EventRecordedTimestamp" + " " + EventRecordedTimestamp);
 
 			if (EventRecordedTimestamp > timestamp) {
-				found = true;
 				Log4jUtil.log("EVENTRECORDEDTIMESTAMP value is greater than since time");
 				break;
 			}
@@ -3971,7 +3942,6 @@ public class RestUtils {
 			Log4jUtil.log("Searching: " + node.getChildNodes().item(0).getTextContent() + ", to be found: "
 					+ (ResourceType_tag.toString()));
 			if (node.getChildNodes().item(0).getTextContent().contains(ResourceType_tag.toString())) {
-				found = true;
 				Log4jUtil.log("Resource type is found.");
 				break;
 			}
@@ -3982,7 +3952,6 @@ public class RestUtils {
 			String NodeName = node.getNodeName();
 			Log4jUtil.log("Searching" + " " + NodeName);
 			if (NodeName.contains("PracticePatientId")) {
-				found = true;
 				Log4jUtil.log("PracticePatientId is found.");
 				break;
 			}
@@ -4012,7 +3981,7 @@ public class RestUtils {
 		return PrescriptionHeaderId;
 	}
 	
-	public static void isMedicationDetailsNewResponseXMLValid(String xmlFileName, String medicationName)
+	public static void isMedicationDetailsNewResponseXMLValid(String xmlFileName, String medicationName, String additionalComment)
 			throws ParserConfigurationException, SAXException, IOException {
 		IHGUtil.PrintMethodName();
 		Document doc = buildDOMXML(xmlFileName);
@@ -4027,9 +3996,11 @@ public class RestUtils {
 					+ (medicationName));
 			if (node.getChildNodes().item(0).getTextContent().contains(medicationName)) {
 				Element ele = (Element) nodes.item(i).getParentNode();
-				Node nDosage = ele.getElementsByTagName(JalapenoConstants.MEDICATION_DOSAGE).item(0);
+				Node nDosage = ele.getElementsByTagName(IntegrationConstants.DOSAGE_TAG).item(0);
+				Node additionalCommentNode =ele.getElementsByTagName(IntegrationConstants.ADDITIONAL_INFO_TAG).item(0);
 				assertEquals(nDosage.getTextContent(), JalapenoConstants.DOSAGE,
 						"The actual value of dosage doesnt equal the expected value");
+				assertEquals(additionalCommentNode.getTextContent(),additionalComment,"The actual value of Additional commnet doesnt equal the expected value");
 				found = true;
 				break;
 			}
@@ -4055,6 +4026,8 @@ public class RestUtils {
 
 		for (int i = 0; i < pnode.getLength(); i++) {
 			Element element = (Element) pnode.item(i);
+			String medicationId = element.getElementsByTagName("ExternalMedicationId").item(0).getTextContent();
+			
 			String reaString = element.getElementsByTagName("MedicationName").item(0).getFirstChild().getNodeValue();
 			if (reaString.equalsIgnoreCase(medication)) {
 				Node node = element.getElementsByTagName("MedicationName").item(0).getParentNode();
@@ -4072,7 +4045,11 @@ public class RestUtils {
 						.add(element.getElementsByTagName("To").item(0).getFirstChild().getNodeValue().toString());
 				medication_details
 						.add(element.getElementsByTagName("From").item(0).getFirstChild().getNodeValue().toString());
+				medication_details.add(element.getElementsByTagName("AdditionalInformation").item(0).getTextContent().toString());
+				medication_details.add(element.getElementsByTagName("ExternalMedicationId").item(0).getTextContent().toString());
+				medication_details.add(element.getElementsByTagName("ExternalSystemId").item(0).getTextContent().toString());
 				node = node.getParentNode().getParentNode();
+				
 				Log4jUtil.log("Node name for prescription:"+node.getNodeName());
 				if (node.hasAttributes()) {
 					Attr attr = (Attr) node.getAttributes().getNamedItem("id");
@@ -4130,15 +4107,20 @@ public class RestUtils {
 		Node nRefillNumber = element.getElementsByTagName(IntegrationConstants.REFILL_NUMBER_TAG).item(0);
 		Node nPrescriptionNumber = element.getElementsByTagName(IntegrationConstants.PRESCRIPTION_NUMBER_TAG).item(0);
 		Node nAdditionalInformation = element.getElementsByTagName(IntegrationConstants.ADDITIONAL_INFO_TAG).item(0);
+		Node nExternalMedicationID = element.getElementsByTagName(IntegrationConstants.EXTERNAL_MEDICATION_ID).item(0);
+		Node nExternalSystemID = element.getElementsByTagName(IntegrationConstants.EXTERNAL_SYSTEM_ID).item(0);
+
 		
-		nAdditionalInformation.setTextContent((String) IntegrationConstants.ADDITIONAL_INFO);
 		nPrescriptionNumber.setTextContent((String) IntegrationConstants.PRESCRIPTION_NO);
 		nRefillNumber.setTextContent((String) IntegrationConstants.NO_OF_REFILLS);
 		nQuantity.setTextContent((String) IntegrationConstants.QUANTITY);
 		nMedicationDosage.setTextContent(medication_details.get(1));
 		nMedicationName.setTextContent(medication_details.get(0));
+		nAdditionalInformation.setTextContent(medication_details.get(6));
+		nExternalMedicationID.setTextContent(medication_details.get(7));
+		nExternalSystemID.setTextContent(medication_details.get(8));
 
-		String SigCode = generateRandomString();
+		String SigCode = "IWVH";
 		Node nSigCodeAbbreviation = element.getElementsByTagName("SigCodeAbbreviation").item(0);
 		Node nSigCodeMeaning = element.getElementsByTagName("SigCodeMeaning").item(0);
 
@@ -4177,6 +4159,26 @@ public class RestUtils {
 		Node InternalAttachmentID = doc.getElementsByTagName("InternalAttachmentID").item(0);
 		String attchmentRefId = InternalAttachmentID.getTextContent().toString();
 		return attchmentRefId;
+	}
+	
+	public static boolean isResponseContainsErrorNode(String xmlFileName)
+			throws ParserConfigurationException, SAXException, IOException {
+		Document doc = buildDOMXML(xmlFileName);
+
+		NodeList nodes = doc.getElementsByTagName(IntegrationConstants.PROCESSING_STATE);
+		NodeList errorNode = doc.getElementsByTagName("Error");
+
+		for (int i = 0; i < nodes.getLength()-1; i++) {
+			if (!nodes.item(i).getTextContent().equals(IntegrationConstants.STATE_COMPLETED)) {
+				Log4jUtil.log("Error while processing response: " + errorNode.item(0).getTextContent());
+			}
+			assertTrue(nodes.item(i).getTextContent().equals(IntegrationConstants.STATE_COMPLETED),
+					"Processing Status is failed for No '" + i + "' message");
+		}
+		
+		assertTrue(nodes.item(nodes.getLength()-1).getTextContent().equals(IntegrationConstants.STATE_ERRORED),"Response Contains Node with Error State for invalid data");
+		Log4jUtil.log("Error Node Contains : "+doc.getElementsByTagName("Description").item(0).getTextContent() +" with severity "+doc.getElementsByTagName("Severity").item(0).getTextContent());
+		return true;
 	}
 
 }

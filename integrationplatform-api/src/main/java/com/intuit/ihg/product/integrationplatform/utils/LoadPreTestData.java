@@ -230,6 +230,7 @@ public class LoadPreTestData {
 			testData.setPracticePassword(propertyData.getPracticePassword());
 			testData.setPracticeId_PIDC_20(propertyData.getPatientID());
 			testData.setPreferredLanguageType(propertyData.getLanguageType());
+			testData.setToken(propertyData.getToken_MU());
 		}
 
 		return testData;

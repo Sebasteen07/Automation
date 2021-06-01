@@ -282,17 +282,6 @@ public class JalapenoAskAStaffV2Page1 extends JalapenoMenu {
 		
 	}
 
-	@Override
-	public boolean areBasicPageElementsPresent() {
-		ArrayList<WebElement> webElementList = new ArrayList<WebElement>();
-		webElementList.add(subjectBox);
-		webElementList.add(questionBox);
-		webElementList.add(historyButton);
-		webElementList.add(continueButton);
-		// provider, location, and card info are all optional
-		return assessPageElements(webElementList);
-	}
-
 	private boolean areAddNewCreditCardLightboxElementsPresent() {
 		ArrayList<WebElement> webElementsList = new ArrayList<WebElement>();
 		webElementsList.add(nameOnCard);

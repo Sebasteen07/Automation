@@ -1,6 +1,6 @@
+// Copyright 2013-2021 NXGN Management, LLC. All Rights Reserved.
 package com.medfusion.product.object.maps.patientportal2.page.AskAStaff;
 
-import java.util.ArrayList;
 import java.util.concurrent.TimeUnit;
 
 import org.openqa.selenium.By;
@@ -22,15 +22,6 @@ public class JalapenoAskAStaffV2HistoryListPage extends JalapenoMenu {
 	public JalapenoAskAStaffV2HistoryListPage(WebDriver driver) {
 		super(driver);
 		IHGUtil.PrintMethodName();
-	}
-
-	@Override
-	public boolean areBasicPageElementsPresent() {
-		ArrayList<WebElement> webElementsList = new ArrayList<WebElement>();
-
-		webElementsList.add(backButton);
-
-		return assessPageElements(webElementsList);
 	}
 
 	public JalapenoAskAStaffV2HistoryDetailPage goToDetailByReason(String reason) throws InterruptedException {

@@ -1,8 +1,6 @@
 //Copyright 2013-2021 NXGN Management, LLC. All Rights Reserved.
 package com.medfusion.product.object.maps.patientportal2.page.CreateAccount;
 
-import java.util.ArrayList;
-
 import com.medfusion.pojos.Patient;
 
 import org.openqa.selenium.WebDriver;
@@ -55,7 +53,10 @@ public class SecurityDetailsPage extends MedfusionPage {
 
 		@FindBy(how = How.ID, using = "finishStep")
 		private WebElement buttonFinishStep;
-
+		
+		@FindBy(how = How.ID, using = "updateMissingInformationForm")
+		private WebElement statementDailougeBox;
+		
 		@FindBy(how = How.ID, using = "paymentPreference_Electronic")
 		private WebElement electronicPaymentPreference;
 
@@ -75,27 +76,15 @@ public class SecurityDetailsPage extends MedfusionPage {
 				super(driver);
 		}
 
-		@Override
-		public boolean areBasicPageElementsPresent() {
-
-				ArrayList<WebElement> webElementsList = new ArrayList<WebElement>();
-				webElementsList.add(inputUserId);
-				webElementsList.add(inputPassword);
-				webElementsList.add(selectSecretQuestion);
-				webElementsList.add(inputSecretAnswer);
-				webElementsList.add(inputPhone1);
-				webElementsList.add(inputPhone2);
-				webElementsList.add(inputPhone3);
-				webElementsList.add(selectPhoneType);
-				webElementsList.add(buttonFinishStep);
-
-				return assessPageElements(webElementsList);
-		}
-
 		public JalapenoHomePage fillAccountDetailsAndContinue(Patient patient) throws InterruptedException {
 				return fillAccountDetailsAndContinue(patient.getUsername(), patient.getPassword(), patient.getSecurityQuestion(), patient.getSecurityQuestionAnswer(),
 						patient.getPhoneMobile(), 2);
 		}
+		
+		public JalapenoHomePage fillAccountDetailsAndContinueWithStatement(Patient patient, int statementValue)throws InterruptedException {
+			return fillAccountDetailsAndContinue(patient.getUsername(), patient.getPassword(), patient.getSecurityQuestion(), patient.getSecurityQuestionAnswer(), 
+					patient.getPhoneMobile(), statementValue);	
+	}
 
 		public JalapenoHomePage fillAccountDetailsAndContinue(String userId, String password, PropertyFileLoader testData) throws InterruptedException {
 				return fillAccountDetailsAndContinue(userId, password, testData.getSecretQuestion(), testData.getSecretAnswer(), testData.getPhoneNumber(), 2);
@@ -147,16 +136,18 @@ public class SecurityDetailsPage extends MedfusionPage {
 				}
 		}
 
-		public void selectStatementIfRequired(int deliveryPref) {
+		public void selectStatementIfRequired(int deliveryPref) throws InterruptedException {
 
-				if (new IHGUtil(driver).exists(electronicPaymentPreference)) {
+				if (new IHGUtil(driver).exists(statementDailougeBox)) {
 						log("Statement delivery preference lightbox is displayed");
-
 						if (deliveryPref == 1) {
+							new WebDriverWait(driver, 10).until(ExpectedConditions.elementToBeClickable(paperPaymentPreference));
 								paperPaymentPreference.click();
 						} else if (deliveryPref == 2) {
+							new WebDriverWait(driver, 10).until(ExpectedConditions.elementToBeClickable(electronicPaymentPreference));
 								electronicPaymentPreference.click();
 						} else if (deliveryPref == 3) {
+							new WebDriverWait(driver, 10).until(ExpectedConditions.elementToBeClickable(bothPaymentPreference));
 								bothPaymentPreference.click();
 						}
 						new WebDriverWait(driver, 15).until(ExpectedConditions.elementToBeClickable(okButton));

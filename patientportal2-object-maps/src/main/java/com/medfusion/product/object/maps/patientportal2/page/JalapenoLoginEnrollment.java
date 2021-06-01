@@ -1,8 +1,6 @@
 //Copyright 2013-2020 NXGN Management, LLC. All Rights Reserved.
 package com.medfusion.product.object.maps.patientportal2.page;
 
-import java.util.ArrayList;
-
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.FindBy;
@@ -64,18 +62,6 @@ public class JalapenoLoginEnrollment extends MedfusionPage {
 		super(driver);
 	}
 
-	@Override
-	public boolean areBasicPageElementsPresent() {
-
-		ArrayList<WebElement> webElementsList = new ArrayList<WebElement>();
-		webElementsList.add(inputUserName);
-		webElementsList.add(inputPassword);
-		webElementsList.add(forgotUserOrPasswordButton);
-		webElementsList.add(buttonSignIn);
-		webElementsList.add(rememberUserNameCheckbox);
-		return assessPageElements(webElementsList);
-	}
-
 	public JalapenoHomePage login(String username, String password) {
 		makeLogin(username, password);
 		log("User is logged in");
@@ -117,13 +103,6 @@ public class JalapenoLoginEnrollment extends MedfusionPage {
 		log("Clicking on Pay Now button");
 		buttonPayNow.click();
 		return PageFactory.initElements(driver, JalapenoPayNowPage.class);
-	}
-
-	private void selectStatementIfRequired() {
-		if (new IHGUtil(driver).exists(electronicPaymentPreference, 10)) {
-			electronicPaymentPreference.click();
-			okButton.click();
-		}
 	}
 
 	public boolean isExistingAccountErrorDisplayed() {

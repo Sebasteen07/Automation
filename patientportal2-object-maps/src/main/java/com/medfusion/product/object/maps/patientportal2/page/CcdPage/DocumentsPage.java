@@ -1,7 +1,5 @@
-//Copyright 2013-2020 NXGN Management, LLC. All Rights Reserved.
+//Copyright 2013-2021 NXGN Management, LLC. All Rights Reserved.
 package com.medfusion.product.object.maps.patientportal2.page.CcdPage;
-
-import java.util.ArrayList;
 
 import org.openqa.selenium.JavascriptExecutor;
 import org.openqa.selenium.WebDriver;
@@ -33,13 +31,6 @@ public class DocumentsPage extends JalapenoMenu {
 
 	public DocumentsPage(WebDriver driver) {
 		super(driver);
-	}
-
-	@Override
-	public boolean areBasicPageElementsPresent() {
-		ArrayList<WebElement> webElementsList = new ArrayList<WebElement>();
-		webElementsList.add(dateFrom);
-		return assessPageElements(webElementsList);
 	}
 
 	public boolean checkLastImportedFileName(String name) {

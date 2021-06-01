@@ -1,6 +1,5 @@
+// Copyright 2013-2021 NXGN Management, LLC. All Rights Reserved.
 package com.medfusion.product.object.maps.patientportal2.page.AppointmentRequestPage;
-
-import java.util.ArrayList;
 
 import com.medfusion.product.object.maps.patientportal2.page.JalapenoMenu;
 
@@ -76,31 +75,6 @@ public class JalapenoAppointmentRequestV2Step2 extends JalapenoMenu {
 	public JalapenoAppointmentRequestV2Step2(WebDriver driver) {
 		super(driver);
 		IHGUtil.PrintMethodName();
-	}
-
-	@Override
-	public boolean areBasicPageElementsPresent() {
-		ArrayList<WebElement> webElementsList = new ArrayList<WebElement>();
-		webElementsList.add(firstAvailableTimeButton);
-		webElementsList.add(videoVisit);
-		webElementsList.add(timeOfDayAnyButton);
-		webElementsList.add(earlyMorningButton);
-		webElementsList.add(lateMorningButton);
-		webElementsList.add(earlyAfternoonButton);
-		webElementsList.add(lateAfternoonButton);
-		webElementsList.add(dayOfWeekAnyButton);
-		webElementsList.add(mondayButton);
-		webElementsList.add(tuesdayButton);
-		webElementsList.add(wednesdayButton);
-		webElementsList.add(thursdayButton);
-		webElementsList.add(fridayButton);
-		webElementsList.add(weekAnyButton);
-		webElementsList.add(weekThisButton);
-		webElementsList.add(weekNextButton);
-		webElementsList.add(appointmentReasonTextArea);
-		webElementsList.add(backButton);
-		webElementsList.add(requestAppointmentButton);
-		return assessPageElements(webElementsList);
 	}
 
 	// sendKeys(" ") instead of click() because there is some problem with

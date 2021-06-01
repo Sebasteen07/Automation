@@ -1,8 +1,6 @@
 //Copyright 2013-2021 NXGN Management, LLC. All Rights Reserved.
 package com.medfusion.product.object.maps.patientportal2.page.ForgotPasswordPage;
 
-import java.util.ArrayList;
-
 import com.medfusion.product.object.maps.patientportal2.page.MedfusionPage;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
@@ -23,14 +21,6 @@ public class JalapenoForgotPasswordPage extends MedfusionPage {
 		public JalapenoForgotPasswordPage(WebDriver driver, String url) {
 				super(driver);
 				IHGUtil.PrintMethodName();
-		}
-
-		@Override
-		public boolean areBasicPageElementsPresent() {
-				ArrayList<WebElement> webElementsList = new ArrayList<WebElement>();
-				webElementsList.add(inputEmail);
-				webElementsList.add(continueButton);
-				return assessPageElements(webElementsList);
 		}
 
 		public JalapenoForgotPasswordPage(WebDriver driver) {

@@ -1,4 +1,4 @@
-// Copyright 2018-2020 NXGN Management, LLC. All Rights Reserved.
+// Copyright 2013-2021 NXGN Management, LLC. All Rights Reserved.
 package com.medfusion.product.object.maps.pss2.page.Specialty;
 
 import org.openqa.selenium.WebDriver;
@@ -78,11 +78,6 @@ public class ManageSpecialty extends PSS2MenuPage {
 
 	public ManageSpecialty(WebDriver driver) {
 		super(driver);
-	}
-
-	@Override
-	public boolean areBasicPageElementsPresent() {
-		return true;
 	}
 
 	public void searchSpecility(String specilityName) {

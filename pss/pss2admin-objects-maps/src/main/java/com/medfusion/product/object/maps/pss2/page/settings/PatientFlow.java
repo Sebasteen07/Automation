@@ -1,7 +1,6 @@
-// Copyright 2018-2020 NXGN Management, LLC. All Rights Reserved.
+// Copyright 2013-2021 NXGN Management, LLC. All Rights Reserved.
 package com.medfusion.product.object.maps.pss2.page.settings;
 
-import java.util.ArrayList;
 import java.util.List;
 
 import org.openqa.selenium.Keys;
@@ -104,13 +103,6 @@ public class PatientFlow extends SettingsTab {
 		commonMethods.highlightElement(insuranceToggleCheckBox);
 		insuranceToggle.click();
 		log("Click on insuranceToggle");
-	}
-
-	@Override
-	public boolean areBasicPageElementsPresent() {
-		ArrayList<WebElement> webElementsList = new ArrayList<WebElement>();
-		webElementsList.add(specialityRule);
-		return assessPageElements(webElementsList);
 	}
 
 	public void addNewRules(String[] ruleNameValue, String[] ruleNameType) {

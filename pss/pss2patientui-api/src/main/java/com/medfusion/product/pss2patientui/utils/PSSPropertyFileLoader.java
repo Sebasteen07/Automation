@@ -403,12 +403,12 @@ public class PSSPropertyFileLoader {
 		appointValues.setBaseurl_APT(property.getProperty("baseurl_appttypeRule_Patient"));
 		appointValues.setBaseurl_AvailableSlots(property.getProperty("baseurl_availableslots_Patient"));
 		appointValues.setBaseurl_ScheduleAppointment(property.getProperty("baseurl_scheduleaptt_Patient"));
-		appointValues.setPracticeId("practiceIdNG");	
+		appointValues.setPracticeId("practiceIdNG");
 		appointValues.setAccessTokenURL(property.getProperty("accessToken_BaseUrl"));
 		appointValues.setBasicURI(property.getProperty("baseurl"));
 		appointValues.setPracticeId(property.getProperty("practiceIdNG"));
 		appointValues.setPracticeDisplayName(property.getProperty("practiceDisplayNameNG"));
-		appointValues .setPatientId(property.getProperty("patientIdNG"));
+		appointValues.setPatientId(property.getProperty("patientIdNG"));
 		appointValues.setStartDateTime(property.getProperty("startDateTime"));
 		appointValues.setEndDateTime(property.getProperty("endDateTime"));
 		appointValues.setApptid(property.getProperty("apptid"));
@@ -417,6 +417,21 @@ public class PSSPropertyFileLoader {
 		appointValues.setSlotStartTime(property.getProperty("slotStartTime"));
 		appointValues.setSlotEndTime(property.getProperty("slotEndTime"));
 
+	}
+
+	public void setRestAPIDataGE(Appointment appointValues) {
+		appointValues.setBasicURI(property.getProperty("base.url.ge"));
+		appointValues.setPracticeId(property.getProperty("practiceid.ge"));
+		appointValues.setPracticeDisplayName(property.getProperty("practice.display.name.ge"));
+		appointValues.setPatientId(property.getProperty("patientid.ge"));
+		appointValues.setStartDateTime(property.getProperty("start.date.time.ge"));
+		appointValues.setEndDateTime(property.getProperty("end.date.time.ge"));
+		appointValues.setLocationId(property.getProperty("locationid.ge"));
+		appointValues.setPatientId(property.getProperty("patientid.available.slots.ge"));
+		appointValues.setResourceId(property.getProperty("resourceid.ge"));
+		appointValues.setSlotId(property.getProperty("slotid.ge"));
+		appointValues.setApptid(property.getProperty("apptid.ge"));
+		appointValues.setSlotSize(property.getProperty("slot.size.ge"));
 	}
 
 }

@@ -1,4 +1,4 @@
-// Copyright 2018-2020 NXGN Management, LLC. All Rights Reserved.
+// Copyright 2013-2021 NXGN Management, LLC. All Rights Reserved.
 package com.medfusion.product.object.maps.patientportal2.page;
 
 import java.util.ArrayList;
@@ -178,7 +178,7 @@ public abstract class JalapenoMenu extends MedfusionPage {
 		return PageFactory.initElements(driver, HealthFormListPage.class);
 	}
 
-	public JalapenoMyAccountProfilePage goToAccountPage() {
+	public JalapenoMyAccountProfilePage goToAccountPage() throws InterruptedException {
 		JalapenoAccountPage accountPage = clickOnAccount();
 		return accountPage.clickOnEditMyAccount();
 	}

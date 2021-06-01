@@ -11,15 +11,6 @@ import io.restassured.response.Response;
 import io.restassured.specification.RequestSpecification;
 import io.restassured.specification.ResponseSpecification;
 
-import java.awt.List;
-import java.util.ArrayList;
-import java.util.Iterator;
-
-import org.json.JSONArray;
-import org.json.JSONObject;
-import org.testng.Assert;
-
-import com.google.gson.JsonObject;
 import com.medfusion.common.utils.PropertyFileLoader;
 import com.medfusion.gateway_proxy.utils.GatewayProxyUtils;
 
@@ -27,12 +18,28 @@ public class GatewayProxyBaseTest extends GatewayProxyUtils {
 
 	protected static PropertyFileLoader testData;
 	public static RequestSpecification requestSpec;
+	public static ResponseSpecification responseSpec;
 
-	public static void setupRequestSpecBuilder() throws Exception {
+
+	public static void setupRequestSpecBuilder() throws Exception
+	{
 		testData = new PropertyFileLoader();
 		RestAssured.baseURI = testData.getProperty("proxybaseurl");
-		requestSpec = new RequestSpecBuilder().setContentType(ContentType.JSON).addFilter(new ResponseLoggingFilter())
-				.addFilter(new RequestLoggingFilter()).build();
+		requestSpec	 = new RequestSpecBuilder()
+	   .setContentType(ContentType.JSON)
+	   .addFilter(new ResponseLoggingFilter())
+	   .addFilter(new RequestLoggingFilter())
+	   .build();
+	}
+	
+	public static void setupResponsetSpecBuilder()
+	{
+		responseSpec = new ResponseSpecBuilder()
+	   .expectStatusCode(200)
+	   .expectContentType(ContentType.JSON)
+	   .build();
+
+
 	}
 
 }

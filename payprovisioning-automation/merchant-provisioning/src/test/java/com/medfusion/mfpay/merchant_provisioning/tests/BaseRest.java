@@ -12,10 +12,11 @@ import io.restassured.specification.ResponseSpecification;
 
 import java.io.IOException;
 
+import com.intuit.ifs.csscat.core.BaseTestNG;
 import com.medfusion.common.utils.PropertyFileLoader;
 import com.medfusion.mfpay.merchant_provisioning.utils.User;
 
-public class BaseRest {
+public class BaseRest extends BaseTestNG {
 	
 	protected static PropertyFileLoader testData;
 	public static RequestSpecification requestSpec;

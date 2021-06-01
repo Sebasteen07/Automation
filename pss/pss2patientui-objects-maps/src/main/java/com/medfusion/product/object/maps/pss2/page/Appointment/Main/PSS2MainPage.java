@@ -34,11 +34,6 @@ public abstract class PSS2MainPage extends BasePageObject {
 			e.printStackTrace();
 		}
 		PageFactory.initElements(driver, this);
-		/*
-		if (!areBasicPageElementsPresent()) {
-			throw new UnsupportedOperationException("Page not loaded");
-		}
-		*/
 	}
 
 	public void printCookies() {
@@ -49,8 +44,6 @@ public abstract class PSS2MainPage extends BasePageObject {
 		}
 		log("--------------------------", Level.DEBUG);
 	}
-
-	public abstract boolean areBasicPageElementsPresent();
 
 	public boolean assessPageElements(ArrayList<WebElement> allElements) {
 		log("Checking page elements");

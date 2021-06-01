@@ -1,9 +1,7 @@
-// Copyright 2018-2020 NXGN Management, LLC. All Rights Reserved.
+// Copyright 2013-2021 NXGN Management, LLC. All Rights Reserved.
 package com.medfusion.product.object.maps.pss2.page.Appointment.Main;
 
 import static org.testng.Assert.assertTrue;
-
-import java.util.ArrayList;
 
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
@@ -52,14 +50,6 @@ public class PrivacyPolicy extends PSS2MainPage {
 	public PrivacyPolicy(WebDriver driver) {
 		super(driver);
 		PageFactory.initElements(driver, this);
-	}
-
-	@Override
-	public boolean areBasicPageElementsPresent() {
-		IHGUtil.PrintMethodName();
-		ArrayList<WebElement> webElementsList = new ArrayList<WebElement>();
-
-		return new IHGUtil(driver).assessAllPageElements(webElementsList, this.getClass());
 	}
 
 	public void closePopup() {

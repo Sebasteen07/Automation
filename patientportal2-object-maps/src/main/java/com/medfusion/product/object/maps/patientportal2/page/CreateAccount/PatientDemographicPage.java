@@ -6,7 +6,6 @@ import static org.testng.Assert.assertTrue;
 
 import java.io.IOException;
 import java.time.Month;
-import java.util.ArrayList;
 
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
@@ -14,6 +13,8 @@ import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.FindBy;
 import org.openqa.selenium.support.How;
 import org.openqa.selenium.support.PageFactory;
+import org.openqa.selenium.support.ui.ExpectedConditions;
+import org.openqa.selenium.support.ui.WebDriverWait;
 
 import com.medfusion.common.utils.IHGUtil;
 import com.medfusion.common.utils.PropertyFileLoader;
@@ -43,10 +44,10 @@ public class PatientDemographicPage extends MedfusionPage {
 	@FindBy(how = How.XPATH, using = ACTIVE_TAB_XPATH_SELECTOR + "//*[@id='birthDate_year']")
 	private WebElement inputDateOfBirthYear;
 
-	@FindBy(how = How.ID, using = "gender_male")
+	@FindBy(how = How.XPATH, using = "//input[@value='M']")
 	private WebElement maleGender;
-
-	@FindBy(how = How.ID, using = "gender_female")
+	
+	@FindBy(how = How.XPATH, using = "//input[@value='F']")
 	private WebElement femaleGender;
 
 	@FindBy(how = How.ID, using = "gender_decline")
@@ -107,29 +108,6 @@ public class PatientDemographicPage extends MedfusionPage {
 		super(driver);
 	}
 
-	@Override
-	public boolean areBasicPageElementsPresent() {
-
-		ArrayList<WebElement> webElementsList = new ArrayList<WebElement>();
-		webElementsList.add(inputPatientFirstName);
-		webElementsList.add(inputPatientLastName);
-		webElementsList.add(inputEmailAddresss);
-		webElementsList.add(inputDateOfBirthMonth);
-		webElementsList.add(inputDateOfBirthDay);
-		webElementsList.add(inputDateOfBirthYear);
-		webElementsList.add(maleGender);
-		webElementsList.add(femaleGender);
-		webElementsList.add(inputAddress1);
-		webElementsList.add(inputAddress2);
-		webElementsList.add(inputCity);
-		webElementsList.add(inputState);
-		webElementsList.add(inputZipCode);
-		webElementsList.add(buttonCancel);
-		webElementsList.add(buttonContinue);
-
-		return assessPageElements(webElementsList);
-	}
-
 	private String convertDOBMonthToText(String monthNumber) {
 		String monthText = Month.of(Integer.parseInt(monthNumber)).name();
 		monthText = monthText.substring(0, 1).toUpperCase() + monthText.substring(1).toLowerCase();
@@ -181,6 +159,7 @@ public class PatientDemographicPage extends MedfusionPage {
 		setName(firstName, lastName);
 		setEmail(email);
 		setDateOfBirth(dobMonthText, dobDay, dobYear);
+		scrollAndWait(0, 500, 10);
 		setGender(gender);
 		setAddress(address1, address2, city, state, zipCode);
 	}
@@ -220,11 +199,13 @@ public class PatientDemographicPage extends MedfusionPage {
 
 	private void setGender(Patient.GenderExtended gender) {
 		if (gender == Patient.GenderExtended.MALE) {
+			new WebDriverWait(driver, 25).until(ExpectedConditions.elementToBeClickable(maleGender));
 			maleGender.click();
+			javascriptClick(maleGender);
 		} else if (gender == Patient.GenderExtended.FEMALE) {
-			femaleGender.click();
+			javascriptClick(femaleGender);
 		} else if (gender == Patient.GenderExtended.DECLINED) {
-			declinedGender.click();
+			javascriptClick(declinedGender);
 		}
 	}
 

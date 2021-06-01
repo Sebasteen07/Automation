@@ -32,7 +32,7 @@ public class SelectMedicationsPage  extends BasePageObject {
 	@FindBy(how=How.XPATH,using="//ul[@class='list']/li[1]")
 	private WebElement apiMedication;
 	
-	@FindBy(how=How.XPATH,using="//button[@class='btn btn-primary ng-binding']")
+	@FindBy(how=How.XPATH,using="//*[contains(text(),'Continue')]")
 	private WebElement btnContinue;
 	
 	@FindBy(how=How.XPATH,using="//div[@class='form-buttons ng-scope']/button[@type='button']")

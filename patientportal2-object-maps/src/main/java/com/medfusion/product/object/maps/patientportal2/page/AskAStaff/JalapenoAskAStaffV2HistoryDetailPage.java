@@ -1,6 +1,5 @@
+// Copyright 2013-2021 NXGN Management, LLC. All Rights Reserved.
 package com.medfusion.product.object.maps.patientportal2.page.AskAStaff;
-
-import java.util.ArrayList;
 
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
@@ -43,19 +42,6 @@ public class JalapenoAskAStaffV2HistoryDetailPage extends JalapenoMenu {
 	public JalapenoAskAStaffV2HistoryDetailPage(WebDriver driver) {
 		super(driver);
 		IHGUtil.PrintMethodName();
-	}
-
-	@Override
-	public boolean areBasicPageElementsPresent() {
-		ArrayList<WebElement> webElementsList = new ArrayList<WebElement>();
-		webElementsList.add(backButton);
-		webElementsList.add(requestDetailDate);
-		webElementsList.add(requestDetailLocation);
-		webElementsList.add(requestDetailSubject);
-		webElementsList.add(requestDetailQuestion);
-		webElementsList.add(requestDetailStatus);
-
-		return assessPageElements(webElementsList);
 	}
 
 	public String getRequestDetailDate() {

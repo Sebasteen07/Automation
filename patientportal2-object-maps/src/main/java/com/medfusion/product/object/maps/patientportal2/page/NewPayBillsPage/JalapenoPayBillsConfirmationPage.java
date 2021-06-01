@@ -1,6 +1,5 @@
+// Copyright 2013-2021 NXGN Management, LLC. All Rights Reserved.
 package com.medfusion.product.object.maps.patientportal2.page.NewPayBillsPage;
-
-import java.util.ArrayList;
 
 import com.medfusion.product.object.maps.patientportal2.page.JalapenoMenu;
 import org.openqa.selenium.WebDriver;
@@ -28,16 +27,6 @@ public class JalapenoPayBillsConfirmationPage extends JalapenoMenu {
 		public JalapenoPayBillsConfirmationPage(WebDriver driver) {
 				super(driver);
 				IHGUtil.PrintMethodName();
-		}
-
-		@Override
-		public boolean areBasicPageElementsPresent() {
-				ArrayList<WebElement> webElementsList = new ArrayList<WebElement>();
-
-				webElementsList.add(comment);
-				webElementsList.add(submitPayment);
-				webElementsList.add(backButton);
-				return assessPageElements(webElementsList);
 		}
 
 		public JalapenoHomePage commentAndSubmitPayment(String commentString) {
