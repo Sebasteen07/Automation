@@ -194,9 +194,10 @@ public class MedicalRecordSummariesPage extends JalapenoMenu {
 		acknowledgement.click();
 	}
 
-	public void clickPatientEducation() {
+	public void clickPatientEducation() throws InterruptedException {
 		javascriptClick(patientEducationButton);
 		javascriptClick(launchMyEducationButton);
+		Thread.sleep(5000);//Waiting for the next page to load 
 		careNexisValidation();
 
 	}

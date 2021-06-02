@@ -1,3 +1,4 @@
+// Copyright 2013-2021 NXGN Management, LLC. All Rights Reserved.
 package com.medfusion.gateway_proxy.utils;
 
 import com.medfusion.common.utils.IHGUtil;
@@ -8,8 +9,7 @@ import java.io.FileOutputStream;
 import java.io.IOException;
 import java.util.Properties;
 
-public class DigitalWalletUtils {
-
+public class GatewayProxyDigitalWalletUtils {
 
     public static void saveWalletDetails(String externalWalletId, String externalCardId) throws FileNotFoundException, IOException {
         Properties property = new Properties();
