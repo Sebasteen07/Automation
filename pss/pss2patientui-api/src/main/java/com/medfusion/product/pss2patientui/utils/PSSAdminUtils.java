@@ -811,7 +811,7 @@ public class PSSAdminUtils extends BaseTestNGWebDriver{
 		PatientFlow patientFlow =pssPracticeConfig.gotoPatientFlowTab();
 		adminUser.setRule(patientFlow.getRule());
 		Log4jUtil.log("rule= " + patientFlow.getRule());
-		setRulesNoSpecialitySet1(patientFlow);
+		//setRulesNoSpecialitySet1(patientFlow);
 		LinkTab linkTab = pssPracticeConfig.linksTab();
 		Log4jUtil.log("Clicked On LinkTab");
 		linkTab.addLinkForProvider(testData.getLinkProvider());
@@ -836,7 +836,7 @@ public class PSSAdminUtils extends BaseTestNGWebDriver{
 		testData.setIsinsuranceVisible(patientFlow.insuracetogglestatus());
 		log("Insurance Status= " + patientFlow.insuracetogglestatus());
 		adminUser.setRule(patientFlow.getRule());
-		Log4jUtil.log("rule= " + patientFlow.getRule());
+		log("rule= " + patientFlow.getRule());
 		setRulesNoSpecialitySet1(patientFlow);
 		LinkTab linkTab = pssPracticeConfig.linksTab();
 		linkTab.addLinkForLocation(testData.getLinkLocation());

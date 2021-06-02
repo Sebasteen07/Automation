@@ -163,7 +163,7 @@ public class Provider extends PSS2MainPage {
 			if (providerList.get(i).getText().trim().contains(providerName.trim())) {
 				CommonMethods.highlightElement(providerList.get(i));
 
-				IHGUtil.waitForElement(driver, 5, providernameLink.get(i));
+				IHGUtil.waitForElement(driver, 5, providerList.get(i));
 				providerList.get(i).click();
 
 				log("Clicked on Provider");
@@ -198,5 +198,11 @@ public class Provider extends PSS2MainPage {
 		String nextDate = nextav.substring(16, 28);
 		log("Only date is  " + nextDate);
 		return nextDate;
+	}
+	
+	public String getNextavaliableText() {
+
+		return providerNextavaliable.getText();
+	
 	}
 }

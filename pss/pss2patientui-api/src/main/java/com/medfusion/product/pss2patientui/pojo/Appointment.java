@@ -159,7 +159,9 @@ public class Appointment {
 	private String timeMarkValue;
 	private String linkProviderURL;
 	private String linkLocationURL;
+	private String nextAvailiableText;
 
+	
 	
 	private boolean insuranceDetails = false;
 
@@ -175,6 +177,15 @@ public class Appointment {
 	}
 
 	public Appointment() {}	
+	
+	public String getNextAvailiableText() {
+		return nextAvailiableText;
+	}
+
+	public void setNextAvailiableText(String nextAvailiableText) {
+		this.nextAvailiableText = nextAvailiableText;
+	}
+
 
 	public String getMemberID() {
 		return memberID;
