@@ -251,7 +251,7 @@ public class PssGEAdapterTest extends BaseTestNGWebDriver {
 	}
 	
 	@Test
-	public void addPatientPOST() throws IOException {
+	public void addPatientPost() throws IOException {
 		PSSPropertyFileLoader propertyData = new PSSPropertyFileLoader();
 		Appointment testData = new Appointment();
 		PayloadGE payloadGE = new PayloadGE();
