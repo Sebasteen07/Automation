@@ -131,7 +131,7 @@ public class JalapenoCcdViewerPage extends MedfusionPage {
 	private WebElement careTeamMember;
 	
 	
-	@FindBy(how = How.XPATH, using = "//*[@id=\"messageContainer\"]/div[2]/div[2]/div[2]/div[1]/div/a")
+	@FindBy(how = How.XPATH, using = "//*[@class='messageContent']//*[contains(text(),'View health data')]")
 	private WebElement btnViewHealthData;
 	
 	@FindBy(id = "basicInfo")

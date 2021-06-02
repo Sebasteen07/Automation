@@ -19,8 +19,6 @@ public class GatewayProxyUtils {
 		RestAssured.useRelaxedHTTPSValidation();
 		
 	}
-	
-	
 	public static String getTokenForCustomer() throws Exception{
 		testData = new PropertyFileLoader();
 		RestAssured.useRelaxedHTTPSValidation();
@@ -35,5 +33,4 @@ public class GatewayProxyUtils {
 		return jsonpath.get("token").toString();
 		
 	}
-
 }
