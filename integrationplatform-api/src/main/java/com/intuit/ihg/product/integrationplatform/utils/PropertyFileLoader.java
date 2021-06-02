@@ -225,7 +225,7 @@ public class PropertyFileLoader {
 	}
 
 	public String getReadCommunicationUrlV3AMDC() {
-		return property.getProperty("readCommunicationurlv3.amdc");
+		return property.getProperty("readcommunicationurlv3.amdc");
 	}
 
 	// MU2 EVENTS
@@ -525,11 +525,11 @@ public class PropertyFileLoader {
 	}
 
 	public String getRestUrl2_20() {
-		return property.getProperty("resturl1.20");
+		return property.getProperty("resturl2.20");
 	}
 
 	public String getRestUrl3_20() {
-		return property.getProperty("resturl1.20");
+		return property.getProperty("resturl3.20");
 	}
 
 	public String getPracticeId_PIDC_20() {

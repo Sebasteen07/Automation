@@ -57,11 +57,10 @@ public class JalapenoAccountPage extends JalapenoMenu {
 				IHGUtil.PrintMethodName();
 		}
 		
-		public JalapenoMyAccountProfilePage clickOnEditMyAccount() throws InterruptedException {
+		public JalapenoMyAccountProfilePage clickOnEditMyAccount() {
 				log("Trying to click on Edit button for My Account");
 				wait.until(ExpectedConditions.visibilityOf(editMyAccountButton));
 				editMyAccountButton.click();
-				Thread.sleep(3000);//Hold the execution for the MY Account Page to load.
 				return PageFactory.initElements(driver, JalapenoMyAccountProfilePage.class);
 		}
 
