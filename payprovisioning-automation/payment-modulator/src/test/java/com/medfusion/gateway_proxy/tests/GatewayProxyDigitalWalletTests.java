@@ -25,7 +25,7 @@ public class GatewayProxyDigitalWalletTests extends GatewayProxyBaseTest {
 	}
 
 	@Test
-	public void addNewCardAndCreateWalletByValidAuth() throws Exception {
+	public void testAddNewCardAndCreateWalletByValidAuth() throws Exception {
 		String token = GatewayProxyUtils.getTokenForCustomer();
 		GatewayProxyDigitalWalletResource digitalWallet = new GatewayProxyDigitalWalletResource();
 		Response response = digitalWallet.createNewWallet(token, testData.getProperty("consumername"),
@@ -44,7 +44,7 @@ public class GatewayProxyDigitalWalletTests extends GatewayProxyBaseTest {
 	}
 
 	@Test
-	public void addNewCardAndCreateWalletByInvalidAuth() throws Exception {
+	public void testAddNewCardAndCreateWalletByInvalidAuth() throws Exception {
 		String token = GatewayProxyUtils.getTokenForCustomer() + "jadgcl";
 		GatewayProxyDigitalWalletResource digitalWallet = new GatewayProxyDigitalWalletResource();
 		Response response = digitalWallet.createNewWallet(token, testData.getProperty("consumername"),
@@ -55,7 +55,7 @@ public class GatewayProxyDigitalWalletTests extends GatewayProxyBaseTest {
 	}
 
 	@Test
-	public void getListOfCardsInWalletByInvalidAuth() throws Exception {
+	public void testGetListOfCardsInWalletByInvalidAuth() throws Exception {
 		String token = GatewayProxyUtils.getTokenForCustomer();
 		String token1 = token + "jadgcl";
 		GatewayProxyDigitalWalletResource digitalWallet = new GatewayProxyDigitalWalletResource();
@@ -65,7 +65,7 @@ public class GatewayProxyDigitalWalletTests extends GatewayProxyBaseTest {
 	}
 
 	@Test
-	public void deleteCardInWallet() throws Exception {
+	public void testDeleteCardInWallet() throws Exception {
 
 		String token = GatewayProxyUtils.getTokenForCustomer();
 
@@ -86,10 +86,8 @@ public class GatewayProxyDigitalWalletTests extends GatewayProxyBaseTest {
 
 		String externalWalletId = jsonPath.get("externalWalletId").toString();
 		String externalCardId = jsonPath.get("walletCards[0].externalCardId").toString();
-
 		
 		Response deleteResponse = digitalWallet.deleteCardInWallet(token, externalWalletId, externalCardId);
-
 		JsonPath jsonPathDelete = new JsonPath(deleteResponse.asString());
 
 		Assert.assertEquals(externalWalletId, jsonPathDelete.get("externalWalletId"));
@@ -100,7 +98,7 @@ public class GatewayProxyDigitalWalletTests extends GatewayProxyBaseTest {
 	}
 
 	@Test
-	public void deleteCardInWalletByInvalidAuth() throws Exception {
+	public void testDeleteCardInWalletByInvalidAuth() throws Exception {
 		String token = GatewayProxyUtils.getTokenForCustomer();
 		String token1 = token + "jadgcl";
 		GatewayProxyDigitalWalletResource digitalWallet = new GatewayProxyDigitalWalletResource();
@@ -131,7 +129,7 @@ public class GatewayProxyDigitalWalletTests extends GatewayProxyBaseTest {
 	}
 
 	@Test(dataProvider = "card_details")
-	public void addNewCardAndCreateWalletWithNullValues(String consumerName, String cardType, String cardNumber,
+	public void testAddNewCardAndCreateWalletWithNullValues(String consumerName, String cardType, String cardNumber,
 			String expiryDate, String cardAlias, String zipcode) throws Exception {
 		String token = GatewayProxyUtils.getTokenForCustomer();
 		GatewayProxyDigitalWalletResource digitalWallet = new GatewayProxyDigitalWalletResource();
@@ -147,7 +145,7 @@ public class GatewayProxyDigitalWalletTests extends GatewayProxyBaseTest {
 
 	@Test(dependsOnMethods = "addNewCardAndCreateWalletByValidAuth")
 
-	public void getListOfCardsInWallet() throws Exception {
+	public void testGetListOfCardsInWallet() throws Exception {
 
 		GatewayProxyDigitalWalletResource digitalWallet = new GatewayProxyDigitalWalletResource();
 		String token = GatewayProxyUtils.getTokenForCustomer();
@@ -164,7 +162,7 @@ public class GatewayProxyDigitalWalletTests extends GatewayProxyBaseTest {
 	}
 
 	@Test
-	public void updateZipcodeOfWalletWithValidAuth() throws Exception {
+	public void testUpdateZipcodeOfWalletWithValidAuth() throws Exception {
 		GatewayProxyDigitalWalletResource digitalWallet = new GatewayProxyDigitalWalletResource();
 		String token = GatewayProxyUtils.getTokenForCustomer();
 		String zipcode = IHGUtil.createRandomZip();
@@ -178,7 +176,7 @@ public class GatewayProxyDigitalWalletTests extends GatewayProxyBaseTest {
 	}
 
 	@Test
-	public void updateZipcodeOfWalletWithInvalidAuth() throws Exception {
+	public void testUpdateZipcodeOfWalletWithInvalidAuth() throws Exception {
 		GatewayProxyDigitalWalletResource digitalWallet = new GatewayProxyDigitalWalletResource();
 		String token = GatewayProxyUtils.getTokenForCustomer();
 		String zipcode = IHGUtil.createRandomZip();
@@ -189,7 +187,7 @@ public class GatewayProxyDigitalWalletTests extends GatewayProxyBaseTest {
 	}
 
 	@Test
-	public void updateZipcodeOfWalletWithInvalidZipcode() throws Exception {
+	public void testUpdateZipcodeOfWalletWithInvalidZipcode() throws Exception {
 		GatewayProxyDigitalWalletResource digitalWallet = new GatewayProxyDigitalWalletResource();
 		String token = GatewayProxyUtils.getTokenForCustomer();
 
