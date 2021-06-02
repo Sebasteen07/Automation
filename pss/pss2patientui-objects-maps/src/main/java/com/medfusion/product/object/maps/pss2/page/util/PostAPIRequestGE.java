@@ -6,8 +6,10 @@ import static org.hamcrest.Matchers.equalTo;
 
 import java.util.Map;
 
+import org.hamcrest.Matchers;
 import org.json.JSONArray;
 import org.json.JSONObject;
+import org.testng.Assert;
 
 import com.intuit.ifs.csscat.core.BaseTestNGWebDriver;
 
@@ -21,7 +23,9 @@ public class PostAPIRequestGE extends BaseTestNGWebDriver {
 
 	public JsonPath healthCheck(String baseurl, Map<String, String> Header) {
 		RestAssured.baseURI = baseurl;
-		Response response = given().log().all().when().get(APIPath.apiPathGE.HEALTH_CHECK).then().log().all().assertThat().statusCode(200).extract().response();
+		Response response =
+				given().log().all().when().get(APIPath.apiPathGE.HEALTH_CHECK).then().log().all().assertThat().statusCode(200)
+						.body("components.DatabaseName", equalTo("centricityps123demo")).extract().response();
 
 		JsonPath js = new JsonPath(response.asString());
 
@@ -44,7 +48,6 @@ public class PostAPIRequestGE extends BaseTestNGWebDriver {
 		Response response = given().log().all().when().get(APIPath.apiPathGE.VERSION).then().log().all().assertThat().statusCode(200).extract().response();
 
 		JsonPath js = new JsonPath(response.asString());
-
 		log("version -" + js.getString("version"));
 		return js;
 	}
@@ -56,11 +59,9 @@ public class PostAPIRequestGE extends BaseTestNGWebDriver {
 		log("Status Code- " + response.getStatusCode());
 		log("Body ------> " + response.body().asString());
 
-		apiVerification.responseCodeValidation(response, 200);
 		apiVerification.responseTimeValidation(response);
 
 		JSONArray jsonarray = new JSONArray(response.asString());
-
 		JSONObject jsonobject = new JSONObject();
 
 		int i = 0;
@@ -78,10 +79,8 @@ public class PostAPIRequestGE extends BaseTestNGWebDriver {
 	public Response appointmentType(String baseurl, Map<String, String> Header) {
 		RestAssured.baseURI = baseurl;
 		Response response = given().log().all().when().get(APIPath.apiPathGE.APPOINTMENT_TYPE).then().log().all().assertThat().statusCode(200).extract().response();
-		apiVerification.responseCodeValidation(response, 200);
 
 		apiVerification.responseTimeValidation(response);
-
 		apiVerification.responseKeyValidation(response, "id");
 		apiVerification.responseKeyValidation(response, "name");
 		apiVerification.responseKeyValidation(response, "displayName");
@@ -94,10 +93,8 @@ public class PostAPIRequestGE extends BaseTestNGWebDriver {
 		Response response = given().log().all().when().get(APIPath.apiPathGE.BOOKS).then().log().all().assertThat().statusCode(200).extract().response();
 		log("Status Code- " + response.getStatusCode());
 		log("Status Code- " + response.asString());
-		apiVerification.responseCodeValidation(response, 200);
 
 		apiVerification.responseTimeValidation(response);
-
 		apiVerification.responseKeyValidation(response, "resourceId");
 		apiVerification.responseKeyValidation(response, "resourceName");
 		apiVerification.responseKeyValidation(response, "displayName");
@@ -113,11 +110,9 @@ public class PostAPIRequestGE extends BaseTestNGWebDriver {
 
 		log("Status Code- " + response.getStatusCode());
 		log("Body ------ " + response.asString());
-		apiVerification.responseCodeValidation(response, 200);
 		apiVerification.responseTimeValidation(response);
 
 		JSONArray jsonarray = new JSONArray(response.asString());
-
 		JSONObject jsonobject = new JSONObject();
 
 		int i = 0;
@@ -137,11 +132,9 @@ public class PostAPIRequestGE extends BaseTestNGWebDriver {
 		Response response = RestAssured.given().when().headers(Header).when().get(APIPath.apiPathGE.LOCATIONS).then().log().all().extract().response();
 		log("Status Code- " + response.getStatusCode());
 		log("Body ------ " + response.asString());
-		apiVerification.responseCodeValidation(response, 200);
 		apiVerification.responseTimeValidation(response);
 
 		JSONArray jsonarray = new JSONArray(response.asString());
-
 		JSONObject jsonobject = new JSONObject();
 
 		int i = 0;
@@ -158,14 +151,14 @@ public class PostAPIRequestGE extends BaseTestNGWebDriver {
 
 	public Response actuator(String baseurl, Map<String, String> Header) {
 		RestAssured.baseURI = baseurl;
-		Response response = given().log().all().when().get(APIPath.apiPathGE.ACTUATOR).then().log().all().assertThat().statusCode(200).extract().response();
-		apiVerification.responseCodeValidation(response, 200);
+		Response response = given().log().all().when().get(APIPath.apiPathGE.ACTUATOR).then().log().all().assertThat().statusCode(200)
+				.body("_links.self.href", Matchers.notNullValue()).extract().response();
+
+		log("Status Code- " + response.getStatusCode());
+
 		JsonPath js = new JsonPath(response.asString());
 		apiVerification.responseTimeValidation(response);
-
-		log("Self Link - " + js.getString("_links.self.href"));
-		log("health Link - " + js.getString("_links.health.href"));
-		log("health-path Link - " + js.getString("_links.health-path.href"));
+		log("Actuator Link - " + js.getString("_links.self.href"));
 
 		return response;
 	}
@@ -175,14 +168,12 @@ public class PostAPIRequestGE extends BaseTestNGWebDriver {
 		Response response = RestAssured.given().log().all().when().headers(Header).body(b).when().post(APIPath.apiPathGE.LAST_SEEN_PROVIDER).then().log().all()
 				.extract().response();
 		log("Status Code- " + response.getStatusCode());
-
-		apiVerification.responseCodeValidation(response, 200);
 		apiVerification.responseTimeValidation(response);
 
 		JsonPath js = new JsonPath(response.asString());
-		log("Last Seen Date Time - " + js.getString("lastSeenDateTime"));
+		String resourceId = js.getString("resourceId");
+		Assert.assertTrue(resourceId.equals("158"));
 		log("Resource Id - " + js.getString("resourceId"));
-		log("Provider Availability - " + js.getString("providerAvailability"));
 
 		return response;
 	}
@@ -191,15 +182,14 @@ public class PostAPIRequestGE extends BaseTestNGWebDriver {
 		RestAssured.baseURI = baseurl;
 		Response response =
 				given().log().all().queryParam("appointmentId", "9526").queryParam("patientId", "27601").queryParam("startDateTime", "05/20/2021 00:30:00").when()
-						.get(APIPath.apiPathGE.APPOINTMENT_STATUS).then().log().all().assertThat().statusCode(200).extract().response();
+						.get(APIPath.apiPathGE.APPOINTMENT_STATUS).then().log().all().assertThat().statusCode(200).body("appointmentTypeId", equalTo("158")).extract()
+						.response();
 
 		JsonPath js = new JsonPath(response.asString());
 
 		log("status of an Appointment -" + js.getString("status"));
 		log("startDateTime- " + js.getString("startDateTime"));
-
-		log("appointmentType Id- " + js.getString("appointmentTypeId"));
-
+		apiVerification.responseTimeValidation(response);
 		return js;
 	}
 
@@ -209,13 +199,10 @@ public class PostAPIRequestGE extends BaseTestNGWebDriver {
 
 		log("Status Code- " + response.getStatusCode());
 
-		APIVerification apiVerification = new APIVerification();
-		apiVerification.responseCodeValidation(response, 200);
-
 		return response;
 	}
 
-	public Response cancelAppointment(String baseurl, String b, Map<String, String> Header) {
+	public Response cancelAppointmentStatus(String baseurl, String b, Map<String, String> Header) {
 		RestAssured.baseURI = baseurl;
 		Response response = RestAssured.given().log().all().when().headers(Header).body(b).when().post(APIPath.apiPathGE.CANCEL_STATUS).then().log().all()
 				.assertThat().statusCode(200).log().all().extract().response();
@@ -298,7 +285,6 @@ public class PostAPIRequestGE extends BaseTestNGWebDriver {
 		Response response =
 				given().log().all().headers(Header).body(b).post(APIPath.apiPathGE.RESCHEDUL_APPT).then().log().all().assertThat().statusCode(200).extract().response();
 
-		apiVerification.responseCodeValidation(response, 200);
 		apiVerification.responseTimeValidation(response);
 
 		return response;
@@ -314,10 +300,8 @@ public class PostAPIRequestGE extends BaseTestNGWebDriver {
 
 		log("Status Code- " + response.getStatusCode());
 
-		APIVerification apiVerification = new APIVerification();
-
-		apiVerification.responseCodeValidation(response, 200);
 		ParseJSONFile.getKey(jsonobject, "startDateTime");
+		ParseJSONFile.getKey(jsonobject, "slotId");
 		apiVerification.responseTimeValidation(response);
 
 		return response;
@@ -332,7 +316,6 @@ public class PostAPIRequestGE extends BaseTestNGWebDriver {
 		JSONObject jsonobject = new JSONObject(response.asString());
 		ParseJSONFile.getKey(jsonobject, "id");
 		ParseJSONFile.getKey(jsonobject, "firstName");
-		apiVerification.responseCodeValidation(response, 200);
 		apiVerification.responseTimeValidation(response);
 		return response;
 	}
@@ -342,11 +325,9 @@ public class PostAPIRequestGE extends BaseTestNGWebDriver {
 		Response response = RestAssured.given().log().all().when().headers(Header).body(b).when().post(APIPath.apiPathGE.CAREPROVIDER).then().log().all()
 				.assertThat().statusCode(200).extract().response();
 		log("Status Code- " + response.getStatusCode());
-		APIVerification apiVerification = new APIVerification();
 		JSONObject jsonobject = new JSONObject(response.asString());
 		ParseJSONFile.getKey(jsonobject, "resourceId");
 		ParseJSONFile.getKey(jsonobject, "nextAvailabledate");
-		apiVerification.responseCodeValidation(response, 200);
 		apiVerification.responseTimeValidation(response);
 		return response;
 	}
@@ -354,8 +335,8 @@ public class PostAPIRequestGE extends BaseTestNGWebDriver {
 	public Response demographicsGET(String baseurl) {
 		RestAssured.baseURI = baseurl;
 		Response response = given().queryParam("patientId", "26854").log().all().when().get(APIPath.apiPathGE.DEMOGRAPHICS).then().log().all().assertThat()
-				.statusCode(200).extract().response();
-		apiVerification.responseCodeValidation(response, 200);
+				.statusCode(200).body("firstName", equalTo("GE6")).body("lastName", equalTo("GE6")).extract().response();
+		log("Status Code- " + response.getStatusCode());
 		apiVerification.responseTimeValidation(response);
 		JSONObject jsonobject = new JSONObject(response.asString());
 		ParseJSONFile.getKey(jsonobject, "id");
@@ -365,7 +346,6 @@ public class PostAPIRequestGE extends BaseTestNGWebDriver {
 	public Response healthOperationGET(String baseurl) {
 		RestAssured.baseURI = baseurl;
 		Response response = given().log().all().when().get(APIPath.apiPathGE.HEALTH_OPERATION).then().log().all().assertThat().statusCode(200).extract().response();
-		apiVerification.responseCodeValidation(response, 200);
 		apiVerification.responseTimeValidation(response);
 		JSONObject jsonobject = new JSONObject(response.asString());
 		ParseJSONFile.getKey(jsonobject, "status");
@@ -375,10 +355,8 @@ public class PostAPIRequestGE extends BaseTestNGWebDriver {
 	public Response matchPatientPost(String baseurl, String b, Map<String, String> Header) {
 		RestAssured.baseURI = baseurl;
 		Response response = RestAssured.given().log().all().when().headers(Header).body(b).when().post(APIPath.apiPathGE.MATCH_PATIENT).then().log().all()
-				.assertThat().statusCode(200).extract().response();
+				.assertThat().statusCode(200).body("27598.firstName", equalTo("GECare111")).body("27598.lastName", equalTo("GECare111")).extract().response();
 		log("Status Code- " + response.getStatusCode());
-		APIVerification apiVerification = new APIVerification();
-		apiVerification.responseCodeValidation(response, 200);
 		apiVerification.responseTimeValidation(response);
 		return response;
 	}
@@ -387,7 +365,6 @@ public class PostAPIRequestGE extends BaseTestNGWebDriver {
 		RestAssured.baseURI = baseurl;
 		Response response =
 				given().log().all().when().get(APIPath.apiPathGE.PATIENT_LASTVISIT).then().log().all().assertThat().statusCode(200).extract().response();
-		apiVerification.responseCodeValidation(response, 200);
 		apiVerification.responseTimeValidation(response);
 		JSONObject jsonobject = new JSONObject(response.asString());
 		ParseJSONFile.getKey(jsonobject, "lastVisitDateTime");
@@ -398,7 +375,6 @@ public class PostAPIRequestGE extends BaseTestNGWebDriver {
 		RestAssured.baseURI = baseurl;
 		Response response =
 				given().log().all().when().get(APIPath.apiPathGE.PREREQUISTE_APPOINTMENTTYPESGET).then().log().all().assertThat().statusCode(200).extract().response();
-		apiVerification.responseCodeValidation(response, 200);
 		apiVerification.responseTimeValidation(response);
 		apiVerification.responseKeyValidation(response, "id");
 		apiVerification.responseKeyValidation(response, "name");
@@ -411,8 +387,19 @@ public class PostAPIRequestGE extends BaseTestNGWebDriver {
 				.assertThat().statusCode(200).extract().response();
 		log("Status Code- " + response.getStatusCode());
 		APIVerification apiVerification = new APIVerification();
-		apiVerification.responseCodeValidation(response, 200);
 		apiVerification.responseTimeValidation(response);
+		JSONArray jsonarray = new JSONArray(response.asString());
+		JSONObject jsonobject = new JSONObject();
+
+		int i = 0;
+		while (i < jsonarray.length()) {
+			jsonobject = jsonarray.getJSONObject(i);
+			String firstname = jsonobject.getString("firstName");
+			Assert.assertTrue(firstname.equalsIgnoreCase("Test"));
+			ParseJSONFile.getKey(jsonobject, "id");
+			ParseJSONFile.getKey(jsonobject, "firstName");
+			i++;
+		}
 		return response;
 	}
 

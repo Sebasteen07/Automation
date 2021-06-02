@@ -320,79 +320,18 @@ public  String matchPatientPayload() {
 
 public  String searchPatientPayload() {
 	
-	String searchPatient="{\r\n" + 
-			"        \"id\": \"27574\",\r\n" + 
-			"        \"firstName\": \"Test\",\r\n" + 
-			"        \"lastName\": \"APIThree\",\r\n" + 
-			"        \"dateOfBirth\": \"01/28/1997\",\r\n" + 
-			"        \"emailAddress\": \"rima.karmakar@crossasyst.com\",\r\n" + 
-			"        \"gender\": \"M\",\r\n" + 
-			"        \"status\": \"A\",\r\n" + 
-			"        \"address\": {\r\n" + 
-			"            \"zipCode\": \"90231\"\r\n" + 
-			"        }\r\n" + 
-			"    },\r\n" + 
-			"    {\r\n" + 
-			"        \"id\": \"27582\",\r\n" + 
-			"        \"firstName\": \"Test\",\r\n" + 
-			"        \"lastName\": \"APIThree\",\r\n" + 
-			"        \"dateOfBirth\": \"01/28/1997\",\r\n" + 
-			"        \"emailAddress\": \"rima.karmakar@crossasyst.com\",\r\n" + 
-			"        \"gender\": \"M\",\r\n" + 
-			"        \"status\": \"A\",\r\n" + 
-			"        \"address\": {\r\n" + 
-			"            \"zipCode\": \"90231\"\r\n" + 
-			"        }\r\n" + 
-			"    },\r\n" + 
-			"    {\r\n" + 
-			"        \"id\": \"27583\",\r\n" + 
-			"        \"firstName\": \"Test\",\r\n" + 
-			"        \"lastName\": \"APIThree\",\r\n" + 
-			"        \"dateOfBirth\": \"01/28/1997\",\r\n" + 
-			"        \"emailAddress\": \"rima.karmakar@crossasyst.com\",\r\n" + 
-			"        \"gender\": \"M\",\r\n" + 
-			"        \"status\": \"A\",\r\n" + 
-			"        \"address\": {\r\n" + 
-			"            \"zipCode\": \"90231\"\r\n" + 
-			"        }\r\n" + 
-			"    },\r\n" + 
-			"    {\r\n" + 
-			"        \"id\": \"27584\",\r\n" + 
-			"        \"firstName\": \"Test\",\r\n" + 
-			"        \"lastName\": \"APIThree\",\r\n" + 
-			"        \"dateOfBirth\": \"01/28/1997\",\r\n" + 
-			"        \"emailAddress\": \"rima.karmakar@crossasyst.com\",\r\n" + 
-			"        \"gender\": \"M\",\r\n" + 
-			"        \"status\": \"A\",\r\n" + 
-			"        \"address\": {\r\n" + 
-			"            \"zipCode\": \"90231\"\r\n" + 
-			"        }\r\n" + 
-			"    },\r\n" + 
-			"    {\r\n" + 
-			"        \"id\": \"27585\",\r\n" + 
-			"        \"firstName\": \"Test\",\r\n" + 
-			"        \"lastName\": \"APIThree\",\r\n" + 
-			"        \"dateOfBirth\": \"01/28/1997\",\r\n" + 
-			"        \"emailAddress\": \"rima.karmakar@crossasyst.com\",\r\n" + 
-			"        \"gender\": \"M\",\r\n" + 
-			"        \"status\": \"A\",\r\n" + 
-			"        \"address\": {\r\n" + 
-			"            \"zipCode\": \"90231\"\r\n" + 
-			"        }\r\n" + 
-			"    },\r\n" + 
-			"    {\r\n" + 
-			"        \"id\": \"27586\",\r\n" + 
-			"        \"firstName\": \"Test\",\r\n" + 
-			"        \"lastName\": \"APIThree\",\r\n" + 
-			"        \"dateOfBirth\": \"01/28/1997\",\r\n" + 
-			"        \"emailAddress\": \"rima.karmakar@crossasyst.com\",\r\n" + 
-			"        \"gender\": \"M\",\r\n" + 
-			"        \"status\": \"A\",\r\n" + 
-			"        \"address\": {\r\n" + 
-			"            \"zipCode\": \"90231\"\r\n" + 
-			"        }\r\n" + 
-			"    }\r\n" + 
-			"]";
+	String searchPatient="{\r\n"
+			+ "    \"id\": \"27574\",\r\n"
+			+ "    \"firstName\": \"Test\",\r\n"
+			+ "    \"lastName\": \"APIThree\",\r\n"
+			+ "    \"dateOfBirth\": \"01/28/1997\",\r\n"
+			+ "    \"emailAddress\": \"rima.karmakar@crossasyst.com\",\r\n"
+			+ "    \"gender\": \"M\",\r\n"
+			+ "    \"status\": \"A\",\r\n"
+			+ "    \"address\":{\r\n"
+			+ "        \"zipCode\": \"90231\"\r\n"
+			+ "    } \r\n"
+			+ "}";
 	
 	return searchPatient;
 }

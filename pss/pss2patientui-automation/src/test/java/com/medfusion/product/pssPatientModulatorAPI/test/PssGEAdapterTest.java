@@ -154,7 +154,7 @@ public class PssGEAdapterTest extends BaseTestNGWebDriver {
 		propertyData.setRestAPIDataGE(testData);
 		PostAPIRequestGE postAPIRequest = new PostAPIRequestGE();
 		log("Base URL is   " + testData.getBasicURI());
-		postAPIRequest.cancelAppointment(testData.getBasicURI(), PayloadGE.cancelledApptStatusPayload(), headerConfig.defaultHeader());
+		postAPIRequest.cancelAppointmentStatus(testData.getBasicURI(), PayloadGE.cancelledApptStatusPayload(), headerConfig.defaultHeader());
 	}
 
 	@Test

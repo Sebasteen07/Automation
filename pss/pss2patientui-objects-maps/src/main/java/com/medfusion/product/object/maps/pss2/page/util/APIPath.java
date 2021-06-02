@@ -74,7 +74,7 @@ public class APIPath {
 	}
 
 	public static final class apiPathPatientMod {
-		public static final String APPT_DETAIL_FROM_GUID = "/24333/cf61827d-cfaa-4024-94e4-03d305f2357f/getapptdetails";
+		public static final String APPT_DETAIL_FROM_GUID = "/24293/dd27b70b-2be3-434c-bded-e4cc01be379b/getapptdetails";
 		public static final String PRACTICE_FROM_GUID = "/anonymous/092e74fd-1dc4-447e-b97a-4c9ac39e379c";
 		public static final String GUID_FOR_LOGOUT_PATIENT = "/24333/patientlogout";
 		public static final String HEALTH = "/actuator/health";
