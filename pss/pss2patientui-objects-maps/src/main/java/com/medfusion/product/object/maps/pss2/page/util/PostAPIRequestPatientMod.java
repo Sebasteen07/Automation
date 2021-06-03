@@ -77,14 +77,6 @@ public class PostAPIRequestPatientMod extends BaseTestNGWebDriver {
 				.all().assertThat().statusCode(200).body("token", Matchers.notNullValue()).body("name", equalTo("PSS-GE-24333-PRACTICE")).extract().response();
 
 		JsonPath js = new JsonPath(response.asString());
-		log("Status Code- " + response.getStatusCode());
-
-		String guid = js.get("guid");
-		String practiceId = js.get("practiceId");
-		Assert.assertTrue(guid.equals("53085385-2d3b-462f-a474-1e501b5a6a21"));
-		Assert.assertTrue(practiceId.equals("24333"));
-		log("Practice name -" + js.getString("name"));
-		log("Practice name -" + js.getString("practiceId"));
 		apiVerification.responseTimeValidation(response);
 
 		return js;

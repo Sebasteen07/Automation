@@ -11,7 +11,7 @@ import com.medfusion.product.object.maps.pss2.page.util.PostAPIRequestPatientMod
 import com.medfusion.product.pss2patientui.pojo.Appointment;
 import com.medfusion.product.pss2patientui.utils.PSSPropertyFileLoader;
 
-public class PssPatientModulatorTest extends BaseTestNGWebDriver {
+public class PssPatientModulatortest extends BaseTestNGWebDriver {
 
 	@Test
 	public void apptDetailFromGuidGET() throws IOException {
