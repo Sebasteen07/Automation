@@ -163,7 +163,7 @@ public class PostAPIRequestGE extends BaseTestNGWebDriver {
 		return response;
 	}
 
-	public Response lastseenProvider(String baseurl, String b, Map<String, String> Header) {
+	public String lastseenProvider(String baseurl, String b, Map<String, String> Header) {
 		RestAssured.baseURI = baseurl;
 		Response response = RestAssured.given().log().all().when().headers(Header).body(b).when().post(APIPath.apiPathGE.LAST_SEEN_PROVIDER).then().log().all()
 				.extract().response();
@@ -172,10 +172,9 @@ public class PostAPIRequestGE extends BaseTestNGWebDriver {
 
 		JsonPath js = new JsonPath(response.asString());
 		String resourceId = js.getString("resourceId");
-		Assert.assertTrue(resourceId.equals("158"));
 		log("Resource Id - " + js.getString("resourceId"));
 
-		return response;
+		return resourceId;
 	}
 
 	public JsonPath appointmentStatus(String baseurl, Map<String, String> Header) {

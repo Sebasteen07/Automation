@@ -3,6 +3,7 @@ package com.medfusion.product.pssPatientModulatorAPI.test;
 
 import java.io.IOException;
 
+import org.testng.Assert;
 import org.testng.annotations.Test;
 
 import com.intuit.ifs.csscat.core.BaseTestNGWebDriver;
@@ -121,6 +122,9 @@ public class PssGEAdapterTest extends BaseTestNGWebDriver {
 		PostAPIRequestGE postAPIRequest = new PostAPIRequestGE();
 		log("Base URL is   " + testData.getBasicURI());
 		postAPIRequest.lastseenProvider(testData.getBasicURI(), PayloadGE.providerLastSeenPayload(), headerConfig.defaultHeader());
+		log("Verifying resource Id");
+		String resourceId = postAPIRequest.lastseenProvider(testData.getBasicURI(), PayloadGE.providerLastSeenPayload(), headerConfig.defaultHeader());
+		Assert.assertEquals(resourceId, "158", "Resource Id is wrong");
 	}
 
 	@Test

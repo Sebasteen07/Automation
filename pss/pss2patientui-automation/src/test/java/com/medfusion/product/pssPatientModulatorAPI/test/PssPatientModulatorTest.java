@@ -3,6 +3,7 @@ package com.medfusion.product.pssPatientModulatorAPI.test;
 
 import java.io.IOException;
 
+import org.testng.Assert;
 import org.testng.annotations.Test;
 
 import com.intuit.ifs.csscat.core.BaseTestNGWebDriver;
@@ -12,7 +13,6 @@ import com.medfusion.product.pss2patientui.pojo.Appointment;
 import com.medfusion.product.pss2patientui.utils.PSSPropertyFileLoader;
 
 public class PssPatientModulatorTest extends BaseTestNGWebDriver {
-
 	@Test
 	public void testApptDetailFromGuidGET() throws IOException {
 		HeaderConfig headerConfig = new HeaderConfig();
@@ -22,6 +22,9 @@ public class PssPatientModulatorTest extends BaseTestNGWebDriver {
 		PostAPIRequestPatientMod postAPIRequest = new PostAPIRequestPatientMod();
 		log("Base URL is   " + testData.getBasicURI());
 		postAPIRequest.apptDetailFromGuid(testData.getBasicURI(), headerConfig.defaultHeader());
+		log("Verifying the PracticeId");
+		String practiceId = postAPIRequest.apptDetailFromGuid(testData.getBasicURI(), headerConfig.defaultHeader());
+		Assert.assertEquals(practiceId, "205604", "Practice is wrong");
 	}
 
 	@Test
@@ -33,6 +36,9 @@ public class PssPatientModulatorTest extends BaseTestNGWebDriver {
 		PostAPIRequestPatientMod postAPIRequest = new PostAPIRequestPatientMod();
 		log("Base URL is   " + testData.getBasicURI());
 		postAPIRequest.practiceFromGuid(testData.getBasicURI(), headerConfig.defaultHeader());
+		log("Verifying the Ext Practice Id");
+		String extPracticeId = postAPIRequest.practiceFromGuid(testData.getBasicURI(), headerConfig.defaultHeader());
+		Assert.assertEquals(extPracticeId, "24829", "Ext Practice Id is wrong");
 	}
 
 	@Test
@@ -44,6 +50,9 @@ public class PssPatientModulatorTest extends BaseTestNGWebDriver {
 		PostAPIRequestPatientMod postAPIRequest = new PostAPIRequestPatientMod();
 		log("Base URL is   " + testData.getBasicURI());
 		postAPIRequest.linksValueGuid(testData.getBasicURI(), headerConfig.defaultHeader());
+		log("Verifying the practiceId");
+		String practiceId = postAPIRequest.linksValueGuid(testData.getBasicURI(), headerConfig.defaultHeader());
+		Assert.assertEquals(practiceId, "24333", "practiceId is wrong");
 	}
 
 	@Test
@@ -55,6 +64,9 @@ public class PssPatientModulatorTest extends BaseTestNGWebDriver {
 		PostAPIRequestPatientMod postAPIRequest = new PostAPIRequestPatientMod();
 		log("Base URL is   " + testData.getBasicURI());
 		postAPIRequest.linksValueGuidAndPractice(testData.getBasicURI(), headerConfig.defaultHeader());
+		log("Verifying the practiceId");
+		String practiceId = postAPIRequest.linksValueGuidAndPractice(testData.getBasicURI(), headerConfig.defaultHeader());
+		Assert.assertEquals(practiceId, "24333", "PracticeId is wrong");
 	}
 
 	@Test
@@ -66,6 +78,9 @@ public class PssPatientModulatorTest extends BaseTestNGWebDriver {
 		PostAPIRequestPatientMod postAPIRequest = new PostAPIRequestPatientMod();
 		log("Base URL is   " + testData.getBasicURI());
 		postAPIRequest.linksDetailGuid(testData.getBasicURI(), headerConfig.defaultHeader());
+		log("Verifying the patientId");
+		String patientId = postAPIRequest.linksDetailGuid(testData.getBasicURI(), headerConfig.defaultHeader());
+		Assert.assertEquals(patientId, "27641", "PatientId is wrong");
 	}
 
 	@Test
@@ -77,6 +92,9 @@ public class PssPatientModulatorTest extends BaseTestNGWebDriver {
 		PostAPIRequestPatientMod postAPIRequest = new PostAPIRequestPatientMod();
 		log("Base URL is   " + testData.getBasicURI());
 		postAPIRequest.linksDetailGuidAndPractice(testData.getBasicURI(), headerConfig.defaultHeader());
+		log("Verifying the patientId");
+		String patientId = postAPIRequest.linksDetailGuidAndPractice(testData.getBasicURI(), headerConfig.defaultHeader());
+		Assert.assertEquals(patientId, "27641", "PatientId is wrong");
 	}
 
 	@Test
@@ -88,6 +106,9 @@ public class PssPatientModulatorTest extends BaseTestNGWebDriver {
 		PostAPIRequestPatientMod postAPIRequest = new PostAPIRequestPatientMod();
 		log("Base URL is   " + testData.getBasicURI());
 		postAPIRequest.guidForLogoutPatient(testData.getBasicURI(), headerConfig.defaultHeader());
+		log("Verifying the Guid");
+		String guidId = postAPIRequest.guidForLogoutPatient(testData.getBasicURI(), headerConfig.defaultHeader());
+		Assert.assertEquals(guidId, "53085385-2d3b-462f-a474-1e501b5a6a21", "guid Id is wrong");
 	}
 
 	@Test
@@ -99,6 +120,9 @@ public class PssPatientModulatorTest extends BaseTestNGWebDriver {
 		PostAPIRequestPatientMod postAPIRequest = new PostAPIRequestPatientMod();
 		log("Base URL is   " + testData.getBasicURI());
 		postAPIRequest.practiceFromGuidLoginless(testData.getBasicURI(), headerConfig.defaultHeader());
+		log("Verifying the Ext Practice Id");
+		String extPracticeId = postAPIRequest.practiceFromGuidLoginless(testData.getBasicURI(), headerConfig.defaultHeader());
+		Assert.assertEquals(extPracticeId, "24249", "Ext PracticeId is wrong");
 	}
 
 	@Test
@@ -110,6 +134,9 @@ public class PssPatientModulatorTest extends BaseTestNGWebDriver {
 		PostAPIRequestPatientMod postAPIRequest = new PostAPIRequestPatientMod();
 		log("Base URL is   " + testData.getBasicURI());
 		postAPIRequest.tokenForLoginless(testData.getBasicURI(), headerConfig.defaultHeader());
+		log("Verifying the Ext Practice Id");
+		String extPracticeId = postAPIRequest.tokenForLoginless(testData.getBasicURI(), headerConfig.defaultHeader());
+		Assert.assertEquals(extPracticeId, "24333", "Ext PracticeId is wrong");
 	}
 
 	@Test
@@ -143,6 +170,9 @@ public class PssPatientModulatorTest extends BaseTestNGWebDriver {
 		PostAPIRequestPatientMod postAPIRequest = new PostAPIRequestPatientMod();
 		log("Base URL is   " + testData.getBasicURI());
 		postAPIRequest.timezonePracticeResource(testData.getBasicURI(), headerConfig.defaultHeader());
+		log("Verifying the practiceId");
+		String practiceId = postAPIRequest.timezonePracticeResource(testData.getBasicURI(), headerConfig.defaultHeader());
+		Assert.assertEquals(practiceId, "24248", "PracticeId is wrong");
 	}
 
 	@Test
@@ -154,6 +184,9 @@ public class PssPatientModulatorTest extends BaseTestNGWebDriver {
 		PostAPIRequestPatientMod postAPIRequest = new PostAPIRequestPatientMod();
 		log("Base URL is   " + testData.getBasicURI());
 		postAPIRequest.practiceInfo(testData.getBasicURI(), headerConfig.defaultHeader());
+		log("Verifying the Ext Practice Id");
+		String extPracticeId = postAPIRequest.practiceInfo(testData.getBasicURI(), headerConfig.defaultHeader());
+		Assert.assertEquals(extPracticeId, "24333", "Ext PracticeId is wrong");
 	}
 
 	@Test
@@ -176,6 +209,9 @@ public class PssPatientModulatorTest extends BaseTestNGWebDriver {
 		PostAPIRequestPatientMod postAPIRequest = new PostAPIRequestPatientMod();
 		log("Base URL is   " + testData.getBasicURI());
 		postAPIRequest.sessionConfiguration(testData.getBasicURI(), headerConfig.defaultHeader());
+		log("Verifying the Token Expiration Time");
+		int tokenExpirationTime = postAPIRequest.sessionConfiguration(testData.getBasicURI(), headerConfig.defaultHeader());
+		Assert.assertEquals(tokenExpirationTime, 600, "Token Expiration Time is wrong");
 	}
 
 	@Test
@@ -187,6 +223,9 @@ public class PssPatientModulatorTest extends BaseTestNGWebDriver {
 		PostAPIRequestPatientMod postAPIRequest = new PostAPIRequestPatientMod();
 		log("Base URL is   " + testData.getBasicURI());
 		postAPIRequest.practiceDetail(testData.getBasicURI(), headerConfig.defaultHeader());
+		log("Verifying the Ext Practice Id");
+		String extPracticeId = postAPIRequest.practiceDetail(testData.getBasicURI(), headerConfig.defaultHeader());
+		Assert.assertEquals(extPracticeId, "24333", "Ext PracticeId is wrong");
 	}
 
 	@Test
@@ -198,6 +237,9 @@ public class PssPatientModulatorTest extends BaseTestNGWebDriver {
 		PostAPIRequestPatientMod postAPIRequest = new PostAPIRequestPatientMod();
 		log("Base URL is   " + testData.getBasicURI());
 		postAPIRequest.practiceFromGuidSso(testData.getBasicURI(), headerConfig.defaultHeader());
+		log("Verifying the Ext Practice Id");
+		String extPracticeId = postAPIRequest.practiceFromGuidSso(testData.getBasicURI(), headerConfig.defaultHeader());
+		Assert.assertEquals(extPracticeId, "24829", "Ext PracticeId is wrong");
 	}
 
 	@Test
@@ -312,6 +354,9 @@ public class PssPatientModulatorTest extends BaseTestNGWebDriver {
 		PostAPIRequestPatientMod postAPIRequest = new PostAPIRequestPatientMod();
 		log("Base URL is   " + testData.getBasicURI());
 		postAPIRequest.demographicsProfiles(testData.getBasicURI(), headerConfig.defaultHeader());
+		log("Verifying the Demographics Id");
+		String demographicsId = postAPIRequest.demographicsProfiles(testData.getBasicURI(), headerConfig.defaultHeader());
+		Assert.assertEquals(demographicsId, "26854", "Demographics Id is wrong");
 	}
 
 	@Test
@@ -382,6 +427,9 @@ public class PssPatientModulatorTest extends BaseTestNGWebDriver {
 		log("Base URL is  ---> " + testData.getBasicURI());
 		log("Access Token --> " + testData.getAccessToken());
 		postAPIRequest.patientDemographics(testData.getBasicURI(), headerConfig.HeaderwithToken(testData.getAccessToken()));
+		log("Verifying the Demographics Id");
+		String demographicsId = postAPIRequest.patientDemographics(testData.getBasicURI(), headerConfig.HeaderwithToken(testData.getAccessToken()));
+		Assert.assertEquals(demographicsId, "26854", "Demographics Id is wrong");
 	}
 
 	@Test
@@ -399,6 +447,10 @@ public class PssPatientModulatorTest extends BaseTestNGWebDriver {
 		log("Payload- " + payloadPatientMod.validateProviderLinkPayload());
 		postAPIRequest.validateProviderLink(testData.getBasicURI(), payloadPatientMod.validateProviderLinkPayload(),
 				headerConfig.HeaderwithToken(testData.getAccessToken()));
+		log("Verifying the Provider link Id");
+		int providerLinkId = postAPIRequest.validateProviderLink(testData.getBasicURI(), payloadPatientMod.validateProviderLinkPayload(),
+				headerConfig.HeaderwithToken(testData.getAccessToken()));
+		Assert.assertEquals(providerLinkId, 205300, "Demographics Id");
 	}
 
 	@Test
@@ -449,6 +501,10 @@ public class PssPatientModulatorTest extends BaseTestNGWebDriver {
 		log("Payload- " + payloadPatientMod.anonymousMatchAndCreatePatientPayload());
 		postAPIRequest.anonymousMatchAndCreatePatient(testData.getBasicURI(), payloadPatientMod.anonymousMatchAndCreatePatientPayload(),
 				headerConfig.HeaderwithToken(testData.getAccessToken()));
+		log("Verifying the patient Id");
+		String patientId = postAPIRequest.anonymousMatchAndCreatePatient(testData.getBasicURI(), payloadPatientMod.anonymousMatchAndCreatePatientPayload(),
+				headerConfig.HeaderwithToken(testData.getAccessToken()));
+		Assert.assertEquals(patientId, "27698", "patient Id is wrong");
 	}
 
 	@Test
@@ -466,6 +522,10 @@ public class PssPatientModulatorTest extends BaseTestNGWebDriver {
 		log("Payload- " + payloadPatientMod.identifyPatientForReschedulePayload());
 		postAPIRequest.identifyPatientForReschedule(testData.getBasicURI(), payloadPatientMod.identifyPatientForReschedulePayload(),
 				headerConfig.HeaderwithToken(testData.getAccessToken()));
+		log("Verifying the patient Id");
+		String patientId = postAPIRequest.identifyPatientForReschedule(testData.getBasicURI(), payloadPatientMod.identifyPatientForReschedulePayload(),
+				headerConfig.HeaderwithToken(testData.getAccessToken()));
+		Assert.assertEquals(patientId, "27699", "patient Id is wrong");
 	}
 
 	@Test
@@ -525,6 +585,9 @@ public class PssPatientModulatorTest extends BaseTestNGWebDriver {
 		PostAPIRequestPatientMod postAPIRequest = new PostAPIRequestPatientMod();
 		log("Base URL is   " + testData.getBasicURI());
 		postAPIRequest.appointment(testData.getBasicURI(), headerConfig.defaultHeader());
+		log("Verifying the patient Id");
+		String bookName = postAPIRequest.appointment(testData.getBasicURI(), headerConfig.defaultHeader());
+		Assert.assertEquals(bookName, "Jennifer Brown", "patient Id is wrong");
 	}
 
 	@Test

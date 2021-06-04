@@ -20,22 +20,20 @@ import io.restassured.response.Response;
 public class PostAPIRequestPatientMod extends BaseTestNGWebDriver {
 	APIVerification apiVerification = new APIVerification();
 
-	public JsonPath apptDetailFromGuid(String baseurl, Map<String, String> Header) {
+	public String apptDetailFromGuid(String baseurl, Map<String, String> Header) {
 		RestAssured.baseURI = baseurl;
-		Response response =
-				given().log().all().when().get(APIPath.apiPathPatientMod.APPT_DETAIL_FROM_GUID).then().log().all().assertThat().statusCode(200)
-						.body("location.displayName", equalTo("pss wla")).extract().response();
+		Response response = given().log().all().when().get(APIPath.apiPathPatientMod.APPT_DETAIL_FROM_GUID).then().log().all().assertThat().statusCode(200)
+				.body("location.displayName", equalTo("pss wla")).extract().response();
 
 		JsonPath js = new JsonPath(response.asString());
 		log("Status Code- " + response.getStatusCode());
 		String id = js.getString("location.id");
-		Assert.assertTrue(id.equalsIgnoreCase("205604"));
 		apiVerification.responseTimeValidation(response);
 
-		return js;
+		return id;
 	}
 
-	public JsonPath practiceFromGuid(String baseurl, Map<String, String> Header) {
+	public String practiceFromGuid(String baseurl, Map<String, String> Header) {
 		RestAssured.baseURI = baseurl;
 		Response response = given().log().all().when().get(APIPath.apiPathPatientMod.PRACTICE_FROM_GUID).then().log().all().assertThat().statusCode(200)
 				.body("token", Matchers.notNullValue()).extract().response();
@@ -43,16 +41,13 @@ public class PostAPIRequestPatientMod extends BaseTestNGWebDriver {
 		JsonPath js = new JsonPath(response.asString());
 		log("Status Code- " + response.getStatusCode());
 
-		String firstName = js.get("name");
 		String extPracticeId = js.get("extPracticeId");
-		Assert.assertTrue(firstName.equalsIgnoreCase("NG_NT123"));
-		Assert.assertTrue(extPracticeId.equalsIgnoreCase("24829"));
 		apiVerification.responseTimeValidation(response);
 
-		return js;
+		return extPracticeId;
 	}
 
-	public JsonPath linksValueGuid(String baseurl, Map<String, String> Header) {
+	public String linksValueGuid(String baseurl, Map<String, String> Header) {
 		RestAssured.baseURI = baseurl;
 		Response response = given().log().all().queryParam("isreschedule", "true").when().get(APIPath.apiPathPatientMod.LINKLS_VALUE_GUID).then().log().all()
 				.assertThat().statusCode(200).body("token", Matchers.notNullValue()).body("name", equalTo("PSS-GE-24333-PRACTICE")).extract().response();
@@ -60,18 +55,15 @@ public class PostAPIRequestPatientMod extends BaseTestNGWebDriver {
 		JsonPath js = new JsonPath(response.asString());
 		log("Status Code- " + response.getStatusCode());
 
-		String guid = js.get("guid");
 		String practiceId = js.get("practiceId");
-		Assert.assertTrue(guid.equals("53085385-2d3b-462f-a474-1e501b5a6a21"));
-		Assert.assertTrue(practiceId.equals("24333"));
 		log("Practice name -" + js.getString("name"));
 		log("Practice name -" + js.getString("practiceId"));
 		apiVerification.responseTimeValidation(response);
 
-		return js;
+		return practiceId;
 	}
 
-	public JsonPath linksValueGuidAndPractice(String baseurl, Map<String, String> Header) {
+	public String linksValueGuidAndPractice(String baseurl, Map<String, String> Header) {
 		RestAssured.baseURI = baseurl;
 		Response response = given().log().all().queryParam("isreschedule", "true").when().get(APIPath.apiPathPatientMod.LINKLS_VALUE_GUID_AND_PRACTICE).then().log()
 				.all().assertThat().statusCode(200).body("token", Matchers.notNullValue()).body("name", equalTo("PSS-GE-24333-PRACTICE")).extract().response();
@@ -79,18 +71,15 @@ public class PostAPIRequestPatientMod extends BaseTestNGWebDriver {
 		JsonPath js = new JsonPath(response.asString());
 		log("Status Code- " + response.getStatusCode());
 
-		String guid = js.get("guid");
 		String practiceId = js.get("practiceId");
-		Assert.assertTrue(guid.equals("53085385-2d3b-462f-a474-1e501b5a6a21"));
-		Assert.assertTrue(practiceId.equals("24333"));
 		log("Practice name -" + js.getString("name"));
 		log("Practice name -" + js.getString("practiceId"));
 		apiVerification.responseTimeValidation(response);
 
-		return js;
+		return practiceId;
 	}
 
-	public JsonPath linksDetailGuid(String baseurl, Map<String, String> Header) {
+	public String linksDetailGuid(String baseurl, Map<String, String> Header) {
 		RestAssured.baseURI = baseurl;
 		Response response = given().log().all().queryParam("isreschedule", "true").when().get(APIPath.apiPathPatientMod.LINKS_DETAIL_GUID).then().log().all()
 				.assertThat().statusCode(200).body("token", Matchers.notNullValue()).extract().response();
@@ -99,14 +88,13 @@ public class PostAPIRequestPatientMod extends BaseTestNGWebDriver {
 		log("Status Code- " + response.getStatusCode());
 
 		String patientId = js.get("emrid");
-		Assert.assertTrue(patientId.equals("27641"));
 		log("Patient id -" + js.getString("emrid"));
 		apiVerification.responseTimeValidation(response);
 
-		return js;
+		return patientId;
 	}
 
-	public JsonPath linksDetailGuidAndPractice(String baseurl, Map<String, String> Header) {
+	public String linksDetailGuidAndPractice(String baseurl, Map<String, String> Header) {
 		RestAssured.baseURI = baseurl;
 		Response response = given().log().all().queryParam("isreschedule", "true").when().get(APIPath.apiPathPatientMod.LINKS_DETAIL_GUID_AND_PRACTICE).then().log()
 				.all().assertThat().statusCode(200).body("token", Matchers.notNullValue()).extract().response();
@@ -115,14 +103,13 @@ public class PostAPIRequestPatientMod extends BaseTestNGWebDriver {
 		log("Status Code- " + response.getStatusCode());
 
 		String patientId = js.get("emrid");
-		Assert.assertTrue(patientId.equals("27641"));
 		log("Patient id -" + js.getString("emrid"));
 		apiVerification.responseTimeValidation(response);
 
-		return js;
+		return patientId;
 	}
 
-	public JsonPath guidForLogoutPatient(String baseurl, Map<String, String> Header) {
+	public String guidForLogoutPatient(String baseurl, Map<String, String> Header) {
 		RestAssured.baseURI = baseurl;
 		Response response = given().log().all().header("flowType", "LOGINLESS").when().get(APIPath.apiPathPatientMod.GUID_FOR_LOGOUT_PATIENT).then().log().all()
 				.assertThat().statusCode(200).body("token", Matchers.notNullValue()).extract().response();
@@ -131,52 +118,42 @@ public class PostAPIRequestPatientMod extends BaseTestNGWebDriver {
 		log("Status Code- " + response.getStatusCode());
 
 		String guid = js.get("guid");
-		Assert.assertTrue(guid.equalsIgnoreCase("53085385-2d3b-462f-a474-1e501b5a6a21"));
 		apiVerification.responseTimeValidation(response);
 
-		return js;
+		return guid;
 	}
 
-	public JsonPath practiceFromGuidLoginless(String baseurl, Map<String, String> Header) {
+	public String practiceFromGuidLoginless(String baseurl, Map<String, String> Header) {
 		RestAssured.baseURI = baseurl;
 		Response response = given().log().all().when().get(APIPath.apiPathPatientMod.PRACTICE_FROM_GUID_LOGINLESS).then().log().all().assertThat().statusCode(200)
-				.body("token", Matchers.notNullValue())
-				.extract().response();
+				.body("token", Matchers.notNullValue()).extract().response();
 
 		JsonPath js = new JsonPath(response.asString());
 		log("Status Code- " + response.getStatusCode());
 
-		String firstName = js.get("name");
 		String extPracticeId = js.get("extPracticeId");
-		String guid = js.get("guid");
-		Assert.assertTrue(firstName.equalsIgnoreCase("PSS - NG2"));
-		Assert.assertTrue(extPracticeId.equalsIgnoreCase("24249"));
-		Assert.assertTrue(guid.equalsIgnoreCase("bc89e551-ac6d-4d69-b0b2-fb63c0a4951b"));
 		log("Practice name -" + js.getString("name"));
 		log("Ext PracticeId -" + js.getString("extPracticeId"));
-		log("Practice guid -" + js.getString("guid"));
 		apiVerification.responseTimeValidation(response);
 
-		return js;
+		return extPracticeId;
 	}
 
-	public JsonPath tokenForLoginless(String baseurl, Map<String, String> Header) {
+	public String tokenForLoginless(String baseurl, Map<String, String> Header) {
 		RestAssured.baseURI = baseurl;
-		Response response =
-				given().log().all().when().get(APIPath.apiPathPatientMod.TOKEN_FOR_LOGINLESS).then().log().all().assertThat().statusCode(200)
-						.body("token", Matchers.notNullValue()).extract().response();
+		Response response = given().log().all().when().get(APIPath.apiPathPatientMod.TOKEN_FOR_LOGINLESS).then().log().all().assertThat().statusCode(200)
+				.body("token", Matchers.notNullValue()).extract().response();
 
 		JsonPath js = new JsonPath(response.asString());
 		log("Status Code- " + response.getStatusCode());
 
 		String extPracticeId = js.get("extPracticeId");
-		Assert.assertTrue(extPracticeId.equals("24333"));
 
 		log("Practice name -" + js.getString("name"));
 		log("Ext PracticeId -" + js.getString("extPracticeId"));
 		apiVerification.responseTimeValidation(response);
 
-		return js;
+		return extPracticeId;
 	}
 
 	public Response health(String baseurl, Map<String, String> Header) {
@@ -200,43 +177,36 @@ public class PostAPIRequestPatientMod extends BaseTestNGWebDriver {
 		return js;
 	}
 
-	public JsonPath timezonePracticeResource(String baseurl, Map<String, String> Header) {
+	public String timezonePracticeResource(String baseurl, Map<String, String> Header) {
 		RestAssured.baseURI = baseurl;
 		Response response = given().log().all().when().get(APIPath.apiPathPatientMod.TIMEZONE_PRACTICE_RESOURCES).then().log().all().assertThat().statusCode(200)
-				.body("practiceName", equalTo("PSS - GE"))
-				.extract().response();
+				.body("practiceName", equalTo("PSS - GE")).extract().response();
 
 		JsonPath js = new JsonPath(response.asString());
 		log("Status Code- " + response.getStatusCode());
 
 		String practiceId = js.get("practiceId");
-		Assert.assertTrue(practiceId.equals("24248"));
-		String practiceTimezone = js.get("practiceTimezone");
-		Assert.assertTrue(practiceTimezone.equalsIgnoreCase("America/New_York"));
 		log("Practice id -" + js.getString("practiceId"));
 		log("Practice name-" + js.getString("practiceName"));
 		apiVerification.responseTimeValidation(response);
 
-		return js;
+		return practiceId;
 	}
 
-	public JsonPath practiceInfo(String baseurl, Map<String, String> Header) {
+	public String practiceInfo(String baseurl, Map<String, String> Header) {
 		RestAssured.baseURI = baseurl;
-		Response response =
-				given().log().all().when().get(APIPath.apiPathPatientMod.PRACTICE_INFO).then().log().all().assertThat().statusCode(200)
-						.body("name", equalTo("PSS-GE-24333!@(((**&&()")).extract().response();
+		Response response = given().log().all().when().get(APIPath.apiPathPatientMod.PRACTICE_INFO).then().log().all().assertThat().statusCode(200)
+				.body("name", equalTo("PSS-GE-24333-PRACTICE")).extract().response();
 
 		JsonPath js = new JsonPath(response.asString());
 		log("Status Code- " + response.getStatusCode());
 
 		String extPracticeId = js.get("extPracticeId");
-		Assert.assertTrue(extPracticeId.equals("24333"));
-		log("Practice name -" + js.getString("id"));
-		log("Ext PracticeId -" + js.getString("name"));
-		log("Token -" + js.getString("practiceId"));
+		log("Practice name -" + js.getString("name"));
+		log("Ext PracticeId -" + js.getString("practiceId"));
 		apiVerification.responseTimeValidation(response);
 
-		return js;
+		return extPracticeId;
 	}
 
 	public JsonPath resellerLogo(String baseurl, Map<String, String> Header) {
@@ -252,7 +222,7 @@ public class PostAPIRequestPatientMod extends BaseTestNGWebDriver {
 		return js;
 	}
 
-	public JsonPath sessionConfiguration(String baseurl, Map<String, String> Header) {
+	public int sessionConfiguration(String baseurl, Map<String, String> Header) {
 		RestAssured.baseURI = baseurl;
 		Response response =
 				given().log().all().when().get(APIPath.apiPathPatientMod.SESSION_CONFIGURATION).then().log().all().assertThat().statusCode(200).extract().response();
@@ -260,33 +230,29 @@ public class PostAPIRequestPatientMod extends BaseTestNGWebDriver {
 		JsonPath js = new JsonPath(response.asString());
 		log("Status Code- " + response.getStatusCode());
 		int tokenExpirationTime = js.get("tokenExpirationTime");
-		Assert.assertEquals(tokenExpirationTime, 600);
 		int expirationWarningTime = js.get("expirationWarningTime");
-		Assert.assertEquals(expirationWarningTime, 60);
+		log("Expiration Warning Time -" + expirationWarningTime);
 		apiVerification.responseTimeValidation(response);
 
-		return js;
+		return tokenExpirationTime;
 	}
 
-	public JsonPath practiceDetail(String baseurl, Map<String, String> Header) {
+	public String practiceDetail(String baseurl, Map<String, String> Header) {
 		RestAssured.baseURI = baseurl;
-		Response response =
-				given().log().all().when().get(APIPath.apiPathPatientMod.PRACTICE_DETAIL).then().log().all().assertThat().statusCode(200).body("name", equalTo("PSS-GE-24333-PRACTICE")).extract().response();
+		Response response = given().log().all().when().get(APIPath.apiPathPatientMod.PRACTICE_DETAIL).then().log().all().assertThat().statusCode(200)
+				.body("name", equalTo("PSS-GE-24333-PRACTICE")).extract().response();
 		JsonPath js = new JsonPath(response.asString());
 		log("Status Code- " + response.getStatusCode());
-		
+
 		String extPracticeId = js.get("extPracticeId");
-		Assert.assertTrue(extPracticeId.equals("24333"));
-		String guid = js.get("guid");
-		Assert.assertTrue(guid.equals("b246055f-1f52-4e9a-8c77-c00b3a63aaa9"));
 		log("Practice id -" + js.getString("practiceId"));
 		log("Practice guid -" + js.getString("guid"));
 		apiVerification.responseTimeValidation(response);
 
-		return js;
+		return extPracticeId;
 	}
 
-	public JsonPath practiceFromGuidSso(String baseurl, Map<String, String> Header) {
+	public String practiceFromGuidSso(String baseurl, Map<String, String> Header) {
 		RestAssured.baseURI = baseurl;
 		Response response =
 				given().log().all().when().get(APIPath.apiPathPatientMod.PRACTICE_FROM_GUID_SSO).then().log().all().assertThat().statusCode(200).extract().response();
@@ -294,15 +260,12 @@ public class PostAPIRequestPatientMod extends BaseTestNGWebDriver {
 		JsonPath js = new JsonPath(response.asString());
 		log("Status Code- " + response.getStatusCode());
 
-		String name = js.get("name");
 		String extPracticeId = js.get("extPracticeId");
-		Assert.assertTrue(name.equalsIgnoreCase("NG_NT123"));
-		Assert.assertTrue(extPracticeId.equals("24829"));
 		log("Practice name -" + js.getString("name"));
 		log("Ext PracticeId -" + js.getString("extPracticeId"));
 		apiVerification.responseTimeValidation(response);
 
-		return js;
+		return extPracticeId;
 	}
 
 	public Response timeZoneResource(String baseurl, Map<String, String> Header) {
@@ -448,20 +411,18 @@ public class PostAPIRequestPatientMod extends BaseTestNGWebDriver {
 		return js;
 	}
 
-	public JsonPath demographicsProfiles(String baseurl, Map<String, String> Header) {
+	public String demographicsProfiles(String baseurl, Map<String, String> Header) {
 		RestAssured.baseURI = baseurl;
 		Response response = given().log().all().when().get(APIPath.apiPathPatientMod.DEMOGRAPHICS_PROFILES).then().log().all().assertThat().statusCode(200)
 				.body("token", Matchers.notNullValue()).body("practiceName", equalTo("PSS-GE-24333-PRACTICE")).extract().response();
 
 		JsonPath js = new JsonPath(response.asString());
-		String id = js.getString("id");
-		Assert.assertTrue(id.equalsIgnoreCase("26854"));
-		log("Demographics id-" + js.getString("id"));
+		String demographicsId = js.getString("id");
 		log("Practice Name -" + js.getString("practiceName"));
 		log("Status Code- " + response.getStatusCode());
 		apiVerification.responseTimeValidation(response);
 
-		return js;
+		return demographicsId;
 	}
 
 	public Response matchPatient(String baseurl, Map<String, String> Header) {
@@ -526,25 +487,23 @@ public class PostAPIRequestPatientMod extends BaseTestNGWebDriver {
 		return response;
 	}
 
-	public JsonPath patientDemographics(String baseurl, Map<String, String> Header) {
+	public String patientDemographics(String baseurl, Map<String, String> Header) {
 		RestAssured.baseURI = baseurl;
 		Response response = given().log().all().headers(Header).log().all().when().get(APIPath.apiPathPatientMod.PATIENT_DEMOGRAPHICS).then().log().all()
 				.assertThat().statusCode(200).body("firstName", equalTo("GE6")).extract().response();
 		JsonPath js = new JsonPath(response.asString());
 
-		String id = js.getString("id");
-		Assert.assertTrue(id.equalsIgnoreCase("26854"));
-		log("Demographics id-" + js.getString("id"));
+		String demographicId = js.getString("id");
 		log("Demographics First Name -" + js.getString("firstName"));
 		log("Demographics Last Name -" + js.getString("lastName"));
 
 		log("Status Code- " + response.getStatusCode());
 		apiVerification.responseTimeValidation(response);
 
-		return js;
+		return demographicId;
 	}
 
-	public Response validateProviderLink(String baseurl, String b, Map<String, String> Header) {
+	public int validateProviderLink(String baseurl, String b, Map<String, String> Header) {
 		RestAssured.baseURI = baseurl;
 		Response response = RestAssured.given().when().headers(Header).body(b).log().all().when().post(APIPath.apiPathPatientMod.VALIDATE_PROVIDER_LINK).then()
 				.log().all().assertThat().statusCode(200).body("displayName", equalTo("Dylan, Bob")).extract().response();
@@ -557,7 +516,7 @@ public class PostAPIRequestPatientMod extends BaseTestNGWebDriver {
 		log("Provider Name -" + js.getString("displayName"));
 		apiVerification.responseTimeValidation(response);
 
-		return response;
+		return id;
 	}
 
 	public Response locationsByNextAvailable(String baseurl, String b, Map<String, String> Header) {
@@ -588,7 +547,7 @@ public class PostAPIRequestPatientMod extends BaseTestNGWebDriver {
 		return response;
 	}
 
-	public Response anonymousMatchAndCreatePatient(String baseurl, String b, Map<String, String> Header) {
+	public String anonymousMatchAndCreatePatient(String baseurl, String b, Map<String, String> Header) {
 		RestAssured.baseURI = baseurl;
 		Response response = RestAssured.given().when().headers(Header).body(b).log().all().when().post(APIPath.apiPathPatientMod.ANONYMOUS_MATCH_AND_CREATE_PATIENT)
 				.then().log().all().assertThat().statusCode(200).extract().response();
@@ -597,15 +556,14 @@ public class PostAPIRequestPatientMod extends BaseTestNGWebDriver {
 		JsonPath js = new JsonPath(response.asString());
 
 		String patientId = js.get("id");
-		Assert.assertTrue(patientId.equalsIgnoreCase("27698"));
 
 		log("Patient  id -" + js.getString("id"));
 		apiVerification.responseTimeValidation(response);
 
-		return response;
+		return patientId;
 	}
 
-	public Response identifyPatientForReschedule(String baseurl, String b, Map<String, String> Header) {
+	public String identifyPatientForReschedule(String baseurl, String b, Map<String, String> Header) {
 		RestAssured.baseURI = baseurl;
 		Response response = RestAssured.given().when().headers(Header).body(b).log().all().when().post(APIPath.apiPathPatientMod.IDENTIFY_PATIENT_FOR_RESCHEDULE)
 				.then().log().all().assertThat().statusCode(200).extract().response();
@@ -614,12 +572,10 @@ public class PostAPIRequestPatientMod extends BaseTestNGWebDriver {
 		JsonPath js = new JsonPath(response.asString());
 
 		String patientId = js.get("id");
-		Assert.assertTrue(patientId.equalsIgnoreCase("27699"));
-		log("Patient  id -" + js.getString("id"));
 		log("Patient  id -" + js.getString("otpPatientDetails[0].text"));
 		apiVerification.responseTimeValidation(response);
 
-		return response;
+		return patientId;
 	}
 
 	public Response specialtyByRule(String baseurl, String b, Map<String, String> Header) {
@@ -658,8 +614,6 @@ public class PostAPIRequestPatientMod extends BaseTestNGWebDriver {
 		log("Status Code- " + response.getStatusCode());
 
 		JsonPath js = new JsonPath(response.asString());
-		boolean showSearchLocation = js.getBoolean("showSearchLocation");
-		Assert.assertEquals(showSearchLocation, true);
 		log("Show Search Location -" + js.getString("showSearchLocation"));
 		log("Show Next Available -" + js.getString("showNextAvailable"));
 		apiVerification.responseTimeValidation(response);
@@ -667,7 +621,7 @@ public class PostAPIRequestPatientMod extends BaseTestNGWebDriver {
 		return response;
 	}
 
-	public JsonPath appointment(String baseurl, Map<String, String> Header) {
+	public String appointment(String baseurl, Map<String, String> Header) {
 		RestAssured.baseURI = baseurl;
 		Response response = given().log().all().when().get(APIPath.apiPathPatientMod.APPOINTMENT).then().log().all().assertThat().statusCode(200)
 				.body("patientId", equalTo("27597")).body("locationName", equalTo("River Oaks Main")).extract().response();
@@ -676,14 +630,12 @@ public class PostAPIRequestPatientMod extends BaseTestNGWebDriver {
 		log("Status Code- " + response.getStatusCode());
 
 		String bookName = js.get("bookName");
-		Assert.assertTrue(bookName.equalsIgnoreCase("Jennifer Brown"));
-
 		log("Patient Id -" + js.getString("patientId"));
 		log("location Name -" + js.getString("locationName"));
 		log("Book Name -" + js.getString("bookName"));
 		apiVerification.responseTimeValidation(response);
 
-		return js;
+		return bookName;
 	}
 
 	public JsonPath appointmentForIcs(String baseurl, Map<String, String> Header) {
@@ -720,7 +672,7 @@ public class PostAPIRequestPatientMod extends BaseTestNGWebDriver {
 
 		log("Status Code- " + response.getStatusCode());
 		apiVerification.responseTimeValidation(response);
-		
+
 
 		return js;
 	}
