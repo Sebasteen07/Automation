@@ -429,8 +429,7 @@ public class CommonFlows {
 		Log4jUtil.log("Step Begins: Login to Patient Portal");
 		NGLoginPage loginPage = new NGLoginPage(driver, URL);
 		JalapenoHomePage homePage = loginPage.login(username, password);
-		Log4jUtil.log("Detecting if Home Page is opened");
-		assertTrue(homePage.isHomeButtonPresent(driver));
+		
 		Log4jUtil.log("Step Begins: Click on messages solution");
 		JalapenoMessagesPage messagesPage = homePage.showMessages(driver);
 
