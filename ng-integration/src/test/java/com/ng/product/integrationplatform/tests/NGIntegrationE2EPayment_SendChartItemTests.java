@@ -33,6 +33,8 @@ import com.medfusion.product.patientportal2.pojo.CreditCard;
 import com.medfusion.product.patientportal2.pojo.CreditCard.CardType;
 import com.medfusion.product.practice.api.utils.PracticeConstants;
 import com.ng.product.integrationplatform.apiUtils.NGAPIUtils;
+import com.ng.product.integrationplatform.apiUtils.PAMAuthentication;
+import com.ng.product.integrationplatform.apiUtils.pamAPIRoutes;
 import com.ng.product.integrationplatform.flows.NGAPIFlows;
 import com.ng.product.integrationplatform.utils.CommonFlows;
 import com.ng.product.integrationplatform.utils.CommonUtils;
@@ -1080,9 +1082,6 @@ public class NGIntegrationE2EPayment_SendChartItemTests extends BaseTestNGWebDri
 		NGLoginPage loginPage = new NGLoginPage(driver, url);
 		JalapenoHomePage homePage = loginPage.login(username, propertyLoaderObj.getPassword());
 
-		logStep("Detecting if Home Page is opened");
-		assertTrue(homePage.isHomeButtonPresent(driver));
-
 		logStep("Click on messages solution");
 		JalapenoMessagesPage messagesPage = homePage.showMessages(driver);
 
@@ -1173,9 +1172,6 @@ public class NGIntegrationE2EPayment_SendChartItemTests extends BaseTestNGWebDri
 		NGLoginPage loginPage = new NGLoginPage(driver, url);
 		JalapenoHomePage homePage = loginPage.login(username, propertyLoaderObj.getPassword());
 
-		logStep("Detecting if Home Page is opened");
-		assertTrue(homePage.isHomeButtonPresent(driver));
-
 		logStep("Click on messages solution");
 		JalapenoMessagesPage messagesPage = homePage.showMessages(driver);
 
@@ -1260,5 +1256,118 @@ public class NGIntegrationE2EPayment_SendChartItemTests extends BaseTestNGWebDri
 				docName + "." + docFormat.trim());
 
 		CommonFlows.verifyDocumentReadStatus(requestId);
+	}
+
+	@Test(enabled = true, groups = { "acceptance-PAM" }, retryAnalyzer = RetryAnalyzer.class)
+	public void testPP174PAMSinglePracticeUser() throws Throwable {
+
+		String username = propertyLoaderObj.getProperty("CCDAUsername");
+		logStep("Get access token for user");
+		String accessToken = PAMAuthentication.getAccessToken(username, propertyLoaderObj.getPassword());
+
+		logStep("Get the patient details using Get call");
+		String routeURL = pamAPIRoutes.valueOf("PAMPatient").getRouteURL();
+		String response = NGAPIUtils.setupPAMHttpGetRequest(routeURL, accessToken, 200);
+
+		logStep("Get last name of person from DB");
+		String actualPatientLastName = DBUtils.executeQueryOnDB("NGCoreDB",
+				"select last_name from person where email_address = '" + username + "'");
+
+		logStep("Get last name of person using PAM api");
+		String patientLastName = CommonFlows.getPAMLastName(response);
+
+		assertEquals(patientLastName, actualPatientLastName, "The last name doesnot match with DB value.");
+	}
+
+	@Test(enabled = true, groups = { "acceptance-PAM" }, retryAnalyzer = RetryAnalyzer.class)
+	public void testPP174PAMMultiPracticePracticeLevel() throws Throwable {
+
+		String username = propertyLoaderObj.getProperty("multipracticepl.userp1");
+		logStep("Get access token for user for Practice 1");
+		String accessToken = PAMAuthentication.getAccessToken(username, propertyLoaderObj.getPassword());
+
+		logStep("Get the patient details using Get call for Practice 1");
+		String routeURL = pamAPIRoutes.valueOf("PAMPatient").getRouteURL();
+		String response = NGAPIUtils.setupPAMHttpGetRequest(routeURL, accessToken, 200);
+
+		logStep("Get last name of person from DB");
+		String actualPatientLastName = DBUtils.executeQueryOnDB("NGCoreDB",
+				"select last_name from person where email_address = '" + username + "'");
+
+		logStep("Get last name of person using PAM api");
+		String patientLastName = CommonFlows.getPAMLastName(response);
+
+		assertEquals(patientLastName, actualPatientLastName, "The last name doesnot match with DB value.");
+
+		username = propertyLoaderObj.getProperty("multipracticepl.userp4");
+		logStep("Get access token for user for Practice 4 (Practice Level)");
+		accessToken = PAMAuthentication.getAccessToken(username, propertyLoaderObj.getPassword());
+
+		logStep("Get the patient details using Get call for Practice 4");
+		response = NGAPIUtils.setupPAMHttpGetRequest(routeURL, accessToken, 200);
+
+		logStep("Get last name of person Practice 4 using PAM api");
+		patientLastName = CommonFlows.getPAMLastName(response);
+
+		assertEquals(patientLastName, actualPatientLastName, "The last name doesnot match with DB value.");
+	}
+
+	@Test(enabled = true, groups = { "acceptance-PAM" }, retryAnalyzer = RetryAnalyzer.class)
+	public void testPP174PAMGuardianUser() throws Throwable {
+
+		String username = propertyLoaderObj.getProperty("guardian.user");
+		logStep("Get access token for guardian");
+		String accessToken = PAMAuthentication.getAccessToken(username, propertyLoaderObj.getPassword());
+
+		logStep("Get the guardian details using Get call");
+		String routeURL = pamAPIRoutes.valueOf("PAMPatient").getRouteURL();
+		String response = NGAPIUtils.setupPAMHttpGetRequest(routeURL, accessToken, 200);
+
+		logStep("Get last name of guardian from DB");
+		String actualPatientLastName = DBUtils.executeQueryOnDB("NGCoreDB",
+				"select last_name from person where email_address = '" + username + "'");
+
+		logStep("Get last name of guardian using PAM api");
+		String patientLastName = CommonFlows.getPAMLastName(response);
+
+		assertEquals(patientLastName, actualPatientLastName, "The last name doesnot match with DB value.");
+	}
+
+	@Test(enabled = true, groups = { "acceptance-PAM" }, retryAnalyzer = RetryAnalyzer.class)
+	public void testPP174PAMTrustedPatientUser() throws Throwable {
+
+		String username = propertyLoaderObj.getProperty("trustedpatient.user");
+		logStep("Get access token for trusted Patient");
+		String accessToken = PAMAuthentication.getAccessToken(username, propertyLoaderObj.getPassword());
+
+		logStep("Get the trusted Patient details using Get call");
+		String routeURL = pamAPIRoutes.valueOf("PAMPatient").getRouteURL();
+		String response = NGAPIUtils.setupPAMHttpGetRequest(routeURL, accessToken, 200);
+
+		logStep("Get last name of trusted Patient from DB");
+		String actualPatientLastName = DBUtils.executeQueryOnDB("NGCoreDB",
+				"select last_name from person where email_address = '" + username + "@mailinator.com" + "'");
+
+		logStep("Get last name of trusted Patient using PAM api");
+		String patientLastName = CommonFlows.getPAMLastName(response);
+
+		assertEquals(patientLastName, actualPatientLastName, "The last name doesnot match with DB value.");
+	}
+
+	@Test(enabled = true, groups = { "acceptance-PAM" }, retryAnalyzer = RetryAnalyzer.class)
+	public void testPP174PAMLegacyPortalUser() throws Throwable {
+
+		String username = propertyLoaderObj.getProperty("legacyportal.user");
+		logStep("Get access token for Legacy Portal Patient");
+		String accessToken = PAMAuthentication.getAccessToken(username, username);
+
+		logStep("Get the Legacy Portal Patient details using Get call");
+		String routeURL = pamAPIRoutes.valueOf("PAMPatient").getRouteURL();
+		String response = NGAPIUtils.setupPAMHttpGetRequest(routeURL, accessToken, 200);
+
+		logStep("Get last name of trusted Patient using PAM api");
+		String patientLastName = CommonFlows.getPAMLastName(response);
+
+		assertTrue(!patientLastName.isEmpty(), "Legacy Portal Patient is unable to access the token");
 	}
 }
