@@ -910,9 +910,6 @@ public class CommonFlows {
 		NGLoginPage loginPage = new NGLoginPage(driver, url);
 		JalapenoHomePage homePage = loginPage.login(username, PropertyLoaderObj.getPassword());
 
-		Log4jUtil.log("Detecting if Home Page is opened");
-		assertTrue(homePage.isHomeButtonPresent(driver));
-
 		if (!body.isEmpty()) {
 			JalapenoMessagesPage messagesPage = homePage.showMessages(driver);
 
@@ -943,9 +940,6 @@ public class CommonFlows {
 		Log4jUtil.log("Step Begins: Log into Portal");
 		NGLoginPage loginPage = new NGLoginPage(driver, url);
 		JalapenoHomePage homePage = loginPage.login(username, PropertyLoaderObj.getPassword());
-
-		Log4jUtil.log("Detecting if Home Page is opened");
-		assertTrue(homePage.isHomeButtonPresent(driver));
 
 		Log4jUtil.log("Step Begins: Click appointment request");
 		homePage.clickOnAppointmentV3(driver);
@@ -1173,8 +1167,7 @@ public class CommonFlows {
 		Log4jUtil.log("Step Begins: Login to Patient Portal");
 		NGLoginPage loginPage = new NGLoginPage(driver, URL);
 		JalapenoHomePage homePage = loginPage.login(username, password);
-		Log4jUtil.log("Detecting if Home Page is opened");
-		assertTrue(homePage.isHomeButtonPresent(driver));
+		
 		Log4jUtil.log("Step Begins: Click on messages solution");
 		JalapenoMessagesPage messagesPage = homePage.showMessages(driver);
 		Log4jUtil.log("Step Begins: Find message in Inbox with message subject " + subject);
