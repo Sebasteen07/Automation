@@ -7,14 +7,15 @@ import io.restassured.builder.ResponseSpecBuilder;
 import io.restassured.filter.log.RequestLoggingFilter;
 import io.restassured.filter.log.ResponseLoggingFilter;
 import io.restassured.http.ContentType;
+import io.restassured.response.Response;
 import io.restassured.specification.RequestSpecification;
 import io.restassured.specification.ResponseSpecification;
 
 import com.medfusion.common.utils.PropertyFileLoader;
 import com.medfusion.gateway_proxy.utils.GatewayProxyUtils;
 
-public class GatewayProxyBaseTest extends GatewayProxyUtils{
-	
+public class GatewayProxyBaseTest extends GatewayProxyUtils {
+
 	protected static PropertyFileLoader testData;
 	public static RequestSpecification requestSpec;
 	public static ResponseSpecification responseSpec;
@@ -37,6 +38,7 @@ public class GatewayProxyBaseTest extends GatewayProxyUtils{
 	   .expectStatusCode(200)
 	   .expectContentType(ContentType.JSON)
 	   .build();
+
 
 	}
 
