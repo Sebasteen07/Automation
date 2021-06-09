@@ -49,7 +49,7 @@ public class JalapenoAppointmentsPage extends MedfusionPage {
 				if (util.isFoundBy(By.id(NO_APPOINTMENTS_TEXT_ID), 5)) {
 						return Collections.emptyList();
 				}
-				List<WebElement> result = appointments.findElements(By.xpath(".//div[@class='row']"));
+				List<WebElement> result = appointments.findElements(By.xpath(".//li[@class='list-group-item']"));
 				return result;
 		}
 
@@ -86,15 +86,17 @@ public class JalapenoAppointmentsPage extends MedfusionPage {
 			Boolean status = false;
 			
 			for(int i =0;i<appointmentList.size();i++){
-				String XPath = "(//ul[contains(@class, 'myAccountList')]//div[@class='row'])["+(i+1)+"]";
+				String XPath = "(//ul[contains(@class, 'myAccountList')]//li[@class='list-group-item'])["+(i+1)+"]";
+				String dateXPath = "("+XPath+"//div[@class='col-6 col-md-4'])[1]//div[@class='col-12 col-md-6'][1]";
+				String timeXPath = "("+XPath+"//div[@class='col-6 col-md-4'])[1]//div[@class='col-12 col-md-6'][2]";
 				
-				Log4jUtil.log("Row "+(i+1)+" Date " +driver.findElement(By.xpath(XPath+"//div[@class='col-sm-6 col-md-6'][1]")).getText());
-				Log4jUtil.log("Row "+(i+1)+" Time " +driver.findElement(By.xpath(XPath+"//div[@class='col-sm-6 col-md-6'][2]")).getText());
+				Log4jUtil.log("Row "+(i+1)+" Date " +driver.findElement(By.xpath(dateXPath)).getText());
+				Log4jUtil.log("Row "+(i+1)+" Time " +driver.findElement(By.xpath(timeXPath)).getText());
 				
-				if(driver.findElement(By.xpath(XPath+"//div[@class='col-sm-6 col-md-6'][1]")).getText().contains(appointmentDate) &&
-						driver.findElement(By.xpath(XPath+"//div[@class='col-sm-6 col-md-6'][2]")).getText().contains(appointmentTime)){	
-					Log4jUtil.log("Actual Date "+driver.findElement(By.xpath(XPath+"//div[@class='col-sm-6 col-md-6'][1]")).getText());
-					Log4jUtil.log("Actual Time "+driver.findElement(By.xpath(XPath+"//div[@class='col-sm-6 col-md-6'][2]")).getText());
+				if(driver.findElement(By.xpath(dateXPath)).getText().contains(appointmentDate) &&
+						driver.findElement(By.xpath(timeXPath)).getText().contains(appointmentTime)){	
+					Log4jUtil.log("Actual Date "+driver.findElement(By.xpath(dateXPath)).getText());
+					Log4jUtil.log("Actual Time "+driver.findElement(By.xpath(timeXPath)).getText());
 					
 						WebElement provider =driver.findElement(By.xpath(XPath)).findElement(By.xpath("//*[contains(text(),'"+appointmentProvider+"')]"));
 						if(provider.isDisplayed()){
@@ -112,11 +114,14 @@ public class JalapenoAppointmentsPage extends MedfusionPage {
 			List<WebElement> appointmentList = getAppointments();
 			Boolean status = true;
 			for(int i =0;i<appointmentList.size();i++){
-				String XPath = "(//ul[contains(@class, 'myAccountList')]//div[@class='row'])["+(i+1)+"]";
-					if(driver.findElement(By.xpath(XPath+"//div[@class='col-sm-6 col-md-6'][1]")).getText().contains(appointmentDate)){
-						Log4jUtil.log("Actual Date "+driver.findElement(By.xpath(XPath+"//div[@class='col-sm-6 col-md-6'][1]")).getText());
-						Log4jUtil.log("Actual Time "+driver.findElement(By.xpath(XPath+"//div[@class='col-sm-6 col-md-6'][2]")).getText());						
-						if(driver.findElement(By.xpath(XPath+"//div[@class='col-sm-6 col-md-6'][2]")).getText().contains(appointmentTime)){
+				String XPath = "(//ul[contains(@class, 'myAccountList')]//li[@class='list-group-item'])["+(i+1)+"]";
+				String dateXPath = "("+XPath+"//div[@class='col-6 col-md-4'])[1]//div[@class='col-12 col-md-6'][1]";
+				String timeXPath = "("+XPath+"//div[@class='col-6 col-md-4'])[1]//div[@class='col-12 col-md-6'][2]";
+				
+					if(driver.findElement(By.xpath(dateXPath)).getText().contains(appointmentDate)){
+						Log4jUtil.log("Actual Date "+driver.findElement(By.xpath(dateXPath)).getText());
+						Log4jUtil.log("Actual Time "+driver.findElement(By.xpath(timeXPath)).getText());						
+						if(driver.findElement(By.xpath(timeXPath)).getText().contains(appointmentTime)){
 						status = false;	
 						Log4jUtil.log("Booked Appointment is not deleted");
 						break;

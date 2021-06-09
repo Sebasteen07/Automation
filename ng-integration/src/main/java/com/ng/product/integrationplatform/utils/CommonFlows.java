@@ -119,12 +119,24 @@ public class CommonFlows {
 	public static void verifyCCDProcessingStatus(PropertyFileLoader PropertyLoaderObj, String person_id,
 			String practice_id, String integrationID, int ccdaType) throws Throwable {
 
-		String ccdaRequestsQuery = "select processing_status from pxp_ccda_requests where person_id ='"
-				+ person_id.trim() + "' and type ='" + ccdaType + "' and practice_id='" + practice_id.trim() + "'";
-		String request_id = DBUtils.executeQueryOnDB("NGCoreDB",
-				"select request_id from pxp_ccda_requests where person_id ='" + person_id.trim() + "' and type ='"
-						+ ccdaType + "' and practice_id='" + practice_id.trim() + "'");
-		String ccdaDocumentQuery = "select delete_ind from pxp_documents where request_id ='" + request_id.trim() + "'";
+		String ccdaRequestsQuery = null, requestId = null;
+		if (ccdaType == 3) {
+			ccdaRequestsQuery = "select top 1 processing_status from pxp_ccda_requests where person_id ='"
+					+ person_id.trim() + "' and type ='" + ccdaType + "' and practice_id='" + practice_id.trim()
+					+ "' order by create_timestamp desc";
+			requestId = DBUtils.executeQueryOnDB("NGCoreDB",
+					"select top 1 request_id from pxp_ccda_requests where person_id ='" + person_id.trim()
+							+ "' and type ='" + ccdaType + "' and practice_id='" + practice_id.trim()
+							+ "' order by create_timestamp desc");
+		} else {
+			ccdaRequestsQuery = "select processing_status from pxp_ccda_requests where person_id ='" + person_id.trim()
+					+ "' and type ='" + ccdaType + "' and practice_id='" + practice_id.trim() + "'";
+			requestId = DBUtils.executeQueryOnDB("NGCoreDB",
+					"select request_id from pxp_ccda_requests where person_id ='" + person_id.trim() + "' and type ='"
+							+ ccdaType + "' and practice_id='" + practice_id.trim() + "'");
+		}
+
+		String ccdaDocumentQuery = "select delete_ind from pxp_documents where request_id ='" + requestId.trim() + "'";
 		String processing_status = DBUtils.executeQueryOnDB("NGCoreDB", ccdaRequestsQuery);
 
 		if (processing_status.equals("1")) {
@@ -174,7 +186,7 @@ public class CommonFlows {
 			}
 //		CommonUtils.VerifyTwoValues(processing_status,"equals","4");
 
-			verifyMFJOBStatusWithoutValidatingGetProcessingStatusCall(PropertyLoaderObj, request_id, integrationID,
+			verifyMFJOBStatusWithoutValidatingGetProcessingStatusCall(PropertyLoaderObj, requestId, integrationID,
 					"CCD");
 			for (int i = 0; i < arg_timeOut; i++) {
 				processing_status = DBUtils.executeQueryOnDB("NGCoreDB", ccdaRequestsQuery);
