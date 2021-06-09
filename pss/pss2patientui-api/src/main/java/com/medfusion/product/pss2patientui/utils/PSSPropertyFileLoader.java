@@ -420,25 +420,75 @@ public class PSSPropertyFileLoader {
 	}
 
 	public void setRestAPIDataGE(Appointment appointValues) {
-		appointValues.setBasicURI(property.getProperty("base.url.ge"));
 		appointValues.setPracticeId(property.getProperty("practiceid.ge"));
-		appointValues.setPracticeDisplayName(property.getProperty("practice.display.name.ge"));
 		appointValues.setPatientId(property.getProperty("patientid.ge"));
+		appointValues.setBasicURI(property.getProperty("base.url.ge"));
+		appointValues.setPracticeDisplayName(property.getProperty("practice.display.name.ge"));
+		appointValues.setApptid(property.getProperty("appt.id.ge"));
+		appointValues.setPracticeIdGE(property.getProperty("practice.id.ge"));
+		appointValues.setSsoPatientId(property.getProperty("sso.patient.id"));
 		appointValues.setStartDateTime(property.getProperty("start.date.time.ge"));
 		appointValues.setEndDateTime(property.getProperty("end.date.time.ge"));
-		appointValues.setLocationId(property.getProperty("locationid.ge"));
-		appointValues.setPatientId(property.getProperty("patientid.available.slots.ge"));
-		appointValues.setResourceId(property.getProperty("resourceid.ge"));
-		appointValues.setSlotId(property.getProperty("slotid.ge"));
-		appointValues.setApptid(property.getProperty("apptid.ge"));
+		appointValues.setResourceId(property.getProperty("resource.id.ge"));
 		appointValues.setSlotSize(property.getProperty("slot.size.ge"));
+		appointValues.setLocationId(property.getProperty("location.id.ge"));
+		appointValues.setApptStatusId(property.getProperty("appt.status.id.ge"));
+		appointValues.setApptStatusPatientId(property.getProperty("appt.status.patient.id.ge"));
+		appointValues.setSlotId(property.getProperty("slotid.ge"));
+		appointValues.setHealthCheckDatabaseName(property.getProperty("health.check.database.name.ge"));
+		appointValues.setApptStatusStartDateTime(property.getProperty("appt.status.start.date.time.ge"));
+		appointValues.setPastAppointmentsResourceName(property.getProperty("past.appointments.resource.name.ge"));
+		appointValues.setPastAppointmentsLocationname(property.getProperty("past.appointments.location.name.ge"));
+		appointValues.setUpcomingApptresourceName(property.getProperty("upcoming.appt.resource.name.ge"));
+		appointValues.setUpcomingApptlocationName(property.getProperty("upcoming.appt.location.name.ge"));
+		appointValues.setDemographicsFirstName(property.getProperty("demographics.first.name.ge"));
+		appointValues.setDemographicsLastName(property.getProperty("demographics.last.name.ge"));
+		appointValues.setMatchPatientFirstName(property.getProperty("match.patient.first.name.ge"));
+		appointValues.setMatchPatientLastName(property.getProperty("match.patient.last.name.ge"));
+		appointValues.setMatchPatientId(property.getProperty("match.patient.id"));
 	}
 
 	public void setRestAPIDataPatientModulator(Appointment appointValues) {
+		appointValues.setPatientId(property.getProperty("patient.id.pm"));
+		appointValues.setPracticeId(property.getProperty("practice.id.pm"));
 		appointValues.setAccessTokenURL(property.getProperty("access.token.base.url"));
 		appointValues.setBasicURI(property.getProperty("base.url.patient.modulator"));
 		appointValues.setBaseUrlHealth(property.getProperty("base.url.health"));
 		appointValues.setApptTypeNextAvailableAccessTokenUrl(property.getProperty("appt.type.next.available.access.token.url"));
 		appointValues.setBookByNextAvailableAccessTokenUrl(property.getProperty("book.by.next.available.access.token.url"));
+		appointValues.setApptDetailGuidId(property.getProperty("appt.detail.guid.id"));
+		appointValues.setAnonymousPracticeId(property.getProperty("practice.from.guid.anonymous.practice.id"));
+		appointValues.setAnonymousGuidId(property.getProperty("anonymous.guid.id"));
+		appointValues.setLinksValueGuidId(property.getProperty("links.value.guid.id"));
+		appointValues.setLinksDetailGuidId(property.getProperty("links.detail.guid.id"));
+		appointValues.setLinksDetailPatientId(property.getProperty("links.detail.patient.id"));
+		appointValues.setLogoutguidId(property.getProperty("logout.guid.id"));
+		appointValues.setLoginlessGuidId(property.getProperty("loginless.guid.id"));
+		appointValues.setLoginlessPrcticeId(property.getProperty("loginless.prctice.id"));
+		appointValues.setTokenForLoginlessGuidId(property.getProperty("token.For.loginless.guid.id"));
+		appointValues.setSessionConfigurationExpirationTime(property.getProperty("session.configuration.expiration.time"));
+		appointValues.setPracticeFromGuidSsoId(property.getProperty("practice.from.guid.sso.id"));
+		appointValues.setPracticeSsoId(property.getProperty("practice.sso.id"));
+		appointValues.setGetImagesBookId(property.getProperty("get.images.book.id"));
+		appointValues.setSpecialtyByRulePatientId(property.getProperty("specialty.by.rule.patient.id"));
+		appointValues.setAppointmentId(property.getProperty("appointment.id"));
+		appointValues.setAppointmentPracticeName(property.getProperty("appointment.practice.name"));
+		appointValues.setApptTypeNextAvailablePracticeId(property.getProperty("appt.type.next.available.practice.id"));
+		appointValues.setApptTypeNextAvailablePatientId(property.getProperty("appt.type.next.available.patient.id"));
+		appointValues.setBooksBynextAvailablePracticeId(property.getProperty("books.by.next.available.practice.id"));
+		appointValues.setBooksBynextAvailablePatientId(property.getProperty("books.by.next.available.patient.id"));
+		appointValues.setApptDetailDisplayName(property.getProperty("appt.detail.display.name"));
+		appointValues.setLinksValueGuidPracticeName(property.getProperty("links.value.guid.practice.name"));
+		appointValues.setTimezonePracticeName(property.getProperty("timezone.practice.name"));
+		appointValues.setApptDetailLocationDisplayName(property.getProperty("appt.detail.location.display.name"));
+		appointValues.setApptDetailAppointmentTypeName(property.getProperty("appt.detail.appointment.type.name"));
+		appointValues.setPatientDemographicsFirstName(property.getProperty("patient.demographics.first.name"));
+		appointValues.setValidateProviderLinkDisplayName(property.getProperty("validate.provider.link.display.name"));
+		appointValues.setLocationsByNextAvailableId(property.getProperty("locations.by.next.available.id"));
+		appointValues.setAppointmentPatientId(property.getProperty("appointment.patient.id"));
+		appointValues.setAppointmentLocationName(property.getProperty("appointment.location.name"));
+		appointValues.setApptTypeNextAvailableId(property.getProperty("appt.type.next.available.id"));
+		appointValues.setBooksBynextAvailableId(property.getProperty("books.by.next.available.id"));
+		appointValues.setValidateProviderLinkId(property.getProperty("validate.provider.link.id"));
 	}
 }

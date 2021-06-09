@@ -15,95 +15,95 @@ import com.medfusion.product.pss2patientui.utils.PSSPropertyFileLoader;
 public class PssGEAdapterTest extends BaseTestNGWebDriver {
 
 	@Test
-	public void healthCheckGET() throws IOException {
+	public void testHealthCheckGET() throws IOException {
 		HeaderConfig headerConfig = new HeaderConfig();
 		PSSPropertyFileLoader propertyData = new PSSPropertyFileLoader();
 		Appointment testData = new Appointment();
 		propertyData.setRestAPIDataGE(testData);
 		PostAPIRequestGE postAPIRequest = new PostAPIRequestGE();
 		log("Base URL is   " + testData.getBasicURI());
-		postAPIRequest.healthCheck(testData.getBasicURI(), headerConfig.defaultHeader());
+		postAPIRequest.healthCheck(testData.getBasicURI(), headerConfig.defaultHeader(), testData.getPracticeId(), testData.getHealthCheckDatabaseName());
 	}
 
 	@Test
-	public void pingGET() throws IOException {
+	public void testPingGET() throws IOException {
 		HeaderConfig headerConfig = new HeaderConfig();
 		PSSPropertyFileLoader propertyData = new PSSPropertyFileLoader();
 		Appointment testData = new Appointment();
 		propertyData.setRestAPIDataGE(testData);
 		PostAPIRequestGE postAPIRequest = new PostAPIRequestGE();
 		log("Base URL is   " + testData.getBasicURI());
-		postAPIRequest.ping(testData.getBasicURI(), headerConfig.defaultHeader());
+		postAPIRequest.ping(testData.getBasicURI(), headerConfig.defaultHeader(), testData.getPracticeId());
 	}
 
 	@Test
-	public void versionGET() throws IOException {
+	public void testVersionGET() throws IOException {
 		HeaderConfig headerConfig = new HeaderConfig();
 		PSSPropertyFileLoader propertyData = new PSSPropertyFileLoader();
 		Appointment testData = new Appointment();
 		propertyData.setRestAPIDataGE(testData);
 		PostAPIRequestGE postAPIRequest = new PostAPIRequestGE();
 		log("Base URL is   " + testData.getBasicURI());
-		postAPIRequest.version(testData.getBasicURI(), headerConfig.defaultHeader());
+		postAPIRequest.version(testData.getBasicURI(), headerConfig.defaultHeader(), testData.getPracticeId());
 	}
 
 	@Test
-	public void lockoutGET() throws IOException {
+	public void testLockoutGET() throws IOException {
 		HeaderConfig headerConfig = new HeaderConfig();
 		PSSPropertyFileLoader propertyData = new PSSPropertyFileLoader();
 		Appointment testData = new Appointment();
 		propertyData.setRestAPIDataGE(testData);
 		PostAPIRequestGE postAPIRequest = new PostAPIRequestGE();
 		log("Base URL is   " + testData.getBasicURI());
-		postAPIRequest.lockOut(testData.getBasicURI(), headerConfig.defaultHeader());
+		postAPIRequest.lockOut(testData.getBasicURI(), headerConfig.defaultHeader(), testData.getPracticeId());
 	}
 
 	@Test
-	public void appointmentTypesGET() throws IOException {
+	public void testAppointmentTypesGET() throws IOException {
 		HeaderConfig headerConfig = new HeaderConfig();
 		PSSPropertyFileLoader propertyData = new PSSPropertyFileLoader();
 		Appointment testData = new Appointment();
 		propertyData.setRestAPIDataGE(testData);
 		PostAPIRequestGE postAPIRequest = new PostAPIRequestGE();
 		log("Base URL is   " + testData.getBasicURI());
-		postAPIRequest.appointmentType(testData.getBasicURI(), headerConfig.defaultHeader());
+		postAPIRequest.appointmentType(testData.getBasicURI(), headerConfig.defaultHeader(), testData.getPracticeId());
 	}
 
 	@Test
-	public void booksGET() throws IOException {
+	public void testBooksGET() throws IOException {
 		HeaderConfig headerConfig = new HeaderConfig();
 		PSSPropertyFileLoader propertyData = new PSSPropertyFileLoader();
 		Appointment testData = new Appointment();
 		propertyData.setRestAPIDataGE(testData);
 		PostAPIRequestGE postAPIRequest = new PostAPIRequestGE();
 		log("Base URL is   " + testData.getBasicURI());
-		postAPIRequest.books(testData.getBasicURI(), headerConfig.defaultHeader());
+		postAPIRequest.books(testData.getBasicURI(), headerConfig.defaultHeader(), testData.getPracticeId());
 	}
 
 	@Test
-	public void insuranceCarrierGET() throws IOException {
+	public void testInsuranceCarrierGET() throws IOException {
 		HeaderConfig headerConfig = new HeaderConfig();
 		PSSPropertyFileLoader propertyData = new PSSPropertyFileLoader();
 		Appointment testData = new Appointment();
 		propertyData.setRestAPIDataGE(testData);
 		PostAPIRequestGE postAPIRequest = new PostAPIRequestGE();
 		log("Base URL is   " + testData.getBasicURI());
-		postAPIRequest.insuranceCarrier(testData.getBasicURI(), headerConfig.defaultHeader());
+		postAPIRequest.insuranceCarrier(testData.getBasicURI(), headerConfig.defaultHeader(), testData.getPracticeId());
 	}
 
 	@Test
-	public void locationGET() throws IOException {
+	public void testLocationGET() throws IOException {
 		HeaderConfig headerConfig = new HeaderConfig();
 		PSSPropertyFileLoader propertyData = new PSSPropertyFileLoader();
 		Appointment testData = new Appointment();
 		propertyData.setRestAPIDataGE(testData);
 		PostAPIRequestGE postAPIRequest = new PostAPIRequestGE();
 		log("Base URL is   " + testData.getBasicURI());
-		postAPIRequest.locations(testData.getBasicURI(), headerConfig.defaultHeader());
+		postAPIRequest.locations(testData.getBasicURI(), headerConfig.defaultHeader(), testData.getPracticeId());
 	}
 
 	@Test
-	public void actuatorGET() throws IOException {
+	public void testActuatorGET() throws IOException {
 		HeaderConfig headerConfig = new HeaderConfig();
 		PSSPropertyFileLoader propertyData = new PSSPropertyFileLoader();
 		Appointment testData = new Appointment();
@@ -114,136 +114,142 @@ public class PssGEAdapterTest extends BaseTestNGWebDriver {
 	}
 
 	@Test
-	public void lastseenProviderPOST() throws IOException {
+	public void testLastseenProviderPOST() throws IOException {
 		HeaderConfig headerConfig = new HeaderConfig();
 		PSSPropertyFileLoader propertyData = new PSSPropertyFileLoader();
 		Appointment testData = new Appointment();
 		propertyData.setRestAPIDataGE(testData);
 		PostAPIRequestGE postAPIRequest = new PostAPIRequestGE();
 		log("Base URL is   " + testData.getBasicURI());
-		postAPIRequest.lastseenProvider(testData.getBasicURI(), PayloadGE.providerLastSeenPayload(), headerConfig.defaultHeader());
 		log("Verifying resource Id");
-		String resourceId = postAPIRequest.lastseenProvider(testData.getBasicURI(), PayloadGE.providerLastSeenPayload(), headerConfig.defaultHeader());
-		Assert.assertEquals(resourceId, "158", "Resource Id is wrong");
+		int resourceId =
+				postAPIRequest.lastseenProvider(testData.getBasicURI(), PayloadGE.providerLastSeenPayload(), headerConfig.defaultHeader(), testData.getPracticeIdGE());
+		String apptId = Integer.toString(resourceId);
+		Assert.assertEquals(apptId, testData.getApptid(), "Resource Id is wrong");
 	}
 
 	@Test
-	public void AppointmentStatusGET() throws IOException {
+	public void testAppointmentStatusGET() throws IOException {
 		HeaderConfig headerConfig = new HeaderConfig();
 		PSSPropertyFileLoader propertyData = new PSSPropertyFileLoader();
 		Appointment testData = new Appointment();
 		propertyData.setRestAPIDataGE(testData);
 		PostAPIRequestGE postAPIRequest = new PostAPIRequestGE();
 		log("Base URL is   " + testData.getBasicURI());
-		postAPIRequest.appointmentStatus(testData.getBasicURI(), headerConfig.defaultHeader());
+		postAPIRequest.appointmentStatus(testData.getBasicURI(), headerConfig.defaultHeader(), testData.getPracticeId(), testData.getApptStatusId(),
+				testData.getApptStatusPatientId(), testData.getApptStatusStartDateTime(), testData.getApptid());
 	}
 
 	@Test
-	public void scheduleAppointmentPOST() throws IOException {
+	public void testScheduleAppointmentPOST() throws IOException {
 		HeaderConfig headerConfig = new HeaderConfig();
 		PSSPropertyFileLoader propertyData = new PSSPropertyFileLoader();
 		Appointment testData = new Appointment();
 		propertyData.setRestAPIDataGE(testData);
 		PostAPIRequestGE postAPIRequest = new PostAPIRequestGE();
 		log("Base URL is   " + testData.getBasicURI());
-		postAPIRequest.scheduleApptPatient(testData.getBasicURI(), PayloadGE.schedApptPayload(), headerConfig.defaultHeader());
-
+		postAPIRequest.scheduleApptPatient(testData.getBasicURI(), PayloadGE.schedApptPayload(), headerConfig.defaultHeader(), testData.getPracticeId());
 	}
 
 	@Test
-	public void CancelledAppointmentStatusPost() throws IOException {
+	public void testCancelledAppointmentStatusPost() throws IOException {
 		HeaderConfig headerConfig = new HeaderConfig();
 		PSSPropertyFileLoader propertyData = new PSSPropertyFileLoader();
 		Appointment testData = new Appointment();
 		propertyData.setRestAPIDataGE(testData);
 		PostAPIRequestGE postAPIRequest = new PostAPIRequestGE();
 		log("Base URL is   " + testData.getBasicURI());
-		postAPIRequest.cancelAppointmentStatus(testData.getBasicURI(), PayloadGE.cancelledApptStatusPayload(), headerConfig.defaultHeader());
+		postAPIRequest.cancelAppointmentStatus(testData.getBasicURI(), PayloadGE.cancelledApptStatusPayload(), headerConfig.defaultHeader(),
+				testData.getPracticeId());
 	}
 
 	@Test
-	public void cancelAppointmentGet() throws IOException {
+	public void testCancelAppointmentGet() throws IOException {
 		HeaderConfig headerConfig = new HeaderConfig();
 		PSSPropertyFileLoader propertyData = new PSSPropertyFileLoader();
 		Appointment testData = new Appointment();
 		propertyData.setRestAPIDataGE(testData);
 		PostAPIRequestGE postAPIRequest = new PostAPIRequestGE();
 		log("Base URL is   " + testData.getBasicURI());
-		postAPIRequest.cancelAppointment(testData.getBasicURI(), headerConfig.defaultHeader());
+		postAPIRequest.cancelAppointment(testData.getBasicURI(), headerConfig.defaultHeader(), testData.getApptid(), testData.getPracticeId(),
+				testData.getPatientId());
 	}
 
 	@Test
-	public void cancelApptWithCancelReasonPost() throws IOException {
+	public void testCancelApptWithCancelReasonPost() throws IOException {
 		HeaderConfig headerConfig = new HeaderConfig();
 		PSSPropertyFileLoader propertyData = new PSSPropertyFileLoader();
 		Appointment testData = new Appointment();
 		propertyData.setRestAPIDataGE(testData);
 		PostAPIRequestGE postAPIRequest = new PostAPIRequestGE();
 		log("Base URL is   " + testData.getBasicURI());
-		postAPIRequest.cancelApptWithCancelReason(testData.getBasicURI(), PayloadGE.cancelApptWithCancelReasonPayload(), headerConfig.defaultHeader());
+		postAPIRequest.cancelApptWithCancelReason(testData.getBasicURI(), PayloadGE.cancelApptWithCancelReasonPayload(), headerConfig.defaultHeader(),
+				testData.getPracticeId(), testData.getSsoPatientId());
 	}
 
 	@Test
-	public void pastAppointmentsPost() throws IOException {
+	public void testPastAppointmentsPost() throws IOException {
 		HeaderConfig headerConfig = new HeaderConfig();
 		PSSPropertyFileLoader propertyData = new PSSPropertyFileLoader();
 		Appointment testData = new Appointment();
 		propertyData.setRestAPIDataGE(testData);
 		PostAPIRequestGE postAPIRequest = new PostAPIRequestGE();
 		log("Base URL is   " + testData.getBasicURI());
-		postAPIRequest.pastAppointments(testData.getBasicURI(), PayloadGE.pastappointmentsPayload(), headerConfig.defaultHeader());
+		postAPIRequest.pastAppointments(testData.getBasicURI(), PayloadGE.pastappointmentsPayload(), headerConfig.defaultHeader(), testData.getPracticeId(),
+				testData.getPastAppointmentsResourceName(), testData.getPastAppointmentsLocationname());
 	}
 
 	@Test
-	public void upcommingApptPOST() throws IOException {
+	public void testUpcommingApptPOST() throws IOException {
 		HeaderConfig headerConfig = new HeaderConfig();
 		PSSPropertyFileLoader propertyData = new PSSPropertyFileLoader();
 		Appointment testData = new Appointment();
 		propertyData.setRestAPIDataGE(testData);
 		PostAPIRequestGE postAPIRequest = new PostAPIRequestGE();
-
 		log("Base URL is   " + testData.getBasicURI());
-		log("Payload- " + PayloadGE.upcommingApt_Payload(testData.getPatientId(), testData.getPracticeId(), testData.getPracticeDisplayName()));
+		log("Payload- " + PayloadGE.upcommingApt_Payload(testData.getSsoPatientId(), testData.getPracticeIdGE(), testData.getPracticeDisplayName()));
 
 		postAPIRequest.upcomingAppt(testData.getBasicURI(),
-				PayloadGE.upcommingApt_Payload(testData.getPatientId(), testData.getPracticeId(), testData.getPracticeDisplayName()), headerConfig.defaultHeader());
+				PayloadGE.upcommingApt_Payload(testData.getSsoPatientId(), testData.getPracticeIdGE(), testData.getPracticeDisplayName()), headerConfig.defaultHeader(),
+				testData.getPracticeIdGE(), testData.getUpcomingApptresourceName(), testData.getUpcomingApptlocationName());
 	}
 
 	@Test
-	public void preventSchedulingGet() throws IOException {
+	public void testPreventSchedulingGet() throws IOException {
 		HeaderConfig headerConfig = new HeaderConfig();
 		PSSPropertyFileLoader propertyData = new PSSPropertyFileLoader();
 		Appointment testData = new Appointment();
 		propertyData.setRestAPIDataGE(testData);
 		PostAPIRequestGE postAPIRequest = new PostAPIRequestGE();
 		log("Base URL is   " + testData.getBasicURI());
-		postAPIRequest.preventScheduling(testData.getBasicURI(), headerConfig.defaultHeader());
+		postAPIRequest.preventScheduling(testData.getBasicURI(), headerConfig.defaultHeader(), testData.getPracticeIdGE(), testData.getPatientId(),
+				testData.getApptid());
 	}
 
 	@Test
-	public void rescheduleApptPOST() throws IOException {
+	public void testRescheduleApptPOST() throws IOException {
 		HeaderConfig headerConfig = new HeaderConfig();
 		PSSPropertyFileLoader propertyData = new PSSPropertyFileLoader();
 		Appointment testData = new Appointment();
 		propertyData.setRestAPIDataGE(testData);
 		PostAPIRequestGE postAPIRequest = new PostAPIRequestGE();
-
 		log("Base url- " + testData.getBasicURI());
 		log("Payload is -" + PayloadGE.rescheduleAppointmentPayload(testData.getStartDateTime(), testData.getEndDateTime(), testData.getLocationId(),
 				testData.getPatientId(), testData.getResourceId(), testData.getSlotId(), testData.getApptid()));
 
-		postAPIRequest.rescheduleAppt(testData.getBasicURI(), PayloadGE.rescheduleAppointmentPayload(testData.getStartDateTime(), testData.getEndDateTime(),
-				testData.getLocationId(), testData.getPatientId(), testData.getResourceId(), testData.getSlotId(), testData.getApptid()), headerConfig.defaultHeader());
+		postAPIRequest.rescheduleAppt(testData.getBasicURI(),
+				PayloadGE.rescheduleAppointmentPayload(testData.getStartDateTime(), testData.getEndDateTime(), testData.getLocationId(), testData.getPatientId(),
+						testData.getResourceId(), testData.getSlotId(), testData.getApptid()),
+				headerConfig.defaultHeader(), testData.getPracticeId());
 	}
 
 	@Test
-	public void availableSlotsPost() throws IOException, InterruptedException {
+	public void testAvailableSlotsPost() throws IOException, InterruptedException {
 		HeaderConfig headerConfig = new HeaderConfig();
 		PSSPropertyFileLoader propertyData = new PSSPropertyFileLoader();
 		Appointment testData = new Appointment();
 		propertyData.setRestAPIDataGE(testData);
 		PostAPIRequestGE postAPIRequest = new PostAPIRequestGE();
-
 		log("Base url- " + testData.getBasicURI());
 
 		log("Payload is -"
@@ -251,11 +257,11 @@ public class PssGEAdapterTest extends BaseTestNGWebDriver {
 
 		postAPIRequest.availableSlots(testData.getBasicURI(),
 				PayloadGE.availableSlotsPayload(testData.getPatientId(), testData.getLocationId(), testData.getStartDateTime(), testData.getSlotSize()),
-				headerConfig.defaultHeader());
+				headerConfig.defaultHeader(), testData.getPracticeId());
 	}
-	
+
 	@Test
-	public void addPatientPost() throws IOException {
+	public void testAddPatientPost() throws IOException {
 		PSSPropertyFileLoader propertyData = new PSSPropertyFileLoader();
 		Appointment testData = new Appointment();
 		PayloadGE payloadGE = new PayloadGE();
@@ -264,12 +270,11 @@ public class PssGEAdapterTest extends BaseTestNGWebDriver {
 		PostAPIRequestGE postAPIRequestGE = new PostAPIRequestGE();
 		log("Base URL- " + testData.getBasicURI());
 		log("Payload- " + payloadGE.addPatientPayload());
-		postAPIRequestGE.addPatientPost(testData.getBasicURI(), payloadGE.addPatientPayload(),
-				headerConfig.defaultHeader());
+		postAPIRequestGE.addPatientPost(testData.getBasicURI(), payloadGE.addPatientPayload(), headerConfig.defaultHeader(), testData.getPracticeIdGE());
 	}
-	
+
 	@Test
-	public void careProviderAvailabilityPOST() throws IOException {
+	public void testCareProviderAvailabilityPOST() throws IOException {
 		PSSPropertyFileLoader propertyData = new PSSPropertyFileLoader();
 		Appointment testData = new Appointment();
 		PayloadGE payloadGE = new PayloadGE();
@@ -277,25 +282,26 @@ public class PssGEAdapterTest extends BaseTestNGWebDriver {
 		propertyData.setRestAPIDataGE(testData);
 		PostAPIRequestGE postAPIRequestGE = new PostAPIRequestGE();
 		log("Base URL- " + testData.getBasicURI());
-		log("Payload is "+				payloadGE.careProviderAvailabilityPayload(testData.getStartDateTime(), testData.getEndDateTime(),testData.getResourceId(),testData.getSlotSize(),testData.getLocationId(),testData.getApptid()));
-		postAPIRequestGE.careProviderPost(testData.getBasicURI(),
-				payloadGE.careProviderAvailabilityPayload(testData.getStartDateTime(), testData.getEndDateTime(),testData.getResourceId(),testData.getSlotSize(),testData.getLocationId(),testData.getApptid()),
-				headerConfig.defaultHeader());
+		log("Payload is " + payloadGE.careProviderAvailabilityPayload(testData.getStartDateTime(), testData.getEndDateTime(), testData.getResourceId(),
+				testData.getSlotSize(), testData.getLocationId(), testData.getApptid()));
+
+		postAPIRequestGE.careProviderPost(testData.getBasicURI(), payloadGE.careProviderAvailabilityPayload(testData.getStartDateTime(), testData.getEndDateTime(),
+				testData.getResourceId(), testData.getSlotSize(), testData.getLocationId(), testData.getApptid()), headerConfig.defaultHeader(),
+				testData.getPracticeIdGE());
 	}
-	
+
 	@Test
-	public void demographicsGET() throws IOException {
+	public void testDemographicsGET() throws IOException {
 		PSSPropertyFileLoader propertyData = new PSSPropertyFileLoader();
 		Appointment testData = new Appointment();
 		propertyData.setRestAPIDataGE(testData);
 		PostAPIRequestGE postAPIRequestGE = new PostAPIRequestGE();
 		log("Base URL- " + testData.getBasicURI());
-		postAPIRequestGE.demographicsGET(testData.getBasicURI());
+		postAPIRequestGE.demographicsGET(testData.getBasicURI(), testData.getPracticeId(), testData.getDemographicsFirstName(), testData.getDemographicsLastName());
 	}
-	
-	@Test
-	public void healthOperationGET() throws IOException {
 
+	@Test
+	public void testHealthOperationGET() throws IOException {
 		PSSPropertyFileLoader propertyData = new PSSPropertyFileLoader();
 		Appointment testData = new Appointment();
 		propertyData.setRestAPIDataGE(testData);
@@ -303,9 +309,9 @@ public class PssGEAdapterTest extends BaseTestNGWebDriver {
 		log("Base URL- " + testData.getBasicURI());
 		postAPIRequestGE.healthOperationGET(testData.getBasicURI());
 	}
-	
+
 	@Test
-	public void matchPatientPOST() throws IOException {
+	public void testMatchPatientPOST() throws IOException {
 		PSSPropertyFileLoader propertyData = new PSSPropertyFileLoader();
 		Appointment testData = new Appointment();
 		PayloadGE payloadGE = new PayloadGE();
@@ -313,35 +319,33 @@ public class PssGEAdapterTest extends BaseTestNGWebDriver {
 		propertyData.setRestAPIDataGE(testData);
 		PostAPIRequestGE postAPIRequestGE = new PostAPIRequestGE();
 		log("Base URL- " + testData.getBasicURI());
-		log("Payload is "+payloadGE.matchPatientPayload());
-		postAPIRequestGE.matchPatientPost(testData.getBasicURI(), payloadGE.matchPatientPayload(),
-				headerConfig.defaultHeader());
+		log("Payload is " + payloadGE.matchPatientPayload());
+		postAPIRequestGE.matchPatientPost(testData.getBasicURI(), payloadGE.matchPatientPayload(), headerConfig.defaultHeader(), testData.getPracticeIdGE(),
+				testData.getMatchPatientId(), testData.getMatchPatientFirstName(), testData.getMatchPatientLastName());
 	}
-	
 
 	@Test
-	public void patientLastVisitGET() throws IOException {
+	public void testPatientLastVisitGET() throws IOException {
 		PSSPropertyFileLoader propertyData = new PSSPropertyFileLoader();
 		Appointment testData = new Appointment();
 		propertyData.setRestAPIDataGE(testData);
 		PostAPIRequestGE postAPIRequestGE = new PostAPIRequestGE();
 		log("Base URL- " + testData.getBasicURI());
-		postAPIRequestGE.patientLastVisit(testData.getBasicURI());
+		postAPIRequestGE.patientLastVisit(testData.getBasicURI(), testData.getPracticeIdGE(), testData.getSsoPatientId());
 	}
-	
-	@Test
-	public void preReqAppointmentTypesGET() throws IOException {
 
+	@Test
+	public void testPreReqAppointmentTypesGET() throws IOException {
 		PSSPropertyFileLoader propertyData = new PSSPropertyFileLoader();
 		Appointment testData = new Appointment();
 		propertyData.setRestAPIDataGE(testData);
 		PostAPIRequestGE postAPIRequestGE = new PostAPIRequestGE();
 		log("Base URL- " + testData.getBasicURI());
-		postAPIRequestGE.preReqAppointmentTypes(testData.getBasicURI());
+		postAPIRequestGE.preReqAppointmentTypes(testData.getBasicURI(), testData.getPracticeIdGE());
 	}
-	
+
 	@Test
-	public void searchPatientPOST() throws IOException {
+	public void testSearchPatientPOST() throws IOException {
 		PSSPropertyFileLoader propertyData = new PSSPropertyFileLoader();
 		Appointment testData = new Appointment();
 		PayloadGE payloadGE = new PayloadGE();
@@ -349,8 +353,7 @@ public class PssGEAdapterTest extends BaseTestNGWebDriver {
 		propertyData.setRestAPIDataGE(testData);
 		PostAPIRequestGE postAPIRequestGE = new PostAPIRequestGE();
 		log("Base URL- " + testData.getBasicURI());
-		postAPIRequestGE.searchPatientPost(testData.getBasicURI(), payloadGE.searchPatientPayload(),
-				headerConfig.defaultHeader());
+		postAPIRequestGE.searchPatientPost(testData.getBasicURI(), payloadGE.searchPatientPayload(), headerConfig.defaultHeader(), testData.getPracticeIdGE());
 	}
 
 }

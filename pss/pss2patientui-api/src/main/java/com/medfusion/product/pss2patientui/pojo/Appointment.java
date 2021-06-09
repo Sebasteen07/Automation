@@ -162,7 +162,59 @@ public class Appointment {
 	private String timeMarkValue;
 	private String linkProviderURL;
 	private String linkLocationURL;
+	// GE adapter
+	private String practiceIdGE;
+	private String ssoPatientId;
+	private String apptStatusId;
+	private String apptStatusPatientId;
+	private String healthCheckDatabaseName;
+	private String apptStatusStartDateTime;
+	private String pastAppointmentsResourceName;
+	private String pastAppointmentsLocationname;
+	private String upcomingApptresourceName;
+	private String upcomingApptlocationName;
+	private String demographicsFirstName;
+	private String demographicsLastName;
+	private String matchPatientFirstName;
+	private String matchPatientLastName;
+	private String matchPatientId;
 
+	// Patient Modulator
+	private String apptDetailGuidId;
+	private String anonymousGuidId;
+	private String anonymousPracticeId;
+	private String linksValueGuidId;
+	private String linksDetailGuidId;
+	private String linksDetailPatientId;
+	private String logoutguidId;
+	private String loginlessGuidId;
+	private String loginlessPrcticeId;
+	private String tokenForLoginlessGuidId;
+	private String sessionConfigurationExpirationTime;
+	private String practiceFromGuidSsoId;
+	private String practiceSsoId;
+	private String getImagesBookId;
+	private String validateProviderLinkId;
+	private String specialtyByRulePracticeId;
+	private String specialtyByRulePatientId;
+	private String appointmentId;
+	private String appointmentPracticeName;
+	private String apptTypeNextAvailablePracticeId;
+	private String apptTypeNextAvailablePatientId;
+	private String booksBynextAvailablePracticeId;
+	private String booksBynextAvailablePatientId;
+	private String apptDetailDisplayName;
+	private String linksValueGuidPracticeName;
+	private String timezonePracticeName;
+	private String apptDetailLocationDisplayName;
+	private String apptDetailAppointmentTypeName;
+	private String patientDemographicsFirstName;
+	private String validateProviderLinkDisplayName;
+	private String locationsByNextAvailableId;
+	private String appointmentPatientId;
+	private String appointmentLocationName;
+	private String apptTypeNextAvailableId;
+	private String booksBynextAvailableId;
 
 	private boolean insuranceDetails = false;
 
@@ -414,8 +466,6 @@ public class Appointment {
 	public void setPracticeDisplayName(String practiceDisplayName) {
 		this.practiceDisplayName = practiceDisplayName;
 	}
-
-
 
 	public String getPracticeId() {
 		return practiceId;
@@ -1239,6 +1289,406 @@ public class Appointment {
 
 	public void setBookByNextAvailableAccessTokenUrl(String bookByNextAvailableAccessTokenUrl) {
 		this.bookByNextAvailableAccessTokenUrl = bookByNextAvailableAccessTokenUrl;
+	}
+
+	public String getHealthCheckDatabaseName() {
+		return healthCheckDatabaseName;
+	}
+
+	public void setHealthCheckDatabaseName(String healthCheckDatabaseName) {
+		this.healthCheckDatabaseName = healthCheckDatabaseName;
+	}
+
+	public String getApptStatusId() {
+		return apptStatusId;
+	}
+
+	public void setApptStatusId(String apptStatusId) {
+		this.apptStatusId = apptStatusId;
+	}
+
+	public String getApptStatusPatientId() {
+		return apptStatusPatientId;
+	}
+
+	public void setApptStatusPatientId(String apptStatusPatientId) {
+		this.apptStatusPatientId = apptStatusPatientId;
+	}
+
+	public String getApptStatusStartDateTime() {
+		return apptStatusStartDateTime;
+	}
+
+	public void setApptStatusStartDateTime(String apptStatusStartDateTime) {
+		this.apptStatusStartDateTime = apptStatusStartDateTime;
+	}
+
+	public String getPastAppointmentsResourceName() {
+		return pastAppointmentsResourceName;
+	}
+
+	public void setPastAppointmentsResourceName(String pastAppointmentsResourceName) {
+		this.pastAppointmentsResourceName = pastAppointmentsResourceName;
+	}
+
+	public String getPastAppointmentsLocationname() {
+		return pastAppointmentsLocationname;
+	}
+
+	public void setPastAppointmentsLocationname(String pastAppointmentsLocationname) {
+		this.pastAppointmentsLocationname = pastAppointmentsLocationname;
+	}
+
+	public String getUpcomingApptresourceName() {
+		return upcomingApptresourceName;
+	}
+
+	public void setUpcomingApptresourceName(String upcomingApptresourceName) {
+		this.upcomingApptresourceName = upcomingApptresourceName;
+	}
+
+	public String getUpcomingApptlocationName() {
+		return upcomingApptlocationName;
+	}
+
+	public void setUpcomingApptlocationName(String upcomingApptlocationName) {
+		this.upcomingApptlocationName = upcomingApptlocationName;
+	}
+
+	public String getDemographicsFirstName() {
+		return demographicsFirstName;
+	}
+
+	public void setDemographicsFirstName(String demographicsFirstName) {
+		this.demographicsFirstName = demographicsFirstName;
+	}
+
+	public String getDemographicsLastName() {
+		return demographicsLastName;
+	}
+
+	public void setDemographicsLastName(String demographicsLastName) {
+		this.demographicsLastName = demographicsLastName;
+	}
+
+	public String getMatchPatientFirstName() {
+		return matchPatientFirstName;
+	}
+
+	public void setMatchPatientFirstName(String matchPatientFirstName) {
+		this.matchPatientFirstName = matchPatientFirstName;
+	}
+
+	public String getMatchPatientLastName() {
+		return matchPatientLastName;
+	}
+
+	public void setMatchPatientLastName(String matchPatientLastName) {
+		this.matchPatientLastName = matchPatientLastName;
+	}
+
+	public String getApptDetailGuidId() {
+		return apptDetailGuidId;
+	}
+
+	public void setApptDetailGuidId(String apptDetailGuidId) {
+		this.apptDetailGuidId = apptDetailGuidId;
+	}
+
+	public String getAnonymousGuidId() {
+		return anonymousGuidId;
+	}
+
+	public void setAnonymousGuidId(String anonymousGuidId) {
+		this.anonymousGuidId = anonymousGuidId;
+	}
+
+	public String getAnonymousPracticeId() {
+		return anonymousPracticeId;
+	}
+
+	public void setAnonymousPracticeId(String anonymousPracticeId) {
+		this.anonymousPracticeId = anonymousPracticeId;
+	}
+
+	public String getLinksValueGuidId() {
+		return linksValueGuidId;
+	}
+
+	public void setLinksValueGuidId(String linksValueGuidId) {
+		this.linksValueGuidId = linksValueGuidId;
+	}
+
+	public String getLinksDetailGuidId() {
+		return linksDetailGuidId;
+	}
+
+	public void setLinksDetailGuidId(String linksDetailGuidId) {
+		this.linksDetailGuidId = linksDetailGuidId;
+	}
+
+	public String getLinksDetailPatientId() {
+		return linksDetailPatientId;
+	}
+
+	public void setLinksDetailPatientId(String linksDetailPatientId) {
+		this.linksDetailPatientId = linksDetailPatientId;
+	}
+
+	public String getLogoutguidId() {
+		return logoutguidId;
+	}
+
+	public void setLogoutguidId(String logoutguidId) {
+		this.logoutguidId = logoutguidId;
+	}
+
+	public String getLoginlessGuidId() {
+		return loginlessGuidId;
+	}
+
+	public void setLoginlessGuidId(String loginlessGuidId) {
+		this.loginlessGuidId = loginlessGuidId;
+	}
+
+	public String getLoginlessPrcticeId() {
+		return loginlessPrcticeId;
+	}
+
+	public void setLoginlessPrcticeId(String loginlessPrcticeId) {
+		this.loginlessPrcticeId = loginlessPrcticeId;
+	}
+
+	public String getTokenForLoginlessGuidId() {
+		return tokenForLoginlessGuidId;
+	}
+
+	public void setTokenForLoginlessGuidId(String tokenForLoginlessGuidId) {
+		this.tokenForLoginlessGuidId = tokenForLoginlessGuidId;
+	}
+
+	public String getSessionConfigurationExpirationTime() {
+		return sessionConfigurationExpirationTime;
+	}
+
+	public void setSessionConfigurationExpirationTime(String sessionConfigurationExpirationTime) {
+		this.sessionConfigurationExpirationTime = sessionConfigurationExpirationTime;
+	}
+
+	public String getPracticeFromGuidSsoId() {
+		return practiceFromGuidSsoId;
+	}
+
+	public void setPracticeFromGuidSsoId(String practiceFromGuidSsoId) {
+		this.practiceFromGuidSsoId = practiceFromGuidSsoId;
+	}
+
+	public String getPracticeSsoId() {
+		return practiceSsoId;
+	}
+
+	public void setPracticeSsoId(String practiceSsoId) {
+		this.practiceSsoId = practiceSsoId;
+	}
+
+	public String getGetImagesBookId() {
+		return getImagesBookId;
+	}
+
+	public void setGetImagesBookId(String getImagesBookId) {
+		this.getImagesBookId = getImagesBookId;
+	}
+
+	public String getSpecialtyByRulePracticeId() {
+		return specialtyByRulePracticeId;
+	}
+
+	public void setSpecialtyByRulePracticeId(String specialtyByRulePracticeId) {
+		this.specialtyByRulePracticeId = specialtyByRulePracticeId;
+	}
+
+	public String getSpecialtyByRulePatientId() {
+		return specialtyByRulePatientId;
+	}
+
+	public void setSpecialtyByRulePatientId(String specialtyByRulePatientId) {
+		this.specialtyByRulePatientId = specialtyByRulePatientId;
+	}
+
+	public String getAppointmentId() {
+		return appointmentId;
+	}
+
+	public void setAppointmentId(String appointmentId) {
+		this.appointmentId = appointmentId;
+	}
+
+	public String getAppointmentPracticeName() {
+		return appointmentPracticeName;
+	}
+
+	public void setAppointmentPracticeName(String appointmentPracticeName) {
+		this.appointmentPracticeName = appointmentPracticeName;
+	}
+
+	public String getApptTypeNextAvailablePracticeId() {
+		return apptTypeNextAvailablePracticeId;
+	}
+
+	public void setApptTypeNextAvailablePracticeId(String apptTypeNextAvailablePracticeId) {
+		this.apptTypeNextAvailablePracticeId = apptTypeNextAvailablePracticeId;
+	}
+
+	public String getApptTypeNextAvailablePatientId() {
+		return apptTypeNextAvailablePatientId;
+	}
+
+	public void setApptTypeNextAvailablePatientId(String apptTypeNextAvailablePatientId) {
+		this.apptTypeNextAvailablePatientId = apptTypeNextAvailablePatientId;
+	}
+
+	public String getBooksBynextAvailablePracticeId() {
+		return booksBynextAvailablePracticeId;
+	}
+
+	public void setBooksBynextAvailablePracticeId(String booksBynextAvailablePracticeId) {
+		this.booksBynextAvailablePracticeId = booksBynextAvailablePracticeId;
+	}
+
+	public String getBooksBynextAvailablePatientId() {
+		return booksBynextAvailablePatientId;
+	}
+
+	public void setBooksBynextAvailablePatientId(String booksBynextAvailablePatientId) {
+		this.booksBynextAvailablePatientId = booksBynextAvailablePatientId;
+	}
+
+	public String getApptDetailDisplayName() {
+		return apptDetailDisplayName;
+	}
+
+	public void setApptDetailDisplayName(String apptDetailDisplayName) {
+		this.apptDetailDisplayName = apptDetailDisplayName;
+	}
+
+	public String getLinksValueGuidPracticeName() {
+		return linksValueGuidPracticeName;
+	}
+
+	public void setLinksValueGuidPracticeName(String linksValueGuidPracticeName) {
+		this.linksValueGuidPracticeName = linksValueGuidPracticeName;
+	}
+
+	public String getTimezonePracticeName() {
+		return timezonePracticeName;
+	}
+
+	public void setTimezonePracticeName(String timezonePracticeName) {
+		this.timezonePracticeName = timezonePracticeName;
+	}
+
+	public String getApptDetailLocationDisplayName() {
+		return apptDetailLocationDisplayName;
+	}
+
+	public void setApptDetailLocationDisplayName(String apptDetailLocationDisplayName) {
+		this.apptDetailLocationDisplayName = apptDetailLocationDisplayName;
+	}
+
+	public String getApptDetailAppointmentTypeName() {
+		return apptDetailAppointmentTypeName;
+	}
+
+	public void setApptDetailAppointmentTypeName(String apptDetailAppointmentTypeName) {
+		this.apptDetailAppointmentTypeName = apptDetailAppointmentTypeName;
+	}
+
+	public String getPatientDemographicsFirstName() {
+		return patientDemographicsFirstName;
+	}
+
+	public void setPatientDemographicsFirstName(String patientDemographicsFirstName) {
+		this.patientDemographicsFirstName = patientDemographicsFirstName;
+	}
+
+	public String getValidateProviderLinkDisplayName() {
+		return validateProviderLinkDisplayName;
+	}
+
+	public void setValidateProviderLinkDisplayName(String validateProviderLinkDisplayName) {
+		this.validateProviderLinkDisplayName = validateProviderLinkDisplayName;
+	}
+
+	public String getLocationsByNextAvailableId() {
+		return locationsByNextAvailableId;
+	}
+
+	public void setLocationsByNextAvailableId(String locationsByNextAvailableId) {
+		this.locationsByNextAvailableId = locationsByNextAvailableId;
+	}
+
+	public String getAppointmentPatientId() {
+		return appointmentPatientId;
+	}
+
+	public void setAppointmentPatientId(String appointmentPatientId) {
+		this.appointmentPatientId = appointmentPatientId;
+	}
+
+	public String getAppointmentLocationName() {
+		return appointmentLocationName;
+	}
+
+	public void setAppointmentLocationName(String appointmentLocationName) {
+		this.appointmentLocationName = appointmentLocationName;
+	}
+
+	public String getApptTypeNextAvailableId() {
+		return apptTypeNextAvailableId;
+	}
+
+	public void setApptTypeNextAvailableId(String apptTypeNextAvailableId) {
+		this.apptTypeNextAvailableId = apptTypeNextAvailableId;
+	}
+
+	public String getBooksBynextAvailableId() {
+		return booksBynextAvailableId;
+	}
+
+	public void setBooksBynextAvailableId(String booksBynextAvailableId) {
+		this.booksBynextAvailableId = booksBynextAvailableId;
+	}
+
+	public String getValidateProviderLinkId() {
+		return validateProviderLinkId;
+	}
+
+	public void setValidateProviderLinkId(String validateProviderLinkId) {
+		this.validateProviderLinkId = validateProviderLinkId;
+	}
+
+	public String getSsoPatientId() {
+		return ssoPatientId;
+	}
+
+	public void setSsoPatientId(String ssoPatientId) {
+		this.ssoPatientId = ssoPatientId;
+	}
+
+	public String getPracticeIdGE() {
+		return practiceIdGE;
+	}
+
+	public void setPracticeIdGE(String practiceIdGE) {
+		this.practiceIdGE = practiceIdGE;
+	}
+
+	public String getMatchPatientId() {
+		return matchPatientId;
+	}
+
+	public void setMatchPatientId(String matchPatientId) {
+		this.matchPatientId = matchPatientId;
 	}
 
 }

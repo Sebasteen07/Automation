@@ -35,11 +35,7 @@ public class APIVerification extends BaseTestNGWebDriver {
 	}
 
 	public void responseTimeValidation(Response response) {
-		try {
 			long time = response.time();
-			log("Test Case Passed-Response Time in ms- " + time);
-		} catch (Exception e) {
-			log("Test Case Failed-Response Time not validated");
-		}
+			log("Response Time in ms- " + time);
 	}
 }

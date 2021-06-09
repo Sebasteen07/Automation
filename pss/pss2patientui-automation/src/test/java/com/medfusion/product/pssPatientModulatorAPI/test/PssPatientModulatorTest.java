@@ -21,126 +21,120 @@ public class PssPatientModulatorTest extends BaseTestNGWebDriver {
 		propertyData.setRestAPIDataPatientModulator(testData);
 		PostAPIRequestPatientMod postAPIRequest = new PostAPIRequestPatientMod();
 		log("Base URL is   " + testData.getBasicURI());
-		postAPIRequest.apptDetailFromGuid(testData.getBasicURI(), headerConfig.defaultHeader());
 		log("Verifying the PracticeId");
-		String practiceId = postAPIRequest.apptDetailFromGuid(testData.getBasicURI(), headerConfig.defaultHeader());
-		Assert.assertEquals(practiceId, "205604", "Practice is wrong");
+		String practiceId = postAPIRequest.apptDetailFromGuid(testData.getBasicURI(), headerConfig.defaultHeader(), testData.getApptDetailGuidId(),
+				testData.getApptDetailDisplayName());
+		Assert.assertEquals(practiceId, testData.getPracticeId(), "Practice id is wrong");
 	}
 
 	@Test
-	public void practiceFromGuidAnonymousGET() throws IOException {
+	public void testPracticeFromGuidAnonymousGET() throws IOException {
 		HeaderConfig headerConfig = new HeaderConfig();
 		PSSPropertyFileLoader propertyData = new PSSPropertyFileLoader();
 		Appointment testData = new Appointment();
 		propertyData.setRestAPIDataPatientModulator(testData);
 		PostAPIRequestPatientMod postAPIRequest = new PostAPIRequestPatientMod();
 		log("Base URL is   " + testData.getBasicURI());
-		postAPIRequest.practiceFromGuid(testData.getBasicURI(), headerConfig.defaultHeader());
 		log("Verifying the Ext Practice Id");
-		String extPracticeId = postAPIRequest.practiceFromGuid(testData.getBasicURI(), headerConfig.defaultHeader());
-		Assert.assertEquals(extPracticeId, "24829", "Ext Practice Id is wrong");
+		String extPracticeId = postAPIRequest.practiceFromGuid(testData.getBasicURI(), headerConfig.defaultHeader(), testData.getAnonymousGuidId());
+		Assert.assertEquals(extPracticeId, testData.getAnonymousPracticeId(), "Ext Practice Id is wrong");
 	}
 
 	@Test
-	public void linksValueGuidGET() throws IOException {
+	public void testLinksValueGuidGET() throws IOException {
 		HeaderConfig headerConfig = new HeaderConfig();
 		PSSPropertyFileLoader propertyData = new PSSPropertyFileLoader();
 		Appointment testData = new Appointment();
 		propertyData.setRestAPIDataPatientModulator(testData);
 		PostAPIRequestPatientMod postAPIRequest = new PostAPIRequestPatientMod();
 		log("Base URL is   " + testData.getBasicURI());
-		postAPIRequest.linksValueGuid(testData.getBasicURI(), headerConfig.defaultHeader());
 		log("Verifying the practiceId");
-		String practiceId = postAPIRequest.linksValueGuid(testData.getBasicURI(), headerConfig.defaultHeader());
-		Assert.assertEquals(practiceId, "24333", "practiceId is wrong");
+		String practiceId = postAPIRequest.linksValueGuid(testData.getBasicURI(), headerConfig.defaultHeader(), testData.getLinksValueGuidId(),
+				testData.getLinksValueGuidPracticeName());
+		Assert.assertEquals(practiceId, testData.getPracticeId(), "practice Id is wrong");
 	}
 
 	@Test
-	public void linksValueGuidAndPracticeGET() throws IOException {
+	public void testLinksValueGuidAndPracticeGET() throws IOException {
 		HeaderConfig headerConfig = new HeaderConfig();
 		PSSPropertyFileLoader propertyData = new PSSPropertyFileLoader();
 		Appointment testData = new Appointment();
 		propertyData.setRestAPIDataPatientModulator(testData);
 		PostAPIRequestPatientMod postAPIRequest = new PostAPIRequestPatientMod();
 		log("Base URL is   " + testData.getBasicURI());
-		postAPIRequest.linksValueGuidAndPractice(testData.getBasicURI(), headerConfig.defaultHeader());
 		log("Verifying the practiceId");
-		String practiceId = postAPIRequest.linksValueGuidAndPractice(testData.getBasicURI(), headerConfig.defaultHeader());
-		Assert.assertEquals(practiceId, "24333", "PracticeId is wrong");
+		String practiceId = postAPIRequest.linksValueGuidAndPractice(testData.getBasicURI(), headerConfig.defaultHeader(),
+				testData.getLinksValueGuidId(), testData.getLinksValueGuidPracticeName());
+		Assert.assertEquals(practiceId, testData.getPracticeId(), "Practice Id is wrong");
 	}
 
 	@Test
-	public void linksDetailGuidGET() throws IOException {
+	public void testLinksDetailGuidGET() throws IOException {
 		HeaderConfig headerConfig = new HeaderConfig();
 		PSSPropertyFileLoader propertyData = new PSSPropertyFileLoader();
 		Appointment testData = new Appointment();
 		propertyData.setRestAPIDataPatientModulator(testData);
 		PostAPIRequestPatientMod postAPIRequest = new PostAPIRequestPatientMod();
 		log("Base URL is   " + testData.getBasicURI());
-		postAPIRequest.linksDetailGuid(testData.getBasicURI(), headerConfig.defaultHeader());
 		log("Verifying the patientId");
-		String patientId = postAPIRequest.linksDetailGuid(testData.getBasicURI(), headerConfig.defaultHeader());
-		Assert.assertEquals(patientId, "27641", "PatientId is wrong");
+		String patientId = postAPIRequest.linksDetailGuid(testData.getBasicURI(), headerConfig.defaultHeader(),testData.getLinksDetailGuidId());
+		Assert.assertEquals(patientId, testData.getLinksDetailPatientId(), "Patient Id is wrong");
 	}
 
 	@Test
-	public void linksDetailGuidAndPracticeGET() throws IOException {
+	public void testLinksDetailGuidAndPracticeGET() throws IOException {
 		HeaderConfig headerConfig = new HeaderConfig();
 		PSSPropertyFileLoader propertyData = new PSSPropertyFileLoader();
 		Appointment testData = new Appointment();
 		propertyData.setRestAPIDataPatientModulator(testData);
 		PostAPIRequestPatientMod postAPIRequest = new PostAPIRequestPatientMod();
 		log("Base URL is   " + testData.getBasicURI());
-		postAPIRequest.linksDetailGuidAndPractice(testData.getBasicURI(), headerConfig.defaultHeader());
 		log("Verifying the patientId");
-		String patientId = postAPIRequest.linksDetailGuidAndPractice(testData.getBasicURI(), headerConfig.defaultHeader());
-		Assert.assertEquals(patientId, "27641", "PatientId is wrong");
+		String patientId = postAPIRequest.linksDetailGuidAndPractice(testData.getBasicURI(), headerConfig.defaultHeader(), testData.getLinksDetailGuidId());
+		Assert.assertEquals(patientId, testData.getLinksDetailPatientId(), "Patient Id is wrong");
 	}
 
 	@Test
-	public void guidForLogoutPatientGET() throws IOException {
+	public void testGuidForLogoutPatientGET() throws IOException {
 		HeaderConfig headerConfig = new HeaderConfig();
 		PSSPropertyFileLoader propertyData = new PSSPropertyFileLoader();
 		Appointment testData = new Appointment();
 		propertyData.setRestAPIDataPatientModulator(testData);
 		PostAPIRequestPatientMod postAPIRequest = new PostAPIRequestPatientMod();
 		log("Base URL is   " + testData.getBasicURI());
-		postAPIRequest.guidForLogoutPatient(testData.getBasicURI(), headerConfig.defaultHeader());
 		log("Verifying the Guid");
-		String guidId = postAPIRequest.guidForLogoutPatient(testData.getBasicURI(), headerConfig.defaultHeader());
-		Assert.assertEquals(guidId, "53085385-2d3b-462f-a474-1e501b5a6a21", "guid Id is wrong");
+		String guidId = postAPIRequest.guidForLogoutPatient(testData.getBasicURI(), headerConfig.defaultHeader(), testData.getPracticeId());
+		Assert.assertEquals(guidId, testData.getLogoutguidId(), "guid Id is wrong");
 	}
 
 	@Test
-	public void practiceFromGuidLoginlessGET() throws IOException {
+	public void testPracticeFromGuidLoginlessGET() throws IOException {
 		HeaderConfig headerConfig = new HeaderConfig();
 		PSSPropertyFileLoader propertyData = new PSSPropertyFileLoader();
 		Appointment testData = new Appointment();
 		propertyData.setRestAPIDataPatientModulator(testData);
 		PostAPIRequestPatientMod postAPIRequest = new PostAPIRequestPatientMod();
 		log("Base URL is   " + testData.getBasicURI());
-		postAPIRequest.practiceFromGuidLoginless(testData.getBasicURI(), headerConfig.defaultHeader());
 		log("Verifying the Ext Practice Id");
-		String extPracticeId = postAPIRequest.practiceFromGuidLoginless(testData.getBasicURI(), headerConfig.defaultHeader());
-		Assert.assertEquals(extPracticeId, "24249", "Ext PracticeId is wrong");
+		String extPracticeId = postAPIRequest.practiceFromGuidLoginless(testData.getBasicURI(), headerConfig.defaultHeader(),testData.getLoginlessGuidId());
+		Assert.assertEquals(extPracticeId, testData.getLoginlessPrcticeId(), "Ext PracticeId is wrong");
 	}
 
 	@Test
-	public void tokenForLoginlessGET() throws IOException {
+	public void testTokenForLoginlessGET() throws IOException {
 		HeaderConfig headerConfig = new HeaderConfig();
 		PSSPropertyFileLoader propertyData = new PSSPropertyFileLoader();
 		Appointment testData = new Appointment();
 		propertyData.setRestAPIDataPatientModulator(testData);
 		PostAPIRequestPatientMod postAPIRequest = new PostAPIRequestPatientMod();
 		log("Base URL is   " + testData.getBasicURI());
-		postAPIRequest.tokenForLoginless(testData.getBasicURI(), headerConfig.defaultHeader());
 		log("Verifying the Ext Practice Id");
-		String extPracticeId = postAPIRequest.tokenForLoginless(testData.getBasicURI(), headerConfig.defaultHeader());
-		Assert.assertEquals(extPracticeId, "24333", "Ext PracticeId is wrong");
+		String extPracticeId = postAPIRequest.tokenForLoginless(testData.getBasicURI(), headerConfig.defaultHeader(), testData.getTokenForLoginlessGuidId());
+		Assert.assertEquals(extPracticeId, testData.getPracticeId(), "Ext PracticeId is wrong");
 	}
 
 	@Test
-	public void healthGET() throws IOException {
+	public void testHealthGET() throws IOException {
 		HeaderConfig headerConfig = new HeaderConfig();
 		PSSPropertyFileLoader propertyData = new PSSPropertyFileLoader();
 		Appointment testData = new Appointment();
@@ -151,133 +145,131 @@ public class PssPatientModulatorTest extends BaseTestNGWebDriver {
 	}
 
 	@Test
-	public void logoGET() throws IOException {
+	public void testLogoGET() throws IOException {
 		HeaderConfig headerConfig = new HeaderConfig();
 		PSSPropertyFileLoader propertyData = new PSSPropertyFileLoader();
 		Appointment testData = new Appointment();
 		propertyData.setRestAPIDataPatientModulator(testData);
 		PostAPIRequestPatientMod postAPIRequest = new PostAPIRequestPatientMod();
 		log("Base URL is   " + testData.getBasicURI());
-		postAPIRequest.logo(testData.getBasicURI(), headerConfig.defaultHeader());
+		postAPIRequest.logo(testData.getBasicURI(), headerConfig.defaultHeader(), testData.getPracticeId());
 	}
 
 	@Test
-	public void timezonePracticeResourceGET() throws IOException {
+	public void testTimezonePracticeResourceGET() throws IOException {
 		HeaderConfig headerConfig = new HeaderConfig();
 		PSSPropertyFileLoader propertyData = new PSSPropertyFileLoader();
 		Appointment testData = new Appointment();
 		propertyData.setRestAPIDataPatientModulator(testData);
 		PostAPIRequestPatientMod postAPIRequest = new PostAPIRequestPatientMod();
 		log("Base URL is   " + testData.getBasicURI());
-		postAPIRequest.timezonePracticeResource(testData.getBasicURI(), headerConfig.defaultHeader());
 		log("Verifying the practiceId");
-		String practiceId = postAPIRequest.timezonePracticeResource(testData.getBasicURI(), headerConfig.defaultHeader());
-		Assert.assertEquals(practiceId, "24248", "PracticeId is wrong");
+		String practiceId = postAPIRequest.timezonePracticeResource(testData.getBasicURI(), headerConfig.defaultHeader(), testData.getPracticeId(),
+				testData.getTimezonePracticeName());
+		Assert.assertEquals(practiceId, testData.getPracticeId(), "Practice Id is wrong");
 	}
 
 	@Test
-	public void practiceInfoGET() throws IOException {
+	public void testPracticeInfoGET() throws IOException {
 		HeaderConfig headerConfig = new HeaderConfig();
 		PSSPropertyFileLoader propertyData = new PSSPropertyFileLoader();
 		Appointment testData = new Appointment();
 		propertyData.setRestAPIDataPatientModulator(testData);
 		PostAPIRequestPatientMod postAPIRequest = new PostAPIRequestPatientMod();
 		log("Base URL is   " + testData.getBasicURI());
-		postAPIRequest.practiceInfo(testData.getBasicURI(), headerConfig.defaultHeader());
 		log("Verifying the Ext Practice Id");
-		String extPracticeId = postAPIRequest.practiceInfo(testData.getBasicURI(), headerConfig.defaultHeader());
-		Assert.assertEquals(extPracticeId, "24333", "Ext PracticeId is wrong");
+		String extPracticeId =
+				postAPIRequest.practiceInfo(testData.getBasicURI(), headerConfig.defaultHeader(), testData.getPracticeId(), testData.getLinksValueGuidPracticeName());
+		Assert.assertEquals(extPracticeId, testData.getPracticeId(), "Ext PracticeId is wrong");
 	}
 
 	@Test
-	public void resellerLogoGET() throws IOException {
+	public void testResellerLogoGET() throws IOException {
 		HeaderConfig headerConfig = new HeaderConfig();
 		PSSPropertyFileLoader propertyData = new PSSPropertyFileLoader();
 		Appointment testData = new Appointment();
 		propertyData.setRestAPIDataPatientModulator(testData);
 		PostAPIRequestPatientMod postAPIRequest = new PostAPIRequestPatientMod();
 		log("Base URL is   " + testData.getBasicURI());
-		postAPIRequest.resellerLogo(testData.getBasicURI(), headerConfig.defaultHeader());
+		postAPIRequest.resellerLogo(testData.getBasicURI(), headerConfig.defaultHeader(), testData.getPracticeId());
 	}
 
 	@Test
-	public void sessionConfigurationGET() throws IOException {
+	public void testSessionConfigurationGE1() throws IOException {
 		HeaderConfig headerConfig = new HeaderConfig();
 		PSSPropertyFileLoader propertyData = new PSSPropertyFileLoader();
 		Appointment testData = new Appointment();
 		propertyData.setRestAPIDataPatientModulator(testData);
 		PostAPIRequestPatientMod postAPIRequest = new PostAPIRequestPatientMod();
 		log("Base URL is   " + testData.getBasicURI());
-		postAPIRequest.sessionConfiguration(testData.getBasicURI(), headerConfig.defaultHeader());
 		log("Verifying the Token Expiration Time");
-		int tokenExpirationTime = postAPIRequest.sessionConfiguration(testData.getBasicURI(), headerConfig.defaultHeader());
-		Assert.assertEquals(tokenExpirationTime, 600, "Token Expiration Time is wrong");
+		int tokenExpirationTime = postAPIRequest.sessionConfiguration(testData.getBasicURI(), headerConfig.defaultHeader(), testData.getPracticeId());
+		String expirationTime = Integer.toString(tokenExpirationTime);
+		Assert.assertEquals(expirationTime, testData.getSessionConfigurationExpirationTime(), "Token Expiration Time is wrong");
 	}
 
 	@Test
-	public void practiceDetailGET() throws IOException {
+	public void testPracticeDetailGET() throws IOException {
 		HeaderConfig headerConfig = new HeaderConfig();
 		PSSPropertyFileLoader propertyData = new PSSPropertyFileLoader();
 		Appointment testData = new Appointment();
 		propertyData.setRestAPIDataPatientModulator(testData);
 		PostAPIRequestPatientMod postAPIRequest = new PostAPIRequestPatientMod();
 		log("Base URL is   " + testData.getBasicURI());
-		postAPIRequest.practiceDetail(testData.getBasicURI(), headerConfig.defaultHeader());
 		log("Verifying the Ext Practice Id");
-		String extPracticeId = postAPIRequest.practiceDetail(testData.getBasicURI(), headerConfig.defaultHeader());
-		Assert.assertEquals(extPracticeId, "24333", "Ext PracticeId is wrong");
+		String extPracticeId = postAPIRequest.practiceDetail(testData.getBasicURI(), headerConfig.defaultHeader(), testData.getPracticeId(),
+				testData.getLinksValueGuidPracticeName());
+		Assert.assertEquals(extPracticeId, testData.getPracticeId(), "Ext PracticeId is wrong");
 	}
 
 	@Test
-	public void practiceFromGuidSsoGET() throws IOException {
+	public void testPracticeFromGuidSsoGET() throws IOException {
 		HeaderConfig headerConfig = new HeaderConfig();
 		PSSPropertyFileLoader propertyData = new PSSPropertyFileLoader();
 		Appointment testData = new Appointment();
 		propertyData.setRestAPIDataPatientModulator(testData);
 		PostAPIRequestPatientMod postAPIRequest = new PostAPIRequestPatientMod();
 		log("Base URL is   " + testData.getBasicURI());
-		postAPIRequest.practiceFromGuidSso(testData.getBasicURI(), headerConfig.defaultHeader());
 		log("Verifying the Ext Practice Id");
-		String extPracticeId = postAPIRequest.practiceFromGuidSso(testData.getBasicURI(), headerConfig.defaultHeader());
-		Assert.assertEquals(extPracticeId, "24829", "Ext PracticeId is wrong");
+		String extPracticeId = postAPIRequest.practiceFromGuidSso(testData.getBasicURI(), headerConfig.defaultHeader(),testData.getPracticeFromGuidSsoId());
+		Assert.assertEquals(extPracticeId, testData.getPracticeSsoId(), "Ext PracticeId is wrong");
 	}
 
 	@Test
-	public void timeZoneResourceGET() throws IOException {
+	public void testTimeZoneResourceGET() throws IOException {
 		HeaderConfig headerConfig = new HeaderConfig();
 		PSSPropertyFileLoader propertyData = new PSSPropertyFileLoader();
 		Appointment testData = new Appointment();
 		propertyData.setRestAPIDataPatientModulator(testData);
 		PostAPIRequestPatientMod postAPIRequest = new PostAPIRequestPatientMod();
 		log("Base URL is   " + testData.getBasicURI());
-		postAPIRequest.timeZoneResource(testData.getBasicURI(), headerConfig.defaultHeader());
+		postAPIRequest.timeZoneResource(testData.getBasicURI(), headerConfig.defaultHeader(), testData.getPatientId());
 	}
 
 	@Test
-	public void createTokenGET() throws IOException {
-
+	public void testCreateTokenGET() throws IOException {
 		PSSPropertyFileLoader propertyData = new PSSPropertyFileLoader();
 		Appointment testData = new Appointment();
 		propertyData.setRestAPIDataPatientModulator(testData);
 		PostAPIRequestPatientMod postAPIRequest = new PostAPIRequestPatientMod();
 		String accessToken = postAPIRequest.createToken(testData.getAccessTokenURL());
 		testData.setAccessToken(accessToken);
-		log("The Accesssc Token is From the Test Method  " + testData.getAccessToken());
+		log("The Accesssc Token is From the Test Method  " + testData.getAccessToken(), testData.getPracticeId());
 	}
 
 	@Test
-	public void upcomingConfigurationGET() throws IOException {
+	public void testUpcomingConfigurationGET() throws IOException {
 		HeaderConfig headerConfig = new HeaderConfig();
 		PSSPropertyFileLoader propertyData = new PSSPropertyFileLoader();
 		Appointment testData = new Appointment();
 		propertyData.setRestAPIDataPatientModulator(testData);
 		PostAPIRequestPatientMod postAPIRequest = new PostAPIRequestPatientMod();
 		log("Base URL is   " + testData.getBasicURI());
-		postAPIRequest.upcomingConfiguration(testData.getBasicURI(), headerConfig.defaultHeader());
+		postAPIRequest.upcomingConfiguration(testData.getBasicURI(), headerConfig.defaultHeader(), testData.getPracticeId());
 	}
 
 	@Test
-	public void getApptDetailPOST() throws IOException {
+	public void testGetApptDetailPOST() throws IOException {
 		HeaderConfig headerConfig = new HeaderConfig();
 		PSSPropertyFileLoader propertyData = new PSSPropertyFileLoader();
 		Appointment testData = new Appointment();
@@ -286,34 +278,34 @@ public class PssPatientModulatorTest extends BaseTestNGWebDriver {
 		PayloadPssPatientModulator payloadPatientMod = new PayloadPssPatientModulator();
 		log("Base URL is   " + testData.getBasicURI());
 		log("Payload- " + payloadPatientMod.getApptDetailPayload());
-		postAPIRequest.getapptDetail(testData.getBasicURI(), payloadPatientMod.getApptDetailPayload(), headerConfig.defaultHeader());
-
+		postAPIRequest.getapptDetail(testData.getBasicURI(), payloadPatientMod.getApptDetailPayload(), headerConfig.defaultHeader(),
+				testData.getPracticeId(), testData.getApptDetailLocationDisplayName(), testData.getApptDetailAppointmentTypeName());
 	}
 
 	@Test
-	public void announcementByNameGET() throws IOException {
+	public void testAnnouncementByNameGET() throws IOException {
 		HeaderConfig headerConfig = new HeaderConfig();
 		PSSPropertyFileLoader propertyData = new PSSPropertyFileLoader();
 		Appointment testData = new Appointment();
 		propertyData.setRestAPIDataPatientModulator(testData);
 		PostAPIRequestPatientMod postAPIRequest = new PostAPIRequestPatientMod();
 		log("Base URL is   " + testData.getBasicURI());
-		postAPIRequest.announcementByName(testData.getBasicURI(), headerConfig.defaultHeader());
+		postAPIRequest.announcementByName(testData.getBasicURI(), headerConfig.defaultHeader(), testData.getPracticeId());
 	}
 
 	@Test
-	public void announcementByLanguageGET() throws IOException {
+	public void testAnnouncementByLanguageGET() throws IOException {
 		HeaderConfig headerConfig = new HeaderConfig();
 		PSSPropertyFileLoader propertyData = new PSSPropertyFileLoader();
 		Appointment testData = new Appointment();
 		propertyData.setRestAPIDataPatientModulator(testData);
 		PostAPIRequestPatientMod postAPIRequest = new PostAPIRequestPatientMod();
 		log("Base URL is   " + testData.getBasicURI());
-		postAPIRequest.announcementByLanguage(testData.getBasicURI(), headerConfig.defaultHeader());
+		postAPIRequest.announcementByLanguage(testData.getBasicURI(), headerConfig.defaultHeader(), testData.getPracticeId());
 	}
 
 	@Test
-	public void announcementTypeGET() throws IOException {
+	public void testAnnouncementTypeGET() throws IOException {
 		HeaderConfig headerConfig = new HeaderConfig();
 		PSSPropertyFileLoader propertyData = new PSSPropertyFileLoader();
 		Appointment testData = new Appointment();
@@ -324,43 +316,43 @@ public class PssPatientModulatorTest extends BaseTestNGWebDriver {
 	}
 
 	@Test
-	public void getImagesGET() throws IOException {
+	public void testGetImagesGET() throws IOException {
 		HeaderConfig headerConfig = new HeaderConfig();
 		PSSPropertyFileLoader propertyData = new PSSPropertyFileLoader();
 		Appointment testData = new Appointment();
 		propertyData.setRestAPIDataPatientModulator(testData);
 		PostAPIRequestPatientMod postAPIRequest = new PostAPIRequestPatientMod();
 		log("Base URL is   " + testData.getBasicURI());
-		postAPIRequest.getImages(testData.getBasicURI(), headerConfig.defaultHeader());
+		postAPIRequest.getImages(testData.getBasicURI(), headerConfig.defaultHeader(), testData.getPracticeId(), testData.getGetImagesBookId());
 	}
 
 	@Test
-	public void getLanguagesGET() throws IOException {
+	public void testGetLanguagesGET() throws IOException {
 		HeaderConfig headerConfig = new HeaderConfig();
 		PSSPropertyFileLoader propertyData = new PSSPropertyFileLoader();
 		Appointment testData = new Appointment();
 		propertyData.setRestAPIDataPatientModulator(testData);
 		PostAPIRequestPatientMod postAPIRequest = new PostAPIRequestPatientMod();
 		log("Base URL is   " + testData.getBasicURI());
-		postAPIRequest.getLanguages(testData.getBasicURI(), headerConfig.defaultHeader());
+		postAPIRequest.getLanguages(testData.getBasicURI(), headerConfig.defaultHeader(), testData.getPatientId());
 	}
 
 	@Test
-	public void demographicsProfilesGET() throws IOException {
+	public void testDemographicsProfilesGET() throws IOException {
 		HeaderConfig headerConfig = new HeaderConfig();
 		PSSPropertyFileLoader propertyData = new PSSPropertyFileLoader();
 		Appointment testData = new Appointment();
 		propertyData.setRestAPIDataPatientModulator(testData);
 		PostAPIRequestPatientMod postAPIRequest = new PostAPIRequestPatientMod();
 		log("Base URL is   " + testData.getBasicURI());
-		postAPIRequest.demographicsProfiles(testData.getBasicURI(), headerConfig.defaultHeader());
 		log("Verifying the Demographics Id");
-		String demographicsId = postAPIRequest.demographicsProfiles(testData.getBasicURI(), headerConfig.defaultHeader());
-		Assert.assertEquals(demographicsId, "26854", "Demographics Id is wrong");
+		String demographicsId = postAPIRequest.demographicsProfiles(testData.getBasicURI(), headerConfig.defaultHeader(), testData.getPracticeId(),
+				testData.getPatientId(), testData.getLinksValueGuidPracticeName());
+		Assert.assertEquals(demographicsId, testData.getPatientId(), "Demographics Id is wrong");
 	}
 
 	@Test
-	public void patientMatchGET() throws IOException {
+	public void testPatientMatchGET() throws IOException {
 		HeaderConfig headerConfig = new HeaderConfig();
 		PSSPropertyFileLoader propertyData = new PSSPropertyFileLoader();
 		Appointment testData = new Appointment();
@@ -370,11 +362,12 @@ public class PssPatientModulatorTest extends BaseTestNGWebDriver {
 		testData.setAccessToken(accessToken);
 		log("Base URL is  ---> " + testData.getBasicURI());
 		log("Access Token --> " + testData.getAccessToken());
-		postAPIRequest.matchPatient(testData.getBasicURI(), headerConfig.HeaderwithToken(testData.getAccessToken()));
+		postAPIRequest.matchPatient(testData.getBasicURI(), headerConfig.HeaderwithToken(testData.getAccessToken()), testData.getPracticeId(),
+				testData.getPatientId());
 	}
 
 	@Test
-	public void flowIdentityGET() throws IOException {
+	public void testFlowIdentityGET() throws IOException {
 		HeaderConfig headerConfig = new HeaderConfig();
 		PSSPropertyFileLoader propertyData = new PSSPropertyFileLoader();
 		Appointment testData = new Appointment();
@@ -384,11 +377,12 @@ public class PssPatientModulatorTest extends BaseTestNGWebDriver {
 		testData.setAccessToken(accessToken);
 		log("Base URL is  ---> " + testData.getBasicURI());
 		log("Access Token --> " + testData.getAccessToken());
-		postAPIRequest.flowIdentity(testData.getBasicURI(), headerConfig.HeaderwithToken(testData.getAccessToken()));
+		postAPIRequest.flowIdentity(testData.getBasicURI(), headerConfig.HeaderwithToken(testData.getAccessToken()), testData.getPracticeId(),
+				testData.getPatientId());
 	}
 
 	@Test
-	public void genderMappingGET() throws IOException {
+	public void testGenderMappingGET() throws IOException {
 		HeaderConfig headerConfig = new HeaderConfig();
 		PSSPropertyFileLoader propertyData = new PSSPropertyFileLoader();
 		Appointment testData = new Appointment();
@@ -398,11 +392,12 @@ public class PssPatientModulatorTest extends BaseTestNGWebDriver {
 		testData.setAccessToken(accessToken);
 		log("Base URL is  ---> " + testData.getBasicURI());
 		log("Access Token --> " + testData.getAccessToken());
-		postAPIRequest.genderMapping(testData.getBasicURI(), headerConfig.HeaderwithToken(testData.getAccessToken()));
+		postAPIRequest.genderMapping(testData.getBasicURI(), headerConfig.HeaderwithToken(testData.getAccessToken()), testData.getPracticeId(),
+				testData.getPatientId());
 	}
 
 	@Test
-	public void getStatesGET() throws IOException {
+	public void testGetStatesGET() throws IOException {
 		HeaderConfig headerConfig = new HeaderConfig();
 		PSSPropertyFileLoader propertyData = new PSSPropertyFileLoader();
 		Appointment testData = new Appointment();
@@ -412,11 +407,12 @@ public class PssPatientModulatorTest extends BaseTestNGWebDriver {
 		testData.setAccessToken(accessToken);
 		log("Base URL is   ---> " + testData.getBasicURI());
 		log("Access Token --> " + testData.getAccessToken());
-		postAPIRequest.getStates(testData.getBasicURI(), headerConfig.HeaderwithToken(testData.getAccessToken()));
+		postAPIRequest.getStates(testData.getBasicURI(), headerConfig.HeaderwithToken(testData.getAccessToken()), testData.getPracticeId(),
+				testData.getPatientId());
 	}
 
 	@Test
-	public void patientDemographicsGET() throws IOException {
+	public void testPatientDemographicsGET() throws IOException {
 		HeaderConfig headerConfig = new HeaderConfig();
 		PSSPropertyFileLoader propertyData = new PSSPropertyFileLoader();
 		Appointment testData = new Appointment();
@@ -426,14 +422,14 @@ public class PssPatientModulatorTest extends BaseTestNGWebDriver {
 		testData.setAccessToken(accessToken);
 		log("Base URL is  ---> " + testData.getBasicURI());
 		log("Access Token --> " + testData.getAccessToken());
-		postAPIRequest.patientDemographics(testData.getBasicURI(), headerConfig.HeaderwithToken(testData.getAccessToken()));
 		log("Verifying the Demographics Id");
-		String demographicsId = postAPIRequest.patientDemographics(testData.getBasicURI(), headerConfig.HeaderwithToken(testData.getAccessToken()));
-		Assert.assertEquals(demographicsId, "26854", "Demographics Id is wrong");
+		String demographicsId = postAPIRequest.patientDemographics(testData.getBasicURI(), headerConfig.HeaderwithToken(testData.getAccessToken()),
+				testData.getPracticeId(), testData.getPatientId(), testData.getPatientDemographicsFirstName());
+		Assert.assertEquals(demographicsId, testData.getPatientId(), "Demographics Id is wrong");
 	}
 
 	@Test
-	public void validateProviderLinkPost() throws IOException {
+	public void testValidateProviderLinkPost() throws IOException {
 		HeaderConfig headerConfig = new HeaderConfig();
 		PSSPropertyFileLoader propertyData = new PSSPropertyFileLoader();
 		Appointment testData = new Appointment();
@@ -445,16 +441,16 @@ public class PssPatientModulatorTest extends BaseTestNGWebDriver {
 		log("Base URL is  ---> " + testData.getBasicURI());
 		log("Access Token --> " + testData.getAccessToken());
 		log("Payload- " + payloadPatientMod.validateProviderLinkPayload());
-		postAPIRequest.validateProviderLink(testData.getBasicURI(), payloadPatientMod.validateProviderLinkPayload(),
-				headerConfig.HeaderwithToken(testData.getAccessToken()));
 		log("Verifying the Provider link Id");
 		int providerLinkId = postAPIRequest.validateProviderLink(testData.getBasicURI(), payloadPatientMod.validateProviderLinkPayload(),
-				headerConfig.HeaderwithToken(testData.getAccessToken()));
-		Assert.assertEquals(providerLinkId, 205300, "Demographics Id");
+				headerConfig.HeaderwithToken(testData.getAccessToken()), testData.getPracticeId(), testData.getPatientId(),
+				testData.getValidateProviderLinkDisplayName());
+		String linkId = Integer.toString(providerLinkId);
+		Assert.assertEquals(linkId, testData.getValidateProviderLinkId(), "Link id is wrong");
 	}
 
 	@Test
-	public void locationsByNextAvailablePost() throws IOException {
+	public void testLocationsByNextAvailablePost() throws IOException {
 		HeaderConfig headerConfig = new HeaderConfig();
 		PSSPropertyFileLoader propertyData = new PSSPropertyFileLoader();
 		Appointment testData = new Appointment();
@@ -466,12 +462,14 @@ public class PssPatientModulatorTest extends BaseTestNGWebDriver {
 		log("Base URL is  ---> " + testData.getBasicURI());
 		log("Access Token --> " + testData.getAccessToken());
 		log("Payload- " + payloadPatientMod.locationsByNextAvailablePayload());
-		postAPIRequest.locationsByNextAvailable(testData.getBasicURI(), payloadPatientMod.locationsByNextAvailablePayload(),
-				headerConfig.HeaderwithToken(testData.getAccessToken()));
+		int practiceId = postAPIRequest.locationsByNextAvailable(testData.getBasicURI(), payloadPatientMod.locationsByNextAvailablePayload(),
+				headerConfig.HeaderwithToken(testData.getAccessToken()), testData.getPracticeId(), testData.getPatientId(), testData.getLocationsByNextAvailableId());
+		String locationPracticeId = Integer.toString(practiceId);
+		Assert.assertEquals(locationPracticeId, testData.getLocationsByNextAvailableId(), "location practice id is wrong");
 	}
 
 	@Test
-	public void locationsByRulePost() throws IOException {
+	public void testLocationsByRulePost() throws IOException {
 		HeaderConfig headerConfig = new HeaderConfig();
 		PSSPropertyFileLoader propertyData = new PSSPropertyFileLoader();
 		Appointment testData = new Appointment();
@@ -483,11 +481,12 @@ public class PssPatientModulatorTest extends BaseTestNGWebDriver {
 		log("Base URL is  ---> " + testData.getBasicURI());
 		log("Access Token --> " + testData.getAccessToken());
 		log("Payload- " + payloadPatientMod.locationsByRulePayload());
-		postAPIRequest.locationsByRule(testData.getBasicURI(), payloadPatientMod.locationsByRulePayload(), headerConfig.HeaderwithToken(testData.getAccessToken()));
+		postAPIRequest.locationsByRule(testData.getBasicURI(), payloadPatientMod.locationsByRulePayload(), headerConfig.HeaderwithToken(testData.getAccessToken()),
+				testData.getPracticeId(), testData.getPatientId());
 	}
 
 	@Test
-	public void anonymousMatchAndCreatePatientPost() throws IOException {
+	public void testAnonymousMatchAndCreatePatientPost() throws IOException {
 		HeaderConfig headerConfig = new HeaderConfig();
 		PSSPropertyFileLoader propertyData = new PSSPropertyFileLoader();
 		Appointment testData = new Appointment();
@@ -499,16 +498,14 @@ public class PssPatientModulatorTest extends BaseTestNGWebDriver {
 		log("Base URL is  ---> " + testData.getBasicURI());
 		log("Access Token --> " + testData.getAccessToken());
 		log("Payload- " + payloadPatientMod.anonymousMatchAndCreatePatientPayload());
-		postAPIRequest.anonymousMatchAndCreatePatient(testData.getBasicURI(), payloadPatientMod.anonymousMatchAndCreatePatientPayload(),
-				headerConfig.HeaderwithToken(testData.getAccessToken()));
 		log("Verifying the patient Id");
 		String patientId = postAPIRequest.anonymousMatchAndCreatePatient(testData.getBasicURI(), payloadPatientMod.anonymousMatchAndCreatePatientPayload(),
-				headerConfig.HeaderwithToken(testData.getAccessToken()));
-		Assert.assertEquals(patientId, "27698", "patient Id is wrong");
+				headerConfig.HeaderwithToken(testData.getAccessToken()), testData.getPracticeId(), testData.getPatientId());
+		Assert.assertEquals(patientId, testData.getPatientId(), "patient Id is wrong");
 	}
 
 	@Test
-	public void identifyPatientForReschedulePost() throws IOException {
+	public void testIdentifyPatientForReschedulePost() throws IOException {
 		HeaderConfig headerConfig = new HeaderConfig();
 		PSSPropertyFileLoader propertyData = new PSSPropertyFileLoader();
 		Appointment testData = new Appointment();
@@ -520,16 +517,14 @@ public class PssPatientModulatorTest extends BaseTestNGWebDriver {
 		log("Base URL is  ---> " + testData.getBasicURI());
 		log("Access Token --> " + testData.getAccessToken());
 		log("Payload- " + payloadPatientMod.identifyPatientForReschedulePayload());
-		postAPIRequest.identifyPatientForReschedule(testData.getBasicURI(), payloadPatientMod.identifyPatientForReschedulePayload(),
-				headerConfig.HeaderwithToken(testData.getAccessToken()));
 		log("Verifying the patient Id");
 		String patientId = postAPIRequest.identifyPatientForReschedule(testData.getBasicURI(), payloadPatientMod.identifyPatientForReschedulePayload(),
-				headerConfig.HeaderwithToken(testData.getAccessToken()));
-		Assert.assertEquals(patientId, "27699", "patient Id is wrong");
+				headerConfig.HeaderwithToken(testData.getAccessToken()), testData.getPracticeId(), testData.getPatientId());
+		Assert.assertEquals(patientId, testData.getPatientId(), "patient Id is wrong");
 	}
 
 	@Test
-	public void specialtyByRulePost() throws IOException {
+	public void testSpecialtyByRulePost() throws IOException {
 		HeaderConfig headerConfig = new HeaderConfig();
 		PSSPropertyFileLoader propertyData = new PSSPropertyFileLoader();
 		Appointment testData = new Appointment();
@@ -541,11 +536,12 @@ public class PssPatientModulatorTest extends BaseTestNGWebDriver {
 		log("Base URL is  ---> " + testData.getBasicURI());
 		log("Access Token --> " + testData.getAccessToken());
 		log("Payload- " + payloadPatientMod.specialtyByRulePayload());
-		postAPIRequest.specialtyByRule(testData.getBasicURI(), payloadPatientMod.specialtyByRulePayload(), headerConfig.HeaderwithToken(testData.getAccessToken()));
+		postAPIRequest.specialtyByRule(testData.getBasicURI(), payloadPatientMod.specialtyByRulePayload(), headerConfig.HeaderwithToken(testData.getAccessToken()),
+				testData.getPracticeId(), testData.getSpecialtyByRulePatientId());
 	}
 
 	@Test
-	public void createTokenPost() throws IOException {
+	public void testCreateTokenPost() throws IOException {
 		HeaderConfig headerConfig = new HeaderConfig();
 		PSSPropertyFileLoader propertyData = new PSSPropertyFileLoader();
 		Appointment testData = new Appointment();
@@ -556,11 +552,11 @@ public class PssPatientModulatorTest extends BaseTestNGWebDriver {
 		log("Base URL is  ---> " + testData.getBasicURI());
 		log("Payload- " + payloadPatientMod.createTokenPayload(accessToken));
 		postAPIRequest.createToken(testData.getBasicURI(), payloadPatientMod.createTokenPayload(accessToken),
-				headerConfig.HeaderwithToken(testData.getAccessToken()));
+				headerConfig.HeaderwithToken(testData.getAccessToken()), testData.getPracticeId());
 	}
 
 	@Test
-	public void locationsBasedOnZipcodeAndRadiusPost() throws IOException {
+	public void testLocationsBasedOnZipcodeAndRadiusPost() throws IOException {
 		HeaderConfig headerConfig = new HeaderConfig();
 		PSSPropertyFileLoader propertyData = new PSSPropertyFileLoader();
 		Appointment testData = new Appointment();
@@ -573,36 +569,36 @@ public class PssPatientModulatorTest extends BaseTestNGWebDriver {
 		log("Access Token --> " + testData.getAccessToken());
 		log("Payload- " + payloadPatientMod.locationsBasedOnZipcodeAndRadiusPayload());
 		postAPIRequest.locationsBasedOnZipcodeAndRadius(testData.getBasicURI(), payloadPatientMod.locationsBasedOnZipcodeAndRadiusPayload(),
-				headerConfig.HeaderwithToken(testData.getAccessToken()));
+				headerConfig.HeaderwithToken(testData.getAccessToken()), testData.getPracticeId(), testData.getPatientId());
 	}
 
 	@Test
-	public void appointmentGET() throws IOException {
+	public void testAppointmentGET() throws IOException {
 		HeaderConfig headerConfig = new HeaderConfig();
 		PSSPropertyFileLoader propertyData = new PSSPropertyFileLoader();
 		Appointment testData = new Appointment();
 		propertyData.setRestAPIDataPatientModulator(testData);
 		PostAPIRequestPatientMod postAPIRequest = new PostAPIRequestPatientMod();
 		log("Base URL is   " + testData.getBasicURI());
-		postAPIRequest.appointment(testData.getBasicURI(), headerConfig.defaultHeader());
 		log("Verifying the patient Id");
-		String bookName = postAPIRequest.appointment(testData.getBasicURI(), headerConfig.defaultHeader());
-		Assert.assertEquals(bookName, "Jennifer Brown", "patient Id is wrong");
+		String bookName = postAPIRequest.appointment(testData.getBasicURI(), headerConfig.defaultHeader(), testData.getPatientId(),
+				testData.getAppointmentId(), testData.getPatientId(), testData.getAppointmentLocationName());
+		Assert.assertEquals(bookName, testData.getAppointmentPracticeName(), "practice Name is wrong");
 	}
 
 	@Test
-	public void appointmentForIcsGET() throws IOException {
+	public void testAppointmentForIcsGET() throws IOException {
 		HeaderConfig headerConfig = new HeaderConfig();
 		PSSPropertyFileLoader propertyData = new PSSPropertyFileLoader();
 		Appointment testData = new Appointment();
 		propertyData.setRestAPIDataPatientModulator(testData);
 		PostAPIRequestPatientMod postAPIRequest = new PostAPIRequestPatientMod();
 		log("Base URL is   " + testData.getBasicURI());
-		postAPIRequest.appointmentForIcs(testData.getBasicURI(), headerConfig.defaultHeader());
+		postAPIRequest.appointmentForIcs(testData.getBasicURI(), headerConfig.defaultHeader(), testData.getPracticeId(), testData.getAppointmentId());
 	}
 
 	@Test
-	public void upcomingAppointmentsByPageGET() throws IOException {
+	public void testUpcomingAppointmentsByPageGET() throws IOException {
 		HeaderConfig headerConfig = new HeaderConfig();
 		PSSPropertyFileLoader propertyData = new PSSPropertyFileLoader();
 		Appointment testData = new Appointment();
@@ -612,11 +608,12 @@ public class PssPatientModulatorTest extends BaseTestNGWebDriver {
 		testData.setAccessToken(accessToken);
 		log("Base URL is  ---> " + testData.getBasicURI());
 		log("Access Token --> " + testData.getAccessToken());
-		postAPIRequest.upcomingAppointmentsByPage(testData.getBasicURI(), headerConfig.HeaderwithToken(testData.getAccessToken()));
+		postAPIRequest.upcomingAppointmentsByPage(testData.getBasicURI(), headerConfig.HeaderwithToken(testData.getAccessToken()),
+				testData.getPracticeId(), testData.getAppointmentId());
 	}
 
 	@Test
-	public void insuranceCarrierGET() throws IOException {
+	public void testInsuranceCarrierGET() throws IOException {
 		HeaderConfig headerConfig = new HeaderConfig();
 		PSSPropertyFileLoader propertyData = new PSSPropertyFileLoader();
 		Appointment testData = new Appointment();
@@ -626,11 +623,12 @@ public class PssPatientModulatorTest extends BaseTestNGWebDriver {
 		testData.setAccessToken(accessToken);
 		log("Base URL is  ---> " + testData.getBasicURI());
 		log("Access Token --> " + testData.getAccessToken());
-		postAPIRequest.insuranceCarrier(testData.getBasicURI(), headerConfig.HeaderwithToken(testData.getAccessToken()));
+		postAPIRequest.insuranceCarrier(testData.getBasicURI(), headerConfig.HeaderwithToken(testData.getAccessToken()), testData.getPracticeId(),
+				testData.getPatientId());
 	}
 
 	@Test
-	public void cancellationReasonGET() throws IOException {
+	public void testCancellationReasonGET() throws IOException {
 		HeaderConfig headerConfig = new HeaderConfig();
 		PSSPropertyFileLoader propertyData = new PSSPropertyFileLoader();
 		Appointment testData = new Appointment();
@@ -640,11 +638,12 @@ public class PssPatientModulatorTest extends BaseTestNGWebDriver {
 		testData.setAccessToken(accessToken);
 		log("Base URL is  ---> " + testData.getBasicURI());
 		log("Access Token --> " + testData.getAccessToken());
-		postAPIRequest.cancellationReason(testData.getBasicURI(), headerConfig.HeaderwithToken(testData.getAccessToken()));
+		postAPIRequest.cancellationReason(testData.getBasicURI(), headerConfig.HeaderwithToken(testData.getAccessToken()),
+				testData.getPracticeId(), testData.getPatientId());
 	}
 
 	@Test
-	public void rescheduleReasonGET() throws IOException {
+	public void testRescheduleReasonGET() throws IOException {
 		HeaderConfig headerConfig = new HeaderConfig();
 		PSSPropertyFileLoader propertyData = new PSSPropertyFileLoader();
 		Appointment testData = new Appointment();
@@ -654,12 +653,13 @@ public class PssPatientModulatorTest extends BaseTestNGWebDriver {
 		testData.setAccessToken(accessToken);
 		log("Base URL is  ---> " + testData.getBasicURI());
 		log("Access Token --> " + testData.getAccessToken());
-		postAPIRequest.rescheduleReason(testData.getBasicURI(), headerConfig.HeaderwithToken(testData.getAccessToken()));
+		postAPIRequest.rescheduleReason(testData.getBasicURI(), headerConfig.HeaderwithToken(testData.getAccessToken()), testData.getPracticeId(),
+				testData.getPatientId());
 
 	}
 
 	@Test
-	public void apptTypeNextAvailablePost() throws IOException {
+	public void testApptTypeNextAvailablePost() throws IOException {
 		HeaderConfig headerConfig = new HeaderConfig();
 		PSSPropertyFileLoader propertyData = new PSSPropertyFileLoader();
 		Appointment testData = new Appointment();
@@ -671,12 +671,15 @@ public class PssPatientModulatorTest extends BaseTestNGWebDriver {
 		log("Base URL is  ---> " + testData.getBasicURI());
 		log("Access Token --> " + testData.getApptTypeNextAvailableAccessTokenUrl());
 		log("Payload- " + payloadPatientMod.apptTypeNextAvailablePayload());
-		postAPIRequest.apptTypeNextAvailable(testData.getBasicURI(), payloadPatientMod.apptTypeNextAvailablePayload(),
-				headerConfig.HeaderwithToken(testData.getApptTypeNextAvailableAccessTokenUrl()));
+		int nextAvailableId = postAPIRequest.apptTypeNextAvailable(testData.getBasicURI(), payloadPatientMod.apptTypeNextAvailablePayload(),
+				headerConfig.HeaderwithToken(testData.getApptTypeNextAvailableAccessTokenUrl()), testData.getApptTypeNextAvailablePracticeId(),
+				testData.getApptTypeNextAvailablePatientId(), testData.getApptTypeNextAvailableId());
+		String slotId = Integer.toString(nextAvailableId);
+		Assert.assertEquals(slotId, testData.getApptTypeNextAvailableId(), "Next Available slotId id is wrong");
 	}
 
 	@Test
-	public void booksBynextAvailablePost() throws IOException {
+	public void testBooksByNextAvailablePost() throws IOException {
 		HeaderConfig headerConfig = new HeaderConfig();
 		PSSPropertyFileLoader propertyData = new PSSPropertyFileLoader();
 		Appointment testData = new Appointment();
@@ -688,8 +691,11 @@ public class PssPatientModulatorTest extends BaseTestNGWebDriver {
 		log("Base URL is  ---> " + testData.getBasicURI());
 		log("Access Token --> " + testData.getBookByNextAvailableAccessTokenUrl());
 		log("Payload- " + payloadPatientMod.booksByNextAvailablePayload());
-		postAPIRequest.booksBynextAvailable(testData.getBasicURI(), payloadPatientMod.booksByNextAvailablePayload(),
-				headerConfig.HeaderwithToken(testData.getBookByNextAvailableAccessTokenUrl()));
+		int bookByNextAvailableId = postAPIRequest.booksBynextAvailable(testData.getBasicURI(), payloadPatientMod.booksByNextAvailablePayload(),
+				headerConfig.HeaderwithToken(testData.getBookByNextAvailableAccessTokenUrl()), testData.getBooksBynextAvailablePracticeId(),
+				testData.getBooksBynextAvailablePatientId(), testData.getBooksBynextAvailableId());
+		String slotId = Integer.toString(bookByNextAvailableId);
+		Assert.assertEquals(slotId, testData.getBooksBynextAvailableId(), "Next Available slotId id is wrong");
 	}
 
 }

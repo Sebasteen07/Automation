@@ -115,7 +115,7 @@ public class PayloadGE {
 				+ "    \"active\": true,\r\n"
 				+ "    \"practiceDisplayName\": \""+practicedisplayname+"\",\r\n"
 				+ "    \"practiceId\": \""+practiceid+"\",\r\n"
-				+ "    \"practiceName\": \"PSS - GE\",\r\n"
+				+ "    \"practiceName\": \"PSS-GE-24333-PRACTICE\",\r\n"
 				+ "    \"practiceTimezone\": \"\"\r\n"
 				+ "  },\r\n"
 				+ "  \"startDate\": \"05/12/2021\"\r\n"
