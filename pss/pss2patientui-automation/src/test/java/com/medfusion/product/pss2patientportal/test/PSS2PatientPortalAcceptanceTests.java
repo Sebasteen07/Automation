@@ -4562,38 +4562,26 @@ public class PSS2PatientPortalAcceptanceTests extends BaseTestNGWebDriver {
 	}
 
 	@Test(enabled = true, groups = { "AcceptanceTests" }, retryAnalyzer = RetryAnalyzer.class)
-	public void testE2ELinkGenerationAT() throws Exception {
-		log("Link Generation with location and Provider for AT");
+	public void testE2ELinkGenerationGW() throws Exception {
 		PSSPropertyFileLoader propertyData = new PSSPropertyFileLoader();
 		Appointment testData = new Appointment();
 		AdminUser adminuser = new AdminUser();
 		PSSNewPatient pssNewPatient = new PSSNewPatient();
-		propertyData.setAdminAT(adminuser);
-		propertyData.setAppointmentResponseAT(testData);
-		log("-----Loaded the test data for New Patient----------");
+		propertyData.setAdminGW(adminuser);
+		propertyData.setAppointmentResponseGW(testData);
 		pssNewPatient.createPatientDetails(testData);
 		log(testData.getUrlLoginLess());
 		log(testData.getAppointmenttype());
-		log("Step 2: Fetch rule and settings from PSS 2.0 Admin portal");
 		PSSAdminUtils adminUtils = new PSSAdminUtils();
+		logStep("Login to Admin Portal and generate link for location and provider");
 		adminUtils.adminSettingLinkGeneration(driver, adminuser, testData, PSSConstants.LOGINLESS);
 		String rule = adminuser.getRule();
 		rule = rule.replaceAll(" ", "");
-		log("Step 3: Move to PSS patient Portal 2.0 to book an Appointment");
-		log("Step 4: Login to PSS Appointment");
+		logStep("Move to PSS patient Portal 2.0 to book an Appointment");
 		log("Link GEneration link is   " + testData.getUrlLinkGen());
 		DismissPage dismissPage = new DismissPage(driver, testData.getUrlLinkGen());
 		Thread.sleep(1000);
 		LoginlessPatientInformation loginlessPatientInformation = dismissPage.clickDismiss();
-		log("***LoginlessPatientInformation****");
-		log("Clicked on Dismiss");
-		log("Step 6: Fill Patient criteria");
-		log("First Name- " + testData.getFirstName());
-		log("Last Name- " + testData.getLastName());
-		log("Gender- " + testData.getGender());
-		log("Email- " + testData.getEmail());
-		log("Phone Number- " + testData.getPrimaryNumber());
-		log("Date Of Birth- " + testData.getDob());
 		Thread.sleep(3000);
 		Boolean insuranceSelected = adminuser.getIsInsuranceDisplayed();
 		log("insuranceSelected--> " + insuranceSelected);
@@ -4614,73 +4602,11 @@ public class PSS2PatientPortalAcceptanceTests extends BaseTestNGWebDriver {
 					testData.getDob(), testData.getEmail(), testData.getGender(), testData.getZipCode(),
 					testData.getPrimaryNumber());
 		}
-		Log4jUtil.log("Step 8: Select Appointment for appointment.");
+	    logStep("Click on Start Scheduling Button");
 		homepage.btnStartSchedClick();
 		homepage.getLocationText();
 		homepage.getProviderText();
-		assertEquals(homepage.getLocationText(), testData.getLocation());
-		assertEquals(homepage.getProviderText(),testData.getLinkProvider());
-		Log4jUtil.log("Test Case Passed");
-	}
-
-
-	@Test(enabled = true, groups = { "AcceptanceTests" }, retryAnalyzer = RetryAnalyzer.class)
-	public void testE2ELinkGenerationGE() throws Exception {
-		log("Link Generation with location and Provider for AT");
-		PSSPropertyFileLoader propertyData = new PSSPropertyFileLoader();
-		Appointment testData = new Appointment();
-		AdminUser adminuser = new AdminUser();
-		PSSNewPatient pssNewPatient = new PSSNewPatient();
-		propertyData.setAdminGE(adminuser);
-		propertyData.setAppointmentResponseGE(testData);
-		log("-----Loaded the test data for New Patient----------");
-		pssNewPatient.createPatientDetails(testData);
-		log(testData.getUrlLoginLess());
-		log(testData.getAppointmenttype());
-		log("Step 2: Fetch rule and settings from PSS 2.0 Admin portal");
-		PSSAdminUtils adminUtils = new PSSAdminUtils();
-		adminUtils.adminSettingLinkGeneration(driver, adminuser, testData, PSSConstants.LOGINLESS);
-		String rule = adminuser.getRule();
-		rule = rule.replaceAll(" ", "");
-		log("Step 3: Move to PSS patient Portal 2.0 to book an Appointment");
-		log("Step 4: Login to PSS Appointment");
-		log("Link GEneration link is   " + testData.getUrlLinkGen());
-		DismissPage dismissPage = new DismissPage(driver, testData.getUrlLinkGen());
-		Thread.sleep(1000);
-		LoginlessPatientInformation loginlessPatientInformation = dismissPage.clickDismiss();
-		log("***LoginlessPatientInformation****");
-		log("Clicked on Dismiss");
-		log("Step 6: Fill Patient criteria");
-		log("First Name- " + testData.getFirstName());
-		log("Last Name- " + testData.getLastName());
-		log("Gender- " + testData.getGender());
-		log("Email- " + testData.getEmail());
-		log("Phone Number- " + testData.getPrimaryNumber());
-		log("Date Of Birth- " + testData.getDob());
-		Thread.sleep(3000);
-		Boolean insuranceSelected = adminuser.getIsInsuranceDisplayed();
-		log("insuranceSelected--> " + insuranceSelected);
-		HomePage homepage;
-		insuranceSelected = false;
-		log("insuranceSelected--> " + insuranceSelected);
-		if (insuranceSelected) {
-			log("insuranceSelected--> ON");
-			NewPatientInsuranceInfo newpatientinsuranceinfo = loginlessPatientInformation.fillPatientForm(
-					testData.getFirstName(), testData.getLastName(), testData.getDob(), testData.getEmail(),
-					testData.getGender(), testData.getZipCode(), testData.getPrimaryNumber());
-			homepage = newpatientinsuranceinfo.fillNewPatientInsuranceInfo(PSSConstants.INSURANCE_CARRIER,
-					PSSConstants.INSURANCE_MEMBERID, PSSConstants.INSURANCE_GROUPID,
-					PSSConstants.INSURANCE_PRIMARYPHONE);
-		} else {
-			log("insuranceSelected--> OFF");
-			homepage = loginlessPatientInformation.fillNewPatientForm(testData.getFirstName(), testData.getLastName(),
-					testData.getDob(), testData.getEmail(), testData.getGender(), testData.getZipCode(),
-					testData.getPrimaryNumber());
-		}
-		Log4jUtil.log("Step 8: Select Appointment for appointment.");
-		homepage.btnStartSchedClick();
-		homepage.getLocationText();
-		homepage.getProviderText();
+	    logStep("Click on Start Scheduling Button");
 		assertEquals(homepage.getLocationText(), testData.getLocation());
 		assertEquals(homepage.getProviderText(), testData.getLinkProvider());
 		Log4jUtil.log("Test Case Passed");
@@ -4688,38 +4614,26 @@ public class PSS2PatientPortalAcceptanceTests extends BaseTestNGWebDriver {
 
 
 	@Test(enabled = true, groups = { "AcceptanceTests" }, retryAnalyzer = RetryAnalyzer.class)
-	public void testE2ELinkGenerationGW() throws Exception {
-		log("Link Generation with location and Provider for AT");
+	public void testE2ELinkGenerationGE() throws Exception {
 		PSSPropertyFileLoader propertyData = new PSSPropertyFileLoader();
 		Appointment testData = new Appointment();
 		AdminUser adminuser = new AdminUser();
 		PSSNewPatient pssNewPatient = new PSSNewPatient();
-		propertyData.setAdminGW(adminuser);
-		propertyData.setAppointmentResponseGW(testData);
-		log("-----Loaded the test data for New Patient----------");
+		propertyData.setAdminGE(adminuser);
+		propertyData.setAppointmentResponseGE(testData);
 		pssNewPatient.createPatientDetails(testData);
 		log(testData.getUrlLoginLess());
 		log(testData.getAppointmenttype());
-		log("Step 2: Fetch rule and settings from PSS 2.0 Admin portal");
 		PSSAdminUtils adminUtils = new PSSAdminUtils();
+		logStep("Login to Admin Portal and generate link for location and provider");
 		adminUtils.adminSettingLinkGeneration(driver, adminuser, testData, PSSConstants.LOGINLESS);
 		String rule = adminuser.getRule();
 		rule = rule.replaceAll(" ", "");
-		log("Step 3: Move to PSS patient Portal 2.0 to book an Appointment");
-		log("Step 4: Login to PSS Appointment");
+		logStep("Move to PSS patient Portal 2.0 to book an Appointment");
 		log("Link GEneration link is   " + testData.getUrlLinkGen());
 		DismissPage dismissPage = new DismissPage(driver, testData.getUrlLinkGen());
 		Thread.sleep(1000);
 		LoginlessPatientInformation loginlessPatientInformation = dismissPage.clickDismiss();
-		log("***LoginlessPatientInformation****");
-		log("Clicked on Dismiss");
-		log("Step 6: Fill Patient criteria");
-		log("First Name- " + testData.getFirstName());
-		log("Last Name- " + testData.getLastName());
-		log("Gender- " + testData.getGender());
-		log("Email- " + testData.getEmail());
-		log("Phone Number- " + testData.getPrimaryNumber());
-		log("Date Of Birth- " + testData.getDob());
 		Thread.sleep(3000);
 		Boolean insuranceSelected = adminuser.getIsInsuranceDisplayed();
 		log("insuranceSelected--> " + insuranceSelected);
@@ -4740,48 +4654,87 @@ public class PSS2PatientPortalAcceptanceTests extends BaseTestNGWebDriver {
 					testData.getDob(), testData.getEmail(), testData.getGender(), testData.getZipCode(),
 					testData.getPrimaryNumber());
 		}
-		Log4jUtil.log("Step 8: Select Appointment for appointment.");
+	    logStep("Click on Start Scheduling Button");
 		homepage.btnStartSchedClick();
 		homepage.getLocationText();
 		homepage.getProviderText();
+	    logStep("Click on Start Scheduling Button");
 		assertEquals(homepage.getLocationText(), testData.getLocation());
-		assertEquals(homepage.getProviderText(),testData.getLinkProvider());
+		assertEquals(homepage.getProviderText(), testData.getLinkProvider());
 		Log4jUtil.log("Test Case Passed");
 	}
 
 	@Test(enabled = true, groups = { "AcceptanceTests" }, retryAnalyzer = RetryAnalyzer.class)
+	public void testE2ELinkGenerationAT() throws Exception {
+		PSSPropertyFileLoader propertyData = new PSSPropertyFileLoader();
+		Appointment testData = new Appointment();
+		AdminUser adminuser = new AdminUser();
+		PSSNewPatient pssNewPatient = new PSSNewPatient();
+		propertyData.setAdminAT(adminuser);
+		propertyData.setAppointmentResponseAT(testData);
+		pssNewPatient.createPatientDetails(testData);
+		log(testData.getUrlLoginLess());
+		log(testData.getAppointmenttype());
+		PSSAdminUtils adminUtils = new PSSAdminUtils();
+		logStep("Login to Admin Portal and generate link for location and provider");
+		adminUtils.adminSettingLinkGeneration(driver, adminuser, testData, PSSConstants.LOGINLESS);
+		String rule = adminuser.getRule();
+		rule = rule.replaceAll(" ", "");
+		logStep("Move to PSS patient Portal 2.0 to book an Appointment");
+		log("Link GEneration link is   " + testData.getUrlLinkGen());
+		DismissPage dismissPage = new DismissPage(driver, testData.getUrlLinkGen());
+		Thread.sleep(1000);
+		LoginlessPatientInformation loginlessPatientInformation = dismissPage.clickDismiss();
+		Thread.sleep(3000);
+		Boolean insuranceSelected = adminuser.getIsInsuranceDisplayed();
+		log("insuranceSelected--> " + insuranceSelected);
+		HomePage homepage;
+		insuranceSelected = false;
+		log("insuranceSelected--> " + insuranceSelected);
+		if (insuranceSelected) {
+			log("insuranceSelected--> ON");
+			NewPatientInsuranceInfo newpatientinsuranceinfo = loginlessPatientInformation.fillPatientForm(
+					testData.getFirstName(), testData.getLastName(), testData.getDob(), testData.getEmail(),
+					testData.getGender(), testData.getZipCode(), testData.getPrimaryNumber());
+			homepage = newpatientinsuranceinfo.fillNewPatientInsuranceInfo(PSSConstants.INSURANCE_CARRIER,
+					PSSConstants.INSURANCE_MEMBERID, PSSConstants.INSURANCE_GROUPID,
+					PSSConstants.INSURANCE_PRIMARYPHONE);
+		} else {
+			log("insuranceSelected--> OFF");
+			homepage = loginlessPatientInformation.fillNewPatientForm(testData.getFirstName(), testData.getLastName(),
+					testData.getDob(), testData.getEmail(), testData.getGender(), testData.getZipCode(),
+					testData.getPrimaryNumber());
+		}
+	    logStep("Click on Start Scheduling Button");
+		homepage.btnStartSchedClick();
+		homepage.getLocationText();
+		homepage.getProviderText();
+	    logStep("Click on Start Scheduling Button");
+		assertEquals(homepage.getLocationText(), testData.getLocation());
+		assertEquals(homepage.getProviderText(), testData.getLinkProvider());
+		Log4jUtil.log("Test Case Passed");
+	}
+	@Test(enabled = true, groups = { "AcceptanceTests" }, retryAnalyzer = RetryAnalyzer.class)
 	public void testE2ELinkGenerationNG() throws Exception {
-		log("Link Generation with location and Provider for AT");
 		PSSPropertyFileLoader propertyData = new PSSPropertyFileLoader();
 		Appointment testData = new Appointment();
 		AdminUser adminuser = new AdminUser();
 		PSSNewPatient pssNewPatient = new PSSNewPatient();
 		propertyData.setAdminNG(adminuser);
 		propertyData.setAppointmentResponseNG(testData);
-		log("-----Loaded the test data for New Patient----------");
 		pssNewPatient.createPatientDetails(testData);
 		log(testData.getUrlLoginLess());
 		log(testData.getAppointmenttype());
-		log("Step 2: Fetch rule and settings from PSS 2.0 Admin portal");
 		PSSAdminUtils adminUtils = new PSSAdminUtils();
+		logStep("Login to Admin Portal and generate link for location and provider");
 		adminUtils.adminSettingLinkGeneration(driver, adminuser, testData, PSSConstants.LOGINLESS);
 		String rule = adminuser.getRule();
 		rule = rule.replaceAll(" ", "");
-		log("Step 3: Move to PSS patient Portal 2.0 to book an Appointment");
-		log("Step 4: Login to PSS Appointment");
+		logStep("Move to PSS patient Portal 2.0 to book an Appointment");
 		log("Link GEneration link is   " + testData.getUrlLinkGen());
 		DismissPage dismissPage = new DismissPage(driver, testData.getUrlLinkGen());
 		Thread.sleep(1000);
 		LoginlessPatientInformation loginlessPatientInformation = dismissPage.clickDismiss();
-		log("***LoginlessPatientInformation****");
-		log("Clicked on Dismiss");
-		log("Step 6: Fill Patient criteria");
-		log("First Name- " + testData.getFirstName());
-		log("Last Name- " + testData.getLastName());
-		log("Gender- " + testData.getGender());
-		log("Email- " + testData.getEmail());
-		log("Phone Number- " + testData.getPrimaryNumber());
-		log("Date Of Birth- " + testData.getDob());
 		Thread.sleep(3000);
 		Boolean insuranceSelected = adminuser.getIsInsuranceDisplayed();
 		log("insuranceSelected--> " + insuranceSelected);
@@ -4802,10 +4755,11 @@ public class PSS2PatientPortalAcceptanceTests extends BaseTestNGWebDriver {
 					testData.getDob(), testData.getEmail(), testData.getGender(), testData.getZipCode(),
 					testData.getPrimaryNumber());
 		}
-		Log4jUtil.log("Step 8: Select Appointment for appointment.");
+	    logStep("Click on Start Scheduling Button");
 		homepage.btnStartSchedClick();
 		homepage.getLocationText();
 		homepage.getProviderText();
+	    logStep("Click on Start Scheduling Button");
 		assertEquals(homepage.getLocationText(), testData.getLocation());
 		assertEquals(homepage.getProviderText(), testData.getLinkProvider());
 		Log4jUtil.log("Test Case Passed");
