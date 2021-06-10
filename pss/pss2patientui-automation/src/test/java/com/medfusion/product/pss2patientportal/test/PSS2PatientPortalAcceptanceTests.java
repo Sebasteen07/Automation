@@ -4562,17 +4562,18 @@ public class PSS2PatientPortalAcceptanceTests extends BaseTestNGWebDriver {
 	}
 
 	@Test(enabled = true, groups = { "AcceptanceTests" }, retryAnalyzer = RetryAnalyzer.class)
-	public void testE2ELinkGenerationGW() throws Exception {
-		log("Link Generation with location and Provider for GW");
+	public void testE2ELinkGenerationAT() throws Exception {
+		log("Link Generation with location and Provider for AT");
 		PSSPropertyFileLoader propertyData = new PSSPropertyFileLoader();
 		Appointment testData = new Appointment();
 		AdminUser adminuser = new AdminUser();
 		PSSNewPatient pssNewPatient = new PSSNewPatient();
-		propertyData.setAdminGW(adminuser);
-		propertyData.setAppointmentResponseGW(testData);
+		propertyData.setAdminAT(adminuser);
+		propertyData.setAppointmentResponseAT(testData);
 		log("-----Loaded the test data for New Patient----------");
 		pssNewPatient.createPatientDetails(testData);
 		log(testData.getUrlLoginLess());
+		log(testData.getAppointmenttype());
 		log("Step 2: Fetch rule and settings from PSS 2.0 Admin portal");
 		PSSAdminUtils adminUtils = new PSSAdminUtils();
 		adminUtils.adminSettingLinkGeneration(driver, adminuser, testData, PSSConstants.LOGINLESS);
@@ -4615,22 +4616,17 @@ public class PSS2PatientPortalAcceptanceTests extends BaseTestNGWebDriver {
 		}
 		Log4jUtil.log("Step 8: Select Appointment for appointment.");
 		homepage.btnStartSchedClick();
-		AppointmentPage appointment = homepage.skipInsurancepage(driver);
-		Log4jUtil.log("Step 9: Verfiy Appointment Page and appointment =" + testData.getAppointmenttype());
-
-		AppointmentDateTime aptDateTime = appointment.selectAppointmentandClick(testData.getAppointmenttype(),
-				Boolean.valueOf(testData.getIsAppointmentPopup()));
-		aptDateTime.selectDate(testData.getIsNextDayBooking());
-
-		aptDateTime.selectDate(testData.getIsNextDayBooking());
-		Thread.sleep(6000);
-
+		homepage.getLocationText();
+		homepage.getProviderText();
+		assertEquals(homepage.getLocationText(), testData.getLocation());
+		assertEquals(homepage.getProviderText(),testData.getLinkProvider());
 		Log4jUtil.log("Test Case Passed");
 	}
 
+
 	@Test(enabled = true, groups = { "AcceptanceTests" }, retryAnalyzer = RetryAnalyzer.class)
 	public void testE2ELinkGenerationGE() throws Exception {
-		log("Link Generation with location and Provider for GE");
+		log("Link Generation with location and Provider for AT");
 		PSSPropertyFileLoader propertyData = new PSSPropertyFileLoader();
 		Appointment testData = new Appointment();
 		AdminUser adminuser = new AdminUser();
@@ -4683,28 +4679,23 @@ public class PSS2PatientPortalAcceptanceTests extends BaseTestNGWebDriver {
 		}
 		Log4jUtil.log("Step 8: Select Appointment for appointment.");
 		homepage.btnStartSchedClick();
-		AppointmentPage appointment = homepage.skipInsurancepage(driver);
-		Log4jUtil.log("Step 9: Verfiy Appointment Page and appointment =" + testData.getAppointmenttype());
-
-		AppointmentDateTime aptDateTime = appointment.selectAppointmentandClick(testData.getAppointmenttype(),
-				Boolean.valueOf(testData.getIsAppointmentPopup()));
-		aptDateTime.selectDate(testData.getIsNextDayBooking());
-
-		aptDateTime.selectDate(testData.getIsNextDayBooking());
-		Thread.sleep(6000);
-
+		homepage.getLocationText();
+		homepage.getProviderText();
+		assertEquals(homepage.getLocationText(), testData.getLocation());
+		assertEquals(homepage.getProviderText(), testData.getLinkProvider());
 		Log4jUtil.log("Test Case Passed");
 	}
 
+
 	@Test(enabled = true, groups = { "AcceptanceTests" }, retryAnalyzer = RetryAnalyzer.class)
-	public void testE2ELinkGenerationAT() throws Exception {
+	public void testE2ELinkGenerationGW() throws Exception {
 		log("Link Generation with location and Provider for AT");
 		PSSPropertyFileLoader propertyData = new PSSPropertyFileLoader();
 		Appointment testData = new Appointment();
 		AdminUser adminuser = new AdminUser();
 		PSSNewPatient pssNewPatient = new PSSNewPatient();
-		propertyData.setAdminAT(adminuser);
-		propertyData.setAppointmentResponseAT(testData);
+		propertyData.setAdminGW(adminuser);
+		propertyData.setAppointmentResponseGW(testData);
 		log("-----Loaded the test data for New Patient----------");
 		pssNewPatient.createPatientDetails(testData);
 		log(testData.getUrlLoginLess());
