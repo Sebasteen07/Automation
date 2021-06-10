@@ -26,7 +26,6 @@ public class PostAPIRequestPatientMod extends BaseTestNGWebDriver {
 
 		JsonPath js = new JsonPath(response.asString());
 		String id = js.getString("location.id");
-		apiVerification.responseTimeValidation(response);
 
 		return id;
 	}
@@ -37,9 +36,7 @@ public class PostAPIRequestPatientMod extends BaseTestNGWebDriver {
 				.body("token", Matchers.notNullValue()).extract().response();
 
 		JsonPath js = new JsonPath(response.asString());
-
 		String extPracticeId = js.get("extPracticeId");
-		apiVerification.responseTimeValidation(response);
 
 		return extPracticeId;
 	}
@@ -54,7 +51,6 @@ public class PostAPIRequestPatientMod extends BaseTestNGWebDriver {
 		String practiceId = js.get("practiceId");
 		log("Practice name -" + js.getString("name"));
 		log("Practice name -" + js.getString("practiceId"));
-		apiVerification.responseTimeValidation(response);
 
 		return practiceId;
 	}
@@ -69,7 +65,6 @@ public class PostAPIRequestPatientMod extends BaseTestNGWebDriver {
 		String practiceId = js.get("practiceId");
 		log("Practice name -" + js.getString("name"));
 		log("Practice name -" + js.getString("practiceId"));
-		apiVerification.responseTimeValidation(response);
 
 		return practiceId;
 	}
@@ -83,7 +78,6 @@ public class PostAPIRequestPatientMod extends BaseTestNGWebDriver {
 
 		String patientId = js.get("emrid");
 		log("Patient id -" + js.getString("emrid"));
-		apiVerification.responseTimeValidation(response);
 
 		return patientId;
 	}
@@ -97,7 +91,6 @@ public class PostAPIRequestPatientMod extends BaseTestNGWebDriver {
 
 		String patientId = js.get("emrid");
 		log("Patient id -" + js.getString("emrid"));
-		apiVerification.responseTimeValidation(response);
 
 		return patientId;
 	}
@@ -108,9 +101,7 @@ public class PostAPIRequestPatientMod extends BaseTestNGWebDriver {
 				.assertThat().statusCode(200).body("token", Matchers.notNullValue()).extract().response();
 
 		JsonPath js = new JsonPath(response.asString());
-
 		String guid = js.get("guid");
-		apiVerification.responseTimeValidation(response);
 
 		return guid;
 	}
@@ -125,7 +116,6 @@ public class PostAPIRequestPatientMod extends BaseTestNGWebDriver {
 		String extPracticeId = js.get("extPracticeId");
 		log("Practice name -" + js.getString("name"));
 		log("Ext PracticeId -" + js.getString("extPracticeId"));
-		apiVerification.responseTimeValidation(response);
 
 		return extPracticeId;
 	}
@@ -138,10 +128,8 @@ public class PostAPIRequestPatientMod extends BaseTestNGWebDriver {
 		JsonPath js = new JsonPath(response.asString());
 
 		String extPracticeId = js.get("extPracticeId");
-
 		log("Practice name -" + js.getString("name"));
 		log("Ext PracticeId -" + js.getString("extPracticeId"));
-		apiVerification.responseTimeValidation(response);
 
 		return extPracticeId;
 	}
@@ -152,7 +140,6 @@ public class PostAPIRequestPatientMod extends BaseTestNGWebDriver {
 
 		JSONObject jsonobject = new JSONObject(response.asString());
 		ParseJSONFile.getKey(jsonobject, "status");
-		apiVerification.responseTimeValidation(response);
 
 		return response;
 	}
@@ -161,7 +148,6 @@ public class PostAPIRequestPatientMod extends BaseTestNGWebDriver {
 		RestAssured.baseURI = baseurl;
 		Response response = given().log().all().when().get(practiceId + "/logo").then().log().all().assertThat().statusCode(200).extract().response();
 		JsonPath js = new JsonPath(response.asString());
-		apiVerification.responseTimeValidation(response);
 
 		return js;
 	}
@@ -176,7 +162,6 @@ public class PostAPIRequestPatientMod extends BaseTestNGWebDriver {
 		String practiceId = js.get("practiceId");
 		log("Practice id -" + js.getString("practiceId"));
 		log("Practice name-" + js.getString("practiceName"));
-		apiVerification.responseTimeValidation(response);
 
 		return practiceId;
 	}
@@ -191,7 +176,6 @@ public class PostAPIRequestPatientMod extends BaseTestNGWebDriver {
 		String extPracticeId = js.get("extPracticeId");
 		log("Practice name -" + js.getString("name"));
 		log("Ext PracticeId -" + js.getString("practiceId"));
-		apiVerification.responseTimeValidation(response);
 
 		return extPracticeId;
 	}
@@ -202,7 +186,6 @@ public class PostAPIRequestPatientMod extends BaseTestNGWebDriver {
 				given().log().all().when().get(practiceId + "/reseller/logo").then().log().all().assertThat().statusCode(200).extract().response();
 
 		JsonPath js = new JsonPath(response.asString());
-		apiVerification.responseTimeValidation(response);
 
 		return js;
 	}
@@ -216,7 +199,6 @@ public class PostAPIRequestPatientMod extends BaseTestNGWebDriver {
 		int tokenExpirationTime = js.get("tokenExpirationTime");
 		int expirationWarningTime = js.get("expirationWarningTime");
 		log("Expiration Warning Time -" + expirationWarningTime);
-		apiVerification.responseTimeValidation(response);
 
 		return tokenExpirationTime;
 	}
@@ -230,7 +212,6 @@ public class PostAPIRequestPatientMod extends BaseTestNGWebDriver {
 		String extPracticeId = js.get("extPracticeId");
 		log("Practice id -" + js.getString("practiceId"));
 		log("Practice guid -" + js.getString("guid"));
-		apiVerification.responseTimeValidation(response);
 
 		return extPracticeId;
 	}
@@ -245,7 +226,6 @@ public class PostAPIRequestPatientMod extends BaseTestNGWebDriver {
 		String extPracticeId = js.get("extPracticeId");
 		log("Practice name -" + js.getString("name"));
 		log("Ext PracticeId -" + js.getString("extPracticeId"));
-		apiVerification.responseTimeValidation(response);
 
 		return extPracticeId;
 	}
@@ -260,8 +240,6 @@ public class PostAPIRequestPatientMod extends BaseTestNGWebDriver {
 
 		apiVerification.responseKeyValidation(response, "code");
 		apiVerification.responseKeyValidation(response, "description");
-		apiVerification.responseTimeValidation(response);
-
 
 		return response;
 	}
@@ -274,7 +252,6 @@ public class PostAPIRequestPatientMod extends BaseTestNGWebDriver {
 		JSONObject jsonobject = new JSONObject(response.asString());
 
 		ParseJSONFile.getKey(jsonobject, "accessToken");
-		apiVerification.responseTimeValidation(response);
 
 		JsonPath jsonPath = response.jsonPath();
 		String access_Token = jsonPath.get("accessToken");
@@ -293,7 +270,6 @@ public class PostAPIRequestPatientMod extends BaseTestNGWebDriver {
 		log("Show Cancel Reason -" + js.getString("showCancelReason"));
 		log("Show Cancel Reason From PM -" + js.getString("showCancelReasonFromPM"));
 		log("Show Cancel Message -" + js.getString("showCancelMessage"));
-		apiVerification.responseTimeValidation(response);
 
 		return js;
 	}
@@ -310,7 +286,6 @@ public class PostAPIRequestPatientMod extends BaseTestNGWebDriver {
 		log("Appointment location -" + js.getString("location.id"));
 		log("Appointment Type -" + js.getString("appointmentType.name"));
 		log("Appointment Book Name -" + js.getString("book.displayName"));
-		apiVerification.responseTimeValidation(response);
 
 		return response;
 	}
@@ -321,9 +296,7 @@ public class PostAPIRequestPatientMod extends BaseTestNGWebDriver {
 				.body("message", Matchers.notNullValue()).extract().response();
 
 		JsonPath js = new JsonPath(response.asString());
-
 		log("Message -" + js.getString("message"));
-		apiVerification.responseTimeValidation(response);
 
 		return js;
 	}
@@ -339,7 +312,6 @@ public class PostAPIRequestPatientMod extends BaseTestNGWebDriver {
 		apiVerification.responseKeyValidation(response, "type");
 		apiVerification.responseKeyValidation(response, "code");
 		apiVerification.responseKeyValidation(response, "message");
-		apiVerification.responseTimeValidation(response);
 
 		return js;
 	}
@@ -354,7 +326,6 @@ public class PostAPIRequestPatientMod extends BaseTestNGWebDriver {
 
 		apiVerification.responseKeyValidation(response, "name");
 		apiVerification.responseKeyValidation(response, "code");
-		apiVerification.responseTimeValidation(response);
 
 		return js;
 	}
@@ -365,7 +336,6 @@ public class PostAPIRequestPatientMod extends BaseTestNGWebDriver {
 				given().log().all().when().get(practiceId + "/book/" + bookId + "/image").then().log().all().assertThat().statusCode(200).extract().response();
 
 		JsonPath js = new JsonPath(response.asString());
-		apiVerification.responseTimeValidation(response);
 
 		return js;
 	}
@@ -379,7 +349,6 @@ public class PostAPIRequestPatientMod extends BaseTestNGWebDriver {
 
 		apiVerification.responseKeyValidation(response, "flag");
 		apiVerification.responseKeyValidation(response, "code");
-		apiVerification.responseTimeValidation(response);
 
 		return js;
 	}
@@ -392,7 +361,6 @@ public class PostAPIRequestPatientMod extends BaseTestNGWebDriver {
 		JsonPath js = new JsonPath(response.asString());
 		String demographicsId = js.getString("id");
 		log("Practice Name -" + js.getString("practiceName"));
-		apiVerification.responseTimeValidation(response);
 
 		return demographicsId;
 	}
@@ -408,7 +376,6 @@ public class PostAPIRequestPatientMod extends BaseTestNGWebDriver {
 		JSONObject jsonobject = new JSONObject(response.asString());
 		ParseJSONFile.getKey(jsonobject, "entity");
 		ParseJSONFile.getKey(jsonobject, "code");
-		apiVerification.responseTimeValidation(response);
 
 		return response;
 	}
@@ -424,7 +391,6 @@ public class PostAPIRequestPatientMod extends BaseTestNGWebDriver {
 		JSONObject jsonobject = new JSONObject(response.asString());
 		ParseJSONFile.getKey(jsonobject, "entity");
 		ParseJSONFile.getKey(jsonobject, "code");
-		apiVerification.responseTimeValidation(response);
 
 		return response;
 	}
@@ -436,7 +402,6 @@ public class PostAPIRequestPatientMod extends BaseTestNGWebDriver {
 
 		apiVerification.responseKeyValidation(response, "pssCode");
 		apiVerification.responseKeyValidation(response, "displayName");
-		apiVerification.responseTimeValidation(response);
 
 		return response;
 	}
@@ -448,7 +413,6 @@ public class PostAPIRequestPatientMod extends BaseTestNGWebDriver {
 
 		apiVerification.responseKeyValidation(response, "key");
 		apiVerification.responseKeyValidation(response, "value");
-		apiVerification.responseTimeValidation(response);
 
 		return response;
 	}
@@ -462,7 +426,6 @@ public class PostAPIRequestPatientMod extends BaseTestNGWebDriver {
 		String demographicId = js.getString("id");
 		log("Demographics First Name -" + js.getString("firstName"));
 		log("Demographics Last Name -" + js.getString("lastName"));
-		apiVerification.responseTimeValidation(response);
 
 		return demographicId;
 	}
@@ -476,7 +439,6 @@ public class PostAPIRequestPatientMod extends BaseTestNGWebDriver {
 		int id = js.getInt("id");
 		log("Provider id-" + js.getString("id"));
 		log("Provider Name -" + js.getString("displayName"));
-		apiVerification.responseTimeValidation(response);
 
 		return id;
 	}
@@ -488,7 +450,6 @@ public class PostAPIRequestPatientMod extends BaseTestNGWebDriver {
 
 		JsonPath js = new JsonPath(response.asString());
 		int locationPracticeId = js.getInt("id[0]");
-		apiVerification.responseTimeValidation(response);
 
 		return locationPracticeId;
 	}
@@ -502,7 +463,6 @@ public class PostAPIRequestPatientMod extends BaseTestNGWebDriver {
 		JSONObject jsonobject = new JSONObject(response.asString());
 		ParseJSONFile.getKey(jsonobject, "displayName");
 		ParseJSONFile.getKey(jsonobject, "locTimeZone");
-		apiVerification.responseTimeValidation(response);
 
 		return response;
 	}
@@ -516,7 +476,6 @@ public class PostAPIRequestPatientMod extends BaseTestNGWebDriver {
 
 		String patientId = js.get("id");
 		log("Patient  id -" + js.getString("id"));
-		apiVerification.responseTimeValidation(response);
 
 		return patientId;
 	}
@@ -530,7 +489,6 @@ public class PostAPIRequestPatientMod extends BaseTestNGWebDriver {
 
 		String patientId = js.get("id");
 		log("Patient  id -" + js.getString("otpPatientDetails[0].text"));
-		apiVerification.responseTimeValidation(response);
 
 		return patientId;
 	}
@@ -541,9 +499,7 @@ public class PostAPIRequestPatientMod extends BaseTestNGWebDriver {
 				.all().assertThat().statusCode(200).extract().response();
 
 		JSONObject jsonobject = new JSONObject(response.asString());
-
 		ParseJSONFile.getKey(jsonobject, "displayName");
-		apiVerification.responseTimeValidation(response);
 
 		return response;
 	}
@@ -556,7 +512,6 @@ public class PostAPIRequestPatientMod extends BaseTestNGWebDriver {
 		JsonPath js = new JsonPath(response.asString());
 		log("Valid Token -" + js.getString("validToken"));
 		log("Access Token -" + js.getString("accessToken"));
-		apiVerification.responseTimeValidation(response);
 
 		return response;
 	}
@@ -569,7 +524,6 @@ public class PostAPIRequestPatientMod extends BaseTestNGWebDriver {
 		JsonPath js = new JsonPath(response.asString());
 		log("Show Search Location -" + js.getString("showSearchLocation"));
 		log("Show Next Available -" + js.getString("showNextAvailable"));
-		apiVerification.responseTimeValidation(response);
 
 		return response;
 	}
@@ -586,7 +540,6 @@ public class PostAPIRequestPatientMod extends BaseTestNGWebDriver {
 		log("Patient Id -" + js.getString("patientId"));
 		log("location Name -" + js.getString("locationName"));
 		log("Book Name -" + js.getString("bookName"));
-		apiVerification.responseTimeValidation(response);
 
 		return bookName;
 	}
@@ -597,7 +550,6 @@ public class PostAPIRequestPatientMod extends BaseTestNGWebDriver {
 				given().log().all().when().get(practiceId + "/appointment/" + appointmentId).then().log().all().assertThat().statusCode(200).extract().response();
 
 		JsonPath js = new JsonPath(response.asString());
-		apiVerification.responseTimeValidation(response);
 
 		return js;
 	}
@@ -608,7 +560,6 @@ public class PostAPIRequestPatientMod extends BaseTestNGWebDriver {
 				.assertThat().statusCode(200).extract().response();
 
 		JsonPath js = new JsonPath(response.asString());
-		apiVerification.responseTimeValidation(response);
 
 		return js;
 	}
@@ -620,8 +571,6 @@ public class PostAPIRequestPatientMod extends BaseTestNGWebDriver {
 				.statusCode(200).extract().response();
 
 		JsonPath js = new JsonPath(response.asString());
-		apiVerification.responseTimeValidation(response);
-
 
 		return js;
 	}
@@ -635,7 +584,6 @@ public class PostAPIRequestPatientMod extends BaseTestNGWebDriver {
 
 		apiVerification.responseKeyValidation(response, "displayName");
 		apiVerification.responseKeyValidation(response, "type");
-		apiVerification.responseTimeValidation(response);
 
 		return js;
 	}
@@ -649,7 +597,6 @@ public class PostAPIRequestPatientMod extends BaseTestNGWebDriver {
 
 		apiVerification.responseKeyValidation(response, "displayName");
 		apiVerification.responseKeyValidation(response, "type");
-		apiVerification.responseTimeValidation(response);
 
 		return js;
 	}
@@ -674,7 +621,6 @@ public class PostAPIRequestPatientMod extends BaseTestNGWebDriver {
 		JsonPath js = new JsonPath(response.asString());
 		int bookByNextAvailableId = js.getInt("id[0]");
 		log("Next availability Slots -" + js.getString("nextAvailabilitySlot[0]"));
-		apiVerification.responseTimeValidation(response);
 		return bookByNextAvailableId;
 	}
 }

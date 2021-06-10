@@ -55,20 +55,16 @@ public class PostAPIRequestGE extends BaseTestNGWebDriver {
 
 		log("Body ------> " + response.body().asString());
 
-		apiVerification.responseTimeValidation(response);
-
 		JSONArray jsonarray = new JSONArray(response.asString());
 		JSONObject jsonobject = new JSONObject();
 
 		int i = 0;
 		while (i < jsonarray.length()) {
-
 			jsonobject = jsonarray.getJSONObject(i);
 			ParseJSONFile.getKey(jsonobject, "key");
 			ParseJSONFile.getKey(jsonobject, "type");
 			i++;
 		}
-
 		return response;
 	}
 
@@ -76,7 +72,6 @@ public class PostAPIRequestGE extends BaseTestNGWebDriver {
 		RestAssured.baseURI = baseurl;
 		Response response = given().log().all().when().get(practiceId + "/appointmenttypes").then().log().all().assertThat().statusCode(200).extract().response();
 
-		apiVerification.responseTimeValidation(response);
 		apiVerification.responseKeyValidation(response, "id");
 		apiVerification.responseKeyValidation(response, "name");
 		apiVerification.responseKeyValidation(response, "displayName");
@@ -88,7 +83,6 @@ public class PostAPIRequestGE extends BaseTestNGWebDriver {
 		RestAssured.baseURI = baseurl;
 		Response response = given().log().all().when().get(practiceId + "/books").then().log().all().assertThat().statusCode(200).extract().response();
 
-		apiVerification.responseTimeValidation(response);
 		apiVerification.responseKeyValidation(response, "resourceId");
 		apiVerification.responseKeyValidation(response, "resourceName");
 		apiVerification.responseKeyValidation(response, "displayName");
@@ -103,14 +97,12 @@ public class PostAPIRequestGE extends BaseTestNGWebDriver {
 				.extract().response();
 
 		log("Body ------ " + response.asString());
-		apiVerification.responseTimeValidation(response);
 
 		JSONArray jsonarray = new JSONArray(response.asString());
 		JSONObject jsonobject = new JSONObject();
 
 		int i = 0;
 		while (i < jsonarray.length()) {
-
 			jsonobject = jsonarray.getJSONObject(i);
 			ParseJSONFile.getKey(jsonobject, "name");
 			ParseJSONFile.getKey(jsonobject, "zipCode");
@@ -124,14 +116,12 @@ public class PostAPIRequestGE extends BaseTestNGWebDriver {
 		RestAssured.baseURI = baseurl;
 		Response response = RestAssured.given().when().headers(Header).when().get(practiceId + "/locations").then().log().all().extract().response();
 		log("Body ------ " + response.asString());
-		apiVerification.responseTimeValidation(response);
 
 		JSONArray jsonarray = new JSONArray(response.asString());
 		JSONObject jsonobject = new JSONObject();
 
 		int i = 0;
 		while (i < jsonarray.length()) {
-
 			jsonobject = jsonarray.getJSONObject(i);
 			ParseJSONFile.getKey(jsonobject, "id");
 			ParseJSONFile.getKey(jsonobject, "name");
@@ -147,7 +137,6 @@ public class PostAPIRequestGE extends BaseTestNGWebDriver {
 				.body("_links.self.href", Matchers.notNullValue()).extract().response();
 
 		JsonPath js = new JsonPath(response.asString());
-		apiVerification.responseTimeValidation(response);
 		log("Actuator Link - " + js.getString("_links.self.href"));
 
 		return response;
@@ -157,7 +146,6 @@ public class PostAPIRequestGE extends BaseTestNGWebDriver {
 		RestAssured.baseURI = baseurl;
 		Response response =
 				RestAssured.given().log().all().when().headers(Header).body(b).when().post(practiceId + "/getlastseenprovider").then().log().all().extract().response();
-		apiVerification.responseTimeValidation(response);
 
 		JsonPath js = new JsonPath(response.asString());
 		int resourceId = js.getInt("resourceId");
@@ -177,7 +165,6 @@ public class PostAPIRequestGE extends BaseTestNGWebDriver {
 
 		log("status of an Appointment -" + js.getString("status"));
 		log("startDateTime- " + js.getString("startDateTime"));
-		apiVerification.responseTimeValidation(response);
 		return js;
 	}
 
@@ -270,8 +257,6 @@ public class PostAPIRequestGE extends BaseTestNGWebDriver {
 		Response response = given().log().all().headers(Header).body(b).post(practiceId + "/rescheduleappointment").then().log().all().assertThat().statusCode(200)
 				.extract().response();
 
-		apiVerification.responseTimeValidation(response);
-
 		return response;
 	}
 
@@ -285,7 +270,6 @@ public class PostAPIRequestGE extends BaseTestNGWebDriver {
 
 		ParseJSONFile.getKey(jsonobject, "startDateTime");
 		ParseJSONFile.getKey(jsonobject, "slotId");
-		apiVerification.responseTimeValidation(response);
 
 		return response;
 	}
@@ -294,11 +278,9 @@ public class PostAPIRequestGE extends BaseTestNGWebDriver {
 		RestAssured.baseURI = baseurl;
 		Response response = RestAssured.given().log().all().when().headers(Header).body(b).when().post(practiceId + "/addpatient").then().log().all().assertThat()
 				.statusCode(200).extract().response();
-		APIVerification apiVerification = new APIVerification();
 		JSONObject jsonobject = new JSONObject(response.asString());
 		ParseJSONFile.getKey(jsonobject, "id");
 		ParseJSONFile.getKey(jsonobject, "firstName");
-		apiVerification.responseTimeValidation(response);
 		return response;
 	}
 
@@ -309,7 +291,6 @@ public class PostAPIRequestGE extends BaseTestNGWebDriver {
 		JSONObject jsonobject = new JSONObject(response.asString());
 		ParseJSONFile.getKey(jsonobject, "resourceId");
 		ParseJSONFile.getKey(jsonobject, "nextAvailabledate");
-		apiVerification.responseTimeValidation(response);
 		return response;
 	}
 
@@ -317,7 +298,6 @@ public class PostAPIRequestGE extends BaseTestNGWebDriver {
 		RestAssured.baseURI = baseurl;
 		Response response = given().queryParam("patientId", "26854").log().all().when().get(practiceId + "/demographics").then().log().all().assertThat()
 				.statusCode(200).body("firstName", equalTo(firstName)).body("lastName", equalTo(lastName)).extract().response();
-		apiVerification.responseTimeValidation(response);
 		JSONObject jsonobject = new JSONObject(response.asString());
 		ParseJSONFile.getKey(jsonobject, "id");
 		return response;
@@ -326,7 +306,6 @@ public class PostAPIRequestGE extends BaseTestNGWebDriver {
 	public Response healthOperationGET(String baseurl) {
 		RestAssured.baseURI = baseurl;
 		Response response = given().log().all().when().get("/actuator/health").then().log().all().assertThat().statusCode(200).extract().response();
-		apiVerification.responseTimeValidation(response);
 		JSONObject jsonobject = new JSONObject(response.asString());
 		ParseJSONFile.getKey(jsonobject, "status");
 		return response;
@@ -337,7 +316,6 @@ public class PostAPIRequestGE extends BaseTestNGWebDriver {
 		RestAssured.baseURI = baseurl;
 		Response response = RestAssured.given().log().all().when().headers(Header).body(b).when().post(practiceId + "/matchpatient").then().log().all().assertThat()
 				.statusCode(200).body(patientId + ".firstName", equalTo(firstName)).body(patientId + ".lastName", equalTo(lastName)).extract().response();
-		apiVerification.responseTimeValidation(response);
 		return response;
 	}
 
@@ -345,7 +323,6 @@ public class PostAPIRequestGE extends BaseTestNGWebDriver {
 		RestAssured.baseURI = baseurl;
 		Response response =
 				given().log().all().when().get(practiceId + "/patientlastvisit/" + patientId).then().log().all().assertThat().statusCode(200).extract().response();
-		apiVerification.responseTimeValidation(response);
 		JSONObject jsonobject = new JSONObject(response.asString());
 		ParseJSONFile.getKey(jsonobject, "lastVisitDateTime");
 		return response;
@@ -355,7 +332,6 @@ public class PostAPIRequestGE extends BaseTestNGWebDriver {
 		RestAssured.baseURI = baseurl;
 		Response response =
 				given().log().all().when().get(practiceId + "/prerequisteappointmenttypes").then().log().all().assertThat().statusCode(200).extract().response();
-		apiVerification.responseTimeValidation(response);
 		apiVerification.responseKeyValidation(response, "id");
 		apiVerification.responseKeyValidation(response, "name");
 		return response;
@@ -365,8 +341,6 @@ public class PostAPIRequestGE extends BaseTestNGWebDriver {
 		RestAssured.baseURI = baseurl;
 		Response response = RestAssured.given().log().all().when().headers(Header).body(b).when().post(practiceId + "/searchpatient").then().log().all()
 				.assertThat().statusCode(200).extract().response();
-		APIVerification apiVerification = new APIVerification();
-		apiVerification.responseTimeValidation(response);
 		JSONArray jsonarray = new JSONArray(response.asString());
 		JSONObject jsonobject = new JSONObject();
 
