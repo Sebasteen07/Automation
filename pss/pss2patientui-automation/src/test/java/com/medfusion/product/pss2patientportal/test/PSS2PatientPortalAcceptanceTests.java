@@ -5294,13 +5294,10 @@ public class PSS2PatientPortalAcceptanceTests extends BaseTestNGWebDriver {
 		location = startappointmentInOrder.selectFirstLocation(PSSConstants.START_LOCATION);
 		Log4jUtil.log("Step 9: Verfiy Location Page and location =" + testData.getLocation());
 		AppointmentPage appointment = location.selectAppointment(testData.getLocation());
-		Thread.sleep(2000);
 		Log4jUtil.log(
 				"Step 10: Verfiy Appointment Page and appointment to be selected = " + testData.getAppointmenttype());
 		Provider provider = appointment.selectTypeOfProvider(testData.getAppointmenttype(),
 				Boolean.valueOf(testData.getIsAppointmentPopup()));
-		Thread.sleep(2000);
-
 		Log4jUtil.log("Step 11: Verfiy Provider Page and Provider = " + testData.getProvider());
 		Thread.sleep(2000);
 		provider.getProvider(testData.getCareProvider());
@@ -5349,32 +5346,29 @@ public class PSS2PatientPortalAcceptanceTests extends BaseTestNGWebDriver {
 
 	@Test(enabled = true, groups = { "AcceptanceTests" }, retryAnalyzer = RetryAnalyzer.class)
 	public void testageRulewithSpecialityGW() throws Exception {
-		log(" VeriFy Gender Rule with the Specility for GW PArtner");
-		log("Step 1: Load test Data from External Property file.");
 		PSSPropertyFileLoader propertyData = new PSSPropertyFileLoader();
 		Appointment testData = new Appointment();
 		AdminUser adminuser = new AdminUser();
-		propertyData.setAdminGW(adminuser);
+		propertyData.setAdminAT(adminuser);
 		propertyData.setAppointmentResponseGW(testData);
 		adminuser.setIsExisting(true);
 		PSSPatientUtils psspatientutils = new PSSPatientUtils();
 		PSSAdminUtils pssadminutils = new PSSAdminUtils();
-		log("Step 2:  Move to PSS admin portal and add the Age Rule in Speciality tab");
+		logStep("Login to PSS admin portal and add the Age Rule in Speciality tab");
 		pssadminutils.ageRuleWithSpeciality(driver, adminuser, testData);
 		String rule = adminuser.getRule();
 		rule = rule.replaceAll(" ", "");
 		log("Rule -" + rule);
-		log("Step 3: Move to PSS patient Portal 2.0 to book an Appointment");
-		log("Step 4: Login to PSS Appointment");
+		logStep("Move to PSS patient Portal 2.0 to book an Appointment");
 		DismissPage dismissPage = new DismissPage(driver, testData.getUrlLoginLess());
-		log("Step 5: LoginlessPatientInformation****");
-		log("Clicked on Dismiss");
+		logStep("Clicked on Dismiss");
 		LoginlessPatientInformation loginlessPatientInformation = dismissPage.clickDismiss();
 		HomePage homepage = loginlessPatientInformation.fillNewPatientForm(testData.getFirstName(),
 				testData.getLastName(), testData.getDob(), testData.getEmail(), testData.getGender(),
 				testData.getZipCode(), testData.getPrimaryNumber());
-		log("Successfully upto Home page On The Patient Portal");
+		logStep("Successfully upto Home page On The Patient Portal");
 		homepage.btnStartSchedClick();
+		logStep("Clicked on the start scheduling button");
 		Speciality speciality = null;
 		speciality = homepage.skipInsuranceForSpeciality(driver);
 		int i = Integer.parseInt(testData.getAgeRuleMonthFirst());
@@ -5390,8 +5384,6 @@ public class PSS2PatientPortalAcceptanceTests extends BaseTestNGWebDriver {
 
 	@Test(enabled = true, groups = { "AcceptanceTests" }, retryAnalyzer = RetryAnalyzer.class)
 	public void testageRulewithSpecialityAT() throws Exception {
-		log(" VeriFy Gender Rule with the Specility for GW PArtner");
-		log("Step 1: Load test Data from External Property file.");
 		PSSPropertyFileLoader propertyData = new PSSPropertyFileLoader();
 		Appointment testData = new Appointment();
 		AdminUser adminuser = new AdminUser();
@@ -5400,22 +5392,21 @@ public class PSS2PatientPortalAcceptanceTests extends BaseTestNGWebDriver {
 		adminuser.setIsExisting(true);
 		PSSPatientUtils psspatientutils = new PSSPatientUtils();
 		PSSAdminUtils pssadminutils = new PSSAdminUtils();
-		log("Step 2:  Move to PSS admin portal and add the Age Rule in Speciality tab");
+		logStep("Login to PSS admin portal and add the Age Rule in Speciality tab");
 		pssadminutils.ageRuleWithSpeciality(driver, adminuser, testData);
 		String rule = adminuser.getRule();
 		rule = rule.replaceAll(" ", "");
 		log("Rule -" + rule);
-		log("Step 3: Move to PSS patient Portal 2.0 to book an Appointment");
-		log("Step 4: Login to PSS Appointment");
+		logStep("Move to PSS patient Portal 2.0 to book an Appointment");
 		DismissPage dismissPage = new DismissPage(driver, testData.getUrlLoginLess());
-		log("Step 5: LoginlessPatientInformation****");
-		log("Clicked on Dismiss");
+		logStep("Clicked on Dismiss");
 		LoginlessPatientInformation loginlessPatientInformation = dismissPage.clickDismiss();
 		HomePage homepage = loginlessPatientInformation.fillNewPatientForm(testData.getFirstName(),
 				testData.getLastName(), testData.getDob(), testData.getEmail(), testData.getGender(),
 				testData.getZipCode(), testData.getPrimaryNumber());
-		log("Successfully upto Home page On The Patient Portal");
+		logStep("Successfully upto Home page On The Patient Portal");
 		homepage.btnStartSchedClick();
+		logStep("Clicked on the start scheduling button");
 		Speciality speciality = null;
 		speciality = homepage.skipInsuranceForSpeciality(driver);
 		int i = Integer.parseInt(testData.getAgeRuleMonthFirst());
@@ -5429,8 +5420,6 @@ public class PSS2PatientPortalAcceptanceTests extends BaseTestNGWebDriver {
 	}
 	@Test(enabled = true, groups = { "AcceptanceTests" }, retryAnalyzer = RetryAnalyzer.class)
 	public void testageRulewithSpecialityGE() throws Exception {
-		log(" VeriFy Gender Rule with the Specility for GW PArtner");
-		log("Step 1: Load test Data from External Property file.");
 		PSSPropertyFileLoader propertyData = new PSSPropertyFileLoader();
 		Appointment testData = new Appointment();
 		AdminUser adminuser = new AdminUser();
@@ -5439,22 +5428,21 @@ public class PSS2PatientPortalAcceptanceTests extends BaseTestNGWebDriver {
 		adminuser.setIsExisting(true);
 		PSSPatientUtils psspatientutils = new PSSPatientUtils();
 		PSSAdminUtils pssadminutils = new PSSAdminUtils();
-		log("Step 2:  Move to PSS admin portal and add the Age Rule in Speciality tab");
+		logStep("Login to PSS admin portal and add the Age Rule in Speciality tab");
 		pssadminutils.ageRuleWithSpeciality(driver, adminuser, testData);
 		String rule = adminuser.getRule();
 		rule = rule.replaceAll(" ", "");
 		log("Rule -" + rule);
-		log("Step 3: Move to PSS patient Portal 2.0 to book an Appointment");
-		log("Step 4: Login to PSS Appointment");
+		logStep("Move to PSS patient Portal 2.0 to book an Appointment");
 		DismissPage dismissPage = new DismissPage(driver, testData.getUrlLoginLess());
-		log("Step 5: LoginlessPatientInformation****");
-		log("Clicked on Dismiss");
+		logStep("Clicked on Dismiss");
 		LoginlessPatientInformation loginlessPatientInformation = dismissPage.clickDismiss();
 		HomePage homepage = loginlessPatientInformation.fillNewPatientForm(testData.getFirstName(),
 				testData.getLastName(), testData.getDob(), testData.getEmail(), testData.getGender(),
 				testData.getZipCode(), testData.getPrimaryNumber());
-		log("Successfully upto Home page On The Patient Portal");
+		logStep("Successfully upto Home page On The Patient Portal");
 		homepage.btnStartSchedClick();
+		logStep("Clicked on the start scheduling button");
 		Speciality speciality = null;
 		speciality = homepage.skipInsuranceForSpeciality(driver);
 		int i = Integer.parseInt(testData.getAgeRuleMonthFirst());
@@ -5468,8 +5456,6 @@ public class PSS2PatientPortalAcceptanceTests extends BaseTestNGWebDriver {
 	}
 	@Test(enabled = true, groups = { "AcceptanceTests" }, retryAnalyzer = RetryAnalyzer.class)
 	public void testageRulewithSpecialityNG() throws Exception {
-		log(" VeriFy Gender Rule with the Specility for GW PArtner");
-		log("Step 1: Load test Data from External Property file.");
 		PSSPropertyFileLoader propertyData = new PSSPropertyFileLoader();
 		Appointment testData = new Appointment();
 		AdminUser adminuser = new AdminUser();
@@ -5478,22 +5464,21 @@ public class PSS2PatientPortalAcceptanceTests extends BaseTestNGWebDriver {
 		adminuser.setIsExisting(true);
 		PSSPatientUtils psspatientutils = new PSSPatientUtils();
 		PSSAdminUtils pssadminutils = new PSSAdminUtils();
-		log("Step 2:  Move to PSS admin portal and add the Age Rule in Speciality tab");
+		logStep("Login to PSS admin portal and add the Age Rule in Speciality tab");
 		pssadminutils.ageRuleWithSpeciality(driver, adminuser, testData);
 		String rule = adminuser.getRule();
 		rule = rule.replaceAll(" ", "");
 		log("Rule -" + rule);
-		log("Step 3: Move to PSS patient Portal 2.0 to book an Appointment");
-		log("Step 4: Login to PSS Appointment");
+		logStep("Move to PSS patient Portal 2.0 to book an Appointment");
 		DismissPage dismissPage = new DismissPage(driver, testData.getUrlLoginLess());
-		log("Step 5: LoginlessPatientInformation****");
-		log("Clicked on Dismiss");
+		logStep("Clicked on Dismiss");
 		LoginlessPatientInformation loginlessPatientInformation = dismissPage.clickDismiss();
 		HomePage homepage = loginlessPatientInformation.fillNewPatientForm(testData.getFirstName(),
 				testData.getLastName(), testData.getDob(), testData.getEmail(), testData.getGender(),
 				testData.getZipCode(), testData.getPrimaryNumber());
-		log("Successfully upto Home page On The Patient Portal");
+		logStep("Successfully upto Home page On The Patient Portal");
 		homepage.btnStartSchedClick();
+		logStep("Clicked on the start scheduling button");
 		Speciality speciality = null;
 		speciality = homepage.skipInsuranceForSpeciality(driver);
 		int i = Integer.parseInt(testData.getAgeRuleMonthFirst());
