@@ -6,12 +6,13 @@ import java.io.IOException;
 import org.testng.annotations.Test;
 import org.hamcrest.Matchers.*;
 import com.intuit.ifs.csscat.core.BaseTestNGWebDriver;
+import com.intuit.ifs.csscat.core.RetryAnalyzer;
 import com.medfusion.product.object.maps.pss2.page.util.HeaderConfig;
 import com.medfusion.product.object.maps.pss2.page.util.PostAPIRequest;
 import com.medfusion.product.pss2patientui.pojo.Appointment;
 import com.medfusion.product.pss2patientui.utils.PSSPropertyFileLoader;
 
-public class NGAdapterAPITest extends BaseTestNGWebDriver {
+public class PssNGAdapterTest extends BaseTestNGWebDriver {
 
 	@Test
 	public void BookListPost() throws IOException {
@@ -212,7 +213,8 @@ public class NGAdapterAPITest extends BaseTestNGWebDriver {
 
 	}
 
-	@Test
+	@Test(enabled = true, groups = {"APItest"}, retryAnalyzer = RetryAnalyzer.class)
+
 	public void Access_tokenGET() throws IOException {
 
 		PSSPropertyFileLoader propertyData = new PSSPropertyFileLoader();
