@@ -1,5 +1,5 @@
 // Copyright 2020 NXGN Management, LLC. All Rights Reserved.
-package com.medfusion.product.pssPatientModulatorAPI.test;
+package com.medfusion.product.pss2patientmodulatorapi.test;
 
 import java.io.IOException;
 
