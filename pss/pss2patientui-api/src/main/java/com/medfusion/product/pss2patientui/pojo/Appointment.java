@@ -104,8 +104,13 @@ public class Appointment {
 
 	private String ageRuleMonthFirst;
 	private String ageRuleMonthSecond;
+	private String excludeSlotFirstValue;
+	private String excludeSlotSecondValue;
+
 
 	private Boolean isCancelButtonPresent;
+
+	
 
 	private int displaySlotCountLength;
 	private Boolean isNextMonthSlotAvail;
@@ -184,6 +189,21 @@ public class Appointment {
 
 	public void setNextAvailiableText(String nextAvailiableText) {
 		this.nextAvailiableText = nextAvailiableText;
+	}
+	public String getExcludeSlotFirstValue() {
+		return excludeSlotFirstValue;
+	}
+
+	public void setExcludeSlotFirstValue(String excludeSlotFirstValue) {
+		this.excludeSlotFirstValue = excludeSlotFirstValue;
+	}
+
+	public String getExcludeSlotSecondValue() {
+		return excludeSlotSecondValue;
+	}
+
+	public void setExcludeSlotSecondValue(String excludeSlotSecondValue) {
+		this.excludeSlotSecondValue = excludeSlotSecondValue;
 	}
 
 

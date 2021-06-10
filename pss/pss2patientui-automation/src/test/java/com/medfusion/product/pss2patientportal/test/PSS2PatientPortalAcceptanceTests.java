@@ -4268,7 +4268,7 @@ public class PSS2PatientPortalAcceptanceTests extends BaseTestNGWebDriver {
 		PSSPatientUtils psspatientutils = new PSSPatientUtils();
 		PSSAdminUtils adminUtils = new PSSAdminUtils();
 		log("Login to PSS 2.0 Admin portal");
-		//adminUtils.maxPerDayAT(driver, adminuser, testData);
+		adminUtils.maxPerDayAT(driver, adminuser, testData);
 		log("Fetch the rules set in Admin");
 		String rule = adminuser.getRule();
 		log("rule are " + rule);
@@ -4754,13 +4754,13 @@ public class PSS2PatientPortalAcceptanceTests extends BaseTestNGWebDriver {
 		homepage.getLocationText();
 		homepage.getProviderText();
 		assertEquals(homepage.getLocationText(), testData.getLocation());
-		assertEquals(homepage.getProviderText(), testData.getProvider());
+		assertEquals(homepage.getProviderText(),testData.getLinkProvider());
 		Log4jUtil.log("Test Case Passed");
 	}
 
 	@Test(enabled = true, groups = { "AcceptanceTests" }, retryAnalyzer = RetryAnalyzer.class)
 	public void testE2ELinkGenerationNG() throws Exception {
-		log("Link Generation with location and Provider for NG");
+		log("Link Generation with location and Provider for AT");
 		PSSPropertyFileLoader propertyData = new PSSPropertyFileLoader();
 		Appointment testData = new Appointment();
 		AdminUser adminuser = new AdminUser();
@@ -4813,12 +4813,11 @@ public class PSS2PatientPortalAcceptanceTests extends BaseTestNGWebDriver {
 		}
 		Log4jUtil.log("Step 8: Select Appointment for appointment.");
 		homepage.btnStartSchedClick();
-		AppointmentPage appointment = homepage.skipInsurancepage(driver);
-		Log4jUtil.log("Step 9: Verfiy Appointment Page and appointment =" + testData.getAppointmenttype());
-
-		AppointmentDateTime aptDateTime = appointment.selectAppointmentandClick(testData.getAppointmenttype(),
-				Boolean.valueOf(testData.getIsAppointmentPopup()));
-		aptDateTime.selectDate(testData.getIsNextDayBooking());
+		homepage.getLocationText();
+		homepage.getProviderText();
+		assertEquals(homepage.getLocationText(), testData.getLocation());
+		assertEquals(homepage.getProviderText(), testData.getLinkProvider());
+		Log4jUtil.log("Test Case Passed");
 	}
 
 	@Test(enabled = true, groups = { "AcceptanceTests" }, retryAnalyzer = RetryAnalyzer.class)
@@ -5363,14 +5362,14 @@ public class PSS2PatientPortalAcceptanceTests extends BaseTestNGWebDriver {
 	}
 
 	@Test(enabled = true, groups = { "AcceptanceTests" }, retryAnalyzer = RetryAnalyzer.class)
-	public void testGenderRule() throws Exception {
+	public void testGenderRuleNG() throws Exception {
 		log(" VeriFy Gender Rule with the Specility for GW PArtner");
 		log("Step 1: Load test Data from External Property file.");
 		PSSPropertyFileLoader propertyData = new PSSPropertyFileLoader();
 		Appointment testData = new Appointment();
 		AdminUser adminuser = new AdminUser();
-		propertyData.setAdminGW(adminuser);
-		propertyData.setAppointmentResponseGW(testData);
+		propertyData.setAdminNG(adminuser);
+		propertyData.setAppointmentResponseNG(testData);
 		adminuser.setIsExisting(true);
 		PSSAdminUtils pssadminutils = new PSSAdminUtils();
 		pssadminutils.genderRule(driver, adminuser, testData);
@@ -5404,7 +5403,7 @@ public class PSS2PatientPortalAcceptanceTests extends BaseTestNGWebDriver {
 	}
 
 	@Test(enabled = true, groups = { "AcceptanceTests" }, retryAnalyzer = RetryAnalyzer.class)
-	public void testageRulewithSpeciality() throws Exception {
+	public void testageRulewithSpecialityGW() throws Exception {
 		log(" VeriFy Gender Rule with the Specility for GW PArtner");
 		log("Step 1: Load test Data from External Property file.");
 		PSSPropertyFileLoader propertyData = new PSSPropertyFileLoader();
@@ -5483,6 +5482,85 @@ public class PSS2PatientPortalAcceptanceTests extends BaseTestNGWebDriver {
 			assertNotEquals(speciality.selectSpeciality1(testData.getSpeciality()), testData.getSpeciality());
 		}
 	}
+	@Test(enabled = true, groups = { "AcceptanceTests" }, retryAnalyzer = RetryAnalyzer.class)
+	public void testageRulewithSpecialityGE() throws Exception {
+		log(" VeriFy Gender Rule with the Specility for GW PArtner");
+		log("Step 1: Load test Data from External Property file.");
+		PSSPropertyFileLoader propertyData = new PSSPropertyFileLoader();
+		Appointment testData = new Appointment();
+		AdminUser adminuser = new AdminUser();
+		propertyData.setAdminGE(adminuser);
+		propertyData.setAppointmentResponseGE(testData);
+		adminuser.setIsExisting(true);
+		PSSPatientUtils psspatientutils = new PSSPatientUtils();
+		PSSAdminUtils pssadminutils = new PSSAdminUtils();
+		log("Step 2:  Move to PSS admin portal and add the Age Rule in Speciality tab");
+		pssadminutils.ageRuleWithSpeciality(driver, adminuser, testData);
+		String rule = adminuser.getRule();
+		rule = rule.replaceAll(" ", "");
+		log("Rule -" + rule);
+		log("Step 3: Move to PSS patient Portal 2.0 to book an Appointment");
+		log("Step 4: Login to PSS Appointment");
+		DismissPage dismissPage = new DismissPage(driver, testData.getUrlLoginLess());
+		log("Step 5: LoginlessPatientInformation****");
+		log("Clicked on Dismiss");
+		LoginlessPatientInformation loginlessPatientInformation = dismissPage.clickDismiss();
+		HomePage homepage = loginlessPatientInformation.fillNewPatientForm(testData.getFirstName(),
+				testData.getLastName(), testData.getDob(), testData.getEmail(), testData.getGender(),
+				testData.getZipCode(), testData.getPrimaryNumber());
+		log("Successfully upto Home page On The Patient Portal");
+		homepage.btnStartSchedClick();
+		Speciality speciality = null;
+		speciality = homepage.skipInsuranceForSpeciality(driver);
+		int i = Integer.parseInt(testData.getAgeRuleMonthFirst());
+		int j = Integer.parseInt(testData.getAgeRuleMonthSecond());
+		if (psspatientutils.ageCurrentmonths(testData) > i && psspatientutils.ageCurrentmonths(testData) < j) {
+			speciality.selectSpeciality1(testData.getSpeciality());
+			assertEquals(speciality.selectSpeciality1(testData.getSpeciality()), testData.getSpeciality());
+		} else {
+			assertNotEquals(speciality.selectSpeciality1(testData.getSpeciality()), testData.getSpeciality());
+		}
+	}
+	@Test(enabled = true, groups = { "AcceptanceTests" }, retryAnalyzer = RetryAnalyzer.class)
+	public void testageRulewithSpecialityNG() throws Exception {
+		log(" VeriFy Gender Rule with the Specility for GW PArtner");
+		log("Step 1: Load test Data from External Property file.");
+		PSSPropertyFileLoader propertyData = new PSSPropertyFileLoader();
+		Appointment testData = new Appointment();
+		AdminUser adminuser = new AdminUser();
+		propertyData.setAdminNG(adminuser);
+		propertyData.setAppointmentResponseNG(testData);
+		adminuser.setIsExisting(true);
+		PSSPatientUtils psspatientutils = new PSSPatientUtils();
+		PSSAdminUtils pssadminutils = new PSSAdminUtils();
+		log("Step 2:  Move to PSS admin portal and add the Age Rule in Speciality tab");
+		pssadminutils.ageRuleWithSpeciality(driver, adminuser, testData);
+		String rule = adminuser.getRule();
+		rule = rule.replaceAll(" ", "");
+		log("Rule -" + rule);
+		log("Step 3: Move to PSS patient Portal 2.0 to book an Appointment");
+		log("Step 4: Login to PSS Appointment");
+		DismissPage dismissPage = new DismissPage(driver, testData.getUrlLoginLess());
+		log("Step 5: LoginlessPatientInformation****");
+		log("Clicked on Dismiss");
+		LoginlessPatientInformation loginlessPatientInformation = dismissPage.clickDismiss();
+		HomePage homepage = loginlessPatientInformation.fillNewPatientForm(testData.getFirstName(),
+				testData.getLastName(), testData.getDob(), testData.getEmail(), testData.getGender(),
+				testData.getZipCode(), testData.getPrimaryNumber());
+		log("Successfully upto Home page On The Patient Portal");
+		homepage.btnStartSchedClick();
+		Speciality speciality = null;
+		speciality = homepage.skipInsuranceForSpeciality(driver);
+		int i = Integer.parseInt(testData.getAgeRuleMonthFirst());
+		int j = Integer.parseInt(testData.getAgeRuleMonthSecond());
+		if (psspatientutils.ageCurrentmonths(testData) > i && psspatientutils.ageCurrentmonths(testData) < j) {
+			speciality.selectSpeciality1(testData.getSpeciality());
+			assertEquals(speciality.selectSpeciality1(testData.getSpeciality()), testData.getSpeciality());
+		} else {
+			assertNotEquals(speciality.selectSpeciality1(testData.getSpeciality()), testData.getSpeciality());
+		}
+	}
+
 
 	@Test(enabled = true, groups = { "AcceptanceTests" }, retryAnalyzer = RetryAnalyzer.class)
 	public void testTimeMarkGW() throws Exception {
@@ -6143,4 +6221,42 @@ public class PSS2PatientPortalAcceptanceTests extends BaseTestNGWebDriver {
 		assertEquals(testData.getNextAvailiableText(), provider.getNextavaliableText());    
 	    
 	}
+	@Test(enabled = true, groups = { "AcceptanceTests" }, retryAnalyzer = RetryAnalyzer.class)
+	public void testExcludeSlotsGW() throws Exception {
+		PSSPropertyFileLoader propertyData = new PSSPropertyFileLoader();
+		Appointment testData = new Appointment();
+		AdminUser adminuser = new AdminUser();
+		propertyData.setAdminNG(adminuser);
+		propertyData.setAppointmentResponseNG(testData);
+		PSSAdminUtils adminUtils = new PSSAdminUtils();
+		logStep("Login to PSS Admin portal ");
+		adminUtils.exclueSlots(driver, adminuser, testData);
+		logStep("Move to PSS patient Portal 2.0 to book an Appointment");
+		logStep("Login to PSS Appointment");
+		DismissPage dismissPage = new DismissPage(driver, testData.getUrlLoginLess());
+		logStep("LoginlessPatientInformation****");
+		log("Clicked on Dismiss");
+		LoginlessPatientInformation loginlessPatientInformation = dismissPage.clickDismiss();
+		HomePage homePage = loginlessPatientInformation.fillNewPatientForm(testData.getFirstName(),
+				testData.getLastName(), testData.getDob(), testData.getEmail(), testData.getGender(),
+				testData.getZipCode(), testData.getPrimaryNumber());
+		homePage.btnStartSchedClick();
+		Location location = null;
+		StartAppointmentInOrder startappointmentInOrder = null;
+		startappointmentInOrder = homePage.skipInsurance(driver);
+		location = startappointmentInOrder.selectFirstLocation(PSSConstants.START_LOCATION);
+		logStep("Verfiy Location Page and location =" + testData.getLocation());
+		AppointmentPage appointment = location.selectAppointment(testData.getLocation());
+		logStep("Verfiy Appointment Page and appointment to be selected = " + testData.getAppointmenttype());
+		Thread.sleep(20000);
+		Provider provider = appointment.selectTypeOfProvider(testData.getAppointmenttype(),	Boolean.valueOf(testData.getIsAppointmentPopup()));
+		logStep("Verfiy Provider Page and Provider = " + testData.getProvider());
+		AppointmentDateTime aptDateTime = provider.getProviderandClick(testData.getProvider());
+	    aptDateTime.selectDate(testData.getIsNextDayBooking());
+		String time=aptDateTime.getfirsttime().replace(":", "");
+		String time1=time.substring(0, 4);
+		log("First time is   "+time1);
+		assertEquals(time1,testData.getExcludeSlotSecondValue());
+		
+	}		
 }

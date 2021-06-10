@@ -161,6 +161,28 @@ public class ManageResource extends PSS2MenuPage {
 
 	@FindAll({ @FindBy(xpath = "//div[@id='tab23']/table/tbody/tr/td[3]/div/div/label/i") })
 	private List<WebElement> locationToggleClick;
+	
+	@FindBy(how = How.XPATH, using = "//a[@title='Add Slots']")
+	private WebElement excludeSlotBtn;
+	
+	@FindBy(how = How.XPATH, using = "//select[@name='beforeAfterStart']")
+	private WebElement excludeSlotBeforeAfterStart;
+
+	@FindBy(how = How.XPATH, using = "//select[@name='beforeAfterEnd']")
+	private WebElement excludeSlotBeforeAfterEnd;
+
+	@FindBy(how = How.XPATH, using = "//select[@name='condition']")
+	private WebElement excludeSlotCondition;
+
+	@FindBy(how = How.XPATH, using = "//input[@name='startTime']")
+	private WebElement startTime;
+
+	@FindBy(how = How.XPATH, using = "//input[@name='endTime']")
+	private WebElement endTime;
+	
+	@FindBy(how = How.XPATH, using = "//a[@title='Add Exclude Slot']")
+	private WebElement addExcludeSlotBtn;
+
 
 	
 	public ManageResource(WebDriver driver) {
@@ -432,5 +454,24 @@ public class ManageResource extends PSS2MenuPage {
 		appointmenttypeSave.click();
 
 	}
+	public void excludeBtn(String firstValue,String secondValue)
+	{
+		excludeSlotBtn.click();
+		Select before = new Select(excludeSlotBeforeAfterStart);
+		Select and = new Select(excludeSlotCondition);
+		Select after = new Select(excludeSlotBeforeAfterEnd);
+		before.selectByVisibleText("After");
+		startTime.clear();
+		startTime.sendKeys(firstValue);
+		and.selectByIndex(1);;
+		after.selectByVisibleText("Before");
+		endTime.clear();
+		endTime.sendKeys(secondValue);
+		log("SuccessFully Sent the Values in Exclude Slot textfield");
+		addExcludeSlotBtn.click();
+		log("Clicked on yes ");
+		appointmenttypeSave.click();
+	}
+
 
 }

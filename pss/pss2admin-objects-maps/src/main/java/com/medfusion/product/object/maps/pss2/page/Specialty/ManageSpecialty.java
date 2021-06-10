@@ -81,6 +81,7 @@ public class ManageSpecialty extends PSS2MenuPage {
 	}
 
 	public void searchSpecility(String specilityName) {
+		log("Enter the speciality name and Search speciality");
 		searchSpecility.sendKeys(specilityName);
 	}
 

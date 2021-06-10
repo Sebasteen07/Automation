@@ -372,7 +372,8 @@ public class PSSPropertyFileLoader {
 		appointValues.setGmailUserName(property.getProperty("emailNG"));
 		appointValues.setPopUpMessege(property.getProperty("popUpMessege"));
 		appointValues.setNextAvailiableText(property.getProperty("next.availi.text"));
-
+		appointValues.setExcludeSlotFirstValue(property.getProperty("exclude.firstvalue.ng"));
+		appointValues.setExcludeSlotSecondValue(property.getProperty("exclude.secondvalue.ng"));
 
 		appointValues.setFirstNameCarePatient(property.getProperty("firstNameCarePatientNG"));
 		appointValues.setLastNameCarePatient(property.getProperty("lastNameCarePatientNG"));
