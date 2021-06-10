@@ -457,6 +457,7 @@ public class JalapenoMessagesPage extends JalapenoMenu {
 		IHGUtil.PrintMethodName();
 		WebElement element;
 		element = driver.findElement(By.xpath("//*/ul/li/a/*[contains(text(),'" + subject + "')]/following-sibling::*[@class='prioritystatus']/img"));
+		IHGUtil.waitForElement(driver, 10, element);
 		String priorityFlagStatus = driver.findElement(By.xpath("//*/ul/li/a/*[contains(text(),'" + subject + "')]/following-sibling::*[@class='prioritystatus']/img")).getAttribute("alt");
 		log("Priority Flag for Message with subject "+subject+" has "+priorityFlagStatus);
 		return element.isDisplayed();

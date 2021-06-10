@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8" standalone="yes"?>
 <ns4:Prescriptions xmlns:ns2="http://schema.medfusion.com/health/adminmessage/v3" xmlns:ns3="http://schema.medfusion.com/health/appointments/v3" xmlns:ns4="http://schema.medfusion.com/health/prescriptions/v3" xmlns:ns5="http://schema.medfusion.com/health/readreceipts/v3" xmlns:ns6="http://schema.medfusion.com/health/attachmentrequest/v3" xmlns:ns7="http://schema.medfusion.com/health/attachmentresponse/v3" xmlns:ns8="http://schema.medfusion.com/health/attachmentmessage/v3" xmlns:ns9="http://schema.medfusion.com/health/bulkSecureMessages/v3">
     <Prescription id="76072227-c373-4c62-b82a-a075eb0f14e8">
-        <Status>OPEN</Status>
+        <Status>APPROVED</Status>
         <CreatedDateTime>2021-05-24T12:01:02.310Z</CreatedDateTime>
         <UpdatedDateTime>2021-05-24T12:01:02.310Z</UpdatedDateTime>
         <PrescriptionRenewalRequest>
