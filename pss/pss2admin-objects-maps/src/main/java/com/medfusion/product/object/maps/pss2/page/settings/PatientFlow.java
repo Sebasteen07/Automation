@@ -89,8 +89,6 @@ public class PatientFlow extends SettingsTab {
 	public boolean isIsuranceDisplayed() {
 		commonMethods.highlightElement(insuranceToggleLabe);
 		commonMethods.highlightElement(insuranceToggleCheckBox);
-//		log(insuranceToggle.getAttribute("ng-reflect-model"));
-//		return insuranceToggle.getAttribute("ng-reflect-model");
 		return insuranceToggle.isSelected();
 	}
 

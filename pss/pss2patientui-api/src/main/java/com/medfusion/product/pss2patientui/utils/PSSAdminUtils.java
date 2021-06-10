@@ -811,7 +811,7 @@ public class PSSAdminUtils extends BaseTestNGWebDriver{
 		PatientFlow patientFlow =pssPracticeConfig.gotoPatientFlowTab();
 		adminUser.setRule(patientFlow.getRule());
 		Log4jUtil.log("rule= " + patientFlow.getRule());
-		//setRulesNoSpecialitySet1(patientFlow);
+		setRulesNoSpecialitySet1(patientFlow);
 		LinkTab linkTab = pssPracticeConfig.linksTab();
 		Log4jUtil.log("Clicked On LinkTab");
 		linkTab.addLinkForProvider(testData.getLinkProvider());
@@ -849,8 +849,7 @@ public class PSSAdminUtils extends BaseTestNGWebDriver{
 	}
 	public void exclueSlots(WebDriver driver, AdminUser adminuser, Appointment appointment) throws Exception {
 		PSS2PracticeConfiguration psspracticeConfig = loginToAdminPortal(driver, adminuser);
-		psspracticeConfig = psspracticeConfig.gotoPracticeConfigTab();
-		
+		psspracticeConfig = psspracticeConfig.gotoPracticeConfigTab();	
 		PatientFlow patientFlow = psspracticeConfig.gotoPatientFlowTab();
 		setRulesNoSpecialitySet1(patientFlow);
 		adminuser.setRule(patientFlow.getRule());

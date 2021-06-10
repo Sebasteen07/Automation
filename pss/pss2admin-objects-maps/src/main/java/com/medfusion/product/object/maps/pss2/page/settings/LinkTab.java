@@ -14,9 +14,7 @@ import org.openqa.selenium.support.FindAll;
 import org.openqa.selenium.support.FindBy;
 import org.openqa.selenium.support.How;
 import org.openqa.selenium.support.ui.Select;
-
 import com.medfusion.common.utils.IHGUtil;
-
 public class LinkTab extends SettingsTab {
 
 	@FindBy(how = How.XPATH, using = "//a[@title='Add Link']")
@@ -62,14 +60,12 @@ public class LinkTab extends SettingsTab {
 	public void searchLinkandRemove(String provider) throws InterruptedException {
 		searchLink.clear();
 		searchLink.sendKeys(provider);
-		Thread.sleep(3000);
 		log("Search the Link for " + provider);
 		if (noProviderConfigured.size() > 0) {
 			searchLink.clear();
 			log("Link is Not avaliable For" + provider);
 		} else {
 			log("Link is avaliable For" + provider);
-			//removelink.click();
 			javascriptClick(removelink);
 			log("Successfully Removed the link form link tab");
 		}
@@ -91,26 +87,20 @@ public class LinkTab extends SettingsTab {
 		Select type = new Select(typeSelect);
 		type.selectByVisibleText("LOGINLESS");
 		IHGUtil.waitForElement(driver, 3, locationSelect);	
-		//locationSelect.click();
 		javascriptClick(locationSelect);
 		log("LocationTypeList " + checklistLocation.size());
 		for (int i = 0; i < checklistLocation.size(); i++) {
 			if (checklistLocation.get(i).getText().contains(locationConfig)) {
-				Thread.sleep(2000);
 				IHGUtil.waitForElement(driver, 3, checklistLocation.get(i));	
-				//checklistLocation.get(i).click();
 				javascriptClick(checklistLocation.get(i));
 				log("Location checkbox selected");
 			}
 		}
-		Thread.sleep(3000);
 		resourceSelect.click();
 		log("ProviderTypeList " + checklistLocation.size());
 		for (int i = 0; i < checklistLocation.size(); i++) {
 			if (checklistLocation.get(i).getText().contains(providerConfig)) {
-				Thread.sleep(2000);
 				javascriptClick(checklistLocation.get(i));
-				//checklistLocation.get(i).click();
 				log("Provider checkbox selected");
 
 			}
@@ -134,15 +124,12 @@ public class LinkTab extends SettingsTab {
 	}
 
 	public void addLinkForProvider(String providerConfig) throws InterruptedException {
-		//linkPlusButton.click();
 		javascriptClick(linkPlusButton);
 		log("Clicked on link plus button");
-		//clickDropType.click();
 		javascriptClick(clickDropType);
 		log("Clicked on type  button");
 		Select type = new Select(typeSelect);
 		type.selectByVisibleText("LOGINLESS");
-		//resourceSelect.click();
 		javascriptClick(resourceSelect);
 		log("Resource Type List size " + checklistLocation.size());
 		for (int i = 0; i < checklistLocation.size(); i++) {
@@ -155,28 +142,22 @@ public class LinkTab extends SettingsTab {
 		log("Clicked on Create link Button");
 	}	
 	public void addLinkForLocation(String locationConfig) throws InterruptedException {
-		//linkPlusButton.click();
 		javascriptClick(linkPlusButton);
 		log("Clicked on link plus button");
-		//clickDropType.click();
 		javascriptClick(clickDropType);
 
 		log("Clicked on type  button");
 		Select type = new Select(typeSelect);
 		type.selectByVisibleText("LOGINLESS");
-		//locationSelect.click();
 		javascriptClick(locationSelect);
 
 		log("Location Type List size " + checklistLocation.size());
 		for (int i = 0; i < checklistLocation.size(); i++) {
 			if (checklistLocation.get(i).getText().contains(locationConfig)) {
 				javascriptClick(checklistLocation.get(i));
-
-				//checklistLocation.get(i).click();
 				log("Location checkbox selected");
 			}
 		}
-		//createLinkButton.click();
 		javascriptClick(createLinkButton);
 		log("Clicked on Create link Button");
 	}

@@ -86,6 +86,8 @@ public class PSSPropertyFileLoader {
 		appointValues.setGmailUserName(property.getProperty("gmailUserNameGW"));
 		appointValues.setPopUpMessege(property.getProperty("popUpMessege"));
 		appointValues.setNextAvailiableText(property.getProperty("next.availi.text"));
+		appointValues.setExcludeSlotFirstValue(property.getProperty("exclude.firstvalue.gw"));
+		appointValues.setExcludeSlotSecondValue(property.getProperty("exclude.secondvalue.gw"));
 
 		appointValues.setFirstNameCarePatient(property.getProperty("firstNameCarePatientGW"));
 		appointValues.setLastNameCarePatient(property.getProperty("lastNameCarePatientGW"));
@@ -216,6 +218,8 @@ public class PSSPropertyFileLoader {
 		appointValues.setGmailUserName(property.getProperty("emailAT"));
 		appointValues.setPopUpMessege(property.getProperty("popUpMessege"));
 		appointValues.setNextAvailiableText(property.getProperty("next.availi.text"));
+		appointValues.setExcludeSlotFirstValue(property.getProperty("exclude.firstvalue.at"));
+		appointValues.setExcludeSlotSecondValue(property.getProperty("exclude.secondvalue.at"));
 		appointValues.setMemberID(property.getProperty("memberID"));
 		appointValues.setGroupID(property.getProperty("groupID"));
 		appointValues.setInsurancePhone(property.getProperty("insrancePhone"));
@@ -288,6 +292,8 @@ public class PSSPropertyFileLoader {
 		appointValues.setGmailUserName(property.getProperty("emailGE"));
 		appointValues.setPopUpMessege(property.getProperty("popUpMessege"));
 		appointValues.setNextAvailiableText(property.getProperty("next.availi.text"));
+		appointValues.setExcludeSlotFirstValue(property.getProperty("exclude.firstvalue.ge"));
+		appointValues.setExcludeSlotSecondValue(property.getProperty("exclude.secondvalue.ge"));
 
 
 		appointValues.setFirstNameCarePatient(property.getProperty("firstNameCarePatientGE"));

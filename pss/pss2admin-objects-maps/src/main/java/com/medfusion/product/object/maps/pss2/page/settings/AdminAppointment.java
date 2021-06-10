@@ -176,8 +176,6 @@ public class AdminAppointment extends SettingsTab {
 	public boolean toggleAllowPCPONOF() throws InterruptedException {
 		pageDown();
 		return allowPCPToggle.isSelected();
-//		boolean bool = Boolean.parseBoolean(allowPCPToggle.getAttribute("ng-reflect-model"));
-//		return bool;
 	}
 
 	public void pcptoggleclick() throws InterruptedException {
@@ -252,14 +250,10 @@ public class AdminAppointment extends SettingsTab {
 	}
 	
 	public void toggleNextavailableClick() throws InterruptedException {
-		IHGUtil.waitForElement(driver, 5, nextAvailable);
-		//nextAvailable.click();
-		IHGUtil.waitForElement(driver, 10, nextAvailable);
 		javascriptClick(nextAvailable);
 		log("Clicked on nextAvailable");
 		IHGUtil.waitForElement(driver, 10, buttonSave);
 		javascriptClick(buttonSave);
-		//buttonSave.click();
 	}
 
 	public void togglePastApptMonths() {

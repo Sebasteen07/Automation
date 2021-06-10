@@ -109,9 +109,6 @@ public class Appointment {
 
 
 	private Boolean isCancelButtonPresent;
-
-	
-
 	private int displaySlotCountLength;
 	private Boolean isNextMonthSlotAvail;
 	private String nextDateAvaliable;
@@ -165,8 +162,6 @@ public class Appointment {
 	private String linkProviderURL;
 	private String linkLocationURL;
 	private String nextAvailiableText;
-
-	
 	
 	private boolean insuranceDetails = false;
 

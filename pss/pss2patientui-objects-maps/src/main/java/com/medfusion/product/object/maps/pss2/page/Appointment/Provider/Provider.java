@@ -201,8 +201,6 @@ public class Provider extends PSS2MainPage {
 	}
 	
 	public String getNextavaliableText() {
-
 		return providerNextavaliable.getText();
-	
 	}
 }
