@@ -12,7 +12,7 @@ import com.medfusion.product.object.maps.pss2.page.util.PostAPIRequestGE;
 import com.medfusion.product.pss2patientui.pojo.Appointment;
 import com.medfusion.product.pss2patientui.utils.PSSPropertyFileLoader;
 
-public class PssgeadapterTest extends BaseTestNGWebDriver {
+public class PSS2GEADAPTERAcceptanceTests extends BaseTestNGWebDriver {
 
 	@Test(enabled = true, groups = {"APItest"}, retryAnalyzer = RetryAnalyzer.class)
 	public void healthCheckGET() throws IOException {
