@@ -12,7 +12,7 @@ import com.medfusion.product.object.maps.pss2.page.util.PostAPIRequest;
 import com.medfusion.product.pss2patientui.pojo.Appointment;
 import com.medfusion.product.pss2patientui.utils.PSSPropertyFileLoader;
 
-public class PSS2NGADAPTERAcceptanceTests extends BaseTestNGWebDriver {
+public class PSS2NGAdpterAcceptanceTests extends BaseTestNGWebDriver {
 
 	@Test(enabled = true, groups = {"APItest"}, retryAnalyzer = RetryAnalyzer.class)
 	public void BookListPost() throws IOException {
