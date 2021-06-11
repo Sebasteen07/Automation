@@ -7,13 +7,14 @@ import org.testng.Assert;
 import org.testng.annotations.Test;
 
 import com.intuit.ifs.csscat.core.BaseTestNGWebDriver;
+import com.intuit.ifs.csscat.core.RetryAnalyzer;
 import com.medfusion.product.object.maps.pss2.page.util.HeaderConfig;
 import com.medfusion.product.object.maps.pss2.page.util.PostAPIRequestPatientMod;
 import com.medfusion.product.pss2patientui.pojo.Appointment;
 import com.medfusion.product.pss2patientui.utils.PSSPropertyFileLoader;
 
-public class PssPatientModulatorTest extends BaseTestNGWebDriver {
-	@Test
+public class PSS2PatientModulatorrAcceptanceTests extends BaseTestNGWebDriver {
+	@Test(enabled = true, groups = {"APItest"}, retryAnalyzer = RetryAnalyzer.class)
 	public void testApptDetailFromGuidGET() throws IOException {
 		HeaderConfig headerConfig = new HeaderConfig();
 		PSSPropertyFileLoader propertyData = new PSSPropertyFileLoader();
@@ -27,7 +28,7 @@ public class PssPatientModulatorTest extends BaseTestNGWebDriver {
 		Assert.assertEquals(practiceId, testData.getPracticeId(), "Practice id is wrong");
 	}
 
-	@Test
+	@Test(enabled = true, groups = {"APItest"}, retryAnalyzer = RetryAnalyzer.class)
 	public void testPracticeFromGuidAnonymousGET() throws IOException {
 		HeaderConfig headerConfig = new HeaderConfig();
 		PSSPropertyFileLoader propertyData = new PSSPropertyFileLoader();
@@ -40,7 +41,7 @@ public class PssPatientModulatorTest extends BaseTestNGWebDriver {
 		Assert.assertEquals(extPracticeId, testData.getAnonymousPracticeId(), "Ext Practice Id is wrong");
 	}
 
-	@Test
+	@Test(enabled = true, groups = {"APItest"}, retryAnalyzer = RetryAnalyzer.class)
 	public void testLinksValueGuidGET() throws IOException {
 		HeaderConfig headerConfig = new HeaderConfig();
 		PSSPropertyFileLoader propertyData = new PSSPropertyFileLoader();
@@ -54,7 +55,7 @@ public class PssPatientModulatorTest extends BaseTestNGWebDriver {
 		Assert.assertEquals(practiceId, testData.getPracticeId(), "practice Id is wrong");
 	}
 
-	@Test
+	@Test(enabled = true, groups = {"APItest"}, retryAnalyzer = RetryAnalyzer.class)
 	public void testLinksValueGuidAndPracticeGET() throws IOException {
 		HeaderConfig headerConfig = new HeaderConfig();
 		PSSPropertyFileLoader propertyData = new PSSPropertyFileLoader();
@@ -68,7 +69,7 @@ public class PssPatientModulatorTest extends BaseTestNGWebDriver {
 		Assert.assertEquals(practiceId, testData.getPracticeId(), "Practice Id is wrong");
 	}
 
-	@Test
+	@Test(enabled = true, groups = {"APItest"}, retryAnalyzer = RetryAnalyzer.class)
 	public void testLinksDetailGuidGET() throws IOException {
 		HeaderConfig headerConfig = new HeaderConfig();
 		PSSPropertyFileLoader propertyData = new PSSPropertyFileLoader();
@@ -81,7 +82,7 @@ public class PssPatientModulatorTest extends BaseTestNGWebDriver {
 		Assert.assertEquals(patientId, testData.getLinksDetailPatientId(), "Patient Id is wrong");
 	}
 
-	@Test
+	@Test(enabled = true, groups = {"APItest"}, retryAnalyzer = RetryAnalyzer.class)
 	public void testLinksDetailGuidAndPracticeGET() throws IOException {
 		HeaderConfig headerConfig = new HeaderConfig();
 		PSSPropertyFileLoader propertyData = new PSSPropertyFileLoader();
@@ -94,7 +95,7 @@ public class PssPatientModulatorTest extends BaseTestNGWebDriver {
 		Assert.assertEquals(patientId, testData.getLinksDetailPatientId(), "Patient Id is wrong");
 	}
 
-	@Test
+	@Test(enabled = true, groups = {"APItest"}, retryAnalyzer = RetryAnalyzer.class)
 	public void testGuidForLogoutPatientGET() throws IOException {
 		HeaderConfig headerConfig = new HeaderConfig();
 		PSSPropertyFileLoader propertyData = new PSSPropertyFileLoader();
@@ -107,7 +108,7 @@ public class PssPatientModulatorTest extends BaseTestNGWebDriver {
 		Assert.assertEquals(guidId, testData.getLogoutguidId(), "guid Id is wrong");
 	}
 
-	@Test
+	@Test(enabled = true, groups = {"APItest"}, retryAnalyzer = RetryAnalyzer.class)
 	public void testPracticeFromGuidLoginlessGET() throws IOException {
 		HeaderConfig headerConfig = new HeaderConfig();
 		PSSPropertyFileLoader propertyData = new PSSPropertyFileLoader();
@@ -120,7 +121,7 @@ public class PssPatientModulatorTest extends BaseTestNGWebDriver {
 		Assert.assertEquals(extPracticeId, testData.getLoginlessPrcticeId(), "Ext PracticeId is wrong");
 	}
 
-	@Test
+	@Test(enabled = true, groups = {"APItest"}, retryAnalyzer = RetryAnalyzer.class)
 	public void testTokenForLoginlessGET() throws IOException {
 		HeaderConfig headerConfig = new HeaderConfig();
 		PSSPropertyFileLoader propertyData = new PSSPropertyFileLoader();
@@ -133,7 +134,7 @@ public class PssPatientModulatorTest extends BaseTestNGWebDriver {
 		Assert.assertEquals(extPracticeId, testData.getPracticeId(), "Ext PracticeId is wrong");
 	}
 
-	@Test
+	@Test(enabled = true, groups = {"APItest"}, retryAnalyzer = RetryAnalyzer.class)
 	public void testHealthGET() throws IOException {
 		HeaderConfig headerConfig = new HeaderConfig();
 		PSSPropertyFileLoader propertyData = new PSSPropertyFileLoader();
@@ -144,7 +145,7 @@ public class PssPatientModulatorTest extends BaseTestNGWebDriver {
 		postAPIRequest.health(testData.getBaseUrlHealth(), headerConfig.defaultHeader());
 	}
 
-	@Test
+	@Test(enabled = true, groups = {"APItest"}, retryAnalyzer = RetryAnalyzer.class)
 	public void testLogoGET() throws IOException {
 		HeaderConfig headerConfig = new HeaderConfig();
 		PSSPropertyFileLoader propertyData = new PSSPropertyFileLoader();
@@ -155,7 +156,7 @@ public class PssPatientModulatorTest extends BaseTestNGWebDriver {
 		postAPIRequest.logo(testData.getBasicURI(), headerConfig.defaultHeader(), testData.getPracticeId());
 	}
 
-	@Test
+	@Test(enabled = true, groups = {"APItest"}, retryAnalyzer = RetryAnalyzer.class)
 	public void testTimezonePracticeResourceGET() throws IOException {
 		HeaderConfig headerConfig = new HeaderConfig();
 		PSSPropertyFileLoader propertyData = new PSSPropertyFileLoader();
@@ -169,7 +170,7 @@ public class PssPatientModulatorTest extends BaseTestNGWebDriver {
 		Assert.assertEquals(practiceId, testData.getPracticeId(), "Practice Id is wrong");
 	}
 
-	@Test
+	@Test(enabled = true, groups = {"APItest"}, retryAnalyzer = RetryAnalyzer.class)
 	public void testPracticeInfoGET() throws IOException {
 		HeaderConfig headerConfig = new HeaderConfig();
 		PSSPropertyFileLoader propertyData = new PSSPropertyFileLoader();
@@ -183,7 +184,7 @@ public class PssPatientModulatorTest extends BaseTestNGWebDriver {
 		Assert.assertEquals(extPracticeId, testData.getPracticeId(), "Ext PracticeId is wrong");
 	}
 
-	@Test
+	@Test(enabled = true, groups = {"APItest"}, retryAnalyzer = RetryAnalyzer.class)
 	public void testResellerLogoGET() throws IOException {
 		HeaderConfig headerConfig = new HeaderConfig();
 		PSSPropertyFileLoader propertyData = new PSSPropertyFileLoader();
@@ -194,7 +195,7 @@ public class PssPatientModulatorTest extends BaseTestNGWebDriver {
 		postAPIRequest.resellerLogo(testData.getBasicURI(), headerConfig.defaultHeader(), testData.getPracticeId());
 	}
 
-	@Test
+	@Test(enabled = true, groups = {"APItest"}, retryAnalyzer = RetryAnalyzer.class)
 	public void testSessionConfigurationGE1() throws IOException {
 		HeaderConfig headerConfig = new HeaderConfig();
 		PSSPropertyFileLoader propertyData = new PSSPropertyFileLoader();
@@ -208,7 +209,7 @@ public class PssPatientModulatorTest extends BaseTestNGWebDriver {
 		Assert.assertEquals(expirationTime, testData.getSessionConfigurationExpirationTime(), "Token Expiration Time is wrong");
 	}
 
-	@Test
+	@Test(enabled = true, groups = {"APItest"}, retryAnalyzer = RetryAnalyzer.class)
 	public void testPracticeDetailGET() throws IOException {
 		HeaderConfig headerConfig = new HeaderConfig();
 		PSSPropertyFileLoader propertyData = new PSSPropertyFileLoader();
@@ -222,7 +223,7 @@ public class PssPatientModulatorTest extends BaseTestNGWebDriver {
 		Assert.assertEquals(extPracticeId, testData.getPracticeId(), "Ext PracticeId is wrong");
 	}
 
-	@Test
+	@Test(enabled = true, groups = {"APItest"}, retryAnalyzer = RetryAnalyzer.class)
 	public void testPracticeFromGuidSsoGET() throws IOException {
 		HeaderConfig headerConfig = new HeaderConfig();
 		PSSPropertyFileLoader propertyData = new PSSPropertyFileLoader();
@@ -235,7 +236,7 @@ public class PssPatientModulatorTest extends BaseTestNGWebDriver {
 		Assert.assertEquals(extPracticeId, testData.getPracticeSsoId(), "Ext PracticeId is wrong");
 	}
 
-	@Test
+	@Test(enabled = true, groups = {"APItest"}, retryAnalyzer = RetryAnalyzer.class)
 	public void testTimeZoneResourceGET() throws IOException {
 		HeaderConfig headerConfig = new HeaderConfig();
 		PSSPropertyFileLoader propertyData = new PSSPropertyFileLoader();
@@ -246,7 +247,7 @@ public class PssPatientModulatorTest extends BaseTestNGWebDriver {
 		postAPIRequest.timeZoneResource(testData.getBasicURI(), headerConfig.defaultHeader(), testData.getPatientId());
 	}
 
-	@Test
+	@Test(enabled = true, groups = {"APItest"}, retryAnalyzer = RetryAnalyzer.class)
 	public void testCreateTokenGET() throws IOException {
 		PSSPropertyFileLoader propertyData = new PSSPropertyFileLoader();
 		Appointment testData = new Appointment();
@@ -257,7 +258,7 @@ public class PssPatientModulatorTest extends BaseTestNGWebDriver {
 		log("The Accesssc Token is From the Test Method  " + testData.getAccessToken(), testData.getPracticeId());
 	}
 
-	@Test
+	@Test(enabled = true, groups = {"APItest"}, retryAnalyzer = RetryAnalyzer.class)
 	public void testUpcomingConfigurationGET() throws IOException {
 		HeaderConfig headerConfig = new HeaderConfig();
 		PSSPropertyFileLoader propertyData = new PSSPropertyFileLoader();
@@ -268,7 +269,7 @@ public class PssPatientModulatorTest extends BaseTestNGWebDriver {
 		postAPIRequest.upcomingConfiguration(testData.getBasicURI(), headerConfig.defaultHeader(), testData.getPracticeId());
 	}
 
-	@Test
+	@Test(enabled = true, groups = {"APItest"}, retryAnalyzer = RetryAnalyzer.class)
 	public void testGetApptDetailPOST() throws IOException {
 		HeaderConfig headerConfig = new HeaderConfig();
 		PSSPropertyFileLoader propertyData = new PSSPropertyFileLoader();
@@ -282,7 +283,7 @@ public class PssPatientModulatorTest extends BaseTestNGWebDriver {
 				testData.getPracticeId(), testData.getApptDetailLocationDisplayName(), testData.getApptDetailAppointmentTypeName());
 	}
 
-	@Test
+	@Test(enabled = true, groups = {"APItest"}, retryAnalyzer = RetryAnalyzer.class)
 	public void testAnnouncementByNameGET() throws IOException {
 		HeaderConfig headerConfig = new HeaderConfig();
 		PSSPropertyFileLoader propertyData = new PSSPropertyFileLoader();
@@ -293,7 +294,7 @@ public class PssPatientModulatorTest extends BaseTestNGWebDriver {
 		postAPIRequest.announcementByName(testData.getBasicURI(), headerConfig.defaultHeader(), testData.getPracticeId());
 	}
 
-	@Test
+	@Test(enabled = true, groups = {"APItest"}, retryAnalyzer = RetryAnalyzer.class)
 	public void testAnnouncementByLanguageGET() throws IOException {
 		HeaderConfig headerConfig = new HeaderConfig();
 		PSSPropertyFileLoader propertyData = new PSSPropertyFileLoader();
@@ -304,7 +305,7 @@ public class PssPatientModulatorTest extends BaseTestNGWebDriver {
 		postAPIRequest.announcementByLanguage(testData.getBasicURI(), headerConfig.defaultHeader(), testData.getPracticeId());
 	}
 
-	@Test
+	@Test(enabled = true, groups = {"APItest"}, retryAnalyzer = RetryAnalyzer.class)
 	public void testAnnouncementTypeGET() throws IOException {
 		HeaderConfig headerConfig = new HeaderConfig();
 		PSSPropertyFileLoader propertyData = new PSSPropertyFileLoader();
@@ -315,7 +316,7 @@ public class PssPatientModulatorTest extends BaseTestNGWebDriver {
 		postAPIRequest.announcementType(testData.getBasicURI(), headerConfig.defaultHeader());
 	}
 
-	@Test
+	@Test(enabled = true, groups = {"APItest"}, retryAnalyzer = RetryAnalyzer.class)
 	public void testGetImagesGET() throws IOException {
 		HeaderConfig headerConfig = new HeaderConfig();
 		PSSPropertyFileLoader propertyData = new PSSPropertyFileLoader();
@@ -326,7 +327,7 @@ public class PssPatientModulatorTest extends BaseTestNGWebDriver {
 		postAPIRequest.getImages(testData.getBasicURI(), headerConfig.defaultHeader(), testData.getPracticeId(), testData.getGetImagesBookId());
 	}
 
-	@Test
+	@Test(enabled = true, groups = {"APItest"}, retryAnalyzer = RetryAnalyzer.class)
 	public void testGetLanguagesGET() throws IOException {
 		HeaderConfig headerConfig = new HeaderConfig();
 		PSSPropertyFileLoader propertyData = new PSSPropertyFileLoader();
@@ -337,7 +338,7 @@ public class PssPatientModulatorTest extends BaseTestNGWebDriver {
 		postAPIRequest.getLanguages(testData.getBasicURI(), headerConfig.defaultHeader(), testData.getPatientId());
 	}
 
-	@Test
+	@Test(enabled = true, groups = {"APItest"}, retryAnalyzer = RetryAnalyzer.class)
 	public void testDemographicsProfilesGET() throws IOException {
 		HeaderConfig headerConfig = new HeaderConfig();
 		PSSPropertyFileLoader propertyData = new PSSPropertyFileLoader();
@@ -351,7 +352,7 @@ public class PssPatientModulatorTest extends BaseTestNGWebDriver {
 		Assert.assertEquals(demographicsId, testData.getPatientId(), "Demographics Id is wrong");
 	}
 
-	@Test
+	@Test(enabled = true, groups = {"APItest"}, retryAnalyzer = RetryAnalyzer.class)
 	public void testPatientMatchGET() throws IOException {
 		HeaderConfig headerConfig = new HeaderConfig();
 		PSSPropertyFileLoader propertyData = new PSSPropertyFileLoader();
@@ -366,7 +367,7 @@ public class PssPatientModulatorTest extends BaseTestNGWebDriver {
 				testData.getPatientId());
 	}
 
-	@Test
+	@Test(enabled = true, groups = {"APItest"}, retryAnalyzer = RetryAnalyzer.class)
 	public void testFlowIdentityGET() throws IOException {
 		HeaderConfig headerConfig = new HeaderConfig();
 		PSSPropertyFileLoader propertyData = new PSSPropertyFileLoader();
@@ -381,7 +382,7 @@ public class PssPatientModulatorTest extends BaseTestNGWebDriver {
 				testData.getPatientId());
 	}
 
-	@Test
+	@Test(enabled = true, groups = {"APItest"}, retryAnalyzer = RetryAnalyzer.class)
 	public void testGenderMappingGET() throws IOException {
 		HeaderConfig headerConfig = new HeaderConfig();
 		PSSPropertyFileLoader propertyData = new PSSPropertyFileLoader();
@@ -396,7 +397,7 @@ public class PssPatientModulatorTest extends BaseTestNGWebDriver {
 				testData.getPatientId());
 	}
 
-	@Test
+	@Test(enabled = true, groups = {"APItest"}, retryAnalyzer = RetryAnalyzer.class)
 	public void testGetStatesGET() throws IOException {
 		HeaderConfig headerConfig = new HeaderConfig();
 		PSSPropertyFileLoader propertyData = new PSSPropertyFileLoader();
@@ -411,7 +412,7 @@ public class PssPatientModulatorTest extends BaseTestNGWebDriver {
 				testData.getPatientId());
 	}
 
-	@Test
+	@Test(enabled = true, groups = {"APItest"}, retryAnalyzer = RetryAnalyzer.class)
 	public void testPatientDemographicsGET() throws IOException {
 		HeaderConfig headerConfig = new HeaderConfig();
 		PSSPropertyFileLoader propertyData = new PSSPropertyFileLoader();
@@ -428,7 +429,7 @@ public class PssPatientModulatorTest extends BaseTestNGWebDriver {
 		Assert.assertEquals(demographicsId, testData.getPatientId(), "Demographics Id is wrong");
 	}
 
-	@Test
+	@Test(enabled = true, groups = {"APItest"}, retryAnalyzer = RetryAnalyzer.class)
 	public void testValidateProviderLinkPost() throws IOException {
 		HeaderConfig headerConfig = new HeaderConfig();
 		PSSPropertyFileLoader propertyData = new PSSPropertyFileLoader();
@@ -449,7 +450,7 @@ public class PssPatientModulatorTest extends BaseTestNGWebDriver {
 		Assert.assertEquals(linkId, testData.getValidateProviderLinkId(), "Link id is wrong");
 	}
 
-	@Test
+	@Test(enabled = true, groups = {"APItest"}, retryAnalyzer = RetryAnalyzer.class)
 	public void testLocationsByNextAvailablePost() throws IOException {
 		HeaderConfig headerConfig = new HeaderConfig();
 		PSSPropertyFileLoader propertyData = new PSSPropertyFileLoader();
@@ -468,7 +469,7 @@ public class PssPatientModulatorTest extends BaseTestNGWebDriver {
 		Assert.assertEquals(locationPracticeId, testData.getLocationsByNextAvailableId(), "location practice id is wrong");
 	}
 
-	@Test
+	@Test(enabled = true, groups = {"APItest"}, retryAnalyzer = RetryAnalyzer.class)
 	public void testLocationsByRulePost() throws IOException {
 		HeaderConfig headerConfig = new HeaderConfig();
 		PSSPropertyFileLoader propertyData = new PSSPropertyFileLoader();
@@ -485,7 +486,7 @@ public class PssPatientModulatorTest extends BaseTestNGWebDriver {
 				testData.getPracticeId(), testData.getPatientId());
 	}
 
-	@Test
+	@Test(enabled = true, groups = {"APItest"}, retryAnalyzer = RetryAnalyzer.class)
 	public void testAnonymousMatchAndCreatePatientPost() throws IOException {
 		HeaderConfig headerConfig = new HeaderConfig();
 		PSSPropertyFileLoader propertyData = new PSSPropertyFileLoader();
@@ -504,7 +505,7 @@ public class PssPatientModulatorTest extends BaseTestNGWebDriver {
 		Assert.assertEquals(patientId, testData.getPatientId(), "patient Id is wrong");
 	}
 
-	@Test
+	@Test(enabled = true, groups = {"APItest"}, retryAnalyzer = RetryAnalyzer.class)
 	public void testIdentifyPatientForReschedulePost() throws IOException {
 		HeaderConfig headerConfig = new HeaderConfig();
 		PSSPropertyFileLoader propertyData = new PSSPropertyFileLoader();
@@ -523,7 +524,7 @@ public class PssPatientModulatorTest extends BaseTestNGWebDriver {
 		Assert.assertEquals(patientId, testData.getPatientId(), "patient Id is wrong");
 	}
 
-	@Test
+	@Test(enabled = true, groups = {"APItest"}, retryAnalyzer = RetryAnalyzer.class)
 	public void testSpecialtyByRulePost() throws IOException {
 		HeaderConfig headerConfig = new HeaderConfig();
 		PSSPropertyFileLoader propertyData = new PSSPropertyFileLoader();
@@ -540,7 +541,7 @@ public class PssPatientModulatorTest extends BaseTestNGWebDriver {
 				testData.getPracticeId(), testData.getSpecialtyByRulePatientId());
 	}
 
-	@Test
+	@Test(enabled = true, groups = {"APItest"}, retryAnalyzer = RetryAnalyzer.class)
 	public void testCreateTokenPost() throws IOException {
 		HeaderConfig headerConfig = new HeaderConfig();
 		PSSPropertyFileLoader propertyData = new PSSPropertyFileLoader();
@@ -555,7 +556,7 @@ public class PssPatientModulatorTest extends BaseTestNGWebDriver {
 				headerConfig.HeaderwithToken(testData.getAccessToken()), testData.getPracticeId());
 	}
 
-	@Test
+	@Test(enabled = true, groups = {"APItest"}, retryAnalyzer = RetryAnalyzer.class)
 	public void testLocationsBasedOnZipcodeAndRadiusPost() throws IOException {
 		HeaderConfig headerConfig = new HeaderConfig();
 		PSSPropertyFileLoader propertyData = new PSSPropertyFileLoader();
@@ -572,7 +573,7 @@ public class PssPatientModulatorTest extends BaseTestNGWebDriver {
 				headerConfig.HeaderwithToken(testData.getAccessToken()), testData.getPracticeId(), testData.getPatientId());
 	}
 
-	@Test
+	@Test(enabled = true, groups = {"APItest"}, retryAnalyzer = RetryAnalyzer.class)
 	public void testAppointmentGET() throws IOException {
 		HeaderConfig headerConfig = new HeaderConfig();
 		PSSPropertyFileLoader propertyData = new PSSPropertyFileLoader();
@@ -586,7 +587,7 @@ public class PssPatientModulatorTest extends BaseTestNGWebDriver {
 		Assert.assertEquals(bookName, testData.getAppointmentPracticeName(), "practice Name is wrong");
 	}
 
-	@Test
+	@Test(enabled = true, groups = {"APItest"}, retryAnalyzer = RetryAnalyzer.class)
 	public void testAppointmentForIcsGET() throws IOException {
 		HeaderConfig headerConfig = new HeaderConfig();
 		PSSPropertyFileLoader propertyData = new PSSPropertyFileLoader();
@@ -597,7 +598,7 @@ public class PssPatientModulatorTest extends BaseTestNGWebDriver {
 		postAPIRequest.appointmentForIcs(testData.getBasicURI(), headerConfig.defaultHeader(), testData.getPracticeId(), testData.getAppointmentId());
 	}
 
-	@Test
+	@Test(enabled = true, groups = {"APItest"}, retryAnalyzer = RetryAnalyzer.class)
 	public void testUpcomingAppointmentsByPageGET() throws IOException {
 		HeaderConfig headerConfig = new HeaderConfig();
 		PSSPropertyFileLoader propertyData = new PSSPropertyFileLoader();
@@ -612,7 +613,7 @@ public class PssPatientModulatorTest extends BaseTestNGWebDriver {
 				testData.getPracticeId(), testData.getAppointmentId());
 	}
 
-	@Test
+	@Test(enabled = true, groups = {"APItest"}, retryAnalyzer = RetryAnalyzer.class)
 	public void testInsuranceCarrierGET() throws IOException {
 		HeaderConfig headerConfig = new HeaderConfig();
 		PSSPropertyFileLoader propertyData = new PSSPropertyFileLoader();
@@ -627,7 +628,7 @@ public class PssPatientModulatorTest extends BaseTestNGWebDriver {
 				testData.getPatientId());
 	}
 
-	@Test
+	@Test(enabled = true, groups = {"APItest"}, retryAnalyzer = RetryAnalyzer.class)
 	public void testCancellationReasonGET() throws IOException {
 		HeaderConfig headerConfig = new HeaderConfig();
 		PSSPropertyFileLoader propertyData = new PSSPropertyFileLoader();
@@ -642,7 +643,7 @@ public class PssPatientModulatorTest extends BaseTestNGWebDriver {
 				testData.getPracticeId(), testData.getPatientId());
 	}
 
-	@Test
+	@Test(enabled = true, groups = {"APItest"}, retryAnalyzer = RetryAnalyzer.class)
 	public void testRescheduleReasonGET() throws IOException {
 		HeaderConfig headerConfig = new HeaderConfig();
 		PSSPropertyFileLoader propertyData = new PSSPropertyFileLoader();
@@ -658,7 +659,7 @@ public class PssPatientModulatorTest extends BaseTestNGWebDriver {
 
 	}
 
-	@Test
+	@Test(enabled = true, groups = {"APItest"}, retryAnalyzer = RetryAnalyzer.class)
 	public void testApptTypeNextAvailablePost() throws IOException {
 		HeaderConfig headerConfig = new HeaderConfig();
 		PSSPropertyFileLoader propertyData = new PSSPropertyFileLoader();
@@ -678,7 +679,7 @@ public class PssPatientModulatorTest extends BaseTestNGWebDriver {
 		Assert.assertEquals(slotId, testData.getApptTypeNextAvailableId(), "Next Available slotId id is wrong");
 	}
 
-	@Test
+	@Test(enabled = true, groups = {"APItest"}, retryAnalyzer = RetryAnalyzer.class)
 	public void testBooksByNextAvailablePost() throws IOException {
 		HeaderConfig headerConfig = new HeaderConfig();
 		PSSPropertyFileLoader propertyData = new PSSPropertyFileLoader();
