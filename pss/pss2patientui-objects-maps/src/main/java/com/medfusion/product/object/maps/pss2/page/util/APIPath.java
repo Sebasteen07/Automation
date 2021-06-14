@@ -40,48 +40,4 @@ public class APIPath {
 		public static final String lastseenproviderNG = "/24249/getlastseenprovider";
 
 	}
-
-	public static final class apiPathGE {
-		public static final String HEALTH_CHECK = "/24248/healthcheck";
-		public static final String PING = "/24248/ping";
-		public static final String VERSION = "/24248/version";
-		public static final String LOCKOUT = "/24248/lockout";
-		public static final String APPOINTMENT_TYPE = "/24248/appointmenttypes";
-		public static final String BOOKS = "/24248/books";
-		public static final String CANCELLATION_REASON = "/24248/cancellationreason";
-		public static final String INSURANCE_CARRIER = "/24248/insurancecarrier";
-		public static final String SPECIALITY = "/24248/specialty";
-		public static final String ACTUATOR = "/actuator";
-		public static final String LAST_SEEN_PROVIDER = "/24333/getlastseenprovider";
-		public static final String LOCATIONS = "/24248/locations";
-		public static final String APPOINTMENT_STATUS = "/24333/appointmentstatus";
-		public static final String SCHEDUL_APPT = "24248/scheduleappointment";
-		public static final String CANCEL_STATUS = "/24248/cancelstatus";
-		public static final String CANCEL_APPOINTMENT = "/24248/cancelappointment/27565";
-		public static final String CANCEL_APPT_WITH_CANCEL_REASON = "/24248/cancelappointment/27554";
-		public static final String PAST_APPOINTMENTS = "/24248/pastappointments";
-		public static final String UPCOMING_APPT = "/24248/upcomingappointments";
-		public static final String PREVENT_SCHEDULING_DATE = "/24333/preventschedulingdate/27552/158";
-		public static final String RESCHEDUL_APPT = "/24248/rescheduleappointment";
-		public static final String AVAILABLE_SLOTS = "/24248/availableslots";
-		public static final String NEXT_AVAILABLE_SLOTS = "/24248/nextavailableslots";
-		public static final String ADD_PATIENT="/24333/addpatient";
-		public static final String CAREPROVIDER="/24333/careprovideravailability";
-		public static final String DEMOGRAPHICS="/24248/demographics";
-		public static final String HEALTH_OPERATION="/actuator/health";
-		public static final String MATCH_PATIENT="/24333/matchpatient";
-		public static final String PATIENT_LASTVISIT="/24333/patientlastvisit/26854";
-		public static final String PREREQUISTE_APPOINTMENTTYPESGET="/24333/prerequisteappointmenttypes";
-		public static final String SEARCH_PATIENT="/24333/searchpatient";
-
-
-
-
-
-
-
-
-		
-
-	}
 }
