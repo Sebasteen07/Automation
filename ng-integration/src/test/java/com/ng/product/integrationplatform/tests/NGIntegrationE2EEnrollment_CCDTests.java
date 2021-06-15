@@ -1320,7 +1320,7 @@ public class NGIntegrationE2EEnrollment_CCDTests extends BaseTestNGWebDriver {
 		String providerName = propertyLoaderObj.getProperty("EPMProviderName");
 		String enterpriseId = propertyLoaderObj.getProperty("NGMainEnterpriseID");
 		String practiceId = propertyLoaderObj.getProperty("NGMainPracticeID");
-		String integrationPracticeId = propertyLoaderObj.getProperty("integrationPracticeIDAMDC");
+		String integrationPracticeId = propertyLoaderObj.getIntegrationPracticeID();
 
 		logStep("Created the patient in NG EPM Practice " + practiceId);
 		NewPatient createPatient = NGPatient.patientUsingJSON(propertyLoaderObj, "complete");
@@ -1358,8 +1358,8 @@ public class NGIntegrationE2EEnrollment_CCDTests extends BaseTestNGWebDriver {
 
 		logStep("Setup Oauth Token");
 		RestUtils.oauthSetup(propertyLoaderObj.getOAuthKeyStore(), propertyLoaderObj.getOAuthProperty(),
-				propertyLoaderObj.getOAuthAppToken(), propertyLoaderObj.getProperty("oAuthUsername"),
-				propertyLoaderObj.getProperty("oAuthPassword"));
+				propertyLoaderObj.getOAuthAppToken(), propertyLoaderObj.getProperty("oauth.username"),
+				propertyLoaderObj.getProperty("oauth.password"));
 
 		Thread.sleep(60000);
 		logStep("Do the Get onDemand Health Data Get API Call.");
@@ -1388,7 +1388,7 @@ public class NGIntegrationE2EEnrollment_CCDTests extends BaseTestNGWebDriver {
 	public void testCCDMSUCCD() throws Throwable {
 		String enterpriseId = propertyLoaderObj.getProperty("NGMainEnterpriseID");
 		String practiceId = propertyLoaderObj.getProperty("NGMainPracticeID");
-		String integrationPracticeId = propertyLoaderObj.getProperty("integrationPracticeIDAMDC");
+		String integrationPracticeId = propertyLoaderObj.getIntegrationPracticeID();
 		String url = propertyLoaderObj.getProperty("url");
 		String locationName = propertyLoaderObj.getProperty("EPMLocationName");
 		String providerName = propertyLoaderObj.getProperty("EPMProviderName");
@@ -1441,7 +1441,7 @@ public class NGIntegrationE2EEnrollment_CCDTests extends BaseTestNGWebDriver {
 	public void testCCDLockedEncounterCCD() throws Throwable {
 		String enterpriseId = propertyLoaderObj.getProperty("NGMainEnterpriseID");
 		String practiceId = propertyLoaderObj.getProperty("NGMainPracticeID");
-		String integrationPracticeId = propertyLoaderObj.getProperty("integrationPracticeIDAMDC");
+		String integrationPracticeId = propertyLoaderObj.getIntegrationPracticeID();
 		String url = propertyLoaderObj.getProperty("url");
 		String locationName = propertyLoaderObj.getProperty("EPMLocationName");
 		String providerName = propertyLoaderObj.getProperty("EPMProviderName");
@@ -1529,7 +1529,7 @@ public class NGIntegrationE2EEnrollment_CCDTests extends BaseTestNGWebDriver {
 			url = propertyLoaderObj.getProperty("MFPortalURLPractice1");
 		} else if (propertyLoaderObj.getNGAPIexecutionMode().equalsIgnoreCase("SIT")) {
 			practiceId = propertyLoaderObj.getProperty("NGMainPracticeID");
-			integrationPracticeID = propertyLoaderObj.getProperty("integrationPracticeIDAMDC");
+			integrationPracticeID = propertyLoaderObj.getIntegrationPracticeID();
 			url = propertyLoaderObj.getProperty("url");
 		} else {
 			Log4jUtil.log("Invalid Execution Mode");
@@ -1576,8 +1576,8 @@ public class NGIntegrationE2EEnrollment_CCDTests extends BaseTestNGWebDriver {
 					propertyLoaderObj.getProperty("oAuthPassword1"));
 		} else if (propertyLoaderObj.getNGAPIexecutionMode().equalsIgnoreCase("SIT")) {
 			RestUtils.oauthSetup(propertyLoaderObj.getOAuthKeyStore(), propertyLoaderObj.getOAuthProperty(),
-					propertyLoaderObj.getOAuthAppToken(), propertyLoaderObj.getProperty("oAuthUsername"),
-					propertyLoaderObj.getProperty("oAuthPassword"));
+					propertyLoaderObj.getOAuthAppToken(), propertyLoaderObj.getProperty("oauth.username"),
+					propertyLoaderObj.getProperty("oauth.password"));
 		} else {
 			Log4jUtil.log("Invalid Execution Mode");
 		}
@@ -1610,7 +1610,7 @@ public class NGIntegrationE2EEnrollment_CCDTests extends BaseTestNGWebDriver {
 		String practiceId = propertyLoaderObj.getProperty("NGMainPracticeID");
 		String providerName = propertyLoaderObj.getProperty("EPMProviderName");
 		String locationName = propertyLoaderObj.getProperty("EPMLocationName");
-		String integrationPracticeID = propertyLoaderObj.getProperty("integrationPracticeIDAMDC");
+		String integrationPracticeID = propertyLoaderObj.getIntegrationPracticeID();
 		String url = propertyLoaderObj.getProperty("url");
 
 		NGAPIUtils.updateLoginDefaultTo("EnterpriseGateway", enterpriseId, practiceId);
@@ -1824,8 +1824,8 @@ public class NGIntegrationE2EEnrollment_CCDTests extends BaseTestNGWebDriver {
 
 		logStep("Setup Oauth Token");
 		RestUtils.oauthSetup(propertyLoaderObj.getOAuthKeyStore(), propertyLoaderObj.getOAuthProperty(),
-				propertyLoaderObj.getOAuthAppToken(), propertyLoaderObj.getProperty("oAuthUsername"),
-				propertyLoaderObj.getProperty("oAuthPassword"));
+				propertyLoaderObj.getOAuthAppToken(), propertyLoaderObj.getProperty("oauth.username"),
+				propertyLoaderObj.getProperty("oauth.password"));
 
 		Thread.sleep(60000);
 		logStep("Do the Get onDemand Health Data Get API Call.");
@@ -1857,7 +1857,7 @@ public class NGIntegrationE2EEnrollment_CCDTests extends BaseTestNGWebDriver {
 		String practiceId = propertyLoaderObj.getProperty("NGMainPracticeID");
 		String providerName = propertyLoaderObj.getProperty("EPMProviderName");
 		String locationName = propertyLoaderObj.getProperty("EPMLocationName");
-		String integrationPracticeID = propertyLoaderObj.getProperty("integrationPracticeIDAMDC");
+		String integrationPracticeID = propertyLoaderObj.getIntegrationPracticeID();
 		String url = propertyLoaderObj.getProperty("url");
 		String practiceName = propertyLoaderObj.getProperty("practiceName");
 
@@ -1955,8 +1955,8 @@ public class NGIntegrationE2EEnrollment_CCDTests extends BaseTestNGWebDriver {
 
 		logStep("Setup Oauth Token");
 		RestUtils.oauthSetup(propertyLoaderObj.getOAuthKeyStore(), propertyLoaderObj.getOAuthProperty(),
-				propertyLoaderObj.getOAuthAppToken(), propertyLoaderObj.getProperty("oAuthUsername"),
-				propertyLoaderObj.getProperty("oAuthPassword"));
+				propertyLoaderObj.getOAuthAppToken(), propertyLoaderObj.getProperty("oauth.username"),
+				propertyLoaderObj.getProperty("oauth.password"));
 
 		Thread.sleep(60000);
 		logStep("Do the Get onDemand Health Data Get API Call.");

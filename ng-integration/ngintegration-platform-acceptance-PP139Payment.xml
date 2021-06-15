@@ -12,7 +12,7 @@
  	
 <test name = "NGIntegration-Platform-Acceptance-PP139Payment" >
 	<classes>
-		<class name = "com.ng.product.integrationplatform.tests.NGIntegrationE2ESITTests" />
+		<class name = "com.ng.product.integrationplatform.tests.NGIntegrationE2EPayment_SendChartItemTests" />
 		<methods>
 	    		<include name="testPaymentPayBills"/>
 	    		<include name="testPaymentVirtualCardSwiper"/> 
