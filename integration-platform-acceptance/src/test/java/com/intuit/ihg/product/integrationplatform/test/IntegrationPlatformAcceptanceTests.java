@@ -669,7 +669,7 @@ public class IntegrationPlatformAcceptanceTests extends BaseTestNGWebDriver {
 		}
 		log("Step 13: Check secure message in patient mailinator inbox");
 		Mailinator mail = new Mailinator();
-		String subject = "New message from PI Automation rsdk Integrated";
+		String subject = "New message from "+testcasesData.getPracticeName();
 		String messageLink = "Sign in to view this message";
 		String emailMessageLink = mail.getLinkFromEmail(testcasesData.getUserName(), subject, messageLink, 20);
 
