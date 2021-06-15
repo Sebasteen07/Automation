@@ -1,7 +1,12 @@
 // Copyright 2013-2021 NXGN Management, LLC. All Rights Reserved.
 package com.medfusion.product.pss2patientportal.test;
 
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Calendar;
+import java.util.Date;
+
 import static org.testng.Assert.*;
 import org.testng.annotations.DataProvider;
 import org.testng.annotations.Parameters;
@@ -39,7 +44,10 @@ import com.medfusion.product.object.maps.pss2.page.Scheduled.ScheduledAppointmen
 import com.medfusion.product.object.maps.pss2.page.settings.AdminAppointment;
 import com.medfusion.product.object.maps.pss2.page.settings.PSS2PracticeConfiguration;
 import com.medfusion.product.object.maps.pss2.page.settings.PatientFlow;
+import com.medfusion.product.object.maps.pss2.page.util.HeaderConfig;
+import com.medfusion.product.object.maps.pss2.page.util.PostAPIRequest;
 import com.medfusion.product.patientportal2.pojo.JalapenoPatient;
+import com.medfusion.product.pss2patientmodulatorapi.test.Payload;
 import com.medfusion.product.pss2patientui.pojo.AdminUser;
 import com.medfusion.product.pss2patientui.pojo.Appointment;
 import com.medfusion.product.pss2patientui.utils.PSSAdminUtils;
@@ -4560,6 +4568,135 @@ public class PSS2PatientPortalAcceptanceTests extends BaseTestNGWebDriver {
 			assertEquals(date, psspatientutils.currentESTDate(testData));
 		}
 	}
+	
+	@Test(enabled = true, groups = { "AcceptanceTests" }, retryAnalyzer = RetryAnalyzer.class)
+	public void testPreventSchedFutureNG() throws Exception {
+
+		PSSPropertyFileLoader propertyData = new PSSPropertyFileLoader();
+		Appointment testData = new Appointment();
+		AdminUser adminUser = new AdminUser();
+		
+		propertyData.setAdminNG(adminUser);
+		propertyData.setAppointmentResponseNG(testData);
+		
+		PSSAdminUtils adminUtils = new PSSAdminUtils();
+		
+		logStep("Login to PSS 2.0 Admin portal");
+		adminUtils.preventSchedAptSettings(driver, adminUser, testData, PSSConstants.LOGINLESS);
+		
+		logStep("Fetch the rules set in Admin");
+		String rule = adminUser.getRule();
+		log("rule are " + rule);
+		rule = rule.replaceAll(" ", "");
+
+		DismissPage dismissPage = new DismissPage(driver, testData.getUrlLoginLess());
+		
+		logStep("Clicked on Dismiss");
+		LoginlessPatientInformation loginlessPatientInformation = dismissPage.clickDismiss();
+
+		logStep("Enter the below mentioned patient details in demographic page- ");
+		log("Demographic Details- " + testData.getFirstName() + " " + testData.getLastName() + " " + testData.getDob()
+				+ " " + testData.getGender() + " " + testData.getEmail() + " " + testData.getPrimaryNumber() + " "
+				+ testData.getZipCode());
+		
+		HomePage homePage = loginlessPatientInformation.fillNewPatientForm(testData.getFirstName(),
+				testData.getLastName(), testData.getDob(), testData.getEmail(), testData.getGender(),
+				testData.getZipCode(), testData.getPrimaryNumber());
+		
+		homePage.btnStartSchedClick();
+		Location location = null;
+		StartAppointmentInOrder startappointmentInOrder = null;
+		startappointmentInOrder = homePage.skipInsurance(driver);
+		
+		location = startappointmentInOrder.selectFirstLocation(PSSConstants.START_LOCATION);
+		Log4jUtil.log("Verfiy Location Page and location =" + testData.getLocation());
+
+		AppointmentPage appointment = location.selectAppointment(testData.getLocation());
+		logStep("Verfiy Appointment Page and appointment to be selected = " + testData.getAppointmenttype());
+		
+		String expPrevSchMsg="The practice does not allow this appointment to be scheduled within "+testData.getPreSchedDays()+" days from your last visit for the same appointment type. Please look for a later date or call the practice if the schedule does not allow selecting a later date.";
+		String actPreventSchMsg=appointment.preventAppointmentTypeMsg(testData.getAppointmenttype());
+
+		assertEquals(actPreventSchMsg,expPrevSchMsg,"Prevent Scheduling Error message is not matches with expected message");
+	}
+	
+	@Test(enabled = true, groups = { "AcceptanceTests" }, retryAnalyzer = RetryAnalyzer.class)
+	public void testPreventSchedPastNG() throws Exception {
+
+		PSSPropertyFileLoader propertyData = new PSSPropertyFileLoader();
+		Appointment testData = new Appointment();
+		AdminUser adminuser = new AdminUser();
+		
+		propertyData.setAdminNG(adminuser);
+		propertyData.setAppointmentResponseNG(testData);
+
+		PSSAdminUtils adminUtils = new PSSAdminUtils();
+		
+		logStep("Login to PSS 2.0 Admin portal");
+		adminUtils.preventSchedAptSettings(driver, adminuser, testData, PSSConstants.LOGINLESS);
+		
+		
+		logStep("Fetch the rules set in Admin");
+		String rule = adminuser.getRule();
+		log("rule are " + rule);
+		rule = rule.replaceAll(" ", "");
+
+		DismissPage dismissPage = new DismissPage(driver, testData.getUrlLoginLess());
+		
+		logStep("Clicked on Dismiss");
+		LoginlessPatientInformation loginlessPatientInformation = dismissPage.clickDismiss();
+
+		logStep("Enter the below mentioned patient details in demographic page- ");
+		log("Demographic Details- " + testData.getFirstName() + " " + testData.getLastName() + " " + testData.getDob()
+				+ " " + testData.getGender() + " " + testData.getEmail() + " " + testData.getPrimaryNumber() + " "
+				+ testData.getZipCode());
+		
+		HomePage homePage = loginlessPatientInformation.fillNewPatientForm(testData.getFirstName(),
+				testData.getLastName(), testData.getDob(), testData.getEmail(), testData.getGender(),
+				testData.getZipCode(), testData.getPrimaryNumber());
+		
+		logStep("Fetch the Past Appointment Date from home page");
+		String pastAptDate=homePage.fetchPastAptDate();
+  
+	    SimpleDateFormat formatter2=new SimpleDateFormat("MMM dd yyyy");  
+	    Date date1=formatter2.parse(pastAptDate);
+	    Calendar cal = Calendar.getInstance();
+	    cal.setTime(date1);
+	        
+	    // manipulate date
+	    cal.add(Calendar.DATE, testData.getPreSchedDays()); 
+	    Date dateWithPrevSchedDaysAdded = cal.getTime();	        
+	    logStep("Slot should be visible from this date- "+dateWithPrevSchedDaysAdded);
+  
+	    DateFormat dateFormat = new SimpleDateFormat("dd"); 
+	    String strDateExp = dateFormat.format(dateWithPrevSchedDaysAdded);  
+	    
+	    logStep("Calculated Date in DD format- "+strDateExp);
+	    
+		homePage.btnStartSchedClick();
+		Location location = null;
+		StartAppointmentInOrder startappointmentInOrder = null;
+		startappointmentInOrder = homePage.skipInsurance(driver);
+		location = startappointmentInOrder.selectFirstLocation(PSSConstants.START_LOCATION);
+		logStep("Verfiy Location Page and location =" + testData.getLocation());
+
+		AppointmentPage appointment = location.selectAppointment(testData.getLocation());
+		logStep("Verfiy Appointment Page and appointment to be selected = " + testData.getAppointmenttype());
+
+		Provider provider = appointment.selectTypeOfProvider(testData.getAppointmenttype(),Boolean.valueOf(testData.getIsAppointmentPopup()));
+		
+		logStep("Verfiy Provider Page and Provider = " + testData.getProvider());
+		
+		AppointmentDateTime aptDateTime = provider.getProviderandClick(testData.getProvider());
+		
+	    String actualSlotDate = aptDateTime.selectDate(testData.getIsNextDayBooking());
+	    logStep("Expected Available slot- "+strDateExp);
+	    
+	    logStep("Actual Available slot- "+actualSlotDate);
+
+		assertEquals(actualSlotDate, strDateExp,"Prevent Scheduling for Past Appointment Type is not working properly");
+	}
+
 
 	@Test(enabled = true, groups = { "AcceptanceTests" }, retryAnalyzer = RetryAnalyzer.class)
 	public void testE2ELinkGenerationGW() throws Exception {

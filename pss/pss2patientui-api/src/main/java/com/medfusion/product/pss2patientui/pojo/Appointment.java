@@ -87,6 +87,7 @@ public class Appointment {
 	private int leadtimeDay;
 	private int leadtimeHour;
 	private int leadtimeMinute;
+	private int preSchedDays;
 
 	private String currentDate;
 	private String currentTimeZone;
@@ -172,6 +173,14 @@ public class Appointment {
 		this.datetime = datetimeConfig;
 		this.appointmenttype = appointmentConfig;
 		this.speciality = specialityConfig;
+	}
+
+	public int getPreSchedDays() {
+		return preSchedDays;
+	}
+
+	public void setPreSchedDays(int preSchedDays) {
+		this.preSchedDays = preSchedDays;
 	}
 
 	public Appointment() {}	

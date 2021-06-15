@@ -64,7 +64,7 @@ public class PSSAdminUtils extends BaseTestNGWebDriver{
 		Log4jUtil.log("length " + patientflow.ruleLength());
 		Log4jUtil.log("Rule length : " + patientflow.getRule());
 		Log4jUtil.log("Insurance Displayed ? " + patientflow.isIsuranceDisplayed());
-		if (patientflow.isIsuranceDisplayed().equalsIgnoreCase("true")) {
+		if (patientflow.isIsuranceDisplayed()==true) {
 			adminuser.setIsInsuranceDisplayed(false);
 		}
 		AdminPatientMatching adminpatientmatching = patientflow.gotoPatientMatchingTab();
@@ -177,7 +177,7 @@ public class PSSAdminUtils extends BaseTestNGWebDriver{
 			adminuser.setRule(patientflow.getRule());
 		}
 		Log4jUtil.log("Insurance Displayed ? " + patientflow.isIsuranceDisplayed());
-		if (patientflow.isIsuranceDisplayed().equalsIgnoreCase("true")) {
+		if (patientflow.isIsuranceDisplayed()==true) {
 			adminuser.setIsInsuranceDisplayed(false);
 		}
 		AdminPatientMatching adminpatientmatching = patientflow.gotoPatientMatchingTab();
@@ -828,24 +828,56 @@ public class PSSAdminUtils extends BaseTestNGWebDriver{
 	}
 	public void linkGenerationWithLocation(WebDriver driver, AdminUser adminUser, Appointment testData, String urlToUse) throws Exception {
 		PSS2PracticeConfiguration pssPracticeConfig = loginToAdminPortal(driver, adminUser);
-		AdminAppointment adminAppointment = pssPracticeConfig.gotoAdminAppointmentTab();
-		if (adminAppointment.toggleNextAvailableStatus() == false) {
-			adminAppointment.toggleNextavailableClick();
-		}
 		PatientFlow patientFlow = pssPracticeConfig.gotoPatientFlowTab();
 		testData.setIsinsuranceVisible(patientFlow.insuracetogglestatus());
 		log("Insurance Status= " + patientFlow.insuracetogglestatus());
 		adminUser.setRule(patientFlow.getRule());
-		Log4jUtil.log("rule= " + patientFlow.getRule());
+		log("rule= " + patientFlow.getRule());
 		setRulesNoSpecialitySet1(patientFlow);
 		LinkTab linkTab = pssPracticeConfig.linksTab();
 		linkTab.addLinkForLocation(testData.getLinkLocation());
 		testData.setLinkLocationURL(testData.getLinkLocationURL());
 		log("Location link is    " + testData.getLinkLocationURL());
+		AdminAppointment adminAppointment = pssPracticeConfig.gotoAdminAppointmentTab();
+		if (adminAppointment.toggleNextAvailableStatus() == false) {
+			adminAppointment.toggleNextavailableClick();
+		}
 		AdminPatientMatching adminPatientMatching = patientFlow.gotoPatientMatchingTab();
 		adminPatientMatching.patientMatchingSelection();
 		adminPatientMatching.logout();
 
 	}
+	
+	public void preventSchedAptSettings(WebDriver driver, AdminUser adminUser, Appointment appointment, String urlToUse)
+			throws Exception {
+
+		PSS2PracticeConfiguration pssPracticeConfig = loginToAdminPortal(driver, adminUser);
+
+		AccessRules accessRule = pssPracticeConfig.gotoAccessTab();
+
+		if (urlToUse.equalsIgnoreCase(PSSConstants.LOGINLESS)) {
+			log("PSS Patient URL : " + accessRule.getLoginlessURL());
+			appointment.setUrlLoginLess(accessRule.getLoginlessURL());
+		}
+		if (urlToUse.equalsIgnoreCase(PSSConstants.ANONYMOUS)) {
+			log("PSS Patient URL : " + accessRule.getAnonymousUrl());
+			appointment.setUrlAnonymous(accessRule.getAnonymousUrl());
+		}
+		PatientFlow patientFlow = accessRule.gotoPatientFlowTab();
+
+		setRulesNoSpecialitySet1(patientFlow);
+
+		adminUser.setRule(patientFlow.getRule());
+		log("rule= " + patientFlow.getRule());
+
+		ManageAppointmentType manageAppointmentType = pssPracticeConfig.gotoAppointment();
+		pageRefresh(driver);
+		
+		manageAppointmentType.prevSchedSettings(appointment.getAppointmenttype(),appointment.getPreSchedDays());
+
+		log("Prevent Scheduling settings are turn on successfully for "+appointment.getPreSchedDays());
+		patientFlow.logout();
+	}
+
 	
 }

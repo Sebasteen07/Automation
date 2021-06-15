@@ -379,6 +379,8 @@ public class PSSPropertyFileLoader {
 		appointValues.setMemberID(property.getProperty("memberID"));
 		appointValues.setGroupID(property.getProperty("groupID"));
 		appointValues.setInsurancePhone(property.getProperty("insrancePhone"));
+		
+		appointValues.setPreSchedDays(Integer.parseInt(property.getProperty("preSchedDays")));
 	}
 
 	public void setAppointmentResponseAthena(Appointment appointValues) {
@@ -406,14 +408,14 @@ public class PSSPropertyFileLoader {
 		appointValues.setPracticeId("practiceIdNG");
 		appointValues.setAccessTokenURL(property.getProperty("accessToken_BaseUrl"));
 		appointValues.setBasicURI(property.getProperty("baseurl"));
-		appointValues.setPracticeId(property.getProperty("practiceIdNG"));
+		appointValues.setPracticeId(property.getProperty("practice.id.NG"));
 		appointValues.setPracticeDisplayName(property.getProperty("practiceDisplayNameNG"));
 		appointValues.setPatientId(property.getProperty("patientIdNG"));
 		appointValues.setStartDateTime(property.getProperty("startDateTime"));
 		appointValues.setEndDateTime(property.getProperty("endDateTime"));
 		appointValues.setApptid(property.getProperty("apptid"));
-		appointValues.setFirstName(property.getProperty("first"));
-		appointValues.setLastName(property.getProperty("first"));
+		appointValues.setFirstName(property.getProperty("firstNameNG"));
+		appointValues.setLastName(property.getProperty("firstNameNG"));
 		appointValues.setSlotStartTime(property.getProperty("slotStartTime"));
 		appointValues.setSlotEndTime(property.getProperty("slotEndTime"));
 

@@ -163,7 +163,7 @@ public class Provider extends PSS2MainPage {
 			if (providerList.get(i).getText().trim().contains(providerName.trim())) {
 				CommonMethods.highlightElement(providerList.get(i));
 
-				IHGUtil.waitForElement(driver, 13, providernameLink.get(i));
+				IHGUtil.waitForElement(driver, 13, providerList.get(i));
 				providerList.get(i).click();
 
 				log("Clicked on Provider");
