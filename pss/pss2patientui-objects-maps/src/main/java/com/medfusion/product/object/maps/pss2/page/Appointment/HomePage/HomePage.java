@@ -181,6 +181,12 @@ public class HomePage extends PSS2MainPage {
 
 	@FindBy(how = How.XPATH, using = "//*[@class='dropdown-menu']//a")
 	private WebElement logout;
+	
+	@FindBy(how = How.XPATH, using = "//div[@class='value-wizard']//div")
+	private WebElement locationPreSelected;
+	
+	@FindBy(how = How.XPATH, using = "//*[@id='wizardwebview']/ol/li[4]/div/div[1]/div")
+	private WebElement providerPreSelected;
 
 	public HomePage(WebDriver driver) {
 		super(driver);
@@ -758,4 +764,16 @@ public class HomePage extends PSS2MainPage {
 		driver.manage().deleteAllCookies();
 	}
 	
+	public String getLocationText()
+	{
+		String locationText=locationPreSelected.getText();
+		log("Location preselected is" +locationText);
+		return locationText;
+	}
+	public String getProviderText()
+	{
+		String providerText=providerPreSelected.getText();
+		log("Provider preselected is" +providerText);
+		return providerText;
+	}
 }
