@@ -2,10 +2,8 @@
 package com.medfusion.product.object.maps.pss2.page.util;
 
 import static io.restassured.RestAssured.given;
+import static org.hamcrest.Matchers.equalTo;
 
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
 
 import org.json.JSONArray;
@@ -16,7 +14,6 @@ import com.intuit.ifs.csscat.core.BaseTestNGWebDriver;
 import io.restassured.RestAssured;
 import io.restassured.path.json.JsonPath;
 import io.restassured.response.Response;
-import static org.hamcrest.Matchers.*;
 
 public class PostAPIRequest extends BaseTestNGWebDriver {
 
@@ -35,7 +32,6 @@ public class PostAPIRequest extends BaseTestNGWebDriver {
 
 		log("status of an Appointment -" + js.getString("status"));
 		log("startDateTime- " + js.getString("startDateTime"));
-
 		log("appointmentType Id- " + js.getString("appointmentTypeId"));
 		return js;
 
