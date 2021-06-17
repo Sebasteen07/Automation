@@ -135,7 +135,8 @@ public class LoginlessPatientInformation extends PSS2MainPage {
 		commonMethods.highlightElement(inputLastName);
 		inputLastName.sendKeys(lastName);
 		
-		commonMethods.highlightElement(dateOfBirth);
+		IHGUtil.waitForElement(driver, 5, dateOfBirth);
+		commonMethods.highlightElement(dateOfBirth);		
 		datePicker.click();
 		log("datePicker clicked ");
 		try {

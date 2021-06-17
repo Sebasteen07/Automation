@@ -87,6 +87,7 @@ public class Appointment {
 	private int leadtimeDay;
 	private int leadtimeHour;
 	private int leadtimeMinute;
+	private int preSchedDays;
 
 	private String currentDate;
 	private String currentTimeZone;
@@ -151,8 +152,8 @@ public class Appointment {
 
 	private String urlAnonymousNG;
 	private boolean isAnonymousFlow = false;
-	private boolean isinsuranceVisible = false;
-	private boolean isstartpointPresent = false;
+	private boolean insuranceVisible = false;
+	private boolean startPointPresent = false;
 	private boolean resourcetoggleStatus = false;
 	private boolean accepttoggleStatus = false;
 
@@ -231,6 +232,14 @@ public class Appointment {
 		this.datetime = datetimeConfig;
 		this.appointmenttype = appointmentConfig;
 		this.speciality = specialityConfig;
+	}
+
+	public int getPreSchedDays() {
+		return preSchedDays;
+	}
+
+	public void setPreSchedDays(int preSchedDays) {
+		this.preSchedDays = preSchedDays;
 	}
 
 	public Appointment() {}	
@@ -646,8 +655,12 @@ public class Appointment {
 		this.showCancellationReasonPM = showCancellationReasonPM;
 	}
 
-	public boolean isIsstartpointPresent() {
-		return isstartpointPresent;
+	public boolean isStartPointPresent() {
+		return startPointPresent;
+	}
+
+	public void setStartPointPresent(boolean startPointPresent) {
+		this.startPointPresent = startPointPresent;
 	}
 
 	public int getLeadtimeDay() {
@@ -682,16 +695,12 @@ public class Appointment {
 		this.currentDate = currentDate;
 	}
 
-	public void setIsstartpointPresent(boolean isstartpointPresent) {
-		this.isstartpointPresent = isstartpointPresent;
+	public boolean isInsuranceVisible() {
+		return insuranceVisible;
 	}
 
-	public boolean isIsinsuranceVisible() {
-		return isinsuranceVisible;
-	}
-
-	public void setIsinsuranceVisible(boolean isinsuranceVisible) {
-		this.isinsuranceVisible = isinsuranceVisible;
+	public void setInsuranceVisible(boolean insuranceVisible) {
+		this.insuranceVisible = insuranceVisible;
 	}
 
 	public String getUrlAnonymousNG() {

@@ -16,4 +16,5 @@ public class CommonMethods extends PSS2MainPage {
 		jse.executeScript("arguments[0].setAttribute('style','border: solid 6px red');", element);
 	}
 
+
 }

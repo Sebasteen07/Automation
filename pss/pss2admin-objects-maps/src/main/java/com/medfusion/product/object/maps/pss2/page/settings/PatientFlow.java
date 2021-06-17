@@ -21,7 +21,7 @@ public class PatientFlow extends SettingsTab {
 	private WebElement specialityRule;
 
 	@FindBy(how = How.XPATH, using = "//label[@for='showinsurance']/input")
-	private WebElement insuranceToggle;
+	private WebElement insuranceToggle;	
 	
 	@FindBy(how = How.XPATH, using = "//*[@id=\"flow\"]/form/div/div[4]/div/label[1]/i")
 	private WebElement insuranceToggleCheckBox;
@@ -200,5 +200,29 @@ public class PatientFlow extends SettingsTab {
 		log("clicked on providertoggle");
 
 
+	}
+	
+	public Boolean isProviderEnabled() {
+		commonMethods.highlightElement(providerToggle);
+		return providerToggle.isSelected();
+	}
+	
+	public void turnOffProvider() {
+		log("insuranceToggle = " + providerToggle.isSelected());
+
+		if(isProviderEnabled() == true) {
+			providerToggleCheckBox.click();
+		}		
+		log("Turn off the Enable Provider Setting ");
+	}	
+	
+	public void turnOnProvider() {
+		log("insuranceToggle = " + providerToggle.isSelected());
+		
+		if(isProviderEnabled() == false) {
+			providerToggleCheckBox.click();
+		log("Status after turn on Provider-"+providerToggle.isSelected());
+		}		
+		log("Turn off the Enable Provider Setting ");
 	}
 }

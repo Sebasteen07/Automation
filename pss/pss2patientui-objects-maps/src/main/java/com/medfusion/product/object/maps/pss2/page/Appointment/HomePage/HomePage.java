@@ -181,7 +181,10 @@ public class HomePage extends PSS2MainPage {
 
 	@FindBy(how = How.XPATH, using = "//*[@class='dropdown-menu']//a")
 	private WebElement logout;
-	
+
+	@FindAll({ @FindBy(xpath = "//div[@class='row up-datediv']/b") })
+	private List<WebElement> pastAptDateList;
+
 	@FindBy(how = How.XPATH, using = "//div[@class='value-wizard']//div")
 	private WebElement locationPreSelected;
 	
@@ -202,6 +205,13 @@ public class HomePage extends PSS2MainPage {
 	}
 
 	CommonMethods commonMethods = new CommonMethods(driver);
+	
+	public String fetchPastAptDate() {
+		IHGUtil.waitForElement(driver, 10, pastAptLabel);
+		String pastAptDate=pastAptDateList.get(0).getText();
+		log("Last Past Appointment Date- "+pastAptDate);
+		return pastAptDate;
+	}
 
 	public StartAppointmentInOrder selectSpeciality(String specialityText) {
 		log(selectSpecialityList.size() + " specialityText " + specialityText);

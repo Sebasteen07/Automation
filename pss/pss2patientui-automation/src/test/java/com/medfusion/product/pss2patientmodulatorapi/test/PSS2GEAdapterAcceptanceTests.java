@@ -1,5 +1,5 @@
 // Copyright 2021 NXGN Management, LLC. All Rights Reserved.
-package com.medfusion.product.pssPatientModulatorAPI.test;
+package com.medfusion.product.pss2patientmodulatorapi.test;
 
 import java.io.IOException;
 
@@ -12,7 +12,7 @@ import com.medfusion.product.object.maps.pss2.page.util.PostAPIRequestGE;
 import com.medfusion.product.pss2patientui.pojo.Appointment;
 import com.medfusion.product.pss2patientui.utils.PSSPropertyFileLoader;
 
-public class PssGEAdapterTest extends BaseTestNGWebDriver {
+public class PSS2GEAdapterAcceptanceTests extends BaseTestNGWebDriver {
 
 	@Test
 	public void testHealthCheckGET() throws IOException {

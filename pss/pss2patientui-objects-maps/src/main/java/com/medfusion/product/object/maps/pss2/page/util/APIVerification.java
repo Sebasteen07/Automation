@@ -1,6 +1,8 @@
 // Copyright 2020 NXGN Management, LLC. All Rights Reserved.
 package com.medfusion.product.object.maps.pss2.page.util;
 
+import static org.testng.Assert.assertEquals;
+
 import org.json.JSONArray;
 import org.json.JSONObject;
 

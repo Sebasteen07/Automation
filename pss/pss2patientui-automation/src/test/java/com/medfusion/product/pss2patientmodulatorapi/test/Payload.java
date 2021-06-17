@@ -1,5 +1,5 @@
 // Copyright 2020 NXGN Management, LLC. All Rights Reserved.
-package com.medfusion.product.pssPatientModulatorAPI.test;
+package com.medfusion.product.pss2patientmodulatorapi.test;
 
 public class Payload {
 	
@@ -74,7 +74,7 @@ public class Payload {
 		
 		String past_appt="{\r\n"
 				+ "  \"additionalFields\": {},\r\n"
-				+ "  \"endDate\": \"04/04/2021 \",\r\n"
+				+ "  \"endDate\": \"07/07/2021 \",\r\n"
 				+ "  \"patientId\": \""+patientId+"\",\r\n"
 				+ "  \"practiceProvision\": {\r\n"
 				+ "    \"active\": true,\r\n"

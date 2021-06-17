@@ -84,14 +84,14 @@ public class PSSPatientUtils extends BaseTestNGWebDriver{
 		Log4jUtil.log("Step 8: Select location for appointment.");
 		Location location = null;
 		StartAppointmentInOrder startappointmentInOrder = null;
-		Log4jUtil.log("Insurance is Enabled " + testData.isIsinsuranceVisible());
-		Log4jUtil.log("startPage is Visible " + testData.isIsstartpointPresent());
+		Log4jUtil.log("Insurance is Enabled " + testData.isInsuranceVisible());
+		Log4jUtil.log("startPage is Visible " + testData.isStartPointPresent());
 
-		if (testData.isIsinsuranceVisible()) {
+		if (testData.isInsuranceVisible()) {
 			Thread.sleep(3500);
 			Log4jUtil.log("insurance is present on home Page going to skip insurance page");
 			startappointmentInOrder = homepage.skipInsurance(driver);
-			if (testData.isIsstartpointPresent()) {
+			if (testData.isStartPointPresent()) {
 				Log4jUtil.log("Starting point is present after insurance skipped ");
 				location = startappointmentInOrder.selectFirstLocation(PSSConstants.START_LOCATION);
 				Log4jUtil.log("Successfully clicked on  " + PSSConstants.START_LOCATION);
@@ -100,7 +100,7 @@ public class PSSPatientUtils extends BaseTestNGWebDriver{
 				Log4jUtil.log("Starting point not Present going to select next provider ");
 			}
 
-		} else if (testData.isIsstartpointPresent()) {
+		} else if (testData.isStartPointPresent()) {
 			startappointmentInOrder = homepage.startpage();
 			Log4jUtil.log("in else part  click on  " + PSSConstants.START_LOCATION);
 			location = startappointmentInOrder.selectFirstLocation(PSSConstants.START_LOCATION);
@@ -139,14 +139,14 @@ public class PSSPatientUtils extends BaseTestNGWebDriver{
 		Log4jUtil.log("Step 8: Select Provider for appointment.");
 		Provider provider = null;
 		StartAppointmentInOrder startappointmentInOrder = null;
-		Log4jUtil.log("Insurance is Enabled " + testData.isIsinsuranceVisible());
-		Log4jUtil.log("startpage is Visible " + testData.isIsstartpointPresent());
+		Log4jUtil.log("Insurance is Enabled " + testData.isInsuranceVisible());
+		Log4jUtil.log("startpage is Visible " + testData.isStartPointPresent());
 
-		if (testData.isIsinsuranceVisible()) {
+		if (testData.isInsuranceVisible()) {
 			Thread.sleep(3500);
 			Log4jUtil.log("insurance is present on home Page going to skip insurance page");
 			startappointmentInOrder = homepage.skipInsurance(driver);
-			if (testData.isIsstartpointPresent()) {
+			if (testData.isStartPointPresent()) {
 				Log4jUtil.log("Starting point is present after insurance skipped ");
 				provider = startappointmentInOrder.selectFirstProvider(PSSConstants.START_PROVIDER);
 				Log4jUtil.log("Successfully clicked on  " + PSSConstants.START_PROVIDER);
@@ -154,7 +154,7 @@ public class PSSPatientUtils extends BaseTestNGWebDriver{
 				provider = homepage.providerpage();
 				Log4jUtil.log("Starting point not Present going to select next provider ");
 			}
-		} else if (testData.isIsstartpointPresent()) {
+		} else if (testData.isStartPointPresent()) {
 			startappointmentInOrder = homepage.startpage();
 			Log4jUtil.log("in else part  click on  " + PSSConstants.START_PROVIDER);
 			provider = startappointmentInOrder.selectFirstProvider(PSSConstants.START_PROVIDER);
@@ -194,13 +194,13 @@ public class PSSPatientUtils extends BaseTestNGWebDriver{
 		Log4jUtil.log("Step 8: Select Provider for appointment.");
 		Provider provider = null;
 		StartAppointmentInOrder startappointmentInOrder = null;
-		Log4jUtil.log("Insurance is Enabled " + testData.isIsinsuranceVisible());
-		Log4jUtil.log("startpage is Visible " + testData.isIsstartpointPresent());
-		if (testData.isIsinsuranceVisible()) {
+		Log4jUtil.log("Insurance is Enabled " + testData.isInsuranceVisible());
+		Log4jUtil.log("startpage is Visible " + testData.isStartPointPresent());
+		if (testData.isInsuranceVisible()) {
 			Thread.sleep(3500);
 			Log4jUtil.log("insurance is present on home Page going to skip insurance page");
 			startappointmentInOrder = homepage.skipInsurance(driver);
-			if (testData.isIsstartpointPresent()) {
+			if (testData.isStartPointPresent()) {
 				Log4jUtil.log("Starting point is present after insurance skipped ");
 				provider = startappointmentInOrder.selectFirstProvider(PSSConstants.START_PROVIDER);
 				Log4jUtil.log("Successfully clicked on  " + PSSConstants.START_PROVIDER);
@@ -210,7 +210,7 @@ public class PSSPatientUtils extends BaseTestNGWebDriver{
 			}
 		}
 
-		else if (testData.isIsstartpointPresent()) {
+		else if (testData.isStartPointPresent()) {
 			startappointmentInOrder = homepage.startpage();
 			Log4jUtil.log("in else part  click on  " + PSSConstants.START_PROVIDER);
 			provider = startappointmentInOrder.selectFirstProvider(PSSConstants.START_PROVIDER);
@@ -249,14 +249,14 @@ public class PSSPatientUtils extends BaseTestNGWebDriver{
 		Location location = null;
 		StartAppointmentInOrder startappointmentInOrder = null;
 
-		Log4jUtil.log("Insurance is Enabled " + testData.isIsinsuranceVisible());
-		Log4jUtil.log("start is Visible " + testData.isIsstartpointPresent());
+		Log4jUtil.log("Insurance is Enabled " + testData.isInsuranceVisible());
+		Log4jUtil.log("start is Visible " + testData.isStartPointPresent());
 
-		if (testData.isIsinsuranceVisible()) {
+		if (testData.isInsuranceVisible()) {
 			Thread.sleep(3500);
 			Log4jUtil.log("insurance is present on home Page going to skip insurance page");
 			startappointmentInOrder = homepage.skipInsurance(driver);
-			if (testData.isIsstartpointPresent()) {
+			if (testData.isStartPointPresent()) {
 				Log4jUtil.log("Starting point is present after insurance skipped ");
 				location = startappointmentInOrder.selectFirstLocation(PSSConstants.START_LOCATION);
 				Log4jUtil.log("Successfully clicked on  " + PSSConstants.START_LOCATION);
@@ -265,7 +265,7 @@ public class PSSPatientUtils extends BaseTestNGWebDriver{
 				Log4jUtil.log("Starting point not Present going to select next provider ");
 			}
 
-		} else if (testData.isIsstartpointPresent()) {
+		} else if (testData.isStartPointPresent()) {
 			startappointmentInOrder = homepage.startpage();
 			Log4jUtil.log("in else part  click on  " + PSSConstants.START_LOCATION);
 			location = startappointmentInOrder.selectFirstLocation(PSSConstants.START_LOCATION);
@@ -306,9 +306,9 @@ public class PSSPatientUtils extends BaseTestNGWebDriver{
 	public void TLBFlow(HomePage homepage, Appointment testData, String startOrderOn, WebDriver driver) throws Exception {
 		AppointmentPage appointment;
 		StartAppointmentInOrder startappointmentInOrder = null;
-		log("Insurance is Enabled " + testData.isIsinsuranceVisible());
-		log("startpage is Visible " + testData.isIsstartpointPresent());
-		if (testData.isIsinsuranceVisible()) {
+		log("Insurance is Enabled " + testData.isInsuranceVisible());
+		log("startpage is Visible " + testData.isStartPointPresent());
+		if (testData.isInsuranceVisible()) {
 
 			if (testData.isInsuranceDetails() == true) {
 				log("Member ID- "+testData.getMemberID() +" Group Id- "+testData.getGroupID()+" Phone Number- "+testData.getInsurancePhone());
@@ -319,7 +319,7 @@ public class PSSPatientUtils extends BaseTestNGWebDriver{
 				startappointmentInOrder = homepage.skipInsurance(driver);
 			}
 
-			if (testData.isIsstartpointPresent()) {
+			if (testData.isStartPointPresent()) {
 				log("Starting point is present after insurance skipped ");
 				appointment = startappointmentInOrder.selectFirstAppointment(PSSConstants.START_APPOINTMENT);
 				log("Successfully clicked on  " + PSSConstants.START_APPOINTMENT);
@@ -327,7 +327,7 @@ public class PSSPatientUtils extends BaseTestNGWebDriver{
 				appointment = homepage.appointmentpage();
 				log("Starting point not Present going to select next provider ");
 			}
-		} else if (testData.isIsstartpointPresent()) {
+		} else if (testData.isStartPointPresent()) {
 			startappointmentInOrder = homepage.startpage();
 			log("in else part  click on  " + PSSConstants.START_APPOINTMENT);
 			appointment = startappointmentInOrder.selectFirstAppointment(PSSConstants.START_APPOINTMENT);
@@ -366,13 +366,13 @@ public class PSSPatientUtils extends BaseTestNGWebDriver{
 		Log4jUtil.log("Step 8: Select Appointment for appointment.");
 		AppointmentPage appointment;
 		StartAppointmentInOrder startappointmentInOrder = null;
-		Log4jUtil.log("Insurance is Enabled " + testData.isIsinsuranceVisible());
-		Log4jUtil.log("startPage is Visible " + testData.isIsstartpointPresent());
-		if (testData.isIsinsuranceVisible()) {
+		Log4jUtil.log("Insurance is Enabled " + testData.isInsuranceVisible());
+		Log4jUtil.log("startPage is Visible " + testData.isStartPointPresent());
+		if (testData.isInsuranceVisible()) {
 			Thread.sleep(3500);
 			Log4jUtil.log("insurance is present on home Page going to skip insurance page");
 			startappointmentInOrder = homepage.skipInsurance(driver);
-			if (testData.isIsstartpointPresent()) {
+			if (testData.isStartPointPresent()) {
 				Log4jUtil.log("Starting point is present after insurance skipped ");
 				appointment = startappointmentInOrder.selectFirstAppointment(PSSConstants.START_APPOINTMENT);
 				Log4jUtil.log("Successfully clicked on  " + PSSConstants.START_APPOINTMENT);
@@ -383,7 +383,7 @@ public class PSSPatientUtils extends BaseTestNGWebDriver{
 
 		}
 
-		else if (testData.isIsstartpointPresent()) {
+		else if (testData.isStartPointPresent()) {
 			startappointmentInOrder = homepage.startpage();
 			Log4jUtil.log("select the starting point & click on  " + PSSConstants.START_APPOINTMENT);
 			appointment = startappointmentInOrder.selectFirstAppointment(PSSConstants.START_APPOINTMENT);
@@ -449,14 +449,14 @@ public class PSSPatientUtils extends BaseTestNGWebDriver{
 		AppointmentPage appointment = null;
 		StartAppointmentInOrder startappointmentInOrder = null;
 		Speciality speciality = null;
-		Log4jUtil.log("Insurance is Enabled " + testData.isIsinsuranceVisible());
-		Log4jUtil.log("startPage is Visible " + testData.isIsstartpointPresent());
+		Log4jUtil.log("Insurance is Enabled " + testData.isInsuranceVisible());
+		Log4jUtil.log("startPage is Visible " + testData.isStartPointPresent());
 
-		if (testData.isIsinsuranceVisible()) {
+		if (testData.isInsuranceVisible()) {
 			speciality = homepage.skipInsuranceForSpeciality(driver);
 			startappointmentInOrder = speciality.selectSpeciality(testData.getSpeciality());
 			Log4jUtil.log("clicked on specility");
-			if (testData.isIsstartpointPresent()) {
+			if (testData.isStartPointPresent()) {
 				Log4jUtil.log("StartPage is Present after clicked ok skip insurance");
 				appointment = startappointmentInOrder.selectFirstAppointment(PSSConstants.START_APPOINTMENT);
 			} else {
@@ -467,7 +467,7 @@ public class PSSPatientUtils extends BaseTestNGWebDriver{
 			Log4jUtil.log("Insurance is not present on homepage the checking for specility");
 			speciality = homepage.specilitypage();
 			startappointmentInOrder = speciality.selectSpeciality(testData.getSpeciality());
-			if (testData.isIsstartpointPresent()) {
+			if (testData.isStartPointPresent()) {
 				Log4jUtil.log("Insurance is not present on homepage the checking for specility");
 				appointment = startappointmentInOrder.selectFirstAppointment(PSSConstants.START_APPOINTMENT);
 
@@ -517,14 +517,14 @@ public class PSSPatientUtils extends BaseTestNGWebDriver{
 		AppointmentPage appointment;
 		StartAppointmentInOrder startappointmentInOrder;
 		Speciality speciality;
-		Log4jUtil.log("Insurance is Enabled " + testData.isIsinsuranceVisible());
-		Log4jUtil.log("startPage is Visible " + testData.isIsstartpointPresent());
+		Log4jUtil.log("Insurance is Enabled " + testData.isInsuranceVisible());
+		Log4jUtil.log("startPage is Visible " + testData.isStartPointPresent());
 
-		if (testData.isIsinsuranceVisible()) {
+		if (testData.isInsuranceVisible()) {
 			speciality = homepage.skipInsuranceForSpeciality(driver);
 			startappointmentInOrder = speciality.selectSpeciality(testData.getSpeciality());
 			Log4jUtil.log("clicked on specility");
-			if (testData.isIsstartpointPresent()) {
+			if (testData.isStartPointPresent()) {
 				Log4jUtil.log("StartPage is Present after clicked ok skip insurance");
 				appointment = startappointmentInOrder.selectFirstAppointment(PSSConstants.START_APPOINTMENT);
 			} else {
@@ -539,7 +539,7 @@ public class PSSPatientUtils extends BaseTestNGWebDriver{
 			speciality = homepage.specilitypage();
 			startappointmentInOrder = speciality.selectSpeciality(testData.getSpeciality());
 
-			if (testData.isIsstartpointPresent()) {
+			if (testData.isStartPointPresent()) {
 
 				Log4jUtil.log("Insurance is not present on homepage the checking for specility");
 				appointment = startappointmentInOrder.selectFirstAppointment(PSSConstants.START_APPOINTMENT);
@@ -582,14 +582,14 @@ public class PSSPatientUtils extends BaseTestNGWebDriver{
 		Location location = null;
 		Speciality speciality = null;
 		StartAppointmentInOrder startappointmentInOrder = null;
-		Log4jUtil.log("Insurance is Enabled " + testData.isIsinsuranceVisible());
-		Log4jUtil.log("startpage is Visible " + testData.isIsstartpointPresent());
-		if (testData.isIsinsuranceVisible()) {
+		Log4jUtil.log("Insurance is Enabled " + testData.isInsuranceVisible());
+		Log4jUtil.log("startpage is Visible " + testData.isStartPointPresent());
+		if (testData.isInsuranceVisible()) {
 			Log4jUtil.log("insurance is present on home Page going to skip insurance page");
 			speciality = homepage.skipInsuranceForSpeciality(driver);
 			startappointmentInOrder = speciality.selectSpeciality(testData.getSpeciality());
 			Log4jUtil.log("clicked on specility");
-			if (testData.isIsstartpointPresent()) {
+			if (testData.isStartPointPresent()) {
 				Log4jUtil.log("Starting point is present after insurance skipped ");
 				location = startappointmentInOrder.selectFirstLocation(PSSConstants.START_LOCATION);
 				Log4jUtil.log("Successfully clicked on  " + PSSConstants.START_LOCATION);
@@ -604,7 +604,7 @@ public class PSSPatientUtils extends BaseTestNGWebDriver{
 			Log4jUtil.log("Insurance is not present on homepage the checking for specility");
 			speciality = homepage.specilitypage();
 			startappointmentInOrder = speciality.selectSpeciality(testData.getSpeciality());
-			if (testData.isIsstartpointPresent()) {
+			if (testData.isStartPointPresent()) {
 				startappointmentInOrder = homepage.startpage();
 				Log4jUtil.log("in else part  click on  " + PSSConstants.START_LOCATION);
 				location = startappointmentInOrder.selectFirstLocation(PSSConstants.START_LOCATION);
@@ -649,14 +649,14 @@ public class PSSPatientUtils extends BaseTestNGWebDriver{
 		Speciality speciality = null;
 		StartAppointmentInOrder startappointmentInOrder = null;
 
-		Log4jUtil.log("Insurance is Enabled " + testData.isIsinsuranceVisible());
-		Log4jUtil.log("startpage is Visible " + testData.isIsstartpointPresent());
-		if (testData.isIsinsuranceVisible()) {
+		Log4jUtil.log("Insurance is Enabled " + testData.isInsuranceVisible());
+		Log4jUtil.log("startpage is Visible " + testData.isStartPointPresent());
+		if (testData.isInsuranceVisible()) {
 			Log4jUtil.log("insurance is present on home Page going to skip insurance page");
 			speciality = homepage.skipInsuranceForSpeciality(driver);
 			startappointmentInOrder = speciality.selectSpeciality(testData.getSpeciality());
 			Log4jUtil.log("clicked on specility");
-			if (testData.isIsstartpointPresent()) {
+			if (testData.isStartPointPresent()) {
 				Log4jUtil.log("Starting point is present after insurance skipped ");
 				location = startappointmentInOrder.selectFirstLocation(PSSConstants.START_LOCATION);
 				Log4jUtil.log("Successfully clicked on  " + PSSConstants.START_LOCATION);
@@ -671,7 +671,7 @@ public class PSSPatientUtils extends BaseTestNGWebDriver{
 			Log4jUtil.log("Insurance is not present on homepage the checking for specility");
 			speciality = homepage.specilitypage();
 			startappointmentInOrder = speciality.selectSpeciality(testData.getSpeciality());
-			if (testData.isIsstartpointPresent()) {
+			if (testData.isStartPointPresent()) {
 				startappointmentInOrder = homepage.startpage();
 				Log4jUtil.log("in else part  click on  " + PSSConstants.START_LOCATION);
 				location = startappointmentInOrder.selectFirstLocation(PSSConstants.START_LOCATION);
@@ -715,14 +715,14 @@ public class PSSPatientUtils extends BaseTestNGWebDriver{
 		Speciality speciality = null;
 		StartAppointmentInOrder startappointmentInOrder = null;
 
-		Log4jUtil.log("Insurance is Enabled " + testData.isIsinsuranceVisible());
-		Log4jUtil.log("startpage is Visible " + testData.isIsstartpointPresent());
-		if (testData.isIsinsuranceVisible()) {
+		Log4jUtil.log("Insurance is Enabled " + testData.isInsuranceVisible());
+		Log4jUtil.log("startpage is Visible " + testData.isStartPointPresent());
+		if (testData.isInsuranceVisible()) {
 			Log4jUtil.log("insurance is present on home Page going to skip insurance page");
 			speciality = homepage.skipInsuranceForSpeciality(driver);
 			startappointmentInOrder = speciality.selectSpeciality(testData.getSpeciality());
 			Log4jUtil.log("clicked on specility");
-			if (testData.isIsstartpointPresent()) {
+			if (testData.isStartPointPresent()) {
 				Log4jUtil.log("Starting point is present after insurance skipped ");
 				provider = startappointmentInOrder.selectFirstProvider(PSSConstants.START_PROVIDER);
 				Log4jUtil.log("Successfully clicked on  " + PSSConstants.START_PROVIDER);
@@ -737,7 +737,7 @@ public class PSSPatientUtils extends BaseTestNGWebDriver{
 			Log4jUtil.log("Insurance is not present on homepage the checking for specility");
 			speciality = homepage.specilitypage();
 			startappointmentInOrder = speciality.selectSpeciality(testData.getSpeciality());
-			if (testData.isIsstartpointPresent()) {
+			if (testData.isStartPointPresent()) {
 				startappointmentInOrder = homepage.startpage();
 				Log4jUtil.log("in else part  click on  " + PSSConstants.START_LOCATION);
 				provider = startappointmentInOrder.selectFirstProvider(PSSConstants.START_PROVIDER);
@@ -781,14 +781,14 @@ public class PSSPatientUtils extends BaseTestNGWebDriver{
 		Speciality speciality = null;
 		StartAppointmentInOrder startappointmentInOrder = null;
 
-		Log4jUtil.log("Insurance is Enabled " + testData.isIsinsuranceVisible());
-		Log4jUtil.log("startpage is Visible " + testData.isIsstartpointPresent());
-		if (testData.isIsinsuranceVisible()) {
+		Log4jUtil.log("Insurance is Enabled " + testData.isInsuranceVisible());
+		Log4jUtil.log("startpage is Visible " + testData.isStartPointPresent());
+		if (testData.isInsuranceVisible()) {
 			Log4jUtil.log("insurance is present on home Page going to skip insurance page");
 			speciality = homepage.skipInsuranceForSpeciality(driver);
 			startappointmentInOrder = speciality.selectSpeciality(testData.getSpeciality());
 			Log4jUtil.log("clicked on specility");
-			if (testData.isIsstartpointPresent()) {
+			if (testData.isStartPointPresent()) {
 				Log4jUtil.log("Starting point is present after insurance skipped ");
 				provider = startappointmentInOrder.selectFirstProvider(PSSConstants.START_PROVIDER);
 				Log4jUtil.log("Successfully clicked on  " + PSSConstants.START_PROVIDER);
@@ -803,7 +803,7 @@ public class PSSPatientUtils extends BaseTestNGWebDriver{
 			Log4jUtil.log("Insurance is not present on homepage the checking for specility");
 			speciality = homepage.specilitypage();
 			startappointmentInOrder = speciality.selectSpeciality(testData.getSpeciality());
-			if (testData.isIsstartpointPresent()) {
+			if (testData.isStartPointPresent()) {
 				startappointmentInOrder = homepage.startpage();
 				Log4jUtil.log("in else part  click on  " + PSSConstants.START_LOCATION);
 				provider = startappointmentInOrder.selectFirstProvider(PSSConstants.START_PROVIDER);
@@ -839,6 +839,119 @@ public class PSSPatientUtils extends BaseTestNGWebDriver{
 			clickOnSubmitAppt(false, aptDateTime, testData, driver);
 		}
 		Log4jUtil.log("Test Case Passed");
+	}
+	
+	public void TLFlow(HomePage homepage, Appointment testData, String startOrderOn, WebDriver driver)
+			throws Exception {
+		AppointmentPage appointment;
+		StartAppointmentInOrder startappointmentInOrder = null;
+		log("Insurance is Enabled " + testData.isInsuranceVisible());
+		log("startpage is Visible " + testData.isStartPointPresent());
+		if (testData.isInsuranceVisible()) {
+
+			if (testData.isInsuranceDetails() == true) {
+				log("Member ID- " + testData.getMemberID() + " Group Id- " + testData.getGroupID() + " Phone Number- "
+						+ testData.getInsurancePhone());
+				homepage.updateInsuranceInfo(driver, testData.getMemberID(), testData.getGroupID(),
+						testData.getInsurancePhone());
+
+			} else {
+				log("insurance is present on home Page going to skip insurance page");
+				startappointmentInOrder = homepage.skipInsurance(driver);
+			}
+
+			if (testData.isStartPointPresent()) {
+				log("Starting point is present after insurance skipped ");
+				appointment = startappointmentInOrder.selectFirstAppointment(PSSConstants.START_APPOINTMENT);
+				log("Successfully clicked on  " + PSSConstants.START_APPOINTMENT);
+			} else {
+				appointment = homepage.appointmentpage();
+				log("Starting point not Present going to select next provider ");
+			}
+		} else if (testData.isStartPointPresent()) {
+			startappointmentInOrder = homepage.startpage();
+			log("in else part  click on  " + PSSConstants.START_APPOINTMENT);
+			appointment = startappointmentInOrder.selectFirstAppointment(PSSConstants.START_APPOINTMENT);
+			log("clicked on Appointment ");
+		} else {
+			log("Start point not present");
+			appointment = homepage.appointmentpage();
+		}
+
+		log("Verfiy Appointment Page and appointment =" + testData.getAppointmenttype());
+		Location location = appointment.selectTypeOfLocation(testData.getAppointmenttype(),
+				Boolean.valueOf(testData.getIsAppointmentPopup()));
+		log("Verfiy Location Page and location to be selected = " + testData.getLocation());
+		AppointmentDateTime aptDateTime = location.searchLocation(testData.getLocation());
+		log("address = " + location.getAddressValue());
+
+		log("Select avaiable Date ");
+		if (testData.isFutureApt()) {
+			aptDateTime.selectFutureDate(testData.getIsNextDayBooking());
+		} else {
+			aptDateTime.selectDate(testData.getIsNextDayBooking());
+		}
+		if (testData.isAnonymousFlow()) {
+			log(" isAnonymousFlow is TRUE ");
+			bookAnonymousApt(aptDateTime, testData, driver);
+		} else {
+			log("This is not an Anonymous flow so comes is else block");
+			clickOnSubmitAppt(false, aptDateTime, testData, driver);
+		}
+		log("Test Case Passed");
+	}
+
+	public void LTFlow(HomePage homepage, Appointment testData, String startOrderOn, WebDriver driver)
+			throws Exception {
+		log("Select Location for appointment.");
+		Location location = null;
+		StartAppointmentInOrder startappointmentInOrder = null;
+
+		log("Insurance is Enabled " + testData.isInsuranceVisible());
+		log("start is Visible " + testData.isStartPointPresent());
+
+		if (testData.isInsuranceVisible()) {
+
+			log("insurance is present on home Page going to skip insurance page");
+			startappointmentInOrder = homepage.skipInsurance(driver);
+			if (testData.isStartPointPresent()) {
+				log("Starting point is present after insurance skipped ");
+				location = startappointmentInOrder.selectFirstLocation(PSSConstants.START_LOCATION);
+				log("Successfully clicked on  " + PSSConstants.START_LOCATION);
+			} else {
+				location = homepage.locationpage();
+				log("Starting point not Present going to select next provider ");
+			}
+		} else if (testData.isStartPointPresent()) {
+			startappointmentInOrder = homepage.startpage();
+			log("in else part  click on  " + PSSConstants.START_LOCATION);
+			location = startappointmentInOrder.selectFirstLocation(PSSConstants.START_LOCATION);
+			log("clicked on location ");
+		} else {
+			log("Start point not present");
+			location = homepage.locationpage();
+		}
+		log("Verfiy Location Page and location =" + testData.getLocation());
+		AppointmentPage appointment = location.selectAppointment(testData.getLocation());
+		log("Verfiy Appointment Page and appointment to be selected = " + testData.getAppointmenttype());
+
+		AppointmentDateTime aptDateTime = appointment.selectAptTyper(testData.getAppointmenttype(),
+				Boolean.valueOf(testData.getIsAppointmentPopup()));
+
+		log("Select avaiable Date ");
+		if (testData.isFutureApt()) {
+			aptDateTime.selectFutureDate(testData.getIsNextDayBooking());
+		} else {
+			aptDateTime.selectDate(testData.getIsNextDayBooking());
+		}
+		if (testData.isAnonymousFlow()) {
+			log(" isAnonymousFlow is TRUE ");
+			bookAnonymousApt(aptDateTime, testData, driver);
+		} else {
+			log("This is not an Anonymous flow so comes is else block");
+			clickOnSubmitAppt(false, aptDateTime, testData, driver);
+		}
+		log("Test Case Passed");
 	}
 
 	public Boolean deleteFile(String fileName) {
@@ -896,7 +1009,7 @@ public class PSSPatientUtils extends BaseTestNGWebDriver{
 		Log4jUtil.log("Step 12: Verify Confirmation page and Scheduled page");
 		Log4jUtil.log("Is Insurance Page Displated= " + isInsuranceDisplated);
 		Thread.sleep(2000);
-		if (testData.isIsinsuranceVisible()) {
+		if (testData.isInsuranceVisible()) {
 			UpdateInsurancePage updateinsurancePage = aptDateTime.selectAppointmentTimeIns();
 			ConfirmationPage confirmationpage = updateinsurancePage.skipInsuranceUpdate();
 
@@ -1110,6 +1223,12 @@ public class PSSPatientUtils extends BaseTestNGWebDriver{
 		}
 		if (rule.equalsIgnoreCase(PSSConstants.SBLT)) {
 			SBLTFlow(homepage, testData, Boolean.toString(testData.getIsInsuranceEnabled()), driver);
+		}
+		if (rule.equalsIgnoreCase(PSSConstants.TL)) {
+			TLFlow(homepage, testData, Boolean.toString(testData.getIsInsuranceEnabled()), driver);
+		}
+		if (rule.equalsIgnoreCase(PSSConstants.LT)) {
+			LTFlow(homepage, testData, Boolean.toString(testData.getIsInsuranceEnabled()), driver);
 		}
 		return PageFactory.initElements(driver, ScheduledAppointment.class);
 	}
@@ -1690,13 +1809,13 @@ public class PSSPatientUtils extends BaseTestNGWebDriver{
 		log("Select Appointment for appointment.");
 		AppointmentPage appointment;
 		StartAppointmentInOrder startAppointmentInOrder = null;
-		log("Insurance is Enabled " + testData.isIsinsuranceVisible());
-		log("startpage is Visible " + testData.isIsstartpointPresent());
-		if (testData.isIsinsuranceVisible()) {
+		log("Insurance is Enabled " + testData.isInsuranceVisible());
+		log("startpage is Visible " + testData.isStartPointPresent());
+		if (testData.isInsuranceVisible()) {
 			Thread.sleep(3500);
 			log("insurance is present on home Page going to skip insurance page");
 			startAppointmentInOrder = homepage.skipInsurance(driver);
-			if (testData.isIsstartpointPresent()) {
+			if (testData.isStartPointPresent()) {
 
 				log("Starting point is present after insurance skipped ");
 				appointment = startAppointmentInOrder.selectFirstAppointment(PSSConstants.START_APPOINTMENT);
@@ -1707,7 +1826,7 @@ public class PSSPatientUtils extends BaseTestNGWebDriver{
 			}
 		}
 
-		else if (testData.isIsstartpointPresent()) {
+		else if (testData.isStartPointPresent()) {
 			startAppointmentInOrder = homepage.startpage();
 			log("in else part  click on  " + PSSConstants.START_APPOINTMENT);
 			appointment = startAppointmentInOrder.selectFirstAppointment(PSSConstants.START_APPOINTMENT);

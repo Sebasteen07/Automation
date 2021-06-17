@@ -1,19 +1,20 @@
 // Copyright 2020 NXGN Management, LLC. All Rights Reserved.
-package com.medfusion.product.pssPatientModulatorAPI.test;
+package com.medfusion.product.pss2patientmodulatorapi.test;
 
 import java.io.IOException;
 
 import org.testng.annotations.Test;
 import org.hamcrest.Matchers.*;
 import com.intuit.ifs.csscat.core.BaseTestNGWebDriver;
+import com.intuit.ifs.csscat.core.RetryAnalyzer;
 import com.medfusion.product.object.maps.pss2.page.util.HeaderConfig;
 import com.medfusion.product.object.maps.pss2.page.util.PostAPIRequest;
 import com.medfusion.product.pss2patientui.pojo.Appointment;
 import com.medfusion.product.pss2patientui.utils.PSSPropertyFileLoader;
 
-public class PostAPITest extends BaseTestNGWebDriver {
+public class PSS2NGAdpterAcceptanceTests extends BaseTestNGWebDriver {
 
-	@Test
+	@Test(enabled = true, groups = {"APItest"}, retryAnalyzer = RetryAnalyzer.class)
 	public void BookListPost() throws IOException {
 
 		HeaderConfig headerConfig = new HeaderConfig();
@@ -37,7 +38,7 @@ public class PostAPITest extends BaseTestNGWebDriver {
 
 	}
 
-	@Test
+	@Test(enabled = true, groups = {"APItest"}, retryAnalyzer = RetryAnalyzer.class)
 	public void Sched_ApptPatient_PatientPOST() throws IOException {
 
 		HeaderConfig headerConfig = new HeaderConfig();
@@ -61,7 +62,7 @@ public class PostAPITest extends BaseTestNGWebDriver {
 
 	}
 
-	@Test
+	@Test(enabled = true, groups = {"APItest"}, retryAnalyzer = RetryAnalyzer.class)
 	public void ApptTypePatient() throws IOException {
 
 		HeaderConfig headerConfig = new HeaderConfig();
@@ -85,7 +86,7 @@ public class PostAPITest extends BaseTestNGWebDriver {
 
 	}
 
-	@Test
+	@Test(enabled = true, groups = {"APItest"}, retryAnalyzer = RetryAnalyzer.class)
 	public void AvailableSlotsNGPost() throws IOException, InterruptedException {
 
 		HeaderConfig headerConfig = new HeaderConfig();
@@ -106,7 +107,7 @@ public class PostAPITest extends BaseTestNGWebDriver {
 				headerConfig.defaultHeader());
 	}
 
-	@Test
+	@Test(enabled = true, groups = {"APItest"}, retryAnalyzer = RetryAnalyzer.class)
 	public void CancellationReasonGET() throws IOException {
 
 		PSSPropertyFileLoader propertyData = new PSSPropertyFileLoader();
@@ -117,7 +118,7 @@ public class PostAPITest extends BaseTestNGWebDriver {
 		postAPIRequest.cancellationReason(testData.getBasicURI());
 	}
 
-	@Test
+	@Test(enabled = true, groups = {"APItest"}, retryAnalyzer = RetryAnalyzer.class)
 	public void TestPastApptNgPOST() throws IOException {
 
 		PSSPropertyFileLoader propertyData = new PSSPropertyFileLoader();
@@ -141,7 +142,7 @@ public class PostAPITest extends BaseTestNGWebDriver {
 
 	}
 
-	@Test
+	@Test(enabled = true, groups = {"APItest"}, retryAnalyzer = RetryAnalyzer.class)
 	public void nextAvailableSlotPost() throws IOException {
 
 		HeaderConfig headerConfig = new HeaderConfig();
@@ -165,7 +166,7 @@ public class PostAPITest extends BaseTestNGWebDriver {
 
 	}
 
-	@Test(dependsOnMethods = "Access_tokenGET")
+	@Test(enabled = true, groups = {"APItest"}, retryAnalyzer = RetryAnalyzer.class,dependsOnMethods = "Access_tokenGET")
 	public void LocationListPOST() throws IOException {
 
 		HeaderConfig headerConfig = new HeaderConfig();
@@ -188,7 +189,7 @@ public class PostAPITest extends BaseTestNGWebDriver {
 				headerConfig.HeaderwithToken(testData.getAccessToken()));
 	}
 
-	@Test
+	@Test(enabled = true, groups = {"APItest"}, retryAnalyzer = RetryAnalyzer.class)
 	public void AppointmentStatusGET() throws IOException {
 
 		HeaderConfig headerConfig = new HeaderConfig();
@@ -200,7 +201,7 @@ public class PostAPITest extends BaseTestNGWebDriver {
 		postAPIRequest.appointmentStatus(testData.getBasicURI(), headerConfig.defaultHeader());
 	}
 
-	@Test
+	@Test(enabled = true, groups = {"APItest"}, retryAnalyzer = RetryAnalyzer.class)
 	public void AppointmentTypesGET() throws IOException {
 
 		PSSPropertyFileLoader propertyData = new PSSPropertyFileLoader();
@@ -212,7 +213,8 @@ public class PostAPITest extends BaseTestNGWebDriver {
 
 	}
 
-	@Test
+	@Test(enabled = true, groups = {"APItest"}, retryAnalyzer = RetryAnalyzer.class)
+
 	public void Access_tokenGET() throws IOException {
 
 		PSSPropertyFileLoader propertyData = new PSSPropertyFileLoader();
@@ -229,7 +231,7 @@ public class PostAPITest extends BaseTestNGWebDriver {
 
 	}
 
-	@Test
+	@Test(enabled = true, groups = {"APItest"}, retryAnalyzer = RetryAnalyzer.class)
 	public void schedule_Resc_NGPOST() throws IOException {
 
 		HeaderConfig headerConfig = new HeaderConfig();
@@ -253,7 +255,7 @@ public class PostAPITest extends BaseTestNGWebDriver {
 
 	}
 	
-	@Test
+	@Test(enabled = true, groups = {"APItest"}, retryAnalyzer = RetryAnalyzer.class)
 	public void upcommingApptPOST() throws IOException {
 
 		HeaderConfig headerConfig = new HeaderConfig();
@@ -272,7 +274,7 @@ public class PostAPITest extends BaseTestNGWebDriver {
 
 	}
 
-	@Test
+	@Test(enabled = true, groups = {"APItest"}, retryAnalyzer = RetryAnalyzer.class)
 	public void AppointmentTypeListGET() throws IOException {
 
 		PSSPropertyFileLoader propertyData = new PSSPropertyFileLoader();
@@ -285,7 +287,7 @@ public class PostAPITest extends BaseTestNGWebDriver {
 		postAPIRequest.appointmentType(testData.getBasicURI());
 	}
 
-	@Test
+	@Test(enabled = true, groups = {"APItest"}, retryAnalyzer = RetryAnalyzer.class)
 	public void RescheduleApptNGPPOST() throws IOException {
 
 		HeaderConfig headerConfig = new HeaderConfig();
@@ -306,7 +308,7 @@ public class PostAPITest extends BaseTestNGWebDriver {
 
 	}
 
-	@Test
+	@Test(enabled = true, groups = {"APItest"}, retryAnalyzer = RetryAnalyzer.class)
 	public void cancelAppointmentGet() throws IOException {
 		PSSPropertyFileLoader propertyData = new PSSPropertyFileLoader();
 		Appointment testData = new Appointment();
@@ -319,7 +321,7 @@ public class PostAPITest extends BaseTestNGWebDriver {
 
 	}
 
-	@Test
+	@Test(enabled = true, groups = {"APItest"}, retryAnalyzer = RetryAnalyzer.class)
 	public void cancelAppointmentPost() throws IOException {
 		PSSPropertyFileLoader propertyData = new PSSPropertyFileLoader();
 		Appointment testData = new Appointment();
@@ -333,7 +335,7 @@ public class PostAPITest extends BaseTestNGWebDriver {
 
 	}
 
-	@Test
+	@Test(enabled = true, groups = {"APItest"}, retryAnalyzer = RetryAnalyzer.class)
 	public void cancellationReasonGET() throws IOException {
 		PSSPropertyFileLoader propertyData = new PSSPropertyFileLoader();
 		Appointment testData = new Appointment();
@@ -345,7 +347,7 @@ public class PostAPITest extends BaseTestNGWebDriver {
 
 	}
 	
-	@Test
+	@Test(enabled = true, groups = {"APItest"}, retryAnalyzer = RetryAnalyzer.class)
 	public void careproviderAvailabilityPOST() throws IOException {
 		
 		PSSPropertyFileLoader propertyData = new PSSPropertyFileLoader();
@@ -358,7 +360,7 @@ public class PostAPITest extends BaseTestNGWebDriver {
 
 	}
 	
-	@Test
+	@Test(enabled = true, groups = {"APItest"}, retryAnalyzer = RetryAnalyzer.class)
 	public void insuranceCarrierGET() throws IOException {
 		
 		PSSPropertyFileLoader propertyData = new PSSPropertyFileLoader();
@@ -371,7 +373,7 @@ public class PostAPITest extends BaseTestNGWebDriver {
 		postAPIRequest.insuranceCarrier(testData.getBasicURI(), headerConfig.defaultHeader());
 	}
 	
-	@Test
+	@Test(enabled = true, groups = {"APItest"}, retryAnalyzer = RetryAnalyzer.class)
 	public void locationsListNGGET() throws IOException {
 		
 		PSSPropertyFileLoader propertyData = new PSSPropertyFileLoader();
@@ -384,7 +386,7 @@ public class PostAPITest extends BaseTestNGWebDriver {
 		postAPIRequest.locations(testData.getBasicURI(), headerConfig.defaultHeader());
 	}
 	
-	@Test
+	@Test(enabled = true, groups = {"APItest"}, retryAnalyzer = RetryAnalyzer.class)
 	public void addPatientPOST() throws IOException {
 		
 		PSSPropertyFileLoader propertyData = new PSSPropertyFileLoader();
@@ -397,7 +399,7 @@ public class PostAPITest extends BaseTestNGWebDriver {
 		postAPIRequest.insuranceCarrier(testData.getBasicURI(), headerConfig.defaultHeader());
 	}
 	
-	@Test
+	@Test(enabled = true, groups = {"APItest"}, retryAnalyzer = RetryAnalyzer.class)
 	public void demographicsGET() throws IOException {
 		
 		PSSPropertyFileLoader propertyData = new PSSPropertyFileLoader();
@@ -410,7 +412,7 @@ public class PostAPITest extends BaseTestNGWebDriver {
 		postAPIRequest.demographics(testData.getBasicURI(), headerConfig.defaultHeader());
 	}
 	
-	@Test
+	@Test(enabled = true, groups = {"APItest"}, retryAnalyzer = RetryAnalyzer.class)
 	public void lockoutGET() throws IOException {
 		
 		PSSPropertyFileLoader propertyData = new PSSPropertyFileLoader();
@@ -423,7 +425,7 @@ public class PostAPITest extends BaseTestNGWebDriver {
 		postAPIRequest.lockout(testData.getBasicURI(), headerConfig.defaultHeader());
 	}
 	
-	@Test
+	@Test(enabled = true, groups = {"APItest"}, retryAnalyzer = RetryAnalyzer.class)
 	public void matchPatientPOST() throws IOException {
 		
 		PSSPropertyFileLoader propertyData = new PSSPropertyFileLoader();
@@ -438,7 +440,7 @@ public class PostAPITest extends BaseTestNGWebDriver {
 		postAPIRequest.matchPatientPOST(testData.getBasicURI(),payload.matchpatient, headerConfig.defaultHeader());
 	}
 	
-	@Test
+	@Test(enabled = true, groups = {"APItest"}, retryAnalyzer = RetryAnalyzer.class)
 	public void patientLastVisitGET() throws IOException {
 		
 		PSSPropertyFileLoader propertyData = new PSSPropertyFileLoader();
@@ -451,7 +453,7 @@ public class PostAPITest extends BaseTestNGWebDriver {
 		postAPIRequest.patientLastVisit(testData.getBasicURI(), headerConfig.defaultHeader());
 	}
 	
-	@Test
+	@Test(enabled = true, groups = {"APItest"}, retryAnalyzer = RetryAnalyzer.class)
 	public void patientRecordbyApptTypePOST() throws IOException {
 		
 		PSSPropertyFileLoader propertyData = new PSSPropertyFileLoader();
@@ -464,7 +466,7 @@ public class PostAPITest extends BaseTestNGWebDriver {
 		postAPIRequest.patientRecordbyApptTypePOST(testData.getBasicURI(), Payload.patientrecordbyapptypes_payload(), headerConfig.defaultHeader());
 	}
 	
-	@Test
+	@Test(enabled = true, groups = {"APItest"}, retryAnalyzer = RetryAnalyzer.class)
 	public void searchPatientPOST() throws IOException {
 		
 		PSSPropertyFileLoader propertyData = new PSSPropertyFileLoader();
@@ -480,7 +482,7 @@ public class PostAPITest extends BaseTestNGWebDriver {
 	}
 	
 	
-	@Test
+	@Test(enabled = true, groups = {"APItest"}, retryAnalyzer = RetryAnalyzer.class)
 	public void patientStatusGET() throws IOException {
 		
 		PSSPropertyFileLoader propertyData = new PSSPropertyFileLoader();
@@ -493,7 +495,7 @@ public class PostAPITest extends BaseTestNGWebDriver {
 		postAPIRequest.patietStatus(testData.getBasicURI(), headerConfig.defaultHeader());
 	}
 	
-	@Test
+	@Test(enabled = true, groups = {"APItest"}, retryAnalyzer = RetryAnalyzer.class)
 	public void prerequisteappointmenttypesPOST() throws IOException {
 		PSSPropertyFileLoader propertyData = new PSSPropertyFileLoader();
 		Appointment testData = new Appointment();
@@ -507,7 +509,7 @@ public class PostAPITest extends BaseTestNGWebDriver {
 				headerConfig.defaultHeader());
 	}
 	
-	@Test
+	@Test(enabled = true, groups = {"APItest"}, retryAnalyzer = RetryAnalyzer.class)
 	public void patientrecordbybooksPOST() throws IOException {
 		PSSPropertyFileLoader propertyData = new PSSPropertyFileLoader();
 		Appointment testData = new Appointment();
@@ -521,7 +523,7 @@ public class PostAPITest extends BaseTestNGWebDriver {
 				headerConfig.defaultHeader());
 	}
 	
-	@Test
+	@Test(enabled = true, groups = {"APItest"}, retryAnalyzer = RetryAnalyzer.class)
 	public void lastseenProviderPOST() throws IOException {
 		PSSPropertyFileLoader propertyData = new PSSPropertyFileLoader();
 		Appointment testData = new Appointment();
@@ -536,7 +538,7 @@ public class PostAPITest extends BaseTestNGWebDriver {
 				headerConfig.defaultHeader());
 	}
 	
-	@Test
+	@Test(enabled = true, groups = {"APItest"}, retryAnalyzer = RetryAnalyzer.class)
 	public void fetchNGBookListGET() throws IOException {
 		PSSPropertyFileLoader propertyData = new PSSPropertyFileLoader();
 		Appointment testData = new Appointment();
@@ -549,7 +551,7 @@ public class PostAPITest extends BaseTestNGWebDriver {
 		postAPIRequest.fetchNGBookList(testData.getBasicURI(),headerConfig.defaultHeader());
 	}
 	
-	@Test
+	@Test(enabled = true, groups = {"APItest"}, retryAnalyzer = RetryAnalyzer.class)
 	public void fetchNGSpeciltyListGET() throws IOException {
 		PSSPropertyFileLoader propertyData = new PSSPropertyFileLoader();
 		Appointment testData = new Appointment();
