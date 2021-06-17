@@ -20,6 +20,7 @@ import com.medfusion.product.object.maps.pss2.page.Specialty.ManageSpecialty;
 import com.medfusion.product.object.maps.pss2.page.settings.AccessRules;
 import com.medfusion.product.object.maps.pss2.page.settings.AdminAppointment;
 import com.medfusion.product.object.maps.pss2.page.settings.AdminPatientMatching;
+import com.medfusion.product.object.maps.pss2.page.settings.Announcements;
 import com.medfusion.product.object.maps.pss2.page.settings.InsuranceCarrier;
 import com.medfusion.product.object.maps.pss2.page.settings.LinkTab;
 import com.medfusion.product.object.maps.pss2.page.settings.PSS2PracticeConfiguration;
@@ -339,6 +340,25 @@ public class PSSAdminUtils extends BaseTestNGWebDriver{
 		patientflow.saveRule();
 		Thread.sleep(8000);
 		Log4jUtil.log("--------------------------------WAIT FOR RULE BLT TO BE ADDED--------------------------------");
+	}
+	
+	public void setRulesNoProviderSet1(PatientFlow patientflow) throws InterruptedException {
+		patientflow.removeAllRules();
+		log("-----------------------------------------------------------------------------------------");
+		patientflow.addNewRulesButton();
+		patientflow.selectRuleName("AppointmentType");
+		patientflow.addNewRules(PSSConstants.RULE_APPOINTMENT_VALUE);
+		patientflow.addNewRules(PSSConstants.RULE_LOCATION_VALUE);
+		patientflow.saveRule();
+		Thread.sleep(1000);
+		log("--------------------------------WAIT FOR RULE TLB TO BE ADDED--------------------------------");
+		patientflow.addNewRulesButton();
+		patientflow.selectRuleName("Location");
+		patientflow.addNewRules(PSSConstants.RULE_LOCATION_VALUE);
+		patientflow.addNewRules(PSSConstants.RULE_APPOINTMENT_VALUE);
+		patientflow.saveRule();
+		Thread.sleep(1000);
+		log("--------------------------------WAIT FOR RULE LTB TO BE ADDED--------------------------------");
 	}
 
 	public void setInsuranceState(WebDriver driver, AdminUser adminuser) throws Exception {
@@ -878,6 +898,59 @@ public class PSSAdminUtils extends BaseTestNGWebDriver{
 		log("Prevent Scheduling settings are turn on successfully for "+appointment.getPreSchedDays());
 		patientFlow.logout();
 	}
+	
+	public void providerOffSettings(WebDriver driver, AdminUser adminUser, Appointment appointment, String urlToUse)
+			throws Exception {
 
+		PSS2PracticeConfiguration pssPracticeConfig = loginToAdminPortal(driver, adminUser);
+
+		AccessRules accessRule = pssPracticeConfig.gotoAccessTab();
+
+		if (urlToUse.equalsIgnoreCase(PSSConstants.LOGINLESS)) {
+			log("PSS Patient URL : " + accessRule.getLoginlessURL());
+			appointment.setUrlLoginLess(accessRule.getLoginlessURL());
+		}
+		if (urlToUse.equalsIgnoreCase(PSSConstants.ANONYMOUS)) {
+			log("PSS Patient URL : " + accessRule.getAnonymousUrl());
+			appointment.setUrlAnonymous(accessRule.getAnonymousUrl());
+		}
+		PatientFlow patientFlow = accessRule.gotoPatientFlowTab();
+
+		patientFlow.turnOnProvider();
+
+		setRulesNoProviderSet1(patientFlow);
+		
+		adminUser.setRule(patientFlow.getRule());
+		log("rule= " + patientFlow.getRule());
+		
+		appointment.setIsinsuranceVisible(patientFlow.insuracetogglestatus());
+		log("Insurance is Enabled= " + patientFlow.insuracetogglestatus());
+		
+		appointment.setIsstartpointPresent(patientFlow.isstartpagepresent());
+		log("StartPage is Visible= " + patientFlow.isstartpagepresent());
+		
+		patientFlow.turnOffProvider();		
+	}
+	
+	public void announcementSettings(WebDriver driver, AdminUser adminUser, Appointment appointment, String urlToUse)
+			throws Exception {
+
+		PSS2PracticeConfiguration pssPracticeConfig = loginToAdminPortal(driver, adminUser);
+
+		AccessRules accessRule = pssPracticeConfig.gotoAccessTab();
+
+		if (urlToUse.equalsIgnoreCase(PSSConstants.LOGINLESS)) {
+			log("PSS Patient URL : " + accessRule.getLoginlessURL());
+			appointment.setUrlLoginLess(accessRule.getLoginlessURL());
+		}
+		if (urlToUse.equalsIgnoreCase(PSSConstants.ANONYMOUS)) {
+			log("PSS Patient URL : " + accessRule.getAnonymousUrl());
+			appointment.setUrlAnonymous(accessRule.getAnonymousUrl());
+		}
+		
+		Announcements announcementsPage= accessRule.goToannouncementTab();
+		announcementsPage.addAnnouncementMsg();
+		
+	}
 	
 }

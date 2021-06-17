@@ -38,6 +38,9 @@ public class SettingsTab extends PSS2MenuPage {
 
 	@FindBy(how = How.ID, using = "links-tab")
 	private WebElement linksTab;
+	
+	@FindBy(how = How.ID, using = "alert-tab")
+	private WebElement announcementTab;
 
 
 	public SettingsTab(WebDriver driver) {
@@ -98,6 +101,11 @@ public class SettingsTab extends PSS2MenuPage {
 	public LinkTab linksTab() {
 		linksTab.click();
 		return PageFactory.initElements(driver, LinkTab.class);
+
+	}
+	public Announcements goToannouncementTab() {
+		announcementTab.click();
+		return PageFactory.initElements(driver, Announcements.class);
 
 	}
 }

@@ -840,6 +840,124 @@ public class PSSPatientUtils extends BaseTestNGWebDriver{
 		}
 		Log4jUtil.log("Test Case Passed");
 	}
+	
+	public void TLFlow(HomePage homepage, Appointment testData, String startOrderOn, WebDriver driver)
+			throws Exception {
+		AppointmentPage appointment;
+		StartAppointmentInOrder startappointmentInOrder = null;
+		log("Insurance is Enabled " + testData.isIsinsuranceVisible());
+		log("startpage is Visible " + testData.isIsstartpointPresent());
+		if (testData.isIsinsuranceVisible()) {
+
+			if (testData.isInsuranceDetails() == true) {
+				log("Member ID- " + testData.getMemberID() + " Group Id- " + testData.getGroupID() + " Phone Number- "
+						+ testData.getInsurancePhone());
+				homepage.updateInsuranceInfo(driver, testData.getMemberID(), testData.getGroupID(),
+						testData.getInsurancePhone());
+
+			} else {
+				log("insurance is present on home Page going to skip insurance page");
+				startappointmentInOrder = homepage.skipInsurance(driver);
+			}
+
+			if (testData.isIsstartpointPresent()) {
+				log("Starting point is present after insurance skipped ");
+				appointment = startappointmentInOrder.selectFirstAppointment(PSSConstants.START_APPOINTMENT);
+				log("Successfully clicked on  " + PSSConstants.START_APPOINTMENT);
+			} else {
+				appointment = homepage.appointmentpage();
+				log("Starting point not Present going to select next provider ");
+			}
+		} else if (testData.isIsstartpointPresent()) {
+			startappointmentInOrder = homepage.startpage();
+			log("in else part  click on  " + PSSConstants.START_APPOINTMENT);
+			appointment = startappointmentInOrder.selectFirstAppointment(PSSConstants.START_APPOINTMENT);
+			log("clicked on Appointment ");
+		} else {
+			log("Start point not present");
+			appointment = homepage.appointmentpage();
+		}
+
+		log("Verfiy Appointment Page and appointment =" + testData.getAppointmenttype());
+		Location location = appointment.selectTypeOfLocation(testData.getAppointmenttype(),
+				Boolean.valueOf(testData.getIsAppointmentPopup()));
+		log("Verfiy Location Page and location to be selected = " + testData.getLocation());
+		AppointmentDateTime aptDateTime  = location.searchLocation(testData.getLocation());
+		log("address = " + location.getAddressValue());
+
+		log("Select avaiable Date ");
+		if (testData.isFutureApt()) {
+			aptDateTime.selectFutureDate(testData.getIsNextDayBooking());
+		} else {
+			aptDateTime.selectDate(testData.getIsNextDayBooking());
+		}
+		if (testData.isAnonymousFlow()) {
+			log(" isAnonymousFlow is TRUE ");
+			bookAnonymousApt(aptDateTime, testData, driver);
+		} else {
+			log("This is not an Anonymous flow so comes is else block");
+			clickOnSubmitAppt(false, aptDateTime, testData, driver);
+		}
+		log("Test Case Passed");
+	}
+
+	public void LTFlow(HomePage homepage, Appointment testData, String startOrderOn, WebDriver driver)
+			throws Exception {
+		log("Select Location for appointment.");
+		Location location = null;
+		StartAppointmentInOrder startappointmentInOrder = null;
+
+		log("Insurance is Enabled " + testData.isIsinsuranceVisible());
+		log("start is Visible " + testData.isIsstartpointPresent());
+
+		if (testData.isIsinsuranceVisible()) {
+			Thread.sleep(3500);
+			log("insurance is present on home Page going to skip insurance page");
+			startappointmentInOrder = homepage.skipInsurance(driver);
+			if (testData.isIsstartpointPresent()) {
+				log("Starting point is present after insurance skipped ");
+				location = startappointmentInOrder.selectFirstLocation(PSSConstants.START_LOCATION);
+				log("Successfully clicked on  " + PSSConstants.START_LOCATION);
+			} else {
+				location = homepage.locationpage();
+				log("Starting point not Present going to select next provider ");
+			}
+
+		} else if (testData.isIsstartpointPresent()) {
+			startappointmentInOrder = homepage.startpage();
+			log("in else part  click on  " + PSSConstants.START_LOCATION);
+			location = startappointmentInOrder.selectFirstLocation(PSSConstants.START_LOCATION);
+			log("clicked on location ");
+		} else {
+			log("Start point not present");
+			location = homepage.locationpage();
+
+		}
+		Thread.sleep(3000);
+		log("Verfiy Location Page and location =" + testData.getLocation());
+		AppointmentPage appointment = location.selectAppointment(testData.getLocation());
+		log("Verfiy Appointment Page and appointment to be selected = " + testData.getAppointmenttype());
+		Thread.sleep(15000);
+		AppointmentDateTime aptDateTime = appointment.selectAptTyper(testData.getAppointmenttype(),
+				Boolean.valueOf(testData.getIsAppointmentPopup()));
+
+		log("Select avaiable Date ");
+		if (testData.isFutureApt()) {
+			aptDateTime.selectFutureDate(testData.getIsNextDayBooking());
+		} else {
+			aptDateTime.selectDate(testData.getIsNextDayBooking());
+		}
+
+		Thread.sleep(6000);
+		if (testData.isAnonymousFlow()) {
+			log(" isAnonymousFlow is TRUE ");
+			bookAnonymousApt(aptDateTime, testData, driver);
+		} else {
+			log("This is not an Anonymous flow so comes is else block");
+			clickOnSubmitAppt(false, aptDateTime, testData, driver);
+		}
+		log("Test Case Passed");
+	}
 
 	public Boolean deleteFile(String fileName) {
 		Boolean isFileDeleted = false;
@@ -1110,6 +1228,12 @@ public class PSSPatientUtils extends BaseTestNGWebDriver{
 		}
 		if (rule.equalsIgnoreCase(PSSConstants.SBLT)) {
 			SBLTFlow(homepage, testData, Boolean.toString(testData.getIsInsuranceEnabled()), driver);
+		}
+		if (rule.equalsIgnoreCase(PSSConstants.TL)) {
+			TLFlow(homepage, testData, Boolean.toString(testData.getIsInsuranceEnabled()), driver);
+		}
+		if (rule.equalsIgnoreCase(PSSConstants.LT)) {
+			LTFlow(homepage, testData, Boolean.toString(testData.getIsInsuranceEnabled()), driver);
 		}
 		return PageFactory.initElements(driver, ScheduledAppointment.class);
 	}
