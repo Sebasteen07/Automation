@@ -1162,10 +1162,12 @@ public class IntegrationPlatformRegressionTests extends BaseTestNGWebDriver {
 				patient.getDOBYear(), patient.getEmail(), patient.getZipCode(), medfusionID);
 		if (version.equalsIgnoreCase("v2"))
 			patientPayload = patientPayload.replaceAll("v1", "v2");
-
+		if (version.equalsIgnoreCase("v3"))
+			patientPayload = patientPayload.replaceAll("v1", "v3");
 		Thread.sleep(600);
 
 		log("Step 5: Post Patient");
+		log("--------------"+patientPayload);
 		String processingUrl = RestUtils.setupHttpPostRequest(testData.getRestUrl(), patientPayload,
 				testData.getResponsePath());
 
@@ -4067,6 +4069,7 @@ public class IntegrationPlatformRegressionTests extends BaseTestNGWebDriver {
 		log("OAuthPassword: " + testData.getOAuthPassword());
 		log("RestV3Url: " + testData.getRestV3Url());
 		log("PrescriptionPathV3: " + testData.getPrescriptionPathV3());
+		log("PrescriptionPath: " + testData.getPrescriptionPath());
 		log("Pharamcy Name:" + testData.getPharmacyName());
 
 		logStep("Login to the patient portal");
@@ -4144,8 +4147,8 @@ public class IntegrationPlatformRegressionTests extends BaseTestNGWebDriver {
 
 			RestUtils.isMedicationDetailsNewResponseXMLValid(testData.getResponsePath(), MedicationDetails, additionalComment);
 
-			String postXML = RestUtils.findValueOfMedicationNode(testData.getResponsePath(), "Medication",
-					MedicationDetails, rxSMSubject, rxSMBody, testData.getPrescriptionPathV3());
+			String postXML = RestUtils.findValueOfMedicationNodeNew(testData.getResponsePath(), "Medication",
+					MedicationDetails, rxSMSubject, rxSMBody, testData.getPrescriptionPath());
 
 			String SigCodeAbbreviation = RestUtils.SigCodeAbbreviation;
 			String SigCodeMeaning = RestUtils.SigCodeMeaning;

@@ -1459,7 +1459,7 @@ public class PropertyFileLoader {
 	}
 
 	public String getpracticePassword_FE() {
-		return property.getProperty("practicepassword.fe");
+		return property.getProperty("practice.password.fe");
 	}
 
 	public String getpatientLocation_FE() {
@@ -1978,7 +1978,7 @@ public class PropertyFileLoader {
 	}
 
 	public String getPATIENT_INVITE_RESTV3URL() {
-		return property.getProperty("resturl.pidcV3");
+		return property.getProperty("resturl.pidcv3");
 	}
 
 	public String getPatienturl_Event() {

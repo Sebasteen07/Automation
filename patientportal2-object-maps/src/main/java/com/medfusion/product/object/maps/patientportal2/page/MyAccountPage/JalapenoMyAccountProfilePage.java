@@ -373,7 +373,6 @@ public class JalapenoMyAccountProfilePage extends JalapenoMyAccountPage {
 		zipCodeTextbox.sendKeys(updateData.get(11));
 		IHGUtil.waitForElement(driver, 5, saveMyChanges);
 		javascriptClick(saveMyChanges);
-		saveMyChanges.click();
 
 	}
 

@@ -52,7 +52,7 @@ public class JalapenoMyAccountPreferencesPage extends JalapenoMyAccountPage {
 	@FindBy(how = How.ID, using = "apptRemindersOptOut")
 	private WebElement apptRemindersOptOut;
 
-	@FindBy(how = How.XPATH, using = "//*[text()='You have successfully updated your preferences.']")
+	@FindBy(how = How.XPATH, using = "//*[text()=' You have successfully updated your preferences. ']")
 	private WebElement successfulUpdateMessage;
 
 
