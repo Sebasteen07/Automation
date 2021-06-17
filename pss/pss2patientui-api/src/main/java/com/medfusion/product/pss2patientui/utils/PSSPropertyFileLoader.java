@@ -22,8 +22,8 @@ public class PSSPropertyFileLoader {
 
 	public void setAppointmentResponseGW(Appointment appointValues) {
 		Log4jUtil.log("Loading data for GW appointment related cases..");
-		appointValues.setIsinsuranceVisible(false);
-		appointValues.setIsstartpointPresent(false);
+		appointValues.setInsuranceVisible(false);
+		appointValues.setStartPointPresent(false);
 		appointValues.setLinkLocationURL(property.getProperty("link.location.url.gw"));
 		appointValues.setLinkProviderURL(property.getProperty("link.provider.url.gw"));
 		appointValues.setTimeMarkValue(property.getProperty("timeMarkValue.GW"));

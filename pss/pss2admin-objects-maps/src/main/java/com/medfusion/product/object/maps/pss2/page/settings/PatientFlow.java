@@ -202,27 +202,24 @@ public class PatientFlow extends SettingsTab {
 
 	}
 	
-	public Boolean enableProvider() {
+	public Boolean isProviderEnabled() {
 		commonMethods.highlightElement(providerToggle);
 		return providerToggle.isSelected();
 	}
 	
 	public void turnOffProvider() {
 		log("insuranceToggle = " + providerToggle.isSelected());
-		commonMethods.highlightElement(providerToggleLabe);
-		commonMethods.highlightElement(providerToggleCheckBox);
-		
-		if(providerToggle.isSelected() == true) {
+
+		if(isProviderEnabled() == true) {
 			providerToggleCheckBox.click();
 		}		
 		log("Turn off the Enable Provider Setting ");
 	}	
+	
 	public void turnOnProvider() {
 		log("insuranceToggle = " + providerToggle.isSelected());
-		commonMethods.highlightElement(providerToggleLabe);
-		commonMethods.highlightElement(providerToggleCheckBox);
 		
-		if(providerToggle.isSelected() == false) {
+		if(isProviderEnabled() == false) {
 			providerToggleCheckBox.click();
 		log("Status after turn on Provider-"+providerToggle.isSelected());
 		}		

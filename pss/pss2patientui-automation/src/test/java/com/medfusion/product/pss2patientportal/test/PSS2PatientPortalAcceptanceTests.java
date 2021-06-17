@@ -3435,9 +3435,9 @@ public class PSS2PatientPortalAcceptanceTests extends BaseTestNGWebDriver {
 		log("Step 5: Fetching the rule and insurance.");
 		PatientFlow patientflow = adminappointment.gotoPatientFlowTab();
 		String rule = patientflow.getRule();
-		testData.setIsinsuranceVisible(patientflow.insuracetogglestatus());
+		testData.setInsuranceVisible(patientflow.insuracetogglestatus());
 		log("Insurance Status = " + patientflow.insuracetogglestatus());
-		testData.setIsstartpointPresent(patientflow.isstartpagepresent());
+		testData.setStartPointPresent(patientflow.isstartpagepresent());
 		log("Startpoint  Status = " + patientflow.isstartpagepresent());
 		adminappointment.logout();
 		log("rule set in admin = " + rule);
@@ -3516,9 +3516,9 @@ public class PSS2PatientPortalAcceptanceTests extends BaseTestNGWebDriver {
 		log("Step 5: Fetching the rule and insurance.");
 		PatientFlow patientflow = adminappointment.gotoPatientFlowTab();
 		String rule = patientflow.getRule();
-		testData.setIsinsuranceVisible(patientflow.insuracetogglestatus());
+		testData.setInsuranceVisible(patientflow.insuracetogglestatus());
 		log("Insurance Status = " + patientflow.insuracetogglestatus());
-		testData.setIsstartpointPresent(patientflow.isstartpagepresent());
+		testData.setStartPointPresent(patientflow.isstartpagepresent());
 		log("Startpoint  Status = " + patientflow.isstartpagepresent());
 		adminappointment.logout();
 		log("rule set in admin = " + rule);

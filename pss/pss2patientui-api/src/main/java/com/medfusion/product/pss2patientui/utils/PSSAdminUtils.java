@@ -20,7 +20,7 @@ import com.medfusion.product.object.maps.pss2.page.Specialty.ManageSpecialty;
 import com.medfusion.product.object.maps.pss2.page.settings.AccessRules;
 import com.medfusion.product.object.maps.pss2.page.settings.AdminAppointment;
 import com.medfusion.product.object.maps.pss2.page.settings.AdminPatientMatching;
-import com.medfusion.product.object.maps.pss2.page.settings.Announcements;
+import com.medfusion.product.object.maps.pss2.page.settings.AnnouncementsTab;
 import com.medfusion.product.object.maps.pss2.page.settings.InsuranceCarrier;
 import com.medfusion.product.object.maps.pss2.page.settings.LinkTab;
 import com.medfusion.product.object.maps.pss2.page.settings.PSS2PracticeConfiguration;
@@ -122,11 +122,11 @@ public class PSSAdminUtils extends BaseTestNGWebDriver{
 		Log4jUtil.log("rule= " + patientflow.getRule());
 
 		Log4jUtil.log("AdminSettings Step 5: Fetch the Insurance Status");
-		testData.setIsinsuranceVisible(patientflow.insuracetogglestatus());
+		testData.setInsuranceVisible(patientflow.insuracetogglestatus());
 		Log4jUtil.log("Insurance Status= " + patientflow.insuracetogglestatus());
 
 		Log4jUtil.log("AdminSettings Step 6: Fetch the Starting Point Status");
-		testData.setIsstartpointPresent(patientflow.isstartpagepresent());
+		testData.setStartPointPresent(patientflow.isstartpagepresent());
 		Log4jUtil.log("Startpoint  Status= " + patientflow.isstartpagepresent());
 
 		AdminPatientMatching adminpatientmatching = patientflow.gotoPatientMatchingTab();
@@ -384,9 +384,9 @@ public class PSSAdminUtils extends BaseTestNGWebDriver{
 		PatientFlow patientflow = psspracticeConfig.gotoPatientFlowTab();
 		adminuser.setRule(patientflow.getRule());
 		Log4jUtil.log("rule= " + patientflow.getRule());
-		appointment.setIsinsuranceVisible(patientflow.insuracetogglestatus());
+		appointment.setInsuranceVisible(patientflow.insuracetogglestatus());
 		Log4jUtil.log("Insurance is Enabled= " + patientflow.insuracetogglestatus());
-		appointment.setIsstartpointPresent(patientflow.isstartpagepresent());
+		appointment.setStartPointPresent(patientflow.isstartpagepresent());
 		Log4jUtil.log("StartPage is Visible= " + patientflow.isstartpagepresent());
 		patientflow.logout();
 	}
@@ -397,9 +397,9 @@ public class PSSAdminUtils extends BaseTestNGWebDriver{
 		PatientFlow patientflow = psspracticeConfig.gotoPatientFlowTab();
 		adminuser.setRule(patientflow.getRule());
 		Log4jUtil.log("rule= " + patientflow.getRule());
-		testData.setIsinsuranceVisible(patientflow.insuracetogglestatus());
+		testData.setInsuranceVisible(patientflow.insuracetogglestatus());
 		Log4jUtil.log("Insurance is Enabled= " + patientflow.insuracetogglestatus());
-		testData.setIsstartpointPresent(patientflow.isstartpagepresent());
+		testData.setStartPointPresent(patientflow.isstartpagepresent());
 		Log4jUtil.log("StartPage is Visible= " + patientflow.isstartpagepresent());
 		adminAppointment = patientflow.gotoAdminAppointmentTab();
 		Log4jUtil.log("Step 3: Set the Cancellation & rescheduling lead time (hrs)- " + PSSConstants.CANCEL_APT_UPTO_HRS);
@@ -438,9 +438,9 @@ public class PSSAdminUtils extends BaseTestNGWebDriver{
 		PatientFlow patientflow = psspracticeConfig.gotoPatientFlowTab();
 		adminuser.setRule(patientflow.getRule());
 		Log4jUtil.log("rule= " + patientflow.getRule());
-		testData.setIsinsuranceVisible(patientflow.insuracetogglestatus());
+		testData.setInsuranceVisible(patientflow.insuracetogglestatus());
 		Log4jUtil.log("Insurance is Enabled= " + patientflow.insuracetogglestatus());
-		testData.setIsstartpointPresent(patientflow.isstartpagepresent());
+		testData.setStartPointPresent(patientflow.isstartpagepresent());
 		Log4jUtil.log("StartPage is Visible= " + patientflow.isstartpagepresent());
 		adminAppointment = patientflow.gotoAdminAppointmentTab();
 		Log4jUtil.log("Step 3: Set the Cancellation & rescheduling lead time (hrs)- " + PSSConstants.CANCEL_APT_UPTO_HRS);
@@ -482,9 +482,9 @@ public class PSSAdminUtils extends BaseTestNGWebDriver{
 		adminuser.setRule(patientflow.getRule());
 		Log4jUtil.log("rule= " + patientflow.getRule());
 		setRulesNoSpecialitySet1(patientflow);
-		appointment.setIsinsuranceVisible(patientflow.insuracetogglestatus());
+		appointment.setInsuranceVisible(patientflow.insuracetogglestatus());
 		Log4jUtil.log("Insurance is Enabled= " + patientflow.insuracetogglestatus());
-		appointment.setIsstartpointPresent(patientflow.isstartpagepresent());
+		appointment.setStartPointPresent(patientflow.isstartpagepresent());
 		Log4jUtil.log("StartPage is Visible= " + patientflow.isstartpagepresent());
 		ManageResource manageResource = psspracticeConfig.gotoResource();
 		pageRefresh(driver);
@@ -549,9 +549,9 @@ public class PSSAdminUtils extends BaseTestNGWebDriver{
 			patientflow.clickonProviderToggle();
 		}
 		setRulesNoSpecialitySet1(patientflow);
-		appointment.setIsinsuranceVisible(patientflow.insuracetogglestatus());
+		appointment.setInsuranceVisible(patientflow.insuracetogglestatus());
 		Log4jUtil.log("Insurance is Enabled= " + patientflow.insuracetogglestatus());
-		appointment.setIsstartpointPresent(patientflow.isstartpagepresent());
+		appointment.setStartPointPresent(patientflow.isstartpagepresent());
 		Log4jUtil.log("StartPage is Visible= " + patientflow.isstartpagepresent());
 		ManageResource manageResource = psspracticeConfig.gotoResource();
 		pageRefresh(driver);
@@ -569,9 +569,9 @@ public class PSSAdminUtils extends BaseTestNGWebDriver{
 		adminuser.setRule(patientflow.getRule());
 		Log4jUtil.log("rule= " + patientflow.getRule());
 		setRulesNoSpecialitySet1(patientflow);
-		appointment.setIsinsuranceVisible(patientflow.insuracetogglestatus());
+		appointment.setInsuranceVisible(patientflow.insuracetogglestatus());
 		Log4jUtil.log("Insurance is Enabled= " + patientflow.insuracetogglestatus());
-		appointment.setIsstartpointPresent(patientflow.isstartpagepresent());
+		appointment.setStartPointPresent(patientflow.isstartpagepresent());
 		Log4jUtil.log("StartPage is Visible= " + patientflow.isstartpagepresent());
 		ManageResource manageResource = psspracticeConfig.gotoResource();
 		pageRefresh(driver);
@@ -750,9 +750,9 @@ public class PSSAdminUtils extends BaseTestNGWebDriver{
 		adminUser.setRule(patientFlow.getRule());
 		log("rule= " + patientFlow.getRule());
 
-		appointment.setIsinsuranceVisible(patientFlow.insuracetogglestatus());
+		appointment.setInsuranceVisible(patientFlow.insuracetogglestatus());
 		log("Insurance is Enabled= " + patientFlow.insuracetogglestatus());
-		appointment.setIsstartpointPresent(patientFlow.isstartpagepresent());
+		appointment.setStartPointPresent(patientFlow.isstartpagepresent());
 		log("StartPage is Visible= " + patientFlow.isstartpagepresent());
 
 		AdminPatientMatching adminPatientMatching = patientFlow.gotoPatientMatchingTab();
@@ -849,7 +849,7 @@ public class PSSAdminUtils extends BaseTestNGWebDriver{
 	public void linkGenerationWithLocation(WebDriver driver, AdminUser adminUser, Appointment testData, String urlToUse) throws Exception {
 		PSS2PracticeConfiguration pssPracticeConfig = loginToAdminPortal(driver, adminUser);
 		PatientFlow patientFlow = pssPracticeConfig.gotoPatientFlowTab();
-		testData.setIsinsuranceVisible(patientFlow.insuracetogglestatus());
+		testData.setInsuranceVisible(patientFlow.insuracetogglestatus());
 		log("Insurance Status= " + patientFlow.insuracetogglestatus());
 		adminUser.setRule(patientFlow.getRule());
 		log("rule= " + patientFlow.getRule());
@@ -938,10 +938,10 @@ public class PSSAdminUtils extends BaseTestNGWebDriver{
 		adminUser.setRule(patientFlow.getRule());
 		log("rule= " + patientFlow.getRule());
 		
-		appointment.setIsinsuranceVisible(patientFlow.insuracetogglestatus());
+		appointment.setInsuranceVisible(patientFlow.insuracetogglestatus());
 		log("Insurance is Enabled= " + patientFlow.insuracetogglestatus());
 		
-		appointment.setIsstartpointPresent(patientFlow.isstartpagepresent());
+		appointment.setStartPointPresent(patientFlow.isstartpagepresent());
 		log("StartPage is Visible= " + patientFlow.isstartpagepresent());
 		
 		patientFlow.turnOffProvider();		
@@ -963,7 +963,7 @@ public class PSSAdminUtils extends BaseTestNGWebDriver{
 			appointment.setUrlAnonymous(accessRule.getAnonymousUrl());
 		}
 		
-		Announcements announcementsPage= accessRule.goToannouncementTab();
+		AnnouncementsTab announcementsPage= accessRule.goToAnnouncementTab();
 		announcementsPage.addAnnouncementMsg();
 		
 	}

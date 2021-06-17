@@ -14,7 +14,7 @@ import org.openqa.selenium.support.ui.Select;
 
 import com.medfusion.common.utils.IHGUtil;
 
-public class Announcements extends SettingsTab  {
+public class AnnouncementsTab extends SettingsTab  {
 	
 	@FindBy(how = How.XPATH, using = "//a[contains(text(),'100')]")
 	private WebElement announcementSubTab;
@@ -58,7 +58,7 @@ public class Announcements extends SettingsTab  {
 	private List<WebElement> announcementMsgDropdownList;
 	
 
-	public Announcements(WebDriver driver) {
+	public AnnouncementsTab(WebDriver driver) {
 		super(driver);
 
 	}

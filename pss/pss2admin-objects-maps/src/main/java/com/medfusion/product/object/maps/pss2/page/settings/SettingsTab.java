@@ -103,9 +103,9 @@ public class SettingsTab extends PSS2MenuPage {
 		return PageFactory.initElements(driver, LinkTab.class);
 
 	}
-	public Announcements goToannouncementTab() {
+	public AnnouncementsTab goToAnnouncementTab() {
 		announcementTab.click();
-		return PageFactory.initElements(driver, Announcements.class);
+		return PageFactory.initElements(driver, AnnouncementsTab.class);
 
 	}
 }
