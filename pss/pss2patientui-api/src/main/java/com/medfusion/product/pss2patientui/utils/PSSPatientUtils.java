@@ -882,7 +882,7 @@ public class PSSPatientUtils extends BaseTestNGWebDriver{
 		Location location = appointment.selectTypeOfLocation(testData.getAppointmenttype(),
 				Boolean.valueOf(testData.getIsAppointmentPopup()));
 		log("Verfiy Location Page and location to be selected = " + testData.getLocation());
-		AppointmentDateTime aptDateTime  = location.searchLocation(testData.getLocation());
+		AppointmentDateTime aptDateTime = location.searchLocation(testData.getLocation());
 		log("address = " + location.getAddressValue());
 
 		log("Select avaiable Date ");
@@ -911,7 +911,7 @@ public class PSSPatientUtils extends BaseTestNGWebDriver{
 		log("start is Visible " + testData.isIsstartpointPresent());
 
 		if (testData.isIsinsuranceVisible()) {
-			Thread.sleep(3500);
+
 			log("insurance is present on home Page going to skip insurance page");
 			startappointmentInOrder = homepage.skipInsurance(driver);
 			if (testData.isIsstartpointPresent()) {
@@ -922,7 +922,6 @@ public class PSSPatientUtils extends BaseTestNGWebDriver{
 				location = homepage.locationpage();
 				log("Starting point not Present going to select next provider ");
 			}
-
 		} else if (testData.isIsstartpointPresent()) {
 			startappointmentInOrder = homepage.startpage();
 			log("in else part  click on  " + PSSConstants.START_LOCATION);
@@ -931,13 +930,11 @@ public class PSSPatientUtils extends BaseTestNGWebDriver{
 		} else {
 			log("Start point not present");
 			location = homepage.locationpage();
-
 		}
-		Thread.sleep(3000);
 		log("Verfiy Location Page and location =" + testData.getLocation());
 		AppointmentPage appointment = location.selectAppointment(testData.getLocation());
 		log("Verfiy Appointment Page and appointment to be selected = " + testData.getAppointmenttype());
-		Thread.sleep(15000);
+
 		AppointmentDateTime aptDateTime = appointment.selectAptTyper(testData.getAppointmenttype(),
 				Boolean.valueOf(testData.getIsAppointmentPopup()));
 
@@ -947,8 +944,6 @@ public class PSSPatientUtils extends BaseTestNGWebDriver{
 		} else {
 			aptDateTime.selectDate(testData.getIsNextDayBooking());
 		}
-
-		Thread.sleep(6000);
 		if (testData.isAnonymousFlow()) {
 			log(" isAnonymousFlow is TRUE ");
 			bookAnonymousApt(aptDateTime, testData, driver);

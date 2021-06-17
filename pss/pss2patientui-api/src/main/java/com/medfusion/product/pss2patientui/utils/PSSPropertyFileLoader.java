@@ -393,7 +393,7 @@ public class PSSPropertyFileLoader {
 		appointValues.setGroupID(property.getProperty("groupID"));
 		appointValues.setInsurancePhone(property.getProperty("insrancePhone"));
 		
-		appointValues.setPreSchedDays(Integer.parseInt(property.getProperty("preSchedDays")));
+		appointValues.setPreSchedDays(Integer.parseInt(property.getProperty("prescheddays.ng")));
 	}
 
 	public void setAppointmentResponseAthena(Appointment appointValues) {
