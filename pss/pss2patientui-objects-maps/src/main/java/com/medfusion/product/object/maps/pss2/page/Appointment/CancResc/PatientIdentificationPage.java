@@ -41,9 +41,8 @@ public class PatientIdentificationPage extends PSS2MainPage {
 	@FindBy(how = How.XPATH, using = "//*[@id='myModalsssloginpopup']/div/div/div[3]/button")
 	private WebElement dismissButtons;
 	
-	@FindBy(how = How.XPATH, using = "//div[@id='myModalsss']/div/div/div[3]/button/span")
+	@FindBy(how = How.XPATH, using = "//*[@id='myModalsssloginpopup']/div/div/div[3]/button")
 	private WebElement dismissButtonsAnonymous;
-	
 	
 	public PatientIdentificationPage(WebDriver driver) {
 		super(driver);

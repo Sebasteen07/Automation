@@ -17,6 +17,7 @@ import com.intuit.ihg.product.integrationplatform.utils.AMDCTestData;
 import com.intuit.ihg.product.integrationplatform.utils.Appointment;
 import com.intuit.ihg.product.integrationplatform.utils.AppointmentTestData;
 import com.intuit.ihg.product.integrationplatform.utils.BalancePayLoad;
+import com.intuit.ihg.product.integrationplatform.utils.CancelInvitePayLoad;
 import com.intuit.ihg.product.integrationplatform.utils.EHDC;
 import com.intuit.ihg.product.integrationplatform.utils.EHDCTestData;
 import com.intuit.ihg.product.integrationplatform.utils.IntegrationConstants;
@@ -1255,5 +1256,91 @@ public class IntegrationPlatformAcceptanceTests extends BaseTestNGWebDriver {
 		log("Deleted medication is not visible on portal");
 		log("Step 11: Logout of Patient Portal");
 		prescriptionsPage.clickOnLogout();
+	}
+	@Test(enabled = true, groups = { "AcceptanceTests" }, retryAnalyzer = RetryAnalyzer.class)
+	public void testCancelInviteForInvitedPatients() throws Exception {
+		PIDCTestData testData = loadDataFromExcel();
+
+		logStep("Prepare patient to post");
+		Long timestamp = System.currentTimeMillis();
+		String practicePatientId = "Name" + timestamp;
+		String firstName = "Name" + timestamp;
+		String lastName = "TestPatient1" + timestamp;
+		String email = firstName + "@mailinator.com";
+		String zip = testData.getZipCode();
+		String date = testData.getBirthDay();
+
+		String dt = date.substring(0, 2);
+		String month = date.substring(3, 5);
+		String year = date.substring(6);
+
+		log("Created Patient details");
+		log("Practice Patient ID: " + practicePatientId);
+		log("Firstname: " + firstName);
+		log("Lastname: " + lastName);
+		log("Email address: " + email);
+		log("Birthdate: " + date);
+		log("Zipcode: " + zip);
+		log("cancelinvite : "  +testData.getCancelInviteRestUrl());
+
+		
+		String patient = RestUtils.preparePatient(testData.getPatientPath(), practicePatientId, firstName, lastName, dt,
+				month, year, email, zip, null);
+		logStep("Setup Oauth client");
+		RestUtils.oauthSetup(testData.getOAuthKeyStore(), testData.getOAuthProperty(), testData.getOAuthAppToken(),
+				testData.getOAuthUsername(), testData.getOAuthPassword());
+
+		logStep("Do a POST call and get processing status URL");
+		String processingUrl = RestUtils.setupHttpPostRequest(testData.getRestUrl(), patient,
+				testData.getResponsePath());
+
+		logStep("Get processing status until it is completed");
+		boolean completed = false;
+		for (int i = 0; i < 1; i++) {
+			// wait 60 seconds so the message can be processed
+			Thread.sleep(60000);
+			RestUtils.setupHttpGetRequest(processingUrl, testData.getResponsePath());
+			if (RestUtils.isMessageProcessingCompleted(testData.getResponsePath())) {
+				completed = true;
+				break;
+			}
+		}
+		assertTrue(completed, "Message processing was not completed in time");
+		
+		logStep("Checking for the activation link inside the patient mailinator inbox");
+		// Searching for the link for patient activation in the mailinator Inbox
+
+		Mailinator mail = new Mailinator();
+		String activationUrl = mail.getLinkFromEmail(email,JalapenoConstants.NEW_PATIENT_ACTIVATION_MESSAGE,
+				JalapenoConstants.NEW_PATIENT_ACTIVATION_MESSAGE_LINK_TEXT, 40);
+
+
+		logStep("Moving to the link obtained from the email message");
+		assertNotNull(activationUrl, "Error: Activation link not found.");
+		log("Retrieved activation link is " + activationUrl);
+
+		logStep("Prepare Cancel invite Payload");
+		CancelInvitePayLoad cancelInvitePayload = new CancelInvitePayLoad();
+
+		String payload = cancelInvitePayload.prepareCancelInvite(practicePatientId);
+		log("cancel Invite payload : "+payload);
+
+		logStep("Do a POST call for cancel invite payload and get processing status URL");
+		String cancelInviteprocessingUrl = RestUtils.setupHttpPostRequest(testData.getCancelInviteRestUrl(), payload,
+				testData.getResponsePath());
+
+		logStep("Get processing status until it is completed");
+		boolean completed1 = false;
+		for (int i = 0; i < 1; i++) {
+			// wait 60 seconds so the message can be processed
+			Thread.sleep(60000);
+			RestUtils.setupHttpGetRequest(cancelInviteprocessingUrl, testData.getResponsePath());
+			if (RestUtils.isMessageProcessingCompleted(testData.getResponsePath())) {
+				completed1 = true;
+				break;
+			}
+		}
+		assertTrue(completed1, "Message processing was not completed in time");
+	
 	}
 }

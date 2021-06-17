@@ -87,7 +87,7 @@ public class AdminAppointment extends SettingsTab {
 	@FindBy(how = How.XPATH, using = "//div[@id='basic']//div//fieldset//button[@class='btn btn-primary'][contains(text(),'Save')]")
 	private WebElement buttonSaveResourceConfg;
 
-	@FindBy(how = How.XPATH, using = "//*[@id=\"appt\"]/form/fieldset/div/div/button")
+	@FindBy(how = How.XPATH, using = "//*[@id='appt']/form/fieldset/div/div/button")
 	private WebElement buttonSave;
 
 	@FindBy(how = How.XPATH, using = "//*[@id='appt']/div/form[2]/fieldset/div/div/button")
@@ -168,15 +168,14 @@ public class AdminAppointment extends SettingsTab {
 		commonMethods.highlightElement(cancelAppointment);
 		cancelAppointment.sendKeys(cancelHoursBefore);
 		commonMethods.highlightElement(buttonSave);
+		Thread.sleep(3000);
 		buttonSave.click();
 		Thread.sleep(1000);
 	}
 
 	public boolean toggleAllowPCPONOF() throws InterruptedException {
 		pageDown();
-		log(allowPCPToggle.getAttribute("ng-reflect-model"));
-		boolean bool = Boolean.parseBoolean(allowPCPToggle.getAttribute("ng-reflect-model"));
-		return bool;
+		return allowPCPToggle.isSelected();
 	}
 
 	public void pcptoggleclick() throws InterruptedException {
@@ -251,10 +250,10 @@ public class AdminAppointment extends SettingsTab {
 	}
 	
 	public void toggleNextavailableClick() throws InterruptedException {
-		IHGUtil.waitForElement(driver, 5, nextAvailable);
-		nextAvailable.click();
+		javascriptClick(nextAvailable);
 		log("Clicked on nextAvailable");
-		buttonSave.click();
+		IHGUtil.waitForElement(driver, 10, buttonSave);
+		javascriptClick(buttonSave);
 	}
 
 	public void togglePastApptMonths() {
