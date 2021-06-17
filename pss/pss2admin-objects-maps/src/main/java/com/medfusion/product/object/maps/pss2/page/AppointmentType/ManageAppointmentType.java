@@ -85,7 +85,7 @@ public class ManageAppointmentType extends PSS2MenuPage {
 		aptTypeLink.click();
 		IHGUtil.waitForElement(driver, 10, editAptTypeHeading);
 		commonMethods.highlightElement(editAptTypeHeading);
-		commonMethods.pageDown(1000);
+		scrollAndWait(0, 800, 1000);
 		commonMethods.highlightElement(prevSchedSettingLabel);
 		log("PrevSched Setting Label- "+prevSchedSettingLabel.getText());
 		
