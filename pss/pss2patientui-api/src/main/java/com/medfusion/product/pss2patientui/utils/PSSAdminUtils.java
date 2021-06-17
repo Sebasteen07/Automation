@@ -867,6 +867,21 @@ public class PSSAdminUtils extends BaseTestNGWebDriver{
 		adminPatientMatching.logout();
 
 	}
+	public void exclueSlots(WebDriver driver, AdminUser adminuser, Appointment appointment) throws Exception {
+		PSS2PracticeConfiguration psspracticeConfig = loginToAdminPortal(driver, adminuser);
+		psspracticeConfig = psspracticeConfig.gotoPracticeConfigTab();	
+		PatientFlow patientFlow = psspracticeConfig.gotoPatientFlowTab();
+		setRulesNoSpecialitySet1(patientFlow);
+		adminuser.setRule(patientFlow.getRule());
+		AdminPatientMatching adminPatientMatching = patientFlow.gotoPatientMatchingTab();
+		adminPatientMatching.patientMatchingSelection();
+		ManageResource manageResource = psspracticeConfig.gotoResource();
+		pageRefresh(driver);
+		manageResource.selectResource(appointment.getProvider());
+		manageResource.selectAppointmenttype(appointment.getAppointmenttype());
+		manageResource.excludeBtn(appointment.getExcludeSlotFirstValue(),appointment.getExcludeSlotSecondValue());
+		patientFlow.logout();
+	}
 	
 	public void preventSchedAptSettings(WebDriver driver, AdminUser adminUser, Appointment appointment, String urlToUse)
 			throws Exception {
