@@ -88,6 +88,8 @@ public class PSSPropertyFileLoader {
 		appointValues.setNextAvailiableText(property.getProperty("next.availi.text"));
 		appointValues.setExcludeSlotFirstValue(property.getProperty("exclude.firstvalue.gw"));
 		appointValues.setExcludeSlotSecondValue(property.getProperty("exclude.secondvalue.gw"));
+		appointValues.setSlotValue(property.getProperty("slotvalue.gw"));
+
 
 		appointValues.setFirstNameCarePatient(property.getProperty("firstNameCarePatientGW"));
 		appointValues.setLastNameCarePatient(property.getProperty("lastNameCarePatientGW"));
@@ -244,7 +246,7 @@ public class PSSPropertyFileLoader {
 		appointValues.setProvider(property.getProperty("providerGE"));
 		appointValues.setSpeciality(property.getProperty("specialityGE"));
 		appointValues.setUsername(property.getProperty("usernameGE"));
-		appointValues.setUrlLoginLess(property.getProperty("loginless.url.ng"));
+		appointValues.setUrlLoginLess(property.getProperty("loginless.url.ge"));
 		appointValues.setAppointmentFlow(property.getProperty("appointmentFlowGE"));
 		appointValues.setFirstTimeUser(property.getProperty("isFirstTimeUserGE"));
 		appointValues.setFirstName(property.getProperty("firstNameGE"));
@@ -294,6 +296,8 @@ public class PSSPropertyFileLoader {
 		appointValues.setNextAvailiableText(property.getProperty("next.availi.text"));
 		appointValues.setExcludeSlotFirstValue(property.getProperty("exclude.firstvalue.ge"));
 		appointValues.setExcludeSlotSecondValue(property.getProperty("exclude.secondvalue.ge"));
+		appointValues.setSlotValue(property.getProperty("slotvalue.ge"));
+
 
 
 		appointValues.setFirstNameCarePatient(property.getProperty("firstNameCarePatientGE"));
