@@ -774,9 +774,6 @@ public class NGIntegrationE2EEnrollment_CCDTests extends BaseTestNGWebDriver {
 				propertyLoaderObj.getSecretQuestion(), propertyLoaderObj.getSecretAnswer(),
 				propertyLoaderObj.getPhoneNumber());
 
-		logStep("Detecting if Home Page is opened");
-		assertTrue(jalapenoHomePage.isHomeButtonPresent(driver));
-
 		logStep("Logout from Portal");
 		jalapenoHomePage.LogoutfromNGMFPortal();
 

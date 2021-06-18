@@ -34,6 +34,9 @@ import com.medfusion.product.object.maps.patientportal2.page.MessagesPage.Jalape
 import com.medfusion.product.object.maps.patientportal2.page.PrescriptionsPage.JalapenoPrescriptionsPage;
 import com.ng.product.integrationplatform.apiUtils.NGAPIUtils;
 import com.ng.product.integrationplatform.flows.NGAPIFlows;
+import com.ng.product.integrationplatform.flows.NGPatient;
+import com.ng.product.integrationplatform.flows.PatientEnrollment;
+import com.ng.product.integrationplatform.pojo.NewPatient;
 import com.ng.product.integrationplatform.utils.CommonFlows;
 import com.ng.product.integrationplatform.utils.CommonUtils;
 import com.ng.product.integrationplatform.utils.DBUtils;
@@ -766,9 +769,6 @@ public class NGIntegrationE2EInboxTests extends BaseTestNGWebDriver {
 		logStep("Log into Portal");
 		NGLoginPage loginPage = new NGLoginPage(driver, url);
 		JalapenoHomePage homePage = loginPage.login(username, propertyLoaderObj.getPassword());
-
-		Log4jUtil.log("Detecting if Home Page is opened");
-		assertTrue(homePage.isHomeButtonPresent(driver));
 
 		logStep("Navigate to appointment page");
 		homePage.clickOnAppointmentV3(driver);
