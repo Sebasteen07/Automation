@@ -1157,7 +1157,7 @@ public class NGIntegrationE2EEnterpriseEnrollmentTests extends BaseTestNGWebDriv
 
 		assertTrue(portalUrlLink.length() > 0, "Error: No matching link found in patient welcome email!");
 
-		JalapenoLoginEnrollment loginPage = new JalapenoLoginEnrollment(driver, portalUrlLink);
+		JalapenoLoginEnrollment loginPage = new JalapenoLoginEnrollment(driver, propertyLoaderObj.getProperty("MFPortalURLPractice2"));
 		JalapenoHomePage homePage = loginPage.login(createPatient.getEmailAddress(), propertyLoaderObj.getPassword());
 
 		logStep("Switching to Second Practice to verify auto enrollment");
@@ -1167,10 +1167,6 @@ public class NGIntegrationE2EEnterpriseEnrollmentTests extends BaseTestNGWebDriv
 
 		logStep("Switching to dependent account to verify auto enrollment");
 		homePage.faChangePatient();
-		Thread.sleep(10000);
-		homePage.switchToPractice(propertyLoaderObj.getProperty("practiceName1"));
-		Thread.sleep(40000);
-		assertTrue(homePage.assessFamilyAccountElements(true));
 		logStep("Auto Enrolment of Guardian and Dependent to Second and third Practice is completed");
 
 		PatientEnrollment.verifyPatientEnrollmentStatus(enterprisebaseURL, ngAPIUtils, person_id,
@@ -1273,10 +1269,6 @@ public class NGIntegrationE2EEnterpriseEnrollmentTests extends BaseTestNGWebDriv
 				createdependent.getEmailAddress(), propertyLoaderObj.getPassword(),
 				propertyLoaderObj.getSecretQuestion(), propertyLoaderObj.getSecretAnswer(),
 				propertyLoaderObj.getPhoneNumber());
-
-		logStep("Detecting if Home Page is opened");
-		Thread.sleep(2000);
-		assertTrue(jalapenoHomePage.isHomeButtonPresent(driver));
 
 		logStep("Logout from Portal");
 		Thread.sleep(9000);
