@@ -384,6 +384,8 @@ public class PSSPropertyFileLoader {
 		appointValues.setNextAvailiableText(property.getProperty("next.availi.text"));
 		appointValues.setExcludeSlotFirstValue(property.getProperty("exclude.firstvalue.ng"));
 		appointValues.setExcludeSlotSecondValue(property.getProperty("exclude.secondvalue.ng"));
+		appointValues.setSlotValue(property.getProperty("slotvalue.ng"));
+
 
 		appointValues.setFirstNameCarePatient(property.getProperty("firstNameCarePatientNG"));
 		appointValues.setLastNameCarePatient(property.getProperty("lastNameCarePatientNG"));
