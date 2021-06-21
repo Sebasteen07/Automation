@@ -34,33 +34,44 @@ public class GatewayProxyDigitalWalletResource extends GatewayProxyBaseTest {
 		Map<String, Object> digitalWallet = PayloadDetails.getPayloadForAddingCardToDigitalWallet(consumerName,
 				cardType, cardNumber, expiryDate, cardAlias, zipcode);
 
-		Response response = given().spec(requestSpec).auth().oauth2(token).body(digitalWallet)
-				.when().post(testData.getProperty("testpaycustomeruuid") + "/wallets").then().extract().response();
+		Response response = given().spec(requestSpec).auth().oauth2(token).body(digitalWallet).when()
+				.post(testData.getProperty("testpaycustomeruuid") + "/wallets").then().extract().response();
 
 		return response;
 	}
 
+	public Response getListOfCardsInWallet(String token) throws IOException {
 
+		testData = new PropertyFileLoader();
 
-	
-	  public Response getListOfCardsInWallet(String token) throws IOException {
-	  
-	  testData = new PropertyFileLoader();
-	 
-	  Response response = given().that().spec(requestSpec).auth().oauth2(token).when().get( testData.getProperty("testpaycustomeruuid") +
-	  "/wallets/" + testData.getProperty("externalWalletId"))
-	  .then().and().extract().response();
-	  
-	  return response;
-	  
-	  }
+		Response response = given().that().spec(requestSpec).auth().oauth2(token).when().get(
+				testData.getProperty("testpaycustomeruuid") + "/wallets/" + testData.getProperty("externalWalletId"))
+				.then().and().extract().response();
+
+		return response;
+
+	}
+
 	public Response updateZipcode(String token, String customeruuid, String walletId, String card, String zipcode)
 			throws Exception {
 		testData = new PropertyFileLoader();
 		Map<String, Object> zipcodePayload = BillToAddress.getBillingAdressMap(zipcode);
 
-		Response response = given().spec(requestSpec).auth().oauth2(token).body(zipcodePayload)
-				.when().patch(customeruuid + "/wallets/" + walletId + "/cards/" + card).then().extract().response();
+		Response response = given().spec(requestSpec).auth().oauth2(token).body(zipcodePayload).when()
+				.patch(customeruuid + "/wallets/" + walletId + "/cards/" + card).then().extract().response();
+		return response;
+	}
+
+	public Response addNewCardToExistingWallet(String externalWalletId, String token, String consumerName,
+			String cardType, String cardNumber, String expiryDate, String cardAlias, String zipcode)
+			throws IOException {
+		testData = new PropertyFileLoader();
+		Map<String, Object> digitalWallet = PayloadDetails.getPayloadForAddingCardToDigitalWallet(consumerName,
+				cardType, cardNumber, expiryDate, cardAlias, zipcode);
+
+		Response response = given().spec(requestSpec).header("Authorization", "Bearer " + token).body(digitalWallet)
+				.when().post(testData.getProperty("testpaycustomeruuid") + "/wallets/" + externalWalletId + "/cards")
+				.then().extract().response();
 		return response;
 	}
 
