@@ -24,7 +24,7 @@ public class TransactionResourceDetails extends BaseRest {
   public List<String> makeAnAuthorize(String mmid, Boolean flag) throws Exception {
 	  testData = new PropertyFileLoader();
 	  Map<String, Object> transactiondetails = PayloadDetails.getPayloadForAuthorizeSaleMap((testData.getProperty("transactionamount")),
-			  testData.getProperty("accountnumber"), testData.getProperty("consumername"), testData.getProperty("paymentsource"),
+			  testData.getProperty("accountnumber"), testData.getProperty("consumername"), testData.getProperty("payment.source"),
 			  testData.getProperty("cvv"), testData.getProperty("type"), testData.getProperty("cardnumber"),
 			  testData.getProperty("expirationnumber"), testData.getProperty("bin"), testData.getProperty("zipcode"),
 			  testData.getProperty("lastname"),testData.getProperty("addressline1"),testData.getProperty("city"),
@@ -53,7 +53,7 @@ public class TransactionResourceDetails extends BaseRest {
   public void makeACapture(String mmid, String transactionid, String orderid) throws IOException {
 	  testData = new PropertyFileLoader();
 	  Map<String, Object> transactiondetails = PayloadDetails.getPayloadForCaptureMap((testData.getProperty("transactionamount")),
-			  testData.getProperty("accountnumber"), testData.getProperty("consumername"), testData.getProperty("paymentsource"),
+			  testData.getProperty("accountnumber"), testData.getProperty("consumername"), testData.getProperty("payment.source"),
 			  testData.getProperty("cvv"), testData.getProperty("type"), testData.getProperty("cardnumber"),
 			  testData.getProperty("expirationnumber"), testData.getProperty("bin"), testData.getProperty("zipcode"),
 			  testData.getProperty("lastname"),testData.getProperty("addressline1"),testData.getProperty("city"),
@@ -70,7 +70,7 @@ public class TransactionResourceDetails extends BaseRest {
   public List<String> makeASale(String mmid) throws IOException {
 	  testData = new PropertyFileLoader();
 	  Map<String, Object> transactiondetails = PayloadDetails.getPayloadForAuthorizeSaleMap((testData.getProperty("transactionamount")),
-			  testData.getProperty("accountnumber"), testData.getProperty("consumername"), testData.getProperty("paymentsource"),
+			  testData.getProperty("accountnumber"), testData.getProperty("consumername"), testData.getProperty("payment.source"),
 			  testData.getProperty("cvv"), testData.getProperty("type"), testData.getProperty("cardnumber"),
 			  testData.getProperty("expirationnumber"), testData.getProperty("bin"), testData.getProperty("zipcode"),
 			  testData.getProperty("lastname"),testData.getProperty("addressline1"),testData.getProperty("city"),
@@ -95,7 +95,7 @@ public class TransactionResourceDetails extends BaseRest {
   public void makeAVoid(String mmid, String transactionid) throws IOException {
 	  testData = new PropertyFileLoader();
 	  Map<String, Object> transactiondetails = PayloadDetails.getPayloadForVoidCreditMap((testData.getProperty("transactionamount")),
-			  testData.getProperty("accountnumber"), testData.getProperty("consumername"), testData.getProperty("paymentsource"),
+			  testData.getProperty("accountnumber"), testData.getProperty("consumername"), testData.getProperty("payment.source"),
 			  testData.getProperty("cvv"), testData.getProperty("type"), testData.getProperty("cardnumber"),
 			  testData.getProperty("expirationnumber"), testData.getProperty("bin"), testData.getProperty("zipcode"),
 			  testData.getProperty("lastname"),testData.getProperty("addressline1"),testData.getProperty("city"),
@@ -113,7 +113,7 @@ public class TransactionResourceDetails extends BaseRest {
    public void makeARefund(String mmid, String transactionid, String refundamount) throws IOException {
 	   testData = new PropertyFileLoader();
 	   Map<String, Object> transactiondetails = PayloadDetails.getPayloadForVoidCreditMap(refundamount,
-			  testData.getProperty("accountnumber"), testData.getProperty("consumername"), testData.getProperty("paymentsource"),
+			  testData.getProperty("accountnumber"), testData.getProperty("consumername"), testData.getProperty("payment.source"),
 			  testData.getProperty("cvv"), testData.getProperty("type"), testData.getProperty("cardnumber"),
 			  testData.getProperty("expirationnumber"), testData.getProperty("bin"), testData.getProperty("zipcode"),
 			  testData.getProperty("lastname"),testData.getProperty("addressline1"),testData.getProperty("city"),

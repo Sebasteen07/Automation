@@ -20,7 +20,7 @@ public class GatewayProxyTransactionResource extends GatewayProxyBaseTest{
 	public void makeASale(String mmid) throws IOException {
 		  testData = new PropertyFileLoader();
 		  Map<String, Object> transactiondetails = PayloadDetails.getPayloadForAuthorizeSaleMap((testData.getProperty("transactionamount")),
-				  testData.getProperty("accountnumber"), testData.getProperty("consumername"), testData.getProperty("paymentsource"),
+				  testData.getProperty("accountnumber"), testData.getProperty("consumername"), testData.getProperty("payment.source"),
 				  testData.getProperty("cvv"), testData.getProperty("type"), testData.getProperty("cardnumber"),
 				  testData.getProperty("expirationnumber"), testData.getProperty("bin"), testData.getProperty("zipcode"),
 				  testData.getProperty("lastname"),testData.getProperty("addressline1"),testData.getProperty("city"),
