@@ -394,6 +394,8 @@ public class PSSPropertyFileLoader {
 		appointValues.setInsurancePhone(property.getProperty("insrancePhone"));
 		
 		appointValues.setPreSchedDays(Integer.parseInt(property.getProperty("prescheddays.ng")));
+		appointValues.setShowCancellationReasonPM(true);
+		appointValues.setShowCancellationRescheduleReason(true);
 	}
 
 	public void setAppointmentResponseAthena(Appointment appointValues) {
