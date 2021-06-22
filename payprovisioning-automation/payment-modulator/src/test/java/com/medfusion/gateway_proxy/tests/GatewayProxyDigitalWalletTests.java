@@ -86,7 +86,7 @@ public class GatewayProxyDigitalWalletTests extends GatewayProxyBaseTest {
 
 		String externalWalletId = jsonPath.get("externalWalletId").toString();
 		String externalCardId = jsonPath.get("walletCards[0].externalCardId").toString();
-		
+
 		Response deleteResponse = digitalWallet.deleteCardInWallet(token, externalWalletId, externalCardId);
 		JsonPath jsonPathDelete = new JsonPath(deleteResponse.asString());
 
@@ -102,8 +102,8 @@ public class GatewayProxyDigitalWalletTests extends GatewayProxyBaseTest {
 		String token = GatewayProxyUtils.getTokenForCustomer();
 		String token1 = token + "jadgcl";
 		GatewayProxyDigitalWalletResource digitalWallet = new GatewayProxyDigitalWalletResource();
-		Response deleteResponse = digitalWallet.deleteCardInWallet(token1, testData.getProperty("default.external.wallet.id"),
-				testData.getProperty("default.external.card.id"));
+		Response deleteResponse = digitalWallet.deleteCardInWallet(token1,
+				testData.getProperty("default.external.wallet.id"), testData.getProperty("default.external.card.id"));
 		Assert.assertTrue(deleteResponse.getStatusCode() == 401);
 
 	}
@@ -198,5 +198,55 @@ public class GatewayProxyDigitalWalletTests extends GatewayProxyBaseTest {
 		Assert.assertEquals("Bad Request", jsonPath.get("error"));
 		Assert.assertTrue(!jsonPath.get("message").toString().isEmpty());
 		Assert.assertEquals("Zip code should be either 5 or 9 digits", jsonPath.get("message"));
+	}
+
+	@Test
+	public void addOneOrMoreCardToExistingWalletByValidAuth() throws Exception {
+		String token = GatewayProxyUtils.getTokenForCustomer();
+		GatewayProxyDigitalWalletResource digitalWallet = new GatewayProxyDigitalWalletResource();
+		String externalWalletId = testData.getProperty("externalWalletId");
+		Response responseOfAddMoreCard = digitalWallet.addNewCardToExistingWallet(externalWalletId, token,
+				testData.getProperty("consumer.name1"), testData.getProperty("card.type1"),
+				testData.getProperty("card.number1"), testData.getProperty("expiration.number1"),
+				testData.getProperty("card.alias1"), testData.getProperty("zip.code1"));
+
+		Assert.assertTrue(responseOfAddMoreCard.getStatusCode() == 200);
+
+		JsonPath jsonPath = new JsonPath(responseOfAddMoreCard.asString());
+		Assert.assertTrue(!jsonPath.get("externalWalletId").toString().isEmpty());
+		Assert.assertTrue(!jsonPath.get("walletCards[0].externalCardId").toString().isEmpty());
+		Assert.assertTrue(!jsonPath.get("walletCards[0].cardExpiryDate").toString().isEmpty());
+		Assert.assertTrue(!jsonPath.get("walletCards[0].cardType").toString().isEmpty());
+
+	}
+
+	@Test
+	public void addOneOrMoreCardToExistingWalletByInvalidAuth() throws Exception {
+		String token = GatewayProxyUtils.getTokenForCustomer() + "Jdjfh1";
+		GatewayProxyDigitalWalletResource digitalWallet = new GatewayProxyDigitalWalletResource();
+		String externalWalletId = testData.getProperty("externalWalletId");
+		Response responseOfAddMoreCard = digitalWallet.addNewCardToExistingWallet(externalWalletId, token,
+				testData.getProperty("consumer.name1"), testData.getProperty("card.type1"),
+				testData.getProperty("card.number1"), testData.getProperty("expiration.number1"),
+				testData.getProperty("card.alias1"), testData.getProperty("zip.code1"));
+
+		Assert.assertTrue(responseOfAddMoreCard.getStatusCode() == 401);
+
+	}
+
+	@Test(dataProvider = "card_details")
+	public void addOneOrMoreCardToExistingWalletWithNullValues(String consumerName, String cardType, String cardNumber,
+			String expiryDate, String cardAlias, String zipcode) throws Exception {
+		String token = GatewayProxyUtils.getTokenForCustomer();
+		String externalWalletId = testData.getProperty("externalWalletId");
+		GatewayProxyDigitalWalletResource digitalWallet = new GatewayProxyDigitalWalletResource();
+		Response responseOfAddMoreCard = digitalWallet.addNewCardToExistingWallet(externalWalletId, token, consumerName,
+				cardType, cardNumber, expiryDate, cardAlias, zipcode);
+
+		JsonPath jsonPath = new JsonPath(responseOfAddMoreCard.asString());
+		Assert.assertEquals(responseOfAddMoreCard.getStatusCode(), 400);
+		Assert.assertEquals("Bad Request", jsonPath.get("error"));
+		Assert.assertTrue(!jsonPath.get("message").toString().isEmpty());
+
 	}
 }
