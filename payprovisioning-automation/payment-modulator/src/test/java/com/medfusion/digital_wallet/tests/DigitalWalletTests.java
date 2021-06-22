@@ -102,7 +102,6 @@ public class DigitalWalletTests extends DigitalWalletBaseTest {
 		String token = DigitalWalletAPIUtils.getTokenForCustomer() + "jhgf";
 		DigitalWalletResource digitalWallet = new DigitalWalletResource();
 		Response response = digitalWallet.getDetailsOfCards(token);
-
 		Assert.assertTrue(response.getStatusCode() == 401);
 
 	}

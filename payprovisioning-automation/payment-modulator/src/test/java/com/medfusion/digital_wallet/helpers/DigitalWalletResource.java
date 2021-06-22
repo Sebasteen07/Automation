@@ -23,7 +23,6 @@ public class DigitalWalletResource extends DigitalWalletBaseTest {
 	}
 
 	public Response getDetailsOfCards(String token) throws IOException {
-
 		testData = new PropertyFileLoader();
 
 		Response response = given().that().spec(requestSpec).header("Authorization", "Bearer" + token).when()
