@@ -558,6 +558,47 @@ public class PracticePortalAcceptanceTests extends BaseTestNGWebDriver {
 		JalapenoForgotPasswordPage4 forgotPasswordPage = new JalapenoForgotPasswordPage4(driver);
 		forgotPasswordPage.fillInPassword(testData.getProperty("newPassword"));	
 	}
+	
+	@Test(enabled = true, groups = { "AcceptanceTests" }, retryAnalyzer = RetryAnalyzer.class)
+	public void testPasswordResetEmailForTrustedRepresentative() throws Exception {
+		Instant passwordResetStart = Instant.now();
+		logStep("Login to Practice Portal");
+		PracticeLoginPage practiceLogin = new PracticeLoginPage(driver, testData.getUrl());
+		PracticeHomePage pPracticeHomePage = practiceLogin.login(testData.getProperty("doctor2Login"),
+				testData.getProperty("doctor2Password"));
+
+		logStep("Click on Patient Search Link");
+		PatientSearchPage pPatientSearchPage = pPracticeHomePage.clickPatientSearchLink();
+
+		logStep("Set Patient Search Fields");
+		pPatientSearchPage.searchForPatientInPatientSearch(testData.getProperty("trustedRepforgotPasswordFirstName"),
+				testData.getProperty("trustedRepforgotPasswordLastName"));
+		PatientDashboardPage pPatientDashboardPage = pPatientSearchPage.clickOnPatient(
+				testData.getProperty("trustedRepforgotPasswordFirstName"), testData.getProperty("trustedRepforgotPasswordLastName"));
+		
+		logStep("Send Password Reset Email to Patient");
+		pPatientSearchPage = pPatientDashboardPage.trustedRepSendResetPasswordLink();
+
+		logStep("Click Send Email");
+		pPatientDashboardPage = pPatientSearchPage.sendPasswordResetEmail();
+		assertTrue(pPatientDashboardPage.getFeedback().contains("Password reset email sent to Guardian or Trusted Representative"),
+				"No success message on send!");
+		
+		logStep("Access Mailinator and check for Reset Password Link");
+		String[] mailAddress = testData.getProperty("forgotPasswordMail").split("@");
+		String emailSubject = "Help with your user name or password";
+		String inEmail = "Reset Password Now";
+		Email receivedEmail = new Mailer(mailAddress[0]).pollForNewEmailWithSubject(emailSubject, 60,
+				passwordResetStart.until(Instant.now(), ChronoUnit.SECONDS));
+		String resetPasswordLink = Mailer.getLinkByText(receivedEmail, inEmail);
+		System.out.println("Link from mail is" +resetPasswordLink );
+		String url = getRedirectUrl(resetPasswordLink);
+		System.out.println("Redirected url is" +url);
+		assertNotNull(url, "Error: Reset Password link not found.");
+		
+		JalapenoForgotPasswordPage4 forgotPasswordPage = new JalapenoForgotPasswordPage4(driver);
+		forgotPasswordPage.fillInPassword(testData.getProperty("newPassword"));
+	}
 
 	private String getRedirectUrl(String originUrl) {
 		log("Navigating to input URL and checking redirection for 10 seconds");

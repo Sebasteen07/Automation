@@ -84,6 +84,9 @@ public class PatientDashboardPage extends BasePageObject {
 
 	@FindBy(xpath = "//strong[contains(text(),'Patient Id')]/../../td[2]")
 	private WebElement lblPatientID1;
+	
+	@FindBy(linkText = "Send password reset")
+	private WebElement trPasswordResetLink;
 
 	private WebElement feedback;
 
@@ -282,6 +285,13 @@ public class PatientDashboardPage extends BasePageObject {
 		IHGUtil.waitForElement(driver, 120, txtexternalIDPM);
 		patientID = txtexternalIDPM.getAttribute("value").toString();
 		return patientID;
+	}
+	
+	public PatientSearchPage trustedRepSendResetPasswordLink() throws InterruptedException {
+		IHGUtil.PrintMethodName();
+		IHGUtil.waitForElement(driver, 10, trPasswordResetLink);
+		trPasswordResetLink.click();
+		return PageFactory.initElements(driver, PatientSearchPage.class);
 	}
 
 }
