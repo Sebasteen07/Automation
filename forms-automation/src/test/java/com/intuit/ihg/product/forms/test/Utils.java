@@ -13,7 +13,6 @@ import java.util.regex.Pattern;
 
 import com.intuit.ihg.common.utils.PatientFactory;
 import com.medfusion.pojos.Patient;
-import com.medfusion.product.patientportal2.implementedExternals.CreatePatient;
 import com.medfusion.product.patientportal2.pojo.PortalBasic;
 import com.medfusion.product.patientportal2.utils.PortalUtil2;
 import org.openqa.selenium.By;
@@ -33,6 +32,7 @@ import com.medfusion.common.utils.PropertyFileLoader;
 import com.medfusion.product.object.maps.forms.page.HealthFormListPage;
 import com.medfusion.product.object.maps.patientportal2.page.JalapenoLoginPage;
 import com.medfusion.product.object.maps.patientportal2.page.HomePage.JalapenoHomePage;
+import com.medfusion.product.object.maps.patientportal2.page.util.CreatePatient;
 import com.medfusion.product.patientportal2.utils.JalapenoTestCaseData;
 
 public class Utils {
