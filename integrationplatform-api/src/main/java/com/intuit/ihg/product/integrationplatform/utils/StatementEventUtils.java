@@ -136,6 +136,9 @@ public class StatementEventUtils {
 
 		assertEquals(SMPObj.patientID, externalPatientID, "Patient External ID Matched !");
 		pPracticeHomePage.logOut();
+		
+		long timeStamp = System.currentTimeMillis();
+
 
 		Mailinator mail = new Mailinator();
 		String link = mail.getLinkFromEmail(testData.Email, testData.emailSubject, testData.PracticeName, 20);
@@ -149,7 +152,6 @@ public class StatementEventUtils {
 		JalapenoMessagesPage jalapenoMessagesPage = jalapenoHomePage.showMessages(driver);
 		Thread.sleep(8000);
 
-		long timeStamp = System.currentTimeMillis();
 
 		JalapenoPayBillsStatementPdfPage statementPdfPageObject = jalapenoMessagesPage.openPDFStatement();
 		Thread.sleep(2000);
@@ -185,9 +187,9 @@ public class StatementEventUtils {
 		driver.switchTo().defaultContent();
 		jalapenoHomePage.clickOnLogout();
 
-		Log4jUtil.log("Waiting 12 minutes for Statement Events to Sync");
-		Thread.sleep(720000);
-
+		Log4jUtil.log("Waiting 10 minutes for Statement Events to Sync");
+		Thread.sleep(600000);
+		
 		if (version.equals("v1")) {
 			String getEvent = testData.StatementEventURL + timeStamp;
 			Log4jUtil.log("Get Link" + getEvent);

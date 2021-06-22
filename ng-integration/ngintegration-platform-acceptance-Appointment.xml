@@ -11,7 +11,7 @@
  	
 <test name = "NGIntegration-Platform-Acceptance-Appointment" >
 	<classes>
-		<class name = "com.ng.product.integrationplatform.tests.NGIntegrationE2ESITTests" />
+		<class name = "com.ng.product.integrationplatform.tests.NGIntegrationE2EInboxTests" />
 		<methods>
 	    		<include name="testInboxAppointment"/>
 	    	 	<include name="testInboxAppointmentSameSlot"/>

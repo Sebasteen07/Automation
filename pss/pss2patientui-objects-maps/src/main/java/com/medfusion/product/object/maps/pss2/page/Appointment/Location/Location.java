@@ -2,7 +2,6 @@
 package com.medfusion.product.object.maps.pss2.page.Appointment.Location;
 
 import java.time.Duration;
-import java.util.ArrayList;
 import java.util.List;
 import java.util.function.Function;
 
@@ -18,7 +17,6 @@ import org.openqa.selenium.support.How;
 import org.openqa.selenium.support.PageFactory;
 import org.openqa.selenium.support.ui.FluentWait;
 
-import com.medfusion.common.utils.IHGUtil;
 import com.medfusion.product.object.maps.pss2.page.Appointment.DateTime.AppointmentDateTime;
 import com.medfusion.product.object.maps.pss2.page.Appointment.Main.PSS2MainPage;
 import com.medfusion.product.object.maps.pss2.page.Appointment.Provider.Provider;
@@ -70,6 +68,18 @@ public class Location extends PSS2MainPage {
 		}
 		return PageFactory.initElements(driver, Provider.class);
 	}
+	
+	public AppointmentDateTime searchLocation(String locationName) throws InterruptedException {
+		log("In SearchProvider Method");
+		for (int i = 0; i < locationList.size(); i++) {
+			if (locationList.get(i).getText().contains(locationName)) {
+				log("Location is ---> " + locationList.get(i).getText());
+				locationList.get(i).click();
+				return PageFactory.initElements(driver, AppointmentDateTime.class);
+			}
+		}
+		return PageFactory.initElements(driver, AppointmentDateTime.class);
+	}
 
 	public AppointmentDateTime selectDatTime(String dateTime) throws Exception {
 		log("location is  ");
@@ -82,12 +92,6 @@ public class Location extends PSS2MainPage {
 			}
 		}
 		return null;
-	}
-
-	@Override
-	public boolean areBasicPageElementsPresent() {
-		ArrayList<WebElement> webElementsList = new ArrayList<WebElement>();
-		return new IHGUtil(driver).assessAllPageElements(webElementsList, this.getClass());
 	}
 
 	public boolean isViewallmessagesButtonPresent(WebDriver driver) throws InterruptedException {

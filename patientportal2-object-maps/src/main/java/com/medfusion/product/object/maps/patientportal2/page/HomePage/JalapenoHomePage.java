@@ -1,10 +1,9 @@
-// Copyright 2018-2020 NXGN Management, LLC. All Rights Reserved.
+// Copyright 2013-2021 NXGN Management, LLC. All Rights Reserved.
 package com.medfusion.product.object.maps.patientportal2.page.HomePage;
 import static org.testng.Assert.assertTrue;
 
 import java.util.ArrayList;
 
-import org.apache.log4j.Level;
 import org.openqa.selenium.By;
 import org.openqa.selenium.JavascriptExecutor;
 import org.openqa.selenium.Keys;
@@ -300,26 +299,6 @@ public class JalapenoHomePage extends JalapenoMenu {
 		}
 	}
 
-	@Override
-	// Checks elements located every time on PI Dashboard
-	public boolean areBasicPageElementsPresent() {
-		ArrayList<WebElement> webElementsList = new ArrayList<WebElement>();
-		webElementsList.add(messages);
-
-		for (int i = 0; i < 2; i++) {
-			int attempt = i + 1;
-			log("Checking page elements, attempt: " + attempt, Level.INFO);
-			if (areMenuElementsPresent() && assessPageElements(webElementsList, 120)) {
-				log("All basic elements are present", Level.INFO);
-				return true;
-			} else {
-				log("Attempt " + attempt + " failed: Some elements are missing, reloading page", Level.INFO);
-				driver.navigate().refresh();
-			}
-		}
-		return false;
-	}
-
 	public boolean assessFamilyAccountElements(boolean button) {
 		IHGUtil.PrintMethodName();
 		ArrayList<WebElement> webElementsList = new ArrayList<WebElement>();
@@ -430,6 +409,7 @@ public class JalapenoHomePage extends JalapenoMenu {
 
 	public void switchPractice(String practice) {
 		log("Clicking on Practice toggle Search");
+		driver.navigate().refresh();
 		practiceToggleSearch.click();
 		practiceInput.sendKeys(practice);
 		practiceInput.sendKeys(Keys.ENTER);

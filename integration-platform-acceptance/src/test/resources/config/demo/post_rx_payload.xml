@@ -24,7 +24,7 @@
 		</DeviceArguments>
 	</Destination>
 	<Prescription id="99e40a42-5f75-490d-b158-b96298a1c1ed">
-		<Status>COMPLETED</Status>
+		<Status>APPROVED</Status>
 		<CreatedDateTime>2014-12-24T10:21:42.194Z</CreatedDateTime>
 		<UpdatedDateTime>2014-12-24T10:21:42.194Z</UpdatedDateTime>
 		<PrescriptionRenewalRequest>

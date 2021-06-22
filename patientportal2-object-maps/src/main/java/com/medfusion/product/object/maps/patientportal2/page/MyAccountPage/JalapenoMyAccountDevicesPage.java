@@ -1,6 +1,5 @@
+//Copyright 2013-2021 NXGN Management, LLC. All Rights Reserved.
 package com.medfusion.product.object.maps.patientportal2.page.MyAccountPage;
-
-import java.util.ArrayList;
 
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
@@ -20,14 +19,6 @@ public class JalapenoMyAccountDevicesPage extends JalapenoMyAccountPage {
 				IHGUtil.PrintMethodName();
 				driver.manage().window().maximize();
 				PageFactory.initElements(driver, this);
-		}
-
-		@Override
-		public boolean areBasicPageElementsPresent() {
-				ArrayList<WebElement> webElementsList = new ArrayList<WebElement>();
-				webElementsList.add(devicesTable);
-
-				return assessPageElements(webElementsList);
 		}
 
 }

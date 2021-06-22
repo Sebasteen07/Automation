@@ -318,8 +318,8 @@ public class PracticePortalAcceptanceTests extends BaseTestNGWebDriver {
 	public void testMakePaymentForPatient() throws Exception {
 		logStep("" + "Login to Practice Portal");
 		PracticeLoginPage practiceLogin = new PracticeLoginPage(driver, testData.getUrl());
-		PracticeHomePage pPracticeHomePage = practiceLogin.login(testData.getDoctorLogin(),
-				testData.getDoctorPassword());
+		PracticeHomePage pPracticeHomePage = practiceLogin.login(testData.getProperty("doctorLoginPayment"),
+				testData.getProperty("doctorPasswordPayment"));
 
 		logStep("Click On Online BillPayment Tab in Practice Portal--->Make Payment For Patient");
 		PayMyBillOnlinePage pPayMyBillOnlinePage = pPracticeHomePage.clickMakePaymentForPatient();
@@ -356,7 +356,8 @@ public class PracticePortalAcceptanceTests extends BaseTestNGWebDriver {
 	public void testOnlineBillPayProcess() throws Exception {
 		logStep("Login to Practice Portal");
 		PracticeLoginPage practiceLogin = new PracticeLoginPage(driver, testData.getUrl());
-		PracticeHomePage practiceHome = practiceLogin.login(testData.getDoctorLogin(), testData.getDoctorPassword());
+		PracticeHomePage practiceHome = practiceLogin.login(testData.getProperty("doctorLoginPayment"),
+				testData.getProperty("doctorPasswordPayment"));
 
 		logStep("Click on Make Payment link.");
 		PayMyBillOnlinePage pPayMyBillOnlinePage = practiceHome.clickMakePaymentForPatient();
@@ -417,8 +418,8 @@ public class PracticePortalAcceptanceTests extends BaseTestNGWebDriver {
 
 		logStep("Login to Practice Portal");
 		PracticeLoginPage practiceLogin = new PracticeLoginPage(driver, testData.getUrl());
-		PracticeHomePage practiceHome = practiceLogin.login(testData.getDoctorLogin(), testData.getDoctorPassword());
-
+		PracticeHomePage practiceHome = practiceLogin.login(testData.getProperty("doctorLoginPayment"),
+				testData.getProperty("doctorPasswordPayment"));
 		logStep("Click on Make Payment link.");
 		PayMyBillOnlinePage pPayMyBillOnlinePage = practiceHome.clickMakePaymentForPatient();
 
@@ -465,8 +466,8 @@ public class PracticePortalAcceptanceTests extends BaseTestNGWebDriver {
 	public void testOnlineBillPayRefundProcess() throws Exception {
 		logStep("Login to Practice Portal");
 		PracticeLoginPage practiceLogin = new PracticeLoginPage(driver, testData.getUrl());
-		PracticeHomePage practiceHome = practiceLogin.login(testData.getDoctorLogin(), testData.getDoctorPassword());
-
+		PracticeHomePage practiceHome = practiceLogin.login(testData.getProperty("doctorLoginPayment"),
+				testData.getProperty("doctorPasswordPayment"));
 		logStep("Click on Make Payment link.");
 		PayMyBillOnlinePage pPayMyBillOnlinePage = practiceHome.clickMakePaymentForPatient();
 
@@ -555,9 +556,7 @@ public class PracticePortalAcceptanceTests extends BaseTestNGWebDriver {
 		assertNotNull(url, "Error: Reset Password link not found.");
 		
 		JalapenoForgotPasswordPage4 forgotPasswordPage = new JalapenoForgotPasswordPage4(driver);
-		JalapenoHomePage homePage= forgotPasswordPage.fillInPassword(testData.getProperty("newPassword"));
-		assertTrue(homePage.areBasicPageElementsPresent());
-	
+		forgotPasswordPage.fillInPassword(testData.getProperty("newPassword"));	
 	}
 
 	private String getRedirectUrl(String originUrl) {

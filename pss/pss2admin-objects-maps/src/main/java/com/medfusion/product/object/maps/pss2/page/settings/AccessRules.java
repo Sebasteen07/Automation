@@ -1,7 +1,6 @@
-// Copyright 2018-2020 NXGN Management, LLC. All Rights Reserved.
+// Copyright 2013-2021 NXGN Management, LLC. All Rights Reserved.
 package com.medfusion.product.object.maps.pss2.page.settings;
 
-import java.util.ArrayList;
 import java.util.List;
 
 import org.openqa.selenium.WebDriver;
@@ -10,7 +9,6 @@ import org.openqa.selenium.support.FindAll;
 import org.openqa.selenium.support.FindBy;
 import org.openqa.selenium.support.How;
 
-import com.medfusion.common.utils.IHGUtil;
 import com.medfusion.product.object.maps.pss2.page.util.CommonMethods;
 
 public class AccessRules extends SettingsTab {
@@ -19,8 +17,9 @@ public class AccessRules extends SettingsTab {
 	private WebElement checkNewPatient;
 
 	@FindBy(how = How.XPATH,
-			using = "//body/app[1]/layout[1]/div[1]/main[1]/div[2]/div[1]/div[1]/div[1]/section[1]/div[1]/div[1]/div[2]/div[2]/div[2]/div[1]/fieldset[2]/div[1]/label")
+			using = "//*[@id='par']/div[2]/div/fieldset[2]/div[1]/label")
 	private WebElement checkNewPatientLabel;
+
 
 	@FindBy(how = How.ID, using = "checkbox2")
 	private WebElement checkShowInsurancePage;
@@ -31,8 +30,7 @@ public class AccessRules extends SettingsTab {
 	@FindBy(how = How.XPATH, using = "//label[@for='showPrivacyPolicyMessageConfig']//input")
 	private WebElement displayPrivacyPolicyLoginless;	
 
-	@FindBy(how = How.XPATH,
-			using = "//body/app[1]/layout[1]/div[1]/main[1]/div[2]/div[1]/div[1]/div[1]/section[1]/div[1]/div[1]/div[2]/div[2]/div[2]/div[1]/fieldset[1]/div[1]/div[1]/label[1]/i[1]")
+	@FindBy(how = How.XPATH,using = "//*[@id=\"par\"]/div[2]/div/fieldset[2]/div[2]/label")
 	private WebElement displayPrivacyPolicyLoginlessCheck;
 
 	@FindBy(how = How.XPATH, using = "//label[contains(text(),'Display Privacy Policy')]")
@@ -52,8 +50,7 @@ public class AccessRules extends SettingsTab {
 	@FindBy(how = How.XPATH, using = "//input[@id='allowOtp']")
 	private WebElement enableOTP;
 
-	@FindBy(how = How.XPATH,
-			using = "//body/app[1]/layout[1]/div[1]/main[1]/div[2]/div[1]/div[1]/div[1]/section[1]/div[1]/div[1]/div[2]/div[2]/div[2]/div[1]/fieldset[2]/div[2]/label")
+	@FindBy(how = How.XPATH,using = "//*[@id=\"par\"]/div[2]/div/fieldset[2]/div[2]/label")
 	private WebElement checkLoginlessExistingPatientLabel;
 
 	@FindBy(how = How.ID, using = "radio0")
@@ -68,14 +65,13 @@ public class AccessRules extends SettingsTab {
 	@FindBy(how = How.ID, using = "radio1")
 	private WebElement selectIDPMedfusionSSO;
 
-	@FindBy(how = How.XPATH,
-			using = "//body/app[1]/layout[1]/div[1]/main[1]/div[2]/div[1]/div[1]/div[1]/section[1]/div[1]/div[1]/div[2]/div[2]/div[2]/div[1]/div[2]/div[1]/button[1]")
+	@FindBy(how = How.XPATH,using = "//*[@id='par']/div[2]/div/div[2]/div/button")
 	private WebElement buttonSaveLoginLess;
 
 	@FindAll({@FindBy(css = ".btn.btn-primary")})
 	private List<WebElement> buttonList;
 
-	@FindAll({@FindBy(xpath = "//div[@class=\"col-md-12\"]/a")})
+	@FindAll({@FindBy(xpath = "//div[@class='col-md-12 ng-star-inserted']/a")})
 	private List<WebElement> urlList;
 
 	@FindBy(how = How.ID, using = "enableloginless")
@@ -94,8 +90,7 @@ public class AccessRules extends SettingsTab {
 	@FindBy(how = How.ID, using = "enableOtpAnonymousConfig")
 	private WebElement enableOTPAnonymous;
 
-	@FindBy(how = How.XPATH,
-			using = "//div[@class='col-md-12']//div[@class='row']//div[@class='col-md-12']//button[@class='btn btn-primary'][contains(text(),'Save')]")
+	@FindBy(how = How.XPATH,using = "//div[@class='pull-right']/button")
 	private WebElement buttonSaveAnonymous;
 
 	public AccessRules(WebDriver driver) {
@@ -103,14 +98,6 @@ public class AccessRules extends SettingsTab {
 	}
 
 	CommonMethods commonMethods = new CommonMethods(driver);
-
-	@Override
-	public boolean areBasicPageElementsPresent() {
-		ArrayList<WebElement> webElementsList = new ArrayList<WebElement>();
-		webElementsList.add(urlList.get(0));
-
-		return new IHGUtil(driver).assessAllPageElements(webElementsList, this.getClass());
-	}
 
 	public String getLoginlessURL() {
 		commonMethods.highlightElement(urlList.get(0));

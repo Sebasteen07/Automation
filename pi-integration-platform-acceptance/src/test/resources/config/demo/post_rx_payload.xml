@@ -24,7 +24,7 @@
 		</DeviceArguments>
 	</Destination>
 	<Prescription id="b9de942f-75c3-462c-b9bb-7759ff152f80">
-		<Status>COMPLETED</Status>
+		<Status>APPROVED</Status>
 		<CreatedDateTime>2014-12-23T10:03:51.813Z</CreatedDateTime>
 		<UpdatedDateTime>2014-12-23T10:03:51.813Z</UpdatedDateTime>
 		<PrescriptionRenewalRequest>
@@ -47,6 +47,8 @@
 						<SigCodeMeaning>IOYP Daily</SigCodeMeaning>
 					</SigCode>
 				</SigCodes>
+				<ExternalMedicationId>202105930029</ExternalMedicationId>
+              			<ExternalSystemId>88</ExternalSystemId>
 			</Medication>
 			<Pharmacy>
 				<PharmacyName>testphrmacy</PharmacyName>

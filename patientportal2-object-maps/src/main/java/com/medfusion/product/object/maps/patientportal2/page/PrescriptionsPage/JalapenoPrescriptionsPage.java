@@ -156,12 +156,6 @@ public class JalapenoPrescriptionsPage extends JalapenoMenu {
 
 	}
 
-	@Override
-	public boolean areBasicPageElementsPresent() {
-		log("Method areBasicPageElementsPresent() is not implemented, so it is considered that all expected elements are present.");
-		return true;
-	}
-
 	public void clickContinueButton(WebDriver driver) {
 		driver.switchTo().frame("iframebody");
 
@@ -344,8 +338,10 @@ public class JalapenoPrescriptionsPage extends JalapenoMenu {
 		}
 	}
 
-	public void verifyPharamcy(String pharmacy, String sendPharmacyFirstWord) throws InterruptedException {
-		driver.switchTo().frame("iframebody");
+	public void verifyPharamcy(String pharmacy, String sendPharmacyFirstWord, String env) throws InterruptedException {
+		if(!env.equalsIgnoreCase("PROD")) {
+			driver.switchTo().frame("iframebody");
+		}
 		chooseFromAList.sendKeys(sendPharmacyFirstWord);
 		Thread.sleep(5000);
 		log("Get text value from Choose from a list textbox");
@@ -512,8 +508,10 @@ public class JalapenoPrescriptionsPage extends JalapenoMenu {
 		}
 	}
 
-	public void verifyDeletedPharamcy(String pharmacy, String sendPharmacyFirstWord) throws InterruptedException {
-		driver.switchTo().frame("iframebody");
+	public void verifyDeletedPharamcy(String pharmacy, String sendPharmacyFirstWord, String env) throws InterruptedException {
+		if(!env.equalsIgnoreCase("PROD")) {
+			driver.switchTo().frame("iframebody");
+		}
 		String textValue = "";
 		chooseFromAList.sendKeys(sendPharmacyFirstWord);
 		Thread.sleep(5000);

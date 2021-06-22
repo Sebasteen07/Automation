@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<!-- Copyright 2021 NXGN Management, LLC. All Rights Reserved. -->
+
+<suite name = "NGIntegration-Platform-Acceptance-Inbox" verbose = "2" >
+<listeners>
+  <listener class-name="com.intuit.ifs.csscat.core.TestValidationErrorListener" />
+  <listener class-name="org.uncommons.reportng.HTMLReporter" />
+  <listener class-name="org.uncommons.reportng.JUnitXMLReporter" />
+  <listener class-name="com.epam.reportportal.testng.ReportPortalTestNGListener" />
+</listeners>
+ 	
+<test name = "NGIntegration-Platform-Acceptance-Inbox" >
+	<classes>
+		<class name = "com.ng.product.integrationplatform.tests.NGIntegrationE2EInboxTests" />
+		<methods>
+	    		<include name="testCOMHighPrioritySecureMessageDoNotAddToEncounterSendByPracticeUserReplyByPatient"/>
+	    		<include name="testCOMReadReceiptSecureMessageNewLockedEncounter"/>   
+	    		<include name="testCOMUnreadNotificationSecureMessageNewUnLockedEncounter"/> 
+	    		<include name="testCOMDisableReplySecureMessageExistingEncounter"/> 
+	    		<include name="testCOMSecureMessageSentAndReplyUsingOnlineProfile"/> 
+	    		<include name="testCOMSecureMessageSentAndReplyUsingAliasName"/> 
+	    		<include name="testCOMAskAQuestionRepliedUsingOriginalUnlockedEncounter"/>
+	    	 	<include name="testCOMSendSecureMessageDoNotAddToChart"/>
+	    	 	<include name="testInboxSendAppointmentRequestBookAppointmentSendResponse"/>
+	    	 	<include name="testInboxAppointmentSameSlot"/>
+	    	 	<include name="testInboxAppointmentBookMultipleSlotsandDeleteAppointmentVerifyInPortal"/>
+	    	 	<include name="testPP138SendPatientEducationByCommunicationMessage"/>
+	    	 	<include name="testInboxRequestPrescriptionRenewalApprovedbyPracticeUser"/>
+	    		<include name="testInboxRequestPrescriptionRenewalRejectedbyPracticeUser"/>
+	    		<include name="testInboxRequestMultiplePrescriptionRenewal"/>
+	    		<include name="testCOMBulkSendMessageWithNormalPriorityUnReadDisbaleReplyDoNotAddToEncounterSendByPracticeUser"/>
+      	</methods>
+	</classes>
+</test>
+</suite>

@@ -6,8 +6,6 @@ import static org.testng.Assert.assertEquals;
 
 import java.io.IOException;
 import java.net.URISyntaxException;
-import java.util.ArrayList;
-
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.FindBy;
@@ -133,7 +131,7 @@ public class JalapenoCcdViewerPage extends MedfusionPage {
 	private WebElement careTeamMember;
 	
 	
-	@FindBy(how = How.XPATH, using = "//*[@id=\"messageContainer\"]/div[2]/div[2]/div[2]/div[1]/div/a")
+	@FindBy(how = How.XPATH, using = "//*[@class='messageContent']//*[contains(text(),'View health data')]")
 	private WebElement btnViewHealthData;
 	
 	@FindBy(id = "basicInfo")
@@ -233,21 +231,6 @@ public class JalapenoCcdViewerPage extends MedfusionPage {
 			return false;
 		}
 	}
-
-	@Override
-	public boolean areBasicPageElementsPresent() {
-
-		ArrayList<WebElement> webElementsList = new ArrayList<WebElement>();
-
-		webElementsList.add(closeButton);
-		webElementsList.add(savePdfButton);
-		webElementsList.add(saveRawButton);
-		webElementsList.add(basicInformation);
-		webElementsList.add(careTeamMembers);
-
-		return assessPageElements(webElementsList);
-	}
-
 
 	/**
 	 * Click on the View health data

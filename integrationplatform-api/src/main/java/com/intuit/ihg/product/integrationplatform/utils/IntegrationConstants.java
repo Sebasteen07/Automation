@@ -38,6 +38,8 @@ public class IntegrationConstants {
 	public static final String PORTALSTATUS = "PortalStatus";
 	public static final String DEACTIVATED = "DEACTIVATED";
 	public static final String DELETED = "DELETED";
+	public static final String STATE_ERRORED = "ERROR";
+
 
 	// Appointment Request constants
 	public static final String REASON = "Reason";
@@ -79,7 +81,9 @@ public class IntegrationConstants {
 	public static final String REFILL_NUMBER_TAG = "RefillNumber";
 	public static final String PRESCRIPTION_NUMBER_TAG = "PrescriptionNumber";
 	public static final String ADDITIONAL_INFO_TAG = "AdditionalInformation";
-	
+	public static final String EXTERNAL_MEDICATION_ID = "ExternalMedicationId";
+	public static final String EXTERNAL_SYSTEM_ID = "ExternalSystemId";
+
 	//new added variables for post prescription API
 	public static final String RXRENEWAL_SUBJECT_TAG = "Prescription Renewal Approved";
 	public final static String MEDICATIONNAME = "Albuterol Sulfate (5 MG/ML) 0.5% Inhalation Nebulization Solution";

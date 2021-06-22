@@ -7,11 +7,12 @@
   <listener class-name="com.intuit.ifs.csscat.core.TestValidationErrorListener" />
   <listener class-name="org.uncommons.reportng.HTMLReporter" />
   <listener class-name="org.uncommons.reportng.JUnitXMLReporter" />
+  <listener class-name="com.epam.reportportal.testng.ReportPortalTestNGListener" />
 </listeners>
  	
 <test name = "NGIntegration-Platform-Acceptance-PP139Payment" >
 	<classes>
-		<class name = "com.ng.product.integrationplatform.tests.NGIntegrationE2ESITTests" />
+		<class name = "com.ng.product.integrationplatform.tests.NGIntegrationE2EPayment_SendChartItemTests" />
 		<methods>
 	    		<include name="testPaymentPayBills"/>
 	    		<include name="testPaymentVirtualCardSwiper"/> 

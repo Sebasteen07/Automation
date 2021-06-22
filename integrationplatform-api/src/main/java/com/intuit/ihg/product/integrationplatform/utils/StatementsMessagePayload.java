@@ -838,7 +838,7 @@ public class StatementsMessagePayload {
 			Statement.appendChild(StatementBillingAccountNumber);
 
 			Node PracticePatientId = doc.createElement("PracticePatientId");
-			PracticePatientId.appendChild(doc.createTextNode(testData.UserName));
+			PracticePatientId.appendChild(doc.createTextNode(testData.PatientID));
 			Statement.appendChild(PracticePatientId);
 
 			Node StatementDate = doc.createElement("StatementDate");

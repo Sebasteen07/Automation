@@ -11,7 +11,7 @@
  	
 <test name = "NGIntegration-Platform-Acceptance-SmokeSuite(SinglePractice)" >
 	<classes>
-		<class name = "com.ng.product.integrationplatform.tests.NGIntegrationE2ESITTests" />
+		<class name = "com.ng.product.integrationplatform.tests.NGIntegrationE2EEnrollment_CCDTests" />
 		<methods>
 	    		<include name="testAEnrollPatientWithOnlyMandatoryDemographicsToMFPortal"/>
 	    		<include name="testAEnrollPatientWithoutMandatoryDemographicsToMFPortal"/>   

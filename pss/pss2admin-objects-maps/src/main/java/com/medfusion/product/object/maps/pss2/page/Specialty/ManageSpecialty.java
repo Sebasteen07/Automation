@@ -1,4 +1,4 @@
-// Copyright 2018-2020 NXGN Management, LLC. All Rights Reserved.
+// Copyright 2013-2021 NXGN Management, LLC. All Rights Reserved.
 package com.medfusion.product.object.maps.pss2.page.Specialty;
 
 import org.openqa.selenium.WebDriver;
@@ -60,13 +60,13 @@ public class ManageSpecialty extends PSS2MenuPage {
 	@FindBy(how = How.XPATH, using = "//strong[contains(text(),'Age Rule')]")
 	private WebElement ageRuleCheckbox;
 
-	@FindBy(how = How.XPATH, using = "//*[@id='content']/div[2]/div/div/div[2]/section/div/form/div[2]/div[2]/select")
+	@FindBy(how = How.XPATH, using = "//select[@name='leftToken']")
 	private WebElement ageRuleDropFirst;
 
-	@FindBy(how = How.XPATH, using = "//*[@id='content']/div[2]/div/div/div[2]/section/div/form/div[2]/div[5]/select")
+	@FindBy(how = How.XPATH, using = "//select[@name='rightToken']")
 	private WebElement ageRuleDropSecond;
 
-	@FindBy(how = How.XPATH, using = "//*[@id='content']/div[2]/div/div/div[2]/section/div/form/div[2]/div[4]/select")
+	@FindBy(how = How.XPATH, using = "//select[@name='condition']")
 	private WebElement ageRuleAnd;
 
 	@FindBy(how = How.XPATH, using = "//div[@class='col-md-3 col-xs-3']//input[@name='leftVal']")
@@ -80,12 +80,8 @@ public class ManageSpecialty extends PSS2MenuPage {
 		super(driver);
 	}
 
-	@Override
-	public boolean areBasicPageElementsPresent() {
-		return true;
-	}
-
 	public void searchSpecility(String specilityName) {
+		log("Enter the speciality name and Search speciality");
 		searchSpecility.sendKeys(specilityName);
 	}
 

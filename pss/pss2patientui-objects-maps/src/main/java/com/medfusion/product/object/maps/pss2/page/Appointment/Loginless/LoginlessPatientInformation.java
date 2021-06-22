@@ -1,7 +1,6 @@
-// Copyright 2020 NXGN Management, LLC. All Rights Reserved.
+// Copyright 2013-2021 NXGN Management, LLC. All Rights Reserved.
 package com.medfusion.product.object.maps.pss2.page.Appointment.Loginless;
 
-import java.util.ArrayList;
 import java.util.List;
 
 import org.openqa.selenium.WebDriver;
@@ -88,19 +87,6 @@ public class LoginlessPatientInformation extends PSS2MainPage {
 
 	CommonMethods commonMethods = new CommonMethods(driver);
 
-	@Override
-	public boolean areBasicPageElementsPresent() {
-		ArrayList<WebElement> webElementsList = new ArrayList<WebElement>();
-		webElementsList.add(inputPrimaryPhoneNumber);
-		webElementsList.add(inputZipCode);
-		webElementsList.add(selectGender);
-		webElementsList.add(inputEmail);
-		webElementsList.add(datePicker);
-		webElementsList.add(inputLastName);
-		webElementsList.add(inputFirstName);
-		return new IHGUtil(driver).assessAllPageElements(webElementsList, this.getClass());
-	}
-
 	public NewPatientInsuranceInfo fillPatientForm(String firstName, String lastName, String dob, String email, String gender, String zipCodeValue,
 			String phoneNumber) throws InterruptedException {
 		log("phoneNumber= " + phoneNumber);
@@ -149,7 +135,8 @@ public class LoginlessPatientInformation extends PSS2MainPage {
 		commonMethods.highlightElement(inputLastName);
 		inputLastName.sendKeys(lastName);
 		
-		commonMethods.highlightElement(dateOfBirth);
+		IHGUtil.waitForElement(driver, 5, dateOfBirth);
+		commonMethods.highlightElement(dateOfBirth);		
 		datePicker.click();
 		log("datePicker clicked ");
 		try {

@@ -4,7 +4,6 @@ package com.medfusion.product.object.maps.patientportal2.page.MessagesPage;
 import static org.testng.Assert.assertEquals;
 import static org.testng.Assert.assertTrue;
 
-import java.util.ArrayList;
 import java.util.List;
 
 import org.openqa.selenium.By;
@@ -62,10 +61,10 @@ public class JalapenoMessagesPage extends JalapenoMenu {
 	@FindBy(how = How.XPATH, using = "//button[@class='btn btn-default'][2]")
 	private WebElement archiveMessageButton;
 
-	@FindBy(how = How.XPATH, using = "//*[@id=\"messageContainer\"]/div[2]/div[2]/div/span[4]")
+	@FindBy(how = How.XPATH, using = "//*[@class='messageTime']")
 	private WebElement lableSent;
 
-	@FindBy(how = How.XPATH, using = "//*[@id=\"messageContainer\"]/div[2]/div[2]/div[2]/a")
+	@FindBy(how = How.XPATH, using = "//*[@class='messageContent']/a[contains(@href,'statement')]")
 	private WebElement statementLinkText;
 
 	@FindBy(how = How.XPATH, using = "//div[@class='messageMetadata clearfix']/span[1]")
@@ -112,17 +111,6 @@ public class JalapenoMessagesPage extends JalapenoMenu {
 	
 	@FindBy(how=How.XPATH, using="//*[@class='attachments']/child::*/a")
 	private WebElement messageBodyAttachmentlink;
-
-	@Override
-	public boolean areBasicPageElementsPresent() {
-		ArrayList<WebElement> webElementsList = new ArrayList<WebElement>();
-
-		webElementsList.add(inboxFolder);
-		webElementsList.add(sentFolder);
-		webElementsList.add(archiveFolder);
-
-		return assessPageElements(webElementsList);
-	}
 
 	public JalapenoMessagesPage(WebDriver driver) {
 		super(driver);
@@ -444,8 +432,11 @@ public class JalapenoMessagesPage extends JalapenoMenu {
 		}
 	}
 
-	public void checkProviderDetails(String providerName, String location) {
+	public void checkProviderDetails(String providerName1, String location) {
 		IHGUtil.PrintMethodName();
+		int index =providerName1.lastIndexOf(',');
+		String providerName = providerName1.substring(0, index) + providerName1.substring(index + 1);
+		
 		Log4jUtil.log("Searching: Provider Name is: " + providerName + ", and Actual Provider Name is: "
 				+ providerNameOnPortal.getText().toString());
 		Log4jUtil.log("Searching: Provider location is: " + location + ", and Actual Provider location is: "
@@ -466,6 +457,7 @@ public class JalapenoMessagesPage extends JalapenoMenu {
 		IHGUtil.PrintMethodName();
 		WebElement element;
 		element = driver.findElement(By.xpath("//*/ul/li/a/*[contains(text(),'" + subject + "')]/following-sibling::*[@class='prioritystatus']/img"));
+		IHGUtil.waitForElement(driver, 10, element);
 		String priorityFlagStatus = driver.findElement(By.xpath("//*/ul/li/a/*[contains(text(),'" + subject + "')]/following-sibling::*[@class='prioritystatus']/img")).getAttribute("alt");
 		log("Priority Flag for Message with subject "+subject+" has "+priorityFlagStatus);
 		return element.isDisplayed();

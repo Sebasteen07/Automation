@@ -13,6 +13,8 @@ import javax.xml.transform.TransformerFactory;
 import javax.xml.transform.dom.DOMSource;
 import javax.xml.transform.stream.StreamResult;
 
+import org.json.JSONObject;
+import org.json.XML;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 
@@ -29,6 +31,7 @@ public class sendPatientInvitePayloadV3 {
 	public String zip;
 	public String dateOfBirth;
 	public String date;
+	static String jsonStringOutput;
 	
 	public  ArrayList<String> firstNameGroup = new ArrayList<String>(100);
 	
@@ -787,4 +790,130 @@ public class sendPatientInvitePayloadV3 {
 		}
 		return output;
 	}
+
+	public  String getPIDCJSONPayload(PIDCInfo testData,String portalVersion) {
+
+		DocumentBuilderFactory icFactory = DocumentBuilderFactory.newInstance();
+		DocumentBuilder icBuilder;
+		try {
+			icBuilder = icFactory.newDocumentBuilder();
+			Document doc = icBuilder.newDocument();
+
+
+			Thread.sleep(500);
+			Element mainRootElement = doc.createElementNS("","PatientBatch");
+			doc.appendChild(mainRootElement);
+			// Start Creating BatchSize Document
+
+			Element BatchSize = doc.createElement("BatchSize");
+			BatchSize.appendChild(doc.createTextNode(testData.getBatchSize()));
+			mainRootElement.appendChild(BatchSize);
+			// End BatchSize
+
+			zip = testData.getZipCode();
+
+			date = testData.getBirthDay(); //"01/01/1987";
+			String dt = date.substring(0, 2);
+			String month = date.substring(3, 5);
+			String year = date.substring(6);
+			dateOfBirth = year + "-" + dt + "-" + month + "T12:00:01";
+			
+				//Adding wait time so that time stamp will have different values-=
+			Thread.sleep(5000);
+			
+			int batchSize = Integer.parseInt(testData.getBatchSize());
+
+			for(int i=0;i<batchSize;i++) {
+				Long timestamp = System.currentTimeMillis();
+				firstName = "Name" + timestamp;
+				lastName = "TestPatient" + timestamp;
+				email = firstName + "@mailinator.com";
+				firstNameGroup.add(firstName);
+				lastNameGroup.add(lastName);
+				emailGroup.add(email);
+				zipGroup.add(zip);
+				dateGroup.add(date);
+				//Start Patient
+			Element Patient = doc.createElement("Patient");
+				
+				//Start PatientIdentifier Node
+			Element PatientIdentifier = doc.createElement("PatientIdentifier");
+			Patient.appendChild(PatientIdentifier);
+				
+			Element PracticePatientId = doc.createElement("PracticePatientId");
+			PatientIdentifier.appendChild(PracticePatientId);
+			PracticePatientId.appendChild(doc.createTextNode(firstName));
+				//End PatientIdentifier Node
+
+			Element PracticeIdentifier = doc.createElement("PracticeIdentifier");
+			Patient.appendChild(PracticeIdentifier);
+
+			Element IntegrationPracticeId = doc.createElement("IntegrationPracticeId");
+			PracticeIdentifier.appendChild(IntegrationPracticeId);
+			IntegrationPracticeId.appendChild(doc.createTextNode(testData.getPracticeId()));
+
+				// Name
+			Element Name = doc.createElement("Name");
+			Patient.appendChild(Name);
+			Element FirstName = doc.createElement("FirstName");
+			Name.appendChild(FirstName);
+			FirstName.appendChild(doc.createTextNode(firstName));
+
+			Element LastName = doc.createElement("LastName");
+			Name.appendChild(LastName);
+			LastName.appendChild(doc.createTextNode(lastName));
+
+
+			Element DateOfBirth = doc.createElement("DateOfBirth");
+			Patient.appendChild(DateOfBirth);
+		    DateOfBirth.appendChild(doc.createTextNode(dateOfBirth));
+
+		    Element Gender = doc.createElement("Gender");
+			Patient.appendChild(Gender);
+			Gender.appendChild(doc.createTextNode(testData.patientDetailList.get(i+1).getGender()));
+				
+			Element EmailAddress = doc.createElement("EmailAddress");
+			Patient.appendChild(EmailAddress);
+			EmailAddress.appendChild(doc.createTextNode(email));
+
+				// HomeAddress
+			Element HomeAddress = doc.createElement("HomeAddress");
+			Patient.appendChild(HomeAddress);
+
+			Element City = doc.createElement("City");
+			HomeAddress.appendChild(City);
+			City.appendChild(doc.createTextNode("City"));
+
+			Element State = doc.createElement("State");
+			HomeAddress.appendChild(State);
+			State.appendChild(doc.createTextNode(testData.patientDetailList.get(i+1).getStateNodeValue().trim()));
+
+			Element Country = doc.createElement("Country");
+			HomeAddress.appendChild(Country);
+			Country.appendChild(doc.createTextNode("Country"));
+
+			Element ZipCode = doc.createElement("ZipCode");
+			HomeAddress.appendChild(ZipCode);
+			ZipCode.appendChild(doc.createTextNode(zip));
+
+			mainRootElement.appendChild(Patient);
+			}
+			Transformer transformer = TransformerFactory.newInstance().newTransformer();
+			transformer.setOutputProperty(OutputKeys.INDENT, "yes");
+
+			DOMSource source = new DOMSource(doc);
+			StringWriter writer = new StringWriter();
+			transformer.transform(source, new StreamResult(writer));
+			output = writer.toString();
+			JSONObject json = XML.toJSONObject(output);   
+	        jsonStringOutput = json.toString(4);  
+
+			
+		} 
+		catch (Exception e) {
+			e.printStackTrace();
+		}
+		return jsonStringOutput;
+	}
+
 }

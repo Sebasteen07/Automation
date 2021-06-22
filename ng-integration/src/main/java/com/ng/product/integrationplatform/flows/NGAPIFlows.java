@@ -77,11 +77,11 @@ public class NGAPIFlows {
 		}
 	}
 
-	public static String CreatePatientinEPM(NewPatient argPayload) throws IOException{
+	public static String createPatientinEPM(NewPatient argPayload) throws IOException{
         String person_id="";
 	  try{
 			ObjectMapper objMap = new ObjectMapper();
-			String PatientRequestbody = objMap.defaultPrettyPrintingWriter().writeValueAsString(argPayload);
+			String PatientRequestbody = objMap.writerWithDefaultPrettyPrinter().writeValueAsString(argPayload);
 			Log4jUtil.log("Patient Request Body is \n" + PatientRequestbody);
 			
 		    String personURL =apiRoutes.valueOf("AddEnterprisePerson").getRouteURL(); 
@@ -108,7 +108,7 @@ public class NGAPIFlows {
 			chart.setDefaultLocationId(DBUtils.executeQueryOnDB("NGCoreDB",strSqlQueryForLocation));
 			
 			ObjectMapper objMap = new ObjectMapper();
-	        String requestbody = objMap.defaultPrettyPrintingWriter().writeValueAsString(chart);
+	        String requestbody = objMap.writerWithDefaultPrettyPrinter().writeValueAsString(chart);
 	        Log4jUtil.log("Chart request body \n"+requestbody);
 	        
 		    String chartURL =apiRoutes.valueOf("AddChart").getRouteURL().replace("personId", personId); 
@@ -130,7 +130,7 @@ public class NGAPIFlows {
 			encounter.setLocationId(DBUtils.executeQueryOnDB("NGCoreDB",strSqlQueryForLocation.replace("locationName", locationName)));
 			
 			ObjectMapper objMap = new ObjectMapper();
-	        String requestbody = objMap.defaultPrettyPrintingWriter().writeValueAsString(encounter);
+	        String requestbody = objMap.writerWithDefaultPrettyPrinter().writeValueAsString(encounter);
 	        Log4jUtil.log("Encounter request body \n"+requestbody);
 			
 			String encounterURL =apiRoutes.valueOf("AddEncounter").getRouteURL().replace("personId", personId); 
@@ -158,7 +158,7 @@ public class NGAPIFlows {
 			diagnosis.setInteractions(interactions); 			
 			
 			ObjectMapper objMap = new ObjectMapper();
-	        String requestbody = objMap.defaultPrettyPrintingWriter().writeValueAsString(diagnosis);
+	        String requestbody = objMap.writerWithDefaultPrettyPrinter().writeValueAsString(diagnosis);
 	        Log4jUtil.log("Diagnosis request body \n"+requestbody);
 			
 			String diagonsisURL =apiRoutes.valueOf("AddDiagnosis").getRouteURL().replace("personId", personID).replace("encounterId", encounterId); 
@@ -205,7 +205,7 @@ public class NGAPIFlows {
             medication.setAcknowledgedProblems(acknowledgedProblems);	
 			
 			ObjectMapper objMap = new ObjectMapper();
-	        String requestbody = objMap.defaultPrettyPrintingWriter().writeValueAsString(medication);
+	        String requestbody = objMap.writerWithDefaultPrettyPrinter().writeValueAsString(medication);
 	        Log4jUtil.log("Medication request body \n"+requestbody);
 			
 			String medicationURL =apiRoutes.valueOf("PrescribeMedication").getRouteURL().replace("personId", personID).replace("encounterId", encounterId); 
@@ -230,7 +230,7 @@ public class NGAPIFlows {
             allergy.setproviderId(DBUtils.executeQueryOnDB("NGCoreDB",strSqlQueryForProvider.replace("ProviderName",ProviderName)));
            
 			ObjectMapper objMap = new ObjectMapper();
-	        String requestbody = objMap.defaultPrettyPrintingWriter().writeValueAsString(allergy);
+	        String requestbody = objMap.writerWithDefaultPrettyPrinter().writeValueAsString(allergy);
 	        Log4jUtil.log("Allergy request body \n"+requestbody);
 			
 			String allergyURL =apiRoutes.valueOf("AddAllergy").getRouteURL().replace("personId", personID).replace("encounterId", encounterId); 
@@ -256,7 +256,7 @@ public class NGAPIFlows {
             procedure.setpatientDiagnosisId1(diagnosisId);
             
 			ObjectMapper objMap = new ObjectMapper();
-	        String requestbody = objMap.defaultPrettyPrintingWriter().writeValueAsString(procedure);
+	        String requestbody = objMap.writerWithDefaultPrettyPrinter().writeValueAsString(procedure);
 	        Log4jUtil.log("Procedure request body \n"+requestbody);
 			
 			String ProcedureURL =apiRoutes.valueOf("AddProcedure").getRouteURL().replace("personId", personID).replace("encounterId", encounterId); 
@@ -278,7 +278,7 @@ public class NGAPIFlows {
 			labOrder.setOrderingProvider(DBUtils.executeQueryOnDB("NGCoreDB",strSqlQueryForProvider.replace("ProviderName",ProviderName)));
             
 			ObjectMapper objMap = new ObjectMapper();
-	        String requestbody = objMap.defaultPrettyPrintingWriter().writeValueAsString(labOrder);
+	        String requestbody = objMap.writerWithDefaultPrettyPrinter().writeValueAsString(labOrder);
 	        Log4jUtil.log("Lab Order request body \n"+requestbody);
 			
 			String LabOrderURL =apiRoutes.valueOf("AddNewLabOrder").getRouteURL().replace("personId", personID).replace("encounterId", encounterId); 
@@ -304,7 +304,7 @@ public class NGAPIFlows {
 			labOrderTestArray.add(labOrderTest);
 			
 			ObjectMapper objMap = new ObjectMapper();
-	        String requestbody = objMap.defaultPrettyPrintingWriter().writeValueAsString(labOrderTestArray);
+	        String requestbody = objMap.writerWithDefaultPrettyPrinter().writeValueAsString(labOrderTestArray);
 	        Log4jUtil.log("Lab Order Test request body \n"+requestbody);
 			
 			String LabOrderTestURL =apiRoutes.valueOf("AddLabOrderTest").getRouteURL().replace("personId", personID).replace("orderId", orderId); 
@@ -328,7 +328,7 @@ public class NGAPIFlows {
 			addObsPanel.setCollectionDateTime(sdf.format(new Date()));
 			
 			ObjectMapper objMap = new ObjectMapper();
-	        String requestbody = objMap.defaultPrettyPrintingWriter().writeValueAsString(addObsPanel);
+	        String requestbody = objMap.writerWithDefaultPrettyPrinter().writeValueAsString(addObsPanel);
 	        Log4jUtil.log("Observation Panel request body \n"+requestbody);
 			
 			String ObsPanelURL =apiRoutes.valueOf("AddObservationPanel").getRouteURL().replace("personId", personID); 
@@ -352,7 +352,7 @@ public class NGAPIFlows {
 			labResultArray.add(labResult);
 			
 			ObjectMapper objMap = new ObjectMapper();
-	        String requestbody = objMap.defaultPrettyPrintingWriter().writeValueAsString(labResultArray);
+	        String requestbody = objMap.writerWithDefaultPrettyPrinter().writeValueAsString(labResultArray);
 	        Log4jUtil.log("Lab Result request body \n"+requestbody);
 			
 			String LabResultURL =apiRoutes.valueOf("AddObservationResults").getRouteURL().replace("personId", personID).replace("panelId", panelId); 
@@ -375,7 +375,7 @@ public class NGAPIFlows {
 			updateLabOrder.setSignOffDate(sdf.format(new Date()));
 			
 			ObjectMapper objMap = new ObjectMapper();
-	        String requestbody = objMap.defaultPrettyPrintingWriter().writeValueAsString(updateLabOrder);
+	        String requestbody = objMap.writerWithDefaultPrettyPrinter().writeValueAsString(updateLabOrder);
 	        Log4jUtil.log("Update Lab Order request body \n"+requestbody);
 			
 			String UpdateLabOrderURL =apiRoutes.valueOf("UpdateLabOrder").getRouteURL().replace("personId", personID).replace("orderId", orderId); 
@@ -400,7 +400,7 @@ public class NGAPIFlows {
 			immunization.setAllergiesReviewed(allergiesReviewed);
 			
 			ObjectMapper objMap = new ObjectMapper();
-	        String requestbody = objMap.defaultPrettyPrintingWriter().writeValueAsString(immunization);
+	        String requestbody = objMap.writerWithDefaultPrettyPrinter().writeValueAsString(immunization);
 	        Log4jUtil.log("Immunization request body \n"+requestbody);
 			
 			String ImmunizationURL =apiRoutes.valueOf("AddNewImmunizationsOrder").getRouteURL().replace("personId", personID).replace("encounterId", encounterId); 
@@ -428,7 +428,7 @@ public class NGAPIFlows {
 			problem.setLastAddressedDate(sdf.format(new Date()));
             
 			ObjectMapper objMap = new ObjectMapper();
-	        String requestbody = objMap.defaultPrettyPrintingWriter().writeValueAsString(problem);
+	        String requestbody = objMap.writerWithDefaultPrettyPrinter().writeValueAsString(problem);
 	        Log4jUtil.log("Problem request body \n"+requestbody);
 			
 			String ProblemURL =apiRoutes.valueOf("AddProblem").getRouteURL().replace("personId", personID); 
@@ -442,7 +442,7 @@ public class NGAPIFlows {
 		return problem_id;
 	}
 
-	public static String PostCCDRequest(String locationName,String ProviderName, String personID,String requestType,String encounterId) throws Throwable{
+	public static String postCCDRequest(String locationName,String ProviderName, String personID,String requestType,String encounterId) throws Throwable{
 		String CCDARequest_id ="";
 		try{
 		List<CCDRequestDetails> a =new ArrayList<CCDRequestDetails>();
@@ -473,7 +473,7 @@ public class NGAPIFlows {
 		ccdRequest.setRequests(a); 			
 		
 		ObjectMapper objMap = new ObjectMapper();
-        String requestbody = objMap.defaultPrettyPrintingWriter().writeValueAsString(ccdRequest);
+        String requestbody = objMap.writerWithDefaultPrettyPrinter().writeValueAsString(ccdRequest);
         Log4jUtil.log("Post CCD request body \n"+requestbody);
 		
 		String CCDARequestURL =apiRoutes.valueOf("PostCCDARequest").getRouteURL(); 
@@ -494,7 +494,7 @@ public class NGAPIFlows {
 			updateEncounter.setLocationId(DBUtils.executeQueryOnDB("NGCoreDB",strSqlQueryForLocation.replace("locationName", locationName)));
 			
 			ObjectMapper objMap = new ObjectMapper();
-	        String requestbody = objMap.defaultPrettyPrintingWriter().writeValueAsString(updateEncounter);
+	        String requestbody = objMap.writerWithDefaultPrettyPrinter().writeValueAsString(updateEncounter);
 	        Log4jUtil.log("Update Encounter request body \n"+requestbody);
 
 			String updateEncounterURL =apiRoutes.valueOf("UpdateEncounter").getRouteURL().replace("personId", personID).replace("encounterId", encounterId); 
@@ -530,7 +530,6 @@ public class NGAPIFlows {
 	
 	public static String postSecureMessage(PropertyFileLoader PropertyLoaderObj,String messageType,String personID, String practiceID,String userID, String ProviderName, String locationName, String applicationName, String encounterType,String senderType,String encounterId,String attachmentName,String documentID) throws Throwable{
 		String comm_id = null;
-		String documentIdQuery= "select document_id from pxp_document_requests where document_desc='"+attachmentName+"'";
 		try{
 			SecureMessage securemessage = new SecureMessage();
 			Message message = new Message();
@@ -695,7 +694,7 @@ public class NGAPIFlows {
 			
 			ObjectMapper mapper = new ObjectMapper();
 			mapper.setSerializationInclusion(Inclusion.NON_NULL);				
-	        String requestbody = mapper.defaultPrettyPrintingWriter().writeValueAsString(securemessage);
+	        String requestbody = mapper.writerWithDefaultPrettyPrinter().writeValueAsString(securemessage);
 	        Log4jUtil.log("Secure Message request body \n"+requestbody);
 			
 			String secureMessageURL =apiRoutes.valueOf("PostSecureMessage").getRouteURL(); 
@@ -727,7 +726,7 @@ public class NGAPIFlows {
 			
 			ObjectMapper mapper = new ObjectMapper();
 			mapper.setSerializationInclusion(Inclusion.NON_NULL);				
-	        String requestbody = mapper.defaultPrettyPrintingWriter().writeValueAsString(appointmentResponse);
+	        String requestbody = mapper.writerWithDefaultPrettyPrinter().writeValueAsString(appointmentResponse);
 	        Log4jUtil.log("Appointment Response request body \n"+requestbody);			
 			
 			String appointmentResponseURL =apiRoutes.valueOf("PostAppointmentResponse").getRouteURL().replace("appointmentRequestId", appointmentRequestId); 
@@ -767,7 +766,7 @@ public class NGAPIFlows {
 					
 			ObjectMapper mapper = new ObjectMapper();
 			mapper.setSerializationInclusion(Inclusion.NON_NULL);				
-	        String requestbody = mapper.defaultPrettyPrintingWriter().writeValueAsString(appointment);
+	        String requestbody = mapper.writerWithDefaultPrettyPrinter().writeValueAsString(appointment);
 	        Log4jUtil.log("Appointment request body \n"+requestbody);			
 			
 			String appointmentURL =apiRoutes.valueOf("PostAppointment").getRouteURL(); 
@@ -818,7 +817,7 @@ public class NGAPIFlows {
 			
 			ObjectMapper mapper = new ObjectMapper();
 			mapper.setSerializationInclusion(Inclusion.NON_NULL);				
-	        String requestbody = mapper.defaultPrettyPrintingWriter().writeValueAsString(prescriptionRenewalRequest);
+	        String requestbody = mapper.writerWithDefaultPrettyPrinter().writeValueAsString(prescriptionRenewalRequest);
 	        Log4jUtil.log("Prescription Renewal Request body \n"+requestbody);			
 			
 			String prescriptionRenewalRequestURL =apiRoutes.valueOf("PutPrescriptionRenewalRequest").getRouteURL().replace("personId", personId).replace("medicationRenewalRequestId", RenewalRequestId); 
@@ -994,7 +993,7 @@ public class NGAPIFlows {
 			
 			ObjectMapper mapper = new ObjectMapper();
 			mapper.setSerializationInclusion(Inclusion.NON_NULL);				
-	        String requestbody = mapper.defaultPrettyPrintingWriter().writeValueAsString(securemessage);
+	        String requestbody = mapper.writerWithDefaultPrettyPrinter().writeValueAsString(securemessage);
 	        Log4jUtil.log("Secure Message request body \n"+requestbody);
 			
 			String secureMessageURL =apiRoutes.valueOf("PostSecureMessage").getRouteURL(); 

@@ -1,8 +1,6 @@
 //Copyright 2013-2020 NXGN Management, LLC. All Rights Reserved.
 package com.medfusion.product.object.maps.patientportal2.page.CreateAccount;
 
-import java.util.ArrayList;
-
 import com.medfusion.pojos.Patient;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
@@ -44,25 +42,8 @@ public class PatientVerificationPage extends MedfusionPage {
 				super(driver, url);
 		}
 
-		@Override
-		public boolean areBasicPageElementsPresent() {
-
-				ArrayList<WebElement> webElementsList = new ArrayList<WebElement>();
-				webElementsList.add(zipCodeInput);
-				webElementsList.add(dateOfBirthMonthSelect);
-				webElementsList.add(dateOfBirthDayInput);
-				webElementsList.add(dateOfBirthYearInput);
-				webElementsList.add(cancelButton);
-				webElementsList.add(continueButton);
-
-				return assessPageElements(webElementsList);
-		}
-
 		public void getToThisPage(String url) {
 				driver.get(url);
-				if (!areBasicPageElementsPresent()) {
-						throw new UnsupportedOperationException("Page was not successfully loaded");
-				}
 		}
 
 		public SecurityDetailsPage fillPatientInfoAndContinue(Patient patient) throws InterruptedException {

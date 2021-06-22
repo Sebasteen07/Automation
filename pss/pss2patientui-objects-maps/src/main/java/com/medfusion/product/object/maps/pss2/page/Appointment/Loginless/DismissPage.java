@@ -1,4 +1,4 @@
-// Copyright 2020 NXGN Management, LLC. All Rights Reserved.
+// Copyright 2013-2021 NXGN Management, LLC. All Rights Reserved.
 
 package com.medfusion.product.object.maps.pss2.page.Appointment.Loginless;
 
@@ -29,13 +29,8 @@ public class DismissPage extends PSS2MainPage {
 
 	CommonMethods commonMethods = new CommonMethods(driver);
 
-	@Override
-	public boolean areBasicPageElementsPresent() {
-		return true;
-	}
-
 	public LoginlessPatientInformation clickDismiss() {
-		IHGUtil.waitForElement(driver, 5, dismissBtn);
+		IHGUtil.waitForElement(driver, 15, dismissBtn);
 		commonMethods.highlightElement(dismissBtn);
 		dismissBtn.click();
 		return PageFactory.initElements(driver, LoginlessPatientInformation.class);

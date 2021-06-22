@@ -117,7 +117,7 @@ public class ManageResource extends PSS2MenuPage {
 	@FindBy(how = How.XPATH, using = "//strong[contains(text(),'Age Rule')]")
 	private WebElement ageRuleCheckbox;
 
-	@FindBy(how = How.XPATH, using = "/html/body/app/layout/div/main/div[2]/div/div/div[2]/section/div/div/div/div/div/div[4]/div/form/div[1]/input")
+	@FindBy(how = How.XPATH, using = "//input[@id='resourceappointmenttypeisageRule']")
 	private WebElement ageRuleCheckboxStatus;
 
 	@FindBy(how = How.XPATH, using = "//*[@id='tab43']/div/form/div[2]/div[2]/select")
@@ -129,10 +129,10 @@ public class ManageResource extends PSS2MenuPage {
 	@FindBy(how = How.XPATH, using = "//*[@id='tab43']/div/form/div[2]/div[4]/select")
 	private WebElement ageruleAnd;
 
-	@FindBy(how = How.XPATH, using = "/html/body/app/layout/div/main/div[2]/div/div/div[2]/section/div/div/div/div/div/div[4]/div/form/div[2]/div[3]/input")
+	@FindBy(how = How.XPATH, using = "//input[@id='line1' and @name='leftVal']")
 	private WebElement sendMonthFirst;
 
-	@FindBy(how = How.XPATH, using = "/html/body/app/layout/div/main/div[2]/div/div/div[2]/section/div/div/div/div/div/div[4]/div/form/div[2]/div[6]/input")
+	@FindBy(how = How.XPATH, using = "//input[@id='line1' and @name='rightVal']")
 	private WebElement sendMonthsecond;
 
 	@FindBy(how = How.XPATH, using = "//*[@name='apptTimeMark']")
@@ -161,17 +161,33 @@ public class ManageResource extends PSS2MenuPage {
 
 	@FindAll({ @FindBy(xpath = "//div[@id='tab23']/table/tbody/tr/td[3]/div/div/label/i") })
 	private List<WebElement> locationToggleClick;
+	
+	@FindBy(how = How.XPATH, using = "//a[@title='Add Slots']")
+	private WebElement excludeSlotBtn;
+	
+	@FindBy(how = How.XPATH, using = "//select[@name='beforeAfterStart']")
+	private WebElement excludeSlotBeforeAfterStart;
+
+	@FindBy(how = How.XPATH, using = "//select[@name='beforeAfterEnd']")
+	private WebElement excludeSlotBeforeAfterEnd;
+
+	@FindBy(how = How.XPATH, using = "//select[@name='condition']")
+	private WebElement excludeSlotCondition;
+
+	@FindBy(how = How.XPATH, using = "//input[@name='startTime']")
+	private WebElement startTime;
+
+	@FindBy(how = How.XPATH, using = "//input[@name='endTime']")
+	private WebElement endTime;
+	
+	@FindBy(how = How.XPATH, using = "//a[@title='Add Exclude Slot']")
+	private WebElement addExcludeSlotBtn;
+
 
 	
 	public ManageResource(WebDriver driver) {
 		super(driver);
 	}
-
-	@Override
-	public boolean areBasicPageElementsPresent() {
-		return true;
-	}
-
 
 	public void searchResource(String resourceName){
 		IHGUtil.waitForElement(driver, 6, searchResource);
@@ -313,10 +329,8 @@ public class ManageResource extends PSS2MenuPage {
 	}
 
 	public boolean checkBoxStatus() {
-		boolean bool = Boolean.parseBoolean(ageRuleCheckboxStatus.getAttribute("ng-reflect-model"));
-		log("CheckBox Status " + bool);
-		return bool;
-
+		log("Status of the age rule checkbox  " + ageRuleCheckboxStatus.isSelected());
+		return ageRuleCheckboxStatus.isSelected();
 	}
 
 	public void ageRule() {
@@ -440,5 +454,24 @@ public class ManageResource extends PSS2MenuPage {
 		appointmenttypeSave.click();
 
 	}
+	public void excludeBtn(String firstValue,String secondValue)
+	{
+		excludeSlotBtn.click();
+		Select before = new Select(excludeSlotBeforeAfterStart);
+		Select and = new Select(excludeSlotCondition);
+		Select after = new Select(excludeSlotBeforeAfterEnd);
+		before.selectByVisibleText("After");
+		startTime.clear();
+		startTime.sendKeys(firstValue);
+		and.selectByIndex(1);;
+		after.selectByVisibleText("Before");
+		endTime.clear();
+		endTime.sendKeys(secondValue);
+		log("SuccessFully Sent the Values in Exclude Slot textfield");
+		addExcludeSlotBtn.click();
+		log("Clicked on yes ");
+		appointmenttypeSave.click();
+	}
+
 
 }

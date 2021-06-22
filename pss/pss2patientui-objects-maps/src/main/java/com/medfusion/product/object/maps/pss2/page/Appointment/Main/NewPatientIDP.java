@@ -1,4 +1,4 @@
-// Copyright 2018-2020 NXGN Management, LLC. All Rights Reserved.
+// Copyright 2013-2021 NXGN Management, LLC. All Rights Reserved.
 package com.medfusion.product.object.maps.pss2.page.Appointment.Main;
 
 import org.openqa.selenium.WebDriver;
@@ -29,11 +29,6 @@ public class NewPatientIDP extends PSS2MainPage {
 
 	public NewPatientIDP(WebDriver driver) {
 		super(driver);
-	}
-
-	@Override
-	public boolean areBasicPageElementsPresent() {
-		return true;
 	}
 
 	public CreateNewAccountIDP createNewAccount() {
