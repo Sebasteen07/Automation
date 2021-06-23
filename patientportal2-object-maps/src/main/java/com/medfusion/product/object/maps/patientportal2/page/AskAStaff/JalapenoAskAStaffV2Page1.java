@@ -164,11 +164,12 @@ public class JalapenoAskAStaffV2Page1 extends JalapenoMenu {
 	public JalapenoAskAStaffV2Page2 fillAndContinue(String subject, String question) throws InterruptedException {
 		if (subject != null && !subject.trim().isEmpty()) {
 			subjectBox.clear();
+			wait.until(ExpectedConditions.visibilityOf(subjectBox));
 			subjectBox.sendKeys(subject);
-			Thread.sleep(1000);
+			Thread.sleep(5000);
 		}
 		questionBox.sendKeys(question);
-		Thread.sleep(10000);
+		Thread.sleep(5000);
 		continueButton.click();
 		return PageFactory.initElements(driver, JalapenoAskAStaffV2Page2.class);
 	}

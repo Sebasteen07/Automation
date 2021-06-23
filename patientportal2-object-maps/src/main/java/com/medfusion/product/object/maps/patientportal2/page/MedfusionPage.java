@@ -13,6 +13,7 @@ import org.apache.commons.lang.StringUtils;
 import org.apache.log4j.Level;
 import org.openqa.selenium.By;
 import org.openqa.selenium.Cookie;
+import org.openqa.selenium.Dimension;
 import org.openqa.selenium.StaleElementReferenceException;
 import org.openqa.selenium.TimeoutException;
 import org.openqa.selenium.WebDriver;
@@ -25,6 +26,7 @@ import org.openqa.selenium.support.ui.Select;
 import org.openqa.selenium.support.ui.WebDriverWait;
 
 import com.intuit.ifs.csscat.core.pageobject.BasePageObject;
+import com.medfusion.common.utils.IHGUtil;
 import com.medfusion.common.utils.IHGUtil.SupportedWebElements;
 
 /**
@@ -43,6 +45,9 @@ public abstract class MedfusionPage extends BasePageObject {
 
 		@FindBy(how = How.ID, using = "updateMissingInfoButton")
 		private WebElement okButton;
+		
+		@FindBy(how = How.XPATH, using = "//input[@name='statementDelivery']")
+		private WebElement statementPreferenceRadioButton;
 
 		public MedfusionPage(WebDriver driver) {
 				this(driver, null);
@@ -56,12 +61,16 @@ public abstract class MedfusionPage extends BasePageObject {
 						String sanitizedUrl = url.trim();
 						log("URL: " + sanitizedUrl);
 						driver.get(sanitizedUrl);
-						driver.manage().window().maximize();
+						// Setting the current window to that dimension
+						Dimension dm = new Dimension(1000, 776);
+						driver.manage().window().setSize(dm);
 				}
 				System.out.println("Size of window before maximizing: " + driver.manage().window().getSize());
-				// there's an issue related to hudson slave's resolution 1024x768 - can't click on CreateNewPatient element
-				//driver.manage().window().maximize();
-				//System.out.println("Size of window after maximizing: " + driver.manage().window().getSize());
+				/*
+				 * there's an issue related to hudson slave's resolution 1024x768 - can't click.
+				 * Changing the dimension of window as for the specific resolution 1032,
+				 * 776 not getting the side Pannel or the icon to enable side pannel.
+				 */
 				printCookies();
 				PageFactory.initElements(driver, this);
 		}
@@ -96,22 +105,25 @@ public abstract class MedfusionPage extends BasePageObject {
 				log("Checking if some confirmation needed");
 				try{
 
-				while (isElementVisible(weNeedToConfirmSomethingModal, 6)){
-
+					while (isElementVisible(weNeedToConfirmSomethingModal, 6)) {
 						log("We need to confirm something modal window shown");
-						okButton.click();
-
-						try {
-								//wait to modal view disappear
-								sleep(2000);
-						} catch (InterruptedException e) {
-								e.printStackTrace();
+						if (new IHGUtil(driver).exists(weNeedToConfirmSomethingModal)) {
+							statementPreferenceRadioButton.click();
+							okButton.click();
+						} else {
+							okButton.click();
 						}
-				}}
-				catch(Exception e){
+						try {
+							// wait to modal view disappear
+							sleep(2000);
+						} catch (InterruptedException e) {
+							e.printStackTrace();
+						}
+					}
+				} catch (Exception e) {
 					log(e.getMessage());
 				}
-		}
+			}
 
 
 		public String elementToString(WebElement element) {

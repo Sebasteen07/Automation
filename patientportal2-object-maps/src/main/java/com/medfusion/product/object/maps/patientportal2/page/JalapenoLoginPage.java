@@ -90,7 +90,6 @@ public class JalapenoLoginPage extends MedfusionPage {
 		makeLogin(username, password);
 		log("User is logged in");
 		handleWeNeedToConfirmSomethingModal();
-		driver.navigate().refresh();
 		return PageFactory.initElements(driver, JalapenoHomePage.class);
 	}
 
