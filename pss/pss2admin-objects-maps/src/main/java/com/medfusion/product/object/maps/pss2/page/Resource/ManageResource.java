@@ -183,6 +183,8 @@ public class ManageResource extends PSS2MenuPage {
 	@FindBy(how = How.XPATH, using = "//a[@title='Add Exclude Slot']")
 	private WebElement addExcludeSlotBtn;
 
+	@FindBy(how = How.XPATH, using = "//*[@name='slotCount']")
+	private WebElement slotCount;
 
 	
 	public ManageResource(WebDriver driver) {
@@ -473,5 +475,20 @@ public class ManageResource extends PSS2MenuPage {
 		appointmenttypeSave.click();
 	}
 
+	public void slotCount(String slotValue) {
+		Select selectOptions = new Select(slotCount);
+		selectOptions.selectByVisibleText(slotValue);
+		slotCount.click();
+		commonMethods.highlightElement(appointmenttypeSave);
+		appointmenttypeSave.click();
+	}
+	public String getslotSize()
+	{
+		commonMethods.highlightElement(slotSizeValue);
+		Select selectOptions = new Select(slotSizeValue);
+		WebElement slotSizeValue=selectOptions.getFirstSelectedOption();
+		String selectedValue=slotSizeValue.getText();
+		return selectedValue;
+	}
 
 }

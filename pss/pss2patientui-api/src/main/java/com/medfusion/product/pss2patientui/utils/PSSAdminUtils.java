@@ -967,5 +967,30 @@ public class PSSAdminUtils extends BaseTestNGWebDriver{
 		announcementsPage.addAnnouncementMsg();
 		
 	}
-	
+	public void mergeSlot(WebDriver driver, AdminUser adminUser, Appointment testData, String urlToUse) throws Exception {
+		PSS2PracticeConfiguration pssPracticeConfig = loginToAdminPortal(driver, adminUser);
+		AdminAppointment adminAppointment = pssPracticeConfig.gotoAdminAppointmentTab();
+		if (adminAppointment.toggleNextAvailableStatus() == true) {
+			adminAppointment.toggleNextavailableClick();
+		}
+		PatientFlow patientFlow = pssPracticeConfig.gotoPatientFlowTab();
+		testData.setInsuranceVisible(patientFlow.insuracetogglestatus());
+		log("Insurance Status= " + patientFlow.insuracetogglestatus());
+		adminUser.setRule(patientFlow.getRule());
+		Log4jUtil.log("rule= " + patientFlow.getRule());
+		setRulesNoSpecialitySet1(patientFlow);
+		AdminPatientMatching adminPatientMatching = patientFlow.gotoPatientMatchingTab();
+		adminPatientMatching.patientMatchingSelection();
+
+		ManageResource manageResource = pssPracticeConfig.gotoResource();
+		pageRefresh(driver);
+		manageResource.selectResource(testData.getProvider());
+		manageResource.selectAppointmenttype(testData.getAppointmenttype());
+		manageResource.slotCount(testData.getSlotValue());
+		manageResource.clickGeneralTab();
+		testData.setSlotSize(manageResource.getslotSize());
+		log("Slot Size is  " + testData.getSlotSize());
+		manageResource.logout();
+	}
+
 }

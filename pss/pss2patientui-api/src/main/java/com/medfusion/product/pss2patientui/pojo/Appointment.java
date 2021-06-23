@@ -107,6 +107,10 @@ public class Appointment {
 	private String ageRuleMonthSecond;
 	private String excludeSlotFirstValue;
 	private String excludeSlotSecondValue;
+	private String firstHour;
+	private String firstMinute;
+	private String slotValue;
+
 
 
 	private Boolean isCancelButtonPresent;
@@ -243,6 +247,31 @@ public class Appointment {
 	}
 
 	public Appointment() {}	
+	
+
+	public String getSlotValue() {
+		return slotValue;
+	}
+
+	public void setSlotValue(String slotValue) {
+		this.slotValue = slotValue;
+	}
+
+	public String getFirstHour() {
+		return firstHour;
+	}
+
+	public void setFirstHour(String firstHour) {
+		this.firstHour = firstHour;
+	}
+
+	public String getFirstMinute() {
+		return firstMinute;
+	}
+
+	public void setFirstMinute(String firstMinute) {
+		this.firstMinute = firstMinute;
+	}
 	
 	public String getNextAvailiableText() {
 		return nextAvailiableText;
