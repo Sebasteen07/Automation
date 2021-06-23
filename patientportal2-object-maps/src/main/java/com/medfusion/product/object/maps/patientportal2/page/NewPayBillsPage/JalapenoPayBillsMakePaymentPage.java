@@ -99,8 +99,6 @@ public class JalapenoPayBillsMakePaymentPage extends JalapenoMenu {
 	@FindBy(how = How.XPATH, using = "//td[label[contains(text(),'Credit Card')]]/following-sibling::td")
 	private WebElement receiptCardDigit;
 	
-	
-	
 	public JalapenoPayBillsMakePaymentPage(WebDriver driver) {
 		super(driver);
 		IHGUtil.PrintMethodName();

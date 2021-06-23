@@ -25,7 +25,7 @@ public class JalapenoPayBillsConfirmationPage extends JalapenoMenu {
 		private WebElement cardEnding;
 		
 		@FindBy(how = How.XPATH, using = "//div[@class='notification-message']/p")
-		private WebElement notificationmessage;
+		private WebElement notificationMessage;
 
 		public JalapenoPayBillsConfirmationPage(WebDriver driver) {
 				super(driver);
@@ -45,10 +45,11 @@ public class JalapenoPayBillsConfirmationPage extends JalapenoMenu {
 		public String getCreditCardEnding() {
 				return cardEnding.getText().substring(cardEnding.getText().length() - 4);
 		}
+		
 		public boolean isDuplicatePaymentErrorMessageDisplayed() {
 			try {
 				log("Looking for error message");
-				return notificationmessage.isDisplayed();
+				return notificationMessage.isDisplayed();
 			} catch (Exception e) {
 			}
 			return false;
