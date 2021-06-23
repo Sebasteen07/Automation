@@ -40,7 +40,7 @@ public class JalapenoForgotPasswordPage4 extends MedfusionPage {
 		@FindBy(how = How.ID, using = "secretAnswer_forgot")
 		public WebElement secretAnswer;
 		
-		@FindBy(how = How.XPATH, using = "//input[@name='secretAnswer']")
+		@FindBy(how = How.XPATH, using = "//input[@name='securityAnswer']")
 		public WebElement answerSecret;
 		
 		@FindBy(how = How.XPATH, using = "//select[@id='secretQuestion']")
@@ -74,7 +74,6 @@ public class JalapenoForgotPasswordPage4 extends MedfusionPage {
 			newPassword.sendKeys(password);
 			confirmPassword.sendKeys(password);
 			resetPasswordButton.click();
-			selectStatementIfRequired();
 			fillInSecretQuestionAndAnswer(testData.getProperty("resetPasswordSecurityQuestion"),testData.getProperty("resetPasswordSecurityAnswer"));
 			
 			return PageFactory.initElements(driver, JalapenoHomePage.class);

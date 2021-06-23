@@ -4057,4 +4057,35 @@ public class PatientPortal2AcceptanceTests extends BaseTestNGWebDriver {
 		assertTrue(linkAccountPage.isIncorrectUsernamePasswordErrorDisplayed());
 			
 	}
+	@Test(enabled = true, groups = { "acceptance-solutions" }, retryAnalyzer = RetryAnalyzer.class)
+	public void testPayBillsDuplicateAmount() throws Exception {
+		logStep("Initiate payment data");
+		String accountNumber = IHGUtil.createRandomNumericString(8);
+		String name = "TestPatient CreditCard";
+		CreditCard creditCard = new CreditCard(CardType.Mastercard, name);
+
+		logStep("Load login page");
+		JalapenoLoginPage loginPage = new JalapenoLoginPage(driver, testData.getUrl());
+
+		JalapenoHomePage homePage = loginPage.login(testData.getUserId(), testData.getPassword());
+		JalapenoPayBillsMakePaymentPage payBillsPage = homePage.clickOnNewPayBills(driver);
+		logStep("Remove all cards because Selenium can't see AddNewCard button");
+		payBillsPage.removeAllCards();
+		logStep("Check that no card is present");
+		assertFalse(payBillsPage.isAnyCardPresent());
+		logStep("Fill all the details on a payment page for first payment");
+		JalapenoPayBillsConfirmationPage confirmationPage = payBillsPage.fillPaymentInfoForDuplicate(PracticeConstants.amount, accountNumber,
+				creditCard);
+		logStep("Click on the submit button and verify the payment status");
+        homePage = confirmationPage.commentAndSubmitPayment("Testing payment from number: " + accountNumber);
+		assertTrue(homePage.wasPayBillsSuccessfull());
+		logStep("Click on the Pay bill for duplicate payment");
+		JalapenoPayBillsMakePaymentPage payBillswithDuplicateAmount = homePage.clickOnNewPayBillsForDuplicatePayment(driver);
+		logStep("Fill all the details on a payment page for Duplicate payment");
+		JalapenoPayBillsConfirmationPage confirmationPageForduplicatePayment = payBillswithDuplicateAmount.fillPaymentInfoWithExistingCards(PracticeConstants.amount, accountNumber,PracticeConstants.CVV);
+		logStep("Click on the submit button and verify the error message");
+		confirmationPageForduplicatePayment.commentAndSubmitPayment("System should display the error message");
+		assertTrue(confirmationPageForduplicatePayment.isDuplicatePaymentErrorMessageDisplayed());
+
+	}
 }

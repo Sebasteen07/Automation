@@ -1894,5 +1894,35 @@ public class PSSPatientUtils extends BaseTestNGWebDriver{
 			assertEquals(aptDateTime.getFirstTimeWithMinute(), testData.getTimeMarkValue());
 		}
 	}
+	
+	public String addTimeinFixedTime(Appointment testData) throws ParseException {
+		int getslotSize=Integer.parseInt(testData.getSlotSize());
+		int getslotValue=Integer.parseInt(testData.getSlotValue());
+
+		log("Slot Size is "+getslotSize);
+		int timeToAdd=getslotSize*getslotValue;
+		log("time to Add is "+timeToAdd);
+		Calendar cal = Calendar.getInstance();
+		int i=Integer.parseInt(testData.getFirstHour());  
+		int j=Integer.parseInt(testData.getFirstMinute());  
+		cal.set(Calendar.HOUR_OF_DAY, i);
+		cal.set(Calendar.MINUTE, j);
+		String fixedTime = +cal.get(Calendar.HOUR_OF_DAY) + ":" + cal.get(Calendar.MINUTE);
+		cal.add(Calendar.MINUTE, timeToAdd);
+		String time = cal.getTime().toString();
+		String timeOnly = time.substring(11, 16);
+		String input = timeOnly;
+		DateFormat df = new SimpleDateFormat("HH:mm");
+		DateFormat outputformat = new SimpleDateFormat("hh:mm");
+		Date date = null;
+		String afterAddTime = null;
+		try {
+			date = df.parse(input);
+			afterAddTime = outputformat.format(date);
+		} catch (ParseException pe) {
+			pe.printStackTrace();
+		}
+		return afterAddTime;
+	}
 
 }

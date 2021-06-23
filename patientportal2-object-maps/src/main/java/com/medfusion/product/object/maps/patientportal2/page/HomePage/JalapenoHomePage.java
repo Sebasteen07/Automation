@@ -545,6 +545,12 @@ public class JalapenoHomePage extends JalapenoMenu {
 		return PageFactory.initElements(driver, JalapenoAppoinmentSchedulingPage.class);
 
 	}
+	public JalapenoPayBillsMakePaymentPage clickOnNewPayBillsForDuplicatePayment(WebDriver driver) {
+		log("Clicking on Payments button");
+		payments.click();
+
+		return PageFactory.initElements(driver, JalapenoPayBillsMakePaymentPage.class);
+	}
 
 }
 
