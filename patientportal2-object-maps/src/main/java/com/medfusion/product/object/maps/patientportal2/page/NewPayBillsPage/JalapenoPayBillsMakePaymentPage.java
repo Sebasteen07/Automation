@@ -295,9 +295,9 @@ public class JalapenoPayBillsMakePaymentPage extends JalapenoMenu {
 		return confirmationNumber;
 
 	}
+	
 	public JalapenoPayBillsConfirmationPage fillPaymentInfoWithExistingCards(String amount, String accNumber, String creditCardCsv) throws InterruptedException {
-
-		WebDriverWait wait = new WebDriverWait(driver, 10);
+        WebDriverWait wait = new WebDriverWait(driver, 10);
 		log("Insert Payment amount: " + amount);
 		paymentAmount.clear();
 		paymentAmount.sendKeys(amount);
