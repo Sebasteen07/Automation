@@ -546,7 +546,6 @@ public class JalapenoHomePage extends JalapenoMenu {
 
 	}
 	public JalapenoPayBillsMakePaymentPage clickOnNewPayBillsForDuplicatePayment(WebDriver driver) {
-       // driver.navigate().refresh();
 		log("Clicking on Payments button");
 		payments.click();
 
