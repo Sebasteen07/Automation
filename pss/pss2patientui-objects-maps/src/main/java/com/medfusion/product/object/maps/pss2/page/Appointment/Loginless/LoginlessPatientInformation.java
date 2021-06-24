@@ -182,6 +182,7 @@ public class LoginlessPatientInformation extends PSS2MainPage {
 		driver.switchTo().parentFrame();
 
 		log("........Captcha clicked......");
+		Thread.sleep(9000);
 
 		wait.until(ExpectedConditions.elementToBeClickable(buttonNext));
 		commonMethods.highlightElement(buttonNext);
