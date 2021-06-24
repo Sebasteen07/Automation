@@ -60,7 +60,7 @@ public class GatewayProxyDigitalWalletTests extends GatewayProxyBaseTest {
 		String token = GatewayProxyUtils.getTokenForCustomer();
 		String token1 = token + "jadgcl";
 		GatewayProxyDigitalWalletResource digitalWallet = new GatewayProxyDigitalWalletResource();
-		Response response = digitalWallet.getListOfCardsInWallet(token1,testData.getProperty("default.external.wallet.id"));
+		Response response = digitalWallet.getListOfCardsInWallet(token1,testData.getProperty("default.wallet.id"));
 		Assert.assertTrue(response.getStatusCode() == 401);
 
 	}
@@ -104,7 +104,7 @@ public class GatewayProxyDigitalWalletTests extends GatewayProxyBaseTest {
 		String token1 = token + "jadgcl";
 		GatewayProxyDigitalWalletResource digitalWallet = new GatewayProxyDigitalWalletResource();
 		Response deleteResponse = digitalWallet.deleteCardInWallet(token1,
-				testData.getProperty("default.external.wallet.id"), testData.getProperty("default.external.card.id"));
+				testData.getProperty("default.wallet.id"), testData.getProperty("default.card.id"));
 		Assert.assertTrue(deleteResponse.getStatusCode() == 401);
 
 	}
