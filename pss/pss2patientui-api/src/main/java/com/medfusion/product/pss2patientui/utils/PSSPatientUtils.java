@@ -1101,10 +1101,10 @@ public class PSSPatientUtils extends BaseTestNGWebDriver{
 		ScheduledAppointmentAnonymous scheduledAppointmentAnonymous = confirmationpage.appointmentConfirmedAnonymous();
 		log("appointment ID = " + scheduledAppointmentAnonymous.getAppointmentID());
 		log("Add to calendar option is displayed and is clickable.");
-		Thread.sleep(4000);
-		scheduledAppointmentAnonymous.downloadCalander();
-		Thread.sleep(2000);
-		readICSFile(filePath());
+//		Thread.sleep(4000);
+//		scheduledAppointmentAnonymous.downloadCalander();
+//		Thread.sleep(2000);
+//		readICSFile(filePath());
 	}
 
 	public void appointmentToScheduled(ConfirmationPage confirmationpage, Appointment testData) throws Exception {
