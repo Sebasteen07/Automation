@@ -47,7 +47,10 @@ public class LoginlessPatientInformation extends PSS2MainPage {
 	@FindBy(how = How.ID, using = "PHONE")
 	private WebElement inputPrimaryPhoneNumber;
 
-	@FindBy(how = How.XPATH, using = "//span[contains(text(),'Submit')]")
+//	@FindBy(how = How.XPATH, using = "//span[contains(text(),'Submit')]")
+//	private WebElement buttonNext;
+
+	@FindBy(how = How.XPATH, using = "//button[@class='custombuttonexistnext']")
 	private WebElement buttonNext;
 
 	@FindBy(how = How.CLASS_NAME, using = "custombuttonexist")
