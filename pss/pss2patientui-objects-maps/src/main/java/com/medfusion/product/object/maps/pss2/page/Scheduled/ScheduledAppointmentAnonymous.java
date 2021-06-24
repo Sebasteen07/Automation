@@ -10,6 +10,7 @@ import org.openqa.selenium.support.FindBy;
 import org.openqa.selenium.support.How;
 import org.openqa.selenium.support.PageFactory;
 
+import com.medfusion.common.utils.IHGUtil;
 import com.medfusion.product.object.maps.pss2.page.Appointment.HomePage.HomePage;
 import com.medfusion.product.object.maps.pss2.page.Appointment.Main.PSS2MainPage;
 
@@ -35,7 +36,11 @@ public class ScheduledAppointmentAnonymous extends PSS2MainPage {
 	}
 
 	public void downloadCalander() {
+		IHGUtil.waitForElement(driver, 15, linkAddToCalander);
+		log("Before Click- ");
 		linkAddToCalander.click();
+		log("After Click");
+
 	}
 
 	public HomePage backtoHomePage() {
