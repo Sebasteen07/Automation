@@ -7,36 +7,6 @@
 				name="com.medfusion.product.pss2patientportal.test.PSS2PatientPortalAcceptanceTests">
 				<methods>
 
-					<include name="testSSOFlowGE()" />
-
-					<include name="testPreventSchedPastGE()" />
-					<include name="testPreventSchedFutureGE()" />
-
-					<include name="testE2ELoginlessForNewPatientGE" />
-					<include name="testE2ELoginlessForExistingPatientGE" />
-
-					<include name="testLoginlessWithInsuranceGE" />
-
-					<include name="testLastQuestionRequiredGE" />
-					<include name="testBookApptWithoutLastQuestionGE()" />
-					<include name="testBookApptWithLastQuestionGE()" />
-
-					<include name="testCancelFromEmailGE()" />
-					<include name="testCancelE2ETestingGE()" />					
-					
-					<include name="testRescheduleAppointmentGE" />
-					<include name="testRescheduleviaEmailNotifiicationGE()" />
-
-					<include name="testAcceptSameDayGE()" />
-					<include name="testAgeRuleGE()" />
-					<include name="testageRulewithSpecialityGE()" />
-					<include name="testE2ELinkGenerationGE()" />
-					<include name="testExcludeSlotsGE()" />
-
-
-					<include name="testLeadTimeGE()" />
-					<include name="testMaxperDayGE()" />
-					<include name="testPCPShareONGE()" />
 					<include name="testTimeMarkGE()" />
 
 				</methods>
