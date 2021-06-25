@@ -4395,7 +4395,7 @@ public class PSS2PatientPortalAcceptanceTests extends BaseTestNGWebDriver {
 	}
 	@Test(enabled = true, groups = { "AcceptanceTests" }, retryAnalyzer = RetryAnalyzer.class)
 	public void testAcceptSameDayGE() throws Exception {
-		log("Test To Verify Accept For same day Functionality For NG Partner");
+		log("Test To Verify Accept For same day Functionality For GE Partner");
 		PSSPropertyFileLoader propertyData = new PSSPropertyFileLoader();
 		Appointment testData = new Appointment();
 		AdminUser adminuser = new AdminUser();
