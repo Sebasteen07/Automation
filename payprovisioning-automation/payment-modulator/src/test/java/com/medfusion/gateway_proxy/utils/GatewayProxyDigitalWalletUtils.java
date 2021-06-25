@@ -20,8 +20,8 @@ public class GatewayProxyDigitalWalletUtils {
         property.load(configStream);
         configStream.close();
 
-        property.setProperty("externalWalletId", externalWalletId);
-        property.setProperty("externalCardId", externalCardId);
+        property.setProperty("external.wallet.id", externalWalletId);
+        property.setProperty("external.card.id", externalCardId);
         FileOutputStream output = new FileOutputStream(fileName);
         property.store(output, null);
         output.close();
