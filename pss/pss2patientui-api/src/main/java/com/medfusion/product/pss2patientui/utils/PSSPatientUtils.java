@@ -1098,12 +1098,12 @@ public class PSSPatientUtils extends BaseTestNGWebDriver{
 		if(testData.isLastQuestionOptional() == true) {
 			confirmationpage.enterLastQuestion();
 		}
-		ScheduledAppointmentAnonymous scheduledAppointmentAnonymous = confirmationpage.appointmentConfirmedAnonymous();
-		log("appointment ID = " + scheduledAppointmentAnonymous.getAppointmentID());
-		log("Add to calendar option is displayed and is clickable.");
-		scheduledAppointmentAnonymous.downloadCalander();
-		Thread.sleep(2000);
-		readICSFile(filePath());
+//		ScheduledAppointmentAnonymous scheduledAppointmentAnonymous = confirmationpage.appointmentConfirmedAnonymous();
+//		log("appointment ID = " + scheduledAppointmentAnonymous.getAppointmentID());
+//		log("Add to calendar option is displayed and is clickable.");
+//		scheduledAppointmentAnonymous.downloadCalander();
+//		Thread.sleep(2000);
+//		readICSFile(filePath());
 	}
 
 	public void appointmentToScheduled(ConfirmationPage confirmationpage, Appointment testData) throws Exception {
