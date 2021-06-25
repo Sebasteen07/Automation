@@ -7,7 +7,10 @@
 				name="com.medfusion.product.pss2patientportal.test.PSS2PatientPortalAcceptanceTests">
 				<methods>
 
-					<include name="testTimeMarkGE()" />
+					<include name="testE2ELinkGenandDeleteLinkAT()" />
+					<include name="testE2ELinkGenerationGE()" />
+					<include name="testE2ELinkGenWithProviGE()" />
+
 
 				</methods>
 			</class>
