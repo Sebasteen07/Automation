@@ -26,8 +26,8 @@ public class DigitalWalletResource extends DigitalWalletBaseTest {
 		testData = new PropertyFileLoader();
 
 		Response response = given().that().spec(requestSpec).header("Authorization", "Bearer" + token).when()
-				.get("/customer/" + testData.getProperty("testpaycustomeruuid") + "/wallets/"
-						+ testData.getProperty("externalWalletId") + "/cards/" + testData.getProperty("externalCardId"))
+				.get("/customer/" + testData.getProperty("test.pay.customer.uuid") + "/wallets/"
+						+ testData.getProperty("external.wallet.id") + "/cards/" + testData.getProperty("external.card.id"))
 				.then().extract().response();
 
 		return response;

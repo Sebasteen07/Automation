@@ -20,8 +20,8 @@ public class CommonUtils {
 		property.load(configStream);
 		configStream.close();
 		
-		property.setProperty("externaltransactionid",value1 );
-		property.setProperty("orderid",value2 );
+		property.setProperty("external.transaction.id",value1 );
+		property.setProperty("order.id",value2 );
 		FileOutputStream output = new FileOutputStream(filename);
 		property.store(output, null);
 	    output.close();
