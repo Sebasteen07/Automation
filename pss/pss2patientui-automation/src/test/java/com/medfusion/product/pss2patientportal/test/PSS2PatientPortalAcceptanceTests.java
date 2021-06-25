@@ -4399,8 +4399,8 @@ public class PSS2PatientPortalAcceptanceTests extends BaseTestNGWebDriver {
 		PSSPropertyFileLoader propertyData = new PSSPropertyFileLoader();
 		Appointment testData = new Appointment();
 		AdminUser adminuser = new AdminUser();
-		propertyData.setAdminNG(adminuser);
-		propertyData.setAppointmentResponseNG(testData);
+		propertyData.setAdminGE(adminuser);
+		propertyData.setAppointmentResponseGE(testData);
 		PSSPatientUtils psspatientutils = new PSSPatientUtils();
 		PSSAdminUtils adminUtils = new PSSAdminUtils();
 		log("Login to PSS 2.0 Admin portal");
