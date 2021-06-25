@@ -90,7 +90,6 @@ public class PSSPropertyFileLoader {
 		appointValues.setExcludeSlotSecondValue(property.getProperty("exclude.secondvalue.gw"));
 		appointValues.setSlotValue(property.getProperty("slotvalue.gw"));
 
-
 		appointValues.setFirstNameCarePatient(property.getProperty("firstname.carepatient.gw"));
 		appointValues.setLastNameCarePatient(property.getProperty("lastname.carepatient.gw"));
 		appointValues.setDobCarePatient(property.getProperty("dob.carepatient.gw"));
@@ -228,7 +227,7 @@ public class PSSPropertyFileLoader {
 
 	}
 
-	public void setAppointmentResponseGE(Appointment appointValues) {	
+	public void setAppointmentResponseGE(Appointment appointValues) {
 		Log4jUtil.log("Loading data for GE appointment related cases..");
 		appointValues.setLinkLocationURL(property.getProperty("link.location.url.ge"));
 		appointValues.setLinkProviderURL(property.getProperty("link.provider.url.ge"));
@@ -297,8 +296,6 @@ public class PSSPropertyFileLoader {
 		appointValues.setExcludeSlotFirstValue(property.getProperty("exclude.firstvalue.ge"));
 		appointValues.setExcludeSlotSecondValue(property.getProperty("exclude.secondvalue.ge"));
 		appointValues.setSlotValue(property.getProperty("slotvalue.ge"));
-
-
 
 		appointValues.setFirstNameCarePatient(property.getProperty("firstNameCarePatientGE"));
 		appointValues.setLastNameCarePatient(property.getProperty("lastNameCarePatientGE"));
@@ -386,7 +383,6 @@ public class PSSPropertyFileLoader {
 		appointValues.setExcludeSlotSecondValue(property.getProperty("exclude.secondvalue.ng"));
 		appointValues.setSlotValue(property.getProperty("slotvalue.ng"));
 
-
 		appointValues.setFirstNameCarePatient(property.getProperty("firstNameCarePatientNG"));
 		appointValues.setLastNameCarePatient(property.getProperty("lastNameCarePatientNG"));
 		appointValues.setDobCarePatient(property.getProperty("dobCarePatientNG"));
@@ -398,7 +394,7 @@ public class PSSPropertyFileLoader {
 		appointValues.setMemberID(property.getProperty("memberID"));
 		appointValues.setGroupID(property.getProperty("groupID"));
 		appointValues.setInsurancePhone(property.getProperty("insrancePhone"));
-		
+
 		appointValues.setPreSchedDays(Integer.parseInt(property.getProperty("prescheddays.ng")));
 	}
 
@@ -475,8 +471,10 @@ public class PSSPropertyFileLoader {
 		appointValues.setAccessTokenURL(property.getProperty("access.token.base.url"));
 		appointValues.setBasicURI(property.getProperty("base.url.patient.modulator"));
 		appointValues.setBaseUrlHealth(property.getProperty("base.url.health"));
-		appointValues.setApptTypeNextAvailableAccessTokenUrl(property.getProperty("appt.type.next.available.access.token.url"));
-		appointValues.setBookByNextAvailableAccessTokenUrl(property.getProperty("book.by.next.available.access.token.url"));
+		appointValues.setApptTypeNextAvailableAccessTokenUrl(
+				property.getProperty("appt.type.next.available.access.token.url"));
+		appointValues
+				.setBookByNextAvailableAccessTokenUrl(property.getProperty("book.by.next.available.access.token.url"));
 		appointValues.setApptDetailGuidId(property.getProperty("appt.detail.guid.id"));
 		appointValues.setAnonymousPracticeId(property.getProperty("practice.from.guid.anonymous.practice.id"));
 		appointValues.setAnonymousGuidId(property.getProperty("anonymous.guid.id"));
@@ -487,7 +485,8 @@ public class PSSPropertyFileLoader {
 		appointValues.setLoginlessGuidId(property.getProperty("loginless.guid.id"));
 		appointValues.setLoginlessPrcticeId(property.getProperty("loginless.prctice.id"));
 		appointValues.setTokenForLoginlessGuidId(property.getProperty("token.For.loginless.guid.id"));
-		appointValues.setSessionConfigurationExpirationTime(property.getProperty("session.configuration.expiration.time"));
+		appointValues
+				.setSessionConfigurationExpirationTime(property.getProperty("session.configuration.expiration.time"));
 		appointValues.setPracticeFromGuidSsoId(property.getProperty("practice.from.guid.sso.id"));
 		appointValues.setPracticeSsoId(property.getProperty("practice.sso.id"));
 		appointValues.setGetImagesBookId(property.getProperty("get.images.book.id"));
@@ -511,5 +510,12 @@ public class PSSPropertyFileLoader {
 		appointValues.setApptTypeNextAvailableId(property.getProperty("appt.type.next.available.id"));
 		appointValues.setBooksBynextAvailableId(property.getProperty("books.by.next.available.id"));
 		appointValues.setValidateProviderLinkId(property.getProperty("validate.provider.link.id"));
+		appointValues.setPatientIdPm(property.getProperty("patient.id"));
+		appointValues.setPatientIdReschedule(property.getProperty("patient.id.reschedule"));
+		appointValues.setPatientIdAvailableSlots(property.getProperty("patient.id.available.slots"));
+		appointValues.setPatientIdAppointmentTypesRule(property.getProperty("patient.id.appointment.types.rule"));
+		appointValues.setDisplayName(property.getProperty("books.rule.display.name"));
+		appointValues.setLocationTimeZoneCode(property.getProperty("location.timezone.code"));
+		appointValues.setPastAppointsmentsByPage(property.getProperty("past.appointments.page"));
 	}
 }

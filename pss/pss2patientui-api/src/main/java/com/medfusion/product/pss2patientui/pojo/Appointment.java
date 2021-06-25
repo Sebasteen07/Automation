@@ -224,7 +224,14 @@ public class Appointment {
 	private String appointmentLocationName;
 	private String apptTypeNextAvailableId;
 	private String booksBynextAvailableId;
-
+	private String patientIdPm;
+	private String patientIdReschedule;
+	private String patientIdAvailableSlots;
+	private String patientIdAppointmentTypesRule;
+	private String displayName;
+	private String locationTimeZoneCode;
+	private String pastAppointsmentsByPage;
+	
 	private boolean insuranceDetails = false;
 
 	public Appointment(String providerConfig, String usernameConfig, String passwordConfig, String datetimeConfig, String locationConfig,
@@ -1754,6 +1761,62 @@ public class Appointment {
 
 	public void setMatchPatientId(String matchPatientId) {
 		this.matchPatientId = matchPatientId;
+	}
+	
+	public String getPatientIdPm() {
+		return patientIdPm;
+	}
+
+	public void setPatientIdPm(String patientIdPm) {
+		this.patientIdPm = patientIdPm;
+	}
+
+	public String getPatientIdReschedule() {
+		return patientIdReschedule;
+	}
+
+	public void setPatientIdReschedule(String patientIdReschedule) {
+		this.patientIdReschedule = patientIdReschedule;
+	}
+
+	public String getPatientIdAvailableSlots() {
+		return patientIdAvailableSlots;
+	}
+
+	public void setPatientIdAvailableSlots(String patientIdAvailableSlots) {
+		this.patientIdAvailableSlots = patientIdAvailableSlots;
+	}
+
+	public String getPatientIdAppointmentTypesRule() {
+		return patientIdAppointmentTypesRule;
+	}
+
+	public void setPatientIdAppointmentTypesRule(String patientIdAppointmentTypesRule) {
+		this.patientIdAppointmentTypesRule = patientIdAppointmentTypesRule;
+	}
+
+	public String getDisplayName() {
+		return displayName;
+	}
+
+	public void setDisplayName(String displayName) {
+		this.displayName = displayName;
+	}
+
+	public String getLocationTimeZoneCode() {
+		return locationTimeZoneCode;
+	}
+
+	public void setLocationTimeZoneCode(String locationTimeZoneCode) {
+		this.locationTimeZoneCode = locationTimeZoneCode;
+	}
+
+	public String getPastAppointsmentsByPage() {
+		return pastAppointsmentsByPage;
+	}
+
+	public void setPastAppointsmentsByPage(String pastAppointsmentsByPage) {
+		this.pastAppointsmentsByPage = pastAppointsmentsByPage;
 	}
 
 }

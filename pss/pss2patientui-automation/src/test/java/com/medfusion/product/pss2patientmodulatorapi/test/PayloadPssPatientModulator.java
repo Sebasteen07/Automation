@@ -199,5 +199,215 @@ public class PayloadPssPatientModulator {
 				+ "";
 		return booksByNextAvailable;
 	}
+	
+	public String  booksByRulePayload()
+	{
+		String  getBookByRule="{\r\n"
+				+ "  \"appointmentType\": 203950,\r\n"
+				+ "  \"book\": null,\r\n"
+				+ "  \"flow\": \"loginless\",\r\n"
+				+ "  \"linkGenerationFlow\": false,\r\n"
+				+ "  \"location\": 204200,\r\n"
+				+ "  \"patientDetails\": {\r\n"
+				+ "    \"FN\": \"Test\",\r\n"
+				+ "    \"LN\": \"APISix\",\r\n"
+				+ "    \"DOB\": \"01/28/1997\"\r\n"
+				+ "  },\r\n"
+				+ "  \"patientType\": \"PT_NEW\",\r\n"
+				+ "  \"radius\": 0,\r\n"
+				+ "  \"slotId\": null,\r\n"
+				+ "  \"specialty\": null,\r\n"
+				+ "  \"startDateTime\": null,\r\n"
+				+ "  \"traversal\": true,\r\n"
+				+ "  \"zipcode\": 0\r\n"
+				+ "}";
+		return getBookByRule;
+	}
+	
+	public String  allowOnlineCancellationPayload()
+	{
+		String  allowOnlineCancellation="{\r\n"
+				+ "  \"externalAppointmentId\": \"9522\",\r\n"
+				+ "  \"map\": {\r\n"
+				+ "    \"additionalProp1\": null,\r\n"
+				+ "    \"additionalProp2\": null,\r\n"
+				+ "    \"additionalProp3\": null\r\n"
+				+ "  }\r\n"
+				+ "}";
+		return allowOnlineCancellation;
+	}
+	
+	public String  availableslotsPayload()
+	{
+		String  availableSlots="{\r\n"
+				+ "    \"specialty\": null,\r\n"
+				+ "    \"location\": 204200,\r\n"
+				+ "    \"book\": 204450,\r\n"
+				+ "    \"appointmentType\": 203950,\r\n"
+				+ "    \"startDateTime\": \"05/28/2021\",\r\n"
+				+ "    \"slotId\": null,\r\n"
+				+ "    \"traversal\": false,\r\n"
+				+ "    \"patientType\": \"PT_NEW\",\r\n"
+				+ "    \"extApptId\": null\r\n"
+				+ "}";
+		return availableSlots;
+	}
+	
+	public String  cancelAppointmentPayload()
+	{
+		String  cancelAppointment="{\r\n"
+				+ "    \"appointmentId\": \"9604\",\r\n"
+				+ "    \"cancellationMap\": null\r\n"
+				+ "}";
+		return cancelAppointment;
+	}
+	
+	public String  rescheduleAppointmentPayload()
+	{
+		String  rescheduleAppointment="{\r\n"
+				+ "    \"apptToSchedule\": {\r\n"
+				+ "        \"patientType\": \"PT_NEW\",\r\n"
+				+ "        \"slotId\": \"4994162\",\r\n"
+				+ "        \"specialty\": null,\r\n"
+				+ "        \"book\": 204450,\r\n"
+				+ "        \"appointmentType\": 203950,\r\n"
+				+ "        \"location\": 204200,\r\n"
+				+ "        \"startDateTime\": \"05/30/2021 01:15:00\",\r\n"
+				+ "        \"customQuestion\": \"due to unavailibility\",\r\n"
+				+ "        \"insuranceInfo\": null,\r\n"
+				+ "        \"patientInfo\": {},\r\n"
+				+ "        \"allowDuplicatePatient\": false,\r\n"
+				+ "        \"updatePatientDetails\": {\r\n"
+				+ "            \"FN\": \"Test\",\r\n"
+				+ "            \"LN\": \"APITen\"\r\n"
+				+ "        },\r\n"
+				+ "        \"flow\": \"loginless\",\r\n"
+				+ "        \"appTypeDetail\": null,\r\n"
+				+ "        \"rule\": \"B,L,T\",\r\n"
+				+ "        \"leafNode\": null\r\n"
+				+ "    },\r\n"
+				+ "    \"apptToReschedule\": {\r\n"
+				+ "        \"appointmentId\": \"4831\",\r\n"
+				+ "        \"cancellationMap\": {\r\n"
+				+ "            \"id\": \"\",\r\n"
+				+ "            \"name\": \"\"\r\n"
+				+ "        }\r\n"
+				+ "    }\r\n"
+				+ "}";
+		return rescheduleAppointment;
+	}
+	
+	public String  scheduleAppointmentPayload()
+	{
+		String  scheduleAppointment="{\r\n"
+				+ "  \"allowDupliacatePatient\": false,\r\n"
+				+ "  \"allowDuplicatePatient\": false,\r\n"
+				+ "  \"appTypeCategory\": null,\r\n"
+				+ "  \"appTypeDetail\": null,\r\n"
+				+ "  \"appointmentType\": \"203950\",\r\n"
+				+ "  \"book\": \"204450\",\r\n"
+				+ "  \"bookCategory\":null,\r\n"
+				+ "  \"customQuestion\": \"sdsd\",\r\n"
+				+ "  \"extApptId\": null,\r\n"
+				+ "  \"flow\": \"loginless\",\r\n"
+				+ " \r\n"
+				+ "  \"leafNode\": null,\r\n"
+				+ "  \"location\": \"204200\",\r\n"
+				+ "  \"nextAvailable\": true,\r\n"
+				+ "\r\n"
+				+ "  \"patientType\": \"PT_NEW\",\r\n"
+				+ "  \"practiceTiezone\": \"EDT\",\r\n"
+				+ "  \"rule\": \"T,L,B\",\r\n"
+				+ "  \"slotId\": \"4993624\",\r\n"
+				+ "  \"specialty\": null,\r\n"
+				+ "  \"stackingFlag\": true,\r\n"
+				+ "  \"startDateTime\": \"05/22/2021 02:45:00\",\r\n"
+				+ "  \"traversal\": true\r\n"
+				+ "  \r\n"
+				+ "}";
+		return scheduleAppointment;
+	}
+	
+	public String  timeZnCodeForDatePayload()
+	{
+		String  timezncodefrdate="{\r\n"
+				+ "  \"dateTime\": \"05/21/2021 01:45:00\",\r\n"
+				+ "  \"locTimeZone\": \"America/New_York\"\r\n"
+				+ "}";
+		return timezncodefrdate;
+	}
+	
+	public String  appointmentTypesByrulePayload()
+	{
+		String  appmntTypesByRule="{\r\n"
+				+ "  \"appointmentType\": null,\r\n"
+				+ "  \"book\": null,\r\n"
+				+ "  \"flow\": \"loginless\",\r\n"
+				+ "  \"linkGenerationFlow\": false,\r\n"
+				+ "  \"location\": null,\r\n"
+				+ "  \r\n"
+				+ "  \"patientType\": \"PT_NEW\",\r\n"
+				+ "  \"radius\": 0,\r\n"
+				+ "  \"slotId\": null,\r\n"
+				+ "  \"specialty\": null,\r\n"
+				+ "  \"startDateTime\": null,\r\n"
+				+ "  \"traversal\": true,\r\n"
+				+ "  \"zipcode\": 0\r\n"
+				+ "}";
+		return appmntTypesByRule;
+	}
+	public String  cancelStatusPayload()
+	{
+		String  cancelstatus="{\r\n"
+				+ "	\"acceptComment\": true,\r\n"
+				+ "\r\n"
+				+ "	\"categoryId\": null,\r\n"
+				+ "	\"customMessage\": null,\r\n"
+				+ "	\"customQuestion\": null,\r\n"
+				+ "	\"displayName\": null,\r\n"
+				+ "\r\n"
+				+ "	\"extAppointmentTypeId\": \"158\",\r\n"
+				+ "	\"extApptId\": null,\r\n"
+				+ "	\"extBookId\": \"string\",\r\n"
+				+ "	\"extLocationId\": \"string\",\r\n"
+				+ "	\"id\": 203950,\r\n"
+				+ "	\"lastQuestRequired\": true,\r\n"
+				+ "	\"messages\": null,\r\n"
+				+ "	\"name\": \"string\",\r\n"
+				+ "	\"nextAvailability\": true,\r\n"
+				+ "	\"nextAvailabilityDate\": null,\r\n"
+				+ "	\"nextAvailabilitySlot\": null,\r\n"
+				+ "	\"numberOfDays\": 0,\r\n"
+				+ "	\"preventScheduling\": 0,\r\n"
+				+ "\r\n"
+				+ "	\"type\": null,\r\n"
+				+ "	\"visitReason\": null\r\n"
+				+ "}";
+		return cancelstatus;
+	}
+	
+	public String commentDetailsPayload()
+	{
+		String  commentDetails="{\r\n"
+				+ "  \"appointmentType\": 203950,\r\n"
+				+ "  \"book\": 204450,\r\n"
+				+ "  \"flow\": null,\r\n"
+				+ "  \"linkGenerationFlow\": true,\r\n"
+				+ "  \"location\": 204200,\r\n"
+				+ "  \"patientDetails\": {\r\n"
+				+ "    \"additionalProp1\": null,\r\n"
+				+ "    \"additionalProp2\": null,\r\n"
+				+ "    \"additionalProp3\": null\r\n"
+				+ "  },\r\n"
+				+ "  \"patientType\": \"PT_NEW\",\r\n"
+				+ "  \"radius\": 0,\r\n"
+				+ "  \"slotId\": \"4993623\",\r\n"
+				+ "  \"specialty\": null,\r\n"
+				+ "  \"startDateTime\": \"05/22/2021 02:30:00\",\r\n"
+				+ "  \"traversal\": false,\r\n"
+				+ "  \"zipcode\": 0\r\n"
+				+ "}";
+		return commentDetails;
+	}
 
 }
