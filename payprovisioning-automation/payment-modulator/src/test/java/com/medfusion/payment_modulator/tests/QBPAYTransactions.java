@@ -23,25 +23,25 @@ public class QBPAYTransactions extends BaseRest {
 	
 	@Test
 	public void makeAQBPAYSale() throws Exception {
-		modulatorSale(testData.getProperty("qbpaymmid"), flag);
+		modulatorSale(testData.getProperty("qbpay.mmid"), flag);
 	
 	}
 	
 	@Test
 	public void voidAQBPAYSale() throws Exception {
-		voidASale(testData.getProperty("qbpaymmid"), flag);
+		voidASale(testData.getProperty("qbpay.mmid"), flag);
 		
 	}
 	
 	@Test
 	public void refundAQBPAYSale() throws Exception {
-		refundASale(testData.getProperty("qbpaymmid"),testData.getProperty("fullrefundamount"), flag);
+		refundASale(testData.getProperty("qbpay.mmid"),testData.getProperty("full.refund.amount"), flag);
 		
 	}
 	
 	@Test
 	public void partialRefundAQBPAYSale() throws Exception {
-		refundASale(testData.getProperty("qbpaymmid"),testData.getProperty("partialrefundamount"), flag);
+		refundASale(testData.getProperty("qbpay.mmid"),testData.getProperty("partial.refund.amount"), flag);
 		
 	}
 }
