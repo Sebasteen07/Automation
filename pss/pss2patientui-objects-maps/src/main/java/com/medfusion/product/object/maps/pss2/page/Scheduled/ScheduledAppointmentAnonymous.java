@@ -37,10 +37,7 @@ public class ScheduledAppointmentAnonymous extends PSS2MainPage {
 
 	public void downloadCalander() {
 		IHGUtil.waitForElement(driver, 15, linkAddToCalander);
-		log("Before Click- ");
 		linkAddToCalander.click();
-		log("After Click");
-
 	}
 
 	public HomePage backtoHomePage() {
