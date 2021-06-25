@@ -1076,13 +1076,15 @@ public class PSSPatientUtils extends BaseTestNGWebDriver{
 			ConfirmationPage confirmationpage = updateinsurancePage.skipInsuranceUpdate();
 			appointmentToScheduled(confirmationpage, testData);
 		} else {
-			ConfirmationPage confirmationpage;
-			if (testData.isFutureApt()) {
-				confirmationpage = aptDateTime.selectFutureApptDateTime(testData.getIsNextDayBooking());
-
-			} else {
-				confirmationpage = aptDateTime.selectAppointmentDateTime(testData.getIsNextDayBooking());
-			}
+			ConfirmationPage confirmationpage = aptDateTime.selectAppointmentDateTime(testData.getIsNextDayBooking());
+			/*
+			 * ConfirmationPage confirmationpage; if (testData.isFutureApt()) {
+			 * confirmationpage =
+			 * aptDateTime.selectFutureApptDateTime(testData.getIsNextDayBooking());
+			 * 
+			 * } else { confirmationpage =
+			 * aptDateTime.selectAppointmentDateTime(testData.getIsNextDayBooking()); }
+			 */
 
 			// appointmentToScheduledAnonymous(confirmationpage, testData);
 			appointmentToScheduled(confirmationpage, testData);
