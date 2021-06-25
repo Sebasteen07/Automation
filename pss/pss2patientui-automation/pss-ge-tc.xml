@@ -10,6 +10,12 @@
 					<include name="testE2ELinkGenandDeleteLinkGE()" />
 					<include name="testAcceptSameDayGE()" />
 					<include name="testE2ELinkGenerationGE()" />
+					<include name="testE2ELoginlessForExistingPatientGE()" />
+					<include name="testE2ELinkGenerationGE()" />
+					<include name="testTimeMarkGE()" />
+					
+					
+					
 
 
 				</methods>
