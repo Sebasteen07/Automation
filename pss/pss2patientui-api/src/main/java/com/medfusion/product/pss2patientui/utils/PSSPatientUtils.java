@@ -1095,9 +1095,9 @@ public class PSSPatientUtils extends BaseTestNGWebDriver{
 		for (WebElement ele : confirmationpage.getAppointmentDetails()) {
 			log("apt Details= " + ele.getText());
 		}
-		if(testData.isLastQuestionOptional() == true) {
-			confirmationpage.enterLastQuestion();
-		}
+//		if(testData.isLastQuestionOptional() == true) {
+//			confirmationpage.enterLastQuestion();
+//		}
 //		ScheduledAppointmentAnonymous scheduledAppointmentAnonymous = confirmationpage.appointmentConfirmedAnonymous();
 //		log("appointment ID = " + scheduledAppointmentAnonymous.getAppointmentID());
 //		log("Add to calendar option is displayed and is clickable.");
@@ -1130,13 +1130,13 @@ public class PSSPatientUtils extends BaseTestNGWebDriver{
 			Log4jUtil.log("apt Details= " + ele.getText());
 
 		}
-
-		ScheduledAppointment scheduledappointment = confirmationpage.rescheduleAppointmentConfirmed();
-		Log4jUtil.log("appointment ID = " + scheduledappointment.getAppointmentID());
-		Log4jUtil.log("Add to calendar option is displayed and is clickable.");
-		scheduledappointment.downloadCalander();
-		Thread.sleep(2000);
-		readICSFile(filePath());
+//
+//		ScheduledAppointment scheduledappointment = confirmationpage.rescheduleAppointmentConfirmed();
+//		Log4jUtil.log("appointment ID = " + scheduledappointment.getAppointmentID());
+//		Log4jUtil.log("Add to calendar option is displayed and is clickable.");
+//		scheduledappointment.downloadCalander();
+//		Thread.sleep(2000);
+//		readICSFile(filePath());
 	}
 
 	public void apptRescheduledwithTextReason(ConfirmationPage confirmationpage, Appointment testData) throws Exception {
@@ -1150,16 +1150,16 @@ public class PSSPatientUtils extends BaseTestNGWebDriver{
 
 		}
 
-		Log4jUtil.log("Enter the Reschedule Reason");
-		confirmationpage.sendRescheduleReason();
-		assertEquals(confirmationpage.maxLengthRescheduleReason(), 500, "The max length of Reschedule reason is not 500, so test case failed");
-
-		ScheduledAppointment scheduledappointment = confirmationpage.rescheduleAppointmentConfirmed();
-		Log4jUtil.log("appointment ID = " + scheduledappointment.getAppointmentID());
-		Log4jUtil.log("Add to calendar option is displayed and is clickable.");
-		scheduledappointment.downloadCalander();
-		Thread.sleep(2000);
-		readICSFile(filePath());
+//		Log4jUtil.log("Enter the Reschedule Reason");
+//		confirmationpage.sendRescheduleReason();
+//		assertEquals(confirmationpage.maxLengthRescheduleReason(), 500, "The max length of Reschedule reason is not 500, so test case failed");
+//
+//		ScheduledAppointment scheduledappointment = confirmationpage.rescheduleAppointmentConfirmed();
+//		Log4jUtil.log("appointment ID = " + scheduledappointment.getAppointmentID());
+//		Log4jUtil.log("Add to calendar option is displayed and is clickable.");
+//		scheduledappointment.downloadCalander();
+//		Thread.sleep(2000);
+//		readICSFile(filePath());
 	}
 
 	public void apptRescheduledDropdownReason(ConfirmationPage confirmationpage, Appointment testData) throws Exception {
@@ -1171,15 +1171,15 @@ public class PSSPatientUtils extends BaseTestNGWebDriver{
 			Log4jUtil.log("apt Details= " + ele.getText());
 		}
 
-		Log4jUtil.log("Select reason from drop down list");
-		confirmationpage.selectRescheduleReason();
-
-		ScheduledAppointment scheduledappointment = confirmationpage.rescheduleAppointmentConfirmed();
-		Log4jUtil.log("appointment ID = " + scheduledappointment.getAppointmentID());
-		Log4jUtil.log("Add to calendar option is displayed and is clickable.");
-		scheduledappointment.downloadCalander();
-		Thread.sleep(2000);
-		readICSFile(filePath());
+//		Log4jUtil.log("Select reason from drop down list");
+//		confirmationpage.selectRescheduleReason();
+//
+//		ScheduledAppointment scheduledappointment = confirmationpage.rescheduleAppointmentConfirmed();
+//		Log4jUtil.log("appointment ID = " + scheduledappointment.getAppointmentID());
+//		Log4jUtil.log("Add to calendar option is displayed and is clickable.");
+//		scheduledappointment.downloadCalander();
+//		Thread.sleep(2000);
+//		readICSFile(filePath());
 	}
 
 	public ScheduledAppointment selectAFlow(WebDriver driver, String rule, HomePage homepage, Appointment testData) throws Exception {
