@@ -731,7 +731,7 @@ public class PSS2PatientPortalAcceptanceTests extends BaseTestNGWebDriver {
 				testData.getLastName(), testData.getDob(), testData.getEmail(), testData.getGender(),
 				testData.getZipCode(), testData.getPrimaryNumber());
 		homepage.btnStartSchedClick();
-		// psspatientutils.selectAFlow(driver, rule, homepage, testData);
+		psspatientutils.selectAFlow(driver, rule, homepage, testData);
 
 	}
 

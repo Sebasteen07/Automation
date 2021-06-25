@@ -1084,7 +1084,8 @@ public class PSSPatientUtils extends BaseTestNGWebDriver{
 				confirmationpage = aptDateTime.selectAppointmentDateTime(testData.getIsNextDayBooking());
 			}
 
-			appointmentToScheduledAnonymous(confirmationpage, testData);
+			// appointmentToScheduledAnonymous(confirmationpage, testData);
+			appointmentToScheduled(confirmationpage, testData);
 		}
 	}
 
@@ -1865,7 +1866,8 @@ public class PSSPatientUtils extends BaseTestNGWebDriver{
 		log("Heading of last question is " + confirmationPage.getHeadingLastQuestin());
 
 		confirmationPage.validateLengthLastQueReq();
-		appointmentToScheduledAnonymous(confirmationPage, testData);
+		// appointmentToScheduledAnonymous(confirmationPage, testData);
+		appointmentToScheduled(confirmationPage, testData);
 	}
 	
 	public void timeMarkLTBRule(HomePage homePage, Appointment testData, WebDriver driver) throws InterruptedException
