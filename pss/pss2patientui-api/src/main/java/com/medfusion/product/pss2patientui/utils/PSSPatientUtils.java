@@ -1113,12 +1113,12 @@ public class PSSPatientUtils extends BaseTestNGWebDriver{
 		for (WebElement ele : confirmationpage.getAppointmentDetails()) {
 			Log4jUtil.log("apt Details= " + ele.getText());
 		}
-		ScheduledAppointment scheduledappointment = confirmationpage.appointmentConfirmed();
-		Log4jUtil.log("appointment ID = " + scheduledappointment.getAppointmentID());
-		Log4jUtil.log("Add to calendar option is displayed and is clickable.");
-		scheduledappointment.downloadCalander();
-		Thread.sleep(2000);
-		readICSFile(filePath());
+//		ScheduledAppointment scheduledappointment = confirmationpage.appointmentConfirmed();
+//		Log4jUtil.log("appointment ID = " + scheduledappointment.getAppointmentID());
+//		Log4jUtil.log("Add to calendar option is displayed and is clickable.");
+//		scheduledappointment.downloadCalander();
+//		Thread.sleep(2000);
+//		readICSFile(filePath());
 	}
 
 	public void appointmentToRescheduled(ConfirmationPage confirmationpage, Appointment testData) throws Exception {
