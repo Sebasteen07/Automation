@@ -21,7 +21,7 @@ public class GatewayProxyTransactionTests extends GatewayProxyBaseTest {
 	@Test
 	public void makeGatewayProxySale() throws Exception {
 		GatewayProxyTransactionResource transaction = new GatewayProxyTransactionResource();
-		transaction.makeASale(testData.getProperty("proxymmid"));
+		transaction.makeASale(testData.getProperty("proxy.mmid"));
 
 	}
 

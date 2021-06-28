@@ -62,7 +62,7 @@ public class AdminAppointment extends SettingsTab {
 
 	@FindBy(how = How.XPATH, using = "//*[@id='appt']/form[1]/div[4]/div/div/label[1]/i")
 	private WebElement nextAvailable;
-	
+
 	@FindBy(how = How.XPATH, using = "//*[@id='nextavailable']")
 	private WebElement nextAvailableStatus;
 
@@ -187,16 +187,14 @@ public class AdminAppointment extends SettingsTab {
 	}
 
 	public Boolean isShowCancellationRescheduleReason() {
-		// commonMethods.highlightElement(showCancelReschedReasonLabel);
-		String str = showCancelReschedReason.getAttribute("ng-reflect-model");
-		log(str);
-		return Boolean.parseBoolean(str);
+
+		return showCancelReschedReason.isSelected();
+
 	}
 
 	public Boolean isShowCancellationReasonPM() {
-		// commonMethods.highlightElement(showCancelReasonPMLabel);
-		String str = showCancelReasonPM.getAttribute("ng-reflect-model");
-		return Boolean.parseBoolean(str);
+
+		return showCancelReasonPM.isSelected();
 	}
 
 	public void blockPatientsAsPerMonth(String lastSeenMonth) {
@@ -245,10 +243,10 @@ public class AdminAppointment extends SettingsTab {
 	}
 
 	public Boolean toggleNextAvailableStatus() {
-		log("Status of NextAvailable Button is  "+nextAvailableStatus.isSelected());
+		log("Status of NextAvailable Button is  " + nextAvailableStatus.isSelected());
 		return nextAvailableStatus.isSelected();
 	}
-	
+
 	public void toggleNextavailableClick() throws InterruptedException {
 		javascriptClick(nextAvailable);
 		log("Clicked on nextAvailable");

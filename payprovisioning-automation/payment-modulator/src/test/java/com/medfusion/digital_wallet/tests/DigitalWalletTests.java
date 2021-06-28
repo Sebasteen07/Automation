@@ -83,7 +83,7 @@ public class DigitalWalletTests extends DigitalWalletBaseTest {
 	@Test
 	public void getDetailsOfCardsWithValidAuth() throws Exception {
 		String token = DigitalWalletAPIUtils.getTokenForCustomer();
-		String cardNumber = testData.getProperty("cardnumber");
+		String cardNumber = testData.getProperty("card.number");
 		DigitalWalletResource digitalWallet = new DigitalWalletResource();
 		Response response = digitalWallet.getDetailsOfCards(token);
 		JsonPath jsonPath = new JsonPath(response.asString());
@@ -96,7 +96,7 @@ public class DigitalWalletTests extends DigitalWalletBaseTest {
 		Assert.assertTrue(!jsonPath.get("cardHolderName").toString().isEmpty());
 
 		String aliasToVerify = testData.getProperty("type") + "-" + cardNumber.substring(cardNumber.length() - 4) + "-"
-				+ testData.getProperty("expirationnumber");
+				+ testData.getProperty("expiration.number");
 		Assert.assertEquals(aliasToVerify, jsonPath.get("cardAlias"));
 
 	}

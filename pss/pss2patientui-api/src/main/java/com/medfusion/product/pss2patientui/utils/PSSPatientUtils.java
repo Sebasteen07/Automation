@@ -312,7 +312,7 @@ public class PSSPatientUtils extends BaseTestNGWebDriver{
 
 			if (testData.isInsuranceDetails() == true) {
 				log("Member ID- "+testData.getMemberID() +" Group Id- "+testData.getGroupID()+" Phone Number- "+testData.getInsurancePhone());
-				homepage.updateInsuranceInfo(driver, testData.getMemberID() , testData.getGroupID(), testData.getInsurancePhone());
+				startappointmentInOrder=homepage.updateInsuranceInfo(driver, testData.getMemberID() , testData.getGroupID(), testData.getInsurancePhone());
 
 			} else {
 				log("insurance is present on home Page going to skip insurance page");
