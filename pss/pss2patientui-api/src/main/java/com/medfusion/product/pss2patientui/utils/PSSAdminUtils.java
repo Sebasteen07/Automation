@@ -585,10 +585,10 @@ public class PSSAdminUtils extends BaseTestNGWebDriver{
 	public void acceptforsameDay(WebDriver driver, AdminUser adminuser, Appointment appointment) throws Exception {
 		PSS2PracticeConfiguration psspracticeConfig = loginToAdminPortal(driver, adminuser);
 		psspracticeConfig = psspracticeConfig.gotoPracticeConfigTab();
-//		appointment.setBusinesshourStartTime(psspracticeConfig.gettextbusineesHourStarttime());
-//		appointment.setBusinesshourEndTime(psspracticeConfig.gettextbusineesHourEndtime());
-//		Log4jUtil.log("Starttime is " + appointment.getBusinesshourStartTime());
-//		Log4jUtil.log("End time is" + appointment.getBusinesshourEndTime());
+		appointment.setBusinesshourStartTime(psspracticeConfig.gettextbusineesHourStarttime());
+		appointment.setBusinesshourEndTime(psspracticeConfig.gettextbusineesHourEndtime());
+		Log4jUtil.log("Starttime is " + appointment.getBusinesshourStartTime());
+		Log4jUtil.log("End time is" + appointment.getBusinesshourEndTime());
 		PatientFlow patientflow = psspracticeConfig.gotoPatientFlowTab();
 		setRulesNoSpecialitySet1(patientflow);
 		adminuser.setRule(patientflow.getRule());
