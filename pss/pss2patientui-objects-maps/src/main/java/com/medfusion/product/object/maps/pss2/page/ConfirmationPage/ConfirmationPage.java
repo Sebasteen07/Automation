@@ -133,6 +133,7 @@ public class ConfirmationPage extends PSS2MainPage {
 	}
 
 	public void apptConfm() {
+		log("-----------I AM IN apptConfm METHOD-----------");
 		commonMethods.highlightElement(buttonAllGood);
 		jse.executeScript("arguments[0].click();", buttonAllGood);
 

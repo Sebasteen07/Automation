@@ -1070,6 +1070,7 @@ public class PSSPatientUtils extends BaseTestNGWebDriver{
 	public void clickOnSubmitAppt(Boolean isInsuranceDisplated, AppointmentDateTime aptDateTime, Appointment testData, WebDriver driver) throws Exception {
 		Log4jUtil.log("Step 12: Verify Confirmation page and Scheduled page");
 		Log4jUtil.log("Is Insurance Page Displated= " + isInsuranceDisplated);
+		log("I am in clickOnSubmitAppt METHOD-------");
 		Thread.sleep(2000);
 		if (isInsuranceDisplated) {
 			UpdateInsurancePage updateinsurancePage = aptDateTime.selectAppointmentDateAndTime(driver);
@@ -1110,6 +1111,7 @@ public class PSSPatientUtils extends BaseTestNGWebDriver{
 	}
 
 	public void appointmentToScheduled(ConfirmationPage confirmationpage, Appointment testData) throws Exception {
+		log("--------I AM IN appointmentToScheduled METHOD---------");
 		Log4jUtil.log("Step 13: Verify if Appointment is scheduled and download ics file");
 		String aptScheduledAt = confirmationpage.getAppointmentDetails().get((confirmationpage.getAppointmentDetails().size() - 1)).getText();
 		Log4jUtil.log(">> " + aptScheduledAt);
@@ -1117,6 +1119,7 @@ public class PSSPatientUtils extends BaseTestNGWebDriver{
 			Log4jUtil.log("apt Details= " + ele.getText());
 		}
 		confirmationpage.apptConfm();
+		log("Appointment is SuccesFull");
 
 		/*
 		 * ScheduledAppointment scheduledappointment =
@@ -1127,6 +1130,7 @@ public class PSSPatientUtils extends BaseTestNGWebDriver{
 		 * scheduledappointment.downloadCalander(); Thread.sleep(2000);
 		 * readICSFile(filePath());
 		 */
+
 	}
 
 	public void appointmentToRescheduled(ConfirmationPage confirmationpage, Appointment testData) throws Exception {
