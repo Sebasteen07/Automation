@@ -1196,6 +1196,7 @@ public class PSSPatientUtils extends BaseTestNGWebDriver{
 
 	public ScheduledAppointment selectAFlow(WebDriver driver, String rule, HomePage homepage, Appointment testData) throws Exception {
 		Log4jUtil.log("selectAFlow method started");
+		log("------------I am in selectAFlow METHOD-----");
 		Thread.sleep(1000);
 		testData.setIsInsuranceEnabled(false);
 		Thread.sleep(1000);
@@ -1245,7 +1246,8 @@ public class PSSPatientUtils extends BaseTestNGWebDriver{
 		return PageFactory.initElements(driver, ScheduledAppointment.class);
 	}
 
-	public void selectAFlow(WebDriver driver, String rule, HomePage homepage, Appointment testData, AppointmentPage appointment) throws Exception {
+	public void selectAFlow_Old(WebDriver driver, String rule, HomePage homepage, Appointment testData,
+			AppointmentPage appointment) throws Exception {
 		if (homepage.isPopUP()) {
 			homepage.popUPClick();
 		}
