@@ -63,6 +63,8 @@ public class PSSConstants {
 	public final static String RULE_PROVIDER_VALUE = "1: Object";
 	public final static String RULE_LOCATION_VALUE = "0: Object";
 	public final static String RULE_APPOINTMENT_VALUE = "2: Object";
+	public final static String RULE_APPOINTMENT_VALUE_NOPROVIDER = "1: Object";
+
 
 	public final static String MAX_SLOTS_MONTHS = "1";
 	public final static String DISPLAY_SLOTS_COUNT = "2";

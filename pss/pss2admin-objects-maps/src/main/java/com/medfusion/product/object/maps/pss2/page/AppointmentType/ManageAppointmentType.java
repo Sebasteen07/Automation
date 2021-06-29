@@ -10,6 +10,7 @@ import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.FindAll;
 import org.openqa.selenium.support.FindBy;
 import org.openqa.selenium.support.How;
+import org.openqa.selenium.support.ui.Select;
 
 import com.medfusion.common.utils.IHGUtil;
 import com.medfusion.product.object.maps.pss2.page.PSS2MenuPage;
@@ -59,7 +60,19 @@ public class ManageAppointmentType extends PSS2MenuPage {
 	@FindBy(how = How.XPATH, using = "//div[@id='toast-container']")
 	private WebElement aptTypeSaveMsg;	
 	
-
+	@FindBy(how = How.XPATH, using = "//table/tbody/tr/td/span/span/a")
+	private WebElement selectAppointment;	
+	
+	@FindBy(how = How.XPATH, using = "//*[@id='tabs3']/li[4]/a")
+	private WebElement goConfiguration;	
+	
+	@FindBy(how = How.XPATH, using = "//*[@name='apptTimeMark']")
+	private WebElement timeMarkOption;
+	
+	@FindBy(how = How.XPATH, using = "//*[@id='tabX33']/form/fieldset[2]/div/div/button[1]")
+	private WebElement saveConfig;
+		
+	
 	public ManageAppointmentType(WebDriver driver) {
 		super(driver);
 	}
@@ -69,6 +82,7 @@ public class ManageAppointmentType extends PSS2MenuPage {
 	public void searchByAptTypeName(String appointmentName) {
 		searchAppointment.sendKeys(appointmentName);
 	}
+
 
 	public List<WebElement> aptNameList() {
 		IHGUtil.waitForElement(driver, 120, searchAppointment);
@@ -103,6 +117,25 @@ public class ManageAppointmentType extends PSS2MenuPage {
 		
 	}
 	
+	public void selectAppointment(String appointment) throws InterruptedException {
+		searchByAptTypeName(appointment);
+		IHGUtil.waitForElement(driver, 60, selectAppointment);
+		selectAppointment.click();
+		log("clicked on Appointment");
+	} 
+	public void goConfiguration()
+	{
+		log("Click on the Configuration");
+		goConfiguration.click();
+		log("Clicked on the Configuration");
+
+	}
 	
-	
+	public void timeMark(String timeMarkValue) {
+		Select selectOptions = new Select(timeMarkOption);
+		selectOptions.selectByValue(timeMarkValue);
+		timeMarkOption.click();
+		saveConfig.click();
+
+	}
 }

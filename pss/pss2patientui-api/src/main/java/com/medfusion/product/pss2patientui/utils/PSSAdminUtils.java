@@ -347,7 +347,7 @@ public class PSSAdminUtils extends BaseTestNGWebDriver{
 		log("-----------------------------------------------------------------------------------------");
 		patientflow.addNewRulesButton();
 		patientflow.selectRuleName("AppointmentType");
-		patientflow.addNewRules(PSSConstants.RULE_APPOINTMENT_VALUE);
+		patientflow.addNewRules(PSSConstants.RULE_APPOINTMENT_VALUE_NOPROVIDER);
 		patientflow.addNewRules(PSSConstants.RULE_LOCATION_VALUE);
 		patientflow.saveRule();
 		Thread.sleep(1000);
@@ -355,7 +355,7 @@ public class PSSAdminUtils extends BaseTestNGWebDriver{
 		patientflow.addNewRulesButton();
 		patientflow.selectRuleName("Location");
 		patientflow.addNewRules(PSSConstants.RULE_LOCATION_VALUE);
-		patientflow.addNewRules(PSSConstants.RULE_APPOINTMENT_VALUE);
+		patientflow.addNewRules(PSSConstants.RULE_APPOINTMENT_VALUE_NOPROVIDER);
 		patientflow.saveRule();
 		Thread.sleep(1000);
 		log("--------------------------------WAIT FOR RULE LTB TO BE ADDED--------------------------------");
@@ -826,6 +826,23 @@ public class PSSAdminUtils extends BaseTestNGWebDriver{
 		manageResource.timeMark(appointment.getTimeMarkValue());
 		
 	}
+	
+	public void timeMarkWithShowOff(WebDriver driver, AdminUser adminUser, Appointment appointment) throws Exception
+	{
+		PSS2PracticeConfiguration pssPracticeConfig = loginToAdminPortal(driver, adminUser);
+		pssPracticeConfig = pssPracticeConfig.gotoPracticeConfigTab();
+		PatientFlow patientFlow =pssPracticeConfig.gotoPatientFlowTab();
+		patientFlow.turnOffProvider();
+		setRulesNoProviderSet1(patientFlow);
+		AdminPatientMatching adminPatientMatching = patientFlow.gotoPatientMatchingTab();
+		adminPatientMatching.patientMatchingSelection();
+		ManageAppointmentType manageAppointmentType = pssPracticeConfig.gotoAppointment();
+		pageRefresh(driver);
+		manageAppointmentType.selectAppointment(appointment.getAppointmenttype());
+		manageAppointmentType.goConfiguration();
+		manageAppointmentType.timeMark(appointment.getTimeMarkValue());
+		
+	}
 	public void linkGenerationWithProvider(WebDriver driver, AdminUser adminUser, Appointment testData, String urlToUse) throws Exception {
 		PSS2PracticeConfiguration pssPracticeConfig = loginToAdminPortal(driver, adminUser);
 		PatientFlow patientFlow =pssPracticeConfig.gotoPatientFlowTab();
@@ -841,7 +858,7 @@ public class PSSAdminUtils extends BaseTestNGWebDriver{
 		adminPatientMatching.patientMatchingSelection();
 		ManageResource manageResource = pssPracticeConfig.gotoResource();
 		pageRefresh(driver);
-		manageResource.selectResource(testData.getLinkProvider());
+		manageResource.selectResource(testData.getProvider());
 		manageResource.clickLocation();
 		manageResource.offAllLocationToggle();
 		patientFlow.logout();
