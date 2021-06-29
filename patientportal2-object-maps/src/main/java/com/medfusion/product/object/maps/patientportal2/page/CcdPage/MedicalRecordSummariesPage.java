@@ -47,16 +47,16 @@ public class MedicalRecordSummariesPage extends JalapenoMenu {
 	@FindBy(how = How.ID, using = "healthRecordRequest")
 	private WebElement healthRecordRequestButton;
 
-	@FindBy(how = How.XPATH, using = "//*[@id=\"ccdTable\"]/tbody[1]/tr/td[1]/input")
+	@FindBy(how = How.XPATH, using = "(//*[@type='checkbox'])[1]")
 	private WebElement firstVisibleCCDCheckbox;
 
-	@FindBy(how = How.XPATH, using = "//*[@id=\"ccdTable\"]/tbody[3]/tr/td[1]/input")
+	@FindBy(how = How.XPATH, using = "(//*[@type='checkbox'])[2]")
 	private WebElement secondVisibleCCDCheckbox;
 
 	@FindBy(how = How.XPATH, using = "//*[@id=\"ccdTable\"]/tbody[1]/tr/td[2]/a")
 	private WebElement firstVisibleCCDDate;
 
-	@FindBy(how = How.XPATH, using = "//*[@id=\"ccdTable\"]/tbody[3]/tr/td[2]/a")
+	@FindBy(how = How.XPATH, using = "//*[@id=\"ccdTable\"]/tbody[2]/tr/td[2]/a")
 	private WebElement secondVisibleCCDDate;
 
 	@FindBy(how = How.XPATH, using = "//*[@id=\"ccdTable\"]/tbody[3]/tr/td[2]/a")
@@ -171,6 +171,7 @@ public class MedicalRecordSummariesPage extends JalapenoMenu {
 	}
 
 	public void selectFirstVisibleCCD() {
+		new WebDriverWait(driver, 60).until(ExpectedConditions.elementToBeClickable(firstVisibleCCDCheckbox));
 		firstVisibleCCDCheckbox.click();
 	}
 
