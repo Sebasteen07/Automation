@@ -231,7 +231,8 @@ public class Appointment {
 	private String displayName;
 	private String locationTimeZoneCode;
 	private String pastAppointsmentsByPage;
-	
+	private String patientType;
+
 	private boolean insuranceDetails = false;
 
 	public Appointment(String providerConfig, String usernameConfig, String passwordConfig, String datetimeConfig, String locationConfig,
@@ -1817,6 +1818,13 @@ public class Appointment {
 
 	public void setPastAppointsmentsByPage(String pastAppointsmentsByPage) {
 		this.pastAppointsmentsByPage = pastAppointsmentsByPage;
+	}
+	public String getPatientType() {
+		return patientType;
+	}
+
+	public void setPatientType(String patientType) {
+		this.patientType = patientType;
 	}
 
 }

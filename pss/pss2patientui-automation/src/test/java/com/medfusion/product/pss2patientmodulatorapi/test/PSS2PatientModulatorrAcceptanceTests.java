@@ -898,7 +898,7 @@ public class PSS2PatientModulatorrAcceptanceTests extends BaseTestNGWebDriver {
 		String PatientId = postAPIRequest.rescheduleAppointment(testData.getBasicURI(),
 				payloadPatientMod.rescheduleAppointmentPayload(),
 				headerConfig.HeaderwithToken(testData.getAccessToken()), testData.getPracticeId(),
-				testData.getPatientIdReschedule());
+				testData.getPatientIdReschedule(),testData.getPatientType());
 
 		Assert.assertEquals(PatientId, testData.getPatientIdReschedule(), "PatientId is wrong");
 	}
@@ -920,7 +920,7 @@ public class PSS2PatientModulatorrAcceptanceTests extends BaseTestNGWebDriver {
 
 		String PatientId = postAPIRequest.scheduleAppointment(testData.getBasicURI(),
 				payloadPatientMod.scheduleAppointmentPayload(), headerConfig.HeaderwithToken(testData.getAccessToken()),
-				testData.getPracticeId(), testData.getPatientIdPm());
+				testData.getPracticeId(), testData.getPatientIdPm(),testData.getPatientType());
 		Assert.assertEquals(PatientId, testData.getPatientIdPm(), "PatientId is wrong");
 	}
 

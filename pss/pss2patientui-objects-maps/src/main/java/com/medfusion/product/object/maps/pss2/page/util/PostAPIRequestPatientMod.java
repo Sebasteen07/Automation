@@ -767,33 +767,38 @@ public class PostAPIRequestPatientMod extends BaseTestNGWebDriver {
 	}
 
 	public String rescheduleAppointment(String baseurl, String b, Map<String, String> Header, String practiceId,
-			String patientId) {
+			String patientId,String patientType) {
 		RestAssured.baseURI = baseurl;
 
 		Response response = given().when().headers(Header).body(b).log().all().when()
 				.post(practiceId + "/rescheduleappointment/" + patientId).then().log().all().assertThat()
-				.statusCode(200).extract().response();
+				.statusCode(200).body("patientType", equalTo(patientType)).extract().response();
 
 		JsonPath js = new JsonPath(response.asString());
 		String PatientId = js.getString("patientId");
+		
+		log("patientType is -" + js.getString("patientType"));
 
 		return PatientId;
 	}
 
 	public String scheduleAppointment(String baseurl, String b, Map<String, String> Header, String practiceId,
-			String patientId) {
+			String patientId, String patientType) {
 		RestAssured.baseURI = baseurl;
 
 		Response response = given().when().headers(Header).body(b).log().all().when()
-				.post(practiceId + "/scheduleappointment/" + patientId).then().log().all().assertThat().statusCode(200)
+				.post(practiceId + "/scheduleappointment/" + patientId).then().log().all().assertThat()
+				.statusCode(200).body("patientType", equalTo(patientType))
 				.extract().response();
 
 		JsonPath js = new JsonPath(response.asString());
 		String PatientId = js.getString("patientId");
+		
+		log("patientType is -" + js.getString("patientType"));
+		
 
 		return PatientId;
 	}
-
 	public Response appointmentTypesByRule(String baseurl, String b, Map<String, String> Header, String practiceId,
 			String patientId) {
 

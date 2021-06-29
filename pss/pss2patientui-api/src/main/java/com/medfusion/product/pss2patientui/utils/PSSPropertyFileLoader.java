@@ -525,5 +525,6 @@ public class PSSPropertyFileLoader {
 		appointValues.setDisplayName(property.getProperty("books.rule.display.name"));
 		appointValues.setLocationTimeZoneCode(property.getProperty("location.timezone.code"));
 		appointValues.setPastAppointsmentsByPage(property.getProperty("past.appointments.page"));
+		appointValues.setPatientType(property.getProperty("patient.type"));
 	}
 }
