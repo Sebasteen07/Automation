@@ -1246,28 +1246,19 @@ public class PSSPatientUtils extends BaseTestNGWebDriver{
 		return PageFactory.initElements(driver, ScheduledAppointment.class);
 	}
 
-	public void selectAFlow_Old(WebDriver driver, String rule, HomePage homepage, Appointment testData,
-			AppointmentPage appointment) throws Exception {
-		if (homepage.isPopUP()) {
-			homepage.popUPClick();
-		}
-		Thread.sleep(7000);
-		if (rule.equalsIgnoreCase(PSSConstants.LBT)) {
-			LBTFlow(homepage, testData, "false", driver);
-		}
-		if (rule.equalsIgnoreCase(PSSConstants.LTB)) {
-			LTBFlow(homepage, testData, "false", driver);
-		}
-		if (rule.equalsIgnoreCase(PSSConstants.BLT)) {
-			BLTFlow(homepage, testData, "false", driver);
-		}
-		if (rule.equalsIgnoreCase(PSSConstants.BTL)) {
-			BTLFlow(homepage, testData, "false", driver);
-		}
-		if (rule.equalsIgnoreCase(PSSConstants.TBL)) {
-			TBLFlow(homepage, testData, "false", appointment, driver);
-		}
-	}
+	/*
+	 * public void selectAFlow_Old(WebDriver driver, String rule, HomePage homepage,
+	 * Appointment testData, AppointmentPage appointment) throws Exception { if
+	 * (homepage.isPopUP()) { homepage.popUPClick(); } Thread.sleep(7000); if
+	 * (rule.equalsIgnoreCase(PSSConstants.LBT)) { LBTFlow(homepage, testData,
+	 * "false", driver); } if (rule.equalsIgnoreCase(PSSConstants.LTB)) {
+	 * LTBFlow(homepage, testData, "false", driver); } if
+	 * (rule.equalsIgnoreCase(PSSConstants.BLT)) { BLTFlow(homepage, testData,
+	 * "false", driver); } if (rule.equalsIgnoreCase(PSSConstants.BTL)) {
+	 * BTLFlow(homepage, testData, "false", driver); } if
+	 * (rule.equalsIgnoreCase(PSSConstants.TBL)) { TBLFlow(homepage, testData,
+	 * "false", appointment, driver); } }
+	 */
 
 	public void checkPrivacyPage(WebDriver driver) {
 		PrivacyPolicy privacypolicy = new PrivacyPolicy(driver);
