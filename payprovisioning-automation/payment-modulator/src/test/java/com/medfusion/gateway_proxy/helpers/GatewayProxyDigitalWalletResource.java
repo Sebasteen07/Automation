@@ -18,7 +18,6 @@ public class GatewayProxyDigitalWalletResource extends GatewayProxyBaseTest {
 
 	protected PropertyFileLoader testData;
 
-<<<<<<< HEAD
 	public Response createNewWallet() throws IOException {
 		testData = new PropertyFileLoader();
 		Map<String, Object> digitalWallet = PayloadDetails.getPayloadForAddingCardToDigitalWallet(
@@ -40,7 +39,9 @@ public class GatewayProxyDigitalWalletResource extends GatewayProxyBaseTest {
 				.get(testData.getProperty("testpaycustomeruuid") + "/wallets/"
 						+ testData.getProperty("externalWalletId"))
 				.then().spec(responseSpec).and().extract().response();
-=======
+		return response;
+	}
+
 	public Response deleteCardInWallet(String token, String walletId, String externalcardId) throws IOException {
 
 		testData = new PropertyFileLoader();
@@ -71,26 +72,11 @@ public class GatewayProxyDigitalWalletResource extends GatewayProxyBaseTest {
 		Response response = given().that().spec(requestSpec).auth().oauth2(token).when().get(
 				testData.getProperty("testpaycustomeruuid") + "/wallets/" + testData.getProperty("externalWalletId"))
 				.then().and().extract().response();
->>>>>>> d5a7db19226687d738ad05e813e60edeac89e0d8
 
 		return response;
 
 	}
 
-<<<<<<< HEAD
-	public Response saleAPI(String customerUUID, String mmid, String externalWalletID, String externalCardID)
-			throws IOException {
-		testData = new PropertyFileLoader();
-		Map<String, Object> digitalWallet = PayloadDetails.getPayloadForNewSaleAPI(
-				testData.getProperty("payment.source"), Integer.parseInt(IHGUtil.createRandomNumericString(4)));
-
-		Response response = given()
-				.spec(requestSpec).body(digitalWallet).when().post(customerUUID + "/merchant/" + mmid + "/wallet/"
-						+ externalWalletID + "/card/" + externalCardID + "/sale")
-				.then().spec(responseSpec).and().extract().response();
-		return response;
-	}
-=======
 	public Response updateZipcode(String token, String customeruuid, String walletId, String card, String zipcode)
 			throws Exception {
 		testData = new PropertyFileLoader();
@@ -114,5 +100,16 @@ public class GatewayProxyDigitalWalletResource extends GatewayProxyBaseTest {
 		return response;
 	}
 
->>>>>>> d5a7db19226687d738ad05e813e60edeac89e0d8
+	public Response saleAPI(String accessToken, String customerUUID, String mmid, String externalWalletID, String externalCardID)
+			throws IOException {
+		testData = new PropertyFileLoader();
+		Map<String, Object> digitalWallet = PayloadDetails.getPayloadForNewSaleAPI(
+				testData.getProperty("payment.source"), Integer.parseInt(IHGUtil.createRandomNumericString(4)));
+
+		Response response = given()
+				.spec(requestSpec).auth().oauth2(accessToken).log().all().body(digitalWallet).when().post(customerUUID + "/merchant/" + mmid + "/wallet/"
+						+ externalWalletID + "/card/" + externalCardID + "/sale")
+				.then().and().extract().response();
+		return response;
+	}
 }

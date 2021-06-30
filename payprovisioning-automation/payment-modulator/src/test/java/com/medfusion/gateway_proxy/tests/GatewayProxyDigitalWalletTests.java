@@ -22,24 +22,6 @@ public class GatewayProxyDigitalWalletTests extends GatewayProxyBaseTest {
 	public void setUp() throws Exception {
 		testData = new PropertyFileLoader();
 		setupRequestSpecBuilder();
-<<<<<<< HEAD
-		setupResponsetSpecBuilder();
-	}
-
-	@Test
-	public void addNewCardAndCreateWallet() throws Exception {
-
-		GatewayProxyDigitalWalletResource digitalWallet = new GatewayProxyDigitalWalletResource();
-		Response response = digitalWallet.createNewWallet();
-
-		JsonPath jsonPath = new JsonPath(response.asString());
-
-		Assert.assertTrue(!jsonPath.get("externalWalletId").toString().isEmpty());
-		Assert.assertTrue(!jsonPath.get("walletCards[0].externalCardId").toString().isEmpty());
-		Assert.assertEquals("VI-1111-1226", jsonPath.get("walletCards[0].cardAlias"));
-
-		DigitalWalletUtils.saveWalletDetails(jsonPath.get("externalWalletId").toString(),
-=======
 	}
 
 	@Test
@@ -57,19 +39,10 @@ public class GatewayProxyDigitalWalletTests extends GatewayProxyBaseTest {
 		Assert.assertTrue(!jsonPath.get("walletCards[0].externalCardId").toString().isEmpty());
 		Assert.assertEquals("VI-1111-1226", jsonPath.get("walletCards[0].cardAlias"));
 		GatewayProxyDigitalWalletUtils.saveWalletDetails(jsonPath.get("externalWalletId").toString(),
->>>>>>> d5a7db19226687d738ad05e813e60edeac89e0d8
 				jsonPath.get("walletCards[0].externalCardId").toString());
 
 	}
 
-<<<<<<< HEAD
-	@Test(dependsOnMethods = "addNewCardAndCreateWallet")
-
-	public void getListOfCardsInWallet() throws Exception {
-
-		GatewayProxyDigitalWalletResource digitalWallet = new GatewayProxyDigitalWalletResource();
-		Response response = digitalWallet.getListOfCardsInWallet();
-=======
 	@Test
 	public void testAddNewCardAndCreateWalletByInvalidAuth() throws Exception {
 		String token = GatewayProxyUtils.getTokenForCustomer() + "jadgcl";
@@ -170,14 +143,12 @@ public class GatewayProxyDigitalWalletTests extends GatewayProxyBaseTest {
 
 	}
 
-	@Test(dependsOnMethods = "addNewCardAndCreateWalletByValidAuth")
-
+	@Test
 	public void testGetListOfCardsInWallet() throws Exception {
 
 		GatewayProxyDigitalWalletResource digitalWallet = new GatewayProxyDigitalWalletResource();
 		String token = GatewayProxyUtils.getTokenForCustomer();
 		Response response = digitalWallet.getListOfCardsInWallet(token);
->>>>>>> d5a7db19226687d738ad05e813e60edeac89e0d8
 		JsonPath jsonPath = new JsonPath(response.asString());
 
 		Assert.assertTrue(!jsonPath.get("externalWalletId").toString().isEmpty());
@@ -190,20 +161,6 @@ public class GatewayProxyDigitalWalletTests extends GatewayProxyBaseTest {
 	}
 
 	@Test
-<<<<<<< HEAD
-	public void saleAPI() throws Exception {
-
-		GatewayProxyDigitalWalletResource digitalWallet = new GatewayProxyDigitalWalletResource();
-		Response response = digitalWallet.saleAPI(testData.getProperty("testpaycustomeruuid"),
-				testData.getProperty("proxymmid"), testData.getProperty("wallet.forsale"),
-				testData.getProperty("card.forsale"));
-		JsonPath jsonPath = new JsonPath(response.asString());
-
-		Assert.assertTrue(!jsonPath.get("externalTransactionId").toString().isEmpty());
-		Assert.assertTrue(!jsonPath.get("orderId").toString().isEmpty());
-		Assert.assertEquals("Approved", jsonPath.get("message"));
-		Assert.assertEquals("000", jsonPath.get("responseCode"));
-=======
 	public void testUpdateZipcodeOfWalletWithValidAuth() throws Exception {
 		GatewayProxyDigitalWalletResource digitalWallet = new GatewayProxyDigitalWalletResource();
 		String token = GatewayProxyUtils.getTokenForCustomer();
@@ -289,7 +246,24 @@ public class GatewayProxyDigitalWalletTests extends GatewayProxyBaseTest {
 		Assert.assertEquals(responseOfAddMoreCard.getStatusCode(), 400);
 		Assert.assertEquals("Bad Request", jsonPath.get("error"));
 		Assert.assertTrue(!jsonPath.get("message").toString().isEmpty());
->>>>>>> d5a7db19226687d738ad05e813e60edeac89e0d8
+
+	}
+
+	@Test
+	public void saleAPI() throws Exception {
+
+		GatewayProxyDigitalWalletResource digitalWallet = new GatewayProxyDigitalWalletResource();
+		String token = GatewayProxyUtils.getTokenForCustomer();
+		
+		Response response = digitalWallet.saleAPI(token, testData.getProperty("test.pay.customer.uuid"),
+				testData.getProperty("proxy.mmid"), testData.getProperty("external.wallet.id"),
+				testData.getProperty("external.card.id"));
+		JsonPath jsonPath = new JsonPath(response.asString());
+
+		Assert.assertTrue(!jsonPath.get("externalTransactionId").toString().isEmpty());
+		Assert.assertTrue(!jsonPath.get("orderId").toString().isEmpty());
+		Assert.assertEquals("Approved", jsonPath.get("message"));
+		Assert.assertEquals("000", jsonPath.get("responseCode"));
 
 	}
 }
