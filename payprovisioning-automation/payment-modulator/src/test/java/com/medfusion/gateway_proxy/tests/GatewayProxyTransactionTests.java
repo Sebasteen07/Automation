@@ -25,4 +25,17 @@ public class GatewayProxyTransactionTests extends GatewayProxyBaseTest {
 
 	}
 
+	@Test
+	public void makeGatewayAuthorize() throws Exception {
+		GatewayProxyTransactionResource transaction = new GatewayProxyTransactionResource();
+		transaction.makeAuthorizeTransaction("75164da9-5747-449f-be45-c2e28f3ff77b","2560807797" );
+
+	}
+
+	@Test
+	public void makeGatewayCapture() throws Exception {
+		GatewayProxyTransactionResource transaction = new GatewayProxyTransactionResource();
+		transaction.makeAuthorizeTransaction("75164da9-5747-449f-be45-c2e28f3ff77b","2560807797" );
+
+	}
 }
