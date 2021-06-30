@@ -6622,15 +6622,60 @@ public class PSS2PatientPortalAcceptanceTests extends BaseTestNGWebDriver {
 	}
 	@Test(enabled = true, groups = { "AcceptanceTests" }, retryAnalyzer = RetryAnalyzer.class)
 	public void testTimeMarkWithShowProOffAT() throws Exception {
-		log(" VeriFy TimeMark Feature For The All Partner");
-		logStep("Load test Data from External Property file.");
 		PSSPropertyFileLoader propertyData = new PSSPropertyFileLoader();
 		Appointment testData = new Appointment();
 		AdminUser adminuser = new AdminUser();
 		propertyData.setAdminAT(adminuser);
 		propertyData.setAppointmentResponseAT(testData);
 		adminuser.setIsExisting(true);
-		PSSPatientUtils psspatientutils = new PSSPatientUtils();
+		PSSAdminUtils pssadminutils = new PSSAdminUtils();
+		logStep("Move to PSS admin portal and Click on the timemark Functionality on Book Appointment Type");
+		pssadminutils.timeMarkWithShowOff(driver, adminuser, testData);
+		String rule = adminuser.getRule();
+		rule = rule.replaceAll(" ", "");
+		logStep("Move to PSS patient Portal 2.0 to book an Appointment");
+		logStep("Login to PSS Appointment");
+		DismissPage dismissPage = new DismissPage(driver, testData.getUrlLoginLess());
+		logStep("LoginlessPatientInformation****");
+		log("Clicked on Dismiss");
+		LoginlessPatientInformation loginlessPatientInformation = dismissPage.clickDismiss();
+		HomePage homePage = loginlessPatientInformation.fillNewPatientForm(testData.getFirstName(),
+				testData.getLastName(), testData.getDob(), testData.getEmail(), testData.getGender(),
+				testData.getZipCode(), testData.getPrimaryNumber());
+		homePage.btnStartSchedClick();
+		Location location = null;
+    	StartAppointmentInOrder startAppointmentInOrder = null;
+		startAppointmentInOrder = homePage.skipInsurance(driver);
+
+		location = startAppointmentInOrder.selectFirstLocation(PSSConstants.START_LOCATION);
+
+		log("Verfiy Location Page and location =" + testData.getLocation());
+		AppointmentPage appointment = location.selectAppointment(testData.getLocation());
+		log("Verfiy Appointment Page and appointment to be selected = " + testData.getAppointmenttype());
+
+		AppointmentDateTime aptDateTime = appointment.selectAptTyper(testData.getAppointmenttype(),
+				Boolean.valueOf(testData.getIsAppointmentPopup()));
+		aptDateTime.selectDate(testData.getIsNextDayBooking());
+		log("Appointment minute " + aptDateTime.getFirstTimeWithMinute());
+		log("Value  is " + testData.getTimeMarkValue());
+		if (testData.getTimeMarkValue().equalsIgnoreCase("0")) {
+			log("Default Slot is Selected ");
+		} else if (testData.getTimeMarkValue().equalsIgnoreCase("60")) {
+			String timeForHour = testData.getTimeMarkValue().replace('6', '0');
+			assertEquals(aptDateTime.getFirstTimeWithMinute(), timeForHour);
+		} else {
+			assertEquals(aptDateTime.getFirstTimeWithMinute(), testData.getTimeMarkValue());
+		}
+		
+	}
+	@Test(enabled = true, groups = { "AcceptanceTests" }, retryAnalyzer = RetryAnalyzer.class)
+	public void testTimeMarkWithShowProOffNG() throws Exception {
+		PSSPropertyFileLoader propertyData = new PSSPropertyFileLoader();
+		Appointment testData = new Appointment();
+		AdminUser adminuser = new AdminUser();
+		propertyData.setAdminNG(adminuser);
+		propertyData.setAppointmentResponseNG(testData);
+		adminuser.setIsExisting(true);
 		PSSAdminUtils pssadminutils = new PSSAdminUtils();
 		logStep("Move to PSS admin portal and Click on the timemark Functionality on Book Appointment Type");
 		pssadminutils.timeMarkWithShowOff(driver, adminuser, testData);

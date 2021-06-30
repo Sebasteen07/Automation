@@ -347,7 +347,7 @@ public class PSSAdminUtils extends BaseTestNGWebDriver{
 		log("-----------------------------------------------------------------------------------------");
 		patientflow.addNewRulesButton();
 		patientflow.selectRuleName("AppointmentType");
-		patientflow.addNewRules(PSSConstants.RULE_APPOINTMENT_VALUE_NOPROVIDER);
+		patientflow.addNewRules(PSSConstants.RULE_APPOINTMENT_VALUE);
 		patientflow.addNewRules(PSSConstants.RULE_LOCATION_VALUE);
 		patientflow.saveRule();
 		Thread.sleep(1000);
@@ -355,7 +355,7 @@ public class PSSAdminUtils extends BaseTestNGWebDriver{
 		patientflow.addNewRulesButton();
 		patientflow.selectRuleName("Location");
 		patientflow.addNewRules(PSSConstants.RULE_LOCATION_VALUE);
-		patientflow.addNewRules(PSSConstants.RULE_APPOINTMENT_VALUE_NOPROVIDER);
+		patientflow.addNewRules(PSSConstants.RULE_APPOINTMENT_VALUE);
 		patientflow.saveRule();
 		Thread.sleep(1000);
 		log("--------------------------------WAIT FOR RULE LTB TO BE ADDED--------------------------------");
@@ -832,8 +832,9 @@ public class PSSAdminUtils extends BaseTestNGWebDriver{
 		PSS2PracticeConfiguration pssPracticeConfig = loginToAdminPortal(driver, adminUser);
 		pssPracticeConfig = pssPracticeConfig.gotoPracticeConfigTab();
 		PatientFlow patientFlow =pssPracticeConfig.gotoPatientFlowTab();
-		patientFlow.turnOffProvider();
+		patientFlow.turnOnProvider();
 		setRulesNoProviderSet1(patientFlow);
+		patientFlow.turnOffProvider();
 		AdminPatientMatching adminPatientMatching = patientFlow.gotoPatientMatchingTab();
 		adminPatientMatching.patientMatchingSelection();
 		ManageAppointmentType manageAppointmentType = pssPracticeConfig.gotoAppointment();
