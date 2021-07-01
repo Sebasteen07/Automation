@@ -628,6 +628,7 @@ public class PSS2PatientPortalAcceptanceTests extends BaseTestNGWebDriver {
 
 	@Test(enabled = true, groups = { "AcceptanceTests" }, retryAnalyzer = RetryAnalyzer.class)
 	public void testE2ELoginlessForExistingPatientGE() throws Exception {
+		
 		log("E2E test to verify loginless appointment for a Existing patient for GE");
 		log("Test To View if configuration change from Admin is reflected in PSS patient portal");
 		PSSPropertyFileLoader propertyData = new PSSPropertyFileLoader();
@@ -6585,9 +6586,9 @@ public class PSS2PatientPortalAcceptanceTests extends BaseTestNGWebDriver {
 
 		location = startAppointmentInOrder.selectFirstLocation(PSSConstants.START_LOCATION);
 
-		log("Verfiy Location Page and location =" + testData.getLocation());
+		logStep("Verfiy Location Page and location =" + testData.getLocation());
 		AppointmentPage appointment = location.selectAppointment(testData.getLocation());
-		log("Verfiy Appointment Page and appointment to be selected = " + testData.getAppointmenttype());
+		logStep("Verfiy Appointment Page and appointment to be selected = " + testData.getAppointmenttype());
 
 		AppointmentDateTime aptDateTime = appointment.selectAptTyper(testData.getAppointmenttype(),
 				Boolean.valueOf(testData.getIsAppointmentPopup()));
@@ -6633,7 +6634,7 @@ public class PSS2PatientPortalAcceptanceTests extends BaseTestNGWebDriver {
 
 		location = startAppointmentInOrder.selectFirstLocation(PSSConstants.START_LOCATION);
 
-		log("Verfiy Location Page and location =" + testData.getLocation());
+		logStep("Verfiy Location Page and location =" + testData.getLocation());
 		AppointmentPage appointment = location.selectAppointment(testData.getLocation());
 		log("Verfiy Appointment Page and appointment to be selected = " + testData.getAppointmenttype());
 

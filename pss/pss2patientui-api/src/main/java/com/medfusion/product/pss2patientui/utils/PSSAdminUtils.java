@@ -840,7 +840,7 @@ public class PSSAdminUtils extends BaseTestNGWebDriver{
 		ManageAppointmentType manageAppointmentType = pssPracticeConfig.gotoAppointment();
 		pageRefresh(driver);
 		manageAppointmentType.selectAppointment(appointment.getAppointmenttype());
-		manageAppointmentType.goConfiguration();
+		manageAppointmentType.gotoConfiguration();
 		manageAppointmentType.timeMark(appointment.getTimeMarkValue());
 		
 	}

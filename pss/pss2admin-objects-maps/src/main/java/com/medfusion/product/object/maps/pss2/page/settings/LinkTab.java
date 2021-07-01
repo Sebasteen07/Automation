@@ -88,9 +88,7 @@ public class LinkTab extends SettingsTab {
 		type.selectByVisibleText("LOGINLESS");
 		IHGUtil.waitForElement(driver, 3, locationSelect);	
 		javascriptClick(locationSelect);
-		Thread.sleep(3000);
 		log("LocationTypeList " + checklistLocation.size());
-		Thread.sleep(3000);
 		for (int i = 0; i < checklistLocation.size(); i++) {
 			if (checklistLocation.get(i).getText().contains(locationConfig)) {
 				IHGUtil.waitForElement(driver, 3, checklistLocation.get(i));	
@@ -98,9 +96,7 @@ public class LinkTab extends SettingsTab {
 				log("Location checkbox selected");
 			}
 		}
-		Thread.sleep(3000);
 		resourceSelect.click();
-		Thread.sleep(3000);
 		log("ProviderTypeList " + checklistLocation.size());
 		for (int i = 0; i < checklistLocation.size(); i++) {
 			if (checklistLocation.get(i).getText().contains(providerConfig)) {

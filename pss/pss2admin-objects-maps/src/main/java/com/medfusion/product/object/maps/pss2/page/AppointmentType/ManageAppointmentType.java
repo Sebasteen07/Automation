@@ -123,7 +123,7 @@ public class ManageAppointmentType extends PSS2MenuPage {
 		selectAppointment.click();
 		log("clicked on Appointment");
 	} 
-	public void goConfiguration()
+	public void gotoConfiguration()
 	{
 		log("Click on the Configuration");
 		goConfiguration.click();
