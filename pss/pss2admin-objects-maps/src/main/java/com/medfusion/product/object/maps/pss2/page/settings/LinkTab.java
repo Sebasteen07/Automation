@@ -116,7 +116,6 @@ public class LinkTab extends SettingsTab {
 	public String getURL(String provider)throws InterruptedException, HeadlessException, UnsupportedFlavorException, IOException {
 		searchLink(provider);
 		IHGUtil.waitForElement(driver, 5, copyLink);	
-		//copyLink.click();
 		javascriptClick(copyLink);
 		String link = (String) Toolkit.getDefaultToolkit().getSystemClipboard().getData(DataFlavor.stringFlavor);
 		log("Link is   " + link);
