@@ -4181,4 +4181,16 @@ public class RestUtils {
 		return true;
 	}
 
+	public static String isResponseContainsValidAttachmentURL(String xmlFileName)
+			throws ParserConfigurationException, SAXException, IOException {
+		IHGUtil.PrintMethodName();
+		Document doc = buildDOMXML(xmlFileName);
+		Log4jUtil.log("finding AttachmentURL");
+		NodeList nodes = doc.getElementsByTagName(IntegrationConstants.ATTACHMENT_URL);
+		String attchmentURL = nodes.item(0).getTextContent();
+		Log4jUtil.log("response is ok");
+		return attchmentURL;
+	}
+
+		
 }
