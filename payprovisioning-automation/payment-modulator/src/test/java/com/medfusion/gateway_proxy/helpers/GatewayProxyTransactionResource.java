@@ -18,48 +18,25 @@ public class GatewayProxyTransactionResource extends GatewayProxyBaseTest {
 	protected PropertyFileLoader testData;
 
 	public void makeASale(String mmid) throws IOException {
-<<<<<<< HEAD
-		  testData = new PropertyFileLoader();
-		  Map<String, Object> transactiondetails = PayloadDetails.getPayloadForAuthorizeSaleMap((testData.getProperty("transactionamount")),
-				  testData.getProperty("accountnumber"), testData.getProperty("consumername"), testData.getProperty("payment.source"),
-				  testData.getProperty("cvv"), testData.getProperty("type"), testData.getProperty("cardnumber"),
-				  testData.getProperty("expirationnumber"), testData.getProperty("bin"), testData.getProperty("zipcode"),
-				  testData.getProperty("lastname"),testData.getProperty("addressline1"),testData.getProperty("city"),
-				  testData.getProperty("state"),testData.getProperty("firstname"));
-
-		  Response response = given().spec(requestSpec).
-		  body(transactiondetails).when().post(testData.getProperty("testpaycustomeruuid")+
-				  "/merchant/"+testData.getProperty("proxymmid")+"/sale")
-		 .then().spec(responseSpec).and().extract().response();
-			
-		  JsonPath jsonpath = new JsonPath(response.asString());
-		  Validations validate = new Validations();
-		  validate.verifyTransactionDetails(response.asString());
-		  CommonUtils.saveTransactionDetails(jsonpath.get("externalTransactionId").toString(),jsonpath.get("orderId").toString());
-
-			  
-	  }
-=======
 		testData = new PropertyFileLoader();
 		Map<String, Object> transactiondetails = PayloadDetails.getPayloadForAuthorizeSaleMap(
-				(testData.getProperty("transaction.amount")), testData.getProperty("account.number"),
-				testData.getProperty("consumer.name"), testData.getProperty("payment.source"),
-				testData.getProperty("cvv"), testData.getProperty("type"), testData.getProperty("card.number"),
-				testData.getProperty("expiration.number"), testData.getProperty("bin"), testData.getProperty("zipcode"),
-				testData.getProperty("last.name"), testData.getProperty("address.line1"), testData.getProperty("city"),
-				testData.getProperty("state"), testData.getProperty("first.name"));
+				(testData.getProperty("transactionamount")), testData.getProperty("accountnumber"),
+				testData.getProperty("consumername"), testData.getProperty("payment.source"),
+				testData.getProperty("cvv"), testData.getProperty("type"), testData.getProperty("cardnumber"),
+				testData.getProperty("expirationnumber"), testData.getProperty("bin"), testData.getProperty("zipcode"),
+				testData.getProperty("lastname"), testData.getProperty("addressline1"), testData.getProperty("city"),
+				testData.getProperty("state"), testData.getProperty("firstname"));
 
-		Response response = given().spec(requestSpec).log().all().body(transactiondetails).when()
-				.post(testData.getProperty("test.pay.customer.uuid") + "/merchant/" + testData.getProperty("proxy.mmid")
-						+ "/sale")
-				.then().and().extract().response();
+		Response response = given()
+				.spec(requestSpec).body(transactiondetails).when().post(testData.getProperty("testpaycustomeruuid")
+						+ "/merchant/" + testData.getProperty("proxymmid") + "/sale")
+				.then().spec(responseSpec).and().extract().response();
 
 		JsonPath jsonpath = new JsonPath(response.asString());
 		Validations validate = new Validations();
 		validate.verifyTransactionDetails(response.asString());
 		CommonUtils.saveTransactionDetails(jsonpath.get("externalTransactionId").toString(),
 				jsonpath.get("orderId").toString());
->>>>>>> d5a7db19226687d738ad05e813e60edeac89e0d8
 
 	}
 
