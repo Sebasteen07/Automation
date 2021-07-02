@@ -526,5 +526,9 @@ public class PSSPropertyFileLoader {
 		appointValues.setLocationTimeZoneCode(property.getProperty("location.timezone.code"));
 		appointValues.setPastAppointsmentsByPage(property.getProperty("past.appointments.page"));
 		appointValues.setPatientType(property.getProperty("patient.type"));
+		appointValues.setScheduleDate(property.getProperty("schedule.slot.date"));
+		appointValues.setScheduleTime(property.getProperty("schedule.slot.time"));
+		appointValues.setRescheduleSlotId(property.getProperty("reschedule.slot.id"));
+		appointValues.setRescheduleDateTime(property.getProperty("reschedule.slot.date.time"));
 	}
 }

@@ -14,6 +14,7 @@ import com.medfusion.product.pss2patientui.pojo.Appointment;
 import com.medfusion.product.pss2patientui.utils.PSSPropertyFileLoader;
 
 public class PSS2PatientModulatorrAcceptanceTests extends BaseTestNGWebDriver {
+
 	@Test(enabled = true, groups = { "APItest" }, retryAnalyzer = RetryAnalyzer.class)
 	public void testApptDetailFromGuidGET() throws IOException {
 		HeaderConfig headerConfig = new HeaderConfig();
@@ -842,6 +843,7 @@ public class PSS2PatientModulatorrAcceptanceTests extends BaseTestNGWebDriver {
 
 	@Test(enabled = true, groups = { "APItest" }, retryAnalyzer = RetryAnalyzer.class)
 	public void testAvailableSlotsPost() throws IOException {
+
 		HeaderConfig headerConfig = new HeaderConfig();
 		PSSPropertyFileLoader propertyData = new PSSPropertyFileLoader();
 		Appointment testData = new Appointment();
@@ -858,6 +860,7 @@ public class PSS2PatientModulatorrAcceptanceTests extends BaseTestNGWebDriver {
 		postAPIRequest.availableSlots(testData.getBasicURI(), payloadPatientMod.availableslotsPayload(),
 				headerConfig.HeaderwithToken(testData.getAccessToken()), testData.getPracticeId(),
 				testData.getPatientIdAvailableSlots());
+
 	}
 
 	@Test(enabled = true, groups = { "APItest" }, retryAnalyzer = RetryAnalyzer.class)
@@ -893,14 +896,13 @@ public class PSS2PatientModulatorrAcceptanceTests extends BaseTestNGWebDriver {
 
 		log("Base URL is ---> " + testData.getBasicURI());
 		log("Access Token --> " + testData.getAccessToken());
-		log("Payload- " + payloadPatientMod.rescheduleAppointmentPayload());
+		log("Payload- " + payloadPatientMod.rescheduleAppointmentPayload(testData.getRescheduleDateTime(),
+				testData.getRescheduleSlotId()));
 
-		String PatientId = postAPIRequest.rescheduleAppointment(testData.getBasicURI(),
-				payloadPatientMod.rescheduleAppointmentPayload(),
+		postAPIRequest.rescheduleAppointment(testData.getBasicURI(), payloadPatientMod.rescheduleAppointmentPayload(testData.getRescheduleDateTime(),
+				testData.getRescheduleSlotId()),
 				headerConfig.HeaderwithToken(testData.getAccessToken()), testData.getPracticeId(),
-				testData.getPatientIdReschedule(),testData.getPatientType());
-
-		Assert.assertEquals(PatientId, testData.getPatientIdReschedule(), "PatientId is wrong");
+				testData.getPatientIdAvailableSlots(), testData.getPatientType());
 	}
 
 	@Test(enabled = true, groups = { "APItest" }, retryAnalyzer = RetryAnalyzer.class)
@@ -916,12 +918,20 @@ public class PSS2PatientModulatorrAcceptanceTests extends BaseTestNGWebDriver {
 
 		log("Base URL is ---> " + testData.getBasicURI());
 		log("Access Token --> " + testData.getAccessToken());
-		log("Payload- " + payloadPatientMod.scheduleAppointmentPayload());
+	
 
-		String PatientId = postAPIRequest.scheduleAppointment(testData.getBasicURI(),
-				payloadPatientMod.scheduleAppointmentPayload(), headerConfig.HeaderwithToken(testData.getAccessToken()),
-				testData.getPracticeId(), testData.getPatientIdPm(),testData.getPatientType());
-		Assert.assertEquals(PatientId, testData.getPatientIdPm(), "PatientId is wrong");
+		String SlotId = postAPIRequest.availableSlots(testData.getBasicURI(), payloadPatientMod.availableslotsPayload(),
+				headerConfig.HeaderwithToken(testData.getAccessToken()), testData.getPracticeId(),
+				testData.getPatientIdAvailableSlots());
+		
+		log("SlotId " + SlotId);
+		log("Payload- " + payloadPatientMod.scheduleAppointmentPayload(testData.getScheduleDate(),
+				testData.getScheduleTime(),SlotId));
+
+		postAPIRequest.scheduleAppointment(testData.getBasicURI(),payloadPatientMod.scheduleAppointmentPayload(testData.getScheduleDate(),
+				testData.getScheduleTime(),SlotId),headerConfig.HeaderwithToken(testData.getAccessToken()), testData.getPracticeId(),
+				testData.getPatientIdAvailableSlots(), testData.getPatientType());
+
 	}
 
 	@Test(enabled = true, groups = { "APItest" }, retryAnalyzer = RetryAnalyzer.class)

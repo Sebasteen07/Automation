@@ -739,7 +739,7 @@ public class PostAPIRequestPatientMod extends BaseTestNGWebDriver {
 		return localTimeZoneCode;
 	}
 
-	public JsonPath availableSlots(String baseurl, String b, Map<String, String> Header, String practiceId,
+	public String availableSlots(String baseurl, String b, Map<String, String> Header, String practiceId,
 			String patientId) {
 		RestAssured.baseURI = baseurl;
 
@@ -748,9 +748,19 @@ public class PostAPIRequestPatientMod extends BaseTestNGWebDriver {
 				.extract().response();
 
 		JsonPath js = new JsonPath(response.asString());
+		
+		String slotid=js.getString("slotList.slotId[3][1]");
+		log("Value of SlotId - "+slotid);
+		
+		String date=js.getString("date[3]");
+		log("Value of date  - "+date);
+		
+		String time=js.getString("slotList.slotTime[3][1]");
+		log("Value of time  - "+time);
+		
 		apiVerification.responseKeyValidation(response, "date");
-
-		return js;
+		
+		return slotid;
 	}
 
 	public JsonPath cancelAppointment(String baseurl, String b, Map<String, String> Header, String practiceId,
@@ -793,9 +803,6 @@ public class PostAPIRequestPatientMod extends BaseTestNGWebDriver {
 
 		JsonPath js = new JsonPath(response.asString());
 		String PatientId = js.getString("patientId");
-		
-		log("patientType is -" + js.getString("patientType"));
-		
 
 		return PatientId;
 	}

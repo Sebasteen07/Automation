@@ -232,6 +232,12 @@ public class Appointment {
 	private String locationTimeZoneCode;
 	private String pastAppointsmentsByPage;
 	private String patientType;
+	private String ScheduleDate;
+	private String ScheduleTime;
+	private String RescheduleSlotId;
+	private String RescheduleDateTime;
+	private String Rescheduledate;
+
 
 	private boolean insuranceDetails = false;
 
@@ -1825,6 +1831,44 @@ public class Appointment {
 
 	public void setPatientType(String patientType) {
 		this.patientType = patientType;
+	}
+	public String getScheduleDate() {
+		return ScheduleDate;
+	}
+
+	public void setScheduleDate(String scheduleDate) {
+		ScheduleDate = scheduleDate;
+	}
+	public String getScheduleTime() {
+		return ScheduleTime;
+	}
+
+	public void setScheduleTime(String scheduleTime) {
+		ScheduleTime = scheduleTime;
+	}
+
+	public String getRescheduleSlotId() {
+		return RescheduleSlotId;
+	}
+
+	public void setRescheduleSlotId(String rescheduleSlotId) {
+		RescheduleSlotId = rescheduleSlotId;
+	}
+
+	public String getRescheduleDateTime() {
+		return RescheduleDateTime;
+	}
+
+	public void setRescheduleDateTime(String rescheduleDateTime) {
+		RescheduleDateTime = rescheduleDateTime;
+	}
+
+	public String getRescheduledate() {
+		return Rescheduledate;
+	}
+
+	public void setRescheduledate(String rescheduledate) {
+		Rescheduledate = rescheduledate;
 	}
 
 }
