@@ -15,7 +15,7 @@ import java.util.Map;
 import static io.restassured.RestAssured.given;
 
 public class GatewayProxyDigitalWalletResource extends GatewayProxyBaseTest {
-
+	
 	protected PropertyFileLoader testData;
 
 	public Response deleteCardInWallet(String token, String walletId, String externalcardId) throws IOException {
@@ -48,8 +48,7 @@ public class GatewayProxyDigitalWalletResource extends GatewayProxyBaseTest {
 		Response response = given().that().spec(requestSpec).auth().oauth2(token).when()
 				.get(testData.getProperty("test.pay.customer.uuid") + "/wallets/" + externalWalletId).then().and()
 				.extract().response();
-
-		return response;
+				return response;
 
 	}
 

@@ -15,7 +15,7 @@ import org.testng.annotations.DataProvider;
 import org.testng.annotations.Test;
 
 public class GatewayProxyDigitalWalletTests extends GatewayProxyBaseTest {
-
+	
 	protected static PropertyFileLoader testData;
 
 	@BeforeTest
@@ -66,7 +66,7 @@ public class GatewayProxyDigitalWalletTests extends GatewayProxyBaseTest {
 
 	@Test
 	public void testDeleteCardInWallet() throws Exception {
-
+		
 		String token = GatewayProxyUtils.getTokenForCustomer();
 
 		GatewayProxyDigitalWalletResource digitalWallet = new GatewayProxyDigitalWalletResource();
@@ -102,8 +102,8 @@ public class GatewayProxyDigitalWalletTests extends GatewayProxyBaseTest {
 		String token = GatewayProxyUtils.getTokenForCustomer();
 		String token1 = token + "jadgcl";
 		GatewayProxyDigitalWalletResource digitalWallet = new GatewayProxyDigitalWalletResource();
-		Response deleteResponse = digitalWallet.deleteCardInWallet(token1, testData.getProperty("default.wallet.id"),
-				testData.getProperty("default.card.id"));
+		Response deleteResponse = digitalWallet.deleteCardInWallet(token1,
+				testData.getProperty("default.wallet.id"), testData.getProperty("default.card.id"));
 		Assert.assertTrue(deleteResponse.getStatusCode() == 401);
 
 	}
@@ -159,15 +159,13 @@ public class GatewayProxyDigitalWalletTests extends GatewayProxyBaseTest {
 		Assert.assertTrue(!jsonPath.get("externalWalletId").toString().isEmpty());
 		Assert.assertTrue(!jsonPath.get("walletCards[0].externalCardId").toString().isEmpty());
 		Assert.assertEquals("VI-1111-1226", jsonPath.get("walletCards[0].cardAlias"));
-
+		
 		String externalWalletId = jsonPath.get("externalWalletId").toString();
-
-		Response responseGet = digitalWallet.getListOfCardsInWallet(token, externalWalletId);
+		Response responseGet = digitalWallet.getListOfCardsInWallet(token, externalWalletId);	
 		JsonPath jsonPathGet = new JsonPath(response.asString());
 
 		Assert.assertTrue(!jsonPathGet.get("externalWalletId").toString().isEmpty());
 		Assert.assertTrue(!jsonPathGet.get("walletCards[0].cardExpiryDate").toString().isEmpty());
-
 		String cardnumber = testData.getProperty("card.number");
 		String aliasToVerify = testData.getProperty("type") + "-" + cardnumber.substring(cardnumber.length() - 4) + "-"
 				+ testData.getProperty("expiration.number");

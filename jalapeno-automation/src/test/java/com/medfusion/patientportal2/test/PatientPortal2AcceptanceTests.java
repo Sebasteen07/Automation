@@ -4057,4 +4057,78 @@ public class PatientPortal2AcceptanceTests extends BaseTestNGWebDriver {
 		assertTrue(linkAccountPage.isIncorrectUsernamePasswordErrorDisplayed());
 			
 	}
+	@Test(enabled = true, groups = { "acceptance-solutions" }, retryAnalyzer = RetryAnalyzer.class)
+	public void testPayBillsDuplicateAmount() throws Exception {
+		logStep("Initiate payment data");
+		String accountNumber = IHGUtil.createRandomNumericString(8);
+		String name = "TestPatient CreditCard";
+		CreditCard creditCard = new CreditCard(CardType.Mastercard, name);
+
+		logStep("Load login page");
+		JalapenoLoginPage loginPage = new JalapenoLoginPage(driver, testData.getUrl());
+
+		JalapenoHomePage homePage = loginPage.login(testData.getUserId(), testData.getPassword());
+		JalapenoPayBillsMakePaymentPage payBillsPage = homePage.clickOnNewPayBills(driver);
+		logStep("Remove all cards because Selenium can't see AddNewCard button");
+		payBillsPage.removeAllCards();
+		logStep("Check that no card is present");
+		assertFalse(payBillsPage.isAnyCardPresent());
+		logStep("Fill all the details on a payment page for first payment");
+		JalapenoPayBillsConfirmationPage confirmationPage = payBillsPage.fillPaymentInfoForDuplicate(PracticeConstants.amount, accountNumber,
+				creditCard);
+		logStep("Click on the submit button and verify the payment status");
+        homePage = confirmationPage.commentAndSubmitPayment("Testing payment from number: " + accountNumber);
+		assertTrue(homePage.wasPayBillsSuccessfull());
+		logStep("Click on the Pay bill for duplicate payment");
+		JalapenoPayBillsMakePaymentPage payBillswithDuplicateAmount = homePage.clickOnNewPayBillsForDuplicatePayment(driver);
+		logStep("Fill all the details on a payment page for Duplicate payment");
+		JalapenoPayBillsConfirmationPage confirmationPageForduplicatePayment = payBillswithDuplicateAmount.fillPaymentInfoWithExistingCards(PracticeConstants.amount, accountNumber,PracticeConstants.CVV);
+		logStep("Click on the submit button and verify the error message");
+		confirmationPageForduplicatePayment.commentAndSubmitPayment("System should display the error message");
+		assertTrue(confirmationPageForduplicatePayment.isDuplicatePaymentErrorMessageDisplayed());
+
+	}
+	
+	@Test(enabled = true, groups = { "acceptance-solutions" }, retryAnalyzer = RetryAnalyzer.class)
+    public void testAskAStaffWithProviderAndLocation() throws Exception {
+        String questionText = "wat";
+
+        logStep("Login patient");
+        JalapenoLoginPage loginPage = new JalapenoLoginPage(driver, testData.getPracticeUrl2());
+        JalapenoHomePage homePage = loginPage.login(testData.getUserId(), testData.getPassword());
+
+        logStep("Click Ask A Staff tab");
+        JalapenoAskAStaffV2Page1 askPage1 = homePage.openSpecificAskaV2(testData.getProperty("askAV2Name"));
+
+        String askaSubject = Long.toString(askPage1.getCreatedTimeStamp());
+
+        logStep("Fill question and continue");
+        JalapenoAskAStaffV2Page2 askPage2 = askPage1.fillAndContinueWithProviderAndLocation(askaSubject, questionText);
+
+        assertTrue(askaSubject.equals(askPage2.getSubject()),
+                "Expected: " + askaSubject + ", found: " + askPage2.getSubject());
+        assertTrue(questionText.equals(askPage2.getQuestion()),
+                "Expected: " + questionText + ", found: " + askPage2.getQuestion());
+
+        homePage = askPage2.submit();
+
+        logStep("Go back to the aska and check question history");
+        askPage1 = homePage.openSpecificAskaV2(testData.getProperty("askAV2Name"));
+        JalapenoAskAStaffV2HistoryListPage askHistoryList = askPage1.clickOnHistory();
+
+        logStep("Find history entry by subject/reason and navigate to detail");
+        JalapenoAskAStaffV2HistoryDetailPage askHistoryDetail = askHistoryList.goToDetailByReason(askaSubject);
+
+        logStep("Verify the subject and question in history detail match submission");
+        assertTrue(askaSubject.equals(askHistoryDetail.getRequestDetailSubject()),
+                "Expected: " + askaSubject + ", found: " + askHistoryDetail.getRequestDetailSubject());
+        assertTrue(questionText.equals(askHistoryDetail.getRequestDetailQuestion()),
+                "Expected: " + questionText + ", found: " + askHistoryDetail.getRequestDetailQuestion());
+        assertTrue("Open".equals(askHistoryDetail.getRequestDetailStatus()),
+                "Expected: Open" + ", found: " + askHistoryDetail.getRequestDetailStatus());
+        logStep("Logout patient");
+        askHistoryDetail.clickOnLogout();
+    }
+
+	
 }

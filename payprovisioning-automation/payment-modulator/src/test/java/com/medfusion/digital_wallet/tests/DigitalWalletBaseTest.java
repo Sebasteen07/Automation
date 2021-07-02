@@ -21,7 +21,7 @@ public class DigitalWalletBaseTest {
     public static void setupRequestSpecBuilder() throws Exception
     {
         testData = new PropertyFileLoader();
-        RestAssured.baseURI = testData.getProperty("digitalwallet.baseurl");
+        RestAssured.baseURI = testData.getProperty("digital.wallet.baseurl");
         requestSpec	 = new RequestSpecBuilder()
                 .setContentType(ContentType.JSON)
                 .addFilter(new ResponseLoggingFilter())

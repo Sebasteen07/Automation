@@ -42,15 +42,15 @@ public class GatewayProxyTransactionResource extends GatewayProxyBaseTest {
 =======
 		testData = new PropertyFileLoader();
 		Map<String, Object> transactiondetails = PayloadDetails.getPayloadForAuthorizeSaleMap(
-				(testData.getProperty("transactionamount")), testData.getProperty("accountnumber"),
-				testData.getProperty("consumername"), testData.getProperty("paymentsource"),
-				testData.getProperty("cvv"), testData.getProperty("type"), testData.getProperty("cardnumber"),
-				testData.getProperty("expirationnumber"), testData.getProperty("bin"), testData.getProperty("zipcode"),
-				testData.getProperty("lastname"), testData.getProperty("addressline1"), testData.getProperty("city"),
-				testData.getProperty("state"), testData.getProperty("firstname"));
+				(testData.getProperty("transaction.amount")), testData.getProperty("account.number"),
+				testData.getProperty("consumer.name"), testData.getProperty("payment.source"),
+				testData.getProperty("cvv"), testData.getProperty("type"), testData.getProperty("card.number"),
+				testData.getProperty("expiration.number"), testData.getProperty("bin"), testData.getProperty("zipcode"),
+				testData.getProperty("last.name"), testData.getProperty("address.line1"), testData.getProperty("city"),
+				testData.getProperty("state"), testData.getProperty("first.name"));
 
-		Response response = given().spec(requestSpec).body(transactiondetails).when()
-				.post(testData.getProperty("testpaycustomeruuid") + "/merchant/" + testData.getProperty("proxymmid")
+		Response response = given().spec(requestSpec).log().all().body(transactiondetails).when()
+				.post(testData.getProperty("test.pay.customer.uuid") + "/merchant/" + testData.getProperty("proxy.mmid")
 						+ "/sale")
 				.then().and().extract().response();
 
