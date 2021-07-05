@@ -2,9 +2,6 @@
 package com.medfusion.gateway_proxy.helpers;
 
 import static io.restassured.RestAssured.given;
-
-import com.medfusion.common.utils.IHGUtil;
-import com.medfusion.gateway_proxy.utils.GatewayProxyUtils;
 import io.restassured.path.json.JsonPath;
 import io.restassured.response.Response;
 import java.io.IOException;
@@ -12,6 +9,7 @@ import java.util.Map;
 
 import com.medfusion.common.utils.PropertyFileLoader;
 import com.medfusion.gateway_proxy.tests.GatewayProxyBaseTest;
+import com.medfusion.gateway_proxy.utils.GatewayProxyUtils;
 import com.medfusion.payment_modulator.pojos.PayloadDetails;
 import com.medfusion.payment_modulator.utils.CommonUtils;
 import com.medfusion.payment_modulator.utils.Validations;
@@ -20,58 +18,36 @@ public class GatewayProxyTransactionResource extends GatewayProxyBaseTest {
 
 	protected PropertyFileLoader testData;
 
-	public void makeASale(String mmid) throws Exception {
+	public Response makeASale(String token, String mmid, String testPayCustomerUuid, String transactionAmount)
+			throws NullPointerException, Exception {
 		testData = new PropertyFileLoader();
-		Map<String, Object> transactiondetails = PayloadDetails.getPayloadForAuthorizeSaleMap(
-				(testData.getProperty("transaction.amount")), testData.getProperty("account.number"),
-				testData.getProperty("consumer.name"), testData.getProperty("payment.source"),
-				testData.getProperty("cvv"), testData.getProperty("type"), testData.getProperty("card.number"),
-				testData.getProperty("expiration.number"), testData.getProperty("bin"), testData.getProperty("zipcode"),
-				testData.getProperty("last.name"), testData.getProperty("address.line1"), testData.getProperty("city"),
-				testData.getProperty("state"), testData.getProperty("first.name"));
 
-		Response response = given().spec(requestSpec).auth().oauth2(GatewayProxyUtils.getTokenForCustomer()).log().all().body(transactiondetails).when()
-				.post(testData.getProperty("test.pay.customer.uuid") + "/merchant/" + testData.getProperty("proxy.mmid")
-						+ "/sale")
-				.then().and().extract().response();
-
-		JsonPath jsonpath = new JsonPath(response.asString());
-		Validations validate = new Validations();
-		validate.verifyTransactionDetails(response.asString());
-		CommonUtils.saveTransactionDetails(jsonpath.get("externalTransactionId").toString(),
-				jsonpath.get("orderId").toString());
-
-	}
-
-	public Response makeAuthorizeTransaction(String token, String paymentSource, String cardType, String cardNo, String expiry, String customeruuid, String mmid) throws Exception {
-		testData = new PropertyFileLoader();
-		Map<String, Object> transactiondetails = PayloadDetails.getPayloadForAuthorizeSaleMap(
-				(testData.getProperty("transaction.amount")), testData.getProperty("account.number"),
-				testData.getProperty("consumer.name"), paymentSource,
-				testData.getProperty("cvv"), cardType, cardNo,
-				expiry, testData.getProperty("bin"), testData.getProperty("zipcode"),
-				testData.getProperty("last.name"), testData.getProperty("address.line1"), testData.getProperty("city"),
-				testData.getProperty("state"), testData.getProperty("first.name"));
+		Map<String, Object> transactiondetails = PayloadDetails.getPayloadForAuthorizeSaleMap((transactionAmount),
+				testData.getProperty("account.number"), testData.getProperty("consumer.name"),
+				testData.getProperty("payment.source"), testData.getProperty("cvv"), testData.getProperty("type"),
+				testData.getProperty("card.number"), testData.getProperty("expiration.number"),
+				testData.getProperty("bin"), testData.getProperty("zipcode"), testData.getProperty("last.name"),
+				testData.getProperty("address.line1"), testData.getProperty("city"), testData.getProperty("state"),
+				testData.getProperty("first.name"));
 
 		Response response = given().spec(requestSpec).auth().oauth2(token).log().all().body(transactiondetails).when()
-				.post(customeruuid + "/merchant/" + mmid	+ "/authorize")
-				.then().and().extract().response();
+				.post(testPayCustomerUuid + "/merchant/" + mmid + "/sale").then().and().extract().response();
+
 		return response;
 	}
 
-	public Response makeCaptureTransaction(String token, String customeruuid, String mmid, String txnid, String orderid) throws Exception {
+	public Response makeARefund(String token, String mmid, String testPayCustomerUuid, String comment,
+			String customerId, String externalTransId, String orderId, String transactionAmount)
+			throws NullPointerException, Exception {
 		testData = new PropertyFileLoader();
 
-		Map<String, Object> transactiondetails = PayloadDetails.getPayloadForCaptureMap(IHGUtil.createRandomNumericString(3),
-				testData.getProperty("account.number"), testData.getProperty("consumer.name"), testData.getProperty("payment.source"),
-				testData.getProperty("cvv"), testData.getProperty("type"), testData.getProperty("card.number"),
-				testData.getProperty("expiration.number"), testData.getProperty("bin"), testData.getProperty("zipcode"),
-				testData.getProperty("last.name"),testData.getProperty("address.line1"),testData.getProperty("city"),
-				testData.getProperty("state"),testData.getProperty("first.name"),txnid, orderid);
+		Map<String, Object> transactiondetails = PayloadDetails.getPayloadForRefundSaleMap(comment, customerId,
+				externalTransId, orderId, transactionAmount);
 
 		Response response = given().spec(requestSpec).auth().oauth2(token).log().all().body(transactiondetails).when()
-				.post(customeruuid + "/merchant/" + mmid	+ "/capture")
-				.then().and().extract().response();
+				.post(testPayCustomerUuid + "/merchant/" + mmid + "/credit").then().and().extract().response();
+
 		return response;
 	}
+
 }

@@ -36,7 +36,7 @@ public class AppointmentDateTime extends PSS2MainPage {
 	@FindBy(how = How.XPATH, using = "//span[contains(text(),'No slots available')]")
 	private WebElement noslotsAvaliable;
 
-	@FindBy(how = How.XPATH, using = "//*[@class='rbc-date-cell rbc-now']")
+	@FindBy(how = How.XPATH, using = "//*[@class='rbc-date-cell rbc-now rbc-off-range']")
 	private WebElement currentDaydisabled;
 
 	public AppointmentDateTime(WebDriver driver) {

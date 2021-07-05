@@ -145,11 +145,11 @@ public class PSSPropertyFileLoader {
 	public void setAdminAT(AdminUser adminuser) {
 		Log4jUtil.log("Admin data loading");
 		adminuser.setAdminUrl(property.getProperty("adminurl"));
-		adminuser.setUser(property.getProperty("adminusernameAt"));
+		adminuser.setUser(property.getProperty("admin.user.name.at"));
 		Log4jUtil.log("adminusernameAT " + adminuser.getUser());
-		adminuser.setPassword(property.getProperty("adminpasswordAt"));
+		adminuser.setPassword(property.getProperty("admin.password.at"));
 		Log4jUtil.log("adminpasswordAT " + adminuser.getPassword());
-		adminuser.setPracticeId(property.getProperty("practiceIdAT"));
+		adminuser.setPracticeId(property.getProperty("practice.id.at"));
 		adminuser.setRule(property.getProperty("rule"));
 	}
 
@@ -166,12 +166,12 @@ public class PSSPropertyFileLoader {
 		appointValues.setUrlAnonymous(property.getProperty("anonymous.url.at"));
 		Log4jUtil.log(appointValues.getUrlAnonymous());
 		appointValues.setIsInsuranceEnabled(true);
-		appointValues.setAppointmenttype(property.getProperty("appointmenttypeAT"));
+		appointValues.setAppointmenttype(property.getProperty("appointmenttype.at"));
 		appointValues.setDatetime(property.getProperty("datetimeAT"));
-		appointValues.setLocation(property.getProperty("locationAT"));
+		appointValues.setLocation(property.getProperty("location.at"));
 		appointValues.setPassword(property.getProperty("passwordAT"));
-		appointValues.setProvider(property.getProperty("providerAT"));
-		appointValues.setSpeciality(property.getProperty("specialityAT"));
+		appointValues.setProvider(property.getProperty("provider.at"));
+		appointValues.setSpeciality(property.getProperty("speciality.at"));
 		appointValues.setUsername(property.getProperty("usernameAT"));
 		appointValues.setUrlLoginLess(property.getProperty("loginless.url.at"));
 		appointValues.setAppointmentFlow(property.getProperty("appointmentFlowAT"));
@@ -416,7 +416,7 @@ public class PSSPropertyFileLoader {
 		appointValues.setIsInsuranceEnabled(true);
 		appointValues.setAppointmenttype(property.getProperty("appointmenttypeAthena"));
 		appointValues.setLocation(property.getProperty("locationAthena"));
-		appointValues.setProvider(property.getProperty("providerAthena"));
+		appointValues.setProvider(property.getProperty("provider.at"));
 		appointValues.setDob(property.getProperty("dobAthena"));
 		appointValues.setFirstName(property.getProperty("firstNameGW"));
 		appointValues.setLastName(property.getProperty("lastNameGW"));
