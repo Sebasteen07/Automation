@@ -22,37 +22,37 @@ public class ElementTransactions extends BaseRest{
 	
 	@Test
 	public void makeElementAuthorizeCapture() throws Exception {
-		makeAuthorizeCapture(testData.getProperty("elementmmid"), flag);
+		makeAuthorizeCapture(testData.getProperty("element.mmid"), flag);
 		
 	}
 	
 	@Test
 	public void makeAnElementSale() throws Exception {
-		modulatorSale(testData.getProperty("elementmmid"), flag);
+		modulatorSale(testData.getProperty("element.mmid"), flag);
 	
 	}
 	
 	@Test
 	public void voidAnElementSale() throws Exception {
-		voidASale(testData.getProperty("elementmmid"), flag);
+		voidASale(testData.getProperty("element.mmid"), flag);
 		
 	}
 	
 	@Test
 	public void refundAnElementSale() throws Exception {
-		refundASale(testData.getProperty("elementmmid"),testData.getProperty("fullrefundamount"), flag);
+		refundASale(testData.getProperty("element.mmid"),testData.getProperty("full.refund.amount"), flag);
 		
 	}
 	
 	@Test
 	public void partialRefundAnElementSale() throws Exception {
-		refundASale(testData.getProperty("elementmmid"),testData.getProperty("partialrefundamount"), flag);
+		refundASale(testData.getProperty("element.mmid"),testData.getProperty("partial.refund.amount"), flag);
 		
 	}
 	
 	@Test
 	public void createChargeBack() throws Exception {
-		chargeBackASale(testData.getProperty("elementmmid"),testData.getProperty("chargebackfrommoduator"), flag);
+		chargeBackASale(testData.getProperty("element.mmid"),testData.getProperty("chargeback.from.moduator"), flag);
 		
 	}
 
