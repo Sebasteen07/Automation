@@ -572,8 +572,6 @@ public class PatientPortal2AcceptanceTests extends BaseTestNGWebDriver {
 
 		jalapenoMessagesPage = jalapenoCcdPage.closeCcd(driver);
 
-		jalapenoHomePage = jalapenoMessagesPage.clickOnMenuHome();
-
 		logStep("Logging out");
 		jalapenoLoginPage = jalapenoHomePage.clickOnLogout();
 
@@ -852,7 +850,6 @@ public class PatientPortal2AcceptanceTests extends BaseTestNGWebDriver {
 
 		logStep("Check appointment request details");
 		assertTrue(historyPage.checkAppointmentDetails(appointmentReason));
-		homePage = historyPage.clickOnMenuHome();
 		homePage.clickOnLogout();
 
 		logStep("Proceed in Practice Portal");
@@ -2411,7 +2408,6 @@ public class PatientPortal2AcceptanceTests extends BaseTestNGWebDriver {
 
 		logStep("Check appointment request details");
 		assertTrue(historyPage.checkAppointmentDetails(appointmentReason));
-		homePage = historyPage.clickOnMenuHome();
 		homePage.clickOnLogout();
 
 		logStep("Proceed in Practice Portal to Approved the request with adding Attachment");
@@ -2512,7 +2508,6 @@ public class PatientPortal2AcceptanceTests extends BaseTestNGWebDriver {
 
 		logStep("Check appointment request details");
 		assertTrue(historyPage.checkAppointmentDetails(appointmentReason));
-		homePage = historyPage.clickOnMenuHome();
 		homePage.clickOnLogout();
 
 		logStep("Proceed in Practice Portal");
@@ -2703,7 +2698,6 @@ public class PatientPortal2AcceptanceTests extends BaseTestNGWebDriver {
 
 		logStep("Check appointment request details");
 		assertTrue(historyPage.checkAppointmentDetails(appointmentReason));
-		homePage = historyPage.clickOnMenuHome();
 		homePage.clickOnLogout();
 
 		logStep("Proceed in Practice Portal");
@@ -2776,7 +2770,6 @@ public class PatientPortal2AcceptanceTests extends BaseTestNGWebDriver {
 
 		logStep("Check appointment request details");
 		assertTrue(historyPage.checkAppointmentDetails(appointmentReason));
-		homePage = historyPage.clickOnMenuHome();
 		homePage.clickOnLogout();
 
 		logStep("Proceed in Practice Portal");
@@ -3864,7 +3857,6 @@ public class PatientPortal2AcceptanceTests extends BaseTestNGWebDriver {
 				"Expected:" + testData.getProperty("patPhone") + ", found: " + jalapenoCcdPage.getPatientPhoneNumber());
 
 		jalapenoMessagesPage = jalapenoCcdPage.closeCcd(driver);
-		jalapenoHomePage = jalapenoMessagesPage.clickOnMenuHome();
 
 		logStep("Logging out");
 		jalapenoLoginPage = jalapenoHomePage.clickOnLogout();
@@ -3928,7 +3920,7 @@ public class PatientPortal2AcceptanceTests extends BaseTestNGWebDriver {
 		logStep("Verify the New Tab Open");
 		assertTrue(appoinmentschedulingpage.isNewTabOpenDestinationUrl(driver));
 	}
-	
+
 	/*
 	 * SCENARIO1- where a patient having statement Paper+Electronic will get update
 	 * to Electronic after updating the job with estatement configuration
@@ -3948,61 +3940,64 @@ public class PatientPortal2AcceptanceTests extends BaseTestNGWebDriver {
 
 		logStep("Login to sitegen as Admin user");
 		loginpage = new SiteGenLoginPage(driver, testData.getProperty("sitegenUrl"));
-		pSiteGenHomePage = loginpage.login(testData.getProperty("jalpenoSitegenAdmin"), testData.getProperty("jalapenoSitegenPassword"));
-				
+		pSiteGenHomePage = loginpage.login(testData.getProperty("jalpenoSitegenAdmin"),
+				testData.getProperty("jalapenoSitegenPassword"));
+
 		logStep("Navigate to SiteGen PracticeHomePage");
 		pSiteGenPracticeHomePage = pSiteGenHomePage.clickLinkMedfusionSiteAdministration();
 		logStep("Check if SiteGen Practice Homepage elements are present ");
-		assertTrue(pSiteGenPracticeHomePage.isSearchPageLoaded(), "Expected the SiteGen Practice HomePage  to be loaded, but it was not.");
-			
+		assertTrue(pSiteGenPracticeHomePage.isSearchPageLoaded(),
+				"Expected the SiteGen Practice HomePage  to be loaded, but it was not.");
+
 		logStep("Click on online bill pay and Navigate to Estatement");
 		pSiteGenPracticeHomePage.clickOnOnlineBillPay();
-		
+
 		logStep("Doing the configuration setting for estatement and setting up the default delivery option");
 		estatement = new EstatementPage(driver);
 		estatement.enableStatementDelivery("check");
 		estatement.bothPaperAndElectronic("check");
 		estatement.disablePaperOnly("uncheck");
-		Thread.sleep(5000);//Waiting for the update of default delivery options
+		Thread.sleep(5000);// Waiting for the update of default delivery options
 		estatement.defaultDeliveryOption("Paper + Electronic");
 		estatement.submitButton();
 
 		String username = PortalUtil2.generateUniqueUsername(testData.getProperty("userid"), testData);
 		patient = PatientFactory.createJalapenoPatient(username, testData);
 		patient = new CreatePatient().selfRegisterPatientWithPreference(driver, patient, testData.getUrl(), 3);
-		
+
 		logStep("Load login page");
 		loginPage = new JalapenoLoginPage(driver, testData.getUrl());
 		homePage = loginPage.login(patient.getUsername(), patient.getPassword());
-		
+
 		logStep("Go to Account tab on my account page");
 		accountPage = homePage.clickOnAccount();
 		myAccountPage = accountPage.clickOnEditMyAccount();
-		
-		
+
 		logStep("Navigate to Preference page and validate the preferencer has been updated to Paper + Electronic");
 		myAccountSecurityPage = myAccountPage.goToPreferencesTab(driver);
 		assertEquals("Paper + Electronic", myAccountSecurityPage.getSelectedStatementPreference());
 		myAccountPage.clickOnLogout();
-		
+
 		logStep("Again login back to Sitegen for estamenet Setting ");
 		loginpage = new SiteGenLoginPage(driver, testData.getProperty("sitegenUrl"));
-		pSiteGenHomePage = loginpage.login(testData.getProperty("jalpenoSitegenAdmin"), testData.getProperty("jalapenoSitegenPassword"));
-				
+		pSiteGenHomePage = loginpage.login(testData.getProperty("jalpenoSitegenAdmin"),
+				testData.getProperty("jalapenoSitegenPassword"));
+
 		logStep("Navigate to SiteGen PracticeHomePage");
 		pSiteGenPracticeHomePage = pSiteGenHomePage.clickLinkMedfusionSiteAdministration();
 		logStep("Check if SiteGen Practice Homepage elements are present ");
-		assertTrue(pSiteGenPracticeHomePage.isSearchPageLoaded(), "Expected the SiteGen Practice HomePage  to be loaded, but it was not.");
-		
+		assertTrue(pSiteGenPracticeHomePage.isSearchPageLoaded(),
+				"Expected the SiteGen Practice HomePage  to be loaded, but it was not.");
+
 		logStep("Clicking on online Bill Pay and Navigate to Estatement");
 		pSiteGenPracticeHomePage.clickOnOnlineBillPay();
-		
+
 		logStep("Setting up the estatement configuration and setting the default delivery option to estatement");
 		estatement = new EstatementPage(driver);
 		estatement.enableStatementDelivery("check");
 		estatement.bothPaperAndElectronic("uncheck");
 		estatement.disablePaperOnly("check");
-		Thread.sleep(5000);//Waiting for the update of default delivery options
+		Thread.sleep(5000);// Waiting for the update of default delivery options
 		estatement.defaultDeliveryOption("eStatement");
 		estatement.submitButton();
 
@@ -4012,14 +4007,14 @@ public class PatientPortal2AcceptanceTests extends BaseTestNGWebDriver {
 
 		logStep("Go to security tab on my account page");
 		accountPage = homePage.clickOnAccount();
-	    myAccountPage = accountPage.clickOnEditMyAccount();
-		
+		myAccountPage = accountPage.clickOnEditMyAccount();
+
 		logStep("Navigate to Preference page and validate the preferencer has been updated to Electronically");
 		myAccountSecurityPage = myAccountPage.goToPreferencesTab(driver);
 		assertEquals("Electronically", myAccountSecurityPage.getStatementPreferenceafterUpdate());
 
 	}
-	
+
 	@Test(enabled = true, groups = { "acceptance-linkedaccounts" }, retryAnalyzer = RetryAnalyzer.class)
 	public void testLACreateDependentWithInvalidGuardianCredentials() throws Exception {
 		String patientLogin = PortalUtil2.generateUniqueUsername("login", testData);
@@ -4040,7 +4035,7 @@ public class PatientPortal2AcceptanceTests extends BaseTestNGWebDriver {
 		String guardianUrl = patientActivationPage.setInitialDetailsAllFields("Dependent", patientLastName, "F",
 				patientLastName, testData.getPhoneNumber(), patientEmail, testData.getDOBMonth(), testData.getDOBDay(),
 				testData.getDOBYearUnderage(), "address1", "address2", "city", "Alabama", testData.getZipCode());
-		
+
 		logStep("Continue to Portal Inspired");
 		assertTrue(patientActivationPage.checkGuardianUrl(guardianUrl));
 		PatientVerificationPage patientVerificationPage = new PatientVerificationPage(driver, guardianUrl);
@@ -4048,15 +4043,16 @@ public class PatientPortal2AcceptanceTests extends BaseTestNGWebDriver {
 		logStep("Identify patient");
 		AuthUserLinkAccountPage linkAccountPage = patientVerificationPage.fillDependentInfoAndContinue(
 				testData.getZipCode(), testData.getDOBMonth(), testData.getDOBDay(), testData.getDOBYearUnderage());
-		
+
 		logStep("Continue registration - check dependent info and fill login credentials");
 		linkAccountPage.checkDependentInfo("Dependent", patientLastName, patientEmail);
 		linkAccountPage.linkPatientToCreateGuardian(testData.getProperty("guardianUsername"),
 				testData.getProperty("guardianInvalidPassword"), "Parent");
-		
+
 		assertTrue(linkAccountPage.isIncorrectUsernamePasswordErrorDisplayed());
-			
+
 	}
+
 	@Test(enabled = true, groups = { "acceptance-solutions" }, retryAnalyzer = RetryAnalyzer.class)
 	public void testPayBillsDuplicateAmount() throws Exception {
 		logStep("Initiate payment data");
@@ -4074,61 +4070,156 @@ public class PatientPortal2AcceptanceTests extends BaseTestNGWebDriver {
 		logStep("Check that no card is present");
 		assertFalse(payBillsPage.isAnyCardPresent());
 		logStep("Fill all the details on a payment page for first payment");
-		JalapenoPayBillsConfirmationPage confirmationPage = payBillsPage.fillPaymentInfoForDuplicate(PracticeConstants.amount, accountNumber,
-				creditCard);
+		JalapenoPayBillsConfirmationPage confirmationPage = payBillsPage
+				.fillPaymentInfoForDuplicate(PracticeConstants.amount, accountNumber, creditCard);
 		logStep("Click on the submit button and verify the payment status");
-        homePage = confirmationPage.commentAndSubmitPayment("Testing payment from number: " + accountNumber);
+		homePage = confirmationPage.commentAndSubmitPayment("Testing payment from number: " + accountNumber);
 		assertTrue(homePage.wasPayBillsSuccessfull());
 		logStep("Click on the Pay bill for duplicate payment");
-		JalapenoPayBillsMakePaymentPage payBillswithDuplicateAmount = homePage.clickOnNewPayBillsForDuplicatePayment(driver);
+		JalapenoPayBillsMakePaymentPage payBillswithDuplicateAmount = homePage
+				.clickOnNewPayBillsForDuplicatePayment(driver);
 		logStep("Fill all the details on a payment page for Duplicate payment");
-		JalapenoPayBillsConfirmationPage confirmationPageForduplicatePayment = payBillswithDuplicateAmount.fillPaymentInfoWithExistingCards(PracticeConstants.amount, accountNumber,PracticeConstants.CVV);
+		JalapenoPayBillsConfirmationPage confirmationPageForduplicatePayment = payBillswithDuplicateAmount
+				.fillPaymentInfoWithExistingCards(PracticeConstants.amount, accountNumber, PracticeConstants.CVV);
 		logStep("Click on the submit button and verify the error message");
 		confirmationPageForduplicatePayment.commentAndSubmitPayment("System should display the error message");
 		assertTrue(confirmationPageForduplicatePayment.isDuplicatePaymentErrorMessageDisplayed());
 
 	}
-	
+
 	@Test(enabled = true, groups = { "acceptance-solutions" }, retryAnalyzer = RetryAnalyzer.class)
-    public void testAskAStaffWithProviderAndLocation() throws Exception {
-        String questionText = "wat";
+	public void testAskAStaffWithProviderAndLocation() throws Exception {
+		String questionText = "wat";
 
-        logStep("Login patient");
-        JalapenoLoginPage loginPage = new JalapenoLoginPage(driver, testData.getPracticeUrl2());
-        JalapenoHomePage homePage = loginPage.login(testData.getUserId(), testData.getPassword());
+		logStep("Login patient");
+		JalapenoLoginPage loginPage = new JalapenoLoginPage(driver, testData.getPracticeUrl2());
+		JalapenoHomePage homePage = loginPage.login(testData.getUserId(), testData.getPassword());
 
-        logStep("Click Ask A Staff tab");
-        JalapenoAskAStaffV2Page1 askPage1 = homePage.openSpecificAskaV2(testData.getProperty("askAV2Name"));
+		logStep("Click Ask A Staff tab");
+		JalapenoAskAStaffV2Page1 askPage1 = homePage.openSpecificAskaV2(testData.getProperty("askAV2Name"));
 
-        String askaSubject = Long.toString(askPage1.getCreatedTimeStamp());
+		String askaSubject = Long.toString(askPage1.getCreatedTimeStamp());
 
-        logStep("Fill question and continue");
-        JalapenoAskAStaffV2Page2 askPage2 = askPage1.fillAndContinueWithProviderAndLocation(askaSubject, questionText);
+		logStep("Fill question and continue");
+		JalapenoAskAStaffV2Page2 askPage2 = askPage1.fillAndContinueWithProviderAndLocation(askaSubject, questionText);
 
-        assertTrue(askaSubject.equals(askPage2.getSubject()),
-                "Expected: " + askaSubject + ", found: " + askPage2.getSubject());
-        assertTrue(questionText.equals(askPage2.getQuestion()),
-                "Expected: " + questionText + ", found: " + askPage2.getQuestion());
+		assertTrue(askaSubject.equals(askPage2.getSubject()),
+				"Expected: " + askaSubject + ", found: " + askPage2.getSubject());
+		assertTrue(questionText.equals(askPage2.getQuestion()),
+				"Expected: " + questionText + ", found: " + askPage2.getQuestion());
 
-        homePage = askPage2.submit();
+		homePage = askPage2.submit();
 
-        logStep("Go back to the aska and check question history");
-        askPage1 = homePage.openSpecificAskaV2(testData.getProperty("askAV2Name"));
-        JalapenoAskAStaffV2HistoryListPage askHistoryList = askPage1.clickOnHistory();
+		logStep("Go back to the aska and check question history");
+		askPage1 = homePage.openSpecificAskaV2(testData.getProperty("askAV2Name"));
+		JalapenoAskAStaffV2HistoryListPage askHistoryList = askPage1.clickOnHistory();
 
-        logStep("Find history entry by subject/reason and navigate to detail");
-        JalapenoAskAStaffV2HistoryDetailPage askHistoryDetail = askHistoryList.goToDetailByReason(askaSubject);
+		logStep("Find history entry by subject/reason and navigate to detail");
+		JalapenoAskAStaffV2HistoryDetailPage askHistoryDetail = askHistoryList.goToDetailByReason(askaSubject);
 
-        logStep("Verify the subject and question in history detail match submission");
-        assertTrue(askaSubject.equals(askHistoryDetail.getRequestDetailSubject()),
-                "Expected: " + askaSubject + ", found: " + askHistoryDetail.getRequestDetailSubject());
-        assertTrue(questionText.equals(askHistoryDetail.getRequestDetailQuestion()),
-                "Expected: " + questionText + ", found: " + askHistoryDetail.getRequestDetailQuestion());
-        assertTrue("Open".equals(askHistoryDetail.getRequestDetailStatus()),
-                "Expected: Open" + ", found: " + askHistoryDetail.getRequestDetailStatus());
-        logStep("Logout patient");
-        askHistoryDetail.clickOnLogout();
-    }
+		logStep("Verify the subject and question in history detail match submission");
+		assertTrue(askaSubject.equals(askHistoryDetail.getRequestDetailSubject()),
+				"Expected: " + askaSubject + ", found: " + askHistoryDetail.getRequestDetailSubject());
+		assertTrue(questionText.equals(askHistoryDetail.getRequestDetailQuestion()),
+				"Expected: " + questionText + ", found: " + askHistoryDetail.getRequestDetailQuestion());
+		assertTrue("Open".equals(askHistoryDetail.getRequestDetailStatus()),
+				"Expected: Open" + ", found: " + askHistoryDetail.getRequestDetailStatus());
+		logStep("Logout patient");
+		askHistoryDetail.clickOnLogout();
+	}
 
-	
+	/*
+	 * SCENARIO3- where a patient having statement Preference as Electronic+Paper
+	 * will get update to Paper after updating the job with Paper configuration
+	 */
+
+	@Test(enabled = true, groups = { "acceptance-basics", "commonpatient" }, retryAnalyzer = RetryAnalyzer.class)
+	public void testSatementPreferenceUpdatingToPaperFromElectronicPaper() throws Exception {
+		SiteGenLoginPage loginpage;
+		SiteGenHomePage pSiteGenHomePage;
+		SiteGenPracticeHomePage pSiteGenPracticeHomePage;
+		EstatementPage estatement;
+		JalapenoLoginPage loginPage;
+		JalapenoHomePage homePage;
+		JalapenoAccountPage accountPage;
+		JalapenoMyAccountPreferencesPage myAccountSecurityPage;
+		JalapenoMyAccountProfilePage myAccountPage;
+
+		logStep("Login to sitegen as Admin user");
+		loginpage = new SiteGenLoginPage(driver, testData.getProperty("sitegenUrl"));
+		pSiteGenHomePage = loginpage.login(testData.getProperty("jalpenoSitegenAdmin"),
+				testData.getProperty("jalapenoSitegenPassword"));
+
+		logStep("Navigate to SiteGen PracticeHomePage");
+		pSiteGenPracticeHomePage = pSiteGenHomePage.clickLinkMedfusionSiteAdministration();
+		logStep("Check if SiteGen Practice Homepage elements are present ");
+		assertTrue(pSiteGenPracticeHomePage.isSearchPageLoaded(),
+				"Expected the SiteGen Practice HomePage  to be loaded, but it was not.");
+
+		logStep("Click on online bill pay and Navigate to Estatement");
+		pSiteGenPracticeHomePage.clickOnOnlineBillPay();
+
+		logStep("Doing the configuration setting for estatement and setting up the default delivery option");
+		estatement = new EstatementPage(driver);
+		estatement.enableStatementDelivery("check");
+		estatement.bothPaperAndElectronic("check");
+		estatement.disablePaperOnly("uncheck");
+		Thread.sleep(5000);// Waiting for the update of default delivery options
+		estatement.defaultDeliveryOption("Paper + Electronic");
+		estatement.submitButton();
+
+		String username = PortalUtil2.generateUniqueUsername(testData.getProperty("userid"), testData);
+		patient = PatientFactory.createJalapenoPatient(username, testData);
+		patient = new CreatePatient().selfRegisterPatientWithPreference(driver, patient, testData.getUrl(), 3);
+
+		logStep("Load login page");
+		loginPage = new JalapenoLoginPage(driver, testData.getUrl());
+		homePage = loginPage.login(patient.getUsername(), patient.getPassword());
+
+		logStep("Go to Account tab on my account page");
+		accountPage = homePage.clickOnAccount();
+		myAccountPage = accountPage.clickOnEditMyAccount();
+
+		logStep("Navigate to Preference page and validate the preferencer has been updated to Paper + Electronic");
+		myAccountSecurityPage = myAccountPage.goToPreferencesTab(driver);
+		assertEquals("Paper + Electronic", myAccountSecurityPage.getSelectedStatementPreference());
+		myAccountPage.clickOnLogout();
+
+		logStep("Again login back to Sitegen for estamenet Setting ");
+		loginpage = new SiteGenLoginPage(driver, testData.getProperty("sitegenUrl"));
+		pSiteGenHomePage = loginpage.login(testData.getProperty("jalpenoSitegenAdmin"),
+				testData.getProperty("jalapenoSitegenPassword"));
+
+		logStep("Navigate to SiteGen PracticeHomePage");
+		pSiteGenPracticeHomePage = pSiteGenHomePage.clickLinkMedfusionSiteAdministration();
+		logStep("Check if SiteGen Practice Homepage elements are present ");
+		assertTrue(pSiteGenPracticeHomePage.isSearchPageLoaded(),
+				"Expected the SiteGen Practice HomePage  to be loaded, but it was not.");
+
+		logStep("Clicking on online Bill Pay and Navigate to Estatement");
+		pSiteGenPracticeHomePage.clickOnOnlineBillPay();
+
+		logStep("Setting up the estatement configuration and setting the default delivery option to Paper");
+		estatement = new EstatementPage(driver);
+		estatement.enableStatementDelivery("check");
+		estatement.bothPaperAndElectronic("uncheck");
+		estatement.disablePaperOnly("uncheck");
+		Thread.sleep(5000);// Waiting for the update of default delivery options
+		estatement.defaultDeliveryOption("Paper statement");
+		estatement.submitButton();
+
+		logStep("Load login page");
+		loginPage = new JalapenoLoginPage(driver, testData.getUrl());
+		homePage = loginPage.login(patient.getUsername(), patient.getPassword());
+
+		logStep("Go to security tab on my account page");
+		accountPage = homePage.clickOnAccount();
+		myAccountPage = accountPage.clickOnEditMyAccount();
+
+		logStep("Navigate to Preference page and validate the preferencer has been updated to Paper Statement");
+		myAccountSecurityPage = myAccountPage.goToPreferencesTab(driver);
+		assertEquals("In the mail (paper statements)", myAccountSecurityPage.getSelectedStatementPreference());
+
+	}
+
 }
