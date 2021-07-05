@@ -21,6 +21,7 @@ public class GatewayProxyTransactionResource extends GatewayProxyBaseTest {
 	public Response makeASale(String token, String mmid, String testPayCustomerUuid, String transactionAmount)
 			throws NullPointerException, Exception {
 		testData = new PropertyFileLoader();
+
 		Map<String, Object> transactiondetails = PayloadDetails.getPayloadForAuthorizeSaleMap((transactionAmount),
 				testData.getProperty("account.number"), testData.getProperty("consumer.name"),
 				testData.getProperty("payment.source"), testData.getProperty("cvv"), testData.getProperty("type"),

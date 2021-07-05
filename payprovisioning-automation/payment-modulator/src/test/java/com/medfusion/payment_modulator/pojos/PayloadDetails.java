@@ -164,4 +164,9 @@ public class PayloadDetails {
 		return refundmap;
 	}
 
+	public static Map<String, Object> getPayloadForNewSaleAPI(String paymentSource, int transactionAmount) {
+		Map<String, Object> cardsMap = new HashMap<String, Object>();
+		cardsMap.putAll(Card.payloadForSale(paymentSource, transactionAmount));
+		return cardsMap;
+	}
 }

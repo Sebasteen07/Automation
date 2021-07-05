@@ -136,5 +136,4 @@ public class BillToAddress {
 		billingAdressMap.put("zipCode", zipCode);
 		return billingAdressMap;
 	}
-
 }
