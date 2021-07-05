@@ -2,11 +2,21 @@
 package com.medfusion.product.pss2patientmodulatorapi.test;
 
 public class PayloadPssPatientModulator {
+//	public String getApptDetailPayload() {
+//		String apptDetail = "{\r\n"
+//				+ "  \"appointmentTypeId\": 203950,\r\n"
+//				+ "  \"bookId\": 204202,\r\n"
+//				+ "  \"locationId\": 204200,\r\n"
+//				+ "  \"type\": \"PT_EXISTING\"\r\n"
+//				+ "}";
+//		return apptDetail;
+//	}
+
 	public String getApptDetailPayload() {
 		String apptDetail = "{\r\n"
-				+ "  \"appointmentTypeId\": 203950,\r\n"
-				+ "  \"bookId\": 204202,\r\n"
-				+ "  \"locationId\": 204200,\r\n"
+				+ "  \"appointmentTypeId\": 201504,\r\n"
+				+ "  \"bookId\": 201610,\r\n"
+				+ "  \"locationId\": 201404,\r\n"
 				+ "  \"type\": \"PT_EXISTING\"\r\n"
 				+ "}";
 		return apptDetail;
