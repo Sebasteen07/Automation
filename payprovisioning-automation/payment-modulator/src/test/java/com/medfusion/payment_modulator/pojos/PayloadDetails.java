@@ -152,6 +152,18 @@ public class PayloadDetails {
 		return cardsMap;
 	}
 
+	public static Map<String, Object> getPayloadForRefundSaleMap(String comment, String customerid,
+			String externaltransactionid, String orderid, String refundamount) {
+
+		Map<String, Object> refundmap = new HashMap<String, Object>();
+		refundmap.put("comment", comment);
+		refundmap.put("customerId", customerid);
+		refundmap.put("externalTransactionId", externaltransactionid);
+		refundmap.put("originalOrderId", orderid);
+		refundmap.put("transactionAmount", Integer.parseInt(refundamount));
+		return refundmap;
+	}
+
 	public static Map<String, Object> getPayloadForNewSaleAPI(String paymentSource, int transactionAmount) {
 		Map<String, Object> cardsMap = new HashMap<String, Object>();
 		cardsMap.putAll(Card.payloadForSale(paymentSource, transactionAmount));

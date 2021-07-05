@@ -9,6 +9,7 @@ import java.util.Map;
 
 import com.medfusion.common.utils.PropertyFileLoader;
 import com.medfusion.gateway_proxy.tests.GatewayProxyBaseTest;
+import com.medfusion.gateway_proxy.utils.GatewayProxyUtils;
 import com.medfusion.payment_modulator.pojos.PayloadDetails;
 import com.medfusion.payment_modulator.utils.CommonUtils;
 import com.medfusion.payment_modulator.utils.Validations;
@@ -17,27 +18,36 @@ public class GatewayProxyTransactionResource extends GatewayProxyBaseTest {
 
 	protected PropertyFileLoader testData;
 
-	public void makeASale(String mmid) throws IOException {
+	public Response makeASale(String token, String mmid, String testPayCustomerUuid, String transactionAmount)
+			throws NullPointerException, Exception {
 		testData = new PropertyFileLoader();
-		Map<String, Object> transactiondetails = PayloadDetails.getPayloadForAuthorizeSaleMap(
-				(testData.getProperty("transactionamount")), testData.getProperty("accountnumber"),
-				testData.getProperty("consumername"), testData.getProperty("payment.source"),
-				testData.getProperty("cvv"), testData.getProperty("type"), testData.getProperty("cardnumber"),
-				testData.getProperty("expirationnumber"), testData.getProperty("bin"), testData.getProperty("zipcode"),
-				testData.getProperty("lastname"), testData.getProperty("addressline1"), testData.getProperty("city"),
-				testData.getProperty("state"), testData.getProperty("firstname"));
 
-		Response response = given()
-				.spec(requestSpec).body(transactiondetails).when().post(testData.getProperty("testpaycustomeruuid")
-						+ "/merchant/" + testData.getProperty("proxymmid") + "/sale")
-				.then().spec(responseSpec).and().extract().response();
+		Map<String, Object> transactiondetails = PayloadDetails.getPayloadForAuthorizeSaleMap((transactionAmount),
+				testData.getProperty("account.number"), testData.getProperty("consumer.name"),
+				testData.getProperty("payment.source"), testData.getProperty("cvv"), testData.getProperty("type"),
+				testData.getProperty("card.number"), testData.getProperty("expiration.number"),
+				testData.getProperty("bin"), testData.getProperty("zipcode"), testData.getProperty("last.name"),
+				testData.getProperty("address.line1"), testData.getProperty("city"), testData.getProperty("state"),
+				testData.getProperty("first.name"));
 
-		JsonPath jsonpath = new JsonPath(response.asString());
-		Validations validate = new Validations();
-		validate.verifyTransactionDetails(response.asString());
-		CommonUtils.saveTransactionDetails(jsonpath.get("externalTransactionId").toString(),
-				jsonpath.get("orderId").toString());
+		Response response = given().spec(requestSpec).auth().oauth2(token).log().all().body(transactiondetails).when()
+				.post(testPayCustomerUuid + "/merchant/" + mmid + "/sale").then().and().extract().response();
 
+		return response;
+	}
+
+	public Response makeARefund(String token, String mmid, String testPayCustomerUuid, String comment,
+			String customerId, String externalTransId, String orderId, String transactionAmount)
+			throws NullPointerException, Exception {
+		testData = new PropertyFileLoader();
+
+		Map<String, Object> transactiondetails = PayloadDetails.getPayloadForRefundSaleMap(comment, customerId,
+				externalTransId, orderId, transactionAmount);
+
+		Response response = given().spec(requestSpec).auth().oauth2(token).log().all().body(transactiondetails).when()
+				.post(testPayCustomerUuid + "/merchant/" + mmid + "/credit").then().and().extract().response();
+
+		return response;
 	}
 
 }

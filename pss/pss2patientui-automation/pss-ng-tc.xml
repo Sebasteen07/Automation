@@ -6,7 +6,7 @@
 			<class
 				name="com.medfusion.product.pss2patientportal.test.PSS2PatientPortalAcceptanceTests">
 				<methods>
-				
+
 					<include name="testE2ELoginlessForExistingPatientNG" />
 
 				</methods>
