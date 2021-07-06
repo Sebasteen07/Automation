@@ -62,7 +62,7 @@ public class GatewayProxyTestData extends GatewayProxyBaseTest {
 	}
 
 	@DataProvider(name = "txn_data_for_http_400_statuscodes")
-	public Object[][] dpMethodForAuthorize() {
+	public Object[][] dpMethodForAuthorizeAndCapture() {
 		return new Object[][]{
 				{testData.getProperty("payment.source"),testData.getProperty("type"),
 						testData.getProperty("card.number"),testData.getProperty("expiration.number"),
