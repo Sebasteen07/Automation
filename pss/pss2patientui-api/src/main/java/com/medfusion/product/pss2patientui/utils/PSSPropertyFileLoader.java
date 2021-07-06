@@ -26,88 +26,91 @@ public class PSSPropertyFileLoader {
 		appointValues.setStartPointPresent(false);
 		appointValues.setLinkLocationURL(property.getProperty("link.location.url.gw"));
 		appointValues.setLinkProviderURL(property.getProperty("link.provider.url.gw"));
-		appointValues.setTimeMarkValue(property.getProperty("timeMarkValue.GW"));
-		appointValues.setAgeRuleMonthFirst(property.getProperty("ageRuleMonthFirstParameterGW"));
-		appointValues.setAgeRuleMonthSecond(property.getProperty("ageRuleMonthSecondParameterGW"));
+		appointValues.setTimeMarkValue(property.getProperty("timemark.value.gw"));
+		appointValues.setAgeRuleMonthFirst(property.getProperty("agerule.firstparameter.gw"));
+		appointValues.setAgeRuleMonthSecond(property.getProperty("agerule.secondparameter.gw"));
 		appointValues.setLinkProvider(property.getProperty("link.provider.gw"));
 		appointValues.setLinkLocation(property.getProperty("link.location.gw"));
-		appointValues.setAppointmenttype(property.getProperty("appointmenttypeGW"));
-		appointValues.setDatetime(property.getProperty("datetimeGW"));
-		appointValues.setLocation(property.getProperty("locationGW"));
-		appointValues.setPassword(property.getProperty("passwordGW"));
-		appointValues.setProvider(property.getProperty("providerGW"));
-		appointValues.setSpeciality(property.getProperty("specialityGW"));
-		appointValues.setUsername(property.getProperty("usernameGW"));
+		appointValues.setAppointmenttype(property.getProperty("appointmenttype.gw"));
+		appointValues.setDatetime(property.getProperty("datetime.gw"));
+		appointValues.setLocation(property.getProperty("location.gw"));
+		appointValues.setPassword(property.getProperty("password.gw"));
+		appointValues.setProvider(property.getProperty("provider.gw"));
+		appointValues.setSpeciality(property.getProperty("speciality.gw"));
+		appointValues.setUsername(property.getProperty("username.gw"));
 		appointValues.setUrlLoginLess(property.getProperty("loginless.url.gw"));
-		appointValues.setAppointmentFlow(property.getProperty("appointmentFlowGW"));
-		appointValues.setFirstTimeUser(property.getProperty("isFirstTimeUserGW"));
-		appointValues.setFirstName(property.getProperty("firstNameGW"));
-		appointValues.setLastName(property.getProperty("lastNameGW"));
-		appointValues.setEmail(property.getProperty("emailGW"));
-		appointValues.setDob(property.getProperty("dobGW"));
-		appointValues.setGender(property.getProperty("genderGW"));
-		appointValues.setZipCode(property.getProperty("zipCodeGW"));
-		appointValues.setPrimaryNumber(property.getProperty("primaryNumberGW"));
+		appointValues.setAppointmentFlow(property.getProperty("appointment.flow.gw"));
+		appointValues.setFirstTimeUser(property.getProperty("isfirsttime.user.gw"));
+		appointValues.setFirstName(property.getProperty("firstname.gw"));
+		appointValues.setLastName(property.getProperty("lastname.gw"));
+		appointValues.setEmail(property.getProperty("email.gw"));
+		appointValues.setDob(property.getProperty("dob.gw"));
+		appointValues.setGender(property.getProperty("gender.gw"));
+		appointValues.setZipCode(property.getProperty("zipcode.gw"));
+		appointValues.setPrimaryNumber(property.getProperty("primarynumber.gw"));
 		appointValues.setUrlIPD(property.getProperty("urlIDPGW"));
-		appointValues.setCity(property.getProperty("cityGW"));
+		appointValues.setCity(property.getProperty("city.gw"));
 		appointValues.setStreet(property.getProperty("streetGW"));
-		appointValues.setPatientUserName(property.getProperty("patientusernameGW"));
-		appointValues.setPatientPassword(property.getProperty("patientpasswordGW"));
-		appointValues.setPatientPortalURL(property.getProperty("patientportalurlGW"));
-		appointValues.setPatientPortalUserName(property.getProperty("patientportalusernameGW"));
-		appointValues.setPatientPortalPassword(property.getProperty("patientportalpasswordGW"));
-		appointValues.setEmaiSubject(property.getProperty("emaiSubject"));
-		appointValues.setFindInEmail(property.getProperty("findInEmail"));
-		appointValues.setRetries(property.getProperty("retries"));
+		appointValues.setPatientUserName(property.getProperty("patient.username.gw"));
+		appointValues.setPatientPassword(property.getProperty("patient.password.gw"));
+		appointValues.setPatientPortalURL(property.getProperty("patientportal.url.gw"));
+		appointValues.setPatientPortalUserName(property.getProperty("patientportal.username.gw"));
+		appointValues.setPatientPortalPassword(property.getProperty("patientportal.password.gw"));
+
+		appointValues.setRetries(property.getProperty("retries.count.count"));
 		appointValues.setIsAppointmentPopup(property.getProperty("is.appointment.popup.gw"));
 		appointValues.setAppointmentScheduledFromPM(property.getProperty("appointmentScheduledAtPMGW"));
 		appointValues.setCancellationPolicyText(property.getProperty("cancellationPolicyTextGW"));
-		appointValues.setAppointmentList(property.getProperty("appointmentListGW"));
-		appointValues.setLocationList(property.getProperty("locationListGW"));
-		appointValues.setProviderList(property.getProperty("providerListGW"));
+		appointValues.setAppointmentList(property.getProperty("appointment.list.gw"));
+		appointValues.setLocationList(property.getProperty("location.list.gw"));
+		appointValues.setProviderList(property.getProperty("provider.list.gw"));
 		appointValues.setIsAgeRuleApplied(property.getProperty("isAgeRuleAppliedGW"));
 		appointValues.setUnderAgePatientUserName(property.getProperty("underAgePatientUNGW"));
 		appointValues.setUnderAgePatientPassword(property.getProperty("underAgePatientPasswordGW"));
-		appointValues.setAssociatedProvider1(property.getProperty("associatedProvider1GW"));
-		appointValues.setAssociatedLocation1(property.getProperty("associatedLocation1GW"));
-		appointValues.setAssociatedSpeciality1(property.getProperty("associatedSpeciality1GW"));
-		appointValues.setAssociatedApt1(property.getProperty("associatedApt1GW"));
-		appointValues.setAssociatedProvider2(property.getProperty("associatedProvider2GW"));
-		appointValues.setAssociatedLocation2(property.getProperty("associatedLocation2GW"));
-		appointValues.setAssociatedSpeciality2(property.getProperty("associatedSpeciality2GW"));
-		appointValues.setAssociatedApt2(property.getProperty("associatedApt2GW"));
-		appointValues.setAssociatedProvider3(property.getProperty("associatedProvider3GW"));
-		appointValues.setAssociatedLocation3(property.getProperty("associatedLocation3GW"));
-		appointValues.setAssociatedSpeciality3(property.getProperty("associatedSpeciality3GW"));
-		appointValues.setAssociatedApt3(property.getProperty("associatedApt3GW"));
-		appointValues.setOldPatientUserName(property.getProperty("oldPatientUserNameGW"));
-		appointValues.setOldPatientPassword(property.getProperty("oldPatientPasswordGW"));
+		appointValues.setAssociatedProvider1(property.getProperty("associated.provider1.gw"));
+		appointValues.setAssociatedLocation1(property.getProperty("associated.location1.gw"));
+		appointValues.setAssociatedSpeciality1(property.getProperty("associated.speciality1.gw"));
+		appointValues.setAssociatedApt1(property.getProperty("associated.apt1.gw"));
+		appointValues.setAssociatedProvider2(property.getProperty("associated.provider2.gw"));
+		appointValues.setAssociatedLocation2(property.getProperty("associated.location2.gw"));
+		appointValues.setAssociatedSpeciality2(property.getProperty("associated.speciality2.gw"));
+		appointValues.setAssociatedApt2(property.getProperty("associated.apt2.gw"));
+		appointValues.setAssociatedProvider3(property.getProperty("associated.provider3.gw"));
+		appointValues.setAssociatedLocation3(property.getProperty("associated.location3.gw"));
+		appointValues.setAssociatedSpeciality3(property.getProperty("associated.speciality3.gw"));
+		appointValues.setAssociatedApt3(property.getProperty("associated.apt3.gw"));
+		appointValues.setOldPatientUserName(property.getProperty("oldpatient.username.gw"));
+		appointValues.setOldPatientPassword(property.getProperty("oldpatient.password.gw"));
 		appointValues.setProviderImageAPI(property.getProperty("providerImageAPIGW"));
 		appointValues.setGmailUserName(property.getProperty("gmailUserNameGW"));
 		appointValues.setPopUpMessege(property.getProperty("popUpMessege"));
 		appointValues.setNextAvailiableText(property.getProperty("next.availi.text"));
 		appointValues.setExcludeSlotFirstValue(property.getProperty("exclude.firstvalue.gw"));
 		appointValues.setExcludeSlotSecondValue(property.getProperty("exclude.secondvalue.gw"));
+		appointValues.setSlotValue(property.getProperty("slotvalue.gw"));
 
-		appointValues.setFirstNameCarePatient(property.getProperty("firstNameCarePatientGW"));
-		appointValues.setLastNameCarePatient(property.getProperty("lastNameCarePatientGW"));
-		appointValues.setDobCarePatient(property.getProperty("dobCarePatientGW"));
-		appointValues.setGenderCarePatient(property.getProperty("genderCarePatientGW"));
-		appointValues.setEmailCarePatient(property.getProperty("emailCarePatientGW"));
+
+		appointValues.setFirstNameCarePatient(property.getProperty("firstname.carepatient.gw"));
+		appointValues.setLastNameCarePatient(property.getProperty("lastname.carepatient.gw"));
+		appointValues.setDobCarePatient(property.getProperty("dob.carepatient.gw"));
+		appointValues.setGenderCarePatient(property.getProperty("gender.carepatient.gw"));
+		appointValues.setEmailCarePatient(property.getProperty("email.carepatient.gw"));
 		appointValues.setPhoneCarePatient(property.getProperty("phone.care.patient.gw"));
-		appointValues.setZipCarePatient(property.getProperty("zipCarePatientGW"));
+		appointValues.setZipCarePatient(property.getProperty("zip.carepatient.gw"));
 		appointValues.setCareProvider(property.getProperty("provider.care.patient.gw"));
 		appointValues.setMemberID(property.getProperty("memberID"));
-		appointValues.setGroupID(property.getProperty("groupID"));
-		appointValues.setInsurancePhone(property.getProperty("insrancePhone"));
+		appointValues.setGroupID(property.getProperty("group.id"));
+		appointValues.setEmaiSubject(property.getProperty("email.subject"));
+		appointValues.setFindInEmail(property.getProperty("find.in.email"));
+		appointValues.setInsurancePhone(property.getProperty("insrance.phone"));
 	}
 
 	public void setAdminGW(AdminUser adminuser) {
 		adminuser.setAdminUrl(property.getProperty("adminurl"));
-		adminuser.setUser(property.getProperty("adminusernameGW"));
-		adminuser.setPassword(property.getProperty("adminpasswordGW"));
+		adminuser.setUser(property.getProperty("admin.username.gw"));
+		adminuser.setPassword(property.getProperty("admin.password.gw"));
 		adminuser.setRule(property.getProperty("rule"));
-		adminuser.setPracticeId(property.getProperty("practiceIdGW"));
+		adminuser.setPracticeId(property.getProperty("practice.id.gw"));
 		adminuser.setIsInsuranceDisplayed(false);
 		adminuser.setIsstartpointPresent(false);
 
@@ -142,11 +145,11 @@ public class PSSPropertyFileLoader {
 	public void setAdminAT(AdminUser adminuser) {
 		Log4jUtil.log("Admin data loading");
 		adminuser.setAdminUrl(property.getProperty("adminurl"));
-		adminuser.setUser(property.getProperty("adminusernameAt"));
+		adminuser.setUser(property.getProperty("admin.user.name.at"));
 		Log4jUtil.log("adminusernameAT " + adminuser.getUser());
-		adminuser.setPassword(property.getProperty("adminpasswordAt"));
+		adminuser.setPassword(property.getProperty("admin.password.at"));
 		Log4jUtil.log("adminpasswordAT " + adminuser.getPassword());
-		adminuser.setPracticeId(property.getProperty("practiceIdAT"));
+		adminuser.setPracticeId(property.getProperty("practice.id.at"));
 		adminuser.setRule(property.getProperty("rule"));
 	}
 
@@ -163,12 +166,12 @@ public class PSSPropertyFileLoader {
 		appointValues.setUrlAnonymous(property.getProperty("anonymous.url.at"));
 		Log4jUtil.log(appointValues.getUrlAnonymous());
 		appointValues.setIsInsuranceEnabled(true);
-		appointValues.setAppointmenttype(property.getProperty("appointmenttypeAT"));
+		appointValues.setAppointmenttype(property.getProperty("appointmenttype.at"));
 		appointValues.setDatetime(property.getProperty("datetimeAT"));
-		appointValues.setLocation(property.getProperty("locationAT"));
+		appointValues.setLocation(property.getProperty("location.at"));
 		appointValues.setPassword(property.getProperty("passwordAT"));
-		appointValues.setProvider(property.getProperty("providerAT"));
-		appointValues.setSpeciality(property.getProperty("specialityAT"));
+		appointValues.setProvider(property.getProperty("provider.at"));
+		appointValues.setSpeciality(property.getProperty("speciality.at"));
 		appointValues.setUsername(property.getProperty("usernameAT"));
 		appointValues.setUrlLoginLess(property.getProperty("loginless.url.at"));
 		appointValues.setAppointmentFlow(property.getProperty("appointmentFlowAT"));
@@ -188,9 +191,9 @@ public class PSSPropertyFileLoader {
 		appointValues.setPatientPortalURL(property.getProperty("patientportalurlAT"));
 		appointValues.setPatientPortalUserName(property.getProperty("patientportalusernameAT"));
 		appointValues.setPatientPortalPassword(property.getProperty("patientportalpasswordAT"));
-		appointValues.setEmaiSubject(property.getProperty("emaiSubject"));
-		appointValues.setFindInEmail(property.getProperty("findInEmail"));
-		appointValues.setRetries(property.getProperty("retries"));
+		appointValues.setEmaiSubject(property.getProperty("email.subject"));
+		appointValues.setFindInEmail(property.getProperty("find.in.email"));
+		appointValues.setRetries(property.getProperty("retries.count"));
 		appointValues.setIsAppointmentPopup(property.getProperty("is.appointment.popup.at"));
 		appointValues.setAppointmentScheduledFromPM(property.getProperty("appointmentScheduledAtPMAT"));
 		appointValues.setCancellationPolicyText(property.getProperty("cancellationPolicyTextAT"));
@@ -221,8 +224,10 @@ public class PSSPropertyFileLoader {
 		appointValues.setExcludeSlotFirstValue(property.getProperty("exclude.firstvalue.at"));
 		appointValues.setExcludeSlotSecondValue(property.getProperty("exclude.secondvalue.at"));
 		appointValues.setMemberID(property.getProperty("memberID"));
-		appointValues.setGroupID(property.getProperty("groupID"));
-		appointValues.setInsurancePhone(property.getProperty("insrancePhone"));
+		appointValues.setGroupID(property.getProperty("group.id"));
+		appointValues.setEmaiSubject(property.getProperty("email.subject"));
+		appointValues.setFindInEmail(property.getProperty("find.in.email"));
+		appointValues.setInsurancePhone(property.getProperty("insrance.phone"));
 
 	}
 
@@ -244,7 +249,7 @@ public class PSSPropertyFileLoader {
 		appointValues.setProvider(property.getProperty("providerGE"));
 		appointValues.setSpeciality(property.getProperty("specialityGE"));
 		appointValues.setUsername(property.getProperty("usernameGE"));
-		appointValues.setUrlLoginLess(property.getProperty("loginless.url.ng"));
+		appointValues.setUrlLoginLess(property.getProperty("loginless.url.ge"));
 		appointValues.setAppointmentFlow(property.getProperty("appointmentFlowGE"));
 		appointValues.setFirstTimeUser(property.getProperty("isFirstTimeUserGE"));
 		appointValues.setFirstName(property.getProperty("firstNameGE"));
@@ -262,9 +267,9 @@ public class PSSPropertyFileLoader {
 		appointValues.setPatientPortalURL(property.getProperty("patientportalurlGE"));
 		appointValues.setPatientPortalUserName(property.getProperty("patientportalusernameGE"));
 		appointValues.setPatientPortalPassword(property.getProperty("patientportalpasswordGE"));
-		appointValues.setEmaiSubject(property.getProperty("emaiSubject"));
-		appointValues.setFindInEmail(property.getProperty("findInEmail"));
-		appointValues.setRetries(property.getProperty("retries"));
+		appointValues.setEmaiSubject(property.getProperty("email.subject"));
+		appointValues.setFindInEmail(property.getProperty("find.in.email"));
+		appointValues.setRetries(property.getProperty("retries.count"));
 		appointValues.setIsAppointmentPopup(property.getProperty("is.appointment.popup.ge"));
 		appointValues.setAppointmentScheduledFromPM(property.getProperty("appointmentScheduledAtPMGE"));
 		appointValues.setCancellationPolicyText(property.getProperty("cancellationPolicyTextGE"));
@@ -294,6 +299,8 @@ public class PSSPropertyFileLoader {
 		appointValues.setNextAvailiableText(property.getProperty("next.availi.text"));
 		appointValues.setExcludeSlotFirstValue(property.getProperty("exclude.firstvalue.ge"));
 		appointValues.setExcludeSlotSecondValue(property.getProperty("exclude.secondvalue.ge"));
+		appointValues.setSlotValue(property.getProperty("slotvalue.ge"));
+
 
 
 		appointValues.setFirstNameCarePatient(property.getProperty("firstNameCarePatientGE"));
@@ -305,8 +312,10 @@ public class PSSPropertyFileLoader {
 		appointValues.setZipCarePatient(property.getProperty("zipCarePatientGE"));
 		appointValues.setCareProvider(property.getProperty("provider.care.patient.ge"));
 		appointValues.setMemberID(property.getProperty("memberID"));
-		appointValues.setGroupID(property.getProperty("groupID"));
-		appointValues.setInsurancePhone(property.getProperty("insrancePhone"));
+		appointValues.setGroupID(property.getProperty("group.id"));
+		appointValues.setEmaiSubject(property.getProperty("email.subject"));
+		appointValues.setFindInEmail(property.getProperty("find.in.email"));
+		appointValues.setInsurancePhone(property.getProperty("insrance.phone"));
 
 	}
 
@@ -348,9 +357,9 @@ public class PSSPropertyFileLoader {
 		appointValues.setPatientPortalURL(property.getProperty("patientportalurlNG"));
 		appointValues.setPatientPortalUserName(property.getProperty("patientportalusernameNG"));
 		appointValues.setPatientPortalPassword(property.getProperty("patientportalpasswordNG"));
-		appointValues.setEmaiSubject(property.getProperty("emaiSubject"));
-		appointValues.setFindInEmail(property.getProperty("findInEmail"));
-		appointValues.setRetries(property.getProperty("retries"));
+		appointValues.setEmaiSubject(property.getProperty("email.subject"));
+		appointValues.setFindInEmail(property.getProperty("find.in.email"));
+		appointValues.setRetries(property.getProperty("retries.count"));
 		appointValues.setIsAppointmentPopup(property.getProperty("is.appointment.popup.ng"));
 		appointValues.setAppointmentScheduledFromPM(property.getProperty("appointmentScheduledAtPMNG"));
 		appointValues.setCancellationPolicyText(property.getProperty("cancellationPolicyTextNG"));
@@ -380,6 +389,8 @@ public class PSSPropertyFileLoader {
 		appointValues.setNextAvailiableText(property.getProperty("next.availi.text"));
 		appointValues.setExcludeSlotFirstValue(property.getProperty("exclude.firstvalue.ng"));
 		appointValues.setExcludeSlotSecondValue(property.getProperty("exclude.secondvalue.ng"));
+		appointValues.setSlotValue(property.getProperty("slotvalue.ng"));
+
 
 		appointValues.setFirstNameCarePatient(property.getProperty("firstNameCarePatientNG"));
 		appointValues.setLastNameCarePatient(property.getProperty("lastNameCarePatientNG"));
@@ -390,10 +401,14 @@ public class PSSPropertyFileLoader {
 		appointValues.setZipCarePatient(property.getProperty("zipCarePatientNG"));
 		appointValues.setCareProvider(property.getProperty("provider.care.patient.ng"));
 		appointValues.setMemberID(property.getProperty("memberID"));
-		appointValues.setGroupID(property.getProperty("groupID"));
-		appointValues.setInsurancePhone(property.getProperty("insrancePhone"));
+		appointValues.setGroupID(property.getProperty("group.id"));
+		appointValues.setEmaiSubject(property.getProperty("email.subject"));
+		appointValues.setFindInEmail(property.getProperty("find.in.email"));
+		appointValues.setInsurancePhone(property.getProperty("insrance.phone"));
 		
 		appointValues.setPreSchedDays(Integer.parseInt(property.getProperty("prescheddays.ng")));
+		appointValues.setShowCancellationReasonPM(true);
+		appointValues.setShowCancellationRescheduleReason(true);
 	}
 
 	public void setAppointmentResponseAthena(Appointment appointValues) {
@@ -401,7 +416,7 @@ public class PSSPropertyFileLoader {
 		appointValues.setIsInsuranceEnabled(true);
 		appointValues.setAppointmenttype(property.getProperty("appointmenttypeAthena"));
 		appointValues.setLocation(property.getProperty("locationAthena"));
-		appointValues.setProvider(property.getProperty("providerAthena"));
+		appointValues.setProvider(property.getProperty("provider.at"));
 		appointValues.setDob(property.getProperty("dobAthena"));
 		appointValues.setFirstName(property.getProperty("firstNameGW"));
 		appointValues.setLastName(property.getProperty("lastNameGW"));

@@ -30,6 +30,8 @@ public class PracticeConstants {
 
 		public final static String CARD_NUMBER = "4111111111111111";
 		public final static String CVV = "111";
+		public final static String amount = "2.21";
+		
 
 		// card payment
 		public final static String PAYMENT_COMPLETED_SUCCESS_MSG = "Payment completed";

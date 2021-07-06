@@ -61,9 +61,7 @@ public abstract class MedfusionPage extends BasePageObject {
 						String sanitizedUrl = url.trim();
 						log("URL: " + sanitizedUrl);
 						driver.get(sanitizedUrl);
-						// Setting the current window to that dimension
-						Dimension dm = new Dimension(1000, 776);
-						driver.manage().window().setSize(dm);
+						driver.manage().window().maximize();
 				}
 				System.out.println("Size of window before maximizing: " + driver.manage().window().getSize());
 				/*

@@ -26,7 +26,7 @@ public class BaseRest {
 	public static void setupRequestSpecBuilder() throws IOException
 	{
 		testData = new PropertyFileLoader();
-		RestAssured.baseURI = testData.getProperty("baseurl");
+		RestAssured.baseURI = testData.getProperty("base.url");
 		requestSpec	 = new RequestSpecBuilder()
 	   .setContentType(ContentType.JSON).and()
 	   .addFilter(new ResponseLoggingFilter())
@@ -57,7 +57,7 @@ public class BaseRest {
 	}
 	
 	public void makeASale(Boolean flag) throws Exception {
-		modulatorSale(testData.getProperty("elementmmid"), flag);
+		modulatorSale(testData.getProperty("element.mmid"), flag);
 	
 	}
 	

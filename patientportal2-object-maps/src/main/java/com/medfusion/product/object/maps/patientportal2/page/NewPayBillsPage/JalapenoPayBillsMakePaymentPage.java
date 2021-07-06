@@ -18,6 +18,7 @@ import org.openqa.selenium.support.ui.WebDriverWait;
 
 import com.medfusion.common.utils.IHGUtil;
 import com.medfusion.product.object.maps.patientportal2.page.JalapenoMenu;
+import com.medfusion.product.object.maps.patientportal2.page.HomePage.JalapenoHomePage;
 import com.medfusion.product.patientportal2.pojo.CreditCard;
 import com.medfusion.product.patientportal2.pojo.CreditCard.CardType;
 
@@ -97,7 +98,7 @@ public class JalapenoPayBillsMakePaymentPage extends JalapenoMenu {
 
 	@FindBy(how = How.XPATH, using = "//td[label[contains(text(),'Credit Card')]]/following-sibling::td")
 	private WebElement receiptCardDigit;
-
+	
 	public JalapenoPayBillsMakePaymentPage(WebDriver driver) {
 		super(driver);
 		IHGUtil.PrintMethodName();
@@ -294,4 +295,65 @@ public class JalapenoPayBillsMakePaymentPage extends JalapenoMenu {
 		return confirmationNumber;
 
 	}
+	
+	public JalapenoPayBillsConfirmationPage fillPaymentInfoWithExistingCards(String amount, String accNumber, String creditCardCsv) throws InterruptedException {
+        WebDriverWait wait = new WebDriverWait(driver, 10);
+		log("Insert Payment amount: " + amount);
+		paymentAmount.clear();
+		paymentAmount.sendKeys(amount);
+		
+		log("Insert account number: " + accNumber);
+		try {
+			accountNumber.sendKeys(accNumber);
+		}
+		catch(Exception e)
+		{
+			log(e.getMessage());
+		}
+		wait.until(ExpectedConditions.visibilityOf(confirmCVV));
+		confirmCVV.sendKeys(creditCardCsv);
+		log("Click on Continue button");
+		wait.until(ExpectedConditions.elementToBeClickable(continueButton));
+		continueButton.sendKeys(Keys.ENTER);
+		return PageFactory.initElements(driver, JalapenoPayBillsConfirmationPage.class);
+	}
+	public JalapenoPayBillsConfirmationPage fillPaymentInfoForDuplicate(String amount, String accNumber, CreditCard creditCard)
+			throws InterruptedException {
+		return fillPaymentInfoForDuplicate(amount, accNumber, creditCard, "");
+	}
+
+	public JalapenoPayBillsConfirmationPage fillPaymentInfoForDuplicate(String amount, String accNumber, CreditCard creditCard,
+			String location) throws InterruptedException {
+
+		WebDriverWait wait = new WebDriverWait(driver, 10);
+
+		log("Click on Add New Card");
+		wait.until(ExpectedConditions.elementToBeClickable(addNewCardButton));
+		addNewCardButton.sendKeys(Keys.ENTER);
+		fillNewCardInformation(creditCard);
+
+		log("Insert Payment amount: " + amount);
+		paymentAmount.clear();
+		paymentAmount.sendKeys(amount);
+		
+		log("Insert account number: " + accNumber);
+		try {
+			accountNumber.sendKeys(accNumber);
+		}
+		catch(Exception e)
+		{
+			log(e.getMessage());
+		}
+		
+		log("Insert CVV code: " + creditCard.getCvvCode());
+		wait.until(ExpectedConditions.visibilityOf(confirmCVV));
+
+		confirmCVV.sendKeys(creditCard.getCvvCode());
+		log("Click on Continue button");
+		wait.until(ExpectedConditions.elementToBeClickable(continueButton));
+		continueButton.sendKeys(Keys.ENTER);
+		return PageFactory.initElements(driver, JalapenoPayBillsConfirmationPage.class);
+	}
+
+	
 }

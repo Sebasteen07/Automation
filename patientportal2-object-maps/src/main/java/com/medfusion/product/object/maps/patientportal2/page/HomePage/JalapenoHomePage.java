@@ -550,17 +550,21 @@ public class JalapenoHomePage extends JalapenoMenu {
 		return PageFactory.initElements(driver, JalapenoAppoinmentSchedulingPage.class);
 
 	}
-	
+	public JalapenoPayBillsMakePaymentPage clickOnNewPayBillsForDuplicatePayment(WebDriver driver) {
+		log("Clicking on Payments button");
+		payments.click();
+
+		return PageFactory.initElements(driver, JalapenoPayBillsMakePaymentPage.class);
+	}
+    
 	public boolean verifyLiveChat() throws TimeoutException {
 		log("Verify LiveChat");
 		try {
-		return btnLiveChat.isDisplayed();
+			return btnLiveChat.isDisplayed();
 		}
 		catch(NoSuchElementException e){
 			log("Live Chat is not displayed");
 			return false;
 		}
 	}
-
 }
-

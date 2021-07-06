@@ -138,6 +138,18 @@ public class JalapenoAskAStaffV2Page1 extends JalapenoMenu {
 	@FindBy(how = How.XPATH, using = "(//div[@class='ng-select-container'])[1]")
 	private WebElement ProviderDropDown;
 
+	@FindBy(how = How.XPATH, using = "//*[text()='Location']/../ng-select")
+    private WebElement lstLocation;
+   
+    @FindBy(how = How.XPATH, using = "//*[text()='Provider']/../ng-select")
+    private WebElement lstProvider;
+   
+    @FindBy(how = How.XPATH, using = "(//*[@class='ng-option'])[1]")
+    private WebElement setLocation;
+   
+    @FindBy(how = How.XPATH, using = "//*[@class='ng-option ng-option-marked']")
+    private WebElement setProvider;
+	
 	private long createdTS;
 
 	public JalapenoAskAStaffV2Page1(WebDriver driver) {
@@ -534,4 +546,30 @@ public class JalapenoAskAStaffV2Page1 extends JalapenoMenu {
 		return PageFactory.initElements(driver, JalapenoAskAStaffV2Page2.class);
 	}
 
+    public JalapenoAskAStaffV2Page2 fillAndContinueWithProviderAndLocation(String subject, String question) throws InterruptedException {
+        if (subject != null && !subject.trim().isEmpty()) {   
+            subjectBox.clear();
+            wait.until(ExpectedConditions.visibilityOf(subjectBox));
+            
+            subjectBox.sendKeys(subject);
+        }
+        if (new IHGUtil(driver).isRendered(lstLocation)) {
+            log("Set primary location");
+            lstLocation.click();
+            IHGUtil.waitForElement(driver, 60, setLocation);
+            javascriptClick(setLocation);
+        }
+        if (new IHGUtil(driver).isRendered(lstProvider)) {
+            log("Set primary location");
+            lstProvider.click();
+            IHGUtil.waitForElement(driver, 60, setLocation);
+            javascriptClick(setProvider);
+        }
+        IHGUtil.waitForElement(driver, 60, questionBox);
+        questionBox.sendKeys(question);
+        IHGUtil.waitForElement(driver, 60, continueButton);
+        continueButton.click();
+        return PageFactory.initElements(driver, JalapenoAskAStaffV2Page2.class);
+    }
+    
 }

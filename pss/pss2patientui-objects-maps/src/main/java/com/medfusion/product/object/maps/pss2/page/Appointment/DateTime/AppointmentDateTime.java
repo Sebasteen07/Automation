@@ -36,7 +36,7 @@ public class AppointmentDateTime extends PSS2MainPage {
 	@FindBy(how = How.XPATH, using = "//span[contains(text(),'No slots available')]")
 	private WebElement noslotsAvaliable;
 
-	@FindBy(how = How.XPATH, using = "//*[@class='rbc-date-cell rbc-now']")
+	@FindBy(how = How.XPATH, using = "//*[@class='rbc-date-cell rbc-now rbc-off-range']")
 	private WebElement currentDaydisabled;
 
 	public AppointmentDateTime(WebDriver driver) {
@@ -257,12 +257,28 @@ public class AppointmentDateTime extends PSS2MainPage {
 		}
 		return dt;
 	}
+	
+	public String getFirstTimeWithHour() {
+		String time = "";
+		for (int i = 0; i < appointmentTimeList.size(); i++) {
+			time = appointmentTimeList.get(0).getText();
+		}		return time.substring(0,2);
+
+	}
 	public String getFirstTimeWithMinute() {
 		String time = "";
 		for (int i = 0; i < appointmentTimeList.size(); i++) {
 			time = appointmentTimeList.get(0).getText();
 		}
 		return time.substring(3,5);
+
+	}
+	public String getNextTimeWithMinute() {
+		String time = "";
+		for (int i = 0; i < appointmentTimeList.size(); i++) {
+			time = appointmentTimeList.get(1).getText();
+		}
+		return time.substring(0,5);
 
 	}
 }
