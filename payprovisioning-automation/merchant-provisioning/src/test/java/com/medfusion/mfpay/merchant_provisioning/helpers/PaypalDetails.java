@@ -20,9 +20,9 @@ protected PropertyFileLoader testData;
 
 	public void createUpdatePaypalMerchant() throws IOException {
 			testData = new PropertyFileLoader();
-			Map<String, Object> paypalmerchantdetails = PaypalMerchantInfo.getMerchantMap((testData.getProperty("paypalmerchantname")),
-					testData.getProperty("externalmerchantid"),testData.getProperty("customeraccountnumber"),
-					testData.getProperty("transactionlimit"),testData.getProperty("paypalcnpusername"),testData.getProperty("paypalcnppassword"));
+			Map<String, Object> paypalmerchantdetails = PaypalMerchantInfo.getMerchantMap((testData.getProperty("paypal.merchant.name")),
+					testData.getProperty("external.merchantid"),testData.getProperty("customer.account.number"),
+					testData.getProperty("transaction.limit"),testData.getProperty("paypal.cnp.username"),testData.getProperty("paypal.cnp.password"));
 			
 			ObjectMapper objectMapper = new ObjectMapper();
 		  	String convertTOJson = objectMapper.writeValueAsString(paypalmerchantdetails);
