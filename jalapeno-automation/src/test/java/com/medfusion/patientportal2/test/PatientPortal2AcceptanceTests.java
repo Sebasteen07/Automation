@@ -3608,7 +3608,7 @@ public class PatientPortal2AcceptanceTests extends BaseTestNGWebDriver {
 		loginWithDeletedPatient.loginUnsuccessfuly(patient.getUsername(), patient.getPassword());
 
 		logStep("Looking for the Error Message and verifying the error message");
-		assertTrue(loginWithDeletedPatient.isDeletePatientErrorDisplayed());
+		assertTrue(loginWithDeletedPatient.isDeleteOrDeactivePatientErrorDisplayed());
 	}
 
 	@Test(enabled = true, groups = { "acceptance-solutions" }, retryAnalyzer = RetryAnalyzer.class)
@@ -4221,5 +4221,39 @@ public class PatientPortal2AcceptanceTests extends BaseTestNGWebDriver {
 		assertEquals("In the mail (paper statements)", myAccountSecurityPage.getSelectedStatementPreference());
 
 	}
+	
+	@Test(enabled = true, groups = { "acceptance-basics", "commonpatient" }, retryAnalyzer = RetryAnalyzer.class)
+	public void testDeactivePatient() throws Exception {
+		patient = null;
+		createPatient();
+
+		logStep("Go to account page");
+		JalapenoHomePage homePage = new JalapenoHomePage(driver);
+		homePage.clickOnLogout();
+
+		logStep("Login to practice portal");
+		PracticeLoginPage practiceLogin = new PracticeLoginPage(driver, testData.getPortalUrl());
+		PracticeHomePage pPracticeHomePage = practiceLogin.login(testData.getProperty("doctorLogin"),
+				testData.getProperty("doctorPassword"));
+
+		logStep("Click on Patient Search Link");
+		PatientSearchPage pPatientSearchPage = pPracticeHomePage.clickPatientSearchLink();
+		pPatientSearchPage.searchForPatientInPatientSearch(patient.getEmail());
+
+		logStep("Verify the Search Result");
+		IHGUtil.waitForElement(driver, 30, pPatientSearchPage.searchResult);
+		pPatientSearchPage.clickOnPatient(patient.getFirstName(), patient.getLastName());
+		pPatientSearchPage.deactivatePatient();
+
+		logStep("Load login page");
+		JalapenoLoginPage loginPage = new JalapenoLoginPage(driver, testData.getUrl());
+		logStep("login with deactive patient details");
+		loginPage.loginUnsuccessfuly(patient.getUsername(), patient.getPassword());
+
+		logStep("Looking for the Error Message and verifying the error message");
+		assertTrue(loginPage.isDeleteOrDeactivePatientErrorDisplayed());
+		
+	}
+
 
 }

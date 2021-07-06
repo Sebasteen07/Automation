@@ -61,7 +61,7 @@ public class JalapenoLoginPage extends MedfusionPage {
 	private WebElement trustedRepresentativeLoginError;
 
 	@FindBy(how = How.XPATH, using = "//span[contains(text(),'Your account is no longer active. Please contact our practice in order re-activate it.')]")
-	private WebElement deletePatientLoginError;
+	private WebElement msgInactivePatientError;
 
 	public JalapenoLoginPage(WebDriver driver, String url) {
 		super(driver, url);
@@ -175,10 +175,10 @@ public class JalapenoLoginPage extends MedfusionPage {
 		return false;
 	}
 
-	public boolean isDeletePatientErrorDisplayed() {
+	public boolean isDeleteOrDeactivePatientErrorDisplayed() {
 		try {
 			log("Looking for Your account is no longer active error on loginPage");
-			return deletePatientLoginError.isDisplayed();
+			return msgInactivePatientError.isDisplayed();
 		} catch (Exception e) {
 		}
 		return false;
