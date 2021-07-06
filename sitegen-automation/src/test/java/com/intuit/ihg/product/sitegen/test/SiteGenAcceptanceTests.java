@@ -12,6 +12,7 @@ import org.testng.annotations.BeforeClass;
 import org.testng.annotations.Test;
 import com.medfusion.product.object.maps.practice.page.PracticeHomePage;
 import com.medfusion.product.object.maps.practice.page.PracticeLoginPage;
+import com.intuit.ihg.product.object.maps.onlinesolutions.ManageSolutionsPage;
 import com.intuit.ihg.product.object.maps.sitegen.page.SiteGenLoginPage;
 import com.intuit.ihg.product.object.maps.sitegen.page.Integrations.CreateIntegrationStep1Page;
 import com.intuit.ihg.product.object.maps.sitegen.page.Integrations.CreateIntegrationStep2Page;
@@ -40,6 +41,10 @@ import com.medfusion.common.utils.IHGUtil;
 import com.medfusion.common.utils.PropertyFileLoader;
 import com.intuit.ihg.product.sitegen.utils.SitegenConstants;
 import static com.intuit.ihg.product.sitegen.utils.SitegenlUtil.verifyTextPresent;
+
+import com.medfusion.product.object.maps.patientportal2.page.JalapenoLoginPage;
+import com.medfusion.product.object.maps.patientportal2.page.HomePage.JalapenoHomePage;
+
 
 public class SiteGenAcceptanceTests extends BaseTestNGWebDriver {
 	private PropertyFileLoader testData;
@@ -547,5 +552,61 @@ public class SiteGenAcceptanceTests extends BaseTestNGWebDriver {
 		{
 			logStep("Pharmacy is deleted succesfully");
 		}
+	}
+
+@Test(enabled = true, groups = {"AcceptanceTests"}, retryAnalyzer = RetryAnalyzer.class)
+public void testPatientSupport() throws Exception {
+	
+	logStep("Log In");
+	SiteGenLoginPage sitegenloginpage = new SiteGenLoginPage(driver, testData.getProperty("sitegenUrl"));
+	SiteGenHomePage pSiteGenHomePage = sitegenloginpage.login(testData.getProperty("automationUser1"), testData.getProperty("automationPassword1"));
+	
+	logStep("Navigate to SiteGen HomePage");
+	SiteGenPracticeHomePage practiceHome = pSiteGenHomePage.clickLinkMedfusionSiteAdministration();
+	
+	logStep("Navigate to Online Solutions Page");
+	ManageSolutionsPage managesolutionspage = practiceHome.clickOnOnlineSolutions();
+	
+	logStep("Click on Edit button");
+	managesolutionspage.clickOnEdit();
+	
+	logStep("Select Patient Solution checkbox");
+	managesolutionspage.clickActivateCheckbox();
+	
+	logStep("Click on Confirm Changes button");
+	managesolutionspage.confirmChanges();
+	
+	logStep("Login patient");
+	JalapenoLoginPage loginPage = new JalapenoLoginPage(driver, testData.getUrl());
+	JalapenoHomePage homePage = loginPage.login(testData.getUserId(), testData.getPassword());
+	
+	logStep("Verify Patient Support");
+	assertTrue(homePage.verifyLiveChat());
+    
+	logStep("Log In to SiteGen");
+	sitegenloginpage = new SiteGenLoginPage(driver, testData.getProperty("sitegenUrl"));
+	sitegenloginpage.login(testData.getProperty("automationUser1"), testData.getProperty("automationPassword1"));
+	
+	logStep("Navigate to SiteGen HomePage");
+	pSiteGenHomePage.clickLinkMedfusionSiteAdministration();
+	
+	logStep("Navigate to Online Solutions Page");
+	practiceHome.clickOnOnlineSolutions();
+	
+	logStep("Click on Edit button");
+	managesolutionspage.clickOnEdit();
+	
+	logStep("Click on DeActivateCheckbox");
+	managesolutionspage.clickDeActivateCheckbox();
+	
+	logStep("Save Changes");
+	managesolutionspage.confirmChanges();
+	
+	logStep("Login to patient portal");
+	loginPage = new JalapenoLoginPage(driver, testData.getUrl());
+	loginPage.login(testData.getUserId(), testData.getPassword());
+	
+	log("Verify that LiveChat is not displayed");
+	assertFalse(homePage.verifyLiveChat());
 	}
 }
