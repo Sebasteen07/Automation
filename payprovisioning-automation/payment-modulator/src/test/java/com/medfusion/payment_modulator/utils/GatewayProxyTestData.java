@@ -60,4 +60,29 @@ public class GatewayProxyTestData extends GatewayProxyBaseTest {
 		testData = new PropertyFileLoader();
 		return new Object[][] { { testData.getProperty("comment") }, };
 	}
+
+	@DataProvider(name = "txn_data_for_http_400_statuscodes")
+	public Object[][] dpMethodForAuthorizeAndCapture() {
+		return new Object[][]{
+				{testData.getProperty("payment.source"),testData.getProperty("type"),
+						testData.getProperty("card.number"),testData.getProperty("expiration.number"),
+						testData.getProperty("test.pay.customer.uuid")+"erd", testData.getProperty("proxy.mmid")},
+				{"",testData.getProperty("type"),testData.getProperty("card.number"),
+						testData.getProperty("expiration.number"),testData.getProperty("test.pay.customer.uuid"),
+						testData.getProperty("proxy.mmid")},
+				{testData.getProperty("payment.source"),"",testData.getProperty("card.number"),
+						testData.getProperty("expiration.number"),testData.getProperty("test.pay.customer.uuid"),
+						testData.getProperty("proxy.mmid")},
+				{testData.getProperty("payment.source"),testData.getProperty("type"),
+						testData.getProperty("card.number"),testData.getProperty("expiration.number"),
+						testData.getProperty("test.pay.customer.uuid"), ""},
+				{"RFD",testData.getProperty("type"),
+						testData.getProperty("card.number"),testData.getProperty("expiration.number"),
+						testData.getProperty("test.pay.customer.uuid"), testData.getProperty("proxy.mmid")},
+				{testData.getProperty("payment.source"),"OP",
+						testData.getProperty("card.number"),testData.getProperty("expiration.number"),
+						testData.getProperty("test.pay.customer.uuid"), testData.getProperty("proxy.mmid")},
+		};
+	}
+
 }

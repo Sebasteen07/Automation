@@ -29,7 +29,7 @@ public class GatewayProxyTransactionTests extends GatewayProxyBaseTest {
 	}
 
 	@Test(enabled = true)
-	public void makeGatewayProxySale() throws Exception {
+	public void testGatewayProxySale() throws Exception {
 		String transanctionAmount = IHGUtil.createRandomNumericString(5);
 		GatewayProxyTransactionResource transaction = new GatewayProxyTransactionResource();
 		Response response = transaction.makeASale(token, testData.getProperty("proxy.mmid"),
@@ -43,7 +43,7 @@ public class GatewayProxyTransactionTests extends GatewayProxyBaseTest {
 	}
 
 	@Test(enabled = true)
-	public void makeGatewayProxyCredit() throws Exception {
+	public void testGatewayProxyCredit() throws Exception {
 
 		GatewayProxyTransactionResource transaction = new GatewayProxyTransactionResource();
 		String transanctionAmount = IHGUtil.createRandomNumericString(4);
@@ -71,7 +71,7 @@ public class GatewayProxyTransactionTests extends GatewayProxyBaseTest {
 
 	@Test(enabled = true)
 
-	public void makeGatewayProxyPartialRefund() throws Exception {
+	public void testGatewayProxyPartialRefund() throws Exception {
 
 		GatewayProxyTransactionResource transaction = new GatewayProxyTransactionResource();
 		String transanctionAmount = IHGUtil.createRandomNumericString(3);
@@ -101,7 +101,7 @@ public class GatewayProxyTransactionTests extends GatewayProxyBaseTest {
 
 	@Test(dataProvider = "refund_data", dataProviderClass = GatewayProxyTestData.class, enabled = true)
 
-	public void makeGatewayProxyCreditInvalidData(String token, String mmid, String testPayCustomerUuid, String comment,
+	public void testGatewayProxyCreditInvalidData(String token, String mmid, String testPayCustomerUuid, String comment,
 			String customerId, String externalTransId, String orderId, String transactionAmount, int statusCodeVerify,
 			String verifyErrorMessage) throws Exception {
 		GatewayProxyTransactionResource transaction = new GatewayProxyTransactionResource();
@@ -121,4 +121,114 @@ public class GatewayProxyTransactionTests extends GatewayProxyBaseTest {
 
 	}
 
+    @Test(enabled = true)
+    public void testGatewayAuthorizeByValidAuth() throws Exception {
+        GatewayProxyTransactionResource transaction = new GatewayProxyTransactionResource();
+
+        Response response = transaction.makeAuthorizeTransaction(token, testData.getProperty("payment.source"),
+                testData.getProperty("type"), testData.getProperty("card.number"),
+                testData.getProperty("expiration.number"), testData.getProperty("test.pay.customer.uuid"),
+                testData.getProperty("proxy.mmid"));
+
+        JsonPath jsonpath = new JsonPath(response.asString());
+
+        Validations validate = new Validations();
+        validate.verifyTransactionDetails(response.asString());
+
+        CommonUtils.saveTransactionDetails(jsonpath.get("externalTransactionId").toString(),
+                jsonpath.get("orderId").toString());
+    }
+
+    @Test(enabled = true)
+    public void testGatewayAuthorizeByInvalidAuth() throws Exception {
+        GatewayProxyTransactionResource transaction = new GatewayProxyTransactionResource();
+
+        String token = GatewayProxyUtils.getTokenForCustomer() + "fgh";
+
+        Response response = transaction.makeAuthorizeTransaction(token, testData.getProperty("payment.source"),
+                testData.getProperty("type"), testData.getProperty("card.number"),
+                testData.getProperty("expiration.number"), testData.getProperty("test.pay.customer.uuid"),
+                testData.getProperty("proxy.mmid"));
+
+        JsonPath jsonpath = new JsonPath(response.asString());
+        Assert.assertTrue(response.getStatusCode() == 401);
+        Assert.assertEquals("Unauthorized", jsonpath.get("message"));
+    }
+
+    @Test(dataProvider = "txn_data_for_http_400_statuscodes", dataProviderClass = GatewayProxyTestData.class, enabled = true)
+    public void testGatewayAuthorizeForInvalidData(String paymentSource, String type, String cardNumber,
+                                                   String expiry, String customeruuid, String mmid) throws Exception {
+        GatewayProxyTransactionResource transaction = new GatewayProxyTransactionResource();
+
+        Response response = transaction.makeAuthorizeTransaction(token, paymentSource, type, cardNumber, expiry, customeruuid, mmid);
+
+        Assert.assertEquals(response.getStatusCode(), 400);
+    }
+
+
+    @Test(enabled = true)
+    public void testGatewayCaptureByValidAuth() throws Exception {
+        GatewayProxyTransactionResource transaction = new GatewayProxyTransactionResource();
+
+        Response authResponse = transaction.makeAuthorizeTransaction(token, testData.getProperty("payment.source"),
+                testData.getProperty("type"), testData.getProperty("card.number"),
+                testData.getProperty("expiration.number"), testData.getProperty("test.pay.customer.uuid"),
+                testData.getProperty("proxy.mmid"));
+
+        JsonPath jsonpath = new JsonPath(authResponse.asString());
+
+        Response captureResponse = transaction.makeCaptureTransaction(token, testData.getProperty("payment.source"),
+                testData.getProperty("type"), testData.getProperty("card.number"),
+                testData.getProperty("expiration.number"), testData.getProperty("test.pay.customer.uuid"),
+                testData.getProperty("proxy.mmid"), jsonpath.get("externalTransactionId").toString(), jsonpath.get("orderId").toString());
+
+        JsonPath jsonpathCapture = new JsonPath(captureResponse.asString());
+        Validations validate = new Validations();
+        validate.verifyTransactionDetails(captureResponse.asString());
+
+        CommonUtils.saveTransactionDetails(jsonpathCapture.get("externalTransactionId").toString(),
+                jsonpathCapture.get("orderId").toString());
+    }
+
+    @Test(enabled = true)
+    public void testGatewayCaptureByInvalidAuth() throws Exception {
+        GatewayProxyTransactionResource transaction = new GatewayProxyTransactionResource();
+
+        Response authResponse = transaction.makeAuthorizeTransaction(token, testData.getProperty("payment.source"),
+                testData.getProperty("type"), testData.getProperty("card.number"),
+                testData.getProperty("expiration.number"), testData.getProperty("test.pay.customer.uuid"),
+                testData.getProperty("proxy.mmid"));
+
+        JsonPath jsonpath = new JsonPath(authResponse.asString());
+
+        String tokenForCapture = GatewayProxyUtils.getTokenForCustomer() + "hggf";
+
+        Response captureResponse = transaction.makeCaptureTransaction(tokenForCapture, testData.getProperty("payment.source"),
+                testData.getProperty("type"), testData.getProperty("card.number"),
+                testData.getProperty("expiration.number"), testData.getProperty("test.pay.customer.uuid"),
+                testData.getProperty("proxy.mmid"), jsonpath.get("externalTransactionId").toString(), jsonpath.get("orderId").toString());
+
+        JsonPath jsonpathCapture = new JsonPath(captureResponse.asString());
+        Assert.assertTrue(captureResponse.getStatusCode() == 401);
+        Assert.assertEquals("Unauthorized", jsonpathCapture.get("message"));
+    }
+
+    @Test(dataProvider = "txn_data_for_http_400_statuscodes", dataProviderClass = GatewayProxyTestData.class, enabled = true)
+    public void testGatewayCaptureForInvalidData(String paymentSource, String type, String cardNumber, String expiry,
+                                                 String customeruuid, String mmid) throws Exception {
+
+		GatewayProxyTransactionResource transaction = new GatewayProxyTransactionResource();
+
+		Response authResponse = transaction.makeAuthorizeTransaction(token, testData.getProperty("payment.source"),
+                testData.getProperty("type"), testData.getProperty("card.number"),
+                testData.getProperty("expiration.number"), testData.getProperty("test.pay.customer.uuid"),
+                testData.getProperty("proxy.mmid"));
+
+        JsonPath jsonpath = new JsonPath(authResponse.asString());
+
+        Response captureResponse = transaction.makeCaptureTransaction(token, paymentSource, type, cardNumber, expiry,
+                customeruuid, mmid, jsonpath.get("externalTransactionId").toString(), jsonpath.get("orderId").toString());
+
+        Assert.assertEquals(captureResponse.getStatusCode(), 400);
+    }
 }
