@@ -3608,7 +3608,7 @@ public class PatientPortal2AcceptanceTests extends BaseTestNGWebDriver {
 		loginWithDeletedPatient.loginUnsuccessfuly(patient.getUsername(), patient.getPassword());
 
 		logStep("Looking for the Error Message and verifying the error message");
-		assertTrue(loginWithDeletedPatient.isDeleteOrDeactivePatientErrorDisplayed());
+		assertTrue(loginWithDeletedPatient.isInactivePatientErrorDisplayed());
 	}
 
 	@Test(enabled = true, groups = { "acceptance-solutions" }, retryAnalyzer = RetryAnalyzer.class)
@@ -4251,7 +4251,7 @@ public class PatientPortal2AcceptanceTests extends BaseTestNGWebDriver {
 		loginPage.loginUnsuccessfuly(patient.getUsername(), patient.getPassword());
 
 		logStep("Looking for the Error Message and verifying the error message");
-		assertTrue(loginPage.isDeleteOrDeactivePatientErrorDisplayed());
+		assertTrue(loginPage.isInactivePatientErrorDisplayed());
 		
 	}
 

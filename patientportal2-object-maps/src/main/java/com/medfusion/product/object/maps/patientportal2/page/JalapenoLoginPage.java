@@ -175,7 +175,7 @@ public class JalapenoLoginPage extends MedfusionPage {
 		return false;
 	}
 
-	public boolean isDeleteOrDeactivePatientErrorDisplayed() {
+	public boolean isInactivePatientErrorDisplayed() {
 		try {
 			log("Looking for Your account is no longer active error on loginPage");
 			return msgInactivePatientError.isDisplayed();
