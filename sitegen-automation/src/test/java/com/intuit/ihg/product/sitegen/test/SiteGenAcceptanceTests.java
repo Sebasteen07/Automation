@@ -581,7 +581,7 @@ public void testPatientSupport() throws Exception {
 	JalapenoHomePage homePage = loginPage.login(testData.getUserId(), testData.getPassword());
 	
 	logStep("Verify Patient Support");
-	assertTrue(homePage.DisplayLiveChat());
+	assertTrue(homePage.isLiveChatDisplayed());
     
 	logStep("Log In to SiteGen");
 	sitegenloginpage = new SiteGenLoginPage(driver, testData.getProperty("sitegenUrl"));
@@ -607,6 +607,6 @@ public void testPatientSupport() throws Exception {
 	loginPage.login(testData.getUserId(), testData.getPassword());
 	
 	logStep("Verify that LiveChat is not displayed");
-	assertFalse(homePage.DisplayLiveChat());
+	assertFalse(homePage.isLiveChatDisplayed());
 	}
 }
