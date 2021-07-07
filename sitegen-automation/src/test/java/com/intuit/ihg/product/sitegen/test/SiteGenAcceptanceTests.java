@@ -557,7 +557,7 @@ public class SiteGenAcceptanceTests extends BaseTestNGWebDriver {
 @Test(enabled = true, groups = {"AcceptanceTests"}, retryAnalyzer = RetryAnalyzer.class)
 public void testPatientSupport() throws Exception {
 	
-	logStep("Log In");
+	logStep("Log In to SiteGen");
 	SiteGenLoginPage sitegenloginpage = new SiteGenLoginPage(driver, testData.getProperty("sitegenUrl"));
 	SiteGenHomePage pSiteGenHomePage = sitegenloginpage.login(testData.getProperty("automationUser1"), testData.getProperty("automationPassword1"));
 	
@@ -576,7 +576,7 @@ public void testPatientSupport() throws Exception {
 	logStep("Click on Confirm Changes button");
 	managesolutionspage.confirmChanges();
 	
-	logStep("Login patient");
+	logStep("Log In to Patient Portal");
 	JalapenoLoginPage loginPage = new JalapenoLoginPage(driver, testData.getUrl());
 	JalapenoHomePage homePage = loginPage.login(testData.getUserId(), testData.getPassword());
 	
@@ -606,7 +606,7 @@ public void testPatientSupport() throws Exception {
 	loginPage = new JalapenoLoginPage(driver, testData.getUrl());
 	loginPage.login(testData.getUserId(), testData.getPassword());
 	
-	log("Verify that LiveChat is not displayed");
-	assertFalse(homePage.verifyLiveChat());
+	logStep("Verify that LiveChat is not displayed");
+	assertFalse(homePage.DisplayLiveChat());
 	}
 }

@@ -557,7 +557,7 @@ public class JalapenoHomePage extends JalapenoMenu {
 		return PageFactory.initElements(driver, JalapenoPayBillsMakePaymentPage.class);
 	}
     
-	public boolean verifyLiveChat() throws TimeoutException {
+	public boolean DisplayLiveChat() throws TimeoutException {
 		log("Verify LiveChat");
 		try {
 			return btnLiveChat.isDisplayed();
