@@ -581,7 +581,7 @@ public void testPatientSupport() throws Exception {
 	JalapenoHomePage homePage = loginPage.login(testData.getUserId(), testData.getPassword());
 	
 	logStep("Verify Patient Support");
-	assertTrue(homePage.verifyLiveChat());
+	assertTrue(homePage.DisplayLiveChat());
     
 	logStep("Log In to SiteGen");
 	sitegenloginpage = new SiteGenLoginPage(driver, testData.getProperty("sitegenUrl"));
