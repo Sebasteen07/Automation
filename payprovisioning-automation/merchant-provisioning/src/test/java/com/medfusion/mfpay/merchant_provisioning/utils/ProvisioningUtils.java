@@ -47,8 +47,8 @@ public class ProvisioningUtils {
 	    String env = testConfig.getProperty("test.environment");
 	    testConfig.load(new FileInputStream("src/test/resources/data-driven/" + env + ".properties"));
 	    testConfig.setProperty("partner", partnerid);
-		testConfig.setProperty("partnerusername", partnerusername);
-		testConfig.setProperty("partnerpassword", password);
+		testConfig.setProperty("partner.username", partnerusername);
+		testConfig.setProperty("partner.password", password);
 		FileOutputStream fileOut = new FileOutputStream("src/test/resources/data-driven/" + env + ".properties");
 		testConfig.store(fileOut, null);
 		fileOut.close();
