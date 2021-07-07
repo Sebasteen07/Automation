@@ -1,6 +1,5 @@
 // Copyright 2013-2021 NXGN Management, LLC. All Rights Reserved.
 package com.medfusion.mfpay.merchant_provisioning.utils;
-
 import org.apache.commons.codec.binary.Base64;
 
 public class User extends ProvisioningUtils{
