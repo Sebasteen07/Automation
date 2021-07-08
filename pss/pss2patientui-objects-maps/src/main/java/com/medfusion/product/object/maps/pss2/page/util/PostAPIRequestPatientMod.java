@@ -751,9 +751,6 @@ public class PostAPIRequestPatientMod extends BaseTestNGWebDriver {
 		
 		String slotid=js.getString("slotList.slotId[3][1]");
 		
-		String date=js.getString("date[3]");
-		log("Value of date  - "+date);
-		
 		apiVerification.responseKeyValidation(response, "date");
 		
 		return slotid;
