@@ -750,13 +750,9 @@ public class PostAPIRequestPatientMod extends BaseTestNGWebDriver {
 		JsonPath js = new JsonPath(response.asString());
 		
 		String slotid=js.getString("slotList.slotId[3][1]");
-		log("Value of SlotId - "+slotid);
 		
 		String date=js.getString("date[3]");
 		log("Value of date  - "+date);
-		
-		String time=js.getString("slotList.slotTime[3][1]");
-		log("Value of time  - "+time);
 		
 		apiVerification.responseKeyValidation(response, "date");
 		
@@ -776,7 +772,7 @@ public class PostAPIRequestPatientMod extends BaseTestNGWebDriver {
 		return js;
 	}
 
-	public String rescheduleAppointment(String baseurl, String b, Map<String, String> Header, String practiceId,
+	public void rescheduleAppointment(String baseurl, String b, Map<String, String> Header, String practiceId,
 			String patientId,String patientType) {
 		RestAssured.baseURI = baseurl;
 
@@ -784,15 +780,14 @@ public class PostAPIRequestPatientMod extends BaseTestNGWebDriver {
 				.post(practiceId + "/rescheduleappointment/" + patientId).then().log().all().assertThat()
 				.statusCode(200).body("patientType", equalTo(patientType)).extract().response();
 
-		JsonPath js = new JsonPath(response.asString());
-		String PatientId = js.getString("patientId");
-		
-		log("patientType is -" + js.getString("patientType"));
-
-		return PatientId;
+		apiVerification.responseKeyValidationJson(response, "duration");
+		apiVerification.responseKeyValidationJson(response, "patientId");
+		apiVerification.responseKeyValidationJson(response, "slotAlreadyTaken");
+		apiVerification.responseKeyValidationJson(response, "rescheduleNotAllowed");
+		apiVerification.responseKeyValidationJson(response, "patientType");
 	}
 
-	public String scheduleAppointment(String baseurl, String b, Map<String, String> Header, String practiceId,
+	public void scheduleAppointment(String baseurl, String b, Map<String, String> Header, String practiceId,
 			String patientId, String patientType) {
 		RestAssured.baseURI = baseurl;
 
@@ -800,11 +795,13 @@ public class PostAPIRequestPatientMod extends BaseTestNGWebDriver {
 				.post(practiceId + "/scheduleappointment/" + patientId).then().log().all().assertThat()
 				.statusCode(200).body("patientType", equalTo(patientType))
 				.extract().response();
-
-		JsonPath js = new JsonPath(response.asString());
-		String PatientId = js.getString("patientId");
-
-		return PatientId;
+		
+		apiVerification.responseKeyValidationJson(response, "duration");
+		apiVerification.responseKeyValidationJson(response, "patientId");
+		apiVerification.responseKeyValidationJson(response, "slotAlreadyTaken");
+		apiVerification.responseKeyValidationJson(response, "rescheduleNotAllowed");
+		apiVerification.responseKeyValidationJson(response, "patientType");
+		
 	}
 	public Response appointmentTypesByRule(String baseurl, String b, Map<String, String> Header, String practiceId,
 			String patientId) {
