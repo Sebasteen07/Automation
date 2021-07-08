@@ -520,5 +520,16 @@ public class PSSPropertyFileLoader {
 		appointValues.setApptTypeNextAvailableId(property.getProperty("appt.type.next.available.id"));
 		appointValues.setBooksBynextAvailableId(property.getProperty("books.by.next.available.id"));
 		appointValues.setValidateProviderLinkId(property.getProperty("validate.provider.link.id"));
+		appointValues.setAppointmentIdApp(property.getProperty("appointment.detail.id"));
+		appointValues.setBookIdApp(property.getProperty("book.detail.id"));
+		appointValues.setLocationIdApp(property.getProperty("location.detail.id"));
+		appointValues.setPatientDemographicsLastName(property.getProperty("patient.demographics.last.name"));
+        appointValues.setPatientDemographicsEmail(property.getProperty("patient.demographics.email"));
+        appointValues.setPatientDemographicsGender(property.getProperty("patient.demographics.gender"));
+        appointValues.setPatientDemographicsPhoneNo(property.getProperty("patient.demographics.phoneno"));
+        appointValues.setPatientDemographicsZipCode(property.getProperty("patient.demographics.zipcode"));
+        appointValues.setPatientDemographicsDOB(property.getProperty("patient.demographics.dob"));
+        
+        
 	}
 }
