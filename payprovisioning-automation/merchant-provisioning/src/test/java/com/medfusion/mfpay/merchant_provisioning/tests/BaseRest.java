@@ -26,7 +26,7 @@ public class BaseRest extends BaseTestNG {
 	public static void setupFinanceRequestSpecBuilder() throws IOException
 	{
 		testData = new PropertyFileLoader();
-		RestAssured.baseURI = testData.getProperty("baseurl");
+		RestAssured.baseURI = testData.getProperty("base.url");
 		requestSpec	 = new RequestSpecBuilder()
 	   .setContentType(ContentType.JSON)
 	   .addHeader("Authorization", User.getCredentialsEncodedInBase("FINANCE"))
@@ -38,7 +38,7 @@ public class BaseRest extends BaseTestNG {
 	public static void setupImplementationRequestSpecBuilder() throws IOException
 	{
 		testData = new PropertyFileLoader();
-		RestAssured.baseURI = testData.getProperty("baseurl");
+		RestAssured.baseURI = testData.getProperty("base.url");
 		requestSpec	 = new RequestSpecBuilder()
 	   .setContentType(ContentType.JSON)
 	   .addHeader("Authorization", User.getCredentialsEncodedInBase("IMPLEMENTATION"))
@@ -50,7 +50,7 @@ public class BaseRest extends BaseTestNG {
 	public static void setupAdminRequestSpecBuilder() throws IOException
 	{
 		testData = new PropertyFileLoader();
-		RestAssured.baseURI = testData.getProperty("baseurl");
+		RestAssured.baseURI = testData.getProperty("base.url");
 		requestSpec	 = new RequestSpecBuilder()
 	   .setContentType(ContentType.JSON)
 	   .addHeader("Authorization", User.getCredentialsEncodedInBase("ADMIN"))

@@ -143,4 +143,10 @@ public class Card {
 		return cards;
 	}
 
+	public static Map<String, Object> payloadForSale(String paymentSource, int transactionAmount){
+		Map<String, Object> cardMap = new HashMap<String, Object>();
+		cardMap.put("mfGatewayMerchant", MFGatewayMerchant.getMFGatewayMerchantMap(paymentSource));
+		cardMap.put("transactionAmount", transactionAmount);
+		return cardMap;
+	}
 }

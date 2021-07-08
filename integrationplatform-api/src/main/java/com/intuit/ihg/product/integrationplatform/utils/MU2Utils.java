@@ -93,6 +93,7 @@ public class MU2Utils {
 		jse.executeScript("window.scrollBy(0,400)", "");
 		Log4jUtil.log("MU2GetEvent Step 4: Transmit Email Direct Protocol and Standard Email");
 		MedicalRecordSummariesPageObject.sendFirstVisibleCCDUsingDirectProtocol(testData.TRANSMIT_EMAIL);
+		driver.navigate().refresh();
 		Thread.sleep(5000);
 		long transmitTimestamp = System.currentTimeMillis();
 		Log4jUtil.log("TransmitTimestamp :"+transmitTimestamp);

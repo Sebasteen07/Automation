@@ -3956,6 +3956,8 @@ public class IntegrationPlatformRegressionTests extends BaseTestNGWebDriver {
 		JalapenoLoginPage loginPage = new JalapenoLoginPage(driver, testData.Url);
 		JalapenoHomePage homePage = loginPage.login(testData.UserName, testData.Password);
 
+		assertTrue(homePage.isHomeButtonPresent(driver));
+
 		homePage.clickOnLogout();
 
 		log("Step 2: Setup Oauth client");
