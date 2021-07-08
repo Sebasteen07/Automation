@@ -16,7 +16,6 @@ import org.testng.annotations.Test;
 
 public class GatewayProxyDigitalWalletTests extends GatewayProxyBaseTest {
 	
-	
 	protected static PropertyFileLoader testData;
 
 	@BeforeTest
@@ -60,7 +59,7 @@ public class GatewayProxyDigitalWalletTests extends GatewayProxyBaseTest {
 		String token = GatewayProxyUtils.getTokenForCustomer();
 		String token1 = token + "jadgcl";
 		GatewayProxyDigitalWalletResource digitalWallet = new GatewayProxyDigitalWalletResource();
-		Response response = digitalWallet.getListOfCardsInWallet(token1,testData.getProperty("default.wallet.id"));
+		Response response = digitalWallet.getListOfCardsInWallet(token1, testData.getProperty("default.wallet.id"));
 		Assert.assertTrue(response.getStatusCode() == 401);
 
 	}
@@ -147,8 +146,8 @@ public class GatewayProxyDigitalWalletTests extends GatewayProxyBaseTest {
 	@Test
 
 	public void testGetListOfCardsInWallet() throws Exception {
-	
-	String token = GatewayProxyUtils.getTokenForCustomer();
+
+		String token = GatewayProxyUtils.getTokenForCustomer();
 		GatewayProxyDigitalWalletResource digitalWallet = new GatewayProxyDigitalWalletResource();
 		Response response = digitalWallet.createNewWallet(token, testData.getProperty("consumer.name"),
 				testData.getProperty("type"), testData.getProperty("card.number"),
@@ -160,23 +159,18 @@ public class GatewayProxyDigitalWalletTests extends GatewayProxyBaseTest {
 		Assert.assertTrue(!jsonPath.get("externalWalletId").toString().isEmpty());
 		Assert.assertTrue(!jsonPath.get("walletCards[0].externalCardId").toString().isEmpty());
 		Assert.assertEquals("VI-1111-1226", jsonPath.get("walletCards[0].cardAlias"));
-	
-	    String externalWalletId = jsonPath.get("externalWalletId").toString();
-	
-
 		
-		Response responseGet = digitalWallet.getListOfCardsInWallet(token,externalWalletId);
+		String externalWalletId = jsonPath.get("externalWalletId").toString();
+		Response responseGet = digitalWallet.getListOfCardsInWallet(token, externalWalletId);	
 		JsonPath jsonPathGet = new JsonPath(response.asString());
 
 		Assert.assertTrue(!jsonPathGet.get("externalWalletId").toString().isEmpty());
 		Assert.assertTrue(!jsonPathGet.get("walletCards[0].cardExpiryDate").toString().isEmpty());
-        
-
 		String cardnumber = testData.getProperty("card.number");
 		String aliasToVerify = testData.getProperty("type") + "-" + cardnumber.substring(cardnumber.length() - 4) + "-"
 				+ testData.getProperty("expiration.number");
 		System.out.println(aliasToVerify);
-        System.out.println(jsonPath.get("walletCards[0].cardAlias"));
+		System.out.println(jsonPath.get("walletCards[0].cardAlias"));
 		Assert.assertEquals(aliasToVerify, jsonPath.get("walletCards[0].cardAlias"));
 	}
 
@@ -215,7 +209,7 @@ public class GatewayProxyDigitalWalletTests extends GatewayProxyBaseTest {
 		Assert.assertTrue(response.getStatusCode() == 400);
 		JsonPath jsonPath = new JsonPath(response.asString());
 		Assert.assertEquals("Bad Request", jsonPath.get("error"));
-		Assert.assertTrue(!jsonPath.get("message").toString().isEmpty());		
+		Assert.assertTrue(!jsonPath.get("message").toString().isEmpty());
 		Assert.assertEquals("Zip code should be 5 digits or 9 digits number", jsonPath.get("message"));
 	}
 
@@ -266,6 +260,24 @@ public class GatewayProxyDigitalWalletTests extends GatewayProxyBaseTest {
 		Assert.assertEquals(responseOfAddMoreCard.getStatusCode(), 400);
 		Assert.assertEquals("Bad Request", jsonPath.get("error"));
 		Assert.assertTrue(!jsonPath.get("message").toString().isEmpty());
+
+	}
+
+	@Test
+	public void saleAPI() throws Exception {
+
+		GatewayProxyDigitalWalletResource digitalWallet = new GatewayProxyDigitalWalletResource();
+		String token = GatewayProxyUtils.getTokenForCustomer();
+
+		Response response = digitalWallet.saleAPI(token, testData.getProperty("test.pay.customer.uuid"),
+				testData.getProperty("proxy.mmid"), testData.getProperty("external.wallet.id"),
+				testData.getProperty("external.card.id"));
+		JsonPath jsonPath = new JsonPath(response.asString());
+
+		Assert.assertTrue(!jsonPath.get("externalTransactionId").toString().isEmpty());
+		Assert.assertTrue(!jsonPath.get("orderId").toString().isEmpty());
+		Assert.assertEquals("Approved", jsonPath.get("message"));
+		Assert.assertEquals("000", jsonPath.get("responseCode"));
 
 	}
 }

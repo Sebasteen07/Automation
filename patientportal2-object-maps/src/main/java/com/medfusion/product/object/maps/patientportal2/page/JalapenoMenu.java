@@ -112,6 +112,7 @@ public abstract class JalapenoMenu extends MedfusionPage {
 	}
 
 	private void openMenuIfClosed() {
+		driver.navigate().refresh();
 		try {
 			if (!homeMenu.isDisplayed()) {
 				openJalapenoMenu();

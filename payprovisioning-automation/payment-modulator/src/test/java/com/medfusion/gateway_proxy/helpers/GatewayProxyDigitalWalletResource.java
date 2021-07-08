@@ -1,6 +1,7 @@
 // Copyright 2013-2021 NXGN Management, LLC. All Rights Reserved.
 package com.medfusion.gateway_proxy.helpers;
 
+import com.medfusion.common.utils.IHGUtil;
 import com.medfusion.common.utils.PropertyFileLoader;
 import com.medfusion.gateway_proxy.tests.GatewayProxyBaseTest;
 import com.medfusion.gateway_proxy.utils.GatewayProxyUtils;
@@ -40,15 +41,14 @@ public class GatewayProxyDigitalWalletResource extends GatewayProxyBaseTest {
 		return response;
 	}
 
-	public Response getListOfCardsInWallet(String token ,String externalWalletId) throws IOException {
+	public Response getListOfCardsInWallet(String token, String externalWalletId) throws IOException {
 
 		testData = new PropertyFileLoader();
 
-		Response response = given().that().spec(requestSpec).auth().oauth2(token).when().get(
-				testData.getProperty("test.pay.customer.uuid") + "/wallets/" + externalWalletId)
-				.then().and().extract().response();
-
-		return response;
+		Response response = given().that().spec(requestSpec).auth().oauth2(token).when()
+				.get(testData.getProperty("test.pay.customer.uuid") + "/wallets/" + externalWalletId).then().and()
+				.extract().response();
+				return response;
 
 	}
 
@@ -75,4 +75,16 @@ public class GatewayProxyDigitalWalletResource extends GatewayProxyBaseTest {
 		return response;
 	}
 
+	public Response saleAPI(String accessToken, String customerUUID, String mmid, String externalWalletID,
+			String externalCardID) throws IOException {
+		testData = new PropertyFileLoader();
+		Map<String, Object> digitalWallet = PayloadDetails.getPayloadForNewSaleAPI(
+				testData.getProperty("payment.source"), Integer.parseInt(IHGUtil.createRandomNumericString(4)));
+
+		Response response = given()
+				.spec(requestSpec).auth().oauth2(accessToken).log().all().body(digitalWallet).when().post(customerUUID
+						+ "/merchant/" + mmid + "/wallet/" + externalWalletID + "/card/" + externalCardID + "/sale")
+				.then().and().extract().response();
+		return response;
+	}
 }
