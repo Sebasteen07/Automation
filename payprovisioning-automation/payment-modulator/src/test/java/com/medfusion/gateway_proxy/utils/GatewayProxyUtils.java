@@ -36,8 +36,6 @@ public class GatewayProxyUtils {
 				.then().statusCode(200).and().extract().response();
 		JsonPath jsonpath = new JsonPath(response.asString());
 
-		System.out.println("Generated token" + jsonpath.get("token").toString());
-
 		return jsonpath.get("token").toString();
 
 	}

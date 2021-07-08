@@ -26,33 +26,33 @@ public class Validations {
 		   JsonPath jsonpath = new JsonPath(merchantdetails);
 		   Assert.assertNotNull(jsonpath, "Response was null");
 		   Assert.assertNotNull(jsonpath.get("id"), "Merchant id was not in the response");
-		   Assert.assertEquals(jsonpath.get("doingBusinessAs"), (testData.getProperty("doingbusinessas")));
-		   Assert.assertEquals(jsonpath.get("customerAccountNumber"), (testData.getProperty("customeraccountnumber")));
-		   Assert.assertEquals(jsonpath.get("primaryContactFirstName"), (testData.getProperty("primaryfirstname")));
-		   Assert.assertEquals(jsonpath.get("primaryContactLastName"), (testData.getProperty("primarylastname")));
-		   Assert.assertEquals(jsonpath.get("primaryContactEmail"), (testData.getProperty("primaryemail")));
-		   Assert.assertEquals(jsonpath.get("primaryContactPhoneNumber"), (testData.getProperty("primaryphonenumber")));
-		   Assert.assertEquals(jsonpath.get("phoneNumber"), (testData.getProperty("merchantphonenumber")));
-		   Assert.assertEquals(jsonpath.get("merchantAddress.address1"), (testData.getProperty("merchantaddress1")));
-		   Assert.assertEquals(jsonpath.get("merchantAddress.city"), (testData.getProperty("merchantcity")));
-		   Assert.assertEquals(jsonpath.get("merchantAddress.state"), (testData.getProperty("merchantstate")));
-		   Assert.assertEquals(jsonpath.get("merchantAddress.zip"), (testData.getProperty("merchantzip")));
+		   Assert.assertEquals(jsonpath.get("doingBusinessAs"), (testData.getProperty("doing.business.as")));
+		   Assert.assertEquals(jsonpath.get("customerAccountNumber"), (testData.getProperty("customer.account.number")));
+		   Assert.assertEquals(jsonpath.get("primaryContactFirstName"), (testData.getProperty("primary.firstname")));
+		   Assert.assertEquals(jsonpath.get("primaryContactLastName"), (testData.getProperty("primary.lastname")));
+		   Assert.assertEquals(jsonpath.get("primaryContactEmail"), (testData.getProperty("primary.email")));
+		   Assert.assertEquals(jsonpath.get("primaryContactPhoneNumber"), (testData.getProperty("primary.phonenumber")));
+		   Assert.assertEquals(jsonpath.get("phoneNumber"), (testData.getProperty("merchant.phonenumber")));
+		   Assert.assertEquals(jsonpath.get("merchantAddress.address1"), (testData.getProperty("merchant.address1")));
+		   Assert.assertEquals(jsonpath.get("merchantAddress.city"), (testData.getProperty("merchant.city")));
+		   Assert.assertEquals(jsonpath.get("merchantAddress.state"), (testData.getProperty("merchant.state")));
+		   Assert.assertEquals(jsonpath.get("merchantAddress.zip"), (testData.getProperty("merchant.zip")));
 		   Assert.assertEquals(jsonpath.get("merchantAddress.country"), "US");
-		   Assert.assertEquals(jsonpath.get("customerAccountNumber"), (testData.getProperty("customeraccountnumber")));
-		   Assert.assertEquals(jsonpath.get("externalMerchantId"), Integer.parseInt((testData.getProperty("externalmerchantid"))));
-		   Assert.assertEquals(jsonpath.get("maxTransactionLimit"), Integer.parseInt((testData.getProperty("transactionlimit"))));
+		   Assert.assertEquals(jsonpath.get("customerAccountNumber"), (testData.getProperty("customer.account.number")));
+		   Assert.assertEquals(jsonpath.get("externalMerchantId"), Integer.parseInt((testData.getProperty("external.merchantid"))));
+		   Assert.assertEquals(jsonpath.get("maxTransactionLimit"), Integer.parseInt((testData.getProperty("transaction.limit"))));
 		   Assert.assertEquals(jsonpath.get("accountDetails.preferredProcessor"), (PracticeConstants.PREFERRED_PROCESSOR_ELEMENT));
 		   Assert.assertEquals(jsonpath.get("accountDetails.worldPayAccountDetails.backingWPMerchantExists"), true);
-		   Assert.assertEquals(jsonpath.get("accountDetails.worldPayAccountDetails.elementAccountId"), (testData.getProperty("elementaccountid")));
+		   Assert.assertEquals(jsonpath.get("accountDetails.worldPayAccountDetails.elementAccountId"), (testData.getProperty("element.accountid")));
 		   Assert.assertEquals(jsonpath.get("accountDetails.worldPayAccountDetails.mccCode"), (testData.getProperty("mcccode")));
-		   Assert.assertEquals(jsonpath.get("accountDetails.worldPayAccountDetails.ownershipType"), (testData.getProperty("ownershiptype")));
-		   Assert.assertEquals(jsonpath.get("accountDetails.worldPayAccountDetails.businessType"), (testData.getProperty("businesstype")));
-		   Assert.assertEquals(jsonpath.get("accountDetails.worldPayAccountDetails.businessEstablishedDate"), (testData.getProperty("businessestablisheddate")));
-		   Assert.assertEquals(jsonpath.get("accountDetails.worldPayAccountDetails.websiteURL"), (testData.getProperty("websiteurl")));
-		   Assert.assertEquals(jsonpath.get("accountDetails.worldPayAccountDetails.billingDescriptor"), "PFA*"+(testData.getProperty("doingbusinessas")));
+		   Assert.assertEquals(jsonpath.get("accountDetails.worldPayAccountDetails.ownershipType"), (testData.getProperty("ownership.type")));
+		   Assert.assertEquals(jsonpath.get("accountDetails.worldPayAccountDetails.businessType"), (testData.getProperty("business.type")));
+		   Assert.assertEquals(jsonpath.get("accountDetails.worldPayAccountDetails.businessEstablishedDate"), (testData.getProperty("business.established.date")));
+		   Assert.assertEquals(jsonpath.get("accountDetails.worldPayAccountDetails.websiteURL"), (testData.getProperty("website.url")));
+		   Assert.assertEquals(jsonpath.get("accountDetails.worldPayAccountDetails.billingDescriptor"), "PFA*"+(testData.getProperty("doing.business.as")));
 		   Assert.assertNotNull(jsonpath.get("accountDetails.worldPayAccountDetails.elementAcceptorId"), "Acceptor id was null");
 		   Assert.assertNotNull(jsonpath.get("accountDetails.worldPayAccountDetails.elementTerminalId"), "Element Terminal id was null");
-		   Assert.assertEquals(jsonpath.get("accountDetails.worldPayAccountDetails.elementAccountToken"), (testData.getProperty("elementaccounttoken")));
+		   Assert.assertEquals(jsonpath.get("accountDetails.worldPayAccountDetails.elementAccountToken"), (testData.getProperty("element.account.token")));
 		   Assert.assertNotNull(jsonpath.get("accountDetails.worldPayAccountDetails.vantivIbmMid"), "IBM Mid was null");
 		   Assert.assertNotNull(jsonpath.get("accountDetails.worldPayAccountDetails.subMerchantId"), "Submerchant id was null");
 
@@ -65,8 +65,8 @@ public class Validations {
 	       testData = new PropertyFileLoader();
 	       JsonPath jsonpath = new JsonPath(response);
 	       Assert.assertNotNull(jsonpath, "Response was null.Adding user was not successful");
-	       Assert.assertEquals(jsonpath.get("practicestaffId").toString(), (testData.getProperty("practicestaffid")));
-	       Assert.assertEquals(jsonpath.get("userName"), (testData.getProperty("staffusername")));
+	       Assert.assertEquals(jsonpath.get("practicestaffId").toString(), (testData.getProperty("practice.staffid")));
+	       Assert.assertEquals(jsonpath.get("userName"), (testData.getProperty("staff.username")));
 			
 	}
 
@@ -75,15 +75,15 @@ public class Validations {
 				AccountDetails accountDetails) throws IOException {
 			
 		  testData = new PropertyFileLoader();
-		  Assert.assertEquals(externalMerchantId, (testData.getProperty("externalmerchantidupdate")));
-		  Assert.assertEquals(maxTransactionLimit, testData.getProperty("transactionlimitupdate"));
+		  Assert.assertEquals(externalMerchantId, (testData.getProperty("external.merchantid.update")));
+		  Assert.assertEquals(maxTransactionLimit, testData.getProperty("transaction.limit.update"));
 		  Assert.assertEquals(accountDetails.getPreferredProcessor(), PracticeConstants.PREFERRED_PROCESSOR_ELEMENT);
-		  Assert.assertEquals(accountDetails.getWorldPayAccountDetails().getBillingDescriptor(),"PFA*"+testData.getProperty("doingbusinessas"));
-		  Assert.assertEquals(accountDetails.getWorldPayAccountDetails().getOwnershipType(),testData.getProperty("ownershiptype"));
-		  Assert.assertEquals(accountDetails.getWorldPayAccountDetails().getBusinessType(),testData.getProperty("businesstype"));
-		  Assert.assertEquals(accountDetails.getWorldPayAccountDetails().getMccCode(),testData.getProperty("mcccodeupdate"));
-		  Assert.assertEquals(accountDetails.getWorldPayAccountDetails().getBusinessEstablishedDate(),testData.getProperty("businessestablisheddate"));
-		  Assert.assertEquals(accountDetails.getWorldPayAccountDetails().getWebsiteURL(),testData.getProperty("websiteurlupdate"));
+		  Assert.assertEquals(accountDetails.getWorldPayAccountDetails().getBillingDescriptor(),"PFA*"+testData.getProperty("doing.business.as"));
+		  Assert.assertEquals(accountDetails.getWorldPayAccountDetails().getOwnershipType(),testData.getProperty("ownership.type"));
+		  Assert.assertEquals(accountDetails.getWorldPayAccountDetails().getBusinessType(),testData.getProperty("business.type"));
+		  Assert.assertEquals(accountDetails.getWorldPayAccountDetails().getMccCode(),testData.getProperty("mcccode.update"));
+		  Assert.assertEquals(accountDetails.getWorldPayAccountDetails().getBusinessEstablishedDate(),testData.getProperty("business.established.date"));
+		  Assert.assertEquals(accountDetails.getWorldPayAccountDetails().getWebsiteURL(),testData.getProperty("website.urlupdate"));
 		  Assert.assertEquals(accountDetails.getCheckingDepositType(),PracticeConstants.CHECKING_TYPE);
 		 	  
 			
@@ -94,10 +94,10 @@ public class Validations {
 			AccountDetails accountDetails,String customeraccountnumber) throws IOException {
 			
 			testData = new PropertyFileLoader();
-			Assert.assertEquals(externalmerchantid, testData.getProperty("externalmerchantid"));
-			Assert.assertEquals(transactionlimit, testData.getProperty("transactionlimit"));
+			Assert.assertEquals(externalmerchantid, testData.getProperty("external.merchantid"));
+			Assert.assertEquals(transactionlimit, testData.getProperty("transaction.limit"));
 			Assert.assertEquals(accountDetails.getPreferredProcessor(),PracticeConstants.PREFERRED_PROCESSOR_PAYPAL) ;
-			Assert.assertEquals(customeraccountnumber, testData.getProperty("customeraccountnumber"));
+			Assert.assertEquals(customeraccountnumber, testData.getProperty("customer.account.number"));
 		}
 
 

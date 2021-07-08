@@ -13,6 +13,7 @@ import org.openqa.selenium.support.PageFactory;
 import com.intuit.ifs.csscat.core.TestConfig;
 import com.intuit.ifs.csscat.core.pageobject.BasePageObject;
 import com.intuit.ifs.csscat.core.utils.BrowserTypeUtil;
+import com.intuit.ihg.product.object.maps.onlinesolutions.ManageSolutionsPage;
 import com.intuit.ihg.product.object.maps.sitegen.page.SiteGenLoginPage;
 import com.intuit.ihg.product.object.maps.sitegen.page.Integrations.ViewIntegrationsPage;
 import com.intuit.ihg.product.object.maps.sitegen.page.InterfaceSetUp.InterfaceAdministrationPage;
@@ -88,6 +89,9 @@ public class SiteGenPracticeHomePage extends BasePageObject {
 	
 	@FindBy(linkText = "eStatements")
 	private WebElement eStatementsLink;
+	
+	@FindBy(linkText = "Online Solutions")
+	private WebElement lnkOnlineSolutions;
 
 
 	/**
@@ -380,4 +384,10 @@ public class SiteGenPracticeHomePage extends BasePageObject {
 		
 	}
 	
+	public ManageSolutionsPage clickOnOnlineSolutions() {
+		IHGUtil.PrintMethodName();
+		IHGUtil.waitForElement(driver, 30, lnkOnlineSolutions);
+		lnkOnlineSolutions.click();
+		return PageFactory.initElements(driver, ManageSolutionsPage.class);
+	}
 }
