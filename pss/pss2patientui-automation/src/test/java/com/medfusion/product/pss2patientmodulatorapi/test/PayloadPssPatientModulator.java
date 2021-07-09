@@ -14,11 +14,11 @@ public class PayloadPssPatientModulator {
 	}
 
 
-	public String validateProviderLinkPayload(String firstName,String lastName,String dob,String gender,String email ) {
+	public String validateProviderLinkPayload(String firstName,String lastName,String dob,String gender,String email,String book ) {
 		String validateProviderLink ="{\r\n"
 				+ "    \"specialty\": null,\r\n"
 				+ "    \"location\": null,\r\n"
-				+ "    \"book\": 205300,\r\n"
+				+ "    \"book\": \"" + book + "\",\r\n"
 				+ "    \"appointmentType\": null,\r\n"
 				+ "    \"slotId\": null,\r\n"
 				+ "    \"patientType\": \"PT_NEW\",\r\n"

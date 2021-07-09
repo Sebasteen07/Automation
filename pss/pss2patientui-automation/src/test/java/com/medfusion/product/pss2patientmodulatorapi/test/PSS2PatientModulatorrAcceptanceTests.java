@@ -160,7 +160,7 @@ public class PSS2PatientModulatorrAcceptanceTests extends BaseTestNGWebDriver {
 		propertyData.setRestAPIDataPatientModulator(testData);
 		PostAPIRequestPatientMod postAPIRequest = new PostAPIRequestPatientMod();
 		log("Base URL is   " + testData.getBasicURI());
-		postAPIRequest.logo(testData.getBasicURI(), headerConfig.defaultHeader(), testData.getPracticeId());
+		postAPIRequest.logo(testData.getBasicURI(), headerConfig.defaultHeader(), testData.getLoginlessPrcticeId());
 	}
 
 	@Test(enabled = true, groups = { "APItest" }, retryAnalyzer = RetryAnalyzer.class)
@@ -458,9 +458,9 @@ public class PSS2PatientModulatorrAcceptanceTests extends BaseTestNGWebDriver {
 		testData.setAccessToken(accessToken);
 		log("Base URL is  ---> " + testData.getBasicURI());
 		log("Access Token --> " + testData.getAccessToken());
-		log("Payload- " + payloadPatientMod.validateProviderLinkPayload(testData.getPatientDemographicsFirstName(),testData.getPatientDemographicsLastName(),testData.getPatientDemographicsDOB(),testData.getPatientDemographicsGender(),testData.getPatientDemographicsEmail()));
+		log("Payload- " + payloadPatientMod.validateProviderLinkPayload(testData.getPatientDemographicsFirstName(),testData.getPatientDemographicsLastName(),testData.getPatientDemographicsDOB(),testData.getPatientDemographicsGender(),testData.getPatientDemographicsEmail(),testData.getValidateProviderLinkId()));
 		log("Verifying the Provider link Id");
-		int providerLinkId = postAPIRequest.validateProviderLink(testData.getBasicURI(), payloadPatientMod.validateProviderLinkPayload(testData.getPatientDemographicsFirstName(),testData.getPatientDemographicsLastName(),testData.getPatientDemographicsDOB(),testData.getPatientDemographicsGender(),testData.getPatientDemographicsEmail()),
+		int providerLinkId = postAPIRequest.validateProviderLink(testData.getBasicURI(), payloadPatientMod.validateProviderLinkPayload(testData.getPatientDemographicsFirstName(),testData.getPatientDemographicsLastName(),testData.getPatientDemographicsDOB(),testData.getPatientDemographicsGender(),testData.getPatientDemographicsEmail(),testData.getValidateProviderLinkId()),
 				headerConfig.HeaderwithToken(testData.getAccessToken()), testData.getPracticeId(), testData.getPatientId(),
 				testData.getValidateProviderLinkDisplayName());
 		

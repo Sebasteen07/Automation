@@ -493,8 +493,7 @@ public class PSSPropertyFileLoader {
 		appointValues.setLoginlessGuidId(property.getProperty("loginless.guid.id"));
 		appointValues.setLoginlessPrcticeId(property.getProperty("loginless.prctice.id"));
 		appointValues.setTokenForLoginlessGuidId(property.getProperty("token.For.loginless.guid.id"));
-		appointValues
-				.setSessionConfigurationExpirationTime(property.getProperty("session.configuration.expiration.time"));
+		appointValues.setSessionConfigurationExpirationTime(property.getProperty("session.configuration.expiration.time"));
 		appointValues.setPracticeFromGuidSsoId(property.getProperty("practice.from.guid.sso.id"));
 		appointValues.setPracticeSsoId(property.getProperty("practice.sso.id"));
 		appointValues.setGetImagesBookId(property.getProperty("get.images.book.id"));
