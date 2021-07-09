@@ -1,9 +1,6 @@
 // Copyright 2013-2021 NXGN Management, LLC. All Rights Reserved.
 package com.medfusion.product.object.maps.patientportal2.page;
 
-import java.awt.AWTException;
-import java.awt.Robot;
-import java.awt.event.KeyEvent;
 import java.util.ArrayList;
 
 import org.openqa.selenium.By;
@@ -115,24 +112,8 @@ public abstract class JalapenoMenu extends MedfusionPage {
 	}
 
 	private void openMenuIfClosed() {
+		driver.navigate().refresh();
 		try {
-			try {
-				Robot rb = new Robot();
-				rb.keyPress(KeyEvent.VK_F12);
-				rb.keyRelease(KeyEvent.VK_F12);
-				Thread.sleep(2000);
-				rb.keyPress(KeyEvent.VK_F12);
-				rb.keyRelease(KeyEvent.VK_F12);
-				Thread.sleep(2000);
-
-			} catch (AWTException e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
-			} catch (InterruptedException e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
-			}
-
 			if (!homeMenu.isDisplayed()) {
 				openJalapenoMenu();
 			}
