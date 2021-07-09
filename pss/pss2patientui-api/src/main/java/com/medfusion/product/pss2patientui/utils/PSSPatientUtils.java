@@ -1852,7 +1852,6 @@ public class PSSPatientUtils extends BaseTestNGWebDriver{
 		log("Heading of last question is " + confirmationPage.getHeadingLastQuestin());
 
 		confirmationPage.validateLengthLastQueReq();
-		// appointmentToScheduledAnonymous(confirmationPage, testData);
 		appointmentToScheduled(confirmationPage, testData);
 	}
 	

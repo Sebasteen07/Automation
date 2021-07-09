@@ -5,6 +5,7 @@ import static org.testng.Assert.assertEquals;
 
 import org.json.JSONArray;
 import org.json.JSONObject;
+
 import com.intuit.ifs.csscat.core.BaseTestNGWebDriver;
 
 import io.restassured.path.json.JsonPath;
@@ -43,12 +44,4 @@ public class APIVerification extends BaseTestNGWebDriver {
 		log("Response Time in ms- " + time);
 	}
 
-	public void responseKeyValidationJson(Response response, String key) {
-		try {
-			JsonPath js = new JsonPath(response.asString());
-			log("Validated key-> " + key + " value is-  " + js.getString(key));
-		} catch (Exception e) {
-			log("Test Case Failed-Response not validated");
-		}
-	}
 }
