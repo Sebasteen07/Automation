@@ -137,7 +137,7 @@ public class AppointmentDateTime extends PSS2MainPage {
 				return PageFactory.initElements(driver, ConfirmationPage.class);
 			}
 		}
-		// sappointmentTimeList.clear();
+		appointmentTimeList.clear();
 		return PageFactory.initElements(driver, ConfirmationPage.class);
 	}
 

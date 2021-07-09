@@ -128,7 +128,6 @@ public class ConfirmationPage extends PSS2MainPage {
 	public ScheduledAppointment appointmentConfirmed() throws InterruptedException {
 		commonMethods.highlightElement(buttonAllGood);
 		jse.executeScript("arguments[0].click();", buttonAllGood);
-		// buttonAllGood.click();
 		return PageFactory.initElements(driver, ScheduledAppointment.class);
 	}
 

@@ -1067,9 +1067,10 @@ public class PSSPatientUtils extends BaseTestNGWebDriver{
 		appointmentToScheduledAnonymous(confirmationpage, testData);
 	}
 
-	public void clickOnSubmitAppt(Boolean isInsuranceDisplated, AppointmentDateTime aptDateTime, Appointment testData, WebDriver driver) throws Exception {
-		Log4jUtil.log("Step 12: Verify Confirmation page and Scheduled page");
-		Log4jUtil.log("Is Insurance Page Displated= " + isInsuranceDisplated);
+	public void clickOnSubmitAppt(Boolean isInsuranceDisplated, AppointmentDateTime aptDateTime, Appointment testData,
+			WebDriver driver) throws Exception {
+		Log4jUtil.log("Verify Confirmation page and Scheduled page");
+		Log4jUtil.log("Is Insurance Page Displayed= " + isInsuranceDisplated);
 		Log4jUtil.log("I am in clickOnSubmitAppt METHOD-------");
 		Thread.sleep(2000);
 		if (isInsuranceDisplated) {
@@ -1077,17 +1078,14 @@ public class PSSPatientUtils extends BaseTestNGWebDriver{
 			ConfirmationPage confirmationpage = updateinsurancePage.skipInsuranceUpdate();
 			appointmentToScheduled(confirmationpage, testData);
 		} else {
-			ConfirmationPage confirmationpage = aptDateTime.selectAppointmentDateTime(testData.getIsNextDayBooking());
-			/*
-			 * ConfirmationPage confirmationpage; if (testData.isFutureApt()) {
-			 * confirmationpage =
-			 * aptDateTime.selectFutureApptDateTime(testData.getIsNextDayBooking());
-			 * 
-			 * } else { confirmationpage =
-			 * aptDateTime.selectAppointmentDateTime(testData.getIsNextDayBooking()); }
-			 */
+			ConfirmationPage confirmationpage;
+			if (testData.isFutureApt()) {
+				confirmationpage = aptDateTime.selectFutureApptDateTime(testData.getIsNextDayBooking());
 
-			// appointmentToScheduledAnonymous(confirmationpage, testData);
+			} else {
+				confirmationpage = aptDateTime.selectAppointmentDateTime(testData.getIsNextDayBooking());
+			}
+
 			appointmentToScheduled(confirmationpage, testData);
 		}
 	}
@@ -1113,7 +1111,8 @@ public class PSSPatientUtils extends BaseTestNGWebDriver{
 	public void appointmentToScheduled(ConfirmationPage confirmationpage, Appointment testData) throws Exception {
 		Log4jUtil.log("--------I AM IN appointmentToScheduled METHOD---------");
 		Log4jUtil.log("Step 13: Verify if Appointment is scheduled and download ics file");
-		String aptScheduledAt = confirmationpage.getAppointmentDetails().get((confirmationpage.getAppointmentDetails().size() - 1)).getText();
+		String aptScheduledAt = confirmationpage.getAppointmentDetails()
+				.get((confirmationpage.getAppointmentDetails().size() - 1)).getText();
 		Log4jUtil.log(">> " + aptScheduledAt);
 		for (WebElement ele : confirmationpage.getAppointmentDetails()) {
 			Log4jUtil.log("apt Details= " + ele.getText());
@@ -1121,16 +1120,13 @@ public class PSSPatientUtils extends BaseTestNGWebDriver{
 		confirmationpage.apptConfm();
 		log("Appointment is SuccesFull");
 
-		/*
-		 * ScheduledAppointment scheduledappointment =
-		 * confirmationpage.appointmentConfirmed();
-		 * 
-		 * Log4jUtil.log("appointment ID = " + scheduledappointment.getAppointmentID());
-		 * Log4jUtil.log("Add to calendar option is displayed and is clickable.");
-		 * scheduledappointment.downloadCalander(); Thread.sleep(2000);
-		 * readICSFile(filePath());
-		 */
+		ScheduledAppointment scheduledappointment = confirmationpage.appointmentConfirmed();
 
+		Log4jUtil.log("appointment ID = " + scheduledappointment.getAppointmentID());
+		Log4jUtil.log("Add to calendar option is displayed and is clickable.");
+		scheduledappointment.downloadCalander();
+		Thread.sleep(2000);
+		readICSFile(filePath());
 	}
 
 	public void appointmentToRescheduled(ConfirmationPage confirmationpage, Appointment testData) throws Exception {
@@ -1245,20 +1241,6 @@ public class PSSPatientUtils extends BaseTestNGWebDriver{
 		}
 		return PageFactory.initElements(driver, ScheduledAppointment.class);
 	}
-
-	/*
-	 * public void selectAFlow_Old(WebDriver driver, String rule, HomePage homepage,
-	 * Appointment testData, AppointmentPage appointment) throws Exception { if
-	 * (homepage.isPopUP()) { homepage.popUPClick(); } Thread.sleep(7000); if
-	 * (rule.equalsIgnoreCase(PSSConstants.LBT)) { LBTFlow(homepage, testData,
-	 * "false", driver); } if (rule.equalsIgnoreCase(PSSConstants.LTB)) {
-	 * LTBFlow(homepage, testData, "false", driver); } if
-	 * (rule.equalsIgnoreCase(PSSConstants.BLT)) { BLTFlow(homepage, testData,
-	 * "false", driver); } if (rule.equalsIgnoreCase(PSSConstants.BTL)) {
-	 * BTLFlow(homepage, testData, "false", driver); } if
-	 * (rule.equalsIgnoreCase(PSSConstants.TBL)) { TBLFlow(homepage, testData,
-	 * "false", appointment, driver); } }
-	 */
 
 	public void checkPrivacyPage(WebDriver driver) {
 		PrivacyPolicy privacypolicy = new PrivacyPolicy(driver);
