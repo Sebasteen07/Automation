@@ -5,6 +5,7 @@ import static org.testng.Assert.assertEquals;
 
 import org.json.JSONArray;
 import org.json.JSONObject;
+
 import com.intuit.ifs.csscat.core.BaseTestNGWebDriver;
 
 import io.restassured.path.json.JsonPath;
@@ -13,14 +14,8 @@ import io.restassured.response.Response;
 public class APIVerification extends BaseTestNGWebDriver {
 
 	public void responseCodeValidation(Response response, int statuscode) {
-
-		try {
-			assertEquals(statuscode, response.getStatusCode());
+		assertEquals(statuscode, response.getStatusCode(), "Status Code doesnt match properly. Test Case failed");
 			log("Status Code Validated as " + response.getStatusCode());
-		} catch (AssertionError e) {
-			log("Test Case-Failed");
-			log("Expected StatusCode- " + statuscode + " Actual StatusCode " + response.getStatusCode());
-		}
 	}
 
 	public void responseKeyValidation(Response response, String key) {
@@ -48,4 +43,5 @@ public class APIVerification extends BaseTestNGWebDriver {
 		long time = response.time();
 		log("Response Time in ms- " + time);
 	}
+
 }
