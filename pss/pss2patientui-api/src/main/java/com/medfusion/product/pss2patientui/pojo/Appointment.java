@@ -246,6 +246,7 @@ public class Appointment {
 	private String RescheduleSlotId;
 	private String RescheduleDateTime;
 	private String Rescheduledate;
+	private boolean insuranceDetails = false;
 
 
 
@@ -320,7 +321,6 @@ public class Appointment {
 		this.patientDemographicsLastName = patientDemographicsLastName;
 	}
 
-	private boolean insuranceDetails = false;
 
 	public String getAppointmentIdApp() {
 		return appointmentIdApp;
