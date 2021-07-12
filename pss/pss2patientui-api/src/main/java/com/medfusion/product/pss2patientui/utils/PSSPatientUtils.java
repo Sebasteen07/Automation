@@ -1067,9 +1067,11 @@ public class PSSPatientUtils extends BaseTestNGWebDriver{
 		appointmentToScheduledAnonymous(confirmationpage, testData);
 	}
 
-	public void clickOnSubmitAppt(Boolean isInsuranceDisplated, AppointmentDateTime aptDateTime, Appointment testData, WebDriver driver) throws Exception {
-		Log4jUtil.log("Step 12: Verify Confirmation page and Scheduled page");
-		Log4jUtil.log("Is Insurance Page Displated= " + isInsuranceDisplated);
+	public void clickOnSubmitAppt(Boolean isInsuranceDisplated, AppointmentDateTime aptDateTime, Appointment testData,
+			WebDriver driver) throws Exception {
+		Log4jUtil.log("Verify Confirmation page and Scheduled page");
+		Log4jUtil.log("Is Insurance Page Displayed= " + isInsuranceDisplated);
+		Log4jUtil.log("I am in clickOnSubmitAppt METHOD-------");
 		Thread.sleep(2000);
 		if (isInsuranceDisplated) {
 			UpdateInsurancePage updateinsurancePage = aptDateTime.selectAppointmentDateAndTime(driver);
@@ -1084,7 +1086,7 @@ public class PSSPatientUtils extends BaseTestNGWebDriver{
 				confirmationpage = aptDateTime.selectAppointmentDateTime(testData.getIsNextDayBooking());
 			}
 
-			appointmentToScheduledAnonymous(confirmationpage, testData);
+			appointmentToScheduled(confirmationpage, testData);
 		}
 	}
 
@@ -1107,13 +1109,19 @@ public class PSSPatientUtils extends BaseTestNGWebDriver{
 	}
 
 	public void appointmentToScheduled(ConfirmationPage confirmationpage, Appointment testData) throws Exception {
+		Log4jUtil.log("--------I AM IN appointmentToScheduled METHOD---------");
 		Log4jUtil.log("Step 13: Verify if Appointment is scheduled and download ics file");
-		String aptScheduledAt = confirmationpage.getAppointmentDetails().get((confirmationpage.getAppointmentDetails().size() - 1)).getText();
+		String aptScheduledAt = confirmationpage.getAppointmentDetails()
+				.get((confirmationpage.getAppointmentDetails().size() - 1)).getText();
 		Log4jUtil.log(">> " + aptScheduledAt);
 		for (WebElement ele : confirmationpage.getAppointmentDetails()) {
 			Log4jUtil.log("apt Details= " + ele.getText());
 		}
+		confirmationpage.apptConfm();
+		log("Appointment is SuccesFull");
+
 		ScheduledAppointment scheduledappointment = confirmationpage.appointmentConfirmed();
+
 		Log4jUtil.log("appointment ID = " + scheduledappointment.getAppointmentID());
 		Log4jUtil.log("Add to calendar option is displayed and is clickable.");
 		scheduledappointment.downloadCalander();
@@ -1184,6 +1192,7 @@ public class PSSPatientUtils extends BaseTestNGWebDriver{
 
 	public ScheduledAppointment selectAFlow(WebDriver driver, String rule, HomePage homepage, Appointment testData) throws Exception {
 		Log4jUtil.log("selectAFlow method started");
+		Log4jUtil.log("------------I am in selectAFlow METHOD-----");
 		Thread.sleep(1000);
 		testData.setIsInsuranceEnabled(false);
 		Thread.sleep(1000);
@@ -1231,28 +1240,6 @@ public class PSSPatientUtils extends BaseTestNGWebDriver{
 			LTFlow(homepage, testData, Boolean.toString(testData.getIsInsuranceEnabled()), driver);
 		}
 		return PageFactory.initElements(driver, ScheduledAppointment.class);
-	}
-
-	public void selectAFlow(WebDriver driver, String rule, HomePage homepage, Appointment testData, AppointmentPage appointment) throws Exception {
-		if (homepage.isPopUP()) {
-			homepage.popUPClick();
-		}
-		Thread.sleep(7000);
-		if (rule.equalsIgnoreCase(PSSConstants.LBT)) {
-			LBTFlow(homepage, testData, "false", driver);
-		}
-		if (rule.equalsIgnoreCase(PSSConstants.LTB)) {
-			LTBFlow(homepage, testData, "false", driver);
-		}
-		if (rule.equalsIgnoreCase(PSSConstants.BLT)) {
-			BLTFlow(homepage, testData, "false", driver);
-		}
-		if (rule.equalsIgnoreCase(PSSConstants.BTL)) {
-			BTLFlow(homepage, testData, "false", driver);
-		}
-		if (rule.equalsIgnoreCase(PSSConstants.TBL)) {
-			TBLFlow(homepage, testData, "false", appointment, driver);
-		}
 	}
 
 	public void checkPrivacyPage(WebDriver driver) {
@@ -1865,7 +1852,7 @@ public class PSSPatientUtils extends BaseTestNGWebDriver{
 		log("Heading of last question is " + confirmationPage.getHeadingLastQuestin());
 
 		confirmationPage.validateLengthLastQueReq();
-		appointmentToScheduledAnonymous(confirmationPage, testData);
+		appointmentToScheduled(confirmationPage, testData);
 	}
 	
 	public void timeMarkLTBRule(HomePage homePage, Appointment testData, WebDriver driver) throws InterruptedException

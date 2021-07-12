@@ -20,6 +20,13 @@ public class PSSPropertyFileLoader {
 		property.load(url);
 	}
 
+	// Universal property loading
+	public String getProperty(String prop) throws NullPointerException {
+		if (property.getProperty(prop) == null)
+			throw new NullPointerException("Property " + prop + " not found in the property file.");
+		return property.getProperty(prop);
+	}
+
 	public void setAppointmentResponseGW(Appointment appointValues) {
 		Log4jUtil.log("Loading data for GW appointment related cases..");
 		appointValues.setInsuranceVisible(false);
@@ -423,24 +430,17 @@ public class PSSPropertyFileLoader {
 
 	public void setRestAPIData(Appointment appointValues) {
 
-		appointValues.setBaseurl_BookRule(property.getProperty("baseurl_bookRule_Patient"));
-		appointValues.setBaseurl_LocationRule(property.getProperty("baseurl_locationRule_Patient"));
-		appointValues.setBaseurl_APT(property.getProperty("baseurl_appttypeRule_Patient"));
-		appointValues.setBaseurl_AvailableSlots(property.getProperty("baseurl_availableslots_Patient"));
-		appointValues.setBaseurl_ScheduleAppointment(property.getProperty("baseurl_scheduleaptt_Patient"));
-		appointValues.setPracticeId("practiceIdNG");
-		appointValues.setAccessTokenURL(property.getProperty("accessToken_BaseUrl"));
-		appointValues.setBasicURI(property.getProperty("baseurl"));
-		appointValues.setPracticeId(property.getProperty("practice.id.NG"));
-		appointValues.setPracticeDisplayName(property.getProperty("practiceDisplayNameNG"));
-		appointValues.setPatientId(property.getProperty("patientIdNG"));
-		appointValues.setStartDateTime(property.getProperty("startDateTime"));
-		appointValues.setEndDateTime(property.getProperty("endDateTime"));
-		appointValues.setApptid(property.getProperty("apptid"));
-		appointValues.setFirstName(property.getProperty("firstNameNG"));
-		appointValues.setLastName(property.getProperty("firstNameNG"));
-		appointValues.setSlotStartTime(property.getProperty("slotStartTime"));
-		appointValues.setSlotEndTime(property.getProperty("slotEndTime"));
+		appointValues.setBasicURI(property.getProperty("baseurl.ng"));
+		appointValues.setPracticeId(property.getProperty("practice.id.ng"));
+		appointValues.setPracticeDisplayName(property.getProperty("practice.displayname.ng"));
+		appointValues.setPatientId(property.getProperty("patient.id.ng"));
+		appointValues.setStartDateTime(property.getProperty("start.date.time.ng"));
+		appointValues.setEndDateTime(property.getProperty("end.date.time.ng"));
+		appointValues.setApptid(property.getProperty("apptid.ng"));
+		appointValues.setFirstName(property.getProperty("first.name.ng"));
+		appointValues.setLastName(property.getProperty("first.name.ng"));
+		appointValues.setSlotStartTime(property.getProperty("slot.start.time.ng"));
+		appointValues.setSlotEndTime(property.getProperty("slot.end.time.ng"));
 
 	}
 
