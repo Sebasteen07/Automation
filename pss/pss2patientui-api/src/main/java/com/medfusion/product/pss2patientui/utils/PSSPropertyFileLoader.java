@@ -408,7 +408,6 @@ public class PSSPropertyFileLoader {
 		appointValues.setEmaiSubject(property.getProperty("email.subject"));
 		appointValues.setFindInEmail(property.getProperty("find.in.email"));
 		appointValues.setInsurancePhone(property.getProperty("insrance.phone"));
-		appointValues.setPreSchedDays(Integer.parseInt(property.getProperty("prescheddays.ng")));
 		appointValues.setShowCancellationReasonPM(true);
 		appointValues.setShowCancellationRescheduleReason(true);
 	}
@@ -493,8 +492,7 @@ public class PSSPropertyFileLoader {
 		appointValues.setLoginlessGuidId(property.getProperty("loginless.guid.id"));
 		appointValues.setLoginlessPrcticeId(property.getProperty("loginless.prctice.id"));
 		appointValues.setTokenForLoginlessGuidId(property.getProperty("token.For.loginless.guid.id"));
-		appointValues
-				.setSessionConfigurationExpirationTime(property.getProperty("session.configuration.expiration.time"));
+		appointValues.setSessionConfigurationExpirationTime(property.getProperty("session.configuration.expiration.time"));
 		appointValues.setPracticeFromGuidSsoId(property.getProperty("practice.from.guid.sso.id"));
 		appointValues.setPracticeSsoId(property.getProperty("practice.sso.id"));
 		appointValues.setGetImagesBookId(property.getProperty("get.images.book.id"));
@@ -518,6 +516,18 @@ public class PSSPropertyFileLoader {
 		appointValues.setApptTypeNextAvailableId(property.getProperty("appt.type.next.available.id"));
 		appointValues.setBooksBynextAvailableId(property.getProperty("books.by.next.available.id"));
 		appointValues.setValidateProviderLinkId(property.getProperty("validate.provider.link.id"));
+
+		appointValues.setAppointmentIdApp(property.getProperty("appointment.detail.id"));
+		appointValues.setBookIdApp(property.getProperty("book.detail.id"));
+		appointValues.setLocationIdApp(property.getProperty("location.detail.id"));
+		appointValues.setPatientDemographicsLastName(property.getProperty("patient.demographics.last.name"));
+        appointValues.setPatientDemographicsEmail(property.getProperty("patient.demographics.email"));
+        appointValues.setPatientDemographicsGender(property.getProperty("patient.demographics.gender"));
+        appointValues.setPatientDemographicsPhoneNo(property.getProperty("patient.demographics.phoneno"));
+        appointValues.setPatientDemographicsZipCode(property.getProperty("patient.demographics.zipcode"));
+        appointValues.setPatientDemographicsDOB(property.getProperty("patient.demographics.dob"));
+        
+        
 		appointValues.setPatientIdPm(property.getProperty("patient.id"));
 		appointValues.setPatientIdReschedule(property.getProperty("patient.id.reschedule"));
 		appointValues.setPatientIdAvailableSlots(property.getProperty("patient.id.available.slots"));
