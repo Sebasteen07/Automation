@@ -408,7 +408,6 @@ public class PSSPropertyFileLoader {
 		appointValues.setEmaiSubject(property.getProperty("email.subject"));
 		appointValues.setFindInEmail(property.getProperty("find.in.email"));
 		appointValues.setInsurancePhone(property.getProperty("insrance.phone"));
-		appointValues.setPreSchedDays(Integer.parseInt(property.getProperty("prescheddays.ng")));
 		appointValues.setShowCancellationReasonPM(true);
 		appointValues.setShowCancellationRescheduleReason(true);
 	}

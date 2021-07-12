@@ -249,10 +249,27 @@ public class Appointment {
 
 
 
+	public Appointment(String providerConfig, String usernameConfig, String passwordConfig, String datetimeConfig,
+			String locationConfig, String appointmentConfig, String specialityConfig) {
+		this.username = usernameConfig;
+		this.password = passwordConfig;
+		this.provider = providerConfig;
+		this.location = locationConfig;
+		this.datetime = datetimeConfig;
+		this.appointmenttype = appointmentConfig;
+		this.speciality = specialityConfig;
+	}
 
+	public int getPreSchedDays() {
+		return preSchedDays;
+	}
 
+	public void setPreSchedDays(int preSchedDays) {
+		this.preSchedDays = preSchedDays;
+	}
 
-
+	public Appointment() {
+	}
 	
 	public String getPatientDemographicsDOB() {
 		return patientDemographicsDOB;
@@ -293,28 +310,7 @@ public class Appointment {
 	public void setPatientDemographicsPhoneNo(String patientDemographicsPhoneNo) {
 		this.patientDemographicsPhoneNo = patientDemographicsPhoneNo;
 	}
-
-	public Appointment(String providerConfig, String usernameConfig, String passwordConfig, String datetimeConfig,
-			String locationConfig, String appointmentConfig, String specialityConfig) {
-		this.username = usernameConfig;
-		this.password = passwordConfig;
-		this.provider = providerConfig;
-		this.location = locationConfig;
-		this.datetime = datetimeConfig;
-		this.appointmenttype = appointmentConfig;
-		this.speciality = specialityConfig;
-	}
-
-	public int getPreSchedDays() {
-		return preSchedDays;
-	}
-
-	public void setPreSchedDays(int preSchedDays) {
-		this.preSchedDays = preSchedDays;
-	}
-
-	public Appointment() {
-	}
+	
 	
 	public String getPatientDemographicsLastName() {
 		return patientDemographicsLastName;
