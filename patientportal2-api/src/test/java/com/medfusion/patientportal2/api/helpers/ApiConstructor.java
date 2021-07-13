@@ -8,7 +8,6 @@ import java.util.Map;
 import com.intuit.ifs.csscat.core.utils.ApiCommonUtil;
 import com.medfusion.common.utils.PropertyFileLoader;
 import com.medfusion.patientportal2.api.pojos.Credentials;
-import com.medfusion.patientportal2.api.pojos.NotificationProfilePayload;
 import com.medfusion.patientportal2.api.pojos.ProfilePayload;
 
 import io.restassured.RestAssured;
