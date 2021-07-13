@@ -250,43 +250,27 @@ public class GatewayProxyTransactionTests extends GatewayProxyBaseTest {
 		String externalTransactionId = jsonPath.get("externalTransactionId").toString();
 		String orderId = jsonPath.get("orderId").toString();
 
-		if (responseSale.getStatusCode() == 200) {
-			Response response = transaction.makeAVoid(token, testData.getProperty("proxy.mmid"),
-					testData.getProperty("test.pay.customer.uuid"), testData.getProperty("comment"),
-					testData.getProperty("customer.id"), externalTransactionId, orderId);
+		Response response = transaction.makeAVoid(token, testData.getProperty("proxy.mmid"),
+				testData.getProperty("test.pay.customer.uuid"), testData.getProperty("comment"),
+				testData.getProperty("customer.id"), externalTransactionId, orderId);
 
-			validate.verifyTransactionDetails(response.asString());
-
-		}
+		validate.verifyTransactionDetails(response.asString());
 
 	}
 
 	@Test(enabled = true)
 	public void testGatewayProxyVoidByInvalidAuth() throws Exception {
 		GatewayProxyTransactionResource transaction = new GatewayProxyTransactionResource();
-		String transanctionAmount = IHGUtil.createRandomNumericString(4);
-
-		Response responseSale = transaction.makeASale(token, testData.getProperty("proxy.mmid"),
-				testData.getProperty("test.pay.customer.uuid"), transanctionAmount);
-
-		JsonPath jsonPath = new JsonPath(responseSale.asString());
-		Validations validate = new Validations();
-		validate.verifyTransactionDetails(responseSale.asString());
-
-		String externalTransactionId = jsonPath.get("externalTransactionId").toString();
-		String orderId = jsonPath.get("orderId").toString();
 		String tokenForVoid = GatewayProxyUtils.getTokenForCustomer() + "fgh";
 
-		if (responseSale.getStatusCode() == 200) {
-			Response voidResponse = transaction.makeAVoid(tokenForVoid, testData.getProperty("proxy.mmid"),
-					testData.getProperty("test.pay.customer.uuid"), testData.getProperty("comment"),
-					testData.getProperty("customer.id"), externalTransactionId, orderId);
+		Response voidResponse = transaction.makeAVoid(tokenForVoid, testData.getProperty("proxy.mmid"),
+				testData.getProperty("test.pay.customer.uuid"), testData.getProperty("comment"),
+				testData.getProperty("customer.id"), testData.getProperty("external.transaction.id"),
+				testData.getProperty("order.id"));
 
-			JsonPath jsonpathVoid = new JsonPath(voidResponse.asString());
-			Assert.assertTrue(voidResponse.getStatusCode() == 401);
-			Assert.assertEquals("Unauthorized", jsonpathVoid.get("message"));
-
-		}
+		JsonPath jsonpathVoid = new JsonPath(voidResponse.asString());
+		Assert.assertTrue(voidResponse.getStatusCode() == 401);
+		Assert.assertEquals("Unauthorized", jsonpathVoid.get("message"));
 
 	}
 
