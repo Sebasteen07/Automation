@@ -229,7 +229,7 @@ public class JalapenoPrescriptionsPage extends JalapenoMenu {
 		cardSelect.selectByIndex(3);
 
 		Select monthSelect = new Select(monthdd);
-		monthSelect.selectByVisibleText(testData.getProperty("DOBMonthText"));
+		monthSelect.selectByVisibleText(testData.getProperty("dob.month.text"));
 
 		Select yearSelect = new Select(yeardd);
 		yearSelect.selectByValue(creditCard.getExpYear());

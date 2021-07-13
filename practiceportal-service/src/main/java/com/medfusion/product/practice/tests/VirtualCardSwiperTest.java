@@ -1,3 +1,4 @@
+// Copyright 2013-2021 NXGN Management, LLC. All Rights Reserved.
 package com.medfusion.product.practice.tests;
 
 import com.medfusion.common.utils.PropertyFileLoader;
@@ -29,9 +30,9 @@ public class VirtualCardSwiperTest extends BaseTestNGWebDriver {
 				PracticeHomePage practiceHome;
 				
 				if (cardType.equalsIgnoreCase(PracticeConstants.CARD_TYPE_VISA)) {
-						practiceHome = practiceLogin.login(testData.getProperty("doctorLogin"), testData.getProperty("doctorPassword"));
+						practiceHome = practiceLogin.login(testData.getProperty("doctor.login"), testData.getProperty("doctor.password"));
 				} else {
-						practiceHome = practiceLogin.login(testData.getProperty("payPalDoctor"), testData.getProperty("payPalPassword"));
+						practiceHome = practiceLogin.login(testData.getProperty("paypal.doctor"), testData.getProperty("paypal.password"));
 				}
 
 				logStep("Navigate to Virtual Card Swiper page.");
@@ -72,7 +73,7 @@ public class VirtualCardSwiperTest extends BaseTestNGWebDriver {
 				PracticeLoginPage practiceLogin = new PracticeLoginPage(driver, testData.getUrl());
 
 				logStep("Enter credentials and login");
-				PracticeHomePage practiceHome = practiceLogin.login(testData.getProperty("doctorLogin"), testData.getProperty("doctorPassword"));
+				PracticeHomePage practiceHome = practiceLogin.login(testData.getProperty("doctor.login"), testData.getProperty("doctor.password"));
 
 				logStep("Navigate to Virtual Card Swiper page.");
 				VirtualCardSwiperPage virtualCardSwiper = practiceHome.clickOnVirtualCardSwiper();

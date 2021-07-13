@@ -1,3 +1,4 @@
+// Copyright 2013-2021 NXGN Management, LLC. All Rights Reserved.
 package com.medfusion.patientportal2.api.helpers;
 
 import static io.restassured.RestAssured.given;
@@ -8,7 +9,6 @@ import java.util.Map;
 import com.intuit.ifs.csscat.core.utils.ApiCommonUtil;
 import com.medfusion.common.utils.PropertyFileLoader;
 import com.medfusion.patientportal2.api.pojos.Credentials;
-import com.medfusion.patientportal2.api.pojos.NotificationProfilePayload;
 import com.medfusion.patientportal2.api.pojos.ProfilePayload;
 
 import io.restassured.RestAssured;
