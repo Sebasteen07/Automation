@@ -77,16 +77,16 @@ public class NGIntegrationE2EPayment_SendChartItemTests extends BaseTestNGWebDri
 	@Test(enabled = true, groups = { "Payment" }, retryAnalyzer = RetryAnalyzer.class)
 	public void testPaymentPayBills() throws Throwable {
 		logStep("Getting Existing User");
-		String username = propertyLoaderObj.getProperty("CCDAUsername");
+		String username = propertyLoaderObj.getProperty("ccda.username");
 		String person_id = DBUtils.executeQueryOnDB("NGCoreDB",
 				"select person_id from person where email_address = '" + username + "'");
 		String practiceId = null, url = null;
 
 		if (propertyLoaderObj.getNGAPIexecutionMode().equalsIgnoreCase("QAMain")) {
-			practiceId = propertyLoaderObj.getProperty("NGEnterprise1Practice1");
-			url = propertyLoaderObj.getProperty("MFPortalURLPractice1");
+			practiceId = propertyLoaderObj.getProperty("ng.enterprise1.practice1");
+			url = propertyLoaderObj.getProperty("mf.portal.url.practice1");
 		} else if (propertyLoaderObj.getNGAPIexecutionMode().equalsIgnoreCase("SIT")) {
-			practiceId = propertyLoaderObj.getProperty("NGMainPracticeID");
+			practiceId = propertyLoaderObj.getProperty("ng.main.practice.id");
 			url = propertyLoaderObj.getProperty("url");
 		} else {
 			Log4jUtil.log("Invalid Execution Mode");
@@ -159,15 +159,15 @@ public class NGIntegrationE2EPayment_SendChartItemTests extends BaseTestNGWebDri
 	@Test(enabled = true, groups = { "Payment" }, retryAnalyzer = RetryAnalyzer.class)
 	public void testPaymentVirtualCardSwiper() throws Throwable {
 		logStep("Getting Existing User");
-		String username = propertyLoaderObj.getProperty("CCDAUsername");
+		String username = propertyLoaderObj.getProperty("ccda.username");
 		String person_id = DBUtils.executeQueryOnDB("NGCoreDB",
 				"select person_id from person where email_address = '" + username + "'");
 		String practiceId = null;
 
 		if (propertyLoaderObj.getNGAPIexecutionMode().equalsIgnoreCase("QAMain")) {
-			practiceId = propertyLoaderObj.getProperty("NGEnterprise1Practice1");
+			practiceId = propertyLoaderObj.getProperty("ng.enterprise1.practice1");
 		} else if (propertyLoaderObj.getNGAPIexecutionMode().equalsIgnoreCase("SIT")) {
-			practiceId = propertyLoaderObj.getProperty("NGMainPracticeID");
+			practiceId = propertyLoaderObj.getProperty("ng.main.practice.id");
 		} else {
 			Log4jUtil.log("Invalid Execution Mode");
 		}
@@ -201,7 +201,7 @@ public class NGIntegrationE2EPayment_SendChartItemTests extends BaseTestNGWebDri
 		virtualCardSwiper.addCreditCardInfo(PracticeConstants.CARD_NAME, PracticeConstants.CARD_NUMBER,
 				PracticeConstants.CARD_TYPE_VISA, PracticeConstants.EXP_MONTH, PracticeConstants.EXP_YEAR, amount,
 				PracticeConstants.CVV, PracticeConstants.ZIP, accountNumber, firstName, paymentComment,
-				propertyLoaderObj.getProperty("PortalLocationName"));
+				propertyLoaderObj.getProperty("portal.location.name"));
 
 		logStep("Verify whether the payment is completed successfully.");
 		assertEquals(virtualCardSwiper.getPaymentCompletedSuccessMsg()
@@ -221,15 +221,15 @@ public class NGIntegrationE2EPayment_SendChartItemTests extends BaseTestNGWebDri
 	@Test(enabled = true, groups = { "Payment" }, retryAnalyzer = RetryAnalyzer.class)
 	public void testPaymentOnlineBillPayProcess() throws Throwable {
 		logStep("Getting Existing User");
-		String username = propertyLoaderObj.getProperty("CCDAUsername");
+		String username = propertyLoaderObj.getProperty("ccda.username");
 		String person_id = DBUtils.executeQueryOnDB("NGCoreDB",
 				"select person_id from person where email_address = '" + username + "'");
 		String practiceId = null;
 
 		if (propertyLoaderObj.getNGAPIexecutionMode().equalsIgnoreCase("QAMain")) {
-			practiceId = propertyLoaderObj.getProperty("NGEnterprise1Practice1");
+			practiceId = propertyLoaderObj.getProperty("ng.enterprise1.practice1");
 		} else if (propertyLoaderObj.getNGAPIexecutionMode().equalsIgnoreCase("SIT")) {
-			practiceId = propertyLoaderObj.getProperty("NGMainPracticeID");
+			practiceId = propertyLoaderObj.getProperty("ng.main.practice.id");
 		} else {
 			Log4jUtil.log("Invalid Execution Mode");
 		}
@@ -271,8 +271,8 @@ public class NGIntegrationE2EPayment_SendChartItemTests extends BaseTestNGWebDri
 
 		String paymentComment = PracticeConstants.PAYMENT_COMMENT.concat(IHGUtil.createRandomNumericString());
 		logStep("Set all the transaction details");
-		pPayMyBillOnlinePage.setTransactionsForOnlineBillPayProcess(propertyLoaderObj.getProperty("PortalLocationName"),
-				propertyLoaderObj.getProperty("PortalProviderName").replaceAll(", Dr", ""), accountNumber, amount,
+		pPayMyBillOnlinePage.setTransactionsForOnlineBillPayProcess(propertyLoaderObj.getProperty("portal.location.name"),
+				propertyLoaderObj.getProperty("portal.provider.name").replaceAll(", Dr", ""), accountNumber, amount,
 				PracticeConstants.PROCESS_CARD_HOLDER_NAME, cardNumber, cardType, paymentComment);
 
 		logStep("Verify the Payment Confirmation text");
@@ -307,19 +307,19 @@ public class NGIntegrationE2EPayment_SendChartItemTests extends BaseTestNGWebDri
 
 	@Test(enabled = true, groups = { "Payment" }, retryAnalyzer = RetryAnalyzer.class)
 	public void testPaymentBudgetPaymentProcess() throws Throwable {
-		String amount = propertyLoaderObj.getProperty("BudgetAmount");
-		String prepayamount = propertyLoaderObj.getProperty("BudgetPrepayAmount");
+		String amount = propertyLoaderObj.getProperty("budget.amount");
+		String prepayamount = propertyLoaderObj.getProperty("budget.prepay.amount");
 
 		logStep("Getting Existing User");
-		String username = propertyLoaderObj.getProperty("CCDAUsername");
+		String username = propertyLoaderObj.getProperty("ccda.username");
 		String person_id = DBUtils.executeQueryOnDB("NGCoreDB",
 				"select person_id from person where email_address = '" + username + "'");
 		String practiceId = null;
 
 		if (propertyLoaderObj.getNGAPIexecutionMode().equalsIgnoreCase("QAMain")) {
-			practiceId = propertyLoaderObj.getProperty("NGEnterprise1Practice1");
+			practiceId = propertyLoaderObj.getProperty("ng.enterprise1.practice1");
 		} else if (propertyLoaderObj.getNGAPIexecutionMode().equalsIgnoreCase("SIT")) {
-			practiceId = propertyLoaderObj.getProperty("NGMainPracticeID");
+			practiceId = propertyLoaderObj.getProperty("ng.main.practice.id");
 		} else {
 			Log4jUtil.log("Invalid Execution Mode");
 		}
@@ -354,8 +354,8 @@ public class NGIntegrationE2EPayment_SendChartItemTests extends BaseTestNGWebDri
 		pPayMyBillOnlinePage.searchForPatient(firstName, lastName);
 
 		logStep("Set all the transaction details");
-		pPayMyBillOnlinePage.setTransactionsForBudgetPaymentPlan(propertyLoaderObj.getProperty("PortalLocationName"),
-				propertyLoaderObj.getProperty("PortalProviderName").replaceAll(", Dr", ""), accountNumber, amount,
+		pPayMyBillOnlinePage.setTransactionsForBudgetPaymentPlan(propertyLoaderObj.getProperty("portal.location.name"),
+				propertyLoaderObj.getProperty("portal.provider.name").replaceAll(", Dr", ""), accountNumber, amount,
 				prepayamount, PracticeConstants.PROCESS_CARD_HOLDER_NAME, cardNumber, cardType);
 
 		logStep("Verify the your Budget payment plan start date text");
@@ -395,9 +395,9 @@ public class NGIntegrationE2EPayment_SendChartItemTests extends BaseTestNGWebDri
 		String practiceId = null;
 
 		if (propertyLoaderObj.getNGAPIexecutionMode().equalsIgnoreCase("QAMain")) {
-			practiceId = propertyLoaderObj.getProperty("NGEnterprise1Practice1");
+			practiceId = propertyLoaderObj.getProperty("ng.enterprise1.practice1");
 		} else if (propertyLoaderObj.getNGAPIexecutionMode().equalsIgnoreCase("SIT")) {
-			practiceId = propertyLoaderObj.getProperty("NGMainPracticeID");
+			practiceId = propertyLoaderObj.getProperty("ng.main.practice.id");
 		} else {
 			Log4jUtil.log("Invalid Execution Mode");
 		}
@@ -437,8 +437,8 @@ public class NGIntegrationE2EPayment_SendChartItemTests extends BaseTestNGWebDri
 
 		String paymentComment = PracticeConstants.PAYMENT_COMMENT.concat(IHGUtil.createRandomNumericString());
 		logStep("Set all the transaction details");
-		pPayMyBillOnlinePage.setTransactionsForOnlineBillPayProcess(propertyLoaderObj.getProperty("PortalLocationName"),
-				propertyLoaderObj.getProperty("PortalProviderName").replaceAll(", Dr", ""), invalidAccountNumber,
+		pPayMyBillOnlinePage.setTransactionsForOnlineBillPayProcess(propertyLoaderObj.getProperty("portal.location.name"),
+				propertyLoaderObj.getProperty("portal.provider.name").replaceAll(", Dr", ""), invalidAccountNumber,
 				amount, PracticeConstants.PROCESS_CARD_HOLDER_NAME, cardNumber, cardType, paymentComment);
 
 		logStep("Verify the Payment Confirmation text");
@@ -462,7 +462,7 @@ public class NGIntegrationE2EPayment_SendChartItemTests extends BaseTestNGWebDri
 	@Test(enabled = true, groups = { "Payment" }, retryAnalyzer = RetryAnalyzer.class)
 	public void testPaymentOnlineBillPayProcessforMultipleGuarantors() throws Throwable {
 		logStep("Getting Existing User");
-		String username = propertyLoaderObj.getProperty("CCDAUsername");
+		String username = propertyLoaderObj.getProperty("ccda.username");
 		String personId = DBUtils.executeQueryOnDB("NGCoreDB",
 				"select person_id from person where email_address = '" + username + "'");
 
@@ -501,8 +501,8 @@ public class NGIntegrationE2EPayment_SendChartItemTests extends BaseTestNGWebDri
 
 		String paymentComment = PracticeConstants.PAYMENT_COMMENT.concat(IHGUtil.createRandomNumericString());
 		logStep("Set all the transaction details");
-		pPayMyBillOnlinePage.setTransactionsForOnlineBillPayProcess(propertyLoaderObj.getProperty("PortalLocationName"),
-				propertyLoaderObj.getProperty("PortalProviderName").replaceAll(", Dr", ""), invalidAccountNumber,
+		pPayMyBillOnlinePage.setTransactionsForOnlineBillPayProcess(propertyLoaderObj.getProperty("portal.location.name"),
+				propertyLoaderObj.getProperty("portal.provider.name").replaceAll(", Dr", ""), invalidAccountNumber,
 				amount, PracticeConstants.PROCESS_CARD_HOLDER_NAME, cardNumber, cardType, paymentComment);
 
 		logStep("Verify the Payment Confirmation text");
@@ -518,7 +518,7 @@ public class NGIntegrationE2EPayment_SendChartItemTests extends BaseTestNGWebDri
 	@Test(enabled = true, groups = { "Payment" }, retryAnalyzer = RetryAnalyzer.class)
 	public void testPaymentVirtualCardSwiperforMultipleGuarantors() throws Throwable {
 		logStep("Getting Existing User");
-		String username = propertyLoaderObj.getProperty("CCDAUsername");
+		String username = propertyLoaderObj.getProperty("ccda.username");
 
 		logStep("Initiate payment data");
 		String invalidAccountNumber = "9999999";
@@ -547,7 +547,7 @@ public class NGIntegrationE2EPayment_SendChartItemTests extends BaseTestNGWebDri
 		virtualCardSwiper.addCreditCardInfo(PracticeConstants.CARD_NAME, PracticeConstants.CARD_NUMBER,
 				PracticeConstants.CARD_TYPE_VISA, PracticeConstants.EXP_MONTH, PracticeConstants.EXP_YEAR, amount,
 				PracticeConstants.CVV, PracticeConstants.ZIP, invalidAccountNumber, firstName, paymentComment,
-				propertyLoaderObj.getProperty("PortalLocationName"));
+				propertyLoaderObj.getProperty("portal.location.name"));
 
 		logStep("Verify whether the payment is completed successfully.");
 		assertEquals(virtualCardSwiper.getPaymentCompletedSuccessMsg()
@@ -560,19 +560,19 @@ public class NGIntegrationE2EPayment_SendChartItemTests extends BaseTestNGWebDri
 	@Test(enabled = true, groups = { "acceptance-INBOX" }, retryAnalyzer = RetryAnalyzer.class)
 	public void testPP139SendEHRDocument() throws Throwable {
 		logStep("Getting Existing User");
-		String username = propertyLoaderObj.getProperty("CCDAUsername");
+		String username = propertyLoaderObj.getProperty("ccda.username");
 		String personId = DBUtils.executeQueryOnDB("NGCoreDB",
 				"select person_id from person where email_address = '" + username + "'");
 		String enterpriseId = null, practiceId = null, integrationPracticeID = null, url = null;
 
 		if (propertyLoaderObj.getNGAPIexecutionMode().equalsIgnoreCase("QAMain")) {
-			enterpriseId = propertyLoaderObj.getProperty("NGEnterpiseEnrollmentEnterprise1");
-			practiceId = propertyLoaderObj.getProperty("NGEnterprise1Practice1");
-			integrationPracticeID = propertyLoaderObj.getProperty("integrationPracticeIDE1P1");
-			url = propertyLoaderObj.getProperty("MFPortalURLPractice1");
+			enterpriseId = propertyLoaderObj.getProperty("ng.enterprise.enrollment.enterprise1");
+			practiceId = propertyLoaderObj.getProperty("ng.enterprise1.practice1");
+			integrationPracticeID = propertyLoaderObj.getProperty("integration.practice.id.e1.p1");
+			url = propertyLoaderObj.getProperty("mf.portal.url.practice1");
 		} else if (propertyLoaderObj.getNGAPIexecutionMode().equalsIgnoreCase("SIT")) {
-			enterpriseId = propertyLoaderObj.getProperty("NGMainEnterpriseID");
-			practiceId = propertyLoaderObj.getProperty("NGMainPracticeID");
+			enterpriseId = propertyLoaderObj.getProperty("ng.main.enterprise.id");
+			practiceId = propertyLoaderObj.getProperty("ng.main.practice.id");
 			integrationPracticeID = propertyLoaderObj.getProperty("integrationpracticeid.amdc");
 			url = propertyLoaderObj.getProperty("url");
 		} else {
@@ -625,19 +625,19 @@ public class NGIntegrationE2EPayment_SendChartItemTests extends BaseTestNGWebDri
 	@Test(enabled = true, groups = { "acceptance-INBOX" }, retryAnalyzer = RetryAnalyzer.class)
 	public void testPP139SendICSImage() throws Throwable {
 		logStep("Getting Existing User");
-		String username = propertyLoaderObj.getProperty("CCDAUsername");
+		String username = propertyLoaderObj.getProperty("ccda.username");
 		String personId = DBUtils.executeQueryOnDB("NGCoreDB",
 				"select person_id from person where email_address = '" + username + "'");
 		String enterpriseId = null, practiceId = null, integrationPracticeID = null, url = null;
 
 		if (propertyLoaderObj.getNGAPIexecutionMode().equalsIgnoreCase("QAMain")) {
-			enterpriseId = propertyLoaderObj.getProperty("NGEnterpiseEnrollmentEnterprise1");
-			practiceId = propertyLoaderObj.getProperty("NGEnterprise1Practice1");
-			integrationPracticeID = propertyLoaderObj.getProperty("integrationPracticeIDE1P1");
-			url = propertyLoaderObj.getProperty("MFPortalURLPractice1");
+			enterpriseId = propertyLoaderObj.getProperty("ng.enterprise.enrollment.enterprise1");
+			practiceId = propertyLoaderObj.getProperty("ng.enterprise1.practice1");
+			integrationPracticeID = propertyLoaderObj.getProperty("integration.practice.id.e1.p1");
+			url = propertyLoaderObj.getProperty("mf.portal.url.practice1");
 		} else if (propertyLoaderObj.getNGAPIexecutionMode().equalsIgnoreCase("SIT")) {
-			enterpriseId = propertyLoaderObj.getProperty("NGMainEnterpriseID");
-			practiceId = propertyLoaderObj.getProperty("NGMainPracticeID");
+			enterpriseId = propertyLoaderObj.getProperty("ng.main.enterprise.id");
+			practiceId = propertyLoaderObj.getProperty("ng.main.practice.id");
 			integrationPracticeID = propertyLoaderObj.getProperty("integrationpracticeid.amdc");
 			url = propertyLoaderObj.getProperty("url");
 		} else {
@@ -691,19 +691,19 @@ public class NGIntegrationE2EPayment_SendChartItemTests extends BaseTestNGWebDri
 	@Test(enabled = true, groups = { "acceptance-INBOX" }, retryAnalyzer = RetryAnalyzer.class)
 	public void testPP139SendEHRImage() throws Throwable {
 		logStep("Getting Existing User");
-		String username = propertyLoaderObj.getProperty("CCDAUsername");
+		String username = propertyLoaderObj.getProperty("ccda.username");
 		String personId = DBUtils.executeQueryOnDB("NGCoreDB",
 				"select person_id from person where email_address = '" + username + "'");
 		String enterpriseId = null, practiceId = null, integrationPracticeID = null, url = null;
 
 		if (propertyLoaderObj.getNGAPIexecutionMode().equalsIgnoreCase("QAMain")) {
-			enterpriseId = propertyLoaderObj.getProperty("NGEnterpiseEnrollmentEnterprise1");
-			practiceId = propertyLoaderObj.getProperty("NGEnterprise1Practice1");
-			integrationPracticeID = propertyLoaderObj.getProperty("integrationPracticeIDE1P1");
-			url = propertyLoaderObj.getProperty("MFPortalURLPractice1");
+			enterpriseId = propertyLoaderObj.getProperty("ng.enterprise.enrollment.enterprise1");
+			practiceId = propertyLoaderObj.getProperty("ng.enterprise1.practice1");
+			integrationPracticeID = propertyLoaderObj.getProperty("integration.practice.id.e1.p1");
+			url = propertyLoaderObj.getProperty("mf.portal.url.practice1");
 		} else if (propertyLoaderObj.getNGAPIexecutionMode().equalsIgnoreCase("SIT")) {
-			enterpriseId = propertyLoaderObj.getProperty("NGMainEnterpriseID");
-			practiceId = propertyLoaderObj.getProperty("NGMainPracticeID");
+			enterpriseId = propertyLoaderObj.getProperty("ng.main.enterprise.id");
+			practiceId = propertyLoaderObj.getProperty("ng.main.practice.id");
 			integrationPracticeID = propertyLoaderObj.getProperty("integrationpracticeid.amdc");
 			url = propertyLoaderObj.getProperty("url");
 		} else {
@@ -757,19 +757,19 @@ public class NGIntegrationE2EPayment_SendChartItemTests extends BaseTestNGWebDri
 	@Test(enabled = true, groups = { "acceptance-INBOX" }, retryAnalyzer = RetryAnalyzer.class)
 	public void testPP139SendReferralLetter() throws Throwable {
 		logStep("Getting Existing User");
-		String username = propertyLoaderObj.getProperty("CCDAUsername");
+		String username = propertyLoaderObj.getProperty("ccda.username");
 		String personId = DBUtils.executeQueryOnDB("NGCoreDB",
 				"select person_id from person where email_address = '" + username + "'");
 		String enterpriseId = null, practiceId = null, integrationPracticeID = null, url = null;
 
 		if (propertyLoaderObj.getNGAPIexecutionMode().equalsIgnoreCase("QAMain")) {
-			enterpriseId = propertyLoaderObj.getProperty("NGEnterpiseEnrollmentEnterprise1");
-			practiceId = propertyLoaderObj.getProperty("NGEnterprise1Practice1");
-			integrationPracticeID = propertyLoaderObj.getProperty("integrationPracticeIDE1P1");
-			url = propertyLoaderObj.getProperty("MFPortalURLPractice1");
+			enterpriseId = propertyLoaderObj.getProperty("ng.enterprise.enrollment.enterprise1");
+			practiceId = propertyLoaderObj.getProperty("ng.enterprise1.practice1");
+			integrationPracticeID = propertyLoaderObj.getProperty("integration.practice.id.e1.p1");
+			url = propertyLoaderObj.getProperty("mf.portal.url.practice1");
 		} else if (propertyLoaderObj.getNGAPIexecutionMode().equalsIgnoreCase("SIT")) {
-			enterpriseId = propertyLoaderObj.getProperty("NGMainEnterpriseID");
-			practiceId = propertyLoaderObj.getProperty("NGMainPracticeID");
+			enterpriseId = propertyLoaderObj.getProperty("ng.main.enterprise.id");
+			practiceId = propertyLoaderObj.getProperty("ng.main.practice.id");
 			integrationPracticeID = propertyLoaderObj.getProperty("integrationpracticeid.amdc");
 			url = propertyLoaderObj.getProperty("url");
 		} else {
@@ -822,35 +822,35 @@ public class NGIntegrationE2EPayment_SendChartItemTests extends BaseTestNGWebDri
 	@Test(enabled = true, groups = { "acceptance-INBOX" }, retryAnalyzer = RetryAnalyzer.class)
 	public void testPP139SendEHRImageWhileReplyingMessage() throws Throwable {
 		String questionText = IntegrationConstants.MESSAGE_REPLY;
-		String userId = propertyLoaderObj.getProperty("SecureMessageUserID");
+		String userId = propertyLoaderObj.getProperty("secure.message.user.id");
 		String userLastName = DBUtils.executeQueryOnDB("NGCoreDB",
 				"select last_name from user_mstr where user_id='" + userId + "'");
 		String userProviderName = userLastName + ", Dr";
 
-		String username = propertyLoaderObj.getProperty("CCDAUsername");
+		String username = propertyLoaderObj.getProperty("ccda.username");
 		String personId = DBUtils.executeQueryOnDB("NGCoreDB",
 				"select person_id from person where email_address = '" + username + "'");
 		String enterpriseId = null, practiceId = null, providerName = null, locationName = null,
 				integrationPracticeID = null, url = null;
 
 		if (propertyLoaderObj.getNGAPIexecutionMode().equalsIgnoreCase("QAMain")) {
-			enterpriseId = propertyLoaderObj.getProperty("NGEnterpiseEnrollmentEnterprise1");
-			practiceId = propertyLoaderObj.getProperty("NGEnterprise1Practice1");
-			providerName = propertyLoaderObj.getProperty("NGE1P1Provider");
-			locationName = propertyLoaderObj.getProperty("NGE1P1Location");
-			integrationPracticeID = propertyLoaderObj.getProperty("integrationPracticeIDE1P1");
-			url = propertyLoaderObj.getProperty("MFPortalURLPractice1");
+			enterpriseId = propertyLoaderObj.getProperty("ng.enterprise.enrollment.enterprise1");
+			practiceId = propertyLoaderObj.getProperty("ng.enterprise1.practice1");
+			providerName = propertyLoaderObj.getProperty("ng.e1.p1.provider");
+			locationName = propertyLoaderObj.getProperty("ng.e1.p1.location");
+			integrationPracticeID = propertyLoaderObj.getProperty("integration.practice.id.e1.p1");
+			url = propertyLoaderObj.getProperty("mf.portal.url.practice1");
 		} else if (propertyLoaderObj.getNGAPIexecutionMode().equalsIgnoreCase("SIT")) {
-			enterpriseId = propertyLoaderObj.getProperty("NGMainEnterpriseID");
-			practiceId = propertyLoaderObj.getProperty("NGMainPracticeID");
-			providerName = propertyLoaderObj.getProperty("EPMProviderName");
-			locationName = propertyLoaderObj.getProperty("EPMLocationName");
+			enterpriseId = propertyLoaderObj.getProperty("ng.main.enterprise.id");
+			practiceId = propertyLoaderObj.getProperty("ng.main.practice.id");
+			providerName = propertyLoaderObj.getProperty("epm.provider.name");
+			locationName = propertyLoaderObj.getProperty("epm.location.name");
 			integrationPracticeID = propertyLoaderObj.getProperty("integrationpracticeid.amdc");
 			url = propertyLoaderObj.getProperty("url");
 		} else {
 			Log4jUtil.log("Invalid Execution Mode");
 		}
-		String userLocationName = propertyLoaderObj.getProperty("PortalLocationName");
+		String userLocationName = propertyLoaderObj.getProperty("portal.location.name");
 
 		long timestamp = System.currentTimeMillis();
 		logStep("Do a GET and get the read communication");
@@ -858,12 +858,12 @@ public class NGIntegrationE2EPayment_SendChartItemTests extends BaseTestNGWebDri
 
 		logStep("Login patient");
 		NGLoginPage loginPage = new NGLoginPage(driver, url);
-		JalapenoHomePage homePage = loginPage.login(propertyLoaderObj.getProperty("CCDAUsername"),
+		JalapenoHomePage homePage = loginPage.login(propertyLoaderObj.getProperty("ccda.username"),
 				propertyLoaderObj.getPassword());
 
 		logStep("Click Ask A Question tab");
 		JalapenoAskAStaffV2Page1 askPage1 = homePage
-				.openSpecificAskaQuestion(propertyLoaderObj.getProperty("askAV2Name"));
+				.openSpecificAskaQuestion(propertyLoaderObj.getProperty("aska.v2.name"));
 
 		String askaSubject = Long.toString(askPage1.getCreatedTimeStamp());
 
@@ -882,8 +882,8 @@ public class NGIntegrationE2EPayment_SendChartItemTests extends BaseTestNGWebDri
 		logStep("Setup Oauth client" + propertyLoaderObj.getResponsePath());
 		if (propertyLoaderObj.getNGAPIexecutionMode().equalsIgnoreCase("QAMain")) {
 			RestUtils.oauthSetup(propertyLoaderObj.getOAuthKeyStore(), propertyLoaderObj.getOAuthProperty(),
-					propertyLoaderObj.getOAuthAppToken(), propertyLoaderObj.getProperty("oAuthUsername1"),
-					propertyLoaderObj.getProperty("oAuthPassword1"));
+					propertyLoaderObj.getOAuthAppToken(), propertyLoaderObj.getProperty("oauth.username1"),
+					propertyLoaderObj.getProperty("oauth.password1"));
 		} else if (propertyLoaderObj.getNGAPIexecutionMode().equalsIgnoreCase("SIT")) {
 			RestUtils.oauthSetup(propertyLoaderObj.getOAuthKeyStore(), propertyLoaderObj.getOAuthProperty(),
 					propertyLoaderObj.getOAuthAppToken(), propertyLoaderObj.getProperty("oauth.username"),
@@ -897,7 +897,7 @@ public class NGIntegrationE2EPayment_SendChartItemTests extends BaseTestNGWebDri
 
 		logStep("Do a GET and get the message");
 		RestUtils.setupHttpGetRequest(
-				propertyLoaderObj.getProperty("GetInboundMessage").replaceAll("integrationID", integrationPracticeID)
+				propertyLoaderObj.getProperty("get.inbound.message").replaceAll("integrationID", integrationPracticeID)
 						+ "?since=" + since + ",0",
 				propertyLoaderObj.getResponsePath());
 
@@ -917,7 +917,7 @@ public class NGIntegrationE2EPayment_SendChartItemTests extends BaseTestNGWebDri
 				+ IntegrationConstants.MESSAGE_REPLY + "\nThanks,\n" + patientFirstName + " " + patientLastName;
 		Thread.sleep(60000);
 		CommonFlows.verifyMessageReceivedAtNGCore(propertyLoaderObj, messageID, askaSubject,
-				expectedBodyinInbox.replace("\n", ""), propertyLoaderObj.getProperty("askAV2Name"));
+				expectedBodyinInbox.replace("\n", ""), propertyLoaderObj.getProperty("aska.v2.name"));
 
 		String peImageId = DBUtils.executeQueryOnDB("NGCoreDB",
 				"select top 1 image_id from patient_images where practice_id ='" + practiceId + "' and person_id ='"
@@ -946,8 +946,8 @@ public class NGIntegrationE2EPayment_SendChartItemTests extends BaseTestNGWebDri
 		logStep("Setup Oauth client" + propertyLoaderObj.getResponsePath());
 		if (propertyLoaderObj.getNGAPIexecutionMode().equalsIgnoreCase("QAMain")) {
 			RestUtils.oauthSetup(propertyLoaderObj.getOAuthKeyStore(), propertyLoaderObj.getOAuthProperty(),
-					propertyLoaderObj.getOAuthAppToken(), propertyLoaderObj.getProperty("oAuthUsername1"),
-					propertyLoaderObj.getProperty("oAuthPassword1"));
+					propertyLoaderObj.getOAuthAppToken(), propertyLoaderObj.getProperty("oauth.username1"),
+					propertyLoaderObj.getProperty("oauth.password1"));
 		} else if (propertyLoaderObj.getNGAPIexecutionMode().equalsIgnoreCase("SIT")) {
 			RestUtils.oauthSetup(propertyLoaderObj.getOAuthKeyStore(), propertyLoaderObj.getOAuthProperty(),
 					propertyLoaderObj.getOAuthAppToken(), propertyLoaderObj.getProperty("oauth.username"),
@@ -963,25 +963,25 @@ public class NGIntegrationE2EPayment_SendChartItemTests extends BaseTestNGWebDri
 	@Test(enabled = true, groups = { "acceptance-INBOX" }, retryAnalyzer = RetryAnalyzer.class)
 	public void testPP139SendEHRImageByCommunication() throws Throwable {
 		logStep("Getting Existing User");
-		String username = propertyLoaderObj.getProperty("CCDAUsername");
+		String username = propertyLoaderObj.getProperty("ccda.username");
 		String personId = DBUtils.executeQueryOnDB("NGCoreDB",
 				"select person_id from person where email_address = '" + username + "'");
 		String enterpriseId = null, practiceId = null, providerName = null, locationName = null, userId = null,
 				integrationPracticeID = null, url = null;
-		userId = propertyLoaderObj.getProperty("SecureMessageUserID");
+		userId = propertyLoaderObj.getProperty("secure.message.user.id");
 
 		if (propertyLoaderObj.getNGAPIexecutionMode().equalsIgnoreCase("QAMain")) {
-			enterpriseId = propertyLoaderObj.getProperty("NGEnterpiseEnrollmentEnterprise1");
-			practiceId = propertyLoaderObj.getProperty("NGEnterprise1Practice1");
-			providerName = propertyLoaderObj.getProperty("NGE1P1Provider");
-			locationName = propertyLoaderObj.getProperty("NGE1P1Location");
-			integrationPracticeID = propertyLoaderObj.getProperty("integrationPracticeIDE1P1");
-			url = propertyLoaderObj.getProperty("MFPortalURLPractice1");
+			enterpriseId = propertyLoaderObj.getProperty("ng.enterprise.enrollment.enterprise1");
+			practiceId = propertyLoaderObj.getProperty("ng.enterprise1.practice1");
+			providerName = propertyLoaderObj.getProperty("ng.e1.p1.provider");
+			locationName = propertyLoaderObj.getProperty("ng.e1.p1.location");
+			integrationPracticeID = propertyLoaderObj.getProperty("integration.practice.id.e1.p1");
+			url = propertyLoaderObj.getProperty("mf.portal.url.practice1");
 		} else if (propertyLoaderObj.getNGAPIexecutionMode().equalsIgnoreCase("SIT")) {
-			enterpriseId = propertyLoaderObj.getProperty("NGMainEnterpriseID");
-			practiceId = propertyLoaderObj.getProperty("NGMainPracticeID");
-			providerName = propertyLoaderObj.getProperty("EPMProviderName");
-			locationName = propertyLoaderObj.getProperty("EPMLocationName");
+			enterpriseId = propertyLoaderObj.getProperty("ng.main.enterprise.id");
+			practiceId = propertyLoaderObj.getProperty("ng.main.practice.id");
+			providerName = propertyLoaderObj.getProperty("epm.provider.name");
+			locationName = propertyLoaderObj.getProperty("epm.location.name");
 			integrationPracticeID = propertyLoaderObj.getProperty("integrationpracticeid.amdc");
 			url = propertyLoaderObj.getProperty("url");
 		} else {
@@ -1016,8 +1016,8 @@ public class NGIntegrationE2EPayment_SendChartItemTests extends BaseTestNGWebDri
 		logStep("Setup Oauth client" + propertyLoaderObj.getResponsePath());
 		if (propertyLoaderObj.getNGAPIexecutionMode().equalsIgnoreCase("QAMain")) {
 			RestUtils.oauthSetup(propertyLoaderObj.getOAuthKeyStore(), propertyLoaderObj.getOAuthProperty(),
-					propertyLoaderObj.getOAuthAppToken(), propertyLoaderObj.getProperty("oAuthUsername1"),
-					propertyLoaderObj.getProperty("oAuthPassword1"));
+					propertyLoaderObj.getOAuthAppToken(), propertyLoaderObj.getProperty("oauth.username1"),
+					propertyLoaderObj.getProperty("oauth.password1"));
 		} else if (propertyLoaderObj.getNGAPIexecutionMode().equalsIgnoreCase("SIT")) {
 			RestUtils.oauthSetup(propertyLoaderObj.getOAuthKeyStore(), propertyLoaderObj.getOAuthProperty(),
 					propertyLoaderObj.getOAuthAppToken(), propertyLoaderObj.getProperty("oauth.username"),
@@ -1032,7 +1032,7 @@ public class NGIntegrationE2EPayment_SendChartItemTests extends BaseTestNGWebDri
 	@Test(enabled = true, groups = { "acceptance-INBOX" }, retryAnalyzer = RetryAnalyzer.class)
 	public void testPP139SendIMHByCommunication() throws Throwable {
 		logStep("Getting Existing User");
-		String username = propertyLoaderObj.getProperty("CCDAUsername");
+		String username = propertyLoaderObj.getProperty("ccda.username");
 		String person_id = DBUtils.executeQueryOnDB("NGCoreDB",
 				"select person_id from person where email_address = '" + username + "'");
 		String firstName = DBUtils.executeQueryOnDB("NGCoreDB",
@@ -1042,20 +1042,20 @@ public class NGIntegrationE2EPayment_SendChartItemTests extends BaseTestNGWebDri
 
 		String enterpriseId = null, practiceId = null, providerName = null, locationName = null, userId = null,
 				integrationPracticeID = null, url = null;
-		userId = propertyLoaderObj.getProperty("SecureMessageUserID");
+		userId = propertyLoaderObj.getProperty("secure.message.user.id");
 
 		if (propertyLoaderObj.getNGAPIexecutionMode().equalsIgnoreCase("QAMain")) {
-			enterpriseId = propertyLoaderObj.getProperty("NGEnterpiseEnrollmentEnterprise1");
-			practiceId = propertyLoaderObj.getProperty("NGEnterprise1Practice1");
-			providerName = propertyLoaderObj.getProperty("NGE1P1Provider");
-			locationName = propertyLoaderObj.getProperty("NGE1P1Location");
-			integrationPracticeID = propertyLoaderObj.getProperty("integrationPracticeIDE1P1");
-			url = propertyLoaderObj.getProperty("MFPortalURLPractice1");
+			enterpriseId = propertyLoaderObj.getProperty("ng.enterprise.enrollment.enterprise1");
+			practiceId = propertyLoaderObj.getProperty("ng.enterprise1.practice1");
+			providerName = propertyLoaderObj.getProperty("ng.e1.p1.provider");
+			locationName = propertyLoaderObj.getProperty("ng.e1.p1.location");
+			integrationPracticeID = propertyLoaderObj.getProperty("integration.practice.id.e1.p1");
+			url = propertyLoaderObj.getProperty("mf.portal.url.practice1");
 		} else if (propertyLoaderObj.getNGAPIexecutionMode().equalsIgnoreCase("SIT")) {
-			enterpriseId = propertyLoaderObj.getProperty("NGMainEnterpriseID");
-			practiceId = propertyLoaderObj.getProperty("NGMainPracticeID");
-			providerName = propertyLoaderObj.getProperty("EPMProviderName");
-			locationName = propertyLoaderObj.getProperty("EPMLocationName");
+			enterpriseId = propertyLoaderObj.getProperty("ng.main.enterprise.id");
+			practiceId = propertyLoaderObj.getProperty("ng.main.practice.id");
+			providerName = propertyLoaderObj.getProperty("epm.provider.name");
+			locationName = propertyLoaderObj.getProperty("epm.location.name");
 			integrationPracticeID = propertyLoaderObj.getProperty("integrationpracticeid.amdc");
 			url = propertyLoaderObj.getProperty("url");
 		} else {
@@ -1094,8 +1094,8 @@ public class NGIntegrationE2EPayment_SendChartItemTests extends BaseTestNGWebDri
 
 		logStep("Filling the IMH Form");
 		IMHPage imhPage = new IMHPage(driver);
-		imhPage.fillIMH(driver, attachmentName, firstName, lastName, propertyLoaderObj.getProperty("DOBMonth"),
-				propertyLoaderObj.getProperty("DOBDay"), propertyLoaderObj.getProperty("DOBYear"),
+		imhPage.fillIMH(driver, attachmentName, firstName, lastName, propertyLoaderObj.getProperty("dob.month"),
+				propertyLoaderObj.getProperty("dob.day"), propertyLoaderObj.getProperty("dob.year"),
 				propertyLoaderObj.getProperty("IMHForm"));
 
 		String deliveryStatusATMF = DBUtils.executeQueryOnDB("MFAgentDB",
@@ -1106,7 +1106,7 @@ public class NGIntegrationE2EPayment_SendChartItemTests extends BaseTestNGWebDri
 	@Test(enabled = true, groups = { "acceptance-INBOX" }, retryAnalyzer = RetryAnalyzer.class)
 	public void testPP139SendIMH() throws Throwable {
 		logStep("Getting Existing User");
-		String username = propertyLoaderObj.getProperty("CCDAUsername");
+		String username = propertyLoaderObj.getProperty("ccda.username");
 		String person_id = DBUtils.executeQueryOnDB("NGCoreDB",
 				"select person_id from person where email_address = '" + username + "'");
 		String firstName = DBUtils.executeQueryOnDB("NGCoreDB",
@@ -1117,19 +1117,19 @@ public class NGIntegrationE2EPayment_SendChartItemTests extends BaseTestNGWebDri
 				locationName = null, url = null;
 
 		if (propertyLoaderObj.getNGAPIexecutionMode().equalsIgnoreCase("QAMain")) {
-			enterpriseId = propertyLoaderObj.getProperty("NGEnterpiseEnrollmentEnterprise1");
-			practiceId = propertyLoaderObj.getProperty("NGEnterprise1Practice1");
-			integrationPracticeID = propertyLoaderObj.getProperty("integrationPracticeIDE1P1");
-			url = propertyLoaderObj.getProperty("MFPortalURLPractice1");
-			providerName = propertyLoaderObj.getProperty("NGE1P1Provider");
-			locationName = propertyLoaderObj.getProperty("NGE1P1Location");
+			enterpriseId = propertyLoaderObj.getProperty("ng.enterprise.enrollment.enterprise1");
+			practiceId = propertyLoaderObj.getProperty("ng.enterprise1.practice1");
+			integrationPracticeID = propertyLoaderObj.getProperty("integration.practice.id.e1.p1");
+			url = propertyLoaderObj.getProperty("mf.portal.url.practice1");
+			providerName = propertyLoaderObj.getProperty("ng.e1.p1.provider");
+			locationName = propertyLoaderObj.getProperty("ng.e1.p1.location");
 		} else if (propertyLoaderObj.getNGAPIexecutionMode().equalsIgnoreCase("SIT")) {
-			enterpriseId = propertyLoaderObj.getProperty("NGMainEnterpriseID");
-			practiceId = propertyLoaderObj.getProperty("NGMainPracticeID");
+			enterpriseId = propertyLoaderObj.getProperty("ng.main.enterprise.id");
+			practiceId = propertyLoaderObj.getProperty("ng.main.practice.id");
 			integrationPracticeID = propertyLoaderObj.getProperty("integrationpracticeid.amdc");
 			url = propertyLoaderObj.getProperty("url");
-			providerName = propertyLoaderObj.getProperty("EPMProviderName");
-			locationName = propertyLoaderObj.getProperty("EPMLocationName");
+			providerName = propertyLoaderObj.getProperty("epm.provider.name");
+			locationName = propertyLoaderObj.getProperty("epm.location.name");
 		} else {
 			Log4jUtil.log("Invalid Execution Mode");
 		}
@@ -1183,8 +1183,8 @@ public class NGIntegrationE2EPayment_SendChartItemTests extends BaseTestNGWebDri
 
 		logStep("Filling the IMH Form");
 		IMHPage imhPage = new IMHPage(driver);
-		imhPage.fillIMH(driver, docName, firstName, lastName, propertyLoaderObj.getProperty("DOBMonth"),
-				propertyLoaderObj.getProperty("DOBDay"), propertyLoaderObj.getProperty("DOBYear"),
+		imhPage.fillIMH(driver, docName, firstName, lastName, propertyLoaderObj.getProperty("dob.month"),
+				propertyLoaderObj.getProperty("dob.day"), propertyLoaderObj.getProperty("dob.year"),
 				propertyLoaderObj.getProperty("IMHForm"));
 
 		CommonFlows.verifyIMHState(documentId);
@@ -1193,19 +1193,19 @@ public class NGIntegrationE2EPayment_SendChartItemTests extends BaseTestNGWebDri
 	@Test(enabled = true, groups = { "acceptance-INBOX" }, retryAnalyzer = RetryAnalyzer.class)
 	public void testPP138SendPEDocument() throws Throwable {
 		logStep("Getting Existing User");
-		String username = propertyLoaderObj.getProperty("CCDAUsername");
+		String username = propertyLoaderObj.getProperty("ccda.username");
 		String person_id = DBUtils.executeQueryOnDB("NGCoreDB",
 				"select person_id from person where email_address = '" + username + "'");
 		String enterpriseId = null, practiceId = null, integrationPracticeID = null, url = null;
 
 		if (propertyLoaderObj.getNGAPIexecutionMode().equalsIgnoreCase("QAMain")) {
-			enterpriseId = propertyLoaderObj.getProperty("NGEnterpiseEnrollmentEnterprise1");
-			practiceId = propertyLoaderObj.getProperty("NGEnterprise1Practice1");
-			integrationPracticeID = propertyLoaderObj.getProperty("integrationPracticeIDE1P1");
-			url = propertyLoaderObj.getProperty("MFPortalURLPractice1");
+			enterpriseId = propertyLoaderObj.getProperty("ng.enterprise.enrollment.enterprise1");
+			practiceId = propertyLoaderObj.getProperty("ng.enterprise1.practice1");
+			integrationPracticeID = propertyLoaderObj.getProperty("integration.practice.id.e1.p1");
+			url = propertyLoaderObj.getProperty("mf.portal.url.practice1");
 		} else if (propertyLoaderObj.getNGAPIexecutionMode().equalsIgnoreCase("SIT")) {
-			enterpriseId = propertyLoaderObj.getProperty("NGMainEnterpriseID");
-			practiceId = propertyLoaderObj.getProperty("NGMainPracticeID");
+			enterpriseId = propertyLoaderObj.getProperty("ng.main.enterprise.id");
+			practiceId = propertyLoaderObj.getProperty("ng.main.practice.id");
 			integrationPracticeID = propertyLoaderObj.getProperty("integrationpracticeid.amdc");
 			url = propertyLoaderObj.getProperty("url");
 		} else {
@@ -1261,7 +1261,7 @@ public class NGIntegrationE2EPayment_SendChartItemTests extends BaseTestNGWebDri
 	@Test(enabled = true, groups = { "acceptance-PAM" }, retryAnalyzer = RetryAnalyzer.class)
 	public void testPP174PAMSinglePracticeUser() throws Throwable {
 
-		String username = propertyLoaderObj.getProperty("CCDAUsername");
+		String username = propertyLoaderObj.getProperty("ccda.username");
 		logStep("Get access token for user");
 		String accessToken = PAMAuthentication.getAccessToken(username, propertyLoaderObj.getPassword());
 

@@ -36,7 +36,7 @@ public class Appointment {
 	private String isExistingPatient;
 	private String patientPortalUserName;
 	private String patientPortalPassword;
-	private String emaiSubject;
+	private String emailSubject;
 	private String findInEmail;
 	private String retries;
 	private String isAppointmentPopup;
@@ -1094,12 +1094,12 @@ public class Appointment {
 		this.patientPortalPassword = patientPortalPassword;
 	}
 
-	public String getEmaiSubject() {
-		return emaiSubject;
+	public String getEmailSubject() {
+		return emailSubject;
 	}
 
-	public void setEmaiSubject(String emaiSubject) {
-		this.emaiSubject = emaiSubject;
+	public void setEmailSubject(String emailSubject) {
+		this.emailSubject = emailSubject;
 	}
 
 	public String getFindInEmail() {

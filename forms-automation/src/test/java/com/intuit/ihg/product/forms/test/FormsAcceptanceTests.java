@@ -40,15 +40,15 @@ public class FormsAcceptanceTests extends BaseTestNGWebDriver {
 		public void formsConfigSmokeTest() throws Exception {
 				SiteGenSteps sgSteps = new SiteGenSteps();
 				DiscreteFormsList formsPage =
-						sgSteps.logInUserToSG(driver, testData.getProperty("sitegenUsername1"), testData.getProperty("sitegenPassword1")).clickLnkDiscreteForms();
+						sgSteps.logInUserToSG(driver, testData.getProperty("sitegen.username1"), testData.getProperty("sitegen.password1")).clickLnkDiscreteForms();
 				assertTrue(formsPage.isPageLoaded());
 		}
 
 		@Test
 		public void testFormExportImport() throws Exception {
 				log("step 1: login to SG as superuser");
-				String automationPracticeID = String.valueOf(Utils.getPracticeIDFromPIUrl(testData.getProperty("portal2Url1")));
-				SiteGenHomePage sHomePage = new SiteGenLoginPage(driver, testData.getProperty("sitegenUrl")).clickOnLoginAsInternalEmployee();
+				String automationPracticeID = String.valueOf(Utils.getPracticeIDFromPIUrl(testData.getProperty("portal2.url1")));
+				SiteGenHomePage sHomePage = new SiteGenLoginPage(driver, testData.getProperty("sitegen.url")).clickOnLoginAsInternalEmployee();
 				// now you have to LOG IN MANUALLY AS SUPERUSER, the test will continue after that
 				log("step 2: navigate to SiteGen PracticeHomePage, practice with ID: " + automationPracticeID);
 				SiteGenPracticeHomePage pSiteGenPracticeHomePage = sHomePage.searchPracticeFromSGAdmin(automationPracticeID);
@@ -84,7 +84,7 @@ public class FormsAcceptanceTests extends BaseTestNGWebDriver {
 		public void testEGQEnablingSG() throws Exception {
 				log("step 1: login to SG as superuser");
 				String automationPracticeID = String.valueOf(Utils.getAutomationPracticeID(PracticeType.SECONDARY));
-				SiteGenHomePage sHomePage = new SiteGenLoginPage(driver, testData.getProperty("sitegenUrl")).clickOnLoginAsInternalEmployee();
+				SiteGenHomePage sHomePage = new SiteGenLoginPage(driver, testData.getProperty("sitegen.url")).clickOnLoginAsInternalEmployee();
 				// now you have to LOG IN MANUALLY AS SUPERUSER, the test will continue after that
 				log("step 2: navigate to SiteGen PracticeHomePage - practice with id: " + automationPracticeID);
 				SiteGenPracticeHomePage pSiteGenPracticeHomePage = sHomePage.searchPracticeFromSGAdmin(automationPracticeID);

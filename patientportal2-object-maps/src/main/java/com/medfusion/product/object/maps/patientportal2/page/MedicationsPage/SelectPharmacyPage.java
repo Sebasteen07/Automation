@@ -136,13 +136,13 @@ public class SelectPharmacyPage extends MedfusionPage {
 		log("Verify all the popup elements are present");
 		assertTrue(arePopupPageElementsPresent());
 		log("Enter Pharmacy Details");
-		pharmacyName.sendKeys(testData.getProperty("pharmacyName") + IHGUtil.createRandomNumericString(4));
+		pharmacyName.sendKeys(testData.getProperty("pharmacy.name") + IHGUtil.createRandomNumericString(4));
 		pharmacyFax.sendKeys(IHGUtil.createRandomNumericString(10));
-		pharmacyAddress.sendKeys(testData.getProperty("Address1"));
-		pharmacyCity.sendKeys(testData.getProperty("City"));
-		pharmacyState.sendKeys(testData.getProperty("State"));
+		pharmacyAddress.sendKeys(testData.getProperty("address1"));
+		pharmacyCity.sendKeys(testData.getProperty("city"));
+		pharmacyState.sendKeys(testData.getProperty("state"));
 		pharmacyState.sendKeys(Keys.ENTER);
-		pharmacyZip.sendKeys(testData.getProperty("ZipCode"));
+		pharmacyZip.sendKeys(testData.getProperty("zip.code"));
 		log("Verifying continue button is disabled since Phone number is mandatory");
 		assertFalse(popupContinueBtn.isEnabled(), "Continue button is disabled");
 		pharmacyPhone.sendKeys(IHGUtil.createRandomNumericString(10));

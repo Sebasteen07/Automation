@@ -1,4 +1,4 @@
-// Copyright 2018-2020 NXGN Management, LLC. All Rights Reserved.
+// Copyright 2013-2021 NXGN Management, LLC. All Rights Reserved.
 package com.medfusion.product.pss2patientui.utils;
 
 import static org.testng.Assert.assertEquals;
@@ -39,7 +39,6 @@ import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.openqa.selenium.support.ui.WebDriverWait;
 
 import com.intuit.ifs.csscat.core.BaseTestNGWebDriver;
-import com.intuit.ifs.csscat.core.utils.Log4jUtil;
 import com.medfusion.product.object.maps.pss2.page.AppEntryPoint.StartAppointmentInOrder;
 import com.medfusion.product.object.maps.pss2.page.Appointment.Anonymous.AnonymousPatientInformation;
 import com.medfusion.product.object.maps.pss2.page.Appointment.CancResc.PatientIdentificationPage;
@@ -63,60 +62,62 @@ import com.medfusion.product.pss2patientui.pojo.Appointment;
 
 import net.fortuna.ical4j.data.ParserException;
 
-public class PSSPatientUtils extends BaseTestNGWebDriver{
+public class PSSPatientUtils extends BaseTestNGWebDriver {
 
 	public void readICSFile(String path) throws IOException, ParserException {
-		Log4jUtil.log("Reading ICS file for the given path. " + path);
+		log("Reading ICS file for the given path. " + path);
 		ICSFileReader icsfilereader = new ICSFileReader();
 		icsfilereader.ICSFile(path);
-		Log4jUtil.log("Is file deleted ? " + deleteFile(path));
+		log("Is file deleted ? " + deleteFile(path));
 	}
 
 	public String filePath() {
 		String home = System.getProperty("user.home");
 		File latestFile = lastFileModified(home + PSSConstants.DOWNLOADFILENAME);
-		Log4jUtil.log("latestFile " + latestFile.getAbsolutePath());
+		log("latestFile " + latestFile.getAbsolutePath());
 		return latestFile.getAbsolutePath();
 	}
 
-	public void LBTFlow(HomePage homepage, Appointment testData, String startOrderOn, WebDriver driver) throws Exception {
-		Log4jUtil.log("LBTFlow");
-		Log4jUtil.log("Step 8: Select location for appointment.");
+	public void LBTFlow(HomePage homepage, Appointment testData, String startOrderOn, WebDriver driver)
+			throws Exception {
+		log("LBTFlow");
+		log("Select location for appointment.");
 		Location location = null;
 		StartAppointmentInOrder startappointmentInOrder = null;
-		Log4jUtil.log("Insurance is Enabled " + testData.isInsuranceVisible());
-		Log4jUtil.log("startPage is Visible " + testData.isStartPointPresent());
+		log("Insurance is Enabled " + testData.isInsuranceVisible());
+		log("startPage is Visible " + testData.isStartPointPresent());
 
 		if (testData.isInsuranceVisible()) {
 			Thread.sleep(3500);
-			Log4jUtil.log("insurance is present on home Page going to skip insurance page");
+			log("insurance is present on home Page going to skip insurance page");
 			startappointmentInOrder = homepage.skipInsurance(driver);
 			if (testData.isStartPointPresent()) {
-				Log4jUtil.log("Starting point is present after insurance skipped ");
+				log("Starting point is present after insurance skipped ");
 				location = startappointmentInOrder.selectFirstLocation(PSSConstants.START_LOCATION);
-				Log4jUtil.log("Successfully clicked on  " + PSSConstants.START_LOCATION);
+				log("Successfully clicked on  " + PSSConstants.START_LOCATION);
 			} else {
 				location = homepage.locationpage();
-				Log4jUtil.log("Starting point not Present going to select next provider ");
+				log("Starting point not Present going to select next provider ");
 			}
 
 		} else if (testData.isStartPointPresent()) {
 			startappointmentInOrder = homepage.startpage();
-			Log4jUtil.log("in else part  click on  " + PSSConstants.START_LOCATION);
+			log("in else part  click on  " + PSSConstants.START_LOCATION);
 			location = startappointmentInOrder.selectFirstLocation(PSSConstants.START_LOCATION);
-			Log4jUtil.log("clicked on location ");
+			log("clicked on location ");
 		} else {
-			Log4jUtil.log("Start point not present");
+			log("Start point not present");
 			location = homepage.locationpage();
 		}
 
-		Log4jUtil.log("Step 9: Verfiy location Page and location =" + testData.getLocation());
+		log("Verfiy location Page and location =" + testData.getLocation());
 		Provider provider = location.searchProvider(testData.getLocation());
-		Log4jUtil.log("Step 10: Verfiy Provider Page and provider to be selected = " + testData.getProvider());
+		log("Verfiy Provider Page and provider to be selected = " + testData.getProvider());
 		AppointmentPage appointment = provider.selectAppointment(testData.getProvider());
-		Log4jUtil.log("Step 11: Verfiy Appointment Page and Appointment to be selected = " + testData.getAppointmenttype());
-		AppointmentDateTime aptDateTime = appointment.selectAppointmentandClick(testData.getAppointmenttype(), Boolean.valueOf(testData.getIsAppointmentPopup()));
-		Log4jUtil.log("Step 12: Select avaiable Date ");
+		log("Verfiy Appointment Page and Appointment to be selected = " + testData.getAppointmenttype());
+		AppointmentDateTime aptDateTime = appointment.selectAppointmentandClick(testData.getAppointmenttype(),
+				Boolean.valueOf(testData.getIsAppointmentPopup()));
+		log("Select avaiable Date ");
 
 		if (testData.isFutureApt()) {
 			aptDateTime.selectFutureDate(testData.getIsNextDayBooking());
@@ -126,53 +127,54 @@ public class PSSPatientUtils extends BaseTestNGWebDriver{
 
 		Thread.sleep(6000);
 		if (testData.isAnonymousFlow()) {
-			Log4jUtil.log(" isAnonymousFlow is TRUE ");
+			log(" isAnonymousFlow is TRUE ");
 			bookAnonymousApt(aptDateTime, testData, driver);
 		} else {
-			Log4jUtil.log("This is not an Anonymous flow so comes is else block");
+			log("This is not an Anonymous flow so comes is else block");
 			clickOnSubmitAppt(false, aptDateTime, testData, driver);
 		}
-		Log4jUtil.log("Test Case Passed");
+		log("Test Case Passed");
 	}
 
-	public void BLTFlow(HomePage homepage, Appointment testData, String startOrderOn, WebDriver driver) throws Exception {
-		Log4jUtil.log("Step 8: Select Provider for appointment.");
+	public void BLTFlow(HomePage homepage, Appointment testData, String startOrderOn, WebDriver driver)
+			throws Exception {
+		log("Select Provider for appointment.");
 		Provider provider = null;
 		StartAppointmentInOrder startappointmentInOrder = null;
-		Log4jUtil.log("Insurance is Enabled " + testData.isInsuranceVisible());
-		Log4jUtil.log("startpage is Visible " + testData.isStartPointPresent());
+		log("Insurance is Enabled " + testData.isInsuranceVisible());
+		log("startpage is Visible " + testData.isStartPointPresent());
 
 		if (testData.isInsuranceVisible()) {
 			Thread.sleep(3500);
-			Log4jUtil.log("insurance is present on home Page going to skip insurance page");
+			log("insurance is present on home Page going to skip insurance page");
 			startappointmentInOrder = homepage.skipInsurance(driver);
 			if (testData.isStartPointPresent()) {
-				Log4jUtil.log("Starting point is present after insurance skipped ");
+				log("Starting point is present after insurance skipped ");
 				provider = startappointmentInOrder.selectFirstProvider(PSSConstants.START_PROVIDER);
-				Log4jUtil.log("Successfully clicked on  " + PSSConstants.START_PROVIDER);
+				log("Successfully clicked on  " + PSSConstants.START_PROVIDER);
 			} else {
 				provider = homepage.providerpage();
-				Log4jUtil.log("Starting point not Present going to select next provider ");
+				log("Starting point not Present going to select next provider ");
 			}
 		} else if (testData.isStartPointPresent()) {
 			startappointmentInOrder = homepage.startpage();
-			Log4jUtil.log("in else part  click on  " + PSSConstants.START_PROVIDER);
+			log("in else part  click on  " + PSSConstants.START_PROVIDER);
 			provider = startappointmentInOrder.selectFirstProvider(PSSConstants.START_PROVIDER);
-			Log4jUtil.log("clicked on provider ");
+			log("clicked on provider ");
 		} else {
-			Log4jUtil.log("Start point not present");
+			log("Start point not present");
 			provider = homepage.providerpage();
 		}
 
-		Log4jUtil.log("Step 9: Verfiy Provider Page and provider =" + testData.getProvider());
+		log("Verfiy Provider Page and provider =" + testData.getProvider());
 		Location location = provider.selectLocation(testData.getProvider());
-		Log4jUtil.log("Step 10: Verfiy Location Page and location to be selected = " + testData.getLocation());
+		log("Verfiy Location Page and location to be selected = " + testData.getLocation());
 		AppointmentPage appointmentpage = location.selectAppointment(testData.getLocation());
-		Log4jUtil.log("Step 11: Verfiy Appointment Page and Appointment to be selected = " + testData.getAppointmenttype());
-		AppointmentDateTime aptDateTime =
-				appointmentpage.selectAppointmentandClick(testData.getAppointmenttype(), Boolean.valueOf(testData.getIsAppointmentPopup()));
+		log("Verfiy Appointment Page and Appointment to be selected = " + testData.getAppointmenttype());
+		AppointmentDateTime aptDateTime = appointmentpage.selectAppointmentandClick(testData.getAppointmenttype(),
+				Boolean.valueOf(testData.getIsAppointmentPopup()));
 
-		Log4jUtil.log("Step 12: Select avaiable Date ");
+		log("Select avaiable Date ");
 		if (testData.isFutureApt()) {
 			aptDateTime.selectFutureDate(testData.getIsNextDayBooking());
 		} else {
@@ -181,53 +183,54 @@ public class PSSPatientUtils extends BaseTestNGWebDriver{
 
 		Thread.sleep(6000);
 		if (testData.isAnonymousFlow()) {
-			Log4jUtil.log(" isAnonymousFlow is TRUE ");
+			log(" isAnonymousFlow is TRUE ");
 			bookAnonymousApt(aptDateTime, testData, driver);
 		} else {
-			Log4jUtil.log("This is not an Anonymous flow so comes is else block");
+			log("This is not an Anonymous flow so comes is else block");
 			clickOnSubmitAppt(false, aptDateTime, testData, driver);
 		}
 
 	}
 
-	public void BTLFlow(HomePage homepage, Appointment testData, String startOrderOn, WebDriver driver) throws Exception {
-		Log4jUtil.log("Step 8: Select Provider for appointment.");
+	public void BTLFlow(HomePage homepage, Appointment testData, String startOrderOn, WebDriver driver)
+			throws Exception {
+		log("Select Provider for appointment.");
 		Provider provider = null;
 		StartAppointmentInOrder startappointmentInOrder = null;
-		Log4jUtil.log("Insurance is Enabled " + testData.isInsuranceVisible());
-		Log4jUtil.log("startpage is Visible " + testData.isStartPointPresent());
+		log("Insurance is Enabled " + testData.isInsuranceVisible());
+		log("startpage is Visible " + testData.isStartPointPresent());
 		if (testData.isInsuranceVisible()) {
 			Thread.sleep(3500);
-			Log4jUtil.log("insurance is present on home Page going to skip insurance page");
+			log("insurance is present on home Page going to skip insurance page");
 			startappointmentInOrder = homepage.skipInsurance(driver);
 			if (testData.isStartPointPresent()) {
-				Log4jUtil.log("Starting point is present after insurance skipped ");
+				log("Starting point is present after insurance skipped ");
 				provider = startappointmentInOrder.selectFirstProvider(PSSConstants.START_PROVIDER);
-				Log4jUtil.log("Successfully clicked on  " + PSSConstants.START_PROVIDER);
+				log("Successfully clicked on  " + PSSConstants.START_PROVIDER);
 			} else {
 				provider = homepage.providerpage();
-				Log4jUtil.log("Starting point not Present going to select next provider ");
+				log("Starting point not Present going to select next provider ");
 			}
 		}
 
 		else if (testData.isStartPointPresent()) {
 			startappointmentInOrder = homepage.startpage();
-			Log4jUtil.log("in else part  click on  " + PSSConstants.START_PROVIDER);
+			log("in else part  click on  " + PSSConstants.START_PROVIDER);
 			provider = startappointmentInOrder.selectFirstProvider(PSSConstants.START_PROVIDER);
-			Log4jUtil.log("clicked on provider ");
+			log("clicked on provider ");
 		} else {
-			Log4jUtil.log("Start point not present");
+			log("Start point not present");
 			provider = homepage.providerpage();
 		}
 
-		Log4jUtil.log("Step 9: Verfiy Provider Page and provider =" + testData.getProvider());
+		log("Verfiy Provider Page and provider =" + testData.getProvider());
 		AppointmentPage appointmentpage = provider.selectAppointment(testData.getProvider());
-		Log4jUtil.log("Step 10: Verfiy Appointment Page and appointment to be selected = " + testData.getAppointmenttype());
+		log("Verfiy Appointment Page and appointment to be selected = " + testData.getAppointmenttype());
 		Location location = appointmentpage.selectTypeOfLocation(testData.getAppointmenttype(), true);
-		Log4jUtil.log("Step 11: Verfiy Location Page and location = " + testData.getAppointmenttype());
+		log("Verfiy Location Page and location = " + testData.getAppointmenttype());
 		AppointmentDateTime aptDateTime = location.selectDatTime(testData.getLocation());
 
-		Log4jUtil.log("Step 12: Select avaiable Date ");
+		log("Select avaiable Date ");
 		if (testData.isFutureApt()) {
 			aptDateTime.selectFutureDate(testData.getIsNextDayBooking());
 		} else {
@@ -236,56 +239,58 @@ public class PSSPatientUtils extends BaseTestNGWebDriver{
 		Thread.sleep(6000);
 
 		if (testData.isAnonymousFlow()) {
-			Log4jUtil.log(" isAnonymousFlow is TRUE ");
+			log(" isAnonymousFlow is TRUE ");
 			bookAnonymousApt(aptDateTime, testData, driver);
 		} else {
-			Log4jUtil.log("This is not an Anonymous flow so comes is else block");
+			log("This is not an Anonymous flow so comes is else block");
 			clickOnSubmitAppt(false, aptDateTime, testData, driver);
 		}
 	}
 
-	public void LTBFlow(HomePage homepage, Appointment testData, String startOrderOn, WebDriver driver) throws Exception {
-		Log4jUtil.log("Step 8: Select Location for appointment.");
+	public void LTBFlow(HomePage homepage, Appointment testData, String startOrderOn, WebDriver driver)
+			throws Exception {
+		log("Select Location for appointment.");
 		Location location = null;
 		StartAppointmentInOrder startappointmentInOrder = null;
 
-		Log4jUtil.log("Insurance is Enabled " + testData.isInsuranceVisible());
-		Log4jUtil.log("start is Visible " + testData.isStartPointPresent());
+		log("Insurance is Enabled " + testData.isInsuranceVisible());
+		log("start is Visible " + testData.isStartPointPresent());
 
 		if (testData.isInsuranceVisible()) {
 			Thread.sleep(3500);
-			Log4jUtil.log("insurance is present on home Page going to skip insurance page");
+			log("insurance is present on home Page going to skip insurance page");
 			startappointmentInOrder = homepage.skipInsurance(driver);
 			if (testData.isStartPointPresent()) {
-				Log4jUtil.log("Starting point is present after insurance skipped ");
+				log("Starting point is present after insurance skipped ");
 				location = startappointmentInOrder.selectFirstLocation(PSSConstants.START_LOCATION);
-				Log4jUtil.log("Successfully clicked on  " + PSSConstants.START_LOCATION);
+				log("Successfully clicked on  " + PSSConstants.START_LOCATION);
 			} else {
 				location = homepage.locationpage();
-				Log4jUtil.log("Starting point not Present going to select next provider ");
+				log("Starting point not Present going to select next provider ");
 			}
 
 		} else if (testData.isStartPointPresent()) {
 			startappointmentInOrder = homepage.startpage();
-			Log4jUtil.log("in else part  click on  " + PSSConstants.START_LOCATION);
+			log("in else part  click on  " + PSSConstants.START_LOCATION);
 			location = startappointmentInOrder.selectFirstLocation(PSSConstants.START_LOCATION);
-			Log4jUtil.log("clicked on location ");
+			log("clicked on location ");
 		} else {
-			Log4jUtil.log("Start point not present");
+			log("Start point not present");
 			location = homepage.locationpage();
 
 		}
 		Thread.sleep(3000);
-		Log4jUtil.log("Step 9: Verfiy Location Page and location =" + testData.getLocation());
+		log("Verfiy Location Page and location =" + testData.getLocation());
 		AppointmentPage appointment = location.selectAppointment(testData.getLocation());
-		Log4jUtil.log("Step 10: Verfiy Appointment Page and appointment to be selected = " + testData.getAppointmenttype());
+		log("Verfiy Appointment Page and appointment to be selected = " + testData.getAppointmenttype());
 		Thread.sleep(15000);
-		Provider provider = appointment.selectTypeOfProvider(testData.getAppointmenttype(), Boolean.valueOf(testData.getIsAppointmentPopup()));
-		Log4jUtil.log("Step 11: Verfiy Provider Page and Provider = " + testData.getProvider());
+		Provider provider = appointment.selectTypeOfProvider(testData.getAppointmenttype(),
+				Boolean.valueOf(testData.getIsAppointmentPopup()));
+		log("Verfiy Provider Page and Provider = " + testData.getProvider());
 		Thread.sleep(2000);
 		AppointmentDateTime aptDateTime = provider.getProviderandClick(testData.getProvider());
 
-		Log4jUtil.log("Step 12: Select avaiable Date ");
+		log("Select avaiable Date ");
 		if (testData.isFutureApt()) {
 			aptDateTime.selectFutureDate(testData.getIsNextDayBooking());
 		} else {
@@ -294,16 +299,17 @@ public class PSSPatientUtils extends BaseTestNGWebDriver{
 
 		Thread.sleep(6000);
 		if (testData.isAnonymousFlow()) {
-			Log4jUtil.log(" isAnonymousFlow is TRUE ");
+			log(" isAnonymousFlow is TRUE ");
 			bookAnonymousApt(aptDateTime, testData, driver);
 		} else {
-			Log4jUtil.log("This is not an Anonymous flow so comes is else block");
+			log("This is not an Anonymous flow so comes is else block");
 			clickOnSubmitAppt(false, aptDateTime, testData, driver);
 		}
-		Log4jUtil.log("Test Case Passed");
+		log("Test Case Passed");
 	}
 
-	public void TLBFlow(HomePage homepage, Appointment testData, String startOrderOn, WebDriver driver) throws Exception {
+	public void TLBFlow(HomePage homepage, Appointment testData, String startOrderOn, WebDriver driver)
+			throws Exception {
 		AppointmentPage appointment;
 		StartAppointmentInOrder startappointmentInOrder = null;
 		log("Insurance is Enabled " + testData.isInsuranceVisible());
@@ -311,8 +317,10 @@ public class PSSPatientUtils extends BaseTestNGWebDriver{
 		if (testData.isInsuranceVisible()) {
 
 			if (testData.isInsuranceDetails() == true) {
-				log("Member ID- "+testData.getMemberID() +" Group Id- "+testData.getGroupID()+" Phone Number- "+testData.getInsurancePhone());
-				startappointmentInOrder=homepage.updateInsuranceInfo(driver, testData.getMemberID() , testData.getGroupID(), testData.getInsurancePhone());
+				log("Member ID- " + testData.getMemberID() + " Group Id- " + testData.getGroupID() + " Phone Number- "
+						+ testData.getInsurancePhone());
+				startappointmentInOrder = homepage.updateInsuranceInfo(driver, testData.getMemberID(),
+						testData.getGroupID(), testData.getInsurancePhone());
 
 			} else {
 				log("insurance is present on home Page going to skip insurance page");
@@ -336,16 +344,17 @@ public class PSSPatientUtils extends BaseTestNGWebDriver{
 			log("Start point not present");
 			appointment = homepage.appointmentpage();
 		}
-		
+
 		log("Verfiy Appointment Page and appointment =" + testData.getAppointmenttype());
-		Location location = appointment.selectTypeOfLocation(testData.getAppointmenttype(), Boolean.valueOf(testData.getIsAppointmentPopup()));
+		Location location = appointment.selectTypeOfLocation(testData.getAppointmenttype(),
+				Boolean.valueOf(testData.getIsAppointmentPopup()));
 		log("Verfiy Location Page and location to be selected = " + testData.getLocation());
 		Provider provider = location.searchProvider(testData.getLocation());
 		log("address = " + location.getAddressValue());
-		
+
 		log("Verfiy Provider Page and Provider = " + testData.getProvider());
 		AppointmentDateTime aptDateTime = provider.getProviderandClick(testData.getProvider());
-		
+
 		log("Select avaiable Date ");
 		if (testData.isFutureApt()) {
 			aptDateTime.selectFutureDate(testData.getIsNextDayBooking());
@@ -362,77 +371,81 @@ public class PSSPatientUtils extends BaseTestNGWebDriver{
 		log("Test Case Passed");
 	}
 
-	public void TBLFlow(HomePage homepage, Appointment testData, String startOrderOn, WebDriver driver) throws Exception {
-		Log4jUtil.log("Step 8: Select Appointment for appointment.");
+	public void TBLFlow(HomePage homepage, Appointment testData, String startOrderOn, WebDriver driver)
+			throws Exception {
+		log("Select Appointment for appointment.");
 		AppointmentPage appointment;
 		StartAppointmentInOrder startappointmentInOrder = null;
-		Log4jUtil.log("Insurance is Enabled " + testData.isInsuranceVisible());
-		Log4jUtil.log("startPage is Visible " + testData.isStartPointPresent());
+		log("Insurance is Enabled " + testData.isInsuranceVisible());
+		log("startPage is Visible " + testData.isStartPointPresent());
 		if (testData.isInsuranceVisible()) {
 			Thread.sleep(3500);
-			Log4jUtil.log("insurance is present on home Page going to skip insurance page");
+			log("insurance is present on home Page going to skip insurance page");
 			startappointmentInOrder = homepage.skipInsurance(driver);
 			if (testData.isStartPointPresent()) {
-				Log4jUtil.log("Starting point is present after insurance skipped ");
+				log("Starting point is present after insurance skipped ");
 				appointment = startappointmentInOrder.selectFirstAppointment(PSSConstants.START_APPOINTMENT);
-				Log4jUtil.log("Successfully clicked on  " + PSSConstants.START_APPOINTMENT);
+				log("Successfully clicked on  " + PSSConstants.START_APPOINTMENT);
 			} else {
 				appointment = homepage.appointmentpage();
-				Log4jUtil.log("Starting point not Present going to select next provider ");
+				log("Starting point not Present going to select next provider ");
 			}
 
 		}
 
 		else if (testData.isStartPointPresent()) {
 			startappointmentInOrder = homepage.startpage();
-			Log4jUtil.log("select the starting point & click on  " + PSSConstants.START_APPOINTMENT);
+			log("select the starting point & click on  " + PSSConstants.START_APPOINTMENT);
 			appointment = startappointmentInOrder.selectFirstAppointment(PSSConstants.START_APPOINTMENT);
-			Log4jUtil.log("clicked on Appointment ");
+			log("clicked on Appointment ");
 		} else {
-			Log4jUtil.log("Start point not present");
+			log("Start point not present");
 			appointment = homepage.appointmentpage();
 
 		}
 
-		Log4jUtil.log("Step 9: Verfiy Appointment Page and appointment =" + testData.getAppointmenttype());
-		Log4jUtil.log("does apt has a pop up? " + testData.getIsAppointmentPopup());
-		Provider provider = appointment.selectTypeOfProvider(testData.getAppointmenttype(), Boolean.valueOf(testData.getIsAppointmentPopup()));
-		Log4jUtil.log("Step 10: Verfiy Provider Page and Provider = " + testData.getProvider());
+		log("Verfiy Appointment Page and appointment =" + testData.getAppointmenttype());
+		log("does apt has a pop up? " + testData.getIsAppointmentPopup());
+		Provider provider = appointment.selectTypeOfProvider(testData.getAppointmenttype(),
+				Boolean.valueOf(testData.getIsAppointmentPopup()));
+		log("Verfiy Provider Page and Provider = " + testData.getProvider());
 		Location location = provider.selectLocation(testData.getProvider());
 		Thread.sleep(9000);
-		Log4jUtil.log("Step 11: Verfiy Location Page and location to be selected = " + testData.getLocation());
+		log("Verfiy Location Page and location to be selected = " + testData.getLocation());
 		AppointmentDateTime aptDateTime = location.selectDatTime(testData.getLocation());
 
-		Log4jUtil.log("Step 12: Select avaiable Date ");
+		log("Select avaiable Date ");
 		if (testData.isFutureApt()) {
 			aptDateTime.selectFutureDate(testData.getIsNextDayBooking());
 		} else {
 			aptDateTime.selectDate(testData.getIsNextDayBooking());
 		}
 
-		Log4jUtil.log("current URL " + driver.getCurrentUrl());
+		log("current URL " + driver.getCurrentUrl());
 		clickOnSubmitAppt(false, aptDateTime, testData, driver);
-		Log4jUtil.log("Test Case Passed");
+		log("Test Case Passed");
 	}
 
-	public void TBLFlow(HomePage homepage, Appointment testData, String startOrderOn, AppointmentPage appointment, WebDriver driver) throws Exception {
+	public void TBLFlow(HomePage homepage, Appointment testData, String startOrderOn, AppointmentPage appointment,
+			WebDriver driver) throws Exception {
 		if (startOrderOn.equalsIgnoreCase("true")) {
 			StartAppointmentInOrder startappointmentInOrder = homepage.skipInsurance(driver);
 			appointment = startappointmentInOrder.selectFirstAppointment(PSSConstants.START_APPOINTMENT);
 		} else {
 			appointment = homepage.selectAppointment(PSSConstants.START_APPOINTMENT);
 		}
-		
-		Log4jUtil.log("Step 9: Verfiy Appointment Page and appointment =" + testData.getAppointmenttype());
-		Provider provider = appointment.selectTypeOfProvider(testData.getAppointmenttype(), Boolean.valueOf(testData.getIsAppointmentPopup()));
-		
-		Log4jUtil.log("Step 10: Verfiy Provider Page and Provider = " + testData.getProvider());
+
+		log("Verfiy Appointment Page and appointment =" + testData.getAppointmenttype());
+		Provider provider = appointment.selectTypeOfProvider(testData.getAppointmenttype(),
+				Boolean.valueOf(testData.getIsAppointmentPopup()));
+
+		log("Verfiy Provider Page and Provider = " + testData.getProvider());
 		Location location = provider.selectLocation(testData.getProvider());
-		
-		Log4jUtil.log("Step 11: Verfiy Location Page and location to be selected = " + testData.getLocation());
+
+		log("Verfiy Location Page and location to be selected = " + testData.getLocation());
 		AppointmentDateTime aptDateTime = location.selectDatTime(testData.getLocation());
 
-		Log4jUtil.log("Step 12: Select avaiable Date ");
+		log("Select avaiable Date ");
 		if (testData.isFutureApt()) {
 			aptDateTime.selectFutureDate(testData.getIsNextDayBooking());
 		} else {
@@ -443,123 +456,127 @@ public class PSSPatientUtils extends BaseTestNGWebDriver{
 		bookAppointment(false, aptDateTime, testData, driver);
 	}
 
-	public void STBLFlow(HomePage homepage, Appointment testData, String startOrderOn, WebDriver driver) throws Exception {
-		Log4jUtil.log("Step 8: Select Appointment for appointment.");
-		Log4jUtil.log("--------STBL Flow Starts---------------");
+	public void STBLFlow(HomePage homepage, Appointment testData, String startOrderOn, WebDriver driver)
+			throws Exception {
+		log("Select Appointment for appointment.");
+		log("--------STBL Flow Starts---------------");
 		AppointmentPage appointment = null;
 		StartAppointmentInOrder startappointmentInOrder = null;
 		Speciality speciality = null;
-		Log4jUtil.log("Insurance is Enabled " + testData.isInsuranceVisible());
-		Log4jUtil.log("startPage is Visible " + testData.isStartPointPresent());
+		log("Insurance is Enabled " + testData.isInsuranceVisible());
+		log("startPage is Visible " + testData.isStartPointPresent());
 
 		if (testData.isInsuranceVisible()) {
 			speciality = homepage.skipInsuranceForSpeciality(driver);
 			startappointmentInOrder = speciality.selectSpeciality(testData.getSpeciality());
-			Log4jUtil.log("clicked on specility");
+			log("clicked on specility");
 			if (testData.isStartPointPresent()) {
-				Log4jUtil.log("StartPage is Present after clicked ok skip insurance");
+				log("StartPage is Present after clicked ok skip insurance");
 				appointment = startappointmentInOrder.selectFirstAppointment(PSSConstants.START_APPOINTMENT);
 			} else {
-				Log4jUtil.log("StartPage Not Present");
+				log("StartPage Not Present");
 				appointment = homepage.appointmentpage();
 			}
 		} else {
-			Log4jUtil.log("Insurance is not present on homepage the checking for specility");
+			log("Insurance is not present on homepage the checking for specility");
 			speciality = homepage.specilitypage();
 			startappointmentInOrder = speciality.selectSpeciality(testData.getSpeciality());
 			if (testData.isStartPointPresent()) {
-				Log4jUtil.log("Insurance is not present on homepage the checking for specility");
+				log("Insurance is not present on homepage the checking for specility");
 				appointment = startappointmentInOrder.selectFirstAppointment(PSSConstants.START_APPOINTMENT);
 
 			} else {
-				Log4jUtil.log("Insurance and startpage both not present");
+				log("Insurance and startpage both not present");
 				speciality = homepage.specilitypage();
 				appointment = homepage.appointmentpage();
 				startappointmentInOrder = speciality.selectSpeciality(testData.getSpeciality());
 			}
 		}
 
-		Log4jUtil.log("Step 9: Verfiy Appointment Page and appointment =" + testData.getAppointmenttype());
-		Log4jUtil.log("does apt has a pop up? " + testData.getIsAppointmentPopup());
-		Provider provider = appointment.selectTypeOfProvider(testData.getAppointmenttype(), Boolean.valueOf(testData.getIsAppointmentPopup()));
-		Log4jUtil.log("Step 10: Verfiy Provider Page and Provider = " + testData.getProvider());
-		Log4jUtil.log(">>>>>>>>>> provider image present " + provider.providerImageSize());
+		log("Verfiy Appointment Page and appointment =" + testData.getAppointmenttype());
+		log("does apt has a pop up? " + testData.getIsAppointmentPopup());
+		Provider provider = appointment.selectTypeOfProvider(testData.getAppointmenttype(),
+				Boolean.valueOf(testData.getIsAppointmentPopup()));
+		log("Verfiy Provider Page and Provider = " + testData.getProvider());
+		log(">>>>>>>>>> provider image present " + provider.providerImageSize());
 		Thread.sleep(5000);
 		Location location = provider.selectLocation(testData.getProvider());
 		Thread.sleep(15000);
 		Thread.sleep(25000);
 		testData.setIsSearchLocationDisplayed(location.isSearchLocationEnabled());
-		Log4jUtil.log(">>>>>>>>>> Is Location Search Enabled? " + location.isSearchLocationEnabled());
-		Log4jUtil.log("Step 11: Verfiy Location Page and location to be selected = " + testData.getLocation());
+		log(">>>>>>>>>> Is Location Search Enabled? " + location.isSearchLocationEnabled());
+		log("Verfiy Location Page and location to be selected = " + testData.getLocation());
 		AppointmentDateTime aptDateTime = location.selectDatTime(testData.getLocation());
 
-		Log4jUtil.log("Step 12: Select avaiable Date ");
+		log("Select avaiable Date ");
 		if (testData.isFutureApt()) {
 			aptDateTime.selectFutureDate(testData.getIsNextDayBooking());
 		} else {
 			aptDateTime.selectDate(testData.getIsNextDayBooking());
 		}
 
-		Log4jUtil.log("current URL " + driver.getCurrentUrl());
+		log("current URL " + driver.getCurrentUrl());
 		if (testData.isAnonymousFlow()) {
-			Log4jUtil.log(" isAnonymousFlow is TRUE ");
+			log(" isAnonymousFlow is TRUE ");
 			bookAnonymousApt(aptDateTime, testData, driver);
 		} else {
-			Log4jUtil.log("This is not an Anonymous flow so comes is else block");
+			log("This is not an Anonymous flow so comes is else block");
 			clickOnSubmitAppt(false, aptDateTime, testData, driver);
 		}
-		Log4jUtil.log("Test Case Passed");
+		log("Test Case Passed");
 	}
 
-	public void STLBFlow(HomePage homepage, Appointment testData, String startOrderOn, WebDriver driver) throws Exception {
-		Log4jUtil.log("Step 8: Select Appointment for appointment.");
-		Log4jUtil.log("--------Flow Starts---------------");
+	public void STLBFlow(HomePage homepage, Appointment testData, String startOrderOn, WebDriver driver)
+			throws Exception {
+		log("Select Appointment for appointment.");
+		log("--------Flow Starts---------------");
 		AppointmentPage appointment;
 		StartAppointmentInOrder startappointmentInOrder;
 		Speciality speciality;
-		Log4jUtil.log("Insurance is Enabled " + testData.isInsuranceVisible());
-		Log4jUtil.log("startPage is Visible " + testData.isStartPointPresent());
+		log("Insurance is Enabled " + testData.isInsuranceVisible());
+		log("startPage is Visible " + testData.isStartPointPresent());
 
 		if (testData.isInsuranceVisible()) {
 			speciality = homepage.skipInsuranceForSpeciality(driver);
 			startappointmentInOrder = speciality.selectSpeciality(testData.getSpeciality());
-			Log4jUtil.log("clicked on specility");
+			log("clicked on specility");
 			if (testData.isStartPointPresent()) {
-				Log4jUtil.log("StartPage is Present after clicked ok skip insurance");
+				log("StartPage is Present after clicked ok skip insurance");
 				appointment = startappointmentInOrder.selectFirstAppointment(PSSConstants.START_APPOINTMENT);
 			} else {
-				Log4jUtil.log("StartPage Not Present");
+				log("StartPage Not Present");
 				appointment = homepage.appointmentpage();
 
 			}
 		}
 
 		else {
-			Log4jUtil.log("Insurance is not present on homepage the checking for specility");
+			log("Insurance is not present on homepage the checking for specility");
 			speciality = homepage.specilitypage();
 			startappointmentInOrder = speciality.selectSpeciality(testData.getSpeciality());
 
 			if (testData.isStartPointPresent()) {
 
-				Log4jUtil.log("Insurance is not present on homepage the checking for specility");
+				log("Insurance is not present on homepage the checking for specility");
 				appointment = startappointmentInOrder.selectFirstAppointment(PSSConstants.START_APPOINTMENT);
 
 			} else {
-				Log4jUtil.log("Insurance and startpage both not present");
+				log("Insurance and startpage both not present");
 				speciality = homepage.specilitypage();
 				appointment = homepage.appointmentpage();
 				startappointmentInOrder = speciality.selectSpeciality(testData.getSpeciality());
 			}
 		}
-		Log4jUtil.log("Step 9: Verfiy Appointment Page and appointment =" + testData.getAppointmenttype());
-		Location location = appointment.selectTypeOfLocation(testData.getAppointmenttype(), Boolean.valueOf(testData.getIsAppointmentPopup()));
-		Log4jUtil.log("Step 10: Verfiy Location Page and location to be selected = " + testData.getLocation());
+		log("Verfiy Appointment Page and appointment =" + testData.getAppointmenttype());
+		Location location = appointment.selectTypeOfLocation(testData.getAppointmenttype(),
+				Boolean.valueOf(testData.getIsAppointmentPopup()));
+		log("Verfiy Location Page and location to be selected = " + testData.getLocation());
 		Provider provider = location.searchProvider(testData.getLocation());
-		Log4jUtil.log("address = " + location.getAddressValue());
-		Log4jUtil.log("Step 11: Verfiy Provider Page and Provider = " + testData.getProvider());
+		log("address = " + location.getAddressValue());
+		log("Verfiy Provider Page and Provider = " + testData.getProvider());
 		AppointmentDateTime aptDateTime = provider.getProviderandClick(testData.getProvider());
 
-		Log4jUtil.log("Step 12: Select avaiable Date ");
+		log("Select avaiable Date ");
 		if (testData.isFutureApt()) {
 			aptDateTime.selectFutureDate(testData.getIsNextDayBooking());
 		} else {
@@ -568,64 +585,66 @@ public class PSSPatientUtils extends BaseTestNGWebDriver{
 
 		Thread.sleep(6000);
 		if (testData.isAnonymousFlow()) {
-			Log4jUtil.log(" isAnonymousFlow is TRUE ");
+			log(" isAnonymousFlow is TRUE ");
 			bookAnonymousApt(aptDateTime, testData, driver);
 		} else {
-			Log4jUtil.log("This is not an Anonymous flow so comes is else block");
+			log("This is not an Anonymous flow so comes is else block");
 			clickOnSubmitAppt(false, aptDateTime, testData, driver);
 		}
-		Log4jUtil.log("Test Case Passed");
+		log("Test Case Passed");
 	}
 
-	public void SLTBFlow(HomePage homepage, Appointment testData, String startOrderOn, WebDriver driver) throws Exception {
-		Log4jUtil.log("Step 8: Select Location for appointment.");
+	public void SLTBFlow(HomePage homepage, Appointment testData, String startOrderOn, WebDriver driver)
+			throws Exception {
+		log("Select Location for appointment.");
 		Location location = null;
 		Speciality speciality = null;
 		StartAppointmentInOrder startappointmentInOrder = null;
-		Log4jUtil.log("Insurance is Enabled " + testData.isInsuranceVisible());
-		Log4jUtil.log("startpage is Visible " + testData.isStartPointPresent());
+		log("Insurance is Enabled " + testData.isInsuranceVisible());
+		log("startpage is Visible " + testData.isStartPointPresent());
 		if (testData.isInsuranceVisible()) {
-			Log4jUtil.log("insurance is present on home Page going to skip insurance page");
+			log("insurance is present on home Page going to skip insurance page");
 			speciality = homepage.skipInsuranceForSpeciality(driver);
 			startappointmentInOrder = speciality.selectSpeciality(testData.getSpeciality());
-			Log4jUtil.log("clicked on specility");
+			log("clicked on specility");
 			if (testData.isStartPointPresent()) {
-				Log4jUtil.log("Starting point is present after insurance skipped ");
+				log("Starting point is present after insurance skipped ");
 				location = startappointmentInOrder.selectFirstLocation(PSSConstants.START_LOCATION);
-				Log4jUtil.log("Successfully clicked on  " + PSSConstants.START_LOCATION);
+				log("Successfully clicked on  " + PSSConstants.START_LOCATION);
 			} else {
 				location = homepage.locationpage();
-				Log4jUtil.log("Starting point not Present going to select next provider ");
+				log("Starting point not Present going to select next provider ");
 			}
 
 		}
 
 		else {
-			Log4jUtil.log("Insurance is not present on homepage the checking for specility");
+			log("Insurance is not present on homepage the checking for specility");
 			speciality = homepage.specilitypage();
 			startappointmentInOrder = speciality.selectSpeciality(testData.getSpeciality());
 			if (testData.isStartPointPresent()) {
 				startappointmentInOrder = homepage.startpage();
-				Log4jUtil.log("in else part  click on  " + PSSConstants.START_LOCATION);
+				log("in else part  click on  " + PSSConstants.START_LOCATION);
 				location = startappointmentInOrder.selectFirstLocation(PSSConstants.START_LOCATION);
-				Log4jUtil.log("clicked on location ");
+				log("clicked on location ");
 			} else {
-				Log4jUtil.log("Start point not present");
+				log("Start point not present");
 				speciality = homepage.specilitypage();
 				location = homepage.locationpage();
 			}
 
 		}
-		Log4jUtil.log("Step 9: Verfiy Location Page and location =" + testData.getLocation());
+		log("Verfiy Location Page and location =" + testData.getLocation());
 		AppointmentPage appointment = location.selectAppointment(testData.getLocation());
-		Log4jUtil.log("Step 10: Verfiy Appointment Page and appointment to be selected = " + testData.getAppointmenttype());
+		log("Verfiy Appointment Page and appointment to be selected = " + testData.getAppointmenttype());
 		Thread.sleep(15000);
-		Provider provider = appointment.selectTypeOfProvider(testData.getAppointmenttype(), Boolean.valueOf(testData.getIsAppointmentPopup()));
-		Log4jUtil.log("Step 11: Verfiy Provider Page and Provider = " + testData.getProvider());
+		Provider provider = appointment.selectTypeOfProvider(testData.getAppointmenttype(),
+				Boolean.valueOf(testData.getIsAppointmentPopup()));
+		log("Verfiy Provider Page and Provider = " + testData.getProvider());
 		Thread.sleep(22000);
 		AppointmentDateTime aptDateTime = provider.getProviderandClick(testData.getProvider());
 
-		Log4jUtil.log("Step 12: Select avaiable Date ");
+		log("Select avaiable Date ");
 		if (testData.isFutureApt()) {
 			aptDateTime.selectFutureDate(testData.getIsNextDayBooking());
 		} else {
@@ -634,64 +653,65 @@ public class PSSPatientUtils extends BaseTestNGWebDriver{
 
 		Thread.sleep(6000);
 		if (testData.isAnonymousFlow()) {
-			Log4jUtil.log(" isAnonymousFlow is TRUE ");
+			log(" isAnonymousFlow is TRUE ");
 			bookAnonymousApt(aptDateTime, testData, driver);
 		} else {
-			Log4jUtil.log("This is not an Anonymous flow so comes is else block");
+			log("This is not an Anonymous flow so comes is else block");
 			clickOnSubmitAppt(false, aptDateTime, testData, driver);
 		}
-		Log4jUtil.log("Test Case Passed");
+		log("Test Case Passed");
 	}
 
-	public void SLBTFlow(HomePage homepage, Appointment testData, String startOrderOn, WebDriver driver) throws Exception {
-		Log4jUtil.log("Step 8: Select Location for appointment.");
+	public void SLBTFlow(HomePage homepage, Appointment testData, String startOrderOn, WebDriver driver)
+			throws Exception {
+		log("Select Location for appointment.");
 		Location location = null;
 		Speciality speciality = null;
 		StartAppointmentInOrder startappointmentInOrder = null;
 
-		Log4jUtil.log("Insurance is Enabled " + testData.isInsuranceVisible());
-		Log4jUtil.log("startpage is Visible " + testData.isStartPointPresent());
+		log("Insurance is Enabled " + testData.isInsuranceVisible());
+		log("startpage is Visible " + testData.isStartPointPresent());
 		if (testData.isInsuranceVisible()) {
-			Log4jUtil.log("insurance is present on home Page going to skip insurance page");
+			log("insurance is present on home Page going to skip insurance page");
 			speciality = homepage.skipInsuranceForSpeciality(driver);
 			startappointmentInOrder = speciality.selectSpeciality(testData.getSpeciality());
-			Log4jUtil.log("clicked on specility");
+			log("clicked on specility");
 			if (testData.isStartPointPresent()) {
-				Log4jUtil.log("Starting point is present after insurance skipped ");
+				log("Starting point is present after insurance skipped ");
 				location = startappointmentInOrder.selectFirstLocation(PSSConstants.START_LOCATION);
-				Log4jUtil.log("Successfully clicked on  " + PSSConstants.START_LOCATION);
+				log("Successfully clicked on  " + PSSConstants.START_LOCATION);
 			} else {
 				location = homepage.locationpage();
-				Log4jUtil.log("Starting point not Present going to select next provider ");
+				log("Starting point not Present going to select next provider ");
 			}
 
 		}
 
 		else {
-			Log4jUtil.log("Insurance is not present on homepage the checking for specility");
+			log("Insurance is not present on homepage the checking for specility");
 			speciality = homepage.specilitypage();
 			startappointmentInOrder = speciality.selectSpeciality(testData.getSpeciality());
 			if (testData.isStartPointPresent()) {
 				startappointmentInOrder = homepage.startpage();
-				Log4jUtil.log("in else part  click on  " + PSSConstants.START_LOCATION);
+				log("in else part  click on  " + PSSConstants.START_LOCATION);
 				location = startappointmentInOrder.selectFirstLocation(PSSConstants.START_LOCATION);
-				Log4jUtil.log("clicked on location ");
+				log("clicked on location ");
 			} else {
-				Log4jUtil.log("Start point not present");
+				log("Start point not present");
 				speciality = homepage.specilitypage();
 				location = homepage.locationpage();
 			}
 
 		}
-		Log4jUtil.log("Step 9: Verfiy location Page and location =" + testData.getLocation());
+		log("Verfiy location Page and location =" + testData.getLocation());
 		Provider provider = location.searchProvider(testData.getLocation());
-		Log4jUtil.log("Step 10: Verfiy Provider Page and provider to be selected = " + testData.getProvider());
+		log("Verfiy Provider Page and provider to be selected = " + testData.getProvider());
 		AppointmentPage appointment = provider.selectAppointment(testData.getProvider());
-		Log4jUtil.log("Step 11: Verfiy Appointment Page and Appointment to be selected = " + testData.getAppointmenttype());
-		AppointmentDateTime aptDateTime = appointment.selectAppointmentandClick(testData.getAppointmenttype(), Boolean.valueOf(testData.getIsAppointmentPopup()));
-		Log4jUtil.log("Step 12: Select avaiable Date ");
+		log("Verfiy Appointment Page and Appointment to be selected = " + testData.getAppointmenttype());
+		AppointmentDateTime aptDateTime = appointment.selectAppointmentandClick(testData.getAppointmenttype(),
+				Boolean.valueOf(testData.getIsAppointmentPopup()));
 
-		Log4jUtil.log("Step 12: Select avaiable Date ");
+		log("Select avaiable Date ");
 		if (testData.isFutureApt()) {
 			aptDateTime.selectFutureDate(testData.getIsNextDayBooking());
 		} else {
@@ -700,63 +720,64 @@ public class PSSPatientUtils extends BaseTestNGWebDriver{
 
 		Thread.sleep(6000);
 		if (testData.isAnonymousFlow()) {
-			Log4jUtil.log(" isAnonymousFlow is TRUE ");
+			log(" isAnonymousFlow is TRUE ");
 			bookAnonymousApt(aptDateTime, testData, driver);
 		} else {
-			Log4jUtil.log("This is not an Anonymous flow so comes is else block");
+			log("This is not an Anonymous flow so comes is else block");
 			clickOnSubmitAppt(false, aptDateTime, testData, driver);
 		}
-		Log4jUtil.log("Test Case Passed");
+		log("Test Case Passed");
 	}
 
-	public void SBTLFlow(HomePage homepage, Appointment testData, String startOrderOn, WebDriver driver) throws Exception {
-		Log4jUtil.log("Step 8: Select Location for appointment.");
+	public void SBTLFlow(HomePage homepage, Appointment testData, String startOrderOn, WebDriver driver)
+			throws Exception {
+		log("Select Location for appointment.");
 		Provider provider = null;
 		Speciality speciality = null;
 		StartAppointmentInOrder startappointmentInOrder = null;
 
-		Log4jUtil.log("Insurance is Enabled " + testData.isInsuranceVisible());
-		Log4jUtil.log("startpage is Visible " + testData.isStartPointPresent());
+		log("Insurance is Enabled " + testData.isInsuranceVisible());
+		log("startpage is Visible " + testData.isStartPointPresent());
 		if (testData.isInsuranceVisible()) {
-			Log4jUtil.log("insurance is present on home Page going to skip insurance page");
+			log("insurance is present on home Page going to skip insurance page");
 			speciality = homepage.skipInsuranceForSpeciality(driver);
 			startappointmentInOrder = speciality.selectSpeciality(testData.getSpeciality());
-			Log4jUtil.log("clicked on specility");
+			log("clicked on specility");
 			if (testData.isStartPointPresent()) {
-				Log4jUtil.log("Starting point is present after insurance skipped ");
+				log("Starting point is present after insurance skipped ");
 				provider = startappointmentInOrder.selectFirstProvider(PSSConstants.START_PROVIDER);
-				Log4jUtil.log("Successfully clicked on  " + PSSConstants.START_PROVIDER);
+				log("Successfully clicked on  " + PSSConstants.START_PROVIDER);
 			} else {
 				provider = homepage.providerpage();
-				Log4jUtil.log("Starting point not Present going to select next provider ");
+				log("Starting point not Present going to select next provider ");
 			}
 
 		}
 
 		else {
-			Log4jUtil.log("Insurance is not present on homepage the checking for specility");
+			log("Insurance is not present on homepage the checking for specility");
 			speciality = homepage.specilitypage();
 			startappointmentInOrder = speciality.selectSpeciality(testData.getSpeciality());
 			if (testData.isStartPointPresent()) {
 				startappointmentInOrder = homepage.startpage();
-				Log4jUtil.log("in else part  click on  " + PSSConstants.START_LOCATION);
+				log("in else part  click on  " + PSSConstants.START_LOCATION);
 				provider = startappointmentInOrder.selectFirstProvider(PSSConstants.START_PROVIDER);
-				Log4jUtil.log("Successfully clicked on  " + PSSConstants.START_PROVIDER);
+				log("Successfully clicked on  " + PSSConstants.START_PROVIDER);
 			} else {
-				Log4jUtil.log("Start point not present");
+				log("Start point not present");
 				speciality = homepage.specilitypage();
 				provider = homepage.providerpage();
 			}
 
 		}
-		Log4jUtil.log("Step 9: Verfiy Provider Page and provider =" + testData.getProvider());
+		log("Verfiy Provider Page and provider =" + testData.getProvider());
 		AppointmentPage appointmentpage = provider.selectAppointment(testData.getProvider());
-		Log4jUtil.log("Step 10: Verfiy Appointment Page and appointment to be selected = " + testData.getAppointmenttype());
+		log("Verfiy Appointment Page and appointment to be selected = " + testData.getAppointmenttype());
 		Location location = appointmentpage.selectTypeOfLocation(testData.getAppointmenttype(), true);
-		Log4jUtil.log("Step 11: Verfiy Location Page and location = " + testData.getAppointmenttype());
+		log("Verfiy Location Page and location = " + testData.getAppointmenttype());
 		AppointmentDateTime aptDateTime = location.selectDatTime(testData.getLocation());
 
-		Log4jUtil.log("Step 12: Select avaiable Date ");
+		log("Select avaiable Date ");
 		if (testData.isFutureApt()) {
 			aptDateTime.selectFutureDate(testData.getIsNextDayBooking());
 		} else {
@@ -765,65 +786,66 @@ public class PSSPatientUtils extends BaseTestNGWebDriver{
 
 		Thread.sleep(6000);
 		if (testData.isAnonymousFlow()) {
-			Log4jUtil.log(" isAnonymousFlow is TRUE ");
+			log(" isAnonymousFlow is TRUE ");
 			bookAnonymousApt(aptDateTime, testData, driver);
 		} else {
-			Log4jUtil.log("This is not an Anonymous flow so comes is else block");
+			log("This is not an Anonymous flow so comes is else block");
 			clickOnSubmitAppt(false, aptDateTime, testData, driver);
 		}
-		Log4jUtil.log("Test Case Passed");
+		log("Test Case Passed");
 
 	}
 
-	public void SBLTFlow(HomePage homepage, Appointment testData, String startOrderOn, WebDriver driver) throws Exception {
-		Log4jUtil.log("Step 8: Select Location for appointment.");
+	public void SBLTFlow(HomePage homepage, Appointment testData, String startOrderOn, WebDriver driver)
+			throws Exception {
+		log("Select Location for appointment.");
 		Provider provider = null;
 		Speciality speciality = null;
 		StartAppointmentInOrder startappointmentInOrder = null;
 
-		Log4jUtil.log("Insurance is Enabled " + testData.isInsuranceVisible());
-		Log4jUtil.log("startpage is Visible " + testData.isStartPointPresent());
+		log("Insurance is Enabled " + testData.isInsuranceVisible());
+		log("startpage is Visible " + testData.isStartPointPresent());
 		if (testData.isInsuranceVisible()) {
-			Log4jUtil.log("insurance is present on home Page going to skip insurance page");
+			log("insurance is present on home Page going to skip insurance page");
 			speciality = homepage.skipInsuranceForSpeciality(driver);
 			startappointmentInOrder = speciality.selectSpeciality(testData.getSpeciality());
-			Log4jUtil.log("clicked on specility");
+			log("clicked on specility");
 			if (testData.isStartPointPresent()) {
-				Log4jUtil.log("Starting point is present after insurance skipped ");
+				log("Starting point is present after insurance skipped ");
 				provider = startappointmentInOrder.selectFirstProvider(PSSConstants.START_PROVIDER);
-				Log4jUtil.log("Successfully clicked on  " + PSSConstants.START_PROVIDER);
+				log("Successfully clicked on  " + PSSConstants.START_PROVIDER);
 			} else {
 				provider = homepage.providerpage();
-				Log4jUtil.log("Starting point not Present going to select next provider ");
+				log("Starting point not Present going to select next provider ");
 			}
 
 		}
 
 		else {
-			Log4jUtil.log("Insurance is not present on homepage the checking for specility");
+			log("Insurance is not present on homepage the checking for specility");
 			speciality = homepage.specilitypage();
 			startappointmentInOrder = speciality.selectSpeciality(testData.getSpeciality());
 			if (testData.isStartPointPresent()) {
 				startappointmentInOrder = homepage.startpage();
-				Log4jUtil.log("in else part  click on  " + PSSConstants.START_LOCATION);
+				log("in else part  click on  " + PSSConstants.START_LOCATION);
 				provider = startappointmentInOrder.selectFirstProvider(PSSConstants.START_PROVIDER);
-				Log4jUtil.log("clicked on location ");
+				log("clicked on location ");
 			} else {
-				Log4jUtil.log("Start point not present");
+				log("Start point not present");
 				speciality = homepage.specilitypage();
 				provider = homepage.providerpage();
 			}
 
 		}
-		Log4jUtil.log("Step 9: Verfiy Provider Page and provider =" + testData.getProvider());
+		log("Verfiy Provider Page and provider =" + testData.getProvider());
 		Location location = provider.selectLocation(testData.getProvider());
-		Log4jUtil.log("Step 10: Verfiy Location Page and location to be selected = " + testData.getLocation());
+		log("Verfiy Location Page and location to be selected = " + testData.getLocation());
 		AppointmentPage appointmentpage = location.selectAppointment(testData.getLocation());
-		Log4jUtil.log("Step 11: Verfiy Appointment Page and Appointment to be selected = " + testData.getAppointmenttype());
-		AppointmentDateTime aptDateTime =
-				appointmentpage.selectAppointmentandClick(testData.getAppointmenttype(), Boolean.valueOf(testData.getIsAppointmentPopup()));
+		log("Verfiy Appointment Page and Appointment to be selected = " + testData.getAppointmenttype());
+		AppointmentDateTime aptDateTime = appointmentpage.selectAppointmentandClick(testData.getAppointmenttype(),
+				Boolean.valueOf(testData.getIsAppointmentPopup()));
 
-		Log4jUtil.log("Step 12: Select avaiable Date ");
+		log("Select avaiable Date ");
 		if (testData.isFutureApt()) {
 			aptDateTime.selectFutureDate(testData.getIsNextDayBooking());
 		} else {
@@ -832,15 +854,15 @@ public class PSSPatientUtils extends BaseTestNGWebDriver{
 
 		Thread.sleep(6000);
 		if (testData.isAnonymousFlow()) {
-			Log4jUtil.log(" isAnonymousFlow is TRUE ");
+			log(" isAnonymousFlow is TRUE ");
 			bookAnonymousApt(aptDateTime, testData, driver);
 		} else {
-			Log4jUtil.log("This is not an Anonymous flow so comes is else block");
+			log("This is not an Anonymous flow so comes is else block");
 			clickOnSubmitAppt(false, aptDateTime, testData, driver);
 		}
-		Log4jUtil.log("Test Case Passed");
+		log("Test Case Passed");
 	}
-	
+
 	public void TLFlow(HomePage homepage, Appointment testData, String startOrderOn, WebDriver driver)
 			throws Exception {
 		AppointmentPage appointment;
@@ -956,15 +978,15 @@ public class PSSPatientUtils extends BaseTestNGWebDriver{
 
 	public Boolean deleteFile(String fileName) {
 		Boolean isFileDeleted = false;
-		Log4jUtil.log("filePath= " + fileName);
+		log("filePath= " + fileName);
 		try {
 			File fileToDelete = new File(fileName);
-			Log4jUtil.log("filePath= " + fileToDelete.exists());
+			log("filePath= " + fileToDelete.exists());
 			if (fileToDelete.delete()) {
-				Log4jUtil.log(fileToDelete.getName() + " is deleted!");
+				log(fileToDelete.getName() + " is deleted!");
 				isFileDeleted = true;
 			} else {
-				Log4jUtil.log("Delete operation is failed please delete file manually.");
+				log("Delete operation is failed please delete file manually.");
 			}
 		} catch (Exception e) {
 			e.printStackTrace();
@@ -991,9 +1013,10 @@ public class PSSPatientUtils extends BaseTestNGWebDriver{
 		return choice;
 	}
 
-	public void bookAppointment(Boolean isInsuranceDisplated, AppointmentDateTime aptDateTime, Appointment testData, WebDriver driver) throws Exception {
-		Log4jUtil.log("Step 12: Verify Confirmation page and Scheduled page");
-		Log4jUtil.log("Is Insurance Page Displated= " + isInsuranceDisplated);
+	public void bookAppointment(Boolean isInsuranceDisplated, AppointmentDateTime aptDateTime, Appointment testData,
+			WebDriver driver) throws Exception {
+		log("Verify Confirmation page and Scheduled page");
+		log("Is Insurance Page Displated= " + isInsuranceDisplated);
 		Thread.sleep(2000);
 		if (isInsuranceDisplated) {
 			UpdateInsurancePage updateinsurancePage = aptDateTime.selectAppointmentTimeIns();
@@ -1005,23 +1028,27 @@ public class PSSPatientUtils extends BaseTestNGWebDriver{
 		}
 	}
 
-	public void reBookAppointment(Boolean isInsuranceDisplated, AppointmentDateTime aptDateTime, Appointment testData, WebDriver driver) throws Exception {
-		Log4jUtil.log("Step 12: Verify Confirmation page and Scheduled page");
-		Log4jUtil.log("Is Insurance Page Displated= " + isInsuranceDisplated);
+	public void reBookAppointment(Boolean isInsuranceDisplated, AppointmentDateTime aptDateTime, Appointment testData,
+			WebDriver driver) throws Exception {
+		log("Verify Confirmation page and Scheduled page");
+		log("Is Insurance Page Displated= " + isInsuranceDisplated);
 		Thread.sleep(2000);
 		if (testData.isInsuranceVisible()) {
 			UpdateInsurancePage updateinsurancePage = aptDateTime.selectAppointmentTimeIns();
 			ConfirmationPage confirmationpage = updateinsurancePage.skipInsuranceUpdate();
 
-			if (testData.isShowCancellationRescheduleReason() == false & testData.isShowCancellationReasonPM() == false) {
+			if (testData.isShowCancellationRescheduleReason() == false
+					& testData.isShowCancellationReasonPM() == false) {
 
 				appointmentToRescheduled(confirmationpage, testData);
 
-			} else if (testData.isShowCancellationRescheduleReason() == true & testData.isShowCancellationReasonPM() == false) {
+			} else if (testData.isShowCancellationRescheduleReason() == true
+					& testData.isShowCancellationReasonPM() == false) {
 
 				apptRescheduledwithTextReason(confirmationpage, testData);
 
-			} else if (testData.isShowCancellationRescheduleReason() == true & testData.isShowCancellationReasonPM() == true) {
+			} else if (testData.isShowCancellationRescheduleReason() == true
+					& testData.isShowCancellationReasonPM() == true) {
 
 				apptRescheduledDropdownReason(confirmationpage, testData);
 			}
@@ -1029,24 +1056,28 @@ public class PSSPatientUtils extends BaseTestNGWebDriver{
 		} else {
 			ConfirmationPage confirmationpage = aptDateTime.selectAppointmentDateTime(testData.getIsNextDayBooking());
 
-			if (testData.isShowCancellationRescheduleReason() == false & testData.isShowCancellationReasonPM() == false) {
+			if (testData.isShowCancellationRescheduleReason() == false
+					& testData.isShowCancellationReasonPM() == false) {
 
 				appointmentToRescheduled(confirmationpage, testData);
 
-			} else if (testData.isShowCancellationRescheduleReason() == true & testData.isShowCancellationReasonPM() == false) {
+			} else if (testData.isShowCancellationRescheduleReason() == true
+					& testData.isShowCancellationReasonPM() == false) {
 
 				apptRescheduledwithTextReason(confirmationpage, testData);
 
-			} else if (testData.isShowCancellationRescheduleReason() == true & testData.isShowCancellationReasonPM() == true) {
+			} else if (testData.isShowCancellationRescheduleReason() == true
+					& testData.isShowCancellationReasonPM() == true) {
 
 				apptRescheduledDropdownReason(confirmationpage, testData);
 			}
 		}
 	}
 
-	public void fillRescheduleDetails(Boolean isInsuranceDisplated, AppointmentDateTime aptDateTime, Appointment testData, WebDriver driver) throws Exception {
-		Log4jUtil.log("Step 12: Verify Confirmation page and Scheduled page");
-		Log4jUtil.log("Is Insurance Page Displated= " + isInsuranceDisplated);
+	public void fillRescheduleDetails(Boolean isInsuranceDisplated, AppointmentDateTime aptDateTime,
+			Appointment testData, WebDriver driver) throws Exception {
+		log("Verify Confirmation page and Scheduled page");
+		log("Is Insurance Page Displated= " + isInsuranceDisplated);
 		Thread.sleep(2000);
 		if (isInsuranceDisplated) {
 			UpdateInsurancePage updateinsurancePage = aptDateTime.selectAppointmentTimeIns();
@@ -1058,20 +1089,23 @@ public class PSSPatientUtils extends BaseTestNGWebDriver{
 		}
 	}
 
-	public void bookAnonymousApt(AppointmentDateTime aptDateTime, Appointment testData, WebDriver driver) throws Exception {
-		Log4jUtil.log("Step 12: Verify Confirmation page and Scheduled page");
+	public void bookAnonymousApt(AppointmentDateTime aptDateTime, Appointment testData, WebDriver driver)
+			throws Exception {
+		log("Verify Confirmation page and Scheduled page");
 		Thread.sleep(2000);
-		AnonymousPatientInformation anonymousPatientInformation = aptDateTime.selectAppointmentTimeSlot(testData.getIsNextDayBooking());
-		ConfirmationPage confirmationpage = anonymousPatientInformation.fillPatientForm(testData.getFirstName(), testData.getLastName(), testData.getDob(),
-				testData.getEmail(), testData.getGender(), testData.getPrimaryNumber());
+		AnonymousPatientInformation anonymousPatientInformation = aptDateTime
+				.selectAppointmentTimeSlot(testData.getIsNextDayBooking());
+		ConfirmationPage confirmationpage = anonymousPatientInformation.fillPatientForm(testData.getFirstName(),
+				testData.getLastName(), testData.getDob(), testData.getEmail(), testData.getGender(),
+				testData.getPrimaryNumber());
 		appointmentToScheduledAnonymous(confirmationpage, testData);
 	}
 
 	public void clickOnSubmitAppt(Boolean isInsuranceDisplated, AppointmentDateTime aptDateTime, Appointment testData,
 			WebDriver driver) throws Exception {
-		Log4jUtil.log("Verify Confirmation page and Scheduled page");
-		Log4jUtil.log("Is Insurance Page Displayed= " + isInsuranceDisplated);
-		Log4jUtil.log("I am in clickOnSubmitAppt METHOD-------");
+		log("Verify Confirmation page and Scheduled page");
+		log("Is Insurance Page Displayed= " + isInsuranceDisplated);
+		log("I am in clickOnSubmitAppt METHOD-------");
 		Thread.sleep(2000);
 		if (isInsuranceDisplated) {
 			UpdateInsurancePage updateinsurancePage = aptDateTime.selectAppointmentDateAndTime(driver);
@@ -1090,14 +1124,16 @@ public class PSSPatientUtils extends BaseTestNGWebDriver{
 		}
 	}
 
-	public void appointmentToScheduledAnonymous(ConfirmationPage confirmationpage, Appointment testData) throws Exception {
+	public void appointmentToScheduledAnonymous(ConfirmationPage confirmationpage, Appointment testData)
+			throws Exception {
 		log("Verify if Appointment is scheduled and download ics file");
-		String aptScheduledAt = confirmationpage.getAppointmentDetails().get((confirmationpage.getAppointmentDetails().size() - 1)).getText();
+		String aptScheduledAt = confirmationpage.getAppointmentDetails()
+				.get((confirmationpage.getAppointmentDetails().size() - 1)).getText();
 		log(">> " + aptScheduledAt);
 		for (WebElement ele : confirmationpage.getAppointmentDetails()) {
 			log("apt Details= " + ele.getText());
 		}
-		if(testData.isLastQuestionOptional() == true) {
+		if (testData.isLastQuestionOptional() == true) {
 			confirmationpage.enterLastQuestion();
 		}
 		ScheduledAppointmentAnonymous scheduledAppointmentAnonymous = confirmationpage.appointmentConfirmedAnonymous();
@@ -1109,90 +1145,95 @@ public class PSSPatientUtils extends BaseTestNGWebDriver{
 	}
 
 	public void appointmentToScheduled(ConfirmationPage confirmationpage, Appointment testData) throws Exception {
-		Log4jUtil.log("--------I AM IN appointmentToScheduled METHOD---------");
-		Log4jUtil.log("Step 13: Verify if Appointment is scheduled and download ics file");
+		log("--------I AM IN appointmentToScheduled METHOD---------");
+		log("Verify if Appointment is scheduled and download ics file");
 		String aptScheduledAt = confirmationpage.getAppointmentDetails()
 				.get((confirmationpage.getAppointmentDetails().size() - 1)).getText();
-		Log4jUtil.log(">> " + aptScheduledAt);
+		log(">> " + aptScheduledAt);
 		for (WebElement ele : confirmationpage.getAppointmentDetails()) {
-			Log4jUtil.log("apt Details= " + ele.getText());
+			log("apt Details= " + ele.getText());
 		}
 		confirmationpage.apptConfm();
 		log("Appointment is SuccesFull");
 
 		ScheduledAppointment scheduledappointment = confirmationpage.appointmentConfirmed();
-
-		Log4jUtil.log("appointment ID = " + scheduledappointment.getAppointmentID());
-		Log4jUtil.log("Add to calendar option is displayed and is clickable.");
+		log("appointment ID = " + scheduledappointment.getAppointmentID());
+		log("Add to calendar option is displayed and is clickable.");
 		scheduledappointment.downloadCalander();
 		Thread.sleep(2000);
 		readICSFile(filePath());
 	}
 
 	public void appointmentToRescheduled(ConfirmationPage confirmationpage, Appointment testData) throws Exception {
-		Log4jUtil.log("Step 13: Verify if Appointment is scheduled and download ics file");
+		log("Verify if Appointment is scheduled and download ics file");
 
-		String aptScheduledAt = confirmationpage.getAppointmentDetails().get((confirmationpage.getAppointmentDetails().size() - 1)).getText();
-		Log4jUtil.log(">> " + aptScheduledAt);
+		String aptScheduledAt = confirmationpage.getAppointmentDetails()
+				.get((confirmationpage.getAppointmentDetails().size() - 1)).getText();
+		log(">> " + aptScheduledAt);
 		for (WebElement ele : confirmationpage.getAppointmentDetails()) {
-			Log4jUtil.log("apt Details= " + ele.getText());
-
+			log("apt Details= " + ele.getText());
 		}
 
 		ScheduledAppointment scheduledappointment = confirmationpage.rescheduleAppointmentConfirmed();
-		Log4jUtil.log("appointment ID = " + scheduledappointment.getAppointmentID());
-		Log4jUtil.log("Add to calendar option is displayed and is clickable.");
+		log("appointment ID = " + scheduledappointment.getAppointmentID());
+		log("Add to calendar option is displayed and is clickable.");
 		scheduledappointment.downloadCalander();
 		Thread.sleep(2000);
 		readICSFile(filePath());
 	}
 
-	public void apptRescheduledwithTextReason(ConfirmationPage confirmationpage, Appointment testData) throws Exception {
+	public void apptRescheduledwithTextReason(ConfirmationPage confirmationpage, Appointment testData)
+			throws Exception {
 
-		Log4jUtil.log("Step 13: Verify if Appointment is scheduled and download ics file");
+		log("Verify if Appointment is scheduled and download ics file");
 
-		String aptScheduledAt = confirmationpage.getAppointmentDetails().get((confirmationpage.getAppointmentDetails().size() - 1)).getText();
-		Log4jUtil.log(">> " + aptScheduledAt);
+		String aptScheduledAt = confirmationpage.getAppointmentDetails()
+				.get((confirmationpage.getAppointmentDetails().size() - 1)).getText();
+		log(">> " + aptScheduledAt);
 		for (WebElement ele : confirmationpage.getAppointmentDetails()) {
-			Log4jUtil.log("apt Details= " + ele.getText());
+			log("apt Details= " + ele.getText());
 
 		}
 
-		Log4jUtil.log("Enter the Reschedule Reason");
+		log("Enter the Reschedule Reason");
 		confirmationpage.sendRescheduleReason();
-		assertEquals(confirmationpage.maxLengthRescheduleReason(), 500, "The max length of Reschedule reason is not 500, so test case failed");
+		assertEquals(confirmationpage.maxLengthRescheduleReason(), 500,
+				"The max length of Reschedule reason is not 500, so test case failed");
 
 		ScheduledAppointment scheduledappointment = confirmationpage.rescheduleAppointmentConfirmed();
-		Log4jUtil.log("appointment ID = " + scheduledappointment.getAppointmentID());
-		Log4jUtil.log("Add to calendar option is displayed and is clickable.");
+		log("appointment ID = " + scheduledappointment.getAppointmentID());
+		log("Add to calendar option is displayed and is clickable.");
 		scheduledappointment.downloadCalander();
 		Thread.sleep(2000);
 		readICSFile(filePath());
 	}
 
-	public void apptRescheduledDropdownReason(ConfirmationPage confirmationpage, Appointment testData) throws Exception {
-		Log4jUtil.log("Step 13: Verify if Appointment is scheduled and download ics file");
+	public void apptRescheduledDropdownReason(ConfirmationPage confirmationpage, Appointment testData)
+			throws Exception {
+		log("Verify if Appointment is scheduled and download ics file");
 
-		String aptScheduledAt = confirmationpage.getAppointmentDetails().get((confirmationpage.getAppointmentDetails().size() - 1)).getText();
-		Log4jUtil.log(">> " + aptScheduledAt);
+		String aptScheduledAt = confirmationpage.getAppointmentDetails()
+				.get((confirmationpage.getAppointmentDetails().size() - 1)).getText();
+		log(">> " + aptScheduledAt);
 		for (WebElement ele : confirmationpage.getAppointmentDetails()) {
-			Log4jUtil.log("apt Details= " + ele.getText());
+			log("apt Details= " + ele.getText());
 		}
 
-		Log4jUtil.log("Select reason from drop down list");
+		log("Select reason from drop down list");
 		confirmationpage.selectRescheduleReason();
 
 		ScheduledAppointment scheduledappointment = confirmationpage.rescheduleAppointmentConfirmed();
-		Log4jUtil.log("appointment ID = " + scheduledappointment.getAppointmentID());
-		Log4jUtil.log("Add to calendar option is displayed and is clickable.");
+		log("appointment ID = " + scheduledappointment.getAppointmentID());
+		log("Add to calendar option is displayed and is clickable.");
 		scheduledappointment.downloadCalander();
 		Thread.sleep(2000);
 		readICSFile(filePath());
 	}
 
-	public ScheduledAppointment selectAFlow(WebDriver driver, String rule, HomePage homepage, Appointment testData) throws Exception {
-		Log4jUtil.log("selectAFlow method started");
-		Log4jUtil.log("------------I am in selectAFlow METHOD-----");
+	public ScheduledAppointment selectAFlow(WebDriver driver, String rule, HomePage homepage, Appointment testData)
+			throws Exception {
+		log("selectAFlow method started");
+		log("------------I am in selectAFlow METHOD-----");
 		Thread.sleep(1000);
 		testData.setIsInsuranceEnabled(false);
 		Thread.sleep(1000);
@@ -1218,7 +1259,7 @@ public class PSSPatientUtils extends BaseTestNGWebDriver{
 			STBLFlow(homepage, testData, Boolean.toString(testData.getIsInsuranceEnabled()), driver);
 		}
 		if (rule.equalsIgnoreCase(PSSConstants.STLB)) {
-			Log4jUtil.log("Method STLBFlow will start now......");
+			log("Method STLBFlow will start now......");
 			STLBFlow(homepage, testData, Boolean.toString(testData.getIsInsuranceEnabled()), driver);
 		}
 		if (rule.equalsIgnoreCase(PSSConstants.SLTB)) {
@@ -1266,7 +1307,7 @@ public class PSSPatientUtils extends BaseTestNGWebDriver{
 		String pssPatientUrl = driver.getCurrentUrl();
 		/* @ code only for dev3 */
 		pssPatientUrl = pssPatientUrl.replaceAll("https", "http");
-		Log4jUtil.log("Url = " + driver.getCurrentUrl());
+		log("Url = " + driver.getCurrentUrl());
 		return pssPatientUrl;
 	}
 
@@ -1330,7 +1371,7 @@ public class PSSPatientUtils extends BaseTestNGWebDriver{
 
 			if (subList.get(i).getText().contains(subject_line)) {
 
-				Log4jUtil.log(subList.get(i).getText() + "---Text");
+				log(subList.get(i).getText() + "---Text");
 
 				cm.highlightElement(chkList.get(i));
 				chkList.get(i).click();
@@ -1350,22 +1391,26 @@ public class PSSPatientUtils extends BaseTestNGWebDriver{
 
 	}
 
-	public void fillPatientDetails(Boolean insuranceSelected, Appointment testData, LoginlessPatientInformation loginlesspatientinformation)
-			throws InterruptedException {
+	public void fillPatientDetails(Boolean insuranceSelected, Appointment testData,
+			LoginlessPatientInformation loginlesspatientinformation) throws InterruptedException {
 		if (insuranceSelected) {
-			Log4jUtil.log("InsurancePage=" + insuranceSelected);
-			NewPatientInsuranceInfo newpatientinsuranceinfo = loginlesspatientinformation.fillPatientForm(testData.getFirstName(), testData.getLastName(),
-					testData.getDob(), testData.getEmail(), testData.getGender(), testData.getZipCode(), testData.getPrimaryNumber());
-			newpatientinsuranceinfo.fillNewPatientInsuranceInfo(PSSConstants.INSURANCE_CARRIER, PSSConstants.INSURANCE_MEMBERID, PSSConstants.INSURANCE_GROUPID,
+			log("InsurancePage=" + insuranceSelected);
+			NewPatientInsuranceInfo newpatientinsuranceinfo = loginlesspatientinformation.fillPatientForm(
+					testData.getFirstName(), testData.getLastName(), testData.getDob(), testData.getEmail(),
+					testData.getGender(), testData.getZipCode(), testData.getPrimaryNumber());
+			newpatientinsuranceinfo.fillNewPatientInsuranceInfo(PSSConstants.INSURANCE_CARRIER,
+					PSSConstants.INSURANCE_MEMBERID, PSSConstants.INSURANCE_GROUPID,
 					PSSConstants.INSURANCE_PRIMARYPHONE);
 		} else {
-			Log4jUtil.log("InsurancePage=" + insuranceSelected);
-			loginlesspatientinformation.fillNewPatientForm(testData.getFirstName(), testData.getLastName(), testData.getDob(), testData.getEmail(),
-					testData.getGender(), testData.getZipCode(), testData.getPrimaryNumber());
+			log("InsurancePage=" + insuranceSelected);
+			loginlesspatientinformation.fillNewPatientForm(testData.getFirstName(), testData.getLastName(),
+					testData.getDob(), testData.getEmail(), testData.getGender(), testData.getZipCode(),
+					testData.getPrimaryNumber());
 		}
 	}
 
-	public void navigateFromHomePage(String ruleType, WebDriver driver, Appointment testData, String toSelect) throws InterruptedException {
+	public void navigateFromHomePage(String ruleType, WebDriver driver, Appointment testData, String toSelect)
+			throws InterruptedException {
 		if (!ruleType.equalsIgnoreCase(PSSConstants.SPECIALITY)) {
 			HomePage homepage = new HomePage(driver);
 			if (toSelect.equalsIgnoreCase(PSSConstants.START_PROVIDER)) {
@@ -1393,35 +1438,36 @@ public class PSSPatientUtils extends BaseTestNGWebDriver{
 		}
 	}
 
-	public void check_Provider_Apt_Loc_List(WebDriver driver, HomePage homepage, Appointment testData) throws Exception {
+	public void check_Provider_Apt_Loc_List(WebDriver driver, HomePage homepage, Appointment testData)
+			throws Exception {
 
-		Log4jUtil.log("Is Home page welcome pop up? " + homepage.isPopUP());
+		log("Is Home page welcome pop up? " + homepage.isPopUP());
 		if (homepage.isPopUP()) {
 			homepage.popUPClick();
 		}
 		Thread.sleep(12000);
 		Collection<String> partnerProviderC = Arrays.asList(testData.getProviderList().split(","));
 		Collection<String> pssProviderC = new ArrayList<String>();
-		Log4jUtil.log("In Provider page " + partnerProviderC.size());
+		log("In Provider page " + partnerProviderC.size());
 		Provider provider = homepage.selectProvider(PSSConstants.START_PROVIDER);
 		for (int i = 0; i < provider.getProviderNames().size(); i++) {
-			Log4jUtil.log("Total Provider names = " + provider.getProviderNames().get(i).getText());
+			log("Total Provider names = " + provider.getProviderNames().get(i).getText());
 			pssProviderC.add(provider.getProviderNames().get(i).getText());
 		}
 		Collection<String> similar = new HashSet<String>(partnerProviderC);
 		similar.retainAll(pssProviderC);
 		assertTrue(partnerProviderC.size() == pssProviderC.size(), "provider names did not matched.");
 		System.out.printf("partner:%s%npss:%s%nSimilar:%s%n", partnerProviderC, pssProviderC, similar);
-		Log4jUtil.log("similar provider size " + similar.size());
-		Log4jUtil.log("pssProviderC size " + pssProviderC.size());
+		log("similar provider size " + similar.size());
+		log("pssProviderC size " + pssProviderC.size());
 		homepage.companyLogoClick();
 		Thread.sleep(8000);
 		Collection<String> partnerLocationC = Arrays.asList(testData.getLocationList().split(","));
 		Collection<String> pssLocationC = new ArrayList<String>();
 		Location location = homepage.selectLocation(PSSConstants.START_LOCATION);
-		Log4jUtil.log("In Location page ");
+		log("In Location page ");
 		for (int i = 0; i < location.getLocationNames().size(); i++) {
-			Log4jUtil.log("Total Location names = " + location.getLocationNames().get(i).getText());
+			log("Total Location names = " + location.getLocationNames().get(i).getText());
 			String locName = location.getLocationNames().get(i).getText();
 			locName = locName.substring(locName.indexOf(".") + 2, (locName.length()));
 			pssLocationC.add(locName);
@@ -1430,26 +1476,27 @@ public class PSSPatientUtils extends BaseTestNGWebDriver{
 		similarL.retainAll(pssLocationC);
 
 		System.out.printf("partner:%s%npss:%s%nSimilarLoc:%s%n", partnerLocationC, pssLocationC, similarL);
-		Log4jUtil.log("similarL size " + similarL.size());
-		Log4jUtil.log("pssLocationC size " + pssLocationC.size());
+		log("similarL size " + similarL.size());
+		log("pssLocationC size " + pssLocationC.size());
 		assertTrue(partnerLocationC.size() == pssLocationC.size(), "Location names did not matched.");
 		homepage.companyLogoClick();
 		Thread.sleep(8000);
 		AppointmentPage appointment = homepage.selectAppointment(PSSConstants.START_APPOINTMENT);
 		Collection<String> partnerappointmentC = Arrays.asList(testData.getAppointmentList().split(","));
 		Collection<String> pssappointmentC = new ArrayList<String>();
-		Log4jUtil.log("In Appointments page ");
+		log("In Appointments page ");
 		for (int i = 0; i < appointment.getAppointmentNames().size(); i++) {
-			Log4jUtil.log("Total Appointment names = " + appointment.getAppointmentNames().get(i).getText());
+			log("Total Appointment names = " + appointment.getAppointmentNames().get(i).getText());
 			pssappointmentC.add(appointment.getAppointmentNames().get(i).getText());
 		}
 		Collection<String> similarApt = new HashSet<String>(partnerappointmentC);
 		similarApt.retainAll(pssappointmentC);
 		System.out.printf("One:%s%nTwo:%s%nSimilar:%s%n", partnerappointmentC, pssappointmentC, similarApt);
-		Log4jUtil.log("similarApt size " + similarApt.size());
-		Log4jUtil.log("pssappointmentC size " + pssappointmentC.size());
+		log("similarApt size " + similarApt.size());
+		log("pssappointmentC size " + pssappointmentC.size());
 		assertTrue(partnerappointmentC.size() == pssappointmentC.size(), "Appointment type names did not matched.");
-		appointment.selectTypeOfLocation(testData.getAppointmenttype(), Boolean.valueOf(testData.getIsAppointmentPopup()));
+		appointment.selectTypeOfLocation(testData.getAppointmenttype(),
+				Boolean.valueOf(testData.getIsAppointmentPopup()));
 		location.searchProvider(testData.getLocation());
 		AppointmentDateTime aptDateTime = provider.selectDateTime(testData.getProvider());
 		aptDateTime.selectDate(testData.getIsNextDayBooking());
@@ -1460,80 +1507,83 @@ public class PSSPatientUtils extends BaseTestNGWebDriver{
 		Thread.sleep(8000);
 	}
 
-	public void ageRule(WebDriver driver, HomePage homepage, Appointment testData, Boolean isUnderAge, String rule) throws Exception {
-		Log4jUtil.log("Is Home page welcome pop up? " + homepage.isPopUP());
+	public void ageRule(WebDriver driver, HomePage homepage, Appointment testData, Boolean isUnderAge, String rule)
+			throws Exception {
+		log("Is Home page welcome pop up? " + homepage.isPopUP());
 		if (homepage.isPopUP()) {
 			homepage.popUPClick();
 		}
 		Thread.sleep(12000);
-		Log4jUtil.log("Select Provider page ");
+		log("Select Provider page ");
 		Provider provider = homepage.selectProvider(PSSConstants.START_PROVIDER);
 		Thread.sleep(6000);
 		int providerSize = provider.searchForProviderFromListt(testData.getProvider());
 		if (isUnderAge) {
 			assertEquals(providerSize, 0);
-			Log4jUtil.log("Unable to schedule appointment for UnderAge patient.");
+			log("Unable to schedule appointment for UnderAge patient.");
 			homepage.logout();
 		} else {
 			assertEquals(providerSize, 1);
 			homepage.companyLogoClick();
 			testData.setIsCancelApt(false);
 			selectAFlow(driver, rule, homepage, testData);
-			Log4jUtil.log("Appointment scheduled for patient within Age criteria.");
+			log("Appointment scheduled for patient within Age criteria.");
 		}
 	}
 
-	public void verifyProviderAssociation(WebDriver driver, HomePage homepage, Appointment testData, String rule) throws Exception {
-		Log4jUtil.log("Is Home page welcome pop up? " + homepage.isPopUP());
+	public void verifyProviderAssociation(WebDriver driver, HomePage homepage, Appointment testData, String rule)
+			throws Exception {
+		log("Is Home page welcome pop up? " + homepage.isPopUP());
 		closeHomePagePopUp(homepage);
 		selectFlowBasedOnProvider(testData, homepage);
 	}
 
 	public void selectFlowBasedOnProvider(Appointment testData, HomePage homepage) throws Exception {
-		Log4jUtil.log("In Provider page ");
+		log("In Provider page ");
 		Provider provider = homepage.selectProvider(PSSConstants.START_PROVIDER);
 		Thread.sleep(6000);
 		String[] providerType = testData.getAssociatedProvider1().split(",");
 		AppointmentPage appointment = provider.selectAppointment(providerType[0]);
 		String[] aptType = testData.getAssociatedApt1().split(",");
-		Log4jUtil.log("Apt to be selected. = " + aptType[0]);
-		Location location = appointment.selectTypeOfLocation(aptType[0], Boolean.valueOf(testData.getIsAppointmentPopup()));
+		log("Apt to be selected. = " + aptType[0]);
+		Location location = appointment.selectTypeOfLocation(aptType[0],
+				Boolean.valueOf(testData.getIsAppointmentPopup()));
 		String[] LocType = testData.getAssociatedLocation1().split(",");
-		Log4jUtil.log("Location to be selected. = " + LocType[0]);
+		log("Location to be selected. = " + LocType[0]);
 		AppointmentDateTime aptDateTime = location.selectDatTime(LocType[0]);
-		Log4jUtil.log("Appropriate Scheduling Calander is displayed.");
+		log("Appropriate Scheduling Calander is displayed.");
 		aptDateTime.selectDate(testData.getIsNextDayBooking());
 		Thread.sleep(9000);
 		aptDateTime.selectAppointmentTimeIns();
-		Log4jUtil.log("Appropriate Slots are Displayed.");
+		log("Appropriate Slots are Displayed.");
 		gotoHomePage(homepage);
 		String[] providerType2 = testData.getAssociatedProvider2().split(",");
 		provider.selectAppointment(providerType2[0]);
 		String[] aptType2 = testData.getAssociatedApt2().split(",");
-		Log4jUtil.log("Apt to be selected. = " + aptType2[0]);
+		log("Apt to be selected. = " + aptType2[0]);
 		appointment.selectTypeOfLocation(aptType2[0], Boolean.valueOf(testData.getIsAppointmentPopup()));
 		String[] LocType2 = testData.getAssociatedLocation2().split(",");
-		Log4jUtil.log("Location to be selected. = " + LocType2[0]);
+		log("Location to be selected. = " + LocType2[0]);
 		location.selectDatTime(LocType2[0]);
-		Log4jUtil.log("Appropriate Scheduling Calander is displayed.");
+		log("Appropriate Scheduling Calander is displayed.");
 		aptDateTime.selectDate(testData.getIsNextDayBooking());
 		Thread.sleep(9000);
 		aptDateTime.selectAppointmentTimeIns();
-		Log4jUtil.log("Appropriate Slots are Displayed.");
+		log("Appropriate Slots are Displayed.");
 		gotoHomePage(homepage);
 		String[] providerType3 = testData.getAssociatedProvider3().split(",");
 		provider.selectAppointment(providerType3[0]);
 		String[] aptType3 = testData.getAssociatedApt3().split(",");
-		Log4jUtil.log("Apt to be selected. = " + aptType3[0]);
+		log("Apt to be selected. = " + aptType3[0]);
 		appointment.selectTypeOfLocation(aptType3[0], Boolean.valueOf(testData.getIsAppointmentPopup()));
 		String[] LocType3 = testData.getAssociatedLocation1().split(",");
-		Log4jUtil.log("Location to be selected. = " + LocType3[0]);
+		log("Location to be selected. = " + LocType3[0]);
 		location.selectDatTime(LocType3[0]);
-		Log4jUtil.log("Appropriate Scheduling Calander is displayed.");
+		log("Appropriate Scheduling Calander is displayed.");
 		aptDateTime.selectDate(testData.getIsNextDayBooking());
 		Thread.sleep(9000);
 		aptDateTime.selectAppointmentTimeIns();
-		Log4jUtil.log("Appropriate Slots are Displayed.");
+		log("Appropriate Slots are Displayed.");
 	}
 
 	public void gotoHomePage(HomePage homepage) throws Exception {
@@ -1573,17 +1623,18 @@ public class PSSPatientUtils extends BaseTestNGWebDriver{
 	}
 
 	public String getURLResponse(String url) throws Exception {
-		Log4jUtil.log("Getting processingurl Status:- " + url);
+		log("Getting processingurl Status:- " + url);
 		URLConnection getConnection = null;
 		String output = "";
 		try {
 			URL processingURL1 = new URL(url);
 			getConnection = processingURL1.openConnection();
 			((HttpURLConnection) getConnection).setRequestMethod("GET");
-			getConnection.setRequestProperty("Accept", "text/html,application/xhtml+xml,application/xml;q=0.9,image/webp,image/apng,*/*;q=0.8");
+			getConnection.setRequestProperty("Accept",
+					"text/html,application/xhtml+xml,application/xml;q=0.9,image/webp,image/apng,*/*;q=0.8");
 			getConnection.setRequestProperty("Upgrade-Insecure-Requests", "1");
 			int responseCode = ((HttpURLConnection) getConnection).getResponseCode();
-			Log4jUtil.log("Get Response Code : " + responseCode);
+			log("Get Response Code : " + responseCode);
 			BufferedReader in = new BufferedReader(new InputStreamReader(getConnection.getInputStream()));
 			String line;
 			StringBuffer response = new StringBuffer();
@@ -1607,9 +1658,9 @@ public class PSSPatientUtils extends BaseTestNGWebDriver{
 		SimpleDateFormat f1 = new SimpleDateFormat("dd");
 		SimpleDateFormat f2 = new SimpleDateFormat("MMM");
 		String currentDate = "Current Date is :" + f1.format(new Date()) + " " + f2.format(new Date());
-		Log4jUtil.log("Current Date is   " + currentDate);
+		log("Current Date is   " + currentDate);
 		String Nextbook = currentDate + testData.getLeadtimeDay();
-		Log4jUtil.log("Next Avaliable Date is   " + Nextbook);
+		log("Next Avaliable Date is   " + Nextbook);
 	}
 
 	public String currentDateandLeadDay(Appointment testData) {
@@ -1622,7 +1673,7 @@ public class PSSPatientUtils extends BaseTestNGWebDriver{
 		c.setTimeZone(time_zone);
 		c.add(Calendar.DATE, testData.getLeadtimeDay());
 		String currentDate = f1.format(c.getTime());
-		Log4jUtil.log("Current Date is " + currentDate);
+		log("Current Date is " + currentDate);
 		String currentleddate = currentDate.substring(0, 2);
 		return currentleddate;
 	}
@@ -1641,7 +1692,7 @@ public class PSSPatientUtils extends BaseTestNGWebDriver{
 			am_pm = "PM";
 		}
 		String time1 = now.get(Calendar.HOUR) + ":" + now.get(Calendar.MINUTE) + am_pm;
-		Log4jUtil.log("Time Before the lead time   " + time1);
+		log("Time Before the lead time   " + time1);
 		now.add(Calendar.HOUR, testData.getLeadtimeHour());
 		now.add(Calendar.MINUTE, testData.getLeadtimeMinute());
 		String timeplusleadmin = +now.get(Calendar.HOUR_OF_DAY) + ":" + now.get(Calendar.MINUTE) + am_pm;
@@ -1669,7 +1720,7 @@ public class PSSPatientUtils extends BaseTestNGWebDriver{
 
 	public String numDate(Appointment testData) {
 		int MILLIS_IN_DAY = 1000 * 60 * 60 * 24;
-		Log4jUtil.log("current est date is  " + currentDateandLeadDay(testData));
+		log("current est date is  " + currentDateandLeadDay(testData));
 		String date = currentDateandLeadDay(testData);
 		String dateFormat = "dd";
 		SimpleDateFormat f1 = new SimpleDateFormat(dateFormat);
@@ -1686,7 +1737,7 @@ public class PSSPatientUtils extends BaseTestNGWebDriver{
 			dateNextDate = f1.parse(nextDate);
 			String date1 = dateNextDate.toString();
 			date2 = date1.substring(8, 10);
-			Log4jUtil.log("Next day's date: " + dateNextDate);
+			log("Next day's date: " + dateNextDate);
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
@@ -1694,19 +1745,19 @@ public class PSSPatientUtils extends BaseTestNGWebDriver{
 	}
 
 	public long timeDifferenceendTime(Appointment testData) throws ParseException {
-		Log4jUtil.log("Bussiness Hour Endtime is  " + testData.getBusinesshourEndTime());
+		log("Bussiness Hour Endtime is  " + testData.getBusinesshourEndTime());
 		Calendar now = Calendar.getInstance();
 		TimeZone time_zone = TimeZone.getTimeZone(testData.getCurrentTimeZone());
 		now.setTimeZone(time_zone);
 		now.add(Calendar.HOUR, testData.getLeadtimeHour());
 		now.add(Calendar.MINUTE, testData.getLeadtimeMinute());
 		String currenttime = +now.get(Calendar.HOUR_OF_DAY) + ":" + now.get(Calendar.MINUTE);
-		Log4jUtil.log("Afetr Add leadTime : " + currenttime);
+		log("Afetr Add leadTime : " + currenttime);
 		SimpleDateFormat format = new SimpleDateFormat("HH:mm");
 		Date time1 = format.parse(currenttime);
 		Date time2 = format.parse(testData.getBusinesshourEndTime());
 		long difference = time2.getTime() - time1.getTime();
-		Log4jUtil.log("Time Differnce is  " + difference);
+		log("Time Differnce is  " + difference);
 		return difference;
 	}
 
@@ -1722,29 +1773,29 @@ public class PSSPatientUtils extends BaseTestNGWebDriver{
 		cal.set(Calendar.HOUR_OF_DAY, i);
 		cal.set(Calendar.MINUTE, j);
 		String fixedtime = +cal.get(Calendar.HOUR_OF_DAY) + ":" + cal.get(Calendar.MINUTE);
-		Log4jUtil.log("Fixed time is" + fixedtime);
+		log("Fixed time is" + fixedtime);
 		TimeZone time_zone = TimeZone.getTimeZone(testData.getCurrentTimeZone());
 		now.setTimeZone(time_zone);
 		cal.setTimeZone(time_zone);
 		String currenttime = +now.get(Calendar.HOUR_OF_DAY) + ":" + now.get(Calendar.MINUTE);
-		Log4jUtil.log("Current Time is : " + currenttime);
+		log("Current Time is : " + currenttime);
 		SimpleDateFormat format = new SimpleDateFormat("HH:mm");
 		Date time1 = format.parse(currenttime);
 		Date time2 = format.parse(fixedtime);
 		cal.getTime();
 		cal.setTime(time2);
 		long difference = time2.getTime() - time1.getTime();
-		Log4jUtil.log("Time Differnce is  " + difference);
+		log("Time Differnce is  " + difference);
 		if (difference < 0) {
 			currentleadtime = currentESTTimeandLeadTime(testData);
-			Log4jUtil.log("Lead Time Added in the current time  " + currentleadtime);
+			log("Lead Time Added in the current time  " + currentleadtime);
 			return currentleadtime;
 		} else {
 			cal.add(Calendar.HOUR, testData.getLeadtimeHour());
 			cal.add(Calendar.MINUTE, testData.getLeadtimeMinute());
 			String time3 = cal.getTimeInMillis() + " -> " + cal.getTime();
 			currentleadtime = time3.substring(22, 28);
-			Log4jUtil.log("Lead Time in the Businessstart time  " + currentleadtime);
+			log("Lead Time in the Businessstart time  " + currentleadtime);
 			return currentleadtime;
 		}
 	}
@@ -1759,9 +1810,10 @@ public class PSSPatientUtils extends BaseTestNGWebDriver{
 		return m.matches();
 	}
 
-	public void clickOnSubmitAppt1(Boolean isInsuranceDisplated, AppointmentDateTime aptDateTime, Appointment testData, WebDriver driver) throws Exception {
-		Log4jUtil.log("Step 12: Verify Confirmation page and Scheduled page");
-		Log4jUtil.log("Is Insurance Page Displated= " + isInsuranceDisplated);
+	public void clickOnSubmitAppt1(Boolean isInsuranceDisplated, AppointmentDateTime aptDateTime, Appointment testData,
+			WebDriver driver) throws Exception {
+		log("Step 12: Verify Confirmation page and Scheduled page");
+		log("Is Insurance Page Displated= " + isInsuranceDisplated);
 		Thread.sleep(2000);
 		if (isInsuranceDisplated) {
 			UpdateInsurancePage updateinsurancePage = aptDateTime.selectAppointmentDateAndTime(driver);
@@ -1781,17 +1833,16 @@ public class PSSPatientUtils extends BaseTestNGWebDriver{
 	public int ageCurrentmonths(Appointment testData) {
 		DateTimeFormatter formatter = DateTimeFormatter.ofPattern("d-MMM-yyyy");
 		String date = testData.getDob();
-		// "23-Mar-2019";
 		LocalDate pdate = LocalDate.parse(date, formatter);
 		LocalDate now = LocalDate.now();
 		Period diff = Period.between(pdate, now);
 		int yearmonth = diff.getYears() * 12;
 		int month = yearmonth + diff.getMonths();
-		Log4jUtil.log("Total Month of patient from date of Birth is  " + month);
+		log("Total Month of patient from date of Birth is  " + month);
 		return month;
 
 	}
-	
+
 	public void TLBLastQuestion(HomePage homepage, Appointment testData, WebDriver driver) throws Exception {
 		log("Select Appointment for appointment.");
 		AppointmentPage appointment;
@@ -1822,14 +1873,14 @@ public class PSSPatientUtils extends BaseTestNGWebDriver{
 			log("Start point not present");
 			appointment = homepage.appointmentpage();
 		}
-		log("Appointment to be selected =" + testData.getAppointmenttype());		
+		log("Appointment to be selected =" + testData.getAppointmenttype());
 		Location location = appointment.selectTypeOfLocation(testData.getAppointmenttype(),
 				Boolean.valueOf(testData.getIsAppointmentPopup()));
 		log("Location to be selected = " + testData.getLocation());
-		
+
 		Provider provider = location.searchProvider(testData.getLocation());
 		log("address = " + location.getAddressValue());
-		log("Provider  to be selected = " + testData.getProvider());	
+		log("Provider  to be selected = " + testData.getProvider());
 
 		AppointmentDateTime aptDateTime = provider.getProviderandClick(testData.getProvider());
 
@@ -1854,9 +1905,8 @@ public class PSSPatientUtils extends BaseTestNGWebDriver{
 		confirmationPage.validateLengthLastQueReq();
 		appointmentToScheduled(confirmationPage, testData);
 	}
-	
-	public void timeMarkLTBRule(HomePage homePage, Appointment testData, WebDriver driver) throws InterruptedException
-	{
+
+	public void timeMarkLTBRule(HomePage homePage, Appointment testData, WebDriver driver) throws InterruptedException {
 		Location location = null;
 		StartAppointmentInOrder startAppointmentInOrder = null;
 		startAppointmentInOrder = homePage.skipInsurance(driver);
@@ -1881,20 +1931,19 @@ public class PSSPatientUtils extends BaseTestNGWebDriver{
 			assertEquals(aptDateTime.getFirstTimeWithMinute(), testData.getTimeMarkValue());
 		}
 	}
-	
-	public String addTimeinFixedTime(Appointment testData) throws ParseException {
-		int getslotSize=Integer.parseInt(testData.getSlotSize());
-		int getslotValue=Integer.parseInt(testData.getSlotValue());
 
-		log("Slot Size is "+getslotSize);
-		int timeToAdd=getslotSize*getslotValue;
-		log("time to Add is "+timeToAdd);
+	public String addTimeinFixedTime(Appointment testData) throws ParseException {
+		int getslotSize = Integer.parseInt(testData.getSlotSize());
+		int getslotValue = Integer.parseInt(testData.getSlotValue());
+
+		log("Slot Size is " + getslotSize);
+		int timeToAdd = getslotSize * getslotValue;
+		log("time to Add is " + timeToAdd);
 		Calendar cal = Calendar.getInstance();
-		int i=Integer.parseInt(testData.getFirstHour());  
-		int j=Integer.parseInt(testData.getFirstMinute());  
+		int i = Integer.parseInt(testData.getFirstHour());
+		int j = Integer.parseInt(testData.getFirstMinute());
 		cal.set(Calendar.HOUR_OF_DAY, i);
 		cal.set(Calendar.MINUTE, j);
-		String fixedTime = +cal.get(Calendar.HOUR_OF_DAY) + ":" + cal.get(Calendar.MINUTE);
 		cal.add(Calendar.MINUTE, timeToAdd);
 		String time = cal.getTime().toString();
 		String timeOnly = time.substring(11, 16);

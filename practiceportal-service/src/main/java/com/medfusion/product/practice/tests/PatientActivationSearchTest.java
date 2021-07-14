@@ -51,11 +51,11 @@ public class PatientActivationSearchTest extends BaseTestNGWebDriver {
 	public PatientInfo PatientActivation(WebDriver driver, PracticeTestData practiceTestData, String email,
 			String doctorLogin, String doctorPassword, String url, PatientInfo patInfo) throws InterruptedException {
 
-		log("Test Case: Patient Activation");
-		log("Execution Environment: " + IHGUtil.getEnvironmentType());
-		log("Execution Browser: " + TestConfig.getBrowserType());
+		logStep("Test Case: Patient Activation");
+		logStep("Execution Environment: " + IHGUtil.getEnvironmentType());
+		logStep("Execution Browser: " + TestConfig.getBrowserType());
 
-		log("step 1: Login to Practice Portal");
+		logStep("Login to Practice Portal");
 
 		String tempUrl = (url == null) ? practiceTestData.getUrl() : url;
 		String tempDocLogin = (doctorLogin == null) ? practiceTestData.getUsername() : doctorLogin;
@@ -65,16 +65,16 @@ public class PatientActivationSearchTest extends BaseTestNGWebDriver {
 		PracticeLoginPage practiceLogin = new PracticeLoginPage(driver, tempUrl);
 		PracticeHomePage practiceHome = practiceLogin.login(tempDocLogin, tempDocPassword);
 
-		log("step 2: Click on Patient Search");
+		logStep("Click on Patient Search");
 		PatientSearchPage patientSearchPage = practiceHome.clickPatientSearchLink();
 
-		log("step 3: Click on Add new Patient");
+		logStep("Click on Add new Patient");
 		PatientActivationPage patientactivationPage = patientSearchPage.clickOnAddNewPatient();
 
-		log("step 4: Enter all the details and click on Register");
+		logStep("Enter all the details and click on Register");
 		patientactivationPage.setInitialDetails(email);
 
-		log("Moving to linkUrl to finish Create Patient procedure");
+		logStep("Moving to linkUrl to finish Create Patient procedure");
 
 		patInfo.unlockLink = patientactivationPage.getUnlockLink();
 
@@ -98,12 +98,12 @@ public class PatientActivationSearchTest extends BaseTestNGWebDriver {
 		return getPatientActivationLink(driver, email, tempDocLogin, tempDocPassword, tempUrl);
 	}
 
-	public String getPatientActivationPracticeLink(WebDriver driver, PropertyFileLoader testData, String email,
-			String doctorlogin, String doctorPassword) throws Exception {
+	public String getPatientActivationPracticeLink(WebDriver driver, PropertyFileLoader testData, String email)
+			throws Exception {
 		String tempUrl = testData.getPortalUrl();
-		String tempDocLogin = testData.getProperty(doctorlogin);
-		String tempDocPassword = testData.getProperty(doctorPassword);
-		return getPatientActivationLink(driver, email, tempDocLogin, tempDocPassword, tempUrl);
+		String docLogin = testData.getProperty("doctor.login");
+		String docPassword = testData.getProperty("doctor.password");
+		return getPatientActivationLink(driver, email, docLogin, docPassword, tempUrl);
 	}
 
 	public String getPatientActivationLink(WebDriver driver, PracticeTestData practiceTestData, String email)
@@ -116,60 +116,6 @@ public class PatientActivationSearchTest extends BaseTestNGWebDriver {
 
 	public String getPatientActivationLink(WebDriver driver, String email, String doctorLogin, String doctorPassword,
 			String url) throws Exception {
-		log("step 1: Login to Practice Portal");
-		PracticeLoginPage practiceLogin = new PracticeLoginPage(driver, url);
-		PracticeHomePage practiceHome = practiceLogin.login(doctorLogin, doctorPassword);
-
-		log("step 2: Click on Patient Search");
-		PatientSearchPage patientSearchPage = practiceHome.clickPatientSearchLink();
-
-		log("step 3: Click on Add new Patient");
-		PatientActivationPage patientActivationPage = patientSearchPage.clickOnAddNewPatient();
-
-		log("step 4: Enter all the details and click on Register");
-		patientActivationPage.setInitialDetails(email);
-
-		log("Moving to linkUrl to finish Create Patient procedure");
-		unlockLink = patientActivationPage.getUnlockLink();
-		firstNameString = patientActivationPage.getFirstNameString();
-		lastNameString = patientActivationPage.getLastNameString();
-		patientIdString = patientActivationPage.getPatientIdString();
-		zipCodeString = patientActivationPage.getZipCodeString();
-		emailAddressString = patientActivationPage.getEmailAddressString();
-
-		driver.switchTo().defaultContent();
-
-		return unlockLink;
-	}
-	
-	public String getPatientActivationPortalLink(int flag, WebDriver driver, String email, String doctorLogin, String doctorPassword, String url,String firstname) throws Exception {
-		log("step 1: Login to Practice Portal");
-		PracticeLoginPage practiceLogin = new PracticeLoginPage(driver, url);
-		PracticeHomePage practiceHome = practiceLogin.login(doctorLogin, doctorPassword);
-
-		log("step 2: Click on Patient Search");
-		PatientSearchPage patientSearchPage = practiceHome.clickPatientSearchLink();
-
-		log("step 3: Click on Add new Patient");
-		PatientActivationPage patientActivationPage = patientSearchPage.clickOnAddNewPatient();
-
-		log("step 4: Enter all the details and click on Register");
-		patientActivationPage.setInitialDetailsPortal2(flag,firstname,email);
-
-		log("Moving to linkUrl to finish Create Patient procedure");
-		unlockLink = patientActivationPage.getUnlockLink();
-		log("Unlock link from practice portal is " +unlockLink);
-		firstNameString = patientActivationPage.getFirstNameString();
-		lastNameString = patientActivationPage.getLastNameString();
-		patientIdString = patientActivationPage.getPatientIdString();
-		zipCodeString = patientActivationPage.getZipCodeString();
-		emailAddressString = patientActivationPage.getEmailAddressString();
-
-		driver.switchTo().defaultContent();
-
-		return unlockLink;
-}
-	public String getPatientActivationLinkWithPatientId(int flag, WebDriver driver,String doctorLogin, String doctorPassword, String url,String patientEmail,String patientId) throws Exception {
 		logStep("Login to Practice Portal");
 		PracticeLoginPage practiceLogin = new PracticeLoginPage(driver, url);
 		PracticeHomePage practiceHome = practiceLogin.login(doctorLogin, doctorPassword);
@@ -181,11 +127,68 @@ public class PatientActivationSearchTest extends BaseTestNGWebDriver {
 		PatientActivationPage patientActivationPage = patientSearchPage.clickOnAddNewPatient();
 
 		logStep("Enter all the details and click on Register");
-		patientActivationPage.setInitialDetailsWithPatientId(flag,patientEmail,patientId);
+		patientActivationPage.setInitialDetails(email);
 
-		log("Moving to linkUrl to finish Create Patient procedure");
+		logStep("Moving to linkUrl to finish Create Patient procedure");
 		unlockLink = patientActivationPage.getUnlockLink();
-		log("Unlock link from practice portal is " +unlockLink);
+		firstNameString = patientActivationPage.getFirstNameString();
+		lastNameString = patientActivationPage.getLastNameString();
+		patientIdString = patientActivationPage.getPatientIdString();
+		zipCodeString = patientActivationPage.getZipCodeString();
+		emailAddressString = patientActivationPage.getEmailAddressString();
+
+		driver.switchTo().defaultContent();
+
+		return unlockLink;
+	}
+
+	public String getPatientActivationPortalLink(int flag, WebDriver driver, String email, String doctorLogin,
+			String doctorPassword, String url, String firstname) throws Exception {
+		logStep("Login to Practice Portal");
+		PracticeLoginPage practiceLogin = new PracticeLoginPage(driver, url);
+		PracticeHomePage practiceHome = practiceLogin.login(doctorLogin, doctorPassword);
+
+		logStep("Click on Patient Search");
+		PatientSearchPage patientSearchPage = practiceHome.clickPatientSearchLink();
+
+		logStep("Click on Add new Patient");
+		PatientActivationPage patientActivationPage = patientSearchPage.clickOnAddNewPatient();
+
+		logStep("Enter all the details and click on Register");
+		patientActivationPage.setInitialDetailsPortal2(flag, firstname, email);
+
+		logStep("Moving to linkUrl to finish Create Patient procedure");
+		unlockLink = patientActivationPage.getUnlockLink();
+		logStep("Unlock link from practice portal is " + unlockLink);
+		firstNameString = patientActivationPage.getFirstNameString();
+		lastNameString = patientActivationPage.getLastNameString();
+		patientIdString = patientActivationPage.getPatientIdString();
+		zipCodeString = patientActivationPage.getZipCodeString();
+		emailAddressString = patientActivationPage.getEmailAddressString();
+
+		driver.switchTo().defaultContent();
+
+		return unlockLink;
+	}
+
+	public String getPatientActivationLinkWithPatientId(int flag, WebDriver driver, String doctorLogin,
+			String doctorPassword, String url, String patientEmail, String patientId) throws Exception {
+		logStep("Login to Practice Portal");
+		PracticeLoginPage practiceLogin = new PracticeLoginPage(driver, url);
+		PracticeHomePage practiceHome = practiceLogin.login(doctorLogin, doctorPassword);
+
+		logStep("Click on Patient Search");
+		PatientSearchPage patientSearchPage = practiceHome.clickPatientSearchLink();
+
+		logStep("Click on Add new Patient");
+		PatientActivationPage patientActivationPage = patientSearchPage.clickOnAddNewPatient();
+
+		logStep("Enter all the details and click on Register");
+		patientActivationPage.setInitialDetailsWithPatientId(flag, patientEmail, patientId);
+
+		logStep("Moving to linkUrl to finish Create Patient procedure");
+		unlockLink = patientActivationPage.getUnlockLink();
+		logStep("Unlock link from practice portal is " + unlockLink);
 		firstNameString = patientActivationPage.getFirstNameString();
 		lastNameString = patientActivationPage.getLastNameString();
 		patientIdString = patientId;
@@ -195,5 +198,5 @@ public class PatientActivationSearchTest extends BaseTestNGWebDriver {
 		driver.switchTo().defaultContent();
 
 		return unlockLink;
-}
+	}
 }

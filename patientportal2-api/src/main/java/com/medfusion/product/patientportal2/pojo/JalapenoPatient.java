@@ -109,32 +109,32 @@ public class JalapenoPatient {
 				return DOBDay;
 		}
 
-		public void setDOBDay(String dOBDay) {
-				DOBDay = dOBDay;
+		public void setDOBDay(String dobDay) {
+				DOBDay = dobDay;
 		}
 
 		public String getDOBMonth() {
 				return DOBMonth;
 		}
 
-		public void setDOBMonth(String dOBMonth) {
-				DOBMonth = dOBMonth;
+		public void setDOBMonth(String dobMonth) {
+				DOBMonth = dobMonth;
 		}
 
 		public String getDOBMonthText() {
 				return DOBMonthText;
 		}
 
-		public void setDOBMonthText(String dOBMonthText) {
-				DOBMonthText = dOBMonthText;
+		public void setDOBMonthText(String dobMonthText) {
+				DOBMonthText = dobMonthText;
 		}
 
 		public String getDOBYear() {
 				return DOBYear;
 		}
 
-		public void setDOBYear(String dOBYear) {
-				DOBYear = dOBYear;
+		public void setDOBYear(String dobYear) {
+				DOBYear = dobYear;
 		}
 
 		public String getZipCode() {
