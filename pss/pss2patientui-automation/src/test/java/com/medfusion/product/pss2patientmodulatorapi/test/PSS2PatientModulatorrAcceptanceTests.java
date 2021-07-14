@@ -747,10 +747,10 @@ public class PSS2PatientModulatorrAcceptanceTests extends BaseTestNGWebDriver {
 
 		log("Base URL is ---> " + testData.getBasicURI());
 		log("Access Token --> " + testData.getAccessToken());
-		log("Payload- " + payloadPatientMod.booksByRulePayload());
+		log("Payload- " + payloadPatientMod.booksByRulePayload(testData.getAppSlotId(),testData.getLocationIdApp()));
 
 		String displayNameValue = postAPIRequest.booksByRule(testData.getBasicURI(),
-				payloadPatientMod.booksByRulePayload(), headerConfig.HeaderwithToken(testData.getAccessToken()),
+				payloadPatientMod.booksByRulePayload(testData.getAppSlotId(),testData.getLocationIdApp()), headerConfig.HeaderwithToken(testData.getAccessToken()),
 				testData.getPracticeId(), testData.getPatientIdPm());
 
 		Assert.assertEquals(displayNameValue, testData.getDisplayName(), "Display name is wrong");
@@ -770,10 +770,10 @@ public class PSS2PatientModulatorrAcceptanceTests extends BaseTestNGWebDriver {
 
 		log("Base URL is ---> " + testData.getBasicURI());
 		log("Access Token --> " + testData.getAccessToken());
-		log("Payload- " + payloadPatientMod.allowOnlineCancellationPayload());
+		log("Payload- " + payloadPatientMod.allowOnlineCancellationPayload(testData.getAppointmentId()));
 
 		postAPIRequest.allowonlinecancellation(testData.getBasicURI(),
-				payloadPatientMod.allowOnlineCancellationPayload(),
+				payloadPatientMod.allowOnlineCancellationPayload(testData.getAppointmentId()),
 				headerConfig.HeaderwithToken(testData.getAccessToken()), testData.getPracticeId(),
 				testData.getPatientIdPm());
 	}
@@ -791,9 +791,9 @@ public class PSS2PatientModulatorrAcceptanceTests extends BaseTestNGWebDriver {
 
 		log("Base URL is ---> " + testData.getBasicURI());
 		log("Access Token --> " + testData.getAccessToken());
-		log("Payload- " + payloadPatientMod.cancelStatusPayload());
+		log("Payload- " + payloadPatientMod.cancelStatusPayload(testData.getAppointmentId()));
 
-		postAPIRequest.cancelStatus(testData.getBasicURI(), payloadPatientMod.cancelStatusPayload(),
+		postAPIRequest.cancelStatus(testData.getBasicURI(), payloadPatientMod.cancelStatusPayload(testData.getAppointmentId()),
 				headerConfig.HeaderwithToken(testData.getAccessToken()), testData.getPracticeId(),
 				testData.getPatientIdPm());
 	}
@@ -811,9 +811,9 @@ public class PSS2PatientModulatorrAcceptanceTests extends BaseTestNGWebDriver {
 
 		log("Base URL is ---> " + testData.getBasicURI());
 		log("Access Token --> " + testData.getAccessToken());
-		log("Payload- " + payloadPatientMod.commentDetailsPayload());
+		log("Payload- " + payloadPatientMod.commentDetailsPayload(testData.getAppointmentIdApp(),testData.getBookIdApp(),testData.getLocationIdApp()));
 
-		postAPIRequest.commentDetails(testData.getBasicURI(), payloadPatientMod.commentDetailsPayload(),
+		postAPIRequest.commentDetails(testData.getBasicURI(), payloadPatientMod.commentDetailsPayload(testData.getAppointmentIdApp(),testData.getBookIdApp(),testData.getLocationIdApp()),
 				headerConfig.HeaderwithToken(testData.getAccessToken()), testData.getPracticeId(),
 				testData.getPatientIdPm());
 	}
@@ -853,9 +853,9 @@ public class PSS2PatientModulatorrAcceptanceTests extends BaseTestNGWebDriver {
 
 		log("Base URL is ---> " + testData.getBasicURI());
 		log("Access Token --> " + testData.getAccessToken());
-		log("Payload- " + payloadPatientMod.availableslotsPayload());
+		log("Payload- " + payloadPatientMod.availableslotsPayload(testData.getLocationIdApp(),testData.getBookIdAppointment(),testData.getAppSlotId()));
 
-		postAPIRequest.availableSlots(testData.getBasicURI(), payloadPatientMod.availableslotsPayload(),
+		postAPIRequest.availableSlots(testData.getBasicURI(), payloadPatientMod.availableslotsPayload(testData.getLocationIdApp(),testData.getBookIdAppointment(),testData.getAppSlotId()),
 				headerConfig.HeaderwithToken(testData.getAccessToken()), testData.getPracticeId(),
 				testData.getPatientIdAvailableSlots());
 
@@ -894,11 +894,10 @@ public class PSS2PatientModulatorrAcceptanceTests extends BaseTestNGWebDriver {
 
 		log("Base URL is ---> " + testData.getBasicURI());
 		log("Access Token --> " + testData.getAccessToken());
-		log("Payload- " + payloadPatientMod.rescheduleAppointmentPayload(testData.getRescheduleDateTime(),
-				testData.getRescheduleSlotId()));
+		log("Payload- " + payloadPatientMod.rescheduleAppointmentPayload(testData.getRescheduleSlotId(),testData.getBookIdAppointment(),testData.getAppSlotId(),testData.getLocationIdApp(),testData.getRescheduleDateTime(),testData.getRescheduleAppId()));
 
-		postAPIRequest.rescheduleAppointment(testData.getBasicURI(), payloadPatientMod.rescheduleAppointmentPayload(testData.getRescheduleDateTime(),
-				testData.getRescheduleSlotId()),
+
+			postAPIRequest.rescheduleAppointment(testData.getBasicURI(), payloadPatientMod.rescheduleAppointmentPayload(testData.getRescheduleSlotId(),testData.getBookIdAppointment(),testData.getAppSlotId(),testData.getLocationIdApp(),testData.getRescheduleDateTime(),testData.getRescheduleAppId()),
 				headerConfig.HeaderwithToken(testData.getAccessToken()), testData.getPracticeId(),
 				testData.getPatientIdAvailableSlots(), testData.getPatientType());
 	}
@@ -918,16 +917,16 @@ public class PSS2PatientModulatorrAcceptanceTests extends BaseTestNGWebDriver {
 		log("Access Token --> " + testData.getAccessToken());
 	
 
-		String SlotId = postAPIRequest.availableSlots(testData.getBasicURI(), payloadPatientMod.availableslotsPayload(),
+		String SlotId = postAPIRequest.availableSlots(testData.getBasicURI(), payloadPatientMod.availableslotsPayload(testData.getLocationIdApp(),testData.getBookIdAppointment(),testData.getAppSlotId()),
 				headerConfig.HeaderwithToken(testData.getAccessToken()), testData.getPracticeId(),
 				testData.getPatientIdAvailableSlots());
 		
 		log("SlotId " + SlotId);
-		log("Payload- " + payloadPatientMod.scheduleAppointmentPayload(testData.getScheduleDate(),
-				testData.getScheduleTime(),SlotId));
+		log("Payload- " + payloadPatientMod.scheduleAppointmentPayload(SlotId,testData.getBookIdAppointment(),testData.getAppSlotId(),testData.getLocationIdApp(),testData.getScheduleDate(),
+				testData.getScheduleTime()));
 
-		postAPIRequest.scheduleAppointment(testData.getBasicURI(),payloadPatientMod.scheduleAppointmentPayload(testData.getScheduleDate(),
-				testData.getScheduleTime(),SlotId),headerConfig.HeaderwithToken(testData.getAccessToken()), testData.getPracticeId(),
+		postAPIRequest.scheduleAppointment(testData.getBasicURI(),payloadPatientMod.scheduleAppointmentPayload(SlotId,testData.getBookIdAppointment(),testData.getAppSlotId(),testData.getLocationIdApp(),testData.getScheduleDate(),
+				testData.getScheduleTime()),headerConfig.HeaderwithToken(testData.getAccessToken()), testData.getPracticeId(),
 				testData.getPatientIdAvailableSlots(), testData.getPatientType());
 
 	}

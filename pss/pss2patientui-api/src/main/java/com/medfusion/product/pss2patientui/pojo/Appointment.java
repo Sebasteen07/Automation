@@ -238,6 +238,7 @@ public class Appointment {
 	private String patientIdAvailableSlots;
 	private String patientIdAppointmentTypesRule;
 	private String displayName;
+
 	private String locationTimeZoneCode;
 	private String pastAppointsmentsByPage;
 	private String patientType;
@@ -247,8 +248,9 @@ public class Appointment {
 	private String RescheduleDateTime;
 	private String Rescheduledate;
 	private boolean insuranceDetails = false;
-
-
+	private String bookIdAppointment;
+	private String rescheduleAppId;
+	private String appSlotId;
 
 	public Appointment(String providerConfig, String usernameConfig, String passwordConfig, String datetimeConfig,
 			String locationConfig, String appointmentConfig, String specialityConfig) {
@@ -1954,5 +1956,28 @@ public class Appointment {
 	public void setRescheduledate(String rescheduledate) {
 		Rescheduledate = rescheduledate;
 	}
+	
+	public String getBookIdAppointment() {
+		return bookIdAppointment;
+	}
 
+	public void setBookIdAppointment(String bookIdAppointment) {
+		this.bookIdAppointment = bookIdAppointment;
+	}
+
+	public String getRescheduleAppId() {
+		return rescheduleAppId;
+	}
+
+	public void setRescheduleAppId(String rescheduleAppId) {
+		this.rescheduleAppId = rescheduleAppId;
+	}
+
+	public String getAppSlotId() {
+		return appSlotId;
+	}
+
+	public void setAppSlotId(String appSlotId) {
+		this.appSlotId = appSlotId;
+	}
 }

@@ -540,5 +540,8 @@ public class PSSPropertyFileLoader {
 		appointValues.setScheduleTime(property.getProperty("schedule.slot.time"));
 		appointValues.setRescheduleSlotId(property.getProperty("reschedule.slot.id"));
 		appointValues.setRescheduleDateTime(property.getProperty("reschedule.slot.date.time"));
+		appointValues.setBookIdAppointment(property.getProperty("book.id"));
+		appointValues.setRescheduleAppId(property.getProperty("reschedule.app.id"));
+		appointValues.setAppSlotId(property.getProperty("appointment.slot.id"));
 	}
 }
