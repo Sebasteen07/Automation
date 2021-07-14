@@ -30,7 +30,7 @@ public class IdentityTests extends ApiConstructor {
 		setupRequestSpecBuilder();
 	}
 
-	@Test (enabled = true)
+	@Test(enabled = true)
 	public void testAuthenticateCredentialsV5() throws Exception {
 		logStep("Execute post credentials with valid username and password");
 		Response response = postAuthenticateCredentials(testData.getProperty("api.username"),
@@ -41,7 +41,7 @@ public class IdentityTests extends ApiConstructor {
 		validate.verifySuccessfulCredentials(response);
 	}
 
-	@Test (enabled = true)
+	@Test(enabled = true)
 	public void testAuthenticateInvalidCredentialsV5() throws Exception {
 		logStep("Execute post v5 credentials with invalid username and password");
 		Response response = postAuthenticateCredentials(testData.getProperty("api.invalid.username"),
@@ -52,7 +52,7 @@ public class IdentityTests extends ApiConstructor {
 		validate.verifyUnsuccessfulCredentials(response);
 	}
 
-	@Test (enabled = true)
+	@Test(enabled = true)
 	public void testGetExistingUsername() throws Exception {
 		logStep("Execute get username status with existing username");
 		Response response = getUsernameStatus(testData.getProperty("api.username"));
@@ -62,7 +62,7 @@ public class IdentityTests extends ApiConstructor {
 		validate.verifyUsernameExists(response);
 	}
 
-	@Test (enabled = true)
+	@Test(enabled = true)
 	public void testGetNewUsername() throws Exception {
 		logStep("Execute get username status with new username");
 		Response response = getUsernameStatus(testData.getProperty("identity.new.username"));
@@ -72,7 +72,7 @@ public class IdentityTests extends ApiConstructor {
 		validate.verifyNewUsername(response);
 	}
 
-	@Test (enabled = true)
+	@Test(enabled = true)
 	public void testGetProfileByUsernameV5() throws Exception {
 		logStep("Get System JWT token");
 		String token = getSystemJWT();
@@ -85,7 +85,7 @@ public class IdentityTests extends ApiConstructor {
 		validate.verifyProfilesForUsername(response, testData.getProperty("identity.username"));
 	}
 
-	@Test (enabled = true)
+	@Test(enabled = true)
 	public void testGetProfileByEmailV5() throws Exception {
 		logStep("Get System JWT token");
 		String token = getSystemJWT();
@@ -98,7 +98,7 @@ public class IdentityTests extends ApiConstructor {
 		validate.verifyProfilesForEmail(response, testData.getProperty("identity.email"));
 	}
 
-	@Test (enabled = true)
+	@Test(enabled = true)
 	public void testGetProfileByAuthIdV5() throws Exception {
 		logStep("Get System JWT token");
 		String token = getSystemJWT();
@@ -111,7 +111,7 @@ public class IdentityTests extends ApiConstructor {
 		validate.verifyProfilesForAuthId(response, testData.getProperty("api.auth.id"));
 	}
 
-	@Test (enabled = true)
+	@Test(enabled = true)
 	public void testCreateProfileV5() throws Exception {
 		logStep("Get System JWT token");
 		String token = getSystemJWT();
@@ -124,10 +124,10 @@ public class IdentityTests extends ApiConstructor {
 
 		logStep("Verifying the response");
 		assertEquals(response.getStatusCode(), 200);
-		validate.verifyPostUserResponse(response, "v5");
+		validate.verifyPostUserResponse(response);
 	}
 
-	@Test (enabled = true)
+	@Test(enabled = true)
 	public void testCreateProfileWithExistingUsernameV5() throws Exception {
 		logStep("Get System JWT token");
 		String token = getSystemJWT();
@@ -144,7 +144,7 @@ public class IdentityTests extends ApiConstructor {
 				response.asString().contains("Username " + testData.getProperty("api.username") + " is already taken"));
 	}
 
-	@Test (enabled = true)
+	@Test(enabled = true)
 	public void testUpdateProfileV5() throws Exception {
 		logStep("Get System JWT token");
 		String token = getSystemJWT();
@@ -157,10 +157,10 @@ public class IdentityTests extends ApiConstructor {
 
 		logStep("Verifying the response");
 		assertEquals(response.getStatusCode(), 200);
-		validate.verifyUpdateUserResponse(response, "v5");
+		validate.verifyUpdateUserResponse(response);
 	}
 
-	@Test (enabled = true)
+	@Test(enabled = true)
 	public void testUpdateProfileForInvalidAuthIdV5() throws Exception {
 		logStep("Get System JWT token");
 		String token = getSystemJWT();
@@ -175,7 +175,7 @@ public class IdentityTests extends ApiConstructor {
 		assertEquals(response.getStatusCode(), 400);
 	}
 
-	@Test (enabled = true)
+	@Test(enabled = true)
 	public void testUpdateProfileWithInvalidTokenV5() throws Exception {
 		logStep("Execute update user profile");
 		Response response = updateUserProfile("", testData.getProperty("identity.update.auth.id"),
@@ -187,7 +187,7 @@ public class IdentityTests extends ApiConstructor {
 		assertEquals(response.getStatusCode(), 401);
 	}
 
-	@Test (enabled = true)
+	@Test(enabled = true)
 	public void testDeleteAuthIdSecurityPhrase() throws Exception {
 		logStep("Get System JWT token");
 		String token = getSystemJWT();
@@ -199,7 +199,7 @@ public class IdentityTests extends ApiConstructor {
 		assertEquals(response.getStatusCode(), 204);
 	}
 
-	@Test (enabled = true)
+	@Test(enabled = true)
 	public void testDeleteSecurityPhraseForInvalidAuthId() throws Exception {
 		logStep("Get System JWT token");
 		String token = getSystemJWT();
@@ -212,7 +212,7 @@ public class IdentityTests extends ApiConstructor {
 		assertTrue(response.asString().contains("No user found with authId"));
 	}
 
-	@Test (enabled = true)
+	@Test(enabled = true)
 	public void testVerifySecurityAnswer() throws Exception {
 		logStep("Get System JWT token");
 		String token = getSystemJWT();
@@ -226,7 +226,7 @@ public class IdentityTests extends ApiConstructor {
 		assertEquals(response.getStatusCode(), 204);
 	}
 
-	@Test (enabled = true)
+	@Test(enabled = true)
 	public void testVerifySecurityAnswerWithWrongAnswer() throws Exception {
 		logStep("Get System JWT token");
 		String token = getSystemJWT();
@@ -239,8 +239,8 @@ public class IdentityTests extends ApiConstructor {
 		assertEquals(response.getStatusCode(), 400);
 		assertTrue(response.asString().contains("Security answer incorrect"));
 	}
-	
-	@Test (enabled = true)
+
+	@Test(enabled = true)
 	public void testGetIdentityByAuthId() throws Exception {
 		logStep("Get System JWT token");
 		String token = getSystemJWT();
@@ -252,7 +252,7 @@ public class IdentityTests extends ApiConstructor {
 		assertEquals(response.getStatusCode(), 200);
 	}
 
-	@Test (enabled = true)
+	@Test(enabled = true)
 	public void testGetIdentityByInvalidAuthId() throws Exception {
 		logStep("Get System JWT token");
 		String token = getSystemJWT();
