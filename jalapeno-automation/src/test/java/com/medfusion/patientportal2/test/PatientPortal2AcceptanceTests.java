@@ -837,7 +837,7 @@ public class PatientPortal2AcceptanceTests extends BaseTestNGWebDriver {
 		homePage = appointmentRequestStep2.submitAppointment(driver);
 
 		logStep("Check if thank you frame is displayd");
-		Thread.sleep(10000);
+		//Thread.sleep(1000);
 		assertTrue(homePage.isTextDisplayed("Thank you"));
 
 		logStep("Navigate to Appointment Request History");
@@ -2495,7 +2495,6 @@ public class PatientPortal2AcceptanceTests extends BaseTestNGWebDriver {
 		homePage = appointmentRequestStep2.submitAppointment(driver);
 
 		logStep("Check if thank you frame is displayd");
-		Thread.sleep(10000);
 		assertTrue(homePage.isTextDisplayed("Thank you"));
 
 		logStep("Navigate to Appointment Request History");
@@ -2503,7 +2502,6 @@ public class PatientPortal2AcceptanceTests extends BaseTestNGWebDriver {
 		JalapenoAppointmentRequestV2HistoryPage historyPage = appointmentRequestStep1.goToHistory(driver);
 
 		logStep("Check elements and appointment request reason");
-
 		assertTrue(historyPage.findAppointmentReasonAndOpen(appointmentReason));
 
 		logStep("Check appointment request details");
