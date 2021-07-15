@@ -164,6 +164,17 @@ public class PayloadDetails {
 		return refundmap;
 	}
 
+	public static Map<String, Object> getPayloadForVoidSaleMap(String comment, String customerid,
+			String externaltransactionid, String orderid) {
+
+		Map<String, Object> voidmap = new HashMap<String, Object>();
+		voidmap.put("comment", comment);
+		voidmap.put("customerId", customerid);
+		voidmap.put("externalTransactionId", externaltransactionid);
+		voidmap.put("originalOrderId", orderid);
+		return voidmap;
+	}
+
 	public static Map<String, Object> getPayloadForNewSaleAPI(String paymentSource, int transactionAmount) {
 		Map<String, Object> cardsMap = new HashMap<String, Object>();
 		cardsMap.putAll(Card.payloadForSale(paymentSource, transactionAmount));

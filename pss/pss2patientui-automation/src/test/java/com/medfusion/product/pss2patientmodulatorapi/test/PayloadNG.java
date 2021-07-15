@@ -1,11 +1,19 @@
 // Copyright 2020 NXGN Management, LLC. All Rights Reserved.
 package com.medfusion.product.pss2patientmodulatorapi.test;
 
-public class Payload {
+public class PayloadNG {
 	
 	String scheduleApptPatient="{\"slotId\":\"0001\",\"specialty\":null,\"book\":205665,\"appointmentType\":205755,\"location\":205605,\"startDateTime\":\"03/31/2021 02:00:00\",\"customQuestion\":null,\"insuranceInfo\":null,\"patientInfo\":{},\"allowDuplicatePatient\":false,\"updatePatientDetails\":{\"FN\":\"rt\",\"LN\":\"rt\",\"DOB\":\"01/01/2000\",\"GENDER\":\"M\",\"EMAIL\":\"Shweta.Sontakke@CrossAsyst.com\",\"PHONE\":null,\"INSID\":null,\"ADDR1\":null,\"ADDR2\":null,\"CITY\":null,\"STATE\":null,\"ZIP\":null},\"flow\":\"loginless\",\"appTypeDetail\":null,\"rule\":\"T,L,B\",\"leafNode\":null}";
 	String apptbody="{\"specialty\":null,\"location\":null,\"book\":null,\"appointmentType\":null,\"slotId\":null,\"patientType\":\"PT_EXISTING\",\"linkGenerationFlow\":false,\"patientDetails\":{\"FN\":\"rt\",\"LN\":\"rt\",\"DOB\":\"01/01/2000\",\"GENDER\":\"M\",\"EMAIL\":\"Shweta.Sontakke@CrossAsyst.com\",\"PHONE\":null,\"INSID\":null,\"ADDR1\":null,\"ADDR2\":null,\"CITY\":null,\"STATE\":null,\"ZIP\":null},\"flow\":\"loginless\"}";
-	String booklist="{\"specialty\":null,\"location\":null,\"book\":null,\"appointmentType\":null,\"slotId\":null,\"patientType\":\"PT_NEW\",\"linkGenerationFlow\":false,\"patientDetails\":{\"FN\":\"api\",\"LN\":\"api\",\"DOB\":\"01/01/2000\",\"GENDER\":\"M\",\"EMAIL\":null,\"PHONE\":null,\"INSID\":null,\"ADDR1\":null,\"ADDR2\":null,\"CITY\":null,\"STATE\":null,\"ZIP\":null,\"PHONE1\":null},\"flow\":\"loginless\"}";
+	String booklist = "{\r\n" + "    \"specialty\": null,\r\n" + "    \"location\": null,\r\n"
+			+ "    \"book\": null,\r\n" + "    \"appointmentType\": null,\r\n" + "    \"slotId\": null,\r\n"
+			+ "    \"patientType\": \"PT_NEW\",\r\n" + "    \"linkGenerationFlow\": false,\r\n"
+			+ "    \"patientDetails\": {\r\n" + "        \"FN\": \"api\",\r\n" + "        \"LN\": \"api\",\r\n"
+			+ "        \"DOB\": \"01/01/2000\",\r\n" + "        \"GENDER\": \"M\",\r\n" + "        \"EMAIL\": null,\r\n"
+			+ "        \"PHONE\": null,\r\n" + "        \"INSID\": null,\r\n" + "        \"ADDR1\": null,\r\n"
+			+ "        \"ADDR2\": null,\r\n" + "        \"CITY\": null,\r\n" + "        \"STATE\": null,\r\n"
+			+ "        \"ZIP\": null,\r\n" + "        \"PHONE1\": null\r\n" + "    },\r\n"
+			+ "    \"flow\": \"loginless\"\r\n" + "}";
 	String locationlist="{\"specialty\":null,\"location\":null,\"book\":null,\"appointmentType\":205902,\"slotId\":null,\"patientType\":\"PT_NEW\",\"linkGenerationFlow\":false,\"patientDetails\":{\"FN\":\"api\",\"LN\":\"api\",\"DOB\":\"01/01/2000\",\"GENDER\":\"M\",\"EMAIL\":null,\"PHONE\":null,\"INSID\":null,\"ADDR1\":null,\"ADDR2\":null,\"CITY\":null,\"STATE\":null,\"ZIP\":null,\"PHONE1\":null},\"flow\":\"loginless\"}";
 	String availableslots="{\"specialty\":null,\"location\":200353,\"book\":205802,\"appointmentType\":205902,\"startDateTime\":\"11/06/2020\",\"slotId\":\"4182387\",\"traversal\":false,\"patientType\":\"PT_NEW\"}";
 	String scheduleappt= "{\r\n" + 
@@ -469,19 +477,18 @@ public class Payload {
 				+ "        }\r\n"
 				+ "    ]\r\n"
 				+ "}";
-		
+
 		String lastseenprovider="{\r\n"
 				+ "  \"additionalField\": null,\r\n"
-				+ "  \"appointmentCategoryId\": null,\r\n"
-				+ "  \"appointmentTypeId\": null,\r\n"
+				+ "  \"appointmentCategoryId\": \"8F563A6C-7098-4446-97E2-7EF9345ED469\",\r\n"
+				+ "  \"appointmentTypeId\": \"86D0E00F-C136-4A24-BF7A-6C17E9AB35ED\",\r\n"
 				+ "  \"apptTypeAllocated\": false,\r\n"
 				+ "  \"duration\":null,\r\n"
 				+ "  \"locationId\": \"283BB437-B0C6-4626-A7CC-57FD0D1D6574\",\r\n"
 				+ "  \"noOfDays\": null,\r\n"
-				+ "  \"patientId\": \"50553\",\r\n"
-				+ "  \"resourceCategoryId\": null,\r\n"
-				+ "  \"resourceId\": null,\r\n"
+				+ "  \"patientId\": \"50056\",\r\n"
+				+ "  \"resourceCategoryId\": \"437DCCDB-8D78-475F-B661-EF393674F1F8\",\r\n"
+				+ "  \"resourceId\": \"78E497EF-0C8F-4D59-AD40-FE7BE12B9842\",\r\n"
 				+ "  \"slotCount\": 0\r\n"
 				+ "}";
-
 }

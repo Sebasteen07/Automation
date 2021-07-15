@@ -27,7 +27,7 @@ public class SearchPartiallyFilledPage extends BasePageObject {
 
 	public ViewPatientFormPage selectPatientsFirstForm() throws Exception {
 		PropertyFileLoader testData = new PropertyFileLoader();
-		String patientsName = testData.getProperty("patientFirstname") + ' ' + testData.getProperty("patientLastname");
+		String patientsName = testData.getProperty("patient.first.name") + ' ' + testData.getProperty("patient.last.name");
 
 		driver.findElement(By.xpath("//*[contains(text(), '" + patientsName + "')]")).click();
 		return PageFactory.initElements(driver, ViewPatientFormPage.class);

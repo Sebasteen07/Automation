@@ -507,7 +507,7 @@ public class CommonFlows {
 
 			Log4jUtil.log("Getting messages since timestamp: " + since);
 			RestUtils.setupHttpGetRequest(
-					PropertyLoaderObj.getProperty("GetReadReceipt").replaceAll("integrationID", integrationID)
+					PropertyLoaderObj.getProperty("get.read.receipt").replaceAll("integrationID", integrationID)
 							+ "?since=" + since + ",0",
 					PropertyLoaderObj.getResponsePath());
 
@@ -531,7 +531,7 @@ public class CommonFlows {
 
 			Log4jUtil.log("Getting messages since timestamp: " + since);
 			RestUtils.setupHttpGetRequest(
-					PropertyLoaderObj.getProperty("GetReadReceipt").replaceAll("integrationID", integrationID)
+					PropertyLoaderObj.getProperty("get.read.receipt").replaceAll("integrationID", integrationID)
 							+ "?since=" + since + ",0",
 					PropertyLoaderObj.getResponsePath());
 
@@ -556,7 +556,7 @@ public class CommonFlows {
 
 			Log4jUtil.log("Step Begins: Do a GET and get the message");
 			RestUtils.setupHttpGetRequest(
-					PropertyLoaderObj.getProperty("GetInboundMessage").replaceAll("integrationID", integrationID)
+					PropertyLoaderObj.getProperty("get.inbound.message").replaceAll("integrationID", integrationID)
 							+ "?since=" + since + ",0",
 					PropertyLoaderObj.getResponsePath());
 
@@ -597,7 +597,7 @@ public class CommonFlows {
 
 		Log4jUtil.log("Step Begins: Do a GET and get the message");
 		RestUtils.setupHttpGetRequest(
-				PropertyLoaderObj.getProperty("GetInboundMessage").replaceAll("integrationID", integrationID)
+				PropertyLoaderObj.getProperty("get.inbound.message").replaceAll("integrationID", integrationID)
 						+ "?since=" + since + ",0",
 				PropertyLoaderObj.getResponsePath());
 
@@ -926,8 +926,8 @@ public class CommonFlows {
 			JalapenoMessagesPage messagesPage = homePage.showMessages(driver);
 
 			Log4jUtil.log("Step Begins: Validate message loads and is the right message");
-			assertTrue(messagesPage.isMessageDisplayed(driver, PropertyLoaderObj.getProperty("AppointmentSubject")));
-			messagesPage.verifyMessageContent(driver, PropertyLoaderObj.getProperty("AppointmentSubject"), body);
+			assertTrue(messagesPage.isMessageDisplayed(driver, PropertyLoaderObj.getProperty("appointment.subject")));
+			messagesPage.verifyMessageContent(driver, PropertyLoaderObj.getProperty("appointment.subject"), body);
 			messagesPage.backToHomePage(driver);
 		}
 
@@ -938,7 +938,7 @@ public class CommonFlows {
 		Thread.sleep(5000);
 		Log4jUtil.log("Step Begins: Verify booked appointment received in Portal");
 		Boolean appointmentStatus = appointmentsPage.verifyAppointment(appointmentDate, appointmentTime,
-				PropertyLoaderObj.getProperty("EPMProviderName"));
+				PropertyLoaderObj.getProperty("epm.provider.name"));
 		assertTrue(appointmentStatus, "Booked Appointment didnot receive by Patient");
 
 		driver.navigate().back();

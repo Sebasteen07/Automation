@@ -1,9 +1,6 @@
 // Copyright 2013-2021 NXGN Management, LLC. All Rights Reserved.
 package com.medfusion.product.object.maps.pss2.page.ConfirmationPage;
 
-import static org.testng.Assert.assertEquals;
-import static org.testng.Assert.assertTrue;
-
 import java.util.ArrayList;
 import java.util.List;
 
@@ -128,10 +125,17 @@ public class ConfirmationPage extends PSS2MainPage {
 		lastQueInputBox.sendKeys("Enter the answer of last question");
 	}
 
-	public ScheduledAppointment appointmentConfirmed() {
+	public ScheduledAppointment appointmentConfirmed() throws InterruptedException {
 		commonMethods.highlightElement(buttonAllGood);
-		buttonAllGood.click();
+		jse.executeScript("arguments[0].click();", buttonAllGood);
 		return PageFactory.initElements(driver, ScheduledAppointment.class);
+	}
+
+	public void apptConfm() {
+		log("-----------I AM IN apptConfm METHOD-----------");
+		commonMethods.highlightElement(buttonAllGood);
+		jse.executeScript("arguments[0].click();", buttonAllGood);
+
 	}
 
 	public ScheduledAppointment rescheduleAppointmentConfirmed() throws InterruptedException {

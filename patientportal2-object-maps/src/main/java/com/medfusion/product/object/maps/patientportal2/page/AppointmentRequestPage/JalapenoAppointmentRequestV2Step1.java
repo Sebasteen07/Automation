@@ -16,7 +16,7 @@ import com.medfusion.product.object.maps.patientportal2.page.JalapenoMenu;
 
 public class JalapenoAppointmentRequestV2Step1 extends JalapenoMenu {
 
-	@FindBy(how = How.ID, using = "history_button")
+	@FindBy(how = How.ID, using = "previousRequestsPillsTab")
 	private WebElement previousAppoitmentRequestsButton;
 
 	@FindBy(how = How.NAME, using = "provsearch")

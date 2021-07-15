@@ -74,7 +74,7 @@ public class JalapenoForgotPasswordPage4 extends MedfusionPage {
 			newPassword.sendKeys(password);
 			confirmPassword.sendKeys(password);
 			resetPasswordButton.click();
-			fillInSecretQuestionAndAnswer(testData.getProperty("resetPasswordSecurityQuestion"),testData.getProperty("resetPasswordSecurityAnswer"));
+			fillInSecretQuestionAndAnswer(testData.getProperty("reset.password.security.question"),testData.getProperty("reset.password.security.answer"));
 			
 			return PageFactory.initElements(driver, JalapenoHomePage.class);
 		}
