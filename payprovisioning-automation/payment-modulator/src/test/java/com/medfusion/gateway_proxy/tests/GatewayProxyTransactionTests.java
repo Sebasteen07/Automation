@@ -29,7 +29,7 @@ public class GatewayProxyTransactionTests extends GatewayProxyBaseTest {
 	}
 
 	@Test(enabled = true)
-	public void testGatewayProxySale() throws Exception {
+	public void testGatewayProxySaleWithValidAuth() throws Exception {
 		String transanctionAmount = IHGUtil.createRandomNumericString(5);
 		GatewayProxyTransactionResource transaction = new GatewayProxyTransactionResource();
 		Response response = transaction.makeASale(token, testData.getProperty("proxy.mmid"),
@@ -40,6 +40,40 @@ public class GatewayProxyTransactionTests extends GatewayProxyBaseTest {
 		validate.verifyTransactionDetails(response.asString());
 		CommonUtils.saveTransactionDetails(jsonpath.get("externalTransactionId").toString(),
 				jsonpath.get("orderId").toString());
+	}
+
+	@Test(enabled = true)
+	public void testGatewayProxySaleWithInvalidAuth() throws Exception {
+		String transanctionAmount = IHGUtil.createRandomNumericString(5);
+		GatewayProxyTransactionResource transaction = new GatewayProxyTransactionResource();
+		Response response = transaction.makeASale(token+"urf", testData.getProperty("proxy.mmid"),
+				testData.getProperty("test.pay.customer.uuid"), transanctionAmount);
+
+		JsonPath jsonpath = new JsonPath(response.asString());
+		Assert.assertTrue(response.getStatusCode() == 401);
+		Assert.assertEquals("Unauthorized", jsonpath.get("message"));
+	}
+
+	@Test(dataProvider = "txn_data_for_proxy_sale", dataProviderClass = GatewayProxyTestData.class, enabled = true)
+	public void testGatewayProxySaleWithInvalidData(String mmid, String customeruuid, String txnAmount) throws Exception {
+
+ 		GatewayProxyTransactionResource transaction = new GatewayProxyTransactionResource();
+		Response response = transaction.makeASale(token, mmid,
+				customeruuid, txnAmount);
+
+		JsonPath jsonpath = new JsonPath(response.asString());
+
+		if(response.getStatusCode() == 400) {
+			Assert.assertTrue(!jsonpath.get("requestId").toString().isEmpty());
+		}
+		else if(response.getStatusCode() == 403){
+			Assert.assertTrue(jsonpath.get("error").toString().contains("Forbidden"));
+		}
+		else {
+			Assert.assertTrue(response.getStatusCode() == 404);
+			Assert.assertTrue(!jsonpath.get("message").toString().isEmpty());
+			Assert.assertTrue(jsonpath.get("error").toString().contains("Not Found"));
+		}
 	}
 
 	@Test(enabled = true)
