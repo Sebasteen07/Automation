@@ -52,34 +52,48 @@ public class GatewayProxyTransactionResource extends GatewayProxyBaseTest {
 		return response;
 	}
 
-	public Response makeAuthorizeTransaction(String token, String paymentSource, String cardType, String cardNo, String expiry, String customeruuid, String mmid) throws Exception {
+	public Response makeAuthorizeTransaction(String token, String paymentSource, String cardType, String cardNo,
+			String expiry, String customeruuid, String mmid) throws Exception {
 		testData = new PropertyFileLoader();
 		Map<String, Object> transactiondetails = PayloadDetails.getPayloadForAuthorizeSaleMap(
 				(testData.getProperty("transaction.amount")), testData.getProperty("account.number"),
-				testData.getProperty("consumer.name"), paymentSource,
-				testData.getProperty("cvv"), cardType, cardNo,
-				expiry, testData.getProperty("bin"), testData.getProperty("zipcode"),
-				testData.getProperty("last.name"), testData.getProperty("address.line1"), testData.getProperty("city"),
-				testData.getProperty("state"), testData.getProperty("first.name"));
+				testData.getProperty("consumer.name"), paymentSource, testData.getProperty("cvv"), cardType, cardNo,
+				expiry, testData.getProperty("bin"), testData.getProperty("zipcode"), testData.getProperty("last.name"),
+				testData.getProperty("address.line1"), testData.getProperty("city"), testData.getProperty("state"),
+				testData.getProperty("first.name"));
 
 		Response response = given().spec(requestSpec).auth().oauth2(token).log().all().body(transactiondetails).when()
-				.post(customeruuid + "/merchant/" + mmid	+ "/authorize")
-				.then().and().extract().response();
+				.post(customeruuid + "/merchant/" + mmid + "/authorize").then().and().extract().response();
 		return response;
 	}
 
-	public Response makeCaptureTransaction(String token, String paymentSource, String cardType, String cardNo, String expiry, String customeruuid, String mmid, String txnid, String orderid) throws Exception {
+	public Response makeCaptureTransaction(String token, String paymentSource, String cardType, String cardNo,
+			String expiry, String customeruuid, String mmid, String txnid, String orderid) throws Exception {
 		testData = new PropertyFileLoader();
 
-		Map<String, Object> transactiondetails = PayloadDetails.getPayloadForCaptureMap(IHGUtil.createRandomNumericString(3),
-				testData.getProperty("account.number"), testData.getProperty("consumer.name"), paymentSource,
-				testData.getProperty("cvv"), cardType, cardNo, expiry, testData.getProperty("bin"), testData.getProperty("zipcode"),
-				testData.getProperty("last.name"),testData.getProperty("address.line1"),testData.getProperty("city"),
-				testData.getProperty("state"),testData.getProperty("first.name"),txnid, orderid);
+		Map<String, Object> transactiondetails = PayloadDetails.getPayloadForCaptureMap(
+				IHGUtil.createRandomNumericString(3), testData.getProperty("account.number"),
+				testData.getProperty("consumer.name"), paymentSource, testData.getProperty("cvv"), cardType, cardNo,
+				expiry, testData.getProperty("bin"), testData.getProperty("zipcode"), testData.getProperty("last.name"),
+				testData.getProperty("address.line1"), testData.getProperty("city"), testData.getProperty("state"),
+				testData.getProperty("first.name"), txnid, orderid);
 
 		Response response = given().spec(requestSpec).auth().oauth2(token).log().all().body(transactiondetails).when()
-				.post(customeruuid + "/merchant/" + mmid	+ "/capture")
-				.then().and().extract().response();
+				.post(customeruuid + "/merchant/" + mmid + "/capture").then().and().extract().response();
 		return response;
 	}
+
+	public Response makeAVoid(String token, String mmid, String testPayCustomerUuid, String comment, String customerId,
+			String externalTransId, String orderId) throws NullPointerException, Exception {
+		testData = new PropertyFileLoader();
+
+		Map<String, Object> transactiondetails = PayloadDetails.getPayloadForVoidSaleMap(comment, customerId,
+				externalTransId, orderId);
+
+		Response response = given().spec(requestSpec).auth().oauth2(token).log().all().body(transactiondetails).when()
+				.post(testPayCustomerUuid + "/merchant/" + mmid + "/void").then().and().extract().response();
+
+		return response;
+	}
+
 }

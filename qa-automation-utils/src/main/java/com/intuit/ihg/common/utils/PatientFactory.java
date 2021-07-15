@@ -11,21 +11,21 @@ public class PatientFactory {
 				Patient patient = new Patient();
 				patient.setUsername(username);
 				patient.setEmail(username + "@mailinator.com");
-				patient.setFirstName(testData.getProperty("FirstName") + IHGUtil.createRandomNumber());
-				patient.setLastName(testData.getProperty("LastName"));
+				patient.setFirstName(testData.getProperty("first.name") + IHGUtil.createRandomNumber());
+				patient.setLastName(testData.getProperty("last.name"));
 				patient.setPassword(testData.getProperty("password"));
-				patient.setGender(Patient.GenderExtended.MALE); //TODO
-				patient.setDOBDay(testData.getProperty("DOBDay"));
-				patient.setDOBMonth(testData.getProperty("DOBMonth"));
-				patient.setDOBYear(testData.getProperty("DOBYear"));
-				patient.setZipCode(testData.getProperty("ZipCode"));
-				patient.setAddress1(testData.getProperty("Address1"));
-				patient.setAddress2(testData.getProperty("Address2"));
-				patient.setCity(testData.getProperty("City"));
-				patient.setState(testData.getProperty("State"));
-				patient.setSecurityQuestion(testData.getProperty("SecretQuestion"));
-				patient.setSecurityQuestionAnswer(testData.getProperty("SecretAnswer"));
-				patient.setPhoneMobile(testData.getProperty("phoneNumber")); //TODO
+				patient.setGender(Patient.GenderExtended.MALE);
+				patient.setDOBDay(testData.getProperty("dob.day"));
+				patient.setDOBMonth(testData.getProperty("dob.month"));
+				patient.setDOBYear(testData.getProperty("dob.year"));
+				patient.setZipCode(testData.getProperty("zip.code"));
+				patient.setAddress1(testData.getProperty("address1"));
+				patient.setAddress2(testData.getProperty("address2"));
+				patient.setCity(testData.getProperty("city"));
+				patient.setState(testData.getProperty("state"));
+				patient.setSecurityQuestion(testData.getProperty("secret.question"));
+				patient.setSecurityQuestionAnswer(testData.getProperty("secret.answer"));
+				patient.setPhoneMobile(testData.getProperty("phone.number"));
 				return patient;
 		}
 

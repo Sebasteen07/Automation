@@ -26,8 +26,8 @@ public class PSS2NGAdpterAcceptanceTests extends BaseTestNGWebDriver {
 		propertyData = new PSSPropertyFileLoader();
 		postAPIRequest = new PostAPIRequestNG();
 		log("I am before Test");
-		postAPIRequest.setupRequestSpecBuilder(propertyData.getProperty("baseurl.ng"));
-		log("BASE URL-" + propertyData.getProperty("baseurl.ng"));
+		postAPIRequest.setupRequestSpecBuilder(propertyData.getProperty("base.url.ng"));
+		log("BASE URL-" + propertyData.getProperty("base.url.ng"));
 	}
 
 	@Test(enabled = true, groups = { "APItest" }, retryAnalyzer = RetryAnalyzer.class)
@@ -117,7 +117,7 @@ public class PSS2NGAdpterAcceptanceTests extends BaseTestNGWebDriver {
 				PayloadNG.reschedule_Payload(propertyData.getProperty("start.date.time.ng"),
 						propertyData.getProperty("end.date.time.ng"), propertyData.getProperty("patient.id.ng"),
 						propertyData.getProperty("first.name.ng"), propertyData.getProperty("first.name.ng"),
-						propertyData.getProperty("apptid.ng")));
+						propertyData.getProperty("appt.id.ng")));
 
 	}
 

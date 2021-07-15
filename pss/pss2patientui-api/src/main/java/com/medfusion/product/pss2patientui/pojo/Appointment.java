@@ -36,7 +36,7 @@ public class Appointment {
 	private String isExistingPatient;
 	private String patientPortalUserName;
 	private String patientPortalPassword;
-	private String emaiSubject;
+	private String emailSubject;
 	private String findInEmail;
 	private String retries;
 	private String isAppointmentPopup;
@@ -111,8 +111,6 @@ public class Appointment {
 	private String firstMinute;
 	private String slotValue;
 
-
-
 	private Boolean isCancelButtonPresent;
 	private int displaySlotCountLength;
 	private Boolean isNextMonthSlotAvail;
@@ -170,7 +168,7 @@ public class Appointment {
 	private String linkProviderURL;
 	private String linkLocationURL;
 	private String nextAvailiableText;
-	
+
 	// GE adapter
 	private String practiceIdGE;
 	private String ssoPatientId;
@@ -224,11 +222,23 @@ public class Appointment {
 	private String appointmentLocationName;
 	private String apptTypeNextAvailableId;
 	private String booksBynextAvailableId;
+	
+	private String appointmentIdApp;
+	private String bookIdApp;
+	private String locationIdApp;
+	private String patientDemographicsLastName;
+	private String patientDemographicsEmail;
+	private String patientDemographicsZipCode;
+	private String patientDemographicsGender;
+	private String patientDemographicsPhoneNo;
+	private String patientDemographicsDOB;
+
 	private String patientIdPm;
 	private String patientIdReschedule;
 	private String patientIdAvailableSlots;
 	private String patientIdAppointmentTypesRule;
 	private String displayName;
+
 	private String locationTimeZoneCode;
 	private String pastAppointsmentsByPage;
 	private String patientType;
@@ -237,12 +247,13 @@ public class Appointment {
 	private String RescheduleSlotId;
 	private String RescheduleDateTime;
 	private String Rescheduledate;
-
-
 	private boolean insuranceDetails = false;
+	private String bookIdAppointment;
+	private String rescheduleAppId;
+	private String appSlotId;
 
-	public Appointment(String providerConfig, String usernameConfig, String passwordConfig, String datetimeConfig, String locationConfig,
-			String appointmentConfig, String specialityConfig) {
+	public Appointment(String providerConfig, String usernameConfig, String passwordConfig, String datetimeConfig,
+			String locationConfig, String appointmentConfig, String specialityConfig) {
 		this.username = usernameConfig;
 		this.password = passwordConfig;
 		this.provider = providerConfig;
@@ -260,8 +271,83 @@ public class Appointment {
 		this.preSchedDays = preSchedDays;
 	}
 
-	public Appointment() {}	
+	public Appointment() {
+	}
 	
+	public String getPatientDemographicsDOB() {
+		return patientDemographicsDOB;
+	}
+
+	public void setPatientDemographicsDOB(String patientDemographicsDOB) {
+		this.patientDemographicsDOB = patientDemographicsDOB;
+	}
+
+	public String getPatientDemographicsEmail() {
+		return patientDemographicsEmail;
+	}
+
+	public void setPatientDemographicsEmail(String patientDemographicsEmail) {
+		this.patientDemographicsEmail = patientDemographicsEmail;
+	}
+
+	public String getPatientDemographicsZipCode() {
+		return patientDemographicsZipCode;
+	}
+
+	public void setPatientDemographicsZipCode(String patientDemographicsZipCode) {
+		this.patientDemographicsZipCode = patientDemographicsZipCode;
+	}
+
+	public String getPatientDemographicsGender() {
+		return patientDemographicsGender;
+	}
+
+	public void setPatientDemographicsGender(String patientDemographicsGender) {
+		this.patientDemographicsGender = patientDemographicsGender;
+	}
+
+	public String getPatientDemographicsPhoneNo() {
+		return patientDemographicsPhoneNo;
+	}
+
+	public void setPatientDemographicsPhoneNo(String patientDemographicsPhoneNo) {
+		this.patientDemographicsPhoneNo = patientDemographicsPhoneNo;
+	}
+	
+	
+	public String getPatientDemographicsLastName() {
+		return patientDemographicsLastName;
+	}
+
+	public void setPatientDemographicsLastName(String patientDemographicsLastName) {
+		this.patientDemographicsLastName = patientDemographicsLastName;
+	}
+
+
+	public String getAppointmentIdApp() {
+		return appointmentIdApp;
+	}
+
+	public void setAppointmentIdApp(String appointmentIdApp) {
+		this.appointmentIdApp = appointmentIdApp;
+	}
+
+	public String getBookIdApp() {
+		return bookIdApp;
+	}
+
+	public void setBookIdApp(String bookIdApp) {
+		this.bookIdApp = bookIdApp;
+	}
+
+	public String getLocationIdApp() {
+		return locationIdApp;
+	}
+
+	public void setLocationIdApp(String locationIdApp) {
+		this.locationIdApp = locationIdApp;
+	}
+
 
 	public String getSlotValue() {
 		return slotValue;
@@ -286,7 +372,7 @@ public class Appointment {
 	public void setFirstMinute(String firstMinute) {
 		this.firstMinute = firstMinute;
 	}
-	
+
 	public String getNextAvailiableText() {
 		return nextAvailiableText;
 	}
@@ -294,6 +380,7 @@ public class Appointment {
 	public void setNextAvailiableText(String nextAvailiableText) {
 		this.nextAvailiableText = nextAvailiableText;
 	}
+
 	public String getExcludeSlotFirstValue() {
 		return excludeSlotFirstValue;
 	}
@@ -446,7 +533,6 @@ public class Appointment {
 	public void setBasicURI(String basicURI) {
 		this.basicURI = basicURI;
 	}
-
 
 	public String getBaseurl_APT() {
 		return baseurl_APT;
@@ -1010,12 +1096,12 @@ public class Appointment {
 		this.patientPortalPassword = patientPortalPassword;
 	}
 
-	public String getEmaiSubject() {
-		return emaiSubject;
+	public String getEmailSubject() {
+		return emailSubject;
 	}
 
-	public void setEmaiSubject(String emaiSubject) {
-		this.emaiSubject = emaiSubject;
+	public void setEmailSubject(String emailSubject) {
+		this.emailSubject = emailSubject;
 	}
 
 	public String getFindInEmail() {
@@ -1870,5 +1956,28 @@ public class Appointment {
 	public void setRescheduledate(String rescheduledate) {
 		Rescheduledate = rescheduledate;
 	}
+	
+	public String getBookIdAppointment() {
+		return bookIdAppointment;
+	}
 
+	public void setBookIdAppointment(String bookIdAppointment) {
+		this.bookIdAppointment = bookIdAppointment;
+	}
+
+	public String getRescheduleAppId() {
+		return rescheduleAppId;
+	}
+
+	public void setRescheduleAppId(String rescheduleAppId) {
+		this.rescheduleAppId = rescheduleAppId;
+	}
+
+	public String getAppSlotId() {
+		return appSlotId;
+	}
+
+	public void setAppSlotId(String appSlotId) {
+		this.appSlotId = appSlotId;
+	}
 }

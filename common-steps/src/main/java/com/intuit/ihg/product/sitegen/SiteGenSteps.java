@@ -1,3 +1,4 @@
+//  Copyright 2013-2021 NXGN Management, LLC. All Rights Reserved.
 package com.intuit.ihg.product.sitegen;
 
 import com.intuit.ifs.csscat.core.BaseTestNGWebDriver;
@@ -12,7 +13,7 @@ import org.openqa.selenium.WebDriver;
 public class SiteGenSteps extends BaseTestNGWebDriver {
 
 	public static void logSGLoginInfo(PropertyFileLoader testData) {
-		Log4jUtil.log("URL: " + testData.getProperty("sitegenUrl"));
+		Log4jUtil.log("URL: " + testData.getProperty("sitegen.url"));
 	}
 
 	public SiteGenPracticeHomePage logInUserToSG(WebDriver driver, String login, String password) throws Exception {
@@ -20,7 +21,7 @@ public class SiteGenSteps extends BaseTestNGWebDriver {
 		PropertyFileLoader testData = new PropertyFileLoader();
 
 		logStep("Opening SiteGen home page");
-		SiteGenLoginPage sloginPage = new SiteGenLoginPage(driver, testData.getProperty("sitegenUrl"));
+		SiteGenLoginPage sloginPage = new SiteGenLoginPage(driver, testData.getProperty("sitegen.url"));
 		SiteGenHomePage sHomePage = sloginPage.login(login, password);
 
 		logStep("Navigate to SiteGen PracticeHomePage");
