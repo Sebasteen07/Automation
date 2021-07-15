@@ -75,7 +75,9 @@ public class JalapenoAskAStaffPage extends JalapenoMenu {
 	private WebElement removeCardOkButton;
     @FindBy(how = How.XPATH, using = "//*[@class='notification-message']")
 	private WebElement successMessage;
-    
+    @FindBy(how=How.XPATH, using = "//*[@class=\"attachmentName\"]")
+	private WebElement attachmentNameText;
+
 	private long createdTS;
 	private static final String filePath = System.getProperty("user.dir")
 			+ "\\src\\test\\resources\\testfiles\\VACCINATION REGISTRATION AND CONSENT FORM.PDF";
@@ -165,14 +167,14 @@ public class JalapenoAskAStaffPage extends JalapenoMenu {
 		return PageFactory.initElements(driver, JalapenoHomePage.class);
 	}
 
-	public boolean fillAndSubmitAskyourDocUnpaid(WebDriver driver) throws InterruptedException {
+	public String fillAndSubmitAskyourDocUnpaid(WebDriver driver) throws InterruptedException {
 		IHGUtil.PrintMethodName();
 
 		log("Fill message and continue");
 		IHGUtil.waitForElement(driver, 10, subject);
 		subject.sendKeys("Ola! " + this.getCreatedTimeStamp());
 		question.sendKeys("Ola Doc! Please help meh.");
-		uploadFile(filePath);
+		String attachmentName = uploadFile(filePath);
 		Thread.sleep(3000);
 		JavascriptExecutor jse = (JavascriptExecutor) driver;
 		jse.executeScript("window.scrollBy(0,400)");
@@ -183,7 +185,7 @@ public class JalapenoAskAStaffPage extends JalapenoMenu {
 		IHGUtil.waitForElement(driver, 5, successMessage);
 
 		//new WebDriverWait(driver, 20).until(ExpectedConditions.visibilityOfElementLocated(By.xpath("//*[contains(text(), 'Thank you for submitting your question')]")));
-		return true;
+		return attachmentName;
 	}
 	
 	public void setClipboardData(String path) {
@@ -193,7 +195,7 @@ public class JalapenoAskAStaffPage extends JalapenoMenu {
 		Toolkit.getDefaultToolkit().getSystemClipboard().setContents(stringSelection, null);
 	}
 	
-	public boolean uploadFile(String correctfilePath) {
+	public String uploadFile(String correctfilePath) {
 		IHGUtil.PrintMethodName();
 		setClipboardData(correctfilePath);
 		addAttachment.click();
@@ -214,6 +216,10 @@ public class JalapenoAskAStaffPage extends JalapenoMenu {
 		robot.keyPress(KeyEvent.VK_ENTER);
 		robot.delay(1500);
 		robot.keyRelease(KeyEvent.VK_ENTER);
-		return true;
+		IHGUtil.waitForElement(driver, 5, attachmentNameText);
+		String attachmentName = attachmentNameText.getText();
+		
+		return attachmentName;
 	}
+
 }
