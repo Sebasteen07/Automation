@@ -523,12 +523,9 @@ public class LoadPreTestData {
 		testData.SurgeryTimeFrame = propertyData.getSurgeryTimeFrame();
 		testData.HospitalizationReason = propertyData.getHospitalizationReason();
 		testData.HospitalizationTimeFrame = propertyData.getHospitalizationTimeFrame();
-		testData.Test = propertyData.getTest();
 		testData.TestTimeFrame = propertyData.getTestTimeFrame();
 		testData.NameofDoctorSpeciality = propertyData.getNameofDoctorSpeciality();
 		testData.NameDosage = propertyData.getNameDosage();
-		testData.FamilyMember = propertyData.getFamilyMember();
-		testData.OtherMedicalhistory = propertyData.getOtherMedicalhistory();
 		testData.times = propertyData.gettimes();
 		testData.exercise = propertyData.getexercise();
 		testData.day = propertyData.getday();

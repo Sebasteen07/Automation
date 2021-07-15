@@ -19,17 +19,17 @@ public class MerchantInfo extends BaseRest {
 	public String createUpdateElementMerchant() throws IOException {
 		
 			testData = new PropertyFileLoader();
-		  	Map<String, Object> merchantdetails = Merchant.getMerchantMap((testData.getProperty("merchantname")),
-			testData.getProperty("doingbusinessas"),testData.getProperty("externalmerchantid"),testData.getProperty("customeraccountnumber"),
-			testData.getProperty("merchantphonenumber"),testData.getProperty("transactionlimit"),testData.getProperty("primaryfirstname"),
-			testData.getProperty("primarylastname"),testData.getProperty("primaryphonenumber"),testData.getProperty("primaryemail"),
-			testData.getProperty("merchantaddress1"),testData.getProperty("merchantcity"),testData.getProperty("merchantstate"),
-			testData.getProperty("merchantzip"),testData.getProperty("accountnumber"),testData.getProperty("routingnumber"),
-			testData.getProperty("federaltaxid"),testData.getProperty("businessestablisheddate"),testData.getProperty("businesstype"),
-			testData.getProperty("mcccode"),testData.getProperty("ownershiptype"),testData.getProperty("websiteurl"),
-			testData.getProperty("amexpercent"),testData.getProperty("midqfeepercent"),testData.getProperty("midqupperfeepercent"),
-			testData.getProperty("nqfeepercent"),testData.getProperty("nqupperfeepercent"),testData.getProperty("pertransactionauthfee"),
-			testData.getProperty("pertransactionrefundfee"),testData.getProperty("qfeepercent"), testData.getProperty("qupperpercent"));
+		  	Map<String, Object> merchantdetails = Merchant.getMerchantMap((testData.getProperty("merchant.name")),
+			testData.getProperty("doing.business.as"),testData.getProperty("external.merchantid"),testData.getProperty("customer.account.number"),
+			testData.getProperty("merchant.phonenumber"),testData.getProperty("transaction.limit"),testData.getProperty("primary.firstname"),
+			testData.getProperty("primary.lastname"),testData.getProperty("primary.phonenumber"),testData.getProperty("primary.email"),
+			testData.getProperty("merchant.address1"),testData.getProperty("merchant.city"),testData.getProperty("merchant.state"),
+			testData.getProperty("merchant.zip"),testData.getProperty("account.number"),testData.getProperty("routing.number"),
+			testData.getProperty("federal.taxid"),testData.getProperty("business.established.date"),testData.getProperty("business.type"),
+			testData.getProperty("mcccode"),testData.getProperty("ownership.type"),testData.getProperty("website.url"),
+			testData.getProperty("amex.percent"),testData.getProperty("mid.qfee.percent"),testData.getProperty("mid.qupper.fee.percent"),
+			testData.getProperty("nqfee.percent"),testData.getProperty("nqupper.fee.percent"),testData.getProperty("per.transaction.authfee"),
+			testData.getProperty("per.transaction.refund.fee"),testData.getProperty("qfee.percent"), testData.getProperty("qupper.percent"));
 	
 		  	Response response = given().spec(requestSpec).
 		  	body(merchantdetails).when().post(ProvisioningUtils.postMerchant)
@@ -55,17 +55,17 @@ public class MerchantInfo extends BaseRest {
 	 public void updateGeneralMerchantDetails(String mmid) throws IOException {
 		 
 		 	testData = new PropertyFileLoader();
-		  	Map<String, Object> merchantdetails = Merchant.getMerchantMap((testData.getProperty("merchantnameupdate")),
-			testData.getProperty("doingbusinessas"),testData.getProperty("externalmerchantidupdate"),testData.getProperty("customeraccountnumber"),
-			testData.getProperty("merchantphonenumber"),testData.getProperty("transactionlimitupdate"),testData.getProperty("primaryfirstname"),
-			testData.getProperty("primarylastname"),testData.getProperty("primaryphonenumber"),testData.getProperty("primaryemail"),
-			testData.getProperty("merchantaddress1"),testData.getProperty("merchantcity"),testData.getProperty("merchantstate"),testData.getProperty("merchantzip"),
-			testData.getProperty("accountnumber"),testData.getProperty("routingnumber"),testData.getProperty("federaltaxid"),
-			testData.getProperty("businessestablisheddate"),testData.getProperty("businesstype"),testData.getProperty("mcccodeupdate"),
-			testData.getProperty("ownershiptype"),testData.getProperty("websiteurlupdate"),testData.getProperty("amexpercent"),
-			testData.getProperty("midqfeepercent"),testData.getProperty("midqupperfeepercent"),testData.getProperty("nqfeepercent"),
-			testData.getProperty("nqupperfeepercent"),testData.getProperty("pertransactionauthfee"),testData.getProperty("pertransactionrefundfee"),
-			testData.getProperty("qfeepercent"),testData.getProperty("qupperpercent"));
+		  	Map<String, Object> merchantdetails = Merchant.getMerchantMap((testData.getProperty("merchant.name.update")),
+			testData.getProperty("doing.business.as"),testData.getProperty("external.merchantid.update"),testData.getProperty("customer.account.number"),
+			testData.getProperty("merchant.phonenumber"),testData.getProperty("transaction.limit.update"),testData.getProperty("primary.firstname"),
+			testData.getProperty("primary.lastname"),testData.getProperty("primary.phonenumber"),testData.getProperty("primary.email"),
+			testData.getProperty("merchant.address1"),testData.getProperty("merchant.city"),testData.getProperty("merchant.state"),testData.getProperty("merchant.zip"),
+			testData.getProperty("account.number"),testData.getProperty("routing.number"),testData.getProperty("federal.taxid"),
+			testData.getProperty("business.established.date"),testData.getProperty("business.type"),testData.getProperty("mcccode.update"),
+			testData.getProperty("ownership.type"),testData.getProperty("website.urlupdate"),testData.getProperty("amex.percent"),
+			testData.getProperty("mid.qfee.percent"),testData.getProperty("mid.qupper.fee.percent"),testData.getProperty("nqfee.percent"),
+			testData.getProperty("nqupper.fee.percent"),testData.getProperty("per.transaction.authfee"),testData.getProperty("per.transaction.refund.fee"),
+			testData.getProperty("qfee.percent"),testData.getProperty("qupper.percent"));
 		  	
 		  	ObjectMapper objectMapper = new ObjectMapper();
 		  	String convertTOJson = objectMapper.writeValueAsString(merchantdetails);

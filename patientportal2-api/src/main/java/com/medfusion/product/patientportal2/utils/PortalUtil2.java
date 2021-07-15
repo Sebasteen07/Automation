@@ -69,7 +69,7 @@ public class PortalUtil2 extends IHGUtil {
 		username = username + generatedTS;
 		int i = 0;
 
-		while (!PortalUtil2.checkUsernameEmailIsUnique(username, testData.getProperty("credentialsMatcherUrl"))) {
+		while (!PortalUtil2.checkUsernameEmailIsUnique(username, testData.getProperty("credentials.matcher.url"))) {
 			if (i++ > 9)
 				throw new RuntimeException("Username was not unique after 10 attempts");
 			generatedTS = System.currentTimeMillis();

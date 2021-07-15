@@ -1082,12 +1082,13 @@ public class IntegrationPlatformAcceptanceTests extends BaseTestNGWebDriver {
 		if (version.contains("v1")) {
 			RestUtils.setupHttpGetRequest(testData.getRestUrl() + "?since=" + since + ",0", testData.getResponsePath());
 		} else if (version.contains("v3")) {
-			RestUtils.setupHttpGetRequest(testData.getRestV3Url() + "?since=" + since + ",0",
-					testData.getResponsePath());
+			RestUtils.setupHttpGetRequest(testData.getRestV3Url() + "?since=" + since + ",0", testData.getResponsePath());
 		}
 
 		log("Step 10: Checking validity of the response xml");
 		RestUtils.isQuestionResponseXMLValid(testData.getResponsePath(), askStaff1.getCreatedTimeStamp());
+		
+		RestUtils.isResponseContainsValidAttachmentURL(testData.getResponsePath());
 	}
 
 	@Test(enabled = true, groups = { "AcceptanceTests" }, retryAnalyzer = RetryAnalyzer.class)

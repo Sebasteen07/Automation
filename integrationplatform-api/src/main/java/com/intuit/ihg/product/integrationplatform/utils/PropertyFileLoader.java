@@ -54,7 +54,7 @@ public class PropertyFileLoader {
 	public String getCCDPATHLargeSize() {
 		return property.getProperty("ccdxml.path.largesize");
 	}
-	
+
 	public String getCCDPath() {
 		return property.getProperty("ccd.path");
 	}
@@ -750,7 +750,7 @@ public class PropertyFileLoader {
 	}
 
 	public String getPracticeProviderName_SE() {
-		return property.getProperty("practiceprovidername.se");
+		return property.getProperty("practice.provider.name.se");
 	}
 
 	// set application attributes
@@ -807,15 +807,15 @@ public class PropertyFileLoader {
 	}
 
 	public String getStatementEventURL() {
-		return property.getProperty("statementeventurl");
+		return property.getProperty("statement.event.url");
 	}
 
 	public String getStatementEventV3URL() {
-		return property.getProperty("statementeventv3url");
+		return property.getProperty("statement.event.v3.url");
 	}
 
 	public String getPaymentDueDate() {
-		return property.getProperty("paymentduedate");
+		return property.getProperty("payment.due.date");
 	}
 
 	public String getRestUrlPIDC_SE() {
@@ -837,9 +837,8 @@ public class PropertyFileLoader {
 	public String getPortalPassword_SE() {
 		return property.getProperty("portal.password.se");
 	}
-
+	
 	// BULK
-
 	public String getOAuthPropertyAMDC() {
 		return property.getProperty("oauth.property.amdc");
 	}
@@ -1043,7 +1042,6 @@ public class PropertyFileLoader {
 	}
 
 	// SendDirectMessage
-
 	public String getRestURL_SDM() {
 		return property.getProperty("resturl.sdm");
 	}
@@ -1303,107 +1301,74 @@ public class PropertyFileLoader {
 	}
 
 	public String getNameofsecondaryInsurance() {
-
 		return property.getProperty("name.of.secondary.insurance");
 	}
 
 	public String getrelFirstNAme() {
-
 		return property.getProperty("rel.first.name");
 	}
 
 	public String getrelLastNAme() {
-
 		return property.getProperty("rel.last.name");
 	}
 
 	public String getrelation1() {
-
 		return property.getProperty("relation1");
 	}
 
 	public String getphonenumber1() {
-
 		return property.getProperty("phone.number1");
 	}
 
 	public String getphonetype1() {
-
 		return property.getProperty("phone.type1");
 	}
 
 	public String gettetanus1() {
-
 		return property.getProperty("tetanus1");
 	}
 
 	public String getHPV1() {
-
 		return property.getProperty("hpv1");
 	}
 
 	public String getInfluenza1() {
-
 		return property.getProperty("influenza1");
 	}
 
 	public String getPneumonia1() {
-
 		return property.getProperty("pneumonia1");
 	}
 
 	public String getSurgeryName() {
-
 		return property.getProperty("surgery.name");
 	}
 
 	public String getSurgeryTimeFrame() {
-
 		return property.getProperty("surgery.timeframe");
 	}
 
 	public String getHospitalizationReason() {
-
 		return property.getProperty("hospitalization.reason");
 	}
 
 	public String getHospitalizationTimeFrame() {
-
 		return property.getProperty("hospitalization.timeframe");
 	}
 
-	public String getTest() {
-
-		return property.getProperty("test");
-	}
-
 	public String getTestTimeFrame() {
-
 		return property.getProperty("test.timeframe");
 	}
 
 	public String getNameofDoctorSpeciality() {
-
 		return property.getProperty("nameofdoctor.speciality");
 	}
 
 	public String getNameDosage() {
-
 		return property.getProperty("name.dosage");
 	}
 
-	public String getFamilyMember() {
-
-		return property.getProperty("familymember");
-	}
-
-	public String getOtherMedicalhistory() {
-
-		return property.getProperty("othermedicalhistory");
-	}
-
 	public String getsex() {
-
 		return property.getProperty("sex");
 	}
 
@@ -1412,12 +1377,10 @@ public class PropertyFileLoader {
 	}
 
 	public String gettimes() {
-
 		return property.getProperty("times");
 	}
 
 	public String getexercise() {
-
 		return property.getProperty("exercise");
 	}
 
@@ -1463,13 +1426,11 @@ public class PropertyFileLoader {
 	}
 
 	public String getpatientLocation_FE() {
-
 		return property.getProperty("patientlocation.fe");
 	}
 
 	public String getpatientProvider_FE() {
 		return property.getProperty("patientprovider.fe");
-
 	}
 
 	public String getresponsePDF_FE() {
@@ -1489,22 +1450,18 @@ public class PropertyFileLoader {
 	}
 
 	public String getday() {
-
 		return property.getProperty("day");
 	}
 
 	public String getDownloadFileLocation() {
-
 		return property.getProperty("download.file.location");
 	}
 
 	public String getPreCheckURL() {
-
 		return property.getProperty("precheckurl.fe");
 	}
 
 	public String getPreCheckPatientExternalID() {
-
 		return property.getProperty("precheckpatient.externalid.fe");
 	}
 
@@ -1606,134 +1563,134 @@ public class PropertyFileLoader {
 
 	// DB
 	public String getPostGREdbHostName() {
-		return property.getProperty("PostGREdbHostName");
+		return property.getProperty("postgres.db.host.name");
 	}
 
 	public String getPostGREdbName() {
-		return property.getProperty("PostGREdbName");
+		return property.getProperty("postgres.db.name");
 	}
 
 	public String getPostGREdbUserName() {
-		return property.getProperty("PostGREdbUserName");
+		return property.getProperty("postgres.db.username");
 	}
 
 	public String getPostGREdbPassword() {
-		return property.getProperty("PostGREdbPassword");
+		return property.getProperty("postgres.db.password");
 	}
 
 	public String getCoreMSSQLdbHostName() {
-		return property.getProperty("CoredbHostName");
+		return property.getProperty("core.db.host.name");
 	}
 
 	public String getCoreMSSQLdbName() {
-		return property.getProperty("CoredbName");
+		return property.getProperty("core.db.name");
 	}
 
 	public String getCoreMSSQLdbUserName() {
-		return property.getProperty("CoredbUserName");
+		return property.getProperty("core.db.username");
 	}
 
 	public String getCoreMSSQLdbPassword() {
-		return property.getProperty("CoredbPassword");
+		return property.getProperty("core.db.password");
 	}
 
 	public String getMFMSSQLdbHostName() {
-		return property.getProperty("MFAgentdbHostName");
+		return property.getProperty("mf.agent.db.host.name");
 	}
 
 	public String getMFMSSQLdbName() {
-		return property.getProperty("MFAgentdbName");
+		return property.getProperty("mf.agent.db.name");
 	}
 
 	public String getMFMSSQLdbUserName() {
-		return property.getProperty("MFAgentdbUserName");
+		return property.getProperty("mf.agent.db.username");
 	}
 
 	public String getMFMSSQLdbPassword() {
-		return property.getProperty("MFAgentdbPassword");
+		return property.getProperty("mf.agent.db.password");
 	}
 
 	public String getMFOracleSQLdbHostName() {
-		return property.getProperty("ConsumerdbHostName");
+		return property.getProperty("consumer.db.host.name");
 	}
 
 	public String getMFOracleSQLdbName() {
-		return property.getProperty("ConsumerdbName");
+		return property.getProperty("consumer.db.name");
 	}
 
 	public String getMFOracleSQLdbUserName() {
-		return property.getProperty("ConsumerdbUserName");
+		return property.getProperty("consumer.db.username");
 	}
 
 	public String getMFOracleSQLdbPassword() {
-		return property.getProperty("ConsumerdbPassword");
+		return property.getProperty("consumer.db.password");
 	}
 
 	// MF API Url
 	public String getProcessingURL() {
-		return property.getProperty("processingURL");
+		return property.getProperty("processing.url");
 	}
 
 	public String getPIDCURL() {
-		return property.getProperty("GetPIDCURL");
+		return property.getProperty("get.pidc.url");
 	}
 
 	public String getPhoneNumber() {
-		return property.getProperty("phoneNumber");
+		return property.getProperty("phone.number");
 	}
 
 	// Practice Portal URL
 	public String getDoctorLogin() {
-		return property.getProperty("doctorLogin");
+		return property.getProperty("doctor.login");
 	}
 
 	public String getDoctorPassword() {
-		return property.getProperty("doctorPassword");
+		return property.getProperty("doctor.password");
 	}
 
 	public String getPortalUrl() {
-		return property.getProperty("portalUrl");
+		return property.getProperty("portal.url");
 	}
 
 	public String getDOBDay() {
-		return property.getProperty("DOBDay");
+		return property.getProperty("dob.day");
 	}
 
 	public String getDOBMonth() {
-		return property.getProperty("DOBMonth");
+		return property.getProperty("dob.month");
 	}
 
 	public String getDOBMonthText() {
-		return property.getProperty("DOBMonthText");
+		return property.getProperty("dob.month.text");
 	}
 
 	public String getDOBYear() {
-		return property.getProperty("DOBYear");
+		return property.getProperty("dob.year");
 	}
 
 	public String getDOBYearUnderage() {
-		return property.getProperty("DOBYearUnderage");
+		return property.getProperty("dob.year.underage");
 	}
 
 	// NG API
 	public String getNGAPIexecutionMode() {
-		return property.getProperty("NGAPIexecutionMode");
+		return property.getProperty("ng.api.execution.mode");
 	}
 
 	public String getNGAPIQAMainPracticeID() {
-		return property.getProperty("NGAPIQAMainPracticeID");
+		return property.getProperty("ng.api.qa.main.practice.id");
 	}
 
 	public String getNGAPIQAMainEnterpriseID() {
-		return property.getProperty("NGAPIQAMainEnterpriseID");
+		return property.getProperty("ng.api.qa.main.enterprise.id");
 	}
 
 	public String getNGAPISITPracticeID() {
-		return property.getProperty("NGAPISITPracticeID");
+		return property.getProperty("ng.api.sit.practice.id");
 	}
 
 	public String getNGAPISITEnterpriseID() {
-		return property.getProperty("NGAPISITEnterpriseID");
+		return property.getProperty("ng.api.sit.enterprise.id");
 	}
 
 	public String getProperty(String prop) throws NullPointerException {
@@ -1743,136 +1700,136 @@ public class PropertyFileLoader {
 	}
 
 	public String getNGEPMProviderName() {
-		return property.getProperty("EPMProviderName");
+		return property.getProperty("epm.provider.name");
 	}
 
 	public String getNGEPMLocationName() {
-		return property.getProperty("EPMLocationName");
+		return property.getProperty("epm.location.name");
 	}
 
 	public String getNGEPMRenderingProviderName() {
-		return property.getProperty("EPMRenderingProviderName");
+		return property.getProperty("epm.rendering.provider.name");
 	}
 
 	// NG Enterprise Enrollment
 	public String getNGEnterpiseEnrollmentE1() {
-		return property.getProperty("NGEnterpiseEnrollmentEnterprise1");
+		return property.getProperty("ng.enterprise.enrollment.enterprise1");
 	}
 
 	public String getNGEnterpiseEnrollmentE2() {
-		return property.getProperty("NGEnterpiseEnrollmentEnterprise2");
+		return property.getProperty("ng.enterprise.enrollment.enterprise2");
 	}
 
 	public String getNGEnterpiseEnrollmentE1P1() {
-		return property.getProperty("NGEnterprise1Practice1");
+		return property.getProperty("ng.enterprise1.practice1");
 	}
 
 	public String getNGEnterpiseEnrollmentE1P2() {
-		return property.getProperty("NGEnterprise1Practice2");
+		return property.getProperty("ng.enterprise1.practice2");
 	}
 
 	public String getNGEnterpiseEnrollmentE1P3() {
-		return property.getProperty("NGEnterprise1Practice3");
+		return property.getProperty("ng.enterprise1.practice3");
 	}
 
 	public String getNGEnterpiseEnrollmentE1P4() {
-		return property.getProperty("NGEnterprise1Practice4");
+		return property.getProperty("ng.enterprise1.practice4");
 	}
 
 	public String getNGEnterpiseEnrollmentE1P5() {
-		return property.getProperty("NGEnterprise1Practice5");
+		return property.getProperty("ng.enterprise1.practice5");
 	}
 
 	public String getNGEnterpiseEnrollmentE2P1() {
-		return property.getProperty("NGEnterprise2Practice1");
+		return property.getProperty("ng.enterprise2.practice1");
 	}
 
 	public String getNGEnterpiseEnrollmentE2P2() {
-		return property.getProperty("NGEnterprise2Practice2");
+		return property.getProperty("ng.enterprise2.practice2");
 	}
 
 	public String getNGEnterpiseEnrollmentintegrationPracticeIDE1P1() {
-		return property.getProperty("integrationPracticeIDE1P1");
+		return property.getProperty("integration.practice.id.e1.p1");
 	}
 
 	public String getNGEnterpiseEnrollmentintegrationPracticeIDE1P2() {
-		return property.getProperty("integrationPracticeIDE1P2");
+		return property.getProperty("integration.practice.id.e1.p2");
 	}
 
 	public String getNGEnterpiseEnrollmentintegrationPracticeIDE1P3() {
-		return property.getProperty("integrationPracticeIDE1P3");
+		return property.getProperty("integration.practice.id.e1.p3");
 	}
 
 	public String getNGEnterpiseEnrollmentintegrationPracticeIDE1P4() {
-		return property.getProperty("integrationPracticeIDE1P4");
+		return property.getProperty("integration.practice.id.e1.p4");
 	}
 
 	public String getNGEnterpiseEnrollmentintegrationPracticeIDE1P5() {
-		return property.getProperty("integrationPracticeIDE1P5");
+		return property.getProperty("integration.practice.id.e1.p5");
 	}
 
 	public String getNGEnterpiseEnrollmentintegrationPracticeIDE2P1() {
-		return property.getProperty("integrationPracticeIDE2P1");
+		return property.getProperty("integration.practice.id.e2.p1");
 	}
 
 	public String getNGEnterpiseEnrollmentintegrationPracticeIDE2P2() {
-		return property.getProperty("integrationPracticeIDE2P2");
+		return property.getProperty("integration.practice.id.e2.p2");
 	}
 
 	public String getNGE1P1Provider() {
-		return property.getProperty("NGE1P1Provider");
+		return property.getProperty("ng.e1.p1.provider");
 	}
 
 	public String getNGE1P2Provider() {
-		return property.getProperty("NGE1P2Provider");
+		return property.getProperty("ng.e1.p2.provider");
 	}
 
 	public String getNGE1P3Provider() {
-		return property.getProperty("NGE1P3Provider");
+		return property.getProperty("ng.e1.p3.provider");
 	}
 
 	public String getNGE1P4Provider() {
-		return property.getProperty("NGE1P4Provider");
+		return property.getProperty("ng.e1.p4.provider");
 	}
 
 	public String getNGE1P5Provider() {
-		return property.getProperty("NGE1P5Provider");
+		return property.getProperty("ng.e1.p5.provider");
 	}
 
 	public String getNGE2P1Provider() {
-		return property.getProperty("NGE2P1Provider");
+		return property.getProperty("ng.e2.p1.provider");
 	}
 
 	public String getNGE2P2Provider() {
-		return property.getProperty("NGE2P2Provider");
+		return property.getProperty("ng.e2.p2.provider");
 	}
 
 	public String getNGE1P1Location() {
-		return property.getProperty("NGE1P1Location");
+		return property.getProperty("ng.e1.p1.location");
 	}
 
 	public String getNGE1P2Location() {
-		return property.getProperty("NGE1P2Location");
+		return property.getProperty("ng.e1.p2.location");
 	}
 
 	public String getNGE1P3Location() {
-		return property.getProperty("NGE1P3Location");
+		return property.getProperty("ng.e1.p3.location");
 	}
 
 	public String getNGE1P4Location() {
-		return property.getProperty("NGE1P4Location");
+		return property.getProperty("ng.e1.p4.location");
 	}
 
 	public String getNGE1P5Location() {
-		return property.getProperty("NGE1P5Location");
+		return property.getProperty("ng.e1.p5.location");
 	}
 
 	public String getNGE2P1Location() {
-		return property.getProperty("NGE2P1Location");
+		return property.getProperty("ng.e2.p1.location");
 	}
 
 	public String getNGE2P2Location() {
-		return property.getProperty("NGE2P2Location");
+		return property.getProperty("ng.e2.p2.location");
 	}
 
 	// AppoinmentType
@@ -2046,14 +2003,13 @@ public class PropertyFileLoader {
 	}
 
 	// Attachment
-		
-		public String getRestUrlAttachment() {
-			return property.getProperty("rest.url.attachment");
-		}
 
-		public String getPatientExternalIdAttachment() {
-			return property.getProperty("patient.externalid.attachment");
-			}
+	public String getRestUrlAttachment() {
+		return property.getProperty("rest.url.attachment");
+	}
 
-		
+	public String getPatientExternalIdAttachment() {
+		return property.getProperty("patient.externalid.attachment");
+	}
+
 }

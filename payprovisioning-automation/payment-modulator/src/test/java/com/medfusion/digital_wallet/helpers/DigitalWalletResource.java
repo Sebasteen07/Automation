@@ -11,18 +11,27 @@ import static io.restassured.RestAssured.given;
 
 public class DigitalWalletResource extends DigitalWalletBaseTest {
 
-    protected PropertyFileLoader testData;
+	protected PropertyFileLoader testData;
 
-    public Response getCountOfExpiringCards(String token, String fromMonth, String toMonth) throws IOException {
-        testData = new PropertyFileLoader();
+	public Response getCountOfExpiringCards(String token, String fromMonth, String toMonth) throws IOException {
+		testData = new PropertyFileLoader();
 
-        Response response = given().that().spec(requestSpec).header("Authorization","Bearer "+ token)
-                .when()
-                .get("cards-to-expire-count?fromMonth=" + fromMonth + "&toMonth=" + toMonth)
-                .then()
-                .extract()
-                .response();
-        return response;
-    }
+		Response response = given().that().spec(requestSpec).header("Authorization", "Bearer " + token).when()
+				.get("cards-to-expire-count?fromMonth=" + fromMonth + "&toMonth=" + toMonth).then().extract()
+				.response();
+		return response;
+	}
+
+	public Response getDetailsOfCards(String token) throws IOException {
+		testData = new PropertyFileLoader();
+
+		Response response = given().that().spec(requestSpec).header("Authorization", "Bearer" + token).when()
+				.get("/customer/" + testData.getProperty("test.pay.customer.uuid") + "/wallets/"
+						+ testData.getProperty("external.wallet.id") + "/cards/" + testData.getProperty("external.card.id"))
+				.then().extract().response();
+
+		return response;
+
+	}
 
 }

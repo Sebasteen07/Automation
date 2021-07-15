@@ -149,8 +149,8 @@ public class PatientDemographicPage extends MedfusionPage {
 			throws NullPointerException, Exception {
 		PropertyFileLoader testData = new PropertyFileLoader();
 		fillInPatientData(firstName, lastName, emailAddress, dobMonth, dobDay, dobYear, gender, zipCode,
-				testData.getProperty("Address1"), testData.getProperty("Address2"), testData.getProperty("City"),
-				testData.getProperty("State"));
+				testData.getProperty("address1"), testData.getProperty("address2"), testData.getProperty("city"),
+				testData.getProperty("state"));
 	}
 
 	public void fillInPatientData(String firstName, String lastName, String email, String dobMonthText, String dobDay,

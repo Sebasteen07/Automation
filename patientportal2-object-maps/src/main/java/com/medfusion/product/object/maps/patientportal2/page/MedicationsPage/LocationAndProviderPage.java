@@ -39,9 +39,9 @@ public class LocationAndProviderPage {
 	public void chooseLocationAndProvider() throws InterruptedException, IOException {
 		PropertyFileLoader testData = new PropertyFileLoader();
 		locationDropdown.click();
-		locationDropdown.sendKeys(testData.getProperty("providerName"));
+		locationDropdown.sendKeys(testData.getProperty("provider.name"));
 		providerDropdown.click();
-		providerDropdown.sendKeys(testData.getProperty("providerLocation"));
+		providerDropdown.sendKeys(testData.getProperty("provider.location"));
 		btnContinue.click();
 	}
 
@@ -49,9 +49,9 @@ public class LocationAndProviderPage {
 		PropertyFileLoader testData = new PropertyFileLoader();
 
 		locationDropdown.click();
-		locationDropdown.sendKeys(testData.getProperty("providerwfName"));
+		locationDropdown.sendKeys(testData.getProperty("provider.wf.name"));
 		providerDropdown.click();
-		providerDropdown.sendKeys(testData.getProperty("providerwfLocation"));
+		providerDropdown.sendKeys(testData.getProperty("provider.wf.location"));
 		btnContinue.click();
 
 	}

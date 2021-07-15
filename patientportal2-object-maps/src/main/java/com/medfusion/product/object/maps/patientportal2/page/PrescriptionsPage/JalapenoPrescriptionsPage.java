@@ -229,7 +229,7 @@ public class JalapenoPrescriptionsPage extends JalapenoMenu {
 		cardSelect.selectByIndex(3);
 
 		Select monthSelect = new Select(monthdd);
-		monthSelect.selectByVisibleText(testData.getProperty("DOBMonthText"));
+		monthSelect.selectByVisibleText(testData.getProperty("dob.month.text"));
 
 		Select yearSelect = new Select(yeardd);
 		yearSelect.selectByValue(creditCard.getExpYear());
@@ -338,8 +338,10 @@ public class JalapenoPrescriptionsPage extends JalapenoMenu {
 		}
 	}
 
-	public void verifyPharamcy(String pharmacy, String sendPharmacyFirstWord) throws InterruptedException {
-		driver.switchTo().frame("iframebody");
+	public void verifyPharamcy(String pharmacy, String sendPharmacyFirstWord, String env) throws InterruptedException {
+		if(!env.equalsIgnoreCase("PROD")) {
+			driver.switchTo().frame("iframebody");
+		}
 		chooseFromAList.sendKeys(sendPharmacyFirstWord);
 		Thread.sleep(5000);
 		log("Get text value from Choose from a list textbox");
@@ -506,8 +508,10 @@ public class JalapenoPrescriptionsPage extends JalapenoMenu {
 		}
 	}
 
-	public void verifyDeletedPharamcy(String pharmacy, String sendPharmacyFirstWord) throws InterruptedException {
-		driver.switchTo().frame("iframebody");
+	public void verifyDeletedPharamcy(String pharmacy, String sendPharmacyFirstWord, String env) throws InterruptedException {
+		if(!env.equalsIgnoreCase("PROD")) {
+			driver.switchTo().frame("iframebody");
+		}
 		String textValue = "";
 		chooseFromAList.sendKeys(sendPharmacyFirstWord);
 		Thread.sleep(5000);

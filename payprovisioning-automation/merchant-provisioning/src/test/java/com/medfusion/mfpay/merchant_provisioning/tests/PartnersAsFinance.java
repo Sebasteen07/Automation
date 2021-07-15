@@ -27,19 +27,19 @@ public class PartnersAsFinance extends BaseRest{
 	 @Test
 	 public void createPartnerCredentialsAsFinance() throws Exception, IOException { 
 		PartnersInfo partnersinfo = new PartnersInfo();
-		String postpartners = ProvisioningUtils.postPartner+testData.getProperty("staticMerchant")+"/partners";
+		String postpartners = ProvisioningUtils.postPartner+testData.getProperty("static.merchant")+"/partners";
 		
 		//Create a partner POST
-		String partnerid = partnersinfo.createPartner(postpartners,(testData.getProperty("partnerusername")),(testData.getProperty("partnerpassword")));
+		String partnerid = partnersinfo.createPartner(postpartners,(testData.getProperty("partner.username")),(testData.getProperty("partner.password")));
 		
 		//Get partners for a mmid GET
-		partnersinfo.getPartners(postpartners,(testData.getProperty("partnerusername")),(testData.getProperty("partnerpassword")));
+		partnersinfo.getPartners(postpartners,(testData.getProperty("partner.username")),(testData.getProperty("partner.password")));
 		
 		//Update partner credentials username and password PUT
-		String updatedpassword = partnersinfo.updateUserNamePassword(partnerid,postpartners,testData.getProperty("usernameupdate"),(testData.getProperty("passwordupdate")));
+		String updatedpassword = partnersinfo.updateUserNamePassword(partnerid,postpartners,testData.getProperty("username.update"),(testData.getProperty("password.update")));
 		
 		//Reset partner credentials POST
-		partnersinfo.resetPartnerCredentials(partnerid,postpartners, testData.getProperty("usernameupdate"),updatedpassword );
+		partnersinfo.resetPartnerCredentials(partnerid,postpartners, testData.getProperty("username.update"),updatedpassword );
 		
 		//Delete partner DELETE
 		partnersinfo.deletePartner(postpartners, partnerid);

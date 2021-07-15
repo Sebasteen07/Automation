@@ -112,6 +112,7 @@ public class UpdateInsurancePage extends PSS2MainPage {
 		inputInsurancePhone.clear();
 		commonMethods.highlightElement(inputInsurancePhone);
 		inputInsurancePhone.sendKeys(phoneNumber);
+		scrollAndWait(0, 800, 500);
 		commonMethods.highlightElement(buttonUpdateInsuranceInfo);
 		buttonUpdateInsuranceInfo.click();
 	}
