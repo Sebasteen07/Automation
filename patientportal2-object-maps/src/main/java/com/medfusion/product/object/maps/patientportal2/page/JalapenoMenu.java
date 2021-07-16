@@ -130,8 +130,7 @@ public abstract class JalapenoMenu extends MedfusionPage {
 	}
 
 	public JalapenoHomePage clickOnMenuHome() {
-		log("Checking the impact");
-		//openMenuIfClosed();
+		openMenuIfClosed();
 		log("Clicking on Home menu button");
 		homeMenu.click();
 		return PageFactory.initElements(driver, JalapenoHomePage.class);
