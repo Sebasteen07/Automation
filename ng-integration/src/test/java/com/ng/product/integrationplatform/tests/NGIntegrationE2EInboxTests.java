@@ -605,7 +605,7 @@ public class NGIntegrationE2EInboxTests extends BaseTestNGWebDriver {
 		String messageID = RestUtils.isReplyPresentReturnMessageID(propertyLoaderObj.getResponsePath(), askaSubject,
 				expectedBody);
 
-		String expectedBodyinInbox = "Dear " + propertyLoaderObj.getProperty("practiceName") + ",\n"
+		String expectedBodyinInbox = "Dear " + propertyLoaderObj.getProperty("practice.name") + ",\n"
 				+ IntegrationConstants.MESSAGE_REPLY + "\nThanks,\n" + patientFirstName + " " + patientLastName;
 		Thread.sleep(60000);
 		CommonFlows.verifyMessageReceivedAtNGCore(propertyLoaderObj, messageID, askaSubject,

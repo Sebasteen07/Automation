@@ -1389,7 +1389,7 @@ public class NGIntegrationE2EEnrollment_CCDTests extends BaseTestNGWebDriver {
 		String url = propertyLoaderObj.getProperty("url");
 		String locationName = propertyLoaderObj.getProperty("epm.location.name");
 		String providerName = propertyLoaderObj.getProperty("epm.provider.name");
-		String practiceName = propertyLoaderObj.getProperty("practiceName");
+		String practiceName = propertyLoaderObj.getProperty("practice.name");
 
 		NGAPIUtils.updateLoginDefaultTo("EnterpriseGateway", enterpriseId, practiceId);
 		logStep("Create the patient in NG EPM in Practice 1");
@@ -1442,7 +1442,7 @@ public class NGIntegrationE2EEnrollment_CCDTests extends BaseTestNGWebDriver {
 		String url = propertyLoaderObj.getProperty("url");
 		String locationName = propertyLoaderObj.getProperty("epm.location.name");
 		String providerName = propertyLoaderObj.getProperty("epm.provider.name");
-		String practiceName = propertyLoaderObj.getProperty("practiceName");
+		String practiceName = propertyLoaderObj.getProperty("practice.name");
 
 		NGAPIUtils.updateLoginDefaultTo("EnterpriseGateway", enterpriseId, practiceId);
 		logStep("Create the patient in NG EPM in Practice 1");
