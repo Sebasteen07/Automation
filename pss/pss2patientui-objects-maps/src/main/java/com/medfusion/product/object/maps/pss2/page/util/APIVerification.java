@@ -18,16 +18,19 @@ public class APIVerification extends BaseTestNGWebDriver {
 			log("Status Code Validated as " + response.getStatusCode());
 	}
 
-	public void responseKeyValidation(Response response, String key) {
+	public String responseKeyValidation(Response response, String key) {
+		String value = null;
 		try {
 			JSONArray arr = new JSONArray(response.getBody().asString());
 			for (int i = 0; i < arr.length(); i++) {
 				JSONObject obj = arr.getJSONObject(i);
 				log("Validated key-> " + key + " value is-  " + obj.getString(key));
+				value = obj.getString(key);
 			}
 		} catch (Exception e) {
 			log("Test Case Failed-Response not validated");
 		}
+		return value;
 	}
 
 	public void responseKeyValidationJson(Response response, String key) {

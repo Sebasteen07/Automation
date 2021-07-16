@@ -9,6 +9,7 @@ import org.testng.annotations.Test;
 import com.intuit.ifs.csscat.core.BaseTestNGWebDriver;
 import com.intuit.ifs.csscat.core.RetryAnalyzer;
 import com.medfusion.product.object.maps.pss2.page.util.PostAPIRequestNG;
+import com.medfusion.product.pss2patientapi.payload.PayloadNG;
 import com.medfusion.product.pss2patientui.pojo.Appointment;
 import com.medfusion.product.pss2patientui.utils.PSSPropertyFileLoader;
 
@@ -26,8 +27,8 @@ public class PSS2NGAdpterAcceptanceTests extends BaseTestNGWebDriver {
 		propertyData = new PSSPropertyFileLoader();
 		postAPIRequest = new PostAPIRequestNG();
 		log("I am before Test");
-		postAPIRequest.setupRequestSpecBuilder(propertyData.getProperty("base.url.ng"));
-		log("BASE URL-" + propertyData.getProperty("base.url.ng"));
+		postAPIRequest.setupRequestSpecBuilder(propertyData.getProperty("baseurl.ng"));
+		log("BASE URL-" + propertyData.getProperty("baseurl.ng"));
 	}
 
 	@Test(enabled = true, groups = { "APItest" }, retryAnalyzer = RetryAnalyzer.class)
