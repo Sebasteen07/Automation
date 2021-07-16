@@ -72,6 +72,7 @@ import com.intuit.ihg.common.utils.mail.GmailBot;
 import com.intuit.ihg.product.integrationplatform.pojo.PIDCInfo;
 import com.medfusion.common.utils.IHGUtil;
 import com.medfusion.product.patientportal2.utils.JalapenoConstants;
+import com.sun.tools.javac.util.Assert;
 
 public class RestUtils {
 
@@ -4189,7 +4190,19 @@ public class RestUtils {
 		NodeList nodes = doc.getElementsByTagName(IntegrationConstants.ATTACHMENT_URL);
 		String attchmentURL = nodes.item(0).getTextContent();
 		Log4jUtil.log("response is ok");
+		Log4jUtil.log("Attachement URL :   "+attchmentURL);
 		return attchmentURL;
+	}
+	
+	public static void validateAttachementName(String xmlFileName,String fileName)
+			throws ParserConfigurationException, SAXException, IOException {
+		IHGUtil.PrintMethodName();
+		Document doc = buildDOMXML(xmlFileName);
+		Log4jUtil.log("finding AttachmentURL");
+		NodeList nodes = doc.getElementsByTagName(IntegrationConstants.FILE_NAME);
+		String attchmentName = nodes.item(0).getTextContent().replaceAll("\\+", " ");
+		Log4jUtil.log("Filename in respons: "+attchmentName);
+		assertTrue(attchmentName.equals(fileName), "Attachment File Names are Equal");
 	}
 
 		
