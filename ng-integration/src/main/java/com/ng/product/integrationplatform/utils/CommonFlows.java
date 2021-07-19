@@ -1251,7 +1251,7 @@ public class CommonFlows {
 
 	public static String getPAMLastName(String response) {
 		JsonObject jObj = new JsonParser().parse(response).getAsJsonObject();
-		jObj.remove("URL");
+		jObj.remove("url");
 
 		String namevalue = CommonUtils.getResponseKeyValue(jObj.toString(), "name");
 		namevalue = namevalue.substring(1, namevalue.length() - 1);
