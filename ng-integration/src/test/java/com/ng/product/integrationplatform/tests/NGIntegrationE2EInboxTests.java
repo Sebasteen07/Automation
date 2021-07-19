@@ -455,14 +455,14 @@ public class NGIntegrationE2EInboxTests extends BaseTestNGWebDriver {
 				"select first_name from person where person_id ='" + person_id + "'");
 		String patientLastName = DBUtils.executeQueryOnDB("NGCoreDB",
 				"select last_name from person where person_id ='" + person_id + "'");
-		String expectedBody = "Dear " + propertyLoaderObj.getProperty("practiceName") + ",<br/><br/>"
+		String expectedBody = "Dear " + propertyLoaderObj.getProperty("practice.name") + ",<br/><br/>"
 				+ IntegrationConstants.MESSAGE_REPLY + "<br/><br/>Thanks,<br>" + patientFirstName + " "
 				+ patientLastName;
 
 		String messageID = RestUtils.isReplyPresentReturnMessageID(propertyLoaderObj.getResponsePath(), askaSubject,
 				expectedBody);
 
-		String expectedBodyinInbox = "Dear " + propertyLoaderObj.getProperty("practiceName") + ",\n"
+		String expectedBodyinInbox = "Dear " + propertyLoaderObj.getProperty("practice.name") + ",\n"
 				+ IntegrationConstants.MESSAGE_REPLY + "\nThanks,\n" + patientFirstName + " " + patientLastName;
 		Thread.sleep(60000);
 		Log4jUtil.log("Verify message received at NG core");
@@ -598,7 +598,7 @@ public class NGIntegrationE2EInboxTests extends BaseTestNGWebDriver {
 				"select first_name from person where person_id ='" + person_id + "'");
 		String patientLastName = DBUtils.executeQueryOnDB("NGCoreDB",
 				"select last_name from person where person_id ='" + person_id + "'");
-		String expectedBody = "Dear " + propertyLoaderObj.getProperty("practiceName") + ",<br/><br/>"
+		String expectedBody = "Dear " + propertyLoaderObj.getProperty("practice.name") + ",<br/><br/>"
 				+ IntegrationConstants.MESSAGE_REPLY + "<br/><br/>Thanks,<br>" + patientFirstName + " "
 				+ patientLastName;
 
@@ -1650,14 +1650,14 @@ public class NGIntegrationE2EInboxTests extends BaseTestNGWebDriver {
 				"select first_name from person where person_id ='" + person_id + "'");
 		String patientLastName = DBUtils.executeQueryOnDB("NGCoreDB",
 				"select last_name from person where person_id ='" + person_id + "'");
-		String expectedBody = "Dear " + propertyLoaderObj.getProperty("practiceName") + ",<br/><br/>"
+		String expectedBody = "Dear " + propertyLoaderObj.getProperty("practice.name") + ",<br/><br/>"
 				+ IntegrationConstants.MESSAGE_REPLY + "<br/><br/>Thanks,<br>" + patientFirstName + " "
 				+ patientLastName;
 
 		String messageID = RestUtils.isReplyPresentReturnMessageID(propertyLoaderObj.getResponsePath(), askaSubject,
 				expectedBody);
 
-		String expectedBodyinInbox = "Dear " + propertyLoaderObj.getProperty("practiceName") + ",\n"
+		String expectedBodyinInbox = "Dear " + propertyLoaderObj.getProperty("practice.name") + ",\n"
 				+ IntegrationConstants.MESSAGE_REPLY + "\nThanks,\n" + patientFirstName + " " + patientLastName;
 
 		Thread.sleep(60000);
@@ -1804,14 +1804,14 @@ public class NGIntegrationE2EInboxTests extends BaseTestNGWebDriver {
 				"select first_name from person where person_id ='" + person_id + "'");
 		String patientLastName = DBUtils.executeQueryOnDB("NGCoreDB",
 				"select last_name from person where person_id ='" + person_id + "'");
-		String expectedBody = "Dear " + propertyLoaderObj.getProperty("practiceName") + ",<br/><br/>"
+		String expectedBody = "Dear " + propertyLoaderObj.getProperty("practice.name") + ",<br/><br/>"
 				+ IntegrationConstants.MESSAGE_REPLY + "<br/><br/>Thanks,<br>" + patientFirstName + " "
 				+ patientLastName;
 
 		String messageID = RestUtils.isReplyPresentReturnMessageID(propertyLoaderObj.getResponsePath(), askaSubject,
 				expectedBody);
 
-		String expectedBodyinInbox = "Dear " + propertyLoaderObj.getProperty("practiceName") + ",\n"
+		String expectedBodyinInbox = "Dear " + propertyLoaderObj.getProperty("practice.name") + ",\n"
 				+ IntegrationConstants.MESSAGE_REPLY + "\nThanks,\n" + patientFirstName + " " + patientLastName;
 
 		Thread.sleep(60000);
@@ -1922,14 +1922,14 @@ public class NGIntegrationE2EInboxTests extends BaseTestNGWebDriver {
 				"select first_name from person where person_id ='" + person_id + "'");
 		String patientLastName = DBUtils.executeQueryOnDB("NGCoreDB",
 				"select last_name from person where person_id ='" + person_id + "'");
-		String expectedBody = "Dear " + propertyLoaderObj.getProperty("practiceName") + ",<br/><br/>"
+		String expectedBody = "Dear " + propertyLoaderObj.getProperty("practice.name") + ",<br/><br/>"
 				+ IntegrationConstants.MESSAGE_REPLY + "<br/><br/>Thanks,<br>" + patientFirstName + " "
 				+ patientLastName;
 
 		String messageID = RestUtils.isReplyPresentReturnMessageID(propertyLoaderObj.getResponsePath(), askaSubject,
 				expectedBody);
 
-		String expectedBodyinInbox = "Dear " + propertyLoaderObj.getProperty("practiceName") + ",\n"
+		String expectedBodyinInbox = "Dear " + propertyLoaderObj.getProperty("practice.name") + ",\n"
 				+ IntegrationConstants.MESSAGE_REPLY + "\nThanks,\n" + patientFirstName + " " + patientLastName;
 
 		Thread.sleep(60000);
@@ -1942,6 +1942,6 @@ public class NGIntegrationE2EInboxTests extends BaseTestNGWebDriver {
 				expectedCorrectFileText2.substring(0, expectedCorrectFileText2.lastIndexOf(".")));
 		CommonFlows.verifyMultipleAttachmentsReceivedInMessageAtNGCore(propertyLoaderObj, messageID, "jpg ",
 				expectedCorrectFileText3.substring(0, expectedCorrectFileText3.lastIndexOf(".")));
-	}
+	}	
 
 }
