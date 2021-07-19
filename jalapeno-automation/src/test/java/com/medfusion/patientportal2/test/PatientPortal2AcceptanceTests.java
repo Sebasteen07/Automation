@@ -809,7 +809,7 @@ public class PatientPortal2AcceptanceTests extends BaseTestNGWebDriver {
 		String appointmentReason = System.currentTimeMillis() + " is my favorite number!";
 
 		logStep("Load login page and login");
-		JalapenoLoginPage loginPage = new JalapenoLoginPage(driver, testData.getPracticeUrl2());
+		JalapenoLoginPage loginPage = new JalapenoLoginPage(driver, testData.getProperty("practice.url2"));
 		JalapenoHomePage homePage = loginPage.login(testData.getUserId(), testData.getPassword());
 
 		logStep("Click appointment request");
@@ -837,7 +837,7 @@ public class PatientPortal2AcceptanceTests extends BaseTestNGWebDriver {
 		homePage = appointmentRequestStep2.submitAppointment(driver);
 
 		logStep("Check if thank you frame is displayd");
-		Thread.sleep(10000);
+		//Thread.sleep(1000);
 		assertTrue(homePage.isTextDisplayed("Thank you"));
 
 		logStep("Navigate to Appointment Request History");
@@ -858,7 +858,7 @@ public class PatientPortal2AcceptanceTests extends BaseTestNGWebDriver {
 				testData.getPortalUrl(), testData.getDoctorLogin2(), testData.getDoctorPassword());
 
 		logStep("Login back to patient portal");
-		loginPage = new JalapenoLoginPage(driver, testData.getPracticeUrl2());
+		loginPage = new JalapenoLoginPage(driver, testData.getProperty("practice.url2"));
 		homePage = loginPage.login(testData.getUserId(), testData.getPassword());
 		JalapenoMessagesPage messagesPage = homePage.showMessages(driver);
 
@@ -2367,7 +2367,7 @@ public class PatientPortal2AcceptanceTests extends BaseTestNGWebDriver {
 		String attachmentFile = "QuickSend.pdf";
 
 		logStep("Load login page and login");
-		JalapenoLoginPage loginPage = new JalapenoLoginPage(driver, testData.getPracticeUrl2());
+		JalapenoLoginPage loginPage = new JalapenoLoginPage(driver, testData.getProperty("practice.url2"));
 		JalapenoHomePage homePage = loginPage.login(testData.getUserId(), testData.getPassword());
 
 		logStep("Click appointment request");
@@ -2417,7 +2417,7 @@ public class PatientPortal2AcceptanceTests extends BaseTestNGWebDriver {
 				MessagefilePath);
 
 		logStep("Login back to patient portal to check the Approved status");
-		loginPage = new JalapenoLoginPage(driver, testData.getPracticeUrl2());
+		loginPage = new JalapenoLoginPage(driver, testData.getProperty("practice.url2"));
 		homePage = loginPage.login(testData.getUserId(), testData.getPassword());
 		JalapenoMessagesPage messagesPage = homePage.showMessages(driver);
 
@@ -2495,7 +2495,6 @@ public class PatientPortal2AcceptanceTests extends BaseTestNGWebDriver {
 		homePage = appointmentRequestStep2.submitAppointment(driver);
 
 		logStep("Check if thank you frame is displayd");
-		Thread.sleep(10000);
 		assertTrue(homePage.isTextDisplayed("Thank you"));
 
 		logStep("Navigate to Appointment Request History");
@@ -2503,7 +2502,6 @@ public class PatientPortal2AcceptanceTests extends BaseTestNGWebDriver {
 		JalapenoAppointmentRequestV2HistoryPage historyPage = appointmentRequestStep1.goToHistory(driver);
 
 		logStep("Check elements and appointment request reason");
-
 		assertTrue(historyPage.findAppointmentReasonAndOpen(appointmentReason));
 
 		logStep("Check appointment request details");
@@ -2516,7 +2514,7 @@ public class PatientPortal2AcceptanceTests extends BaseTestNGWebDriver {
 				testData.getPortalUrl(), testData.getDoctorLogin2(), testData.getDoctorPassword());
 
 		logStep("Login back to patient portal");
-		loginPage = new JalapenoLoginPage(driver, testData.getPracticeUrl2());
+		loginPage = new JalapenoLoginPage(driver, testData.getProperty("practice.url2"));
 		homePage = loginPage.login(testData.getUserId(), testData.getPassword());
 		JalapenoMessagesPage messagesPage = homePage.showMessages(driver);
 
@@ -2659,7 +2657,7 @@ public class PatientPortal2AcceptanceTests extends BaseTestNGWebDriver {
 		String appointmentReason = System.currentTimeMillis() + " is my favorite number!";
 
 		logStep("Load login page and login");
-		JalapenoLoginPage loginPage = new JalapenoLoginPage(driver, testData.getPracticeUrl2());
+		JalapenoLoginPage loginPage = new JalapenoLoginPage(driver, testData.getProperty("practice.url2"));
 		JalapenoHomePage homePage = loginPage.login(testData.getUserId(), testData.getPassword());
 
 		logStep("Click appointment request");
@@ -2711,7 +2709,7 @@ public class PatientPortal2AcceptanceTests extends BaseTestNGWebDriver {
 				testData.getPortalUrl(), testData.getDoctorLogin2(), testData.getDoctorPassword());
 
 		logStep("Login back to patient portal");
-		loginPage = new JalapenoLoginPage(driver, testData.getPracticeUrl2());
+		loginPage = new JalapenoLoginPage(driver, testData.getProperty("practice.url2"));
 		homePage = loginPage.login(testData.getUserId(), testData.getPassword());
 		JalapenoMessagesPage messagesPage = homePage.showMessages(driver);
 
@@ -2732,7 +2730,7 @@ public class PatientPortal2AcceptanceTests extends BaseTestNGWebDriver {
 		String appointmentReason = System.currentTimeMillis() + " is my favorite number!";
 
 		logStep("Load login page and login");
-		JalapenoLoginPage loginPage = new JalapenoLoginPage(driver, testData.getPracticeUrl2());
+		JalapenoLoginPage loginPage = new JalapenoLoginPage(driver, testData.getProperty("practice.url2"));
 		JalapenoHomePage homePage = loginPage.login(testData.getUserId(), testData.getPassword());
 		driver.navigate().refresh();
 
@@ -2784,7 +2782,7 @@ public class PatientPortal2AcceptanceTests extends BaseTestNGWebDriver {
 				testData.getDoctorLogin2(), testData.getDoctorPassword());
 
 		logStep("Login back to patient portal");
-		loginPage = new JalapenoLoginPage(driver, testData.getPracticeUrl2());
+		loginPage = new JalapenoLoginPage(driver, testData.getProperty("practice.url2"));
 		homePage = loginPage.login(testData.getUserId(), testData.getPassword());
 		JalapenoMessagesPage messagesPage = homePage.showMessages(driver);
 
