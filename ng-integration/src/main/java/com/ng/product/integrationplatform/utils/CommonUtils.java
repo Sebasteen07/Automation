@@ -4,12 +4,14 @@ package com.ng.product.integrationplatform.utils;
 import static org.testng.Assert.assertEquals;
 import static org.testng.Assert.assertTrue;
 
+import java.nio.file.Files;
+import java.nio.file.Paths;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.TimeZone;
 
-
+import org.json.JSONObject;
 
 import com.google.gson.JsonObject;
 import com.google.gson.JsonParser;
@@ -67,4 +69,17 @@ public class CommonUtils {
 	    Log4jUtil.log("IST Date "+formatter.format(date));
 	    return formatter.format(date);
 	}
+	
+	public static String fetchTokenValueFromJsonObject(String filePath, String fileName, String tokenKey) {
+
+        String tokenValue = "";
+        try {
+            String jsonString = new String(Files.readAllBytes(Paths.get(filePath + fileName + ".json")));
+            JSONObject jsonObject = new JSONObject(jsonString);
+            tokenValue = jsonObject.get(tokenKey).toString();
+        } catch (Exception e) {
+        	Log4jUtil.log(e.getMessage());
+        }
+        return tokenValue;
+    }
 }

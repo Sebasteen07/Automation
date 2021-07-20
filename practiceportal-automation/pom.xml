@@ -7,7 +7,7 @@
 	<parent>
 		<artifactId>ihg-depot-parent-pom</artifactId>
 		<groupId>com.intuit.ihg</groupId>
-		<version>21.3.0</version>
+		<version>21.4.0</version>
 	</parent>
 
 	<artifactId>practiceportal-automation</artifactId>
@@ -24,7 +24,7 @@
 
 	<properties>
 		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
-		<ihg.version>21.3.0</ihg.version>
+		<ihg.version>21.4.0</ihg.version>
 	</properties>
 
 	<dependencies>
@@ -46,6 +46,11 @@
 		<dependency>
 			<groupId>com.intuit.ihg</groupId>
 			<artifactId>practiceportal-object-maps</artifactId>
+			<version>${ihg.version}</version>
+		</dependency>
+		<dependency>
+			<groupId>com.intuit.ihg</groupId>
+			<artifactId>patientportal2-object-maps</artifactId>
 			<version>${ihg.version}</version>
 		</dependency>
     </dependencies>

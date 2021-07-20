@@ -6,8 +6,6 @@ import static org.testng.Assert.assertEquals;
 
 import java.io.IOException;
 import java.net.URISyntaxException;
-import java.util.ArrayList;
-
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.FindBy;
@@ -101,8 +99,39 @@ public class JalapenoCcdViewerPage extends MedfusionPage {
 
 	@FindBy(how = How.ID, using = "idp6454816")
 	private WebElement insurance;
-
-	@FindBy(how = How.XPATH, using = "//*[@id=\"messageContainer\"]/div[2]/div[2]/div[2]/div[1]/div/a")
+	
+	@FindBy(how = How.ID, using = "personalHeader")
+	private WebElement headerName;
+	
+	@FindBy(how = How.XPATH, using = "//dd[text()='Name']/following-sibling::dt")
+	private WebElement patientName;
+	
+	@FindBy(how = How.XPATH, using = "//dl[dd[text()='Date Of Birth']]/dt/span")
+	private WebElement patientDOB;
+	
+	@FindBy(how = How.XPATH, using = "//dd[text()='Race']/following-sibling::dt")
+	private WebElement patientRace;
+	
+	@FindBy(how = How.XPATH, using = "//dd[text()='Ethnicity']/following-sibling::dt")
+	private WebElement patientEthnicity;
+	
+	@FindBy(how = How.XPATH, using = "//dl[dt[text()='Sex']]/dd/span")
+	private WebElement patientSex;
+	
+	@FindBy(how = How.XPATH, using = "//dl[dt[text()='Marital Status']]/dd/span")
+	private WebElement patientMaritialStatus;
+	
+	@FindBy(how = How.XPATH, using = "//div[dd[text()='Email Address']]/following-sibling::table/tbody/tr/td/div/dt")
+	private WebElement patientEmail;
+	
+	@FindBy(how = How.XPATH, using = "//ul[@class='telecom performers clearfix']/li/dt")
+	private WebElement patientPhone;
+	
+	@FindBy(how = How.XPATH, using = "//ul[@class='careteam performers clearfix']/li/dl/dt")
+	private WebElement careTeamMember;
+	
+	
+	@FindBy(how = How.XPATH, using = "//*[@class='messageContent']//*[contains(text(),'View health data')]")
 	private WebElement btnViewHealthData;
 	
 	@FindBy(id = "basicInfo")
@@ -203,22 +232,6 @@ public class JalapenoCcdViewerPage extends MedfusionPage {
 		}
 	}
 
-	@Override
-	public boolean areBasicPageElementsPresent() {
-
-		ArrayList<WebElement> webElementsList = new ArrayList<WebElement>();
-
-		webElementsList.add(closeButton);
-		webElementsList.add(savePdfButton);
-		webElementsList.add(saveRawButton);
-		webElementsList.add(sendDirectInformationLink);
-		webElementsList.add(basicInformation);
-		webElementsList.add(careTeamMembers);
-
-		return assessPageElements(webElementsList);
-	}
-
-
 	/**
 	 * Click on the View health data
 	 */
@@ -245,5 +258,44 @@ public class JalapenoCcdViewerPage extends MedfusionPage {
 
 	public void saveRawXML() {
 		saveRawButton.click();
+	}
+	
+	public String getPatientName() {
+		return patientName.getText();
+	}
+	public String getHeaderName() {
+		return headerName.getText();
+	}
+
+	public String getPatientDOB() {
+		return patientDOB.getText();
+	}
+	
+	public String getPatientRace() {
+		return patientRace.getText();
+	}
+	
+	public String getPatientEthnicity() {
+		return patientEthnicity.getText();
+	}
+	
+	public String getPatientSex() {
+		return patientSex.getText();
+	}
+	
+	public String getPatientMaritialStatus() {
+		return patientMaritialStatus.getText();
+	}
+	
+	public String getPatientEmail() {
+		return patientEmail.getText();
+	}
+	
+	public String getPatientPhoneNumber() {
+		return patientPhone.getText();
+	}
+	
+	public String getPatientCareTeamMember() {
+		return careTeamMember.getText();
 	}
 }

@@ -156,12 +156,6 @@ public class JalapenoPrescriptionsPage extends JalapenoMenu {
 
 	}
 
-	@Override
-	public boolean areBasicPageElementsPresent() {
-		log("Method areBasicPageElementsPresent() is not implemented, so it is considered that all expected elements are present.");
-		return true;
-	}
-
 	public void clickContinueButton(WebDriver driver) {
 		driver.switchTo().frame("iframebody");
 
@@ -251,7 +245,7 @@ public class JalapenoPrescriptionsPage extends JalapenoMenu {
 		driver.switchTo().frame("iframebody");
 		jse.executeScript("window.scrollBy(0,650)", "");
 		String env = IHGUtil.getEnvironmentType().toString();
-		if (env == "DEV3") {
+		if (env.equals("DEV3") || env.equals("DEMO")) {
 			addAnotherMedicationBtn.click();
 		} else {
 			log("No Add another Medication button");
@@ -534,7 +528,7 @@ public class JalapenoPrescriptionsPage extends JalapenoMenu {
 	public String getPracticeProvider(WebDriver driver) {
 		IHGUtil.PrintMethodName();
 		String env = IHGUtil.getEnvironmentType().toString();
-		if (env == "DEV3") {
+		if (env.equals("DEV3") || env.equals("DEMO")) {
 			driver.switchTo().defaultContent();
 			driver.switchTo().frame("iframebody");
 		} else {
@@ -547,7 +541,7 @@ public class JalapenoPrescriptionsPage extends JalapenoMenu {
 	public String getPracticeLocation(WebDriver driver) {
 		IHGUtil.PrintMethodName();
 		String env = IHGUtil.getEnvironmentType().toString();
-		if (env == "DEV3") {
+		if (env.equals("DEV3") || env.equals("DEMO")) {
 			driver.switchTo().frame("iframebody");
 		} else {
 			log("getting Practice Location");

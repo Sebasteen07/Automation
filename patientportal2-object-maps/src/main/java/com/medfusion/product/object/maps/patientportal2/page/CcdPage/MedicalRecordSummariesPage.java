@@ -79,7 +79,7 @@ public class MedicalRecordSummariesPage extends JalapenoMenu {
 	@FindBy(how = How.ID, using = "unsecureTransmit")
 	private WebElement unsecureTransmit;
 
-	@FindBy(how = How.ID, using = "acknowledgement")
+	@FindBy(how = How.ID, using = "acknowledgementValue")
 	private WebElement acknowledgement;
 
 	@FindBy(how = How.ID, using = "plusLinkButton")
@@ -124,28 +124,23 @@ public class MedicalRecordSummariesPage extends JalapenoMenu {
 	@FindBy(how = How.XPATH, using = "//span[text()='Fever']")
 	private WebElement fever;
 
-	@FindBy(how = How.XPATH, using = "(//input[@id='select-all'])[1]")
+	@FindBy(how = How.XPATH, using = "(//input[@id='select-all'])[2]")
 	private WebElement requestCompleteRecord;
 
 	@FindBy(how = How.ID, using = "requestCcdContinueButton")
 	private WebElement requestRecord;
+	
+	@FindBy(how = How.XPATH, using = "(//input[@id='from-date'])[2]")
+	private WebElement requestHealthRecordFromDate;
+
+	@FindBy(how = How.XPATH, using = "(//input[@id='to-date'])[2]")
+	private WebElement requestHealthRecordToDate;
+	
+	@FindBy(how = How.XPATH, using = "//*[contains(text(),'Request complete record')]")
+	private WebElement requestHealthRecord;
 
 	public MedicalRecordSummariesPage(WebDriver driver) {
 		super(driver);
-	}
-
-	@Override
-	public boolean areBasicPageElementsPresent() {
-		ArrayList<WebElement> webElementsList = new ArrayList<WebElement>();
-		webElementsList.add(fromDate);
-		webElementsList.add(toDate);
-		webElementsList.add(selectAll);
-		webElementsList.add(emailButton);
-		webElementsList.add(downloadButton);
-		webElementsList.add(firstVisibleCCDCheckbox);
-		webElementsList.add(firstVisibleCCDDate);
-
-		return assessPageElements(webElementsList);
 	}
 
 	public void sendCCDIfNewestIsOlderThan(int days) {
@@ -199,9 +194,10 @@ public class MedicalRecordSummariesPage extends JalapenoMenu {
 		acknowledgement.click();
 	}
 
-	public void clickPatientEducation() {
+	public void clickPatientEducation() throws InterruptedException {
 		javascriptClick(patientEducationButton);
 		javascriptClick(launchMyEducationButton);
+		Thread.sleep(5000);//Waiting for the next page to load 
 		careNexisValidation();
 
 	}
@@ -241,7 +237,6 @@ public class MedicalRecordSummariesPage extends JalapenoMenu {
 	public void setFilterToDefaultPositionAndCheckElements() {
 		IHGUtil.waitForElement(driver, 60, firstVisibleCCDDate);
 		filterCCDs(MFDateUtil.parseDateToUTCZonedTime(firstVisibleCCDDate.getText()).toInstant(), Instant.now());
-		assertTrue(areBasicPageElementsPresent());
 	}
 
 	private boolean areEmailLightboxElementsPresent() {
@@ -277,7 +272,13 @@ public class MedicalRecordSummariesPage extends JalapenoMenu {
 		updateWebElement(this.fromDate, fromDate);
 		updateWebElement(this.toDate, toDate);
 	}
-
+	
+	public void onDemandFilterCCDs(String fromDate, String toDate) {
+		updateWebElement(requestHealthRecordFromDate, fromDate);
+		updateWebElement(requestHealthRecordToDate, toDate);
+		requestHealthRecordToDate.sendKeys(Keys.TAB);
+	}
+	
 	private void filterCCDs(Instant from, Instant to) {
 		String fromString = MFDateUtil.getShortUSDateLocal(from);
 		String toString = MFDateUtil.getShortUSDateLocal(to);
@@ -286,9 +287,8 @@ public class MedicalRecordSummariesPage extends JalapenoMenu {
 		log("Instant FROM ISO:" + to.toString() + " parsed to:" + toString.toString());
 
 		updateWebElement(this.fromDate, fromString);
+		log("From Date is updated to Past Date");
 		fromDate.sendKeys(Keys.ENTER);
-		// I'm afraid it's vital to wait a little bit here, to allow update after the
-		// first element is set
 		try {
 			Thread.sleep(1000);
 		} catch (InterruptedException e) {
@@ -296,7 +296,15 @@ public class MedicalRecordSummariesPage extends JalapenoMenu {
 			e.printStackTrace();
 		}
 		updateWebElement(this.toDate, toString);
+		log("To Date is updated to Current Date");
 		toDate.sendKeys(Keys.ENTER);
+		try {
+			Thread.sleep(2000);
+		} catch (InterruptedException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+
 	}
 
 	public void selectDownload() {
@@ -304,6 +312,7 @@ public class MedicalRecordSummariesPage extends JalapenoMenu {
 	}
 
 	public void selectHealthRecordRequestButton() {
+		IHGUtil.waitForElement(driver, 60, healthRecordRequestButton);
 		healthRecordRequestButton.click();
 	}
 
@@ -317,7 +326,6 @@ public class MedicalRecordSummariesPage extends JalapenoMenu {
 
 	public void setFilterToDefaultPositionAndCheckElementsNew() {
 		filterCCDs(getOnlyDateFromElementNew(firstVisibleCCDDate), getDateFromTimeStamp(System.currentTimeMillis()));
-		assertTrue(areBasicPageElementsPresent());
 	}
 
 	private String getOnlyDateFromElementNew(WebElement element) {
@@ -394,5 +402,9 @@ public class MedicalRecordSummariesPage extends JalapenoMenu {
 		requestCompleteRecord.click();
 		IHGUtil.waitForElement(driver, 60, requestRecord);
 		requestRecord.click();
+	}
+	
+	public void clickRequestHealthRecord() {
+		requestHealthRecord.click();
 	}
 }

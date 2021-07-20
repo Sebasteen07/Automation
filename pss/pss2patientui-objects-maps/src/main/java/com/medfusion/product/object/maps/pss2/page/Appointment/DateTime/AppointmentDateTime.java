@@ -1,9 +1,8 @@
-// Copyright 2018-2020 NXGN Management, LLC. All Rights Reserved.
+// Copyright 2013-2021 NXGN Management, LLC. All Rights Reserved.
 package com.medfusion.product.object.maps.pss2.page.Appointment.DateTime;
 
 import static org.testng.Assert.assertTrue;
 
-import java.util.ArrayList;
 import java.util.List;
 import java.util.concurrent.TimeUnit;
 
@@ -15,7 +14,6 @@ import org.openqa.selenium.support.FindBy;
 import org.openqa.selenium.support.How;
 import org.openqa.selenium.support.PageFactory;
 
-import com.medfusion.common.utils.IHGUtil;
 import com.medfusion.product.object.maps.pss2.page.Appointment.Anonymous.AnonymousPatientInformation;
 import com.medfusion.product.object.maps.pss2.page.Appointment.Main.PSS2MainPage;
 import com.medfusion.product.object.maps.pss2.page.ConfirmationPage.ConfirmationPage;
@@ -45,20 +43,7 @@ public class AppointmentDateTime extends PSS2MainPage {
 		super(driver);
 	}
 
-	@Override
-	public boolean areBasicPageElementsPresent() {
-		if (appointmentList.size() != 0) {
-			IHGUtil.waitForElement(driver, 120, appointmentList.get((appointmentList.size() - 1)));
-		}
-		ArrayList<WebElement> webElementsList = new ArrayList<WebElement>();
-		for (int i = 0; i < appointmentList.size(); i++) {
-			webElementsList.add(appointmentList.get(i));
-		}
-		return assessPageElements(webElementsList);
-	}
-
 	public AppointmentDateTime selectDt(Boolean nextMonthBooking) {
-		String dt = null;
 		if (nextMonthBooking) {
 			driver.findElement(By.className("rbc-next-month")).click();
 			driver.manage().timeouts().implicitlyWait(80, TimeUnit.SECONDS);
@@ -68,7 +53,7 @@ public class AppointmentDateTime extends PSS2MainPage {
 			if (appointmentList.get(i).isDisplayed()) {
 				log("Appointment Date selected=" + appointmentList.get(i).getText());
 				appointmentList.get(i).click();
-				dt = appointmentList.get(i).getText();
+				appointmentList.get(i).getText();
 				return PageFactory.initElements(driver, AppointmentDateTime.class);
 			}
 		}
@@ -77,7 +62,6 @@ public class AppointmentDateTime extends PSS2MainPage {
 
 	/*----New Method For Future Date APPT----*/
 	public AppointmentDateTime selectFutureDate(Boolean nextMonthBooking) {
-		String dt = null;
 		if (nextMonthBooking) {
 			driver.findElement(By.className("rbc-next-month")).click();
 			driver.manage().timeouts().implicitlyWait(80, TimeUnit.SECONDS);
@@ -88,7 +72,6 @@ public class AppointmentDateTime extends PSS2MainPage {
 				log("Appointment Date selected=" + appointmentList.get(i).getText());
 				log("Value of i is " + i);
 				appointmentList.get(i).click();
-				dt = appointmentList.get(i).getText();
 				return PageFactory.initElements(driver, AppointmentDateTime.class);
 			}
 		}
@@ -273,5 +256,13 @@ public class AppointmentDateTime extends PSS2MainPage {
 			}
 		}
 		return dt;
+	}
+	public String getFirstTimeWithMinute() {
+		String time = "";
+		for (int i = 0; i < appointmentTimeList.size(); i++) {
+			time = appointmentTimeList.get(0).getText();
+		}
+		return time.substring(3,5);
+
 	}
 }

@@ -1,7 +1,6 @@
-// Copyright 2020 NXGN Management, LLC. All Rights Reserved.
+// Copyright 2013-2021 NXGN Management, LLC. All Rights Reserved.
 package com.medfusion.product.object.maps.pss2.page.Appointment.Loginless;
 
-import java.util.ArrayList;
 import java.util.List;
 
 import org.openqa.selenium.WebDriver;
@@ -88,19 +87,6 @@ public class LoginlessPatientInformation extends PSS2MainPage {
 
 	CommonMethods commonMethods = new CommonMethods(driver);
 
-	@Override
-	public boolean areBasicPageElementsPresent() {
-		ArrayList<WebElement> webElementsList = new ArrayList<WebElement>();
-		webElementsList.add(inputPrimaryPhoneNumber);
-		webElementsList.add(inputZipCode);
-		webElementsList.add(selectGender);
-		webElementsList.add(inputEmail);
-		webElementsList.add(datePicker);
-		webElementsList.add(inputLastName);
-		webElementsList.add(inputFirstName);
-		return new IHGUtil(driver).assessAllPageElements(webElementsList, this.getClass());
-	}
-
 	public NewPatientInsuranceInfo fillPatientForm(String firstName, String lastName, String dob, String email, String gender, String zipCodeValue,
 			String phoneNumber) throws InterruptedException {
 		log("phoneNumber= " + phoneNumber);
@@ -142,12 +128,13 @@ public class LoginlessPatientInformation extends PSS2MainPage {
 	public HomePage fillNewPatientForm(String firstName, String lastName, String dob, String email, String gender, String zipCodeValue, String phoneNumber)
 			throws InterruptedException {
 
+		IHGUtil.waitForElement(driver, 5, inputFirstName);
 		commonMethods.highlightElement(inputFirstName);
 		inputFirstName.sendKeys(firstName);
-		log("firstName= " + firstName);
+		
 		commonMethods.highlightElement(inputLastName);
 		inputLastName.sendKeys(lastName);
-		log("lastName= " + lastName);
+		
 		commonMethods.highlightElement(dateOfBirth);
 		datePicker.click();
 		log("datePicker clicked ");
@@ -158,6 +145,7 @@ public class LoginlessPatientInformation extends PSS2MainPage {
 		}
 		DateMatcher dateMatcher = new DateMatcher();
 		dateMatcher.selectDate(dob, driver);
+		
 		commonMethods.highlightElement(selectGender);
 		selectGender.click();
 		Select selectGenderType = new Select(selectGender);
@@ -167,12 +155,13 @@ public class LoginlessPatientInformation extends PSS2MainPage {
 		} catch (InterruptedException e) {
 			e.printStackTrace();
 		}
-		commonMethods.highlightElement(inputPrimaryPhoneNumber);
-		log("phoneNumber= " + phoneNumber);
+		
+		commonMethods.highlightElement(inputPrimaryPhoneNumber);		
 		inputPrimaryPhoneNumber.sendKeys(phoneNumber);
+		
 		commonMethods.highlightElement(inputEmail);
 		inputEmail.sendKeys(email);
-		log("Email id used= " + email);
+		
 		jse.executeScript("window.scrollTo(0, 300)");
 		Thread.sleep(3000);
 		commonMethods.highlightElement(inputZip);

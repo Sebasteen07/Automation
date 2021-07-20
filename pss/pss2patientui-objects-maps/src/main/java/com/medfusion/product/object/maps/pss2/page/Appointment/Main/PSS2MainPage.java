@@ -1,4 +1,4 @@
-// Copyright 2018-2020 NXGN Management, LLC. All Rights Reserved.
+// Copyright 2013-2021 NXGN Management, LLC. All Rights Reserved.
 package com.medfusion.product.object.maps.pss2.page.Appointment.Main;
 
 import java.util.ArrayList;
@@ -12,8 +12,6 @@ import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.PageFactory;
 import org.openqa.selenium.support.ui.ExpectedConditions;
-import org.openqa.selenium.support.ui.WebDriverWait;
-
 import com.intuit.ifs.csscat.core.pageobject.BasePageObject;
 
 public abstract class PSS2MainPage extends BasePageObject {
@@ -36,11 +34,6 @@ public abstract class PSS2MainPage extends BasePageObject {
 			e.printStackTrace();
 		}
 		PageFactory.initElements(driver, this);
-		/*
-		if (!areBasicPageElementsPresent()) {
-			throw new UnsupportedOperationException("Page not loaded");
-		}
-		*/
 	}
 
 	public void printCookies() {
@@ -52,8 +45,6 @@ public abstract class PSS2MainPage extends BasePageObject {
 		log("--------------------------", Level.DEBUG);
 	}
 
-	public abstract boolean areBasicPageElementsPresent();
-
 	public boolean assessPageElements(ArrayList<WebElement> allElements) {
 		log("Checking page elements");
 
@@ -62,7 +53,7 @@ public abstract class PSS2MainPage extends BasePageObject {
 			while (attempt < 3) {
 				log("Searching for element: " + element.toString(), Level.DEBUG);
 				try {
-					new WebDriverWait(driver, 20).until(ExpectedConditions.visibilityOf(element));
+					wait.until(ExpectedConditions.visibilityOf(element));
 					log(elementToString(element) + " : is displayed", Level.DEBUG);
 					attempt = 3;
 				} catch (StaleElementReferenceException ex) {

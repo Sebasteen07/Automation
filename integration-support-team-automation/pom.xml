@@ -6,7 +6,7 @@
 	<parent>
 		<groupId>com.intuit.ihg</groupId>
 		<artifactId>ihg-depot-parent-pom</artifactId>
-		<version>21.3.0</version>
+		<version>21.4.0</version>
 	</parent>
 	
 	<artifactId>integration-support-team-automation</artifactId>
@@ -23,8 +23,8 @@
 	</repositories>
 	<properties>
 		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
-		<!--<qa-automation-utils.version>21.3.0</qa-automation-utils.version> -->
-		<ihg.version>21.3.0</ihg.version>
+		<!--<qa-automation-utils.version>21.4.0</qa-automation-utils.version> -->
+		<ihg.version>21.4.0</ihg.version>
 	</properties>
 	<dependencies>
 		<dependency>

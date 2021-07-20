@@ -1,4 +1,4 @@
-// Copyright 2018-2020 NXGN Management, LLC. All Rights Reserved.
+// Copyright 2013-2021 NXGN Management, LLC. All Rights Reserved.
 package com.medfusion.product.object.maps.pss2.page.settings;
 
 import java.util.List;
@@ -11,7 +11,6 @@ import org.openqa.selenium.support.How;
 
 public class PSS2PracticeConfiguration extends SettingsTab {
 
-
 	@FindBy(how = How.XPATH, using = "/html/body/app/layout/div/main/div[2]/div/div/div/section/div/div/div[2]/div[1]/div[1]/div[1]/img")
 	private WebElement clientlogo;
 
@@ -21,7 +20,7 @@ public class PSS2PracticeConfiguration extends SettingsTab {
 	@FindBy(how = How.CSS, using = ".badge.badge-primary")
 	private WebElement practiceText;
 
-	@FindAll({@FindBy(css = ".nav-chang-color")})
+	@FindAll({ @FindBy(css = ".nav-chang-color") })
 	private List<WebElement> colorType;
 
 	@FindBy(how = How.NAME, using = "zone")
@@ -30,9 +29,8 @@ public class PSS2PracticeConfiguration extends SettingsTab {
 	@FindBy(how = How.ID, using = "simple-select")
 	private WebElement partnerName;
 
-	@FindAll({@FindBy(xpath = "//*[@id=\"simple-select\"]/option")})
+	@FindAll({ @FindBy(xpath = "//*[@id=\"simple-select\"]/option") })
 	private List<WebElement> partnerOptionValue;
-
 
 	@FindBy(how = How.ID, using = "frompractice")
 	private WebElement businesshourStart;
@@ -43,14 +41,8 @@ public class PSS2PracticeConfiguration extends SettingsTab {
 	@FindBy(how = How.XPATH, using = "//*[@id=\"basic\"]/fieldset/div/div/button")
 	private WebElement saveButton;
 
-
 	public PSS2PracticeConfiguration(WebDriver driver) {
 		super(driver);
-	}
-
-	@Override
-	public boolean areBasicPageElementsPresent() {
-		return true;
 	}
 
 	public void clickOnLogo() {
@@ -94,16 +86,13 @@ public class PSS2PracticeConfiguration extends SettingsTab {
 		return null;
 	}
 
-	public void busineesHour(String startTime,String endTime)
-	{
+	public void busineesHour(String startTime, String endTime) {
 		businesshourStart.clear();
 		businesshourStart.sendKeys(startTime);
 		businesshourEnd.clear();
 		businesshourEnd.sendKeys(endTime);
 		saveButton.click();
 		log("Successfully send the keys");
-
-		
 	}
 
 	public String gettextbusineesHourStarttime() {

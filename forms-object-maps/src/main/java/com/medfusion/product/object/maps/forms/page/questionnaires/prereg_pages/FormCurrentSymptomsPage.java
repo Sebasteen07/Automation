@@ -99,6 +99,7 @@ public class FormCurrentSymptomsPage extends PortalFormPage {
 		if(!checkBruising.isSelected()) {
 			checkBruising.click();
 		}
+		scrollAndWait(0, 200, 500);
 		if(!checkEarache.isSelected()) {
 			checkEarache.click();
 		}

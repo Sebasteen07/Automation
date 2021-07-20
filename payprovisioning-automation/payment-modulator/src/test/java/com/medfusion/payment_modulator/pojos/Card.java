@@ -1,7 +1,9 @@
 // Copyright 2013-2021 NXGN Management, LLC. All Rights Reserved.
 package com.medfusion.payment_modulator.pojos;
 
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;import com.fasterxml.jackson.annotation.JsonAnyGetter;
 import com.fasterxml.jackson.annotation.JsonAnySetter;
 import com.fasterxml.jackson.annotation.JsonIgnore;
@@ -20,13 +22,15 @@ import com.fasterxml.jackson.annotation.JsonPropertyOrder;
 	
 public class Card {
 
-
+		private String cardHolderName;
 		private String cvvNumber;
 		private String type;
 		private String accountNumber;
 		private String expirationDate;
 		private String bin;
 		private Boolean cardPresent;
+		private String cardAlias;
+		private String zipCode;
 		
 		@JsonIgnore
 		private Map<String, Object> additionalProperties = new HashMap<String, Object>();
@@ -80,6 +84,30 @@ public class Card {
 			this.cardPresent = cardPresent;
 		}
 
+		public String getCardHolderName() {
+			return cardHolderName;
+		}
+
+		public void setCardHolderName(String cvvNumber) {
+			this.cardHolderName = cardHolderName;
+		}
+
+		public String getCardAlias() {
+			return cardAlias;
+		}
+
+		public void setCardAlias(String cardAlias) {
+			this.cardAlias = cardAlias;
+		}
+
+		public String getZipCode() {
+			return zipCode;
+		}
+
+		public void setZipCode(String zipCode) {
+			this.zipCode = zipCode;
+		}
+
 		@JsonAnyGetter
 		public Map<String, Object> getAdditionalProperties() {
 			return this.additionalProperties;
@@ -101,9 +129,18 @@ public class Card {
 		cardmap.put("cardPresent", false);
 		return cardmap;
 	}
-	
-	
-	
-	
+
+	public static List<Map<String, Object>> getCardsListDigitalWallet(String cardHolderName, String type, String cardNumber, String expirationNumber, String cardAlias, String zipCode){
+		Map<String, Object> cardMap = new HashMap<String, Object>();
+		cardMap.put("cardHolderName", cardHolderName);
+		cardMap.put("cardType", type);
+		cardMap.put("cardNumber", cardNumber);
+		cardMap.put("cardExpiryDate", expirationNumber);
+		cardMap.put("cardAlias", cardAlias);
+		cardMap.put("billingAddress", BillToAddress.getBillingAdressMap(zipCode));
+		List<Map<String, Object>> cards = new ArrayList<Map<String, Object>>();
+		cards.add(cardMap);
+		return cards;
+	}
 
 }

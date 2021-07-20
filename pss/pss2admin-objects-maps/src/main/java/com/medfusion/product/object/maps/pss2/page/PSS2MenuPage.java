@@ -1,7 +1,5 @@
-// Copyright 2018-2020 NXGN Management, LLC. All Rights Reserved.
+// Copyright 2013-2021 NXGN Management, LLC. All Rights Reserved.
 package com.medfusion.product.object.maps.pss2.page;
-
-import java.util.ArrayList;
 
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
@@ -9,7 +7,6 @@ import org.openqa.selenium.support.FindBy;
 import org.openqa.selenium.support.How;
 import org.openqa.selenium.support.PageFactory;
 
-import com.medfusion.common.utils.IHGUtil;
 import com.medfusion.product.object.maps.pss2.page.Appointment.Main.PSS2MainPage;
 import com.medfusion.product.object.maps.pss2.page.AppointmentType.ManageAppointmentType;
 import com.medfusion.product.object.maps.pss2.page.CancelReason.ManageCancelReason;
@@ -21,7 +18,7 @@ import com.medfusion.product.oject.maps.pss2.page.CareTeam.ManageCareTeam;
 
 public class PSS2MenuPage extends PSS2MainPage {
 
-	@FindBy(how = How.XPATH, using = "//a[@class='nav-link dropdown-toggle']/i")
+	@FindBy(how = How.XPATH, using = "//a[@class='nav-link dropdown-toggle']//*[local-name()='svg']")
 	private WebElement settingsLogout;
 
 	@FindBy(how = How.XPATH, using = "//li[@class='nav-item dropdown open show']/ul")
@@ -39,32 +36,20 @@ public class PSS2MenuPage extends PSS2MainPage {
 	@FindBy(how = How.XPATH, using = "//a[@href=\"#/app/appointmenttype\"]")
 	private WebElement linkAppointmenttype;
 
-	@FindBy(how = How.XPATH, using = "//body/app[1]/layout[1]/nav[1]/div[1]/div[1]/ul[1]/li[2]/a[1]/span[1]/i[1]")
+	@FindBy(how = How.XPATH, using = "//*[@href='#/app/resource']")
 	private WebElement linkResource;
 
 	@FindBy(how = How.XPATH, using = "//a[@href='#/app/careteam']")
 	private WebElement linkCareTeam;
 
-	@FindBy(how = How.XPATH, using = "//a[@href=\"#/app/location\"]")
+	@FindBy(how = How.XPATH, using = "//*[@href='#/app/location']")
 	private WebElement linkLocation;
-
+	
 	@FindBy(how = How.XPATH, using = "//a[@href='#/app/cancelreason']")
 	private WebElement linkCancelReason;
 
 	public PSS2MenuPage(WebDriver driver) {
 		super(driver);
-	}
-
-	@Override
-	public boolean areBasicPageElementsPresent() {
-		ArrayList<WebElement> webElementsList = new ArrayList<WebElement>();
-		webElementsList.add(linkLockout);
-		webElementsList.add(linkSpecialty);
-		webElementsList.add(linkAppointmenttype);
-		webElementsList.add(linkResource);
-		webElementsList.add(linkLocation);
-		webElementsList.add(linkCancelReason);
-		return new IHGUtil(driver).assessAllPageElements(webElementsList, this.getClass());
 	}
 
 	public void gotoSettings() {
@@ -96,7 +81,7 @@ public class PSS2MenuPage extends PSS2MainPage {
 	}
 
 	public ManageResource gotoResource() {
-		linkResource.click();
+		javascriptClick(linkResource);
 		log("Resource Tab clicked.....");
 		return PageFactory.initElements(driver, ManageResource.class);
 	}

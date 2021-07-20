@@ -340,5 +340,114 @@ public class BulkMessagePayload {
 		return output;
 	}
 
+	public static String getBulkMessageAttachmentPayload(BulkAdmin testData, String attachmentRefId) throws InterruptedException, IOException {
+		
+		try{
+			DocumentBuilderFactory icFactory = DocumentBuilderFactory.newInstance();
+			DocumentBuilder icBuilder;
+			icBuilder = icFactory.newDocumentBuilder();
+			Document doc = icBuilder.newDocument();
+			Long timestamp = System.currentTimeMillis();
+			String schema = "http://schema.medfusion.com/health/bulkSecureMessages/v3";
+			Thread.sleep(500);
+			Element mainRootElement = doc.createElementNS(schema, "p:BulkSecureMessages");
+			mainRootElement.setAttributeNS("http://www.w3.org/2001/XMLSchema-instance", "xsi:schemaLocation", schema + " bulkSecureMessagesV3.xsd");
+			doc.appendChild(mainRootElement);
+
+			String BulkMessageIdValue = "";
+			BulkMessageIdValue = getUUID();
+			
+			// BulkMessageId
+			Element BulkMessageId = doc.createElement("BulkMessageId");
+			BulkMessageId.appendChild(doc.createTextNode(BulkMessageIdValue));
+			mainRootElement.appendChild(BulkMessageId);
+			// From
+			Element From = doc.createElement("From");
+			From.appendChild(doc.createTextNode(testData.From));
+			mainRootElement.appendChild(From);
+			// Subject
+			subject = "Test " + timestamp;
+			testData.Subject = subject;
+			Element Subject = doc.createElement("Subject");
+			Subject.appendChild(doc.createTextNode(subject));
+			mainRootElement.appendChild(Subject);
+			
+			//priority
+			Element Priority = doc.createElement("Priority");
+			Priority.appendChild(doc.createTextNode("false"));
+			mainRootElement.appendChild(Priority);
+			
+			// AllowReply
+			Element AllowReply = doc.createElement("AllowReply");
+			AllowReply.appendChild(doc.createTextNode("true"));
+			mainRootElement.appendChild(AllowReply);
+			
+			// Message
+			String bulkMessage = String.format(testData.MessageBulk, timestamp);
+			Element Message = doc.createElement("Message");
+			Message.appendChild(doc.createTextNode(bulkMessage));
+			mainRootElement.appendChild(Message);
+			if (testData.AddAttachment.contains("yes")) {
+			// Attachment
+			
+				Element Attachment = doc.createElement("Attachment");
+					//AttachmentRefId
+				Element AttachmentRefId = doc.createElement("AttachmentRefId");
+				AttachmentRefId.appendChild(doc.createTextNode(attachmentRefId));
+				Attachment.appendChild(AttachmentRefId);
+				mainRootElement.appendChild(Attachment);
+				}
+			
+			// End of Attachment
+			
+			Element Patients = doc.createElement("Patients");
+			mainRootElement.appendChild(Patients);
+			// Patients
+			for (int j = 0; j < Integer.parseInt(testData.MaxPatients); j++) {
+				messageId = getUUID();
+				Element Patient = doc.createElement("Patient");
+				Patients.appendChild(Patient);
+				Patient.setAttribute("messageId", messageId);
+
+				Element PracticePatientId = doc.createElement("PracticePatientId");
+				Patient.appendChild(PracticePatientId);
+				PracticePatientId.appendChild(doc.createTextNode(testData.PatientsIDArray[j]));
+				// Params
+				Element Params = doc.createElement("Params");
+				Patient.appendChild(Params);
+				// Param
+				for (int k = 1; k <= Integer.parseInt(testData.NumberOfParams); k++) {
+					// add different name value pair
+					Element Param = doc.createElement("Param");
+					Params.appendChild(Param);
+					// Name and Value Pair
+
+					Element Name = doc.createElement("Name");
+					Param.appendChild(Name);
+					Name.appendChild(doc.createTextNode(testData.ParamNameArray[k - 1]));
+					Element ValuePatient = doc.createElement("Value");
+					Param.appendChild(ValuePatient);
+					ValuePatient.appendChild(doc.createTextNode(testData.ParamValueArray[k - 1]));
+				}
+			}
+			// End patients
+
+		// write the content into XML file
+			Transformer transformer = TransformerFactory.newInstance().newTransformer();
+			transformer.setOutputProperty(OutputKeys.INDENT, "yes");
+			DOMSource source = new DOMSource(doc);
+
+
+			StringWriter writer = new StringWriter();
+			transformer.transform(source, new StreamResult(writer));
+			output = writer.toString();
+	  } catch (ParserConfigurationException pce) {
+		pce.printStackTrace();
+	  } catch (TransformerException tfe) {
+		tfe.printStackTrace();
+	  }
+		return output;
+	}
+
 	
 }

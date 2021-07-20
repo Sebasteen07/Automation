@@ -75,13 +75,6 @@ public class JalapenoAskAStaffPage extends JalapenoMenu {
 		createdTS = System.currentTimeMillis();
 	}
 
-	@Override
-	public boolean areBasicPageElementsPresent() {
-		// TODO
-		log("Method areBasicPageElementsPresent() is not implemented, so it is considered that all expected elements are present.");
-		return true;
-	}
-
 	public long getCreatedTimeStamp() {
 		return createdTS;
 	}
@@ -90,7 +83,7 @@ public class JalapenoAskAStaffPage extends JalapenoMenu {
 		IHGUtil.PrintMethodName();
 
 		log("Fill message and continue");
-		new WebDriverWait(driver, 20).until(ExpectedConditions.visibilityOfElementLocated(By.xpath("//*[@id='viewContent']")));
+		IHGUtil.waitForElement(driver, 10, subject);
 		subject.sendKeys("Ola! " + this.getCreatedTimeStamp());
 		question.sendKeys("Ola Doc! Please help meh.");
 		Thread.sleep(3000);
@@ -117,13 +110,13 @@ public class JalapenoAskAStaffPage extends JalapenoMenu {
 		IHGUtil.waitForElement(driver, 20, creditCardAddButton);
 		creditCardAddButton.click();
 		cardName.sendKeys("Joffrey Baratheon Lannister");
-		cardNumber.sendKeys("4111111111111111");
+		cardNumber.sendKeys("4012888888881881");
 		LocalDate currentDate = LocalDate.now();
 		Month month = currentDate.getMonth().plus(1);
 		DecimalFormat formatter = new DecimalFormat("00");
 			String cardMonth2 = formatter.format(month.getValue());
-		cardCVV.sendKeys("369");
-		cardZip.sendKeys("36969");
+		cardCVV.sendKeys("123");
+		cardZip.sendKeys("24765");
 		IHGUtil.waitForElement(driver, 5, cardDateMonth);
 		Select dropdownYear = new Select(cardDateYear);
 		dropdownYear.selectByIndex(2);
@@ -166,7 +159,7 @@ public class JalapenoAskAStaffPage extends JalapenoMenu {
 		IHGUtil.PrintMethodName();
 
 		log("Fill message and continue");
-		new WebDriverWait(driver, 20).until(ExpectedConditions.visibilityOfElementLocated(By.xpath("//*[@id='viewContent']")));
+		IHGUtil.waitForElement(driver, 10, subject);
 		subject.sendKeys("Ola! " + this.getCreatedTimeStamp());
 		question.sendKeys("Ola Doc! Please help meh.");
 		Thread.sleep(3000);

@@ -7,11 +7,14 @@ import static org.testng.Assert.assertTrue;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.support.PageFactory;
 
+import com.google.gson.JsonObject;
+import com.google.gson.JsonParser;
 import com.intuit.ifs.csscat.core.utils.Log4jUtil;
 import com.intuit.ihg.product.integrationplatform.utils.IntegrationConstants;
 import com.intuit.ihg.product.integrationplatform.utils.PropertyFileLoader;
 import com.intuit.ihg.product.integrationplatform.utils.RestUtils;
 import com.medfusion.common.utils.IHGUtil;
+import com.medfusion.product.object.maps.patientportal2.page.JalapenoMenu;
 import com.medfusion.product.object.maps.patientportal2.page.NGLoginPage;
 import com.medfusion.product.object.maps.patientportal2.page.AppointmentsPage.JalapenoAppointmentsPage;
 import com.medfusion.product.object.maps.patientportal2.page.CcdPage.MedicalRecordSummariesPage;
@@ -63,11 +66,11 @@ public class CommonFlows {
 			Log4jUtil.log("Please check Bad request or MF agent is not working");
 		}
 
-		String jobID = DBUtils.executeQueryOnDB("MFAgentDB",
+		DBUtils.executeQueryOnDB("MFAgentDB",
 				"select jobid from processingstatus where id = (select processingstatus_id from processingstatus_entity where entityidentifier ='"
 						+ entityidentifier + "')");
 
-		String messageID = DBUtils.executeQueryOnDB("MFAgentDB",
+		DBUtils.executeQueryOnDB("MFAgentDB",
 				"select messageid from processingstatus where id = (select processingstatus_id from processingstatus_entity where entityidentifier ='"
 						+ entityidentifier + "')");
 
@@ -216,7 +219,6 @@ public class CommonFlows {
 
 		Log4jUtil.log("Step Begins: Click on messages solution");
 		JalapenoMessagesPage messagesPage = homePage.showMessages(driver);
-		assertTrue(messagesPage.areBasicPageElementsPresent(), "Inbox failed to load properly.");
 
 		Log4jUtil.log("Step Begins: Validate message subject and send date");
 		Thread.sleep(1000);
@@ -229,9 +231,6 @@ public class CommonFlows {
 		Log4jUtil.log("Step Begins: Click on link View health data");
 		NGCcdViewerPage ngCcdPage = messagesPage.findNGCcdMessage(driver);
 
-		Log4jUtil.log("Step Begins: Verify if CCD Viewer is loaded");
-		assertTrue(ngCcdPage.areBasicPageElementsPresent());
-
 		Log4jUtil.log("Step Begins: Verify all elements are present in CCD Viewer and click Close Viewer");
 		ngCcdPage.verifyCCDPageElementsPresent();
 		if (personType.equalsIgnoreCase("HavingSensitiveEncounterONDemand"))
@@ -239,10 +238,10 @@ public class CommonFlows {
 		else if (personType.equalsIgnoreCase("HavingSensitiveEncounterMSU"))
 			ngCcdPage.verifySensitiveMSUCCDElementsContent(driver);
 		else if (personType.equalsIgnoreCase("EncounterHavingALLData"))
-			ngCcdPage.verifyCCDElementsContent(driver, "guaifenesin", "Lipitor 10 mg tablet", "Chest pain, unspecified",
+			ngCcdPage.verifyCCDElementsContent(driver, "guaifenesin", "Lipitor 10 mg tablet", "Anemia",
 					"Panel Description: Glucose [Mass/volume] in Serum or Plasma", "Chest pain, unspecified");
 		else if (personType.equalsIgnoreCase("HavingUnSignedOffResult"))
-			ngCcdPage.verifyCCDElementsContent(driver, "guaifenesin", "Lipitor 10 mg tablet", "Chest pain, unspecified",
+			ngCcdPage.verifyCCDElementsContent(driver, "guaifenesin", "Lipitor 10 mg tablet", "Anemia",
 					"", "Chest pain, unspecified");
 
 		messagesPage = ngCcdPage.closeCcd(driver);
@@ -271,8 +270,6 @@ public class CommonFlows {
 
 		Log4jUtil.log("Step Begins: Go to  Health Record Summaries");
 		MedicalRecordSummariesPage MedicalRecordSummariesPageObject = homePage.clickOnMedicalRecordSummaries(driver);
-		assertTrue(MedicalRecordSummariesPageObject.areBasicPageElementsPresent(),
-				"Failed to Load Health Record Summaries ");
 
 		Log4jUtil.log("Step Begins: Click on Request Health Record");
 		MedicalRecordSummariesPageObject.selectHealthRecordRequestButton();
@@ -287,8 +284,8 @@ public class CommonFlows {
 		Log4jUtil.log("Step Begins: Logout");
 		homePage.LogoutfromNGMFPortal();
 		Log4jUtil.log("ON Demand CCD is requested by patient successfully");
-		}
-         
+	}
+
 	public static void deactivatePatient(WebDriver driver, String URL, String Usermame, String Password, String FName,
 			String LName) throws Exception {
 		Log4jUtil.log("Step Begins: Login to Practice Portal");
@@ -304,8 +301,8 @@ public class CommonFlows {
 		patientSearchPage.deactivatePatient();
 		Log4jUtil.log("Step Begins: Verify the Patient is deactivated from practive portal");
 		patientSearchPage.verifyDeactivatedPatient(FName, LName);
-		}      
-   
+	}
+
 	public static void deletePatient(WebDriver driver, String URL, String Usermame, String Password, String FName,
 			String LName) throws Exception {
 		Log4jUtil.log("Step Begins: Login to Practice Portal");
@@ -331,29 +328,27 @@ public class CommonFlows {
 		String encounter_id = NGAPIFlows.addEncounter(locationName, providerName, person_id);
 
 		Log4jUtil.log("Step Begins: Add Diagnosis to created encounter");
-		String diagnosis_id = NGAPIFlows.addDiagnosis(practiceId, person_id, encounter_id);
+		NGAPIFlows.addDiagnosis(practiceId, person_id, encounter_id);
 
 		Log4jUtil.log("Step Begins: Add Medication to created encounter");
-		String medication_id = NGAPIFlows.addMedication(practiceId, locationName, providerName, "Active", person_id,
-				encounter_id, "R07.9", 286939);
+		NGAPIFlows.addMedication(practiceId, locationName, providerName, "Active", person_id, encounter_id, "R07.9",
+				286939);
 
 		Log4jUtil.log("Step Begins: Add allergy to created encounter");
-		String allergy_id = NGAPIFlows.addAllergy(locationName, providerName, person_id, encounter_id, "1000", 2);
+		NGAPIFlows.addAllergy(locationName, providerName, person_id, encounter_id, "1000", 2);
 
 		Log4jUtil.log("Step Begins: Add Problem to patient chart");
-		String problem_id = NGAPIFlows.addProblem(locationName, providerName, person_id, "420543008", "55561003",
-				"Active");
+		NGAPIFlows.addProblem(locationName, providerName, person_id, "420543008", "55561003", "Active");
 
 		Log4jUtil.log("Step Begins: Add Immunization to created encounter");
-		String immunization_id = NGAPIFlows.addNewImmunizationsOrder(locationName, providerName, person_id,
-				encounter_id);
+		NGAPIFlows.addNewImmunizationsOrder(locationName, providerName, person_id, encounter_id);
 
 		Log4jUtil.log("Step Begins: Add lab Order and lab results to patient CCD");
 		String labOrder_id = NGAPIFlows.addLabOrder(locationName, providerName, person_id, encounter_id);
-		String labOrderTest_id = NGAPIFlows.addLabOrderTest(person_id, labOrder_id, "NG001032");
+		NGAPIFlows.addLabOrderTest(person_id, labOrder_id, "NG001032");
 		String ObsPanel_id = NGAPIFlows.addObsPanel(person_id, labOrder_id);
-		String labResult_id = NGAPIFlows.addLabResult(person_id, ObsPanel_id, "75325-1");
-		String updatelabOrder_id = NGAPIFlows.updateLabOrder(locationName, providerName, person_id, labOrder_id);
+		NGAPIFlows.addLabResult(person_id, ObsPanel_id, "75325-1");
+		NGAPIFlows.updateLabOrder(locationName, providerName, person_id, labOrder_id);
 		Log4jUtil.log("Step End: Test data added to patient CCD successfully to encounter " + encounter_id);
 		return encounter_id;
 	}
@@ -438,18 +433,14 @@ public class CommonFlows {
 		assertTrue(homePage.isHomeButtonPresent(driver));
 		Log4jUtil.log("Step Begins: Click on messages solution");
 		JalapenoMessagesPage messagesPage = homePage.showMessages(driver);
-		assertTrue(messagesPage.areBasicPageElementsPresent(), "Inbox failed to load properly.");
-		Log4jUtil.log("Step Begins: Find message in Inbox with message subject " + subject);
 
 		Log4jUtil.log("Log the message read time ");
 		long epoch = System.currentTimeMillis() / 1000;
-
 		String readdatetimestamp = RestUtils.readTime(epoch);
 		Log4jUtil.log("Message Read Time:" + readdatetimestamp);
-
+		
 		Log4jUtil.log("Step Begins: Validate message loads and is the right message");
 		assertTrue(messagesPage.isMessageDisplayed(driver, subject));
-
 		messagesPage.verifyMessageContent(driver, subject, body);
 
 		if (messageType.equalsIgnoreCase("SentByPracticeUser")) {
@@ -459,13 +450,11 @@ public class CommonFlows {
 					"select first_name from user_mstr where user_id='" + userId + "'");
 			String userLastName = DBUtils.executeQueryOnDB("NGCoreDB",
 					"select last_name from user_mstr where user_id='" + userId + "'");
-			String ExpectedSenderName = userLastName + ", " + userFirstName + "Dr";
 			messagesPage.verifySenderInfo(driver, userFirstName, userLastName);
 		}
 		if (messageType.equalsIgnoreCase("SentByAlias")) {
 			String userFirstName = "Alias";
 			String userLastName = "Routing";
-			String ExpectedSenderName = "Routing, Alias Staff";
 			messagesPage.verifySenderInfo(driver, userFirstName, userLastName);
 		}
 		if (messageType.equalsIgnoreCase("SentByOnlineProfile")) {
@@ -481,7 +470,6 @@ public class CommonFlows {
 					"select first_name from user_mstr where user_id='" + userId + "'");
 			String userLastName = DBUtils.executeQueryOnDB("NGCoreDB",
 					"select last_name from user_mstr where user_id='" + userId + "'");
-			String ExpectedSenderName = userLastName + ", " + userFirstName + "Dr";
 			messagesPage.verifySenderInfo(driver, userFirstName, userLastName);
 		}
 
@@ -675,7 +663,7 @@ public class CommonFlows {
 	}
 
 	public static void verifyReadReceiptMessageReceived(String comm_id, String subject) throws Throwable {
-		String ReadReceiptCommID = DBUtils.executeQueryOnDB("NGCoreDB",
+		DBUtils.executeQueryOnDB("NGCoreDB",
 				"select comm_id from ngweb_communications where parent_id ='" + comm_id + "'");
 
 		String ReadReceiptSubject = DBUtils.executeQueryOnDB("NGCoreDB",
@@ -942,7 +930,7 @@ public class CommonFlows {
 		Thread.sleep(5000);
 		Log4jUtil.log("Step Begins: Verify booked appointment received in Portal");
 		Boolean appointmentStatus = appointmentsPage.verifyAppointment(appointmentDate, appointmentTime,
-				PropertyLoaderObj.getProperty("ResourceName"));
+				PropertyLoaderObj.getProperty("EPMProviderName"));
 		assertTrue(appointmentStatus, "Booked Appointment didnot receive by Patient");
 
 		driver.navigate().back();
@@ -1081,5 +1069,187 @@ public class CommonFlows {
 		String PracticeID = DBUtils.executeQueryOnDB("NGCoreDB", PracticeIDQuery);
 		CommonUtils.VerifyTwoValues(PracticeID, "equals", actualPracticeID);
 		Log4jUtil.log("Step End: The payment is posted to NG successfully");
+	}
+	
+	public static void verifyAttachmentReceivedInMessageAtNGCore(PropertyFileLoader PropertyLoaderObj,String comm_id,String format,
+            String AttachmentName) throws Throwable{
+        Log4jUtil.log("Step Begins: Verify attachment is received in message");
+        String ActualFormat = DBUtils.executeQueryOnDB("NGCoreDB","select format from pxp_comm_attachment_data where comm_id ='"+comm_id+"'");
+        CommonUtils.VerifyTwoValues(ActualFormat,"equals",format);
+        
+        String ActualAttachmentData = DBUtils.executeQueryOnDB("NGCoreDB","select attachment_data from pxp_comm_attachment_data where comm_id ='"+comm_id+"'");
+        assertTrue((!ActualAttachmentData.isEmpty()), "Attachment is received");
+        
+        String AttachmentIdPxp = DBUtils.executeQueryOnDB("NGCoreDB","select attachment_id from pxp_comm_attachment_data where comm_id ='"+comm_id+"'");
+        String AttachmentIdNG = DBUtils.executeQueryOnDB("NGCoreDB","select attachment_id from ngweb_comm_attachments where comm_id ='"+comm_id+"'");
+        CommonUtils.VerifyTwoValues(AttachmentIdPxp.toUpperCase(),"equals",AttachmentIdNG.toUpperCase());
+        
+        String ActualAttachmentName = DBUtils.executeQueryOnDB("NGCoreDB","select attachment_name from ngweb_comm_attachments where comm_id ='"+comm_id+"'");
+        CommonUtils.VerifyTwoValues(ActualAttachmentName,"equals",AttachmentName);
+        Log4jUtil.log("Step End: The attachment is received in message");
+        }
+	
+	public static void verifyMultipleAttachmentsReceivedInMessageAtNGCore(PropertyFileLoader PropertyLoaderObj,String comm_id,String format,
+            String attachmentName) throws Throwable{
+        Log4jUtil.log("Step Begins: Verify attachment is received in message");        
+        String actualattachmentId = DBUtils.executeQueryOnDB("NGCoreDB","select attachment_id from ngweb_comm_attachments where comm_id ='"+comm_id+"' and attachment_name ='"+attachmentName+"'");
+                
+        String actualFormat = DBUtils.executeQueryOnDB("NGCoreDB","select format from pxp_comm_attachment_data where comm_id ='"+comm_id+"' and attachment_id ='"+actualattachmentId+"'");
+        CommonUtils.VerifyTwoValues(actualFormat,"equals",format);
+        
+        String actualAttachmentData = DBUtils.executeQueryOnDB("NGCoreDB","select attachment_data from pxp_comm_attachment_data where comm_id ='"+comm_id+"' and attachment_id ='"+actualattachmentId+"'");
+        assertTrue((!actualAttachmentData.isEmpty()), "Attachment is received");        
+        Log4jUtil.log("Step End: The attachment is received in message");
+        }
+	
+	public static void verifyDocumentInsertedIntoTables(String requestId, String comments) throws Throwable {		
+		String documentContentQuery = "select content from pxp_documents where request_id ='"+requestId+"'";
+		String documentRequestsQuery = "select name from pxp_document_requests where request_id ='"+requestId+"'";
+		String documentHistoryQuery = "select emr_doc_id from ngweb_document_history where comments ='"+comments+"'";
+		
+		String documentContent = DBUtils.executeQueryOnDB("NGCoreDB", documentContentQuery);
+		String documentRequests = DBUtils.executeQueryOnDB("NGCoreDB", documentRequestsQuery);
+		String documentHistory = DBUtils.executeQueryOnDB("NGCoreDB", documentHistoryQuery);
+		
+		if((documentContent.isEmpty() && documentRequests.isEmpty() && documentHistory.isEmpty()) || ((documentContent == null)
+				&& (documentRequests == null) && (documentHistory == null)))
+			Log4jUtil.log("Document is not added into tables");
+		else
+			Log4jUtil.log("Document is added into tables successfully");
+		}
+			
+	public static void verifyDocumentProcessingStatus(PropertyFileLoader PropertyLoaderObj, String requestId,
+			String practice_id, String integrationID) throws Throwable {
+		
+		String documentRequestsQuery = "select status from pxp_document_requests where request_id ='"+requestId+"' and practice_id='" + practice_id.trim() + "'";
+		String processing_status = DBUtils.executeQueryOnDB("NGCoreDB", documentRequestsQuery);
+		
+		if ((processing_status.equals("2")) || (processing_status.equals("4"))) {
+			if (processing_status.equals("2")) {
+				Log4jUtil.log("Processing status is " + processing_status + " i.e. Document is added into table.");
+			for (int i = 0; i < arg_timeOut; i++) {
+				processing_status = DBUtils.executeQueryOnDB("NGCoreDB", documentRequestsQuery);
+				if (processing_status.equals("4")) {
+					Log4jUtil.log("Step End: Processing status is " + processing_status
+							+ " i.e. EHR Document has been posted to MF agent");
+					break;
+				} else {
+					if (i == arg_timeOut - 1)
+						Thread.sleep(1000);
+				}
+			}
+			CommonUtils.VerifyTwoValues(processing_status,"equals","4");
+		}
+			verifyMFJOBStatusWithoutValidatingGetProcessingStatusCall(PropertyLoaderObj, requestId, integrationID,
+					"EHR Document");
+			
+			for (int i = 0; i < arg_timeOut; i++) {
+				processing_status = DBUtils.executeQueryOnDB("NGCoreDB", documentRequestsQuery);
+				if (processing_status.equals("6")) {
+					Log4jUtil.log("Step End: Processing status is " + processing_status
+							+ " i.e. RSDK has posted EHR Document to portal");
+					break;
+				} else {
+					if (i == arg_timeOut - 1)
+						Thread.sleep(1000);
+				}
+			}
+		} else if (processing_status.equals("6")) {
+			Log4jUtil
+					.log("Step End: Processing status is " + processing_status + " i.e. RSDK has posted EHR Document to portal");
+		} else if (processing_status.equals("3")) {
+			Log4jUtil.log("Step End: Processing status is " + processing_status	+ " i.e. Failed to generate EHR Document");
+		} else if (processing_status.equals("5")) {
+			Log4jUtil.log(
+					"Step End: Processing status is " + processing_status + " i.e. Failed to post EHR Document to MF Agent");
+		} else if (processing_status.equals("7")) {
+			Log4jUtil.log(
+					"Step End: Processing status is " + processing_status + " i.e. Failed to deliver EHR Document to Portal");
+		}
+		CommonUtils.VerifyTwoValues(processing_status, "equals", "6");
+	}
+	
+	public static void verifyPatientDocumentReceivedINInbox(PropertyFileLoader PropertyLoaderObj, WebDriver driver, String URL,
+			String username, String password, String subject, String body, String attachmentName) throws Throwable {
+		Log4jUtil.log("Step Begins: Login to Patient Portal");
+		NGLoginPage loginPage = new NGLoginPage(driver, URL);
+		JalapenoHomePage homePage = loginPage.login(username, password);
+		Log4jUtil.log("Detecting if Home Page is opened");
+		assertTrue(homePage.isHomeButtonPresent(driver));
+		Log4jUtil.log("Step Begins: Click on messages solution");
+		JalapenoMessagesPage messagesPage = homePage.showMessages(driver);
+		Log4jUtil.log("Step Begins: Find message in Inbox with message subject " + subject);
+			
+		Log4jUtil.log("Step Begins: Validate message loads and is the right message");
+		assertTrue(messagesPage.isMessageDisplayed(driver, subject));
+
+		messagesPage.verifyMessageContent(driver, subject, body);
+		Log4jUtil.log("Step Begins:Verify attachment in message");
+		messagesPage.verifyMessageAttachment(driver, attachmentName);
+		
+		Log4jUtil.log("Logging out");
+		homePage.LogoutfromNGMFPortal();
+	}
+	
+	public static void verifyIMHState(String documentId) throws Throwable {
+		Log4jUtil.log("Step Begins: Verify current status of IMH");
+		String currentStateQuery = "select current_state from ngweb_imh_question_state where id = '"+documentId+"'";
+		String currentState = DBUtils.executeQueryOnDB("NGCoreDB", currentStateQuery);
+				
+		if (currentState.equals("1")) {
+			for (int i = 0; i < arg_timeOut; i++) {
+				currentState = DBUtils.executeQueryOnDB("NGCoreDB", currentStateQuery);
+				if (currentState.equals("2")) {
+					Log4jUtil.log("IMH response is received to NG");
+					break;
+				} else {
+					if (i == arg_timeOut - 1)
+						Thread.sleep(1000);
+				}
+			}
+			CommonUtils.VerifyTwoValues(currentState, "equals", "2");
+		}
+		CommonUtils.VerifyTwoValues(currentState, "equals", "2");
+	}
+	
+	public static void verifyDocumentReadStatus(String requestId) throws Throwable {
+		Log4jUtil.log("Step Begins: Verify read status of document");			
+		String documentRequestsQuery = "select status from pxp_document_requests where request_id ='"+requestId+"'";
+		String processingStatus = DBUtils.executeQueryOnDB("NGCoreDB", documentRequestsQuery);
+		
+		if (processingStatus.equals("6")) {
+			for (int i = 0; i < arg_timeOut; i++) {
+				processingStatus = DBUtils.executeQueryOnDB("NGCoreDB", documentRequestsQuery);
+				if (processingStatus.equals("8")) {
+					Log4jUtil.log("Document is read by patient");
+					break;
+				} else {
+					if (i == arg_timeOut - 1)
+						Thread.sleep(1000);
+				}
+			}
+			CommonUtils.VerifyTwoValues(processingStatus, "equals", "8");
+		}
+		CommonUtils.VerifyTwoValues(processingStatus, "equals", "8");
+	}
+	
+	public static String getPAMLastName(String response) {	    	
+    	JsonObject jObj = new JsonParser().parse(response).getAsJsonObject();  
+    	jObj.remove("url");
+    	     
+    	String entryValue = jObj.get("entry").toString();    	
+    	entryValue = entryValue.substring(1, entryValue.length()-1);
+    	Log4jUtil.log("Value of Entry Key is " + entryValue);
+    	
+    	jObj = new JsonParser().parse(entryValue).getAsJsonObject();  
+    	String resourcevalue = jObj.get("resource").toString();
+    	Log4jUtil.log("Value of Resource Key is " + resourcevalue);
+    	 
+    	String namevalue = CommonUtils.getResponseKeyValue(resourcevalue,"name");
+    	namevalue = namevalue.substring(1, namevalue.length()-1);    	
+    	String lastName = CommonUtils.getResponseKeyValue(namevalue,"family");
+    	Log4jUtil.log("LastName is " + lastName);
+    	
+		return lastName;
 	}
 }

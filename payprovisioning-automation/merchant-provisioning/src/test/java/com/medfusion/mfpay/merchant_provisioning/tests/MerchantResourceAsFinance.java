@@ -11,7 +11,7 @@ import com.medfusion.common.utils.PropertyFileLoader;
 import com.medfusion.mfpay.merchant_provisioning.helpers.MerchantInfo;
 import com.medfusion.mfpay.merchant_provisioning.helpers.PaypalDetails;
 
-public class MerchantResourceAsFinance extends BaseRest{
+public class MerchantResourceAsFinance extends BaseRest {
 	protected PropertyFileLoader testData;
 	
   @BeforeTest

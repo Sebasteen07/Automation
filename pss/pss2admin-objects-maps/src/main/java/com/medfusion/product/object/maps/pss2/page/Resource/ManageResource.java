@@ -3,6 +3,7 @@ package com.medfusion.product.object.maps.pss2.page.Resource;
 
 import java.util.List;
 
+import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.FindAll;
@@ -12,6 +13,7 @@ import org.openqa.selenium.support.ui.Select;
 
 import com.medfusion.common.utils.IHGUtil;
 import com.medfusion.product.object.maps.pss2.page.PSS2MenuPage;
+import com.medfusion.product.object.maps.pss2.page.util.CommonMethods;
 
 public class ManageResource extends PSS2MenuPage {
 
@@ -30,13 +32,13 @@ public class ManageResource extends PSS2MenuPage {
 	@FindBy(how = How.XPATH, using = "//a[contains(text(),'General')]")
 	private WebElement editGeneralTab;
 
-	@FindBy(how = How.XPATH, using = "//a[contains(text(),'Location')]")
+	@FindBy(how = How.XPATH, using = "//*[@id='tabs3']/li[2]/a")
 	private WebElement editLocationTab;
 
 	@FindBy(how = How.XPATH, using = "//a[contains(text(),'Specialty')]")
 	private WebElement editSpecialityTab;
 
-	@FindBy(how = How.XPATH, using = "//*[@class='nav-item']//a[@href='#tab43']")
+	@FindBy(how = How.XPATH, using = "//*[@id='tabs3']/li[4]/a")
 	private WebElement editAptTypeTab;
 
 	@FindBy(how = How.NAME, using = "slotSize")
@@ -69,8 +71,11 @@ public class ManageResource extends PSS2MenuPage {
 	@FindBy(how = How.ID, using = "isageRule")
 	private WebElement resourceAgeRuleChecked;
 
-	@FindBy(how = How.XPATH, using = "//button[@type=\"submit\"]")
+	@FindBy(how = How.XPATH, using = "//button[@type='submit']")
 	private WebElement resourceSave;
+	
+	@FindBy(how = How.XPATH, using = "//a[normalize-space()='Location']")
+	private WebElement resourceLocationTab;	
 
 	@FindBy(how = How.XPATH, using = "//button[@type=\"button\"]")
 	private WebElement resourceCancel;
@@ -96,16 +101,17 @@ public class ManageResource extends PSS2MenuPage {
 	@FindBy(how = How.XPATH, using = "//*[@name='apptTypeReservedReason']")
 	private WebElement reservefor;
 
-	@FindBy(how = How.XPATH, using = "//*[@class='col-xs-12']/div/button[1]")
+	@FindBy(how = How.XPATH, using = "//*[@id='tab43']/div/form/fieldset[3]/div/div/button[1]")
 	private WebElement appointmenttypeSave;
 
 	@FindBy(how = How.ID, using = "maxPerDay")
 	private WebElement maxPerDay;
 
-	@FindBy(how = How.XPATH, using = "//div[@class='form-group row']//div[@class='col-md-12']//label[@for='allowSameDayAppts']/input")
+
+	@FindBy(how = How.XPATH, using = "//label[@for='allowSameDayAppts']//input")
 	private WebElement acceptToggle;
 
-	@FindBy(how = How.XPATH, using = "//div[@class='col-md-12']//label[@for='allowSameDayAppts']")
+	@FindBy(how = How.XPATH, using = "//div[@class='col-md-12']//label[@for='allowSameDayAppts']/i")
 	private WebElement acceptToggleclick;
 
 	@FindBy(how = How.XPATH, using = "//strong[contains(text(),'Age Rule')]")
@@ -129,16 +135,41 @@ public class ManageResource extends PSS2MenuPage {
 	@FindBy(how = How.XPATH, using = "/html/body/app/layout/div/main/div[2]/div/div/div[2]/section/div/div/div/div/div/div[4]/div/form/div[2]/div[6]/input")
 	private WebElement sendMonthsecond;
 
+	@FindBy(how = How.XPATH, using = "//*[@name='apptTimeMark']")
+	private WebElement timeMarkOption;
+
+	@FindBy(how = How.XPATH, using = "//label[@for='lastQuestRequired']//i")
+	private WebElement lastQuestionRequiredToggleClick;
+
+	@FindBy(how = How.XPATH, using = "//label[@for='lastQuestRequired']//input")
+	private WebElement lastQuestionRequiredTogglebtn;
+
+	@FindBy(how = How.XPATH, using = "//button[@class='btn btn-primary'][normalize-space()='Save']")
+	private WebElement bookAptSaveBtn;
+
+	@FindBy(how = How.XPATH, using = "//label[@for='acceptComment']//input")
+	private WebElement lastQuestionEnableTogglebtn;
+
+	@FindBy(how = How.XPATH, using = "//label[@for='acceptComment']//i")
+	private WebElement lastQuestionEnableToggleClick;
+
+	@FindBy(how = How.XPATH, using = "//a[@title='Back']//*[local-name()='svg']")
+	private WebElement backArrow;
+	
+	@FindAll({ @FindBy(xpath = "//div[@id='tab23']/table/tbody/tr/td[3]/div/div/label/input") })
+	private List<WebElement> locationToggleStatus;
+
+	@FindAll({ @FindBy(xpath = "//div[@id='tab23']/table/tbody/tr/td[3]/div/div/label/i") })
+	private List<WebElement> locationToggleClick;
+
+	
 	public ManageResource(WebDriver driver) {
 		super(driver);
 	}
 
-	@Override
-	public boolean areBasicPageElementsPresent() {
-		return true;
-	}
-
-	public void searchResource(String resourceName) {
+	public void searchResource(String resourceName){
+		IHGUtil.waitForElement(driver, 6, searchResource);
+		log("Enter the resource in search box "+resourceName);
 		searchResource.sendKeys(resourceName);
 	}
 
@@ -146,11 +177,36 @@ public class ManageResource extends PSS2MenuPage {
 		resourceSearchApt.sendKeys(resourceName);
 	}
 
-	public void selectResource(String resourceName) {
+	CommonMethods commonMethods = new CommonMethods(driver);
+
+	public void selectResource(String resourceName) throws InterruptedException {
 		searchResource(resourceName);
 		IHGUtil.waitForElement(driver, 60, searchedResourceName);
 		searchedResourceName.click();
 		log("clicked on Resource  ");
+	} 
+ 
+	public void clickLocation() throws InterruptedException {
+		commonMethods.highlightElement(resourceLocationTab);
+		resourceLocationTab.click();
+		log("Clicked On Location ");
+	}
+
+	public void offAllLocationToggle() throws InterruptedException {
+		log("The size of toggle button in webpage is" + locationToggleStatus.size());
+		for (int t = 1; t < locationToggleClick.size(); t++) {
+			WebElement locationchk = driver
+					.findElement(By.xpath("//div[@id='tab23']/table/tbody/tr[" + t + "]/td[3]/div/div/label/i"));
+			WebElement locationchkStatus = driver
+					.findElement(By.xpath("//div[@id='tab23']/table/tbody/tr[" + t + "]/td[3]/div/div/label/input"));
+			if (locationchkStatus.isSelected() == true) {
+				log("the Value of t is " + t);
+				commonMethods.highlightElement(locationchk);
+				locationchk.click();
+				log("The Value of the Toggle status after turn off is " + locationchkStatus.isSelected());
+				log("Clicked on The True Value");
+			}
+		}
 	}
 
 	public void selectAppointmenttype(String ApptypeName) {
@@ -239,9 +295,8 @@ public class ManageResource extends PSS2MenuPage {
 	}
 
 	public boolean acceptforStatus() {
-
-		log(acceptToggle.getAttribute("ng-reflect-model"));
-		boolean bool = Boolean.parseBoolean(acceptToggle.getAttribute("ng-reflect-model"));
+		boolean bool = acceptToggle.isSelected();
+		log("Status of Accept for the Same Day -" + bool);
 		return bool;
 	}
 
@@ -281,4 +336,103 @@ public class ManageResource extends PSS2MenuPage {
 		log("SuccessFully Sent the Values in ageRule textfield");
 		appointmenttypeSave.click();
 	}
+
+	public void disableLastQuestionRequired() throws InterruptedException {
+		IHGUtil.waitForElement(driver, 1, lastQuestionRequiredToggleClick);
+		commonMethods.highlightElement(lastQuestionRequiredToggleClick);
+		jse.executeScript("arguments[0].click();", lastQuestionRequiredTogglebtn);
+		log("Status of Last Question Required after TURN OFF- " + lastQuestionRequiredTogglebtn.isSelected());
+		while (lastQuestionRequiredTogglebtn.isSelected() == true) {
+			jse.executeScript("arguments[0].click();", lastQuestionRequiredTogglebtn);
+		}
+		pageDown(1000);
+		IHGUtil.waitForElement(driver, 3, bookAptSaveBtn);
+		commonMethods.highlightElement(bookAptSaveBtn);
+		bookAptSaveBtn.click();
+		log("TURN OFF the Last Question Required toggle button as it was enable previously");
+	}
+
+	public void enableLastQuestionRequired() throws InterruptedException {
+
+		IHGUtil.waitForElement(driver, 1, lastQuestionRequiredToggleClick);
+		pageDown(800);
+
+		commonMethods.highlightElement(lastQuestionRequiredToggleClick);
+		jse.executeScript("arguments[0].click();", lastQuestionRequiredTogglebtn);
+		log("Status of Last Question Required after TURN ON- " + lastQuestionRequiredTogglebtn.isSelected());
+
+		while (lastQuestionRequiredTogglebtn.isSelected() == false) {
+			jse.executeScript("arguments[0].click();", lastQuestionRequiredTogglebtn);
+		}
+		pageDown(1000);
+		IHGUtil.waitForElement(driver, 3, bookAptSaveBtn);
+		commonMethods.highlightElement(bookAptSaveBtn);
+		bookAptSaveBtn.click();
+		log("TURN ON the Last Question Required toggle button as it was disabled previously");
+	}
+
+	public void enableLastQuestion() throws InterruptedException {
+
+		IHGUtil.waitForElement(driver, 1, lastQuestionEnableToggleClick);
+		pageDown(800);
+
+		commonMethods.highlightElement(lastQuestionEnableToggleClick);
+		jse.executeScript("arguments[0].click();", lastQuestionEnableTogglebtn);
+		log("Status of Last Question Enable after TURN ON- " + lastQuestionEnableTogglebtn.isSelected());
+
+		while (lastQuestionEnableTogglebtn.isSelected() == false) {
+			jse.executeScript("arguments[0].click();", lastQuestionEnableTogglebtn);
+		}
+		log("TURN ON the Last Question Enable toggle button as it was disabled previously");
+	}
+
+	public void pageDown(int d) throws InterruptedException {
+		Thread.sleep(1000);
+		// This will scroll down the page by 800 pixel vertical
+		jse.executeScript("window.scrollBy(0," + d + ")");
+		Thread.sleep(1000);
+	}
+
+	public void pageUp(int t) throws InterruptedException {
+		Thread.sleep(1000);
+		// This will scroll up the page by 600 pixel vertical
+		jse.executeScript("window.scrollBy(" + t + ",0)");
+		Thread.sleep(1000);
+	}
+
+	public void clickBackArraow() throws InterruptedException {
+		pageUp(1500);
+		commonMethods.highlightElement(backArrow);
+		backArrow.click();
+	}
+
+	public void clickGeneralTab() throws InterruptedException {
+		commonMethods.highlightElement(editGeneralTab);
+		editGeneralTab.click();
+		pageDown(1500);
+		commonMethods.highlightElement(resourceSave);
+		resourceSave.click();
+	}
+
+	public boolean lastQuestionRequiredStatus() {
+
+		commonMethods.highlightElement(lastQuestionRequiredToggleClick);
+		boolean bool = lastQuestionRequiredTogglebtn.isSelected();
+		return bool;
+	}
+
+	public boolean lastQuestionEnableStatus() {
+		commonMethods.highlightElement(lastQuestionEnableToggleClick);
+		boolean bool = lastQuestionEnableTogglebtn.isSelected();
+		return bool;
+	}
+
+	public void timeMark(String timeMarkValue) {
+		Select selectOptions = new Select(timeMarkOption);
+		selectOptions.selectByValue(timeMarkValue);
+		timeMarkOption.click();
+		appointmenttypeSave.click();
+
+	}
+
 }

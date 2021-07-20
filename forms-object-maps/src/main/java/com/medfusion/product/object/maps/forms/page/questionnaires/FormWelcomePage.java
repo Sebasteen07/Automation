@@ -1,6 +1,7 @@
 //  Copyright 2013-2021 NXGN Management, LLC. All Rights Reserved.
 package com.medfusion.product.object.maps.forms.page.questionnaires;
 
+import java.time.Duration;
 import java.util.concurrent.TimeUnit;
 import java.util.function.Function;
 
@@ -32,8 +33,8 @@ public class FormWelcomePage extends PortalFormPage {
 	public String getMessageText() {		
 
 		FluentWait<WebDriver> wdw = new FluentWait<WebDriver>(driver)
-				.withTimeout(30, TimeUnit.SECONDS)
-				.pollingEvery(3, TimeUnit.SECONDS)
+				.withTimeout(Duration.ofSeconds(30))
+				.pollingEvery(Duration.ofSeconds(3))
 				.ignoring(NoSuchFrameException.class)
 				.ignoring(NoSuchElementException.class);
 

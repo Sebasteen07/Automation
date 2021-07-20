@@ -1,10 +1,11 @@
-// Copyright 2018-2020 NXGN Management, LLC. All Rights Reserved.
+// Copyright 2013-2021 NXGN Management, LLC. All Rights Reserved.
 package com.medfusion.product.object.maps.pss2.page.Specialty;
 
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.FindBy;
 import org.openqa.selenium.support.How;
+import org.openqa.selenium.support.ui.Select;
 
 import com.medfusion.common.utils.IHGUtil;
 import com.medfusion.product.object.maps.pss2.page.PSS2MenuPage;
@@ -16,6 +17,9 @@ public class ManageSpecialty extends PSS2MenuPage {
 
 	@FindBy(how = How.ID, using = "search-specialty")
 	private WebElement searchSpecility;
+	
+	@FindBy(how = How.XPATH, using = "//input[@id='myonoffswitch']")
+	private WebElement ageRuleCheckboxStatus;
 
 	@FindBy(how = How.ID, using = "onoffgender")
 	private WebElement genderRuleStatus;
@@ -52,14 +56,28 @@ public class ManageSpecialty extends PSS2MenuPage {
 
 	@FindBy(how = How.XPATH, using = "//table/tbody/tr")
 	private WebElement searchSpecilityName;
+	
+	@FindBy(how = How.XPATH, using = "//strong[contains(text(),'Age Rule')]")
+	private WebElement ageRuleCheckbox;
+
+	@FindBy(how = How.XPATH, using = "//*[@id='content']/div[2]/div/div/div[2]/section/div/form/div[2]/div[2]/select")
+	private WebElement ageRuleDropFirst;
+
+	@FindBy(how = How.XPATH, using = "//*[@id='content']/div[2]/div/div/div[2]/section/div/form/div[2]/div[5]/select")
+	private WebElement ageRuleDropSecond;
+
+	@FindBy(how = How.XPATH, using = "//*[@id='content']/div[2]/div/div/div[2]/section/div/form/div[2]/div[4]/select")
+	private WebElement ageRuleAnd;
+
+	@FindBy(how = How.XPATH, using = "//div[@class='col-md-3 col-xs-3']//input[@name='leftVal']")
+	private WebElement sendMonthFirst;
+
+	@FindBy(how = How.XPATH, using = "//div[@class='col-md-3 col-xs-3']//input[@name='rightVal']")
+	private WebElement sendMonthSecond;
+
 
 	public ManageSpecialty(WebDriver driver) {
 		super(driver);
-	}
-
-	@Override
-	public boolean areBasicPageElementsPresent() {
-		return true;
 	}
 
 	public void searchSpecility(String specilityName) {
@@ -74,7 +92,7 @@ public class ManageSpecialty extends PSS2MenuPage {
 	}
 
 	public Boolean isgenderRuleTrue() {
-		return Boolean.valueOf(genderRuleStatus.getAttribute("ng-reflect-model"));
+		return genderRuleStatus.isSelected();
 	}
 
 	public Boolean isMaleTrue() {
@@ -137,4 +155,36 @@ public class ManageSpecialty extends PSS2MenuPage {
 		gendeunknown.click();
 		saveButton.click();
 	}
+	
+
+	public boolean checkBoxStatus() {
+		boolean bool = ageRuleCheckboxStatus.isSelected();
+		log("CheckBox Status " + bool);
+		return bool;
+
+	}
+	public void ageRule() {
+		if (checkBoxStatus() == false) {
+			ageRuleCheckbox.click();
+			log("Clicked on Checkbox of Age Rule ");
+		} else {
+			log("CheckBox is Already Selected");
+		}
+	}
+
+	public void ageRuleparameter(String ageStartMonth, String ageEndMonths) {
+		Select select = new Select(ageRuleDropFirst);
+		Select and = new Select(ageRuleAnd);
+		Select select1 = new Select(ageRuleDropSecond);
+		select.selectByVisibleText(">");
+		sendMonthFirst.clear();
+		sendMonthFirst.sendKeys(ageStartMonth);
+		and.selectByIndex(1);
+		select1.selectByVisibleText("<");
+		sendMonthSecond.clear();
+		sendMonthSecond.sendKeys(ageEndMonths);
+		log("SuccessFully Sent the Values in ageRule textfield");
+		saveButton.click();
+	}
+
 }

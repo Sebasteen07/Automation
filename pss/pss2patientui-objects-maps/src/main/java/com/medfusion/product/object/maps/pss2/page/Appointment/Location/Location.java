@@ -1,9 +1,8 @@
-// Copyright 2018-2020 NXGN Management, LLC. All Rights Reserved.
+// Copyright 2013-2021 NXGN Management, LLC. All Rights Reserved.
 package com.medfusion.product.object.maps.pss2.page.Appointment.Location;
 
-import java.util.ArrayList;
+import java.time.Duration;
 import java.util.List;
-import java.util.concurrent.TimeUnit;
 import java.util.function.Function;
 
 import org.openqa.selenium.By;
@@ -18,19 +17,17 @@ import org.openqa.selenium.support.How;
 import org.openqa.selenium.support.PageFactory;
 import org.openqa.selenium.support.ui.FluentWait;
 
-import com.medfusion.common.utils.IHGUtil;
 import com.medfusion.product.object.maps.pss2.page.Appointment.DateTime.AppointmentDateTime;
 import com.medfusion.product.object.maps.pss2.page.Appointment.Main.PSS2MainPage;
 import com.medfusion.product.object.maps.pss2.page.Appointment.Provider.Provider;
 import com.medfusion.product.object.maps.pss2.page.AppointmentType.AppointmentPage;
 
-
 public class Location extends PSS2MainPage {
 
-	@FindAll({@FindBy(xpath = "//a[@class='locationlink locationlinkclick']")})
+	@FindAll({ @FindBy(xpath = "//a[@class='locationlink locationlinkclick']") })
 	private List<WebElement> locationList;
 
-	@FindAll({@FindBy(xpath = "//a[contains(text(),'River Oaks Main')]")})
+	@FindAll({ @FindBy(xpath = "//a[contains(text(),'River Oaks Main')]") })
 	private List<WebElement> locationRever;
 
 	@FindBy(how = How.XPATH, using = "//select[@id='sel1']")
@@ -85,15 +82,10 @@ public class Location extends PSS2MainPage {
 		return null;
 	}
 
-	@Override
-	public boolean areBasicPageElementsPresent() {
-		ArrayList<WebElement> webElementsList = new ArrayList<WebElement>();
-		return new IHGUtil(driver).assessAllPageElements(webElementsList, this.getClass());
-	}
-
 	public boolean isViewallmessagesButtonPresent(WebDriver driver) throws InterruptedException {
-		FluentWait<WebDriver> wait = new FluentWait<WebDriver>(driver).withTimeout(60, TimeUnit.SECONDS).pollingEvery(3, TimeUnit.SECONDS)
-				.ignoring(NoSuchElementException.class).ignoring(NoSuchFrameException.class).ignoring(WebDriverException.class);
+		FluentWait<WebDriver> wait = new FluentWait<WebDriver>(driver).withTimeout(Duration.ofSeconds(60))
+				.pollingEvery(Duration.ofSeconds(3)).ignoring(NoSuchElementException.class)
+				.ignoring(NoSuchFrameException.class).ignoring(WebDriverException.class);
 		boolean result = wait.until(new Function<WebDriver, Boolean>() {
 			@Override
 			public Boolean apply(WebDriver driver) {
@@ -106,7 +98,6 @@ public class Location extends PSS2MainPage {
 	public String getAddressValue() {
 		return addressValue;
 	}
-
 
 	public void setAddressValue(String addressValue) {
 		this.addressValue = addressValue;

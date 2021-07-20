@@ -1,7 +1,10 @@
+//  Copyright 2013-2021 NXGN Management, LLC. All Rights Reserved.
 package com.medfusion.product.object.maps.patientportal2.page;
 
 import java.util.ArrayList;
 
+import org.openqa.selenium.By;
+import org.openqa.selenium.JavascriptExecutor;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.FindBy;
@@ -20,13 +23,13 @@ public class JalapenoLoginPage extends MedfusionPage {
 
 	@FindBy(how = How.ID, using = "userid")
 	private WebElement inputUserName;
-	
+
 	@FindBy(how = How.ID, using = "userid_error")
 	private WebElement userNameError;
 
 	@FindBy(how = How.ID, using = "password")
 	private WebElement inputPassword;
-	
+
 	@FindBy(how = How.ID, using = "password_error")
 	private WebElement passwordError;
 
@@ -52,11 +55,11 @@ public class JalapenoLoginPage extends MedfusionPage {
 	private WebElement okButton;
 
 	@FindBy(how = How.XPATH, using = "//*[@id='same']")
-    private WebElement healthKeyMatchError;
-	
+	private WebElement healthKeyMatchError;
+
 	@FindBy(how = How.XPATH, using = "//*[contains(text(),'You are no longer able to sign in because you have been unlinked from all patient accounts. Please contact our practice if you need assistance.')]")
 	private WebElement trustedRepresentativeLoginError;
-	
+
 	@FindBy(how = How.XPATH, using = "//span[contains(text(),'Your account is no longer active. Please contact our practice in order re-activate it.')]")
 	private WebElement deletePatientLoginError;
 
@@ -68,30 +71,33 @@ public class JalapenoLoginPage extends MedfusionPage {
 		super(driver);
 	}
 
-	@Override
-	public boolean areBasicPageElementsPresent() {
+	public boolean assessPageElements() {
 
 		ArrayList<WebElement> webElementsList = new ArrayList<WebElement>();
+
 		webElementsList.add(inputUserName);
 		webElementsList.add(inputPassword);
-		webElementsList.add(forgotUserOrPasswordButton);
 		webElementsList.add(buttonSignIn);
-		webElementsList.add(buttonCreateANewAccount);
 		webElementsList.add(rememberUserNameCheckbox);
-		return assessPageElements(webElementsList);
+		webElementsList.add(buttonPayNow);
+		webElementsList.add(buttonCreateANewAccount);
+		webElementsList.add(forgotUserOrPasswordButton);
+
+		return new IHGUtil(driver).assessAllPageElements(webElementsList, this.getClass());
 	}
 
 	public JalapenoHomePage login(String username, String password) {
 		makeLogin(username, password);
 		log("User is logged in");
 		handleWeNeedToConfirmSomethingModal();
+		driver.navigate().refresh();
 		return PageFactory.initElements(driver, JalapenoHomePage.class);
 	}
-	
-	public  void loginEmptyCredentials() {
+
+	public void loginEmptyCredentials() {
 		makeLogin("", "");
-		log("User clicked Signin in with empty credentials");		
-			}
+		log("User clicked Signin in with empty credentials");
+	}
 
 	public JalapenoLoginPage loginUnsuccessfuly(String username, String password) {
 		makeLogin(username, password);
@@ -108,20 +114,20 @@ public class JalapenoLoginPage extends MedfusionPage {
 
 	public String getUserErrorText() {
 		return userNameError.getText();
-		
+
 	}
-	
+
 	public String getPasswordErrorText() {
 		return passwordError.getText();
-		
+
 	}
-	
-	public PatientDemographicPage clickCreateANewAccountButton() {
+
+	public PatientDemographicPage clickCreateANewAccountButton() throws InterruptedException {
 
 		IHGUtil.PrintMethodName();
 		log("Clicking on Create a new account button");
-		new WebDriverWait(driver, 20).until(ExpectedConditions.elementToBeClickable(buttonCreateANewAccount));
-		buttonCreateANewAccount.click();
+		JavascriptExecutor executor = (JavascriptExecutor) driver;
+		executor.executeScript("arguments[0].click();", buttonCreateANewAccount);
 		return PageFactory.initElements(driver, PatientDemographicPage.class);
 	}
 
@@ -139,74 +145,44 @@ public class JalapenoLoginPage extends MedfusionPage {
 		return PageFactory.initElements(driver, JalapenoPayNowPage.class);
 	}
 
-	private void selectStatementIfRequired() {
-		if (new IHGUtil(driver).exists(electronicPaymentPreference, 10)) {
-			electronicPaymentPreference.click();
-			okButton.click();
+	public boolean isExistingAccountErrorDisplayed() {
+		try {
+			log("Looking for account already exists error on loginPage");
+			return healthKeyMatchError.isDisplayed();
+		} catch (Exception e) {
+		}
+		return false;
+	}
+
+	public String getUserNameFieldText() {
+		log(inputUserName.getAttribute("value"));
+		return inputUserName.getAttribute("value");
+	}
+
+	public void selectRememberUsernameCheckbox(String option) {
+		if (option == "check" && !rememberUserNameCheckbox.isSelected()) {
+			rememberUserNameCheckbox.click();
+		} else if (option == "uncheck" && rememberUserNameCheckbox.isSelected()) {
+			rememberUserNameCheckbox.click();
 		}
 	}
 
-	public boolean isExistingAccountErrorDisplayed() {
-	    try {
-	        log("Looking for account already exists error on loginPage");
-	        return healthKeyMatchError.isDisplayed();
-	    }
-	    catch (Exception e) {	        
-	    }
-	    return false;
-	}
-	
-public JalapenoHomePage RememberUserName(String username, String password) {		
-		
-		makeLogin(username, password);
-		log("User is logged in");
-		handleWeNeedToConfirmSomethingModal();
-		return PageFactory.initElements(driver, JalapenoHomePage.class);
-	}
-
-public String getUserNameFieldText()
-{
-	return inputUserName.getText();
-	
-}
-
-public void checkRememberUserName()
-{
-	if(rememberUserNameCheckbox.isSelected())
-	{
-		//already checked
-	}
-	}
-
-
-public void unCheckRememberUserName()
-{
-	if(rememberUserNameCheckbox.isSelected()== true)
-	{
-		rememberUserNameCheckbox.click();
-	}
-	}
-
 	public boolean isTrustedRepresentativeAccountErrorDisplayed() {
-	    try {
-	        log("Looking for You are no longer able to sign in error on loginPage");
-	        return trustedRepresentativeLoginError.isDisplayed();
-	    }
-	    catch (Exception e) {
-	    }
-	    return false;
-	}
-	
-	public boolean isDeletePatientErrorDisplayed() {
-	    try {
-	        log("Looking for Your account is no longer active error on loginPage");
-	        return deletePatientLoginError.isDisplayed();
-	    }
-	    catch (Exception e) {
-	    }
-	    return false;
+		try {
+			log("Looking for You are no longer able to sign in error on loginPage");
+			return trustedRepresentativeLoginError.isDisplayed();
+		} catch (Exception e) {
+		}
+		return false;
 	}
 
+	public boolean isDeletePatientErrorDisplayed() {
+		try {
+			log("Looking for Your account is no longer active error on loginPage");
+			return deletePatientLoginError.isDisplayed();
+		} catch (Exception e) {
+		}
+		return false;
+	}
 
 }
-

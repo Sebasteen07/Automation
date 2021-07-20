@@ -1,0 +1,23 @@
+<?xml version="1.0"?>
+<ns2:Medications
+    xmlns:ns2="http://schema.medfusion.com/medications/v3">
+    <Medication id="202104030029">
+        <GenericName>Zenim & Crosin</GenericName>
+        <ProductName>8-MOP</ProductName>
+        <Status>ACTIVE</Status>
+        <Dosage>100</Dosage>
+        <DoseUnit>MG</DoseUnit>
+        <RXNormCode>208947</RXNormCode>
+        <NDCCode>187065142</NDCCode>
+        <PatientDemographics>
+            <PatientIdentifier>
+                <PracticePatientId>DemoTest5</PracticePatientId>
+                <MedfusionMemberId>1125587</MedfusionMemberId>
+            </PatientIdentifier>
+            <Name>
+                <FirstName>DemoTest5</FirstName>
+                <LastName>DemoTest5</LastName>
+            </Name>
+        </PatientDemographics>
+    </Medication>
+</ns2:Medications>

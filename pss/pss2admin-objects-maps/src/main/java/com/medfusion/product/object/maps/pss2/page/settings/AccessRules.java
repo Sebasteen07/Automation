@@ -1,7 +1,6 @@
-// Copyright 2018-2020 NXGN Management, LLC. All Rights Reserved.
+// Copyright 2013-2021 NXGN Management, LLC. All Rights Reserved.
 package com.medfusion.product.object.maps.pss2.page.settings;
 
-import java.util.ArrayList;
 import java.util.List;
 
 import org.openqa.selenium.WebDriver;
@@ -10,7 +9,6 @@ import org.openqa.selenium.support.FindAll;
 import org.openqa.selenium.support.FindBy;
 import org.openqa.selenium.support.How;
 
-import com.medfusion.common.utils.IHGUtil;
 import com.medfusion.product.object.maps.pss2.page.util.CommonMethods;
 
 public class AccessRules extends SettingsTab {
@@ -25,11 +23,11 @@ public class AccessRules extends SettingsTab {
 	@FindBy(how = How.ID, using = "checkbox2")
 	private WebElement checkShowInsurancePage;
 
-	@FindBy(how = How.XPATH, using = "//fieldset//i")
+	@FindBy(how = How.XPATH, using = "//label[@for='showPrivacyPolicyMessageConfig']//i")
 	private WebElement checkShowPrivacyPolicyPage;
-
-	@FindBy(how = How.XPATH, using = "//input[@id='showPrivacyPolicyMessageConfig']")
-	private WebElement displayPrivacyPolicyLoginless;
+	
+	@FindBy(how = How.XPATH, using = "//label[@for='showPrivacyPolicyMessageConfig']//input")
+	private WebElement displayPrivacyPolicyLoginless;	
 
 	@FindBy(how = How.XPATH,
 			using = "//body/app[1]/layout[1]/div[1]/main[1]/div[2]/div[1]/div[1]/div[1]/section[1]/div[1]/div[1]/div[2]/div[2]/div[2]/div[1]/fieldset[1]/div[1]/div[1]/label[1]/i[1]")
@@ -104,14 +102,6 @@ public class AccessRules extends SettingsTab {
 
 	CommonMethods commonMethods = new CommonMethods(driver);
 
-	@Override
-	public boolean areBasicPageElementsPresent() {
-		ArrayList<WebElement> webElementsList = new ArrayList<WebElement>();
-		webElementsList.add(urlList.get(0));
-
-		return new IHGUtil(driver).assessAllPageElements(webElementsList, this.getClass());
-	}
-
 	public String getLoginlessURL() {
 		commonMethods.highlightElement(urlList.get(0));
 		return urlList.get(0).getText();
@@ -129,10 +119,10 @@ public class AccessRules extends SettingsTab {
 		return checkShowInsurancePage.isSelected() ? "true" : "false"; // .getCssValue("background-color"); // .getAttribute("ng-reflect-model");
 	}
 
-	public String isLLPrivacyPolicySelected() {
+	public boolean isLLPrivacyPolicySelected() {
 		commonMethods.highlightElement(displayPrivacyPolicyLoginlesseLabel);
 		commonMethods.highlightElement(displayPrivacyPolicyLoginlessCheck);
-		return displayPrivacyPolicyLoginless.getAttribute("ng-reflect-model");
+		return displayPrivacyPolicyLoginless.isSelected();
 	}
 
 	public String isEnableOTPSelected() {

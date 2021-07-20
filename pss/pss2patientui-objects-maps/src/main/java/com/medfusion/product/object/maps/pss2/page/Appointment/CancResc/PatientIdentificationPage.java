@@ -1,7 +1,5 @@
-// Copyright 2020 NXGN Management, LLC. All Rights Reserved.
+// Copyright 2013-2021 NXGN Management, LLC. All Rights Reserved.
 package com.medfusion.product.object.maps.pss2.page.Appointment.CancResc;
-
-import java.util.ArrayList;
 
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
@@ -10,7 +8,6 @@ import org.openqa.selenium.support.How;
 import org.openqa.selenium.support.PageFactory;
 import org.openqa.selenium.support.ui.ExpectedConditions;
 
-import com.medfusion.common.utils.IHGUtil;
 import com.medfusion.product.object.maps.pss2.page.Appointment.Main.PSS2MainPage;
 import com.medfusion.product.object.maps.pss2.page.util.CommonMethods;
 
@@ -79,17 +76,6 @@ public class PatientIdentificationPage extends PSS2MainPage {
 	public void popUPAnClick() {
 		dismissButtonsAnonymous.click();
 	}
-
-	@Override
-	public boolean areBasicPageElementsPresent() {
-		
-		ArrayList<WebElement> webElementList = new ArrayList<WebElement>();
-		webElementList.add(headingPI);
-		webElementList.add(cancelBtn);
-		webElementList.add(buttonNext);
-		
-		return new IHGUtil(driver).assessAllPageElements(webElementList, getClass());
-	}
 	
 	CommonMethods commonMethods = new CommonMethods(driver);
 	
@@ -102,8 +88,9 @@ public class PatientIdentificationPage extends PSS2MainPage {
 		
 		driver.switchTo().frame(recaptchaFrame);
 		commonMethods.highlightElement(recaptchaBox);
-		recaptchaClick.click();
 		Thread.sleep(3000);
+		recaptchaClick.click();
+		Thread.sleep(6000);
 		driver.switchTo().parentFrame();
 
 		log("........Captcha clicked......");

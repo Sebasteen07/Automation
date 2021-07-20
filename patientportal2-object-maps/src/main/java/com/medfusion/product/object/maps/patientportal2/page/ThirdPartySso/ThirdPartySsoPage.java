@@ -32,16 +32,6 @@ public class ThirdPartySsoPage extends JalapenoMenu {
 
 	}
 
-	@Override
-	public boolean areBasicPageElementsPresent() {
-		ArrayList<WebElement> webElementsList = new ArrayList<WebElement>();
-		webElementsList.add(continueButton);
-		webElementsList.add(ssowarningbanner);
-		webElementsList.add(destinationurl);
-		webElementsList.add(existportalmessage);
-		return true;
-	}
-
 	public void clickOnContinueButton() {
 		IHGUtil.waitForElement(driver, 80, continueButton);
 		javascriptClick(continueButton);

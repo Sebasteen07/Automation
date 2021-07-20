@@ -1,3 +1,4 @@
+//Copyright 2013-2021 NXGN Management, LLC. All Rights Reserved.
 package com.medfusion.product.object.maps.patientportal2.page.MyAccountPage;
 
 import static org.testng.Assert.assertTrue;
@@ -149,16 +150,6 @@ public class JalapenoMyAccountSecurityPage extends JalapenoMyAccountPage {
 				preferencesTab.click();
 
 				return PageFactory.initElements(driver, JalapenoMyAccountPreferencesPage.class);
-		}
-
-		@Override
-		public boolean areBasicPageElementsPresent() {
-				ArrayList<WebElement> webElementList = new ArrayList<WebElement>();
-				webElementList.add(changeEmailBtn);
-				webElementList.add(changePasswordBtn);
-				webElementList.add(changeUserNameBtn);
-				webElementList.add(changeSecurityQuestionBtn);
-				return assessPageElements(webElementList);
 		}
 
 		private boolean areEmailChangePageElementsPresent() {

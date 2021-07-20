@@ -1,10 +1,9 @@
-// Copyright 2018-2020 NXGN Management, LLC. All Rights Reserved.
+// Copyright 2013-2021 NXGN Management, LLC. All Rights Reserved.
 package com.medfusion.product.object.maps.patientportal2.page.HomePage;
 import static org.testng.Assert.assertTrue;
 
 import java.util.ArrayList;
 
-import org.apache.log4j.Level;
 import org.openqa.selenium.By;
 import org.openqa.selenium.JavascriptExecutor;
 import org.openqa.selenium.Keys;
@@ -36,6 +35,7 @@ import com.medfusion.product.object.maps.patientportal2.page.MessagesPage.Jalape
 import com.medfusion.product.object.maps.patientportal2.page.NewPayBillsPage.JalapenoPayBillsMakePaymentPage;
 import com.medfusion.product.object.maps.patientportal2.page.PayBillsStatementPage.JalapenoPayBillsStatementPage;
 import com.medfusion.product.object.maps.patientportal2.page.PrescriptionsPage.JalapenoPrescriptionsPage;
+import com.medfusion.product.object.maps.patientportal2.page.ScheduleAppoinment.JalapenoAppoinmentSchedulingPage;
 import com.medfusion.product.object.maps.patientportal2.page.ThirdPartySso.ThirdPartySsoPage;
 
 public class JalapenoHomePage extends JalapenoMenu {
@@ -96,7 +96,7 @@ public class JalapenoHomePage extends JalapenoMenu {
 	@FindBy(how = How.XPATH, using = "//*[@id=\"feature_bill_pay\"]/span")
 	private WebElement outstandingPatientBalance;
 
-	@FindBy(how = How.XPATH, using = "//blink-health//button/*[contains(text(),'×')]")
+	@FindBy(how = How.XPATH, using = "//blinkhealth//*[contains(text(),'×')]")
 	private WebElement blinkBannerHideButton;
 
 	@FindBy(how = How.ID, using = "actionButton")
@@ -138,6 +138,9 @@ public class JalapenoHomePage extends JalapenoMenu {
 	
 	@FindBy(how=How.XPATH, using="//h3[text()='3 Party SSO']")
 	private WebElement thirdpartysso;
+	
+	@FindBy(how = How.XPATH, using = "//h3[contains(text(),'Schedule an Appointment')]")
+	private WebElement appoinmentscheduling;
 
 	public JalapenoHomePage(WebDriver driver) {
 		super(driver);
@@ -296,26 +299,6 @@ public class JalapenoHomePage extends JalapenoMenu {
 		}
 	}
 
-	@Override
-	// Checks elements located every time on PI Dashboard
-	public boolean areBasicPageElementsPresent() {
-		ArrayList<WebElement> webElementsList = new ArrayList<WebElement>();
-		webElementsList.add(messages);
-
-		for (int i = 0; i < 2; i++) {
-			int attempt = i + 1;
-			log("Checking page elements, attempt: " + attempt, Level.INFO);
-			if (areMenuElementsPresent() && assessPageElements(webElementsList, 120)) {
-				log("All basic elements are present", Level.INFO);
-				return true;
-			} else {
-				log("Attempt " + attempt + " failed: Some elements are missing, reloading page", Level.INFO);
-				driver.navigate().refresh();
-			}
-		}
-		return false;
-	}
-
 	public boolean assessFamilyAccountElements(boolean button) {
 		IHGUtil.PrintMethodName();
 		ArrayList<WebElement> webElementsList = new ArrayList<WebElement>();
@@ -426,6 +409,7 @@ public class JalapenoHomePage extends JalapenoMenu {
 
 	public void switchPractice(String practice) {
 		log("Clicking on Practice toggle Search");
+		driver.navigate().refresh();
 		practiceToggleSearch.click();
 		practiceInput.sendKeys(practice);
 		practiceInput.sendKeys(Keys.ENTER);
@@ -554,6 +538,12 @@ public class JalapenoHomePage extends JalapenoMenu {
 		js.executeScript("arguments[0].scrollIntoView();", thirdpartysso);
 		javascriptClick(thirdpartysso);
 		return PageFactory.initElements(driver, ThirdPartySsoPage.class);
+	}
+	public JalapenoAppoinmentSchedulingPage clickOnAppoinmentScheduled(WebDriver driver) throws InterruptedException {
+		IHGUtil.PrintMethodName();
+		javascriptClick(appoinmentscheduling);
+		return PageFactory.initElements(driver, JalapenoAppoinmentSchedulingPage.class);
+
 	}
 
 }

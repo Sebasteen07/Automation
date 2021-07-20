@@ -255,24 +255,6 @@ public class NGCcdViewerPage extends MedfusionPage {
 				}
 		}
 
-		@Override
-		public boolean areBasicPageElementsPresent() {
-
-				ArrayList<WebElement> webElementsList = new ArrayList<WebElement>();
-
-				webElementsList.add(closeButton);
-				webElementsList.add(savePdfButton);
-				webElementsList.add(saveRawButton);
-				webElementsList.add(sendDirectInformationLink);
-				//webElementsList.add(sendUnsecureInformationLink);
-//				webElementsList.add(healthOverview);
-				webElementsList.add(basicInformation);
-				webElementsList.add(careTeamMembers);
-
-				return assessPageElements(webElementsList);
-		}
-
-
 		/**
 		 * Click on the View health data
 		 */

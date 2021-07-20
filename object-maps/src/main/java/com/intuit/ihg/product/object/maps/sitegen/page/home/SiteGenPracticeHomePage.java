@@ -26,6 +26,7 @@ import com.intuit.ihg.product.object.maps.sitegen.page.pharmacy.ManageYourPharma
 import com.intuit.ihg.product.object.maps.sitegen.page.physicians.ManageYourPhysiciansPage;
 import com.intuit.ihg.product.sitegen.utils.SitegenConstants;
 import com.intuti.ihg.product.object.maps.sitegen.page.medfusionadmin.PracticeInfoPage;
+import com.intuti.ihg.product.object.maps.sitegen.page.onlineBillPay.EstatementPage;
 import com.medfusion.common.utils.IHGConstants;
 import com.medfusion.common.utils.IHGUtil;
 
@@ -81,6 +82,12 @@ public class SiteGenPracticeHomePage extends BasePageObject {
 
 	@FindBy(linkText = "Pharmacies")
 	private WebElement pharmacyLink;
+	
+	@FindBy(linkText = "Online Bill Pay")
+	private WebElement onlineBillPay;
+	
+	@FindBy(linkText = "eStatements")
+	private WebElement eStatementsLink;
 
 
 	/**
@@ -362,6 +369,15 @@ public class SiteGenPracticeHomePage extends BasePageObject {
 		IHGUtil.waitForElement(driver, 30, pharmacyLink);
 		pharmacyLink.click();
 		return PageFactory.initElements(driver, ManageYourPharmacies.class);
+	}
+	
+	public EstatementPage clickOnOnlineBillPay() {
+		IHGUtil.PrintMethodName();
+		IHGUtil.waitForElement(driver, 30, onlineBillPay);
+		onlineBillPay.click();
+		eStatementsLink.click();
+		return PageFactory.initElements(driver, EstatementPage.class);
+		
 	}
 	
 }

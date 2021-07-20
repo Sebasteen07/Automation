@@ -1,4 +1,4 @@
-// Copyright 2018-2020 NXGN Management, LLC. All Rights Reserved.
+// Copyright 2013-2021 NXGN Management, LLC. All Rights Reserved.
 package com.medfusion.product.object.maps.pss2.page.settings;
 
 import org.openqa.selenium.JavascriptExecutor;
@@ -60,11 +60,11 @@ public class AdminAppointment extends SettingsTab {
 	@FindBy(how = How.ID, using = "searchlocation")
 	private WebElement searchLocation;
 
-	@FindBy(how = How.ID, using = "nextAvailable")
-	private WebElement nextavailable;
+	@FindBy(how = How.XPATH, using = "//*[@id='appt']/form[1]/div[4]/div/div/label[1]/i")
+	private WebElement nextAvailable;
 	
 	@FindBy(how = How.XPATH, using = "//*[@id='nextavailable']")
-	private WebElement nextavailableStatus;
+	private WebElement nextAvailableStatus;
 
 	@FindBy(how = How.ID, using = "pastapptmonths")
 	private WebElement pastApptMonths;
@@ -95,11 +95,6 @@ public class AdminAppointment extends SettingsTab {
 
 	public AdminAppointment(WebDriver driver) {
 		super(driver);
-	}
-
-	@Override
-	public boolean areBasicPageElementsPresent() {
-		return true;
 	}
 
 	CommonMethods commonMethods = new CommonMethods(driver);
@@ -251,11 +246,14 @@ public class AdminAppointment extends SettingsTab {
 	}
 
 	public Boolean toggleNextAvailableStatus() {
-		return Boolean.valueOf(nextavailableStatus.getAttribute("ng-reflect-model"));
+		log("Status of NextAvailable Button is  "+nextAvailableStatus.isSelected());
+		return nextAvailableStatus.isSelected();
 	}
 	
-	public void toggleNextavailable() {
-		nextavailable.click();
+	public void toggleNextavailableClick() throws InterruptedException {
+		IHGUtil.waitForElement(driver, 5, nextAvailable);
+		nextAvailable.click();
+		log("Clicked on nextAvailable");
 		buttonSave.click();
 	}
 

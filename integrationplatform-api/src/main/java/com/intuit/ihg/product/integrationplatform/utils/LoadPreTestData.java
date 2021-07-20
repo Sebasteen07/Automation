@@ -230,6 +230,7 @@ public class LoadPreTestData {
 			testData.setPracticePassword(propertyData.getPracticePassword());
 			testData.setPracticeId_PIDC_20(propertyData.getPatientID());
 			testData.setPreferredLanguageType(propertyData.getLanguageType());
+			testData.setToken(propertyData.getToken_MU());
 		}
 
 		return testData;
@@ -618,6 +619,18 @@ public class LoadPreTestData {
 		testData.OAuthUsername = propertyData.getPatientoAuthUsername_Event();
 		testData.OAuthPassword = propertyData.getPatientoAuthPassword_Event();
 		testData.ResponsePath = propertyData.getPatientResponsePath_Event();
+
+		return testData;
+	}
+	
+	
+	public Attachment loadAttachmentDataFromProperty(Attachment testData) throws IOException {
+
+		PropertyFileLoader propertyData = new PropertyFileLoader();
+
+		testData.restUrl = propertyData.getRestUrlAttachment();
+		testData.patientExternalId = propertyData.getPatientExternalIdAttachment();
+
 
 		return testData;
 	}

@@ -1,4 +1,4 @@
-// Copyright 2020 NXGN Management, LLC. All Rights Reserved.
+// Copyright 2013-2021 NXGN Management, LLC. All Rights Reserved.
 package com.medfusion.product.pss2patientportal.test;
 
 import java.util.ArrayList;
@@ -9,8 +9,6 @@ import org.testng.annotations.Test;
 import com.intuit.ifs.csscat.core.BaseTestNGWebDriver;
 import com.intuit.ifs.csscat.core.RetryAnalyzer;
 import com.medfusion.common.utils.Mailinator;
-import com.medfusion.product.object.maps.patientportal2.page.JalapenoLoginPage;
-import com.medfusion.product.object.maps.patientportal2.page.HomePage.JalapenoHomePage;
 import com.medfusion.product.object.maps.pss2.page.Appointment.Anonymous.AnonymousDismissPage;
 import com.medfusion.product.object.maps.pss2.page.Appointment.CancResc.CancelRescheduleDecisionPage;
 import com.medfusion.product.object.maps.pss2.page.Appointment.CancResc.PatientIdentificationPage;
@@ -20,7 +18,6 @@ import com.medfusion.product.pss2patientui.pojo.AdminUser;
 import com.medfusion.product.pss2patientui.pojo.Appointment;
 import com.medfusion.product.pss2patientui.utils.PSSAdminUtils;
 import com.medfusion.product.pss2patientui.utils.PSSPatientUtils;
-import com.medfusion.product.pss2patientui.utils.PSSPropertyFileLoader;
 
 public class PSS2PatientPortalAcceptanceTests02 extends BaseTestNGWebDriver {
 
@@ -103,7 +100,6 @@ public class PSS2PatientPortalAcceptanceTests02 extends BaseTestNGWebDriver {
 		
 		log("Step 11: Verify the appointment details and click on Cancel button");
 		CancelRescheduleDecisionPage cancelRescheduleDecisionPage =patientIdentificationPage.fillPatientForm(testData.getFirstName(), testData.getLastName());
-		cancelRescheduleDecisionPage.areBasicPageElementsPresent();
 		cancelRescheduleDecisionPage.clickReschedule();
 		psspatientutils.rescheduleAPT( testData, driver);
 
@@ -188,13 +184,12 @@ public class PSS2PatientPortalAcceptanceTests02 extends BaseTestNGWebDriver {
 		
 		log("Step 11: Verify the appointment details and click on Cancel button");
 		CancelRescheduleDecisionPage cancelRescheduleDecisionPage =patientIdentificationPage.fillPatientForm(testData.getFirstName(), testData.getLastName());
-		cancelRescheduleDecisionPage.areBasicPageElementsPresent();
 		cancelRescheduleDecisionPage.clickReschedule();
 		psspatientutils.rescheduleAPT( testData, driver);
 
 	}
 	
-	@Test(enabled = true, groups = {"AcceptanceTests"}, retryAnalyzer = RetryAnalyzer.class, dependsOnMethods ="testE2EAnonymousNG" )
+	@Test(enabled = true, groups = {"AcceptanceTests"}, retryAnalyzer = RetryAnalyzer.class, dependsOnMethods="testE2EAnonymousNG")
 	public void testCancelAnonymousviaEmailNG() throws Exception {
 		log("Test to verify if Cancel Appointment button available only after given hours.");
 		log("Step 1: Load test Data from External Property file.");
@@ -250,7 +245,6 @@ public class PSS2PatientPortalAcceptanceTests02 extends BaseTestNGWebDriver {
 
 		log("Step 11: Verify the appointment details and click on Cancel button");
 		CancelRescheduleDecisionPage cancelRescheduleDecisionPage = patientIdentificationPage.fillPatientForm(testData.getFirstName(), testData.getLastName());
-		cancelRescheduleDecisionPage.areBasicPageElementsPresent();
 		homepage = cancelRescheduleDecisionPage.clickCancel();
 
 		if (can1 == true & can2 == false) {
@@ -285,7 +279,7 @@ public class PSS2PatientPortalAcceptanceTests02 extends BaseTestNGWebDriver {
 		psspatientutils.deleteEmail_Mailinator(driver, "https://www.mailinator.com/", "ast@mailinator.com");
 	}
 	
-	@Test(enabled = true, groups = {"AcceptanceTests"}, retryAnalyzer = RetryAnalyzer.class, dependsOnMethods ="testE2EAnonymousAT")
+	@Test(enabled = true, groups = {"AcceptanceTests"}, retryAnalyzer = RetryAnalyzer.class)
 	public void testCancelAnonymousviaEmailAT() throws Exception {
 		log("Test to verify if Cancel Appointment for anonymous flow for the Athena Partners.");
 		log("Step 1: Load test Data from External Property file.");
@@ -330,8 +324,8 @@ public class PSS2PatientPortalAcceptanceTests02 extends BaseTestNGWebDriver {
 		log("Step 9: Click on Cancel/Reschedule link from email");
 
 		Thread.sleep(2000);
-		if (patientIdentificationPage.isPopUP()) {
-			patientIdentificationPage.popUPClick();
+		if (patientIdentificationPage.isPopUPAn()) {
+			patientIdentificationPage.isPopUPAn();
 		}
 
 		log("Step 10: Fill Patient details for Identification");
@@ -341,7 +335,6 @@ public class PSS2PatientPortalAcceptanceTests02 extends BaseTestNGWebDriver {
 
 		log("Step 11: Verify the appointment details and click on Cancel button");
 		CancelRescheduleDecisionPage cancelRescheduleDecisionPage = patientIdentificationPage.fillPatientForm(testData.getFirstName(), testData.getLastName());
-		cancelRescheduleDecisionPage.areBasicPageElementsPresent();
 		homepage = cancelRescheduleDecisionPage.clickCancel();
 
 		if (can1 == true & can2 == false) {
