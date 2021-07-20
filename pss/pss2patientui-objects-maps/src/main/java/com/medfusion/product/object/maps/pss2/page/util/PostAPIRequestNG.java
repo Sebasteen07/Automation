@@ -18,7 +18,7 @@ import io.restassured.response.Response;
 import io.restassured.specification.RequestSpecification;
 import io.restassured.specification.ResponseSpecification;
 
-public class PostAPIRequest extends BaseTestNGWebDriver {
+public class PostAPIRequestNG extends BaseTestNGWebDriver {
 
 	public static RequestSpecification requestSpec;
 	public static ResponseSpecification responseSpec;

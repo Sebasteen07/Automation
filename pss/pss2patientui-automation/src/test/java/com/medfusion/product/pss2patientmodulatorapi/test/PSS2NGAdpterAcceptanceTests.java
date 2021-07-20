@@ -8,32 +8,32 @@ import org.testng.annotations.Test;
 
 import com.intuit.ifs.csscat.core.BaseTestNGWebDriver;
 import com.intuit.ifs.csscat.core.RetryAnalyzer;
-import com.medfusion.product.object.maps.pss2.page.util.PostAPIRequest;
+import com.medfusion.product.object.maps.pss2.page.util.PostAPIRequestNG;
 import com.medfusion.product.pss2patientui.pojo.Appointment;
 import com.medfusion.product.pss2patientui.utils.PSSPropertyFileLoader;
 
 public class PSS2NGAdpterAcceptanceTests extends BaseTestNGWebDriver {
 
-	public static Payload payload;
+	public static PayloadNG payload;
 	public static PSSPropertyFileLoader propertyData;
 	public static Appointment testData;
-	public static PostAPIRequest postAPIRequest;
+	public static PostAPIRequestNG postAPIRequest;
 
 	@BeforeTest(enabled = true, groups = { "APItest" })
 	public void setUp() throws IOException {
 
-		payload = new Payload();
+		payload = new PayloadNG();
 		propertyData = new PSSPropertyFileLoader();
-		postAPIRequest = new PostAPIRequest();
+		postAPIRequest = new PostAPIRequestNG();
 		log("I am before Test");
-		postAPIRequest.setupRequestSpecBuilder(propertyData.getProperty("baseurl.ng"));
-		log("BASE URL-" + propertyData.getProperty("baseurl.ng"));
+		postAPIRequest.setupRequestSpecBuilder(propertyData.getProperty("base.url.ng"));
+		log("BASE URL-" + propertyData.getProperty("base.url.ng"));
 	}
 
 	@Test(enabled = true, groups = { "APItest" }, retryAnalyzer = RetryAnalyzer.class)
 	public void AvailableSlotsNGPost() throws IOException, InterruptedException {
 
-		postAPIRequest.availableSlots(Payload.nextAvailable_Payload(propertyData.getProperty("patient.id.ng")),
+		postAPIRequest.availableSlots(PayloadNG.nextAvailable_Payload(propertyData.getProperty("patient.id.ng")),
 				propertyData.getProperty("practice.id.ng"));
 	}
 
@@ -47,7 +47,7 @@ public class PSS2NGAdpterAcceptanceTests extends BaseTestNGWebDriver {
 	public void TestPastApptNgPOST() throws IOException {
 
 		postAPIRequest.pastApptNG(propertyData.getProperty("practice.id.ng"),
-				Payload.past_appt_payload(propertyData.getProperty("patient.id.ng"),
+				PayloadNG.past_appt_payload(propertyData.getProperty("patient.id.ng"),
 						propertyData.getProperty("practice.displayname.ng"),
 						propertyData.getProperty("practice.id.ng")));
 
@@ -63,7 +63,7 @@ public class PSS2NGAdpterAcceptanceTests extends BaseTestNGWebDriver {
 		log("Patient Id- " + propertyData.getProperty("patient.id.ng"));
 
 		postAPIRequest.nextAvailableNG(propertyData.getProperty("practice.id.ng"),
-				Payload.nextAvailable_Payload(propertyData.getProperty("patient.id.ng")));
+				PayloadNG.nextAvailable_Payload(propertyData.getProperty("patient.id.ng")));
 
 	}
 
@@ -84,11 +84,11 @@ public class PSS2NGAdpterAcceptanceTests extends BaseTestNGWebDriver {
 	public void schedule_Resc_NGPOST() throws IOException {
 
 		String appointmentId = postAPIRequest.scheduleApptNG(propertyData.getProperty("practice.id.ng"),
-				Payload.schedule_Payload(propertyData.getProperty("slot.start.time.ng"),
+				PayloadNG.schedule_Payload(propertyData.getProperty("slot.start.time.ng"),
 						propertyData.getProperty("slot.end.time.ng")));
 
 		postAPIRequest.rescheduleApptNG(propertyData.getProperty("practice.id.ng"),
-				Payload.reschedule_Payload(propertyData.getProperty("start.date.time.ng"),
+				PayloadNG.reschedule_Payload(propertyData.getProperty("start.date.time.ng"),
 						propertyData.getProperty("end.date.time.ng"), propertyData.getProperty("patient.id.ng"),
 						propertyData.getProperty("first.name.ng"), propertyData.getProperty("first.name.ng"),
 						appointmentId));
@@ -99,7 +99,7 @@ public class PSS2NGAdpterAcceptanceTests extends BaseTestNGWebDriver {
 	public void upcommingApptPOST() throws IOException {
 
 		postAPIRequest.upcommingApptNG(propertyData.getProperty("practice.id.ng"),
-				Payload.upcommingApt_Payload(propertyData.getProperty("patient.id.ng"),
+				PayloadNG.upcommingApt_Payload(propertyData.getProperty("patient.id.ng"),
 						propertyData.getProperty("practice.id.ng"),
 						propertyData.getProperty("practice.displayname.ng")));
 	}
@@ -114,10 +114,10 @@ public class PSS2NGAdpterAcceptanceTests extends BaseTestNGWebDriver {
 	public void RescheduleApptNGPPOST() throws IOException {
 
 		postAPIRequest.rescheduleApptNG(propertyData.getProperty("practice.id.ng"),
-				Payload.reschedule_Payload(propertyData.getProperty("start.date.time.ng"),
+				PayloadNG.reschedule_Payload(propertyData.getProperty("start.date.time.ng"),
 						propertyData.getProperty("end.date.time.ng"), propertyData.getProperty("patient.id.ng"),
 						propertyData.getProperty("first.name.ng"), propertyData.getProperty("first.name.ng"),
-						propertyData.getProperty("apptid.ng")));
+						propertyData.getProperty("appt.id.ng")));
 
 	}
 
@@ -146,7 +146,7 @@ public class PSS2NGAdpterAcceptanceTests extends BaseTestNGWebDriver {
 	public void careproviderAvailabilityPOST() throws IOException {
 
 		postAPIRequest.careproviderAvailability(propertyData.getProperty("practice.id.ng"),
-				Payload.careprovideravailability_Payload());
+				PayloadNG.careprovideravailability_Payload());
 
 	}
 
@@ -184,7 +184,7 @@ public class PSS2NGAdpterAcceptanceTests extends BaseTestNGWebDriver {
 	@Test(enabled = true, groups = { "APItest" }, retryAnalyzer = RetryAnalyzer.class)
 	public void matchPatientPOST() throws IOException {
 
-		Payload payload = new Payload();
+		PayloadNG payload = new PayloadNG();
 
 		postAPIRequest.matchPatientPOST(propertyData.getProperty("practice.id.ng"), payload.matchpatient);
 	}
@@ -199,7 +199,7 @@ public class PSS2NGAdpterAcceptanceTests extends BaseTestNGWebDriver {
 	public void patientRecordbyApptTypePOST() throws IOException {
 
 		postAPIRequest.patientRecordbyApptTypePOST(propertyData.getProperty("practice.id.ng"),
-				Payload.patientrecordbyapptypes_payload());
+				PayloadNG.patientrecordbyapptypes_payload());
 	}
 
 	@Test(enabled = true, groups = { "APItest" }, retryAnalyzer = RetryAnalyzer.class)
@@ -218,14 +218,14 @@ public class PSS2NGAdpterAcceptanceTests extends BaseTestNGWebDriver {
 	public void prerequisteappointmenttypesPOST() throws IOException {
 
 		postAPIRequest.prerequisteappointmenttypesPOST(propertyData.getProperty("practice.id.ng"),
-				Payload.prerequisteappointmenttypes_Payload());
+				PayloadNG.prerequisteappointmenttypes_Payload());
 	}
 
 	@Test(enabled = true, groups = { "APItest" }, retryAnalyzer = RetryAnalyzer.class)
 	public void patientrecordbybooksPOST() throws IOException {
 
 		postAPIRequest.patientrecordbyBooks(propertyData.getProperty("practice.id.ng"),
-				Payload.patientrecordbybooks_payload());
+				PayloadNG.patientrecordbybooks_payload());
 	}
 
 	@Test(enabled = true, groups = { "APItest" }, retryAnalyzer = RetryAnalyzer.class)

@@ -1027,7 +1027,7 @@ public class IntegrationPlatformAcceptanceTests extends BaseTestNGWebDriver {
 		log("Execution Environment: " + IHGUtil.getEnvironmentType());
 		log("Execution Browser: " + TestConfig.getBrowserType());
 
-		log("Step 1: Get Data from Excel");
+		logStep("Get Data from Excel");
 		AMDC AMDCData = new AMDC();
 		AMDCTestData testData = new AMDCTestData(AMDCData);
 
@@ -1044,33 +1044,30 @@ public class IntegrationPlatformAcceptanceTests extends BaseTestNGWebDriver {
 		log("OAuthUsername: " + testData.getOAuthUsername());
 		log("OAuthPassword: " + testData.getOAuthPassword());
 
-		log("Step 2: LogIn");
+		logStep("LogIn");
 		JalapenoLoginPage loginPage = new JalapenoLoginPage(driver, testData.getUrl());
 		JalapenoHomePage homePage = loginPage.login(testData.getUserName(), testData.getPassword());
 
-		log("Step 3: Click Ask Ur Doc");
+		logStep("Click Ask Ur Doc");
 		JalapenoAskAStaffPage askStaff1 = homePage.clickOnAskADoc(driver);
-
 		Thread.sleep(8000);
-		log("Step 4: fill and complete the of Ask A Staff");
-		askStaff1.fillAndSubmitAskyourDocUnpaid(driver);
+		logStep("Fill and complete the of Ask A Staff");
+		String attachmentName= askStaff1.fillAndSubmitAskyourDocUnpaid(driver);
+		log("FileName : "+attachmentName);
 
-		log("Step 6: Validate entry is on Ask A Staff History page");
+		logStep("Validate entry is on Ask A Staff History page");
 		homePage.clickOnAskADoc(driver);
 		askStaff1.checkHistory(driver);
 		Thread.sleep(7000);
-		// assertTrue(aasHistory);
 
-		log("Step 7: Logout of Patient Portal");
+		logStep("Logout of Patient Portal");
 		homePage.clickOnLogout();
 
-		log("Step 8: Setup Oauth client");
+		logStep("Setup Oauth client");
 		RestUtils.oauthSetup(testData.getOAuthKeyStore(), testData.getOAuthProperty(), testData.getOAuthAppToken(),
 				testData.getOAuthUsername(), testData.getOAuthPassword());
 
-		// OAuthPropertyManager.init(testData.getOAuthProperty());
-
-		log("Step 9: Get AMDC Rest call");
+		logStep("Get AMDC Rest call");
 		// get only messages from last day in epoch time to avoid transferring
 		// lot of data
 		Long since = askStaff1.getCreatedTimeStamp() / 1000L;
@@ -1085,10 +1082,18 @@ public class IntegrationPlatformAcceptanceTests extends BaseTestNGWebDriver {
 			RestUtils.setupHttpGetRequest(testData.getRestV3Url() + "?since=" + since + ",0", testData.getResponsePath());
 		}
 
-		log("Step 10: Checking validity of the response xml");
+		logStep("Checking validity of the response xml");
 		RestUtils.isQuestionResponseXMLValid(testData.getResponsePath(), askStaff1.getCreatedTimeStamp());
 		
-		RestUtils.isResponseContainsValidAttachmentURL(testData.getResponsePath());
+		String attachementURL = RestUtils.isResponseContainsValidAttachmentURL(testData.getResponsePath());
+		
+		logStep("Make GET call with attachement URL");
+		RestUtils.setupHttpGetRequest(attachementURL, testData.getResponsePath());
+
+		
+		logStep("Validate the FileName in the attachement URL response");
+		RestUtils.validateAttachementName(testData.getResponsePath(),attachmentName);
+		log("Attached FileName is correctly Populdated in the GET response of attachment URL ");
 	}
 
 	@Test(enabled = true, groups = { "AcceptanceTests" }, retryAnalyzer = RetryAnalyzer.class)
