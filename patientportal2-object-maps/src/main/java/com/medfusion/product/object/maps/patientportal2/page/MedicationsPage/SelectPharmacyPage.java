@@ -75,10 +75,8 @@ public class SelectPharmacyPage extends MedfusionPage {
 
 	@FindBy(how = How.XPATH, using = "//div[@class='modal-button']/button[@class='btn btn-secondary ng-binding']")
 	private WebElement popupBackbtn;
-	
 	@FindBy(how = How.XPATH, using = "//button[@class='close']")
 	private WebElement addPharmacyClosePopupbtn;
-	
 	@FindBy(how = How.XPATH, using = "//*[contains(text(),'Save & Continue')]")
 	private WebElement popupContinueBtn;
 
@@ -90,9 +88,14 @@ public class SelectPharmacyPage extends MedfusionPage {
 
 	@FindBy(how = How.XPATH, using = "//div[@class='ng-option ng-option-marked']")
 	private WebElement selectPharmacyName;
-	
+	@FindBy(how = How.XPATH, using = "//span[@class='pharmacy-radio-button selected']/../../..//a[text()='Delete']")
+	private WebElement btnDelete;
+	@FindBy(how = How.ID, using = "removePharmacyOkButton")
+	private WebElement btnRemovePharmacyOkButton;
+	@FindBy(how = How.XPATH, using = "//span[@class='pharmacy-radio-button selected']/../span[@class='pharmacy-name']")
+	private WebElement rdoPharmacy;
+
 	WebDriverWait wait=new WebDriverWait(driver, 60);
-	
 	private boolean areBasicPopUpPageElementsPresent() {
 		ArrayList<WebElement> webElementsList = new ArrayList<WebElement>();
 		webElementsList.add(addPharmacyClosePopupbtn);
@@ -179,5 +182,34 @@ public class SelectPharmacyPage extends MedfusionPage {
 		btnContinue.click();
 
 	}
-
+	public void deletePharmacy(WebDriver driver) throws InterruptedException, IOException {
+		PropertyFileLoader testData = new PropertyFileLoader();
+		IHGUtil.PrintMethodName();
+		log("Click on Add a Pharmacy button");
+		Thread.sleep(2000);
+		addPharmacy.click();
+		log("Click on Add Your Pharmacy button from the popup");
+		Thread.sleep(2000);
+		addYourPharmacy.click();
+		log("Verify all the popup elements are present");
+		assertTrue(arePopupPageElementsPresent());
+		log("Enter Pharmacy Details");
+		pharmacyName.sendKeys(testData.getProperty("pharmacy.name") + IHGUtil.createRandomNumericString(4));
+		pharmacyFax.sendKeys(IHGUtil.createRandomNumericString(10));
+		pharmacyAddress.sendKeys(testData.getProperty("address1"));
+		pharmacyCity.sendKeys(testData.getProperty("city"));
+		pharmacyState.sendKeys(testData.getProperty("state"));
+		pharmacyState.sendKeys(Keys.ENTER);
+		pharmacyZip.sendKeys(testData.getProperty("zip.code"));
+		log("Verifying continue button is disabled since Phone number is mandatory");
+		assertFalse(popupContinueBtn.isEnabled(), "Continue button is disabled");
+		pharmacyPhone.sendKeys(IHGUtil.createRandomNumericString(10));
+		new WebDriverWait(driver, 10).until(ExpectedConditions.elementToBeClickable(popupContinueBtn));
+		popupContinueBtn.click();
+		log("Pharmacy is added");
+		javascriptClick(btnDelete);
+		wait.until(ExpectedConditions.elementToBeClickable(btnRemovePharmacyOkButton));
+		btnRemovePharmacyOkButton.click();
+		log("Pharmacy is deleted");
+	}
 }
