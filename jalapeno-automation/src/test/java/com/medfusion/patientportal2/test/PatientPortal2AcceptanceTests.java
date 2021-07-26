@@ -4256,26 +4256,29 @@ public class PatientPortal2AcceptanceTests extends BaseTestNGWebDriver {
 	}
 
 	@Test(enabled = true, groups = { "acceptance-solutions" }, retryAnalyzer = RetryAnalyzer.class)
-	public void testMedicationsDeletePharmacy() throws Exception {
+	public void testMedicationsDeleteDependantPharmacy() throws Exception {
 
-	 logStep("Load login page and login");
-	JalapenoLoginPage loginPage = new JalapenoLoginPage(driver, testData.getProperty("med.wf.portal.url"));
-	JalapenoHomePage homePage = loginPage.login(testData.getProperty("med.wf.user.id"),
-	testData.getProperty("med.wf.password"));
+		logStep("Load login page and login");
+		JalapenoLoginPage loginPage = new JalapenoLoginPage(driver, testData.getProperty("med.wf.portal.url"));
+		JalapenoHomePage homePage = loginPage.login(testData.getProperty("med.wf.user.id"),
+				testData.getProperty("med.wf.password"));
 
-	 logStep("Click on Medications");
-	homePage.clickOnMedications(driver);
+		logStep("Switching to Second Practice to verify auto enrollment");
+		homePage.faChangePatient();
 
-	 log("Initiating Medications 2.0 Request from Patient Portal");
-	MedicationsHomePage medPage = new MedicationsHomePage(driver);
-	medPage.clickOnRxRequest();
+		logStep("Click on Medications");
+		homePage.clickOnMedications(driver);
 
-	 logStep("Select Location and Provider");
-	LocationAndProviderPage select = new LocationAndProviderPage(driver);
-	select.chooseLocationAndProviderwithoutFee();
+		log("Initiating Medications 2.0 Request from Patient Portal");
+		MedicationsHomePage medPage = new MedicationsHomePage(driver);
+		medPage.clickOnRxRequest();
 
-	 logStep("Add and delete pharmacy");
-	SelectPharmacyPage pharmaPage = new SelectPharmacyPage(driver);
-	pharmaPage.deletePharmacy(driver);
+		logStep("Select Location and Provider");
+		LocationAndProviderPage select = new LocationAndProviderPage(driver);
+		select.chooseLocationAndProviderwithoutFee();
+
+		logStep("Add and delete dependant pharmacy");
+		SelectPharmacyPage pharmaPage = new SelectPharmacyPage(driver);
+		pharmaPage.deletePharmacy(driver);
 	}
 }
