@@ -41,6 +41,9 @@ public class SelectMedicationsPage  extends BasePageObject {
 	@FindBy(how=How.XPATH,using="(//*[@class='list-item']/*[@class='checkbox'])[1]")
 	private WebElement availablemedicationcheckbx;
 	
+	@FindBy(how=How.XPATH,using="//div[@class='ng-value-container']//following::input")
+	private WebElement multiSelectDependentMedication;
+	
 
 	public void selectMedications() throws IOException, InterruptedException {
 		PropertyFileLoader testData = new PropertyFileLoader();
@@ -55,6 +58,16 @@ public class SelectMedicationsPage  extends BasePageObject {
 	public void selectMedicationsFrmAvailable() throws IOException, InterruptedException {
 		IHGUtil.waitForElement(driver, 5, availablemedicationcheckbx);	
 		availablemedicationcheckbx.click();
+		btnContinue.click();
+	}
+	
+	public void selectDependentMedications() throws IOException, InterruptedException {
+		PropertyFileLoader testData = new PropertyFileLoader();
+		wait.until(ExpectedConditions.visibilityOf(multiSelectDependentMedication));
+		multiSelectDependentMedication.sendKeys(testData.getProperty("med.one"));
+		Thread.sleep(2000);
+		multiSelectDependentMedication.sendKeys(Keys.ENTER);	
+		Thread.sleep(2000);
 		btnContinue.click();
 	}
 	
