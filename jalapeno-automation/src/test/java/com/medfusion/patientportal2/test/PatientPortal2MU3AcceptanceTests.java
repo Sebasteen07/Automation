@@ -122,7 +122,7 @@ public class PatientPortal2MU3AcceptanceTests extends BaseTestNGWebDriver {
 		public void testPatientAccountPages() throws InterruptedException {
 				logStep("Login patient");
 				JalapenoLoginPage loginPage = new JalapenoLoginPage(driver, testData.getUrl());
-				JalapenoHomePage homePage = loginPage.login(testData.getProperty("userMu3AcountPage"), testData.getPassword());
+				JalapenoHomePage homePage = loginPage.login(testData.getProperty("user.mu3.account.page"), testData.getPassword());
 
 				logStep("Click on Account");
 				JalapenoMyAccountProfilePage myAccountPage = homePage.goToAccountPage();

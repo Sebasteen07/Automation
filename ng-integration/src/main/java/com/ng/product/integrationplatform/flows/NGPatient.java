@@ -41,8 +41,8 @@ public class NGPatient {
                newpatient.setLastName("Portal" + (new Date()).getTime());
             
             SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss'Z'");
-//	        System.out.println(testData.getProperty("DOBDay")+"-----"+testData.getProperty("DOBMonth")+"-----------"+testData.getProperty("DOBYear"));
-	        String sDate1 = propertyLoaderObj.getProperty("DOBDay")+"/"+propertyLoaderObj.getProperty("DOBMonth")+"/"+propertyLoaderObj.getProperty("DOBYear");
+//	        System.out.println(testData.getProperty("dob.day")+"-----"+testData.getProperty("dob.month")+"-----------"+testData.getProperty("dob.year"));
+	        String sDate1 = propertyLoaderObj.getProperty("dob.day")+"/"+propertyLoaderObj.getProperty("dob.month")+"/"+propertyLoaderObj.getProperty("dob.year");
 	        Date dateofbirth=new SimpleDateFormat("dd/MM/yyyy").parse(sDate1);
 	        System.out.println(sdf.format(dateofbirth));
 	        
@@ -78,7 +78,7 @@ public class NGPatient {
             	newpatient.setZip(strZipCode);
             	newpatient.setEmailAddress(System.getProperty("ParentEmailAddress"));
             	
-    	        String date = propertyLoaderObj.getProperty("DOBDay")+"/"+propertyLoaderObj.getProperty("DOBMonth")+"/"+propertyLoaderObj.getProperty("DOBYearUnderage");
+    	        String date = propertyLoaderObj.getProperty("dob.day")+"/"+propertyLoaderObj.getProperty("dob.month")+"/"+propertyLoaderObj.getProperty("dob.year.underage");
     	        Date guardiandateofbirth=new SimpleDateFormat("dd/MM/yyyy").parse(date);
     	        System.out.println(sdf.format(guardiandateofbirth));  
     	        
@@ -92,15 +92,15 @@ public class NGPatient {
             	newpatient.setZip(strZipCode);
             	newpatient.setEmailAddress(newpatient.getFirstName()+"@mailinator.com");
             	
-     	        String dob = propertyLoaderObj.getProperty("DOBDay")+"/"+propertyLoaderObj.getProperty("DOBMonth")+"/"+propertyLoaderObj.getProperty("DOBYear");
+     	        String dob = propertyLoaderObj.getProperty("dob.day")+"/"+propertyLoaderObj.getProperty("dob.month")+"/"+propertyLoaderObj.getProperty("dob.year");
      	        Date trustedPatientdob=new SimpleDateFormat("dd/MM/yyyy").parse(dob);
             	newpatient.setDateOfBirth(sdf.format(trustedPatientdob));
             } 
             
             if(mode.equalsIgnoreCase("complete")){
-            String strAddressLine1 = propertyLoaderObj.getProperty("Address1");
-            String strCity = propertyLoaderObj.getProperty("City");
-            String strState = propertyLoaderObj.getProperty("State");
+            String strAddressLine1 = propertyLoaderObj.getProperty("address1");
+            String strCity = propertyLoaderObj.getProperty("city");
+            String strState = propertyLoaderObj.getProperty("state");
             
             newpatient.setAddressLine1(strAddressLine1);
             newpatient.setCity(strCity);
@@ -143,9 +143,9 @@ public class NGPatient {
 	
 	public static NewPatient addDataToPatientDemographics(PropertyFileLoader propertyLoaderObj,NewPatient newpatient) throws Throwable{
         try{
-            String strAddressLine1 = propertyLoaderObj.getProperty("Address1");
-            String strCity = propertyLoaderObj.getProperty("City");
-            String strState = propertyLoaderObj.getProperty("State");
+            String strAddressLine1 = propertyLoaderObj.getProperty("address1");
+            String strCity = propertyLoaderObj.getProperty("city");
+            String strState = propertyLoaderObj.getProperty("state");
             
             newpatient.setAddressLine1(strAddressLine1);
             newpatient.setCity(strCity);

@@ -20,9 +20,6 @@ import com.medfusion.product.object.maps.pss2.page.util.CommonMethods;
 import com.medfusion.product.object.maps.pss2.page.util.DateMatcher;
 
 public class LoginlessPatientInformation extends PSS2MainPage {
-
-
-
 	@FindBy(how = How.NAME, using = "FN")
 	private WebElement inputFirstName;
 

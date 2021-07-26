@@ -4,6 +4,7 @@ import static org.testng.Assert.assertTrue;
 
 import java.util.ArrayList;
 
+import org.apache.commons.httpclient.util.TimeoutController.TimeoutException;
 import org.openqa.selenium.By;
 import org.openqa.selenium.JavascriptExecutor;
 import org.openqa.selenium.Keys;
@@ -141,6 +142,10 @@ public class JalapenoHomePage extends JalapenoMenu {
 	
 	@FindBy(how = How.XPATH, using = "//h3[contains(text(),'Schedule an Appointment')]")
 	private WebElement appoinmentscheduling;
+	
+	@FindBy(how = How.XPATH, using = "//button[text()='Live Chat']")
+	private WebElement btnLiveChat;
+	
 
 	public JalapenoHomePage(WebDriver driver) {
 		super(driver);
@@ -264,7 +269,7 @@ public class JalapenoHomePage extends JalapenoMenu {
 		log("Looking for notification: " + text);
 
 		try {
-			return driver.findElement(By.xpath("//*[contains(text(),'" + text + "')]")).getText().contains(text);
+			return driver.findElement(By.xpath("//p[contains(text(),'" + text + "')]")).getText().contains(text);
 		} catch (Exception e) {
 			log("Text: '" + text + "' wasn't found on the page.");
 			return false;
@@ -551,6 +556,15 @@ public class JalapenoHomePage extends JalapenoMenu {
 
 		return PageFactory.initElements(driver, JalapenoPayBillsMakePaymentPage.class);
 	}
-
+    
+	public boolean isLiveChatDisplayed() throws TimeoutException {
+		log("Verify LiveChat");
+		try {
+			return btnLiveChat.isDisplayed();
+		}
+		catch(NoSuchElementException e){
+			log("Live Chat is not displayed");
+			return false;
+		}
+	}
 }
-

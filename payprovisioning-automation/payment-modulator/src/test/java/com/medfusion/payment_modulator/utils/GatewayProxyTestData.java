@@ -16,43 +16,67 @@ public class GatewayProxyTestData extends GatewayProxyBaseTest {
 		testData = new PropertyFileLoader();
 		String token = GatewayProxyUtils.getTokenForCustomer();
 		return new Object[][] {
-				
-				
-				  { token," ",testData.getProperty("test.pay.customer.uuid")
-				  ,"Testing refund with blank mmid ", testData.getProperty("customer.id"),
-				  testData.getProperty("external.transaction.id"),testData.getProperty(
-				  "order.id"), testData.getProperty("transaction.amount"),400,"For input string: \" \""},
-				  
-				  { token,testData.getProperty("proxy.mmid")," "
-				  ,"Testing refund with blank customer uuid  ",
-				  testData.getProperty("customer.id"),
-				  testData.getProperty("external.transaction.id"),testData.getProperty(
-				  "order.id"), testData.getProperty("transaction.amount"),404
-				  ,"No message available"},
-				  
-				  { token,"2560807700",testData.getProperty("test.pay.customer.uuid")
-				  ,"Testing refund with invalid mmid  ", testData.getProperty("customer.id"),
-				  testData.getProperty("external.transaction.id"),testData.getProperty(
-				  "order.id"), testData.getProperty("transaction.amount"),403 ," " },
-				  
-				  { token,testData.getProperty("proxy.mmid"),testData.getProperty(
-				  "test.pay.customer.uuid"),"Testing refund with blank transaction id ",
-				  testData.getProperty("customer.id"), " ",testData.getProperty("order.id"),
-				  testData.getProperty("transaction.amount"),500,"500 Internal Server Error" },
-				  
-				  { token,testData.getProperty("proxy.mmid"),testData.getProperty(
-				  "test.pay.customer.uuid"),"Testing refund with transaction amount as 0",
-				  testData.getProperty("customer.id"),
-				  testData.getProperty("external.transaction.id"),testData.getProperty(
-				  "order.id"),"0",400 ,"Amount should be greater than zero"} ,
-				  
-				  { token,testData.getProperty("proxy.mmid"),testData.getProperty(
-				  "test.pay.customer.uuid"),"Testing refund with diffrent customer Id ",
-				  "87b7e73a-ddab-4849-9af9-467b32c95ef2",
-				  testData.getProperty("external.transaction.id"),testData.getProperty(
-				  "order.id"),
-				  testData.getProperty("transaction.amount"),400,"CustomerId is invalid" }
-				   
+
+				{ token, " ", testData.getProperty("test.pay.customer.uuid"), "Testing refund with blank mmid ",
+						testData.getProperty("customer.id"), testData.getProperty("external.transaction.id"),
+						testData.getProperty("order.id"), testData.getProperty("transaction.amount"), 400,
+						"For input string: \" \"" },
+
+				{ token, testData.getProperty("proxy.mmid"), " ", "Testing refund with blank customer uuid  ",
+						testData.getProperty("customer.id"), testData.getProperty("external.transaction.id"),
+						testData.getProperty("order.id"), testData.getProperty("transaction.amount"), 404,
+						"No message available" },
+
+				{ token, "2560807700", testData.getProperty("test.pay.customer.uuid"),
+						"Testing refund with invalid mmid  ", testData.getProperty("customer.id"),
+						testData.getProperty("external.transaction.id"), testData.getProperty("order.id"),
+						testData.getProperty("transaction.amount"), 403, " " },
+
+				{ token, testData.getProperty("proxy.mmid"), testData.getProperty("test.pay.customer.uuid"),
+						"Testing refund with blank transaction id ", testData.getProperty("customer.id"), " ",
+						testData.getProperty("order.id"), testData.getProperty("transaction.amount"), 500,
+						"500 Internal Server Error" },
+
+				{ token, testData.getProperty("proxy.mmid"), testData.getProperty("test.pay.customer.uuid"),
+						"Testing refund with transaction amount as 0", testData.getProperty("customer.id"),
+						testData.getProperty("external.transaction.id"), testData.getProperty("order.id"), "0", 400,
+						"Amount should be greater than zero" },
+
+				{ token, testData.getProperty("proxy.mmid"), testData.getProperty("test.pay.customer.uuid"),
+						"Testing refund with diffrent customer Id ", "87b7e73a-ddab-4849-9af9-467b32c95ef2",
+						testData.getProperty("external.transaction.id"), testData.getProperty("order.id"),
+						testData.getProperty("transaction.amount"), 400, "CustomerId is invalid" }
+
+		};
+	}
+
+	@DataProvider(name = "void_data")
+	public static Object[][] dataProvider1() throws Exception {
+		testData = new PropertyFileLoader();
+		String token = GatewayProxyUtils.getTokenForCustomer();
+		return new Object[][] {
+
+				{ token, " ", testData.getProperty("test.pay.customer.uuid"), "Testing refund with blank mmid ",
+						testData.getProperty("customer.id"), testData.getProperty("external.transaction.id"),
+						testData.getProperty("order.id"), 400, "For input string: \" \"" },
+
+				{ token, testData.getProperty("proxy.mmid"), " ", "Testing refund with blank customer uuid  ",
+						testData.getProperty("customer.id"), testData.getProperty("external.transaction.id"),
+						testData.getProperty("order.id"), 404, "No message available" },
+
+				{ token, "2560807700", testData.getProperty("test.pay.customer.uuid"),
+						"Testing refund with invalid mmid  ", testData.getProperty("customer.id"),
+						testData.getProperty("external.transaction.id"), testData.getProperty("order.id"), 403, " " },
+
+				{ token, testData.getProperty("proxy.mmid"), testData.getProperty("test.pay.customer.uuid"),
+						"Testing refund with blank transaction id ", testData.getProperty("customer.id"), " ",
+						testData.getProperty("order.id"), 500, "Unexpected Server Error" },
+
+				{ token, testData.getProperty("proxy.mmid"), testData.getProperty("test.pay.customer.uuid"),
+						"Testing refund with diffrent customer Id ", "12855",
+						testData.getProperty("external.transaction.id"), testData.getProperty("order.id"), 400,
+						"CustomerId is invalid" }
+
 		};
 	}
 
@@ -64,26 +88,25 @@ public class GatewayProxyTestData extends GatewayProxyBaseTest {
 
 	@DataProvider(name = "txn_data_for_http_400_statuscodes")
 	public Object[][] dpMethodForAuthorizeAndCapture() {
-		return new Object[][]{
-				{testData.getProperty("payment.source"),testData.getProperty("type"),
-						testData.getProperty("card.number"),testData.getProperty("expiration.number"),
-						testData.getProperty("test.pay.customer.uuid")+"erd", testData.getProperty("proxy.mmid")},
-				{"",testData.getProperty("type"),testData.getProperty("card.number"),
-						testData.getProperty("expiration.number"),testData.getProperty("test.pay.customer.uuid"),
-						testData.getProperty("proxy.mmid")},
-				{testData.getProperty("payment.source"),"",testData.getProperty("card.number"),
-						testData.getProperty("expiration.number"),testData.getProperty("test.pay.customer.uuid"),
-						testData.getProperty("proxy.mmid")},
-				{testData.getProperty("payment.source"),testData.getProperty("type"),
-						testData.getProperty("card.number"),testData.getProperty("expiration.number"),
-						testData.getProperty("test.pay.customer.uuid"), ""},
-				{"RFD",testData.getProperty("type"),
-						testData.getProperty("card.number"),testData.getProperty("expiration.number"),
-						testData.getProperty("test.pay.customer.uuid"), testData.getProperty("proxy.mmid")},
-				{testData.getProperty("payment.source"),"OP",
-						testData.getProperty("card.number"),testData.getProperty("expiration.number"),
-						testData.getProperty("test.pay.customer.uuid"), testData.getProperty("proxy.mmid")},
-		};
+		return new Object[][] {
+				{ testData.getProperty("payment.source"), testData.getProperty("type"),
+						testData.getProperty("card.number"), testData.getProperty("expiration.number"),
+						testData.getProperty("test.pay.customer.uuid") + "erd", testData.getProperty("proxy.mmid") },
+				{ "", testData.getProperty("type"), testData.getProperty("card.number"),
+						testData.getProperty("expiration.number"), testData.getProperty("test.pay.customer.uuid"),
+						testData.getProperty("proxy.mmid") },
+				{ testData.getProperty("payment.source"), "", testData.getProperty("card.number"),
+						testData.getProperty("expiration.number"), testData.getProperty("test.pay.customer.uuid"),
+						testData.getProperty("proxy.mmid") },
+				{ testData.getProperty("payment.source"), testData.getProperty("type"),
+						testData.getProperty("card.number"), testData.getProperty("expiration.number"),
+						testData.getProperty("test.pay.customer.uuid"), "" },
+				{ "RFD", testData.getProperty("type"), testData.getProperty("card.number"),
+						testData.getProperty("expiration.number"), testData.getProperty("test.pay.customer.uuid"),
+						testData.getProperty("proxy.mmid") },
+				{ testData.getProperty("payment.source"), "OP", testData.getProperty("card.number"),
+						testData.getProperty("expiration.number"), testData.getProperty("test.pay.customer.uuid"),
+						testData.getProperty("proxy.mmid") }, };
 	}
 
 

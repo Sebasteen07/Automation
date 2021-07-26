@@ -421,8 +421,8 @@ public class PatientMessagingPage extends BasePageObject {
 		IHGUtil.setFrame(driver, PracticeConstants.FRAME_NAME);
 		new WebDriverWait(driver, 120).until(ExpectedConditions.visibilityOf(messageAttachment));
 		messageAttachment.sendKeys(filePath);
-		setFieldsAndPublishMessage(testData.getProperty("documentsPatientFirstName"),
-				testData.getProperty("documentsPatientLastName"), "", templateName, subjectText);
+		setFieldsAndPublishMessage(testData.getProperty("documents.patient.first.name"),
+				testData.getProperty("documents.patient.last.name"), "", templateName, subjectText);
 
 	}
 

@@ -78,7 +78,7 @@ public class PSS2PatientPortalAcceptanceTests02 extends BaseTestNGWebDriver {
 		
 		log("Step 8: Fetch the Cancel/Reschedule link from email");
 		Mailinator mail = new Mailinator();
-		String subject = testData.getEmaiSubject();
+		String subject = testData.getEmailSubject();
 		String messageLink = "Reschedule or cancel";
 		String CancelReschedulelink = mail.getLinkFromEmail(testData.getGmailUserName(), subject, messageLink, 5);
 		
@@ -162,7 +162,7 @@ public class PSS2PatientPortalAcceptanceTests02 extends BaseTestNGWebDriver {
 		
 		log("Step 8: Fetch the Cancel/Reschedule link from email");
 		Mailinator mail = new Mailinator();
-		String subject = testData.getEmaiSubject();
+		String subject = testData.getEmailSubject();
 		String messageLink = "Reschedule or cancel";
 		String CancelReschedulelink = mail.getLinkFromEmail(testData.getGmailUserName(), subject, messageLink, 5);
 		
@@ -223,7 +223,7 @@ public class PSS2PatientPortalAcceptanceTests02 extends BaseTestNGWebDriver {
 
 		log("Step 8: Fetch the Cancel/Reschedule link from email");
 		Mailinator mail = new Mailinator();
-		String subject = testData.getEmaiSubject();
+		String subject = testData.getEmailSubject();
 		String messageLink = "Reschedule or cancel";
 		String CancelReschedulelink = mail.getLinkFromEmail(testData.getGmailUserName(), subject, messageLink, 5);
 
@@ -313,7 +313,7 @@ public class PSS2PatientPortalAcceptanceTests02 extends BaseTestNGWebDriver {
 
 		log("Step 8: Fetch the Cancel/Reschedule link from email");
 		Mailinator mail = new Mailinator();
-		String subject = testData.getEmaiSubject();
+		String subject = testData.getEmailSubject();
 		String messageLink = "Reschedule or cancel";
 		String CancelReschedulelink = mail.getLinkFromEmail(testData.getGmailUserName(), subject, messageLink, 5);
 
