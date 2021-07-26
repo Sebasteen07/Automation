@@ -1,6 +1,7 @@
 // Copyright 2013-2021 NXGN Management, LLC. All Rights Reserved.
 package com.medfusion.gateway_proxy.tests;
 
+import io.restassured.http.Headers;
 import org.testng.Assert;
 import org.testng.annotations.BeforeTest;
 import org.testng.annotations.Test;
@@ -64,7 +65,12 @@ public class GatewayProxyTransactionTests extends GatewayProxyBaseTest {
 		JsonPath jsonpath = new JsonPath(response.asString());
 
 		if(response.getStatusCode() == 400) {
-			Assert.assertTrue(!jsonpath.get("requestId").toString().isEmpty());
+			if (response.getHeaders().toString().contains("text/html")) {
+				Assert.assertTrue(response.asString().contains("Bad Request"));
+			}
+			else {
+				Assert.assertTrue(!jsonpath.get("error").toString().isEmpty());
+			}
 		}
 		else if(response.getStatusCode() == 403){
 			Assert.assertTrue(jsonpath.get("error").toString().contains("Forbidden"));
