@@ -4292,20 +4292,16 @@ public class PatientPortal2AcceptanceTests extends BaseTestNGWebDriver {
 		logStep("Continue registration - sign in as trusted representative username and password");
 		homePage = linkAccountPage.linkPatientToCreateTrustedRep(testData.getProperty("med.username"),
 				testData.getProperty("med.password"), "Spouse");
-        //Thread.sleep(5000);
-		//driver.navigate().refresh();
+       
 
 		logStep("Click on Medications");
-		
 		homePage.clickOnMedications(driver);
 		driver.navigate().refresh();
 		log("Initiating Medications 2.0 Request from Patient Portal");
-		//Thread.sleep(2000);
+		
 		MedicationsHomePage medPage = new MedicationsHomePage(driver);
 		medPage.clickOnRxRequest();
 		
-		//driver.navigate().refresh();
-
 		logStep("Select Location and Provider");
 		LocationAndProviderPage select = new LocationAndProviderPage(driver);
 		select.chooseLocationAndProvider();

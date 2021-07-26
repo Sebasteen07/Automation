@@ -26,7 +26,6 @@ public class SelectMedicationsPage  extends BasePageObject {
 	@FindBy(how=How.XPATH,using="//div[@class='ng-input']/input")
 	private WebElement multiSelectMedicationWithoutRenewalFee;
 	
-	//@FindBy(how=How.XPATH,using="//div[@class='ng-value-container']/following::input")
 	@FindBy(how=How.XPATH,using="//*[@id=\"iMOMedications\"]/div/div/div[2]/input")
 	private WebElement multiSelectMedication;
 	 
