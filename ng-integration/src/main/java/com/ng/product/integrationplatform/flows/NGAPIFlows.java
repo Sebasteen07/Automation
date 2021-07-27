@@ -552,12 +552,12 @@ public class NGAPIFlows {
 			message.setId(communicationMessageID);
 			
 			if(messageType.equalsIgnoreCase("SentByOnlineProfile")){
-				String SecureMessageOnlineProfile = PropertyLoaderObj.getProperty("SecureMessageOnlineProfile");
+				String SecureMessageOnlineProfile = PropertyLoaderObj.getProperty("secure.message.online.profile");
 				message.setRoutingRuleName(SecureMessageOnlineProfile);
 				message.setRoutingRuleType("1");
 				message.setRoutingRuleId(DBUtils.executeQueryOnDB("NGCoreDB","select row_id from ngweb_alias where name='"+SecureMessageOnlineProfile+"'"));				
 			} else if(messageType.contains("ReplyToASKAUsingAliasName")){
-				String SecureMessageAlias = PropertyLoaderObj.getProperty("SecureMessageAlias");
+				String SecureMessageAlias = PropertyLoaderObj.getProperty("secure.message.alias");
 				message.setRoutingRuleType("0");
 				message.setAliasName(SecureMessageAlias);
 				message.setRoutingRuleName("RoutingRuleName Check");
@@ -863,12 +863,12 @@ public class NGAPIFlows {
 			message.setId(communicationMessageID);
 			
 			if(messageType.equalsIgnoreCase("SentByOnlineProfile")){
-				String SecureMessageOnlineProfile = PropertyLoaderObj.getProperty("SecureMessageOnlineProfile");
+				String SecureMessageOnlineProfile = PropertyLoaderObj.getProperty("secure.message.online.profile");
 				message.setRoutingRuleName(SecureMessageOnlineProfile);
 				message.setRoutingRuleType("1");
 				message.setRoutingRuleId(DBUtils.executeQueryOnDB("NGCoreDB","select row_id from ngweb_alias where name='"+SecureMessageOnlineProfile+"'"));				
 			} else if(messageType.contains("ReplyToASKAUsingAliasName")){
-				String SecureMessageAlias = PropertyLoaderObj.getProperty("SecureMessageAlias");
+				String SecureMessageAlias = PropertyLoaderObj.getProperty("secure.message.alias");
 				message.setRoutingRuleType("0");
 				message.setAliasName(SecureMessageAlias);
 				message.setRoutingRuleName("RoutingRuleName Check");
