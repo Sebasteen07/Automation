@@ -4279,6 +4279,7 @@ public class PatientPortal2AcceptanceTests extends BaseTestNGWebDriver {
 
 		logStep("Add and delete dependant pharmacy");
 		SelectPharmacyPage pharmaPage = new SelectPharmacyPage(driver);
-		pharmaPage.deletePharmacy(driver);
+		pharmaPage.addPharmacyWithNameAndPhoneNumber(driver);
+		pharmaPage.deletePharmacy();
 	}
 }

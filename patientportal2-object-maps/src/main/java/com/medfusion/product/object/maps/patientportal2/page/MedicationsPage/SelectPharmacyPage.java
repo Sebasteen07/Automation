@@ -182,7 +182,19 @@ public class SelectPharmacyPage extends MedfusionPage {
 		btnContinue.click();
 
 	}
-	public void deletePharmacy(WebDriver driver) throws InterruptedException, IOException {
+
+
+	public void deletePharmacy() throws InterruptedException{
+		log("Click on Delete a Pharmacy button");
+		wait.until(ExpectedConditions.elementToBeClickable(btnDelete));
+		javascriptClick(btnDelete);
+		wait.until(ExpectedConditions.elementToBeClickable(btnRemovePharmacyOkButton));
+		btnRemovePharmacyOkButton.click();
+		log("Pharmacy is Deleted");
+
+	}
+
+	public void addPharmacyWithNameAndPhoneNumber(WebDriver driver) throws IOException, InterruptedException {
 		PropertyFileLoader testData = new PropertyFileLoader();
 		IHGUtil.PrintMethodName();
 		log("Click on Add a Pharmacy button");
@@ -195,21 +207,10 @@ public class SelectPharmacyPage extends MedfusionPage {
 		assertTrue(arePopupPageElementsPresent());
 		log("Enter Pharmacy Details");
 		pharmacyName.sendKeys(testData.getProperty("pharmacy.name") + IHGUtil.createRandomNumericString(4));
-		pharmacyFax.sendKeys(IHGUtil.createRandomNumericString(10));
-		pharmacyAddress.sendKeys(testData.getProperty("address1"));
-		pharmacyCity.sendKeys(testData.getProperty("city"));
-		pharmacyState.sendKeys(testData.getProperty("state"));
-		pharmacyState.sendKeys(Keys.ENTER);
-		pharmacyZip.sendKeys(testData.getProperty("zip.code"));
-		log("Verifying continue button is disabled since Phone number is mandatory");
-		assertFalse(popupContinueBtn.isEnabled(), "Continue button is disabled");
 		pharmacyPhone.sendKeys(IHGUtil.createRandomNumericString(10));
-		new WebDriverWait(driver, 10).until(ExpectedConditions.elementToBeClickable(popupContinueBtn));
 		popupContinueBtn.click();
 		log("Pharmacy is added");
-		javascriptClick(btnDelete);
-		wait.until(ExpectedConditions.elementToBeClickable(btnRemovePharmacyOkButton));
-		btnRemovePharmacyOkButton.click();
-		log("Pharmacy is deleted");
 	}
+
 }
+
