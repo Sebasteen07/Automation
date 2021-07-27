@@ -76,10 +76,10 @@ public class GatewayProxyDigitalWalletResource extends GatewayProxyBaseTest {
 	}
 
 	public Response saleAPI(String accessToken, String customerUUID, String mmid, String externalWalletID,
-			String externalCardID) throws IOException {
+			String externalCardID, int transanctionAmount) throws IOException {
 		testData = new PropertyFileLoader();
 		Map<String, Object> digitalWallet = PayloadDetails.getPayloadForNewSaleAPI(
-				testData.getProperty("payment.source"), Integer.parseInt(IHGUtil.createRandomNumericString(4)));
+				testData.getProperty("payment.source"), transanctionAmount);
 
 		Response response = given()
 				.spec(requestSpec).auth().oauth2(accessToken).log().all().body(digitalWallet).when().post(customerUUID
