@@ -1,6 +1,7 @@
 // Copyright 2013-2021 NXGN Management, LLC. All Rights Reserved.
 package com.medfusion.gateway_proxy.tests;
 
+import org.joda.time.LocalDateTime;
 import org.testng.Assert;
 import org.testng.annotations.BeforeTest;
 import org.testng.annotations.Test;
@@ -15,6 +16,8 @@ import com.medfusion.payment_modulator.utils.Validations;
 
 import io.restassured.path.json.JsonPath;
 import io.restassured.response.Response;
+
+import java.util.List;
 
 public class GatewayProxyTransactionTests extends GatewayProxyBaseTest {
 
@@ -294,5 +297,19 @@ public class GatewayProxyTransactionTests extends GatewayProxyBaseTest {
 
 		}
 
+	}
+
+	@Test(enabled = true)
+	public void testGPGetTransactionDataWithValidAuth() throws Exception {
+		GatewayProxyTransactionResource transaction = new GatewayProxyTransactionResource();
+
+		long epochStartDate = 1627200051000L;
+		long epochEndDate = 1627372851000L;
+
+		Response response = transaction.getTransactions(token, "75164da9-5747-449f-be45-c2e28f3ff77b",
+				"2560791218", epochStartDate, epochEndDate);
+
+		JsonPath jsonPath = new JsonPath(response.asString());
+		Assert.assertNotNull(jsonPath, "Response was null");
 	}
 }

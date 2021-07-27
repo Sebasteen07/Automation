@@ -96,4 +96,16 @@ public class GatewayProxyTransactionResource extends GatewayProxyBaseTest {
 		return response;
 	}
 
+	public Response getTransactions(String token, String customeruuid, String mmid, long epochStartDate, long epochEndDate) throws NullPointerException, Exception {
+		testData = new PropertyFileLoader();
+
+		Response response = given().that().spec(requestSpec).auth().oauth2(token).log().all()
+				.param("startDate", epochStartDate)
+				.param("endDate",epochEndDate)
+				.param("paymentSource","VCS").when()
+				.get(customeruuid + "/merchant/" + mmid +"/transactions").then().and()
+				.extract().response();
+
+		return response;
+	}
 }
