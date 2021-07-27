@@ -859,7 +859,7 @@ public class PSSAdminUtils extends BaseTestNGWebDriver{
 		adminPatientMatching.patientMatchingSelection();
 		ManageResource manageResource = pssPracticeConfig.gotoResource();
 		pageRefresh(driver);
-		manageResource.selectResource(testData.getProvider());
+		manageResource.selectResource(testData.getLinkProvider());
 		manageResource.clickLocation();
 		manageResource.offAllLocationToggle();
 		patientFlow.logout();

@@ -4,7 +4,6 @@ package com.medfusion.product.object.maps.pss2.page.Insurance;
 import java.util.ArrayList;
 import java.util.List;
 
-import org.openqa.selenium.Keys;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.interactions.Actions;
@@ -24,7 +23,7 @@ public class UpdateInsurancePage extends PSS2MainPage {
 	@FindBy(how = How.XPATH, using = "//div[@id=\"react-select-3--value\"]")
 	private WebElement insuranceCarrier;
 
-	@FindBy(how = How.XPATH, using = "//span[@class='Select-arrow']")
+	@FindBy(how = How.XPATH, using = "//div[@class=\" css-1wy0on6\"]/div")
 	private WebElement selectArrow;
 
 	@FindBy(how = How.ID, using = "insurancecarrier")
@@ -45,10 +44,10 @@ public class UpdateInsurancePage extends PSS2MainPage {
 	@FindBy(how = How.ID, using = "updateinfo")
 	private WebElement buttonUpdateInsuranceInfo;
 	
-	@FindBy(how = How.XPATH, using = "//div[@class='Select-placeholder']")
+	@FindBy(how = How.XPATH, using = "//div[contains(@class,'css-1hwfws3')]")
 	private WebElement dropdownInsuranceCar;
 	
-	@FindAll({@FindBy(how = How.XPATH, using = "//div[@class=\"Select-menu\"]/div")})
+	@FindAll({ @FindBy(how = How.XPATH, using = "//div[@class=\" css-1ub9c6o-option\"]") })
 	private List<WebElement> insuranceCarrierDropDownList;
 
 	public UpdateInsurancePage(WebDriver driver) {

@@ -22,17 +22,16 @@ public class AppointmentPage extends PSS2MainPage {
 	@FindBy(how = How.XPATH, using = "//*[@class='form-control appointtype-search-control form-control-lg' or @id='searchappointmenttype1']")
 	private WebElement searchAppointment;
 
-	@FindBy(how = How.XPATH,
-			using = "//*[@class='btn' or @class='appointtypewidthbtn' or @class='col-sm-6 col-xs-12 appointtypewidthbtn' or @class='btn appointmentType-btn handle-text-Overflow outer-div']")
+	@FindBy(how = How.XPATH, using = "//*[@class='btn' or @class='appointtypewidthbtn' or @class='col-sm-6 col-xs-12 appointtypewidthbtn' or @class='btn appointmentType-btn handle-text-Overflow outer-div']")
 	private WebElement selectAppointment;
-
-	@FindBy(how = How.XPATH, using = "//div[3]//div[1]//div[1]//div[1]//div[1]//div[3]//a[1]")
+	
+	@FindBy(how = How.XPATH, using = "//*[contains(text(),'Go to next step')]")
 	private WebElement gotoNextStep;
 
 	@FindAll({@FindBy(xpath = "//div//button[@class='btn appointmentType-btn handle-text-Overflow outer-div']")})
 	private List<WebElement> appointmentTypeList;
 	
-	@FindBy(how = How.XPATH, using = "//body/div[@id='root']/div/div/div[@class='container']/div/div[@id='appointtypewizarddatalist']/div[3]/div[1]/div[2]/div[1]/div[1]/div[2]")
+	@FindBy(how = How.XPATH, using = "//div[4]/div[2]/div[4]/div[1]/div[2]/div[1]/div[1]/div[2]")
 	private WebElement preventApptSchedPopUp;
 	
 	@FindBy(how = How.XPATH, using = "//div[contains(text(),'The practice does not allow this appointment to be scheduled within')]")

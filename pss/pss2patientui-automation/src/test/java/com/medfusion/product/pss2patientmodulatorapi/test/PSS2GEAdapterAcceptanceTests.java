@@ -211,7 +211,9 @@ public class PSS2GEAdapterAcceptanceTests extends BaseTestNGWebDriver {
 		log("Payload- " + PayloadGE.upcommingApt_Payload(testData.getSsoPatientId(), testData.getPracticeIdGE(), testData.getPracticeDisplayName()));
 
 		postAPIRequest.upcomingAppt(testData.getBasicURI(),
-				PayloadGE.upcommingApt_Payload(testData.getSsoPatientId(), testData.getPracticeIdGE(), testData.getPracticeDisplayName()), headerConfig.defaultHeader(),
+				PayloadGE.upcommingApt_Payload(testData.getMatchPatientId(), testData.getPracticeIdGE(),
+						testData.getPracticeDisplayName()),
+				headerConfig.defaultHeader(),
 				testData.getPracticeIdGE(), testData.getUpcomingApptresourceName(), testData.getUpcomingApptlocationName());
 	}
 
