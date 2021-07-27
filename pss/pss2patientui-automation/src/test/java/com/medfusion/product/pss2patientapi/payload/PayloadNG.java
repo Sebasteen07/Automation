@@ -1,5 +1,5 @@
 // Copyright 2020 NXGN Management, LLC. All Rights Reserved.
-package com.medfusion.product.pss2patientmodulatorapi.test;
+package com.medfusion.product.pss2patientapi.payload;
 
 public class PayloadNG {
 	
@@ -46,7 +46,7 @@ public class PayloadNG {
 			"    \"rule\": \"L,T,B\",\r\n" + 
 			"    \"leafNode\": null\r\n" + 
 			"}";
-	String cancelAppointment="{\r\n" + 
+	public String cancelAppointment = "{\r\n" +
 			"  \"appointmentId\": \"59f90f71-f4b9-4752-9810-24792ad5412b\",\r\n" + 
 			"  \"cancellationMap\": {\r\n" + 
 			"    \"additionalProp1\": \"string\",\r\n" + 
@@ -334,7 +334,7 @@ public class PayloadNG {
 				+ "  \"slotId\": \"0001\"\r\n"
 				+ "}";
 		
-		String matchpatient="{\r\n"
+		public String matchpatient = "{\r\n"
 				+ "\"patientMatches\": [\r\n"
 				+ " {\r\n"
 				+ "\"entity\": \"First Name\",\r\n"
@@ -387,7 +387,7 @@ public class PayloadNG {
 				+ "  ]\r\n"
 				+ "}";
 		
-		String searchpatient="{\r\n"
+		public String searchpatient = "{\r\n"
 				+ "  \"id\": \"50056\",\r\n"
 				+ "  \"firstName\": \"march\",\r\n"
 				+ "  \"lastName\": \"march\",\r\n"
@@ -478,7 +478,7 @@ public class PayloadNG {
 				+ "    ]\r\n"
 				+ "}";
 
-		String lastseenprovider="{\r\n"
+		public String lastseenprovider = "{\r\n"
 				+ "  \"additionalField\": null,\r\n"
 				+ "  \"appointmentCategoryId\": \"8F563A6C-7098-4446-97E2-7EF9345ED469\",\r\n"
 				+ "  \"appointmentTypeId\": \"86D0E00F-C136-4A24-BF7A-6C17E9AB35ED\",\r\n"
