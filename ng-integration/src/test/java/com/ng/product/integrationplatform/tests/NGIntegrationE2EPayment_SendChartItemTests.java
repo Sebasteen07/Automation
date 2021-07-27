@@ -906,14 +906,14 @@ public class NGIntegrationE2EPayment_SendChartItemTests extends BaseTestNGWebDri
 				"select first_name from person where person_id ='" + personId + "'");
 		String patientLastName = DBUtils.executeQueryOnDB("NGCoreDB",
 				"select last_name from person where person_id ='" + personId + "'");
-		String expectedBody = "Dear " + propertyLoaderObj.getProperty("practiceName") + ",<br/><br/>"
+		String expectedBody = "Dear " + propertyLoaderObj.getProperty("practice.name") + ",<br/><br/>"
 				+ IntegrationConstants.MESSAGE_REPLY + "<br/><br/>Thanks,<br>" + patientFirstName + " "
 				+ patientLastName;
 
 		String messageID = RestUtils.isReplyPresentReturnMessageID(propertyLoaderObj.getResponsePath(), askaSubject,
 				expectedBody);
 
-		String expectedBodyinInbox = "Dear " + propertyLoaderObj.getProperty("practiceName") + ",\n"
+		String expectedBodyinInbox = "Dear " + propertyLoaderObj.getProperty("practice.name") + ",\n"
 				+ IntegrationConstants.MESSAGE_REPLY + "\nThanks,\n" + patientFirstName + " " + patientLastName;
 		Thread.sleep(60000);
 		CommonFlows.verifyMessageReceivedAtNGCore(propertyLoaderObj, messageID, askaSubject,

@@ -72,7 +72,6 @@ import com.intuit.ihg.common.utils.mail.GmailBot;
 import com.intuit.ihg.product.integrationplatform.pojo.PIDCInfo;
 import com.medfusion.common.utils.IHGUtil;
 import com.medfusion.product.patientportal2.utils.JalapenoConstants;
-import com.sun.tools.javac.util.Assert;
 
 public class RestUtils {
 

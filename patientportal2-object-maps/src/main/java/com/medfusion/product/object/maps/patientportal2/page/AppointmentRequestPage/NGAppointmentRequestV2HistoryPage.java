@@ -3,6 +3,7 @@ package com.medfusion.product.object.maps.patientportal2.page.AppointmentRequest
 
 import com.medfusion.product.object.maps.patientportal2.page.JalapenoMenu;
 import org.openqa.selenium.By;
+import org.openqa.selenium.JavascriptExecutor;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.FindBy;
@@ -44,8 +45,11 @@ public class NGAppointmentRequestV2HistoryPage extends JalapenoMenu {
 		public boolean findAppointmentReasonAndOpen(String appointmentReason) {
 				IHGUtil.PrintMethodName();
 
+				WebElement apptReason= driver.findElement(By.xpath("//*[contains(text(),'" + appointmentReason + "')]"));
+				IHGUtil.waitForElement(driver, 60, apptReason);
 				try {
-						driver.findElement(By.xpath("//*[contains(text(),'" + appointmentReason + "')]")).click();
+						JavascriptExecutor executor = (JavascriptExecutor)driver;
+						executor.executeScript("arguments[0].click();", apptReason);
 						return true;
 				} catch (Exception e) {
 						log(e.getCause().toString());
