@@ -4,14 +4,13 @@ package com.medfusion.gateway_proxy.tests;
 import com.medfusion.common.utils.IHGUtil;
 import com.medfusion.common.utils.PropertyFileLoader;
 import com.medfusion.gateway_proxy.helpers.GatewayProxyDigitalWalletResource;
-import com.medfusion.payment_modulator.pojos.PayloadDetails;
 import com.medfusion.gateway_proxy.utils.GatewayProxyDigitalWalletUtils;
 import com.medfusion.gateway_proxy.utils.GatewayProxyUtils;
+import com.medfusion.payment_modulator.utils.GatewayProxyTestData;
 import io.restassured.path.json.JsonPath;
 import io.restassured.response.Response;
 import org.testng.Assert;
 import org.testng.annotations.BeforeTest;
-import org.testng.annotations.DataProvider;
 import org.testng.annotations.Test;
 
 public class GatewayProxyDigitalWalletTests extends GatewayProxyBaseTest {
@@ -24,7 +23,7 @@ public class GatewayProxyDigitalWalletTests extends GatewayProxyBaseTest {
 		setupRequestSpecBuilder();
 	}
 
-	@Test
+	@Test(enabled = true)
 	public void testAddNewCardAndCreateWalletByValidAuth() throws Exception {
 		String token = GatewayProxyUtils.getTokenForCustomer();
 		GatewayProxyDigitalWalletResource digitalWallet = new GatewayProxyDigitalWalletResource();
@@ -43,7 +42,7 @@ public class GatewayProxyDigitalWalletTests extends GatewayProxyBaseTest {
 
 	}
 
-	@Test
+	@Test(enabled = true)
 	public void testAddNewCardAndCreateWalletByInvalidAuth() throws Exception {
 		String token = GatewayProxyUtils.getTokenForCustomer() + "jadgcl";
 		GatewayProxyDigitalWalletResource digitalWallet = new GatewayProxyDigitalWalletResource();
@@ -54,7 +53,7 @@ public class GatewayProxyDigitalWalletTests extends GatewayProxyBaseTest {
 		Assert.assertTrue(response.getStatusCode() == 401);
 	}
 
-	@Test
+	@Test(enabled = true)
 	public void testGetListOfCardsInWalletByInvalidAuth() throws Exception {
 		String token = GatewayProxyUtils.getTokenForCustomer();
 		String token1 = token + "jadgcl";
@@ -64,7 +63,7 @@ public class GatewayProxyDigitalWalletTests extends GatewayProxyBaseTest {
 
 	}
 
-	@Test
+	@Test(enabled = true)
 	public void testDeleteCardInWallet() throws Exception {
 		
 		String token = GatewayProxyUtils.getTokenForCustomer();
@@ -97,7 +96,7 @@ public class GatewayProxyDigitalWalletTests extends GatewayProxyBaseTest {
 
 	}
 
-	@Test
+	@Test(enabled = true)
 	public void testDeleteCardInWalletByInvalidAuth() throws Exception {
 		String token = GatewayProxyUtils.getTokenForCustomer();
 		String token1 = token + "jadgcl";
@@ -108,27 +107,7 @@ public class GatewayProxyDigitalWalletTests extends GatewayProxyBaseTest {
 
 	}
 
-	@DataProvider(name = "card_details")
-	public Object[][] dpMethod() {
-		return new Object[][] {
-				{ "", testData.getProperty("type"), testData.getProperty("card.number"),
-						testData.getProperty("expiration.number"), testData.getProperty("card.alias"),
-						testData.getProperty("zipcode") },
-				{ testData.getProperty("consumer.name"), "", testData.getProperty("card.number"),
-						testData.getProperty("expiration.number"), testData.getProperty("card.alias"),
-						testData.getProperty("zipcode") },
-				{ testData.getProperty("consumer.name"), testData.getProperty("type"), "",
-						testData.getProperty("expiration.number"), testData.getProperty("card.alias"),
-						testData.getProperty("zipcode") },
-				{ testData.getProperty("consumer.name"), testData.getProperty("type"),
-						testData.getProperty("card.number"), "1220", testData.getProperty("card.alias"),
-						testData.getProperty("zipcode") },
-				{ testData.getProperty("consumer.name"), testData.getProperty("type"),
-						testData.getProperty("card.number"), testData.getProperty("expiration.number"),
-						testData.getProperty("card.alias"), "" } };
-	}
-
-	@Test(dataProvider = "card_details")
+	@Test(dataProvider = "card_details", dataProviderClass = GatewayProxyTestData.class, enabled = true)
 	public void testAddNewCardAndCreateWalletWithNullValues(String consumerName, String cardType, String cardnumber,
 			String expiryDate, String cardAlias, String zipcode) throws Exception {
 		String token = GatewayProxyUtils.getTokenForCustomer();
@@ -143,7 +122,7 @@ public class GatewayProxyDigitalWalletTests extends GatewayProxyBaseTest {
 
 	}
 
-	@Test
+	@Test(enabled = true)
 
 	public void testGetListOfCardsInWallet() throws Exception {
 
@@ -174,7 +153,7 @@ public class GatewayProxyDigitalWalletTests extends GatewayProxyBaseTest {
 		Assert.assertEquals(aliasToVerify, jsonPath.get("walletCards[0].cardAlias"));
 	}
 
-	@Test
+	@Test(enabled = true)
 	public void testUpdateZipcodeOfWalletWithValidAuth() throws Exception {
 		GatewayProxyDigitalWalletResource digitalWallet = new GatewayProxyDigitalWalletResource();
 		String token = GatewayProxyUtils.getTokenForCustomer();
@@ -188,7 +167,7 @@ public class GatewayProxyDigitalWalletTests extends GatewayProxyBaseTest {
 		Assert.assertEquals(zipcode, jsonPath.get("zipCode"));
 	}
 
-	@Test
+	@Test(enabled = true)
 	public void testUpdateZipcodeOfWalletWithInvalidAuth() throws Exception {
 		GatewayProxyDigitalWalletResource digitalWallet = new GatewayProxyDigitalWalletResource();
 		String token = GatewayProxyUtils.getTokenForCustomer();
@@ -199,7 +178,7 @@ public class GatewayProxyDigitalWalletTests extends GatewayProxyBaseTest {
 		Assert.assertTrue(response.getStatusCode() == 401);
 	}
 
-	@Test
+	@Test(enabled = true)
 	public void testUpdateZipcodeOfWalletWithInvalidZipcode() throws Exception {
 		GatewayProxyDigitalWalletResource digitalWallet = new GatewayProxyDigitalWalletResource();
 		String token = GatewayProxyUtils.getTokenForCustomer();
@@ -210,11 +189,11 @@ public class GatewayProxyDigitalWalletTests extends GatewayProxyBaseTest {
 		JsonPath jsonPath = new JsonPath(response.asString());
 		Assert.assertEquals("Bad Request", jsonPath.get("error"));
 		Assert.assertTrue(!jsonPath.get("message").toString().isEmpty());
-		Assert.assertEquals("Zip code should be 5 digits or 9 digits number", jsonPath.get("message"));
+		Assert.assertEquals("Zip code should be either 5 or 9 digits", jsonPath.get("message"));
 	}
 
-	@Test
-	public void addOneOrMoreCardToExistingWalletByValidAuth() throws Exception {
+	@Test(enabled = true)
+	public void testAddOneOrMoreCardToExistingWalletByValidAuth() throws Exception {
 		String token = GatewayProxyUtils.getTokenForCustomer();
 		GatewayProxyDigitalWalletResource digitalWallet = new GatewayProxyDigitalWalletResource();
 		String externalWalletId = testData.getProperty("external.wallet.id");
@@ -233,8 +212,8 @@ public class GatewayProxyDigitalWalletTests extends GatewayProxyBaseTest {
 
 	}
 
-	@Test
-	public void addOneOrMoreCardToExistingWalletByInvalidAuth() throws Exception {
+	@Test(enabled = true)
+	public void testAddOneOrMoreCardToExistingWalletByInvalidAuth() throws Exception {
 		String token = GatewayProxyUtils.getTokenForCustomer() + "Jdjfh1";
 		GatewayProxyDigitalWalletResource digitalWallet = new GatewayProxyDigitalWalletResource();
 		String externalWalletId = testData.getProperty("external.wallet.id");
@@ -247,8 +226,8 @@ public class GatewayProxyDigitalWalletTests extends GatewayProxyBaseTest {
 
 	}
 
-	@Test(dataProvider = "card_details")
-	public void addOneOrMoreCardToExistingWalletWithNullValues(String consumerName, String cardType, String cardnumber,
+	@Test(dataProvider = "card_details", dataProviderClass = GatewayProxyTestData.class, enabled = true)
+	public void testAddOneOrMoreCardToExistingWalletWithNullValues(String consumerName, String cardType, String cardnumber,
 			String expiryDate, String cardAlias, String zipcode) throws Exception {
 		String token = GatewayProxyUtils.getTokenForCustomer();
 		String externalWalletId = testData.getProperty("external.wallet.id");
@@ -263,15 +242,17 @@ public class GatewayProxyDigitalWalletTests extends GatewayProxyBaseTest {
 
 	}
 
-	@Test
-	public void saleAPI() throws Exception {
+	@Test(enabled = true)
+	public void testDigitalWalletSaleWithValidAuth() throws Exception {
 
 		GatewayProxyDigitalWalletResource digitalWallet = new GatewayProxyDigitalWalletResource();
 		String token = GatewayProxyUtils.getTokenForCustomer();
 
+		int transanctionAmount = Integer.parseInt(IHGUtil.createRandomNumericString(4));
+
 		Response response = digitalWallet.saleAPI(token, testData.getProperty("test.pay.customer.uuid"),
 				testData.getProperty("proxy.mmid"), testData.getProperty("external.wallet.id"),
-				testData.getProperty("external.card.id"));
+				testData.getProperty("external.card.id"), transanctionAmount);
 		JsonPath jsonPath = new JsonPath(response.asString());
 
 		Assert.assertTrue(!jsonPath.get("externalTransactionId").toString().isEmpty());
@@ -279,5 +260,45 @@ public class GatewayProxyDigitalWalletTests extends GatewayProxyBaseTest {
 		Assert.assertEquals("Approved", jsonPath.get("message"));
 		Assert.assertEquals("000", jsonPath.get("responseCode"));
 
+	}
+
+	@Test(enabled = true)
+	public void testDigitalWalletSaleWithInvalidAuth() throws Exception {
+
+		GatewayProxyDigitalWalletResource digitalWallet = new GatewayProxyDigitalWalletResource();
+		String token = GatewayProxyUtils.getTokenForCustomer() + "hgf";
+		int transanctionAmount = Integer.parseInt(IHGUtil.createRandomNumericString(4));
+
+		Response response = digitalWallet.saleAPI(token, testData.getProperty("test.pay.customer.uuid"),
+				testData.getProperty("proxy.mmid"), testData.getProperty("external.wallet.id"),
+				testData.getProperty("external.card.id"), transanctionAmount);
+
+		JsonPath jsonpath = new JsonPath(response.asString());
+		Assert.assertTrue(response.getStatusCode() == 401);
+		Assert.assertEquals("Unauthorized", jsonpath.get("message"));
+	}
+
+	@Test(dataProvider = "txn_data_for_sale", dataProviderClass = GatewayProxyTestData.class, enabled = true)
+	public void testDigitalWalletSaleWithInvalidData(String customeruuid, String mmid, String wallet, String card, int transanctionAmount) throws Exception {
+
+		GatewayProxyDigitalWalletResource digitalWallet = new GatewayProxyDigitalWalletResource();
+		String token = GatewayProxyUtils.getTokenForCustomer();
+
+		Response response = digitalWallet.saleAPI(token, customeruuid, mmid, wallet, card, transanctionAmount);
+
+		JsonPath jsonpath = new JsonPath(response.asString());
+
+		if(response.getStatusCode() == 400) {
+			Assert.assertTrue(!jsonpath.get("error").toString().isEmpty());
+		}
+		else if(response.getStatusCode() == 403){
+			Assert.assertTrue(!jsonpath.get("message").toString().isEmpty());
+			Assert.assertTrue(jsonpath.get("error").toString().contains("Forbidden"));
+		}
+		else {
+			Assert.assertTrue(response.getStatusCode() == 404);
+			Assert.assertTrue(!jsonpath.get("message").toString().isEmpty());
+			Assert.assertTrue(jsonpath.get("error").toString().contains("Not Found"));
+		}
 	}
 }

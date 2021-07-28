@@ -29,7 +29,12 @@
 	    	 	<include name="testPP139SendEHRImageByCommunication"/>
 	    	 	<include name="testPP139SendEHRImageWhileReplyingMessage"/>
 	    	 	<include name="testPP139SendIMH"/>
-	    	 	<include name="testPP139SendIMHByCommunication"/> 	    			    		
+	    	 	<include name="testPP139SendIMHByCommunication"/>
+	    	 	<include name="testPP174PAMSinglePracticeUser" />
+				<include name="testPP174PAMMultiPracticePracticeLevel" />
+				<include name="testPP174PAMGuardianUser" />
+				<include name="testPP174PAMTrustedPatientUser" />
+				<include name="testPP174PAMLegacyPortalUser" /> 	    			    		
 	    	</methods>
 	</classes>
 </test>

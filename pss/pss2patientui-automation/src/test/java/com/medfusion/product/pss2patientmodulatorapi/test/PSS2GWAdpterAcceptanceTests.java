@@ -4,6 +4,7 @@ package com.medfusion.product.pss2patientmodulatorapi.test;
 import static org.testng.Assert.assertEquals;
 
 import java.io.IOException;
+import java.sql.Timestamp;
 
 import org.testng.annotations.BeforeTest;
 import org.testng.annotations.Test;
@@ -13,6 +14,8 @@ import com.intuit.ifs.csscat.core.RetryAnalyzer;
 import com.medfusion.product.object.maps.pss2.page.util.APIVerification;
 import com.medfusion.product.object.maps.pss2.page.util.PostAPIRequestGW;
 import com.medfusion.product.object.maps.pss2.page.util.PostAPIRequestNG;
+import com.medfusion.product.pss2patientapi.payload.PayloadGW;
+import com.medfusion.product.pss2patientapi.validation.ValidationGW;
 import com.medfusion.product.pss2patientui.pojo.Appointment;
 import com.medfusion.product.pss2patientui.utils.PSSPropertyFileLoader;
 
@@ -28,6 +31,8 @@ public class PSS2GWAdpterAcceptanceTests extends BaseTestNGWebDriver {
 	public static PostAPIRequestNG postAPIRequest;
 	public static PostAPIRequestGW postAPIRequestgw;
 
+	ValidationGW validateGW = new ValidationGW();
+	Timestamp timestamp = new Timestamp(System.currentTimeMillis());
 
 	public static RequestSpecification requestSpec;
 	public static ResponseSpecification responseSpec;
@@ -62,7 +67,8 @@ public class PSS2GWAdpterAcceptanceTests extends BaseTestNGWebDriver {
 						propertyData.getProperty("lastName.gw"), propertyData.getProperty("practiceTimezone.gw")),
 				propertyData.getProperty("practice.id.gw"));
 		logStep("Verifying the response");
-		assertEquals(response.getStatusCode(), 200);
+		validateGW.verifySearchPatientResponse(response);
+
 	}
 
 }

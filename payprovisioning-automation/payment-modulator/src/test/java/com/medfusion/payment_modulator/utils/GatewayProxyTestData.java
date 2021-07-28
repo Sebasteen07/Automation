@@ -2,6 +2,7 @@ package com.medfusion.payment_modulator.utils;
 
 import java.io.IOException;
 
+import com.medfusion.common.utils.IHGUtil;
 import org.testng.annotations.DataProvider;
 
 import com.medfusion.common.utils.PropertyFileLoader;
@@ -108,4 +109,63 @@ public class GatewayProxyTestData extends GatewayProxyBaseTest {
 						testData.getProperty("proxy.mmid") }, };
 	}
 
+
+	@DataProvider(name = "card_details")
+	public Object[][] dpMethodDigitalWallet() {
+		return new Object[][] {
+				{ "", testData.getProperty("type"), testData.getProperty("card.number"),
+						testData.getProperty("expiration.number"), testData.getProperty("card.alias"),
+						testData.getProperty("zipcode") },
+				{ testData.getProperty("consumer.name"), "", testData.getProperty("card.number"),
+						testData.getProperty("expiration.number"), testData.getProperty("card.alias"),
+						testData.getProperty("zipcode") },
+				{ testData.getProperty("consumer.name"), testData.getProperty("type"), "",
+						testData.getProperty("expiration.number"), testData.getProperty("card.alias"),
+						testData.getProperty("zipcode") },
+				{ testData.getProperty("consumer.name"), testData.getProperty("type"),
+						testData.getProperty("card.number"), "1220", testData.getProperty("card.alias"),
+						testData.getProperty("zipcode") },
+				{ testData.getProperty("consumer.name"), testData.getProperty("type"),
+						testData.getProperty("card.number"), testData.getProperty("expiration.number"),
+						testData.getProperty("card.alias"), "" } };
+	}
+
+	@DataProvider(name = "txn_data_for_sale")
+	public Object[][] dpMethodDigitalWalletSale() {
+		return new Object[][]{
+				{testData.getProperty("test.pay.customer.uuid")+"hgf",
+						testData.getProperty("proxy.mmid"), testData.getProperty("external.wallet.id"),
+						testData.getProperty("external.card.id"), Integer.parseInt(IHGUtil.createRandomNumericString(4))},
+				{testData.getProperty("test.pay.customer.uuid"),
+						testData.getProperty("proxy.mmid"), testData.getProperty("external.wallet.id"),
+						testData.getProperty("external.card.id"), 0},
+				{testData.getProperty("test.pay.customer.uuid"),
+						testData.getProperty("proxy.mmid"), testData.getProperty("external.wallet.id"),
+						testData.getProperty("external.card.id")+"iut", Integer.parseInt(IHGUtil.createRandomNumericString(4))},
+				{testData.getProperty("test.pay.customer.uuid"),
+						testData.getProperty("proxy.mmid"), testData.getProperty("external.wallet.id")+"tre",
+						testData.getProperty("external.card.id"), Integer.parseInt(IHGUtil.createRandomNumericString(4))},
+				{testData.getProperty("test.pay.customer.uuid"),
+						testData.getProperty("proxy.mmid")+"oiu", testData.getProperty("external.wallet.id"),
+						testData.getProperty("external.card.id"), Integer.parseInt(IHGUtil.createRandomNumericString(4))}
+
+		};
+	}
+
+	@DataProvider(name = "txn_data_for_proxy_sale")
+	public Object[][] dpMethodGatewayProxySale() {
+		return new Object[][]{
+				{"", testData.getProperty("test.pay.customer.uuid"),
+						IHGUtil.createRandomNumericString(4)},
+				{testData.getProperty("proxy.mmid"), "",
+						IHGUtil.createRandomNumericString(4)},
+				{testData.getProperty("proxy.mmid"), testData.getProperty("test.pay.customer.uuid"),
+						"0"},
+				{testData.getProperty("proxy.mmid"), "75164da9-5747-449f-be45-c2e28f3ff77o",
+						IHGUtil.createRandomNumericString(4)},
+				{"2560807796", testData.getProperty("test.pay.customer.uuid"),
+						IHGUtil.createRandomNumericString(4)},
+
+		};
+	}
 }
