@@ -96,4 +96,14 @@ public class GatewayProxyTransactionResource extends GatewayProxyBaseTest {
 		return response;
 	}
 
+	public Response getATransactionData(String token, String mmid, String testPayCustomerUuid, String externalTransId,
+			String orderId) throws NullPointerException, Exception {
+		Response response = given().spec(requestSpec).auth().oauth2(token).when().get(
+				testPayCustomerUuid + "/merchant/" + mmid + "/transaction/" + externalTransId + "/orderId/" + orderId)
+				.then().extract().response();
+
+		return response;
+
+	}
+
 }
