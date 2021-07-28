@@ -27,8 +27,8 @@ public class PSS2NGAdpterAcceptanceTests extends BaseTestNGWebDriver {
 		propertyData = new PSSPropertyFileLoader();
 		postAPIRequest = new PostAPIRequestNG();
 		log("I am before Test");
-		postAPIRequest.setupRequestSpecBuilder(propertyData.getProperty("baseurl.ng"));
-		log("BASE URL-" + propertyData.getProperty("baseurl.ng"));
+		postAPIRequest.setupRequestSpecBuilder(propertyData.getProperty("base.url.ng"));
+		log("BASE URL-" + propertyData.getProperty("base.url.ng"));
 	}
 
 	@Test(enabled = true, groups = { "APItest" }, retryAnalyzer = RetryAnalyzer.class)
