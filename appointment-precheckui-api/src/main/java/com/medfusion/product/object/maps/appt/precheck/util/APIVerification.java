@@ -389,4 +389,78 @@ public class APIVerification extends BaseTestNGWebDriver {
 		assertEquals(js.get("message"), "No message available");
 	}
 
+	public void verifyProcessReminderData(Response response, String practiceId, String patientId, String ApptId)
+			throws IOException {
+		JsonPath js = new JsonPath(response.asString());
+		log("Validate PM Integration Setting");
+		assertEquals(js.getString("practiceId"), practiceId, "practice Id  was incorrect");
+		assertEquals(js.getString("pmPatientId"), patientId, "Patient Id was incorrect");
+		assertEquals(js.getString("pmAppointmentId"), ApptId, "Appointment Id was incorrect");
+		assertEquals(js.getString("status"), "PUBLISH_TEMPLATE_METADATA_FINISHED", "Status was incorrect");
+		assertEquals(js.getString("message"), "Finished publishing template metadata to queue",
+				"Message was incorrect");
+
+	}
+
+	public void verifyProcessReminderDataWithInvalidData(Response response, String practiceId, String patientId,
+			String ApptId) throws IOException {
+		JsonPath js = new JsonPath(response.asString());
+		log("Validate PM Integration Setting");
+		assertEquals(js.getString("practiceId"), practiceId, "practice Id  was incorrect");
+		assertEquals(js.getString("pmPatientId"), patientId, "Patient Id was incorrect");
+		assertEquals(js.getString("pmAppointmentId"), ApptId, "Appointment Id was incorrect");
+		assertEquals(js.getString("status"), "PUBLISH_TEMPLATE_METADATA_FINISHED", "Status was incorrect");
+		assertEquals(js.getString("message"), "Finished publishing template metadata to queue",
+				"Message was incorrect");
+	}
+
+	public void verifyProcessReminderDataCurbsSide(Response response, String practiceId, String patientId,
+			String ApptId) throws IOException {
+		JsonPath js = new JsonPath(response.asString());
+		log("Validate PM Integration Setting");
+		assertEquals(js.getString("practiceId"), practiceId, "practice Id  was incorrect");
+		assertEquals(js.getString("pmPatientId"), patientId, "Patient Id was incorrect");
+		assertEquals(js.getString("pmAppointmentId"), ApptId, "Appointment Id was incorrect");
+		assertEquals(js.getString("status"), "PUBLISH_TEMPLATE_METADATA_FINISHED", "Status was incorrect");
+		assertEquals(js.getString("message"), "Finished publishing template metadata to queue",
+				"Message was incorrect");
+	}
+
+	public void verifySendsPatientProvidedDataWithoutCadence(Response response) throws IOException {
+		JsonPath jsonPath = new JsonPath(response.asString());
+		assertEquals(jsonPath.get("message"), "Cadence cannot be null or blank");
+	}
+
+	public void verifySendsPatientProvidedDataWithInvalidPracticeId(Response response, String practiceId,
+			String patientId, String ApptId) throws IOException {
+		JsonPath js = new JsonPath(response.asString());
+		log("Validate PM Integration Setting");
+		assertEquals(js.getString("practiceId"), practiceId, "practice Id  was incorrect");
+		assertEquals(js.getString("pmPatientId"), patientId, "Patient Id was incorrect");
+		assertEquals(js.getString("pmAppointmentId"), ApptId, "Appointment Id was incorrect");
+		assertEquals(js.getString("status"), "PRACTICE_SETTINGS_DO_NOT_EXIST", "Status was incorrect");
+		assertEquals(js.getString("message"), "Settings do not exist", "Message was incorrect");
+	}
+
+	public void verifySendsPatientProvidedDataWithInvalidPatientId(Response response, String practiceId,
+			String patientId, String ApptId) throws IOException {
+		JsonPath js = new JsonPath(response.asString());
+		log("Validate PM Integration Setting");
+		assertEquals(js.getString("practiceId"), practiceId, "practice Id  was incorrect");
+		assertEquals(js.getString("pmPatientId"), patientId, "Patient Id was incorrect");
+		assertEquals(js.getString("pmAppointmentId"), ApptId, "Appointment Id was incorrect");
+		assertEquals(js.getString("status"), "FHIR_APPOINTMENT_NOT_FOUND", "Status was incorrect");
+		assertEquals(js.getString("message"), "Did not find a FHIR appointment", "Message was incorrect");
+	}
+
+	public void verifySendsPatientProvidedDataWithInvalidApptId(Response response, String practiceId, String patientId,
+			String ApptId) throws IOException {
+		JsonPath js = new JsonPath(response.asString());
+		log("Validate PM Integration Setting");
+		assertEquals(js.getString("practiceId"), practiceId, "practice Id  was incorrect");
+		assertEquals(js.getString("pmPatientId"), patientId, "Patient Id was incorrect");
+		assertEquals(js.getString("pmAppointmentId"), ApptId, "Appointment Id was incorrect");
+		assertEquals(js.getString("status"), "FHIR_APPOINTMENT_NOT_FOUND", "Status was incorrect");
+		assertEquals(js.getString("message"), "Did not find a FHIR appointment", "Message was incorrect");
+	}
 }
