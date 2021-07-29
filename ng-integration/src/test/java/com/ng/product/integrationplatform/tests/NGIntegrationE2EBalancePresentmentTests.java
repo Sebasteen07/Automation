@@ -161,7 +161,7 @@ public class NGIntegrationE2EBalancePresentmentTests extends BaseTestNGWebDriver
 				practiceId);
 
 	}
-	
+	/*
 	@Test(enabled = true, groups = { "acceptance-BalancePresentment" }, retryAnalyzer = RetryAnalyzer.class)
 	public void testPatientAbletoSeetheUpdatedchargesinPortal() throws Throwable {
 		String enterpriseId = propertyLoaderObj.getProperty("ng.main.enterprise.id");
@@ -427,7 +427,7 @@ public class NGIntegrationE2EBalancePresentmentTests extends BaseTestNGWebDriver
 		CommonFlows.verifyPaymentPostedtoNG(paymentComments, sourceIdQuery.toUpperCase(), personId.toUpperCase(),
 				"-" + extrapatamt, "Payment type: BillPayment, Last 4 CC digits: " + creditCard.getLastFourDigits(),
 				practiceId);		
-	}
+	}*/
 	
 	public static String createRandomGUID() throws Throwable {
 		String guid = UUID.randomUUID().toString().toUpperCase();
