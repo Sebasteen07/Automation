@@ -70,5 +70,15 @@ public class PSS2GWAdpterAcceptanceTests extends BaseTestNGWebDriver {
 		validateGW.verifySearchPatientResponse(response);
 
 	}
+	
+	@Test(enabled = true, groups = { "APItest" }, retryAnalyzer = RetryAnalyzer.class)
+	public void testGetAppointmentStatus() throws NullPointerException, Exception {
+		Response response = postAPIRequestgw.appointmentStatus(propertyData.getProperty("practice.id.gw"),propertyData.getProperty("appointment.id.gw"),propertyData.getProperty("start.date.time.gw"));
+		logStep("Verifying the response");
+		assertEquals(response.getStatusCode(), 200);
+		validateGW.verifyAppointmentStatus(response);
+
+	}
+	
 
 }

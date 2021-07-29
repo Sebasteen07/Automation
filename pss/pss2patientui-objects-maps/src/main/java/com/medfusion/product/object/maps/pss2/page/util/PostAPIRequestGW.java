@@ -42,4 +42,10 @@ public class PostAPIRequestGW extends BaseTestNGWebDriver {
 				.all().extract().response();
 	}
 
+	public Response appointmentStatus(String practiceid,String appointmentId,String startTime) throws Exception {
+		Response response = given().queryParam("appointmentId", appointmentId).queryParam("startDateTime", startTime).log().all().spec(requestSpec).when()
+				.get(practiceid+"/appointmentstatus").then().spec(responseSpec).log().all().extract().response();
+		return response;
+	}
+
 }

@@ -9,14 +9,13 @@ import com.intuit.ifs.csscat.core.BaseTestNG;
 import com.medfusion.product.object.maps.pss2.page.util.APIVerification;
 import com.medfusion.product.pss2patientui.utils.PSSPropertyFileLoader;
 
+import io.restassured.path.json.JsonPath;
 import io.restassured.response.Response;
 
-
 public class ValidationGW extends BaseTestNG {
-	
+
 	public static PSSPropertyFileLoader propertyData;
 	APIVerification apiVerification = new APIVerification();
-
 
 	public void verifySearchPatientResponse(Response response) throws IOException {
 		propertyData = new PSSPropertyFileLoader();
@@ -28,6 +27,18 @@ public class ValidationGW extends BaseTestNG {
 		assertEquals(pid, propertyData.getProperty("patient.id.gw"), "Patient id is incorrect");
 		assertEquals(fn, propertyData.getProperty("firstName.gw"), "firstName incorrect");
 		assertEquals(ln, propertyData.getProperty("lastName.gw"), "Last Name incorrect");
+	}
+
+	public void verifyAppointmentStatus(Response response) throws IOException {
+		propertyData = new PSSPropertyFileLoader();
+//		JsonPath jsonPath = new JsonPath(response.asString());
+//		assertEquals(jsonPath.get("id"), propertyData.getProperty("appointment.id.gw"), "Appointment id is incorrect");
+//		assertEquals(jsonPath.get("startDateTime"), propertyData.getProperty("start.date.time.gw"),
+//				"StartTime incorrect");
+//		assertEquals(jsonPath.get("endDateTime"), propertyData.getProperty("end.date.time.gw"), "EndTime incorrect");
+//		assertEquals(jsonPath.get("locationName"), propertyData.getProperty("locationname.gw"),
+//				"LocationName Name incorrect");
+		apiVerification.responseKeyValidationJson(response, "id");
 	}
 
 }
