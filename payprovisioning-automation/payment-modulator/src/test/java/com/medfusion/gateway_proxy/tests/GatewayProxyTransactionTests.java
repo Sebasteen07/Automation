@@ -1,11 +1,11 @@
 // Copyright 2013-2021 NXGN Management, LLC. All Rights Reserved.
 package com.medfusion.gateway_proxy.tests;
 
-import io.restassured.http.Headers;
+
+import com.medfusion.payment_modulator.pojos.Transactions;
 import org.testng.Assert;
 import org.testng.annotations.BeforeTest;
 import org.testng.annotations.Test;
-
 import com.medfusion.common.utils.IHGUtil;
 import com.medfusion.common.utils.PropertyFileLoader;
 import com.medfusion.gateway_proxy.helpers.GatewayProxyTransactionResource;
@@ -13,9 +13,12 @@ import com.medfusion.gateway_proxy.utils.GatewayProxyUtils;
 import com.medfusion.payment_modulator.utils.CommonUtils;
 import com.medfusion.payment_modulator.utils.GatewayProxyTestData;
 import com.medfusion.payment_modulator.utils.Validations;
-
 import io.restassured.path.json.JsonPath;
 import io.restassured.response.Response;
+
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 
 public class GatewayProxyTransactionTests extends GatewayProxyBaseTest {
 
@@ -335,4 +338,117 @@ public class GatewayProxyTransactionTests extends GatewayProxyBaseTest {
 		}
 
 	}
+
+	@Test(enabled = true)
+	public void testGPGetTransactionDataWithValidAuth() throws Exception {
+		GatewayProxyTransactionResource transaction = new GatewayProxyTransactionResource();
+
+		long startDate = getEpochDate(-1);
+		long endDate = getEpochDate(1);
+
+		Response response = transaction.getTransactions(token, testData.getProperty("test.pay.customer.uuid"),
+				testData.getProperty("proxy.mmid"), startDate, endDate, "");
+
+		JsonPath jsonPath = new JsonPath(response.asString());
+		if(response.getStatusCode() == 204){
+			Assert.assertNull(jsonPath);
+		}
+		else {
+			Assert.assertNotNull(jsonPath, "Response was null");
+			jsonPath = response.jsonPath();
+
+			List<String> allTxns = jsonPath.getList("transactionId");
+			for(String txn : allTxns)
+			{
+				Assert.assertTrue(!jsonPath.get("cardType").toString().isEmpty(), "cardType was not found in the response");
+				Assert.assertTrue(!jsonPath.get("cardNumberLastFour").toString().isEmpty(), "cardNumberLastFour was not found in the response");
+				Assert.assertTrue(!jsonPath.get("transactionId").toString().isEmpty(), "Order id was not found in the response");
+				Assert.assertTrue(!jsonPath.get("orderId").toString().isEmpty(), "Order id was not found in the response");
+				Assert.assertTrue(!jsonPath.get("status").toString().isEmpty(), "Order id was not found in the response");
+				Assert.assertTrue(!jsonPath.get("purchaseAmount").toString().isEmpty(), "Order id was not found in the response");
+				}
+		}
+	}
+
+	@Test(dataProvider = "get_txns_for_different_sources", dataProviderClass = GatewayProxyTestData.class, enabled = true)
+	public void testGPGetTransactionsForDifferentPaymentSources(String customeruuid, String mmid,
+																String startDate, String endDate,
+																String paymentSource) throws Exception {
+		GatewayProxyTransactionResource transaction = new GatewayProxyTransactionResource();
+
+		Response response = transaction.getTransactions(token, customeruuid,
+				mmid, Long.parseLong(startDate), Long.parseLong(endDate), paymentSource);
+
+		JsonPath jsonPath = new JsonPath(response.asString());
+		if(response.getStatusCode() == 204){
+			Assert.assertNotNull(jsonPath, "Value like io.restassured.path.json.JsonPath@4afd21c6 is found");
+		}
+		else {
+			Assert.assertNotNull(jsonPath, "Response was null");
+			if(paymentSource.equalsIgnoreCase("CPOS")){
+				Assert.assertEquals(jsonPath.get("paymentSource"), "CPOS");
+
+			}
+		}
+	}
+
+	@Test(enabled = true)
+	public void testGPGetTransactionDataWithInvalidAuth() throws Exception {
+		GatewayProxyTransactionResource transaction = new GatewayProxyTransactionResource();
+
+		long startDate = getEpochDate(-1);
+		long endDate = getEpochDate(0);
+
+		Response response = transaction.getTransactions(token+"erf", testData.getProperty("test.pay.customer.uuid"),
+				testData.getProperty("proxy.mmid"), startDate, endDate, testData.getProperty("payment.source"));
+
+		JsonPath jsonpath = new JsonPath(response.asString());
+		Assert.assertTrue(response.getStatusCode() == 401);
+		Assert.assertEquals("Unauthorized", jsonpath.get("message"));
+	}
+
+	@Test(dataProvider = "get_txn", dataProviderClass = GatewayProxyTestData.class, enabled = true)
+	public void testGPGetTransactionDataWithInvalidData(String customeruuid, String mmid,
+														long startDate, long endDate,
+														String paymentSource) throws Exception {
+		GatewayProxyTransactionResource transaction = new GatewayProxyTransactionResource();
+
+		Response response = transaction.getTransactions(token, customeruuid,
+				mmid, startDate, endDate, paymentSource);
+
+		JsonPath jsonpath = new JsonPath(response.asString());
+
+		if(response.getStatusCode() == 400) {
+			if (response.getHeaders().toString().contains("text/html")) {
+				Assert.assertTrue(response.asString().contains("Bad Request"));
+			}
+			else {
+				Assert.assertTrue(!jsonpath.get("error").toString().isEmpty());
+				Assert.assertTrue(!jsonpath.get("message").toString().isEmpty());
+			}
+		}
+		else if(response.getStatusCode() == 403){
+			Assert.assertTrue(jsonpath.get("error").toString().contains("Forbidden"));
+		}
+		else {
+			Assert.assertTrue(response.getStatusCode() == 404);
+			Assert.assertTrue(!jsonpath.get("message").toString().isEmpty());
+			Assert.assertTrue(jsonpath.get("error").toString().contains("Not Found"));
+		}
+	}
+
+	@Test(enabled = true)
+	public void testGPGetTransactionDataAsList() throws Exception {
+		GatewayProxyTransactionResource transaction = new GatewayProxyTransactionResource();
+
+		long startDate = getEpochDate(-2);
+		long endDate = getEpochDate(0);
+
+		List<Transactions> transactions = transaction.getTransactionsAsList(token, testData.getProperty("test.pay.customer.uuid"),
+				testData.getProperty("proxy.mmid"), startDate, endDate, "");
+		Validations validate = new Validations();
+		validate.verifyTransactionList(transactions);
+	}
+
 }
+

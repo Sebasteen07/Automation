@@ -6,6 +6,8 @@ import io.restassured.RestAssured;
 import io.restassured.http.ContentType;
 import io.restassured.path.json.JsonPath;
 import io.restassured.response.Response;
+
+import java.util.Calendar;
 import java.util.HashMap;
 import java.util.Map;
 import com.medfusion.common.utils.PropertyFileLoader;
@@ -38,5 +40,18 @@ public class GatewayProxyUtils {
 
 		return jsonpath.get("token").toString();
 
+	}
+
+
+	public static long getEpochDate(int amount){
+		/*
+		If we want epoch date of the past, amount date will be a negative value
+		for current day, amount date will be 0,
+		for future days, amount date will be a postive value
+		 */
+
+		Calendar calendar = Calendar.getInstance();
+		calendar.add(Calendar.DATE, amount);
+		return calendar.getTime().getTime();
 	}
 }
