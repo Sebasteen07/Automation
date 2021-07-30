@@ -463,4 +463,16 @@ public class APIVerification extends BaseTestNGWebDriver {
 		assertEquals(js.getString("status"), "FHIR_APPOINTMENT_NOT_FOUND", "Status was incorrect");
 		assertEquals(js.getString("message"), "Did not find a FHIR appointment", "Message was incorrect");
 	}
+
+	public void verifySendNotificationWithInvalidNotifType(Response response) throws IOException {
+		JsonPath jsonPath = new JsonPath(response.asString());
+		assertEquals(jsonPath.get("message"),
+				"Processed 1 notifications; 1 of those failed: [Invalid notification type]");
+	}
+
+	public void verifySendNotificationhWithoutNotifType(Response response) throws IOException {
+		JsonPath jsonPath = new JsonPath(response.asString());
+		assertEquals(jsonPath.get("message"),
+				"Processed 1 notifications; 1 of those failed: [The notification properties type cannot be null or empty.]");
+	}
 }
