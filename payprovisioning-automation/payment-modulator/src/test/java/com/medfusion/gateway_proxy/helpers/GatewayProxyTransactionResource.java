@@ -5,18 +5,14 @@ import static io.restassured.RestAssured.given;
 
 import com.medfusion.common.utils.IHGUtil;
 import com.medfusion.payment_modulator.pojos.Transactions;
-import io.restassured.path.json.JsonPath;
 import io.restassured.response.Response;
+
 import java.io.IOException;
 import java.util.List;
 import java.util.Map;
-
 import com.medfusion.common.utils.PropertyFileLoader;
 import com.medfusion.gateway_proxy.tests.GatewayProxyBaseTest;
-import com.medfusion.gateway_proxy.utils.GatewayProxyUtils;
 import com.medfusion.payment_modulator.pojos.PayloadDetails;
-import com.medfusion.payment_modulator.utils.CommonUtils;
-import com.medfusion.payment_modulator.utils.Validations;
 
 public class GatewayProxyTransactionResource extends GatewayProxyBaseTest {
 
@@ -98,6 +94,16 @@ public class GatewayProxyTransactionResource extends GatewayProxyBaseTest {
 		return response;
 	}
 
+	public Response getATransactionData(String token, String mmid, String testPayCustomerUuid, String externalTransId,
+			String orderId) throws NullPointerException, Exception {
+		Response response = given().spec(requestSpec).auth().oauth2(token).when().get(
+				testPayCustomerUuid + "/merchant/" + mmid + "/transaction/" + externalTransId + "/orderId/" + orderId)
+				.then().extract().response();
+
+		return response;
+
+	}
+
 	public Response getTransactions(String token, String customeruuid,
 									String mmid, long epochStartDate,
 									long epochEndDate, String paymentSource) throws IOException {
@@ -126,4 +132,6 @@ public class GatewayProxyTransactionResource extends GatewayProxyBaseTest {
 				.extract().body().jsonPath().getList(".", Transactions.class);
 
 	}
+
+
 }
