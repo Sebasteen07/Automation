@@ -47,7 +47,7 @@ public class GatewayProxyTransactionTests extends GatewayProxyBaseTest {
 	public void testGatewayProxySaleWithInvalidAuth() throws Exception {
 		String transanctionAmount = IHGUtil.createRandomNumericString(5);
 		GatewayProxyTransactionResource transaction = new GatewayProxyTransactionResource();
-		Response response = transaction.makeASale(token+"urf", testData.getProperty("proxy.mmid"),
+		Response response = transaction.makeASale(token + "urf", testData.getProperty("proxy.mmid"),
 				testData.getProperty("test.pay.customer.uuid"), transanctionAmount);
 
 		JsonPath jsonpath = new JsonPath(response.asString());
@@ -56,26 +56,23 @@ public class GatewayProxyTransactionTests extends GatewayProxyBaseTest {
 	}
 
 	@Test(dataProvider = "txn_data_for_proxy_sale", dataProviderClass = GatewayProxyTestData.class, enabled = true)
-	public void testGatewayProxySaleWithInvalidData(String mmid, String customeruuid, String txnAmount) throws Exception {
+	public void testGatewayProxySaleWithInvalidData(String mmid, String customeruuid, String txnAmount)
+			throws Exception {
 
- 		GatewayProxyTransactionResource transaction = new GatewayProxyTransactionResource();
-		Response response = transaction.makeASale(token, mmid,
-				customeruuid, txnAmount);
+		GatewayProxyTransactionResource transaction = new GatewayProxyTransactionResource();
+		Response response = transaction.makeASale(token, mmid, customeruuid, txnAmount);
 
 		JsonPath jsonpath = new JsonPath(response.asString());
 
-		if(response.getStatusCode() == 400) {
+		if (response.getStatusCode() == 400) {
 			if (response.getHeaders().toString().contains("text/html")) {
 				Assert.assertTrue(response.asString().contains("Bad Request"));
-			}
-			else {
+			} else {
 				Assert.assertTrue(!jsonpath.get("error").toString().isEmpty());
 			}
-		}
-		else if(response.getStatusCode() == 403){
+		} else if (response.getStatusCode() == 403) {
 			Assert.assertTrue(jsonpath.get("error").toString().contains("Forbidden"));
-		}
-		else {
+		} else {
 			Assert.assertTrue(response.getStatusCode() == 404);
 			Assert.assertTrue(!jsonpath.get("message").toString().isEmpty());
 			Assert.assertTrue(jsonpath.get("error").toString().contains("Not Found"));
@@ -335,4 +332,51 @@ public class GatewayProxyTransactionTests extends GatewayProxyBaseTest {
 		}
 
 	}
+
+	@Test(enabled = true)
+	public void testGatewayProxyToGetTransactionDataByValidAuth() throws Exception {
+		GatewayProxyTransactionResource transaction = new GatewayProxyTransactionResource();
+		Response response = transaction.getATransactionData(token, testData.getProperty("proxy.mmid"),
+				testData.getProperty("test.pay.customer.uuid"), testData.getProperty("external.transaction.id"),
+				testData.getProperty("order.id"));
+		JsonPath jsonpath = new JsonPath(response.asString());
+		Assert.assertEquals(response.getStatusCode(), 200);
+		String cardnumber = testData.getProperty("card.number");
+		String expectedCard = cardnumber.substring(cardnumber.length() - 4);
+		String actualCard = jsonpath.get("cardNumberLastFour");
+		Assert.assertEquals(expectedCard, actualCard);
+		String expectedMMID = testData.getProperty("proxy.mmid");
+		String actualMMID = jsonpath.get("mmid").toString();
+		Assert.assertEquals(expectedMMID, actualMMID);
+		Assert.assertTrue(
+				jsonpath.get("cardType").equals("VISA") || jsonpath.get("cardType").equals("American Express")
+						|| jsonpath.get("cardType").equals("Discover") || jsonpath.get("cardType").equals("MasterCard"),
+				"Response message was: " + jsonpath.get("message"));
+		Assert.assertTrue(
+				jsonpath.get("paymentSource").equals("VCS") || jsonpath.get("paymentSource").equals("CPOS")
+						|| jsonpath.get("paymentSource").equals("OLBP") || jsonpath.get("paymentSource").equals("PAYN")
+						|| jsonpath.get("paymentSource").equals("BDGB") || jsonpath.get("paymentSource").equals("CHBK")
+						|| jsonpath.get("paymentSource").equals("PRCC") || jsonpath.get("paymentSource").equals("PRCB"),
+				"Response message was: " + jsonpath.get("message"));
+
+		Assert.assertTrue(!jsonpath.get("orderId").toString().isEmpty(), "orderId was not found in the response");
+		Assert.assertTrue(!jsonpath.get("transactionId").toString().isEmpty(),
+				"transactionId was not found in the response");
+		Assert.assertTrue(!jsonpath.get("submittedDate").toString().isEmpty());
+
+	}
+
+	@Test(enabled = true)
+	public void testGatewayProxyToGetTransactionDataByInalidAuth() throws Exception {
+		GatewayProxyTransactionResource transaction = new GatewayProxyTransactionResource();
+		String token = GatewayProxyUtils.getTokenForCustomer() + "7fgh";
+		Response response = transaction.getATransactionData(token, testData.getProperty("proxy.mmid"),
+				testData.getProperty("test.pay.customer.uuid"), testData.getProperty("external.transaction.id"),
+				testData.getProperty("order.id"));
+		JsonPath jsonForGet = new JsonPath(response.asString());
+		Assert.assertTrue(response.getStatusCode() == 401);
+		Assert.assertEquals("Unauthorized", jsonForGet.get("message"));
+
+	}
+
 }
