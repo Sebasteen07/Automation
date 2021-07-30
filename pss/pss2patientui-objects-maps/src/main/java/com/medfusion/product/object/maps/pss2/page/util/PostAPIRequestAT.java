@@ -2,8 +2,11 @@
 package com.medfusion.product.object.maps.pss2.page.util;
 
 import static io.restassured.RestAssured.given;
+import static org.testng.Assert.assertEquals;
 
 import java.util.Map;
+
+import org.json.JSONArray;
 
 import io.restassured.RestAssured;
 import io.restassured.builder.RequestSpecBuilder;
@@ -46,7 +49,7 @@ public class PostAPIRequestAT {
 	public Response cancelappt(String practiceid, String appointmentId, String patientId) throws Exception {
 		Response response = given().queryParam("appointmentId", appointmentId)
 				.log().all().spec(requestSpec).when()
-				.get(practiceid + "/cancelappointment/" + patientId).then().log().all().assertThat().statusCode(200)
+				.get(practiceid + "/cancelappointment/" + patientId).then().spec(responseSpec).log().all()
 				.extract()
 				.response();
 		return response;
@@ -61,10 +64,108 @@ public class PostAPIRequestAT {
 		return response;
 	}
 
-	public Response pastAppt(String practiceid, String appointmentId, String patientId, Map<String, Object> hm)
+	public Response pastAppt(String practiceid, String appointmentId, String patientId, Map<String, Object>hm)
 			throws Exception {
 		Response response = given().log().all().spec(requestSpec).body(hm)
-				.get(practiceid + "/pastappointments/").then().log().all().assertThat().statusCode(200)
+				.post(practiceid + "/pastappointments/").then().log().all().assertThat().statusCode(200)
+				.extract()
+				.response();
+		return response;
+	}
+	
+	public Response upcommingAppt(String practiceid, String b)
+			throws Exception {
+		Response response = given().log().all().spec(requestSpec).body(b)
+				.post(practiceid + "/upcomingappointments").then().log().all()
+				.extract()
+				.response();
+		return response;
+	}
+	public Response lastseenprovider(String practiceid, String b)
+			throws Exception {
+		Response response = given().log().all().spec(requestSpec).body(b)
+				.post(practiceid + "/getlastseenprovider").then().log().all()
+				.extract()
+				.response();
+		return response;
+	}
+	
+	public Response careprovideravailability(String practiceid, String b)
+			throws Exception {
+		Response response = given().log().all().spec(requestSpec).body(b)
+				.post(practiceid + "/careprovideravailability").then().log().all()
+				.extract()
+				.response();
+		return response;
+	}
+	
+	public Response addpatient(String practiceid, String b)
+			throws Exception {
+		Response response = given().log().all().spec(requestSpec).body(b)
+				.post(practiceid + "/addpatient").then().log().all()
+				.extract()
+				.response();
+		return response;
+	}
+	
+	public Response matchpatient(String practiceid, String b)
+			throws Exception {
+		Response response = given().log().all().spec(requestSpec).body(b)
+				.post(practiceid + "/matchpatient").then().log().all()
+				.extract()
+				.response();
+		return response;
+	}
+	public Response searchpatient(String practiceid, String b)
+			throws Exception {
+		Response response = given().log().all().spec(requestSpec).body(b)
+				.post(practiceid + "/searchpatient").then().log().all()
+				.extract()
+				.response();
+		return response;
+	}
+	
+	public Response prerequisteappointmenttypes(String practiceid, String b)
+			throws Exception {
+		Response response = given().log().all().spec(requestSpec).body(b)
+				.post(practiceid + "/prerequisteappointmenttypes").then().log().all()
+				.extract()
+				.response();
+		return response;
+	}
+	
+	public Response nextavailableslots(String practiceid, String b)
+			throws Exception {
+		Response response = given().log().all().spec(requestSpec).body(b)
+				.post(practiceid + "/nextavailableslots").then().log().all()
+				.extract()
+				.response();
+		return response;
+	}
+	
+	public Response availableslots(String practiceid, String b)
+			throws Exception {
+		Response response = given().log().all().spec(requestSpec).body(b)
+				.post(practiceid + "/availableslots").then().log().all()
+				.extract()
+				.response();
+
+		return response;
+	}
+	
+	public Response scheduleAppt(String practiceid, String b)
+			throws Exception {
+		Response response = given().log().all().spec(requestSpec).body(b)
+				.post(practiceid + "/scheduleappointment").then().log().all()
+				.extract()
+				.response();
+		return response;
+	}
+	
+	public Response rescheduleAppt(String practiceid, String b)
+			throws Exception {
+		Response response = given().log().all().spec(requestSpec).body(b)
+				.post(practiceid + "/rescheduleappointment").then().log().all()
 				.extract()
 				.response();
 		return response;
