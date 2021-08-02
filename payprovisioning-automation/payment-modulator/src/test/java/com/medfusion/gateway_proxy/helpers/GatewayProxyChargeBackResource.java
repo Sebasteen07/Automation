@@ -16,19 +16,17 @@ import io.restassured.RestAssured;
 import io.restassured.http.ContentType;
 import io.restassured.path.json.JsonPath;
 import io.restassured.response.Response;
-
 import java.io.IOException;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-
 import static io.restassured.RestAssured.given;
 import static org.hamcrest.Matchers.equalTo;
 
 public class GatewayProxyChargeBackResource extends GatewayProxyBaseTest {
 	
 	protected PropertyFileLoader testData;
-
+	
 	public Response createChargeBack(String token,String proxychargebackurl, String mmid, String transactionid, String orderid,
 			String chargeBackAmount) throws Exception {
 		testData = new PropertyFileLoader();
@@ -38,8 +36,7 @@ public class GatewayProxyChargeBackResource extends GatewayProxyBaseTest {
 				  "/chargebacks").then().extract().response();
 					
 		return response;
-	}
-	
+	}	
 	
 	public Map<String,String>  getCBdetails (JsonPath jsonPathCB) { 
 		
@@ -51,20 +48,12 @@ public class GatewayProxyChargeBackResource extends GatewayProxyBaseTest {
 		
 	  return chargeBackMP;
 	}
-	
-	
+		
 	public Response getChargeBack(String token,String proxychargebackurl, String mmid) throws IOException {
-
-
 		
 		  Response response = given().spec(requestSpec).header("Authorization",
 		  token).when().get(proxychargebackurl +"/merchant/" + mmid +
 		  "/chargebacks").then().extract().response();
-		  return response;
-		 
-		
+		  return response;		
 	}
-
-
-
 }
