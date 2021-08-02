@@ -75,10 +75,8 @@ public class SelectPharmacyPage extends MedfusionPage {
 
 	@FindBy(how = How.XPATH, using = "//div[@class='modal-button']/button[@class='btn btn-secondary ng-binding']")
 	private WebElement popupBackbtn;
-	
 	@FindBy(how = How.XPATH, using = "//button[@class='close']")
 	private WebElement addPharmacyClosePopupbtn;
-	
 	@FindBy(how = How.XPATH, using = "//*[contains(text(),'Save & Continue')]")
 	private WebElement popupContinueBtn;
 
@@ -90,9 +88,14 @@ public class SelectPharmacyPage extends MedfusionPage {
 
 	@FindBy(how = How.XPATH, using = "//div[@class='ng-option ng-option-marked']")
 	private WebElement selectPharmacyName;
-	
+	@FindBy(how = How.XPATH, using = "//span[@class='pharmacy-radio-button selected']/../../..//a[text()='Delete']")
+	private WebElement btnDelete;
+	@FindBy(how = How.ID, using = "removePharmacyOkButton")
+	private WebElement btnRemovePharmacyOkButton;
+	@FindBy(how = How.XPATH, using = "//span[@class='pharmacy-radio-button selected']/../span[@class='pharmacy-name']")
+	private WebElement rdoPharmacy;
+
 	WebDriverWait wait=new WebDriverWait(driver, 60);
-	
 	private boolean areBasicPopUpPageElementsPresent() {
 		ArrayList<WebElement> webElementsList = new ArrayList<WebElement>();
 		webElementsList.add(addPharmacyClosePopupbtn);
@@ -180,4 +183,34 @@ public class SelectPharmacyPage extends MedfusionPage {
 
 	}
 
+
+	public void deletePharmacy() throws InterruptedException{
+		log("Click on Delete a Pharmacy button");
+		wait.until(ExpectedConditions.elementToBeClickable(btnDelete));
+		javascriptClick(btnDelete);
+		wait.until(ExpectedConditions.elementToBeClickable(btnRemovePharmacyOkButton));
+		btnRemovePharmacyOkButton.click();
+		log("Pharmacy is Deleted");
+
+	}
+
+	public void addPharmacyWithNameAndPhoneNumber(WebDriver driver) throws IOException, InterruptedException {
+		PropertyFileLoader testData = new PropertyFileLoader();
+		IHGUtil.PrintMethodName();
+		log("Click on Add a Pharmacy button");
+		Thread.sleep(2000);
+		addPharmacy.click();
+		log("Click on Add Your Pharmacy button from the popup");
+		Thread.sleep(2000);
+		addYourPharmacy.click();
+		log("Verify all the popup elements are present");
+		assertTrue(arePopupPageElementsPresent());
+		log("Enter Pharmacy Details");
+		pharmacyName.sendKeys(testData.getProperty("pharmacy.name") + IHGUtil.createRandomNumericString(4));
+		pharmacyPhone.sendKeys(IHGUtil.createRandomNumericString(10));
+		popupContinueBtn.click();
+		log("Pharmacy is added");
+	}
+
 }
+
