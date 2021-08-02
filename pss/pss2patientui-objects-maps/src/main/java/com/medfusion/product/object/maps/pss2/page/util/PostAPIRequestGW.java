@@ -32,7 +32,7 @@ public class PostAPIRequestGW extends BaseTestNGWebDriver {
 
 	public Response demographics(String patientIdtestdata, String practiceid) throws Exception {
 		Response response = given().queryParam("patientId", patientIdtestdata).log().all().spec(requestSpec).when()
-				.get("24253/demographics").then().spec(responseSpec).log().all().extract().response();
+				.get(practiceid+"/demographics").then().spec(responseSpec).log().all().extract().response();
 		return response;
 	}
 
@@ -47,5 +47,37 @@ public class PostAPIRequestGW extends BaseTestNGWebDriver {
 				.get(practiceid+"/appointmentstatus").then().spec(responseSpec).log().all().extract().response();
 		return response;
 	}
+	
+	public Response avaliableSlot(Map<String, Object> map, String practiceid) throws IOException {
 
+		return given().spec(requestSpec).log().all().body(map).when().post(practiceid + "/availableslots").then().log()
+				.all().extract().response();
+	}
+
+	public Response nextavaliableSlot(Map<String, Object> map, String practiceid) throws IOException {
+
+		return given().spec(requestSpec).log().all().body(map).when().post(practiceid + "/nextavailableslots").then().log()
+				.all().extract().response();
+	}
+
+	public Response pastAppt(String practiceid, Map<String, Object>hm)
+			throws Exception {
+		Response response = given().log().all().spec(requestSpec).body(hm)
+				.post(practiceid + "/pastappointments").then().log().all().assertThat().statusCode(200)
+				.extract()
+				.response();
+		return response;
+	}
+
+	public Response preventSchedulingDate(String patientId, String practiceid,String extAppId) throws Exception {
+		Response response = given().log().all().spec(requestSpec).when()
+				.get(practiceid+"/preventschedulingdate/"+patientId+"/"+extAppId).then().spec(responseSpec).log().all().extract().response();
+		return response;
+	}
+	
+	public Response insurancecarrier(String practiceid) throws Exception {
+		Response response = given().log().all().spec(requestSpec).when()
+				.get(practiceid+"/insurancecarrier").then().spec(responseSpec).log().all().extract().response();
+		return response;
+	}
 }

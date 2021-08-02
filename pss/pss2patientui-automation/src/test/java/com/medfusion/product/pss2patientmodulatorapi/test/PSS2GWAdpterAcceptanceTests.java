@@ -6,6 +6,7 @@ import static org.testng.Assert.assertEquals;
 import java.io.IOException;
 import java.sql.Timestamp;
 
+import org.json.JSONArray;
 import org.testng.annotations.BeforeTest;
 import org.testng.annotations.Test;
 
@@ -70,15 +71,70 @@ public class PSS2GWAdpterAcceptanceTests extends BaseTestNGWebDriver {
 		validateGW.verifySearchPatientResponse(response);
 
 	}
-	
+
 	@Test(enabled = true, groups = { "APItest" }, retryAnalyzer = RetryAnalyzer.class)
 	public void testGetAppointmentStatus() throws NullPointerException, Exception {
-		Response response = postAPIRequestgw.appointmentStatus(propertyData.getProperty("practice.id.gw"),propertyData.getProperty("appointment.id.gw"),propertyData.getProperty("start.date.time.gw"));
+		Response response = postAPIRequestgw.appointmentStatus(propertyData.getProperty("practice.id.gw"),
+				propertyData.getProperty("appointment.id.gw"), propertyData.getProperty("start.date.time.gw"));
 		logStep("Verifying the response");
 		assertEquals(response.getStatusCode(), 200);
 		validateGW.verifyAppointmentStatus(response);
 
 	}
-	
 
+	@Test(enabled = true, groups = { "APItest" }, retryAnalyzer = RetryAnalyzer.class)
+	public void testAvailableSlots() throws IOException, InterruptedException {
+
+		Response response = postAPIRequestgw
+				.avaliableSlot(payload.availableslotsPayload(propertyData.getProperty("appointment.cat.id.gw"),
+						propertyData.getProperty("appointment.type.id"), propertyData.getProperty("extapp.id.gw"),
+						propertyData.getProperty("location.id.gw"), propertyData.getProperty("patient.id.gw"),
+						propertyData.getProperty("resource.cat.id.gw"), propertyData.getProperty("resource.id"),
+						propertyData.getProperty("start.date.time.gw")), propertyData.getProperty("practice.id.gw"));
+		logStep("Verifying the response");
+		assertEquals(response.getStatusCode(), 200);
+		validateGW.verifyAvailiableSlotResponse(response);
+
+	}
+
+	@Test(enabled = true, groups = { "APItest" }, retryAnalyzer = RetryAnalyzer.class)
+	public void testNextAvailableSlots() throws IOException, InterruptedException {
+
+		Response response = postAPIRequestgw
+				.nextavaliableSlot(payload.nextAvailableslotsPayload(propertyData.getProperty("appointment.cat.id.gw"),
+						propertyData.getProperty("appointment.type.id"), propertyData.getProperty("extapp.id.gw"),
+						propertyData.getProperty("location.id.gw"), propertyData.getProperty("patient.id.gw"),
+						propertyData.getProperty("resource.cat.id.gw"), propertyData.getProperty("resource.id"),
+						propertyData.getProperty("start.date.time.gw")), propertyData.getProperty("practice.id.gw"));
+		logStep("Verifying the response");
+		assertEquals(response.getStatusCode(), 200);
+
+	}
+	@Test(enabled = true, groups = { "APItest" }, retryAnalyzer = RetryAnalyzer.class)
+	public void testPastAppointmentsPOST() throws NullPointerException, Exception {
+
+		Response response = postAPIRequestgw.pastAppt(propertyData.getProperty("practice.id.gw"),payload.pastApptPayload(propertyData.getProperty("patient.id.gw")));
+		JSONArray arr = new JSONArray(response.body().asString());
+		log("Id "+arr.getJSONObject(0).getString("id"));
+		log("Appointment Type- "+ arr.getJSONObject(0).getJSONObject("appointmentTypes").getString("name"));
+		
+	}
+	
+	@Test(enabled = true, groups = { "APItest" }, retryAnalyzer = RetryAnalyzer.class)
+	public void testGetPreventSchedulingDate() throws NullPointerException, Exception {
+
+		Response response = postAPIRequestgw.preventSchedulingDate(propertyData.getProperty("patient.id.gw"),
+				propertyData.getProperty("practice.id.gw"),propertyData.getProperty("extapp.id.gw"));
+		logStep("Verifying the response");
+		assertEquals(response.getStatusCode(), 200);
+	}
+	
+	@Test(enabled = true, groups = { "APItest" }, retryAnalyzer = RetryAnalyzer.class)
+	public void testGetinsuranceCarrier() throws NullPointerException, Exception {
+
+		Response response = postAPIRequestgw.insurancecarrier(propertyData.getProperty("practice.id.gw"));
+		logStep("Verifying the response");
+		assertEquals(response.getStatusCode(), 200);
+		validateGW.verifyInsurancecCarrierResponse(response);
+	}
 }

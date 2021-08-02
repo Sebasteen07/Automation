@@ -31,14 +31,39 @@ public class ValidationGW extends BaseTestNG {
 
 	public void verifyAppointmentStatus(Response response) throws IOException {
 		propertyData = new PSSPropertyFileLoader();
-//		JsonPath jsonPath = new JsonPath(response.asString());
-//		assertEquals(jsonPath.get("id"), propertyData.getProperty("appointment.id.gw"), "Appointment id is incorrect");
-//		assertEquals(jsonPath.get("startDateTime"), propertyData.getProperty("start.date.time.gw"),
-//				"StartTime incorrect");
-//		assertEquals(jsonPath.get("endDateTime"), propertyData.getProperty("end.date.time.gw"), "EndTime incorrect");
-//		assertEquals(jsonPath.get("locationName"), propertyData.getProperty("locationname.gw"),
-//				"LocationName Name incorrect");
+		JsonPath jsonPath = new JsonPath(response.asString());
+		assertEquals(jsonPath.get("id"), propertyData.getProperty("appointment.id.gw"), "Appointment id is incorrect");
+		assertEquals(jsonPath.get("locationName"), propertyData.getProperty("locationname.gw"),
+			"LocationName Name incorrect");
 		apiVerification.responseKeyValidationJson(response, "id");
 	}
+	
+	public void verifyAvailiableSlotResponse(Response response) throws IOException {
+		propertyData = new PSSPropertyFileLoader();
+		apiVerification.responseKeyValidationJson(response, "availableSlots");
 
+}
+	public void verifyPatientFlag(Response response) throws IOException {
+		propertyData = new PSSPropertyFileLoader();
+
+//		String catName = apiVerification.responseKeyValidation(response, "categoryName");
+//		String regflagid = apiVerification.responseKeyValidation(response, "regFlagId");
+//		String flaglaBel = apiVerification.responseKeyValidation(response, "flagLabel");
+//
+//		assertEquals(catName, propertyData.getProperty("cat.name"), "Flag Category name is incorrect");
+//		assertEquals(regflagid, propertyData.getProperty("regflag.id"), "flag id incorrect");
+//		assertEquals(flaglaBel, propertyData.getProperty("flag.label"), "flag label incorrect");
+	}
+
+
+	public void verifyInsurancecCarrierResponse(Response response) throws IOException {
+		propertyData = new PSSPropertyFileLoader();
+
+		 apiVerification.responseKeyValidation(response, "id");
+		 apiVerification.responseKeyValidation(response, "name");
+		 apiVerification.responseKeyValidation(response, "payerId");
+
+
+		
+	}
 }
