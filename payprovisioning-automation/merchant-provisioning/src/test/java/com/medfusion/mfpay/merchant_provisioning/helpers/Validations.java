@@ -109,8 +109,6 @@ public class Validations {
 	public static void validatePracticeRoles(JsonPath jsonpath, String practiceStaffid, String practiceId, List<String> practiceRoles) throws IOException {
 		testData = new PropertyFileLoader();
         Assert.assertNotNull(jsonpath, "Response was null.Adding user was not successful");
-        System.out.println(jsonpath.get("practiceStaffId"));
-
         Assert.assertEquals(jsonpath.get("practiceStaffId"), Integer.parseInt(practiceStaffid));
         Assert.assertEquals(jsonpath.get("userName"), testData.getProperty("staff.username"));
         Assert.assertEquals(jsonpath.get("practiceId").toString(), practiceId);
