@@ -461,7 +461,11 @@ public class PSS2PatientModulatorrAcceptanceTests extends BaseTestNGWebDriver {
 		log("Access Token --> " + testData.getAccessToken());
 		log("Payload- " + payloadPatientMod.validateProviderLinkPayload(testData.getPatientDemographicsFirstName(),testData.getPatientDemographicsLastName(),testData.getPatientDemographicsDOB(),testData.getPatientDemographicsGender(),testData.getPatientDemographicsEmail(),testData.getValidateProviderLinkId()));
 		log("Verifying the Provider link Id");
-		int providerLinkId = postAPIRequest.validateProviderLink(testData.getBasicURI(), payloadPatientMod.validateProviderLinkPayload(testData.getPatientDemographicsFirstName(),testData.getPatientDemographicsLastName(),testData.getPatientDemographicsDOB(),testData.getPatientDemographicsGender(),testData.getPatientDemographicsEmail(),testData.getValidateProviderLinkId()),
+		int providerLinkId = postAPIRequest.validateProviderLink(testData.getBasicURI(),
+				payloadPatientMod.validateProviderLinkPayload(testData.getPatientDemographicsFirstName(),
+						testData.getPatientDemographicsLastName(), testData.getPatientDemographicsDOB(),
+						testData.getPatientDemographicsGender(), testData.getPatientDemographicsEmail(),
+						testData.getValidateProviderLinkId()),
 				headerConfig.HeaderwithToken(testData.getAccessToken()), testData.getPracticeId(), testData.getPatientId(),
 				testData.getValidateProviderLinkDisplayName());
 		
