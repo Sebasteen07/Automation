@@ -135,6 +135,8 @@ public class PayloadDetails {
 		return voidmap;
 	}
 
+
+	
 	public static Map<String, Object> getPayloadForChargeback(String mmid, String transactionid, String orderid,
 			String chargebackamount) {
 		Map<String, Object> chargebackmap = new HashMap<String, Object>();
@@ -179,5 +181,17 @@ public class PayloadDetails {
 		Map<String, Object> cardsMap = new HashMap<String, Object>();
 		cardsMap.putAll(Card.payloadForSale(paymentSource, transactionAmount));
 		return cardsMap;
+	}
+	
+	public static Map<String, Object> getPayloadForCreatingChargeBack( String transactionid, String orderid,
+			String chargeBackAmount) {
+
+		Map<String, Object> chargeBackMap = new HashMap<String, Object>();
+	
+		chargeBackMap.put("parentExternalTransactionId", transactionid);
+		chargeBackMap.put("parentOrderId", orderid);
+		chargeBackMap.put("chargebackAmount", Integer.parseInt(chargeBackAmount));
+		
+		return chargeBackMap;
 	}
 }

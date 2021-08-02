@@ -130,6 +130,8 @@ public class TransactionResourceDetails extends BaseRest {
 		testData = new PropertyFileLoader();
 		Map<String, Object> transactiondetails = PayloadDetails.getPayloadForChargeback(mmid, transactionid, orderid,
 				testData.getProperty("chargeback.amount"));
+		
+
 
 		Response response = given().spec(requestSpec).body(transactiondetails).when()
 				.post(chargebackurl + "merchant/" + mmid + "/chargeback").then().spec(responseSpec).and().extract()

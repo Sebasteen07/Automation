@@ -43,7 +43,7 @@ public class JalapenoAccountPage extends JalapenoMenu {
 		@FindBy(how = How.ID, using = "trustedRepRelationship")
 		private WebElement trustedRepRelationshipSelect;
 
-		@FindBy(how = How.XPATH, using = "//*[@class='button primary ladda-button ng-binding inviteBtn pull-right']")
+		@FindBy(how = How.ID, using = "sendInvitation")
 		private WebElement sendInvitationButton;
 		
 		@FindBy(how = How.LINK_TEXT, using = "Unlink")
