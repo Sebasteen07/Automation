@@ -8,6 +8,7 @@ import org.testng.annotations.DataProvider;
 import com.medfusion.common.utils.PropertyFileLoader;
 import com.medfusion.gateway_proxy.tests.GatewayProxyBaseTest;
 import com.medfusion.gateway_proxy.utils.GatewayProxyUtils;
+import com.medfusion.gateway_proxy.utils.MPUsersUtility;
 
 public class GatewayProxyTestData extends GatewayProxyBaseTest {
 
@@ -199,6 +200,37 @@ public class GatewayProxyTestData extends GatewayProxyBaseTest {
 						testData.getProperty("epoc.start.olbp.txn"),
 						testData.getProperty("epoc.end.olbp.txn"), "OLBP"},
 		};
+	}
+
+	@DataProvider(name = "CB_data_inavild_create")
+	public static Object[][] dataProvider_CB() throws IOException {
+		testData = new PropertyFileLoader();
+		String  token = MPUsersUtility.getCredentialsEncodedInBase("FINANCE");
+		return new Object[][] { 
+		    { token,testData.getProperty("proxy.chargeback.url")," ",testData.getProperty("external.transaction.id"),testData.getProperty("order.id"),"1" ,"Failed to convert value of type",500},
+			{ token,testData.getProperty("proxy.chargeback.url"),testData.getProperty("proxy.mmid") ," ",testData.getProperty("order.id"),"1" ,"Field error in object 'chargeback' on field 'parentExternalTransactionId'",400},
+			{ token,testData.getProperty("proxy.chargeback.url"),testData.getProperty("proxy.mmid") ,testData.getProperty("external.transaction.id")," ","1" ,"Field error in object 'chargeback' on field 'parentOrderId'",400},
+			{ token,testData.getProperty("proxy.chargeback.url"),testData.getProperty("proxy.mmid") ,testData.getProperty("external.transaction.id"),testData.getProperty("order.id"),"0" ,"Field error in object 'chargeback' on field 'chargebackAmount'",400},
+			{ "invalid"+token ,testData.getProperty("proxy.chargeback.url"),testData.getProperty("proxy.mmid") ,testData.getProperty("external.transaction.id"),testData.getProperty("order.id"),"1" ,"",401},
+		//	{ token ,testData.getProperty("proxy.chargeback.url"),"2560809338" ,testData.getProperty("external.transaction.id"),testData.getProperty("order.id"),"1" ,"",403},
+
+			
+
+
+		};
+	
+	}
+	
+	@DataProvider(name = "CB_data_invaild_get")
+	public static Object[][] dataProvider_CB_get() throws IOException {
+		testData = new PropertyFileLoader();
+		String  token = MPUsersUtility.getCredentialsEncodedInBase("FINANCE");
+		return new Object[][] { 
+		    { token," ","Failed to convert value of type",500},
+		    { token,"$$$$","Failed to convert value of type",500},
+			{ "invalid"+token ,testData.getProperty("proxy.mmid"),"",401},
+		};
+	
 	}
 
 }
