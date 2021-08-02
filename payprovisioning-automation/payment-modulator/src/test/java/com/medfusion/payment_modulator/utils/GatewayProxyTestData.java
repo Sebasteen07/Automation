@@ -168,4 +168,37 @@ public class GatewayProxyTestData extends GatewayProxyBaseTest {
 
 		};
 	}
+
+	@DataProvider(name = "get_txn")
+	public Object[][] dpMethodForGetTxn() {
+		return new Object[][]{
+				{"", testData.getProperty("proxy.mmid"),
+						getEpochDate(-1), getEpochDate(0), "VCS"},
+				{testData.getProperty("test.pay.customer.uuid"), "",
+						getEpochDate(-1), getEpochDate(0), "VCS"},
+				{testData.getProperty("test.pay.customer.uuid"), testData.getProperty("proxy.mmid"),
+						getEpochDate(-10), getEpochDate(0), "VCS"},
+				{testData.getProperty("test.pay.customer.uuid"), testData.getProperty("proxy.mmid"),
+						getEpochDate(-1), getEpochDate(10), "VCS"},
+		};
+	}
+
+	@DataProvider(name = "get_txns_for_different_sources")
+	public Object[][] dpMethodForGetTxnPostiveCases() {
+		return new Object[][]{
+				{testData.getProperty("test.pay.customer.uuid"), testData.getProperty("proxy.mmid"),
+						testData.getProperty("epoch.time.saturday"),
+						testData.getProperty("epoch.time.sunday"), ""},
+				{testData.getProperty("test.pay.customer.uuid"), testData.getProperty("proxy.mmid"),
+						testData.getProperty("epoc.start.cpos.txn"),
+						testData.getProperty("epoc.end.cpos.txn"), "VCS"},
+				{testData.getProperty("test.pay.customer.uuid"), testData.getProperty("proxy.mmid"),
+						testData.getProperty("epoc.start.cpos.txn"),
+						testData.getProperty("epoc.end.cpos.txn"), "CPOS"},
+				{testData.getProperty("test.pay.customer.uuid"), testData.getProperty("proxy.mmid"),
+						testData.getProperty("epoc.start.olbp.txn"),
+						testData.getProperty("epoc.end.olbp.txn"), "OLBP"},
+		};
+	}
+
 }
