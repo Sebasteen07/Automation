@@ -4255,5 +4255,31 @@ public class PatientPortal2AcceptanceTests extends BaseTestNGWebDriver {
 		
 	}
 
+	@Test(enabled = true, groups = { "acceptance-solutions" }, retryAnalyzer = RetryAnalyzer.class)
+	public void testMedicationsDeleteDependantPharmacy() throws Exception {
 
+		logStep("Load login page and login");
+		JalapenoLoginPage loginPage = new JalapenoLoginPage(driver, testData.getProperty("med.wf.portal.url"));
+		JalapenoHomePage homePage = loginPage.login(testData.getProperty("med.wf.user.id"),
+				testData.getProperty("med.wf.password"));
+
+		logStep("Switching to Second Practice to verify auto enrollment");
+		homePage.faChangePatient();
+
+		logStep("Click on Medications");
+		homePage.clickOnMedications(driver);
+
+		log("Initiating Medications 2.0 Request from Patient Portal");
+		MedicationsHomePage medPage = new MedicationsHomePage(driver);
+		medPage.clickOnRxRequest();
+
+		logStep("Select Location and Provider");
+		LocationAndProviderPage select = new LocationAndProviderPage(driver);
+		select.chooseLocationAndProviderwithoutFee();
+
+		logStep("Add and delete dependant pharmacy");
+		SelectPharmacyPage pharmaPage = new SelectPharmacyPage(driver);
+		pharmaPage.addPharmacyWithNameAndPhoneNumber(driver);
+		pharmaPage.deletePharmacy();
+	}
 }
