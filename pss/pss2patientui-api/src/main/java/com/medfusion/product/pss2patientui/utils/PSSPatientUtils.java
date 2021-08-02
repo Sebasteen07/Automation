@@ -1153,9 +1153,6 @@ public class PSSPatientUtils extends BaseTestNGWebDriver {
 		for (WebElement ele : confirmationpage.getAppointmentDetails()) {
 			log("apt Details= " + ele.getText());
 		}
-		confirmationpage.apptConfm();
-		log("Appointment is SuccesFull");
-
 		ScheduledAppointment scheduledappointment = confirmationpage.appointmentConfirmed();
 		log("appointment ID = " + scheduledappointment.getAppointmentID());
 		log("Add to calendar option is displayed and is clickable.");

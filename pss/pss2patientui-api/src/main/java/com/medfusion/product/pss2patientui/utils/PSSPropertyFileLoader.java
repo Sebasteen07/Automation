@@ -231,6 +231,7 @@ public class PSSPropertyFileLoader {
 		appointValues.setEmailSubject(property.getProperty("email.subject"));
 		appointValues.setFindInEmail(property.getProperty("find.in.email"));
 		appointValues.setInsurancePhone(property.getProperty("insrance.phone"));
+		appointValues.setSlotValue(property.getProperty("slotvalue.at"));
 	}
 
 	public void setAppointmentResponseGE(Appointment appointValues) {
@@ -333,13 +334,13 @@ public class PSSPropertyFileLoader {
 		appointValues.setLocation(property.getProperty("location.ng"));
 		appointValues.setPassword(property.getProperty("password.ng"));
 		appointValues.setProvider(property.getProperty("provider.ng"));
-		appointValues.setSpeciality(property.getProperty("specialty.ng"));
+		appointValues.setSpeciality(property.getProperty("speciality.ng"));
 		appointValues.setUsername(property.getProperty("username.ng"));
 		appointValues.setUrlLoginLess(property.getProperty("loginless.url.ng"));
 		appointValues.setAppointmentFlow(property.getProperty("appointment.flow.ng"));
 		appointValues.setFirstTimeUser(property.getProperty("is.first.time.user.ng"));
-		appointValues.setFirstName(property.getProperty("first.name.ng"));
-		appointValues.setLastName(property.getProperty("last.name.ng"));
+		appointValues.setFirstName(property.getProperty("firstname.ng"));
+		appointValues.setLastName(property.getProperty("lastname.ng"));
 		appointValues.setEmail(property.getProperty("email.ng"));
 		appointValues.setDob(property.getProperty("dob.ng"));
 		appointValues.setGender(property.getProperty("gender.ng"));
@@ -401,6 +402,7 @@ public class PSSPropertyFileLoader {
 		appointValues.setInsurancePhone(property.getProperty("insrance.phone"));
 		appointValues.setShowCancellationReasonPM(true);
 		appointValues.setShowCancellationRescheduleReason(true);
+		appointValues.setPreSchedDays(Integer.parseInt(property.getProperty("preventscheddays.ng")));
 	}
 
 	public void setAppointmentResponseAthena(Appointment appointValues) {
