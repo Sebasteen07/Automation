@@ -33,7 +33,7 @@ public class MfNotificationModulatorPayload {
 
 	public String sendNotificationPayloadWithoutNotifType(String notificationPurpose, String notificationType,
 			String subjectId, String subjectUrn, String recipientAddress, String subject) {
-		String sendNotificatiob = "[\r\n"
+		String sendNotification = "[\r\n"
 				+ "  {\r\n"
 				+ "    \"highPriority\": true,\r\n"
 				+ "    \"notificationPurpose\": \""+notificationPurpose+"\",\r\n"
@@ -48,6 +48,6 @@ public class MfNotificationModulatorPayload {
 				+ "  }\r\n"
 				+ "]\r\n"
 				+ "";
-		return sendNotificatiob;
+		return sendNotification;
 	}
 }
