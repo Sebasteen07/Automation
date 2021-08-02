@@ -1327,7 +1327,7 @@ public class NGIntegrationE2EEnrollment_CCDTests extends BaseTestNGWebDriver {
 		NGAPIFlows.addCharttoProvider(locationName, providerName, personId);
 
 		PatientEnrollment.enrollPatientWithoutGetProcessingStatusValidation(propertyLoaderObj, enterprisebaseURL,
-				ngAPIUtils, driver, createPatient, personId, propertyLoaderObj.getProperty("practiceName"),
+				ngAPIUtils, driver, createPatient, personId, propertyLoaderObj.getProperty("practice.name"),
 				integrationPracticeId, enterpriseId, practiceId);
 
 		Thread.sleep(40000);
@@ -1389,7 +1389,7 @@ public class NGIntegrationE2EEnrollment_CCDTests extends BaseTestNGWebDriver {
 		String url = propertyLoaderObj.getProperty("url");
 		String locationName = propertyLoaderObj.getProperty("epm.location.name");
 		String providerName = propertyLoaderObj.getProperty("epm.provider.name");
-		String practiceName = propertyLoaderObj.getProperty("practiceName");
+		String practiceName = propertyLoaderObj.getProperty("practice.name");
 
 		NGAPIUtils.updateLoginDefaultTo("EnterpriseGateway", enterpriseId, practiceId);
 		logStep("Create the patient in NG EPM in Practice 1");
@@ -1442,7 +1442,7 @@ public class NGIntegrationE2EEnrollment_CCDTests extends BaseTestNGWebDriver {
 		String url = propertyLoaderObj.getProperty("url");
 		String locationName = propertyLoaderObj.getProperty("epm.location.name");
 		String providerName = propertyLoaderObj.getProperty("epm.provider.name");
-		String practiceName = propertyLoaderObj.getProperty("practiceName");
+		String practiceName = propertyLoaderObj.getProperty("practice.name");
 
 		NGAPIUtils.updateLoginDefaultTo("EnterpriseGateway", enterpriseId, practiceId);
 		logStep("Create the patient in NG EPM in Practice 1");
@@ -1856,7 +1856,7 @@ public class NGIntegrationE2EEnrollment_CCDTests extends BaseTestNGWebDriver {
 		String locationName = propertyLoaderObj.getProperty("epm.location.name");
 		String integrationPracticeID = propertyLoaderObj.getIntegrationPracticeID();
 		String url = propertyLoaderObj.getProperty("url");
-		String practiceName = propertyLoaderObj.getProperty("practiceName");
+		String practiceName = propertyLoaderObj.getProperty("practice.name");
 
 		NGAPIUtils.updateLoginDefaultTo("EnterpriseGateway", enterpriseId, practiceId);
 		logStep("Create the patient in NG EPM in Practice 1");

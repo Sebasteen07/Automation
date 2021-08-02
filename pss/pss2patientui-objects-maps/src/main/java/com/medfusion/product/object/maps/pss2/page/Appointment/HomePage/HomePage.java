@@ -17,7 +17,6 @@ import org.openqa.selenium.support.FindBy;
 import org.openqa.selenium.support.How;
 import org.openqa.selenium.support.PageFactory;
 
-
 import com.medfusion.common.utils.IHGUtil;
 import com.medfusion.product.object.maps.pss2.page.AppEntryPoint.StartAppointmentInOrder;
 import com.medfusion.product.object.maps.pss2.page.Appointment.Location.Location;
@@ -75,13 +74,13 @@ public class HomePage extends PSS2MainPage {
 	@FindBy(how = How.XPATH, using = "//div[contains(text(),'We understand that there are times when you must m')]")
 	private WebElement cancelAppointmentPopupMSGviaEmail;
 	
-	@FindAll({ @FindBy(xpath = "//div[@class='Select-menu-outer']/div/div") })
+	@FindAll({ @FindBy(xpath = "//div[@class=' css-11unzgr']/div") })
 	private List<WebElement> cancelAppointmentdropdownlist;
 
 	@FindBy(how = How.XPATH, using = "//span[normalize-space()='Select cancel reason']")
 	private WebElement cancelAppointmentdropdownbox;
 
-	@FindBy(how = How.XPATH, using = "//div[@class=' canceldropdown form-group']/div/div/span/span")
+	@FindBy(how = How.XPATH, using = "//div[@class=' canceldropdown form-group']/div/div/div[2]")
 	private WebElement selectarrowzone;
 
 	@FindBy(how = How.XPATH, using = "//input[@id='cancelReasonText']")
@@ -133,8 +132,7 @@ public class HomePage extends PSS2MainPage {
 	@FindAll({ @FindBy(xpath = "//div[@class='col-sm-6 col-xs-12 startingpointdata']") })
 	private List<WebElement> selectstartpoint;
 
-	@FindAll({
-			@FindBy(xpath = "//*[@class=\"list-group-item listingOfappointments undefined\"]/div[3]/div[2]/button//span[contains(text(),'Cancel')]") })
+	@FindAll({ @FindBy(xpath = "//button//span[contains(text(),'Cancel')]") })
 	private List<WebElement> cancelAppointmentList;
 	
 	@FindAll({ @FindBy(xpath = "//div[@id='upcomingevents']//div//div[1]//div[3]//div[2]//button[2]") })
@@ -143,7 +141,7 @@ public class HomePage extends PSS2MainPage {
 	@FindAll({ @FindBy(xpath = "//*[@id=\"upcomingappoitment\"]/div") })
 	private List<WebElement> selectUpcomingApptList;
 
-	@FindAll({ @FindBy(xpath = "//*[@id=\"pastappointmentevent\"]/div/div") })
+	@FindAll({ @FindBy(xpath = "//*[@id='pastappointmentevent']/div/div") })
 	private List<WebElement> selectPastApptList;
 
 	@FindBy(how = How.XPATH, using = ".//*[@id='upcomingevents']/p/span")
@@ -188,7 +186,7 @@ public class HomePage extends PSS2MainPage {
 	@FindBy(how = How.XPATH, using = "//div[@class='value-wizard']//div")
 	private WebElement locationPreSelected;
 	
-	@FindBy(how = How.XPATH, using = "//*[@id='wizardwebview']/ol/li[3]/div/div[1]/div")
+	@FindBy(how = How.XPATH, using = "//div[normalize-space()='Dinesh PSS [Dinesh PSS]']")
 	private WebElement providerPreSelected;
 
 	public HomePage(WebDriver driver) {
