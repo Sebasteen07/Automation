@@ -80,4 +80,10 @@ public class PostAPIRequestGW extends BaseTestNGWebDriver {
 				.get(practiceid+"/insurancecarrier").then().spec(responseSpec).log().all().extract().response();
 		return response;
 	}
+	
+	public Response appointmentTypes(String practiceid) throws Exception {
+		Response response = given().log().all().spec(requestSpec).when()
+				.get(practiceid+"/appointmenttypes").then().spec(responseSpec).log().all().extract().response();
+		return response;
+	}
 }

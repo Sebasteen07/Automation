@@ -137,4 +137,13 @@ public class PSS2GWAdpterAcceptanceTests extends BaseTestNGWebDriver {
 		assertEquals(response.getStatusCode(), 200);
 		validateGW.verifyInsurancecCarrierResponse(response);
 	}
+	
+	@Test(enabled = true, groups = { "APItest" }, retryAnalyzer = RetryAnalyzer.class)
+	public void testGetAppointmentTypes() throws NullPointerException, Exception {
+
+		Response response = postAPIRequestgw.insurancecarrier(propertyData.getProperty("practice.id.gw"));
+		logStep("Verifying the response");
+		assertEquals(response.getStatusCode(), 200);
+		validateGW.verifyInsurancecCarrierResponse(response);
+	}
 }

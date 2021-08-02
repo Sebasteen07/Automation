@@ -61,9 +61,16 @@ public class ValidationGW extends BaseTestNG {
 
 		 apiVerification.responseKeyValidation(response, "id");
 		 apiVerification.responseKeyValidation(response, "name");
-		 apiVerification.responseKeyValidation(response, "payerId");
+		 apiVerification.responseKeyValidation(response, "payerId");		
+	}
+	public void verifyAppointmenttypesResponse(Response response) throws IOException {
+		propertyData = new PSSPropertyFileLoader();
 
-
-		
+		 apiVerification.responseKeyValidation(response, "id");
+		 apiVerification.responseKeyValidation(response, "name");
+		 apiVerification.responseKeyValidation(response, "categoryId");	
+		 apiVerification.responseKeyValidation(response, "categoryName");		
+		 apiVerification.responseKeyValidation(response, "displayName");
+		 apiVerification.responseKeyValidation(response, "duration");		
 	}
 }
