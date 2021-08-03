@@ -4,6 +4,8 @@ package com.medfusion.mfpay.merchant_provisioning.helpers;
 import io.restassured.path.json.JsonPath;
 
 import java.io.IOException;
+import java.util.Arrays;
+import java.util.List;
 import java.util.Map;
 
 import org.testng.Assert;
@@ -14,6 +16,10 @@ import com.medfusion.mfpay.merchant_provisioning.pojos.ContractedRates;
 import com.medfusion.mfpay.merchant_provisioning.pojos.PaypalMerchantAccountDetails;
 import com.medfusion.mfpay.merchant_provisioning.pojos.RemitToAddress;
 import com.medfusion.mfpay.merchant_provisioning.utils.PracticeConstants;
+
+import javax.xml.ws.Response;
+
+import static org.hamcrest.Matchers.containsInAnyOrder;
 
 public class Validations {
 	
@@ -100,5 +106,12 @@ public class Validations {
 			Assert.assertEquals(customeraccountnumber, testData.getProperty("customer.account.number"));
 		}
 
-
+	public static void validatePracticeRoles(JsonPath jsonpath, String practiceStaffid, String practiceId, List<String> practiceRoles) throws IOException {
+		testData = new PropertyFileLoader();
+        Assert.assertNotNull(jsonpath, "Response was null.Adding user was not successful");
+        Assert.assertEquals(jsonpath.get("practiceStaffId"), Integer.parseInt(practiceStaffid));
+        Assert.assertEquals(jsonpath.get("userName"), testData.getProperty("staff.username"));
+        Assert.assertEquals(jsonpath.get("practiceId").toString(), practiceId);
+		Assert.assertEquals(jsonpath.get("practiceLevelRoles"), practiceRoles);
+	}
 }
