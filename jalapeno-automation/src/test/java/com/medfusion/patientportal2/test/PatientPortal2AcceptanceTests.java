@@ -4612,7 +4612,10 @@ public class PatientPortal2AcceptanceTests extends BaseTestNGWebDriver {
 
 		loginPage = new JalapenoLoginPage(driver, testData.getProperty("med.portal.url"));
 		homePage = loginPage.login(testData.getProperty("med.username"), testData.getProperty("med.password"));
-
+		
+		logStep("Switching to dependent account");
+		homePage.faChangePatient();
+		
 		JalapenoMessagesPage messagesPage = homePage.showMessages(driver);
 
 		logStep("Looking for Medication approval from doctor");
