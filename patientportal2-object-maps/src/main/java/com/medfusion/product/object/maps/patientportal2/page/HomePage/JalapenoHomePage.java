@@ -46,7 +46,10 @@ public class JalapenoHomePage extends JalapenoMenu {
 	@FindBy(how = How.XPATH, using = "//span[text()='Messages']")
 	private WebElement messagesSideBar;
 
-	@FindBy(how = How.XPATH, using = "//h3[contains(text(),'Schedule an Appointment')]")
+//	@FindBy(how = How.XPATH, using = "//h3[contains(text(),'Schedule an Appointment')]")
+//	private WebElement sheduleanappointment;
+	
+	@FindBy(how = How.XPATH, using = "//span[contains(text(),'Schedule an Appointment')]")
 	private WebElement sheduleanappointment;
 	
 	@FindBy(how = How.XPATH, using = "//a[@id = 'feature_appointments'] | //a[@id = 'feature_appointment_request'][1]")
@@ -398,7 +401,7 @@ public class JalapenoHomePage extends JalapenoMenu {
 
 	public void clickFeaturedAppointmentsReq() {
 		javascriptClick(sheduleanappointment);
-		IHGUtil.waitForElement(driver, 1, buttonContinue);
+		IHGUtil.waitForElement(driver, 5, buttonContinue);
 		javascriptClick(buttonContinue);
 	}
 

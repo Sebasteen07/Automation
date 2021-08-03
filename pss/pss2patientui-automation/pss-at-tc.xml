@@ -33,11 +33,16 @@
 					<include name="testE2ELinkGenerationAT()" />
 					<include name="testExcludeSlotsAT()" />
 
-
 					<include name="testLeadTimeAT()" />
 					<include name="testMaxperDayAT()" />
 					<include name="testPCPShareONAT()" />
 					<include name="testTimeMarkAT()" />
+					
+					<include name="testE2EMergeSlotNG()" />
+					<include name="testE2ELinkGenWithProviAT()" />
+					<include name="testBookAptProviderOFFAT()" />
+					<include name="testNextAvailableDisplayedWithLocationAT()" />
+					<include name="testLoginlessWithInsuranceAT()" />	
 
 				</methods>
 			</class>
