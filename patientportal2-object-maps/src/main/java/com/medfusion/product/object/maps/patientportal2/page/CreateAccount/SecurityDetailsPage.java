@@ -87,7 +87,7 @@ public class SecurityDetailsPage extends MedfusionPage {
 	}
 
 		public JalapenoHomePage fillAccountDetailsAndContinue(String userId, String password, PropertyFileLoader testData) throws InterruptedException {
-				return fillAccountDetailsAndContinue(userId, password, testData.getSecretQuestion(), testData.getSecretAnswer(), testData.getPhoneNumber(), 2);
+			return fillAccountDetailsAndContinue(userId, password, testData.getProperty("secret.question"), testData.getProperty("secret.answer"), testData.getProperty("phone.number"), 2);
 		}
 
 		public JalapenoHomePage fillAccountDetailsAndContinue(String userId, String password, String secretQuestion, String secretAnswer, String phoneNumber) throws InterruptedException {
