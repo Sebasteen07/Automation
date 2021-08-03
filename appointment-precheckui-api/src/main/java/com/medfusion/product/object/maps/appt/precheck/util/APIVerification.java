@@ -12,6 +12,7 @@ import org.json.JSONObject;
 import com.intuit.ifs.csscat.core.BaseTestNGWebDriver;
 
 import io.restassured.path.json.JsonPath;
+import io.restassured.path.xml.XmlPath;
 import io.restassured.response.Response;
 import io.restassured.response.ValidatableResponse;
 
@@ -534,5 +535,34 @@ public class APIVerification extends BaseTestNGWebDriver {
 	public void verifyGetsTheImageDataWithoutProviderId(Response response) throws IOException {
 		JsonPath jsonPath = new JsonPath(response.asString());
 		assertEquals(jsonPath.get("message"), "No provider found for criteria.");
+	}
+
+	public void verifySendsConfirmationData(Response response, String practiceId, String apptId, String emrId)
+			throws IOException {
+		String stringResponse = response.asString();
+		XmlPath xmlPath = new XmlPath(stringResponse);
+		assertEquals(xmlPath.get("ns2:AppointmentConfirmation.PracticeId"), practiceId, "Practice Id was incorrect");
+		assertEquals(xmlPath.get("ns2:AppointmentConfirmation.AppointmentId"), apptId, "Appointment Id was incorrect");
+		assertEquals(xmlPath.get("ns2:AppointmentConfirmation.EmrId"), emrId, "EmrId was incorrect");
+	}
+
+	public void verifySendsConfirmationWithIncompleteData(Response response) throws IOException {
+		JsonPath jsonPath = new JsonPath(response.asString());
+		assertEquals(jsonPath.get("message"), "must not be blank");
+	}
+
+	public void verifySendsPatientProvidedDataWithoutApptId(Response response) throws IOException {
+		JsonPath jsonPath = new JsonPath(response.asString());
+		assertEquals(jsonPath.get("message"), "pmAppointmentId cannot be null, empty, or blank");
+	}
+
+	public void verifySendsPatientProvidedDataWithoutPatientId(Response response) throws IOException {
+		JsonPath jsonPath = new JsonPath(response.asString());
+		assertEquals(jsonPath.get("message"), "pmPatientId cannot be null, empty, or blank");
+	}
+
+	public void verifySendsPatientProvidedDataWithoutPracticeId(Response response) throws IOException {
+		JsonPath jsonPath = new JsonPath(response.asString());
+		assertEquals(jsonPath.get("message"), "practiceId cannot be null, empty, or blank");
 	}
 }
