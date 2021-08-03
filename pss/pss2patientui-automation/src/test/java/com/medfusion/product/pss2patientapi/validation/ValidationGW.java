@@ -21,11 +21,14 @@ public class ValidationGW extends BaseTestNG {
 
 	public void verifySearchPatientResponse(Response response) throws IOException {
 		propertyData = new PSSPropertyFileLoader();
-
-		apiVerification.responseKeyValidation(response, "id");
-		apiVerification.responseKeyValidation(response, "firstName");
-		apiVerification.responseKeyValidation(response, "lastName");
-
+		JSONArray arr = new JSONArray(response.body().asString());
+		log("Id " + arr.getJSONObject(0).getString("id"));
+		assertEquals(arr.getJSONObject(0).getString("id"), propertyData.getProperty("patient.id.gw"),
+				"patient id wrong");
+		assertEquals(arr.getJSONObject(0).getString("firstName"), propertyData.getProperty("first.name.gw"),
+				"patient name wrong");
+		assertEquals(arr.getJSONObject(0).getString("lastName"), propertyData.getProperty("last.name.gw"),
+				"patient lastname wrong");
 	}
 
 	public void verifyDemographicsResponse(Response response) throws IOException {
@@ -120,14 +123,13 @@ public class ValidationGW extends BaseTestNG {
 		apiVerification.responseKeyValidation(response, "displayName");
 		apiVerification.responseKeyValidation(response, "description");
 	}
-	
+
 	public void verifyLockoutResponse(Response response) throws IOException {
 		propertyData = new PSSPropertyFileLoader();
 		apiVerification.responseKeyValidation(response, "key");
 		apiVerification.responseKeyValidation(response, "value");
 		apiVerification.responseKeyValidation(response, "type");
 	}
-	
 
 	public void verifyAddPatientResponse(Response response) throws IOException {
 		propertyData = new PSSPropertyFileLoader();
@@ -135,11 +137,7 @@ public class ValidationGW extends BaseTestNG {
 		assertEquals(jsonPath.get("firstName"), propertyData.getProperty("first.name.gw"), "firstName incorrect");
 		assertEquals(jsonPath.get("lastName"), propertyData.getProperty("last.name.gw"), "firstName incorrect");
 	}
-	
-	public void verifyMatchPatientResponse(Response response) throws IOException {
-		propertyData = new PSSPropertyFileLoader();
-		JsonPath js = new JsonPath(response.asString());		
-	}
+
 	public void verifyCancelStateResponse(Response response) throws IOException {
 		propertyData = new PSSPropertyFileLoader();
 		JsonPath jsonPath = new JsonPath(response.asString());

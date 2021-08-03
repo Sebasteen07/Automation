@@ -272,7 +272,6 @@ public class PSS2GWAdpterAcceptanceTests extends BaseTestNGWebDriver {
 						propertyData.getProperty("first.name.gw")), propertyData.getProperty("practice.id.gw"));
 		logStep("Verifying the response");
 		assertEquals(response.getStatusCode(), 200);
-		validateGW.verifyMatchPatientResponse(response);
 
 	}
 
