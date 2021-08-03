@@ -51,7 +51,7 @@ public class SettingsTab extends PSS2MenuPage {
 	CommonMethods commonMethods = new CommonMethods(driver);
 
 	public PatientFlow gotoPatientFlowTab() {
-		IHGUtil.waitForElement(driver, 3, patientFlowTab);
+		IHGUtil.waitForElement(driver, 5, patientFlowTab);
 		commonMethods.highlightElement(patientFlowTab);
 		patientFlowTab.click();
 		return PageFactory.initElements(driver, PatientFlow.class);

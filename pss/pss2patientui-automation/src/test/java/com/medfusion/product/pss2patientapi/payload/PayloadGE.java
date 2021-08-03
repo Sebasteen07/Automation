@@ -1,5 +1,5 @@
 // Copyright 2021 NXGN Management, LLC. All Rights Reserved.
-package com.medfusion.product.pss2patientmodulatorapi.test;
+package com.medfusion.product.pss2patientapi.payload;
 
 public class PayloadGE {
 	public static String providerLastSeenPayload() {
@@ -268,52 +268,52 @@ public  String careProviderAvailabilityPayload(String startDateTime, String endD
 
 public  String matchPatientPayload() {
 	
-	String  matchPatient="{\r\n" + 
-			"    \"patientMatches\": [\r\n" + 
-			"        {\r\n" + 
-			"            \"entity\": \"Email Address\",\r\n" + 
-			"            \"isMandatory\": true,\r\n" + 
-			"            \"code\": \"EMAIL\",\r\n" + 
-			"            \"value\": \"GECare111@mailinator.com\",\r\n" + 
-			"            \"selected\": true,\r\n" + 
-			"            \"search\": true\r\n" + 
-			"        },\r\n" + 
-			"        {\r\n" + 
-			"            \"entity\": \"First Name\",\r\n" + 
-			"            \"isMandatory\": true,\r\n" + 
-			"            \"code\": \"FN\",\r\n" + 
-			"            \"value\": \"GECare111\",\r\n" + 
-			"            \"selected\": true,\r\n" + 
-			"            \"search\": true\r\n" + 
-			"        },\r\n" + 
-			"        {\r\n" + 
-			"            \"entity\": \"Gender\",\r\n" + 
-			"            \"isMandatory\": false,\r\n" + 
-			"            \"code\": \"GENDER\",\r\n" + 
-			"            \"value\": \"M\",\r\n" + 
-			"            \"selected\": true,\r\n" + 
-			"            \"search\": false\r\n" + 
-			"        },\r\n" + 
-			"        {\r\n" + 
-			"            \"entity\": \"Date Of Birth\",\r\n" + 
-			"            \"isMandatory\": true,\r\n" + 
-			"            \"code\": \"DOB\",\r\n" + 
-			"            \"value\": \"01/01/2000\",\r\n" + 
-			"            \"selected\": true,\r\n" + 
-			"            \"search\": true\r\n" + 
-			"        },\r\n" + 
-			"        {\r\n" + 
-			"            \"entity\": \"Last Name\",\r\n" + 
-			"            \"isMandatory\": true,\r\n" + 
-			"            \"code\": \"LN\",\r\n" + 
-			"            \"value\": \"GECare111\",\r\n" + 
-			"            \"selected\": true,\r\n" + 
-			"            \"search\": true\r\n" + 
-			"        }\r\n" + 
-			"    ],\r\n" + 
-			"    \"maxCriteria\": \"4\",\r\n" + 
-			"    \"allowDuplicatePatient\": false\r\n" + 
-			"}";
+	String  matchPatient="{\r\n"
+			+ "    \"patientMatches\": [\r\n"
+			+ "        {\r\n"
+			+ "            \"entity\": \"Email Address\",\r\n"
+			+ "            \"isMandatory\": true,\r\n"
+			+ "            \"code\": \"EMAIL\",\r\n"
+			+ "            \"value\": \"GECare@mailinator.com\",\r\n"
+			+ "            \"selected\": true,\r\n"
+			+ "            \"search\": true\r\n"
+			+ "        },\r\n"
+			+ "        {\r\n"
+			+ "            \"entity\": \"First Name\",\r\n"
+			+ "            \"isMandatory\": true,\r\n"
+			+ "            \"code\": \"FN\",\r\n"
+			+ "            \"value\": \"GECare\",\r\n"
+			+ "            \"selected\": true,\r\n"
+			+ "            \"search\": true\r\n"
+			+ "        },\r\n"
+			+ "        {\r\n"
+			+ "            \"entity\": \"Gender\",\r\n"
+			+ "            \"isMandatory\": false,\r\n"
+			+ "            \"code\": \"GENDER\",\r\n"
+			+ "            \"value\": \"M\",\r\n"
+			+ "            \"selected\": true,\r\n"
+			+ "            \"search\": false\r\n"
+			+ "        },\r\n"
+			+ "        {\r\n"
+			+ "            \"entity\": \"Date Of Birth\",\r\n"
+			+ "            \"isMandatory\": true,\r\n"
+			+ "            \"code\": \"DOB\",\r\n"
+			+ "            \"value\": \"01/01/2000\",\r\n"
+			+ "            \"selected\": true,\r\n"
+			+ "            \"search\": true\r\n"
+			+ "        },\r\n"
+			+ "        {\r\n"
+			+ "            \"entity\": \"Last Name\",\r\n"
+			+ "            \"isMandatory\": true,\r\n"
+			+ "            \"code\": \"LN\",\r\n"
+			+ "            \"value\": \"GECare\",\r\n"
+			+ "            \"selected\": true,\r\n"
+			+ "            \"search\": true\r\n"
+			+ "        }\r\n"
+			+ "    ],\r\n"
+			+ "    \"maxCriteria\": \"4\",\r\n"
+			+ "    \"allowDuplicatePatient\": false\r\n"
+			+ "}";
 	
 	return  matchPatient;
 }

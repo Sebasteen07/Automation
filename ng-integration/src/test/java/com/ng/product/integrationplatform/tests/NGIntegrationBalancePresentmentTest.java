@@ -1,3 +1,4 @@
+//Copyright 2021 NXGN Management, LLC. All Rights Reserved.
 package com.ng.product.integrationplatform.tests;
 
 import static org.testng.Assert.assertFalse;
@@ -32,7 +33,7 @@ import com.ng.product.integrationplatform.utils.CommonFlows;
 import com.ng.product.integrationplatform.utils.CommonUtils;
 import com.ng.product.integrationplatform.utils.DBUtils;
 
-public class NGIntegrationPP174BalancePresentmentTest extends BaseTestNGWebDriver {
+public class NGIntegrationBalancePresentmentTest extends BaseTestNGWebDriver {
 
 	int arg_timeOut = 1800;
 	NGAPIUtils ngAPIUtils;
@@ -63,13 +64,13 @@ public class NGIntegrationPP174BalancePresentmentTest extends BaseTestNGWebDrive
 
 	@Test(enabled = true, groups = { "acceptance-BalancePresentment" }, retryAnalyzer = RetryAnalyzer.class)
 	public void testPatientAbletoSeeChargesAndPaytheBill() throws Throwable {
-		String enterpriseId = propertyLoaderObj.getProperty("NGMainEnterpriseID");
-		String practiceId = propertyLoaderObj.getProperty("NGMainPracticeID");
+		String enterpriseId = propertyLoaderObj.getProperty("ng.main.enterprise.id");
+		String practiceId = propertyLoaderObj.getProperty("ng.main.practice.id");
 		String integrationPracticeId = propertyLoaderObj.getProperty("integrationpracticeid.amdc");
 		String url = propertyLoaderObj.getProperty("url");
-		String locationName = propertyLoaderObj.getProperty("EPMLocationName");
-		String providerName = propertyLoaderObj.getProperty("EPMProviderName");
-		String practiceName = propertyLoaderObj.getProperty("practiceName");
+		String locationName = propertyLoaderObj.getProperty("epm.location.name");
+		String providerName = propertyLoaderObj.getProperty("epm.provider.name");
+		String practiceName = propertyLoaderObj.getProperty("practice.name");
 		NGAPIUtils.updateLoginDefaultTo("EnterpriseGateway", enterpriseId, practiceId);
 		
 		logStep("Create the patient in NG EPM");		
@@ -165,13 +166,13 @@ public class NGIntegrationPP174BalancePresentmentTest extends BaseTestNGWebDrive
 
 	@Test(enabled = true, groups = { "acceptance-BalancePresentment" }, retryAnalyzer = RetryAnalyzer.class)
 	public void testPatientAbletoSeetheUpdatedchargesinPortal() throws Throwable {
-		String enterpriseId = propertyLoaderObj.getProperty("NGMainEnterpriseID");
-		String practiceId = propertyLoaderObj.getProperty("NGMainPracticeID");
+		String enterpriseId = propertyLoaderObj.getProperty("ng.main.enterprise.id");
+		String practiceId = propertyLoaderObj.getProperty("ng.main.practice.id");
 		String integrationPracticeId = propertyLoaderObj.getProperty("integrationpracticeid.amdc");
 		String url = propertyLoaderObj.getProperty("url");
-		String locationName = propertyLoaderObj.getProperty("EPMLocationName");
-		String providerName = propertyLoaderObj.getProperty("EPMProviderName");
-		String practiceName = propertyLoaderObj.getProperty("practiceName");
+		String locationName = propertyLoaderObj.getProperty("epm.location.name");
+		String providerName = propertyLoaderObj.getProperty("epm.provider.name");
+		String practiceName = propertyLoaderObj.getProperty("practice.name");
 
 		NGAPIUtils.updateLoginDefaultTo("EnterpriseGateway", enterpriseId, practiceId);
 		logStep("Create the patient in NG EPM");		
@@ -271,13 +272,13 @@ public class NGIntegrationPP174BalancePresentmentTest extends BaseTestNGWebDrive
 
 	@Test(enabled = true, groups = { "acceptance-BalancePresentment" }, retryAnalyzer = RetryAnalyzer.class)
 	public void testPatientnotAblePayZeroAmountCharge() throws Throwable {
-		String enterpriseId = propertyLoaderObj.getProperty("NGMainEnterpriseID");
-		String practiceId = propertyLoaderObj.getProperty("NGMainPracticeID");
+		String enterpriseId = propertyLoaderObj.getProperty("ng.main.enterprise.id");
+		String practiceId = propertyLoaderObj.getProperty("ng.main.practice.id");
 		String integrationPracticeId = propertyLoaderObj.getProperty("integrationpracticeid.amdc");
 		String url = propertyLoaderObj.getProperty("url");
-		String locationName = propertyLoaderObj.getProperty("EPMLocationName");
-		String providerName = propertyLoaderObj.getProperty("EPMProviderName");
-		String practiceName = propertyLoaderObj.getProperty("practiceName");
+		String locationName = propertyLoaderObj.getProperty("epm.location.name");
+		String providerName = propertyLoaderObj.getProperty("epm.provider.name");
+		String practiceName = propertyLoaderObj.getProperty("practice.name");
 		NGAPIUtils.updateLoginDefaultTo("EnterpriseGateway", enterpriseId, practiceId);
 		
 		logStep("Create the patient in NG EPM");		
@@ -335,13 +336,13 @@ public class NGIntegrationPP174BalancePresentmentTest extends BaseTestNGWebDrive
 	@Test(enabled = true, groups = { "acceptance-BalancePresentment" }, retryAnalyzer = RetryAnalyzer.class)
 	public void testPatientAbletoPayExtraAmount() throws Throwable {
 		
-		String enterpriseId = propertyLoaderObj.getProperty("NGMainEnterpriseID");
-		String practiceId = propertyLoaderObj.getProperty("NGMainPracticeID");
+		String enterpriseId = propertyLoaderObj.getProperty("ng.main.enterprise.id");
+		String practiceId = propertyLoaderObj.getProperty("ng.main.practice.id");
 		String integrationPracticeId = propertyLoaderObj.getProperty("integrationpracticeid.amdc");
 		String url = propertyLoaderObj.getProperty("url");
-		String locationName = propertyLoaderObj.getProperty("EPMLocationName");
-		String providerName = propertyLoaderObj.getProperty("EPMProviderName");
-		String practiceName = propertyLoaderObj.getProperty("practiceName");
+		String locationName = propertyLoaderObj.getProperty("epm.location.name");
+		String providerName = propertyLoaderObj.getProperty("epm.provider.name");
+		String practiceName = propertyLoaderObj.getProperty("practice.name");
 		NGAPIUtils.updateLoginDefaultTo("EnterpriseGateway", enterpriseId, practiceId);
 		
 		logStep("Create the patient in NG EPM");		

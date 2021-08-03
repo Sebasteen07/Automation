@@ -10,6 +10,7 @@ import com.intuit.ifs.csscat.core.BaseTestNGWebDriver;
 import com.intuit.ifs.csscat.core.RetryAnalyzer;
 import com.medfusion.product.object.maps.pss2.page.util.HeaderConfig;
 import com.medfusion.product.object.maps.pss2.page.util.PostAPIRequestPatientMod;
+import com.medfusion.product.pss2patientapi.payload.PayloadPssPatientModulator;
 import com.medfusion.product.pss2patientui.pojo.Appointment;
 import com.medfusion.product.pss2patientui.utils.PSSPropertyFileLoader;
 
@@ -460,7 +461,11 @@ public class PSS2PatientModulatorrAcceptanceTests extends BaseTestNGWebDriver {
 		log("Access Token --> " + testData.getAccessToken());
 		log("Payload- " + payloadPatientMod.validateProviderLinkPayload(testData.getPatientDemographicsFirstName(),testData.getPatientDemographicsLastName(),testData.getPatientDemographicsDOB(),testData.getPatientDemographicsGender(),testData.getPatientDemographicsEmail(),testData.getValidateProviderLinkId()));
 		log("Verifying the Provider link Id");
-		int providerLinkId = postAPIRequest.validateProviderLink(testData.getBasicURI(), payloadPatientMod.validateProviderLinkPayload(testData.getPatientDemographicsFirstName(),testData.getPatientDemographicsLastName(),testData.getPatientDemographicsDOB(),testData.getPatientDemographicsGender(),testData.getPatientDemographicsEmail(),testData.getValidateProviderLinkId()),
+		int providerLinkId = postAPIRequest.validateProviderLink(testData.getBasicURI(),
+				payloadPatientMod.validateProviderLinkPayload(testData.getPatientDemographicsFirstName(),
+						testData.getPatientDemographicsLastName(), testData.getPatientDemographicsDOB(),
+						testData.getPatientDemographicsGender(), testData.getPatientDemographicsEmail(),
+						testData.getValidateProviderLinkId()),
 				headerConfig.HeaderwithToken(testData.getAccessToken()), testData.getPracticeId(), testData.getPatientId(),
 				testData.getValidateProviderLinkDisplayName());
 		

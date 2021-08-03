@@ -422,7 +422,7 @@ public class PostAPIRequestPatientMod extends BaseTestNGWebDriver {
 
 	public Response getStates(String baseurl, Map<String, String> Header, String practiceId, String patientId) {
 		RestAssured.baseURI = baseurl;
-		Response response = given().log().all().headers(Header).log().all().when()
+		Response response = given().log().all().headers(Header).queryParam(patientId).log().all().when()
 				.get(practiceId + "/states/" + patientId).then().log().all().assertThat().statusCode(200).extract()
 				.response();
 

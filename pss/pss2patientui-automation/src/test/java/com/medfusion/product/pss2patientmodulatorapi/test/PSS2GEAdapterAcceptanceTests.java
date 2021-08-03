@@ -9,6 +9,7 @@ import org.testng.annotations.Test;
 import com.intuit.ifs.csscat.core.BaseTestNGWebDriver;
 import com.medfusion.product.object.maps.pss2.page.util.HeaderConfig;
 import com.medfusion.product.object.maps.pss2.page.util.PostAPIRequestGE;
+import com.medfusion.product.pss2patientapi.payload.PayloadGE;
 import com.medfusion.product.pss2patientui.pojo.Appointment;
 import com.medfusion.product.pss2patientui.utils.PSSPropertyFileLoader;
 
@@ -210,7 +211,9 @@ public class PSS2GEAdapterAcceptanceTests extends BaseTestNGWebDriver {
 		log("Payload- " + PayloadGE.upcommingApt_Payload(testData.getSsoPatientId(), testData.getPracticeIdGE(), testData.getPracticeDisplayName()));
 
 		postAPIRequest.upcomingAppt(testData.getBasicURI(),
-				PayloadGE.upcommingApt_Payload(testData.getSsoPatientId(), testData.getPracticeIdGE(), testData.getPracticeDisplayName()), headerConfig.defaultHeader(),
+				PayloadGE.upcommingApt_Payload(testData.getMatchPatientId(), testData.getPracticeIdGE(),
+						testData.getPracticeDisplayName()),
+				headerConfig.defaultHeader(),
 				testData.getPracticeIdGE(), testData.getUpcomingApptresourceName(), testData.getUpcomingApptlocationName());
 	}
 

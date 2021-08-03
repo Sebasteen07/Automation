@@ -63,7 +63,7 @@ public class NGPatient {
 	        else
                 newpatient.setSex("M");
 	        
-            String strZipCode = propertyLoaderObj.getProperty("ZipCode");
+            String strZipCode = propertyLoaderObj.getProperty("zip.code");
             if(mode.equalsIgnoreCase("withoutZip"))
                 newpatient.setZip("");
             else if(mode.equalsIgnoreCase("invalidZIP"))

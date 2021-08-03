@@ -14,7 +14,7 @@ import com.medfusion.product.object.maps.pss2.page.util.CommonMethods;
 
 public class AdminPatientMatching extends SettingsTab {
 
-	@FindAll({ @FindBy(xpath = "//*[@id=\"tab41\"]/patientmatch/div/div[2]/div/div/table/tbody/tr") })
+	@FindAll({ @FindBy(xpath = "//div/div[2]/div/div/table/tbody/tr") })
 	private List<WebElement> patientMatchingList;
 
 	@FindBy(xpath = "//div[@id='tab41']//button[@type='submit'][normalize-space()='Save']")
@@ -62,20 +62,25 @@ public class AdminPatientMatching extends SettingsTab {
 		list.add("Sex assigned at birth");
 		list.add("Email Address");
 		log("List ------>" + list);
-		log("Size of patientMatchingList -- " + patientMatchingList.size());
+		int pmSize = patientMatchingList.size();
+		log("Size of patientMatchingList -- " + pmSize);
 
-		for (int i = 4; i < patientMatchingList.size(); i++) {
+		for (int i = 3; i < pmSize; i++) {
 			log("Value of i --> " + i);
 			WebElement toSelect = driver.findElement(By.xpath("//input[@id='pmm" + i + "']"));
 			WebElement searchCheckbox = driver
 					.findElement(By.xpath("//input[@id='pmm" + i + "']/following-sibling::label"));
-			WebElement label = driver.findElement(By
-					.xpath("//*[@id=\"tab41\"]/patientmatch/div/div[2]/div/div/table/tbody/tr[" + (i + 1) + "]/td[1]"));
+
+			WebElement label = driver.findElement(By.xpath("//table//tbody//tr[" + i + "]/td[1]//span"));
 			WebElement matchingCriteria = driver.findElement(By.xpath("//input[@id='pi" + i + "']"));
 
+			commonMethods.highlightElement(label);
 			String labelText = label.getText();
 
+			commonMethods.highlightElement(toSelect);
 			boolean valueOfSearchStatus = toSelect.isSelected();
+
+			commonMethods.highlightElement(matchingCriteria);
 			boolean matchingCriteriaStatus = matchingCriteria.isEnabled();
 
 			log("LABEL " + labelText + " " + valueOfSearchStatus + "  " + "MATCHING CRITERIA "
@@ -97,6 +102,8 @@ public class AdminPatientMatching extends SettingsTab {
 				}
 			}
 		}
+
+		scrollAndWait(1000, 0, 1000);
 		saveBtnPAtientMatching.click();
 	}
 
