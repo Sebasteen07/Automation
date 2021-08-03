@@ -1,12 +1,12 @@
 package com.medfusion.product.appt.precheck.payload;
 
-public class AptEvetCollectorPayload {
+public class AptEventCollectorPayload {
 	
-	private static AptEvetCollectorPayload payload = new AptEvetCollectorPayload();
-	private AptEvetCollectorPayload() {
+	private static AptEventCollectorPayload payload = new AptEventCollectorPayload();
+	private AptEventCollectorPayload() {
 		
 	}
-	public static AptEvetCollectorPayload getAptEvetCollectorPayload() {
+	public static AptEventCollectorPayload getAptEvetCollectorPayload() {
 		return payload;
 	}
 	

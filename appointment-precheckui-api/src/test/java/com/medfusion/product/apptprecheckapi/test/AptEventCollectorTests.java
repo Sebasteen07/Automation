@@ -10,7 +10,7 @@ import org.testng.annotations.Test;
 import com.intuit.ifs.csscat.core.BaseTestNGWebDriver;
 import com.intuit.ifs.csscat.core.RetryAnalyzer;
 import com.medfusion.common.utils.PropertyFileLoader;
-import com.medfusion.product.appt.precheck.payload.AptEvetCollectorPayload;
+import com.medfusion.product.appt.precheck.payload.AptEventCollectorPayload;
 import com.medfusion.product.appt.precheck.pojo.Appointment;
 import com.medfusion.product.object.maps.appt.precheck.util.APIVerification;
 import com.medfusion.product.object.maps.appt.precheck.util.AccessToken;
@@ -22,7 +22,7 @@ import io.restassured.response.Response;
 public class AptEventCollectorTests extends BaseTestNGWebDriver {
 	String getaccessToken;
 	public static PropertyFileLoader propertyData;
-	public static AptEvetCollectorPayload payload;
+	public static AptEventCollectorPayload payload;
 	public static PostAPIRequestAptEventcollector postAPIRequest;
 	public static AccessToken accessToken;
 	public static HeaderConfig headerConfig;
@@ -36,7 +36,7 @@ public class AptEventCollectorTests extends BaseTestNGWebDriver {
 		postAPIRequest = PostAPIRequestAptEventcollector.getPostAPIRequestAptEventcollector();
 		accessToken = AccessToken.getAccessToken();
 		getaccessToken = accessToken.getaccessTokenPost();
-		payload = AptEvetCollectorPayload.getAptEvetCollectorPayload();
+		payload = AptEventCollectorPayload.getAptEvetCollectorPayload();
 		headerConfig = HeaderConfig.getHeaderConfig();
 		testData = new Appointment();
 		postAPIRequest.setupRequestSpecBuilder(propertyData.getProperty("base.url.apr.event.coll"));
