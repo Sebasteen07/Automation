@@ -505,4 +505,76 @@ public class APIVerification extends BaseTestNGWebDriver {
 		assertEquals(jsonPath.get("message"), "Unable to parse date=2021-006-1833 - date is expected to be in yyyy-MM-dd format");
 	}
 
+
+	public void verifySendNotificationWithInvalidNotifType(Response response) throws IOException {
+		JsonPath jsonPath = new JsonPath(response.asString());
+		assertEquals(jsonPath.get("message"),
+				"Processed 1 notifications; 1 of those failed: [Invalid notification type]");
+	}
+
+	public void verifySendNotificationhWithoutNotifType(Response response) throws IOException {
+		JsonPath jsonPath = new JsonPath(response.asString());
+		assertEquals(jsonPath.get("message"),
+				"Processed 1 notifications; 1 of those failed: [The notification properties type cannot be null or empty.]");
+	}
+
+	public void verifyCreateProviderForPractice(Response response, String practiceId) throws IOException {
+		log("Validate Response");
+		JsonPath js = new JsonPath(response.asString());
+		assertEquals(js.getString("practiceId"), practiceId, "practice Id  was incorrect");
+	}
+
+	public void verifyCreateProviderForPracticeIfAlreadyExist(Response response) throws IOException {
+		JsonPath jsonPath = new JsonPath(response.asString());
+		assertEquals(jsonPath.get("message"), "Provider already exists.");
+	}
+
+	public void verifyCreateProviderForPracticeInvalidPracticeId(Response response) throws IOException {
+		JsonPath jsonPath = new JsonPath(response.asString());
+		assertEquals(jsonPath.get("message"), "PracticeId in request does not match practiceId on path.");
+	}
+
+	public void verifyProviderDetails(Response response, String practiceId, String providerId, String firstName,
+			String lastName, String fileName, String contentType) throws IOException {
+		log("Validate Response");
+		JsonPath js = new JsonPath(response.asString());
+		assertEquals(js.getString("practiceId"), practiceId, "Practice Id  was incorrect");
+		assertEquals(js.getString("providerId"), providerId, "Provider Id Id was incorrect");
+		assertEquals(js.getString("firstName"), firstName, "First Name was incorrect");
+		assertEquals(js.getString("lastName"), lastName, "last Name was incorrect");
+		assertEquals(js.getString("providerImage.fileName"), fileName, "FileName was incorrect");
+		assertEquals(js.getString("providerImage.contentType"), contentType, "Content Type Id was incorrect");
+	}
+
+	public void verifyProviderDetailsWithoutPracticeId(Response response) throws IOException {
+		JsonPath jsonPath = new JsonPath(response.asString());
+		assertEquals(jsonPath.get("message"), "Request method 'GET' not supported");
+	}
+
+	public void verifyUpdateAnExistingProvider(Response response, String practiceId, String providerId,
+			String firstName, String lastName, String fileName, String contentType) throws IOException {
+		log("Validate Response");
+		JsonPath js = new JsonPath(response.asString());
+		assertEquals(js.getString("practiceId"), practiceId, "Practice Id  was incorrect");
+		assertEquals(js.getString("providerId"), providerId, "Provider Id Id was incorrect");
+		assertEquals(js.getString("firstName"), firstName, "First Name was incorrect");
+		assertEquals(js.getString("lastName"), lastName, "last Name was incorrect");
+		assertEquals(js.getString("providerImage.fileName"), fileName, "FileName was incorrect");
+		assertEquals(js.getString("providerImage.contentType"), contentType, "Content Type Id was incorrect");
+	}
+
+	public void verifyUpdateAnExistingProviderWithInvalidPracticeId(Response response) throws IOException {
+		JsonPath jsonPath = new JsonPath(response.asString());
+		assertEquals(jsonPath.get("message"), "PracticeId in request does not match practiceId on path.");
+	}
+
+	public void verifyDeleteExistingProviderWithoutProviderId(Response response) throws IOException {
+		JsonPath jsonPath = new JsonPath(response.asString());
+		assertEquals(jsonPath.get("message"), "Request method 'DELETE' not supported");
+	}
+
+	public void verifyGetsTheImageDataWithoutProviderId(Response response) throws IOException {
+		JsonPath jsonPath = new JsonPath(response.asString());
+		assertEquals(jsonPath.get("message"), "No provider found for criteria.");
+	}
 }

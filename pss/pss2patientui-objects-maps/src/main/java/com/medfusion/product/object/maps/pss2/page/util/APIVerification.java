@@ -33,13 +33,16 @@ public class APIVerification extends BaseTestNGWebDriver {
 		return value;
 	}
 
-	public void responseKeyValidationJson(Response response, String key) {
+	public String responseKeyValidationJson(Response response, String key) {
+		String value = null;
 		try {
 			JsonPath js = new JsonPath(response.asString());
 			log("Validated key-> " + key + " value is-  " + js.getString(key));
+			value = js.getString(key);
 		} catch (Exception e) {
 			log("Test Case Failed-Response not validated");
 		}
+		return value;
 	}
 
 	public void responseTimeValidation(Response response) {
