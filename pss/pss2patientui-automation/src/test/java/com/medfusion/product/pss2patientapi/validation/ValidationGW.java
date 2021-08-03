@@ -115,19 +115,10 @@ public class ValidationGW extends BaseTestNG {
 
 	public void verifyLocationsResponse(Response response) throws IOException {
 		propertyData = new PSSPropertyFileLoader();
-
-
-		JSONArray arr = new JSONArray(response.body().asString());
-		log("Id " + arr.getJSONObject(0).getString("id"));
-		// log("Appointment Type- " +
-		// arr.getJSONObject(0).getJSONObject("appointmentTypes").getString("name"));
-		// assertEquals(arr.getJSONObject(0).getString("id"),
-		// propertyData.getProperty("appointment.id.val"),
-		// "patient id wrong");
-		// assertEquals(arr.getJSONObject(0).getJSONObject("appointmentTypes").getString("name"),
-		// propertyData.getProperty("appointment.type.name.val"), "AppointmentType was
-		// wrong");
-
+		apiVerification.responseKeyValidation(response, "id");
+		apiVerification.responseKeyValidation(response, "name");
+		apiVerification.responseKeyValidation(response, "displayName");
+		apiVerification.responseKeyValidation(response, "description");
 	}
 	
 	public void verifyLockoutResponse(Response response) throws IOException {

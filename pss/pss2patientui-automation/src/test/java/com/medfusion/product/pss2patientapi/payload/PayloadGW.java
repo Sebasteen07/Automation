@@ -145,7 +145,7 @@ public class PayloadGW extends BaseTestNGWebDriver {
 	}
 
 	public String matchPatientPayload(String email,String firstName) {
-		String addpatient="{  \r\n"
+		String matchPatient="{  \r\n"
 				+ "      \"patientMatches\":[  \r\n"
 				+ "         {  \r\n"
 				+ "            \"entity\":\"Email Address\",\r\n"
@@ -170,10 +170,10 @@ public class PayloadGW extends BaseTestNGWebDriver {
 				+ "}\r\n"
 				+ "";		
 		
-		return addpatient;
+		return matchPatient;
 	}
 	public String cancelStatusPayload(String appointmentTypeId,String locationId,String patientId,String resourceId) {
-		String addpatient="{\r\n"
+		String cancelStatus="{\r\n"
 				+ "    \"additionalProperties\": {},\r\n"
 				+ "    \"appointmentCategoryId\": null,\r\n"
 				+ "    \"appointmentTypeId\":\"" +appointmentTypeId+"\",\r\n"
@@ -199,7 +199,40 @@ public class PayloadGW extends BaseTestNGWebDriver {
 				+ "    }\r\n"
 				+ "}";		
 		
-		return addpatient;
+		return cancelStatus;
+	}
+	public String schedulePayload(String startdate,String enddate,String patientId) {
+		String schedulePayload="{\r\n"
+				+ "\"locationId\": \"1019\",\r\n"
+				+ "\"appointmentCategoryId\": \"1087\",\r\n"
+				+ "\"appointmentTypeId\": \"1086\",\r\n"
+				+ "\"duration\": 0,\r\n"
+				+ "\"comments\": \"~(pss) 231701 03/12/2021 04:34:27~\",\r\n"
+				+ "\"startDateTime\": \""+startdate+"\",\r\n"
+				+ " \"endDateTime\": \""+enddate+"\",\r\n"
+				+ "\"patientId\": \""+patientId+"\",\r\n"
+				+ "\"resourceCategoryId\": \"1025\",\r\n"
+				+ "\"resourceId\": \"1072\",\r\n"
+				+ "\"stackingFlag\": false,\r\n"
+				+ "\"schedulingDuration\": 0,\r\n"
+				+ "\"additionalProperties\": {\r\n"
+				+ "\"FN\": \"atr11\",\r\n"
+				+ "\"LN\": \"atr11\",\r\n"
+				+ "\"DOB\": \"01/01/2001\",\r\n"
+				+ "\"GENDER\": \"M\",\r\n"
+				+ "\"EMAIL\": \"atul.rathod@crossasyst.com\",\r\n"
+				+ "\"PHONE\": \"961-992-1668\",\r\n"
+				+ "\"ZIP\": \"12345\"\r\n"
+				+ "  },\r\n"
+				+ "\"notesProperties\": {\r\n"
+				+ "\"apptIndicatorWithConfirmationNo\": \"(pss) 231701 03/12/2021 04:34:27\"\r\n"
+				+ "  },\r\n"
+				+ "\"practiceTimezone\": \"America/New_York\"\r\n"
+				+ "}\r\n"
+				+ "\r\n"
+				+ "";		
+		
+		return schedulePayload;
 	}
 
 }

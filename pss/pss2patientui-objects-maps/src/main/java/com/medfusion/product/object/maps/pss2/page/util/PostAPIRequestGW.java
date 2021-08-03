@@ -85,57 +85,55 @@ public class PostAPIRequestGW extends BaseTestNGWebDriver {
 				.spec(responseSpec).log().all().extract().response();
 		return response;
 	}
-	
+
 	public Response appointmenttypes(String practiceid) throws Exception {
 		Response response = given().log().all().spec(requestSpec).when().get(practiceid + "/appointmenttypes").then()
 				.spec(responseSpec).log().all().extract().response();
 		return response;
 	}
-	
+
 	public Response book(String practiceid) throws Exception {
 		Response response = given().log().all().spec(requestSpec).when().get(practiceid + "/books").then()
 				.spec(responseSpec).log().all().extract().response();
 		return response;
 	}
-	
+
 	public Response flags(String practiceid) throws Exception {
 		Response response = given().log().all().spec(requestSpec).when().get(practiceid + "/flags").then()
 				.spec(responseSpec).log().all().extract().response();
 		return response;
 	}
-	
-	public Response patientFlags(String practiceid,String patientId) throws Exception {
-		Response response = given().log().all().spec(requestSpec).when().get(practiceid + "/patientflag/"+patientId).then()
-				.spec(responseSpec).log().all().extract().response();
+
+	public Response patientFlags(String practiceid, String patientId) throws Exception {
+		Response response = given().log().all().spec(requestSpec).when().get(practiceid + "/patientflag/" + patientId)
+				.then().spec(responseSpec).log().all().extract().response();
 		return response;
 	}
-	
-	
+
 	public Response healthcheck(String practiceid) throws Exception {
 		Response response = given().log().all().spec(requestSpec).when().get(practiceid + "/healthcheck").then()
 				.spec(responseSpec).log().all().extract().response();
 		return response;
 	}
 
-
 	public Response locations(String practiceid) throws Exception {
 		Response response = given().log().all().spec(requestSpec).when().get(practiceid + "/locations").then()
 				.spec(responseSpec).log().all().extract().response();
 		return response;
 	}
-	
+
 	public Response lockout(String practiceid) throws Exception {
 		Response response = given().log().all().spec(requestSpec).when().get(practiceid + "/lockout").then()
 				.spec(responseSpec).log().all().extract().response();
 		return response;
 	}
-	
+
 	public Response ping(String practiceid) throws Exception {
 		Response response = given().log().all().spec(requestSpec).when().get(practiceid + "/ping").then()
 				.spec(responseSpec).log().all().extract().response();
 		return response;
 	}
-	
+
 	public Response version(String practiceid) throws Exception {
 		Response response = given().log().all().spec(requestSpec).when().get(practiceid + "/version").then()
 				.spec(responseSpec).log().all().extract().response();
@@ -147,26 +145,29 @@ public class PostAPIRequestGW extends BaseTestNGWebDriver {
 				.spec(responseSpec).log().all().extract().response();
 		return response;
 	}
+
 	public Response patientLastVisit(String patientId, String practiceid) throws Exception {
 		Response response = given().log().all().spec(requestSpec).when()
-				.get(practiceid + "/patientlastvisit/"+patientId).then().spec(responseSpec).log().all().extract().response();
+				.get(practiceid + "/patientlastvisit/" + patientId).then().spec(responseSpec).log().all().extract()
+				.response();
 		return response;
 	}
-	
+
 	public Response addPatient(String body, String practiceid) throws IOException {
 
 		return given().spec(requestSpec).log().all().body(body).when().post(practiceid + "/addpatient").then().log()
 				.all().extract().response();
 	}
-	
+
 	public Response matchPatient(String body, String practiceid) throws IOException {
 
 		return given().spec(requestSpec).log().all().body(body).when().post(practiceid + "/matchpatient").then().log()
 				.all().extract().response();
 	}
-	public Response cancelstatus(String body, String practiceid) throws IOException {
 
+	public Response cancelstatus(String body, String practiceid) throws IOException {
 		return given().spec(requestSpec).log().all().body(body).when().post(practiceid + "/cancelstatus").then().log()
 				.all().extract().response();
 	}
+
 }
