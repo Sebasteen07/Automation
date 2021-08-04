@@ -5,7 +5,9 @@ import static org.testng.Assert.assertEquals;
 
 import java.io.IOException;
 import java.sql.Timestamp;
+import java.util.Map;
 
+import org.json.JSONArray;
 import org.testng.annotations.BeforeTest;
 import org.testng.annotations.Test;
 
@@ -19,6 +21,7 @@ import com.medfusion.product.pss2patientapi.validation.ValidationGW;
 import com.medfusion.product.pss2patientui.pojo.Appointment;
 import com.medfusion.product.pss2patientui.utils.PSSPropertyFileLoader;
 
+import io.restassured.path.json.JsonPath;
 import io.restassured.response.Response;
 import io.restassured.specification.RequestSpecification;
 import io.restassured.specification.ResponseSpecification;
@@ -56,19 +59,232 @@ public class PSS2GWAdpterAcceptanceTests extends BaseTestNGWebDriver {
 				propertyData.getProperty("practice.id.gw"));
 		logStep("Verifying the response");
 		assertEquals(response.getStatusCode(), 200);
+		validateGW.verifyDemographicsResponse(response);
+
 	}
 
 	@Test(enabled = true, groups = { "APItest" }, retryAnalyzer = RetryAnalyzer.class)
 	public void testsearchPatientPOST() throws IOException, InterruptedException {
 
 		Response response = postAPIRequestgw.searchPatient(
-				payload.searchPatientPayload(propertyData.getProperty("dateOfBirth.gw"),
-						propertyData.getProperty("firstName.gw"), propertyData.getProperty("gender.gw"),
-						propertyData.getProperty("lastName.gw"), propertyData.getProperty("practiceTimezone.gw")),
+				payload.searchPatientPayload(propertyData.getProperty("dateofbirth.gw"),
+						propertyData.getProperty("first.name.gw"), propertyData.getProperty("gender.gw"),
+						propertyData.getProperty("last.name.gw"), propertyData.getProperty("practiceTimezone.gw")),
 				propertyData.getProperty("practice.id.gw"));
 		logStep("Verifying the response");
 		validateGW.verifySearchPatientResponse(response);
 
 	}
 
+	@Test(enabled = true, groups = { "APItest" }, retryAnalyzer = RetryAnalyzer.class)
+	public void testGetAppointmentStatus() throws NullPointerException, Exception {
+		Response response = postAPIRequestgw.appointmentStatus(propertyData.getProperty("practice.id.gw"),
+				propertyData.getProperty("appointment.id.gw"), propertyData.getProperty("start.date.time.gw"));
+		logStep("Verifying the response");
+		assertEquals(response.getStatusCode(), 200);
+		validateGW.verifyAppointmentStatus(response);
+
+	}
+
+	@Test(enabled = true, groups = { "APItest" }, retryAnalyzer = RetryAnalyzer.class)
+	public void testAvailableSlots() throws IOException, InterruptedException {
+
+		Response response = postAPIRequestgw
+				.avaliableSlot(payload.availableslotsPayload(propertyData.getProperty("appointment.cat.id.gw"),
+						propertyData.getProperty("appointment.type.id"), propertyData.getProperty("extapp.id.gw"),
+						propertyData.getProperty("location.id.gw"), propertyData.getProperty("patient.id.gw"),
+						propertyData.getProperty("resource.cat.id.gw"), propertyData.getProperty("resource.id"),
+						propertyData.getProperty("start.date.time.gw")), propertyData.getProperty("practice.id.gw"));
+		logStep("Verifying the response");
+		assertEquals(response.getStatusCode(), 200);
+		validateGW.verifyAvailiableSlotResponse(response);
+
+	}
+
+	@Test(enabled = true, groups = { "APItest" }, retryAnalyzer = RetryAnalyzer.class)
+	public void testNextAvailableSlots() throws IOException, InterruptedException {
+
+		Response response = postAPIRequestgw
+				.nextavaliableSlot(payload.nextAvailableslotsPayload(propertyData.getProperty("appointment.cat.id.gw"),
+						propertyData.getProperty("appointment.type.id"), propertyData.getProperty("extapp.id.gw"),
+						propertyData.getProperty("location.id.gw"), propertyData.getProperty("patient.id.gw"),
+						propertyData.getProperty("resource.cat.id.gw"), propertyData.getProperty("resource.id"),
+						propertyData.getProperty("start.date.time.gw")), propertyData.getProperty("practice.id.gw"));
+		logStep("Verifying the response");
+		assertEquals(response.getStatusCode(), 200);
+
+	}
+
+	@Test(enabled = true, groups = { "APItest" }, retryAnalyzer = RetryAnalyzer.class)
+	public void testPastAppointmentsPOST() throws NullPointerException, Exception {
+
+		Response response = postAPIRequestgw.pastAppt(propertyData.getProperty("practice.id.gw"),
+				payload.pastApptPayload(propertyData.getProperty("patient.id.gw")));
+		assertEquals(response.getStatusCode(), 200);
+		validateGW.verifyPastAppointmentResponse(response);
+
+	}
+
+	@Test(enabled = true, groups = { "APItest" }, retryAnalyzer = RetryAnalyzer.class)
+	public void testGetPreventSchedulingDate() throws NullPointerException, Exception {
+
+		Response response = postAPIRequestgw.preventSchedulingDate(propertyData.getProperty("patient.id.gw"),
+				propertyData.getProperty("practice.id.gw"), propertyData.getProperty("extapp.id.gw"));
+		logStep("Verifying the response");
+		assertEquals(response.getStatusCode(), 200);
+	}
+
+	@Test(enabled = true, groups = { "APItest" }, retryAnalyzer = RetryAnalyzer.class)
+	public void testGetinsuranceCarrier() throws NullPointerException, Exception {
+
+		Response response = postAPIRequestgw.insurancecarrier(propertyData.getProperty("practice.id.gw"));
+		logStep("Verifying the response");
+		assertEquals(response.getStatusCode(), 200);
+		validateGW.verifyInsurancecCarrierResponse(response);
+	}
+
+	@Test(enabled = true, groups = { "APItest" }, retryAnalyzer = RetryAnalyzer.class)
+	public void testGetappointmentTypes() throws NullPointerException, Exception {
+
+		Response response = postAPIRequestgw.appointmenttypes(propertyData.getProperty("practice.id.gw"));
+		logStep("Verifying the response");
+		assertEquals(response.getStatusCode(), 200);
+		validateGW.verifyAppointmenttypesResponse(response);
+	}
+
+	@Test(enabled = true, groups = { "APItest" }, retryAnalyzer = RetryAnalyzer.class)
+	public void testGetBook() throws NullPointerException, Exception {
+
+		Response response = postAPIRequestgw.book(propertyData.getProperty("practice.id.gw"));
+		logStep("Verifying the response");
+		assertEquals(response.getStatusCode(), 200);
+		validateGW.verifyBookResponse(response);
+	}
+
+	@Test(enabled = true, groups = { "APItest" }, retryAnalyzer = RetryAnalyzer.class)
+	public void testGetflags() throws NullPointerException, Exception {
+
+		Response response = postAPIRequestgw.flags(propertyData.getProperty("practice.id.gw"));
+		logStep("Verifying the response");
+		assertEquals(response.getStatusCode(), 200);
+		validateGW.verifyFlagResponse(response);
+	}
+
+	@Test(enabled = true, groups = { "APItest" }, retryAnalyzer = RetryAnalyzer.class)
+	public void testPatientGetflags() throws NullPointerException, Exception {
+
+		Response response = postAPIRequestgw.patientFlags(propertyData.getProperty("practice.id.gw"),
+				propertyData.getProperty("patient.id.gw"));
+		logStep("Verifying the response");
+		assertEquals(response.getStatusCode(), 200);
+		validateGW.verifyPatientFlag(response);
+	}
+
+	@Test(enabled = true, groups = { "APItest" }, retryAnalyzer = RetryAnalyzer.class)
+	public void testHealthCheck() throws NullPointerException, Exception {
+
+		Response response = postAPIRequestgw.healthcheck(propertyData.getProperty("practice.id.gw"));
+		logStep("Verifying the response");
+		assertEquals(response.getStatusCode(), 200);
+	}
+
+	@Test(enabled = true, groups = { "APItest" }, retryAnalyzer = RetryAnalyzer.class)
+	public void testGetLocations() throws NullPointerException, Exception {
+
+		Response response = postAPIRequestgw.locations(propertyData.getProperty("practice.id.gw"));
+		logStep("Verifying the response");
+		assertEquals(response.getStatusCode(), 200);
+		validateGW.verifyLocationsResponse(response);
+
+	}
+
+	@Test(enabled = true, groups = { "APItest" }, retryAnalyzer = RetryAnalyzer.class)
+	public void testGetLockout() throws NullPointerException, Exception {
+
+		Response response = postAPIRequestgw.lockout(propertyData.getProperty("practice.id.gw"));
+		logStep("Verifying the response");
+		assertEquals(response.getStatusCode(), 200);
+		validateGW.verifyLockoutResponse(response);
+
+	}
+
+	@Test(enabled = true, groups = { "APItest" }, retryAnalyzer = RetryAnalyzer.class)
+	public void testGetPing() throws NullPointerException, Exception {
+
+		Response response = postAPIRequestgw.ping(propertyData.getProperty("practice.id.gw"));
+		logStep("Verifying the response");
+		assertEquals(response.getStatusCode(), 200);
+
+	}
+
+	@Test(enabled = true, groups = { "APItest" }, retryAnalyzer = RetryAnalyzer.class)
+	public void testGetVersion() throws NullPointerException, Exception {
+
+		Response response = postAPIRequestgw.version(propertyData.getProperty("practice.id.gw"));
+		logStep("Verifying the response");
+		assertEquals(response.getStatusCode(), 200);
+
+	}
+
+	@Test(enabled = true, groups = { "APItest" }, retryAnalyzer = RetryAnalyzer.class)
+	public void testUpcomingAppointments() throws NullPointerException, Exception {
+
+		Response response = postAPIRequestgw.upcommingAppt(propertyData.getProperty("practice.id.gw"),
+				payload.upComingAppointmentsPayload(propertyData.getProperty("start.date.time.gw"),
+						propertyData.getProperty("patient.id.gw"), propertyData.getProperty("practice.displayname.gw"),
+						propertyData.getProperty("practice.id.gw"),
+						propertyData.getProperty("practice.displayname.gw")));
+		logStep("Verifying the response");
+		assertEquals(response.getStatusCode(), 200);
+		validateGW.verifyUpcomingAppointmentsResponse(response);
+
+	}
+
+	@Test(enabled = true, groups = { "APItest" }, retryAnalyzer = RetryAnalyzer.class)
+	public void testPatientlastvisit() throws NullPointerException, Exception {
+
+		Response response = postAPIRequestgw.patientLastVisit(propertyData.getProperty("patient.id.gw"),
+				propertyData.getProperty("practice.id.gw"));
+		logStep("Verifying the response");
+		assertEquals(response.getStatusCode(), 200);
+
+	}
+
+	@Test(enabled = true, groups = { "APItest" }, retryAnalyzer = RetryAnalyzer.class)
+	public void testAddPatientPOST() throws IOException, InterruptedException {
+
+		Response response = postAPIRequestgw
+				.addPatient(payload.addPatientPayload(propertyData.getProperty("first.name.gw"),
+						propertyData.getProperty("last.name.gw"), propertyData.getProperty("dateofbirth.gw"),
+						propertyData.getProperty("email.gw.api")), propertyData.getProperty("practice.id.gw"));
+		assertEquals(response.getStatusCode(), 200);
+		logStep("Verifying the response");
+
+		validateGW.verifyAddPatientResponse(response);
+
+	}
+
+	@Test(enabled = true, groups = { "APItest" }, retryAnalyzer = RetryAnalyzer.class)
+	public void testMatchPatientPOST() throws IOException, InterruptedException {
+
+		Response response = postAPIRequestgw
+				.matchPatient(payload.matchPatientPayload(propertyData.getProperty("email.gw.api"),
+						propertyData.getProperty("first.name.gw")), propertyData.getProperty("practice.id.gw"));
+		logStep("Verifying the response");
+		assertEquals(response.getStatusCode(), 200);
+
+	}
+
+	@Test(enabled = true, groups = { "APItest" }, retryAnalyzer = RetryAnalyzer.class)
+	public void testCancelStatusPOST() throws IOException, InterruptedException {
+
+		Response response = postAPIRequestgw
+				.cancelstatus(payload.cancelStatusPayload(propertyData.getProperty("appointment.type.id"),
+						propertyData.getProperty("location.id.gw"), propertyData.getProperty("patient.id.gw"),
+						propertyData.getProperty("resource.id")), propertyData.getProperty("practice.id.gw"));
+		logStep("Verifying the response");
+		assertEquals(response.getStatusCode(), 200);
+		validateGW.verifyCancelStateResponse(response);
+
+	}
 }

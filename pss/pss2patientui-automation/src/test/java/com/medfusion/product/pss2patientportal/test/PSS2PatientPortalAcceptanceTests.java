@@ -1208,8 +1208,8 @@ public class PSS2PatientPortalAcceptanceTests extends BaseTestNGWebDriver {
 		Appointment testData = new Appointment();
 		AdminUser adminUser = new AdminUser();
 
-		propertyData.setAdminNG(adminUser);
-		propertyData.setAppointmentResponseNG(testData);
+		propertyData.setAdminGE(adminUser);
+		propertyData.setAppointmentResponseGE(testData);
 		testData.setLastQuestionOptional(true);
 
 		PSSPatientUtils psspatientutils = new PSSPatientUtils();
@@ -4044,24 +4044,13 @@ public class PSS2PatientPortalAcceptanceTests extends BaseTestNGWebDriver {
 		String rule = adminuser.getRule();
 		log("rule are " + rule);
 		rule = rule.replaceAll(" ", "");
-		JalapenoLoginPage loginPage = new JalapenoLoginPage(driver, testData.getPatientPortalURL());
-		JalapenoHomePage homePage = loginPage.login(testData.getPatientPortalUserName(),
-				testData.getPatientPortalPassword());
-		log("Detecting if Home Page is opened");
-		assertTrue(homePage.isHomeButtonPresent(driver));
-		homePage.clickFeaturedAppointmentsReq();
-		log("Wait for PSS 2.0 Patient UI to be loaded.");
-		Thread.sleep(6000);
-		log("Switching tabs");
-		String currentUrl = psspatientutils.switchtabs(driver);
-		HomePage homepage = new HomePage(driver, currentUrl);
-		Thread.sleep(15000);
-		if (homepage.isPopUP()) {
-			homepage.popUPClick();
-		}
-		Thread.sleep(12000);
-
-		log("Successfully upto Home page");
+		DismissPage dismissPage = new DismissPage(driver, testData.getUrlLoginLess());
+		Thread.sleep(1000);
+		logStep("Clicked on Dismiss");
+		LoginlessPatientInformation loginlessPatientInformation = dismissPage.clickDismiss();
+		HomePage homepage = loginlessPatientInformation.fillNewPatientForm(testData.getFirstName(),
+				testData.getLastName(), testData.getDob(), testData.getEmail(), testData.getGender(),
+				testData.getZipCode(), testData.getPrimaryNumber());
 		homepage.btnStartSchedClick();
 		Log4jUtil.log("Step 8: Select Provider for appointment.");
 		Provider provider = null;
