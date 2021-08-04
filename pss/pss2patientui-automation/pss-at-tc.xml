@@ -7,7 +7,7 @@
 				name="com.medfusion.product.pss2patientportal.test.PSS2PatientPortalAcceptanceTests">
 				<methods>
 
-					<include name="testSSOFlowAT()" />
+					<exclude name="testSSOFlowAT()" />
 
 					<include name="testPreventSchedPastAT()" />
 					<include name="testPreventSchedFutureAT()" />
@@ -17,30 +17,30 @@
 
 					<include name="testLoginlessWithInsuranceAT" />
 
-					<include name="testLastQuestionRequiredAT" />
-					<include name="testBookApptWithoutLastQuestionAT()" />
-					<include name="testBookApptWithLastQuestionAT()" />
+					<exclude name="testLastQuestionRequiredAT" />
+					<exclude name="testBookApptWithoutLastQuestionAT()" />
+					<exclude name="testBookApptWithLastQuestionAT()" />
 
-					<include name="testCancelFromEmailAT()" />
-					<include name="testCancelE2ETestingAT()" />					
+					<exclude name="testCancelFromEmailAT()" />
+					<exclude name="testCancelE2ETestingAT()" />					
 					
 					<include name="testRescheduleAppointmentAT" />
-					<include name="testRescheduleviaEmailNotifiicationAT()" />
+					<exclude name="testRescheduleviaEmailNotifiicationAT()" />
 
 					<include name="testAcceptSameDayAT()" />
 					<include name="testAgeRuleAT()" />
 					<include name="testageRulewithSpecialityAT()" />
 					<include name="testE2ELinkGenerationAT()" />
-					<include name="testExcludeSlotsAT()" />
+					<exclude name="testExcludeSlotsAT()" />
 
 					<include name="testLeadTimeAT()" />
 					<include name="testMaxperDayAT()" />
 					<include name="testPCPShareONAT()" />
-					<include name="testTimeMarkAT()" />
+					<exclude name="testTimeMarkAT()" />
 					
-					<include name="testE2EMergeSlotNG()" />
+					<include name="testE2EMergeSlotAT()" />
 					<include name="testE2ELinkGenWithProviAT()" />
-					<include name="testBookAptProviderOFFAT()" />
+					<exclude name="testBookAptProviderOFFAT()" />
 					<include name="testNextAvailableDisplayedWithLocationAT()" />
 					<include name="testLoginlessWithInsuranceAT()" />	
 
