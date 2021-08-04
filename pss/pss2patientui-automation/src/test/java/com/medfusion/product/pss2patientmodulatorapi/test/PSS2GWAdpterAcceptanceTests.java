@@ -97,7 +97,37 @@ public class PSS2GWAdpterAcceptanceTests extends BaseTestNGWebDriver {
 						propertyData.getProperty("start.date.time.gw")), propertyData.getProperty("practice.id.gw"));
 		logStep("Verifying the response");
 		assertEquals(response.getStatusCode(), 200);
-		validateGW.verifyAvailiableSlotResponse(response);
+		
+		JsonPath js = new JsonPath(response.asString());
+
+		String startDateTime=js.getString("availableSlots[0].startDateTime");;
+		String endDateTime=js.getString("availableSlots[0].endDateTime");
+		
+		String startDateTime_resch=js.getString("availableSlots[1].startDateTime");;
+		String endDateTime_resch=js.getString("availableSlots[1].endDateTime");
+		
+		String patientId= propertyData.getProperty("patient.id.gw");
+		
+		log("startDateTime- "+startDateTime);
+		log("endDateTime- "+endDateTime);
+		log("patientId- "+patientId);
+		
+		log("startDateTime- "+startDateTime_resch);
+		log("endDateTime- "+endDateTime_resch);
+		log("patientId- "+patientId);
+		
+		Response scheduleApptResponse = postAPIRequestgw
+				.scheduleappointment(payload.schedulePayload(startDateTime, endDateTime, patientId), propertyData.getProperty("practice.id.gw"));
+		logStep("Verifying the response");
+		assertEquals(scheduleApptResponse.getStatusCode(), 200);
+		
+		String apptid=aPIVerification.responseKeyValidationJson(scheduleApptResponse, "id");
+		aPIVerification.responseKeyValidationJson(scheduleApptResponse, "slotAlreadyTaken");
+		aPIVerification.responseKeyValidationJson(scheduleApptResponse, "rescheduleNotAllowed");
+		
+		log("Appointment id - "+apptid);
+
+		//validateGW.verifyAvailiableSlotResponse(response);
 
 	}
 

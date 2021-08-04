@@ -174,5 +174,11 @@ public class PostAPIRequestGW extends BaseTestNGWebDriver {
 		return given().spec(requestSpec).log().all().body(body).when().post(practiceid + "/cancelappointment/"+patientId).then().log()
 				.all().extract().response();
 	}
+	
+	public Response scheduleappointment(String body, String practiceid) throws IOException {
+
+		return given().spec(requestSpec).log().all().body(body).when().post(practiceid + "/scheduleappointment").then().log()
+				.all().extract().response();
+	}
 
 }
