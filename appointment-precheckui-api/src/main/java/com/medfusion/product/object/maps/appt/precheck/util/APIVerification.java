@@ -565,4 +565,94 @@ public class APIVerification extends BaseTestNGWebDriver {
 		JsonPath jsonPath = new JsonPath(response.asString());
 		assertEquals(jsonPath.get("message"), "practiceId cannot be null, empty, or blank");
 	}
+
+	public void verifyReturnLogs(Response response, String subjectUrn, String subjectId) throws IOException {
+		JsonPath js = new JsonPath(response.asString());
+		log("Validate PM Integration Setting");
+		assertEquals(js.getString("result.subjectUrn"), subjectUrn, "Subject Urn  was incorrect");
+		assertEquals(js.getString("result.subjectId"), subjectId, "System id was incorrect");
+	}
+
+	public void verifyReturnLogsWithoutSubjUrn(Response response) throws IOException {
+		JsonPath jsonPath = new JsonPath(response.asString());
+		assertEquals(jsonPath.get("message"),
+				"Required request parameter 'subj_urn' for method parameter type String is not present");
+	}
+
+	public void verifyReturnLogsWithoutSubjId(Response response) throws IOException {
+		JsonPath jsonPath = new JsonPath(response.asString());
+		assertEquals(jsonPath.get("message"),
+				"Required request parameter 'subj_id' for method parameter type String is not present");
+	}
+
+	public void verifyReturnLogsPost(Response response, String subjectUrn, String subjectId) throws IOException {
+		JsonPath js = new JsonPath(response.asString());
+		log("Validate PM Integration Setting");
+		assertEquals(js.getString("result.subjectUrn"), "[platform:appointment]", "Subject Urn  was incorrect");
+		assertEquals(js.getString("result.subjectId"), "[24333.27766.158]", "System id was incorrect");
+	}
+
+	public void verifyReturnLogsPostWithInvalidSubjId(Response response) throws IOException {
+		JsonPath jsonPath = new JsonPath(response.asString());
+		assertEquals(jsonPath.get("message"),
+				"Could not find log for: {subjectUrn: platform:appointment subjectId: 24333.12345.158}");
+	}
+
+	public void verifyReturnLogsPostWithInvalidSubjUrn(Response response) throws IOException {
+		JsonPath jsonPath = new JsonPath(response.asString());
+		assertEquals(jsonPath.get("message"),
+				"Could not find log for: {subjectUrn: plrfgatform:appointment subjectId: 24333.27766.158}");
+	}
+
+	public void verifyReturnLogsPostWithoutSubjId(Response response) throws IOException {
+		JsonPath jsonPath = new JsonPath(response.asString());
+		assertEquals(jsonPath.get("message"),
+				"Could not find log for: {subjectUrn: platform:appointment subjectId: null}");
+	}
+
+	public void verifyDeleteLogs(Response response, String subjectId, String practiceId, String patientId,
+			String apptId) throws IOException {
+		JsonPath js = new JsonPath(response.asString());
+		log("Validate PM Integration Setting");
+		if (js.getString("result.subjectUrn").equals("[platform:appointment]")) {
+			assertEquals(js.getString("result.subjectUrn"), "[platform:appointment]", "Subject Urn  was incorrect");
+			assertEquals(js.getString("result.subjectId"), subjectId, "System id was incorrect");
+		} else
+			assertEquals(js.get("message"), "Could not find log for: {subjectUrn: platform:appointment subjectId: "
+					+ practiceId + "." + patientId + "." + apptId + "}");
+	}
+
+	public void verifyDeleteLogsWithInvalidSubjId(Response response) throws IOException {
+		JsonPath jsonPath = new JsonPath(response.asString());
+		assertEquals(jsonPath.get("message"),
+				"Could not find log for: {subjectUrn: platform:appointment subjectId: 24333.297761.9826}");
+	}
+
+	public void verifyDeleteLogsWithInvalidSubjUrn(Response response) throws IOException {
+		JsonPath jsonPath = new JsonPath(response.asString());
+		assertEquals(jsonPath.get("message"),
+				"Could not find log for: {subjectUrn: plrfgatform:appointment subjectId: 24333.27761.9826}");
+	}
+
+	public void verifyCreateStatus(Response response) throws IOException {
+		JsonPath jsonPath = new JsonPath(response.asString());
+		assertEquals(jsonPath.get("message"), "Status created");
+	}
+
+	public void verifyCreateStatusWithInvalidTime(Response response) throws IOException {
+		JsonPath jsonPath = new JsonPath(response.asString());
+		assertEquals(jsonPath.get("message"),
+				"Invalid input value: Invalid status data value: Text '2021-06-1012:01:46' could not be parsed at index 10");
+	}
+
+	public void verifyCreateStatusWithoutNotifId(Response response) throws IOException {
+		JsonPath jsonPath = new JsonPath(response.asString());
+		assertEquals(jsonPath.get("message"),
+				"/mf-notifications-log/v1/logs/v1/logs/d949174e-c056-456e-9c07-a37f022e488b/statuses");
+	}
+
+	public void verifyCreateNotification(Response response) throws IOException {
+		JsonPath jsonPath = new JsonPath(response.asString());
+		assertEquals(jsonPath.get("message"), "Status created");
+	}
 }
