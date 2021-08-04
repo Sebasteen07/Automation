@@ -607,4 +607,84 @@ public class APIVerification extends BaseTestNGWebDriver {
 		JsonPath jsonPath = new JsonPath(response.asString());
 		assertEquals(jsonPath.get("message"), "practiceId cannot be null, empty, or blank");
 	}
+
+	public void verifyAppointmentActions(Response response, String apptAction, String practiceId, String pmPatientId,
+			String pmAppointmentId) throws IOException {
+		JsonPath js = new JsonPath(response.asString());
+		log("Validate Appointment actions");
+		assertEquals(js.getString("action"), apptAction, "Action not allowed");
+		assertEquals(js.getString("practiceId"), practiceId, "Practice id was incorrect");
+		assertEquals(js.getString("pmPatientId"), pmPatientId, "Patient id was incorrect");
+		assertEquals(js.getString("pmAppointmentId"), pmAppointmentId, "Appointment id was incorrect");
+	}
+
+	public void verifyAppointmentActionPast(Response response) throws IOException {
+		JsonPath jsonPath = new JsonPath(response.asString());
+		assertEquals(jsonPath.get("message"), "Action not allowed");
+	}
+
+	public void verifyAppointments(Response response, String practiceId, String IntegrationId, String pmPatientId)
+			throws IOException {
+		JsonPath js = new JsonPath(response.asString());
+		log("Validate Apppointments");
+		assertEquals(js.getString("practiceId"), practiceId, "Practice id was incorrect");
+		assertEquals(js.getString("integrationId"), IntegrationId, "integrationId was incorrect");
+		assertEquals(js.getString("pmPatientId"), pmPatientId, "Patient id was incorrect");
+	}
+
+	public void verifyBalancePay(Response response, String practiceId, String pmPatientId, String pmAppointmentId)
+			throws IOException {
+		JsonPath js = new JsonPath(response.asString());
+		log("Validate Balance Pay");
+		assertEquals(js.getString("practiceId"), practiceId, "Practice id was incorrect");
+		assertEquals(js.getString("pmPatientId"), pmPatientId, "Patient id was incorrect");
+		assertEquals(js.getString("pmAppointmentId"), pmAppointmentId, "Appointment id was incorrect");
+	}
+
+	public void verifyBalancePaid(Response response) throws IOException {
+		JsonPath jsonPath = new JsonPath(response.asString());
+		assertEquals(jsonPath.get("message"), "BALANCE_ALREADY_COMPLETE");
+	}
+
+	public void verifyCopayPaid(Response response) throws IOException {
+		JsonPath jsonPath = new JsonPath(response.asString());
+		assertEquals(jsonPath.get("message"), "COPAY_ALREADY_COMPLETE");
+	}
+
+	public void verifyMessageHistory(Response response, String practiceId, String pmPatientId, String pmAppointmentId)
+			throws IOException {
+		JsonPath js = new JsonPath(response.asString());
+		log("Validate Message history");
+		assertEquals(js.getString("practiceId"), practiceId, "Practice id was incorrect");
+		assertEquals(js.getString("pmPatientId"), pmPatientId, "Patient id was incorrect");
+		assertEquals(js.getString("pmAppointmentId"), pmAppointmentId, "Appointment id was incorrect");
+	}
+
+	public void verifyDemographics(Response response, String practiceId, String pmPatientId, String pmAppointmentId)
+			throws IOException {
+		JsonPath js = new JsonPath(response.asString());
+		log("Validate demographis data");
+		assertEquals(js.getString("practiceId"), practiceId, "Practice id was incorrect");
+		assertEquals(js.getString("pmPatientId"), pmPatientId, "Patient id was incorrect");
+		assertEquals(js.getString("pmAppointmentId"), pmAppointmentId, "Appointment id was incorrect");
+	}
+
+	public void verifyPutForms(Response response, String practiceId, String pmPatientId, String pmAppointmentId)
+			throws IOException {
+		JsonPath js = new JsonPath(response.asString());
+		log("Validate Form created");
+		assertEquals(js.getString("practiceId"), practiceId, "Practice id was incorrect");
+		assertEquals(js.getString("pmPatientId"), pmPatientId, "Patient id was incorrect");
+		assertEquals(js.getString("pmAppointmentId"), pmAppointmentId, "Appointment id was incorrect");
+	}
+
+	public void verifyPutInsurance(Response response, String practiceId, String pmPatientId, String pmAppointmentId)
+			throws IOException {
+		JsonPath js = new JsonPath(response.asString());
+		log("Validate Insurance");
+		assertEquals(js.getString("practiceId"), practiceId, "Practice id was incorrect");
+		assertEquals(js.getString("pmPatientId"), pmPatientId, "Patient id was incorrect");
+		assertEquals(js.getString("pmAppointmentId"), pmAppointmentId, "Appointment id was incorrect");
+	}
+
 }
