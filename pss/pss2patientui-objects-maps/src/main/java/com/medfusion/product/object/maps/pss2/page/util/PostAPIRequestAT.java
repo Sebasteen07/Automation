@@ -201,7 +201,7 @@ public class PostAPIRequestAT {
 		return response;
 	}
 	public Response actuator(String practiceid) throws Exception {
-		Response response = given().log().all().spec(requestSpec).get(practiceid + "/actuator").then().spec(responseSpec).log().all().extract()
+		Response response = given().log().all().spec(requestSpec).get("/actuator").then().spec(responseSpec).log().all().extract()
 				.response();
 		return response;
 	}

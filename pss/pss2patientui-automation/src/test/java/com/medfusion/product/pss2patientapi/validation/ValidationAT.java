@@ -11,6 +11,7 @@ import com.intuit.ifs.csscat.core.BaseTestNG;
 import com.medfusion.product.object.maps.pss2.page.util.APIVerification;
 import com.medfusion.product.pss2patientui.utils.PSSPropertyFileLoader;
 
+import io.restassured.path.json.JsonPath;
 import io.restassured.response.Response;
 
 public class ValidationAT extends BaseTestNG {
@@ -27,7 +28,7 @@ public class ValidationAT extends BaseTestNG {
 
 		assertEquals(pid, propertyData.getProperty("apptid.at"), "Appointment id is incorrect");
 		assertEquals(status, "SCHEDULED", "Appointment's Status is not SCHEDULED");
-		assertEquals(appointmentTypeId, "82", "Appointment Type id is not correct");
+		assertEquals(appointmentTypeId, propertyData.getProperty("appttype.id.at"), "Appointment Type id is not correct");
 	}
 
 	public void verifyCancelledAppointmentStatusRponse(Response response) throws IOException {
@@ -59,5 +60,187 @@ public class ValidationAT extends BaseTestNG {
 		assertEquals(status, "SCHEDULED", "Appointment's Status is not SCHEDULED");
 		assertEquals(appointmentTypeId, "82", "Appointment Type id is not correct");
 	}
+	
+	public void verifyaddpatientResponse(Response response) throws IOException {
+		propertyData = new PSSPropertyFileLoader();
 
+		String fname= apiVerification.responseKeyValidationJson(response, "firstName");
+		String lname= apiVerification.responseKeyValidationJson(response, "lastName");
+		String email= apiVerification.responseKeyValidationJson(response, "emailAddress");
+		String gender= apiVerification.responseKeyValidationJson(response, "gender");
+		
+		assertEquals(fname, propertyData.getProperty("addpatient.fname.at"), "First Name is incorrect");
+		assertEquals(lname, propertyData.getProperty("addpatient.lname.at"));
+		assertEquals(email, propertyData.getProperty("addpatient.email.at"));
+		assertEquals(gender,propertyData.getProperty("addpatient.gender.at"));	
+
+	}
+
+	public void verifyAppointmentTypesResponse(Response response) throws IOException {
+		propertyData = new PSSPropertyFileLoader();
+
+		apiVerification.responseKeyValidationJson(response, "displayName");
+		apiVerification.responseKeyValidationJson(response, "name");
+		apiVerification.responseKeyValidationJson(response, "duration");
+		apiVerification.responseTimeValidation(response);
+
+	}
+	public void verifyBookResponse(Response response) throws IOException {
+		propertyData = new PSSPropertyFileLoader();
+
+		apiVerification.responseKeyValidationJson(response, "resourceName");
+		apiVerification.responseKeyValidationJson(response, "categoryName");
+		apiVerification.responseKeyValidationJson(response, "providerId");
+		apiVerification.responseKeyValidationJson(response, "type");
+		apiVerification.responseKeyValidationJson(response, "resourceId");
+		apiVerification.responseTimeValidation(response);
+
+	}
+	public void verifyCancellationReasonResponse(Response response) throws IOException {
+		propertyData = new PSSPropertyFileLoader();
+
+		apiVerification.responseKeyValidationJson(response, "id");
+		apiVerification.responseKeyValidationJson(response, "name");
+		apiVerification.responseKeyValidationJson(response, "displayName");
+		apiVerification.responseKeyValidationJson(response, "reasonType");
+
+	}
+	public void verifyCareProviderAvailabilityResponse(Response response) throws IOException {
+		propertyData = new PSSPropertyFileLoader();
+		JsonPath js = new JsonPath(response.asString());
+		
+		String resourceid= js.getString("careProvider[0].resourceId");
+		String catid=js.getString("careProvider[0].resourceCatId");
+		
+		apiVerification.responseKeyValidationJson(response, "careProvider[0].slotSize");
+		apiVerification.responseKeyValidationJson(response, "careProvider[0].nextAvilabledate");
+		
+		
+		assertEquals(catid, propertyData.getProperty("cpresourcecat.id.at"));
+		assertEquals(resourceid,propertyData.getProperty("cpresource.id.at"));	
+
+	}
+	public void verifyHealthcheckResponse(Response response) throws IOException {
+		propertyData = new PSSPropertyFileLoader();
+
+		String value=apiVerification.responseKeyValidationJson(response, "components.api");
+		assertEquals(value, "true");	
+
+	}
+	public void verifyInsuranceCarrierResponse(Response response) throws IOException {
+		propertyData = new PSSPropertyFileLoader();
+
+		apiVerification.responseKeyValidationJson(response, "name");
+		apiVerification.responseKeyValidationJson(response, "phone");
+		apiVerification.responseKeyValidationJson(response, "id");
+
+	}
+	public void verifyLastseenProviderResponse(Response response) throws IOException {
+		propertyData = new PSSPropertyFileLoader();
+
+		String lastseen=apiVerification.responseKeyValidationJson(response, "resourceId");		
+		assertEquals(lastseen, propertyData.getProperty("lastseen.provider.at"));
+		
+		apiVerification.responseKeyValidationJson(response, "lastSeenDateTime");		
+	}
+	public void verifLocationsResponse(Response response) throws IOException {
+		propertyData = new PSSPropertyFileLoader();
+		
+		apiVerification.responseKeyValidationJson(response, "name");
+		apiVerification.responseKeyValidationJson(response, "address.address1");
+		apiVerification.responseKeyValidationJson(response, "address.city");
+		apiVerification.responseKeyValidationJson(response, "address.state");
+		apiVerification.responseKeyValidationJson(response, "address.zipCode");
+		apiVerification.responseTimeValidation(response);
+	}
+	public void verifyLockoutsResponse(Response response) throws IOException {
+		propertyData = new PSSPropertyFileLoader();
+
+		apiVerification.responseKeyValidationJson(response, "key");
+		apiVerification.responseKeyValidationJson(response, "value");
+		apiVerification.responseKeyValidationJson(response, "type");
+
+	}
+	public void verifyMatchPatientResponse(Response response) throws IOException {
+		propertyData = new PSSPropertyFileLoader();
+
+		String fname= apiVerification.responseKeyValidationJson(response, "10113.firstName");
+		String lname= apiVerification.responseKeyValidationJson(response, "10113.lastName");
+	
+		assertEquals(fname, propertyData.getProperty("addpatient.fname.at"), "First Name is incorrect");
+		assertEquals(lname, propertyData.getProperty("addpatient.lname.at"));
+
+	}
+	public void verifyNextavailableSlotsResponse(Response response) throws IOException {
+		propertyData = new PSSPropertyFileLoader();
+
+		apiVerification.responseTimeValidation(response);
+	}
+	
+	public void verifPastAppointmentResponse(Response response) throws IOException {
+		propertyData = new PSSPropertyFileLoader();
+
+		JSONArray arr = new JSONArray(response.body().asString());
+		log("Id "+arr.getJSONObject(0).getString("id"));
+		log("Appointment Type- "+ arr.getJSONObject(0).getJSONObject("appointmentTypes").getString("name"));
+		log("Provider Name-  "+arr.getJSONObject(0).getJSONObject("book").getString("resourceName"));
+		log("Location Name-  "+arr.getJSONObject(0).getJSONObject("location").getString("displayName"));
+
+	}
+	public void verifyaPingResponse(Response response) throws IOException {
+		propertyData = new PSSPropertyFileLoader();
+
+		apiVerification.responseTimeValidation(response);
+
+	}
+	public void verifyPrerequisteAppointmenttypesResponse(Response response) throws IOException {
+		propertyData = new PSSPropertyFileLoader();
+
+		apiVerification.responseKeyValidationJson(response, "name");
+		apiVerification.responseKeyValidationJson(response, "id");
+	}
+	public void verifyactuatorResponse(Response response) throws IOException {
+		propertyData = new PSSPropertyFileLoader();
+
+		apiVerification.responseKeyValidationJson(response, "_links.self.href");
+		apiVerification.responseKeyValidationJson(response, "_links.health.href");
+	}
+	
+	public void verifyPrerequisteApptResponse(Response response) throws IOException {
+		propertyData = new PSSPropertyFileLoader();
+
+		JSONArray arr = new JSONArray(response.body().asString());			
+		String appointmentTypeId=arr.getJSONObject(0).getString("appointmentTypeId");
+		
+		log("Id "+appointmentTypeId);	
+		assertEquals(appointmentTypeId, propertyData.getProperty("prerequiste.appointmenttype.Id"));
+
+	}
+	
+	public void verifySearchatientResponse(Response response) throws IOException {
+		propertyData = new PSSPropertyFileLoader();
+
+		JSONArray arr = new JSONArray(response.body().asString());
+		
+		String fname = arr.getJSONObject(0).getString("firstName");
+		String lname = arr.getJSONObject(0).getString("lastName");
+		
+		assertEquals(fname, propertyData.getProperty("addpatient.fname.at"));
+		assertEquals(lname, propertyData.getProperty("addpatient.lname.at"));
+		
+	}
+	
+	public void verifyUpcommingApptResponse(Response response) throws IOException {
+		propertyData = new PSSPropertyFileLoader();
+
+		JSONArray arr = new JSONArray(response.body().asString());
+		log("Id "+arr.getJSONObject(0).getString("id"));
+		log("Appointment Type- "+ arr.getJSONObject(0).getJSONObject("appointmentTypes").getString("name"));
+		log("Provider Name-  "+arr.getJSONObject(0).getJSONObject("book").getString("resourceName"));
+		log("Location Name-  "+arr.getJSONObject(0).getJSONObject("location").getString("displayName"));
+		
+		apiVerification.responseTimeValidation(response);
+
+	}
+	
 }
