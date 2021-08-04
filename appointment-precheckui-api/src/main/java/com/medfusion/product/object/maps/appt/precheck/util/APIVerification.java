@@ -74,6 +74,14 @@ public class APIVerification extends BaseTestNGWebDriver {
 		ValidatableResponse valRes = response.then();
 		valRes.time(Matchers.lessThan(5000L));
 	}
+	
+	public void responseTimeValidationDailyAggregation(Response response) {
+		long time = response.time();
+		log("Response time " + time);
+		ValidatableResponse valRes = response.then();
+		valRes.time(Matchers.lessThan(30000L));
+	}
+
 
 	public void verifyInvalidLanguage(Response response) throws IOException {
 		JsonPath jsonPath = new JsonPath(response.asString());
@@ -464,6 +472,40 @@ public class APIVerification extends BaseTestNGWebDriver {
 		assertEquals(js.getString("status"), "FHIR_APPOINTMENT_NOT_FOUND", "Status was incorrect");
 		assertEquals(js.getString("message"), "Did not find a FHIR appointment", "Message was incorrect");
 	}
+	
+	public void verifyEventResponse(Response response, String eventId, String eventSource, String eventTime, String eventType, String practiceId) throws IOException {
+		JsonPath js = new JsonPath(response.asString());
+		log("Validate Apppointments events");
+		assertEquals(js.getString("eventId"), eventId, "EventId was incorrect");
+		assertEquals(js.getString("eventSource"), eventSource, "EventSource was incorrect");
+		assertEquals(js.getString("eventTime"), eventTime, "eventTimes incorrect");
+		assertEquals(js.getString("eventType"), eventType, "eventType was incorrect");
+		assertEquals(js.getString("practiceId"), practiceId, "practiceId was incorrect");
+	}
+	
+	public void verifyEventIncorrectTime(Response response) throws IOException {
+		JsonPath jsonPath = new JsonPath(response.asString());
+		assertEquals(jsonPath.get("message"), "Event time must be in ISO8601 date format");
+	}
+	
+	public void verifyMissingEventsource(Response response) throws IOException {
+		JsonPath jsonPath = new JsonPath(response.asString());
+		assertEquals(jsonPath.get("message"), "eventSource cannot be blank or null");
+	}
+	public void verifyDailyAggregationIncorrectTime(Response response) throws IOException {
+		JsonPath jsonPath = new JsonPath(response.asString());
+		assertEquals(jsonPath.get("message"), "Event time must be in ISO8601 date format");
+	}
+	public void verifyDailyAggregationTimeRange(Response response) throws IOException {
+		JsonPath jsonPath = new JsonPath(response.asString());
+		assertEquals(jsonPath.get("message"), "Start date and time cannot be after End date and time");
+	}
+	
+	public void verifyLongtermAggregationDateFormat(Response response) throws IOException {
+		JsonPath jsonPath = new JsonPath(response.asString());
+		assertEquals(jsonPath.get("message"), "Unable to parse date=2021-006-1833 - date is expected to be in yyyy-MM-dd format");
+	}
+
 
 	public void verifySendNotificationWithInvalidNotifType(Response response) throws IOException {
 		JsonPath jsonPath = new JsonPath(response.asString());
