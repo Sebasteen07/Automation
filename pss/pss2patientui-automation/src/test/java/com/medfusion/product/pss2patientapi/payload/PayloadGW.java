@@ -201,6 +201,20 @@ public class PayloadGW extends BaseTestNGWebDriver {
 		
 		return cancelStatus;
 	}
+	
+	public String cancelAppointmentPayload(String appointmentidCancel) {
+		String cancelStatus="{\r\n"
+				+ "  \"appointmentId\": \""+appointmentidCancel+"\",\r\n"
+				+ "  \"cancellationMap\": {\r\n"
+				+ "    \"additionalProp1\": null,\r\n"
+				+ "    \"additionalProp2\": null,\r\n"
+				+ "    \"additionalProp3\": null\r\n"
+				+ "  }\r\n"
+				+ "}\r\n"
+				+ "";		
+		
+		return cancelStatus;
+	}
 	public String schedulePayload(String startdate,String enddate,String patientId) {
 		String schedulePayload="{\r\n"
 				+ "\"locationId\": \"1019\",\r\n"

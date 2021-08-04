@@ -287,4 +287,15 @@ public class PSS2GWAdpterAcceptanceTests extends BaseTestNGWebDriver {
 		validateGW.verifyCancelStateResponse(response);
 
 	}
+	
+	@Test(enabled = true, groups = { "APItest" }, retryAnalyzer = RetryAnalyzer.class)
+	public void testCancelAppointmentPOST() throws IOException, InterruptedException {
+
+		Response response = postAPIRequestgw
+				.cancelappointment(payload.cancelAppointmentPayload(propertyData.getProperty("cancel.app.id.gw")), propertyData.getProperty("practice.id.gw"), propertyData.getProperty("patient.id.gw"));
+		logStep("Verifying the response");
+		assertEquals(response.getStatusCode(), 200);
+		validateGW.verifyCancelStateResponse(response);
+
+	}
 }
