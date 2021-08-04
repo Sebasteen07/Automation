@@ -12,6 +12,7 @@ import org.json.JSONObject;
 import com.intuit.ifs.csscat.core.BaseTestNGWebDriver;
 
 import io.restassured.path.json.JsonPath;
+import io.restassured.path.xml.XmlPath;
 import io.restassured.response.Response;
 import io.restassured.response.ValidatableResponse;
 
@@ -474,5 +475,94 @@ public class APIVerification extends BaseTestNGWebDriver {
 		JsonPath jsonPath = new JsonPath(response.asString());
 		assertEquals(jsonPath.get("message"),
 				"Processed 1 notifications; 1 of those failed: [The notification properties type cannot be null or empty.]");
+	}
+
+	public void verifyCreateProviderForPractice(Response response, String practiceId) throws IOException {
+		log("Validate Response");
+		JsonPath js = new JsonPath(response.asString());
+		assertEquals(js.getString("practiceId"), practiceId, "practice Id  was incorrect");
+	}
+
+	public void verifyCreateProviderForPracticeIfAlreadyExist(Response response) throws IOException {
+		JsonPath jsonPath = new JsonPath(response.asString());
+		assertEquals(jsonPath.get("message"), "Provider already exists.");
+	}
+
+	public void verifyCreateProviderForPracticeInvalidPracticeId(Response response) throws IOException {
+		JsonPath jsonPath = new JsonPath(response.asString());
+		assertEquals(jsonPath.get("message"), "PracticeId in request does not match practiceId on path.");
+	}
+
+	public void verifyProviderDetails(Response response, String practiceId, String providerId, String firstName,
+			String lastName, String fileName, String contentType) throws IOException {
+		log("Validate Response");
+		JsonPath js = new JsonPath(response.asString());
+		assertEquals(js.getString("practiceId"), practiceId, "Practice Id  was incorrect");
+		assertEquals(js.getString("providerId"), providerId, "Provider Id Id was incorrect");
+		assertEquals(js.getString("firstName"), firstName, "First Name was incorrect");
+		assertEquals(js.getString("lastName"), lastName, "last Name was incorrect");
+		assertEquals(js.getString("providerImage.fileName"), fileName, "FileName was incorrect");
+		assertEquals(js.getString("providerImage.contentType"), contentType, "Content Type Id was incorrect");
+	}
+
+	public void verifyProviderDetailsWithoutPracticeId(Response response) throws IOException {
+		JsonPath jsonPath = new JsonPath(response.asString());
+		assertEquals(jsonPath.get("message"), "Request method 'GET' not supported");
+	}
+
+	public void verifyUpdateAnExistingProvider(Response response, String practiceId, String providerId,
+			String firstName, String lastName, String fileName, String contentType) throws IOException {
+		log("Validate Response");
+		JsonPath js = new JsonPath(response.asString());
+		assertEquals(js.getString("practiceId"), practiceId, "Practice Id  was incorrect");
+		assertEquals(js.getString("providerId"), providerId, "Provider Id Id was incorrect");
+		assertEquals(js.getString("firstName"), firstName, "First Name was incorrect");
+		assertEquals(js.getString("lastName"), lastName, "last Name was incorrect");
+		assertEquals(js.getString("providerImage.fileName"), fileName, "FileName was incorrect");
+		assertEquals(js.getString("providerImage.contentType"), contentType, "Content Type Id was incorrect");
+	}
+
+	public void verifyUpdateAnExistingProviderWithInvalidPracticeId(Response response) throws IOException {
+		JsonPath jsonPath = new JsonPath(response.asString());
+		assertEquals(jsonPath.get("message"), "PracticeId in request does not match practiceId on path.");
+	}
+
+	public void verifyDeleteExistingProviderWithoutProviderId(Response response) throws IOException {
+		JsonPath jsonPath = new JsonPath(response.asString());
+		assertEquals(jsonPath.get("message"), "Request method 'DELETE' not supported");
+	}
+
+	public void verifyGetsTheImageDataWithoutProviderId(Response response) throws IOException {
+		JsonPath jsonPath = new JsonPath(response.asString());
+		assertEquals(jsonPath.get("message"), "No provider found for criteria.");
+	}
+
+	public void verifySendsConfirmationData(Response response, String practiceId, String apptId, String emrId)
+			throws IOException {
+		String stringResponse = response.asString();
+		XmlPath xmlPath = new XmlPath(stringResponse);
+		assertEquals(xmlPath.get("ns2:AppointmentConfirmation.PracticeId"), practiceId, "Practice Id was incorrect");
+		assertEquals(xmlPath.get("ns2:AppointmentConfirmation.AppointmentId"), apptId, "Appointment Id was incorrect");
+		assertEquals(xmlPath.get("ns2:AppointmentConfirmation.EmrId"), emrId, "EmrId was incorrect");
+	}
+
+	public void verifySendsConfirmationWithIncompleteData(Response response) throws IOException {
+		JsonPath jsonPath = new JsonPath(response.asString());
+		assertEquals(jsonPath.get("message"), "must not be blank");
+	}
+
+	public void verifySendsPatientProvidedDataWithoutApptId(Response response) throws IOException {
+		JsonPath jsonPath = new JsonPath(response.asString());
+		assertEquals(jsonPath.get("message"), "pmAppointmentId cannot be null, empty, or blank");
+	}
+
+	public void verifySendsPatientProvidedDataWithoutPatientId(Response response) throws IOException {
+		JsonPath jsonPath = new JsonPath(response.asString());
+		assertEquals(jsonPath.get("message"), "pmPatientId cannot be null, empty, or blank");
+	}
+
+	public void verifySendsPatientProvidedDataWithoutPracticeId(Response response) throws IOException {
+		JsonPath jsonPath = new JsonPath(response.asString());
+		assertEquals(jsonPath.get("message"), "practiceId cannot be null, empty, or blank");
 	}
 }

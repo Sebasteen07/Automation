@@ -25,6 +25,7 @@ public class ProvisioningUtils {
 	public static final String IMPLEMENTATION_PASS = "nG9;&(L&39mj";
 	public static final String ADMIN_USER = "testuser1";
 	public static final String ADMIN_PASS = "M3dfusion!";
+	public static String PRACTICE_ROLE = "/internal/merchantUser/";
 	
 	
 	
