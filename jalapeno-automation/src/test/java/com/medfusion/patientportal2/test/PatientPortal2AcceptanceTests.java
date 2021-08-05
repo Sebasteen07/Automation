@@ -4347,7 +4347,7 @@ public class PatientPortal2AcceptanceTests extends BaseTestNGWebDriver {
 	@Test(enabled = true, groups = { "acceptance-linkedaccounts" }, retryAnalyzer = RetryAnalyzer.class)
 	public void testMedicationWithFeeForTrustedRep() throws Exception {
 		String name = "Medication Patient CreditCard";
-		CreditCard creditCard = new CreditCard(CardType.Mastercard, name);
+		CreditCard creditCard = new CreditCard(CardType.Visa, name);
 		String email = testData.getTrustedRepEmail() + IHGUtil.createRandomNumber() + "@mailinator.com";
 		
 		logStep("Create a new patient on a practice where madication is configured");
