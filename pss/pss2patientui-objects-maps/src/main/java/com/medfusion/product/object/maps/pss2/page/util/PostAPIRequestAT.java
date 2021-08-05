@@ -36,6 +36,14 @@ public class PostAPIRequestAT {
 				.get(practiceid + "/appointmentstatus").then().spec(responseSpec).log().all().extract().response();
 		return response;
 	}
+	
+	public Response appointmentStatusWithoutPatientId(String practiceid, String apptid, String startDateTime)
+			throws Exception {
+		Response response = given().spec(requestSpec)
+				.queryParam("appointmentId", apptid).queryParam("startDateTime", startDateTime).log().all().when()
+				.get(practiceid + "/appointmentstatus").then().log().all().extract().response();
+		return response;
+	}
 
 	public Response demographics(String patientIdtestdata, String practiceid) throws Exception {
 		Response response = given().queryParam("patientId", patientIdtestdata).log().all().spec(requestSpec).when()
@@ -50,6 +58,13 @@ public class PostAPIRequestAT {
 		return response;
 	}
 
+	public Response cancelapptWithoutAppointmentId(String practiceid, String patientId) throws Exception {
+		Response response = given().log().all().spec(requestSpec).when()
+				.get(practiceid + "/cancelappointment/" + patientId).then().log().all().extract()
+				.response();
+		return response;
+	}
+	
 	public Response cancelApptPost(String practiceid, String apptid, String patientid) throws Exception {
 		Response response = given().spec(requestSpec).body("{      \"appointmentId\": \"1783620\"\r\n" + "}").log()
 				.all().when().post(practiceid + "/cancelappointment/" + patientid).then().spec(responseSpec).log().all().extract()
@@ -60,7 +75,14 @@ public class PostAPIRequestAT {
 	public Response pastAppt(String practiceid, String appointmentId, String patientId, Map<String, Object> hm)
 			throws Exception {
 		Response response = given().log().all().spec(requestSpec).body(hm).post(practiceid + "/pastappointments/")
-				.then().spec(responseSpec).log().all().assertThat().statusCode(200).extract().response();
+				.then().spec(responseSpec).log().all().extract().response();
+		return response;
+	}
+	
+	public Response pastApptInvalid(String practiceid, String appointmentId, String patientId, Map<String, Object> hm)
+			throws Exception {
+		Response response = given().log().all().spec(requestSpec).body(hm).post(practiceid + "/pastappointments/")
+				.then().log().all().extract().response();
 		return response;
 	}
 
@@ -75,10 +97,22 @@ public class PostAPIRequestAT {
 				.then().spec(responseSpec).log().all().extract().response();
 		return response;
 	}
+	
+	public Response lastseenproviderInvalid(String practiceid, String b) throws Exception {
+		Response response = given().log().all().spec(requestSpec).body(b).post(practiceid + "/getlastseenprovider")
+				.then().log().all().extract().response();
+		return response;
+	}
 
 	public Response careprovideravailability(String practiceid, String b) throws Exception {
 		Response response = given().log().all().spec(requestSpec).body(b).post(practiceid + "/careprovideravailability")
 				.then().spec(responseSpec).log().all().extract().response();
+		return response;
+	}
+	
+	public Response careprovideravailabilityInvalid(String practiceid, String b) throws Exception {
+		Response response = given().log().all().spec(requestSpec).body(b).post(practiceid + "/careprovideravailability")
+				.then().log().all().extract().response();
 		return response;
 	}
 
@@ -87,8 +121,20 @@ public class PostAPIRequestAT {
 				.all().extract().response();
 		return response;
 	}
+	
+	public Response addpatientInvalid(String practiceid, String b) throws Exception {
+		Response response = given().log().all().spec(requestSpec).body(b).post(practiceid + "/addpatient").then().log()
+				.all().extract().response();
+		return response;
+	}
 
 	public Response matchpatient(String practiceid, String b) throws Exception {
+		Response response = given().log().all().spec(requestSpec).body(b).post(practiceid + "/matchpatient").then().spec(responseSpec)
+				.log().all().extract().response();
+		return response;
+	}
+	
+	public Response matchpatientInvalid(String practiceid, String b) throws Exception {
 		Response response = given().log().all().spec(requestSpec).body(b).post(practiceid + "/matchpatient").then()
 				.log().all().extract().response();
 		return response;
@@ -112,6 +158,12 @@ public class PostAPIRequestAT {
 		return response;
 	}
 
+	public Response nextavailableslotsWithInvalidApptId(String practiceid, String b) throws Exception {
+		Response response = given().log().all().spec(requestSpec).body(b).post(practiceid + "/nextavailableslots")
+				.then().log().all().extract().response();
+		return response;
+	}
+	
 	public Response availableslots(String practiceid, String b) throws Exception {
 		Response response = given().log().all().spec(requestSpec).body(b).post(practiceid + "/availableslots").then()
 				.log().all().extract().response();
@@ -136,9 +188,21 @@ public class PostAPIRequestAT {
 				.extract().response();
 		return response;
 	}
+	
+	public Response healthcheckInvalid(String practiceid) throws Exception {
+		Response response = given().log().all().spec(requestSpec).get(practiceid + "/healthcheckk").then().log().all()
+				.extract().response();
+		return response;
+	}
 
 	public Response appointmenttypes(String practiceid) throws Exception {
 		Response response = given().log().all().spec(requestSpec).get(practiceid + "/appointmenttypes").then().spec(responseSpec).log()
+				.all().extract().response();
+		return response;
+	}
+	
+	public Response appointmenttypesInvalid() throws Exception {
+		Response response = given().log().all().spec(requestSpec).get("/appointmenttypes").then().log()
 				.all().extract().response();
 		return response;
 	}
@@ -148,15 +212,33 @@ public class PostAPIRequestAT {
 				.extract().response();
 		return response;
 	}
+	
+	public Response booksInvalid() throws Exception {
+		Response response = given().log().all().spec(requestSpec).get("/24260/books").then().log().all()
+				.extract().response();
+		return response;
+	}
 
 	public Response cancellationreason(String practiceid) throws Exception {
 		Response response = given().log().all().spec(requestSpec).get(practiceid + "/cancellationreason").then().spec(responseSpec).log()
 				.all().extract().response();
 		return response;
 	}
+	
+	public Response cancellationreasonInvalid(String practiceid) throws Exception {
+		Response response = given().log().all().spec(requestSpec).get(practiceid + "/cancellationreasonn").then().log()
+				.all().extract().response();
+		return response;
+	}
 
 	public Response locations(String practiceid) throws Exception {
 		Response response = given().log().all().spec(requestSpec).get(practiceid + "/locations").then().spec(responseSpec).log().all()
+				.extract().response();
+		return response;
+	}
+	
+	public Response locationsInvalid(String practiceid) throws Exception {
+		Response response = given().log().all().spec(requestSpec).get(practiceid + "/locationss").then().log().all()
 				.extract().response();
 		return response;
 	}
@@ -169,6 +251,12 @@ public class PostAPIRequestAT {
 
 	public Response lockout(String practiceid) throws Exception {
 		Response response = given().log().all().spec(requestSpec).get(practiceid + "/lockout").then().spec(responseSpec).log().all()
+				.extract().response();
+		return response;
+	}
+	
+	public Response lockoutInvalid(String practiceid) throws Exception {
+		Response response = given().log().all().spec(requestSpec).get(practiceid + "/lockoutt").then().log().all()
 				.extract().response();
 		return response;
 	}
@@ -202,6 +290,12 @@ public class PostAPIRequestAT {
 	}
 	public Response actuator(String practiceid) throws Exception {
 		Response response = given().log().all().spec(requestSpec).get("/actuator").then().spec(responseSpec).log().all().extract()
+				.response();
+		return response;
+	}
+	
+	public Response actuatorInvalid(String practiceid) throws Exception {
+		Response response = given().log().all().spec(requestSpec).get("/actuatorr").then().log().all().extract()
 				.response();
 		return response;
 	}

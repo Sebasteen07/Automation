@@ -30,6 +30,13 @@ public class ValidationAT extends BaseTestNG {
 		assertEquals(status, "SCHEDULED", "Appointment's Status is not SCHEDULED");
 		assertEquals(appointmentTypeId, propertyData.getProperty("appttype.id.at"), "Appointment Type id is not correct");
 	}
+	
+	public void verifyAppointmentStatusWithoutPatientIdRponse(Response response) throws IOException {
+		propertyData = new PSSPropertyFileLoader();
+
+		String message = apiVerification.responseKeyValidationJson(response, "message");
+		assertEquals(message, "Required String parameter 'patientId' is not present", "Message is not valid");
+	}
 
 	public void verifyCancelledAppointmentStatusRponse(Response response) throws IOException {
 		propertyData = new PSSPropertyFileLoader();
@@ -75,6 +82,14 @@ public class ValidationAT extends BaseTestNG {
 		assertEquals(gender,propertyData.getProperty("addpatient.gender.at"));	
 
 	}
+	
+	public void verifyaddpatientWithouFirstNameResponse(Response response) throws IOException {
+		propertyData = new PSSPropertyFileLoader();
+
+		String message= apiVerification.responseKeyValidationJson(response, "message");
+		assertEquals(response.getStatusCode(), 400);
+		assertEquals(message, "Additional fields are required.");
+	}
 
 	public void verifyAppointmentTypesResponse(Response response) throws IOException {
 		propertyData = new PSSPropertyFileLoader();
@@ -83,6 +98,15 @@ public class ValidationAT extends BaseTestNG {
 		apiVerification.responseKeyValidationJson(response, "name");
 		apiVerification.responseKeyValidationJson(response, "duration");
 		apiVerification.responseTimeValidation(response);
+	}
+	
+	public void verifyCancelApptWithoutApptIdResponse(Response response) throws IOException {
+		propertyData = new PSSPropertyFileLoader();
+
+		String message=apiVerification.responseKeyValidationJson(response, "message");
+		assertEquals(message, "Required String parameter 'appointmentId' is not present","Error message is wrong");
+		assertEquals(response.getStatusCode(), 400);
+
 
 	}
 	public void verifyBookResponse(Response response) throws IOException {
@@ -99,12 +123,22 @@ public class ValidationAT extends BaseTestNG {
 	public void verifyCancellationReasonResponse(Response response) throws IOException {
 		propertyData = new PSSPropertyFileLoader();
 
+		String error=apiVerification.responseKeyValidationJson(response, "error");
+		apiVerification.responseTimeValidation(response);
+		assertEquals(error, "Not Found");
+		assertEquals(response.getStatusCode(), 404);
+
+	}
+	
+	public void verifyCancellationReasonInvalidResponse(Response response) throws IOException {
+		propertyData = new PSSPropertyFileLoader();
+
 		apiVerification.responseKeyValidationJson(response, "id");
 		apiVerification.responseKeyValidationJson(response, "name");
 		apiVerification.responseKeyValidationJson(response, "displayName");
 		apiVerification.responseKeyValidationJson(response, "reasonType");
-
 	}
+	
 	public void verifyCareProviderAvailabilityResponse(Response response) throws IOException {
 		propertyData = new PSSPropertyFileLoader();
 		JsonPath js = new JsonPath(response.asString());
@@ -114,17 +148,27 @@ public class ValidationAT extends BaseTestNG {
 		
 		apiVerification.responseKeyValidationJson(response, "careProvider[0].slotSize");
 		apiVerification.responseKeyValidationJson(response, "careProvider[0].nextAvilabledate");
-		
+		apiVerification.responseTimeValidation(response);
 		
 		assertEquals(catid, propertyData.getProperty("cpresourcecat.id.at"));
 		assertEquals(resourceid,propertyData.getProperty("cpresource.id.at"));	
-
 	}
+	
+	public void verifyCareProviderAvailabilityInvalidResponse(Response response) throws IOException {
+		propertyData = new PSSPropertyFileLoader();
+	
+		String message=apiVerification.responseKeyValidationJson(response, "message");
+		assertEquals(response.getStatusCode(), 400);
+		assertEquals(message, "Appointment type ID is invalid.");
+	
+	}
+	
 	public void verifyHealthcheckResponse(Response response) throws IOException {
 		propertyData = new PSSPropertyFileLoader();
 
 		String value=apiVerification.responseKeyValidationJson(response, "components.api");
 		assertEquals(value, "true");	
+		apiVerification.responseTimeValidation(response);
 
 	}
 	public void verifyInsuranceCarrierResponse(Response response) throws IOException {
@@ -133,16 +177,26 @@ public class ValidationAT extends BaseTestNG {
 		apiVerification.responseKeyValidationJson(response, "name");
 		apiVerification.responseKeyValidationJson(response, "phone");
 		apiVerification.responseKeyValidationJson(response, "id");
-
+		apiVerification.responseTimeValidation(response);
 	}
+	
 	public void verifyLastseenProviderResponse(Response response) throws IOException {
 		propertyData = new PSSPropertyFileLoader();
 
 		String lastseen=apiVerification.responseKeyValidationJson(response, "resourceId");		
-		assertEquals(lastseen, propertyData.getProperty("lastseen.provider.at"));
-		
-		apiVerification.responseKeyValidationJson(response, "lastSeenDateTime");		
+		assertEquals(lastseen, propertyData.getProperty("lastseen.provider.at"));		
+		apiVerification.responseKeyValidationJson(response, "lastSeenDateTime");
+		apiVerification.responseTimeValidation(response);
 	}
+	
+	public void verifyLastseenProviderInvalidResponse(Response response) throws IOException {
+		
+		propertyData = new PSSPropertyFileLoader();
+		String message=apiVerification.responseKeyValidationJson(response, "message");		
+		assertEquals(message, "Patient ID is invalid.");
+		
+	}
+	
 	public void verifLocationsResponse(Response response) throws IOException {
 		propertyData = new PSSPropertyFileLoader();
 		
@@ -153,6 +207,14 @@ public class ValidationAT extends BaseTestNG {
 		apiVerification.responseKeyValidationJson(response, "address.zipCode");
 		apiVerification.responseTimeValidation(response);
 	}
+	
+	public void verifLocationsInvalidResponse(Response response) throws IOException {
+		propertyData = new PSSPropertyFileLoader();
+		String error=apiVerification.responseKeyValidationJson(response, "error");
+		assertEquals(error, "Not Found");
+		assertEquals(response.getStatusCode(), 404);
+	}
+	
 	public void verifyLockoutsResponse(Response response) throws IOException {
 		propertyData = new PSSPropertyFileLoader();
 
@@ -169,12 +231,29 @@ public class ValidationAT extends BaseTestNG {
 	
 		assertEquals(fname, propertyData.getProperty("addpatient.fname.at"), "First Name is incorrect");
 		assertEquals(lname, propertyData.getProperty("addpatient.lname.at"));
-
 	}
+	
+	public void verifyMatchPatientInvalidResponse(Response response) throws IOException {
+		propertyData = new PSSPropertyFileLoader();
+		
+		String message= apiVerification.responseKeyValidationJson(response, "message");
+		assertEquals(message, "Additional fields are required.", "Error message is not matching");
+		
+	}
+	
 	public void verifyNextavailableSlotsResponse(Response response) throws IOException {
 		propertyData = new PSSPropertyFileLoader();
 
 		apiVerification.responseTimeValidation(response);
+	}
+	
+	public void verifyNextavailableSlotsWithInvalidApptIdResponse(Response response) throws IOException {
+		propertyData = new PSSPropertyFileLoader();
+		
+		apiVerification.responseCodeValidation(response, 400);
+		apiVerification.responseTimeValidation(response);
+		String message=apiVerification.responseKeyValidationJson(response, "message");
+		assertEquals(message, "Appointment type ID is invalid.");		
 	}
 	
 	public void verifPastAppointmentResponse(Response response) throws IOException {
@@ -185,8 +264,17 @@ public class ValidationAT extends BaseTestNG {
 		log("Appointment Type- "+ arr.getJSONObject(0).getJSONObject("appointmentTypes").getString("name"));
 		log("Provider Name-  "+arr.getJSONObject(0).getJSONObject("book").getString("resourceName"));
 		log("Location Name-  "+arr.getJSONObject(0).getJSONObject("location").getString("displayName"));
+	}
+	
+	public void verifPastAppointmentInvalidResponse(Response response) throws IOException {
+
+		apiVerification.responseCodeValidation(response, 500);
+		apiVerification.responseTimeValidation(response);
+		String message=apiVerification.responseKeyValidationJson(response, "message");
+		assertEquals(message, "Invalid Parameters");	
 
 	}
+	
 	public void verifyaPingResponse(Response response) throws IOException {
 		propertyData = new PSSPropertyFileLoader();
 
