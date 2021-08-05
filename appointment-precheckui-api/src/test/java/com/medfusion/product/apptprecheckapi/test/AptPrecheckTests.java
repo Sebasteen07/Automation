@@ -19,7 +19,7 @@ import com.medfusion.product.object.maps.appt.precheck.util.PostAPIRequestAptPre
 
 import io.restassured.response.Response;
 
-public class AptPrecheck extends BaseTestNGWebDriver {
+public class AptPrecheckTests extends BaseTestNGWebDriver {
 	String getaccessToken;
 	public static PropertyFileLoader propertyData;
 	public static AptPrecheckPayload payload;
