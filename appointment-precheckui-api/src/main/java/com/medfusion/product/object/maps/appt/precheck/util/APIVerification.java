@@ -686,8 +686,6 @@ public class APIVerification extends BaseTestNGWebDriver {
 		assertEquals(js.getString("pmPatientId"), pmPatientId, "Patient id was incorrect");
 		assertEquals(js.getString("pmAppointmentId"), pmAppointmentId, "Appointment id was incorrect");
 	}
-
-=======
 	public void verifyReturnLogs(Response response, String subjectUrn, String subjectId) throws IOException {
 		JsonPath js = new JsonPath(response.asString());
 		log("Validate PM Integration Setting");
