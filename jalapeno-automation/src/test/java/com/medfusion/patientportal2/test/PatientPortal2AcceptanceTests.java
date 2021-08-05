@@ -4749,17 +4749,17 @@ public class PatientPortal2AcceptanceTests extends BaseTestNGWebDriver {
 
 		JalapenoAppointmentRequestV2Step1 appointmentRequestStep1 = PageFactory.initElements(driver,
 				JalapenoAppointmentRequestV2Step1.class);
-		logStep("Assess Elements and choose provider");
+		logStep("Choose a provider");
 		appointmentRequestStep1.chooseFirstProvider();
 
-		logStep("Continue to step 2.: click continue and assess elements");
+		logStep("Continue to step 2.: click on continue button");
 		JalapenoAppointmentRequestV2Step2 appointmentRequestStep2 = appointmentRequestStep1.continueToStep2(driver);
 
 		logStep("Fill details and submit");
 		appointmentRequestStep2.fillAppointmentRequestForm(appointmentReason);
 		homePage = appointmentRequestStep2.submitAppointment(driver);
 
-		logStep("Check if thank you frame is displayd");
+		logStep("Check if thank you frame is displayed");
 		assertTrue(homePage.isTextDisplayed("Thank you"));
 
 		logStep("Navigate to Appointment Request History");
