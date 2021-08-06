@@ -120,7 +120,7 @@ public class ValidationAT extends BaseTestNG {
 		apiVerification.responseTimeValidation(response);
 
 	}
-	public void verifyCancellationReasonResponse(Response response) throws IOException {
+	public void verifyCancellationReasonInvalidResponse(Response response) throws IOException {
 		propertyData = new PSSPropertyFileLoader();
 
 		String error=apiVerification.responseKeyValidationJson(response, "error");
@@ -130,7 +130,7 @@ public class ValidationAT extends BaseTestNG {
 
 	}
 	
-	public void verifyCancellationReasonInvalidResponse(Response response) throws IOException {
+	public void verifyCancellationReasonResponse(Response response) throws IOException {
 		propertyData = new PSSPropertyFileLoader();
 
 		apiVerification.responseKeyValidationJson(response, "id");
@@ -314,7 +314,8 @@ public class ValidationAT extends BaseTestNG {
 		String lname = arr.getJSONObject(0).getString("lastName");
 		
 		assertEquals(fname, propertyData.getProperty("addpatient.fname.at"));
-		assertEquals(lname, propertyData.getProperty("addpatient.lname.at"));		
+		assertEquals(lname, propertyData.getProperty("addpatient.lname.at"));	
+		apiVerification.responseTimeValidation(response);
 	}
 	
 	public void verifySearchatientInvalidResponse(Response response) throws IOException {

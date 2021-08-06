@@ -119,8 +119,7 @@ public class PostAPIRequestAT {
 	}
 
 	public Response addpatient(String practiceid, String b) throws Exception {
-		Response response = given().log().all().spec(requestSpec).body(b).post(practiceid + "/addpatient").then().spec(responseSpec).log()
-				.all().extract().response();
+		Response response = given().log().all().spec(requestSpec).body(b).post(practiceid + "/addpatient").then().log().all().spec(responseSpec).extract().response();
 		return response;
 	}
 	
@@ -143,6 +142,12 @@ public class PostAPIRequestAT {
 	}
 
 	public Response searchpatient(String practiceid, String b) throws Exception {
+		Response response = given().log().all().spec(requestSpec).body(b).post(practiceid + "/searchpatient").then().spec(responseSpec)
+				.log().all().extract().response();
+		return response;
+	}
+	
+	public Response searchpatientInvalid(String practiceid, String b) throws Exception {
 		Response response = given().log().all().spec(requestSpec).body(b).post(practiceid + "/searchpatient").then()
 				.log().all().extract().response();
 		return response;
@@ -151,6 +156,12 @@ public class PostAPIRequestAT {
 	public Response prerequisteappointmenttypes(String practiceid, String b) throws Exception {
 		Response response = given().log().all().spec(requestSpec).body(b)
 				.post(practiceid + "/prerequisteappointmenttypes").then().spec(responseSpec).log().all().extract().response();
+		return response;
+	}
+	
+	public Response prerequisteappointmenttypesInvalid(String practiceid, String b) throws Exception {
+		Response response = given().log().all().spec(requestSpec).body(b)
+				.post(practiceid + "/prerequisteappointmenttypes").then().log().all().extract().response();
 		return response;
 	}
 
