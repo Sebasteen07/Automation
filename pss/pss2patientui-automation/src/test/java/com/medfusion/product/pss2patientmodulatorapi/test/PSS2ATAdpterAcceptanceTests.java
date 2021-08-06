@@ -149,6 +149,7 @@ public class PSS2ATAdpterAcceptanceTests extends BaseTestNGWebDriver {
 		String b=payloadAT.getavailableSlotPayload(propertyData.getProperty("start.date.time.at"), propertyData.getProperty("end.date.time.at"), propertyData.getProperty("patient.id.at"));		
 
 		Response response = postAPIRequestat.availableslots(propertyData.getProperty("practice.id.at"),b);
+		aPIVerification.responseTimeValidation(response);
 
 		JsonPath js = new JsonPath(response.asString());
 
@@ -175,6 +176,7 @@ public class PSS2ATAdpterAcceptanceTests extends BaseTestNGWebDriver {
 		String schedPayload=payloadAT.schedulePayload(startDateTime, endDateTime, patientId, slotId);
 		
 		Response scheduleApptResponse =postAPIRequestat.scheduleAppt(propertyData.getProperty("practice.id.at"), schedPayload);
+		aPIVerification.responseTimeValidation(scheduleApptResponse);
 		String apptid=aPIVerification.responseKeyValidationJson(scheduleApptResponse, "id");
 		aPIVerification.responseKeyValidationJson(scheduleApptResponse, "slotAlreadyTaken");
 		aPIVerification.responseKeyValidationJson(scheduleApptResponse, "rescheduleNotAllowed");
@@ -184,6 +186,7 @@ public class PSS2ATAdpterAcceptanceTests extends BaseTestNGWebDriver {
 		String reschPayload=payloadAT.reschPayload(startDateTime_resch, endDateTime_resch, patientId, slotId_resch,apptid);
 			
 		Response rescheduleResponse=postAPIRequestat.rescheduleAppt(practiceid, reschPayload);
+		aPIVerification.responseTimeValidation(rescheduleResponse);
 		aPIVerification.responseKeyValidationJson(rescheduleResponse, "id");
 		aPIVerification.responseKeyValidationJson(rescheduleResponse, "slotAlreadyTaken");
 		aPIVerification.responseKeyValidationJson(rescheduleResponse, "rescheduleNotAllowed");			

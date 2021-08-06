@@ -25,6 +25,7 @@ public class ValidationAT extends BaseTestNG {
 		String pid = apiVerification.responseKeyValidationJson(response, "id");
 		String status = apiVerification.responseKeyValidationJson(response, "status");
 		String appointmentTypeId = apiVerification.responseKeyValidationJson(response, "appointmentTypeId");
+		apiVerification.responseTimeValidation(response);
 
 		assertEquals(pid, propertyData.getProperty("apptid.at"), "Appointment id is incorrect");
 		assertEquals(status, "SCHEDULED", "Appointment's Status is not SCHEDULED");
@@ -36,6 +37,7 @@ public class ValidationAT extends BaseTestNG {
 
 		String message = apiVerification.responseKeyValidationJson(response, "message");
 		assertEquals(message, "Required String parameter 'patientId' is not present", "Message is not valid");
+		apiVerification.responseTimeValidation(response);
 	}
 
 	public void verifyCancelledAppointmentStatusRponse(Response response) throws IOException {
@@ -44,6 +46,7 @@ public class ValidationAT extends BaseTestNG {
 		String pid = apiVerification.responseKeyValidationJson(response, "id");
 		String status = apiVerification.responseKeyValidationJson(response, "status");
 		String appointmentTypeId = apiVerification.responseKeyValidationJson(response, "appointmentTypeId");
+		apiVerification.responseTimeValidation(response);
 
 		assertEquals(pid, propertyData.getProperty("cancelled.apptid.at"), "Appointment id is incorrect");
 		assertEquals(status, "CANCELLED", "Appointment's Status is not CANCELLED");
@@ -62,6 +65,7 @@ public class ValidationAT extends BaseTestNG {
 		String pid = apiVerification.responseKeyValidationJson(response, "id");
 		String status = apiVerification.responseKeyValidationJson(response, "status");
 		String appointmentTypeId = apiVerification.responseKeyValidationJson(response, "appointmentTypeId");
+		apiVerification.responseTimeValidation(response);
 
 		assertEquals(pid, propertyData.getProperty("apptid.at"), "Appointment id is incorrect");
 		assertEquals(status, "SCHEDULED", "Appointment's Status is not SCHEDULED");
@@ -75,6 +79,7 @@ public class ValidationAT extends BaseTestNG {
 		String lname= apiVerification.responseKeyValidationJson(response, "lastName");
 		String email= apiVerification.responseKeyValidationJson(response, "emailAddress");
 		String gender= apiVerification.responseKeyValidationJson(response, "gender");
+		apiVerification.responseTimeValidation(response);
 		
 		assertEquals(fname, propertyData.getProperty("addpatient.fname.at"), "First Name is incorrect");
 		assertEquals(lname, propertyData.getProperty("addpatient.lname.at"));
@@ -87,6 +92,7 @@ public class ValidationAT extends BaseTestNG {
 		propertyData = new PSSPropertyFileLoader();
 
 		String message= apiVerification.responseKeyValidationJson(response, "message");
+		apiVerification.responseTimeValidation(response);
 		assertEquals(response.getStatusCode(), 400);
 		assertEquals(message, "Additional fields are required.");
 	}
@@ -106,9 +112,9 @@ public class ValidationAT extends BaseTestNG {
 		String message=apiVerification.responseKeyValidationJson(response, "message");
 		assertEquals(message, "Required String parameter 'appointmentId' is not present","Error message is wrong");
 		assertEquals(response.getStatusCode(), 400);
-
-
+		apiVerification.responseTimeValidation(response);
 	}
+	
 	public void verifyBookResponse(Response response) throws IOException {
 		propertyData = new PSSPropertyFileLoader();
 
@@ -137,6 +143,7 @@ public class ValidationAT extends BaseTestNG {
 		apiVerification.responseKeyValidationJson(response, "name");
 		apiVerification.responseKeyValidationJson(response, "displayName");
 		apiVerification.responseKeyValidationJson(response, "reasonType");
+		apiVerification.responseTimeValidation(response);
 	}
 	
 	public void verifyCareProviderAvailabilityResponse(Response response) throws IOException {
@@ -160,7 +167,7 @@ public class ValidationAT extends BaseTestNG {
 		String message=apiVerification.responseKeyValidationJson(response, "message");
 		assertEquals(response.getStatusCode(), 400);
 		assertEquals(message, "Appointment type ID is invalid.");
-	
+		apiVerification.responseTimeValidation(response);	
 	}
 	
 	public void verifyHealthcheckResponse(Response response) throws IOException {
@@ -194,6 +201,7 @@ public class ValidationAT extends BaseTestNG {
 		propertyData = new PSSPropertyFileLoader();
 		String message=apiVerification.responseKeyValidationJson(response, "message");		
 		assertEquals(message, "Patient ID is invalid.");
+		apiVerification.responseTimeValidation(response);
 		
 	}
 	
@@ -213,6 +221,7 @@ public class ValidationAT extends BaseTestNG {
 		String error=apiVerification.responseKeyValidationJson(response, "error");
 		assertEquals(error, "Not Found");
 		assertEquals(response.getStatusCode(), 404);
+		apiVerification.responseTimeValidation(response);
 	}
 	
 	public void verifyLockoutsResponse(Response response) throws IOException {
@@ -221,6 +230,7 @@ public class ValidationAT extends BaseTestNG {
 		apiVerification.responseKeyValidationJson(response, "key");
 		apiVerification.responseKeyValidationJson(response, "value");
 		apiVerification.responseKeyValidationJson(response, "type");
+		apiVerification.responseTimeValidation(response);
 
 	}
 	public void verifyMatchPatientResponse(Response response) throws IOException {
@@ -231,6 +241,7 @@ public class ValidationAT extends BaseTestNG {
 	
 		assertEquals(fname, propertyData.getProperty("addpatient.fname.at"), "First Name is incorrect");
 		assertEquals(lname, propertyData.getProperty("addpatient.lname.at"));
+		apiVerification.responseTimeValidation(response);
 	}
 	
 	public void verifyMatchPatientInvalidResponse(Response response) throws IOException {
@@ -238,6 +249,7 @@ public class ValidationAT extends BaseTestNG {
 		
 		String message= apiVerification.responseKeyValidationJson(response, "message");
 		assertEquals(message, "Additional fields are required.", "Error message is not matching");
+		apiVerification.responseTimeValidation(response);
 		
 	}
 	
@@ -264,6 +276,7 @@ public class ValidationAT extends BaseTestNG {
 		log("Appointment Type- "+ arr.getJSONObject(0).getJSONObject("appointmentTypes").getString("name"));
 		log("Provider Name-  "+arr.getJSONObject(0).getJSONObject("book").getString("resourceName"));
 		log("Location Name-  "+arr.getJSONObject(0).getJSONObject("location").getString("displayName"));
+		apiVerification.responseTimeValidation(response);
 	}
 	
 	public void verifPastAppointmentInvalidResponse(Response response) throws IOException {
@@ -272,6 +285,7 @@ public class ValidationAT extends BaseTestNG {
 		apiVerification.responseTimeValidation(response);
 		String message=apiVerification.responseKeyValidationJson(response, "message");
 		assertEquals(message, "Invalid Parameters");	
+		apiVerification.responseTimeValidation(response);
 
 	}
 	
@@ -286,12 +300,14 @@ public class ValidationAT extends BaseTestNG {
 
 		apiVerification.responseKeyValidationJson(response, "name");
 		apiVerification.responseKeyValidationJson(response, "id");
+		apiVerification.responseTimeValidation(response);
 	}
 	public void verifyactuatorResponse(Response response) throws IOException {
 		propertyData = new PSSPropertyFileLoader();
 
 		apiVerification.responseKeyValidationJson(response, "_links.self.href");
 		apiVerification.responseKeyValidationJson(response, "_links.health.href");
+		apiVerification.responseTimeValidation(response);
 	}
 	
 	public void verifyPrerequisteApptResponse(Response response) throws IOException {
@@ -299,6 +315,7 @@ public class ValidationAT extends BaseTestNG {
 
 		JSONArray arr = new JSONArray(response.body().asString());			
 		String appointmentTypeId=arr.getJSONObject(0).getString("appointmentTypeId");
+		apiVerification.responseTimeValidation(response);
 		
 		log("Id "+appointmentTypeId);	
 		assertEquals(appointmentTypeId, propertyData.getProperty("prerequiste.appointmenttype.Id"));
@@ -330,6 +347,7 @@ public class ValidationAT extends BaseTestNG {
 		
 		String message=apiVerification.responseKeyValidationJson(response, "message");
 		assertEquals(message, "Additional fields are required.");
+		apiVerification.responseTimeValidation(response);
 	}
 	
 	
