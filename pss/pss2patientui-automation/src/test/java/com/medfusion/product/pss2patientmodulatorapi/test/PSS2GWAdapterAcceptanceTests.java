@@ -22,7 +22,7 @@ import io.restassured.response.Response;
 import io.restassured.specification.RequestSpecification;
 import io.restassured.specification.ResponseSpecification;
 
-public class PSS2GWAdpterAcceptanceTests extends BaseTestNGWebDriver {
+public class PSS2GWAdapterAcceptanceTests extends BaseTestNGWebDriver {
 
 	public static PayloadGW payload;
 	public static PSSPropertyFileLoader propertyData;
