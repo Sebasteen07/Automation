@@ -253,22 +253,6 @@ public class PostAPIRequestPatientMod extends BaseTestNGWebDriver {
 		return response;
 	}
 
-	/*public String createToken(String baseurl) {
-		RestAssured.baseURI = baseurl;
-		Response response = given().log().all().header("flowType", "LOGINLESS").get("/accesstoken").then().log().all()
-				.assertThat().statusCode(200).body("accessToken", Matchers.notNullValue()).extract().response();
-
-		JSONObject jsonobject = new JSONObject(response.asString());
-
-		ParseJSONFile.getKey(jsonobject, "accessToken");
-
-		JsonPath jsonPath = response.jsonPath();
-		String access_Token = jsonPath.get("accessToken");
-		log("The Access Token is    " + jsonPath.get("accessToken"));
-
-		return access_Token;
-	}*/
-	
 	public String createToken(String baseurl) {
 		RestAssured.baseURI = baseurl;
 		Response response = given().log().all().header("flowType", "LOGINLESS").get("/createtoken").then().log().all()

@@ -78,7 +78,7 @@ public class PSS2ATAdpterAcceptanceTests extends BaseTestNGWebDriver {
 	}
 
 	@Test(enabled = true, groups = { "APItest" }, retryAnalyzer = RetryAnalyzer.class)
-	public void testcancelappointmentGET() throws NullPointerException, Exception {
+	public void testCancelAppointmentGET() throws NullPointerException, Exception {
 
 		String b=payloadAT.getavailableSlotPayload(propertyData.getProperty("start.date.time.at"), propertyData.getProperty("end.date.time.at"), propertyData.getProperty("patient.id.at"));		
 
@@ -118,7 +118,7 @@ public class PSS2ATAdpterAcceptanceTests extends BaseTestNGWebDriver {
 
 
 	@Test(enabled = true, groups = { "APItest" }, retryAnalyzer = RetryAnalyzer.class)
-	public void testupcomingappointmentsPOST() throws NullPointerException, Exception {
+	public void testUpcomingAppointmentsPOST() throws NullPointerException, Exception {
 		
 		String b=payloadAT.upcommingApptPayload(propertyData.getProperty("start.date.time.at"), propertyData.getProperty("end.date.time.at"), propertyData.getProperty("patient.id.at"));	
 		
@@ -127,7 +127,7 @@ public class PSS2ATAdpterAcceptanceTests extends BaseTestNGWebDriver {
 	}
 	
 	@Test(enabled = true, groups = { "APItest" }, retryAnalyzer = RetryAnalyzer.class)
-	public void testupcomingappointmentsInvalidPOST() throws NullPointerException, Exception {
+	public void testUpcomingAppointmentsInvalidPOST() throws NullPointerException, Exception {
 	
 		String c=payloadAT.upcommingApptInvalidApptIdPayload(propertyData.getProperty("start.date.time.at"), propertyData.getProperty("end.date.time.at"), propertyData.getProperty("patient.id.at"));
 		Response responseInvalid=postAPIRequestat.upcommingApptInvalid(propertyData.getProperty("practice.id.at"),c);
@@ -201,7 +201,7 @@ public class PSS2ATAdpterAcceptanceTests extends BaseTestNGWebDriver {
 	}
 	
 	@Test(enabled = true, groups = { "APItest" }, retryAnalyzer = RetryAnalyzer.class)
-	public void testlastseenproviderPOST() throws NullPointerException, Exception {
+	public void testLasteenProviderPOST() throws NullPointerException, Exception {
 		
 		String b=payloadAT.lastseenProviderPayload();	
 		String c=payloadAT.lastseenProviderInvalidPatientIdPayload();
@@ -214,7 +214,7 @@ public class PSS2ATAdpterAcceptanceTests extends BaseTestNGWebDriver {
 	}
 
 	@Test(enabled = true, groups = { "APItest" }, retryAnalyzer = RetryAnalyzer.class)
-	public void testcareprovideravailabilityPOST() throws NullPointerException, Exception {
+	public void testCareProviderAvailabilityPOST() throws NullPointerException, Exception {
 
 		String b = payloadAT.careProviderAvailabilityPayload(
 				propertyData.getProperty("start.date.time.at"),
@@ -232,30 +232,39 @@ public class PSS2ATAdpterAcceptanceTests extends BaseTestNGWebDriver {
 
 	}
 	@Test(enabled = true, groups = { "APItest" }, retryAnalyzer = RetryAnalyzer.class)
-	public void testaddpatientPOST() throws NullPointerException, Exception {
+	public void testAddpatientPOST() throws NullPointerException, Exception {
 		
 		String b=payloadAT.addPatientPayload();		
 		Response response = postAPIRequestat.addpatient(propertyData.getProperty("practice.id.at"),b);
 		validateAT.verifyaddpatientResponse(response);
-		String c=payloadAT.addPatientWithoutFirstNamePayload();	
-		Response responseInvalid= postAPIRequestat.addpatientInvalid(propertyData.getProperty("practice.id.at"),c);
+	}
+	
+	@Test(enabled = true, groups = { "APItest" }, retryAnalyzer = RetryAnalyzer.class)
+	public void testAddpatientInvalidPOST() throws NullPointerException, Exception {
+		
+		String c = payloadAT.addPatientWithoutFirstNamePayload();
+		Response responseInvalid = postAPIRequestat.addpatientInvalid(propertyData.getProperty("practice.id.at"), c);
 		validateAT.verifyaddpatientWithouFirstNameResponse(responseInvalid);
 	}
 	
 	@Test(enabled = true, groups = { "APItest" }, retryAnalyzer = RetryAnalyzer.class)
-	public void testmatchpatientPOST() throws NullPointerException, Exception {
+	public void testMatchpatientPOST() throws NullPointerException, Exception {
 		
-		String b=payloadAT.matchPatientPayload();	
-		String c=payloadAT.matchPatientInvalidPayload();
-
+		String b=payloadAT.matchPatientPayload();
 		Response response = postAPIRequestat.matchpatient(propertyData.getProperty("practice.id.at"),b);
 		validateAT.verifyMatchPatientResponse(response);
-		Response responseInvalid=postAPIRequestat.matchpatientInvalid(propertyData.getProperty("practice.id.at"), c);
-		validateAT.verifyMatchPatientInvalidResponse(responseInvalid);	
 	}
 	
 	@Test(enabled = true, groups = { "APItest" }, retryAnalyzer = RetryAnalyzer.class)
-	public void testsearchpatientPOST() throws NullPointerException, Exception {
+	public void testMatchpatientInvalidPOST() throws NullPointerException, Exception {
+
+		String c = payloadAT.matchPatientInvalidPayload();
+		Response responseInvalid = postAPIRequestat.matchpatientInvalid(propertyData.getProperty("practice.id.at"), c);
+		validateAT.verifyMatchPatientInvalidResponse(responseInvalid);
+	}
+	
+	@Test(enabled = true, groups = { "APItest" }, retryAnalyzer = RetryAnalyzer.class)
+	public void testSearchpatientPOST() throws NullPointerException, Exception {
 		
 		String b=payloadAT.searchPatientPayload();		
 		log("Payload- "+b);
@@ -264,7 +273,7 @@ public class PSS2ATAdpterAcceptanceTests extends BaseTestNGWebDriver {
 	}
 	
 	@Test(enabled = true, groups = { "APItest" }, retryAnalyzer = RetryAnalyzer.class)
-	public void testsearchpatientInvalidPOST() throws NullPointerException, Exception {
+	public void testSearchpatientInvalidPOST() throws NullPointerException, Exception {
 
 		String b = payloadAT.searchPatientInvalidPayload();
 		Response response = postAPIRequestat.searchpatient(propertyData.getProperty("practice.id.at"), b);
@@ -272,7 +281,7 @@ public class PSS2ATAdpterAcceptanceTests extends BaseTestNGWebDriver {
 	}
 	
 	@Test(enabled = true, groups = { "APItest" }, retryAnalyzer = RetryAnalyzer.class)
-	public void testprerequisteappointmenttypesPOST() throws NullPointerException, Exception {
+	public void testPrerequisteAppointmentTypesPOST() throws NullPointerException, Exception {
 		
 		String b=payloadAT.prerequisteappointmenttypesPayload(propertyData.getProperty("prerequiste.appointmenttype.Id"));		
 		log("Payload- "+b);
@@ -281,7 +290,7 @@ public class PSS2ATAdpterAcceptanceTests extends BaseTestNGWebDriver {
 	}
 	
 	@Test(enabled = true, groups = { "APItest" }, retryAnalyzer = RetryAnalyzer.class)
-	public void testprerequisteappointmenttypesInvalidPOST() throws NullPointerException, Exception {
+	public void testPrerequisteAppointmentTypesInvalidPOST() throws NullPointerException, Exception {
 		
 		String b=payloadAT.prerequisteappointmenttypesInvalidPayload(propertyData.getProperty("prerequiste.appointmenttype.Id"));		
 		Response response = postAPIRequestat.prerequisteappointmenttypes(propertyData.getProperty("practice.id.at"),b);
@@ -289,31 +298,38 @@ public class PSS2ATAdpterAcceptanceTests extends BaseTestNGWebDriver {
 	}
 	
 	@Test(enabled = true, groups = { "APItest" }, retryAnalyzer = RetryAnalyzer.class)
-	public void testnextavailableslotsPOST() throws NullPointerException, Exception {
+	public void testNextavailableslotsPOST() throws NullPointerException, Exception {
 		
 		String b=payloadAT.nextAvailablePayload(propertyData.getProperty("start.date.time.at"));		
-		String c=payloadAT.nextAvailableInvalidPayload(propertyData.getProperty("start.date.time.at"));
-	
 		Response response = postAPIRequestat.nextavailableslots(propertyData.getProperty("practice.id.at"),b);
 		validateAT.verifyNextavailableSlotsResponse(response);
-		Response responseInvalid= postAPIRequestat.nextavailableslotsWithInvalidApptId(propertyData.getProperty("practice.id.at"),c);
-		validateAT.verifyNextavailableSlotsWithInvalidApptIdResponse(responseInvalid);
-		
 	}
 	
 	@Test(enabled = true, groups = { "APItest" }, retryAnalyzer = RetryAnalyzer.class)
-	public void testinsurancecarrierGET() throws NullPointerException, Exception {
+	public void testNextavailableslotsInvalidPOST() throws NullPointerException, Exception {
+		
+		String c=payloadAT.nextAvailableInvalidPayload(propertyData.getProperty("start.date.time.at"));
+		Response responseInvalid= postAPIRequestat.nextavailableslotsWithInvalidApptId(propertyData.getProperty("practice.id.at"),c);
+		validateAT.verifyNextavailableSlotsWithInvalidApptIdResponse(responseInvalid);	
+	}
+	
+	@Test(enabled = true, groups = { "APItest" }, retryAnalyzer = RetryAnalyzer.class)
+	public void testInsurancecarrierGET() throws NullPointerException, Exception {
 
 		Response response = postAPIRequestat.insurancecarrier(propertyData.getProperty("practice.id.at"));
 		validateAT.verifyInsuranceCarrierResponse(response);
 	}
 
 	@Test(enabled = true, groups = { "APItest" }, retryAnalyzer = RetryAnalyzer.class)
-	public void testhealthcheckGET() throws NullPointerException, Exception {
+	public void testHealthcheckGET() throws NullPointerException, Exception {
 
 		Response response = postAPIRequestat.healthcheck(propertyData.getProperty("practice.id.at"));
 		validateAT.verifyHealthcheckResponse(response);
-		
+	}
+	
+	@Test(enabled = true, groups = { "APItest" }, retryAnalyzer = RetryAnalyzer.class)
+	public void testHealthcheckInvalidGET() throws NullPointerException, Exception {
+
 		Response responseInvalid= postAPIRequestat.healthcheckInvalid(propertyData.getProperty("practice.id.at"));
 		aPIVerification.responseCodeValidation(responseInvalid, 404);
 	}
@@ -323,7 +339,11 @@ public class PSS2ATAdpterAcceptanceTests extends BaseTestNGWebDriver {
 
 		Response response = postAPIRequestat.appointmenttypes(propertyData.getProperty("practice.id.at"));
 		validateAT.verifyAppointmentTypesResponse(response);
-		
+	}
+	
+	@Test(enabled = true, groups = { "APItest" }, retryAnalyzer = RetryAnalyzer.class)
+	public void testApptTypesInvalidGET() throws NullPointerException, Exception {
+
 		Response responseInvallid = postAPIRequestat.appointmenttypesInvalid();
 		assertEquals(responseInvallid.getStatusCode(), 404);
 	}
@@ -333,6 +353,10 @@ public class PSS2ATAdpterAcceptanceTests extends BaseTestNGWebDriver {
 
 		Response response = postAPIRequestat.books(propertyData.getProperty("practice.id.at"));
 		validateAT.verifyBookResponse(response);
+	}
+	
+	@Test(enabled = true, groups = { "APItest" }, retryAnalyzer = RetryAnalyzer.class)
+	public void testBooksInvalidGET() throws NullPointerException, Exception {
 		
 		Response responseInvalid= postAPIRequestat.booksInvalid();
 		assertEquals(responseInvalid.getStatusCode(), 500);
@@ -346,73 +370,91 @@ public class PSS2ATAdpterAcceptanceTests extends BaseTestNGWebDriver {
 	}
 	
 	@Test(enabled = true, groups = { "APItest" }, retryAnalyzer = RetryAnalyzer.class)
-	public void testcancellationreasonrGET() throws NullPointerException, Exception {
+	public void testCancellationReasonrGET() throws NullPointerException, Exception {
 
 		Response response = postAPIRequestat.cancellationreason(propertyData.getProperty("practice.id.at"));
 		validateAT.verifyCancellationReasonResponse(response);
-		
+	}
+	
+	@Test(enabled = true, groups = { "APItest" }, retryAnalyzer = RetryAnalyzer.class)
+	public void testCancellationReasonrInvalidGET() throws NullPointerException, Exception {
+	
 		Response responseInvalid= postAPIRequestat.cancellationreasonInvalid(propertyData.getProperty("practice.id.at"));
 		validateAT.verifyCancellationReasonInvalidResponse(responseInvalid);
 	}
 	
 	@Test(enabled = true, groups = { "APItest" }, retryAnalyzer = RetryAnalyzer.class)
-	public void testlocationsGET() throws NullPointerException, Exception {
-
-		Response response = postAPIRequestat.locations(propertyData.getProperty("practice.id.at"));
-		validateAT.verifLocationsResponse(response);
-		
+	public void testLocationsGET() throws NullPointerException, Exception {
+	
 		Response responseInvalid = postAPIRequestat.locationsInvalid(propertyData.getProperty("practice.id.at"));
 		validateAT.verifLocationsInvalidResponse(responseInvalid);
 	}
 	
 	@Test(enabled = true, groups = { "APItest" }, retryAnalyzer = RetryAnalyzer.class)
-	public void testlockoutGET() throws NullPointerException, Exception {
+	public void testLocationsInvalidGET() throws NullPointerException, Exception {
+
+		Response responseInvalid = postAPIRequestat.locationsInvalid(propertyData.getProperty("practice.id.at"));
+		validateAT.verifLocationsInvalidResponse(responseInvalid);
+	}
+	
+	@Test(enabled = true, groups = { "APItest" }, retryAnalyzer = RetryAnalyzer.class)
+	public void testLockoutGET() throws NullPointerException, Exception {
 
 		Response response = postAPIRequestat.lockout(propertyData.getProperty("practice.id.at"));
 		validateAT.verifLocationsResponse(response);
+	}
+	
+	@Test(enabled = true, groups = { "APItest" }, retryAnalyzer = RetryAnalyzer.class)
+	public void testLockoutInvalidGET() throws NullPointerException, Exception {
+
 		Response responseInvalid= postAPIRequestat.lockoutInvalid(propertyData.getProperty("practice.id.at"));
 		aPIVerification.responseCodeValidation(responseInvalid, 404);
 	}
 
 	@Test(enabled = true, groups = { "APItest" }, retryAnalyzer = RetryAnalyzer.class)
-	public void testprerequisteappointmenttypesGET() throws NullPointerException, Exception {
+	public void testPrerequisteAppointmentTypesGET() throws NullPointerException, Exception {
 
 		Response response = postAPIRequestat.prerequisteappointmenttypes(propertyData.getProperty("practice.id.at"));
 		validateAT.verifyPrerequisteAppointmenttypesResponse(response);
 	}
 	
 	@Test(enabled = true, groups = { "APItest" }, retryAnalyzer = RetryAnalyzer.class)
-	public void testprerequisteappointmenttypesInvalidGET() throws NullPointerException, Exception {
+	public void testPrerequisteAppointmentTypesInvalidGET() throws NullPointerException, Exception {
 
 		Response response = postAPIRequestat.prerequisteappointmenttypesInvalid(propertyData.getProperty("practice.id.at"));
 		aPIVerification.responseCodeValidation(response, 404);
 	}
 	
 	@Test(enabled = true, groups = { "APItest" }, retryAnalyzer = RetryAnalyzer.class)
-	public void testpingGET() throws NullPointerException, Exception {
+	public void testPingGET() throws NullPointerException, Exception {
 
 		Response response = postAPIRequestat.ping(propertyData.getProperty("practice.id.at"));
 		validateAT.verifyaPingResponse(response);
 	}
 	
 	@Test(enabled = true, groups = { "APItest" }, retryAnalyzer = RetryAnalyzer.class)
-	public void testactuatorGET() throws NullPointerException, Exception {
+	public void testActuatorGET() throws NullPointerException, Exception {
 
 		Response response = postAPIRequestat.actuator(propertyData.getProperty("practice.id.at"));
 		validateAT.verifyactuatorResponse(response);	
-		Response responseInvalid= postAPIRequestat.actuatorInvalid(propertyData.getProperty("practice.id.at"));
+	}
+	
+	@Test(enabled = true, groups = { "APItest" }, retryAnalyzer = RetryAnalyzer.class)
+	public void testActuatorInvalidGET() throws NullPointerException, Exception {
+
+		Response responseInvalid = postAPIRequestat.actuatorInvalid(propertyData.getProperty("practice.id.at"));
 		assertEquals(responseInvalid.getStatusCode(), 404);
 	}
 	
 	@Test(enabled = true, groups = { "APItest" }, retryAnalyzer = RetryAnalyzer.class)
-	public void testpreventschedulingdateGET() throws NullPointerException, Exception {
+	public void testPreventSchedulingdateGET() throws NullPointerException, Exception {
 
 		Response response = postAPIRequestat.preventschedulingdate(propertyData.getProperty("practice.id.at"));
 		aPIVerification.responseTimeValidation(response);		
 	}
 	
 	@Test(enabled = true, groups = { "APItest" }, retryAnalyzer = RetryAnalyzer.class)
-	public void testpreventschedulingdateInvalidGET() throws NullPointerException, Exception {
+	public void testPreventschedulingdateInvalidGET() throws NullPointerException, Exception {
 
 		Response response = postAPIRequestat.preventschedulingdateInvalid(propertyData.getProperty("practice.id.at"));
 		aPIVerification.responseTimeValidation(response);		
