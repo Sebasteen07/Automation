@@ -47,14 +47,14 @@ public class PostAPIRequestAT {
 		return response;
 	}
 
-	public Response cancelappt(String practiceid, String appointmentId, String patientId) throws Exception {
+	public Response cancelAppt(String practiceid, String appointmentId, String patientId) throws Exception {
 		Response response = given().queryParam("appointmentId", appointmentId).log().all().spec(requestSpec).when()
 				.get(practiceid + "/cancelappointment/" + patientId).then().spec(responseSpec).log().all().extract()
 				.response();
 		return response;
 	}
 
-	public Response cancelapptWithoutAppointmentId(String practiceid, String patientId) throws Exception {
+	public Response cancelApptWithoutAppointmentId(String practiceid, String patientId) throws Exception {
 		Response response = given().log().all().spec(requestSpec).when()
 				.get(practiceid + "/cancelappointment/" + patientId).then().log().all().extract()
 				.response();
@@ -94,90 +94,90 @@ public class PostAPIRequestAT {
 		return response;
 	}
 
-	public Response lastseenprovider(String practiceid, String b) throws Exception {
+	public Response lastSeenProvider(String practiceid, String b) throws Exception {
 		Response response = given().log().all().spec(requestSpec).body(b).post(practiceid + "/getlastseenprovider")
 				.then().spec(responseSpec).log().all().extract().response();
 		return response;
 	}
 	
-	public Response lastseenproviderInvalid(String practiceid, String b) throws Exception {
+	public Response lastSeenproviderInvalid(String practiceid, String b) throws Exception {
 		Response response = given().log().all().spec(requestSpec).body(b).post(practiceid + "/getlastseenprovider")
 				.then().log().all().extract().response();
 		return response;
 	}
 
-	public Response careprovideravailability(String practiceid, String b) throws Exception {
+	public Response careProviderAvailability(String practiceid, String b) throws Exception {
 		Response response = given().log().all().spec(requestSpec).body(b).post(practiceid + "/careprovideravailability")
 				.then().spec(responseSpec).log().all().extract().response();
 		return response;
 	}
 	
-	public Response careprovideravailabilityInvalid(String practiceid, String b) throws Exception {
+	public Response careProviderAvailabilityInvalid(String practiceid, String b) throws Exception {
 		Response response = given().log().all().spec(requestSpec).body(b).post(practiceid + "/careprovideravailability")
 				.then().log().all().extract().response();
 		return response;
 	}
 
-	public Response addpatient(String practiceid, String b) throws Exception {
+	public Response addPatient(String practiceid, String b) throws Exception {
 		Response response = given().log().all().spec(requestSpec).body(b).post(practiceid + "/addpatient").then().log().all().spec(responseSpec).extract().response();
 		return response;
 	}
 	
-	public Response addpatientInvalid(String practiceid, String b) throws Exception {
+	public Response addPatientInvalid(String practiceid, String b) throws Exception {
 		Response response = given().log().all().spec(requestSpec).body(b).post(practiceid + "/addpatient").then().log()
 				.all().extract().response();
 		return response;
 	}
 
-	public Response matchpatient(String practiceid, String b) throws Exception {
+	public Response matchPatient(String practiceid, String b) throws Exception {
 		Response response = given().log().all().spec(requestSpec).body(b).post(practiceid + "/matchpatient").then().spec(responseSpec)
 				.log().all().extract().response();
 		return response;
 	}
 	
-	public Response matchpatientInvalid(String practiceid, String b) throws Exception {
+	public Response matchPatientInvalid(String practiceid, String b) throws Exception {
 		Response response = given().log().all().spec(requestSpec).body(b).post(practiceid + "/matchpatient").then()
 				.log().all().extract().response();
 		return response;
 	}
 
-	public Response searchpatient(String practiceid, String b) throws Exception {
+	public Response searchPatient(String practiceid, String b) throws Exception {
 		Response response = given().log().all().spec(requestSpec).body(b).post(practiceid + "/searchpatient").then().spec(responseSpec)
 				.log().all().extract().response();
 		return response;
 	}
 	
-	public Response searchpatientInvalid(String practiceid, String b) throws Exception {
+	public Response searchPatientInvalid(String practiceid, String b) throws Exception {
 		Response response = given().log().all().spec(requestSpec).body(b).post(practiceid + "/searchpatient").then()
 				.log().all().extract().response();
 		return response;
 	}
 
-	public Response prerequisteappointmenttypes(String practiceid, String b) throws Exception {
+	public Response prerequisteAppointmentTypes(String practiceid, String b) throws Exception {
 		Response response = given().log().all().spec(requestSpec).body(b)
 				.post(practiceid + "/prerequisteappointmenttypes").then().spec(responseSpec).log().all().extract().response();
 		return response;
 	}
 	
-	public Response prerequisteappointmenttypesInvalid(String practiceid, String b) throws Exception {
+	public Response prerequisteAppointmentTypesInvalid(String practiceid, String b) throws Exception {
 		Response response = given().log().all().spec(requestSpec).body(b)
 				.post(practiceid + "/prerequisteappointmenttypes").then().log().all().extract().response();
 		return response;
 	}
 
-	public Response nextavailableslots(String practiceid, String b) throws Exception {
+	public Response nextavailableSlots(String practiceid, String b) throws Exception {
 		Response response = given().log().all().spec(requestSpec).body(b).post(practiceid + "/nextavailableslots")
 				.then().spec(responseSpec).log().all().extract().response();
 		return response;
 	}
 
-	public Response nextavailableslotsWithInvalidApptId(String practiceid, String b) throws Exception {
+	public Response nextavailableSlotsWithInvalidApptId(String practiceid, String b) throws Exception {
 		Response response = given().log().all().spec(requestSpec).body(b).post(practiceid + "/nextavailableslots")
 				.then().log().all().extract().response();
 		return response;
 	}
 	
-	public Response availableslots(String practiceid, String b) throws Exception {
+	public Response availableSlots(String practiceid, String b) throws Exception {
 		Response response = given().log().all().spec(requestSpec).body(b).post(practiceid + "/availableslots").then()
 				.log().all().extract().response();
 
@@ -214,13 +214,13 @@ public class PostAPIRequestAT {
 		return response;
 	}
 
-	public Response appointmenttypes(String practiceid) throws Exception {
+	public Response appointmentTypes(String practiceid) throws Exception {
 		Response response = given().log().all().spec(requestSpec).get(practiceid + "/appointmenttypes").then().spec(responseSpec).log()
 				.all().extract().response();
 		return response;
 	}
 	
-	public Response appointmenttypesInvalid() throws Exception {
+	public Response appointmentTypesInvalid() throws Exception {
 		Response response = given().log().all().spec(requestSpec).get("/appointmenttypes").then().log()
 				.all().extract().response();
 		return response;
@@ -238,13 +238,13 @@ public class PostAPIRequestAT {
 		return response;
 	}
 
-	public Response cancellationreason(String practiceid) throws Exception {
+	public Response cancellationReason(String practiceid) throws Exception {
 		Response response = given().log().all().spec(requestSpec).get(practiceid + "/cancellationreason").then().spec(responseSpec).log()
 				.all().extract().response();
 		return response;
 	}
 	
-	public Response cancellationreasonInvalid(String practiceid) throws Exception {
+	public Response cancellationReasonInvalid(String practiceid) throws Exception {
 		Response response = given().log().all().spec(requestSpec).get(practiceid + "/cancellationreasonn").then().log()
 				.all().extract().response();
 		return response;
@@ -262,7 +262,7 @@ public class PostAPIRequestAT {
 		return response;
 	}
 
-	public Response patientstatus(String practiceid) throws Exception {
+	public Response patientStatus(String practiceid) throws Exception {
 		Response response = given().log().all().spec(requestSpec).get(practiceid + "/patientstatus").then().spec(responseSpec).log().all()
 				.extract().response();
 		return response;
@@ -280,7 +280,7 @@ public class PostAPIRequestAT {
 		return response;
 	}
 
-	public Response insurancecarrier(String practiceid) throws Exception {
+	public Response insuranceCarrier(String practiceid) throws Exception {
 		Response response = given().log().all().spec(requestSpec).get(practiceid + "/insurancecarrier").then().spec(responseSpec).log()
 				.all().extract().response();
 		return response;
@@ -296,19 +296,19 @@ public class PostAPIRequestAT {
 				.response();
 		return response;
 	}
-	public Response prerequisteappointmenttypes(String practiceid) throws Exception {
+	public Response prerequisteAppointmentTypes(String practiceid) throws Exception {
 		Response response = given().log().all().spec(requestSpec).get(practiceid + "/prerequisteappointmenttypes").then().spec(responseSpec).log().all().extract()
 				.response();
 		return response;
 	}
 	
-	public Response prerequisteappointmenttypesInvalid(String practiceid) throws Exception {
+	public Response prerequisteAppointmentTypesInvalid(String practiceid) throws Exception {
 		Response response = given().log().all().spec(requestSpec).get(practiceid + "/prerequisteappointmenttypess").then().log().all().extract()
 				.response();
 		return response;
 	}
 	
-	public Response addpatient(String practiceid) throws Exception {
+	public Response addPatient(String practiceid) throws Exception {
 		Response response = given().log().all().spec(requestSpec).get(practiceid + "/addpatient").then().spec(responseSpec).log().all().extract()
 				.response();
 		return response;
@@ -324,13 +324,13 @@ public class PostAPIRequestAT {
 				.response();
 		return response;
 	}
-	public Response preventschedulingdate(String practiceid) throws Exception {
+	public Response preventSchedulingDate(String practiceid) throws Exception {
 		Response response = given().log().all().spec(requestSpec).get(practiceid + "/preventschedulingdate/10282/82").then().spec(responseSpec).log().all().extract()
 				.response();
 		return response;
 	}
 	
-	public Response preventschedulingdateInvalid(String practiceid) throws Exception {
+	public Response preventSchedulingdateInvalid(String practiceid) throws Exception {
 		Response response = given().log().all().spec(requestSpec).get(practiceid + "/preventschedulingdate/10282").then().log().all().extract()
 				.response();
 		return response;

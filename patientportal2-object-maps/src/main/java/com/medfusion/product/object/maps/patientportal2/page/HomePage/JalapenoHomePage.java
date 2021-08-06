@@ -45,9 +45,6 @@ public class JalapenoHomePage extends JalapenoMenu {
 	
 	@FindBy(how = How.XPATH, using = "//span[text()='Messages']")
 	private WebElement messagesSideBar;
-
-//	@FindBy(how = How.XPATH, using = "//h3[contains(text(),'Schedule an Appointment')]")
-//	private WebElement sheduleanappointment;
 	
 	@FindBy(how = How.XPATH, using = "//span[contains(text(),'Schedule an Appointment')]")
 	private WebElement sheduleanappointment;
