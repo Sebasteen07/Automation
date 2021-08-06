@@ -102,6 +102,29 @@ public class PayloadAT {
 		return schedule;
 	}
 	
+	public String scheduleWithoutPatientIdPayload(String startdate, String enddate, String slotid) {		
+		String schedule="{\r\n"
+				+ "	\"locationId\": \"150\",\r\n"
+				+ "	\"appointmentTypeId\": \"82\",\r\n"
+				+ "	\"providerid\" : \"27\",\r\n"
+				+ "    \"duration\": \"15\",\r\n"
+				+ "	\"comments\": \"CustomQuestion:testcomment~:(pss)BOOKED:205098 01/03/2019 16:15:14~\",\r\n"
+				+ "	\"slotId\": \""+slotid+"\",\r\n"
+				+ "	\"startDateTime\": \""+startdate+"\",\r\n"
+				+ "    \"endDateTime\": \""+enddate+"\",\r\n"
+				+ "    \"additionalProperties\" : {\r\n"
+				+ "    	\"PHONE\" : \"9876543210\"\r\n"
+				+ "    },\r\n"
+				+ "    \"notesProperties\": {\r\n"
+				+ "        \"insuranceInfo\": \"Car=Aetna Life and Casualty,GrpId=464364,Ph=2753757656,MbrId=474587457\",\r\n"
+				+ "        \"apptIndicatorWithConfirmationNo\": \"(pss)BOOKED:null 10/29/2019 03:18:52\",\r\n"
+				+ "        \"customQuestion\": \"bhbhj\",\r\n"
+				+ "        \"visitReason\": \"my reason for visit\"\r\n"
+				+ "    }\r\n"
+				+ "}";		
+		return schedule;
+	}
+	
 	public String reschPayload(String startdate, String enddate, String patientid, String slotid, String apptid) {
 		
 		String reschedule="{\r\n"
@@ -143,6 +166,24 @@ public class PayloadAT {
 				+ "    \"appointmentTypeId\": \"201006\",\r\n"
 				+ "    \"endDate\": \""+enddate+"\",\r\n"
 				+ "    \"patientId\": \""+patientid+"\",\r\n"
+				+ "    \"practiceProvision\": {\r\n"
+				+ "        \"active\": true,\r\n"
+				+ "        \"practiceDisplayName\": \"PSS - Athena - Dev1\",\r\n"
+				+ "        \"practiceId\": \"24269\",\r\n"
+				+ "        \"practiceName\": \"PSS - Athena - Dev1\",\r\n"
+				+ "        \"practiceTimezone\": \"America/New_York\"\r\n"
+				+ "    },\r\n"
+				+ "    \"providerId\": 200861,\r\n"
+				+ "    \"startDate\": \""+startdate+"\"\r\n"
+				+ "}";		
+		return upcomming;
+	}
+	
+	public String upcommingApptInvalidApptIdPayload(String startdate, String enddate, String patientid) {
+		
+		String upcomming="{\r\n"
+				+ "    \"appointmentTypeId\": \"201006\",\r\n"
+				+ "    \"endDate\": \""+enddate+"\",\r\n"
 				+ "    \"practiceProvision\": {\r\n"
 				+ "        \"active\": true,\r\n"
 				+ "        \"practiceDisplayName\": \"PSS - Athena - Dev1\",\r\n"
@@ -336,6 +377,13 @@ public class PayloadAT {
 		return searchpatient;
 	}
 	
+	public String searchPatientInvalidPayload() {
+		String searchpatient="{\r\n"
+				+ "    \"firstName\": \"Shweta\",\r\n"
+				+ "    \"lastName\": \"Sontakke\"}";
+		return searchpatient;
+	}
+	
 	public String prerequisteappointmenttypesPayload(String prerequisteapptid) {
 		String prerequisteappointmenttypes="{  \r\n"
 				+ "   \"patientId\":\"8093\",\r\n"
@@ -345,6 +393,23 @@ public class PayloadAT {
 				+ "         \"prerequisiteAppointmentType\":[  \r\n"
 				+ "            {  \r\n"
 				+ "               \"preAppointmentTypeId\":\"1023\",\r\n"
+				+ "               \"noOfDays\":-1\r\n"
+				+ "            }\r\n"
+				+ "         ]\r\n"
+				+ "      }\r\n"
+				+ "   ]\r\n"
+				+ "}";
+		return prerequisteappointmenttypes;
+	}
+	
+	public String prerequisteappointmenttypesInvalidPayload(String prerequisteapptid) {
+		String prerequisteappointmenttypes="{  \r\n"
+				+ "   \"patientId\":\"8093\",\r\n"
+				+ "   \"appointmentType\":[  \r\n"
+				+ "      {  \r\n"
+				+ "         \"appointmentTypeId\":\""+prerequisteapptid+"\",\r\n"
+				+ "         \"prerequisiteAppointmentType\":[  \r\n"
+				+ "            {  \r\n"				
 				+ "               \"noOfDays\":-1\r\n"
 				+ "            }\r\n"
 				+ "         ]\r\n"

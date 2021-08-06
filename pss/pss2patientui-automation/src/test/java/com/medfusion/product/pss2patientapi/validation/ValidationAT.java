@@ -314,9 +314,23 @@ public class ValidationAT extends BaseTestNG {
 		String lname = arr.getJSONObject(0).getString("lastName");
 		
 		assertEquals(fname, propertyData.getProperty("addpatient.fname.at"));
-		assertEquals(lname, propertyData.getProperty("addpatient.lname.at"));
-		
+		assertEquals(lname, propertyData.getProperty("addpatient.lname.at"));		
 	}
+	
+	public void verifySearchatientInvalidResponse(Response response) throws IOException {
+
+		apiVerification.responseCodeValidation(response, 400);
+		apiVerification.responseTimeValidation(response);
+		String message=apiVerification.responseKeyValidationJson(response, "message");
+		assertEquals(message, "First Name, Last Name, Gender And Date Of Birth Can Not Be Empty");
+	}
+	
+	public void verifySchedApptInvalidResponse(Response response) throws IOException {
+		
+		String message=apiVerification.responseKeyValidationJson(response, "message");
+		assertEquals(message, "Additional fields are required.");
+	}
+	
 	
 	public void verifyUpcommingApptResponse(Response response) throws IOException {
 		propertyData = new PSSPropertyFileLoader();

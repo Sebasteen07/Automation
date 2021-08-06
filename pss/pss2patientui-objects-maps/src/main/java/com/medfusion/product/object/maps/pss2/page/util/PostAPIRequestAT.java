@@ -2,11 +2,7 @@
 package com.medfusion.product.object.maps.pss2.page.util;
 
 import static io.restassured.RestAssured.given;
-import static org.testng.Assert.assertEquals;
-
 import java.util.Map;
-
-import org.json.JSONArray;
 
 import io.restassured.RestAssured;
 import io.restassured.builder.RequestSpecBuilder;
@@ -89,6 +85,12 @@ public class PostAPIRequestAT {
 	public Response upcommingAppt(String practiceid, String b) throws Exception {
 		Response response = given().log().all().spec(requestSpec).body(b).post(practiceid + "/upcomingappointments")
 				.then().spec(responseSpec).log().all().extract().response();
+		return response;
+	}
+	
+	public Response upcommingApptInvalid(String practiceid, String b) throws Exception {
+		Response response = given().log().all().spec(requestSpec).body(b).post(practiceid + "/upcomingappointments")
+				.then().log().all().extract().response();
 		return response;
 	}
 
@@ -174,6 +176,12 @@ public class PostAPIRequestAT {
 	public Response scheduleAppt(String practiceid, String b) throws Exception {
 		Response response = given().log().all().spec(requestSpec).body(b).post(practiceid + "/scheduleappointment")
 				.then().spec(responseSpec).log().all().extract().response();
+		return response;
+	}
+	
+	public Response scheduleApptInvalid(String practiceid, String b) throws Exception {
+		Response response = given().log().all().spec(requestSpec).body(b).post(practiceid + "/scheduleappointment")
+				.then().log().all().extract().response();
 		return response;
 	}
 
@@ -283,6 +291,12 @@ public class PostAPIRequestAT {
 		return response;
 	}
 	
+	public Response prerequisteappointmenttypesInvalid(String practiceid) throws Exception {
+		Response response = given().log().all().spec(requestSpec).get(practiceid + "/prerequisteappointmenttypess").then().log().all().extract()
+				.response();
+		return response;
+	}
+	
 	public Response addpatient(String practiceid) throws Exception {
 		Response response = given().log().all().spec(requestSpec).get(practiceid + "/addpatient").then().spec(responseSpec).log().all().extract()
 				.response();
@@ -301,6 +315,12 @@ public class PostAPIRequestAT {
 	}
 	public Response preventschedulingdate(String practiceid) throws Exception {
 		Response response = given().log().all().spec(requestSpec).get(practiceid + "/preventschedulingdate/10282/82").then().spec(responseSpec).log().all().extract()
+				.response();
+		return response;
+	}
+	
+	public Response preventschedulingdateInvalid(String practiceid) throws Exception {
+		Response response = given().log().all().spec(requestSpec).get(practiceid + "/preventschedulingdate/10282").then().log().all().extract()
 				.response();
 		return response;
 	}
