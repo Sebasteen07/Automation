@@ -64,7 +64,7 @@ public class SelectMedicationsPage  extends BasePageObject {
 	public void selectDependentMedications() throws IOException, InterruptedException {
 		PropertyFileLoader testData = new PropertyFileLoader();
 		wait.until(ExpectedConditions.visibilityOf(multiSelectDependentMedication));
-		multiSelectDependentMedication.sendKeys(testData.getProperty("med.one"));
+		multiSelectDependentMedication.sendKeys(testData.getProperty("med.dep.one"));
 		Thread.sleep(2000);
 		multiSelectDependentMedication.sendKeys(Keys.ENTER);	
 		Thread.sleep(2000);
