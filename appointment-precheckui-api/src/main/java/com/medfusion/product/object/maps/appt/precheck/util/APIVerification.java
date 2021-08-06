@@ -31,36 +31,39 @@ public class APIVerification extends BaseTestNGWebDriver {
 		}
 	}
 
-	public void verifyMfRemServiceResponse(Response response, String cadence) {
+	public void verifyMfRemServiceResponse(Response response, String cadence, String practiceId, String patientId,
+			String apptId) {
 		JSONArray arr = new JSONArray(response.getBody().asString());
 		log("Validate Email content");
 		assertEquals(arr.getJSONObject(0).getString("type"), "EMAIL");
 		assertEquals(arr.getJSONObject(0).getString("notificationPurpose"), cadence);
 		assertEquals(arr.getJSONObject(0).getString("notificationType"), "Appointment Check-In");
-		assertEquals(arr.getJSONObject(0).getString("subjectId"), "24333.27867.10083");
+		assertEquals(arr.getJSONObject(0).getString("subjectId"), practiceId + "." + patientId + "." + apptId);
 		log("Validate Text content");
 		assertEquals(arr.getJSONObject(1).getString("type"), "TEXT");
 		assertEquals(arr.getJSONObject(1).getString("notificationPurpose"), cadence);
 		assertEquals(arr.getJSONObject(1).getString("notificationType"), "Appointment Check-In");
-		assertEquals(arr.getJSONObject(1).getString("subjectId"), "24333.27867.10083");
+		assertEquals(arr.getJSONObject(1).getString("subjectId"), practiceId + "." + patientId + "." + apptId);
 	}
 
-	public void verifyResponseForTextMessageContent(Response response, String cadence) {
+	public void verifyResponseForTextMessageContent(Response response, String cadence, String practiceId,
+			String patientId, String apptId) {
 		JSONArray arr = new JSONArray(response.getBody().asString());
 		log("Validate Text content");
 		assertEquals(arr.getJSONObject(0).getString("type"), "TEXT");
 		assertEquals(arr.getJSONObject(0).getString("notificationPurpose"), cadence);
 		assertEquals(arr.getJSONObject(0).getString("notificationType"), "Appointment Check-In");
-		assertEquals(arr.getJSONObject(0).getString("subjectId"), "24333.27867.10083");
+		assertEquals(arr.getJSONObject(0).getString("subjectId"), practiceId + "." + patientId + "." + apptId);
 	}
 
-	public void verifyResponseForEmailContent(Response response, String cadence) {
+	public void verifyResponseForEmailContent(Response response, String cadence, String practiceId, String patientId,
+			String apptId) {
 		JSONArray arr = new JSONArray(response.getBody().asString());
 		log("Validate Email content");
 		assertEquals(arr.getJSONObject(0).getString("type"), "EMAIL");
 		assertEquals(arr.getJSONObject(0).getString("notificationPurpose"), cadence);
 		assertEquals(arr.getJSONObject(0).getString("notificationType"), "Appointment Check-In");
-		assertEquals(arr.getJSONObject(0).getString("subjectId"), "24333.27867.10083");
+		assertEquals(arr.getJSONObject(0).getString("subjectId"), practiceId + "." + patientId + "." + apptId);
 	}
 
 	public void responseKeyValidationJson(Response response, String key) {
@@ -774,5 +777,116 @@ public class APIVerification extends BaseTestNGWebDriver {
 	public void verifyCreateNotification(Response response) throws IOException {
 		JsonPath jsonPath = new JsonPath(response.asString());
 		assertEquals(jsonPath.get("message"), "Status created");
+	}
+
+	public void verifyUpdateApptMetadata(Response response, String practiceId, String patientId, String apptId,
+			String type) throws IOException {
+		JsonPath js = new JsonPath(response.asString());
+		log("Validate PM Integration Setting");
+		assertEquals(js.getString("practiceId"), practiceId, "practice Id  was incorrect");
+		assertEquals(js.getString("pmPatientId"), patientId, "Patient Id was incorrect");
+		assertEquals(js.getString("pmAppointmentId"), apptId, "Appointment Id was incorrect");
+		assertEquals(js.getString("type"), type, "Message was incorrect");
+		assertEquals(js.getString("status"), "booked", "Status was incorrect");
+
+	}
+
+	public void verifyUpdateApptMetadataInvalidWithPracticeId(Response response) throws IOException {
+		JsonPath jsonPath = new JsonPath(response.asString());
+		assertEquals(jsonPath.get("message"), "Metadata for appointment does not exist; cannot update");
+	}
+
+	public void verifyUpdateApptMetadataWithoutPracticeId(Response response) throws IOException {
+		JsonPath jsonPath = new JsonPath(response.asString());
+		assertEquals(jsonPath.get("message"), "Practice ID cannot be null, blank, or empty");
+	}
+
+	public void verifyMetadataForAppts(Response response, String practiceId, String patientId, String apptId)
+			throws IOException {
+		JsonPath js = new JsonPath(response.asString());
+		log("Validate PM Integration Setting");
+		assertEquals(js.getString("practiceId"), practiceId, "practice Id  was incorrect");
+		assertEquals(js.getString("pmPatientId"), patientId, "Patient Id was incorrect");
+		assertEquals(js.getString("pmAppointmentId"), apptId, "Appointment Id was incorrect");
+	}
+
+	public void verifyMetadataForApptsWithoutApptId(Response response) throws IOException {
+		JsonPath js = new JsonPath(response.asString());
+		assertEquals(js.get("message"), "Request method 'PUT' not supported");
+	}
+
+	public void verifyDeleteApptMetadata(Response response, String practiceId, String patientId, String apptId,
+			String type) throws IOException {
+		JsonPath js = new JsonPath(response.asString());
+		log("Validate PM Integration Setting");
+		assertEquals(js.getString("practiceId"), practiceId, "practice Id  was incorrect");
+		assertEquals(js.getString("pmPatientId"), patientId, "Patient Id was incorrect");
+		assertEquals(js.getString("pmAppointmentId"), apptId, "Appointment Id was incorrect");
+		assertEquals(js.getString("type"), type, "type was incorrect");
+	}
+
+	public void verifyDeleteApptMetadataIfNotExist(Response response) throws IOException {
+		JsonPath js = new JsonPath(response.asString());
+		assertEquals(js.get("message"), "Cannot delete non existent appointment metadata");
+	}
+
+	public void verifyScheduleReminders(Response response, String practiceId, String pmPatientId,
+			String pmAppointmentId, String type) throws IOException {
+		JSONArray arr = new JSONArray(response.getBody().asString());
+		log("Validate Response");
+		assertEquals(arr.getJSONObject(0).getString("practiceId"), practiceId, "id was incorrect");
+		assertEquals(arr.getJSONObject(0).getString("pmPatientId"), pmPatientId, "id was incorrect");
+		assertEquals(arr.getJSONObject(0).getString("pmAppointmentId"), pmAppointmentId, "id was incorrect");
+		assertEquals(arr.getJSONObject(0).getString("type"), type, "Type was incorrect");
+	}
+
+	public void verifyScheduleRemindersIfNotFind(Response response) throws IOException {
+		JsonPath js = new JsonPath(response.asString());
+		assertEquals(js.get("message"), "Did not find appointment metadata");
+	}
+
+	public void verifyScheduleRemindersWithInvalidData(Response response) throws IOException {
+		JsonPath js = new JsonPath(response.asString());
+		assertEquals(js.get("message"), "Did not find appointment metadata");
+	}
+
+	public void verifyReminderForApptMetadata(Response response, String practiceId, String pmPatientId,
+			String pmAppointmentId, String type) throws IOException {
+		log("Validate Response");
+		JsonPath js = new JsonPath(response.asString());
+		assertEquals(js.getString("practiceId"), practiceId, "practice Id  was incorrect");
+		assertEquals(js.getString("pmPatientId"), pmPatientId, "Patient Id was incorrect");
+		assertEquals(js.getString("pmAppointmentId"), pmAppointmentId, "Appointment Id was incorrect");
+		assertEquals(js.getString("type"), type, "Appointment Id was incorrect");
+	}
+
+	public void verifySaveApptMetadata(Response response, String practiceId, String pmPatientId, String pmAppointmentId,
+			String type) throws IOException {
+		log("Validate Response");
+		JsonPath js = new JsonPath(response.asString());
+		assertEquals(js.getString("practiceId"), practiceId, "practice Id  was incorrect");
+		assertEquals(js.getString("pmPatientId"), pmPatientId, "Patient Id was incorrect");
+		assertEquals(js.getString("pmAppointmentId"), pmAppointmentId, "Appointment Id was incorrect");
+		assertEquals(js.getString("type"), type, "Appointment Id was incorrect");
+	}
+
+	public void verifySaveApptMetadataIfAlreadyExist(Response response) throws IOException {
+		JsonPath js = new JsonPath(response.asString());
+		assertEquals(js.get("message"), "Metadata for appointment already exists; cannot insert");
+	}
+
+	public void verifySaveApptMetadataWithInvalidStatus(Response response) throws IOException {
+		JsonPath js = new JsonPath(response.asString());
+		assertEquals(js.get("message"), "Metadata for appointment already exists; cannot insert");
+	}
+
+	public void verifySaveApptMetadataWithoutFilter(Response response) throws IOException {
+		JsonPath js = new JsonPath(response.asString());
+		assertEquals(js.get("message"), "Appointment Filtered cannot be null");
+	}
+
+	public void verifySaveApptMetadataWithoutTime(Response response) throws IOException {
+		JsonPath js = new JsonPath(response.asString());
+		assertEquals(js.get("message"), "Appointment Time cannot be null");
 	}
 }
