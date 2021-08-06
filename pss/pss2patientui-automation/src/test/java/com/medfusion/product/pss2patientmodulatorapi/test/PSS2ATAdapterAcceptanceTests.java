@@ -23,7 +23,7 @@ import io.restassured.response.Response;
 import io.restassured.specification.RequestSpecification;
 import io.restassured.specification.ResponseSpecification;
 
-public class PSS2ATAdpterAcceptanceTests extends BaseTestNGWebDriver {
+public class PSS2ATAdapterAcceptanceTests extends BaseTestNGWebDriver {
 
 	public static PayloadAT payloadAT;
 	public static PSSPropertyFileLoader propertyData;
