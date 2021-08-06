@@ -31,7 +31,7 @@
 					<include name="testANGRuleNG()" />
 					<include name="testaNGRulewithSpecialityNG()" />
 					<include name="testE2ELinkNGnerationNG()" />
-					<include name="testincludeSlotsNG()" />
+					<include name="testExcludeSlotsNG()" />
 
 
 					<include name="testLeadTimeNG()" />
