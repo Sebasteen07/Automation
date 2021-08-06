@@ -31,7 +31,7 @@
 					<include name="testAgeRuleAT()" />
 					<include name="testageRulewithSpecialityAT()" />
 					<include name="testE2ELinkGenerationAT()" />
-					<include name="testincludeSlotsAT()" />
+					<include name="testExcludeSlotsAT()" />
 
 					<include name="testLeadTimeAT()" />
 					<include name="testMaxperDayAT()" />
