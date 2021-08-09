@@ -1,23 +1,18 @@
 // Copyright 2013-2021 NXGN Management, LLC. All Rights Reserved.
 package com.medfusion.gateway_proxy.helpers;
 
-//import com.medfusion.common.utils.IHGUtil;
+
 import com.medfusion.common.utils.PropertyFileLoader;
 import com.medfusion.gateway_proxy.tests.GatewayProxyBaseTest;
-//import com.medfusion.gateway_proxy.utils.GatewayProxyUtils;
-//import com.medfusion.payment_modulator.pojos.BillToAddress;
+
 import com.medfusion.payment_modulator.pojos.PayloadDetails;
-//import com.medfusion.payment_modulator.utils.Validations;
-//import io.restassured.RestAssured;
-//import io.restassured.http.ContentType;
 import io.restassured.path.json.JsonPath;
 import io.restassured.response.Response;
 import java.io.IOException;
 import java.util.HashMap;
-//import java.util.List;
 import java.util.Map;
 import static io.restassured.RestAssured.given;
-//import static org.hamcrest.Matchers.equalTo;
+
 
 public class GatewayProxyChargeBackResource extends GatewayProxyBaseTest {
 	
