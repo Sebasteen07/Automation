@@ -5,9 +5,6 @@ import static org.testng.Assert.assertEquals;
 
 import java.io.IOException;
 import java.sql.Timestamp;
-import java.util.Map;
-
-import org.json.JSONArray;
 import org.testng.annotations.BeforeTest;
 import org.testng.annotations.Test;
 
@@ -21,12 +18,11 @@ import com.medfusion.product.pss2patientapi.validation.ValidationGW;
 import com.medfusion.product.pss2patientui.pojo.Appointment;
 import com.medfusion.product.pss2patientui.utils.PSSPropertyFileLoader;
 
-import io.restassured.path.json.JsonPath;
 import io.restassured.response.Response;
 import io.restassured.specification.RequestSpecification;
 import io.restassured.specification.ResponseSpecification;
 
-public class PSS2GWAdpterAcceptanceTests extends BaseTestNGWebDriver {
+public class PSS2GWAdapterAcceptanceTests extends BaseTestNGWebDriver {
 
 	public static PayloadGW payload;
 	public static PSSPropertyFileLoader propertyData;

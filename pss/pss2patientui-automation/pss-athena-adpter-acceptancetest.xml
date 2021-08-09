@@ -9,7 +9,7 @@
  	
 <test name = "pss2patientui-automation" >
 	<classes>
-		<class name = "com.medfusion.product.pss2patientmodulatorapi.test.PSS2NGAdapterAcceptanceTests" />
+		<class name = "com.medfusion.product.pss2patientmodulatorapi.test.PSS2ATAdapterAcceptanceTests" />
 	</classes>
 </test>
 </suite>

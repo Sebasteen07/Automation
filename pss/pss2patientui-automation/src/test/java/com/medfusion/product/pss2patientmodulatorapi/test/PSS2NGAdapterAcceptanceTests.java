@@ -13,7 +13,7 @@ import com.medfusion.product.pss2patientapi.payload.PayloadNG;
 import com.medfusion.product.pss2patientui.pojo.Appointment;
 import com.medfusion.product.pss2patientui.utils.PSSPropertyFileLoader;
 
-public class PSS2NGAdpterAcceptanceTests extends BaseTestNGWebDriver {
+public class PSS2NGAdapterAcceptanceTests extends BaseTestNGWebDriver {
 
 	public static PayloadNG payload;
 	public static PSSPropertyFileLoader propertyData;
