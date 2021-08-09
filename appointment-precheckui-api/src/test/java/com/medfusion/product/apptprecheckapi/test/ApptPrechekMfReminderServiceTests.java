@@ -57,7 +57,10 @@ public class ApptPrechekMfReminderServiceTests extends BaseTestNGWebDriver {
 				headerConfig.HeaderwithToken(getaccessToken));
 		log("Verifying the response");
 		assertEquals(response.getStatusCode(), 200);
-		apiVerification.verifyMfRemServiceResponse(response, propertyData.getProperty("cadence.1"));
+		apiVerification.verifyMfRemServiceResponse(response, propertyData.getProperty("cadence.1"),
+				propertyData.getProperty("mf.rem.service.practice.id"),
+				propertyData.getProperty("mf.rem.service.patient.id"),
+				propertyData.getProperty("mf.rem.service.appt.id"));
 		apiVerification.responseTimeValidation(response);
 	}
 
@@ -73,7 +76,7 @@ public class ApptPrechekMfReminderServiceTests extends BaseTestNGWebDriver {
 				testData.isGenerateTextTrue(), propertyData.getProperty("mf.rem.service.email"),
 				propertyData.getProperty("invalid.language")), headerConfig.HeaderwithToken(getaccessToken));
 		log("Verifying the response");
-		assertEquals(response.getStatusCode(), 500);
+		assertEquals(response.getStatusCode(), 400);
 		apiVerification.verifyInvalidLanguage(response);
 		apiVerification.responseTimeValidation(response);
 
@@ -91,7 +94,7 @@ public class ApptPrechekMfReminderServiceTests extends BaseTestNGWebDriver {
 				testData.isGenerateTextTrue(), propertyData.getProperty("mf.rem.service.email"),
 				propertyData.getProperty("language.en")), headerConfig.HeaderwithToken(getaccessToken));
 		log("Verifying the response");
-		assertEquals(response.getStatusCode(), 500);
+		assertEquals(response.getStatusCode(), 400);
 		apiVerification.verifyMfRemServiceWithoutNotifType(response);
 		apiVerification.responseTimeValidation(response);
 
@@ -111,7 +114,10 @@ public class ApptPrechekMfReminderServiceTests extends BaseTestNGWebDriver {
 				headerConfig.HeaderwithToken(getaccessToken));
 		log("Verifying the response");
 		assertEquals(response.getStatusCode(), 200);
-		apiVerification.verifyMfRemServiceResponse(response, propertyData.getProperty("cadence.curbs"));
+		apiVerification.verifyMfRemServiceResponse(response, propertyData.getProperty("cadence.curbs"),
+				propertyData.getProperty("mf.rem.service.practice.id"),
+				propertyData.getProperty("mf.rem.service.patient.id"),
+				propertyData.getProperty("mf.rem.service.appt.id"));
 		apiVerification.responseTimeValidation(response);
 	}
 
@@ -129,7 +135,10 @@ public class ApptPrechekMfReminderServiceTests extends BaseTestNGWebDriver {
 				headerConfig.HeaderwithToken(getaccessToken));
 		log("Verifying the response");
 		assertEquals(response.getStatusCode(), 200);
-		apiVerification.verifyMfRemServiceResponse(response, propertyData.getProperty("cadence.30.min"));
+		apiVerification.verifyMfRemServiceResponse(response, propertyData.getProperty("cadence.30.min"),
+				propertyData.getProperty("mf.rem.service.practice.id"),
+				propertyData.getProperty("mf.rem.service.patient.id"),
+				propertyData.getProperty("mf.rem.service.appt.id"));
 		apiVerification.responseTimeValidation(response);
 	}
 
@@ -146,7 +155,10 @@ public class ApptPrechekMfReminderServiceTests extends BaseTestNGWebDriver {
 				propertyData.getProperty("language.en")), headerConfig.HeaderwithToken(getaccessToken));
 		log("Verifying the response");
 		assertEquals(response.getStatusCode(), 200);
-		apiVerification.verifyMfRemServiceResponse(response, propertyData.getProperty("cadence.2.hours"));
+		apiVerification.verifyMfRemServiceResponse(response, propertyData.getProperty("cadence.2.hours"),
+				propertyData.getProperty("mf.rem.service.practice.id"),
+				propertyData.getProperty("mf.rem.service.patient.id"),
+				propertyData.getProperty("mf.rem.service.appt.id"));
 		apiVerification.responseTimeValidation(response);
 	}
 
@@ -163,7 +175,10 @@ public class ApptPrechekMfReminderServiceTests extends BaseTestNGWebDriver {
 				propertyData.getProperty("language.en")), headerConfig.HeaderwithToken(getaccessToken));
 		log("Verifying the response");
 		assertEquals(response.getStatusCode(), 200);
-		apiVerification.verifyMfRemServiceResponse(response, propertyData.getProperty("pss.confirmation"));
+		apiVerification.verifyMfRemServiceResponse(response, propertyData.getProperty("pss.confirmation"),
+				propertyData.getProperty("mf.rem.service.practice.id"),
+				propertyData.getProperty("mf.rem.service.patient.id"),
+				propertyData.getProperty("mf.rem.service.appt.id"));
 		apiVerification.responseTimeValidation(response);
 	}
 
@@ -180,7 +195,10 @@ public class ApptPrechekMfReminderServiceTests extends BaseTestNGWebDriver {
 				propertyData.getProperty("language.en")), headerConfig.HeaderwithToken(getaccessToken));
 		log("Verifying the response");
 		assertEquals(response.getStatusCode(), 200);
-		apiVerification.verifyResponseForTextMessageContent(response, propertyData.getProperty("pss.confirmation"));
+		apiVerification.verifyResponseForTextMessageContent(response, propertyData.getProperty("pss.confirmation"),
+				propertyData.getProperty("mf.rem.service.practice.id"),
+				propertyData.getProperty("mf.rem.service.patient.id"),
+				propertyData.getProperty("mf.rem.service.appt.id"));
 		apiVerification.responseTimeValidation(response);
 	}
 
@@ -197,7 +215,10 @@ public class ApptPrechekMfReminderServiceTests extends BaseTestNGWebDriver {
 				propertyData.getProperty("language.en")), headerConfig.HeaderwithToken(getaccessToken));
 		log("Verifying the response");
 		assertEquals(response.getStatusCode(), 200);
-		apiVerification.verifyResponseForEmailContent(response, propertyData.getProperty("pss.confirmation"));
+		apiVerification.verifyResponseForEmailContent(response, propertyData.getProperty("pss.confirmation"),
+				propertyData.getProperty("mf.rem.service.practice.id"),
+				propertyData.getProperty("mf.rem.service.patient.id"),
+				propertyData.getProperty("mf.rem.service.appt.id"));
 		apiVerification.responseTimeValidation(response);
 
 	}
@@ -230,7 +251,7 @@ public class ApptPrechekMfReminderServiceTests extends BaseTestNGWebDriver {
 				testData.isGenerateTextTrue(), propertyData.getProperty("invalid.email"),
 				propertyData.getProperty("language.en")), headerConfig.HeaderwithToken(getaccessToken));
 		log("Verifying the response");
-		assertEquals(response.getStatusCode(), 500);
+		assertEquals(response.getStatusCode(), 400);
 		apiVerification.verifyInvalidEmail(response);
 		apiVerification.responseTimeValidation(response);
 	}
@@ -247,7 +268,7 @@ public class ApptPrechekMfReminderServiceTests extends BaseTestNGWebDriver {
 						propertyData.getProperty("language.en")),
 				headerConfig.HeaderwithToken(getaccessToken));
 		log("Verifying the response");
-		assertEquals(response.getStatusCode(), 500);
+		assertEquals(response.getStatusCode(), 400);
 		apiVerification.responseTimeValidation(response);
 	}
 
@@ -264,7 +285,10 @@ public class ApptPrechekMfReminderServiceTests extends BaseTestNGWebDriver {
 				propertyData.getProperty("language.en")), headerConfig.HeaderwithToken(getaccessToken));
 		log("Verifying the response");
 		assertEquals(response.getStatusCode(), 200);
-		apiVerification.verifyMfRemServiceResponse(response, propertyData.getProperty("pss.confirmation"));
+		apiVerification.verifyMfRemServiceResponse(response, propertyData.getProperty("pss.confirmation"),
+				propertyData.getProperty("mf.rem.service.practice.id"),
+				propertyData.getProperty("mf.rem.service.patient.id"),
+				propertyData.getProperty("mf.rem.service.appt.id"));
 		apiVerification.responseTimeValidation(response);
 	}
 
@@ -281,7 +305,10 @@ public class ApptPrechekMfReminderServiceTests extends BaseTestNGWebDriver {
 				propertyData.getProperty("language.es")), headerConfig.HeaderwithToken(getaccessToken));
 		log("Verifying the response");
 		assertEquals(response.getStatusCode(), 200);
-		apiVerification.verifyMfRemServiceResponse(response, propertyData.getProperty("pss.confirmation"));
+		apiVerification.verifyMfRemServiceResponse(response, propertyData.getProperty("pss.confirmation"),
+				propertyData.getProperty("mf.rem.service.practice.id"),
+				propertyData.getProperty("mf.rem.service.patient.id"),
+				propertyData.getProperty("mf.rem.service.appt.id"));
 		apiVerification.responseTimeValidation(response);
 
 	}
@@ -299,7 +326,10 @@ public class ApptPrechekMfReminderServiceTests extends BaseTestNGWebDriver {
 				propertyData.getProperty("language.en.es")), headerConfig.HeaderwithToken(getaccessToken));
 		log("Verifying the response");
 		assertEquals(response.getStatusCode(), 200);
-		apiVerification.verifyMfRemServiceResponse(response, propertyData.getProperty("pss.confirmation"));
+		apiVerification.verifyMfRemServiceResponse(response, propertyData.getProperty("pss.confirmation"),
+				propertyData.getProperty("mf.rem.service.practice.id"),
+				propertyData.getProperty("mf.rem.service.patient.id"),
+				propertyData.getProperty("mf.rem.service.appt.id"));
 		apiVerification.responseTimeValidation(response);
 	}
 
@@ -316,7 +346,10 @@ public class ApptPrechekMfReminderServiceTests extends BaseTestNGWebDriver {
 				propertyData.getProperty("language.en")), headerConfig.HeaderwithToken(getaccessToken));
 		log("Verifying the response");
 		assertEquals(response.getStatusCode(), 200);
-		apiVerification.verifyMfRemServiceResponse(response, propertyData.getProperty("pss.confirmation"));
+		apiVerification.verifyMfRemServiceResponse(response, propertyData.getProperty("pss.confirmation"),
+				propertyData.getProperty("mf.rem.service.practice.id"),
+				propertyData.getProperty("mf.rem.service.patient.id"),
+				propertyData.getProperty("mf.rem.service.appt.id"));
 		apiVerification.responseTimeValidation(response);
 
 	}
