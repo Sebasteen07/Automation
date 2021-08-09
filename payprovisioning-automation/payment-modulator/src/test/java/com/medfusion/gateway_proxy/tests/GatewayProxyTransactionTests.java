@@ -10,9 +10,9 @@ import org.testng.annotations.Test;
 import com.medfusion.common.utils.IHGUtil;
 import com.medfusion.common.utils.PropertyFileLoader;
 import com.medfusion.gateway_proxy.helpers.GatewayProxyTransactionResource;
+import com.medfusion.gateway_proxy.utils.GatewayProxyTestData;
 import com.medfusion.gateway_proxy.utils.GatewayProxyUtils;
 import com.medfusion.payment_modulator.utils.CommonUtils;
-import com.medfusion.payment_modulator.utils.GatewayProxyTestData;
 import com.medfusion.payment_modulator.utils.Validations;
 
 import io.restassured.path.json.JsonPath;
