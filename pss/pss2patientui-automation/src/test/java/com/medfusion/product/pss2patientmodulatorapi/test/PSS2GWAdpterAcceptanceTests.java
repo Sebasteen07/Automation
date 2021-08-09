@@ -188,6 +188,28 @@ public class PSS2GWAdpterAcceptanceTests extends BaseTestNGWebDriver {
 	}
 	
 	@Test(enabled = true, groups = { "APItest" }, retryAnalyzer = RetryAnalyzer.class)
+	public void testScheduleAppPOST() throws IOException, InterruptedException {
+		Response scheduleApptResponse = postAPIRequestgw.scheduleappointment(
+				payload.schedulePayload(propertyData.getProperty("start.date.time.gw"), propertyData.getProperty("end.date.time.gw"), propertyData.getProperty("patient.id.gw")),
+				propertyData.getProperty("practice.id.gw"));
+		logStep("Verifying the response");
+		assertEquals(scheduleApptResponse.getStatusCode(), 200);
+
+		aPIVerification.responseKeyValidationJson(scheduleApptResponse, "slotAlreadyTaken");
+		aPIVerification.responseKeyValidationJson(scheduleApptResponse, "rescheduleNotAllowed");
+	}
+	
+	@Test(enabled = true, groups = { "APItest" }, retryAnalyzer = RetryAnalyzer.class)
+	public void testScheduleAppWithoutPidPOST() throws IOException, InterruptedException {
+		Response scheduleApptResponse = postAPIRequestgw.scheduleappointment(
+				payload.scheduleWithoutPidPayload(propertyData.getProperty("start.date.time.gw"), propertyData.getProperty("end.date.time.gw")),
+				propertyData.getProperty("practice.id.gw"));
+		logStep("Verifying the response");
+		assertEquals(scheduleApptResponse.getStatusCode(), 400);
+
+	}
+	
+	@Test(enabled = true, groups = { "APItest" }, retryAnalyzer = RetryAnalyzer.class)
 	public void testAvaliableSlot() throws IOException, InterruptedException {
 
 		Response response = postAPIRequestgw
@@ -536,16 +558,6 @@ public class PSS2GWAdpterAcceptanceTests extends BaseTestNGWebDriver {
 		assertEquals(response.getStatusCode(), 200);
 		logStep("Verifying the response");
 		validateGW.verifyAddPatientResponse(response);
-
-		String body1 = payload.addPatientPayloadWithoutFName(propertyData.getProperty("last.name.gw"),
-				propertyData.getProperty("dateofbirth.gw"), propertyData.getProperty("email.gw.api"));
-
-		Response negResponse = postAPIRequestgw.addPatient(body1, propertyData.getProperty("practice.id.gw"));
-		assertEquals(negResponse.getStatusCode(), 400);
-		JsonPath jsonPath = new JsonPath(negResponse.asString());
-		assertEquals(jsonPath.get("message"),
-				"RequiredFieldException in Greenway.PrimeSuite.Controllers.Person.Patient.Patient.ValidatePatientAddNewRequest: (PatientAddNewRequest.Patient.Firstname is required.)");
-
 	}
 	
 	@Test(enabled = true, groups = { "APItest" }, retryAnalyzer = RetryAnalyzer.class)
@@ -604,6 +616,16 @@ public class PSS2GWAdpterAcceptanceTests extends BaseTestNGWebDriver {
 		assertEquals(negResponse.getStatusCode(), 404);
 
 	}
+	
+	@Test(enabled = true, groups = { "APItest" }, retryAnalyzer = RetryAnalyzer.class)
+	public void testCancelStatusWithoutPracticeIdPOST() throws IOException, InterruptedException {
+		Response negResponse = postAPIRequestgw.cancelstatuswithoutPracticeId(
+				payload.cancelStatusPayload(propertyData.getProperty("appointment.type.id"),
+						propertyData.getProperty("location.id.gw"), propertyData.getProperty("patient.id.gw"),
+						propertyData.getProperty("resource.id"), propertyData.getProperty("cancel.app.id.gw")));
+		assertEquals(negResponse.getStatusCode(), 404);
+
+	}
 
 	@Test(enabled = true, groups = { "APItest" }, retryAnalyzer = RetryAnalyzer.class)
 	public void testCancelAppointmentPOST() throws IOException, InterruptedException {
@@ -615,6 +637,17 @@ public class PSS2GWAdpterAcceptanceTests extends BaseTestNGWebDriver {
 		assertEquals(response.getStatusCode(), 200);
 		validateGW.verifyCancelStateResponse(response);
 
+		Response negResponse = postAPIRequestgw.cancelappointment(
+				payload.cancelAppInvalidIdPayload(propertyData.getProperty("invalid.cancel.app.id.gw")),
+				propertyData.getProperty("practice.id.gw"), propertyData.getProperty("patient.id.gw"));
+		assertEquals(negResponse.getStatusCode(), 400);
+		JsonPath jsonPath = new JsonPath(negResponse.asString());
+		assertEquals(jsonPath.get("message"), "Invalid AppointmentID.");
+
+	}
+	
+	@Test(enabled = true, groups = { "APItest" }, retryAnalyzer = RetryAnalyzer.class)
+	public void testCancelAppointmentWithInvalidAppIDPOST() throws IOException, InterruptedException {
 		Response negResponse = postAPIRequestgw.cancelappointment(
 				payload.cancelAppInvalidIdPayload(propertyData.getProperty("invalid.cancel.app.id.gw")),
 				propertyData.getProperty("practice.id.gw"), propertyData.getProperty("patient.id.gw"));
