@@ -25,11 +25,6 @@ public class CommonUtils {
 		FileOutputStream output = new FileOutputStream(filename);
 		property.store(output, null);
 	    output.close();
-	    
-	    
-	    
-	    
-	    
 	}
 }
 	

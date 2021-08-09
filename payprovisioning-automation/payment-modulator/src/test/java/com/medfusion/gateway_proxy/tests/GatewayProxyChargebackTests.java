@@ -71,9 +71,6 @@ public class GatewayProxyChargebackTests extends GatewayProxyBaseTest {
 		Assert.assertEquals(orderId, jsonPathCB.get("parentOrderId"));
 		Assert.assertEquals(chargeBackAmount, jsonPathCB.get("chargebackAmount"));
 		Assert.assertEquals(financeUser, jsonPathCB.get("chargebackIssuer"));
-
-		// Map<String, String> chargeBackMP = chargeBack.getCBdetails(jsonPathCB);
-
 	}
 
 	@Test(dataProvider = "CB_data_inavild_create", dataProviderClass = GatewayProxyTestData.class, enabled = true)
@@ -94,7 +91,6 @@ public class GatewayProxyChargebackTests extends GatewayProxyBaseTest {
 		if (jsonPath.get("message") != null) {
 
 			Assert.assertTrue(jsonPath.get("message").toString().contains(verifyErrorMessage));
-
 		}
 
 	}
@@ -189,7 +185,6 @@ public class GatewayProxyChargebackTests extends GatewayProxyBaseTest {
 	@Test(enabled = true)
 
 	public void testGetChargeBackValidEmptyList() throws Exception {
-
 		GatewayProxyChargeBackResource chargeBack = new GatewayProxyChargeBackResource();
 
 		Response response = chargeBack.getChargeBack(token, testData.getProperty("proxy.chargeback.url"), "2560809338");
@@ -198,7 +193,6 @@ public class GatewayProxyChargebackTests extends GatewayProxyBaseTest {
 		List<String> emptyList = response.jsonPath().getList("$");
 
 		Assert.assertTrue(emptyList.isEmpty());
-
 	}
 
 }

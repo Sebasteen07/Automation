@@ -14,7 +14,7 @@ import com.medfusion.payment_modulator.utils.Validations;
 import io.restassured.path.json.JsonPath;
 import io.restassured.response.Response;
 
-public class QBPAYTransactions extends BaseRest {
+public class QBPayTransactionsTests extends BaseRest {
 
 	protected PropertyFileLoader testData;
 	Boolean flag = false;

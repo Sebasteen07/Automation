@@ -18,7 +18,7 @@ import com.medfusion.payment_modulator.utils.Validations;
 import io.restassured.path.json.JsonPath;
 import io.restassured.response.Response;
 
-public class ElementTransactions extends BaseRest {
+public class ElementTransactionsTests extends BaseRest {
 
 	protected static PropertyFileLoader testData;
 	Boolean flag = true;
@@ -102,6 +102,8 @@ public class ElementTransactions extends BaseRest {
 
 		String externalTransactionId = jsonPath.get("externalTransactionId").toString();
 		String orderId = jsonPath.get("orderId").toString();
+			
+		CommonUtils.saveTransactionDetails(externalTransactionId, orderId);
 
 		Response responseCapture = transaction.makeACapture(testData.getProperty("element.mmid"), externalTransactionId,
 				orderId, transanctionAmount, testData.getProperty("account.number"),
@@ -222,6 +224,9 @@ public class ElementTransactions extends BaseRest {
 
 		Validations validate = new Validations();
 		validate.verifyTransactionDetails(response.asString());
+		
+		CommonUtils.saveTransactionDetails(jsonPath.get("externalTransactionId").toString(),
+				jsonPath.get("orderId").toString());
 
 		Response responseVoidSale = transaction.makeAVoid(testData.getProperty("element.mmid"),
 				jsonPath.get("externalTransactionId").toString(), transanctionAmount.toString(),

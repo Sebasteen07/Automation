@@ -15,7 +15,7 @@ import io.restassured.path.json.JsonPath;
 import io.restassured.response.Response;
 
 
-public class PaypalTransactions extends BaseRest {
+public class PaypalTransactionsTests extends BaseRest {
 	
 	protected PropertyFileLoader testData;
 	Boolean flag = false;

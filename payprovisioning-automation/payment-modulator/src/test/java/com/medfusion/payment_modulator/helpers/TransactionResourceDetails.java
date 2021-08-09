@@ -20,38 +20,6 @@ public class TransactionResourceDetails extends BaseRest {
 
 	protected PropertyFileLoader testData;
 
-	/*
-	 * public List<String> makeAnAuthorize(String mmid, Boolean flag) throws
-	 * Exception { testData = new PropertyFileLoader(); Map<String, Object>
-	 * transactiondetails = PayloadDetails.getPayloadForAuthorizeSaleMap(
-	 * (testData.getProperty("transaction.amount")),
-	 * testData.getProperty("account.number"),
-	 * testData.getProperty("consumer.name"),
-	 * testData.getProperty("payment.source"), testData.getProperty("cvv"),
-	 * testData.getProperty("type"), testData.getProperty("card.number"),
-	 * testData.getProperty("expiration.number"), testData.getProperty("bin"),
-	 * testData.getProperty("zipcode"), testData.getProperty("last.name"),
-	 * testData.getProperty("address.line1"), testData.getProperty("city"),
-	 * testData.getProperty("state"), testData.getProperty("first.name"));
-	 * 
-	 * Response response =
-	 * given().spec(requestSpec).body(transactiondetails).when().post("authorize/" +
-	 * mmid).then() .spec(responseSpec).and().extract().response();
-	 * 
-	 * JsonPath jsonpath = new JsonPath(response.asString()); Validations validate =
-	 * new Validations(); validate.verifyTransactionDetails(response.asString());
-	 * CommonUtils.saveTransactionDetails(jsonpath.get("externalTransactionId").
-	 * toString(), jsonpath.get("orderId").toString()); List<String>
-	 * transactiondetailslist = new ArrayList<String>();
-	 * transactiondetailslist.add(jsonpath.get("externalTransactionId").toString());
-	 * transactiondetailslist.add(jsonpath.get("orderId").toString());
-	 * 
-	 * // Check to see if mmid is element. For element transactions check for
-	 * Network // id in the response if (flag.equals(true)) {
-	 * validate.verifyIfNetworkIdPresent(response.asString()); } return
-	 * transactiondetailslist; }
-	 */
-
 	public Response makeAnAuthorize(String mmid, String transactionAmount, String accountNumber, String consumerName,
 			String paymentSource, String cvv, String type, String cardNumber, String expiratioNumber, String bin,
 			String zipCode, String lastName, String addresLine1, String city, String state, String firstName)
