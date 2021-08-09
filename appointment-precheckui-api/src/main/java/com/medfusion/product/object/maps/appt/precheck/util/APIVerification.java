@@ -977,4 +977,9 @@ public class APIVerification extends BaseTestNGWebDriver {
 		assertEquals(js.get("message"),
 				"saveAll.unsubscribedDataList[0].type: Type value cannot be null, empty, or blank");
 	}
+
+	public void verifySendEmail(Response response) throws IOException {
+		JsonPath jsonPath = new JsonPath(response.asString());
+		assertEquals(jsonPath.get("status"), "Email request complete.");
+	}
 }
