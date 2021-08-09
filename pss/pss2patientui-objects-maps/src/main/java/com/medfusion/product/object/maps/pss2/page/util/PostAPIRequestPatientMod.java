@@ -255,16 +255,16 @@ public class PostAPIRequestPatientMod extends BaseTestNGWebDriver {
 
 	public String createToken(String baseurl) {
 		RestAssured.baseURI = baseurl;
-		Response response = given().log().all().header("flowType", "LOGINLESS").get("/accesstoken").then().log().all()
-				.assertThat().statusCode(200).body("accessToken", Matchers.notNullValue()).extract().response();
+		Response response = given().log().all().header("flowType", "LOGINLESS").get("/createtoken").then().log().all()
+				.assertThat().statusCode(200).body("token", Matchers.notNullValue()).extract().response();
 
 		JSONObject jsonobject = new JSONObject(response.asString());
 
-		ParseJSONFile.getKey(jsonobject, "accessToken");
+		ParseJSONFile.getKey(jsonobject, "token");
 
 		JsonPath jsonPath = response.jsonPath();
-		String access_Token = jsonPath.get("accessToken");
-		log("The Access Token is    " + jsonPath.get("accessToken"));
+		String access_Token = jsonPath.get("token");
+		log("The Access Token is    " + jsonPath.get("token"));
 
 		return access_Token;
 	}
