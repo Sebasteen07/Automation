@@ -1014,4 +1014,32 @@ public class APIVerification extends BaseTestNGWebDriver {
 		JsonPath jsonPath = new JsonPath(response.asString());
 		assertEquals(jsonPath.get("status"), "Email request complete.");
 	}
+	
+	public void verifyDeleteApmt(Response response, String practiceId, String pmPatientId, String pmAppointmentId)
+			throws IOException {
+		JsonPath js = new JsonPath(response.asString());
+		log("Validate appointment to be deleted");
+		assertEquals(js.getString("practiceId"), practiceId, "Practice id was incorrect");
+		assertEquals(js.getString("pmPatientId"), pmPatientId, "Patient id was incorrect");
+		assertEquals(js.getString("pmAppointmentId"), pmAppointmentId, "Appointment id was incorrect");
+}
+	
+	public void verifyPastAppmnt(Response response) throws IOException {
+		JsonPath jsonPath = new JsonPath(response.asString());
+		assertEquals(jsonPath.get("message"), "Appointment time is in past cannot cancel");
+	}
+	
+	public void verifyPutAppt(Response response, String practiceId, String pmPatientId, String pmAppointmentId)
+			throws IOException {
+		JsonPath js = new JsonPath(response.asString());
+		log("Validate put appointment");
+		assertEquals(js.getString("practiceId"), practiceId, "Practice id was incorrect");
+		assertEquals(js.getString("pmPatientId"), pmPatientId, "Patient id was incorrect");
+		assertEquals(js.getString("pmAppointmentId"), pmAppointmentId, "Appointment id was incorrect");
+	}
+	
+	public void verifyPutAppointmentPastTime(Response response) throws IOException {
+		JsonPath jsonPath = new JsonPath(response.asString());
+		assertEquals(jsonPath.get("message"), "Incoming Appointment time is in past cannot schedule, reschedule, cancel, or update");
+	}
 }
