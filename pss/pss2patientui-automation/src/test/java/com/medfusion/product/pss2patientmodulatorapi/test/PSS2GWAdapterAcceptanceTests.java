@@ -18,6 +18,7 @@ import com.medfusion.product.pss2patientapi.validation.ValidationGW;
 import com.medfusion.product.pss2patientui.pojo.Appointment;
 import com.medfusion.product.pss2patientui.utils.PSSPropertyFileLoader;
 
+import io.restassured.path.json.JsonPath;
 import io.restassured.response.Response;
 import io.restassured.specification.RequestSpecification;
 import io.restassured.specification.ResponseSpecification;
@@ -65,8 +66,8 @@ public class PSS2GWAdapterAcceptanceTests extends BaseTestNGWebDriver {
 		Response response = postAPIRequestgw.demographicsWithoutPid(propertyData.getProperty("practice.id.gw"));
 		logStep("Verifying the response");
 		assertEquals(response.getStatusCode(), 400);
-		JsonPath jsonPath = new JsonPath(response.asString());
-		assertEquals(jsonPath.get("message"), "Required String parameter 'patientId' is not present", "Incorrect Patient id");
+		validateGW.verifyDemographicsResponseWithoutPid(response);
+		
 	}
 
 
@@ -93,8 +94,8 @@ public class PSS2GWAdapterAcceptanceTests extends BaseTestNGWebDriver {
 				propertyData.getProperty("practice.id.gw"));
 		logStep("Verifying the response");
 		assertEquals(response.getStatusCode(), 400);
-		JsonPath jsonPath = new JsonPath(response.asString());
-		assertEquals(jsonPath.get("message"), "First Name, Last Name, Gender And Date Of Birth Can Not Be Empty");
+		validateGW.verifySearchPatientResponseWithoutFname(response);
+		
 
 
 	}
@@ -116,8 +117,7 @@ public class PSS2GWAdapterAcceptanceTests extends BaseTestNGWebDriver {
 				propertyData.getProperty("practice.id.gw"), propertyData.getProperty("start.date.time.gw"));
 		logStep("Verifying the response");
 		assertEquals(responseWithoutAppId.getStatusCode(), 400);
-		JsonPath jsonPath = new JsonPath(responseWithoutAppId.asString());
-		assertEquals(jsonPath.get("message"), "Appointment Id should not be empty", "InValid message");
+		validateGW.verifyAppointmentStatusWithoutAppId(responseWithoutAppId);
 
 	}
 	
@@ -190,9 +190,8 @@ public class PSS2GWAdapterAcceptanceTests extends BaseTestNGWebDriver {
 				propertyData.getProperty("practice.id.gw"));
 		logStep("Verifying the response");
 		assertEquals(scheduleApptResponse.getStatusCode(), 200);
+		validateGW.verifytestScheduleAppPOST(scheduleApptResponse);
 
-		aPIVerification.responseKeyValidationJson(scheduleApptResponse, "slotAlreadyTaken");
-		aPIVerification.responseKeyValidationJson(scheduleApptResponse, "rescheduleNotAllowed");
 	}
 	
 	@Test(enabled = true, groups = { "APItest" }, retryAnalyzer = RetryAnalyzer.class)
@@ -257,9 +256,8 @@ public class PSS2GWAdapterAcceptanceTests extends BaseTestNGWebDriver {
 						propertyData.getProperty("resource.cat.id.gw"),
 						propertyData.getProperty("start.date.time.gw")), propertyData.getProperty("practice.id.gw"));
 		assertEquals(response.getStatusCode(), 500);
-		JsonPath jsonPath = new JsonPath(response.asString());
-		assertEquals(jsonPath.get("error"), "Internal Server Error");
-
+		validateGW.verifyNextAvailableSlotsWithoutProvider(response);
+		
 	}
 
 	@Test(enabled = true, groups = { "APItest" }, retryAnalyzer = RetryAnalyzer.class)
@@ -278,8 +276,8 @@ public class PSS2GWAdapterAcceptanceTests extends BaseTestNGWebDriver {
 		Response response = postAPIRequestgw.pastApptWithOutPid(propertyData.getProperty("practice.id.gw"),
 				payload.pastApptPayloadWithoutPid());
 		assertEquals(response.getStatusCode(), 500);
-		JsonPath jsonPath = new JsonPath(response.asString());
-		assertEquals(jsonPath.get("message"), "Invalid Parameters");
+		validateGW.verifyPastAppointmentsWithoutPidPOST(response);
+	
 
 	}
 
@@ -514,8 +512,8 @@ public class PSS2GWAdapterAcceptanceTests extends BaseTestNGWebDriver {
 						propertyData.getProperty("practice.displayname.gw")));
 		logStep("Verifying the response");
 		assertEquals(response.getStatusCode(), 500);
-		JsonPath jsonPath = new JsonPath(response.asString());
-		assertEquals(jsonPath.get("message"), "Invalid Parameters");
+		validateGW.verifyUpcomingAppointmentsResponseWithoutPid(response);
+	
 	}
 
 	@Test(enabled = true, groups = { "APItest" }, retryAnalyzer = RetryAnalyzer.class)
@@ -556,6 +554,7 @@ public class PSS2GWAdapterAcceptanceTests extends BaseTestNGWebDriver {
 		validateGW.verifyAddPatientResponse(response);
 	}
 	
+	
 	@Test(enabled = true, groups = { "APItest" }, retryAnalyzer = RetryAnalyzer.class)
 	public void testAddPatientWithoutFnamePOST() throws IOException, InterruptedException {
 		
@@ -564,10 +563,8 @@ public class PSS2GWAdapterAcceptanceTests extends BaseTestNGWebDriver {
 
 		Response negResponse = postAPIRequestgw.addPatient(body, propertyData.getProperty("practice.id.gw"));
 		assertEquals(negResponse.getStatusCode(), 400);
-		JsonPath jsonPath = new JsonPath(negResponse.asString());
-		assertEquals(jsonPath.get("message"),
-				"RequiredFieldException in Greenway.PrimeSuite.Controllers.Person.Patient.Patient.ValidatePatientAddNewRequest: (PatientAddNewRequest.Patient.Firstname is required.)");
-
+		validateGW.verifyAddPatientWithoutFname(negResponse);
+		
 	}
 
 
@@ -589,8 +586,8 @@ public class PSS2GWAdapterAcceptanceTests extends BaseTestNGWebDriver {
 				.matchPatient(payload.matchPatientWithoutEmailPayload(propertyData.getProperty("first.name.gw")), propertyData.getProperty("practice.id.gw"));
 		logStep("Verifying the response");
 		assertEquals(response.getStatusCode(), 500);
-		JsonPath jsonPath = new JsonPath(response.asString());
-		assertEquals(jsonPath.get("error"), "Internal Server Error");
+		validateGW.verifyMatchPatientWithoutEmail(response);
+		
 
 	}
 
@@ -604,13 +601,6 @@ public class PSS2GWAdapterAcceptanceTests extends BaseTestNGWebDriver {
 		logStep("Verifying the response");
 		assertEquals(response.getStatusCode(), 200);
 		validateGW.verifyCancelStateResponse(response);
-		
-		Response negResponse = postAPIRequestgw
-				.cancelstatuswithoutPracticeId(payload.cancelStatusPayload(propertyData.getProperty("appointment.type.id"),
-						propertyData.getProperty("location.id.gw"), propertyData.getProperty("patient.id.gw"),
-						propertyData.getProperty("resource.id"), propertyData.getProperty("cancel.app.id.gw")));
-		assertEquals(negResponse.getStatusCode(), 404);
-
 	}
 	
 	@Test(enabled = true, groups = { "APItest" }, retryAnalyzer = RetryAnalyzer.class)
@@ -632,14 +622,6 @@ public class PSS2GWAdapterAcceptanceTests extends BaseTestNGWebDriver {
 		logStep("Verifying the response");
 		assertEquals(response.getStatusCode(), 200);
 		validateGW.verifyCancelStateResponse(response);
-
-		Response negResponse = postAPIRequestgw.cancelappointment(
-				payload.cancelAppInvalidIdPayload(propertyData.getProperty("invalid.cancel.app.id.gw")),
-				propertyData.getProperty("practice.id.gw"), propertyData.getProperty("patient.id.gw"));
-		assertEquals(negResponse.getStatusCode(), 400);
-		JsonPath jsonPath = new JsonPath(negResponse.asString());
-		assertEquals(jsonPath.get("message"), "Invalid AppointmentID.");
-
 	}
 	
 	@Test(enabled = true, groups = { "APItest" }, retryAnalyzer = RetryAnalyzer.class)
@@ -648,8 +630,8 @@ public class PSS2GWAdapterAcceptanceTests extends BaseTestNGWebDriver {
 				payload.cancelAppInvalidIdPayload(propertyData.getProperty("invalid.cancel.app.id.gw")),
 				propertyData.getProperty("practice.id.gw"), propertyData.getProperty("patient.id.gw"));
 		assertEquals(negResponse.getStatusCode(), 400);
-		JsonPath jsonPath = new JsonPath(negResponse.asString());
-		assertEquals(jsonPath.get("message"), "Invalid AppointmentID.");
+		validateGW.verifyCancelStateResponseWithoutAppId(negResponse);
+		
 
 	}
 }

@@ -31,12 +31,26 @@ public class ValidationGW extends BaseTestNG {
 				"patient lastname wrong");
 	}
 
+	public void verifySearchPatientResponseWithoutFname(Response response) throws IOException {
+		propertyData = new PSSPropertyFileLoader();
+		JsonPath jsonPath = new JsonPath(response.asString());
+		assertEquals(jsonPath.get("message"), "First Name, Last Name, Gender And Date Of Birth Can Not Be Empty");
+	}
+
 	public void verifyDemographicsResponse(Response response) throws IOException {
 		propertyData = new PSSPropertyFileLoader();
 		JsonPath jsonPath = new JsonPath(response.asString());
 		assertEquals(jsonPath.get("id"), propertyData.getProperty("patient.id.gw"), "patient id wrong");
 		assertEquals(jsonPath.get("firstName"), propertyData.getProperty("first.name.gw"), "firstname was wrong");
 		assertEquals(jsonPath.get("lastName"), propertyData.getProperty("last.name.gw"), "lastname was wrong");
+
+	}
+
+	public void verifyDemographicsResponseWithoutPid(Response response) throws IOException {
+		propertyData = new PSSPropertyFileLoader();
+		JsonPath jsonPath = new JsonPath(response.asString());
+		assertEquals(jsonPath.get("message"), "Required String parameter 'patientId' is not present",
+				"Incorrect Patient id");
 
 	}
 
@@ -47,6 +61,13 @@ public class ValidationGW extends BaseTestNG {
 		assertEquals(jsonPath.get("locationName"), propertyData.getProperty("locationname.gw"),
 				"LocationName Name incorrect");
 		apiVerification.responseKeyValidationJson(response, "id");
+	}
+
+	public void verifyAppointmentStatusWithoutAppId(Response response) throws IOException {
+		propertyData = new PSSPropertyFileLoader();
+
+		JsonPath jsonPath = new JsonPath(response.asString());
+		assertEquals(jsonPath.get("message"), "Appointment Id should not be empty", "InValid message");
 	}
 
 	public void verifyAvailiableSlotResponse(Response response) throws IOException {
@@ -99,6 +120,12 @@ public class ValidationGW extends BaseTestNG {
 		apiVerification.responseKeyValidation(response, "endDateTime");
 	}
 
+	public void verifyUpcomingAppointmentsResponseWithoutPid(Response response) throws IOException {
+		propertyData = new PSSPropertyFileLoader();
+		JsonPath jsonPath = new JsonPath(response.asString());
+		assertEquals(jsonPath.get("message"), "Invalid Parameters");
+	}
+
 	public void verifyBookResponse(Response response) throws IOException {
 		propertyData = new PSSPropertyFileLoader();
 		apiVerification.responseKeyValidation(response, "resourceId");
@@ -138,10 +165,49 @@ public class ValidationGW extends BaseTestNG {
 		assertEquals(jsonPath.get("lastName"), propertyData.getProperty("last.name.gw"), "firstName incorrect");
 	}
 
+	public void verifyAddPatientWithoutFname(Response response) throws IOException {
+		propertyData = new PSSPropertyFileLoader();
+		JsonPath jsonPath = new JsonPath(response.asString());
+		assertEquals(jsonPath.get("message"),
+				"RequiredFieldException in Greenway.PrimeSuite.Controllers.Person.Patient.Patient.ValidatePatientAddNewRequest: (PatientAddNewRequest.Patient.Firstname is required.)");
+
+	}
+
 	public void verifyCancelStateResponse(Response response) throws IOException {
 		propertyData = new PSSPropertyFileLoader();
 		JsonPath jsonPath = new JsonPath(response.asString());
 		assertEquals(jsonPath.get("checkCancelAppointmentStatus"), true);
 
+	}
+
+	public void verifyCancelStateResponseWithoutAppId(Response response) throws IOException {
+		propertyData = new PSSPropertyFileLoader();
+		JsonPath jsonPath = new JsonPath(response.asString());
+		assertEquals(jsonPath.get("message"), "Invalid AppointmentID.");
+
+	}
+
+	public void verifyMatchPatientWithoutEmail(Response response) throws IOException {
+		propertyData = new PSSPropertyFileLoader();
+		JsonPath jsonPath = new JsonPath(response.asString());
+		assertEquals(jsonPath.get("error"), "Internal Server Error");
+	}
+
+	public void verifyNextAvailableSlotsWithoutProvider(Response response) throws IOException {
+		propertyData = new PSSPropertyFileLoader();
+		JsonPath jsonPath = new JsonPath(response.asString());
+		assertEquals(jsonPath.get("error"), "Internal Server Error");
+	}
+
+	public void verifyPastAppointmentsWithoutPidPOST(Response response) throws IOException {
+		propertyData = new PSSPropertyFileLoader();
+		JsonPath jsonPath = new JsonPath(response.asString());
+		assertEquals(jsonPath.get("message"), "Invalid Parameters");
+	}
+
+	public void verifytestScheduleAppPOST(Response response) throws IOException {
+		propertyData = new PSSPropertyFileLoader();
+		apiVerification.responseKeyValidationJson(response, "slotAlreadyTaken");
+		apiVerification.responseKeyValidationJson(response, "rescheduleNotAllowed");
 	}
 }
