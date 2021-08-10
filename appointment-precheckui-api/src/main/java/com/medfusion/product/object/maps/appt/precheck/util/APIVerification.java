@@ -77,14 +77,13 @@ public class APIVerification extends BaseTestNGWebDriver {
 		ValidatableResponse valRes = response.then();
 		valRes.time(Matchers.lessThan(5000L));
 	}
-	
+
 	public void responseTimeValidationDailyAggregation(Response response) {
 		long time = response.time();
 		log("Response time " + time);
 		ValidatableResponse valRes = response.then();
 		valRes.time(Matchers.lessThan(30000L));
 	}
-
 
 	public void verifyInvalidLanguage(Response response) throws IOException {
 		JsonPath jsonPath = new JsonPath(response.asString());
@@ -246,8 +245,7 @@ public class APIVerification extends BaseTestNGWebDriver {
 	}
 
 	public void verifyBalanceInfo(Response response, String practiceId, String pmPatientId, String pmAppointmentId,
-			String balanceAmount)
-			throws IOException {
+			String balanceAmount) throws IOException {
 		JsonPath js = new JsonPath(response.asString());
 		log("Validate Appointment Ids");
 		assertEquals(js.getString("practiceId"), practiceId, "Practice id was incorrect");
@@ -274,8 +272,7 @@ public class APIVerification extends BaseTestNGWebDriver {
 	}
 
 	public void verifyUpdateCopayInfo(Response response, String practiceId, String pmPatientId, String pmAppointmentId,
-			String copayAmount)
-			throws IOException {
+			String copayAmount) throws IOException {
 		JsonPath js = new JsonPath(response.asString());
 		log("Validate Appointment Ids");
 		assertEquals(js.getString("practiceId"), practiceId, "Practice id was incorrect");
@@ -475,8 +472,9 @@ public class APIVerification extends BaseTestNGWebDriver {
 		assertEquals(js.getString("status"), "FHIR_APPOINTMENT_NOT_FOUND", "Status was incorrect");
 		assertEquals(js.getString("message"), "Did not find a FHIR appointment", "Message was incorrect");
 	}
-	
-	public void verifyEventResponse(Response response, String eventId, String eventSource, String eventTime, String eventType, String practiceId) throws IOException {
+
+	public void verifyEventResponse(Response response, String eventId, String eventSource, String eventTime,
+			String eventType, String practiceId) throws IOException {
 		JsonPath js = new JsonPath(response.asString());
 		log("Validate Apppointments events");
 		assertEquals(js.getString("eventId"), eventId, "EventId was incorrect");
@@ -485,30 +483,32 @@ public class APIVerification extends BaseTestNGWebDriver {
 		assertEquals(js.getString("eventType"), eventType, "eventType was incorrect");
 		assertEquals(js.getString("practiceId"), practiceId, "practiceId was incorrect");
 	}
-	
+
 	public void verifyEventIncorrectTime(Response response) throws IOException {
 		JsonPath jsonPath = new JsonPath(response.asString());
 		assertEquals(jsonPath.get("message"), "Event time must be in ISO8601 date format");
 	}
-	
+
 	public void verifyMissingEventsource(Response response) throws IOException {
 		JsonPath jsonPath = new JsonPath(response.asString());
 		assertEquals(jsonPath.get("message"), "eventSource cannot be blank or null");
 	}
+
 	public void verifyDailyAggregationIncorrectTime(Response response) throws IOException {
 		JsonPath jsonPath = new JsonPath(response.asString());
 		assertEquals(jsonPath.get("message"), "Event time must be in ISO8601 date format");
 	}
+
 	public void verifyDailyAggregationTimeRange(Response response) throws IOException {
 		JsonPath jsonPath = new JsonPath(response.asString());
 		assertEquals(jsonPath.get("message"), "Start date and time cannot be after End date and time");
 	}
-	
+
 	public void verifyLongtermAggregationDateFormat(Response response) throws IOException {
 		JsonPath jsonPath = new JsonPath(response.asString());
-		assertEquals(jsonPath.get("message"), "Unable to parse date=2021-006-1833 - date is expected to be in yyyy-MM-dd format");
+		assertEquals(jsonPath.get("message"),
+				"Unable to parse date=2021-006-1833 - date is expected to be in yyyy-MM-dd format");
 	}
-
 
 	public void verifySendNotificationWithInvalidNotifType(Response response) throws IOException {
 		JsonPath jsonPath = new JsonPath(response.asString());
@@ -689,6 +689,7 @@ public class APIVerification extends BaseTestNGWebDriver {
 		assertEquals(js.getString("pmPatientId"), pmPatientId, "Patient id was incorrect");
 		assertEquals(js.getString("pmAppointmentId"), pmAppointmentId, "Appointment id was incorrect");
 	}
+
 	public void verifyReturnLogs(Response response, String subjectUrn, String subjectId) throws IOException {
 		JsonPath js = new JsonPath(response.asString());
 		log("Validate PM Integration Setting");
@@ -888,5 +889,129 @@ public class APIVerification extends BaseTestNGWebDriver {
 	public void verifySaveApptMetadataWithoutTime(Response response) throws IOException {
 		JsonPath js = new JsonPath(response.asString());
 		assertEquals(js.get("message"), "Appointment Time cannot be null");
+	}
+
+	public void verifyPutFormsWithoutPatientId(Response response) throws IOException {
+		JsonPath jsonPath = new JsonPath(response.asString());
+		assertEquals(jsonPath.get("message"), "pmPatientId cannot be null, empty, or blank");
+	}
+
+	public void verifyinsuranceWithStatusBlank(Response response) throws IOException {
+		JsonPath jsonPath = new JsonPath(response.asString());
+		assertEquals(jsonPath.get("message"), "'status' value must be one of: INCOMPLETE, SKIPPED, or COMPLETE.");
+	}
+
+	public void verifyinsuranceWithEditstatusIncorrrect(Response response) throws IOException {
+		JsonPath jsonPath = new JsonPath(response.asString());
+		assertEquals(jsonPath.get("message"),
+				"'editStatus' value must be one of: ADDED, EDITED, REMOVED, or PENDING, or CONFIRMED.");
+	}
+
+	public void verifyinsuranceWithIncorrectTier(Response response) throws IOException {
+		JsonPath jsonPath = new JsonPath(response.asString());
+		assertEquals(jsonPath.get("message"), "'tier' value must be one of: PRIMARY, SECONDARY, TERTIARY or OTHER.");
+	}
+
+	public void verifyPostApptIncorrectPracticeId(Response response) throws IOException {
+		JsonPath jsonPath = new JsonPath(response.asString());
+		assertEquals(jsonPath.get("message"), "User is not authorized for this practice.");
+	}
+
+	public void verifyPatientIdentificationIncorrectdata(Response response) throws IOException {
+		JsonPath jsonPath = new JsonPath(response.asString());
+		assertEquals(jsonPath.get("message"), "Could not decode token.");
+	}
+
+	public void verifyRetrieveAllSubscriptionData(Response response, String email, String resource, String identifier,
+			String mechanism) throws IOException {
+		JSONArray arr = new JSONArray(response.body().asString());
+		log("Validate Response");
+		assertEquals(arr.getJSONObject(0).getString("email"), email, "Id was incorrect");
+		assertEquals(arr.getJSONObject(0).getString("resource"), resource, "Resource  was incorrect ");
+		assertEquals(arr.getJSONObject(0).getString("identifier"), identifier, "Identifier was incorrect");
+		assertEquals(arr.getJSONObject(0).getString("mechanism"), mechanism, "Mechanism  was incorrect");
+	}
+
+	public void verifyRetrieveSubsDataGetUsingEmailIdAndResourceId(Response response, String email, String resource,
+			String identifier, String mechanism, String type) throws IOException {
+		JsonPath js = new JsonPath(response.body().asString());
+		log("Validate Response");
+		assertEquals(js.getString("email"), email, "id was incorrect");
+		assertEquals(js.getString("resource"), resource, "Days  was incorrect ");
+		assertEquals(js.getString("identifier"), identifier, "Days Period Value was incorrect");
+		assertEquals(js.getString("mechanism"), mechanism, "Hours Period Value was incorrect");
+		assertEquals(js.getString("type"), type, "type  was incorrect ");
+	}
+
+	public void verifyRetrieveSubsDataIfNotUnsubscribe(Response response, String email, String practiceId,
+			String apptType) throws IOException {
+		JsonPath js = new JsonPath(response.asString());
+		assertEquals(js.get("message"), "Did not find unsubscribed data for email/phone=" + email + " identifier="
+				+ practiceId + " and type=" + apptType);
+	}
+
+	public void verifyRetrieveAllSubsnDataUsingTypeId(Response response, String email, String resource,
+			String identifier, String mechanism, String apptType) throws IOException {
+		JSONArray arr = new JSONArray(response.body().asString());
+		log("Validate Response");
+		assertEquals(arr.getJSONObject(0).getString("email"), email, "Id was incorrect");
+		assertEquals(arr.getJSONObject(0).getString("resource"), resource, "Resource  was incorrect ");
+		assertEquals(arr.getJSONObject(0).getString("identifier"), identifier, "Identifier was incorrect");
+		assertEquals(arr.getJSONObject(0).getString("mechanism"), mechanism, "Mechanism  was incorrect");
+		assertEquals(arr.getJSONObject(0).getString("type"), apptType, "Appt Default Type  was incorrect ");
+	}
+	public void verifySaveSubsDataWithInvalidEmailId(Response response) throws IOException {
+		JsonPath js = new JsonPath(response.asString());
+		assertEquals(js.get("message"), "Email must be a valid email address");
+	}
+
+	public void verifySaveSubsDataWithInvalidResource(Response response) throws IOException {
+		JsonPath js = new JsonPath(response.asString());
+		assertEquals(js.get("message"),
+				"Resource must be one of 'authuser', 'authuserrole', 'device', 'document', 'esystem', 'identity', 'location', 'org', 'org_staff', 'patient', 'person', 'pharmacy', 'practice', 'practitioner', 'profile', 'staff'");
+	}
+
+	public void verifySaveSubsDataWithInvalidApptType(Response response) throws IOException {
+		JsonPath js = new JsonPath(response.asString());
+		assertEquals(js.get("message"),
+				"Type must be one of 'Appointment Check-In', 'Appointment Default', 'Appointment Scheduled Confirmation', 'Broadcast Appointment', 'Single Use Otp Code'");
+	}
+
+	public void verifySaveSubsDataWithInvalidMechanism(Response response) throws IOException {
+		JsonPath js = new JsonPath(response.asString());
+		assertEquals(js.get("message"), "Mechanism must be one of 'Email', 'Text', 'Push'");
+	}
+
+	public void verifySaveSubsDataWithoutSystemId(Response response) throws IOException {
+		JsonPath js = new JsonPath(response.asString());
+		assertEquals(js.get("message"), "System cannot be null, empty, or blank");
+	}
+
+	public void verifySaveAllSubsDataWithInvalidEmailId(Response response) throws IOException {
+		JsonPath js = new JsonPath(response.asString());
+		assertEquals(js.get("message"), "saveAll.unsubscribedDataList[0].email: Email must be a valid email address");
+	}
+
+	public void verifySaveAllSubsDataWithoutSystemId(Response response) throws IOException {
+		JsonPath js = new JsonPath(response.asString());
+		assertEquals(js.get("message"),
+				"saveAll.unsubscribedDataList[0].system: System cannot be null, empty, or blank");
+	}
+
+	public void verifySaveAllSubsDataWithoutResource(Response response) throws IOException {
+		JsonPath js = new JsonPath(response.asString());
+		assertEquals(js.get("message"),
+				"saveAll.unsubscribedDataList[0].resource: Resources cannot be null, empty, or blank");
+	}
+
+	public void verifySaveAllSubsDataWithoutApptType(Response response) throws IOException {
+		JsonPath js = new JsonPath(response.asString());
+		assertEquals(js.get("message"),
+				"saveAll.unsubscribedDataList[0].type: Type value cannot be null, empty, or blank");
+	}
+
+	public void verifySendEmail(Response response) throws IOException {
+		JsonPath jsonPath = new JsonPath(response.asString());
+		assertEquals(jsonPath.get("status"), "Email request complete.");
 	}
 }

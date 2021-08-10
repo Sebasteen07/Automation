@@ -76,7 +76,7 @@ public class ApptPrechekMfReminderServiceTests extends BaseTestNGWebDriver {
 				testData.isGenerateTextTrue(), propertyData.getProperty("mf.rem.service.email"),
 				propertyData.getProperty("invalid.language")), headerConfig.HeaderwithToken(getaccessToken));
 		log("Verifying the response");
-		assertEquals(response.getStatusCode(), 500);
+		assertEquals(response.getStatusCode(), 400);
 		apiVerification.verifyInvalidLanguage(response);
 		apiVerification.responseTimeValidation(response);
 
@@ -94,7 +94,7 @@ public class ApptPrechekMfReminderServiceTests extends BaseTestNGWebDriver {
 				testData.isGenerateTextTrue(), propertyData.getProperty("mf.rem.service.email"),
 				propertyData.getProperty("language.en")), headerConfig.HeaderwithToken(getaccessToken));
 		log("Verifying the response");
-		assertEquals(response.getStatusCode(), 500);
+		assertEquals(response.getStatusCode(), 400);
 		apiVerification.verifyMfRemServiceWithoutNotifType(response);
 		apiVerification.responseTimeValidation(response);
 
@@ -251,7 +251,7 @@ public class ApptPrechekMfReminderServiceTests extends BaseTestNGWebDriver {
 				testData.isGenerateTextTrue(), propertyData.getProperty("invalid.email"),
 				propertyData.getProperty("language.en")), headerConfig.HeaderwithToken(getaccessToken));
 		log("Verifying the response");
-		assertEquals(response.getStatusCode(), 500);
+		assertEquals(response.getStatusCode(), 400);
 		apiVerification.verifyInvalidEmail(response);
 		apiVerification.responseTimeValidation(response);
 	}
@@ -268,7 +268,7 @@ public class ApptPrechekMfReminderServiceTests extends BaseTestNGWebDriver {
 						propertyData.getProperty("language.en")),
 				headerConfig.HeaderwithToken(getaccessToken));
 		log("Verifying the response");
-		assertEquals(response.getStatusCode(), 500);
+		assertEquals(response.getStatusCode(), 400);
 		apiVerification.responseTimeValidation(response);
 	}
 
