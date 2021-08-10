@@ -18,6 +18,7 @@ import com.medfusion.product.pss2patientapi.validation.ValidationGW;
 import com.medfusion.product.pss2patientui.pojo.Appointment;
 import com.medfusion.product.pss2patientui.utils.PSSPropertyFileLoader;
 
+import io.restassured.path.json.JsonPath;
 import io.restassured.response.Response;
 import io.restassured.specification.RequestSpecification;
 import io.restassured.specification.ResponseSpecification;
@@ -58,6 +59,17 @@ public class PSS2GWAdapterAcceptanceTests extends BaseTestNGWebDriver {
 		validateGW.verifyDemographicsResponse(response);
 
 	}
+	
+	@Test(enabled = true, groups = { "APItest" }, retryAnalyzer = RetryAnalyzer.class)
+	public void testGetdemographicsWithoutPid() throws NullPointerException, Exception {
+
+		Response response = postAPIRequestgw.demographicsWithoutPid(propertyData.getProperty("practice.id.gw"));
+		logStep("Verifying the response");
+		assertEquals(response.getStatusCode(), 400);
+		validateGW.verifyDemographicsResponseWithoutPid(response);
+		
+	}
+
 
 	@Test(enabled = true, groups = { "APItest" }, retryAnalyzer = RetryAnalyzer.class)
 	public void testsearchPatientPOST() throws IOException, InterruptedException {
@@ -71,6 +83,23 @@ public class PSS2GWAdapterAcceptanceTests extends BaseTestNGWebDriver {
 		validateGW.verifySearchPatientResponse(response);
 
 	}
+	
+	@Test(enabled = true, groups = { "APItest" }, retryAnalyzer = RetryAnalyzer.class)
+	public void testsearchPatientWithoutFnamePOST() throws IOException, InterruptedException {
+
+		Response response = postAPIRequestgw.searchPatient(
+				payload.searchPatientWithoutFnamePayload(propertyData.getProperty("dateofbirth.gw"),
+						propertyData.getProperty("first.name.gw"), propertyData.getProperty("gender.gw"),
+						propertyData.getProperty("last.name.gw"), propertyData.getProperty("practiceTimezone.gw")),
+				propertyData.getProperty("practice.id.gw"));
+		logStep("Verifying the response");
+		assertEquals(response.getStatusCode(), 400);
+		validateGW.verifySearchPatientResponseWithoutFname(response);
+		
+
+
+	}
+
 
 	@Test(enabled = true, groups = { "APItest" }, retryAnalyzer = RetryAnalyzer.class)
 	public void testGetAppointmentStatus() throws NullPointerException, Exception {
@@ -79,11 +108,104 @@ public class PSS2GWAdapterAcceptanceTests extends BaseTestNGWebDriver {
 		logStep("Verifying the response");
 		assertEquals(response.getStatusCode(), 200);
 		validateGW.verifyAppointmentStatus(response);
+}
+	
 
+	@Test(enabled = true, groups = { "APItest" }, retryAnalyzer = RetryAnalyzer.class)
+	public void testGetAppointmentStatusWithoutAppId() throws NullPointerException, Exception {
+		Response responseWithoutAppId = postAPIRequestgw.appointmentStatusWithoutAppId(
+				propertyData.getProperty("practice.id.gw"), propertyData.getProperty("start.date.time.gw"));
+		logStep("Verifying the response");
+		assertEquals(responseWithoutAppId.getStatusCode(), 400);
+		validateGW.verifyAppointmentStatusWithoutAppId(responseWithoutAppId);
+
+	}
+	
+
+	@Test(enabled = true, groups = { "APItest" }, retryAnalyzer = RetryAnalyzer.class)
+	public void testGetCancelAppointment() throws NullPointerException, Exception {
+		Response response = postAPIRequestgw.getcancelappointment(propertyData.getProperty("appointment.id.gw.cancel"),
+				propertyData.getProperty("practice.id.gw"), propertyData.getProperty("patient.id.gw"));
+		logStep("Verifying the response");
+		assertEquals(response.getStatusCode(), 200);
 	}
 
 	@Test(enabled = true, groups = { "APItest" }, retryAnalyzer = RetryAnalyzer.class)
-	public void testAvailableSlots() throws IOException, InterruptedException {
+	public void testAvailSlotsScheReScheduleApp() throws IOException, InterruptedException {
+
+		Response response = postAPIRequestgw
+				.avaliableSlot(payload.availableslotsPayload(propertyData.getProperty("appointment.cat.id.gw"),
+						propertyData.getProperty("appointment.type.id"), propertyData.getProperty("extapp.id.gw"),
+						propertyData.getProperty("location.id.gw"), propertyData.getProperty("patient.id.gw"),
+						propertyData.getProperty("resource.cat.id.gw"), propertyData.getProperty("resource.id"),
+						propertyData.getProperty("start.date.time.gw")), propertyData.getProperty("practice.id.gw"));
+		logStep("Verifying the response");
+		assertEquals(response.getStatusCode(), 200);
+
+		JsonPath js = new JsonPath(response.asString());
+
+		String startDateTime = js.getString("availableSlots[0].startDateTime");
+		String endDateTime = js.getString("availableSlots[0].endDateTime");
+
+		String startDateTime_resch = js.getString("availableSlots[1].startDateTime");
+		String endDateTime_resch = js.getString("availableSlots[1].endDateTime");
+
+		String patientId = propertyData.getProperty("patient.id.gw");
+
+		log("startDateTime- " + startDateTime);
+		log("endDateTime- " + endDateTime);
+		log("patientId- " + patientId);
+
+		log("startDateTime- " + startDateTime_resch);
+		log("endDateTime- " + endDateTime_resch);
+		log("patientId- " + patientId);
+
+		Response scheduleApptResponse = postAPIRequestgw.scheduleappointment(
+				payload.schedulePayload(startDateTime, endDateTime, patientId),
+				propertyData.getProperty("practice.id.gw"));
+		logStep("Verifying the response");
+		assertEquals(scheduleApptResponse.getStatusCode(), 200);
+
+		String apptid = aPIVerification.responseKeyValidationJson(scheduleApptResponse, "id");
+		aPIVerification.responseKeyValidationJson(scheduleApptResponse, "slotAlreadyTaken");
+		aPIVerification.responseKeyValidationJson(scheduleApptResponse, "rescheduleNotAllowed");
+
+		log("Appointment id - " + apptid);
+
+		Response rescheduleResponse = postAPIRequestgw.reScheduleappointment(
+				payload.reschedulePayload(startDateTime_resch, endDateTime_resch, patientId),
+				propertyData.getProperty("practice.id.gw"));
+		logStep("Verifying the response");
+		assertEquals(rescheduleResponse.getStatusCode(), 200);
+		aPIVerification.responseKeyValidationJson(rescheduleResponse, "id");
+		aPIVerification.responseKeyValidationJson(rescheduleResponse, "slotAlreadyTaken");
+		aPIVerification.responseKeyValidationJson(rescheduleResponse, "rescheduleNotAllowed");
+
+	}
+	
+	@Test(enabled = true, groups = { "APItest" }, retryAnalyzer = RetryAnalyzer.class)
+	public void testScheduleAppPOST() throws IOException, InterruptedException {
+		Response scheduleApptResponse = postAPIRequestgw.scheduleappointment(
+				payload.schedulePayload(propertyData.getProperty("start.date.time.gw"), propertyData.getProperty("end.date.time.gw"), propertyData.getProperty("patient.id.gw")),
+				propertyData.getProperty("practice.id.gw"));
+		logStep("Verifying the response");
+		assertEquals(scheduleApptResponse.getStatusCode(), 200);
+		validateGW.verifytestScheduleAppPOST(scheduleApptResponse);
+
+	}
+	
+	@Test(enabled = true, groups = { "APItest" }, retryAnalyzer = RetryAnalyzer.class)
+	public void testScheduleAppWithoutPidPOST() throws IOException, InterruptedException {
+		Response scheduleApptResponse = postAPIRequestgw.scheduleappointment(
+				payload.scheduleWithoutPidPayload(propertyData.getProperty("start.date.time.gw"), propertyData.getProperty("end.date.time.gw")),
+				propertyData.getProperty("practice.id.gw"));
+		logStep("Verifying the response");
+		assertEquals(scheduleApptResponse.getStatusCode(), 400);
+
+	}
+	
+	@Test(enabled = true, groups = { "APItest" }, retryAnalyzer = RetryAnalyzer.class)
+	public void testAvaliableSlot() throws IOException, InterruptedException {
 
 		Response response = postAPIRequestgw
 				.avaliableSlot(payload.availableslotsPayload(propertyData.getProperty("appointment.cat.id.gw"),
@@ -94,8 +216,21 @@ public class PSS2GWAdapterAcceptanceTests extends BaseTestNGWebDriver {
 		logStep("Verifying the response");
 		assertEquals(response.getStatusCode(), 200);
 		validateGW.verifyAvailiableSlotResponse(response);
-
 	}
+	
+	@Test(enabled = true, groups = { "APItest" }, retryAnalyzer = RetryAnalyzer.class)
+	public void testAvaliableSlotWithoutAppTypeId() throws IOException, InterruptedException {
+
+		Response response = postAPIRequestgw
+				.avaliableSlot(payload.availableslotsWithoutAppIdPayload(propertyData.getProperty("appointment.cat.id.gw"),
+						 propertyData.getProperty("extapp.id.gw"),
+						propertyData.getProperty("location.id.gw"), propertyData.getProperty("patient.id.gw"),
+						propertyData.getProperty("resource.cat.id.gw"), propertyData.getProperty("resource.id"),
+						propertyData.getProperty("start.date.time.gw")), propertyData.getProperty("practice.id.gw"));
+		logStep("Verifying the response");
+		assertEquals(response.getStatusCode(), 400);
+	}
+
 
 	@Test(enabled = true, groups = { "APItest" }, retryAnalyzer = RetryAnalyzer.class)
 	public void testNextAvailableSlots() throws IOException, InterruptedException {
@@ -110,6 +245,20 @@ public class PSS2GWAdapterAcceptanceTests extends BaseTestNGWebDriver {
 		assertEquals(response.getStatusCode(), 200);
 
 	}
+	
+	@Test(enabled = true, groups = { "APItest" }, retryAnalyzer = RetryAnalyzer.class)
+	public void testNextAvailableSlotsWithoutProvider() throws IOException, InterruptedException {
+
+		Response response = postAPIRequestgw
+				.nextavaliableSlot(payload.nextAvailableslotsWithoutProviderPayload(propertyData.getProperty("appointment.cat.id.gw"),
+						propertyData.getProperty("appointment.type.id"), propertyData.getProperty("extapp.id.gw"),
+						propertyData.getProperty("location.id.gw"), propertyData.getProperty("patient.id.gw"),
+						propertyData.getProperty("resource.cat.id.gw"),
+						propertyData.getProperty("start.date.time.gw")), propertyData.getProperty("practice.id.gw"));
+		assertEquals(response.getStatusCode(), 500);
+		validateGW.verifyNextAvailableSlotsWithoutProvider(response);
+		
+	}
 
 	@Test(enabled = true, groups = { "APItest" }, retryAnalyzer = RetryAnalyzer.class)
 	public void testPastAppointmentsPOST() throws NullPointerException, Exception {
@@ -120,6 +269,18 @@ public class PSS2GWAdapterAcceptanceTests extends BaseTestNGWebDriver {
 		validateGW.verifyPastAppointmentResponse(response);
 
 	}
+	
+	@Test(enabled = true, groups = { "APItest" }, retryAnalyzer = RetryAnalyzer.class)
+	public void testPastAppointmentsWithoutPidPOST() throws NullPointerException, Exception {
+
+		Response response = postAPIRequestgw.pastApptWithOutPid(propertyData.getProperty("practice.id.gw"),
+				payload.pastApptPayloadWithoutPid());
+		assertEquals(response.getStatusCode(), 500);
+		validateGW.verifyPastAppointmentsWithoutPidPOST(response);
+	
+
+	}
+
 
 	@Test(enabled = true, groups = { "APItest" }, retryAnalyzer = RetryAnalyzer.class)
 	public void testGetPreventSchedulingDate() throws NullPointerException, Exception {
@@ -128,6 +289,24 @@ public class PSS2GWAdapterAcceptanceTests extends BaseTestNGWebDriver {
 				propertyData.getProperty("practice.id.gw"), propertyData.getProperty("extapp.id.gw"));
 		logStep("Verifying the response");
 		assertEquals(response.getStatusCode(), 200);
+	}
+	
+	@Test(enabled = true, groups = { "APItest" }, retryAnalyzer = RetryAnalyzer.class)
+	public void testGetPreventSchedulingDateWithoutExtId() throws NullPointerException, Exception {
+
+		Response response = postAPIRequestgw.preventSchedulingDateWithoutExtId(propertyData.getProperty("patient.id.gw"),
+				propertyData.getProperty("practice.id.gw"));
+		logStep("Verifying the response");
+		assertEquals(response.getStatusCode(), 404);
+	}
+	
+	@Test(enabled = true, groups = { "APItest" }, retryAnalyzer = RetryAnalyzer.class)
+	public void testGetPreventSchedulingDateWithoutPId() throws NullPointerException, Exception {
+
+		Response response = postAPIRequestgw.preventSchedulingDateWithoutPid(propertyData.getProperty("practice.id.gw"),
+				propertyData.getProperty("extapp.id.gw"));
+		logStep("Verifying the response");
+		assertEquals(response.getStatusCode(), 404);
 	}
 
 	@Test(enabled = true, groups = { "APItest" }, retryAnalyzer = RetryAnalyzer.class)
@@ -138,14 +317,29 @@ public class PSS2GWAdapterAcceptanceTests extends BaseTestNGWebDriver {
 		assertEquals(response.getStatusCode(), 200);
 		validateGW.verifyInsurancecCarrierResponse(response);
 	}
+	
+	@Test(enabled = true, groups = { "APItest" }, retryAnalyzer = RetryAnalyzer.class)
+	public void testGetinsuranceCarrierWithoutPracticeId() throws NullPointerException, Exception {
+
+		Response response = postAPIRequestgw.insurancecarrierWithoutPracticeId();
+		assertEquals(response.getStatusCode(), 404);
+	}
+
 
 	@Test(enabled = true, groups = { "APItest" }, retryAnalyzer = RetryAnalyzer.class)
 	public void testGetappointmentTypes() throws NullPointerException, Exception {
 
 		Response response = postAPIRequestgw.appointmenttypes(propertyData.getProperty("practice.id.gw"));
 		logStep("Verifying the response");
-		assertEquals(response.getStatusCode(), 200);
 		validateGW.verifyAppointmenttypesResponse(response);
+	
+	}
+	
+	@Test(enabled = true, groups = { "APItest" }, retryAnalyzer = RetryAnalyzer.class)
+	public void testGetAppoTypesWithoutPracticeId() throws NullPointerException, Exception {		
+		Response negResponse = postAPIRequestgw.appointmenttypesWithoutPracticeID();
+		assertEquals(negResponse.getStatusCode(), 404);
+
 	}
 
 	@Test(enabled = true, groups = { "APItest" }, retryAnalyzer = RetryAnalyzer.class)
@@ -156,6 +350,13 @@ public class PSS2GWAdapterAcceptanceTests extends BaseTestNGWebDriver {
 		assertEquals(response.getStatusCode(), 200);
 		validateGW.verifyBookResponse(response);
 	}
+	
+
+	@Test(enabled = true, groups = { "APItest" }, retryAnalyzer = RetryAnalyzer.class)
+	public void testGetBookWithoutPracticeId() throws NullPointerException, Exception {
+
+		Response response = postAPIRequestgw.bookWithoutPracticeId();
+		assertEquals(response.getStatusCode(), 404);	}
 
 	@Test(enabled = true, groups = { "APItest" }, retryAnalyzer = RetryAnalyzer.class)
 	public void testGetflags() throws NullPointerException, Exception {
@@ -167,6 +368,14 @@ public class PSS2GWAdapterAcceptanceTests extends BaseTestNGWebDriver {
 	}
 
 	@Test(enabled = true, groups = { "APItest" }, retryAnalyzer = RetryAnalyzer.class)
+	public void testGetflagsWithoutPracticeId() throws NullPointerException, Exception {
+
+		Response response = postAPIRequestgw.flagsWithout();
+		logStep("Verifying the response");
+		assertEquals(response.getStatusCode(), 404);
+	}
+
+	@Test(enabled = true, groups = { "APItest" }, retryAnalyzer = RetryAnalyzer.class)
 	public void testPatientGetflags() throws NullPointerException, Exception {
 
 		Response response = postAPIRequestgw.patientFlags(propertyData.getProperty("practice.id.gw"),
@@ -174,6 +383,20 @@ public class PSS2GWAdapterAcceptanceTests extends BaseTestNGWebDriver {
 		logStep("Verifying the response");
 		assertEquals(response.getStatusCode(), 200);
 		validateGW.verifyPatientFlag(response);
+	}
+	
+	@Test(enabled = true, groups = { "APItest" }, retryAnalyzer = RetryAnalyzer.class)
+	public void testPatientGetflagsWithoutPId() throws NullPointerException, Exception {
+
+		Response response = postAPIRequestgw.patientFlagsWithoutPId(propertyData.getProperty("practice.id.gw"));
+		assertEquals(response.getStatusCode(), 404);
+	}
+	
+	@Test(enabled = true, groups = { "APItest" }, retryAnalyzer = RetryAnalyzer.class)
+	public void testPatientGetflagsWithoutPracticeId() throws NullPointerException, Exception {
+
+		Response response = postAPIRequestgw.patientFlagsWithoutPracticeId(propertyData.getProperty("patient.id.gw"));
+		assertEquals(response.getStatusCode(), 404);
 	}
 
 	@Test(enabled = true, groups = { "APItest" }, retryAnalyzer = RetryAnalyzer.class)
@@ -183,6 +406,14 @@ public class PSS2GWAdapterAcceptanceTests extends BaseTestNGWebDriver {
 		logStep("Verifying the response");
 		assertEquals(response.getStatusCode(), 200);
 	}
+	
+
+	@Test(enabled = true, groups = { "APItest" }, retryAnalyzer = RetryAnalyzer.class)
+	public void testHealthCheckWithoutPracticeId() throws NullPointerException, Exception {
+
+		Response response = postAPIRequestgw.healthcheckWithoutPracticeId();
+		assertEquals(response.getStatusCode(), 404);
+	}
 
 	@Test(enabled = true, groups = { "APItest" }, retryAnalyzer = RetryAnalyzer.class)
 	public void testGetLocations() throws NullPointerException, Exception {
@@ -191,8 +422,16 @@ public class PSS2GWAdapterAcceptanceTests extends BaseTestNGWebDriver {
 		logStep("Verifying the response");
 		assertEquals(response.getStatusCode(), 200);
 		validateGW.verifyLocationsResponse(response);
+	}
+	
+	@Test(enabled = true, groups = { "APItest" }, retryAnalyzer = RetryAnalyzer.class)
+	public void testGetLocationsWithoutPracticeId() throws NullPointerException, Exception {
+
+		Response response = postAPIRequestgw.locationsWithoutPracticeId();
+		assertEquals(response.getStatusCode(), 404);
 
 	}
+
 
 	@Test(enabled = true, groups = { "APItest" }, retryAnalyzer = RetryAnalyzer.class)
 	public void testGetLockout() throws NullPointerException, Exception {
@@ -203,6 +442,14 @@ public class PSS2GWAdapterAcceptanceTests extends BaseTestNGWebDriver {
 		validateGW.verifyLockoutResponse(response);
 
 	}
+	
+	@Test(enabled = true, groups = { "APItest" }, retryAnalyzer = RetryAnalyzer.class)
+	public void testGetLockoutWithoutPracticeId() throws NullPointerException, Exception {
+
+		Response response = postAPIRequestgw.lockoutWithoutPracticeId();
+		assertEquals(response.getStatusCode(), 404);
+	}
+
 
 	@Test(enabled = true, groups = { "APItest" }, retryAnalyzer = RetryAnalyzer.class)
 	public void testGetPing() throws NullPointerException, Exception {
@@ -212,6 +459,15 @@ public class PSS2GWAdapterAcceptanceTests extends BaseTestNGWebDriver {
 		assertEquals(response.getStatusCode(), 200);
 
 	}
+	
+	@Test(enabled = true, groups = { "APItest" }, retryAnalyzer = RetryAnalyzer.class)
+	public void testGetPingWithoutPracticeID() throws NullPointerException, Exception {
+
+		Response response = postAPIRequestgw.pingWithoutPracticeId();
+		assertEquals(response.getStatusCode(), 404);
+
+	}
+
 
 	@Test(enabled = true, groups = { "APItest" }, retryAnalyzer = RetryAnalyzer.class)
 	public void testGetVersion() throws NullPointerException, Exception {
@@ -221,7 +477,17 @@ public class PSS2GWAdapterAcceptanceTests extends BaseTestNGWebDriver {
 		assertEquals(response.getStatusCode(), 200);
 
 	}
+	
+	@Test(enabled = true, groups = { "APItest" }, retryAnalyzer = RetryAnalyzer.class)
+	public void testGetVersionWithoutPracticeId() throws NullPointerException, Exception {
 
+		Response response = postAPIRequestgw.versionWithoutPracticeId();
+		assertEquals(response.getStatusCode(), 404);
+
+	}
+
+
+	
 	@Test(enabled = true, groups = { "APItest" }, retryAnalyzer = RetryAnalyzer.class)
 	public void testUpcomingAppointments() throws NullPointerException, Exception {
 
@@ -235,6 +501,20 @@ public class PSS2GWAdapterAcceptanceTests extends BaseTestNGWebDriver {
 		validateGW.verifyUpcomingAppointmentsResponse(response);
 
 	}
+	
+	@Test(enabled = true, groups = { "APItest" }, retryAnalyzer = RetryAnalyzer.class)
+	public void testUpcomingAppointmentsWithoutPatientId() throws NullPointerException, Exception {
+
+		Response response = postAPIRequestgw.upcommingApptWithoutPatientId(propertyData.getProperty("practice.id.gw"),
+				payload.upComingAppointmentsPayloadWithoutPatientId(propertyData.getProperty("start.date.time.gw"),
+						 propertyData.getProperty("practice.displayname.gw"),
+						propertyData.getProperty("practice.id.gw"),
+						propertyData.getProperty("practice.displayname.gw")));
+		logStep("Verifying the response");
+		assertEquals(response.getStatusCode(), 500);
+		validateGW.verifyUpcomingAppointmentsResponseWithoutPid(response);
+	
+	}
 
 	@Test(enabled = true, groups = { "APItest" }, retryAnalyzer = RetryAnalyzer.class)
 	public void testPatientlastvisit() throws NullPointerException, Exception {
@@ -245,20 +525,48 @@ public class PSS2GWAdapterAcceptanceTests extends BaseTestNGWebDriver {
 		assertEquals(response.getStatusCode(), 200);
 
 	}
+	
+	@Test(enabled = true, groups = { "APItest" }, retryAnalyzer = RetryAnalyzer.class)
+	public void testPatientlastvisitWithoutPatientId() throws NullPointerException, Exception {
+
+		Response response = postAPIRequestgw.patientLastVisitWithoutPatientId(
+				propertyData.getProperty("practice.id.gw"));
+		assertEquals(response.getStatusCode(), 404);
+
+	}
+	
+	@Test(enabled = true, groups = { "APItest" }, retryAnalyzer = RetryAnalyzer.class)
+	public void testPatientlastvisitWithoutPracticeId() throws NullPointerException, Exception {
+
+		Response response = postAPIRequestgw.patientLastVisitWithoutPracticeId(propertyData.getProperty("patient.id.gw"));
+		assertEquals(response.getStatusCode(), 404);
+
+	}
 
 	@Test(enabled = true, groups = { "APItest" }, retryAnalyzer = RetryAnalyzer.class)
 	public void testAddPatientPOST() throws IOException, InterruptedException {
-
-		Response response = postAPIRequestgw
-				.addPatient(payload.addPatientPayload(propertyData.getProperty("first.name.gw"),
-						propertyData.getProperty("last.name.gw"), propertyData.getProperty("dateofbirth.gw"),
-						propertyData.getProperty("email.gw.api")), propertyData.getProperty("practice.id.gw"));
+		String body = payload.addPatientPayload(propertyData.getProperty("first.name.gw"),
+				propertyData.getProperty("last.name.gw"), propertyData.getProperty("dateofbirth.gw"),
+				propertyData.getProperty("email.gw.api"));
+		Response response = postAPIRequestgw.addPatient(body, propertyData.getProperty("practice.id.gw"));
 		assertEquals(response.getStatusCode(), 200);
 		logStep("Verifying the response");
-
 		validateGW.verifyAddPatientResponse(response);
-
 	}
+	
+	
+	@Test(enabled = true, groups = { "APItest" }, retryAnalyzer = RetryAnalyzer.class)
+	public void testAddPatientWithoutFnamePOST() throws IOException, InterruptedException {
+		
+		String body = payload.addPatientPayloadWithoutFName(propertyData.getProperty("last.name.gw"),
+				propertyData.getProperty("dateofbirth.gw"), propertyData.getProperty("email.gw.api"));
+
+		Response negResponse = postAPIRequestgw.addPatient(body, propertyData.getProperty("practice.id.gw"));
+		assertEquals(negResponse.getStatusCode(), 400);
+		validateGW.verifyAddPatientWithoutFname(negResponse);
+		
+	}
+
 
 	@Test(enabled = true, groups = { "APItest" }, retryAnalyzer = RetryAnalyzer.class)
 	public void testMatchPatientPOST() throws IOException, InterruptedException {
@@ -270,6 +578,18 @@ public class PSS2GWAdapterAcceptanceTests extends BaseTestNGWebDriver {
 		assertEquals(response.getStatusCode(), 200);
 
 	}
+	
+	@Test(enabled = true, groups = { "APItest" }, retryAnalyzer = RetryAnalyzer.class)
+	public void testMatchPatientWithoutEmailPOST() throws IOException, InterruptedException {
+
+		Response response = postAPIRequestgw
+				.matchPatient(payload.matchPatientWithoutEmailPayload(propertyData.getProperty("first.name.gw")), propertyData.getProperty("practice.id.gw"));
+		logStep("Verifying the response");
+		assertEquals(response.getStatusCode(), 500);
+		validateGW.verifyMatchPatientWithoutEmail(response);
+		
+
+	}
 
 	@Test(enabled = true, groups = { "APItest" }, retryAnalyzer = RetryAnalyzer.class)
 	public void testCancelStatusPOST() throws IOException, InterruptedException {
@@ -277,10 +597,41 @@ public class PSS2GWAdapterAcceptanceTests extends BaseTestNGWebDriver {
 		Response response = postAPIRequestgw
 				.cancelstatus(payload.cancelStatusPayload(propertyData.getProperty("appointment.type.id"),
 						propertyData.getProperty("location.id.gw"), propertyData.getProperty("patient.id.gw"),
-						propertyData.getProperty("resource.id")), propertyData.getProperty("practice.id.gw"));
+						propertyData.getProperty("resource.id"), propertyData.getProperty("cancel.app.id.gw")), propertyData.getProperty("practice.id.gw"));
 		logStep("Verifying the response");
 		assertEquals(response.getStatusCode(), 200);
 		validateGW.verifyCancelStateResponse(response);
+	}
+	
+	@Test(enabled = true, groups = { "APItest" }, retryAnalyzer = RetryAnalyzer.class)
+	public void testCancelStatusWithoutPracticeIdPOST() throws IOException, InterruptedException {
+		Response negResponse = postAPIRequestgw.cancelstatuswithoutPracticeId(
+				payload.cancelStatusPayload(propertyData.getProperty("appointment.type.id"),
+						propertyData.getProperty("location.id.gw"), propertyData.getProperty("patient.id.gw"),
+						propertyData.getProperty("resource.id"), propertyData.getProperty("cancel.app.id.gw")));
+		assertEquals(negResponse.getStatusCode(), 404);
+
+	}
+
+	@Test(enabled = true, groups = { "APItest" }, retryAnalyzer = RetryAnalyzer.class)
+	public void testCancelAppointmentPOST() throws IOException, InterruptedException {
+
+		Response response = postAPIRequestgw.cancelappointment(
+				payload.cancelAppointmentPayload(propertyData.getProperty("cancel.app.id.gw")),
+				propertyData.getProperty("practice.id.gw"), propertyData.getProperty("patient.id.gw"));
+		logStep("Verifying the response");
+		assertEquals(response.getStatusCode(), 200);
+		validateGW.verifyCancelStateResponse(response);
+	}
+	
+	@Test(enabled = true, groups = { "APItest" }, retryAnalyzer = RetryAnalyzer.class)
+	public void testCancelAppointmentWithInvalidAppIDPOST() throws IOException, InterruptedException {
+		Response negResponse = postAPIRequestgw.cancelappointment(
+				payload.cancelAppInvalidIdPayload(propertyData.getProperty("invalid.cancel.app.id.gw")),
+				propertyData.getProperty("practice.id.gw"), propertyData.getProperty("patient.id.gw"));
+		assertEquals(negResponse.getStatusCode(), 400);
+		validateGW.verifyCancelStateResponseWithoutAppId(negResponse);
+		
 
 	}
 }
