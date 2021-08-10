@@ -315,7 +315,8 @@ public class PostAPIRequestGE extends BaseTestNGWebDriver {
 			String lastName) {
 		RestAssured.baseURI = baseurl;
 		Response response = RestAssured.given().log().all().when().headers(Header).body(b).when().post(practiceId + "/matchpatient").then().log().all().assertThat()
-				.statusCode(200).body(patientId + ".firstName", equalTo(firstName)).body(patientId + ".lastName", equalTo(lastName)).extract().response();
+				.statusCode(200).body(patientId + ".firstName", equalTo(firstName))
+				.body(patientId + ".lastName", equalTo(lastName)).extract().response();
 		return response;
 	}
 
