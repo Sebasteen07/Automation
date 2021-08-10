@@ -5,37 +5,21 @@ import com.medfusion.common.utils.IHGUtil;
 
 import com.medfusion.common.utils.PropertyFileLoader;
 import com.medfusion.gateway_proxy.helpers.GatewayProxyChargeBackResource;
-import com.medfusion.gateway_proxy.helpers.GatewayProxyDigitalWalletResource;
 import com.medfusion.gateway_proxy.helpers.GatewayProxyTransactionResource;
-import com.medfusion.payment_modulator.pojos.PayloadDetails;
-import com.medfusion.payment_modulator.utils.GatewayProxyTestData;
 import com.medfusion.payment_modulator.utils.Validations;
-import com.medfusion.gateway_proxy.utils.GatewayProxyDigitalWalletUtils;
+import com.medfusion.gateway_proxy.utils.GatewayProxyTestData;
 import com.medfusion.gateway_proxy.utils.GatewayProxyUtils;
-//import com.medfusion.mfpay.merchant_provisioning.utils.ProvisioningUtils;
-//import com.medfusion.mfpay.merchant_provisioning.utils.User;
 import com.medfusion.gateway_proxy.utils.MPUsersUtility;
-
-import io.restassured.http.ContentType;
 import io.restassured.path.json.JsonPath;
 import io.restassured.response.Response;
-
-import static io.restassured.RestAssured.given;
-import static org.hamcrest.Matchers.equalTo;
-
 import java.text.SimpleDateFormat;
-import java.util.ArrayList;
-import java.util.Calendar;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.TimeZone;
-
-import org.json.JSONArray;
 import org.testng.Assert;
 import org.testng.annotations.BeforeTest;
-import org.testng.annotations.DataProvider;
 import org.testng.annotations.Test;
 
 public class GatewayProxyChargebackTests extends GatewayProxyBaseTest {
@@ -50,7 +34,6 @@ public class GatewayProxyChargebackTests extends GatewayProxyBaseTest {
 		setupRequestSpecBuilder();
 		token = MPUsersUtility.getCredentialsEncodedInBase("FINANCE");
 		financeUser = MPUsersUtility.FINANCE_USER;
-		
 
 	}
 
@@ -88,9 +71,6 @@ public class GatewayProxyChargebackTests extends GatewayProxyBaseTest {
 		Assert.assertEquals(orderId, jsonPathCB.get("parentOrderId"));
 		Assert.assertEquals(chargeBackAmount, jsonPathCB.get("chargebackAmount"));
 		Assert.assertEquals(financeUser, jsonPathCB.get("chargebackIssuer"));
-
-		Map<String, String> chargeBackMP = chargeBack.getCBdetails(jsonPathCB);
-
 	}
 
 	@Test(dataProvider = "CB_data_inavild_create", dataProviderClass = GatewayProxyTestData.class, enabled = true)
@@ -111,7 +91,6 @@ public class GatewayProxyChargebackTests extends GatewayProxyBaseTest {
 		if (jsonPath.get("message") != null) {
 
 			Assert.assertTrue(jsonPath.get("message").toString().contains(verifyErrorMessage));
-
 		}
 
 	}
@@ -199,7 +178,6 @@ public class GatewayProxyChargebackTests extends GatewayProxyBaseTest {
 		if (jsonPath.get("message") != null) {
 
 			Assert.assertTrue(jsonPath.get("message").toString().contains(verifyErrorMessage));
-
 		}
 
 	}
@@ -207,7 +185,6 @@ public class GatewayProxyChargebackTests extends GatewayProxyBaseTest {
 	@Test(enabled = true)
 
 	public void testGetChargeBackValidEmptyList() throws Exception {
-
 		GatewayProxyChargeBackResource chargeBack = new GatewayProxyChargeBackResource();
 
 		Response response = chargeBack.getChargeBack(token, testData.getProperty("proxy.chargeback.url"), "2560809338");
@@ -216,7 +193,6 @@ public class GatewayProxyChargebackTests extends GatewayProxyBaseTest {
 		List<String> emptyList = response.jsonPath().getList("$");
 
 		Assert.assertTrue(emptyList.isEmpty());
-
 	}
 
 }
