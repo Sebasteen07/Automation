@@ -91,4 +91,90 @@ public class PostAPIRequestAdapterModulator {
 				.get(practiceid + "/validatepractice").then().log().all().extract().response();
 		return response;
 	}
+	
+	public Response saveAppointmenttype( String practiceid, String b)
+			throws Exception {
+		Response response = given().spec(requestSpec).body(b).log().all().when()
+				.post(practiceid + "/appointmenttype").then().log().all().extract().response();
+		return response;
+	}
+	public Response updateAppointmenttype( String practiceid, String b)
+			throws Exception {
+		Response response = given().spec(requestSpec).body(b).log().all().when()
+				.put(practiceid + "/appointmenttype").then().log().all().extract().response();
+		return response;
+	}
+	public Response saveAppointmenttypeInvalid( String practiceid, String b)
+			throws Exception {
+		Response response = given().spec(requestSpec).body(b).log().all().when()
+				.post(practiceid + "/appointmenttype").then().log().all().extract().response();
+		return response;
+	}
+	public Response updateAppointmenttypeInvalid( String practiceid, String b)
+			throws Exception {
+		Response response = given().spec(requestSpec).body(b).log().all().when()
+				.put(practiceid + "/appointmenttype").then().log().all().extract().response();
+		return response;
+	}
+	public Response getAppointmentTypeById( String practiceid, String b)
+			throws Exception {
+		Response response = given().spec(requestSpec).body(b).log().all().when()
+				.put(practiceid + "/appointmenttype/205755").then().log().all().extract().response();
+		return response;
+	}
+	public Response getAppointmentTypeByBookId( String practiceid, String bookid)
+			throws Exception {
+		Response response = given().spec(requestSpec).log().all().when()
+				.get(practiceid + "/bookappointmenttype/"+bookid).then().log().all().extract().response();
+		return response;
+	}
+	
+	public Response getAppointmentTypeByBookIdInvalid( String practiceid, String bookid)
+			throws Exception {
+		Response response = given().spec(requestSpec).log().all().when()
+				.get(practiceid + "/bookappointmenttype/42470").then().log().all().extract().response();
+		return response;
+	}
+	
+	public Response reorderAppointmentType( String practiceid, String b)
+			throws Exception {
+		Response response = given().spec(requestSpec).body(b).log().all().when()
+				.post(practiceid + "/appointmenttype/reorder").then().log().all().extract().response();
+		return response;
+	}
+	
+	public Response reorderAppointmentTypeWithoutBody( String practiceid)
+			throws Exception {
+		Response response = given().spec(requestSpec).log().all().when()
+				.post(practiceid + "/appointmenttype/reorder").then().log().all().extract().response();
+		return response;
+	}
+	
+	public Response deleteBookAppointmentType( String practiceid)
+			throws Exception {
+		Response response = given().spec(requestSpec).log().all().when()
+				.delete(practiceid + "/bookappointmenttype/book/4247/apptype/4195").then().log().all().extract().response();
+		return response;
+	}
+	
+	public Response saveBookAppointmentType( String practiceid, String b)
+			throws Exception {
+		Response response = given().spec(requestSpec).body(b).log().all().when()
+				.post(practiceid + "/booklocation").then().log().all().extract().response();
+		return response;
+	}
+	
+	public Response deleteBookLocation( String practiceid)
+			throws Exception {
+		Response response = given().spec(requestSpec).log().all().when()
+				.delete(practiceid + "/booklocation/book/4248/location/4161").then().log().all().extract().response();
+		return response;
+	}
+	
+	public Response saveBookLocation( String practiceid, String b)
+			throws Exception {
+		Response response = given().spec(requestSpec).body(b).log().all().when()
+				.post(practiceid + "/booklocation").then().log().all().extract().response();
+		return response;
+	}
 }

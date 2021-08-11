@@ -1,6 +1,8 @@
 // Copyright 2021 NXGN Management, LLC. All Rights Reserved.
 package com.medfusion.product.pss2patientmodulatorapi.test;
 
+import static org.testng.Assert.assertEquals;
+
 import java.io.IOException;
 
 import org.json.JSONArray;
@@ -117,6 +119,117 @@ public class PSS2PSSAdapterModulatorTests extends BaseTestNGWebDriver{
 		
 		logStep("Verifying the response");
 		postAPIRequestAM.getAnnouncementByCode(practiceId);
+	}
+	
+	@Test(enabled = true, groups = { "APItest" }, retryAnalyzer = RetryAnalyzer.class)
+	public void testSaveApptType() throws NullPointerException, Exception {
+		
+		String b=payloadAM.saveApptTypePayload();
+		Response response=postAPIRequestAM.saveAppointmenttype(practiceId,b);
+		aPIVerification.responseCodeValidation(response, 200);
+		log("Body- "+response.getBody().asString());
+		assertEquals(response.getBody().asString(), "true");
+	}
+	
+	@Test(enabled = true, groups = { "APItest" }, retryAnalyzer = RetryAnalyzer.class)
+	public void testSaveApptTypeWithoutApptId() throws NullPointerException, Exception {
+		
+		String b=payloadAM.saveApptTypeWithoutIdPayload();
+		Response response =postAPIRequestAM.saveAppointmenttypeInvalid(practiceId,b);	
+		
+		aPIVerification.responseCodeValidation(response, 400);
+		String message = aPIVerification.responseKeyValidationJson(response, "message");
+		assertEquals(message, "Extappointmenttypeid=ec5c2faa-57e1-4121-9c0b-fc99a462281d and categoryid=c9cc92fb-06c2-420b-ab60-e95dd5c7af83 already exists");
+		aPIVerification.responseTimeValidation(response);
+	}
+
+	
+	@Test(enabled = true, groups = { "APItest" }, retryAnalyzer = RetryAnalyzer.class)
+	public void testUpdateApptType() throws NullPointerException, Exception {
+		
+		String b=payloadAM.saveApptTypePayload();
+		Response response=postAPIRequestAM.updateAppointmenttype(practiceId,b);
+		aPIVerification.responseCodeValidation(response, 200);
+		log("Body- "+response.getBody().asString());
+		assertEquals(response.getBody().asString(), "true");
+	}
+	
+	@Test(enabled = true, groups = { "APItest" }, retryAnalyzer = RetryAnalyzer.class)
+	public void testUpdateApptTypeWithoutApptId() throws NullPointerException, Exception {
+
+		String b=payloadAM.saveApptTypeWithoutIdPayload();
+		Response response =postAPIRequestAM.updateAppointmenttypeInvalid(practiceId,b);
+		
+		aPIVerification.responseCodeValidation(response, 400);
+		String message = aPIVerification.responseKeyValidationJson(response, "message");
+		assertEquals(message, "Extappointmenttypeid=ec5c2faa-57e1-4121-9c0b-fc99a462281d and categoryid=c9cc92fb-06c2-420b-ab60-e95dd5c7af83 already exists");
+		aPIVerification.responseTimeValidation(response);
+	}
+	
+	@Test(enabled = true, groups = { "APItest" }, retryAnalyzer = RetryAnalyzer.class)
+	public void testGetAppointmentTypeById() throws NullPointerException, Exception {
+		
+		String b=payloadAM.saveApptTypePayload();
+		Response response=postAPIRequestAM.updateAppointmenttype(practiceId,b);
+		aPIVerification.responseCodeValidation(response, 200);
+		log("Body- "+response.getBody().asString());
+		assertEquals(response.getBody().asString(), "true");
+	}
+	
+	@Test(enabled = true, groups = { "APItest" }, retryAnalyzer = RetryAnalyzer.class)
+	public void testGetAppointmentTypeByBookId() throws NullPointerException, Exception {
+
+		Response response=postAPIRequestAM.getAppointmentTypeByBookId(practiceId,propertyData.getProperty("book.id.am"));
+		validateAdapter.verifyGetAppointmentTypeByBookIdResponse(response);
+
+	}
+	
+	@Test(enabled = true, groups = { "APItest" }, retryAnalyzer = RetryAnalyzer.class)
+	public void testBookAppointmenTtype_Save_Delete() throws NullPointerException, Exception {
+		
+		String b=payloadAM.saveBookAppointmentTypePayload();
+		Response response=postAPIRequestAM.saveBookAppointmentType(practiceId,b);
+		aPIVerification.responseCodeValidation(response, 200);
+		log("Body- "+response.getBody().asString());
+		assertEquals(response.getBody().asString(), "true");
+		
+		Response deleteResponse=postAPIRequestAM.deleteBookAppointmentType(practiceId);
+		aPIVerification.responseCodeValidation(deleteResponse, 200);
+		log("Body- "+response.getBody().asString());
+		assertEquals(response.getBody().asString(), "true");
+	}
+	
+	@Test(enabled = true, groups = { "APItest" }, retryAnalyzer = RetryAnalyzer.class)
+	public void testreorderAppointmentType() throws NullPointerException, Exception {
+		
+		String b=payloadAM.reorderApptPayload();
+		Response response=postAPIRequestAM.reorderAppointmentType(practiceId,b);
+		aPIVerification.responseCodeValidation(response, 200);
+		log("Body- "+response.getBody().asString());
+		assertEquals(response.getBody().asString(), "true");
+	}
+	
+	@Test(enabled = true, groups = { "APItest" }, retryAnalyzer = RetryAnalyzer.class)
+	public void testreorderAppointmentTypeInvalid() throws NullPointerException, Exception {
+
+		Response response=postAPIRequestAM.reorderAppointmentTypeWithoutBody(practiceId);
+		aPIVerification.responseCodeValidation(response, 400);
+		log("Body- "+response.getBody().asString());
+	}
+	
+	@Test(enabled = true, groups = { "APItest" }, retryAnalyzer = RetryAnalyzer.class)
+	public void testBookLocation_Save_Delete() throws NullPointerException, Exception {
+		
+		String b=payloadAM.saveBookLocationPayload();
+		Response response=postAPIRequestAM.saveBookAppointmentType(practiceId,b);
+		aPIVerification.responseCodeValidation(response, 200);
+		log("Body- "+response.getBody().asString());
+		assertEquals(response.getBody().asString(), "true");
+		
+		Response deleteResponse=postAPIRequestAM.deleteBookLocation(practiceId);
+		aPIVerification.responseCodeValidation(deleteResponse, 200);
+		log("Body- "+deleteResponse.getBody().asString());
+		assertEquals(deleteResponse.getBody().asString(), "true");
 	}
 
 }
