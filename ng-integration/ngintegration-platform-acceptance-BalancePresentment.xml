@@ -11,7 +11,7 @@
  	
 <test name = "NGIntegration-Platform-Acceptance-BalancePresentment" >
 	<classes>
-		<class name = "com.ng.product.integrationplatform.tests.NGIntegrationBalancePresentmentTest" />
+		<class name = "com.ng.product.integrationplatform.tests.NGIntegrationE2EBalancePresentmentTests" />
 		<methods>
 	    		<include name="testPatientAbletoSeeChargesAndPaytheBill"/>
 	    	 	<include name="testPatientAbletoSeetheUpdatedchargesinPortal"/>
