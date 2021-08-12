@@ -1042,4 +1042,26 @@ public class APIVerification extends BaseTestNGWebDriver {
 		JsonPath jsonPath = new JsonPath(response.asString());
 		assertEquals(jsonPath.get("message"), "Incoming Appointment time is in past cannot schedule, reschedule, cancel, or update");
 	}
+
+	public void verifyGetLogoForPracticeId(Response response) throws IOException {
+		JsonPath jsonPath = new JsonPath(response.asString());
+		assertEquals(jsonPath.get("message"), "No logo was found with id =practice");
+	}
+
+	public void verifyLogoInfo(Response response, String practiceId) throws IOException {
+		JsonPath jsonPath = new JsonPath(response.asString());
+		assertEquals(jsonPath.get("practiceId"), practiceId, "Practice Id  was incorrect");
+	}
+
+	public void verifyLogoInfoWithoutPracticeId(Response response) throws IOException {
+		JsonPath jsonPath = new JsonPath(response.asString());
+		assertEquals(jsonPath.get("message"), "No logo was found with practiceId=info");
+	}
+
+	public void verifyUpdateLogo(Response response, String Id, String practiceId) throws IOException {
+		JsonPath jsonPath = new JsonPath(response.asString());
+		assertEquals(jsonPath.get("id"), Id, "Id  was incorrect");
+		assertEquals(jsonPath.get("practiceId"), practiceId, "Practice Id  was incorrect");
+	}
+
 }
