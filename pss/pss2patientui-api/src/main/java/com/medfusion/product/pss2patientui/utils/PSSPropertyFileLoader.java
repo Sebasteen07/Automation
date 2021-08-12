@@ -137,7 +137,6 @@ public class PSSPropertyFileLoader {
 		adminuser.setPassword(property.getProperty("admin.password.ng"));
 		adminuser.setPracticeId(property.getProperty("practice.id.ng"));
 		adminuser.setRule(property.getProperty("rule"));
-		adminuser.setPracticeId(property.getProperty("practice.id.ng"));
 	}
 
 	public void setAdminAthena(AdminUser adminuser) {

@@ -188,7 +188,8 @@ public class ConfirmationPage extends PSS2MainPage {
 
 	public String dateConfirm() {
 		String datetext = DateConfirmation.getText();
-		String nextDate1 = datetext.substring(5, 8);
+		log("DateConfirm Text- "+datetext);
+		String nextDate1 = datetext.substring(6, 9);
 		String confirmdate = nextDate1.replace(" ", "");
 		StringBuffer str = new StringBuffer(confirmdate);
 		log("Confirmation date is   " + str);

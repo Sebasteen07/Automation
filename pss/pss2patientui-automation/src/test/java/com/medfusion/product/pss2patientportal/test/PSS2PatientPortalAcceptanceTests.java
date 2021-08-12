@@ -4530,7 +4530,7 @@ public class PSS2PatientPortalAcceptanceTests extends BaseTestNGWebDriver {
 
 		logStep("Verfiy Provider Page and Provider = " + testData.getProvider());
 
-		AppointmentDateTime aptDateTime = provider.getProviderandClick(testData.getProvider());
+		AppointmentDateTime aptDateTime = provider.getProviderandClick(propertyData.getProperty("provider.pastappt.ng"));
 
 		String actualSlotDate = aptDateTime.selectDate(testData.getIsNextDayBooking());
 		logStep("Expected Available slot- " + strDateExp);
@@ -4839,7 +4839,7 @@ public class PSS2PatientPortalAcceptanceTests extends BaseTestNGWebDriver {
 		homepage.getLocationText();
 		homepage.getProviderText();
 		logStep("Click on Start Scheduling Button");
-		assertEquals(homepage.getLocationText(), testData.getLocation());
+		assertEquals(homepage.getLocationText(), testData.getLinkLocation());
 		assertEquals(homepage.getProviderText(), testData.getLinkProvider());
 		Log4jUtil.log("Test Case Passed");
 	}
@@ -6068,7 +6068,7 @@ public class PSS2PatientPortalAcceptanceTests extends BaseTestNGWebDriver {
 		StartAppointmentInOrder startAppointmentInOrder = null;
 		startAppointmentInOrder = homePage.skipInsurance(driver);
 		startAppointmentInOrder.selectFirstLocation(PSSConstants.START_LOCATION);
-		log("Verfiy Location Page and location =" + testData.getLocation());
+		log("Verfiy Location Page and location =" + testData.getLinkLocation());
 		String popUp = startAppointmentInOrder.locationPopUp();
 		log("Location popup message is  " + popUp);
 		log("Expected message is    " + testData.getPopUpMessege());
@@ -6153,11 +6153,11 @@ public class PSS2PatientPortalAcceptanceTests extends BaseTestNGWebDriver {
 		startAppointmentInOrder = homePage.skipInsurance(driver);
 		logStep("Clicked on the Skip Insurance Button ");
 		appointment = startAppointmentInOrder.selectFirstAppointment(PSSConstants.START_APPOINTMENT);
-		logStep("Verfiy Appointment Page and appointment =" + testData.getAppointmenttype());
-		Provider provider = appointment.selectTypeOfProvider(testData.getAppointmenttype(),
+		logStep("Verfiy Appointment Page and appointment =" + propertyData.getProperty("link.appointment.ng"));
+		Provider provider = appointment.selectTypeOfProvider(propertyData.getProperty("link.appointment.ng"),
 				Boolean.valueOf(testData.getIsAppointmentPopup()));
-		logStep("Verfiy Provider Page and Provider = " + testData.getProvider());
-		provider.selectLocation(testData.getProvider());
+		logStep("Verfiy Provider Page and Provider = " + testData.getLinkProvider());
+		provider.selectLocation(testData.getLinkProvider());
 		log("Next availiable text is  " + provider.getNextavaliableText());
 		assertEquals(testData.getNextAvailiableText(), provider.getNextavaliableText());
 	}
