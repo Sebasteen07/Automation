@@ -8,6 +8,7 @@ import java.io.IOException;
 import org.hamcrest.Matchers;
 import org.json.JSONArray;
 import org.json.JSONObject;
+import org.testng.Assert;
 
 import com.intuit.ifs.csscat.core.BaseTestNGWebDriver;
 
@@ -1357,4 +1358,16 @@ public class APIVerification extends BaseTestNGWebDriver {
 		assertEquals(js.getString("pmIntegrationSettings.id"), systemId, "System id was incorrect");
 		assertEquals(js.getString("active"), "true", "Practice inactive");
 	}
+
+	public void verifyIncorrectUuid(Response response) throws IOException {
+		JsonPath jsonPath = new JsonPath(response.asString());
+		String uuid = jsonPath .getString("message");
+		log("Verify incorrect Uuid" +uuid);
+		Assert.assertTrue(true, "Invalid input value:" +uuid.contains("Invalid input value:"));
+	}
+	public void verifyAlreadyexistsAppt(Response response) throws IOException {
+		JsonPath jsonPath = new JsonPath(response.asString());
+		assertEquals(jsonPath.get("message"), "Appointment type with practiceId/integrationId/appointmentId/categoryId already exists");
+	}
+	
 }
