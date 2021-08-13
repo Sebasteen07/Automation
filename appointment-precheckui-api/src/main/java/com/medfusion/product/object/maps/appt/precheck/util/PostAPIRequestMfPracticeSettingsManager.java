@@ -4,7 +4,7 @@ import static io.restassured.RestAssured.given;
 
 import java.util.Map;
 
-import com.intuit.ifs.csscat.core.BaseTestNGWebDriver;
+import com.intuit.ifs.csscat.core.BaseTestNG;
 
 import io.restassured.RestAssured;
 import io.restassured.builder.RequestSpecBuilder;
@@ -13,7 +13,7 @@ import io.restassured.path.json.JsonPath;
 import io.restassured.response.Response;
 import io.restassured.specification.RequestSpecification;
 
-public class PostAPIRequestMfPracticeSettingsManager extends BaseTestNGWebDriver {
+public class PostAPIRequestMfPracticeSettingsManager extends BaseTestNG {
 	private static PostAPIRequestMfPracticeSettingsManager postAPIRequest = new PostAPIRequestMfPracticeSettingsManager();
 
 	private PostAPIRequestMfPracticeSettingsManager() {
