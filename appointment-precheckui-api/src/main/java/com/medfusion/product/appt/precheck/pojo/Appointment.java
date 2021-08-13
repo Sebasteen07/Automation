@@ -9,6 +9,7 @@ public class Appointment {
 	private String pmAppointmentId = null;
 	private String pmPatientId = null;
 	private String pmPracticeId = null;
+	private boolean pssSetting = true;
 
 	public boolean isGenerateEmailTrue() {
 		return generateEmailTrue;
@@ -66,4 +67,11 @@ public class Appointment {
 		this.pmPracticeId = pmPracticeId;
 	}
 
+	public boolean isPssSetting() {
+		return pssSetting;
+	}
+
+	public void setPssSetting(boolean pssSetting) {
+		this.pssSetting = pssSetting;
+	}
 }
