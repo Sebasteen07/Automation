@@ -82,7 +82,9 @@ public class PSS2PatientPortalAcceptanceTests02 extends BaseTestNGWebDriver {
 		String messageLink = "Reschedule or cancel";
 		String CancelReschedulelink = mail.getLinkFromEmail(testData.getGmailUserName(), subject, messageLink, 5);
 		
-		log(CancelReschedulelink+" ---This is cancel link");		
+		log(CancelReschedulelink+" ---This is cancel link");	
+		log("Email Used for Link- "+ testData.getGmailUserName());
+		log("Subject of email- "+ subject);
 		
 		PatientIdentificationPage patientIdentificationPage = new PatientIdentificationPage(driver,CancelReschedulelink);
 		
@@ -166,7 +168,9 @@ public class PSS2PatientPortalAcceptanceTests02 extends BaseTestNGWebDriver {
 		String messageLink = "Reschedule or cancel";
 		String CancelReschedulelink = mail.getLinkFromEmail(testData.getGmailUserName(), subject, messageLink, 5);
 		
-		log(CancelReschedulelink+" ---This is cancel link");		
+		log(CancelReschedulelink+" ---This is cancel link");
+		log("Email Used for Link- "+ testData.getGmailUserName());
+		log("Subject of email- "+ subject);
 		
 		PatientIdentificationPage patientIdentificationPage = new PatientIdentificationPage(driver,CancelReschedulelink);
 		
@@ -189,7 +193,7 @@ public class PSS2PatientPortalAcceptanceTests02 extends BaseTestNGWebDriver {
 
 	}
 	
-	@Test(enabled = true, groups = {"AcceptanceTests" }, retryAnalyzer = RetryAnalyzer.class,dependsOnMethods= "testE2EAnonymousNG")
+	@Test(enabled = true, groups = {"AcceptanceTests" }, retryAnalyzer = RetryAnalyzer.class)
 	public void testCancelAnonymousviaEmailNG() throws Exception {
 		log("Test to verify if Cancel Appointment button available only after given hours.");
 		log("Step 1: Load test Data from External Property file.");
@@ -228,6 +232,8 @@ public class PSS2PatientPortalAcceptanceTests02 extends BaseTestNGWebDriver {
 		String CancelReschedulelink = mail.getLinkFromEmail(testData.getGmailUserName(), subject, messageLink, 5);
 
 		log(CancelReschedulelink + " ---This is cancel link");
+		log("Email Used for Link- "+ testData.getGmailUserName());
+		log("Subject of email- "+ subject);
 
 		PatientIdentificationPage patientIdentificationPage = new PatientIdentificationPage(driver, CancelReschedulelink);
 
@@ -318,6 +324,8 @@ public class PSS2PatientPortalAcceptanceTests02 extends BaseTestNGWebDriver {
 		String CancelReschedulelink = mail.getLinkFromEmail(testData.getGmailUserName(), subject, messageLink, 5);
 
 		log(CancelReschedulelink + " ---This is cancel link");
+		log("Email Used for Link- "+ testData.getGmailUserName());
+		log("Subject of email- "+ subject);
 
 		PatientIdentificationPage patientIdentificationPage = new PatientIdentificationPage(driver, CancelReschedulelink);
 
@@ -325,7 +333,7 @@ public class PSS2PatientPortalAcceptanceTests02 extends BaseTestNGWebDriver {
 
 		Thread.sleep(2000);
 		if (patientIdentificationPage.isPopUPAn()) {
-			patientIdentificationPage.isPopUPAn();
+			patientIdentificationPage.popUPAnClick();
 		}
 
 		log("Step 10: Fill Patient details for Identification");

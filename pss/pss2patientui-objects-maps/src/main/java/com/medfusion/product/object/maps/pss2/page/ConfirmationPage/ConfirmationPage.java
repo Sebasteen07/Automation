@@ -53,13 +53,13 @@ public class ConfirmationPage extends PSS2MainPage {
 	@FindBy(how = How.XPATH, using = "//input[@id='cancelReasonText']")
 	private WebElement rescheduleReasonInputBox;
 
-	@FindBy(how = How.XPATH, using = "//div[@class=\" css-tlfecz-indicatorContainer\"]")
+	@FindBy(how = How.XPATH, using = "//div[@class=' css-tlfecz-indicatorContainer']")
 	private WebElement selectArrow;
 
 	@FindBy(how = How.XPATH, using = "//div[@class=\" css-1wa3eu0-placeholder\"]")
 	private WebElement dropdownReschedule;
 
-	@FindAll({@FindBy(how = How.XPATH, using = "//div[@class=\"Select-menu\"]/div")})
+	@FindAll({@FindBy(how = How.XPATH, using = "//div[@class=' css-11unzgr']/div")})
 	private List<WebElement> rescheduleReasondropDownList;
 
 	@FindBy(how = How.XPATH, using = "//*[@class='confirmdetaiils']/div[1]/span")
