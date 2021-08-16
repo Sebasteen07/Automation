@@ -21,7 +21,7 @@ public class Validations {
 		   Assert.assertTrue(jsonpath.get("message").equals("Success") || jsonpath.get("message").equals("Approved"),"Response message was: "+jsonpath.get("message"));
 		   Assert.assertTrue(!jsonpath.get("responseTime").toString().isEmpty(), "Response time was not found in the response");
 		   Assert.assertTrue(!jsonpath.get("orderId").toString().isEmpty(), "Order id was not found in the response");
-			
+		   
 	   }
 
 

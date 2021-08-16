@@ -4453,6 +4453,10 @@ public class PatientPortal2AcceptanceTests extends BaseTestNGWebDriver {
 
 		logStep("Looking for Medication approval from doctor");
 		assertTrue(messagesPage.isMessageDisplayed(driver, "RxRenewalSubject"));
+		
+		logStep("Going to MyAccount page and unlink dependent");
+		homePage.unlinkDependentAccount();
+		assertTrue(homePage.wasUnlinkSuccessful());
 
 	}
 	@Test(enabled = true, groups = { "acceptance-linkedaccounts" }, retryAnalyzer = RetryAnalyzer.class)
@@ -4723,5 +4727,326 @@ public class PatientPortal2AcceptanceTests extends BaseTestNGWebDriver {
 
 
 	}
+	
+	@Test(enabled = true, groups = { "acceptance-linkedaccounts" }, retryAnalyzer = RetryAnalyzer.class)
+	public void testLADependentAppointmentRequest() throws Exception {
+		String appointmentReason = System.currentTimeMillis() + " is my favorite number!";
 
+		logStep("Load login page and login");
+		JalapenoLoginPage loginPage = new JalapenoLoginPage(driver, testData.getProperty("practice.url2"));
+		JalapenoHomePage homePage = loginPage.login(testData.getUserId(), testData.getPassword());
+		
+		logStep("Switching to Dependent Account");
+		homePage.faChangePatient();
+
+		logStep("Click appointment request");
+		homePage.clickOnAppointmentV2(driver);
+
+		// workaround for extra appointments list when multiple appointments solutions
+		// are on
+		try {
+
+			driver.findElement(By.id("appointmentSolutionBtn")).click();
+		} catch (WebDriverException e) {
+			System.out.println("Exception caught");// go on assuming we didn't find the extra page and button
+		}
+
+		JalapenoAppointmentRequestV2Step1 appointmentRequestStep1 = PageFactory.initElements(driver,
+				JalapenoAppointmentRequestV2Step1.class);
+		logStep("Choose a provider");
+		appointmentRequestStep1.chooseFirstProvider();
+
+		logStep("Continue to step 2.: click on continue button");
+		JalapenoAppointmentRequestV2Step2 appointmentRequestStep2 = appointmentRequestStep1.continueToStep2(driver);
+
+		logStep("Fill details and submit");
+		appointmentRequestStep2.fillAppointmentRequestForm(appointmentReason);
+		homePage = appointmentRequestStep2.submitAppointment(driver);
+
+		logStep("Check if thank you frame is displayed");
+		assertTrue(homePage.isTextDisplayed("Thank you"));
+
+		logStep("Navigate to Appointment Request History");
+		appointmentRequestStep1 = homePage.clickOnAppointmentV2(driver);
+		JalapenoAppointmentRequestV2HistoryPage historyPage = appointmentRequestStep1.goToHistory(driver);
+
+		logStep("Check elements and appointment request reason");
+
+		assertTrue(historyPage.findAppointmentReasonAndOpen(appointmentReason));
+
+		logStep("Check appointment request details");
+		assertTrue(historyPage.checkAppointmentDetails(appointmentReason));
+		homePage.clickOnLogout();
+
+		logStep("Proceed in Practice Portal");
+		AppoitmentRequest practicePortal = new AppoitmentRequest();
+		long tsPracticePortal = practicePortal.ProceedAppoitmentRequest(driver, true, appointmentReason,
+				testData.getPortalUrl(), testData.getDoctorLogin2(), testData.getDoctorPassword());
+
+		logStep("Login back to patient portal");
+		loginPage = new JalapenoLoginPage(driver, testData.getProperty("practice.url2"));
+		homePage = loginPage.login(testData.getUserId(), testData.getPassword());
+		
+		logStep("Switching to Dependent Account");
+		homePage.faChangePatient();
+
+		logStep("Looking for dependent appointment approval from doctor");
+		JalapenoMessagesPage messagesPage = homePage.showMessages(driver);
+		assertTrue(messagesPage.isMessageDisplayed(driver, "Approved " + tsPracticePortal));
+	}
+	
+	@Test(enabled = true, groups = { "acceptance-solutions" }, retryAnalyzer = RetryAnalyzer.class)
+	public void testLADependentAppointmentRequestUpdate() throws Exception {
+		String appointmentReason = System.currentTimeMillis() + " is my favorite number!";
+
+		logStep("Load login page and login");
+		JalapenoLoginPage loginPage = new JalapenoLoginPage(driver, testData.getPracticeUrl2());
+		JalapenoHomePage homePage = loginPage.login(testData.getUserId(), testData.getPassword());
+
+		logStep("Switching to Dependent Account");
+		homePage.faChangePatient();
+		logStep("Click appointment request");
+		homePage.clickOnAppointmentV2(driver);
+
+		try {
+		driver.findElement(By.id("appointmentSolutionBtn")).click();
+		} catch (WebDriverException e) {
+			System.out.println("Exception caught");
+		}
+		JalapenoAppointmentRequestV2Step1 appointmentRequestStep1 = PageFactory.initElements(driver,
+                JalapenoAppointmentRequestV2Step1.class);
+		logStep("Choose a provider");
+		appointmentRequestStep1.chooseFirstProvider();
+
+		logStep("Continue to step 2: click on continue");
+		JalapenoAppointmentRequestV2Step2 appointmentRequestStep2 = appointmentRequestStep1.continueToStep2(driver);
+		
+		logStep("Fill details and submit");
+		appointmentRequestStep2.fillAppointmentRequestForm(appointmentReason);
+		homePage = appointmentRequestStep2.submitAppointment(driver);
+
+		logStep("Check if thank you frame is displayed");
+		Thread.sleep(10000);
+		assertTrue(homePage.isTextDisplayed("Thank you"));
+
+		logStep("Navigate to Appointment Request History");
+		appointmentRequestStep1 = homePage.clickOnAppointmentV2(driver);
+		JalapenoAppointmentRequestV2HistoryPage historyPage = appointmentRequestStep1.goToHistory(driver);
+
+		logStep("Check elements and appointment request reason");
+		assertTrue(historyPage.findAppointmentReasonAndOpen(appointmentReason));
+
+		logStep("Check appointment request details");
+		assertTrue(historyPage.checkAppointmentDetails(appointmentReason));
+		homePage.clickOnLogout();
+		
+		logStep("Proceed in Practice Portal");
+		AppoitmentRequest practicePortal = new AppoitmentRequest();
+		long tsPracticePortal = practicePortal.ProceedAppoitmentRequest(driver, true, appointmentReason,
+				testData.getPortalUrl(), testData.getDoctorLogin2(), testData.getDoctorPassword());
+
+		logStep("Login back to patient portal");
+		loginPage = new JalapenoLoginPage(driver, testData.getProperty("practice.url2"));
+		homePage = loginPage.login(testData.getUserId(), testData.getPassword());
+
+		logStep("Switching to Dependent Account");
+		homePage.faChangePatient();
+		JalapenoMessagesPage messagesPage = homePage.showMessages(driver);
+
+		logStep("Looking for dependent appointment approval from doctor");
+		assertTrue(messagesPage.isMessageDisplayed(driver, "Approved " + tsPracticePortal));
+		homePage.clickOnLogout();
+
+		logStep("Proceed in Practice Portal for second time ");
+		AppoitmentRequest practicePortalApproved = new AppoitmentRequest();
+		long tsPracticePortalUpdate = practicePortalApproved.ProceedAppoitmentRequestUpdate(driver, true,
+				appointmentReason, testData.getPortalUrl(), testData.getDoctorLogin2(), testData.getDoctorPassword());
+
+		logStep("Login back to patient portal for update Appointment ");
+		loginPage = new JalapenoLoginPage(driver, testData.getPracticeUrl2());
+		homePage = loginPage.login(testData.getUserId(), testData.getPassword());
+
+		logStep("Switching to Dependent Account");
+		homePage.faChangePatient();
+		JalapenoMessagesPage messagesPageUpdate = homePage.showMessages(driver);
+
+		logStep("Looking for dependent appointment approval from doctor");
+		assertTrue(messagesPageUpdate.isMessageDisplayed(driver, "Update Appointment " + tsPracticePortalUpdate));
+		homePage.clickOnLogout();
+	}
+
+    @Test(enabled = true, groups = { "acceptance-linkedaccounts" }, retryAnalyzer = RetryAnalyzer.class)
+	public void testAppointmentRequestCancelAttachmentForDependent() throws Exception {
+		String appointmentReason = System.currentTimeMillis() + " is my favorite number!";
+		String attachmentFile = "QuickSend.pdf";
+
+		logStep("Load login page and login");
+		JalapenoLoginPage loginPage = new JalapenoLoginPage(driver, testData.getProperty("practice.url2"));
+		JalapenoHomePage homePage = loginPage.login(testData.getUserId(), testData.getPassword());
+        
+		logStep("Switching to Dependent Account");
+		homePage.faChangePatient();
+		
+		logStep("Click appointment request");
+		homePage.clickOnAppointmentV2(driver);
+
+		// workaround for extra appointments list when multiple appointments solutions
+		// are on
+		try {
+			driver.findElement(By.id("appointmentSolutionBtn")).click();
+		} catch (WebDriverException e) {
+			System.out.println("Exception caught");
+		}
+
+		JalapenoAppointmentRequestV2Step1 appointmentRequestStep1 = PageFactory.initElements(driver,
+				JalapenoAppointmentRequestV2Step1.class);
+		logStep("Choose a provider");
+		appointmentRequestStep1.chooseFirstProvider();
+
+		logStep("Continue to step 2.: click continue");
+		JalapenoAppointmentRequestV2Step2 appointmentRequestStep2 = appointmentRequestStep1.continueToStep2(driver);
+
+		logStep("Fill details and submit");
+		appointmentRequestStep2.fillAppointmentRequestForm(appointmentReason);
+		homePage = appointmentRequestStep2.submitAppointment(driver);
+
+		logStep("Check if thank you frame is displayed");
+		assertTrue(homePage.isTextDisplayed("Thank you"));
+
+		logStep("Navigate to Appointment Request History");
+		appointmentRequestStep1 = homePage.clickOnAppointmentV2(driver);
+		JalapenoAppointmentRequestV2HistoryPage historyPage = appointmentRequestStep1.goToHistory(driver);
+
+		logStep("Check elements and appointment request reason");
+
+		assertTrue(historyPage.findAppointmentReasonAndOpen(appointmentReason));
+
+		logStep("Check appointment request details");
+		assertTrue(historyPage.checkAppointmentDetails(appointmentReason));
+		homePage.clickOnLogout();
+
+		logStep("Proceed in Practice Portal to Approve the request with adding Attachment");
+		AppoitmentRequest practicePortal = new AppoitmentRequest();
+		long tsPracticePortal = practicePortal.ProceedAppoitmentRequesAttachmentt(driver, true, appointmentReason,
+				testData.getPortalUrl(), testData.getDoctorLogin2(), testData.getDoctorPassword(), MessageErrorfilePath,
+				MessagefilePath);
+
+		logStep("Login back to patient portal to check the Approved status");
+		loginPage = new JalapenoLoginPage(driver, testData.getProperty("practice.url2"));
+		homePage = loginPage.login(testData.getUserId(), testData.getPassword());
+		
+		logStep("Switching to Dependent Account");
+		homePage.faChangePatient();
+		
+		JalapenoMessagesPage messagesPage = homePage.showMessages(driver);
+		logStep("Looking for appointment approval from doctor");
+		assertTrue(messagesPage.isMessageDisplayed(driver, "Approved " + tsPracticePortal));
+
+		logStep("Verify the Attachmnet file Text");
+		assertEquals(attachmentFile, messagesPage.getAttachmentPdfFile());
+		homePage.clickOnLogout();
+
+		logStep("Proceed in Practice Portal second time to cancel the Approved status ");
+		AppoitmentRequest practicePortalApproved = new AppoitmentRequest();
+		long tsPracticePortalCancel = practicePortalApproved.ProceedAppoitmentRequestcancel(driver, true,
+				appointmentReason, testData.getPortalUrl(), testData.getDoctorLogin2(), testData.getDoctorPassword());
+
+		logStep("Login back to patient portal second time to verify the Cancel status");
+		loginPage = new JalapenoLoginPage(driver, testData.getPracticeUrl2());
+		homePage = loginPage.login(testData.getUserId(), testData.getPassword());
+		
+		logStep("Switching to Dependent Account");
+		homePage.faChangePatient();
+		
+		JalapenoMessagesPage messagesPageCancel = homePage.showMessages(driver);
+
+		logStep("Looking for appointment Cancel from doctor ");
+		assertTrue(messagesPageCancel.isMessageDisplayed(driver, "Cancel " + tsPracticePortalCancel));
+		homePage.clickOnLogout();
+
+		logStep("Proceed in Practice Portal third time to communicate the cancel status ");
+		AppoitmentRequest practicePortalCommunicate = new AppoitmentRequest();
+		long tsPracticePortalcommunicate = practicePortalCommunicate.ProceedAppoitmentRequestCommunicateOnly(driver,
+				true, appointmentReason, testData.getPortalUrl(), testData.getDoctorLogin2(),
+				testData.getDoctorPassword());
+
+		logStep("Login back to patient portal third time to verify the communicate only status");
+		loginPage = new JalapenoLoginPage(driver, testData.getPracticeUrl2());
+		homePage = loginPage.login(testData.getUserId(), testData.getPassword());
+		
+		logStep("Switching to Dependent Account");
+		homePage.faChangePatient();
+		
+		JalapenoMessagesPage messagesPageCommunicate = homePage.showMessages(driver);
+
+		logStep("Looking for appointment Communicate only status from doctor");
+		assertTrue(
+				messagesPageCommunicate.isMessageDisplayed(driver, "Communicate only " + tsPracticePortalcommunicate));
+		homePage.clickOnLogout();
+	}
+
+    @Test(enabled = true, groups = { "acceptance-linkedaccounts" }, retryAnalyzer = RetryAnalyzer.class)
+    public void testLAAppointmentProcessExternallyStatus2() throws Exception {
+    String appointmentReason = System.currentTimeMillis() + " is my favorite number!";
+    logStep("Load login page and login");
+    JalapenoLoginPage loginPage = new JalapenoLoginPage(driver, testData.getProperty("practice.url2"));
+    JalapenoHomePage homePage = loginPage.login(testData.getUserId(), testData.getPassword());
+   
+    logStep("Switching to Dependent Account");
+    homePage.faChangePatient();
+    
+    logStep("Click appointment request");
+    homePage.clickOnAppointmentV2(driver);
+
+    try {
+     driver.findElement(By.id("appointmentSolutionBtn")).click();
+    } catch (WebDriverException e) {
+        System.out.println("Exception caught");
+    }
+
+    JalapenoAppointmentRequestV2Step1 appointmentRequestStep1 = PageFactory.initElements(driver,
+            JalapenoAppointmentRequestV2Step1.class);
+    logStep("Choose a provider");
+    appointmentRequestStep1.chooseFirstProvider();
+
+    logStep("Continue to step 2: click on continue button");
+    JalapenoAppointmentRequestV2Step2 appointmentRequestStep2 = appointmentRequestStep1.continueToStep2(driver);
+
+    logStep("Fill details and submit");
+    appointmentRequestStep2.fillAppointmentRequestForm(appointmentReason);
+    homePage = appointmentRequestStep2.submitAppointment(driver);
+
+    logStep("Check if thank you frame is displayed");
+    Thread.sleep(10000);
+    assertTrue(homePage.isTextDisplayed("Thank you"));
+
+    logStep("Navigate to Appointment Request History");
+    appointmentRequestStep1 = homePage.clickOnAppointmentV2(driver);
+    JalapenoAppointmentRequestV2HistoryPage historyPage = appointmentRequestStep1.goToHistory(driver);
+
+    logStep("Check elements and appointment request reason");
+
+    assertTrue(historyPage.findAppointmentReasonAndOpen(appointmentReason));
+
+    logStep("Check appointment request details");
+    assertTrue(historyPage.checkAppointmentDetails(appointmentReason));
+    homePage.clickOnLogout();
+
+    logStep("Proceed in Practice Portal");
+    AppoitmentRequest practicePortal = new AppoitmentRequest();
+    long tsPracticePortal = practicePortal.ProceedAppoitmentProcessExternallyRequest(driver, true,
+            appointmentReason, testData.getPortalUrl(), testData.getDoctorLogin2(), testData.getDoctorPassword());
+
+    logStep("Login back to patient portal");
+    loginPage = new JalapenoLoginPage(driver, testData.getProperty("practice.url2"));
+    homePage = loginPage.login(testData.getUserId(), testData.getPassword());
+    
+    logStep("Switching to Dependent Account");
+    homePage.faChangePatient();
+    JalapenoMessagesPage messagesPage = homePage.showMessages(driver);
+
+    logStep("Looking for Dependent appointment Process Externally from doctor");
+    assertTrue(messagesPage.isMessageDisplayed(driver, "Process Externally " + tsPracticePortal));
+    homePage.clickOnLogout();
+}
 }
