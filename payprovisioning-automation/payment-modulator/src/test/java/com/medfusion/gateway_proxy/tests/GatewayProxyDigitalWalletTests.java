@@ -13,7 +13,6 @@ import org.testng.Assert;
 import org.testng.annotations.BeforeTest;
 import org.testng.annotations.Test;
 
-
 public class GatewayProxyDigitalWalletTests extends GatewayProxyBaseTest {
 	
 	protected static PropertyFileLoader testData;
@@ -161,13 +160,13 @@ public class GatewayProxyDigitalWalletTests extends GatewayProxyBaseTest {
 		String zipcode = IHGUtil.createRandomZip();
 
 		Response response = digitalWallet.updateZipcode(token, testData.getProperty("test.pay.customer.uuid"),
-				testData.getProperty("wallet"), testData.getProperty("card"), "Test-alias", zipcode, true);
+				testData.getProperty("wallet"), testData.getProperty("card"), testData.getProperty("card.alias1"), zipcode, true);
 		Assert.assertTrue(response.getStatusCode() == 200);
 
 		JsonPath jsonPath = new JsonPath(response.asString());
 		Assert.assertEquals(zipcode, jsonPath.get("zipCode"));
 		Assert.assertEquals(jsonPath.get("primaryCard"), true);
-		Assert.assertEquals(jsonPath.get("cardAlias"), "Test-alias");
+		Assert.assertEquals(jsonPath.get("cardAlias"), "Test-Alias");
 	}
 
 	@Test(enabled = true)
@@ -177,12 +176,12 @@ public class GatewayProxyDigitalWalletTests extends GatewayProxyBaseTest {
 		String zipcode = IHGUtil.createRandomZip();
 
 		Response response = digitalWallet.updateZipcode(token + "gcnj", testData.getProperty("test.pay.customer.uuid"),
-				testData.getProperty("wallet"), testData.getProperty("card"), "Test-alias", zipcode, true);
+				testData.getProperty("wallet"), testData.getProperty("card"), testData.getProperty("card.alias1"), zipcode, true);
 		Assert.assertTrue(response.getStatusCode() == 401);
 	}
 
 	@Test(dataProvider = "update_card", dataProviderClass = GatewayProxyTestData.class, enabled = true)
-	public void testUpdateZipcodeOfWalletWithInvalidZipcode(String alias, String zipcode, boolean isPrimary) throws Exception {
+	public void testCardDetailsWithInvalidData(String alias, String zipcode, boolean isPrimary) throws Exception {
 		GatewayProxyDigitalWalletResource digitalWallet = new GatewayProxyDigitalWalletResource();
 		String token = GatewayProxyUtils.getTokenForCustomer();
 

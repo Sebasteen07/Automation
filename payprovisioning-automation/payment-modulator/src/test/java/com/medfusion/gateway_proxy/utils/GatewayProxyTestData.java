@@ -243,10 +243,10 @@ public class GatewayProxyTestData extends GatewayProxyBaseTest {
 
 		return new Object[][] {
 				{ "", zipcode, true},
-				{ "Test-Alias", "987654321234", true},
-				{ "Test-Alias", "123", true},
-				{ "Test-Alias", "", true},
-				{ "Test-Alias", zipcode, false}
+				{ testData.getProperty("card.alias1"), "987654321234", true},
+				{ testData.getProperty("card.alias1"), "123", true},
+				{ testData.getProperty("card.alias1"), "", true},
+				{ testData.getProperty("card.alias1"), zipcode, false}
 		};
 
 	}
