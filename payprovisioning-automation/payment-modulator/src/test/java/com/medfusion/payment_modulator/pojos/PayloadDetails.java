@@ -147,10 +147,10 @@ public class PayloadDetails {
 	}
 
 	public static Map<String, Object> getPayloadForAddingCardToDigitalWallet(String cardHolderName, String type,
-			String cardNumber, String expirationNumber, String cardAlias, String zipCode) {
+			String cardNumber, String expirationNumber, String cardAlias, String zipCode, boolean primaryCardFlag) {
 		Map<String, Object> cardsMap = new HashMap<String, Object>();
 		cardsMap.put("cards",
-				Card.getCardsListDigitalWallet(cardHolderName, type, cardNumber, expirationNumber, cardAlias, zipCode));
+				Card.getCardsListDigitalWallet(cardHolderName, type, cardNumber, expirationNumber, cardAlias, zipCode, primaryCardFlag));
 		return cardsMap;
 	}
 
@@ -193,5 +193,12 @@ public class PayloadDetails {
 		chargeBackMap.put("chargebackAmount", Integer.parseInt(chargeBackAmount));
 		
 		return chargeBackMap;
+	}
+	public static Map<String, Object> getPayloadForUpdatingCardDetails(String cardAlias, String zipCode, boolean makeCardPrimaryFlag) {
+		Map<String, Object> cardsMap = new HashMap<String, Object>();
+		cardsMap.put("cardAlias", cardAlias);
+		cardsMap.put("makeCardPrimary", makeCardPrimaryFlag);
+		cardsMap.put("zipCode", zipCode);
+		return cardsMap;
 	}
 }

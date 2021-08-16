@@ -116,19 +116,25 @@ public class GatewayProxyTestData extends GatewayProxyBaseTest {
 		return new Object[][] {
 				{ "", testData.getProperty("type"), testData.getProperty("card.number"),
 						testData.getProperty("expiration.number"), testData.getProperty("card.alias"),
-						testData.getProperty("zipcode") },
+						testData.getProperty("zipcode"), true},
 				{ testData.getProperty("consumer.name"), "", testData.getProperty("card.number"),
 						testData.getProperty("expiration.number"), testData.getProperty("card.alias"),
-						testData.getProperty("zipcode") },
+						testData.getProperty("zipcode"), true },
 				{ testData.getProperty("consumer.name"), testData.getProperty("type"), "",
 						testData.getProperty("expiration.number"), testData.getProperty("card.alias"),
-						testData.getProperty("zipcode") },
+						testData.getProperty("zipcode"), true },
 				{ testData.getProperty("consumer.name"), testData.getProperty("type"),
 						testData.getProperty("card.number"), "1220", testData.getProperty("card.alias"),
-						testData.getProperty("zipcode") },
+						testData.getProperty("zipcode"), true },
 				{ testData.getProperty("consumer.name"), testData.getProperty("type"),
 						testData.getProperty("card.number"), testData.getProperty("expiration.number"),
-						testData.getProperty("card.alias"), "" } };
+						testData.getProperty("card.alias"), "" ,true },
+				{ testData.getProperty("consumer.name"), testData.getProperty("type"),
+						testData.getProperty("card.number"), testData.getProperty("expiration.number"),
+						testData.getProperty("card.alias"), "" ,true },
+				{ testData.getProperty("consumer.name"), testData.getProperty("type"),
+						testData.getProperty("card.number"), testData.getProperty("expiration.number"),
+						testData.getProperty("card.alias"), testData.getProperty("zipcode") , false}};
 	}
 
 	@DataProvider(name = "txn_data_for_sale")
@@ -214,9 +220,6 @@ public class GatewayProxyTestData extends GatewayProxyBaseTest {
 			{ "invalid"+token ,testData.getProperty("proxy.chargeback.url"),testData.getProperty("proxy.mmid") ,testData.getProperty("external.transaction.id"),testData.getProperty("order.id"),"1" ,"",401},
 		//	{ token ,testData.getProperty("proxy.chargeback.url"),"2560809338" ,testData.getProperty("external.transaction.id"),testData.getProperty("order.id"),"1" ,"",403},
 
-			
-
-
 		};
 	
 	}
@@ -231,6 +234,21 @@ public class GatewayProxyTestData extends GatewayProxyBaseTest {
 			{ "invalid"+token ,testData.getProperty("proxy.mmid"),"",401},
 		};
 	
+	}
+
+	@DataProvider(name = "update_card")
+	public static Object[][] dataProvider_update_card() throws IOException {
+		testData = new PropertyFileLoader();
+		String zipcode = IHGUtil.createRandomZip();
+
+		return new Object[][] {
+				{ "", zipcode, true},
+				{ "Test-Alias", "987654321234", true},
+				{ "Test-Alias", "123", true},
+				{ "Test-Alias", "", true},
+				{ "Test-Alias", zipcode, false}
+		};
+
 	}
 
 }
