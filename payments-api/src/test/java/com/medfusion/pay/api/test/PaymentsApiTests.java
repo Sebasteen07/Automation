@@ -8,44 +8,46 @@ import static org.testng.Assert.*;
 import org.testng.annotations.BeforeTest;
 import org.testng.annotations.Test;
 
-import com.intuit.ifs.csscat.core.BaseTestNG;
 import com.medfusion.common.utils.PropertyFileLoader;
+import com.medfusion.pay.api.util.Validations;
+import com.medfusion.pay.api.helpers.ApiConstructor;
 
-import io.restassured.RestAssured;
 import io.restassured.response.Response;
 
-public class paymentsApiTests extends BaseTestNG {
+public class PaymentsApiTests extends ApiConstructor {
 
 	protected static PropertyFileLoader testData;
+	Validations validate = new Validations();
 
 	@BeforeTest
 	public void setUp() throws IOException {
-		setupRequestSpecBuilder(propertyData.getProperty("base.url.bin.lookup"));
+		testData = new PropertyFileLoader();
+		setupRequestSpecBuilder(testData.getProperty("base.url.bin.lookup"));
 	}
 
 	@Test(enabled = true)
 	public void testGetCardInfoForValidBin() throws Exception {
-		logStep("Execute post credentials with valid username and password");
+		logStep("Execute get card info for bin");
 		Response response = getCardInfo(testData.getProperty("valid.bin.no"));
 
 		logStep("Verifying the response");
 		assertEquals(response.getStatusCode(), 200);
-		validate.verifyCardInfoOnBin(response);
+		validate.verifyCardInfoOnBin(response, testData.getProperty("valid.bin.no"), testData.getProperty("card.type"));
 	}
 	
 	@Test(enabled = true)
 	public void testGetCardInfoForInvalidBin() throws Exception {
-		logStep("Execute post credentials with valid username and password");
+		logStep("Execute get card info for bin");
 		Response response = getCardInfo(testData.getProperty("invalid.bin.no"));
 
 		logStep("Verifying the response");
 		assertEquals(response.getStatusCode(), 404);
-		validate.verifyBinNotFound(response);
+		validate.verifyBinNotFound(response, testData.getProperty("invalid.bin.no"));
 	}
 	
 	@Test(enabled = true)
 	public void testUpdateBinData() throws Exception {
-		logStep("Execute post credentials with valid username and password");
+		logStep("Execute update bin data");
 		Response response = updateBinData();
 
 		logStep("Verifying the response");
