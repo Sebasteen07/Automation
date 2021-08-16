@@ -3,6 +3,7 @@ package com.medfusion.product.object.maps.pss2.page.util;
 
 import static org.testng.Assert.assertEquals;
 
+import org.hamcrest.Matchers;
 import org.json.JSONArray;
 import org.json.JSONObject;
 
@@ -10,6 +11,7 @@ import com.intuit.ifs.csscat.core.BaseTestNGWebDriver;
 
 import io.restassured.path.json.JsonPath;
 import io.restassured.response.Response;
+import io.restassured.response.ValidatableResponse;
 
 public class APIVerification extends BaseTestNGWebDriver {
 
@@ -41,7 +43,11 @@ public class APIVerification extends BaseTestNGWebDriver {
 
 	public void responseTimeValidation(Response response) {
 		long time = response.time();
-		log("Response Time in ms- " + time);
+		log("Response time " + time);
+		ValidatableResponse valRes = response.then();
+		valRes.time(Matchers.lessThan(5000L));
+
+
 	}
 
 }

@@ -1,8 +1,7 @@
 //Copyright 2021 NXGN Management, LLC. All Rights Reserved.
 package com.ng.product.integrationplatform.tests;
 
-import static org.testng.Assert.assertFalse;
-import static org.testng.Assert.assertTrue;
+import static org.testng.Assert.*;
 
 import java.util.Date;
 import java.util.UUID;
@@ -12,7 +11,6 @@ import org.openqa.selenium.JavascriptExecutor;
 import org.openqa.selenium.WebElement;
 import org.testng.annotations.BeforeClass;
 import org.testng.annotations.Test;
-
 import com.intuit.ifs.csscat.core.BaseTestNGWebDriver;
 import com.intuit.ifs.csscat.core.RetryAnalyzer;
 import com.intuit.ifs.csscat.core.utils.Log4jUtil;
@@ -33,14 +31,20 @@ import com.ng.product.integrationplatform.utils.CommonFlows;
 import com.ng.product.integrationplatform.utils.CommonUtils;
 import com.ng.product.integrationplatform.utils.DBUtils;
 
-public class NGIntegrationBalancePresentmentTest extends BaseTestNGWebDriver {
+/************************
+ * 
+ * @author VMurugesh
+ * 
+ ************************/
+
+public class NGIntegrationE2EBalancePresentmentTests extends BaseTestNGWebDriver {
+
+	private PropertyFileLoader propertyLoaderObj;
 
 	int arg_timeOut = 1800;
 	NGAPIUtils ngAPIUtils;
 	String enterprisebaseURL;
 	NGAPIFlows ngAPIFlows;
-
-	private PropertyFileLoader propertyLoaderObj;
 
 	@BeforeClass(alwaysRun = true)
 	public void prepareTestData() throws Throwable {
@@ -57,11 +61,6 @@ public class NGIntegrationBalancePresentmentTest extends BaseTestNGWebDriver {
 		}
 	}
 
-	public static String createRandomGUID() throws Throwable {
-		String guid = UUID.randomUUID().toString().toUpperCase(); 
-		return guid;
-	}
-
 	@Test(enabled = true, groups = { "acceptance-BalancePresentment" }, retryAnalyzer = RetryAnalyzer.class)
 	public void testPatientAbletoSeeChargesAndPaytheBill() throws Throwable {
 		String enterpriseId = propertyLoaderObj.getProperty("ng.main.enterprise.id");
@@ -71,9 +70,9 @@ public class NGIntegrationBalancePresentmentTest extends BaseTestNGWebDriver {
 		String locationName = propertyLoaderObj.getProperty("epm.location.name");
 		String providerName = propertyLoaderObj.getProperty("epm.provider.name");
 		String practiceName = propertyLoaderObj.getProperty("practice.name");
+
 		NGAPIUtils.updateLoginDefaultTo("EnterpriseGateway", enterpriseId, practiceId);
-		
-		logStep("Create the patient in NG EPM");		
+		logStep("Create the patient in NG EPM");
 		NewPatient createPatient = NGPatient.patientUsingJSON(propertyLoaderObj, "complete");
 		String personId = NGAPIFlows.createPatientinEPM(createPatient);
 		NGAPIFlows.addCharttoProvider(locationName, providerName, personId);
@@ -122,7 +121,7 @@ public class NGIntegrationBalancePresentmentTest extends BaseTestNGWebDriver {
 		logStep("Login into Portal");
 		JalapenoLoginPage loginPage = new JalapenoLoginPage(driver, url);
 		JalapenoHomePage homePage = loginPage.login(createPatient.getEmailAddress(), propertyLoaderObj.getPassword());
-		
+
 		logStep("Wait 90 second so that added charges in NG will be synced with Portal");
 		Thread.sleep(90000);
 		logStep("Refreshing the page so that charges will be displayed in Portal");
@@ -131,10 +130,10 @@ public class NGIntegrationBalancePresentmentTest extends BaseTestNGWebDriver {
 		JalapenoPayBillsMakePaymentPage payBillsPage = homePage.clickOnNewPayBills(driver);
 
 		logStep("Verifying the expected and actual bill amount");
-		String AmountText = driver.findElement(By.xpath("//div[@id='balanceDue']//strong")).getText().substring(1);
+		String amountText = driver.findElement(By.xpath("//div[@id='balanceDue']//strong")).getText().substring(1);
 
-		logStep("Amount which is displayed in Portal:" + AmountText);
-		CommonUtils.VerifyTwoValues(AmountText, "equals", propertyLoaderObj.getProperty("pat.amt"));
+		logStep("Amount which is displayed in Portal:" + amountText);
+		CommonUtils.VerifyTwoValues(amountText, "equals", propertyLoaderObj.getProperty("pat.amt"));
 		logStep("Remove all cards because Selenium can't see AddNewCard button");
 		payBillsPage.removeAllCards();
 		logStep("Check that no card is present");
@@ -161,9 +160,8 @@ public class NGIntegrationBalancePresentmentTest extends BaseTestNGWebDriver {
 				"-" + patAmt, "Payment type: BillPayment, Last 4 CC digits: " + creditCard.getLastFourDigits(),
 				practiceId);
 
-
 	}
-
+	
 	@Test(enabled = true, groups = { "acceptance-BalancePresentment" }, retryAnalyzer = RetryAnalyzer.class)
 	public void testPatientAbletoSeetheUpdatedchargesinPortal() throws Throwable {
 		String enterpriseId = propertyLoaderObj.getProperty("ng.main.enterprise.id");
@@ -229,10 +227,10 @@ public class NGIntegrationBalancePresentmentTest extends BaseTestNGWebDriver {
 		JalapenoPayBillsMakePaymentPage payBillsPage = homePage.clickOnNewPayBills(driver);
 		
 		logStep("Verifying the expected and actual bill amount");
-		String AmountText = driver.findElement(By.xpath("//div[@id='balanceDue']//strong")).getText().substring(1);
+		String amountText = driver.findElement(By.xpath("//div[@id='balanceDue']//strong")).getText().substring(1);
 		
-		logStep("Amount which is displayed in Portal:" + AmountText);
-		CommonUtils.VerifyTwoValues(AmountText, "equals", propertyLoaderObj.getProperty("pat.amt"));
+		logStep("Amount which is displayed in Portal:" + amountText);
+		CommonUtils.VerifyTwoValues(amountText, "equals", propertyLoaderObj.getProperty("pat.amt"));
 		payBillsPage.LogoutfromNGMFPortal();
 		
 		logStep("Adding Second Charges to the Patient Encounter in NG");
@@ -258,16 +256,14 @@ public class NGIntegrationBalancePresentmentTest extends BaseTestNGWebDriver {
 		driver.navigate().refresh();
 		
 		driver.findElement(By.xpath("//span[@class='badge amountDue']")).isDisplayed();
-		JalapenoPayBillsMakePaymentPage payBillsPages = homePage.clickOnNewPayBills(driver);
+		homePage.clickOnNewPayBills(driver);
 		String updatedAmountText = driver.findElement(By.xpath("//div[@id='balanceDue']//strong")).getText()
 				.substring(1);
 		logStep("Amount which is displayed in Portal:" + updatedAmountText);
-		float FirstAmount = Float.parseFloat(propertyLoaderObj.getProperty("pat.amt")) 
+		float firstAmount = Float.parseFloat(propertyLoaderObj.getProperty("pat.amt")) 
 				+ Float.parseFloat(propertyLoaderObj.getProperty("pat.amt"));
-		String finalamt = Float.toString(FirstAmount) + "0";
-		CommonUtils.VerifyTwoValues(updatedAmountText, "equals", finalamt);
-		
-
+		String finalamt = Float.toString(firstAmount) + "0";
+		CommonUtils.VerifyTwoValues(updatedAmountText, "equals", finalamt);		
 	}
 
 	@Test(enabled = true, groups = { "acceptance-BalancePresentment" }, retryAnalyzer = RetryAnalyzer.class)
@@ -279,8 +275,8 @@ public class NGIntegrationBalancePresentmentTest extends BaseTestNGWebDriver {
 		String locationName = propertyLoaderObj.getProperty("epm.location.name");
 		String providerName = propertyLoaderObj.getProperty("epm.provider.name");
 		String practiceName = propertyLoaderObj.getProperty("practice.name");
-		NGAPIUtils.updateLoginDefaultTo("EnterpriseGateway", enterpriseId, practiceId);
 		
+		NGAPIUtils.updateLoginDefaultTo("EnterpriseGateway", enterpriseId, practiceId);
 		logStep("Create the patient in NG EPM");		
 		NewPatient createPatient = NGPatient.patientUsingJSON(propertyLoaderObj, "complete");
 		String personId = NGAPIFlows.createPatientinEPM(createPatient);
@@ -328,9 +324,7 @@ public class NGIntegrationBalancePresentmentTest extends BaseTestNGWebDriver {
 		} 
 		else {
 			logStep("System Allow the user to pay 0.00 amount. Please check");
-		}
-		
-
+		}	
 	}
 	
 	@Test(enabled = true, groups = { "acceptance-BalancePresentment" }, retryAnalyzer = RetryAnalyzer.class)
@@ -343,8 +337,8 @@ public class NGIntegrationBalancePresentmentTest extends BaseTestNGWebDriver {
 		String locationName = propertyLoaderObj.getProperty("epm.location.name");
 		String providerName = propertyLoaderObj.getProperty("epm.provider.name");
 		String practiceName = propertyLoaderObj.getProperty("practice.name");
-		NGAPIUtils.updateLoginDefaultTo("EnterpriseGateway", enterpriseId, practiceId);
 		
+		NGAPIUtils.updateLoginDefaultTo("EnterpriseGateway", enterpriseId, practiceId);
 		logStep("Create the patient in NG EPM");		
 		NewPatient createPatient = NGPatient.patientUsingJSON(propertyLoaderObj, "complete");
 		String personId = NGAPIFlows.createPatientinEPM(createPatient);
@@ -403,10 +397,10 @@ public class NGIntegrationBalancePresentmentTest extends BaseTestNGWebDriver {
 		JalapenoPayBillsMakePaymentPage payBillsPage = homePage.clickOnNewPayBills(driver);
 
 		logStep("Verifying the expected and actual bill amount");
-		String AmountText = driver.findElement(By.xpath("//div[@id='balanceDue']//strong")).getText().substring(1);
+		String amountText = driver.findElement(By.xpath("//div[@id='balanceDue']//strong")).getText().substring(1);
 
-		logStep("Amount which is displayed in Portal:" + AmountText);
-		CommonUtils.VerifyTwoValues(AmountText, "equals", propertyLoaderObj.getProperty("pat.amt"));
+		logStep("Amount which is displayed in Portal:" + amountText);
+		CommonUtils.VerifyTwoValues(amountText, "equals", propertyLoaderObj.getProperty("pat.amt"));
 		logStep("Remove all cards because Selenium can't see AddNewCard button");
 		payBillsPage.removeAllCards();
 		logStep("Check that no card is present");
@@ -432,10 +426,11 @@ public class NGIntegrationBalancePresentmentTest extends BaseTestNGWebDriver {
 				+ personId + "' and practice_id='" + practiceId.trim() + "'");
 		CommonFlows.verifyPaymentPostedtoNG(paymentComments, sourceIdQuery.toUpperCase(), personId.toUpperCase(),
 				"-" + extrapatamt, "Payment type: BillPayment, Last 4 CC digits: " + creditCard.getLastFourDigits(),
-				practiceId);
-	
-		
+				practiceId);		
 	}
 	
-
+	public static String createRandomGUID() throws Throwable {
+		String guid = UUID.randomUUID().toString().toUpperCase();
+		return guid;
+	}
 }
