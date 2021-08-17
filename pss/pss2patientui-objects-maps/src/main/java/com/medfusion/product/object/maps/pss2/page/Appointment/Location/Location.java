@@ -17,6 +17,7 @@ import org.openqa.selenium.support.How;
 import org.openqa.selenium.support.PageFactory;
 import org.openqa.selenium.support.ui.FluentWait;
 
+import com.medfusion.common.utils.IHGUtil;
 import com.medfusion.product.object.maps.pss2.page.Appointment.DateTime.AppointmentDateTime;
 import com.medfusion.product.object.maps.pss2.page.Appointment.Main.PSS2MainPage;
 import com.medfusion.product.object.maps.pss2.page.Appointment.Provider.Provider;
@@ -35,6 +36,9 @@ public class Location extends PSS2MainPage {
 
 	@FindBy(how = How.XPATH, using = "//div[@class='col-sm-4 locationclass']//input[@placeholder='Zipcode']")
 	private WebElement nearByZipCodeInput;
+	
+	@FindBy(how = How.XPATH, using = "//span[normalize-space()='Next Available']")
+	private WebElement locationNextAvailable;
 
 	public Location(WebDriver driver) {
 		super(driver);
@@ -130,5 +134,10 @@ public class Location extends PSS2MainPage {
 		} else {
 			return false;
 		}
+	}
+	
+	public String getNextavaliableText() {
+		IHGUtil.waitForElement(driver, 10, locationNextAvailable);
+		return locationNextAvailable.getText();
 	}
 }

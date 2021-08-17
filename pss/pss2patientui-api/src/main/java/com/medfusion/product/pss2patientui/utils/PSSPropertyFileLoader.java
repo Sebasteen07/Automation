@@ -91,7 +91,7 @@ public class PSSPropertyFileLoader {
 		appointValues.setProviderImageAPI(property.getProperty("provider.image.api.gw"));
 		appointValues.setGmailUserName(property.getProperty("gmail.username.gw"));
 		appointValues.setPopUpMessege(property.getProperty("popup.messege"));
-		appointValues.setNextAvailiableText(property.getProperty("next.availi.text"));
+		appointValues.setNextAvailiableText(property.getProperty("nextavailable.text"));
 		appointValues.setExcludeSlotFirstValue(property.getProperty("exclude.firstvalue.gw"));
 		appointValues.setExcludeSlotSecondValue(property.getProperty("exclude.secondvalue.gw"));
 		appointValues.setSlotValue(property.getProperty("slotvalue.gw"));
@@ -222,7 +222,7 @@ public class PSSPropertyFileLoader {
 		appointValues.setAssociatedApt3(property.getProperty("associated.apt3.at"));
 		appointValues.setGmailUserName(property.getProperty("ll.email.at"));
 		appointValues.setPopUpMessege(property.getProperty("popup.messege"));
-		appointValues.setNextAvailiableText(property.getProperty("next.availi.text"));
+		appointValues.setNextAvailiableText(property.getProperty("nextavailable.text"));
 		appointValues.setExcludeSlotFirstValue(property.getProperty("exclude.firstvalue.at"));
 		appointValues.setExcludeSlotSecondValue(property.getProperty("exclude.secondvalue.at"));
 		appointValues.setMemberID(property.getProperty("member.id"));
@@ -296,7 +296,7 @@ public class PSSPropertyFileLoader {
 		appointValues.setOldPatientPassword(property.getProperty("old.patient.password.ge"));
 		appointValues.setGmailUserName(property.getProperty("email.ge"));
 		appointValues.setPopUpMessege(property.getProperty("popup.messege"));
-		appointValues.setNextAvailiableText(property.getProperty("next.availi.text"));
+		appointValues.setNextAvailiableText(property.getProperty("nextavailable.text"));
 		appointValues.setExcludeSlotFirstValue(property.getProperty("exclude.firstvalue.ge"));
 		appointValues.setExcludeSlotSecondValue(property.getProperty("exclude.secondvalue.ge"));
 		appointValues.setSlotValue(property.getProperty("slotvalue.ge"));
@@ -382,7 +382,7 @@ public class PSSPropertyFileLoader {
 		appointValues.setProviderImageAPI(property.getProperty("providerImageAPING"));
 		appointValues.setGmailUserName(property.getProperty("email.ng"));
 		appointValues.setPopUpMessege(property.getProperty("popup.messege"));
-		appointValues.setNextAvailiableText(property.getProperty("next.availi.text"));
+		appointValues.setNextAvailiableText(property.getProperty("nextavailable.text"));
 		appointValues.setExcludeSlotFirstValue(property.getProperty("exclude.firstvalue.ng"));
 		appointValues.setExcludeSlotSecondValue(property.getProperty("exclude.secondvalue.ng"));
 		appointValues.setSlotValue(property.getProperty("slotvalue.ng"));

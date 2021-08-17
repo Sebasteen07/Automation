@@ -9,7 +9,7 @@ import org.json.JSONArray;
 import org.testng.annotations.BeforeTest;
 import org.testng.annotations.Test;
 
-import com.intuit.ifs.csscat.core.BaseTestNGWebDriver;
+import com.intuit.ifs.csscat.core.BaseTestNG;
 import com.intuit.ifs.csscat.core.RetryAnalyzer;
 import com.intuit.ihg.eh.core.dto.Timestamp;
 import com.medfusion.product.object.maps.pss2.page.util.APIVerification;
@@ -20,11 +20,12 @@ import com.medfusion.product.pss2patientapi.validation.ValidationAdapterModulato
 import com.medfusion.product.pss2patientui.pojo.Appointment;
 import com.medfusion.product.pss2patientui.utils.PSSPropertyFileLoader;
 
+import io.restassured.path.json.JsonPath;
 import io.restassured.response.Response;
 import io.restassured.specification.RequestSpecification;
 import io.restassured.specification.ResponseSpecification;
 
-public class PSS2PSSAdapterModulatorTests extends BaseTestNGWebDriver{
+public class PSS2PSSAdapterModulatorTests extends BaseTestNG{
 	
 	public static PayloadAdapterModulator payloadAM;
 	public static PSSPropertyFileLoader propertyData;
@@ -227,6 +228,158 @@ public class PSS2PSSAdapterModulatorTests extends BaseTestNGWebDriver{
 		assertEquals(response.getBody().asString(), "true");
 		
 		Response deleteResponse=postAPIRequestAM.deleteBookLocation(practiceId);
+		aPIVerification.responseCodeValidation(deleteResponse, 200);
+		log("Body- "+deleteResponse.getBody().asString());
+		assertEquals(deleteResponse.getBody().asString(), "true");
+	}
+	
+	@Test(enabled = true, groups = { "APItest" }, retryAnalyzer = RetryAnalyzer.class)
+	public void testBookappointmenttypeGET() throws NullPointerException, Exception {
+		
+		String bookIdActual=propertyData.getProperty("bookappointmenttype.bookid");
+		String apptIdActual=propertyData.getProperty("bookappointmenttype.apptid");		
+		
+		logStep("First verify the Save call -testBookappointmenttypePOST");
+		
+		String b=payloadAM.bookAppointmentTypeSavePayload(bookIdActual, apptIdActual);
+		Response saveResponse=postAPIRequestAM.bookAppointmentTypeSave(practiceId, b);
+		aPIVerification.responseCodeValidation(saveResponse, 200);
+		aPIVerification.responseTimeValidation(saveResponse);
+		assertEquals(saveResponse.getBody().asString(), "true");
+
+		logStep("Verify the GET call -testBookappointmenttypeGET");
+		
+		Response response=postAPIRequestAM.bookAppointmentTypeGET(practiceId, bookIdActual , apptIdActual);
+		JsonPath js = new JsonPath(response.asString());
+		String bookIdExp= js.getString("book.id");
+		log("Expected book Id "+bookIdExp);
+		String apptIdExp= js.getString("appointmentType.id");
+		log("Expected Appt Id "+apptIdExp);
+		
+		assertEquals(bookIdActual, bookIdExp, "Book Id is not matching with input Book_ID ");
+		assertEquals(apptIdActual, apptIdExp, "Appointment Id is not matching with input Book_ID ");
+		
+		aPIVerification.responseCodeValidation(response, 200);
+		aPIVerification.responseTimeValidation(response);
+		
+		logStep("Verify the Delete call -BookappointmenttypeDelete");
+		
+		Response deleteResponse=postAPIRequestAM.bookAppointmentTypeDelete(practiceId, bookIdActual,apptIdActual );
+		aPIVerification.responseCodeValidation(deleteResponse, 200);
+		log("Body- "+deleteResponse.getBody().asString());
+		assertEquals(deleteResponse.getBody().asString(), "true");
+	}
+	
+
+	
+	@Test(enabled = true, groups = { "APItest" }, retryAnalyzer = RetryAnalyzer.class)
+	public void test01BookAppointmentTypePOST() throws NullPointerException, Exception {
+		
+		String bookIdActual=propertyData.getProperty("bookappointmenttype.bookid");
+		String apptIdActual=propertyData.getProperty("bookappointmenttype.apptid");		
+		
+		logStep("First verify the Save call -testBookappointmenttypePOST");
+		
+		String b=payloadAM.bookAppointmentTypeSavePayload(bookIdActual, apptIdActual);
+		Response saveResponse=postAPIRequestAM.bookAppointmentTypeSave(practiceId, b);
+		aPIVerification.responseCodeValidation(saveResponse, 200);
+		aPIVerification.responseTimeValidation(saveResponse);
+		assertEquals(saveResponse.getBody().asString(), "true");
+	}
+	
+	@Test(enabled = true, groups = { "APItest" }, retryAnalyzer = RetryAnalyzer.class)
+	public void test02BookAppointmentTypeGET() throws NullPointerException, Exception {
+		
+		String bookIdActual=propertyData.getProperty("bookappointmenttype.bookid");
+		String apptIdActual=propertyData.getProperty("bookappointmenttype.apptid");		
+
+		logStep("Verify the GET call -testBookAppointmenTtypeGET");
+		
+		Response response=postAPIRequestAM.bookAppointmentTypeGET(practiceId, bookIdActual , apptIdActual);
+		JsonPath js = new JsonPath(response.asString());
+		String bookIdExp= js.getString("book.id");
+		log("Expected book Id "+bookIdExp);
+		String apptIdExp= js.getString("appointmentType.id");
+		log("Expected Appt Id "+apptIdExp);
+		
+		assertEquals(bookIdActual, bookIdExp, "Book Id is not matching with input Book_ID ");
+		assertEquals(apptIdActual, apptIdExp, "Appointment Id is not matching with input Book_ID ");
+		
+		aPIVerification.responseCodeValidation(response, 200);
+		aPIVerification.responseTimeValidation(response);
+
+	}
+	
+	@Test(enabled = true, groups = { "APItest" }, retryAnalyzer = RetryAnalyzer.class)
+	public void test03BookAppointmentTypePUT() throws NullPointerException, Exception {
+		logStep("Verify the Update call -testBookappointmenttypePUT");
+		
+		String bookIdActual=propertyData.getProperty("bookappointmenttype.bookid");
+		String apptIdActual=propertyData.getProperty("bookappointmenttype.apptid");	
+		
+		String c= payloadAM.bookAppointmentTypUpdatePayload(bookIdActual, apptIdActual);
+		
+		Response updateResponse=postAPIRequestAM.bookAppointmentTypeUpdate(practiceId, c);
+		JsonPath js1 = new JsonPath(updateResponse.asString());
+		String bookIdExp1= js1.getString("book.id");
+		log("Expected book Id "+bookIdExp1);
+		String apptIdExp1= js1.getString("appointmentType.id");
+		log("Expected Appt Id "+apptIdExp1);
+		
+		assertEquals(bookIdActual, bookIdExp1, "Book Id is not matching with input Book_ID ");
+		assertEquals(apptIdActual, apptIdExp1, "Appointment Id is not matching with input Book_ID ");
+		
+		aPIVerification.responseCodeValidation(updateResponse, 200);
+		aPIVerification.responseTimeValidation(updateResponse);	
+	}
+	
+	@Test(enabled = true, groups = { "APItest" }, retryAnalyzer = RetryAnalyzer.class)
+	public void test04BookAppointmentTypeDELETE() throws NullPointerException, Exception {
+		
+		String bookIdActual=propertyData.getProperty("bookappointmenttype.bookid");
+		String apptIdActual=propertyData.getProperty("bookappointmenttype.apptid");		
+		
+		logStep("Verify the Delete call -BookAppointmentTypeDelete");
+		
+		Response deleteResponse=postAPIRequestAM.bookAppointmentTypeDelete(practiceId, bookIdActual,apptIdActual );
+		aPIVerification.responseCodeValidation(deleteResponse, 200);
+		log("Body- "+deleteResponse.getBody().asString());
+		assertEquals(deleteResponse.getBody().asString(), "true");
+	}
+	
+	@Test(enabled = true, groups = { "APItest" }, retryAnalyzer = RetryAnalyzer.class)
+	public void test05BookLocationSave() throws NullPointerException, Exception {
+		
+		String bookid=propertyData.getProperty("booklocation.bookid");
+		String locationid=propertyData.getProperty("booklocation.locationid");		
+		
+		logStep("First verify the Save call -BookLocationPost");
+		
+		String b=payloadAM.bookLocationSavePayload(bookid, locationid);
+		Response saveResponse=postAPIRequestAM.bookLocationSave(practiceId, b);
+		aPIVerification.responseCodeValidation(saveResponse, 200);
+		aPIVerification.responseTimeValidation(saveResponse);
+		assertEquals(saveResponse.getBody().asString(), "true");
+	}
+	
+	@Test(enabled = true, groups = { "APItest" }, retryAnalyzer = RetryAnalyzer.class)
+	public void test06BookLocationGET() throws NullPointerException, Exception {
+		
+		String bookid=propertyData.getProperty("booklocation.bookid");
+	
+		Response response=postAPIRequestAM.bookLocationGET(practiceId, bookid);
+		aPIVerification.responseCodeValidation(response, 200);
+		aPIVerification.responseTimeValidation(response);
+		aPIVerification.responseKeyValidation(response, "displayName");
+	}
+
+	@Test(enabled = true, groups = { "APItest" }, retryAnalyzer = RetryAnalyzer.class)
+	public void test07BookLocationDelete() throws NullPointerException, Exception {		
+		
+		String bookid=propertyData.getProperty("booklocation.bookid");
+		String locationid=propertyData.getProperty("booklocation.locationid");			
+
+		Response deleteResponse=postAPIRequestAM.bookLocationDelete(practiceId, bookid, locationid);
 		aPIVerification.responseCodeValidation(deleteResponse, 200);
 		log("Body- "+deleteResponse.getBody().asString());
 		assertEquals(deleteResponse.getBody().asString(), "true");

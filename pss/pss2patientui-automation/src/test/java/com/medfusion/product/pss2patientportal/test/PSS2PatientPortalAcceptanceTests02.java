@@ -285,7 +285,7 @@ public class PSS2PatientPortalAcceptanceTests02 extends BaseTestNGWebDriver {
 		psspatientutils.deleteEmail_Mailinator(driver, "https://www.mailinator.com/", "ast@mailinator.com");
 	}
 	
-	@Test(enabled = true, groups = {"AcceptanceTests"}, retryAnalyzer = RetryAnalyzer.class)
+	@Test(enabled = true, groups = {"AcceptanceTests"}, retryAnalyzer = RetryAnalyzer.class, dependsOnMethods="testE2EAnonymousAT")
 	public void testCancelAnonymousviaEmailAT() throws Exception {
 		log("Test to verify if Cancel Appointment for anonymous flow for the Athena Partners.");
 		log("Step 1: Load test Data from External Property file.");
