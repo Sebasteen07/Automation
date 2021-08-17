@@ -275,10 +275,10 @@ public class PostAPIRequestAdapterModulator {
 		return response;
 	}
 	
-	public Response associatedBookSave( String practiceid,String bookid, String locationid )
+	public Response bookSave( String practiceid,String b )
 			throws Exception {
-		Response response = given().spec(requestSpec).log().all().when()
-				.delete(practiceid + "/booklocation/book/"+bookid+"/location/"+locationid).then().log().all().extract().response();
+		Response response = given().spec(requestSpec).body(b).log().all().when()
+				.post(practiceid + "/book").then().log().all().extract().response();
 		return response;
 	}
 	
@@ -292,7 +292,7 @@ public class PostAPIRequestAdapterModulator {
 	public Response getBookImage( String practiceid,String bookid)
 			throws Exception {
 		Response response = given().spec(requestSpec).log().all().when()
-				.get(practiceid + "/book/"+bookid).then().log().all().extract().response();
+				.get(practiceid + "/book/" +bookid+ "/image").then().log().all().extract().response();
 		return response;
 	}
 	
@@ -317,10 +317,10 @@ public class PostAPIRequestAdapterModulator {
 		return response;
 	}
 	
-	public Response getBooksFromPartner( String practiceid,String bookid, String locationid )
+	public Response getBooksFromPartner( String practiceid)
 			throws Exception {
 		Response response = given().spec(requestSpec).log().all().when()
-				.delete(practiceid + "/booklocation/book/"+bookid+"/location/"+locationid).then().log().all().extract().response();
+				.get(practiceid + "/partnerbook").then().log().all().extract().response();
 		return response;
 	}
 	
@@ -338,6 +338,12 @@ public class PostAPIRequestAdapterModulator {
 		return response;
 	}
 	
+	public Response getCancelLevel( String practiceid )
+			throws Exception {
+		Response response = given().spec(requestSpec).log().all().queryParam("groupType","CANCEL_REASON").when()
+				.get(practiceid + "/getbooklevel").then().log().all().extract().response();
+		return response;
+	}
 	public Response practiceBook( String practiceid )
 			throws Exception {
 		Response response = given().spec(requestSpec).log().all().when()
@@ -365,37 +371,37 @@ public class PostAPIRequestAdapterModulator {
 	
 	public Response getCancellationReasonFromDB( String practiceid )throws Exception {
 		Response response = given().spec(requestSpec).log().all().when()
-				.get(practiceid + "/partnerbook").then().log().all().extract().response();
+				.get(practiceid + "/associatedcancellationreason").then().log().all().extract().response();
 		return response;
 	}
 	
-	public Response saveCancellationReason( String practiceid )throws Exception {
-		Response response = given().spec(requestSpec).log().all().when()
-				.get(practiceid + "/partnerbook").then().log().all().extract().response();
+	public Response saveCancellationReason( String practiceid, String b)throws Exception {
+		Response response = given().spec(requestSpec).body(b).log().all().when()
+				.post(practiceid + "/cancellationreason").then().log().all().extract().response();
 		return response;
 	}
 	
-	public Response getCancellationReasonById( String practiceid )throws Exception {
+	public Response getCancellationReasonById( String practiceid, String cancelreasonid)throws Exception {
 		Response response = given().spec(requestSpec).log().all().when()
-				.get(practiceid + "/partnerbook").then().log().all().extract().response();
+				.get(practiceid + "/cancellationreason/"+cancelreasonid).then().log().all().extract().response();
 		return response;
 	}
 	
-	public Response deleteCancellationReason( String practiceid )throws Exception {
+	public Response deleteCancellationReason( String practiceid, String cancelreasonid )throws Exception {
 		Response response = given().spec(requestSpec).log().all().when()
-				.get(practiceid + "/partnerbook").then().log().all().extract().response();
+				.delete(practiceid + "/cancellationreason/"+cancelreasonid).then().log().all().extract().response();
 		return response;
 	}
 	
-	public Response reorderCancellationReason( String practiceid )throws Exception {
-		Response response = given().spec(requestSpec).log().all().when()
-				.get(practiceid + "/partnerbook").then().log().all().extract().response();
+	public Response reorderCancellationReason( String practiceid , String b)throws Exception {
+		Response response = given().spec(requestSpec).body(b).log().all().when()
+				.post(practiceid + "/cancellationreason/reorder").then().log().all().extract().response();
 		return response;
 	}
 	
-	public Response getCancellationReason( String practiceid )throws Exception {
+	public Response getPracticeCancellationReason( String practiceid )throws Exception {
 		Response response = given().spec(requestSpec).log().all().when()
-				.get(practiceid + "/partnerbook").then().log().all().extract().response();
+				.get(practiceid + "/practicecancellationreason").then().log().all().extract().response();
 		return response;
 	}
 	

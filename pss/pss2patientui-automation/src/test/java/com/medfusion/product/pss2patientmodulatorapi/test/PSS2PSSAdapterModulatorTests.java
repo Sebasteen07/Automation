@@ -236,8 +236,8 @@ public class PSS2PSSAdapterModulatorTests extends BaseTestNG{
 	@Test(enabled = true, groups = { "APItest" }, retryAnalyzer = RetryAnalyzer.class)
 	public void testBookappointmenttypeGET() throws NullPointerException, Exception {
 		
-		String bookIdActual=propertyData.getProperty("bookappointmenttype.bookid");
-		String apptIdActual=propertyData.getProperty("bookappointmenttype.apptid");		
+		String bookIdActual=propertyData.getProperty("bookappointmenttype.bookid.am");
+		String apptIdActual=propertyData.getProperty("bookappointmenttype.apptid.am");		
 		
 		logStep("First verify the Save call -testBookappointmenttypePOST");
 		
@@ -275,8 +275,8 @@ public class PSS2PSSAdapterModulatorTests extends BaseTestNG{
 	@Test(enabled = true, groups = { "APItest" }, retryAnalyzer = RetryAnalyzer.class)
 	public void test01BookAppointmentTypePOST() throws NullPointerException, Exception {
 		
-		String bookIdActual=propertyData.getProperty("bookappointmenttype.bookid");
-		String apptIdActual=propertyData.getProperty("bookappointmenttype.apptid");		
+		String bookIdActual=propertyData.getProperty("bookappointmenttype.bookid.am");
+		String apptIdActual=propertyData.getProperty("bookappointmenttype.apptid.am");		
 		
 		logStep("First verify the Save call -testBookappointmenttypePOST");
 		
@@ -290,8 +290,8 @@ public class PSS2PSSAdapterModulatorTests extends BaseTestNG{
 	@Test(enabled = true, groups = { "APItest" }, retryAnalyzer = RetryAnalyzer.class)
 	public void test02BookAppointmentTypeGET() throws NullPointerException, Exception {
 		
-		String bookIdActual=propertyData.getProperty("bookappointmenttype.bookid");
-		String apptIdActual=propertyData.getProperty("bookappointmenttype.apptid");		
+		String bookIdActual=propertyData.getProperty("bookappointmenttype.bookid.am");
+		String apptIdActual=propertyData.getProperty("bookappointmenttype.apptid.am");		
 
 		logStep("Verify the GET call -testBookAppointmenTtypeGET");
 		
@@ -314,8 +314,8 @@ public class PSS2PSSAdapterModulatorTests extends BaseTestNG{
 	public void test03BookAppointmentTypePUT() throws NullPointerException, Exception {
 		logStep("Verify the Update call -testBookappointmenttypePUT");
 		
-		String bookIdActual=propertyData.getProperty("bookappointmenttype.bookid");
-		String apptIdActual=propertyData.getProperty("bookappointmenttype.apptid");	
+		String bookIdActual=propertyData.getProperty("bookappointmenttype.bookid.am");
+		String apptIdActual=propertyData.getProperty("bookappointmenttype.apptid.am");	
 		
 		String c= payloadAM.bookAppointmentTypUpdatePayload(bookIdActual, apptIdActual);
 		
@@ -336,8 +336,8 @@ public class PSS2PSSAdapterModulatorTests extends BaseTestNG{
 	@Test(enabled = true, groups = { "APItest" }, retryAnalyzer = RetryAnalyzer.class)
 	public void test04BookAppointmentTypeDELETE() throws NullPointerException, Exception {
 		
-		String bookIdActual=propertyData.getProperty("bookappointmenttype.bookid");
-		String apptIdActual=propertyData.getProperty("bookappointmenttype.apptid");		
+		String bookIdActual=propertyData.getProperty("bookappointmenttype.bookid.am");
+		String apptIdActual=propertyData.getProperty("bookappointmenttype.apptid.am");		
 		
 		logStep("Verify the Delete call -BookAppointmentTypeDelete");
 		
@@ -365,7 +365,7 @@ public class PSS2PSSAdapterModulatorTests extends BaseTestNG{
 	@Test(enabled = true, groups = { "APItest" }, retryAnalyzer = RetryAnalyzer.class)
 	public void test06BookLocationGET() throws NullPointerException, Exception {
 		
-		String bookid=propertyData.getProperty("booklocation.bookid");
+		String bookid=propertyData.getProperty("booklocation.bookid.am");
 	
 		Response response=postAPIRequestAM.bookLocationGET(practiceId, bookid);
 		aPIVerification.responseCodeValidation(response, 200);
@@ -376,13 +376,145 @@ public class PSS2PSSAdapterModulatorTests extends BaseTestNG{
 	@Test(enabled = true, groups = { "APItest" }, retryAnalyzer = RetryAnalyzer.class)
 	public void test07BookLocationDelete() throws NullPointerException, Exception {		
 		
-		String bookid=propertyData.getProperty("booklocation.bookid");
+		String bookid=propertyData.getProperty("booklocation.bookid.am");
 		String locationid=propertyData.getProperty("booklocation.locationid");			
 
 		Response deleteResponse=postAPIRequestAM.bookLocationDelete(practiceId, bookid, locationid);
 		aPIVerification.responseCodeValidation(deleteResponse, 200);
 		log("Body- "+deleteResponse.getBody().asString());
 		assertEquals(deleteResponse.getBody().asString(), "true");
+	}
+	
+	@Test(enabled = true, groups = { "APItest" }, retryAnalyzer = RetryAnalyzer.class)
+	public void test08BooksFromDBGET() throws NullPointerException, Exception {		
+
+		Response response =postAPIRequestAM.getBooksFromDB(practiceId);
+		aPIVerification.responseCodeValidation(response, 200);
+		log("Body- "+response.getBody().asString());
+		assertEquals(response.getBody().asString(), "true");
+	}
+	
+	@Test(enabled = true, groups = { "APItest" }, retryAnalyzer = RetryAnalyzer.class)
+	public void test09BookSave() throws NullPointerException, Exception {			
+	
+		String b= payloadAM.bookSavePayload();
+
+		Response deleteResponse=postAPIRequestAM.saveBook(practiceId, b);
+		aPIVerification.responseCodeValidation(deleteResponse, 200);
+		log("Body- "+deleteResponse.getBody().asString());
+		assertEquals(deleteResponse.getBody().asString(), "true");
+	}
+	
+	@Test(enabled = true, groups = { "APItest" }, retryAnalyzer = RetryAnalyzer.class)
+	public void test10BookImage() throws NullPointerException, Exception {		
+		
+		String bookid=propertyData.getProperty("bookimage.bookid.am");
+
+		Response deleteResponse=postAPIRequestAM.getBookImage(practiceId, bookid);
+		aPIVerification.responseCodeValidation(deleteResponse, 200);
+	}
+	
+	@Test(enabled = true, groups = { "APItest" }, retryAnalyzer = RetryAnalyzer.class)
+	public void test11BookById() throws NullPointerException, Exception {		
+		
+		String bookid=propertyData.getProperty("book.id.am");
+		Response response=postAPIRequestAM.getBookById(practiceId, bookid);
+		aPIVerification.responseCodeValidation(response, 200);
+		aPIVerification.responseTimeValidation(response);
+
+	}
+	
+	@Test(enabled = true, groups = { "APItest" }, retryAnalyzer = RetryAnalyzer.class)
+	public void test12BookReorder() throws NullPointerException, Exception {		
+		
+		String b=payloadAM.reorderBookPayload();
+		
+		Response response=postAPIRequestAM.reorderBook(practiceId, b);
+		aPIVerification.responseCodeValidation(response, 200);
+		assertEquals(response.getBody().asString(), "true");
+	}
+	
+	@Test(enabled = true, groups = { "APItest" }, retryAnalyzer = RetryAnalyzer.class)
+	public void testBooksFromPartnerGET() throws NullPointerException, Exception {		
+
+		Response response=postAPIRequestAM.getBooksFromPartner(practiceId);
+		aPIVerification.responseCodeValidation(response, 200);
+	}
+	@Test(enabled = true, groups = { "APItest" }, retryAnalyzer = RetryAnalyzer.class)
+	public void testBooksGET() throws NullPointerException, Exception {		
+
+		Response response=postAPIRequestAM.practiceBook(practiceId);
+		aPIVerification.responseCodeValidation(response, 200);
+	}
+	
+	@Test(enabled = true, groups = { "APItest" }, retryAnalyzer = RetryAnalyzer.class)
+	public void testGetBookLevel() throws NullPointerException, Exception {		
+		Response response=postAPIRequestAM.getBookLevel(practiceId);
+		aPIVerification.responseCodeValidation(response, 200);
+		aPIVerification.responseTimeValidation(response);
+	}
+	
+	@Test(enabled = true, groups = { "APItest" }, retryAnalyzer = RetryAnalyzer.class)
+	public void testGetCancelReasonLevel() throws NullPointerException, Exception {		
+			
+		Response response= postAPIRequestAM.getCancelLevel(practiceId);
+		aPIVerification.responseCodeValidation(response, 200);
+		aPIVerification.responseTimeValidation(response);
+	}
+	
+	@Test(enabled = true, groups = { "APItest" }, retryAnalyzer = RetryAnalyzer.class)
+	public void test13CancellationReasonGET() throws NullPointerException, Exception {		
+
+		Response response=postAPIRequestAM.getPracticeCancellationReason(practiceId);
+		aPIVerification.responseCodeValidation(response, 200);
+		aPIVerification.responseTimeValidation(response);
+	}
+	
+	@Test(enabled = true, groups = { "APItest" }, retryAnalyzer = RetryAnalyzer.class)
+	public void test14CancellationReasonSave() throws NullPointerException, Exception {		
+		
+		String b=payloadAM.saveCancellationReasonPayload();
+
+		Response response=postAPIRequestAM.saveCancellationReason(practiceId,b);
+		aPIVerification.responseCodeValidation(response, 200);
+		aPIVerification.responseTimeValidation(response);
+
+	}
+	
+	@Test(enabled = true, groups = { "APItest" }, retryAnalyzer = RetryAnalyzer.class)
+	public void test15CancellationReasonReorder() throws NullPointerException, Exception {		
+		
+		String b=payloadAM.reorderCancellationReasonPayload();
+		Response response=postAPIRequestAM.reorderCancellationReason(practiceId, b);
+		aPIVerification.responseCodeValidation(response, 200);
+		aPIVerification.responseTimeValidation(response);
+
+	}
+	@Test(enabled = true, groups = { "APItest" }, retryAnalyzer = RetryAnalyzer.class)
+	public void test16CancellationReasonDelete() throws NullPointerException, Exception {		
+		
+		String cancelreasonid=propertyData.getProperty("cancelreason.id.delete.am");
+		Response response=postAPIRequestAM.deleteCancellationReason(practiceId, cancelreasonid);
+		aPIVerification.responseCodeValidation(response, 200);
+		aPIVerification.responseTimeValidation(response);
+	}
+	
+	@Test(enabled = true, groups = { "APItest" }, retryAnalyzer = RetryAnalyzer.class)
+	public void test17CancellationReasonPractice() throws NullPointerException, Exception {		
+
+		Response response=postAPIRequestAM.getPracticeCancellationReason(practiceId);
+		aPIVerification.responseCodeValidation(response, 200);
+		aPIVerification.responseTimeValidation(response);
+	}
+	
+	@Test(enabled = true, groups = { "APItest" }, retryAnalyzer = RetryAnalyzer.class)
+	public void test18CancellationReasonById() throws NullPointerException, Exception {		
+		
+		String cancelreasonid=propertyData.getProperty("cancelreason.id.am");
+		
+		Response response=postAPIRequestAM.getCancellationReasonById(practiceId, cancelreasonid);
+		aPIVerification.responseCodeValidation(response, 200);
+		aPIVerification.responseTimeValidation(response);
 	}
 
 }

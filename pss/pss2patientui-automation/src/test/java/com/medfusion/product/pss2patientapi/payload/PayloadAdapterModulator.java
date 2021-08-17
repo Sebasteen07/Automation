@@ -423,6 +423,14 @@ public class PayloadAdapterModulator {
 		return reorder;
 	}
 	
+	public String reorderBookPayload() {
+		String reorder = "{\r\n"
+				+ "    \"source\": 1,\r\n"
+				+ "    \"target\": 2\r\n"
+				+ "}";
+		return reorder;
+	}
+	
 	public String saveBookLocationPayload() {
 		String booklocation="{\r\n"
 				+ "    \"book\": {\r\n"
@@ -563,6 +571,169 @@ public class PayloadAdapterModulator {
 				+ "}";
 		return booklocation;
 	}
+	
+	public String bookSavePayload() {
+		String book="[\r\n"
+				+ "    {\r\n"
+				+ "        \"isageRule\": false,\r\n"
+				+ "        \"id\": 4254,\r\n"
+				+ "        \"name\": \"Brut PSS [Brut PSS]\",\r\n"
+				+ "        \"displayNames\": {\r\n"
+				+ "            \"EN\": \"Brut PSS [Brut PSS]\",\r\n"
+				+ "            \"ES\": \"Brut PSS Espanol hola amigo\"\r\n"
+				+ "        },\r\n"
+				+ "        \"displayName\": \"Brut PSS [Brut PSS]\",\r\n"
+				+ "        \"ageRule\": \"\",\r\n"
+				+ "        \"extBookId\": \"F625C319-3CA2-47C7-B116-51D13294C37F\",\r\n"
+				+ "        \"sharePatients\": true,\r\n"
+				+ "        \"slotSize\": 5,\r\n"
+				+ "        \"status\": true,\r\n"
+				+ "        \"providerImage\": \"https://dev3-pss-adminportal-ui.dev.medfusion.net/pss-adapter-modulator/24702/book/F625C319-3CA2-47C7-B116-51D13294C37F/image\",\r\n"
+				+ "        \"specialty\": [\r\n"
+				+ "            {\r\n"
+				+ "                \"isageRule\": false,\r\n"
+				+ "                \"isgenderRule\": false,\r\n"
+				+ "                \"id\": 203604,\r\n"
+				+ "                \"name\": \"specialty\",\r\n"
+				+ "                \"displayName\": \"specialty\",\r\n"
+				+ "                \"ageRule\": \"\"\r\n"
+				+ "            },\r\n"
+				+ "            {\r\n"
+				+ "                \"isageRule\": false,\r\n"
+				+ "                \"isgenderRule\": false,\r\n"
+				+ "                \"id\": 4117,\r\n"
+				+ "                \"name\": \"sp'1\",\r\n"
+				+ "                \"displayName\": \"sp'1\",\r\n"
+				+ "                \"ageRule\": \"\"\r\n"
+				+ "            }\r\n"
+				+ "        ],\r\n"
+				+ "        \"location\": [\r\n"
+				+ "            {\r\n"
+				+ "                \"id\": \"206532\",\r\n"
+				+ "                \"name\": \"PSS Cary\",\r\n"
+				+ "                \"displayName\": \"PSS Cary\",\r\n"
+				+ "                \"address\": {\r\n"
+				+ "                    \"id\": 206432,\r\n"
+				+ "                    \"city\": \"Test\",\r\n"
+				+ "                    \"state\": \"AL\",\r\n"
+				+ "                    \"zipCode\": \"555555555\",\r\n"
+				+ "                    \"latitude\": 0,\r\n"
+				+ "                    \"longitude\": 0\r\n"
+				+ "                },\r\n"
+				+ "                \"timezone\": \"\",\r\n"
+				+ "                \"extLocationId\": \"1B595F99-278A-4956-8F04-1879B12FB43D\",\r\n"
+				+ "                \"selected\": false,\r\n"
+				+ "                \"phoneNumber\": \"\",\r\n"
+				+ "                \"restrictToCareteam\": false,\r\n"
+				+ "                \"locationLinks\": {}\r\n"
+				+ "            }\r\n"
+				+ "        ],\r\n"
+				+ "        \"appointmentType\": [\r\n"
+				+ "            {\r\n"
+				+ "                \"isageRule\": false,\r\n"
+				+ "                \"id\": 206558,\r\n"
+				+ "                \"name\": \"Shrikant\",\r\n"
+				+ "                \"displayName\": \"Shrikant\",\r\n"
+				+ "                \"displayNames\": {},\r\n"
+				+ "                \"message\": {},\r\n"
+				+ "                \"question\": {},\r\n"
+				+ "                \"customMessages\": {},\r\n"
+				+ "                \"categoryId\": \"04E98D09-3797-4250-A0C4-E467D11FE2FA\",\r\n"
+				+ "                \"categoryName\": \"Shrikant\",\r\n"
+				+ "                \"extAppointmentTypeId\": \"C1DDA8A2-B513-42AD-B6AA-4643AC4345CA\",\r\n"
+				+ "                \"preventRescheduleOnCancel\": 0,\r\n"
+				+ "                \"preventScheduling\": 5\r\n"
+				+ "            },\r\n"
+				+ "            {\r\n"
+				+ "                \"isageRule\": false,\r\n"
+				+ "                \"id\": 206536,\r\n"
+				+ "                \"name\": \"Optical One\",\r\n"
+				+ "                \"displayName\": \"Optical One\",\r\n"
+				+ "                \"displayNames\": {},\r\n"
+				+ "                \"message\": {},\r\n"
+				+ "                \"question\": {},\r\n"
+				+ "                \"customMessages\": {},\r\n"
+				+ "                \"categoryId\": \"234C5101-63AD-403F-93C6-C98B45B81709\",\r\n"
+				+ "                \"categoryName\": \"Optical One\",\r\n"
+				+ "                \"extAppointmentTypeId\": \"695257A9-4F0D-44D4-82D0-ADED623DC6B1\",\r\n"
+				+ "                \"preventRescheduleOnCancel\": 0,\r\n"
+				+ "                \"preventScheduling\": 0\r\n"
+				+ "            },\r\n"
+				+ "            {\r\n"
+				+ "                \"isageRule\": false,\r\n"
+				+ "                \"id\": 206557,\r\n"
+				+ "                \"name\": \"General Health Checkup\",\r\n"
+				+ "                \"displayName\": \"General Health Checkup\",\r\n"
+				+ "                \"displayNames\": {},\r\n"
+				+ "                \"message\": {},\r\n"
+				+ "                \"question\": {},\r\n"
+				+ "                \"customMessages\": {},\r\n"
+				+ "                \"categoryId\": \"7B40680C-9CCE-478D-9455-2B017FD048A2\",\r\n"
+				+ "                \"categoryName\": \"General Health Check\",\r\n"
+				+ "                \"extAppointmentTypeId\": \"9E0BC44E-4200-4433-8941-DA49C408F1BA\",\r\n"
+				+ "                \"preventRescheduleOnCancel\": 0,\r\n"
+				+ "                \"preventScheduling\": 0\r\n"
+				+ "            }\r\n"
+				+ "        ],\r\n"
+				+ "        \"sortOrder\": 9,\r\n"
+				+ "        \"emailAddress\": \"Shweta.Sontakke@CrossAsyst.com\",\r\n"
+				+ "        \"acceptComment\": false,\r\n"
+				+ "        \"acceptNew\": false,\r\n"
+				+ "        \"categoryId\": \"11B85759-9394-4C06-8F20-CF57F1EA81BB\",\r\n"
+				+ "        \"categoryName\": \"Brut PSS [Brut PSS]\",\r\n"
+				+ "        \"bookType\": {\r\n"
+				+ "            \"name\": \"PERSON\",\r\n"
+				+ "            \"code\": \"RS_PERSON\",\r\n"
+				+ "            \"grouptype\": \"RESOURCE\"\r\n"
+				+ "        },\r\n"
+				+ "        \"bookLevel\": {\r\n"
+				+ "            \"name\": \"Level 1\",\r\n"
+				+ "            \"code\": \"RS_L1\",\r\n"
+				+ "            \"grouptype\": \"RESOURCE_LEVEL\"\r\n"
+				+ "        },\r\n"
+				+ "        \"providerlinks\": {},\r\n"
+				+ "        \"providerMessage\": \"Hello Doctor\"\r\n"
+				+ "    }\r\n"
+				+ "]";
+		return book;
+	}
+	
+	public String reorderCancellationReasonPayload() {
+		String payload="{\r\n"
+				+ "  \"source\": 0,\r\n"
+				+ "  \"target\": 1\r\n"
+				+ "}";
+		return payload;
+	}
+	
+	public String saveCancellationReasonPayload() {
+		String payload="[\r\n"
+				+ "    {\r\n"
+				+ "        \"id\": 202626,\r\n"
+				+ "        \"name\": \"Patient Request\",\r\n"
+				+ "        \"sortOrder\": 1,\r\n"
+				+ "        \"extCancellationReasonId\": \"35312D39-C27B-4A56-ADDC-43B3C27AB236\",\r\n"
+				+ "        \"displayName\": \"Patient Request\",\r\n"
+				+ "        \"type\": {\r\n"
+				+ "            \"name\": \"Rescheduling Reason\",\r\n"
+				+ "            \"code\": \"CR_RESCHEDULE\",\r\n"
+				+ "            \"grouptype\": \"CANCEL_REASON\"\r\n"
+				+ "        }\r\n"
+				+ "    }\r\n"
+				+ "]";
+		return payload;
+	}
+	
+//	public String saveCancellationReasonPayload() {
+//		String payload="";
+//		return payload;
+//	}
+//	
+//	public String saveCancellationReasonPayload() {
+//		String payload="";
+//		return payload;
+//	}
+//	
 	
 	
 	
