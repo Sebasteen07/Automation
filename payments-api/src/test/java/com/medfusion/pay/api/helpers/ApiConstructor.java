@@ -1,3 +1,4 @@
+//  Copyright 2013-2021 NXGN Management, LLC. All Rights Reserved.
 package com.medfusion.pay.api.helpers;
 
 import static io.restassured.RestAssured.given;
