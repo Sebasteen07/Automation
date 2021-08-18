@@ -4,10 +4,12 @@ import static org.testng.Assert.assertEquals;
 
 import java.io.IOException;
 
+import org.testng.ITestResult;
+import org.testng.annotations.BeforeMethod;
 import org.testng.annotations.BeforeTest;
 import org.testng.annotations.Test;
 
-import com.intuit.ifs.csscat.core.BaseTestNGWebDriver;
+import com.intuit.ifs.csscat.core.BaseTestNG;
 import com.intuit.ifs.csscat.core.RetryAnalyzer;
 import com.medfusion.common.utils.PropertyFileLoader;
 import com.medfusion.product.appt.precheck.payload.MfNotificationSubscriptionManagerPayload;
@@ -19,7 +21,7 @@ import com.medfusion.product.object.maps.appt.precheck.util.PostAPIRequestMfNoti
 
 import io.restassured.response.Response;
 
-public class ApptPrecheckMfNotificationSubscriptionManagerTest extends BaseTestNGWebDriver {
+public class ApptPrecheckMfNotificationSubscriptionManagerTest extends BaseTestNG {
 	String getaccessToken;
 	public static PropertyFileLoader propertyData;
 	public static MfNotificationSubscriptionManagerPayload payload;
@@ -452,19 +454,6 @@ public class ApptPrecheckMfNotificationSubscriptionManagerTest extends BaseTestN
 	}
 
 	@Test(enabled = true, groups = { "APItest" }, retryAnalyzer = RetryAnalyzer.class)
-	public void testSaveSubsDataPostWithoutSystemId() throws IOException {
-		Response response = postAPIRequest.saveSubsDataWithApptType(headerConfig.HeaderwithToken(getaccessToken),
-				payload.getSavesSubsDataPayloadWithInvalidSystemId(propertyData.getProperty("notif.subs.email.id"),
-						propertyData.getProperty("notification.resource"), propertyData.getProperty("practice.id"),
-						propertyData.getProperty("appt.default.type"),
-						propertyData.getProperty("notification.mechanism")));
-		log("Verifying the response");
-		assertEquals(response.getStatusCode(), 400);
-		apiVerification.responseTimeValidation(response);
-		apiVerification.verifySaveSubsDataWithoutSystemId(response);
-	}
-
-	@Test(enabled = true, groups = { "APItest" }, retryAnalyzer = RetryAnalyzer.class)
 	public void testSaveSubsDataPostWithInvalidResource() throws IOException {
 		Response response = postAPIRequest.saveSubsDataWithApptType(headerConfig.HeaderwithToken(getaccessToken),
 				payload.getSavesSubscriptionDataPayload(propertyData.getProperty("notif.subs.email.id"),
@@ -607,5 +596,23 @@ public class ApptPrecheckMfNotificationSubscriptionManagerTest extends BaseTestN
 		assertEquals(response.getStatusCode(), 400);
 		apiVerification.responseTimeValidation(response);
 		apiVerification.verifySaveAllSubsDataWithoutApptType(response);
+	}
+
+	@Test(enabled = true, groups = { "APItest" }, retryAnalyzer = RetryAnalyzer.class)
+	public void testSaveSubsDataPostWithoutSystemId() throws IOException {
+		Response response = postAPIRequest.saveSubsDataWithApptType(headerConfig.HeaderwithToken(getaccessToken),
+				payload.getSavesSubsDataPayloadWithInvalidSystemId(propertyData.getProperty("notif.subs.email.id"),
+						propertyData.getProperty("notification.resource"), propertyData.getProperty("practice.id"),
+						propertyData.getProperty("appt.default.type"),
+						propertyData.getProperty("notification.mechanism")));
+		log("Verifying the response");
+		assertEquals(response.getStatusCode(), 400);
+		apiVerification.responseTimeValidation(response);
+		apiVerification.verifySaveSubsDataWithoutSystemId(response);
+	}
+
+	@BeforeMethod(enabled = true, groups = { "APItest" })
+	public void getMethodName(ITestResult result) throws IOException {
+		log("Method Name-- " + result.getMethod().getMethodName());
 	}
 }

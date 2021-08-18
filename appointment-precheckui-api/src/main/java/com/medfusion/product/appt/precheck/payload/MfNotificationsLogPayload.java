@@ -51,7 +51,7 @@ public class MfNotificationsLogPayload {
 	}
 
 	public String createsNotificationPayload(String createdTime, String mechanism, String notificationId,
-			String notificationType, String notifPurpose) {
+			String notificationType, String notifPurpose, String time, String vendorStatus, String vendor) {
 		String createNotification = " {\r\n"
 				+ "  \"created\": \"" + createdTime + "\",\r\n"
 				+ "  \"mechanism\": \""+mechanism+"\",\r\n"
@@ -62,11 +62,11 @@ public class MfNotificationsLogPayload {
 				+ "  \"statuses\": [\r\n"
 				+ "    {\r\n"
 				+ "      \"mfStatus\": \"PENDING\",\r\n"
-				+ "      \"time\": \"2021-06-10T12:02:29Z\",\r\n"
-				+ "      \"vendorStatus\": \"processed\"\r\n"
+				+ "      \"time\": \"" + time + "\",\r\n"
+				+ "      \"vendorStatus\": \"" + vendorStatus + "\"\r\n"
 				+ "    }\r\n"
 				+ "  ],\r\n"
-				+ "  \"vendor\": \"SendGrid\"\r\n"
+				+ "  \"vendor\": \"" + vendor + "\"\r\n"
 				+ "}";
 		return createNotification;
 	}
