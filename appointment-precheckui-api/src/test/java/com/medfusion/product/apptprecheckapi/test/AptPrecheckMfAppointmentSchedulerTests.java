@@ -1,11 +1,15 @@
 package com.medfusion.product.apptprecheckapi.test;
 
 import static org.testng.Assert.assertEquals;
+
 import java.io.IOException;
+
+import org.testng.ITestResult;
+import org.testng.annotations.BeforeMethod;
 import org.testng.annotations.BeforeTest;
 import org.testng.annotations.Test;
 
-import com.intuit.ifs.csscat.core.BaseTestNGWebDriver;
+import com.intuit.ifs.csscat.core.BaseTestNG;
 import com.intuit.ifs.csscat.core.RetryAnalyzer;
 import com.medfusion.common.utils.PropertyFileLoader;
 import com.medfusion.product.appt.precheck.payload.MfAppointmentSchedulerPayload;
@@ -14,10 +18,11 @@ import com.medfusion.product.object.maps.appt.precheck.util.APIVerification;
 import com.medfusion.product.object.maps.appt.precheck.util.AccessToken;
 import com.medfusion.product.object.maps.appt.precheck.util.HeaderConfig;
 import com.medfusion.product.object.maps.appt.precheck.util.PostAPIRequestMfAppointmentScheduler;
+
 import io.restassured.response.Response;
 
 
-public class AptPrecheckMfAppointmentSchedulerTests extends BaseTestNGWebDriver {
+public class AptPrecheckMfAppointmentSchedulerTests extends BaseTestNG {
 	String getaccessToken;
 	public static PropertyFileLoader propertyData;
 	public static MfAppointmentSchedulerPayload payload;
@@ -104,5 +109,10 @@ public class AptPrecheckMfAppointmentSchedulerTests extends BaseTestNGWebDriver 
 		assertEquals(response.getStatusCode(), 400);
 		apiVerification.verifyPutAppointmentPastTime(response);
 		apiVerification.responseTimeValidation(response);
+	}
+
+	@BeforeMethod(enabled = true, groups = { "APItest" })
+	public void getMethodName(ITestResult result) throws IOException {
+		log("Method Name-- " + result.getMethod().getMethodName());
 	}
 }
