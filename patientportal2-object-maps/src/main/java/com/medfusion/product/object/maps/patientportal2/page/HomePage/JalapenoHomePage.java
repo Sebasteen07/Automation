@@ -352,6 +352,7 @@ public class JalapenoHomePage extends JalapenoMenu {
 
 	public JalapenoAskAStaffV2Page1 openSpecificAskaPaidV2(String askaName) throws InterruptedException {
 		IHGUtil.PrintMethodName();
+		wait.until(ExpectedConditions.visibilityOf(askAQuestion));
 		askAQuestion.click();
 		System.out.println("It clicked on the ASK a question in homepage");
 		try {
