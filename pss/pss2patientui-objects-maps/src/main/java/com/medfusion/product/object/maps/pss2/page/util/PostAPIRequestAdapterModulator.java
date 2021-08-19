@@ -559,15 +559,6 @@ public class PostAPIRequestAdapterModulator {
 		String filee = "/src/test/resources/data-driven/Force.json";
 		
 		File file = new File(filee);
-		
-//		Request request = new Request.Builder()
-//				  .url("https://dev3-pss-adminportal-ui.dev.medfusion.net/pss-adapter-modulator/24702/category/import")
-//				  .method("POST", body)
-//				  .addHeader("Authorization", "Bearer eyJraWQiOiJJZGVudGl0eUtleSIsImFsZyI6IkhTMjU2In0.eyJhdXRoVXNlcklkIjoibWY6YWQ6dXNlcm5hbWU6bnNoaXJvZGthciIsInByYWN0aWNlSWQiOiIyNDcwMiIsInR5cGUiOiJjb20ubWVkZnVzaW9uLnNzLnBzcy53ZWIucG9qby5QcmFjdGljZUF1dGhVc2VyVG9rZW4iLCJleHAiOiIxNjI5MjkwMTY4In0.mLDo9mBjdT9fFcdUGob1bcbZZ9phn-pYsTvQYoN1Bpc")
-//				  .build();
-//				Response response = OkHttpClient.newCall(request).execute();
-//
-//	    byte[] fileContent = FileUtils.readFileToByteArray(new File(file));
 	    
 		String readJsonPayload = new String(Files.readAllBytes(Paths.get("./src/test/resources/data-driven/Force.json")));
 		RestAssured.baseURI = "https://dev3-pss-adminportal-ui.dev.medfusion.net/pss-adapter-modulator/24702/category/import";
@@ -585,53 +576,6 @@ public class PostAPIRequestAdapterModulator {
 			   	.then().log().all().extract().response();
 		
 		return response;
-	}
-	
-	public static String setupHttpJSONPostRequest(String strUrl,String accessToken) throws IOException, URISyntaxException {
-		IHGUtil.PrintMethodName();
-
-		HttpClient client = new DefaultHttpClient();
-		Log4jUtil.log("Post Request Url: " + strUrl);
-		
-		MediaType mediaType = MediaType.parse("text/plain");
-		RequestBody body = new MultipartBody.Builder().setType(MultipartBody.FORM)
-				.addFormDataPart("categoryFile", "/C:/Users/Qaauto/Downloads/Force.json",
-						RequestBody.create(MediaType.parse("application/octet-stream"),
-								new File("/C:/Users/Qaauto/Downloads/Force.json")))
-				.addFormDataPart("name", "SuperCategory")
-				.addFormDataPart("displayNames", "{\"EN\":\"SuperCategory\",\"ES\":\"SuperCategory_Es\"}")
-				.addFormDataPart("type", "CG_APPOINTMENT_TYPE").build();
-
-		HttpPost request = new HttpPost();
-		request.getParams().setParameter(CoreConnectionPNames.CONNECTION_TIMEOUT, 60000)
-				.setParameter(CoreConnectionPNames.SO_TIMEOUT, 60000);
-		request.setURI(new URI(strUrl));
-		request.setEntity(new StringEntity(body.toString()));
-		
-		//request.setHeader("Noun", "Encounter");
-		//request.setHeader("Verb", "Completed");
-		//request.addHeader((org.apache.http.Header) Header);
-		request.addHeader("Authorization", "Bearer "+accessToken);
-		//request.addHeader("Content-Type", "application/json");
-		
-//		Request request = new Request.Builder()
-//				  .url("https://dev3-pss-adminportal-ui.dev.medfusion.net/pss-adapter-modulator/24702/category/import")
-//				  .method("POST", body)
-//				  .addHeader("Authorization", "Bearer eyJraWQiOiJJZGVudGl0eUtleSIsImFsZyI6IkhTMjU2In0.eyJhdXRoVXNlcklkIjoibWY6YWQ6dXNlcm5hbWU6bnNoaXJvZGthciIsInByYWN0aWNlSWQiOiIyNDcwMiIsInR5cGUiOiJjb20ubWVkZnVzaW9uLnNzLnBzcy53ZWIucG9qby5QcmFjdGljZUF1dGhVc2VyVG9rZW4iLCJleHAiOiIxNjI5MjkwMTY4In0.mLDo9mBjdT9fFcdUGob1bcbZZ9phn-pYsTvQYoN1Bpc")
-//				  .build();
-		HttpResponse response = client.execute(request);
-		String sResp = EntityUtils.toString(response.getEntity());
-		Log4jUtil.log("Check for http 200/202 response");
-		assertTrue(
-				response.getStatusLine().getStatusCode() == 200 || response.getStatusLine().getStatusCode() == 202,
-				"Get Request response is " + response.getStatusLine().getStatusCode()
-						+ " instead of 200/202. Response message:\n" + sResp);
-		Log4jUtil.log("Response Code" + response.getStatusLine().getStatusCode());
-		
-		Log4jUtil.log(sResp);
-		//writeFile(responseFilePath, sResp);
-
-		return null;
 	}
 	
 	public static void writeFile(String xmlFilePath, String xml) throws IOException {
