@@ -5,11 +5,14 @@ import static org.testng.Assert.assertEquals;
 
 import java.io.IOException;
 
+import org.testng.ITestResult;
+import org.testng.annotations.BeforeMethod;
 import org.testng.annotations.BeforeTest;
 import org.testng.annotations.Test;
 
-import com.intuit.ifs.csscat.core.BaseTestNGWebDriver;
+import com.intuit.ifs.csscat.core.BaseTestNG;
 import com.intuit.ifs.csscat.core.RetryAnalyzer;
+import com.medfusion.common.utils.IHGUtil;
 import com.medfusion.common.utils.PropertyFileLoader;
 import com.medfusion.product.appt.precheck.payload.MfNotificationsLogPayload;
 import com.medfusion.product.appt.precheck.pojo.Appointment;
@@ -20,7 +23,7 @@ import com.medfusion.product.object.maps.appt.precheck.util.PostAPIRequestMfNoti
 
 import io.restassured.response.Response;
 
-public class ApptPrecheckMfNotificationsLogTest extends BaseTestNGWebDriver {
+public class ApptPrecheckMfNotificationsLogTest extends BaseTestNG {
 	String getaccessToken;
 	public static PropertyFileLoader propertyData;
 	public static MfNotificationsLogPayload payload;
@@ -91,8 +94,13 @@ public class ApptPrecheckMfNotificationsLogTest extends BaseTestNGWebDriver {
 		log("Verifying the response");
 		assertEquals(response.getStatusCode(), 200);
 		apiVerification.responseTimeValidation(response);
+		if (IHGUtil.getEnvironmentType().equals("DEV3")) {
 		apiVerification.verifyReturnLogsPost(response, propertyData.getProperty("notifiction.subj.urn"),
 				propertyData.getProperty("notifiction.subj.id"));
+		} else {
+			apiVerification.verifyReturnLogsPost(response, propertyData.getProperty("notifiction.subj.urn"),
+					propertyData.getProperty("notifiction.subject.id"));
+		}
 		apiVerification.responseKeyValidationJson(response, "result.notifications[0].notificationId");
 		apiVerification.responseKeyValidationJson(response, "result.notifications[0].mechanism");
 		apiVerification.responseKeyValidationJson(response, "result.notifications[0].notificationType");
@@ -110,7 +118,8 @@ public class ApptPrecheckMfNotificationsLogTest extends BaseTestNGWebDriver {
 		log("Verifying the response");
 		assertEquals(response.getStatusCode(), 200);
 		apiVerification.responseTimeValidation(response);
-		apiVerification.verifyReturnLogsPostWithInvalidSubjId(response);
+		apiVerification.verifyReturnLogsPostWithInvalidSubjId(response,
+				propertyData.getProperty("invalid.notif.subj.id"));
 	}
 
 	@Test(enabled = true, groups = { "APItest" }, retryAnalyzer = RetryAnalyzer.class)
@@ -122,7 +131,8 @@ public class ApptPrecheckMfNotificationsLogTest extends BaseTestNGWebDriver {
 		log("Verifying the response");
 		assertEquals(response.getStatusCode(), 200);
 		apiVerification.responseTimeValidation(response);
-		apiVerification.verifyReturnLogsPostWithInvalidSubjUrn(response);
+		apiVerification.verifyReturnLogsPostWithInvalidSubjUrn(response,
+				propertyData.getProperty("notifiction.subj.id"));
 
 	}
 
@@ -160,7 +170,8 @@ public class ApptPrecheckMfNotificationsLogTest extends BaseTestNGWebDriver {
 		log("Verifying the response");
 		assertEquals(response.getStatusCode(), 200);
 		apiVerification.responseTimeValidation(response);
-		apiVerification.verifyDeleteLogsWithInvalidSubjId(response);
+		apiVerification.verifyDeleteLogsWithInvalidSubjId(response,
+				propertyData.getProperty("delete.invalid.notif.subj.id"));
 	}
 
 	@Test(enabled = true, groups = { "APItest" }, retryAnalyzer = RetryAnalyzer.class)
@@ -172,7 +183,7 @@ public class ApptPrecheckMfNotificationsLogTest extends BaseTestNGWebDriver {
 		log("Verifying the response");
 		assertEquals(response.getStatusCode(), 200);
 		apiVerification.responseTimeValidation(response);
-		apiVerification.verifyDeleteLogsWithInvalidSubjUrn(response);
+		apiVerification.verifyDeleteLogsWithInvalidSubjUrn(response, propertyData.getProperty("delete.notif.subj.id"));
 	}
 
 	@Test(enabled = true, groups = { "APItest" }, retryAnalyzer = RetryAnalyzer.class)
@@ -216,9 +227,11 @@ public class ApptPrecheckMfNotificationsLogTest extends BaseTestNGWebDriver {
 						propertyData.getProperty("created.notification.mechanism"),
 						propertyData.getProperty("created.notification.id"),
 						propertyData.getProperty("created.notification.type"),
-						propertyData.getProperty("notif.purpose.cadence.30minutes")),
+						propertyData.getProperty("notif.purpose.cadence.30minutes"),
+						propertyData.getProperty("create.status.time"), propertyData.getProperty("vendor.status"),
+						propertyData.getProperty("vendor")),
 				headerConfig.HeaderwithToken(getaccessToken), propertyData.getProperty("create.status.log.id"),
-				propertyData.getProperty("update.notification.id"));
+				propertyData.getProperty("update.notifi.id"));
 		log("Verifying the response");
 		assertEquals(response.getStatusCode(), 201);
 		apiVerification.responseTimeValidation(response);
@@ -232,9 +245,11 @@ public class ApptPrecheckMfNotificationsLogTest extends BaseTestNGWebDriver {
 						propertyData.getProperty("created.notification.mechanism"),
 						propertyData.getProperty("created.notification.id"),
 						propertyData.getProperty("created.notification.type"),
-						propertyData.getProperty("notif.purpose.cadence1")),
+						propertyData.getProperty("notif.purpose.cadence1"),
+						propertyData.getProperty("create.status.time"), propertyData.getProperty("vendor.status"),
+						propertyData.getProperty("vendor")),
 				headerConfig.HeaderwithToken(getaccessToken), propertyData.getProperty("create.status.log.id"),
-				propertyData.getProperty("update.notification.id"));
+				propertyData.getProperty("update.notifi.id"));
 		log("Verifying the response");
 		assertEquals(response.getStatusCode(), 201);
 		apiVerification.responseTimeValidation(response);
@@ -248,9 +263,11 @@ public class ApptPrecheckMfNotificationsLogTest extends BaseTestNGWebDriver {
 						propertyData.getProperty("created.notification.mechanism"),
 						propertyData.getProperty("created.notification.id"),
 						propertyData.getProperty("created.notification.type"),
-						propertyData.getProperty("notif.purpose.pss.confirmation")),
+						propertyData.getProperty("notif.purpose.pss.confirmation"),
+						propertyData.getProperty("create.status.time"), propertyData.getProperty("vendor.status"),
+						propertyData.getProperty("vendor")),
 				headerConfig.HeaderwithToken(getaccessToken), propertyData.getProperty("create.status.log.id"),
-				propertyData.getProperty("update.notification.id"));
+				propertyData.getProperty("update.notifi.id"));
 		log("Verifying the response");
 		assertEquals(response.getStatusCode(), 201);
 		apiVerification.responseTimeValidation(response);
@@ -264,12 +281,19 @@ public class ApptPrecheckMfNotificationsLogTest extends BaseTestNGWebDriver {
 						propertyData.getProperty("created.notification.mechanism"),
 						propertyData.getProperty("created.notification.id"),
 						propertyData.getProperty("created.notification.type"),
-						propertyData.getProperty("notif.purpose.cadence.curbs")),
+						propertyData.getProperty("notif.purpose.cadence.curbs"),
+						propertyData.getProperty("create.status.time"), propertyData.getProperty("vendor.status"),
+						propertyData.getProperty("vendor")),
 				headerConfig.HeaderwithToken(getaccessToken), propertyData.getProperty("create.status.log.id"),
-				propertyData.getProperty("update.notification.id"));
+				propertyData.getProperty("update.notifi.id"));
 		log("Verifying the response");
 		assertEquals(response.getStatusCode(), 201);
 		apiVerification.responseTimeValidation(response);
 		apiVerification.verifyCreateNotification(response);
+	}
+
+	@BeforeMethod(enabled = true, groups = { "APItest" })
+	public void getMethodName(ITestResult result) throws IOException {
+		log("Method Name-- " + result.getMethod().getMethodName());
 	}
 }

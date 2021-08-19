@@ -8,6 +8,7 @@ import java.io.IOException;
 import org.hamcrest.Matchers;
 import org.json.JSONArray;
 import org.json.JSONObject;
+import org.testng.Assert;
 
 import com.intuit.ifs.csscat.core.BaseTestNGWebDriver;
 
@@ -103,13 +104,14 @@ public class APIVerification extends BaseTestNGWebDriver {
 				"Could not generate notification due to: , The email address format is invalid");
 	}
 
-	public void verifyUpdateApptAction(Response response) throws IOException {
+	public void verifyUpdateApptAction(Response response, String practiceId, String patientId, String apptId)
+			throws IOException {
 		JsonPath js = new JsonPath(response.asString());
 		log("Validate Practioner Action");
 		assertEquals(js.getString("action"), "ARRIVAL", "Action was incorrect");
-		assertEquals(js.getString("practiceId"), "24333", "Practice id was incorrect");
-		assertEquals(js.getString("pmPatientId"), "27268", "Patient id was incorrect");
-		assertEquals(js.getString("pmAppointmentId"), "8881", "Appointment id was incorrect");
+		assertEquals(js.getString("practiceId"), practiceId, "Practice id was incorrect");
+		assertEquals(js.getString("pmPatientId"), patientId, "Patient id was incorrect");
+		assertEquals(js.getString("pmAppointmentId"), apptId, "Appointment id was incorrect");
 		assertEquals(js.getString("properties.practionerAction"), "CHECKIN", "Practioner Action was empty");
 	}
 
@@ -123,11 +125,11 @@ public class APIVerification extends BaseTestNGWebDriver {
 		assertEquals(jsonPath.get("message"), "Arrival is not confirm by patient");
 	}
 
-	public void verifyRetrievesApptAction(Response response, String practiceId, String pmPatientId,
+	public void verifyRetrievesApptAction(Response response, String action, String practiceId, String pmPatientId,
 			String pmAppointmentId) throws IOException {
 		JSONArray arr = new JSONArray(response.getBody().asString());
 		log("Validate Response");
-		assertEquals(arr.getJSONObject(0).getString("action"), "CONFIRM", "Action was incorrect");
+		assertEquals(arr.getJSONObject(0).getString("action"), action, "Action was incorrect");
 		assertEquals(arr.getJSONObject(0).getString("practiceId"), practiceId, "Practice id was incorrect");
 		assertEquals(arr.getJSONObject(0).getString("pmPatientId"), pmPatientId, "Patient id was incorrect");
 		assertEquals(arr.getJSONObject(0).getString("pmAppointmentId"), pmAppointmentId,
@@ -713,19 +715,19 @@ public class APIVerification extends BaseTestNGWebDriver {
 		JsonPath js = new JsonPath(response.asString());
 		log("Validate PM Integration Setting");
 		assertEquals(js.getString("result.subjectUrn"), "[platform:appointment]", "Subject Urn  was incorrect");
-		assertEquals(js.getString("result.subjectId"), "[24333.27766.158]", "System id was incorrect");
+		assertEquals(js.getString("result.subjectId"), subjectId, "System id was incorrect");
 	}
 
-	public void verifyReturnLogsPostWithInvalidSubjId(Response response) throws IOException {
+	public void verifyReturnLogsPostWithInvalidSubjId(Response response, String subjectId) throws IOException {
 		JsonPath jsonPath = new JsonPath(response.asString());
 		assertEquals(jsonPath.get("message"),
-				"Could not find log for: {subjectUrn: platform:appointment subjectId: 24333.12345.158}");
+				"Could not find log for: {subjectUrn: platform:appointment subjectId: " + subjectId + "}");
 	}
 
-	public void verifyReturnLogsPostWithInvalidSubjUrn(Response response) throws IOException {
+	public void verifyReturnLogsPostWithInvalidSubjUrn(Response response, String subjectId) throws IOException {
 		JsonPath jsonPath = new JsonPath(response.asString());
 		assertEquals(jsonPath.get("message"),
-				"Could not find log for: {subjectUrn: plrfgatform:appointment subjectId: 24333.27766.158}");
+				"Could not find log for: {subjectUrn: plrfgatform:appointment subjectId: " + subjectId + "}");
 	}
 
 	public void verifyReturnLogsPostWithoutSubjId(Response response) throws IOException {
@@ -746,16 +748,16 @@ public class APIVerification extends BaseTestNGWebDriver {
 					+ practiceId + "." + patientId + "." + apptId + "}");
 	}
 
-	public void verifyDeleteLogsWithInvalidSubjId(Response response) throws IOException {
+	public void verifyDeleteLogsWithInvalidSubjId(Response response, String subjectId) throws IOException {
 		JsonPath jsonPath = new JsonPath(response.asString());
 		assertEquals(jsonPath.get("message"),
-				"Could not find log for: {subjectUrn: platform:appointment subjectId: 24333.297761.9826}");
+				"Could not find log for: {subjectUrn: platform:appointment subjectId: " + subjectId + "}");
 	}
 
-	public void verifyDeleteLogsWithInvalidSubjUrn(Response response) throws IOException {
+	public void verifyDeleteLogsWithInvalidSubjUrn(Response response, String subjectId) throws IOException {
 		JsonPath jsonPath = new JsonPath(response.asString());
 		assertEquals(jsonPath.get("message"),
-				"Could not find log for: {subjectUrn: plrfgatform:appointment subjectId: 24333.27761.9826}");
+				"Could not find log for: {subjectUrn: plrfgatform:appointment subjectId: " + subjectId + "}");
 	}
 
 	public void verifyCreateStatus(Response response) throws IOException {
@@ -1042,4 +1044,331 @@ public class APIVerification extends BaseTestNGWebDriver {
 		JsonPath jsonPath = new JsonPath(response.asString());
 		assertEquals(jsonPath.get("message"), "Incoming Appointment time is in past cannot schedule, reschedule, cancel, or update");
 	}
+
+	public void verifyGetLogoForPracticeId(Response response) throws IOException {
+		JsonPath jsonPath = new JsonPath(response.asString());
+		assertEquals(jsonPath.get("message"), "No logo was found with id =practice");
+	}
+
+	public void verifyLogoInfo(Response response, String practiceId) throws IOException {
+		JsonPath jsonPath = new JsonPath(response.asString());
+		assertEquals(jsonPath.get("practiceId"), practiceId, "Practice Id  was incorrect");
+	}
+
+	public void verifyLogoInfoWithoutPracticeId(Response response) throws IOException {
+		JsonPath jsonPath = new JsonPath(response.asString());
+		assertEquals(jsonPath.get("message"), "No logo was found with practiceId=info");
+	}
+
+	public void verifyUpdateLogo(Response response, String Id, String practiceId) throws IOException {
+		JsonPath jsonPath = new JsonPath(response.asString());
+		assertEquals(jsonPath.get("id"), Id, "Id  was incorrect");
+		assertEquals(jsonPath.get("practiceId"), practiceId, "Practice Id  was incorrect");
+	}
+
+	public void verifyDefaultConfirmationSetting(Response response, String deliveryMtd, String apptMethod,
+			String status) throws IOException {
+		JsonPath js = new JsonPath(response.asString());
+		log("Validate Default Confirmation Setting");
+		assertEquals(js.getString("deliveryMethod"), deliveryMtd, "Delivery method id was incorrect");
+		assertEquals(js.getString("version"), "Default", "Version was incorrect");
+		assertEquals(js.getString("apptMethod"), apptMethod, "Appointment Method was incorrect");
+		assertEquals(js.getString("status"), status, "Status was incorrect");
+		assertEquals(js.getString("timing"), "Upon Scheduling", "timing was incorrect");
+	}
+
+	public void verifyWithoutDeliveryMethod(Response response) throws IOException {
+		JsonPath jsonPath = new JsonPath(response.asString());
+		assertEquals(jsonPath.get("message"), "No message available");
+	}
+
+	public void verifyDefaultReminderSetting(Response response, String deliveryMtd, String apptMethod, String status)
+			throws IOException {
+		JsonPath js = new JsonPath(response.asString());
+		log("Validate Default reminder Setting");
+		assertEquals(js.getString("deliveryMethod"), deliveryMtd, "Delivery method id was incorrect");
+		assertEquals(js.getString("apptMethod"), apptMethod, "Appointment Method was incorrect");
+		assertEquals(js.getString("status"), status, "Status  was incorrect");
+	}
+
+	public void verifyReminderSetting(Response response, String deliveryMtd, String apptMethod, String status)
+			throws IOException {
+		JsonPath js = new JsonPath(response.asString());
+		log("Validate Reminder Setting");
+		assertEquals(js.getString("deliveryMethod"), deliveryMtd, "Delivery method id was incorrect");
+		assertEquals(js.getString("apptMethod"), apptMethod, "Appointment Method was incorrect");
+		assertEquals(js.getString("status"), status, "Status  was incorrect");
+	}
+
+	public void verifyWithoutReminderId(Response response) throws IOException {
+		JsonPath jsonPath = new JsonPath(response.asString());
+		assertEquals(jsonPath.get("message"), "Request method 'GET' not supported");
+	}
+
+	public void verifySettingsForSpecificedPractice(Response response, String practiceId) throws IOException {
+		JSONArray arr = new JSONArray(response.getBody().asString());
+		log("Validate Response");
+		assertEquals(arr.getJSONObject(0).getString("id"), practiceId, "id was incorrect");
+	}
+
+	public void verifySettingsForAPractice(Response response, String practiceId, String systemId, String displayName)
+			throws IOException {
+		JsonPath js = new JsonPath(response.asString());
+		log("Validate Setting for Practice");
+		assertEquals(js.getString("id"), practiceId, "practiceId  was incorrect");
+		assertEquals(js.getString("pmIntegrationSettings.id"), systemId, "Integration id was incorrect");
+		assertEquals(js.getString("locationSettings.primaryLocation.displayName"), displayName,
+				"Display Name  was incorrect");
+	}
+
+	public void verifyCadenceForSpecifiedPractices(Response response, String practiceId) throws IOException {
+		JSONArray arr = new JSONArray(response.body().asString());
+		log("Validate Response");
+		assertEquals(arr.getJSONObject(0).getString("practiceId"), practiceId, "id was incorrect");
+	}
+
+	public void verifyResponseKeys(Response response, String key) throws IOException {
+		JSONArray arr = new JSONArray(response.body().asString());
+		for (int i = 0; i < arr.length(); i++) {
+			JSONArray obj = arr.getJSONObject(i).getJSONArray("cadence");
+			for (int j = 0; j < obj.length(); j++) {
+				JSONObject obj1 = obj.getJSONObject(j);
+				log("Validated key-> " + key + " value is-  " + obj1.getString(key));
+			}
+		}
+	}
+
+	public void verifyReminderSettings(Response response, String practiceId, String systemId, String id,
+			String deliveryMtd, String apptMethod) throws IOException {
+		JsonPath js = new JsonPath(response.asString());
+		log("Validate Reminder Settings");
+		assertEquals(js.getString("id"), practiceId, "practiceId  was incorrect");
+		assertEquals(js.getString("pmIntegrationSettings.id"), systemId, "System id was incorrect");
+		assertEquals(js.getString("notifySettings.reminderNotification[0].id"), id,
+				"Reminder notification id was incorrect");
+		assertEquals(js.getString("notifySettings.reminderNotification[0].deliveryMethod"), deliveryMtd,
+				"delivery Method was incorrect");
+		assertEquals(js.getString("notifySettings.reminderNotification[0].apptMethod"), apptMethod,
+				"Appointment Method was incorrect");
+		assertEquals(js.getString("notifySettings.reminderNotification[0].status"), "Published",
+				"Status was incorrect");
+	}
+
+	public void verifyReminderSettingsWithInvalidDeliveryMtd(Response response) throws IOException {
+		JsonPath jsonPath = new JsonPath(response.asString());
+		assertEquals(jsonPath.get("message"), "Practice cadence notification type must be one of SMS, Email");
+	}
+
+	public void verifyReminderSettingsWithInvalidApptMtd(Response response) throws IOException {
+		JsonPath jsonPath = new JsonPath(response.asString());
+		assertEquals(jsonPath.get("message"), "Practice appointment method must be one of In Office, Virtual ");
+	}
+
+	public void verifyReminderSettingsWithInvalidStatus(Response response) throws IOException {
+		JsonPath jsonPath = new JsonPath(response.asString());
+		assertEquals(jsonPath.get("message"), "Practice appointment method must be Published ");
+	}
+
+	public void verifyUpdateSettings(Response response, String practiceId, String systemId, String locationId,
+			String deliveryMtd) throws IOException {
+		JsonPath js = new JsonPath(response.asString());
+		log("Validate Update Setting");
+		assertEquals(js.getString("id"), practiceId, "practiceId  was incorrect");
+		assertEquals(js.getString("pmIntegrationSettings.id"), systemId, "System id was incorrect");
+		assertEquals(js.getString("locationSettings.locations.abc456"), locationId, "Location id was incorrect");
+		assertEquals(js.getString("notifySettings.reminderNotification[0].deliveryMethod"), deliveryMtd,
+				"Delivery method was incorrect");
+	}
+
+	public void verifyUpdateSettingsWithInvalidLocationId(Response response) throws IOException {
+		JsonPath jsonPath = new JsonPath(response.asString());
+		assertEquals(jsonPath.get("message"), "Location key values and IDs must match");
+	}
+
+	public void verifyUpdateSettingsWithInvalidDeliveryMtd(Response response) throws IOException {
+		JsonPath jsonPath = new JsonPath(response.asString());
+		assertEquals(jsonPath.get("message"), "Practice cadence notification type must be one of SMS, Email");
+	}
+
+	public void verifyUpdateSettingsWithInvalidLanguage(Response response) throws IOException {
+		JsonPath jsonPath = new JsonPath(response.asString());
+		assertEquals(jsonPath.get("message"), "Practice notification language must be one of en, es, en-es");
+	}
+
+	public void verifyActiveSettings(Response response, String practiceId, String activeSetting, String systemId)
+			throws IOException {
+		JsonPath js = new JsonPath(response.asString());
+		log("Validate Active Setting");
+		assertEquals(js.getString("id"), practiceId, "practiceId  was incorrect");
+		assertEquals(js.getString("active"), activeSetting, "System id was incorrect");
+		assertEquals(js.getString("pmIntegrationSettings.id"), systemId, "System id was incorrect");
+	}
+
+	public void verifyUpdateSettingsWithoutActiveValue(Response response) throws IOException {
+		JsonPath jsonPath = new JsonPath(response.asString());
+		assertEquals(jsonPath.get("message"), "No message available");
+	}
+
+	public void verifyLocationSettings(Response response, String practiceId, String systemId, String locationId,
+			String displayName, String streetName, String city, String state) throws IOException {
+		JsonPath js = new JsonPath(response.asString());
+		log("Validate Location Setting");
+		assertEquals(js.getString("id"), practiceId, "practiceId  was incorrect");
+		assertEquals(js.getString("pmIntegrationSettings.id"), systemId, "System id was incorrect");
+		assertEquals(js.getString("locationSettings.primaryLocation.id"), locationId, "location Id was incorrect");
+		assertEquals(js.getString("locationSettings.primaryLocation.displayName"), displayName,
+				"Display Name was incorrect");
+		assertEquals(js.getString("locationSettings.primaryLocation.streetName"), streetName,
+				"Street Name was incorrect");
+		assertEquals(js.getString("locationSettings.primaryLocation.city"), city, "City was incorrect");
+		assertEquals(js.getString("locationSettings.primaryLocation.state"), state, "State was incorrect");
+	}
+
+	public void verifyUpdateLocationSettingsWithoutPracticeId(Response response) throws IOException {
+		JsonPath jsonPath = new JsonPath(response.asString());
+		assertEquals(jsonPath.get("message"), "The location ID must be provided");
+	}
+
+	public void verifyMerchantSettings(Response response, String practiceId, String systemId, String merchantId,
+			String merchantName, String creditCards) throws IOException {
+		JsonPath js = new JsonPath(response.asString());
+		log("Validate Merchant Setting");
+		assertEquals(js.getString("id"), practiceId, "practiceId  was incorrect");
+		assertEquals(js.getString("pmIntegrationSettings.id"), systemId, "System id was incorrect");
+		assertEquals(js.getString("merchantSettings.id"), merchantId, "Merchant Id was incorrect");
+		assertEquals(js.getString("merchantSettings.name"), merchantName, "Merchant Name was incorrect");
+		assertEquals(js.getString("merchantSettings.acceptedCreditCards"), creditCards, "Street Name was incorrect");
+
+	}
+
+	public void verifyMerchantSettingsWithInvalidCreditCard(Response response) throws IOException {
+		JsonPath jsonPath = new JsonPath(response.asString());
+		assertEquals(jsonPath.get("message"),
+				"Invalid credit card; valid values are: American Express, Care Credit, Discover, Mastercard, Visa");
+	}
+
+	public void verifyMerchantSettingsWithoutIdAndName(Response response) throws IOException {
+		JsonPath jsonPath = new JsonPath(response.asString());
+		assertEquals(jsonPath.get("message"),
+				"When defining a merchant, merchant ID must be provided, When defining a merchant, merchant name must be provided");
+	}
+
+	public void verifyNotifySettings(Response response, String practiceId, String systemId, String enabled,
+			String enabledByPractice, String notifyOneDayOut, String notifyThreeDaysOut, String notifyFiveDaysOut)
+			throws IOException {
+		JsonPath js = new JsonPath(response.asString());
+		log("Validate Notify Setting");
+		assertEquals(js.getString("id"), practiceId, "practiceId  was incorrect");
+		assertEquals(js.getString("pmIntegrationSettings.id"), systemId, "System id was incorrect");
+		assertEquals(js.getString("notifySettings.enabled"), enabled, "enabled was incorrect");
+		assertEquals(js.getString("notifySettings.enabledByPractice"), enabledByPractice,
+				"Enabled By Practice  was incorrect");
+		assertEquals(js.getString("notifySettings.notifyOneDayOut"), notifyOneDayOut,
+				" Notify One Day Out was incorrect");
+		assertEquals(js.getString("notifySettings.notifyThreeDaysOut"), notifyThreeDaysOut,
+				"Notify Three Days Out was incorrect");
+		assertEquals(js.getString("notifySettings.notifyFiveDaysOut"), notifyFiveDaysOut,
+				"Notify Five Days Out Id was incorrect");
+	}
+
+	public void verifyNotifySettingsWithInvalidDeliveryMtd(Response response) throws IOException {
+		JsonPath jsonPath = new JsonPath(response.asString());
+		assertEquals(jsonPath.get("message"), "Practice cadence notification type must be one of SMS, Email");
+	}
+
+	public void verifyPmIntegrationSettings(Response response, String practiceId, String systemId,
+			String dataSyncEnabled) throws IOException {
+		JsonPath js = new JsonPath(response.asString());
+		log("Validate PM Integration Setting");
+		assertEquals(js.getString("id"), practiceId, "practiceId  was incorrect");
+		assertEquals(js.getString("pmIntegrationSettings.id"), systemId, "System id was incorrect");
+		assertEquals(js.getString("pmIntegrationSettings.dataSyncEnabled"), dataSyncEnabled,
+				"DataSyncEnabled was incorrect");
+
+	}
+
+	public void verifyNotifySettingsWithoutPracticeId(Response response) throws IOException {
+		JsonPath jsonPath = new JsonPath(response.asString());
+		assertEquals(jsonPath.get("message"), "PM integrations settings must be defined");
+	}
+
+	public void verifyNotifySettingsWithoutDataSyncEnabled(Response response) throws IOException {
+		JsonPath jsonPath = new JsonPath(response.asString());
+		assertEquals(jsonPath.get("message"), "Data sync enabled must be defined");
+	}
+
+	public void verifyPrecheckSettings(Response response, String practiceId, String precheckSettings,
+			String disableDemographics, String insuranceSettings, String textEntryEnabled, String ocrEnabled,
+			String disableCopay, String disableBalance, String enablePatientMode, String enableForms)
+			throws IOException {
+		JsonPath js = new JsonPath(response.asString());
+		log("Validate Precheck Setting");
+		assertEquals(js.getString("id"), practiceId, "practiceId  was incorrect");
+		assertEquals(js.getString("precheckSettings.enabled"), precheckSettings, "Precheck Settings was incorrect");
+		assertEquals(js.getString("precheckSettings.disableDemographics"), disableDemographics,
+				"Disable Demographics was incorrect");
+		assertEquals(js.getString("precheckSettings.insuranceSettings.enabled"), insuranceSettings,
+				"Insurance Settings was incorrect");
+		assertEquals(js.getString("precheckSettings.insuranceSettings.textEntryEnabled"), textEntryEnabled,
+				"Text Entry Enabled was incorrect");
+		assertEquals(js.getString("precheckSettings.insuranceSettings.ocrEnabled"), ocrEnabled,
+				"Ocr Enabled  was incorrect");
+		assertEquals(js.getString("precheckSettings.disableCopay"), disableCopay, "Disable Copay was incorrect");
+		assertEquals(js.getString("precheckSettings.disableBalance"), disableBalance, "Disable Balance was incorrect");
+		assertEquals(js.getString("precheckSettings.enablePatientMode"), enablePatientMode,
+				"Enable Patient Mode was incorrect");
+		assertEquals(js.getString("precheckSettings.enableForms"), enableForms, "Enable Forms was incorrect");
+
+	}
+
+	public void verifyUpdatePrecheckSettingWithoutPracticeId(Response response) throws IOException {
+		JsonPath jsonPath = new JsonPath(response.asString());
+		if (jsonPath.get("message").equals("PM integrations settings must be defined, Practice ID must be provided")) {
+			assertEquals(jsonPath.get("message"),
+					"PM integrations settings must be defined, Practice ID must be provided");
+		} else {
+			assertEquals(jsonPath.get("message"),
+					"Practice ID must be provided, PM integrations settings must be defined");
+		}
+	}
+
+	public void verifyUpdatePssSetting(Response response, String practiceId, String systemId, boolean pssSetting)
+			throws IOException {
+		JsonPath js = new JsonPath(response.asString());
+		assertEquals(js.getString("id"), practiceId, "practiceId  was incorrect");
+		assertEquals(js.getString("pmIntegrationSettings.id"), systemId, "System id was incorrect");
+		assertEquals(js.get("pssSettings.enabled"), pssSetting, "PSS Setting was incorrect");
+	}
+
+	public void verifyCreateSetting(Response response, String practiceId) throws IOException {
+		JsonPath js = new JsonPath(response.asString());
+		assertEquals(js.getString("id"), practiceId, "practiceId  was incorrect");
+		assertEquals(js.getString("pmIntegrationSettings.id"), "84", "System id was incorrect");
+	}
+
+	public void verifySettingIfAlreadyExist(Response response) throws IOException {
+		JsonPath jsonPath = new JsonPath(response.asString());
+		assertEquals(jsonPath.get("message"), "Settings for the practice already exists.  Cannot create.");
+	}
+
+	public void verifyGetSettingsForAPractice(Response response, String practiceId, String systemId)
+			throws IOException {
+		JsonPath js = new JsonPath(response.asString());
+		log("Validate PM Integration Setting");
+		assertEquals(js.getString("id"), practiceId, "practiceId  was incorrect");
+		assertEquals(js.getString("pmIntegrationSettings.id"), systemId, "System id was incorrect");
+		assertEquals(js.getString("active"), "true", "Practice inactive");
+	}
+
+	public void verifyIncorrectUuid(Response response) throws IOException {
+		JsonPath jsonPath = new JsonPath(response.asString());
+		String uuid = jsonPath .getString("message");
+		log("Verify incorrect Uuid" +uuid);
+		Assert.assertTrue(true, "Invalid input value:" +uuid.contains("Invalid input value:"));
+	}
+	public void verifyAlreadyexistsAppt(Response response) throws IOException {
+		JsonPath jsonPath = new JsonPath(response.asString());
+		assertEquals(jsonPath.get("message"), "Appointment type with practiceId/integrationId/appointmentId/categoryId already exists");
+	}
+	
 }
