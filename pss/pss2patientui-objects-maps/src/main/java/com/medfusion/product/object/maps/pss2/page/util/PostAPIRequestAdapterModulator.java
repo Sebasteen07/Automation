@@ -543,38 +543,18 @@ public class PostAPIRequestAdapterModulator {
 		return response;
 	}
 	
-	public Response importCategory(String practiceid,Map<String, String> Header)throws Exception {
-		
-	
-		MediaType mediaType = MediaType.parse("text/plain");
-		RequestBody body = new MultipartBody.Builder().setType(MultipartBody.FORM)
-		  .addFormDataPart("categoryFile","/C:/Users/Qaauto/Downloads/Force.json",
-		    RequestBody.create(MediaType.parse("application/octet-stream"),
-		    new File("/C:/Users/Qaauto/Downloads/Force.json")))
-		  .addFormDataPart("name","SuperCategory")
-		  .addFormDataPart("displayNames","{\"EN\":\"SuperCategory\",\"ES\":\"SuperCategory_Es\"}")
-		  .addFormDataPart("type","CG_APPOINTMENT_TYPE")
-		  .build();
-		
-		String filee = "/src/test/resources/data-driven/Force.json";
-		
-		File file = new File(filee);
-	    
-		String readJsonPayload = new String(Files.readAllBytes(Paths.get("./src/test/resources/data-driven/Force.json")));
+	public Response importCategory(String practiceid, Map<String, String> Header) throws Exception {
+
+		String file = "./src/test/resources/data-driven/Force.json";
+
+		String jsonFile = "{\"EN\":\"SuperCategory\",\"ES\":\"SuperCategory_Es\"}";
+
 		RestAssured.baseURI = "https://dev3-pss-adminportal-ui.dev.medfusion.net/pss-adapter-modulator/24702/category/import";
-		Response response = given().urlEncodingEnabled(true).log().all()
-				.contentType( "multipart/form-data")
-	           
-	            .headers(Header)
-	            .body(body)
-			    .formParam("name", "SuperCategory")
-			    .formParam("displayNames", "{'EN':'SupCategory','ES':'SupCategory_Es'}")
-			    .formParam("type", "CG_APPOINTMENT_TYPE")
-			    //.multiPart("categoryFile", new File(file)).when()
-			    .multiPart("categoryFile", file,"application/json")
-			    .post()
-			   	.then().log().all().extract().response();
-		
+		Response response = given().urlEncodingEnabled(true).log().all().contentType("multipart/form-data")
+
+				.headers(Header).formParam("name", "SuperCategory").formParam("displayNames", jsonFile)
+				.formParam("type", "CG_APPOINTMENT_TYPE").multiPart("categoryFile", new File(file)).when().post().then()
+				.log().all().extract().response();
 		return response;
 	}
 	

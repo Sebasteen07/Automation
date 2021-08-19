@@ -675,16 +675,18 @@ public class PSS2PSSAdapterModulatorTests extends BaseTestNG{
 	}
 		
 	@Test(enabled = true, groups = { "APItest" }, retryAnalyzer = RetryAnalyzer.class)
-	public void testImportCategory() throws NullPointerException, Exception {			
-			
-		log("Base URL- "+propertyData.getProperty("base.url.am"));
-		
-		 
-		Response response=postAPIRequestAM.importCategory( practiceId, headerConfig.HeaderwithTokenMulti(openToken));
-		//PostAPIRequestAdapterModulator.setupHttpJSONPostRequest("https://dev3-pss-adminportal-ui.dev.medfusion.net/pss-adapter-modulator/24702/category/import",openToken);
-//		aPIVerification.responseCodeValidation(response, 200);
-//		aPIVerification.responseTimeValidation(response);
+	public void testImportCategory() throws NullPointerException, Exception {		
 
+		Response response=postAPIRequestAM.importCategory( practiceId, headerConfig.HeaderwithTokenMulti(openToken));
+		aPIVerification.responseCodeValidation(response, 200);
+		aPIVerification.responseTimeValidation(response);
+		
+		String categoryid=aPIVerification.responseKeyValidationJson(response, "id");
+		String name=aPIVerification.responseKeyValidationJson(response, "name");
+
+		assertEquals(name, "SuperCategory","Category Name is not matching with input");
+		
+		postAPIRequestAM.deleteCategory(practiceId, String.valueOf(categoryid));
 	}
 	
 }

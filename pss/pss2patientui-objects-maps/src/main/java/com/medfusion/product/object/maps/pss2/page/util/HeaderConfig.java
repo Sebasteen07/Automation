@@ -21,7 +21,6 @@ public class HeaderConfig {
 	
 	public Map<String, String> HeaderwithTokenMulti(String s) {
 		Map<String, String> df = new HashMap<String, String>();
-		//df.put("content-type", "multipart/form-data");
 		df.put("Authorization", "Bearer " + s);
 		return df;
 	}
