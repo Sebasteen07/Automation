@@ -680,8 +680,8 @@ public class PSS2PSSAdapterModulatorTests extends BaseTestNG{
 		log("Base URL- "+propertyData.getProperty("base.url.am"));
 		
 		 
-		//Response response=postAPIRequestAM.importCategory( practiceId, headerConfig.HeaderwithTokenMulti(openToken));
-		PostAPIRequestAdapterModulator.setupHttpJSONPostRequest("https://dev3-pss-adminportal-ui.dev.medfusion.net/pss-adapter-modulator/24702/category/import",openToken);
+		Response response=postAPIRequestAM.importCategory( practiceId, headerConfig.HeaderwithTokenMulti(openToken));
+		//PostAPIRequestAdapterModulator.setupHttpJSONPostRequest("https://dev3-pss-adminportal-ui.dev.medfusion.net/pss-adapter-modulator/24702/category/import",openToken);
 //		aPIVerification.responseCodeValidation(response, 200);
 //		aPIVerification.responseTimeValidation(response);
 
