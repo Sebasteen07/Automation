@@ -517,4 +517,174 @@ public class PSS2PSSAdapterModulatorTests extends BaseTestNG{
 		aPIVerification.responseTimeValidation(response);
 	}
 
+	@Test(enabled = true, groups = { "APItest" }, retryAnalyzer = RetryAnalyzer.class)
+	public void test19BookBySpecialtyIdAndLevelGET() throws NullPointerException, Exception {		
+		
+		String specialtyid=propertyData.getProperty("specialty.id.am");
+		
+		Response response=postAPIRequestAM.getBookBySpecialtyIdAndLevel(practiceId, specialtyid);
+		aPIVerification.responseCodeValidation(response, 200);
+		aPIVerification.responseTimeValidation(response);
+	}
+	
+	@Test(enabled = true, groups = { "APItest" }, retryAnalyzer = RetryAnalyzer.class)
+	public void test20BookAssociatedToCareTeamGET() throws NullPointerException, Exception {		
+		
+		String careteam=propertyData.getProperty("careteam.id.am");
+		
+		Response response=postAPIRequestAM.getBookAssociatedToCareTeam(practiceId, careteam);
+		aPIVerification.responseCodeValidation(response, 200);
+		aPIVerification.responseTimeValidation(response);
+	}
+	
+	@Test(enabled = true, groups = { "APItest" }, retryAnalyzer = RetryAnalyzer.class)
+	public void test21CareTeamBookSave() throws NullPointerException, Exception {		
+		
+		String careteam=propertyData.getProperty("careteam.id.am");
+		String name=propertyData.getProperty("careteam.name.am");
+		String b= payloadAM.saveCareTeamBookPayload(careteam, name);
+		
+		Response response=postAPIRequestAM.saveCareTeamBook(practiceId, b);
+		aPIVerification.responseCodeValidation(response, 200);
+		aPIVerification.responseTimeValidation(response);
+		
+	}
+	
+	@Test(enabled = true, groups = { "APItest" }, retryAnalyzer = RetryAnalyzer.class)
+	public void test22CareTeamBookByBookIdGET() throws NullPointerException, Exception {		
+		
+		String bookid=propertyData.getProperty("careteam.book.id.am");
+		
+		Response response=postAPIRequestAM.getCareTeamByBookId(practiceId, bookid);
+		aPIVerification.responseCodeValidation(response, 200);
+		aPIVerification.responseTimeValidation(response);
+	}
+	
+	@Test(enabled = true, groups = { "APItest" }, retryAnalyzer = RetryAnalyzer.class)
+	public void test23CareTeamBookDelete() throws NullPointerException, Exception {		
+		
+		String careteam=propertyData.getProperty("careteam.id.am");
+		String name=propertyData.getProperty("careteam.name.am");
+	
+		Response response=postAPIRequestAM.deleteCareTeamBook(practiceId);
+		aPIVerification.responseCodeValidation(response, 200);
+		aPIVerification.responseTimeValidation(response);
+		
+	}
+	
+	@Test(enabled = true, groups = { "APItest" }, retryAnalyzer = RetryAnalyzer.class)
+	public void test23BookSpecialtySave() throws NullPointerException, Exception {		
+		
+		String bookid=propertyData.getProperty("specialty.book.id.am");
+		String specialtyid=propertyData.getProperty("specialty.id.am");
+		String b= payloadAM.saveBookSpecialtyPayload(bookid, specialtyid);
+		
+		Response response=postAPIRequestAM.saveSpecialty(practiceId, b);
+		aPIVerification.responseCodeValidation(response, 200);
+		aPIVerification.responseTimeValidation(response);
+		assertEquals(response.getBody().asString(), "true");
+	}
+	
+	@Test(enabled = true, groups = { "APItest" }, retryAnalyzer = RetryAnalyzer.class)
+	public void test24BookSpecialtyDelete() throws NullPointerException, Exception {		
+		
+		String bookid=propertyData.getProperty("specialty.book.id.am");
+		String specialtyid=propertyData.getProperty("specialty.id.am");
+				
+		Response response=postAPIRequestAM.deleteSpecialty(practiceId, bookid, specialtyid);
+		aPIVerification.responseCodeValidation(response, 200);
+		aPIVerification.responseTimeValidation(response);
+		assertEquals(response.getBody().asString(), "true");
+	}
+	
+	@Test(enabled = true, groups = { "APItest" }, retryAnalyzer = RetryAnalyzer.class)
+	public void testCareTeamGET_SAVE_DELETE() throws NullPointerException, Exception {		
+		
+		String b= payloadAM.saveCareTeam();
+				
+		Response response=postAPIRequestAM.saveCareTeam(practiceId, b);
+		
+		aPIVerification.responseCodeValidation(response, 200);
+		aPIVerification.responseTimeValidation(response);
+		
+		String careteamid=aPIVerification.responseKeyValidationJson(response, "id");
+		
+		Response getResponse= postAPIRequestAM.getAssociatedCareteam(practiceId);
+		
+		aPIVerification.responseCodeValidation(getResponse, 200);
+		aPIVerification.responseTimeValidation(getResponse);
+		
+		Response getCareTeamResponse=postAPIRequestAM.getCareTeamById(practiceId, careteamid);
+		
+		aPIVerification.responseCodeValidation(getCareTeamResponse, 200);
+		aPIVerification.responseTimeValidation(getCareTeamResponse);
+		
+		Response deleteResponse=postAPIRequestAM.deleteCareTeam(practiceId, careteamid);
+		
+		aPIVerification.responseCodeValidation(deleteResponse, 200);
+		aPIVerification.responseTimeValidation(deleteResponse);
+	}
+	
+	@Test(enabled = true, groups = { "APItest" }, retryAnalyzer = RetryAnalyzer.class)
+	public void testCategoryGET_SAVE_DELETE() throws NullPointerException, Exception {		
+		
+		String b= payloadAM.saveCategory();
+				
+		Response response=postAPIRequestAM.saveCategory(practiceId, b);
+		logStep("Validate SaveCategory Response");
+		
+		aPIVerification.responseCodeValidation(response, 200);
+		aPIVerification.responseTimeValidation(response);
+		
+		JSONArray arr = new JSONArray(response.body().asString());
+		int categoryid=arr.getJSONObject(0).getInt("id");
+		
+		Response getResponse= postAPIRequestAM.getcategoryById(practiceId, String.valueOf(categoryid));
+		logStep("Validate GetCategoryById Response");
+				
+		aPIVerification.responseCodeValidation(getResponse, 200);
+		aPIVerification.responseTimeValidation(getResponse);
+		
+		Response getAssociatedCategory=postAPIRequestAM.associatedCategory(practiceId);
+		logStep("Validate AssociatedCategory Response");
+		
+		aPIVerification.responseCodeValidation(getAssociatedCategory, 200);
+		aPIVerification.responseTimeValidation(getAssociatedCategory);
+		
+		String draft=payloadAM.draftCategoryPayload(categoryid);	
+		
+		Response draftResponse =postAPIRequestAM.saveCategoryDraft(practiceId, draft);
+		logStep("Validate DraftCategory Response");
+		
+		aPIVerification.responseCodeValidation(draftResponse, 200);
+		aPIVerification.responseTimeValidation(draftResponse);	
+		
+		String export= payloadAM.exportCategoryPayload();
+		
+		Response exportResponse= postAPIRequestAM.exportCategory(practiceId, export);
+		logStep("Validate ExportCategory Response");
+		
+		aPIVerification.responseCodeValidation(exportResponse, 200);
+		aPIVerification.responseTimeValidation(exportResponse);
+		
+		Response deleteResponse=postAPIRequestAM.deleteCategory(practiceId, String.valueOf(categoryid));
+		logStep("Validate DeleteCategory Response");
+		
+		aPIVerification.responseCodeValidation(deleteResponse, 200);
+		aPIVerification.responseTimeValidation(deleteResponse);
+	}
+		
+	@Test(enabled = true, groups = { "APItest" }, retryAnalyzer = RetryAnalyzer.class)
+	public void testImportCategory() throws NullPointerException, Exception {			
+			
+		log("Base URL- "+propertyData.getProperty("base.url.am"));
+		
+		 
+		//Response response=postAPIRequestAM.importCategory( practiceId, headerConfig.HeaderwithTokenMulti(openToken));
+		PostAPIRequestAdapterModulator.setupHttpJSONPostRequest("https://dev3-pss-adminportal-ui.dev.medfusion.net/pss-adapter-modulator/24702/category/import",openToken);
+//		aPIVerification.responseCodeValidation(response, 200);
+//		aPIVerification.responseTimeValidation(response);
+
+	}
+	
 }

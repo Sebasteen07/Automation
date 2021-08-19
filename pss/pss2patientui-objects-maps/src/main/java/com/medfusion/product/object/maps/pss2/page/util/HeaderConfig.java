@@ -17,9 +17,14 @@ public class HeaderConfig {
 		df.put("content-type", "application/json");
 		df.put("Authorization", "Bearer " + s);
 		return df;
-
 	}
 	
+	public Map<String, String> HeaderwithTokenMulti(String s) {
+		Map<String, String> df = new HashMap<String, String>();
+		//df.put("content-type", "multipart/form-data");
+		df.put("Authorization", "Bearer " + s);
+		return df;
+	}
 	public Map<String,String> AWSHeader(){
 		Map<String,String> df= new HashMap<String,String>();
 		df.put("", "");

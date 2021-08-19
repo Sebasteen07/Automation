@@ -724,19 +724,188 @@ public class PayloadAdapterModulator {
 		return payload;
 	}
 	
-//	public String saveCancellationReasonPayload() {
-//		String payload="";
-//		return payload;
-//	}
-//	
-//	public String saveCancellationReasonPayload() {
-//		String payload="";
-//		return payload;
-//	}
-//	
+	public String saveCareTeamPayload(String careteam, String name) {
+		String payload="[\r\n"
+				+ "    {\r\n"
+				+ "        \"id\": "+careteam+",\r\n"
+				+ "        \"name\": \""+name+"\",\r\n"
+				+ "        \"book\": [\r\n"
+				+ "            {\r\n"
+				+ "                \"isageRule\": false,\r\n"
+				+ "                \"id\": 4303,\r\n"
+				+ "                \"name\": \"Ng1 Pss [PSS, NG1]\",\r\n"
+				+ "                \"displayNames\": {\r\n"
+				+ "                    \"EN\": \"Ng1 Pss [PSS, NG1]\"\r\n"
+				+ "                },\r\n"
+				+ "                \"displayName\": \"Ng1 Pss [PSS, NG1]\",\r\n"
+				+ "                \"extBookId\": \"FB84CDED-8A67-4A40-81F8-9401F59DC6C6\",\r\n"
+				+ "                \"sharePatients\": true,\r\n"
+				+ "                \"slotSize\": 5,\r\n"
+				+ "                \"status\": true,\r\n"
+				+ "                \"acceptComment\": true,\r\n"
+				+ "                \"acceptNew\": false,\r\n"
+				+ "                \"categoryId\": \"730C6F5E-4F8C-482F-BB81-F6050841FD8D\",\r\n"
+				+ "                \"categoryName\": \"Ng1 Pss [PSS, NG1]\",\r\n"
+				+ "                \"bookType\": {\r\n"
+				+ "                    \"name\": \"PERSON\",\r\n"
+				+ "                    \"code\": \"RS_PERSON\",\r\n"
+				+ "                    \"grouptype\": \"RESOURCE\"\r\n"
+				+ "                },\r\n"
+				+ "                \"bookLevel\": {\r\n"
+				+ "                    \"name\": \"None\",\r\n"
+				+ "                    \"code\": \"RS_NONE\",\r\n"
+				+ "                    \"grouptype\": \"RESOURCE_LEVEL\"\r\n"
+				+ "                },\r\n"
+				+ "                \"careteam\": [\r\n"
+				+ "                    {\r\n"
+				+ "                        \"id\": 4068,\r\n"
+				+ "                        \"name\": \"care team\"\r\n"
+				+ "                    }\r\n"
+				+ "                ],\r\n"
+				+ "                \"providerlinks\": {}\r\n"
+				+ "            }\r\n"
+				+ "        ]\r\n"
+				+ "    }\r\n"
+				+ "]";
+		return payload;
+	}	
 	
+	public String saveCareTeamBookPayload(String careteam, String name) {
+		String payload="{\"careTeam\":{\"id\":4068},\"book\":[{\"id\":4304}]}";
+		return payload;
+	}	
+	public String saveBookSpecialtyPayload(String bookid, String specialtyid) {
+		String payload="{\r\n"
+				+ "    \"book\": {\r\n"
+				+ "        \"id\": "+bookid+"\r\n"
+				+ "    },\r\n"
+				+ "    \"specialty\": [\r\n"
+				+ "        {\r\n"
+				+ "            \"id\": "+specialtyid+"\r\n"
+				+ "        }\r\n"
+				+ "    ]\r\n"
+				+ "}";
+		return payload;
+	}	
 	
-	
-	
+	public String saveCareTeam() {
+		String payload="[\r\n"
+				+ "    {\r\n"
+				+ "        \"id\": 4070,\r\n"
+				+ "        \"name\": \"Care Team for delete\"\r\n"
+				+ "    }\r\n"
+				+ "]";
+		return payload;
+	}
 
+	public String saveCategory() {		
+		String payload="[\r\n"
+				+ "    {\r\n"
+				+ "        \"displayNames\": {\r\n"
+				+ "            \"EN\": \"English Sushma\",\r\n"
+				+ "            \"ES\": \"Sushma_Espanol\"\r\n"
+				+ "        },\r\n"
+				+ "        \"name\": \"Sushma\",\r\n"
+				+ "        \"type\": \"CG_APPOINTMENT_TYPE\",\r\n"
+				+ "        \"status\": \"DRAFT\"\r\n"
+				+ "    }\r\n"
+				+ "]";
+		return payload;		
+	}
+	
+	public String draftCategoryPayload(int categoryname) {		
+		String payload="[\r\n"
+				+ "    {\r\n"
+				+ "        \"id\": "+categoryname+",\r\n"
+				+ "        \"name\": \"Sushma\",\r\n"
+				+ "        \"type\": \"CG_APPOINTMENT_TYPE\",\r\n"
+				+ "        \"nodes\": [\r\n"
+				+ "            {\r\n"
+				+ "                \"guid\": 4397,\r\n"
+				+ "                \"type\": \"CATEGORY\",\r\n"
+				+ "                \"displayName\": \"English Sushma\",\r\n"
+				+ "                \"displayNames\": {\r\n"
+				+ "                    \"EN\": \"English Sushma\",\r\n"
+				+ "                    \"ES\": \"Sushma_Espanol\"\r\n"
+				+ "                },\r\n"
+				+ "                \"entity\": {\r\n"
+				+ "                    \"type\": \"appointment_type\",\r\n"
+				+ "                    \"id\": 4195,\r\n"
+				+ "                    \"name\": \"One Medical\",\r\n"
+				+ "                    \"categoryId\": \"003DB4E4-8F86-424F-9A08-9EE212285CBE\",\r\n"
+				+ "                    \"categoryName\": \"One Medical Category\",\r\n"
+				+ "                    \"extAppointmentTypeId\": \"F39DDC8C-C061-445B-8564-8B4A220F5D49\"\r\n"
+				+ "                },\r\n"
+				+ "                \"children\": []\r\n"
+				+ "            }\r\n"
+				+ "        ],\r\n"
+				+ "        \"displayName\": \"English Sushma\",\r\n"
+				+ "        \"displayNames\": {\r\n"
+				+ "            \"EN\": \"English Sushma\",\r\n"
+				+ "            \"ES\": \"Sushma_Espanol\"\r\n"
+				+ "        },\r\n"
+				+ "        \"status\": \"DRAFT\"\r\n"
+				+ "    }\r\n"
+				+ "]";
+		return payload;		
+	}
+	
+	public String exportCategoryPayload(){
+		String payload="{\r\n"
+				+ "    \"id\": 4397,\r\n"
+				+ "    \"name\": \"Sushma\",\r\n"
+				+ "    \"type\": \"CG_APPOINTMENT_TYPE\",\r\n"
+				+ "    \"nodes\": [\r\n"
+				+ "        {\r\n"
+				+ "            \"guid\": 4397,\r\n"
+				+ "            \"type\": \"CATEGORY\",\r\n"
+				+ "            \"displayName\": \"English Sushma\",\r\n"
+				+ "            \"displayNames\": {\r\n"
+				+ "                \"EN\": \"English Sushma\",\r\n"
+				+ "                \"ES\": \"Sushma_Espanol\"\r\n"
+				+ "            },\r\n"
+				+ "            \"entity\": null,\r\n"
+				+ "            \"children\": [\r\n"
+				+ "                \"5e90668c-564f-4a42-97e1-9fd2f8cf1beb\"\r\n"
+				+ "            ]\r\n"
+				+ "        },\r\n"
+				+ "        {\r\n"
+				+ "            \"guid\": \"5e90668c-564f-4a42-97e1-9fd2f8cf1beb\",\r\n"
+				+ "            \"type\": \"QUESTION\",\r\n"
+				+ "            \"displayName\": \"[QUESTION0]\",\r\n"
+				+ "            \"displayNames\": {\r\n"
+				+ "                \"EN\": \"What is the appointment Name\",\r\n"
+				+ "                \"ES\": \"[QUESTION0]\"\r\n"
+				+ "            },\r\n"
+				+ "            \"parentId\": 4397,\r\n"
+				+ "            \"entity\": null,\r\n"
+				+ "            \"children\": [\r\n"
+				+ "                \"9b0a70ed-ae2d-4aef-ad5b-68b6501605a5\"\r\n"
+				+ "            ]\r\n"
+				+ "        },\r\n"
+				+ "        {\r\n"
+				+ "            \"guid\": \"9b0a70ed-ae2d-4aef-ad5b-68b6501605a5\",\r\n"
+				+ "            \"type\": \"ANSWER\",\r\n"
+				+ "            \"displayName\": \"[ANSWER0]\",\r\n"
+				+ "            \"displayNames\": {\r\n"
+				+ "                \"EN\": \"Medical One\",\r\n"
+				+ "                \"ES\": \"[ANSWER0]\"\r\n"
+				+ "            },\r\n"
+				+ "            \"parentId\": \"5e90668c-564f-4a42-97e1-9fd2f8cf1beb\",\r\n"
+				+ "            \"entity\": null,\r\n"
+				+ "            \"children\": []\r\n"
+				+ "        }\r\n"
+				+ "    ],\r\n"
+				+ "    \"displayName\": \"English Sushma\",\r\n"
+				+ "    \"displayNames\": {\r\n"
+				+ "        \"EN\": \"English Sushma\",\r\n"
+				+ "        \"ES\": \"Sushma_Espanol\"\r\n"
+				+ "    },\r\n"
+				+ "    \"status\": \"DRAFT\"\r\n"
+				+ "}";
+		return payload;
+	}
+	
+	
+	
 }

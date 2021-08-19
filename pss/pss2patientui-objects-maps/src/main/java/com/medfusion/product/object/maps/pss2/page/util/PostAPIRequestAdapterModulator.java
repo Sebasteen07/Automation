@@ -2,10 +2,32 @@
 package com.medfusion.product.object.maps.pss2.page.util;
 
 import static io.restassured.RestAssured.given;
+import static org.testng.Assert.assertTrue;
 
+import java.io.File;
+import java.io.FileWriter;
+import java.io.IOException;
+import java.net.URI;
+import java.net.URISyntaxException;
+import java.nio.file.Files;
+import java.nio.file.Paths;
 import java.util.Map;
 
+import org.apache.http.Header;
+import org.apache.http.HttpResponse;
+import org.apache.http.client.HttpClient;
+import org.apache.http.client.methods.HttpPost;
+import org.apache.http.entity.StringEntity;
+import org.apache.http.impl.client.DefaultHttpClient;
+import org.apache.http.params.CoreConnectionPNames;
+import org.apache.http.util.EntityUtils;
+import org.apache.tools.ant.util.FileUtils;
 import org.hamcrest.Matchers;
+
+import com.intuit.ifs.csscat.core.utils.Log4jUtil;
+import com.intuit.ihg.rest.RestUtils;
+import com.medfusion.common.utils.IHGUtil;
+
 import io.restassured.RestAssured;
 import io.restassured.builder.RequestSpecBuilder;
 import io.restassured.builder.ResponseSpecBuilder;
@@ -14,6 +36,11 @@ import io.restassured.path.json.JsonPath;
 import io.restassured.response.Response;
 import io.restassured.specification.RequestSpecification;
 import io.restassured.specification.ResponseSpecification;
+import okhttp3.MediaType;
+import okhttp3.MultipartBody;
+import okhttp3.OkHttpClient;
+import okhttp3.Request;
+import okhttp3.RequestBody;
 
 public class PostAPIRequestAdapterModulator {
 	
@@ -405,15 +432,16 @@ public class PostAPIRequestAdapterModulator {
 		return response;
 	}
 	
-	public Response saveSpecialty( String practiceid )throws Exception {
-		Response response = given().spec(requestSpec).log().all().when()
-				.get(practiceid + "/partnerbook").then().log().all().extract().response();
+	public Response saveSpecialty( String practiceid , String b)throws Exception {
+		Response response = given().spec(requestSpec).body(b).log().all().when()
+				.post(practiceid + "/bookspecialty").then().log().all().extract().response();
 		return response;
 	}
 	
-	public Response deleteSpecialty( String practiceid )throws Exception {
-		Response response = given().spec	(requestSpec).log().all().when()
-				.get(practiceid + "/partnerbook").then().log().all().extract().response();
+	public Response deleteSpecialty( String practiceid,String bookid, String specialtyid )throws Exception {
+		Response response = given().spec(requestSpec).log().all().when()
+				.delete(practiceid + "/bookspecialty/book/"+bookid+"/specialty/"+specialtyid
+						).then().log().all().extract().response();
 		return response;
 	}
 	
@@ -428,13 +456,7 @@ public class PostAPIRequestAdapterModulator {
 				.get(practiceid + "/partnerbook").then().log().all().extract().response();
 		return response;
 	}
-	
-	public Response saveCareTeamBook( String practiceid )throws Exception {
-		Response response = given().spec(requestSpec).log().all().when()
-				.get(practiceid + "/partnerbook").then().log().all().extract().response();
-		return response;
-	}
-	
+
 	public Response deleteCareTeamBook( String practiceid )throws Exception {
 		Response response = given().spec(requestSpec).log().all().when()
 				.get(practiceid + "/partnerbook").then().log().all().extract().response();
@@ -460,57 +482,167 @@ public class PostAPIRequestAdapterModulator {
 		return response;
 	}
 	
-	public Response saveCareTeam( String practiceid )throws Exception {
-		Response response = given().spec(requestSpec).log().all().when()
-				.get(practiceid + "/partnerbook").then().log().all().extract().response();
+	public Response saveCareTeam( String practiceid, String b)throws Exception {
+		Response response = given().spec(requestSpec).body(b).log().all().when()
+				.post(practiceid + "/careteam").then().log().all().extract().response();
 		return response;
 	}
 	
-	public Response getCareTeamById( String practiceid )throws Exception {
+	public Response getAssociatedCareteam( String practiceid )throws Exception {
 		Response response = given().spec(requestSpec).log().all().when()
-				.get(practiceid + "/partnerbook").then().log().all().extract().response();
+				.get(practiceid + "/associatedcareteam").then().log().all().extract().response();
 		return response;
 	}
-	public Response deleteCareTeam( String practiceid )throws Exception {
+	public Response deleteCareTeam( String practiceid, String careteamid)throws Exception {
 		Response response = given().spec(requestSpec).log().all().when()
-				.get(practiceid + "/partnerbook").then().log().all().extract().response();
+				.delete(practiceid + "/careteam/"+careteamid).then().log().all().extract().response();
 		return response;
 	}
+	
+	public Response getCareTeamById( String practiceid, String careteamid)throws Exception {
+		Response response = given().spec(requestSpec).log().all().when()
+				.get(practiceid + "/careteam/"+careteamid).then().log().all().extract().response();
+		return response;
+	}
+	
 	public Response getCategorysFromDB( String practiceid )throws Exception {
 		Response response = given().spec(requestSpec).log().all().when()
 				.get(practiceid + "/partnerbook").then().log().all().extract().response();
 		return response;
 	}
-	public Response saveCategory( String practiceid )throws Exception {
-		Response response = given().spec(requestSpec).log().all().when()
-				.get(practiceid + "/partnerbook").then().log().all().extract().response();
+	public Response saveCategory( String practiceid, String b )throws Exception {
+		Response response = given().spec(requestSpec).body(b).log().all().when()
+				.post(practiceid + "/category").then().log().all().extract().response();
 		return response;
 	}
-	public Response getcategoryById( String practiceid )throws Exception {
+	
+	public Response getcategoryById( String practiceid, String categoryid )throws Exception {
 		Response response = given().spec(requestSpec).log().all().when()
-				.get(practiceid + "/partnerbook").then().log().all().extract().response();
+				.get(practiceid + "/categoryspecialty/"+categoryid).then().log().all().extract().response();
 		return response;
 	}
-	public Response deleteCategory( String practiceid )throws Exception {
+	
+	public Response deleteCategory( String practiceid, String categoryid)throws Exception {
 		Response response = given().spec(requestSpec).log().all().when()
-				.get(practiceid + "/partnerbook").then().log().all().extract().response();
+				.delete(practiceid + "/category/"+categoryid).then().log().all().extract().response();
 		return response;
 	}
-	public Response saveCategoryDraft( String practiceid )throws Exception {
-		Response response = given().spec(requestSpec).log().all().when()
-				.get(practiceid + "/partnerbook").then().log().all().extract().response();
+	public Response saveCategoryDraft( String practiceid, String b)throws Exception {
+		Response response = given().spec(requestSpec).body(b).log().all().when()
+				.post(practiceid + "/category/draft").then().log().all().extract().response();
 		return response;
 	}
-	public Response getCategoryJsonFile( String practiceid )throws Exception {
+	public Response associatedCategory( String practiceid )throws Exception {
 		Response response = given().spec(requestSpec).log().all().when()
-				.get(practiceid + "/partnerbook").then().log().all().extract().response();
+				.get(practiceid + "/associatedcategory").then().log().all().extract().response();
 		return response;
 	}
-	public Response importCategoryInPractice( String practiceid )throws Exception {
-		Response response = given().spec(requestSpec).log().all().when()
-				.get(practiceid + "/partnerbook").then().log().all().extract().response();
+	public Response exportCategory( String practiceid, String b)throws Exception {
+		Response response = given().spec(requestSpec).body(b).log().all().when()
+				.post(practiceid + "/category/export").then().log().all().extract().response();
 		return response;
 	}
+	
+	public Response importCategory(String practiceid,Map<String, String> Header)throws Exception {
+		
+	
+		MediaType mediaType = MediaType.parse("text/plain");
+		RequestBody body = new MultipartBody.Builder().setType(MultipartBody.FORM)
+		  .addFormDataPart("categoryFile","/C:/Users/Qaauto/Downloads/Force.json",
+		    RequestBody.create(MediaType.parse("application/octet-stream"),
+		    new File("/C:/Users/Qaauto/Downloads/Force.json")))
+		  .addFormDataPart("name","SuperCategory")
+		  .addFormDataPart("displayNames","{\"EN\":\"SuperCategory\",\"ES\":\"SuperCategory_Es\"}")
+		  .addFormDataPart("type","CG_APPOINTMENT_TYPE")
+		  .build();
+		
+		String filee = "/src/test/resources/data-driven/Force.json";
+		
+		File file = new File(filee);
+		
+//		Request request = new Request.Builder()
+//				  .url("https://dev3-pss-adminportal-ui.dev.medfusion.net/pss-adapter-modulator/24702/category/import")
+//				  .method("POST", body)
+//				  .addHeader("Authorization", "Bearer eyJraWQiOiJJZGVudGl0eUtleSIsImFsZyI6IkhTMjU2In0.eyJhdXRoVXNlcklkIjoibWY6YWQ6dXNlcm5hbWU6bnNoaXJvZGthciIsInByYWN0aWNlSWQiOiIyNDcwMiIsInR5cGUiOiJjb20ubWVkZnVzaW9uLnNzLnBzcy53ZWIucG9qby5QcmFjdGljZUF1dGhVc2VyVG9rZW4iLCJleHAiOiIxNjI5MjkwMTY4In0.mLDo9mBjdT9fFcdUGob1bcbZZ9phn-pYsTvQYoN1Bpc")
+//				  .build();
+//				Response response = OkHttpClient.newCall(request).execute();
+//
+//	    byte[] fileContent = FileUtils.readFileToByteArray(new File(file));
+	    
+		String readJsonPayload = new String(Files.readAllBytes(Paths.get("./src/test/resources/data-driven/Force.json")));
+		RestAssured.baseURI = "https://dev3-pss-adminportal-ui.dev.medfusion.net/pss-adapter-modulator/24702/category/import";
+		Response response = given().urlEncodingEnabled(true).log().all()
+				.contentType( "multipart/form-data")
+	           
+	            .headers(Header)
+	            .body(body)
+			    .formParam("name", "SuperCategory")
+			    .formParam("displayNames", "{'EN':'SupCategory','ES':'SupCategory_Es'}")
+			    .formParam("type", "CG_APPOINTMENT_TYPE")
+			    //.multiPart("categoryFile", new File(file)).when()
+			    .multiPart("categoryFile", file,"application/json")
+			    .post()
+			   	.then().log().all().extract().response();
+		
+		return response;
+	}
+	
+	public static String setupHttpJSONPostRequest(String strUrl,String accessToken) throws IOException, URISyntaxException {
+		IHGUtil.PrintMethodName();
+
+		HttpClient client = new DefaultHttpClient();
+		Log4jUtil.log("Post Request Url: " + strUrl);
+		
+		MediaType mediaType = MediaType.parse("text/plain");
+		RequestBody body = new MultipartBody.Builder().setType(MultipartBody.FORM)
+				.addFormDataPart("categoryFile", "/C:/Users/Qaauto/Downloads/Force.json",
+						RequestBody.create(MediaType.parse("application/octet-stream"),
+								new File("/C:/Users/Qaauto/Downloads/Force.json")))
+				.addFormDataPart("name", "SuperCategory")
+				.addFormDataPart("displayNames", "{\"EN\":\"SuperCategory\",\"ES\":\"SuperCategory_Es\"}")
+				.addFormDataPart("type", "CG_APPOINTMENT_TYPE").build();
+
+		HttpPost request = new HttpPost();
+		request.getParams().setParameter(CoreConnectionPNames.CONNECTION_TIMEOUT, 60000)
+				.setParameter(CoreConnectionPNames.SO_TIMEOUT, 60000);
+		request.setURI(new URI(strUrl));
+		request.setEntity(new StringEntity(body.toString()));
+		
+		//request.setHeader("Noun", "Encounter");
+		//request.setHeader("Verb", "Completed");
+		//request.addHeader((org.apache.http.Header) Header);
+		request.addHeader("Authorization", "Bearer "+accessToken);
+		//request.addHeader("Content-Type", "application/json");
+		
+//		Request request = new Request.Builder()
+//				  .url("https://dev3-pss-adminportal-ui.dev.medfusion.net/pss-adapter-modulator/24702/category/import")
+//				  .method("POST", body)
+//				  .addHeader("Authorization", "Bearer eyJraWQiOiJJZGVudGl0eUtleSIsImFsZyI6IkhTMjU2In0.eyJhdXRoVXNlcklkIjoibWY6YWQ6dXNlcm5hbWU6bnNoaXJvZGthciIsInByYWN0aWNlSWQiOiIyNDcwMiIsInR5cGUiOiJjb20ubWVkZnVzaW9uLnNzLnBzcy53ZWIucG9qby5QcmFjdGljZUF1dGhVc2VyVG9rZW4iLCJleHAiOiIxNjI5MjkwMTY4In0.mLDo9mBjdT9fFcdUGob1bcbZZ9phn-pYsTvQYoN1Bpc")
+//				  .build();
+		HttpResponse response = client.execute(request);
+		String sResp = EntityUtils.toString(response.getEntity());
+		Log4jUtil.log("Check for http 200/202 response");
+		assertTrue(
+				response.getStatusLine().getStatusCode() == 200 || response.getStatusLine().getStatusCode() == 202,
+				"Get Request response is " + response.getStatusLine().getStatusCode()
+						+ " instead of 200/202. Response message:\n" + sResp);
+		Log4jUtil.log("Response Code" + response.getStatusLine().getStatusCode());
+		
+		Log4jUtil.log(sResp);
+		//writeFile(responseFilePath, sResp);
+
+		return null;
+	}
+	
+	public static void writeFile(String xmlFilePath, String xml) throws IOException {
+		FileWriter out = new FileWriter(xmlFilePath);
+		out.write(xml);
+		if (out != null) {
+			out.close();
+		}
+		IHGUtil.PrintMethodName();
+	}
+			
 	public Response reorderCategorys( String practiceid )throws Exception {
 		Response response = given().spec(requestSpec).log().all().when()
 				.get(practiceid + "/partnerbook").then().log().all().extract().response();
@@ -521,5 +653,28 @@ public class PostAPIRequestAdapterModulator {
 				.get(practiceid + "/partnerbook").then().log().all().extract().response();
 		return response;
 	}
+	
+	public Response getBookBySpecialtyIdAndLevel( String practiceid , String specialtyid)throws Exception {
+		Response response = given().spec(requestSpec).queryParam("specialtyid", specialtyid).queryParam("level", "RS_L1").log().all().when()
+				.get(practiceid + "/bookcareteam").then().log().all().extract().response();
+		return response;
+	}
+	
+	public Response getBookAssociatedToCareTeam( String practiceid , String careteamid)throws Exception {
+		Response response = given().spec(requestSpec).log().all().when()
+				.get(practiceid + "/bookcareteam/"+careteamid).then().log().all().extract().response();
+		return response;	
+	}
 
+	public Response saveCareTeamBook( String practiceid , String b)throws Exception {
+		Response response = given().spec(requestSpec).body(b).log().all().when()
+				.post(practiceid + "/careteambook").then().log().all().extract().response();
+		return response;	
+	}
+	
+	public Response getCareTeamByBookId( String practiceid , String bookid)throws Exception {
+		Response response = given().spec(requestSpec).log().all().when()
+				.get(practiceid + "/careteambook/book/"+bookid).then().log().all().extract().response();
+		return response;	
+	}
 }
