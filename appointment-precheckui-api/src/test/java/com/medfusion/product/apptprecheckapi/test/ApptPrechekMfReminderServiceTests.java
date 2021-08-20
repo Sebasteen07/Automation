@@ -5,10 +5,12 @@ import static org.testng.Assert.assertEquals;
 
 import java.io.IOException;
 
+import org.testng.ITestResult;
+import org.testng.annotations.BeforeMethod;
 import org.testng.annotations.BeforeTest;
 import org.testng.annotations.Test;
 
-import com.intuit.ifs.csscat.core.BaseTestNGWebDriver;
+import com.intuit.ifs.csscat.core.BaseTestNG;
 import com.intuit.ifs.csscat.core.RetryAnalyzer;
 import com.medfusion.common.utils.PropertyFileLoader;
 import com.medfusion.product.appt.precheck.payload.MfReminderServicePayload;
@@ -20,7 +22,7 @@ import com.medfusion.product.object.maps.appt.precheck.util.PostAPIRequestMfRemi
 
 import io.restassured.response.Response;
 
-public class ApptPrechekMfReminderServiceTests extends BaseTestNGWebDriver {
+public class ApptPrechekMfReminderServiceTests extends BaseTestNG {
 	String getaccessToken;
 	public static PropertyFileLoader propertyData;
 	public static MfReminderServicePayload payload;
@@ -352,6 +354,11 @@ public class ApptPrechekMfReminderServiceTests extends BaseTestNGWebDriver {
 				propertyData.getProperty("mf.rem.service.appt.id"));
 		apiVerification.responseTimeValidation(response);
 
+	}
+
+	@BeforeMethod(enabled = true, groups = { "APItest" })
+	public void getMethodName(ITestResult result) throws IOException {
+		log("Method Name-- " + result.getMethod().getMethodName());
 	}
 
 }

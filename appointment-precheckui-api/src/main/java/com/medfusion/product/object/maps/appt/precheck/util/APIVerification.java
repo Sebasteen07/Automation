@@ -104,13 +104,14 @@ public class APIVerification extends BaseTestNGWebDriver {
 				"Could not generate notification due to: , The email address format is invalid");
 	}
 
-	public void verifyUpdateApptAction(Response response) throws IOException {
+	public void verifyUpdateApptAction(Response response, String practiceId, String patientId, String apptId)
+			throws IOException {
 		JsonPath js = new JsonPath(response.asString());
 		log("Validate Practioner Action");
 		assertEquals(js.getString("action"), "ARRIVAL", "Action was incorrect");
-		assertEquals(js.getString("practiceId"), "24333", "Practice id was incorrect");
-		assertEquals(js.getString("pmPatientId"), "27268", "Patient id was incorrect");
-		assertEquals(js.getString("pmAppointmentId"), "8881", "Appointment id was incorrect");
+		assertEquals(js.getString("practiceId"), practiceId, "Practice id was incorrect");
+		assertEquals(js.getString("pmPatientId"), patientId, "Patient id was incorrect");
+		assertEquals(js.getString("pmAppointmentId"), apptId, "Appointment id was incorrect");
 		assertEquals(js.getString("properties.practionerAction"), "CHECKIN", "Practioner Action was empty");
 	}
 
@@ -124,11 +125,11 @@ public class APIVerification extends BaseTestNGWebDriver {
 		assertEquals(jsonPath.get("message"), "Arrival is not confirm by patient");
 	}
 
-	public void verifyRetrievesApptAction(Response response, String practiceId, String pmPatientId,
+	public void verifyRetrievesApptAction(Response response, String action, String practiceId, String pmPatientId,
 			String pmAppointmentId) throws IOException {
 		JSONArray arr = new JSONArray(response.getBody().asString());
 		log("Validate Response");
-		assertEquals(arr.getJSONObject(0).getString("action"), "CONFIRM", "Action was incorrect");
+		assertEquals(arr.getJSONObject(0).getString("action"), action, "Action was incorrect");
 		assertEquals(arr.getJSONObject(0).getString("practiceId"), practiceId, "Practice id was incorrect");
 		assertEquals(arr.getJSONObject(0).getString("pmPatientId"), pmPatientId, "Patient id was incorrect");
 		assertEquals(arr.getJSONObject(0).getString("pmAppointmentId"), pmAppointmentId,
@@ -714,19 +715,19 @@ public class APIVerification extends BaseTestNGWebDriver {
 		JsonPath js = new JsonPath(response.asString());
 		log("Validate PM Integration Setting");
 		assertEquals(js.getString("result.subjectUrn"), "[platform:appointment]", "Subject Urn  was incorrect");
-		assertEquals(js.getString("result.subjectId"), "[24333.27766.158]", "System id was incorrect");
+		assertEquals(js.getString("result.subjectId"), subjectId, "System id was incorrect");
 	}
 
-	public void verifyReturnLogsPostWithInvalidSubjId(Response response) throws IOException {
+	public void verifyReturnLogsPostWithInvalidSubjId(Response response, String subjectId) throws IOException {
 		JsonPath jsonPath = new JsonPath(response.asString());
 		assertEquals(jsonPath.get("message"),
-				"Could not find log for: {subjectUrn: platform:appointment subjectId: 24333.12345.158}");
+				"Could not find log for: {subjectUrn: platform:appointment subjectId: " + subjectId + "}");
 	}
 
-	public void verifyReturnLogsPostWithInvalidSubjUrn(Response response) throws IOException {
+	public void verifyReturnLogsPostWithInvalidSubjUrn(Response response, String subjectId) throws IOException {
 		JsonPath jsonPath = new JsonPath(response.asString());
 		assertEquals(jsonPath.get("message"),
-				"Could not find log for: {subjectUrn: plrfgatform:appointment subjectId: 24333.27766.158}");
+				"Could not find log for: {subjectUrn: plrfgatform:appointment subjectId: " + subjectId + "}");
 	}
 
 	public void verifyReturnLogsPostWithoutSubjId(Response response) throws IOException {
@@ -747,16 +748,16 @@ public class APIVerification extends BaseTestNGWebDriver {
 					+ practiceId + "." + patientId + "." + apptId + "}");
 	}
 
-	public void verifyDeleteLogsWithInvalidSubjId(Response response) throws IOException {
+	public void verifyDeleteLogsWithInvalidSubjId(Response response, String subjectId) throws IOException {
 		JsonPath jsonPath = new JsonPath(response.asString());
 		assertEquals(jsonPath.get("message"),
-				"Could not find log for: {subjectUrn: platform:appointment subjectId: 24333.297761.9826}");
+				"Could not find log for: {subjectUrn: platform:appointment subjectId: " + subjectId + "}");
 	}
 
-	public void verifyDeleteLogsWithInvalidSubjUrn(Response response) throws IOException {
+	public void verifyDeleteLogsWithInvalidSubjUrn(Response response, String subjectId) throws IOException {
 		JsonPath jsonPath = new JsonPath(response.asString());
 		assertEquals(jsonPath.get("message"),
-				"Could not find log for: {subjectUrn: plrfgatform:appointment subjectId: 24333.27761.9826}");
+				"Could not find log for: {subjectUrn: plrfgatform:appointment subjectId: " + subjectId + "}");
 	}
 
 	public void verifyCreateStatus(Response response) throws IOException {

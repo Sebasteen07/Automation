@@ -4,10 +4,12 @@ import static org.testng.Assert.assertEquals;
 
 import java.io.IOException;
 
+import org.testng.ITestResult;
+import org.testng.annotations.BeforeMethod;
 import org.testng.annotations.BeforeTest;
 import org.testng.annotations.Test;
 
-import com.intuit.ifs.csscat.core.BaseTestNGWebDriver;
+import com.intuit.ifs.csscat.core.BaseTestNG;
 import com.intuit.ifs.csscat.core.RetryAnalyzer;
 import com.medfusion.common.utils.PropertyFileLoader;
 import com.medfusion.product.appt.precheck.payload.MfLogoServicePayload;
@@ -19,7 +21,7 @@ import com.medfusion.product.object.maps.appt.precheck.util.PostAPIRequestMfLogo
 
 import io.restassured.response.Response;
 
-public class ApptPrecheckMfLogoServiceTest extends BaseTestNGWebDriver {
+public class ApptPrecheckMfLogoServiceTest extends BaseTestNG {
 	String getaccessToken;
 	public static PropertyFileLoader propertyData;
 	public static MfLogoServicePayload payload;
@@ -174,6 +176,11 @@ public class ApptPrecheckMfLogoServiceTest extends BaseTestNGWebDriver {
 		log("Verifying the response");
 		assertEquals(response.getStatusCode(), 405);
 		apiVerification.responseTimeValidation(response);
+	}
+
+	@BeforeMethod(enabled = true, groups = { "APItest" })
+	public void getMethodName(ITestResult result) throws IOException {
+		log("Method Name-- " + result.getMethod().getMethodName());
 	}
 
 }

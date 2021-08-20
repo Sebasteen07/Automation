@@ -269,7 +269,7 @@ public class JalapenoHomePage extends JalapenoMenu {
 		log("Looking for notification: " + text);
 
 		try {
-			return driver.findElement(By.xpath("//p[contains(text(),'" + text + "')]")).getText().contains(text);
+			return driver.findElement(By.xpath("//p[contains(text(),'" +text+ "')]")).getText().contains(text);
 		} catch (Exception e) {
 			log("Text: '" + text + "' wasn't found on the page.");
 			return false;
