@@ -83,4 +83,13 @@ public class GatewayProxyDigitalWalletResource extends GatewayProxyBaseTest {
 				.then().and().extract().response();
 		return response;
 	}
+
+	public Response createNewWallet(String token, Map<String, Object> digitalWallet) throws Exception {
+		testData = new PropertyFileLoader();
+
+		Response response = given().spec(requestSpec).auth().oauth2(token).body(digitalWallet).when()
+				.post(testData.getProperty("test.pay.customer.uuid") + "/wallets").then().extract().response();
+
+		return response;
+	}
 }

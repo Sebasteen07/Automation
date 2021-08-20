@@ -152,4 +152,18 @@ public class Card {
 		cardMap.put("transactionAmount", transactionAmount);
 		return cardMap;
 	}
+
+		public static Map<String, Object> getCardsListDigitalWalletMap(String cardHolderName, String type,
+																		  String cardNumber, String expirationNumber,
+																		  String cardAlias, String zipCode, boolean primaryCardFlag){
+			Map<String, Object> cardMap = new HashMap<String, Object>();
+			cardMap.put("cardHolderName", cardHolderName);
+			cardMap.put("cardType", type);
+			cardMap.put("cardNumber", cardNumber);
+			cardMap.put("cardExpiryDate", expirationNumber);
+			cardMap.put("cardAlias", cardAlias);
+			cardMap.put("billingAddress", BillToAddress.getBillingAdressMap(zipCode));
+			cardMap.put("primaryCard", primaryCardFlag);
+			return cardMap;
+		}
 }
