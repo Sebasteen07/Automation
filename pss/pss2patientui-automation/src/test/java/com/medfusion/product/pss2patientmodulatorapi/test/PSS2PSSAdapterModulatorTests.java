@@ -983,6 +983,36 @@ public class PSS2PSSAdapterModulatorTests extends BaseTestNG{
 	}
 	
 	@Test(enabled = true, groups = { "APItest" }, retryAnalyzer = RetryAnalyzer.class)
+	public void testCareTeamSaveInvalid() throws NullPointerException, Exception {		
+	
+		Response response=postAPIRequestAM.saveCareTeamWithoutBody(practiceId);		
+		aPIVerification.responseCodeValidation(response, 400);	
+		aPIVerification.responseTimeValidation(response);
+		String message= aPIVerification.responseKeyValidationJson(response, "message");
+		assertTrue(message.contains("Required request body is missing"));
+	}
+	
+	@Test(enabled = true, groups = { "APItest" }, retryAnalyzer = RetryAnalyzer.class)
+	public void testCareTeamGETInvalid() throws NullPointerException, Exception {		
+		
+		Response response=postAPIRequestAM.getCareTeamById(practiceId, "12345");
+		aPIVerification.responseCodeValidation(response, 400);
+		aPIVerification.responseTimeValidation(response);		
+		String message=aPIVerification.responseKeyValidationJson(response, "message");
+		assertTrue(message.contains("No careteam found for id"));	
+	}
+	
+	@Test(enabled = true, groups = { "APItest" }, retryAnalyzer = RetryAnalyzer.class)
+	public void testCareTeamDeleteInvalid() throws NullPointerException, Exception {
+
+		Response response = postAPIRequestAM.deleteCareTeam(practiceId, "1234");
+		aPIVerification.responseCodeValidation(response, 400);
+		aPIVerification.responseTimeValidation(response);
+		String message = aPIVerification.responseKeyValidationJson(response, "message");
+		assertTrue(message.contains("No careteam found for id"));
+	}
+
+	@Test(enabled = true, groups = { "APItest" }, retryAnalyzer = RetryAnalyzer.class)
 	public void testCategoryGET_SAVE_DELETE() throws NullPointerException, Exception {		
 		
 		String b= payloadAM.saveCategory();
@@ -1029,6 +1059,51 @@ public class PSS2PSSAdapterModulatorTests extends BaseTestNG{
 		
 		aPIVerification.responseCodeValidation(deleteResponse, 200);
 		aPIVerification.responseTimeValidation(deleteResponse);
+	}
+	
+	@Test(enabled = true, groups = { "APItest" }, retryAnalyzer = RetryAnalyzer.class)
+	public void testCategorySaveInvalid() throws NullPointerException, Exception {		
+		
+		Response response=postAPIRequestAM.saveCategory(practiceId, "");
+		logStep("Validate SaveCategory Response");
+		aPIVerification.responseCodeValidation(response, 400);	
+		aPIVerification.responseTimeValidation(response);
+		String message= aPIVerification.responseKeyValidationJson(response, "message");
+		assertTrue(message.contains("Required request body is missing"));
+
+	}
+	
+	@Test(enabled = true, groups = { "APItest" }, retryAnalyzer = RetryAnalyzer.class)
+	public void testCategoryGETInvalid() throws NullPointerException, Exception {	
+		
+		Response response= postAPIRequestAM.getcategoryById(practiceId, "22222");
+		logStep("Validate GetCategoryById Response");
+		aPIVerification.responseCodeValidation(response, 400);
+		aPIVerification.responseTimeValidation(response);		
+		String message=aPIVerification.responseKeyValidationJson(response, "message");
+		assertTrue(message.contains("No category found for id"));
+	}
+	
+	@Test(enabled = true, groups = { "APItest" }, retryAnalyzer = RetryAnalyzer.class)
+	public void testCategoryDeleteInvalid() throws NullPointerException, Exception {		
+
+		Response response=postAPIRequestAM.deleteCategory(practiceId, "12345");
+		logStep("Validate DeleteCategory Response");
+		aPIVerification.responseCodeValidation(response, 400);
+		aPIVerification.responseTimeValidation(response);		
+		String message=aPIVerification.responseKeyValidationJson(response, "message");
+		assertTrue(message.contains("No category found for id"));
+	}
+	
+	@Test(enabled = true, groups = { "APItest" }, retryAnalyzer = RetryAnalyzer.class)
+	public void testCategoryExportInvalid() throws NullPointerException, Exception {	
+		
+		Response response= postAPIRequestAM.exportCategory(practiceId, "");
+		logStep("Validate ExportCategory Response");
+		aPIVerification.responseCodeValidation(response, 400);	
+		aPIVerification.responseTimeValidation(response);
+		String message= aPIVerification.responseKeyValidationJson(response, "message");
+		assertTrue(message.contains("Required request body is missing"));
 	}
 		
 	@Test(enabled = true, groups = { "APItest" }, retryAnalyzer = RetryAnalyzer.class)

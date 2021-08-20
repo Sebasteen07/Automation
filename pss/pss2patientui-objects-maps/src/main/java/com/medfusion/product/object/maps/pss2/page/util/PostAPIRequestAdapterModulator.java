@@ -682,6 +682,12 @@ public class PostAPIRequestAdapterModulator {
 		return response;
 	}
 	
+	public Response saveCareTeamWithoutBody( String practiceid)throws Exception {
+		Response response = given().spec(requestSpec).log().all().when()
+				.post(practiceid + "/careteam").then().log().all().extract().response();
+		return response;
+	}
+	
 	public Response getAssociatedCareteam( String practiceid )throws Exception {
 		Response response = given().spec(requestSpec).log().all().when()
 				.get(practiceid + "/associatedcareteam").then().log().all().extract().response();
