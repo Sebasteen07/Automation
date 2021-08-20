@@ -46,9 +46,9 @@ public class PostAPIRequestAptEventcollector extends BaseTestNGWebDriver {
 		return response;
 	}
 	
-	public Response aptPostDailyAggregation(String practiceId,Map<String, String> Header) {
+	public Response aptPostDailyAggregation(String practiceId,Map<String, String> Header, String StartDate, String EndDate) {
 		log("Execute Post  request for daily aggregation resource");
-		Response response = given().when().queryParam("startDate", "2021-06-17T14:35:09.179Z").queryParam("endDate", "2021-06-17T14:35:09.179Z").
+		Response response = given().when().queryParam("startDate", StartDate).queryParam("endDate", StartDate).
 				headers(Header).log().all().when()
 				.post("aggregation/daily").then().log().all()
 				.extract().response();
@@ -77,10 +77,10 @@ public class PostAPIRequestAptEventcollector extends BaseTestNGWebDriver {
 		return response;
 	}
 	
-	public Response aptPostLongtermAggregation(String practiceId,Map<String, String> Header) {
+	public Response aptPostLongtermAggregation(String practiceId,Map<String, String> Header, String datelongTerm) {
 		log("Execute Post  request for daily aggregation resource");
 		Response response = given().when().
-				queryParam("date", "2021-06-18").
+				queryParam("date", datelongTerm).
 				headers(Header).log().all().when()
 				.post("aggregation/longterm").then().log().all()
 				.extract().response();
@@ -96,11 +96,12 @@ public class PostAPIRequestAptEventcollector extends BaseTestNGWebDriver {
 				.extract().response();
 		return response;
 	}
-	public Response aptGETEvent(String practiceId,Map<String, String> Header) {
+	
+	public Response aptGETEvent(String practiceId,Map<String, String> Header, String timeRangeStart, String timeRangeEnd) {
 		log("Execute GET request for event");
 		Response response = given().when().
-				queryParam("timeRangeStart", "2021-07-16T10:02:31.343Z").
-				queryParam("timeRangeEnd", "2021-07-16T10:02:31.343Z").
+				queryParam("timeRangeStart", timeRangeStart).
+				queryParam("timeRangeEnd", timeRangeEnd).
 				headers(Header).log().all().when()
 				.get("event").then().log().all()
 				.extract().response();
@@ -140,11 +141,11 @@ public class PostAPIRequestAptEventcollector extends BaseTestNGWebDriver {
 		return response;
 	}
 
-	public Response aptGETEventType(String practiceId,Map<String, String> Header) {
+	public Response aptGETEventType(String practiceId,Map<String, String> Header, String timeRangeStart, String timeRangeEnd) {
 		log("Execute GET request for event");
 		Response response = given().when().
-				queryParam("timeRangeStart", "2021-06-17T09:45:13.854Z").
-				queryParam("timeRangeEnd", "2021-06-17T09:50:13.854Z").
+				queryParam("timeRangeStart", timeRangeStart).
+				queryParam("timeRangeEnd", timeRangeEnd).
 				headers(Header).log().all().when()
 				.get("event/practiceId/" + practiceId + "/eventType/TEXT_SENT").then().log().all()
 				.extract().response();
@@ -173,11 +174,11 @@ public class PostAPIRequestAptEventcollector extends BaseTestNGWebDriver {
 		return response;
 	}
 	
-	public Response aptGETEventPracticeId(String practiceId,Map<String, String> Header) {
+	public Response aptGETEventPracticeId(String practiceId,Map<String, String> Header,String timeRangeStart, String timeRangeEnd) {
 		log("Execute GET request for event");
 		Response response = given().when().
-				queryParam("timeRangeStart", "2021-07-16T10:02:57Z").
-				queryParam("timeRangeEnd", "2021-07-16T10:02:57Z").
+				queryParam("timeRangeStart", timeRangeStart).
+				queryParam("timeRangeEnd", timeRangeEnd).
 				headers(Header).log().all().when()
 				.get("event/practiceId/" +practiceId).then().log().all()
 				.extract().response();
@@ -195,13 +196,13 @@ public class PostAPIRequestAptEventcollector extends BaseTestNGWebDriver {
 		return response;
 	}
 	
-	public Response aptGETEventId(String practiceId,Map<String, String> Header) {
+	public Response aptGETEventId(String practiceId,Map<String, String> Header, String EventId,String timeRangeStart, String timeRangeEnd) {
 		log("Execute GET request for event");
 		Response response = given().when().
-				queryParam("timeRangeStart", "2021-07-16T10:02:57Z").
-				queryParam("timeRangeEnd", "2021-07-16T10:02:57Z").
+				queryParam("timeRangeStart", timeRangeStart).
+				queryParam("timeRangeEnd", timeRangeEnd).
 				headers(Header).log().all().when()
-				.get("event/practiceId/" +practiceId +"/eventType/APPOINTMENT_SCHEDULED_EVENT/eventId/ab956727-0e2a-4859-92a3-f35cc7c3ada8").then().log().all()
+				.get("event/practiceId/" +practiceId +"/eventType/APPOINTMENT_SCHEDULED_EVENT/eventId/" +EventId).then().log().all()
 				.extract().response();
 		return response;
 	}

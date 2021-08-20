@@ -51,9 +51,9 @@ public class PostAPIRequestAptPrecheck extends BaseTestNGWebDriver {
 		return response;
 	}
 
-	public Response getAppointmentsStartDay(String practiceId, Map<String, String> Header) {
+	public Response getAppointmentsStartDay(String practiceId, Map<String, String> Header,String StartDay) {
 		log("Execute GET request for appointments for a practise for a particular day");
-		Response response = given().when().queryParam("dayStart", "1623820818000").headers(Header).log().all().when()
+		Response response = given().when().queryParam("dayStart", StartDay).headers(Header).log().all().when()
 				.get("practices/" + practiceId + "/appointments").then().log().all().extract().response();
 		return response;
 	}
