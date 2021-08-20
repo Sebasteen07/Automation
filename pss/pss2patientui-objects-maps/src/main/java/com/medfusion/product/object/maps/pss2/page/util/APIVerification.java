@@ -16,7 +16,7 @@ import io.restassured.response.ValidatableResponse;
 public class APIVerification extends BaseTestNGWebDriver {
 
 	public void responseCodeValidation(Response response, int statuscode) {
-		assertEquals(statuscode, response.getStatusCode(), "Status Code doesnt match properly. Test Case failed");
+		assertEquals(response.getStatusCode(),statuscode, "Status Code doesnt match properly. Test Case failed");
 		log("Status Code Validated as " + response.getStatusCode());
 	}
 
@@ -31,13 +31,9 @@ public class APIVerification extends BaseTestNGWebDriver {
 
 	public String responseKeyValidationJson(Response response, String key) {
 		String value = null;
-		try {
 			JsonPath js = new JsonPath(response.asString());
 			log("Validated key-> " + key + " value is-  " + js.getString(key));
 			value = js.getString(key);
-		} catch (Exception e) {
-			log("Test Case Failed-Response not validated");
-		}
 		return value;
 	}
 
@@ -45,9 +41,7 @@ public class APIVerification extends BaseTestNGWebDriver {
 		long time = response.time();
 		log("Response time " + time);
 		ValidatableResponse valRes = response.then();
-		valRes.time(Matchers.lessThan(5000L));
-
-
+		valRes.time(Matchers.lessThan(15000L));
 	}
 
 }

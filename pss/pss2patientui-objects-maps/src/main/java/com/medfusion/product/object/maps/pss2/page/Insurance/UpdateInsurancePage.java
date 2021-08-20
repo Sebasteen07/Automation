@@ -47,7 +47,7 @@ public class UpdateInsurancePage extends PSS2MainPage {
 	@FindBy(how = How.XPATH, using = "//div[contains(@class,'css-1hwfws3')]")
 	private WebElement dropdownInsuranceCar;
 	
-	@FindAll({ @FindBy(how = How.XPATH, using = "//div[@class=\" css-1ub9c6o-option\"]") })
+	@FindAll({ @FindBy(how = How.XPATH, using = "//div[@class=' css-1ub9c6o-option']") })
 	private List<WebElement> insuranceCarrierDropDownList;
 
 	public UpdateInsurancePage(WebDriver driver) {
@@ -86,11 +86,12 @@ public class UpdateInsurancePage extends PSS2MainPage {
 		IHGUtil.waitForElement(driver, 5, dropdownInsuranceCar);
 		commonMethods.highlightElement(dropdownInsuranceCar);
 		selectArrow.click();
+		IHGUtil.waitForElement(driver, 5, insuranceCarrierDropDownList.get(0));
 		insuranceCarrierList = insuranceCarrierDropDownList;
 		log("Save all the reschedule reason in rescheduleReasonlist ");
 		if (insuranceCarrierList.size() > 0) {
 			int length = insuranceCarrierList.size();
-			log("There " + length + " number of reschedule reason ");
+			log("There " + length + " number of Insurance reason ");
 			for (WebElement a : insuranceCarrierList) {
 				log(" Insurance Carrier - "+a.getText());
 			}

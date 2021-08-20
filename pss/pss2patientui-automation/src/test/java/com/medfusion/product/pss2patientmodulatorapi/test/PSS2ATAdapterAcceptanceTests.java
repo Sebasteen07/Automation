@@ -272,7 +272,7 @@ public class PSS2ATAdapterAcceptanceTests extends BaseTestNGWebDriver {
 	public void testMatchpatientInvalidPOST() throws NullPointerException, Exception {
 
 		String c = payloadAT.matchPatientInvalidPayload();
-		Response responseInvalid = postAPIRequestat.matchPatient(propertyData.getProperty("practice.id.at"), c);
+		Response responseInvalid = postAPIRequestat.matchPatientInvalid(propertyData.getProperty("practice.id.at"), c);
 		validateAT.verifyMatchPatientInvalidResponse(responseInvalid);
 	}
 	
