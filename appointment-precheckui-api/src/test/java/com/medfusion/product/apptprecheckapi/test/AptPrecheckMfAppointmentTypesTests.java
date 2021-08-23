@@ -69,6 +69,7 @@ public class AptPrecheckMfAppointmentTypesTests extends BaseTestNG {
 		log("Verifying the response");
 		assertEquals(response.getStatusCode(), 400);
 		apiVerification.verifyIncorrectUuid(response);
+		apiVerification.responseTimeValidation(response);
 	}
 
 	@Test(enabled = true, groups = { "APItest" }, retryAnalyzer = RetryAnalyzer.class)
@@ -117,7 +118,7 @@ public class AptPrecheckMfAppointmentTypesTests extends BaseTestNG {
 	@Test(enabled = true, groups = { "APItest" }, retryAnalyzer = RetryAnalyzer.class)
 	public void testPutApptTypesUuid() throws IOException {
 		Response response = postAPIRequest.aptPutUpdateAppointmentTypesUuid(
-				propertyData.getProperty("mf.appointment.Type.uuid"),
+				propertyData.getProperty("mf.appointment.Type.uuid.update"),
 				payload.updateApptTypesUuidPayload(propertyData.getProperty("mf.appointment.Type.Id"),
 						propertyData.getProperty("mf.app.type.integration.id"),
 						propertyData.getProperty("mf.apt.scheduler.practice.id")),

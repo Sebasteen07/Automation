@@ -21,7 +21,6 @@ import com.medfusion.product.object.maps.appt.precheck.util.PostAPIRequestMfAppo
 
 import io.restassured.response.Response;
 
-
 public class AptPrecheckMfAppointmentSchedulerTests extends BaseTestNG {
 	String getaccessToken;
 	public static PropertyFileLoader propertyData;
@@ -44,8 +43,7 @@ public class AptPrecheckMfAppointmentSchedulerTests extends BaseTestNG {
 		postAPIRequest.setupRequestSpecBuilder(propertyData.getProperty("baseurl.mf.appointment.scheduler"));
 		log("BASE URL-" + propertyData.getProperty("baseurl.mf.appointment.scheduler"));
 	}
-	
-	
+
 	@Test(enabled = true, groups = { "APItest" }, retryAnalyzer = RetryAnalyzer.class)
 	public void testGETAppointmentsAppId() throws IOException {
 		Response response = postAPIRequest.getAppointmentAptId(propertyData.getProperty("mf.apt.scheduler.practice.id"),
@@ -55,20 +53,21 @@ public class AptPrecheckMfAppointmentSchedulerTests extends BaseTestNG {
 		assertEquals(response.getStatusCode(), 200);
 		apiVerification.responseTimeValidation(response);
 	}
-	
+
 	@Test(enabled = true, groups = { "APItest" }, retryAnalyzer = RetryAnalyzer.class)
 	public void testDELETEAppointment() throws IOException {
 
-		Response response = postAPIRequest.getDELETETAppointment(propertyData.getProperty("mf.apt.scheduler.delete.practice.id"),
-				headerConfig.HeaderwithToken(getaccessToken), propertyData.getProperty("mf.apt.scheduler.delete.patient.id"),
+		Response response = postAPIRequest.getDELETETAppointment(
+				propertyData.getProperty("mf.apt.scheduler.delete.practice.id"),
+				headerConfig.HeaderwithToken(getaccessToken),
+				propertyData.getProperty("mf.apt.scheduler.delete.patient.id"),
 				propertyData.getProperty("mf.apt.scheduler.delete.appt.id"));
 		log("Verifying the response");
 
 		if (response.getStatusCode() == 200) {
 			log("Delete appointment action");
 			assertEquals(response.getStatusCode(), 200);
-			apiVerification.verifyDeleteApmt(response,
-					propertyData.getProperty("mf.apt.scheduler.delete.practice.id"),
+			apiVerification.verifyDeleteApmt(response, propertyData.getProperty("mf.apt.scheduler.delete.practice.id"),
 					propertyData.getProperty("mf.apt.scheduler.delete.patient.id"),
 					propertyData.getProperty("mf.apt.scheduler.delete.appt.id"));
 		}
@@ -80,7 +79,7 @@ public class AptPrecheckMfAppointmentSchedulerTests extends BaseTestNG {
 		apiVerification.responseTimeValidation(response);
 
 	}
-	
+
 	@Test(enabled = true, groups = { "APItest" }, retryAnalyzer = RetryAnalyzer.class)
 	public void testPutAppointment() throws IOException {
 		Response response = postAPIRequest.aptPutAppointment(propertyData.getProperty("mf.apt.scheduler.practice.id"),
@@ -90,13 +89,20 @@ public class AptPrecheckMfAppointmentSchedulerTests extends BaseTestNG {
 
 		log("Payload- " + payload.putAppointmentPayload());
 		log("Verify response");
-		assertEquals(response.getStatusCode(), 200);
-		apiVerification.verifyPutAppt(response, propertyData.getProperty("mf.apt.scheduler.practice.id"),
-				propertyData.getProperty("mf.apt.scheduler.put.patient.id"),
-				propertyData.getProperty("mf.apt.scheduler.put.appt.id"));
+
+		if (response.getStatusCode() == 200) {
+			assertEquals(response.getStatusCode(), 200);
+			apiVerification.verifyPutAppt(response, propertyData.getProperty("mf.apt.scheduler.practice.id"),
+					propertyData.getProperty("mf.apt.scheduler.put.patient.id"),
+					propertyData.getProperty("mf.apt.scheduler.put.appt.id"));
+		}
+		if (response.getStatusCode() == 400) {
+			assertEquals(response.getStatusCode(), 400);
+			apiVerification.verifyPutAppointmentPastTime(response);
+		}
 		apiVerification.responseTimeValidation(response);
 	}
-	
+
 	@Test(enabled = true, groups = { "APItest" }, retryAnalyzer = RetryAnalyzer.class)
 	public void testPutAppointmentPastTime() throws IOException {
 		Response response = postAPIRequest.aptPutAppointment(propertyData.getProperty("mf.apt.scheduler.practice.id"),

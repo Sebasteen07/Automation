@@ -47,7 +47,7 @@ public class AptPrecheckTests extends BaseTestNG {
 	@Test(enabled = true, groups = { "APItest" }, retryAnalyzer = RetryAnalyzer.class)
 	public void testGETAppointments() throws IOException {
 		Response response = postAPIRequest.getAppointments(propertyData.getProperty("apt.precheck.practice.id"),
-				headerConfig.HeaderwithToken(getaccessToken), propertyData.getProperty("apt.precheck.patient.id"));
+				headerConfig.HeaderwithToken(getaccessToken), propertyData.getProperty("apt.precheck.patient.id.new"));
 
 		log("Verifying the response");
 		assertEquals(response.getStatusCode(), 200);
@@ -57,7 +57,7 @@ public class AptPrecheckTests extends BaseTestNG {
 	@Test(enabled = true, groups = { "APItest" }, retryAnalyzer = RetryAnalyzer.class)
 	public void testGETAppointmentsAppId() throws IOException {
 		Response response = postAPIRequest.getAppointmentsAppId(propertyData.getProperty("apt.precheck.practice.id"),
-				headerConfig.HeaderwithToken(getaccessToken), propertyData.getProperty("apt.precheck.patient.id"),
+				headerConfig.HeaderwithToken(getaccessToken), propertyData.getProperty("apt.precheck.patient.id.new"),
 				propertyData.getProperty("apt.precheck.pm.appmnt.id"));
 		log("Verifying the response");
 		assertEquals(response.getStatusCode(), 200);
@@ -67,7 +67,8 @@ public class AptPrecheckTests extends BaseTestNG {
 	@Test(enabled = true, groups = { "APItest" }, retryAnalyzer = RetryAnalyzer.class)
 	public void testGETAppointmentsStartDay() throws IOException {
 		Response response = postAPIRequest.getAppointmentsStartDay(propertyData.getProperty("apt.precheck.practice.id"),
-				headerConfig.HeaderwithToken(getaccessToken));
+				headerConfig.HeaderwithToken(getaccessToken),
+				propertyData.getProperty("apt.precheck.appts.start.day"));
 		log("Verifying the response");
 		assertEquals(response.getStatusCode(), 200);
 		apiVerification.responseTimeValidation(response);
@@ -144,7 +145,7 @@ public class AptPrecheckTests extends BaseTestNG {
 	@Test(enabled = true, groups = { "APItest" }, retryAnalyzer = RetryAnalyzer.class)
 	public void testGETFormInformation() throws IOException {
 		Response response = postAPIRequest.getFormInformation(propertyData.getProperty("apt.precheck.practice.id"),
-				headerConfig.HeaderwithToken(getaccessToken), propertyData.getProperty("apt.precheck.patient.id"),
+				headerConfig.HeaderwithToken(getaccessToken), propertyData.getProperty("apt.precheck.patient.id.new"),
 				propertyData.getProperty("apt.precheck.pm.appmnt.id"));
 		log("Verifying the response");
 		assertEquals(response.getStatusCode(), 200);
@@ -229,7 +230,7 @@ public class AptPrecheckTests extends BaseTestNG {
 	public void testGETPatientsIdentification() throws IOException {
 		Response response = postAPIRequest.getPatientsIdentification(
 				propertyData.getProperty("apt.precheck.practice.id"), headerConfig.HeaderwithToken(getaccessToken),
-				propertyData.getProperty("apt.precheck.patient.id"),
+				propertyData.getProperty("apt.precheck.patient.id.new"),
 				propertyData.getProperty("apt.precheck.pm.appmnt.id"));
 		log("Verifying the response");
 		assertEquals(response.getStatusCode(), 200);
@@ -343,7 +344,7 @@ public class AptPrecheckTests extends BaseTestNG {
 	@Test(enabled = true, groups = { "APItest" }, retryAnalyzer = RetryAnalyzer.class)
 	public void testGETRequiredForms() throws IOException {
 		Response response = postAPIRequest.getRequiredForms(propertyData.getProperty("apt.precheck.practice.id"),
-				headerConfig.HeaderwithToken(getaccessToken), propertyData.getProperty("apt.precheck.patient.id"),
+				headerConfig.HeaderwithToken(getaccessToken), propertyData.getProperty("apt.precheck.patient.id.new"),
 				propertyData.getProperty("apt.precheck.pm.appmnt.id"));
 		log("Verifying the response");
 		assertEquals(response.getStatusCode(), 200);
