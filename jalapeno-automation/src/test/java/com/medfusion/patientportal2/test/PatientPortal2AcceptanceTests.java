@@ -722,7 +722,7 @@ public class PatientPortal2AcceptanceTests extends BaseTestNGWebDriver {
 		loginPage = homePage.clickOnLogout();
 
 		logStep("Try to create the same patient in different practice");
-		loginPage = new JalapenoLoginPage(driver, testData.getPractice2Url());
+		loginPage = new JalapenoLoginPage(driver, testData.getProperty("practice.url2"));
 
 		PatientDemographicPage patientDemographicPage = loginPage.clickCreateANewAccountButton();
 
