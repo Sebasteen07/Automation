@@ -1,6 +1,8 @@
 // Copyright 2020 NXGN Management, LLC. All Rights Reserved.
 package com.medfusion.product.pss2patientmodulatorapi.test;
 
+import static org.testng.Assert.assertEquals;
+
 import java.io.IOException;
 
 import org.testng.annotations.BeforeTest;
@@ -36,6 +38,7 @@ public class PSS2NGAdapterAcceptanceTests extends BaseTestNGWebDriver {
 
 		postAPIRequest.availableSlots(PayloadNG.nextAvailable_Payload(propertyData.getProperty("patient.id.ng")),
 				propertyData.getProperty("practice.id.ng"));
+		
 	}
 
 	@Test(enabled = true, groups = { "APItest" }, retryAnalyzer = RetryAnalyzer.class)

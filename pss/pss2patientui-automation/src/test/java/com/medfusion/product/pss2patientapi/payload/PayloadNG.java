@@ -138,7 +138,7 @@ public class PayloadNG {
 				+ "    \"resourceId\": \"F49641D6-CDF1-4264-B5A5-7489F7E58F8D\",\r\n"
 				+ "    \"startDate\": \"03/03/2021 00:49:32\",\r\n"
 				+ "    \"slotSize\": \"15\",\r\n"
-				+ "    \"patientId\": \"null\",\r\n"
+				+ "    \"patientId\": null,\r\n"
 				+ "    \"reservedForSameDay\": false,\r\n"
 				+ "    \"apptTypeAllocated\": true,\r\n"
 				+ "    \"nextAvailability\": false,\r\n"
