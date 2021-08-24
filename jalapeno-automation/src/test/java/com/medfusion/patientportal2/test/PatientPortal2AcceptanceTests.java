@@ -4562,6 +4562,10 @@ public class PatientPortal2AcceptanceTests extends BaseTestNGWebDriver {
 
 		logStep("Looking for Medication approval from doctor in Inbox");
 		assertTrue(messagesPage.isMessageDisplayed(driver, "RxRenewalSubject"));
+		
+		logStep("Going to MyAccount page and unlink dependent");
+		homePage.unlinkDependentAccount();
+		assertTrue(homePage.wasUnlinkSuccessful());
        }
 	
     @Test(enabled = true, groups = { "acceptance-linkedaccounts" }, retryAnalyzer = RetryAnalyzer.class)
@@ -4629,7 +4633,7 @@ public class PatientPortal2AcceptanceTests extends BaseTestNGWebDriver {
 		logStep("Finishing of patient activation: step 1 - verifying identity");
 		PatientVerificationPage patientVerificationPage = new PatientVerificationPage(driver, patientUrl);
 		SecurityDetailsPage accountDetailsPage = patientVerificationPage.fillPatientInfoAndContinue(
-				testData.getProperty("zip.code"), testData.getProperty("dob.month"), testData.getProperty("dob.day"), testData.getProperty("dob.year"));
+				testData.getZipCode(), testData.getDOBMonth(), testData.getDOBDay(), testData.getDOBYear());
 
 		logStep("Finishing of patient activation: step 2 - filling patient data");
 		JalapenoHomePage jalapenoHomePage = accountDetailsPage.fillAccountDetailsAndContinue(patientLogin,

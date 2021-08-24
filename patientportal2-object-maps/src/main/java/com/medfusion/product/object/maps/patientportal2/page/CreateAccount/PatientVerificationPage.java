@@ -71,6 +71,7 @@ public class PatientVerificationPage extends MedfusionPage {
 				IHGUtil.PrintMethodName();
 
 				log("Fill inputs with ZIP: " + zipCode + " and DOB: " + month + "/" + day + "/" + year);
+				IHGUtil.waitForElement(driver, 60, zipCodeInput);
 				zipCodeInput.sendKeys(zipCode);
 				Thread.sleep(1000);
 		
