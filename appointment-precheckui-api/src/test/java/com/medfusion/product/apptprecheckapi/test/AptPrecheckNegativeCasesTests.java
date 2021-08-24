@@ -298,6 +298,109 @@ public class AptPrecheckNegativeCasesTests extends BaseTestNG {
 		apiVerification.responseTimeValidation(response);
 		apiVerification.verifyPatientIdentificationIncorrectdata(response);
 	}
+	@Test(enabled = true, groups = { "APItest" }, retryAnalyzer = RetryAnalyzer.class)
+	public void testPOSTPracticeIdIncorrect() throws IOException {
+
+		Response response = postAPIRequest.aptPostPracticeId(
+				propertyData.getProperty("apt.precheck.incorrect.practice.id"),
+				payload.getPracticeIdIncorrectPayload(
+						propertyData.getProperty("apt.precheck.practice.appt.date.range.start"),
+						propertyData.getProperty("apt.precheck.practice.appt.date.range.end")),
+				headerConfig.HeaderwithToken(getaccessToken));
+
+		log("Payload- " + payload.getPracticeIdIncorrectPayload(
+				propertyData.getProperty("apt.precheck.practice.appt.date.range.start"),
+				propertyData.getProperty("apt.precheck.practice.appt.date.range.end")));
+		log("Verifying the response");
+		assertEquals(response.getStatusCode(), 200);
+		apiVerification.responseTimeValidation(response);
+	}
+
+	@Test(enabled = true, groups = { "APItest" }, retryAnalyzer = RetryAnalyzer.class)
+	public void testPOSTPracticeIdIncorrectDate() throws IOException {
+
+		Response response = postAPIRequest.aptPostPracticeId(propertyData.getProperty("apt.precheck.practice.id"),
+				payload.getPracticeIdIncorrectPayload(
+						propertyData.getProperty("apt.precheck.practice.appt.date.range.start"),
+						propertyData.getProperty("apt.precheck.practice.appt.incorrect.date.range.end")),
+				headerConfig.HeaderwithToken(getaccessToken));
+
+		log("Payload- " + payload.getPracticeIdIncorrectPayload(
+				propertyData.getProperty("apt.precheck.practice.appt.date.range.start"),
+				propertyData.getProperty("apt.precheck.practice.appt.incorrect.date.range.end")));
+		log("Verifying the response");
+		assertEquals(response.getStatusCode(), 500);
+		apiVerification.responseTimeValidation(response);
+	}
+
+	@Test(enabled = true, groups = { "APItest" }, retryAnalyzer = RetryAnalyzer.class)
+	public void testPOSTPracticeIdIncorrectData() throws IOException {
+
+		Response response = postAPIRequest.aptPostPracticeId(propertyData.getProperty("apt.precheck.practice.id"),
+				payload.getPracticeIdIncorrecDatatPayload(
+						propertyData.getProperty("apt.precheck.practice.appt.date.range.start"),
+						propertyData.getProperty("apt.precheck.practice.appt.date.range.end")),
+				headerConfig.HeaderwithToken(getaccessToken));
+
+		log("Payload- " + payload.getPracticeIdIncorrectPayload(
+				propertyData.getProperty("apt.precheck.practice.appt.date.range.start"),
+				propertyData.getProperty("apt.precheck.practice.appt.incorrect.date.range.end")));
+		log("Verifying the response");
+		assertEquals(response.getStatusCode(), 400);
+		apiVerification.responseTimeValidation(response);
+	}
+
+	@Test(enabled = true, groups = { "APItest" }, retryAnalyzer = RetryAnalyzer.class)
+	public void testPOSTHistoryMessageIncorrect() throws IOException {
+
+		Response response = postAPIRequest.aptPostHistoryMessageIncorrectData(
+				propertyData.getProperty("apt.precheck.practice.id"), payload.getHistoryMessageIncorrect(),
+				headerConfig.HeaderwithToken(getaccessToken),
+				propertyData.getProperty("apt.precheck.historymessage.patient.id"),
+				propertyData.getProperty("apt.precheck.historymessage.appmnt.id"));
+
+		log("Payload- " + payload.getHistoryMessageIncorrect());
+		log("Verifying the response");
+		log("Post history message");
+		assertEquals(response.getStatusCode(), 400);
+
+		apiVerification.responseTimeValidation(response);
+	}
+
+	@Test(enabled = true, groups = { "APItest" }, retryAnalyzer = RetryAnalyzer.class)
+	public void testPOSTMessageHistoryIncorrectMedium() throws IOException {
+
+		Response response = postAPIRequest.aptMessageHistoryIncorectMedium(
+				propertyData.getProperty("apt.precheck.practice.id"), payload.getMessageHistoryPayload(),
+				headerConfig.HeaderwithToken(getaccessToken),
+				propertyData.getProperty("apt.precheck.messagehistory.patient.id"),
+				propertyData.getProperty("apt.precheck.messagehistory.appmnt.id"));
+
+		log("Payload- " + payload.getMessageHistoryPayload());
+		log("Verifying the response");
+		log("Post message history");
+		assertEquals(response.getStatusCode(), 400);
+		apiVerification.verifyMsgHistoryIncorrectMedium(response);
+		apiVerification.responseTimeValidation(response);
+	}
+
+	@Test(enabled = true, groups = { "APItest" }, retryAnalyzer = RetryAnalyzer.class)
+	public void testPOSTMessageHistoryIncorrectType() throws IOException {
+
+		Response response = postAPIRequest.aptMessageHistoryIncorectType(
+				propertyData.getProperty("apt.precheck.practice.id"), payload.getMessageHistoryPayload(),
+				headerConfig.HeaderwithToken(getaccessToken),
+				propertyData.getProperty("apt.precheck.messagehistory.patient.id"),
+				propertyData.getProperty("apt.precheck.messagehistory.appmnt.id"));
+
+		log("Payload- " + payload.getMessageHistoryPayload());
+		log("Verifying the response");
+		log("Post message history");
+		assertEquals(response.getStatusCode(), 400);
+		apiVerification.verifyMsgHistoryIncorrectType(response);
+		apiVerification.responseTimeValidation(response);
+	}
+
 
 	@BeforeMethod(enabled = true, groups = { "APItest" })
 	public void getMethodName(ITestResult result) throws IOException {

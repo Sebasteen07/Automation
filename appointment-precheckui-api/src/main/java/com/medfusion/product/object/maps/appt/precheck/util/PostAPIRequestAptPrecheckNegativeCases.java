@@ -160,5 +160,45 @@ public class PostAPIRequestAptPrecheckNegativeCases extends BaseTestNGWebDriver 
 		log("form info:" + responseforminfo);
 		return responseforminfo;
 	}
+	public Response aptPostPracticeId(String practiceId, String payload, Map<String, String> Header) {
+		log("Execute Post  request for practices/practiseId");
+		Response response = given().when().headers(Header).body(payload).log().all().when()
+				.post("practices/" + practiceId).then().log().all().extract().response();
+		return response;
+	}
+	
+	public Response aptPostHistoryMessageIncorrectData(String practiceId, String payload, Map<String, String> Header,
+			String PatientId, String Appointmentid) {
+		log("Execute Post  request for history message for patient");
+		Response response = given()
+				.when().headers(Header).body(payload).log().all().when().post("practices/" + practiceId + "/patients/"
+						+ PatientId + "/appointments/" + Appointmentid + "/historymessage")
+				.then().log().all().extract().response();
+		return response;
+	}
+	
+	public Response aptMessageHistoryIncorectMedium(String practiceId, String payload, Map<String, String> Header, String PatientId,
+			String Appointmentid) {
+		log("Execute Post  request for CHECKIN, BROADCAST message history for patient");
+		Response response = given().when().headers(Header).body(payload).log().all().when()
+				.queryParam("startDate", "2021-06-17T14:35:09.179Z").queryParam("medium", "fcghb")
+				.queryParam("type", "BROADCAST").post("practices/" + practiceId + "/patients/" + PatientId
+						+ "/appointments/" + Appointmentid + "/messagehistory")
+				.then().log().all().extract().response();
+
+		return response;
+	}
+	
+	public Response aptMessageHistoryIncorectType(String practiceId, String payload, Map<String, String> Header, String PatientId,
+			String Appointmentid) {
+		log("Execute Post  request for CHECKIN, BROADCAST message history for patient");
+		Response response = given().when().headers(Header).body(payload).log().all().when()
+				.queryParam("startDate", "2021-06-17T14:35:09.179Z").queryParam("medium", "EMAIL")
+				.queryParam("type", "cgg").post("practices/" + practiceId + "/patients/" + PatientId
+						+ "/appointments/" + Appointmentid + "/messagehistory")
+				.then().log().all().extract().response();
+
+		return response;
+	}
 
 }
