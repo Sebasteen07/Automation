@@ -63,7 +63,7 @@ public class PSS2PSSAdapterModulatorTests extends BaseTestNG{
 	public void testvalidatePracticeGET() throws NullPointerException, Exception {
 		
 		logStep("Verifying the response");
-		Response response =postAPIRequestAM.validatePractice(practiceId);
+		Response response =postAPIRequestAM.validatePractice(practiceId, "validatepractice");
 		aPIVerification.responseCodeValidation(response, 200);
 	}
 	
@@ -71,15 +71,15 @@ public class PSS2PSSAdapterModulatorTests extends BaseTestNG{
 	public void testvalidatePracticeInvalidGET() throws NullPointerException, Exception {
 		
 		logStep("Verifying the response for Validate Practice Invalid");
-		Response response =postAPIRequestAM.validatePracticeInvalid(practiceId);
-		aPIVerification.responseCodeValidation(response, 200);
+		Response response =postAPIRequestAM.validatePractice(practiceId, "/validatepracticee");
+		aPIVerification.responseCodeValidation(response, 404);
 	}
 	
 	@Test(enabled = true, groups = { "APItest" }, retryAnalyzer = RetryAnalyzer.class)
 	public void testAnnouncement_Fetch_Save_Delete() throws NullPointerException, Exception {
 		
 		logStep("Verifying the response");
-		Response response=postAPIRequestAM.getAnnouncement(practiceId);
+		Response response=postAPIRequestAM.getAnnouncement(practiceId,"/announcement");
 		aPIVerification.responseCodeValidation(response, 200);
 		
 		JSONArray arr = new JSONArray(response.body().asString());
@@ -105,7 +105,7 @@ public class PSS2PSSAdapterModulatorTests extends BaseTestNG{
 	public void testAnnouncementGetInvalid() throws NullPointerException, Exception {
 		
 		logStep("Verifying the response");
-		Response response=postAPIRequestAM.getAnnouncementInvalid(practiceId);
+		Response response=postAPIRequestAM.getAnnouncement(practiceId, "/announcementt");
 		aPIVerification.responseCodeValidation(response, 404);			
 	}
 	
@@ -113,7 +113,7 @@ public class PSS2PSSAdapterModulatorTests extends BaseTestNG{
 	public void testAnnouncementSaveInvalid() throws NullPointerException, Exception {
 		
 		logStep("Verifying the response");
-		Response response=postAPIRequestAM.saveAnnouncementWithoutBody(practiceId);
+		Response response=postAPIRequestAM.saveAnnouncement(practiceId,"");
 		aPIVerification.responseCodeValidation(response, 400);	
 		String message= aPIVerification.responseKeyValidationJson(response, "message");
 		assertTrue(message.contains("Required request body is missing"));
@@ -123,7 +123,7 @@ public class PSS2PSSAdapterModulatorTests extends BaseTestNG{
 	public void testAnnouncementDeleteInvalid() throws NullPointerException, Exception {
 		
 		logStep("Verifying the response");
-		Response responseDeleteAnn=postAPIRequestAM.deleteAnnouncementInvalidAnnId(practiceId, 4999);
+		Response responseDeleteAnn=postAPIRequestAM.deleteAnnouncement(practiceId, 4999);
 		aPIVerification.responseCodeValidation(responseDeleteAnn, 500);
 		String message= aPIVerification.responseKeyValidationJson(responseDeleteAnn, "message");
 		assertTrue(message.contains("No value present"));
@@ -132,7 +132,7 @@ public class PSS2PSSAdapterModulatorTests extends BaseTestNG{
 	@Test(enabled = true, groups = { "APItest" }, retryAnalyzer = RetryAnalyzer.class)
 	public void testAnnouncementUpdate() throws NullPointerException, Exception {
 		
-		Response response=postAPIRequestAM.getAnnouncement(practiceId);
+		Response response=postAPIRequestAM.getAnnouncement(practiceId,"/announcement");
 		aPIVerification.responseCodeValidation(response, 200);
 		
 		JSONArray arr = new JSONArray(response.body().asString());
@@ -150,13 +150,13 @@ public class PSS2PSSAdapterModulatorTests extends BaseTestNG{
 		Response responseSaveAnn=postAPIRequestAM.updateAnnouncement(practiceId, b);
 		aPIVerification.responseCodeValidation(responseSaveAnn, 200);
 		
-		response=postAPIRequestAM.getAnnouncement(practiceId);
+		response=postAPIRequestAM.getAnnouncement(practiceId, "/announcement");
 	}
 	
 	@Test(enabled = true, groups = { "APItest" }, retryAnalyzer = RetryAnalyzer.class)
 	public void testAnnouncementUpdateInvalid() throws NullPointerException, Exception {
 
-		Response response=postAPIRequestAM.updateAnnouncementWithoutBody(practiceId);
+		Response response=postAPIRequestAM.updateAnnouncement(practiceId,"");
 		aPIVerification.responseCodeValidation(response, 400);	
 		String message= aPIVerification.responseKeyValidationJson(response, "message");
 		assertTrue(message.contains("Required request body is missing"));
@@ -166,7 +166,7 @@ public class PSS2PSSAdapterModulatorTests extends BaseTestNG{
 	public void testAnnouncementByCode() throws NullPointerException, Exception {
 		
 		logStep("Verifying the response");
-		Response response=postAPIRequestAM.getAnnouncementByCode(practiceId);
+		Response response=postAPIRequestAM.getAnnouncementByCode(practiceId, "AG");
 		aPIVerification.responseCodeValidation(response, 200);
 		
 		String type= aPIVerification.responseKeyValidationJson(response, "type");
@@ -180,7 +180,7 @@ public class PSS2PSSAdapterModulatorTests extends BaseTestNG{
 	public void testAnnouncementByCodeInvalid() throws NullPointerException, Exception {
 		
 		logStep("Verifying the response");
-		Response response=postAPIRequestAM.getAnnouncementByInvalidCode(practiceId);
+		Response response=postAPIRequestAM.getAnnouncementByCode(practiceId, "ZZZ");
 		aPIVerification.responseCodeValidation(response, 400);	
 		String message= aPIVerification.responseKeyValidationJson(response, "message");
 		assertTrue(message.contains("Invalid announcement type"));
@@ -200,7 +200,7 @@ public class PSS2PSSAdapterModulatorTests extends BaseTestNG{
 	public void testSaveApptTypeWithoutApptId() throws NullPointerException, Exception {
 		
 		String b=payloadAM.saveApptTypeWithoutIdPayload();
-		Response response =postAPIRequestAM.saveAppointmenttypeInvalid(practiceId,b);	
+		Response response =postAPIRequestAM.saveAppointmenttype(practiceId,b);	
 		
 		aPIVerification.responseCodeValidation(response, 400);
 		String message = aPIVerification.responseKeyValidationJson(response, "message");
@@ -223,7 +223,7 @@ public class PSS2PSSAdapterModulatorTests extends BaseTestNG{
 	public void testUpdateApptTypeWithoutApptId() throws NullPointerException, Exception {
 
 		String b=payloadAM.saveApptTypeWithoutIdPayload();
-		Response response =postAPIRequestAM.updateAppointmenttypeInvalid(practiceId,b);
+		Response response =postAPIRequestAM.updateAppointmenttype(practiceId,b);
 		
 		aPIVerification.responseCodeValidation(response, 400);
 		String message = aPIVerification.responseKeyValidationJson(response, "message");
@@ -277,7 +277,7 @@ public class PSS2PSSAdapterModulatorTests extends BaseTestNG{
 	@Test(enabled = true, groups = { "APItest" }, retryAnalyzer = RetryAnalyzer.class)
 	public void testreorderAppointmentTypeInvalid() throws NullPointerException, Exception {
 
-		Response response=postAPIRequestAM.reorderAppointmentTypeWithoutBody(practiceId);
+		Response response=postAPIRequestAM.reorderAppointmentType(practiceId,"");
 		aPIVerification.responseCodeValidation(response, 400);
 		log("Body- "+response.getBody().asString());
 	}
@@ -291,7 +291,7 @@ public class PSS2PSSAdapterModulatorTests extends BaseTestNG{
 		log("Body- "+response.getBody().asString());
 		assertEquals(response.getBody().asString(), "true");
 		
-		Response deleteResponse=postAPIRequestAM.deleteBookLocation(practiceId);
+		Response deleteResponse=postAPIRequestAM.deleteBookLocation(practiceId,propertyData.getProperty("booklocation.delete.id.am"));
 		aPIVerification.responseCodeValidation(deleteResponse, 200);
 		log("Body- "+deleteResponse.getBody().asString());
 		assertEquals(deleteResponse.getBody().asString(), "true");
@@ -300,7 +300,7 @@ public class PSS2PSSAdapterModulatorTests extends BaseTestNG{
 	@Test(enabled = true, groups = { "APItest" }, retryAnalyzer = RetryAnalyzer.class)
 	public void testBookLocationSaveInvalid() throws NullPointerException, Exception {
 
-		Response response=postAPIRequestAM.saveBookAppointmentTypeInvalid(practiceId);
+		Response response=postAPIRequestAM.saveBookAppointmentType(practiceId,"");
 		aPIVerification.responseCodeValidation(response, 400);	
 		String message= aPIVerification.responseKeyValidationJson(response, "message");
 		assertTrue(message.contains("Required request body is missing"));
@@ -309,7 +309,7 @@ public class PSS2PSSAdapterModulatorTests extends BaseTestNG{
 	@Test(enabled = true, groups = { "APItest" }, retryAnalyzer = RetryAnalyzer.class)
 	public void testBookLocationDeleteInvalid() throws NullPointerException, Exception {
 	
-		Response response=postAPIRequestAM.deleteBookLocationInvalid(practiceId);
+		Response response=postAPIRequestAM.deleteBookLocation(practiceId,"40610");
 		aPIVerification.responseCodeValidation(response, 400);	
 		String message= aPIVerification.responseKeyValidationJson(response, "message");
 		assertTrue(message.contains("No location found for locationid"));
@@ -354,10 +354,12 @@ public class PSS2PSSAdapterModulatorTests extends BaseTestNG{
 	
 	@Test(enabled = true, groups = { "APItest" }, retryAnalyzer = RetryAnalyzer.class)
 	public void testBookAppointmenttypeGETInvalid() throws NullPointerException, Exception {
+		
+		String apptIdActual=propertyData.getProperty("bookappointmenttype.apptid.am");
 
 		logStep("Verify the GET call -testBookappointmenttypeGET");
 		
-		Response response=postAPIRequestAM.bookAppointmentTypeGETInvalidBookId(practiceId);
+		Response response=postAPIRequestAM.bookAppointmentTypeGET(practiceId,"12345", apptIdActual);
 	
 		aPIVerification.responseCodeValidation(response, 400);
 		aPIVerification.responseTimeValidation(response);
@@ -368,10 +370,14 @@ public class PSS2PSSAdapterModulatorTests extends BaseTestNG{
 	
 	@Test(enabled = true, groups = { "APItest" }, retryAnalyzer = RetryAnalyzer.class)
 	public void testBookAppointmenttypeGETInvalidApptId() throws NullPointerException, Exception {
+		
+		
+		String bookIdActual=propertyData.getProperty("bookappointmenttype.bookid.am");
+			
 
 		logStep("Verify the GET call -testBookappointmenttypeGET");
 		
-		Response response=postAPIRequestAM.bookAppointmentTypeGETInvalidApptId(practiceId);
+		Response response=postAPIRequestAM.bookAppointmentTypeGET(practiceId,bookIdActual, "12345");
 	
 		aPIVerification.responseCodeValidation(response, 400);
 		aPIVerification.responseTimeValidation(response);
@@ -383,7 +389,7 @@ public class PSS2PSSAdapterModulatorTests extends BaseTestNG{
 	@Test(enabled = true, groups = { "APItest" }, retryAnalyzer = RetryAnalyzer.class)
 	public void testBookAppointmenttypeSaveInvalid() throws NullPointerException, Exception {
 
-		Response saveResponse=postAPIRequestAM.bookAppointmentTypeSaveInvalid(practiceId);
+		Response saveResponse=postAPIRequestAM.bookAppointmentTypeSave(practiceId,"");
 		aPIVerification.responseCodeValidation(saveResponse, 400);
 		aPIVerification.responseTimeValidation(saveResponse);
 		String message= aPIVerification.responseKeyValidationJson(saveResponse, "message");
@@ -395,7 +401,7 @@ public class PSS2PSSAdapterModulatorTests extends BaseTestNG{
 		
 		log("Verify the Delete call -BookappointmenttypeDelete");
 		
-		Response response=postAPIRequestAM.bookAppointmentTypeDeleteInvalid(practiceId );
+		Response response=postAPIRequestAM.bookAppointmentTypeDelete(practiceId, "206501", "200033");
 		
 		aPIVerification.responseCodeValidation(response, 400);
 		aPIVerification.responseTimeValidation(response);
@@ -497,7 +503,7 @@ public class PSS2PSSAdapterModulatorTests extends BaseTestNG{
 	@Test(enabled = true, groups = { "APItest" }, retryAnalyzer = RetryAnalyzer.class)
 	public void test05BookLocationSaveWithoutBody() throws NullPointerException, Exception {
 
-		Response response=postAPIRequestAM.bookLocationSaveWithoutBody(practiceId);
+		Response response=postAPIRequestAM.bookLocationSave(practiceId,"");
 		aPIVerification.responseCodeValidation(response, 400);	
 		String message= aPIVerification.responseKeyValidationJson(response, "message");
 		assertTrue(message.contains("Required request body is missing"));
@@ -517,7 +523,7 @@ public class PSS2PSSAdapterModulatorTests extends BaseTestNG{
 	@Test(enabled = true, groups = { "APItest" }, retryAnalyzer = RetryAnalyzer.class)
 	public void test06BookLocationGETInvalid() throws NullPointerException, Exception {		
 
-		Response response=postAPIRequestAM.bookLocationGETInvalid(practiceId);
+		Response response=postAPIRequestAM.bookLocationGET(practiceId,"12345");
 		aPIVerification.responseCodeValidation(response, 400);
 		aPIVerification.responseTimeValidation(response);
 	}
@@ -538,7 +544,7 @@ public class PSS2PSSAdapterModulatorTests extends BaseTestNG{
 	public void test07BookLocationDeleteInvalid() throws NullPointerException, Exception {		
 		
 		String bookid=propertyData.getProperty("booklocation.bookid.am");
-		Response response=postAPIRequestAM.bookLocationDeleteInvalid(practiceId, bookid);		
+		Response response=postAPIRequestAM.bookLocationDelete(practiceId, bookid,"12345");		
 		aPIVerification.responseCodeValidation(response, 400);	
 		String message= aPIVerification.responseKeyValidationJson(response, "message");
 		assertTrue(message.contains("No location found for locationid"));
@@ -547,16 +553,14 @@ public class PSS2PSSAdapterModulatorTests extends BaseTestNG{
 	@Test(enabled = true, groups = { "APItest" }, retryAnalyzer = RetryAnalyzer.class)
 	public void test08BooksFromDBGET() throws NullPointerException, Exception {		
 
-		Response response =postAPIRequestAM.getBooksFromDB(practiceId);
+		Response response =postAPIRequestAM.getBooksFromDB(practiceId,"/associatedbook");
 		aPIVerification.responseCodeValidation(response, 200);
-		log("Body- "+response.getBody().asString());
-		assertEquals(response.getBody().asString(), "true");
 	}
 	
 	@Test(enabled = true, groups = { "APItest" }, retryAnalyzer = RetryAnalyzer.class)
 	public void test08BooksFromDBGETInvalid() throws NullPointerException, Exception {		
 
-		Response response =postAPIRequestAM.getBooksFromDBInvalid(practiceId);
+		Response response =postAPIRequestAM.getBooksFromDB(practiceId,"/associatedbookk");
 		aPIVerification.responseCodeValidation(response, 404);
 	}
 	
@@ -574,7 +578,7 @@ public class PSS2PSSAdapterModulatorTests extends BaseTestNG{
 	@Test(enabled = true, groups = { "APItest" }, retryAnalyzer = RetryAnalyzer.class)
 	public void test09BookSaveWithoutBody() throws NullPointerException, Exception {			
 
-		Response response=postAPIRequestAM.saveBookWithoutBody(practiceId);
+		Response response=postAPIRequestAM.saveBook(practiceId,"");
 		aPIVerification.responseCodeValidation(response, 400);	
 		String message= aPIVerification.responseKeyValidationJson(response, "message");
 		assertTrue(message.contains("Required request body is missing"));
@@ -592,7 +596,7 @@ public class PSS2PSSAdapterModulatorTests extends BaseTestNG{
 	@Test(enabled = true, groups = { "APItest" }, retryAnalyzer = RetryAnalyzer.class)
 	public void test10BookImageInvalid() throws NullPointerException, Exception {		
 		
-		Response response=postAPIRequestAM.getBookImageInvalid(practiceId, "12345");
+		Response response=postAPIRequestAM.getBookImage(practiceId, "12345");
 		aPIVerification.responseCodeValidation(response, 400);
 		aPIVerification.responseTimeValidation(response);
 		
@@ -612,7 +616,7 @@ public class PSS2PSSAdapterModulatorTests extends BaseTestNG{
 	@Test(enabled = true, groups = { "APItest" }, retryAnalyzer = RetryAnalyzer.class)
 	public void test11BookByIdInvalid() throws NullPointerException, Exception {		
 
-		Response response=postAPIRequestAM.getBookByIdInvalid(practiceId);
+		Response response=postAPIRequestAM.getBookById(practiceId,"12345");
 		aPIVerification.responseCodeValidation(response, 400);
 		aPIVerification.responseTimeValidation(response);		
 		String message=aPIVerification.responseKeyValidationJson(response, "message");
@@ -632,7 +636,7 @@ public class PSS2PSSAdapterModulatorTests extends BaseTestNG{
 	@Test(enabled = true, groups = { "APItest" }, retryAnalyzer = RetryAnalyzer.class)
 	public void test12BookReorderWithoutBody() throws NullPointerException, Exception {		
 		
-		Response response=postAPIRequestAM.reorderBookWithoutBody(practiceId);
+		Response response=postAPIRequestAM.reorderBook(practiceId,"");
 		aPIVerification.responseCodeValidation(response, 400);	
 		aPIVerification.responseTimeValidation(response);
 		String message= aPIVerification.responseKeyValidationJson(response, "message");
@@ -642,14 +646,14 @@ public class PSS2PSSAdapterModulatorTests extends BaseTestNG{
 	@Test(enabled = true, groups = { "APItest" }, retryAnalyzer = RetryAnalyzer.class)
 	public void testBooksFromPartnerGET() throws NullPointerException, Exception {		
 
-		Response response=postAPIRequestAM.getBooksFromPartner(practiceId);
+		Response response=postAPIRequestAM.getBooksFromPartner(practiceId, "/partnerbook");
 		aPIVerification.responseCodeValidation(response, 200);
 	}
 	
 	@Test(enabled = true, groups = { "APItest" }, retryAnalyzer = RetryAnalyzer.class)
 	public void testBooksFromPartnerGETInvalid() throws NullPointerException, Exception {		
 
-		Response response=postAPIRequestAM.getBooksFromPartnerInvalid(practiceId);
+		Response response=postAPIRequestAM.getBooksFromPartner(practiceId, "/partnerbookkk");
 		aPIVerification.responseCodeValidation(response, 404);
 		aPIVerification.responseTimeValidation(response);
 	}
@@ -657,7 +661,7 @@ public class PSS2PSSAdapterModulatorTests extends BaseTestNG{
 	@Test(enabled = true, groups = { "APItest" }, retryAnalyzer = RetryAnalyzer.class)
 	public void testBooksGET() throws NullPointerException, Exception {		
 
-		Response response=postAPIRequestAM.practiceBook(practiceId);
+		Response response=postAPIRequestAM.practiceBook(practiceId,"/practicebook");
 		aPIVerification.responseCodeValidation(response, 200);
 		aPIVerification.responseTimeValidation(response);
 	}
@@ -665,14 +669,14 @@ public class PSS2PSSAdapterModulatorTests extends BaseTestNG{
 	@Test(enabled = true, groups = { "APItest" }, retryAnalyzer = RetryAnalyzer.class)
 	public void testBooksGETInvalid() throws NullPointerException, Exception {		
 
-		Response response=postAPIRequestAM.practiceBookInvalid(practiceId);
+		Response response=postAPIRequestAM.practiceBook(practiceId,"/practicebookk");
 		aPIVerification.responseCodeValidation(response, 404);
 		aPIVerification.responseTimeValidation(response);
 	}
 	
 	@Test(enabled = true, groups = { "APItest" }, retryAnalyzer = RetryAnalyzer.class)
 	public void testGetBookLevel() throws NullPointerException, Exception {		
-		Response response=postAPIRequestAM.getBookLevel(practiceId);
+		Response response=postAPIRequestAM.getBookLevel(practiceId,"RESOURCE_LEVEL");
 		aPIVerification.responseCodeValidation(response, 200);
 		aPIVerification.responseTimeValidation(response);
 		aPIVerification.responseKeyValidation(response, "name");
@@ -680,7 +684,7 @@ public class PSS2PSSAdapterModulatorTests extends BaseTestNG{
 	
 	@Test(enabled = true, groups = { "APItest" }, retryAnalyzer = RetryAnalyzer.class)
 	public void testGetCancelLevel() throws NullPointerException, Exception {		
-		Response response=postAPIRequestAM.getCancelLevel(practiceId);
+		Response response=postAPIRequestAM.getBookLevel(practiceId,"CANCEL_REASON");
 		aPIVerification.responseCodeValidation(response, 200);
 		aPIVerification.responseTimeValidation(response);
 		aPIVerification.responseKeyValidation(response, "name");
@@ -688,7 +692,7 @@ public class PSS2PSSAdapterModulatorTests extends BaseTestNG{
 		
 	@Test(enabled = true, groups = { "APItest" }, retryAnalyzer = RetryAnalyzer.class)
 	public void testGetBookLevelInvalid() throws NullPointerException, Exception {		
-		Response response=postAPIRequestAM.getBookLevelInvalid(practiceId);
+		Response response=postAPIRequestAM.getBookLevel(practiceId,"abcd");
 		aPIVerification.responseCodeValidation(response, 204);
 		aPIVerification.responseTimeValidation(response);		
 	}
@@ -696,7 +700,7 @@ public class PSS2PSSAdapterModulatorTests extends BaseTestNG{
 	@Test(enabled = true, groups = { "APItest" }, retryAnalyzer = RetryAnalyzer.class)
 	public void testGetCancelReasonLevel() throws NullPointerException, Exception {		
 			
-		Response response= postAPIRequestAM.getCancelLevel(practiceId);
+		Response response= postAPIRequestAM.getBookLevel(practiceId,"CANCEL_REASON");
 		aPIVerification.responseCodeValidation(response, 200);
 		aPIVerification.responseTimeValidation(response);
 	}
@@ -704,7 +708,7 @@ public class PSS2PSSAdapterModulatorTests extends BaseTestNG{
 	@Test(enabled = true, groups = { "APItest" }, retryAnalyzer = RetryAnalyzer.class)
 	public void test13CancellationReasonGET() throws NullPointerException, Exception {		
 
-		Response response=postAPIRequestAM.getPracticeCancellationReason(practiceId);
+		Response response=postAPIRequestAM.getPracticeCancellationReason(practiceId,"/practicecancellationreason");
 		aPIVerification.responseCodeValidation(response, 200);
 		aPIVerification.responseTimeValidation(response);
 	}
@@ -712,7 +716,7 @@ public class PSS2PSSAdapterModulatorTests extends BaseTestNG{
 	@Test(enabled = true, groups = { "APItest" }, retryAnalyzer = RetryAnalyzer.class)
 	public void test13CancellationReasonGETInvalid() throws NullPointerException, Exception {		
 
-		Response response=postAPIRequestAM.getPracticeCancellationReasonInvalid(practiceId);
+		Response response=postAPIRequestAM.getPracticeCancellationReason(practiceId,"/practicecancellationreasonnn");
 		aPIVerification.responseCodeValidation(response, 404);
 		aPIVerification.responseTimeValidation(response);
 	}
@@ -730,7 +734,7 @@ public class PSS2PSSAdapterModulatorTests extends BaseTestNG{
 	@Test(enabled = true, groups = { "APItest" }, retryAnalyzer = RetryAnalyzer.class)
 	public void test14CancellationReasonSaveInvalid() throws NullPointerException, Exception {		
 
-		Response response=postAPIRequestAM.saveCancellationReasonInvalid(practiceId);
+		Response response=postAPIRequestAM.saveCancellationReason(practiceId,"");
 		aPIVerification.responseCodeValidation(response, 400);	
 		aPIVerification.responseTimeValidation(response);
 		String message= aPIVerification.responseKeyValidationJson(response, "message");
@@ -749,7 +753,7 @@ public class PSS2PSSAdapterModulatorTests extends BaseTestNG{
 	@Test(enabled = true, groups = { "APItest" }, retryAnalyzer = RetryAnalyzer.class)
 	public void test15CancellationReasonReorderInvalid() throws NullPointerException, Exception {		
 
-		Response response=postAPIRequestAM.reorderCancellationReasonInvalid(practiceId);
+		Response response=postAPIRequestAM.reorderCancellationReason(practiceId,"");
 		aPIVerification.responseCodeValidation(response, 400);	
 		aPIVerification.responseTimeValidation(response);
 		String message= aPIVerification.responseKeyValidationJson(response, "message");
@@ -768,7 +772,7 @@ public class PSS2PSSAdapterModulatorTests extends BaseTestNG{
 	@Test(enabled = true, groups = { "APItest" }, retryAnalyzer = RetryAnalyzer.class)
 	public void test16CancellationReasonDeleteInvalid() throws NullPointerException, Exception {		
 
-		Response response=postAPIRequestAM.deleteCancellationReasonInvalid(practiceId);
+		Response response=postAPIRequestAM.deleteCancellationReason(practiceId,"1222");
 		aPIVerification.responseCodeValidation(response, 400);
 		aPIVerification.responseTimeValidation(response);		
 		String message=aPIVerification.responseKeyValidationJson(response, "message");
@@ -778,7 +782,7 @@ public class PSS2PSSAdapterModulatorTests extends BaseTestNG{
 	@Test(enabled = true, groups = { "APItest" }, retryAnalyzer = RetryAnalyzer.class)
 	public void test17CancellationReasonPractice() throws NullPointerException, Exception {		
 
-		Response response=postAPIRequestAM.getPracticeCancellationReason(practiceId);
+		Response response=postAPIRequestAM.getPracticeCancellationReason(practiceId,"/practicecancellationreason");
 		aPIVerification.responseCodeValidation(response, 200);
 		aPIVerification.responseTimeValidation(response);
 	}
@@ -786,7 +790,7 @@ public class PSS2PSSAdapterModulatorTests extends BaseTestNG{
 	@Test(enabled = true, groups = { "APItest" }, retryAnalyzer = RetryAnalyzer.class)
 	public void test17CancellationReasonPracticeInvalid() throws NullPointerException, Exception {		
 
-		Response response=postAPIRequestAM.getPracticeCancellationReasonInvalid(practiceId);
+		Response response=postAPIRequestAM.getPracticeCancellationReason(practiceId,"/practicecancellationreason");
 		aPIVerification.responseCodeValidation(response, 404);
 		aPIVerification.responseTimeValidation(response);
 	}
@@ -804,7 +808,7 @@ public class PSS2PSSAdapterModulatorTests extends BaseTestNG{
 	@Test(enabled = true, groups = { "APItest" }, retryAnalyzer = RetryAnalyzer.class)
 	public void test18CancellationReasonByIdInvalid() throws NullPointerException, Exception {		
 	
-		Response response=postAPIRequestAM.getCancellationReasonByIdInvalid(practiceId);
+		Response response=postAPIRequestAM.getCancellationReasonById(practiceId,"1222");
 		aPIVerification.responseCodeValidation(response, 400);
 		aPIVerification.responseTimeValidation(response);
 	}
@@ -814,7 +818,7 @@ public class PSS2PSSAdapterModulatorTests extends BaseTestNG{
 		
 		String specialtyid=propertyData.getProperty("specialty.id.am");
 		
-		Response response=postAPIRequestAM.getBookBySpecialtyIdAndLevel(practiceId, specialtyid);
+		Response response=postAPIRequestAM.getBookBySpecialtyIdAndLevel(practiceId, specialtyid,"RS_L1");
 		aPIVerification.responseCodeValidation(response, 200);
 		aPIVerification.responseTimeValidation(response);
 	}
@@ -823,7 +827,7 @@ public class PSS2PSSAdapterModulatorTests extends BaseTestNG{
 	public void test19BookBySpecialtyIdAndLevelGETInvalid() throws NullPointerException, Exception {		
 		
 		String specialtyid=propertyData.getProperty("specialty.id.am");		
-		Response response=postAPIRequestAM.getBookBySpecialtyIdAndLevelInvalid(practiceId, specialtyid);
+		Response response=postAPIRequestAM.getBookBySpecialtyIdAndLevel(practiceId, specialtyid,"RS_L10");
 		aPIVerification.responseCodeValidation(response, 204);
 		aPIVerification.responseTimeValidation(response);
 	}
