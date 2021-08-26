@@ -224,7 +224,7 @@ public class ApptPrecheckDataTest extends BaseTestNG {
 		log("An appointment action already exists");
 		assertEquals(response.getStatusCode(), 404);
 		apiVerification.responseTimeValidation(response);
-		apiVerification.verifyWithoutApptId(response);
+
 	}
 
 	@Test(enabled = true, groups = { "APItest" }, retryAnalyzer = RetryAnalyzer.class)
@@ -315,7 +315,6 @@ public class ApptPrecheckDataTest extends BaseTestNG {
 		log("Verifying the response");
 		assertEquals(response.getStatusCode(), 404);
 		apiVerification.responseTimeValidation(response);
-		apiVerification.verifyWithoutApptId(response);
 	}
 
 	@Test(enabled = true, groups = { "APItest" }, retryAnalyzer = RetryAnalyzer.class)
@@ -405,7 +404,6 @@ public class ApptPrecheckDataTest extends BaseTestNG {
 		log("Verifying the response");
 		assertEquals(response.getStatusCode(), 404);
 		apiVerification.responseTimeValidation(response);
-		apiVerification.verifyWithoutApptId(response);
 	}
 
 	@Test(enabled = true, groups = { "APItest" }, retryAnalyzer = RetryAnalyzer.class)
@@ -430,8 +428,6 @@ public class ApptPrecheckDataTest extends BaseTestNG {
 		log("Verifying the response");
 		assertEquals(response.getStatusCode(), 404);
 		apiVerification.responseTimeValidation(response);
-		apiVerification.verifyWithoutPracticeId(response);
-
 	}
 
 	@Test(enabled = true, groups = { "APItest" }, retryAnalyzer = RetryAnalyzer.class)
@@ -467,7 +463,6 @@ public class ApptPrecheckDataTest extends BaseTestNG {
 		log("Verifying the response");
 		assertEquals(response.getStatusCode(), 404);
 		apiVerification.responseTimeValidation(response);
-		apiVerification.verifyWithoutApptId(response);
 
 	}
 
@@ -479,8 +474,6 @@ public class ApptPrecheckDataTest extends BaseTestNG {
 		log("Verifying the response");
 		assertEquals(response.getStatusCode(), 404);
 		apiVerification.responseTimeValidation(response);
-		apiVerification.verifyWithoutPracticeId(response);
-
 	}
 
 	@Test(enabled = true, groups = { "APItest" }, retryAnalyzer = RetryAnalyzer.class)
@@ -654,7 +647,6 @@ public class ApptPrecheckDataTest extends BaseTestNG {
 		log("Verifying the response");
 		assertEquals(response.getStatusCode(), 404);
 		apiVerification.responseTimeValidation(response);
-		apiVerification.verifyWithoutApptId(response);
 	}
 
 	@Test(enabled = true, groups = { "APItest" }, retryAnalyzer = RetryAnalyzer.class)
@@ -665,7 +657,6 @@ public class ApptPrecheckDataTest extends BaseTestNG {
 		log("Verifying the response");
 		assertEquals(response.getStatusCode(), 404);
 		apiVerification.responseTimeValidation(response);
-		apiVerification.verifyWithoutPatientId(response);
 	}
 
 	@Test(enabled = true, groups = { "APItest" }, retryAnalyzer = RetryAnalyzer.class)
@@ -725,7 +716,6 @@ public class ApptPrecheckDataTest extends BaseTestNG {
 		log("Verifying the response");
 		assertEquals(response.getStatusCode(), 404);
 		apiVerification.responseTimeValidation(response);
-		apiVerification.verifyWithoutPatientId(response);
 	}
 
 	@Test(enabled = true, groups = { "APItest" }, retryAnalyzer = RetryAnalyzer.class)
@@ -735,7 +725,6 @@ public class ApptPrecheckDataTest extends BaseTestNG {
 		log("Verifying the response");
 		assertEquals(response.getStatusCode(), 404);
 		apiVerification.responseTimeValidation(response);
-		apiVerification.verifyWithoutPracticeId(response);
 	}
 
 	@Test(enabled = true, groups = { "APItest" }, retryAnalyzer = RetryAnalyzer.class)
@@ -758,7 +747,6 @@ public class ApptPrecheckDataTest extends BaseTestNG {
 		log("Verifying the response");
 		assertEquals(response.getStatusCode(), 404);
 		apiVerification.responseTimeValidation(response);
-		apiVerification.verifyWithoutApptId(response);
 	}
 
 	@Test(enabled = true, groups = { "APItest" }, retryAnalyzer = RetryAnalyzer.class)
@@ -769,7 +757,6 @@ public class ApptPrecheckDataTest extends BaseTestNG {
 		log("Verifying the response");
 		assertEquals(response.getStatusCode(), 404);
 		apiVerification.responseTimeValidation(response);
-		apiVerification.verifyWithoutPracticeId(response);
 	}
 
 	@Test(enabled = true, groups = { "APItest" }, retryAnalyzer = RetryAnalyzer.class)
@@ -922,7 +909,6 @@ public class ApptPrecheckDataTest extends BaseTestNG {
 		log("Verifying the response");
 		assertEquals(response.getStatusCode(), 405);
 		apiVerification.responseTimeValidation(response);
-		apiVerification.verifyFormWithoutApptId(response);
 	}
 
 	@Test(enabled = true, groups = { "APItest" }, retryAnalyzer = RetryAnalyzer.class)
@@ -936,7 +922,6 @@ public class ApptPrecheckDataTest extends BaseTestNG {
 		log("Verifying the response");
 		assertEquals(response.getStatusCode(), 404);
 		apiVerification.responseTimeValidation(response);
-		apiVerification.verifyWithoutPracticeId(response);
 	}
 
 	@Test(enabled = true, groups = { "APItest" }, retryAnalyzer = RetryAnalyzer.class)
@@ -1006,7 +991,7 @@ public class ApptPrecheckDataTest extends BaseTestNG {
 		log("Verifying the response");
 		assertEquals(response.getStatusCode(), 404);
 		apiVerification.responseTimeValidation(response);
-		apiVerification.verifyWithoutPatientId(response);
+
 	}
 
 	@Test(enabled = true, groups = { "APItest" }, retryAnalyzer = RetryAnalyzer.class)
@@ -1018,7 +1003,6 @@ public class ApptPrecheckDataTest extends BaseTestNG {
 		log("Verifying the response");
 		assertEquals(response.getStatusCode(), 405);
 		apiVerification.responseTimeValidation(response);
-		apiVerification.verifyApptIdWithoutApptId(response);
 	}
 
 	@Test(enabled = true, groups = { "APItest" }, retryAnalyzer = RetryAnalyzer.class)
@@ -1040,7 +1024,6 @@ public class ApptPrecheckDataTest extends BaseTestNG {
 		log("Verifying the response");
 		assertEquals(response.getStatusCode(), 404);
 		apiVerification.responseTimeValidation(response);
-		apiVerification.verifyWithoutPatientId(response);
 	}
 
 	@Test(enabled = true, groups = { "APItest" }, retryAnalyzer = RetryAnalyzer.class)
@@ -1051,7 +1034,6 @@ public class ApptPrecheckDataTest extends BaseTestNG {
 		log("Verifying the response");
 		assertEquals(response.getStatusCode(), 405);
 		apiVerification.responseTimeValidation(response);
-		apiVerification.verifyDeleteInsuranceWithoutApptId(response);
 	}
 
 	@Test(enabled = true, groups = { "APItest" }, retryAnalyzer = RetryAnalyzer.class)
@@ -1073,7 +1055,6 @@ public class ApptPrecheckDataTest extends BaseTestNG {
 		log("Verifying the response");
 		assertEquals(response.getStatusCode(), 404);
 		apiVerification.responseTimeValidation(response);
-		apiVerification.verifyWithoutApptId(response);
 	}
 
 	@Test(enabled = true, groups = { "APItest" }, retryAnalyzer = RetryAnalyzer.class)
@@ -1094,7 +1075,7 @@ public class ApptPrecheckDataTest extends BaseTestNG {
 		log("Verifying the response");
 		assertEquals(response.getStatusCode(), 404);
 		apiVerification.responseTimeValidation(response);
-		apiVerification.verifyReturnInsuranceImageWithoutFileName(response);
+
 	}
 
 	@Test(enabled = true, groups = { "APItest" }, retryAnalyzer = RetryAnalyzer.class)
@@ -1122,7 +1103,6 @@ public class ApptPrecheckDataTest extends BaseTestNG {
 		log("Verifying the response");
 		assertEquals(response.getStatusCode(), 404);
 		apiVerification.responseTimeValidation(response);
-		apiVerification.verifySaveInsuranceImageWithoutFileName(response);
 	}
 
 	@BeforeMethod(enabled = true, groups = { "APItest" })
