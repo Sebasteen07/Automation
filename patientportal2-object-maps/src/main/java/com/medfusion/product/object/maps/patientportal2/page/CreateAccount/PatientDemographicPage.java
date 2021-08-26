@@ -247,8 +247,8 @@ public class PatientDemographicPage extends MedfusionPage {
 	private void setAddressStateSpecific(String address1, String address2, String city, String state, String zipCode)
 			throws InterruptedException, IOException {
 		PropertyFileLoader testData = new PropertyFileLoader();
-		String State2 = testData.getProperty("State2");
-		String State1 = testData.getProperty("State1");
+		String State2 = testData.getProperty("state2");
+		String State1 = testData.getProperty("state1");
 		updateWebElement(inputAddress1, address1);
 		updateWebElement(inputAddress2, address2);
 		updateWebElement(inputCity, city);

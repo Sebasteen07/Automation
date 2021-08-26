@@ -210,4 +210,44 @@ public class AptPrecheckNegativeCasesPayload {
 		return postAppointment;
 }
 	
+	public String getPracticeIdIncorrectPayload(String appDateRangeStart, String appDateRangeEnd) {
+		String PracticeId=" {\r\n"
+				+ "    \"applyFilters\": true,\r\n"
+				+ "    \"applyStatusMappings\": true,\r\n"
+				+ "    \"pageSize\": 50,\r\n"
+				+ "    \"pageNumber\": 1,\r\n"
+				+ "  \"appointmentDateRangeStart\": \""+appDateRangeStart+"\",\r\n"
+				+ "  \"appointmentDateRangeEnd\": \""+appDateRangeEnd+"\"\r\n"
+				+ "}";
+		return PracticeId;
+	}
+	
+	public String getPracticeIdIncorrecDatatPayload(String appDateRangeStart, String appDateRangeEnd) {
+		String PracticeId=" {\r\n"
+				+ "    \"applyFilters\": true,\r\n"
+				+ "    \"applyStatusMappings\": true,\r\n"
+				+ "    \"pageSize\": 50,\r\n"
+				+ "    \"pageNumber\": --1,\r\n"
+				+ "  \"appointmentDateRangeStart\": \""+appDateRangeStart+"\",\r\n"
+				+ "  \"appointmentDateRangeEnd\": \""+appDateRangeEnd+"\"\r\n"
+				+ "}";
+		return PracticeId;
+	}
+	
+	public String getHistoryMessageIncorrect() {
+		String historymessage=" {\r\n"
+				+ "	\"latitude\": ,\r\n"
+				+ "	\"longitude\": 0,\r\n"
+				+ "	\"timezoneId\": \"America/New_York\",\r\n"
+				+ "	\"timezoneName\": null\r\n"
+				+ "}";
+		return historymessage;
+}
+	public String getMessageHistoryPayload() {
+		String historymessage=" {\r\n"
+				+ "	\"timezoneId\": \"America/New_York\",\r\n"
+				+ "	\"timezoneName\": null\r\n"
+				+ "}";
+		return historymessage;
+}
 }

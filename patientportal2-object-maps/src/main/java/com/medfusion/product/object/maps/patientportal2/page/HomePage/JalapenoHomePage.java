@@ -269,7 +269,7 @@ public class JalapenoHomePage extends JalapenoMenu {
 		log("Looking for notification: " + text);
 
 		try {
-			return driver.findElement(By.xpath("//p[contains(text(),'" + text + "')]")).getText().contains(text);
+			return driver.findElement(By.xpath("//p[contains(text(),'" +text+ "')]")).getText().contains(text);
 		} catch (Exception e) {
 			log("Text: '" + text + "' wasn't found on the page.");
 			return false;
@@ -352,6 +352,7 @@ public class JalapenoHomePage extends JalapenoMenu {
 
 	public JalapenoAskAStaffV2Page1 openSpecificAskaPaidV2(String askaName) throws InterruptedException {
 		IHGUtil.PrintMethodName();
+		wait.until(ExpectedConditions.visibilityOf(askAQuestion));
 		askAQuestion.click();
 		System.out.println("It clicked on the ASK a question in homepage");
 		try {

@@ -4,10 +4,12 @@ import static org.testng.Assert.assertEquals;
 
 import java.io.IOException;
 
+import org.testng.ITestResult;
+import org.testng.annotations.BeforeMethod;
 import org.testng.annotations.BeforeTest;
 import org.testng.annotations.Test;
 
-import com.intuit.ifs.csscat.core.BaseTestNGWebDriver;
+import com.intuit.ifs.csscat.core.BaseTestNG;
 import com.intuit.ifs.csscat.core.RetryAnalyzer;
 import com.medfusion.common.utils.PropertyFileLoader;
 import com.medfusion.product.appt.precheck.payload.AptPrecheckDataPayload;
@@ -20,7 +22,7 @@ import com.medfusion.product.object.maps.appt.precheck.util.PostAPIRequestAptPre
 
 import io.restassured.response.Response;
 
-public class ApptPrecheckDataTest extends BaseTestNGWebDriver {
+public class ApptPrecheckDataTest extends BaseTestNG {
 	String getaccessToken;
 	public static PropertyFileLoader propertyData;
 	public static AptPrecheckDataPayload payload;
@@ -30,7 +32,6 @@ public class ApptPrecheckDataTest extends BaseTestNGWebDriver {
 	public static Appointment testData;
 	APIVerification apiVerification = new APIVerification();
 	long timestamp = System.currentTimeMillis();
-
 	@BeforeTest(enabled = true, groups = { "APItest" })
 	public void setUp() throws IOException {
 		propertyData = new PropertyFileLoader();
@@ -55,7 +56,10 @@ public class ApptPrecheckDataTest extends BaseTestNGWebDriver {
 		log("Verifying the response");
 		assertEquals(response.getStatusCode(), 200);
 		apiVerification.responseTimeValidation(response);
-		apiVerification.verifyUpdateApptAction(response);
+		apiVerification.verifyUpdateApptAction(response, propertyData.getProperty("apt.precheck.data.practice.id"),
+				propertyData.getProperty("apt.precheck.data.patient.id"),
+				propertyData.getProperty("apt.precheck.data.appt.id"));
+		apiVerification.responseTimeValidation(response);
 
 	}
 
@@ -99,7 +103,8 @@ public class ApptPrecheckDataTest extends BaseTestNGWebDriver {
 		log("Verifying the response");
 		assertEquals(response.getStatusCode(), 200);
 		apiVerification.responseTimeValidation(response);
-		apiVerification.verifyRetrievesApptAction(response, propertyData.getProperty("retrieves.practice.id"),
+		apiVerification.verifyRetrievesApptAction(response, propertyData.getProperty("retrieves.appt.action"),
+				propertyData.getProperty("retrieves.practice.id"),
 				propertyData.getProperty("retrieves.patient.id"), propertyData.getProperty("retrieves.appt.id"));
 
 	}
@@ -148,7 +153,7 @@ public class ApptPrecheckDataTest extends BaseTestNGWebDriver {
 					propertyData.getProperty("apt.precheck.data.practice.id"),
 					propertyData.getProperty("saves.patient.id"), propertyData.getProperty("saves.appt.id"));
 		}
-		if (response.getStatusCode() == 400) {
+		else {
 			log("An appointment action already exists");
 			assertEquals(response.getStatusCode(), 400);
 			apiVerification.verifyApptActionIfAlreadyExist(response);
@@ -175,7 +180,7 @@ public class ApptPrecheckDataTest extends BaseTestNGWebDriver {
 					propertyData.getProperty("apt.precheck.data.practice.id"),
 					propertyData.getProperty("saves.patient.id"), propertyData.getProperty("saves.appt.id"));
 		}
-		if (response.getStatusCode() == 400) {
+		else {
 			log("An appointment action already exists");
 			assertEquals(response.getStatusCode(), 400);
 			apiVerification.verifyApptActionIfAlreadyExist(response);
@@ -202,7 +207,7 @@ public class ApptPrecheckDataTest extends BaseTestNGWebDriver {
 					propertyData.getProperty("apt.precheck.data.practice.id"),
 					propertyData.getProperty("saves.patient.id"), propertyData.getProperty("saves.appt.id"));
 		}
-		if (response.getStatusCode() == 400) {
+		else {
 			log("An appointment action already exists");
 			assertEquals(response.getStatusCode(), 400);
 			apiVerification.verifyApptActionIfAlreadyExist(response);
@@ -219,7 +224,7 @@ public class ApptPrecheckDataTest extends BaseTestNGWebDriver {
 		log("An appointment action already exists");
 		assertEquals(response.getStatusCode(), 404);
 		apiVerification.responseTimeValidation(response);
-		apiVerification.verifyWithoutApptId(response);
+
 	}
 
 	@Test(enabled = true, groups = { "APItest" }, retryAnalyzer = RetryAnalyzer.class)
@@ -241,7 +246,7 @@ public class ApptPrecheckDataTest extends BaseTestNGWebDriver {
 					propertyData.getProperty("apt.precheck.data.practice.id"),
 					propertyData.getProperty("saves.patient.id"), propertyData.getProperty("saves.appt.id"));
 		}
-		if (response.getStatusCode() == 404) {
+		else {
 			log("Action does not exist for appointment");
 			assertEquals(response.getStatusCode(), 404);
 			apiVerification.verifyApptActionIfDoesNotExist(response);
@@ -267,7 +272,7 @@ public class ApptPrecheckDataTest extends BaseTestNGWebDriver {
 					propertyData.getProperty("apt.precheck.data.practice.id"),
 					propertyData.getProperty("saves.patient.id"), propertyData.getProperty("saves.appt.id"));
 		}
-		if (response.getStatusCode() == 404) {
+		else {
 			log("Action does not exist for appointment");
 			assertEquals(response.getStatusCode(), 404);
 			apiVerification.verifyApptActionIfDoesNotExist(response);
@@ -294,7 +299,7 @@ public class ApptPrecheckDataTest extends BaseTestNGWebDriver {
 					propertyData.getProperty("apt.precheck.data.practice.id"),
 					propertyData.getProperty("saves.patient.id"), propertyData.getProperty("saves.appt.id"));
 		}
-		if (response.getStatusCode() == 404) {
+		else {
 			log("Action does not exist for appointment");
 			assertEquals(response.getStatusCode(), 404);
 			apiVerification.verifyApptActionIfDoesNotExist(response);
@@ -310,7 +315,6 @@ public class ApptPrecheckDataTest extends BaseTestNGWebDriver {
 		log("Verifying the response");
 		assertEquals(response.getStatusCode(), 404);
 		apiVerification.responseTimeValidation(response);
-		apiVerification.verifyWithoutApptId(response);
 	}
 
 	@Test(enabled = true, groups = { "APItest" }, retryAnalyzer = RetryAnalyzer.class)
@@ -332,7 +336,7 @@ public class ApptPrecheckDataTest extends BaseTestNGWebDriver {
 					propertyData.getProperty("apt.precheck.data.practice.id"),
 					propertyData.getProperty("saves.patient.id"), propertyData.getProperty("saves.appt.id"));
 		}
-		if (response.getStatusCode() == 404) {
+		else {
 			log("An appointment action Did not find");
 			assertEquals(response.getStatusCode(), 404);
 			apiVerification.verifyApptActionNotFound(response);
@@ -358,7 +362,7 @@ public class ApptPrecheckDataTest extends BaseTestNGWebDriver {
 					propertyData.getProperty("apt.precheck.data.practice.id"),
 					propertyData.getProperty("saves.patient.id"), propertyData.getProperty("saves.appt.id"));
 		}
-		if (response.getStatusCode() == 404) {
+		else {
 			log("An appointment action Did not find");
 			assertEquals(response.getStatusCode(), 404);
 			apiVerification.verifyApptActionNotFound(response);
@@ -384,7 +388,7 @@ public class ApptPrecheckDataTest extends BaseTestNGWebDriver {
 					propertyData.getProperty("apt.precheck.data.practice.id"),
 					propertyData.getProperty("saves.patient.id"), propertyData.getProperty("saves.appt.id"));
 		}
-		if (response.getStatusCode() == 404) {
+		else {
 			log("An appointment action Did not find");
 			assertEquals(response.getStatusCode(), 404);
 			apiVerification.verifyApptActionNotFound(response);
@@ -400,7 +404,6 @@ public class ApptPrecheckDataTest extends BaseTestNGWebDriver {
 		log("Verifying the response");
 		assertEquals(response.getStatusCode(), 404);
 		apiVerification.responseTimeValidation(response);
-		apiVerification.verifyWithoutApptId(response);
 	}
 
 	@Test(enabled = true, groups = { "APItest" }, retryAnalyzer = RetryAnalyzer.class)
@@ -425,8 +428,6 @@ public class ApptPrecheckDataTest extends BaseTestNGWebDriver {
 		log("Verifying the response");
 		assertEquals(response.getStatusCode(), 404);
 		apiVerification.responseTimeValidation(response);
-		apiVerification.verifyWithoutPracticeId(response);
-
 	}
 
 	@Test(enabled = true, groups = { "APItest" }, retryAnalyzer = RetryAnalyzer.class)
@@ -446,7 +447,7 @@ public class ApptPrecheckDataTest extends BaseTestNGWebDriver {
 					propertyData.getProperty("delete.all.patient.id"), propertyData.getProperty("delete.all.appt.id"));
 
 		}
-		if (response.getStatusCode() == 404) {
+		else {
 			log("Actions do not exist for appointment");
 			assertEquals(response.getStatusCode(), 404);
 			apiVerification.verifyDeleteAllApptActionIfNotExist(response);
@@ -462,7 +463,6 @@ public class ApptPrecheckDataTest extends BaseTestNGWebDriver {
 		log("Verifying the response");
 		assertEquals(response.getStatusCode(), 404);
 		apiVerification.responseTimeValidation(response);
-		apiVerification.verifyWithoutApptId(response);
 
 	}
 
@@ -474,8 +474,6 @@ public class ApptPrecheckDataTest extends BaseTestNGWebDriver {
 		log("Verifying the response");
 		assertEquals(response.getStatusCode(), 404);
 		apiVerification.responseTimeValidation(response);
-		apiVerification.verifyWithoutPracticeId(response);
-
 	}
 
 	@Test(enabled = true, groups = { "APItest" }, retryAnalyzer = RetryAnalyzer.class)
@@ -649,7 +647,6 @@ public class ApptPrecheckDataTest extends BaseTestNGWebDriver {
 		log("Verifying the response");
 		assertEquals(response.getStatusCode(), 404);
 		apiVerification.responseTimeValidation(response);
-		apiVerification.verifyWithoutApptId(response);
 	}
 
 	@Test(enabled = true, groups = { "APItest" }, retryAnalyzer = RetryAnalyzer.class)
@@ -660,7 +657,6 @@ public class ApptPrecheckDataTest extends BaseTestNGWebDriver {
 		log("Verifying the response");
 		assertEquals(response.getStatusCode(), 404);
 		apiVerification.responseTimeValidation(response);
-		apiVerification.verifyWithoutPatientId(response);
 	}
 
 	@Test(enabled = true, groups = { "APItest" }, retryAnalyzer = RetryAnalyzer.class)
@@ -720,7 +716,6 @@ public class ApptPrecheckDataTest extends BaseTestNGWebDriver {
 		log("Verifying the response");
 		assertEquals(response.getStatusCode(), 404);
 		apiVerification.responseTimeValidation(response);
-		apiVerification.verifyWithoutPatientId(response);
 	}
 
 	@Test(enabled = true, groups = { "APItest" }, retryAnalyzer = RetryAnalyzer.class)
@@ -730,7 +725,6 @@ public class ApptPrecheckDataTest extends BaseTestNGWebDriver {
 		log("Verifying the response");
 		assertEquals(response.getStatusCode(), 404);
 		apiVerification.responseTimeValidation(response);
-		apiVerification.verifyWithoutPracticeId(response);
 	}
 
 	@Test(enabled = true, groups = { "APItest" }, retryAnalyzer = RetryAnalyzer.class)
@@ -753,7 +747,6 @@ public class ApptPrecheckDataTest extends BaseTestNGWebDriver {
 		log("Verifying the response");
 		assertEquals(response.getStatusCode(), 404);
 		apiVerification.responseTimeValidation(response);
-		apiVerification.verifyWithoutApptId(response);
 	}
 
 	@Test(enabled = true, groups = { "APItest" }, retryAnalyzer = RetryAnalyzer.class)
@@ -764,7 +757,6 @@ public class ApptPrecheckDataTest extends BaseTestNGWebDriver {
 		log("Verifying the response");
 		assertEquals(response.getStatusCode(), 404);
 		apiVerification.responseTimeValidation(response);
-		apiVerification.verifyWithoutPracticeId(response);
 	}
 
 	@Test(enabled = true, groups = { "APItest" }, retryAnalyzer = RetryAnalyzer.class)
@@ -917,7 +909,6 @@ public class ApptPrecheckDataTest extends BaseTestNGWebDriver {
 		log("Verifying the response");
 		assertEquals(response.getStatusCode(), 405);
 		apiVerification.responseTimeValidation(response);
-		apiVerification.verifyFormWithoutApptId(response);
 	}
 
 	@Test(enabled = true, groups = { "APItest" }, retryAnalyzer = RetryAnalyzer.class)
@@ -931,7 +922,6 @@ public class ApptPrecheckDataTest extends BaseTestNGWebDriver {
 		log("Verifying the response");
 		assertEquals(response.getStatusCode(), 404);
 		apiVerification.responseTimeValidation(response);
-		apiVerification.verifyWithoutPracticeId(response);
 	}
 
 	@Test(enabled = true, groups = { "APItest" }, retryAnalyzer = RetryAnalyzer.class)
@@ -1001,7 +991,7 @@ public class ApptPrecheckDataTest extends BaseTestNGWebDriver {
 		log("Verifying the response");
 		assertEquals(response.getStatusCode(), 404);
 		apiVerification.responseTimeValidation(response);
-		apiVerification.verifyWithoutPatientId(response);
+
 	}
 
 	@Test(enabled = true, groups = { "APItest" }, retryAnalyzer = RetryAnalyzer.class)
@@ -1013,7 +1003,6 @@ public class ApptPrecheckDataTest extends BaseTestNGWebDriver {
 		log("Verifying the response");
 		assertEquals(response.getStatusCode(), 405);
 		apiVerification.responseTimeValidation(response);
-		apiVerification.verifyApptIdWithoutApptId(response);
 	}
 
 	@Test(enabled = true, groups = { "APItest" }, retryAnalyzer = RetryAnalyzer.class)
@@ -1035,7 +1024,6 @@ public class ApptPrecheckDataTest extends BaseTestNGWebDriver {
 		log("Verifying the response");
 		assertEquals(response.getStatusCode(), 404);
 		apiVerification.responseTimeValidation(response);
-		apiVerification.verifyWithoutPatientId(response);
 	}
 
 	@Test(enabled = true, groups = { "APItest" }, retryAnalyzer = RetryAnalyzer.class)
@@ -1046,7 +1034,6 @@ public class ApptPrecheckDataTest extends BaseTestNGWebDriver {
 		log("Verifying the response");
 		assertEquals(response.getStatusCode(), 405);
 		apiVerification.responseTimeValidation(response);
-		apiVerification.verifyDeleteInsuranceWithoutApptId(response);
 	}
 
 	@Test(enabled = true, groups = { "APItest" }, retryAnalyzer = RetryAnalyzer.class)
@@ -1068,7 +1055,6 @@ public class ApptPrecheckDataTest extends BaseTestNGWebDriver {
 		log("Verifying the response");
 		assertEquals(response.getStatusCode(), 404);
 		apiVerification.responseTimeValidation(response);
-		apiVerification.verifyWithoutApptId(response);
 	}
 
 	@Test(enabled = true, groups = { "APItest" }, retryAnalyzer = RetryAnalyzer.class)
@@ -1089,7 +1075,7 @@ public class ApptPrecheckDataTest extends BaseTestNGWebDriver {
 		log("Verifying the response");
 		assertEquals(response.getStatusCode(), 404);
 		apiVerification.responseTimeValidation(response);
-		apiVerification.verifyReturnInsuranceImageWithoutFileName(response);
+
 	}
 
 	@Test(enabled = true, groups = { "APItest" }, retryAnalyzer = RetryAnalyzer.class)
@@ -1117,6 +1103,10 @@ public class ApptPrecheckDataTest extends BaseTestNGWebDriver {
 		log("Verifying the response");
 		assertEquals(response.getStatusCode(), 404);
 		apiVerification.responseTimeValidation(response);
-		apiVerification.verifySaveInsuranceImageWithoutFileName(response);
+	}
+
+	@BeforeMethod(enabled = true, groups = { "APItest" })
+	public void getMethodName(ITestResult result) throws IOException {
+		log("Method Name-- " + result.getMethod().getMethodName());
 	}
 }

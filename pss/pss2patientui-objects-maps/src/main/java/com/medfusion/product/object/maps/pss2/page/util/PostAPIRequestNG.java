@@ -242,15 +242,11 @@ public class PostAPIRequestNG extends BaseTestNGWebDriver {
 	public Response availableSlots(String b, String practiceId) {
 
 		Response response = given().spec(requestSpec).log().all().spec(requestSpec).body(b).when()
-				.post(practiceId + "/availableslots").then().spec(responseSpec).log().all().spec(responseSpec).extract()
+				.post(practiceId + "/availableslots").then().log().all().extract()
 				.response();
 		log("Response is as below" + response.asString());
-
-		JSONObject jsonobject = new JSONObject(response.asString());
-
 		APIVerification apiVerification = new APIVerification();
-
-		ParseJSONFile.getKey(jsonobject, "startDateTime");
+		apiVerification.responseCodeValidation(response, 200);
 		apiVerification.responseTimeValidation(response);
 		return response;
 	}

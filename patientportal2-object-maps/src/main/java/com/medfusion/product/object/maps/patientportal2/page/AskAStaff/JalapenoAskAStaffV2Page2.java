@@ -27,11 +27,11 @@ public class JalapenoAskAStaffV2Page2 extends JalapenoMenu {
 		}
 
 		public String getSubject() {
-				return subjectText.getText();
+			    return subjectText.getText();
 		}
 
 		public String getQuestion() {
-				return questionText.getText();
+			    return questionText.getText();
 		}
 
 		public JalapenoHomePage submit() {

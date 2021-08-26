@@ -2,10 +2,15 @@
 package com.medfusion.product.object.maps.pss2.page.util;
 
 import static io.restassured.RestAssured.given;
-
+import java.io.File;
+import java.io.FileWriter;
+import java.io.IOException;
 import java.util.Map;
 
 import org.hamcrest.Matchers;
+
+import com.medfusion.common.utils.IHGUtil;
+
 import io.restassured.RestAssured;
 import io.restassured.builder.RequestSpecBuilder;
 import io.restassured.builder.ResponseSpecBuilder;
@@ -37,20 +42,20 @@ public class PostAPIRequestAdapterModulator {
 		return access_Token;
 	}
 	
-	public Response getAnnouncement( String practiceid)
+	public Response getAnnouncement( String practiceid, String path)
 			throws Exception {
 		Response response = given().spec(requestSpec).log().all().when()
-				.get(practiceid + "/announcement").then().log().all().extract().response();
+				.get(practiceid + path).then().log().all().extract().response();
 		return response;
 	}
-	
-	public Response getAnnouncementByCode( String practiceid)
+
+	public Response getAnnouncementByCode( String practiceid, String code)
 			throws Exception {
 		Response response = given().spec(requestSpec).log().all().when()
-				.get(practiceid + "/announcementbycode/AG").then().log().all().extract().response();
+				.get(practiceid + "/announcementbycode/"+code).then().log().all().extract().response();
 		return response;
 	}
-	
+
 	public Response announcementType( String practiceid)
 			throws Exception {
 		Response response = given().spec(requestSpec).log().all().when()
@@ -71,13 +76,14 @@ public class PostAPIRequestAdapterModulator {
 				.put(practiceid + "/announcement").then().log().all().extract().response();
 		return response;
 	}
-	
+
 	public Response saveAnnouncement( String practiceid, String b)
 			throws Exception {
 		Response response = given().spec(requestSpec).body(b).log().all().when()
 				.post(practiceid + "/announcement").then().log().all().extract().response();
 		return response;
 	}
+	
 	public Response deleteAnnouncement( String practiceid, int announcementid)
 			throws Exception {
 		Response response = given().spec(requestSpec).log().all().when()
@@ -85,10 +91,467 @@ public class PostAPIRequestAdapterModulator {
 		return response;
 	}
 
-	public Response validatePractice( String practiceid)
+	public Response validatePractice( String practiceid, String path)
 			throws Exception {
 		Response response = given().spec(requestSpec).log().all().when()
-				.get(practiceid + "/validatepractice").then().log().all().extract().response();
+				.get(practiceid + path).then().log().all().extract().response();
 		return response;
+	}
+
+	public Response saveAppointmenttype( String practiceid, String b)
+			throws Exception {
+		Response response = given().spec(requestSpec).body(b).log().all().when()
+				.post(practiceid + "/appointmenttype").then().log().all().extract().response();
+		return response;
+	}
+	public Response updateAppointmenttype( String practiceid, String b)
+			throws Exception {
+		Response response = given().spec(requestSpec).body(b).log().all().when()
+				.put(practiceid + "/appointmenttype").then().log().all().extract().response();
+		return response;
+	}
+
+	public Response getAppointmentTypeById( String practiceid, String b)
+			throws Exception {
+		Response response = given().spec(requestSpec).body(b).log().all().when()
+				.put(practiceid + "/appointmenttype/205755").then().log().all().extract().response();
+		return response;
+	}
+	public Response getAppointmentTypeByBookId( String practiceid, String bookid)
+			throws Exception {
+		Response response = given().spec(requestSpec).log().all().when()
+				.get(practiceid + "/bookappointmenttype/"+bookid).then().log().all().extract().response();
+		return response;
+	}
+	
+	public Response reorderAppointmentType( String practiceid, String b)
+			throws Exception {
+		Response response = given().spec(requestSpec).body(b).log().all().when()
+				.post(practiceid + "/appointmenttype/reorder").then().log().all().extract().response();
+		return response;
+	}
+	
+	public Response deleteBookAppointmentType( String practiceid)
+			throws Exception {
+		Response response = given().spec(requestSpec).log().all().when()
+				.delete(practiceid + "/bookappointmenttype/book/4247/apptype/4195").then().log().all().extract().response();
+		return response;
+	}
+	
+	public Response saveBookAppointmentType( String practiceid, String b)
+			throws Exception {
+		Response response = given().spec(requestSpec).body(b).log().all().when()
+				.post(practiceid + "/booklocation").then().log().all().extract().response();
+		return response;
+	}
+	
+	public Response deleteBookLocation( String practiceid, String locationid)
+			throws Exception {
+		Response response = given().spec(requestSpec).log().all().when()
+				.delete(practiceid + "/booklocation/book/4248/location/"+locationid).then().log().all().extract().response();
+		return response;
+	}
+	
+	public Response saveBookLocation( String practiceid, String b)
+			throws Exception {
+		Response response = given().spec(requestSpec).body(b).log().all().when()
+				.post(practiceid + "/booklocation").then().log().all().extract().response();
+		return response;
+	}
+	
+	public Response associatedappointmenttype( String practiceid, String b)
+			throws Exception {
+		Response response = given().spec(requestSpec).body(b).log().all().when()
+				.post(practiceid + "/associatedappointmenttype").then().log().all().extract().response();
+		return response;
+	}
+	
+	public Response filterappointmenttype( String practiceid, String b)
+			throws Exception {
+		Response response = given().spec(requestSpec).body(b).log().all().when()
+				.post(practiceid + "/filterappointmenttype").then().log().all().extract().response();
+		return response;
+	}
+	
+	public Response partnerappointmenttype( String practiceid, String b)
+			throws Exception {
+		Response response = given().spec(requestSpec).body(b).log().all().when()
+				.post(practiceid + "/partnerappointmenttype").then().log().all().extract().response();
+		return response;
+	}
+	
+	public Response practiceappointmenttype( String practiceid, String b)
+			throws Exception {
+		Response response = given().spec(requestSpec).body(b).log().all().when()
+				.post(practiceid + "/booklocation").then().log().all().extract().response();
+		return response;
+	}
+	
+	public Response practiceSettings( String practiceid, String b)
+			throws Exception {
+		Response response = given().spec(requestSpec).body(b).log().all().when()
+				.post(practiceid + "/practice/settings").then().log().all().extract().response();
+		return response;
+	}
+	
+	public Response bookAppointmentTypeGET( String practiceid, String bookid, String apptid)
+			throws Exception {
+		Response response = given().spec(requestSpec).log().all().when()
+				.get(practiceid + "/bookappointmenttype/"+bookid+"/"+apptid).then().log().all().extract().response();
+		return response;
+	}
+	
+	public Response bookAppointmentTypeSave( String practiceid, String b)
+			throws Exception {
+		Response response = given().spec(requestSpec).body(b).log().all().when()
+				.post(practiceid + "/bookappointmenttype").then().log().all().extract().response();
+		return response;
+	}
+	
+	public Response bookAppointmentTypeUpdate( String practiceid, String b)
+			throws Exception {
+		Response response = given().spec(requestSpec).body(b).log().all().when()
+				.put(practiceid + "/bookappointmenttype").then().log().all().extract().response();
+		return response;
+	}
+	
+	public Response bookAppointmentTypeDelete( String practiceid,String bookid, String apptid )
+			throws Exception {
+		Response response = given().spec(requestSpec).log().all().when()
+				.delete(practiceid + "/bookappointmenttype/book/"+bookid+"/apptype/"+apptid).then().log().all().extract().response();
+		return response;
+	}
+	
+	public Response bookLocationGET( String practiceid, String bookid)
+			throws Exception {
+		Response response = given().spec(requestSpec).log().all().when()
+				.get(practiceid + "/booklocation/"+bookid).then().log().all().extract().response();
+		return response;
+	}
+	
+	public Response bookLocationSave( String practiceid, String b)
+			throws Exception {
+		Response response = given().spec(requestSpec).body(b).log().all().when()
+				.post(practiceid + "/booklocation").then().log().all().extract().response();
+		return response;
+	}
+	
+	public Response bookLocationDelete( String practiceid,String bookid, String locationid )
+			throws Exception {
+		Response response = given().spec(requestSpec).log().all().when()
+				.delete(practiceid + "/booklocation/book/"+bookid+"/location/"+locationid).then().log().all().extract().response();
+		return response;
+	}
+	
+	public Response associatedBookGET( String practiceid,String bookid, String locationid )
+			throws Exception {
+		Response response = given().spec(requestSpec).log().all().when()
+				.delete(practiceid + "/booklocation/book/"+bookid+"/location/"+locationid).then().log().all().extract().response();
+		return response;
+	}
+	
+	public Response associatedBookUpdate( String practiceid,String bookid, String locationid )
+			throws Exception {
+		Response response = given().spec(requestSpec).log().all().when()
+				.delete(practiceid + "/booklocation/book/"+bookid+"/location/"+locationid).then().log().all().extract().response();
+		return response;
+	}
+	
+	public Response bookSave( String practiceid,String b )
+			throws Exception {
+		Response response = given().spec(requestSpec).body(b).log().all().when()
+				.post(practiceid + "/book").then().log().all().extract().response();
+		return response;
+	}
+	
+	public Response associatedBookDelete( String practiceid,String bookid, String locationid )
+			throws Exception {
+		Response response = given().spec(requestSpec).log().all().when()
+				.delete(practiceid + "/booklocation/book/"+bookid+"/location/"+locationid).then().log().all().extract().response();
+		return response;
+	}
+	
+	public Response getBookImage( String practiceid,String bookid)
+			throws Exception {
+		Response response = given().spec(requestSpec).log().all().when()
+				.get(practiceid + "/book/" +bookid+ "/image").then().log().all().extract().response();
+		return response;
+	}
+	
+	public Response reorderBook( String practiceid,String b)
+			throws Exception {
+		Response response = given().spec(requestSpec).log().all().body(b).when()
+				.post(practiceid + "/book/reorder").then().log().all().extract().response();
+		return response;
+	}
+
+	public Response getBooksFromDB( String practiceid, String endpointpath)
+			throws Exception {
+		Response response = given().spec(requestSpec).log().all().when()
+				.get(practiceid + endpointpath).then().log().all().extract().response();
+		return response;
+	}	
+	public Response saveBook( String practiceid, String b)
+			throws Exception {
+		Response response = given().spec(requestSpec).body(b).log().all().when()
+				.post(practiceid + "/book").then().log().all().extract().response();
+		return response;
+	}	
+	public Response getBooksFromPartner( String practiceid, String endpointpath)
+			throws Exception {
+		Response response = given().spec(requestSpec).log().all().when()
+				.get(practiceid + endpointpath).then().log().all().extract().response();
+		return response;
+	}
+	
+	public Response getBookById( String practiceid,String bookid)
+			throws Exception {
+		Response response = given().spec(requestSpec).log().all().when()
+				.get(practiceid + "/book/"+bookid).then().log().all().extract().response();
+		return response;
+	}
+
+	public Response getBookLevel( String practiceid , String grouptype)
+			throws Exception {
+		Response response = given().spec(requestSpec).log().all().queryParam("groupType", grouptype).when()
+				.get(practiceid + "/getbooklevel").then().log().all().extract().response();
+		return response;
+	}
+	
+	public Response practiceBook( String practiceid, String endpointpath )
+			throws Exception {
+		Response response = given().spec(requestSpec).log().all().when()
+				.get(practiceid + endpointpath).then().log().all().extract().response();
+		return response;
+	}
+	
+	public Response partnerBook( String practiceid )throws Exception {
+		Response response = given().spec(requestSpec).log().all().when()
+				.get(practiceid + "/partnerbook").then().log().all().extract().response();
+		return response;
+	}
+	
+	public Response bookSpecialty( String practiceid )throws Exception {
+		Response response = given().spec(requestSpec).log().all().when()
+				.post(practiceid + "/bookspecialty").then().log().all().extract().response();
+		return response;
+	}
+	
+	public Response partnerBook( String practiceid, String bookid, String specialtyid )throws Exception {
+		Response response = given().spec(requestSpec).log().all().when()
+				.delete(practiceid + "/bookspecialty/book/"+bookid+"/specialty/"+specialtyid).then().log().all().extract().response();
+		return response;
+	}
+	
+	public Response getCancellationReasonFromDB( String practiceid )throws Exception {
+		Response response = given().spec(requestSpec).log().all().when()
+				.get(practiceid + "/associatedcancellationreason").then().log().all().extract().response();
+		return response;
+	}
+	
+	public Response saveCancellationReason( String practiceid, String b)throws Exception {
+		Response response = given().spec(requestSpec).body(b).log().all().when()
+				.post(practiceid + "/cancellationreason").then().log().all().extract().response();
+		return response;
+	}
+
+	public Response getCancellationReasonById( String practiceid, String cancelreasonid)throws Exception {
+		Response response = given().spec(requestSpec).log().all().when()
+				.get(practiceid + "/cancellationreason/"+cancelreasonid).then().log().all().extract().response();
+		return response;
+	}
+
+	public Response deleteCancellationReason( String practiceid, String cancelreasonid )throws Exception {
+		Response response = given().spec(requestSpec).log().all().when()
+				.delete(practiceid + "/cancellationreason/"+cancelreasonid).then().log().all().extract().response();
+		return response;
+	}
+
+	public Response reorderCancellationReason( String practiceid , String b)throws Exception {
+		Response response = given().spec(requestSpec).body(b).log().all().when()
+				.post(practiceid + "/cancellationreason/reorder").then().log().all().extract().response();
+		return response;
+	}
+		
+	public Response getPracticeCancellationReason( String practiceid , String endpointpath)throws Exception {
+		Response response = given().spec(requestSpec).log().all().when()
+				.get(practiceid + endpointpath).then().log().all().extract().response();
+		return response;
+	}
+
+	public Response saveSpecialty( String practiceid , String b)throws Exception {
+		Response response = given().spec(requestSpec).body(b).log().all().when()
+				.post(practiceid + "/bookspecialty").then().log().all().extract().response();
+		return response;
+	}
+	
+	public Response deleteSpecialty( String practiceid,String bookid, String specialtyid )throws Exception {
+		Response response = given().spec(requestSpec).log().all().when()
+				.delete(practiceid + "/bookspecialty/book/"+bookid+"/specialty/"+specialtyid
+						).then().log().all().extract().response();
+		return response;
+	}
+	
+	public Response getBookBySpecialtyIdAndLevel( String practiceid )throws Exception {
+		Response response = given().spec(requestSpec).log().all().when()
+				.get(practiceid + "/partnerbook").then().log().all().extract().response();
+		return response;
+	}
+	
+	public Response getBookAssociatedToCareTeam( String practiceid )throws Exception {
+		Response response = given().spec(requestSpec).log().all().when()
+				.get(practiceid + "/partnerbook").then().log().all().extract().response();
+		return response;
+	}
+
+	public Response deleteCareTeamBook( String practiceid, String careteamid, String bookid )throws Exception {
+		Response response = given().spec(requestSpec).log().all().when()
+				.delete(practiceid + "/careteambook/"+careteamid+"/book/"+bookid).then().log().all().extract().response();
+		return response;
+	}
+	
+	public Response getCareTeamBookFromDB( String practiceid )throws Exception {
+		Response response = given().spec(requestSpec).log().all().when()
+				.get(practiceid + "/partnerbook").then().log().all().extract().response();
+		return response;
+	}
+	
+	
+	public Response getCareTeamFromDB( String practiceid )throws Exception {
+		Response response = given().spec(requestSpec).log().all().when()
+				.get(practiceid + "/partnerbook").then().log().all().extract().response();
+		return response;
+	}
+	
+	public Response updateCareTeam( String practiceid )throws Exception {
+		Response response = given().spec(requestSpec).log().all().when()
+				.get(practiceid + "/partnerbook").then().log().all().extract().response();
+		return response;
+	}
+	
+	public Response saveCareTeam( String practiceid, String b)throws Exception {
+		Response response = given().spec(requestSpec).body(b).log().all().when()
+				.post(practiceid + "/careteam").then().log().all().extract().response();
+		return response;
+	}
+	
+	public Response saveCareTeamWithoutBody( String practiceid)throws Exception {
+		Response response = given().spec(requestSpec).log().all().when()
+				.post(practiceid + "/careteam").then().log().all().extract().response();
+		return response;
+	}
+	
+	public Response getAssociatedCareteam( String practiceid )throws Exception {
+		Response response = given().spec(requestSpec).log().all().when()
+				.get(practiceid + "/associatedcareteam").then().log().all().extract().response();
+		return response;
+	}
+	public Response deleteCareTeam( String practiceid, String careteamid)throws Exception {
+		Response response = given().spec(requestSpec).log().all().when()
+				.delete(practiceid + "/careteam/"+careteamid).then().log().all().extract().response();
+		return response;
+	}
+	
+	public Response getCareTeamById( String practiceid, String careteamid)throws Exception {
+		Response response = given().spec(requestSpec).log().all().when()
+				.get(practiceid + "/careteam/"+careteamid).then().log().all().extract().response();
+		return response;
+	}
+	
+	public Response getCategorysFromDB( String practiceid )throws Exception {
+		Response response = given().spec(requestSpec).log().all().when()
+				.get(practiceid + "/partnerbook").then().log().all().extract().response();
+		return response;
+	}
+	public Response saveCategory( String practiceid, String b )throws Exception {
+		Response response = given().spec(requestSpec).body(b).log().all().when()
+				.post(practiceid + "/category").then().log().all().extract().response();
+		return response;
+	}
+	
+	public Response getcategoryById( String practiceid, String categoryid )throws Exception {
+		Response response = given().spec(requestSpec).log().all().when()
+				.get(practiceid + "/categoryspecialty/"+categoryid).then().log().all().extract().response();
+		return response;
+	}
+	
+	public Response deleteCategory( String practiceid, String categoryid)throws Exception {
+		Response response = given().spec(requestSpec).log().all().when()
+				.delete(practiceid + "/category/"+categoryid).then().log().all().extract().response();
+		return response;
+	}
+	public Response saveCategoryDraft( String practiceid, String b)throws Exception {
+		Response response = given().spec(requestSpec).body(b).log().all().when()
+				.post(practiceid + "/category/draft").then().log().all().extract().response();
+		return response;
+	}
+	public Response associatedCategory( String practiceid )throws Exception {
+		Response response = given().spec(requestSpec).log().all().when()
+				.get(practiceid + "/associatedcategory").then().log().all().extract().response();
+		return response;
+	}
+	public Response exportCategory( String practiceid, String b)throws Exception {
+		Response response = given().spec(requestSpec).body(b).log().all().when()
+				.post(practiceid + "/category/export").then().log().all().extract().response();
+		return response;
+	}
+	
+	public Response importCategory(String practiceid, Map<String, String> Header) throws Exception {
+
+		String file = "./src/test/resources/data-driven/Force.json";
+
+		String jsonFile = "{\"EN\":\"SuperCategory\",\"ES\":\"SuperCategory_Es\"}";
+
+		RestAssured.baseURI = "https://dev3-pss-adminportal-ui.dev.medfusion.net/pss-adapter-modulator/24702/category/import";
+		Response response = given().urlEncodingEnabled(true).log().all().contentType("multipart/form-data")
+
+				.headers(Header).formParam("name", "SuperCategory").formParam("displayNames", jsonFile)
+				.formParam("type", "CG_APPOINTMENT_TYPE").multiPart("categoryFile", new File(file)).when().post().then()
+				.log().all().extract().response();
+		return response;
+	}
+	
+	public static void writeFile(String xmlFilePath, String xml) throws IOException {
+		FileWriter out = new FileWriter(xmlFilePath);
+		out.write(xml);
+		if (out != null) {
+			out.close();
+		}
+		IHGUtil.PrintMethodName();
+	}
+			
+	public Response reorderCategorys( String practiceid )throws Exception {
+		Response response = given().spec(requestSpec).log().all().when()
+				.get(practiceid + "/partnerbook").then().log().all().extract().response();
+		return response;
+	}
+	public Response validateCategory( String practiceid )throws Exception {
+		Response response = given().spec(requestSpec).log().all().when()
+				.get(practiceid + "/partnerbook").then().log().all().extract().response();
+		return response;
+	}
+	
+	public Response getBookBySpecialtyIdAndLevel( String practiceid , String specialtyid, String level)throws Exception {
+		Response response = given().spec(requestSpec).queryParam("specialtyid", specialtyid).queryParam("level", level).log().all().when()
+				.get(practiceid + "/bookcareteam").then().log().all().extract().response();
+		return response;
+	}
+	
+	public Response getBookAssociatedToCareTeam( String practiceid , String careteamid)throws Exception {
+		Response response = given().spec(requestSpec).log().all().when()
+				.get(practiceid + "/bookcareteam/"+careteamid).then().log().all().extract().response();
+		return response;	
+	}
+
+	public Response saveCareTeamBook( String practiceid , String b)throws Exception {
+		Response response = given().spec(requestSpec).body(b).log().all().when()
+				.post(practiceid + "/careteambook").then().log().all().extract().response();
+		return response;	
+	}
+	
+	public Response getCareTeamByBookId( String practiceid , String bookid)throws Exception {
+		Response response = given().spec(requestSpec).log().all().when()
+				.get(practiceid + "/careteambook/book/"+bookid).then().log().all().extract().response();
+		return response;	
 	}
 }

@@ -53,13 +53,13 @@ public class ConfirmationPage extends PSS2MainPage {
 	@FindBy(how = How.XPATH, using = "//input[@id='cancelReasonText']")
 	private WebElement rescheduleReasonInputBox;
 
-	@FindBy(how = How.XPATH, using = "//div[@class=\" css-tlfecz-indicatorContainer\"]")
+	@FindBy(how = How.XPATH, using = "//div[@class=' css-tlfecz-indicatorContainer']")
 	private WebElement selectArrow;
 
 	@FindBy(how = How.XPATH, using = "//div[@class=\" css-1wa3eu0-placeholder\"]")
 	private WebElement dropdownReschedule;
 
-	@FindAll({@FindBy(how = How.XPATH, using = "//div[@class=\"Select-menu\"]/div")})
+	@FindAll({@FindBy(how = How.XPATH, using = "//div[@class=' css-11unzgr']/div")})
 	private List<WebElement> rescheduleReasondropDownList;
 
 	@FindBy(how = How.XPATH, using = "//*[@class='confirmdetaiils']/div[1]/span")
@@ -188,7 +188,8 @@ public class ConfirmationPage extends PSS2MainPage {
 
 	public String dateConfirm() {
 		String datetext = DateConfirmation.getText();
-		String nextDate1 = datetext.substring(5, 8);
+		log("DateConfirm Text- "+datetext);
+		String nextDate1 = datetext.substring(6, 9);
 		String confirmdate = nextDate1.replace(" ", "");
 		StringBuffer str = new StringBuffer(confirmdate);
 		log("Confirmation date is   " + str);

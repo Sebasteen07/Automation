@@ -4,10 +4,12 @@ import static org.testng.Assert.assertEquals;
 
 import java.io.IOException;
 
+import org.testng.ITestResult;
+import org.testng.annotations.BeforeMethod;
 import org.testng.annotations.BeforeTest;
 import org.testng.annotations.Test;
 
-import com.intuit.ifs.csscat.core.BaseTestNGWebDriver;
+import com.intuit.ifs.csscat.core.BaseTestNG;
 import com.intuit.ifs.csscat.core.RetryAnalyzer;
 import com.medfusion.common.utils.PropertyFileLoader;
 import com.medfusion.product.appt.precheck.payload.AptEventCollectorPayload;
@@ -19,7 +21,7 @@ import com.medfusion.product.object.maps.appt.precheck.util.PostAPIRequestAptEve
 
 import io.restassured.response.Response;
 
-public class AptEventCollectorTests extends BaseTestNGWebDriver {
+public class AptEventCollectorTests extends BaseTestNG {
 	String getaccessToken;
 	public static PropertyFileLoader propertyData;
 	public static AptEventCollectorPayload payload;
@@ -96,7 +98,9 @@ public class AptEventCollectorTests extends BaseTestNGWebDriver {
 	@Test(enabled = true, groups = { "APItest" }, retryAnalyzer = RetryAnalyzer.class)
 	public void testDailyAggregationPost() throws IOException {
 		Response response = postAPIRequest.aptPostDailyAggregation(propertyData.getProperty("event.practice.id"),
-				headerConfig.HeaderwithToken(getaccessToken));
+				headerConfig.HeaderwithToken(getaccessToken),
+				propertyData.getProperty("post.daily.start.date"),
+				propertyData.getProperty("post.daily.end.date"));
 
 		log("Verifying the response");
 		assertEquals(response.getStatusCode(), 200);
@@ -130,7 +134,8 @@ public class AptEventCollectorTests extends BaseTestNGWebDriver {
 	@Test(enabled = true, groups = { "APItest" }, retryAnalyzer = RetryAnalyzer.class)
 	public void testLongtermAggregationPost() throws IOException {
 		Response response = postAPIRequest.aptPostLongtermAggregation(propertyData.getProperty("event.practice.id"),
-				headerConfig.HeaderwithToken(getaccessToken));
+				headerConfig.HeaderwithToken(getaccessToken),
+				propertyData.getProperty("date.longterm.aggregation"));
 
 		log("Verifying the response");
 		assertEquals(response.getStatusCode(), 200);
@@ -151,7 +156,9 @@ public class AptEventCollectorTests extends BaseTestNGWebDriver {
 	@Test(enabled = true, groups = { "APItest" }, retryAnalyzer = RetryAnalyzer.class)
 	public void testGETEvent() throws IOException {
 		Response response = postAPIRequest.aptGETEvent(propertyData.getProperty("event.practice.id"),
-				headerConfig.HeaderwithToken(getaccessToken));
+				headerConfig.HeaderwithToken(getaccessToken),
+				propertyData.getProperty("event.time.range.start"),
+				propertyData.getProperty("event.time.range.end"));
 
 		log("Verifying the response");
 		assertEquals(response.getStatusCode(), 200);
@@ -186,8 +193,10 @@ public class AptEventCollectorTests extends BaseTestNGWebDriver {
 	
 	@Test(enabled = true, groups = { "APItest" }, retryAnalyzer = RetryAnalyzer.class)
 	public void testGETEventType() throws IOException {
-		Response response = postAPIRequest.aptGETEventType(propertyData.getProperty("event.practice.id"),
-				headerConfig.HeaderwithToken(getaccessToken));
+		Response response = postAPIRequest.aptGETEventType(propertyData.getProperty("get.event.practice.id"),
+				headerConfig.HeaderwithToken(getaccessToken),
+				propertyData.getProperty("get.event.time.range.start"),
+				propertyData.getProperty("get.event.time.range.end"));
 
 		log("Verifying the response");
 		assertEquals(response.getStatusCode(), 200);
@@ -214,7 +223,9 @@ public class AptEventCollectorTests extends BaseTestNGWebDriver {
 	@Test(enabled = true, groups = { "APItest" }, retryAnalyzer = RetryAnalyzer.class)
 	public void testGETEventPracticeId() throws IOException {
 		Response response = postAPIRequest.aptGETEventPracticeId(propertyData.getProperty("get.event.practice.id"),
-				headerConfig.HeaderwithToken(getaccessToken));
+				headerConfig.HeaderwithToken(getaccessToken),
+				propertyData.getProperty("get.event.time.range.start"),
+				propertyData.getProperty("get.event.time.range.end"));
 
 		log("Verifying the response");
 		assertEquals(response.getStatusCode(), 200);
@@ -233,7 +244,11 @@ public class AptEventCollectorTests extends BaseTestNGWebDriver {
 	@Test(enabled = true, groups = { "APItest" }, retryAnalyzer = RetryAnalyzer.class)
 	public void testGETEventId() throws IOException {
 		Response response = postAPIRequest.aptGETEventId(propertyData.getProperty("get.event.practice.id"),
-				headerConfig.HeaderwithToken(getaccessToken));
+				headerConfig.HeaderwithToken(getaccessToken),
+				propertyData.getProperty("get.event.id"),
+				propertyData.getProperty("get.event.time.range.start"),
+				propertyData.getProperty("get.event.time.range.end")
+				);
 
 		log("Verifying the response");
 		assertEquals(response.getStatusCode(), 200);
@@ -257,5 +272,8 @@ public class AptEventCollectorTests extends BaseTestNGWebDriver {
 		assertEquals(response.getStatusCode(), 200);
 	}
 	
-	
+	@BeforeMethod(enabled = true, groups = { "APItest" })
+	public void getMethodName(ITestResult result) throws IOException {
+		log("Method Name-- " + result.getMethod().getMethodName());
+	}
 }

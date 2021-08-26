@@ -5,10 +5,12 @@ import static org.testng.Assert.assertEquals;
 
 import java.io.IOException;
 
+import org.testng.ITestResult;
+import org.testng.annotations.BeforeMethod;
 import org.testng.annotations.BeforeTest;
 import org.testng.annotations.Test;
 
-import com.intuit.ifs.csscat.core.BaseTestNGWebDriver;
+import com.intuit.ifs.csscat.core.BaseTestNG;
 import com.intuit.ifs.csscat.core.RetryAnalyzer;
 import com.medfusion.common.utils.PropertyFileLoader;
 import com.medfusion.product.appt.precheck.payload.AptReminderProcessorPayload;
@@ -20,7 +22,7 @@ import com.medfusion.product.object.maps.appt.precheck.util.PostAPIRequestAptRem
 
 import io.restassured.response.Response;
 
-public class ApptPrecheckAptReminderProcessorTest extends BaseTestNGWebDriver {
+public class ApptPrecheckAptReminderProcessorTest extends BaseTestNG {
 	String getaccessToken;
 	public static PropertyFileLoader propertyData;
 	public static AptReminderProcessorPayload payload;
@@ -312,5 +314,10 @@ public class ApptPrecheckAptReminderProcessorTest extends BaseTestNGWebDriver {
 				propertyData.getProperty("process.reminder.data.practice.id"),
 				propertyData.getProperty("process.reminder.data.patient.id"),
 				propertyData.getProperty("process.reminder.data.invalid.appt.id"));
+	}
+
+	@BeforeMethod(enabled = true, groups = { "APItest" })
+	public void getMethodName(ITestResult result) throws IOException {
+		log("Method Name-- " + result.getMethod().getMethodName());
 	}
 }
