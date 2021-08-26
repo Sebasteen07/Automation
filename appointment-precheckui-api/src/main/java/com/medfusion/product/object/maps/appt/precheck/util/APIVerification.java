@@ -356,11 +356,6 @@ public class APIVerification extends BaseTestNGWebDriver {
 		assertEquals(js.getString("insurance.insuranceList[0].editStatus"), "CONFIRMED", "Status not Confirmed");
 	}
 
-	public void verifyReturnInsuranceImageWithoutFileName(Response response) throws IOException {
-		JsonPath js = new JsonPath(response.asString());
-		assertEquals(js.get("message"), "No message available");
-	}
-
 	public void verifyInsuranceWithInvalidEditStatus(Response response) throws IOException {
 		JsonPath js = new JsonPath(response.asString());
 		assertEquals(js.get("message"),
@@ -377,11 +372,6 @@ public class APIVerification extends BaseTestNGWebDriver {
 		assertEquals(js.get("message"), "Request method 'PUT' not supported");
 	}
 
-	public void verifyDeleteInsuranceWithoutApptId(Response response) throws IOException {
-		JsonPath js = new JsonPath(response.asString());
-		assertEquals(js.get("message"), "Request method 'DELETE' not supported");
-	}
-
 	public void verifyReturnAppt(Response response, String practiceId, String pmPatientId, String pmAppointmentId,
 			String firstName, String lastName, String birthDate) throws IOException {
 		JsonPath js = new JsonPath(response.asString());
@@ -393,11 +383,6 @@ public class APIVerification extends BaseTestNGWebDriver {
 		assertEquals(js.getString("patientDemographics.lastName"), lastName, "LastName  was incorrect");
 		assertEquals(js.getString("patientDemographics.birthDate"), birthDate, "birthDate was incorrect");
 		assertEquals(js.getString("patientDemographics.status"), "COMPLETE", "Tire was incorrect");
-	}
-
-	public void verifySaveInsuranceImageWithoutFileName(Response response) throws IOException {
-		JsonPath js = new JsonPath(response.asString());
-		assertEquals(js.get("message"), "No message available");
 	}
 
 	public void verifyProcessReminderData(Response response, String practiceId, String patientId, String ApptId)
@@ -962,7 +947,6 @@ public class APIVerification extends BaseTestNGWebDriver {
 		assertEquals(arr.getJSONObject(0).getString("mechanism"), mechanism, "Mechanism  was incorrect");
 		assertEquals(arr.getJSONObject(0).getString("type"), apptType, "Appt Default Type  was incorrect ");
 	}
-
 	public void verifySaveSubsDataWithInvalidEmailId(Response response) throws IOException {
 		JsonPath js = new JsonPath(response.asString());
 		assertEquals(js.get("message"), "Email must be a valid email address");
@@ -1368,23 +1352,11 @@ public class APIVerification extends BaseTestNGWebDriver {
 		log("Verify incorrect Uuid" + uuid);
 		Assert.assertTrue(true, "Invalid input value:" + uuid.contains("Invalid input value:"));
 	}
-
 	public void verifyAlreadyexistsAppt(Response response) throws IOException {
 		JsonPath jsonPath = new JsonPath(response.asString());
 		assertEquals(jsonPath.get("message"),
 				"Appointment type with practiceId/integrationId/appointmentId/categoryId already exists");
 	}
 
-	public void verifyMsgHistoryIncorrectMedium(Response response) throws IOException {
-		JsonPath jsonPath = new JsonPath(response.asString());
-		assertEquals(jsonPath.get("message"),
-				"getMessagesHistory.medium: 'medium' must be one of: 'EMAIL', 'TEXT', 'EMAIL-TEXT'.");
-	}
-
-	public void verifyMsgHistoryIncorrectType(Response response) throws IOException {
-		JsonPath jsonPath = new JsonPath(response.asString());
-		assertEquals(jsonPath.get("message"),
-				"getMessagesHistory.type: 'type' must be one of: 'CHECK-IN', 'BROADCAST'.");
-	}
-
 }
+
