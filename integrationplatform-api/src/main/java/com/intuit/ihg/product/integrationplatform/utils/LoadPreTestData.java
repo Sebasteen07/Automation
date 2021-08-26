@@ -192,19 +192,10 @@ public class LoadPreTestData {
 		if (channelVersion.contains("v3")) {
 			testData.setRestUrl_20(propertyData.getRestUrl3_20());
 		}
-
-		if (portalVersion.contains("1.0")) {
-			if (channelVersion.contains("v1")) {
-				testData.setRestUrl(propertyData.getRestUrl1());
-			}
-			if (channelVersion.contains("v2")) {
-				testData.setRestUrl(propertyData.getRestUrl2());
-			}
-			testData.setPracticeId(propertyData.getPracticeId_PIDC());
-			testData.setoAuthAppToken(propertyData.getOAuthAppToken());
-			testData.setoAuthUsername(propertyData.getOAuthUsername());
-			testData.setoAuthPassword(propertyData.getOAuthPassword());
+		if (channelVersion.contains("v4")) {
+			testData.setRestUrl_20(propertyData.getRestUrl4_20());
 		}
+
 		if (portalVersion.contains("2.0")) {
 			if (channelVersion.contains("v1")) {
 				testData.setRestUrl(propertyData.getRestUrl1_20());
@@ -215,6 +206,7 @@ public class LoadPreTestData {
 			if (channelVersion.contains("v3")) {
 				testData.setRestUrl(propertyData.getRestUrl3_20());
 			}
+			
 			testData.setPracticeId(propertyData.getPracticeId_PIDC_20());
 			testData.setoAuthAppToken(propertyData.getOAuthAppToken_20());
 			testData.setoAuthUsername(propertyData.getOAuthUsername_20());
@@ -231,6 +223,9 @@ public class LoadPreTestData {
 			testData.setPracticeId_PIDC_20(propertyData.getPatientID());
 			testData.setPreferredLanguageType(propertyData.getLanguageType());
 			testData.setToken(propertyData.getToken_MU());
+			testData.setTestPatientIDUserName(propertyData.getTestPatientIDUserName());
+			testData.setPrecheckSubscriberPatientRestURL(propertyData.getPrecheckSubscriberPatientRestURL());
+			testData.setSubscriberPracticeID(propertyData.getSubscriberPracticeID());
 		}
 
 		return testData;

@@ -250,7 +250,6 @@ public class PatientRegistrationUtils {
 				Thread.sleep(10000);
 			}
 
-
 			Log4jUtil.log("Step 8: Do a GET on PIDC Url to get registered patient");
 			Long since = timestamp / 1000L - 60 * 24;
 			Log4jUtil.log("Getting patients since timestamp: " + since);
@@ -347,6 +346,41 @@ public class PatientRegistrationUtils {
 			RestUtils.isPatientRegistered(testData.getResponsePath(), payloadObj.firstNameGroup, payloadObj.firstNameGroup, payloadObj.lastNameGroup, null, testData);
 	}
 
+	public static void PrecheckPatientSubscriberPayloadV4(String ChannelVersion, WebDriver driver, String portalVersion) throws Exception {
+		LoadPreTestData LoadPreTestDataObj = new LoadPreTestData();
+		PIDCInfo testData = new PIDCInfo();
+		
+		Long timestamp = System.currentTimeMillis();
+		Long since = timestamp / 1000L - 60 * 24;
+
+		LoadPreTestDataObj.loadDataFromProperty(testData, ChannelVersion, portalVersion);
+		String workingDir = System.getProperty("user.dir");
+		workingDir = workingDir + testData.getCsvFilePath();
+		Log4jUtil.log("Loading CSVfile : " + workingDir);
+		csvFileReader(testData, workingDir);
+		Log4jUtil.log("Payload Batchsize : 1");
+		Log4jUtil.log("SubscriberEndpoint : "+testData.getPrecheckSubscriberPatientRestURL());
+		Log4jUtil.log("Patient V4 Endpoint : "+testData.getRestUrl_20());
+		sendPrecheckPatientSubscriberPayloadV4 payloadObj = new sendPrecheckPatientSubscriberPayloadV4();
+		String patient = payloadObj.getPIDCPayload(testData, portalVersion);
+
+		Log4jUtil.log(patient);
+
+		Log4jUtil.log("Step 2: Setup Oauth client" + testData.getResponsePath());
+		RestUtils.oauthSetup(testData.getoAuthKeyStore(), testData.getoAuthProperty(), testData.getoAuthAppToken(), testData.getoAuthUsername(),
+					testData.getoAuthPassword());
+		Log4jUtil.log(testData.getToken());
+
+		Log4jUtil.log("Step 3: Do a POST call and get processing status URL");
+		String processingUrl = RestUtils.setupHttpPostRequest(testData.getPrecheckSubscriberPatientRestURL(), patient, testData.getResponsePath());
+
+		Log4jUtil.log("Step 4: Do a GET on PIDC Url to get registered patient");
+		Log4jUtil.log("Getting patients since timestamp: " + since);
+		RestUtils.setupHttpGetRequest(testData.getRestUrl_20() + "?since=" + since + ",0", testData.getResponsePath());
+		Thread.sleep(2000);
+		
+		
+		}
 
 
 }

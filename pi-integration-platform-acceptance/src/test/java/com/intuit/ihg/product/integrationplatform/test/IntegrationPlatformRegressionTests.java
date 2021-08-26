@@ -1116,7 +1116,7 @@ public class IntegrationPlatformRegressionTests extends BaseTestNGWebDriver {
 	
 	@DataProvider(name = "channelVersion")
 	public Object[][] channelVersion() {
-		Object[][] obj = new Object[][] {{ "v3" } };
+		Object[][] obj = new Object[][] {{ "v1" }, { "v3" } };
 		return obj;
 	}
 
@@ -4544,9 +4544,8 @@ public class IntegrationPlatformRegressionTests extends BaseTestNGWebDriver {
 			log("Test Case: PIDC precheck Patient post for  v4 channel -" + portalVersion);
 			log("Execution Environment: " + IHGUtil.getEnvironmentType());
 			log("Execution Browser: " + TestConfig.getBrowserType());
-			PIDCInfo testData = new PIDCInfo();
-			sendPrecheckPatientSubscriberPayloadV4 payloadObj = new sendPrecheckPatientSubscriberPayloadV4();
-			String patient = payloadObj.getPIDCPayload(testData, portalVersion);
+			PatientRegistrationUtils.PrecheckPatientSubscriberPayloadV4("v4", driver, portalVersion);
+			
 
 		}
 }

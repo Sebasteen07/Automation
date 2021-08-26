@@ -32,7 +32,6 @@ public class sendPrecheckPatientSubscriberPayloadV4 {
 	public String zip;
 	public String dateOfBirth;
 	public String date;
-	static String jsonStringOutput;
 	
 	public  ArrayList<String> firstNameGroup = new ArrayList<String>(100);
 	
@@ -54,12 +53,12 @@ public class sendPrecheckPatientSubscriberPayloadV4 {
 			Document doc = icBuilder.newDocument();
 
 			String schema = "http://www.intuit.com/qhg/hub/schemas/Messages";
-
 			Thread.sleep(500);
 			Element mainRootElement = doc.createElementNS(schema, "Message");
-
+			mainRootElement.setAttributeNS("http://www.w3.org/2001/XMLSchema-instance", "xsi:type", "PatientDemographicsMessageType");
+			mainRootElement.setAttribute("majorVer", "1");
+			mainRootElement.setAttribute("minorVer", "0");
 			doc.appendChild(mainRootElement);
-
 			zip = testData.getZipCode();
 
 			date = testData.getBirthDay(); //"01/01/1987";
@@ -70,8 +69,11 @@ public class sendPrecheckPatientSubscriberPayloadV4 {
 			if(portalVersion.contains("2.0")) {
 				dateOfBirth = year + "-" + dt + "-" + month + "T12:00:01";
 			}
-			int batchSize = Integer.parseInt(testData.getBatchSize());
+			int batchSize = 1;
+			
+			String portalStackPatientUrnIdData = "urn:vnd:ihg:portal:patient:"+testData.getTestPatientIDUserName();
 						
+			String portalStackProviderUrnIdData = "urn:vnd:ihg:portal:practice:"+testData.getSubscriberPracticeID();
 			for(int i=0;i<batchSize;i++) {
 				//Adding wait time so that time stamp will have different values-=
 				Thread.sleep(5000);
@@ -95,7 +97,7 @@ public class sendPrecheckPatientSubscriberPayloadV4 {
 					
 				Element MsgId = doc.createElement("MsgId");
 				Header.appendChild(MsgId);
-				MsgId.appendChild(doc.createTextNode(firstName));
+				MsgId.appendChild(doc.createTextNode(patientuuid.toString()));
 
 				
 				Element Event = doc.createElement("Event");
@@ -117,7 +119,7 @@ public class sendPrecheckPatientSubscriberPayloadV4 {
 				
 				Element MinorVer = doc.createElement("MinorVer");
 				Internal.appendChild(MinorVer);
-				MinorVer.appendChild(doc.createTextNode("1"));
+				MinorVer.appendChild(doc.createTextNode("0"));
 				
 				Element Status = doc.createElement("Status");
 				Internal.appendChild(Status);
@@ -147,801 +149,283 @@ public class sendPrecheckPatientSubscriberPayloadV4 {
 				Element LastName = doc.createElement("LastName");
 				PatientDemographics.appendChild(LastName);
 				LastName.appendChild(doc.createTextNode("LastName"));
+								
+				Element DOB = doc.createElement("DOB");
+				PatientDemographics.appendChild(DOB);
+				DOB.appendChild(doc.createTextNode(dateOfBirth));
 				
-				Element IntuitPatientId = doc.createElement("IntuitPatientId");
-				PatientDemographics.appendChild(IntuitPatientId);
-				IntuitPatientId.appendChild(doc.createTextNode(String.valueOf(patientuuid)));
-				
-				//PracticeIdentifier Node
-				Element PracticeIdentifier = doc.createElement("PracticeIdentifier");
-				Patient.appendChild(PracticeIdentifier);
-
-				Element IntegrationPracticeId = doc.createElement("IntegrationPracticeId");
-				PracticeIdentifier.appendChild(IntegrationPracticeId);
-				IntegrationPracticeId.appendChild(doc.createTextNode(testData.getPracticeId()));
-
-				//PatientStatus
-				Element PatientStatus = doc.createElement("PatientStatus");
-				Patient.appendChild(PatientStatus);
-				
-				Element Status1 = doc.createElement("Status");
-				PatientStatus.appendChild(Status);
-
-				// Name
-				Element Name = doc.createElement("Name");
-				Patient.appendChild(Name);
-
-				Element Prefix = doc.createElement("Prefix");
-				Name.appendChild(Prefix);
-				Prefix.appendChild(doc.createTextNode("Prefix"));
-
-				
-				Element MiddleName = doc.createElement("MiddleName");
-
-	
-
-				Element Suffix = doc.createElement("Suffix");
-				Name.appendChild(Suffix);
-				Suffix.appendChild(doc.createTextNode("Suffix"));
-
-				Element DateOfBirth = doc.createElement("DateOfBirth");
-				Patient.appendChild(DateOfBirth);
-			    DateOfBirth.appendChild(doc.createTextNode(dateOfBirth));
-
-				Element Race = doc.createElement("Race");
-				Patient.appendChild(Race);
-				Race.appendChild(doc.createTextNode(testData.patientDetailList.get(i+1).getRace()));
-				
-				Element Ethnicity = doc.createElement("Ethnicity");
-				Patient.appendChild(Ethnicity);
-				Ethnicity.appendChild(doc.createTextNode(testData.patientDetailList.get(i+1).getEthnicity()));
-
 				Element Gender = doc.createElement("Gender");
-				Patient.appendChild(Gender);
+				PatientDemographics.appendChild(Gender);
 				Gender.appendChild(doc.createTextNode(testData.patientDetailList.get(i+1).getGender()));
 				
-				//Enable after implementation
-				if(version.contains("v2_REMOVEME")) {
-					Element GenderIdentity = doc.createElement("GenderIdentity");
-					Patient.appendChild(GenderIdentity);
-					
-					Element ValueGI = doc.createElement("Value");
-					GenderIdentity.appendChild(ValueGI);
-					ValueGI.appendChild(doc.createTextNode(testData.patientDetailList.get(i+1).getGenderIdentity()));
-					
-					Element CommentGI = doc.createElement("Comment");
-					GenderIdentity.appendChild(CommentGI);
-					CommentGI.appendChild(doc.createTextNode(" "));
-					
-					Element SexualOrientation = doc.createElement("SexualOrientation");
-					Patient.appendChild(SexualOrientation);
-					
-					Element ValueSO = doc.createElement("Value");
-					SexualOrientation.appendChild(ValueSO);
-					ValueSO.appendChild(doc.createTextNode(testData.patientDetailList.get(i+1).getSexualOrientation()));
-					
-					Element CommentSO = doc.createElement("Comment");
-					SexualOrientation.appendChild(CommentSO);
-					CommentSO.appendChild(doc.createTextNode(" "));
-				}
+				Element GenderIdentity = doc.createElement("GenderIdentity");
+				PatientDemographics.appendChild(GenderIdentity);
+				GenderIdentity.appendChild(doc.createTextNode(testData.patientDetailList.get(i+1).getGender()));
+				
+				Element SexualOrientation = doc.createElement("SexualOrientation");
+				PatientDemographics.appendChild(SexualOrientation);
+				SexualOrientation.appendChild(doc.createTextNode("LESBIAN_GAY_OR_HOMOSEXUAL"));
+				
+				Element MaritalStatus = doc.createElement("MaritalStatus");
+				PatientDemographics.appendChild(MaritalStatus);
+				MaritalStatus.appendChild(doc.createTextNode("SINGLE"));
+				
+				Element Race = doc.createElement("Race");
+				PatientDemographics.appendChild(Race);
+				Race.appendChild(doc.createTextNode("Unknown"));
+				
+				Element Ethnicity = doc.createElement("Ethnicity");
+				PatientDemographics.appendChild(Ethnicity);
+				Ethnicity.appendChild(doc.createTextNode("Unknown"));
 				
 				Element PreferredLanguage = doc.createElement("PreferredLanguage");
-				Patient.appendChild(PreferredLanguage);
-				PreferredLanguage.appendChild(doc.createTextNode(testData.patientDetailList.get(i+1).getPreferredLanguage()));
+				PatientDemographics.appendChild(PreferredLanguage);
+				PreferredLanguage.appendChild(doc.createTextNode("Unknown"));
+				
+				//Start Addresses node
+				Element Addresses = doc.createElement("Addresses");
+				
+				//Start Address node
+				Element Address = doc.createElement("Address");
+				Addresses.appendChild(Address);
+				
+				Element AddressType = doc.createElement("Type");
+				Address.appendChild(AddressType);
+				AddressType.appendChild(doc.createTextNode("HOME"));
 
+				Element AddressLine1 = doc.createElement("AddressLine1");
+				Address.appendChild(AddressLine1);
+				AddressLine1.appendChild(doc.createTextNode("Line1"));
+
+				Element AddressLine2 = doc.createElement("AddressLine2");
+				Address.appendChild(AddressLine2);
+				AddressLine2.appendChild(doc.createTextNode("Line2"));
+
+				Element CityName = doc.createElement("CityName");
+				Address.appendChild(CityName);
+				CityName.appendChild(doc.createTextNode("City"));
+
+				Element StateCode = doc.createElement("StateCode");
+				Address.appendChild(StateCode);
+				StateCode.appendChild(doc.createTextNode(testData.patientDetailList.get(i+1).getStateNodeValue().trim()));
+
+				Element ZipCode = doc.createElement("ZipCode");
+				Address.appendChild(ZipCode);
+				ZipCode.appendChild(doc.createTextNode(zip));
+				
+				Element Country = doc.createElement("Country");
+				Address.appendChild(Country);
+				Country.appendChild(doc.createTextNode("Country"));
+
+				PatientDemographics.appendChild(Addresses);
+				//End Address Node
+				
+				// Patient Phones Number
+				
+				Element Phones = doc.createElement("Phones");
+				
+				Element Phone = doc.createElement("Phone");
+				Phones.appendChild(Phone);
+				
+				
+				Element PhoneType = doc.createElement("Type");
+				Phone.appendChild(PhoneType);
+				PhoneType.appendChild(doc.createTextNode("HOME"));
+
+				Element Number = doc.createElement("Number");	
+				Phone.appendChild(Number);
+				Number.appendChild(doc.createTextNode("HomePhone"));
+				
+				PatientDemographics.appendChild(Phones);
+
+				
+				Element EmailAddress = doc.createElement("Email");
+				PatientDemographics.appendChild(EmailAddress);
+				EmailAddress.appendChild(doc.createTextNode(email));
+				
+				////personProviders Node
+				Element personProviders = doc.createElement("personProviders");
+				PatientDemographics.appendChild(personProviders);
+				
+				Element personProvider = doc.createElement("personProvider");
+				personProviders.appendChild(personProvider);
+				
+				
+				Element portalStackPatientUrnId = doc.createElement("portalStackPatientUrnId");
+				personProvider.appendChild(portalStackPatientUrnId);
+				
+			
+				Element patienturn = doc.createElement("urn");
+				portalStackPatientUrnId.appendChild(patienturn);
+				patienturn.appendChild(doc.createTextNode(portalStackPatientUrnIdData));
+				
+				
+				Element portalStackProviderUrnId = doc.createElement("portalStackProviderUrnId");
+				personProvider.appendChild(portalStackProviderUrnId);
+				
+				Element ProviderUrnId = doc.createElement("urn");
+				portalStackProviderUrnId.appendChild(ProviderUrnId);
+				ProviderUrnId.appendChild(doc.createTextNode(portalStackProviderUrnIdData));
+				
 				Element PreferredCommunication = doc.createElement("PreferredCommunication");
 				Patient.appendChild(PreferredCommunication);
 				PreferredCommunication.appendChild(doc.createTextNode(testData.patientDetailList.get(i+1).getPreferredCommunication()));
-
-				Element SocialSecurityNumber = doc.createElement("SocialSecurityNumber");
-				Patient.appendChild(SocialSecurityNumber);
-				SocialSecurityNumber.appendChild(doc.createTextNode("123456789"));
-
-				Element EmailAddress = doc.createElement("EmailAddress");
-				Patient.appendChild(EmailAddress);
-				EmailAddress.appendChild(doc.createTextNode(email));
-
-				// HomeAddress
-				Element HomeAddress = doc.createElement("HomeAddress");
-				Patient.appendChild(HomeAddress);
-				Element Line1 = doc.createElement("Line1");
-				HomeAddress.appendChild(Line1);
-				Line1.appendChild(doc.createTextNode("Line1"));
-
-				Element Line2 = doc.createElement("Line2");
-				HomeAddress.appendChild(Line2);
-				Line2.appendChild(doc.createTextNode("Line2"));
-
-				Element City = doc.createElement("City");
-				HomeAddress.appendChild(City);
-				City.appendChild(doc.createTextNode("City"));
-
-				Element State = doc.createElement("State");
-				HomeAddress.appendChild(State);
-				State.appendChild(doc.createTextNode(testData.patientDetailList.get(i+1).getStateNodeValue().trim()));
-
-				Element Country = doc.createElement("Country");
-				HomeAddress.appendChild(Country);
-				Country.appendChild(doc.createTextNode("Country"));
-
-				Element ZipCode = doc.createElement("ZipCode");
-				HomeAddress.appendChild(ZipCode);
-				ZipCode.appendChild(doc.createTextNode(zip));
-
-				// WorkAddress
-				Element WorkAddress = doc.createElement("WorkAddress");
-				Patient.appendChild(WorkAddress);
-				Line1 = doc.createElement("Line1");
-				WorkAddress.appendChild(Line1);
-				Line1.appendChild(doc.createTextNode("Line1"));
-
-				Line2 = doc.createElement("Line2");
-				WorkAddress.appendChild(Line2);
-				Line2.appendChild(doc.createTextNode("Line2"));
-
-				City = doc.createElement("City");
-				WorkAddress.appendChild(City);
-				City.appendChild(doc.createTextNode("City"));
-
-				State = doc.createElement("State");
-				WorkAddress.appendChild(State);
-				State.appendChild(doc.createTextNode("NC"));
-
-				Country = doc.createElement("Country");
-				WorkAddress.appendChild(Country);
-				Country.appendChild(doc.createTextNode("Country"));
-
-				ZipCode = doc.createElement("ZipCode");
-				WorkAddress.appendChild(ZipCode);
-				ZipCode.appendChild(doc.createTextNode(zip));
-
-				// Patient Telephone Number
-				Element HomePhone = doc.createElement("HomePhone");
-				Patient.appendChild(HomePhone);
-				HomePhone.appendChild(doc.createTextNode("HomePhone"));
-				Element MobilePhone = doc.createElement("MobilePhone");
-				Patient.appendChild(MobilePhone);
-				MobilePhone.appendChild(doc.createTextNode("MobilePhone"));
-				Element WorkPhone = doc.createElement("WorkPhone");
-				Patient.appendChild(WorkPhone);
-				WorkPhone.appendChild(doc.createTextNode("WorkPhone"));
-				// MaritalStatus
-				Element MaritalStatus = doc.createElement("MaritalStatus");
-				Patient.appendChild(MaritalStatus);
-				MaritalStatus.appendChild(doc.createTextNode("SINGLE"));
-
-				// EmergencyContact
-				Element EmergencyContact = doc.createElement("EmergencyContact");
-				Patient.appendChild(EmergencyContact);
-
-				// Name
-				Name = doc.createElement("Name");
-				EmergencyContact.appendChild(Name);
-
-				Prefix = doc.createElement("Prefix");
-				Name.appendChild(Prefix);
-				Prefix.appendChild(doc.createTextNode("Prefix"));
-
-				FirstName = doc.createElement("FirstName");
-				Name.appendChild(FirstName);
-				FirstName.appendChild(doc.createTextNode("FirstName"));
-
-				MiddleName = doc.createElement("MiddleName");
-				Name.appendChild(MiddleName);
-				MiddleName.appendChild(doc.createTextNode("MiddleName"));
-
-				LastName = doc.createElement("LastName");
-				Name.appendChild(LastName);
-				LastName.appendChild(doc.createTextNode("LastName"));
-
-				Suffix = doc.createElement("Suffix");
-				Name.appendChild(Suffix);
-				Suffix.appendChild(doc.createTextNode("Suffix"));
-
-				// Address
-				Element Address = doc.createElement("Address");
-				EmergencyContact.appendChild(Address);
-				Line1 = doc.createElement("Line1");
-				Address.appendChild(Line1);
-				Line1.appendChild(doc.createTextNode("Line1"));
-
-				Line2 = doc.createElement("Line2");
-				Address.appendChild(Line2);
-				Line2.appendChild(doc.createTextNode("Line2"));
-
-				City = doc.createElement("City");
-				Address.appendChild(City);
-				City.appendChild(doc.createTextNode("City"));
-
-				State = doc.createElement("State");
-				Address.appendChild(State);
-				State.appendChild(doc.createTextNode("NC"));
-
-				Country = doc.createElement("Country");
-				Address.appendChild(Country);
-				Country.appendChild(doc.createTextNode("Country"));
-
-				ZipCode = doc.createElement("ZipCode");
-				Address.appendChild(ZipCode);
-				ZipCode.appendChild(doc.createTextNode("27560"));
-
-				Element Phone = doc.createElement("Phone");
-				EmergencyContact.appendChild(Phone);
-				Phone.appendChild(doc.createTextNode("321511-126"));
-
-				EmailAddress = doc.createElement("EmailAddress");
-				EmergencyContact.appendChild(EmailAddress);
-				EmailAddress.appendChild(doc.createTextNode("EmailAddress"));
-
-				Element Employment = doc.createElement("Employment");
-				Patient.appendChild(Employment);
-
-				Name = doc.createElement("Name");
-				Employment.appendChild(Name);
-				Name.appendChild(doc.createTextNode("Name"));
-
-				// Address
-				Address = doc.createElement("Address");
-				Employment.appendChild(Address);
-				Line1 = doc.createElement("Line1");
-				Address.appendChild(Line1);
-				Line1.appendChild(doc.createTextNode("Line1"));
-
-				Line2 = doc.createElement("Line2");
-				Address.appendChild(Line2);
-				Line2.appendChild(doc.createTextNode("Line2"));
-
-				City = doc.createElement("City");
-				Address.appendChild(City);
-				City.appendChild(doc.createTextNode("City"));
-
-				State = doc.createElement("State");
-				Address.appendChild(State);
-				State.appendChild(doc.createTextNode("NC"));
-
-				Country = doc.createElement("Country");
-				Address.appendChild(Country);
-				Country.appendChild(doc.createTextNode("Country"));
-
-				ZipCode = doc.createElement("ZipCode");
-				Address.appendChild(ZipCode);
-				ZipCode.appendChild(doc.createTextNode("27560"));
-
-				Phone = doc.createElement("Phone");
-				Employment.appendChild(Phone);
-				Phone.appendChild(doc.createTextNode("Phone"));
-
-				Element Billing = doc.createElement("Billing");
-				Patient.appendChild(Billing);
-
-				Element AccountNumber = doc.createElement("AccountNumber");
-
-				Element Guarantor = doc.createElement("Guarantor");
-				Billing.appendChild(Guarantor);
-
-				Name = doc.createElement("Name");
-				Guarantor.appendChild(Name);
-
-				Prefix = doc.createElement("Prefix");
-				Name.appendChild(Prefix);
-				Prefix.appendChild(doc.createTextNode("Prefix"));
-
-				FirstName = doc.createElement("FirstName");
-				Name.appendChild(FirstName);
-				FirstName.appendChild(doc.createTextNode("FirstName"));
-
-				MiddleName = doc.createElement("MiddleName");
-				Name.appendChild(MiddleName);
-				MiddleName.appendChild(doc.createTextNode("MiddleName"));
-
-				LastName = doc.createElement("LastName");
-				Name.appendChild(LastName);
-				LastName.appendChild(doc.createTextNode("LastName"));
-
-				Suffix = doc.createElement("Suffix");
-				Name.appendChild(Suffix);
-				Suffix.appendChild(doc.createTextNode("Suffix"));
-
-				DateOfBirth = doc.createElement("DateOfBirth");
-				Guarantor.appendChild(DateOfBirth);
-				DateOfBirth.appendChild(doc.createTextNode("2001-12-31T12:00:00"));
-
-				SocialSecurityNumber = doc.createElement("SocialSecurityNumber");
-				Guarantor.appendChild(SocialSecurityNumber);
-				SocialSecurityNumber.appendChild(doc.createTextNode("123456789"));
-
-				// Address
-				Address = doc.createElement("Address");
-				Guarantor.appendChild(Address);
-				Line1 = doc.createElement("Line1");
-				Address.appendChild(Line1);
-				Line1.appendChild(doc.createTextNode("Line1"));
-
-				Line2 = doc.createElement("Line2");
-				Address.appendChild(Line2);
-				Line2.appendChild(doc.createTextNode("Line2"));
-
-				City = doc.createElement("City");
-				Address.appendChild(City);
-				City.appendChild(doc.createTextNode("City"));
-
-				State = doc.createElement("State");
-				Address.appendChild(State);
-				State.appendChild(doc.createTextNode("DE"));
-
-				Country = doc.createElement("Country");
-				Address.appendChild(Country);
-				Country.appendChild(doc.createTextNode("Country"));
-
-				ZipCode = doc.createElement("ZipCode");
-				Address.appendChild(ZipCode);
-				ZipCode.appendChild(doc.createTextNode("27560"));
-
-				Phone = doc.createElement("Phone");
-				Guarantor.appendChild(Phone);
-				Phone.appendChild(doc.createTextNode("Phone"));
-
-				Element Email = doc.createElement("Email");
-				Guarantor.appendChild(Email);
-				Email.appendChild(doc.createTextNode("Email"));
-
-				Element PatientRelationToGuarantor = doc.createElement("PatientRelationToGuarantor");
-				Guarantor.appendChild(PatientRelationToGuarantor);
-				PatientRelationToGuarantor.appendChild(doc.createTextNode("SELF"));
-
-				// Primary
-				Element PrimaryInsurance = doc.createElement("PrimaryInsurance");
-				Patient.appendChild(PrimaryInsurance);
-
-				Element CompanyName = doc.createElement("CompanyName");
-				PrimaryInsurance.appendChild(CompanyName);
-				CompanyName.appendChild(doc.createTextNode("Aviva"));
-
-				Element PlanName = doc.createElement("PlanName");
-				PrimaryInsurance.appendChild(PlanName);
-				PlanName.appendChild(doc.createTextNode("Plan123"));
-
-				Element GroupNumber = doc.createElement("GroupNumber");
-				PrimaryInsurance.appendChild(GroupNumber);
-				GroupNumber.appendChild(doc.createTextNode("23123"));
-
-				Element PolicyNumber = doc.createElement("PolicyNumber");
-				PrimaryInsurance.appendChild(PolicyNumber);
-				PolicyNumber.appendChild(doc.createTextNode("PolicyNumber"));
-
-				Element EffectiveDate = doc.createElement("EffectiveDate");
-				PrimaryInsurance.appendChild(EffectiveDate);
-				EffectiveDate.appendChild(doc.createTextNode("2001-12-31T12:00:00"));
-
-				Element ExpirationDate = doc.createElement("ExpirationDate");
-				PrimaryInsurance.appendChild(ExpirationDate);
-				ExpirationDate.appendChild(doc.createTextNode("2001-12-31T12:00:00"));
-
-				Element Copay = doc.createElement("Copay");
-				PrimaryInsurance.appendChild(Copay);
-				Copay.appendChild(doc.createTextNode("0.2"));
-
-				Element ClaimsAddress = doc.createElement("ClaimsAddress");
-				PrimaryInsurance.appendChild(ClaimsAddress);
-
-				Line1 = doc.createElement("Line1");
-				ClaimsAddress.appendChild(Line1);
-				Line1.appendChild(doc.createTextNode("addLine1"));
-
-				Line2 = doc.createElement("Line2");
-				ClaimsAddress.appendChild(Line2);
-				Line2.appendChild(doc.createTextNode("addLine2"));
-
-				City = doc.createElement("City");
-				ClaimsAddress.appendChild(City);
-				City.appendChild(doc.createTextNode("City1"));
-
-				State = doc.createElement("State");
-				ClaimsAddress.appendChild(State);
-				State.appendChild(doc.createTextNode("NC"));
-
-				Country = doc.createElement("Country");
-				ClaimsAddress.appendChild(Country);
-				Country.appendChild(doc.createTextNode("US"));
-
-				ZipCode = doc.createElement("ZipCode");
-				ClaimsAddress.appendChild(ZipCode);
-				ZipCode.appendChild(doc.createTextNode("27560"));
-
-				Element ClaimsPhone = doc.createElement("ClaimsPhone");
-				PrimaryInsurance.appendChild(ClaimsPhone);
-				ClaimsPhone.appendChild(doc.createTextNode("ClaimPhone"));
-
-				Element MemberId = doc.createElement("MemberId");
-				PrimaryInsurance.appendChild(MemberId);
-				MemberId.appendChild(doc.createTextNode("MemberId"));
-
+				
+				// Preffered Pharmacy
+				Element PreferredPharmacy = doc.createElement("PreferredPharmacy");
+				PatientDemographics.appendChild(PreferredPharmacy);
+				
+				Element Pharmacy = doc.createElement("Pharmacy");
+				PreferredPharmacy.appendChild(Pharmacy);				
+				
+				Element ExternalPharmacyId = doc.createElement("ExternalPharmacyId");
+				Pharmacy.appendChild(ExternalPharmacyId);	
+				ExternalPharmacyId.appendChild(doc.createTextNode("ExternalPharmacyId1"));
+				
+				Element Name = doc.createElement("Name");
+				Pharmacy.appendChild(Name);	
+				Name.appendChild(doc.createTextNode("TestPharmacyName1"));
+
+				Element PharmacyStatus = doc.createElement("Status");
+				Pharmacy.appendChild(PharmacyStatus);	
+				PharmacyStatus.appendChild(doc.createTextNode("ACTIVE"));
+				
+				Element PharmacyAddress = doc.createElement("Address");
+				Pharmacy.appendChild(PharmacyAddress);	
+				
+				Element PharmAddressType = doc.createElement("Type");
+				PharmacyAddress.appendChild(PharmAddressType);
+				PharmAddressType.appendChild(doc.createTextNode("HOME"));
+
+				Element PharmAddressLine1 = doc.createElement("AddressLine1");
+				PharmacyAddress.appendChild(PharmAddressLine1);
+				PharmAddressLine1.appendChild(doc.createTextNode("Line1"));
+
+				Element PharmAddressLine2 = doc.createElement("AddressLine2");
+				PharmacyAddress.appendChild(PharmAddressLine2);
+				PharmAddressLine2.appendChild(doc.createTextNode("Line2"));
+
+				Element PharmCityName = doc.createElement("CityName");
+				PharmacyAddress.appendChild(PharmCityName);
+				PharmCityName.appendChild(doc.createTextNode("City"));
+
+				Element PharmStateCode = doc.createElement("StateCode");
+				PharmacyAddress.appendChild(PharmStateCode);
+				PharmStateCode.appendChild(doc.createTextNode(testData.patientDetailList.get(i+1).getStateNodeValue().trim()));
+
+				Element PharmZipCode = doc.createElement("ZipCode");
+				PharmacyAddress.appendChild(PharmZipCode);
+				PharmZipCode.appendChild(doc.createTextNode(zip));
+				
+				Element PharmCountry = doc.createElement("Country");
+				PharmacyAddress.appendChild(PharmCountry);
+				PharmCountry.appendChild(doc.createTextNode("Country"));
+				//End of Pharmacy node
+				
+				// start Patient Insurance1				
+				Element PatientInsurance = doc.createElement("PatientInsurance");
+				mainRootElement.appendChild(PatientInsurance);
+
+				Element InsurancePolicyKey = doc.createElement("InsurancePolicyKey");
+				PatientInsurance.appendChild(InsurancePolicyKey);
+				
 				Element PayerId = doc.createElement("PayerId");
-				PrimaryInsurance.appendChild(PayerId);
-				PayerId.appendChild(doc.createTextNode("PayerId"));
+				InsurancePolicyKey.appendChild(PayerId);
+				PayerId.appendChild(doc.createTextNode("67890947"));
+
+				Element PolicyId = doc.createElement("PolicyId");
+				InsurancePolicyKey.appendChild(PolicyId);
+				PolicyId.appendChild(doc.createTextNode("InsurancePolicyId"));
+				
+				Element PatientRef = doc.createElement("PatientRef");
+				InsurancePolicyKey.appendChild(PatientRef);
+				
+				Element PatientNum = doc.createElement("PatientNum");
+				PatientRef.appendChild(PatientNum);
+				PatientNum.appendChild(doc.createTextNode("PatientNum"));
+				
+				Element BillingAccountRef = doc.createElement("BillingAccountRef");
+				PatientRef.appendChild(BillingAccountRef);
+				
+				Element PracticeId = doc.createElement("PracticeId");
+				BillingAccountRef.appendChild(PracticeId);
+				PracticeId.appendChild(doc.createTextNode(testData.getPracticeId()));
+				
+				Element BillingAcctNum = doc.createElement("BillingAcctNum");
+				BillingAccountRef.appendChild(BillingAcctNum);
+				BillingAcctNum.appendChild(doc.createTextNode("BillingAcctNum"));
+				
+				Element InsuranceCompany = doc.createElement("InsuranceCompany");
+				PatientInsurance.appendChild(InsuranceCompany);
+				InsuranceCompany.appendChild(doc.createTextNode("Aviva"));
+
+				Element InsuranceClaimsPhone = doc.createElement("InsuranceClaimsPhone");
+				PatientInsurance.appendChild(InsuranceClaimsPhone);
+
+				Element InsNumber = doc.createElement("Number");
+				InsuranceClaimsPhone.appendChild(InsNumber);
+				InsNumber.appendChild(doc.createTextNode("9820999889"));
+				
+				Element InsuranceIdx = doc.createElement("InsuranceIdx");
+				PatientInsurance.appendChild(InsuranceIdx);
+				InsuranceIdx.appendChild(doc.createTextNode("PRIMARY"));
+				
+				Element MemberId = doc.createElement("MemberId");
+				PatientInsurance.appendChild(MemberId);
+				MemberId.appendChild(doc.createTextNode("001"));
 
 				Element SubscriberId = doc.createElement("SubscriberId");
-				PrimaryInsurance.appendChild(SubscriberId);
-				SubscriberId.appendChild(doc.createTextNode("SubscriberId"));
+				PatientInsurance.appendChild(SubscriberId);
+				SubscriberId.appendChild(doc.createTextNode("002"));
+				
+				Element GroupNum = doc.createElement("GroupNum");
+				PatientInsurance.appendChild(GroupNum);
+				GroupNum.appendChild(doc.createTextNode("003"));
 
-				Element SubscriberName = doc.createElement("SubscriberName");
-				PrimaryInsurance.appendChild(SubscriberName);
+				Element SubscriberFirstName = doc.createElement("SubscriberFirstName");
+				PatientInsurance.appendChild(SubscriberFirstName);
+				SubscriberFirstName.appendChild(doc.createTextNode("SubscriberFirstName"));
 
-				Prefix = doc.createElement("Prefix");
-				SubscriberName.appendChild(Prefix);
-				Prefix.appendChild(doc.createTextNode("Prefix"));
+				Element SubscriberLastName = doc.createElement("SubscriberLastName");
+				PatientInsurance.appendChild(SubscriberLastName);
+				SubscriberLastName.appendChild(doc.createTextNode("SubscriberLastName"));
+				
+				Element SubscriberMiddleName = doc.createElement("SubscriberMiddleName");
+				PatientInsurance.appendChild(SubscriberMiddleName);
+				SubscriberMiddleName.appendChild(doc.createTextNode("SubscriberMiddleName"));
+				
+				Element SubscriberDoB = doc.createElement("SubscriberDoB");
+				PatientInsurance.appendChild(SubscriberDoB);
+				SubscriberDoB.appendChild(doc.createTextNode(dateOfBirth));
+				
+				Element SubscriberSSN = doc.createElement("SubscriberSSN");
+				PatientInsurance.appendChild(SubscriberSSN);
+				SubscriberSSN.appendChild(doc.createTextNode("SubscriberSSN"));
 
-				FirstName = doc.createElement("FirstName");
-				SubscriberName.appendChild(FirstName);
-				FirstName.appendChild(doc.createTextNode("timon"));
-
-				MiddleName = doc.createElement("MiddleName");
-				SubscriberName.appendChild(MiddleName);
-				MiddleName.appendChild(doc.createTextNode("sd12"));
-
-				LastName = doc.createElement("LastName");
-				SubscriberName.appendChild(LastName);
-				LastName.appendChild(doc.createTextNode("south"));
-
-				Suffix = doc.createElement("Suffix");
-				SubscriberName.appendChild(Suffix);
-				Suffix.appendChild(doc.createTextNode("Suffix"));
-
-				Element SubscriberDateOfBirth = doc.createElement("SubscriberDateOfBirth");
-				PrimaryInsurance.appendChild(SubscriberDateOfBirth);
-				SubscriberDateOfBirth.appendChild(doc.createTextNode("2001-12-01T12:00:00"));
-
-				Element SubscriberSocialSecurityNumber = doc.createElement("SubscriberSocialSecurityNumber");
-				PrimaryInsurance.appendChild(SubscriberSocialSecurityNumber);
-				SubscriberSocialSecurityNumber.appendChild(doc.createTextNode("123456789"));
-
-				Element PatientRelationToSubscriber = doc.createElement("PatientRelationToSubscriber");
-				PrimaryInsurance.appendChild(PatientRelationToSubscriber);
-				PatientRelationToSubscriber.appendChild(doc.createTextNode("SELF"));
-
-				// Secondary Insurance
-				Element SecondaryInsurance = doc.createElement("SecondaryInsurance");
-				Patient.appendChild(SecondaryInsurance);
-
-				CompanyName = doc.createElement("CompanyName");
-				SecondaryInsurance.appendChild(CompanyName);
-				CompanyName.appendChild(doc.createTextNode("Aviva1"));
-
-				PlanName = doc.createElement("PlanName");
-				SecondaryInsurance.appendChild(PlanName);
-				PlanName.appendChild(doc.createTextNode("Plan234"));
-
-				GroupNumber = doc.createElement("GroupNumber");
-				SecondaryInsurance.appendChild(GroupNumber);
-				GroupNumber.appendChild(doc.createTextNode("23143"));
-
-				PolicyNumber = doc.createElement("PolicyNumber");
-				SecondaryInsurance.appendChild(PolicyNumber);
-				PolicyNumber.appendChild(doc.createTextNode("PolicyNumber1"));
-
-				EffectiveDate = doc.createElement("EffectiveDate");
-				SecondaryInsurance.appendChild(EffectiveDate);
-				EffectiveDate.appendChild(doc.createTextNode("2001-12-03T12:00:00"));
-
-				ExpirationDate = doc.createElement("ExpirationDate");
-				SecondaryInsurance.appendChild(ExpirationDate);
-				ExpirationDate.appendChild(doc.createTextNode("2001-12-03T12:00:00"));
-
-				Copay = doc.createElement("Copay");
-				SecondaryInsurance.appendChild(Copay);
-				Copay.appendChild(doc.createTextNode("0.3"));
-
-				ClaimsAddress = doc.createElement("ClaimsAddress");
-				SecondaryInsurance.appendChild(ClaimsAddress);
-
-				Line1 = doc.createElement("Line1");
-				ClaimsAddress.appendChild(Line1);
-				Line1.appendChild(doc.createTextNode("addressLine1"));
-
-				Line2 = doc.createElement("Line2");
-				ClaimsAddress.appendChild(Line2);
-				Line2.appendChild(doc.createTextNode("addressLine2"));
-
-				City = doc.createElement("City");
-				ClaimsAddress.appendChild(City);
-				City.appendChild(doc.createTextNode("City2"));
-
-				State = doc.createElement("State");
-				ClaimsAddress.appendChild(State);
-				State.appendChild(doc.createTextNode("MA"));
-
-				Country = doc.createElement("Country");
-				ClaimsAddress.appendChild(Country);
-				Country.appendChild(doc.createTextNode("US"));
-
-				ZipCode = doc.createElement("ZipCode");
-				ClaimsAddress.appendChild(ZipCode);
-				ZipCode.appendChild(doc.createTextNode("27561"));
-
-				ClaimsPhone = doc.createElement("ClaimsPhone");
-				SecondaryInsurance.appendChild(ClaimsPhone);
-				ClaimsPhone.appendChild(doc.createTextNode("ClaimsPhone"));
-
-				MemberId = doc.createElement("MemberId");
-				SecondaryInsurance.appendChild(MemberId);
-				MemberId.appendChild(doc.createTextNode("MemberId"));
-
-				PayerId = doc.createElement("PayerId");
-				SecondaryInsurance.appendChild(PayerId);
-				PayerId.appendChild(doc.createTextNode("PayerId"));
-
-				SubscriberId = doc.createElement("SubscriberId");
-				SecondaryInsurance.appendChild(SubscriberId);
-				SubscriberId.appendChild(doc.createTextNode("SubscriberId"));
-
-				SubscriberName = doc.createElement("SubscriberName");
-				SecondaryInsurance.appendChild(SubscriberName);
-
-				Prefix = doc.createElement("Prefix");
-				SubscriberName.appendChild(Prefix);
-				Prefix.appendChild(doc.createTextNode("Prefix"));
-
-				FirstName = doc.createElement("FirstName");
-				SubscriberName.appendChild(FirstName);
-				FirstName.appendChild(doc.createTextNode("FirstName"));
-
-				MiddleName = doc.createElement("MiddleName");
-				SubscriberName.appendChild(MiddleName);
-				MiddleName.appendChild(doc.createTextNode("MiddleName"));
-
-				LastName = doc.createElement("LastName");
-				SubscriberName.appendChild(LastName);
-				LastName.appendChild(doc.createTextNode("FirstName"));
-
-				Suffix = doc.createElement("Suffix");
-				SubscriberName.appendChild(Suffix);
-				Suffix.appendChild(doc.createTextNode("Suffix"));
-
-				SubscriberDateOfBirth = doc.createElement("SubscriberDateOfBirth");
-				SecondaryInsurance.appendChild(SubscriberDateOfBirth);
-				SubscriberDateOfBirth.appendChild(doc.createTextNode("2001-12-01T12:00:00"));
-
-				SubscriberSocialSecurityNumber = doc.createElement("SubscriberSocialSecurityNumber");
-				SecondaryInsurance.appendChild(SubscriberSocialSecurityNumber);
-				SubscriberSocialSecurityNumber.appendChild(doc.createTextNode("123456790"));
-
-				PatientRelationToSubscriber = doc.createElement("PatientRelationToSubscriber");
-				SecondaryInsurance.appendChild(PatientRelationToSubscriber);
-				PatientRelationToSubscriber.appendChild(doc.createTextNode("SELF"));
-
-				// Tertiary Insurance
-				Element TertiaryInsurance = doc.createElement("TertiaryInsurance");
-				Patient.appendChild(TertiaryInsurance);
-
-				CompanyName = doc.createElement("CompanyName");
-				TertiaryInsurance.appendChild(CompanyName);
-				CompanyName.appendChild(doc.createTextNode("Aviva3"));
-
-				PlanName = doc.createElement("PlanName");
-				TertiaryInsurance.appendChild(PlanName);
-				PlanName.appendChild(doc.createTextNode("Plan345"));
-
-				GroupNumber = doc.createElement("GroupNumber");
-				TertiaryInsurance.appendChild(GroupNumber);
-				GroupNumber.appendChild(doc.createTextNode("544212"));
-
-				PolicyNumber = doc.createElement("PolicyNumber");
-				TertiaryInsurance.appendChild(PolicyNumber);
-				PolicyNumber.appendChild(doc.createTextNode("PolicyNumber2"));
-
-				EffectiveDate = doc.createElement("EffectiveDate");
-				TertiaryInsurance.appendChild(EffectiveDate);
+				Element ISSSN = doc.createElement("ISSSN");
+				PatientInsurance.appendChild(ISSSN);
+				ISSSN.appendChild(doc.createTextNode("false"));
+				
+				Element InsuredName = doc.createElement("InsuredName");
+				PatientInsurance.appendChild(InsuredName);
+				InsuredName.appendChild(doc.createTextNode("Max"));
+				
+				Element EffectiveDate = doc.createElement("EffectiveDate");
+				PatientInsurance.appendChild(EffectiveDate);
 				EffectiveDate.appendChild(doc.createTextNode("2001-12-31T12:00:00"));
 
-				ExpirationDate = doc.createElement("ExpirationDate");
-				TertiaryInsurance.appendChild(ExpirationDate);
-				ExpirationDate.appendChild(doc.createTextNode("2001-12-31T12:00:00"));
-
-				Copay = doc.createElement("Copay");
-				TertiaryInsurance.appendChild(Copay);
-				Copay.appendChild(doc.createTextNode("0.5"));
-
-				ClaimsAddress = doc.createElement("ClaimsAddress");
-				TertiaryInsurance.appendChild(ClaimsAddress);
-
-				Line1 = doc.createElement("Line1");
-				ClaimsAddress.appendChild(Line1);
-				Line1.appendChild(doc.createTextNode("addssLine1"));
-
-				Line2 = doc.createElement("Line2");
-				ClaimsAddress.appendChild(Line2);
-				Line2.appendChild(doc.createTextNode("addssLine2"));
-
-				City = doc.createElement("City");
-				ClaimsAddress.appendChild(City);
-				City.appendChild(doc.createTextNode("City3"));
-
-				State = doc.createElement("State");
-				ClaimsAddress.appendChild(State);
-				State.appendChild(doc.createTextNode("DE"));
-
-				Country = doc.createElement("Country");
-				ClaimsAddress.appendChild(Country);
-				Country.appendChild(doc.createTextNode("US"));
-
-				ZipCode = doc.createElement("ZipCode");
-				ClaimsAddress.appendChild(ZipCode);
-				ZipCode.appendChild(doc.createTextNode("27562"));
-
-				ClaimsPhone = doc.createElement("ClaimsPhone");
-				TertiaryInsurance.appendChild(ClaimsPhone);
-				ClaimsPhone.appendChild(doc.createTextNode("1234567892"));
-
-				MemberId = doc.createElement("MemberId");
-				TertiaryInsurance.appendChild(MemberId);
-				MemberId.appendChild(doc.createTextNode("MemberId"));
-
-				PayerId = doc.createElement("PayerId");
-				TertiaryInsurance.appendChild(PayerId);
-				PayerId.appendChild(doc.createTextNode("PayerId"));
-
-				SubscriberId = doc.createElement("SubscriberId");
-				TertiaryInsurance.appendChild(SubscriberId);
-				SubscriberId.appendChild(doc.createTextNode("SubscriberId"));
-
-				SubscriberName = doc.createElement("SubscriberName");
-				TertiaryInsurance.appendChild(SubscriberName);
-
-				Prefix = doc.createElement("Prefix");
-				SubscriberName.appendChild(Prefix);
-				Prefix.appendChild(doc.createTextNode("Suffix"));
-
-				FirstName = doc.createElement("FirstName");
-				SubscriberName.appendChild(FirstName);
-				FirstName.appendChild(doc.createTextNode("Tim3"));
-
-				MiddleName = doc.createElement("MiddleName");
-				SubscriberName.appendChild(MiddleName);
-				MiddleName.appendChild(doc.createTextNode("M"));
-
-				LastName = doc.createElement("LastName");
-				SubscriberName.appendChild(LastName);
-				LastName.appendChild(doc.createTextNode("Southee3"));
-
-				Suffix = doc.createElement("Suffix");
-				SubscriberName.appendChild(Suffix);
-				Suffix.appendChild(doc.createTextNode("Suffix"));
-
-				SubscriberDateOfBirth = doc.createElement("SubscriberDateOfBirth");
-				TertiaryInsurance.appendChild(SubscriberDateOfBirth);
-				SubscriberDateOfBirth.appendChild(doc.createTextNode("2001-12-01T12:00:00"));
-
-				SubscriberSocialSecurityNumber = doc.createElement("SubscriberSocialSecurityNumber");
-				TertiaryInsurance.appendChild(SubscriberSocialSecurityNumber);
-				SubscriberSocialSecurityNumber.appendChild(doc.createTextNode("123465789"));
-
-				PatientRelationToSubscriber = doc.createElement("PatientRelationToSubscriber");
-				TertiaryInsurance.appendChild(PatientRelationToSubscriber);
+				Element PatientRelationToSubscriber = doc.createElement("PatientRelationToSubscriber");
+				PatientInsurance.appendChild(PatientRelationToSubscriber);
 				PatientRelationToSubscriber.appendChild(doc.createTextNode("SELF"));
 
-				mainRootElement.appendChild(Patient);
-			}
-
-			Transformer transformer = TransformerFactory.newInstance().newTransformer();
-			transformer.setOutputProperty(OutputKeys.INDENT, "yes");
-
-			DOMSource source = new DOMSource(doc);
-			StringWriter writer = new StringWriter();
-			transformer.transform(source, new StreamResult(writer));
-			output = writer.toString();
-			
-		} catch (Exception e) {
-			e.printStackTrace();
-		}
-		return output;
-	}
-
-	public  String getPIDCJSONPayload(PIDCInfo testData,String portalVersion) {
-
-		DocumentBuilderFactory icFactory = DocumentBuilderFactory.newInstance();
-		DocumentBuilder icBuilder;
-		try {
-			icBuilder = icFactory.newDocumentBuilder();
-			Document doc = icBuilder.newDocument();
-
-
-			Thread.sleep(500);
-			Element mainRootElement = doc.createElementNS("","PatientBatch");
-			doc.appendChild(mainRootElement);
-			// Start Creating BatchSize Document
-
-			Element BatchSize = doc.createElement("BatchSize");
-			BatchSize.appendChild(doc.createTextNode(testData.getBatchSize()));
-			mainRootElement.appendChild(BatchSize);
-			// End BatchSize
-
-			zip = testData.getZipCode();
-
-			date = testData.getBirthDay(); //"01/01/1987";
-			String dt = date.substring(0, 2);
-			String month = date.substring(3, 5);
-			String year = date.substring(6);
-			dateOfBirth = year + "-" + dt + "-" + month + "T12:00:01";
-			
-				//Adding wait time so that time stamp will have different values-=
-			Thread.sleep(5000);
-			
-			int batchSize = Integer.parseInt(testData.getBatchSize());
-
-			for(int i=0;i<batchSize;i++) {
-				Long timestamp = System.currentTimeMillis();
-				firstName = "Name" + timestamp;
-				lastName = "TestPatient" + timestamp;
-				email = firstName + "@mailinator.com";
-				firstNameGroup.add(firstName);
-				lastNameGroup.add(lastName);
-				emailGroup.add(email);
-				zipGroup.add(zip);
-				dateGroup.add(date);
-				//Start Patient
-			Element Patient = doc.createElement("Patient");
+				Element PictureFront = doc.createElement("PictureFront");
+				PatientInsurance.appendChild(PictureFront);
+				PictureFront.appendChild(doc.createTextNode("123456"));
 				
-				//Start PatientIdentifier Node
-			Element PatientIdentifier = doc.createElement("PatientIdentifier");
-			Patient.appendChild(PatientIdentifier);
-				
-			Element PracticePatientId = doc.createElement("PracticePatientId");
-			PatientIdentifier.appendChild(PracticePatientId);
-			PracticePatientId.appendChild(doc.createTextNode(firstName));
-				//End PatientIdentifier Node
-
-			Element PracticeIdentifier = doc.createElement("PracticeIdentifier");
-			Patient.appendChild(PracticeIdentifier);
-
-			Element IntegrationPracticeId = doc.createElement("IntegrationPracticeId");
-			PracticeIdentifier.appendChild(IntegrationPracticeId);
-			IntegrationPracticeId.appendChild(doc.createTextNode(testData.getPracticeId()));
-
-				// Name
-			Element Name = doc.createElement("Name");
-			Patient.appendChild(Name);
-			Element FirstName = doc.createElement("FirstName");
-			Name.appendChild(FirstName);
-			FirstName.appendChild(doc.createTextNode(firstName));
-
-			Element LastName = doc.createElement("LastName");
-			Name.appendChild(LastName);
-			LastName.appendChild(doc.createTextNode(lastName));
-
-
-			Element DateOfBirth = doc.createElement("DateOfBirth");
-			Patient.appendChild(DateOfBirth);
-		    DateOfBirth.appendChild(doc.createTextNode(dateOfBirth));
-
-		    Element Gender = doc.createElement("Gender");
-			Patient.appendChild(Gender);
-			Gender.appendChild(doc.createTextNode(testData.patientDetailList.get(i+1).getGender()));
-				
-			Element EmailAddress = doc.createElement("EmailAddress");
-			Patient.appendChild(EmailAddress);
-			EmailAddress.appendChild(doc.createTextNode(email));
-
-				// HomeAddress
-			Element HomeAddress = doc.createElement("HomeAddress");
-			Patient.appendChild(HomeAddress);
-
-			Element City = doc.createElement("City");
-			HomeAddress.appendChild(City);
-			City.appendChild(doc.createTextNode("City"));
-
-			Element State = doc.createElement("State");
-			HomeAddress.appendChild(State);
-			State.appendChild(doc.createTextNode(testData.patientDetailList.get(i+1).getStateNodeValue().trim()));
-
-			Element Country = doc.createElement("Country");
-			HomeAddress.appendChild(Country);
-			Country.appendChild(doc.createTextNode("Country"));
-
-			Element ZipCode = doc.createElement("ZipCode");
-			HomeAddress.appendChild(ZipCode);
-			ZipCode.appendChild(doc.createTextNode(zip));
-
-			mainRootElement.appendChild(Patient);
+				Element PictureBack = doc.createElement("PictureBack");
+				PatientInsurance.appendChild(PictureBack);
+				PictureBack.appendChild(doc.createTextNode("123456"));
+								
 			}
 			Transformer transformer = TransformerFactory.newInstance().newTransformer();
 			transformer.setOutputProperty(OutputKeys.INDENT, "yes");
@@ -950,15 +434,12 @@ public class sendPrecheckPatientSubscriberPayloadV4 {
 			StringWriter writer = new StringWriter();
 			transformer.transform(source, new StreamResult(writer));
 			output = writer.toString();
-			JSONObject json = XML.toJSONObject(output);   
-	        jsonStringOutput = json.toString(4);  
-
 			
 		} 
 		catch (Exception e) {
 			e.printStackTrace();
 		}
-		return jsonStringOutput;
+		return output;
 	}
 
 }

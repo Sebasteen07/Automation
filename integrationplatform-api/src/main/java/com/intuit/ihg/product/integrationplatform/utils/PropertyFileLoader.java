@@ -531,6 +531,10 @@ public class PropertyFileLoader {
 	public String getRestUrl3_20() {
 		return property.getProperty("resturl3.20");
 	}
+	
+	public String getRestUrl4_20() {
+		return property.getProperty("resturl4.20");
+	}
 
 	public String getPracticeId_PIDC_20() {
 		return property.getProperty("practiceid.pidc.20");
@@ -575,6 +579,18 @@ public class PropertyFileLoader {
 	public String getLanguageType() {
 		return property.getProperty("preferred.language");
 	}
+	
+	public String getTestPatientIDUserName() {
+			return property.getProperty("username");
+	}
+	
+	public String getPrecheckSubscriberPatientRestURL() {
+		return property.getProperty("rest.precheck.subscriber");
+	}
+	public String getSubscriberPracticeID() {
+		return property.getProperty("subscriber.praticeid");
+	}
+	
 	// PIDC END
 
 	// Appointment Data Request from partner
