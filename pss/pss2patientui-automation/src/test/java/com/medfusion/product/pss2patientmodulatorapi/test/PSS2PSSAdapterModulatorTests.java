@@ -1135,13 +1135,6 @@ public class PSS2PSSAdapterModulatorTests extends BaseTestNG {
 				propertyData.getProperty("cat.speci.id.am"));
 		Response response = postAPIRequestAM.categorySpecialtyPost(practiceId, b);
 		aPIVerification.responseCodeValidation(response, 200);
-		aPIVerification.responseTimeValidation(response);
-
-		// aPIVerification.responseCodeValidation(response, 400);
-//		JsonPath js = new JsonPath(response.asString());
-//		String message = js.getString("message");
-//		assertEquals(message,"Specialty is already associated with category");
-
 	}
 
 	@Test(enabled = true, groups = { "APItest" }, retryAnalyzer = RetryAnalyzer.class)
@@ -2420,35 +2413,32 @@ public class PSS2PSSAdapterModulatorTests extends BaseTestNG {
 
 		Response response1 = postAPIRequestAM.customDataPost(practiceId, payloadAM.customDataPayload());
 		aPIVerification.responseCodeValidation(response1, 200);
-		
+
 		Response response = postAPIRequestAM.customDataGet(practiceId);
 		aPIVerification.responseCodeValidation(response, 200);
 		aPIVerification.responseTimeValidation(response);
 		aPIVerification.responseKeyValidationJson(response, "patientMatches[0].id");
-		String id=aPIVerification.responseKeyValidationJson(response, "patientMatches[0].id");
-		
+		String id = aPIVerification.responseKeyValidationJson(response, "patientMatches[0].id");
+
 		Response responseDelete = postAPIRequestAM.customDataDelete(practiceId, id);
 		aPIVerification.responseCodeValidation(responseDelete, 200);
 
-		
-		
 	}
-	
 
 	@Test(enabled = true, groups = { "APItest" }, retryAnalyzer = RetryAnalyzer.class)
 	public void testPatientMatchCustMetaData() throws NullPointerException, Exception {
-        Response response = postAPIRequestAM.partnerCustommetaData(practiceId,"/partnercustommetadata");
+		Response response = postAPIRequestAM.partnerCustommetaData(practiceId, "/partnercustommetadata");
 		aPIVerification.responseCodeValidation(response, 200);
 		aPIVerification.responseTimeValidation(response);
-				
+
 	}
-	
+
 	@Test(enabled = true, groups = { "APItest" }, retryAnalyzer = RetryAnalyzer.class)
 	public void testPatientMatchCustMetaDataInvalidPath() throws NullPointerException, Exception {
-        Response response = postAPIRequestAM.partnerCustommetaData(practiceId,"/partnercustommetadataaa");
+		Response response = postAPIRequestAM.partnerCustommetaData(practiceId, "/partnercustommetadataaa");
 		aPIVerification.responseCodeValidation(response, 404);
 		aPIVerification.responseTimeValidation(response);
-				
+
 	}
 
 }

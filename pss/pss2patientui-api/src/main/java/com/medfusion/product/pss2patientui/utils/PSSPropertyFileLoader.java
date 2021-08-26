@@ -89,7 +89,7 @@ public class PSSPropertyFileLoader {
 		appointValues.setOldPatientUserName(property.getProperty("oldpatient.username.gw"));
 		appointValues.setOldPatientPassword(property.getProperty("oldpatient.password.gw"));
 		appointValues.setProviderImageAPI(property.getProperty("provider.image.api.gw"));
-		appointValues.setGmailUserName(property.getProperty("gmail.username.gw"));
+		appointValues.setGmailUserName(property.getProperty("gmail.gw"));
 		appointValues.setPopUpMessege(property.getProperty("popup.messege"));
 		appointValues.setNextAvailiableText(property.getProperty("nextavailable.text"));
 		appointValues.setExcludeSlotFirstValue(property.getProperty("exclude.firstvalue.gw"));

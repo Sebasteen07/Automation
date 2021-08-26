@@ -106,19 +106,22 @@ public class PayloadGE {
 		return pastappointments;
 	}
 	
-	public static String upcommingApt_Payload(String patientid, String practiceid, String practicedisplayname) {
+	public static String upcommingApt_Payload(String patientid, String practiceid, String practicedisplayname,String starttime) {
 		String upcommingappt ="{\r\n"
 				+ "  \"additionalFields\": {},\r\n"
 				+ "  \"endDate\": \"04/01/2021\",\r\n"
+				+ "  \"endDate\": null,\r\n"
 				+ "  \"patientId\": \""+patientid+"\",\r\n"
 				+ "  \"practiceProvision\": {\r\n"
 				+ "    \"active\": true,\r\n"
 				+ "    \"practiceDisplayName\": \""+practicedisplayname+"\",\r\n"
 				+ "    \"practiceId\": \""+practiceid+"\",\r\n"
 				+ "    \"practiceName\": \"PSS-GE-24333-PRACTICE\",\r\n"
+				+ "    \"practiceName\": \""+practicedisplayname+"\",\r\n"
 				+ "    \"practiceTimezone\": \"\"\r\n"
 				+ "  },\r\n"
 				+ "  \"startDate\": \"05/12/2021\"\r\n"
+				+ "  \"startDate\": \"08/12/2021 00:00:00\"\r\n"
 				+ "}";
 		return upcommingappt;
 	}
