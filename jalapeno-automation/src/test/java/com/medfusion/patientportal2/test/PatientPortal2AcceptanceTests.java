@@ -5076,7 +5076,7 @@ public class PatientPortal2AcceptanceTests extends BaseTestNGWebDriver {
 		SelectPharmacyPage pharmaPage = new SelectPharmacyPage(driver);
 		pharmaPage.selectPharmacy();
 
-		logStep("Select Medications");
+		logStep("Select Inactive Medications");
 		SelectMedicationsPage selectMedPage = new SelectMedicationsPage(driver);
 		selectMedPage.selectInactiveMedication();
 
