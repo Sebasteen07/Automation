@@ -77,6 +77,8 @@ import com.intuit.ihg.product.integrationplatform.utils.SendDirectMessageUtils;
 import com.intuit.ihg.product.integrationplatform.utils.StatementEventData;
 import com.intuit.ihg.product.integrationplatform.utils.StatementEventUtils;
 import com.intuit.ihg.product.integrationplatform.utils.StatementsMessagePayload;
+import com.intuit.ihg.product.integrationplatform.utils.sendPatientInvitePayloadV3;
+import com.intuit.ihg.product.integrationplatform.utils.sendPrecheckPatientSubscriberPayloadV4;
 import com.medfusion.common.utils.IHGUtil;
 import com.medfusion.common.utils.Mailinator;
 import com.medfusion.common.utils.PropertyFileLoader;
@@ -1114,7 +1116,7 @@ public class IntegrationPlatformRegressionTests extends BaseTestNGWebDriver {
 	
 	@DataProvider(name = "channelVersion")
 	public Object[][] channelVersion() {
-		Object[][] obj = new Object[][] {{ "v1" } ,{ "v3" } };
+		Object[][] obj = new Object[][] {{ "v1" }, { "v3" } };
 		return obj;
 	}
 
@@ -4535,4 +4537,15 @@ public class IntegrationPlatformRegressionTests extends BaseTestNGWebDriver {
 		log("Execution Browser: " + TestConfig.getBrowserType());
 		PatientRegistrationUtils.pidcPatientRegistrationJSONPayload("v3", driver, portalVersion);
 }
+
+		@Test(enabled = true, dataProvider = "portalVersion", groups = {
+				"RegressionTests" }, retryAnalyzer = RetryAnalyzer.class)
+		public void testPIDCPrecheckPatientV4(String portalVersion) throws Exception {
+			log("Test Case: PIDC precheck Patient post for  v4 channel -" + portalVersion);
+			log("Execution Environment: " + IHGUtil.getEnvironmentType());
+			log("Execution Browser: " + TestConfig.getBrowserType());
+			PatientRegistrationUtils.PrecheckPatientSubscriberPayloadV4("v4", driver, portalVersion);
+			
+
+		}
 }

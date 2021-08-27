@@ -74,6 +74,8 @@ public class PIDCInfo {
 	private String oAuthPassword_20 = "";
 	private String preferredLanguageType="";
 	private String token;
+	private String precheckSubscriberPatientRestURL="";
+	private String SubscriberPracticeID = "";
 	
 	public String getRestUrl() {
 		return restUrl;
@@ -627,6 +629,22 @@ public class PIDCInfo {
 
 	public void setToken(String token) {
 		this.token = token;
+	}
+	
+	public String getPrecheckSubscriberPatientRestURL() {
+		return precheckSubscriberPatientRestURL;
+	}
+
+	public void setPrecheckSubscriberPatientRestURL(String precheckSubscriberPatientRestURL) {
+		this.precheckSubscriberPatientRestURL = precheckSubscriberPatientRestURL;
+	}
+	
+	public String getSubscriberPracticeID() {
+		return SubscriberPracticeID;
+	}
+
+	public void setSubscriberPracticeID(String SubscriberPracticeID) {
+		this.SubscriberPracticeID = SubscriberPracticeID;
 	}
 
 }
