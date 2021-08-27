@@ -247,7 +247,7 @@ public class sendPrecheckPatientSubscriberPayloadV4 {
 				Element personProviders = doc.createElement("personProviders");
 				PatientDemographics.appendChild(personProviders);
 				
-				Element personProvider = doc.createElement("personProvider");
+				Element personProvider = doc.createElement("PersonProvider");
 				personProviders.appendChild(personProvider);
 				
 				

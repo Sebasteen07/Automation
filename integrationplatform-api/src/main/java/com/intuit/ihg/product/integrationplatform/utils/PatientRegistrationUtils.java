@@ -378,7 +378,7 @@ public class PatientRegistrationUtils {
 		Log4jUtil.log("Getting patients since timestamp: " + since);
 		RestUtils.setupHttpGetRequest(testData.getRestUrl_20() + "?since=" + since + ",0", testData.getResponsePath());
 		Thread.sleep(2000);
-		
+		RestUtils.isPatientPresent(testData.getResponsePath(), testData.getTestPatientIDUserName());
 		
 		}
 
