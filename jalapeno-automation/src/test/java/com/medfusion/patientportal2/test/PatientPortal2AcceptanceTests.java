@@ -5053,4 +5053,82 @@ public class PatientPortal2AcceptanceTests extends BaseTestNGWebDriver {
     assertTrue(messagesPage.isMessageDisplayed(driver, "Process Externally " + tsPracticePortal));
     homePage.clickOnLogout();
 }
+    @Test(enabled = true, groups = { "acceptance-solutions" }, retryAnalyzer = RetryAnalyzer.class)
+	public void testInactiveMedications() throws Exception {
+
+		logStep("Load login page and login");
+		JalapenoLoginPage loginPage = new JalapenoLoginPage(driver, testData.getProperty("med.wf.portal.url"));
+		JalapenoHomePage homePage = loginPage.login(testData.getProperty("med.wf.user.id"),
+				testData.getProperty("med.wf.password"));
+
+		logStep("Click on Medications");
+		homePage.clickOnMedications(driver);
+
+		log("Initiating Medications 2.0 Request from Patient Portal");
+		MedicationsHomePage medPage = new MedicationsHomePage(driver);
+		medPage.clickOnRxRequest();
+
+		logStep("Select Location and Provider");
+		LocationAndProviderPage select = new LocationAndProviderPage(driver);
+		select.chooseLocationAndProviderwithoutFee();
+
+		logStep("Select a pharmacy");
+		SelectPharmacyPage pharmaPage = new SelectPharmacyPage(driver);
+		pharmaPage.selectPharmacy();
+
+		logStep("Select Inactive Medications");
+		SelectMedicationsPage selectMedPage = new SelectMedicationsPage(driver);
+		selectMedPage.selectInactiveMedication();
+
+		logStep("Validating Prescription Renewal Fee Text is not present");
+		MedicationsConfirmationPage confirmPage = new MedicationsConfirmationPage(driver);
+		confirmPage.prescriptionRenewalFee();
+
+		logStep("Confirm Medication Request from Patient Portal");
+		MedicationsConfirmationPage confirmPage1 = new MedicationsConfirmationPage(driver);
+		String successMsg = confirmPage1.confirmMedication(driver);
+		assertEquals(successMsg, "Your prescription request has been submitted.");
+
+		homePage.clickOnLogout();
+
+		logStep("Login to Practice Portal");
+		PracticeLoginPage practiceLogin = new PracticeLoginPage(driver, testData.getPortalUrl());
+		PracticeHomePage practiceHome = practiceLogin.login(testData.getProperty("med.wf.doc.user.id"),
+				testData.getProperty("med.wf.doc.password"));
+
+		logStep("Click On RxRenewal in Practice Portal");
+		RxRenewalSearchPage rxRenewalSearchPage = practiceHome.clickonRxRenewal();
+
+		logStep("Search for Today's RxRenewal in Practice Portal");
+		rxRenewalSearchPage.searchForRxRenewalToday();
+
+		logStep("Get the RxRenewal Details in Practice Portal");
+		rxRenewalSearchPage.getRxRenewalDetails();
+
+		logStep("Set the RxRenewal Fields in Practice Portal");
+		rxRenewalSearchPage.setRxRenewalFields();
+
+		logStep("Click On Process RxRenewal Button in Practice Portal");
+		rxRenewalSearchPage.clickProcessRxRenewal();
+
+		logStep("Set Action Radio Button in Practice Portal");
+		rxRenewalSearchPage.setActionRadioButton();
+
+		logStep("Verify Process Completed Text in Practice Portal");
+		rxRenewalSearchPage.verifyProcessCompleted();
+
+		logStep("Logout of Practice Portal");
+		practiceHome.logOut();
+
+		logStep("Login to Patient Portal");
+		loginPage = new JalapenoLoginPage(driver, testData.getProperty("med.wf.portal.url"));
+		homePage = loginPage.login(testData.getProperty("med.wf.user.id"), testData.getProperty("med.wf.password"));
+
+		logStep("Navigate to Message Inbox");
+		JalapenoMessagesPage messagesPage = homePage.showMessages(driver);
+
+		logStep("Looking for Medication approval from doctor in Inbox");
+		assertTrue(messagesPage.isMessageDisplayed(driver, "RxRenewalSubject"));
+
+	}
 }
