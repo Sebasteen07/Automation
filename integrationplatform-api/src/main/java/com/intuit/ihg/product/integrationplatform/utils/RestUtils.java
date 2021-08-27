@@ -4203,6 +4203,27 @@ public class RestUtils {
 		Log4jUtil.log("Filename in respons: "+attchmentName);
 		assertTrue(attchmentName.equals(fileName), "Attachment File Names are Equal");
 	}
+	
+	public static void isPatientPresent(String responsePath, String TestPatientIDUserName)
+			throws ParserConfigurationException, SAXException, IOException {
+		Document doc = buildDOMXML(responsePath);
+
+		Log4jUtil.log("Step 5: finding posted Patient");
+		boolean found = false;
+		NodeList nodes = doc.getElementsByTagName(IntegrationConstants.PRACTICEPATIENTID);
+		Node node = null;
+		for (int i = 0; i < nodes.getLength(); i++) {
+
+			node = nodes.item(i);
+			Log4jUtil.log("Searching: " + node.getChildNodes().item(0).getTextContent() + ", to be found: "
+					+ (TestPatientIDUserName.toString()));
+			if (node.getChildNodes().item(0).getTextContent().contains(TestPatientIDUserName.toString())) {
+				found = true;
+				break;
+			}
+		}
+		assertTrue(found, "Patient was found in GET call with 200 Response");
+	}
 
 		
 }

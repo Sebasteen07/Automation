@@ -40,7 +40,7 @@ public class SelectMedicationsPage  extends BasePageObject {
 	@FindBy(how=How.XPATH,using="//div[@class='form-buttons ng-scope']/button[@type='button']")
 	private WebElement btnBack;
 	
-	@FindBy(how=How.XPATH,using="(//*[@class='list-item']/*[@class='checkbox'])[1]")
+	@FindBy(how=How.XPATH,using="(//*[@class='checkbox'])[1]")
 	private WebElement availablemedicationcheckbx;
 	
 	@FindBy(how=How.XPATH,using="//div[@class='ng-value-container']//following::input")

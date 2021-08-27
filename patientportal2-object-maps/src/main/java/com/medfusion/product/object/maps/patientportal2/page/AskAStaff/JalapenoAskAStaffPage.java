@@ -122,7 +122,7 @@ public class JalapenoAskAStaffPage extends JalapenoMenu {
 		IHGUtil.waitForElement(driver, 20, creditCardAddButton);
 		creditCardAddButton.click();
 		cardName.sendKeys("Joffrey Baratheon Lannister");
-		cardNumber.sendKeys("4012888888881881");
+		cardNumber.sendKeys("5555555555554444");
 		LocalDate currentDate = LocalDate.now();
 		Month month = currentDate.getMonth().plus(1);
 		DecimalFormat formatter = new DecimalFormat("00");
