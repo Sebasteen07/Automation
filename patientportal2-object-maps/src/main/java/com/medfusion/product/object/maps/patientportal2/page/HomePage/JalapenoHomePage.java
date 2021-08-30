@@ -366,6 +366,21 @@ public class JalapenoHomePage extends JalapenoMenu {
 		return PageFactory.initElements(driver, JalapenoAskAStaffV2Page1.class);
 	}
 
+	public JalapenoAskAStaffV2Page1 openSpecificAskaFree(String askaName) throws InterruptedException {
+		IHGUtil.PrintMethodName();
+		wait.until(ExpectedConditions.visibilityOf(askAQuestion));
+		askAQuestion.click();
+		System.out.println("It clicked on the ASK a question in homepage");
+		try {
+			IHGUtil.waitForElement(driver, 80, askPaid);
+			driver.findElement(By.xpath("//a[text()='Ask (free)']")).click();
+			System.out.println("clciked the element ASK Paid");
+		} catch (NoSuchElementException e) {
+			log("No question with the specified link text found! name: " + askaName);
+			e.printStackTrace();
+		}
+		return PageFactory.initElements(driver, JalapenoAskAStaffV2Page1.class);
+	}
 	public void faChangePatient() throws InterruptedException {
 		IHGUtil.PrintMethodName();
 		clickOnBubbleIcon();
