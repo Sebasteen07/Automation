@@ -208,13 +208,14 @@ public class PSS2GEAdapterAcceptanceTests extends BaseTestNGWebDriver {
 		propertyData.setRestAPIDataGE(testData);
 		PostAPIRequestGE postAPIRequest = new PostAPIRequestGE();
 		log("Base URL is   " + testData.getBasicURI());
-		log("Payload- " + PayloadGE.upcommingApt_Payload(testData.getSsoPatientId(), testData.getPracticeIdGE(), testData.getPracticeDisplayName()));
+		log("Payload- " + PayloadGE.upcommingApt_Payload(testData.getSsoPatientId(), testData.getPracticeIdGE(),
+				testData.getPracticeDisplayName(), testData.getStartDateTime()));
 
 		postAPIRequest.upcomingAppt(testData.getBasicURI(),
 				PayloadGE.upcommingApt_Payload(testData.getMatchPatientId(), testData.getPracticeIdGE(),
-						testData.getPracticeDisplayName()),
-				headerConfig.defaultHeader(),
-				testData.getPracticeIdGE(), testData.getUpcomingApptresourceName(), testData.getUpcomingApptlocationName());
+						testData.getPracticeDisplayName(), testData.getStartDateTime()),
+				headerConfig.defaultHeader(), testData.getPracticeIdGE(), testData.getUpcomingApptresourceName(),
+				testData.getUpcomingApptlocationName());
 	}
 
 	@Test
