@@ -1,6 +1,8 @@
 // Copyright 2021 NXGN Management, LLC. All Rights Reserved.
 package com.medfusion.product.object.maps.patientportal2.page.MedicationsPage;
 
+import static org.testng.Assert.assertFalse;
+
 import java.io.IOException;
 
 import org.openqa.selenium.Keys;
@@ -38,11 +40,20 @@ public class SelectMedicationsPage  extends BasePageObject {
 	@FindBy(how=How.XPATH,using="//div[@class='form-buttons ng-scope']/button[@type='button']")
 	private WebElement btnBack;
 	
-	@FindBy(how=How.XPATH,using="(//*[@class='list-item']/*[@class='checkbox'])[1]")
+	@FindBy(how=How.XPATH,using="(//*[@class='checkbox'])[1]")
 	private WebElement availablemedicationcheckbx;
 	
 	@FindBy(how=How.XPATH,using="//div[@class='ng-value-container']//following::input")
 	private WebElement multiSelectDependentMedication;
+	
+	@FindBy(how=How.ID,using="add-new-medication")
+	private WebElement btnAddInactiveMedication;
+	
+	@FindBy(how=How.XPATH,using="//*[@class='checkbox']")
+	private WebElement CheckbxInactiveMedication;
+	
+	@FindBy(how=How.XPATH,using="//*[text()=' Add ']")
+	private WebElement btnAddMedication;
 	
 
 	public void selectMedications() throws IOException, InterruptedException {
@@ -68,6 +79,18 @@ public class SelectMedicationsPage  extends BasePageObject {
 		Thread.sleep(2000);
 		multiSelectDependentMedication.sendKeys(Keys.ENTER);	
 		Thread.sleep(2000);
+		btnContinue.click();
+	}
+	
+	public void selectInactiveMedication() throws IOException, InterruptedException {
+		IHGUtil.waitForElement(driver, 5, btnAddInactiveMedication);
+		btnAddInactiveMedication.click();
+		IHGUtil.waitForElement(driver, 5, CheckbxInactiveMedication);
+		log("Verifying add button is disabled as medication is not selected");
+		assertFalse(btnAddMedication.isEnabled(), "Add button is disabled");
+		CheckbxInactiveMedication.click();
+		btnAddMedication.click();
+		IHGUtil.waitForElement(driver, 5, btnContinue);
 		btnContinue.click();
 	}
 	

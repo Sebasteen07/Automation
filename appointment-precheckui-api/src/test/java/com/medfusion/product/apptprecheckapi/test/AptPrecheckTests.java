@@ -67,8 +67,7 @@ public class AptPrecheckTests extends BaseTestNG {
 	@Test(enabled = true, groups = { "APItest" }, retryAnalyzer = RetryAnalyzer.class)
 	public void testGETAppointmentsStartDay() throws IOException {
 		Response response = postAPIRequest.getAppointmentsStartDay(propertyData.getProperty("apt.precheck.practice.id"),
-				headerConfig.HeaderwithToken(getaccessToken),
-				propertyData.getProperty("apt.precheck.appts.start.day"));
+				headerConfig.HeaderwithToken(getaccessToken), propertyData.getProperty("apt.precheck.appts.start.day"));
 		log("Verifying the response");
 		assertEquals(response.getStatusCode(), 200);
 		apiVerification.responseTimeValidation(response);
@@ -77,14 +76,14 @@ public class AptPrecheckTests extends BaseTestNG {
 	@Test(enabled = true, groups = { "APItest" }, retryAnalyzer = RetryAnalyzer.class)
 	public void testPOSTPracticeId() throws IOException {
 
-		Response response = postAPIRequest.
-		aptPostPracticeId(propertyData.getProperty("apt.precheck.practice.id"),
-		payload.getPracticeIdPayload(propertyData.getProperty("apt.precheck.practice.appt.date.range.start"),
-		propertyData.getProperty("apt.precheck.practice.appt.date.range.end")),
-						headerConfig.HeaderwithToken(getaccessToken));
+		Response response = postAPIRequest.aptPostPracticeId(propertyData.getProperty("apt.precheck.practice.id"),
+				payload.getPracticeIdPayload(propertyData.getProperty("apt.precheck.practice.appt.date.range.start"),
+						propertyData.getProperty("apt.precheck.practice.appt.date.range.end")),
+				headerConfig.HeaderwithToken(getaccessToken));
 
-		log("Payload- " + payload.getPracticeIdPayload(propertyData.getProperty("apt.precheck.practice.appt.date.range.start"),
-				propertyData.getProperty("apt.precheck.practice.appt.date.range.end")));
+		log("Payload- "
+				+ payload.getPracticeIdPayload(propertyData.getProperty("apt.precheck.practice.appt.date.range.start"),
+						propertyData.getProperty("apt.precheck.practice.appt.date.range.end")));
 		log("Verifying the response");
 		assertEquals(response.getStatusCode(), 200);
 		apiVerification.responseTimeValidation(response);
@@ -95,10 +94,12 @@ public class AptPrecheckTests extends BaseTestNG {
 
 		Response response = postAPIRequest.aptPostArrivals(propertyData.getProperty("apt.precheck.practice.id"),
 				payload.getArrivalsPayload(propertyData.getProperty("apt.precheck.arrivals.appt.date.range.start"),
-						propertyData.getProperty("apt.precheck.arrivals.appt.date.range.end")), headerConfig.HeaderwithToken(getaccessToken));
+						propertyData.getProperty("apt.precheck.arrivals.appt.date.range.end")),
+				headerConfig.HeaderwithToken(getaccessToken));
 
-		log("Payload- " + payload.getArrivalsPayload(propertyData.getProperty("apt.precheck.practice.appt.date.range.start"),
-				propertyData.getProperty("apt.precheck.practice.appt.date.range.end")));
+		log("Payload- "
+				+ payload.getArrivalsPayload(propertyData.getProperty("apt.precheck.practice.appt.date.range.start"),
+						propertyData.getProperty("apt.precheck.practice.appt.date.range.end")));
 		log("Verifying the response");
 		assertEquals(response.getStatusCode(), 200);
 		apiVerification.responseTimeValidation(response);
@@ -159,9 +160,11 @@ public class AptPrecheckTests extends BaseTestNG {
 				payload.getBroadcastMessagePayload(propertyData.getProperty("apt.precheck.broadcast.date.range.start"),
 						propertyData.getProperty("apt.precheck.broadcast.date.range.end"),
 						propertyData.getProperty("apt.precheck.broadcast.msg.patient.id"),
-						propertyData.getProperty("apt.precheck.broadcast.msg.appt.id")), headerConfig.HeaderwithToken(getaccessToken));
-		
-		log("Payload- " + payload.getBroadcastMessagePayload(propertyData.getProperty("apt.precheck.broadcast.date.range.start"),
+						propertyData.getProperty("apt.precheck.broadcast.msg.appt.id")),
+				headerConfig.HeaderwithToken(getaccessToken));
+
+		log("Payload- " + payload.getBroadcastMessagePayload(
+				propertyData.getProperty("apt.precheck.broadcast.date.range.start"),
 				propertyData.getProperty("apt.precheck.broadcast.date.range.end"),
 				propertyData.getProperty("apt.precheck.broadcast.msg.patient.id"),
 				propertyData.getProperty("apt.precheck.broadcast.msg.appt.id")));
@@ -175,10 +178,14 @@ public class AptPrecheckTests extends BaseTestNG {
 
 		Response response = postAPIRequest.getCheckinActions(propertyData.getProperty("apt.precheck.practice.id"),
 				payload.getCheckinActionsPayload(propertyData.getProperty("apt.precheck.copay.skip.appointment.id"),
-						propertyData.getProperty("apt.precheck.copay.skip.patient.id"),propertyData.getProperty("apt.precheck.balance.practice.id")), headerConfig.HeaderwithToken(getaccessToken));
+						propertyData.getProperty("apt.precheck.copay.skip.patient.id"),
+						propertyData.getProperty("apt.precheck.balance.practice.id")),
+				headerConfig.HeaderwithToken(getaccessToken));
 
-		log("Payload- " + payload.getCheckinActionsPayload(propertyData.getProperty("apt.precheck.copay.skip.appointment.id"),
-				propertyData.getProperty("apt.precheck.copay.skip.patient.id"),propertyData.getProperty("apt.precheck.balance.practice.id")));
+		log("Payload- "
+				+ payload.getCheckinActionsPayload(propertyData.getProperty("apt.precheck.copay.skip.appointment.id"),
+						propertyData.getProperty("apt.precheck.copay.skip.patient.id"),
+						propertyData.getProperty("apt.precheck.balance.practice.id")));
 		log("Verifying the response");
 		assertEquals(response.getStatusCode(), 200);
 		apiVerification.responseTimeValidation(response);
@@ -215,12 +222,14 @@ public class AptPrecheckTests extends BaseTestNG {
 	public void testDELETEAppointmentsFromDb() throws IOException {
 
 		Response response = postAPIRequest.getDELETEAppointmentsFromDb(
-				propertyData.getProperty("apt.precheck.practice.id"), payload.getDELETEAppointmentsFromDbPayload(propertyData.getProperty("apt.precheck.delete.appt.id"),
+				propertyData.getProperty("apt.precheck.practice.id"),
+				payload.getDELETEAppointmentsFromDbPayload(propertyData.getProperty("apt.precheck.delete.appt.id"),
 						propertyData.getProperty("apt.precheck.delete.patient.id")),
 				headerConfig.HeaderwithToken(getaccessToken));
 
-		log("Payload- " + payload.getDELETEAppointmentsFromDbPayload(propertyData.getProperty("apt.precheck.delete.appt.id"),
-				propertyData.getProperty("apt.precheck.delete.patient.id")));
+		log("Payload- "
+				+ payload.getDELETEAppointmentsFromDbPayload(propertyData.getProperty("apt.precheck.delete.appt.id"),
+						propertyData.getProperty("apt.precheck.delete.patient.id")));
 		log("Verifying the response");
 		assertEquals(response.getStatusCode(), 200);
 		apiVerification.responseTimeValidation(response);
@@ -241,8 +250,8 @@ public class AptPrecheckTests extends BaseTestNG {
 	public void testPOSTAppointments() throws IOException {
 
 		Response response = postAPIRequest.aptpostAppointments(propertyData.getProperty("apt.precheck.practice.id"),
-				payload.postAppointmentsPayload(propertyData.getProperty("apt.precheck.integration.id")), headerConfig.HeaderwithToken(getaccessToken),
-				propertyData.getProperty("apt.precheck.integration.id"),
+				payload.postAppointmentsPayload(propertyData.getProperty("apt.precheck.integration.id")),
+				headerConfig.HeaderwithToken(getaccessToken), propertyData.getProperty("apt.precheck.integration.id"),
 				propertyData.getProperty("apt.precheck.create.patient.id"));
 
 		log("Payload- " + payload.postAppointmentsPayload(propertyData.getProperty("apt.precheck.integration.id")));
@@ -258,7 +267,8 @@ public class AptPrecheckTests extends BaseTestNG {
 	@Test(enabled = true, groups = { "APItest" }, retryAnalyzer = RetryAnalyzer.class)
 	public void testPOSTCopaySkip() throws IOException {
 
-		Response response = postAPIRequest.aptpostCopaySkip(propertyData.getProperty("apt.precheck.balance.practice.id"),
+		Response response = postAPIRequest.aptpostCopaySkip(
+				propertyData.getProperty("apt.precheck.balance.practice.id"),
 
 				headerConfig.HeaderwithToken(getaccessToken),
 				propertyData.getProperty("apt.precheck.balance.patient.id"),
@@ -389,7 +399,8 @@ public class AptPrecheckTests extends BaseTestNG {
 	public void testPOSTBalancePay() throws IOException {
 
 		Response response = postAPIRequest.aptBalancePay(propertyData.getProperty("apt.precheck.balance.practice.id"),
-				payload.getBalancePayPayload(propertyData.getProperty("apt.precheck.balance.patient.id")), headerConfig.HeaderwithToken(getaccessToken),
+				payload.getBalancePayPayload(propertyData.getProperty("apt.precheck.balance.patient.id")),
+				headerConfig.HeaderwithToken(getaccessToken),
 				propertyData.getProperty("apt.precheck.balance.patient.id"),
 				propertyData.getProperty("apt.precheck.pm.balance.appmnt.id"));
 
@@ -415,7 +426,8 @@ public class AptPrecheckTests extends BaseTestNG {
 	public void testPOSTCopayPay() throws IOException {
 
 		Response response = postAPIRequest.aptCopayPay(propertyData.getProperty("apt.precheck.balance.practice.id"),
-				payload.getCopayPayPayload(propertyData.getProperty("apt.precheck.balance.patient.id")), headerConfig.HeaderwithToken(getaccessToken),
+				payload.getCopayPayPayload(propertyData.getProperty("apt.precheck.balance.patient.id")),
+				headerConfig.HeaderwithToken(getaccessToken),
 				propertyData.getProperty("apt.precheck.balance.patient.id"),
 				propertyData.getProperty("apt.precheck.pm.balance.appmnt.id"));
 
@@ -512,7 +524,8 @@ public class AptPrecheckTests extends BaseTestNG {
 	@Test(enabled = true, groups = { "APItest" }, retryAnalyzer = RetryAnalyzer.class)
 	public void testPOSTAppointmentActionsCurbscheckin() throws IOException {
 		Response response = postAPIRequest.aptAppointmentActionsCurbscheckin(
-				propertyData.getProperty("apt.precheck.balance.practice.id"), headerConfig.HeaderwithToken(getaccessToken),
+				propertyData.getProperty("apt.precheck.balance.practice.id"),
+				headerConfig.HeaderwithToken(getaccessToken),
 				propertyData.getProperty("apt.precheck.copay.skip.patient.id"),
 				propertyData.getProperty("apt.precheck.copay.skip.appointment.id"));
 		log("Verifying the response");
@@ -865,7 +878,8 @@ public class AptPrecheckTests extends BaseTestNG {
 		log("Response guest token- " + responseGuestToken);
 
 		Response response = postAPIRequest.aptPostBalancePayGuest(
-				propertyData.getProperty("apt.precheck.guest.practice.id"), payload.getBalancePayloadGuest(propertyData.getProperty("apt.precheck.guest.patient.id")),
+				propertyData.getProperty("apt.precheck.guest.practice.id"),
+				payload.getBalancePayloadGuest(propertyData.getProperty("apt.precheck.guest.patient.id")),
 				responseGuestToken,
 
 				propertyData.getProperty("apt.precheck.guest.patient.id"),
@@ -901,7 +915,8 @@ public class AptPrecheckTests extends BaseTestNG {
 		log("Response guest token- " + responseGuestToken);
 
 		Response response = postAPIRequest.aptPostCopayPayGuest(
-				propertyData.getProperty("apt.precheck.guest.practice.id"), payload.getCopayPayPayloadGuest(propertyData.getProperty("apt.precheck.guest.patient.id")),
+				propertyData.getProperty("apt.precheck.guest.practice.id"),
+				payload.getCopayPayPayloadGuest(propertyData.getProperty("apt.precheck.guest.patient.id")),
 				responseGuestToken, propertyData.getProperty("apt.precheck.guest.patient.id"),
 				propertyData.getProperty("apt.precheck.guest.appointment.id"), headerConfig.defaultHeader());
 

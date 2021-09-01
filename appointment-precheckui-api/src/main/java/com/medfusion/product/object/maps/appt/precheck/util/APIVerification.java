@@ -356,11 +356,6 @@ public class APIVerification extends BaseTestNGWebDriver {
 		assertEquals(js.getString("insurance.insuranceList[0].editStatus"), "CONFIRMED", "Status not Confirmed");
 	}
 
-	public void verifyReturnInsuranceImageWithoutFileName(Response response) throws IOException {
-		JsonPath js = new JsonPath(response.asString());
-		assertEquals(js.get("message"), "No message available");
-	}
-
 	public void verifyInsuranceWithInvalidEditStatus(Response response) throws IOException {
 		JsonPath js = new JsonPath(response.asString());
 		assertEquals(js.get("message"),
@@ -377,11 +372,6 @@ public class APIVerification extends BaseTestNGWebDriver {
 		assertEquals(js.get("message"), "Request method 'PUT' not supported");
 	}
 
-	public void verifyDeleteInsuranceWithoutApptId(Response response) throws IOException {
-		JsonPath js = new JsonPath(response.asString());
-		assertEquals(js.get("message"), "Request method 'DELETE' not supported");
-	}
-
 	public void verifyReturnAppt(Response response, String practiceId, String pmPatientId, String pmAppointmentId,
 			String firstName, String lastName, String birthDate) throws IOException {
 		JsonPath js = new JsonPath(response.asString());
@@ -393,11 +383,6 @@ public class APIVerification extends BaseTestNGWebDriver {
 		assertEquals(js.getString("patientDemographics.lastName"), lastName, "LastName  was incorrect");
 		assertEquals(js.getString("patientDemographics.birthDate"), birthDate, "birthDate was incorrect");
 		assertEquals(js.getString("patientDemographics.status"), "COMPLETE", "Tire was incorrect");
-	}
-
-	public void verifySaveInsuranceImageWithoutFileName(Response response) throws IOException {
-		JsonPath js = new JsonPath(response.asString());
-		assertEquals(js.get("message"), "No message available");
 	}
 
 	public void verifyProcessReminderData(Response response, String practiceId, String patientId, String ApptId)
@@ -1016,7 +1001,7 @@ public class APIVerification extends BaseTestNGWebDriver {
 		JsonPath jsonPath = new JsonPath(response.asString());
 		assertEquals(jsonPath.get("status"), "Email request complete.");
 	}
-	
+
 	public void verifyDeleteApmt(Response response, String practiceId, String pmPatientId, String pmAppointmentId)
 			throws IOException {
 		JsonPath js = new JsonPath(response.asString());
@@ -1024,13 +1009,13 @@ public class APIVerification extends BaseTestNGWebDriver {
 		assertEquals(js.getString("practiceId"), practiceId, "Practice id was incorrect");
 		assertEquals(js.getString("pmPatientId"), pmPatientId, "Patient id was incorrect");
 		assertEquals(js.getString("pmAppointmentId"), pmAppointmentId, "Appointment id was incorrect");
-}
-	
+	}
+
 	public void verifyPastAppmnt(Response response) throws IOException {
 		JsonPath jsonPath = new JsonPath(response.asString());
 		assertEquals(jsonPath.get("message"), "Appointment time is in past cannot cancel");
 	}
-	
+
 	public void verifyPutAppt(Response response, String practiceId, String pmPatientId, String pmAppointmentId)
 			throws IOException {
 		JsonPath js = new JsonPath(response.asString());
@@ -1039,10 +1024,11 @@ public class APIVerification extends BaseTestNGWebDriver {
 		assertEquals(js.getString("pmPatientId"), pmPatientId, "Patient id was incorrect");
 		assertEquals(js.getString("pmAppointmentId"), pmAppointmentId, "Appointment id was incorrect");
 	}
-	
+
 	public void verifyPutAppointmentPastTime(Response response) throws IOException {
 		JsonPath jsonPath = new JsonPath(response.asString());
-		assertEquals(jsonPath.get("message"), "Incoming Appointment time is in past cannot schedule, reschedule, cancel, or update");
+		assertEquals(jsonPath.get("message"),
+				"Incoming Appointment time is in past cannot schedule, reschedule, cancel, or update");
 	}
 
 	public void verifyGetLogoForPracticeId(Response response) throws IOException {
@@ -1362,13 +1348,15 @@ public class APIVerification extends BaseTestNGWebDriver {
 
 	public void verifyIncorrectUuid(Response response) throws IOException {
 		JsonPath jsonPath = new JsonPath(response.asString());
-		String uuid = jsonPath .getString("message");
-		log("Verify incorrect Uuid" +uuid);
-		Assert.assertTrue(true, "Invalid input value:" +uuid.contains("Invalid input value:"));
+		String uuid = jsonPath.getString("message");
+		log("Verify incorrect Uuid" + uuid);
+		Assert.assertTrue(true, "Invalid input value:" + uuid.contains("Invalid input value:"));
 	}
 	public void verifyAlreadyexistsAppt(Response response) throws IOException {
 		JsonPath jsonPath = new JsonPath(response.asString());
-		assertEquals(jsonPath.get("message"), "Appointment type with practiceId/integrationId/appointmentId/categoryId already exists");
+		assertEquals(jsonPath.get("message"),
+				"Appointment type with practiceId/integrationId/appointmentId/categoryId already exists");
 	}
-	
+
 }
+

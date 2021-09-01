@@ -5053,4 +5053,189 @@ public class PatientPortal2AcceptanceTests extends BaseTestNGWebDriver {
     assertTrue(messagesPage.isMessageDisplayed(driver, "Process Externally " + tsPracticePortal));
     homePage.clickOnLogout();
 }
+    @Test(enabled = true, groups = { "acceptance-solutions" }, retryAnalyzer = RetryAnalyzer.class)
+	public void testInactiveMedications() throws Exception {
+
+		logStep("Load login page and login");
+		JalapenoLoginPage loginPage = new JalapenoLoginPage(driver, testData.getProperty("med.wf.portal.url"));
+		JalapenoHomePage homePage = loginPage.login(testData.getProperty("med.wf.user.id"),
+				testData.getProperty("med.wf.password"));
+
+		logStep("Click on Medications");
+		homePage.clickOnMedications(driver);
+
+		log("Initiating Medications 2.0 Request from Patient Portal");
+		MedicationsHomePage medPage = new MedicationsHomePage(driver);
+		medPage.clickOnRxRequest();
+
+		logStep("Select Location and Provider");
+		LocationAndProviderPage select = new LocationAndProviderPage(driver);
+		select.chooseLocationAndProviderwithoutFee();
+
+		logStep("Select a pharmacy");
+		SelectPharmacyPage pharmaPage = new SelectPharmacyPage(driver);
+		pharmaPage.selectPharmacy();
+
+		logStep("Select Inactive Medications");
+		SelectMedicationsPage selectMedPage = new SelectMedicationsPage(driver);
+		selectMedPage.selectInactiveMedication();
+
+		logStep("Validating Prescription Renewal Fee Text is not present");
+		MedicationsConfirmationPage confirmPage = new MedicationsConfirmationPage(driver);
+		confirmPage.prescriptionRenewalFee();
+
+		logStep("Confirm Medication Request from Patient Portal");
+		MedicationsConfirmationPage confirmPage1 = new MedicationsConfirmationPage(driver);
+		String successMsg = confirmPage1.confirmMedication(driver);
+		assertEquals(successMsg, "Your prescription request has been submitted.");
+
+		homePage.clickOnLogout();
+
+		logStep("Login to Practice Portal");
+		PracticeLoginPage practiceLogin = new PracticeLoginPage(driver, testData.getPortalUrl());
+		PracticeHomePage practiceHome = practiceLogin.login(testData.getProperty("med.wf.doc.user.id"),
+				testData.getProperty("med.wf.doc.password"));
+
+		logStep("Click On RxRenewal in Practice Portal");
+		RxRenewalSearchPage rxRenewalSearchPage = practiceHome.clickonRxRenewal();
+
+		logStep("Search for Today's RxRenewal in Practice Portal");
+		rxRenewalSearchPage.searchForRxRenewalToday();
+
+		logStep("Get the RxRenewal Details in Practice Portal");
+		rxRenewalSearchPage.getRxRenewalDetails();
+
+		logStep("Set the RxRenewal Fields in Practice Portal");
+		rxRenewalSearchPage.setRxRenewalFields();
+
+		logStep("Click On Process RxRenewal Button in Practice Portal");
+		rxRenewalSearchPage.clickProcessRxRenewal();
+
+		logStep("Set Action Radio Button in Practice Portal");
+		rxRenewalSearchPage.setActionRadioButton();
+
+		logStep("Verify Process Completed Text in Practice Portal");
+		rxRenewalSearchPage.verifyProcessCompleted();
+
+		logStep("Logout of Practice Portal");
+		practiceHome.logOut();
+
+		logStep("Login to Patient Portal");
+		loginPage = new JalapenoLoginPage(driver, testData.getProperty("med.wf.portal.url"));
+		homePage = loginPage.login(testData.getProperty("med.wf.user.id"), testData.getProperty("med.wf.password"));
+
+		logStep("Navigate to Message Inbox");
+		JalapenoMessagesPage messagesPage = homePage.showMessages(driver);
+
+		logStep("Looking for Medication approval from doctor in Inbox");
+		assertTrue(messagesPage.isMessageDisplayed(driver, "RxRenewalSubject"));
+
+	}
+    @Test(enabled = true, groups = { "acceptance-solutions" }, retryAnalyzer = RetryAnalyzer.class)
+	public void testAskAFreeforDependents() throws Exception {
+		String questionText = "wat";
+
+		logStep("Login patient");
+		JalapenoLoginPage loginPage = new JalapenoLoginPage(driver, testData.getProperty("url"));
+		JalapenoHomePage homePage = loginPage.login(testData.getProperty("aska.v2.user"),
+				testData.getProperty("aska.v2.password"));
+		
+		logStep("Switching to Dependent Account");
+		homePage.faChangePatient();
+
+		logStep("Click Ask A Staff tab");
+		JalapenoAskAStaffV2Page1 askPageFreequs = homePage.openSpecificAskaFree(testData.getProperty("aska.v2.name"));
+
+		String askaSubjectForDependent = Long.toString(askPageFreequs.getCreatedTimeStamp());
+
+		logStep("Fill question and continue");
+		JalapenoAskAStaffV2Page2 askPage2 = askPageFreequs.fillAndContinue(askaSubjectForDependent, questionText);
+
+		assertTrue(askaSubjectForDependent.equals(askPage2.getSubject()),
+				"Expected: " + askaSubjectForDependent + ", found: " + askPage2.getSubject());
+		assertTrue(questionText.equals(askPage2.getQuestion()),
+				"Expected: " + questionText + ", found: " + askPage2.getQuestion());
+
+		homePage = askPage2.submit();
+
+		logStep("Go back to the aska and check question history");
+		askPageFreequs = homePage.openSpecificAskaFree(testData.getProperty("aska.v2.name"));
+		JalapenoAskAStaffV2HistoryListPage askHistoryList = askPageFreequs.clickOnHistory();
+
+		logStep("Find history entry by subject/reason and navigate to detail");
+		JalapenoAskAStaffV2HistoryDetailPage askHistoryDetail = askHistoryList.goToDetailByReason(askaSubjectForDependent);
+
+		logStep("Verify the subject and question in history detail match submission");
+		assertTrue(askaSubjectForDependent.equals(askHistoryDetail.getRequestDetailSubject()),
+				"Expected: " + askaSubjectForDependent + ", found: " + askHistoryDetail.getRequestDetailSubject());
+		assertTrue(questionText.equals(askHistoryDetail.getRequestDetailQuestion()),
+				"Expected: " + questionText + ", found: " + askHistoryDetail.getRequestDetailQuestion());
+		assertTrue("Open".equals(askHistoryDetail.getRequestDetailStatus()),
+				"Expected: Open" + ", found: " + askHistoryDetail.getRequestDetailStatus());
+		logStep("Logout patient");
+		askHistoryDetail.clickOnLogout();
+
+		logStep("Login to practice portal");
+		PracticeLoginPage practiceLogin = new PracticeLoginPage(driver, testData.getPortalUrl());
+		PracticeHomePage practiceHome = practiceLogin.login(testData.getProperty("aska.v2.doctor.login"),
+				testData.getProperty("aska.v2.doctor.password"));
+
+		logStep("Click Ask A Staff tab");
+		AskAStaffSearchPage searchQ = practiceHome.clickAskAStaffTab();
+
+		logStep("Search for questions");
+		searchQ.searchForQuestions();
+		AskAStaffQuestionDetailStep1Page detailStep1 = searchQ.getQuestionDetails(askaSubjectForDependent);
+		assertNotNull(detailStep1, "The submitted patient question was not found in the practice");
+
+		PerformanceReporter.getPageLoadDuration(driver, AskAStaffQuestionDetailStep1Page.PAGE_NAME);
+		logStep("Choose action on patient question");
+		AskAStaffQuestionDetailStep2Page detailStep2 = detailStep1.chooseProvideAdviceOnly();
+
+		logStep("Respond to patient question");
+		AskAStaffQuestionDetailStep3Page detailStep3 = detailStep2.processAndCommunicate("Automated Test",
+				"This message was generated by an automated test");
+
+		logStep("Confirm response details to patient");
+		AskAStaffQuestionDetailStep4Page detailStep4 = detailStep3.confirmProcessedQuestion();
+
+		logStep("Validate submit of confirmation");
+		assertTrue(detailStep4.isQuestionDetailPageLoaded());
+
+		logStep("Logout of Practice Portal");
+		practiceHome.logOut();
+
+		logStep("Login patient");
+		loginPage = new JalapenoLoginPage(driver, testData.getProperty("url"));
+		homePage = loginPage.login(testData.getProperty("aska.v2.user"), testData.getProperty("aska.v2.password"));
+		
+		logStep("Switching to Dependent Account");
+		homePage.faChangePatient();
+
+		logStep("Go to messages");
+		JalapenoMessagesPage messagesPage = homePage.showMessages(driver);
+
+		logStep("Check if message was delivered");
+		assertTrue(messagesPage.isMessageDisplayed(driver,
+				"Automated Test " + (Long.toString(detailStep2.getCreatedTimeStamp()))));
+
+		logStep("Go back to the aska again and check submission status changed");
+		homePage = messagesPage.clickOnMenuHome();
+		askPageFreequs = homePage.openSpecificAskaFree(testData.getProperty("aska.v2.name"));
+		askHistoryList = askPageFreequs.clickOnHistory();
+
+		logStep("Find history entry by subject/reason and navigate to detail");
+		askHistoryDetail = askHistoryList.goToDetailByReason(askaSubjectForDependent);
+
+		logStep("Reverify subject and question in history detail, verify status is now completed");
+		assertTrue(askaSubjectForDependent.equals(askHistoryDetail.getRequestDetailSubject()),
+				"Expected: " + askaSubjectForDependent + ", found: " + askHistoryDetail.getRequestDetailSubject());
+		assertTrue(questionText.equals(askHistoryDetail.getRequestDetailQuestion()),
+				"Expected: " + questionText + ", found: " + askHistoryDetail.getRequestDetailQuestion());
+		assertTrue("Completed".equals(askHistoryDetail.getRequestDetailStatus()),
+				"Expected: Completed" + ", found: " + askHistoryDetail.getRequestDetailStatus());
+		logStep("Logout patient");
+		askHistoryDetail.clickOnLogout();
+
+	}
 }
