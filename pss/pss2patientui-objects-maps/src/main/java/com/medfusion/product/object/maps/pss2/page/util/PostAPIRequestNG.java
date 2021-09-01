@@ -203,12 +203,12 @@ public class PostAPIRequestNG extends BaseTestNGWebDriver {
 		return s;
 	}
 
-	public String upcommingApptNG(String practiceid, String b) {
+	public Response upcommingApptNG(String practiceid, String b) {
 
-		String response = given().spec(requestSpec).when().body(b).log().all()
+		Response response = given().spec(requestSpec).when().body(b).log().all()
 				.post(practiceid + APIPath.apiPath.upcommingApptNG).then().spec(responseSpec).log().all()
 				.body("book[0].resourceName", equalTo("Saif PSS")).body("location[0].name", equalTo("PSS WLA"))
-				.extract().response().asString();
+				.extract().response();
 
 		JsonPath js = new JsonPath(response.toString());
 
