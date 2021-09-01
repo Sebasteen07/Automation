@@ -22,23 +22,23 @@ public class PayloadGE {
 		return getlastseenproviders;
 	}
 	
-	public static String schedApptPayload() {
+	public static String schedApptPayload(String startTime,String patientId,String slotId,String endTime) {
 		String schedAppt="{\r\n"
 				+ "  \"appointmentCategoryId\": null,\r\n"
 				+ "  \"appointmentTypeId\": null,\r\n"
-				+ "  \"endDateTime\": \"05/30/2021 02:00:00\",\r\n"
+				+ "  \"endDateTime\": \""+endTime+"\",\r\n"
 				+ "  \"locationId\": \"3\",\r\n"
 				+ "  \"notesProperties\": {\r\n"
 				+ "    \"additionalProp1\": \"string\",\r\n"
 				+ "    \"additionalProp2\": \"string\",\r\n"
 				+ "    \"additionalProp3\": \"string\"\r\n"
 				+ "  },\r\n"
-				+ "  \"patientId\": \"27565\",\r\n"
+				+ "  \"patientId\": \""+patientId+"\",\r\n"
 				+ "  \"resourceCategoryId\": null,\r\n"
 				+ "  \"resourceId\": \"466\",\r\n"
-				+ "  \"slotId\": \"4993302\",\r\n"
+				+ "  \"slotId\": \""+slotId+"\",\r\n"
 				+ "  \"stackingFlag\": false,\r\n"
-				+ "  \"startDateTime\": \"05/17/2021 1:30:00\",\r\n"
+				+ "  \"startDateTime\": \""+startTime+"\",\r\n"
 				+ "  \"updatePatientInfoKeys\": {\r\n"
 				+ "    \"additionalProp1\": {},\r\n"
 				+ "    \"additionalProp2\": {},\r\n"
@@ -206,7 +206,7 @@ public class PayloadGE {
 		return availableSlots;
 	}
     
-	public String addPatientPayload() {
+	public static String addPatientPayload() {
 		String addPatient="{\r\n" + 
 				"\r\n" + 
 				"  \"address\": {\r\n" + 
@@ -245,7 +245,7 @@ public class PayloadGE {
 		return addPatient;
 	}
 	
-public  String careProviderAvailabilityPayload(String startDateTime, String endDateTime,String resourceId,String slotSize,String locationId,String appointmentTypeId) {
+public static  String careProviderAvailabilityPayload(String startDateTime, String endDateTime,String resourceId,String slotSize,String locationId,String appointmentTypeId) {
 		
 	String careProAvailability=" {\r\n" + 
 			"  \"appointmentTypeCatId\": null,\r\n" + 
@@ -266,7 +266,7 @@ public  String careProviderAvailabilityPayload(String startDateTime, String endD
 	return careProAvailability;
 	}
 
-public  String matchPatientPayload() {
+public static  String matchPatientPayload() {
 	
 	String  matchPatient="{\r\n"
 			+ "    \"patientMatches\": [\r\n"
@@ -274,7 +274,7 @@ public  String matchPatientPayload() {
 			+ "            \"entity\": \"Email Address\",\r\n"
 			+ "            \"isMandatory\": true,\r\n"
 			+ "            \"code\": \"EMAIL\",\r\n"
-			+ "            \"value\": \"GECare@mailinator.com\",\r\n"
+			+ "            \"value\": \"rima.karmakar@crossasyst.com\",\r\n"
 			+ "            \"selected\": true,\r\n"
 			+ "            \"search\": true\r\n"
 			+ "        },\r\n"
@@ -282,7 +282,7 @@ public  String matchPatientPayload() {
 			+ "            \"entity\": \"First Name\",\r\n"
 			+ "            \"isMandatory\": true,\r\n"
 			+ "            \"code\": \"FN\",\r\n"
-			+ "            \"value\": \"GECare\",\r\n"
+			+ "            \"value\": \"Test\",\r\n"
 			+ "            \"selected\": true,\r\n"
 			+ "            \"search\": true\r\n"
 			+ "        },\r\n"
@@ -298,7 +298,7 @@ public  String matchPatientPayload() {
 			+ "            \"entity\": \"Date Of Birth\",\r\n"
 			+ "            \"isMandatory\": true,\r\n"
 			+ "            \"code\": \"DOB\",\r\n"
-			+ "            \"value\": \"01/01/2000\",\r\n"
+			+ "            \"value\": \"01/28/1997\",\r\n"
 			+ "            \"selected\": true,\r\n"
 			+ "            \"search\": true\r\n"
 			+ "        },\r\n"
@@ -306,7 +306,7 @@ public  String matchPatientPayload() {
 			+ "            \"entity\": \"Last Name\",\r\n"
 			+ "            \"isMandatory\": true,\r\n"
 			+ "            \"code\": \"LN\",\r\n"
-			+ "            \"value\": \"GECare\",\r\n"
+			+ "            \"value\": \"APIThree\",\r\n"
 			+ "            \"selected\": true,\r\n"
 			+ "            \"search\": true\r\n"
 			+ "        }\r\n"
@@ -318,7 +318,7 @@ public  String matchPatientPayload() {
 	return  matchPatient;
 }
 
-public  String searchPatientPayload() {
+public static  String searchPatientPayload() {
 	
 	String searchPatient="{\r\n"
 			+ "    \"id\": \"27574\",\r\n"

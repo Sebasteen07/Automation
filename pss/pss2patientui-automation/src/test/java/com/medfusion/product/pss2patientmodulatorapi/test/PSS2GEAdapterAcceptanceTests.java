@@ -1,203 +1,438 @@
 // Copyright 2021 NXGN Management, LLC. All Rights Reserved.
 package com.medfusion.product.pss2patientmodulatorapi.test;
 
-import java.io.IOException;
+import static org.testng.Assert.assertEquals;
+import static org.testng.Assert.assertTrue;
 
-import org.testng.Assert;
+import java.io.IOException;
+import java.sql.Timestamp;
+
+import org.testng.annotations.BeforeTest;
 import org.testng.annotations.Test;
 
-import com.intuit.ifs.csscat.core.BaseTestNGWebDriver;
+import com.intuit.ifs.csscat.core.BaseTestNG;
+import com.intuit.ifs.csscat.core.RetryAnalyzer;
+import com.medfusion.product.object.maps.pss2.page.util.APIVerification;
 import com.medfusion.product.object.maps.pss2.page.util.HeaderConfig;
 import com.medfusion.product.object.maps.pss2.page.util.PostAPIRequestGE;
 import com.medfusion.product.pss2patientapi.payload.PayloadGE;
 import com.medfusion.product.pss2patientui.pojo.Appointment;
 import com.medfusion.product.pss2patientui.utils.PSSPropertyFileLoader;
 
-public class PSS2GEAdapterAcceptanceTests extends BaseTestNGWebDriver {
+import io.restassured.path.json.JsonPath;
+import io.restassured.response.Response;
+import io.restassured.specification.RequestSpecification;
+import io.restassured.specification.ResponseSpecification;
 
-	@Test
-	public void testHealthCheckGET() throws IOException {
-		HeaderConfig headerConfig = new HeaderConfig();
-		PSSPropertyFileLoader propertyData = new PSSPropertyFileLoader();
-		Appointment testData = new Appointment();
-		propertyData.setRestAPIDataGE(testData);
-		PostAPIRequestGE postAPIRequest = new PostAPIRequestGE();
-		log("Base URL is   " + testData.getBasicURI());
-		postAPIRequest.healthCheck(testData.getBasicURI(), headerConfig.defaultHeader(), testData.getPracticeId(), testData.getHealthCheckDatabaseName());
+public class PSS2GEAdapterAcceptanceTests extends BaseTestNG {
+	
+	
+	public static PayloadGE payload;
+	public static PSSPropertyFileLoader propertyData;
+	public static Appointment testData;
+	public static PostAPIRequestGE postAPIRequestge;
+
+
+	Timestamp timestamp = new Timestamp(System.currentTimeMillis());
+
+	public static RequestSpecification requestSpec;
+	public static ResponseSpecification responseSpec;
+
+	APIVerification apiVerification = new APIVerification();
+
+	@BeforeTest(enabled = true, groups = { "APItest" })
+	public void setUp() throws IOException {
+		payload = new PayloadGE();
+		propertyData = new PSSPropertyFileLoader();
+		postAPIRequestge = new PostAPIRequestGE();
+		log("I am before Test");
+		postAPIRequestge.setupRequestSpecBuilder(propertyData.getProperty("base.url.ge"));
+		log("BASE URL-" + propertyData.getProperty("base.url.ge"));
 	}
 
+	
+	@Test(enabled = true, groups = { "APItest" }, retryAnalyzer = RetryAnalyzer.class)
+	public void testHealthCheckGET1() throws NullPointerException, Exception {
+
+		Response response = postAPIRequestge.healthCheck(propertyData.getProperty("practiceid.ge"));
+		logStep("Verifying the response");
+		apiVerification.responseCodeValidation(response, 200);
+		apiVerification.responseTimeValidation(response);
+		apiVerification.responseKeyValidationJson(response, "version");
+		apiVerification.responseKeyValidationJson(response, "components.DatabaseName");
+		apiVerification.responseKeyValidationJson(response, "components.api");
+	}
+	
+	
+	@Test(enabled = true, groups = { "APItest" }, retryAnalyzer = RetryAnalyzer.class)
+	public void testHealthCheckWithoutPracticeIDGET() throws NullPointerException, Exception {
+
+		Response response = postAPIRequestge.healthCheck("");
+		logStep("Verifying the response");
+		apiVerification.responseCodeValidation(response, 404);
+		apiVerification.responseTimeValidation(response);
+	}
+	
+
+	
 	@Test
 	public void testPingGET() throws IOException {
-		HeaderConfig headerConfig = new HeaderConfig();
-		PSSPropertyFileLoader propertyData = new PSSPropertyFileLoader();
-		Appointment testData = new Appointment();
-		propertyData.setRestAPIDataGE(testData);
-		PostAPIRequestGE postAPIRequest = new PostAPIRequestGE();
-		log("Base URL is   " + testData.getBasicURI());
-		postAPIRequest.ping(testData.getBasicURI(), headerConfig.defaultHeader(), testData.getPracticeId());
+		Response response = postAPIRequestge.ping(propertyData.getProperty("practiceid.ge"));
+		logStep("Verifying the response");
+		apiVerification.responseCodeValidation(response, 200);
+		apiVerification.responseTimeValidation(response);
+
+	}
+	
+	@Test
+	public void testPingWithoutPracticeIdGET() throws IOException {
+		Response response = postAPIRequestge.ping("");
+		logStep("Verifying the response");
+		apiVerification.responseCodeValidation(response, 404);
+		apiVerification.responseTimeValidation(response);
+
 	}
 
 	@Test
 	public void testVersionGET() throws IOException {
-		HeaderConfig headerConfig = new HeaderConfig();
-		PSSPropertyFileLoader propertyData = new PSSPropertyFileLoader();
-		Appointment testData = new Appointment();
-		propertyData.setRestAPIDataGE(testData);
-		PostAPIRequestGE postAPIRequest = new PostAPIRequestGE();
-		log("Base URL is   " + testData.getBasicURI());
-		postAPIRequest.version(testData.getBasicURI(), headerConfig.defaultHeader(), testData.getPracticeId());
+		Response response = postAPIRequestge.version(propertyData.getProperty("practiceid.ge"));
+		apiVerification.responseCodeValidation(response, 200);
+		apiVerification.responseTimeValidation(response);
+		apiVerification.responseKeyValidationJson(response, "version");
+	}
+	
+	@Test
+	public void testVersionWithoutPracticeIdGET() throws IOException {
+		Response response = postAPIRequestge.version("");
+		apiVerification.responseCodeValidation(response, 404);
+		apiVerification.responseTimeValidation(response);
+	}
+	
+	@Test
+	public void testLockoutGET() throws IOException {
+		Response response = postAPIRequestge.lockOut(propertyData.getProperty("practiceid.ge"));
+		apiVerification.responseCodeValidation(response, 200);
+		apiVerification.responseTimeValidation(response);
+		apiVerification.responseKeyValidation(response, "key");
+		apiVerification.responseKeyValidation(response, "value");
+		apiVerification.responseKeyValidation(response, "type");
+
 	}
 
 	@Test
-	public void testLockoutGET() throws IOException {
-		HeaderConfig headerConfig = new HeaderConfig();
-		PSSPropertyFileLoader propertyData = new PSSPropertyFileLoader();
-		Appointment testData = new Appointment();
-		propertyData.setRestAPIDataGE(testData);
-		PostAPIRequestGE postAPIRequest = new PostAPIRequestGE();
-		log("Base URL is   " + testData.getBasicURI());
-		postAPIRequest.lockOut(testData.getBasicURI(), headerConfig.defaultHeader(), testData.getPracticeId());
+	public void testLockoutWithoutPracticeIdGET() throws IOException {
+		Response response = postAPIRequestge.lockOut("");
+		apiVerification.responseCodeValidation(response, 404);
+		apiVerification.responseTimeValidation(response);
 	}
 
 	@Test
 	public void testAppointmentTypesGET() throws IOException {
-		HeaderConfig headerConfig = new HeaderConfig();
-		PSSPropertyFileLoader propertyData = new PSSPropertyFileLoader();
-		Appointment testData = new Appointment();
-		propertyData.setRestAPIDataGE(testData);
-		PostAPIRequestGE postAPIRequest = new PostAPIRequestGE();
-		log("Base URL is   " + testData.getBasicURI());
-		postAPIRequest.appointmentType(testData.getBasicURI(), headerConfig.defaultHeader(), testData.getPracticeId());
+		Response response = postAPIRequestge.appointmentType(propertyData.getProperty("practiceid.ge"));
+		apiVerification.responseCodeValidation(response, 200);
+		apiVerification.responseTimeValidation(response);
+		apiVerification.responseKeyValidation(response, "id");
+		apiVerification.responseKeyValidation(response, "name");
+		apiVerification.responseKeyValidation(response, "displayName");
 	}
+	
+	
+	@Test
+	public void testAppointmentTypesWithoutPracticeIdGET() throws IOException {
+		Response response = postAPIRequestge.appointmentType("");
+		apiVerification.responseCodeValidation(response, 404);
+		apiVerification.responseTimeValidation(response);
+	}
+
 
 	@Test
 	public void testBooksGET() throws IOException {
-		HeaderConfig headerConfig = new HeaderConfig();
-		PSSPropertyFileLoader propertyData = new PSSPropertyFileLoader();
-		Appointment testData = new Appointment();
-		propertyData.setRestAPIDataGE(testData);
-		PostAPIRequestGE postAPIRequest = new PostAPIRequestGE();
-		log("Base URL is   " + testData.getBasicURI());
-		postAPIRequest.books(testData.getBasicURI(), headerConfig.defaultHeader(), testData.getPracticeId());
+		Response response = postAPIRequestge.books(propertyData.getProperty("practiceid.ge"));
+		apiVerification.responseCodeValidation(response, 200);
+		apiVerification.responseTimeValidation(response);	
+		apiVerification.responseKeyValidation(response, "resourceId");
+		apiVerification.responseKeyValidation(response, "resourceName");
+		apiVerification.responseKeyValidation(response, "displayName");
+		apiVerification.responseKeyValidation(response, "providerId");
+		apiVerification.responseKeyValidation(response, "type");	
 	}
 
+	
+	@Test
+	public void testBooksWithoutPracticeIdGET() throws IOException {
+		Response response = postAPIRequestge.books("");
+		apiVerification.responseCodeValidation(response, 404);
+		apiVerification.responseTimeValidation(response);
+	}
+	
 	@Test
 	public void testInsuranceCarrierGET() throws IOException {
-		HeaderConfig headerConfig = new HeaderConfig();
-		PSSPropertyFileLoader propertyData = new PSSPropertyFileLoader();
-		Appointment testData = new Appointment();
-		propertyData.setRestAPIDataGE(testData);
-		PostAPIRequestGE postAPIRequest = new PostAPIRequestGE();
-		log("Base URL is   " + testData.getBasicURI());
-		postAPIRequest.insuranceCarrier(testData.getBasicURI(), headerConfig.defaultHeader(), testData.getPracticeId());
+		Response response = postAPIRequestge.insuranceCarrier(propertyData.getProperty("practiceid.ge"));
+		apiVerification.responseCodeValidation(response, 200);
+		apiVerification.responseTimeValidation(response);	
+		
+		apiVerification.responseKeyValidationJson(response, "id");
+		apiVerification.responseKeyValidationJson(response, "name");
+		apiVerification.responseKeyValidationJson(response, "zipCode");
+		apiVerification.responseKeyValidationJson(response, "address1");
+		apiVerification.responseKeyValidationJson(response, "state");	
+		apiVerification.responseKeyValidationJson(response, "city");	
+
+	}
+	
+	@Test
+	public void testInsuranceCarrierWithoutPracticeIdGET() throws IOException {
+		Response response = postAPIRequestge.insuranceCarrier("");
+		apiVerification.responseCodeValidation(response, 404);
+		apiVerification.responseTimeValidation(response);
 	}
 
 	@Test
 	public void testLocationGET() throws IOException {
-		HeaderConfig headerConfig = new HeaderConfig();
-		PSSPropertyFileLoader propertyData = new PSSPropertyFileLoader();
-		Appointment testData = new Appointment();
-		propertyData.setRestAPIDataGE(testData);
-		PostAPIRequestGE postAPIRequest = new PostAPIRequestGE();
-		log("Base URL is   " + testData.getBasicURI());
-		postAPIRequest.locations(testData.getBasicURI(), headerConfig.defaultHeader(), testData.getPracticeId());
-	}
+		
+		Response response = postAPIRequestge.locations(propertyData.getProperty("practiceid.ge"));
+		apiVerification.responseCodeValidation(response, 200);
+		apiVerification.responseTimeValidation(response);	
+		apiVerification.responseKeyValidationJson(response, "id");
+		apiVerification.responseKeyValidationJson(response, "name");
+		apiVerification.responseKeyValidationJson(response, "displayName");
+		apiVerification.responseKeyValidationJson(response, "phoneNumber1");
+			
+		}
+	
+
+	@Test
+	public void testLocationWithoutPracticeIdGET() throws IOException {
+		
+		Response response = postAPIRequestge.locations("");
+		apiVerification.responseCodeValidation(response, 404);
+		apiVerification.responseTimeValidation(response);	
+		
+		}
 
 	@Test
 	public void testActuatorGET() throws IOException {
-		HeaderConfig headerConfig = new HeaderConfig();
-		PSSPropertyFileLoader propertyData = new PSSPropertyFileLoader();
-		Appointment testData = new Appointment();
-		propertyData.setRestAPIDataGE(testData);
-		PostAPIRequestGE postAPIRequest = new PostAPIRequestGE();
-		log("Base URL is   " + testData.getBasicURI());
-		postAPIRequest.actuator(testData.getBasicURI(), headerConfig.defaultHeader());
+		Response response = postAPIRequestge.actuator("/actuator");
+		apiVerification.responseCodeValidation(response, 200);
+		apiVerification.responseTimeValidation(response);	
+		apiVerification.responseKeyValidationJson(response, "_links");
+		apiVerification.responseKeyValidationJson(response, "health");
+		apiVerification.responseKeyValidationJson(response, "health-path");
+		
+	}
+	
+	@Test
+	public void testActuatorInvalidPathGET() throws IOException {
+		Response response = postAPIRequestge.actuator("/actuatoraa");
+		apiVerification.responseCodeValidation(response, 404);
+		apiVerification.responseTimeValidation(response);
 	}
 
+	
 	@Test
 	public void testLastseenProviderPOST() throws IOException {
-		HeaderConfig headerConfig = new HeaderConfig();
-		PSSPropertyFileLoader propertyData = new PSSPropertyFileLoader();
-		Appointment testData = new Appointment();
-		propertyData.setRestAPIDataGE(testData);
-		PostAPIRequestGE postAPIRequest = new PostAPIRequestGE();
-		log("Base URL is   " + testData.getBasicURI());
-		log("Verifying resource Id");
-		int resourceId =
-				postAPIRequest.lastseenProvider(testData.getBasicURI(), PayloadGE.providerLastSeenPayload(), headerConfig.defaultHeader(), testData.getPracticeIdGE());
-		String apptId = Integer.toString(resourceId);
-		Assert.assertEquals(apptId, testData.getApptid(), "Resource Id is wrong");
+		Response response =	postAPIRequestge.lastseenProvider(PayloadGE.providerLastSeenPayload(),propertyData.getProperty("practiceid.ge"));
+		apiVerification.responseCodeValidation(response, 200);
+		apiVerification.responseTimeValidation(response);	
+		apiVerification.responseKeyValidationJson(response, "lastSeenDateTime");
+		apiVerification.responseKeyValidationJson(response, "resourceId");
+		apiVerification.responseKeyValidationJson(response, "providerAvailability");
+
+
+	}
+	
+	@Test
+	public void testLastseenProviderWithoutBodyPOST() throws IOException {
+		Response response =	postAPIRequestge.lastseenProvider("",propertyData.getProperty("practiceid.ge"));
+		apiVerification.responseCodeValidation(response, 400);
+		apiVerification.responseTimeValidation(response);
+		String message= apiVerification.responseKeyValidationJson(response, "message");
+		assertTrue(message.contains("Required request body is missing"));
 	}
 
+	
 	@Test
 	public void testAppointmentStatusGET() throws IOException {
-		HeaderConfig headerConfig = new HeaderConfig();
-		PSSPropertyFileLoader propertyData = new PSSPropertyFileLoader();
-		Appointment testData = new Appointment();
-		propertyData.setRestAPIDataGE(testData);
-		PostAPIRequestGE postAPIRequest = new PostAPIRequestGE();
-		log("Base URL is   " + testData.getBasicURI());
-		postAPIRequest.appointmentStatus(testData.getBasicURI(), headerConfig.defaultHeader(), testData.getPracticeId(), testData.getApptStatusId(),
-				testData.getApptStatusPatientId(), testData.getApptStatusStartDateTime(), testData.getApptid());
+
+		Response response = postAPIRequestge.appointmentStatus(propertyData.getProperty("practiceid.ge"),
+				"appointmentId", propertyData.getProperty("appt.status.id.ge"), "patientId",
+				propertyData.getProperty("appt.status.patient.id.ge"), "startDateTime",
+				propertyData.getProperty("start.date.time.ge"), propertyData.getProperty("appt.id.ge"));
+
+		apiVerification.responseCodeValidation(response, 200);
+		apiVerification.responseTimeValidation(response);
+		apiVerification.responseKeyValidationJson(response, "id");
+		apiVerification.responseKeyValidationJson(response, "startDateTime");
+		apiVerification.responseKeyValidationJson(response, "endDateTime");
+		apiVerification.responseKeyValidationJson(response, "status");
+		apiVerification.responseKeyValidationJson(response, "resourceId");
+		apiVerification.responseKeyValidationJson(response, "appointmentTypeId");
+
 	}
 
 	@Test
+	public void testAppointmentStatusWithoutStartTimeGET() throws IOException {
+
+		Response response = postAPIRequestge.appointmentStatus(propertyData.getProperty("practiceid.ge"),
+				"appointmentId", propertyData.getProperty("appt.status.id.ge"), "patientId",
+				propertyData.getProperty("appt.status.patient.id.ge"), "", "", propertyData.getProperty("appt.id.ge"));
+
+		apiVerification.responseCodeValidation(response, 400);
+		apiVerification.responseTimeValidation(response);
+		JsonPath js = new JsonPath(response.asString());
+		String msg = js.getString("message");
+		assertEquals(msg, "Required String parameter 'startDateTime' is not present");
+
+	}
+
+	@Test
+	public void testAppointmentWithoutPatientIdStatusGET() throws IOException {
+
+		Response response = postAPIRequestge.appointmentStatus(propertyData.getProperty("practiceid.ge"),
+				"appointmentId", propertyData.getProperty("appt.status.id.ge"), "", "", "startDateTime",
+				propertyData.getProperty("start.date.time.ge"), propertyData.getProperty("appt.id.ge"));
+
+		apiVerification.responseCodeValidation(response, 400);
+		apiVerification.responseTimeValidation(response);
+		JsonPath js = new JsonPath(response.asString());
+		String msg = js.getString("message");
+		assertEquals(msg, "Required String parameter 'patientId' is not present");
+
+	}
+
+	@Test
+	public void testAppointmentStatusWithoutAppIdGET() throws IOException {
+
+		Response response = postAPIRequestge.appointmentStatus(propertyData.getProperty("practiceid.ge"), "", "",
+				"patientId", propertyData.getProperty("appt.status.patient.id.ge"), "startDateTime",
+				propertyData.getProperty("start.date.time.ge"), propertyData.getProperty("appt.id.ge"));
+
+		apiVerification.responseCodeValidation(response, 400);
+		apiVerification.responseTimeValidation(response);
+		JsonPath js = new JsonPath(response.asString());
+		String msg = js.getString("message");
+		assertEquals(msg, "Required String parameter 'appointmentId' is not present");
+
+	}
+	
+	@Test
 	public void testScheduleAppointmentPOST() throws IOException {
-		HeaderConfig headerConfig = new HeaderConfig();
-		PSSPropertyFileLoader propertyData = new PSSPropertyFileLoader();
-		Appointment testData = new Appointment();
-		propertyData.setRestAPIDataGE(testData);
-		PostAPIRequestGE postAPIRequest = new PostAPIRequestGE();
-		log("Base URL is   " + testData.getBasicURI());
-		postAPIRequest.scheduleApptPatient(testData.getBasicURI(), PayloadGE.schedApptPayload(), headerConfig.defaultHeader(), testData.getPracticeId());
+
+		String body = PayloadGE.availableSlotsPayload(propertyData.getProperty("patientid.ge"),
+				propertyData.getProperty("location.id.ge"), propertyData.getProperty("start.date.time.ge"),
+				propertyData.getProperty("slot.size.ge"));
+
+		Response response = postAPIRequestge.availableSlots(body, propertyData.getProperty("practiceid.ge"));
+		JsonPath js = new JsonPath(response.asString());
+
+		String startDateTime = js.getString("availableSlots[0].startDateTime");
+		;
+		String slotId = js.getString("availableSlots[0].slotId");
+		String endTime = js.getString("availableSlots[1].startDateTime");
+
+		String startDateTime_resch = js.getString("availableSlots[1].startDateTime");
+		String slotId_resch = js.getString("availableSlots[1].slotId");
+
+		String patientId = propertyData.getProperty("patientid.ge");
+
+		log("startDateTime- " + startDateTime);
+		log("slotId- " + slotId);
+		log("patientId- " + patientId);
+
+		log("startDateTime- " + startDateTime_resch);
+		log("slotId- " + slotId_resch);
+		log("patientId- " + patientId);
+
+		String schedPayload = PayloadGE.schedApptPayload(startDateTime, patientId, slotId, endTime);
+
+		Response scheduleApptResponse = postAPIRequestge.scheduleApptPatient(schedPayload,
+				propertyData.getProperty("practiceid.ge"));
+		apiVerification.responseCodeValidation(scheduleApptResponse, 200);
+		apiVerification.responseTimeValidation(scheduleApptResponse);
+		apiVerification.responseTimeValidation(scheduleApptResponse);
+		apiVerification.responseKeyValidationJson(scheduleApptResponse, "slotAlreadyTaken");
+
 	}
 
 	@Test
 	public void testCancelledAppointmentStatusPost() throws IOException {
-		HeaderConfig headerConfig = new HeaderConfig();
-		PSSPropertyFileLoader propertyData = new PSSPropertyFileLoader();
-		Appointment testData = new Appointment();
-		propertyData.setRestAPIDataGE(testData);
-		PostAPIRequestGE postAPIRequest = new PostAPIRequestGE();
-		log("Base URL is   " + testData.getBasicURI());
-		postAPIRequest.cancelAppointmentStatus(testData.getBasicURI(), PayloadGE.cancelledApptStatusPayload(), headerConfig.defaultHeader(),
-				testData.getPracticeId());
+		String body = PayloadGE.cancelledApptStatusPayload();
+
+		
+		Response response = postAPIRequestge.cancelAppointmentStatus(body, propertyData.getProperty("practiceid.ge"));
+		apiVerification.responseCodeValidation(response, 200);
+		apiVerification.responseTimeValidation(response);
+		apiVerification.responseKeyValidationJson(response, "checkCancelAppointmentStatus");
+	}
+	
+
+	@Test
+	public void testCancelledAppointmentStatusWithoutBodyPost() throws IOException {
+		Response response = postAPIRequestge.cancelAppointmentStatus("", propertyData.getProperty("practiceid.ge"));
+		apiVerification.responseCodeValidation(response, 400);
+		apiVerification.responseTimeValidation(response);
 	}
 
 	@Test
 	public void testCancelAppointmentGet() throws IOException {
-		HeaderConfig headerConfig = new HeaderConfig();
-		PSSPropertyFileLoader propertyData = new PSSPropertyFileLoader();
-		Appointment testData = new Appointment();
-		propertyData.setRestAPIDataGE(testData);
-		PostAPIRequestGE postAPIRequest = new PostAPIRequestGE();
-		log("Base URL is   " + testData.getBasicURI());
-		postAPIRequest.cancelAppointment(testData.getBasicURI(), headerConfig.defaultHeader(), testData.getApptid(), testData.getPracticeId(),
-				testData.getPatientId());
+		Response response=postAPIRequestge.cancelAppointment(propertyData.getProperty("appt.status.id.ge"), propertyData.getProperty("practiceid.ge"),
+				propertyData.getProperty("patientid.ge"));
+		apiVerification.responseCodeValidation(response, 200);
+		apiVerification.responseTimeValidation(response);
+	}
+	
+	@Test
+	public void testCancelAppointmentWithoutAppIdGet() throws IOException {
+		Response response=postAPIRequestge.cancelAppointment("", propertyData.getProperty("practiceid.ge"),
+				propertyData.getProperty("patientid.ge"));
+		apiVerification.responseCodeValidation(response, 500);
+		apiVerification.responseTimeValidation(response);
+		JsonPath js = new JsonPath(response.asString());
+		String msg = js.getString("message");
+		assertEquals(msg, "Unable to cancel Appointment");
+     
 	}
 
 	@Test
 	public void testCancelApptWithCancelReasonPost() throws IOException {
-		HeaderConfig headerConfig = new HeaderConfig();
-		PSSPropertyFileLoader propertyData = new PSSPropertyFileLoader();
-		Appointment testData = new Appointment();
-		propertyData.setRestAPIDataGE(testData);
-		PostAPIRequestGE postAPIRequest = new PostAPIRequestGE();
-		log("Base URL is   " + testData.getBasicURI());
-		postAPIRequest.cancelApptWithCancelReason(testData.getBasicURI(), PayloadGE.cancelApptWithCancelReasonPayload(), headerConfig.defaultHeader(),
-				testData.getPracticeId(), testData.getSsoPatientId());
+		Response response=postAPIRequestge.cancelApptWithCancelReason(PayloadGE.cancelApptWithCancelReasonPayload(),
+				propertyData.getProperty("practiceid.ge"),propertyData.getProperty("sso.patient.id"));
+		apiVerification.responseCodeValidation(response, 200);
+		apiVerification.responseTimeValidation(response);
+	}
+	
+	@Test
+	public void testCancelApptWithCancelReasonWithoutBodyPost() throws IOException {
+		Response response=postAPIRequestge.cancelApptWithCancelReason("",
+				propertyData.getProperty("practiceid.ge"),propertyData.getProperty("sso.patient.id"));
+		apiVerification.responseCodeValidation(response, 400);
+		apiVerification.responseTimeValidation(response);
+		String message= apiVerification.responseKeyValidationJson(response, "message");
+		assertTrue(message.contains("Required request body is missing"));
 	}
 
 	@Test
 	public void testPastAppointmentsPost() throws IOException {
-		HeaderConfig headerConfig = new HeaderConfig();
-		PSSPropertyFileLoader propertyData = new PSSPropertyFileLoader();
-		Appointment testData = new Appointment();
-		propertyData.setRestAPIDataGE(testData);
-		PostAPIRequestGE postAPIRequest = new PostAPIRequestGE();
-		log("Base URL is   " + testData.getBasicURI());
-		postAPIRequest.pastAppointments(testData.getBasicURI(), PayloadGE.pastappointmentsPayload(), headerConfig.defaultHeader(), testData.getPracticeId(),
-				testData.getPastAppointmentsResourceName(), testData.getPastAppointmentsLocationname());
+		Response response=postAPIRequestge.pastAppointments(PayloadGE.pastappointmentsPayload(),propertyData.getProperty("practiceid.ge"));
+	apiVerification.responseCodeValidation(response, 200);
+	apiVerification.responseTimeValidation(response);
+	apiVerification.responseKeyValidationJson(response, "id");
+	apiVerification.responseKeyValidationJson(response, "patientId");
+	apiVerification.responseKeyValidationJson(response, "startDateTime");
+	apiVerification.responseKeyValidationJson(response, "endDateTime");
+	apiVerification.responseKeyValidationJson(response, "comments");
+
+	}
+	
+
+	@Test
+	public void testPastAppointmentsWithoutBodyPost() throws IOException {
+		Response response=postAPIRequestge.pastAppointments("",propertyData.getProperty("practiceid.ge"));
+	apiVerification.responseCodeValidation(response, 400);
+	apiVerification.responseTimeValidation(response);
+	String message= apiVerification.responseKeyValidationJson(response, "message");
+	assertTrue(message.contains("Required request body is missing"));
+	
 	}
 
 	@Test
@@ -220,144 +455,239 @@ public class PSS2GEAdapterAcceptanceTests extends BaseTestNGWebDriver {
 
 	@Test
 	public void testPreventSchedulingGet() throws IOException {
-		HeaderConfig headerConfig = new HeaderConfig();
-		PSSPropertyFileLoader propertyData = new PSSPropertyFileLoader();
-		Appointment testData = new Appointment();
-		propertyData.setRestAPIDataGE(testData);
-		PostAPIRequestGE postAPIRequest = new PostAPIRequestGE();
-		log("Base URL is   " + testData.getBasicURI());
-		postAPIRequest.preventScheduling(testData.getBasicURI(), headerConfig.defaultHeader(), testData.getPracticeIdGE(), testData.getPatientId(),
-				testData.getApptid());
+		Response response=postAPIRequestge.preventScheduling(propertyData.getProperty("practiceid.ge"), propertyData.getProperty("patientid.ge"),
+				propertyData.getProperty("appt.id.ge"));
+		apiVerification.responseCodeValidation(response, 200);
+		apiVerification.responseTimeValidation(response);
+	}
+	
+	@Test
+	public void testPreventSchedulingWithoutAppIdGet() throws IOException {
+		Response response = postAPIRequestge.preventScheduling(propertyData.getProperty("practiceid.ge"),
+				propertyData.getProperty("patientid.ge"), "");
+		apiVerification.responseCodeValidation(response, 404);
+		apiVerification.responseTimeValidation(response);
 	}
 
 	@Test
 	public void testRescheduleApptPOST() throws IOException {
-		HeaderConfig headerConfig = new HeaderConfig();
-		PSSPropertyFileLoader propertyData = new PSSPropertyFileLoader();
-		Appointment testData = new Appointment();
-		propertyData.setRestAPIDataGE(testData);
-		PostAPIRequestGE postAPIRequest = new PostAPIRequestGE();
-		log("Base url- " + testData.getBasicURI());
-		log("Payload is -" + PayloadGE.rescheduleAppointmentPayload(testData.getStartDateTime(), testData.getEndDateTime(), testData.getLocationId(),
-				testData.getPatientId(), testData.getResourceId(), testData.getSlotId(), testData.getApptid()));
-
-		postAPIRequest.rescheduleAppt(testData.getBasicURI(),
-				PayloadGE.rescheduleAppointmentPayload(testData.getStartDateTime(), testData.getEndDateTime(), testData.getLocationId(), testData.getPatientId(),
-						testData.getResourceId(), testData.getSlotId(), testData.getApptid()),
-				headerConfig.defaultHeader(), testData.getPracticeId());
+		String body=PayloadGE.rescheduleAppointmentPayload(propertyData.getProperty("start.date.time.ge"), propertyData.getProperty("end.date.time.ge"), propertyData.getProperty("location.id.ge"), propertyData.getProperty("patientid.ge"),
+				propertyData.getProperty("resource.id.ge"), propertyData.getProperty("slotid.ge"), propertyData.getProperty("appt.id.ge"));
+		Response response =postAPIRequestge.rescheduleAppt(body,propertyData.getProperty("practiceid.ge"));
+		apiVerification.responseCodeValidation(response, 200);
+		apiVerification.responseTimeValidation(response);
+		apiVerification.responseKeyValidationJson(response, "slotAlreadyTaken");
+		
+	}
+	
+	@Test
+	public void testRescheduleApptWithoutBodyPOST() throws IOException {
+		
+		Response response =postAPIRequestge.rescheduleAppt("",propertyData.getProperty("practiceid.ge"));
+		apiVerification.responseCodeValidation(response, 400);
+		apiVerification.responseTimeValidation(response);
+		String message= apiVerification.responseKeyValidationJson(response, "message");
+		assertTrue(message.contains("Required request body is missing"));
+		
 	}
 
 	@Test
 	public void testAvailableSlotsPost() throws IOException, InterruptedException {
-		HeaderConfig headerConfig = new HeaderConfig();
-		PSSPropertyFileLoader propertyData = new PSSPropertyFileLoader();
-		Appointment testData = new Appointment();
-		propertyData.setRestAPIDataGE(testData);
-		PostAPIRequestGE postAPIRequest = new PostAPIRequestGE();
-		log("Base url- " + testData.getBasicURI());
 
-		log("Payload is -"
-				+ PayloadGE.availableSlotsPayload(testData.getPatientId(), testData.getLocationId(), testData.getStartDateTime(), testData.getSlotSize()));
+		
+        String body=PayloadGE.availableSlotsPayload(propertyData.getProperty("patientid.ge"), propertyData.getProperty("location.id.ge"), propertyData.getProperty("start.date.time.ge"),propertyData.getProperty ("slot.size.ge"));	
+        Response response =postAPIRequestge.availableSlots(body,propertyData.getProperty("practiceid.ge"));
+        apiVerification.responseCodeValidation(response, 200);
+        apiVerification.responseKeyValidationJson(response, "availableSlots[0].startDateTime");
+        apiVerification.responseKeyValidationJson(response, "availableSlots[0].slotId");
+	}
+	
+	@Test
+	public void testAvailableSlotsWithoutBodyPost() throws IOException, InterruptedException {
 
-		postAPIRequest.availableSlots(testData.getBasicURI(),
-				PayloadGE.availableSlotsPayload(testData.getPatientId(), testData.getLocationId(), testData.getStartDateTime(), testData.getSlotSize()),
-				headerConfig.defaultHeader(), testData.getPracticeId());
+		
+        Response response =postAPIRequestge.availableSlots("",propertyData.getProperty("practiceid.ge"));
+        apiVerification.responseCodeValidation(response, 400);
+        apiVerification.responseTimeValidation(response);
+        String message= apiVerification.responseKeyValidationJson(response, "message");
+		assertTrue(message.contains("Required request body is missing"));
 	}
 
 	@Test
 	public void testAddPatientPost() throws IOException {
-		PSSPropertyFileLoader propertyData = new PSSPropertyFileLoader();
-		Appointment testData = new Appointment();
-		PayloadGE payloadGE = new PayloadGE();
-		HeaderConfig headerConfig = new HeaderConfig();
-		propertyData.setRestAPIDataGE(testData);
-		PostAPIRequestGE postAPIRequestGE = new PostAPIRequestGE();
-		log("Base URL- " + testData.getBasicURI());
-		log("Payload- " + payloadGE.addPatientPayload());
-		postAPIRequestGE.addPatientPost(testData.getBasicURI(), payloadGE.addPatientPayload(), headerConfig.defaultHeader(), testData.getPracticeIdGE());
+		String body=PayloadGE.addPatientPayload();
+		Response response =postAPIRequestge.addPatientPost(body,propertyData.getProperty("practiceid.ge"));
+		apiVerification.responseCodeValidation(response, 200);
+		apiVerification.responseTimeValidation(response);
+		apiVerification.responseKeyValidationJson(response, "id");
+		apiVerification.responseKeyValidationJson(response, "firstName");
+		apiVerification.responseKeyValidationJson(response, "lastName");
+		apiVerification.responseKeyValidationJson(response, "dateOfBirth");
+		apiVerification.responseKeyValidationJson(response, "emailAddress");
+		apiVerification.responseKeyValidationJson(response, "gender");
+
+
+	}
+	
+	@Test
+	public void testAddPatientWithoutBodyPost() throws IOException {
+		Response response =postAPIRequestge.addPatientPost("",propertyData.getProperty("practiceid.ge"));
+		apiVerification.responseCodeValidation(response, 400);
+		apiVerification.responseTimeValidation(response);
+		String message= apiVerification.responseKeyValidationJson(response, "message");
+		assertTrue(message.contains("Required request body is missing"));
+		
+
 	}
 
 	@Test
 	public void testCareProviderAvailabilityPOST() throws IOException {
-		PSSPropertyFileLoader propertyData = new PSSPropertyFileLoader();
-		Appointment testData = new Appointment();
-		PayloadGE payloadGE = new PayloadGE();
-		HeaderConfig headerConfig = new HeaderConfig();
-		propertyData.setRestAPIDataGE(testData);
-		PostAPIRequestGE postAPIRequestGE = new PostAPIRequestGE();
-		log("Base URL- " + testData.getBasicURI());
-		log("Payload is " + payloadGE.careProviderAvailabilityPayload(testData.getStartDateTime(), testData.getEndDateTime(), testData.getResourceId(),
-				testData.getSlotSize(), testData.getLocationId(), testData.getApptid()));
 
-		postAPIRequestGE.careProviderPost(testData.getBasicURI(), payloadGE.careProviderAvailabilityPayload(testData.getStartDateTime(), testData.getEndDateTime(),
-				testData.getResourceId(), testData.getSlotSize(), testData.getLocationId(), testData.getApptid()), headerConfig.defaultHeader(),
-				testData.getPracticeIdGE());
+		String body = PayloadGE.careProviderAvailabilityPayload(propertyData.getProperty("start.date.time.ge"),
+				propertyData.getProperty("end.date.time.ge"), propertyData.getProperty("resource.id.ge"),
+				propertyData.getProperty("slot.size.ge"), propertyData.getProperty("location.id.ge"),
+				propertyData.getProperty("appt.id.ge"));
+		Response response = postAPIRequestge.careProviderPost(body, propertyData.getProperty("practiceid.ge"));
+		apiVerification.responseCodeValidation(response, 200);
+		apiVerification.responseTimeValidation(response);
+		apiVerification.responseKeyValidationJson(response, "careProvider[0].resourceId");
+		apiVerification.responseKeyValidationJson(response, "careProvider[0].nextAvailabledate");
+
 	}
 
+	
+
+	@Test
+	public void testCareProviderAvailabilityWithoutBodyPOST() throws IOException {
+		Response response =postAPIRequestge.careProviderPost("",propertyData.getProperty("practiceid.ge"));
+		apiVerification.responseCodeValidation(response, 400);
+		apiVerification.responseTimeValidation(response);
+		String message= apiVerification.responseKeyValidationJson(response, "message");
+		assertTrue(message.contains("Required request body is missing"));
+		
+
+	}
 	@Test
 	public void testDemographicsGET() throws IOException {
-		PSSPropertyFileLoader propertyData = new PSSPropertyFileLoader();
-		Appointment testData = new Appointment();
-		propertyData.setRestAPIDataGE(testData);
-		PostAPIRequestGE postAPIRequestGE = new PostAPIRequestGE();
-		log("Base URL- " + testData.getBasicURI());
-		postAPIRequestGE.demographicsGET(testData.getBasicURI(), testData.getPracticeId(), testData.getDemographicsFirstName(), testData.getDemographicsLastName());
+		Response response=postAPIRequestge.demographicsGET( propertyData.getProperty("practiceid.ge"),propertyData.getProperty("sso.patient.id"));
+		apiVerification.responseCodeValidation(response, 200);
+		apiVerification.responseTimeValidation(response);
+		apiVerification.responseKeyValidationJson(response, "id");
+		apiVerification.responseKeyValidationJson(response, "firstName");
+		apiVerification.responseKeyValidationJson(response, "lastName");
+		apiVerification.responseKeyValidationJson(response, "dateOfBirth");
+		apiVerification.responseKeyValidationJson(response, "emailAddress");
+
+	
+	}
+	
+	@Test
+	public void testDemographicsWithouPatientIdGET() throws IOException {
+		Response response=postAPIRequestge.demographicsGET( propertyData.getProperty("practiceid.ge"),"");
+		apiVerification.responseCodeValidation(response, 400);
+		apiVerification.responseTimeValidation(response);
+		String message= apiVerification.responseKeyValidationJson(response, "message");
+		assertTrue(message.contains("Patient Id Is Not Valid"));
+
+	
 	}
 
 	@Test
 	public void testHealthOperationGET() throws IOException {
-		PSSPropertyFileLoader propertyData = new PSSPropertyFileLoader();
-		Appointment testData = new Appointment();
-		propertyData.setRestAPIDataGE(testData);
-		PostAPIRequestGE postAPIRequestGE = new PostAPIRequestGE();
-		log("Base URL- " + testData.getBasicURI());
-		postAPIRequestGE.healthOperationGET(testData.getBasicURI());
+		Response response=postAPIRequestge.healthOperationGET("/actuator/health");
+		apiVerification.responseCodeValidation(response, 200);
+		apiVerification.responseTimeValidation(response);
+	String status=	apiVerification.responseKeyValidationJson(response, "status");
+	assertEquals(status,"UP");
+
 	}
+	
+	@Test
+	public void testHealthOperationInvalidPathGET() throws IOException {
+		Response response=postAPIRequestge.healthOperationGET("/actuator/heal");
+		apiVerification.responseCodeValidation(response, 404);
+		apiVerification.responseTimeValidation(response);
+
+	}
+
 
 	@Test
 	public void testMatchPatientPOST() throws IOException {
-		PSSPropertyFileLoader propertyData = new PSSPropertyFileLoader();
-		Appointment testData = new Appointment();
-		PayloadGE payloadGE = new PayloadGE();
-		HeaderConfig headerConfig = new HeaderConfig();
-		propertyData.setRestAPIDataGE(testData);
-		PostAPIRequestGE postAPIRequestGE = new PostAPIRequestGE();
-		log("Base URL- " + testData.getBasicURI());
-		log("Payload is " + payloadGE.matchPatientPayload());
-		postAPIRequestGE.matchPatientPost(testData.getBasicURI(), payloadGE.matchPatientPayload(), headerConfig.defaultHeader(), testData.getPracticeIdGE(),
-				testData.getMatchPatientId(), testData.getMatchPatientFirstName(), testData.getMatchPatientLastName());
+		
+		Response response = postAPIRequestge.matchPatientPost(PayloadGE.matchPatientPayload(), propertyData.getProperty("practiceid.ge"));
+		apiVerification.responseCodeValidation(response, 200);
+		apiVerification.responseTimeValidation(response);
 	}
+	
+	@Test
+	public void testMatchPatientPOSTWithoutBodyPOST() throws IOException {
+		Response response = postAPIRequestge.matchPatientPost("", propertyData.getProperty("practiceid.ge"));
+		apiVerification.responseCodeValidation(response, 400);
+		apiVerification.responseTimeValidation(response);
+		String message= apiVerification.responseKeyValidationJson(response, "message");
+		assertTrue(message.contains("Required request body is missing"));
+
+	}
+
 
 	@Test
 	public void testPatientLastVisitGET() throws IOException {
-		PSSPropertyFileLoader propertyData = new PSSPropertyFileLoader();
-		Appointment testData = new Appointment();
-		propertyData.setRestAPIDataGE(testData);
-		PostAPIRequestGE postAPIRequestGE = new PostAPIRequestGE();
-		log("Base URL- " + testData.getBasicURI());
-		postAPIRequestGE.patientLastVisit(testData.getBasicURI(), testData.getPracticeIdGE(), testData.getSsoPatientId());
+	
+		Response response=postAPIRequestge.patientLastVisit( propertyData.getProperty("practiceid.ge"),propertyData.getProperty("sso.patient.id"));
+		apiVerification.responseCodeValidation(response, 200);
+		apiVerification.responseTimeValidation(response);
+		apiVerification.responseKeyValidationJson(response, "lastVisitDateTime");
+
+	}
+	
+	@Test
+	public void testPatientLastVisitWithoutPatientIdGET() throws IOException {
+	
+		Response response=postAPIRequestge.patientLastVisit( propertyData.getProperty("practiceid.ge"),"");
+		apiVerification.responseCodeValidation(response, 404);
+		apiVerification.responseTimeValidation(response);
+
 	}
 
 	@Test
 	public void testPreReqAppointmentTypesGET() throws IOException {
-		PSSPropertyFileLoader propertyData = new PSSPropertyFileLoader();
-		Appointment testData = new Appointment();
-		propertyData.setRestAPIDataGE(testData);
-		PostAPIRequestGE postAPIRequestGE = new PostAPIRequestGE();
-		log("Base URL- " + testData.getBasicURI());
-		postAPIRequestGE.preReqAppointmentTypes(testData.getBasicURI(), testData.getPracticeIdGE());
+		Response response=postAPIRequestge.preReqAppointmentTypes( propertyData.getProperty("practiceid.ge"));
+		apiVerification.responseCodeValidation(response, 200);
+		apiVerification.responseTimeValidation(response);
+		apiVerification.responseKeyValidation(response, "id");
+		apiVerification.responseKeyValidation(response, "name");
+	}
+
+	@Test
+	public void testPreReqAppointmentTypesWithoutPracticeIdGET() throws IOException {
+		Response response=postAPIRequestge.preReqAppointmentTypes("");
+		apiVerification.responseCodeValidation(response, 404);
+		apiVerification.responseTimeValidation(response);
 	}
 
 	@Test
 	public void testSearchPatientPOST() throws IOException {
-		PSSPropertyFileLoader propertyData = new PSSPropertyFileLoader();
-		Appointment testData = new Appointment();
-		PayloadGE payloadGE = new PayloadGE();
-		HeaderConfig headerConfig = new HeaderConfig();
-		propertyData.setRestAPIDataGE(testData);
-		PostAPIRequestGE postAPIRequestGE = new PostAPIRequestGE();
-		log("Base URL- " + testData.getBasicURI());
-		postAPIRequestGE.searchPatientPost(testData.getBasicURI(), payloadGE.searchPatientPayload(), headerConfig.defaultHeader(), testData.getPracticeIdGE());
+		Response response = postAPIRequestge.searchPatientPost(PayloadGE.searchPatientPayload(), propertyData.getProperty("practiceid.ge"));
+		apiVerification.responseCodeValidation(response, 200);
+		apiVerification.responseTimeValidation(response);
+		apiVerification.responseKeyValidation(response, "id");
+		apiVerification.responseKeyValidation(response, "firstName");
+		apiVerification.responseKeyValidation(response, "lastName");
+		apiVerification.responseKeyValidation(response, "dateOfBirth");
+		apiVerification.responseKeyValidation(response, "emailAddress");
+		apiVerification.responseKeyValidation(response, "gender");
+
+
+	}
+	
+	@Test
+	public void testSearchPatientWithoutBodyPOST() throws IOException {
+		Response response = postAPIRequestge.searchPatientPost("", propertyData.getProperty("practiceid.ge"));
+		apiVerification.responseCodeValidation(response, 400);
+		apiVerification.responseTimeValidation(response);
+		String message= apiVerification.responseKeyValidationJson(response, "message");
+		assertTrue(message.contains("Required request body is missing"));
+
 	}
 
 }
