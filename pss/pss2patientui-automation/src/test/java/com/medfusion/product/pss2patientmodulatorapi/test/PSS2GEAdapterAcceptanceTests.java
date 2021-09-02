@@ -54,7 +54,7 @@ public class PSS2GEAdapterAcceptanceTests extends BaseTestNG {
 
 	
 	@Test(enabled = true, groups = { "APItest" }, retryAnalyzer = RetryAnalyzer.class)
-	public void testHealthCheckGET1() throws NullPointerException, Exception {
+	public void testHealthCheckGET() throws NullPointerException, Exception {
 
 		Response response = postAPIRequestge.healthCheck(propertyData.getProperty("practiceid.ge"));
 		logStep("Verifying the response");
@@ -77,7 +77,7 @@ public class PSS2GEAdapterAcceptanceTests extends BaseTestNG {
 	
 
 	
-	@Test
+	@Test(enabled = true, groups = { "APItest" }, retryAnalyzer = RetryAnalyzer.class)
 	public void testPingGET() throws IOException {
 		Response response = postAPIRequestge.ping(propertyData.getProperty("practiceid.ge"));
 		logStep("Verifying the response");
@@ -86,7 +86,7 @@ public class PSS2GEAdapterAcceptanceTests extends BaseTestNG {
 
 	}
 	
-	@Test
+	@Test(enabled = true, groups = { "APItest" }, retryAnalyzer = RetryAnalyzer.class)
 	public void testPingWithoutPracticeIdGET() throws IOException {
 		Response response = postAPIRequestge.ping("");
 		logStep("Verifying the response");
@@ -95,7 +95,7 @@ public class PSS2GEAdapterAcceptanceTests extends BaseTestNG {
 
 	}
 
-	@Test
+	@Test(enabled = true, groups = { "APItest" }, retryAnalyzer = RetryAnalyzer.class)
 	public void testVersionGET() throws IOException {
 		Response response = postAPIRequestge.version(propertyData.getProperty("practiceid.ge"));
 		apiVerification.responseCodeValidation(response, 200);
@@ -103,14 +103,14 @@ public class PSS2GEAdapterAcceptanceTests extends BaseTestNG {
 		apiVerification.responseKeyValidationJson(response, "version");
 	}
 	
-	@Test
+	@Test(enabled = true, groups = { "APItest" }, retryAnalyzer = RetryAnalyzer.class)
 	public void testVersionWithoutPracticeIdGET() throws IOException {
 		Response response = postAPIRequestge.version("");
 		apiVerification.responseCodeValidation(response, 404);
 		apiVerification.responseTimeValidation(response);
 	}
 	
-	@Test
+	@Test(enabled = true, groups = { "APItest" }, retryAnalyzer = RetryAnalyzer.class)
 	public void testLockoutGET() throws IOException {
 		Response response = postAPIRequestge.lockOut(propertyData.getProperty("practiceid.ge"));
 		apiVerification.responseCodeValidation(response, 200);
@@ -121,14 +121,14 @@ public class PSS2GEAdapterAcceptanceTests extends BaseTestNG {
 
 	}
 
-	@Test
+	@Test(enabled = true, groups = { "APItest" }, retryAnalyzer = RetryAnalyzer.class)
 	public void testLockoutWithoutPracticeIdGET() throws IOException {
 		Response response = postAPIRequestge.lockOut("");
 		apiVerification.responseCodeValidation(response, 404);
 		apiVerification.responseTimeValidation(response);
 	}
 
-	@Test
+	@Test(enabled = true, groups = { "APItest" }, retryAnalyzer = RetryAnalyzer.class)
 	public void testAppointmentTypesGET() throws IOException {
 		Response response = postAPIRequestge.appointmentType(propertyData.getProperty("practiceid.ge"));
 		apiVerification.responseCodeValidation(response, 200);
@@ -139,7 +139,7 @@ public class PSS2GEAdapterAcceptanceTests extends BaseTestNG {
 	}
 	
 	
-	@Test
+	@Test(enabled = true, groups = { "APItest" }, retryAnalyzer = RetryAnalyzer.class)
 	public void testAppointmentTypesWithoutPracticeIdGET() throws IOException {
 		Response response = postAPIRequestge.appointmentType("");
 		apiVerification.responseCodeValidation(response, 404);
@@ -147,7 +147,7 @@ public class PSS2GEAdapterAcceptanceTests extends BaseTestNG {
 	}
 
 
-	@Test
+	@Test(enabled = true, groups = { "APItest" }, retryAnalyzer = RetryAnalyzer.class)
 	public void testBooksGET() throws IOException {
 		Response response = postAPIRequestge.books(propertyData.getProperty("practiceid.ge"));
 		apiVerification.responseCodeValidation(response, 200);
@@ -160,14 +160,14 @@ public class PSS2GEAdapterAcceptanceTests extends BaseTestNG {
 	}
 
 	
-	@Test
+	@Test(enabled = true, groups = { "APItest" }, retryAnalyzer = RetryAnalyzer.class)
 	public void testBooksWithoutPracticeIdGET() throws IOException {
 		Response response = postAPIRequestge.books("");
 		apiVerification.responseCodeValidation(response, 404);
 		apiVerification.responseTimeValidation(response);
 	}
 	
-	@Test
+	@Test(enabled = true, groups = { "APItest" }, retryAnalyzer = RetryAnalyzer.class)
 	public void testInsuranceCarrierGET() throws IOException {
 		Response response = postAPIRequestge.insuranceCarrier(propertyData.getProperty("practiceid.ge"));
 		apiVerification.responseCodeValidation(response, 200);
@@ -182,14 +182,14 @@ public class PSS2GEAdapterAcceptanceTests extends BaseTestNG {
 
 	}
 	
-	@Test
+	@Test(enabled = true, groups = { "APItest" }, retryAnalyzer = RetryAnalyzer.class)
 	public void testInsuranceCarrierWithoutPracticeIdGET() throws IOException {
 		Response response = postAPIRequestge.insuranceCarrier("");
 		apiVerification.responseCodeValidation(response, 404);
 		apiVerification.responseTimeValidation(response);
 	}
 
-	@Test
+	@Test(enabled = true, groups = { "APItest" }, retryAnalyzer = RetryAnalyzer.class)
 	public void testLocationGET() throws IOException {
 		
 		Response response = postAPIRequestge.locations(propertyData.getProperty("practiceid.ge"));
@@ -203,7 +203,7 @@ public class PSS2GEAdapterAcceptanceTests extends BaseTestNG {
 		}
 	
 
-	@Test
+	@Test(enabled = true, groups = { "APItest" }, retryAnalyzer = RetryAnalyzer.class)
 	public void testLocationWithoutPracticeIdGET() throws IOException {
 		
 		Response response = postAPIRequestge.locations("");
@@ -212,7 +212,7 @@ public class PSS2GEAdapterAcceptanceTests extends BaseTestNG {
 		
 		}
 
-	@Test
+	@Test(enabled = true, groups = { "APItest" }, retryAnalyzer = RetryAnalyzer.class)
 	public void testActuatorGET() throws IOException {
 		Response response = postAPIRequestge.actuator("/actuator");
 		apiVerification.responseCodeValidation(response, 200);
@@ -223,7 +223,7 @@ public class PSS2GEAdapterAcceptanceTests extends BaseTestNG {
 		
 	}
 	
-	@Test
+	@Test(enabled = true, groups = { "APItest" }, retryAnalyzer = RetryAnalyzer.class)
 	public void testActuatorInvalidPathGET() throws IOException {
 		Response response = postAPIRequestge.actuator("/actuatoraa");
 		apiVerification.responseCodeValidation(response, 404);

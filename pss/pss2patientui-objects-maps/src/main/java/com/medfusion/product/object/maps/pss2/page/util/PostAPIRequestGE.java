@@ -91,17 +91,6 @@ public class PostAPIRequestGE extends BaseTestNGWebDriver {
 		return response;
 	}
 
-	public Response actuator1(String baseurl, Map<String, String> Header) {
-		RestAssured.baseURI = baseurl;
-		Response response = given().log().all().when().get("/actuator").then().log().all().assertThat().statusCode(200)
-				.body("_links.self.href", Matchers.notNullValue()).extract().response();
-
-		JsonPath js = new JsonPath(response.asString());
-		log("Actuator Link - " + js.getString("_links.self.href"));
-
-		return response;
-	}
-
 	public Response lastseenProvider(String b, String practiceId) {
 		Response response = given().spec(requestSpec).log().all().body(b).when()
 				.post(practiceId + "/getlastseenprovider").then().log().all().extract().response();
