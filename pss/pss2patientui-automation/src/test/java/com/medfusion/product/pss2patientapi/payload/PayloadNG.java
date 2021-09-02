@@ -136,7 +136,7 @@ public class PayloadNG {
 				+ "    \"appointmentTypeId\": \"86D0E00F-C136-4A24-BF7A-6C17E9AB35ED\",\r\n"
 				+ "    \"resourceCategoryId\": \"C8E55131-F1D8-401D-A107-F90222DBD977\",\r\n"
 				+ "    \"resourceId\": \"F49641D6-CDF1-4264-B5A5-7489F7E58F8D\",\r\n"
-				+ "    \"startDate\": \"03/03/2021 00:49:32\",\r\n"
+				+ "    \"startDate\": \"08/24/2021 00:49:32\",\r\n"
 				+ "    \"slotSize\": \"15\",\r\n"
 				+ "    \"patientId\": null,\r\n"
 				+ "    \"reservedForSameDay\": false,\r\n"
@@ -155,7 +155,38 @@ public class PayloadNG {
 				+ "    \"locationDBId\": \"205605\",\r\n"
 				+ "    \"providerDBId\": \"205664\",\r\n"
 				+ "    \"practiceTimezone\": \"America/New_York\",\r\n"
-				+ "    \"nextAvailable\": false\r\n"
+				+ "    \"nextAvailable\": true\r\n"
+				+ "}";
+		
+		return nextAvailable;
+	}
+	
+public static String nextAvailable_New() {
+		
+		String nextAvailable="{\r\n"
+				+ "\"locationId\": \"1B595F99-278A-4956-8F04-1879B12FB43D\",\r\n"
+				+ "\"appointmentCategoryId\": \"7B40680C-9CCE-478D-9455-2B017FD048A2\",\r\n"
+				+ "\"appointmentTypeId\": \"9E0BC44E-4200-4433-8941-DA49C408F1BA\",\r\n"
+				+ "\"resourceCategoryId\":\"11B85759-9394-4C06-8F20-CF57F1EA81BB\",\r\n"
+				+ "\"startDate\":\"08/01/2022 00:00:00\",\r\n"
+				+ "\"endDate\":\"08/24/2022 23:59:00\",\r\n"
+				+ "\"slotSize\": 5,\r\n"
+				+ "\"patientId\": null,\r\n"
+				+ "\"reservedForSameDay\": false,\r\n"
+				+ "\"apptTypeAllocated\": true,\r\n"
+				+ "\"nextAvailability\": false,\r\n"
+				+ "\"stackingFlag\": false,\r\n"
+				+ "\"preventScheduling\": 0,\r\n"
+				+ "\"sameDayAppointment\": false,\r\n"
+				+ "\"contiguous\": false,\r\n"
+				+ "\"maxPerDay\": 0,\r\n"
+				+ "\"leadTime\": 0,\r\n"
+				+ "\"slotCount\": 1,\r\n"
+				+ "\"allowSameDayAppts\": true,\r\n"
+				+ "\"reservedForSameDate\": \"n\",\r\n"
+				+ "\"appointmentTypeDBId\": \"205810\",\r\n"
+				+ "\"locationDBId\": \"205810\",\r\n"
+				+ "\"providerDBId\":\"205720\"\r\n"
 				+ "}";
 		
 		return nextAvailable;
@@ -245,8 +276,8 @@ public class PayloadNG {
 				+ "    \"practiceName\": \"PSS - NG\",\r\n"
 				+ "    \"practiceTimezone\": \"\"\r\n"
 				+ "  },\r\n"
-				+ "  \"startDate\": \"03/19/2021\",\r\n"
-				+ "  \"endDate\": \"04/01/2021\"\r\n"
+				+ "  \"startDate\": \"08/19/2021\",\r\n"
+				+ "  \"endDate\": \"09/01/2021\"\r\n"
 				+ "}";
 		return upcommingappt;
 	}
@@ -264,9 +295,9 @@ public class PayloadNG {
 				+ "      \"slotSize\": \"15\"\r\n"
 				+ "    }\r\n"
 				+ "  ],\r\n"
-				+ "  \"endDateTime\": \"04/30/2021 01:47:48\",\r\n"
+				+ "  \"endDateTime\": \"08/30/2021 01:47:48\",\r\n"
 				+ "  \"locationId\": \"283BB437-B0C6-4626-A7CC-57FD0D1D6574\",\r\n"
-				+ "  \"startDateTime\": \"03/19/2021 01:47:48\"\r\n"
+				+ "  \"startDateTime\": \"08/19/2021 01:47:48\"\r\n"
 				+ "}";
 		return careprovideravailability;
 		
