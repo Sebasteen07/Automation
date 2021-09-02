@@ -478,30 +478,6 @@ public class PayloadPssPatientModulator {
 				+ "}";
 		return identifyPatientForReschedule;
 	}
-//
-//	public String specialtyByRulePayload() {
-//		String specialtyByRulePayload ="{\r\n"
-//				+ "    \"appointmentType\": 203950,\r\n"
-//				+ "    \"book\": 205300,\r\n"
-//				+ "    \"flow\": \"loginless\",\r\n"
-//				+ "    \"linkGenerationFlow\": true,\r\n"
-//				+ "    \"location\": 204200,\r\n"
-//				+ "    \"patientDetails\": {\r\n"
-//				+ "        \"additionalProp1\": \"string\",\r\n"
-//				+ "        \"additionalProp2\": \"string\",\r\n"
-//				+ "        \"additionalProp3\": \"string\"\r\n"
-//				+ "    },\r\n"
-//				+ "    \"patientType\": null,\r\n"
-//				+ "    \"radius\": 0,\r\n"
-//				+ "    \"slotId\": null,\r\n"
-//				+ "    \"specialty\": 202513,\r\n"
-//				+ "    \"startDateTime\": \"05/25/2021 01:30:00\",\r\n"
-//				+ "    \"traversal\": true,\r\n"
-//				+ "    \"zipcode\": 12345\r\n"
-//				+ "}";
-//		return specialtyByRulePayload;
-//	}
-	
 
 	public String specialtyByRulePayload(String appointmentId) {
 		String specialtyByRulePayload ="{\r\n"
@@ -613,22 +589,6 @@ public class PayloadPssPatientModulator {
 				+ "}";
 		return allowOnlineCancellation;
 	}
-	
-//	public String  availableslotsPayload(String locationId, String bookId, String AppmntTypeId)
-//	{
-//		String  availableSlots="{\r\n"
-//				+ "	\"specialty\": null,\r\n"
-//				+ "	\"location\": \""+locationId+"\",\r\n"
-//				+ "	\"book\": \""+bookId+"\",\r\n"
-//				+ "	\"appointmentType\": \""+AppmntTypeId+"\",\r\n"
-//				+ "	\"startDateTime\": \"07/14/2021\",\r\n"
-//				+ "	\"slotId\": null,\r\n"
-//				+ "	\"traversal\": false,\r\n"
-//				+ "	\"patientType\": \"PT_NEW\",\r\n"
-//				+ "	\"extApptId\": null\r\n"
-//				+ "}";
-//		return availableSlots;
-//	}
 	
 	public String  availableslotsPayload(String date, String bookid, String locationid, String apptid)
 	{
