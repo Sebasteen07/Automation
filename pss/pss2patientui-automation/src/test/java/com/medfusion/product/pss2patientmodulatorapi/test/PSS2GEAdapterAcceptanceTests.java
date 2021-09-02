@@ -13,10 +13,10 @@ import org.testng.annotations.Test;
 import com.intuit.ifs.csscat.core.BaseTestNG;
 import com.intuit.ifs.csscat.core.RetryAnalyzer;
 import com.medfusion.product.object.maps.pss2.page.util.APIVerification;
-import com.medfusion.product.object.maps.pss2.page.util.HeaderConfig;
 import com.medfusion.product.object.maps.pss2.page.util.PostAPIRequestGE;
 import com.medfusion.product.pss2patientapi.payload.PayloadGE;
 import com.medfusion.product.pss2patientui.pojo.Appointment;
+import com.medfusion.product.pss2patientui.utils.PSSPatientUtils;
 import com.medfusion.product.pss2patientui.utils.PSSPropertyFileLoader;
 
 import io.restassured.path.json.JsonPath;
@@ -27,6 +27,7 @@ import io.restassured.specification.ResponseSpecification;
 public class PSS2GEAdapterAcceptanceTests extends BaseTestNG {
 	
 	
+	public PSSPatientUtils pssPatientUtils;
 	public static PayloadGE payload;
 	public static PSSPropertyFileLoader propertyData;
 	public static Appointment testData;
@@ -42,6 +43,7 @@ public class PSS2GEAdapterAcceptanceTests extends BaseTestNG {
 
 	@BeforeTest(enabled = true, groups = { "APItest" })
 	public void setUp() throws IOException {
+		pssPatientUtils=new PSSPatientUtils();
 		payload = new PayloadGE();
 		propertyData = new PSSPropertyFileLoader();
 		postAPIRequestge = new PostAPIRequestGE();
@@ -318,9 +320,11 @@ public class PSS2GEAdapterAcceptanceTests extends BaseTestNG {
 	@Test
 	public void testScheduleAppointmentPOST() throws IOException {
 
+		String date=pssPatientUtils.sampleDateTime("MM/dd/yyyy HH:mm:ss");
+		log("Current date is"+date);
 		String body = PayloadGE.availableSlotsPayload(propertyData.getProperty("patientid.ge"),
 				propertyData.getProperty("location.id.ge"), propertyData.getProperty("start.date.time.ge"),
-				propertyData.getProperty("slot.size.ge"));
+				propertyData.getProperty("slot.size.ge"), date);
 
 		Response response = postAPIRequestge.availableSlots(body, propertyData.getProperty("practiceid.ge"));
 		JsonPath js = new JsonPath(response.asString());
@@ -331,6 +335,7 @@ public class PSS2GEAdapterAcceptanceTests extends BaseTestNG {
 		String endTime = js.getString("availableSlots[1].startDateTime");
 
 		String startDateTime_resch = js.getString("availableSlots[1].startDateTime");
+		String endDateTime_resch = js.getString("availableSlots[2].startDateTime");
 		String slotId_resch = js.getString("availableSlots[1].slotId");
 
 		String patientId = propertyData.getProperty("patientid.ge");
@@ -350,8 +355,56 @@ public class PSS2GEAdapterAcceptanceTests extends BaseTestNG {
 		apiVerification.responseCodeValidation(scheduleApptResponse, 200);
 		apiVerification.responseTimeValidation(scheduleApptResponse);
 		apiVerification.responseTimeValidation(scheduleApptResponse);
+		String id=apiVerification.responseKeyValidationJson(scheduleApptResponse, "id");
+		log("Id is   "+id);
 		apiVerification.responseKeyValidationJson(scheduleApptResponse, "slotAlreadyTaken");
+		
+		
+		String body1=PayloadGE.rescheduleAppointmentPayload(startDateTime_resch, endDateTime_resch, propertyData.getProperty("location.id.ge"), propertyData.getProperty("patientid.ge"),
+				propertyData.getProperty("resource.id.ge"), slotId_resch, id);
+		Response reScheduleApptResponse =postAPIRequestge.rescheduleAppt(body1,propertyData.getProperty("practiceid.ge"));
+		apiVerification.responseCodeValidation(reScheduleApptResponse, 200);
+		apiVerification.responseTimeValidation(reScheduleApptResponse);
+		apiVerification.responseKeyValidationJson(reScheduleApptResponse, "id");
+		apiVerification.responseKeyValidationJson(reScheduleApptResponse, "slotAlreadyTaken");
 
+
+		
+	}
+	
+	@Test
+	public void testScheduleAppointmentForNewPatientPOST() throws IOException {
+
+		String date=pssPatientUtils.sampleDateTime("MM/dd/yyyy HH:mm:ss");
+		log("Current date is"+date);
+		String body = PayloadGE.availableSlotsPayload(propertyData.getProperty("patientid.ge"),
+				propertyData.getProperty("location.id.ge"), propertyData.getProperty("start.date.time.ge"),
+				propertyData.getProperty("slot.size.ge"), date);
+
+		Response response = postAPIRequestge.availableSlots(body, propertyData.getProperty("practiceid.ge"));
+		JsonPath js = new JsonPath(response.asString());
+
+		String startDateTime = js.getString("availableSlots[0].startDateTime");
+		;
+		String slotId = js.getString("availableSlots[0].slotId");
+		String endTime = js.getString("availableSlots[1].startDateTime");
+
+		String patientId = propertyData.getProperty("patientid.ge");
+
+		log("startDateTime- " + startDateTime);
+		log("slotId- " + slotId);
+		log("patientId- " + patientId);
+
+		String schedPayload = PayloadGE.schedApptForNewPatientPayload(startDateTime, slotId, endTime);
+
+		Response scheduleApptResponse = postAPIRequestge.scheduleApptPatient(schedPayload,
+				propertyData.getProperty("practiceid.ge"));
+		apiVerification.responseCodeValidation(scheduleApptResponse, 200);
+		apiVerification.responseTimeValidation(scheduleApptResponse);
+		apiVerification.responseTimeValidation(scheduleApptResponse);
+		String id=apiVerification.responseKeyValidationJson(scheduleApptResponse, "id");
+		log("Id is   "+id);
+		apiVerification.responseKeyValidationJson(scheduleApptResponse, "slotAlreadyTaken");
 	}
 
 	@Test
@@ -437,20 +490,27 @@ public class PSS2GEAdapterAcceptanceTests extends BaseTestNG {
 
 	@Test
 	public void testUpcommingApptPOST() throws IOException {
-		HeaderConfig headerConfig = new HeaderConfig();
-		PSSPropertyFileLoader propertyData = new PSSPropertyFileLoader();
-		Appointment testData = new Appointment();
-		propertyData.setRestAPIDataGE(testData);
-		PostAPIRequestGE postAPIRequest = new PostAPIRequestGE();
-		log("Base URL is   " + testData.getBasicURI());
-		log("Payload- " + PayloadGE.upcommingApt_Payload(testData.getSsoPatientId(), testData.getPracticeIdGE(),
-				testData.getPracticeDisplayName(), testData.getStartDateTime()));
+        String body=PayloadGE.upcommingApt_Payload(propertyData.getProperty("patientid.ge"), propertyData.getProperty("practiceid.ge"),propertyData.getProperty("practice.display.name.ge"), propertyData.getProperty("start.date.time.ge"));	
+        Response response =postAPIRequestge.upcomingAppt(body,propertyData.getProperty("practiceid.ge"));
+        apiVerification.responseCodeValidation(response, 200);
+        apiVerification.responseTimeValidation(response);
+        apiVerification.responseKeyValidation(response, "id");
+        apiVerification.responseKeyValidation(response, "patientId");
+        apiVerification.responseKeyValidation(response, "startDateTime");
+        apiVerification.responseKeyValidation(response, "endDateTime");
 
-		postAPIRequest.upcomingAppt(testData.getBasicURI(),
-				PayloadGE.upcommingApt_Payload(testData.getMatchPatientId(), testData.getPracticeIdGE(),
-						testData.getPracticeDisplayName(), testData.getStartDateTime()),
-				headerConfig.defaultHeader(), testData.getPracticeIdGE(), testData.getUpcomingApptresourceName(),
-				testData.getUpcomingApptlocationName());
+
+
+	}
+	
+	@Test
+	public void testUpcomingApptWithoutBodyPost() throws IOException {
+		Response response=postAPIRequestge.upcomingAppt("",propertyData.getProperty("practiceid.ge"));
+	apiVerification.responseCodeValidation(response, 400);
+	apiVerification.responseTimeValidation(response);
+	String message= apiVerification.responseKeyValidationJson(response, "message");
+	assertTrue(message.contains("Required request body is missing"));
+	
 	}
 
 	@Test
@@ -494,8 +554,9 @@ public class PSS2GEAdapterAcceptanceTests extends BaseTestNG {
 	@Test
 	public void testAvailableSlotsPost() throws IOException, InterruptedException {
 
-		
-        String body=PayloadGE.availableSlotsPayload(propertyData.getProperty("patientid.ge"), propertyData.getProperty("location.id.ge"), propertyData.getProperty("start.date.time.ge"),propertyData.getProperty ("slot.size.ge"));	
+		String date=pssPatientUtils.sampleDateTime("MM/dd/yyyy HH:mm:ss");
+		log("Current date is"+date);
+        String body=PayloadGE.availableSlotsPayload(propertyData.getProperty("patientid.ge"), propertyData.getProperty("location.id.ge"), propertyData.getProperty("start.date.time.ge"),propertyData.getProperty ("slot.size.ge"), date);	
         Response response =postAPIRequestge.availableSlots(body,propertyData.getProperty("practiceid.ge"));
         apiVerification.responseCodeValidation(response, 200);
         apiVerification.responseKeyValidationJson(response, "availableSlots[0].startDateTime");

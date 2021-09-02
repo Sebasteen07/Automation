@@ -71,6 +71,15 @@ public class PSSPatientUtils extends BaseTestNGWebDriver {
 		log("Is file deleted ? " + deleteFile(path));
 	}
 
+	public String sampleDateTime(String datetimeformat) {
+	       
+        DateFormat dateFormat = new SimpleDateFormat(datetimeformat);
+        Date d = new Date();
+        String currentdate = dateFormat.format(d);
+        log("Current Date- " + currentdate);
+        return currentdate;
+    }
+	
 	public String filePath() {
 		String home = System.getProperty("user.home");
 		File latestFile = lastFileModified(home + PSSConstants.DOWNLOADFILENAME);

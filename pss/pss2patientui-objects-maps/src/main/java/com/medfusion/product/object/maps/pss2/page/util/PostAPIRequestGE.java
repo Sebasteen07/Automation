@@ -102,7 +102,7 @@ public class PostAPIRequestGE extends BaseTestNGWebDriver {
 		return response;
 	}
 
-	public Response lastseenProvider(String b, String practiceId) {		
+	public Response lastseenProvider(String b, String practiceId) {
 		Response response = given().spec(requestSpec).log().all().body(b).when()
 				.post(practiceId + "/getlastseenprovider").then().log().all().extract().response();
 		return response;
@@ -151,26 +151,10 @@ public class PostAPIRequestGE extends BaseTestNGWebDriver {
 		return response;
 	}
 
-	public String upcomingAppt(String baseurl, String b, Map<String, String> Header, String practiceId,
-			String apptResourceName, String apptLocationName) {
-		RestAssured.baseURI = baseurl;
-		String response = given().when().headers(Header).body(b).log().all().when()
-				.post(practiceId + "/upcomingappointments").then().log().all().assertThat().statusCode(200)
-				.body("book[0].resourceName", equalTo(apptResourceName))
-				.body("location[0].name", equalTo(apptLocationName)).extract().response().asString();
+	public Response upcomingAppt(String b, String practiceId) {
 
-		log("Response is - " + response);
-
-		JsonPath js = new JsonPath(response.toString());
-
-		String apptName = js.getString("appointmentTypes.name");
-		String resourceName = js.getString("book.resourceName");
-		String locationName = js.getString("location.name");
-
-		log("APPOINTMENT TYPE - " + apptName);
-		log("resourceName - " + resourceName);
-		log("locationName - " + locationName);
-
+		Response response = given().spec(requestSpec).log().all().body(b).when()
+				.post(practiceId + "/upcomingappointments").then().log().all().extract().response();
 		return response;
 	}
 

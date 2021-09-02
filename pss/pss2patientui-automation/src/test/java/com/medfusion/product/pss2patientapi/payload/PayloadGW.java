@@ -446,7 +446,7 @@ public class PayloadGW extends BaseTestNGWebDriver {
 		
 		return schedulePayload;
 	}
-	public String reschedulePayload(String startdate,String enddate,String patientId) {
+	public String reschedulePayload(String startdate,String enddate,String patientId,String appId) {
 		String reschedulePayload="{\r\n"
 				+ "\r\n"
 				+ "    \"locationId\": \"1019\",\r\n"
@@ -495,7 +495,7 @@ public class PayloadGW extends BaseTestNGWebDriver {
 				+ "\r\n"
 				+ "        \"schedulingDuration\": 0,\r\n"
 				+ "\r\n"
-				+ "        \"appointmentId\": \"36141\"\r\n"
+				+ "        \"appointmentId\": \""+appId+"\"\r\n"
 				+ "\r\n"
 				+ "    },\r\n"
 				+ "\r\n"
