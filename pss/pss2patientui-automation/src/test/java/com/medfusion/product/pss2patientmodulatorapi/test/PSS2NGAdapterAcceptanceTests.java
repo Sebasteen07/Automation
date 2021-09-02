@@ -8,19 +8,24 @@ import java.io.IOException;
 import org.testng.annotations.BeforeTest;
 import org.testng.annotations.Test;
 
+import com.intuit.ifs.csscat.core.BaseTestNG;
 import com.intuit.ifs.csscat.core.BaseTestNGWebDriver;
 import com.intuit.ifs.csscat.core.RetryAnalyzer;
+import com.medfusion.product.object.maps.pss2.page.util.APIVerification;
 import com.medfusion.product.object.maps.pss2.page.util.PostAPIRequestNG;
 import com.medfusion.product.pss2patientapi.payload.PayloadNG;
 import com.medfusion.product.pss2patientui.pojo.Appointment;
 import com.medfusion.product.pss2patientui.utils.PSSPropertyFileLoader;
 
-public class PSS2NGAdapterAcceptanceTests extends BaseTestNGWebDriver {
+import io.restassured.response.Response;
+
+public class PSS2NGAdapterAcceptanceTests extends BaseTestNG {
 
 	public static PayloadNG payload;
 	public static PSSPropertyFileLoader propertyData;
 	public static Appointment testData;
 	public static PostAPIRequestNG postAPIRequest;
+	APIVerification aPIVerification = new APIVerification();
 
 	@BeforeTest(enabled = true, groups = { "APItest" })
 	public void setUp() throws IOException {
@@ -67,7 +72,7 @@ public class PSS2NGAdapterAcceptanceTests extends BaseTestNGWebDriver {
 		log("Patient Id- " + propertyData.getProperty("patient.id.ng"));
 
 		postAPIRequest.nextAvailableNG(propertyData.getProperty("practice.id.ng"),
-				PayloadNG.nextAvailable_Payload(propertyData.getProperty("patient.id.ng")));
+				PayloadNG.nextAvailable_New());
 
 	}
 
@@ -102,10 +107,11 @@ public class PSS2NGAdapterAcceptanceTests extends BaseTestNGWebDriver {
 	@Test(enabled = true, groups = { "APItest" }, retryAnalyzer = RetryAnalyzer.class)
 	public void upcommingApptPOST() throws IOException {
 
-		postAPIRequest.upcommingApptNG(propertyData.getProperty("practice.id.ng"),
+		Response response=postAPIRequest.upcommingApptNG(propertyData.getProperty("practice.id.ng"),
 				PayloadNG.upcommingApt_Payload(propertyData.getProperty("patient.id.ng"),
 						propertyData.getProperty("practice.id.ng"),
 						propertyData.getProperty("practice.displayname.ng")));
+		aPIVerification.responseCodeValidation(response, 200);
 	}
 
 	@Test(enabled = true, groups = { "APItest" }, retryAnalyzer = RetryAnalyzer.class)
@@ -149,8 +155,11 @@ public class PSS2NGAdapterAcceptanceTests extends BaseTestNGWebDriver {
 	@Test(enabled = true, groups = { "APItest" }, retryAnalyzer = RetryAnalyzer.class)
 	public void careproviderAvailabilityPOST() throws IOException {
 
-		postAPIRequest.careproviderAvailability(propertyData.getProperty("practice.id.ng"),
+		Response response=postAPIRequest.careproviderAvailability(propertyData.getProperty("practice.id.ng"),
 				PayloadNG.careprovideravailability_Payload());
+		
+		aPIVerification.responseCodeValidation(response, 200);
+		aPIVerification.responseTimeValidation(response);
 
 	}
 

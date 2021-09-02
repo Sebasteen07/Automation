@@ -3,17 +3,6 @@ package com.medfusion.product.pss2patientapi.payload;
 
 public class PayloadPssPatientModulator {
 
-	public String getApptDetailPayload(String appointmentTypeId,String bookid,String locationid) {
-		String apptDetail = "{\r\n"
-				+ "  \"appointmentTypeId\": \""+appointmentTypeId+"\",\r\n"
-				+ "  \"bookId\": \""+bookid+"\",\r\n"
-				+ "  \"locationId\": \""+locationid+"\",\r\n"
-				+ "  \"type\": \"PT_EXISTING\"\r\n"
-				+ "}";
-		return apptDetail;
-	}
-
-
 	public String validateProviderLinkPayload(String firstName,String lastName,String dob,String gender,String email,String book ) {
 		String validateProviderLink ="{\r\n"
 				+ "    \"specialty\": null,\r\n"
@@ -43,16 +32,43 @@ public class PayloadPssPatientModulator {
 		return validateProviderLink;
 	}
 	
+	public String validateProviderLinkPayload_New() {
+		String payload ="{\r\n"
+				+ "    \"specialty\": null,\r\n"
+				+ "    \"location\": 204200,\r\n"
+				+ "    \"book\": 205300,\r\n"
+				+ "    \"appointmentType\": null,\r\n"
+				+ "    \"slotId\": null,\r\n"
+				+ "    \"patientType\": \"PT_NEW\",\r\n"
+				+ "    \"flow\": \"loginless\",\r\n"
+				+ "    \"patientDetails\": {\r\n"
+				+ "        \"FN\": \"abh\",\r\n"
+				+ "        \"LN\": \"abh\",\r\n"
+				+ "        \"DOB\": \"01/01/2000\",\r\n"
+				+ "        \"GENDER\": \"M\",\r\n"
+				+ "        \"EMAIL\": \"Shweta.Sontakke@CrossAsyst.com\",\r\n"
+				+ "        \"PHONE\": \"787-878-7878\",\r\n"
+				+ "        \"INSID\": null,\r\n"
+				+ "        \"ADDR1\": null,\r\n"
+				+ "        \"ADDR2\": null,\r\n"
+				+ "        \"CITY\": null,\r\n"
+				+ "        \"STATE\": null,\r\n"
+				+ "        \"ZIP\": \"27518\"\r\n"
+				+ "    }\r\n"
+				+ "}";
+		return payload;
+	}
+	
 	public String locationsByNextAvailablePayload() {
 		String locationsByNextAvailable ="{\r\n"
 				+ "    \"specialty\": null,\r\n"
 				+ "    \"locations\": [\r\n"
 				+ "        {\r\n"
-				+ "            \"id\": 205605\r\n"
+				+ "            \"id\": 204200\r\n"
 				+ "        }\r\n"
 				+ "    ],\r\n"
-				+ "    \"book\": null,\r\n"
-				+ "    \"appointmentType\": 205755,\r\n"
+				+ "    \"book\": 204450,\r\n"
+				+ "    \"appointmentType\": 203950,\r\n"
 				+ "    \"patientType\": \"PT_NEW\"\r\n"
 				+ "}";
 		return locationsByNextAvailable;
@@ -88,7 +104,7 @@ public class PayloadPssPatientModulator {
 	}
 	
 
-	public String anonymousMatchAndCreatePatientPayload(String firstName) {
+	public String anonymousMatchAndCreatePatientPayload() {
 		String anonymousMatchAndCreatePatient ="{\r\n"
 				+ "    \"patientMatches\": [\r\n"
 				+ "        {\r\n"
@@ -269,15 +285,196 @@ public class PayloadPssPatientModulator {
 		return anonymousMatchAndCreatePatient;
 		}
 	
+	public String anonymousPatientPayload() {
+		String payload ="{\r\n"
+				+ "    \"patientMatches\": [\r\n"
+				+ "        {\r\n"
+				+ "            \"entity\": \"firstname\",\r\n"
+				+ "            \"isMandatory\": true,\r\n"
+				+ "            \"code\": \"FN\",\r\n"
+				+ "            \"value\": \"ge\",\r\n"
+				+ "            \"selected\": true,\r\n"
+				+ "            \"search\": true,\r\n"
+				+ "            \"error\": \"\",\r\n"
+				+ "            \"message\": \"Please enter your first name\",\r\n"
+				+ "            \"regex\": \"^(?!\\\\s*$).+\",\r\n"
+				+ "            \"type\": \"TEXT\",\r\n"
+				+ "            \"key\": null,\r\n"
+				+ "            \"seq\": 1\r\n"
+				+ "        },\r\n"
+				+ "        {\r\n"
+				+ "            \"entity\": \"lastname\",\r\n"
+				+ "            \"isMandatory\": true,\r\n"
+				+ "            \"code\": \"LN\",\r\n"
+				+ "            \"value\": \"ge\",\r\n"
+				+ "            \"selected\": true,\r\n"
+				+ "            \"search\": true,\r\n"
+				+ "            \"error\": \"\",\r\n"
+				+ "            \"message\": \"Please enter your last name\",\r\n"
+				+ "            \"regex\": \"^(?!\\\\s*$).+\",\r\n"
+				+ "            \"type\": \"TEXT\",\r\n"
+				+ "            \"key\": null,\r\n"
+				+ "            \"seq\": 2\r\n"
+				+ "        },\r\n"
+				+ "        {\r\n"
+				+ "            \"entity\": \"Date Of Birth\",\r\n"
+				+ "            \"isMandatory\": true,\r\n"
+				+ "            \"code\": \"DOB\",\r\n"
+				+ "            \"value\": \"01/01/2000\",\r\n"
+				+ "            \"selected\": true,\r\n"
+				+ "            \"search\": true,\r\n"
+				+ "            \"error\": \"\",\r\n"
+				+ "            \"message\": \"Please enter a valid birth date\",\r\n"
+				+ "            \"regex\": \"^(0[1-9]|1[0-2])\\\\/(0[1-9]|1\\\\d|2\\\\d|3[01])\\\\/(19|20)\\\\d{2}$\",\r\n"
+				+ "            \"type\": \"DOB\",\r\n"
+				+ "            \"key\": null,\r\n"
+				+ "            \"seq\": 3\r\n"
+				+ "        },\r\n"
+				+ "        {\r\n"
+				+ "            \"entity\": \"Sex assigned at birth\",\r\n"
+				+ "            \"isMandatory\": true,\r\n"
+				+ "            \"code\": \"GENDER\",\r\n"
+				+ "            \"value\": \"M\",\r\n"
+				+ "            \"selected\": true,\r\n"
+				+ "            \"search\": true,\r\n"
+				+ "            \"error\": \"\",\r\n"
+				+ "            \"message\": \"Please select your gender\",\r\n"
+				+ "            \"regex\": \"^(?!\\\\s*$).+\",\r\n"
+				+ "            \"type\": \"SELECT\",\r\n"
+				+ "            \"key\": null,\r\n"
+				+ "            \"seq\": 4\r\n"
+				+ "        },\r\n"
+				+ "        {\r\n"
+				+ "            \"entity\": \"Email Address\",\r\n"
+				+ "            \"isMandatory\": false,\r\n"
+				+ "            \"code\": \"EMAIL\",\r\n"
+				+ "            \"value\": \"Shweta.Sontakke@CrossAsyst.com\",\r\n"
+				+ "            \"selected\": true,\r\n"
+				+ "            \"search\": false,\r\n"
+				+ "            \"error\": \"\",\r\n"
+				+ "            \"message\": \"Email is required and format should be john@doe.com\",\r\n"
+				+ "            \"regex\": \"\\\\w+([-+.]\\\\w+)*@\\\\w+([-.]\\\\w+)*\\\\.\\\\w+([-.]\\\\w+)*$\",\r\n"
+				+ "            \"type\": \"TEXT\",\r\n"
+				+ "            \"key\": null,\r\n"
+				+ "            \"seq\": 5\r\n"
+				+ "        },\r\n"
+				+ "        {\r\n"
+				+ "            \"entity\": \"Preferred Phone Number\",\r\n"
+				+ "            \"isMandatory\": false,\r\n"
+				+ "            \"code\": \"PHONE\",\r\n"
+				+ "            \"value\": \"310-965-1102\",\r\n"
+				+ "            \"selected\": true,\r\n"
+				+ "            \"search\": false,\r\n"
+				+ "            \"error\": \"\",\r\n"
+				+ "            \"message\": \"Please enter a valid phone number\",\r\n"
+				+ "            \"regex\": \"^\\\\(?[0-9]{3}\\\\)?[-]([0-9]{3})[-]([0-9]{4})$\",\r\n"
+				+ "            \"type\": \"PHONE\",\r\n"
+				+ "            \"key\": null,\r\n"
+				+ "            \"seq\": 6\r\n"
+				+ "        },\r\n"
+				+ "        {\r\n"
+				+ "            \"entity\": \"Insurance ID\",\r\n"
+				+ "            \"isMandatory\": false,\r\n"
+				+ "            \"code\": \"INSID\",\r\n"
+				+ "            \"value\": null,\r\n"
+				+ "            \"selected\": false,\r\n"
+				+ "            \"search\": false,\r\n"
+				+ "            \"error\": \"\",\r\n"
+				+ "            \"message\": \"Please enter a valid insurance id\",\r\n"
+				+ "            \"regex\": \"^(?!\\\\s*$).+\",\r\n"
+				+ "            \"type\": \"TEXT\",\r\n"
+				+ "            \"key\": null,\r\n"
+				+ "            \"seq\": 7\r\n"
+				+ "        },\r\n"
+				+ "        {\r\n"
+				+ "            \"entity\": \"Address2\",\r\n"
+				+ "            \"isMandatory\": false,\r\n"
+				+ "            \"code\": \"ADDR1\",\r\n"
+				+ "            \"value\": null,\r\n"
+				+ "            \"selected\": false,\r\n"
+				+ "            \"search\": false,\r\n"
+				+ "            \"error\": \"\",\r\n"
+				+ "            \"message\": \"Please enter your address\",\r\n"
+				+ "            \"regex\": \"^(?!\\\\s*$).+\",\r\n"
+				+ "            \"type\": \"TEXT\",\r\n"
+				+ "            \"key\": null,\r\n"
+				+ "            \"seq\": 9\r\n"
+				+ "        },\r\n"
+				+ "        {\r\n"
+				+ "            \"entity\": \"Address1\",\r\n"
+				+ "            \"isMandatory\": false,\r\n"
+				+ "            \"code\": \"ADDR2\",\r\n"
+				+ "            \"value\": null,\r\n"
+				+ "            \"selected\": false,\r\n"
+				+ "            \"search\": false,\r\n"
+				+ "            \"error\": \"\",\r\n"
+				+ "            \"message\": \"Please enter your address\",\r\n"
+				+ "            \"regex\": \"^(?!\\\\s*$).+\",\r\n"
+				+ "            \"type\": \"TEXT\",\r\n"
+				+ "            \"key\": null,\r\n"
+				+ "            \"seq\": 10\r\n"
+				+ "        },\r\n"
+				+ "        {\r\n"
+				+ "            \"entity\": \"City\",\r\n"
+				+ "            \"isMandatory\": false,\r\n"
+				+ "            \"code\": \"CITY\",\r\n"
+				+ "            \"value\": null,\r\n"
+				+ "            \"selected\": false,\r\n"
+				+ "            \"search\": false,\r\n"
+				+ "            \"error\": \"\",\r\n"
+				+ "            \"message\": \"Please enter a valid city\",\r\n"
+				+ "            \"regex\": \"^(?!\\\\s*$).+\",\r\n"
+				+ "            \"type\": \"TEXT\",\r\n"
+				+ "            \"key\": null,\r\n"
+				+ "            \"seq\": 11\r\n"
+				+ "        },\r\n"
+				+ "        {\r\n"
+				+ "            \"entity\": \"State\",\r\n"
+				+ "            \"isMandatory\": false,\r\n"
+				+ "            \"code\": \"STATE\",\r\n"
+				+ "            \"value\": null,\r\n"
+				+ "            \"selected\": false,\r\n"
+				+ "            \"search\": false,\r\n"
+				+ "            \"error\": \"\",\r\n"
+				+ "            \"message\": \"Please select a state\",\r\n"
+				+ "            \"regex\": \"^(?!\\\\s*$).+\",\r\n"
+				+ "            \"type\": \"SELECT\",\r\n"
+				+ "            \"key\": null,\r\n"
+				+ "            \"seq\": 12\r\n"
+				+ "        },\r\n"
+				+ "        {\r\n"
+				+ "            \"entity\": \"Zip Code\",\r\n"
+				+ "            \"isMandatory\": false,\r\n"
+				+ "            \"code\": \"ZIP\",\r\n"
+				+ "            \"value\": \"12345\",\r\n"
+				+ "            \"selected\": true,\r\n"
+				+ "            \"search\": false,\r\n"
+				+ "            \"error\": \"\",\r\n"
+				+ "            \"message\": \"Postal code is required eg(12345 or 12345-1234)\",\r\n"
+				+ "            \"regex\": \"^\\\\d{5}(?:[-\\\\s]\\\\d{4})?$\",\r\n"
+				+ "            \"type\": \"TEXT\",\r\n"
+				+ "            \"key\": null,\r\n"
+				+ "            \"seq\": 13\r\n"
+				+ "        }\r\n"
+				+ "    ],\r\n"
+				+ "    \"type\": \"LOGINLESS\",\r\n"
+				+ "    \"allowDuplicatePatient\": false,\r\n"
+				+ "    \"additionalProperties\": {\r\n"
+				+ "        \"flowType\": \"loginless\"\r\n"
+				+ "    }\r\n"
+				+ "}";
+		return payload;
+	}
 	
-	public String identifyPatientForReschedulePayload(String firstName,String lastName) {
+	
+	public String identifyPatientForReschedulePayload(String firstName,String lastName, String guid) {
 		String identifyPatientForReschedule ="{\r\n"
 				+ "    \"patientIdentityMap\": {\r\n"
 				+ "        \"FN\": \"" + firstName + "\",\r\n"
 				+ "        \"LN\": \"" +lastName + "\"\r\n"
 				+ "    },\r\n"
 				+ "    \"flowType\": \"loginless\",\r\n"
-				+ "    \"guid\": \"0eb4e14a-cc19-4cd9-b354-02bb8f6cf522\"\r\n"
+				+ "    \"guid\": \""+guid+"\"\r\n"
 				+ "}";
 		return identifyPatientForReschedule;
 	}
@@ -350,35 +547,33 @@ public class PayloadPssPatientModulator {
 		return createToken;
 	}
 	
-	public String apptTypeNextAvailablePayload() {
+	public String apptTypeNextAvailablePayload(String appt) {
 		String apptTypeNextavailable = "{\r\n"
 				+ "    \"specialty\": null,\r\n"
-				+ "    \"location\": 200856,\r\n"
+				+ "    \"location\": 206350,\r\n"
 				+ "    \"book\": null,\r\n"
 				+ "    \"appointmentTypes\": [\r\n"
 				+ "        {\r\n"
-				+ "            \"id\": 201006\r\n"
+				+ "            \"id\": "+appt+"\r\n"
 				+ "        }\r\n"
 				+ "    ],\r\n"
-				+ "    \"patientType\": \"PT_NEW\"\r\n"
-				+ "}\r\n"
-				+ "";
+				+ "    \"patientType\": \"PT_EXISTING\"\r\n"
+				+ "}";
 		return apptTypeNextavailable;
 	}
 
 	public String booksByNextAvailablePayload() {
 		String booksByNextAvailable = "{\r\n"
 				+ "    \"specialty\": null,\r\n"
-				+ "    \"location\": 206752,\r\n"
+				+ "    \"location\": 204200,\r\n"
 				+ "    \"books\": [\r\n"
 				+ "        {\r\n"
-				+ "            \"id\": 207003\r\n"
+				+ "            \"id\": 205268\r\n"
 				+ "        }\r\n"
 				+ "    ],\r\n"
-				+ "    \"appointmentType\": 206901,\r\n"
+				+ "    \"appointmentType\": 203950,\r\n"
 				+ "    \"patientType\": \"PT_NEW\"\r\n"
-				+ "}\r\n"
-				+ "";
+				+ "}";
 		return booksByNextAvailable;
 	}
 	
@@ -435,11 +630,30 @@ public class PayloadPssPatientModulator {
 		return availableSlots;
 	}
 	
-	public String  cancelAppointmentPayload()
+	public String  availableslotsPayload_New()
+	{
+		String  availableSlots="{\r\n"
+				+ "    \"specialty\": null,\r\n"
+				+ "    \"location\": 204200,\r\n"
+				+ "    \"book\": 204450,\r\n"
+				+ "    \"appointmentType\": 203950,\r\n"
+				+ "    \"startDateTime\": \"08/26/2021\",\r\n"
+				+ "    \"slotId\": null,\r\n"
+				+ "    \"traversal\": false,\r\n"
+				+ "    \"patientType\": \"PT_NEW\",\r\n"
+				+ "    \"extApptId\": null\r\n"
+				+ "}";
+		return availableSlots;
+	}
+	
+	public String  cancelAppointmentPayload(String extApptId)
 	{
 		String  cancelAppointment="{\r\n"
-				+ "    \"appointmentId\": \"9604\",\r\n"
-				+ "    \"cancellationMap\": null\r\n"
+				+ "    \"appointmentId\": \""+extApptId+"\",\r\n"
+				+ "    \"cancellationMap\": {\r\n"
+				+ "        \"id\": null,\r\n"
+				+ "        \"name\": \"Equipment Problem\"\r\n"
+				+ "    }\r\n"
 				+ "}";
 		return cancelAppointment;
 	}
@@ -479,40 +693,38 @@ public class PayloadPssPatientModulator {
 		return rescheduleAppointment;
 	}
 	
-	public String  scheduleAppointmentPayload(String SlotId,String bookId,String AppmntTypeId,String locationId, String date,String SlotTime)
+	public String  scheduleAppointmentPayload(String slotid, String date,String slottime)
 	{   
 		String  scheduleAppointment="{\r\n"
-				+ "	\"patientType\": \"PT_NEW\",\r\n"
-				+ "  \"slotId\": \""+SlotId+"\",\r\n"
-				+ "	\"specialty\": null,\r\n"
-				+ "	\"book\": \""+bookId+"\",\r\n"
-				+ "	\"appointmentType\": \""+AppmntTypeId+"\",\r\n"
-				+ "	\"location\": \""+locationId+"\",\r\n"
-					+ "  \"startDateTime\": \""+date+" "+SlotTime+"\",\r\n"		
-				+ "	\"customQuestion\": \"test\",\r\n"
-				+ "	\"insuranceInfo\": null,\r\n"
-				+ "	\"patientInfo\": {},\r\n"
-				+ "	\"allowDuplicatePatient\": false,\r\n"
-				+ "	\"updatePatientDetails\": {\r\n"
-				+ "		\"FN\": \"Test\",\r\n"
-				+ "		\"LN\": \"Slotone\",\r\n"
-				+ "		\"DOB\": \"01/28/1997\",\r\n"
-				+ "		\"GENDER\": \"M\",\r\n"
-				+ "		\"EMAIL\": \"rima.karmakar@crossasyst.com\",\r\n"
-				+ "		\"PHONE\": \"510-931-9126\",\r\n"
-				+ "		\"INSID\": null,\r\n"
-				+ "		\"ADDR1\": null,\r\n"
-				+ "		\"ADDR2\": null,\r\n"
-				+ "		\"CITY\": null,\r\n"
-				+ "		\"STATE\": null,\r\n"
-				+ "		\"ZIP\": \"90231\",\r\n"
-				+ "		\"PHONE2\": null,\r\n"
-				+ "		\"PHONE1\": null\r\n"
-				+ "	},\r\n"
-				+ "	\"flow\": \"loginless\",\r\n"
-				+ "	\"appTypeDetail\": null,\r\n"
-				+ "	\"rule\": \"T,L,B\",\r\n"
-				+ "	\"leafNode\": null\r\n"
+				+ "    \"patientType\": \"PT_NEW\",\r\n"
+				+ "    \"slotId\": \""+slotid+"\",\r\n"
+				+ "    \"specialty\": null,\r\n"
+				+ "    \"book\": 204450,\r\n"
+				+ "    \"appointmentType\": 203950,\r\n"
+				+ "    \"location\": 204200,\r\n"
+				+ "    \"startDateTime\": \""+date+" "+slottime+"\",\r\n"
+				+ "    \"customQuestion\": null,\r\n"
+				+ "    \"insuranceInfo\": null,\r\n"
+				+ "    \"patientInfo\": {},\r\n"
+				+ "    \"allowDuplicatePatient\": false,\r\n"
+				+ "    \"updatePatientDetails\": {\r\n"
+				+ "        \"FN\": \"ge\",\r\n"
+				+ "        \"LN\": \"ge\",\r\n"
+				+ "        \"DOB\": \"01/01/2000\",\r\n"
+				+ "        \"GENDER\": \"M\",\r\n"
+				+ "        \"EMAIL\": null,\r\n"
+				+ "        \"PHONE\": null,\r\n"
+				+ "        \"INSID\": null,\r\n"
+				+ "        \"ADDR1\": null,\r\n"
+				+ "        \"ADDR2\": null,\r\n"
+				+ "        \"CITY\": null,\r\n"
+				+ "        \"STATE\": null,\r\n"
+				+ "        \"ZIP\": null\r\n"
+				+ "    },\r\n"
+				+ "    \"flow\": \"loginless\",\r\n"
+				+ "    \"appTypeDetail\": null,\r\n"
+				+ "    \"rule\": \"T,L,B\",\r\n"
+				+ "    \"leafNode\": null\r\n"
 				+ "}";
 		return scheduleAppointment;
 	}
@@ -542,6 +754,38 @@ public class PayloadPssPatientModulator {
 				+ "  \"startDateTime\": null,\r\n"
 				+ "  \"traversal\": true,\r\n"
 				+ "  \"zipcode\": 0\r\n"
+				+ "}";
+		return appmntTypesByRule;
+	}
+	
+	public String  appointmentTypesByrulePayload_New()
+	{
+		String  appmntTypesByRule="{\r\n"
+				+ "    \"specialty\": null,\r\n"
+				+ "    \"location\": null,\r\n"
+				+ "    \"book\": null,\r\n"
+				+ "    \"appointmentType\": null,\r\n"
+				+ "    \"startDateTime\": \"10/31/2021 10:15:00\",\r\n"
+				+ "    \"slotId\": null,\r\n"
+				+ "    \"traversal\": false,\r\n"
+				+ "    \"patientType\": \"PT_NEW\",\r\n"
+				+ "    \"extApptId\": null,\r\n"
+				+ "    \"linkGenerationFlow\": false,\r\n"
+				+ "    \"patientDetails\": {\r\n"
+				+ "        \"FN\": \"ge\",\r\n"
+				+ "        \"LN\": \"ge\",\r\n"
+				+ "        \"DOB\": \"01/01/2000\",\r\n"
+				+ "        \"GENDER\": \"M\",\r\n"
+				+ "        \"EMAIL\": null,\r\n"
+				+ "        \"PHONE\": null,\r\n"
+				+ "        \"INSID\": null,\r\n"
+				+ "        \"ADDR1\": null,\r\n"
+				+ "        \"ADDR2\": null,\r\n"
+				+ "        \"CITY\": null,\r\n"
+				+ "        \"STATE\": null,\r\n"
+				+ "        \"ZIP\": null\r\n"
+				+ "    },\r\n"
+				+ "    \"flow\": \"loginless\"\r\n"
 				+ "}";
 		return appmntTypesByRule;
 	}
