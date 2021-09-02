@@ -231,7 +231,7 @@ public class PSS2GEAdapterAcceptanceTests extends BaseTestNG {
 	}
 
 	
-	@Test
+	@Test(enabled = true, groups = { "APItest" }, retryAnalyzer = RetryAnalyzer.class)
 	public void testLastseenProviderPOST() throws IOException {
 		Response response =	postAPIRequestge.lastseenProvider(PayloadGE.providerLastSeenPayload(),propertyData.getProperty("practiceid.ge"));
 		apiVerification.responseCodeValidation(response, 200);
@@ -243,7 +243,7 @@ public class PSS2GEAdapterAcceptanceTests extends BaseTestNG {
 
 	}
 	
-	@Test
+	@Test(enabled = true, groups = { "APItest" }, retryAnalyzer = RetryAnalyzer.class)
 	public void testLastseenProviderWithoutBodyPOST() throws IOException {
 		Response response =	postAPIRequestge.lastseenProvider("",propertyData.getProperty("practiceid.ge"));
 		apiVerification.responseCodeValidation(response, 400);
@@ -253,7 +253,7 @@ public class PSS2GEAdapterAcceptanceTests extends BaseTestNG {
 	}
 
 	
-	@Test
+	@Test(enabled = true, groups = { "APItest" }, retryAnalyzer = RetryAnalyzer.class)
 	public void testAppointmentStatusGET() throws IOException {
 
 		Response response = postAPIRequestge.appointmentStatus(propertyData.getProperty("practiceid.ge"),
@@ -272,7 +272,7 @@ public class PSS2GEAdapterAcceptanceTests extends BaseTestNG {
 
 	}
 
-	@Test
+	@Test(enabled = true, groups = { "APItest" }, retryAnalyzer = RetryAnalyzer.class)
 	public void testAppointmentStatusWithoutStartTimeGET() throws IOException {
 
 		Response response = postAPIRequestge.appointmentStatus(propertyData.getProperty("practiceid.ge"),
@@ -287,7 +287,7 @@ public class PSS2GEAdapterAcceptanceTests extends BaseTestNG {
 
 	}
 
-	@Test
+	@Test(enabled = true, groups = { "APItest" }, retryAnalyzer = RetryAnalyzer.class)
 	public void testAppointmentWithoutPatientIdStatusGET() throws IOException {
 
 		Response response = postAPIRequestge.appointmentStatus(propertyData.getProperty("practiceid.ge"),
@@ -302,7 +302,7 @@ public class PSS2GEAdapterAcceptanceTests extends BaseTestNG {
 
 	}
 
-	@Test
+	@Test(enabled = true, groups = { "APItest" }, retryAnalyzer = RetryAnalyzer.class)
 	public void testAppointmentStatusWithoutAppIdGET() throws IOException {
 
 		Response response = postAPIRequestge.appointmentStatus(propertyData.getProperty("practiceid.ge"), "", "",
@@ -317,7 +317,7 @@ public class PSS2GEAdapterAcceptanceTests extends BaseTestNG {
 
 	}
 	
-	@Test
+	@Test(enabled = true, groups = { "APItest" }, retryAnalyzer = RetryAnalyzer.class)
 	public void testScheduleAppointmentPOST() throws IOException {
 
 		String date=pssPatientUtils.sampleDateTime("MM/dd/yyyy HH:mm:ss");
@@ -372,7 +372,7 @@ public class PSS2GEAdapterAcceptanceTests extends BaseTestNG {
 		
 	}
 	
-	@Test
+	@Test(enabled = true, groups = { "APItest" }, retryAnalyzer = RetryAnalyzer.class)
 	public void testScheduleAppointmentForNewPatientPOST() throws IOException {
 
 		String date=pssPatientUtils.sampleDateTime("MM/dd/yyyy HH:mm:ss");
@@ -407,7 +407,7 @@ public class PSS2GEAdapterAcceptanceTests extends BaseTestNG {
 		apiVerification.responseKeyValidationJson(scheduleApptResponse, "slotAlreadyTaken");
 	}
 
-	@Test
+	@Test(enabled = true, groups = { "APItest" }, retryAnalyzer = RetryAnalyzer.class)
 	public void testCancelledAppointmentStatusPost() throws IOException {
 		String body = PayloadGE.cancelledApptStatusPayload();
 
@@ -419,14 +419,14 @@ public class PSS2GEAdapterAcceptanceTests extends BaseTestNG {
 	}
 	
 
-	@Test
+	@Test(enabled = true, groups = { "APItest" }, retryAnalyzer = RetryAnalyzer.class)
 	public void testCancelledAppointmentStatusWithoutBodyPost() throws IOException {
 		Response response = postAPIRequestge.cancelAppointmentStatus("", propertyData.getProperty("practiceid.ge"));
 		apiVerification.responseCodeValidation(response, 400);
 		apiVerification.responseTimeValidation(response);
 	}
 
-	@Test
+	@Test(enabled = true, groups = { "APItest" }, retryAnalyzer = RetryAnalyzer.class)
 	public void testCancelAppointmentGet() throws IOException {
 		Response response=postAPIRequestge.cancelAppointment(propertyData.getProperty("appt.status.id.ge"), propertyData.getProperty("practiceid.ge"),
 				propertyData.getProperty("patientid.ge"));
@@ -434,7 +434,7 @@ public class PSS2GEAdapterAcceptanceTests extends BaseTestNG {
 		apiVerification.responseTimeValidation(response);
 	}
 	
-	@Test
+	@Test(enabled = true, groups = { "APItest" }, retryAnalyzer = RetryAnalyzer.class)
 	public void testCancelAppointmentWithoutAppIdGet() throws IOException {
 		Response response=postAPIRequestge.cancelAppointment("", propertyData.getProperty("practiceid.ge"),
 				propertyData.getProperty("patientid.ge"));
@@ -446,7 +446,7 @@ public class PSS2GEAdapterAcceptanceTests extends BaseTestNG {
      
 	}
 
-	@Test
+	@Test(enabled = true, groups = { "APItest" }, retryAnalyzer = RetryAnalyzer.class)
 	public void testCancelApptWithCancelReasonPost() throws IOException {
 		Response response=postAPIRequestge.cancelApptWithCancelReason(PayloadGE.cancelApptWithCancelReasonPayload(),
 				propertyData.getProperty("practiceid.ge"),propertyData.getProperty("sso.patient.id"));
@@ -454,7 +454,7 @@ public class PSS2GEAdapterAcceptanceTests extends BaseTestNG {
 		apiVerification.responseTimeValidation(response);
 	}
 	
-	@Test
+	@Test(enabled = true, groups = { "APItest" }, retryAnalyzer = RetryAnalyzer.class)
 	public void testCancelApptWithCancelReasonWithoutBodyPost() throws IOException {
 		Response response=postAPIRequestge.cancelApptWithCancelReason("",
 				propertyData.getProperty("practiceid.ge"),propertyData.getProperty("sso.patient.id"));
@@ -464,7 +464,7 @@ public class PSS2GEAdapterAcceptanceTests extends BaseTestNG {
 		assertTrue(message.contains("Required request body is missing"));
 	}
 
-	@Test
+	@Test(enabled = true, groups = { "APItest" }, retryAnalyzer = RetryAnalyzer.class)
 	public void testPastAppointmentsPost() throws IOException {
 		Response response=postAPIRequestge.pastAppointments(PayloadGE.pastappointmentsPayload(),propertyData.getProperty("practiceid.ge"));
 	apiVerification.responseCodeValidation(response, 200);
@@ -478,7 +478,7 @@ public class PSS2GEAdapterAcceptanceTests extends BaseTestNG {
 	}
 	
 
-	@Test
+	@Test(enabled = true, groups = { "APItest" }, retryAnalyzer = RetryAnalyzer.class)
 	public void testPastAppointmentsWithoutBodyPost() throws IOException {
 		Response response=postAPIRequestge.pastAppointments("",propertyData.getProperty("practiceid.ge"));
 	apiVerification.responseCodeValidation(response, 400);
@@ -488,7 +488,7 @@ public class PSS2GEAdapterAcceptanceTests extends BaseTestNG {
 	
 	}
 
-	@Test
+	@Test(enabled = true, groups = { "APItest" }, retryAnalyzer = RetryAnalyzer.class)
 	public void testUpcommingApptPOST() throws IOException {
         String body=PayloadGE.upcommingApt_Payload(propertyData.getProperty("patientid.ge"), propertyData.getProperty("practiceid.ge"),propertyData.getProperty("practice.display.name.ge"), propertyData.getProperty("start.date.time.ge"));	
         Response response =postAPIRequestge.upcomingAppt(body,propertyData.getProperty("practiceid.ge"));
@@ -503,7 +503,7 @@ public class PSS2GEAdapterAcceptanceTests extends BaseTestNG {
 
 	}
 	
-	@Test
+	@Test(enabled = true, groups = { "APItest" }, retryAnalyzer = RetryAnalyzer.class)
 	public void testUpcomingApptWithoutBodyPost() throws IOException {
 		Response response=postAPIRequestge.upcomingAppt("",propertyData.getProperty("practiceid.ge"));
 	apiVerification.responseCodeValidation(response, 400);
@@ -513,7 +513,7 @@ public class PSS2GEAdapterAcceptanceTests extends BaseTestNG {
 	
 	}
 
-	@Test
+	@Test(enabled = true, groups = { "APItest" }, retryAnalyzer = RetryAnalyzer.class)
 	public void testPreventSchedulingGet() throws IOException {
 		Response response=postAPIRequestge.preventScheduling(propertyData.getProperty("practiceid.ge"), propertyData.getProperty("patientid.ge"),
 				propertyData.getProperty("appt.id.ge"));
@@ -521,7 +521,7 @@ public class PSS2GEAdapterAcceptanceTests extends BaseTestNG {
 		apiVerification.responseTimeValidation(response);
 	}
 	
-	@Test
+	@Test(enabled = true, groups = { "APItest" }, retryAnalyzer = RetryAnalyzer.class)
 	public void testPreventSchedulingWithoutAppIdGet() throws IOException {
 		Response response = postAPIRequestge.preventScheduling(propertyData.getProperty("practiceid.ge"),
 				propertyData.getProperty("patientid.ge"), "");
@@ -529,7 +529,7 @@ public class PSS2GEAdapterAcceptanceTests extends BaseTestNG {
 		apiVerification.responseTimeValidation(response);
 	}
 
-	@Test
+	@Test(enabled = true, groups = { "APItest" }, retryAnalyzer = RetryAnalyzer.class)
 	public void testRescheduleApptPOST() throws IOException {
 		String body=PayloadGE.rescheduleAppointmentPayload(propertyData.getProperty("start.date.time.ge"), propertyData.getProperty("end.date.time.ge"), propertyData.getProperty("location.id.ge"), propertyData.getProperty("patientid.ge"),
 				propertyData.getProperty("resource.id.ge"), propertyData.getProperty("slotid.ge"), propertyData.getProperty("appt.id.ge"));
@@ -540,7 +540,7 @@ public class PSS2GEAdapterAcceptanceTests extends BaseTestNG {
 		
 	}
 	
-	@Test
+	@Test(enabled = true, groups = { "APItest" }, retryAnalyzer = RetryAnalyzer.class)
 	public void testRescheduleApptWithoutBodyPOST() throws IOException {
 		
 		Response response =postAPIRequestge.rescheduleAppt("",propertyData.getProperty("practiceid.ge"));
@@ -551,7 +551,7 @@ public class PSS2GEAdapterAcceptanceTests extends BaseTestNG {
 		
 	}
 
-	@Test
+	@Test(enabled = true, groups = { "APItest" }, retryAnalyzer = RetryAnalyzer.class)
 	public void testAvailableSlotsPost() throws IOException, InterruptedException {
 
 		String date=pssPatientUtils.sampleDateTime("MM/dd/yyyy HH:mm:ss");
@@ -563,7 +563,7 @@ public class PSS2GEAdapterAcceptanceTests extends BaseTestNG {
         apiVerification.responseKeyValidationJson(response, "availableSlots[0].slotId");
 	}
 	
-	@Test
+	@Test(enabled = true, groups = { "APItest" }, retryAnalyzer = RetryAnalyzer.class)
 	public void testAvailableSlotsWithoutBodyPost() throws IOException, InterruptedException {
 
 		
@@ -574,7 +574,7 @@ public class PSS2GEAdapterAcceptanceTests extends BaseTestNG {
 		assertTrue(message.contains("Required request body is missing"));
 	}
 
-	@Test
+	@Test(enabled = true, groups = { "APItest" }, retryAnalyzer = RetryAnalyzer.class)
 	public void testAddPatientPost() throws IOException {
 		String body=PayloadGE.addPatientPayload();
 		Response response =postAPIRequestge.addPatientPost(body,propertyData.getProperty("practiceid.ge"));
@@ -590,7 +590,7 @@ public class PSS2GEAdapterAcceptanceTests extends BaseTestNG {
 
 	}
 	
-	@Test
+	@Test(enabled = true, groups = { "APItest" }, retryAnalyzer = RetryAnalyzer.class)
 	public void testAddPatientWithoutBodyPost() throws IOException {
 		Response response =postAPIRequestge.addPatientPost("",propertyData.getProperty("practiceid.ge"));
 		apiVerification.responseCodeValidation(response, 400);
@@ -601,7 +601,7 @@ public class PSS2GEAdapterAcceptanceTests extends BaseTestNG {
 
 	}
 
-	@Test
+	@Test(enabled = true, groups = { "APItest" }, retryAnalyzer = RetryAnalyzer.class)
 	public void testCareProviderAvailabilityPOST() throws IOException {
 
 		String body = PayloadGE.careProviderAvailabilityPayload(propertyData.getProperty("start.date.time.ge"),
@@ -618,7 +618,7 @@ public class PSS2GEAdapterAcceptanceTests extends BaseTestNG {
 
 	
 
-	@Test
+	@Test(enabled = true, groups = { "APItest" }, retryAnalyzer = RetryAnalyzer.class)
 	public void testCareProviderAvailabilityWithoutBodyPOST() throws IOException {
 		Response response =postAPIRequestge.careProviderPost("",propertyData.getProperty("practiceid.ge"));
 		apiVerification.responseCodeValidation(response, 400);
@@ -628,7 +628,7 @@ public class PSS2GEAdapterAcceptanceTests extends BaseTestNG {
 		
 
 	}
-	@Test
+	@Test(enabled = true, groups = { "APItest" }, retryAnalyzer = RetryAnalyzer.class)
 	public void testDemographicsGET() throws IOException {
 		Response response=postAPIRequestge.demographicsGET( propertyData.getProperty("practiceid.ge"),propertyData.getProperty("sso.patient.id"));
 		apiVerification.responseCodeValidation(response, 200);
@@ -642,7 +642,7 @@ public class PSS2GEAdapterAcceptanceTests extends BaseTestNG {
 	
 	}
 	
-	@Test
+	@Test(enabled = true, groups = { "APItest" }, retryAnalyzer = RetryAnalyzer.class)
 	public void testDemographicsWithouPatientIdGET() throws IOException {
 		Response response=postAPIRequestge.demographicsGET( propertyData.getProperty("practiceid.ge"),"");
 		apiVerification.responseCodeValidation(response, 400);
@@ -653,7 +653,7 @@ public class PSS2GEAdapterAcceptanceTests extends BaseTestNG {
 	
 	}
 
-	@Test
+	@Test(enabled = true, groups = { "APItest" }, retryAnalyzer = RetryAnalyzer.class)
 	public void testHealthOperationGET() throws IOException {
 		Response response=postAPIRequestge.healthOperationGET("/actuator/health");
 		apiVerification.responseCodeValidation(response, 200);
@@ -663,7 +663,7 @@ public class PSS2GEAdapterAcceptanceTests extends BaseTestNG {
 
 	}
 	
-	@Test
+	@Test(enabled = true, groups = { "APItest" }, retryAnalyzer = RetryAnalyzer.class)
 	public void testHealthOperationInvalidPathGET() throws IOException {
 		Response response=postAPIRequestge.healthOperationGET("/actuator/heal");
 		apiVerification.responseCodeValidation(response, 404);
@@ -672,7 +672,7 @@ public class PSS2GEAdapterAcceptanceTests extends BaseTestNG {
 	}
 
 
-	@Test
+	@Test(enabled = true, groups = { "APItest" }, retryAnalyzer = RetryAnalyzer.class)
 	public void testMatchPatientPOST() throws IOException {
 		
 		Response response = postAPIRequestge.matchPatientPost(PayloadGE.matchPatientPayload(), propertyData.getProperty("practiceid.ge"));
@@ -680,7 +680,7 @@ public class PSS2GEAdapterAcceptanceTests extends BaseTestNG {
 		apiVerification.responseTimeValidation(response);
 	}
 	
-	@Test
+	@Test(enabled = true, groups = { "APItest" }, retryAnalyzer = RetryAnalyzer.class)
 	public void testMatchPatientPOSTWithoutBodyPOST() throws IOException {
 		Response response = postAPIRequestge.matchPatientPost("", propertyData.getProperty("practiceid.ge"));
 		apiVerification.responseCodeValidation(response, 400);
@@ -691,7 +691,7 @@ public class PSS2GEAdapterAcceptanceTests extends BaseTestNG {
 	}
 
 
-	@Test
+	@Test(enabled = true, groups = { "APItest" }, retryAnalyzer = RetryAnalyzer.class)
 	public void testPatientLastVisitGET() throws IOException {
 	
 		Response response=postAPIRequestge.patientLastVisit( propertyData.getProperty("practiceid.ge"),propertyData.getProperty("sso.patient.id"));
@@ -701,7 +701,7 @@ public class PSS2GEAdapterAcceptanceTests extends BaseTestNG {
 
 	}
 	
-	@Test
+	@Test(enabled = true, groups = { "APItest" }, retryAnalyzer = RetryAnalyzer.class)
 	public void testPatientLastVisitWithoutPatientIdGET() throws IOException {
 	
 		Response response=postAPIRequestge.patientLastVisit( propertyData.getProperty("practiceid.ge"),"");
@@ -710,7 +710,7 @@ public class PSS2GEAdapterAcceptanceTests extends BaseTestNG {
 
 	}
 
-	@Test
+	@Test(enabled = true, groups = { "APItest" }, retryAnalyzer = RetryAnalyzer.class)
 	public void testPreReqAppointmentTypesGET() throws IOException {
 		Response response=postAPIRequestge.preReqAppointmentTypes( propertyData.getProperty("practiceid.ge"));
 		apiVerification.responseCodeValidation(response, 200);
@@ -719,14 +719,14 @@ public class PSS2GEAdapterAcceptanceTests extends BaseTestNG {
 		apiVerification.responseKeyValidation(response, "name");
 	}
 
-	@Test
+	@Test(enabled = true, groups = { "APItest" }, retryAnalyzer = RetryAnalyzer.class)
 	public void testPreReqAppointmentTypesWithoutPracticeIdGET() throws IOException {
 		Response response=postAPIRequestge.preReqAppointmentTypes("");
 		apiVerification.responseCodeValidation(response, 404);
 		apiVerification.responseTimeValidation(response);
 	}
 
-	@Test
+	@Test(enabled = true, groups = { "APItest" }, retryAnalyzer = RetryAnalyzer.class)
 	public void testSearchPatientPOST() throws IOException {
 		Response response = postAPIRequestge.searchPatientPost(PayloadGE.searchPatientPayload(), propertyData.getProperty("practiceid.ge"));
 		apiVerification.responseCodeValidation(response, 200);
@@ -741,7 +741,7 @@ public class PSS2GEAdapterAcceptanceTests extends BaseTestNG {
 
 	}
 	
-	@Test
+	@Test(enabled = true, groups = { "APItest" }, retryAnalyzer = RetryAnalyzer.class)
 	public void testSearchPatientWithoutBodyPOST() throws IOException {
 		Response response = postAPIRequestge.searchPatientPost("", propertyData.getProperty("practiceid.ge"));
 		apiVerification.responseCodeValidation(response, 400);
