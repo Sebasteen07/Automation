@@ -1236,7 +1236,8 @@ public class PSSPatientUtils extends BaseTestNGWebDriver {
 //		readICSFile(filePath());
 	}
 
-	public ScheduledAppointment selectAFlow(WebDriver driver, String rule, HomePage homepage, Appointment testData)
+	//public ScheduledAppointment selectAFlow(WebDriver driver, String rule, HomePage homepage, Appointment testData)
+	public void selectAFlow(WebDriver driver, String rule, HomePage homepage, Appointment testData)
 			throws Exception {
 		log("selectAFlow method started");
 		log("------------I am in selectAFlow METHOD-----");
@@ -1286,7 +1287,7 @@ public class PSSPatientUtils extends BaseTestNGWebDriver {
 		if (rule.equalsIgnoreCase(PSSConstants.LT)) {
 			LTFlow(homepage, testData, Boolean.toString(testData.getIsInsuranceEnabled()), driver);
 		}
-		return PageFactory.initElements(driver, ScheduledAppointment.class);
+		//return PageFactory.initElements(driver, ScheduledAppointment.class);
 	}
 
 	public void checkPrivacyPage(WebDriver driver) {
