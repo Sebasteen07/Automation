@@ -21,11 +21,20 @@
 		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
 		<ihg.version>21.6.0-SNAPSHOT</ihg.version>
 	</properties>
+	
 	<repositories>
 		<repository>
 			<id>IHG-nexus</id>
 			<name>IHG-nexus</name>
 			<url>http://maven.qhg.local/nexus/content/groups/qhg-dev/</url>
+		</repository>
+		<repository>
+			<snapshots>
+				<enabled>false</enabled>
+			</snapshots>
+			<id>bintray-epam-reportportal</id>
+			<name>bintray</name>
+			<url>http://dl.bintray.com/epam/reportportal</url>
 		</repository>
 	</repositories>
 
