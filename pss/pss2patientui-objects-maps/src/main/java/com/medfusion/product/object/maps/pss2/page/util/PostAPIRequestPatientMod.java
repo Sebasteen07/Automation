@@ -343,7 +343,7 @@ public class PostAPIRequestPatientMod extends BaseTestNGWebDriver {
 	public Response anonymousPatientNewPatient(String baseurl, String b, Map<String, String> Header,
 			String practiceId) {
 		RestAssured.baseURI = baseurl;
-		Response response = RestAssured.given().when().headers(Header).body(b).when()
+		Response response = RestAssured.given().log().all().when().headers(Header).body(b).when()
 				.post(practiceId + "/anonymouspatient").then().log().all().extract().response();		
 		return response;
 	}
@@ -434,11 +434,6 @@ public class PostAPIRequestPatientMod extends BaseTestNGWebDriver {
 		Response response = given().log().all().headers(Header).log().all().when()
 				.get(practiceId + "/reschedulereason/" + patientId).then().log().all()
 				.extract().response();
-		JsonPath js = new JsonPath(response.asString());
-
-		apiVerification.responseKeyValidation(response, "displayName");
-		apiVerification.responseKeyValidation(response, "type");
-
 		return response;
 	}
 
@@ -556,14 +551,8 @@ public class PostAPIRequestPatientMod extends BaseTestNGWebDriver {
 		RestAssured.baseURI = baseurl;
 
 		Response response = given().when().headers(Header).body(b).log().all().when()
-				.post(practiceId + "/rescheduleappointment/" + patientId).then().log().all().assertThat()
-				.statusCode(200).body("patientType", equalTo(patientType)).extract().response();
+				.post(practiceId + "/rescheduleappointment/" + patientId).then().log().all().extract().response();
 
-		apiVerification.responseKeyValidationJson(response, "duration");
-		apiVerification.responseKeyValidationJson(response, "patientId");
-		apiVerification.responseKeyValidationJson(response, "slotAlreadyTaken");
-		apiVerification.responseKeyValidationJson(response, "rescheduleNotAllowed");
-		apiVerification.responseKeyValidationJson(response, "patientType");
 		return response;
 	}
 

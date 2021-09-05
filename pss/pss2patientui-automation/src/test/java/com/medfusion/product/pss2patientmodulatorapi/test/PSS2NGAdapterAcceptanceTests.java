@@ -1,15 +1,12 @@
 // Copyright 2020 NXGN Management, LLC. All Rights Reserved.
 package com.medfusion.product.pss2patientmodulatorapi.test;
 
-import static org.testng.Assert.assertEquals;
-
 import java.io.IOException;
 
 import org.testng.annotations.BeforeTest;
 import org.testng.annotations.Test;
 
 import com.intuit.ifs.csscat.core.BaseTestNG;
-import com.intuit.ifs.csscat.core.BaseTestNGWebDriver;
 import com.intuit.ifs.csscat.core.RetryAnalyzer;
 import com.medfusion.product.object.maps.pss2.page.util.APIVerification;
 import com.medfusion.product.object.maps.pss2.page.util.PostAPIRequestNG;
