@@ -124,6 +124,7 @@ public abstract class JalapenoMenu extends MedfusionPage {
 
 	private void openJalapenoMenu() {
 		log("Opening Jalapeno menu");
+		new WebDriverWait(driver, 10).until(ExpectedConditions.visibilityOf(leftMenuToggle));
 		leftMenuToggle.click();
 		new WebDriverWait(driver, 10).until(ExpectedConditions.visibilityOf(homeMenu));
 		log("Jalapeno menu is opened");
