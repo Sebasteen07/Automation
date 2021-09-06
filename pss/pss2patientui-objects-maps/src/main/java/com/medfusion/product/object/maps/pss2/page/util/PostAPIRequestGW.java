@@ -310,7 +310,7 @@ public class PostAPIRequestGW extends BaseTestNGWebDriver {
 
 	public Response reScheduleappointment(String body, String practiceid) throws IOException {
 
-		return given().spec(requestSpec).log().all().body(body).when().post(practiceid + "/scheduleappointment").then()
+		return given().spec(requestSpec).log().all().body(body).when().post(practiceid + "/rescheduleappointment").then()
 				.log().all().extract().response();
 	}
 
