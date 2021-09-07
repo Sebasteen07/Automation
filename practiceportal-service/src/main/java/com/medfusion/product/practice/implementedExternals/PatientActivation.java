@@ -64,7 +64,7 @@ public class PatientActivation implements IPatientActivation {
 	public PatientInfo editPatientSetExternalID(WebDriver driver, PropertyFileLoader testData, PatientInfo patientInfo,String externalSystemId)
             throws ClassNotFoundException, IllegalAccessException, IOException, InterruptedException {
         System.out.println("Starting flow to set externalId for system: " + externalSystemId);        
-        PracticeLoginPage practiceLogin = new PracticeLoginPage(driver, testData.getProperty("portalUrl"));
+        PracticeLoginPage practiceLogin = new PracticeLoginPage(driver, testData.getProperty("portal.url"));
         PracticeHomePage pPracticeHomePage = practiceLogin.login(testData.getDoctorLogin(), testData.getDoctorPassword());
 
         System.out.println("Click on Patient Search Link");
@@ -102,7 +102,7 @@ public class PatientActivation implements IPatientActivation {
 	public PatientInfo editPatientSetPrimaryId(WebDriver driver, PropertyFileLoader testData, PatientInfo patientInfo, String emrid)
             throws ClassNotFoundException, IllegalAccessException, IOException, InterruptedException {
         System.out.println("Starting flow to set primary external id for patient, emrid: " + emrid);        
-        PracticeLoginPage practiceLogin = new PracticeLoginPage(driver, testData.getProperty("portalUrl"));
+        PracticeLoginPage practiceLogin = new PracticeLoginPage(driver, testData.getProperty("portal.url"));
         PracticeHomePage pPracticeHomePage = practiceLogin.login(testData.getDoctorLogin(), testData.getDoctorPassword());
 
         System.out.println("Click on Patient Search Link");

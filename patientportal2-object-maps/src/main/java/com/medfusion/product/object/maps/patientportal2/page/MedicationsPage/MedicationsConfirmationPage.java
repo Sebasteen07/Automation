@@ -33,7 +33,7 @@ public class MedicationsConfirmationPage extends BasePageObject {
 	@FindBy(how = How.XPATH, using = "//*[@id='confirmation']/following-sibling::p")
 	private WebElement successMsg;
 
-	@FindBy(how = How.XPATH, using = "(//span[text()='×'])[2]")
+	@FindBy(how = How.ID, using = "closebtn")
 	private WebElement btnClose;
 
 	@FindBy(how = How.XPATH, using = "//span[text()='Prescription renewal fee']")

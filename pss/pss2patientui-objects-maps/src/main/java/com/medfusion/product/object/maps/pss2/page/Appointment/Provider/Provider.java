@@ -158,14 +158,12 @@ public class Provider extends PSS2MainPage {
 		log("in select Provider from providerList" + providerName);
 		log("Size is " + providerList.size());
 		Thread.sleep(1000);
-		for (int i = 0; i < providerList.size(); i++) {
+		for (int i = 0; i <providerList.size(); i++) {
 			log(providerList.get(i).getText() + " match " + providerList.get(i).getText().contains(providerName));
 			if (providerList.get(i).getText().trim().contains(providerName.trim())) {
 				CommonMethods.highlightElement(providerList.get(i));
-
-				IHGUtil.waitForElement(driver, 13, providernameLink.get(i));
+				IHGUtil.waitForElement(driver, 13, providerList.get(i));
 				providerList.get(i).click();
-
 				log("Clicked on Provider");
 				return PageFactory.initElements(driver, AppointmentDateTime.class);
 			}
@@ -198,5 +196,9 @@ public class Provider extends PSS2MainPage {
 		String nextDate = nextav.substring(16, 28);
 		log("Only date is  " + nextDate);
 		return nextDate;
+	}
+	
+	public String getNextavaliableText() {
+		return providerNextavaliable.getText();
 	}
 }

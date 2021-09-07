@@ -17,16 +17,16 @@ import com.medfusion.product.object.maps.pss2.page.util.CommonMethods;
 public class PatientFlow extends SettingsTab {
 
 
-	@FindBy(how = How.XPATH, using = "/html/body/app/layout/div/main/div[2]/div/div/div/section/div/div/div[2]/div[3]/div[3]/div/table/tbody/tr/td[2]/span")
+	@FindBy(how = How.XPATH, using = "//*[@id='flow']/div[3]/div/table/tbody/tr[1]/td[2]/span")
 	private WebElement specialityRule;
 
 	@FindBy(how = How.XPATH, using = "//label[@for='showinsurance']/input")
-	private WebElement insuranceToggle;
+	private WebElement insuranceToggle;	
 	
-	@FindBy(how = How.XPATH, using = "//div[@id='flow']//div//div[@class='col-md-12 col-xs-12']/div/label/i")
+	@FindBy(how = How.XPATH, using = "//*[@id=\"flow\"]/form/div/div[4]/div/label[1]/i")
 	private WebElement insuranceToggleCheckBox;
 
-	@FindBy(how = How.XPATH, using = "//div[@id='flow']//div//div[@class='col-md-12 col-xs-12']/div/label[2]")
+	@FindBy(how = How.XPATH, using = "//label[@class='col-md-5 label-toggle']")
 	private WebElement insuranceToggleLabe;
 
 	@FindBy(how = How.XPATH, using = "//*[@id=\"flow\"]/div[2]/div/h5/strong/a/i")
@@ -86,11 +86,10 @@ public class PatientFlow extends SettingsTab {
 		return specialityRule.getText();
 	}
 
-	public String isIsuranceDisplayed() {
+	public boolean isIsuranceDisplayed() {
 		commonMethods.highlightElement(insuranceToggleLabe);
 		commonMethods.highlightElement(insuranceToggleCheckBox);
-		log(insuranceToggle.getAttribute("ng-reflect-model"));
-		return insuranceToggle.getAttribute("ng-reflect-model");
+		return insuranceToggle.isSelected();
 	}
 
 	public Boolean isInsuranceToBeDisplayed() {
@@ -201,5 +200,29 @@ public class PatientFlow extends SettingsTab {
 		log("clicked on providertoggle");
 
 
+	}
+	
+	public Boolean isProviderEnabled() {
+		commonMethods.highlightElement(providerToggle);
+		return providerToggle.isSelected();
+	}
+	
+	public void turnOffProvider() {
+		log("insuranceToggle = " + providerToggle.isSelected());
+
+		if(isProviderEnabled() == true) {
+			providerToggleCheckBox.click();
+		}		
+		log("Turn off the Enable Provider Setting ");
+	}	
+	
+	public void turnOnProvider() {
+		log("insuranceToggle = " + providerToggle.isSelected());
+		
+		if(isProviderEnabled() == false) {
+			providerToggleCheckBox.click();
+		log("Status after turn on Provider-"+providerToggle.isSelected());
+		}		
+		log("Turn off the Enable Provider Setting ");
 	}
 }

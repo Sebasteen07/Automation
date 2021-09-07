@@ -68,6 +68,18 @@ public class Location extends PSS2MainPage {
 		}
 		return PageFactory.initElements(driver, Provider.class);
 	}
+	
+	public AppointmentDateTime searchLocation(String locationName) throws InterruptedException {
+		log("In SearchProvider Method");
+		for (int i = 0; i < locationList.size(); i++) {
+			if (locationList.get(i).getText().contains(locationName)) {
+				log("Location is ---> " + locationList.get(i).getText());
+				locationList.get(i).click();
+				return PageFactory.initElements(driver, AppointmentDateTime.class);
+			}
+		}
+		return PageFactory.initElements(driver, AppointmentDateTime.class);
+	}
 
 	public AppointmentDateTime selectDatTime(String dateTime) throws Exception {
 		log("location is  ");

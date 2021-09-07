@@ -62,7 +62,7 @@ public class AdminAppointment extends SettingsTab {
 
 	@FindBy(how = How.XPATH, using = "//*[@id='appt']/form[1]/div[4]/div/div/label[1]/i")
 	private WebElement nextAvailable;
-	
+
 	@FindBy(how = How.XPATH, using = "//*[@id='nextavailable']")
 	private WebElement nextAvailableStatus;
 
@@ -87,7 +87,7 @@ public class AdminAppointment extends SettingsTab {
 	@FindBy(how = How.XPATH, using = "//div[@id='basic']//div//fieldset//button[@class='btn btn-primary'][contains(text(),'Save')]")
 	private WebElement buttonSaveResourceConfg;
 
-	@FindBy(how = How.XPATH, using = "//*[@id=\"appt\"]/form/fieldset/div/div/button")
+	@FindBy(how = How.XPATH, using = "//*[@id='appt']/form/fieldset/div/div/button")
 	private WebElement buttonSave;
 
 	@FindBy(how = How.XPATH, using = "//*[@id='appt']/div/form[2]/fieldset/div/div/button")
@@ -168,15 +168,14 @@ public class AdminAppointment extends SettingsTab {
 		commonMethods.highlightElement(cancelAppointment);
 		cancelAppointment.sendKeys(cancelHoursBefore);
 		commonMethods.highlightElement(buttonSave);
+		Thread.sleep(3000);
 		buttonSave.click();
 		Thread.sleep(1000);
 	}
 
 	public boolean toggleAllowPCPONOF() throws InterruptedException {
 		pageDown();
-		log(allowPCPToggle.getAttribute("ng-reflect-model"));
-		boolean bool = Boolean.parseBoolean(allowPCPToggle.getAttribute("ng-reflect-model"));
-		return bool;
+		return allowPCPToggle.isSelected();
 	}
 
 	public void pcptoggleclick() throws InterruptedException {
@@ -188,16 +187,14 @@ public class AdminAppointment extends SettingsTab {
 	}
 
 	public Boolean isShowCancellationRescheduleReason() {
-		// commonMethods.highlightElement(showCancelReschedReasonLabel);
-		String str = showCancelReschedReason.getAttribute("ng-reflect-model");
-		log(str);
-		return Boolean.parseBoolean(str);
+
+		return showCancelReschedReason.isSelected();
+
 	}
 
 	public Boolean isShowCancellationReasonPM() {
-		// commonMethods.highlightElement(showCancelReasonPMLabel);
-		String str = showCancelReasonPM.getAttribute("ng-reflect-model");
-		return Boolean.parseBoolean(str);
+
+		return showCancelReasonPM.isSelected();
 	}
 
 	public void blockPatientsAsPerMonth(String lastSeenMonth) {
@@ -246,15 +243,15 @@ public class AdminAppointment extends SettingsTab {
 	}
 
 	public Boolean toggleNextAvailableStatus() {
-		log("Status of NextAvailable Button is  "+nextAvailableStatus.isSelected());
+		log("Status of NextAvailable Button is  " + nextAvailableStatus.isSelected());
 		return nextAvailableStatus.isSelected();
 	}
-	
+
 	public void toggleNextavailableClick() throws InterruptedException {
-		IHGUtil.waitForElement(driver, 5, nextAvailable);
-		nextAvailable.click();
+		javascriptClick(nextAvailable);
 		log("Clicked on nextAvailable");
-		buttonSave.click();
+		IHGUtil.waitForElement(driver, 10, buttonSave);
+		javascriptClick(buttonSave);
 	}
 
 	public void togglePastApptMonths() {

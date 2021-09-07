@@ -8,6 +8,7 @@
       <class name="com.medfusion.payment_modulator.tests.ElementTransactions"/>
       <class name="com.medfusion.gateway_proxy.tests.GatewayProxyTransactionTests"/>
       <class name="com.medfusion.payment_modulator.tests.QBPAYTransactions"/>
+      <class name="com.medfusion.gateway_proxy.tests.GatewayProxyDigitalWalletTests"/>
     </classes>
   </test> <!-- ModulatorTests -->
 </suite> <!-- Suite -->

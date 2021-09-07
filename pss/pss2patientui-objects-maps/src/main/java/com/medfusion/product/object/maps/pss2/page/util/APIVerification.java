@@ -1,4 +1,4 @@
-// Copyright 2020 NXGN Management, LLC. All Rights Reserved.
+// Copyright 2013-2021 NXGN Management, LLC. All Rights Reserved.
 package com.medfusion.product.object.maps.pss2.page.util;
 
 import static org.testng.Assert.assertEquals;
@@ -8,20 +8,14 @@ import org.json.JSONObject;
 
 import com.intuit.ifs.csscat.core.BaseTestNGWebDriver;
 
+import io.restassured.path.json.JsonPath;
 import io.restassured.response.Response;
-
 
 public class APIVerification extends BaseTestNGWebDriver {
 
 	public void responseCodeValidation(Response response, int statuscode) {
-
-		try {
-			assertEquals(statuscode, response.getStatusCode());
+		assertEquals(statuscode, response.getStatusCode(), "Status Code doesnt match properly. Test Case failed");
 			log("Status Code Validated as " + response.getStatusCode());
-		} catch (AssertionError e) {
-			log("Test Case-Failed");
-			log("Expected StatusCode- " + statuscode + " Actual StatusCode " + response.getStatusCode());
-		}
 	}
 
 	public void responseKeyValidation(Response response, String key) {
@@ -36,12 +30,18 @@ public class APIVerification extends BaseTestNGWebDriver {
 		}
 	}
 
-	public void responseTimeValidation(Response response) {
+	public void responseKeyValidationJson(Response response, String key) {
 		try {
-			long time = response.time();
-			log("Test Case Passed-Response Time in ms- " + time);
+			JsonPath js = new JsonPath(response.asString());
+			log("Validated key-> " + key + " value is-  " + js.getString(key));
 		} catch (Exception e) {
-			log("Test Case Failed-Response Time not validated");
+			log("Test Case Failed-Response not validated");
 		}
 	}
+
+	public void responseTimeValidation(Response response) {
+		long time = response.time();
+		log("Response Time in ms- " + time);
+	}
+
 }

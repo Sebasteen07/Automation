@@ -6,7 +6,7 @@
 	<parent>
         <groupId>com.intuit.ihg</groupId>
         <artifactId>ihg-depot-parent-pom</artifactId>
-        <version>21.4.0</version>
+        <version>21.5.0</version>
     </parent>
 	
 	<artifactId>rcm-automation</artifactId>
@@ -23,7 +23,7 @@
 	
 	<properties>
 		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
-		<ihg.version>21.4.0</ihg.version>
+		<ihg.version>21.5.0</ihg.version>
 	</properties>
 	
 	<dependencies>

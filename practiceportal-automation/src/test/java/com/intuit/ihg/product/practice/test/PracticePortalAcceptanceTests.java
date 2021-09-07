@@ -191,18 +191,18 @@ public class PracticePortalAcceptanceTests extends BaseTestNGWebDriver {
 		PatientSearchPage pPatientSearchPage = pPracticeHomePage.clickPatientSearchLink();
 
 		logStep("Set Patient Search Fields");
-		pPatientSearchPage.searchForPatientInPatientSearch(testData.getProperty("changeEmailFirstName"),
-				testData.getProperty("changeEmailLastName"));
+		pPatientSearchPage.searchForPatientInPatientSearch(testData.getProperty("change.email.first.name"),
+				testData.getProperty("change.email.last.name"));
 
 		logStep("Open Patient Dashboard");
 		PatientDashboardPage pPatientDashboardPage = pPatientSearchPage.clickOnPatient(
-				testData.getProperty("changeEmailFirstName"), testData.getProperty("changeEmailLastName"));
+				testData.getProperty("change.email.first.name"), testData.getProperty("change.email.last.name"));
 
 		logStep("Click Edit email");
 		pPatientSearchPage = pPatientDashboardPage.clickEditEmail();
 
 		logStep("Update email");
-		pPatientDashboardPage = pPatientSearchPage.changeEmail(testData.getProperty("changeEmailNewEmail"));
+		pPatientDashboardPage = pPatientSearchPage.changeEmail(testData.getProperty("change.email.new.email"));
 		assertEquals(true, pPatientDashboardPage.getFeedback().contains("Patient Email Address / User Id Was Updated"));
 	}
 
@@ -224,10 +224,10 @@ public class PracticePortalAcceptanceTests extends BaseTestNGWebDriver {
 		PatientSearchPage pPatientSearchPage = pPracticeHomePage.clickPatientSearchLink();
 
 		logStep("Set Patient Search Fields");
-		pPatientSearchPage.searchForPatientInPatientSearch(testData.getProperty("forgotUsernameFirstName"),
-				testData.getProperty("forgotUsernameLastName"));
+		pPatientSearchPage.searchForPatientInPatientSearch(testData.getProperty("forgot.username.first.name"),
+				testData.getProperty("forgot.username.last.name"));
 		PatientDashboardPage pPatientDashboardPage = pPatientSearchPage.clickOnPatient(
-				testData.getProperty("forgotUsernameFirstName"), testData.getProperty("forgotUsernameLastName"));
+				testData.getProperty("forgot.username.first.name"), testData.getProperty("forgot.username.last.name"));
 
 		logStep("Send Email reminder with User ID");
 		pPatientSearchPage = pPatientDashboardPage.sendEmailUserID();
@@ -238,8 +238,8 @@ public class PracticePortalAcceptanceTests extends BaseTestNGWebDriver {
 				"No success message on send!");
 		logStep("Access Mailinator and check for received email");
 		Mailinator mailinator = new Mailinator();
-		assertTrue(mailinator.catchNewMessageCheckContent(testData.getProperty("forgotUsernameMail"),
-				testData.getProperty("forgotUsernameMailSubject"), testData.getProperty("forgotUsernameLogin"), 10),
+		assertTrue(mailinator.catchNewMessageCheckContent(testData.getProperty("forgot.username.mail"),
+				testData.getProperty("forgot.username.mail.subject"), testData.getProperty("forgot.username.login"), 10),
 				"Mail not received after max retries");
 	}
 
@@ -318,8 +318,8 @@ public class PracticePortalAcceptanceTests extends BaseTestNGWebDriver {
 	public void testMakePaymentForPatient() throws Exception {
 		logStep("" + "Login to Practice Portal");
 		PracticeLoginPage practiceLogin = new PracticeLoginPage(driver, testData.getUrl());
-		PracticeHomePage pPracticeHomePage = practiceLogin.login(testData.getProperty("doctorLoginPayment"),
-				testData.getProperty("doctorPasswordPayment"));
+		PracticeHomePage pPracticeHomePage = practiceLogin.login(testData.getProperty("doctor.login.payment"),
+				testData.getProperty("doctor.password.payment"));
 
 		logStep("Click On Online BillPayment Tab in Practice Portal--->Make Payment For Patient");
 		PayMyBillOnlinePage pPayMyBillOnlinePage = pPracticeHomePage.clickMakePaymentForPatient();
@@ -356,15 +356,15 @@ public class PracticePortalAcceptanceTests extends BaseTestNGWebDriver {
 	public void testOnlineBillPayProcess() throws Exception {
 		logStep("Login to Practice Portal");
 		PracticeLoginPage practiceLogin = new PracticeLoginPage(driver, testData.getUrl());
-		PracticeHomePage practiceHome = practiceLogin.login(testData.getProperty("doctorLoginPayment"),
-				testData.getProperty("doctorPasswordPayment"));
+		PracticeHomePage practiceHome = practiceLogin.login(testData.getProperty("doctor.login.payment"),
+				testData.getProperty("doctor.password.payment"));
 
 		logStep("Click on Make Payment link.");
 		PayMyBillOnlinePage pPayMyBillOnlinePage = practiceHome.clickMakePaymentForPatient();
 
 		logStep("Search For Patient");
-		pPayMyBillOnlinePage.searchForPatient(testData.getProperty("onlineBillPayFirstName"),
-				testData.getProperty("onlineBillPayLastName"));
+		pPayMyBillOnlinePage.searchForPatient(testData.getProperty("online.bill.pay.first.name"),
+				testData.getProperty("online.bill.pay.last.name"));
 
 		String amount = IHGUtil.createRandomNumericStringInRange(5, 500);
 		log("Random generated amount: " + amount);
@@ -418,14 +418,14 @@ public class PracticePortalAcceptanceTests extends BaseTestNGWebDriver {
 
 		logStep("Login to Practice Portal");
 		PracticeLoginPage practiceLogin = new PracticeLoginPage(driver, testData.getUrl());
-		PracticeHomePage practiceHome = practiceLogin.login(testData.getProperty("doctorLoginPayment"),
-				testData.getProperty("doctorPasswordPayment"));
+		PracticeHomePage practiceHome = practiceLogin.login(testData.getProperty("doctor.login.payment"),
+				testData.getProperty("doctor.password.payment"));
 		logStep("Click on Make Payment link.");
 		PayMyBillOnlinePage pPayMyBillOnlinePage = practiceHome.clickMakePaymentForPatient();
 
 		logStep("Search For Patient");
-		pPayMyBillOnlinePage.searchForPatient(testData.getProperty("onlineBillPayFirstName"),
-				testData.getProperty("onlineBillPayLastName"));
+		pPayMyBillOnlinePage.searchForPatient(testData.getProperty("online.bill.pay.first.name"),
+				testData.getProperty("online.bill.pay.last.name"));
 
 		logStep("Set all the transaction details");
 		pPayMyBillOnlinePage.setTransactionsForBudgetPaymentPlan(PracticeConstants.LOCATION, PracticeConstants.PROVIDER,
@@ -448,8 +448,8 @@ public class PracticePortalAcceptanceTests extends BaseTestNGWebDriver {
 		practiceHome.budgetPaymentPlanSearch();
 
 		logStep("Searching of Budget Payment plan with patient firstName and lastName ");
-		pPayMyBillOnlinePage.budgetPaymentPlanSearchPatient(testData.getProperty("onlineBillPayFirstName"),
-				testData.getProperty("onlineBillPayLastName"));
+		pPayMyBillOnlinePage.budgetPaymentPlanSearchPatient(testData.getProperty("online.bill.pay.first.name"),
+				testData.getProperty("online.bill.pay.last.name"));
 
 		logStep("Verify the BudgetPaymentPlan End Date and card ending");
 		assertTrue(pPayMyBillOnlinePage.getplanEndDateBudgetSearch().equals(EnddatePlanText));
@@ -466,14 +466,14 @@ public class PracticePortalAcceptanceTests extends BaseTestNGWebDriver {
 	public void testOnlineBillPayRefundProcess() throws Exception {
 		logStep("Login to Practice Portal");
 		PracticeLoginPage practiceLogin = new PracticeLoginPage(driver, testData.getUrl());
-		PracticeHomePage practiceHome = practiceLogin.login(testData.getProperty("doctorLoginPayment"),
-				testData.getProperty("doctorPasswordPayment"));
+		PracticeHomePage practiceHome = practiceLogin.login(testData.getProperty("doctor.login.payment"),
+				testData.getProperty("doctor.password.payment"));
 		logStep("Click on Make Payment link.");
 		PayMyBillOnlinePage pPayMyBillOnlinePage = practiceHome.clickMakePaymentForPatient();
 
 		logStep("Search For Patient");
-		pPayMyBillOnlinePage.searchForPatient(testData.getProperty("onlineBillPayFirstName"),
-				testData.getProperty("onlineBillPayLastName"));
+		pPayMyBillOnlinePage.searchForPatient(testData.getProperty("online.bill.pay.first.name"),
+				testData.getProperty("online.bill.pay.last.name"));
 
 		String amount = IHGUtil.createRandomNumericStringInRange(100, 500);
 		log("Random generated amount: " + amount);
@@ -523,17 +523,17 @@ public class PracticePortalAcceptanceTests extends BaseTestNGWebDriver {
 		Instant passwordResetStart = Instant.now();
 		logStep("Login to Practice Portal");
 		PracticeLoginPage practiceLogin = new PracticeLoginPage(driver, testData.getUrl());
-		PracticeHomePage pPracticeHomePage = practiceLogin.login(testData.getProperty("doctor2Login"),
-				testData.getProperty("doctor2Password"));
+		PracticeHomePage pPracticeHomePage = practiceLogin.login(testData.getProperty("doctor2.login"),
+				testData.getProperty("doctor2.password"));
 
 		logStep("Click on Patient Search Link");
 		PatientSearchPage pPatientSearchPage = pPracticeHomePage.clickPatientSearchLink();
 
 		logStep("Set Patient Search Fields");
-		pPatientSearchPage.searchForPatientInPatientSearch(testData.getProperty("forgotPasswordFirstName"),
-				testData.getProperty("forgotPasswordLastName"));
+		pPatientSearchPage.searchForPatientInPatientSearch(testData.getProperty("forgot.password.first.name"),
+				testData.getProperty("forgot.password.last.name"));
 		PatientDashboardPage pPatientDashboardPage = pPatientSearchPage.clickOnPatient(
-				testData.getProperty("forgotPasswordFirstName"), testData.getProperty("forgotPasswordLastName"));
+				testData.getProperty("forgot.password.first.name"), testData.getProperty("forgot.password.last.name"));
 
 		logStep("Send Password Reset Email to Patient");
 		pPatientSearchPage = pPatientDashboardPage.sendResetPasswordLink();
@@ -544,7 +544,7 @@ public class PracticePortalAcceptanceTests extends BaseTestNGWebDriver {
 				"No success message on send!");
 		
 		logStep("Access Mailinator and check for Reset Password Link");
-		String[] mailAddress = testData.getProperty("forgotPasswordMail").split("@");
+		String[] mailAddress = testData.getProperty("forgot.password.mail").split("@");
 		String emailSubject = "Help with your user name or password";
 		String inEmail = "Reset Password Now";
 		Email receivedEmail = new Mailer(mailAddress[0]).pollForNewEmailWithSubject(emailSubject, 60,
@@ -556,7 +556,48 @@ public class PracticePortalAcceptanceTests extends BaseTestNGWebDriver {
 		assertNotNull(url, "Error: Reset Password link not found.");
 		
 		JalapenoForgotPasswordPage4 forgotPasswordPage = new JalapenoForgotPasswordPage4(driver);
-		forgotPasswordPage.fillInPassword(testData.getProperty("newPassword"));	
+		forgotPasswordPage.fillInPassword(testData.getProperty("new.password"));	
+	}
+	
+	@Test(enabled = true, groups = { "AcceptanceTests" }, retryAnalyzer = RetryAnalyzer.class)
+	public void testPasswordResetEmailForTrustedRepresentative() throws Exception {
+		Instant passwordResetStart = Instant.now();
+		logStep("Login to Practice Portal");
+		PracticeLoginPage practiceLogin = new PracticeLoginPage(driver, testData.getUrl());
+		PracticeHomePage pPracticeHomePage = practiceLogin.login(testData.getProperty("doctor2.login"),
+				testData.getProperty("doctor2.password"));
+
+		logStep("Click on Patient Search Link");
+		PatientSearchPage pPatientSearchPage = pPracticeHomePage.clickPatientSearchLink();
+
+		logStep("Set Patient Search Fields");
+		pPatientSearchPage.searchForPatientInPatientSearch(testData.getProperty("trusted.rep.forgot.password.first.name"),
+				testData.getProperty("trusted.rep.forgot.password.last.name"));
+		PatientDashboardPage pPatientDashboardPage = pPatientSearchPage.clickOnPatient(
+				testData.getProperty("trusted.rep.forgot.password.first.name"), testData.getProperty("trusted.rep.forgot.password.last.name"));
+		
+		logStep("Send Password Reset Email to Patient");
+		pPatientSearchPage = pPatientDashboardPage.trustedRepSendResetPasswordLink();
+
+		logStep("Click Send Email");
+		pPatientDashboardPage = pPatientSearchPage.sendPasswordResetEmail();
+		assertTrue(pPatientDashboardPage.getFeedback().contains("Password reset email sent to Guardian or Trusted Representative"),
+				"No success message on send!");
+		
+		logStep("Access Mailinator and check for Reset Password Link");
+		String[] mailAddress = testData.getProperty("forgot.password.mail").split("@");
+		String emailSubject = "Help with your user name or password";
+		String inEmail = "Reset Password Now";
+		Email receivedEmail = new Mailer(mailAddress[0]).pollForNewEmailWithSubject(emailSubject, 60,
+				passwordResetStart.until(Instant.now(), ChronoUnit.SECONDS));
+		String resetPasswordLink = Mailer.getLinkByText(receivedEmail, inEmail);
+		System.out.println("Link from mail is" +resetPasswordLink );
+		String url = getRedirectUrl(resetPasswordLink);
+		System.out.println("Redirected url is" +url);
+		assertNotNull(url, "Error: Reset Password link not found.");
+		
+		JalapenoForgotPasswordPage4 forgotPasswordPage = new JalapenoForgotPasswordPage4(driver);
+		forgotPasswordPage.fillInPassword(testData.getProperty("new.password"));
 	}
 
 	private String getRedirectUrl(String originUrl) {

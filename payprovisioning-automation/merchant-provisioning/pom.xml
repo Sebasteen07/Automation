@@ -8,16 +8,18 @@
 	<parent>
 		<artifactId>ihg-depot-parent-pom</artifactId>
 		<groupId>com.intuit.ihg</groupId>
-		<version>21.4.0</version>
+		<version>21.5.0</version>
 	</parent>
 
+	<groupId>com.mfpay</groupId>
 	<artifactId>merchant-provisioning</artifactId>
+	<version>0.0.1-SNAPSHOT</version>
 	<packaging>jar</packaging>
 	<name>merchant-provisioning</name>
 
 	<properties>
 		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
-		<ihg.version>21.4.0</ihg.version>
+		<ihg.version>21.5.0</ihg.version>
 	</properties>
 	<repositories>
 		<repository>
@@ -32,31 +34,6 @@
 			<groupId>com.intuit.ifs.csscat.core</groupId>
 			<artifactId>Core</artifactId>
 			<version>2.3-SNAPSHOT</version>
-		</dependency>
-		<dependency>
-			<groupId>io.rest-assured</groupId>
-			<artifactId>rest-assured</artifactId>
-			<version>4.3.3</version>
-		</dependency>
-		<dependency>
-			<groupId>io.rest-assured</groupId>
-			<artifactId>json-path</artifactId>
-			<version>4.3.3</version>
-		</dependency>
-		<dependency>
-			<groupId>io.rest-assured</groupId>
-			<artifactId>json-schema-validator</artifactId>
-			<version>4.3.3</version>
-		</dependency>
-		<dependency>
-			<groupId>io.rest-assured</groupId>
-			<artifactId>xml-path</artifactId>
-			<version>4.3.3</version>
-		</dependency>
-		<dependency>
-			<groupId>org.hamcrest</groupId>
-			<artifactId>hamcrest</artifactId>
-			<version>2.2</version>
 		</dependency>
 	</dependencies>
 </project>

@@ -81,8 +81,8 @@ public class NGIntegrationE2EEnrollment_CCDTests extends BaseTestNGWebDriver {
 	@Test(enabled = true, groups = { "acceptance-patientEnrollmentPracticeLevel" }, retryAnalyzer = RetryAnalyzer.class)
 	public void testAEnrollPatientWithOnlyMandatoryDemographicsToMFPortal() throws Throwable {
 		Long timestamp = System.currentTimeMillis();
-		NGAPIUtils.updateLoginDefaultTo("EnterpriseGateway", propertyLoaderObj.getProperty("NGMainEnterpriseID"),
-				propertyLoaderObj.getProperty("NGMainPracticeID"));
+		NGAPIUtils.updateLoginDefaultTo("EnterpriseGateway", propertyLoaderObj.getProperty("ng.main.enterprise.id"),
+				propertyLoaderObj.getProperty("ng.main.practice.id"));
 		logStep("Create the patient in NG EPM");
 		NewPatient createPatient = NGPatient.patientUsingJSON(propertyLoaderObj, "");
 		createPatient = NGPatient.addDataToPatientDemographics(propertyLoaderObj, createPatient);
@@ -95,8 +95,8 @@ public class NGIntegrationE2EEnrollment_CCDTests extends BaseTestNGWebDriver {
 		String personId = ngAPIUtils.setupNGHttpPostRequest("EnterpriseGateway", finalURL, requestbody, 201);
 		log("Step End: Person created with id " + personId);
 
-		String locationName = propertyLoaderObj.getProperty("EPMLocationName");
-		String providerName = propertyLoaderObj.getProperty("EPMProviderName");
+		String locationName = propertyLoaderObj.getProperty("epm.location.name");
+		String providerName = propertyLoaderObj.getProperty("epm.provider.name");
 		NGAPIFlows.addCharttoProvider(locationName, providerName, personId);
 
 		logStep("Using Post Enrollment call, Verify the MF agent trigger for new patient");
@@ -240,8 +240,8 @@ public class NGIntegrationE2EEnrollment_CCDTests extends BaseTestNGWebDriver {
 		logStep("Moving to the link obtained from the email message");
 		assertNotNull(activationUrl, "Error: Activation link not found.");
 		Thread.sleep(20000);
-		String sDate1 = propertyLoaderObj.getProperty("DOBMonth") + "/" + propertyLoaderObj.getProperty("DOBDay") + "/"
-				+ propertyLoaderObj.getProperty("DOBYear");
+		String sDate1 = propertyLoaderObj.getProperty("dob.month") + "/" + propertyLoaderObj.getProperty("dob.day") + "/"
+				+ propertyLoaderObj.getProperty("dob.year");
 		log(sDate1);
 
 		logStep("Enroll the Patient to MedFusion Portal : step 1 - verifying identity");
@@ -300,8 +300,8 @@ public class NGIntegrationE2EEnrollment_CCDTests extends BaseTestNGWebDriver {
 	@Test(enabled = true, groups = { "acceptance-patientEnrollmentPracticeLevel" }, retryAnalyzer = RetryAnalyzer.class)
 	public void testAEnrollPatientWithoutMandatoryDemographicsToMFPortal() throws Throwable {
 		logStep("Create the patient in NG EPM without First Name");
-		NGAPIUtils.updateLoginDefaultTo("EnterpriseGateway", propertyLoaderObj.getProperty("NGMainEnterpriseID"),
-				propertyLoaderObj.getProperty("NGMainPracticeID"));
+		NGAPIUtils.updateLoginDefaultTo("EnterpriseGateway", propertyLoaderObj.getProperty("ng.main.enterprise.id"),
+				propertyLoaderObj.getProperty("ng.main.practice.id"));
 		NewPatient createPatient = NGPatient.patientUsingJSON(propertyLoaderObj, "withoutFirstName");
 
 		ObjectMapper objMap = new ObjectMapper();
@@ -342,8 +342,8 @@ public class NGIntegrationE2EEnrollment_CCDTests extends BaseTestNGWebDriver {
 	@Test(enabled = true, groups = { "acceptance-patientEnrollmentPracticeLevel" }, retryAnalyzer = RetryAnalyzer.class)
 	public void testAEnrollPatientWithoutMandatoryDemographicsEmailAddressToMFPortal() throws Throwable {
 		logStep("Create the patient in NG EPM");
-		NGAPIUtils.updateLoginDefaultTo("EnterpriseGateway", propertyLoaderObj.getProperty("NGMainEnterpriseID"),
-				propertyLoaderObj.getProperty("NGMainPracticeID"));
+		NGAPIUtils.updateLoginDefaultTo("EnterpriseGateway", propertyLoaderObj.getProperty("ng.main.enterprise.id"),
+				propertyLoaderObj.getProperty("ng.main.practice.id"));
 		NewPatient createPatient = NGPatient.patientUsingJSON(propertyLoaderObj, "withoutEmailaddress");
 
 		ObjectMapper objMap = new ObjectMapper();
@@ -371,8 +371,8 @@ public class NGIntegrationE2EEnrollment_CCDTests extends BaseTestNGWebDriver {
 	@Test(enabled = true, groups = { "acceptance-patientEnrollmentPracticeLevel" }, retryAnalyzer = RetryAnalyzer.class)
 	public void testAEnrollPatientWithoutMandatoryDemographicsZipToMFPortal() throws Throwable {
 		logStep("Create the patient in NG EPM");
-		NGAPIUtils.updateLoginDefaultTo("EnterpriseGateway", propertyLoaderObj.getProperty("NGMainEnterpriseID"),
-				propertyLoaderObj.getProperty("NGMainPracticeID"));
+		NGAPIUtils.updateLoginDefaultTo("EnterpriseGateway", propertyLoaderObj.getProperty("ng.main.enterprise.id"),
+				propertyLoaderObj.getProperty("ng.main.practice.id"));
 		NewPatient createPatient = NGPatient.patientUsingJSON(propertyLoaderObj, "withoutZip");
 
 		ObjectMapper objMap = new ObjectMapper();
@@ -472,8 +472,8 @@ public class NGIntegrationE2EEnrollment_CCDTests extends BaseTestNGWebDriver {
 
 		logStep("Create the Guardian in NG EPM");
 		NGAPIUtils.updateLoginDefaultTo("EnterpriseGateway",
-				propertyLoaderObj.getProperty("NGEnterpiseEnrollmentEnterprise1"),
-				propertyLoaderObj.getProperty("NGEnterprise1Practice1"));
+				propertyLoaderObj.getProperty("ng.enterprise.enrollment.enterprise1"),
+				propertyLoaderObj.getProperty("ng.enterprise1.practice1"));
 		NewPatient createPatient = NGPatient.patientUsingJSON(propertyLoaderObj, "");
 		createPatient = NGPatient.addDataToPatientDemographics(propertyLoaderObj, createPatient);
 		System.setProperty("ParentEmailAddress", createPatient.getEmailAddress());
@@ -487,8 +487,8 @@ public class NGIntegrationE2EEnrollment_CCDTests extends BaseTestNGWebDriver {
 		String person_id = NGAPIUtils.setupNGHttpPostRequest("EnterpriseGateway", finalURL, requestbody, 201);
 		log("Step End: Guardian created with id " + person_id);
 
-		String locationName = propertyLoaderObj.getProperty("NGE1P1Location");
-		String providerName = propertyLoaderObj.getProperty("NGE1P1Provider");
+		String locationName = propertyLoaderObj.getProperty("ng.e1.p1.location");
+		String providerName = propertyLoaderObj.getProperty("ng.e1.p1.provider");
 		NGAPIFlows.addCharttoProvider(locationName, providerName, person_id);
 
 		logStep("Create the Dependent in NG EPM");
@@ -549,11 +549,11 @@ public class NGIntegrationE2EEnrollment_CCDTests extends BaseTestNGWebDriver {
 		CommonUtils.VerifyTwoValues(enrollment_status1, "equals", "1");
 
 		PatientEnrollment.verifyProcessingStatusto3WithoutValidatingGetProcessingStatusCall(propertyLoaderObj,
-				person_id.trim(), propertyLoaderObj.getProperty("NGEnterprise1Practice1"),
-				propertyLoaderObj.getProperty("integrationPracticeIDE1P1"));
+				person_id.trim(), propertyLoaderObj.getProperty("ng.enterprise1.practice1"),
+				propertyLoaderObj.getProperty("integration.practice.id.e1.p1"));
 		PatientEnrollment.verifyProcessingStatusto3WithoutValidatingGetProcessingStatusCall(propertyLoaderObj,
-				dependentperson_id.trim(), propertyLoaderObj.getProperty("NGEnterprise1Practice1"),
-				propertyLoaderObj.getProperty("integrationPracticeIDE1P1"));
+				dependentperson_id.trim(), propertyLoaderObj.getProperty("ng.enterprise1.practice1"),
+				propertyLoaderObj.getProperty("integration.practice.id.e1.p1"));
 
 		Mailinator mail = new Mailinator();
 		Thread.sleep(15000);
@@ -611,12 +611,12 @@ public class NGIntegrationE2EEnrollment_CCDTests extends BaseTestNGWebDriver {
 
 		logStep("Setup Oauth client" + propertyLoaderObj.getResponsePath());
 		RestUtils.oauthSetup(propertyLoaderObj.getOAuthKeyStore(), propertyLoaderObj.getOAuthProperty(),
-				propertyLoaderObj.getOAuthAppToken(), propertyLoaderObj.getProperty("oAuthUsername1"),
-				propertyLoaderObj.getProperty("oAuthPassword1"));
+				propertyLoaderObj.getOAuthAppToken(), propertyLoaderObj.getProperty("oauth.username1"),
+				propertyLoaderObj.getProperty("oauth.password1"));
 
 		PatientEnrollment.VerifyGetPIDCCall(propertyLoaderObj, timestamp, dependentperson_nbr,
 				createdependent.getFirstName(), createdependent.getLastName(), "Registered",
-				propertyLoaderObj.getProperty("integrationPracticeIDE1P1"));
+				propertyLoaderObj.getProperty("integration.practice.id.e1.p1"));
 
 		logStep("Using mailinator Mailer to retrieve the latest emails for patient and guardian");
 		Thread.sleep(15000);
@@ -699,8 +699,8 @@ public class NGIntegrationE2EEnrollment_CCDTests extends BaseTestNGWebDriver {
 		String finalURL = enterprisebaseURL + personURL.getRouteURL();
 
 		logStep("Create the Dependent in NG EPM");
-		NGAPIUtils.updateLoginDefaultTo("EnterpriseGateway", propertyLoaderObj.getProperty("NGMainEnterpriseID"),
-				propertyLoaderObj.getProperty("NGMainPracticeID"));
+		NGAPIUtils.updateLoginDefaultTo("EnterpriseGateway", propertyLoaderObj.getProperty("ng.main.enterprise.id"),
+				propertyLoaderObj.getProperty("ng.main.practice.id"));
 		NewPatient createdependent = NGPatient.patientUsingJSON(propertyLoaderObj, "Dependent");
 		createdependent = NGPatient.addDataToPatientDemographics(propertyLoaderObj, createdependent);
 		String dependentrequestbody = objMap.writerWithDefaultPrettyPrinter().writeValueAsString(createdependent);
@@ -710,8 +710,8 @@ public class NGIntegrationE2EEnrollment_CCDTests extends BaseTestNGWebDriver {
 				dependentrequestbody, 201);
 		log("Step End: Dependent created with id " + dependentperson_id);
 
-		String locationName = propertyLoaderObj.getProperty("EPMLocationName");
-		String providerName = propertyLoaderObj.getProperty("EPMProviderName");
+		String locationName = propertyLoaderObj.getProperty("epm.location.name");
+		String providerName = propertyLoaderObj.getProperty("epm.provider.name");
 		NGAPIFlows.addCharttoProvider(locationName, providerName, dependentperson_id);
 
 		logStep("Using Post Enrollment call, Verify the MF agent trigger for dependent");
@@ -742,7 +742,7 @@ public class NGIntegrationE2EEnrollment_CCDTests extends BaseTestNGWebDriver {
 		CommonUtils.VerifyTwoValues(enrollment_status1, "equals", "1");
 
 		PatientEnrollment.verifyProcessingStatusto3WithoutValidatingGetProcessingStatusCall(propertyLoaderObj,
-				dependentperson_id.trim(), propertyLoaderObj.getProperty("NGMainPracticeID"),
+				dependentperson_id.trim(), propertyLoaderObj.getProperty("ng.main.practice.id"),
 				propertyLoaderObj.getIntegrationPracticeID());
 
 		Mailinator mail = new Mailinator();
@@ -773,9 +773,6 @@ public class NGIntegrationE2EEnrollment_CCDTests extends BaseTestNGWebDriver {
 				createdependent.getEmailAddress(), propertyLoaderObj.getPassword(),
 				propertyLoaderObj.getSecretQuestion(), propertyLoaderObj.getSecretAnswer(),
 				propertyLoaderObj.getPhoneNumber());
-
-		logStep("Detecting if Home Page is opened");
-		assertTrue(jalapenoHomePage.isHomeButtonPresent(driver));
 
 		logStep("Logout from Portal");
 		jalapenoHomePage.LogoutfromNGMFPortal();
@@ -825,8 +822,8 @@ public class NGIntegrationE2EEnrollment_CCDTests extends BaseTestNGWebDriver {
 	@Test(enabled = true, groups = { "acceptance-patientEnrollmentPracticeLevel" }, retryAnalyzer = RetryAnalyzer.class)
 	public void testALACreateTrustedRepresentativeOnly() throws Throwable {
 		logStep("Create the patient in NG EPM");
-		NGAPIUtils.updateLoginDefaultTo("EnterpriseGateway", propertyLoaderObj.getProperty("NGMainEnterpriseID"),
-				propertyLoaderObj.getProperty("NGMainPracticeID"));
+		NGAPIUtils.updateLoginDefaultTo("EnterpriseGateway", propertyLoaderObj.getProperty("ng.main.enterprise.id"),
+				propertyLoaderObj.getProperty("ng.main.practice.id"));
 		NewPatient createPatient = NGPatient.patientUsingJSON(propertyLoaderObj, "");
 		createPatient = NGPatient.addDataToPatientDemographics(propertyLoaderObj, createPatient);
 		ObjectMapper objMap = new ObjectMapper();
@@ -838,8 +835,8 @@ public class NGIntegrationE2EEnrollment_CCDTests extends BaseTestNGWebDriver {
 		String person_id = NGAPIUtils.setupNGHttpPostRequest("EnterpriseGateway", finalURL, requestbody, 201);
 		log("Step End: Person created with id " + person_id);
 
-		String locationName = propertyLoaderObj.getProperty("EPMLocationName");
-		String providerName = propertyLoaderObj.getProperty("EPMProviderName");
+		String locationName = propertyLoaderObj.getProperty("epm.location.name");
+		String providerName = propertyLoaderObj.getProperty("epm.provider.name");
 		NGAPIFlows.addCharttoProvider(locationName, providerName, person_id);
 
 		logStep("Using Post Enrollment call, Verify the MF agent trigger for new patient");
@@ -867,7 +864,7 @@ public class NGIntegrationE2EEnrollment_CCDTests extends BaseTestNGWebDriver {
 		CommonUtils.VerifyTwoValues(enrollment_status1, "equals", "1");
 
 		PatientEnrollment.verifyProcessingStatusto3WithoutValidatingGetProcessingStatusCall(propertyLoaderObj,
-				person_id.trim(), propertyLoaderObj.getProperty("NGMainPracticeID"),
+				person_id.trim(), propertyLoaderObj.getProperty("ng.main.practice.id"),
 				propertyLoaderObj.getIntegrationPracticeID());
 
 		Mailinator mail = new Mailinator();
@@ -881,8 +878,8 @@ public class NGIntegrationE2EEnrollment_CCDTests extends BaseTestNGWebDriver {
 		logStep("Moving to the link obtained from the email message- Patient 1");
 		assertNotNull(activationUrl, "Error: Activation link not found.");
 		Thread.sleep(20000);
-		String sDate1 = propertyLoaderObj.getProperty("DOBMonth") + "/" + propertyLoaderObj.getProperty("DOBDay") + "/"
-				+ propertyLoaderObj.getProperty("DOBYear");
+		String sDate1 = propertyLoaderObj.getProperty("dob.month") + "/" + propertyLoaderObj.getProperty("dob.day") + "/"
+				+ propertyLoaderObj.getProperty("dob.year");
 		log(sDate1);
 
 		logStep("Enroll the Patient to MedFusion Portal : step 1 - verifying identity");
@@ -960,8 +957,8 @@ public class NGIntegrationE2EEnrollment_CCDTests extends BaseTestNGWebDriver {
 	@Test(enabled = true, groups = { "acceptance-patientEnrollmentPracticeLevel" }, retryAnalyzer = RetryAnalyzer.class)
 	public void testAEnrollPatientHavingInvalidZipToMFPortal() throws Throwable {
 		logStep("Create the patient in NG EPM");
-		NGAPIUtils.updateLoginDefaultTo("EnterpriseGateway", propertyLoaderObj.getProperty("NGMainEnterpriseID"),
-				propertyLoaderObj.getProperty("NGMainPracticeID"));
+		NGAPIUtils.updateLoginDefaultTo("EnterpriseGateway", propertyLoaderObj.getProperty("ng.main.enterprise.id"),
+				propertyLoaderObj.getProperty("ng.main.practice.id"));
 		NewPatient createPatient = NGPatient.patientUsingJSON(propertyLoaderObj, "invalidZIP");
 		createPatient = NGPatient.addDataToPatientDemographics(propertyLoaderObj, createPatient);
 		ObjectMapper objMap = new ObjectMapper();
@@ -973,8 +970,8 @@ public class NGIntegrationE2EEnrollment_CCDTests extends BaseTestNGWebDriver {
 		String person_id = NGAPIUtils.setupNGHttpPostRequest("EnterpriseGateway", finalURL, requestbody, 201);
 		log("Step End: Person created with id " + person_id);
 
-		String locationName = propertyLoaderObj.getProperty("EPMLocationName");
-		String providerName = propertyLoaderObj.getProperty("EPMProviderName");
+		String locationName = propertyLoaderObj.getProperty("epm.location.name");
+		String providerName = propertyLoaderObj.getProperty("epm.provider.name");
 		NGAPIFlows.addCharttoProvider(locationName, providerName, person_id);
 
 		logStep("Using Post Enrollment call, Verify the MF agent trigger for new patient");
@@ -1110,8 +1107,8 @@ public class NGIntegrationE2EEnrollment_CCDTests extends BaseTestNGWebDriver {
 		String person_id = ngAPIUtils.setupNGHttpPostRequest("EnterpriseGateway", finalURL, requestbody, 201);
 		log("Step End: Person created with id " + person_id);
 
-		String locationName = propertyLoaderObj.getProperty("EPMLocationName");
-		String providerName = propertyLoaderObj.getProperty("EPMProviderName");
+		String locationName = propertyLoaderObj.getProperty("epm.location.name");
+		String providerName = propertyLoaderObj.getProperty("epm.provider.name");
 		NGAPIFlows.addCharttoProvider(locationName, providerName, person_id);
 
 		logStep("Using Post Enrollment call, Verify the MF agent trigger for new patient");
@@ -1256,8 +1253,8 @@ public class NGIntegrationE2EEnrollment_CCDTests extends BaseTestNGWebDriver {
 		logStep("Moving to the link obtained from the email message");
 		assertNotNull(activationUrl, "Error: Activation link not found.");
 		Thread.sleep(20000);
-		String sDate1 = propertyLoaderObj.getProperty("DOBMonth") + "/" + propertyLoaderObj.getProperty("DOBDay") + "/"
-				+ propertyLoaderObj.getProperty("DOBYear");
+		String sDate1 = propertyLoaderObj.getProperty("dob.month") + "/" + propertyLoaderObj.getProperty("dob.day") + "/"
+				+ propertyLoaderObj.getProperty("dob.year");
 		log(sDate1);
 
 		logStep("Enroll the Patient to MedFusion Portal : step 1 - verifying identity");
@@ -1313,14 +1310,14 @@ public class NGIntegrationE2EEnrollment_CCDTests extends BaseTestNGWebDriver {
 
 	@Test(enabled = true, groups = { "acceptance-CCD" }, retryAnalyzer = RetryAnalyzer.class)
 	public void testCCDPracticeLevelEnrollmentOnDemandCCD() throws Throwable {
-		NGAPIUtils.updateLoginDefaultTo("EnterpriseGateway", propertyLoaderObj.getProperty("NGMainEnterpriseID"),
-				propertyLoaderObj.getProperty("NGMainPracticeID"));
+		NGAPIUtils.updateLoginDefaultTo("EnterpriseGateway", propertyLoaderObj.getProperty("ng.main.enterprise.id"),
+				propertyLoaderObj.getProperty("ng.main.practice.id"));
 
-		String locationName = propertyLoaderObj.getProperty("EPMLocationName");
-		String providerName = propertyLoaderObj.getProperty("EPMProviderName");
-		String enterpriseId = propertyLoaderObj.getProperty("NGMainEnterpriseID");
-		String practiceId = propertyLoaderObj.getProperty("NGMainPracticeID");
-		String integrationPracticeId = propertyLoaderObj.getProperty("integrationPracticeIDAMDC");
+		String locationName = propertyLoaderObj.getProperty("epm.location.name");
+		String providerName = propertyLoaderObj.getProperty("epm.provider.name");
+		String enterpriseId = propertyLoaderObj.getProperty("ng.main.enterprise.id");
+		String practiceId = propertyLoaderObj.getProperty("ng.main.practice.id");
+		String integrationPracticeId = propertyLoaderObj.getIntegrationPracticeID();
 
 		logStep("Created the patient in NG EPM Practice " + practiceId);
 		NewPatient createPatient = NGPatient.patientUsingJSON(propertyLoaderObj, "complete");
@@ -1358,13 +1355,13 @@ public class NGIntegrationE2EEnrollment_CCDTests extends BaseTestNGWebDriver {
 
 		logStep("Setup Oauth Token");
 		RestUtils.oauthSetup(propertyLoaderObj.getOAuthKeyStore(), propertyLoaderObj.getOAuthProperty(),
-				propertyLoaderObj.getOAuthAppToken(), propertyLoaderObj.getProperty("oAuthUsername"),
-				propertyLoaderObj.getProperty("oAuthPassword"));
+				propertyLoaderObj.getOAuthAppToken(), propertyLoaderObj.getProperty("oauth.username"),
+				propertyLoaderObj.getProperty("oauth.password"));
 
 		Thread.sleep(60000);
 		logStep("Do the Get onDemand Health Data Get API Call.");
 		RestUtils.setupHttpGetRequest(
-				propertyLoaderObj.getProperty("GetHealthData").replaceAll("integrationID", integrationPracticeId)
+				propertyLoaderObj.getProperty("get.health.data").replaceAll("integrationID", integrationPracticeId)
 						+ "?since=" + since + ",0",
 				propertyLoaderObj.getResponsePath());
 
@@ -1386,12 +1383,12 @@ public class NGIntegrationE2EEnrollment_CCDTests extends BaseTestNGWebDriver {
 
 	@Test(enabled = true, groups = { "acceptance-CCD" }, retryAnalyzer = RetryAnalyzer.class)
 	public void testCCDMSUCCD() throws Throwable {
-		String enterpriseId = propertyLoaderObj.getProperty("NGMainEnterpriseID");
-		String practiceId = propertyLoaderObj.getProperty("NGMainPracticeID");
-		String integrationPracticeId = propertyLoaderObj.getProperty("integrationPracticeIDAMDC");
+		String enterpriseId = propertyLoaderObj.getProperty("ng.main.enterprise.id");
+		String practiceId = propertyLoaderObj.getProperty("ng.main.practice.id");
+		String integrationPracticeId = propertyLoaderObj.getIntegrationPracticeID();
 		String url = propertyLoaderObj.getProperty("url");
-		String locationName = propertyLoaderObj.getProperty("EPMLocationName");
-		String providerName = propertyLoaderObj.getProperty("EPMProviderName");
+		String locationName = propertyLoaderObj.getProperty("epm.location.name");
+		String providerName = propertyLoaderObj.getProperty("epm.provider.name");
 		String practiceName = propertyLoaderObj.getProperty("practiceName");
 
 		NGAPIUtils.updateLoginDefaultTo("EnterpriseGateway", enterpriseId, practiceId);
@@ -1439,12 +1436,12 @@ public class NGIntegrationE2EEnrollment_CCDTests extends BaseTestNGWebDriver {
 
 	@Test(enabled = true, groups = { "acceptance-CCD" }, retryAnalyzer = RetryAnalyzer.class)
 	public void testCCDLockedEncounterCCD() throws Throwable {
-		String enterpriseId = propertyLoaderObj.getProperty("NGMainEnterpriseID");
-		String practiceId = propertyLoaderObj.getProperty("NGMainPracticeID");
-		String integrationPracticeId = propertyLoaderObj.getProperty("integrationPracticeIDAMDC");
+		String enterpriseId = propertyLoaderObj.getProperty("ng.main.enterprise.id");
+		String practiceId = propertyLoaderObj.getProperty("ng.main.practice.id");
+		String integrationPracticeId = propertyLoaderObj.getIntegrationPracticeID();
 		String url = propertyLoaderObj.getProperty("url");
-		String locationName = propertyLoaderObj.getProperty("EPMLocationName");
-		String providerName = propertyLoaderObj.getProperty("EPMProviderName");
+		String locationName = propertyLoaderObj.getProperty("epm.location.name");
+		String providerName = propertyLoaderObj.getProperty("epm.provider.name");
 		String practiceName = propertyLoaderObj.getProperty("practiceName");
 
 		NGAPIUtils.updateLoginDefaultTo("EnterpriseGateway", enterpriseId, practiceId);
@@ -1518,18 +1515,18 @@ public class NGIntegrationE2EEnrollment_CCDTests extends BaseTestNGWebDriver {
 	@Test(enabled = true, groups = { "acceptance-CCD" }, retryAnalyzer = RetryAnalyzer.class)
 	public void testCCDDateFilterCCD() throws Throwable {
 		logStep("Getting Existing User");
-		String username = propertyLoaderObj.getProperty("CCDAUsername");
+		String username = propertyLoaderObj.getProperty("ccda.username");
 		String person_id = DBUtils.executeQueryOnDB("NGCoreDB",
 				"select person_id from person where email_address = '" + username + "'");
 		String practiceId = null, integrationPracticeID = null, url = null;
 
 		if (propertyLoaderObj.getNGAPIexecutionMode().equalsIgnoreCase("QAMain")) {
-			practiceId = propertyLoaderObj.getProperty("NGEnterprise1Practice1");
-			integrationPracticeID = propertyLoaderObj.getProperty("integrationPracticeIDE1P1");
-			url = propertyLoaderObj.getProperty("MFPortalURLPractice1");
+			practiceId = propertyLoaderObj.getProperty("ng.enterprise1.practice1");
+			integrationPracticeID = propertyLoaderObj.getProperty("integration.practice.id.e1.p1");
+			url = propertyLoaderObj.getProperty("mf.portal.url.practice1");
 		} else if (propertyLoaderObj.getNGAPIexecutionMode().equalsIgnoreCase("SIT")) {
-			practiceId = propertyLoaderObj.getProperty("NGMainPracticeID");
-			integrationPracticeID = propertyLoaderObj.getProperty("integrationPracticeIDAMDC");
+			practiceId = propertyLoaderObj.getProperty("ng.main.practice.id");
+			integrationPracticeID = propertyLoaderObj.getIntegrationPracticeID();
 			url = propertyLoaderObj.getProperty("url");
 		} else {
 			Log4jUtil.log("Invalid Execution Mode");
@@ -1572,12 +1569,12 @@ public class NGIntegrationE2EEnrollment_CCDTests extends BaseTestNGWebDriver {
 		logStep("Setup Oauth client" + propertyLoaderObj.getResponsePath());
 		if (propertyLoaderObj.getNGAPIexecutionMode().equalsIgnoreCase("QAMain")) {
 			RestUtils.oauthSetup(propertyLoaderObj.getOAuthKeyStore(), propertyLoaderObj.getOAuthProperty(),
-					propertyLoaderObj.getOAuthAppToken(), propertyLoaderObj.getProperty("oAuthUsername1"),
-					propertyLoaderObj.getProperty("oAuthPassword1"));
+					propertyLoaderObj.getOAuthAppToken(), propertyLoaderObj.getProperty("oauth.username1"),
+					propertyLoaderObj.getProperty("oauth.password1"));
 		} else if (propertyLoaderObj.getNGAPIexecutionMode().equalsIgnoreCase("SIT")) {
 			RestUtils.oauthSetup(propertyLoaderObj.getOAuthKeyStore(), propertyLoaderObj.getOAuthProperty(),
-					propertyLoaderObj.getOAuthAppToken(), propertyLoaderObj.getProperty("oAuthUsername"),
-					propertyLoaderObj.getProperty("oAuthPassword"));
+					propertyLoaderObj.getOAuthAppToken(), propertyLoaderObj.getProperty("oauth.username"),
+					propertyLoaderObj.getProperty("oauth.password"));
 		} else {
 			Log4jUtil.log("Invalid Execution Mode");
 		}
@@ -1585,7 +1582,7 @@ public class NGIntegrationE2EEnrollment_CCDTests extends BaseTestNGWebDriver {
 		Thread.sleep(60000);
 		logStep("Do the Get onDemand Health Data Get API Call.");
 		RestUtils.setupHttpGetRequest(
-				propertyLoaderObj.getProperty("GetHealthData").replaceAll("integrationID", integrationPracticeID)
+				propertyLoaderObj.getProperty("get.health.data").replaceAll("integrationID", integrationPracticeID)
 						+ "?since=" + since + ",0",
 				propertyLoaderObj.getResponsePath());
 
@@ -1606,11 +1603,11 @@ public class NGIntegrationE2EEnrollment_CCDTests extends BaseTestNGWebDriver {
 
 	@Test(enabled = true, groups = { "acceptance-CCD" }, retryAnalyzer = RetryAnalyzer.class)
 	public void testCCDGuardianDependentCCD() throws Throwable {
-		String enterpriseId = propertyLoaderObj.getProperty("NGMainEnterpriseID");
-		String practiceId = propertyLoaderObj.getProperty("NGMainPracticeID");
-		String providerName = propertyLoaderObj.getProperty("EPMProviderName");
-		String locationName = propertyLoaderObj.getProperty("EPMLocationName");
-		String integrationPracticeID = propertyLoaderObj.getProperty("integrationPracticeIDAMDC");
+		String enterpriseId = propertyLoaderObj.getProperty("ng.main.enterprise.id");
+		String practiceId = propertyLoaderObj.getProperty("ng.main.practice.id");
+		String providerName = propertyLoaderObj.getProperty("epm.provider.name");
+		String locationName = propertyLoaderObj.getProperty("epm.location.name");
+		String integrationPracticeID = propertyLoaderObj.getIntegrationPracticeID();
 		String url = propertyLoaderObj.getProperty("url");
 
 		NGAPIUtils.updateLoginDefaultTo("EnterpriseGateway", enterpriseId, practiceId);
@@ -1824,13 +1821,13 @@ public class NGIntegrationE2EEnrollment_CCDTests extends BaseTestNGWebDriver {
 
 		logStep("Setup Oauth Token");
 		RestUtils.oauthSetup(propertyLoaderObj.getOAuthKeyStore(), propertyLoaderObj.getOAuthProperty(),
-				propertyLoaderObj.getOAuthAppToken(), propertyLoaderObj.getProperty("oAuthUsername"),
-				propertyLoaderObj.getProperty("oAuthPassword"));
+				propertyLoaderObj.getOAuthAppToken(), propertyLoaderObj.getProperty("oauth.username"),
+				propertyLoaderObj.getProperty("oauth.password"));
 
 		Thread.sleep(60000);
 		logStep("Do the Get onDemand Health Data Get API Call.");
 		RestUtils.setupHttpGetRequest(
-				propertyLoaderObj.getProperty("GetHealthData").replaceAll("integrationID", integrationPracticeID)
+				propertyLoaderObj.getProperty("get.health.data").replaceAll("integrationID", integrationPracticeID)
 						+ "?since=" + since + ",0",
 				propertyLoaderObj.getResponsePath());
 
@@ -1853,11 +1850,11 @@ public class NGIntegrationE2EEnrollment_CCDTests extends BaseTestNGWebDriver {
 	@Test(enabled = true, groups = { "acceptance-CCD" }, retryAnalyzer = RetryAnalyzer.class)
 	public void testCCDTrustedRepresentativeWithoutMFAccount() throws Throwable {
 
-		String enterpriseId = propertyLoaderObj.getProperty("NGMainEnterpriseID");
-		String practiceId = propertyLoaderObj.getProperty("NGMainPracticeID");
-		String providerName = propertyLoaderObj.getProperty("EPMProviderName");
-		String locationName = propertyLoaderObj.getProperty("EPMLocationName");
-		String integrationPracticeID = propertyLoaderObj.getProperty("integrationPracticeIDAMDC");
+		String enterpriseId = propertyLoaderObj.getProperty("ng.main.enterprise.id");
+		String practiceId = propertyLoaderObj.getProperty("ng.main.practice.id");
+		String providerName = propertyLoaderObj.getProperty("epm.provider.name");
+		String locationName = propertyLoaderObj.getProperty("epm.location.name");
+		String integrationPracticeID = propertyLoaderObj.getIntegrationPracticeID();
 		String url = propertyLoaderObj.getProperty("url");
 		String practiceName = propertyLoaderObj.getProperty("practiceName");
 
@@ -1955,13 +1952,13 @@ public class NGIntegrationE2EEnrollment_CCDTests extends BaseTestNGWebDriver {
 
 		logStep("Setup Oauth Token");
 		RestUtils.oauthSetup(propertyLoaderObj.getOAuthKeyStore(), propertyLoaderObj.getOAuthProperty(),
-				propertyLoaderObj.getOAuthAppToken(), propertyLoaderObj.getProperty("oAuthUsername"),
-				propertyLoaderObj.getProperty("oAuthPassword"));
+				propertyLoaderObj.getOAuthAppToken(), propertyLoaderObj.getProperty("oauth.username"),
+				propertyLoaderObj.getProperty("oauth.password"));
 
 		Thread.sleep(60000);
 		logStep("Do the Get onDemand Health Data Get API Call.");
 		RestUtils.setupHttpGetRequest(
-				propertyLoaderObj.getProperty("GetHealthData").replaceAll("integrationID", integrationPracticeID)
+				propertyLoaderObj.getProperty("get.health.data").replaceAll("integrationID", integrationPracticeID)
 						+ "?since=" + since1 + ",0",
 				propertyLoaderObj.getResponsePath());
 
@@ -1985,10 +1982,10 @@ public class NGIntegrationE2EEnrollment_CCDTests extends BaseTestNGWebDriver {
 		String locationName = propertyLoaderObj.getNGE1P1Location();
 		String providerName = propertyLoaderObj.getNGE1P1Provider();
 		String practiceId = propertyLoaderObj.getNGEnterpiseEnrollmentE1P1();
-		String integrationPracticeId = propertyLoaderObj.getProperty("integrationPracticeIDE1P1");
+		String integrationPracticeId = propertyLoaderObj.getProperty("integration.practice.id.e1.p1");
 		String enterpriseID = propertyLoaderObj.getNGEnterpiseEnrollmentE1();
-		String URL = propertyLoaderObj.getProperty("MFPortalURLPractice1");
-		String practiceName = propertyLoaderObj.getProperty("practiceName1");
+		String URL = propertyLoaderObj.getProperty("mf.portal.url.practice1");
+		String practiceName = propertyLoaderObj.getProperty("practice.name1");
 
 		NGAPIUtils.updateLoginDefaultTo("EnterpriseGateway", enterpriseID, practiceId);
 		NewPatient createPatient = NGPatient.patientUsingJSON(propertyLoaderObj, "complete");
@@ -2054,10 +2051,10 @@ public class NGIntegrationE2EEnrollment_CCDTests extends BaseTestNGWebDriver {
 		String locationName = propertyLoaderObj.getNGE1P1Location();
 		String providerName = propertyLoaderObj.getNGE1P1Provider();
 		String practiceId = propertyLoaderObj.getNGEnterpiseEnrollmentE1P1();
-		String integrationPracticeId = propertyLoaderObj.getProperty("integrationPracticeIDE1P1");
+		String integrationPracticeId = propertyLoaderObj.getProperty("integration.practice.id.e1.p1");
 		String enterpriseID = propertyLoaderObj.getNGEnterpiseEnrollmentE1();
-		String URL = propertyLoaderObj.getProperty("MFPortalURLPractice1");
-		String practiceName = propertyLoaderObj.getProperty("practiceName1");
+		String URL = propertyLoaderObj.getProperty("mf.portal.url.practice1");
+		String practiceName = propertyLoaderObj.getProperty("practice.name1");
 
 		NGAPIUtils.updateLoginDefaultTo("EnterpriseGateway", enterpriseID, practiceId);
 
@@ -2131,13 +2128,13 @@ public class NGIntegrationE2EEnrollment_CCDTests extends BaseTestNGWebDriver {
 
 		logStep("Setup Oauth Token");
 		RestUtils.oauthSetup(propertyLoaderObj.getOAuthKeyStore(), propertyLoaderObj.getOAuthProperty(),
-				propertyLoaderObj.getOAuthAppToken(), propertyLoaderObj.getProperty("oAuthUsername1"),
-				propertyLoaderObj.getProperty("oAuthPassword1"));
+				propertyLoaderObj.getOAuthAppToken(), propertyLoaderObj.getProperty("oauth.username1"),
+				propertyLoaderObj.getProperty("oauth.password1"));
 
 		Thread.sleep(60000);
 		logStep("Do the Get onDemand Health Data Get API Call.");
 		RestUtils.setupHttpGetRequest(
-				propertyLoaderObj.getProperty("GetHealthData").replaceAll("integrationID", integrationPracticeId)
+				propertyLoaderObj.getProperty("get.health.data").replaceAll("integrationID", integrationPracticeId)
 						+ "?since=" + since + ",0",
 				propertyLoaderObj.getResponsePath());
 

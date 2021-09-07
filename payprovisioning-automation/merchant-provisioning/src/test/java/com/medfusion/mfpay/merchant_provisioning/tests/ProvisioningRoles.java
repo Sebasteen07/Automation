@@ -22,7 +22,7 @@ public class ProvisioningRoles {
 
 	public String getBaseUrl() throws IOException {
 		testData = new PropertyFileLoader();
-		String baseurl = testData.getProperty("baseurl");
+		String baseurl = testData.getProperty("base.url");
 		return baseurl;
 	}
 	

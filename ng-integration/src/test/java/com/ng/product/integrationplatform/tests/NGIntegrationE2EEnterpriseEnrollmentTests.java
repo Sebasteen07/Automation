@@ -90,8 +90,8 @@ public class NGIntegrationE2EEnterpriseEnrollmentTests extends BaseTestNGWebDriv
 		NGAPIFlows.addEncounter(propertyLoaderObj.getNGE1P1Location(), propertyLoaderObj.getNGE1P1Provider(), personId);
 
 		PatientEnrollment.enrollPatientWithoutGetProcessingStatusValidation(propertyLoaderObj, enterprisebaseURL,
-				ngAPIUtils, driver, createPatient, personId, propertyLoaderObj.getProperty("practiceName1"),
-				propertyLoaderObj.getProperty("integrationPracticeIDE1P1"),
+				ngAPIUtils, driver, createPatient, personId, propertyLoaderObj.getProperty("practice.name1"),
+				propertyLoaderObj.getProperty("integration.practice.id.e1.p1"),
 				propertyLoaderObj.getNGEnterpiseEnrollmentE1(), propertyLoaderObj.getNGEnterpiseEnrollmentE1P1());
 		Thread.sleep(60000);
 		Long timestamp = System.currentTimeMillis();
@@ -105,7 +105,7 @@ public class NGIntegrationE2EEnterpriseEnrollmentTests extends BaseTestNGWebDriv
 
 		PatientEnrollment.verifyProcessingStatusto3WithoutValidatingGetProcessingStatusCall(propertyLoaderObj, personId,
 				propertyLoaderObj.getNGEnterpiseEnrollmentE1P2(),
-				propertyLoaderObj.getProperty("integrationPracticeIDE1P2"));
+				propertyLoaderObj.getProperty("integration.practice.id.e1.p2"));
 
 		Thread.sleep(90000);
 		logStep("Waiting for welcome mail at patient inbox from second practice");
@@ -119,19 +119,19 @@ public class NGIntegrationE2EEnterpriseEnrollmentTests extends BaseTestNGWebDriv
 		JalapenoHomePage homePage = loginPage.login(createPatient.getEmailAddress(), propertyLoaderObj.getPassword());
 
 		logStep("Switching to First Practice to verify auto enrollment");
-		homePage.switchToPractice(propertyLoaderObj.getProperty("practiceName1"));
+		homePage.switchToPractice(propertyLoaderObj.getProperty("practice.name1"));
 
 		String person_nbr = DBUtils.executeQueryOnDB("NGCoreDB",
 				"select person_nbr from person where person_id = '" + personId.trim() + "'");
 		Log4jUtil.log("Step Begins: Setup Oauth client" + propertyLoaderObj.getResponsePath());
 		RestUtils.oauthSetup(propertyLoaderObj.getOAuthKeyStore(), propertyLoaderObj.getOAuthProperty(),
-				propertyLoaderObj.getOAuthAppToken(), propertyLoaderObj.getProperty("oAuthUsername2"),
-				propertyLoaderObj.getProperty("oAuthPassword2"));
+				propertyLoaderObj.getOAuthAppToken(), propertyLoaderObj.getProperty("oauth.username2"),
+				propertyLoaderObj.getProperty("oauth.password2"));
 		PatientEnrollment.VerifyGetPIDCCall(propertyLoaderObj, timestamp, person_nbr, createPatient.getFirstName(),
-				createPatient.getLastName(), "Registered", propertyLoaderObj.getProperty("integrationPracticeIDE1P2"));
+				createPatient.getLastName(), "Registered", propertyLoaderObj.getProperty("integration.practice.id.e1.p2"));
 		PatientEnrollment.verifyPatientEnrollmentStatus(enterprisebaseURL, ngAPIUtils, personId,
-				propertyLoaderObj.getProperty("NGEnterprise1Practice2"),
-				propertyLoaderObj.getProperty("NGEnterpiseEnrollmentEnterprise1"));
+				propertyLoaderObj.getProperty("ng.enterprise1.practice2"),
+				propertyLoaderObj.getProperty("ng.enterprise.enrollment.enterprise1"));
 	}
 
 	@Test(enabled = true, groups = { "acceptance-EnterpriseEnrollment" }, retryAnalyzer = RetryAnalyzer.class)
@@ -148,14 +148,14 @@ public class NGIntegrationE2EEnterpriseEnrollmentTests extends BaseTestNGWebDriv
 
 		PatientEnrollment.verifyProcessingStatusto3WithoutValidatingGetProcessingStatusCall(propertyLoaderObj, personId,
 				propertyLoaderObj.getNGEnterpiseEnrollmentE1P1(),
-				propertyLoaderObj.getProperty("integrationPracticeIDE1P1"));
+				propertyLoaderObj.getProperty("integration.practice.id.e1.p1"));
 		log(createPatient.getEmailAddress() + "   :    " + INVITE_EMAIL_SUBJECT_PATIENT
-				+ propertyLoaderObj.getProperty("practiceName1") + "     :   "
+				+ propertyLoaderObj.getProperty("practice.name1") + "     :   "
 				+ JalapenoConstants.NEW_PATIENT_ACTIVATION_MESSAGE_LINK_TEXT);
 		Thread.sleep(60000);
 		logStep("Logging into Mailinator and getting Patient Activation url for first Practice");
 		String activationUrlP1 = new Mailinator().getLinkFromEmail(createPatient.getEmailAddress(),
-				INVITE_EMAIL_SUBJECT_PATIENT + propertyLoaderObj.getProperty("practiceName1"),
+				INVITE_EMAIL_SUBJECT_PATIENT + propertyLoaderObj.getProperty("practice.name1"),
 				JalapenoConstants.NEW_PATIENT_ACTIVATION_MESSAGE_LINK_TEXT, 40);
 		assertNotNull(activationUrlP1, "Error: Activation link not found.");
 
@@ -169,13 +169,13 @@ public class NGIntegrationE2EEnterpriseEnrollmentTests extends BaseTestNGWebDriv
 
 		PatientEnrollment.enrollPatientWithoutGetProcessingStatusValidation(propertyLoaderObj, enterprisebaseURL,
 				ngAPIUtils, driver, createPatient, personId, propertyLoaderObj.getProperty("practiceName3"),
-				propertyLoaderObj.getProperty("integrationPracticeIDE1P3"),
+				propertyLoaderObj.getProperty("integration.practice.id.e1.p3"),
 				propertyLoaderObj.getNGEnterpiseEnrollmentE1(), propertyLoaderObj.getNGEnterpiseEnrollmentE1P3());
 
 		Thread.sleep(60000);
 		mails.add(new ExpectedEmail(createPatient.getEmailAddress(), WELCOME_EMAIL_SUBJECT_PATIENT,
 				WELCOME_EMAIL_BODY_PATTERN_PRACTICE.replace("PracticeName",
-						propertyLoaderObj.getProperty("practiceName1"))));
+						propertyLoaderObj.getProperty("practice.name1"))));
 		mails.add(new ExpectedEmail(createPatient.getEmailAddress(), WELCOME_EMAIL_SUBJECT_PATIENT,
 				WELCOME_EMAIL_BODY_PATTERN_PRACTICE.replace("PracticeName",
 						propertyLoaderObj.getProperty("practiceName3"))));
@@ -196,7 +196,7 @@ public class NGIntegrationE2EEnterpriseEnrollmentTests extends BaseTestNGWebDriv
 		JalapenoHomePage homePage = loginPage.login(createPatient.getEmailAddress(), propertyLoaderObj.getPassword());
 
 		logStep("Switching to First Practice to verify auto enrollment");
-		homePage.switchToPractice(propertyLoaderObj.getProperty("practiceName1"));
+		homePage.switchToPractice(propertyLoaderObj.getProperty("practice.name1"));
 		Thread.sleep(40000);
 		driver.navigate().refresh();
 		homePage.switchToPractice(propertyLoaderObj.getProperty("practiceName3"));
@@ -205,13 +205,13 @@ public class NGIntegrationE2EEnterpriseEnrollmentTests extends BaseTestNGWebDriv
 				"select person_nbr from person where person_id = '" + personId.trim() + "'");
 		Log4jUtil.log("Step Begins: Setup Oauth client" + propertyLoaderObj.getResponsePath());
 		RestUtils.oauthSetup(propertyLoaderObj.getOAuthKeyStore(), propertyLoaderObj.getOAuthProperty(),
-				propertyLoaderObj.getOAuthAppToken(), propertyLoaderObj.getProperty("oAuthUsername1"),
-				propertyLoaderObj.getProperty("oAuthPassword1"));
+				propertyLoaderObj.getOAuthAppToken(), propertyLoaderObj.getProperty("oauth.username1"),
+				propertyLoaderObj.getProperty("oauth.password1"));
 		PatientEnrollment.VerifyGetPIDCCall(propertyLoaderObj, timestamp, person_nbr, createPatient.getFirstName(),
-				createPatient.getLastName(), "Registered", propertyLoaderObj.getProperty("integrationPracticeIDE1P1"));
+				createPatient.getLastName(), "Registered", propertyLoaderObj.getProperty("integration.practice.id.e1.p1"));
 		PatientEnrollment.verifyPatientEnrollmentStatus(enterprisebaseURL, ngAPIUtils, personId,
-				propertyLoaderObj.getProperty("NGEnterprise1Practice1"),
-				propertyLoaderObj.getProperty("NGEnterpiseEnrollmentEnterprise1"));
+				propertyLoaderObj.getProperty("ng.enterprise1.practice1"),
+				propertyLoaderObj.getProperty("ng.enterprise.enrollment.enterprise1"));
 	}
 
 	@Test(enabled = true, groups = { "acceptance-EnterpriseEnrollment" }, retryAnalyzer = RetryAnalyzer.class)
@@ -234,7 +234,7 @@ public class NGIntegrationE2EEnterpriseEnrollmentTests extends BaseTestNGWebDriv
 
 		PatientEnrollment.enrollPatientWithoutGetProcessingStatusValidation(propertyLoaderObj, enterprisebaseURL,
 				ngAPIUtils, driver, createPatient, personId, propertyLoaderObj.getProperty("practiceName3"),
-				propertyLoaderObj.getProperty("integrationPracticeIDE1P3"),
+				propertyLoaderObj.getProperty("integration.practice.id.e1.p3"),
 				propertyLoaderObj.getNGEnterpiseEnrollmentE1(), propertyLoaderObj.getNGEnterpiseEnrollmentE1P3());
 
 		Thread.sleep(40000);
@@ -252,12 +252,12 @@ public class NGIntegrationE2EEnterpriseEnrollmentTests extends BaseTestNGWebDriv
 		JalapenoHomePage homePage = loginPage.login(createPatient.getEmailAddress(), propertyLoaderObj.getPassword());
 
 		logStep("Switching to First Practice to verify auto enrollment");
-		homePage.switchToPractice(propertyLoaderObj.getProperty("practiceName1"));
+		homePage.switchToPractice(propertyLoaderObj.getProperty("practice.name1"));
 
 		logStep("Login to Practice Portal");
 		PracticeLoginPage practiceLogin = new PracticeLoginPage(driver, propertyLoaderObj.getPortalUrl());
-		PracticeHomePage practiceHome = practiceLogin.login(propertyLoaderObj.getProperty("doctorLoginPractice3"),
-				propertyLoaderObj.getProperty("doctorPasswordPractice3"));
+		PracticeHomePage practiceHome = practiceLogin.login(propertyLoaderObj.getProperty("doctor.login.practice3"),
+				propertyLoaderObj.getProperty("doctor.password.practice3"));
 		logStep("Click on Search");
 		PatientSearchPage patientSearchPage = practiceHome.clickPatientSearchLink();
 		logStep("Search for Patient");
@@ -268,7 +268,7 @@ public class NGIntegrationE2EEnterpriseEnrollmentTests extends BaseTestNGWebDriv
 		patientSearchPage.verifyDeletedPatient(createPatient.getFirstName(), createPatient.getLastName());
 
 		logStep("Log into Practice2 Portal");
-		loginPage = new JalapenoLoginEnrollment(driver, propertyLoaderObj.getProperty("MFPortalURLPractice1"));
+		loginPage = new JalapenoLoginEnrollment(driver, propertyLoaderObj.getProperty("mf.portal.url.practice1"));
 		homePage = loginPage.login(createPatient.getEmailAddress(), propertyLoaderObj.getPassword());
 
 		log("Verify the Multiple Practice Toggle is not displayed");
@@ -278,10 +278,10 @@ public class NGIntegrationE2EEnterpriseEnrollmentTests extends BaseTestNGWebDriv
 				"select person_nbr from person where person_id = '" + personId.trim() + "'");
 		Log4jUtil.log("Step Begins: Setup Oauth client" + propertyLoaderObj.getResponsePath());
 		RestUtils.oauthSetup(propertyLoaderObj.getOAuthKeyStore(), propertyLoaderObj.getOAuthProperty(),
-				propertyLoaderObj.getOAuthAppToken(), propertyLoaderObj.getProperty("oAuthUsername3"),
-				propertyLoaderObj.getProperty("oAuthPassword3"));
+				propertyLoaderObj.getOAuthAppToken(), propertyLoaderObj.getProperty("oauth.username3"),
+				propertyLoaderObj.getProperty("oauth.password3"));
 		PatientEnrollment.VerifyGetPIDCCall(propertyLoaderObj, timestamp, person_nbr, createPatient.getFirstName(),
-				createPatient.getLastName(), "DELETED", propertyLoaderObj.getProperty("integrationPracticeIDE1P3"));
+				createPatient.getLastName(), "DELETED", propertyLoaderObj.getProperty("integration.practice.id.e1.p3"));
 
 		PatientEnrollment.verifyPatientEnrollmentDeletedStatus(enterprisebaseURL, personId,
 				propertyLoaderObj.getNGEnterpiseEnrollmentE1P3(), propertyLoaderObj.getNGEnterpiseEnrollmentE1());
@@ -309,7 +309,7 @@ public class NGIntegrationE2EEnterpriseEnrollmentTests extends BaseTestNGWebDriv
 
 		PatientEnrollment.enrollPatientWithoutGetProcessingStatusValidation(propertyLoaderObj, enterprisebaseURL,
 				ngAPIUtils, driver, createPatient, personId, propertyLoaderObj.getProperty("practiceName3"),
-				propertyLoaderObj.getProperty("integrationPracticeIDE1P3"),
+				propertyLoaderObj.getProperty("integration.practice.id.e1.p3"),
 				propertyLoaderObj.getNGEnterpiseEnrollmentE1(), propertyLoaderObj.getNGEnterpiseEnrollmentE1P3());
 
 		Thread.sleep(60000);
@@ -330,8 +330,8 @@ public class NGIntegrationE2EEnterpriseEnrollmentTests extends BaseTestNGWebDriv
 		logStep("Login to Practice Portal");
 		Thread.sleep(3000);
 		PracticeLoginPage practiceLogin = new PracticeLoginPage(driver, propertyLoaderObj.getPortalUrl());
-		PracticeHomePage practiceHome = practiceLogin.login(propertyLoaderObj.getProperty("doctorLoginPractice3"),
-				propertyLoaderObj.getProperty("doctorPasswordPractice3"));
+		PracticeHomePage practiceHome = practiceLogin.login(propertyLoaderObj.getProperty("doctor.login.practice3"),
+				propertyLoaderObj.getProperty("doctor.password.practice3"));
 		log("Step Begins: Click on Search");
 		PatientSearchPage patientSearchPage = practiceHome.clickPatientSearchLink();
 		log("Step Begins: Search for Patient");
@@ -343,7 +343,7 @@ public class NGIntegrationE2EEnterpriseEnrollmentTests extends BaseTestNGWebDriv
 		patientSearchPage.verifyDeactivatedPatient(createPatient.getFirstName(), createPatient.getLastName());
 
 		logStep("Log into Practice2 Portal");
-		loginPage = new JalapenoLoginEnrollment(driver, propertyLoaderObj.getProperty("MFPortalURLPractice1"));
+		loginPage = new JalapenoLoginEnrollment(driver, propertyLoaderObj.getProperty("mf.portal.url.practice1"));
 		homePage = loginPage.login(createPatient.getEmailAddress(), propertyLoaderObj.getPassword());
 
 		logStep("Verify the Multiple Practice Toggle is not displayed");
@@ -353,10 +353,10 @@ public class NGIntegrationE2EEnterpriseEnrollmentTests extends BaseTestNGWebDriv
 				"select person_nbr from person where person_id = '" + personId.trim() + "'");
 		Log4jUtil.log("Step Begins: Setup Oauth client" + propertyLoaderObj.getResponsePath());
 		RestUtils.oauthSetup(propertyLoaderObj.getOAuthKeyStore(), propertyLoaderObj.getOAuthProperty(),
-				propertyLoaderObj.getOAuthAppToken(), propertyLoaderObj.getProperty("oAuthUsername3"),
-				propertyLoaderObj.getProperty("oAuthPassword3"));
+				propertyLoaderObj.getOAuthAppToken(), propertyLoaderObj.getProperty("oauth.username3"),
+				propertyLoaderObj.getProperty("oauth.password3"));
 		PatientEnrollment.VerifyGetPIDCCall(propertyLoaderObj, timestamp, person_nbr, createPatient.getFirstName(),
-				createPatient.getLastName(), "DEACTIVATED", propertyLoaderObj.getProperty("integrationPracticeIDE1P3"));
+				createPatient.getLastName(), "DEACTIVATED", propertyLoaderObj.getProperty("integration.practice.id.e1.p3"));
 
 		PatientEnrollment.verifyPatientEnrollmentDeactivatedStatus(enterprisebaseURL, personId,
 				propertyLoaderObj.getNGEnterpiseEnrollmentE1P3(), propertyLoaderObj.getNGEnterpiseEnrollmentE1());
@@ -375,8 +375,8 @@ public class NGIntegrationE2EEnterpriseEnrollmentTests extends BaseTestNGWebDriv
 				personId);
 
 		PatientEnrollment.enrollPatientWithoutGetProcessingStatusValidation(propertyLoaderObj, enterprisebaseURL,
-				ngAPIUtils, driver, createPatient, personId, propertyLoaderObj.getProperty("practiceName1"),
-				propertyLoaderObj.getProperty("integrationPracticeIDE1P1"),
+				ngAPIUtils, driver, createPatient, personId, propertyLoaderObj.getProperty("practice.name1"),
+				propertyLoaderObj.getProperty("integration.practice.id.e1.p1"),
 				propertyLoaderObj.getNGEnterpiseEnrollmentE1(), propertyLoaderObj.getNGEnterpiseEnrollmentE1P1());
 
 		logStep("Create the chart in Practice 4");
@@ -407,7 +407,7 @@ public class NGIntegrationE2EEnterpriseEnrollmentTests extends BaseTestNGWebDriv
 
 		PatientEnrollment.verifyProcessingStatusto3WithoutValidatingGetProcessingStatusCall(propertyLoaderObj, personId,
 				propertyLoaderObj.getNGEnterpiseEnrollmentE1P4(),
-				propertyLoaderObj.getProperty("integrationPracticeIDE1P4"));
+				propertyLoaderObj.getProperty("integration.practice.id.e1.p4"));
 
 		Mailinator mail = new Mailinator();
 		Thread.sleep(15000);
@@ -485,8 +485,8 @@ public class NGIntegrationE2EEnterpriseEnrollmentTests extends BaseTestNGWebDriv
 				personId);
 
 		PatientEnrollment.enrollPatientWithoutGetProcessingStatusValidation(propertyLoaderObj, enterprisebaseURL,
-				ngAPIUtils, driver, createPatient, personId, propertyLoaderObj.getProperty("practiceName1"),
-				propertyLoaderObj.getProperty("integrationPracticeIDE1P1"),
+				ngAPIUtils, driver, createPatient, personId, propertyLoaderObj.getProperty("practice.name1"),
+				propertyLoaderObj.getProperty("integration.practice.id.e1.p1"),
 				propertyLoaderObj.getNGEnterpiseEnrollmentE1(), propertyLoaderObj.getNGEnterpiseEnrollmentE1P1());
 
 		Thread.sleep(80000);
@@ -508,8 +508,8 @@ public class NGIntegrationE2EEnterpriseEnrollmentTests extends BaseTestNGWebDriv
 
 		logStep("Login to Practice Portal");
 		PracticeLoginPage practiceLogin = new PracticeLoginPage(driver, propertyLoaderObj.getPortalUrl());
-		PracticeHomePage practiceHome = practiceLogin.login(propertyLoaderObj.getProperty("doctorLoginPractice2"),
-				propertyLoaderObj.getProperty("doctorPasswordPractice2"));
+		PracticeHomePage practiceHome = practiceLogin.login(propertyLoaderObj.getProperty("doctor.login.practice2"),
+				propertyLoaderObj.getProperty("doctor.password.practice2"));
 		logStep("Click on Search");
 		PatientSearchPage patientSearchPage = practiceHome.clickPatientSearchLink();
 		log("Search for Patient");
@@ -555,8 +555,8 @@ public class NGIntegrationE2EEnterpriseEnrollmentTests extends BaseTestNGWebDriv
 				personId);
 
 		PatientEnrollment.enrollPatientWithoutGetProcessingStatusValidation(propertyLoaderObj, enterprisebaseURL,
-				ngAPIUtils, driver, createPatient, personId, propertyLoaderObj.getProperty("practiceName1"),
-				propertyLoaderObj.getProperty("integrationPracticeIDE1P1"),
+				ngAPIUtils, driver, createPatient, personId, propertyLoaderObj.getProperty("practice.name1"),
+				propertyLoaderObj.getProperty("integration.practice.id.e1.p1"),
 				propertyLoaderObj.getNGEnterpiseEnrollmentE1(), propertyLoaderObj.getNGEnterpiseEnrollmentE1P1());
 
 		Thread.sleep(80000);
@@ -577,8 +577,8 @@ public class NGIntegrationE2EEnterpriseEnrollmentTests extends BaseTestNGWebDriv
 
 		logStep("Login to Practice Portal");
 		PracticeLoginPage practiceLogin = new PracticeLoginPage(driver, propertyLoaderObj.getPortalUrl());
-		PracticeHomePage practiceHome = practiceLogin.login(propertyLoaderObj.getProperty("doctorLoginPractice2"),
-				propertyLoaderObj.getProperty("doctorPasswordPractice2"));
+		PracticeHomePage practiceHome = practiceLogin.login(propertyLoaderObj.getProperty("doctor.login.practice2"),
+				propertyLoaderObj.getProperty("doctor.password.practice2"));
 		log("Step Begins: Click on Search");
 		PatientSearchPage patientSearchPage = practiceHome.clickPatientSearchLink();
 		log("Step Begins: Search for Patient");
@@ -612,8 +612,8 @@ public class NGIntegrationE2EEnterpriseEnrollmentTests extends BaseTestNGWebDriv
 				personId);
 
 		PatientEnrollment.enrollPatientWithoutGetProcessingStatusValidation(propertyLoaderObj, enterprisebaseURL,
-				ngAPIUtils, driver, createPatient, personId, propertyLoaderObj.getProperty("practiceName1"),
-				propertyLoaderObj.getProperty("integrationPracticeIDE1P1"),
+				ngAPIUtils, driver, createPatient, personId, propertyLoaderObj.getProperty("practice.name1"),
+				propertyLoaderObj.getProperty("integration.practice.id.e1.p1"),
 				propertyLoaderObj.getNGEnterpiseEnrollmentE1(), propertyLoaderObj.getNGEnterpiseEnrollmentE1P1());
 
 		NGAPIUtils.updateLoginDefaultTo("EnterpriseGateway", propertyLoaderObj.getNGEnterpiseEnrollmentE1(),
@@ -697,8 +697,8 @@ public class NGIntegrationE2EEnterpriseEnrollmentTests extends BaseTestNGWebDriv
 				personId);
 
 		PatientEnrollment.enrollPatientWithoutGetProcessingStatusValidation(propertyLoaderObj, enterprisebaseURL,
-				ngAPIUtils, driver, createPatient, personId, propertyLoaderObj.getProperty("practiceName1"),
-				propertyLoaderObj.getProperty("integrationPracticeIDE1P1"),
+				ngAPIUtils, driver, createPatient, personId, propertyLoaderObj.getProperty("practice.name1"),
+				propertyLoaderObj.getProperty("integration.practice.id.e1.p1"),
 				propertyLoaderObj.getNGEnterpiseEnrollmentE1(), propertyLoaderObj.getNGEnterpiseEnrollmentE1P1());
 
 		logStep("Create the chart in Enterprise 1 practice 2");
@@ -716,8 +716,8 @@ public class NGIntegrationE2EEnterpriseEnrollmentTests extends BaseTestNGWebDriv
 				trustedperson_id);
 
 		PatientEnrollment.enrollPatientWithoutGetProcessingStatusValidation(propertyLoaderObj, enterprisebaseURL,
-				ngAPIUtils, driver, trustedPatient, trustedperson_id, propertyLoaderObj.getProperty("practiceName2"),
-				propertyLoaderObj.getProperty("integrationPracticeIDE1P2"),
+				ngAPIUtils, driver, trustedPatient, trustedperson_id, propertyLoaderObj.getProperty("practice.name2"),
+				propertyLoaderObj.getProperty("integration.practice.id.e1.p2"),
 				propertyLoaderObj.getNGEnterpiseEnrollmentE1(), propertyLoaderObj.getNGEnterpiseEnrollmentE1P2());
 
 		logStep("Waiting for welcome mail at patient inbox from practice 2");
@@ -750,7 +750,7 @@ public class NGIntegrationE2EEnterpriseEnrollmentTests extends BaseTestNGWebDriv
 		JalapenoHomePage homePage = loginPage.login(createPatient.getEmailAddress(), propertyLoaderObj.getPassword());
 
 		logStep("Switching to Second Practice to verify auto enrollment");
-		homePage.switchToPractice(propertyLoaderObj.getProperty("practiceName2"));
+		homePage.switchToPractice(propertyLoaderObj.getProperty("practice.name2"));
 
 		Thread.sleep(20000);
 		JalapenoAccountPage accountPage = homePage.clickOnAccount();
@@ -807,7 +807,7 @@ public class NGIntegrationE2EEnterpriseEnrollmentTests extends BaseTestNGWebDriv
 
 		PatientEnrollment.enrollPatientWithoutGetProcessingStatusValidation(propertyLoaderObj, enterprisebaseURL,
 				ngAPIUtils, driver, createPatient, personId, propertyLoaderObj.getProperty("practiceName5"),
-				propertyLoaderObj.getProperty("integrationPracticeIDE1P5"),
+				propertyLoaderObj.getProperty("integration.practice.id.e1.p5"),
 				propertyLoaderObj.getNGEnterpiseEnrollmentE1(), propertyLoaderObj.getNGEnterpiseEnrollmentE1P5());
 
 		NGAPIUtils.updateLoginDefaultTo("EnterpriseGateway", propertyLoaderObj.getNGEnterpiseEnrollmentE1(),
@@ -822,7 +822,7 @@ public class NGIntegrationE2EEnterpriseEnrollmentTests extends BaseTestNGWebDriv
 
 		PatientEnrollment.enrollPatientWithoutGetProcessingStatusValidation(propertyLoaderObj, enterprisebaseURL,
 				ngAPIUtils, driver, trustedPatient, trustedperson_id, propertyLoaderObj.getProperty("practiceName4"),
-				propertyLoaderObj.getProperty("integrationPracticeIDE1P4"),
+				propertyLoaderObj.getProperty("integration.practice.id.e1.p4"),
 				propertyLoaderObj.getNGEnterpiseEnrollmentE1(), propertyLoaderObj.getNGEnterpiseEnrollmentE1P4());
 
 		logStep("Waiting for welcome mail at patient inbox from practice 5");
@@ -913,8 +913,8 @@ public class NGIntegrationE2EEnterpriseEnrollmentTests extends BaseTestNGWebDriv
 				personId);
 
 		PatientEnrollment.enrollPatientWithoutGetProcessingStatusValidation(propertyLoaderObj, enterprisebaseURL,
-				ngAPIUtils, driver, createPatient, personId, propertyLoaderObj.getProperty("practiceName1"),
-				propertyLoaderObj.getProperty("integrationPracticeIDE1P1"),
+				ngAPIUtils, driver, createPatient, personId, propertyLoaderObj.getProperty("practice.name1"),
+				propertyLoaderObj.getProperty("integration.practice.id.e1.p1"),
 				propertyLoaderObj.getNGEnterpiseEnrollmentE1(), propertyLoaderObj.getNGEnterpiseEnrollmentE1P1());
 
 		logStep("Create the chart in Enterprise 2 practice 1");
@@ -945,17 +945,17 @@ public class NGIntegrationE2EEnterpriseEnrollmentTests extends BaseTestNGWebDriv
 
 		PatientEnrollment.verifyProcessingStatusto3WithoutValidatingGetProcessingStatusCall(propertyLoaderObj, personId,
 				propertyLoaderObj.getNGEnterpiseEnrollmentE2P1(),
-				propertyLoaderObj.getProperty("integrationPracticeIDE2P1"));
+				propertyLoaderObj.getProperty("integration.practice.id.e2.p1"));
 
 		Mailinator mail = new Mailinator();
 		Thread.sleep(15000);
 		log(createPatient.getEmailAddress() + "   :    " + INVITE_EMAIL_SUBJECT_PATIENT
-				+ propertyLoaderObj.getProperty("E2practiceName1") + "     :   "
+				+ propertyLoaderObj.getProperty("e2.practice.name1") + "     :   "
 				+ JalapenoConstants.NEW_PATIENT_ACTIVATION_MESSAGE_LINK_TEXT);
 		Thread.sleep(60000);
 		logStep("Logging into Mailinator and getting Patient Activation url for first Practice");
 		String activationUrl = mail.getLinkFromEmail(createPatient.getEmailAddress(),
-				INVITE_EMAIL_SUBJECT_PATIENT + propertyLoaderObj.getProperty("E2practiceName1"),
+				INVITE_EMAIL_SUBJECT_PATIENT + propertyLoaderObj.getProperty("e2.practice.name1"),
 				JalapenoConstants.NEW_PATIENT_ACTIVATION_MESSAGE_LINK_TEXT, 80);
 		assertNotNull(activationUrl, "Error: Activation link not found.");
 
@@ -1064,10 +1064,10 @@ public class NGIntegrationE2EEnterpriseEnrollmentTests extends BaseTestNGWebDriv
 
 		PatientEnrollment.verifyProcessingStatusto3WithoutValidatingGetProcessingStatusCall(propertyLoaderObj,
 				person_id.trim(), propertyLoaderObj.getNGEnterpiseEnrollmentE1P1(),
-				propertyLoaderObj.getProperty("integrationPracticeIDE1P1"));
+				propertyLoaderObj.getProperty("integration.practice.id.e1.p1"));
 		PatientEnrollment.verifyProcessingStatusto3WithoutValidatingGetProcessingStatusCall(propertyLoaderObj,
 				dependentperson_id.trim(), propertyLoaderObj.getNGEnterpiseEnrollmentE1P1(),
-				propertyLoaderObj.getProperty("integrationPracticeIDE1P1"));
+				propertyLoaderObj.getProperty("integration.practice.id.e1.p1"));
 
 		logStep("Create the Guardian chart in second practice");
 		NGAPIUtils.updateLoginDefaultTo("EnterpriseGateway", propertyLoaderObj.getNGEnterpiseEnrollmentE1(),
@@ -1095,26 +1095,26 @@ public class NGIntegrationE2EEnterpriseEnrollmentTests extends BaseTestNGWebDriv
 		logStep("Verify the Guardian mail");
 		Thread.sleep(15000);
 		Log4jUtil.log(createPatient.getEmailAddress() + "   :    " + INVITE_EMAIL_SUBJECT_PATIENT
-				+ propertyLoaderObj.getProperty("practiceName1") + "     :   "
+				+ propertyLoaderObj.getProperty("practice.name1") + "     :   "
 				+ JalapenoConstants.NEW_PATIENT_ACTIVATION_MESSAGE_LINK_TEXT);
 		Thread.sleep(60000);
 		String activationGuardianUrl = mail.getLinkFromEmail(createPatient.getEmailAddress(),
-				INVITE_EMAIL_SUBJECT_PATIENT + propertyLoaderObj.getProperty("practiceName1"),
+				INVITE_EMAIL_SUBJECT_PATIENT + propertyLoaderObj.getProperty("practice.name1"),
 				JalapenoConstants.NEW_PATIENT_ACTIVATION_MESSAGE_LINK_TEXT, 80);
 		assertNotNull(activationGuardianUrl, "Error: No Registeration email found with specified subject: "
-				+ INVITE_EMAIL_SUBJECT_PATIENT + propertyLoaderObj.getProperty("practiceName1"));
+				+ INVITE_EMAIL_SUBJECT_PATIENT + propertyLoaderObj.getProperty("practice.name1"));
 		log("Step End: Guradian mail is received");
 
 		logStep("Verify the dependent mail");
 		Log4jUtil.log(createdependent.getEmailAddress() + "   :    " + NEWDEPENDENT_ACTIVATION_MESSAGE
-				+ propertyLoaderObj.getProperty("practiceName1") + "     :   "
+				+ propertyLoaderObj.getProperty("practice.name1") + "     :   "
 				+ JalapenoConstants.NEW_PATIENT_ACTIVATION_MESSAGE_LINK_TEXT);
 		Thread.sleep(60000);
 		String activationDependentUrl = mail.getLinkFromEmail(createdependent.getEmailAddress(),
-				NEWDEPENDENT_ACTIVATION_MESSAGE + propertyLoaderObj.getProperty("practiceName1"),
+				NEWDEPENDENT_ACTIVATION_MESSAGE + propertyLoaderObj.getProperty("practice.name1"),
 				JalapenoConstants.NEW_PATIENT_ACTIVATION_MESSAGE_LINK_TEXT, 80);
 		assertNotNull(activationDependentUrl, "Error: No Registeration email found with specified subject: "
-				+ NEWDEPENDENT_ACTIVATION_MESSAGE + propertyLoaderObj.getProperty("practiceName1"));
+				+ NEWDEPENDENT_ACTIVATION_MESSAGE + propertyLoaderObj.getProperty("practice.name1"));
 		log("Step End: Dependent mail is received");
 
 		logStep("Enroll the Guardian to MedFusion Portal : step 1 - verifying identity");
@@ -1157,20 +1157,16 @@ public class NGIntegrationE2EEnterpriseEnrollmentTests extends BaseTestNGWebDriv
 
 		assertTrue(portalUrlLink.length() > 0, "Error: No matching link found in patient welcome email!");
 
-		JalapenoLoginEnrollment loginPage = new JalapenoLoginEnrollment(driver, portalUrlLink);
+		JalapenoLoginEnrollment loginPage = new JalapenoLoginEnrollment(driver, propertyLoaderObj.getProperty("mf.portal.url.practice2"));
 		JalapenoHomePage homePage = loginPage.login(createPatient.getEmailAddress(), propertyLoaderObj.getPassword());
 
 		logStep("Switching to Second Practice to verify auto enrollment");
-		homePage.switchToPractice(propertyLoaderObj.getProperty("practiceName1"));
+		homePage.switchToPractice(propertyLoaderObj.getProperty("practice.name1"));
 		Thread.sleep(40000);
 		assertTrue(homePage.assessFamilyAccountElements(true));
 
 		logStep("Switching to dependent account to verify auto enrollment");
 		homePage.faChangePatient();
-		Thread.sleep(10000);
-		homePage.switchToPractice(propertyLoaderObj.getProperty("practiceName1"));
-		Thread.sleep(40000);
-		assertTrue(homePage.assessFamilyAccountElements(true));
 		logStep("Auto Enrolment of Guardian and Dependent to Second and third Practice is completed");
 
 		PatientEnrollment.verifyPatientEnrollmentStatus(enterprisebaseURL, ngAPIUtils, person_id,
@@ -1274,10 +1270,6 @@ public class NGIntegrationE2EEnterpriseEnrollmentTests extends BaseTestNGWebDriv
 				propertyLoaderObj.getSecretQuestion(), propertyLoaderObj.getSecretAnswer(),
 				propertyLoaderObj.getPhoneNumber());
 
-		logStep("Detecting if Home Page is opened");
-		Thread.sleep(2000);
-		assertTrue(jalapenoHomePage.isHomeButtonPresent(driver));
-
 		logStep("Logout from Portal");
 		Thread.sleep(9000);
 		NGLoginPage loginPage = jalapenoHomePage.LogoutfromNGMFPortal();
@@ -1334,7 +1326,7 @@ public class NGIntegrationE2EEnterpriseEnrollmentTests extends BaseTestNGWebDriv
 		JalapenoHomePage homePage = loginPage.login(createdependent.getEmailAddress(), propertyLoaderObj.getPassword());
 
 		logStep("Switching to Second Practice to verify auto enrollment");
-		homePage.switchToPractice(propertyLoaderObj.getProperty("practiceName1"));
+		homePage.switchToPractice(propertyLoaderObj.getProperty("practice.name1"));
 		log("Auto Enrolment of Dependent to Second Practice is completed");
 
 		PatientEnrollment.verifyPatientEnrollmentStatus(enterprisebaseURL, ngAPIUtils, dependentperson_id,

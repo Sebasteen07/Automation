@@ -1,6 +1,11 @@
 // Copyright 2013-2021 NXGN Management, LLC. All Rights Reserved.
 package com.medfusion.product.object.maps.patientportal2.page.AskAStaff;
 
+import java.awt.AWTException;
+import java.awt.Robot;
+import java.awt.Toolkit;
+import java.awt.datatransfer.StringSelection;
+import java.awt.event.KeyEvent;
 import java.text.DecimalFormat;
 import java.time.LocalDate;
 import java.time.Month;
@@ -40,6 +45,8 @@ public class JalapenoAskAStaffPage extends JalapenoMenu {
 	@FindBy(how = How.ID, using = "question")
 	private WebElement question;
 
+	@FindBy(how = How.XPATH, using = "//*[@class='attachments']/button")
+	private WebElement addAttachment;
 	// Credit card
 
 	@FindBy(how = How.XPATH, using = "//a[contains(@Class,'creditCardEditButton')]")
@@ -66,9 +73,14 @@ public class JalapenoAskAStaffPage extends JalapenoMenu {
 	private WebElement cvv;
 	@FindBy(how = How.ID, using = "removeCardOkButton")
 	private WebElement removeCardOkButton;
+    @FindBy(how = How.XPATH, using = "//*[@class='notification-message']")
+	private WebElement successMessage;
+    @FindBy(how=How.XPATH, using = "//*[@class=\"attachmentName\"]")
+	private WebElement attachmentNameText;
 
 	private long createdTS;
-
+	private static final String filePath = System.getProperty("user.dir")
+			+ "\\src\\test\\resources\\testfiles\\VACCINATION REGISTRATION AND CONSENT FORM.PDF";
 	public JalapenoAskAStaffPage(WebDriver driver) {
 		super(driver);
 		IHGUtil.PrintMethodName();
@@ -155,13 +167,14 @@ public class JalapenoAskAStaffPage extends JalapenoMenu {
 		return PageFactory.initElements(driver, JalapenoHomePage.class);
 	}
 
-	public boolean fillAndSubmitAskyourDocUnpaid(WebDriver driver) throws InterruptedException {
+	public String fillAndSubmitAskyourDocUnpaid(WebDriver driver) throws InterruptedException {
 		IHGUtil.PrintMethodName();
 
 		log("Fill message and continue");
 		IHGUtil.waitForElement(driver, 10, subject);
 		subject.sendKeys("Ola! " + this.getCreatedTimeStamp());
 		question.sendKeys("Ola Doc! Please help meh.");
+		String attachmentName = uploadFile(filePath);
 		Thread.sleep(3000);
 		JavascriptExecutor jse = (JavascriptExecutor) driver;
 		jse.executeScript("window.scrollBy(0,400)");
@@ -169,8 +182,44 @@ public class JalapenoAskAStaffPage extends JalapenoMenu {
 		continueButton.click();
 		IHGUtil.waitForElement(driver, 2, continueButton);
 		continueButton.click();
-		new WebDriverWait(driver, 20)
-				.until(ExpectedConditions.visibilityOfElementLocated(By.xpath("//*[contains(text(), 'Thank you for submitting your question')]")));
-		return true;
+		IHGUtil.waitForElement(driver, 5, successMessage);
+
+		//new WebDriverWait(driver, 20).until(ExpectedConditions.visibilityOfElementLocated(By.xpath("//*[contains(text(), 'Thank you for submitting your question')]")));
+		return attachmentName;
 	}
+	
+	public void setClipboardData(String path) {
+		IHGUtil.PrintMethodName();
+		// StringSelection is a class that can be used for copy and paste operations.
+		StringSelection stringSelection = new StringSelection(path);
+		Toolkit.getDefaultToolkit().getSystemClipboard().setContents(stringSelection, null);
+	}
+	
+	public String uploadFile(String correctfilePath) {
+		IHGUtil.PrintMethodName();
+		setClipboardData(correctfilePath);
+		addAttachment.click();
+		Robot robot = null;
+
+		try {
+			robot = new Robot();
+		} catch (AWTException e) {
+			e.printStackTrace();
+		}
+		robot.delay(8000);
+		robot.keyPress(KeyEvent.VK_ENTER);
+		robot.keyRelease(KeyEvent.VK_ENTER);
+		robot.keyPress(KeyEvent.VK_CONTROL);
+		robot.keyPress(KeyEvent.VK_V);
+		robot.keyRelease(KeyEvent.VK_V);
+		robot.keyRelease(KeyEvent.VK_CONTROL);
+		robot.keyPress(KeyEvent.VK_ENTER);
+		robot.delay(1500);
+		robot.keyRelease(KeyEvent.VK_ENTER);
+		IHGUtil.waitForElement(driver, 5, attachmentNameText);
+		String attachmentName = attachmentNameText.getText();
+		
+		return attachmentName;
+	}
+
 }

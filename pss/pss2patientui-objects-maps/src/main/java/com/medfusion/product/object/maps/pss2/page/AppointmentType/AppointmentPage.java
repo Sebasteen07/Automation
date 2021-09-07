@@ -15,6 +15,7 @@ import com.medfusion.product.object.maps.pss2.page.Appointment.DateTime.Appointm
 import com.medfusion.product.object.maps.pss2.page.Appointment.Location.Location;
 import com.medfusion.product.object.maps.pss2.page.Appointment.Main.PSS2MainPage;
 import com.medfusion.product.object.maps.pss2.page.Appointment.Provider.Provider;
+import com.medfusion.product.object.maps.pss2.page.util.CommonMethods;
 
 public class AppointmentPage extends PSS2MainPage {
 
@@ -30,10 +31,18 @@ public class AppointmentPage extends PSS2MainPage {
 
 	@FindAll({@FindBy(xpath = "//div//button[@class='btn appointmentType-btn handle-text-Overflow outer-div']")})
 	private List<WebElement> appointmentTypeList;
+	
+	@FindBy(how = How.XPATH, using = "//body/div[@id='root']/div/div/div[@class='container']/div/div[@id='appointtypewizarddatalist']/div[3]/div[1]/div[2]/div[1]/div[1]/div[2]")
+	private WebElement preventApptSchedPopUp;
+	
+	@FindBy(how = How.XPATH, using = "//div[contains(text(),'The practice does not allow this appointment to be scheduled within')]")
+	private WebElement preventApptSchedPopUpMsg;
 
 	public AppointmentPage(WebDriver driver) {
 		super(driver);
 	}
+	
+	CommonMethods commonMethods= new CommonMethods(driver);
 
 	public AppointmentDateTime selectTypeOfAppointment(String appointmentType, Boolean isPopUpSelected) {
 		searchAppointment.sendKeys(appointmentType);
@@ -56,6 +65,22 @@ public class AppointmentPage extends PSS2MainPage {
 		log("no matching appointment found ");
 		return PageFactory.initElements(driver, AppointmentDateTime.class);
 	}
+	
+	public String preventAppointmentTypeMsg(String appointmentType) throws InterruptedException {
+		log("appointmentTypeList " + appointmentTypeList.size());
+		String preventSchMsg = null;
+		for (int i = 0; i < appointmentTypeList.size(); i++) {
+
+			if (appointmentTypeList.get(i).getText().contains(appointmentType)) {
+				appointmentTypeList.get(i).click();
+				commonMethods.highlightElement(preventApptSchedPopUp);
+				IHGUtil.waitForElement(driver, 60, preventApptSchedPopUpMsg);
+				preventSchMsg =preventApptSchedPopUpMsg.getText();
+				log("Actual Prevent Scheduling Error Message- "+preventSchMsg);
+			}
+		}
+		return preventSchMsg;
+	}
 
 	public Provider selectTypeOfProvider(String providerConfig, Boolean isPopUpSelected) {
 		log("appointmentTypeList " + appointmentTypeList.size());
@@ -68,6 +93,19 @@ public class AppointmentPage extends PSS2MainPage {
 		}
 		log("no matching appointment found ");
 		return PageFactory.initElements(driver, Provider.class);
+	}
+	
+	public AppointmentDateTime selectAptTyper(String providerConfig, Boolean isPopUpSelected) {
+		log("appointmentTypeList " + appointmentTypeList.size());
+		for (int i = 0; i < appointmentTypeList.size(); i++) {
+			if (appointmentTypeList.get(i).getText().contains(providerConfig)) {
+				appointmentTypeList.get(i).click();
+				selectNextStep(isPopUpSelected);
+				return PageFactory.initElements(driver, AppointmentDateTime.class);
+			}
+		}
+		log("no matching appointment found ");
+		return PageFactory.initElements(driver, AppointmentDateTime.class);
 	}
 
 	public Location selectTypeOfLocation(String locationConfig, Boolean isPopUpSelected) {

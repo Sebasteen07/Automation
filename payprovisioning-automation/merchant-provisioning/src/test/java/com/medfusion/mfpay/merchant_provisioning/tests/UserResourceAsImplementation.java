@@ -26,16 +26,16 @@ public class UserResourceAsImplementation extends BaseRest {
 	@Test
 	 public void getMerchantUsersAsImplementation() throws Exception, IOException { 
 		UsersDetails usersdetails = new UsersDetails();
-		String getusers = ProvisioningUtils.getUsers+testData.getProperty("staticMerchant")+"/users";
+		String getusers = ProvisioningUtils.getUsers+testData.getProperty("static.merchant")+"/users";
 		
 		//Get users for a merchant GET
 		usersdetails.getUsers(getusers);
 		
 		//Set roles for Merchant user POST
-		usersdetails.createStaffUser(getusers,(testData.getProperty("staffusername")),(testData.getProperty("practicestaffid")));
+		usersdetails.createStaffUser(getusers,(testData.getProperty("staff.username")),(testData.getProperty("practice.staffid")));
 		
 		//Get roles for user GET
-		usersdetails.getRolesForUser(getusers,(testData.getProperty("staffusername")),(testData.getProperty("practicestaffid")));
+		usersdetails.getRolesForUser(getusers,(testData.getProperty("staff.username")),(testData.getProperty("practice.staffid")));
 		
 		
 			

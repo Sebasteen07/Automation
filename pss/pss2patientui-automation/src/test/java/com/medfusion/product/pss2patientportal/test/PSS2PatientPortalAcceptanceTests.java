@@ -1,8 +1,16 @@
 // Copyright 2013-2021 NXGN Management, LLC. All Rights Reserved.
 package com.medfusion.product.pss2patientportal.test;
 
+import static org.testng.Assert.assertEquals;
+import static org.testng.Assert.assertNotEquals;
+import static org.testng.Assert.assertTrue;
+
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
-import static org.testng.Assert.*;
+import java.util.Calendar;
+import java.util.Date;
+
 import org.testng.annotations.DataProvider;
 import org.testng.annotations.Parameters;
 import org.testng.annotations.Test;
@@ -620,7 +628,7 @@ public class PSS2PatientPortalAcceptanceTests extends BaseTestNGWebDriver {
 
 	@Test(enabled = true, groups = { "AcceptanceTests" }, retryAnalyzer = RetryAnalyzer.class)
 	public void testE2ELoginlessForExistingPatientGE() throws Exception {
-
+		
 		log("E2E test to verify loginless appointment for a Existing patient for GE");
 		log("Test To View if configuration change from Admin is reflected in PSS patient portal");
 		PSSPropertyFileLoader propertyData = new PSSPropertyFileLoader();
@@ -1114,8 +1122,8 @@ public class PSS2PatientPortalAcceptanceTests extends BaseTestNGWebDriver {
 		Appointment testData = new Appointment();
 		AdminUser adminUser = new AdminUser();
 
-		propertyData.setAdminNG(adminUser);
-		propertyData.setAppointmentResponseNG(testData);
+		propertyData.setAdminAT(adminUser);
+		propertyData.setAppointmentResponseAT(testData);
 		testData.setLastQuestionOptional(true);
 
 		PSSPatientUtils psspatientutils = new PSSPatientUtils();
@@ -1912,7 +1920,7 @@ public class PSS2PatientPortalAcceptanceTests extends BaseTestNGWebDriver {
 
 		log("Step 8: Fetch the Cancel/Reschedule link from email");
 		Mailinator mail = new Mailinator();
-		String subject = testData.getEmaiSubject();
+		String subject = testData.getEmailSubject();
 		String messageLink = "Reschedule or cancel";
 		String CancelReschedulelink = mail.getLinkFromEmail(testData.getGmailUserName(), subject, messageLink, 5);
 
@@ -1987,7 +1995,7 @@ public class PSS2PatientPortalAcceptanceTests extends BaseTestNGWebDriver {
 
 		log("Step 8: Fetch the Cancel/Reschedule link from email");
 		Mailinator mail = new Mailinator();
-		String subject = testData.getEmaiSubject();
+		String subject = testData.getEmailSubject();
 		String messageLink = "Reschedule or cancel";
 		String CancelReschedulelink = mail.getLinkFromEmail(testData.getGmailUserName(), subject, messageLink, 5);
 
@@ -2080,7 +2088,7 @@ public class PSS2PatientPortalAcceptanceTests extends BaseTestNGWebDriver {
 
 		log("Step 8: Fetch the Cancel/Reschedule link from email");
 		Mailinator mail = new Mailinator();
-		String subject = testData.getEmaiSubject();
+		String subject = testData.getEmailSubject();
 		String messageLink = "Reschedule or cancel";
 		String CancelReschedulelink = mail.getLinkFromEmail(testData.getGmailUserName(), subject, messageLink, 5);
 
@@ -2150,30 +2158,11 @@ public class PSS2PatientPortalAcceptanceTests extends BaseTestNGWebDriver {
 		boolean can1 = testData.isShowCancellationRescheduleReason();
 		boolean can2 = testData.isShowCancellationReasonPM();
 
-		String rule = adminuser.getRule();
-
-		log("rule set in admin = " + rule);
-		rule = rule.replaceAll(" ", "");
-
-		log("Step 4: Login to PSS Appointment");
-		DismissPage dismissPage = new DismissPage(driver, testData.getUrlLoginLess());
-		Thread.sleep(2000);
-
-		log("Step 5: LoginlessPatientInformation****");
-		log("Clicked on Dismiss");
-		LoginlessPatientInformation loginlessPatientInformation = dismissPage.clickDismiss();
-
-		Thread.sleep(1000);
-
-		HomePage homepage = loginlessPatientInformation.fillNewPatientForm(testData.getFirstName(),
-				testData.getLastName(), testData.getDob(), testData.getEmail(), testData.getGender(),
-				testData.getZipCode(), testData.getPrimaryNumber());
-
-		homepage.patientLogout(driver);
+		HomePage homepage;
 
 		log("Step 8: Fetch the Cancel/Reschedule link from email");
 		Mailinator mail = new Mailinator();
-		String subject = testData.getEmaiSubject();
+		String subject = testData.getEmailSubject();
 		String messageLink = "Reschedule or cancel";
 		String CancelReschedulelink = mail.getLinkFromEmail(testData.getGmailUserName(), subject, messageLink, 5);
 
@@ -2898,7 +2887,7 @@ public class PSS2PatientPortalAcceptanceTests extends BaseTestNGWebDriver {
 
 		log("Step 8: Fetch the Cancel/Reschedule link from email");
 		Mailinator mail = new Mailinator();
-		String subject = testData.getEmaiSubject();
+		String subject = testData.getEmailSubject();
 		String messageLink = "Reschedule or cancel";
 		String CancelReschedulelink = mail.getLinkFromEmail(testData.getGmailUserName(), subject, messageLink, 5);
 
@@ -2973,7 +2962,7 @@ public class PSS2PatientPortalAcceptanceTests extends BaseTestNGWebDriver {
 
 		log("Step 8: Fetch the Cancel/Reschedule link from email");
 		Mailinator mail = new Mailinator();
-		String subject = testData.getEmaiSubject();
+		String subject = testData.getEmailSubject();
 		String messageLink = "Reschedule or cancel";
 		String CancelReschedulelink = mail.getLinkFromEmail(testData.getGmailUserName(), subject, messageLink, 5);
 
@@ -2999,82 +2988,6 @@ public class PSS2PatientPortalAcceptanceTests extends BaseTestNGWebDriver {
 		cancelRescheduleDecisionPage.clickReschedule();
 		psspatientutils.rescheduleAPT(testData, driver);
 
-		psspatientutils.deleteEmail_Mailinator(driver, "https://www.mailinator.com/", testData.getEmail());
-
-	}
-
-	@Test(enabled = true, groups = {
-			"AcceptanceTests" }, retryAnalyzer = RetryAnalyzer.class, dependsOnMethods = "testE2ELoginlessForExistingPatientNG")
-	public void testRescheduleviaEmailNotifiicationNG() throws Exception {
-
-		log("Test to verify if Reschedule an Appointment via Email Notification");
-		log("Step 1: Load test Data from External Property file.");
-		Appointment testData = new Appointment();
-		AdminUser adminuser = new AdminUser();
-		PSSPatientUtils psspatientutils = new PSSPatientUtils();
-		PSSAdminUtils pssadminutils = new PSSAdminUtils();
-
-		AdminAppointment adminAppointment = new AdminAppointment(driver);
-
-		psspatientutils.setTestData("NG", testData, adminuser);
-
-		testData.setFutureApt(true);
-
-		ArrayList<String> adminCancelReasonList = pssadminutils.getCancelRescheduleSettings(driver, adminuser, testData,
-				adminAppointment);
-
-		log("adminCancelReasonList- " + adminCancelReasonList);
-		log("isShowCancellationRescheduleReason --" + testData.isShowCancellationRescheduleReason());
-		log("isShowCancellationReasonPM ---" + testData.isShowCancellationReasonPM());
-
-		String rule = adminuser.getRule();
-
-		log("rule set in admin = " + rule);
-		rule = rule.replaceAll(" ", "");
-
-		log("Step 4: Login to PSS Appointment");
-		DismissPage dismissPage = new DismissPage(driver, testData.getUrlLoginLess());
-		Thread.sleep(2000);
-
-		log("Step 5: LoginlessPatientInformation****");
-		log("Clicked on Dismiss");
-		LoginlessPatientInformation loginlessPatientInformation = dismissPage.clickDismiss();
-
-		Thread.sleep(1000);
-
-		HomePage homepage = loginlessPatientInformation.fillNewPatientForm(testData.getFirstName(),
-				testData.getLastName(), testData.getDob(), testData.getEmail(), testData.getGender(),
-				testData.getZipCode(), testData.getPrimaryNumber());
-
-		homepage.patientLogout(driver);
-
-		log("Step 8: Fetch the Cancel/Reschedule link from email");
-		Mailinator mail = new Mailinator();
-		String subject = testData.getEmaiSubject();
-		String messageLink = "Reschedule or cancel";
-		String CancelReschedulelink = mail.getLinkFromEmail(testData.getGmailUserName(), subject, messageLink, 5);
-
-		log(CancelReschedulelink + " ---This is cancel link");
-
-		PatientIdentificationPage patientIdentificationPage = new PatientIdentificationPage(driver,
-				CancelReschedulelink);
-
-		log("Step 9: Click on Cancel/Reschedule link from email");
-
-		Thread.sleep(1500);
-		if (patientIdentificationPage.isPopUP()) {
-			patientIdentificationPage.popUPClick();
-		}
-
-		log("Step 10: Fill Patient details for Identification");
-		log("First Name- " + testData.getFirstName());
-		log("Last Name- " + testData.getLastName());
-
-		log("Step 11: Verify the appointment details and click on Cancel button");
-		CancelRescheduleDecisionPage cancelRescheduleDecisionPage = patientIdentificationPage
-				.fillPatientForm(testData.getFirstName(), testData.getLastName());
-		cancelRescheduleDecisionPage.clickReschedule();
-		psspatientutils.rescheduleAPT(testData, driver);
 		psspatientutils.deleteEmail_Mailinator(driver, "https://www.mailinator.com/", testData.getEmail());
 
 	}
@@ -3100,7 +3013,7 @@ public class PSS2PatientPortalAcceptanceTests extends BaseTestNGWebDriver {
 
 		log("Step 8: Fetch the Cancel/Reschedule link from email");
 		Mailinator mail = new Mailinator();
-		String subject = testData.getEmaiSubject();
+		String subject = testData.getEmailSubject();
 		String messageLink = "Reschedule or cancel";
 		String CancelReschedulelink = mail.getLinkFromEmail(testData.getGmailUserName(), subject, messageLink, 5);
 
@@ -3427,9 +3340,9 @@ public class PSS2PatientPortalAcceptanceTests extends BaseTestNGWebDriver {
 		log("Step 5: Fetching the rule and insurance.");
 		PatientFlow patientflow = adminappointment.gotoPatientFlowTab();
 		String rule = patientflow.getRule();
-		testData.setIsinsuranceVisible(patientflow.insuracetogglestatus());
+		testData.setInsuranceVisible(patientflow.insuracetogglestatus());
 		log("Insurance Status = " + patientflow.insuracetogglestatus());
-		testData.setIsstartpointPresent(patientflow.isstartpagepresent());
+		testData.setStartPointPresent(patientflow.isstartpagepresent());
 		log("Startpoint  Status = " + patientflow.isstartpagepresent());
 		adminappointment.logout();
 		log("rule set in admin = " + rule);
@@ -3508,9 +3421,9 @@ public class PSS2PatientPortalAcceptanceTests extends BaseTestNGWebDriver {
 		log("Step 5: Fetching the rule and insurance.");
 		PatientFlow patientflow = adminappointment.gotoPatientFlowTab();
 		String rule = patientflow.getRule();
-		testData.setIsinsuranceVisible(patientflow.insuracetogglestatus());
+		testData.setInsuranceVisible(patientflow.insuracetogglestatus());
 		log("Insurance Status = " + patientflow.insuracetogglestatus());
-		testData.setIsstartpointPresent(patientflow.isstartpagepresent());
+		testData.setStartPointPresent(patientflow.isstartpagepresent());
 		log("Startpoint  Status = " + patientflow.isstartpagepresent());
 		adminappointment.logout();
 		log("rule set in admin = " + rule);
@@ -4329,7 +4242,6 @@ public class PSS2PatientPortalAcceptanceTests extends BaseTestNGWebDriver {
 
 	@Test(enabled = true, groups = { "AcceptanceTests" }, retryAnalyzer = RetryAnalyzer.class)
 	public void testAcceptSameDayGW() throws Exception {
-		log("Test To Verify Accept For same day Functionality For GW Partner");
 		PSSPropertyFileLoader propertyData = new PSSPropertyFileLoader();
 		Appointment testData = new Appointment();
 		AdminUser adminuser = new AdminUser();
@@ -4337,58 +4249,43 @@ public class PSS2PatientPortalAcceptanceTests extends BaseTestNGWebDriver {
 		propertyData.setAppointmentResponseGW(testData);
 		PSSPatientUtils psspatientutils = new PSSPatientUtils();
 		PSSAdminUtils adminUtils = new PSSAdminUtils();
-		log("Login to PSS 2.0 Admin portal");
+		logStep("Login to PSS 2.0 Admin portal");
 		adminUtils.acceptforsameDay(driver, adminuser, testData);
 		log("Fetch the rules set in Admin");
 		String rule = adminuser.getRule();
 		log("rule are " + rule);
 		rule = rule.replaceAll(" ", "");
-		JalapenoLoginPage loginPage = new JalapenoLoginPage(driver, testData.getPatientPortalURL());
-		JalapenoHomePage homePage = loginPage.login(testData.getPatientPortalUserName(),
-				testData.getPatientPortalPassword());
-		log("Detecting if Home Page is opened");
-		assertTrue(homePage.isHomeButtonPresent(driver));
-		homePage.clickFeaturedAppointmentsReq();
-		log("Wait for PSS 2.0 Patient UI to be loaded.");
-		Thread.sleep(6000);
-		log("Switching tabs");
-		String currentUrl = psspatientutils.switchtabs(driver);
-		HomePage homepage = new HomePage(driver, currentUrl);
-		Thread.sleep(15000);
-		if (homepage.isPopUP()) {
-			homepage.popUPClick();
-		}
-		Thread.sleep(12000);
-
-		log("Successfully upto Home page");
+		DismissPage dismissPage = new DismissPage(driver, testData.getUrlLoginLess());
+		Thread.sleep(1000);
+		logStep("Clicked on Dismiss");
+		LoginlessPatientInformation loginlessPatientInformation = dismissPage.clickDismiss();
+		HomePage homepage = loginlessPatientInformation.fillNewPatientForm(testData.getFirstName(),
+				testData.getLastName(), testData.getDob(), testData.getEmail(), testData.getGender(),
+				testData.getZipCode(), testData.getPrimaryNumber());
 		homepage.btnStartSchedClick();
 		Location location = null;
 		StartAppointmentInOrder startappointmentInOrder = null;
 		startappointmentInOrder = homepage.skipInsurance(driver);
 		location = startappointmentInOrder.selectFirstLocation(PSSConstants.START_LOCATION);
-		Log4jUtil.log("Step 9: Verfiy Location Page and location =" + testData.getLocation());
+		logStep("Verfiy Location Page and location =" + testData.getLocation());
+
 		AppointmentPage appointment = location.selectAppointment(testData.getLocation());
-		Log4jUtil.log(
-				"Step 10: Verfiy Appointment Page and appointment to be selected = " + testData.getAppointmenttype());
+		logStep("Verfiy Appointment Page and appointment to be selected = " + testData.getAppointmenttype());
 
 		Thread.sleep(20000);
 		Provider provider = appointment.selectTypeOfProvider(testData.getAppointmenttype(),
 				Boolean.valueOf(testData.getIsAppointmentPopup()));
-		Log4jUtil.log("Step 11: Verfiy Provider Page and Provider = " + testData.getProvider());
-		Thread.sleep(3000);
+		logStep("Verfiy Provider Page and Provider = " + testData.getProvider());
 		AppointmentDateTime aptDateTime = provider.getProviderandClick(testData.getProvider());
 		String date = aptDateTime.selectDate(testData.getIsNextDayBooking());
-		log("Selected Date is   " + date);
 		if (testData.isAccepttoggleStatus() == false) {
 			assertEquals(date, psspatientutils.numDate(testData));
 		} else {
 			assertEquals(date, psspatientutils.currentESTDate(testData));
 		}
 	}
-
 	@Test(enabled = true, groups = { "AcceptanceTests" }, retryAnalyzer = RetryAnalyzer.class)
 	public void testAcceptSameDayGE() throws Exception {
-		log("Test To Verify Accept For same day Functionality For GE Partner");
 		PSSPropertyFileLoader propertyData = new PSSPropertyFileLoader();
 		Appointment testData = new Appointment();
 		AdminUser adminuser = new AdminUser();
@@ -4396,45 +4293,33 @@ public class PSS2PatientPortalAcceptanceTests extends BaseTestNGWebDriver {
 		propertyData.setAppointmentResponseGE(testData);
 		PSSPatientUtils psspatientutils = new PSSPatientUtils();
 		PSSAdminUtils adminUtils = new PSSAdminUtils();
-		log("Login to PSS 2.0 Admin portal");
+		logStep("Login to PSS 2.0 Admin portal");
 		adminUtils.acceptforsameDay(driver, adminuser, testData);
 		log("Fetch the rules set in Admin");
 		String rule = adminuser.getRule();
 		log("rule are " + rule);
 		rule = rule.replaceAll(" ", "");
-		JalapenoLoginPage loginPage = new JalapenoLoginPage(driver, testData.getPatientPortalURL());
-		JalapenoHomePage homePage = loginPage.login(testData.getPatientPortalUserName(),
-				testData.getPatientPortalPassword());
-		log("Detecting if Home Page is opened");
-		assertTrue(homePage.isHomeButtonPresent(driver));
-		homePage.clickFeaturedAppointmentsReq();
-		log("Wait for PSS 2.0 Patient UI to be loaded.");
-		Thread.sleep(6000);
-		log("Switching tabs");
-		String currentUrl = psspatientutils.switchtabs(driver);
-		HomePage homepage = new HomePage(driver, currentUrl);
-		Thread.sleep(15000);
-		if (homepage.isPopUP()) {
-			homepage.popUPClick();
-		}
-		Thread.sleep(12000);
-
-		log("Successfully upto Home page");
+		DismissPage dismissPage = new DismissPage(driver, testData.getUrlLoginLess());
+		Thread.sleep(1000);
+		logStep("Clicked on Dismiss");
+		LoginlessPatientInformation loginlessPatientInformation = dismissPage.clickDismiss();
+		HomePage homepage = loginlessPatientInformation.fillNewPatientForm(testData.getFirstName(),
+				testData.getLastName(), testData.getDob(), testData.getEmail(), testData.getGender(),
+				testData.getZipCode(), testData.getPrimaryNumber());
 		homepage.btnStartSchedClick();
 		Location location = null;
 		StartAppointmentInOrder startappointmentInOrder = null;
 		startappointmentInOrder = homepage.skipInsurance(driver);
 		location = startappointmentInOrder.selectFirstLocation(PSSConstants.START_LOCATION);
-		Log4jUtil.log("Step 9: Verfiy Location Page and location =" + testData.getLocation());
+		logStep("Verfiy Location Page and location =" + testData.getLocation());
+
 		AppointmentPage appointment = location.selectAppointment(testData.getLocation());
-		Log4jUtil.log(
-				"Step 10: Verfiy Appointment Page and appointment to be selected = " + testData.getAppointmenttype());
+		logStep("Verfiy Appointment Page and appointment to be selected = " + testData.getAppointmenttype());
 
 		Thread.sleep(20000);
 		Provider provider = appointment.selectTypeOfProvider(testData.getAppointmenttype(),
 				Boolean.valueOf(testData.getIsAppointmentPopup()));
-		Log4jUtil.log("Step 11: Verfiy Provider Page and Provider = " + testData.getProvider());
-		Thread.sleep(3000);
+		logStep("Verfiy Provider Page and Provider = " + testData.getProvider());
 		AppointmentDateTime aptDateTime = provider.getProviderandClick(testData.getProvider());
 		String date = aptDateTime.selectDate(testData.getIsNextDayBooking());
 		if (testData.isAccepttoggleStatus() == false) {
@@ -4446,7 +4331,6 @@ public class PSS2PatientPortalAcceptanceTests extends BaseTestNGWebDriver {
 
 	@Test(enabled = true, groups = { "AcceptanceTests" }, retryAnalyzer = RetryAnalyzer.class)
 	public void testAcceptSameDayAT() throws Exception {
-		log("Test To Verify Accept For same day Functionality For AT Partner");
 		PSSPropertyFileLoader propertyData = new PSSPropertyFileLoader();
 		Appointment testData = new Appointment();
 		AdminUser adminuser = new AdminUser();
@@ -4454,43 +4338,33 @@ public class PSS2PatientPortalAcceptanceTests extends BaseTestNGWebDriver {
 		propertyData.setAppointmentResponseAT(testData);
 		PSSPatientUtils psspatientutils = new PSSPatientUtils();
 		PSSAdminUtils adminUtils = new PSSAdminUtils();
-		log("Login to PSS 2.0 Admin portal");
+		logStep("Login to PSS 2.0 Admin portal");
 		adminUtils.acceptforsameDay(driver, adminuser, testData);
 		log("Fetch the rules set in Admin");
 		String rule = adminuser.getRule();
 		log("rule are " + rule);
 		rule = rule.replaceAll(" ", "");
-		JalapenoLoginPage loginPage = new JalapenoLoginPage(driver, testData.getPatientPortalURL());
-		JalapenoHomePage homePage = loginPage.login(testData.getPatientPortalUserName(),
-				testData.getPatientPortalPassword());
-		log("Detecting if Home Page is opened");
-		assertTrue(homePage.isHomeButtonPresent(driver));
-		homePage.clickFeaturedAppointmentsReq();
-		log("Wait for PSS 2.0 Patient UI to be loaded.");
-		Thread.sleep(6000);
-		log("Switching tabs");
-		String currentUrl = psspatientutils.switchtabs(driver);
-		HomePage homepage = new HomePage(driver, currentUrl);
-		Thread.sleep(15000);
-		if (homepage.isPopUP()) {
-			homepage.popUPClick();
-		}
-		Thread.sleep(12000);
-		log("Successfully upto Home page");
+		DismissPage dismissPage = new DismissPage(driver, testData.getUrlLoginLess());
+		Thread.sleep(1000);
+		logStep("Clicked on Dismiss");
+		LoginlessPatientInformation loginlessPatientInformation = dismissPage.clickDismiss();
+		HomePage homepage = loginlessPatientInformation.fillNewPatientForm(testData.getFirstName(),
+				testData.getLastName(), testData.getDob(), testData.getEmail(), testData.getGender(),
+				testData.getZipCode(), testData.getPrimaryNumber());
 		homepage.btnStartSchedClick();
 		Location location = null;
 		StartAppointmentInOrder startappointmentInOrder = null;
 		startappointmentInOrder = homepage.skipInsurance(driver);
 		location = startappointmentInOrder.selectFirstLocation(PSSConstants.START_LOCATION);
-		Log4jUtil.log("Step 9: Verfiy Location Page and location =" + testData.getLocation());
+		logStep("Verfiy Location Page and location =" + testData.getLocation());
+
 		AppointmentPage appointment = location.selectAppointment(testData.getLocation());
-		Log4jUtil.log(
-				"Step 10: Verfiy Appointment Page and appointment to be selected = " + testData.getAppointmenttype());
+		logStep("Verfiy Appointment Page and appointment to be selected = " + testData.getAppointmenttype());
+
 		Thread.sleep(20000);
 		Provider provider = appointment.selectTypeOfProvider(testData.getAppointmenttype(),
 				Boolean.valueOf(testData.getIsAppointmentPopup()));
-		Log4jUtil.log("Step 11: Verfiy Provider Page and Provider = " + testData.getProvider());
-		Thread.sleep(3000);
+		logStep("Verfiy Provider Page and Provider = " + testData.getProvider());
 		AppointmentDateTime aptDateTime = provider.getProviderandClick(testData.getProvider());
 		String date = aptDateTime.selectDate(testData.getIsNextDayBooking());
 		if (testData.isAccepttoggleStatus() == false) {
@@ -4502,7 +4376,6 @@ public class PSS2PatientPortalAcceptanceTests extends BaseTestNGWebDriver {
 
 	@Test(enabled = true, groups = { "AcceptanceTests" }, retryAnalyzer = RetryAnalyzer.class)
 	public void testAcceptSameDayNG() throws Exception {
-		log("Test To Verify Accept For same day Functionality For NG Partner");
 		PSSPropertyFileLoader propertyData = new PSSPropertyFileLoader();
 		Appointment testData = new Appointment();
 		AdminUser adminuser = new AdminUser();
@@ -4510,29 +4383,16 @@ public class PSS2PatientPortalAcceptanceTests extends BaseTestNGWebDriver {
 		propertyData.setAppointmentResponseNG(testData);
 		PSSPatientUtils psspatientutils = new PSSPatientUtils();
 		PSSAdminUtils adminUtils = new PSSAdminUtils();
-		log("Login to PSS 2.0 Admin portal");
+		logStep("Login to PSS 2.0 Admin portal");
 		adminUtils.acceptforsameDay(driver, adminuser, testData);
 		log("Fetch the rules set in Admin");
 		String rule = adminuser.getRule();
 		log("rule are " + rule);
 		rule = rule.replaceAll(" ", "");
-
 		DismissPage dismissPage = new DismissPage(driver, testData.getUrlLoginLess());
 		Thread.sleep(1000);
-
-		log("Step 5: LoginlessPatientInformation****");
-		log("Clicked on Dismiss");
+		logStep("Clicked on Dismiss");
 		LoginlessPatientInformation loginlessPatientInformation = dismissPage.clickDismiss();
-
-		log("Step 6: Fill Patient criteria");
-		log("First Name- " + testData.getFirstName());
-		log("Last Name- " + testData.getLastName());
-		log("Gender- " + testData.getGender());
-		log("Email- " + testData.getEmail());
-		log("Phone Number- " + testData.getPrimaryNumber());
-		log("Date Of Birth- " + testData.getDob());
-		Thread.sleep(3000);
-
 		HomePage homepage = loginlessPatientInformation.fillNewPatientForm(testData.getFirstName(),
 				testData.getLastName(), testData.getDob(), testData.getEmail(), testData.getGender(),
 				testData.getZipCode(), testData.getPrimaryNumber());
@@ -4541,17 +4401,15 @@ public class PSS2PatientPortalAcceptanceTests extends BaseTestNGWebDriver {
 		StartAppointmentInOrder startappointmentInOrder = null;
 		startappointmentInOrder = homepage.skipInsurance(driver);
 		location = startappointmentInOrder.selectFirstLocation(PSSConstants.START_LOCATION);
-		Log4jUtil.log("Step 9: Verfiy Location Page and location =" + testData.getLocation());
+		logStep("Verfiy Location Page and location =" + testData.getLocation());
 
 		AppointmentPage appointment = location.selectAppointment(testData.getLocation());
-		Log4jUtil.log(
-				"Step 10: Verfiy Appointment Page and appointment to be selected = " + testData.getAppointmenttype());
+		logStep("Verfiy Appointment Page and appointment to be selected = " + testData.getAppointmenttype());
 
 		Thread.sleep(20000);
 		Provider provider = appointment.selectTypeOfProvider(testData.getAppointmenttype(),
 				Boolean.valueOf(testData.getIsAppointmentPopup()));
-		Log4jUtil.log("Step 11: Verfiy Provider Page and Provider = " + testData.getProvider());
-		Thread.sleep(3000);
+		logStep("Verfiy Provider Page and Provider = " + testData.getProvider());
 		AppointmentDateTime aptDateTime = provider.getProviderandClick(testData.getProvider());
 		String date = aptDateTime.selectDate(testData.getIsNextDayBooking());
 		if (testData.isAccepttoggleStatus() == false) {
@@ -4562,37 +4420,216 @@ public class PSS2PatientPortalAcceptanceTests extends BaseTestNGWebDriver {
 	}
 
 	@Test(enabled = true, groups = { "AcceptanceTests" }, retryAnalyzer = RetryAnalyzer.class)
+	public void testPreventSchedFutureNG() throws Exception {
+
+		PSSPropertyFileLoader propertyData = new PSSPropertyFileLoader();
+		Appointment testData = new Appointment();
+		AdminUser adminUser = new AdminUser();
+
+		propertyData.setAdminNG(adminUser);
+		propertyData.setAppointmentResponseNG(testData);
+
+		PSSAdminUtils adminUtils = new PSSAdminUtils();
+
+		logStep("Login to PSS 2.0 Admin portal");
+		adminUtils.preventSchedAptSettings(driver, adminUser, testData, PSSConstants.LOGINLESS);
+
+		logStep("Fetch the rules set in Admin");
+		String rule = adminUser.getRule();
+		log("rule are " + rule);
+		rule = rule.replaceAll(" ", "");
+
+		DismissPage dismissPage = new DismissPage(driver, testData.getUrlLoginLess());
+
+		logStep("Clicked on Dismiss");
+		LoginlessPatientInformation loginlessPatientInformation = dismissPage.clickDismiss();
+
+		logStep("Enter the below mentioned patient details in demographic page- ");
+		log("Demographic Details- " + testData.getFirstName() + " " + testData.getLastName() + " " + testData.getDob()
+				+ " " + testData.getGender() + " " + testData.getEmail() + " " + testData.getPrimaryNumber() + " "
+				+ testData.getZipCode());
+
+		HomePage homePage = loginlessPatientInformation.fillNewPatientForm(testData.getFirstName(),
+				testData.getLastName(), testData.getDob(), testData.getEmail(), testData.getGender(),
+				testData.getZipCode(), testData.getPrimaryNumber());
+
+		homePage.btnStartSchedClick();
+		Location location = null;
+		StartAppointmentInOrder startappointmentInOrder = null;
+		startappointmentInOrder = homePage.skipInsurance(driver);
+
+		location = startappointmentInOrder.selectFirstLocation(PSSConstants.START_LOCATION);
+		Log4jUtil.log("Verfiy Location Page and location =" + testData.getLocation());
+
+		AppointmentPage appointment = location.selectAppointment(testData.getLocation());
+		logStep("Verfiy Appointment Page and appointment to be selected = " + testData.getAppointmenttype());
+
+		String expPrevSchMsg = "The practice does not allow this appointment to be scheduled within "
+				+ testData.getPreSchedDays()
+				+ " days from your last visit for the same appointment type. Please look for a later date or call the practice if the schedule does not allow selecting a later date.";
+		String actPreventSchMsg = appointment.preventAppointmentTypeMsg(testData.getAppointmenttype());
+
+		assertEquals(actPreventSchMsg, expPrevSchMsg,
+				"Prevent Scheduling Error message is not matches with expected message");
+	}
+
+	@Test(enabled = true, groups = { "AcceptanceTests" }, retryAnalyzer = RetryAnalyzer.class)
+	public void testPreventSchedPastNG() throws Exception {
+
+		PSSPropertyFileLoader propertyData = new PSSPropertyFileLoader();
+		Appointment testData = new Appointment();
+		AdminUser adminuser = new AdminUser();
+
+		propertyData.setAdminNG(adminuser);
+		propertyData.setAppointmentResponseNG(testData);
+
+		PSSAdminUtils adminUtils = new PSSAdminUtils();
+
+		logStep("Login to PSS 2.0 Admin portal");
+		adminUtils.preventSchedAptSettings(driver, adminuser, testData, PSSConstants.LOGINLESS);
+
+		logStep("Fetch the rules set in Admin");
+		String rule = adminuser.getRule();
+		log("rule are " + rule);
+		rule = rule.replaceAll(" ", "");
+
+		DismissPage dismissPage = new DismissPage(driver, testData.getUrlLoginLess());
+
+		logStep("Clicked on Dismiss");
+		LoginlessPatientInformation loginlessPatientInformation = dismissPage.clickDismiss();
+
+		logStep("Enter the below mentioned patient details in demographic page- ");
+		log("Demographic Details- " + testData.getFirstName() + " " + testData.getLastName() + " " + testData.getDob()
+				+ " " + testData.getGender() + " " + testData.getEmail() + " " + testData.getPrimaryNumber() + " "
+				+ testData.getZipCode());
+
+		HomePage homePage = loginlessPatientInformation.fillNewPatientForm(testData.getFirstName(),
+				testData.getLastName(), testData.getDob(), testData.getEmail(), testData.getGender(),
+				testData.getZipCode(), testData.getPrimaryNumber());
+
+		logStep("Fetch the Past Appointment Date from home page");
+		String pastAptDate = homePage.fetchPastAptDate();
+
+		SimpleDateFormat formatter2 = new SimpleDateFormat("MMM dd yyyy");
+		Date date1 = formatter2.parse(pastAptDate);
+		Calendar cal = Calendar.getInstance();
+		cal.setTime(date1);
+
+		// manipulate date
+		cal.add(Calendar.DATE, testData.getPreSchedDays());
+		Date dateWithPrevSchedDaysAdded = cal.getTime();
+		logStep("Slot should be visible from this date- " + dateWithPrevSchedDaysAdded);
+
+		DateFormat dateFormat = new SimpleDateFormat("dd");
+		String strDateExp = dateFormat.format(dateWithPrevSchedDaysAdded);
+
+		logStep("Calculated Date in DD format- " + strDateExp);
+
+		homePage.btnStartSchedClick();
+		Location location = null;
+		StartAppointmentInOrder startappointmentInOrder = null;
+		startappointmentInOrder = homePage.skipInsurance(driver);
+		location = startappointmentInOrder.selectFirstLocation(PSSConstants.START_LOCATION);
+		logStep("Verfiy Location Page and location =" + testData.getLocation());
+
+		AppointmentPage appointment = location.selectAppointment(testData.getLocation());
+		logStep("Verfiy Appointment Page and appointment to be selected = " + testData.getAppointmenttype());
+
+		Provider provider = appointment.selectTypeOfProvider(testData.getAppointmenttype(),
+				Boolean.valueOf(testData.getIsAppointmentPopup()));
+
+		logStep("Verfiy Provider Page and Provider = " + testData.getProvider());
+
+		AppointmentDateTime aptDateTime = provider.getProviderandClick(testData.getProvider());
+
+		String actualSlotDate = aptDateTime.selectDate(testData.getIsNextDayBooking());
+		logStep("Expected Available slot- " + strDateExp);
+
+		logStep("Actual Available slot- " + actualSlotDate);
+
+		assertEquals(actualSlotDate, strDateExp,
+				"Prevent Scheduling for Past Appointment Type is not working properly");
+	}
+
+	@Test(enabled = true, groups = { "AcceptanceTests" }, retryAnalyzer = RetryAnalyzer.class)
+	public void testAnnouncement() throws Exception {
+
+		PSSPropertyFileLoader propertyData = new PSSPropertyFileLoader();
+		Appointment testData = new Appointment();
+		AdminUser adminUser = new AdminUser();
+
+		propertyData.setAdminNG(adminUser);
+		propertyData.setAppointmentResponseNG(testData);
+
+		PSSAdminUtils adminUtils = new PSSAdminUtils();
+
+		logStep("Login to PSS 2.0 Admin portal");
+		adminUtils.announcementSettings(driver, adminUser, testData, PSSConstants.LOGINLESS);
+	}
+
+	@Test(enabled = true, groups = { "AcceptanceTests" }, retryAnalyzer = RetryAnalyzer.class)
+	public void testBookAptProviderOFFNG() throws Exception {
+
+		PSSPropertyFileLoader propertyData = new PSSPropertyFileLoader();
+		Appointment testData = new Appointment();
+		AdminUser adminuser = new AdminUser();
+
+		PSSPatientUtils pssPatientUtils = new PSSPatientUtils();
+
+		propertyData.setAdminNG(adminuser);
+		propertyData.setAppointmentResponseNG(testData);
+
+		PSSAdminUtils adminUtils = new PSSAdminUtils();
+
+		logStep("Login to PSS 2.0 Admin portal");
+		adminUtils.providerOffSettings(driver, adminuser, testData, PSSConstants.LOGINLESS);
+
+		logStep("Fetch the rules set in Admin");
+		String rule = adminuser.getRule();
+		log("rule are " + rule);
+		rule = rule.replaceAll(" ", "");
+
+		DismissPage dismissPage = new DismissPage(driver, testData.getUrlLoginLess());
+
+		logStep("Clicked on Dismiss");
+		LoginlessPatientInformation loginlessPatientInformation = dismissPage.clickDismiss();
+
+		logStep("Enter the below mentioned patient details in demographic page- ");
+		log("Demographic Details- " + testData.getFirstName() + " " + testData.getLastName() + " " + testData.getDob()
+				+ " " + testData.getGender() + " " + testData.getEmail() + " " + testData.getPrimaryNumber() + " "
+				+ testData.getZipCode());
+
+		HomePage homePage = loginlessPatientInformation.fillNewPatientForm(testData.getFirstName(),
+				testData.getLastName(), testData.getDob(), testData.getEmail(), testData.getGender(),
+				testData.getZipCode(), testData.getPrimaryNumber());
+
+		logStep("Book an appointment flow started");
+		homePage.btnStartSchedClick();
+		pssPatientUtils.selectAFlow(driver, rule, homePage, testData);
+	}
+
+
+	@Test(enabled = true, groups = { "AcceptanceTests" }, retryAnalyzer = RetryAnalyzer.class)
 	public void testE2ELinkGenerationGW() throws Exception {
-		log("Link Generation with location and Provider for GW");
 		PSSPropertyFileLoader propertyData = new PSSPropertyFileLoader();
 		Appointment testData = new Appointment();
 		AdminUser adminuser = new AdminUser();
 		PSSNewPatient pssNewPatient = new PSSNewPatient();
 		propertyData.setAdminGW(adminuser);
 		propertyData.setAppointmentResponseGW(testData);
-		log("-----Loaded the test data for New Patient----------");
 		pssNewPatient.createPatientDetails(testData);
 		log(testData.getUrlLoginLess());
-		log("Step 2: Fetch rule and settings from PSS 2.0 Admin portal");
+		log(testData.getAppointmenttype());
 		PSSAdminUtils adminUtils = new PSSAdminUtils();
+		logStep("Login to Admin Portal and generate link for location and provider");
 		adminUtils.adminSettingLinkGeneration(driver, adminuser, testData, PSSConstants.LOGINLESS);
 		String rule = adminuser.getRule();
 		rule = rule.replaceAll(" ", "");
-		log("Step 3: Move to PSS patient Portal 2.0 to book an Appointment");
-		log("Step 4: Login to PSS Appointment");
+		logStep("Move to PSS patient Portal 2.0 to book an Appointment");
 		log("Link GEneration link is   " + testData.getUrlLinkGen());
 		DismissPage dismissPage = new DismissPage(driver, testData.getUrlLinkGen());
 		Thread.sleep(1000);
 		LoginlessPatientInformation loginlessPatientInformation = dismissPage.clickDismiss();
-		log("***LoginlessPatientInformation****");
-		log("Clicked on Dismiss");
-		log("Step 6: Fill Patient criteria");
-		log("First Name- " + testData.getFirstName());
-		log("Last Name- " + testData.getLastName());
-		log("Gender- " + testData.getGender());
-		log("Email- " + testData.getEmail());
-		log("Phone Number- " + testData.getPrimaryNumber());
-		log("Date Of Birth- " + testData.getDob());
 		Thread.sleep(3000);
 		Boolean insuranceSelected = adminuser.getIsInsuranceDisplayed();
 		log("insuranceSelected--> " + insuranceSelected);
@@ -4613,54 +4650,38 @@ public class PSS2PatientPortalAcceptanceTests extends BaseTestNGWebDriver {
 					testData.getDob(), testData.getEmail(), testData.getGender(), testData.getZipCode(),
 					testData.getPrimaryNumber());
 		}
-		Log4jUtil.log("Step 8: Select Appointment for appointment.");
+		logStep("Click on Start Scheduling Button");
 		homepage.btnStartSchedClick();
-		AppointmentPage appointment = homepage.skipInsurancepage(driver);
-		Log4jUtil.log("Step 9: Verfiy Appointment Page and appointment =" + testData.getAppointmenttype());
-
-		AppointmentDateTime aptDateTime = appointment.selectAppointmentandClick(testData.getAppointmenttype(),
-				Boolean.valueOf(testData.getIsAppointmentPopup()));
-		aptDateTime.selectDate(testData.getIsNextDayBooking());
-
-		aptDateTime.selectDate(testData.getIsNextDayBooking());
-		Thread.sleep(6000);
-
+		homepage.getLocationText();
+		homepage.getProviderText();
+		logStep("Click on Start Scheduling Button");
+		assertEquals(homepage.getLocationText(), testData.getLocation());
+		assertEquals(homepage.getProviderText(), testData.getLinkProvider());
 		Log4jUtil.log("Test Case Passed");
 	}
 
+
 	@Test(enabled = true, groups = { "AcceptanceTests" }, retryAnalyzer = RetryAnalyzer.class)
 	public void testE2ELinkGenerationGE() throws Exception {
-		log("Link Generation with location and Provider for GE");
 		PSSPropertyFileLoader propertyData = new PSSPropertyFileLoader();
 		Appointment testData = new Appointment();
 		AdminUser adminuser = new AdminUser();
 		PSSNewPatient pssNewPatient = new PSSNewPatient();
 		propertyData.setAdminGE(adminuser);
 		propertyData.setAppointmentResponseGE(testData);
-		log("-----Loaded the test data for New Patient----------");
 		pssNewPatient.createPatientDetails(testData);
 		log(testData.getUrlLoginLess());
 		log(testData.getAppointmenttype());
-		log("Step 2: Fetch rule and settings from PSS 2.0 Admin portal");
 		PSSAdminUtils adminUtils = new PSSAdminUtils();
+		logStep("Login to Admin Portal and generate link for location and provider");
 		adminUtils.adminSettingLinkGeneration(driver, adminuser, testData, PSSConstants.LOGINLESS);
 		String rule = adminuser.getRule();
 		rule = rule.replaceAll(" ", "");
-		log("Step 3: Move to PSS patient Portal 2.0 to book an Appointment");
-		log("Step 4: Login to PSS Appointment");
+		logStep("Move to PSS patient Portal 2.0 to book an Appointment");
 		log("Link GEneration link is   " + testData.getUrlLinkGen());
 		DismissPage dismissPage = new DismissPage(driver, testData.getUrlLinkGen());
 		Thread.sleep(1000);
 		LoginlessPatientInformation loginlessPatientInformation = dismissPage.clickDismiss();
-		log("***LoginlessPatientInformation****");
-		log("Clicked on Dismiss");
-		log("Step 6: Fill Patient criteria");
-		log("First Name- " + testData.getFirstName());
-		log("Last Name- " + testData.getLastName());
-		log("Gender- " + testData.getGender());
-		log("Email- " + testData.getEmail());
-		log("Phone Number- " + testData.getPrimaryNumber());
-		log("Date Of Birth- " + testData.getDob());
 		Thread.sleep(3000);
 		Boolean insuranceSelected = adminuser.getIsInsuranceDisplayed();
 		log("insuranceSelected--> " + insuranceSelected);
@@ -4681,54 +4702,37 @@ public class PSS2PatientPortalAcceptanceTests extends BaseTestNGWebDriver {
 					testData.getDob(), testData.getEmail(), testData.getGender(), testData.getZipCode(),
 					testData.getPrimaryNumber());
 		}
-		Log4jUtil.log("Step 8: Select Appointment for appointment.");
+		logStep("Click on Start Scheduling Button");
 		homepage.btnStartSchedClick();
-		AppointmentPage appointment = homepage.skipInsurancepage(driver);
-		Log4jUtil.log("Step 9: Verfiy Appointment Page and appointment =" + testData.getAppointmenttype());
-
-		AppointmentDateTime aptDateTime = appointment.selectAppointmentandClick(testData.getAppointmenttype(),
-				Boolean.valueOf(testData.getIsAppointmentPopup()));
-		aptDateTime.selectDate(testData.getIsNextDayBooking());
-
-		aptDateTime.selectDate(testData.getIsNextDayBooking());
-		Thread.sleep(6000);
-
+		homepage.getLocationText();
+		homepage.getProviderText();
+		logStep("Click on Start Scheduling Button");
+		assertEquals(homepage.getLocationText(), testData.getLocation());
+		assertEquals(homepage.getProviderText(), testData.getProvider());
 		Log4jUtil.log("Test Case Passed");
 	}
 
 	@Test(enabled = true, groups = { "AcceptanceTests" }, retryAnalyzer = RetryAnalyzer.class)
 	public void testE2ELinkGenerationAT() throws Exception {
-		log("Link Generation with location and Provider for AT");
 		PSSPropertyFileLoader propertyData = new PSSPropertyFileLoader();
 		Appointment testData = new Appointment();
 		AdminUser adminuser = new AdminUser();
 		PSSNewPatient pssNewPatient = new PSSNewPatient();
 		propertyData.setAdminAT(adminuser);
 		propertyData.setAppointmentResponseAT(testData);
-		log("-----Loaded the test data for New Patient----------");
 		pssNewPatient.createPatientDetails(testData);
 		log(testData.getUrlLoginLess());
 		log(testData.getAppointmenttype());
-		log("Step 2: Fetch rule and settings from PSS 2.0 Admin portal");
 		PSSAdminUtils adminUtils = new PSSAdminUtils();
+		logStep("Login to Admin Portal and generate link for location and provider");
 		adminUtils.adminSettingLinkGeneration(driver, adminuser, testData, PSSConstants.LOGINLESS);
 		String rule = adminuser.getRule();
 		rule = rule.replaceAll(" ", "");
-		log("Step 3: Move to PSS patient Portal 2.0 to book an Appointment");
-		log("Step 4: Login to PSS Appointment");
+		logStep("Move to PSS patient Portal 2.0 to book an Appointment");
 		log("Link GEneration link is   " + testData.getUrlLinkGen());
 		DismissPage dismissPage = new DismissPage(driver, testData.getUrlLinkGen());
 		Thread.sleep(1000);
 		LoginlessPatientInformation loginlessPatientInformation = dismissPage.clickDismiss();
-		log("***LoginlessPatientInformation****");
-		log("Clicked on Dismiss");
-		log("Step 6: Fill Patient criteria");
-		log("First Name- " + testData.getFirstName());
-		log("Last Name- " + testData.getLastName());
-		log("Gender- " + testData.getGender());
-		log("Email- " + testData.getEmail());
-		log("Phone Number- " + testData.getPrimaryNumber());
-		log("Date Of Birth- " + testData.getDob());
 		Thread.sleep(3000);
 		Boolean insuranceSelected = adminuser.getIsInsuranceDisplayed();
 		log("insuranceSelected--> " + insuranceSelected);
@@ -4749,54 +4753,36 @@ public class PSS2PatientPortalAcceptanceTests extends BaseTestNGWebDriver {
 					testData.getDob(), testData.getEmail(), testData.getGender(), testData.getZipCode(),
 					testData.getPrimaryNumber());
 		}
-		Log4jUtil.log("Step 8: Select Appointment for appointment.");
+		logStep("Click on Start Scheduling Button");
 		homepage.btnStartSchedClick();
-		AppointmentPage appointment = homepage.skipInsurancepage(driver);
-		Log4jUtil.log("Step 9: Verfiy Appointment Page and appointment =" + testData.getAppointmenttype());
-
-		AppointmentDateTime aptDateTime = appointment.selectAppointmentandClick(testData.getAppointmenttype(),
-				Boolean.valueOf(testData.getIsAppointmentPopup()));
-		aptDateTime.selectDate(testData.getIsNextDayBooking());
-
-		aptDateTime.selectDate(testData.getIsNextDayBooking());
-		Thread.sleep(6000);
-
+		homepage.getLocationText();
+		homepage.getProviderText();
+		logStep("Click on Start Scheduling Button");
+		assertEquals(homepage.getLocationText(), testData.getLocation());
+		assertEquals(homepage.getProviderText(), testData.getLinkProvider());
 		Log4jUtil.log("Test Case Passed");
 	}
-
 	@Test(enabled = true, groups = { "AcceptanceTests" }, retryAnalyzer = RetryAnalyzer.class)
 	public void testE2ELinkGenerationNG() throws Exception {
-		log("Link Generation with location and Provider for NG");
 		PSSPropertyFileLoader propertyData = new PSSPropertyFileLoader();
 		Appointment testData = new Appointment();
 		AdminUser adminuser = new AdminUser();
 		PSSNewPatient pssNewPatient = new PSSNewPatient();
 		propertyData.setAdminNG(adminuser);
 		propertyData.setAppointmentResponseNG(testData);
-		log("-----Loaded the test data for New Patient----------");
 		pssNewPatient.createPatientDetails(testData);
 		log(testData.getUrlLoginLess());
 		log(testData.getAppointmenttype());
-		log("Step 2: Fetch rule and settings from PSS 2.0 Admin portal");
 		PSSAdminUtils adminUtils = new PSSAdminUtils();
+		logStep("Login to Admin Portal and generate link for location and provider");
 		adminUtils.adminSettingLinkGeneration(driver, adminuser, testData, PSSConstants.LOGINLESS);
 		String rule = adminuser.getRule();
 		rule = rule.replaceAll(" ", "");
-		log("Step 3: Move to PSS patient Portal 2.0 to book an Appointment");
-		log("Step 4: Login to PSS Appointment");
+		logStep("Move to PSS patient Portal 2.0 to book an Appointment");
 		log("Link GEneration link is   " + testData.getUrlLinkGen());
 		DismissPage dismissPage = new DismissPage(driver, testData.getUrlLinkGen());
 		Thread.sleep(1000);
 		LoginlessPatientInformation loginlessPatientInformation = dismissPage.clickDismiss();
-		log("***LoginlessPatientInformation****");
-		log("Clicked on Dismiss");
-		log("Step 6: Fill Patient criteria");
-		log("First Name- " + testData.getFirstName());
-		log("Last Name- " + testData.getLastName());
-		log("Gender- " + testData.getGender());
-		log("Email- " + testData.getEmail());
-		log("Phone Number- " + testData.getPrimaryNumber());
-		log("Date Of Birth- " + testData.getDob());
 		Thread.sleep(3000);
 		Boolean insuranceSelected = adminuser.getIsInsuranceDisplayed();
 		log("insuranceSelected--> " + insuranceSelected);
@@ -4817,14 +4803,14 @@ public class PSS2PatientPortalAcceptanceTests extends BaseTestNGWebDriver {
 					testData.getDob(), testData.getEmail(), testData.getGender(), testData.getZipCode(),
 					testData.getPrimaryNumber());
 		}
-		Log4jUtil.log("Step 8: Select Appointment for appointment.");
+		logStep("Click on Start Scheduling Button");
 		homepage.btnStartSchedClick();
-		AppointmentPage appointment = homepage.skipInsurancepage(driver);
-		Log4jUtil.log("Step 9: Verfiy Appointment Page and appointment =" + testData.getAppointmenttype());
-
-		AppointmentDateTime aptDateTime = appointment.selectAppointmentandClick(testData.getAppointmenttype(),
-				Boolean.valueOf(testData.getIsAppointmentPopup()));
-		aptDateTime.selectDate(testData.getIsNextDayBooking());
+		homepage.getLocationText();
+		homepage.getProviderText();
+		logStep("Click on Start Scheduling Button");
+		assertEquals(homepage.getLocationText(), testData.getLocation());
+		assertEquals(homepage.getProviderText(), testData.getLinkProvider());
+		Log4jUtil.log("Test Case Passed");
 	}
 
 	@Test(enabled = true, groups = { "AcceptanceTests" }, retryAnalyzer = RetryAnalyzer.class)
@@ -5406,36 +5392,31 @@ public class PSS2PatientPortalAcceptanceTests extends BaseTestNGWebDriver {
 		Log4jUtil.log("Test Case Passed.....");
 	}
 
-	@Test(enabled = true, dataProvider = "partnerType", groups = {
-			"AcceptanceTests" }, retryAnalyzer = RetryAnalyzer.class)
-	public void testageRulewithSpeciality(String partnerPractice) throws Exception {
-		log(" VeriFy Gender Rule with the Specility for GW PArtner");
-		log("Step 1: Load test Data from External Property file.");
+	@Test(enabled = true, groups = { "AcceptanceTests" }, retryAnalyzer = RetryAnalyzer.class)
+	public void testageRulewithSpecialityGW() throws Exception {
 		PSSPropertyFileLoader propertyData = new PSSPropertyFileLoader();
 		Appointment testData = new Appointment();
 		AdminUser adminuser = new AdminUser();
-		propertyData.setAdminGW(adminuser);
+		propertyData.setAdminAT(adminuser);
 		propertyData.setAppointmentResponseGW(testData);
 		adminuser.setIsExisting(true);
 		PSSPatientUtils psspatientutils = new PSSPatientUtils();
 		PSSAdminUtils pssadminutils = new PSSAdminUtils();
-		psspatientutils.setTestData(partnerPractice, testData, adminuser);
-		log("Step 2:  Move to PSS admin portal and add the Age Rule in Speciality tab");
+		logStep("Login to PSS admin portal and add the Age Rule in Speciality tab");
 		pssadminutils.ageRuleWithSpeciality(driver, adminuser, testData);
 		String rule = adminuser.getRule();
 		rule = rule.replaceAll(" ", "");
 		log("Rule -" + rule);
-		log("Step 3: Move to PSS patient Portal 2.0 to book an Appointment");
-		log("Step 4: Login to PSS Appointment");
+		logStep("Move to PSS patient Portal 2.0 to book an Appointment");
 		DismissPage dismissPage = new DismissPage(driver, testData.getUrlLoginLess());
-		log("Step 5: LoginlessPatientInformation****");
-		log("Clicked on Dismiss");
+		logStep("Clicked on Dismiss");
 		LoginlessPatientInformation loginlessPatientInformation = dismissPage.clickDismiss();
 		HomePage homepage = loginlessPatientInformation.fillNewPatientForm(testData.getFirstName(),
 				testData.getLastName(), testData.getDob(), testData.getEmail(), testData.getGender(),
 				testData.getZipCode(), testData.getPrimaryNumber());
-		log("Successfully upto Home page On The Patient Portal");
+		logStep("Successfully upto Home page On The Patient Portal");
 		homepage.btnStartSchedClick();
+		logStep("Clicked on the start scheduling button");
 		Speciality speciality = null;
 		speciality = homepage.skipInsuranceForSpeciality(driver);
 		int i = Integer.parseInt(testData.getAgeRuleMonthFirst());
@@ -5447,6 +5428,117 @@ public class PSS2PatientPortalAcceptanceTests extends BaseTestNGWebDriver {
 			assertNotEquals(speciality.selectSpeciality1(testData.getSpeciality()), testData.getSpeciality());
 		}
 	}
+
+
+	@Test(enabled = true, groups = { "AcceptanceTests" }, retryAnalyzer = RetryAnalyzer.class)
+	public void testageRulewithSpecialityAT() throws Exception {
+		PSSPropertyFileLoader propertyData = new PSSPropertyFileLoader();
+		Appointment testData = new Appointment();
+		AdminUser adminuser = new AdminUser();
+		propertyData.setAdminAT(adminuser);
+		propertyData.setAppointmentResponseAT(testData);
+		adminuser.setIsExisting(true);
+		PSSPatientUtils psspatientutils = new PSSPatientUtils();
+		PSSAdminUtils pssadminutils = new PSSAdminUtils();
+		logStep("Login to PSS admin portal and add the Age Rule in Speciality tab");
+		pssadminutils.ageRuleWithSpeciality(driver, adminuser, testData);
+		String rule = adminuser.getRule();
+		rule = rule.replaceAll(" ", "");
+		log("Rule -" + rule);
+		logStep("Move to PSS patient Portal 2.0 to book an Appointment");
+		DismissPage dismissPage = new DismissPage(driver, testData.getUrlLoginLess());
+		logStep("Clicked on Dismiss");
+		LoginlessPatientInformation loginlessPatientInformation = dismissPage.clickDismiss();
+		HomePage homepage = loginlessPatientInformation.fillNewPatientForm(testData.getFirstName(),
+				testData.getLastName(), testData.getDob(), testData.getEmail(), testData.getGender(),
+				testData.getZipCode(), testData.getPrimaryNumber());
+		logStep("Successfully upto Home page On The Patient Portal");
+		homepage.btnStartSchedClick();
+		logStep("Clicked on the start scheduling button");
+		Speciality speciality = null;
+		speciality = homepage.skipInsuranceForSpeciality(driver);
+		int i = Integer.parseInt(testData.getAgeRuleMonthFirst());
+		int j = Integer.parseInt(testData.getAgeRuleMonthSecond());
+		if (psspatientutils.ageCurrentmonths(testData) > i && psspatientutils.ageCurrentmonths(testData) < j) {
+			speciality.selectSpeciality1(testData.getSpeciality());
+			assertEquals(speciality.selectSpeciality1(testData.getSpeciality()), testData.getSpeciality());
+		} else {
+			assertNotEquals(speciality.selectSpeciality1(testData.getSpeciality()), testData.getSpeciality());
+		}
+	}
+	@Test(enabled = true, groups = { "AcceptanceTests" }, retryAnalyzer = RetryAnalyzer.class)
+	public void testageRulewithSpecialityGE() throws Exception {
+		PSSPropertyFileLoader propertyData = new PSSPropertyFileLoader();
+		Appointment testData = new Appointment();
+		AdminUser adminuser = new AdminUser();
+		propertyData.setAdminGE(adminuser);
+		propertyData.setAppointmentResponseGE(testData);
+		adminuser.setIsExisting(true);
+		PSSPatientUtils psspatientutils = new PSSPatientUtils();
+		PSSAdminUtils pssadminutils = new PSSAdminUtils();
+		logStep("Login to PSS admin portal and add the Age Rule in Speciality tab");
+		pssadminutils.ageRuleWithSpeciality(driver, adminuser, testData);
+		String rule = adminuser.getRule();
+		rule = rule.replaceAll(" ", "");
+		log("Rule -" + rule);
+		logStep("Move to PSS patient Portal 2.0 to book an Appointment");
+		DismissPage dismissPage = new DismissPage(driver, testData.getUrlLoginLess());
+		logStep("Clicked on Dismiss");
+		LoginlessPatientInformation loginlessPatientInformation = dismissPage.clickDismiss();
+		HomePage homepage = loginlessPatientInformation.fillNewPatientForm(testData.getFirstName(),
+				testData.getLastName(), testData.getDob(), testData.getEmail(), testData.getGender(),
+				testData.getZipCode(), testData.getPrimaryNumber());
+		logStep("Successfully upto Home page On The Patient Portal");
+		homepage.btnStartSchedClick();
+		logStep("Clicked on the start scheduling button");
+		Speciality speciality = null;
+		speciality = homepage.skipInsuranceForSpeciality(driver);
+		int i = Integer.parseInt(testData.getAgeRuleMonthFirst());
+		int j = Integer.parseInt(testData.getAgeRuleMonthSecond());
+		if (psspatientutils.ageCurrentmonths(testData) > i && psspatientutils.ageCurrentmonths(testData) < j) {
+			speciality.selectSpeciality1(testData.getSpeciality());
+			assertEquals(speciality.selectSpeciality1(testData.getSpeciality()), testData.getSpeciality());
+		} else {
+			assertNotEquals(speciality.selectSpeciality1(testData.getSpeciality()), testData.getSpeciality());
+		}
+	}
+	@Test(enabled = true, groups = { "AcceptanceTests" }, retryAnalyzer = RetryAnalyzer.class)
+	public void testageRulewithSpecialityNG() throws Exception {
+		PSSPropertyFileLoader propertyData = new PSSPropertyFileLoader();
+		Appointment testData = new Appointment();
+		AdminUser adminuser = new AdminUser();
+		propertyData.setAdminNG(adminuser);
+		propertyData.setAppointmentResponseNG(testData);
+		adminuser.setIsExisting(true);
+		PSSPatientUtils psspatientutils = new PSSPatientUtils();
+		PSSAdminUtils pssadminutils = new PSSAdminUtils();
+		logStep("Login to PSS admin portal and add the Age Rule in Speciality tab");
+		pssadminutils.ageRuleWithSpeciality(driver, adminuser, testData);
+		String rule = adminuser.getRule();
+		rule = rule.replaceAll(" ", "");
+		log("Rule -" + rule);
+		logStep("Move to PSS patient Portal 2.0 to book an Appointment");
+		DismissPage dismissPage = new DismissPage(driver, testData.getUrlLoginLess());
+		logStep("Clicked on Dismiss");
+		LoginlessPatientInformation loginlessPatientInformation = dismissPage.clickDismiss();
+		HomePage homepage = loginlessPatientInformation.fillNewPatientForm(testData.getFirstName(),
+				testData.getLastName(), testData.getDob(), testData.getEmail(), testData.getGender(),
+				testData.getZipCode(), testData.getPrimaryNumber());
+		logStep("Successfully upto Home page On The Patient Portal");
+		homepage.btnStartSchedClick();
+		logStep("Clicked on the start scheduling button");
+		Speciality speciality = null;
+		speciality = homepage.skipInsuranceForSpeciality(driver);
+		int i = Integer.parseInt(testData.getAgeRuleMonthFirst());
+		int j = Integer.parseInt(testData.getAgeRuleMonthSecond());
+		if (psspatientutils.ageCurrentmonths(testData) > i && psspatientutils.ageCurrentmonths(testData) < j) {
+			speciality.selectSpeciality1(testData.getSpeciality());
+			assertEquals(speciality.selectSpeciality1(testData.getSpeciality()), testData.getSpeciality());
+		} else {
+			assertNotEquals(speciality.selectSpeciality1(testData.getSpeciality()), testData.getSpeciality());
+		}
+	}
+
 
 	@Test(enabled = true, groups = { "AcceptanceTests" }, retryAnalyzer = RetryAnalyzer.class)
 	public void testTimeMarkGW() throws Exception {
@@ -5676,8 +5768,8 @@ public class PSS2PatientPortalAcceptanceTests extends BaseTestNGWebDriver {
 		PSSPatientUtils pssPatientUtils = new PSSPatientUtils();
 
 		logStep("Set the Test Data for AT ADMIN & APPOINTMENT-------");
-		propertyData.setAdminAT(adminUser);
-		propertyData.setAppointmentResponseAT(testData);
+		propertyData.setAdminGE(adminUser);
+		propertyData.setAppointmentResponseGE(testData);
 
 		testData.setFutureApt(true);
 		testData.setInsuranceDetails(true);
@@ -5961,110 +6053,7 @@ public class PSS2PatientPortalAcceptanceTests extends BaseTestNGWebDriver {
 	}
 
 	@Test(enabled = true, groups = { "AcceptanceTests" }, retryAnalyzer = RetryAnalyzer.class)
-	public void testE2ELinkLocationGE() throws Exception {
-		log("Link Generation : Next Available is display with location or Provider GE");
-		PSSPropertyFileLoader propertyData = new PSSPropertyFileLoader();
-		Appointment testData = new Appointment();
-		AdminUser adminUser = new AdminUser();
-		PSSNewPatient pssNewPatient = new PSSNewPatient();
-		propertyData.setAdminGE(adminUser);
-		propertyData.setAppointmentResponseGE(testData);
-		pssNewPatient.createPatientDetails(testData);
-		PSSAdminUtils adminUtils = new PSSAdminUtils();
-		logStep("Login To admin portal and Generate link for Provider");
-		adminUtils.linkGenerationWithLocation(driver, adminUser, testData, PSSConstants.LOGINLESS);
-		log("Location link is " + testData.getLinkLocationURL());
-		logStep("Move to PSS patient Portal 2.0 to book an Appointment");
-		log("link is   " + testData.getLinkLocationURL());
-		DismissPage dismissPage = new DismissPage(driver, testData.getLinkLocationURL());
-		Thread.sleep(1000);
-		LoginlessPatientInformation loginlessPatientInformation = dismissPage.clickDismiss();
-		Thread.sleep(3000);
-		HomePage homePage = loginlessPatientInformation.fillNewPatientForm(testData.getFirstName(),
-				testData.getLastName(), testData.getDob(), testData.getEmail(), testData.getGender(),
-				testData.getZipCode(), testData.getPrimaryNumber());
-		homePage.btnStartSchedClick();
-		AppointmentPage appointment;
-		StartAppointmentInOrder startAppointmentInOrder = null;
-		startAppointmentInOrder = homePage.skipInsurance(driver);
-		appointment = startAppointmentInOrder.selectFirstAppointment(PSSConstants.START_APPOINTMENT);
-		log("Verfiy Appointment Page and appointment =" + testData.getAppointmenttype());
-		appointment.selectTypeOfLocation(testData.getAppointmenttype(),
-				Boolean.valueOf(testData.getIsAppointmentPopup()));
-		log("Verfiy Location Page and location to be selected = " + testData.getLocation());
-	}
-
-	@Test(enabled = true, groups = { "AcceptanceTests" }, retryAnalyzer = RetryAnalyzer.class)
-	public void testE2ELinkLocationGW() throws Exception {
-		log("Link Generation : Next Available is display with location or Provider GW");
-		PSSPropertyFileLoader propertyData = new PSSPropertyFileLoader();
-		Appointment testData = new Appointment();
-		AdminUser adminUser = new AdminUser();
-		PSSNewPatient pssNewPatient = new PSSNewPatient();
-		propertyData.setAdminGW(adminUser);
-		propertyData.setAppointmentResponseGW(testData);
-		pssNewPatient.createPatientDetails(testData);
-		PSSAdminUtils adminUtils = new PSSAdminUtils();
-		logStep("Login To admin portal and Generate link for Provider");
-		adminUtils.linkGenerationWithLocation(driver, adminUser, testData, PSSConstants.LOGINLESS);
-		log("Location link is " + testData.getLinkLocationURL());
-		logStep("Move to PSS patient Portal 2.0 to book an Appointment");
-		log("link is   " + testData.getLinkLocationURL());
-		DismissPage dismissPage = new DismissPage(driver, testData.getLinkLocationURL());
-		Thread.sleep(1000);
-		LoginlessPatientInformation loginlessPatientInformation = dismissPage.clickDismiss();
-		Thread.sleep(3000);
-		HomePage homePage = loginlessPatientInformation.fillNewPatientForm(testData.getFirstName(),
-				testData.getLastName(), testData.getDob(), testData.getEmail(), testData.getGender(),
-				testData.getZipCode(), testData.getPrimaryNumber());
-		homePage.btnStartSchedClick();
-		AppointmentPage appointment;
-		StartAppointmentInOrder startAppointmentInOrder = null;
-		startAppointmentInOrder = homePage.skipInsurance(driver);
-		appointment = startAppointmentInOrder.selectFirstAppointment(PSSConstants.START_APPOINTMENT);
-		log("Verfiy Appointment Page and appointment =" + testData.getAppointmenttype());
-		appointment.selectTypeOfLocation(testData.getAppointmenttype(),
-				Boolean.valueOf(testData.getIsAppointmentPopup()));
-		log("Verfiy Location Page and location to be selected = " + testData.getLocation());
-	}
-
-	@Test(enabled = true, groups = { "AcceptanceTests" }, retryAnalyzer = RetryAnalyzer.class)
-	public void testE2ELinkLocationAT() throws Exception {
-		log("Link Generation : Next Available is display with location or Provider AT");
-		PSSPropertyFileLoader propertyData = new PSSPropertyFileLoader();
-		Appointment testData = new Appointment();
-		AdminUser adminUser = new AdminUser();
-		PSSNewPatient pssNewPatient = new PSSNewPatient();
-		propertyData.setAdminAT(adminUser);
-		propertyData.setAppointmentResponseAT(testData);
-		pssNewPatient.createPatientDetails(testData);
-		PSSAdminUtils adminUtils = new PSSAdminUtils();
-		logStep("Login To admin portal and Generate link for Provider");
-		adminUtils.linkGenerationWithLocation(driver, adminUser, testData, PSSConstants.LOGINLESS);
-		log("Location link is " + testData.getLinkLocationURL());
-		logStep("Move to PSS patient Portal 2.0 to book an Appointment");
-		log("link is   " + testData.getLinkLocationURL());
-		DismissPage dismissPage = new DismissPage(driver, testData.getLinkLocationURL());
-		Thread.sleep(1000);
-		LoginlessPatientInformation loginlessPatientInformation = dismissPage.clickDismiss();
-		Thread.sleep(3000);
-		HomePage homePage = loginlessPatientInformation.fillNewPatientForm(testData.getFirstName(),
-				testData.getLastName(), testData.getDob(), testData.getEmail(), testData.getGender(),
-				testData.getZipCode(), testData.getPrimaryNumber());
-		homePage.btnStartSchedClick();
-		AppointmentPage appointment;
-		StartAppointmentInOrder startAppointmentInOrder = null;
-		startAppointmentInOrder = homePage.skipInsurance(driver);
-		appointment = startAppointmentInOrder.selectFirstAppointment(PSSConstants.START_APPOINTMENT);
-		log("Verfiy Appointment Page and appointment =" + testData.getAppointmenttype());
-		appointment.selectTypeOfLocation(testData.getAppointmenttype(),
-				Boolean.valueOf(testData.getIsAppointmentPopup()));
-		log("Verfiy Location Page and location to be selected = " + testData.getLocation());
-	}
-
-	@Test(enabled = true, groups = { "AcceptanceTests" }, retryAnalyzer = RetryAnalyzer.class)
-	public void testE2ELinkLocationNG() throws Exception {
-		log("Link Generation : Next Available is display with location or Provider NG");
+	public void testNextAvailableDisplayedWithLocationNG() throws Exception {
 		PSSPropertyFileLoader propertyData = new PSSPropertyFileLoader();
 		Appointment testData = new Appointment();
 		AdminUser adminUser = new AdminUser();
@@ -6080,18 +6069,588 @@ public class PSS2PatientPortalAcceptanceTests extends BaseTestNGWebDriver {
 		log("link is   " + testData.getLinkLocationURL());
 		DismissPage dismissPage = new DismissPage(driver, testData.getLinkLocationURL());
 		Thread.sleep(1000);
+		logStep("Open the location link and click on Dismiss Button ");
 		LoginlessPatientInformation loginlessPatientInformation = dismissPage.clickDismiss();
-		Thread.sleep(3000);
 		HomePage homePage = loginlessPatientInformation.fillNewPatientForm(testData.getFirstName(),
 				testData.getLastName(), testData.getDob(), testData.getEmail(), testData.getGender(),
 				testData.getZipCode(), testData.getPrimaryNumber());
 		homePage.btnStartSchedClick();
+		logStep("Clicked on the Start Button ");
 		AppointmentPage appointment;
 		StartAppointmentInOrder startAppointmentInOrder = null;
 		startAppointmentInOrder = homePage.skipInsurance(driver);
+		logStep("Clicked on the Skip Insurance Button ");
 		appointment = startAppointmentInOrder.selectFirstAppointment(PSSConstants.START_APPOINTMENT);
-		log("Verfiy Appointment Page and appointment =" + testData.getAppointmenttype());
-		appointment.selectTypeOfLocation(testData.getAppointmenttype(),
+		logStep("Verfiy Appointment Page and appointment =" + testData.getAppointmenttype());
+		Provider provider = appointment.selectTypeOfProvider(testData.getAppointmenttype(),
 				Boolean.valueOf(testData.getIsAppointmentPopup()));
+		logStep("Verfiy Provider Page and Provider = " + testData.getProvider());
+		provider.selectLocation(testData.getProvider());
+		log("Next availiable text is  " + provider.getNextavaliableText());
+		assertEquals(testData.getNextAvailiableText(), provider.getNextavaliableText());
+	}
+	@Test(enabled = true, groups = { "AcceptanceTests" }, retryAnalyzer = RetryAnalyzer.class)
+	public void testNextAvailableDisplayedWithLocationAT() throws Exception {
+		PSSPropertyFileLoader propertyData = new PSSPropertyFileLoader();
+		Appointment testData = new Appointment();
+		AdminUser adminUser = new AdminUser();
+		PSSNewPatient pssNewPatient = new PSSNewPatient();
+		propertyData.setAdminAT(adminUser);
+		propertyData.setAppointmentResponseAT(testData);
+		pssNewPatient.createPatientDetails(testData);
+		PSSAdminUtils adminUtils = new PSSAdminUtils();
+		logStep("Login To admin portal and Generate link for Provider");
+		adminUtils.linkGenerationWithLocation(driver, adminUser, testData, PSSConstants.LOGINLESS);
+		log("Location link is " + testData.getLinkLocationURL());
+		logStep("Move to PSS patient Portal 2.0 to book an Appointment");
+		log("link is   " + testData.getLinkLocationURL());
+		DismissPage dismissPage = new DismissPage(driver, testData.getLinkLocationURL());
+		Thread.sleep(1000);
+		logStep("Open the location link and click on Dismiss Button ");
+		LoginlessPatientInformation loginlessPatientInformation = dismissPage.clickDismiss();
+		HomePage homePage = loginlessPatientInformation.fillNewPatientForm(testData.getFirstName(),
+				testData.getLastName(), testData.getDob(), testData.getEmail(), testData.getGender(),
+				testData.getZipCode(), testData.getPrimaryNumber());
+		homePage.btnStartSchedClick();
+		logStep("Clicked on the Start Button ");
+		AppointmentPage appointment;
+		StartAppointmentInOrder startAppointmentInOrder = null;
+		startAppointmentInOrder = homePage.skipInsurance(driver);
+		logStep("Clicked on the Skip Insurance Button ");
+		appointment = startAppointmentInOrder.selectFirstAppointment(PSSConstants.START_APPOINTMENT);
+		logStep("Verfiy Appointment Page and appointment =" + testData.getAppointmenttype());
+		Provider provider = appointment.selectTypeOfProvider(testData.getAppointmenttype(),
+				Boolean.valueOf(testData.getIsAppointmentPopup()));
+		logStep("Verfiy Provider Page and Provider = " + testData.getProvider());
+		provider.selectLocation(testData.getProvider());
+		log("Next availiable text is  " + provider.getNextavaliableText());
+		assertEquals(testData.getNextAvailiableText(), provider.getNextavaliableText());
+	}
+
+	@Test(enabled = true, groups = { "AcceptanceTests" }, retryAnalyzer = RetryAnalyzer.class)
+	public void testNextAvailableDisplayedWithLocationGE() throws Exception {
+		PSSPropertyFileLoader propertyData = new PSSPropertyFileLoader();
+		Appointment testData = new Appointment();
+		AdminUser adminUser = new AdminUser();
+		PSSNewPatient pssNewPatient = new PSSNewPatient();
+		propertyData.setAdminGE(adminUser);
+		propertyData.setAppointmentResponseGE(testData);
+		pssNewPatient.createPatientDetails(testData);
+		PSSAdminUtils adminUtils = new PSSAdminUtils();
+		logStep("Login To admin portal and Generate link for Provider");
+		adminUtils.linkGenerationWithLocation(driver, adminUser, testData, PSSConstants.LOGINLESS);
+		log("Location link is " + testData.getLinkLocationURL());
+		logStep("Move to PSS patient Portal 2.0 to book an Appointment");
+		log("link is   " + testData.getLinkLocationURL());
+		DismissPage dismissPage = new DismissPage(driver, testData.getLinkLocationURL());
+		Thread.sleep(1000);
+		logStep("Open the location link and click on Dismiss Button ");
+		LoginlessPatientInformation loginlessPatientInformation = dismissPage.clickDismiss();
+		HomePage homePage = loginlessPatientInformation.fillNewPatientForm(testData.getFirstName(),
+				testData.getLastName(), testData.getDob(), testData.getEmail(), testData.getGender(),
+				testData.getZipCode(), testData.getPrimaryNumber());
+		homePage.btnStartSchedClick();
+		logStep("Clicked on the Start Button ");
+		AppointmentPage appointment;
+		StartAppointmentInOrder startAppointmentInOrder = null;
+		startAppointmentInOrder = homePage.skipInsurance(driver);
+		logStep("Clicked on the Skip Insurance Button ");
+		appointment = startAppointmentInOrder.selectFirstAppointment(PSSConstants.START_APPOINTMENT);
+		logStep("Verfiy Appointment Page and appointment =" + testData.getAppointmenttype());
+		Provider provider = appointment.selectTypeOfProvider(testData.getAppointmenttype(),
+				Boolean.valueOf(testData.getIsAppointmentPopup()));
+		logStep("Verfiy Provider Page and Provider = " + testData.getProvider());
+		provider.selectLocation(testData.getProvider());
+		log("Next availiable text is  " + provider.getNextavaliableText());
+		assertEquals(testData.getNextAvailiableText(), provider.getNextavaliableText());
+	}
+
+	@Test(enabled = true, groups = { "AcceptanceTests" }, retryAnalyzer = RetryAnalyzer.class)
+	public void testNextAvailableDisplayedWithLocationGW() throws Exception {
+		PSSPropertyFileLoader propertyData = new PSSPropertyFileLoader();
+		Appointment testData = new Appointment();
+		AdminUser adminUser = new AdminUser();
+		PSSNewPatient pssNewPatient = new PSSNewPatient();
+		propertyData.setAdminGW(adminUser);
+		propertyData.setAppointmentResponseGW(testData);
+		pssNewPatient.createPatientDetails(testData);
+		PSSAdminUtils adminUtils = new PSSAdminUtils();
+		logStep("Login To admin portal and Generate link for Provider");
+		adminUtils.linkGenerationWithLocation(driver, adminUser, testData, PSSConstants.LOGINLESS);
+		log("Location link is " + testData.getLinkLocationURL());
+		logStep("Move to PSS patient Portal 2.0 to book an Appointment");
+		log("link is   " + testData.getLinkLocationURL());
+		DismissPage dismissPage = new DismissPage(driver, testData.getLinkLocationURL());
+		Thread.sleep(1000);
+		logStep("Open the location link and click on Dismiss Button ");
+		LoginlessPatientInformation loginlessPatientInformation = dismissPage.clickDismiss();
+		HomePage homePage = loginlessPatientInformation.fillNewPatientForm(testData.getFirstName(),
+				testData.getLastName(), testData.getDob(), testData.getEmail(), testData.getGender(),
+				testData.getZipCode(), testData.getPrimaryNumber());
+		homePage.btnStartSchedClick();
+		logStep("Clicked on the Start Button ");
+		AppointmentPage appointment;
+		StartAppointmentInOrder startAppointmentInOrder = null;
+		startAppointmentInOrder = homePage.skipInsurance(driver);
+		logStep("Clicked on the Skip Insurance Button ");
+		appointment = startAppointmentInOrder.selectFirstAppointment(PSSConstants.START_APPOINTMENT);
+		logStep("Verfiy Appointment Page and appointment =" + testData.getAppointmenttype());
+		Provider provider = appointment.selectTypeOfProvider(testData.getAppointmenttype(),
+				Boolean.valueOf(testData.getIsAppointmentPopup()));
+		logStep("Verfiy Provider Page and Provider = " + testData.getProvider());
+		provider.selectLocation(testData.getProvider());
+		log("Next availiable text is  " + provider.getNextavaliableText());
+		assertEquals(testData.getNextAvailiableText(), provider.getNextavaliableText());
+
+	}
+	@Test(enabled = true, groups = { "AcceptanceTests" }, retryAnalyzer = RetryAnalyzer.class)
+	public void testExcludeSlotsNG() throws Exception {
+		PSSPropertyFileLoader propertyData = new PSSPropertyFileLoader();
+		Appointment testData = new Appointment();
+		AdminUser adminuser = new AdminUser();
+		propertyData.setAdminNG(adminuser);
+		propertyData.setAppointmentResponseNG(testData);
+		PSSAdminUtils adminUtils = new PSSAdminUtils();
+		logStep("Login to PSS Admin portal ");
+		adminUtils.exclueSlots(driver, adminuser, testData);
+		logStep("Move to PSS patient Portal 2.0 to book an Appointment");
+		logStep("Login to PSS Appointment");
+		DismissPage dismissPage = new DismissPage(driver, testData.getUrlLoginLess());
+		logStep("LoginlessPatientInformation****");
+		log("Clicked on Dismiss");
+		LoginlessPatientInformation loginlessPatientInformation = dismissPage.clickDismiss();
+		HomePage homePage = loginlessPatientInformation.fillNewPatientForm(testData.getFirstName(),
+				testData.getLastName(), testData.getDob(), testData.getEmail(), testData.getGender(),
+				testData.getZipCode(), testData.getPrimaryNumber());
+		homePage.btnStartSchedClick();
+		Location location = null;
+		StartAppointmentInOrder startappointmentInOrder = null;
+		startappointmentInOrder = homePage.skipInsurance(driver);
+		location = startappointmentInOrder.selectFirstLocation(PSSConstants.START_LOCATION);
+		logStep("Verfiy Location Page and location =" + testData.getLocation());
+		AppointmentPage appointment = location.selectAppointment(testData.getLocation());
+		logStep("Verfiy Appointment Page and appointment to be selected = " + testData.getAppointmenttype());
+		Thread.sleep(20000);
+		Provider provider = appointment.selectTypeOfProvider(testData.getAppointmenttype(),
+				Boolean.valueOf(testData.getIsAppointmentPopup()));
+		logStep("Verfiy Provider Page and Provider = " + testData.getProvider());
+		AppointmentDateTime aptDateTime = provider.getProviderandClick(testData.getProvider());
+		aptDateTime.selectDate(testData.getIsNextDayBooking());
+		String time = aptDateTime.getfirsttime().replace(":", "");
+		String time1 = time.substring(0, 4);
+		log("First time is   " + time1);
+		assertEquals(time1, testData.getExcludeSlotSecondValue());
+
+	}
+
+	@Test(enabled = true, groups = { "AcceptanceTests" }, retryAnalyzer = RetryAnalyzer.class)
+	public void testExcludeSlotsAT() throws Exception {
+		PSSPropertyFileLoader propertyData = new PSSPropertyFileLoader();
+		Appointment testData = new Appointment();
+		AdminUser adminuser = new AdminUser();
+		propertyData.setAdminAT(adminuser);
+		propertyData.setAppointmentResponseAT(testData);
+		PSSAdminUtils adminUtils = new PSSAdminUtils();
+		logStep("Login to PSS Admin portal ");
+		adminUtils.exclueSlots(driver, adminuser, testData);
+		logStep("Move to PSS patient Portal 2.0 to book an Appointment");
+		logStep("Login to PSS Appointment");
+		DismissPage dismissPage = new DismissPage(driver, testData.getUrlLoginLess());
+		logStep("LoginlessPatientInformation****");
+		log("Clicked on Dismiss");
+		LoginlessPatientInformation loginlessPatientInformation = dismissPage.clickDismiss();
+		HomePage homePage = loginlessPatientInformation.fillNewPatientForm(testData.getFirstName(),
+				testData.getLastName(), testData.getDob(), testData.getEmail(), testData.getGender(),
+				testData.getZipCode(), testData.getPrimaryNumber());
+		homePage.btnStartSchedClick();
+		Location location = null;
+		StartAppointmentInOrder startappointmentInOrder = null;
+		startappointmentInOrder = homePage.skipInsurance(driver);
+		location = startappointmentInOrder.selectFirstLocation(PSSConstants.START_LOCATION);
+		logStep("Verfiy Location Page and location =" + testData.getLocation());
+		AppointmentPage appointment = location.selectAppointment(testData.getLocation());
+		logStep("Verfiy Appointment Page and appointment to be selected = " + testData.getAppointmenttype());
+		Thread.sleep(20000);
+		Provider provider = appointment.selectTypeOfProvider(testData.getAppointmenttype(),
+				Boolean.valueOf(testData.getIsAppointmentPopup()));
+		logStep("Verfiy Provider Page and Provider = " + testData.getProvider());
+		AppointmentDateTime aptDateTime = provider.getProviderandClick(testData.getProvider());
+		aptDateTime.selectDate(testData.getIsNextDayBooking());
+		String time = aptDateTime.getfirsttime().replace(":", "");
+		String time1 = time.substring(0, 4);
+		log("First time is   " + time1);
+		assertEquals(time1, testData.getExcludeSlotSecondValue());
+
+	}
+
+	@Test(enabled = true, groups = { "AcceptanceTests" }, retryAnalyzer = RetryAnalyzer.class)
+	public void testExcludeSlotsGW() throws Exception {
+		PSSPropertyFileLoader propertyData = new PSSPropertyFileLoader();
+		Appointment testData = new Appointment();
+		AdminUser adminuser = new AdminUser();
+		propertyData.setAdminGW(adminuser);
+		propertyData.setAppointmentResponseGW(testData);
+		PSSAdminUtils adminUtils = new PSSAdminUtils();
+		logStep("Login to PSS Admin portal ");
+		adminUtils.exclueSlots(driver, adminuser, testData);
+		logStep("Move to PSS patient Portal 2.0 to book an Appointment");
+		logStep("Login to PSS Appointment");
+		DismissPage dismissPage = new DismissPage(driver, testData.getUrlLoginLess());
+		logStep("LoginlessPatientInformation****");
+		log("Clicked on Dismiss");
+		LoginlessPatientInformation loginlessPatientInformation = dismissPage.clickDismiss();
+		HomePage homePage = loginlessPatientInformation.fillNewPatientForm(testData.getFirstName(),
+				testData.getLastName(), testData.getDob(), testData.getEmail(), testData.getGender(),
+				testData.getZipCode(), testData.getPrimaryNumber());
+		homePage.btnStartSchedClick();
+		Location location = null;
+		StartAppointmentInOrder startappointmentInOrder = null;
+		startappointmentInOrder = homePage.skipInsurance(driver);
+		location = startappointmentInOrder.selectFirstLocation(PSSConstants.START_LOCATION);
+		logStep("Verfiy Location Page and location =" + testData.getLocation());
+		AppointmentPage appointment = location.selectAppointment(testData.getLocation());
+		logStep("Verfiy Appointment Page and appointment to be selected = " + testData.getAppointmenttype());
+		Thread.sleep(20000);
+		Provider provider = appointment.selectTypeOfProvider(testData.getAppointmenttype(),
+				Boolean.valueOf(testData.getIsAppointmentPopup()));
+		logStep("Verfiy Provider Page and Provider = " + testData.getProvider());
+		AppointmentDateTime aptDateTime = provider.getProviderandClick(testData.getProvider());
+		aptDateTime.selectDate(testData.getIsNextDayBooking());
+		String time = aptDateTime.getfirsttime().replace(":", "");
+		String time1 = time.substring(0, 4);
+		log("First time is   " + time1);
+		assertEquals(time1, testData.getExcludeSlotSecondValue());
+	}
+
+	@Test(enabled = true, groups = { "AcceptanceTests" }, retryAnalyzer = RetryAnalyzer.class)
+	public void testExcludeSlotsGE() throws Exception {
+		PSSPropertyFileLoader propertyData = new PSSPropertyFileLoader();
+		Appointment testData = new Appointment();
+		AdminUser adminuser = new AdminUser();
+		propertyData.setAdminGE(adminuser);
+		propertyData.setAppointmentResponseGE(testData);
+		PSSAdminUtils adminUtils = new PSSAdminUtils();
+		logStep("Login to PSS Admin portal ");
+		adminUtils.exclueSlots(driver, adminuser, testData);
+		logStep("Move to PSS patient Portal 2.0 to book an Appointment");
+		logStep("Login to PSS Appointment");
+		DismissPage dismissPage = new DismissPage(driver, testData.getUrlLoginLess());
+		logStep("LoginlessPatientInformation****");
+		log("Clicked on Dismiss");
+		LoginlessPatientInformation loginlessPatientInformation = dismissPage.clickDismiss();
+		HomePage homePage = loginlessPatientInformation.fillNewPatientForm(testData.getFirstName(),
+				testData.getLastName(), testData.getDob(), testData.getEmail(), testData.getGender(),
+				testData.getZipCode(), testData.getPrimaryNumber());
+		homePage.btnStartSchedClick();
+		Location location = null;
+		StartAppointmentInOrder startappointmentInOrder = null;
+		startappointmentInOrder = homePage.skipInsurance(driver);
+		location = startappointmentInOrder.selectFirstLocation(PSSConstants.START_LOCATION);
+		logStep("Verfiy Location Page and location =" + testData.getLocation());
+		AppointmentPage appointment = location.selectAppointment(testData.getLocation());
+		logStep("Verfiy Appointment Page and appointment to be selected = " + testData.getAppointmenttype());
+		Thread.sleep(20000);
+		Provider provider = appointment.selectTypeOfProvider(testData.getAppointmenttype(),
+				Boolean.valueOf(testData.getIsAppointmentPopup()));
+		logStep("Verfiy Provider Page and Provider = " + testData.getProvider());
+		AppointmentDateTime aptDateTime = provider.getProviderandClick(testData.getProvider());
+		aptDateTime.selectDate(testData.getIsNextDayBooking());
+		String time = aptDateTime.getfirsttime().replace(":", "");
+		String time1 = time.substring(0, 4);
+		log("First time is   " + time1);
+		assertEquals(time1, testData.getExcludeSlotSecondValue());
+
+	}
+
+	@Test(enabled = true, groups = {
+			"AcceptanceTests" }, retryAnalyzer = RetryAnalyzer.class, dependsOnMethods = "testE2ELoginlessForExistingPatientNG")
+	public void testRescheduleviaEmailNotifiicationNG() throws Exception {
+
+		Appointment testData = new Appointment();
+		AdminUser adminUser = new AdminUser();
+		PSSPatientUtils pssPatientUtils = new PSSPatientUtils();
+		PSSAdminUtils pssAdminutils = new PSSAdminUtils();
+
+		AdminAppointment adminAppointment = new AdminAppointment(driver);
+
+		logStep("Load all the test data related to admin UI and patient UI");
+		pssPatientUtils.setTestData("NG", testData, adminUser);
+
+		testData.setFutureApt(true);
+
+		logStep("Check the Admin Settings for Reschedule Appointment");
+		ArrayList<String> adminCancelReasonList = pssAdminutils.getCancelRescheduleSettings(driver, adminUser, testData,
+				adminAppointment);
+
+		log("adminCancelReasonList- " + adminCancelReasonList);
+		log("isShowCancellationRescheduleReason --" + testData.isShowCancellationRescheduleReason());
+		log("isShowCancellationReasonPM ---" + testData.isShowCancellationReasonPM());
+
+		logStep("Fetch the Cancel/Reschedule link from email");
+		Mailinator mail = new Mailinator();
+		String subject = testData.getEmailSubject();
+		String messageLink = "Reschedule or cancel";
+		String userName = testData.getGmailUserName();
+
+		log("Subject- " + subject);
+		log("messageLink- " + messageLink);
+		log("userName- " + userName);
+
+		String CancelReschedulelink = mail.getLinkFromEmail(userName, subject, messageLink, 5);
+
+		logStep("Hit the Cancel/Reschedule link which we get from email in browser");
+		PatientIdentificationPage patientIdentificationPage = new PatientIdentificationPage(driver,
+				CancelReschedulelink);
+
+		logStep("Wait for the page to load completely and check for the Greetings pop up");
+		Thread.sleep(3000);
+		if (patientIdentificationPage.isPopUP()) {
+			patientIdentificationPage.popUPClick();
+		}
+
+		logStep("Fill Patient details on Patient Identification Page");
+		log("First Name- " + testData.getFirstName());
+		log("Last Name- " + testData.getLastName());
+		CancelRescheduleDecisionPage cancelRescheduleDecisionPage = patientIdentificationPage
+				.fillPatientForm(testData.getFirstName(), testData.getLastName());
+
+		logStep("Verify the appointment details and click on Cancel button");
+		cancelRescheduleDecisionPage.clickReschedule();
+		pssPatientUtils.rescheduleAPT(testData, driver);
+
+		logStep("Delete all the emails from inbox");
+		pssPatientUtils.deleteEmail_Mailinator(driver, "https://www.mailinator.com/", testData.getEmail());
+
+	}
+
+	@Test(enabled = true, groups = { "AcceptanceTests" }, retryAnalyzer = RetryAnalyzer.class)
+	public void testE2EMergeSlotGE() throws Exception {
+		PSSPropertyFileLoader propertyData = new PSSPropertyFileLoader();
+		Appointment testData = new Appointment();
+		AdminUser adminUser = new AdminUser();
+		PSSNewPatient pssNewPatient = new PSSNewPatient();
+		propertyData.setAdminGE(adminUser);
+		propertyData.setAppointmentResponseGE(testData);
+		pssNewPatient.createPatientDetails(testData);
+		PSSPatientUtils psspatientutils = new PSSPatientUtils();
+		PSSAdminUtils adminUtils = new PSSAdminUtils();
+		logStep("Login to PSS Admin portal and do setting related to merge Slot");
+		adminUtils.mergeSlot(driver, adminUser, testData, PSSConstants.LOGINLESS);
+		logStep("Move to PSS patient Portal 2.0 to book an Appointment");
+		logStep("Login to PSS Appointment");
+		DismissPage dismissPage = new DismissPage(driver, testData.getUrlLoginLess());
+		logStep("Clicked on Dismiss");
+		LoginlessPatientInformation loginlessPatientInformation = dismissPage.clickDismiss();
+		HomePage homePage = loginlessPatientInformation.fillNewPatientForm(testData.getFirstName(),
+				testData.getLastName(), testData.getDob(), testData.getEmail(), testData.getGender(),
+				testData.getZipCode(), testData.getPrimaryNumber());
+		homePage.btnStartSchedClick();
+		Location location = null;
+		StartAppointmentInOrder startappointmentInOrder = null;
+		startappointmentInOrder = homePage.skipInsurance(driver);
+		location = startappointmentInOrder.selectFirstLocation(PSSConstants.START_LOCATION);
+		logStep("Verfiy Location Page and location =" + testData.getLocation());
+		AppointmentPage appointment = location.selectAppointment(testData.getLocation());
+		logStep("Verfiy Appointment Page and appointment to be selected = " + testData.getAppointmenttype());
+		Provider provider = appointment.selectTypeOfProvider(testData.getAppointmenttype(),
+				Boolean.valueOf(testData.getIsAppointmentPopup()));
+		logStep("Verfiy Provider Page and Provider = " + testData.getProvider());
+		AppointmentDateTime aptDateTime = provider.getProviderandClick(testData.getProvider());
+		aptDateTime.selectFutureDate(testData.getIsNextDayBooking());
+		testData.setFirstHour(aptDateTime.getFirstTimeWithHour());
+		testData.setFirstMinute(aptDateTime.getFirstTimeWithMinute());
+		String time = aptDateTime.getfirsttime();
+		log("First Time is  " + time);
+		String nexttime = aptDateTime.getNextTimeWithMinute();
+		log("Next Time is " + nexttime);
+		log("Time Add After  " + psspatientutils.addTimeinFixedTime(testData));
+		assertEquals(aptDateTime.getNextTimeWithMinute(), psspatientutils.addTimeinFixedTime(testData));
+	}
+
+
+	@Test(enabled = true, groups = { "AcceptanceTests" }, retryAnalyzer = RetryAnalyzer.class)
+	public void testE2EMergeSlotGW() throws Exception {
+		PSSPropertyFileLoader propertyData = new PSSPropertyFileLoader();
+		Appointment testData = new Appointment();
+		AdminUser adminUser = new AdminUser();
+		PSSNewPatient pssNewPatient = new PSSNewPatient();
+		propertyData.setAdminGW(adminUser);
+		propertyData.setAppointmentResponseGW(testData);
+		pssNewPatient.createPatientDetails(testData);
+		PSSPatientUtils psspatientutils = new PSSPatientUtils();
+		PSSAdminUtils adminUtils = new PSSAdminUtils();
+		logStep("Login to PSS Admin portal and do setting related to merge Slot");
+		adminUtils.mergeSlot(driver, adminUser, testData, PSSConstants.LOGINLESS);
+		logStep("Move to PSS patient Portal 2.0 to book an Appointment");
+		logStep("Login to PSS Appointment");
+		DismissPage dismissPage = new DismissPage(driver, testData.getUrlLoginLess());
+		logStep("Clicked on Dismiss");
+		LoginlessPatientInformation loginlessPatientInformation = dismissPage.clickDismiss();
+		HomePage homePage = loginlessPatientInformation.fillNewPatientForm(testData.getFirstName(),
+				testData.getLastName(), testData.getDob(), testData.getEmail(), testData.getGender(),
+				testData.getZipCode(), testData.getPrimaryNumber());
+		homePage.btnStartSchedClick();
+		Location location = null;
+		StartAppointmentInOrder startappointmentInOrder = null;
+		startappointmentInOrder = homePage.skipInsurance(driver);
+		location = startappointmentInOrder.selectFirstLocation(PSSConstants.START_LOCATION);
+		logStep("Verfiy Location Page and location =" + testData.getLocation());
+		AppointmentPage appointment = location.selectAppointment(testData.getLocation());
+		logStep("Verfiy Appointment Page and appointment to be selected = " + testData.getAppointmenttype());
+		Provider provider = appointment.selectTypeOfProvider(testData.getAppointmenttype(),
+				Boolean.valueOf(testData.getIsAppointmentPopup()));
+		logStep("Verfiy Provider Page and Provider = " + testData.getProvider());
+		AppointmentDateTime aptDateTime = provider.getProviderandClick(testData.getProvider());
+		aptDateTime.selectFutureDate(testData.getIsNextDayBooking());
+		testData.setFirstHour(aptDateTime.getFirstTimeWithHour());
+		testData.setFirstMinute(aptDateTime.getFirstTimeWithMinute());
+		String time = aptDateTime.getfirsttime();
+		log("First Time is  " + time);
+		String nexttime = aptDateTime.getNextTimeWithMinute();
+		log("Next Time is " + nexttime);
+		log("Time Add After  " + psspatientutils.addTimeinFixedTime(testData));
+		assertEquals(aptDateTime.getNextTimeWithMinute(), psspatientutils.addTimeinFixedTime(testData));
+
+	}
+
+	@Test(enabled = true, groups = { "AcceptanceTests" }, retryAnalyzer = RetryAnalyzer.class)
+	public void testE2EMergeSlotNG() throws Exception {
+		PSSPropertyFileLoader propertyData = new PSSPropertyFileLoader();
+		Appointment testData = new Appointment();
+		AdminUser adminUser = new AdminUser();
+		PSSNewPatient pssNewPatient = new PSSNewPatient();
+		propertyData.setAdminNG(adminUser);
+		propertyData.setAppointmentResponseNG(testData);
+		pssNewPatient.createPatientDetails(testData);
+		PSSPatientUtils psspatientutils = new PSSPatientUtils();
+		PSSAdminUtils adminUtils = new PSSAdminUtils();
+		logStep("Login to PSS Admin portal and do setting related to merge Slot");
+		adminUtils.mergeSlot(driver, adminUser, testData, PSSConstants.LOGINLESS);
+		logStep("Move to PSS patient Portal 2.0 to book an Appointment");
+		logStep("Login to PSS Appointment");
+		DismissPage dismissPage = new DismissPage(driver, testData.getUrlLoginLess());
+		logStep("Clicked on Dismiss");
+		LoginlessPatientInformation loginlessPatientInformation = dismissPage.clickDismiss();
+		HomePage homePage = loginlessPatientInformation.fillNewPatientForm(testData.getFirstName(),
+				testData.getLastName(), testData.getDob(), testData.getEmail(), testData.getGender(),
+				testData.getZipCode(), testData.getPrimaryNumber());
+		homePage.btnStartSchedClick();
+		Location location = null;
+		StartAppointmentInOrder startappointmentInOrder = null;
+		startappointmentInOrder = homePage.skipInsurance(driver);
+		location = startappointmentInOrder.selectFirstLocation(PSSConstants.START_LOCATION);
+		logStep("Verfiy Location Page and location =" + testData.getLocation());
+		AppointmentPage appointment = location.selectAppointment(testData.getLocation());
+		logStep("Verfiy Appointment Page and appointment to be selected = " + testData.getAppointmenttype());
+		Provider provider = appointment.selectTypeOfProvider(testData.getAppointmenttype(),
+				Boolean.valueOf(testData.getIsAppointmentPopup()));
+		logStep("Verfiy Provider Page and Provider = " + testData.getProvider());
+		AppointmentDateTime aptDateTime = provider.getProviderandClick(testData.getProvider());
+		aptDateTime.selectFutureDate(testData.getIsNextDayBooking());
+		testData.setFirstHour(aptDateTime.getFirstTimeWithHour());
+		testData.setFirstMinute(aptDateTime.getFirstTimeWithMinute());
+		String time = aptDateTime.getfirsttime();
+		log("First Time is  " + time);
+		String nexttime = aptDateTime.getNextTimeWithMinute();
+		log("Next Time is " + nexttime);
+		log("Time Add After  " + psspatientutils.addTimeinFixedTime(testData));
+		assertEquals(aptDateTime.getNextTimeWithMinute(), psspatientutils.addTimeinFixedTime(testData));
+
+	}
+	@Test(enabled = true, groups = { "AcceptanceTests" }, retryAnalyzer = RetryAnalyzer.class)
+	public void testTimeMarkWithShowProOffAT() throws Exception {
+		PSSPropertyFileLoader propertyData = new PSSPropertyFileLoader();
+		Appointment testData = new Appointment();
+		AdminUser adminuser = new AdminUser();
+		propertyData.setAdminAT(adminuser);
+		propertyData.setAppointmentResponseAT(testData);
+		adminuser.setIsExisting(true);
+		PSSAdminUtils pssadminutils = new PSSAdminUtils();
+		logStep("Move to PSS admin portal and Click on the timemark Functionality on Book Appointment Type");
+		pssadminutils.timeMarkWithShowOff(driver, adminuser, testData);
+		String rule = adminuser.getRule();
+		rule = rule.replaceAll(" ", "");
+		logStep("Move to PSS patient Portal 2.0 to book an Appointment");
+		logStep("Login to PSS Appointment");
+		DismissPage dismissPage = new DismissPage(driver, testData.getUrlLoginLess());
+		logStep("LoginlessPatientInformation****");
+		log("Clicked on Dismiss");
+		LoginlessPatientInformation loginlessPatientInformation = dismissPage.clickDismiss();
+		HomePage homePage = loginlessPatientInformation.fillNewPatientForm(testData.getFirstName(),
+				testData.getLastName(), testData.getDob(), testData.getEmail(), testData.getGender(),
+				testData.getZipCode(), testData.getPrimaryNumber());
+		homePage.btnStartSchedClick();
+		Location location = null;
+    	StartAppointmentInOrder startAppointmentInOrder = null;
+		startAppointmentInOrder = homePage.skipInsurance(driver);
+
+		location = startAppointmentInOrder.selectFirstLocation(PSSConstants.START_LOCATION);
+
+		logStep("Verfiy Location Page and location =" + testData.getLocation());
+		AppointmentPage appointment = location.selectAppointment(testData.getLocation());
+		logStep("Verfiy Appointment Page and appointment to be selected = " + testData.getAppointmenttype());
+
+		AppointmentDateTime aptDateTime = appointment.selectAptTyper(testData.getAppointmenttype(),
+				Boolean.valueOf(testData.getIsAppointmentPopup()));
+		aptDateTime.selectDate(testData.getIsNextDayBooking());
+		log("Appointment minute " + aptDateTime.getFirstTimeWithMinute());
+		log("Value  is " + testData.getTimeMarkValue());
+		if (testData.getTimeMarkValue().equalsIgnoreCase("0")) {
+			log("Default Slot is Selected ");
+		} else if (testData.getTimeMarkValue().equalsIgnoreCase("60")) {
+			String timeForHour = testData.getTimeMarkValue().replace('6', '0');
+			assertEquals(aptDateTime.getFirstTimeWithMinute(), timeForHour);
+		} else {
+			assertEquals(aptDateTime.getFirstTimeWithMinute(), testData.getTimeMarkValue());
+		}
+		
+	}
+	@Test(enabled = true, groups = { "AcceptanceTests" }, retryAnalyzer = RetryAnalyzer.class)
+	public void testTimeMarkWithShowProOffNG() throws Exception {
+		PSSPropertyFileLoader propertyData = new PSSPropertyFileLoader();
+		Appointment testData = new Appointment();
+		AdminUser adminuser = new AdminUser();
+		propertyData.setAdminNG(adminuser);
+		propertyData.setAppointmentResponseNG(testData);
+		adminuser.setIsExisting(true);
+		PSSAdminUtils pssadminutils = new PSSAdminUtils();
+		logStep("Move to PSS admin portal and Click on the timemark Functionality on Book Appointment Type");
+		pssadminutils.timeMarkWithShowOff(driver, adminuser, testData);
+		String rule = adminuser.getRule();
+		rule = rule.replaceAll(" ", "");
+		logStep("Move to PSS patient Portal 2.0 to book an Appointment");
+		logStep("Login to PSS Appointment");
+		DismissPage dismissPage = new DismissPage(driver, testData.getUrlLoginLess());
+		logStep("LoginlessPatientInformation****");
+		log("Clicked on Dismiss");
+		LoginlessPatientInformation loginlessPatientInformation = dismissPage.clickDismiss();
+		HomePage homePage = loginlessPatientInformation.fillNewPatientForm(testData.getFirstName(),
+				testData.getLastName(), testData.getDob(), testData.getEmail(), testData.getGender(),
+				testData.getZipCode(), testData.getPrimaryNumber());
+		homePage.btnStartSchedClick();
+		Location location = null;
+    	StartAppointmentInOrder startAppointmentInOrder = null;
+		startAppointmentInOrder = homePage.skipInsurance(driver);
+
+		location = startAppointmentInOrder.selectFirstLocation(PSSConstants.START_LOCATION);
+
+		logStep("Verfiy Location Page and location =" + testData.getLocation());
+		AppointmentPage appointment = location.selectAppointment(testData.getLocation());
+		log("Verfiy Appointment Page and appointment to be selected = " + testData.getAppointmenttype());
+
+		AppointmentDateTime aptDateTime = appointment.selectAptTyper(testData.getAppointmenttype(),
+				Boolean.valueOf(testData.getIsAppointmentPopup()));
+		aptDateTime.selectDate(testData.getIsNextDayBooking());
+		log("Appointment minute " + aptDateTime.getFirstTimeWithMinute());
+		log("Value  is " + testData.getTimeMarkValue());
+		if (testData.getTimeMarkValue().equalsIgnoreCase("0")) {
+			log("Default Slot is Selected ");
+		} else if (testData.getTimeMarkValue().equalsIgnoreCase("60")) {
+			String timeForHour = testData.getTimeMarkValue().replace('6', '0');
+			assertEquals(aptDateTime.getFirstTimeWithMinute(), timeForHour);
+		} else {
+			assertEquals(aptDateTime.getFirstTimeWithMinute(), testData.getTimeMarkValue());
+		}
+		
 	}
 }

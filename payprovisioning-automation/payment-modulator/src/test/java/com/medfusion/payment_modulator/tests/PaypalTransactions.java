@@ -22,31 +22,31 @@ public class PaypalTransactions extends BaseRest {
 	
 	@Test
 	public void makePaypalAuthorizeCapture() throws Exception {
-		makeAuthorizeCapture(testData.getProperty("paypalmmid"), flag);
+		makeAuthorizeCapture(testData.getProperty("paypal.mmid"), flag);
 		
 	}
 	
 	@Test
 	public void makeAPaypalSale() throws Exception {
-		modulatorSale(testData.getProperty("paypalmmid"), flag);
+		modulatorSale(testData.getProperty("paypal.mmid"), flag);
 	
 	}
 	
 	@Test
 	public void voidAPaypalSale() throws Exception {
-		voidASale(testData.getProperty("paypalmmid"), flag);
+		voidASale(testData.getProperty("paypal.mmid"), flag);
 		
 	}
 	
 	@Test
 	public void refundAPaypalSale() throws Exception {
-		refundASale(testData.getProperty("paypalmmid"),testData.getProperty("fullrefundamount"), flag);
+		refundASale(testData.getProperty("paypal.mmid"),testData.getProperty("full.refund.amount"), flag);
 		
 	}
 	
 	@Test
 	public void partialRefundAPaypalSale() throws Exception {
-		refundASale(testData.getProperty("paypalmmid"),testData.getProperty("partialrefundamount"), flag);
+		refundASale(testData.getProperty("paypal.mmid"),testData.getProperty("partial.refund.amount"), flag);
 		
 	}
 }

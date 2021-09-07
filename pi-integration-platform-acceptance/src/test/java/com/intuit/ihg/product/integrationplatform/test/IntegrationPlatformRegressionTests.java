@@ -1162,10 +1162,12 @@ public class IntegrationPlatformRegressionTests extends BaseTestNGWebDriver {
 				patient.getDOBYear(), patient.getEmail(), patient.getZipCode(), medfusionID);
 		if (version.equalsIgnoreCase("v2"))
 			patientPayload = patientPayload.replaceAll("v1", "v2");
-
+		if (version.equalsIgnoreCase("v3"))
+			patientPayload = patientPayload.replaceAll("v1", "v3");
 		Thread.sleep(600);
 
 		log("Step 5: Post Patient");
+		log("--------------"+patientPayload);
 		String processingUrl = RestUtils.setupHttpPostRequest(testData.getRestUrl(), patientPayload,
 				testData.getResponsePath());
 
@@ -3462,14 +3464,9 @@ public class IntegrationPlatformRegressionTests extends BaseTestNGWebDriver {
 		log("Added Pharamacy :- " + addedPharamacy);
 		String env = IHGUtil.getEnvironmentType().toString();
 
-		if (env == "DEV3") {
-			String pharmacyFristWord = "Added";
-			JalapenoPrescriptionsPageObject.verifyPharamcy(addedPharamacy, pharmacyFristWord);
-		} else {
-			JalapenoPrescriptionsPageObject.clickOnChooseOneDrpdown();
-			Thread.sleep(6000);
-			JalapenoPrescriptionsPageObject.verifyPharmacy(addedPharamacy);
-		}
+		String pharmacyFristWord = "Added";
+		JalapenoPrescriptionsPageObject.verifyPharamcy(addedPharamacy, pharmacyFristWord, env);
+		
 	}
 
 	@Test(enabled = true, groups = { "RegressionTests" }, retryAnalyzer = RetryAnalyzer.class)
@@ -3563,18 +3560,13 @@ public class IntegrationPlatformRegressionTests extends BaseTestNGWebDriver {
 		log("Added Pharamacy :- " + addedPharamacy);
 		String env = IHGUtil.getEnvironmentType().toString();
 
-		if (env == "DEV3") {
-			String pharmacyFristWord = "Update";
-			JalapenoPrescriptionsPageObject.verifyPharamcy(addedPharamacy, pharmacyFristWord);
-		} else {
-			JalapenoPrescriptionsPageObject.clickOnChooseOneDrpdown();
-			Thread.sleep(6000);
-			JalapenoPrescriptionsPageObject.verifyPharmacy(addedPharamacy);
-		}
+		String pharmacyFristWord = "Update";
+		JalapenoPrescriptionsPageObject.verifyPharamcy(addedPharamacy, pharmacyFristWord, env);
+		
 	}
 
 	@Test(enabled = true, groups = { "RegressionTests" }, retryAnalyzer = RetryAnalyzer.class)
-	public void testDeletePharmacies() throws Exception {
+	public void testAddandDeletePharmacies() throws Exception {
 		log("Test Case: Delete Pharmacy");
 		log("Execution Environment: " + IHGUtil.getEnvironmentType());
 		log("Execution Browser: " + TestConfig.getBrowserType());
@@ -3618,7 +3610,27 @@ public class IntegrationPlatformRegressionTests extends BaseTestNGWebDriver {
 			}
 		}
 		assertTrue(completed, "Message processing was not completed in time");
+		
+		log("Step 3: Login to Patient Portal");
+		JalapenoLoginPage loginPage = new JalapenoLoginPage(driver, testData.URL);
+		JalapenoHomePage homePage = loginPage.login(testData.UserName, testData.Password);
 
+		log("Step 4: Click on Prescription and go to Prescription Page");
+		JalapenoPrescriptionsPage JalapenoPrescriptionsPageObject = homePage.clickOnPrescriptions(driver);
+
+		log("Step 5: Click on Continue ");
+		JalapenoPrescriptionsPageObject.clickContinueButton(driver);
+		Thread.sleep(60000);
+
+		log("Step 6:verify newly added pharmacy in the list");
+		String addedPharamacy = testData.PharmacyName + ", " + testData.Line1 + ", " + testData.City + ", "
+				+ testData.State;
+		log("Added Pharamacy :- " + addedPharamacy);
+		String env = IHGUtil.getEnvironmentType().toString();
+
+		String pharmacyFristWord = "Added";
+		JalapenoPrescriptionsPageObject.verifyPharamcy(addedPharamacy, pharmacyFristWord,env);
+			
 		log("Delete Pharmacy with status 'DELETE' ");
 		testData.Status = "DELETE";
 
@@ -3647,11 +3659,11 @@ public class IntegrationPlatformRegressionTests extends BaseTestNGWebDriver {
 		assertTrue(completed, "Message processing was not completed in time");
 
 		log("Step 4: Login to Patient Portal");
-		JalapenoLoginPage loginPage = new JalapenoLoginPage(driver, testData.URL);
-		JalapenoHomePage homePage = loginPage.login(testData.UserName, testData.Password);		
+		driver.get(testData.URL);
+		loginPage.login(testData.UserName, testData.Password);		
 
 		log("Step 5: Click on Prescription and go to Prescription Page");
-		JalapenoPrescriptionsPage JalapenoPrescriptionsPageObject = homePage.clickOnPrescriptions(driver);
+		homePage.clickOnPrescriptions(driver);
 		
 		log("Step 6: Click on Continue ");
 		JalapenoPrescriptionsPageObject.clickContinueButton(driver);
@@ -3661,17 +3673,10 @@ public class IntegrationPlatformRegressionTests extends BaseTestNGWebDriver {
 		String deletedPharamacy = testData.PharmacyName + ", " + testData.Line1 + ", " + testData.City + ", "
 				+ testData.State;
 		log("Added Pharamacy :- " + deletedPharamacy);
-		String env = IHGUtil.getEnvironmentType().toString();
-		if (env == "DEV3") {
-			String pharmacyFristWord = "Added";
-			JalapenoPrescriptionsPageObject.verifyDeletedPharamcy(deletedPharamacy, pharmacyFristWord);
-			log("Pharamacy is not visible on the Portal");
-		} else {
-			JalapenoPrescriptionsPageObject.clickOnChooseOneDrpdown();
-			Thread.sleep(6000);
-			JalapenoPrescriptionsPageObject.verifyDeletedPharmacy(deletedPharamacy);
-			log("Pharamacy is not visible on the Portal");
-		}
+	
+		JalapenoPrescriptionsPageObject.verifyDeletedPharamcy(deletedPharamacy, pharmacyFristWord,env);
+		log("Pharamacy is not visible on the Portal");
+		
 	}
 
 	@Test(enabled = true, groups = { "RegressionTests" }, retryAnalyzer = RetryAnalyzer.class)
@@ -3951,6 +3956,8 @@ public class IntegrationPlatformRegressionTests extends BaseTestNGWebDriver {
 		JalapenoLoginPage loginPage = new JalapenoLoginPage(driver, testData.Url);
 		JalapenoHomePage homePage = loginPage.login(testData.UserName, testData.Password);
 
+		assertTrue(homePage.isHomeButtonPresent(driver));
+
 		homePage.clickOnLogout();
 
 		log("Step 2: Setup Oauth client");
@@ -4067,6 +4074,7 @@ public class IntegrationPlatformRegressionTests extends BaseTestNGWebDriver {
 		log("OAuthPassword: " + testData.getOAuthPassword());
 		log("RestV3Url: " + testData.getRestV3Url());
 		log("PrescriptionPathV3: " + testData.getPrescriptionPathV3());
+		log("PrescriptionPath: " + testData.getPrescriptionPath());
 		log("Pharamcy Name:" + testData.getPharmacyName());
 
 		logStep("Login to the patient portal");
@@ -4144,8 +4152,8 @@ public class IntegrationPlatformRegressionTests extends BaseTestNGWebDriver {
 
 			RestUtils.isMedicationDetailsNewResponseXMLValid(testData.getResponsePath(), MedicationDetails, additionalComment);
 
-			String postXML = RestUtils.findValueOfMedicationNode(testData.getResponsePath(), "Medication",
-					MedicationDetails, rxSMSubject, rxSMBody, testData.getPrescriptionPathV3());
+			String postXML = RestUtils.findValueOfMedicationNodeNew(testData.getResponsePath(), "Medication",
+					MedicationDetails, rxSMSubject, rxSMBody, testData.getPrescriptionPath());
 
 			String SigCodeAbbreviation = RestUtils.SigCodeAbbreviation;
 			String SigCodeMeaning = RestUtils.SigCodeMeaning;

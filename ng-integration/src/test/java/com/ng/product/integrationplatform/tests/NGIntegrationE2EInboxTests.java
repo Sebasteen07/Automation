@@ -71,27 +71,27 @@ public class NGIntegrationE2EInboxTests extends BaseTestNGWebDriver {
 	@Test(enabled = true, groups = { "acceptance-INBOX" }, retryAnalyzer = RetryAnalyzer.class)
 	public void testCOMHighPrioritySecureMessageDoNotAddToEncounterSendByPracticeUserReplyByPatient() throws Throwable {
 		logStep("Getting Existing User");
-		String username = propertyLoaderObj.getProperty("CCDAUsername");
+		String username = propertyLoaderObj.getProperty("ccda.username");
 		String person_id = DBUtils.executeQueryOnDB("NGCoreDB",
 				"select person_id from person where email_address = '" + username + "'");
 		String enterpriseId = null, practiceId = null, providerName = null, locationName = null, userId = null,
 				integrationPracticeID = null, url = null;
 
 		if (propertyLoaderObj.getNGAPIexecutionMode().equalsIgnoreCase("QAMain")) {
-			enterpriseId = propertyLoaderObj.getProperty("NGEnterpiseEnrollmentEnterprise1");
-			practiceId = propertyLoaderObj.getProperty("NGEnterprise1Practice1");
-			providerName = propertyLoaderObj.getProperty("NGE1P1Provider");
-			locationName = propertyLoaderObj.getProperty("NGE1P1Location");
-			userId = propertyLoaderObj.getProperty("SecureMessageUserID");
-			integrationPracticeID = propertyLoaderObj.getProperty("integrationPracticeIDE1P1");
-			url = propertyLoaderObj.getProperty("MFPortalURLPractice1");
+			enterpriseId = propertyLoaderObj.getProperty("ng.enterprise.enrollment.enterprise1");
+			practiceId = propertyLoaderObj.getProperty("ng.enterprise1.practice1");
+			providerName = propertyLoaderObj.getProperty("ng.e1.p1.provider");
+			locationName = propertyLoaderObj.getProperty("ng.e1.p1.location");
+			userId = propertyLoaderObj.getProperty("secure.message.user.id");
+			integrationPracticeID = propertyLoaderObj.getProperty("integration.practice.id.e1.p1");
+			url = propertyLoaderObj.getProperty("mf.portal.url.practice1");
 		} else if (propertyLoaderObj.getNGAPIexecutionMode().equalsIgnoreCase("SIT")) {
-			enterpriseId = propertyLoaderObj.getProperty("NGMainEnterpriseID");
-			practiceId = propertyLoaderObj.getProperty("NGMainPracticeID");
-			providerName = propertyLoaderObj.getProperty("EPMProviderName");
-			locationName = propertyLoaderObj.getProperty("EPMLocationName");
-			userId = propertyLoaderObj.getProperty("SecureMessageUserID");
-			integrationPracticeID = propertyLoaderObj.getProperty("integrationPracticeIDAMDC");
+			enterpriseId = propertyLoaderObj.getProperty("ng.main.enterprise.id");
+			practiceId = propertyLoaderObj.getProperty("ng.main.practice.id");
+			providerName = propertyLoaderObj.getProperty("epm.provider.name");
+			locationName = propertyLoaderObj.getProperty("epm.location.name");
+			userId = propertyLoaderObj.getProperty("secure.message.user.id");
+			integrationPracticeID = propertyLoaderObj.getProperty("integrationpracticeid.amdc");
 			url = propertyLoaderObj.getProperty("url");
 		} else {
 			Log4jUtil.log("Invalid Execution Mode");
@@ -120,12 +120,12 @@ public class NGIntegrationE2EInboxTests extends BaseTestNGWebDriver {
 		logStep("Setup Oauth client" + propertyLoaderObj.getResponsePath());
 		if (propertyLoaderObj.getNGAPIexecutionMode().equalsIgnoreCase("QAMain")) {
 			RestUtils.oauthSetup(propertyLoaderObj.getOAuthKeyStore(), propertyLoaderObj.getOAuthProperty(),
-					propertyLoaderObj.getOAuthAppToken(), propertyLoaderObj.getProperty("oAuthUsername1"),
-					propertyLoaderObj.getProperty("oAuthPassword1"));
+					propertyLoaderObj.getOAuthAppToken(), propertyLoaderObj.getProperty("oauth.username1"),
+					propertyLoaderObj.getProperty("oauth.password1"));
 		} else if (propertyLoaderObj.getNGAPIexecutionMode().equalsIgnoreCase("SIT")) {
 			RestUtils.oauthSetup(propertyLoaderObj.getOAuthKeyStore(), propertyLoaderObj.getOAuthProperty(),
-					propertyLoaderObj.getOAuthAppToken(), propertyLoaderObj.getProperty("oAuthUsername"),
-					propertyLoaderObj.getProperty("oAuthPassword"));
+					propertyLoaderObj.getOAuthAppToken(), propertyLoaderObj.getProperty("oauth.username"),
+					propertyLoaderObj.getProperty("oauth.password"));
 		} else {
 			Log4jUtil.log("Invalid Execution Mode");
 		}
@@ -140,27 +140,27 @@ public class NGIntegrationE2EInboxTests extends BaseTestNGWebDriver {
 	@Test(enabled = true, groups = { "acceptance-INBOX" }, retryAnalyzer = RetryAnalyzer.class)
 	public void testCOMReadReceiptSecureMessageNewLockedEncounter() throws Throwable {
 		logStep("Getting Existing User");
-		String username = propertyLoaderObj.getProperty("CCDAUsername");
+		String username = propertyLoaderObj.getProperty("ccda.username");
 		String person_id = DBUtils.executeQueryOnDB("NGCoreDB",
 				"select person_id from person where email_address = '" + username + "'");
 		String enterpriseId = null, practiceId = null, providerName = null, locationName = null, userId = null,
 				integrationPracticeID = null, url = null;
 
 		if (propertyLoaderObj.getNGAPIexecutionMode().equalsIgnoreCase("QAMain")) {
-			enterpriseId = propertyLoaderObj.getProperty("NGEnterpiseEnrollmentEnterprise1");
-			practiceId = propertyLoaderObj.getProperty("NGEnterprise1Practice1");
-			providerName = propertyLoaderObj.getProperty("NGE1P1Provider");
-			locationName = propertyLoaderObj.getProperty("NGE1P1Location");
-			userId = propertyLoaderObj.getProperty("SecureMessageUserID");
-			integrationPracticeID = propertyLoaderObj.getProperty("integrationPracticeIDE1P1");
-			url = propertyLoaderObj.getProperty("MFPortalURLPractice1");
+			enterpriseId = propertyLoaderObj.getProperty("ng.enterprise.enrollment.enterprise1");
+			practiceId = propertyLoaderObj.getProperty("ng.enterprise1.practice1");
+			providerName = propertyLoaderObj.getProperty("ng.e1.p1.provider");
+			locationName = propertyLoaderObj.getProperty("ng.e1.p1.location");
+			userId = propertyLoaderObj.getProperty("secure.message.user.id");
+			integrationPracticeID = propertyLoaderObj.getProperty("integration.practice.id.e1.p1");
+			url = propertyLoaderObj.getProperty("mf.portal.url.practice1");
 		} else if (propertyLoaderObj.getNGAPIexecutionMode().equalsIgnoreCase("SIT")) {
-			enterpriseId = propertyLoaderObj.getProperty("NGMainEnterpriseID");
-			practiceId = propertyLoaderObj.getProperty("NGMainPracticeID");
-			providerName = propertyLoaderObj.getProperty("EPMProviderName");
-			locationName = propertyLoaderObj.getProperty("EPMLocationName");
-			userId = propertyLoaderObj.getProperty("SecureMessageUserID");
-			integrationPracticeID = propertyLoaderObj.getProperty("integrationPracticeIDAMDC");
+			enterpriseId = propertyLoaderObj.getProperty("ng.main.enterprise.id");
+			practiceId = propertyLoaderObj.getProperty("ng.main.practice.id");
+			providerName = propertyLoaderObj.getProperty("epm.provider.name");
+			locationName = propertyLoaderObj.getProperty("epm.location.name");
+			userId = propertyLoaderObj.getProperty("secure.message.user.id");
+			integrationPracticeID = propertyLoaderObj.getProperty("integrationpracticeid.amdc");
 			url = propertyLoaderObj.getProperty("url");
 		} else {
 			Log4jUtil.log("Invalid Execution Mode");
@@ -187,12 +187,12 @@ public class NGIntegrationE2EInboxTests extends BaseTestNGWebDriver {
 		logStep("Setup Oauth client" + propertyLoaderObj.getResponsePath());
 		if (propertyLoaderObj.getNGAPIexecutionMode().equalsIgnoreCase("QAMain")) {
 			RestUtils.oauthSetup(propertyLoaderObj.getOAuthKeyStore(), propertyLoaderObj.getOAuthProperty(),
-					propertyLoaderObj.getOAuthAppToken(), propertyLoaderObj.getProperty("oAuthUsername1"),
-					propertyLoaderObj.getProperty("oAuthPassword1"));
+					propertyLoaderObj.getOAuthAppToken(), propertyLoaderObj.getProperty("oauth.username1"),
+					propertyLoaderObj.getProperty("oauth.password1"));
 		} else if (propertyLoaderObj.getNGAPIexecutionMode().equalsIgnoreCase("SIT")) {
 			RestUtils.oauthSetup(propertyLoaderObj.getOAuthKeyStore(), propertyLoaderObj.getOAuthProperty(),
-					propertyLoaderObj.getOAuthAppToken(), propertyLoaderObj.getProperty("oAuthUsername"),
-					propertyLoaderObj.getProperty("oAuthPassword"));
+					propertyLoaderObj.getOAuthAppToken(), propertyLoaderObj.getProperty("oauth.username"),
+					propertyLoaderObj.getProperty("oauth.password"));
 		} else {
 			Log4jUtil.log("Invalid Execution Mode");
 		}
@@ -204,23 +204,23 @@ public class NGIntegrationE2EInboxTests extends BaseTestNGWebDriver {
 	@Test(enabled = true, groups = { "acceptance-INBOX" }, retryAnalyzer = RetryAnalyzer.class)
 	public void testCOMUnreadNotificationSecureMessageNewUnLockedEncounter() throws Throwable {
 		logStep("Getting Existing User");
-		String username = propertyLoaderObj.getProperty("CCDAUsername");
+		String username = propertyLoaderObj.getProperty("ccda.username");
 		String person_id = DBUtils.executeQueryOnDB("NGCoreDB",
 				"select person_id from person where email_address = '" + username + "'");
 		String enterpriseId = null, practiceId = null, providerName = null, locationName = null, userId = null;
 
 		if (propertyLoaderObj.getNGAPIexecutionMode().equalsIgnoreCase("QAMain")) {
-			enterpriseId = propertyLoaderObj.getProperty("NGEnterpiseEnrollmentEnterprise1");
-			practiceId = propertyLoaderObj.getProperty("NGEnterprise1Practice1");
-			providerName = propertyLoaderObj.getProperty("NGE1P1Provider");
-			locationName = propertyLoaderObj.getProperty("NGE1P1Location");
-			userId = propertyLoaderObj.getProperty("SecureMessageUserID");
+			enterpriseId = propertyLoaderObj.getProperty("ng.enterprise.enrollment.enterprise1");
+			practiceId = propertyLoaderObj.getProperty("ng.enterprise1.practice1");
+			providerName = propertyLoaderObj.getProperty("ng.e1.p1.provider");
+			locationName = propertyLoaderObj.getProperty("ng.e1.p1.location");
+			userId = propertyLoaderObj.getProperty("secure.message.user.id");
 		} else if (propertyLoaderObj.getNGAPIexecutionMode().equalsIgnoreCase("SIT")) {
-			enterpriseId = propertyLoaderObj.getProperty("NGMainEnterpriseID");
-			practiceId = propertyLoaderObj.getProperty("NGMainPracticeID");
-			providerName = propertyLoaderObj.getProperty("EPMProviderName");
-			locationName = propertyLoaderObj.getProperty("EPMLocationName");
-			userId = propertyLoaderObj.getProperty("SecureMessageUserID");
+			enterpriseId = propertyLoaderObj.getProperty("ng.main.enterprise.id");
+			practiceId = propertyLoaderObj.getProperty("ng.main.practice.id");
+			providerName = propertyLoaderObj.getProperty("epm.provider.name");
+			locationName = propertyLoaderObj.getProperty("epm.location.name");
+			userId = propertyLoaderObj.getProperty("secure.message.user.id");
 		} else {
 			Log4jUtil.log("Invalid Execution Mode");
 		}
@@ -234,27 +234,27 @@ public class NGIntegrationE2EInboxTests extends BaseTestNGWebDriver {
 	@Test(enabled = true, groups = { "acceptance-INBOX" }, retryAnalyzer = RetryAnalyzer.class)
 	public void testCOMDisableReplySecureMessageExistingEncounter() throws Throwable {
 		logStep("Getting Existing User");
-		String username = propertyLoaderObj.getProperty("CCDAUsername");
+		String username = propertyLoaderObj.getProperty("ccda.username");
 		String person_id = DBUtils.executeQueryOnDB("NGCoreDB",
 				"select person_id from person where email_address = '" + username + "'");
 		String enterpriseId = null, practiceId = null, providerName = null, locationName = null, userId = null,
 				integrationPracticeID = null, url = null;
 
 		if (propertyLoaderObj.getNGAPIexecutionMode().equalsIgnoreCase("QAMain")) {
-			enterpriseId = propertyLoaderObj.getProperty("NGEnterpiseEnrollmentEnterprise1");
-			practiceId = propertyLoaderObj.getProperty("NGEnterprise1Practice1");
-			providerName = propertyLoaderObj.getProperty("NGE1P1Provider");
-			locationName = propertyLoaderObj.getProperty("NGE1P1Location");
-			userId = propertyLoaderObj.getProperty("SecureMessageUserID");
-			integrationPracticeID = propertyLoaderObj.getProperty("integrationPracticeIDE1P1");
-			url = propertyLoaderObj.getProperty("MFPortalURLPractice1");
+			enterpriseId = propertyLoaderObj.getProperty("ng.enterprise.enrollment.enterprise1");
+			practiceId = propertyLoaderObj.getProperty("ng.enterprise1.practice1");
+			providerName = propertyLoaderObj.getProperty("ng.e1.p1.provider");
+			locationName = propertyLoaderObj.getProperty("ng.e1.p1.location");
+			userId = propertyLoaderObj.getProperty("secure.message.user.id");
+			integrationPracticeID = propertyLoaderObj.getProperty("integration.practice.id.e1.p1");
+			url = propertyLoaderObj.getProperty("mf.portal.url.practice1");
 		} else if (propertyLoaderObj.getNGAPIexecutionMode().equalsIgnoreCase("SIT")) {
-			enterpriseId = propertyLoaderObj.getProperty("NGMainEnterpriseID");
-			practiceId = propertyLoaderObj.getProperty("NGMainPracticeID");
-			providerName = propertyLoaderObj.getProperty("EPMProviderName");
-			locationName = propertyLoaderObj.getProperty("EPMLocationName");
-			userId = propertyLoaderObj.getProperty("SecureMessageUserID");
-			integrationPracticeID = propertyLoaderObj.getProperty("integrationPracticeIDAMDC");
+			enterpriseId = propertyLoaderObj.getProperty("ng.main.enterprise.id");
+			practiceId = propertyLoaderObj.getProperty("ng.main.practice.id");
+			providerName = propertyLoaderObj.getProperty("epm.provider.name");
+			locationName = propertyLoaderObj.getProperty("epm.location.name");
+			userId = propertyLoaderObj.getProperty("secure.message.user.id");
+			integrationPracticeID = propertyLoaderObj.getProperty("integrationpracticeid.amdc");
 			url = propertyLoaderObj.getProperty("url");
 		} else {
 			Log4jUtil.log("Invalid Execution Mode");
@@ -283,12 +283,12 @@ public class NGIntegrationE2EInboxTests extends BaseTestNGWebDriver {
 		logStep("Setup Oauth client" + propertyLoaderObj.getResponsePath());
 		if (propertyLoaderObj.getNGAPIexecutionMode().equalsIgnoreCase("QAMain")) {
 			RestUtils.oauthSetup(propertyLoaderObj.getOAuthKeyStore(), propertyLoaderObj.getOAuthProperty(),
-					propertyLoaderObj.getOAuthAppToken(), propertyLoaderObj.getProperty("oAuthUsername1"),
-					propertyLoaderObj.getProperty("oAuthPassword1"));
+					propertyLoaderObj.getOAuthAppToken(), propertyLoaderObj.getProperty("oauth.username1"),
+					propertyLoaderObj.getProperty("oauth.password1"));
 		} else if (propertyLoaderObj.getNGAPIexecutionMode().equalsIgnoreCase("SIT")) {
 			RestUtils.oauthSetup(propertyLoaderObj.getOAuthKeyStore(), propertyLoaderObj.getOAuthProperty(),
-					propertyLoaderObj.getOAuthAppToken(), propertyLoaderObj.getProperty("oAuthUsername"),
-					propertyLoaderObj.getProperty("oAuthPassword"));
+					propertyLoaderObj.getOAuthAppToken(), propertyLoaderObj.getProperty("oauth.username"),
+					propertyLoaderObj.getProperty("oauth.password"));
 		} else {
 			Log4jUtil.log("Invalid Execution Mode");
 		}
@@ -300,27 +300,27 @@ public class NGIntegrationE2EInboxTests extends BaseTestNGWebDriver {
 	@Test(enabled = true, groups = { "acceptance-INBOX" }, retryAnalyzer = RetryAnalyzer.class)
 	public void testCOMSecureMessageSentAndReplyUsingOnlineProfile() throws Throwable {
 		logStep("Getting Existing User");
-		String username = propertyLoaderObj.getProperty("CCDAUsername");
+		String username = propertyLoaderObj.getProperty("ccda.username");
 		String person_id = DBUtils.executeQueryOnDB("NGCoreDB",
 				"select person_id from person where email_address = '" + username + "'");
 		String enterpriseId = null, practiceId = null, providerName = null, locationName = null, userId = null,
 				integrationPracticeID = null, url = null;
 
 		if (propertyLoaderObj.getNGAPIexecutionMode().equalsIgnoreCase("QAMain")) {
-			enterpriseId = propertyLoaderObj.getProperty("NGEnterpiseEnrollmentEnterprise1");
-			practiceId = propertyLoaderObj.getProperty("NGEnterprise1Practice1");
-			providerName = propertyLoaderObj.getProperty("NGE1P1Provider");
-			locationName = propertyLoaderObj.getProperty("NGE1P1Location");
-			userId = propertyLoaderObj.getProperty("SecureMessageUserID");
-			integrationPracticeID = propertyLoaderObj.getProperty("integrationPracticeIDE1P1");
-			url = propertyLoaderObj.getProperty("MFPortalURLPractice1");
+			enterpriseId = propertyLoaderObj.getProperty("ng.enterprise.enrollment.enterprise1");
+			practiceId = propertyLoaderObj.getProperty("ng.enterprise1.practice1");
+			providerName = propertyLoaderObj.getProperty("ng.e1.p1.provider");
+			locationName = propertyLoaderObj.getProperty("ng.e1.p1.location");
+			userId = propertyLoaderObj.getProperty("secure.message.user.id");
+			integrationPracticeID = propertyLoaderObj.getProperty("integration.practice.id.e1.p1");
+			url = propertyLoaderObj.getProperty("mf.portal.url.practice1");
 		} else if (propertyLoaderObj.getNGAPIexecutionMode().equalsIgnoreCase("SIT")) {
-			enterpriseId = propertyLoaderObj.getProperty("NGMainEnterpriseID");
-			practiceId = propertyLoaderObj.getProperty("NGMainPracticeID");
-			providerName = propertyLoaderObj.getProperty("EPMProviderName");
-			locationName = propertyLoaderObj.getProperty("EPMLocationName");
-			userId = propertyLoaderObj.getProperty("SecureMessageUserID");
-			integrationPracticeID = propertyLoaderObj.getProperty("integrationPracticeIDAMDC");
+			enterpriseId = propertyLoaderObj.getProperty("ng.main.enterprise.id");
+			practiceId = propertyLoaderObj.getProperty("ng.main.practice.id");
+			providerName = propertyLoaderObj.getProperty("epm.provider.name");
+			locationName = propertyLoaderObj.getProperty("epm.location.name");
+			userId = propertyLoaderObj.getProperty("secure.message.user.id");
+			integrationPracticeID = propertyLoaderObj.getProperty("integrationpracticeid.amdc");
 			url = propertyLoaderObj.getProperty("url");
 		} else {
 			Log4jUtil.log("Invalid Execution Mode");
@@ -350,12 +350,12 @@ public class NGIntegrationE2EInboxTests extends BaseTestNGWebDriver {
 		logStep("Setup Oauth client" + propertyLoaderObj.getResponsePath());
 		if (propertyLoaderObj.getNGAPIexecutionMode().equalsIgnoreCase("QAMain")) {
 			RestUtils.oauthSetup(propertyLoaderObj.getOAuthKeyStore(), propertyLoaderObj.getOAuthProperty(),
-					propertyLoaderObj.getOAuthAppToken(), propertyLoaderObj.getProperty("oAuthUsername1"),
-					propertyLoaderObj.getProperty("oAuthPassword1"));
+					propertyLoaderObj.getOAuthAppToken(), propertyLoaderObj.getProperty("oauth.username1"),
+					propertyLoaderObj.getProperty("oauth.password1"));
 		} else if (propertyLoaderObj.getNGAPIexecutionMode().equalsIgnoreCase("SIT")) {
 			RestUtils.oauthSetup(propertyLoaderObj.getOAuthKeyStore(), propertyLoaderObj.getOAuthProperty(),
-					propertyLoaderObj.getOAuthAppToken(), propertyLoaderObj.getProperty("oAuthUsername"),
-					propertyLoaderObj.getProperty("oAuthPassword"));
+					propertyLoaderObj.getOAuthAppToken(), propertyLoaderObj.getProperty("oauth.username"),
+					propertyLoaderObj.getProperty("oauth.password"));
 		} else {
 			Log4jUtil.log("Invalid Execution Mode");
 		}
@@ -371,35 +371,35 @@ public class NGIntegrationE2EInboxTests extends BaseTestNGWebDriver {
 	@Test(enabled = true, groups = { "acceptance-INBOX" }, retryAnalyzer = RetryAnalyzer.class)
 	public void testCOMSecureMessageSentAndReplyUsingAliasName() throws Throwable {
 		String questionText = IntegrationConstants.MESSAGE_REPLY;
-		String userId = propertyLoaderObj.getProperty("SecureMessageUserID");
+		String userId = propertyLoaderObj.getProperty("secure.message.user.id");
 		String userLastName = DBUtils.executeQueryOnDB("NGCoreDB",
 				"select last_name from user_mstr where user_id='" + userId + "'");
 		String userProviderName = userLastName + ", Dr";
 
-		String username = propertyLoaderObj.getProperty("CCDAUsername");
+		String username = propertyLoaderObj.getProperty("ccda.username");
 		String person_id = DBUtils.executeQueryOnDB("NGCoreDB",
 				"select person_id from person where email_address = '" + username + "'");
 		String enterpriseId = null, practiceId = null, providerName = null, locationName = null,
 				integrationPracticeID = null, url = null;
 
 		if (propertyLoaderObj.getNGAPIexecutionMode().equalsIgnoreCase("QAMain")) {
-			enterpriseId = propertyLoaderObj.getProperty("NGEnterpiseEnrollmentEnterprise1");
-			practiceId = propertyLoaderObj.getProperty("NGEnterprise1Practice1");
-			providerName = propertyLoaderObj.getProperty("NGE1P1Provider");
-			locationName = propertyLoaderObj.getProperty("NGE1P1Location");
-			integrationPracticeID = propertyLoaderObj.getProperty("integrationPracticeIDE1P1");
-			url = propertyLoaderObj.getProperty("MFPortalURLPractice1");
+			enterpriseId = propertyLoaderObj.getProperty("ng.enterprise.enrollment.enterprise1");
+			practiceId = propertyLoaderObj.getProperty("ng.enterprise1.practice1");
+			providerName = propertyLoaderObj.getProperty("ng.e1.p1.provider");
+			locationName = propertyLoaderObj.getProperty("ng.e1.p1.location");
+			integrationPracticeID = propertyLoaderObj.getProperty("integration.practice.id.e1.p1");
+			url = propertyLoaderObj.getProperty("mf.portal.url.practice1");
 		} else if (propertyLoaderObj.getNGAPIexecutionMode().equalsIgnoreCase("SIT")) {
-			enterpriseId = propertyLoaderObj.getProperty("NGMainEnterpriseID");
-			practiceId = propertyLoaderObj.getProperty("NGMainPracticeID");
-			providerName = propertyLoaderObj.getProperty("EPMProviderName");
-			locationName = propertyLoaderObj.getProperty("EPMLocationName");
-			integrationPracticeID = propertyLoaderObj.getProperty("integrationPracticeIDAMDC");
+			enterpriseId = propertyLoaderObj.getProperty("ng.main.enterprise.id");
+			practiceId = propertyLoaderObj.getProperty("ng.main.practice.id");
+			providerName = propertyLoaderObj.getProperty("epm.provider.name");
+			locationName = propertyLoaderObj.getProperty("epm.location.name");
+			integrationPracticeID = propertyLoaderObj.getProperty("integrationpracticeid.amdc");
 			url = propertyLoaderObj.getProperty("url");
 		} else {
 			Log4jUtil.log("Invalid Execution Mode");
 		}
-		String userLocationName = propertyLoaderObj.getProperty("PortalLocationName");
+		String userLocationName = propertyLoaderObj.getProperty("portal.location.name");
 
 		long timestamp = System.currentTimeMillis();
 		logStep("Do a GET and get the read communication");
@@ -407,12 +407,12 @@ public class NGIntegrationE2EInboxTests extends BaseTestNGWebDriver {
 
 		logStep("Login patient");
 		NGLoginPage loginPage = new NGLoginPage(driver, propertyLoaderObj.getProperty("url"));
-		JalapenoHomePage homePage = loginPage.login(propertyLoaderObj.getProperty("CCDAUsername"),
+		JalapenoHomePage homePage = loginPage.login(propertyLoaderObj.getProperty("ccda.username"),
 				propertyLoaderObj.getPassword());
 
 		logStep("Click Ask A Question tab");
 		JalapenoAskAStaffV2Page1 askPage1 = homePage
-				.openSpecificAskaQuestion(propertyLoaderObj.getProperty("askAV2Name"));
+				.openSpecificAskaQuestion(propertyLoaderObj.getProperty("aska.v2.name"));
 
 		String askaSubject = Long.toString(askPage1.getCreatedTimeStamp());
 
@@ -431,12 +431,12 @@ public class NGIntegrationE2EInboxTests extends BaseTestNGWebDriver {
 		logStep("Setup Oauth client" + propertyLoaderObj.getResponsePath());
 		if (propertyLoaderObj.getNGAPIexecutionMode().equalsIgnoreCase("QAMain")) {
 			RestUtils.oauthSetup(propertyLoaderObj.getOAuthKeyStore(), propertyLoaderObj.getOAuthProperty(),
-					propertyLoaderObj.getOAuthAppToken(), propertyLoaderObj.getProperty("oAuthUsername1"),
-					propertyLoaderObj.getProperty("oAuthPassword1"));
+					propertyLoaderObj.getOAuthAppToken(), propertyLoaderObj.getProperty("oauth.username1"),
+					propertyLoaderObj.getProperty("oauth.password1"));
 		} else if (propertyLoaderObj.getNGAPIexecutionMode().equalsIgnoreCase("SIT")) {
 			RestUtils.oauthSetup(propertyLoaderObj.getOAuthKeyStore(), propertyLoaderObj.getOAuthProperty(),
-					propertyLoaderObj.getOAuthAppToken(), propertyLoaderObj.getProperty("oAuthUsername"),
-					propertyLoaderObj.getProperty("oAuthPassword"));
+					propertyLoaderObj.getOAuthAppToken(), propertyLoaderObj.getProperty("oauth.username"),
+					propertyLoaderObj.getProperty("oauth.password"));
 		} else {
 			Log4jUtil.log("Invalid Execution Mode");
 		}
@@ -446,7 +446,7 @@ public class NGIntegrationE2EInboxTests extends BaseTestNGWebDriver {
 
 		logStep("Do a GET and get the message");
 		RestUtils.setupHttpGetRequest(
-				propertyLoaderObj.getProperty("GetInboundMessage").replaceAll("integrationID", integrationPracticeID)
+				propertyLoaderObj.getProperty("get.inbound.message").replaceAll("integrationID", integrationPracticeID)
 						+ "?since=" + since + ",0",
 				propertyLoaderObj.getResponsePath());
 
@@ -467,7 +467,7 @@ public class NGIntegrationE2EInboxTests extends BaseTestNGWebDriver {
 		Thread.sleep(60000);
 		Log4jUtil.log("Verify message received at NG core");
 		CommonFlows.verifyMessageReceivedAtNGCore(propertyLoaderObj, messageID, askaSubject,
-				expectedBodyinInbox.replace("\n", ""), propertyLoaderObj.getProperty("askAV2Name"));
+				expectedBodyinInbox.replace("\n", ""), propertyLoaderObj.getProperty("aska.v2.name"));
 
 		NGAPIUtils.updateLoginDefaultTo("EnterpriseGateway", enterpriseId, practiceId);
 		String comm_id = NGAPIFlows.postSecureMessage(propertyLoaderObj, "ReplyToASKAUsingAliasName" + messageID,
@@ -491,12 +491,12 @@ public class NGIntegrationE2EInboxTests extends BaseTestNGWebDriver {
 		logStep("Setup Oauth client" + propertyLoaderObj.getResponsePath());
 		if (propertyLoaderObj.getNGAPIexecutionMode().equalsIgnoreCase("QAMain")) {
 			RestUtils.oauthSetup(propertyLoaderObj.getOAuthKeyStore(), propertyLoaderObj.getOAuthProperty(),
-					propertyLoaderObj.getOAuthAppToken(), propertyLoaderObj.getProperty("oAuthUsername1"),
-					propertyLoaderObj.getProperty("oAuthPassword1"));
+					propertyLoaderObj.getOAuthAppToken(), propertyLoaderObj.getProperty("oauth.username1"),
+					propertyLoaderObj.getProperty("oauth.password1"));
 		} else if (propertyLoaderObj.getNGAPIexecutionMode().equalsIgnoreCase("SIT")) {
 			RestUtils.oauthSetup(propertyLoaderObj.getOAuthKeyStore(), propertyLoaderObj.getOAuthProperty(),
-					propertyLoaderObj.getOAuthAppToken(), propertyLoaderObj.getProperty("oAuthUsername"),
-					propertyLoaderObj.getProperty("oAuthPassword"));
+					propertyLoaderObj.getOAuthAppToken(), propertyLoaderObj.getProperty("oauth.username"),
+					propertyLoaderObj.getProperty("oauth.password"));
 		} else {
 			Log4jUtil.log("Invalid Execution Mode");
 		}
@@ -513,36 +513,36 @@ public class NGIntegrationE2EInboxTests extends BaseTestNGWebDriver {
 	@Test(enabled = true, groups = { "acceptance-INBOX" }, retryAnalyzer = RetryAnalyzer.class)
 	public void testCOMAskAQuestionRepliedUsingOriginalUnlockedEncounter() throws Throwable {
 		String questionText = IntegrationConstants.MESSAGE_REPLY;
-		String userId = propertyLoaderObj.getProperty("SecureMessageUserID");
+		String userId = propertyLoaderObj.getProperty("secure.message.user.id");
 		DBUtils.executeQueryOnDB("NGCoreDB", "select first_name from user_mstr where user_id='" + userId + "'");
 		String userLastName = DBUtils.executeQueryOnDB("NGCoreDB",
 				"select last_name from user_mstr where user_id='" + userId + "'");
 		String userProviderName = userLastName + ", Dr";
 
-		String username = propertyLoaderObj.getProperty("CCDAUsername");
+		String username = propertyLoaderObj.getProperty("ccda.username");
 		String person_id = DBUtils.executeQueryOnDB("NGCoreDB",
 				"select person_id from person where email_address = '" + username + "'");
 		String enterpriseId = null, practiceId = null, providerName = null, locationName = null,
 				integrationPracticeID = null, url = null;
 
 		if (propertyLoaderObj.getNGAPIexecutionMode().equalsIgnoreCase("QAMain")) {
-			enterpriseId = propertyLoaderObj.getProperty("NGEnterpiseEnrollmentEnterprise1");
-			practiceId = propertyLoaderObj.getProperty("NGEnterprise1Practice1");
-			providerName = propertyLoaderObj.getProperty("NGE1P1Provider");
-			locationName = propertyLoaderObj.getProperty("NGE1P1Location");
-			integrationPracticeID = propertyLoaderObj.getProperty("integrationPracticeIDE1P1");
-			url = propertyLoaderObj.getProperty("MFPortalURLPractice1");
+			enterpriseId = propertyLoaderObj.getProperty("ng.enterprise.enrollment.enterprise1");
+			practiceId = propertyLoaderObj.getProperty("ng.enterprise1.practice1");
+			providerName = propertyLoaderObj.getProperty("ng.e1.p1.provider");
+			locationName = propertyLoaderObj.getProperty("ng.e1.p1.location");
+			integrationPracticeID = propertyLoaderObj.getProperty("integration.practice.id.e1.p1");
+			url = propertyLoaderObj.getProperty("mf.portal.url.practice1");
 		} else if (propertyLoaderObj.getNGAPIexecutionMode().equalsIgnoreCase("SIT")) {
-			enterpriseId = propertyLoaderObj.getProperty("NGMainEnterpriseID");
-			practiceId = propertyLoaderObj.getProperty("NGMainPracticeID");
-			providerName = propertyLoaderObj.getProperty("EPMProviderName");
-			locationName = propertyLoaderObj.getProperty("EPMLocationName");
-			integrationPracticeID = propertyLoaderObj.getProperty("integrationPracticeIDAMDC");
+			enterpriseId = propertyLoaderObj.getProperty("ng.main.enterprise.id");
+			practiceId = propertyLoaderObj.getProperty("ng.main.practice.id");
+			providerName = propertyLoaderObj.getProperty("epm.provider.name");
+			locationName = propertyLoaderObj.getProperty("epm.location.name");
+			integrationPracticeID = propertyLoaderObj.getProperty("integrationpracticeid.amdc");
 			url = propertyLoaderObj.getProperty("url");
 		} else {
 			Log4jUtil.log("Invalid Execution Mode");
 		}
-		String userLocationName = propertyLoaderObj.getProperty("PortalLocationName");
+		String userLocationName = propertyLoaderObj.getProperty("portal.location.name");
 
 		long timestamp = System.currentTimeMillis();
 		logStep("Do a GET and get the read communication");
@@ -550,12 +550,12 @@ public class NGIntegrationE2EInboxTests extends BaseTestNGWebDriver {
 
 		logStep("Login patient");
 		NGLoginPage loginPage = new NGLoginPage(driver, propertyLoaderObj.getProperty("url"));
-		JalapenoHomePage homePage = loginPage.login(propertyLoaderObj.getProperty("CCDAUsername"),
+		JalapenoHomePage homePage = loginPage.login(propertyLoaderObj.getProperty("ccda.username"),
 				propertyLoaderObj.getPassword());
 
 		logStep("Click Ask A Question tab");
 		JalapenoAskAStaffV2Page1 askPage1 = homePage
-				.openSpecificAskaQuestion(propertyLoaderObj.getProperty("askAV2Name"));
+				.openSpecificAskaQuestion(propertyLoaderObj.getProperty("aska.v2.name"));
 
 		String askaSubject = Long.toString(askPage1.getCreatedTimeStamp());
 
@@ -574,12 +574,12 @@ public class NGIntegrationE2EInboxTests extends BaseTestNGWebDriver {
 		logStep("Setup Oauth client" + propertyLoaderObj.getResponsePath());
 		if (propertyLoaderObj.getNGAPIexecutionMode().equalsIgnoreCase("QAMain")) {
 			RestUtils.oauthSetup(propertyLoaderObj.getOAuthKeyStore(), propertyLoaderObj.getOAuthProperty(),
-					propertyLoaderObj.getOAuthAppToken(), propertyLoaderObj.getProperty("oAuthUsername1"),
-					propertyLoaderObj.getProperty("oAuthPassword1"));
+					propertyLoaderObj.getOAuthAppToken(), propertyLoaderObj.getProperty("oauth.username1"),
+					propertyLoaderObj.getProperty("oauth.password1"));
 		} else if (propertyLoaderObj.getNGAPIexecutionMode().equalsIgnoreCase("SIT")) {
 			RestUtils.oauthSetup(propertyLoaderObj.getOAuthKeyStore(), propertyLoaderObj.getOAuthProperty(),
-					propertyLoaderObj.getOAuthAppToken(), propertyLoaderObj.getProperty("oAuthUsername"),
-					propertyLoaderObj.getProperty("oAuthPassword"));
+					propertyLoaderObj.getOAuthAppToken(), propertyLoaderObj.getProperty("oauth.username"),
+					propertyLoaderObj.getProperty("oauth.password"));
 		} else {
 			Log4jUtil.log("Invalid Execution Mode");
 		}
@@ -589,7 +589,7 @@ public class NGIntegrationE2EInboxTests extends BaseTestNGWebDriver {
 
 		logStep("Do a GET and get the message");
 		RestUtils.setupHttpGetRequest(
-				propertyLoaderObj.getProperty("GetInboundMessage").replaceAll("integrationID", integrationPracticeID)
+				propertyLoaderObj.getProperty("get.inbound.message").replaceAll("integrationID", integrationPracticeID)
 						+ "?since=" + since + ",0",
 				propertyLoaderObj.getResponsePath());
 
@@ -609,7 +609,7 @@ public class NGIntegrationE2EInboxTests extends BaseTestNGWebDriver {
 				+ IntegrationConstants.MESSAGE_REPLY + "\nThanks,\n" + patientFirstName + " " + patientLastName;
 		Thread.sleep(60000);
 		CommonFlows.verifyMessageReceivedAtNGCore(propertyLoaderObj, messageID, askaSubject,
-				expectedBodyinInbox.replace("\n", ""), propertyLoaderObj.getProperty("askAV2Name"));
+				expectedBodyinInbox.replace("\n", ""), propertyLoaderObj.getProperty("aska.v2.name"));
 
 		NGAPIUtils.updateLoginDefaultTo("EnterpriseGateway", enterpriseId, practiceId);
 		String comm_id = NGAPIFlows.postSecureMessage(propertyLoaderObj, "ReplyToPortal" + messageID, person_id,
@@ -633,12 +633,12 @@ public class NGIntegrationE2EInboxTests extends BaseTestNGWebDriver {
 		logStep("Setup Oauth client" + propertyLoaderObj.getResponsePath());
 		if (propertyLoaderObj.getNGAPIexecutionMode().equalsIgnoreCase("QAMain")) {
 			RestUtils.oauthSetup(propertyLoaderObj.getOAuthKeyStore(), propertyLoaderObj.getOAuthProperty(),
-					propertyLoaderObj.getOAuthAppToken(), propertyLoaderObj.getProperty("oAuthUsername1"),
-					propertyLoaderObj.getProperty("oAuthPassword1"));
+					propertyLoaderObj.getOAuthAppToken(), propertyLoaderObj.getProperty("oauth.username1"),
+					propertyLoaderObj.getProperty("oauth.password1"));
 		} else if (propertyLoaderObj.getNGAPIexecutionMode().equalsIgnoreCase("SIT")) {
 			RestUtils.oauthSetup(propertyLoaderObj.getOAuthKeyStore(), propertyLoaderObj.getOAuthProperty(),
-					propertyLoaderObj.getOAuthAppToken(), propertyLoaderObj.getProperty("oAuthUsername"),
-					propertyLoaderObj.getProperty("oAuthPassword"));
+					propertyLoaderObj.getOAuthAppToken(), propertyLoaderObj.getProperty("oauth.username"),
+					propertyLoaderObj.getProperty("oauth.password"));
 		} else {
 			Log4jUtil.log("Invalid Execution Mode");
 		}
@@ -650,27 +650,27 @@ public class NGIntegrationE2EInboxTests extends BaseTestNGWebDriver {
 	@Test(enabled = true, groups = { "acceptance-INBOX" }, retryAnalyzer = RetryAnalyzer.class)
 	public void testCOMSendSecureMessageDoNotAddToChart() throws Throwable {
 		logStep("Getting Existing User");
-		String username = propertyLoaderObj.getProperty("CCDAUsername");
+		String username = propertyLoaderObj.getProperty("ccda.username");
 		String person_id = DBUtils.executeQueryOnDB("NGCoreDB",
 				"select person_id from person where email_address = '" + username + "'");
 		String enterpriseId = null, practiceId = null, providerName = null, locationName = null, userId = null,
 				integrationPracticeID = null, url = null;
 
 		if (propertyLoaderObj.getNGAPIexecutionMode().equalsIgnoreCase("QAMain")) {
-			enterpriseId = propertyLoaderObj.getProperty("NGEnterpiseEnrollmentEnterprise1");
-			practiceId = propertyLoaderObj.getProperty("NGEnterprise1Practice1");
-			providerName = propertyLoaderObj.getProperty("NGE1P1Provider");
-			locationName = propertyLoaderObj.getProperty("NGE1P1Location");
-			userId = propertyLoaderObj.getProperty("SecureMessageUserID");
-			integrationPracticeID = propertyLoaderObj.getProperty("integrationPracticeIDE1P1");
-			url = propertyLoaderObj.getProperty("MFPortalURLPractice1");
+			enterpriseId = propertyLoaderObj.getProperty("ng.enterprise.enrollment.enterprise1");
+			practiceId = propertyLoaderObj.getProperty("ng.enterprise1.practice1");
+			providerName = propertyLoaderObj.getProperty("ng.e1.p1.provider");
+			locationName = propertyLoaderObj.getProperty("ng.e1.p1.location");
+			userId = propertyLoaderObj.getProperty("secure.message.user.id");
+			integrationPracticeID = propertyLoaderObj.getProperty("integration.practice.id.e1.p1");
+			url = propertyLoaderObj.getProperty("mf.portal.url.practice1");
 		} else if (propertyLoaderObj.getNGAPIexecutionMode().equalsIgnoreCase("SIT")) {
-			enterpriseId = propertyLoaderObj.getProperty("NGMainEnterpriseID");
-			practiceId = propertyLoaderObj.getProperty("NGMainPracticeID");
-			providerName = propertyLoaderObj.getProperty("EPMProviderName");
-			locationName = propertyLoaderObj.getProperty("EPMLocationName");
-			userId = propertyLoaderObj.getProperty("SecureMessageUserID");
-			integrationPracticeID = propertyLoaderObj.getProperty("integrationPracticeIDAMDC");
+			enterpriseId = propertyLoaderObj.getProperty("ng.main.enterprise.id");
+			practiceId = propertyLoaderObj.getProperty("ng.main.practice.id");
+			providerName = propertyLoaderObj.getProperty("epm.provider.name");
+			locationName = propertyLoaderObj.getProperty("epm.location.name");
+			userId = propertyLoaderObj.getProperty("secure.message.user.id");
+			integrationPracticeID = propertyLoaderObj.getProperty("integrationpracticeid.amdc");
 			url = propertyLoaderObj.getProperty("url");
 		} else {
 			Log4jUtil.log("Invalid Execution Mode");
@@ -697,12 +697,12 @@ public class NGIntegrationE2EInboxTests extends BaseTestNGWebDriver {
 		logStep("Setup Oauth client" + propertyLoaderObj.getResponsePath());
 		if (propertyLoaderObj.getNGAPIexecutionMode().equalsIgnoreCase("QAMain")) {
 			RestUtils.oauthSetup(propertyLoaderObj.getOAuthKeyStore(), propertyLoaderObj.getOAuthProperty(),
-					propertyLoaderObj.getOAuthAppToken(), propertyLoaderObj.getProperty("oAuthUsername1"),
-					propertyLoaderObj.getProperty("oAuthPassword1"));
+					propertyLoaderObj.getOAuthAppToken(), propertyLoaderObj.getProperty("oauth.username1"),
+					propertyLoaderObj.getProperty("oauth.password1"));
 		} else if (propertyLoaderObj.getNGAPIexecutionMode().equalsIgnoreCase("SIT")) {
 			RestUtils.oauthSetup(propertyLoaderObj.getOAuthKeyStore(), propertyLoaderObj.getOAuthProperty(),
-					propertyLoaderObj.getOAuthAppToken(), propertyLoaderObj.getProperty("oAuthUsername"),
-					propertyLoaderObj.getProperty("oAuthPassword"));
+					propertyLoaderObj.getOAuthAppToken(), propertyLoaderObj.getProperty("oauth.username"),
+					propertyLoaderObj.getProperty("oauth.password"));
 		} else {
 			Log4jUtil.log("Invalid Execution Mode");
 		}
@@ -714,31 +714,31 @@ public class NGIntegrationE2EInboxTests extends BaseTestNGWebDriver {
 	@Test(enabled = true, groups = { "acceptance-INBOX" }, retryAnalyzer = RetryAnalyzer.class)
 	public void testInboxSendAppointmentRequestBookAppointmentSendResponse() throws Throwable {
 		logStep("Getting Existing User");
-		String username = propertyLoaderObj.getProperty("CCDAUsername");
+		String username = propertyLoaderObj.getProperty("ccda.username");
 		String person_id = DBUtils.executeQueryOnDB("NGCoreDB",
 				"select person_id from person where email_address = '" + username + "'");
 		String enterpriseId = null, practiceId = null, providerName = null, locationName = null,
 				integrationPracticeID = null, url = null;
 
 		if (propertyLoaderObj.getNGAPIexecutionMode().equalsIgnoreCase("QAMain")) {
-			enterpriseId = propertyLoaderObj.getProperty("NGEnterpiseEnrollmentEnterprise1");
-			practiceId = propertyLoaderObj.getProperty("NGEnterprise1Practice1");
-			providerName = propertyLoaderObj.getProperty("NGE1P1Provider");
-			locationName = propertyLoaderObj.getProperty("NGE1P1Location");
-			integrationPracticeID = propertyLoaderObj.getProperty("integrationPracticeIDE1P1");
-			url = propertyLoaderObj.getProperty("MFPortalURLPractice1");
+			enterpriseId = propertyLoaderObj.getProperty("ng.enterprise.enrollment.enterprise1");
+			practiceId = propertyLoaderObj.getProperty("ng.enterprise1.practice1");
+			providerName = propertyLoaderObj.getProperty("ng.e1.p1.provider");
+			locationName = propertyLoaderObj.getProperty("ng.e1.p1.location");
+			integrationPracticeID = propertyLoaderObj.getProperty("integration.practice.id.e1.p1");
+			url = propertyLoaderObj.getProperty("mf.portal.url.practice1");
 		} else if (propertyLoaderObj.getNGAPIexecutionMode().equalsIgnoreCase("SIT")) {
-			enterpriseId = propertyLoaderObj.getProperty("NGMainEnterpriseID");
-			practiceId = propertyLoaderObj.getProperty("NGMainPracticeID");
-			providerName = propertyLoaderObj.getProperty("EPMProviderName");
-			locationName = propertyLoaderObj.getProperty("EPMLocationName");
-			integrationPracticeID = propertyLoaderObj.getProperty("integrationPracticeIDAMDC");
+			enterpriseId = propertyLoaderObj.getProperty("ng.main.enterprise.id");
+			practiceId = propertyLoaderObj.getProperty("ng.main.practice.id");
+			providerName = propertyLoaderObj.getProperty("epm.provider.name");
+			locationName = propertyLoaderObj.getProperty("epm.location.name");
+			integrationPracticeID = propertyLoaderObj.getProperty("integrationpracticeid.amdc");
 			url = propertyLoaderObj.getProperty("url");
 		} else {
 			Log4jUtil.log("Invalid Execution Mode");
 		}
-		String eventName = propertyLoaderObj.getProperty("EventName");
-		String resourceName = propertyLoaderObj.getProperty("ResourceName");
+		String eventName = propertyLoaderObj.getProperty("event.name");
+		String resourceName = propertyLoaderObj.getProperty("resource.name");
 
 		String updateToEPMCategoryQuery = "update service_setting set value = 'EPM' where [key] = 'epmcategory' and practice_id = (select id from practice where extpracticeid ='"
 				+ practiceId + "')";
@@ -767,9 +767,6 @@ public class NGIntegrationE2EInboxTests extends BaseTestNGWebDriver {
 		NGLoginPage loginPage = new NGLoginPage(driver, url);
 		JalapenoHomePage homePage = loginPage.login(username, propertyLoaderObj.getPassword());
 
-		Log4jUtil.log("Detecting if Home Page is opened");
-		assertTrue(homePage.isHomeButtonPresent(driver));
-
 		logStep("Navigate to appointment page");
 		homePage.clickOnAppointmentV3(driver);
 
@@ -787,7 +784,7 @@ public class NGIntegrationE2EInboxTests extends BaseTestNGWebDriver {
 				NGAppointmentRequestV2Step1.class);
 
 		logStep("Assess Elements and choose provider");
-		appointmentRequestStep1.chooseProvider(propertyLoaderObj.getProperty("ProviderName"));
+		appointmentRequestStep1.chooseProvider(propertyLoaderObj.getProperty("provider.name"));
 
 		logStep("Continue to step 2: click continue and assess elements");
 		JalapenoAppointmentRequestV2Step2 appointmentRequestStep2 = appointmentRequestStep1.continueToStep2(driver);
@@ -821,12 +818,12 @@ public class NGIntegrationE2EInboxTests extends BaseTestNGWebDriver {
 		logStep("Setup Oauth client" + propertyLoaderObj.getResponsePath());
 		if (propertyLoaderObj.getNGAPIexecutionMode().equalsIgnoreCase("QAMain")) {
 			RestUtils.oauthSetup(propertyLoaderObj.getOAuthKeyStore(), propertyLoaderObj.getOAuthProperty(),
-					propertyLoaderObj.getOAuthAppToken(), propertyLoaderObj.getProperty("oAuthUsername1"),
-					propertyLoaderObj.getProperty("oAuthPassword1"));
+					propertyLoaderObj.getOAuthAppToken(), propertyLoaderObj.getProperty("oauth.username1"),
+					propertyLoaderObj.getProperty("oauth.password1"));
 		} else if (propertyLoaderObj.getNGAPIexecutionMode().equalsIgnoreCase("SIT")) {
 			RestUtils.oauthSetup(propertyLoaderObj.getOAuthKeyStore(), propertyLoaderObj.getOAuthProperty(),
-					propertyLoaderObj.getOAuthAppToken(), propertyLoaderObj.getProperty("oAuthUsername"),
-					propertyLoaderObj.getProperty("oAuthPassword"));
+					propertyLoaderObj.getOAuthAppToken(), propertyLoaderObj.getProperty("oauth.username"),
+					propertyLoaderObj.getProperty("oauth.password"));
 		} else {
 			Log4jUtil.log("Invalid Execution Mode");
 		}
@@ -836,7 +833,7 @@ public class NGIntegrationE2EInboxTests extends BaseTestNGWebDriver {
 
 		logStep("Do a GET and get the message");
 		RestUtils.setupHttpGetRequest(
-				propertyLoaderObj.getProperty("GetAppointment").replaceAll("integrationID", integrationPracticeID)
+				propertyLoaderObj.getProperty("get.appointment").replaceAll("integrationID", integrationPracticeID)
 						+ "?since=" + since + ",0",
 				propertyLoaderObj.getResponsePath());
 
@@ -846,8 +843,8 @@ public class NGIntegrationE2EInboxTests extends BaseTestNGWebDriver {
 
 		logStep("Verify appointment request is reached to EPM/EHR Inbox");
 		CommonFlows.verifyAppointmentRequestReceived(appointmentID, appointmentReason,
-				propertyLoaderObj.getProperty("AppointmentStartTime"),
-				propertyLoaderObj.getProperty("AppointmentEndTime"), propertyLoaderObj.getProperty("AppointmentDays"),
+				propertyLoaderObj.getProperty("appointment.start.time"),
+				propertyLoaderObj.getProperty("appointment.end.time"), propertyLoaderObj.getProperty("appointment.days"),
 				practiceId);
 
 		DBUtils.executeQueryOnDB("MFAgentDB", updateToEPMCategoryQuery);
@@ -893,26 +890,26 @@ public class NGIntegrationE2EInboxTests extends BaseTestNGWebDriver {
 	@Test(enabled = true, groups = { "acceptance-INBOX" }, retryAnalyzer = RetryAnalyzer.class)
 	public void testInboxAppointmentSameSlot() throws Throwable {
 		logStep("Getting Existing User");
-		String username = propertyLoaderObj.getProperty("CCDAUsername");
+		String username = propertyLoaderObj.getProperty("ccda.username");
 		String person_id = DBUtils.executeQueryOnDB("NGCoreDB",
 				"select person_id from person where email_address = '" + username + "'");
 		String enterpriseId = null, practiceId = null, providerName = null, locationName = null;
 
 		if (propertyLoaderObj.getNGAPIexecutionMode().equalsIgnoreCase("QAMain")) {
-			enterpriseId = propertyLoaderObj.getProperty("NGEnterpiseEnrollmentEnterprise1");
-			practiceId = propertyLoaderObj.getProperty("NGEnterprise1Practice1");
-			providerName = propertyLoaderObj.getProperty("NGE1P1Provider");
-			locationName = propertyLoaderObj.getProperty("NGE1P1Location");
+			enterpriseId = propertyLoaderObj.getProperty("ng.enterprise.enrollment.enterprise1");
+			practiceId = propertyLoaderObj.getProperty("ng.enterprise1.practice1");
+			providerName = propertyLoaderObj.getProperty("ng.e1.p1.provider");
+			locationName = propertyLoaderObj.getProperty("ng.e1.p1.location");
 		} else if (propertyLoaderObj.getNGAPIexecutionMode().equalsIgnoreCase("SIT")) {
-			enterpriseId = propertyLoaderObj.getProperty("NGMainEnterpriseID");
-			practiceId = propertyLoaderObj.getProperty("NGMainPracticeID");
-			providerName = propertyLoaderObj.getProperty("EPMProviderName");
-			locationName = propertyLoaderObj.getProperty("EPMLocationName");
+			enterpriseId = propertyLoaderObj.getProperty("ng.main.enterprise.id");
+			practiceId = propertyLoaderObj.getProperty("ng.main.practice.id");
+			providerName = propertyLoaderObj.getProperty("epm.provider.name");
+			locationName = propertyLoaderObj.getProperty("epm.location.name");
 		} else {
 			Log4jUtil.log("Invalid Execution Mode");
 		}
-		String eventName = propertyLoaderObj.getProperty("EventName");
-		String resourceName = propertyLoaderObj.getProperty("ResourceName");
+		String eventName = propertyLoaderObj.getProperty("event.name");
+		String resourceName = propertyLoaderObj.getProperty("resource.name");
 
 		String apptTime = "09:30:00";
 		String begintime = apptTime.substring(0, 5).replaceAll(":", "");
@@ -941,31 +938,31 @@ public class NGIntegrationE2EInboxTests extends BaseTestNGWebDriver {
 	@Test(enabled = true, groups = { "acceptance-INBOX" }, retryAnalyzer = RetryAnalyzer.class)
 	public void testInboxAppointmentBookMultipleSlotsandDeleteAppointmentVerifyInPortal() throws Throwable {
 		logStep("Getting Existing User");
-		String username = propertyLoaderObj.getProperty("CCDAUsername");
+		String username = propertyLoaderObj.getProperty("ccda.username");
 		String person_id = DBUtils.executeQueryOnDB("NGCoreDB",
 				"select person_id from person where email_address = '" + username + "'");
 		String enterpriseId = null, practiceId = null, providerName = null, locationName = null,
 				integrationPracticeID = null, url = null;
 
 		if (propertyLoaderObj.getNGAPIexecutionMode().equalsIgnoreCase("QAMain")) {
-			enterpriseId = propertyLoaderObj.getProperty("NGEnterpiseEnrollmentEnterprise1");
-			practiceId = propertyLoaderObj.getProperty("NGEnterprise1Practice1");
-			providerName = propertyLoaderObj.getProperty("NGE1P1Provider");
-			locationName = propertyLoaderObj.getProperty("NGE1P1Location");
-			integrationPracticeID = propertyLoaderObj.getProperty("integrationPracticeIDE1P1");
-			url = propertyLoaderObj.getProperty("MFPortalURLPractice1");
+			enterpriseId = propertyLoaderObj.getProperty("ng.enterprise.enrollment.enterprise1");
+			practiceId = propertyLoaderObj.getProperty("ng.enterprise1.practice1");
+			providerName = propertyLoaderObj.getProperty("ng.e1.p1.provider");
+			locationName = propertyLoaderObj.getProperty("ng.e1.p1.location");
+			integrationPracticeID = propertyLoaderObj.getProperty("integration.practice.id.e1.p1");
+			url = propertyLoaderObj.getProperty("mf.portal.url.practice1");
 		} else if (propertyLoaderObj.getNGAPIexecutionMode().equalsIgnoreCase("SIT")) {
-			enterpriseId = propertyLoaderObj.getProperty("NGMainEnterpriseID");
-			practiceId = propertyLoaderObj.getProperty("NGMainPracticeID");
-			providerName = propertyLoaderObj.getProperty("EPMProviderName");
-			locationName = propertyLoaderObj.getProperty("EPMLocationName");
-			integrationPracticeID = propertyLoaderObj.getProperty("integrationPracticeIDAMDC");
+			enterpriseId = propertyLoaderObj.getProperty("ng.main.enterprise.id");
+			practiceId = propertyLoaderObj.getProperty("ng.main.practice.id");
+			providerName = propertyLoaderObj.getProperty("epm.provider.name");
+			locationName = propertyLoaderObj.getProperty("epm.location.name");
+			integrationPracticeID = propertyLoaderObj.getProperty("integrationpracticeid.amdc");
 			url = propertyLoaderObj.getProperty("url");
 		} else {
 			Log4jUtil.log("Invalid Execution Mode");
 		}
-		String eventName = propertyLoaderObj.getProperty("EventName");
-		String resourceName = propertyLoaderObj.getProperty("ResourceName");
+		String eventName = propertyLoaderObj.getProperty("event.name");
+		String resourceName = propertyLoaderObj.getProperty("resource.name");
 
 		String apptTime = "10:30:00";
 		String begintime = apptTime.substring(0, 5).replaceAll(":", "");
@@ -994,12 +991,12 @@ public class NGIntegrationE2EInboxTests extends BaseTestNGWebDriver {
 		logStep("Setup Oauth client" + propertyLoaderObj.getResponsePath());
 		if (propertyLoaderObj.getNGAPIexecutionMode().equalsIgnoreCase("QAMain")) {
 			RestUtils.oauthSetup(propertyLoaderObj.getOAuthKeyStore(), propertyLoaderObj.getOAuthProperty(),
-					propertyLoaderObj.getOAuthAppToken(), propertyLoaderObj.getProperty("oAuthUsername1"),
-					propertyLoaderObj.getProperty("oAuthPassword1"));
+					propertyLoaderObj.getOAuthAppToken(), propertyLoaderObj.getProperty("oauth.username1"),
+					propertyLoaderObj.getProperty("oauth.password1"));
 		} else if (propertyLoaderObj.getNGAPIexecutionMode().equalsIgnoreCase("SIT")) {
 			RestUtils.oauthSetup(propertyLoaderObj.getOAuthKeyStore(), propertyLoaderObj.getOAuthProperty(),
-					propertyLoaderObj.getOAuthAppToken(), propertyLoaderObj.getProperty("oAuthUsername"),
-					propertyLoaderObj.getProperty("oAuthPassword"));
+					propertyLoaderObj.getOAuthAppToken(), propertyLoaderObj.getProperty("oauth.username"),
+					propertyLoaderObj.getProperty("oauth.password"));
 		} else {
 			Log4jUtil.log("Invalid Execution Mode");
 		}
@@ -1049,27 +1046,27 @@ public class NGIntegrationE2EInboxTests extends BaseTestNGWebDriver {
 	@Test(enabled = true, groups = { "acceptance-INBOX" }, retryAnalyzer = RetryAnalyzer.class)
 	public void testPP138SendPatientEducationByCommunicationMessage() throws Throwable {
 		logStep("Getting Existing User");
-		String username = propertyLoaderObj.getProperty("CCDAUsername");
+		String username = propertyLoaderObj.getProperty("ccda.username");
 		String person_id = DBUtils.executeQueryOnDB("NGCoreDB",
 				"select person_id from person where email_address = '" + username + "'");
 		String enterpriseId = null, practiceId = null, providerName = null, locationName = null, userId = null,
 				integrationPracticeID = null, url = null;
 
 		if (propertyLoaderObj.getNGAPIexecutionMode().equalsIgnoreCase("QAMain")) {
-			enterpriseId = propertyLoaderObj.getProperty("NGEnterpiseEnrollmentEnterprise1");
-			practiceId = propertyLoaderObj.getProperty("NGEnterprise1Practice1");
-			providerName = propertyLoaderObj.getProperty("NGE1P1Provider");
-			locationName = propertyLoaderObj.getProperty("NGE1P1Location");
-			userId = propertyLoaderObj.getProperty("SecureMessageUserID");
-			integrationPracticeID = propertyLoaderObj.getProperty("integrationPracticeIDE1P1");
-			url = propertyLoaderObj.getProperty("MFPortalURLPractice1");
+			enterpriseId = propertyLoaderObj.getProperty("ng.enterprise.enrollment.enterprise1");
+			practiceId = propertyLoaderObj.getProperty("ng.enterprise1.practice1");
+			providerName = propertyLoaderObj.getProperty("ng.e1.p1.provider");
+			locationName = propertyLoaderObj.getProperty("ng.e1.p1.location");
+			userId = propertyLoaderObj.getProperty("secure.message.user.id");
+			integrationPracticeID = propertyLoaderObj.getProperty("integration.practice.id.e1.p1");
+			url = propertyLoaderObj.getProperty("mf.portal.url.practice1");
 		} else if (propertyLoaderObj.getNGAPIexecutionMode().equalsIgnoreCase("SIT")) {
-			enterpriseId = propertyLoaderObj.getProperty("NGMainEnterpriseID");
-			practiceId = propertyLoaderObj.getProperty("NGMainPracticeID");
-			providerName = propertyLoaderObj.getProperty("EPMProviderName");
-			locationName = propertyLoaderObj.getProperty("EPMLocationName");
-			userId = propertyLoaderObj.getProperty("SecureMessageUserID");
-			integrationPracticeID = propertyLoaderObj.getProperty("integrationPracticeIDAMDC");
+			enterpriseId = propertyLoaderObj.getProperty("ng.main.enterprise.id");
+			practiceId = propertyLoaderObj.getProperty("ng.main.practice.id");
+			providerName = propertyLoaderObj.getProperty("epm.provider.name");
+			locationName = propertyLoaderObj.getProperty("epm.location.name");
+			userId = propertyLoaderObj.getProperty("secure.message.user.id");
+			integrationPracticeID = propertyLoaderObj.getProperty("integrationpracticeid.amdc");
 			url = propertyLoaderObj.getProperty("url");
 		} else {
 			Log4jUtil.log("Invalid Execution Mode");
@@ -1104,12 +1101,12 @@ public class NGIntegrationE2EInboxTests extends BaseTestNGWebDriver {
 		logStep("Setup Oauth client" + propertyLoaderObj.getResponsePath());
 		if (propertyLoaderObj.getNGAPIexecutionMode().equalsIgnoreCase("QAMain")) {
 			RestUtils.oauthSetup(propertyLoaderObj.getOAuthKeyStore(), propertyLoaderObj.getOAuthProperty(),
-					propertyLoaderObj.getOAuthAppToken(), propertyLoaderObj.getProperty("oAuthUsername1"),
-					propertyLoaderObj.getProperty("oAuthPassword1"));
+					propertyLoaderObj.getOAuthAppToken(), propertyLoaderObj.getProperty("oauth.username1"),
+					propertyLoaderObj.getProperty("oauth.password1"));
 		} else if (propertyLoaderObj.getNGAPIexecutionMode().equalsIgnoreCase("SIT")) {
 			RestUtils.oauthSetup(propertyLoaderObj.getOAuthKeyStore(), propertyLoaderObj.getOAuthProperty(),
-					propertyLoaderObj.getOAuthAppToken(), propertyLoaderObj.getProperty("oAuthUsername"),
-					propertyLoaderObj.getProperty("oAuthPassword"));
+					propertyLoaderObj.getOAuthAppToken(), propertyLoaderObj.getProperty("oauth.username"),
+					propertyLoaderObj.getProperty("oauth.password"));
 		} else {
 			Log4jUtil.log("Invalid Execution Mode");
 		}
@@ -1120,24 +1117,24 @@ public class NGIntegrationE2EInboxTests extends BaseTestNGWebDriver {
 	@Test(enabled = true, groups = { "acceptance-INBOX" }, retryAnalyzer = RetryAnalyzer.class)
 	public void testInboxPrescription() throws Throwable {
 		logStep("Getting Existing User");
-		String username = propertyLoaderObj.getProperty("CCDAUsername");
+		String username = propertyLoaderObj.getProperty("ccda.username");
 		String person_id = DBUtils.executeQueryOnDB("NGCoreDB",
 				"select person_id from person where email_address = '" + username + "'");
 		String enterpriseId = null, practiceId = null, providerName = null, locationName = null,
 				integrationPracticeID = null;
 
 		if (propertyLoaderObj.getNGAPIexecutionMode().equalsIgnoreCase("QAMain")) {
-			enterpriseId = propertyLoaderObj.getProperty("NGEnterpiseEnrollmentEnterprise1");
-			practiceId = propertyLoaderObj.getProperty("NGEnterprise1Practice1");
-			providerName = propertyLoaderObj.getProperty("NGE1P1Provider");
-			locationName = propertyLoaderObj.getProperty("NGE1P1Location");
-			integrationPracticeID = propertyLoaderObj.getProperty("integrationPracticeIDE1P1");
+			enterpriseId = propertyLoaderObj.getProperty("ng.enterprise.enrollment.enterprise1");
+			practiceId = propertyLoaderObj.getProperty("ng.enterprise1.practice1");
+			providerName = propertyLoaderObj.getProperty("ng.e1.p1.provider");
+			locationName = propertyLoaderObj.getProperty("ng.e1.p1.location");
+			integrationPracticeID = propertyLoaderObj.getProperty("integration.practice.id.e1.p1");
 		} else if (propertyLoaderObj.getNGAPIexecutionMode().equalsIgnoreCase("SIT")) {
-			enterpriseId = propertyLoaderObj.getProperty("NGMainEnterpriseID");
-			practiceId = propertyLoaderObj.getProperty("NGMainPracticeID");
-			providerName = propertyLoaderObj.getProperty("EPMProviderName");
-			locationName = propertyLoaderObj.getProperty("EPMLocationName");
-			integrationPracticeID = propertyLoaderObj.getProperty("integrationPracticeIDAMDC");
+			enterpriseId = propertyLoaderObj.getProperty("ng.main.enterprise.id");
+			practiceId = propertyLoaderObj.getProperty("ng.main.practice.id");
+			providerName = propertyLoaderObj.getProperty("epm.provider.name");
+			locationName = propertyLoaderObj.getProperty("epm.location.name");
+			integrationPracticeID = propertyLoaderObj.getProperty("integrationpracticeid.amdc");
 		} else {
 			Log4jUtil.log("Invalid Execution Mode");
 		}
@@ -1168,18 +1165,18 @@ public class NGIntegrationE2EInboxTests extends BaseTestNGWebDriver {
 				integrationPracticeID = null, url = null;
 
 		if (propertyLoaderObj.getNGAPIexecutionMode().equalsIgnoreCase("QAMain")) {
-			enterpriseId = propertyLoaderObj.getProperty("NGEnterpiseEnrollmentEnterprise1");
-			practiceId = propertyLoaderObj.getProperty("NGEnterprise1Practice1");
-			providerName = propertyLoaderObj.getProperty("NGE1P1Provider");
-			locationName = propertyLoaderObj.getProperty("NGE1P1Location");
-			integrationPracticeID = propertyLoaderObj.getProperty("integrationPracticeIDE1P1");
-			url = propertyLoaderObj.getProperty("MFPortalURLPractice1");
+			enterpriseId = propertyLoaderObj.getProperty("ng.enterprise.enrollment.enterprise1");
+			practiceId = propertyLoaderObj.getProperty("ng.enterprise1.practice1");
+			providerName = propertyLoaderObj.getProperty("ng.e1.p1.provider");
+			locationName = propertyLoaderObj.getProperty("ng.e1.p1.location");
+			integrationPracticeID = propertyLoaderObj.getProperty("integration.practice.id.e1.p1");
+			url = propertyLoaderObj.getProperty("mf.portal.url.practice1");
 		} else if (propertyLoaderObj.getNGAPIexecutionMode().equalsIgnoreCase("SIT")) {
-			enterpriseId = propertyLoaderObj.getProperty("NGMainEnterpriseID");
-			practiceId = propertyLoaderObj.getProperty("NGMainPracticeID");
-			providerName = propertyLoaderObj.getProperty("EPMProviderName");
-			locationName = propertyLoaderObj.getProperty("EPMLocationName");
-			integrationPracticeID = propertyLoaderObj.getProperty("integrationPracticeIDAMDC");
+			enterpriseId = propertyLoaderObj.getProperty("ng.main.enterprise.id");
+			practiceId = propertyLoaderObj.getProperty("ng.main.practice.id");
+			providerName = propertyLoaderObj.getProperty("epm.provider.name");
+			locationName = propertyLoaderObj.getProperty("epm.location.name");
+			integrationPracticeID = propertyLoaderObj.getProperty("integrationpracticeid.amdc");
 			url = propertyLoaderObj.getProperty("url");
 		} else {
 			Log4jUtil.log("Invalid Execution Mode");
@@ -1188,7 +1185,7 @@ public class NGIntegrationE2EInboxTests extends BaseTestNGWebDriver {
 		long timestamp = System.currentTimeMillis();
 		Long since = timestamp / 1000L - 60 * 24;
 		String prescritonRenewalRequestReason = "PrescriptionRenewalRequest" + System.currentTimeMillis();
-		String medicationToRenew = propertyLoaderObj.getProperty("MedicationToRenew");
+		String medicationToRenew = propertyLoaderObj.getProperty("medication.to.renew");
 
 		logStep("Log into Portal");
 		NGLoginPage loginPage = new NGLoginPage(driver, url);
@@ -1200,8 +1197,8 @@ public class NGIntegrationE2EInboxTests extends BaseTestNGWebDriver {
 
 		logStep("Select Location and Provider");
 		prescriptionsPage.SelectProviderLocationclickContinueButton(driver,
-				propertyLoaderObj.getProperty("PortalLocationName"),
-				propertyLoaderObj.getProperty("PortalProviderName"));
+				propertyLoaderObj.getProperty("portal.location.name"),
+				propertyLoaderObj.getProperty("portal.provider.name"));
 
 		logStep("Request for Prescription Renewal from Portal");
 		homePage = prescriptionsPage.requestForPrescriptionRenewal(driver, prescritonRenewalRequestReason,
@@ -1212,12 +1209,12 @@ public class NGIntegrationE2EInboxTests extends BaseTestNGWebDriver {
 		logStep("Setup Oauth client" + propertyLoaderObj.getResponsePath());
 		if (propertyLoaderObj.getNGAPIexecutionMode().equalsIgnoreCase("QAMain")) {
 			RestUtils.oauthSetup(propertyLoaderObj.getOAuthKeyStore(), propertyLoaderObj.getOAuthProperty(),
-					propertyLoaderObj.getOAuthAppToken(), propertyLoaderObj.getProperty("oAuthUsername1"),
-					propertyLoaderObj.getProperty("oAuthPassword1"));
+					propertyLoaderObj.getOAuthAppToken(), propertyLoaderObj.getProperty("oauth.username1"),
+					propertyLoaderObj.getProperty("oauth.password1"));
 		} else if (propertyLoaderObj.getNGAPIexecutionMode().equalsIgnoreCase("SIT")) {
 			RestUtils.oauthSetup(propertyLoaderObj.getOAuthKeyStore(), propertyLoaderObj.getOAuthProperty(),
-					propertyLoaderObj.getOAuthAppToken(), propertyLoaderObj.getProperty("oAuthUsername"),
-					propertyLoaderObj.getProperty("oAuthPassword"));
+					propertyLoaderObj.getOAuthAppToken(), propertyLoaderObj.getProperty("oauth.username"),
+					propertyLoaderObj.getProperty("oauth.password"));
 		} else {
 			Log4jUtil.log("Invalid Execution Mode");
 		}
@@ -1227,7 +1224,7 @@ public class NGIntegrationE2EInboxTests extends BaseTestNGWebDriver {
 
 		logStep("Do a GET Prescription Call and get the message");
 		RestUtils.setupHttpGetRequest(
-				propertyLoaderObj.getProperty("GetPrescription").replaceAll("integrationID", integrationPracticeID)
+				propertyLoaderObj.getProperty("get.prescription").replaceAll("integrationID", integrationPracticeID)
 						+ "?since=" + since + ",0",
 				propertyLoaderObj.getResponsePath());
 
@@ -1256,7 +1253,7 @@ public class NGIntegrationE2EInboxTests extends BaseTestNGWebDriver {
 		JalapenoMessagesPage messagesPage = homePage.showMessages(driver);
 
 		logStep("Verify Prescription Renewal Message is received");
-		assertTrue(messagesPage.isMessageDisplayed(driver, propertyLoaderObj.getProperty("PrescriptionSubject")));
+		assertTrue(messagesPage.isMessageDisplayed(driver, propertyLoaderObj.getProperty("prescription.subject")));
 
 		messagesPage.OpenMessage(driver, "Prescription Renewal Request");
 
@@ -1279,18 +1276,18 @@ public class NGIntegrationE2EInboxTests extends BaseTestNGWebDriver {
 				integrationPracticeID = null, url = null;
 
 		if (propertyLoaderObj.getNGAPIexecutionMode().equalsIgnoreCase("QAMain")) {
-			enterpriseId = propertyLoaderObj.getProperty("NGEnterpiseEnrollmentEnterprise1");
-			practiceId = propertyLoaderObj.getProperty("NGEnterprise1Practice1");
-			providerName = propertyLoaderObj.getProperty("NGE1P1Provider");
-			locationName = propertyLoaderObj.getProperty("NGE1P1Location");
-			integrationPracticeID = propertyLoaderObj.getProperty("integrationPracticeIDE1P1");
-			url = propertyLoaderObj.getProperty("MFPortalURLPractice1");
+			enterpriseId = propertyLoaderObj.getProperty("ng.enterprise.enrollment.enterprise1");
+			practiceId = propertyLoaderObj.getProperty("ng.enterprise1.practice1");
+			providerName = propertyLoaderObj.getProperty("ng.e1.p1.provider");
+			locationName = propertyLoaderObj.getProperty("ng.e1.p1.location");
+			integrationPracticeID = propertyLoaderObj.getProperty("integration.practice.id.e1.p1");
+			url = propertyLoaderObj.getProperty("mf.portal.url.practice1");
 		} else if (propertyLoaderObj.getNGAPIexecutionMode().equalsIgnoreCase("SIT")) {
-			enterpriseId = propertyLoaderObj.getProperty("NGMainEnterpriseID");
-			practiceId = propertyLoaderObj.getProperty("NGMainPracticeID");
-			providerName = propertyLoaderObj.getProperty("EPMProviderName");
-			locationName = propertyLoaderObj.getProperty("EPMLocationName");
-			integrationPracticeID = propertyLoaderObj.getProperty("integrationPracticeIDAMDC");
+			enterpriseId = propertyLoaderObj.getProperty("ng.main.enterprise.id");
+			practiceId = propertyLoaderObj.getProperty("ng.main.practice.id");
+			providerName = propertyLoaderObj.getProperty("epm.provider.name");
+			locationName = propertyLoaderObj.getProperty("epm.location.name");
+			integrationPracticeID = propertyLoaderObj.getProperty("integrationpracticeid.amdc");
 			url = propertyLoaderObj.getProperty("url");
 		} else {
 			Log4jUtil.log("Invalid Execution Mode");
@@ -1299,7 +1296,7 @@ public class NGIntegrationE2EInboxTests extends BaseTestNGWebDriver {
 		long timestamp = System.currentTimeMillis();
 		Long since = timestamp / 1000L - 60 * 24;
 		String prescritonRenewalRequestReason = "PrescriptionRenewalRequest" + System.currentTimeMillis();
-		String medicationToRenew = propertyLoaderObj.getProperty("MedicationToRenew");
+		String medicationToRenew = propertyLoaderObj.getProperty("medication.to.renew");
 
 		logStep("Log into Portal");
 		NGLoginPage loginPage = new NGLoginPage(driver, url);
@@ -1311,8 +1308,8 @@ public class NGIntegrationE2EInboxTests extends BaseTestNGWebDriver {
 
 		logStep("Select Location and Provider");
 		prescriptionsPage.SelectProviderLocationclickContinueButton(driver,
-				propertyLoaderObj.getProperty("PortalLocationName"),
-				propertyLoaderObj.getProperty("PortalProviderName"));
+				propertyLoaderObj.getProperty("portal.location.name"),
+				propertyLoaderObj.getProperty("portal.provider.name"));
 
 		logStep("Request for Prescription Renewal from Portal");
 		homePage = prescriptionsPage.requestForPrescriptionRenewal(driver, prescritonRenewalRequestReason,
@@ -1323,12 +1320,12 @@ public class NGIntegrationE2EInboxTests extends BaseTestNGWebDriver {
 		logStep("Setup Oauth client" + propertyLoaderObj.getResponsePath());
 		if (propertyLoaderObj.getNGAPIexecutionMode().equalsIgnoreCase("QAMain")) {
 			RestUtils.oauthSetup(propertyLoaderObj.getOAuthKeyStore(), propertyLoaderObj.getOAuthProperty(),
-					propertyLoaderObj.getOAuthAppToken(), propertyLoaderObj.getProperty("oAuthUsername1"),
-					propertyLoaderObj.getProperty("oAuthPassword1"));
+					propertyLoaderObj.getOAuthAppToken(), propertyLoaderObj.getProperty("oauth.username1"),
+					propertyLoaderObj.getProperty("oauth.password1"));
 		} else if (propertyLoaderObj.getNGAPIexecutionMode().equalsIgnoreCase("SIT")) {
 			RestUtils.oauthSetup(propertyLoaderObj.getOAuthKeyStore(), propertyLoaderObj.getOAuthProperty(),
-					propertyLoaderObj.getOAuthAppToken(), propertyLoaderObj.getProperty("oAuthUsername"),
-					propertyLoaderObj.getProperty("oAuthPassword"));
+					propertyLoaderObj.getOAuthAppToken(), propertyLoaderObj.getProperty("oauth.username"),
+					propertyLoaderObj.getProperty("oauth.password"));
 		} else {
 			Log4jUtil.log("Invalid Execution Mode");
 		}
@@ -1338,7 +1335,7 @@ public class NGIntegrationE2EInboxTests extends BaseTestNGWebDriver {
 
 		logStep("Do a GET Prescription Call and get the message");
 		RestUtils.setupHttpGetRequest(
-				propertyLoaderObj.getProperty("GetPrescription").replaceAll("integrationID", integrationPracticeID)
+				propertyLoaderObj.getProperty("get.prescription").replaceAll("integrationID", integrationPracticeID)
 						+ "?since=" + since + ",0",
 				propertyLoaderObj.getResponsePath());
 
@@ -1367,7 +1364,7 @@ public class NGIntegrationE2EInboxTests extends BaseTestNGWebDriver {
 		JalapenoMessagesPage messagesPage = homePage.showMessages(driver);
 
 		logStep("Verify Prescription Renewal Message is received");
-		assertTrue(messagesPage.isMessageDisplayed(driver, propertyLoaderObj.getProperty("PrescriptionSubject")));
+		assertTrue(messagesPage.isMessageDisplayed(driver, propertyLoaderObj.getProperty("prescription.subject")));
 
 		messagesPage.OpenMessage(driver, "Prescription Renewal Request");
 
@@ -1381,27 +1378,27 @@ public class NGIntegrationE2EInboxTests extends BaseTestNGWebDriver {
 	public void testCOMBulkSendMessageWithNormalPriorityUnReadDisbaleReplyDoNotAddToEncounterSendByPracticeUser()
 			throws Throwable {
 		logStep("Getting Existing User");
-		String person_id = propertyLoaderObj.getProperty("PersonId1");
+		String person_id = propertyLoaderObj.getProperty("person.id1");
 		String username = DBUtils.executeQueryOnDB("NGCoreDB",
 				"select email_address from person where person_id = '" + person_id + "'");
 		String enterpriseId = null, practiceId = null, providerName = null, locationName = null, userId = null,
 				integrationPracticeID = null, url = null;
 
 		if (propertyLoaderObj.getNGAPIexecutionMode().equalsIgnoreCase("QAMain")) {
-			enterpriseId = propertyLoaderObj.getProperty("NGEnterpiseEnrollmentEnterprise1");
-			practiceId = propertyLoaderObj.getProperty("NGEnterprise1Practice1");
-			providerName = propertyLoaderObj.getProperty("NGE1P1Provider");
-			locationName = propertyLoaderObj.getProperty("NGE1P1Location");
-			userId = propertyLoaderObj.getProperty("SecureMessageUserID");
-			integrationPracticeID = propertyLoaderObj.getProperty("integrationPracticeIDE1P1");
-			url = propertyLoaderObj.getProperty("MFPortalURLPractice1");
+			enterpriseId = propertyLoaderObj.getProperty("ng.enterprise.enrollment.enterprise1");
+			practiceId = propertyLoaderObj.getProperty("ng.enterprise1.practice1");
+			providerName = propertyLoaderObj.getProperty("ng.e1.p1.provider");
+			locationName = propertyLoaderObj.getProperty("ng.e1.p1.location");
+			userId = propertyLoaderObj.getProperty("secure.message.user.id");
+			integrationPracticeID = propertyLoaderObj.getProperty("integration.practice.id.e1.p1");
+			url = propertyLoaderObj.getProperty("mf.portal.url.practice1");
 		} else if (propertyLoaderObj.getNGAPIexecutionMode().equalsIgnoreCase("SIT")) {
-			enterpriseId = propertyLoaderObj.getProperty("NGMainEnterpriseID");
-			practiceId = propertyLoaderObj.getProperty("NGMainPracticeID");
-			providerName = propertyLoaderObj.getProperty("EPMProviderName");
-			locationName = propertyLoaderObj.getProperty("EPMLocationName");
-			userId = propertyLoaderObj.getProperty("SecureMessageUserID");
-			integrationPracticeID = propertyLoaderObj.getProperty("integrationPracticeIDAMDC");
+			enterpriseId = propertyLoaderObj.getProperty("ng.main.enterprise.id");
+			practiceId = propertyLoaderObj.getProperty("ng.main.practice.id");
+			providerName = propertyLoaderObj.getProperty("epm.provider.name");
+			locationName = propertyLoaderObj.getProperty("epm.location.name");
+			userId = propertyLoaderObj.getProperty("secure.message.user.id");
+			integrationPracticeID = propertyLoaderObj.getProperty("integrationpracticeid.amdc");
 			url = propertyLoaderObj.getProperty("url");
 		} else {
 			Log4jUtil.log("Invalid Execution Mode");
@@ -1409,7 +1406,7 @@ public class NGIntegrationE2EInboxTests extends BaseTestNGWebDriver {
 
 		List<String> personIdList = new ArrayList<String>();
 		personIdList.add(person_id);
-		personIdList.add(propertyLoaderObj.getProperty("PersonId2"));
+		personIdList.add(propertyLoaderObj.getProperty("person.id2"));
 
 		logStep("Compose message with normal priority, unread notification, disable reply and send it to more than one recipient");
 		NGAPIUtils.updateLoginDefaultTo("EnterpriseGateway", enterpriseId, practiceId);
@@ -1432,17 +1429,17 @@ public class NGIntegrationE2EInboxTests extends BaseTestNGWebDriver {
 		logStep("Setup Oauth client" + propertyLoaderObj.getResponsePath());
 		if (propertyLoaderObj.getNGAPIexecutionMode().equalsIgnoreCase("QAMain")) {
 			RestUtils.oauthSetup(propertyLoaderObj.getOAuthKeyStore(), propertyLoaderObj.getOAuthProperty(),
-					propertyLoaderObj.getOAuthAppToken(), propertyLoaderObj.getProperty("oAuthUsername1"),
-					propertyLoaderObj.getProperty("oAuthPassword1"));
+					propertyLoaderObj.getOAuthAppToken(), propertyLoaderObj.getProperty("oauth.username1"),
+					propertyLoaderObj.getProperty("oauth.password1"));
 		} else if (propertyLoaderObj.getNGAPIexecutionMode().equalsIgnoreCase("SIT")) {
 			RestUtils.oauthSetup(propertyLoaderObj.getOAuthKeyStore(), propertyLoaderObj.getOAuthProperty(),
-					propertyLoaderObj.getOAuthAppToken(), propertyLoaderObj.getProperty("oAuthUsername"),
-					propertyLoaderObj.getProperty("oAuthPassword"));
+					propertyLoaderObj.getOAuthAppToken(), propertyLoaderObj.getProperty("oauth.username"),
+					propertyLoaderObj.getProperty("oauth.password"));
 		} else {
 			Log4jUtil.log("Invalid Execution Mode");
 		}
 		CommonFlows.verifyMessageINInbox(propertyLoaderObj, driver, url, username,
-				propertyLoaderObj.getProperty("BulkPassword"), subject, body, comm_id, messageID, integrationPracticeID,
+				propertyLoaderObj.getProperty("bulk.password"), subject, body, comm_id, messageID, integrationPracticeID,
 				"BulkCannotReply", "");
 	}
 
@@ -1454,18 +1451,18 @@ public class NGIntegrationE2EInboxTests extends BaseTestNGWebDriver {
 		String practiceId = null, integrationPracticeID = null, url = null;
 
 		if (propertyLoaderObj.getNGAPIexecutionMode().equalsIgnoreCase("QAMain")) {
-			propertyLoaderObj.getProperty("NGEnterpiseEnrollmentEnterprise1");
-			practiceId = propertyLoaderObj.getProperty("NGEnterprise1Practice1");
-			propertyLoaderObj.getProperty("NGE1P1Provider");
-			propertyLoaderObj.getProperty("NGE1P1Location");
-			integrationPracticeID = propertyLoaderObj.getProperty("integrationPracticeIDE1P1");
-			url = propertyLoaderObj.getProperty("MFPortalURLPractice1");
+			propertyLoaderObj.getProperty("ng.enterprise.enrollment.enterprise1");
+			practiceId = propertyLoaderObj.getProperty("ng.enterprise1.practice1");
+			propertyLoaderObj.getProperty("ng.e1.p1.provider");
+			propertyLoaderObj.getProperty("ng.e1.p1.location");
+			integrationPracticeID = propertyLoaderObj.getProperty("integration.practice.id.e1.p1");
+			url = propertyLoaderObj.getProperty("mf.portal.url.practice1");
 		} else if (propertyLoaderObj.getNGAPIexecutionMode().equalsIgnoreCase("SIT")) {
-			propertyLoaderObj.getProperty("NGMainEnterpriseID");
-			practiceId = propertyLoaderObj.getProperty("NGMainPracticeID");
-			propertyLoaderObj.getProperty("EPMProviderName");
-			propertyLoaderObj.getProperty("EPMLocationName");
-			integrationPracticeID = propertyLoaderObj.getProperty("integrationPracticeIDAMDC");
+			propertyLoaderObj.getProperty("ng.main.enterprise.id");
+			practiceId = propertyLoaderObj.getProperty("ng.main.practice.id");
+			propertyLoaderObj.getProperty("epm.provider.name");
+			propertyLoaderObj.getProperty("epm.location.name");
+			integrationPracticeID = propertyLoaderObj.getProperty("integrationpracticeid.amdc");
 			url = propertyLoaderObj.getProperty("url");
 		} else {
 			Log4jUtil.log("Invalid Execution Mode");
@@ -1474,7 +1471,7 @@ public class NGIntegrationE2EInboxTests extends BaseTestNGWebDriver {
 		long timestamp = System.currentTimeMillis();
 		Long since = timestamp / 1000L - 60 * 24;
 		String prescritonRenewalRequestReason = "PrescriptionRenewalRequest" + System.currentTimeMillis();
-		String medicationToRenew = propertyLoaderObj.getProperty("MedicationToRenew");
+		String medicationToRenew = propertyLoaderObj.getProperty("medication.to.renew");
 
 		logStep("Log into Portal");
 		NGLoginPage loginPage = new NGLoginPage(driver, url);
@@ -1486,24 +1483,24 @@ public class NGIntegrationE2EInboxTests extends BaseTestNGWebDriver {
 
 		logStep("Select Location and Provider");
 		prescriptionsPage.SelectProviderLocationclickContinueButton(driver,
-				propertyLoaderObj.getProperty("PortalLocationName"),
-				propertyLoaderObj.getProperty("PortalProviderName"));
+				propertyLoaderObj.getProperty("portal.location.name"),
+				propertyLoaderObj.getProperty("portal.provider.name"));
 
 		logStep("Request for Prescription Renewal from Portal");
 		homePage = prescriptionsPage.requestForMultiplePrescriptionRenewal(driver, prescritonRenewalRequestReason,
-				medicationToRenew, propertyLoaderObj.getProperty("SecondMedicationToRenew"));
+				medicationToRenew, propertyLoaderObj.getProperty("second.medication.to.renew"));
 
 		homePage.LogoutfromNGMFPortal();
 
 		logStep("Setup Oauth client" + propertyLoaderObj.getResponsePath());
 		if (propertyLoaderObj.getNGAPIexecutionMode().equalsIgnoreCase("QAMain")) {
 			RestUtils.oauthSetup(propertyLoaderObj.getOAuthKeyStore(), propertyLoaderObj.getOAuthProperty(),
-					propertyLoaderObj.getOAuthAppToken(), propertyLoaderObj.getProperty("oAuthUsername1"),
-					propertyLoaderObj.getProperty("oAuthPassword1"));
+					propertyLoaderObj.getOAuthAppToken(), propertyLoaderObj.getProperty("oauth.username1"),
+					propertyLoaderObj.getProperty("oauth.password1"));
 		} else if (propertyLoaderObj.getNGAPIexecutionMode().equalsIgnoreCase("SIT")) {
 			RestUtils.oauthSetup(propertyLoaderObj.getOAuthKeyStore(), propertyLoaderObj.getOAuthProperty(),
-					propertyLoaderObj.getOAuthAppToken(), propertyLoaderObj.getProperty("oAuthUsername"),
-					propertyLoaderObj.getProperty("oAuthPassword"));
+					propertyLoaderObj.getOAuthAppToken(), propertyLoaderObj.getProperty("oauth.username"),
+					propertyLoaderObj.getProperty("oauth.password"));
 		} else {
 			Log4jUtil.log("Invalid Execution Mode");
 		}
@@ -1513,7 +1510,7 @@ public class NGIntegrationE2EInboxTests extends BaseTestNGWebDriver {
 
 		logStep("Do a GET Prescription Call and get the message");
 		RestUtils.setupHttpGetRequest(
-				propertyLoaderObj.getProperty("GetPrescription").replaceAll("integrationID", integrationPracticeID)
+				propertyLoaderObj.getProperty("get.prescription").replaceAll("integrationID", integrationPracticeID)
 						+ "?since=" + since + ",0",
 				propertyLoaderObj.getResponsePath());
 
@@ -1532,31 +1529,31 @@ public class NGIntegrationE2EInboxTests extends BaseTestNGWebDriver {
 		String expectedCorrectFileText = "sw-test-academy.txt";
 
 		String questionText = IntegrationConstants.MESSAGE_REPLY;
-		String userId = propertyLoaderObj.getProperty("SecureMessageUserID");
+		String userId = propertyLoaderObj.getProperty("secure.message.user.id");
 		String userLastName = DBUtils.executeQueryOnDB("NGCoreDB",
 				"select last_name from user_mstr where user_id='" + userId + "'");
 		String userProviderName = userLastName + ", Dr";
 
 		logStep("Getting Existing User");
-		String username = propertyLoaderObj.getProperty("CCDAUsername");
+		String username = propertyLoaderObj.getProperty("ccda.username");
 		String person_id = DBUtils.executeQueryOnDB("NGCoreDB",
 				"select person_id from person where email_address = '" + username + "'");
 		String enterpriseId = null, practiceId = null, providerName = null, locationName = null,
 				integrationPracticeID = null, url = null;
 
 		if (propertyLoaderObj.getNGAPIexecutionMode().equalsIgnoreCase("QAMain")) {
-			enterpriseId = propertyLoaderObj.getProperty("NGEnterpiseEnrollmentEnterprise1");
-			practiceId = propertyLoaderObj.getProperty("NGEnterprise1Practice1");
-			providerName = propertyLoaderObj.getProperty("NGE1P1Provider");
-			locationName = propertyLoaderObj.getProperty("NGE1P1Location");
-			integrationPracticeID = propertyLoaderObj.getProperty("integrationPracticeIDE1P1");
-			url = propertyLoaderObj.getProperty("MFPortalURLPractice1");
+			enterpriseId = propertyLoaderObj.getProperty("ng.enterprise.enrollment.enterprise1");
+			practiceId = propertyLoaderObj.getProperty("ng.enterprise1.practice1");
+			providerName = propertyLoaderObj.getProperty("ng.e1.p1.provider");
+			locationName = propertyLoaderObj.getProperty("ng.e1.p1.location");
+			integrationPracticeID = propertyLoaderObj.getProperty("integration.practice.id.e1.p1");
+			url = propertyLoaderObj.getProperty("mf.portal.url.practice1");
 		} else if (propertyLoaderObj.getNGAPIexecutionMode().equalsIgnoreCase("SIT")) {
-			enterpriseId = propertyLoaderObj.getProperty("NGMainEnterpriseID");
-			practiceId = propertyLoaderObj.getProperty("NGMainPracticeID");
-			providerName = propertyLoaderObj.getProperty("EPMProviderName");
-			locationName = propertyLoaderObj.getProperty("EPMLocationName");
-			integrationPracticeID = propertyLoaderObj.getProperty("integrationPracticeIDAMDC");
+			enterpriseId = propertyLoaderObj.getProperty("ng.main.enterprise.id");
+			practiceId = propertyLoaderObj.getProperty("ng.main.practice.id");
+			providerName = propertyLoaderObj.getProperty("epm.provider.name");
+			locationName = propertyLoaderObj.getProperty("epm.location.name");
+			integrationPracticeID = propertyLoaderObj.getProperty("integrationpracticeid.amdc");
 			url = propertyLoaderObj.getProperty("url");
 		} else {
 			Log4jUtil.log("Invalid Execution Mode");
@@ -1568,7 +1565,7 @@ public class NGIntegrationE2EInboxTests extends BaseTestNGWebDriver {
 				+ "\\src\\test\\resources\\File_Attachment\\sw-test-academy.txt";
 
 		Log4jUtil.log("CorrectfilePath " + correctfilePath);
-		String userLocationName = propertyLoaderObj.getProperty("PortalLocationName");
+		String userLocationName = propertyLoaderObj.getProperty("portal.location.name");
 		long timestamp = System.currentTimeMillis();
 		logStep("Do a GET and get the read communication");
 		Long since = timestamp / 1000L - 60 * 24;
@@ -1579,7 +1576,7 @@ public class NGIntegrationE2EInboxTests extends BaseTestNGWebDriver {
 
 		logStep("Click Ask A Staff tab");
 		JalapenoAskAStaffV2Page1 askPage1 = homePage
-				.openSpecificAskaQuestion(propertyLoaderObj.getProperty("askAV2Name"));
+				.openSpecificAskaQuestion(propertyLoaderObj.getProperty("aska.v2.name"));
 
 		String askaSubject = Long.toString(askPage1.getCreatedTimeStamp());
 
@@ -1607,7 +1604,7 @@ public class NGIntegrationE2EInboxTests extends BaseTestNGWebDriver {
 		homePage = askPage2.submit();
 
 		logStep("Go back to the aska and check question history");
-		askPage1 = homePage.openSpecificAskaQuestion(propertyLoaderObj.getProperty("askAV2Name"));
+		askPage1 = homePage.openSpecificAskaQuestion(propertyLoaderObj.getProperty("aska.v2.name"));
 		JalapenoAskAStaffV2HistoryListPage askHistoryList = askPage1.clickOnHistory();
 
 		logStep("Find history entry by subject/reason and navigate to detail");
@@ -1630,12 +1627,12 @@ public class NGIntegrationE2EInboxTests extends BaseTestNGWebDriver {
 		logStep("Setup Oauth client" + propertyLoaderObj.getResponsePath());
 		if (propertyLoaderObj.getNGAPIexecutionMode().equalsIgnoreCase("QAMain"))
 			RestUtils.oauthSetup(propertyLoaderObj.getOAuthKeyStore(), propertyLoaderObj.getOAuthProperty(),
-					propertyLoaderObj.getOAuthAppToken(), propertyLoaderObj.getProperty("oAuthUsername1"),
-					propertyLoaderObj.getProperty("oAuthPassword1"));
+					propertyLoaderObj.getOAuthAppToken(), propertyLoaderObj.getProperty("oauth.username1"),
+					propertyLoaderObj.getProperty("oauth.password1"));
 		else if (propertyLoaderObj.getNGAPIexecutionMode().equalsIgnoreCase("SIT"))
 			RestUtils.oauthSetup(propertyLoaderObj.getOAuthKeyStore(), propertyLoaderObj.getOAuthProperty(),
-					propertyLoaderObj.getOAuthAppToken(), propertyLoaderObj.getProperty("oAuthUsername"),
-					propertyLoaderObj.getProperty("oAuthPassword"));
+					propertyLoaderObj.getOAuthAppToken(), propertyLoaderObj.getProperty("oauth.username"),
+					propertyLoaderObj.getProperty("oauth.password"));
 		else
 			Log4jUtil.log("Invalid Execution Mode");
 
@@ -1644,7 +1641,7 @@ public class NGIntegrationE2EInboxTests extends BaseTestNGWebDriver {
 
 		logStep("Do a GET and get the message");
 		RestUtils.setupHttpGetRequest(
-				propertyLoaderObj.getProperty("GetInboundMessage").replaceAll("integrationID", integrationPracticeID)
+				propertyLoaderObj.getProperty("get.inbound.message").replaceAll("integrationID", integrationPracticeID)
 						+ "?since=" + since + ",0",
 				propertyLoaderObj.getResponsePath());
 
@@ -1666,7 +1663,7 @@ public class NGIntegrationE2EInboxTests extends BaseTestNGWebDriver {
 		Thread.sleep(60000);
 
 		CommonFlows.verifyMessageReceivedAtNGCore(propertyLoaderObj, messageID, askaSubject,
-				expectedBodyinInbox.replace("\n", ""), propertyLoaderObj.getProperty("askAV2Name"));
+				expectedBodyinInbox.replace("\n", ""), propertyLoaderObj.getProperty("aska.v2.name"));
 
 		CommonFlows.verifyAttachmentReceivedInMessageAtNGCore(propertyLoaderObj, messageID, "txt ",
 				expectedCorrectFileText.substring(0, expectedCorrectFileText.lastIndexOf(".")));
@@ -1694,12 +1691,12 @@ public class NGIntegrationE2EInboxTests extends BaseTestNGWebDriver {
 		logStep("Setup Oauth client" + propertyLoaderObj.getResponsePath());
 		if (propertyLoaderObj.getNGAPIexecutionMode().equalsIgnoreCase("QAMain"))
 			RestUtils.oauthSetup(propertyLoaderObj.getOAuthKeyStore(), propertyLoaderObj.getOAuthProperty(),
-					propertyLoaderObj.getOAuthAppToken(), propertyLoaderObj.getProperty("oAuthUsername1"),
-					propertyLoaderObj.getProperty("oAuthPassword1"));
+					propertyLoaderObj.getOAuthAppToken(), propertyLoaderObj.getProperty("oauth.username1"),
+					propertyLoaderObj.getProperty("oauth.password1"));
 		else if (propertyLoaderObj.getNGAPIexecutionMode().equalsIgnoreCase("SIT"))
 			RestUtils.oauthSetup(propertyLoaderObj.getOAuthKeyStore(), propertyLoaderObj.getOAuthProperty(),
-					propertyLoaderObj.getOAuthAppToken(), propertyLoaderObj.getProperty("oAuthUsername"),
-					propertyLoaderObj.getProperty("oAuthPassword"));
+					propertyLoaderObj.getOAuthAppToken(), propertyLoaderObj.getProperty("oauth.username"),
+					propertyLoaderObj.getProperty("oauth.password"));
 		else
 			Log4jUtil.log("Invalid Execution Mode");
 
@@ -1716,23 +1713,23 @@ public class NGIntegrationE2EInboxTests extends BaseTestNGWebDriver {
 		String expectedCorrectFileText4 = "PNGImage.png";
 
 		String questionText = IntegrationConstants.MESSAGE_REPLY;
-		String userId = propertyLoaderObj.getProperty("SecureMessageUserID");
+		String userId = propertyLoaderObj.getProperty("secure.message.user.id");
 		String userLastName = DBUtils.executeQueryOnDB("NGCoreDB",
 				"select last_name from user_mstr where user_id='" + userId + "'");
 		String userProviderName = userLastName + ", Dr";
 
 		logStep("Getting Existing User");
-		String username = propertyLoaderObj.getProperty("CCDAUsername");
+		String username = propertyLoaderObj.getProperty("ccda.username");
 		String person_id = DBUtils.executeQueryOnDB("NGCoreDB",
 				"select person_id from person where email_address = '" + username + "'");
 		String integrationPracticeID = null, url = null;
 
 		if (propertyLoaderObj.getNGAPIexecutionMode().equalsIgnoreCase("QAMain")) {
-			integrationPracticeID = propertyLoaderObj.getProperty("integrationPracticeIDE1P1");
-			url = propertyLoaderObj.getProperty("MFPortalURLPractice1");
+			integrationPracticeID = propertyLoaderObj.getProperty("integration.practice.id.e1.p1");
+			url = propertyLoaderObj.getProperty("mf.portal.url.practice1");
 		} else if (propertyLoaderObj.getNGAPIexecutionMode().equalsIgnoreCase("SIT")) {
 
-			integrationPracticeID = propertyLoaderObj.getProperty("integrationPracticeIDAMDC");
+			integrationPracticeID = propertyLoaderObj.getProperty("integrationpracticeid.amdc");
 			url = propertyLoaderObj.getProperty("url");
 		} else {
 			Log4jUtil.log("Invalid Execution Mode");
@@ -1744,7 +1741,7 @@ public class NGIntegrationE2EInboxTests extends BaseTestNGWebDriver {
 		String pdfFile = System.getProperty("user.dir") + "\\src\\test\\resources\\File_Attachment\\SamplePDF.pdf";
 		String pngFile = System.getProperty("user.dir") + "\\src\\test\\resources\\File_Attachment\\PNGImage.png";
 
-		String userLocationName = propertyLoaderObj.getProperty("PortalLocationName");
+		String userLocationName = propertyLoaderObj.getProperty("portal.location.name");
 		long timestamp = System.currentTimeMillis();
 		logStep("Do a GET and get the read communication");
 		Long since = timestamp / 1000L - 60 * 24;
@@ -1755,7 +1752,7 @@ public class NGIntegrationE2EInboxTests extends BaseTestNGWebDriver {
 
 		logStep("Click Ask A Staff tab");
 		JalapenoAskAStaffV2Page1 askPage1 = homePage
-				.openSpecificAskaQuestion(propertyLoaderObj.getProperty("askAV2Name"));
+				.openSpecificAskaQuestion(propertyLoaderObj.getProperty("aska.v2.name"));
 
 		String askaSubject = Long.toString(askPage1.getCreatedTimeStamp());
 
@@ -1784,12 +1781,12 @@ public class NGIntegrationE2EInboxTests extends BaseTestNGWebDriver {
 		logStep("Setup Oauth client" + propertyLoaderObj.getResponsePath());
 		if (propertyLoaderObj.getNGAPIexecutionMode().equalsIgnoreCase("QAMain"))
 			RestUtils.oauthSetup(propertyLoaderObj.getOAuthKeyStore(), propertyLoaderObj.getOAuthProperty(),
-					propertyLoaderObj.getOAuthAppToken(), propertyLoaderObj.getProperty("oAuthUsername1"),
-					propertyLoaderObj.getProperty("oAuthPassword1"));
+					propertyLoaderObj.getOAuthAppToken(), propertyLoaderObj.getProperty("oauth.username1"),
+					propertyLoaderObj.getProperty("oauth.password1"));
 		else if (propertyLoaderObj.getNGAPIexecutionMode().equalsIgnoreCase("SIT"))
 			RestUtils.oauthSetup(propertyLoaderObj.getOAuthKeyStore(), propertyLoaderObj.getOAuthProperty(),
-					propertyLoaderObj.getOAuthAppToken(), propertyLoaderObj.getProperty("oAuthUsername"),
-					propertyLoaderObj.getProperty("oAuthPassword"));
+					propertyLoaderObj.getOAuthAppToken(), propertyLoaderObj.getProperty("oauth.username"),
+					propertyLoaderObj.getProperty("oauth.password"));
 		else
 			Log4jUtil.log("Invalid Execution Mode");
 
@@ -1798,7 +1795,7 @@ public class NGIntegrationE2EInboxTests extends BaseTestNGWebDriver {
 
 		logStep("Do a GET and get the message");
 		RestUtils.setupHttpGetRequest(
-				propertyLoaderObj.getProperty("GetInboundMessage").replaceAll("integrationID", integrationPracticeID)
+				propertyLoaderObj.getProperty("get.inbound.message").replaceAll("integrationID", integrationPracticeID)
 						+ "?since=" + since + ",0",
 				propertyLoaderObj.getResponsePath());
 
@@ -1819,7 +1816,7 @@ public class NGIntegrationE2EInboxTests extends BaseTestNGWebDriver {
 
 		Thread.sleep(60000);
 		CommonFlows.verifyMessageReceivedAtNGCore(propertyLoaderObj, messageID, askaSubject,
-				expectedBodyinInbox.replace("\n", ""), propertyLoaderObj.getProperty("askAV2Name"));
+				expectedBodyinInbox.replace("\n", ""), propertyLoaderObj.getProperty("aska.v2.name"));
 
 		CommonFlows.verifyMultipleAttachmentsReceivedInMessageAtNGCore(propertyLoaderObj, messageID, "tiff",
 				expectedCorrectFileText1.substring(0, expectedCorrectFileText1.lastIndexOf(".")));
@@ -1838,22 +1835,22 @@ public class NGIntegrationE2EInboxTests extends BaseTestNGWebDriver {
 		String expectedCorrectFileText3 = "JPGImage.jpg";
 
 		String questionText = IntegrationConstants.MESSAGE_REPLY;
-		String userId = propertyLoaderObj.getProperty("SecureMessageUserID");
+		String userId = propertyLoaderObj.getProperty("secure.message.user.id");
 		String userLastName = DBUtils.executeQueryOnDB("NGCoreDB",
 				"select last_name from user_mstr where user_id='" + userId + "'");
 		String userProviderName = userLastName + ", Dr";
 
 		logStep("Getting Existing User");
-		String username = propertyLoaderObj.getProperty("CCDAUsername");
+		String username = propertyLoaderObj.getProperty("ccda.username");
 		String person_id = DBUtils.executeQueryOnDB("NGCoreDB",
 				"select person_id from person where email_address = '" + username + "'");
 		String integrationPracticeID = null, url = null;
 
 		if (propertyLoaderObj.getNGAPIexecutionMode().equalsIgnoreCase("QAMain")) {
-			integrationPracticeID = propertyLoaderObj.getProperty("integrationPracticeIDE1P1");
-			url = propertyLoaderObj.getProperty("MFPortalURLPractice1");
+			integrationPracticeID = propertyLoaderObj.getProperty("integration.practice.id.e1.p1");
+			url = propertyLoaderObj.getProperty("mf.portal.url.practice1");
 		} else if (propertyLoaderObj.getNGAPIexecutionMode().equalsIgnoreCase("SIT")) {
-			integrationPracticeID = propertyLoaderObj.getProperty("integrationPracticeIDAMDC");
+			integrationPracticeID = propertyLoaderObj.getProperty("integrationpracticeid.amdc");
 			url = propertyLoaderObj.getProperty("url");
 		} else {
 			Log4jUtil.log("Invalid Execution Mode");
@@ -1863,7 +1860,7 @@ public class NGIntegrationE2EInboxTests extends BaseTestNGWebDriver {
 		String bmpFile = System.getProperty("user.dir") + "\\src\\test\\resources\\File_Attachment\\BMPImage.bmp";
 		String txtFile = System.getProperty("user.dir") + "\\src\\test\\resources\\File_Attachment\\1.7MB File.txt";
 
-		String userLocationName = propertyLoaderObj.getProperty("PortalLocationName");
+		String userLocationName = propertyLoaderObj.getProperty("portal.location.name");
 		long timestamp = System.currentTimeMillis();
 		logStep("Do a GET and get the read communication");
 		Long since = timestamp / 1000L - 60 * 24;
@@ -1874,7 +1871,7 @@ public class NGIntegrationE2EInboxTests extends BaseTestNGWebDriver {
 
 		logStep("Click Ask A Staff tab");
 		JalapenoAskAStaffV2Page1 askPage1 = homePage
-				.openSpecificAskaQuestion(propertyLoaderObj.getProperty("askAV2Name"));
+				.openSpecificAskaQuestion(propertyLoaderObj.getProperty("aska.v2.name"));
 
 		String askaSubject = Long.toString(askPage1.getCreatedTimeStamp());
 
@@ -1902,12 +1899,12 @@ public class NGIntegrationE2EInboxTests extends BaseTestNGWebDriver {
 		logStep("Setup Oauth client" + propertyLoaderObj.getResponsePath());
 		if (propertyLoaderObj.getNGAPIexecutionMode().equalsIgnoreCase("QAMain"))
 			RestUtils.oauthSetup(propertyLoaderObj.getOAuthKeyStore(), propertyLoaderObj.getOAuthProperty(),
-					propertyLoaderObj.getOAuthAppToken(), propertyLoaderObj.getProperty("oAuthUsername1"),
-					propertyLoaderObj.getProperty("oAuthPassword1"));
+					propertyLoaderObj.getOAuthAppToken(), propertyLoaderObj.getProperty("oauth.username1"),
+					propertyLoaderObj.getProperty("oauth.password1"));
 		else if (propertyLoaderObj.getNGAPIexecutionMode().equalsIgnoreCase("SIT"))
 			RestUtils.oauthSetup(propertyLoaderObj.getOAuthKeyStore(), propertyLoaderObj.getOAuthProperty(),
-					propertyLoaderObj.getOAuthAppToken(), propertyLoaderObj.getProperty("oAuthUsername"),
-					propertyLoaderObj.getProperty("oAuthPassword"));
+					propertyLoaderObj.getOAuthAppToken(), propertyLoaderObj.getProperty("oauth.username"),
+					propertyLoaderObj.getProperty("oauth.password"));
 		else
 			Log4jUtil.log("Invalid Execution Mode");
 
@@ -1916,7 +1913,7 @@ public class NGIntegrationE2EInboxTests extends BaseTestNGWebDriver {
 
 		logStep("Do a GET and get the message");
 		RestUtils.setupHttpGetRequest(
-				propertyLoaderObj.getProperty("GetInboundMessage").replaceAll("integrationID", integrationPracticeID)
+				propertyLoaderObj.getProperty("get.inbound.message").replaceAll("integrationID", integrationPracticeID)
 						+ "?since=" + since + ",0",
 				propertyLoaderObj.getResponsePath());
 
@@ -1937,7 +1934,7 @@ public class NGIntegrationE2EInboxTests extends BaseTestNGWebDriver {
 
 		Thread.sleep(60000);
 		CommonFlows.verifyMessageReceivedAtNGCore(propertyLoaderObj, messageID, askaSubject,
-				expectedBodyinInbox.replace("\n", ""), propertyLoaderObj.getProperty("askAV2Name"));
+				expectedBodyinInbox.replace("\n", ""), propertyLoaderObj.getProperty("aska.v2.name"));
 
 		CommonFlows.verifyMultipleAttachmentsReceivedInMessageAtNGCore(propertyLoaderObj, messageID, "txt ",
 				expectedCorrectFileText1.substring(0, expectedCorrectFileText1.lastIndexOf(".")));

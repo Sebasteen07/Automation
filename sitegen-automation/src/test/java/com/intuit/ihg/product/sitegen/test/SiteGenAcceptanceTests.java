@@ -12,6 +12,7 @@ import org.testng.annotations.BeforeClass;
 import org.testng.annotations.Test;
 import com.medfusion.product.object.maps.practice.page.PracticeHomePage;
 import com.medfusion.product.object.maps.practice.page.PracticeLoginPage;
+import com.intuit.ihg.product.object.maps.onlinesolutions.ManageSolutionsPage;
 import com.intuit.ihg.product.object.maps.sitegen.page.SiteGenLoginPage;
 import com.intuit.ihg.product.object.maps.sitegen.page.Integrations.CreateIntegrationStep1Page;
 import com.intuit.ihg.product.object.maps.sitegen.page.Integrations.CreateIntegrationStep2Page;
@@ -41,6 +42,10 @@ import com.medfusion.common.utils.PropertyFileLoader;
 import com.intuit.ihg.product.sitegen.utils.SitegenConstants;
 import static com.intuit.ihg.product.sitegen.utils.SitegenlUtil.verifyTextPresent;
 
+import com.medfusion.product.object.maps.patientportal2.page.JalapenoLoginPage;
+import com.medfusion.product.object.maps.patientportal2.page.HomePage.JalapenoHomePage;
+
+
 public class SiteGenAcceptanceTests extends BaseTestNGWebDriver {
 	private PropertyFileLoader testData;
 
@@ -62,8 +67,8 @@ public class SiteGenAcceptanceTests extends BaseTestNGWebDriver {
 	@Test(enabled = true, groups = {"AcceptanceTests"}, retryAnalyzer = RetryAnalyzer.class)
 	public void testSiteGenLoginLogout() throws Exception {
 		logStep("LogIn");
-		SiteGenLoginPage loginpage = new SiteGenLoginPage(driver, testData.getProperty("sitegenUrl"));
-		SiteGenHomePage pSiteGenHomePage = loginpage.login(testData.getProperty("automationUser"), testData.getProperty("automationPassword"));
+		SiteGenLoginPage loginpage = new SiteGenLoginPage(driver, testData.getProperty("sitegen.url"));
+		SiteGenHomePage pSiteGenHomePage = loginpage.login(testData.getProperty("automation.user"), testData.getProperty("automation.password"));
 		IHGUtil util = new IHGUtil(driver);
 		logStep("Check if SiteGen Homepage elements are present ");
 		assertTrue(pSiteGenHomePage.isSearchPageLoaded(), "Expected the SiteGen HomePage  to be loaded, but it was not.");
@@ -95,8 +100,8 @@ public class SiteGenAcceptanceTests extends BaseTestNGWebDriver {
 	@Test(enabled = true, groups = {"AcceptanceTests"}, retryAnalyzer = RetryAnalyzer.class)
 	public void testLocation() throws Exception {
 		logStep("LogIn");
-		SiteGenLoginPage loginpage = new SiteGenLoginPage(driver, testData.getProperty("sitegenUrl"));
-		SiteGenHomePage pSiteGenHomePage = loginpage.login(testData.getProperty("automationUser"), testData.getProperty("automationPassword"));
+		SiteGenLoginPage loginpage = new SiteGenLoginPage(driver, testData.getProperty("sitegen.url"));
+		SiteGenHomePage pSiteGenHomePage = loginpage.login(testData.getProperty("automation.user"), testData.getProperty("automation.password"));
 		logStep("Navigate to SiteGen PracticeHomePage");
 		SiteGenPracticeHomePage pSiteGenPracticeHomePage = pSiteGenHomePage.clickLinkMedfusionSiteAdministration();
 
@@ -134,16 +139,16 @@ public class SiteGenAcceptanceTests extends BaseTestNGWebDriver {
 	 *                    added or not
 	 */
 	private void testPhysicianBoth(boolean su) throws Exception {
-		SiteGenLoginPage loginpage = new SiteGenLoginPage(driver, testData.getProperty("sitegenUrl"));
+		SiteGenLoginPage loginpage = new SiteGenLoginPage(driver, testData.getProperty("sitegen.url"));
 		SiteGenHomePage pSiteGenHomePage;
 		SiteGenPracticeHomePage pSiteGenPracticeHomePage = new SiteGenPracticeHomePage(driver);
 		if (su) {
 			pSiteGenHomePage = loginpage.clickOnLoginAsInternalEmployee();
 			logStep("navigate to SiteGen PracticeHomePage");
 			assertTrue(pSiteGenHomePage.isSearchPageLoaded(), "Expected the SiteGen HomePage  to be loaded, but it was not.");
-			pSiteGenHomePage.searchPracticeFromSGAdmin(testData.getProperty("siteGenAutomationPractice"));
+			pSiteGenHomePage.searchPracticeFromSGAdmin(testData.getProperty("sitegen.automation.practice"));
 		} else {
-			pSiteGenHomePage = loginpage.login(testData.getProperty("automationUser"), testData.getProperty("automationPassword"));
+			pSiteGenHomePage = loginpage.login(testData.getProperty("automation.user"), testData.getProperty("automation.password"));
 			logStep("navigate to SiteGen PracticeHomePage");
 			pSiteGenPracticeHomePage = pSiteGenHomePage.clickLinkMedfusionSiteAdministration();
 		}
@@ -242,8 +247,8 @@ public class SiteGenAcceptanceTests extends BaseTestNGWebDriver {
 	@Test(enabled = true, groups = {"AcceptanceTests"}, retryAnalyzer = RetryAnalyzer.class)
 	public void testPermission() throws Exception {
 		logStep("LogIn");
-		SiteGenLoginPage loginpage = new SiteGenLoginPage(driver, testData.getProperty("sitegenUrl"));
-		SiteGenHomePage pSiteGenHomePage = loginpage.login(testData.getProperty("automationUser"), testData.getProperty("automationPassword"));
+		SiteGenLoginPage loginpage = new SiteGenLoginPage(driver, testData.getProperty("sitegen.url"));
+		SiteGenHomePage pSiteGenHomePage = loginpage.login(testData.getProperty("automation.user"), testData.getProperty("automation.password"));
 		logStep("Navigate to SiteGen PracticeHomePage");
 		SiteGenPracticeHomePage pSiteGenPracticeHomePage = pSiteGenHomePage.clickLinkMedfusionSiteAdministration();
 
@@ -264,8 +269,8 @@ public class SiteGenAcceptanceTests extends BaseTestNGWebDriver {
 				"Expected the SiteGen login Page  to be loaded, but it was not.");
 
 		logStep("Login to Practice Portal");
-		PracticeLoginPage practiceLogin = new PracticeLoginPage(driver, testData.getProperty("siteGenAutomationPracticeUrl"));
-		PracticeHomePage practiceHome = practiceLogin.login(testData.getProperty("personnelTypeUserName"), testData.getProperty("personnelTypePswd"));
+		PracticeLoginPage practiceLogin = new PracticeLoginPage(driver, testData.getProperty("sitegen.automation.practice.url"));
+		PracticeHomePage practiceHome = practiceLogin.login(testData.getProperty("personnel.type.username"), testData.getProperty("personnel.type.password"));
 
 		logStep("Verify AptRequest Tab in Practice Portal");
 		assertTrue(practiceHome.verifyAptRequestTab(), "Appointment tab not displayed");
@@ -299,8 +304,8 @@ public class SiteGenAcceptanceTests extends BaseTestNGWebDriver {
 	@Test(enabled = true, groups = {"AcceptanceTests"}, retryAnalyzer = RetryAnalyzer.class)
 	public void testIntegrationEngAndInterfaceSetUp() throws Exception {
 		logStep("LogIn");
-		SiteGenLoginPage loginpage = new SiteGenLoginPage(driver, testData.getProperty("sitegenUrl"));
-		SiteGenHomePage p1SiteGenHomePage = loginpage.login(testData.getProperty("automationUser"), testData.getProperty("automationPassword"));
+		SiteGenLoginPage loginpage = new SiteGenLoginPage(driver, testData.getProperty("sitegen.url"));
+		SiteGenHomePage p1SiteGenHomePage = loginpage.login(testData.getProperty("automation.user"), testData.getProperty("automation.password"));
 		logStep("Navigate to SiteGen PracticeHomePage");
 		SiteGenPracticeHomePage pSiteGenPracticeHomePage = p1SiteGenHomePage.clickLinkMedfusionSiteAdministration();
 
@@ -358,8 +363,8 @@ public class SiteGenAcceptanceTests extends BaseTestNGWebDriver {
 	@Test(enabled = true, groups = {"AcceptanceTests"}, retryAnalyzer = RetryAnalyzer.class)
 	public void testMerchantAccountSetUpViaPaypal() throws Exception {
 		logStep("LogIn");
-		SiteGenLoginPage loginpage = new SiteGenLoginPage(driver, testData.getProperty("sitegenUrl"));
-		SiteGenHomePage pSiteGenHomePage = loginpage.login(testData.getProperty("automationUser"), testData.getProperty("automationPassword"));
+		SiteGenLoginPage loginpage = new SiteGenLoginPage(driver, testData.getProperty("sitegen.url"));
+		SiteGenHomePage pSiteGenHomePage = loginpage.login(testData.getProperty("automation.user"), testData.getProperty("automation.password"));
 		logStep("Navigate to SiteGen PracticeHomePage");
 		SiteGenPracticeHomePage practiseHome = pSiteGenHomePage.clickLinkMedfusionSiteAdministration();
 		logStep("Navigate to MerchantAccountPage");
@@ -398,10 +403,10 @@ public class SiteGenAcceptanceTests extends BaseTestNGWebDriver {
 	@Test(enabled = true, groups = {"AcceptanceTests"})
 	public void testMerchantAccountSetUpViaQBMS() throws Exception {
 		logStep("Login to SG as superuser - THIS REQUIRES MANUAL INPUT");
-		SiteGenHomePage pSiteGenHomePage = new SiteGenLoginPage(driver, testData.getProperty("sitegenUrl")).clickOnLoginAsInternalEmployee();
+		SiteGenHomePage pSiteGenHomePage = new SiteGenLoginPage(driver, testData.getProperty("sitegen.url")).clickOnLoginAsInternalEmployee();
 		assertTrue(pSiteGenHomePage.isSearchPageLoaded(), "Expected the SiteGen HomePage  to be loaded, but it was not.");
 		logStep("Navigate to SiteGen PracticeHomePage");
-		SiteGenPracticeHomePage pSiteGenPracticeHomePage = pSiteGenHomePage.searchPracticeFromSGAdmin(testData.getProperty("siteGenAutomationPractice"));
+		SiteGenPracticeHomePage pSiteGenPracticeHomePage = pSiteGenHomePage.searchPracticeFromSGAdmin(testData.getProperty("sitegen.automation.practice"));
 
 		logStep("Navigating to the Merchant Account List page.");
 		MerchantAccountPage merchantAcctPage = pSiteGenPracticeHomePage.clickOnMerchantAccountLink();
@@ -454,8 +459,8 @@ public class SiteGenAcceptanceTests extends BaseTestNGWebDriver {
 	@Test(enabled = true, groups = {"AcceptanceTests"}, retryAnalyzer = RetryAnalyzer.class)
 	public void testImportAndExportStaff() throws Exception {
 		logStep("LogIn");
-		SiteGenLoginPage loginpage = new SiteGenLoginPage(driver, testData.getProperty("sitegenUrl"));
-		SiteGenHomePage pSiteGenHomePage = loginpage.login(testData.getProperty("automationUser"), testData.getProperty("automationPassword"));
+		SiteGenLoginPage loginpage = new SiteGenLoginPage(driver, testData.getProperty("sitegen.url"));
+		SiteGenHomePage pSiteGenHomePage = loginpage.login(testData.getProperty("automation.user"), testData.getProperty("automation.password"));
 		logStep("Navigate to SiteGen PracticeHomePage");
 		SiteGenPracticeHomePage pSiteGenPracticeHomePage = pSiteGenHomePage.clickLinkMedfusionSiteAdministration();
 
@@ -497,8 +502,8 @@ public class SiteGenAcceptanceTests extends BaseTestNGWebDriver {
 	public void testAddPharmacyAndValidateExternalSystemID() throws Exception {
 		
 		logStep("LogIn");
-		SiteGenLoginPage loginpage = new SiteGenLoginPage(driver, testData.getProperty("sitegenUrl"));
-		SiteGenHomePage pSiteGenHomePage = loginpage.login(testData.getProperty("automationUser"), testData.getProperty("automationPassword"));
+		SiteGenLoginPage loginpage = new SiteGenLoginPage(driver, testData.getProperty("sitegen.url"));
+		SiteGenHomePage pSiteGenHomePage = loginpage.login(testData.getProperty("automation.user"), testData.getProperty("automation.password"));
 		logStep("Navigate to SiteGen HomePage");
 		SiteGenPracticeHomePage practiseHome = pSiteGenHomePage.clickLinkMedfusionSiteAdministration();
 		logStep("Navigate to Manage Your Pharamcies Page");
@@ -524,8 +529,8 @@ public class SiteGenAcceptanceTests extends BaseTestNGWebDriver {
 	public void testEditAndDeletePharmacy() throws Exception {
 		
 		logStep("Log In");
-		SiteGenLoginPage loginpage = new SiteGenLoginPage(driver, testData.getProperty("sitegenUrl"));
-		SiteGenHomePage pSiteGenHomePage = loginpage.login(testData.getProperty("automationUser"), testData.getProperty("automationPassword"));
+		SiteGenLoginPage loginpage = new SiteGenLoginPage(driver, testData.getProperty("sitegen.url"));
+		SiteGenHomePage pSiteGenHomePage = loginpage.login(testData.getProperty("automation.user"), testData.getProperty("automation.password"));
 		
 		logStep("Navigate to SiteGen HomePage");
 		SiteGenPracticeHomePage practiceHome = pSiteGenHomePage.clickLinkMedfusionSiteAdministration();
@@ -547,5 +552,61 @@ public class SiteGenAcceptanceTests extends BaseTestNGWebDriver {
 		{
 			logStep("Pharmacy is deleted succesfully");
 		}
+	}
+
+@Test(enabled = true, groups = {"AcceptanceTests"}, retryAnalyzer = RetryAnalyzer.class)
+public void testPatientSupport() throws Exception {
+	
+	logStep("Log In to SiteGen");
+	SiteGenLoginPage sitegenloginpage = new SiteGenLoginPage(driver, testData.getProperty("sitegen.url"));
+	SiteGenHomePage pSiteGenHomePage = sitegenloginpage.login(testData.getProperty("automation.user1"), testData.getProperty("automation.password1"));
+	
+	logStep("Navigate to SiteGen HomePage");
+	SiteGenPracticeHomePage practiceHome = pSiteGenHomePage.clickLinkMedfusionSiteAdministration();
+	
+	logStep("Navigate to Online Solutions Page");
+	ManageSolutionsPage managesolutionspage = practiceHome.clickOnOnlineSolutions();
+	
+	logStep("Click on Edit button");
+	managesolutionspage.clickOnEdit();
+	
+	logStep("Select Patient Solution checkbox");
+	managesolutionspage.clickActivateCheckbox();
+	
+	logStep("Click on Confirm Changes button");
+	managesolutionspage.confirmChanges();
+	
+	logStep("Log In to Patient Portal");
+	JalapenoLoginPage loginPage = new JalapenoLoginPage(driver, testData.getUrl());
+	JalapenoHomePage homePage = loginPage.login(testData.getUserId(), testData.getPassword());
+	
+	logStep("Verify Patient Support");
+	assertTrue(homePage.isLiveChatDisplayed());
+    
+	logStep("Log In to SiteGen");
+	sitegenloginpage = new SiteGenLoginPage(driver, testData.getProperty("sitegen.url"));
+	sitegenloginpage.login(testData.getProperty("automation.user1"), testData.getProperty("automation.password1"));
+	
+	logStep("Navigate to SiteGen HomePage");
+	pSiteGenHomePage.clickLinkMedfusionSiteAdministration();
+	
+	logStep("Navigate to Online Solutions Page");
+	practiceHome.clickOnOnlineSolutions();
+	
+	logStep("Click on Edit button");
+	managesolutionspage.clickOnEdit();
+	
+	logStep("Click on DeActivateCheckbox");
+	managesolutionspage.clickDeActivateCheckbox();
+	
+	logStep("Save Changes");
+	managesolutionspage.confirmChanges();
+	
+	logStep("Login to patient portal");
+	loginPage = new JalapenoLoginPage(driver, testData.getUrl());
+	loginPage.login(testData.getUserId(), testData.getPassword());
+	
+	logStep("Verify that LiveChat is not displayed");
+	assertFalse(homePage.isLiveChatDisplayed());
 	}
 }

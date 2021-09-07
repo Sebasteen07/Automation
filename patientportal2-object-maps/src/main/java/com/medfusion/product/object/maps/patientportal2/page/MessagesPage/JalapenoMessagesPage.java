@@ -64,7 +64,7 @@ public class JalapenoMessagesPage extends JalapenoMenu {
 	@FindBy(how = How.XPATH, using = "//*[@class='messageTime']")
 	private WebElement lableSent;
 
-	@FindBy(how = How.XPATH, using = "//*[@id=\"messageContainer\"]/div[2]/div[2]/div[2]/a")
+	@FindBy(how = How.XPATH, using = "//*[@class='messageContent']/a[contains(@href,'statement')]")
 	private WebElement statementLinkText;
 
 	@FindBy(how = How.XPATH, using = "//div[@class='messageMetadata clearfix']/span[1]")
@@ -457,6 +457,7 @@ public class JalapenoMessagesPage extends JalapenoMenu {
 		IHGUtil.PrintMethodName();
 		WebElement element;
 		element = driver.findElement(By.xpath("//*/ul/li/a/*[contains(text(),'" + subject + "')]/following-sibling::*[@class='prioritystatus']/img"));
+		IHGUtil.waitForElement(driver, 10, element);
 		String priorityFlagStatus = driver.findElement(By.xpath("//*/ul/li/a/*[contains(text(),'" + subject + "')]/following-sibling::*[@class='prioritystatus']/img")).getAttribute("alt");
 		log("Priority Flag for Message with subject "+subject+" has "+priorityFlagStatus);
 		return element.isDisplayed();

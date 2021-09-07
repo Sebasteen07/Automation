@@ -1,3 +1,4 @@
+// Copyright 2013-2021 NXGN Management, LLC. All Rights Reserved.
 package com.medfusion.patientportal2.api.utils;
 
 import java.io.IOException;
@@ -14,29 +15,16 @@ import io.restassured.path.json.JsonPath;
 public class Validations extends BaseTestNG {
 	protected static PropertyFileLoader testData;
 
-	public void verifySuccessfulCredentials(Response response, String version) throws IOException {
+	public void verifySuccessfulCredentials(Response response) throws IOException {
 		JsonPath jsonPath = new JsonPath(response.asString());
 		Map<String, String> credentials = jsonPath.getMap("credentials");
-
-		if (version.equals("v3")) {
-			assertNotNull(jsonPath.get("authId"), "AuthId was null");
-			assertEquals(jsonPath.get("email"), "kgladtest@gmail.com", "Email is incorrect");
-			assertNull(credentials.get("password"), "Password is incorrect");
-		} else if (version.equals("v4")) {
-			assertNotNull(jsonPath.get("authId"), "AuthId was null");
-			assertEquals(jsonPath.get("email"), "kgladtest@gmail.com", "Email is incorrect");
-			assertNull(credentials.get("password"), "Password is incorrect");
-			assertEquals(jsonPath.get("source"), "MF_MEMBER", "Source is incorrect");
-			assertNull(jsonPath.get("externalProfile"), "External profile was null");
-		} else if (version.equals("v5")) {
-			assertNotNull(jsonPath.get("authId"), "AuthId was null");
-			assertEquals(jsonPath.get("email"), "kgladtest@gmail.com", "Email is incorrect");
-			assertEquals(credentials.get("password"), null, "Password is incorrect");
-			assertEquals(jsonPath.get("challengeAnswer"), "focus", "Challenge answer is incorrect");
-			assertTrue(jsonPath.get("challengePhrase").toString().contains("v1"), "Challenge phrase is incorrect");
-			assertEquals(jsonPath.get("source"), "MF_MEMBER", "Source is incorrect");
-			assertNull(jsonPath.get("externalProfile"), "External profile was null");
-		}
+		assertNotNull(jsonPath.get("authId"), "AuthId was null");
+		assertEquals(jsonPath.get("email"), "kgladtest@gmail.com", "Email is incorrect");
+		assertEquals(credentials.get("password"), null, "Password is incorrect");
+		assertEquals(jsonPath.get("challengeAnswer"), "focus", "Challenge answer is incorrect");
+		assertTrue(jsonPath.get("challengePhrase").toString().contains("v1"), "Challenge phrase is incorrect");
+		assertEquals(jsonPath.get("source"), "MF_MEMBER", "Source is incorrect");
+		assertNull(jsonPath.get("externalProfile"), "External profile was null");
 	}
 
 	public void verifyUnsuccessfulCredentials(Response response) throws IOException {
@@ -85,67 +73,35 @@ public class Validations extends BaseTestNG {
 		assertTrue(jsonPath.getList("credentials.username").contains(searchedUsername));
 		assertEquals(jsonPath.getList("credentials.username").size(), 1);
 	}
-	
+
 	public void verifyProfilesForAuthId(Response response, String searchedAuthId) throws IOException {
 		JsonPath jsonPath = new JsonPath(response.asString());
 		String authId = jsonPath.get("authId");
 		assertTrue(authId.contains(searchedAuthId));
 	}
-	
-	public void verifyPostUserResponse(Response response, String version) throws IOException {
+
+	public void verifyPostUserResponse(Response response) throws IOException {
 		JsonPath jsonPath = new JsonPath(response.asString());
 		Map<String, String> credentials = jsonPath.getMap("credentials");
-
-		if (version.equals("v2")) {
-			assertNotNull(jsonPath.get("authId"), "AuthId was null");
-			assertEquals(jsonPath.get("email"), "kgladtest@gmail.com", "Email is incorrect");
-			assertNull(credentials.get("password"), "Password is incorrect");
-		} else if (version.equals("v3")) {
-			assertNotNull(jsonPath.get("authId"), "AuthId was null");
-			assertEquals(jsonPath.get("email"), "mbush@nextgen.com", "Email is incorrect");
-			assertNull(credentials.get("password"), "Password is incorrect");
-		} else if (version.equals("v4")) {
-			assertNotNull(jsonPath.get("authId"), "AuthId was null");
-			assertEquals(jsonPath.get("email"), "mbush@nextgen.com", "Email is incorrect");
-			assertNull(credentials.get("password"), "Password is incorrect");
-			assertEquals(jsonPath.get("source"), "MF_MEMBER", "Source is incorrect");
-			assertNull(jsonPath.get("externalProfile"), "External profile was null");
-		} else if (version.equals("v5")) {
-			assertNotNull(jsonPath.get("authId"), "AuthId was null");
-			assertEquals(jsonPath.get("email"), "mbush@nextgen.com", "Email is incorrect");
-			assertEquals(credentials.get("password"), null, "Password is incorrect");
-			assertEquals(jsonPath.get("challengeAnswer"), "Bird", "Challenge answer was null");
-			assertEquals(jsonPath.get("challengePhrase"), "What flies?", "Challenge phrase was null");
-			assertEquals(jsonPath.get("source"), "MF_MEMBER", "Source is incorrect");
-			assertNull(jsonPath.get("externalProfile"), "External profile wasn't null");
-		}
+		assertNotNull(jsonPath.get("authId"), "AuthId was null");
+		assertEquals(jsonPath.get("email"), "mbush@nextgen.com", "Email is incorrect");
+		assertEquals(credentials.get("password"), null, "Password is incorrect");
+		assertEquals(jsonPath.get("challengeAnswer"), "Bird", "Challenge answer was null");
+		assertEquals(jsonPath.get("challengePhrase"), "What flies?", "Challenge phrase was null");
+		assertEquals(jsonPath.get("source"), "MF_MEMBER", "Source is incorrect");
+		assertNull(jsonPath.get("externalProfile"), "External profile wasn't null");
 	}
-	
-	public void verifyUpdateUserResponse(Response response, String version) throws IOException {
+
+	public void verifyUpdateUserResponse(Response response) throws IOException {
 		JsonPath jsonPath = new JsonPath(response.asString());
 		Map<String, String> credentials = jsonPath.getMap("credentials");
-
-		if (version.equals("v3")) {
-			assertNotNull(jsonPath.get("authId"), "AuthId was null");
-			assertEquals(jsonPath.get("email"), "mbush@nextgen.com", "Email is incorrect");
-			assertTrue(jsonPath.get("credentials.username").toString().contains("update"));
-			assertNull(credentials.get("password"), "Password is incorrect");
-		} else if (version.equals("v4")) {
-			assertNotNull(jsonPath.get("authId"), "AuthId was null");
-			assertEquals(jsonPath.get("email"), "mbush@nextgen.com", "Email is incorrect");
-			assertTrue(jsonPath.get("credentials.username").toString().contains("update"));
-			assertNull(credentials.get("password"), "Password is incorrect");
-			assertEquals(jsonPath.get("source"), "MF_MEMBER", "Source is incorrect");
-			assertNull(jsonPath.get("externalProfile"), "External profile was null");
-		} else if (version.equals("v5")) {
-			assertNotNull(jsonPath.get("authId"), "AuthId was null");
-			assertEquals(jsonPath.get("email"), "mbush@nextgen.com", "Email is incorrect");
-			log(jsonPath.get("credentials.username").toString());
-			assertTrue(jsonPath.get("credentials.username").toString().contains("update"));
-			assertEquals(credentials.get("password"), null, "Password is incorrect");
-			assertNull(jsonPath.get("challengeAnswer"), "Challenge answer wasn't null");
-			assertEquals(jsonPath.get("source"), "MF_MEMBER", "Source is incorrect");
-			assertNull(jsonPath.get("externalProfile"), "External profile wasn't null");
-		}
+		assertNotNull(jsonPath.get("authId"), "AuthId was null");
+		assertEquals(jsonPath.get("email"), "mbush@nextgen.com", "Email is incorrect");
+		log(jsonPath.get("credentials.username").toString());
+		assertTrue(jsonPath.get("credentials.username").toString().contains("update"));
+		assertEquals(credentials.get("password"), null, "Password is incorrect");
+		assertNull(jsonPath.get("challengeAnswer"), "Challenge answer wasn't null");
+		assertEquals(jsonPath.get("source"), "MF_MEMBER", "Source is incorrect");
+		assertNull(jsonPath.get("externalProfile"), "External profile wasn't null");
 	}
 }

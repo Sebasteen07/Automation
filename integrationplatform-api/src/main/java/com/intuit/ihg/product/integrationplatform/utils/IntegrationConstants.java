@@ -39,6 +39,8 @@ public class IntegrationConstants {
 	public static final String DEACTIVATED = "DEACTIVATED";
 	public static final String DELETED = "DELETED";
 	public static final String STATE_ERRORED = "ERROR";
+	public static final String ATTACHMENT_URL ="AttachmentUrl";
+	public static final String FILE_NAME = "FileName";
 
 
 	// Appointment Request constants

@@ -30,7 +30,7 @@ public class DismissPage extends PSS2MainPage {
 	CommonMethods commonMethods = new CommonMethods(driver);
 
 	public LoginlessPatientInformation clickDismiss() {
-		IHGUtil.waitForElement(driver, 5, dismissBtn);
+		IHGUtil.waitForElement(driver, 15, dismissBtn);
 		commonMethods.highlightElement(dismissBtn);
 		dismissBtn.click();
 		return PageFactory.initElements(driver, LoginlessPatientInformation.class);

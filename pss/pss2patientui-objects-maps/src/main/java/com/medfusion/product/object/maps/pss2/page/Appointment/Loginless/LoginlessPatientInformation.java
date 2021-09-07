@@ -20,9 +20,6 @@ import com.medfusion.product.object.maps.pss2.page.util.CommonMethods;
 import com.medfusion.product.object.maps.pss2.page.util.DateMatcher;
 
 public class LoginlessPatientInformation extends PSS2MainPage {
-
-
-
 	@FindBy(how = How.NAME, using = "FN")
 	private WebElement inputFirstName;
 
@@ -47,7 +44,7 @@ public class LoginlessPatientInformation extends PSS2MainPage {
 	@FindBy(how = How.ID, using = "PHONE")
 	private WebElement inputPrimaryPhoneNumber;
 
-	@FindBy(how = How.XPATH, using = "//span[contains(text(),'Submit')]")
+	@FindBy(how = How.XPATH, using = "//button[@class='custombuttonexistnext']")
 	private WebElement buttonNext;
 
 	@FindBy(how = How.CLASS_NAME, using = "custombuttonexist")
@@ -135,7 +132,8 @@ public class LoginlessPatientInformation extends PSS2MainPage {
 		commonMethods.highlightElement(inputLastName);
 		inputLastName.sendKeys(lastName);
 		
-		commonMethods.highlightElement(dateOfBirth);
+		IHGUtil.waitForElement(driver, 5, dateOfBirth);
+		commonMethods.highlightElement(dateOfBirth);		
 		datePicker.click();
 		log("datePicker clicked ");
 		try {
@@ -181,6 +179,7 @@ public class LoginlessPatientInformation extends PSS2MainPage {
 		driver.switchTo().parentFrame();
 
 		log("........Captcha clicked......");
+		Thread.sleep(2000);
 
 		wait.until(ExpectedConditions.elementToBeClickable(buttonNext));
 		commonMethods.highlightElement(buttonNext);

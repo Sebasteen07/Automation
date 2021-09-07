@@ -10,7 +10,7 @@
 	<parent>
         <groupId>com.intuit.ihg</groupId>
         <artifactId>ihg-depot-parent-pom</artifactId>
-        <version>21.4.0</version>
+        <version>21.5.0</version>
     </parent>
 	
 	<artifactId>ng-integration</artifactId>
@@ -23,11 +23,19 @@
 			<name>IHG-nexus</name>
 			<url>http://maven.qhg.local/nexus/content/groups/qhg-dev/</url>
 		</repository>
+		<repository>
+			<snapshots>
+				<enabled>false</enabled>
+			</snapshots>
+			<id>bintray-epam-reportportal</id>
+			<name>bintray</name>
+			<url>http://dl.bintray.com/epam/reportportal</url>
+		</repository>
 	</repositories>
 
 	<properties>
 		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
-		<ihg.version>21.4.0</ihg.version>
+		<ihg.version>21.5.0</ihg.version>
 	</properties>
 
 	<dependencies>
@@ -49,11 +57,6 @@
 		<dependency>
 			<groupId>com.intuit.ihg</groupId>
 			<artifactId>patientportal2-api</artifactId>
-			<version>${ihg.version}</version>
-		</dependency>
-		<dependency>
-			<groupId>com.intuit.ihg</groupId>
-			<artifactId>patientportal2-service</artifactId>
 			<version>${ihg.version}</version>
 		</dependency>
 		<dependency>
@@ -91,23 +94,23 @@
 		</dependency>
 		<!-- Report Portal Dependencies -->
 		<dependency>
-            <groupId>com.epam.reportportal</groupId>
-            <artifactId>agent-java-testng</artifactId>
-            <version>5.0.11</version>
-        </dependency>
+			<groupId>com.epam.reportportal</groupId>
+			<artifactId>agent-java-testng</artifactId>
+			<version>5.0.11</version>
+		</dependency>
 
-        <dependency>
-            <groupId>com.epam.reportportal</groupId>
-            <artifactId>logger-java-log4j</artifactId>
-            <version>5.0.3</version>
-        </dependency>
+		<dependency>
+			<groupId>com.epam.reportportal</groupId>
+			<artifactId>logger-java-log4j</artifactId>
+			<version>5.0.3</version>
+		</dependency>
 	</dependencies>
 	<build>
 		<plugins>
 			<plugin>
 				<groupId>org.apache.maven.plugins</groupId>
 				<artifactId>maven-failsafe-plugin</artifactId>
-				<version>2.9</version>				
+				<version>2.9</version>
 				<executions>
 					<execution>
 						<phase>integration-test</phase>
@@ -126,17 +129,17 @@
 							<properties>
 								<usedefaultlisteners>false</usedefaultlisteners>
 								<workingDirectory>target/surefire-reports/</workingDirectory>
-								
-							<!--  adding property to log in to Report Portal -->
-							<property>
-							     <name>usedefaultlisteners</name>
-							     <value>false</value>
-							</property>
-							<property>
-							     <name>listener</name>
-							     <value>com.epam.reportportal.testng.ReportPortalTestNGListener</value>
-							</property>
-								
+
+								<!-- adding property to log in to Report Portal -->
+								<property>
+									<name>usedefaultlisteners</name>
+									<value>false</value>
+								</property>
+								<property>
+									<name>listener</name>
+									<value>com.epam.reportportal.testng.ReportPortalTestNGListener</value>
+								</property>
+
 							</properties>
 						</configuration>
 						<goals>

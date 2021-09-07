@@ -1,3 +1,4 @@
+// Copyright 2013-2021 NXGN Management, LLC. All Rights Reserved.
 package com.medfusion.patientportal2.api.pojos;
 
 import java.util.HashMap;
@@ -84,24 +85,16 @@ public class ProfilePayload {
 	}
 
 	public static Map<String, Object> createProfileMap(String email, String username, String password,
-			String challengeAnswer, String challengePhrase, String source, String version) {
+			String challengeAnswer, String challengePhrase, String source) {
 		Map<String, Object> profileMap = new HashMap<String, Object>();
-
-		if (version.equals("v4")) {
-			profileMap.put("email", email);
-			profileMap.put("credentials", Credentials.getCredentialsMap(username, password));
-			profileMap.put("source", source);
-			return profileMap;
-		} else {
-			profileMap.put("email", email);
-			profileMap.put("credentials", Credentials.getCredentialsMap(username, password));
-			profileMap.put("challengeAnswer", challengeAnswer);
-			profileMap.put("challengePhrase", challengePhrase);
-			profileMap.put("source", source);
-			return profileMap;
-		}
+		profileMap.put("email", email);
+		profileMap.put("credentials", Credentials.getCredentialsMap(username, password));
+		profileMap.put("challengeAnswer", challengeAnswer);
+		profileMap.put("challengePhrase", challengePhrase);
+		profileMap.put("source", source);
+		return profileMap;
 	}
-	
+
 	public static Map<String, Object> createSecurityMap(String securityAnswer) {
 		Map<String, Object> securityMap = new HashMap<String, Object>();
 		securityMap.put("securityAnswer", securityAnswer);
