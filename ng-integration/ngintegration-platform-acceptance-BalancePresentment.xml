@@ -2,22 +2,29 @@
 
 <!-- Copyright 2021 NXGN Management, LLC. All Rights Reserved. -->
 
-<suite name = "NGIntegration-Platform-Acceptance-BalancePresentment" verbose = "2" >
-<listeners>
-  <listener class-name="com.intuit.ifs.csscat.core.TestValidationErrorListener" />
-  <listener class-name="org.uncommons.reportng.HTMLReporter" />
-  <listener class-name="org.uncommons.reportng.JUnitXMLReporter" />
-</listeners>
- 	
-<test name = "NGIntegration-Platform-Acceptance-BalancePresentment" >
-	<classes>
-		<class name = "com.ng.product.integrationplatform.tests.NGIntegrationE2EBalancePresentmentTests" />
-		<methods>
-	    		<include name="testPatientAbletoSeeChargesAndPaytheBill"/>
-	    	 	<include name="testPatientAbletoSeetheUpdatedchargesinPortal"/>
-	    	 	<include name="testPatientnotAblePayZeroAmountCharge"/>
-	    	 	<include name="testPatientAbletoPayExtraAmount"/>
-	    </methods>
-	</classes>
-</test>
+<suite name="NGIntegration-Platform-Acceptance-BalancePresentment"
+	verbose="2">
+	<listeners>
+		<listener
+			class-name="com.epam.reportportal.testng.ReportPortalTestNGListener" />
+		<listener
+			class-name="com.intuit.ifs.csscat.core.TestValidationErrorListener" />
+		<listener class-name="org.uncommons.reportng.HTMLReporter" />
+		<listener
+			class-name="org.uncommons.reportng.JUnitXMLReporter" />
+	</listeners>
+
+	<test name="NGIntegration-Platform-Acceptance-BalancePresentment">
+		<classes>
+			<class
+				name="com.ng.product.integrationplatform.tests.NGIntegrationE2EBalancePresentmentTests" />
+			<methods>
+				<include name="testPatientAbletoSeeChargesAndPaytheBill" />
+				<include
+					name="testPatientAbletoSeetheUpdatedchargesinPortal" />
+				<include name="testPatientnotAblePayZeroAmountCharge" />
+				<include name="testPatientAbletoPayExtraAmount" />
+			</methods>
+		</classes>
+	</test>
 </suite>

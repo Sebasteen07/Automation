@@ -1,14 +1,29 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE suite SYSTEM "http://testng.org/testng-1.0.dtd">
 <suite name="Suite">
-  <test thread-count="5" name="ModulatorTests">
-    <classes>
-      <class name="com.medfusion.gateway_proxy.utils.GatewayProxyUtils"/>
-      <class name="com.medfusion.payment_modulator.tests.PaypalTransactions"/>
-      <class name="com.medfusion.payment_modulator.tests.ElementTransactions"/>
-      <class name="com.medfusion.gateway_proxy.tests.GatewayProxyTransactionTests"/>
-      <class name="com.medfusion.payment_modulator.tests.QBPAYTransactions"/>
-      <class name="com.medfusion.gateway_proxy.tests.GatewayProxyDigitalWalletTests"/>
-    </classes>
-  </test> <!-- ModulatorTests -->
+	<listeners>
+		<listener
+			class-name="com.intuit.ifs.csscat.core.TestValidationErrorListener" />
+		<listener class-name="org.uncommons.reportng.HTMLReporter" />
+		<listener
+			class-name="org.uncommons.reportng.JUnitXMLReporter" />
+		<listener
+			class-name="com.epam.reportportal.testng.ReportPortalTestNGListener" />
+	</listeners>
+	<test thread-count="5" name="ModulatorTests">
+		<classes>
+			<class
+				name="com.medfusion.gateway_proxy.utils.GatewayProxyUtils" />
+			<class
+				name="com.medfusion.payment_modulator.tests.PaypalTransactions" />
+			<class
+				name="com.medfusion.payment_modulator.tests.ElementTransactions" />
+			<class
+				name="com.medfusion.gateway_proxy.tests.GatewayProxyTransactionTests" />
+			<class
+				name="com.medfusion.payment_modulator.tests.QBPAYTransactions" />
+			<class
+				name="com.medfusion.gateway_proxy.tests.GatewayProxyDigitalWalletTests" />
+		</classes>
+	</test> <!-- ModulatorTests -->
 </suite> <!-- Suite -->
