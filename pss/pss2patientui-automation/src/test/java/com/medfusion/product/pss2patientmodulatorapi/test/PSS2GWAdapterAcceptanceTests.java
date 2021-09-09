@@ -8,7 +8,7 @@ import java.sql.Timestamp;
 import org.testng.annotations.BeforeTest;
 import org.testng.annotations.Test;
 
-import com.intuit.ifs.csscat.core.BaseTestNGWebDriver;
+import com.intuit.ifs.csscat.core.BaseTestNG;
 import com.intuit.ifs.csscat.core.RetryAnalyzer;
 import com.medfusion.product.object.maps.pss2.page.util.APIVerification;
 import com.medfusion.product.object.maps.pss2.page.util.PostAPIRequestGW;
@@ -23,7 +23,7 @@ import io.restassured.response.Response;
 import io.restassured.specification.RequestSpecification;
 import io.restassured.specification.ResponseSpecification;
 
-public class PSS2GWAdapterAcceptanceTests extends BaseTestNGWebDriver {
+public class PSS2GWAdapterAcceptanceTests extends BaseTestNG {
 
 	public static PayloadGW payload;
 	public static PSSPropertyFileLoader propertyData;

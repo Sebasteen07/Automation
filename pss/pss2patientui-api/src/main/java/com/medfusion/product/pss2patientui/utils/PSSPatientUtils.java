@@ -1148,9 +1148,9 @@ public class PSSPatientUtils extends BaseTestNGWebDriver {
 		ScheduledAppointmentAnonymous scheduledAppointmentAnonymous = confirmationpage.appointmentConfirmedAnonymous();
 		log("appointment ID = " + scheduledAppointmentAnonymous.getAppointmentID());
 		log("Add to calendar option is displayed and is clickable.");
-//		scheduledAppointmentAnonymous.downloadCalander();
-//		Thread.sleep(2000);
-//		readICSFile(filePath());
+		scheduledAppointmentAnonymous.downloadCalander();
+		Thread.sleep(2000);
+		readICSFile(filePath());
 	}
 
 	public void appointmentToScheduled(ConfirmationPage confirmationpage, Appointment testData) throws Exception {
@@ -1165,9 +1165,9 @@ public class PSSPatientUtils extends BaseTestNGWebDriver {
 		ScheduledAppointment scheduledappointment = confirmationpage.appointmentConfirmed();
 		log("appointment ID = " + scheduledappointment.getAppointmentID());
 		log("Add to calendar option is displayed and is clickable.");
-//		scheduledappointment.downloadCalander();
-//		Thread.sleep(2000);
-//		readICSFile(filePath());
+		scheduledappointment.downloadCalander();
+		Thread.sleep(2000);
+		readICSFile(filePath());
 	}
 
 	public void appointmentToRescheduled(ConfirmationPage confirmationpage, Appointment testData) throws Exception {
@@ -1183,9 +1183,9 @@ public class PSSPatientUtils extends BaseTestNGWebDriver {
 		ScheduledAppointment scheduledappointment = confirmationpage.rescheduleAppointmentConfirmed();
 		log("appointment ID = " + scheduledappointment.getAppointmentID());
 		log("Add to calendar option is displayed and is clickable.");
-//		scheduledappointment.downloadCalander();
-//		Thread.sleep(2000);
-//		readICSFile(filePath());
+		scheduledappointment.downloadCalander();
+		Thread.sleep(2000);
+		readICSFile(filePath());
 	}
 
 	public void apptRescheduledwithTextReason(ConfirmationPage confirmationpage, Appointment testData)
@@ -1209,9 +1209,9 @@ public class PSSPatientUtils extends BaseTestNGWebDriver {
 		ScheduledAppointment scheduledappointment = confirmationpage.rescheduleAppointmentConfirmed();
 		log("appointment ID = " + scheduledappointment.getAppointmentID());
 		log("Add to calendar option is displayed and is clickable.");
-//		scheduledappointment.downloadCalander();
-//		Thread.sleep(2000);
-//		readICSFile(filePath());
+		scheduledappointment.downloadCalander();
+		Thread.sleep(2000);
+		readICSFile(filePath());
 	}
 
 	public void apptRescheduledDropdownReason(ConfirmationPage confirmationpage, Appointment testData)
@@ -1231,13 +1231,12 @@ public class PSSPatientUtils extends BaseTestNGWebDriver {
 		ScheduledAppointment scheduledappointment = confirmationpage.rescheduleAppointmentConfirmed();
 		log("appointment ID = " + scheduledappointment.getAppointmentID());
 		log("Add to calendar option is displayed and is clickable.");
-//		scheduledappointment.downloadCalander();
-//		Thread.sleep(2000);
-//		readICSFile(filePath());
+		scheduledappointment.downloadCalander();
+		Thread.sleep(2000);
+		readICSFile(filePath());
 	}
 
-	//public ScheduledAppointment selectAFlow(WebDriver driver, String rule, HomePage homepage, Appointment testData)
-	public void selectAFlow(WebDriver driver, String rule, HomePage homepage, Appointment testData)
+	public ScheduledAppointment selectAFlow(WebDriver driver, String rule, HomePage homepage, Appointment testData)
 			throws Exception {
 		log("selectAFlow method started");
 		log("------------I am in selectAFlow METHOD-----");
@@ -1287,7 +1286,7 @@ public class PSSPatientUtils extends BaseTestNGWebDriver {
 		if (rule.equalsIgnoreCase(PSSConstants.LT)) {
 			LTFlow(homepage, testData, Boolean.toString(testData.getIsInsuranceEnabled()), driver);
 		}
-		//return PageFactory.initElements(driver, ScheduledAppointment.class);
+		return PageFactory.initElements(driver, ScheduledAppointment.class);
 	}
 
 	public void checkPrivacyPage(WebDriver driver) {

@@ -6,14 +6,14 @@ import java.io.IOException;
 import org.testng.Assert;
 import org.testng.annotations.Test;
 
-import com.intuit.ifs.csscat.core.BaseTestNGWebDriver;
+import com.intuit.ifs.csscat.core.BaseTestNG;
 import com.medfusion.product.object.maps.pss2.page.util.HeaderConfig;
 import com.medfusion.product.object.maps.pss2.page.util.PostAPIRequestGE;
 import com.medfusion.product.pss2patientapi.payload.PayloadGE;
 import com.medfusion.product.pss2patientui.pojo.Appointment;
 import com.medfusion.product.pss2patientui.utils.PSSPropertyFileLoader;
 
-public class PSS2GEAdapterAcceptanceTests extends BaseTestNGWebDriver {
+public class PSS2GEAdapterAcceptanceTests extends BaseTestNG {
 
 	@Test
 	public void testHealthCheckGET() throws IOException {
