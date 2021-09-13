@@ -2,26 +2,32 @@
 
 <!-- Copyright 2020 NXGN Management, LLC. All Rights Reserved. -->
 
-<suite name = "NGIntegration-Platform-Acceptance-CCD" verbose = "2" >
-<listeners>
-  <listener class-name="com.intuit.ifs.csscat.core.TestValidationErrorListener" />
-  <listener class-name="org.uncommons.reportng.HTMLReporter" />
-  <listener class-name="org.uncommons.reportng.JUnitXMLReporter" />
-</listeners>
- 	
-<test name = "NGIntegration-Platform-Acceptance-CCD" >
-	<classes>
-		<class name = "com.ng.product.integrationplatform.tests.NGIntegrationE2EEnrollment_CCDTests" />
-		<methods>
-	    		<include name="testCCDPracticeLevelEnrollmentOnDemandCCD"/>
-	    		<include name="testCCDMSUCCD"/> 
-	    		<include name="testCCDLockedEncounterCCD"/>
-	    		<include name="testCCDGuardianDependentCCD"/>
-	    		<include name="testCCDTrustedRepresentativeWithoutMFAccount"/>
-	    		<include name="testCCDUnSignedOffLabResultInCCD"/> 
-	    		<include name="testCCDSensitiveLockedEncounterCCD"/>  
-	    		<include name="testCCDMultiPracticeCCDP1P2ANDOnDemandCCDTrustedRepresentativeWithMFAccount"/>	   	    			    		
-	    	</methods>
-	</classes>
-</test>
+<suite name="NGIntegration-Platform-Acceptance-CCD" verbose="2">
+	<listeners>
+		<listener
+			class-name="com.epam.reportportal.testng.ReportPortalTestNGListener" />
+		<listener
+			class-name="com.intuit.ifs.csscat.core.TestValidationErrorListener" />
+		<listener class-name="org.uncommons.reportng.HTMLReporter" />
+		<listener
+			class-name="org.uncommons.reportng.JUnitXMLReporter" />
+	</listeners>
+
+	<test name="NGIntegration-Platform-Acceptance-CCD">
+		<classes>
+			<class
+				name="com.ng.product.integrationplatform.tests.NGIntegrationE2EEnrollment_CCDTests" />
+			<methods>
+				<include name="testCCDPracticeLevelEnrollmentOnDemandCCD" />
+				<include name="testCCDMSUCCD" />
+				<include name="testCCDLockedEncounterCCD" />
+				<include name="testCCDGuardianDependentCCD" />
+				<include name="testCCDTrustedRepresentativeWithoutMFAccount" />
+				<include name="testCCDUnSignedOffLabResultInCCD" />
+				<include name="testCCDSensitiveLockedEncounterCCD" />
+				<include
+					name="testCCDMultiPracticeCCDP1P2ANDOnDemandCCDTrustedRepresentativeWithMFAccount" />
+			</methods>
+		</classes>
+	</test>
 </suite>

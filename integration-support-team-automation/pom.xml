@@ -6,7 +6,7 @@
 	<parent>
 		<groupId>com.intuit.ihg</groupId>
 		<artifactId>ihg-depot-parent-pom</artifactId>
-		<version>21.6.0-SNAPSHOT</version>
+		<version>21.7.0-SNAPSHOT</version>
 	</parent>
 	
 	<artifactId>integration-support-team-automation</artifactId>
@@ -20,11 +20,19 @@
 			<url>https://nexus.dev.medfusion.net/nexus/content/groups/qhg-dev/ </url>
 			<!-- <url>http://maven.qhg.local/nexus/content/groups/qhg-dev/</url> -->
 		</repository>
+		<repository>
+			<snapshots>
+				<enabled>false</enabled>
+			</snapshots>
+			<id>bintray-epam-reportportal</id>
+			<name>bintray</name>
+			<url>http://dl.bintray.com/epam/reportportal</url>
+		</repository>
 	</repositories>
 	<properties>
 		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
-		<!--<qa-automation-utils.version>21.6.0-SNAPSHOT</qa-automation-utils.version> -->
-		<ihg.version>21.6.0-SNAPSHOT</ihg.version>
+		<!--<qa-automation-utils.version>21.7.0-SNAPSHOT</qa-automation-utils.version> -->
+		<ihg.version>21.7.0-SNAPSHOT</ihg.version>
 	</properties>
 	<dependencies>
 		<dependency>

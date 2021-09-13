@@ -3,11 +3,12 @@
 	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
 	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
 	<modelVersion>4.0.0</modelVersion>
+	<!-- Copyright 2013-2021 NXGN Management, LLC. All Rights Reserved. -->
 
 	<parent>
         <groupId>com.intuit.ihg</groupId>
         <artifactId>ihg-depot-parent-pom</artifactId>
-        <version>21.6.0-SNAPSHOT</version>
+        <version>21.7.0-SNAPSHOT</version>
     </parent>
 	
 	<artifactId>integrationplatform-api</artifactId>
@@ -20,11 +21,19 @@
 			<name>IHG-nexus</name>
 			<url>http://maven.qhg.local/nexus/content/groups/qhg-dev/</url>
 		</repository>
+		<repository>
+			<snapshots>
+				<enabled>false</enabled>
+			</snapshots>
+			<id>bintray-epam-reportportal</id>
+			<name>bintray</name>
+			<url>http://dl.bintray.com/epam/reportportal</url>
+		</repository>
 	</repositories>
 
 	<properties>
 		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
-		<ihg.version>21.6.0-SNAPSHOT</ihg.version>
+		<ihg.version>21.7.0-SNAPSHOT</ihg.version>
 	</properties>
 
 	<dependencies>
@@ -50,12 +59,12 @@
 		<dependency>
   			<groupId>com.intuit.ihg</groupId>
   			<artifactId>qa-automation-utils</artifactId>
-  			<version>21.6.0-SNAPSHOT</version>
+  			<version>21.7.0-SNAPSHOT</version>
   		</dependency>
   		 <dependency>
   			<groupId>com.intuit.ihg</groupId>
   			<artifactId>patientportal2-object-maps</artifactId>
-  			<version>21.6.0-SNAPSHOT</version>
+  			<version>21.7.0-SNAPSHOT</version>
   		</dependency>
 		<dependency>
 			<groupId>org.eclipse.jetty</groupId>
@@ -80,13 +89,13 @@
 		<dependency>
 	      <groupId>com.intuit.qhg.hub.schemas</groupId>
 	      <artifactId>Messages</artifactId>
-	      <version>21.6.0-SNAPSHOT</version>
+	      <version>21.7.0-SNAPSHOT</version>
 	      <scope>compile</scope>
 		</dependency>
 		<dependency>
 			<groupId>com.intuit.api.security</groupId>
 			<artifactId>oauth-core-client</artifactId>
-			<version>21.6.0-SNAPSHOT</version>
+			<version>21.7.0-SNAPSHOT</version>
 		</dependency>
 		<dependency>
 			<groupId>com.jayway.awaitility</groupId>
@@ -97,7 +106,7 @@
 	  	<dependency>
 	  		<groupId>com.intuit.eh.core</groupId>
 	  		<artifactId>eh-core-dto</artifactId>
-	  		<version>21.6.0-SNAPSHOT</version>
+	  		<version>21.7.0-SNAPSHOT</version>
 	  	</dependency>
 
 	  	<dependency>
@@ -123,7 +132,7 @@
         <dependency>
 	  	 	<groupId>com.intuit.ihg</groupId>
 	  	 	<artifactId>practiceportal-object-maps</artifactId>
-	  	 	<version>21.6.0-SNAPSHOT</version>
+	  	 	<version>21.7.0-SNAPSHOT</version>
 	  </dependency>
 	</dependencies>
 	<build>

@@ -1,6 +1,9 @@
 //  Copyright 2013-2021 NXGN Management, LLC. All Rights Reserved.
 package com.medfusion.ibfibm.service;
 
+import static org.testng.Assert.assertEquals;
+import static org.testng.Assert.assertTrue;
+
 import java.io.BufferedReader;
 import java.io.BufferedWriter;
 import java.io.File;
@@ -89,7 +92,7 @@ public class IBFIBMService extends BaseTestNG {
 		assertTrue((result != null), "Transaction not found in vantiv_emaf_fee_schedule");
 		assertEquals(result.getString("account_number"), emafData.getCardNumber(), "Card number not correct");
 		log("Correct. Card number: " + result.getString("account_number"));
-		assertEquals(result.getLong("merchant_id"), emafData.getMmid(), "MMID not correct");
+		assertEquals(result.getLong("merchant_id"), emafData.getMmid().toString(), "MMID not correct");
 		log("Correct. MMID: " + result.getLong("merchant_id"));
 		assertEquals(result.getString("activity_date"), emafData.getActivityDate(), "Activity Date not correct");
 		log("Correct. Activity date: " + result.getString("activity_date"));
