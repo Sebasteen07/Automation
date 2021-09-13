@@ -14,6 +14,7 @@ import com.medfusion.product.pss2patientapi.payload.PayloadNG;
 import com.medfusion.product.pss2patientui.pojo.Appointment;
 import com.medfusion.product.pss2patientui.utils.PSSPropertyFileLoader;
 
+import io.restassured.path.json.JsonPath;
 import io.restassured.response.Response;
 
 public class PSS2NGAdapterAcceptanceTests extends BaseTestNG {
@@ -38,26 +39,67 @@ public class PSS2NGAdapterAcceptanceTests extends BaseTestNG {
 	@Test(enabled = true, groups = { "APItest" }, retryAnalyzer = RetryAnalyzer.class)
 	public void AvailableSlotsNGPost() throws IOException, InterruptedException {
 
-		postAPIRequest.availableSlots(PayloadNG.nextAvailable_Payload(propertyData.getProperty("patient.id.ng")),
+		Response response=	postAPIRequest.availableSlots(PayloadNG.nextAvailable_Payload(propertyData.getProperty("patient.id.ng")),
 				propertyData.getProperty("practice.id.ng"));
+		aPIVerification.responseCodeValidation(response, 200);
+		aPIVerification.responseTimeValidation(response);
+
 		
 	}
+	
+	
+	@Test(enabled = true, groups = { "APItest" }, retryAnalyzer = RetryAnalyzer.class)
+	public void AvailableSlotsNGPostInvalidPayload() throws IOException, InterruptedException {
+
+		Response response=	postAPIRequest.availableSlots("",propertyData.getProperty("practice.id.ng"));
+		aPIVerification.responseCodeValidation(response, 400);
+	}
+
 
 	@Test(enabled = true, groups = { "APItest" }, retryAnalyzer = RetryAnalyzer.class)
 	public void CancellationReasonGET() throws IOException {
 
-		postAPIRequest.cancellationReasonT(propertyData.getProperty("practice.id.ng"));
+		Response response=postAPIRequest.cancellationReasonT(propertyData.getProperty("practice.id.ng"));
+		aPIVerification.responseCodeValidation(response, 200);
+		aPIVerification.responseTimeValidation(response);
+
+		aPIVerification.responseKeyValidation(response, "displayName");
+		aPIVerification.responseKeyValidation(response, "reasonType");
+
 	}
+	
+	@Test(enabled = true, groups = { "APItest" }, retryAnalyzer = RetryAnalyzer.class)
+	public void CancellationReasonWithoutPracticeIdGET() throws IOException {
+
+		Response response=postAPIRequest.cancellationReasonT("");
+		aPIVerification.responseCodeValidation(response, 404);
+		aPIVerification.responseTimeValidation(response);
+
+	}
+
 
 	@Test(enabled = true, groups = { "APItest" }, retryAnalyzer = RetryAnalyzer.class)
 	public void TestPastApptNgPOST() throws IOException {
 
-		postAPIRequest.pastApptNG(propertyData.getProperty("practice.id.ng"),
+		Response response=	postAPIRequest.pastApptNG(propertyData.getProperty("practice.id.ng"),
 				PayloadNG.past_appt_payload(propertyData.getProperty("patient.id.ng"),
 						propertyData.getProperty("practice.displayname.ng"),
 						propertyData.getProperty("practice.id.ng")));
-
+		aPIVerification.responseTimeValidation(response);
+		aPIVerification.responseKeyValidationJson(response, "appointmentTypes.name");
+		aPIVerification.responseKeyValidationJson(response, "book.resourceId");
+		aPIVerification.responseKeyValidationJson(response, "location.name");
 	}
+	
+	@Test(enabled = true, groups = { "APItest" }, retryAnalyzer = RetryAnalyzer.class)
+	public void TestPastApptWithoutPayloadPOST() throws IOException, InterruptedException {
+
+		Response response=	postAPIRequest.pastApptNG(propertyData.getProperty("practice.id.ng"),"");
+		aPIVerification.responseCodeValidation(response, 400);
+		aPIVerification.responseTimeValidation(response);
+		
+	}
+
 
 	@Test(enabled = true, groups = { "APItest" }, retryAnalyzer = RetryAnalyzer.class)
 	public void nextAvailableSlotPost() throws IOException {

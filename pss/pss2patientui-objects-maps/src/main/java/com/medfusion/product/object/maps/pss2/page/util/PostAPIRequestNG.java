@@ -33,7 +33,7 @@ public class PostAPIRequestNG extends BaseTestNGWebDriver {
 		responseSpec = new ResponseSpecBuilder().expectStatusCode(200).expectContentType(ContentType.JSON).build();
 	}
 
-	public JsonPath appointmentStatus(String practiceid) {
+	public Response appointmentStatus(String practiceid) {
 
 		Response response = given().spec(requestSpec).log().all().spec(requestSpec)
 				.queryParam("appointmentId", "00b971f3-b83f-42c2-ac31-9c748fe7bef3").queryParam("patientId", "49911")
@@ -45,7 +45,7 @@ public class PostAPIRequestNG extends BaseTestNGWebDriver {
 		log("status of an Appointment -" + js.getString("status"));
 		log("startDateTime- " + js.getString("startDateTime"));
 		log("appointmentType Id- " + js.getString("appointmentTypeId"));
-		return js;
+		return response;
 
 	}
 
@@ -79,32 +79,18 @@ public class PostAPIRequestNG extends BaseTestNGWebDriver {
 	public Response cancellationReasonT(String practiceid) {
 
 		Response response = given().spec(requestSpec).log().all().spec(requestSpec).when()
-				.get(practiceid + APIPath.apiPath.Cancel_Reason).then().spec(responseSpec).log().all()
-				.spec(responseSpec).extract().response();
+				.get(practiceid + APIPath.apiPath.Cancel_Reason).then().log().all().extract().response();
 
-		aPIVerification.responseCodeValidation(response, 200);
-		aPIVerification.responseTimeValidation(response);
-
-		aPIVerification.responseKeyValidation(response, "displayName");
-		aPIVerification.responseKeyValidation(response, "reasonType");
 
 		return response;
 
 	}
 
-	public JsonPath pastApptNG(String practiceid, String b) {
+	public Response pastApptNG(String practiceid, String b) {
 
 		Response response = given().spec(requestSpec).log().all().body(b).when()
-				.post(practiceid + APIPath.apiPath.Past_APPT).then().log().all().assertThat().statusCode(200).extract()
-				.response();
-
-		JsonPath js = new JsonPath(response.asString());
-
-		log("Appointment Type -" + js.getString("appointmentTypes.name"));
-		log("Resource Id- " + js.getString("book.resourceId"));
-
-		log("Location Id- " + js.getString("location.name"));
-		return js;
+				.post(practiceid + APIPath.apiPath.Past_APPT).then().log().all().extract().response();
+		return response;
 
 	}
 
@@ -244,10 +230,6 @@ public class PostAPIRequestNG extends BaseTestNGWebDriver {
 		Response response = given().spec(requestSpec).log().all().spec(requestSpec).body(b).when()
 				.post(practiceId + "/availableslots").then().log().all().extract()
 				.response();
-		log("Response is as below" + response.asString());
-		APIVerification apiVerification = new APIVerification();
-		apiVerification.responseCodeValidation(response, 200);
-		apiVerification.responseTimeValidation(response);
 		return response;
 	}
 
