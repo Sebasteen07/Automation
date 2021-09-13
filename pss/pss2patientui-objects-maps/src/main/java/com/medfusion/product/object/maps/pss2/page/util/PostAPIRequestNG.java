@@ -33,18 +33,13 @@ public class PostAPIRequestNG extends BaseTestNGWebDriver {
 		responseSpec = new ResponseSpecBuilder().expectStatusCode(200).expectContentType(ContentType.JSON).build();
 	}
 
-	public Response appointmentStatus(String practiceid) {
+	public Response appointmentStatus(String practiceid,String patientId) {
 
 		Response response = given().spec(requestSpec).log().all().spec(requestSpec)
-				.queryParam("appointmentId", "00b971f3-b83f-42c2-ac31-9c748fe7bef3").queryParam("patientId", "49911")
+				.queryParam("appointmentId", "00b971f3-b83f-42c2-ac31-9c748fe7bef3").queryParam("patientId",patientId)
 				.queryParam("startDateTime", "1612522800").when().get(practiceid + APIPath.apiPath.Appointment_Status)
-				.then().spec(responseSpec).log().all().spec(responseSpec).extract().response();
+				.then().log().all().extract().response();
 
-		JsonPath js = new JsonPath(response.asString());
-
-		log("status of an Appointment -" + js.getString("status"));
-		log("startDateTime- " + js.getString("startDateTime"));
-		log("appointmentType Id- " + js.getString("appointmentTypeId"));
 		return response;
 
 	}
@@ -52,27 +47,14 @@ public class PostAPIRequestNG extends BaseTestNGWebDriver {
 	public Response appointmentType(String practiceid) {
 
 		Response response = given().spec(requestSpec).log().all().when().get(practiceid + APIPath.apiPath.Apt_Type)
-				.then().spec(responseSpec).log().all().extract().response();
-		aPIVerification.responseCodeValidation(response, 200);
-
-		aPIVerification.responseTimeValidation(response);
-
-		aPIVerification.responseKeyValidation(response, "categoryName");
-		aPIVerification.responseKeyValidation(response, "displayName");
-		aPIVerification.responseKeyValidation(response, "name");
-
+				.then().log().all().extract().response();
 		return response;
 	}
 
 	public Response rescheduleApptNG(String practiceid, String b) {
 
 		Response response = given().spec(requestSpec).log().all().body(b)
-				.post(practiceid + APIPath.apiPath.rescheduleAppt).then().log().all().assertThat().statusCode(200)
-				.extract().response();
-
-		aPIVerification.responseCodeValidation(response, 200);
-		aPIVerification.responseTimeValidation(response);
-
+				.post(practiceid + APIPath.apiPath.rescheduleAppt).then().log().all().extract().response();
 		return response;
 	}
 
@@ -94,14 +76,14 @@ public class PostAPIRequestNG extends BaseTestNGWebDriver {
 
 	}
 
-	public JsonPath nextAvailableNG(String practiceid, String b) {
+	public Response nextAvailableNG(String practiceid, String b) {
 
 		Response response = given().spec(requestSpec).log().all().when().body(b)
 				.post(practiceid + APIPath.apiPath.next_Available).then().log().all().assertThat().statusCode(200)
 				.extract().response();
 
-		JsonPath js = new JsonPath(response.asString());
-		return js;
+		//JsonPath js = new JsonPath(response.asString());
+		return response;
 
 	}
 
@@ -189,6 +171,25 @@ public class PostAPIRequestNG extends BaseTestNGWebDriver {
 		return s;
 	}
 
+	public Response scheduleApptNG1(String practiceid, String b) {
+
+		Response response = given().spec(requestSpec).when().body(b).log().all().when()
+				.post(practiceid + APIPath.apiPath.scheduleApptNG).then().spec(responseSpec).log().all().extract()
+				.response();
+
+		JSONObject js = new JSONObject(response.asString());
+
+		String s = js.getString("id");
+
+		log("Value of id - " + s);
+
+		APIVerification apiVerification = new APIVerification();
+
+		apiVerification.responseCodeValidation(response, 200);
+		apiVerification.responseTimeValidation(response);
+		return response;
+	}
+
 	public Response upcommingApptNG(String practiceid, String b) {
 
 		Response response = given().spec(requestSpec).when().body(b).log().all()
@@ -274,12 +275,12 @@ public class PostAPIRequestNG extends BaseTestNGWebDriver {
 		return access_Token;
 	}
 
-	public Response cancelAppointmentGET(String practiceid) {
+	public Response cancelAppointmentGET(String practiceid,String appId) {
 
 		Response response = given().spec(requestSpec).log().all().spec(requestSpec)
 				.queryParam("additionalFields", "Cancel")
-				.queryParam("appointmentId", "8ce85b6a-268a-4ef1-9baa-446afd56367d").when()
-				.get(practiceid + APIPath.apiPath.cancelAppointment).then().spec(responseSpec).log().all().extract()
+				.queryParam("appointmentId", appId).when()
+				.get(practiceid + APIPath.apiPath.cancelAppointment).then().log().all().extract()
 				.response();
 
 		return response;
@@ -290,7 +291,7 @@ public class PostAPIRequestNG extends BaseTestNGWebDriver {
 		Response response = given().spec(requestSpec).log().all().spec(requestSpec)
 				.queryParam("additionalFields", "Cancel")
 				.queryParam("appointmentId", "8ce85b6a-268a-4ef1-9baa-446afd56367d").when().body(b)
-				.post(practiceid + APIPath.apiPath.cancelAppointment).then().spec(responseSpec).log().all().extract()
+				.post(practiceid + APIPath.apiPath.cancelAppointment).then().log().all().extract()
 				.response();
 
 		return response;
@@ -299,16 +300,15 @@ public class PostAPIRequestNG extends BaseTestNGWebDriver {
 	public Response prerequisteappointmenttypesPOST(String practiceid, String b) {
 
 		Response response = given().spec(requestSpec).log().all().when().body(b)
-				.post(practiceid + APIPath.apiPath.prerequisteappointmenttypesNG).then().spec(responseSpec).log().all()
+				.post(practiceid + APIPath.apiPath.prerequisteappointmenttypesNG).then().log().all()
 				.extract().response();
-
 		return response;
 	}
 
 	public Response cancellationReason(String practiceid) {
 
 		Response response = given().spec(requestSpec).log().all().when()
-				.get(practiceid + APIPath.apiPath.cancellationReason).then().spec(responseSpec).log().all().extract()
+				.get(practiceid + APIPath.apiPath.cancellationReason).then().log().all().extract()
 				.response();
 
 		return response;
@@ -333,125 +333,57 @@ public class PostAPIRequestNG extends BaseTestNGWebDriver {
 	public Response insuranceCarrier(String practiceid) {
 
 		Response response = given().when().spec(requestSpec).log().all()
-				.get(practiceid + APIPath.apiPath.insurancecarrierNG).then().spec(responseSpec).log().all().extract()
+				.get(practiceid + APIPath.apiPath.insurancecarrierNG).then().log().all().extract()
 				.response();
-
-		aPIVerification.responseTimeValidation(response);
-
-		JSONArray jsonarray = new JSONArray(response.asString());
-
-		JSONObject jsonobject = new JSONObject();
-
-		int i = 0;
-		while (i < jsonarray.length()) {
-
-			jsonobject = jsonarray.getJSONObject(i);
-			ParseJSONFile.getKey(jsonobject, "name");
-			i++;
-		}
-
 		return response;
 	}
 
 	public Response locations(String practiceid) {
 
-		Response response = given().when().get(practiceid + APIPath.apiPath.locationsNG).then().spec(responseSpec).log()
+		Response response = given().log().all().when().get(practiceid + APIPath.apiPath.locationsNG).then().log()
 				.all().extract().response();
-
-		aPIVerification.responseCodeValidation(response, 200);
-		aPIVerification.responseTimeValidation(response);
-
-		JSONArray jsonarray = new JSONArray(response.asString());
-
-		JSONObject jsonobject = new JSONObject();
-
-		int i = 0;
-		while (i < jsonarray.length()) {
-
-			jsonobject = jsonarray.getJSONObject(i);
-			ParseJSONFile.getKey(jsonobject, "name");
-			i++;
-		}
-
 		return response;
+
 	}
 
 	public Response demographics(String practiceid) {
 
 		Response response = given().spec(requestSpec).log().all().queryParam("patientId", "50302").when()
-				.get(practiceid + APIPath.apiPath.demographicNG).then().spec(responseSpec).log().all().extract()
+				.get(practiceid + APIPath.apiPath.demographicNG).then().log().all().extract()
 				.response();
 
-		aPIVerification.responseCodeValidation(response, 200);
-		aPIVerification.responseTimeValidation(response);
 
-		JSONObject jsonobject = new JSONObject(response.asString());
-		ParseJSONFile.getKey(jsonobject, "firstName");
-		ParseJSONFile.getKey(jsonobject, "lastName");
-		ParseJSONFile.getKey(jsonobject, "emailAddress");
-		ParseJSONFile.getKey(jsonobject, "gender");
-
+//		JSONObject jsonobject = new JSONObject(response.asString());
+//		ParseJSONFile.getKey(jsonobject, "firstName");
+//		ParseJSONFile.getKey(jsonobject, "lastName");
+//		ParseJSONFile.getKey(jsonobject, "emailAddress");
+//		ParseJSONFile.getKey(jsonobject, "gender");
+//
 		return response;
 	}
 
 	public Response lockout(String practiceid) {
 
-		Response response = given().when().get(practiceid + APIPath.apiPath.lockoutNG).then().spec(responseSpec).log()
+		Response response = given().log().all().when().get(practiceid + APIPath.apiPath.lockoutNG).then().log()
 				.all().extract().response();
-
-		aPIVerification.responseCodeValidation(response, 200);
-		aPIVerification.responseTimeValidation(response);
-
-		JSONArray jsonarray = new JSONArray(response.asString());
-
-		JSONObject jsonobject = new JSONObject();
-
-		int i = 0;
-		while (i < jsonarray.length()) {
-
-			jsonobject = jsonarray.getJSONObject(i);
-			ParseJSONFile.getKey(jsonobject, "key");
-			ParseJSONFile.getKey(jsonobject, "type");
-			i++;
-		}
 
 		return response;
 	}
 
 	public Response patientLastVisit(String practiceid) {
 
-		Response response = given().queryParam("patientId", "50056").when()
-				.get(practiceid + APIPath.apiPath.patientLastVisistNG).then().spec(responseSpec).log().all().extract()
+		Response response = given().log().all().queryParam("patientId", "50056").when()
+				.get(practiceid + APIPath.apiPath.patientLastVisistNG).then().log().all().extract()
 				.response();
-
-		aPIVerification.responseCodeValidation(response, 200);
-		aPIVerification.responseTimeValidation(response);
-
-		JSONObject jsonobject = new JSONObject(response.asString());
-		ParseJSONFile.getKey(jsonobject, "lastVisitDateTime");
 		return response;
 	}
 
 	public Response patietStatus(String practiceid) {
 
 		Response response = given().log().all().when().get(practiceid + APIPath.apiPath.patientStatusNG).then()
-				.spec(responseSpec).log().all().extract().response();
+				.log().all().extract().response();
 
-		aPIVerification.responseCodeValidation(response, 200);
-		aPIVerification.responseTimeValidation(response);
-
-		JSONArray jsonarray = new JSONArray(response.asString());
-
-		JSONObject jsonobject = new JSONObject();
-
-		int i = 0;
-		while (i < jsonarray.length()) {
-
-			jsonobject = jsonarray.getJSONObject(i);
-			ParseJSONFile.getKey(jsonobject, "key");
-			ParseJSONFile.getKey(jsonobject, "value");
-			i++;
-		}
+		
 
 		return response;
 	}
@@ -459,31 +391,23 @@ public class PostAPIRequestNG extends BaseTestNGWebDriver {
 	public Response matchPatientPOST(String practiceid, String b) {
 
 		Response response = given().spec(requestSpec).log().all().when().body(b)
-				.post(practiceid + APIPath.apiPath.patientMatchNG).then().spec(responseSpec).log().all().extract()
+				.post(practiceid + APIPath.apiPath.patientMatchNG).then().log().all().extract()
 				.response();
-
 		return response;
 	}
 
 	public Response patientRecordbyApptTypePOST(String practiceid, String b) {
 
 		Response response = given().spec(requestSpec).log().all().when().body(b)
-				.post(practiceid + APIPath.apiPath.patientrecordbyapptypesNG).then().spec(responseSpec).log().all()
+				.post(practiceid + APIPath.apiPath.patientrecordbyapptypesNG).then().log().all()
 				.extract().response();
-
-		aPIVerification.responseCodeValidation(response, 200);
-		aPIVerification.responseTimeValidation(response);
-
-		JSONObject jsonobject = new JSONObject(response.asString());
-		ParseJSONFile.getKey(jsonobject, "patientRecord");
-		ParseJSONFile.getKey(jsonobject, "appointmentTypeId");
 		return response;
 	}
 
 	public Response searchpatient(String practiceid, String b) {
 
 		Response response = given().spec(requestSpec).log().all().when().body(b)
-				.post(practiceid + APIPath.apiPath.searchpatientNG).then().spec(responseSpec).log().all().extract()
+				.post(practiceid + APIPath.apiPath.searchpatientNG).then().log().all().extract()
 				.response();
 
 		return response;
@@ -492,39 +416,24 @@ public class PostAPIRequestNG extends BaseTestNGWebDriver {
 	public Response patientrecordbyBooks(String practiceid, String b) {
 
 		Response response = given().spec(requestSpec).log().all().when().body(b)
-				.post(practiceid + APIPath.apiPath.patientrecordbybooksNG).then().spec(responseSpec).log().all()
+				.post(practiceid + APIPath.apiPath.patientrecordbybooksNG).then().log().all()
 				.extract().response();
-
-		aPIVerification.responseCodeValidation(response, 200);
-		aPIVerification.responseTimeValidation(response);
-
-		JSONObject jsonobject = new JSONObject(response.asString());
-		ParseJSONFile.getKey(jsonobject, "patientRecord");
-		ParseJSONFile.getKey(jsonobject, "bookId");
-
 		return response;
 	}
 
 	public Response lastseenProvider(String practiceid, String b) {
 
 		Response response = given().spec(requestSpec).log().all().when().body(b)
-				.post(practiceid + APIPath.apiPath.lastseenproviderNG).then().spec(responseSpec).log().all().extract()
+				.post(practiceid + APIPath.apiPath.lastseenproviderNG).then().log().all().extract()
 				.response();
-
-		aPIVerification.responseCodeValidation(response, 200);
-		aPIVerification.responseTimeValidation(response);
-
-		JSONObject jsonobject = new JSONObject(response.asString());
-		ParseJSONFile.getKey(jsonobject, "lastSeenDateTime");
-		ParseJSONFile.getKey(jsonobject, "resourceId");
 
 		return response;
 	}
 
 	public Response fetchNGBookList(String practiceid) {
 
-		Response response = given().when().get(practiceid + APIPath.apiPath.booklistNG).then().spec(responseSpec).log()
-				.all().assertThat().statusCode(200).extract().response();
+		Response response = given().log().all().when().get(practiceid + APIPath.apiPath.booklistNG).then().log()
+				.all().extract().response();
 
 		return response;
 	}
