@@ -560,11 +560,11 @@ public class PostAPIRequestPatientMod extends BaseTestNGWebDriver {
 		return response;
 	}
 
-	public Response pastAppointmentsByPage(String baseurl, Map<String, String> Header, String practiceId,
-			String appointmentId) {
+	public Response pastAppointmentsByPage(String baseurl, Map<String, String> Header, String practiceid,
+			String patientid) {
 		RestAssured.baseURI = baseurl;
-		Response response = given().log().all().headers(Header).log().all().when()
-				.get(practiceId + "/pastappointmentsbypage/" + appointmentId + "?pageIndex=1").then().log().all()
+		Response response = given().log().all().headers(Header).queryParam("pageIndex", 1).log().all().when()
+				.get(practiceid + "/pastappointmentsbypage/" + patientid).then().log().all()
 				.extract().response();
 		return response;
 	}
