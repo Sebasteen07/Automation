@@ -2,13 +2,11 @@
 package com.medfusion.product.object.maps.pss2.page.util;
 
 import static io.restassured.RestAssured.given;
-import org.json.JSONObject;
 import com.intuit.ifs.csscat.core.BaseTestNGWebDriver;
 import io.restassured.RestAssured;
 import io.restassured.builder.RequestSpecBuilder;
 import io.restassured.builder.ResponseSpecBuilder;
 import io.restassured.http.ContentType;
-import io.restassured.path.json.JsonPath;
 import io.restassured.response.Response;
 import io.restassured.specification.RequestSpecification;
 import io.restassured.specification.ResponseSpecification;
@@ -76,72 +74,8 @@ public class PostAPIRequestNG extends BaseTestNGWebDriver {
 
 	}
 
-	public Response sampleMethod(String practiceid, String b) {
-
-		Response response = given().when().body(b).log().all().when().post("/availableslots/3665").then()
-				.spec(responseSpec).log().all().extract().response();
-
-		JSONObject jsonobject = new JSONObject(response.asString());
-
-		APIVerification apiVerification = new APIVerification();
-
-		apiVerification.responseCodeValidation(response, 200);
-		ParseJSONFile.getKey(jsonobject, "name");
-		apiVerification.responseKeyValidation(response, "name");
-		apiVerification.responseTimeValidation(response);
-		return response;
-	}
-
-	public Response locationList(String practiceid, String b) {
-
-		Response response = given().spec(requestSpec).log().all().when().body(b)
-				.post(practiceid + APIPath.apiPath.Get_List_Location).then().log().all().extract().response();
-
-		JSONObject jsonobject = new JSONObject(response.asString());
-
-		APIVerification apiVerification = new APIVerification();
-
-		apiVerification.responseCodeValidation(response, 200);
-		ParseJSONFile.getKey(jsonobject, "name");
-		apiVerification.responseKeyValidation(response, "name");
-		apiVerification.responseTimeValidation(response);
-		return response;
-	}
-
-	public Response bookList(String practiceid, String b) {
-
-		Response response = given().spec(requestSpec).log().all().when().body(b)
-				.post(practiceid + APIPath.apiPath.Get_List_Book).then().log().all().spec(responseSpec).extract()
-				.response();
-
-		JSONObject jsonobject = new JSONObject(response.asString());
-
-		APIVerification apiVerification = new APIVerification();
-
-		apiVerification.responseCodeValidation(response, 200);
-		ParseJSONFile.getKey(jsonobject, "displayName");
-		apiVerification.responseKeyValidation(response, "name");
-		apiVerification.responseTimeValidation(response);
-		return response;
-	}
-
-	public Response scheduleApptPatient(String practiceid, String b) {
-
-		Response response = given().when().body(b).log().all().when().post(practiceid + APIPath.apiPath.ScheduleAPPT)
-				.then().log().all().extract().response();
-
-		JSONObject jsonobject = new JSONObject(response.asString());
-
-		APIVerification apiVerification = new APIVerification();
-
-		apiVerification.responseCodeValidation(response, 200);
-		ParseJSONFile.getKey(jsonobject, "displayName");
-		apiVerification.responseKeyValidation(response, "categoryId");
-		apiVerification.responseTimeValidation(response);
-		return response;
-	}
-
-	public Response scheduleApptNG(String practiceid, String b) {
+	
+		public Response scheduleApptNG(String practiceid, String b) {
 
 		Response response = given().spec(requestSpec).when().body(b).log().all().when()
 				.post(practiceid + APIPath.apiPath.scheduleApptNG).then().log().all().extract().response();
@@ -156,21 +90,6 @@ public class PostAPIRequestNG extends BaseTestNGWebDriver {
 
 	}
 
-	public Response appointmenttypesRule(String practiceid, String b) {
-
-		Response response = given().spec(requestSpec).log().all().when().body(b)
-				.post(practiceid + APIPath.apiPath.Get_List_Appointment).then().log().all().extract().response();
-
-		JSONObject jsonobject = new JSONObject(response.asString());
-
-		APIVerification apiVerification = new APIVerification();
-
-		apiVerification.responseCodeValidation(response, 200);
-		ParseJSONFile.getKey(jsonobject, "displayName");
-		apiVerification.responseTimeValidation(response);
-		return response;
-	}
-
 	public Response availableSlots(String b, String practiceId) {
 
 		Response response = given().spec(requestSpec).log().all().spec(requestSpec).body(b).when()
@@ -178,46 +97,6 @@ public class PostAPIRequestNG extends BaseTestNGWebDriver {
 		return response;
 	}
 
-	public String getaccessToken(String practiceid) {
-
-		Response response = given().spec(requestSpec).log().all().header("flowType", "LOGINLESS")
-				.get(practiceid + "/accesstoken").then().spec(responseSpec).log().all().extract().response();
-
-		JSONObject jsonobject = new JSONObject(response.asString());
-
-		APIVerification apiVerification = new APIVerification();
-
-		apiVerification.responseCodeValidation(response, 200);
-		ParseJSONFile.getKey(jsonobject, "accessToken");
-		apiVerification.responseKeyValidation(response, "accessToken");
-		apiVerification.responseTimeValidation(response);
-
-		JsonPath jsonPathEvaluator = response.jsonPath();
-		String access_Token = jsonPathEvaluator.get(practiceid + "accessToken");
-		log("The Access Token is    " + jsonPathEvaluator.get(practiceid + "accessToken"));
-
-		return access_Token;
-	}
-
-	public String accessToken(String practiceid) {
-
-		Response response = given().get(practiceid).then().spec(responseSpec).log().all().extract().response();
-
-		JSONObject jsonobject = new JSONObject(response.asString());
-
-		APIVerification apiVerification = new APIVerification();
-
-		apiVerification.responseCodeValidation(response, 200);
-		ParseJSONFile.getKey(jsonobject, "accessToken");
-		apiVerification.responseKeyValidation(response, "accessToken");
-		apiVerification.responseTimeValidation(response);
-
-		JsonPath jsonPathEvaluator = response.jsonPath();
-		String access_Token = jsonPathEvaluator.get(practiceid + "accessToken");
-		log("The Access Token is    " + jsonPathEvaluator.get(practiceid + "accessToken"));
-
-		return access_Token;
-	}
 
 	public Response cancelAppointmentGET(String practiceid, String appId) {
 
