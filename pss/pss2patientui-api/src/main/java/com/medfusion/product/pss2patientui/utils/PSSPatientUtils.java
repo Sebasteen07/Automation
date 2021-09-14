@@ -71,7 +71,6 @@ public class PSSPatientUtils extends BaseTestNGWebDriver {
 		log("Is file deleted ? " + deleteFile(path));
 	}
 
-
 	public String sampleDateTime(String datetimeformat) { 
         DateFormat dateFormat = new SimpleDateFormat(datetimeformat);
         Date d = new Date();

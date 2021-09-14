@@ -2,13 +2,8 @@
 package com.medfusion.product.object.maps.pss2.page.util;
 
 import static io.restassured.RestAssured.given;
-import static org.hamcrest.Matchers.equalTo;
-
-import org.json.JSONArray;
 import org.json.JSONObject;
-
 import com.intuit.ifs.csscat.core.BaseTestNGWebDriver;
-
 import io.restassured.RestAssured;
 import io.restassured.builder.RequestSpecBuilder;
 import io.restassured.builder.ResponseSpecBuilder;
@@ -39,7 +34,6 @@ public class PostAPIRequestNG extends BaseTestNGWebDriver {
 				.queryParam("appointmentId", "00b971f3-b83f-42c2-ac31-9c748fe7bef3").queryParam("patientId", patientId)
 				.queryParam("startDateTime", "1612522800").when().get(practiceid + APIPath.apiPath.Appointment_Status)
 				.then().log().all().extract().response();
-
 		return response;
 
 	}
@@ -68,7 +62,6 @@ public class PostAPIRequestNG extends BaseTestNGWebDriver {
 	}
 
 	public Response pastApptNG(String practiceid, String b) {
-
 		Response response = given().spec(requestSpec).log().all().body(b).when()
 				.post(practiceid + APIPath.apiPath.Past_APPT).then().log().all().extract().response();
 		return response;
@@ -148,41 +141,10 @@ public class PostAPIRequestNG extends BaseTestNGWebDriver {
 		return response;
 	}
 
-	public String scheduleApptNG(String practiceid, String b) {
+	public Response scheduleApptNG(String practiceid, String b) {
 
 		Response response = given().spec(requestSpec).when().body(b).log().all().when()
-				.post(practiceid + APIPath.apiPath.scheduleApptNG).then().spec(responseSpec).log().all().extract()
-				.response();
-
-		JSONObject js = new JSONObject(response.asString());
-
-		String s = js.getString("id");
-
-		log("Value of id - " + s);
-
-		APIVerification apiVerification = new APIVerification();
-
-		apiVerification.responseCodeValidation(response, 200);
-		apiVerification.responseTimeValidation(response);
-		return s;
-	}
-
-	public Response scheduleApptNG1(String practiceid, String b) {
-
-		Response response = given().spec(requestSpec).when().body(b).log().all().when()
-				.post(practiceid + APIPath.apiPath.scheduleApptNG).then().spec(responseSpec).log().all().extract()
-				.response();
-
-		JSONObject js = new JSONObject(response.asString());
-
-		String s = js.getString("id");
-
-		log("Value of id - " + s);
-
-		APIVerification apiVerification = new APIVerification();
-
-		apiVerification.responseCodeValidation(response, 200);
-		apiVerification.responseTimeValidation(response);
+				.post(practiceid + APIPath.apiPath.scheduleApptNG).then().log().all().extract().response();
 		return response;
 	}
 
@@ -318,13 +280,6 @@ public class PostAPIRequestNG extends BaseTestNGWebDriver {
 
 		Response response = given().spec(requestSpec).log().all().queryParam("patientId", "50302").when()
 				.get(practiceid + APIPath.apiPath.demographicNG).then().log().all().extract().response();
-
-//		JSONObject jsonobject = new JSONObject(response.asString());
-//		ParseJSONFile.getKey(jsonobject, "firstName");
-//		ParseJSONFile.getKey(jsonobject, "lastName");
-//		ParseJSONFile.getKey(jsonobject, "emailAddress");
-//		ParseJSONFile.getKey(jsonobject, "gender");
-//
 		return response;
 	}
 

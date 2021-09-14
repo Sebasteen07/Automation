@@ -42,7 +42,6 @@ public class PSS2NGAdapterAcceptanceTests extends BaseTestNG {
 
 	@Test(enabled = true, groups = { "APItest" }, retryAnalyzer = RetryAnalyzer.class)
 	public void testAvailableSlotsNGPost() throws IOException, InterruptedException {
-
 		Response response = postAPIRequest.availableSlots(
 				PayloadNG.nextAvailable_Payload(propertyData.getProperty("patient.id.ng")),
 				propertyData.getProperty("practice.id.ng"));
@@ -53,7 +52,6 @@ public class PSS2NGAdapterAcceptanceTests extends BaseTestNG {
 
 	@Test(enabled = true, groups = { "APItest" }, retryAnalyzer = RetryAnalyzer.class)
 	public void testAvailableSlotsNGPostInvalidPayload() throws IOException, InterruptedException {
-
 		Response response = postAPIRequest.availableSlots("", propertyData.getProperty("practice.id.ng"));
 		aPIVerification.responseCodeValidation(response, 400);
 	}
@@ -65,6 +63,7 @@ public class PSS2NGAdapterAcceptanceTests extends BaseTestNG {
 				PayloadNG.past_appt_payload(propertyData.getProperty("patient.id.ng"),
 						propertyData.getProperty("practice.displayname.ng"),
 						propertyData.getProperty("practice.id.ng")));
+		aPIVerification.responseCodeValidation(response, 200);
 		aPIVerification.responseTimeValidation(response);
 		aPIVerification.responseKeyValidationJson(response, "appointmentTypes.name");
 		aPIVerification.responseKeyValidationJson(response, "book.resourceId");
@@ -146,10 +145,18 @@ public class PSS2NGAdapterAcceptanceTests extends BaseTestNG {
 
 	@Test(enabled = true, groups = { "APItest" }, retryAnalyzer = RetryAnalyzer.class)
 	public void testschedule_Resc_NGPOST() throws NullPointerException, Exception {
+		Response response = postAPIRequest.availableSlots(
+				PayloadNG.nextAvailable_Payload(propertyData.getProperty("patient.id.ng")),
+				propertyData.getProperty("practice.id.ng"));
+		aPIVerification.responseCodeValidation(response, 200);
+		aPIVerification.responseTimeValidation(response);
 
-		Response scheduleApptResponse = postAPIRequest.scheduleApptNG1(propertyData.getProperty("practice.id.ng"),
-				PayloadNG.schedule_Payload(propertyData.getProperty("slot.start.time.ng"),
-						propertyData.getProperty("slot.end.time.ng")));
+		JsonPath js = new JsonPath(response.asString());
+		String startDateTime = js.getString("availableSlots[0].startDateTime");
+		;
+		Response scheduleApptResponse = postAPIRequest.scheduleApptNG(propertyData.getProperty("practice.id.ng"),
+				PayloadNG.schedule_Payload(startDateTime, propertyData.getProperty("slot.end.time.ng")));
+		aPIVerification.responseCodeValidation(scheduleApptResponse, 200);
 		aPIVerification.responseTimeValidation(scheduleApptResponse);
 		String apptid = aPIVerification.responseKeyValidationJson(scheduleApptResponse, "id");
 		aPIVerification.responseKeyValidationJson(scheduleApptResponse, "slotAlreadyTaken");
@@ -164,6 +171,22 @@ public class PSS2NGAdapterAcceptanceTests extends BaseTestNG {
 		aPIVerification.responseKeyValidationJson(scheduleApptResponse, "id");
 		aPIVerification.responseKeyValidationJson(scheduleApptResponse, "slotAlreadyTaken");
 
+	}
+
+	@Test(enabled = true, groups = { "APItest" }, retryAnalyzer = RetryAnalyzer.class)
+	public void testscheduleWithoutBody() throws NullPointerException, Exception {
+
+		Response scheduleApptResponse = postAPIRequest.scheduleApptNG(propertyData.getProperty("practice.id.ng"), "");
+		aPIVerification.responseCodeValidation(scheduleApptResponse, 400);
+		aPIVerification.responseTimeValidation(scheduleApptResponse);
+	}
+
+	@Test(enabled = true, groups = { "APItest" }, retryAnalyzer = RetryAnalyzer.class)
+	public void testRescheduleWithoutBody() throws NullPointerException, Exception {
+
+		Response scheduleApptResponse = postAPIRequest.rescheduleApptNG(propertyData.getProperty("practice.id.ng"), "");
+		aPIVerification.responseCodeValidation(scheduleApptResponse, 400);
+		aPIVerification.responseTimeValidation(scheduleApptResponse);
 	}
 
 	@Test(enabled = true, groups = { "APItest" }, retryAnalyzer = RetryAnalyzer.class)
