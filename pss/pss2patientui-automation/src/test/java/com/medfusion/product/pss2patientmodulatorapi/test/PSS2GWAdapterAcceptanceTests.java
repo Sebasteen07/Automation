@@ -5,6 +5,8 @@ import static org.testng.Assert.assertEquals;
 
 import java.io.IOException;
 import java.sql.Timestamp;
+import java.util.Map;
+
 import org.testng.annotations.BeforeTest;
 import org.testng.annotations.Test;
 
@@ -16,6 +18,7 @@ import com.medfusion.product.object.maps.pss2.page.util.PostAPIRequestNG;
 import com.medfusion.product.pss2patientapi.payload.PayloadGW;
 import com.medfusion.product.pss2patientapi.validation.ValidationGW;
 import com.medfusion.product.pss2patientui.pojo.Appointment;
+import com.medfusion.product.pss2patientui.utils.PSSPatientUtils;
 import com.medfusion.product.pss2patientui.utils.PSSPropertyFileLoader;
 
 import io.restassured.path.json.JsonPath;
@@ -23,8 +26,8 @@ import io.restassured.response.Response;
 import io.restassured.specification.RequestSpecification;
 import io.restassured.specification.ResponseSpecification;
 
-public class PSS2GWAdapterAcceptanceTests extends BaseTestNG {
 
+public class PSS2GWAdapterAcceptanceTests extends BaseTestNG {
 	public static PayloadGW payload;
 	public static PSSPropertyFileLoader propertyData;
 	public static Appointment testData;
@@ -36,11 +39,13 @@ public class PSS2GWAdapterAcceptanceTests extends BaseTestNG {
 
 	public static RequestSpecification requestSpec;
 	public static ResponseSpecification responseSpec;
+	public PSSPatientUtils pssPatientUtils;
 
 	APIVerification aPIVerification = new APIVerification();
 
 	@BeforeTest(enabled = true, groups = { "APItest" })
 	public void setUp() throws IOException {
+		pssPatientUtils=new PSSPatientUtils();
 		payload = new PayloadGW();
 		propertyData = new PSSPropertyFileLoader();
 		postAPIRequestgw = new PostAPIRequestGW();
@@ -132,13 +137,16 @@ public class PSS2GWAdapterAcceptanceTests extends BaseTestNG {
 
 	@Test(enabled = true, groups = { "APItest" }, retryAnalyzer = RetryAnalyzer.class)
 	public void testAvailSlotsScheReScheduleApp() throws IOException, InterruptedException {
+		String date=pssPatientUtils.sampleDateTime("MM/dd/yyyy HH:mm:ss");
+		log("Current date is"+date);
 
+		Map<String, Object> b=payload.availableslotsPayload(propertyData.getProperty("appointment.cat.id.gw"),
+				propertyData.getProperty("appointment.type.id"), propertyData.getProperty("extapp.id.gw"),
+				propertyData.getProperty("location.id.gw"), propertyData.getProperty("patient.id.gw"),
+				propertyData.getProperty("resource.cat.id.gw"), propertyData.getProperty("resource.id"),
+				date);
 		Response response = postAPIRequestgw
-				.avaliableSlot(payload.availableslotsPayload(propertyData.getProperty("appointment.cat.id.gw"),
-						propertyData.getProperty("appointment.type.id"), propertyData.getProperty("extapp.id.gw"),
-						propertyData.getProperty("location.id.gw"), propertyData.getProperty("patient.id.gw"),
-						propertyData.getProperty("resource.cat.id.gw"), propertyData.getProperty("resource.id"),
-						propertyData.getProperty("start.date.time.gw")), propertyData.getProperty("practice.id.gw"));
+				.avaliableSlot( b,propertyData.getProperty("practice.id.gw"));
 		logStep("Verifying the response");
 		assertEquals(response.getStatusCode(), 200);
 
@@ -173,7 +181,7 @@ public class PSS2GWAdapterAcceptanceTests extends BaseTestNG {
 		log("Appointment id - " + apptid);
 
 		Response rescheduleResponse = postAPIRequestgw.reScheduleappointment(
-				payload.reschedulePayload(startDateTime_resch, endDateTime_resch, patientId),
+				payload.reschedulePayload(startDateTime_resch, endDateTime_resch, patientId, apptid),
 				propertyData.getProperty("practice.id.gw"));
 		logStep("Verifying the response");
 		assertEquals(rescheduleResponse.getStatusCode(), 200);

@@ -4,6 +4,7 @@ package com.medfusion.product.object.maps.patientportal2.page;
 import java.util.ArrayList;
 
 import org.openqa.selenium.By;
+import org.openqa.selenium.Dimension;
 import org.openqa.selenium.ElementNotInteractableException;
 import org.openqa.selenium.ElementNotVisibleException;
 import org.openqa.selenium.JavascriptExecutor;
@@ -95,6 +96,9 @@ public abstract class JalapenoMenu extends MedfusionPage {
 
 	@FindBy(how = How.XPATH, using = "//*[@id='ccdList_lhn']/a/span")
 	private WebElement healthRecordMenu;
+	
+	@FindBy(how=How.ID,using="feature_ask_a_practitioner_modal")
+	private WebElement asaQuestion;
 
 	public JalapenoMenu(WebDriver driver) {
 		super(driver);
@@ -124,6 +128,9 @@ public abstract class JalapenoMenu extends MedfusionPage {
 
 	private void openJalapenoMenu() {
 		log("Opening Jalapeno menu");
+		JavascriptExecutor ex = (JavascriptExecutor)driver;
+		ex.executeScript("arguments[0].scrollIntoView();",leftMenuToggle ); 
+		new WebDriverWait(driver, 10).until(ExpectedConditions.visibilityOf(leftMenuToggle));
 		leftMenuToggle.click();
 		new WebDriverWait(driver, 10).until(ExpectedConditions.visibilityOf(homeMenu));
 		log("Jalapeno menu is opened");
