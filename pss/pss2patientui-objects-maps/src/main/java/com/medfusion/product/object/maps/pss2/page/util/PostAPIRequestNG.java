@@ -33,10 +33,10 @@ public class PostAPIRequestNG extends BaseTestNGWebDriver {
 		responseSpec = new ResponseSpecBuilder().expectStatusCode(200).expectContentType(ContentType.JSON).build();
 	}
 
-	public Response appointmentStatus(String practiceid,String patientId) {
+	public Response appointmentStatus(String practiceid, String patientId) {
 
 		Response response = given().spec(requestSpec).log().all().spec(requestSpec)
-				.queryParam("appointmentId", "00b971f3-b83f-42c2-ac31-9c748fe7bef3").queryParam("patientId",patientId)
+				.queryParam("appointmentId", "00b971f3-b83f-42c2-ac31-9c748fe7bef3").queryParam("patientId", patientId)
 				.queryParam("startDateTime", "1612522800").when().get(practiceid + APIPath.apiPath.Appointment_Status)
 				.then().log().all().extract().response();
 
@@ -63,7 +63,6 @@ public class PostAPIRequestNG extends BaseTestNGWebDriver {
 		Response response = given().spec(requestSpec).log().all().spec(requestSpec).when()
 				.get(practiceid + APIPath.apiPath.Cancel_Reason).then().log().all().extract().response();
 
-
 		return response;
 
 	}
@@ -79,10 +78,7 @@ public class PostAPIRequestNG extends BaseTestNGWebDriver {
 	public Response nextAvailableNG(String practiceid, String b) {
 
 		Response response = given().spec(requestSpec).log().all().when().body(b)
-				.post(practiceid + APIPath.apiPath.next_Available).then().log().all().assertThat().statusCode(200)
-				.extract().response();
-
-		//JsonPath js = new JsonPath(response.asString());
+				.post(practiceid + APIPath.apiPath.next_Available).then().log().all().extract().response();
 		return response;
 
 	}
@@ -193,20 +189,7 @@ public class PostAPIRequestNG extends BaseTestNGWebDriver {
 	public Response upcommingApptNG(String practiceid, String b) {
 
 		Response response = given().spec(requestSpec).when().body(b).log().all()
-				.post(practiceid + APIPath.apiPath.upcommingApptNG).then().spec(responseSpec).log().all()
-				.body("book[0].resourceName", equalTo("Saif PSS")).body("location[0].name", equalTo("PSS WLA"))
-				.extract().response();
-
-		JsonPath js = new JsonPath(response.toString());
-
-		String apptName = js.getString("appointmentTypes.name");
-		String resourceName = js.getString("book.resourceName");
-		String locationName = js.getString("location.name");
-
-		log("APPOINTMENT TYPE - " + apptName);
-		log("resourceName - " + resourceName);
-		log("locationName - " + locationName);
-
+				.post(practiceid + APIPath.apiPath.upcommingApptNG).then().log().all().extract().response();
 		return response;
 
 	}
@@ -229,8 +212,7 @@ public class PostAPIRequestNG extends BaseTestNGWebDriver {
 	public Response availableSlots(String b, String practiceId) {
 
 		Response response = given().spec(requestSpec).log().all().spec(requestSpec).body(b).when()
-				.post(practiceId + "/availableslots").then().log().all().extract()
-				.response();
+				.post(practiceId + "/availableslots").then().log().all().extract().response();
 		return response;
 	}
 
@@ -275,13 +257,11 @@ public class PostAPIRequestNG extends BaseTestNGWebDriver {
 		return access_Token;
 	}
 
-	public Response cancelAppointmentGET(String practiceid,String appId) {
+	public Response cancelAppointmentGET(String practiceid, String appId) {
 
 		Response response = given().spec(requestSpec).log().all().spec(requestSpec)
-				.queryParam("additionalFields", "Cancel")
-				.queryParam("appointmentId", appId).when()
-				.get(practiceid + APIPath.apiPath.cancelAppointment).then().log().all().extract()
-				.response();
+				.queryParam("additionalFields", "Cancel").queryParam("appointmentId", appId).when()
+				.get(practiceid + APIPath.apiPath.cancelAppointment).then().log().all().extract().response();
 
 		return response;
 	}
@@ -291,8 +271,7 @@ public class PostAPIRequestNG extends BaseTestNGWebDriver {
 		Response response = given().spec(requestSpec).log().all().spec(requestSpec)
 				.queryParam("additionalFields", "Cancel")
 				.queryParam("appointmentId", "8ce85b6a-268a-4ef1-9baa-446afd56367d").when().body(b)
-				.post(practiceid + APIPath.apiPath.cancelAppointment).then().log().all().extract()
-				.response();
+				.post(practiceid + APIPath.apiPath.cancelAppointment).then().log().all().extract().response();
 
 		return response;
 	}
@@ -300,16 +279,15 @@ public class PostAPIRequestNG extends BaseTestNGWebDriver {
 	public Response prerequisteappointmenttypesPOST(String practiceid, String b) {
 
 		Response response = given().spec(requestSpec).log().all().when().body(b)
-				.post(practiceid + APIPath.apiPath.prerequisteappointmenttypesNG).then().log().all()
-				.extract().response();
+				.post(practiceid + APIPath.apiPath.prerequisteappointmenttypesNG).then().log().all().extract()
+				.response();
 		return response;
 	}
 
 	public Response cancellationReason(String practiceid) {
 
 		Response response = given().spec(requestSpec).log().all().when()
-				.get(practiceid + APIPath.apiPath.cancellationReason).then().log().all().extract()
-				.response();
+				.get(practiceid + APIPath.apiPath.cancellationReason).then().log().all().extract().response();
 
 		return response;
 	}
@@ -317,31 +295,21 @@ public class PostAPIRequestNG extends BaseTestNGWebDriver {
 	public Response careproviderAvailability(String practiceid, String b) {
 
 		Response response = given().spec(requestSpec).log().all().when().body(b)
-				.post(practiceid + APIPath.apiPath.careprovideravailabilityNG).then().spec(responseSpec).log().all()
-				.extract().response();
-		aPIVerification.responseCodeValidation(response, 200);
-		aPIVerification.responseTimeValidation(response);
-
-		JSONObject jsonobject = new JSONObject(response.asString());
-
-		ParseJSONFile.getKey(jsonobject, "resourceId");
-		ParseJSONFile.getKey(jsonobject, "nextAvailabledate");
-
+				.post(practiceid + APIPath.apiPath.careprovideravailabilityNG).then().log().all().extract().response();
 		return response;
 	}
 
 	public Response insuranceCarrier(String practiceid) {
 
 		Response response = given().when().spec(requestSpec).log().all()
-				.get(practiceid + APIPath.apiPath.insurancecarrierNG).then().log().all().extract()
-				.response();
+				.get(practiceid + APIPath.apiPath.insurancecarrierNG).then().log().all().extract().response();
 		return response;
 	}
 
 	public Response locations(String practiceid) {
 
-		Response response = given().log().all().when().get(practiceid + APIPath.apiPath.locationsNG).then().log()
-				.all().extract().response();
+		Response response = given().log().all().when().get(practiceid + APIPath.apiPath.locationsNG).then().log().all()
+				.extract().response();
 		return response;
 
 	}
@@ -349,9 +317,7 @@ public class PostAPIRequestNG extends BaseTestNGWebDriver {
 	public Response demographics(String practiceid) {
 
 		Response response = given().spec(requestSpec).log().all().queryParam("patientId", "50302").when()
-				.get(practiceid + APIPath.apiPath.demographicNG).then().log().all().extract()
-				.response();
-
+				.get(practiceid + APIPath.apiPath.demographicNG).then().log().all().extract().response();
 
 //		JSONObject jsonobject = new JSONObject(response.asString());
 //		ParseJSONFile.getKey(jsonobject, "firstName");
@@ -364,8 +330,8 @@ public class PostAPIRequestNG extends BaseTestNGWebDriver {
 
 	public Response lockout(String practiceid) {
 
-		Response response = given().log().all().when().get(practiceid + APIPath.apiPath.lockoutNG).then().log()
-				.all().extract().response();
+		Response response = given().log().all().when().get(practiceid + APIPath.apiPath.lockoutNG).then().log().all()
+				.extract().response();
 
 		return response;
 	}
@@ -373,17 +339,14 @@ public class PostAPIRequestNG extends BaseTestNGWebDriver {
 	public Response patientLastVisit(String practiceid) {
 
 		Response response = given().log().all().queryParam("patientId", "50056").when()
-				.get(practiceid + APIPath.apiPath.patientLastVisistNG).then().log().all().extract()
-				.response();
+				.get(practiceid + APIPath.apiPath.patientLastVisistNG).then().log().all().extract().response();
 		return response;
 	}
 
 	public Response patietStatus(String practiceid) {
 
-		Response response = given().log().all().when().get(practiceid + APIPath.apiPath.patientStatusNG).then()
-				.log().all().extract().response();
-
-		
+		Response response = given().log().all().when().get(practiceid + APIPath.apiPath.patientStatusNG).then().log()
+				.all().extract().response();
 
 		return response;
 	}
@@ -391,24 +354,21 @@ public class PostAPIRequestNG extends BaseTestNGWebDriver {
 	public Response matchPatientPOST(String practiceid, String b) {
 
 		Response response = given().spec(requestSpec).log().all().when().body(b)
-				.post(practiceid + APIPath.apiPath.patientMatchNG).then().log().all().extract()
-				.response();
+				.post(practiceid + APIPath.apiPath.patientMatchNG).then().log().all().extract().response();
 		return response;
 	}
 
 	public Response patientRecordbyApptTypePOST(String practiceid, String b) {
 
 		Response response = given().spec(requestSpec).log().all().when().body(b)
-				.post(practiceid + APIPath.apiPath.patientrecordbyapptypesNG).then().log().all()
-				.extract().response();
+				.post(practiceid + APIPath.apiPath.patientrecordbyapptypesNG).then().log().all().extract().response();
 		return response;
 	}
 
 	public Response searchpatient(String practiceid, String b) {
 
 		Response response = given().spec(requestSpec).log().all().when().body(b)
-				.post(practiceid + APIPath.apiPath.searchpatientNG).then().log().all().extract()
-				.response();
+				.post(practiceid + APIPath.apiPath.searchpatientNG).then().log().all().extract().response();
 
 		return response;
 	}
@@ -416,24 +376,22 @@ public class PostAPIRequestNG extends BaseTestNGWebDriver {
 	public Response patientrecordbyBooks(String practiceid, String b) {
 
 		Response response = given().spec(requestSpec).log().all().when().body(b)
-				.post(practiceid + APIPath.apiPath.patientrecordbybooksNG).then().log().all()
-				.extract().response();
+				.post(practiceid + APIPath.apiPath.patientrecordbybooksNG).then().log().all().extract().response();
 		return response;
 	}
 
 	public Response lastseenProvider(String practiceid, String b) {
 
 		Response response = given().spec(requestSpec).log().all().when().body(b)
-				.post(practiceid + APIPath.apiPath.lastseenproviderNG).then().log().all().extract()
-				.response();
+				.post(practiceid + APIPath.apiPath.lastseenproviderNG).then().log().all().extract().response();
 
 		return response;
 	}
 
 	public Response fetchNGBookList(String practiceid) {
 
-		Response response = given().log().all().when().get(practiceid + APIPath.apiPath.booklistNG).then().log()
-				.all().extract().response();
+		Response response = given().log().all().when().get(practiceid + APIPath.apiPath.booklistNG).then().log().all()
+				.extract().response();
 
 		return response;
 	}
@@ -442,6 +400,14 @@ public class PostAPIRequestNG extends BaseTestNGWebDriver {
 
 		Response response = given().spec(requestSpec).log().all().when().get(practiceid + APIPath.apiPath.specialtyNG)
 				.then().spec(responseSpec).log().all().extract().response();
+
+		return response;
+	}
+
+	public Response addPatient(String practiceid, String b) {
+
+		Response response = given().spec(requestSpec).log().all().when().body(b).post(practiceid + "/addpatient").then()
+				.log().all().extract().response();
 
 		return response;
 	}

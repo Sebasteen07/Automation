@@ -265,19 +265,33 @@ public static String nextAvailable_New() {
 		return schedule;
 	}
 	
-	public static String upcommingApt_Payload(String patientid, String practiceid, String practicedisplayname) {
+//	public static String upcommingApt_Payload(String patientid, String practiceid, String practicedisplayname) {
+//
+//		String upcommingappt = "{\r\n"
+//				+ "  \"patientId\": \""+patientid+"\",\r\n"
+//				+ "  \"practiceProvision\": {\r\n"
+//				+ "    \"active\": true,\r\n"
+//				+ "    \"practiceDisplayName\": \""+practicedisplayname+"\",\r\n"
+//				+ "    \"practiceId\": \""+practiceid+"\",\r\n"
+//				+ "    \"practiceName\": \"PSS - NG\",\r\n"
+//				+ "    \"practiceTimezone\": \"\"\r\n"
+//				+ "  },\r\n"
+//				+ "  \"startDate\": \"08/19/2021\",\r\n"
+//				+ "  \"endDate\": \"09/01/2021\"\r\n"
+//				+ "}";
+//		return upcommingappt;
+//	}
+	
+	public static String upcommingApt_Payload(String patientid, String practiceid) {
 
 		String upcommingappt = "{\r\n"
-				+ "  \"patientId\": \""+patientid+"\",\r\n"
-				+ "  \"practiceProvision\": {\r\n"
-				+ "    \"active\": true,\r\n"
-				+ "    \"practiceDisplayName\": \""+practicedisplayname+"\",\r\n"
-				+ "    \"practiceId\": \""+practiceid+"\",\r\n"
-				+ "    \"practiceName\": \"PSS - NG\",\r\n"
-				+ "    \"practiceTimezone\": \"\"\r\n"
-				+ "  },\r\n"
-				+ "  \"startDate\": \"08/19/2021\",\r\n"
-				+ "  \"endDate\": \"09/01/2021\"\r\n"
+				+ "  \r\n"
+				+ "    \"patientId\": \""+patientid+"\",\r\n"
+				+ "    \"practiceProvision\": {\r\n"
+				+ "        \"active\": true,\r\n"
+				+ "        \"practiceId\": \""+practiceid+"\"\r\n"
+				+ "    },\r\n"
+				+ "    \"startDate\": \"03/19/2021 01:47:48\"\r\n"
 				+ "}";
 		return upcommingappt;
 	}
@@ -384,6 +398,7 @@ public static String nextAvailable_New() {
 	}	
 	
 		
+	public static String addPatient() {
 		String addPatient="{\r\n"
 				+ "  \"firstName\": \"Rai\",\r\n"
 				+ "  \"lastName\": \"Jeera\",\r\n"
@@ -397,6 +412,8 @@ public static String nextAvailable_New() {
 				+ "  \"additionFields\": {},\r\n"
 				+ "  \"slotId\": \"0001\"\r\n"
 				+ "}";
+		return addPatient;
+	}
 		
 		public String matchpatient = "{\r\n"
 				+ "\"patientMatches\": [\r\n"
