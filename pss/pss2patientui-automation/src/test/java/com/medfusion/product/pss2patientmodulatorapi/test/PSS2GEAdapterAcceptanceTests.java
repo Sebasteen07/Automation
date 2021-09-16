@@ -9,7 +9,6 @@ import java.sql.Timestamp;
 
 import org.testng.annotations.BeforeTest;
 import org.testng.annotations.Test;
-
 import com.intuit.ifs.csscat.core.BaseTestNG;
 import com.intuit.ifs.csscat.core.RetryAnalyzer;
 import com.medfusion.product.object.maps.pss2.page.util.APIVerification;
@@ -18,7 +17,6 @@ import com.medfusion.product.pss2patientapi.payload.PayloadGE;
 import com.medfusion.product.pss2patientui.pojo.Appointment;
 import com.medfusion.product.pss2patientui.utils.PSSPatientUtils;
 import com.medfusion.product.pss2patientui.utils.PSSPropertyFileLoader;
-
 import io.restassured.path.json.JsonPath;
 import io.restassured.response.Response;
 import io.restassured.specification.RequestSpecification;
@@ -52,7 +50,6 @@ public class PSS2GEAdapterAcceptanceTests extends BaseTestNG {
 		log("BASE URL-" + propertyData.getProperty("base.url.ge"));
 	}
 
-	
 	@Test(enabled = true, groups = { "APItest" }, retryAnalyzer = RetryAnalyzer.class)
 	public void testHealthCheckGET() throws NullPointerException, Exception {
 

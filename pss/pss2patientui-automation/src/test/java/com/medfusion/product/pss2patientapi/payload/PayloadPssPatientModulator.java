@@ -32,11 +32,11 @@ public class PayloadPssPatientModulator {
 		return validateProviderLink;
 	}
 	
-	public String validateProviderLinkPayload_New() {
+	public String validateProviderLinkPayload_New(String book) {
 		String payload ="{\r\n"
 				+ "    \"specialty\": null,\r\n"
 				+ "    \"location\": 204200,\r\n"
-				+ "    \"book\": 205300,\r\n"
+				+ "    \"book\": "+book+",\r\n"
 				+ "    \"appointmentType\": null,\r\n"
 				+ "    \"slotId\": null,\r\n"
 				+ "    \"patientType\": \"PT_NEW\",\r\n"
