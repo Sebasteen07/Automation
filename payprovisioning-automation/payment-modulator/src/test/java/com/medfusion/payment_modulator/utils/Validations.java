@@ -6,6 +6,7 @@ import io.restassured.path.json.JsonPath;
 import java.io.IOException;
 import java.util.List;
 
+import io.restassured.response.Response;
 import org.testng.Assert;
 import com.medfusion.common.utils.PropertyFileLoader;
 
@@ -60,5 +61,29 @@ public class Validations {
 			}
 		}
 
+	}
+
+	public void verifyReceiptDetails(String response, String paymentType) throws IOException {
+		JsonPath jsonpath = new JsonPath(response);
+		Assert.assertNotNull(jsonpath, "Response was null");
+		Assert.assertEquals(jsonpath.get("responseCode"), "000","Response code was: "+jsonpath.get("responseCode"));
+		Assert.assertTrue(jsonpath.get("responseMessage").equals("Success") || jsonpath.get("responseMessage").equals("Approved"),"Response message was: "+jsonpath.get("message"));
+		Assert.assertTrue(!jsonpath.get("transactionDate").toString().isEmpty(), "Transaction date was not found in the response");
+		Assert.assertTrue(!jsonpath.get("amount").toString().isEmpty(), "Transaction amount was not found in the response");
+
+		if(!paymentType.equalsIgnoreCase("Refund")) {
+			Assert.assertTrue(!jsonpath.get("cardType").toString().isEmpty(), "Card Type was not found in the response");
+		}
+		Assert.assertTrue(!jsonpath.get("tags").toString().isEmpty(), "Card Type was not found in the response");
+		Assert.assertTrue(jsonpath.get("pinVerified").equals(false) || jsonpath.get("pinVerified").equals(true));
+		Assert.assertTrue(jsonpath.get("signatureRequired").equals(false) || jsonpath.get("pinVerified").equals(true));
+
+		if(paymentType.equalsIgnoreCase("CPOS")) {
+			Assert.assertTrue(!jsonpath.get("approvalNumber").toString().isEmpty(), "Card Type was not found in the response");
+			Assert.assertTrue(!jsonpath.get("applicationID").toString().isEmpty(), "Card Type was not found in the response");
+			Assert.assertTrue(!jsonpath.get("applicationLabel").toString().isEmpty(), "Card Type was not found in the response");
+			Assert.assertTrue(!jsonpath.get("cryptogram").toString().isEmpty(), "Card Type was not found in the response");
+			Assert.assertTrue(!jsonpath.get("cardSuffix").toString().isEmpty(), "Card Type was not found in the response");
+		}
 	}
 }
