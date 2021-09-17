@@ -520,7 +520,7 @@ public class GatewayProxyTransactionTests extends GatewayProxyBaseTest {
 	}
 
 	@Test(dataProvider = "get_txns_for_receipt_data", dataProviderClass = GatewayProxyTestData.class, enabled = true)
-	public void testGetReceiptDataWithDifferentPaymentSources(String customeruuid, String mmid,
+	public void testGetReceiptDataWithDifferentPaymentTypes(String customeruuid, String mmid,
 															  String transactionId, String orderId,
 															  String paymentSource, int statusCode) throws Exception {
 		GatewayProxyTransactionResource transaction = new GatewayProxyTransactionResource();
