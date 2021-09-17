@@ -5,8 +5,6 @@ import com.medfusion.payment_modulator.pojos.Transactions;
 import io.restassured.path.json.JsonPath;
 import java.io.IOException;
 import java.util.List;
-
-import io.restassured.response.Response;
 import org.testng.Assert;
 import com.medfusion.common.utils.PropertyFileLoader;
 
