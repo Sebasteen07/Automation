@@ -1138,13 +1138,15 @@ public class PSS2PSSAdapterModulatorTests extends BaseTestNG {
 	}
 
 	@Test(enabled = true, groups = { "APItest" }, retryAnalyzer = RetryAnalyzer.class)
-	public void testCategorySpecialty01InvalidIdPost() throws NullPointerException, Exception {
+	public void testCategorySpecialty01WithoutBodyPost() throws NullPointerException, Exception {
 
-		String b = payloadAM.categorySpecInvalidIdPayload(propertyData.getProperty("cat.specialitybook.id.am"),
-				propertyData.getProperty("cat.speci.invalidid.am"));
+		String b = "";
 		Response response = postAPIRequestAM.categorySpecialtyPost(practiceId, b);
-		aPIVerification.responseCodeValidation(response, 500);
+		aPIVerification.responseCodeValidation(response, 400);
 		aPIVerification.responseTimeValidation(response);
+		String message = aPIVerification.responseKeyValidationJson(response, "message");
+		assertTrue(message.contains("Required request body is missing"));
+
 
 	}
 
@@ -1215,7 +1217,7 @@ public class PSS2PSSAdapterModulatorTests extends BaseTestNG {
 	@Test(enabled = true, groups = { "APItest" }, retryAnalyzer = RetryAnalyzer.class)
 	public void testResourceConfigWithoutBodyPOST() throws NullPointerException, Exception {
 
-		Response response = postAPIRequestAM.resourceConfigPost(practiceId, payloadAM.resourceConfigBlankPayload());
+		Response response = postAPIRequestAM.resourceConfigPost(practiceId, "");
 		aPIVerification.responseCodeValidation(response, 400);
 		aPIVerification.responseTimeValidation(response);
 	}
@@ -1228,10 +1230,10 @@ public class PSS2PSSAdapterModulatorTests extends BaseTestNG {
 	}
 
 	@Test(enabled = true, groups = { "APItest" }, retryAnalyzer = RetryAnalyzer.class)
-	public void testResourceConfigSaveInvalidPayloadPOST() throws NullPointerException, Exception {
+	public void testResourceConfigSaveWithoutBodyPOST() throws NullPointerException, Exception {
 
 		Response response = postAPIRequestAM.resourceConfigSavePost(practiceId,
-				payloadAM.resourceConfigSaveInvalidPayload());
+				"");
 		aPIVerification.responseCodeValidation(response, 500);
 		aPIVerification.responseTimeValidation(response);
 	}
@@ -1315,10 +1317,13 @@ public class PSS2PSSAdapterModulatorTests extends BaseTestNG {
 	}
 
 	@Test(enabled = true, groups = { "APItest" }, retryAnalyzer = RetryAnalyzer.class)
-	public void testGenderMappingInvalidPayloadPost() throws NullPointerException, Exception {
-		Response response = postAPIRequestAM.gendermapPost(practiceId, payloadAM.genderMapInvalidPayload());
-		aPIVerification.responseCodeValidation(response, 500);
+	public void testGenderMappingWithoutBodyPost() throws NullPointerException, Exception {
+		Response response = postAPIRequestAM.gendermapPost(practiceId, "");
+		aPIVerification.responseCodeValidation(response, 400);
 		aPIVerification.responseTimeValidation(response);
+		String message = aPIVerification.responseKeyValidationJson(response, "message");
+		assertTrue(message.contains("Required request body is missing"));
+
 	}
 
 	@Test(enabled = true, groups = { "APItest" }, retryAnalyzer = RetryAnalyzer.class)
@@ -1345,13 +1350,12 @@ public class PSS2PSSAdapterModulatorTests extends BaseTestNG {
 	}
 
 	@Test(enabled = true, groups = { "APItest" }, retryAnalyzer = RetryAnalyzer.class)
-	public void testLinkSavePostInvalidPath() throws NullPointerException, Exception {
-		Response response = postAPIRequestAM.savelinkPost(practiceId,
-				payloadAM.saveLink(propertyData.getProperty("link.id.am"), propertyData.getProperty("link.provider.am"),
-						propertyData.getProperty("link.ext.id.am"), propertyData.getProperty("link.cat.id.am"),
-						propertyData.getProperty("link.display.name.am")),
-				"/savelink");
-		aPIVerification.responseCodeValidation(response, 404);
+	public void testLinkSaveWithoutBodyPost() throws NullPointerException, Exception {
+		Response response = postAPIRequestAM.savelinkPost(practiceId,"","/savelink");
+		aPIVerification.responseCodeValidation(response, 400);
+		String message = aPIVerification.responseKeyValidationJson(response, "message");
+		assertTrue(message.contains("Required request body is missing"));
+
 	}
 
 	@Test(enabled = true, groups = { "APItest" }, retryAnalyzer = RetryAnalyzer.class)
@@ -1702,6 +1706,17 @@ public class PSS2PSSAdapterModulatorTests extends BaseTestNG {
 		aPIVerification.responseTimeValidation(response);
 
 	}
+	
+	@Test(enabled = true, groups = { "APItest" }, retryAnalyzer = RetryAnalyzer.class)
+	public void testPatientInfoWithoutBodyPOST() throws NullPointerException, Exception {
+
+		Response response = postAPIRequestAM.patientInfoPost(practiceId, "");
+		aPIVerification.responseCodeValidation(response, 400);
+		aPIVerification.responseTimeValidation(response);
+		String message = aPIVerification.responseKeyValidationJson(response, "message");
+		assertTrue(message.contains("Required request body is missing"));
+	}
+
 
 	@Test(enabled = true, groups = { "APItest" }, retryAnalyzer = RetryAnalyzer.class)
 	public void testPracticeGetTimeZone() throws NullPointerException, Exception {
@@ -1755,14 +1770,11 @@ public class PSS2PSSAdapterModulatorTests extends BaseTestNG {
 
 	@Test(enabled = true, groups = { "APItest" }, retryAnalyzer = RetryAnalyzer.class)
 	public void testPracticeInvalidPayloadPut() throws NullPointerException, Exception {
-		Response response = postAPIRequestAM.practicePut(practiceId,
-				payloadAM.practiceInvalidPayload(propertyData.getProperty("practice.starttime.am"),
-						propertyData.getProperty("practice.endtime.am"), propertyData.getProperty("practice.id.am"),
-						propertyData.getProperty("practice.name.am"),
-						propertyData.getProperty("practice.timezone.am")));
-		aPIVerification.responseCodeValidation(response, 500);
+		Response response = postAPIRequestAM.practicePut(practiceId,"");
+		aPIVerification.responseCodeValidation(response, 400);
 		aPIVerification.responseTimeValidation(response);
-
+		String message = aPIVerification.responseKeyValidationJson(response, "message");
+		assertTrue(message.contains("Required request body is missing"));
 	}
 
 	@Test(enabled = true, groups = { "APItest" }, retryAnalyzer = RetryAnalyzer.class)
@@ -1779,14 +1791,11 @@ public class PSS2PSSAdapterModulatorTests extends BaseTestNG {
 
 	@Test(enabled = true, groups = { "APItest" }, retryAnalyzer = RetryAnalyzer.class)
 	public void testPracticeInvalidPayloadPost() throws NullPointerException, Exception {
-		Response response = postAPIRequestAM.practicePost(practiceId,
-				payloadAM.practiceInvalidPayload(propertyData.getProperty("practice.starttime.am"),
-						propertyData.getProperty("practice.endtime.am"), propertyData.getProperty("practice.id.am"),
-						propertyData.getProperty("practice.name.am"),
-						propertyData.getProperty("practice.timezone.am")));
-		aPIVerification.responseCodeValidation(response, 500);
+		Response response = postAPIRequestAM.practicePost(practiceId,"");
+		aPIVerification.responseCodeValidation(response, 400);
 		aPIVerification.responseTimeValidation(response);
-
+		String message = aPIVerification.responseKeyValidationJson(response, "message");
+		assertTrue(message.contains("Required request body is missing"));
 	}
 
 	@Test(enabled = true, groups = { "APItest" }, retryAnalyzer = RetryAnalyzer.class)
@@ -1945,6 +1954,8 @@ public class PSS2PSSAdapterModulatorTests extends BaseTestNG {
 		Response response = postAPIRequestAM.bookSearch(practiceId, payloadAM.booksearchEmptyPayload());
 		aPIVerification.responseCodeValidation(response, 400);
 		aPIVerification.responseTimeValidation(response);
+		String message = aPIVerification.responseKeyValidationJson(response, "message");
+		assertTrue(message.contains("Required request body is missing"));
 
 	}
 
@@ -2272,8 +2283,7 @@ public class PSS2PSSAdapterModulatorTests extends BaseTestNG {
 	@Test(enabled = true, groups = { "APItest" }, retryAnalyzer = RetryAnalyzer.class)
 	public void testSpecialtyReorderInvalidPayloadPost() throws NullPointerException, Exception {
 
-		Response response = postAPIRequestAM.specialityReorderPost(practiceId,
-				payloadAM.specialityReorderEmptyPayload());
+		Response response = postAPIRequestAM.specialityReorderPost(practiceId,"");
 		aPIVerification.responseCodeValidation(response, 400);
 		aPIVerification.responseTimeValidation(response);
 
@@ -2356,9 +2366,12 @@ public class PSS2PSSAdapterModulatorTests extends BaseTestNG {
 
 	@Test(enabled = true, groups = { "APItest" }, retryAnalyzer = RetryAnalyzer.class)
 	public void testInsuranceCarrierReordeInvalidPayloadrPost() throws NullPointerException, Exception {
-		Response response = postAPIRequestAM.insuranceReorder(practiceId, payloadAM.insuranceReorderInvalid());
+		Response response = postAPIRequestAM.insuranceReorder(practiceId, "");
 		aPIVerification.responseCodeValidation(response, 400);
 		aPIVerification.responseTimeValidation(response);
+		String message = aPIVerification.responseKeyValidationJson(response, "message");
+		assertTrue(message.contains("Required request body is missing"));
+
 	}
 
 	@Test(enabled = true, groups = { "APItest" }, retryAnalyzer = RetryAnalyzer.class)
@@ -2370,10 +2383,13 @@ public class PSS2PSSAdapterModulatorTests extends BaseTestNG {
 	}
 
 	@Test(enabled = true, groups = { "APItest" }, retryAnalyzer = RetryAnalyzer.class)
-	public void testInsuranceCarrierSaveInvalidPayloadPost() throws NullPointerException, Exception {
-		Response response = postAPIRequestAM.insuranceSave(practiceId, payloadAM.insuranceSaveInvalidPayload());
-		aPIVerification.responseCodeValidation(response, 500);
+	public void testInsuranceCarrierSaveWithoutBodyPost() throws NullPointerException, Exception {
+		Response response = postAPIRequestAM.insuranceSave(practiceId, "");
+		aPIVerification.responseCodeValidation(response, 400);
 		aPIVerification.responseTimeValidation(response);
+		String message = aPIVerification.responseKeyValidationJson(response, "message");
+		assertTrue(message.contains("Required request body is missing"));
+
 
 	}
 
@@ -2401,8 +2417,8 @@ public class PSS2PSSAdapterModulatorTests extends BaseTestNG {
 	}
 
 	@Test(enabled = true, groups = { "APItest" }, retryAnalyzer = RetryAnalyzer.class)
-	public void testPatientMatchCustDataPostInvalidPayload() throws NullPointerException, Exception {
-		Response response = postAPIRequestAM.customDataPost(practiceId, payloadAM.customDataInvalidPayload());
+	public void testPatientMatchCustDataWithoutBodyPost() throws NullPointerException, Exception {
+		Response response = postAPIRequestAM.customDataPost(practiceId,"");
 		aPIVerification.responseCodeValidation(response, 400);
 		aPIVerification.responseTimeValidation(response);
 
