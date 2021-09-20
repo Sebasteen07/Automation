@@ -448,4 +448,41 @@ public class GatewayProxyTestData extends GatewayProxyBaseTest {
 						testData.getProperty("zipcode3"), true, 400, "In a wallet there can be only one primary card"}
 		};
 	}
+
+	@DataProvider(name = "get_txns_for_receipt_data")
+	public Object[][] dpMethodForGetReceiptData() {
+		return new Object[][]{
+				{testData.getProperty("test.pay.customer.uuid"), testData.getProperty("element.mmid"),
+						testData.getProperty("proxy.vcs.transactionId"), testData.getProperty("proxy.vcs.orderId"),
+						testData.getProperty("payment.source"), 200},
+				{testData.getProperty("test.pay.customer.uuid"), testData.getProperty("element.mmid"),
+						testData.getProperty("proxy.olbp.transactionId"), testData.getProperty("proxy.olbp.orderId"),
+						testData.getProperty("olbp.payment.type"), 200},
+				{testData.getProperty("test.pay.customer.uuid"), testData.getProperty("element.mmid"),
+						testData.getProperty("proxy.chbk.transactionId"), testData.getProperty("proxy.chbk.orderId"),
+						testData.getProperty("chbk.payment.type"), 200},
+				{testData.getProperty("test.pay.customer.uuid"), testData.getProperty("element.mmid"),
+						testData.getProperty("proxy.refund.transactionId"), testData.getProperty("proxy.refund.orderId"),
+						testData.getProperty("refund.payment.type"), 200},
+				{testData.getProperty("test.pay.customer.uuid"), testData.getProperty("element.mmid"),
+						testData.getProperty("proxy.void.transactionId"), testData.getProperty("proxy.void.orderId"),
+						testData.getProperty("void.payment.type"), 200},
+				{testData.getProperty("test.pay.customer.uuid"), testData.getProperty("element.mmid"),
+						testData.getProperty("proxy.void.transactionId"), testData.getProperty("proxy.void.orderId"),
+						testData.getProperty("void.payment.type"), 200},
+				{testData.getProperty("test.pay.customer.uuid"), testData.getProperty("element.mmid"),
+						testData.getProperty("proxy.void.transactionId"), testData.getProperty("proxy.declined.orderId"),
+						testData.getProperty("cpos.payment.type"), 200},
+				{testData.getProperty("test.pay.customer.uuid"), testData.getProperty("proxy.mmid"),
+						testData.getProperty("proxy.declined.transactionId"), testData.getProperty("proxy.void.orderId"),
+						testData.getProperty("void.payment.type"), 204},
+				{testData.getProperty("test.pay.customer.uuid"), testData.getProperty("element.mmid"),
+						"12345678", testData.getProperty("proxy.vcs.orderId"),
+						testData.getProperty("payment.source"), 204},
+				{testData.getProperty("test.pay.customer.uuid"), testData.getProperty("element.mmid"),
+						testData.getProperty("proxy.vcs.transactionId"), "jvdgerebdsvbkdvbakd",
+						testData.getProperty("payment.source"), 204}
+
+		};
+	}
 }

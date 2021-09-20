@@ -133,5 +133,16 @@ public class GatewayProxyTransactionResource extends GatewayProxyBaseTest {
 
 	}
 
+	public Response getReceiptData(String token, String customeruuid,
+									String mmid, String transactionId, String orderId) throws IOException {
+		testData = new PropertyFileLoader();
+
+		Response response = given().that().spec(requestSpec).auth().oauth2(token).when()
+				.get(customeruuid + "/merchant/" + mmid +"/transaction/" + transactionId + "/orderId/" + orderId + "/receipt").then().and()
+				.extract().response();
+
+		return response;
+	}
+
 
 }
