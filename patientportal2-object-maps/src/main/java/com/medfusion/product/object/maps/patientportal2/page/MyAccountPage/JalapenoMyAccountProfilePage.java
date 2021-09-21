@@ -389,4 +389,10 @@ public class JalapenoMyAccountProfilePage extends JalapenoMyAccountPage {
 		IHGUtil.PrintMethodName();
 		PortalUtil2.setPortalFrame(driver);
 	}
+	
+	public JalapenoMyAccountDevicesPage navigateToDevicesTab(WebDriver driver) {
+		log("Click on My Devices");
+		devicesTab.click();
+		return PageFactory.initElements(driver, JalapenoMyAccountDevicesPage.class);
+	}
 }
