@@ -5,4 +5,12 @@ provider "aws" {
   assume_role {
     role_arn = var.role_arn
   }
+
+  default_tags {
+    tags = {
+    "nextgen.automation"          = "true"
+    "nextgen.component"           = "PXP"
+    "nextgen.data-classification" = "confidential"
+    }
+  }
 }
