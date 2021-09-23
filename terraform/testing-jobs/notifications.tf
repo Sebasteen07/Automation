@@ -6,9 +6,7 @@ resource "aws_codestarnotifications_notification_rule" "codepipeline_notificatio
   event_type_ids = [
     "codepipeline-pipeline-pipeline-execution-succeeded",
     "codepipeline-pipeline-pipeline-execution-failed",
-    "codepipeline-pipeline-pipeline-execution-canceled",
-    "codepipeline-pipeline-pipeline-execution-resumed",
-    "codepipeline-pipeline-pipeline-execution-started"
+    "codepipeline-pipeline-pipeline-execution-canceled"
   ]
 
   name     = "dev-test-pipeline-notification"
