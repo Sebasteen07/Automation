@@ -41,10 +41,6 @@ The following resources are created by this configuration
 | data_encryption_key_parameter_name | SSM parameter name for storing the value of data encryption KMS key for this account |
 | sns_topic_arn | The SNS topic created by this module for sending notifications to AWS Chatbot |
 | chatbot_iam_role_arn | IAM role assumed by the AWS Chatbot channel |
-|  |  |
-|  |  |
-|  |  |
-|  |  |
 
 ## Deployment diagram
 
