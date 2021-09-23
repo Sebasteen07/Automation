@@ -48,3 +48,9 @@ data "aws_sns_topic" "slack" {
 
   name = "pxp-mf-qa-dev-chatbot-sns-topic"
 }
+
+data "aws_codecommit_repository" "qa_automation" {
+  provider = aws.pipeline
+  
+  repository_name = var.repository_name
+}

@@ -69,7 +69,7 @@ data "aws_iam_policy_document" "pipeline" {
     ]
 
     resources = [
-      local.aws_codebuild_project_arn,
+      module.build.codebuild_project.arn
     ]
   }
 
@@ -82,7 +82,7 @@ data "aws_iam_policy_document" "pipeline" {
     ]
 
     resources = [
-      local.aws_codecommit_repo_arn,
+      data.aws_codecommit_repository.qa_automation.arn
     ]
   }
 }
