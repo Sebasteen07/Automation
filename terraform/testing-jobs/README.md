@@ -5,10 +5,10 @@ This directory contains Terraform configurations to create a testing-jobs AWS re
 
 ## Pre-requisites
 The following resources are the pre-requisites from common folder
-  CodeCommit repository by the name qa-automation-mirror for mirroring the qa-automation repo from Bitbucket
-  KMS keys ARN stored in SSM parameter - /nextgen/kms/data/default for data encryption key
-  Bucket ARN stored in SSM parameter - /nextgen/codepipeline/artifact-store/default for storing CodePipeline artifacts & logs
-  SNS topic ARN for Slack notifications
+  - CodeCommit repository by the name qa-automation-mirror for mirroring the qa-automation repo from Bitbucket
+  - KMS keys ARN stored in SSM parameter - /nextgen/kms/data/default for data encryption key
+  - Bucket ARN stored in SSM parameter - /nextgen/codepipeline/artifact-store/default for storing CodePipeline artifacts & logs
+  - SNS topic ARN for Slack notifications
 
 ## AWS Design Reference
 ![AWS_Design](assets/pxp-qa-automation-design.png)
