@@ -5256,4 +5256,77 @@ public class PatientPortal2AcceptanceTests extends BaseTestNGWebDriver {
 		assertTrue(myDevicesTab.isRemoveDeviceDisplayed());
 				
     }
+    @Test(enabled = true, groups = { "acceptance-linkedaccounts" }, retryAnalyzer = RetryAnalyzer.class)
+    public void testTrustedRepresentativeCareManagerForMessage() throws Exception {
+		logStep("Createing a Gurdian Patient");
+		createCommonPatient();
+		Patient trustedPatient = PatientFactory.createJalapenoPatient(PortalUtil2.generateUniqueUsername(testData.getProperty("user.id"), testData), testData);
+		
+		logStep("Load login page");
+		JalapenoLoginPage loginPage = new JalapenoLoginPage(driver, testData.getUrl());
+		JalapenoHomePage homePage = loginPage.login(patient.getUsername(), patient.getPassword());
+        JalapenoAccountPage accountPage = homePage.clickOnAccount();
+
+	    logStep("Invite Trusted Representative with no access to message solution");
+        accountPage.clickInviteButton();
+        accountPage.givingPermissionWithModuleName("Messages","noAccess");
+        accountPage.inviteTrustedRepresentativeWithPermission(trustedPatient);
+        
+		logStep("Waiting for invitation email");
+		String patientUrl = new Mailinator().getLinkFromEmail(trustedPatient.getEmail(),
+				INVITE_EMAIL_SUBJECT_REPRESENTATIVE, INVITE_EMAIL_BUTTON_TEXT, 15);
+		assertNotNull(patientUrl, "Error: Activation patients link not found.");
+
+		logStep("Redirecting to verification page");
+		PatientVerificationPage patientVerificationPage = new PatientVerificationPage(driver, patientUrl);
+
+		logStep("Identify patient");
+		AuthUserLinkAccountPage linkAccountPage = patientVerificationPage.fillDependentInfoAndContinue(
+				patient.getZipCode(), patient.getDOBMonth(), patient.getDOBDay(), patient.getDOBYear());
+
+		logStep("Continue registration - check dependent info and fill trusted representative name");
+		linkAccountPage.checkDependentInfo(patient.getFirstName(), patient.getLastName(), trustedPatient.getEmail());
+		SecurityDetailsPage accountDetailsPage = linkAccountPage
+				.continueToCreateGuardianOnly(trustedPatient.getFirstName(), trustedPatient.getLastName(), "Child");
+
+		logStep("Continue registration - create dependents credentials and continue to Home page");
+		accountDetailsPage.fillAccountDetailsAndContinue(trustedPatient.getUsername(), trustedPatient.getPassword(),
+				testData.getSecretQuestion(), testData.getSecretAnswer(), testData.getPhoneNumber());
+
+		assertTrue(homePage.assessFamilyAccountElements(false));
+
+		logStep("Log out from patient portal");
+		loginPage = homePage.clickOnLogout();
+
+		logStep("Log in and log out as Trusted Representative");
+		homePage = loginPage.login(trustedPatient.getUsername(), trustedPatient.getPassword());
+		assertTrue(homePage.assessFamilyAccountElements(false));
+		
+		log("Verify Message solution Not display for Trusted Rep");
+		assertTrue(homePage.isMessageSolutionDisplayed());
+		homePage.clickOnLogout();
+        
+		logStep("Log in to a Gurdian user role and change the permission");
+		homePage = loginPage.login(patient.getUsername(), patient.getPassword());
+		accountPage = homePage.clickOnAccount();
+		homePage.editTrustedRepAccount();
+		accountPage.givingPermissionWithModuleName("Messages","viewOnly");
+		accountPage.clickOnSaveMyChangesButton();
+		
+		logStep("Verify the success message after changeing the user permission to view only");
+		homePage.clickOnLogout();
+		
+		logStep("Log in and log out as Trusted Representative and verify the view only access permission");
+		homePage = loginPage.login(trustedPatient.getUsername(), trustedPatient.getPassword());
+		assertTrue(homePage.assessFamilyAccountElements(false));
+		
+		logStep("Click on messages solution");
+		JalapenoMessagesPage messagesPage = homePage.showMessages(driver);
+        assertTrue(messagesPage.returnSubjectMessage().length() > 0);
+        
+        logStep("Verify Aska question button should not display for view only access");
+        assertTrue(messagesPage.isAskaQuestionButtonDisplayed());
+		homePage.clickOnLogout();
+		
+   	    }
 }
