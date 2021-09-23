@@ -1,6 +1,6 @@
 # Copyright 2021 NXGN Management, LLC. All Rights Reserved.
 terraform {
-  required_version = ">= 1.0.0"
+  required_version = ">= 1.0"
 
   backend "s3" {
     region         = "us-east-2"
