@@ -8,9 +8,9 @@ provider "aws" {
 
   default_tags {
     tags = {
-    "nextgen.automation"          = "true"
-    "nextgen.component"           = "PXP"
-    "nextgen.data-classification" = "confidential"
+      "nextgen.automation"          = "true"
+      "nextgen.component"           = "PXP"
+      "nextgen.data-classification" = "confidential"
     }
   }
 }
