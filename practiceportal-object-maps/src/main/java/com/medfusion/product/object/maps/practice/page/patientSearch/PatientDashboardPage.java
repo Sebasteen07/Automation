@@ -87,6 +87,21 @@ public class PatientDashboardPage extends BasePageObject {
 	
 	@FindBy(linkText = "Send password reset")
 	private WebElement trPasswordResetLink;
+	
+	@FindBy(xpath = "//a[contains(text(),'Edit Access')]")
+	private WebElement editAccess;
+	
+	@FindBy(xpath = "//input[@id='custom_access']")
+	private WebElement customAccess;
+	
+	@FindBy(xpath = "//input[@name=\"accesslevel\" and @value=\"-1\"]")
+	private WebElement viewAndPerformActions;
+	
+	@FindBy(xpath = "//input[@name='patientMessaging' and @value = '0']")
+	private WebElement noAccess;
+	
+	@FindBy(xpath = "//input[@name='submit']")
+	private WebElement submit;
 
 	private WebElement feedback;
 
@@ -293,5 +308,32 @@ public class PatientDashboardPage extends BasePageObject {
 		trPasswordResetLink.click();
 		return PageFactory.initElements(driver, PatientSearchPage.class);
 	}
-
+	
+public void revokeAccess() throws InterruptedException {
+		
+		log("Edit Access");
+		assertTrue(IHGUtil.waitForElement(driver, 30, editAccess));
+		editAccess.click();
+		log("Click on CustomAccess");
+		assertTrue(IHGUtil.waitForElement(driver, 30, customAccess));
+		customAccess.click();
+		log("Select No Access and Submit");
+		assertTrue(IHGUtil.waitForElement(driver, 30, noAccess));
+		noAccess.click();
+		submit.click();
+	}
+	
+public void grantAccess() throws InterruptedException {
+		
+		log("Edit Access");
+		assertTrue(IHGUtil.waitForElement(driver, 30, editAccess));
+		editAccess.click();
+		log("Click on CustomAccess");
+		assertTrue(IHGUtil.waitForElement(driver, 30, customAccess));
+		customAccess.click();
+		log("Select No Access and Submit");
+		assertTrue(IHGUtil.waitForElement(driver, 30, viewAndPerformActions));
+		viewAndPerformActions.click();
+		submit.click();
+	}
 }

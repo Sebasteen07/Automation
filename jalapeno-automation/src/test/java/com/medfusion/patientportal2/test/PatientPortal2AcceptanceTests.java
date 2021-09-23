@@ -5256,4 +5256,55 @@ public class PatientPortal2AcceptanceTests extends BaseTestNGWebDriver {
 		assertTrue(myDevicesTab.isRemoveDeviceDisplayed());
 				
     }
+    
+    @Test(enabled = true, groups = { "acceptance-linkedaccounts" }, retryAnalyzer = RetryAnalyzer.class)
+	public void testCareManagerWithMultiplePermissions() throws Exception {
+
+		logStep("Login to Practice Portal");
+		PracticeLoginPage practiceLogin = new PracticeLoginPage(driver, testData.getPortalUrl());
+		PracticeHomePage practiceHome = practiceLogin.login(testData.getDoctorLogin(), testData.getDoctorPassword());
+
+		logStep("Click on Patient Search Link");
+		PatientSearchPage pPatientSearchPage = practiceHome.clickPatientSearchLink();
+
+		logStep("Set Patient Search Fields");
+		pPatientSearchPage.searchForPatientInPatientSearch(testData.getProperty("trusted.rep.care.management.first.name"),
+				testData.getProperty("trusted.rep.care.management.last.name"));
+		PatientDashboardPage pPatientDashboardPage = pPatientSearchPage.clickOnPatient(
+				testData.getProperty("trusted.rep.care.management.first.name"),testData.getProperty("trusted.rep.care.management.last.name"));
+		
+		logStep("Set Patient Search Fields");
+		pPatientDashboardPage.revokeAccess();
+		logStep("Login to patient portal");
+		JalapenoLoginPage loginPage = new JalapenoLoginPage(driver, testData.getUrl());
+		JalapenoHomePage homePage = loginPage.login(testData.getProperty("patient.login"), testData.getProperty("patient.password"));
+		
+		logStep("Go to messages"); 
+		assertFalse(homePage.isMessagesDisplayed(), "Messages Not Accessible"); 
+		homePage.clickOnLogout();
+		
+		logStep("Login to Practice Portal");
+		PracticeLoginPage practiceLogin1 = new PracticeLoginPage(driver, testData.getPortalUrl());
+		practiceLogin.login(testData.getDoctorLogin(), testData.getDoctorPassword());
+
+		logStep("Click on Patient Search Link");
+		practiceHome.clickPatientSearchLink();
+
+		logStep("Set Patient Search Fields");
+		pPatientSearchPage.searchForPatientInPatientSearch(testData.getProperty("trusted.rep.care.management.first.name"),
+				testData.getProperty("trusted.rep.care.management.last.name"));
+		pPatientSearchPage.clickOnPatient(
+				testData.getProperty("trusted.rep.care.management.first.name"),testData.getProperty("trusted.rep.care.management.last.name"));
+		
+		logStep("Set Patient Search Fields");
+		pPatientDashboardPage.grantAccess();
+		logStep("Login to patient portal");
+		JalapenoLoginPage loginPage1 = new JalapenoLoginPage(driver, testData.getUrl());
+		loginPage.login(testData.getProperty("patient.login"), testData.getProperty("patient.password"));
+		
+		logStep("Go to messages"); 
+		assertTrue(homePage.isMessagesDisplayed(), "Messages is Accessible"); 
+		homePage.clickOnLogout();
+
+	}
 }
