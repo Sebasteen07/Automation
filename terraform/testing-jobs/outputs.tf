@@ -5,11 +5,11 @@ output "codebuild_project_role" {
 }
 
 output "codepipeline_name" {
-  description = "The codepipeline id created"
+  description = "The codepipeline id created for test execution"
   value       = aws_codepipeline.main.id
 }
 
 output "cloudwatch_event_rule_name" {
-  description = "The cloudwatch event rule name created"
+  description = "cloudwatch event rule name created for triggering pipeline execution"
   value       = aws_cloudwatch_event_rule.trigger_codepipeline.id
 }
