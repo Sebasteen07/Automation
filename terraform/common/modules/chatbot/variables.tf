@@ -25,7 +25,7 @@ variable "slack_channel_workspace" {
 }
 
 variable "logging_level" {
-  description = "The slack channel workspace id"
+  description = "Specifies the logging level for this configuration(ERROR, INFO, or NONE). This property affects the log entries pushed to Amazon CloudWatch Logs"
   type        = string
 }
 
