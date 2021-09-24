@@ -944,7 +944,8 @@ public class PSS2PatientPortalAcceptanceTests extends BaseTestNGWebDriver {
 
 		logStep("Start booking an appointment in PSS---> PATIENT UI STEPS ");
 		homepage.btnStartSchedClick();
-		//psspatientutils.selectAFlow(driver, rule, homepage, testData);
+		ScheduledAppointment scheduledAppointment=psspatientutils.selectAFlow(driver, rule, homepage, testData);
+		scheduledAppointment.endMethod();
 	}
 
 	@Test(enabled = true, groups = { "AcceptanceTests" }, retryAnalyzer = RetryAnalyzer.class)

@@ -33,6 +33,10 @@ public class ScheduledAppointment extends PSS2MainPage {
 	public ScheduledAppointment(WebDriver driver) {
 		super(driver);
 	}
+	
+	public void endMethod() {
+		log("Method ends here");
+	}
 
 	public void downloadCalander() {
 		linkAddToCalander.click();
