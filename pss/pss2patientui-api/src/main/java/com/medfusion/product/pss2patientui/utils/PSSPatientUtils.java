@@ -71,14 +71,14 @@ public class PSSPatientUtils extends BaseTestNGWebDriver {
 		log("Is file deleted ? " + deleteFile(path));
 	}
 
-	public String sampleDateTime(String datetimeformat) { 
-        DateFormat dateFormat = new SimpleDateFormat(datetimeformat);
-        Date d = new Date();
-        String currentdate = dateFormat.format(d);
-        log("Current Date- " + currentdate);
-        return currentdate;
-    }
-	
+	public String sampleDateTime(String datetimeformat) {
+		DateFormat dateFormat = new SimpleDateFormat(datetimeformat);
+		Date d = new Date();
+		String currentdate = dateFormat.format(d);
+		log("Current Date- " + currentdate);
+		return currentdate;
+	}
+
 	public String filePath() {
 		String home = System.getProperty("user.home");
 		File latestFile = lastFileModified(home + PSSConstants.DOWNLOADFILENAME);
@@ -198,6 +198,7 @@ public class PSSPatientUtils extends BaseTestNGWebDriver {
 			clickOnSubmitAppt(false, aptDateTime, testData, driver);
 		}
 
+		log("Test Case Passed");
 	}
 
 	public void BTLFlow(HomePage homepage, Appointment testData, String startOrderOn, WebDriver driver)
@@ -463,6 +464,7 @@ public class PSSPatientUtils extends BaseTestNGWebDriver {
 
 		Thread.sleep(6000);
 		bookAppointment(false, aptDateTime, testData, driver);
+		log("Test Case Passed");
 	}
 
 	public void STBLFlow(HomePage homepage, Appointment testData, String startOrderOn, WebDriver driver)
@@ -1162,16 +1164,16 @@ public class PSSPatientUtils extends BaseTestNGWebDriver {
 //		for (WebElement ele : confirmationpage.getAppointmentDetails()) {
 //			log("apt Details= " + ele.getText());
 //		}
-		
-		List<WebElement> ele=confirmationpage.getAppointmentDetails();
-		int l=ele.size();
-		for(int i=0; i<l; i++){
-			
-			log("apt details-"+ele.get(i));
+
+		List<WebElement> ele = confirmationpage.getAppointmentDetails();
+		int l = ele.size();
+		for (int i = 0; i < l; i++) {
+
+			log("apt details-" + ele.get(i));
 		}
-		
+
 		ScheduledAppointment scheduledappointment = confirmationpage.appointmentConfirmed();
-		String apptid=scheduledappointment.getAppointmentID();
+		String apptid = scheduledappointment.getAppointmentID();
 		log("appointment ID = " + apptid);
 		log("Add to calendar option is displayed and is clickable.");
 //		scheduledappointment.downloadCalander();
