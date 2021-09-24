@@ -242,7 +242,7 @@ public class PSSPatientUtils extends BaseTestNGWebDriver {
 		if (testData.isFutureApt()) {
 			aptDateTime.selectFutureDate(testData.getIsNextDayBooking());
 		} else {
-			aptDateTime.selectDate(testData.getIsNextDayBooking());
+			aptDateTime.selectDateOnly(testData.getIsNextDayBooking());
 		}
 		Thread.sleep(6000);
 

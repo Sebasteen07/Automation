@@ -919,7 +919,7 @@ public class PSS2PatientPortalAcceptanceTests extends BaseTestNGWebDriver {
 		PSSPatientUtils psspatientutils = new PSSPatientUtils();
 		PSSAdminUtils adminUtils = new PSSAdminUtils();
 		
-		testData.setFutureApt(true);
+		testData.setFutureApt(false);
 
 		logStep("Login to PSS 2.0 Admin portal and do the seetings for Last Question Required");
 		adminUtils.lastQuestionEnable(driver, adminUser, testData, PSSConstants.LOGINLESS);
