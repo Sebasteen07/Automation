@@ -1155,12 +1155,20 @@ public class PSSPatientUtils extends BaseTestNGWebDriver {
 	public void appointmentToScheduled(ConfirmationPage confirmationpage, Appointment testData) throws Exception {
 		log("--------I AM IN appointmentToScheduled METHOD---------");
 		log("Verify if Appointment is scheduled and download ics file");
-//		String aptScheduledAt = confirmationpage.getAppointmentDetails()
-//				.get((confirmationpage.getAppointmentDetails().size() - 1)).getText();
-//		log(">> " + aptScheduledAt);
-		for (WebElement ele : confirmationpage.getAppointmentDetails()) {
-			log("apt Details= " + ele.getText());
+		String aptScheduledAt = confirmationpage.getAppointmentDetails()
+				.get((confirmationpage.getAppointmentDetails().size() - 1)).getText();
+		log(">> " + aptScheduledAt);
+//		for (WebElement ele : confirmationpage.getAppointmentDetails()) {
+//			log("apt Details= " + ele.getText());
+//		}
+		
+		List<WebElement> ele=confirmationpage.getAppointmentDetails();
+		int l=ele.size();
+		for(int i=0; i<l; i++){
+			
+			log("apt details-"+ele.get(i));
 		}
+		
 		ScheduledAppointment scheduledappointment = confirmationpage.appointmentConfirmed();
 		String apptid=scheduledappointment.getAppointmentID();
 		log("appointment ID = " + apptid);
