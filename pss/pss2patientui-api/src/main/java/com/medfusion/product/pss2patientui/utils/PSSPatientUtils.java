@@ -253,6 +253,7 @@ public class PSSPatientUtils extends BaseTestNGWebDriver {
 			log("This is not an Anonymous flow so comes is else block");
 			clickOnSubmitAppt(false, aptDateTime, testData, driver);
 		}
+		log("Test Case Passed");
 	}
 
 	public void LTBFlow(HomePage homepage, Appointment testData, String startOrderOn, WebDriver driver)
