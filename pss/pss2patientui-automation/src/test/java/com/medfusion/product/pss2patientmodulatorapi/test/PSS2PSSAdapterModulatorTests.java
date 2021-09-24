@@ -238,7 +238,7 @@ public class PSS2PSSAdapterModulatorTests extends BaseTestNG {
 	public void testGetAppointmentTypeById() throws NullPointerException, Exception {
 
 		String b = payloadAM.saveApptTypePayload();
-		Response response = postAPIRequestAM.updateAppointmenttype(practiceId, b);
+		Response response = postAPIRequestAM.getAppointmentTypeById(practiceId, b);
 		aPIVerification.responseCodeValidation(response, 200);
 		log("Body- " + response.getBody().asString());
 		assertEquals(response.getBody().asString(), "true");
