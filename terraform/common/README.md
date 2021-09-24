@@ -13,9 +13,8 @@ This directory contains Terraform configurations to create a common AWS resource
 ## Resources
 The following resources are created by this configuration
 1. CodeCommit repository by the name `qa-automation-mirror` for mirroring the `qa-automation` repo from Bitbucket
-1. KMS keys
-  - `/nextgen/kms/data/default` for storing the ARN of account's data encryption key
-  - `/nextgen/codepipeline/artifact-store/default` for storing the name of artifact bucket for CodePipeline
+1. SSM Parameter `/nextgen/kms/data/default` for storing the ARN of account's data encryption key
+1. SSM Parameter `/nextgen/codepipeline/artifact-store/default` for storing the name of artifact bucket for CodePipeline
 1. SNS topic for Slack notifications
 1. AWS Chatbot for Slack notifications
 1. IAM roles and policies required for SNS and Chatbot
