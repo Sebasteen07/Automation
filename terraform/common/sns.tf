@@ -60,7 +60,7 @@ resource "aws_iam_policy" "success" {
           "logs:PutRetentionPolicy"
         ]
         Effect   = "Allow"
-        Resource = "*"
+        Resource = "arn:aws:logs:*:*:log-group:sns/*"
       },
     ]
   })
