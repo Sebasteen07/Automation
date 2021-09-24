@@ -28,7 +28,7 @@ resource "aws_iam_policy" "chatbot_sns_permissions" {
               "sns:ListSubscriptions"
             ],
             "Effect": "Allow",
-            "Resource": "*"
+            "Resource": "${module.sns_module.sns_topic.arn}"
         },
         {
             "Effect": "Allow",
@@ -44,7 +44,14 @@ resource "aws_iam_policy" "chatbot_sns_permissions" {
         {
             "Effect": "Allow",
             "Action": [
-              "kms:*"
+              "kms:Encrypt",
+              "kms:Decrypt",
+              "kms:ReEncrypt*",
+              "kms:GenerateDataKey*",
+              "kms:DescribeKey",
+              "kms:CreateGrant",
+              "kms:ListGrants",
+              "kms:RevokeGrant"
             ],
             "Resource": "${aws_ssm_parameter.kms_key_arn.value}"
         }
