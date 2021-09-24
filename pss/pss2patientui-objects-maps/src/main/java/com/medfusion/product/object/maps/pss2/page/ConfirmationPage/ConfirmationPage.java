@@ -23,7 +23,7 @@ import com.medfusion.product.object.maps.pss2.page.util.CommonMethods;
 
 public class ConfirmationPage extends PSS2MainPage {
 
-	@FindAll({@FindBy(css = ".value-classschedule")})
+	@FindAll({@FindBy(css = ".value-class")})
 	private List<WebElement> appointmentScheduledDetails;
 
 	@FindBy(how = How.XPATH, using = "//a[@id='everythingiscorrectbutton']")

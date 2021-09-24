@@ -9,6 +9,7 @@
 
 					<include name="testBookApptWithoutLastQuestionNG" />
 					<include name="testSSOFlowNG()" />
+					<include name="testE2ELoginlessForExistingPatientNG" />
 
 					<include name="testPreventSchedPastNG()" />
 					<include name="testPreventSchedFutureNG()" />
