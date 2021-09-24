@@ -242,7 +242,7 @@ public class PSSPatientUtils extends BaseTestNGWebDriver {
 		if (testData.isFutureApt()) {
 			aptDateTime.selectFutureDate(testData.getIsNextDayBooking());
 		} else {
-			aptDateTime.selectDateOnly(testData.getIsNextDayBooking());
+			aptDateTime.selectDate(testData.getIsNextDayBooking());
 		}
 		Thread.sleep(6000);
 
@@ -1155,18 +1155,18 @@ public class PSSPatientUtils extends BaseTestNGWebDriver {
 	public void appointmentToScheduled(ConfirmationPage confirmationpage, Appointment testData) throws Exception {
 		log("--------I AM IN appointmentToScheduled METHOD---------");
 		log("Verify if Appointment is scheduled and download ics file");
-		String aptScheduledAt = confirmationpage.getAppointmentDetails()
-				.get((confirmationpage.getAppointmentDetails().size() - 1)).getText();
-		log(">> " + aptScheduledAt);
+//		String aptScheduledAt = confirmationpage.getAppointmentDetails()
+//				.get((confirmationpage.getAppointmentDetails().size() - 1)).getText();
+//		log(">> " + aptScheduledAt);
 		for (WebElement ele : confirmationpage.getAppointmentDetails()) {
 			log("apt Details= " + ele.getText());
 		}
 		ScheduledAppointment scheduledappointment = confirmationpage.appointmentConfirmed();
 		log("appointment ID = " + scheduledappointment.getAppointmentID());
 		log("Add to calendar option is displayed and is clickable.");
-		scheduledappointment.downloadCalander();
-		Thread.sleep(2000);
-		readICSFile(filePath());
+//		scheduledappointment.downloadCalander();
+//		Thread.sleep(2000);
+//		readICSFile(filePath());
 	}
 
 	public void appointmentToRescheduled(ConfirmationPage confirmationpage, Appointment testData) throws Exception {
