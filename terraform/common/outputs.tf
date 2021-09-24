@@ -16,7 +16,7 @@ output "data_encryption_key_parameter_name" {
 }
 
 output "sns_topic_arn" {
-  description = "The SNS topic created by this module"
+  description = "The SNS topic created by this module for sending messages to AWS Chatbot"
   value       = module.sns_module.sns_topic.arn
 }
 
