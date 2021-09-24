@@ -5258,8 +5258,8 @@ public class PatientPortal2AcceptanceTests extends BaseTestNGWebDriver {
 				
     }
     
-    @Test(enabled = true, groups = { "acceptance-solutions" }, retryAnalyzer = RetryAnalyzer.class)
-	public void testTrustedRepresentativeCareManagerForForms() throws Exception {
+    @Test(enabled = true, groups = { "acceptance-linkedaccounts" }, retryAnalyzer = RetryAnalyzer.class)
+	public void testLATrustedRepresentativeAcessForFormsFromPractice() throws Exception {
 		patient = null;
 		JalapenoLoginPage loginPage;
 		JalapenoHomePage homePage;
