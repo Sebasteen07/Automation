@@ -1,7 +1,6 @@
 # Copyright 2021 NXGN Management, LLC. All Rights Reserved.
 module "build" {
-  #source = "git::ssh://git@bitbucket.nextgen.com:7999/dope/codebuild?ref=4.2.0"
-  source = "../../../../tm/codebuild"
+  source = "git::ssh://git@bitbucket.nextgen.com:7999/dope/codebuild?ref=4.3.0"
 
   providers = {
     aws = aws.pipeline
