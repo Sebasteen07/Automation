@@ -9,6 +9,7 @@ import org.openqa.selenium.NoSuchElementException;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.FindBy;
+import org.openqa.selenium.support.How;
 import org.openqa.selenium.support.PageFactory;
 import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.openqa.selenium.support.ui.WebDriverWait;
@@ -102,6 +103,18 @@ public class PatientDashboardPage extends BasePageObject {
 	
 	@FindBy(xpath = "//input[@name='submit']")
 	private WebElement submit;
+	
+	@FindBy(how = How.XPATH, using = "(//input[@name='accesslevel'])[3]")
+    private WebElement rdoViewOnly;
+
+    @FindBy(how = How.XPATH, using = "//input[@id='custom_access']")
+    private WebElement rdoManageAccess;
+
+    @FindBy(how = How.XPATH, using = "(//input[@name='forms'])[2]")
+    private WebElement rdoFormsViewOnly;
+
+    @FindBy(how = How.XPATH, using = "(//input[@name='forms'])[3]")
+    private WebElement rdoFormsNoAccess;
 
 	private WebElement feedback;
 
@@ -309,31 +322,51 @@ public class PatientDashboardPage extends BasePageObject {
 		return PageFactory.initElements(driver, PatientSearchPage.class);
 	}
 	
-public void revokeAccess() throws InterruptedException {
+public void grantRevokeAccess(String textModule, String manageAccessPref) throws InterruptedException {
 		
-		log("Edit Access");
-		assertTrue(IHGUtil.waitForElement(driver, 30, editAccess));
-		editAccess.click();
-		log("Click on CustomAccess");
-		assertTrue(IHGUtil.waitForElement(driver, 30, customAccess));
-		customAccess.click();
-		log("Select No Access and Submit");
-		assertTrue(IHGUtil.waitForElement(driver, 30, noAccess));
-		noAccess.click();
-		submit.click();
-	}
+	log("Edit Access");
+	assertTrue(IHGUtil.waitForElement(driver, 30, editAccess));
+	editAccess.click();
 	
-public void grantAccess() throws InterruptedException {
-		
-		log("Edit Access");
-		assertTrue(IHGUtil.waitForElement(driver, 30, editAccess));
-		editAccess.click();
-		log("Click on CustomAccess");
-		assertTrue(IHGUtil.waitForElement(driver, 30, customAccess));
-		customAccess.click();
-		log("Select No Access and Submit");
-		assertTrue(IHGUtil.waitForElement(driver, 30, viewAndPerformActions));
-		viewAndPerformActions.click();
-		submit.click();
-	}
+	log("Click on CustomAccess");
+	assertTrue(IHGUtil.waitForElement(driver, 30, customAccess));
+	customAccess.click();
+	
+    int i=0;
+    System.out.println(i);
+    if (manageAccessPref == "fullAccess") {
+        i=1;
+    }else if (manageAccessPref == "viewOnly") {
+        i=2;
+    }else if (manageAccessPref == "noAccess") {
+        i=3;
+    }
+    System.out.println(i);
+    String moduleName = "//td[p[contains(text()," + "'" + textModule + "')]]";
+    String preferenceValue = "/following-sibling::td["+i+"]/input";
+    String selectedPreference = moduleName + preferenceValue;
+    WebElement preference = driver.findElement(By.xpath(selectedPreference));
+    log("Printig the full xpath sending :" + preference);
+    if ((new IHGUtil(driver).exists(rdoManageAccess))||(new IHGUtil(driver).exists(rdoViewOnly))) {
+
+
+
+        log("Manage Access Per Category is present");
+        if (manageAccessPref == "fullAccess") {
+            new WebDriverWait(driver, 10).until(ExpectedConditions.elementToBeClickable(preference));
+            preference.click();
+        } else if (manageAccessPref == "viewOnly") {
+            new WebDriverWait(driver, 10).until(ExpectedConditions.elementToBeClickable(preference));
+            preference.click();
+        } else if (manageAccessPref == "noAccess") {
+            new WebDriverWait(driver, 10).until(ExpectedConditions.elementToBeClickable(preference));
+            preference.click();
+        }
+
+
+
+    }
+    submit.click();
 }
+}
+

@@ -5274,7 +5274,7 @@ public class PatientPortal2AcceptanceTests extends BaseTestNGWebDriver {
 				testData.getProperty("trusted.rep.care.management.first.name"),testData.getProperty("trusted.rep.care.management.last.name"));
 		
 		logStep("Set Patient Search Fields");
-		pPatientDashboardPage.revokeAccess();
+		pPatientDashboardPage.grantRevokeAccess("Messages","noAccess");
 		logStep("Login to patient portal");
 		JalapenoLoginPage loginPage = new JalapenoLoginPage(driver, testData.getUrl());
 		JalapenoHomePage homePage = loginPage.login(testData.getProperty("patient.login"), testData.getProperty("patient.password"));
@@ -5297,7 +5297,7 @@ public class PatientPortal2AcceptanceTests extends BaseTestNGWebDriver {
 				testData.getProperty("trusted.rep.care.management.first.name"),testData.getProperty("trusted.rep.care.management.last.name"));
 		
 		logStep("Set Patient Search Fields");
-		pPatientDashboardPage.grantAccess();
+		pPatientDashboardPage.grantRevokeAccess("Messages","fullAccess");
 		logStep("Login to patient portal");
 		JalapenoLoginPage loginPage1 = new JalapenoLoginPage(driver, testData.getUrl());
 		loginPage.login(testData.getProperty("patient.login"), testData.getProperty("patient.password"));
