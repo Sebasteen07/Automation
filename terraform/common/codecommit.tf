@@ -22,7 +22,29 @@ resource "aws_iam_group_policy" "qa_automation_policy" {
   "Statement": [
     {
       "Action": [
-        "codecommit:*"
+        "codecommit:List*",
+        "codecommit:Get*",
+        "codecommit:BatchGet*",
+        "codecommit:BatchDescribeMergeConflicts",
+        "codecommit:Describe*",
+        "codecommit:TagResource",
+        "codecommit:UntagResource",
+        "codecommit:CreateBranch",
+        "codecommit:CreateCommit",
+        "codecommit:CreatePullRequest*",
+        "codecommit:CreateRepository",
+        "codecommit:CreateUnreferencedMergeCommit",
+        "codecommit:DeleteBranch",
+        "codecommit:DeleteCommentContent",
+        "codecommit:DeleteFile",
+        "codecommit:DeletePullRequest*",
+        "codecommit:GitPush",
+        "codecommit:Merge*",
+        "codecommit:OverridePullRequest*",
+        "codecommit:PostComment*",
+        "codecommit:PutComment*",
+        "codecommit:PutFile",
+        "codecommit:Update*"
       ],
       "Effect": "Allow",
       "Resource": "${aws_codecommit_repository.qa_automation_repo.arn}"
