@@ -1173,9 +1173,9 @@ public class PSSPatientUtils extends BaseTestNGWebDriver {
 		String apptid=scheduledappointment.getAppointmentID();
 		log("appointment ID = " + apptid);
 		log("Add to calendar option is displayed and is clickable.");
-		scheduledappointment.downloadCalander();
-		Thread.sleep(2000);
-		readICSFile(filePath());
+//		scheduledappointment.downloadCalander();
+//		Thread.sleep(2000);
+//		readICSFile(filePath());
 	}
 
 	public void appointmentToRescheduled(ConfirmationPage confirmationpage, Appointment testData) throws Exception {
