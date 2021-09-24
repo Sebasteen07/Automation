@@ -756,7 +756,7 @@ public class PSSAdminUtils extends BaseTestNGWebDriver{
 		log("StartPage is Visible= " + patientFlow.isstartpagepresent());
 
 		AdminPatientMatching adminPatientMatching = patientFlow.gotoPatientMatchingTab();
-		adminPatientMatching.patientMatchingSelection();
+		//adminPatientMatching.patientMatchingSelection();
 
 		ManageResource manageResource = pssPracticeConfig.gotoResource();
 		pageRefresh(driver);
