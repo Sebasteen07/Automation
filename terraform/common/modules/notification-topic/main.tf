@@ -6,7 +6,7 @@ resource "aws_sns_topic" "this" {
   name         = var.topic_name
   display_name = var.display_name
 
-  kms_master_key_id = var.kms_master_key_id
+  kms_master_key_id = var.kms_key_id
 
   http_failure_feedback_role_arn    = var.http_failure_feedback_role_arn
   http_success_feedback_role_arn    = var.http_success_feedback_role_arn

@@ -23,7 +23,7 @@ AWS chatbot that sends notifications to Slack.
 | sns_topic_name | The  name  of  the  SNS  topic  to  create | string | prod-rm-notify-aws-chatbot | no |
 | sns_tags | Tags for the SNS topic | string | Name = "prod-rm-notify-aws-chatbot" | no |
 | sns_topic_display_name | The  name  of  the  SNS  topic  to  display | string | prod-rm-notify-aws-chatbot | no|
-| kms_master_key_id | The  kms  master  key  id storted in parameter store | string | /nextgen/kms/organization/chatbot | no |
+| kms_key_id | The  kms  master  key  id storted in parameter store | string | /nextgen/kms/organization/chatbot | no |
 | min_delay_target | Minimum  delay  target  for  the  resource | number | 20 | no|
 | max_delay_target | Maximum  delay  int  target  by  the  resource | number | 20 | no |
 | num_retries | Number  of  retries  by  the  resource | number | 3 | no |

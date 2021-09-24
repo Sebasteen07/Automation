@@ -17,7 +17,7 @@ module "sns_module" {
   topic_name   = "pxp-mf-qa-${var.environment}-chatbot-sns-topic"
   display_name = "PxP MF QA ${var.environment} chatbot SNS topic"
 
-  kms_master_key_id = aws_ssm_parameter.kms_key_arn.value
+  kms_key_id = aws_ssm_parameter.kms_key_arn.value
 
   tags = local.environment_tags
 

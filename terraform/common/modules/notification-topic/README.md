@@ -23,7 +23,7 @@ This terraform configuration creates the following resources on AWS:
 |---|---|---|---|:--------:|
 | topic_name | The friendly name for the SNS topic | string | - | yes |
 | display_name | The display name for the SNS topic | string | - | yes |
-| kms_master_key_id | The ID of an AWS-managed customer master key (CMK) for Amazon SNS or a custom CMK (Recommended to use InfoSec provided key) | string | "alias/aws/sns" | no |
+| kms_key_id | The ID of an AWS-managed customer master key (CMK) for Amazon SNS or a custom CMK (Recommended to use InfoSec provided key) | string | "alias/aws/sns" | no |
 | minDelayTarget | Minimum Delay Target | number | 20 | no |
 | maxDelayTarget | Maximum Delay Target | number | 20 | no |
 | numRetries | Number of retries | number | 3 | no |

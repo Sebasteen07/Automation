@@ -8,7 +8,7 @@ variable "display_name" {
   description = "The display name for the SNS topic"
 }
 
-variable "kms_master_key_id" {
+variable "kms_key_id" {
   description = "The ID of an AWS-managed customer master key (CMK) for Amazon SNS or a custom CMK"
   default     = "alias/aws/sns"
 }
