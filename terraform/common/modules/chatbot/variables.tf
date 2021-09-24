@@ -37,6 +37,7 @@ variable "role_name" {
 variable "tags" {
   description = "Additional custom tags for resources"
   type        = map(string)
+  default     = {}
 }
 
 variable "assume_role_policy" {

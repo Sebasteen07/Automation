@@ -14,7 +14,7 @@ data "aws_iam_policy_document" "chatbot_assume_role_policy" {
 resource "aws_iam_policy" "chatbot_sns_permissions" {
   name        = "pxp-mf-qa-chatbot-role-policy"
   description = "Chatbot Role to subscribe to SNS topic"
-  tags        = local.environment_tags
+
   policy      = <<EOF
 {
     "Version": "2012-10-17",
@@ -55,7 +55,7 @@ EOF
 
 module "chatbot_module" {
   source                  = "./modules/chatbot"
-  tags                    = local.environment_tags
+
   iam_role_tags           = { "Name" = "pxp-mf-qa-${var.environment}-${local.chatbot_role_name}" }
   role_name               = "pxp-mf-qa-${var.environment}-${local.chatbot_role_name}"
   policy_arn              = aws_iam_policy.chatbot_sns_permissions.arn

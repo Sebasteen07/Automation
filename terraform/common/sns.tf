@@ -19,8 +19,6 @@ module "sns_module" {
 
   kms_key_id = aws_ssm_parameter.kms_key_arn.value
 
-  tags = local.environment_tags
-
   http_failure_feedback_role_arn    = aws_iam_role.sns_delivery_status_failure.arn
   http_success_feedback_role_arn    = aws_iam_role.sns_delivery_status_success.arn
   http_success_feedback_sample_rate = 100

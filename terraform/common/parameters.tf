@@ -6,8 +6,6 @@ resource "aws_ssm_parameter" "kms_key_arn" {
   type        = "String"
   key_id      = local.kms_key_arn
   value       = local.kms_key_arn
-
-  tags = local.environment_tags
 }
 
 resource "aws_ssm_parameter" "codepipeline_artifact_bucket_name" {
@@ -16,6 +14,4 @@ resource "aws_ssm_parameter" "codepipeline_artifact_bucket_name" {
   type        = "String"
   key_id      = aws_ssm_parameter.kms_key_arn.value
   value       = local.codepipeline_artifact_bucket_name
-
-  tags = local.environment_tags
 }

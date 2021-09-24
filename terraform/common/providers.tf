@@ -11,6 +11,8 @@ provider "aws" {
       "nextgen.automation"          = "true"
       "nextgen.component"           = "PXP"
       "nextgen.data-classification" = "confidential"
+      "nextgen.environment"         = var.environment
+      "nextgen.environment-type"    = var.environment_type
     }
   }
 }

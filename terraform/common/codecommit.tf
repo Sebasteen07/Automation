@@ -3,8 +3,6 @@
 resource "aws_codecommit_repository" "qa_automation_repo" {
   repository_name = local.repository_name["qa-automation"]
   description     = local.repository_desc["qa-automation"]
-
-  tags = local.environment_tags
 }
 
 resource "aws_iam_group" "qa_automation" {

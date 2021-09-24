@@ -24,9 +24,4 @@ locals {
   chatbot_role_name = "chatbot-monitoring-alarms-role"
   cfn_stack_name    = "chatbot-notify-slack"
   config_name       = "alarms-notify-slack-channel"
-
-  environment_tags = {
-    "nextgen.environment"      = var.environment
-    "nextgen.environment-type" = var.environment_type
-  }
 }

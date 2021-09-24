@@ -77,4 +77,5 @@ variable "http_success_feedback_sample_rate" {
 
 variable "tags" {
   description = "Key-value map of resource tags"
+  default = {}
 }
