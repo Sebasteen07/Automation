@@ -4,16 +4,8 @@ AWS chatbot that sends notifications to Slack.
 
 ## Terraform versions
 ### Recommended
-- Terraform v 0.14.0 and above  
-- AWS Provider v 3.46.0 and above
-
-### Minimum 
-- Terraform v 0.12.0 and above
-- AWS Provider v 2.67.0 and above
-
-### Created using 
-- Terraform v 0.14.0
-- AWS Provider v 3.46.0
+- Terraform v 1.0.0 and above  
+- AWS Provider v 3.59.0 and above
 
 ## Inputs
 | Name | Description  | Type| Default | Required |

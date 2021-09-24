@@ -6,12 +6,8 @@ This directory contains Terraform configurations to create an SNS topic.
 
 ## Terraform versions
 ### Recommended 
-- Terraform v 0.14.0 and above  
-- AWS Provider v 3.27.0 and above
-
-### Minimum 
-- Terraform v 0.12.0 and above
-- AWS Provider v 2.67.0 and above
+- Terraform v 1.0.0 and above  
+- AWS Provider v 3.59.0 and above
 
 ## Resources
 This terraform configuration creates the following resources on AWS:
