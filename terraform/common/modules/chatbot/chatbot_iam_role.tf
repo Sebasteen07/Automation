@@ -5,7 +5,7 @@ resource "aws_iam_role" "chatbot_role" {
   assume_role_policy = var.assume_role_policy
 }
 
-resource "aws_iam_role_policy_attachment" "this" {
+resource "aws_iam_role_policy_attachment" "chatbot" {
   role       = var.role_name
   policy_arn = var.policy_arn
   depends_on = [aws_iam_role.chatbot_role]
