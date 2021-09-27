@@ -66,32 +66,6 @@ public class PSS2DBAdapterModulatorTests extends BaseTestNG {
 		Response response = postAPIRequestDB.validatePractice(practiceId, "/validatepractice");
 		apv.responseCodeValidation(response, 200);
 	}
-
-//	@Test(enabled = true, groups = { "APItest" }, retryAnalyzer = RetryAnalyzer.class)
-//	public void testAnnouncement_Fetch_Save_Delete() throws NullPointerException, Exception {
-//
-//		logStep("Verifying the response");
-//		Response response = postAPIRequestDB.getAnnouncement(practiceId, "/announcement");
-//		apv.responseCodeValidation(response, 200);
-//
-//		JSONArray arr = new JSONArray(response.body().asString());
-//
-//		int ann_id = arr.getJSONObject(1).getInt("id");
-//		String ann_type = arr.getJSONObject(1).getString("type");
-//		String ann_code = arr.getJSONObject(1).getString("code");
-//
-//		log("announcement Id- " + ann_id);
-//		log("announcement Type- " + ann_type);
-//		log("announcement code- " + ann_code);
-//
-//		String b = payloadAM.saveAnnouncementPayload(ann_id, ann_type, ann_code);
-//
-//		Response responseDeleteAnn = postAPIRequestDB.deleteAnnouncement(practiceId, ann_id);
-//		apv.responseCodeValidation(responseDeleteAnn, 200);
-//
-//		Response responseSaveAnn = postAPIRequestDB.saveAnnouncement(practiceId, b);
-//		apv.responseCodeValidation(responseSaveAnn, 200);
-//	}
 	
 	@Test(enabled = true, groups = { "APItest" }, retryAnalyzer = RetryAnalyzer.class)
 	public void testAnnouncementGet() throws NullPointerException, Exception {
@@ -144,30 +118,6 @@ public class PSS2DBAdapterModulatorTests extends BaseTestNG {
 		String message = apv.responseKeyValidationJson(responseDeleteAnn, "message");
 		assertTrue(message.contains("No value present"));
 	}
-
-//	@Test(enabled = true, groups = { "APItest" }, retryAnalyzer = RetryAnalyzer.class)
-//	public void testAnnouncementUpdate() throws NullPointerException, Exception {
-//
-//		Response response = postAPIRequestDB.getAnnouncement(practiceId, "/announcement");
-//		apv.responseCodeValidation(response, 200);
-//
-//		JSONArray arr = new JSONArray(response.body().asString());
-//
-//		int ann_id = arr.getJSONObject(1).getInt("id");
-//		String ann_type = arr.getJSONObject(1).getString("type");
-//		String ann_code = arr.getJSONObject(1).getString("code");
-//
-//		log("announcement Id- " + ann_id);
-//		log("announcement Type- " + ann_type);
-//		log("announcement code- " + ann_code);
-//
-//		String b = payloadAM.updateAnnouncementPayload(ann_id, ann_type, ann_code);
-//
-//		Response responseSaveAnn = postAPIRequestDB.updateAnnouncement(practiceId, b);
-//		apv.responseCodeValidation(responseSaveAnn, 200);
-//
-//		response = postAPIRequestDB.getAnnouncement(practiceId, "/announcement");
-//	}
 
 	@Test(enabled = true, groups = { "APItest" }, retryAnalyzer = RetryAnalyzer.class)
 	public void testAnnouncementUpdateInvalid() throws NullPointerException, Exception {
@@ -599,10 +549,6 @@ public class PSS2DBAdapterModulatorTests extends BaseTestNG {
 		apv.responseCodeValidation(response, 200);
 		apv.responseTimeValidation(response);
 	}
-	
-
-	
-	
 	
 
 	
