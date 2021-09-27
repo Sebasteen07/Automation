@@ -300,5 +300,85 @@ public class PostAPIRequestDBAdapter {
 				.extract().response();
 		return response;
 	}
+	
+	public Response getBookByPracticeAndName(String practiceid, String bookname) throws Exception {
+		Response response = given().spec(requestSpec).header("language", "es").log().all().when()
+				.get(practiceid+"/books/"+bookname).then().log().all()
+				.extract().response();
+		return response;
+	}
+	
+	public Response getBooksWithLanguageForPractice(String practiceid) throws Exception {
+		Response response = given().spec(requestSpec).header("language", "es").log().all().when()
+				.get(practiceid+"/books").then().log().all()
+				.extract().response();
+		return response;
+	}
+	public Response getBooksWithLanguageForPractice(String practiceid) throws Exception {
+		Response response = given().spec(requestSpec).header("language", "es").log().all().when()
+				.get(practiceid+"/books").then().log().all()
+				.extract().response();
+		return response;
+	}
+	public Response getBooksWithLanguageForPractice(String practiceid) throws Exception {
+		Response response = given().spec(requestSpec).header("language", "es").log().all().when()
+				.get(practiceid+"/books").then().log().all()
+				.extract().response();
+		return response;
+	}
+	public Response getBooksWithLanguageForPractice(String practiceid) throws Exception {
+		Response response = given().spec(requestSpec).header("language", "es").log().all().when()
+				.get(practiceid+"/books").then().log().all()
+				.extract().response();
+		return response;
+	}
+	public Response getBooksWithLanguageForPractice(String practiceid) throws Exception {
+		Response response = given().spec(requestSpec).header("language", "es").log().all().when()
+				.get(practiceid+"/books").then().log().all()
+				.extract().response();
+		return response;
+	}
+	public Response getBooksWithLanguageForPractice(String practiceid) throws Exception {
+		Response response = given().spec(requestSpec).header("language", "es").log().all().when()
+				.get(practiceid+"/books").then().log().all()
+				.extract().response();
+		return response;
+	}
+	public Response getBooksWithLanguageForPractice(String practiceid) throws Exception {
+		Response response = given().spec(requestSpec).header("language", "es").log().all().when()
+				.get(practiceid+"/books").then().log().all()
+				.extract().response();
+		return response;
+	}
+	public Response getBooksWithLanguageForPractice(String practiceid) throws Exception {
+		Response response = given().spec(requestSpec).header("language", "es").log().all().when()
+				.get(practiceid+"/books").then().log().all()
+				.extract().response();
+		return response;
+	}
+	public Response getBooksWithLanguageForPractice(String practiceid) throws Exception {
+		Response response = given().spec(requestSpec).header("language", "es").log().all().when()
+				.get(practiceid+"/books").then().log().all()
+				.extract().response();
+		return response;
+	}
+	public Response getBooksWithLanguageForPractice(String practiceid) throws Exception {
+		Response response = given().spec(requestSpec).header("language", "es").log().all().when()
+				.get(practiceid+"/books").then().log().all()
+				.extract().response();
+		return response;
+	}
+	public Response getBooksWithLanguageForPractice(String practiceid) throws Exception {
+		Response response = given().spec(requestSpec).header("language", "es").log().all().when()
+				.get(practiceid+"/books").then().log().all()
+				.extract().response();
+		return response;
+	}
+	public Response getBooksWithLanguageForPractice(String practiceid) throws Exception {
+		Response response = given().spec(requestSpec).header("language", "es").log().all().when()
+				.get(practiceid+"/books").then().log().all()
+				.extract().response();
+		return response;
+	}
 
 }

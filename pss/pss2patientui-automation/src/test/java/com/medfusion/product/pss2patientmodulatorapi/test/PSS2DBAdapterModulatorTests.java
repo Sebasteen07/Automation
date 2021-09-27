@@ -550,6 +550,22 @@ public class PSS2DBAdapterModulatorTests extends BaseTestNG {
 		apv.responseTimeValidation(response);
 	}
 	
+	@Test(enabled = true, groups = { "APItest" }, retryAnalyzer = RetryAnalyzer.class)
+	public void testBook_getBookByPracticeAndName() throws NullPointerException, Exception {
+		
+		String bookname=propertyData.getProperty("book.bookname.db");
+		String extbookid=propertyData.getProperty("book.extbook.id.db");
+
+		Response response = postAPIRequestDB.getBookByPracticeAndName(practiceId, bookname);
+		String actualextbookid= response.getBody().asString();
+		log("actualextbookid- "+actualextbookid);
+		assertEquals(actualextbookid, extbookid, "External Book id is not matching with expected id");
+		apv.responseCodeValidation(response, 200);
+		apv.responseTimeValidation(response);
+	}
+	
+	
+	
 
 	
 }
