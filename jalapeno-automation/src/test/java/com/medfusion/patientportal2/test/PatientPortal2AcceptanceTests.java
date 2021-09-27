@@ -13,6 +13,7 @@ import java.util.Objects;
 import com.intuit.ifs.csscat.core.BaseTestNGWebDriver;
 import com.intuit.ihg.common.utils.PatientFactory;
 import com.medfusion.pojos.Patient;
+import com.medfusion.product.object.maps.patientportal2.page.MyAccountPage.JalapenoMyAccountDevicesPage;
 import com.medfusion.product.object.maps.patientportal2.page.MyAccountPage.JalapenoMyAccountPreferencesPage;
 import com.medfusion.product.object.maps.patientportal2.page.PayNow.JalapenoPayNowPage;
 import com.medfusion.product.patientportal2.utils.JalapenoConstants;
@@ -5238,4 +5239,21 @@ public class PatientPortal2AcceptanceTests extends BaseTestNGWebDriver {
 		askHistoryDetail.clickOnLogout();
 
 	}
+    
+    @Test(enabled = true, groups = { "acceptance-solutions" }, retryAnalyzer = RetryAnalyzer.class)
+	public void testMyDeviceTab() throws Exception {
+		logStep("Load login page");
+		JalapenoLoginPage loginPage = new JalapenoLoginPage(driver, testData.getUrl());
+
+		logStep("Fill in credentials and log in");
+		JalapenoHomePage jalapenoHomePage = loginPage.login(testData.getUserId(), testData.getPassword());
+
+		logStep("Click on Account");
+		JalapenoMyAccountProfilePage myAccountPage = jalapenoHomePage.goToAccountPage();
+		
+		logStep("Click on Devices Tab");
+		JalapenoMyAccountDevicesPage myDevicesTab=myAccountPage.navigateToDevicesTab(driver);
+		assertTrue(myDevicesTab.isRemoveDeviceDisplayed());
+				
+    }
 }

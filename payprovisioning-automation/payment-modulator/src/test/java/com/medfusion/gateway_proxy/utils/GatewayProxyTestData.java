@@ -131,9 +131,7 @@ public class GatewayProxyTestData extends GatewayProxyBaseTest {
 				{ testData.getProperty("consumer.name"), testData.getProperty("type"),
 						testData.getProperty("card.number"), testData.getProperty("expiration.number"),
 						testData.getProperty("card.alias"), "", true },
-				{ testData.getProperty("consumer.name"), testData.getProperty("type"),
-						testData.getProperty("card.number"), testData.getProperty("expiration.number"),
-						testData.getProperty("card.alias"), testData.getProperty("zipcode"), false } };
+		 };
 	}
 
 	@DataProvider(name = "txn_data_for_sale")
@@ -223,15 +221,23 @@ public class GatewayProxyTestData extends GatewayProxyBaseTest {
 
 	}
 
-
 	@DataProvider(name = "update_card")
 	public static Object[][] dataProvider_update_card() throws IOException {
 		testData = new PropertyFileLoader();
 		String zipcode = IHGUtil.createRandomZip();
 
-		return new Object[][] { { "", zipcode, true }, { testData.getProperty("card.alias1"), "987654321234", true },
-				{ testData.getProperty("card.alias1"), "123", true }, { testData.getProperty("card.alias1"), "", true },
-				{ testData.getProperty("card.alias1"), zipcode, false } };
+		return new Object[][] {
+	
+			{ testData.getProperty("card.alias1"), "", false, 400, "Zip code is mandatory" },
+			{ "", "12345", false, 400, "Card Alias is mandatory" },
+			{ testData.getProperty("card.alias1"), "1", false, 400,
+					"Zip code should be 5 digits or 9 digits number" },
+			{ testData.getProperty("card.alias1"), "1234567890", false, 400,
+					"Zip code should be 5 digits or 9 digits number" },
+			{ testData.getProperty("card.alias1"), "$$$$$", false, 400,
+					"Zip code should be 5 digits or 9 digits number" },
+
+				};
 
 	}
 
@@ -313,11 +319,6 @@ public class GatewayProxyTestData extends GatewayProxyBaseTest {
 						testData.getProperty("type"), testData.getProperty("card.number"),
 						testData.getProperty("expiration.number"), testData.getProperty("zipcode"), true, 404,
 						"The wallet with external_wallet_id   does not exist" },
-
-				{ testData.getProperty("test.pay.customer.uuid"), token, testData.getProperty("external.wallet.id"),
-						"A", testData.getProperty("type"), testData.getProperty("card.number"),
-						testData.getProperty("expiration.number"), testData.getProperty("zipcode"), true, 400, " " },
-
 				{ testData.getProperty("test.pay.customer.uuid"), token, testData.getProperty("external.wallet.id"),
 						testData.getProperty("consumer.name"), " ", testData.getProperty("card.number"),
 						testData.getProperty("expiration.number"), testData.getProperty("zipcode"), true, 400,
@@ -376,76 +377,172 @@ public class GatewayProxyTestData extends GatewayProxyBaseTest {
 
 	@DataProvider(name = "cards_details")
 	public Object[][] dpMethodCards() {
-		return new Object[][]{
-				{testData.getProperty("consumer.name"), testData.getProperty("type1"), testData.getProperty("card.number1"),
-						testData.getProperty("expiration.number1"), testData.getProperty("card.alias1"),
-						testData.getProperty("zipcode1"), false,
-						testData.getProperty("consumer.name"), testData.getProperty("type2"), testData.getProperty("card.number2"),
-						testData.getProperty("expiration.number2"), testData.getProperty("card.alias2"),
-						testData.getProperty("zipcode2"), false,
-						testData.getProperty("consumer.name"), testData.getProperty("type3"), testData.getProperty("card.number3"),
-						testData.getProperty("expiration.number3"), testData.getProperty("card.alias3"),
-						testData.getProperty("zipcode3"), false, 400, "At least one card has to be marked primary in a wallet"},
+		return new Object[][] {
+				{ testData.getProperty("consumer.name"), testData.getProperty("type1"),
+						testData.getProperty("card.number1"), testData.getProperty("expiration.number1"),
+						testData.getProperty("card.alias1"), testData.getProperty("zipcode1"), false,
+						testData.getProperty("consumer.name"), testData.getProperty("type2"),
+						testData.getProperty("card.number2"), testData.getProperty("expiration.number2"),
+						testData.getProperty("card.alias2"), testData.getProperty("zipcode2"), false,
+						testData.getProperty("consumer.name"), testData.getProperty("type3"),
+						testData.getProperty("card.number3"), testData.getProperty("expiration.number3"),
+						testData.getProperty("card.alias3"), testData.getProperty("zipcode3"), false, 400,
+						"One card has to be marked primary in a wallet" },
+				
+				  { testData.getProperty("consumer.name"), testData.getProperty("type1"),
+				  testData.getProperty("card.number1"),
+				  testData.getProperty("expiration.number1"),
+				  testData.getProperty("card.alias1"), testData.getProperty("zipcode1"), true,
+				  testData.getProperty("consumer.name"), testData.getProperty("type1"),
+				  testData.getProperty("card.number1"),
+				  testData.getProperty("expiration.number1"),
+				  testData.getProperty("card.alias2"), testData.getProperty("zipcode1"), false,
+				  testData.getProperty("consumer.name"), testData.getProperty("type3"),
+				  testData.getProperty("card.number3"),
+				  testData.getProperty("expiration.number3"),
+				  testData.getProperty("card.alias3"), testData.getProperty("zipcode3"), false,
+				  400, "Cannot save duplicate cards" },
+				  
+				  { testData.getProperty("consumer.name"), testData.getProperty("type1"),
+				  testData.getProperty("card.number1"), "1220",
+				  testData.getProperty("card.alias1"), testData.getProperty("zipcode1"), true,
+				  testData.getProperty("consumer.name"), testData.getProperty("type2"),
+				  testData.getProperty("card.number2"),
+				  testData.getProperty("expiration.number2"),
+				  testData.getProperty("card.alias2"), testData.getProperty("zipcode2"), false,
+				  testData.getProperty("consumer.name"), testData.getProperty("type3"),
+				  testData.getProperty("card.number3"),
+				  testData.getProperty("expiration.number3"),
+				  testData.getProperty("card.alias3"), testData.getProperty("zipcode3"), false,
+				  400, " Card expiry date should not be in the past" },
+				  
+				  { testData.getProperty("consumer.name"), testData.getProperty("type1"), " ",
+				  "1220", testData.getProperty("card.alias1"),
+				  testData.getProperty("zipcode1"), true,
+				  testData.getProperty("consumer.name"), testData.getProperty("type2"),
+				  testData.getProperty("card.number2"),
+				  testData.getProperty("expiration.number2"),
+				  testData.getProperty("card.alias2"), testData.getProperty("zipcode2"), false,
+				  testData.getProperty("consumer.name"), testData.getProperty("type3"),
+				  testData.getProperty("card.number3"),
+				  testData.getProperty("expiration.number3"),
+				  testData.getProperty("card.alias3"), testData.getProperty("zipcode3"), false,
+				  400, "Card number is mandatory" },
+				  
+				  { testData.getProperty("consumer.name"), testData.getProperty("type1"),
+				  testData.getProperty("card.number1"), " ",
+				  testData.getProperty("card.alias1"), testData.getProperty("zipcode1"), true,
+				  testData.getProperty("consumer.name"), testData.getProperty("type2"),
+				  testData.getProperty("card.number2"),
+				  testData.getProperty("expiration.number2"),
+				  testData.getProperty("card.alias2"), testData.getProperty("zipcode2"), false,
+				  testData.getProperty("consumer.name"), testData.getProperty("type3"),
+				  testData.getProperty("card.number3"),
+				  testData.getProperty("expiration.number3"),
+				  testData.getProperty("card.alias3"), testData.getProperty("zipcode3"), false,
+				  400, "Card expiry date is mandatory" },
+				  
+				  { testData.getProperty("consumer.name"), testData.getProperty("type1"),
+				  testData.getProperty("card.number1"),
+				  testData.getProperty("expiration.number1"),
+				  testData.getProperty("card.alias1"), " ", true,
+				  testData.getProperty("consumer.name"), testData.getProperty("type2"),
+				  testData.getProperty("card.number2"),
+				  testData.getProperty("expiration.number2"),
+				  testData.getProperty("card.alias2"), testData.getProperty("zipcode2"), false,
+				  testData.getProperty("consumer.name"), testData.getProperty("type3"),
+				  testData.getProperty("card.number3"),
+				  testData.getProperty("expiration.number3"),
+				  testData.getProperty("card.alias3"), testData.getProperty("zipcode3"), false,
+				  400, "Zip code is mandatory" },
+				  
+				  { testData.getProperty("consumer.name"), testData.getProperty("type1"),
+				  testData.getProperty("card.number1"),
+				  testData.getProperty("expiration.number1"),
+				  testData.getProperty("card.alias1"), testData.getProperty("zipcode1"), true,
+				  testData.getProperty("consumer.name"), testData.getProperty("type2"),
+				  testData.getProperty("card.number2"),
+				  testData.getProperty("expiration.number2"),
+				  testData.getProperty("card.alias2"), testData.getProperty("zipcode2"), true,
+				  testData.getProperty("consumer.name"), testData.getProperty("type3"),
+				  testData.getProperty("card.number3"),
+				  testData.getProperty("expiration.number3"),
+				  testData.getProperty("card.alias3"), testData.getProperty("zipcode3"), true,
+				  400, "In a wallet there can be only one primary card" }
+				  };
+	}
 
-				{testData.getProperty("consumer.name"), testData.getProperty("type1"), testData.getProperty("card.number1"),
-						testData.getProperty("expiration.number1"), testData.getProperty("card.alias1"),
-						testData.getProperty("zipcode1"), true,
-						testData.getProperty("consumer.name"), testData.getProperty("type1"), testData.getProperty("card.number1"),
-						testData.getProperty("expiration.number1"), testData.getProperty("card.alias2"),
-						testData.getProperty("zipcode1"), false,
-						testData.getProperty("consumer.name"), testData.getProperty("type3"), testData.getProperty("card.number3"),
-						testData.getProperty("expiration.number3"), testData.getProperty("card.alias3"),
-						testData.getProperty("zipcode3"), false, 400, "Cannot save duplicate cards"},
+	@DataProvider(name = "get_txns_for_receipt_data")
+	public Object[][] dpMethodForGetReceiptData() {
+		return new Object[][] {
+				{ testData.getProperty("test.pay.customer.uuid"), testData.getProperty("element.mmid"),
+						testData.getProperty("proxy.vcs.transactionId"), testData.getProperty("proxy.vcs.orderId"),
+						testData.getProperty("payment.source"), 200 },
+				{ testData.getProperty("test.pay.customer.uuid"), testData.getProperty("element.mmid"),
+						testData.getProperty("proxy.olbp.transactionId"), testData.getProperty("proxy.olbp.orderId"),
+						testData.getProperty("olbp.payment.type"), 200 },
+				{ testData.getProperty("test.pay.customer.uuid"), testData.getProperty("element.mmid"),
+						testData.getProperty("proxy.chbk.transactionId"), testData.getProperty("proxy.chbk.orderId"),
+						testData.getProperty("chbk.payment.type"), 200 },
+				{ testData.getProperty("test.pay.customer.uuid"), testData.getProperty("element.mmid"),
+						testData.getProperty("proxy.refund.transactionId"),
+						testData.getProperty("proxy.refund.orderId"), testData.getProperty("refund.payment.type"),
+						200 },
+				{ testData.getProperty("test.pay.customer.uuid"), testData.getProperty("element.mmid"),
+						testData.getProperty("proxy.void.transactionId"), testData.getProperty("proxy.void.orderId"),
+						testData.getProperty("void.payment.type"), 200 },
+				{ testData.getProperty("test.pay.customer.uuid"), testData.getProperty("element.mmid"),
+						testData.getProperty("proxy.void.transactionId"), testData.getProperty("proxy.void.orderId"),
+						testData.getProperty("void.payment.type"), 200 },
+				{ testData.getProperty("test.pay.customer.uuid"), testData.getProperty("element.mmid"),
+						testData.getProperty("proxy.void.transactionId"),
+						testData.getProperty("proxy.declined.orderId"), testData.getProperty("cpos.payment.type"),
+						200 },
+				{ testData.getProperty("test.pay.customer.uuid"), testData.getProperty("proxy.mmid"),
+						testData.getProperty("proxy.declined.transactionId"),
+						testData.getProperty("proxy.void.orderId"), testData.getProperty("void.payment.type"), 204 },
+				{ testData.getProperty("test.pay.customer.uuid"), testData.getProperty("element.mmid"), "12345678",
+						testData.getProperty("proxy.vcs.orderId"), testData.getProperty("payment.source"), 204 },
+				{ testData.getProperty("test.pay.customer.uuid"), testData.getProperty("element.mmid"),
+						testData.getProperty("proxy.vcs.transactionId"), "jvdgerebdsvbkdvbakd",
+						testData.getProperty("payment.source"), 204 }
 
-				{testData.getProperty("consumer.name"), testData.getProperty("type1"), testData.getProperty("card.number1"),
-						"1220", testData.getProperty("card.alias1"),
-						testData.getProperty("zipcode1"), true,
-						testData.getProperty("consumer.name"), testData.getProperty("type2"), testData.getProperty("card.number2"),
-						testData.getProperty("expiration.number2"), testData.getProperty("card.alias2"),
-						testData.getProperty("zipcode2"), false,
-						testData.getProperty("consumer.name"), testData.getProperty("type3"), testData.getProperty("card.number3"),
-						testData.getProperty("expiration.number3"), testData.getProperty("card.alias3"),
-						testData.getProperty("zipcode3"), false, 400, " Card expiry date should not be in the past"},
+		};
+	}
+	
+	@DataProvider(name = "empty_Wallet_Add_Cards")
+	public Object[][] dpEmptyWallet() {
+		return new Object[][] {
 
-				{testData.getProperty("consumer.name"), testData.getProperty("type1"), " ",
-						"1220", testData.getProperty("card.alias1"),
-						testData.getProperty("zipcode1"), true,
-						testData.getProperty("consumer.name"), testData.getProperty("type2"), testData.getProperty("card.number2"),
-						testData.getProperty("expiration.number2"), testData.getProperty("card.alias2"),
-						testData.getProperty("zipcode2"), false,
-						testData.getProperty("consumer.name"), testData.getProperty("type3"), testData.getProperty("card.number3"),
-						testData.getProperty("expiration.number3"), testData.getProperty("card.alias3"),
-						testData.getProperty("zipcode3"), false, 400, "Card number is mandatory"},
+//	Refernce to input data addded
+//{noOfCrads, noofCrdsToBeTrue, noOfCrdsToBeFalse,noOfCrdsToBeNull,noofcardstobeommited,noOfCardsTobeRandom ,statusCodeVerify,validationMessage},
 
-				{testData.getProperty("consumer.name"), testData.getProperty("type1"), testData.getProperty("card.number1"),
-						" ", testData.getProperty("card.alias1"),
-						testData.getProperty("zipcode1"), true,
-						testData.getProperty("consumer.name"), testData.getProperty("type2"), testData.getProperty("card.number2"),
-						testData.getProperty("expiration.number2"), testData.getProperty("card.alias2"),
-						testData.getProperty("zipcode2"), false,
-						testData.getProperty("consumer.name"), testData.getProperty("type3"), testData.getProperty("card.number3"),
-						testData.getProperty("expiration.number3"), testData.getProperty("card.alias3"),
-						testData.getProperty("zipcode3"), false, 400, "Card expiry date is mandatory"},
+				{ 1, 0, 1, 0, 0, 0, 200, "" },
 
-				{testData.getProperty("consumer.name"), testData.getProperty("type1"), testData.getProperty("card.number1"),
-						testData.getProperty("expiration.number1"), testData.getProperty("card.alias1"),
-						" ", true,
-						testData.getProperty("consumer.name"), testData.getProperty("type2"), testData.getProperty("card.number2"),
-						testData.getProperty("expiration.number2"), testData.getProperty("card.alias2"),
-						testData.getProperty("zipcode2"), false,
-						testData.getProperty("consumer.name"), testData.getProperty("type3"), testData.getProperty("card.number3"),
-						testData.getProperty("expiration.number3"), testData.getProperty("card.alias3"),
-						testData.getProperty("zipcode3"), false, 400, "Zip code is mandatory"},
+				{ 1, 0, 0, 1, 0, 0, 200, "" }, { 1, 0, 0, 0, 1, 0, 200, "" },
+				{ 1, 0, 0, 0, 0, 1, 500, "JSON parse error: Cannot deserialize value of type" },
 
-				{testData.getProperty("consumer.name"), testData.getProperty("type1"), testData.getProperty("card.number1"),
-						testData.getProperty("expiration.number1"), testData.getProperty("card.alias1"),
-						testData.getProperty("zipcode1"), true,
-						testData.getProperty("consumer.name"), testData.getProperty("type2"), testData.getProperty("card.number2"),
-						testData.getProperty("expiration.number2"), testData.getProperty("card.alias2"),
-						testData.getProperty("zipcode2"), true,
-						testData.getProperty("consumer.name"), testData.getProperty("type3"), testData.getProperty("card.number3"),
-						testData.getProperty("expiration.number3"), testData.getProperty("card.alias3"),
-						testData.getProperty("zipcode3"), true, 400, "In a wallet there can be only one primary card"}
+				{ 2, 1, 0, 1, 0, 0, 200, "" },
+
+				{ 2, 2, 0, 0, 0, 0, 400, "In a wallet there can be only one primary card" },
+				{ 2, 0, 2, 0, 0, 0, 400, "One card has to be marked primary in a wallet" },
+
+				{ 2, 1, 1, 0, 0, 0, 200, "" }, { 2, 1, 0, 1, 0, 0, 200, "" },
+
+				{ 2, 0, 0, 2, 0, 0, 400, "One card has to be marked primary in a wallet" },
+
+				{ 2, 1, 0, 0, 1, 0, 200, "" },
+
+				{ 2, 0, 0, 0, 2, 0, 400, "One card has to be marked primary in a wallet" },
+
+				{ 3, 0, 3, 0, 0, 0, 400, "One card has to be marked primary in a wallet" },
+
+				{ 3, 3, 0, 0, 0, 0, 400, "In a wallet there can be only one primary card" },
+
+				{ 3, 0, 0, 3, 0, 0, 400, "One card has to be marked primary in a wallet" },
+				{ 3, 0, 0, 0, 3, 0, 400, "One card has to be marked primary in a wallet" },
+				{ 3, 0, 0, 0, 0, 3, 500, "JSON parse error: Cannot deserialize value of type" },
+
 		};
 	}
 }

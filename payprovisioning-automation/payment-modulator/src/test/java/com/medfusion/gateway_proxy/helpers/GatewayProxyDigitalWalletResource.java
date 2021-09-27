@@ -4,9 +4,13 @@ package com.medfusion.gateway_proxy.helpers;
 import com.medfusion.common.utils.PropertyFileLoader;
 import com.medfusion.gateway_proxy.tests.GatewayProxyBaseTest;
 import com.medfusion.payment_modulator.pojos.PayloadDetails;
+
+import io.restassured.path.json.JsonPath;
 import io.restassured.response.Response;
 import java.io.IOException;
 import java.util.Map;
+
+import org.testng.Assert;
 
 import static io.restassured.RestAssured.given;
 
@@ -91,5 +95,45 @@ public class GatewayProxyDigitalWalletResource extends GatewayProxyBaseTest {
 				.post(testData.getProperty("test.pay.customer.uuid") + "/wallets").then().extract().response();
 
 		return response;
+	}
+	
+	public Response addCardsToWallet(String token, Map<String, Object> digitalWallet, String externalWalletId)
+			throws Exception {
+		testData = new PropertyFileLoader();
+
+		Response response = given().spec(requestSpec).auth().oauth2(token).body(digitalWallet).when()
+				.post(testData.getProperty("test.pay.customer.uuid") + "/wallets/" + externalWalletId + "/cards").then()
+				.extract().response();
+
+		return response;
+	}
+	public String getEmptyWallet(String token, PropertyFileLoader testData,
+			GatewayProxyDigitalWalletResource digitalWallet) throws Exception {
+
+		Response response = digitalWallet.createNewWallet(token, testData.getProperty("consumer.name"),
+				testData.getProperty("type"), testData.getProperty("card.to.delete"),
+				testData.getProperty("expiration.number"), testData.getProperty("card.alias"),
+				testData.getProperty("zipcode"), true);
+
+		JsonPath jsonPath = new JsonPath(response.asString());
+
+		Assert.assertTrue(!jsonPath.get("walletCards[0].externalCardId").toString().isEmpty());
+		String cardnumber = testData.getProperty("card.to.delete");
+		String aliasToVerify = testData.getProperty("type") + "-" + cardnumber.substring(cardnumber.length() - 4) + "-"
+				+ testData.getProperty("expiration.number");
+		Assert.assertEquals(aliasToVerify, jsonPath.get("walletCards[0].cardAlias"));
+
+		String externalWalletId = jsonPath.get("externalWalletId").toString();
+		String externalCardId = jsonPath.get("walletCards[0].externalCardId").toString();
+
+		Response deleteResponse = digitalWallet.deleteCardInWallet(token,
+				testData.getProperty("test.pay.customer.uuid"), externalWalletId, externalCardId);
+
+		Response responseGet = digitalWallet.getListOfCardsInWallet(token, externalWalletId);
+		JsonPath jsonPathGet = new JsonPath(responseGet.asString());
+		System.out.println(jsonPathGet.get("walletCards[]").toString());
+		Assert.assertEquals("[]", jsonPathGet.get("walletCards[]").toString());
+
+		return externalWalletId;
 	}
 }
