@@ -6,7 +6,7 @@ public class PayloadAdapterModulator {
 	public String openTokenPayload(String practiceid) {
 		String openToken = "{\r\n"
 				+ "    \"practiceId\": \""+practiceid+"\",\r\n"
-				+ "    \"authUserId\": \"mf:ad:username:nshirodkar\"\r\n"
+				+ "    \"authUserId\": \"mf:company:pssngpga16\"\r\n"
 				+ "}";
 		return openToken;
 	}

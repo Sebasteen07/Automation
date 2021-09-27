@@ -2,23 +2,13 @@
 package com.medfusion.product.object.maps.pss2.page.util;
 
 import static io.restassured.RestAssured.given;
-import static org.hamcrest.Matchers.equalTo;
-
 import java.io.IOException;
-import java.util.Map;
-
-import org.hamcrest.Matchers;
-import org.json.JSONArray;
-import org.json.JSONObject;
-import org.testng.Assert;
-
 import com.intuit.ifs.csscat.core.BaseTestNGWebDriver;
 
 import io.restassured.RestAssured;
 import io.restassured.builder.RequestSpecBuilder;
 import io.restassured.builder.ResponseSpecBuilder;
 import io.restassured.http.ContentType;
-import io.restassured.path.json.JsonPath;
 import io.restassured.response.Response;
 import io.restassured.specification.RequestSpecification;
 import io.restassured.specification.ResponseSpecification;
