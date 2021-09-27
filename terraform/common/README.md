@@ -41,5 +41,33 @@ The following resources are created by this configuration
 | sns_topic_arn | The SNS topic created by this module for sending notifications to AWS Chatbot |
 | chatbot_iam_role_arn | IAM role assumed by the AWS Chatbot channel |
 
-## Deployment diagram
+# Usage
+
+## Resource creation
+
+Clone this repository to your local using `git clone` command
+```
+git clone ssh://git@bitbucket.nextgen.com:7999/mfqa/qa-automation.git
+```
+Change path to `terraform/common`
+```
+cd terraform/common
+```
+Initialize Terraform
+```
+terraform init
+```
+Plan the Terraform changes
+```
+terraform plan -out=terraform.plan -no-color | tee terraform.plan.log
+```
+This would create 2 files
+  1. **terraform.plan** - binary file that would be used by Terraform to create resources in the next step
+  1. **terraform.plan.log** - Human-readable file that would list all resources that would be created/modified or deleted
+Review the `terraform.plan.log`for the changes and if they look good, move to the next step to apply those changes using the `terraform apply` command
+```
+terraform apply
+```
+Wait for the resource creation to complete.
+
 
