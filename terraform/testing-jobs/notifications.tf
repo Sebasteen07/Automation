@@ -9,7 +9,7 @@ resource "aws_codestarnotifications_notification_rule" "codepipeline_notificatio
     "codepipeline-pipeline-pipeline-execution-canceled"
   ]
 
-  name     = "dev-test-pipeline-notification"
+  name     = "${local.name}-notification"
   resource = aws_codepipeline.main.arn
 
   target {
