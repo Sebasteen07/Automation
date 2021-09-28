@@ -64,11 +64,10 @@ public class PatientTrustedRepresentativePage extends BasePageObject {
 		lblEmail.sendKeys(patient.getEmail());
 	}
 	
-	public PatientTrustedRepresentativePage selectCustomAccess() throws InterruptedException {
-		IHGUtil.waitForElement(driver, 10, rdoCustomAccess);
-		rdoCustomAccess.click();
-		return PageFactory.initElements(driver, PatientTrustedRepresentativePage.class);
-	}
+	public void selectCustomAccess() throws InterruptedException {
+	       IHGUtil.waitForElement(driver, 10, rdoCustomAccess);
+	       rdoCustomAccess.click();
+	 }
 
 
 	public void updateWithModuleNameAndAccess(String textModule, String manageAccessPref) {
