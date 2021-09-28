@@ -594,4 +594,15 @@ public class JalapenoHomePage extends JalapenoMenu {
 				return false;
 			}
 	   }
+	
+	public boolean isFormsSolutionDisplayed() throws TimeoutException {
+		log("Verify Forms");
+		try {
+			return forms.isDisplayed();
+		}
+		catch(NoSuchElementException e){
+			log("Forms Solution is not displayed");
+			return false;
+		}
+	}
 }

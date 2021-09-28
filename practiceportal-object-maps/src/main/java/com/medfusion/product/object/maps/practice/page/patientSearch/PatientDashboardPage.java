@@ -89,33 +89,6 @@ public class PatientDashboardPage extends BasePageObject {
 	@FindBy(linkText = "Send password reset")
 	private WebElement trPasswordResetLink;
 	
-	@FindBy(xpath = "//a[contains(text(),'Edit Access')]")
-	private WebElement editAccess;
-	
-	@FindBy(xpath = "//input[@id='custom_access']")
-	private WebElement customAccess;
-	
-	@FindBy(xpath = "//input[@name=\"accesslevel\" and @value=\"-1\"]")
-	private WebElement viewAndPerformActions;
-	
-	@FindBy(xpath = "//input[@name='patientMessaging' and @value = '0']")
-	private WebElement noAccess;
-	
-	@FindBy(xpath = "//input[@name='submit']")
-	private WebElement submit;
-	
-	@FindBy(how = How.XPATH, using = "(//input[@name='accesslevel'])[3]")
-    private WebElement rdoViewOnly;
-
-    @FindBy(how = How.XPATH, using = "//input[@id='custom_access']")
-    private WebElement rdoManageAccess;
-
-    @FindBy(how = How.XPATH, using = "(//input[@name='forms'])[2]")
-    private WebElement rdoFormsViewOnly;
-
-    @FindBy(how = How.XPATH, using = "(//input[@name='forms'])[3]")
-    private WebElement rdoFormsNoAccess;
-
 	private WebElement feedback;
 
 	public static String medfusionID = null;
@@ -321,52 +294,5 @@ public class PatientDashboardPage extends BasePageObject {
 		trPasswordResetLink.click();
 		return PageFactory.initElements(driver, PatientSearchPage.class);
 	}
-	
-public void grantRevokeAccess(String textModule, String manageAccessPref) throws InterruptedException {
-		
-	log("Edit Access");
-	assertTrue(IHGUtil.waitForElement(driver, 30, editAccess));
-	editAccess.click();
-	
-	log("Click on CustomAccess");
-	assertTrue(IHGUtil.waitForElement(driver, 30, customAccess));
-	customAccess.click();
-	
-    int i=0;
-    System.out.println(i);
-    if (manageAccessPref == "fullAccess") {
-        i=1;
-    }else if (manageAccessPref == "viewOnly") {
-        i=2;
-    }else if (manageAccessPref == "noAccess") {
-        i=3;
-    }
-    System.out.println(i);
-    String moduleName = "//td[p[contains(text()," + "'" + textModule + "')]]";
-    String preferenceValue = "/following-sibling::td["+i+"]/input";
-    String selectedPreference = moduleName + preferenceValue;
-    WebElement preference = driver.findElement(By.xpath(selectedPreference));
-    log("Printig the full xpath sending :" + preference);
-    if ((new IHGUtil(driver).exists(rdoManageAccess))||(new IHGUtil(driver).exists(rdoViewOnly))) {
-
-
-
-        log("Manage Access Per Category is present");
-        if (manageAccessPref == "fullAccess") {
-            new WebDriverWait(driver, 10).until(ExpectedConditions.elementToBeClickable(preference));
-            preference.click();
-        } else if (manageAccessPref == "viewOnly") {
-            new WebDriverWait(driver, 10).until(ExpectedConditions.elementToBeClickable(preference));
-            preference.click();
-        } else if (manageAccessPref == "noAccess") {
-            new WebDriverWait(driver, 10).until(ExpectedConditions.elementToBeClickable(preference));
-            preference.click();
-        }
-
-
-
-    }
-    submit.click();
-}
 }
 
