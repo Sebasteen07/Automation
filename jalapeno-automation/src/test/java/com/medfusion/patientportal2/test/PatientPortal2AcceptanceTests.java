@@ -5332,7 +5332,7 @@ public class PatientPortal2AcceptanceTests extends BaseTestNGWebDriver {
 		assertFalse(homePage.isFormsSolutionDisplayed());
 	}
         @Test(enabled = true, groups = { "acceptance-linkedaccounts" }, retryAnalyzer = RetryAnalyzer.class)
-        public void testLATrustedRepresentativeAcessForMessagesFromPractice() throws Exception {
+        public void testLATrustedRepresentativeAcessForMessagesFromPatient() throws Exception {
     		logStep("Createing a Gurdian Patient");
     		createCommonPatient();
     		Patient trustedPatient = PatientFactory.createJalapenoPatient(PortalUtil2.generateUniqueUsername(testData.getProperty("user.id"), testData), testData);
