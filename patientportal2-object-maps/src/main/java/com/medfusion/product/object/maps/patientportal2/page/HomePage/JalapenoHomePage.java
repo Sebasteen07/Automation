@@ -583,6 +583,7 @@ public class JalapenoHomePage extends JalapenoMenu {
 			return false;
 		}
 	}
+
 	
 	public boolean isFormsSolutionDisplayed() throws TimeoutException {
 		log("Verify Forms");
@@ -591,7 +592,18 @@ public class JalapenoHomePage extends JalapenoMenu {
 		}
 		catch(NoSuchElementException e){
 			log("Forms Solution is not displayed");
+
 			return false;
 		}
 	}
-}
+   public boolean isMessageSolutionDisplayed() throws TimeoutException {
+	log("Verify Message solution No Access for Trusted Rep");
+	try {
+		return !messagesSideBar.isDisplayed();
+	}
+	catch(NoSuchElementException e){
+		log("Verify Message solution No Access for Trusted Rep shoud not display");
+		return true;
+     }
+	}
+   }

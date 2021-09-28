@@ -111,6 +111,9 @@ public class JalapenoMessagesPage extends JalapenoMenu {
 	
 	@FindBy(how=How.XPATH, using="//*[@class='attachments']/child::*/a")
 	private WebElement messageBodyAttachmentlink;
+	
+	@FindBy(how = How.ID, using = "askatitle_link") 
+	private WebElement askAQuestionButton;
 
 	public JalapenoMessagesPage(WebDriver driver) {
 		super(driver);
@@ -476,5 +479,13 @@ public class JalapenoMessagesPage extends JalapenoMenu {
 			log(ex.getMessage());
 		}
 		return true;
+	}
+	public boolean isAskaQuestionButtonDisplayed() {
+		log("Verify Aska Question button should not display for No Access role");
+		try {
+			return !askAQuestionButton.isDisplayed();
+		}catch(NoSuchElementException e) {
+			return false;
+		}
 	}
 }
