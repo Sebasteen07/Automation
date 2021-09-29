@@ -12,7 +12,7 @@ import io.cucumber.junit.CucumberOptions;
 				"json:target/cucumber-reports/cucumber.json", "html:target/cucumber-reports/cucumber.html",
 				"junit:target/cucumber-reports/cucumber.xml", "pretty:target/cucumber-reports/cucumber-pretty.txt",
 				"usage:target/cucumber-reports/cucumber-usage.json",
-				"rerun:target/cucumber-reports/rerun.txt" }, tags = "@Regression1", dryRun = false, monochrome = true)
+				"rerun:target/cucumber-reports/rerun.txt" }, tags = "@Regression", dryRun = false, monochrome = true)
 public class TestRunner {
 
 }
