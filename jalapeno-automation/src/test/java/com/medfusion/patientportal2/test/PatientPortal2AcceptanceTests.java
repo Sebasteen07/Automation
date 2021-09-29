@@ -85,6 +85,7 @@ import com.medfusion.product.object.maps.practice.page.askstaff.AskAStaffQuestio
 import com.medfusion.product.object.maps.practice.page.askstaff.AskAStaffQuestionDetailStep4Page;
 import com.medfusion.product.object.maps.practice.page.askstaff.AskAStaffSearchPage;
 import com.medfusion.product.object.maps.practice.page.familyManagement.AgeOutReportPage;
+import com.medfusion.product.object.maps.practice.page.familyManagement.PatientTrustedRepresentativePage;
 import com.medfusion.product.object.maps.practice.page.onlinebillpay.OnlineBillPaySearchPage;
 import com.medfusion.product.object.maps.practice.page.patientMessaging.PatientMessagingPage;
 import com.medfusion.product.object.maps.practice.page.patientSearch.PatientDashboardPage;
@@ -5256,4 +5257,290 @@ public class PatientPortal2AcceptanceTests extends BaseTestNGWebDriver {
 		assertTrue(myDevicesTab.isRemoveDeviceDisplayed());
 				
     }
+    @Test(enabled = true, groups = { "acceptance-linkedaccounts" }, retryAnalyzer = RetryAnalyzer.class)
+	public void testLATrustedRepresentativeAcessForMessagesFromPracticePortal() throws Exception {
+    	
+    	PracticeLoginPage practiceLogin;
+    	PracticeHomePage practiceHome;
+    	JalapenoLoginPage loginPage;
+    	JalapenoHomePage homePage;
+    	JalapenoMessagesPage messagesPage;
+    	PatientSearchPage pPatientSearchPage;
+    	PatientDashboardPage pPatientDashboardPage;
+		PatientTrustedRepresentativePage patientInviteTrustedRepresentative;
+		
+		logStep("Login to Practice Portal");
+		practiceLogin = new PracticeLoginPage(driver, testData.getPortalUrl());
+		practiceHome = practiceLogin.login(testData.getDoctorLogin(), testData.getDoctorPassword());
+
+		logStep("Click on Patient Search Link");
+		pPatientSearchPage = practiceHome.clickPatientSearchLink();
+
+		logStep("Set Patient Search Fields");
+		pPatientSearchPage.searchForPatientInPatientSearch(testData.getProperty("trusted.rep.care.management.first.name"),
+				testData.getProperty("trusted.rep.care.management.last.name"));
+		pPatientDashboardPage = pPatientSearchPage.clickOnPatient(
+				testData.getProperty("trusted.rep.care.management.first.name"),testData.getProperty("trusted.rep.care.management.last.name"));
+		
+		logStep("Set Patient Search Fields");
+		patientInviteTrustedRepresentative=pPatientSearchPage.editTrustedRepresentativeAccess();
+		patientInviteTrustedRepresentative.selectCustomAccess();
+		patientInviteTrustedRepresentative.updateWithModuleNameAndAccess("Messages","noAccess");
+		
+		logStep("Login to patient portal");
+		loginPage = new JalapenoLoginPage(driver, testData.getUrl());
+		homePage = loginPage.login(testData.getProperty("patient.login"), testData.getProperty("patient.password"));
+		
+		
+		logStep("Go to Messages and ASKA Question Not displayed when No Access is granted"); 
+		assertFalse(homePage.isMessagesDisplayed(), "Messages Not Accessible");
+		homePage.clickOnLogout();
+		
+		logStep("Login to Practice Portal");
+		practiceLogin = new PracticeLoginPage(driver, testData.getPortalUrl());
+		practiceLogin.login(testData.getDoctorLogin(), testData.getDoctorPassword());
+
+		logStep("Click on Patient Search Link");
+		practiceHome.clickPatientSearchLink();
+
+		logStep("Set Patient Search Fields");
+		pPatientSearchPage.searchForPatientInPatientSearch(testData.getProperty("trusted.rep.care.management.first.name"),
+				testData.getProperty("trusted.rep.care.management.last.name"));
+		pPatientSearchPage.clickOnPatient(
+				testData.getProperty("trusted.rep.care.management.first.name"),testData.getProperty("trusted.rep.care.management.last.name"));
+		
+		logStep("Set Patient Search Fields");
+		patientInviteTrustedRepresentative=pPatientSearchPage.editTrustedRepresentativeAccess();
+		patientInviteTrustedRepresentative.updateWithModuleNameAndAccess("Messages","viewOnly");
+		
+		logStep("Login to patient portal");
+		loginPage = new JalapenoLoginPage(driver, testData.getUrl());
+		loginPage.login(testData.getProperty("patient.login"), testData.getProperty("patient.password"));
+		
+		
+		logStep("Go to messages");
+		messagesPage = homePage.showMessages(driver);
+		assertTrue(messagesPage.returnSubjectMessage().length() > 0);
+		
+		logStep("Verify Aska question button should not display for view only access");
+        assertFalse(messagesPage.isAskaQuestionButtonDisplayed());
+		homePage.clickOnLogout();
+ }
+
+	public void testLATrustedRepresentativeAcessForFormsFromPractice() throws Exception {
+		patient = null;
+		JalapenoLoginPage loginPage;
+		JalapenoHomePage homePage;
+		PracticeLoginPage practiceLogin;
+		PracticeHomePage practiceHome;
+		PatientSearchPage patientSearchPage;
+		PatientTrustedRepresentativePage patientInviteTrustedRepresentative;
+		createPatient();
+		Patient trustedPatient = PatientFactory.createJalapenoPatient(
+				PortalUtil2.generateUniqueUsername(testData.getProperty("user.id"), testData), testData);
+		logStep("Load login page");
+		loginPage = new JalapenoLoginPage(driver, testData.getUrl());
+		homePage = loginPage.login(patient.getUsername(), patient.getPassword());
+
+		logStep("Login to Practice Portal");
+		practiceLogin = new PracticeLoginPage(driver, testData.getPortalUrl());
+		practiceHome = practiceLogin.login(testData.getDoctorLogin(), testData.getDoctorPassword());
+
+		logStep("Click on Search");
+		patientSearchPage = practiceHome.clickPatientSearchLink();
+		patientSearchPage.searchForPatientInPatientSearch(patient.getEmail());
+		patientSearchPage.clickOnPatient(patient.getFirstName(), patient.getLastName());
+		logStep("Invite Trusted Representative With View Only Access");
+		patientInviteTrustedRepresentative=patientSearchPage.clickInviteTrustedRepresentative();
+		patientInviteTrustedRepresentative.inviteTrustedRepresentative(trustedPatient,"Forms","viewOnly");
+		assertTrue(patientSearchPage.wasInviteTrustedRepresentativeSuccessful());
+
+
+		logStep("Waiting for invitation email");
+		String patientUrl = new Mailinator().getLinkFromEmail(trustedPatient.getEmail(),
+				INVITE_EMAIL_SUBJECT_REPRESENTATIVE, INVITE_EMAIL_BUTTON_TEXT, 15);
+		assertNotNull(patientUrl, "Error: Activation patients link not found.");
+
+		logStep("Redirecting to verification page");
+		PatientVerificationPage patientVerificationPage = new PatientVerificationPage(driver, patientUrl);
+
+		logStep("Identify patient");
+		AuthUserLinkAccountPage linkAccountPage = patientVerificationPage.fillDependentInfoAndContinue(
+				patient.getZipCode(), patient.getDOBMonth(), patient.getDOBDay(), patient.getDOBYear());
+
+		logStep("Continue registration - check dependent info and fill trusted representative name");
+		linkAccountPage.checkDependentInfo(patient.getFirstName(), patient.getLastName(), trustedPatient.getEmail());
+		SecurityDetailsPage accountDetailsPage = linkAccountPage
+				.continueToCreateGuardianOnly(trustedPatient.getFirstName(), trustedPatient.getLastName(), "Child");
+
+		logStep("Continue registration - create dependents credentials and continue to Home page");
+		accountDetailsPage.fillAccountDetailsAndContinue(trustedPatient.getUsername(), trustedPatient.getPassword(),
+				testData.getSecretQuestion(), testData.getSecretAnswer(), testData.getPhoneNumber());
+
+		assertTrue(homePage.assessFamilyAccountElements(false));
+
+		logStep("Verify Forms Solutions");
+		assertTrue(homePage.isFormsSolutionDisplayed());
+		homePage.clickOnHealthForms();
+
+		logStep("Login to Practice Portal");
+		practiceLogin = new PracticeLoginPage(driver, testData.getPortalUrl());
+		practiceHome = practiceLogin.login(testData.getDoctorLogin(), testData.getDoctorPassword());
+
+		logStep("Click on Search");
+		patientSearchPage = practiceHome.clickPatientSearchLink();
+		patientSearchPage.searchForPatientInPatientSearch(patient.getEmail());
+		patientSearchPage.clickOnPatient(patient.getFirstName(), patient.getLastName());
+		logStep("Forms: Update Trusted Representative Access with No Access");
+		patientInviteTrustedRepresentative=patientSearchPage.editTrustedRepresentativeAccess();
+		patientInviteTrustedRepresentative.updateWithModuleNameAndAccess("Forms", "noAccess");
+		
+		logStep("Login as Trusted Representative and verify Forms Solution");
+		loginPage = new JalapenoLoginPage(driver, testData.getUrl());
+		homePage = loginPage.login(trustedPatient.getUsername(), trustedPatient.getPassword());
+		assertFalse(homePage.isFormsSolutionDisplayed());
+	}
+        @Test(enabled = true, groups = { "acceptance-linkedaccounts" }, retryAnalyzer = RetryAnalyzer.class)
+        public void testLATrustedRepresentativeAcessForMessagesFromPatient() throws Exception {
+    		logStep("Createing a Gurdian Patient");
+    		createCommonPatient();
+    		Patient trustedPatient = PatientFactory.createJalapenoPatient(PortalUtil2.generateUniqueUsername(testData.getProperty("user.id"), testData), testData);
+    		
+    		logStep("Load login page");
+    		JalapenoLoginPage loginPage = new JalapenoLoginPage(driver, testData.getUrl());
+    		JalapenoHomePage homePage = loginPage.login(patient.getUsername(), patient.getPassword());
+            JalapenoAccountPage accountPage = homePage.clickOnAccount();
+
+    	    logStep("Invite Trusted Representative with no access to message solution");
+            accountPage.clickInviteButton();
+            accountPage.givingPermissionWithModuleName("Messages","noAccess");
+            accountPage.inviteTrustedRepresentativeWithPermission(trustedPatient);
+            
+    		logStep("Waiting for invitation email");
+    		String patientUrl = new Mailinator().getLinkFromEmail(trustedPatient.getEmail(),
+    				INVITE_EMAIL_SUBJECT_REPRESENTATIVE, INVITE_EMAIL_BUTTON_TEXT, 15);
+    		assertNotNull(patientUrl, "Error: Activation patients link not found.");
+
+    		logStep("Redirecting to verification page");
+    		PatientVerificationPage patientVerificationPage = new PatientVerificationPage(driver, patientUrl);
+
+    		logStep("Identify patient");
+    		AuthUserLinkAccountPage linkAccountPage = patientVerificationPage.fillDependentInfoAndContinue(
+    				patient.getZipCode(), patient.getDOBMonth(), patient.getDOBDay(), patient.getDOBYear());
+
+    		logStep("Continue registration - check dependent info and fill trusted representative name");
+    		linkAccountPage.checkDependentInfo(patient.getFirstName(), patient.getLastName(), trustedPatient.getEmail());
+    		SecurityDetailsPage accountDetailsPage = linkAccountPage
+    				.continueToCreateGuardianOnly(trustedPatient.getFirstName(), trustedPatient.getLastName(), "Child");
+
+    		logStep("Continue registration - create dependents credentials and continue to Home page");
+    		accountDetailsPage.fillAccountDetailsAndContinue(trustedPatient.getUsername(), trustedPatient.getPassword(),
+    				testData.getSecretQuestion(), testData.getSecretAnswer(), testData.getPhoneNumber());
+
+    		assertTrue(homePage.assessFamilyAccountElements(false));
+
+    		logStep("Log out from patient portal");
+    		loginPage = homePage.clickOnLogout();
+
+    		logStep("Log in and log out as Trusted Representative");
+    		homePage = loginPage.login(trustedPatient.getUsername(), trustedPatient.getPassword());
+    		assertTrue(homePage.assessFamilyAccountElements(false));
+    		
+    		log("Verify Message solution Not display for Trusted Rep");
+    		assertTrue(homePage.isMessageSolutionDisplayed());
+    		homePage.clickOnLogout();
+            
+    		logStep("Log in to a Gurdian user role and change the permission");
+    		homePage = loginPage.login(patient.getUsername(), patient.getPassword());
+    		accountPage = homePage.clickOnAccount();
+    		homePage.editTrustedRepAccount();
+    		accountPage.givingPermissionWithModuleName("Messages","viewOnly");
+    		accountPage.clickOnSaveMyChangesButton();
+    		
+    		logStep("Verify the success message after changeing the user permission to view only");
+    		homePage.clickOnLogout();
+    		
+    		logStep("Log in and log out as Trusted Representative and verify the view only access permission");
+    		homePage = loginPage.login(trustedPatient.getUsername(), trustedPatient.getPassword());
+    		assertTrue(homePage.assessFamilyAccountElements(false));
+    		
+    		logStep("Click on messages solution");
+    		JalapenoMessagesPage messagesPage = homePage.showMessages(driver);
+            assertTrue(messagesPage.returnSubjectMessage().length() > 0);
+            
+            logStep("Verify Aska question button should not display for view only access");
+            assertFalse(messagesPage.isAskaQuestionButtonDisplayed());
+    		homePage.clickOnLogout();
+    		
+       	    }
+        
+        @Test(enabled = true, groups = { "acceptance-linkedaccounts" }, retryAnalyzer = RetryAnalyzer.class)
+        public void testLATrustedRepresentativeAcessForFormsFromPatient() throws Exception {
+        	logStep("Creating a Gurdian Patient");
+        	createCommonPatient();
+        	Patient trustedPatient = PatientFactory.createJalapenoPatient(PortalUtil2.generateUniqueUsername(testData.getProperty("user.id"), testData), testData);
+
+        	logStep("Load login page");
+        	JalapenoLoginPage loginPage = new JalapenoLoginPage(driver, testData.getUrl());
+        	JalapenoHomePage homePage = loginPage.login(patient.getUsername(), patient.getPassword());
+        	JalapenoAccountPage accountPage = homePage.clickOnAccount();
+
+        	logStep("Invite Trusted Representative with no access to message solution");
+        	accountPage.clickInviteButton();
+        	accountPage.givingPermissionWithModuleName("Forms","noAccess");
+        	accountPage.inviteTrustedRepresentativeWithPermission(trustedPatient);
+
+        	logStep("Waiting for invitation email");
+        	String patientUrl = new Mailinator().getLinkFromEmail(trustedPatient.getEmail(),
+        			INVITE_EMAIL_SUBJECT_REPRESENTATIVE, INVITE_EMAIL_BUTTON_TEXT, 15);
+        	assertNotNull(patientUrl, "Error: Activation patients link not found.");
+
+        	logStep("Redirecting to verification page");
+        	PatientVerificationPage patientVerificationPage = new PatientVerificationPage(driver, patientUrl);
+
+        	logStep("Identify patient");
+        	AuthUserLinkAccountPage linkAccountPage = patientVerificationPage.fillDependentInfoAndContinue(
+        			patient.getZipCode(), patient.getDOBMonth(), patient.getDOBDay(), patient.getDOBYear());
+
+        	logStep("Continue registration - check dependent info and fill trusted representative name");
+        	linkAccountPage.checkDependentInfo(patient.getFirstName(), patient.getLastName(), trustedPatient.getEmail());
+        	SecurityDetailsPage accountDetailsPage = linkAccountPage
+        			.continueToCreateGuardianOnly(trustedPatient.getFirstName(), trustedPatient.getLastName(), "Child");
+
+        	logStep("Continue registration - create dependents credentials and continue to Home page");
+        	accountDetailsPage.fillAccountDetailsAndContinue(trustedPatient.getUsername(), trustedPatient.getPassword(),
+        			testData.getSecretQuestion(), testData.getSecretAnswer(), testData.getPhoneNumber());
+        	assertTrue(homePage.assessFamilyAccountElements(false));
+
+        	logStep("Log out from patient portal");
+        	loginPage = homePage.clickOnLogout();
+
+        	logStep("Log in and log out as Trusted Representative");
+        	homePage = loginPage.login(trustedPatient.getUsername(), trustedPatient.getPassword());
+        	assertTrue(homePage.assessFamilyAccountElements(false));
+
+        	log("Verify Forms solution Not display for Trusted Rep");
+        	assertFalse(homePage.isFormsSolutionDisplayed());
+        	homePage.clickOnLogout();
+
+        	logStep("Log in to a Gurdian user role and change the permission");
+        	homePage = loginPage.login(patient.getUsername(), patient.getPassword());
+        	accountPage = homePage.clickOnAccount();
+        	homePage.editTrustedRepAccount();
+        	accountPage.givingPermissionWithModuleName("Forms","viewOnly");
+        	accountPage.clickOnSaveMyChangesButton();
+
+        	logStep("Verify the success message after changeing the user permission to view only");
+        	homePage.clickOnLogout();
+
+        	logStep("Login as Trusted Representative and verify the view only access permission");
+        	homePage = loginPage.login(trustedPatient.getUsername(), trustedPatient.getPassword());
+        	assertTrue(homePage.assessFamilyAccountElements(false));
+
+        	logStep("Click on forms solution");
+        	assertTrue(homePage.isFormsSolutionDisplayed());
+        	homePage.clickOnHealthForms();
+
+        }
+
 }
