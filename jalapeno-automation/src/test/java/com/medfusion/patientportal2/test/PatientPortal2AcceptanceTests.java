@@ -5259,36 +5259,44 @@ public class PatientPortal2AcceptanceTests extends BaseTestNGWebDriver {
     }
     
     @Test(enabled = true, groups = { "acceptance-linkedaccounts" }, retryAnalyzer = RetryAnalyzer.class)
-	public void testCareManagerWithMultiplePermissions() throws Exception {
+	public void testLATrustedRepresentativeAcessForMessagesFromPracticePortal() throws Exception {
     	
+    	PracticeLoginPage practiceLogin;
+    	PracticeHomePage practiceHome;
+    	JalapenoLoginPage loginPage;
+    	JalapenoHomePage homePage;
+    	PatientSearchPage pPatientSearchPage;
+    	PatientDashboardPage pPatientDashboardPage;
 		PatientTrustedRepresentativePage patientInviteTrustedRepresentative;
+		
 		logStep("Login to Practice Portal");
-		PracticeLoginPage practiceLogin = new PracticeLoginPage(driver, testData.getPortalUrl());
-		PracticeHomePage practiceHome = practiceLogin.login(testData.getDoctorLogin(), testData.getDoctorPassword());
+		practiceLogin = new PracticeLoginPage(driver, testData.getPortalUrl());
+		practiceHome = practiceLogin.login(testData.getDoctorLogin(), testData.getDoctorPassword());
 
 		logStep("Click on Patient Search Link");
-		PatientSearchPage pPatientSearchPage = practiceHome.clickPatientSearchLink();
+		pPatientSearchPage = practiceHome.clickPatientSearchLink();
 
 		logStep("Set Patient Search Fields");
 		pPatientSearchPage.searchForPatientInPatientSearch(testData.getProperty("trusted.rep.care.management.first.name"),
 				testData.getProperty("trusted.rep.care.management.last.name"));
-		PatientDashboardPage pPatientDashboardPage = pPatientSearchPage.clickOnPatient(
+		pPatientDashboardPage = pPatientSearchPage.clickOnPatient(
 				testData.getProperty("trusted.rep.care.management.first.name"),testData.getProperty("trusted.rep.care.management.last.name"));
 		
 		logStep("Set Patient Search Fields");
 		patientInviteTrustedRepresentative=pPatientSearchPage.editTrustedRepresentativeAccess();
 		patientInviteTrustedRepresentative.selectCustomAccess();
 		patientInviteTrustedRepresentative.updateWithModuleNameAndAccess("Messages","noAccess");
-		logStep("Login to patient portal");
-		JalapenoLoginPage loginPage = new JalapenoLoginPage(driver, testData.getUrl());
-		JalapenoHomePage homePage = loginPage.login(testData.getProperty("patient.login"), testData.getProperty("patient.password"));
 		
-		logStep("Go to messages"); 
-		assertFalse(homePage.isMessagesDisplayed(), "Messages Not Accessible"); 
+		logStep("Login to patient portal");
+		loginPage = new JalapenoLoginPage(driver, testData.getUrl());
+		homePage = loginPage.login(testData.getProperty("patient.login"), testData.getProperty("patient.password"));
+		
+		logStep("Go to Messages and ASKA Question Not displayed when No Access is granted"); 
+		assertFalse(homePage.isMessagesDisplayed(), "Messages Not Accessible");
 		homePage.clickOnLogout();
 		
 		logStep("Login to Practice Portal");
-		PracticeLoginPage practiceLogin1 = new PracticeLoginPage(driver, testData.getPortalUrl());
+		practiceLogin = new PracticeLoginPage(driver, testData.getPortalUrl());
 		practiceLogin.login(testData.getDoctorLogin(), testData.getDoctorPassword());
 
 		logStep("Click on Patient Search Link");
@@ -5303,8 +5311,9 @@ public class PatientPortal2AcceptanceTests extends BaseTestNGWebDriver {
 		logStep("Set Patient Search Fields");
 		patientInviteTrustedRepresentative=pPatientSearchPage.editTrustedRepresentativeAccess();
 		patientInviteTrustedRepresentative.updateWithModuleNameAndAccess("Messages","fullAccess");
+		
 		logStep("Login to patient portal");
-		JalapenoLoginPage loginPage1 = new JalapenoLoginPage(driver, testData.getUrl());
+		loginPage = new JalapenoLoginPage(driver, testData.getUrl());
 		loginPage.login(testData.getProperty("patient.login"), testData.getProperty("patient.password"));
 		
 		logStep("Go to messages"); 
