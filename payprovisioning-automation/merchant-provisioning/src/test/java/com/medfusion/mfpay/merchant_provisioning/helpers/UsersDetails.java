@@ -51,5 +51,10 @@ public class UsersDetails extends BaseRest {
 				body(body).when().post(getusers).then().extract().response();
 	}
 	
+	public Response getMerchantUserRoles(String getusers) {
+		return given().spec(requestSpec).when().get(getusers).then().extract().response();
+		
+	}
+	
 
 }
