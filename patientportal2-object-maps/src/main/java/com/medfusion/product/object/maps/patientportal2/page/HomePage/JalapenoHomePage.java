@@ -585,6 +585,17 @@ public class JalapenoHomePage extends JalapenoMenu {
 	}
 
 	
+	public boolean isMessagesDisplayed() {
+		   log("Verify if Messages is displayed");
+			try {
+				return messages.isDisplayed();
+			}
+			catch(NoSuchElementException e){
+				log("Messages not displayed");
+				return false;
+			}
+	   }
+	
 	public boolean isFormsSolutionDisplayed() throws TimeoutException {
 		log("Verify Forms");
 		try {

@@ -5258,6 +5258,75 @@ public class PatientPortal2AcceptanceTests extends BaseTestNGWebDriver {
 				
     }
     @Test(enabled = true, groups = { "acceptance-linkedaccounts" }, retryAnalyzer = RetryAnalyzer.class)
+	public void testLATrustedRepresentativeAcessForMessagesFromPracticePortal() throws Exception {
+    	
+    	PracticeLoginPage practiceLogin;
+    	PracticeHomePage practiceHome;
+    	JalapenoLoginPage loginPage;
+    	JalapenoHomePage homePage;
+    	JalapenoMessagesPage messagesPage;
+    	PatientSearchPage pPatientSearchPage;
+    	PatientDashboardPage pPatientDashboardPage;
+		PatientTrustedRepresentativePage patientInviteTrustedRepresentative;
+		
+		logStep("Login to Practice Portal");
+		practiceLogin = new PracticeLoginPage(driver, testData.getPortalUrl());
+		practiceHome = practiceLogin.login(testData.getDoctorLogin(), testData.getDoctorPassword());
+
+		logStep("Click on Patient Search Link");
+		pPatientSearchPage = practiceHome.clickPatientSearchLink();
+
+		logStep("Set Patient Search Fields");
+		pPatientSearchPage.searchForPatientInPatientSearch(testData.getProperty("trusted.rep.care.management.first.name"),
+				testData.getProperty("trusted.rep.care.management.last.name"));
+		pPatientDashboardPage = pPatientSearchPage.clickOnPatient(
+				testData.getProperty("trusted.rep.care.management.first.name"),testData.getProperty("trusted.rep.care.management.last.name"));
+		
+		logStep("Set Patient Search Fields");
+		patientInviteTrustedRepresentative=pPatientSearchPage.editTrustedRepresentativeAccess();
+		patientInviteTrustedRepresentative.selectCustomAccess();
+		patientInviteTrustedRepresentative.updateWithModuleNameAndAccess("Messages","noAccess");
+		
+		logStep("Login to patient portal");
+		loginPage = new JalapenoLoginPage(driver, testData.getUrl());
+		homePage = loginPage.login(testData.getProperty("patient.login"), testData.getProperty("patient.password"));
+		
+		
+		logStep("Go to Messages and ASKA Question Not displayed when No Access is granted"); 
+		assertFalse(homePage.isMessagesDisplayed(), "Messages Not Accessible");
+		homePage.clickOnLogout();
+		
+		logStep("Login to Practice Portal");
+		practiceLogin = new PracticeLoginPage(driver, testData.getPortalUrl());
+		practiceLogin.login(testData.getDoctorLogin(), testData.getDoctorPassword());
+
+		logStep("Click on Patient Search Link");
+		practiceHome.clickPatientSearchLink();
+
+		logStep("Set Patient Search Fields");
+		pPatientSearchPage.searchForPatientInPatientSearch(testData.getProperty("trusted.rep.care.management.first.name"),
+				testData.getProperty("trusted.rep.care.management.last.name"));
+		pPatientSearchPage.clickOnPatient(
+				testData.getProperty("trusted.rep.care.management.first.name"),testData.getProperty("trusted.rep.care.management.last.name"));
+		
+		logStep("Set Patient Search Fields");
+		patientInviteTrustedRepresentative=pPatientSearchPage.editTrustedRepresentativeAccess();
+		patientInviteTrustedRepresentative.updateWithModuleNameAndAccess("Messages","viewOnly");
+		
+		logStep("Login to patient portal");
+		loginPage = new JalapenoLoginPage(driver, testData.getUrl());
+		loginPage.login(testData.getProperty("patient.login"), testData.getProperty("patient.password"));
+		
+		
+		logStep("Go to messages");
+		messagesPage = homePage.showMessages(driver);
+		assertTrue(messagesPage.returnSubjectMessage().length() > 0);
+		
+		logStep("Verify Aska question button should not display for view only access");
+        assertFalse(messagesPage.isAskaQuestionButtonDisplayed());
+		homePage.clickOnLogout();
+ }
+
 	public void testLATrustedRepresentativeAcessForFormsFromPractice() throws Exception {
 		patient = null;
 		JalapenoLoginPage loginPage;
