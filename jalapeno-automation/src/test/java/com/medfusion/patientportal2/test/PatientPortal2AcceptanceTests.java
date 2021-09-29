@@ -5264,6 +5264,7 @@ public class PatientPortal2AcceptanceTests extends BaseTestNGWebDriver {
     	PracticeHomePage practiceHome;
     	JalapenoLoginPage loginPage;
     	JalapenoHomePage homePage;
+    	JalapenoMessagesPage messagesPage;
     	PatientSearchPage pPatientSearchPage;
     	PatientDashboardPage pPatientDashboardPage;
 		PatientTrustedRepresentativePage patientInviteTrustedRepresentative;
@@ -5290,6 +5291,7 @@ public class PatientPortal2AcceptanceTests extends BaseTestNGWebDriver {
 		loginPage = new JalapenoLoginPage(driver, testData.getUrl());
 		homePage = loginPage.login(testData.getProperty("patient.login"), testData.getProperty("patient.password"));
 		
+		
 		logStep("Go to Messages and ASKA Question Not displayed when No Access is granted"); 
 		assertFalse(homePage.isMessagesDisplayed(), "Messages Not Accessible");
 		homePage.clickOnLogout();
@@ -5309,14 +5311,19 @@ public class PatientPortal2AcceptanceTests extends BaseTestNGWebDriver {
 		
 		logStep("Set Patient Search Fields");
 		patientInviteTrustedRepresentative=pPatientSearchPage.editTrustedRepresentativeAccess();
-		patientInviteTrustedRepresentative.updateWithModuleNameAndAccess("Messages","fullAccess");
+		patientInviteTrustedRepresentative.updateWithModuleNameAndAccess("Messages","viewOnly");
 		
 		logStep("Login to patient portal");
 		loginPage = new JalapenoLoginPage(driver, testData.getUrl());
 		loginPage.login(testData.getProperty("patient.login"), testData.getProperty("patient.password"));
 		
-		logStep("Go to messages"); 
-		assertTrue(homePage.isMessagesDisplayed(), "Messages is Accessible"); 
+		
+		logStep("Go to messages");
+		messagesPage = homePage.showMessages(driver);
+		assertTrue(messagesPage.returnSubjectMessage().length() > 0);
+		
+		logStep("Verify Aska question button should not display for view only access");
+        assertFalse(messagesPage.isAskaQuestionButtonDisplayed());
 		homePage.clickOnLogout();
  }
 
