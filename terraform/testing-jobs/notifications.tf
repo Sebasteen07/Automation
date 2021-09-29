@@ -1,7 +1,5 @@
 #Copyright 2021 NXGN Management, LLC. All Rights Reserved.
 resource "aws_codestarnotifications_notification_rule" "codepipeline_notification" {
-  provider = aws.pipeline
-
   detail_type = "BASIC" #BASIC or FUll
   event_type_ids = [
     "codepipeline-pipeline-pipeline-execution-succeeded",

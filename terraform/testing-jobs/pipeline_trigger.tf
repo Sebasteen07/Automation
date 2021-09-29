@@ -1,7 +1,5 @@
 # Copyright 2021 NXGN Management, LLC. All Rights Reserved.
 resource "aws_cloudwatch_event_rule" "trigger_codepipeline" {
-  provider = aws.pipeline
-
   name        = "trigger-${local.name}"
   description = "Trigger pipeline execution when changes are pushed to master branch in CodeCommit."
 
@@ -10,8 +8,6 @@ resource "aws_cloudwatch_event_rule" "trigger_codepipeline" {
 }
 
 resource "aws_cloudwatch_event_target" "trigger_codepipeline" {
-  provider = aws.pipeline
-
   rule      = aws_cloudwatch_event_rule.trigger_codepipeline.name
   target_id = "pipeline"
   role_arn  = aws_iam_role.cwevent.arn
@@ -19,8 +15,6 @@ resource "aws_cloudwatch_event_target" "trigger_codepipeline" {
 }
 
 data "aws_iam_policy_document" "cwevent_assume_role_policy" {
-  provider = aws.pipeline
-
   statement {
     actions = ["sts:AssumeRole"]
 
@@ -33,8 +27,6 @@ data "aws_iam_policy_document" "cwevent_assume_role_policy" {
 }
 
 resource "aws_iam_role" "cwevent" {
-  provider = aws.pipeline
-
   name               = "${local.name}-cwevent"
   assume_role_policy = data.aws_iam_policy_document.cwevent_assume_role_policy.json
 
@@ -42,8 +34,6 @@ resource "aws_iam_role" "cwevent" {
 }
 
 data "aws_iam_policy_document" "cwevent_codepipeline" {
-  provider = aws.pipeline
-
   statement {
     actions = [
       "codepipeline:StartPipelineExecution",
@@ -56,8 +46,6 @@ data "aws_iam_policy_document" "cwevent_codepipeline" {
 }
 
 resource "aws_iam_role_policy" "cw_events_policy" {
-  provider = aws.pipeline
-
   name   = "${local.name}-cwevents-policy"
   role   = aws_iam_role.cwevent.name
   policy = data.aws_iam_policy_document.cwevent_codepipeline.json

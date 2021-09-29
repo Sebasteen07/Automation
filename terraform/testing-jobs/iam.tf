@@ -1,7 +1,5 @@
 # Copyright 2021 NXGN Management, LLC. All Rights Reserved.
 data "aws_iam_policy_document" "pipeline_assume_role_policy" {
-  provider = aws.pipeline
-
   statement {
     actions = ["sts:AssumeRole"]
 
@@ -14,8 +12,6 @@ data "aws_iam_policy_document" "pipeline_assume_role_policy" {
 }
 
 resource "aws_iam_role" "pipeline" {
-  provider = aws.pipeline
-
   name               = "${local.name}-role"
   assume_role_policy = data.aws_iam_policy_document.pipeline_assume_role_policy.json
 
@@ -23,8 +19,6 @@ resource "aws_iam_role" "pipeline" {
 }
 
 data "aws_iam_policy_document" "pipeline" {
-  provider = aws.pipeline
-
   statement {
     sid = "S3bucket"
 
@@ -88,8 +82,6 @@ data "aws_iam_policy_document" "pipeline" {
 }
 
 resource "aws_iam_role_policy" "pipeline" {
-  provider = aws.pipeline
-
   name   = "pipeline"
   role   = aws_iam_role.pipeline.name
   policy = data.aws_iam_policy_document.pipeline.json
