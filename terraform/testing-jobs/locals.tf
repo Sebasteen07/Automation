@@ -9,20 +9,6 @@ locals {
   test_execution_mode           = "headless"
 
   inputs = {
-    "default" = {
-      codecommit_branch     = "master"
-      PollForSourceChanges  = true
-      execution_folder      = "pi-integration-platform-acceptance"
-      test_environment      = "demo"
-      suite_xml             = "codebuild.xml"
-      build_timeout         = 240 #Number of minutes, from 5 to 480. Default value is 60 mins
-      queued_timeout        = 480 #Number of minutes, from 5 to 480. Default value is 480 mins
-      maven_parameter       = "mvn -U clean install"
-      google_chrome_version = "93.0.4577.82-1"
-      chrome_driver_version = "92.0.4515.107"
-      cron_shedule          = "cron(0 10 * * ? *)"
-    }
-
     "demo-integrations2-acceptance" = {
       codecommit_branch     = "development"
       PollForSourceChanges  = true
@@ -34,7 +20,7 @@ locals {
       maven_parameter       = "mvn -U clean install"
       google_chrome_version = "93.0.4577.82-1"
       chrome_driver_version = "92.0.4515.107"
-      cron_shedule          = "cron(10 6 ? * 3 *)" 
+      cron_shedule          = "cron(10 6 ? * 3 *)"
     }
   }
 
