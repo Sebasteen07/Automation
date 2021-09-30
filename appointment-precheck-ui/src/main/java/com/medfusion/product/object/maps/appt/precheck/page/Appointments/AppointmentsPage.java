@@ -289,6 +289,7 @@ public class AppointmentsPage extends BasePageObject {
 	public boolean broadcastMessage() {
 		try {
 			broadcastMessage.isDisplayed();
+			log("Broadcast message action is visible");
 			return true;
 		} catch (NoSuchElementException e) {
 			log("Broadcast message action is not visible");
@@ -426,7 +427,6 @@ public class AppointmentsPage extends BasePageObject {
 	}
 
 	public boolean clickOnBannerMessage() throws InterruptedException {
-		log("Click on banner message");
 		IHGUtil.waitForElement(driver, 5, bannerMessage);
 		jse.executeScript("arguments[0].click();", bannerMessage);
 		try {

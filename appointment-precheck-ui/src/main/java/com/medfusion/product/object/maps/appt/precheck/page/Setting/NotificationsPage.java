@@ -25,9 +25,9 @@ public class NotificationsPage extends BaseTest {
 	}
 
 	public void clickOnNotificationTab() {
-		log("Click on notification tab");
 		IHGUtil.waitForElement(driver, 5, notificationTab);
 		notificationTab.click();
+		log("Switch on notification tab");
 	}
 
 	public void displayPatientFirstNameCheckbox() throws InterruptedException {
@@ -40,7 +40,7 @@ public class NotificationsPage extends BaseTest {
 	}
 
 	public void saveNotification() {
-		log("Save notifications");
+		IHGUtil.waitForElement(driver, 5, saveButton);
 		saveButton.click();
 	}
 

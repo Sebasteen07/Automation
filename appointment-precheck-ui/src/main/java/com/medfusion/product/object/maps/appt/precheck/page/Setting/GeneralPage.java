@@ -43,7 +43,6 @@ public class GeneralPage extends BaseTest {
 
 	public void uncheckingNotificationsCheckbox() {
 		IHGUtil.waitForElement(driver, 5, notificationsCheckbox);
-		log("unchecking Notifications Checkbox");
 		notificationsCheckbox.click();
 	}
 

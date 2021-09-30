@@ -5,7 +5,6 @@ import java.util.Set;
 
 import org.apache.log4j.Level;
 import org.openqa.selenium.Cookie;
-import org.openqa.selenium.JavascriptExecutor;
 import org.openqa.selenium.StaleElementReferenceException;
 import org.openqa.selenium.TimeoutException;
 import org.openqa.selenium.WebDriver;
@@ -92,15 +91,14 @@ public class ApptPrecheckMainPage extends BasePageObject {
 	}
 
 	public void clickOnSettingTab() throws InterruptedException {
-		Log4jUtil.log("Click on setting tab");
 		settingTab.click();
-		Log4jUtil.log("Switch to Setting Dashboard");
+		log("Switch to Setting Dashboard");
 		driver.navigate().refresh();
 	}
 
 	public void clickOnAppointmentsTab() throws InterruptedException {
 		IHGUtil.waitForElement(driver, 6, appointmentsTab);
-		Log4jUtil.log("Click on Appointments tab");
 		jse.executeScript("arguments[0].click();", appointmentsTab);
+		log("Switch to Appointment Dashboard");
 	}
 }

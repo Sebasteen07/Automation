@@ -1,10 +1,10 @@
+@Regression
 Feature: Test fuctionality of Appointment precheck
 
   Background: Login to practice provisioning portal
     Given user lauch practice provisioning url
     When user enter username and password
 
-  @Regression
   Scenario: Verify Broadcast is sent successfully when filter is applied for within one month
     Then schedule an appointments within one month
     Then enter date and time within one month
@@ -14,7 +14,6 @@ Feature: Test fuctionality of Appointment precheck
     And verify count in banner message is coming correct
     Then logout from practice provisioning portal
 
-  @Regression
   Scenario: Verify Broadcast is sent successfully when filter is applied for future month
     Then schedule an appointments for future
     Then enter future date and time
@@ -24,7 +23,6 @@ Feature: Test fuctionality of Appointment precheck
     And verify count in banner message is coming correct
     Then logout from practice provisioning portal
 
-  @Regression
   Scenario: Verify Broadcast is sent successfully when filter is applied for backdated greater than one month
     Then enter date and time for backdated greater than one month
     Then filter is applied for provider and Location
@@ -33,7 +31,6 @@ Feature: Test fuctionality of Appointment precheck
     And verify the count in banner message is coming correct for one month backdated
     Then logout from practice provisioning portal
 
-  @Regression
   Scenario: Verify Broadcast is sent successfully when filter is applied only for provider for within one month
     Then enter date and time within one month
     Then filter is applied only for provider
@@ -42,7 +39,6 @@ Feature: Test fuctionality of Appointment precheck
     And verify count in banner message is coming correct
     Then logout from practice provisioning portal
 
-  @Regression
   Scenario: Verify Broadcast is sent successfully when filter is applied only for location for within one month
     Then enter date and time within one month
     Then filter is applied only for location
@@ -51,7 +47,6 @@ Feature: Test fuctionality of Appointment precheck
     And verify count in banner message is coming correct
     Then logout from practice provisioning portal
 
-  @Regression
   Scenario: Verify Broadcast is sent successfully when filter is applied only for provider for backdated greater than one month
     Then enter date and time for backdated greater than one month
     Then filter is applied only for provider
@@ -60,7 +55,6 @@ Feature: Test fuctionality of Appointment precheck
     And verify the count in banner message is coming correct for one month backdated
     Then logout from practice provisioning portal
 
-  @Regression
   Scenario: Verify Broadcast is sent successfully when filter is applied only for location for backdated greater than one month
     Then enter date and time for backdated greater than one month
     Then filter is applied only for location
@@ -77,7 +71,6 @@ Feature: Test fuctionality of Appointment precheck
     Then go to the setting dashboard and enable notifications checkbox from manage solution in general tab
     Then logout from practice provisioning portal
 
-  @Regression
   Scenario: Verify if select all functionality is working when filter is applied on location and broadcast is sent from page 2 or page 3 and verify the banner count verify broadcast logs and verify on clicking refresh button
     Then schedule an appointments within one month
     Then enter date and time within one month
