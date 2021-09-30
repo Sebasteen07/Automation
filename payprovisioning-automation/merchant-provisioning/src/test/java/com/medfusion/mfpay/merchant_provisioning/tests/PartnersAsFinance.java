@@ -26,7 +26,7 @@ public class PartnersAsFinance extends BaseRest{
 
 	
 	 @Test
-	 public void createPartnerCredentialsAsFinance() throws Exception, IOException { 
+	 public void testCreatePartnerCredentialsAsFinance() throws Exception, IOException {
 		PartnersInfo partnersinfo = new PartnersInfo();
 		String postpartners = ProvisioningUtils.postPartner+testData.getProperty("static.merchant")+"/partners";
 		
@@ -45,7 +45,7 @@ public class PartnersAsFinance extends BaseRest{
   }
 
 	@Test
-	public void getPartnerCredentialsAsFinance(){
+	public void testGetPartnerCredentialsAsFinance(){
 		PartnersInfo partnersinfo = new PartnersInfo();
 		String postpartners = ProvisioningUtils.postPartner+testData.getProperty("static.merchant")+"/partners";
 
