@@ -36,3 +36,5 @@ data "aws_sns_topic" "slack" {
 data "aws_codecommit_repository" "qa_automation" {
   repository_name = var.repository_name
 }
+
+data "aws_default_tags" "default_tags" {}

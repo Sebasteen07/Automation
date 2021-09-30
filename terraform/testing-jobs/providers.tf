@@ -5,4 +5,14 @@ provider "aws" {
   assume_role {
     role_arn = "arn:aws:iam::997401518295:role/NextGenAdminAccess"
   }
+
+  default_tags {
+    tags = {
+      "nextgen.automation"          = true
+      "nextgen.component"           = var.component
+      "nextgen.data-classification" = var.data_classification
+      "nextgen.environment"         = var.environment
+      "nextgen.environment-type"    = var.environment-type
+    }
+  }
 }

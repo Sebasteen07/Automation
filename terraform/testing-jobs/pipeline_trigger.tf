@@ -4,7 +4,6 @@ resource "aws_cloudwatch_event_rule" "trigger_codepipeline" {
   description = "Trigger pipeline execution when changes are pushed to master branch in CodeCommit."
 
   schedule_expression = try(local.inputs[local.name].cron_shedule)
-  tags                = local.common_tags
 }
 
 resource "aws_cloudwatch_event_target" "trigger_codepipeline" {
@@ -29,8 +28,6 @@ data "aws_iam_policy_document" "cwevent_assume_role_policy" {
 resource "aws_iam_role" "cwevent" {
   name               = "${local.name}-cwevent"
   assume_role_policy = data.aws_iam_policy_document.cwevent_assume_role_policy.json
-
-  tags = local.common_tags
 }
 
 data "aws_iam_policy_document" "cwevent_codepipeline" {

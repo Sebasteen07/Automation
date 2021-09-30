@@ -7,15 +7,12 @@ data "aws_iam_policy_document" "pipeline_assume_role_policy" {
       type        = "Service"
       identifiers = ["codepipeline.amazonaws.com"]
     }
-
   }
 }
 
 resource "aws_iam_role" "pipeline" {
   name               = "${local.name}-role"
   assume_role_policy = data.aws_iam_policy_document.pipeline_assume_role_policy.json
-
-  tags = local.common_tags
 }
 
 data "aws_iam_policy_document" "pipeline" {
