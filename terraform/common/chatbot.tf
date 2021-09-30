@@ -15,7 +15,7 @@ resource "aws_iam_policy" "chatbot_sns_permissions" {
   name        = "pxp-mf-qa-chatbot-role-policy"
   description = "Chatbot Role to subscribe to SNS topic"
 
-  policy      = <<EOF
+  policy = <<EOF
 {
     "Version": "2012-10-17",
     "Statement": [
@@ -61,7 +61,7 @@ EOF
 }
 
 module "chatbot_module" {
-  source                  = "./modules/chatbot"
+  source = "./modules/chatbot"
 
   iam_role_tags           = { "Name" = "pxp-mf-qa-${var.environment}-${local.chatbot_role_name}" }
   role_name               = "pxp-mf-qa-${var.environment}-${local.chatbot_role_name}"

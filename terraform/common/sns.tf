@@ -31,7 +31,7 @@ module "sns_module" {
     effect = "Allow"
     principals = {
       principal_type = "Service"
-      identifiers    = [
+      identifiers = [
         "events.amazonaws.com",
         "codestar-notifications.amazonaws.com"
       ]
