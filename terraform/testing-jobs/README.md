@@ -44,6 +44,8 @@ The following resources are the pre-requisites from common folder
 | Name | Description |
 |------|-------------|
 | codebuild\_project\_role | The codebuild project role |
+| codepipeline\_name | The codepipeline id created for test execution |
+| cloudwatch\_event\_rule\_name | cloudwatch event rule name created for triggering pipeline execution |
 
 ## Locals
 The following locals are configured as an Inputs to the testing-job terraform code, if required can be modified.
@@ -72,17 +74,17 @@ The following locals are configured as an Inputs mapping to each spcific testing
 ````
 inputs = {
   "default" = {
-    codecommit_branch     = "master"
+    codecommit_branch     = "development"
     PollForSourceChanges  = true
     execution_folder      = "pi-integration-platform-acceptance"
     test_environment      = "demo"
-    suite_xml             = "codebuild.xml"
+    suite_xml             = "integration-platform-acceptance.xml"
     build_timeout         = 240 #Number of minutes, from 5 to 480. Default value is 60 mins
     queued_timeout        = 480 #Number of minutes, from 5 to 480. Default value is 480 mins
     maven_parameter       = "mvn -U clean install"
     google_chrome_version = "93.0.4577.82-1"
     chrome_driver_version = "92.0.4515.107"
-    cron_shedule          = "cron(0 10 * * ? *)"
+    cron_shedule          = "cron(10 6 ? * 3 *)"
   }
 }
 ````
@@ -95,30 +97,29 @@ Example:
 ```
 locals {
   valid_workspaces = {
-    default = "default"
-    piIntPlatformAcceptance-demo-codebuild = "piIntPlatformAcceptance-demo-codebuild"
+    demo-integrations2-acceptance = "demo-integrations2-acceptance"
   }
   selected_workspace = local.valid_workspaces[terraform.workspace]
 }
 ```
 
-Copy the <default> section from the locals.tf file (also copied in the above section) & paste it by changing it to supported <testing job purpose> as described in the workspace.tf also in above section. Fill in all the required env specific information for the new testing job.
+Copy the <demo-integrations2-acceptance> section from the locals.tf file (also copied in the above section) & paste it by changing it to supported <testing job purpose> as described in the workspace.tf also in above section. Fill in all the required information for the new testing job.
 
 ### Switching terraform workspace
-For example, if the name of the testing job purpose is 'piIntPlatformAcceptance-demo-codebuild' & the workspace is not exits, then create a workspace named `piIntPlatformAcceptance-demo-codebuild`
+For example, if the name of the testing job purpose is 'demo-integrations2-acceptance' & the workspace is not exits, then create a workspace named `demo-integrations2-acceptance`
 ```
-terraform workspace new piIntPlatformAcceptance-demo-codebuild
+terraform workspace new demo-integrations2-acceptance
 ```
 List the current available workspace & identify the selected workspace by symbol '*' in front of workspace name
 ```
 terraform workspace list
 ```
-Select 'piIntPlatformAcceptance-demo-codebuild' as the current workspace, if already
+Select 'demo-integrations2-acceptance' as the current workspace, if not already
 ```
-terraform workspace select piIntPlatformAcceptance-demo-codebuild
+terraform workspace select demo-integrations2-acceptance
 ```
 
-Additionally, some parameter defaults are set specifically set for specific testing job purpose/regions(for pxp-build, strictly us-east-2).
+Additionally, some parameter defaults are set specifically set for specific testing job purpose/regions(for pxp-build, restricted to us-east-2).
 Go through the locals section above to understand the various local reference for execution and update accordingly.  
 
 Using the configurations is easy. Run the following commands from within the `terraform/testing-jobs/` directory:
