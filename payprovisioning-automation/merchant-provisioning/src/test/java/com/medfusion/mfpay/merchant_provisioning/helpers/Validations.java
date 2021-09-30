@@ -97,12 +97,12 @@ public class Validations {
 
 
 		public void verifyMerchantDetailsForPaypal(String externalmerchantid,String transactionlimit,
-			AccountDetails accountDetails,String customeraccountnumber) throws IOException {
+			String accountDetails,String customeraccountnumber) throws IOException {
 			
 			testData = new PropertyFileLoader();
 			Assert.assertEquals(externalmerchantid, testData.getProperty("external.merchantid"));
 			Assert.assertEquals(transactionlimit, testData.getProperty("transaction.limit"));
-			Assert.assertEquals(accountDetails.getPreferredProcessor(),PracticeConstants.PREFERRED_PROCESSOR_PAYPAL) ;
+			Assert.assertEquals(accountDetails,PracticeConstants.PREFERRED_PROCESSOR_PAYPAL) ;
 			Assert.assertEquals(customeraccountnumber, testData.getProperty("customer.account.number"));
 		}
 
