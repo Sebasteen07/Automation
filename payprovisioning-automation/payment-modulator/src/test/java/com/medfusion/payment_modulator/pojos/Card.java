@@ -31,6 +31,7 @@ public class Card {
 		private Boolean cardPresent;
 		private String cardAlias;
 		private String zipCode;
+		private String primaryCardFlag;
 		
 		@JsonIgnore
 		private Map<String, Object> additionalProperties = new HashMap<String, Object>();
@@ -164,6 +165,28 @@ public class Card {
 			cardMap.put("cardAlias", cardAlias);
 			cardMap.put("billingAddress", BillToAddress.getBillingAdressMap(zipCode));
 			cardMap.put("primaryCard", primaryCardFlag);
+			return cardMap;
+		}
+		
+		
+		public static Map<String, Object> getMulitipleCardsDigitalWalletMap(String cardHolderName, String type,
+				String cardNumber, String expirationNumber, String cardAlias, String zipCode, String primaryCardFlag) {
+			Map<String, Object> cardMap = new HashMap<String, Object>();
+			cardMap.put("cardHolderName", cardHolderName);
+			cardMap.put("cardType", type);
+			cardMap.put("cardNumber", cardNumber);
+			cardMap.put("cardExpiryDate", expirationNumber);
+			cardMap.put("cardAlias", cardAlias);
+			cardMap.put("billingAddress", BillToAddress.getBillingAdressMap(zipCode));
+
+			if (primaryCardFlag != "ommit") {
+
+				cardMap.put("primaryCard", primaryCardFlag);
+			} else {
+				System.out.println("Ommiting primary flag");
+
+			}
+
 			return cardMap;
 		}
 }

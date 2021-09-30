@@ -51,6 +51,12 @@ public class JalapenoAccountPage extends JalapenoMenu {
 		
 		@FindBy(how = How.XPATH, using = "//button/span[contains(text(),'Unlink')]")
 		private WebElement unLinkButton;
+		
+		@FindBy(how = How.XPATH, using = "//label[contains(text(),'Manage access per category')]")
+		private WebElement manageAccessPerCategory;
+		
+		@FindBy(how = How.XPATH, using = "//*[contains(text(),' Trusted Representatives ')]/..//*[contains(text(),'Edit')]")
+		private WebElement editTrustedRep;
 
 		public JalapenoAccountPage(WebDriver driver) {
 				super(driver);
@@ -146,4 +152,55 @@ public class JalapenoAccountPage extends JalapenoMenu {
 			wait.until(ExpectedConditions.visibilityOf(unLinkButton));
 			unLinkButton.click();
 	}
+		public void inviteTrustedRepresentativeWithPermission(Patient patient) throws InterruptedException {
+			waitUntilLightboxContentLoads(wait);
+			fillLightboxInputs(patient);
+			sendInvitationButton.click();
+			String fullName = patient.getFirstName() + " " + patient.getLastName();
+			waitUntilSuccessMessageLoads(wait, fullName);
+
+		}
+
+		public void clickInviteButton() throws InterruptedException {
+			wait.until(ExpectedConditions.visibilityOf(inviteNewButton));
+			inviteNewButton.click();
+			log("Invite New Button got clicked");
+			manageAccessPerCategory.click();
+			log("Manage Access Per Category Radio Button got clicked");
+
+		}
+
+		public void givingPermissionWithModuleName(String textModule, String manageAccessPref) {
+
+			String moduleName = "//div[span[contains(text()," + "'" + textModule + "')]]";
+			String preferenceValue = "/following-sibling::div/input[@id=" + "'" + manageAccessPref + "'" + "]";
+			String preferenceToBeSelected = moduleName + preferenceValue;
+			WebElement selectedPreference = driver.findElement(By.xpath(preferenceToBeSelected));
+			if (new IHGUtil(driver).exists(manageAccessPerCategory)) {
+
+				log("Manage Access Per Category is present");
+				if (manageAccessPref == "fullAccess") {
+					new WebDriverWait(driver, 10).until(ExpectedConditions.elementToBeClickable(selectedPreference));
+					selectedPreference.click();
+				} else if (manageAccessPref == "viewOnly") {
+					new WebDriverWait(driver, 10).until(ExpectedConditions.elementToBeClickable(selectedPreference));
+					selectedPreference.click();
+				} else if (manageAccessPref == "noAccess") {
+					new WebDriverWait(driver, 10).until(ExpectedConditions.elementToBeClickable(selectedPreference));
+					selectedPreference.click();
+
+				}
+
+			}
+		}
+		public void clickOnEditTrustedRepAccount(){
+			log("Trying to click on Trusted Rep Edit Button");
+			new WebDriverWait(driver, 10).until(ExpectedConditions.visibilityOf(editTrustedRep));
+			editTrustedRep.click();
+	      }
+		public void clickOnSaveMyChangesButton(){
+			log("Trying to click on Trusted Rep Edit Button");
+			new WebDriverWait(driver, 10).until(ExpectedConditions.visibilityOf(sendInvitationButton));
+			sendInvitationButton.click();
+	      }
 }
