@@ -21,7 +21,7 @@ variable "role_arn" {
 
 variable "codecommit_user" {
   description = "IAM user used to mirror the Bitbucket repositories to CodeCommit repositories"
-  default     = "codecommit_mirror"
+  default     = "codecommit_mirror_qa_automation"
 }
 
 variable "slack_channel_id" {
