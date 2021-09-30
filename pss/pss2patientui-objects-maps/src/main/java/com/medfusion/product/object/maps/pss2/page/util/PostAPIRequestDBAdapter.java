@@ -308,77 +308,143 @@ public class PostAPIRequestDBAdapter {
 		return response;
 	}
 	
-	public Response getBooksWithLanguageForPractice(String practiceid) throws Exception {
+	public Response getBooksByAppType(String practiceid, String apptype) throws Exception {
 		Response response = given().spec(requestSpec).header("language", "es").log().all().when()
-				.get(practiceid+"/books").then().log().all()
+				.get(practiceid+"/books/apptype/"+apptype).then().log().all()
 				.extract().response();
 		return response;
 	}
-	public Response getBooksWithLanguageForPractice(String practiceid) throws Exception {
+	public Response getBooksByLocation(String practiceid, String locationid) throws Exception {
 		Response response = given().spec(requestSpec).header("language", "es").log().all().when()
-				.get(practiceid+"/books").then().log().all()
+				.get(practiceid+"/books/location/"+locationid).then().log().all()
 				.extract().response();
 		return response;
 	}
-	public Response getBooksWithLanguageForPractice(String practiceid) throws Exception {
+	public Response getBooksByLocationAndAppointmentTypes(String practiceid, String locationid, String apptypeid) throws Exception {
 		Response response = given().spec(requestSpec).header("language", "es").log().all().when()
-				.get(practiceid+"/books").then().log().all()
+				.get(practiceid+"/books/location/"+locationid+"/apptype/"+apptypeid).then().log().all()
 				.extract().response();
 		return response;
 	}
-	public Response getBooksWithLanguageForPractice(String practiceid) throws Exception {
+	public Response getBooksBySpeciality(String practiceid,String specialtyid) throws Exception {
 		Response response = given().spec(requestSpec).header("language", "es").log().all().when()
-				.get(practiceid+"/books").then().log().all()
+				.get(practiceid+"/books/specialty/"+specialtyid).then().log().all()
 				.extract().response();
 		return response;
 	}
-	public Response getBooksWithLanguageForPractice(String practiceid) throws Exception {
+	public Response getBooksBySpecialityAndAppointmentType(String practiceid, String specialty, String apptypeid) throws Exception {
 		Response response = given().spec(requestSpec).header("language", "es").log().all().when()
-				.get(practiceid+"/books").then().log().all()
+				.get(practiceid+"/books/specialty/"+specialty+"/apptype/"+apptypeid).then().log().all()
 				.extract().response();
 		return response;
 	}
-	public Response getBooksWithLanguageForPractice(String practiceid) throws Exception {
+	public Response getBooksBySpecialityAndLocation(String practiceid, String specialty, String locationid) throws Exception {
 		Response response = given().spec(requestSpec).header("language", "es").log().all().when()
-				.get(practiceid+"/books").then().log().all()
+				.get(practiceid+"/books/specialty/"+specialty+"/location/"+locationid).then().log().all()
 				.extract().response();
 		return response;
 	}
-	public Response getBooksWithLanguageForPractice(String practiceid) throws Exception {
+	public Response getBooksBySpecialityAndLocationAndAppointmentType(String practiceid, String specialty, String locationid, String apptypeid) throws Exception {
 		Response response = given().spec(requestSpec).header("language", "es").log().all().when()
-				.get(practiceid+"/books").then().log().all()
+				.get(practiceid+"/books/specialty/"+specialty+"/location/"+locationid+"/apptype/"+apptypeid).then().log().all()
 				.extract().response();
 		return response;
 	}
-	public Response getBooksWithLanguageForPractice(String practiceid) throws Exception {
-		Response response = given().spec(requestSpec).header("language", "es").log().all().when()
-				.get(practiceid+"/books").then().log().all()
+	public Response getbooklevel(String practiceid) throws Exception {
+		Response response = given().spec(requestSpec).header("language", "es").queryParam("groupType", "RESOURCE_LEVEL").log().all().when()
+				.get(practiceid+"/getbooklevel").then().log().all()
 				.extract().response();
 		return response;
 	}
-	public Response getBooksWithLanguageForPractice(String practiceid) throws Exception {
-		Response response = given().spec(requestSpec).header("language", "es").log().all().when()
-				.get(practiceid+"/books").then().log().all()
+	
+	//Cancellation Reason Controller
+	
+	public Response getCancellationReason(String practiceid, String path) throws Exception {
+		Response response = given().spec(requestSpec).log().all().when()
+				.get(practiceid+ path).then().log().all()
 				.extract().response();
 		return response;
 	}
-	public Response getBooksWithLanguageForPractice(String practiceid) throws Exception {
-		Response response = given().spec(requestSpec).header("language", "es").log().all().when()
-				.get(practiceid+"/books").then().log().all()
+	
+	//Care Team Book Controller
+	public Response getBookAssociatedToCareTeam(String practiceid, String careteamid) throws Exception {
+		Response response = given().spec(requestSpec).log().all().when()
+				.get(practiceid+"/careteambook/"+ careteamid).then().log().all()
 				.extract().response();
 		return response;
 	}
-	public Response getBooksWithLanguageForPractice(String practiceid) throws Exception {
-		Response response = given().spec(requestSpec).header("language", "es").log().all().when()
-				.get(practiceid+"/books").then().log().all()
-				.extract().response();
+	
+	//Care Team Controller
+	
+	public Response getCareteamsForPractice(String practiceid) throws Exception {
+		Response response = given().spec(requestSpec).log().all().when().get(practiceid + "/careteam").then().log()
+				.all().extract().response();
 		return response;
 	}
-	public Response getBooksWithLanguageForPractice(String practiceid) throws Exception {
-		Response response = given().spec(requestSpec).header("language", "es").log().all().when()
-				.get(practiceid+"/books").then().log().all()
-				.extract().response();
+
+	//Category App Type Controller
+	
+	public Response getAppTypeForCategory(String practiceid, String categoryid) throws Exception {
+		Response response = given().spec(requestSpec).log().all().when().get(practiceid + "/categoryapptype/" + careteamid)
+				.then().log().all().extract().response();
 		return response;
 	}
+	
+	public Response getCategoryAppTypeForCategoryAndAppttype(String practiceid, String categoryid, String apptype) throws Exception {
+		Response response = given().spec(requestSpec).log().all().when().get(practiceid + "/categoryapptype/" + categoryid+ apptype)
+				.then().log().all().extract().response();
+		return response;
+	}
+	
+	//Category App Type Location Controller
+	
+	public Response getLocationsForCategoryAppType(String practiceid, String careteamid) throws Exception {
+		Response response = given().spec(requestSpec).log().all().when().get(practiceid + "/categoryapptypelocation/" + careteamid)
+				.then().log().all().extract().response();
+		return response;
+	}
+	
+	//Category Controller
+	
+	public Response getCategoryForPractice(String practiceid) throws Exception {
+		Response response = given().spec(requestSpec).log().all().when().get(practiceid + "/category")
+				.then().log().all().extract().response();
+		return response;
+	}
+	
+	
+	public Response getCategoryById(String practiceid, String categoryid) throws Exception {
+		Response response = given().spec(requestSpec).log().all().when().get(practiceid + "/category/" + categoryid)
+				.then().log().all().extract().response();
+		return response;
+	}
+	
+	
+	public Response getCategorysWithLanguageForPractice(String practiceid) throws Exception {
+		Response response = given().spec(requestSpec).log().all().when().get(practiceid + "/categorys")
+				.then().log().all().extract().response();
+		return response;
+	}
+	
+	public Response getCategorysBySpecialty(String practiceid, String specialty) throws Exception {
+		Response response = given().spec(requestSpec).log().all().when().get(practiceid + "/categorys/specialty/" + specialty)
+				.then().log().all().extract().response();
+		return response;
+	}
+	
+	//Category Specialty Controller
+	
+	public Response saveCategorySpecialty(String practiceid, String careteamid) throws Exception {
+		Response response = given().spec(requestSpec).log().all().when().get(practiceid + "/careteam/" + careteamid)
+				.then().log().all().extract().response();
+		return response;
+	}
+	
+	public Response getCareTeamById(String practiceid, String careteamid) throws Exception {
+		Response response = given().spec(requestSpec).log().all().when().get(practiceid + "/careteam/" + careteamid)
+				.then().log().all().extract().response();
+		return response;
+	}
+	
 
 }
