@@ -4,6 +4,7 @@ locals {
     #Subfolder-env-XmlFile format to maintain uniqueness
     #piIntPlatformAcceptance-demo-codebuild = "piIntPlatformAcceptance-demo-codebuild"
     default = "default"
+    demo-integrations2-acceptance = "demo-integrations2-acceptance"
   }
   selected_workspace = local.valid_workspaces[terraform.workspace]
 }
