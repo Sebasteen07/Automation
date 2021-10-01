@@ -4,11 +4,13 @@ package com.medfusion.mfpay.merchant_provisioning.tests;
 
 import java.io.IOException;
 
-import com.medfusion.mfpay.merchant_provisioning.helpers.UsersDetails;
+import com.medfusion.mfpay.merchant_provisioning.helpers.Validations;
+import com.medfusion.mfpay.merchant_provisioning.pojos.Merchant;
 import com.medfusion.mfpay.merchant_provisioning.utils.DBUtils;
 import com.medfusion.mfpay.merchant_provisioning.utils.ProvisioningUtils;
 import io.restassured.path.json.JsonPath;
 import io.restassured.response.Response;
+import org.codehaus.jackson.map.ObjectMapper;
 import org.testng.Assert;
 import org.testng.annotations.BeforeTest;
 import org.testng.annotations.Test;
@@ -29,19 +31,28 @@ public class MerchantResourceAsFinance extends BaseRest {
 
   //Creates a new element merchant as Finance user.
   @Test
-  public void createNewElementMerchantAsFinance() throws IOException {
+  public void testCreateNewElementMerchantAsFinance() throws IOException {
 	  
 	  MerchantInfo merchantinfo = new MerchantInfo();
-	  merchantinfo.createUpdateElementMerchant();  
-	  
+	  Response response = merchantinfo.createUpdateElementMerchant();
+
+      JsonPath jsonpath = new JsonPath(response.asString());
+      Validations validate = new Validations();
+      validate.verifyMerchantDetails(response.asString());
+      ProvisioningUtils.saveMMID(jsonpath.get("id").toString());
   } 
     
   //Update general merchant details for the merchant created as finance
   @Test
-  public void updateGeneralMerchantInfo() throws IOException {
+  public void testUdateGeneralMerchantInfo() throws IOException {
 	  MerchantInfo merchantinfo = new MerchantInfo();
-	  merchantinfo.updateGeneralMerchantDetails(testData.getProperty("mmid"));
-    
+      Response response = merchantinfo.updateGeneralMerchantDetails(testData.getProperty("mmid"));
+
+      ObjectMapper objectMapper = new ObjectMapper();
+      Merchant readJSON = objectMapper.readValue(response.asString(), Merchant.class);
+      Validations validate = new Validations();
+      validate.verifyMerchantDetailsOnUpdate(readJSON.getExternalMerchantId().toString(),readJSON.getMaxTransactionLimit().toString(),
+              readJSON.getAccountDetails());
   }
   
   //Get details of the merchant created as finance
@@ -54,11 +65,16 @@ public class MerchantResourceAsFinance extends BaseRest {
   
   //Creates a new paypal merchant as Finance user.
   @Test
-  public void createNewPaypalMerchantAsFinance() throws IOException {
+  public void testCreateNewPaypalMerchantAsFinance() throws IOException {
 	  
 	  PaypalDetails merchantdetails = new PaypalDetails();
-	  merchantdetails.createUpdatePaypalMerchant();  
-	  
+      Response response = merchantdetails.createUpdatePaypalMerchant();
+      JsonPath jsonpath = new JsonPath(response.asString());
+
+      Validations validate = new Validations();
+      validate.verifyMerchantDetailsForPaypal(jsonpath.get("externalMerchantId").toString(),jsonpath.get("maxTransactionLimit").toString(),
+              jsonpath.get("accountDetails.preferredProcessor").toString(),jsonpath.get("customerAccountNumber").toString());
+
   }
 
   @Test
@@ -93,13 +109,5 @@ public class MerchantResourceAsFinance extends BaseRest {
       Assert.assertNotNull(jsonPath.get("nonQualifiedUpperBoundaryPercent"));
       Assert.assertEquals(jsonPath.get("nonQualifiedUpperBoundaryPercent").toString(), nonQualifiedUpperBoundaryPercent.toString());
   }
-
-
-
-
-
-
-
-
 
 }
