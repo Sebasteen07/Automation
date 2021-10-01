@@ -30,8 +30,4 @@ locals {
   selected_maven_parameter       = try(local.inputs[local.name].maven_parameter)
   selected_google_chrome_version = try(local.inputs[local.name].google_chrome_version)
   selected_chrome_driver_version = try(local.inputs[local.name].chrome_driver_version)
-
-  #Workaround to resolve "Error: "tags" are identical to those in the "default_tags" configuration block of the provider: please de-duplicate and try again" with codebuild module
-  #https://github.com/hashicorp/terraform-provider-aws/issues/19204#issuecomment-878129327
-  common_tags = length(data.aws_default_tags.default_tags.tags) > 0 ? {} : {}
 }

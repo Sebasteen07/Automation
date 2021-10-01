@@ -48,5 +48,5 @@ module "build" {
     security_group_ids = [data.aws_security_group.codebuild_sg.id]
   }]
 
-  common_tags = local.common_tags
+  common_tags = {}
 }
