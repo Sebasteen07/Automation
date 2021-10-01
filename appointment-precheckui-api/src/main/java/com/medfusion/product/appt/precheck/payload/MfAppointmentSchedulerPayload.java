@@ -10,7 +10,7 @@ public class MfAppointmentSchedulerPayload {
 		return payload;
 	}
 	
-	public String putAppointmentPayload() {
+	public String putAppointmentPayload(long time, String email) {
 		String Apptdata=" {\r\n"
 				+ "\"practiceData\": {\r\n"
 				+ "\"pmSystemId\": \"9\",\r\n"
@@ -41,7 +41,7 @@ public class MfAppointmentSchedulerPayload {
 				+ "\"state\": null,\r\n"
 				+ "\"zip\": \"12345\",\r\n"
 				+ "\"phone\": 5087437423,\r\n"
-				+ "\"email\": \"testpatient.crossasyst@gmail.com\",\r\n"
+				+ "\"email\": \"" + email + "\",\r\n"
 				+ "\"language\": \"en\",\r\n"
 				+ "\"primaryInsurance\": {\r\n"
 				+ "\"name\": \"Blue Sheild insurance\",\r\n"
@@ -62,7 +62,7 @@ public class MfAppointmentSchedulerPayload {
 				+ "\"appointmentData\": {\r\n"
 				+ "\"type\": \"Scot appt type\",\r\n"
 				+ "\"status\": \"NEW\",\r\n"
-				+ "\"time\": 1628598718000\r\n"
+				+ "\"time\": " + time + "\r\n"
 				+ "},\r\n"
 				+ "\"managementData\": {\r\n"
 				+ "\"resourceLink\": \"https://www.medfusion.com/\"\r\n"

@@ -3,13 +3,14 @@ package com.medfusion.mfpay.merchant_provisioning.tests;
 
 
 import java.io.IOException;
-
+import java.util.ArrayList;
+import java.util.Map;
+import static io.restassured.path.json.JsonPath.from;
+import io.restassured.response.Response;
 import org.testng.annotations.BeforeTest;
 import org.testng.annotations.Test;
-
 import com.medfusion.common.utils.PropertyFileLoader;
 import com.medfusion.mfpay.merchant_provisioning.helpers.PartnersInfo;
-
 import com.medfusion.mfpay.merchant_provisioning.utils.ProvisioningUtils;
 
 public class PartnersAsFinance extends BaseRest{
@@ -25,16 +26,13 @@ public class PartnersAsFinance extends BaseRest{
 
 	
 	 @Test
-	 public void createPartnerCredentialsAsFinance() throws Exception, IOException { 
+	 public void testCreatePartnerCredentialsAsFinance() throws Exception, IOException {
 		PartnersInfo partnersinfo = new PartnersInfo();
 		String postpartners = ProvisioningUtils.postPartner+testData.getProperty("static.merchant")+"/partners";
 		
 		//Create a partner POST
 		String partnerid = partnersinfo.createPartner(postpartners,(testData.getProperty("partner.username")),(testData.getProperty("partner.password")));
-		
-		//Get partners for a mmid GET
-		partnersinfo.getPartners(postpartners,(testData.getProperty("partner.username")),(testData.getProperty("partner.password")));
-		
+
 		//Update partner credentials username and password PUT
 		String updatedpassword = partnersinfo.updateUserNamePassword(partnerid,postpartners,testData.getProperty("username.update"),(testData.getProperty("password.update")));
 		
@@ -45,6 +43,20 @@ public class PartnersAsFinance extends BaseRest{
 		partnersinfo.deletePartner(postpartners, partnerid);
 			
   }
+
+	@Test
+	public void testGetPartnerCredentialsAsFinance(){
+		PartnersInfo partnersinfo = new PartnersInfo();
+		String postpartners = ProvisioningUtils.postPartner+testData.getProperty("static.merchant")+"/partners";
+
+		Response response = partnersinfo.getPartners(postpartners,(testData.getProperty("partner.username")),
+				(testData.getProperty("partner.password")));
+
+		String partners = response.asString();
+		ArrayList<Map<String,?>> jsonAsArrayList = from(partners).get("");
+		System.out.println("MMID has:"+jsonAsArrayList.size()+" partners");
+
+	}
 	
 	 
 }

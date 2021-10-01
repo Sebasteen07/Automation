@@ -3,6 +3,7 @@ package com.medfusion.product.apptprecheckapi.test;
 import static org.testng.Assert.assertEquals;
 
 import java.io.IOException;
+import java.util.concurrent.TimeUnit;
 
 import org.testng.ITestResult;
 import org.testng.annotations.BeforeMethod;
@@ -82,12 +83,19 @@ public class AptPrecheckMfAppointmentSchedulerTests extends BaseTestNG {
 
 	@Test(enabled = true, groups = { "APItest" }, retryAnalyzer = RetryAnalyzer.class)
 	public void testPutAppointment() throws IOException {
-		Response response = postAPIRequest.aptPutAppointment(propertyData.getProperty("mf.apt.scheduler.practice.id"),
-				payload.putAppointmentPayload(), headerConfig.HeaderwithToken(getaccessToken),
+		long currentTimestamp = System.currentTimeMillis();
+		long plus20Minutes = currentTimestamp + TimeUnit.MINUTES.toMillis(20);
+		log("Getting patients since timestamp: " + plus20Minutes);
+		Response response = postAPIRequest.aptPutAppointment(
+				propertyData.getProperty("baseurl.mf.appointment.scheduler"),
+				propertyData.getProperty("mf.apt.scheduler.practice.id"),
+				payload.putAppointmentPayload(plus20Minutes, propertyData.getProperty("mf.apt.scheduler.email")),
+				headerConfig.HeaderwithToken(getaccessToken),
 				propertyData.getProperty("mf.apt.scheduler.put.patient.id"),
 				propertyData.getProperty("mf.apt.scheduler.put.appt.id"));
 
-		log("Payload- " + payload.putAppointmentPayload());
+		log("Payload- "
+				+ payload.putAppointmentPayload(plus20Minutes, propertyData.getProperty("mf.apt.scheduler.email")));
 		log("Verify response");
 
 		if (response.getStatusCode() == 200) {
@@ -105,11 +113,12 @@ public class AptPrecheckMfAppointmentSchedulerTests extends BaseTestNG {
 
 	@Test(enabled = true, groups = { "APItest" }, retryAnalyzer = RetryAnalyzer.class)
 	public void testPutAppointmentPastTime() throws IOException {
-		Response response = postAPIRequest.aptPutAppointment(propertyData.getProperty("mf.apt.scheduler.practice.id"),
+		Response response = postAPIRequest.aptPutAppointment(
+				propertyData.getProperty("baseurl.mf.appointment.scheduler"),
+				propertyData.getProperty("mf.apt.scheduler.practice.id"),
 				payload.putAppointmentPastTimePayload(), headerConfig.HeaderwithToken(getaccessToken),
 				propertyData.getProperty("mf.apt.scheduler.put.patient.id"),
 				propertyData.getProperty("mf.apt.scheduler.put.appt.id"));
-
 		log("Payload- " + payload.putAppointmentPastTimePayload());
 		log("Verify response");
 		assertEquals(response.getStatusCode(), 400);
