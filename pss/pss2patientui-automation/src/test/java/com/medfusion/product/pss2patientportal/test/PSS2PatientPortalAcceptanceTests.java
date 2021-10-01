@@ -386,7 +386,7 @@ public class PSS2PatientPortalAcceptanceTests extends BaseTestNGWebDriver {
 		JalapenoHomePage homePage = loginPage.login(testData.getPatientPortalUserName(),
 				testData.getPatientPortalPassword());
 		log("Detecting if Home Page is opened");
-		assertTrue(homePage.isHomeButtonPresent(driver));
+		
 		homePage.clickFeaturedAppointmentsReq();
 		log("Wait for PSS 2.0 Patient UI to be loaded.");
 		Thread.sleep(6000);
@@ -427,7 +427,7 @@ public class PSS2PatientPortalAcceptanceTests extends BaseTestNGWebDriver {
 		JalapenoHomePage homePage = loginPage.login(testData.getPatientPortalUserName(),
 				testData.getPatientPortalPassword());
 		log("Detecting if Home Page is opened");
-		assertTrue(homePage.isHomeButtonPresent(driver));
+		
 		homePage.clickFeaturedAppointmentsReq();
 		log("Wait for PSS 2.0 Patient UI to be loaded.");
 		Thread.sleep(6000);
@@ -472,7 +472,7 @@ public class PSS2PatientPortalAcceptanceTests extends BaseTestNGWebDriver {
 		JalapenoHomePage homePage = loginPage.login(testData.getPatientPortalUserName(),
 				testData.getPatientPortalPassword());
 		log("Detecting if Home Page is opened");
-		assertTrue(homePage.isHomeButtonPresent(driver));
+		
 		homePage.clickFeaturedAppointmentsReq();
 		log("Wait for PSS 2.0 Patient UI to be loaded.");
 		Thread.sleep(6000);
@@ -516,7 +516,7 @@ public class PSS2PatientPortalAcceptanceTests extends BaseTestNGWebDriver {
 		JalapenoHomePage homePage = loginPage.login(testData.getPatientPortalUserName(),
 				testData.getPatientPortalPassword());
 		log("Detecting if Home Page is opened");
-		assertTrue(homePage.isHomeButtonPresent(driver));
+		
 		homePage.clickFeaturedAppointmentsReq();
 		log("Wait for PSS 2.0 Patient UI to be loaded.");
 		Thread.sleep(6000);
@@ -554,7 +554,7 @@ public class PSS2PatientPortalAcceptanceTests extends BaseTestNGWebDriver {
 		JalapenoHomePage homePage = loginPage.login(testData.getPatientPortalUserName(),
 				testData.getPatientPortalPassword());
 		log("Detecting if Home Page is opened");
-		assertTrue(homePage.isHomeButtonPresent(driver));
+		
 		homePage.clickFeaturedAppointmentsReq();
 		log("Wait for PSS 2.0 Patient UI to be loaded.");
 		Thread.sleep(6000);
@@ -591,7 +591,7 @@ public class PSS2PatientPortalAcceptanceTests extends BaseTestNGWebDriver {
 		JalapenoHomePage homePage = accountDetailsPage.fillAccountDetailsAndContinue(patient.getEmail(),
 				patient.getPassword(), testDataPFL);
 		log("Detecting if Home Page is opened");
-		assertTrue(homePage.isHomeButtonPresent(driver));
+		
 		homePage.clickFeaturedAppointmentsReq();
 		assertEquals(homePage.appointmentNotScheduled(), "Online Scheduling Unavailable");
 		homePage.closeModalPopUp();
@@ -618,7 +618,7 @@ public class PSS2PatientPortalAcceptanceTests extends BaseTestNGWebDriver {
 		JalapenoHomePage homePage = accountDetailsPage.fillAccountDetailsAndContinue(patient.getEmail(),
 				patient.getPassword(), testDataPFL);
 		log("Detecting if Home Page is opened");
-		assertTrue(homePage.isHomeButtonPresent(driver));
+		
 		homePage.clickFeaturedAppointmentsReq();
 		assertEquals(homePage.appointmentNotScheduled(), "Online Scheduling Unavailable");
 		homePage.closeModalPopUp();
@@ -2138,8 +2138,7 @@ public class PSS2PatientPortalAcceptanceTests extends BaseTestNGWebDriver {
 		psspatientutils.deleteEmail_Mailinator(driver, "https://www.mailinator.com/", testData.getEmail());
 	}
 
-	@Test(enabled = true, groups = {
-			"AcceptanceTests" }, retryAnalyzer = RetryAnalyzer.class, dependsOnMethods = "testE2ELoginlessForExistingPatientNG")
+	@Test(enabled = true, groups = {"AcceptanceTests" }, retryAnalyzer = RetryAnalyzer.class, dependsOnMethods = "testE2ELoginlessForExistingPatientNG")
 	public void testCancelFromEmailNG() throws Exception {
 		log("Test to verify if Cancel Appointment button available only after given hours.");
 		log("Step 1: Load test Data from External Property file.");
@@ -2648,7 +2647,7 @@ public class PSS2PatientPortalAcceptanceTests extends BaseTestNGWebDriver {
 				testData.getPatientPortalPassword());
 
 		log("Detecting if Home Page is opened");
-		assertTrue(homePage.isHomeButtonPresent(driver));
+		
 		homePage.clickFeaturedAppointmentsReq();
 
 		log("Wait for PSS 2.0 Patient UI to be loaded.");
@@ -2709,7 +2708,6 @@ public class PSS2PatientPortalAcceptanceTests extends BaseTestNGWebDriver {
 				testData.getPatientPortalPassword());
 
 		log("Detecting if Home Page is opened");
-		assertTrue(homePage.isHomeButtonPresent(driver));
 		homePage.clickFeaturedAppointmentsReq();
 
 		log("Wait for PSS 2.0 Patient UI to be loaded.");
@@ -2762,7 +2760,7 @@ public class PSS2PatientPortalAcceptanceTests extends BaseTestNGWebDriver {
 				testData.getPatientPortalPassword());
 
 		log("Detecting if Home Page is opened");
-		assertTrue(homePage.isHomeButtonPresent(driver));
+		
 		homePage.clickFeaturedAppointmentsReq();
 
 		log("Wait for PSS 2.0 Patient UI to be loaded.");
@@ -2817,7 +2815,7 @@ public class PSS2PatientPortalAcceptanceTests extends BaseTestNGWebDriver {
 				testData.getPatientPortalPassword());
 
 		log("Detecting if Home Page is opened");
-		assertTrue(homePage.isHomeButtonPresent(driver));
+		
 		homePage.clickFeaturedAppointmentsReq();
 
 		log("Wait for PSS 2.0 Patient UI to be loaded.");
@@ -3359,7 +3357,7 @@ public class PSS2PatientPortalAcceptanceTests extends BaseTestNGWebDriver {
 				testData.getPatientPortalPassword());
 
 		log("Step 8: Detecting if Home Page is opened");
-		assertTrue(homePage.isHomeButtonPresent(driver));
+		
 		homePage.clickFeaturedAppointmentsReq();
 		Thread.sleep(1000);
 
@@ -3440,7 +3438,7 @@ public class PSS2PatientPortalAcceptanceTests extends BaseTestNGWebDriver {
 				testData.getPatientPortalPassword());
 
 		log("Step 8: Detecting if Home Page is opened");
-		assertTrue(homePage.isHomeButtonPresent(driver));
+		
 		homePage.clickFeaturedAppointmentsReq();
 		Thread.sleep(1000);
 
@@ -3591,7 +3589,7 @@ public class PSS2PatientPortalAcceptanceTests extends BaseTestNGWebDriver {
 
 	@Test(enabled = true, groups = { "AcceptanceTests" }, retryAnalyzer = RetryAnalyzer.class)
 	public void testSSOFlowNG() throws Exception {
-		Thread.sleep(12000);
+
 		log("Test To Verify if a Patient is able to login via SSO Flow from Patient 2.0 portal.");
 		log("Step 1: Login to Patient Portal 2.0");
 		PSSPropertyFileLoader propertyData = new PSSPropertyFileLoader();
@@ -3611,7 +3609,6 @@ public class PSS2PatientPortalAcceptanceTests extends BaseTestNGWebDriver {
 		JalapenoHomePage homePage = loginPage.login(testData.getPatientPortalUserName(),
 				testData.getPatientPortalPassword());
 		log("Detecting if Home Page is opened");
-		assertTrue(homePage.isHomeButtonPresent(driver));
 		homePage.clickFeaturedAppointmentsReq();
 		log("Wait for PSS 2.0 Patient UI to be loaded.");
 		Thread.sleep(6000);
@@ -3650,7 +3647,7 @@ public class PSS2PatientPortalAcceptanceTests extends BaseTestNGWebDriver {
 		JalapenoHomePage homePage = loginPage.login(testData.getPatientPortalUserName(),
 				testData.getPatientPortalPassword());
 		log("Detecting if Home Page is opened");
-		assertTrue(homePage.isHomeButtonPresent(driver));
+		
 		homePage.clickFeaturedAppointmentsReq();
 		log("Wait for PSS 2.0 Patient UI to be loaded.");
 		Thread.sleep(6000);
@@ -3687,7 +3684,7 @@ public class PSS2PatientPortalAcceptanceTests extends BaseTestNGWebDriver {
 		JalapenoHomePage homePage = loginPage.login(testData.getPatientPortalUserName(),
 				testData.getPatientPortalPassword());
 		log("Detecting if Home Page is opened");
-		assertTrue(homePage.isHomeButtonPresent(driver));
+		
 		homePage.clickFeaturedAppointmentsReq();
 		log("Wait for PSS 2.0 Patient UI to be loaded.");
 		Thread.sleep(6000);
@@ -3759,7 +3756,7 @@ public class PSS2PatientPortalAcceptanceTests extends BaseTestNGWebDriver {
 		JalapenoHomePage homePage = loginPage.login(testData.getPatientPortalUserName(),
 				testData.getPatientPortalPassword());
 		log("Detecting if Home Page is opened");
-		assertTrue(homePage.isHomeButtonPresent(driver));
+		
 		homePage.clickFeaturedAppointmentsReq();
 		log("Wait for PSS 2.0 Patient UI to be loaded.");
 		Thread.sleep(6000);
@@ -3831,7 +3828,7 @@ public class PSS2PatientPortalAcceptanceTests extends BaseTestNGWebDriver {
 		JalapenoHomePage homePage = loginPage.login(testData.getPatientPortalUserName(),
 				testData.getPatientPortalPassword());
 		log("Detecting if Home Page is opened");
-		assertTrue(homePage.isHomeButtonPresent(driver));
+		
 		homePage.clickFeaturedAppointmentsReq();
 		log("Wait for PSS 2.0 Patient UI to be loaded.");
 		Thread.sleep(6000);
@@ -3905,7 +3902,7 @@ public class PSS2PatientPortalAcceptanceTests extends BaseTestNGWebDriver {
 		JalapenoHomePage homePage = loginPage.login(testData.getPatientPortalUserName(),
 				testData.getPatientPortalPassword());
 		log("Detecting if Home Page is opened");
-		assertTrue(homePage.isHomeButtonPresent(driver));
+		
 		homePage.clickFeaturedAppointmentsReq();
 		log("Wait for PSS 2.0 Patient UI to be loaded.");
 		Thread.sleep(6000);
@@ -3979,7 +3976,7 @@ public class PSS2PatientPortalAcceptanceTests extends BaseTestNGWebDriver {
 		JalapenoHomePage homePage = loginPage.login(testData.getPatientPortalUserName(),
 				testData.getPatientPortalPassword());
 		log("Detecting if Home Page is opened");
-		assertTrue(homePage.isHomeButtonPresent(driver));
+		
 		homePage.clickFeaturedAppointmentsReq();
 		log("Wait for PSS 2.0 Patient UI to be loaded.");
 		Thread.sleep(6000);
@@ -4112,7 +4109,7 @@ public class PSS2PatientPortalAcceptanceTests extends BaseTestNGWebDriver {
 		JalapenoHomePage homePage = loginPage.login(testData.getPatientPortalUserName(),
 				testData.getPatientPortalPassword());
 		log("Detecting if Home Page is opened");
-		assertTrue(homePage.isHomeButtonPresent(driver));
+		
 		homePage.clickFeaturedAppointmentsReq();
 		log("Wait for PSS 2.0 Patient UI to be loaded.");
 		Thread.sleep(6000);
@@ -4182,7 +4179,7 @@ public class PSS2PatientPortalAcceptanceTests extends BaseTestNGWebDriver {
 		JalapenoHomePage homePage = loginPage.login(testData.getPatientPortalUserName(),
 				testData.getPatientPortalPassword());
 		log("Detecting if Home Page is opened");
-		assertTrue(homePage.isHomeButtonPresent(driver));
+		
 		homePage.clickFeaturedAppointmentsReq();
 		log("Wait for PSS 2.0 Patient UI to be loaded.");
 		Thread.sleep(6000);
@@ -4473,7 +4470,7 @@ public class PSS2PatientPortalAcceptanceTests extends BaseTestNGWebDriver {
 		Appointment testData = new Appointment();
 		AdminUser adminuser = new AdminUser();
 
-		propertyData.setAdminNG(adminuser);
+		propertyData.setAdminNG24249(adminuser);
 		propertyData.setAppointmentResponseNG(testData);
 
 		PSSAdminUtils adminUtils = new PSSAdminUtils();
@@ -4496,9 +4493,7 @@ public class PSS2PatientPortalAcceptanceTests extends BaseTestNGWebDriver {
 				+ " " + testData.getGender() + " " + testData.getEmail() + " " + testData.getPrimaryNumber() + " "
 				+ testData.getZipCode());
 
-		HomePage homePage = loginlessPatientInformation.fillNewPatientForm(testData.getFirstNameCarePatient(),
-				testData.getLastNameCarePatient(), testData.getDobCarePatient(), testData.getEmailCarePatient(),
-				testData.getGenderCarePatient(), testData.getZipCarePatient(), testData.getPhoneCarePatient());
+		HomePage homePage = loginlessPatientInformation.fillNewPatientForm("kt","kt","01-Jan-2000", "kest@mailinator.com", "M","12345", "7891234567");
 
 		logStep("Fetch the Past Appointment Date from home page");
 		String pastAptDate = homePage.fetchPastAptDate();

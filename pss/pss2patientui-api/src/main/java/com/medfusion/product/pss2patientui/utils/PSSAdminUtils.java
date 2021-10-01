@@ -467,7 +467,8 @@ public class PSSAdminUtils extends BaseTestNGWebDriver{
 			Log4jUtil.log("Cancel/Reschedule reason setting is OFF-Defaults pop up message will display");
 			Log4jUtil.log("cancel 1 - OFF and Cancel2 - OFF");
 		}
-		adminAppointment.saveSlotCancelReasonSetting();
+		adminAppointment.saveSlotCancelReasonSetting();		
+		patientflow.logout();
 	}
 
 	public void leadTimenotReserve(WebDriver driver, AdminUser adminuser, Appointment appointment) throws Exception {
