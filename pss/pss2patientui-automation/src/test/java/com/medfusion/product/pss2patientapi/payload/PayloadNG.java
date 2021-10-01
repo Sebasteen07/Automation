@@ -78,7 +78,7 @@ public class PayloadNG {
 			+ "   \"locationDBId\":\"205605\"\r\n"
 			+ "}";
 	
-	public static String past_appt_payload(String patientId, String practiceDisplayName, String practiceId) {
+	public static String past_appt_payload(String patientId, String practiceDisplayName, String practiceId,String startDate) {
 		
 		String past_appt="{\r\n"
 				+ "  \"additionalFields\": {},\r\n"
@@ -91,7 +91,7 @@ public class PayloadNG {
 				+ "    \"practiceName\": \""+practiceDisplayName+"\",\r\n"
 				+ "    \"practiceTimezone\": \"America/New_York\"\r\n"
 				+ "  },\r\n"
-				+ "  \"startDate\": \"01/01/2021\"\r\n"
+				+ "  \"startDate\": \""+startDate+"\"\r\n"
 				+ "}\r\n"
 				+ "";
 		
@@ -248,8 +248,8 @@ public static String nextAvailable_New() {
 				+ "  \"stackingFlag\": false,\r\n"
 				+ "  \"schedulingDuration\": 0,\r\n"
 				+ "  \"additionalProperties\": {\r\n"
-				+ "    \"FN\": \"mai\",\r\n"
-				+ "    \"LN\": \"mai\",\r\n"
+				+ "    \"FN\": \"maimai\",\r\n"
+				+ "    \"LN\": \"maimai\",\r\n"
 				+ "    \"DOB\": \"01/01/2001\",\r\n"
 				+ "    \"GENDER\": \"F\",\r\n"
 				+ "    \"EMAIL\": \"Shweta.Sontakke@crossasyst.com\",\r\n"
@@ -274,7 +274,7 @@ public static String nextAvailable_New() {
 				+ "        \"active\": true,\r\n"
 				+ "        \"practiceId\": \""+practiceid+"\"\r\n"
 				+ "    },\r\n"
-				+ "    \"startDate\": \"03/19/2021 01:47:48\"\r\n"
+				+ "    \"startDate\": \"09/29/2021 01:47:48\"\r\n"
 				+ "}";
 		return upcommingappt;
 	}

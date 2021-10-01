@@ -16,6 +16,7 @@ import com.medfusion.product.object.maps.pss2.page.util.ParseJSONFile;
 import com.medfusion.product.object.maps.pss2.page.util.PostAPIRequestNG;
 import com.medfusion.product.pss2patientapi.payload.PayloadNG;
 import com.medfusion.product.pss2patientui.pojo.Appointment;
+import com.medfusion.product.pss2patientui.utils.PSSPatientUtils;
 import com.medfusion.product.pss2patientui.utils.PSSPropertyFileLoader;
 
 import io.restassured.path.json.JsonPath;
@@ -27,6 +28,7 @@ public class PSS2NGAdapterAcceptanceTests extends BaseTestNG {
 	public static PSSPropertyFileLoader propertyData;
 	public static Appointment testData;
 	public static PostAPIRequestNG postAPIRequest;
+	public PSSPatientUtils pssPatientUtils;
 	APIVerification aPIVerification = new APIVerification();
 
 	@BeforeTest(enabled = true, groups = { "APItest" })
@@ -35,6 +37,7 @@ public class PSS2NGAdapterAcceptanceTests extends BaseTestNG {
 		payload = new PayloadNG();
 		propertyData = new PSSPropertyFileLoader();
 		postAPIRequest = new PostAPIRequestNG();
+		pssPatientUtils=new PSSPatientUtils();
 		log("I am before Test");
 		postAPIRequest.setupRequestSpecBuilder(propertyData.getProperty("base.url.ng"));
 		log("BASE URL-" + propertyData.getProperty("base.url.ng"));
@@ -58,11 +61,12 @@ public class PSS2NGAdapterAcceptanceTests extends BaseTestNG {
 
 	@Test(enabled = true, groups = { "APItest" }, retryAnalyzer = RetryAnalyzer.class)
 	public void testPastApptNgPOST() throws IOException {
-
+		String date=pssPatientUtils.sampleDateTime("MM/dd/yyyy HH:mm:ss");
+		log("Current date is"+date);
 		Response response = postAPIRequest.pastApptNG(propertyData.getProperty("practice.id.ng"),
 				PayloadNG.past_appt_payload(propertyData.getProperty("patient.id.ng"),
 						propertyData.getProperty("practice.displayname.ng"),
-						propertyData.getProperty("practice.id.ng")));
+						propertyData.getProperty("practice.id.ng"), date));
 		aPIVerification.responseCodeValidation(response, 200);
 		aPIVerification.responseTimeValidation(response);
 		aPIVerification.responseKeyValidationJson(response, "appointmentTypes.name");
@@ -153,7 +157,7 @@ public class PSS2NGAdapterAcceptanceTests extends BaseTestNG {
 
 		JsonPath js = new JsonPath(response.asString());
 		String startDateTime = js.getString("availableSlots[0].startDateTime");
-		;
+		String startDateTimeResch = js.getString("availableSlots[1].startDateTime");
 		Response scheduleApptResponse = postAPIRequest.scheduleApptNG(propertyData.getProperty("practice.id.ng"),
 				PayloadNG.schedule_Payload(startDateTime, propertyData.getProperty("slot.end.time.ng")));
 		aPIVerification.responseCodeValidation(scheduleApptResponse, 200);
@@ -163,13 +167,13 @@ public class PSS2NGAdapterAcceptanceTests extends BaseTestNG {
 		log("Appointment id - " + apptid);
 
 		Response rescheduleResponse = postAPIRequest.rescheduleApptNG(propertyData.getProperty("practice.id.ng"),
-				PayloadNG.reschedule_Payload(propertyData.getProperty("start.date.time.ng"),
+				PayloadNG.reschedule_Payload(startDateTimeResch,
 						propertyData.getProperty("end.date.time.ng"), propertyData.getProperty("patient.id.ng"),
 						propertyData.getProperty("first.name.ng"), propertyData.getProperty("first.name.ng"), apptid));
-		aPIVerification.responseTimeValidation(scheduleApptResponse);
+		aPIVerification.responseTimeValidation(rescheduleResponse);
 		aPIVerification.responseCodeValidation(rescheduleResponse, 200);
-		aPIVerification.responseKeyValidationJson(scheduleApptResponse, "id");
-		aPIVerification.responseKeyValidationJson(scheduleApptResponse, "slotAlreadyTaken");
+		aPIVerification.responseKeyValidationJson(rescheduleResponse, "id");
+		aPIVerification.responseKeyValidationJson(rescheduleResponse, "slotAlreadyTaken");
 
 	}
 
