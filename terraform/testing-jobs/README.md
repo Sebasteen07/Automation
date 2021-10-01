@@ -60,13 +60,6 @@ name                          = terraform.workspace
 aws_codecommit_repo_arn       = "arn:aws:codecommit:${data.aws_region.current.name}:${data.aws_caller_identity.current.account_id}:${var.repository_name}"
 selenium_browser              = "*chrome"
 test_execution_mode           = "headless"
-common_tags = {
-  "nextgen.automation"          = true
-  "nextgen.component"           = var.component
-  "nextgen.data-classification" = var.data_classification
-  "nextgen.environment"         = var.environment
-  "nextgen.environment-type"    = var.environment-type
-}
 ````
 
 The following locals are configured as an Inputs mapping to each spcific testing-job terraform code, which needs modification.
