@@ -169,6 +169,12 @@ public class JalapenoAccountPage extends JalapenoMenu {
 			log("Manage Access Per Category Radio Button got clicked");
 
 		}
+		public void clickOnRdoManageAccessPerCategory() throws InterruptedException {
+			wait.until(ExpectedConditions.visibilityOf(manageAccessPerCategory));
+			manageAccessPerCategory.click();
+			log("Manage Access Per Category Radio Button got clicked");
+
+		}
 
 		public void givingPermissionWithModuleName(String textModule, String manageAccessPref) {
 
@@ -186,6 +192,9 @@ public class JalapenoAccountPage extends JalapenoMenu {
 					new WebDriverWait(driver, 10).until(ExpectedConditions.elementToBeClickable(selectedPreference));
 					selectedPreference.click();
 				} else if (manageAccessPref == "noAccess") {
+					new WebDriverWait(driver, 10).until(ExpectedConditions.elementToBeClickable(selectedPreference));
+					selectedPreference.click();
+                } else if (manageAccessPref == "fullAccessHealthRecord") {
 					new WebDriverWait(driver, 10).until(ExpectedConditions.elementToBeClickable(selectedPreference));
 					selectedPreference.click();
 

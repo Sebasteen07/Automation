@@ -15,7 +15,9 @@ import java.util.Date;
 import java.util.Locale;
 import com.medfusion.product.object.maps.patientportal2.page.JalapenoMenu;
 import org.openqa.selenium.By;
+import org.openqa.selenium.JavascriptExecutor;
 import org.openqa.selenium.Keys;
+import org.openqa.selenium.NoSuchElementException;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.FindBy;
@@ -84,6 +86,9 @@ public class MedicalRecordSummariesPage extends JalapenoMenu {
 
 	@FindBy(how = How.ID, using = "plusLinkButton")
 	private WebElement getStartedButton;
+	
+	@FindBy(how = How.ID, using = "viewBtn0")
+	private WebElement viewButton;
 
 	@FindBy(how = How.XPATH, using = "//*[@id=\"common-nav-container\"]/ul/li[2]/a")
 	private WebElement otherDocument;
@@ -407,5 +412,15 @@ public class MedicalRecordSummariesPage extends JalapenoMenu {
 	
 	public void clickRequestHealthRecord() {
 		requestHealthRecord.click();
+	}
+	public boolean isViewButtonDisplayed() {
+		JavascriptExecutor jse = (JavascriptExecutor) driver;
+		jse.executeScript("window.scrollBy(0,400)", "");
+		try {
+			return viewButton.isDisplayed();
+		} catch (NoSuchElementException e) {
+			log("Verify Appointment Solution  for Trusted Rep shoud not display");
+			return false;
+		}
 	}
 }

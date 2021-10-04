@@ -5640,4 +5640,59 @@ public class PatientPortal2AcceptanceTests extends BaseTestNGWebDriver {
 		assertFalse(homePage.isAppointmentSolutionisplayed());
 
 	}
+	@Test(enabled = true, groups = { "acceptance-linkedaccounts" }, retryAnalyzer = RetryAnalyzer.class)
+	public void testLATrustedRepresentativeAcessForHealthRecordFromPatient() throws Exception {
+		
+        logStep("Load login page");
+		JalapenoLoginPage loginPage = new JalapenoLoginPage(driver, testData.getUrl());
+		JalapenoHomePage homePage = loginPage.login(testData.getProperty("user.id"), testData.getProperty("password"));
+		
+		logStep("Click on the acount button");
+		JalapenoAccountPage accountPage = homePage.clickOnAccount();
+		
+		logStep("Click on the edit trusted representatives button");
+		homePage.editTrustedRepAccount();
+		
+		logStep("Select manage access per category radio button");
+		accountPage.clickOnRdoManageAccessPerCategory();
+		
+		logStep("Unchecked the full access to health record and click on save my change button");
+		accountPage.givingPermissionWithModuleName("Health Record", "fullAccessHealthRecord");
+		accountPage.clickOnSaveMyChangesButton();
+		
+		logStep("Load trusted representatives user role");
+		loginPage = new JalapenoLoginPage(driver, testData.getUrl());
+		homePage = loginPage.login(testData.getProperty("caremanager.trustedrep.healthrecord.username"), testData.getProperty("password"));
+
+		logStep("Verify that system should not display the Health Record");
+		assertFalse(homePage.isHealthRecordSolutionisplayed());
+		
+		logStep("Load login page with the parent role");
+		loginPage = new JalapenoLoginPage(driver, testData.getUrl());
+		homePage = loginPage.login(testData.getProperty("user.id"), testData.getProperty("password"));
+			
+		logStep("Click on the acount button");
+		accountPage = homePage.clickOnAccount();
+			
+		logStep("Click on the edit trusted representatives button");
+		homePage.editTrustedRepAccount();
+			
+		logStep("Select manage access per category radio button");
+		accountPage.clickOnRdoManageAccessPerCategory();
+			
+		logStep("Unchecked the full access to health record and click on save my change button");
+		accountPage.givingPermissionWithModuleName("Health Record", "fullAccessHealthRecord");
+		accountPage.clickOnSaveMyChangesButton();
+		
+		logStep("Load trusted representatives user role");
+		loginPage = new JalapenoLoginPage(driver, testData.getUrl());
+		homePage = loginPage.login(testData.getProperty("caremanager.trustedrep.healthrecord.username"), testData.getProperty("password"));
+
+		logStep("Verify that system should not display the Health Record");
+		assertTrue(homePage.isHealthRecordSolutionisplayed());
+		
+		logStep("Verify that system should allow user to view the Health Record");
+		MedicalRecordSummariesPage healthrecord=homePage.clickOnMedicalRecordSummaries(driver);
+		assertTrue(healthrecord.isViewButtonDisplayed());
+		}
 }
