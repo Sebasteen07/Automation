@@ -638,7 +638,7 @@ public class JalapenoHomePage extends JalapenoMenu {
 		try {
 			return healthrecord.isDisplayed();
 		} catch (NoSuchElementException e) {
-			log("Verify Appointment Solution  for Trusted Rep shoud not display");
+			log("Verify Health Record Solution for Trusted Rep shoud not display");
 			return false;
 		}
 	}
