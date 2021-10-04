@@ -71,12 +71,34 @@ public class PSSPatientUtils extends BaseTestNGWebDriver {
 		log("Is file deleted ? " + deleteFile(path));
 	}
 
-	public String sampleDateTime(String datetimeformat) {
-		DateFormat dateFormat = new SimpleDateFormat(datetimeformat);
-		Date d = new Date();
-		String currentdate = dateFormat.format(d);
-		log("Current Date- " + currentdate);
-		return currentdate;
+	public String sampleDateTime(String datetimeformat) { 
+        DateFormat dateFormat = new SimpleDateFormat(datetimeformat);
+        Date d = new Date();
+        String currentdate = dateFormat.format(d);
+        log("Current Date- " + currentdate);
+        return currentdate;
+    }
+	
+	public String createFutureDate(String date, int futuredays) {
+
+		SimpleDateFormat sdf = new SimpleDateFormat("MM/dd/yyyy");
+		Calendar c = Calendar.getInstance();
+		try {
+			// Setting the date to the given date
+			c.setTime(sdf.parse(date));
+		} catch (ParseException e) {
+			e.printStackTrace();
+		}
+
+		// Number of days to add to create the future date
+		c.add(Calendar.DAY_OF_MONTH, futuredays);
+
+		String newDate = sdf.format(c.getTime());
+
+		// Displaying the new Date after addition of Days
+		log("Future Date: " + newDate);
+
+		return newDate;
 	}
 
 	public String filePath() {
