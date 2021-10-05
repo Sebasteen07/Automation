@@ -1260,7 +1260,7 @@ public class PSSPatientUtils extends BaseTestNGWebDriver {
 		readICSFile(filePath());
 	}
 
-	public ScheduledAppointment selectAFlow(WebDriver driver, String rule, HomePage homepage, Appointment testData)
+	public ScheduledAppointment selectAFlow_New(WebDriver driver, String rule, HomePage homepage, Appointment testData)
 			throws Exception {
 		log("selectAFlow method started");
 		log("------------I am in selectAFlow METHOD-----");
@@ -1311,6 +1311,59 @@ public class PSSPatientUtils extends BaseTestNGWebDriver {
 			LTFlow(homepage, testData, Boolean.toString(testData.getIsInsuranceEnabled()), driver);
 		}
 		return PageFactory.initElements(driver, ScheduledAppointment.class);
+	}
+	
+	public void selectAFlow(WebDriver driver, String rule, HomePage homepage, Appointment testData)
+			throws Exception {
+		log("selectAFlow method started");
+		log("------------I am in selectAFlow METHOD-----");
+		Thread.sleep(1000);
+		testData.setIsInsuranceEnabled(false);
+		Thread.sleep(1000);
+		if (rule.equalsIgnoreCase(PSSConstants.LBT)) {
+			LBTFlow(homepage, testData, Boolean.toString(testData.getIsInsuranceEnabled()), driver);
+		}
+		if (rule.equalsIgnoreCase(PSSConstants.LTB)) {
+			LTBFlow(homepage, testData, Boolean.toString(testData.getIsInsuranceEnabled()), driver);
+		}
+		if (rule.equalsIgnoreCase(PSSConstants.BLT)) {
+			BLTFlow(homepage, testData, Boolean.toString(testData.getIsInsuranceEnabled()), driver);
+		}
+		if (rule.equalsIgnoreCase(PSSConstants.BTL)) {
+			BTLFlow(homepage, testData, Boolean.toString(testData.getIsInsuranceEnabled()), driver);
+		}
+		if (rule.equalsIgnoreCase(PSSConstants.TLB)) {
+			TLBFlow(homepage, testData, Boolean.toString(testData.getIsInsuranceEnabled()), driver);
+		}
+		if (rule.equalsIgnoreCase(PSSConstants.TBL)) {
+			TBLFlow(homepage, testData, Boolean.toString(testData.getIsInsuranceEnabled()), driver);
+		}
+		if (rule.equalsIgnoreCase(PSSConstants.STBL)) {
+			STBLFlow(homepage, testData, Boolean.toString(testData.getIsInsuranceEnabled()), driver);
+		}
+		if (rule.equalsIgnoreCase(PSSConstants.STLB)) {
+			log("Method STLBFlow will start now......");
+			STLBFlow(homepage, testData, Boolean.toString(testData.getIsInsuranceEnabled()), driver);
+		}
+		if (rule.equalsIgnoreCase(PSSConstants.SLTB)) {
+			SLTBFlow(homepage, testData, Boolean.toString(testData.getIsInsuranceEnabled()), driver);
+		}
+		if (rule.equalsIgnoreCase(PSSConstants.SLBT)) {
+			SLBTFlow(homepage, testData, Boolean.toString(testData.getIsInsuranceEnabled()), driver);
+		}
+		if (rule.equalsIgnoreCase(PSSConstants.SBTL)) {
+			SBTLFlow(homepage, testData, Boolean.toString(testData.getIsInsuranceEnabled()), driver);
+		}
+		if (rule.equalsIgnoreCase(PSSConstants.SBLT)) {
+			SBLTFlow(homepage, testData, Boolean.toString(testData.getIsInsuranceEnabled()), driver);
+		}
+		if (rule.equalsIgnoreCase(PSSConstants.TL)) {
+			TLFlow(homepage, testData, Boolean.toString(testData.getIsInsuranceEnabled()), driver);
+		}
+		if (rule.equalsIgnoreCase(PSSConstants.LT)) {
+			LTFlow(homepage, testData, Boolean.toString(testData.getIsInsuranceEnabled()), driver);
+		}
+		
 	}
 
 	public void checkPrivacyPage(WebDriver driver) {

@@ -946,8 +946,8 @@ public class PSS2PatientPortalAcceptanceTests extends BaseTestNGWebDriver {
 
 		logStep("Start booking an appointment in PSS---> PATIENT UI STEPS ");
 		homepage.btnStartSchedClick();
-		ScheduledAppointment scheduledAppointment=psspatientutils.selectAFlow(driver, rule, homepage, testData);
-		scheduledAppointment.endMethod();
+		psspatientutils.selectAFlow(driver, rule, homepage, testData);
+		
 	}
 
 	@Test(enabled = true, groups = { "AcceptanceTests" }, retryAnalyzer = RetryAnalyzer.class)
@@ -1807,7 +1807,7 @@ public class PSS2PatientPortalAcceptanceTests extends BaseTestNGWebDriver {
 		HomePage homepage = loginlessPatientInformation.fillNewPatientForm(testData.getFirstName(),
 				testData.getLastName(), testData.getDob(), testData.getEmail(), testData.getGender(),
 				testData.getZipCode(), testData.getPrimaryNumber());
-		ScheduledAppointment scheduledAppointment = psspatientutils.selectAFlow(driver, rule, homepage, testData);
+		ScheduledAppointment scheduledAppointment = psspatientutils.selectAFlow_New(driver, rule, homepage, testData);
 
 		homepage = scheduledAppointment.backtoHomePage();
 
@@ -1870,7 +1870,7 @@ public class PSS2PatientPortalAcceptanceTests extends BaseTestNGWebDriver {
 				testData.getZipCode(), testData.getPrimaryNumber());
 
 		homepage.btnStartSchedClick();
-		ScheduledAppointment scheduledAppointment = psspatientutils.selectAFlow(driver, rule, homepage, testData);
+		ScheduledAppointment scheduledAppointment = psspatientutils.selectAFlow_New(driver, rule, homepage, testData);
 
 		homepage = scheduledAppointment.backtoHomePage();
 		String popupmsg = "We understand that there are times when you must miss an appointment due to emergencies or obligations for work or family. However, when you do not call to cancel an appointment, you may be preventing another patient from getting much needed treatment. If an appointment is not cancelled in advance you may be charged a fee; this will not be covered by your insurance company.";
@@ -2252,7 +2252,7 @@ public class PSS2PatientPortalAcceptanceTests extends BaseTestNGWebDriver {
 		HomePage homepage = loginlessPatientInformation.fillNewPatientForm(testData.getFirstName(),
 				testData.getLastName(), testData.getDob(), testData.getEmail(), testData.getGender(),
 				testData.getZipCode(), testData.getPrimaryNumber());
-		ScheduledAppointment scheduledAppointment = psspatientutils.selectAFlow(driver, rule, homepage, testData);
+		ScheduledAppointment scheduledAppointment = psspatientutils.selectAFlow_New(driver, rule, homepage, testData);
 
 		homepage = scheduledAppointment.backtoHomePage();
 
@@ -2341,7 +2341,7 @@ public class PSS2PatientPortalAcceptanceTests extends BaseTestNGWebDriver {
 		HomePage homepage = loginlessPatientInformation.fillNewPatientForm(testData.getFirstName(),
 				testData.getLastName(), testData.getDob(), testData.getEmail(), testData.getGender(),
 				testData.getZipCode(), testData.getPrimaryNumber());
-		ScheduledAppointment scheduledAppointment = psspatientutils.selectAFlow(driver, rule, homepage, testData);
+		ScheduledAppointment scheduledAppointment = psspatientutils.selectAFlow_New(driver, rule, homepage, testData);
 
 		homepage = scheduledAppointment.backtoHomePage();
 
@@ -2444,7 +2444,7 @@ public class PSS2PatientPortalAcceptanceTests extends BaseTestNGWebDriver {
 				testData.getLastName(), testData.getDob(), testData.getEmail(), testData.getGender(),
 				testData.getZipCode(), testData.getPrimaryNumber());
 		homepage.btnStartSchedClick();
-		ScheduledAppointment scheduledAppointment = psspatientutils.selectAFlow(driver, rule, homepage, testData);
+		ScheduledAppointment scheduledAppointment = psspatientutils.selectAFlow_New(driver, rule, homepage, testData);
 
 		homepage = scheduledAppointment.backtoHomePage();
 
@@ -2518,7 +2518,7 @@ public class PSS2PatientPortalAcceptanceTests extends BaseTestNGWebDriver {
 				testData.getLastName(), testData.getDob(), testData.getEmail(), testData.getGender(),
 				testData.getZipCode(), testData.getPrimaryNumber());
 		homepage.btnStartSchedClick();
-		ScheduledAppointment scheduledAppointment = psspatientutils.selectAFlow(driver, rule, homepage, testData);
+		ScheduledAppointment scheduledAppointment = psspatientutils.selectAFlow_New(driver, rule, homepage, testData);
 
 		homepage = scheduledAppointment.backtoHomePage();
 
@@ -2588,7 +2588,7 @@ public class PSS2PatientPortalAcceptanceTests extends BaseTestNGWebDriver {
 				testData.getZipCode(), testData.getPrimaryNumber());
 
 		homepage.btnStartSchedClick();
-		ScheduledAppointment scheduledAppointment = psspatientutils.selectAFlow(driver, rule, homepage, testData);
+		ScheduledAppointment scheduledAppointment = psspatientutils.selectAFlow_New(driver, rule, homepage, testData);
 
 		homepage = scheduledAppointment.backtoHomePage();
 		assertTrue(homepage.getFutureAppointmentListSize() > 0, "No Future Appointment found.");
@@ -2666,7 +2666,7 @@ public class PSS2PatientPortalAcceptanceTests extends BaseTestNGWebDriver {
 
 		homepage.btnStartSchedClick();
 
-		ScheduledAppointment scheduledAppointment = psspatientutils.selectAFlow(driver, rule, homepage, testData);
+		ScheduledAppointment scheduledAppointment = psspatientutils.selectAFlow_New(driver, rule, homepage, testData);
 		homepage = scheduledAppointment.backtoHomePage();
 
 		homepage.clickRescheduleLink();
@@ -2726,7 +2726,7 @@ public class PSS2PatientPortalAcceptanceTests extends BaseTestNGWebDriver {
 
 		homepage.btnStartSchedClick();
 
-		ScheduledAppointment scheduledAppointment = psspatientutils.selectAFlow(driver, rule, homepage, testData);
+		ScheduledAppointment scheduledAppointment = psspatientutils.selectAFlow_New(driver, rule, homepage, testData);
 		homepage = scheduledAppointment.backtoHomePage();
 
 		homepage.clickRescheduleLink();
@@ -2779,7 +2779,7 @@ public class PSS2PatientPortalAcceptanceTests extends BaseTestNGWebDriver {
 
 		homepage.btnStartSchedClick();
 
-		ScheduledAppointment scheduledAppointment = psspatientutils.selectAFlow(driver, rule, homepage, testData);
+		ScheduledAppointment scheduledAppointment = psspatientutils.selectAFlow_New(driver, rule, homepage, testData);
 		homepage = scheduledAppointment.backtoHomePage();
 
 		homepage.clickRescheduleLink();
@@ -2834,7 +2834,7 @@ public class PSS2PatientPortalAcceptanceTests extends BaseTestNGWebDriver {
 
 		homepage.btnStartSchedClick();
 
-		ScheduledAppointment scheduledAppointment = psspatientutils.selectAFlow(driver, rule, homepage, testData);
+		ScheduledAppointment scheduledAppointment = psspatientutils.selectAFlow_New(driver, rule, homepage, testData);
 		homepage = scheduledAppointment.backtoHomePage();
 
 		homepage.clickRescheduleLink();
