@@ -11,6 +11,7 @@ resource "aws_codestarnotifications_notification_rule" "codepipeline_notificatio
   resource = aws_codepipeline.main.arn
 
   target {
-    address = data.aws_sns_topic.slack.arn
+    address = local.slack_chatbot_arn
+    type    = "AWSChatbotSlack"
   }
 }

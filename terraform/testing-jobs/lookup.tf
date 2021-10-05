@@ -29,10 +29,6 @@ data "aws_security_group" "codebuild_sg" {
   name = "nextgen_default"
 }
 
-data "aws_sns_topic" "slack" {
-  name = "pxp-mf-qa-dev-chatbot-sns-topic"
-}
-
 data "aws_codecommit_repository" "qa_automation" {
   repository_name = var.repository_name
 }

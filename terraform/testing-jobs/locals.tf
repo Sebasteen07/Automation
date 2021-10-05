@@ -4,6 +4,7 @@ locals {
   kms_key_id                    = data.aws_ssm_parameter.kms_data_default.value
   pipeline_artifact_bucket_name = data.aws_ssm_parameter.codepipeline_artifact_store.value
   pipeline_artifact_bucket_arn  = "arn:aws:s3:::${local.pipeline_artifact_bucket_name}"
+  slack_chatbot_arn             = "arn:aws:chatbot::${data.aws_caller_identity.current.account_id}:chat-configuration/slack-channel/${var.slack_chatbot}"  
   name                          = terraform.workspace
   selenium_browser              = "*chrome"
   test_execution_mode           = "headless"
