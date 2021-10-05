@@ -18,10 +18,6 @@ import org.openqa.selenium.By;
 import org.openqa.selenium.JavascriptExecutor;
 import org.openqa.selenium.Keys;
 import org.openqa.selenium.NoSuchElementException;
-<<<<<<< HEAD
-=======
-import org.openqa.selenium.TimeoutException;
->>>>>>> 38cc2b3abd4692c9be2af88032cf87a9b6f2de22
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.FindBy;
@@ -29,6 +25,7 @@ import org.openqa.selenium.support.How;
 import org.openqa.selenium.support.PageFactory;
 import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.openqa.selenium.support.ui.WebDriverWait;
+import org.openqa.selenium.TimeoutException;
 
 import com.medfusion.common.utils.IHGUtil;
 import com.medfusion.common.utils.MFDateUtil;
