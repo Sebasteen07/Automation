@@ -447,8 +447,6 @@ public class GatewayProxyDigitalWalletTests extends GatewayProxyBaseTest {
 		String token = GatewayProxyUtils.getTokenForCustomer();
 		GatewayProxyDigitalWalletResource digitalWallet = new GatewayProxyDigitalWalletResource();
 
-		System.out.println("===============================================================================");
-
 		emptyWalletId = digitalWallet.getEmptyWallet(token, testData, digitalWallet);
 
 		Map<String, Object> cardsMap = PayloadDetails.getPayloadForAddingMultipeCardsToDigitalWallet(testData,
@@ -471,7 +469,6 @@ public class GatewayProxyDigitalWalletTests extends GatewayProxyBaseTest {
 				Assert.assertTrue(jPAddCrdsToExisting.get("message").toString().contains(verifyValidationMessage));
 			}
 
-			System.out.println("===============================================================================");
 		}
 
 	}
@@ -494,15 +491,15 @@ public class GatewayProxyDigitalWalletTests extends GatewayProxyBaseTest {
 		Assert.assertTrue(response.getStatusCode() == 200);
 		Assert.assertTrue(!jsonPath.get("externalWalletId").toString().isEmpty());
 
-		String WalletId = jsonPath.get("externalWalletId").toString();
+		String walletId = jsonPath.get("externalWalletId").toString();
 
-		Response deleteResponce = digitalWallet.makeWalletEmpty(token, testData, digitalWallet, WalletId,
+		Response deleteResponce = digitalWallet.makeWalletEmpty(token, testData, digitalWallet, walletId,
 				cardFlagToBeDeleted);
 		JsonPath jsonPathDelete = new JsonPath(deleteResponce.asString());
 
 		if (statusCodeVerify == 200) {
 
-			Response getCardsResponce = digitalWallet.getListOfCardsInWallet(token, WalletId);
+			Response getCardsResponce = digitalWallet.getListOfCardsInWallet(token, walletId);
 
 			JsonPath jsonPathgetCards = new JsonPath(getCardsResponce.asString());
 
