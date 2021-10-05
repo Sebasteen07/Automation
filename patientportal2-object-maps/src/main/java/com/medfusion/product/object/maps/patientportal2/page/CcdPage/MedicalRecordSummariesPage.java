@@ -16,6 +16,8 @@ import java.util.Locale;
 import com.medfusion.product.object.maps.patientportal2.page.JalapenoMenu;
 import org.openqa.selenium.By;
 import org.openqa.selenium.Keys;
+import org.openqa.selenium.NoSuchElementException;
+import org.openqa.selenium.TimeoutException;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.FindBy;
@@ -138,6 +140,18 @@ public class MedicalRecordSummariesPage extends JalapenoMenu {
 	
 	@FindBy(how = How.XPATH, using = "//*[contains(text(),'Request complete record')]")
 	private WebElement requestHealthRecord;
+	
+	@FindBy(how = How.ID, using = "greenLightLinkButton")
+	private WebElement btnGreenLight;
+
+	@FindBy(how = How.XPATH, using = "//span[text()='Greenlight Login']")
+	private WebElement btnGreenLightLogin;
+		
+	@FindBy(how = How.XPATH, using = "//img[@class='greenlight-header__logo']")
+	private WebElement imgGreenlightLogo;
+		
+	@FindBy(how = How.XPATH, using = "//*[text()='Create your new account']")
+	private WebElement lblCreateYourNewAccount;
 
 	public MedicalRecordSummariesPage(WebDriver driver) {
 		super(driver);
@@ -408,4 +422,28 @@ public class MedicalRecordSummariesPage extends JalapenoMenu {
 	public void clickRequestHealthRecord() {
 		requestHealthRecord.click();
 	}
+	
+	public void clickGreenLight() throws InterruptedException {
+		javascriptClick(btnGreenLight);
+		javascriptClick(btnGreenLightLogin);
+		Thread.sleep(5000);//Waiting for the next page to load 
+	}
+
+	public boolean isGreenLightLogoDisplayed() throws TimeoutException {
+		log("Verify Green Light Logo");
+		try {
+			return imgGreenlightLogo.isDisplayed();
+		}
+		catch(NoSuchElementException e){
+			log("Green Light Logo is not displayed");
+
+			return false;
+		}
+	}
+
+	public String getCreateYourNewAccount() {
+		IHGUtil.waitForElement(driver, 60, lblCreateYourNewAccount);
+		return lblCreateYourNewAccount.getText();
+	}
+	
 }

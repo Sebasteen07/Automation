@@ -10,6 +10,7 @@ import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.FindBy;
+import org.openqa.selenium.support.How;
 import org.openqa.selenium.support.PageFactory;
 import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.openqa.selenium.support.ui.WebDriverWait;
@@ -17,6 +18,7 @@ import org.openqa.selenium.support.ui.WebDriverWait;
 
 import com.intuit.ifs.csscat.core.pageobject.BasePageObject;
 import com.medfusion.common.utils.IHGUtil;
+import com.medfusion.product.object.maps.practice.page.familyManagement.PatientTrustedRepresentativePage;
 import com.medfusion.product.object.maps.practice.page.onlinebillpay.PayMyBillOnlinePage;
 import com.medfusion.product.object.maps.practice.page.patientactivation.PatientActivationPage;
 import com.medfusion.product.practice.api.utils.PracticeConstants;
@@ -98,6 +100,18 @@ public class PatientSearchPage extends BasePageObject {
 	
 	@FindBy(xpath = "//input[@type='submit']")
 	private WebElement emailPasswordReset;
+	
+	@FindBy(linkText = "Invite New")
+	private WebElement lnkInviteNewTrustedRepresentative;
+
+	@FindBy(linkText = "Edit Access")
+	private WebElement lnkEditAccess;
+	
+	@FindBy(how = How.XPATH, using = "//*[contains(text(),'A trusted representative invitation has been sent')]")
+	private WebElement msgInviteTrustedRepresentative;
+	
+	@FindBy(how = How.XPATH, using = "//*[contains(text(),'Trusted representative access has been updated')]")
+	private WebElement msgUpdateTrustedRepresentative;
 
 	/**
 	 * @Description:Set Patient First Name
@@ -327,4 +341,30 @@ public class PatientSearchPage extends BasePageObject {
 		String patientExternalID = patientIdTextbox.getAttribute("value");
 		return patientExternalID;
 	}
+
+	public PatientTrustedRepresentativePage clickInviteTrustedRepresentative() throws InterruptedException {
+		IHGUtil.PrintMethodName();
+		IHGUtil.waitForElement(driver, 10, lnkInviteNewTrustedRepresentative);
+		lnkInviteNewTrustedRepresentative.click();
+		return PageFactory.initElements(driver, PatientTrustedRepresentativePage.class);
+	}
+
+	public PatientTrustedRepresentativePage editTrustedRepresentativeAccess() throws InterruptedException {
+		IHGUtil.waitForElement(driver, 10, lnkEditAccess);
+		lnkEditAccess.click();
+		return PageFactory.initElements(driver, PatientTrustedRepresentativePage.class);
+	}
+	
+	public boolean wasInviteTrustedRepresentativeSuccessful() {
+
+		try {
+			log("Looking for successful message after inviting trusted representative");
+			new WebDriverWait(driver, 30).until(ExpectedConditions.visibilityOf(msgInviteTrustedRepresentative));
+			return msgInviteTrustedRepresentative.isDisplayed();
+		} catch (Exception e) {
+			log("Invite TrustedRepresentative was unsuccessful");
+			return false;
+		}
+	}
+	
 }

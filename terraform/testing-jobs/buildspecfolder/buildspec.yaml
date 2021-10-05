@@ -1,0 +1,25 @@
+version: 0.2
+
+phases:
+  install:
+    runtime-versions:
+      java: corretto8
+  pre_build:
+    commands:
+      - yum update -y
+      - yum install GConf2 liberation-fonts-common gtk3 libappindicator-gtk3 yum-utils libXScrnSaver redhat-lsb-core alsa-lib-devel dbus-x11 ImageMagick Xvfb net-tools -y
+      #- curl -O https://dl.google.com/linux/direct/google-chrome-stable_current_x86_64.rpm
+      - curl -O https://dl.google.com/linux/chrome/rpm/stable/x86_64/google-chrome-stable-${google_chrome_version}.x86_64.rpm
+      - ls -l /usr/bin
+      - rpm -Uvh --nodeps google-chrome-stable-${google_chrome_version}.x86_64.rpm
+      - mv /usr/bin/google-chrome-stable /usr/bin/google-chrome
+      - ls -l /usr/bin
+      - google-chrome -version
+      - which google-chrome
+      - curl -O https://chromedriver.storage.googleapis.com/${chrome_driver_version}/chromedriver_linux64.zip
+      - unzip -x -o chromedriver_linux64.zip -d /usr/bin/
+      - chmod +x /usr/bin/chromedriver
+  build:
+    commands:
+      - cd ${execution_folder}
+      - xvfb-run ${maven_command}
