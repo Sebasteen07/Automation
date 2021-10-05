@@ -5640,6 +5640,26 @@ public class PatientPortal2AcceptanceTests extends BaseTestNGWebDriver {
 		assertFalse(homePage.isAppointmentSolutionisplayed());
 
 	}
+	
+	@Test(enabled = true, groups = { "acceptance-solutions" }, retryAnalyzer = RetryAnalyzer.class)
+	public void testGreenLight() throws Exception {
+		logStep("Load login page");
+		JalapenoLoginPage jalapenoLoginPage = new JalapenoLoginPage(driver, testData.getUrl());
+
+		JalapenoHomePage jalapenoHomePage = jalapenoLoginPage
+				.login(testData.getProperty("patient.education.with.issue.username"), testData.getPassword());
+
+		logStep("Navigate to Medical Record Summaries Page");
+		MedicalRecordSummariesPage recordSummaries = jalapenoHomePage.clickOnMedicalRecordSummaries(driver);
+
+		logStep("Click on Green Light Button ");
+		recordSummaries.clickGreenLight();
+
+		logStep("Validating the Green Light Health Page");
+		assertTrue(recordSummaries.isGreenLightLogoDisplayed());
+		assertEquals(recordSummaries.getCreateYourNewAccount(), "Create your new account");
+
+	}
 	@Test(enabled = true, groups = { "acceptance-linkedaccounts" }, retryAnalyzer = RetryAnalyzer.class)
 	public void testLATrustedRepresentativeAcessForHealthRecordFromPatient() throws Exception {
 		
@@ -5695,4 +5715,7 @@ public class PatientPortal2AcceptanceTests extends BaseTestNGWebDriver {
 		MedicalRecordSummariesPage healthrecord=homePage.clickOnMedicalRecordSummaries(driver);
 		assertTrue(healthrecord.isViewButtonDisplayed());
 		}
-}
+    }
+
+	
+
