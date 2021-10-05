@@ -3,6 +3,7 @@ package com.medfusion.product.object.maps.practice.page.askstaff;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.FindBy;
+import org.openqa.selenium.support.How;
 import org.openqa.selenium.support.PageFactory;
 import org.openqa.selenium.support.ui.Select;
 
@@ -65,7 +66,7 @@ public class AskAStaffQuestionDetailStep2Page extends BasePageObject {
 	private final String diagnosticCodeContent = "COU";
 	private final String diagnosticContent = "Cough";
 
-	@FindBy(linkText = diagnosticContent)
+	@FindBy(how = How.XPATH, using = "//a[contains(text(),'Cough')]")
 	private WebElement diagnosticContentButton;
 
 	@FindBy(name = "buttons:submit")
@@ -140,9 +141,9 @@ public class AskAStaffQuestionDetailStep2Page extends BasePageObject {
 	 *                       accessible via getCreatedTimeStamp())
 	 * @param bodyContent    content to be put in reply body to patient
 	 * 
-	 * @return Ask A Staff Question Detail Step 3 page
+	 * @return Ask A Staff Question Detail Step 3 page 
 	 */
-	public AskAStaffQuestionDetailStep3Page processAndCommunicate(String subjectContent, String bodyContent) {
+	public AskAStaffQuestionDetailStep3Page processAndCommunicate(String subjectContent, String bodyContent) throws InterruptedException {
 		IHGUtil.PrintMethodName();
 		PracticeUtil.setPracticeFrame(driver);
 
@@ -162,9 +163,9 @@ public class AskAStaffQuestionDetailStep2Page extends BasePageObject {
 	/**
 	 * Fills out the Prescription, Pharmacy and the rest is handled by the
 	 * processAndCommunicate method Units stay default (capsule), Refills 0 and Do
-	 * not fill after = today
+	 * not fill after = today 
 	 */
-	public AskAStaffQuestionDetailStep3Page prescribeAndCommunicate(String subjectContent, String bodyContent) {
+	public AskAStaffQuestionDetailStep3Page prescribeAndCommunicate(String subjectContent, String bodyContent) throws InterruptedException {
 		IHGUtil.PrintMethodName();
 		PracticeUtil.setPracticeFrame(driver);
 		IHGUtil.waitForElement(driver, 20, drugName);

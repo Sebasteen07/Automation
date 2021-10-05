@@ -10,38 +10,28 @@ import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonPropertyOrder;
 
 @JsonInclude(JsonInclude.Include.NON_NULL)
-@JsonPropertyOrder({
-"qualifiedFeePercent",
-"midQualifiedFeePercent",
-"midQualifiedUpperBoundaryPercent",
-"perTransRefundFee",
-"qualifiedUpperBoundaryPercent",
-"perTransAuthFee",
-"nonQualifiedUpperBoundaryPercent",
-"amexPercent",
-"nonQualifiedFeePercent"
-})
+@JsonPropertyOrder({ "qualifiedFeePercent", "midQualifiedFeePercent", "midQualifiedUpperBoundaryPercent",
+		"perTransRefundFee", "qualifiedUpperBoundaryPercent", "perTransAuthFee", "nonQualifiedUpperBoundaryPercent",
+		"amexPercent", "nonQualifiedFeePercent", "feeSettlementType" })
 
 public class ContractedRates {
-	
-	
+
 	public static Map<String, Object> getContractedRatesMap(String amexpercent, String midqfeepercent,
-			String midqupperfeepercent,String nqfeepercent, String nqupperfeepercent,String pertransactionauthfee,
-			String pertransactionrefundfee,String qfeepercent,String qupperpercent){
-		Map<String, Object> contractrates = new HashMap<String, Object>(); 
-		contractrates.put("perTransAuthFee",Integer.parseInt(pertransactionauthfee));
-		contractrates.put("perTransRefundFee",Integer.parseInt(pertransactionrefundfee)); 
+			String midqupperfeepercent, String nqfeepercent, String nqupperfeepercent, String pertransactionauthfee,
+			String pertransactionrefundfee, String qfeepercent, String qupperpercent) {
+		Map<String, Object> contractrates = new HashMap<String, Object>();
+		contractrates.put("perTransAuthFee", Integer.parseInt(pertransactionauthfee));
+		contractrates.put("perTransRefundFee", Integer.parseInt(pertransactionrefundfee));
 		contractrates.put("qualifiedUpperBoundaryPercent", Double.parseDouble(qupperpercent));
-		contractrates.put("qualifiedFeePercent",Double.parseDouble(qfeepercent)); 
+		contractrates.put("qualifiedFeePercent", Double.parseDouble(qfeepercent));
 		contractrates.put("midQualifiedUpperBoundaryPercent", Double.parseDouble(midqupperfeepercent));
 		contractrates.put("midQualifiedFeePercent", Double.parseDouble(midqfeepercent));
-		contractrates.put("nonQualifiedUpperBoundaryPercent",Double.parseDouble(nqupperfeepercent)); 
+		contractrates.put("nonQualifiedUpperBoundaryPercent", Double.parseDouble(nqupperfeepercent));
 		contractrates.put("nonQualifiedFeePercent", Double.parseDouble(nqfeepercent));
-		contractrates.put("amexPercent",Double.parseDouble(amexpercent)); 
+		contractrates.put("amexPercent", Double.parseDouble(amexpercent));
 		return contractrates;
-		
+
 	}
-	
 
 	private Double qualifiedFeePercent;
 	private Double midQualifiedFeePercent;
@@ -51,107 +41,131 @@ public class ContractedRates {
 	private Integer perTransAuthFee;
 	private Double nonQualifiedUpperBoundaryPercent;
 	private Double amexPercent;
+	private String feeType;
 
 	private Double nonQualifiedFeePercent;
 	@JsonIgnore
 	private Map<String, Object> additionalProperties = new HashMap<String, Object>();
 
 	public Double getQualifiedFeePercent() {
-	return qualifiedFeePercent;
+		return qualifiedFeePercent;
 	}
 
 	public void setQualifiedFeePercent(Double qualifiedFeePercent) {
-	this.qualifiedFeePercent = qualifiedFeePercent;
+		this.qualifiedFeePercent = qualifiedFeePercent;
 	}
 
 	public Double getMidQualifiedFeePercent() {
-	return midQualifiedFeePercent;
+		return midQualifiedFeePercent;
 	}
 
 	public void setMidQualifiedFeePercent(Double midQualifiedFeePercent) {
-	this.midQualifiedFeePercent = midQualifiedFeePercent;
+		this.midQualifiedFeePercent = midQualifiedFeePercent;
 	}
 
 	public Double getMidQualifiedUpperBoundaryPercent() {
-	return midQualifiedUpperBoundaryPercent;
+		return midQualifiedUpperBoundaryPercent;
 	}
 
 	public void setMidQualifiedUpperBoundaryPercent(Double midQualifiedUpperBoundaryPercent) {
-	this.midQualifiedUpperBoundaryPercent = midQualifiedUpperBoundaryPercent;
+		this.midQualifiedUpperBoundaryPercent = midQualifiedUpperBoundaryPercent;
 	}
 
 	public Integer getPerTransRefundFee() {
-	return perTransRefundFee;
+		return perTransRefundFee;
 	}
 
 	public void setPerTransRefundFee(Integer perTransRefundFee) {
-	this.perTransRefundFee = perTransRefundFee;
+		this.perTransRefundFee = perTransRefundFee;
 	}
 
 	public Double getQualifiedUpperBoundaryPercent() {
-	return qualifiedUpperBoundaryPercent;
+		return qualifiedUpperBoundaryPercent;
 	}
 
 	public void setQualifiedUpperBoundaryPercent(Double qualifiedUpperBoundaryPercent) {
-	this.qualifiedUpperBoundaryPercent = qualifiedUpperBoundaryPercent;
+		this.qualifiedUpperBoundaryPercent = qualifiedUpperBoundaryPercent;
 	}
 
 	public Integer getPerTransAuthFee() {
-	return perTransAuthFee;
+		return perTransAuthFee;
 	}
 
 	public void setPerTransAuthFee(Integer perTransAuthFee) {
-	this.perTransAuthFee = perTransAuthFee;
+		this.perTransAuthFee = perTransAuthFee;
 	}
 
 	public Double getNonQualifiedUpperBoundaryPercent() {
-	return nonQualifiedUpperBoundaryPercent;
+		return nonQualifiedUpperBoundaryPercent;
 	}
 
 	public void setNonQualifiedUpperBoundaryPercent(Double nonQualifiedUpperBoundaryPercent) {
-	this.nonQualifiedUpperBoundaryPercent = nonQualifiedUpperBoundaryPercent;
+		this.nonQualifiedUpperBoundaryPercent = nonQualifiedUpperBoundaryPercent;
 	}
 
 	public Double getAmexPercent() {
-	return amexPercent;
+		return amexPercent;
 	}
 
 	public void setAmexPercent(Double amexPercent) {
-	this.amexPercent = amexPercent;
+		this.amexPercent = amexPercent;
+	}
+
+	public String putFeeSettlementType() {
+		return feeType;
+	}
+
+	public void setFeeSettlement(String feeType) {
+		this.feeType = feeType;
 	}
 
 	public Double getNonQualifiedFeePercent() {
-	return nonQualifiedFeePercent;
+		return nonQualifiedFeePercent;
 	}
 
-
 	public void setNonQualifiedFeePercent(Double nonQualifiedFeePercent) {
-	this.nonQualifiedFeePercent = nonQualifiedFeePercent;
+		this.nonQualifiedFeePercent = nonQualifiedFeePercent;
 	}
 
 	@JsonAnyGetter
 	public Map<String, Object> getAdditionalProperties() {
-	return this.additionalProperties;
+		return this.additionalProperties;
 	}
 
 	@JsonAnySetter
 	public void setAdditionalProperty(String name, Object value) {
-	this.additionalProperties.put(name, value);
+		this.additionalProperties.put(name, value);
 	}
+
 	@Override
 	public String toString() {
-		return "ContractedRates [perTransAuthFee=" + perTransAuthFee
-				+ ", perTransRefundFee=" + this.perTransRefundFee
-				+ ", qualifiedUpperBoundaryPercent="
-				+ this.qualifiedUpperBoundaryPercent + ", qualifiedFeePercent="
+		return "ContractedRates [perTransAuthFee=" + perTransAuthFee + ", perTransRefundFee=" + this.perTransRefundFee
+				+ ", qualifiedUpperBoundaryPercent=" + this.qualifiedUpperBoundaryPercent + ", qualifiedFeePercent="
 				+ this.qualifiedFeePercent + ", midQualifiedUpperBoundaryPercent="
-				+ this.midQualifiedUpperBoundaryPercent
-				+ ", midQualifiedFeePercent=" + this.midQualifiedFeePercent
-				+ ", nonQualifiedUpperBoundaryPercent="
-				+ this.nonQualifiedUpperBoundaryPercent
-				+ ", nonQualifiedFeePercent=" + this.nonQualifiedFeePercent
-				+ ", amexPercent=" + this.amexPercent + "]";
+				+ this.midQualifiedUpperBoundaryPercent + ", midQualifiedFeePercent=" + this.midQualifiedFeePercent
+				+ ", nonQualifiedUpperBoundaryPercent=" + this.nonQualifiedUpperBoundaryPercent
+				+ ", nonQualifiedFeePercent=" + this.nonQualifiedFeePercent + ", amexPercent=" + this.amexPercent + "]";
 	}
-	
+
+	public static Map<String, Object> updateMerchantfeesMap(String amexpercent, String feeSettlementType,
+			String midQualifiedFeePercent, String midQualifiedUpperBoundaryPercent, String nonQualifiedFeePercent,
+			String nonQualifiedUpperBoundaryPercent, String perTransAuthFee, String perTransRefundFee,
+			String qualifiedFeePercent, String qualifiedUpperBoundaryPercent, String suppressFeeSettlement) {
+
+		Map<String, Object> merchantrates = new HashMap<String, Object>();
+		merchantrates.put("amexPercent", Double.parseDouble(amexpercent));
+		merchantrates.put("feeSettlementType", feeSettlementType);
+		merchantrates.put("perTransAuthFee", Integer.parseInt(perTransAuthFee));
+		merchantrates.put("perTransRefundFee", Integer.parseInt(perTransRefundFee));
+		merchantrates.put("qualifiedUpperBoundaryPercent", qualifiedUpperBoundaryPercent);
+		merchantrates.put("qualifiedFeePercent", Double.parseDouble(qualifiedFeePercent));
+		merchantrates.put("midQualifiedUpperBoundaryPercent", Double.parseDouble(midQualifiedUpperBoundaryPercent));
+		merchantrates.put("midQualifiedFeePercent", Double.parseDouble(midQualifiedFeePercent));
+		merchantrates.put("nonQualifiedUpperBoundaryPercent", Double.parseDouble(nonQualifiedUpperBoundaryPercent));
+		merchantrates.put("nonQualifiedFeePercent", Double.parseDouble(nonQualifiedFeePercent));
+		merchantrates.put("suppressFeeSettlement", suppressFeeSettlement);
+		return merchantrates;
+
+	}
 
 }

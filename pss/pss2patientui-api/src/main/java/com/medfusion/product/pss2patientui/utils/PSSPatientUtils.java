@@ -100,7 +100,7 @@ public class PSSPatientUtils extends BaseTestNGWebDriver {
 
 		return newDate;
 	}
-	
+
 	public String filePath() {
 		String home = System.getProperty("user.home");
 		File latestFile = lastFileModified(home + PSSConstants.DOWNLOADFILENAME);
@@ -220,6 +220,7 @@ public class PSSPatientUtils extends BaseTestNGWebDriver {
 			clickOnSubmitAppt(false, aptDateTime, testData, driver);
 		}
 
+		log("Test Case Passed");
 	}
 
 	public void BTLFlow(HomePage homepage, Appointment testData, String startOrderOn, WebDriver driver)
@@ -275,6 +276,7 @@ public class PSSPatientUtils extends BaseTestNGWebDriver {
 			log("This is not an Anonymous flow so comes is else block");
 			clickOnSubmitAppt(false, aptDateTime, testData, driver);
 		}
+		log("Test Case Passed");
 	}
 
 	public void LTBFlow(HomePage homepage, Appointment testData, String startOrderOn, WebDriver driver)
@@ -484,6 +486,7 @@ public class PSSPatientUtils extends BaseTestNGWebDriver {
 
 		Thread.sleep(6000);
 		bookAppointment(false, aptDateTime, testData, driver);
+		log("Test Case Passed");
 	}
 
 	public void STBLFlow(HomePage homepage, Appointment testData, String startOrderOn, WebDriver driver)
@@ -1177,18 +1180,18 @@ public class PSSPatientUtils extends BaseTestNGWebDriver {
 	public void appointmentToScheduled(ConfirmationPage confirmationpage, Appointment testData) throws Exception {
 		log("--------I AM IN appointmentToScheduled METHOD---------");
 		log("Verify if Appointment is scheduled and download ics file");
-		String aptScheduledAt = confirmationpage.getAppointmentDetails()
-				.get((confirmationpage.getAppointmentDetails().size() - 1)).getText();
-		log(">> " + aptScheduledAt);
-		for (WebElement ele : confirmationpage.getAppointmentDetails()) {
-			log("apt Details= " + ele.getText());
+
+		List<WebElement> ele = confirmationpage.getAppointmentDetails();
+		int l = ele.size();
+		for (int i = 0; i < l; i++) {
+
+			log("apt details-" + ele.get(i).getText());
 		}
+
 		ScheduledAppointment scheduledappointment = confirmationpage.appointmentConfirmed();
-		log("appointment ID = " + scheduledappointment.getAppointmentID());
+		String apptid = scheduledappointment.getAppointmentID();
+		log("appointment ID = " + apptid);
 		log("Add to calendar option is displayed and is clickable.");
-		scheduledappointment.downloadCalander();
-		Thread.sleep(2000);
-		readICSFile(filePath());
 	}
 
 	public void appointmentToRescheduled(ConfirmationPage confirmationpage, Appointment testData) throws Exception {
@@ -1257,7 +1260,7 @@ public class PSSPatientUtils extends BaseTestNGWebDriver {
 		readICSFile(filePath());
 	}
 
-	public ScheduledAppointment selectAFlow(WebDriver driver, String rule, HomePage homepage, Appointment testData)
+	public ScheduledAppointment selectAFlow_New(WebDriver driver, String rule, HomePage homepage, Appointment testData)
 			throws Exception {
 		log("selectAFlow method started");
 		log("------------I am in selectAFlow METHOD-----");
@@ -1308,6 +1311,59 @@ public class PSSPatientUtils extends BaseTestNGWebDriver {
 			LTFlow(homepage, testData, Boolean.toString(testData.getIsInsuranceEnabled()), driver);
 		}
 		return PageFactory.initElements(driver, ScheduledAppointment.class);
+	}
+	
+	public void selectAFlow(WebDriver driver, String rule, HomePage homepage, Appointment testData)
+			throws Exception {
+		log("selectAFlow method started");
+		log("------------I am in selectAFlow METHOD-----");
+		Thread.sleep(1000);
+		testData.setIsInsuranceEnabled(false);
+		Thread.sleep(1000);
+		if (rule.equalsIgnoreCase(PSSConstants.LBT)) {
+			LBTFlow(homepage, testData, Boolean.toString(testData.getIsInsuranceEnabled()), driver);
+		}
+		if (rule.equalsIgnoreCase(PSSConstants.LTB)) {
+			LTBFlow(homepage, testData, Boolean.toString(testData.getIsInsuranceEnabled()), driver);
+		}
+		if (rule.equalsIgnoreCase(PSSConstants.BLT)) {
+			BLTFlow(homepage, testData, Boolean.toString(testData.getIsInsuranceEnabled()), driver);
+		}
+		if (rule.equalsIgnoreCase(PSSConstants.BTL)) {
+			BTLFlow(homepage, testData, Boolean.toString(testData.getIsInsuranceEnabled()), driver);
+		}
+		if (rule.equalsIgnoreCase(PSSConstants.TLB)) {
+			TLBFlow(homepage, testData, Boolean.toString(testData.getIsInsuranceEnabled()), driver);
+		}
+		if (rule.equalsIgnoreCase(PSSConstants.TBL)) {
+			TBLFlow(homepage, testData, Boolean.toString(testData.getIsInsuranceEnabled()), driver);
+		}
+		if (rule.equalsIgnoreCase(PSSConstants.STBL)) {
+			STBLFlow(homepage, testData, Boolean.toString(testData.getIsInsuranceEnabled()), driver);
+		}
+		if (rule.equalsIgnoreCase(PSSConstants.STLB)) {
+			log("Method STLBFlow will start now......");
+			STLBFlow(homepage, testData, Boolean.toString(testData.getIsInsuranceEnabled()), driver);
+		}
+		if (rule.equalsIgnoreCase(PSSConstants.SLTB)) {
+			SLTBFlow(homepage, testData, Boolean.toString(testData.getIsInsuranceEnabled()), driver);
+		}
+		if (rule.equalsIgnoreCase(PSSConstants.SLBT)) {
+			SLBTFlow(homepage, testData, Boolean.toString(testData.getIsInsuranceEnabled()), driver);
+		}
+		if (rule.equalsIgnoreCase(PSSConstants.SBTL)) {
+			SBTLFlow(homepage, testData, Boolean.toString(testData.getIsInsuranceEnabled()), driver);
+		}
+		if (rule.equalsIgnoreCase(PSSConstants.SBLT)) {
+			SBLTFlow(homepage, testData, Boolean.toString(testData.getIsInsuranceEnabled()), driver);
+		}
+		if (rule.equalsIgnoreCase(PSSConstants.TL)) {
+			TLFlow(homepage, testData, Boolean.toString(testData.getIsInsuranceEnabled()), driver);
+		}
+		if (rule.equalsIgnoreCase(PSSConstants.LT)) {
+			LTFlow(homepage, testData, Boolean.toString(testData.getIsInsuranceEnabled()), driver);
+		}
+		
 	}
 
 	public void checkPrivacyPage(WebDriver driver) {
