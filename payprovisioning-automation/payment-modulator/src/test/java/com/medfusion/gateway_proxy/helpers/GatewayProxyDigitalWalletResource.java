@@ -8,6 +8,7 @@ import com.medfusion.payment_modulator.pojos.PayloadDetails;
 import io.restassured.path.json.JsonPath;
 import io.restassured.response.Response;
 import java.io.IOException;
+import java.util.HashMap;
 import java.util.Map;
 
 import org.testng.Assert;
@@ -96,7 +97,7 @@ public class GatewayProxyDigitalWalletResource extends GatewayProxyBaseTest {
 
 		return response;
 	}
-	
+
 	public Response addCardsToWallet(String token, Map<String, Object> digitalWallet, String externalWalletId)
 			throws Exception {
 		testData = new PropertyFileLoader();
@@ -107,6 +108,7 @@ public class GatewayProxyDigitalWalletResource extends GatewayProxyBaseTest {
 
 		return response;
 	}
+
 	public String getEmptyWallet(String token, PropertyFileLoader testData,
 			GatewayProxyDigitalWalletResource digitalWallet) throws Exception {
 
@@ -135,5 +137,70 @@ public class GatewayProxyDigitalWalletResource extends GatewayProxyBaseTest {
 		Assert.assertEquals("[]", jsonPathGet.get("walletCards[]").toString());
 
 		return externalWalletId;
+	}
+
+	public Response makeWalletEmpty(String token, PropertyFileLoader testData,
+			GatewayProxyDigitalWalletResource digitalWallet, String externalWalletId, String cardFlagToBeDeleted)
+			throws Exception {
+
+		boolean walletEmpty = false;
+		System.out.println("Going to make wallet empty ");
+		Response responseGetBeforeDeletingCards = digitalWallet.getListOfCardsInWallet(token, externalWalletId);
+		JsonPath jsonPathGetBeforeDeletingCards = new JsonPath(responseGetBeforeDeletingCards.asString());
+		Response deleteResponse = null;
+
+		int i = 0;
+		while (jsonPathGetBeforeDeletingCards.get("walletCards[" + i + "].externalCardId") != null) {
+			System.out.println(
+					"Test card " + jsonPathGetBeforeDeletingCards.get("walletCards[" + i + "].externalCardId"));
+
+			System.out.println(
+					"Test" + jsonPathGetBeforeDeletingCards.get("walletCards[" + i + "].primaryCard").toString());
+			if (jsonPathGetBeforeDeletingCards.get("walletCards[" + i + "].primaryCard").toString()
+					.equals(cardFlagToBeDeleted)) {
+				String externalCardId = jsonPathGetBeforeDeletingCards.get("walletCards[" + i + "].externalCardId")
+						.toString().trim();
+				System.out.println("Test inside"
+						+ jsonPathGetBeforeDeletingCards.get("walletCards[" + i + "].primaryCard").toString());
+
+				System.out.println("Going to delete the card ");
+				deleteResponse = digitalWallet.deleteCardInWallet(token, testData.getProperty("test.pay.customer.uuid"),
+						externalWalletId, externalCardId);
+				walletEmpty = true;
+			} else {
+				i++;
+			}
+
+			if (walletEmpty == true) {
+				break;
+			}
+
+		}
+		return deleteResponse;
+
+	}
+
+	public HashMap verifyFlagInResponce(String flagToBeChecked, int noOfCardsToBeAdded, JsonPath jsonPath)
+			throws IOException {
+		String flagToCheck = "";
+		HashMap<String, String> cardDetails = new HashMap<String, String>();
+
+		for (int i = 0; i < noOfCardsToBeAdded; i++) {
+
+			if (jsonPath.get("walletCards[" + i + "].primaryCard").toString().equals(flagToBeChecked)) {
+
+				String exetrnalCardId = jsonPath.get("walletCards[" + i + "].externalCardId").toString();
+				flagToCheck = "true";
+				cardDetails.put(flagToCheck, exetrnalCardId);
+				break;
+			}
+
+			else {
+				i++;
+			}
+		}
+
+		return cardDetails;
+
 	}
 }
