@@ -438,11 +438,8 @@ public class PSS2DBAdapterModulatorTests extends BaseTestNG {
 	@Test(enabled = true, groups = { "APItest" }, retryAnalyzer = RetryAnalyzer.class)
 	public void testBookAppTyp_BookAppTypesAssociatedToBookGet() throws NullPointerException, Exception {
 
-		String specialty = propertyData.getProperty("bookapttype.specialty.id.db");
-		String locationid = propertyData.getProperty("bookapttype.location.id.db");
 		String bookid=propertyData.getProperty("bookapttype.book.id.db");
 		String apptype=propertyData.getProperty("bookapttype.apttype.id.db");
-
 		Response response = postAPIRequestDB.getBookAppTypesAssociatedToBook(practiceId, bookid, apptype);
 		apv.responseCodeValidation(response, 200);
 		apv.responseTimeValidation(response);
@@ -451,10 +448,7 @@ public class PSS2DBAdapterModulatorTests extends BaseTestNG {
 	@Test(enabled = true, groups = { "APItest" }, retryAnalyzer = RetryAnalyzer.class)
 	public void testBookAppTyp_AppTypesAssociatedToBookGet() throws NullPointerException, Exception {
 
-		String specialty = propertyData.getProperty("bookapttype.specialty.id.db");
-		String locationid = propertyData.getProperty("bookapttype.location.id.db");
 		String bookid=propertyData.getProperty("bookapttype.book.id.db");
-		String apptype=propertyData.getProperty("bookapttype.apttype.id.db");
 
 		Response response = postAPIRequestDB.getAppTypesAssociatedToBook(practiceId, bookid);
 		apv.responseCodeValidation(response, 200);
@@ -464,11 +458,7 @@ public class PSS2DBAdapterModulatorTests extends BaseTestNG {
 	@Test(enabled = true, groups = { "APItest" }, retryAnalyzer = RetryAnalyzer.class)
 	public void testBookApp_getAssociatedBookAppTypesByBookId() throws NullPointerException, Exception {
 
-		String specialty = propertyData.getProperty("bookapttype.specialty.id.db");
-		String locationid = propertyData.getProperty("bookapttype.location.id.db");
 		String bookid=propertyData.getProperty("bookapttype.book.id.db");
-		String apptype=propertyData.getProperty("bookapttype.apttype.id.db");
-
 		Response response = postAPIRequestDB.getAssociatedBookAppTypesByBookId(practiceId, bookid);
 		apv.responseCodeValidation(response, 200);
 		apv.responseTimeValidation(response);
@@ -477,9 +467,6 @@ public class PSS2DBAdapterModulatorTests extends BaseTestNG {
 	@Test(enabled = true, groups = { "APItest" }, retryAnalyzer = RetryAnalyzer.class)
 	public void testBookApp_getAssociatedBookAppTypesByAppTypeId() throws NullPointerException, Exception {
 
-		String specialty = propertyData.getProperty("bookapttype.specialty.id.db");
-		String locationid = propertyData.getProperty("bookapttype.location.id.db");
-		String bookid=propertyData.getProperty("bookapttype.book.id.db");
 		String apptype=propertyData.getProperty("bookapttype.apttype.id.db");
 
 		Response response = postAPIRequestDB.getAssociatedBookAppTypesByAppTypeId(practiceId, apptype);
@@ -492,8 +479,6 @@ public class PSS2DBAdapterModulatorTests extends BaseTestNG {
 	@Test(enabled = true, groups = { "APItest" }, retryAnalyzer = RetryAnalyzer.class)
 	public void testbookapptypelocation_getLocationsAssociatedToBookAndAppointmentType() throws NullPointerException, Exception {
 
-		String specialty = propertyData.getProperty("bookapttype.specialty.id.db");
-		String locationid = propertyData.getProperty("bookapttype.location.id.db");
 		String bookid=propertyData.getProperty("bookapttype.book.id.db");
 		String apptype=propertyData.getProperty("bookapttype.apttype.id.db");
 
@@ -755,59 +740,5 @@ public class PSS2DBAdapterModulatorTests extends BaseTestNG {
 		apv.responseCodeValidation(response, 200);
 		apv.responseTimeValidation(response);
 	}
-	@Test(enabled = true, groups = { "APItest" }, retryAnalyzer = RetryAnalyzer.class)
-	public void testBook_getbooklevel() throws NullPointerException, Exception {
-		
-		Response response = postAPIRequestDB.getbooklevel(practiceId);
-		apv.responseCodeValidation(response, 200);
-		apv.responseTimeValidation(response);
-	}
-	@Test(enabled = true, groups = { "APItest" }, retryAnalyzer = RetryAnalyzer.class)
-	public void testBook_getbooklevel() throws NullPointerException, Exception {
-		
-		Response response = postAPIRequestDB.getbooklevel(practiceId);
-		apv.responseCodeValidation(response, 200);
-		apv.responseTimeValidation(response);
-	}
-	@Test(enabled = true, groups = { "APItest" }, retryAnalyzer = RetryAnalyzer.class)
-	public void testBook_getbooklevel() throws NullPointerException, Exception {
-		
-		Response response = postAPIRequestDB.getbooklevel(practiceId);
-		apv.responseCodeValidation(response, 200);
-		apv.responseTimeValidation(response);
-	}
-	@Test(enabled = true, groups = { "APItest" }, retryAnalyzer = RetryAnalyzer.class)
-	public void testBook_getbooklevel() throws NullPointerException, Exception {
-		
-		Response response = postAPIRequestDB.getbooklevel(practiceId);
-		apv.responseCodeValidation(response, 200);
-		apv.responseTimeValidation(response);
-	}
-	@Test(enabled = true, groups = { "APItest" }, retryAnalyzer = RetryAnalyzer.class)
-	public void testBook_getbooklevel() throws NullPointerException, Exception {
-		
-		Response response = postAPIRequestDB.getbooklevel(practiceId);
-		apv.responseCodeValidation(response, 200);
-		apv.responseTimeValidation(response);
-	}
-	@Test(enabled = true, groups = { "APItest" }, retryAnalyzer = RetryAnalyzer.class)
-	public void testBook_getbooklevel() throws NullPointerException, Exception {
-		
-		Response response = postAPIRequestDB.getbooklevel(practiceId);
-		apv.responseCodeValidation(response, 200);
-		apv.responseTimeValidation(response);
-	}
-	@Test(enabled = true, groups = { "APItest" }, retryAnalyzer = RetryAnalyzer.class)
-	public void testBook_getbooklevel() throws NullPointerException, Exception {
-		
-		Response response = postAPIRequestDB.getbooklevel(practiceId);
-		apv.responseCodeValidation(response, 200);
-		apv.responseTimeValidation(response);
-	}
-	
-	
-	
-	
 
-	
 }

@@ -385,7 +385,7 @@ public class PostAPIRequestDBAdapter {
 	//Category App Type Controller
 	
 	public Response getAppTypeForCategory(String practiceid, String categoryid) throws Exception {
-		Response response = given().spec(requestSpec).log().all().when().get(practiceid + "/categoryapptype/" + careteamid)
+		Response response = given().spec(requestSpec).log().all().when().get(practiceid + "/categoryapptype/" + categoryid)
 				.then().log().all().extract().response();
 		return response;
 	}
