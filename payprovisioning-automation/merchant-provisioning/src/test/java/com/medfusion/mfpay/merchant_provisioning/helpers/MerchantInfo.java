@@ -16,7 +16,7 @@ import com.medfusion.mfpay.merchant_provisioning.utils.ProvisioningUtils;
 public class MerchantInfo extends BaseRest {
 	protected PropertyFileLoader testData;
 
-	public String createUpdateElementMerchant() throws IOException {
+	public Response createUpdateElementMerchant() throws IOException {
 
 		testData = new PropertyFileLoader();
 		Map<String, Object> merchantdetails = Merchant.getMerchantMap((testData.getProperty("merchant.name")),
@@ -36,14 +36,8 @@ public class MerchantInfo extends BaseRest {
 				testData.getProperty("per.transaction.authfee"), testData.getProperty("per.transaction.refund.fee"),
 				testData.getProperty("qfee.percent"), testData.getProperty("qupper.percent"));
 
-		Response response = given().spec(requestSpec).body(merchantdetails).when().post(ProvisioningUtils.postMerchant)
-				.then().spec(responseSpec).and().extract().response();
-
-		JsonPath jsonpath = new JsonPath(response.asString());
-		Validations validate = new Validations();
-		validate.verifyMerchantDetails(response.asString());
-		ProvisioningUtils.saveMMID(jsonpath.get("id").toString());
-		return response.asString();
+		return given().spec(requestSpec).body(merchantdetails).when().post(ProvisioningUtils.postMerchant).then()
+				.spec(responseSpec).and().extract().response();
 
 	}
 
@@ -54,7 +48,7 @@ public class MerchantInfo extends BaseRest {
 
 	}
 
-	public void updateGeneralMerchantDetails(String mmid) throws IOException {
+	public Response updateGeneralMerchantDetails(String mmid) throws IOException {
 
 		testData = new PropertyFileLoader();
 		Map<String, Object> merchantdetails = Merchant.getMerchantMap((testData.getProperty("merchant.name.update")),
@@ -78,14 +72,8 @@ public class MerchantInfo extends BaseRest {
 		String convertTOJson = objectMapper.writeValueAsString(merchantdetails);
 
 		String putmerchant = ProvisioningUtils.postMerchant + "/" + mmid + "/wpSubMerchant?updateType=GENERAL_INFO";
-		Response response = given().spec(requestSpec).body(convertTOJson).when().put(putmerchant).then()
-				.spec(responseSpec).and().extract().response();
-
-		Merchant readJSON = objectMapper.readValue(response.asString(), Merchant.class);
-		Validations validate = new Validations();
-		validate.verifyMerchantDetailsOnUpdate(readJSON.getExternalMerchantId().toString(),
-				readJSON.getMaxTransactionLimit().toString(), readJSON.getAccountDetails());
-
+		return given().spec(requestSpec).body(convertTOJson).when().put(putmerchant).then().spec(responseSpec).and()
+				.extract().response();
 	}
 
 	public Response getMerchantFeeType(String mmid) {

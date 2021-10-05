@@ -18,25 +18,16 @@ public class PaypalDetails extends BaseRest{
 protected PropertyFileLoader testData;
 	
 
-	public void createUpdatePaypalMerchant() throws IOException {
+	public Response createUpdatePaypalMerchant() throws IOException {
 			testData = new PropertyFileLoader();
 			Map<String, Object> paypalmerchantdetails = PaypalMerchantInfo.getMerchantMap((testData.getProperty("paypal.merchant.name")),
 					testData.getProperty("external.merchantid"),testData.getProperty("customer.account.number"),
 					testData.getProperty("transaction.limit"),testData.getProperty("paypal.cnp.username"),testData.getProperty("paypal.cnp.password"));
-			
-			ObjectMapper objectMapper = new ObjectMapper();
-		  	String convertTOJson = objectMapper.writeValueAsString(paypalmerchantdetails);
-		  	objectMapper.disable(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES);
-		  	
-			Response response = given().spec(requestSpec).
-			body(convertTOJson).when().post(ProvisioningUtils.postMerchant)
+
+			return given().spec(requestSpec).
+			body(paypalmerchantdetails).when().post(ProvisioningUtils.postMerchant)
 			.then().spec(responseSpec).and().extract().response();
-			
-			PaypalMerchantInfo readJSON = objectMapper.readValue(response.asString(), PaypalMerchantInfo.class);
-			Validations validate = new Validations();
-			validate.verifyMerchantDetailsForPaypal(readJSON.getExternalMerchantId().toString(),readJSON.getMaxTransactionLimit().toString(),
-			readJSON.getAccountDetails(),readJSON.getCustomerAccountNumber());
-		
+
 	}
 	
 	
