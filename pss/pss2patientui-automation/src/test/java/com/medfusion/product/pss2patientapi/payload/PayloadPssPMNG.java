@@ -10,7 +10,7 @@ public class PayloadPssPMNG {
 				+ "    \"book\": \"" + book + "\",\r\n"
 				+ "    \"appointmentType\": null,\r\n"
 				+ "    \"slotId\": null,\r\n"
-				+ "    \"patientType\": \"PT_NEW\",\r\n"
+				+ "    \"patientType\": \"PT_EXISTING\",\r\n"
 				+ "    \"flow\": \"loginless\",\r\n"
 				+ "    \"patientDetails\": {\r\n"
 				+ "        \"FN\": \"" + firstName + "\",\r\n"
@@ -32,10 +32,10 @@ public class PayloadPssPMNG {
 		return validateProviderLink;
 	}
 	
-	public String validateProviderLinkPayload_New(String book) {
+	public String validateProviderLinkPayload_New(String book, String locationid) {
 		String payload ="{\r\n"
 				+ "    \"specialty\": null,\r\n"
-				+ "    \"location\": 204200,\r\n"
+				+ "    \"location\": "+locationid+",\r\n"
 				+ "    \"book\": "+book+",\r\n"
 				+ "    \"appointmentType\": null,\r\n"
 				+ "    \"slotId\": null,\r\n"
@@ -583,26 +583,31 @@ public class PayloadPssPMNG {
 		return booksByNextAvailable;
 	}
 	
-	public String  booksByRulePayload(String AppmntTypeId, String locationId)
+	public String  booksByRulePayload(String apptid, String locationid)
 	{
 		String  getBookByRule="{\r\n"
-				+ "	\"appointmentType\": \""+AppmntTypeId+"\",\r\n"
-				+ "  \"book\": null,\r\n"
-				+ "  \"flow\": \"loginless\",\r\n"
-				+ "  \"linkGenerationFlow\": false,\r\n"
-				+ "	\"location\": \""+locationId+"\",\r\n"
-				+ "  \"patientDetails\": {\r\n"
-				+ "    \"FN\": \"Test\",\r\n"
-				+ "    \"LN\": \"APISix\",\r\n"
-				+ "    \"DOB\": \"01/28/1997\"\r\n"
-				+ "  },\r\n"
-				+ "  \"patientType\": \"PT_NEW\",\r\n"
-				+ "  \"radius\": 0,\r\n"
-				+ "  \"slotId\": null,\r\n"
 				+ "  \"specialty\": null,\r\n"
-				+ "  \"startDateTime\": null,\r\n"
-				+ "  \"traversal\": true,\r\n"
-				+ "  \"zipcode\": 0\r\n"
+				+ "  \"location\": "+locationid+",\r\n"
+				+ "  \"book\": null,\r\n"
+				+ "  \"appointmentType\": "+apptid+",\r\n"
+				+ "  \"slotId\": null,\r\n"
+				+ "  \"patientType\": \"PT_EXISTING\",\r\n"
+				+ "  \"linkGenerationFlow\": false,\r\n"
+				+ "  \"patientDetails\": {\r\n"
+				+ "    \"FN\": \"dd\",\r\n"
+				+ "    \"LN\": \"dd\",\r\n"
+				+ "    \"DOB\": \"01/01/2000\",\r\n"
+				+ "    \"GENDER\": \"M\",\r\n"
+				+ "    \"EMAIL\": \"Shweta.Sontakke@CrossAsyst.com\",\r\n"
+				+ "    \"PHONE\": \"\",\r\n"
+				+ "    \"INSID\": null,\r\n"
+				+ "    \"ADDR1\": null,\r\n"
+				+ "    \"ADDR2\": null,\r\n"
+				+ "    \"CITY\": null,\r\n"
+				+ "    \"STATE\": null,\r\n"
+				+ "    \"ZIP\": \"\"\r\n"
+				+ "  },\r\n"
+				+ "  \"flow\": \"loginless\"\r\n"
 				+ "}";
 		return getBookByRule;
 	}
@@ -804,6 +809,14 @@ public class PayloadPssPMNG {
 				+ "  \"extApptId\": null\r\n"
 				+ "}";
 		return cancelstatus;
+	}
+	
+	public String  getDetailsPayload(String bookid)
+	{
+		String  payload="{\r\n"
+				+ "  \"bookId\": "+bookid+"\r\n"
+				+ "}";
+		return payload;
 	}
 	
 	public String commentDetailsPayload(String ApptypeId, String bookId, String locationId)
