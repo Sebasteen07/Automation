@@ -1450,14 +1450,14 @@ public class GmailBot implements MailBot {
 
 
 	/**
-	 * bkrishnankutty      
+	 * bkrishnankutty
 	 * Deletes all e-mail messages whose subject field contain a string specified by 'subjectToDelete'
-	 *          
+	 *
 	 * @param userName
-	 * @param password      
+	 * @param password
 	 * @param subject
 	 * 
-	 * ToDelete delete if the message's subject contains this value.      
+	 * ToDelete delete if the message's subject contains this value.
 	 */
 	public void deleteMessagesFromInbox(String userName, String password, String subjectToDelete) {
 		IHGUtil.PrintMethodName();
