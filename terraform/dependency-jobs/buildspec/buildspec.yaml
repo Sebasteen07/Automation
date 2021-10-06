@@ -1,0 +1,20 @@
+version: 0.2
+
+phases:
+  install:
+    runtime-versions:
+      java: corretto8
+  pre_build:
+    commands:
+      - yum update -y
+      # - git config --global credential.helper '!aws codecommit credential-helper $@'
+      # - git config --global credential.UseHttpPath true
+      # - git --version
+      # - git clone https://git-codecommit.us-east-2.amazonaws.com/v1/repos/${repo_name}
+      # - cd ${repo_name}
+      # - git checkout tags/${tag_name} -b temp #The branch name can be anything, since it will not be referred or committed back.
+      - export CODEARTIFACT_AUTH_TOKEN=`aws codeartifact get-authorization-token --domain nextgen-pxp-mf-build --domain-owner 997401518295 --query authorizationToken --output text`
+  build:
+    commands:
+      - cd ${execution_folder}
+      - xvfb-run ${maven_command}
