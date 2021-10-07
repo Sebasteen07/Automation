@@ -94,6 +94,7 @@ public class ConfirmationPage extends PSS2MainPage {
 		List<WebElement> rescheduleReasonlist = new ArrayList<WebElement>();
 		Actions act = new Actions(driver);
 		IHGUtil.waitForElement(driver, 5, dropdownReschedule);
+		IHGUtil.waitForElement(driver, 10, selectArrow);
 		commonMethods.highlightElement(selectArrow);
 		selectArrow.click();
 
