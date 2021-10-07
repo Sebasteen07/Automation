@@ -1253,7 +1253,8 @@ public class PSSPatientUtils extends BaseTestNGWebDriver {
 		confirmationpage.selectRescheduleReason();
 
 		ScheduledAppointment scheduledappointment = confirmationpage.rescheduleAppointmentConfirmed();
-		log("appointment ID = " + scheduledappointment.getAppointmentID());
+		String successmsg=scheduledappointment.getAppointmentID();
+		log("Success Message- "+successmsg);
 		log("Add to calendar option is displayed and is clickable.");
 		scheduledappointment.downloadCalander();
 		Thread.sleep(2000);
