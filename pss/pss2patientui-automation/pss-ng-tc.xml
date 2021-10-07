@@ -7,8 +7,8 @@
 				name="com.medfusion.product.pss2patientportal.test.PSS2PatientPortalAcceptanceTests">
 				<methods>
 
-					<include name="testE2ELoginlessForExistingPatientNG" />
-					<include name="testRescheduleAppointmentNG" />
+					<exclude name="testE2ELoginlessForExistingPatientNG" />
+					<exclude name="testRescheduleAppointmentNG" />
 					<include name="testRescheduleviaEmailNotifiicationNG()" />
 
 				</methods>

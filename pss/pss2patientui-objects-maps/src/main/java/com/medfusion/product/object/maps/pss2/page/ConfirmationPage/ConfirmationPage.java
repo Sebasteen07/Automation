@@ -52,8 +52,8 @@ public class ConfirmationPage extends PSS2MainPage {
 
 	@FindBy(how = How.XPATH, using = "//input[@id='cancelReasonText']")
 	private WebElement rescheduleReasonInputBox;
-
-	@FindBy(how = How.XPATH, using = "//div[@class=' css-tlfecz-indicatorContainer']")
+	
+	@FindBy(how = How.XPATH, using = "//div[@class=\" css-yk16xz-control\"]")
 	private WebElement selectArrow;
 
 	@FindBy(how = How.XPATH, using = "//div[@class=\" css-1wa3eu0-placeholder\"]")
@@ -97,8 +97,7 @@ public class ConfirmationPage extends PSS2MainPage {
 		IHGUtil.waitForElement(driver, 10, selectArrow);
 		Thread.sleep(5000);
 		commonMethods.highlightElement(selectArrow);
-		
-		jse.executeScript("arguments[0].click();", selectArrow);	
+		javascriptClick(selectArrow);
 		
 		rescheduleReasonlist = rescheduleReasondropDownList;
 		log("Save all the reschedule reason in rescheduleReasonlist ");

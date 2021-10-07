@@ -6469,7 +6469,7 @@ public class PSS2PatientPortalAcceptanceTests extends BaseTestNGWebDriver {
 	}
 
 	@Test(enabled = true, groups = {
-			"AcceptanceTests" }, retryAnalyzer = RetryAnalyzer.class, dependsOnMethods = "testE2ELoginlessForExistingPatientNG")
+			"AcceptanceTests" }, retryAnalyzer = RetryAnalyzer.class)
 	public void testRescheduleviaEmailNotifiicationNG() throws Exception {
 
 		Appointment testData = new Appointment();
