@@ -1256,9 +1256,7 @@ public class PSSPatientUtils extends BaseTestNGWebDriver {
 		String successmsg=scheduledappointment.getAppointmentID();
 		log("Success Message- "+successmsg);
 		log("Add to calendar option is displayed and is clickable.");
-		scheduledappointment.downloadCalander();
-		Thread.sleep(2000);
-		readICSFile(filePath());
+
 	}
 
 	public ScheduledAppointment selectAFlow_New(WebDriver driver, String rule, HomePage homepage, Appointment testData)
