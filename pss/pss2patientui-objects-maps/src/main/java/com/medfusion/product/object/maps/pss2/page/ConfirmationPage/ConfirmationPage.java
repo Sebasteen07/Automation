@@ -95,9 +95,11 @@ public class ConfirmationPage extends PSS2MainPage {
 		Actions act = new Actions(driver);
 		IHGUtil.waitForElement(driver, 5, dropdownReschedule);
 		IHGUtil.waitForElement(driver, 10, selectArrow);
+		Thread.sleep(5000);
 		commonMethods.highlightElement(selectArrow);
-		selectArrow.click();
-
+		
+		jse.executeScript("arguments[0].click();", selectArrow);	
+		
 		rescheduleReasonlist = rescheduleReasondropDownList;
 		log("Save all the reschedule reason in rescheduleReasonlist ");
 
