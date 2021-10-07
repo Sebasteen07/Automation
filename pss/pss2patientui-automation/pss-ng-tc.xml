@@ -8,7 +8,7 @@
 				<methods>
 
 					<include name="testBookApptWithoutLastQuestionNG" />
-					<include name="testSSOFlowNG()" />
+					<exclude name="testSSOFlowNG()" />
 					<include name="testE2ELoginlessForExistingPatientNG" />
 
 					<include name="testPreventSchedPastNG()" />
@@ -18,7 +18,7 @@
 					
 					<include name="testLoginlessWithInsuranceNG" />
 
-					<exclude name="testLastQuestionRequiredNG" />
+					<include name="testLastQuestionRequiredNG" />
 					<exclude name="testBookApptWithoutLastQuestionNG()" />
 					<include name="testBookApptWithLastQuestionNG()" />
 
@@ -28,17 +28,17 @@
 					<include name="testRescheduleAppointmentNG" />
 					<include name="testRescheduleviaEmailNotifiicationNG()" />
 
-					<include name="testAcceptSameDayNG()" />
-					<include name="testANGRuleNG()" />
-					<include name="testaNGRulewithSpecialityNG()" />
-					<include name="testE2ELinkNGnerationNG()" />
-					<include name="testExcludeSlotsNG()" />
+					<exclude name="testAcceptSameDayNG()" />
+					<exclude name="testANGRuleNG()" />
+					<exclude name="testaNGRulewithSpecialityNG()" />
+					<exclude name="testE2ELinkNGnerationNG()" />
+					<exclude name="testExcludeSlotsNG()" />
 
 
-					<include name="testLeadTimeNG()" />
-					<include name="testMaxperDayNG()" />
-					<include name="testPCPShareONNG()" />
-					<include name="testTimeMarkNG()" />
+					<exclude name="testLeadTimeNG()" />
+					<exclude name="testMaxperDayNG()" />
+					<exclude name="testPCPShareONNG()" />
+					<exclude name="testTimeMarkNG()" />
 
 				</methods>
 			</class>
