@@ -6509,7 +6509,7 @@ public class PSS2PatientPortalAcceptanceTests extends BaseTestNGWebDriver {
 				CancelReschedulelink);
 
 		logStep("Wait for the page to load completely and check for the Greetings pop up");
-		Thread.sleep(3000);
+		Thread.sleep(5000);
 		if (patientIdentificationPage.isPopUP()) {
 			patientIdentificationPage.popUPClick();
 		}
