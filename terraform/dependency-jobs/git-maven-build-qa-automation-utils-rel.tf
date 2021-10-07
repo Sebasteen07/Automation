@@ -12,30 +12,7 @@ module "qa_automation_utils_rel_codebuild" {
   artifact_kms_key_ids = []
   artifacts_type       = var.codebuild_artifacts_type
 
-  environment_variables = [
-    {
-      name  = "maven_command"
-      value = "${local.qa_automation_utils_rel.maven_parameter} -Dmaven.test.skip=${local.qa_automation_utils_rel.maven_test_skip}"
-      type  = "PLAINTEXT"
-    },
-    {
-      name  = "execution_folder"
-      value = local.qa_automation_utils_rel.execution_folder
-      type  = "PLAINTEXT"
-    },
-    {
-      name  = "repo_name"
-      value = var.repository_name
-      type  = "PLAINTEXT"
-    },
-    {
-      name  = "tag_name"
-      value = local.qa_automation_utils_rel.git_tag_name
-      type  = "PLAINTEXT"
-    }
-  ]
-
-  source_buildspec = var.source_buildspec
+  source_buildspec = templatefile("buildspec/buildspec.tpl", {domain = var.codeartifact_maven_domain, owner = data.aws_caller_identity.current.account_id, execution_folder = local.qa_automation_utils_rel.execution_folder, maven_command = "${local.qa_automation_utils_rel.maven_parameter} -Dmaven.test.skip=${local.qa_automation_utils_rel.maven_test_skip}"}) # var.source_buildspec
   source_type      = var.codebuild_source_type
   build_timeout    = local.qa_automation_utils_rel.build_timeout
   queued_timeout   = local.qa_automation_utils_rel.queued_timeout
@@ -238,6 +215,12 @@ resource "aws_iam_role_policy" "qa_automation_utils_rel_pipeline" {
   name   = "${local.qa_automation_utils_rel.name}-pipeline-policy"
   role   = aws_iam_role.qa_automation_utils_rel.name
   policy = data.aws_iam_policy_document.qa_automation_utils_rel_codepipeline.json
+}
+
+resource "aws_iam_role_policy" "qa_automation_utils_rel_codebuild_inline_policy" {
+  name   = "${local.qa_automation_utils_rel.name}-codebuild-inline-policy"
+  role   = module.qa_automation_utils_rel_codebuild.codebuild_role.name
+  policy = data.aws_iam_policy_document.codebuild_inline.json
 }
 
 ###################################################################################

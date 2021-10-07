@@ -103,6 +103,18 @@ variable "event_type_ids" {
   ]
 }
 
+variable "codeartifact_maven_domain" {
+  type        = string
+  description = "Domain name of the AWS CodeArtifact repository where the Maven build packages would be uploaded"
+  default     = "nextgen-pxp-mf-build"
+} 
+
+variable "codeartifact_maven_repo" {
+  type        = string
+  description = "AWS CodeArtifact repository where the Maven build packages would be uploaded"
+  default     = "pxp-mf"
+} 
+
 variable "aws_chatbot_channel_arn" {
   type        = string
   description = "ARN of the AWS Chatbot channel with which the Slack channel is associated"
