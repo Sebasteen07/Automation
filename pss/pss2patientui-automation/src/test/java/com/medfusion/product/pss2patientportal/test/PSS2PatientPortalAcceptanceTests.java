@@ -6469,7 +6469,7 @@ public class PSS2PatientPortalAcceptanceTests extends BaseTestNGWebDriver {
 	}
 
 	@Test(enabled = true, groups = {
-			"AcceptanceTests" }, retryAnalyzer = RetryAnalyzer.class)
+			"AcceptanceTests" }, retryAnalyzer = RetryAnalyzer.class, dependsOnMethods = "testE2ELoginlessForExistingPatientNG")
 	public void testRescheduleviaEmailNotifiicationNG() throws Exception {
 
 		Appointment testData = new Appointment();
@@ -6509,7 +6509,7 @@ public class PSS2PatientPortalAcceptanceTests extends BaseTestNGWebDriver {
 				CancelReschedulelink);
 
 		logStep("Wait for the page to load completely and check for the Greetings pop up");
-		Thread.sleep(5000);
+		Thread.sleep(3000);
 		if (patientIdentificationPage.isPopUP()) {
 			patientIdentificationPage.popUPClick();
 		}
