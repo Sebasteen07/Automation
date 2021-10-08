@@ -1,7 +1,5 @@
 # Copyright 2021 NXGN Management, LLC. All Rights Reserved.
 resource "aws_codepipeline" "main" {
-  provider = aws.pipeline
-
   name     = local.name
   role_arn = aws_iam_role.pipeline.arn
 

@@ -76,3 +76,9 @@ variable "codebuild_image_pull_credentials_type" {
   description = "The type of credentials AWS CodeBuild uses to pull images in your build. Available values for this parameter are CODEBUILD or SERVICE_ROLE, default to CODEBUILD"
   default     = "CODEBUILD"
 }
+
+variable "slack_chatbot" {
+  type        = string
+  description = "The name of the slack chatbot that would be used to send notification"
+  default     = "pxp-mf-qa-dev-alarms-notify-slack-channel"
+}

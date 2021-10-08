@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE suite SYSTEM "https://testng.org/testng-1.0.dtd">
+<suite name="Suite">
+	<test thread-count="5" name="Test">
+		<classes>
+			<class
+				name="com.medfusion.product.pss2patientportal.test.PSS2PatientPortalAcceptanceTests">
+				<methods>
+
+					<include name="testSSOFlowGW()" />
+
+					<include name="testPreventSchedPastGW()" />
+					<include name="testPreventSchedFutureGW()" />
+
+					<include name="testE2ELoginlessForNewPatientGW" />
+					<include name="testE2ELoginlessForExistingPatientGW" />
+
+					<include name="testLoginlessWithInsuranceGW" />
+
+					<include name="testLastQuestionRequiredGW" />
+					<include name="testBookApptWithoutLastQuestionGW()" />
+					<include name="testBookApptWithLastQuestionGW()" />
+
+					<include name="testCancelFromEmailGW()" />
+					<include name="testCancelE2ETestingGW()" />					
+					
+					<include name="testRescheduleAppointmentGW" />
+					<include name="testRescheduleviaEmailNotifiicationGW()" />
+
+					<include name="testAcceptSameDayGW()" />
+					<include name="testAgeRuleGW()" />
+					<include name="testageRulewithSpecialityGW()" />
+					<include name="testE2ELinkGenerationGW()" />
+					<include name="testExcludeSlotsGW()" />
+
+
+					<include name="testLeadTimeGW()" />
+					<include name="testMaxperDayGW()" />
+					<include name="testPCPShareOGWW()" />
+					<include name="testTimeMarkGW()" />
+
+				</methods>
+			</class>
+		</classes>
+	</test> <!-- Test -->
+</suite> <!-- Suite -->

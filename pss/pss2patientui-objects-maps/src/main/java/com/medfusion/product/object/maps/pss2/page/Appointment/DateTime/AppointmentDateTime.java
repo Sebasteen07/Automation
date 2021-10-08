@@ -97,6 +97,26 @@ public class AppointmentDateTime extends PSS2MainPage {
 		}
 		return dt;
 	}
+	
+	public void selectDateOnly(Boolean nextMonthBooking) {
+		String dt = null;
+		if (nextMonthBooking) {
+			driver.findElement(By.className("rbc-next-month")).click();
+			driver.manage().timeouts().implicitlyWait(80, TimeUnit.SECONDS);
+		}
+		List<WebElement> appointmentList = driver.findElements(By.cssSelector(".rbc-event-content"));
+		log("size is " + appointmentList.size());
+		for (int i = 0; i < appointmentList.size(); i++) {
+			if (appointmentList.get(0).isDisplayed()) {
+				log("Appointment Date selected=" + appointmentList.get(0).getText());
+				appointmentList.get(0).click();
+				dt = appointmentList.get(0).getText();
+				log("Date is " + dt);
+
+			}
+		}
+	
+	}
 
 	public UpdateInsurancePage selectAppointmentTimeIns() {
 		List<WebElement> appointmentTimeList = driver.findElements(By.cssSelector(".time-btn"));
