@@ -12,7 +12,7 @@ module "qa_automation_utils_rel_codebuild" {
   artifact_kms_key_ids = []
   artifacts_type       = var.codebuild_artifacts_type
 
-  source_buildspec = templatefile("buildspec/buildspec.tpl", {domain = var.codeartifact_maven_domain, owner = data.aws_caller_identity.current.account_id, execution_folder = local.qa_automation_utils_rel.execution_folder, maven_command = "${local.qa_automation_utils_rel.maven_parameter} -Dmaven.test.skip=${local.qa_automation_utils_rel.maven_test_skip}"}) # var.source_buildspec
+  source_buildspec = templatefile("templates/buildspec.tpl", {domain = var.codeartifact_maven_domain, owner = data.aws_caller_identity.current.account_id, execution_folder = local.qa_automation_utils_rel.execution_folder, maven_command = "${local.qa_automation_utils_rel.maven_parameter} -Dmaven.test.skip=${local.qa_automation_utils_rel.maven_test_skip}"}) # var.source_buildspec
   source_type      = var.codebuild_source_type
   build_timeout    = local.qa_automation_utils_rel.build_timeout
   queued_timeout   = local.qa_automation_utils_rel.queued_timeout
