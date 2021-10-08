@@ -63,9 +63,9 @@ public class PostAPIRequestPMNG extends BaseTestNGWebDriver {
 		return response;
 	}
 
-	public Response linksValueGuidAndPractice(String baseurl, Map<String, String> Header, String guidId) {
+	public Response linksValueGuidAndPractice(String baseurl, Map<String, String> Header, String guidId, String practiceid) {
 		RestAssured.baseURI = baseurl;
-		Response response = given().log().all().queryParam("isreschedule", "true").when().get("/link/" + guidId).then()
+		Response response = given().log().all().queryParam("isreschedule", "true").when().get("/link/" + guidId+ "/" +practiceid).then()
 				.log().all().extract().response();
 		return response;
 	}
@@ -295,7 +295,7 @@ public class PostAPIRequestPMNG extends BaseTestNGWebDriver {
 	}
 
 	public Response locationsByNextAvailable(String baseurl, String b, Map<String, String> Header, String practiceId,
-			String patientId, String locationId) {
+			String patientId) {
 		RestAssured.baseURI = baseurl;
 
 		Response response;
@@ -326,11 +326,18 @@ public class PostAPIRequestPMNG extends BaseTestNGWebDriver {
 		return response;
 	}
 
-	public Response locationsByRule(String baseurl, String b, Map<String, String> Header, String LocationsPracticeId,
-			String patientId) {
+	public Response locationsByRule(String baseurl, String b, Map<String, String> Header, String practiceid,
+			String patientid) {
 		RestAssured.baseURI = baseurl;
-		Response response = RestAssured.given().when().headers(Header).body(b).log().all().when()
-				.post(LocationsPracticeId + "/location/rule/" + patientId).then().log().all().extract().response();
+		Response response;
+		if (patientid == null) {
+			response = RestAssured.given().when().headers(Header).body(b).log().all().when()
+					.post(practiceid + "/location/rule").then().log().all().extract().response();
+		} else {
+
+			response = RestAssured.given().when().headers(Header).body(b).log().all().when()
+					.post(practiceid + "/location/rule/" + patientid).then().log().all().extract().response();
+		}
 		return response;
 	}
 

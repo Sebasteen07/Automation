@@ -104,19 +104,19 @@ public class PayloadPssPMNG {
 		return appTypeByNextAvailable;
 	}
 	
-	public String locationsByRulePayload(String firstName,String lastName,String gender,String email,String phoneNo,String zipCode) {
+	public String locationsByRulePayload(String appt, String dob,String firstName,String lastName,String gender,String email,String phoneNo,String zipCode) {
 		String locationsByRule ="{\r\n"
 				+ "    \"specialty\": null,\r\n"
 				+ "    \"location\": null,\r\n"
 				+ "    \"book\": null,\r\n"
-				+ "    \"appointmentType\": 203950,\r\n"
+				+ "    \"appointmentType\": "+appt+",\r\n"
 				+ "    \"slotId\": null,\r\n"
 				+ "    \"patientType\": \"PT_NEW\",\r\n"
 				+ "    \"linkGenerationFlow\": false,\r\n"
 				+ "    \"patientDetails\": {\r\n"
 				+ "        \"FN\": \"" + firstName+ "\",\r\n"
 				+ "        \"LN\": \"" +lastName + "\",\r\n"
-				+ "        \"DOB\": \"11/11/1999\",\r\n"
+				+ "        \"DOB\": \""+dob+"\",\r\n"
 				+ "        \"GENDER\": \"" + gender + "\",\r\n"
 				+ "        \"EMAIL\": \"" +email +"\",\r\n"
 				+ "        \"PHONE\": \""+phoneNo+"\",\r\n"
