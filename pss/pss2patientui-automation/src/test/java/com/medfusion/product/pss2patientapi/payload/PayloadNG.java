@@ -82,7 +82,7 @@ public class PayloadNG {
 		
 		String past_appt="{\r\n"
 				+ "  \"additionalFields\": {},\r\n"
-				+ "  \"endDate\": \"07/07/2021 \",\r\n"
+				+ "  \"endDate\": \"10/09/2021\",\r\n"
 				+ "  \"patientId\": \""+patientId+"\",\r\n"
 				+ "  \"practiceProvision\": {\r\n"
 				+ "    \"active\": true,\r\n"
@@ -91,7 +91,7 @@ public class PayloadNG {
 				+ "    \"practiceName\": \""+practiceDisplayName+"\",\r\n"
 				+ "    \"practiceTimezone\": \"America/New_York\"\r\n"
 				+ "  },\r\n"
-				+ "  \"startDate\": \"01/01/2021\"\r\n"
+				+ "  \"startDate\": \"07/08/2021\"\r\n"
 				+ "}\r\n"
 				+ "";
 		
@@ -164,17 +164,17 @@ public class PayloadNG {
 public static String nextAvailable_New() {
 		
 		String nextAvailable="{\r\n"
-				+ "\"locationId\": \"1B595F99-278A-4956-8F04-1879B12FB43D\",\r\n"
-				+ "\"appointmentCategoryId\": \"7B40680C-9CCE-478D-9455-2B017FD048A2\",\r\n"
-				+ "\"appointmentTypeId\": \"9E0BC44E-4200-4433-8941-DA49C408F1BA\",\r\n"
-				+ "\"resourceCategoryId\":\"11B85759-9394-4C06-8F20-CF57F1EA81BB\",\r\n"
-				+ "\"startDate\":\"08/01/2022 00:00:00\",\r\n"
-				+ "\"endDate\":\"08/24/2022 23:59:00\",\r\n"
+				+ "\"locationId\": \"283BB437-B0C6-4626-A7CC-57FD0D1D6574\",\r\n"
+				+ "\"appointmentCategoryId\": \"8F563A6C-7098-4446-97E2-7EF9345ED469\",\r\n"
+				+ "\"appointmentTypeId\": \"86D0E00F-C136-4A24-BF7A-6C17E9AB35ED\",\r\n"
+				+ "\"resourceCategoryId\":null,\r\n"
+				+ "\"startDate\":\"10/08/2021 05:02:22\",\r\n"
+				+ "\"endDate\":null,\r\n"
 				+ "\"slotSize\": 5,\r\n"
 				+ "\"patientId\": null,\r\n"
 				+ "\"reservedForSameDay\": false,\r\n"
 				+ "\"apptTypeAllocated\": true,\r\n"
-				+ "\"nextAvailability\": false,\r\n"
+				+ "\"nextAvailability\": true,\r\n"
 				+ "\"stackingFlag\": false,\r\n"
 				+ "\"preventScheduling\": 0,\r\n"
 				+ "\"sameDayAppointment\": false,\r\n"
@@ -182,11 +182,8 @@ public static String nextAvailable_New() {
 				+ "\"maxPerDay\": 0,\r\n"
 				+ "\"leadTime\": 0,\r\n"
 				+ "\"slotCount\": 1,\r\n"
-				+ "\"allowSameDayAppts\": true,\r\n"
-				+ "\"reservedForSameDate\": \"n\",\r\n"
-				+ "\"appointmentTypeDBId\": \"205810\",\r\n"
-				+ "\"locationDBId\": \"205810\",\r\n"
-				+ "\"providerDBId\":\"205720\"\r\n"
+				+ "\"allowSameDayAppts\": true\r\n"
+				+ "\r\n"
 				+ "}";
 		
 		return nextAvailable;
@@ -286,15 +283,21 @@ public static String nextAvailable_New() {
 				+ "  \"appointmentTypeId\": \"86D0E00F-C136-4A24-BF7A-6C17E9AB35ED\",\r\n"
 				+ "  \"careProvider\": [\r\n"
 				+ "    {\r\n"
-				+ "      \"nextAvailabledate\": null,\r\n"
+				+ "      \"nextAvailabledate\": \"10/08/2021 08:45:00\",\r\n"
 				+ "      \"resourceCatId\": \"437DCCDB-8D78-475F-B661-EF393674F1F8\",\r\n"
 				+ "      \"resourceId\": \"78E497EF-0C8F-4D59-AD40-FE7BE12B9842\",\r\n"
-				+ "      \"slotSize\": \"15\"\r\n"
+				+ "      \"slotSize\": 15\r\n"
+				+ "    },\r\n"
+				+ "    {\r\n"
+				+ "      \"nextAvailabledate\": null,\r\n"
+				+ "      \"resourceCatId\": \"ECA5CE18-7EA7-42EE-B3AD-65A2D607F127\",\r\n"
+				+ "      \"resourceId\": \"7DB3D384-149E-41E3-8FA4-102488DBDD6B\",\r\n"
+				+ "      \"slotSize\": 5\r\n"
 				+ "    }\r\n"
 				+ "  ],\r\n"
-				+ "  \"endDateTime\": \"08/30/2021 01:47:48\",\r\n"
+				+ "  \"endDateTime\": \"10/11/2021 07:39:11\",\r\n"
 				+ "  \"locationId\": \"283BB437-B0C6-4626-A7CC-57FD0D1D6574\",\r\n"
-				+ "  \"startDateTime\": \"08/19/2021 01:47:48\"\r\n"
+				+ "  \"startDateTime\": \"10/08/2021 07:39:11\"\r\n"
 				+ "}";
 		return careprovideravailability;
 		

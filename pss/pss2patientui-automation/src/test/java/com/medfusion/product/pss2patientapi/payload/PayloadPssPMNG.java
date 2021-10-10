@@ -736,7 +736,7 @@ public class PayloadPssPMNG {
 	public String  appointmentTypesByrulePayload()
 	{
 		String  appmntTypesByRule="{\r\n"
-				+ "  \"specialty\": 200150,\r\n"
+				+ "  \"specialty\": null,\r\n"
 				+ "  \"location\": null,\r\n"
 				+ "  \"book\": null,\r\n"
 				+ "  \"appointmentType\": null,\r\n"
@@ -766,46 +766,46 @@ public class PayloadPssPMNG {
 		return appmntTypesByRule;
 	}
 	
-	public String  appointmentTypesByrulePayload_New()
+	public String  appointmentTypesByrulePayload_New(String fn, String ln, String email,String phone, String zip)
 	{
 		String  appmntTypesByRule="{\r\n"
-				+ "  \"specialty\": 200150,\r\n"
+				+ "  \"specialty\": null,\r\n"
 				+ "  \"location\": null,\r\n"
 				+ "  \"book\": null,\r\n"
 				+ "  \"appointmentType\": null,\r\n"
-				+ "  \"startDateTime\": \"10/26/2021 08:45:00\",\r\n"
+				+ "  \"startDateTime\": \"10/10/2021 08:45:00\",\r\n"
 				+ "  \"slotId\": null,\r\n"
 				+ "  \"traversal\": false,\r\n"
 				+ "  \"patientType\": \"PT_EXISTING\",\r\n"
 				+ "  \"extApptId\": null,\r\n"
 				+ "  \"linkGenerationFlow\": false,\r\n"
 				+ "  \"patientDetails\": {\r\n"
-				+ "    \"FN\": \"dd\",\r\n"
-				+ "    \"LN\": \"dd\",\r\n"
+				+ "    \"FN\": \""+fn+"\",\r\n"
+				+ "    \"LN\": \""+ln+"\",\r\n"
 				+ "    \"DOB\": \"01/01/2000\",\r\n"
 				+ "    \"GENDER\": \"M\",\r\n"
-				+ "    \"EMAIL\": \"Shweta.Sontakke@CrossAsyst.com\",\r\n"
-				+ "    \"PHONE\": \"\",\r\n"
+				+ "    \"EMAIL\": \""+email+"\",\r\n"
+				+ "    \"PHONE\": \""+phone+"\",\r\n"
 				+ "    \"INSID\": null,\r\n"
 				+ "    \"ADDR1\": null,\r\n"
 				+ "    \"ADDR2\": null,\r\n"
 				+ "    \"CITY\": null,\r\n"
 				+ "    \"STATE\": null,\r\n"
-				+ "    \"ZIP\": \"\",\r\n"
+				+ "    \"ZIP\": \""+zip+"\",\r\n"
 				+ "    \"AP\": null\r\n"
 				+ "  },\r\n"
 				+ "  \"flow\": \"loginless\"\r\n"
 				+ "}";
 		return appmntTypesByRule;
 	}
-	public String  cancelStatusPayload(String extapp, String catid)
+	public String  cancelStatusPayload(String extapp, String catid, String apptid, String numberofdays, String preventscheduling )
 	{
 		String  cancelstatus="{\r\n"
 				+ "  \"categoryId\": \""+catid+"\",\r\n"
 				+ "  \"extAppointmentTypeId\": \""+extapp+"\",\r\n"
-				+ "  \"numberOfDays\": 10,\r\n"
-				+ "  \"preventScheduling\": 2,\r\n"
-				+ "  \"id\": 4130,\r\n"
+				+ "  \"numberOfDays\": "+numberofdays+",\r\n"
+				+ "  \"preventScheduling\": "+preventscheduling+",\r\n"
+				+ "  \"id\": "+apptid+",\r\n"
 				+ "  \"extApptId\": null\r\n"
 				+ "}";
 		return cancelstatus;

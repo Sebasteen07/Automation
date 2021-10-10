@@ -86,7 +86,7 @@ public class PostAPIRequestPatientMod extends BaseTestNGWebDriver {
 
 	public Response practiceFromGuidLoginless(String baseurl, Map<String, String> Header, String guidId) {
 		RestAssured.baseURI = baseurl;
-		Response response = given().log().all().when().get("/loginless/" + guidId).then().log().all().extract().response();
+		Response response = given().log().all().queryParam("isByPassGuid", false).when().get("/loginless/" + guidId).then().log().all().extract().response();
 
 		return response;
 	}
