@@ -10,7 +10,7 @@ import com.medfusion.common.utils.PropertyFileLoader;
 import pageobjects.MerchantDetailsPage;
 import pageobjects.MerchantSearchPage;
 
-public class VerifyMerchantDetails extends ProvisioningBaseTest {
+public class VerifyMerchantDetailsTest extends ProvisioningBaseTest {
 
 	@Test
 	public void testVerifyMerchant() throws IOException, NullPointerException, InterruptedException {
@@ -60,7 +60,7 @@ public class VerifyMerchantDetails extends ProvisioningBaseTest {
 		logStep("Going to verify Rates Contract Information");
 		merchantDetailsPage.verifyRatesContractInformation();
 
-		logStep("Going to verify percentage fee tiers");
+		logStep("Going to verify Percentage fee tiers");
 		merchantDetailsPage.verifyPercentageFeeTiers();
 
 		logStep("Going to verify Chargeback");
