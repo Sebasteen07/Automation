@@ -76,7 +76,12 @@ qa_automation_utils_rel = {
     maven_parameter       = "mvn clean install"
 }
 ```
-Similarly, adding new jobs would need the corresponding inputs to be added in the `local.tf` as well.
+When creating a new dependency job:
+1. Add new job's corresponding inputs in the `local.tf` as in the above example for `qa_automation_utils_rel`
+1. Copy the `example.tf` from the `example-job` directory and rename it with the actual job name.
+1. Open the renamed tf file and search all occurences of `dependency_jobname` and replace it with the actual job's name (with `_` instead of `-`). For example, in `git-maven-build-qa-automation-utils-rel.tf`, all occurences of `dependency_jobname` were replaced with `qa_automation_utils_rel`
+1. Create a plan and apply
+1. Test as per requirements and make necessary changes (if needed)
 
 ## Usage
 This requires Terraform version 1.0.0 and above.
