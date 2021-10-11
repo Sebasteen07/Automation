@@ -61,14 +61,6 @@ public class PSS2NGAdapterAcceptanceTests extends BaseTestNG {
 		aPIVerification.responseTimeValidation(response);
 
 	}
-//	public void testAvailableSlotsNGPost() throws IOException, InterruptedException {
-//		Response response = postAPIRequest.availableSlots(
-//				PayloadNG.nextAvailable_Payload(propertyData.getProperty("patient.id.ng")),
-//				propertyData.getProperty("practice.id.ng"));
-//		aPIVerification.responseCodeValidation(response, 200);
-//		aPIVerification.responseTimeValidation(response);
-//
-//	}
 
 	@Test(enabled = true, groups = { "APItest" }, retryAnalyzer = RetryAnalyzer.class)
 	public void testAvailableSlotsNGPostInvalidPayload() throws IOException, InterruptedException {
