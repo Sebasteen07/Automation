@@ -37,7 +37,7 @@ data "aws_iam_policy_document" "codebuild_inline" {
     condition {
       test     = "StringEquals"
       variable = "sts:AWSServiceName"
-      values   = "codeartifact.amazonaws.com"
+      values   = ["codeartifact.amazonaws.com"]
     }
   }
 
