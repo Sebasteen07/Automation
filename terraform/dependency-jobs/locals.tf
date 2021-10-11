@@ -7,9 +7,8 @@ locals {
 
   qa_automation_utils_rel = {
       name                  = "git-maven-build-qa-automation-utils-rel"
-      codecommit_branch     = "master"
+      codecommit_branch     = "development"
       PollForSourceChanges  = true
-      git_tag_name          = "master"
       execution_folder      = "qa-automation-utils"
       maven_test_skip       = "true"
       build_timeout         = 240     #Number of minutes, from 5 to 480. Default value is 60 mins
