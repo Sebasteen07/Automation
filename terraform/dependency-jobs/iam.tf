@@ -34,6 +34,11 @@ data "aws_iam_policy_document" "codebuild_inline" {
       "sts:GetServiceBearerToken"
     ]
     resources = ["*"]
+    condition {
+      test     = "StringEquals"
+      variable = "sts:AWSServiceName"
+      values   = "codeartifact.amazonaws.com"
+    }
   }
 
   statement {
