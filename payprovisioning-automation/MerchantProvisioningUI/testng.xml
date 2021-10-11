@@ -8,5 +8,8 @@
   <listener class-name="com.epam.reportportal.testng.ReportPortalTestNGListener" />
 </listeners>
   <test thread-count="5" name="Test">
+  <classes>
+   
+  </classes>
   </test> <!-- Test -->
 </suite> <!-- Suite -->
