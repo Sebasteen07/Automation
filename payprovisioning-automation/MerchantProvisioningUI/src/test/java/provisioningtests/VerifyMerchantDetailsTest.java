@@ -22,7 +22,6 @@ public class VerifyMerchantDetailsTest extends ProvisioningBaseTest {
 		merchantSearchPage.findByMerchantId(testData.getProperty("merchant.id.get"));
 		merchantSearchPage.searchButtonClick();
 		driver.manage().timeouts().implicitlyWait(10, TimeUnit.SECONDS);
-		
 
 		logStep("Going to click on view Merchant details page");
 		merchantSearchPage.viewDetailsButtonClick();
@@ -34,22 +33,10 @@ public class VerifyMerchantDetailsTest extends ProvisioningBaseTest {
 
 		logStep("Going to verify payment processor information");
 		driver.manage().timeouts().implicitlyWait(10, TimeUnit.SECONDS);
-		merchantDetailsPage.verifyProcessorInformation();
+		merchantDetailsPage.verifyProcessorInformation(testData.getProperty("merchant.processor.get"));
 
 		logStep("Going to verify general merchant information");
-		merchantDetailsPage.verifyGeneralMerchantInformation();
-
-		logStep("Going to verify Customer contact section");
-		merchantDetailsPage.verifyCustomerContact();
-
-		logStep("Going to verify Merchant Address");
-		merchantDetailsPage.verifyMerchantAddress();
-
-		logStep("Going to verify Remit to Address section");
-		merchantDetailsPage.verifyRemitToAddress();
-
-		logStep("Going to verify Legal Entity ");
-		merchantDetailsPage.verifyLegalEntity();
+		merchantDetailsPage.verifyGeneralMerchantInformation(testData.getProperty("merchant.practice.id"));
 
 		logStep("Going to verify Accepted cards ");
 		merchantDetailsPage.verifyAcceptedCards();
@@ -72,8 +59,6 @@ public class VerifyMerchantDetailsTest extends ProvisioningBaseTest {
 		logStep("Going to verify userRoles");
 		merchantDetailsPage.verifyUserRoles();
 
-		logStep("Going to verify BeneficialOwner");
-		merchantDetailsPage.verifyBeneficialOwners();
 		logStep("Merchant Details Verified successfully");
 
 	}
