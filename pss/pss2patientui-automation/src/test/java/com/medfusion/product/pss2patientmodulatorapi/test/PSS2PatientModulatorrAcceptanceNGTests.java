@@ -57,16 +57,12 @@ public class PSS2PatientModulatorrAcceptanceNGTests extends BaseTestNG {
 		baseurl = propertyData.getProperty("base.url.pm.ng");
 		practiceid = propertyData.getProperty("practice.id.pm.ng");
 		accessToken = postAPIRequest.createToken(baseurl, practiceid);
-
-		// testData.setAccessToken(accessToken);
-
 		pssPatientUtils = new PSSPatientUtils();
 		apv = new APIVerification();
 
 		log("Base URL for Patient Modulator - " + baseurl);
 
 	}
-	
 
 	@Test(enabled = true, groups = { "APItest" }, retryAnalyzer = RetryAnalyzer.class)
 	public void test01AnnouncementByLanguageGET() throws IOException {
@@ -99,21 +95,21 @@ public class PSS2PatientModulatorrAcceptanceNGTests extends BaseTestNG {
 		apv.responseKeyValidationJson(response, "name");
 		apv.responseKeyValidationJson(response, "code");
 	}
-	
+
 	@Test(enabled = true, groups = { "APItest" }, retryAnalyzer = RetryAnalyzer.class)
 	public void test04AllowOnlineCancellationPost() throws IOException {
-		
-		String patientid=propertyData.getProperty("patient.id.pm.ng");
-		String bookid=propertyData.getProperty("availableslot.bookid.pm.ng");
-		String locationid=propertyData.getProperty("availableslot.locationid.pm.ng");
-		String apptype=propertyData.getProperty("availableslot.apptid.pm.ng");
+
+		String patientid = propertyData.getProperty("patient.id.pm.ng");
+		String bookid = propertyData.getProperty("availableslot.bookid.pm.ng");
+		String locationid = propertyData.getProperty("availableslot.locationid.pm.ng");
+		String apptype = propertyData.getProperty("availableslot.apptid.pm.ng");
 
 		String currentdate = pssPatientUtils.sampleDateTime("MM/dd/yyyy");
 
 		String b = payloadPatientMod.availableslotsPayload(currentdate, bookid, locationid, apptype);
 
-		Response response = postAPIRequest.availableSlots(baseurl, b,
-				headerConfig.HeaderwithToken(accessToken), practiceid, patientid);
+		Response response = postAPIRequest.availableSlots(baseurl, b, headerConfig.HeaderwithToken(accessToken),
+				practiceid, patientid);
 
 		JSONArray arr = new JSONArray(response.body().asString());
 
@@ -121,14 +117,13 @@ public class PSS2PatientModulatorrAcceptanceNGTests extends BaseTestNG {
 		String time = arr.getJSONObject(2).getJSONArray("slotList").getJSONObject(0).getString("slotTime");
 		String date = arr.getJSONObject(2).getString("date");
 
-		String c = payloadPatientMod.scheduleAppointmentPayload(slotid, date, time,bookid,locationid,apptype);
-		
-		Response schedResponse = postAPIRequest.scheduleAppointment(baseurl, c,
-				headerConfig.HeaderwithToken(accessToken), practiceid, patientid,
-				testData.getPatientType());
+		String c = payloadPatientMod.scheduleAppointmentPayload(slotid, date, time, bookid, locationid, apptype);
 
-		String extapptid=	apv.responseKeyValidationJson(schedResponse, "extApptId");
-		
+		Response schedResponse = postAPIRequest.scheduleAppointment(baseurl, c,
+				headerConfig.HeaderwithToken(accessToken), practiceid, patientid, testData.getPatientType());
+
+		String extapptid = apv.responseKeyValidationJson(schedResponse, "extApptId");
+
 		String d = payloadPatientMod.allowOnlineCancellationPayload(extapptid);
 		log("Practice Id is-" + practiceid);
 
@@ -140,32 +135,31 @@ public class PSS2PatientModulatorrAcceptanceNGTests extends BaseTestNG {
 		assertEquals(apv.responseKeyValidationJson(canresponse, "checkCancelAppointmentStatus"), "true");
 		assertEquals(apv.responseKeyValidationJson(canresponse, "preventScheduling"), null);
 	}
-	
+
 	@Test(enabled = true, groups = { "APItest" }, retryAnalyzer = RetryAnalyzer.class)
 	public void test05getAppointment() throws IOException {
 
 		String extapptid = propertyData.getProperty("extappt.id.pm.ng");
 
-		Response response = postAPIRequest.appointment(baseurl, headerConfig.defaultHeader(), practiceid,
-				extapptid);
+		Response response = postAPIRequest.appointment(baseurl, headerConfig.defaultHeader(), practiceid, extapptid);
 		apv.responseCodeValidation(response, 200);
 		apv.responseKeyValidationJson(response, "patientId");
 		apv.responseKeyValidationJson(response, "confirmationNo");
 		apv.responseKeyValidationJson(response, "bookName");
 		apv.responseKeyValidationJson(response, "locationName");
 	}
-	
+
 	@Test(enabled = true, groups = { "APItest" }, retryAnalyzer = RetryAnalyzer.class)
 	public void test06getAppointmentForIcs() throws IOException {
-		
+
 		String extapptid = propertyData.getProperty("extappt.id.pm.ng");
-	
-		Response response = postAPIRequest.appointmentForIcs(baseurl, headerConfig.defaultHeader(),
-				practiceid, extapptid);
+
+		Response response = postAPIRequest.appointmentForIcs(baseurl, headerConfig.defaultHeader(), practiceid,
+				extapptid);
 		apv.responseCodeValidation(response, 200);
 		apv.responseTimeValidation(response);
 	}
-	
+
 	@Test(enabled = true, groups = { "APItest" }, retryAnalyzer = RetryAnalyzer.class)
 	public void test07AvailableSlotsPost_ExistingPatient() throws IOException {
 
@@ -178,12 +172,12 @@ public class PSS2PatientModulatorrAcceptanceNGTests extends BaseTestNG {
 				propertyData.getProperty("availableslot.locationid.pm.ng"),
 				propertyData.getProperty("availableslot.apptid.pm.ng"));
 
-		Response response = postAPIRequest.availableSlots(baseurl, b,
-				headerConfig.HeaderwithToken(accessToken), practiceid, patientid);
+		Response response = postAPIRequest.availableSlots(baseurl, b, headerConfig.HeaderwithToken(accessToken),
+				practiceid, patientid);
 		apv.responseCodeValidation(response, 200);
 		apv.responseTimeValidation(response);
 	}
-	
+
 	@Test(enabled = true, groups = { "APItest" }, retryAnalyzer = RetryAnalyzer.class)
 	public void test08AvailableSlotsPost_NewPatient() throws IOException {
 
@@ -199,16 +193,16 @@ public class PSS2PatientModulatorrAcceptanceNGTests extends BaseTestNG {
 				propertyData.getProperty("availableslot.locationid.pm.ng"),
 				propertyData.getProperty("availableslot.apptid.pm.ng"));
 
-		Response response = postAPIRequest.availableSlots(baseurl, b,
-				headerConfig.HeaderwithToken(accessToken), practiceid, patientid);
+		Response response = postAPIRequest.availableSlots(baseurl, b, headerConfig.HeaderwithToken(accessToken),
+				practiceid, patientid);
 		apv.responseCodeValidation(response, 200);
 		apv.responseTimeValidation(response);
 	}
-	
+
 	@Test(enabled = true, groups = { "APItest" }, retryAnalyzer = RetryAnalyzer.class)
 	public void test09Sched_Resc_Cancel_AppointmentPost() throws IOException {
 
-		String patientid=propertyData.getProperty("patient.id.pm.ng");
+		String patientid = propertyData.getProperty("patient.id.pm.ng");
 
 		String currentdate = pssPatientUtils.sampleDateTime("MM/dd/yyyy");
 
@@ -217,8 +211,8 @@ public class PSS2PatientModulatorrAcceptanceNGTests extends BaseTestNG {
 				propertyData.getProperty("availableslot.locationid.pm.ng"),
 				propertyData.getProperty("availableslot.apptid.pm.ng"));
 
-		Response response = postAPIRequest.availableSlots(baseurl, b,
-				headerConfig.HeaderwithToken(accessToken), practiceid, patientid);
+		Response response = postAPIRequest.availableSlots(baseurl, b, headerConfig.HeaderwithToken(accessToken),
+				practiceid, patientid);
 		apv.responseCodeValidation(response, 200);
 		apv.responseTimeValidation(response);
 
@@ -240,8 +234,7 @@ public class PSS2PatientModulatorrAcceptanceNGTests extends BaseTestNG {
 		log("Payload-" + c);
 
 		Response schedResponse = postAPIRequest.scheduleAppointment(baseurl, c,
-				headerConfig.HeaderwithToken(accessToken), practiceid, patientid,
-				testData.getPatientType());
+				headerConfig.HeaderwithToken(accessToken), practiceid, patientid, testData.getPatientType());
 		apv.responseCodeValidation(schedResponse, 200);
 		apv.responseTimeValidation(schedResponse);
 
@@ -258,8 +251,8 @@ public class PSS2PatientModulatorrAcceptanceNGTests extends BaseTestNG {
 				propertyData.getProperty("availableslot.apptid.pm.ng"));
 
 		Response rescheduleResponse = postAPIRequest.rescheduleAppointment(baseurl, d,
-				headerConfig.HeaderwithToken(accessToken), practiceid,
-				testData.getPatientIdAvailableSlots(), testData.getPatientType());
+				headerConfig.HeaderwithToken(accessToken), practiceid, testData.getPatientIdAvailableSlots(),
+				testData.getPatientType());
 
 		apv.responseCodeValidation(rescheduleResponse, 200);
 		apv.responseTimeValidation(rescheduleResponse);
@@ -268,21 +261,21 @@ public class PSS2PatientModulatorrAcceptanceNGTests extends BaseTestNG {
 		String extapptid_new = apv.responseKeyValidationJson(schedResponse, "extApptId");
 
 		Response cancelResponse = postAPIRequest.cancelAppointment(baseurl,
-				payloadPatientMod.cancelAppointmentPayload(extapptid_new),
-				headerConfig.HeaderwithToken(accessToken), practiceid, patientid);
+				payloadPatientMod.cancelAppointmentPayload(extapptid_new), headerConfig.HeaderwithToken(accessToken),
+				practiceid, patientid);
 		apv.responseCodeValidation(cancelResponse, 200);
 		apv.responseTimeValidation(cancelResponse);
 
 	}
-	
+
 	@Test(enabled = true, groups = { "APItest" }, retryAnalyzer = RetryAnalyzer.class)
 	public void test10PastAppointmentsByPageGET() throws IOException {
-		
-		String patientid=propertyData.getProperty("pastappt.patient.id.pm.ng");
 
-		Response response = postAPIRequest.pastAppointmentsByPage(baseurl,
-				headerConfig.HeaderwithToken(accessToken), practiceid,patientid);
-			
+		String patientid = propertyData.getProperty("pastappt.patient.id.pm.ng");
+
+		Response response = postAPIRequest.pastAppointmentsByPage(baseurl, headerConfig.HeaderwithToken(accessToken),
+				practiceid, patientid);
+
 		apv.responseCodeValidation(response, 200);
 		apv.responseTimeValidation(response);
 
@@ -297,15 +290,14 @@ public class PSS2PatientModulatorrAcceptanceNGTests extends BaseTestNG {
 		String book = js.getString("content[0].book.resourceName");
 		log("Resource Name - " + book);
 	}
-	
+
 	@Test(enabled = true, groups = { "APItest" }, retryAnalyzer = RetryAnalyzer.class)
 	public void test11TimeZoneCodePost() throws IOException {
 
-		String patientid=propertyData.getProperty("patient.id.pm.ng");
-		
-		Response response = postAPIRequest.timeZoneCode(baseurl,
-				payloadPatientMod.timeZnCodeForDatePayload(), headerConfig.HeaderwithToken(accessToken),
-				practiceid, patientid);
+		String patientid = propertyData.getProperty("patient.id.pm.ng");
+
+		Response response = postAPIRequest.timeZoneCode(baseurl, payloadPatientMod.timeZnCodeForDatePayload(),
+				headerConfig.HeaderwithToken(accessToken), practiceid, patientid);
 		apv.responseCodeValidation(response, 200);
 		apv.responseTimeValidation(response);
 
@@ -324,7 +316,7 @@ public class PSS2PatientModulatorrAcceptanceNGTests extends BaseTestNG {
 		apv.responseCodeValidation(response, 200);
 		apv.responseTimeValidation(response);
 	}
-	
+
 	@Test(enabled = true, groups = { "APItest" }, retryAnalyzer = RetryAnalyzer.class)
 	public void test13AppointmentTypesByRulePost_NewPatient() throws IOException {
 
@@ -340,22 +332,22 @@ public class PSS2PatientModulatorrAcceptanceNGTests extends BaseTestNG {
 
 	@Test(enabled = true, groups = { "APItest" }, retryAnalyzer = RetryAnalyzer.class)
 	public void test14AppointmentTypesByRulePost_ExPatient() throws IOException {
-		
-		String patientid=propertyData.getProperty("patient.id.pm.ng");
-		String fn=propertyData.getProperty("demographics.fn.pm.ng");
-		String ln=propertyData.getProperty("demographics.ln.pm.ng");
-		String email=propertyData.getProperty("demographics.email.pm.ng");
-		String phone=propertyData.getProperty("demographics.phone.pm.ng");
-		String zip=propertyData.getProperty("demographics.zip.pm.ng");
+
+		String patientid = propertyData.getProperty("patient.id.pm.ng");
+		String fn = propertyData.getProperty("demographics.fn.pm.ng");
+		String ln = propertyData.getProperty("demographics.ln.pm.ng");
+		String email = propertyData.getProperty("demographics.email.pm.ng");
+		String phone = propertyData.getProperty("demographics.phone.pm.ng");
+		String zip = propertyData.getProperty("demographics.zip.pm.ng");
 
 		Response response = postAPIRequest.appointmentTypesByRule(baseurl,
-				payloadPatientMod.appointmentTypesByrulePayload_New(fn,ln,email, phone, zip), headerConfig.HeaderwithToken(accessToken),
-				practiceid, patientid);
+				payloadPatientMod.appointmentTypesByrulePayload_New(fn, ln, email, phone, zip),
+				headerConfig.HeaderwithToken(accessToken), practiceid, patientid);
 
 		apv.responseCodeValidation(response, 200);
 		apv.responseTimeValidation(response);
 	}
-	
+
 	@Test(enabled = true, groups = { "APItest" }, retryAnalyzer = RetryAnalyzer.class)
 	public void test15AppTypeByNextAvailablePost_NewPatient() throws IOException {
 
@@ -379,18 +371,18 @@ public class PSS2PatientModulatorrAcceptanceNGTests extends BaseTestNG {
 		log("Next Available slot for Appointment Type- " + apptid_actual + " is- " + nextavailableslot);
 		assertEquals(apptid_actual, Integer.parseInt(apptid), "location practice id is wrong");
 	}
-	
+
 	@Test(enabled = true, groups = { "APItest" }, retryAnalyzer = RetryAnalyzer.class)
 	public void test16AppTypeByNextAvailablePost_ExistingPatient() throws IOException {
-		
-		String patientid=propertyData.getProperty("patient.id.pm.ng");
+
+		String patientid = propertyData.getProperty("patient.id.pm.ng");
 		String apptid = propertyData.getProperty("nextavailable.apptid.pm.ng");
 		String locationid = propertyData.getProperty("nextavailable.locationid.pm.ng");
 
 		String b = payloadPatientMod.appTypeByNextAvailablePayload_Exe(locationid, apptid);
 
-		Response response = postAPIRequest.apptTypeNextAvailable(baseurl, b,
-				headerConfig.HeaderwithToken(accessToken), practiceid, patientid);			
+		Response response = postAPIRequest.apptTypeNextAvailable(baseurl, b, headerConfig.HeaderwithToken(accessToken),
+				practiceid, patientid);
 
 		apv.responseCodeValidation(response, 200);
 		apv.responseTimeValidation(response);
@@ -402,7 +394,7 @@ public class PSS2PatientModulatorrAcceptanceNGTests extends BaseTestNG {
 		log("Next Available slot for Appointment Type- " + apptid_actual + " is- " + nextavailableslot);
 		assertEquals(apptid_actual, Integer.parseInt(apptid), "location practice id is wrong");
 	}
-	
+
 	@Test(enabled = true, groups = { "APItest" }, retryAnalyzer = RetryAnalyzer.class)
 	public void test17CancelStatus_New() throws IOException {
 
@@ -410,10 +402,10 @@ public class PSS2PatientModulatorrAcceptanceNGTests extends BaseTestNG {
 		String extappt = propertyData.getProperty("cancelstatus.ext.apptype.pm.ng");
 		String appcat = propertyData.getProperty("cancelstatus.cat.apptype.pm.ng");
 		String apptid = propertyData.getProperty("nextavailable.apptid.pm.ng");
-		String d1=propertyData.getProperty("numberofdays.pm.ng");
-		String d2=propertyData.getProperty("preventscheduling.pm.ng");
+		String d1 = propertyData.getProperty("numberofdays.pm.ng");
+		String d2 = propertyData.getProperty("preventscheduling.pm.ng");
 
-		String b = payloadPatientMod.cancelStatusPayload(extappt, appcat, apptid,d1, d2);
+		String b = payloadPatientMod.cancelStatusPayload(extappt, appcat, apptid, d1, d2);
 
 		Response response = postAPIRequest.cancelStatus(baseurl, b, headerConfig.HeaderwithToken(accessToken),
 				practiceid, patientid);
@@ -421,18 +413,18 @@ public class PSS2PatientModulatorrAcceptanceNGTests extends BaseTestNG {
 		apv.responseCodeValidation(response, 200);
 		apv.responseTimeValidation(response);
 	}
-	
+
 	@Test(enabled = true, groups = { "APItest" }, retryAnalyzer = RetryAnalyzer.class)
 	public void test18CancelStatus_Ex() throws IOException {
-		
+
 		String patientid = propertyData.getProperty("patient.id.pm.ng");
 		String extappt = propertyData.getProperty("cancelstatus.ext.apptype.pm.ng");
 		String appcat = propertyData.getProperty("cancelstatus.cat.apptype.pm.ng");
 		String apptid = propertyData.getProperty("nextavailable.apptid.pm.ng");
-		String d1=propertyData.getProperty("numberofdays.pm.ng");
-		String d2=propertyData.getProperty("preventscheduling.pm.ng");
+		String d1 = propertyData.getProperty("numberofdays.pm.ng");
+		String d2 = propertyData.getProperty("preventscheduling.pm.ng");
 
-		String b = payloadPatientMod.cancelStatusPayload(extappt, appcat, apptid,d1, d2);
+		String b = payloadPatientMod.cancelStatusPayload(extappt, appcat, apptid, d1, d2);
 
 		Response response = postAPIRequest.cancelStatus(baseurl, b, headerConfig.HeaderwithToken(accessToken),
 				practiceid, patientid);
@@ -447,46 +439,46 @@ public class PSS2PatientModulatorrAcceptanceNGTests extends BaseTestNG {
 		String patientid = null;
 		String bookid = propertyData.getProperty("availableslot.bookid.pm.ng");
 		String locationid = propertyData.getProperty("availableslot.locationid.pm.ng");
-		String apptid= propertyData.getProperty("availableslot.apptid.pm.ng");
+		String apptid = propertyData.getProperty("availableslot.apptid.pm.ng");
 
 		String b = payloadPatientMod.commentDetailsPayload(apptid, bookid, locationid);
 
-		Response response = postAPIRequest.commentDetails(baseurl,b,
-				headerConfig.HeaderwithToken(accessToken), practiceid, patientid);
+		Response response = postAPIRequest.commentDetails(baseurl, b, headerConfig.HeaderwithToken(accessToken),
+				practiceid, patientid);
 
 		apv.responseCodeValidation(response, 200);
 		apv.responseTimeValidation(response);
 	}
-	
+
 	@Test(enabled = true, groups = { "APItest" }, retryAnalyzer = RetryAnalyzer.class)
 	public void test20getCommentDetails_Ex() throws IOException {
-		
+
 		String patientid = propertyData.getProperty("patient.id.pm.ng");
 		String bookid = propertyData.getProperty("availableslot.bookid.pm.ng");
 		String locationid = propertyData.getProperty("availableslot.locationid.pm.ng");
-		String apptid= propertyData.getProperty("availableslot.apptid.pm.ng");
+		String apptid = propertyData.getProperty("availableslot.apptid.pm.ng");
 
 		String b = payloadPatientMod.commentDetailsPayload(apptid, bookid, locationid);
 
-		Response response = postAPIRequest.commentDetails(baseurl,b,
-				headerConfig.HeaderwithToken(accessToken), practiceid, patientid);
+		Response response = postAPIRequest.commentDetails(baseurl, b, headerConfig.HeaderwithToken(accessToken),
+				practiceid, patientid);
 
 		apv.responseCodeValidation(response, 200);
 		apv.responseTimeValidation(response);
 	}
-	
+
 	@Test(enabled = true, groups = { "APItest" }, retryAnalyzer = RetryAnalyzer.class)
 	public void test21BooksByNextAvailablePost_NewPatient() throws IOException {
 
 		String patientid = null;
 		String bookid = propertyData.getProperty("availableslot.bookid.pm.ng");
 		String locationid = propertyData.getProperty("availableslot.locationid.pm.ng");
-		String apptid= propertyData.getProperty("availableslot.apptid.pm.ng");
-		
-		String b = payloadPatientMod.booksByNextAvailablePayload(bookid,locationid, apptid);
+		String apptid = propertyData.getProperty("availableslot.apptid.pm.ng");
 
-		Response response = postAPIRequest.booksBynextAvailable(baseurl, b,
-				headerConfig.HeaderwithToken(accessToken), practiceid, patientid);
+		String b = payloadPatientMod.booksByNextAvailablePayload(bookid, locationid, apptid);
+
+		Response response = postAPIRequest.booksBynextAvailable(baseurl, b, headerConfig.HeaderwithToken(accessToken),
+				practiceid, patientid);
 
 		JSONArray jo = new JSONArray(response.asString());
 		int bookid_actual = jo.getJSONObject(0).getInt("id");
@@ -498,16 +490,16 @@ public class PSS2PatientModulatorrAcceptanceNGTests extends BaseTestNG {
 
 	@Test(enabled = true, groups = { "APItest" }, retryAnalyzer = RetryAnalyzer.class)
 	public void test22BooksByNextAvailablePost_ExistingPatient() throws IOException {
-		
+
 		String patientid = propertyData.getProperty("patient.id.pm.ng");
 		String bookid = propertyData.getProperty("availableslot.bookid.pm.ng");
 		String locationid = propertyData.getProperty("availableslot.locationid.pm.ng");
-		String apptid= propertyData.getProperty("availableslot.apptid.pm.ng");
-		
-		String b = payloadPatientMod.booksByNextAvailablePayload(bookid,locationid, apptid);
+		String apptid = propertyData.getProperty("availableslot.apptid.pm.ng");
 
-		Response response = postAPIRequest.booksBynextAvailable(baseurl, b,
-				headerConfig.HeaderwithToken(accessToken), practiceid, patientid);
+		String b = payloadPatientMod.booksByNextAvailablePayload(bookid, locationid, apptid);
+
+		Response response = postAPIRequest.booksBynextAvailable(baseurl, b, headerConfig.HeaderwithToken(accessToken),
+				practiceid, patientid);
 
 		JSONArray jo = new JSONArray(response.asString());
 		int bookid_actual = jo.getJSONObject(0).getInt("id");
@@ -516,7 +508,7 @@ public class PSS2PatientModulatorrAcceptanceNGTests extends BaseTestNG {
 		assertEquals(bookid_actual, Integer.parseInt(bookid), "Book id is wrong");
 		assertNotNull(nextavailableslot);
 	}
-	
+
 	@Test(enabled = true, groups = { "APItest" }, retryAnalyzer = RetryAnalyzer.class)
 	public void test23BooksByRulePost_NewPatient() throws IOException {
 
@@ -533,14 +525,14 @@ public class PSS2PatientModulatorrAcceptanceNGTests extends BaseTestNG {
 		JsonPath js = new JsonPath(response.asString());
 
 		String displayname = js.getString("books[0].displayName");
-		String bookid_actual= js.getString("books[0].id");		
-		
+		String bookid_actual = js.getString("books[0].id");
+
 		apv.responseCodeValidation(response, 200);
 		apv.responseTimeValidation(response);
 		assertEquals(bookid_actual, bookid, "Book id is not matching with expected id");
 		assertEquals(displayname, propertyData.getProperty("displayname.book.pm.ng"), "Display name is wrong");
-	}	
-	
+	}
+
 	@Test(enabled = true, groups = { "APItest" }, retryAnalyzer = RetryAnalyzer.class)
 	public void test24BooksByRulePost_ExistingPatient() throws IOException {
 
@@ -557,14 +549,14 @@ public class PSS2PatientModulatorrAcceptanceNGTests extends BaseTestNG {
 		JsonPath js = new JsonPath(response.asString());
 
 		String displayname = js.getString("books[0].displayName");
-		String bookid_actual= js.getString("books[0].id");		
-		
+		String bookid_actual = js.getString("books[0].id");
+
 		apv.responseCodeValidation(response, 200);
 		apv.responseTimeValidation(response);
 		assertEquals(bookid_actual, bookid, "Book id is not matching with expected id");
 		assertEquals(displayname, propertyData.getProperty("displayname.book.pm.ng"), "Display name is wrong");
 	}
-	
+
 	@Test(enabled = true, groups = { "APItest" }, retryAnalyzer = RetryAnalyzer.class)
 	public void test25CancellationReasonGET() throws IOException {
 
@@ -580,8 +572,8 @@ public class PSS2PatientModulatorrAcceptanceNGTests extends BaseTestNG {
 	@Test(enabled = true, groups = { "APItest" }, retryAnalyzer = RetryAnalyzer.class)
 	public void test16CancellationReasonGETInvalid() throws IOException {
 
-		Response response = postAPIRequest.cancellationReason(baseurl,
-				headerConfig.HeaderwithToken(accessToken), practiceid, "111111111");
+		Response response = postAPIRequest.cancellationReason(baseurl, headerConfig.HeaderwithToken(accessToken),
+				practiceid, "111111111");
 		apv.responseCodeValidation(response, 200);
 		apv.responseTimeValidation(response);
 		apv.responseKeyValidationJson(response, "displayName");
@@ -592,74 +584,76 @@ public class PSS2PatientModulatorrAcceptanceNGTests extends BaseTestNG {
 	public void test27RescheduleReasonGET() throws IOException {
 
 		String patientid = propertyData.getProperty("patient.id.pm.ng");
-		
-		Response response = postAPIRequest.rescheduleReason(baseurl,
-				headerConfig.HeaderwithToken(accessToken), practiceid, patientid);
+
+		Response response = postAPIRequest.rescheduleReason(baseurl, headerConfig.HeaderwithToken(accessToken),
+				practiceid, patientid);
 		apv.responseCodeValidation(response, 200);
 		apv.responseTimeValidation(response);
 		apv.responseKeyValidation(response, "displayName");
 		apv.responseKeyValidation(response, "type");
 	}
-	
+
 	@Test(enabled = true, groups = { "APItest" }, retryAnalyzer = RetryAnalyzer.class)
-	public void test28InsuranceCarrierGET() throws IOException {		
+	public void test28InsuranceCarrierGET() throws IOException {
 
 		String patientid = propertyData.getProperty("patient.id.pm.ng");
 
-		Response response = postAPIRequest.insuranceCarrier(baseurl,
-				headerConfig.HeaderwithToken(accessToken), practiceid, patientid);
+		Response response = postAPIRequest.insuranceCarrier(baseurl, headerConfig.HeaderwithToken(accessToken),
+				practiceid, patientid);
 		apv.responseCodeValidation(response, 200);
 		apv.responseTimeValidation(response);
 	}
-	
+
 	@Test(enabled = true, groups = { "APItest" }, retryAnalyzer = RetryAnalyzer.class)
-	public void test28InsuranceCarrierGET_New() throws IOException {		
+	public void test28InsuranceCarrierGET_New() throws IOException {
 
 		String patientid = null;
 
-		Response response = postAPIRequest.insuranceCarrier(baseurl,
-				headerConfig.HeaderwithToken(accessToken), practiceid, patientid);
+		Response response = postAPIRequest.insuranceCarrier(baseurl, headerConfig.HeaderwithToken(accessToken),
+				practiceid, patientid);
 		apv.responseCodeValidation(response, 200);
 		apv.responseTimeValidation(response);
 	}
 
 	@Test(enabled = true, groups = { "APItest" }, retryAnalyzer = RetryAnalyzer.class)
 	public void test29ApptDetailFromGuidGET() throws IOException {
-		
-		String guidid=propertyData.getProperty("appt.detail.guid.id.pm.ng");
 
-		Response response = postAPIRequest.apptDetailFromGuid(baseurl,
-				headerConfig.HeaderwithToken(accessToken), guidid, practiceid);
+		String guidid = propertyData.getProperty("appt.detail.guid.id.pm.ng");
+
+		Response response = postAPIRequest.apptDetailFromGuid(baseurl, headerConfig.HeaderwithToken(accessToken),
+				guidid, practiceid);
 		apv.responseCodeValidation(response, 200);
 		apv.responseKeyValidationJson(response, "appointmentType.name");
 		apv.responseKeyValidationJson(response, "book.displayName");
 		apv.responseKeyValidationJson(response, "location.displayName");
 	}
-	
+
 	@Test(enabled = true, groups = { "APItest" }, retryAnalyzer = RetryAnalyzer.class)
 	public void test30getDetails() throws IOException {
-		
+
 		String bookid = propertyData.getProperty("availableslot.bookid.pm.ng");
-		
-		String b=payloadPatientMod.getDetailsPayload(bookid);
-		Response response = postAPIRequest.getDetails(baseurl, headerConfig.HeaderwithToken(accessToken), practiceid, b);
-		apv.responseCodeValidation(response, 200);	
+
+		String b = payloadPatientMod.getDetailsPayload(bookid);
+		Response response = postAPIRequest.getDetails(baseurl, headerConfig.HeaderwithToken(accessToken), practiceid,
+				b);
+		apv.responseCodeValidation(response, 200);
 	}
-	
+
 	@Test(enabled = true, groups = { "APItest" }, retryAnalyzer = RetryAnalyzer.class)
 	public void test31ValidateProviderLinkPost_ExistingPatient() throws IOException {
-		
-		String fn=propertyData.getProperty("demographics.fn.pm.ng");
-		String ln=propertyData.getProperty("demographics.ln.pm.ng");
-		String dob=propertyData.getProperty("demographics.dob.pm.ng");
-		String gender =propertyData.getProperty("demographics.gender.pm.ng");
-		String email=propertyData.getProperty("demographics.email.pm.ng");
+
+		String fn = propertyData.getProperty("demographics.fn.pm.ng");
+		String ln = propertyData.getProperty("demographics.ln.pm.ng");
+		String dob = propertyData.getProperty("demographics.dob.pm.ng");
+		String gender = propertyData.getProperty("demographics.gender.pm.ng");
+		String email = propertyData.getProperty("demographics.email.pm.ng");
 		String bookid = propertyData.getProperty("availableslot.bookid.pm.ng");
 		String patientid = propertyData.getProperty("patient.id.pm.ng");
 
 		String b = payloadPatientMod.validateProviderLinkPayload(fn, ln, dob, gender, email, bookid);
 
-		Response response = postAPIRequest.validateProviderLink(baseurl, b, headerConfig.HeaderwithToken(accessToken),practiceid, patientid);
+		Response response = postAPIRequest.validateProviderLink(baseurl, b, headerConfig.HeaderwithToken(accessToken),
+				practiceid, patientid);
 
 		JsonPath js = new JsonPath(response.asString());
 		int id = js.getInt("id");
@@ -672,14 +666,14 @@ public class PSS2PatientModulatorrAcceptanceNGTests extends BaseTestNG {
 
 	@Test(enabled = true, groups = { "APItest" }, retryAnalyzer = RetryAnalyzer.class)
 	public void test32ValidateProviderLinkPost_NewPatient() throws IOException {
-		
+
 		String bookid = propertyData.getProperty("availableslot.bookid.pm.ng");
 		String locationid = propertyData.getProperty("availableslot.locationid.pm.ng");
 
 		String b = payloadPatientMod.validateProviderLinkPayload_New(bookid, locationid);
 		String patientid = null;
-		Response response = postAPIRequest.validateProviderLink(baseurl, b,
-				headerConfig.HeaderwithToken(accessToken), practiceid, patientid);
+		Response response = postAPIRequest.validateProviderLink(baseurl, b, headerConfig.HeaderwithToken(accessToken),
+				practiceid, patientid);
 		JsonPath js = new JsonPath(response.asString());
 		int id = js.getInt("id");
 		log("Provider id-" + js.getString("id"));
@@ -688,60 +682,59 @@ public class PSS2PatientModulatorrAcceptanceNGTests extends BaseTestNG {
 		String linkId = Integer.toString(id);
 		assertEquals(linkId, bookid, "Link id is wrong");
 	}
-	
+
 	@Test(enabled = true, groups = { "APItest" }, retryAnalyzer = RetryAnalyzer.class)
 	public void test33ApptDetailFromGuidGET() throws IOException {
-		
-		String guidid=propertyData.getProperty("appt.detail.guid.id.pm.ng");
 
-		Response response = postAPIRequest.apptDetailFromGuid(baseurl,
-				headerConfig.HeaderwithToken(accessToken), guidid, practiceid);
+		String guidid = propertyData.getProperty("appt.detail.guid.id.pm.ng");
+
+		Response response = postAPIRequest.apptDetailFromGuid(baseurl, headerConfig.HeaderwithToken(accessToken),
+				guidid, practiceid);
 		apv.responseCodeValidation(response, 200);
 		apv.responseKeyValidationJson(response, "appointmentType.name");
 		apv.responseKeyValidationJson(response, "book.displayName");
 		apv.responseKeyValidationJson(response, "location.displayName");
 	}
-	
+
 	@Test(enabled = true, groups = { "APItest" }, retryAnalyzer = RetryAnalyzer.class)
 	public void test34getDetails() throws IOException {
-		
-		String bookid = propertyData.getProperty("availableslot.bookid.pm.ng");
-		
-		String b= payloadPatientMod.getDetailsPayload(bookid);  
 
-		Response response = postAPIRequest.getDetails(baseurl,
-				headerConfig.HeaderwithToken(accessToken), practiceid, b);
+		String bookid = propertyData.getProperty("availableslot.bookid.pm.ng");
+
+		String b = payloadPatientMod.getDetailsPayload(bookid);
+
+		Response response = postAPIRequest.getDetails(baseurl, headerConfig.HeaderwithToken(accessToken), practiceid,
+				b);
 		apv.responseCodeValidation(response, 200);
 		apv.responseKeyValidationJson(response, "book.id");
 		apv.responseKeyValidationJson(response, "book.displayName");
 		apv.responseKeyValidationJson(response, "book.acceptComment");
 	}
-	
+
 	@Test(enabled = true, groups = { "APItest" }, retryAnalyzer = RetryAnalyzer.class)
 	public void test35PracticeFromGuidAnonymousGET() throws IOException {
 
-		String anonymousguid=propertyData.getProperty("anonymous.guid.pm.ng");
-		Response response = postAPIRequest.practiceFromGuid(baseurl, headerConfig.defaultHeader(),anonymousguid);
+		String anonymousguid = propertyData.getProperty("anonymous.guid.pm.ng");
+		Response response = postAPIRequest.practiceFromGuid(baseurl, headerConfig.defaultHeader(), anonymousguid);
 
 		JsonPath js = new JsonPath(response.asString());
 		String practiceid_actual = js.get("practiceId");
 		String practicename = js.getString("name");
-		
+
 		log("Practice Id-" + practiceid_actual);
 		log("Practice Name-" + practicename);
-		
+
 		assertEquals(practiceid_actual, practiceid, "Ext Practice Id is wrong");
 		apv.responseCodeValidation(response, 200);
 		apv.responseTimeValidation(response);
 	}
-	
 
 	@Test(enabled = true, groups = { "APItest" }, retryAnalyzer = RetryAnalyzer.class)
 	public void test36LinksValueGuidGET() throws IOException {
 
-		String guidid=propertyData.getProperty("appt.detail.guid.id.pm.ng");
-		Response response = postAPIRequest.linksValueGuid(baseurl, headerConfig.defaultHeader(),guidid);
-				
+		String guidid = propertyData.getProperty("appt.detail.guid.id.pm.ng");
+		Response response = postAPIRequest.linksValueGuid(baseurl, headerConfig.defaultHeader(), guidid);
+
 		JsonPath js = new JsonPath(response.asString());
 
 		String practiceId = js.get("practiceId");
@@ -750,7 +743,7 @@ public class PSS2PatientModulatorrAcceptanceNGTests extends BaseTestNG {
 
 		assertEquals(practiceId, practiceid, "practice Id is wrong");
 	}
-	
+
 	@Test(enabled = true, groups = { "APItest" }, retryAnalyzer = RetryAnalyzer.class)
 	public void test37LinksValueGuidAndPracticeGET() throws IOException {
 
@@ -766,14 +759,14 @@ public class PSS2PatientModulatorrAcceptanceNGTests extends BaseTestNG {
 		log("Practice name -" + js.getString("practiceId"));
 		assertEquals(practiceId, practiceid, "Practice Id is wrong");
 	}
-	
+
 	@Test(enabled = true, groups = { "APItest" }, retryAnalyzer = RetryAnalyzer.class)
 	public void test38LinksValueGuidGET() throws IOException {
-		
-		String guidid=propertyData.getProperty("appt.detail.guid.id.pm.ng");
 
-		Response response = postAPIRequest.linksValueGuid(baseurl, headerConfig.defaultHeader(),guidid);
-				
+		String guidid = propertyData.getProperty("appt.detail.guid.id.pm.ng");
+
+		Response response = postAPIRequest.linksValueGuid(baseurl, headerConfig.defaultHeader(), guidid);
+
 		JsonPath js = new JsonPath(response.asString());
 
 		String practiceId = js.get("practiceId");
@@ -782,14 +775,14 @@ public class PSS2PatientModulatorrAcceptanceNGTests extends BaseTestNG {
 
 		assertEquals(practiceId, practiceid, "practice Id is wrong");
 	}
-	
+
 	@Test(enabled = true, groups = { "APItest" }, retryAnalyzer = RetryAnalyzer.class)
 	public void test39LinksValueGuidAndPracticeGET() throws IOException {
-		
-		String guidid=propertyData.getProperty("appt.detail.guid.id.pm.ng");
 
-		Response response = postAPIRequest.linksValueGuidAndPractice(baseurl,
-				headerConfig.defaultHeader(), guidid,practiceid);
+		String guidid = propertyData.getProperty("appt.detail.guid.id.pm.ng");
+
+		Response response = postAPIRequest.linksValueGuidAndPractice(baseurl, headerConfig.defaultHeader(), guidid,
+				practiceid);
 
 		JsonPath js = new JsonPath(response.asString());
 
@@ -798,115 +791,111 @@ public class PSS2PatientModulatorrAcceptanceNGTests extends BaseTestNG {
 		log("Practice name -" + js.getString("practiceId"));
 		assertEquals(practiceId, practiceid, "Practice Id is wrong");
 	}
-	
+
 	@Test(enabled = true, groups = { "APItest" }, retryAnalyzer = RetryAnalyzer.class)
 	public void test40LocationsByNextAvailablePost_ExistingPatient() throws IOException {
 
 		String patientid = propertyData.getProperty("patient.id.pm.ng");
 		String bookid = propertyData.getProperty("availableslot.bookid.pm.ng");
 		String locationid = propertyData.getProperty("availableslot.locationid.pm.ng");
-		String apptid= propertyData.getProperty("availableslot.apptid.pm.ng");
-		
+		String apptid = propertyData.getProperty("availableslot.apptid.pm.ng");
+
 		String b = payloadPatientMod.locationsByNextAvailablePayload(bookid, locationid, apptid);
 
 		Response response = postAPIRequest.locationsByNextAvailable(baseurl, b,
 				headerConfig.HeaderwithToken(accessToken), practiceid, patientid);
-
 
 		JSONArray jo = new JSONArray(response.asString());
 		int locationid_actual = jo.getJSONObject(0).getInt("id");
 		String nextavailableslot = jo.getJSONObject(0).getString("nextAvailabilitySlot");
 
 		log("Next Available slot for Location " + locationid + " is- " + nextavailableslot);
-		assertEquals(locationid_actual, Integer.parseInt(locationid),
-				"location practice id is wrong");
+		assertEquals(locationid_actual, Integer.parseInt(locationid), "location practice id is wrong");
 		apv.responseCodeValidation(response, 200);
 		apv.responseTimeValidation(response);
 	}
-	
+
 	@Test(enabled = true, groups = { "APItest" }, retryAnalyzer = RetryAnalyzer.class)
 	public void test41LocationsByNextAvailablePost_NewPatient() throws IOException {
 
 		String patientid = null;
-		
+
 		String bookid = propertyData.getProperty("availableslot.bookid.pm.ng");
 		String locationid = propertyData.getProperty("availableslot.locationid.pm.ng");
-		String apptid= propertyData.getProperty("availableslot.apptid.pm.ng");
-		
+		String apptid = propertyData.getProperty("availableslot.apptid.pm.ng");
+
 		String b = payloadPatientMod.locationsByNextAvailablePayload(bookid, locationid, apptid);
 
 		Response response = postAPIRequest.locationsByNextAvailable(baseurl, b,
 				headerConfig.HeaderwithToken(accessToken), practiceid, patientid);
-
 
 		JSONArray jo = new JSONArray(response.asString());
 		int locationid_actual = jo.getJSONObject(0).getInt("id");
 		String nextavailableslot = jo.getJSONObject(0).getString("nextAvailabilitySlot");
 
 		log("Next Available slot for Location " + locationid + " is- " + nextavailableslot);
-		assertEquals(locationid_actual, Integer.parseInt(locationid),
-				"location practice id is wrong");
+		assertEquals(locationid_actual, Integer.parseInt(locationid), "location practice id is wrong");
 		apv.responseCodeValidation(response, 200);
 		apv.responseTimeValidation(response);
 	}
-	
+
 	@Test(enabled = true, groups = { "APItest" }, retryAnalyzer = RetryAnalyzer.class)
 	public void test43LocationsByRulePost_New() throws IOException {
-		
+
 		String patientid = null;
-		
-		String fn="FirstNameNG";
-		String ln="LastNameNG";
-		String dob=propertyData.getProperty("demographics.dob.pm.ng");
-		String gender ="F";
-		String email="Shweta.Sontakke@CrossAsyst.com";
+
+		String fn = "FirstNameNG";
+		String ln = "LastNameNG";
+		String dob = propertyData.getProperty("demographics.dob.pm.ng");
+		String gender = "F";
+		String email = "Shweta.Sontakke@CrossAsyst.com";
 		String phone = propertyData.getProperty("demographics.phone.pm.ng");
 		String zipcode = propertyData.getProperty("demographics.zip.pm.ng");
-		String apptid= propertyData.getProperty("availableslot.apptid.pm.ng");
-		
-		String b=payloadPatientMod.locationsByRulePayload(apptid, dob,fn, ln, gender, email, phone, zipcode);
+		String apptid = propertyData.getProperty("availableslot.apptid.pm.ng");
 
-		Response response = postAPIRequest.locationsByRule(baseurl, b, headerConfig.HeaderwithToken(accessToken), practiceid, patientid);
-		
+		String b = payloadPatientMod.locationsByRulePayload(apptid, dob, fn, ln, gender, email, phone, zipcode);
+
+		Response response = postAPIRequest.locationsByRule(baseurl, b, headerConfig.HeaderwithToken(accessToken),
+				practiceid, patientid);
 
 		JSONObject jsonobject = new JSONObject(response.asString());
 		ParseJSONFile.getKey(jsonobject, "displayName");
 		ParseJSONFile.getKey(jsonobject, "locTimeZone");
-	
+
 		apv.responseKeyValidationJson(response, "locations.id");
 		apv.responseCodeValidation(response, 200);
 		apv.responseTimeValidation(response);
 	}
-	
+
 	@Test(enabled = true, groups = { "APItest" }, retryAnalyzer = RetryAnalyzer.class)
 	public void test42LocationsByRulePost_Existing() throws IOException {
-		
+
 		String patientid = propertyData.getProperty("patient.id.pm.ng");
-		String fn=propertyData.getProperty("demographics.fn.pm.ng");
-		String ln=propertyData.getProperty("demographics.ln.pm.ng");
-		String dob=propertyData.getProperty("demographics.dob.pm.ng");
-		String gender =propertyData.getProperty("demographics.gender.pm.ng");
-		String email=propertyData.getProperty("demographics.email.pm.ng");
+		String fn = propertyData.getProperty("demographics.fn.pm.ng");
+		String ln = propertyData.getProperty("demographics.ln.pm.ng");
+		String dob = propertyData.getProperty("demographics.dob.pm.ng");
+		String gender = propertyData.getProperty("demographics.gender.pm.ng");
+		String email = propertyData.getProperty("demographics.email.pm.ng");
 		String phone = propertyData.getProperty("demographics.phone.pm.ng");
 		String zipcode = propertyData.getProperty("demographics.zip.pm.ng");
-		String apptid= propertyData.getProperty("availableslot.apptid.pm.ng");
-		
-		String b=payloadPatientMod.locationsByRulePayload(apptid, dob,fn, ln, gender, email, phone, zipcode);
+		String apptid = propertyData.getProperty("availableslot.apptid.pm.ng");
 
-		Response response = postAPIRequest.locationsByRule(baseurl, b, headerConfig.HeaderwithToken(accessToken), practiceid, patientid);
-		
+		String b = payloadPatientMod.locationsByRulePayload(apptid, dob, fn, ln, gender, email, phone, zipcode);
+
+		Response response = postAPIRequest.locationsByRule(baseurl, b, headerConfig.HeaderwithToken(accessToken),
+				practiceid, patientid);
 
 		JSONObject jsonobject = new JSONObject(response.asString());
 		ParseJSONFile.getKey(jsonobject, "displayName");
 		ParseJSONFile.getKey(jsonobject, "locTimeZone");
-	
+
 		apv.responseKeyValidationJson(response, "locations.id");
 		apv.responseCodeValidation(response, 200);
 		apv.responseTimeValidation(response);
 	}
-	
+
 	@Test(enabled = true, groups = { "APItest" }, retryAnalyzer = RetryAnalyzer.class)
-	public void testPracticeFromGuidLoginlessGET() throws IOException {
+	public void test44PracticeFromGuidLoginlessGET() throws IOException {
 
 		String loginlessguid = propertyData.getProperty("loginless.guid.pm.ng");
 		Response response = postAPIRequest.practiceFromGuidLoginless(baseurl, headerConfig.defaultHeader(),
@@ -919,6 +908,48 @@ public class PSS2PatientModulatorrAcceptanceNGTests extends BaseTestNG {
 		log("Ext PracticeId -" + js.getString("extPracticeId"));
 		assertEquals(practiceid_actual, practiceid, "Ext PracticeId is wrong");
 	}
-	
-	
+
+	@Test(enabled = true, groups = { "APItest" }, retryAnalyzer = RetryAnalyzer.class)
+	public void testGuidForLogoutPatientGET() throws IOException {
+
+		String guidid = propertyData.getProperty("loginless.guid.pm.ng");
+
+		Response response = postAPIRequest.guidForLogoutPatient(testData.getBasicURI(), headerConfig.defaultHeader(),
+				practiceid);
+		JsonPath js = new JsonPath(response.asString());
+		String guidid_actual = js.get("guid");
+		assertEquals(guidid_actual, guidid, "guid Id is wrong");
+	}
+
+	@Test(enabled = true, groups = { "APItest" }, retryAnalyzer = RetryAnalyzer.class)
+	public void testPracticeFromGuidLoginlessGET() throws IOException {
+
+		String guidid = propertyData.getProperty("loginless.guid.pm.ng");
+
+		Response response = postAPIRequest.practiceFromGuidLoginless(baseurl, headerConfig.defaultHeader(), guidid);
+
+		JsonPath js = new JsonPath(response.asString());
+
+		String guid_actual = js.get("guid");
+		log("Practice Name -" + js.getString("name"));
+		log("Practice Id -" + js.getString("practiceId"));
+		assertEquals(guid_actual, guidid, "Guid Id is wrong");
+	}
+
+	@Test(enabled = true, groups = { "APItest" }, retryAnalyzer = RetryAnalyzer.class)
+	public void testTokenForLoginlessGET() throws IOException {
+
+		String apptguid = propertyData.getProperty("appt.detail.guid.id.pm.ng");
+
+		Response response = postAPIRequest.tokenForLoginless(testData.getBasicURI(), headerConfig.defaultHeader(),
+				apptguid);
+
+		JsonPath js = new JsonPath(response.asString());
+
+		String guid_actual = js.get("guid");
+		log("GUID ID -" + js.getString("guid"));
+		log("Practice Id -" + js.getString("practiceId"));
+		assertEquals(guid_actual, apptguid, "Guid Id is wrong");
+	}
+
 }
