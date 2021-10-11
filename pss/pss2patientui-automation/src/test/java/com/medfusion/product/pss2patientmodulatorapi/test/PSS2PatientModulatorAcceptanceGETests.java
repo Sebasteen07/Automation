@@ -31,7 +31,7 @@ import com.medfusion.product.pss2patientui.utils.PSSPropertyFileLoader;
 import io.restassured.path.json.JsonPath;
 import io.restassured.response.Response;
 
-public class PSS2PatientModulatorrAcceptanceGETests extends BaseTestNG {
+public class PSS2PatientModulatorAcceptanceGETests extends BaseTestNG {
 
 	public static HeaderConfig headerConfig;
 	public static PSSPropertyFileLoader propertyData;

@@ -78,11 +78,11 @@ public class PayloadNG {
 			+ "   \"locationDBId\":\"205605\"\r\n"
 			+ "}";
 	
-	public static String past_appt_payload(String patientId, String practiceDisplayName, String practiceId) {
+	public static String past_appt_payload(String patientId, String practiceDisplayName, String practiceId, String endate) {
 		
 		String past_appt="{\r\n"
 				+ "  \"additionalFields\": {},\r\n"
-				+ "  \"endDate\": \"10/09/2021\",\r\n"
+				+ "  \"endDate\": \""+endate+"\",\r\n"
 				+ "  \"patientId\": \""+patientId+"\",\r\n"
 				+ "  \"practiceProvision\": {\r\n"
 				+ "    \"active\": true,\r\n"
@@ -97,38 +97,8 @@ public class PayloadNG {
 		
 		return past_appt;
 	}
-	
 
-//	public static String nextAvailable_Payload(String patientId) {
-//		
-//		String nextAvailable="{\r\n"
-//				+ "\r\n"
-//				+ "\"locationId\": \"283BB437-B0C6-4626-A7CC-57FD0D1D6574\",\r\n"
-//				+ "\"appointmentCategoryId\": \"8F563A6C-7098-4446-97E2-7EF9345ED469\",\r\n"
-//				+ "\"appointmentTypeId\": \"86D0E00F-C136-4A24-BF7A-6C17E9AB35ED\",\r\n"
-//				+ "\"startDate\": \"08/11/2021 00:49:32\",\r\n"
-//				+ "\"slotSize\": \"15\",\r\n"
-//				+ "\"patientId\": \""+patientId+"\",\r\n"
-//				+ "\"reservedForSameDay\": false,\r\n"
-//				+ "\"apptTypeAllocated\": true,\r\n"
-//				+ "\"nextAvailability\": true,\r\n"
-//				+ "\"stackingFlag\": false,\r\n"
-//				+ "\"preventScheduling\": 0,\r\n"
-//				+ "\"sameDayAppointment\": false,\r\n"
-//				+ "\"contiguous\": false,\r\n"
-//				+ "\"maxPerDay\": 0,\r\n"
-//				+ "\"leadTime\": 0,\r\n"
-//				+ "\"slotCount\": 1,\r\n"
-//				+ "\"allowSameDayAppts\": true,\r\n"
-//				+ "\"reservedForSameDate\": \"n\",\r\n"
-//				+ "\"appointmentTypeDBId\": \"205755\",\r\n"
-//				+ "\"locationDBId\": \"205605\"\r\n"
-//				+ "}";
-//		
-//		return nextAvailable;
-//	}
-	
-	public static String nextAvailable_Payload(String patientId) {
+	public static String nextAvailable_Payload(String patientId, String startdate,  String enddate) {
 		
 		String nextAvailable="{\r\n"
 				+ "    \"locationId\": \"283BB437-B0C6-4626-A7CC-57FD0D1D6574\",\r\n"
@@ -136,7 +106,8 @@ public class PayloadNG {
 				+ "    \"appointmentTypeId\": \"86D0E00F-C136-4A24-BF7A-6C17E9AB35ED\",\r\n"
 				+ "    \"resourceCategoryId\": \"C8E55131-F1D8-401D-A107-F90222DBD977\",\r\n"
 				+ "    \"resourceId\": \"F49641D6-CDF1-4264-B5A5-7489F7E58F8D\",\r\n"
-				+ "    \"startDate\": \"08/24/2021 00:49:32\",\r\n"
+				+ "    \"startDate\": \""+startdate+"\",\r\n"
+				+ "    \"endDate\": \""+enddate+"\",\r\n"				
 				+ "    \"slotSize\": \"15\",\r\n"
 				+ "    \"patientId\": null,\r\n"
 				+ "    \"reservedForSameDay\": false,\r\n"
@@ -262,7 +233,7 @@ public static String nextAvailable_New() {
 		return schedule;
 	}
 	
-	public static String upcommingApt_Payload(String patientid, String practiceid) {
+	public static String upcommingApt_Payload(String patientid, String practiceid, String sdate) {
 
 		String upcommingappt = "{\r\n"
 				+ "  \r\n"
@@ -271,7 +242,7 @@ public static String nextAvailable_New() {
 				+ "        \"active\": true,\r\n"
 				+ "        \"practiceId\": \""+practiceid+"\"\r\n"
 				+ "    },\r\n"
-				+ "    \"startDate\": \"03/19/2021 01:47:48\"\r\n"
+				+ "    \"startDate\": \""+sdate+"\"\r\n"
 				+ "}";
 		return upcommingappt;
 	}

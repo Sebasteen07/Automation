@@ -4,6 +4,7 @@ package com.medfusion.product.pss2patientmodulatorapi.test;
 import static org.testng.Assert.assertEquals;
 
 import java.io.IOException;
+import java.text.ParseException;
 
 import org.json.JSONObject;
 import org.testng.annotations.BeforeTest;
@@ -16,6 +17,7 @@ import com.medfusion.product.object.maps.pss2.page.util.ParseJSONFile;
 import com.medfusion.product.object.maps.pss2.page.util.PostAPIRequestNG;
 import com.medfusion.product.pss2patientapi.payload.PayloadNG;
 import com.medfusion.product.pss2patientui.pojo.Appointment;
+import com.medfusion.product.pss2patientui.utils.PSSPatientUtils;
 import com.medfusion.product.pss2patientui.utils.PSSPropertyFileLoader;
 
 import io.restassured.path.json.JsonPath;
@@ -27,6 +29,8 @@ public class PSS2NGAdapterAcceptanceTests extends BaseTestNG {
 	public static PSSPropertyFileLoader propertyData;
 	public static Appointment testData;
 	public static PostAPIRequestNG postAPIRequest;
+	public static PSSPatientUtils pSSPatientUtils;
+	public static String practiceid;
 	APIVerification aPIVerification = new APIVerification();
 
 	@BeforeTest(enabled = true, groups = { "APItest" })
@@ -35,20 +39,36 @@ public class PSS2NGAdapterAcceptanceTests extends BaseTestNG {
 		payload = new PayloadNG();
 		propertyData = new PSSPropertyFileLoader();
 		postAPIRequest = new PostAPIRequestNG();
+		pSSPatientUtils= new PSSPatientUtils();
+		
 		log("I am before Test");
 		postAPIRequest.setupRequestSpecBuilder(propertyData.getProperty("base.url.ng"));
 		log("BASE URL-" + propertyData.getProperty("base.url.ng"));
+		
+		practiceid=propertyData.getProperty("practice.id.ng");
 	}
 
 	@Test(enabled = true, groups = { "APItest" }, retryAnalyzer = RetryAnalyzer.class)
-	public void testAvailableSlotsNGPost() throws IOException, InterruptedException {
-		Response response = postAPIRequest.availableSlots(
-				PayloadNG.nextAvailable_Payload(propertyData.getProperty("patient.id.ng")),
-				propertyData.getProperty("practice.id.ng"));
+	public void testAvailableSlotsNGPost() throws IOException, InterruptedException, ParseException {
+		
+		String startdate=pSSPatientUtils.sampleDateTime("MM/dd/yyyy HH:MM:SS");
+		String enddate1=pSSPatientUtils.addDaysToDate(startdate, "1","MM/dd/yyyy HH:MM:SS");		
+		log("End Date- "+enddate1);		
+		String b=PayloadNG.nextAvailable_Payload(propertyData.getProperty("patient.id.ng"), startdate, enddate1);		
+		
+		Response response = postAPIRequest.availableSlots(b, practiceid);
 		aPIVerification.responseCodeValidation(response, 200);
 		aPIVerification.responseTimeValidation(response);
 
 	}
+//	public void testAvailableSlotsNGPost() throws IOException, InterruptedException {
+//		Response response = postAPIRequest.availableSlots(
+//				PayloadNG.nextAvailable_Payload(propertyData.getProperty("patient.id.ng")),
+//				propertyData.getProperty("practice.id.ng"));
+//		aPIVerification.responseCodeValidation(response, 200);
+//		aPIVerification.responseTimeValidation(response);
+//
+//	}
 
 	@Test(enabled = true, groups = { "APItest" }, retryAnalyzer = RetryAnalyzer.class)
 	public void testAvailableSlotsNGPostInvalidPayload() throws IOException, InterruptedException {
@@ -59,10 +79,12 @@ public class PSS2NGAdapterAcceptanceTests extends BaseTestNG {
 	@Test(enabled = true, groups = { "APItest" }, retryAnalyzer = RetryAnalyzer.class)
 	public void testPastApptNgPOST() throws IOException {
 
+		String edate=pSSPatientUtils.sampleDateTime("MM/dd/yyyy");
+
 		Response response = postAPIRequest.pastApptNG(propertyData.getProperty("practice.id.ng"),
 				PayloadNG.past_appt_payload(propertyData.getProperty("patient.id.ng"),
 						propertyData.getProperty("practice.displayname.ng"),
-						propertyData.getProperty("practice.id.ng")));
+						propertyData.getProperty("practice.id.ng"), edate));
 		aPIVerification.responseCodeValidation(response, 200);
 		aPIVerification.responseTimeValidation(response);
 		aPIVerification.responseKeyValidationJson(response, "appointmentTypes.name");
@@ -145,15 +167,21 @@ public class PSS2NGAdapterAcceptanceTests extends BaseTestNG {
 
 	@Test(enabled = true, groups = { "APItest" }, retryAnalyzer = RetryAnalyzer.class)
 	public void testschedule_Resc_NGPOST() throws NullPointerException, Exception {
-		Response response = postAPIRequest.availableSlots(
-				PayloadNG.nextAvailable_Payload(propertyData.getProperty("patient.id.ng")),
-				propertyData.getProperty("practice.id.ng"));
+		
+
+		String startdate = pSSPatientUtils.sampleDateTime("MM/dd/yyyy HH:MM:SS");
+		String enddate = pSSPatientUtils.addDaysToDate(startdate, "1", "MM/dd/yyyy HH:MM:SS");
+
+		String b = PayloadNG.nextAvailable_Payload(propertyData.getProperty("patient.id.ng"), startdate, enddate);
+
+		Response response = postAPIRequest.availableSlots(b, practiceid);
+
 		aPIVerification.responseCodeValidation(response, 200);
 		aPIVerification.responseTimeValidation(response);
 
 		JsonPath js = new JsonPath(response.asString());
 		String startDateTime = js.getString("availableSlots[0].startDateTime");
-		;
+
 		Response scheduleApptResponse = postAPIRequest.scheduleApptNG(propertyData.getProperty("practice.id.ng"),
 				PayloadNG.schedule_Payload(startDateTime, propertyData.getProperty("slot.end.time.ng")));
 		aPIVerification.responseCodeValidation(scheduleApptResponse, 200);
@@ -191,10 +219,13 @@ public class PSS2NGAdapterAcceptanceTests extends BaseTestNG {
 
 	@Test(enabled = true, groups = { "APItest" }, retryAnalyzer = RetryAnalyzer.class)
 	public void testUpcommingApptPOST() throws IOException {
+		
+		String startdate = pSSPatientUtils.sampleDateTime("MM/dd/YYYY HH:MM:SS");
 
 		Response response = postAPIRequest.upcommingApptNG(propertyData.getProperty("practice.id.ng"),
-				PayloadNG.upcommingApt_Payload(propertyData.getProperty("patient.id.ng"),
-						propertyData.getProperty("practice.id.ng")));
+				PayloadNG.upcommingApt_Payload(propertyData.getProperty("uppcomming.patient.id.ng"),
+						propertyData.getProperty("practice.id.ng"), startdate));
+		
 		aPIVerification.responseCodeValidation(response, 200);
 		aPIVerification.responseTimeValidation(response);
 		aPIVerification.responseKeyValidation(response, "id");
