@@ -4,6 +4,7 @@ package com.medfusion.product.pss2patientmodulatorapi.test;
 import static org.testng.Assert.assertEquals;
 import static org.testng.Assert.assertNotNull;
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.Date;
 
 import org.json.JSONArray;
@@ -951,5 +952,333 @@ public class PSS2PatientModulatorrAcceptanceNGTests extends BaseTestNG {
 		log("Practice Id -" + js.getString("practiceId"));
 		assertEquals(guid_actual, apptguid, "Guid Id is wrong");
 	}
+	@Test(enabled = true, groups = { "APItest" }, retryAnalyzer = RetryAnalyzer.class)
+	public void testUpcomingConfigurationGET() throws IOException {
+		Response response = postAPIRequest.upcomingConfiguration(baseurl, headerConfig.defaultHeader(),
+				practiceid, "/upcomingconfiguration");
+		JsonPath js = new JsonPath(response.asString());
+		log("Show Cancel Reason -" + js.getString("showCancelReason"));
+		log("Show Cancel Reason From PM -" + js.getString("showCancelReasonFromPM"));
+		log("Show Cancel Message -" + js.getString("showCancelMessage"));
+		apv.responseCodeValidation(response, 200);
+		apv.responseTimeValidation(response);
+		apv.responseKeyValidationJson(response, "showCancelReason");
+		apv.responseKeyValidationJson(response, "showCancelReasonFromPM");
+		apv.responseKeyValidationJson(response, "showCancelMessage");
 
+	}
+	
+	
+	
+	@Test(enabled = true, groups = { "APItest" }, retryAnalyzer = RetryAnalyzer.class)
+	public void testTimeZoneResourceGET() throws IOException {
+
+		Response response = postAPIRequest.timeZoneResource(baseurl, headerConfig.defaultHeader(),propertyData.getProperty("patientid.pm.ng"));
+     	JsonPath js = new JsonPath(response.asString());
+		log("Practice status -" + js.getString("active"));
+		apv.responseCodeValidation(response, 200);
+		apv.responseTimeValidation(response);
+		apv.responseKeyValidation(response, "code");
+		apv.responseKeyValidation(response, "description");
+	}
+
+	
+	@Test(enabled = true, groups = { "APItest" }, retryAnalyzer = RetryAnalyzer.class)
+	public void testDemographicsProfilesGET() throws IOException {
+
+		Response response = postAPIRequest.demographicsProfiles(baseurl,
+				headerConfig.HeaderwithToken(accessToken), practiceid, propertyData.getProperty("patientid.pm.ng"));
+
+		String demographicsid = apv.responseKeyValidationJson(response, "id");
+		apv.responseCodeValidation(response, 200);
+		apv.responseTimeValidation(response);
+		assertEquals(demographicsid, propertyData.getProperty("patientid.pm.ng"), "Demographics Id is wrong");
+	}
+
+	
+
+	@Test(enabled = true, groups = { "APItest" }, retryAnalyzer = RetryAnalyzer.class)
+	public void testPracticeDetailGET() throws IOException {
+
+		Response response = postAPIRequest.practiceDetail(baseurl, headerConfig.defaultHeader(),
+				practiceid, testData.getLinksValueGuidPracticeName());
+		apv.responseCodeValidation(response, 200);
+		apv.responseTimeValidation(response);
+		apv.responseKeyValidationJson(response, "extPracticeId");
+		apv.responseKeyValidationJson(response, "practiceId");
+		apv.responseKeyValidationJson(response, "guid");
+
+	}
+
+	@Test(enabled = true, groups = { "APItest" }, retryAnalyzer = RetryAnalyzer.class)
+	public void testPracticeFromGuidSsoGET() throws IOException {
+
+		Response response = postAPIRequest.practiceFromGuidSso(baseurl, headerConfig.defaultHeader(),
+				propertyData.getProperty("practice.from.guid.sso.id.ng"),"/sso/");
+		JsonPath js = new JsonPath(response.asString());
+		String extPracticeId = js.get("extPracticeId");
+		log("Practice name -" + js.getString("name"));
+		log("Ext PracticeId -" + js.getString("extPracticeId"));
+		apv.responseCodeValidation(response, 200);
+		apv.responseTimeValidation(response);
+		assertEquals(extPracticeId, propertyData.getProperty("practice.id.pm.ng"), "Ext PracticeId is wrong");
+	}
+	
+	
+	
+	@Test(enabled = true, groups = { "APItest" }, retryAnalyzer = RetryAnalyzer.class)
+	public void testSpecialtyByRulePost() throws IOException {
+
+		Response response = postAPIRequest.specialtyByRule(baseurl,
+				payloadPatientMod.specialtyByRulePayload(propertyData.getProperty("appointment.detail.id.ng")),
+				headerConfig.HeaderwithToken(accessToken), practiceid,"/specialty/rule/",
+				testData.getSpecialtyByRulePatientId());
+		JSONObject jsonobject = new JSONObject(response.asString());
+		ParseJSONFile.getKey(jsonobject, "displayName");
+		apv.responseCodeValidation(response, 200);
+		apv.responseTimeValidation(response);
+	}
+
+	
+	@Test(enabled = true, groups = { "APItest" }, retryAnalyzer = RetryAnalyzer.class)
+	public void testSessionConfigurationGET() throws IOException {
+
+		Response response = postAPIRequest.sessionConfiguration(baseurl, headerConfig.defaultHeader(),
+				practiceid);
+		JsonPath js = new JsonPath(response.asString());
+		int tokenExpirationTime = js.get("tokenExpirationTime");
+		int expirationWarningTime = js.get("expirationWarningTime");
+		log("Expiration Warning Time -" + expirationWarningTime);
+		assertEquals(tokenExpirationTime, Integer.parseInt(testData.getSessionConfigurationExpirationTime()),
+				"Token Expiration Time is wrong");
+	}
+	
+	@Test(enabled = true, groups = { "APItest" }, retryAnalyzer = RetryAnalyzer.class)
+	public void testResellerLogoGET() throws IOException {
+
+		Response response = postAPIRequest.resellerLogo(baseurl, headerConfig.defaultHeader(),
+				practiceid);
+		apv.responseCodeValidation(response, 200);
+		apv.responseTimeValidation(response);
+	}
+	
+
+	@Test(enabled = true, groups = { "APItest" }, retryAnalyzer = RetryAnalyzer.class)
+	public void testResellerGET() throws IOException {
+		String patientId = propertyData.getProperty("patientid.pm.ng");
+		Response response = postAPIRequest.reseller(baseurl, headerConfig.HeaderwithToken(accessToken), practiceid,
+				"/reseller/", patientId);
+		apv.responseCodeValidation(response, 200);
+		apv.responseTimeValidation(response);
+	}
+	
+	@Test(enabled = true, groups = { "APItest" }, retryAnalyzer = RetryAnalyzer.class)
+	public void testLogoGET() throws IOException {
+
+		Response response = postAPIRequest.logo(baseurl, headerConfig.defaultHeader(),
+				practiceid);
+		apv.responseCodeValidation(response, 200);
+		apv.responseTimeValidation(response);
+	}
+	
+	@Test(enabled = true, groups = { "APItest" }, retryAnalyzer = RetryAnalyzer.class)
+	public void testTimezonePracticeResourceGET() throws IOException {
+
+		Response response = postAPIRequest.timezonePracticeResource(baseurl,
+				headerConfig.defaultHeader(), practiceid, propertyData.getProperty("timezone.practice.name.ng"));
+		apv.responseCodeValidation(response, 200);
+		apv.responseTimeValidation(response);
+		JsonPath js = new JsonPath(response.asString());
+		String practiceName=js.getString("practiceName");
+		String practiceId = js.get("practiceId");
+		log("Practice id -" + js.getString("practiceId"));
+		log("Practice name-" + js.getString("practiceName"));
+		assertEquals(practiceId, practiceid, "Practice Id is wrong");
+		assertEquals(practiceName,propertyData.getProperty("practicename.pm.ng"));
+	}
+	
+	
+	@Test(enabled = true, groups = { "APItest" }, retryAnalyzer = RetryAnalyzer.class)
+	public void testPracticeInfoGET() throws IOException {
+
+		Response response = postAPIRequest.practiceInfo(baseurl, headerConfig.defaultHeader(),
+				practiceid);
+		apv.responseCodeValidation(response, 200);
+		apv.responseTimeValidation(response);
+		JsonPath js = new JsonPath(response.asString());
+		String extpracticeid = js.get("extPracticeId");
+		log("Practice name -" + js.getString("name"));
+		log("Ext PracticeId -" + js.getString("practiceId"));
+		assertEquals(extpracticeid, practiceid, "Ext PracticeId is wrong");
+	}
+	
+	@Test(enabled = true, groups = { "APItest" }, retryAnalyzer = RetryAnalyzer.class)
+	public void testpracticeResourceStateGet() throws IOException {
+
+		Response response = postAPIRequest.practiceResourceState(baseurl, headerConfig.HeaderwithToken(accessToken),
+				practiceid);
+		apv.responseCodeValidation(response, 200);
+		apv.responseTimeValidation(response);
+		apv.responseKeyValidation(response, "key");
+		apv.responseKeyValidation(response, "value");
+		
+	}
+
+	@Test(enabled = true, groups = { "APItest" }, retryAnalyzer = RetryAnalyzer.class)
+	public void testAnonymousMatchAndCreatePatientPost_ExistingPatient() throws IOException {
+
+		String b = payloadPatientMod.anonymousPatientPayload(propertyData.getProperty("identifypatient.firstname.pm.ng"),
+				propertyData.getProperty("identifypatient.firstname.pm.ng"));
+
+		Response existingPatientResponse = postAPIRequest.anonymousPatientNewPatient(baseurl, b,
+				headerConfig.HeaderwithToken(accessToken), practiceid);
+		apv.responseCodeValidation(existingPatientResponse, 200);
+		apv.responseTimeValidation(existingPatientResponse);
+		JsonPath js = new JsonPath(existingPatientResponse.asString());
+		ArrayList<JSONObject> jo = js.getJsonObject("otpPatientDetails");
+		log("otpPatientDetails- " + jo);
+		assertNotNull(jo, "OTP Patient Details are not set");
+	}
+
+	@Test(enabled = true, groups = { "APItest" }, retryAnalyzer = RetryAnalyzer.class)
+	public void testAnonymousMatchAndCreatePatientPost_NewPatient() throws IOException {
+
+		Response response = postAPIRequest.anonymousPatientNewPatient(baseurl,
+				payloadPatientMod.anonymousMatchAndCreatePatientPayload(), headerConfig.HeaderwithToken(accessToken),
+				practiceid);
+		apv.responseCodeValidation(response, 200);
+		apv.responseTimeValidation(response);
+	}
+	
+	
+	@Test(enabled = true, groups = { "APItest" }, retryAnalyzer = RetryAnalyzer.class)
+	public void testPatientDemographicsGET() throws IOException {
+		String patientId = propertyData.getProperty("patientid.pm.ng");
+		Response response = postAPIRequest.patientDemographics(baseurl, headerConfig.HeaderwithToken(accessToken),
+				practiceid, patientId);
+		apv.responseCodeValidation(response, 200);
+		apv.responseTimeValidation(response);
+		apv.responseKeyValidationJson(response, "firstName");
+		apv.responseKeyValidationJson(response, "lastName");
+		JsonPath js = new JsonPath(response.asString());
+		String demographicid = js.getString("id");
+		assertEquals(demographicid, patientId, "Demographics Id is wrong");
+	
+	}
+	
+	@Test(enabled = true, groups = { "APItest" }, retryAnalyzer = RetryAnalyzer.class)
+	public void testIdentifyPatientForReschedulePost() throws IOException {
+
+		String b = payloadPatientMod.identifyPatientForReschedulePayload(
+				propertyData.getProperty("identifypatient.firstname.pm.ng"),
+				propertyData.getProperty("identifypatient.firstname.pm.ng"),
+				propertyData.getProperty("identifypatient.guid.pm.ng"));
+        log("Verifying the patient Id");
+		Response response = postAPIRequest.identifyPatientForReschedule(baseurl, b,
+				headerConfig.HeaderwithToken(accessToken), practiceid);
+        apv.responseCodeValidation(response, 200);	
+        apv.responseTimeValidation(response);
+		String patientid = apv.responseKeyValidationJson(response, "id");
+		assertEquals(patientid, propertyData.getProperty("patientid.pm.ng1"), "Patient Id is wrong");
+	}
+	
+	
+	@Test(enabled = true, groups = { "APItest" }, retryAnalyzer = RetryAnalyzer.class)
+	public void testPatientMatchGET() throws IOException {
+
+		Response response = postAPIRequest.matchPatient(baseurl, headerConfig.HeaderwithToken(accessToken), practiceid,
+				propertyData.getProperty("patientid.pm.ng"));
+		apv.responseCodeValidation(response, 200);
+		apv.responseTimeValidation(response);
+		apv.responseKeyValidationJson(response, "patientMatches[0].entity");
+		apv.responseKeyValidationJson(response, "patientMatches[0].code");
+		apv.responseKeyValidationJson(response, "patientMatches[0].message");
+
+	}
+
+	@Test(enabled = true, groups = { "APItest" }, retryAnalyzer = RetryAnalyzer.class)
+	public void testFlowIdentityGET() throws IOException {
+
+		Response response = postAPIRequest.flowIdentity(baseurl, headerConfig.HeaderwithToken(accessToken), practiceid);
+		apv.responseCodeValidation(response, 200);
+		apv.responseTimeValidation(response);
+		JsonPath js = new JsonPath(response.asString());
+		log("Flow Type -" + js.getString("type"));
+		JSONObject jsonobject = new JSONObject(response.asString());
+		ParseJSONFile.getKey(jsonobject, "entity");
+		ParseJSONFile.getKey(jsonobject, "code");
+	}
+
+	@Test(enabled = true, groups = { "APItest" }, retryAnalyzer = RetryAnalyzer.class)
+	public void testGenderMappingGET() throws IOException {
+
+		Response response = postAPIRequest.genderMapping(baseurl, headerConfig.HeaderwithToken(accessToken),
+				practiceid);
+		apv.responseCodeValidation(response, 200);
+		apv.responseTimeValidation(response);
+		apv.responseKeyValidation(response, "pssCode");
+		apv.responseKeyValidation(response, "displayName");
+	}
+
+	@Test(enabled = true, groups = { "APItest" }, retryAnalyzer = RetryAnalyzer.class)
+	public void testPatientInfoGET() throws IOException {
+
+		Response response = postAPIRequest.patientInfo(baseurl, headerConfig.HeaderwithToken(accessToken), practiceid);
+		apv.responseCodeValidation(response, 200);
+		apv.responseTimeValidation(response);
+		apv.responseKeyValidationJson(response, "patientMatches[0].entity");
+		apv.responseKeyValidationJson(response, "patientMatches[0].code");
+		apv.responseKeyValidationJson(response, "patientMatches[0].message");
+
+	}
+	
+	@Test(enabled = true, groups = { "APItest" }, retryAnalyzer = RetryAnalyzer.class)
+	public void testpatientInfoAnonymousGET() throws IOException {
+
+		Response response = postAPIRequest.patientInfoAnonymous(baseurl, headerConfig.HeaderwithToken(accessToken), practiceid);
+		apv.responseCodeValidation(response, 200);
+		apv.responseTimeValidation(response);
+		apv.responseKeyValidationJson(response, "patientMatches[0].entity");
+		apv.responseKeyValidationJson(response, "patientMatches[0].code");
+		apv.responseKeyValidationJson(response, "patientMatches[0].message");
+
+	}
+	@Test(enabled = true, groups = { "APItest" }, retryAnalyzer = RetryAnalyzer.class)
+	public void testLocationsBasedOnZipcodeAndRadiusPost() throws IOException {
+
+		Response response = postAPIRequest.locationsBasedOnZipcodeAndRadius(baseurl,
+				payloadPatientMod.locationsBasedOnZipcodeAndRadiusPayload(propertyData.getProperty("appointment.detail.id.ng"), propertyData.getProperty("zipcode.pm.ng")),
+				headerConfig.HeaderwithToken(accessToken), practiceid, propertyData.getProperty("patientid.pm.ng"));
+
+		JsonPath js = new JsonPath(response.asString());
+		log("Show Search Location -" + js.getString("showSearchLocation"));
+		log("Show Next Available -" + js.getString("showNextAvailable"));
+	}
+	
+	@Test(enabled = true, groups = { "APItest" }, retryAnalyzer = RetryAnalyzer.class)
+	public void testLocationsBasedOnZipcodePost() throws IOException {
+
+		Response response = postAPIRequest.locationsBasedOnZipcode(baseurl,
+				payloadPatientMod.locationsBasedOnZipcodeAndRadiusPayload(propertyData.getProperty("appointment.detail.id.ng"), propertyData.getProperty("zipcode.pm.ng")),
+				headerConfig.HeaderwithToken(accessToken), practiceid);
+		apv.responseCodeValidation(response, 200);
+		apv.responseTimeValidation(response);
+
+		JsonPath js = new JsonPath(response.asString());
+		log("Show Search Location -" + js.getString("showSearchLocation"));
+		log("Show Next Available -" + js.getString("showNextAvailable"));
+	}
+	
+	@Test(enabled = true, groups = { "APItest" }, retryAnalyzer = RetryAnalyzer.class)
+	public void testGetOTPDetailsPost() throws IOException {
+		Response response = postAPIRequest.otpDetails(baseurl,
+				payloadPatientMod.getOtpDetails(propertyData.getProperty("firstname.pm.ng"), propertyData.getProperty("lastname.pm.ng"), propertyData.getProperty("dob.pm.ng"), 
+						propertyData.getProperty("gender.pm.ng"), propertyData.getProperty("email.pm.ng"), propertyData.getProperty("phone.pm.ng")),
+				headerConfig.HeaderwithToken(accessToken), practiceid);
+		apv.responseCodeValidation(response, 200);
+		apv.responseTimeValidation(response);
+
+
+	
+	}
 }
