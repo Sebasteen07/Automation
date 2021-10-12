@@ -64,14 +64,6 @@ public class PSS2DBAdapterModulatorTests extends BaseTestNG {
 		postAPIRequestDB.setupRequestSpecBuilder(propertyData.getProperty("base.url.db"),
 				headerConfig.defaultHeader());
 	}
-
-	@Test(enabled = true, groups = { "APItest" }, retryAnalyzer = RetryAnalyzer.class)
-	public void testvalidatePracticeGET() throws NullPointerException, Exception {
-
-		logStep("Verifying the response");
-		Response response = postAPIRequestDB.validatePractice(practiceId, "/validatepractice");
-		apv.responseCodeValidation(response, 200);
-	}
 	
 	@Test(enabled = true, groups = { "APItest" }, retryAnalyzer = RetryAnalyzer.class)
 	public void testAnnouncementGet() throws NullPointerException, Exception {
@@ -196,11 +188,7 @@ public class PSS2DBAdapterModulatorTests extends BaseTestNG {
 
 		String b = "";
 		Response response = postAPIRequestDB.updateAppointmenttype(practiceId, b);
-
-		apv.responseCodeValidation(response, 400);
-		String message = apv.responseKeyValidationJson(response, "message");
-		assertEquals(message,
-				"Extappointmenttypeid=ec5c2faa-57e1-4121-9c0b-fc99a462281d and categoryid=c9cc92fb-06c2-420b-ab60-e95dd5c7af83 already exists");
+		apv.responseCodeValidation(response, 404);
 		apv.responseTimeValidation(response);
 	}
 
@@ -239,8 +227,7 @@ public class PSS2DBAdapterModulatorTests extends BaseTestNG {
 	public void testUpcomingAppointmentsByPatientIdForPracticeGet01() throws NullPointerException, Exception {
 
 		String patientid = propertyData.getProperty("patientid.upcommingapp.id");
-		String currentdate = pssPatientUtils.sampleDateTime("MM/dd/yyyy");
-
+	    String currentdate = pssPatientUtils.sampleDateTime("MM/dd/yyyy");
 		Response response = postAPIRequestDB.getUpcomingAppointmentsByPatientIdForPractice(practiceId, patientid,
 				currentdate);
 		apv.responseCodeValidation(response, 200);
@@ -1281,7 +1268,7 @@ public class PSS2DBAdapterModulatorTests extends BaseTestNG {
 	public void testlocationInvalidPathGET() throws NullPointerException, Exception {
 
 		logStep("Verifying the response");
-		Response response = postAPIRequestDB.location(practiceId,"/location");
+		Response response = postAPIRequestDB.location(practiceId,"/locationaa");
 		apv.responseCodeValidation(response, 404);
 		apv.responseTimeValidation(response);
 	}
