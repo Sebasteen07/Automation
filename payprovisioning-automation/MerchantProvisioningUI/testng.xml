@@ -8,5 +8,12 @@
   <listener class-name="com.epam.reportportal.testng.ReportPortalTestNGListener" />
 </listeners>
   <test thread-count="5" name="Test">
+  <classes>
+   
+      <class name="provisioningtests.VerifyMerchantDetailsTest" />
+      <class name="provisioningtests.SearchMerchantTest" />
+      <class name="provisioningtests.AddMerchantTest" />
+   
+  </classes>
   </test> <!-- Test -->
 </suite> <!-- Suite -->

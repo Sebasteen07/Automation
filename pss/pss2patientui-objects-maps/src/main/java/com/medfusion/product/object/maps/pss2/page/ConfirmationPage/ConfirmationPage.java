@@ -53,7 +53,7 @@ public class ConfirmationPage extends PSS2MainPage {
 	@FindBy(how = How.XPATH, using = "//input[@id='cancelReasonText']")
 	private WebElement rescheduleReasonInputBox;
 
-	@FindBy(how = How.XPATH, using = "//div[@class=' css-tlfecz-indicatorContainer']")
+	@FindBy(how = How.XPATH, using = "//div[@class=' css-1wy0on6']")
 	private WebElement selectArrow;
 
 	@FindBy(how = How.XPATH, using = "//div[@class=\" css-1wa3eu0-placeholder\"]")

@@ -16,6 +16,8 @@ import org.openqa.selenium.support.PageFactory;
 import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.openqa.selenium.support.ui.WebDriverWait;
 import com.medfusion.common.utils.IHGUtil;
+
+
 import com.intuit.ifs.csscat.core.utils.Log4jUtil;
 
 public class MerchantSearchPage extends NavigationMenu {
@@ -37,6 +39,9 @@ public class MerchantSearchPage extends NavigationMenu {
 
 	@FindBy(how = How.XPATH, using = "//tbody/tr")
 	private WebElement tableRow;
+	
+	@FindBy(how = How.XPATH, using = "//*[@class='btn btn-primary btn-xs']")
+	private WebElement viewDetailsButton;
 
 	@FindAll({ @FindBy(how = How.XPATH, using = "//thead/tr/th") })
 	private List<WebElement> tableColumn;
@@ -66,8 +71,24 @@ public class MerchantSearchPage extends NavigationMenu {
 		searchField.sendKeys(practiceId);
 	}
 
+	public void findByMerchantId(String merchantId) throws InterruptedException {
+		WebDriverWait wait = new WebDriverWait(driver, 10);
+		wait.until(ExpectedConditions.elementToBeClickable(searchField));
+		searchField.sendKeys(merchantId);
+	}
+
 	public void searchButtonClick() {
+		
 		searchButton.click();
+	
+	}
+	
+	public void viewDetailsButtonClick() throws InterruptedException {
+		
+
+		viewDetailsButton.click();
+		Thread.sleep(5000);
+		
 	}
 
 	public void duplicateRecords() {
