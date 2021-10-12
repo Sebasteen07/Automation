@@ -19,7 +19,7 @@ import io.restassured.response.Response;
 import io.restassured.specification.RequestSpecification;
 import io.restassured.specification.ResponseSpecification;
 
-public class PostAPIRequestPatientMod extends BaseTestNGWebDriver {
+public class PostAPIRequestPMNG extends BaseTestNGWebDriver {
 	
 	public static RequestSpecification requestSpec;
 	public static ResponseSpecification responseSpec;
@@ -41,6 +41,13 @@ public class PostAPIRequestPatientMod extends BaseTestNGWebDriver {
 				.response();
 		return response;
 	}
+	
+	public Response getDetails(String baseurl, Map<String, String> Header,String practiceid, String b) {
+		RestAssured.baseURI = baseurl;
+		Response response = given().log().all().headers(Header).body(b).when().post(practiceid+ "/getdetails").then().log().all().extract()
+				.response();
+		return response;
+	}
 
 	public Response practiceFromGuid(String baseurl, Map<String, String> Header, String guidId) {
 		RestAssured.baseURI = baseurl;
@@ -56,9 +63,9 @@ public class PostAPIRequestPatientMod extends BaseTestNGWebDriver {
 		return response;
 	}
 
-	public Response linksValueGuidAndPractice(String baseurl, Map<String, String> Header, String guidId) {
+	public Response linksValueGuidAndPractice(String baseurl, Map<String, String> Header, String guidId, String practiceid) {
 		RestAssured.baseURI = baseurl;
-		Response response = given().log().all().queryParam("isreschedule", "true").when().get("/link/" + guidId).then()
+		Response response = given().log().all().queryParam("isreschedule", "true").when().get("/link/" + guidId+ "/" +practiceid).then()
 				.log().all().extract().response();
 		return response;
 	}
@@ -127,7 +134,7 @@ public class PostAPIRequestPatientMod extends BaseTestNGWebDriver {
 
 	public Response resellerLogo(String baseurl, Map<String, String> Header, String practiceId) {
 		RestAssured.baseURI = baseurl;
-		Response response = given().log().all().when().get(practiceId + "/reseller/logo").then().log().all()
+		Response response = given().log().all().headers(Header).when().get(practiceId + "/reseller/logo").then().log().all()
 				.extract().response();
 		return response;
 	}
@@ -159,9 +166,9 @@ public class PostAPIRequestPatientMod extends BaseTestNGWebDriver {
 		return response;
 	}
 
-	public String createToken(String baseurl) {
+	public String createToken(String baseurl, String practiceid) {
 		RestAssured.baseURI = baseurl;
-		Response response = given().log().all().header("flowType", "LOGINLESS").get("/createtoken").then().assertThat()
+		Response response = given().log().all().header("flowType", "LOGINLESS").get(practiceid+ "/createtoken").then().assertThat()
 				.statusCode(200).body("token", Matchers.notNullValue()).extract().response();
 		JsonPath jsonPath = response.jsonPath();
 		String access_Token = jsonPath.get("token");
@@ -272,7 +279,7 @@ public class PostAPIRequestPatientMod extends BaseTestNGWebDriver {
 	}
 
 	public Response validateProviderLink(String baseurl, String b, Map<String, String> Header, String practiceId,
-			String patientid, String displayName) {
+			String patientid) {
 		RestAssured.baseURI = baseurl;
 		Response response;
 		if (patientid == null) {
@@ -288,7 +295,7 @@ public class PostAPIRequestPatientMod extends BaseTestNGWebDriver {
 	}
 
 	public Response locationsByNextAvailable(String baseurl, String b, Map<String, String> Header, String practiceId,
-			String patientId, String locationId) {
+			String patientId) {
 		RestAssured.baseURI = baseurl;
 
 		Response response;
@@ -302,12 +309,35 @@ public class PostAPIRequestPatientMod extends BaseTestNGWebDriver {
 		}
 		return response;
 	}
-
-	public Response locationsByRule(String baseurl, String b, Map<String, String> Header, String LocationsPracticeId,
-			String patientId) {
+	
+	public Response getAppTypesByNextAvailable(String baseurl, String b, Map<String, String> Header, String practiceid,
+			String patientid, String aaptype) {
 		RestAssured.baseURI = baseurl;
-		Response response = RestAssured.given().when().headers(Header).body(b).log().all().when()
-				.post(LocationsPracticeId + "/location/rule/" + patientId).then().log().all().extract().response();
+
+		Response response;
+		if (patientid == null) {
+			response = RestAssured.given().when().headers(Header).body(b).log().all().when()
+					.post(practiceid + "/apptype/nextavailable").then().log().all().extract().response();
+		} else {
+
+			response = RestAssured.given().when().headers(Header).body(b).log().all().when()
+					.post(practiceid + "/apptype/nextavailable" + patientid).then().log().all().extract().response();
+		}
+		return response;
+	}
+
+	public Response locationsByRule(String baseurl, String b, Map<String, String> Header, String practiceid,
+			String patientid) {
+		RestAssured.baseURI = baseurl;
+		Response response;
+		if (patientid == null) {
+			response = RestAssured.given().when().headers(Header).body(b).log().all().when()
+					.post(practiceid + "/location/rule").then().log().all().extract().response();
+		} else {
+
+			response = RestAssured.given().when().headers(Header).body(b).log().all().when()
+					.post(practiceid + "/location/rule/" + patientid).then().log().all().extract().response();
+		}
 		return response;
 	}
 
@@ -381,11 +411,11 @@ public class PostAPIRequestPatientMod extends BaseTestNGWebDriver {
 		return response;
 	}
 
-	public Response upcomingAppointmentsByPage(String baseurl, Map<String, String> Header, String practiceId,
-			String appointmentId) {
+	public Response upcomingAppointmentsByPage(String baseurl, Map<String, String> Header, String practiceid,
+			String patientid) {
 		RestAssured.baseURI = baseurl;
-		Response response = given().log().all().headers(Header).log().all().when()
-				.get(practiceId + "/appointment/" + appointmentId).then().log().all()
+		Response response = given().log().all().headers(Header).queryParam("pageIndex", 1).log().all().when()
+				.get(practiceid + "/upcomingappointmentsbypage/" + patientid+"/loginless").then().log().all()
 				.extract().response();
 		return response;
 	}
@@ -393,16 +423,28 @@ public class PostAPIRequestPatientMod extends BaseTestNGWebDriver {
 	public Response insuranceCarrier(String baseurl, Map<String, String> Header, String practiceid,
 			String patientid) {
 		RestAssured.baseURI = baseurl;
-		Response response = given().log().all().headers(Header).log().all().when()
-				.get(practiceid + "/insurancecarrier/" + patientid).then().log().all()
-				.extract().response();
-		return response;
+		Response response;
+		if(patientid== null) {
+			
+			 response = given().log().all().headers(Header).log().all().when()
+						.get(practiceid + "/insurancecarrier").then().log().all()
+						.extract().response();
+				return response;
+			
+		}else {
+			 response = given().log().all().headers(Header).log().all().when()
+						.get(practiceid + "/insurancecarrier/" + patientid).then().log().all()
+						.extract().response();
+				return response;
+		}
 	}
 
 	public Response cancellationReason(String baseurl, Map<String, String> Header, String practiceId,
 			String patientId) {
 		RestAssured.baseURI = baseurl;
-		Response response = given().log().all().headers(Header).log().all().when()
+		Response response;
+		
+		response= given().log().all().headers(Header).log().all().when()
 				.get(practiceId + "/cancellationreason/" + patientId).then().log().all()
 				.extract().response();
 		return response;
@@ -444,13 +486,20 @@ public class PostAPIRequestPatientMod extends BaseTestNGWebDriver {
 	}
 
 	public Response booksByRule(String baseurl, String b, Map<String, String> Header, String practiceId,
-			String patientId) {
-
+			String patientid) {
 		RestAssured.baseURI = baseurl;
-		Response response = given().when().headers(Header).body(b).log().all().when()
-				.post(practiceId + "/book/rule/" + patientId).then().log().all().extract()
-				.response();
-		return response;
+		Response response;
+		if (patientid == null) {
+
+			response = given().when().headers(Header).body(b).log().all().when()
+					.post(practiceId + "/book/rule").then().log().all().extract().response();
+			return response;
+
+		} else {
+			response = given().when().headers(Header).body(b).log().all().when()
+					.post(practiceId + "/book/rule/" + patientid).then().log().all().extract().response();
+			return response;
+		}
 	}
 
 	public Response allowonlinecancellation(String baseurl, String b, Map<String, String> Header, String practiceId,
@@ -462,23 +511,35 @@ public class PostAPIRequestPatientMod extends BaseTestNGWebDriver {
 		return response;
 	}
 
-	public Response cancelStatus(String baseurl, String b, Map<String, String> Header, String practiceId,
-			String patientId) {
+	public Response cancelStatus(String baseurl, String b, Map<String, String> Header, String practiceid,
+			String patientid) {
 		RestAssured.baseURI = baseurl;
 
-		Response response = given().when().headers(Header).body(b).log().all().when()
-				.post(practiceId + "/cancelstatus/" + patientId).then().log().all()
-				.extract().response();
+		Response response;
+
+		if (patientid == null) {
+			response = given().when().headers(Header).body(b).log().all().when()
+					.post(practiceid + "/cancelstatus/" + patientid).then().log().all().extract().response();
+
+		} else {
+			response = given().when().headers(Header).body(b).log().all().when()
+					.post(practiceid + "/cancelstatus/" + patientid).then().log().all().extract().response();
+		}
 		return response;
 	}
 
 	public Response commentDetails(String baseurl, String b, Map<String, String> Header, String practiceId,
 			String patientId) {
 		RestAssured.baseURI = baseurl;
+		Response response;
+		if (patientId == null) {
+			response = given().when().headers(Header).body(b).log().all().when().post(practiceId + "/getCommentDetails")
+					.then().log().all().extract().response();
 
-		Response response = given().when().headers(Header).body(b).log().all().when()
-				.post(practiceId + "/getCommentDetails/" + patientId).then().log().all()
-				.extract().response();
+		} else {
+			response = given().when().headers(Header).body(b).log().all().when()
+					.post(practiceId + "/getCommentDetails/" + patientId).then().log().all().extract().response();
+		}
 		return response;
 	}
 

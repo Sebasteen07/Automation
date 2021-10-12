@@ -65,44 +65,38 @@ public class AdminPatientMatching extends SettingsTab {
 		int pmSize = patientMatchingList.size();
 		log("Size of patientMatchingList -- " + pmSize);
 
-		for (int i = 3; i < pmSize; i++) {
+		for (int i = 3; i <= pmSize; i++) {
 			log("Value of i --> " + i);
-			WebElement toSelect = driver.findElement(By.xpath("//input[@id='pmm" + i + "']"));
-			WebElement searchCheckbox = driver
-					.findElement(By.xpath("//input[@id='pmm" + i + "']/following-sibling::label"));
+			int k = i - 1;
+			WebElement toSelect = driver.findElement(By.xpath("//input[@id='pmm" + k + "']"));
 
-			WebElement label = driver.findElement(By.xpath("//table//tbody//tr[" + i + "]/td[1]//span"));
-			WebElement matchingCriteria = driver.findElement(By.xpath("//input[@id='pi" + i + "']"));
+			WebElement searchCheckbox = driver
+					.findElement(By.xpath("//input[@id='pmm" + k + "']/following-sibling::label"));
+
+			WebElement label = driver
+					.findElement(By.xpath("//app-patientmatch[1]/div[1]/div[2]/div[1]/div[1]/table[1]/tbody[1]/tr[" + i
+							+ "]/td[1]/span[1]/a"));
 
 			commonMethods.highlightElement(label);
 			String labelText = label.getText();
-
 			commonMethods.highlightElement(toSelect);
 			boolean valueOfSearchStatus = toSelect.isSelected();
+			log("Status of Checkbox TOSELECT -" + valueOfSearchStatus);
+			log("LABEL " + labelText);
 
-			commonMethods.highlightElement(matchingCriteria);
-			boolean matchingCriteriaStatus = matchingCriteria.isEnabled();
-
-			log("LABEL " + labelText + " " + valueOfSearchStatus + "  " + "MATCHING CRITERIA "
-					+ matchingCriteriaStatus);
-			log("-------");
 			if (list.contains(labelText)) {
 				log("Patient Matching Criteria is available in list and can be changed");
-
 				if (valueOfSearchStatus == false) {
-
 					commonMethods.highlightElement(toSelect);
 					Thread.sleep(1000);
 					jse.executeScript("arguments[0].click();", searchCheckbox);
 					Thread.sleep(3000);
 					log("Patient Matching Criteria Added " + labelText);
 					Thread.sleep(3000);
-					log("LABEL " + labelText + " Search Criteria->" + valueOfSearchStatus + " MATCHING CRITERIA-> "
-							+ matchingCriteriaStatus);
+					log("LABEL " + labelText);
 				}
 			}
 		}
-
 		scrollAndWait(1000, 0, 1000);
 		saveBtnPAtientMatching.click();
 	}
