@@ -84,16 +84,12 @@ public class PartnersInfo extends BaseRest {
 		
 	}
 
-	  public void getPartners(String postpartners, String username, String password) {
+	  public Response getPartners(String postpartners, String username, String password) {
 		  
-		  Response response = given().spec(requestSpec).when().
+		  return given().spec(requestSpec).when().
 		  get(postpartners).then().
 		  spec(responseSpec).and().extract().response();
-					 
-		  String partners = response.asString();
-		  ArrayList<Map<String,?>> jsonAsArrayList = from(partners).get("");
-		  System.out.println("MMID has:"+jsonAsArrayList.size()+" partners");
-					 
+
 	}
 
 }

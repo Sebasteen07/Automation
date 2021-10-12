@@ -3,6 +3,7 @@ package com.medfusion.product.object.maps.patientportal2.page.AskAStaff;
 
 import org.openqa.selenium.By;
 import org.openqa.selenium.Keys;
+import org.openqa.selenium.NoSuchElementException;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.FindBy;
@@ -181,15 +182,21 @@ public class JalapenoAskAStaffV2Page1 extends JalapenoMenu {
 			subjectBox.clear();
 			wait.until(ExpectedConditions.visibilityOf(subjectBox));
 			subjectBox.sendKeys(subject);
-			Thread.sleep(5000);
+			Thread.sleep(2000);
 		}
-		Thread.sleep(4000);			
+		Thread.sleep(2000);			
 		log("Selecting Provider ");
-		ProviderDropDown.click();
-		Thread.sleep(10000);
-		firstProvider.click();
+		try {
+			IHGUtil.waitForElement(driver, 0, ProviderDropDown);
+			ProviderDropDown.click();
+			Thread.sleep(2000);
+			firstProvider.click();
+		}
+		catch(NoSuchElementException e) {
+			log("Provider drop down not displayed");
+		}
 		questionBox.sendKeys(question);
-		Thread.sleep(5000);
+		Thread.sleep(2000);
 		continueButton.click();
 		return PageFactory.initElements(driver, JalapenoAskAStaffV2Page2.class);
 	}
@@ -237,6 +244,16 @@ public class JalapenoAskAStaffV2Page1 extends JalapenoMenu {
 			subjectBox.sendKeys(subject);
 			Thread.sleep(1000);
 		}
+		try {
+			IHGUtil.waitForElement(driver, 0, ProviderDropDown);
+			ProviderDropDown.click();
+			Thread.sleep(2000);
+			firstProvider.click();
+		}
+		catch(NoSuchElementException e) {
+			log("Provider drop down not displayed");
+		}
+			
 		questionBox.sendKeys(question);
 		Thread.sleep(1000);
 		return PageFactory.initElements(driver, JalapenoAskAStaffV2Page2.class);
@@ -281,11 +298,11 @@ public class JalapenoAskAStaffV2Page1 extends JalapenoMenu {
 				log("Path of Error File " + errorfilePath);
 				JalapenoAskAStaffV2Page1 ref = new JalapenoAskAStaffV2Page1(driver);
 				ref.uploadFileWithRobot(errorfilePath, correctfilePath);
-				log("Uploaded more than 2 MB file  " + errorFileName.getText());
+				log("Uploaded more than 10 MB file  " + errorFileName.getText());
 				assertTrue(errorFileName.getText().equals("Error_Files_Testing.pdf"),
 						"Expected: " + errorFileName.getText() + ", found: " + "Error_Files_Testing.pdf");
-				assertTrue(fileUploadErrorMsg.getText().equals("Your attachments exceed the maximum size of 2MB."),
-						"Expected: " + fileUploadErrorMsg.getText() + ", found: " + "Your attachments exceed the maximum size of 2MB.");	
+				assertTrue(fileUploadErrorMsg.getText().equals("Your attachments exceed the maximum size of 10MB."),
+						"Expected: " + fileUploadErrorMsg.getText() + ", found: " + "Your attachments exceed the maximum size of 10MB.");	
 				errorFileRemove.click();
 				continue;
 			} else {

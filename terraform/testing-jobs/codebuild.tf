@@ -2,10 +2,6 @@
 module "build" {
   source = "git::ssh://git@bitbucket.nextgen.com:7999/dope/codebuild?ref=4.3.0"
 
-  providers = {
-    aws = aws.pipeline
-  }
-
   artifact_bucket_arns = [local.pipeline_artifact_bucket_arn]
   name                 = local.name
   kms_key_id           = local.kms_key_id
@@ -52,5 +48,5 @@ module "build" {
     security_group_ids = [data.aws_security_group.codebuild_sg.id]
   }]
 
-  common_tags = local.common_tags
+  common_tags = {}
 }

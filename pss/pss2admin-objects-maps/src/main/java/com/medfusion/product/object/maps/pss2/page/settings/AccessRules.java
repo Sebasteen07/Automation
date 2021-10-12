@@ -16,8 +16,7 @@ public class AccessRules extends SettingsTab {
 	@FindBy(how = How.XPATH, using = "//div//input[@id='checkbox1']")
 	private WebElement checkNewPatient;
 
-	@FindBy(how = How.XPATH,
-			using = "//*[@id='par']/div[2]/div/fieldset[2]/div[1]/label")
+	@FindBy(how = How.XPATH,using = "//label[normalize-space()='New Patients']")
 	private WebElement checkNewPatientLabel;
 
 
@@ -30,7 +29,7 @@ public class AccessRules extends SettingsTab {
 	@FindBy(how = How.XPATH, using = "//label[@for='showPrivacyPolicyMessageConfig']//input")
 	private WebElement displayPrivacyPolicyLoginless;	
 
-	@FindBy(how = How.XPATH,using = "//*[@id=\"par\"]/div[2]/div/fieldset[2]/div[2]/label")
+	@FindBy(how = How.XPATH,using = "//label[@for='showPrivacyPolicyMessageConfig']//i")
 	private WebElement displayPrivacyPolicyLoginlessCheck;
 
 	@FindBy(how = How.XPATH, using = "//label[contains(text(),'Display Privacy Policy')]")
@@ -50,7 +49,7 @@ public class AccessRules extends SettingsTab {
 	@FindBy(how = How.XPATH, using = "//input[@id='allowOtp']")
 	private WebElement enableOTP;
 
-	@FindBy(how = How.XPATH,using = "//*[@id=\"par\"]/div[2]/div/fieldset[2]/div[2]/label")
+	@FindBy(how = How.XPATH,using = "//label[normalize-space()='Existing Patients']")
 	private WebElement checkLoginlessExistingPatientLabel;
 
 	@FindBy(how = How.ID, using = "radio0")
