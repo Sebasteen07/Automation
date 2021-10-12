@@ -112,10 +112,16 @@ Feature: Test fuctionality of Appointment precheck
     And verify count will be reflected on send reminder and broadcast message button
     Then logout from practice provisioning portal
 
-  Scenario: Verify if only email is enable from notification then in broadcast column & reminder column only mail column should displayed on appointment dashboard.
+  Scenario: Verify if only email is enable from notification then in broadcast column only mail column should displayed on appointment dashboard
     When from setting dashboard in general enable email check box and disable text checkbox
-    And verify on appointment dashboard user is able to see only mail column under send reminder and broadcast message column and Text column is disappear
-    Then from setting dashboard in general enable email check box and enable text checkbox
-    And verify on appointment dashboard user is able to see Text column under send reminder and broadcast message column
-    Then logout from practice provisioning portal
+    Then verify on appointment dashboard user is able to see only mail column under send reminder column and Text column is disappear
+    And from setting dashboard in general enable email check box and enable text checkbox
+    Then verify on appointment dashboard user is able to see Text column under send reminder column
+    And logout from practice provisioning portal
     
+    Scenario: Verify if only email is enable from notification then in reminder column only mail column should displayed on appointment dashboard
+    When from setting dashboard in general enable email check box and disable text checkbox
+    Then verify on appointment dashboard user is able to see only mail column under broadcast message column and Text column is disappear
+    And from setting dashboard in general enable email check box and enable text checkbox
+    Then verify on appointment dashboard user is able to see Text column under broadcast message column
+    And logout from practice provisioning portal

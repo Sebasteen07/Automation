@@ -504,14 +504,13 @@ public class ApptPrecheckSteps extends BaseTest {
 		mainPage.clickOnAppointmentsTab();
 	}
 	
-	@And("verify on appointment dashboard user is able to see only mail column under send reminder and broadcast message column and Text column is disappear")
-	public void verify_on_appointment_dashboard_user_is_able_to_see_only_mail_column_under_send_reminder_and_broadcast_message_column_and_text_column_is_disappear() {
-		log("verify text cloumn will not display under send reminder and broadcast message coloumn on  oppointments dashboard");
-		assertFalse(apptPage.sendRemibderTextColoumn());
-		assertFalse(apptPage.broadcastMessageTextColoumn());
+	@Then("verify on appointment dashboard user is able to see only mail column under send reminder column and Text column is disappear")
+	public void verify_on_appointment_dashboard_user_is_able_to_see_only_mail_column_under_send_reminder_column_and_text_column_is_disappear() {
+		log("verify text column will not display under send reminder column on oppointments dashboard");
+		assertFalse(apptPage.sendRemibderTextColumn());
 	}
 	
-	@Then("from setting dashboard in general enable email check box and enable text checkbox")
+	@And("from setting dashboard in general enable email check box and enable text checkbox")
 	public void from_setting_dashboard_in_general_enable_email_check_box_and_enable_text_checkbox() throws InterruptedException {
 		mainPage.clickOnSettingTab();
 		log("Enable text checkbox");
@@ -519,11 +518,21 @@ public class ApptPrecheckSteps extends BaseTest {
 		generalPage.clickOnUpdateSettingbutton();
 		mainPage.clickOnAppointmentsTab();
 	}
-	@And("verify on appointment dashboard user is able to see Text column under send reminder and broadcast message column")
-	public void verify_on_appointment_dashboard_user_is_able_to_see_text_column_under_send_reminder_and_broadcast_message_column() {
-		log("verify text cloumn will be display under send reminder and broadcast message coloumn on oppointments dashboard");
-		assertTrue(apptPage.sendRemibderTextColoumn());
-		assertTrue(apptPage.broadcastMessageTextColoumn());
+	@Then("verify on appointment dashboard user is able to see Text column under send reminder column")
+	public void verify_on_appointment_dashboard_user_is_able_to_see_text_column_under_send_reminder_column() {
+		log("verify text column will be display under send reminder column on oppointments dashboard");
+		assertTrue(apptPage.sendRemibderTextColumn());
+	}
+	
+	@When("verify on appointment dashboard user is able to see only mail column under broadcast message column and Text column is disappear")
+	public void verify_on_appointment_dashboard_user_is_able_to_see_only_mail_column_under_broadcast_message_column_and_text_column_is_disappear() {
+		log("verify text coloumn will not display under broadcast message coloumn on oppointments dashboard");
+		assertFalse(apptPage.broadcastMessageTextColumn());
+	}
+	@Then("verify on appointment dashboard user is able to see Text column under broadcast message column")
+	public void verify_on_appointment_dashboard_user_is_able_to_see_text_column_under_broadcast_message_column() {
+		log("verify text column will be display under broadcast message column on oppointments dashboard");
+		assertTrue(apptPage.broadcastMessageTextColumn());
 	}
 	
 }

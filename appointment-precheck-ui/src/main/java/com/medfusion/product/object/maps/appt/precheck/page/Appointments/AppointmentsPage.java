@@ -529,7 +529,7 @@ public class AppointmentsPage extends BasePageObject {
 		return sendReminder.getText();
 	}
 
-	public boolean sendRemibderTextColoumn() {
+	public boolean sendRemibderTextColumn() {
 		try {
 			reminderTextColumn.isDisplayed();
 			log("Send remibder text coloumn is displayed");
@@ -539,7 +539,7 @@ public class AppointmentsPage extends BasePageObject {
 			return false;
 		}
 	}
-	public boolean broadcastMessageTextColoumn() {
+	public boolean broadcastMessageTextColumn() {
 		try {
 			broadcastTextColoumn.isDisplayed();
 			log("Broadcast text coloumn is displayed");
