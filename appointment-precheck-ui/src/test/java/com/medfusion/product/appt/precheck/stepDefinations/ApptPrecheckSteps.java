@@ -1,3 +1,4 @@
+// Copyright 2021 NXGN Management, LLC. All Rights Reserved.
 package com.medfusion.product.appt.precheck.stepDefinations;
 
 import static org.junit.Assert.assertEquals;
