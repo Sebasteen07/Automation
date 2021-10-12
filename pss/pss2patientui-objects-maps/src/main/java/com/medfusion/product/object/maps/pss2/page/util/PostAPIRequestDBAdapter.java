@@ -275,7 +275,7 @@ public class PostAPIRequestDBAdapter {
 		return response;
 	}
 
-	public Response getBookById(String practiceid, String bookid) throws Exception {
+	public Response getBookById(String practiceid, int bookid) throws Exception {
 		Response response = given().spec(requestSpec).log().all().when()
 				.get(practiceid + "/book/" + bookid).then().log().all()
 				.extract().response();
@@ -315,7 +315,7 @@ public class PostAPIRequestDBAdapter {
 				.extract().response();
 		return response;
 	}
-	public Response getBooksByLocation(String practiceid, String locationid) throws Exception {
+	public Response getBooksByLocation(String practiceid, int locationid) throws Exception {
 		Response response = given().spec(requestSpec).header("language", "es").log().all().when()
 				.get(practiceid+"/books/location/"+locationid).then().log().all()
 				.extract().response();
@@ -363,6 +363,27 @@ public class PostAPIRequestDBAdapter {
 	public Response getCancellationReason(String practiceid, String path) throws Exception {
 		Response response = given().spec(requestSpec).log().all().when()
 				.get(practiceid+ path).then().log().all()
+				.extract().response();
+		return response;
+	}
+	
+	public Response getCancellationReasonById(String practiceid, int reasonid) throws Exception {
+		Response response = given().spec(requestSpec).log().all().when()
+				.get(practiceid+ "/cancellationreason/"+reasonid).then().log().all()
+				.extract().response();
+		return response;
+	}
+	
+	public Response cancellationReasonDelete(String practiceid, int reasonid) throws Exception {
+		Response response = given().spec(requestSpec).log().all().when()
+				.delete(practiceid+ "/cancellationreason/"+reasonid).then().log().all()
+				.extract().response();
+		return response;
+	}
+	
+	public Response reorderCancellationReason(String practiceid, String b) throws Exception {
+		Response response = given().spec(requestSpec).body(b).log().all().when()
+				.post(practiceid+ "/cancellationreason/reorder").then().log().all()
 				.extract().response();
 		return response;
 	}
@@ -741,6 +762,106 @@ public class PostAPIRequestDBAdapter {
 				.extract().response();
 		return response;
 	}
+	
+	public Response saveBook(String practiceid, String path, String b) throws Exception {
+		Response response = given().spec(requestSpec).log().all().body(b).when().post(practiceid+path).then().log().all()
+				.extract().response();
+		return response;
+	}
+	
+	public Response deleteBook(String practiceid, String path, int bookid) throws Exception {
+		Response response = given().spec(requestSpec).log().all().when().delete(practiceid+path+bookid).then().log().all()
+				.extract().response();
+		return response;
+	}
+	
+	public Response saveBookLocation(String practiceid, String path, String b) throws Exception {
+		Response response = given().spec(requestSpec).body(b).log().all().when().post(practiceid+path).then().log().all()
+				.extract().response();
+		return response;
+	}
+	
+	public Response deleteBookLocation(String practiceid,int bookid, int locationid) throws Exception {
+		Response response = given().spec(requestSpec).log().all().when().delete(practiceid+"/booklocation/book/"+ bookid+"/location/"+ locationid).then().log().all()
+				.extract().response();
+		return response;
+	}
+	
+	public Response bookLocations(String practiceid, String b) throws Exception {
+		Response response = given().spec(requestSpec).body(b).log().all().when().post(practiceid+"/booklocations").then().log().all()
+				.extract().response();
+		return response;
+	}
+	
+	public Response cancellationReasonSave(String practiceid, String b) throws Exception {
+		Response response = given().spec(requestSpec).body(b).log().all().when().post(practiceid+"/cancellationreason").then().log().all()
+				.extract().response();
+		return response;
+	}
+	
+	public Response saveBook(String practiceid, String path, String b) throws Exception {
+		Response response = given().spec(requestSpec).body(b).log().all().when().get(practiceid+path).then().log().all()
+				.extract().response();
+		return response;
+	}
+	
+	public Response saveBook(String practiceid, String path, String b) throws Exception {
+		Response response = given().spec(requestSpec).body(b).log().all().when().get(practiceid+path).then().log().all()
+				.extract().response();
+		return response;
+	}
+	
+	public Response saveBook(String practiceid, String path, String b) throws Exception {
+		Response response = given().spec(requestSpec).body(b).log().all().when().get(practiceid+path).then().log().all()
+				.extract().response();
+		return response;
+	}
+	
+	public Response saveBook(String practiceid, String path, String b) throws Exception {
+		Response response = given().spec(requestSpec).body(b).log().all().when().get(practiceid+path).then().log().all()
+				.extract().response();
+		return response;
+	}
+	
+	public Response saveBook(String practiceid, String path, String b) throws Exception {
+		Response response = given().spec(requestSpec).body(b).log().all().when().get(practiceid+path).then().log().all()
+				.extract().response();
+		return response;
+	}
+	
+	public Response saveBook(String practiceid, String path, String b) throws Exception {
+		Response response = given().spec(requestSpec).body(b).log().all().when().get(practiceid+path).then().log().all()
+				.extract().response();
+		return response;
+	}
+	
+	public Response saveBook(String practiceid, String path, String b) throws Exception {
+		Response response = given().spec(requestSpec).body(b).log().all().when().get(practiceid+path).then().log().all()
+				.extract().response();
+		return response;
+	}
+	
+	public Response saveBook(String practiceid, String path, String b) throws Exception {
+		Response response = given().spec(requestSpec).body(b).log().all().when().get(practiceid+path).then().log().all()
+				.extract().response();
+		return response;
+	}
+	
+	public Response saveBook(String practiceid, String path, String b) throws Exception {
+		Response response = given().spec(requestSpec).body(b).log().all().when().get(practiceid+path).then().log().all()
+				.extract().response();
+		return response;
+	}
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
 }
 
 

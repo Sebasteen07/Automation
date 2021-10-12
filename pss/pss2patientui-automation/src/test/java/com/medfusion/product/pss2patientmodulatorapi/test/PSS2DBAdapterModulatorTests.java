@@ -19,6 +19,7 @@ import com.intuit.ifs.csscat.core.RetryAnalyzer;
 import com.intuit.ihg.eh.core.dto.Timestamp;
 import com.medfusion.product.object.maps.pss2.page.util.APIVerification;
 import com.medfusion.product.object.maps.pss2.page.util.HeaderConfig;
+import com.medfusion.product.object.maps.pss2.page.util.ParseJSONFile;
 import com.medfusion.product.object.maps.pss2.page.util.PostAPIRequestDBAdapter;
 import com.medfusion.product.pss2patientapi.payload.PayloadDBAdapter;
 import com.medfusion.product.pss2patientui.pojo.Appointment;
@@ -38,7 +39,8 @@ public class PSS2DBAdapterModulatorTests extends BaseTestNG {
 	public static Appointment testData;
 	public static PostAPIRequestDBAdapter postAPIRequestDB;
 	HeaderConfig headerConfig;
-	public static String practiceId;
+	public static String practiceid;
+	public ParseJSONFile parseJSONFile;
 
 	public PSSPatientUtils pssPatientUtils;
 
@@ -60,16 +62,18 @@ public class PSS2DBAdapterModulatorTests extends BaseTestNG {
 		headerConfig = new HeaderConfig();
 		apv= new APIVerification();
 		pssPatientUtils= new PSSPatientUtils();
-		practiceId = propertyData.getProperty("practice.id.db");
+		practiceid = propertyData.getProperty("practice.id.db");
 		postAPIRequestDB.setupRequestSpecBuilder(propertyData.getProperty("base.url.db"),
 				headerConfig.defaultHeader());
+		
+		parseJSONFile= new ParseJSONFile();
 	}
 
 	@Test(enabled = true, groups = { "APItest" }, retryAnalyzer = RetryAnalyzer.class)
 	public void testvalidatePracticeGET() throws NullPointerException, Exception {
 
 		logStep("Verifying the response");
-		Response response = postAPIRequestDB.validatePractice(practiceId, "/validatepractice");
+		Response response = postAPIRequestDB.validatePractice(practiceid, "/validatepractice");
 		apv.responseCodeValidation(response, 200);
 	}
 	
@@ -77,7 +81,7 @@ public class PSS2DBAdapterModulatorTests extends BaseTestNG {
 	public void testAnnouncementGet() throws NullPointerException, Exception {
 
 		logStep("Verifying the response");
-		Response response = postAPIRequestDB.getAnnouncement(practiceId, "/announcement");
+		Response response = postAPIRequestDB.getAnnouncement(practiceid, "/announcement");
 		apv.responseCodeValidation(response, 200);
 
 		JSONArray ja = new JSONArray(response.asString());
@@ -101,7 +105,7 @@ public class PSS2DBAdapterModulatorTests extends BaseTestNG {
 	public void testAnnouncementGetInvalid() throws NullPointerException, Exception {
 
 		logStep("Verifying the response");
-		Response response = postAPIRequestDB.getAnnouncement(practiceId, "/announcementt");
+		Response response = postAPIRequestDB.getAnnouncement(practiceid, "/announcementt");
 		apv.responseCodeValidation(response, 404);
 	}
 
@@ -109,7 +113,7 @@ public class PSS2DBAdapterModulatorTests extends BaseTestNG {
 	public void testAnnouncementSaveInvalid() throws NullPointerException, Exception {
 
 		logStep("Verifying the response");
-		Response response = postAPIRequestDB.saveAnnouncement(practiceId, "");
+		Response response = postAPIRequestDB.saveAnnouncement(practiceid, "");
 		apv.responseCodeValidation(response, 400);
 		String message = apv.responseKeyValidationJson(response, "message");
 		assertTrue(message.contains("Required request body is missing"));
@@ -119,7 +123,7 @@ public class PSS2DBAdapterModulatorTests extends BaseTestNG {
 	public void testAnnouncementDeleteInvalid() throws NullPointerException, Exception {
 
 		logStep("Verifying the response");
-		Response responseDeleteAnn = postAPIRequestDB.deleteAnnouncement(practiceId, 4999);
+		Response responseDeleteAnn = postAPIRequestDB.deleteAnnouncement(practiceid, 4999);
 		apv.responseCodeValidation(responseDeleteAnn, 500);
 		String message = apv.responseKeyValidationJson(responseDeleteAnn, "message");
 		assertTrue(message.contains("No value present"));
@@ -128,7 +132,7 @@ public class PSS2DBAdapterModulatorTests extends BaseTestNG {
 	@Test(enabled = true, groups = { "APItest" }, retryAnalyzer = RetryAnalyzer.class)
 	public void testAnnouncementUpdateInvalid() throws NullPointerException, Exception {
 
-		Response response = postAPIRequestDB.updateAnnouncement(practiceId, "");
+		Response response = postAPIRequestDB.updateAnnouncement(practiceid, "");
 		apv.responseCodeValidation(response, 400);
 		String message = apv.responseKeyValidationJson(response, "message");
 		assertTrue(message.contains("Required request body is missing"));
@@ -138,7 +142,7 @@ public class PSS2DBAdapterModulatorTests extends BaseTestNG {
 	public void testAnnouncementByCode() throws NullPointerException, Exception {
 
 		logStep("Verifying the response");
-		Response response = postAPIRequestDB.getAnnouncementByCode(practiceId, "AG");
+		Response response = postAPIRequestDB.getAnnouncementByCode(practiceid, "AG");
 		apv.responseCodeValidation(response, 200);
 
 		String type = apv.responseKeyValidationJson(response, "type");
@@ -152,7 +156,7 @@ public class PSS2DBAdapterModulatorTests extends BaseTestNG {
 	public void testAnnouncementByCodeInvalid() throws NullPointerException, Exception {
 
 		logStep("Verifying the response");
-		Response response = postAPIRequestDB.getAnnouncementByCode(practiceId, "ZZZ");
+		Response response = postAPIRequestDB.getAnnouncementByCode(practiceid, "ZZZ");
 		apv.responseCodeValidation(response, 400);
 		String message = apv.responseKeyValidationJson(response, "message");
 		assertTrue(message.contains("Invalid announcement type"));
@@ -162,7 +166,7 @@ public class PSS2DBAdapterModulatorTests extends BaseTestNG {
 	public void testSaveApptType() throws NullPointerException, Exception {
 
 		String b = "";
-		Response response = postAPIRequestDB.saveAppointmenttype(practiceId, b);
+		Response response = postAPIRequestDB.saveAppointmenttype(practiceid, b);
 		apv.responseCodeValidation(response, 200);
 		log("Body- " + response.getBody().asString());
 		assertEquals(response.getBody().asString(), "true");
@@ -172,7 +176,7 @@ public class PSS2DBAdapterModulatorTests extends BaseTestNG {
 	public void testSaveApptTypeWithoutApptId() throws NullPointerException, Exception {
 
 		String b = "";
-		Response response = postAPIRequestDB.saveAppointmenttype(practiceId, b);
+		Response response = postAPIRequestDB.saveAppointmenttype(practiceid, b);
 
 		apv.responseCodeValidation(response, 400);
 		String message = apv.responseKeyValidationJson(response, "message");
@@ -185,7 +189,7 @@ public class PSS2DBAdapterModulatorTests extends BaseTestNG {
 	public void testUpdateApptType() throws NullPointerException, Exception {
 
 		String b = "";
-		Response response = postAPIRequestDB.updateAppointmenttype(practiceId, b);
+		Response response = postAPIRequestDB.updateAppointmenttype(practiceid, b);
 		apv.responseCodeValidation(response, 200);
 		log("Body- " + response.getBody().asString());
 		assertEquals(response.getBody().asString(), "true");
@@ -195,7 +199,7 @@ public class PSS2DBAdapterModulatorTests extends BaseTestNG {
 	public void testUpdateApptTypeWithoutApptId() throws NullPointerException, Exception {
 
 		String b = "";
-		Response response = postAPIRequestDB.updateAppointmenttype(practiceId, b);
+		Response response = postAPIRequestDB.updateAppointmenttype(practiceid, b);
 
 		apv.responseCodeValidation(response, 400);
 		String message = apv.responseKeyValidationJson(response, "message");
@@ -209,7 +213,7 @@ public class PSS2DBAdapterModulatorTests extends BaseTestNG {
 
 		String extapptid=propertyData.getProperty("extappt.id.db");
 		log("Appt Id- "+extapptid);
-		Response response = postAPIRequestDB.getAppointmentTypeByExtApptId(practiceId,extapptid);
+		Response response = postAPIRequestDB.getAppointmentTypeByExtApptId(practiceid,extapptid);
 		apv.responseCodeValidation(response, 200);
 		log("Appointment Id- "+apv.responseKeyValidationJson(response, "id"));
 		log("Patient Id- "+apv.responseKeyValidationJson(response, "patientId"));
@@ -220,7 +224,7 @@ public class PSS2DBAdapterModulatorTests extends BaseTestNG {
 
 		String apptid = propertyData.getProperty("appt.confm.id.db");
 		log("Appt Id- " + apptid);
-		Response response = postAPIRequestDB.getAppointmentTypeById(practiceId, apptid);
+		Response response = postAPIRequestDB.getAppointmentTypeById(practiceid, apptid);
 		apv.responseCodeValidation(response, 200);
 		log("Appointment Id- " + apv.responseKeyValidationJson(response, "id"));
 		log("Patient Id- " + apv.responseKeyValidationJson(response, "patientId"));
@@ -229,7 +233,7 @@ public class PSS2DBAdapterModulatorTests extends BaseTestNG {
 	@Test(enabled = true, groups = { "APItest" }, retryAnalyzer = RetryAnalyzer.class)
 	public void testAppointmentsForPracticeGet() throws NullPointerException, Exception {
 
-		Response response = postAPIRequestDB.getAppointmentsForPractice(practiceId);
+		Response response = postAPIRequestDB.getAppointmentsForPractice(practiceid);
 		apv.responseCodeValidation(response, 200);
 		apv.responseKeyValidationJson(response, "id");
 		apv.responseKeyValidationJson(response, "patientId");
@@ -241,7 +245,7 @@ public class PSS2DBAdapterModulatorTests extends BaseTestNG {
 		String patientid = propertyData.getProperty("patientid.upcommingapp.id");
 		String currentdate = pssPatientUtils.sampleDateTime("MM/dd/yyyy");
 
-		Response response = postAPIRequestDB.getUpcomingAppointmentsByPatientIdForPractice(practiceId, patientid,
+		Response response = postAPIRequestDB.getUpcomingAppointmentsByPatientIdForPractice(practiceid, patientid,
 				currentdate);
 		apv.responseCodeValidation(response, 200);
 		apv.responseTimeValidation(response);
@@ -256,7 +260,7 @@ public class PSS2DBAdapterModulatorTests extends BaseTestNG {
 		String currentdate = pssPatientUtils.sampleDateTime("MM/dd/yyyy");
 		String enddate= pssPatientUtils.createFutureDate(currentdate, 60);
 
-		Response response = postAPIRequestDB.patientappointmentsbyrange(practiceId, patientid,
+		Response response = postAPIRequestDB.patientappointmentsbyrange(practiceid, patientid,
 				currentdate, enddate);
 		apv.responseCodeValidation(response, 200);
 		apv.responseTimeValidation(response);
@@ -270,7 +274,7 @@ public class PSS2DBAdapterModulatorTests extends BaseTestNG {
 
 		String apptypeid = propertyData.getProperty("appttypeconfig.appttype.id.db");
 
-		Response response = postAPIRequestDB.getAppointmentTypeConfig(practiceId, apptypeid);
+		Response response = postAPIRequestDB.getAppointmentTypeConfig(practiceid, apptypeid);
 		apv.responseCodeValidation(response, 200);
 		apv.responseTimeValidation(response);
 	}
@@ -280,7 +284,7 @@ public class PSS2DBAdapterModulatorTests extends BaseTestNG {
 
 		String apptypeid = "9999";
 
-		Response response = postAPIRequestDB.getAppointmentTypeConfig(practiceId, apptypeid);
+		Response response = postAPIRequestDB.getAppointmentTypeConfig(practiceid, apptypeid);
 
 		apv.responseCodeValidation(response, 400);
 		apv.responseTimeValidation(response);
@@ -295,7 +299,7 @@ public class PSS2DBAdapterModulatorTests extends BaseTestNG {
 
 		String locationid = propertyData.getProperty("appttype.location.id.db");
 
-		Response response = postAPIRequestDB.getAppointmentTypesByLocationForNoBook(practiceId, locationid);
+		Response response = postAPIRequestDB.getAppointmentTypesByLocationForNoBook(practiceid, locationid);
 		apv.responseCodeValidation(response, 200);
 		apv.responseTimeValidation(response);
 	}
@@ -303,7 +307,7 @@ public class PSS2DBAdapterModulatorTests extends BaseTestNG {
 	@Test(enabled = true, groups = { "APItest" }, retryAnalyzer = RetryAnalyzer.class)
 	public void testAppointmentTypesForPracticeGet() throws NullPointerException, Exception {
 
-		Response response = postAPIRequestDB.getAppointmentTypesForPractice(practiceId);
+		Response response = postAPIRequestDB.getAppointmentTypesForPractice(practiceid);
 		apv.responseCodeValidation(response, 200);
 		apv.responseTimeValidation(response);
 	}
@@ -313,7 +317,7 @@ public class PSS2DBAdapterModulatorTests extends BaseTestNG {
 
 		String apptype =propertyData.getProperty("appttypeconfig.appttype.id.db");
 		
-		Response response = postAPIRequestDB.getAppTypeById(practiceId, apptype);
+		Response response = postAPIRequestDB.getAppTypeById(practiceid, apptype);
 		apv.responseCodeValidation(response, 200);
 		apv.responseTimeValidation(response);
 	}
@@ -322,7 +326,7 @@ public class PSS2DBAdapterModulatorTests extends BaseTestNG {
 	public void testAppointmentTypesByBookGet() throws NullPointerException, Exception {
 
 		String bookid= propertyData.getProperty("appttype.book.id.db");
-		Response response = postAPIRequestDB.getAppointmentTypesByBook(practiceId, bookid);
+		Response response = postAPIRequestDB.getAppointmentTypesByBook(practiceid, bookid);
 		apv.responseCodeValidation(response, 200);
 		apv.responseTimeValidation(response);
 	}
@@ -331,7 +335,7 @@ public class PSS2DBAdapterModulatorTests extends BaseTestNG {
 	public void testAppointmentTypesByLocationGet() throws NullPointerException, Exception {
 
 		String locationid = propertyData.getProperty("appttype.location.id.db");
-		Response response = postAPIRequestDB.getAppointmentTypesByLocation(practiceId, locationid);
+		Response response = postAPIRequestDB.getAppointmentTypesByLocation(practiceid, locationid);
 		apv.responseCodeValidation(response, 200);
 		apv.responseTimeValidation(response);		
 	}
@@ -342,7 +346,7 @@ public class PSS2DBAdapterModulatorTests extends BaseTestNG {
 		String bookid = propertyData.getProperty("appttype.book.id.db");
 		String locationid = propertyData.getProperty("appttype.location.id.db");
 
-		Response response = postAPIRequestDB.getAppointmentTypesByLocationAndBooks(practiceId, bookid, locationid);
+		Response response = postAPIRequestDB.getAppointmentTypesByLocationAndBooks(practiceid, bookid, locationid);
 		apv.responseCodeValidation(response, 200);
 		apv.responseTimeValidation(response);
 	}
@@ -352,7 +356,7 @@ public class PSS2DBAdapterModulatorTests extends BaseTestNG {
 
 		String specialty = propertyData.getProperty("appttype.specialty.id.db");
 
-		Response response = postAPIRequestDB.getAppointmentTypesBySpecialty(practiceId, specialty);
+		Response response = postAPIRequestDB.getAppointmentTypesBySpecialty(practiceid, specialty);
 		apv.responseCodeValidation(response, 200);
 		apv.responseTimeValidation(response);
 	}
@@ -363,7 +367,7 @@ public class PSS2DBAdapterModulatorTests extends BaseTestNG {
 		String specialty = propertyData.getProperty("appttype.specialty.id.db");
 		String bookid= propertyData.getProperty("appttype.specialty.book.id.db");
 
-		Response response = postAPIRequestDB.getAppointmentTypesBySpecialtyAndBook(practiceId, specialty,bookid);
+		Response response = postAPIRequestDB.getAppointmentTypesBySpecialtyAndBook(practiceid, specialty,bookid);
 		apv.responseCodeValidation(response, 200);
 		apv.responseTimeValidation(response);
 	}
@@ -375,7 +379,7 @@ public class PSS2DBAdapterModulatorTests extends BaseTestNG {
 		String bookid = propertyData.getProperty("appttype.specialty.book.id.db");
 		String locationid = propertyData.getProperty("appttype.location.id.db");
 
-		Response response = postAPIRequestDB.getAppointmentTypesBySpecialtyAndBookAndLocation(practiceId, specialty,
+		Response response = postAPIRequestDB.getAppointmentTypesBySpecialtyAndBookAndLocation(practiceid, specialty,
 				bookid, locationid);
 		apv.responseCodeValidation(response, 200);
 		apv.responseTimeValidation(response);
@@ -387,7 +391,7 @@ public class PSS2DBAdapterModulatorTests extends BaseTestNG {
 		String specialty = propertyData.getProperty("appttype.specialty.id.db");
 		String locationid = propertyData.getProperty("appttype.location.id.db");
 
-		Response response = postAPIRequestDB.getAppointmentTypesBySpecialtyAndLocation(practiceId, specialty,
+		Response response = postAPIRequestDB.getAppointmentTypesBySpecialtyAndLocation(practiceid, specialty,
 				locationid);
 		apv.responseCodeValidation(response, 200);
 		apv.responseTimeValidation(response);
@@ -398,7 +402,7 @@ public class PSS2DBAdapterModulatorTests extends BaseTestNG {
 
 		String extapptid = propertyData.getProperty("appttype.extappt.id.db");
 
-		Response response = postAPIRequestDB.getApptypeExtById(practiceId, extapptid);
+		Response response = postAPIRequestDB.getApptypeExtById(practiceid, extapptid);
 		apv.responseCodeValidation(response, 200);
 		apv.responseTimeValidation(response);
 	}
@@ -406,7 +410,7 @@ public class PSS2DBAdapterModulatorTests extends BaseTestNG {
 	@Test(enabled = true, groups = { "APItest" }, retryAnalyzer = RetryAnalyzer.class)
 	public void testAppointmentTypesWithLanguageForPracticeGetEnglish() throws NullPointerException, Exception {
 
-		Response response = postAPIRequestDB.getAppointmentTypesWithLanguageForPractice(practiceId, "EN");
+		Response response = postAPIRequestDB.getAppointmentTypesWithLanguageForPractice(practiceid, "EN");
 		apv.responseCodeValidation(response, 200);
 		apv.responseTimeValidation(response);
 	}
@@ -414,7 +418,7 @@ public class PSS2DBAdapterModulatorTests extends BaseTestNG {
 	@Test(enabled = true, groups = { "APItest" }, retryAnalyzer = RetryAnalyzer.class)
 	public void testAppointmentTypesWithLanguageForPracticeGetEspanol() throws NullPointerException, Exception {
 
-		Response response = postAPIRequestDB.getAppointmentTypesWithLanguageForPractice(practiceId, "ES");
+		Response response = postAPIRequestDB.getAppointmentTypesWithLanguageForPractice(practiceid, "ES");
 		apv.responseCodeValidation(response, 200);
 		apv.responseTimeValidation(response);
 	}
@@ -424,7 +428,7 @@ public class PSS2DBAdapterModulatorTests extends BaseTestNG {
 
 		String id = propertyData.getProperty("extuserid.authappuser.id.db");		
 
-		Response response = postAPIRequestDB.getAppAuthUserByUserId(practiceId, id);
+		Response response = postAPIRequestDB.getAppAuthUserByUserId(practiceid, id);
 		apv.responseCodeValidation(response, 200);
 		apv.responseTimeValidation(response);
 	}
@@ -434,7 +438,7 @@ public class PSS2DBAdapterModulatorTests extends BaseTestNG {
 
 		String extuserid = propertyData.getProperty("extuserid.db");
 
-		Response response = postAPIRequestDB.getAppAuthUserByExtUserId(practiceId, extuserid);
+		Response response = postAPIRequestDB.getAppAuthUserByExtUserId(practiceid, extuserid);
 		apv.responseCodeValidation(response, 200);
 		apv.responseTimeValidation(response);
 	}
@@ -446,7 +450,7 @@ public class PSS2DBAdapterModulatorTests extends BaseTestNG {
 
 		String bookid=propertyData.getProperty("bookapttype.book.id.db");
 		String apptype=propertyData.getProperty("bookapttype.apttype.id.db");
-		Response response = postAPIRequestDB.getBookAppTypesAssociatedToBook(practiceId, bookid, apptype);
+		Response response = postAPIRequestDB.getBookAppTypesAssociatedToBook(practiceid, bookid, apptype);
 		apv.responseCodeValidation(response, 200);
 		apv.responseTimeValidation(response);
 	}
@@ -456,7 +460,7 @@ public class PSS2DBAdapterModulatorTests extends BaseTestNG {
 
 		String bookid=propertyData.getProperty("bookapttype.book.id.db");
 
-		Response response = postAPIRequestDB.getAppTypesAssociatedToBook(practiceId, bookid);
+		Response response = postAPIRequestDB.getAppTypesAssociatedToBook(practiceid, bookid);
 		apv.responseCodeValidation(response, 200);
 		apv.responseTimeValidation(response);
 	}
@@ -465,7 +469,7 @@ public class PSS2DBAdapterModulatorTests extends BaseTestNG {
 	public void testBookApp_getAssociatedBookAppTypesByBookId() throws NullPointerException, Exception {
 
 		String bookid=propertyData.getProperty("bookapttype.book.id.db");
-		Response response = postAPIRequestDB.getAssociatedBookAppTypesByBookId(practiceId, bookid);
+		Response response = postAPIRequestDB.getAssociatedBookAppTypesByBookId(practiceid, bookid);
 		apv.responseCodeValidation(response, 200);
 		apv.responseTimeValidation(response);
 	}
@@ -475,7 +479,7 @@ public class PSS2DBAdapterModulatorTests extends BaseTestNG {
 
 		String apptype=propertyData.getProperty("bookapttype.apttype.id.db");
 
-		Response response = postAPIRequestDB.getAssociatedBookAppTypesByAppTypeId(practiceId, apptype);
+		Response response = postAPIRequestDB.getAssociatedBookAppTypesByAppTypeId(practiceid, apptype);
 		apv.responseCodeValidation(response, 200);
 		apv.responseTimeValidation(response);
 	}
@@ -488,7 +492,7 @@ public class PSS2DBAdapterModulatorTests extends BaseTestNG {
 		String bookid=propertyData.getProperty("bookapttype.book.id.db");
 		String apptype=propertyData.getProperty("bookapttype.apttype.id.db");
 
-		Response response = postAPIRequestDB.getLocationsAssociatedToBookAndAppointmentType(practiceId, bookid,apptype);
+		Response response = postAPIRequestDB.getLocationsAssociatedToBookAndAppointmentType(practiceid, bookid,apptype);
 		apv.responseCodeValidation(response, 200);
 		apv.responseTimeValidation(response);
 	}
@@ -498,7 +502,7 @@ public class PSS2DBAdapterModulatorTests extends BaseTestNG {
 	@Test(enabled = true, groups = { "APItest" }, retryAnalyzer = RetryAnalyzer.class)
 	public void testBook_getBooksForPractice() throws NullPointerException, Exception {
 
-		Response response = postAPIRequestDB.getBooksForPractice(practiceId);
+		Response response = postAPIRequestDB.getBooksForPractice(practiceid);
 		apv.responseCodeValidation(response, 200);
 		apv.responseTimeValidation(response);
 	}
@@ -508,7 +512,7 @@ public class PSS2DBAdapterModulatorTests extends BaseTestNG {
 
 		String bookid=propertyData.getProperty("bookapttype.book.id.db");
 
-		Response response = postAPIRequestDB.getBookById(practiceId,bookid);
+		Response response = postAPIRequestDB.getBookById(practiceid,Integer.parseInt(bookid));
 		apv.responseCodeValidation(response, 200);
 		apv.responseTimeValidation(response);
 	}
@@ -518,7 +522,7 @@ public class PSS2DBAdapterModulatorTests extends BaseTestNG {
 		
 		String extbokid=propertyData.getProperty("book.extbook.id");
 
-		Response response = postAPIRequestDB.getBookExtById(practiceId, extbokid);
+		Response response = postAPIRequestDB.getBookExtById(practiceid, extbokid);
 		apv.responseCodeValidation(response, 200);
 		apv.responseTimeValidation(response);
 	}
@@ -528,7 +532,7 @@ public class PSS2DBAdapterModulatorTests extends BaseTestNG {
 		
 		String bookid=propertyData.getProperty("bookapttype.book.id.db");
 
-		Response response = postAPIRequestDB.getBookWithLinksById(practiceId,bookid);
+		Response response = postAPIRequestDB.getBookWithLinksById(practiceid,bookid);
 		apv.responseCodeValidation(response, 200);
 		apv.responseTimeValidation(response);
 	}
@@ -536,7 +540,7 @@ public class PSS2DBAdapterModulatorTests extends BaseTestNG {
 	@Test(enabled = true, groups = { "APItest" }, retryAnalyzer = RetryAnalyzer.class)
 	public void testBook_getBooksWithLanguageForPractice() throws NullPointerException, Exception {
 
-		Response response = postAPIRequestDB.getBooksWithLanguageForPractice(practiceId);
+		Response response = postAPIRequestDB.getBooksWithLanguageForPractice(practiceid);
 		apv.responseCodeValidation(response, 200);
 		apv.responseTimeValidation(response);
 	}
@@ -547,7 +551,7 @@ public class PSS2DBAdapterModulatorTests extends BaseTestNG {
 		String bookname=propertyData.getProperty("book.bookname.db");
 		String extbookid=propertyData.getProperty("book.extbook.id.db");
 
-		Response response = postAPIRequestDB.getBookByPracticeAndName(practiceId, bookname);
+		Response response = postAPIRequestDB.getBookByPracticeAndName(practiceid, bookname);
 		String actualextbookid= response.getBody().asString();
 		log("actualextbookid- "+actualextbookid);
 		assertEquals(actualextbookid, extbookid, "External Book id is not matching with expected id");
@@ -560,7 +564,7 @@ public class PSS2DBAdapterModulatorTests extends BaseTestNG {
 
 		String apptype=propertyData.getProperty("bookapttype.apttype.id.db");
 
-		Response response = postAPIRequestDB.getBooksByAppType(practiceId, apptype);
+		Response response = postAPIRequestDB.getBooksByAppType(practiceid, apptype);
 		apv.responseCodeValidation(response, 200);
 		apv.responseTimeValidation(response);
 	}
@@ -570,7 +574,7 @@ public class PSS2DBAdapterModulatorTests extends BaseTestNG {
 	public void testBook_getBooksByLocation() throws NullPointerException, Exception {		
 
 		String locationid = propertyData.getProperty("bookapttype.location.id.db");
-		Response response = postAPIRequestDB.getBooksByLocation(practiceId,locationid);
+		Response response = postAPIRequestDB.getBooksByLocation(practiceid,locationid);
 		apv.responseCodeValidation(response, 200);
 		apv.responseTimeValidation(response);
 	}
@@ -580,7 +584,7 @@ public class PSS2DBAdapterModulatorTests extends BaseTestNG {
 		String locationid = propertyData.getProperty("bookapttype.location.id.db");
 		String apptype=propertyData.getProperty("bookapttype.apttype.id.db");
 
-		Response response = postAPIRequestDB.getBooksByLocationAndAppointmentTypes(practiceId, locationid , apptype);
+		Response response = postAPIRequestDB.getBooksByLocationAndAppointmentTypes(practiceid, locationid , apptype);
 		apv.responseCodeValidation(response, 200);
 		apv.responseTimeValidation(response);
 	}
@@ -590,7 +594,7 @@ public class PSS2DBAdapterModulatorTests extends BaseTestNG {
 		
 		String specialty = propertyData.getProperty("bookapttype.specialty.id.db");
 
-		Response response = postAPIRequestDB.getBooksBySpeciality(practiceId, specialty);
+		Response response = postAPIRequestDB.getBooksBySpeciality(practiceid, specialty);
 		apv.responseCodeValidation(response, 200);
 		apv.responseTimeValidation(response);
 	}
@@ -600,7 +604,7 @@ public class PSS2DBAdapterModulatorTests extends BaseTestNG {
 		String specialty = propertyData.getProperty("bookapttype.specialty.id.db");
 		String apptype=propertyData.getProperty("bookapttype.apttype.id.db");
 
-		Response response = postAPIRequestDB.getBooksBySpecialityAndAppointmentType(practiceId, specialty, apptype);
+		Response response = postAPIRequestDB.getBooksBySpecialityAndAppointmentType(practiceid, specialty, apptype);
 		apv.responseCodeValidation(response, 200);
 		apv.responseTimeValidation(response);
 	}
@@ -609,7 +613,7 @@ public class PSS2DBAdapterModulatorTests extends BaseTestNG {
 		
 		String specialty = propertyData.getProperty("bookapttype.specialty.id.db");
 		String locationid = propertyData.getProperty("bookapttype.location.id.db");
-		Response response = postAPIRequestDB.getBooksBySpecialityAndLocation(practiceId, specialty, locationid);
+		Response response = postAPIRequestDB.getBooksBySpecialityAndLocation(practiceid, specialty, locationid);
 		apv.responseCodeValidation(response, 200);
 		apv.responseTimeValidation(response);
 	}
@@ -621,7 +625,7 @@ public class PSS2DBAdapterModulatorTests extends BaseTestNG {
 		String locationid = propertyData.getProperty("bookapttype.location.id.db");
 		String apptype=propertyData.getProperty("bookapttype.apttype.id.db");
 		
-		Response response = postAPIRequestDB.getBooksBySpecialityAndLocationAndAppointmentType(practiceId,specialty, locationid, apptype);
+		Response response = postAPIRequestDB.getBooksBySpecialityAndLocationAndAppointmentType(practiceid,specialty, locationid, apptype);
 		apv.responseCodeValidation(response, 200);
 		apv.responseTimeValidation(response);
 	}
@@ -629,7 +633,7 @@ public class PSS2DBAdapterModulatorTests extends BaseTestNG {
 	@Test(enabled = true, groups = { "APItest" }, retryAnalyzer = RetryAnalyzer.class)
 	public void testBook_getbooklevel() throws NullPointerException, Exception {
 		
-		Response response = postAPIRequestDB.getbooklevel(practiceId);
+		Response response = postAPIRequestDB.getbooklevel(practiceid);
 		apv.responseCodeValidation(response, 200);
 		apv.responseTimeValidation(response);
 	}
@@ -639,7 +643,7 @@ public class PSS2DBAdapterModulatorTests extends BaseTestNG {
 	@Test(enabled = true, groups = { "APItest" }, retryAnalyzer = RetryAnalyzer.class)
 	public void testCancelReason_getCancellationReason() throws NullPointerException, Exception {
 
-		Response response = postAPIRequestDB.getCancellationReason(practiceId,"/cancellationreason");
+		Response response = postAPIRequestDB.getCancellationReason(practiceid,"/cancellationreason");
 		apv.responseCodeValidation(response, 200);
 		apv.responseTimeValidation(response);
 	}
@@ -650,7 +654,7 @@ public class PSS2DBAdapterModulatorTests extends BaseTestNG {
 	public void testCareTeamBook_getBookAssociatedToCareTeam() throws NullPointerException, Exception {
 		
 		String careteamid=propertyData.getProperty("careteambook.careteam.id.db");
-		Response response = postAPIRequestDB.getBookAssociatedToCareTeam(practiceId, careteamid);
+		Response response = postAPIRequestDB.getBookAssociatedToCareTeam(practiceid, careteamid);
 		apv.responseCodeValidation(response, 200);
 		apv.responseKeyValidationJson(response, "careteam");
 		apv.responseKeyValidationJson(response, "id");
@@ -664,7 +668,7 @@ public class PSS2DBAdapterModulatorTests extends BaseTestNG {
 	@Test(enabled = true, groups = { "APItest" }, retryAnalyzer = RetryAnalyzer.class)
 	public void testCareTeam_getCareteamsForPracticel() throws NullPointerException, Exception {
 		
-		Response response = postAPIRequestDB.getCareteamsForPractice(practiceId);
+		Response response = postAPIRequestDB.getCareteamsForPractice(practiceid);
 		apv.responseCodeValidation(response, 200);
 		apv.responseTimeValidation(response);
 	}
@@ -672,7 +676,7 @@ public class PSS2DBAdapterModulatorTests extends BaseTestNG {
 	public void testCareTeam_getCareTeamById() throws NullPointerException, Exception {
 		
 		String careteamid=propertyData.getProperty("careteambook.careteam.id.db");
-		Response response = postAPIRequestDB.getCareTeamById(practiceId, careteamid);
+		Response response = postAPIRequestDB.getCareTeamById(practiceid, careteamid);
 		apv.responseCodeValidation(response, 200);
 		apv.responseKeyValidationJson(response, "createdUserId");
 		apv.responseKeyValidationJson(response, "id");
@@ -686,7 +690,7 @@ public class PSS2DBAdapterModulatorTests extends BaseTestNG {
 	public void testCatgoryAppType_getAppTypeForCategory() throws NullPointerException, Exception {
 		
 		String categoryid=propertyData.getProperty("");
-		Response response = postAPIRequestDB.getAppTypeForCategory(practiceId, categoryid);
+		Response response = postAPIRequestDB.getAppTypeForCategory(practiceid, categoryid);
 		apv.responseCodeValidation(response, 200);
 		apv.responseTimeValidation(response);
 	}
@@ -697,7 +701,7 @@ public class PSS2DBAdapterModulatorTests extends BaseTestNG {
 		String categoryid=propertyData.getProperty("categoryapp.category.id.db");
 		String apptype=propertyData.getProperty("categoryapp.apptype.id.db");
 		
-		Response response = postAPIRequestDB.getCategoryAppTypeForCategoryAndAppttype(practiceId, categoryid, apptype);
+		Response response = postAPIRequestDB.getCategoryAppTypeForCategoryAndAppttype(practiceid, categoryid, apptype);
 		apv.responseCodeValidation(response, 200);
 		apv.responseTimeValidation(response);
 	}
@@ -707,7 +711,7 @@ public class PSS2DBAdapterModulatorTests extends BaseTestNG {
 		
 		String categoryid=propertyData.getProperty("categoryapp.category.id.db");
 		
-		Response response = postAPIRequestDB.getLocationsForCategoryAppType(practiceId, categoryid);
+		Response response = postAPIRequestDB.getLocationsForCategoryAppType(practiceid, categoryid);
 		apv.responseCodeValidation(response, 200);
 		apv.responseTimeValidation(response);
 	}
@@ -718,14 +722,14 @@ public class PSS2DBAdapterModulatorTests extends BaseTestNG {
 	public void testCategory_getCategoryById() throws NullPointerException, Exception {
 		
 		String categoryid=propertyData.getProperty("categoryapp.category.id.db");
-		Response response = postAPIRequestDB.getCategoryById(practiceId, categoryid);
+		Response response = postAPIRequestDB.getCategoryById(practiceid, categoryid);
 		apv.responseCodeValidation(response, 200);
 		apv.responseTimeValidation(response);
 	}
 	@Test(enabled = true, groups = { "APItest" }, retryAnalyzer = RetryAnalyzer.class)
 	public void testCategory_getCategoryForPractice() throws NullPointerException, Exception {
 		
-		Response response = postAPIRequestDB.getCategoryForPractice(practiceId);
+		Response response = postAPIRequestDB.getCategoryForPractice(practiceid);
 		apv.responseCodeValidation(response, 200);
 		apv.responseTimeValidation(response);
 	}
@@ -733,7 +737,7 @@ public class PSS2DBAdapterModulatorTests extends BaseTestNG {
 	@Test(enabled = true, groups = { "APItest" }, retryAnalyzer = RetryAnalyzer.class)
 	public void testCategory_getCategorysWithLanguageForPractice() throws NullPointerException, Exception {
 		
-		Response response = postAPIRequestDB.getCategorysWithLanguageForPractice(practiceId);
+		Response response = postAPIRequestDB.getCategorysWithLanguageForPractice(practiceid);
 		apv.responseCodeValidation(response, 200);
 		apv.responseTimeValidation(response);
 	}
@@ -743,7 +747,7 @@ public class PSS2DBAdapterModulatorTests extends BaseTestNG {
 		
 		String specialty=propertyData.getProperty("bookapttype.specialty.id.db");
 		
-		Response response = postAPIRequestDB.getCategorysBySpecialty(practiceId, specialty);
+		Response response = postAPIRequestDB.getCategorysBySpecialty(practiceid, specialty);
 		apv.responseCodeValidation(response, 200);
 		apv.responseTimeValidation(response);
 	}
@@ -751,7 +755,7 @@ public class PSS2DBAdapterModulatorTests extends BaseTestNG {
 	public void testStateGET() throws NullPointerException, Exception {
 
 		logStep("Verifying the response");
-		Response response = postAPIRequestDB.State(practiceId, "/states");
+		Response response = postAPIRequestDB.State(practiceid, "/states");
 		apv.responseCodeValidation(response, 200);
 		apv.responseTimeValidation(response);
 		apv.responseKeyValidation(response, "statecode");
@@ -764,7 +768,7 @@ public class PSS2DBAdapterModulatorTests extends BaseTestNG {
 	public void testStateInvalidPAthGET() throws NullPointerException, Exception {
 
 		logStep("Verifying the response");
-		Response response = postAPIRequestDB.State(practiceId, "/statesa");
+		Response response = postAPIRequestDB.State(practiceid, "/statesa");
 		apv.responseCodeValidation(response, 404);
 		apv.responseTimeValidation(response);
 
@@ -774,7 +778,7 @@ public class PSS2DBAdapterModulatorTests extends BaseTestNG {
 	public void testSSOConfigGET() throws NullPointerException, Exception {
 
 		logStep("Verifying the response");
-		Response response = postAPIRequestDB.ssoConfig(practiceId, "/sso");
+		Response response = postAPIRequestDB.ssoConfig(practiceid, "/sso");
 		apv.responseCodeValidation(response, 200);
 		apv.responseTimeValidation(response);
 		apv.responseKeyValidationJson(response, "id");
@@ -787,7 +791,7 @@ public class PSS2DBAdapterModulatorTests extends BaseTestNG {
 	public void testSSOConfigInvalidPathGET() throws NullPointerException, Exception {
 
 		logStep("Verifying the response");
-		Response response = postAPIRequestDB.ssoConfig(practiceId, "/ssoaa");
+		Response response = postAPIRequestDB.ssoConfig(practiceid, "/ssoaa");
 		apv.responseCodeValidation(response, 404);
 		apv.responseTimeValidation(response);
 
@@ -797,7 +801,7 @@ public class PSS2DBAdapterModulatorTests extends BaseTestNG {
 	public void testSSOConfigCodeGET() throws NullPointerException, Exception {
 
 		logStep("Verifying the response");
-		Response response = postAPIRequestDB.ssoCode(practiceId, "/sso/MF");
+		Response response = postAPIRequestDB.ssoCode(practiceid, "/sso/MF");
 		apv.responseCodeValidation(response, 200);
 		apv.responseTimeValidation(response);
 		apv.responseKeyValidationJson(response, "id");
@@ -810,7 +814,7 @@ public class PSS2DBAdapterModulatorTests extends BaseTestNG {
 	public void testSSOConfigCodeInvalidPathGET() throws NullPointerException, Exception {
 
 		logStep("Verifying the response");
-		Response response = postAPIRequestDB.State(practiceId, "/sso/MFa");
+		Response response = postAPIRequestDB.State(practiceid, "/sso/MFa");
 		apv.responseCodeValidation(response, 400);
 		apv.responseTimeValidation(response);
 
@@ -849,7 +853,7 @@ public class PSS2DBAdapterModulatorTests extends BaseTestNG {
 
 		logStep("Verifying the response");
 
-		Response response = postAPIRequestDB.speciality(practiceId, ("/speciality"));
+		Response response = postAPIRequestDB.speciality(practiceid, ("/speciality"));
 		apv.responseCodeValidation(response, 200);
 		apv.responseTimeValidation(response);
 		apv.responseKeyValidationJson(response, "id");
@@ -863,7 +867,7 @@ public class PSS2DBAdapterModulatorTests extends BaseTestNG {
 
 		logStep("Verifying the response");
 
-		Response response = postAPIRequestDB.speciality(practiceId, ("/specialityaa"));
+		Response response = postAPIRequestDB.speciality(practiceid, ("/specialityaa"));
 		apv.responseCodeValidation(response, 404);
 		apv.responseTimeValidation(response);
 	}
@@ -873,7 +877,7 @@ public class PSS2DBAdapterModulatorTests extends BaseTestNG {
 
 		logStep("Verifying the response");
 		String id = propertyData.getProperty("speciality.id");
-		Response response = postAPIRequestDB.State(practiceId, ("/speciality/" + id));
+		Response response = postAPIRequestDB.State(practiceid, ("/speciality/" + id));
 		apv.responseCodeValidation(response, 200);
 		apv.responseTimeValidation(response);
 		apv.responseKeyValidationJson(response, "id");
@@ -885,7 +889,7 @@ public class PSS2DBAdapterModulatorTests extends BaseTestNG {
 
 		logStep("Verifying the response");
 		String id = "20360411";
-		Response response = postAPIRequestDB.specilityById(practiceId, ("/speciality/" + id));
+		Response response = postAPIRequestDB.specilityById(practiceid, ("/speciality/" + id));
 		apv.responseCodeValidation(response, 400);
 		apv.responseTimeValidation(response);
 		JsonPath js = new JsonPath(response.asString());
@@ -898,7 +902,7 @@ public class PSS2DBAdapterModulatorTests extends BaseTestNG {
 	public void testSpecialityByIdandLanguageGET() throws NullPointerException, Exception {
 
 		logStep("Verifying the response");
-		Response response = postAPIRequestDB.specilityByIdLanguage(practiceId, ("/specialties"));
+		Response response = postAPIRequestDB.specilityByIdLanguage(practiceid, ("/specialties"));
 		apv.responseCodeValidation(response, 200);
 		apv.responseTimeValidation(response);
 		apv.responseKeyValidationJson(response, "id");
@@ -909,7 +913,7 @@ public class PSS2DBAdapterModulatorTests extends BaseTestNG {
 	public void testSpecialityByIdandLanguageInvalidPathGET() throws NullPointerException, Exception {
 
 		logStep("Verifying the response");
-		Response response = postAPIRequestDB.specilityByIdLanguage(practiceId, ("/specialtiesa"));
+		Response response = postAPIRequestDB.specilityByIdLanguage(practiceid, ("/specialtiesa"));
 		apv.responseCodeValidation(response, 404);
 		apv.responseTimeValidation(response);
 
@@ -919,7 +923,7 @@ public class PSS2DBAdapterModulatorTests extends BaseTestNG {
 	public void testRuleGET() throws NullPointerException, Exception {
 
 		logStep("Verifying the response");
-		Response response = postAPIRequestDB.ruleAll(practiceId, ("/configurations/rules"));
+		Response response = postAPIRequestDB.ruleAll(practiceid, ("/configurations/rules"));
 		apv.responseCodeValidation(response, 200);
 		apv.responseTimeValidation(response);
 		apv.responseKeyValidationJson(response, "id");
@@ -932,7 +936,7 @@ public class PSS2DBAdapterModulatorTests extends BaseTestNG {
 	public void testRuleInvalidPathGET() throws NullPointerException, Exception {
 
 		logStep("Verifying the response");
-		Response response = postAPIRequestDB.ruleAll(practiceId, ("/configurations/rulesaa"));
+		Response response = postAPIRequestDB.ruleAll(practiceid, ("/configurations/rulesaa"));
 		apv.responseCodeValidation(response, 404);
 		apv.responseTimeValidation(response);
 
@@ -965,7 +969,7 @@ public class PSS2DBAdapterModulatorTests extends BaseTestNG {
 	public void testresellerPracticeGET() throws NullPointerException, Exception {
 
 		logStep("Verifying the response");
-		Response response = postAPIRequestDB.resellerPractice(practiceId, "/reseller");
+		Response response = postAPIRequestDB.resellerPractice(practiceid, "/reseller");
 		apv.responseCodeValidation(response, 200);
 		apv.responseTimeValidation(response);
 		apv.responseKeyValidationJson(response, "id");
@@ -976,7 +980,7 @@ public class PSS2DBAdapterModulatorTests extends BaseTestNG {
 	public void testresellerPracticeInvalidPathGET() throws NullPointerException, Exception {
 
 		logStep("Verifying the response");
-		Response response = postAPIRequestDB.resellerPractice(practiceId, "/reselleraa");
+		Response response = postAPIRequestDB.resellerPractice(practiceid, "/reselleraa");
 		apv.responseCodeValidation(response, 404);
 		apv.responseTimeValidation(response);
 
@@ -986,7 +990,7 @@ public class PSS2DBAdapterModulatorTests extends BaseTestNG {
 	public void testresellerPracticeByLanguageGET() throws NullPointerException, Exception {
 
 		logStep("Verifying the response");
-		Response response = postAPIRequestDB.resellerByLanguage(practiceId, "/resellerbylanguage");
+		Response response = postAPIRequestDB.resellerByLanguage(practiceid, "/resellerbylanguage");
 		apv.responseCodeValidation(response, 200);
 		apv.responseTimeValidation(response);
 		apv.responseKeyValidationJson(response, "id");
@@ -997,7 +1001,7 @@ public class PSS2DBAdapterModulatorTests extends BaseTestNG {
 	public void testresellerPracticeByLanguageInvalidPathGET() throws NullPointerException, Exception {
 
 		logStep("Verifying the response");
-		Response response = postAPIRequestDB.resellerByLanguage(practiceId, "/resellerbylanguageaa");
+		Response response = postAPIRequestDB.resellerByLanguage(practiceid, "/resellerbylanguageaa");
 		apv.responseCodeValidation(response, 404);
 		apv.responseTimeValidation(response);
 
@@ -1007,7 +1011,7 @@ public class PSS2DBAdapterModulatorTests extends BaseTestNG {
 	public void testresellerPracticeByLanguageForUIGET() throws NullPointerException, Exception {
 
 		logStep("Verifying the response");
-		Response response = postAPIRequestDB.resellerByLanguageByUI(practiceId, "/resellerbylanguageforui");
+		Response response = postAPIRequestDB.resellerByLanguageByUI(practiceid, "/resellerbylanguageforui");
 		apv.responseCodeValidation(response, 200);
 		apv.responseTimeValidation(response);
 		apv.responseKeyValidationJson(response, "id");
@@ -1018,7 +1022,7 @@ public class PSS2DBAdapterModulatorTests extends BaseTestNG {
 	public void testresellerPracticeByLanguageForUIInvalidPathGET() throws NullPointerException, Exception {
 
 		logStep("Verifying the response");
-		Response response = postAPIRequestDB.resellerByLanguageByUI(practiceId, "/resellerbylanguageforuiaa");
+		Response response = postAPIRequestDB.resellerByLanguageByUI(practiceid, "/resellerbylanguageforuiaa");
 		apv.responseCodeValidation(response, 404);
 		apv.responseTimeValidation(response);
 
@@ -1074,7 +1078,7 @@ public class PSS2DBAdapterModulatorTests extends BaseTestNG {
 	public void testPracticeInfoGET() throws NullPointerException, Exception {
 
 		logStep("Verifying the response");
-		Response response = postAPIRequestDB.practiceInfo(practiceId, "/practiceinfo");
+		Response response = postAPIRequestDB.practiceInfo(practiceid, "/practiceinfo");
 		apv.responseCodeValidation(response, 200);
 		apv.responseTimeValidation(response);
 		apv.responseKeyValidationJson(response, "id");
@@ -1087,7 +1091,7 @@ public class PSS2DBAdapterModulatorTests extends BaseTestNG {
 	public void testPracticeInfoInvalidGET() throws NullPointerException, Exception {
 
 		logStep("Verifying the response");
-		Response response = postAPIRequestDB.practiceInfo(practiceId, "/practiceinfoaa");
+		Response response = postAPIRequestDB.practiceInfo(practiceid, "/practiceinfoaa");
 		apv.responseCodeValidation(response, 404);
 		apv.responseTimeValidation(response);
 	}
@@ -1096,7 +1100,7 @@ public class PSS2DBAdapterModulatorTests extends BaseTestNG {
 	public void testPracticeDetailsGET() throws NullPointerException, Exception {
 
 		logStep("Verifying the response");
-		Response response = postAPIRequestDB.practiceDetails(practiceId, "/practice");
+		Response response = postAPIRequestDB.practiceDetails(practiceid, "/practice");
 		apv.responseCodeValidation(response, 200);
 		apv.responseTimeValidation(response);
 		apv.responseKeyValidationJson(response, "id");
@@ -1109,7 +1113,7 @@ public class PSS2DBAdapterModulatorTests extends BaseTestNG {
 	public void testPracticeDetailsInvalidPathGET() throws NullPointerException, Exception {
 
 		logStep("Verifying the response");
-		Response response = postAPIRequestDB.practiceDetails(practiceId, "/practiceaa");
+		Response response = postAPIRequestDB.practiceDetails(practiceid, "/practiceaa");
 		apv.responseCodeValidation(response, 404);
 		apv.responseTimeValidation(response);
 
@@ -1119,7 +1123,7 @@ public class PSS2DBAdapterModulatorTests extends BaseTestNG {
 	public void testPatientMatchGET() throws NullPointerException, Exception {
 
 		logStep("Verifying the response");
-		Response response = postAPIRequestDB.patientMatch(practiceId, "/patientmatch/LG_LOG");
+		Response response = postAPIRequestDB.patientMatch(practiceid, "/patientmatch/LG_LOG");
 		apv.responseCodeValidation(response, 200);
 		apv.responseTimeValidation(response);
 		apv.responseKeyValidationJson(response, "id");
@@ -1131,7 +1135,7 @@ public class PSS2DBAdapterModulatorTests extends BaseTestNG {
 	public void testPatientMatchInvalidPathGET() throws NullPointerException, Exception {
 
 		logStep("Verifying the response");
-		Response response = postAPIRequestDB.patientMatch(practiceId, "/patientmatchaa/LG_LOG");
+		Response response = postAPIRequestDB.patientMatch(practiceid, "/patientmatchaa/LG_LOG");
 		apv.responseCodeValidation(response, 404);
 		apv.responseTimeValidation(response);
 
@@ -1141,7 +1145,7 @@ public class PSS2DBAdapterModulatorTests extends BaseTestNG {
 	public void testPatientMatchMasterGET() throws NullPointerException, Exception {
 
 		logStep("Verifying the response");
-		Response response = postAPIRequestDB.patientMatchMaster(practiceId, "/patientmatchmaster/LG_LOG");
+		Response response = postAPIRequestDB.patientMatchMaster(practiceid, "/patientmatchmaster/LG_LOG");
 		apv.responseCodeValidation(response, 200);
 		apv.responseTimeValidation(response);
 		apv.responseKeyValidationJson(response, "id");
@@ -1153,7 +1157,7 @@ public class PSS2DBAdapterModulatorTests extends BaseTestNG {
 	public void testPatientMatchMasterInvalidPathGET() throws NullPointerException, Exception {
 
 		logStep("Verifying the response");
-		Response response = postAPIRequestDB.patientMatchMaster(practiceId, "/patientmatchmasteraa/LG_LOG");
+		Response response = postAPIRequestDB.patientMatchMaster(practiceid, "/patientmatchmasteraa/LG_LOG");
 		apv.responseCodeValidation(response, 404);
 		apv.responseTimeValidation(response);
 	}
@@ -1162,7 +1166,7 @@ public class PSS2DBAdapterModulatorTests extends BaseTestNG {
 	public void testPatientInfoGET() throws NullPointerException, Exception {
 
 		logStep("Verifying the response");
-		Response response = postAPIRequestDB.patientInfo(practiceId, "/patientinfo/LG_LOG");
+		Response response = postAPIRequestDB.patientInfo(practiceid, "/patientinfo/LG_LOG");
 		apv.responseCodeValidation(response, 200);
 		apv.responseTimeValidation(response);
 		apv.responseKeyValidationJson(response, "id");
@@ -1174,7 +1178,7 @@ public class PSS2DBAdapterModulatorTests extends BaseTestNG {
 	public void testPatientInfoInvalidPathGET() throws NullPointerException, Exception {
 
 		logStep("Verifying the response");
-		Response response = postAPIRequestDB.patientInfo(practiceId, "/patientmatchaa/LG_LOG");
+		Response response = postAPIRequestDB.patientInfo(practiceid, "/patientmatchaa/LG_LOG");
 		apv.responseCodeValidation(response, 404);
 		apv.responseTimeValidation(response);
 
@@ -1184,7 +1188,7 @@ public class PSS2DBAdapterModulatorTests extends BaseTestNG {
 	public void testPatientInfoMasterGET() throws NullPointerException, Exception {
 
 		logStep("Verifying the response");
-		Response response = postAPIRequestDB.patientInfo(practiceId, "/patientinfomaster/LG_LOG");
+		Response response = postAPIRequestDB.patientInfo(practiceid, "/patientinfomaster/LG_LOG");
 		apv.responseCodeValidation(response, 200);
 		apv.responseTimeValidation(response);
 		apv.responseKeyValidationJson(response, "id");
@@ -1196,7 +1200,7 @@ public class PSS2DBAdapterModulatorTests extends BaseTestNG {
 	public void testPatientInfoMasterInvalidPathGET() throws NullPointerException, Exception {
 
 		logStep("Verifying the response");
-		Response response = postAPIRequestDB.patientInfo(practiceId, "/patientinfomasteraa/LG_LOG");
+		Response response = postAPIRequestDB.patientInfo(practiceid, "/patientinfomasteraa/LG_LOG");
 		apv.responseCodeValidation(response, 404);
 		apv.responseTimeValidation(response);
 	}
@@ -1205,7 +1209,7 @@ public class PSS2DBAdapterModulatorTests extends BaseTestNG {
 	public void testPartnerCustomandInfoGET() throws NullPointerException, Exception {
 
 		logStep("Verifying the response");
-		Response response = postAPIRequestDB.partnerCustomandInfo(practiceId, "/partnercustomandinfo/LG_LOG");
+		Response response = postAPIRequestDB.partnerCustomandInfo(practiceid, "/partnercustomandinfo/LG_LOG");
 		apv.responseCodeValidation(response, 200);
 		apv.responseTimeValidation(response);
 		apv.responseKeyValidationJson(response, "partnerCustomId");
@@ -1217,7 +1221,7 @@ public class PSS2DBAdapterModulatorTests extends BaseTestNG {
 	public void testPartnerCustomandInfoInvalidPathGET() throws NullPointerException, Exception {
 
 		logStep("Verifying the response");
-		Response response = postAPIRequestDB.partnerCustomandInfo(practiceId, "/partnercustomandinfoaa/LG_LOG");
+		Response response = postAPIRequestDB.partnerCustomandInfo(practiceid, "/partnercustomandinfoaa/LG_LOG");
 		apv.responseCodeValidation(response, 404);
 		apv.responseTimeValidation(response);
 
@@ -1227,7 +1231,7 @@ public class PSS2DBAdapterModulatorTests extends BaseTestNG {
 	public void testPartnerCustMetaDataGET() throws NullPointerException, Exception {
 
 		logStep("Verifying the response");
-		Response response = postAPIRequestDB.partnerCustMetaData(practiceId, "/partnercustommetadata", "ZIP");
+		Response response = postAPIRequestDB.partnerCustMetaData(practiceid, "/partnercustommetadata", "ZIP");
 		apv.responseCodeValidation(response, 200);
 		apv.responseTimeValidation(response);
 
@@ -1237,7 +1241,7 @@ public class PSS2DBAdapterModulatorTests extends BaseTestNG {
 	public void testPartnerCustMetaDataInvalidPathGET() throws NullPointerException, Exception {
 
 		logStep("Verifying the response");
-		Response response = postAPIRequestDB.partnerCustMetaData(practiceId, "/partnercustommetadataaa", "ZIP");
+		Response response = postAPIRequestDB.partnerCustMetaData(practiceid, "/partnercustommetadataaa", "ZIP");
 		apv.responseCodeValidation(response, 404);
 		apv.responseTimeValidation(response);
 
@@ -1247,7 +1251,7 @@ public class PSS2DBAdapterModulatorTests extends BaseTestNG {
 	public void testPartnerMetaData() throws NullPointerException, Exception {
 
 		logStep("Verifying the response");
-		Response response = postAPIRequestDB.partnerMetaData(practiceId, "/partnermetadata");
+		Response response = postAPIRequestDB.partnerMetaData(practiceid, "/partnermetadata");
 		apv.responseCodeValidation(response, 200);
 		apv.responseTimeValidation(response);
 		apv.responseKeyValidationJson(response, "id");
@@ -1261,7 +1265,7 @@ public class PSS2DBAdapterModulatorTests extends BaseTestNG {
 	public void testPartnerMetaDataInvalidPathGET() throws NullPointerException, Exception {
 
 		logStep("Verifying the response");
-		Response response = postAPIRequestDB.partnerMetaData(practiceId, "/partnermetadataaa");
+		Response response = postAPIRequestDB.partnerMetaData(practiceid, "/partnermetadataaa");
 		apv.responseCodeValidation(response, 404);
 		apv.responseTimeValidation(response);
 
@@ -1272,7 +1276,7 @@ public class PSS2DBAdapterModulatorTests extends BaseTestNG {
 
 		logStep("Verifying the response");
 		String code = propertyData.getProperty("partnermetadata.code");
-		Response response = postAPIRequestDB.partnerMetaDataByCode(practiceId, "/partnermetadatabycode/" + code);
+		Response response = postAPIRequestDB.partnerMetaDataByCode(practiceid, "/partnermetadatabycode/" + code);
 		apv.responseCodeValidation(response, 200);
 		apv.responseTimeValidation(response);
 		apv.responseKeyValidationJson(response, "id");
@@ -1287,7 +1291,7 @@ public class PSS2DBAdapterModulatorTests extends BaseTestNG {
 
 		logStep("Verifying the response");
 		String code = propertyData.getProperty("partnermetadata.code");
-		Response response = postAPIRequestDB.partnerMetaDataByCode(practiceId, "/partnermetadatabycodeaa/" + code);
+		Response response = postAPIRequestDB.partnerMetaDataByCode(practiceid, "/partnermetadatabycodeaa/" + code);
 		apv.responseCodeValidation(response, 404);
 		apv.responseTimeValidation(response);
 
@@ -1297,7 +1301,7 @@ public class PSS2DBAdapterModulatorTests extends BaseTestNG {
 	public void testPartnerConfig() throws NullPointerException, Exception {
 
 		logStep("Verifying the response");
-		Response response = postAPIRequestDB.partnerConfig(practiceId, "/partner");
+		Response response = postAPIRequestDB.partnerConfig(practiceid, "/partner");
 		apv.responseCodeValidation(response, 200);
 		apv.responseTimeValidation(response);
 		apv.responseKeyValidationJson(response, "id");
@@ -1311,7 +1315,7 @@ public class PSS2DBAdapterModulatorTests extends BaseTestNG {
 	public void testPartnerConfigInvalidPathGET() throws NullPointerException, Exception {
 
 		logStep("Verifying the response");
-		Response response = postAPIRequestDB.partnerConfig(practiceId, "/partneraa");
+		Response response = postAPIRequestDB.partnerConfig(practiceid, "/partneraa");
 		apv.responseCodeValidation(response, 404);
 		apv.responseTimeValidation(response);
 
@@ -1321,7 +1325,7 @@ public class PSS2DBAdapterModulatorTests extends BaseTestNG {
 	public void testPartnerDetailsConfig() throws NullPointerException, Exception {
 
 		logStep("Verifying the response");
-		Response response = postAPIRequestDB.partnerDetails(practiceId, "/partnerdetails");
+		Response response = postAPIRequestDB.partnerDetails(practiceid, "/partnerdetails");
 		apv.responseCodeValidation(response, 200);
 		apv.responseTimeValidation(response);
 		apv.responseKeyValidationJson(response, "forceCareTeamDuration");
@@ -1335,7 +1339,7 @@ public class PSS2DBAdapterModulatorTests extends BaseTestNG {
 	public void testPartnerConfigDetailsInvalidPathGET() throws NullPointerException, Exception {
 
 		logStep("Verifying the response");
-		Response response = postAPIRequestDB.partnerDetails(practiceId, "/partnerdetailsaa");
+		Response response = postAPIRequestDB.partnerDetails(practiceid, "/partnerdetailsaa");
 		apv.responseCodeValidation(response, 404);
 		apv.responseTimeValidation(response);
 
@@ -1390,7 +1394,7 @@ public class PSS2DBAdapterModulatorTests extends BaseTestNG {
 	public void testloginlessConfig() throws NullPointerException, Exception {
 
 		logStep("Verifying the response");
-		Response response = postAPIRequestDB.loginless(practiceId, "/loginless");
+		Response response = postAPIRequestDB.loginless(practiceid, "/loginless");
 		apv.responseCodeValidation(response, 200);
 		apv.responseTimeValidation(response);
 		apv.responseKeyValidationJson(response, "id");
@@ -1402,7 +1406,7 @@ public class PSS2DBAdapterModulatorTests extends BaseTestNG {
 	public void testloginlessInvalidPathGET() throws NullPointerException, Exception {
 
 		logStep("Verifying the response");
-		Response response = postAPIRequestDB.loginless(practiceId, "/loginlessaa");
+		Response response = postAPIRequestDB.loginless(practiceid, "/loginlessaa");
 		apv.responseCodeValidation(response, 404);
 		apv.responseTimeValidation(response);
 
@@ -1436,7 +1440,7 @@ public class PSS2DBAdapterModulatorTests extends BaseTestNG {
 	public void testlockoutConfig() throws NullPointerException, Exception {
 
 		logStep("Verifying the response");
-		Response response = postAPIRequestDB.lockout(practiceId,"/lockout");
+		Response response = postAPIRequestDB.lockout(practiceid,"/lockout");
 		apv.responseCodeValidation(response, 200);
 		apv.responseTimeValidation(response);
 		apv.responseKeyValidationJson(response, "id");
@@ -1448,7 +1452,7 @@ public class PSS2DBAdapterModulatorTests extends BaseTestNG {
 	public void testlockoutInvalidPathGET() throws NullPointerException, Exception {
 
 		logStep("Verifying the response");
-		Response response = postAPIRequestDB.lockout(practiceId,"/lockoutaa");
+		Response response = postAPIRequestDB.lockout(practiceid,"/lockoutaa");
 		apv.responseCodeValidation(response, 404);
 		apv.responseTimeValidation(response);
 	}
@@ -1457,7 +1461,7 @@ public class PSS2DBAdapterModulatorTests extends BaseTestNG {
 	public void testlocation() throws NullPointerException, Exception {
 
 		logStep("Verifying the response");
-		Response response = postAPIRequestDB.location(practiceId,"/location");
+		Response response = postAPIRequestDB.location(practiceid,"/location");
 		apv.responseCodeValidation(response, 200);
 		apv.responseTimeValidation(response);
 		apv.responseKeyValidationJson(response, "id");
@@ -1470,7 +1474,7 @@ public class PSS2DBAdapterModulatorTests extends BaseTestNG {
 	public void testlocationInvalidPathGET() throws NullPointerException, Exception {
 
 		logStep("Verifying the response");
-		Response response = postAPIRequestDB.location(practiceId,"/location");
+		Response response = postAPIRequestDB.location(practiceid,"/location");
 		apv.responseCodeValidation(response, 404);
 		apv.responseTimeValidation(response);
 	}
@@ -1480,7 +1484,7 @@ public class PSS2DBAdapterModulatorTests extends BaseTestNG {
 
 		logStep("Verifying the response");
 		String locationId=propertyData.getProperty("location.id.db");
-		Response response = postAPIRequestDB.locationById(practiceId,"/location/"+locationId);
+		Response response = postAPIRequestDB.locationById(practiceid,"/location/"+locationId);
 		apv.responseCodeValidation(response, 200);
 		apv.responseTimeValidation(response);
 		apv.responseKeyValidationJson(response, "id");
@@ -1494,7 +1498,7 @@ public class PSS2DBAdapterModulatorTests extends BaseTestNG {
 
 		logStep("Verifying the response");
 		String InvalidlocationId="2063511";
-		Response response = postAPIRequestDB.locationById(practiceId,"/location/"+InvalidlocationId);
+		Response response = postAPIRequestDB.locationById(practiceid,"/location/"+InvalidlocationId);
 		apv.responseCodeValidation(response, 400);
 		apv.responseTimeValidation(response);
 		JsonPath js = new JsonPath(response.asString());
@@ -1508,7 +1512,7 @@ public class PSS2DBAdapterModulatorTests extends BaseTestNG {
 
 		logStep("Verifying the response");
 		String AppId=propertyData.getProperty("location.appid.db");
-		Response response = postAPIRequestDB.locationByAppId(practiceId,"/location/appointmenttype/"+AppId);
+		Response response = postAPIRequestDB.locationByAppId(practiceid,"/location/appointmenttype/"+AppId);
 		apv.responseCodeValidation(response, 200);
 		apv.responseTimeValidation(response);
 		apv.responseKeyValidationJson(response, "id");
@@ -1522,7 +1526,7 @@ public class PSS2DBAdapterModulatorTests extends BaseTestNG {
 
 		logStep("Verifying the response");
 		String AppId="2063511";
-		Response response = postAPIRequestDB.locationByAppId(practiceId,"/location/appointmenttype/"+AppId);
+		Response response = postAPIRequestDB.locationByAppId(practiceid,"/location/appointmenttype/"+AppId);
 		apv.responseCodeValidation(response, 400);
 		apv.responseTimeValidation(response);
 		JsonPath js = new JsonPath(response.asString());
@@ -1535,7 +1539,7 @@ public class PSS2DBAdapterModulatorTests extends BaseTestNG {
 
 		logStep("Verifying the response");
 		String AppId=propertyData.getProperty("location.appid.db");
-		Response response = postAPIRequestDB.locationByAppointmentId(practiceId,"/location/apptype/"+AppId);
+		Response response = postAPIRequestDB.locationByAppointmentId(practiceid,"/location/apptype/"+AppId);
 		apv.responseCodeValidation(response, 200);
 		apv.responseTimeValidation(response);
 		apv.responseKeyValidationJson(response, "id");
@@ -1549,7 +1553,7 @@ public class PSS2DBAdapterModulatorTests extends BaseTestNG {
 
 		logStep("Verifying the response");
 		String AppId="2063511";
-		Response response = postAPIRequestDB.locationByAppointmentId(practiceId,"/location/apptype/"+AppId);
+		Response response = postAPIRequestDB.locationByAppointmentId(practiceid,"/location/apptype/"+AppId);
 		apv.responseCodeValidation(response, 400);
 		apv.responseTimeValidation(response);
 		JsonPath js = new JsonPath(response.asString());
@@ -1562,7 +1566,7 @@ public class PSS2DBAdapterModulatorTests extends BaseTestNG {
 
 		logStep("Verifying the response");
 		String bookId=propertyData.getProperty("location.bookid.db");
-		Response response = postAPIRequestDB.locationBook(practiceId,"/location/book/"+bookId);
+		Response response = postAPIRequestDB.locationBook(practiceid,"/location/book/"+bookId);
 		apv.responseCodeValidation(response, 200);
 		apv.responseTimeValidation(response);
 		apv.responseKeyValidationJson(response, "id");
@@ -1576,7 +1580,7 @@ public class PSS2DBAdapterModulatorTests extends BaseTestNG {
 
 		logStep("Verifying the response");
 		String invalidbooId="2063511";
-		Response response = postAPIRequestDB.locationBook(practiceId,"/location/book/"+invalidbooId);
+		Response response = postAPIRequestDB.locationBook(practiceid,"/location/book/"+invalidbooId);
 		apv.responseCodeValidation(response, 400);
 		apv.responseTimeValidation(response);
 		JsonPath js = new JsonPath(response.asString());
@@ -1590,7 +1594,7 @@ public class PSS2DBAdapterModulatorTests extends BaseTestNG {
 		logStep("Verifying the response");
 		String bookId=propertyData.getProperty("location.bookid.db");
 		String AppId=propertyData.getProperty("location.appid.db");
-		Response response = postAPIRequestDB.locationBookAppType(practiceId,"/location/book/"+bookId+"/apptype/"+AppId);
+		Response response = postAPIRequestDB.locationBookAppType(practiceid,"/location/book/"+bookId+"/apptype/"+AppId);
 		apv.responseCodeValidation(response, 200);
 		apv.responseTimeValidation(response);
 		apv.responseKeyValidationJson(response, "id");
@@ -1605,7 +1609,7 @@ public class PSS2DBAdapterModulatorTests extends BaseTestNG {
 		logStep("Verifying the response");
 		String invalidbooId="2063511";
 		String AppId=propertyData.getProperty("location.appid.db");
-		Response response = postAPIRequestDB.locationBookAppType(practiceId,"/location/book/"+invalidbooId+"/apptype/"+AppId);
+		Response response = postAPIRequestDB.locationBookAppType(practiceid,"/location/book/"+invalidbooId+"/apptype/"+AppId);
 		apv.responseCodeValidation(response, 400);
 		apv.responseTimeValidation(response);
 		JsonPath js = new JsonPath(response.asString());
@@ -1618,7 +1622,7 @@ public class PSS2DBAdapterModulatorTests extends BaseTestNG {
 
 		logStep("Verifying the response");
 		String specialtyId=propertyData.getProperty("location.specialityid.db");
-		Response response = postAPIRequestDB.locationSpeciality(practiceId,"/location/specialty/"+specialtyId);
+		Response response = postAPIRequestDB.locationSpeciality(practiceid,"/location/specialty/"+specialtyId);
 		apv.responseCodeValidation(response, 200);
 		apv.responseTimeValidation(response);
 		apv.responseKeyValidationJson(response, "id");
@@ -1632,7 +1636,7 @@ public class PSS2DBAdapterModulatorTests extends BaseTestNG {
 
 		logStep("Verifying the response");
 		String invalidspecialtyId="2063511";
-		Response response = postAPIRequestDB.locationSpeciality(practiceId,"/location/specialty/"+invalidspecialtyId);
+		Response response = postAPIRequestDB.locationSpeciality(practiceid,"/location/specialty/"+invalidspecialtyId);
 		apv.responseCodeValidation(response, 400);
 		apv.responseTimeValidation(response);
 		JsonPath js = new JsonPath(response.asString());
@@ -1647,7 +1651,7 @@ public class PSS2DBAdapterModulatorTests extends BaseTestNG {
 		logStep("Verifying the response");
 		String specialtyId=propertyData.getProperty("location.specialityid.db");
 		String AppId=propertyData.getProperty("location.appid.db");
-		Response response = postAPIRequestDB.locationSpecialityAppType(practiceId,"/location/specialty/"+specialtyId+"/apptype/"+AppId);
+		Response response = postAPIRequestDB.locationSpecialityAppType(practiceid,"/location/specialty/"+specialtyId+"/apptype/"+AppId);
 		apv.responseCodeValidation(response, 200);
 		apv.responseTimeValidation(response);
 		apv.responseKeyValidationJson(response, "id");
@@ -1662,7 +1666,7 @@ public class PSS2DBAdapterModulatorTests extends BaseTestNG {
 		logStep("Verifying the response");
 		String invalidSpecialityId="2063511";
 		String AppId=propertyData.getProperty("location.appid.db");
-		Response response = postAPIRequestDB.locationSpecialityAppType(practiceId,"/location/specialty/"+invalidSpecialityId+"/apptype/"+AppId);
+		Response response = postAPIRequestDB.locationSpecialityAppType(practiceid,"/location/specialty/"+invalidSpecialityId+"/apptype/"+AppId);
 		apv.responseCodeValidation(response, 400);
 		apv.responseTimeValidation(response);
 		JsonPath js = new JsonPath(response.asString());
@@ -1676,7 +1680,7 @@ public class PSS2DBAdapterModulatorTests extends BaseTestNG {
 		logStep("Verifying the response");
 		String bookId=propertyData.getProperty("location.bookid.db");
 		String specialtyId=propertyData.getProperty("location.specialityid.db");
-		Response response = postAPIRequestDB.locationSpecialityBook(practiceId,"/location/specialty/"+specialtyId+"/book/"+bookId);
+		Response response = postAPIRequestDB.locationSpecialityBook(practiceid,"/location/specialty/"+specialtyId+"/book/"+bookId);
 		apv.responseCodeValidation(response, 200);
 		apv.responseTimeValidation(response);
 		apv.responseKeyValidationJson(response, "id");
@@ -1691,7 +1695,7 @@ public class PSS2DBAdapterModulatorTests extends BaseTestNG {
 		logStep("Verifying the response");
 		String invalidSpecialityId="2063511";
 		String AppId=propertyData.getProperty("location.appid.db");
-		Response response = postAPIRequestDB.locationSpecialityBook(practiceId,"/location/specialty/"+invalidSpecialityId+"/book/"+AppId);
+		Response response = postAPIRequestDB.locationSpecialityBook(practiceid,"/location/specialty/"+invalidSpecialityId+"/book/"+AppId);
 		apv.responseCodeValidation(response, 400);
 		apv.responseTimeValidation(response);
 		JsonPath js = new JsonPath(response.asString());
@@ -1704,7 +1708,7 @@ public class PSS2DBAdapterModulatorTests extends BaseTestNG {
 
 		logStep("Verifying the response");
 		String locationId=propertyData.getProperty("location.id.db");
-		Response response = postAPIRequestDB.locationLinkbyid(practiceId,"/locationlinkbyid/"+locationId);
+		Response response = postAPIRequestDB.locationLinkbyid(practiceid,"/locationlinkbyid/"+locationId);
 		apv.responseCodeValidation(response, 200);
 		apv.responseTimeValidation(response);
 		apv.responseKeyValidationJson(response, "id");
@@ -1718,7 +1722,7 @@ public class PSS2DBAdapterModulatorTests extends BaseTestNG {
 
 		logStep("Verifying the response");
 		String invalidLocationId="2063511";
-		Response response = postAPIRequestDB.locationLinkbyid(practiceId,"/locationlinkbyid/"+invalidLocationId);
+		Response response = postAPIRequestDB.locationLinkbyid(practiceid,"/locationlinkbyid/"+invalidLocationId);
 		apv.responseCodeValidation(response, 400);
 		apv.responseTimeValidation(response);
 		JsonPath js = new JsonPath(response.asString());
@@ -1730,7 +1734,7 @@ public class PSS2DBAdapterModulatorTests extends BaseTestNG {
 	public void testlocationsGet() throws NullPointerException, Exception {
 
 		logStep("Verifying the response");
-		Response response = postAPIRequestDB.locations(practiceId,"/locations");
+		Response response = postAPIRequestDB.locations(practiceid,"/locations");
 		apv.responseCodeValidation(response, 200);
 		apv.responseTimeValidation(response);
 		apv.responseKeyValidationJson(response, "id");
@@ -1743,7 +1747,7 @@ public class PSS2DBAdapterModulatorTests extends BaseTestNG {
 	public void testlocationsInvalidPathGET() throws NullPointerException, Exception {
 
 		logStep("Verifying the response");
-		Response response = postAPIRequestDB.locations(practiceId,"/locationsaa");
+		Response response = postAPIRequestDB.locations(practiceid,"/locationsaa");
 		apv.responseCodeValidation(response, 404);
 		apv.responseTimeValidation(response);
 	
@@ -1754,7 +1758,7 @@ public class PSS2DBAdapterModulatorTests extends BaseTestNG {
 	public void testInsuranceCarrierGet() throws NullPointerException, Exception {
 
 		logStep("Verifying the response");
-		Response response = postAPIRequestDB.insuranceCarrrier(practiceId,"/insurancecarrier");
+		Response response = postAPIRequestDB.insuranceCarrrier(practiceid,"/insurancecarrier");
 		apv.responseCodeValidation(response, 200);
 		apv.responseTimeValidation(response);
 		apv.responseKeyValidationJson(response, "id");
@@ -1766,7 +1770,7 @@ public class PSS2DBAdapterModulatorTests extends BaseTestNG {
 	public void testinsuranceCarrierInvalidPathGET() throws NullPointerException, Exception {
 
 		logStep("Verifying the response");
-		Response response = postAPIRequestDB.insuranceCarrrier(practiceId,"/insurancecarrieraa");
+		Response response = postAPIRequestDB.insuranceCarrrier(practiceid,"/insurancecarrieraa");
 		apv.responseCodeValidation(response, 404);
 		apv.responseTimeValidation(response);
 	
@@ -1777,7 +1781,7 @@ public class PSS2DBAdapterModulatorTests extends BaseTestNG {
 
 		logStep("Verifying the response");
 		String insuranceId=propertyData.getProperty("insurance.id.db");
-        Response response = postAPIRequestDB.insuranceCarrrierById(practiceId,"/insurancecarrier/"+insuranceId);
+        Response response = postAPIRequestDB.insuranceCarrrierById(practiceid,"/insurancecarrier/"+insuranceId);
 		apv.responseCodeValidation(response, 200);
 		apv.responseTimeValidation(response);
 		apv.responseKeyValidationJson(response, "id");
@@ -1790,7 +1794,7 @@ public class PSS2DBAdapterModulatorTests extends BaseTestNG {
 
 		logStep("Verifying the response");
 		String insuranceId=propertyData.getProperty("insurance.id.db");
-		Response response = postAPIRequestDB.insuranceCarrrierById(practiceId,"/insurancecarrieraa"+insuranceId);
+		Response response = postAPIRequestDB.insuranceCarrrierById(practiceid,"/insurancecarrieraa"+insuranceId);
 		apv.responseCodeValidation(response, 404);
 		apv.responseTimeValidation(response);
 	
@@ -1800,7 +1804,7 @@ public class PSS2DBAdapterModulatorTests extends BaseTestNG {
 
 		logStep("Verifying the response");
 		String flowType=propertyData.getProperty("flowtype.db");
-        Response response = postAPIRequestDB.flowIdentity(practiceId,"/flowidentity", flowType);
+        Response response = postAPIRequestDB.flowIdentity(practiceid,"/flowidentity", flowType);
 		apv.responseCodeValidation(response, 200);
 		apv.responseTimeValidation(response);
 		apv.responseKeyValidationJson(response, "id");
@@ -1812,7 +1816,7 @@ public class PSS2DBAdapterModulatorTests extends BaseTestNG {
 
 		logStep("Verifying the response");
 		String flowType=propertyData.getProperty("flowtype.db");
-		Response response = postAPIRequestDB.flowIdentity(practiceId,"/flowidentityaa", flowType);
+		Response response = postAPIRequestDB.flowIdentity(practiceid,"/flowidentityaa", flowType);
 		apv.responseCodeValidation(response, 404);
 		apv.responseTimeValidation(response);
 	
@@ -1845,7 +1849,7 @@ public class PSS2DBAdapterModulatorTests extends BaseTestNG {
 
 		logStep("Verifying the response");
 		String AppId=propertyData.getProperty("reschedule.aaptypeid.db");
-        Response response = postAPIRequestDB.rescheduleApp(practiceId,"/reschedule/"+AppId);
+        Response response = postAPIRequestDB.rescheduleApp(practiceid,"/reschedule/"+AppId);
 		apv.responseCodeValidation(response, 200);
 		apv.responseTimeValidation(response);
 		apv.responseKeyValidationJson(response, "id");
@@ -1856,7 +1860,7 @@ public class PSS2DBAdapterModulatorTests extends BaseTestNG {
 
 		logStep("Verifying the response");
 		String AppId=propertyData.getProperty("reschedule.aaptypeid.db");
-		Response response = postAPIRequestDB.rescheduleApp(practiceId,"/rescheduleaa/"+AppId);
+		Response response = postAPIRequestDB.rescheduleApp(practiceid,"/rescheduleaa/"+AppId);
 		apv.responseCodeValidation(response, 404);
 		apv.responseTimeValidation(response);
 	
@@ -1895,7 +1899,7 @@ public class PSS2DBAdapterModulatorTests extends BaseTestNG {
 
 		logStep("Verifying the response");
 		String AppId=propertyData.getProperty("location.appid.db");
-        Response response = postAPIRequestDB.rescheduleApp(practiceId,"/prerequisiteappointmenttypes/"+AppId);
+        Response response = postAPIRequestDB.rescheduleApp(practiceid,"/prerequisiteappointmenttypes/"+AppId);
 		apv.responseCodeValidation(response, 200);
 		apv.responseTimeValidation(response);
 		apv.responseKeyValidationJson(response, "id");
@@ -1911,7 +1915,7 @@ public class PSS2DBAdapterModulatorTests extends BaseTestNG {
 
 		logStep("Verifying the response");
 		String AppId=propertyData.getProperty("location.appid.db");
-		Response response = postAPIRequestDB.rescheduleApp(practiceId,"/prerequisiteappointmenttypesaa/"+AppId);
+		Response response = postAPIRequestDB.rescheduleApp(practiceid,"/prerequisiteappointmenttypesaa/"+AppId);
 		apv.responseCodeValidation(response, 404);
 		apv.responseTimeValidation(response);
 	
@@ -1922,7 +1926,7 @@ public class PSS2DBAdapterModulatorTests extends BaseTestNG {
 
 		logStep("Verifying the response");
 		String invalidAppID="12345";
-		Response response = postAPIRequestDB.rescheduleApp(practiceId,"/prerequisiteappointmenttypes/"+invalidAppID);
+		Response response = postAPIRequestDB.rescheduleApp(practiceid,"/prerequisiteappointmenttypes/"+invalidAppID);
 		apv.responseCodeValidation(response, 400);
 		apv.responseTimeValidation(response);
 		JsonPath js = new JsonPath(response.asString());
@@ -1937,7 +1941,7 @@ public class PSS2DBAdapterModulatorTests extends BaseTestNG {
 
 		logStep("Verifying the response");
 		String flowType=propertyData.getProperty("flowtype.db");
-        Response response = postAPIRequestDB.practiceMetaData(practiceId,"/customdata",flowType);
+        Response response = postAPIRequestDB.practiceMetaData(practiceid,"/customdata",flowType);
 		apv.responseCodeValidation(response, 200);
 		apv.responseTimeValidation(response);
 		apv.responseKeyValidationJson(response, "practicePatientInfo.id");
@@ -1953,7 +1957,7 @@ public class PSS2DBAdapterModulatorTests extends BaseTestNG {
 
 		logStep("Verifying the response");
 		String flowType = propertyData.getProperty("flowtype.db");
-		Response response = postAPIRequestDB.practiceMetaData(practiceId, "/customdataaa/", flowType);
+		Response response = postAPIRequestDB.practiceMetaData(practiceid, "/customdataaa/", flowType);
 		apv.responseCodeValidation(response, 404);
 		apv.responseTimeValidation(response);
 
@@ -1963,7 +1967,7 @@ public class PSS2DBAdapterModulatorTests extends BaseTestNG {
 	public void testPracticeMetaDataAllGet() throws NullPointerException, Exception {
 
 		logStep("Verifying the response");
-        Response response = postAPIRequestDB.practiceMetaDataAll(practiceId,"/practicecustomalldata");
+        Response response = postAPIRequestDB.practiceMetaDataAll(practiceid,"/practicecustomalldata");
 		apv.responseCodeValidation(response, 200);
 		apv.responseTimeValidation(response);
 		
@@ -1973,7 +1977,7 @@ public class PSS2DBAdapterModulatorTests extends BaseTestNG {
 	public void testPracticeMetadataAllInvalidPathGET() throws NullPointerException, Exception {
 
 		logStep("Verifying the response");
-		Response response = postAPIRequestDB.practiceMetaDataAll(practiceId, "/practicecustomalldataaaa");
+		Response response = postAPIRequestDB.practiceMetaDataAll(practiceid, "/practicecustomalldataaaa");
 		apv.responseCodeValidation(response, 404);
 		apv.responseTimeValidation(response);
 
@@ -1984,7 +1988,7 @@ public class PSS2DBAdapterModulatorTests extends BaseTestNG {
 
 		logStep("Verifying the response");
 		String flowType=propertyData.getProperty("flowtype.db");
-        Response response = postAPIRequestDB.practiceMetaDataAll(practiceId,"/practicecustomandinfo/"+flowType);
+        Response response = postAPIRequestDB.practiceMetaDataAll(practiceid,"/practicecustomandinfo/"+flowType);
 		apv.responseCodeValidation(response, 200);
 		apv.responseTimeValidation(response);
 		apv.responseKeyValidationJson(response, "practiceInfoId");
@@ -1997,7 +2001,7 @@ public class PSS2DBAdapterModulatorTests extends BaseTestNG {
 
 		logStep("Verifying the response");
 		String flowType = propertyData.getProperty("flowtype.db");
-		Response response = postAPIRequestDB.practiceMetaDataAll(practiceId, "/practicecustomandinfoaa/"+flowType);
+		Response response = postAPIRequestDB.practiceMetaDataAll(practiceid, "/practicecustomandinfoaa/"+flowType);
 		apv.responseCodeValidation(response, 404);
 		apv.responseTimeValidation(response);
 
@@ -2007,7 +2011,7 @@ public class PSS2DBAdapterModulatorTests extends BaseTestNG {
 	public void testPracticeMetaData1Get() throws NullPointerException, Exception {
 
 		logStep("Verifying the response");
-        Response response = postAPIRequestDB.practiceMetaDataAll(practiceId,"/practicemetdata");
+        Response response = postAPIRequestDB.practiceMetaDataAll(practiceid,"/practicemetdata");
 		apv.responseCodeValidation(response, 200);
 		apv.responseTimeValidation(response);
 		
@@ -2017,10 +2021,108 @@ public class PSS2DBAdapterModulatorTests extends BaseTestNG {
 	public void testPracticeMetaDataInvalidPathGET() throws NullPointerException, Exception {
 
 		logStep("Verifying the response");
-		Response response = postAPIRequestDB.practiceMetaDataAll(practiceId, "/practicemetdataaa");
+		Response response = postAPIRequestDB.practiceMetaDataAll(practiceid, "/practicemetdataaa");
 		apv.responseCodeValidation(response, 404);
 		apv.responseTimeValidation(response);
 
 	}
+	
+	@Test(enabled = true, groups = { "APItest" }, retryAnalyzer = RetryAnalyzer.class)
+	public void testSave_get_del_Book() throws NullPointerException, Exception {
+		
+		String b= payloadDB.createBook();
+
+		logStep("Verifying the response");
+		Response response = postAPIRequestDB.saveBook(practiceid, "/book",b);
+		apv.responseCodeValidation(response, 200);
+		apv.responseTimeValidation(response);
+		
+		JSONArray arr = new JSONArray(response.body().asString());
+
+		int bookid = arr.getJSONObject(0).getInt("id");
+		log("Bookid- "+bookid);
+			
+		Response getResponse =postAPIRequestDB.getBookById(practiceid, bookid) ;
+		
+		apv.responseKeyValidationJson(getResponse, "id");
+		
+		Response deleteResponse=postAPIRequestDB.deleteBook(practiceid, "/book/", bookid);
+		
+		apv.responseCodeValidation(deleteResponse, 200);	
+	}
+	
+	//Book Location Controller
+	
+	@Test(enabled = true, groups = { "APItest" }, retryAnalyzer = RetryAnalyzer.class)
+	public void testBookLocation_save_get_del() throws NullPointerException, Exception {
+		
+		String b= payloadDB.saveBookLocationPayload();
+
+		logStep("Verifying the response");
+		Response response = postAPIRequestDB.saveBookLocation(practiceid, "/booklocation",b);
+		apv.responseCodeValidation(response, 200);
+		apv.responseTimeValidation(response);
+
+		JSONArray arr = new JSONArray(response.asString());
+
+		int bookid = arr.getJSONObject(0).getJSONObject("book").getInt("id");
+		log("Bookid- "+bookid);
+		int locationid = arr.getJSONObject(0).getJSONObject("location").getInt("id");
+		log("Location Id- "+locationid);
+			
+		Response getResponse =postAPIRequestDB.getBooksByLocation(practiceid, locationid) ;
+		apv.responseCodeValidation(getResponse, 200);
+		apv.responseKeyValidationJson(getResponse, "id");
+		
+		Response deleteResponse=postAPIRequestDB.deleteBookLocation(practiceid, bookid, locationid);
+		
+		apv.responseCodeValidation(deleteResponse, 200);	
+	}
+	
+	@Test(enabled = true, groups = { "APItest" }, retryAnalyzer = RetryAnalyzer.class)
+	public void testBookLocation_getLocationsAssociatedToBook() throws NullPointerException, Exception {
+		
+		String b= payloadDB.bookLocationsGetPayload();
+
+		logStep("Verifying the response");
+		Response response = postAPIRequestDB.bookLocations(practiceid, b);
+		apv.responseCodeValidation(response, 200);
+		apv.responseTimeValidation(response);	
+	}
+	
+	//Cancellation Reason Controller
+	
+	@Test(enabled = true, groups = { "APItest" }, retryAnalyzer = RetryAnalyzer.class)
+	public void testCancellationReason_save_get_del() throws NullPointerException, Exception {
+		
+		String b= payloadDB.cancellationReasonPayload();
+
+		logStep("Verifying the response");
+		Response response = postAPIRequestDB.cancellationReasonSave(practiceid,b);
+		apv.responseCodeValidation(response, 200);
+		apv.responseTimeValidation(response);
+
+		JSONArray arr = new JSONArray(response.asString());
+
+		String name = arr.getJSONObject(0).getString("name");
+		log("Cancellation Reason- "+name);
+		
+		int reasonid=arr.getJSONObject(0).getInt("id");
+			
+		Response getResponse =postAPIRequestDB.getCancellationReasonById(practiceid, reasonid) ;
+		apv.responseCodeValidation(getResponse, 200);
+		apv.responseKeyValidationJson(getResponse, "id");
+		
+		Response deleteResponse=postAPIRequestDB.cancellationReasonDelete(practiceid, reasonid);
+		
+		apv.responseCodeValidation(deleteResponse, 200);
+		
+		String c=payloadDB.reorderPayload();
+		
+		Response reorderResponse=postAPIRequestDB.reorderCancellationReason(practiceid, c);
+		
+		apv.responseCodeValidation(reorderResponse, 200);
+	}
+	
 
 }
