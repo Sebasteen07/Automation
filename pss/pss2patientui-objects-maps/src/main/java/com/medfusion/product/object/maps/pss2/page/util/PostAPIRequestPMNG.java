@@ -665,7 +665,6 @@ public class PostAPIRequestPMNG extends BaseTestNGWebDriver {
 		return response;
 	}
 
-	// used
 	public Response specialtyByRule(String baseurl, String b, Map<String, String> Header, String practiceId,
 			String endPoint, String patientId) {
 		RestAssured.baseURI = baseurl;
