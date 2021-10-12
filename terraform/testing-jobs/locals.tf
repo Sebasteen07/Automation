@@ -4,7 +4,7 @@ locals {
   kms_key_id                    = data.aws_ssm_parameter.kms_data_default.value
   pipeline_artifact_bucket_name = data.aws_ssm_parameter.codepipeline_artifact_store.value
   pipeline_artifact_bucket_arn  = "arn:aws:s3:::${local.pipeline_artifact_bucket_name}"
-  slack_chatbot_arn             = "arn:aws:chatbot::${data.aws_caller_identity.current.account_id}:chat-configuration/slack-channel/${var.slack_chatbot}"  
+  slack_chatbot_arn             = "arn:aws:chatbot::${data.aws_caller_identity.current.account_id}:chat-configuration/slack-channel/${var.slack_chatbot}"
   name                          = terraform.workspace
   selenium_browser              = "*chrome"
   test_execution_mode           = "headless"
@@ -22,6 +22,48 @@ locals {
       google_chrome_version = "93.0.4577.82-1"
       chrome_driver_version = "92.0.4515.107"
       cron_shedule          = "cron(10 6 ? * 3 *)"
+    }
+
+    "git-taf-prod-mu2-accessibility" = {
+      codecommit_branch     = "development"
+      PollForSourceChanges  = false
+      execution_folder      = "mu2-api-automation"
+      test_environment      = "prod"
+      suite_xml             = "accessibility-testing.xml"
+      build_timeout         = 240 #Number of minutes, from 5 to 480. Default value is 60 mins
+      queued_timeout        = 480 #Number of minutes, from 5 to 480. Default value is 480 mins
+      maven_parameter       = "mvn -U clean install -Dgroups=AccessibilityTests"
+      google_chrome_version = "93.0.4577.82-1"
+      chrome_driver_version = "92.0.4515.107"
+      cron_shedule          = "cron(45 0 ? * 1 *)"
+    }
+
+    "git-taf-prod-mu2-regression" = {
+      codecommit_branch     = "development"
+      PollForSourceChanges  = false
+      execution_folder      = "mu2-api-automation"
+      test_environment      = "prod"
+      suite_xml             = "mu2-api-automation.xml"
+      build_timeout         = 240 #Number of minutes, from 5 to 480. Default value is 60 mins
+      queued_timeout        = 480 #Number of minutes, from 5 to 480. Default value is 480 mins
+      maven_parameter       = "mvn clean install -U -Dgroups=RegressionTests"
+      google_chrome_version = "93.0.4577.82-1"
+      chrome_driver_version = "92.0.4515.107"
+      cron_shedule          = "cron(0 1 ? * 1 *)"
+    }
+
+    "git-taf-prod-mu2-acceptance" = {
+      codecommit_branch     = "development"
+      PollForSourceChanges  = false
+      execution_folder      = "mu2-api-automation"
+      test_environment      = "prod"
+      suite_xml             = "mu2-api-automation.xml"
+      build_timeout         = 240 #Number of minutes, from 5 to 480. Default value is 60 mins
+      queued_timeout        = 480 #Number of minutes, from 5 to 480. Default value is 480 mins
+      maven_parameter       = "mvn clean install -U -Dgroups=AcceptanceTests"
+      google_chrome_version = "93.0.4577.82-1"
+      chrome_driver_version = "92.0.4515.107"
+      cron_shedule          = "cron(0 0 ? * 1 *)"
     }
   }
 

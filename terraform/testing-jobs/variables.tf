@@ -79,6 +79,6 @@ variable "codebuild_image_pull_credentials_type" {
 
 variable "slack_chatbot" {
   type        = string
-  description = "he name of the slack chatbot that would be used to send notification"
+  description = "The name of the slack chatbot that would be used to send notification"
   default     = "pxp-mf-qa-dev-alarms-notify-slack-channel"
 }

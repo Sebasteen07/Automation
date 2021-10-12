@@ -90,13 +90,14 @@ public class ApptPrecheckMainPage extends BasePageObject {
 		return "Element (id: " + element.getAttribute("id") + ", tag: " + element.getTagName() + ")";
 	}
 
-	public void clickOnSettingTab() throws InterruptedException {
+	public void clickOnSettingTab() {
 		settingTab.click();
 		log("Switch to Setting Dashboard");
 		driver.navigate().refresh();
 	}
 
-	public void clickOnAppointmentsTab() throws InterruptedException {
+	public void clickOnAppointmentsTab() {
+		driver.navigate().refresh();
 		IHGUtil.waitForElement(driver, 6, appointmentsTab);
 		jse.executeScript("arguments[0].click();", appointmentsTab);
 		log("Switch to Appointment Dashboard");
