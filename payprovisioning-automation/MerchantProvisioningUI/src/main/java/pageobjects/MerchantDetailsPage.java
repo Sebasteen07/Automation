@@ -107,6 +107,9 @@ public class MerchantDetailsPage extends NavigationMenu {
 	@FindBy(how = How.XPATH, using = "//a[text()=' Edit Fraud/Risk Variables ']")
 	private WebElement editFraudButton;
 
+	@FindBy(how=How.XPATH,using="//*[@id='top-nav']/div/div[2]/div[1]/span[1]")
+	private WebElement mmid;
+
 	public void verifyPageTitle() {
 
 		String title = this.driver.getTitle();
@@ -197,6 +200,10 @@ public class MerchantDetailsPage extends NavigationMenu {
 
 		Assert.assertTrue(editFraudButton.isDisplayed());
 
+	}
+
+	public String getMMID(){
+		return mmid.getText();
 	}
 
 }
