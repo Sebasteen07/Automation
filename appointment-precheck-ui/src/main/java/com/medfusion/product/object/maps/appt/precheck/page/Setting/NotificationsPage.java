@@ -1,3 +1,4 @@
+// Copyright 2021 NXGN Management, LLC. All Rights Reserved.
 package com.medfusion.product.object.maps.appt.precheck.page.Setting;
 
 import org.openqa.selenium.WebDriver;
