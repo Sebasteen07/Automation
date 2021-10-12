@@ -10,7 +10,7 @@ public class MfAppointmentSchedulerPayload {
 		return payload;
 	}
 	
-	public String putAppointmentPayload(long time, String email) {
+	public String putAppointmentPayload(long time, String phone,String email) {
 		String Apptdata=" {\r\n"
 				+ "\"practiceData\": {\r\n"
 				+ "\"pmSystemId\": \"9\",\r\n"
@@ -40,7 +40,7 @@ public class MfAppointmentSchedulerPayload {
 				+ "\"city\": null,\r\n"
 				+ "\"state\": null,\r\n"
 				+ "\"zip\": \"12345\",\r\n"
-				+ "\"phone\": 5087437423,\r\n"
+				+ "\"phone\": "+phone+",\r\n"
 				+ "\"email\": \"" + email + "\",\r\n"
 				+ "\"language\": \"en\",\r\n"
 				+ "\"primaryInsurance\": {\r\n"

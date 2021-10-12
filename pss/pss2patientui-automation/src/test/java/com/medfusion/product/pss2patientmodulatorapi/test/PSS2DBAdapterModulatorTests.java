@@ -431,11 +431,8 @@ public class PSS2DBAdapterModulatorTests extends BaseTestNG {
 	@Test(enabled = true, groups = { "APItest" }, retryAnalyzer = RetryAnalyzer.class)
 	public void testBookAppTyp_BookAppTypesAssociatedToBookGet() throws NullPointerException, Exception {
 
-		String specialty = propertyData.getProperty("bookapttype.specialty.id.db");
-		String locationid = propertyData.getProperty("bookapttype.location.id.db");
 		String bookid=propertyData.getProperty("bookapttype.book.id.db");
 		String apptype=propertyData.getProperty("bookapttype.apttype.id.db");
-
 		Response response = postAPIRequestDB.getBookAppTypesAssociatedToBook(practiceId, bookid, apptype);
 		apv.responseCodeValidation(response, 200);
 		apv.responseTimeValidation(response);
@@ -444,10 +441,7 @@ public class PSS2DBAdapterModulatorTests extends BaseTestNG {
 	@Test(enabled = true, groups = { "APItest" }, retryAnalyzer = RetryAnalyzer.class)
 	public void testBookAppTyp_AppTypesAssociatedToBookGet() throws NullPointerException, Exception {
 
-		String specialty = propertyData.getProperty("bookapttype.specialty.id.db");
-		String locationid = propertyData.getProperty("bookapttype.location.id.db");
 		String bookid=propertyData.getProperty("bookapttype.book.id.db");
-		String apptype=propertyData.getProperty("bookapttype.apttype.id.db");
 
 		Response response = postAPIRequestDB.getAppTypesAssociatedToBook(practiceId, bookid);
 		apv.responseCodeValidation(response, 200);
@@ -457,11 +451,7 @@ public class PSS2DBAdapterModulatorTests extends BaseTestNG {
 	@Test(enabled = true, groups = { "APItest" }, retryAnalyzer = RetryAnalyzer.class)
 	public void testBookApp_getAssociatedBookAppTypesByBookId() throws NullPointerException, Exception {
 
-		String specialty = propertyData.getProperty("bookapttype.specialty.id.db");
-		String locationid = propertyData.getProperty("bookapttype.location.id.db");
 		String bookid=propertyData.getProperty("bookapttype.book.id.db");
-		String apptype=propertyData.getProperty("bookapttype.apttype.id.db");
-
 		Response response = postAPIRequestDB.getAssociatedBookAppTypesByBookId(practiceId, bookid);
 		apv.responseCodeValidation(response, 200);
 		apv.responseTimeValidation(response);
@@ -470,9 +460,6 @@ public class PSS2DBAdapterModulatorTests extends BaseTestNG {
 	@Test(enabled = true, groups = { "APItest" }, retryAnalyzer = RetryAnalyzer.class)
 	public void testBookApp_getAssociatedBookAppTypesByAppTypeId() throws NullPointerException, Exception {
 
-		String specialty = propertyData.getProperty("bookapttype.specialty.id.db");
-		String locationid = propertyData.getProperty("bookapttype.location.id.db");
-		String bookid=propertyData.getProperty("bookapttype.book.id.db");
 		String apptype=propertyData.getProperty("bookapttype.apttype.id.db");
 
 		Response response = postAPIRequestDB.getAssociatedBookAppTypesByAppTypeId(practiceId, apptype);
@@ -485,8 +472,6 @@ public class PSS2DBAdapterModulatorTests extends BaseTestNG {
 	@Test(enabled = true, groups = { "APItest" }, retryAnalyzer = RetryAnalyzer.class)
 	public void testbookapptypelocation_getLocationsAssociatedToBookAndAppointmentType() throws NullPointerException, Exception {
 
-		String specialty = propertyData.getProperty("bookapttype.specialty.id.db");
-		String locationid = propertyData.getProperty("bookapttype.location.id.db");
 		String bookid=propertyData.getProperty("bookapttype.book.id.db");
 		String apptype=propertyData.getProperty("bookapttype.apttype.id.db");
 
@@ -543,9 +528,213 @@ public class PSS2DBAdapterModulatorTests extends BaseTestNG {
 		apv.responseTimeValidation(response);
 	}
 	
+	@Test(enabled = true, groups = { "APItest" }, retryAnalyzer = RetryAnalyzer.class)
+	public void testBook_getBookByPracticeAndName() throws NullPointerException, Exception {
+		
+		String bookname=propertyData.getProperty("book.bookname.db");
+		String extbookid=propertyData.getProperty("book.extbook.id.db");
 
+		Response response = postAPIRequestDB.getBookByPracticeAndName(practiceId, bookname);
+		String actualextbookid= response.getBody().asString();
+		log("actualextbookid- "+actualextbookid);
+		assertEquals(actualextbookid, extbookid, "External Book id is not matching with expected id");
+		apv.responseCodeValidation(response, 200);
+		apv.responseTimeValidation(response);
+	}
 	
 	@Test(enabled = true, groups = { "APItest" }, retryAnalyzer = RetryAnalyzer.class)
+	public void testBook_getBooksByAppType() throws NullPointerException, Exception {
+
+		String apptype=propertyData.getProperty("bookapttype.apttype.id.db");
+
+		Response response = postAPIRequestDB.getBooksByAppType(practiceId, apptype);
+		apv.responseCodeValidation(response, 200);
+		apv.responseTimeValidation(response);
+	}
+	
+	@Test(enabled = true, groups = { "APItest" }, retryAnalyzer = RetryAnalyzer.class)
+
+	public void testBook_getBooksByLocation() throws NullPointerException, Exception {		
+
+		String locationid = propertyData.getProperty("bookapttype.location.id.db");
+		Response response = postAPIRequestDB.getBooksByLocation(practiceId,locationid);
+		apv.responseCodeValidation(response, 200);
+		apv.responseTimeValidation(response);
+	}
+	@Test(enabled = true, groups = { "APItest" }, retryAnalyzer = RetryAnalyzer.class)
+	public void testBook_getBooksByLocationAndAppointmentTypes() throws NullPointerException, Exception {
+		
+		String locationid = propertyData.getProperty("bookapttype.location.id.db");
+		String apptype=propertyData.getProperty("bookapttype.apttype.id.db");
+
+		Response response = postAPIRequestDB.getBooksByLocationAndAppointmentTypes(practiceId, locationid , apptype);
+		apv.responseCodeValidation(response, 200);
+		apv.responseTimeValidation(response);
+	}
+	
+	@Test(enabled = true, groups = { "APItest" }, retryAnalyzer = RetryAnalyzer.class)
+	public void testBook_getBooksBySpeciality() throws NullPointerException, Exception {
+		
+		String specialty = propertyData.getProperty("bookapttype.specialty.id.db");
+
+		Response response = postAPIRequestDB.getBooksBySpeciality(practiceId, specialty);
+		apv.responseCodeValidation(response, 200);
+		apv.responseTimeValidation(response);
+	}
+	@Test(enabled = true, groups = { "APItest" }, retryAnalyzer = RetryAnalyzer.class)
+	public void testBook_getBooksBySpecialityAndAppointmentType() throws NullPointerException, Exception {
+		
+		String specialty = propertyData.getProperty("bookapttype.specialty.id.db");
+		String apptype=propertyData.getProperty("bookapttype.apttype.id.db");
+
+		Response response = postAPIRequestDB.getBooksBySpecialityAndAppointmentType(practiceId, specialty, apptype);
+		apv.responseCodeValidation(response, 200);
+		apv.responseTimeValidation(response);
+	}
+	@Test(enabled = true, groups = { "APItest" }, retryAnalyzer = RetryAnalyzer.class)
+	public void testBook_getBooksBySpecialityAndLocation() throws NullPointerException, Exception {
+		
+		String specialty = propertyData.getProperty("bookapttype.specialty.id.db");
+		String locationid = propertyData.getProperty("bookapttype.location.id.db");
+		Response response = postAPIRequestDB.getBooksBySpecialityAndLocation(practiceId, specialty, locationid);
+		apv.responseCodeValidation(response, 200);
+		apv.responseTimeValidation(response);
+	}
+	
+	@Test(enabled = true, groups = { "APItest" }, retryAnalyzer = RetryAnalyzer.class)
+	public void testBook_getBooksBySpecialityAndLocationAndAppointmentType() throws NullPointerException, Exception {
+
+		String specialty = propertyData.getProperty("bookapttype.specialty.id.db");
+		String locationid = propertyData.getProperty("bookapttype.location.id.db");
+		String apptype=propertyData.getProperty("bookapttype.apttype.id.db");
+		
+		Response response = postAPIRequestDB.getBooksBySpecialityAndLocationAndAppointmentType(practiceId,specialty, locationid, apptype);
+		apv.responseCodeValidation(response, 200);
+		apv.responseTimeValidation(response);
+	}
+	
+	@Test(enabled = true, groups = { "APItest" }, retryAnalyzer = RetryAnalyzer.class)
+	public void testBook_getbooklevel() throws NullPointerException, Exception {
+		
+		Response response = postAPIRequestDB.getbooklevel(practiceId);
+		apv.responseCodeValidation(response, 200);
+		apv.responseTimeValidation(response);
+	}
+	
+	//Cancellation Reason Controller
+	
+	@Test(enabled = true, groups = { "APItest" }, retryAnalyzer = RetryAnalyzer.class)
+	public void testCancelReason_getCancellationReason() throws NullPointerException, Exception {
+
+		Response response = postAPIRequestDB.getCancellationReason(practiceId,"/cancellationreason");
+		apv.responseCodeValidation(response, 200);
+		apv.responseTimeValidation(response);
+	}
+	
+	//Care Team Book Controller
+	
+	@Test(enabled = true, groups = { "APItest" }, retryAnalyzer = RetryAnalyzer.class)
+	public void testCareTeamBook_getBookAssociatedToCareTeam() throws NullPointerException, Exception {
+		
+		String careteamid=propertyData.getProperty("careteambook.careteam.id.db");
+		Response response = postAPIRequestDB.getBookAssociatedToCareTeam(practiceId, careteamid);
+		apv.responseCodeValidation(response, 200);
+		apv.responseKeyValidationJson(response, "careteam");
+		apv.responseKeyValidationJson(response, "id");
+		apv.responseKeyValidationJson(response, "displayName");
+		apv.responseKeyValidationJson(response, "extBookId");
+		apv.responseTimeValidation(response);
+	}
+	
+	
+	
+	@Test(enabled = true, groups = { "APItest" }, retryAnalyzer = RetryAnalyzer.class)
+	public void testCareTeam_getCareteamsForPracticel() throws NullPointerException, Exception {
+		
+		Response response = postAPIRequestDB.getCareteamsForPractice(practiceId);
+		apv.responseCodeValidation(response, 200);
+		apv.responseTimeValidation(response);
+	}
+	@Test(enabled = true, groups = { "APItest" }, retryAnalyzer = RetryAnalyzer.class)
+	public void testCareTeam_getCareTeamById() throws NullPointerException, Exception {
+		
+		String careteamid=propertyData.getProperty("careteambook.careteam.id.db");
+		Response response = postAPIRequestDB.getCareTeamById(practiceId, careteamid);
+		apv.responseCodeValidation(response, 200);
+		apv.responseKeyValidationJson(response, "createdUserId");
+		apv.responseKeyValidationJson(response, "id");
+		apv.responseKeyValidationJson(response, "name");
+		apv.responseTimeValidation(response);
+	}
+	
+	//Category App Type Controller
+	
+	@Test(enabled = true, groups = { "APItest" }, retryAnalyzer = RetryAnalyzer.class)
+	public void testCatgoryAppType_getAppTypeForCategory() throws NullPointerException, Exception {
+		
+		String categoryid=propertyData.getProperty("");
+		Response response = postAPIRequestDB.getAppTypeForCategory(practiceId, categoryid);
+		apv.responseCodeValidation(response, 200);
+		apv.responseTimeValidation(response);
+	}
+	
+	@Test(enabled = true, groups = { "APItest" }, retryAnalyzer = RetryAnalyzer.class)
+	public void testCatgoryAppType_getCategoryAppTypeForCategoryAndAppttypel() throws NullPointerException, Exception {
+		
+		String categoryid=propertyData.getProperty("categoryapp.category.id.db");
+		String apptype=propertyData.getProperty("categoryapp.apptype.id.db");
+		
+		Response response = postAPIRequestDB.getCategoryAppTypeForCategoryAndAppttype(practiceId, categoryid, apptype);
+		apv.responseCodeValidation(response, 200);
+		apv.responseTimeValidation(response);
+	}
+	
+	@Test(enabled = true, groups = { "APItest" }, retryAnalyzer = RetryAnalyzer.class)
+	public void testCatgoryAppType_getLocationsForCategoryAppType() throws NullPointerException, Exception {
+		
+		String categoryid=propertyData.getProperty("categoryapp.category.id.db");
+		
+		Response response = postAPIRequestDB.getLocationsForCategoryAppType(practiceId, categoryid);
+		apv.responseCodeValidation(response, 200);
+		apv.responseTimeValidation(response);
+	}
+	
+	//Category Controller
+	
+	@Test(enabled = true, groups = { "APItest" }, retryAnalyzer = RetryAnalyzer.class)
+	public void testCategory_getCategoryById() throws NullPointerException, Exception {
+		
+		String categoryid=propertyData.getProperty("categoryapp.category.id.db");
+		Response response = postAPIRequestDB.getCategoryById(practiceId, categoryid);
+		apv.responseCodeValidation(response, 200);
+		apv.responseTimeValidation(response);
+	}
+	@Test(enabled = true, groups = { "APItest" }, retryAnalyzer = RetryAnalyzer.class)
+	public void testCategory_getCategoryForPractice() throws NullPointerException, Exception {
+		
+		Response response = postAPIRequestDB.getCategoryForPractice(practiceId);
+		apv.responseCodeValidation(response, 200);
+		apv.responseTimeValidation(response);
+	}
+	
+	@Test(enabled = true, groups = { "APItest" }, retryAnalyzer = RetryAnalyzer.class)
+	public void testCategory_getCategorysWithLanguageForPractice() throws NullPointerException, Exception {
+		
+		Response response = postAPIRequestDB.getCategorysWithLanguageForPractice(practiceId);
+		apv.responseCodeValidation(response, 200);
+		apv.responseTimeValidation(response);
+	}
+	
+	@Test(enabled = true, groups = { "APItest" }, retryAnalyzer = RetryAnalyzer.class)
+	public void testCategory_getCategorysBySpecialty() throws NullPointerException, Exception {
+		
+		String specialty=propertyData.getProperty("bookapttype.specialty.id.db");
+		
+		Response response = postAPIRequestDB.getCategorysBySpecialty(practiceId, specialty);
+		apv.responseCodeValidation(response, 200);
+		apv.responseTimeValidation(response);
+	}
+	
 	public void testStateGET() throws NullPointerException, Exception {
 
 		logStep("Verifying the response");

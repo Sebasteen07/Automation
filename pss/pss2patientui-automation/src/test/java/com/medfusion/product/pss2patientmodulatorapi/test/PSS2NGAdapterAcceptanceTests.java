@@ -4,6 +4,7 @@ package com.medfusion.product.pss2patientmodulatorapi.test;
 import static org.testng.Assert.assertEquals;
 
 import java.io.IOException;
+import java.text.ParseException;
 
 import org.json.JSONObject;
 import org.testng.annotations.BeforeTest;
@@ -28,7 +29,8 @@ public class PSS2NGAdapterAcceptanceTests extends BaseTestNG {
 	public static PSSPropertyFileLoader propertyData;
 	public static Appointment testData;
 	public static PostAPIRequestNG postAPIRequest;
-	public PSSPatientUtils pssPatientUtils;
+	public static PSSPatientUtils pSSPatientUtils;
+	public static String practiceid;
 	APIVerification aPIVerification = new APIVerification();
 
 	@BeforeTest(enabled = true, groups = { "APItest" })
@@ -37,17 +39,23 @@ public class PSS2NGAdapterAcceptanceTests extends BaseTestNG {
 		payload = new PayloadNG();
 		propertyData = new PSSPropertyFileLoader();
 		postAPIRequest = new PostAPIRequestNG();
-		pssPatientUtils=new PSSPatientUtils();
+		pSSPatientUtils= new PSSPatientUtils();
 		log("I am before Test");
 		postAPIRequest.setupRequestSpecBuilder(propertyData.getProperty("base.url.ng"));
 		log("BASE URL-" + propertyData.getProperty("base.url.ng"));
+		
+		practiceid=propertyData.getProperty("practice.id.ng");
 	}
 
 	@Test(enabled = true, groups = { "APItest" }, retryAnalyzer = RetryAnalyzer.class)
-	public void testAvailableSlotsNGPost() throws IOException, InterruptedException {
-		Response response = postAPIRequest.availableSlots(
-				PayloadNG.nextAvailable_Payload(propertyData.getProperty("patient.id.ng")),
-				propertyData.getProperty("practice.id.ng"));
+	public void testAvailableSlotsNGPost() throws IOException, InterruptedException, ParseException {
+		
+		String startdate=pSSPatientUtils.sampleDateTime("MM/dd/yyyy HH:MM:SS");
+		String enddate1=pSSPatientUtils.addDaysToDate(startdate, "1","MM/dd/yyyy HH:MM:SS");		
+		log("End Date- "+enddate1);		
+		String b=PayloadNG.nextAvailable_Payload(propertyData.getProperty("patient.id.ng"), startdate, enddate1);		
+		
+		Response response = postAPIRequest.availableSlots(b, practiceid);
 		aPIVerification.responseCodeValidation(response, 200);
 		aPIVerification.responseTimeValidation(response);
 
@@ -61,12 +69,13 @@ public class PSS2NGAdapterAcceptanceTests extends BaseTestNG {
 
 	@Test(enabled = true, groups = { "APItest" }, retryAnalyzer = RetryAnalyzer.class)
 	public void testPastApptNgPOST() throws IOException {
-		String date=pssPatientUtils.sampleDateTime("MM/dd/yyyy HH:mm:ss");
-		log("Current date is"+date);
+
+		String edate=pSSPatientUtils.sampleDateTime("MM/dd/yyyy");
+
 		Response response = postAPIRequest.pastApptNG(propertyData.getProperty("practice.id.ng"),
 				PayloadNG.past_appt_payload(propertyData.getProperty("patient.id.ng"),
 						propertyData.getProperty("practice.displayname.ng"),
-						propertyData.getProperty("practice.id.ng"), date));
+						propertyData.getProperty("practice.id.ng"), edate));
 		aPIVerification.responseCodeValidation(response, 200);
 		aPIVerification.responseTimeValidation(response);
 		aPIVerification.responseKeyValidationJson(response, "appointmentTypes.name");
@@ -149,9 +158,15 @@ public class PSS2NGAdapterAcceptanceTests extends BaseTestNG {
 
 	@Test(enabled = true, groups = { "APItest" }, retryAnalyzer = RetryAnalyzer.class)
 	public void testschedule_Resc_NGPOST() throws NullPointerException, Exception {
-		Response response = postAPIRequest.availableSlots(
-				PayloadNG.nextAvailable_Payload(propertyData.getProperty("patient.id.ng")),
-				propertyData.getProperty("practice.id.ng"));
+		
+
+		String startdate = pSSPatientUtils.sampleDateTime("MM/dd/yyyy HH:MM:SS");
+		String enddate = pSSPatientUtils.addDaysToDate(startdate, "1", "MM/dd/yyyy HH:MM:SS");
+
+		String b = PayloadNG.nextAvailable_Payload(propertyData.getProperty("patient.id.ng"), startdate, enddate);
+
+		Response response = postAPIRequest.availableSlots(b, practiceid);
+
 		aPIVerification.responseCodeValidation(response, 200);
 		aPIVerification.responseTimeValidation(response);
 
@@ -195,10 +210,13 @@ public class PSS2NGAdapterAcceptanceTests extends BaseTestNG {
 
 	@Test(enabled = true, groups = { "APItest" }, retryAnalyzer = RetryAnalyzer.class)
 	public void testUpcommingApptPOST() throws IOException {
+		
+		String startdate = pSSPatientUtils.sampleDateTime("MM/dd/YYYY HH:MM:SS");
 
 		Response response = postAPIRequest.upcommingApptNG(propertyData.getProperty("practice.id.ng"),
-				PayloadNG.upcommingApt_Payload(propertyData.getProperty("patient.id.ng"),
-						propertyData.getProperty("practice.id.ng")));
+				PayloadNG.upcommingApt_Payload(propertyData.getProperty("uppcomming.patient.id.ng"),
+						propertyData.getProperty("practice.id.ng"), startdate));
+		
 		aPIVerification.responseCodeValidation(response, 200);
 		aPIVerification.responseTimeValidation(response);
 		aPIVerification.responseKeyValidation(response, "id");

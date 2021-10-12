@@ -100,6 +100,21 @@ public class PSSPatientUtils extends BaseTestNGWebDriver {
 
 		return newDate;
 	}
+	
+	//This method will give you future date- Future Date
+	public String addDaysToDate(String date, String days, String DATE_FORMAT) {
+		Calendar c = Calendar.getInstance();
+		DateFormat df = new SimpleDateFormat(DATE_FORMAT);
+		try {
+			Date myDate = df.parse(date.trim());
+			c.setTime(myDate);
+			c.add(Calendar.DATE, Integer.parseInt(days));
+		} catch (ParseException e) {
+			e.printStackTrace();
+		}
+		String toDate = df.format(c.getTime());
+		return toDate;
+	}
 
 	public String filePath() {
 		String home = System.getProperty("user.home");
@@ -1253,11 +1268,11 @@ public class PSSPatientUtils extends BaseTestNGWebDriver {
 		confirmationpage.selectRescheduleReason();
 
 		ScheduledAppointment scheduledappointment = confirmationpage.rescheduleAppointmentConfirmed();
-		log("appointment ID = " + scheduledappointment.getAppointmentID());
+		String successmsg=scheduledappointment.getAppointmentID();
+		log("Success Message- "+successmsg);
+		assertTrue(successmsg.contains("Your appointment has been rescheduled"));
 		log("Add to calendar option is displayed and is clickable.");
-		scheduledappointment.downloadCalander();
-		Thread.sleep(2000);
-		readICSFile(filePath());
+
 	}
 
 	public ScheduledAppointment selectAFlow_New(WebDriver driver, String rule, HomePage homepage, Appointment testData)

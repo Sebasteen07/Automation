@@ -158,7 +158,7 @@ public class AptEventCollectorTests extends BaseTestNG {
 		Response response = postAPIRequest.aptGETEvent(propertyData.getProperty("event.practice.id"),
 				headerConfig.HeaderwithToken(getaccessToken),
 				propertyData.getProperty("event.time.range.start"),
-				propertyData.getProperty("event.time.range.end"));
+				propertyData.getProperty("get.event.time.range.end"));
 
 		log("Verifying the response");
 		assertEquals(response.getStatusCode(), 200);

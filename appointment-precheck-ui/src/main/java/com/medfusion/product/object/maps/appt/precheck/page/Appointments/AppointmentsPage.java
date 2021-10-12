@@ -132,6 +132,18 @@ public class AppointmentsPage extends BasePageObject {
 	@FindBy(how = How.XPATH, using = "//*[@id=\"page-content-container\"]/div/div[1]/span")
 	private WebElement broadcastBannerMessage;
 
+	@FindBy(how = How.XPATH, using = "//*[@id='select-45789-18902']")
+	private WebElement selectPatientWithoutEmailAndPhone;
+
+	@FindBy(how = How.XPATH, using = "//*[@id='select-20000-3000']")
+	private WebElement selectPatientWithInvalidEmailAndPhone;
+
+	@FindBy(how = How.XPATH, using = "//*[@id='select-44444-3434']")
+	private WebElement selectPatientWithInvalidPhoneAndBlankEmail;
+
+	@FindBy(how = How.XPATH, using = "//*[@class='close']")
+	private WebElement BannerCloseButton;
+	
 	public AppointmentsPage(WebDriver driver) {
 		super(driver);
 		PageFactory.initElements(driver, this);
@@ -467,8 +479,46 @@ public class AppointmentsPage extends BasePageObject {
 	}
 
 	public String broadcastBannerMessage() {
-		IHGUtil.waitForElement(driver, 5, broadcastBannerMessage);
+		IHGUtil.waitForElement(driver, 60, broadcastBannerMessage);
 		return broadcastBannerMessage.getText();
 	}
 
+	public void selectPatientWithoutEmailAndPhone() {
+		jse.executeScript("arguments[0].click();", selectPatientWithoutEmailAndPhone);
+	}
+
+	public void selectPatientWithInvalidEmailAndPhone() {
+		jse.executeScript("arguments[0].click();", selectPatientWithInvalidEmailAndPhone);
+	}
+
+	public void selectPatientWithInvalidPhoneAndBlankEmail() {
+		jse.executeScript("arguments[0].click();", selectPatientWithInvalidPhoneAndBlankEmail);
+	}
+
+	public boolean visibilityOfBroadcastMessage() {
+		try {
+			IHGUtil.waitForElement(driver, 60, broadcastBannerMessage);
+			broadcastBannerMessage.isDisplayed();
+			log("Broadcast Banner Message is visible");
+			return true;
+		} catch (NoSuchElementException e) {
+			log("Broadcast Banner Message is not visible");
+			return false;
+		}
+	}
+	
+	public void clickOnBannerCrossButton() {
+		IHGUtil.waitForElement(driver, 5, BannerCloseButton);
+		BannerCloseButton.click();
+		}
+	
+	public String getbroadcastMessageText() {
+		IHGUtil.waitForElement(driver, 5, broadcastMessage);
+		return broadcastMessage.getText();
+		}
+
+		public String getSendReminderText() {
+		IHGUtil.waitForElement(driver, 5, sendReminder);
+		return sendReminder.getText();
+		}
 }
