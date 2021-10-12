@@ -17,5 +17,14 @@ public class MerchantDetailsPage extends NavigationMenu{
 	@FindBy(how=How.XPATH,using="/html/body/div[3]/div/div[3]/div[5]/div/fieldset/legend/div[2]/div/div/")
 	private WebElement collectChargebackButton;
 
+	@FindBy(how=How.XPATH,using="//*[@id='top-nav']/div/div[2]/div[1]/span[1]")
+	private WebElement mmid;
+
+
+	public String getMMID(){
+		return mmid.getText();
+	}
+
+
 
 }
