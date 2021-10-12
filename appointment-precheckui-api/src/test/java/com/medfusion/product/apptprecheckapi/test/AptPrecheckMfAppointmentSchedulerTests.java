@@ -87,15 +87,15 @@ public class AptPrecheckMfAppointmentSchedulerTests extends BaseTestNG {
 		long plus20Minutes = currentTimestamp + TimeUnit.MINUTES.toMillis(20);
 		log("Getting patients since timestamp: " + plus20Minutes);
 		Response response = postAPIRequest.aptPutAppointment(
-				propertyData.getProperty("baseurl.mf.appointment.scheduler"),
+				propertyData.getProperty("baseurl.mf.appointment.scheduler"), 
 				propertyData.getProperty("mf.apt.scheduler.practice.id"),
-				payload.putAppointmentPayload(plus20Minutes, propertyData.getProperty("mf.apt.scheduler.email")),
+				payload.putAppointmentPayload(plus20Minutes, propertyData.getProperty("mf.apt.scheduler.phone"),propertyData.getProperty("mf.apt.scheduler.email")),
 				headerConfig.HeaderwithToken(getaccessToken),
 				propertyData.getProperty("mf.apt.scheduler.put.patient.id"),
 				propertyData.getProperty("mf.apt.scheduler.put.appt.id"));
 
 		log("Payload- "
-				+ payload.putAppointmentPayload(plus20Minutes, propertyData.getProperty("mf.apt.scheduler.email")));
+				+ payload.putAppointmentPayload(plus20Minutes, propertyData.getProperty("mf.apt.scheduler.email"),propertyData.getProperty("mf.apt.scheduler.phone")));
 		log("Verify response");
 
 		if (response.getStatusCode() == 200) {
