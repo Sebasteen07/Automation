@@ -12,6 +12,7 @@
    
       <class name="provisioningtests.VerifyMerchantDetailsTest" />
       <class name="provisioningtests.SearchMerchantTest" />
+      <class name="provisioningtests.AddMerchantTest" />
    
   </classes>
   </test> <!-- Test -->
