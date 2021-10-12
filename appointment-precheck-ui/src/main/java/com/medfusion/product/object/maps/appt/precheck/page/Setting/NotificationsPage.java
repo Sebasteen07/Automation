@@ -73,5 +73,16 @@ public class NotificationsPage extends BaseTest {
 		}
 		Thread.sleep(10000);
 	}
+	
+	public void enableBroadcastMessagingCheckbox() throws InterruptedException {
+		IHGUtil.waitForElement(driver, 5, broadcastMessagingCheckbox);
+		boolean selected = broadcastMessagingCheckbox.isSelected();
+		 if(!selected){
+			log("Enable 'Broadcast Messaging' checkbox");
+			broadcastMessagingCheckbox.click();
+			Thread.sleep(10000);
+		}
+		
+	}
 
 }

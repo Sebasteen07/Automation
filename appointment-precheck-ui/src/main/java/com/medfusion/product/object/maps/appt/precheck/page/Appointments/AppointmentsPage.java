@@ -143,7 +143,13 @@ public class AppointmentsPage extends BasePageObject {
 
 	@FindBy(how = How.XPATH, using = "//*[@class='close']")
 	private WebElement BannerCloseButton;
-	
+
+	@FindBy(how = How.XPATH, using = "//*[@class='rt-th precheck-header'][3]")
+	private WebElement reminderTextColumn;
+
+	@FindBy(how = How.XPATH, using = "//*[@class='rt-th precheck-header'][4]")
+	private WebElement broadcastTextColoumn;
+
 	public AppointmentsPage(WebDriver driver) {
 		super(driver);
 		PageFactory.initElements(driver, this);
@@ -506,19 +512,40 @@ public class AppointmentsPage extends BasePageObject {
 			return false;
 		}
 	}
-	
+
 	public void clickOnBannerCrossButton() {
 		IHGUtil.waitForElement(driver, 5, BannerCloseButton);
 		BannerCloseButton.click();
-		}
-	
+	}
+
 	public String getbroadcastMessageText() {
 		IHGUtil.waitForElement(driver, 5, broadcastMessage);
 		return broadcastMessage.getText();
-		}
+	}
 
-		public String getSendReminderText() {
+	public String getSendReminderText() {
 		IHGUtil.waitForElement(driver, 5, sendReminder);
 		return sendReminder.getText();
+	}
+
+	public boolean sendRemibderTextColoumn() {
+		try {
+			reminderTextColumn.isDisplayed();
+			log("Send remibder text coloumn is displayed");
+			return true;
+		} catch (NoSuchElementException e) {
+			log("Send remibder text coloumn is is not displayed");
+			return false;
 		}
+	}
+	public boolean broadcastMessageTextColoumn() {
+		try {
+			broadcastTextColoumn.isDisplayed();
+			log("Broadcast text coloumn is displayed");
+			return true;
+		} catch (NoSuchElementException e) {
+			log("Broadcast text coloumn is not displayed");
+			return false;
+		}
+	}
 }

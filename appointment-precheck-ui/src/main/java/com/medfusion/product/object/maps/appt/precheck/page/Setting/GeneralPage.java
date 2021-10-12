@@ -22,6 +22,12 @@ public class GeneralPage extends BaseTest {
 	@FindBy(how = How.XPATH, using = "//*[text()='Update settings']")
 	private WebElement updateSettingButton;
 	
+	@FindBy(how = How.CSS, using = "#react-tabs-1 > section > div > div > div > h3:nth-child(2) > span")                   
+	private WebElement textCheckbox;
+	
+	@FindBy(how = How.XPATH, using = "//*[text()='General']")
+	private WebElement generalTab;
+	
 	private static GeneralPage generalPage = new GeneralPage();
 
 	public GeneralPage() {
@@ -46,9 +52,24 @@ public class GeneralPage extends BaseTest {
 		notificationsCheckbox.click();
 	}
 
-	public void clickOnUpdateSettingbutton() {
-		log("Click on update setting button");
+	public void clickOnUpdateSettingbutton() throws InterruptedException {
 		updateSettingButton.click();
+		Thread.sleep(5000);
 	}
-
+	
+	public void enableAndDisableTextCheckbox() {
+		driver.navigate().refresh();
+		IHGUtil.waitForElement(driver, 10, textCheckbox);
+		boolean selected = textCheckbox.isSelected();
+		if (selected) {
+			textCheckbox.click();
+		}else if(!selected){
+			textCheckbox.click();
+		}
+	}
+	public void clickOnGeneralTab() throws InterruptedException {
+		generalTab.click();
+		log("Switch on general tab");
+		Thread.sleep(5000);
+	}
 }
