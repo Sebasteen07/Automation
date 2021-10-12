@@ -24,7 +24,8 @@ public class AddMerchantTest extends ProvisioningBaseTest{
 
     final static private MerchantEntity merchantEntityPaypal = new MerchantEntity("Paypal",
             "Test Paypal Merchant-"+ IHGUtil.createRandomNumericString(3),
-            "43215","54321", "1000", "Medfusion");
+            "54321", "43215", "1000",
+            "Medfusion", "TestUserPaypal", "AutomationUser");
 
     @Test
     public void testAddPaypalMerchant() throws IOException, InterruptedException {
@@ -39,9 +40,8 @@ public class AddMerchantTest extends ProvisioningBaseTest{
 
         logStep("Create Element Merchant");
         addNewMerchantPage.addMerchant("Paypal", merchantEntityPaypal,
-                testData.getProperty("paypal.card.not.present.username"),
                 testData.getProperty("paypal.card.not.present.password"),
-                testData.getProperty("paypal.username"), testData.getProperty("paypal.password"));
+                testData.getProperty("paypal.password"));
 
         log("Click Create Merchant Button");
         MerchantDetailsPage merchantDetailsPage = addNewMerchantPage.clickCreateMerchantButton();

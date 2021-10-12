@@ -596,8 +596,10 @@ public class AddNewMerchantPage extends NavigationMenu{
         isRemitToAdress(isRemitToAddress);
     }
 
-    public void fillBeneficialOwnerInformation(Integer numberOfBeneficialOwners, String firstName, String lastName, String ownershipPercent,
-                                               String addressLine1, String city, String state, String zipcode, String country, String ownerType) {
+    public void fillBeneficialOwnerInformation(Integer numberOfBeneficialOwners, String firstName,
+                                               String lastName, String ownershipPercent,
+                                               String addressLine1, String city, String state,
+                                               String zipcode, String country, String ownerType) {
         if(numberOfBeneficialOwners <= 1) {
             fillBeneficialOwnerFirstName(firstName);
             fillBeneficialOwnerLastName(lastName);
@@ -615,15 +617,18 @@ public class AddNewMerchantPage extends NavigationMenu{
         }
     }
 
-    public void fillBankAccountDetails(String accountType, String routingNumber, String bankAccountNo, String federalTaxId) {
+    public void fillBankAccountDetails(String accountType, String routingNumber,
+                                       String bankAccountNo, String federalTaxId) {
             selectAccountType(accountType);
             fillRoutingNumber(routingNumber);
             fillBankAccountNumber(bankAccountNo);
             fillFederalTaxId(federalTaxId);
     }
 
-    public void fillRatesAndFees(String perTransactionAuthFee, String perTransactionRefundFee, String qTierUpper, String qTierFee,
-                                 String mTierUpper, String mTierFee, String nonQTierUpper, String nonQTierFee) {
+    public void fillRatesAndFees(String perTransactionAuthFee, String perTransactionRefundFee,
+                                 String qTierUpper, String qTierFee,
+                                 String mTierUpper, String mTierFee,
+                                 String nonQTierUpper, String nonQTierFee) {
             fillPerTransactionFeeAuth(perTransactionAuthFee);
             fillPerTransactionFeeRefund(perTransactionRefundFee);
             fillQualifiedTierBoundary(qTierUpper);
@@ -635,8 +640,7 @@ public class AddNewMerchantPage extends NavigationMenu{
     }
 
     public void addMerchant(String vendorType, MerchantEntity merchantEntity,
-                            String cardPresentUsername, String cardPresentPassword,
-                            String cardNotPresentUsername, String cardNotPresentPassword) throws InterruptedException {
+                            String cardPresentPassword, String cardNotPresentPassword) throws InterruptedException {
         if(vendorType.equalsIgnoreCase("Paypal"))
         {
             selectVendorType(merchantEntity.getVendorType());
@@ -645,9 +649,9 @@ public class AddNewMerchantPage extends NavigationMenu{
             fillCustomerAccountNumber(merchantEntity.getCustomerAccountNo());
             fillMaxTransactionLimit(merchantEntity.getMaxTransactionLimit());
             selectPaypalPartner(merchantEntity.getPaypalPartner());
-            fillPaypalCardNotPresentUsername(cardPresentUsername);
+            fillPaypalCardNotPresentUsername(merchantEntity.getPaypalCardNotPresentUsername());
             fillPaypalCardNotPresentPassword(cardPresentPassword);
-            fillPaypalCardPresentUsername(cardNotPresentUsername);
+            fillPaypalCardPresentUsername(merchantEntity.getPaypalCardPresentUsername());
             fillPaypalCardPresentPassword(cardNotPresentPassword);
         }
     }

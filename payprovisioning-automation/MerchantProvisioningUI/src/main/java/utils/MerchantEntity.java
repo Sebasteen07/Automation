@@ -134,19 +134,15 @@ public class MerchantEntity {
 
     public MerchantEntity(String vendorType, String merchantName, String practiceID,
                           String customerAccountNo, String maxTransactionLimit, String paypalPartner,
-                          String paypalCardNotPresentUsername, String paypalCardNotPresentPassword,
-                          String paypalCardPresentUsername, String paypalCardPresentPassword) {
+                          String paypalCardNotPresentUsername, String paypalCardPresentUsername) {
         this.vendorType = vendorType;
         this.merchantName = merchantName;
         this.practiceID = practiceID;
         this.customerAccountNo = customerAccountNo;
-
         this.maxTransactionLimit = maxTransactionLimit;
         this.paypalPartner = paypalPartner;
         this.paypalCardNotPresentUsername = paypalCardNotPresentUsername;
-        this.paypalCardNotPresentPassword = paypalCardNotPresentPassword;
         this.paypalCardPresentUsername = paypalCardPresentUsername;
-        this.paypalCardPresentPassword = paypalCardPresentPassword;
     }
 }
 
