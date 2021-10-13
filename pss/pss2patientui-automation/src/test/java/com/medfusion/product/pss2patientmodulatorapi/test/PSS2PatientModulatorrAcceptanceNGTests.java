@@ -1179,7 +1179,7 @@ public class PSS2PatientModulatorrAcceptanceNGTests extends BaseTestNG {
         apv.responseCodeValidation(response, 200);	
         apv.responseTimeValidation(response);
 		String patientid = apv.responseKeyValidationJson(response, "id");
-		assertEquals(patientid, propertyData.getProperty("patientid.pm.ng1"), "Patient Id is wrong");
+		assertEquals(patientid, propertyData.getProperty("identify.patientid.pm.ng"), "Patient Id is wrong");
 	}
 	
 	
