@@ -274,19 +274,6 @@ public class PostAPIRequestPMNG extends BaseTestNGWebDriver {
 		return response;
 	}
 
-//	public Response createToken(String baseurl, String b, Map<String, String> Header, String practiceId) {
-//		RestAssured.baseURI = baseurl;
-//		Response response = RestAssured.given().when().headers(Header).body(b).log().all().when()
-//				.post("/createtoken/" + practiceId + "/tokens").then().log().all()
-//				.body("accessToken", Matchers.notNullValue()).extract().response();
-//
-//		JsonPath js = new JsonPath(response.asString());
-//		log("Valid Token -" + js.getString("validToken"));
-//		log("Access Token -" + js.getString("accessToken"));
-//
-//		return response;
-//	}
-
 	public Response appointment(String baseurl, Map<String, String> Header, String practiceId, String appointmentId) {
 		RestAssured.baseURI = baseurl;
 		Response response = given().log().all().when().get(practiceId + "/appointment/" + appointmentId + "/book/test")
