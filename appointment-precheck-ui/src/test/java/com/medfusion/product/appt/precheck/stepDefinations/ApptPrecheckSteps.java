@@ -510,13 +510,16 @@ public class ApptPrecheckSteps extends BaseTest {
 		assertFalse(apptPage.sendRemibderTextColumn());
 	}
 	
-	@Then("verify on appointment dashboard user is able to see Text column under send reminder column")
-	public void verify_on_appointment_dashboard_user_is_able_to_see_text_column_under_send_reminder_column() {
-		log("verify text column will be display under send reminder column on oppointments dashboard");
-		assertTrue(apptPage.sendRemibderTextColumn());
+	@And("from setting dashboard in general enable email check box and enable text checkbox")
+	public void from_setting_dashboard_in_general_enable_email_check_box_and_enable_text_checkbox() throws InterruptedException {
+		mainPage.clickOnSettingTab();
+		log("Enable text checkbox");
+		generalPage.enableAndDisableTextCheckbox();
+		generalPage.clickOnUpdateSettingbutton();
+		mainPage.clickOnAppointmentsTab();
 	}
 	
-	@When("verify on appointment dashboard user is able to see only mail column under broadcast message column and Text column is disappear")
+	@Then("verify on appointment dashboard user is able to see only mail column under broadcast message column and Text column is disappear")
 	public void verify_on_appointment_dashboard_user_is_able_to_see_only_mail_column_under_broadcast_message_column_and_text_column_is_disappear() {
 		log("verify text coloumn will not display under broadcast message coloumn on oppointments dashboard");
 		assertFalse(apptPage.broadcastMessageTextColumn());
