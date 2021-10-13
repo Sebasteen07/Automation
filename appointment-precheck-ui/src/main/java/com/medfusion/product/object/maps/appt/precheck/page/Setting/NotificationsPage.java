@@ -1,3 +1,4 @@
+// Copyright 2021 NXGN Management, LLC. All Rights Reserved.
 package com.medfusion.product.object.maps.appt.precheck.page.Setting;
 
 import org.openqa.selenium.WebDriver;
@@ -72,6 +73,17 @@ public class NotificationsPage extends BaseTest {
 			broadcastMessagingCheckbox.click();
 		}
 		Thread.sleep(10000);
+	}
+	
+	public void enableBroadcastMessagingCheckbox() throws InterruptedException {
+		IHGUtil.waitForElement(driver, 5, broadcastMessagingCheckbox);
+		boolean selected = broadcastMessagingCheckbox.isSelected();
+		 if(!selected){
+			log("Enable 'Broadcast Messaging' checkbox");
+			broadcastMessagingCheckbox.click();
+			Thread.sleep(10000);
+		}
+		
 	}
 
 }

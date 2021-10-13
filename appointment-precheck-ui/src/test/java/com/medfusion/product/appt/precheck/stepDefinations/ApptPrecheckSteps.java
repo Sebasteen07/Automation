@@ -1,3 +1,4 @@
+// Copyright 2021 NXGN Management, LLC. All Rights Reserved.
 package com.medfusion.product.appt.precheck.stepDefinations;
 
 import static org.junit.Assert.assertEquals;
@@ -35,6 +36,7 @@ public class ApptPrecheckSteps extends BaseTest {
 	AppointmentsPage apptPage;
 	NotificationsPage notifPage;
 	CommonMethods commonMethod;
+	GeneralPage generalPage;
 
 	@Given("user lauch practice provisioning url")
 	public void user_lauch_practice_provisioning_url() throws Exception {
@@ -43,6 +45,7 @@ public class ApptPrecheckSteps extends BaseTest {
 		notifPage = new NotificationsPage(driver);
 		mainPage = new ApptPrecheckMainPage(driver);
 		notifPage = new NotificationsPage(driver);
+		generalPage= new GeneralPage();
 		log("Practice provisining url-- " + propertyData.getProperty("practice.provisining.url.ge"));
 		loginPage = new AppointmentPrecheckLogin(driver, propertyData.getProperty("practice.provisining.url.ge"));
 		log("Verify medfusion page");
@@ -485,4 +488,41 @@ public class ApptPrecheckSteps extends BaseTest {
 			log("No total count for send reminder");
 		}
 	}
+	
+	@When("from setting dashboard in general enable email check box and disable text checkbox")
+	public void from_setting_dashboard_in_general_enable_email_check_box_and_disable_text_checkbox() throws InterruptedException {
+		mainPage.clickOnSettingTab();
+		notifPage.clickOnNotificationTab();
+		log("user should be on notification page");
+		assertTrue(notifPage.getNotificationTitle().contains("Notifications"));
+		notifPage.enableBroadcastMessagingCheckbox();
+		notifPage.saveNotification();
+		generalPage.clickOnGeneralTab();
+		log("Disable text checkbox");
+		generalPage.enableAndDisableTextCheckbox();
+		generalPage.clickOnUpdateSettingbutton();
+		mainPage.clickOnAppointmentsTab();
+	}
+	
+	@Then("verify on appointment dashboard user is able to see only mail column under send reminder column and Text column is disappear")
+	public void verify_on_appointment_dashboard_user_is_able_to_see_only_mail_column_under_send_reminder_column_and_text_column_is_disappear() {
+		log("verify text column will not display under send reminder column on oppointments dashboard");
+		assertFalse(apptPage.sendRemibderTextColumn());
+	}
+	
+	@And("from setting dashboard in general enable email check box and enable text checkbox")
+	public void from_setting_dashboard_in_general_enable_email_check_box_and_enable_text_checkbox() throws InterruptedException {
+		mainPage.clickOnSettingTab();
+		log("Enable text checkbox");
+		generalPage.enableAndDisableTextCheckbox();
+		generalPage.clickOnUpdateSettingbutton();
+		mainPage.clickOnAppointmentsTab();
+	}
+	
+	@Then("verify on appointment dashboard user is able to see only mail column under broadcast message column and Text column is disappear")
+	public void verify_on_appointment_dashboard_user_is_able_to_see_only_mail_column_under_broadcast_message_column_and_text_column_is_disappear() {
+		log("verify text coloumn will not display under broadcast message coloumn on oppointments dashboard");
+		assertFalse(apptPage.broadcastMessageTextColumn());
+	}
+	
 }
