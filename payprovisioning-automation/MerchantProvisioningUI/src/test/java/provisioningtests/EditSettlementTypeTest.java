@@ -55,7 +55,7 @@ public class EditSettlementTypeTest extends ProvisioningBaseTest {
 		merchantDetailsPageNew.verifyPageTitle();
 		merchantDetailsPageNew.waitToCheckEditRatesContractButton();
 
-		logStep("Going to verifysettment edit of settlement type");
+		logStep("Going to verify settlement type after edit operation");
 		merchantDetailsPageNew.verifySettlementType(settlementType);
 
 	}
