@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<suite name = "Medfusion" verbose = "2" >
+<listeners>
+  <listener class-name="com.intuit.ifs.csscat.core.TestValidationErrorListener" />
+  <listener class-name="org.uncommons.reportng.HTMLReporter" />
+  <listener class-name="org.uncommons.reportng.JUnitXMLReporter" />
+</listeners>
+	<test name="payreporting-PaymentsAcceptanceTests">
+		<classes>
+			<class name="com.medfusion.payreporting.tests.ReportingPaymentTests" />
+			<methods>
+					<include name="testVCSPayEmailElement" />/>														
+			</methods>
+			 <class name="com.medfusion.funding.tests.FundingTests"/>
+		</classes>
+		
+		
+	</test>
+</suite>
