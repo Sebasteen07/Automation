@@ -525,4 +525,39 @@ public class ApptPrecheckSteps extends BaseTest {
 		assertFalse(apptPage.broadcastMessageTextColumn());
 	}
 	
+	@When("from setting dashboard in general text checkbox is enable and email checkbox is disable")
+	public void from_setting_dashboard_in_general_text_checkbox_is_enable_and_email_checkbox_is_disable()  throws InterruptedException {
+		mainPage.clickOnSettingTab();
+		notifPage.clickOnNotificationTab();
+		log("user should be on notification page");
+		assertTrue(notifPage.getNotificationTitle().contains("Notifications"));
+		notifPage.enableBroadcastMessagingCheckbox();
+		notifPage.saveNotification();
+		generalPage.clickOnGeneralTab();
+		log("Disable email checkbox");
+		generalPage.enableAndDisableEmailCheckbox();
+		generalPage.clickOnUpdateSettingbutton();
+		mainPage.clickOnAppointmentsTab();
+	}
+	
+	@Then("verify on appointment dashboard user is able to see only text column under broadcast message column and mail column is disappear")
+	public void verify_on_appointment_dashboard_user_is_able_to_see_only_text_column_under_broadcast_message_column_and_mail_column_is_disappear() throws InterruptedException {
+		log("verify email column will not display under broadcast message column on oppointments dashboard");
+		assertTrue(apptPage.visibilityBroadcastMessageTextColumn());
+		assertFalse(apptPage.broadcastMessageEmailColumn());
+	}
+	@And("from setting dashboard in general enable email check box")
+	public void from_setting_dashboard_in_general_enable_email_check_box() throws InterruptedException {
+		mainPage.clickOnSettingTab();
+		log("Enable text checkbox");
+		generalPage.enableAndDisableEmailCheckbox();
+		generalPage.clickOnUpdateSettingbutton();
+	}
+	
+	@Then("verify on appointment dashboard user is able to see only text column under send reminder column and mail column is disappear")
+	public void verify_on_appointment_dashboard_user_is_able_to_see_only_text_column_under_send_reminder_column_and_mail_column_is_disappear() {
+		log("verify email column will not display under send reminder message column on oppointments dashboard");
+		assertTrue(apptPage.visibilitySendReminderTextColumn());
+		assertFalse(apptPage.sendReminderEmailColumn());
+	}
 }

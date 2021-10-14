@@ -29,6 +29,9 @@ public class GeneralPage extends BaseTest {
 	@FindBy(how = How.XPATH, using = "//*[text()='General']")
 	private WebElement generalTab;
 	
+	@FindBy(how = How.CSS, using = "#react-tabs-1 > section > div > div > div > h3:nth-child(1) > span")
+	private WebElement emailCheckbox;
+	
 	private static GeneralPage generalPage = new GeneralPage();
 
 	public GeneralPage() {
@@ -72,5 +75,18 @@ public class GeneralPage extends BaseTest {
 		generalTab.click();
 		log("Switch on general tab");
 		Thread.sleep(5000);
+	}
+	
+	public void enableAndDisableEmailCheckbox() {
+		driver.navigate().refresh();
+		IHGUtil.waitForElement(driver, 10, emailCheckbox);
+		boolean selected = emailCheckbox.isSelected();
+		if (selected) {
+			emailCheckbox.click();
+			log("Deselect Notification checkbox");
+		}else if(!selected){
+			emailCheckbox.click();
+			log("Select Notification checkbox");
+		}
 	}
 }
