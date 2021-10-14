@@ -44,7 +44,7 @@ public class EditSettlementTypeTest extends ProvisioningBaseTest {
 		merchantDetailsPage.clickOnRatesNContractButton();
 		driver.manage().timeouts().implicitlyWait(8, TimeUnit.SECONDS);
 
-		// Thread.sleep(10000);
+		
 		logStep("Going to change settlemet type");
 		EditRatesAndContractPage editRatesAndContractPage = PageFactory.initElements(driver,
 				EditRatesAndContractPage.class);
@@ -65,8 +65,8 @@ public class EditSettlementTypeTest extends ProvisioningBaseTest {
 		testData = new PropertyFileLoader();
 		return new Object[][] { { testData.getProperty("settlement.type.monthly") },
 				{ testData.getProperty("settlement.type.daily") } };
-		// }
+		
 	}
-//	
+
 
 }

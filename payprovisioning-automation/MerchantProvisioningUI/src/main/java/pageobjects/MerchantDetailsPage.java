@@ -118,6 +118,7 @@ public class MerchantDetailsPage extends NavigationMenu {
 	public void verifyPageTitle() {
 
 		String title = this.driver.getTitle();
+		assertNotNull(title);
 
 	}
 
