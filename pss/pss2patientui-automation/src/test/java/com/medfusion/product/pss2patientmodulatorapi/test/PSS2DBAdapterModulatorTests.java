@@ -118,6 +118,34 @@ public class PSS2DBAdapterModulatorTests extends BaseTestNG {
 		String message = apv.responseKeyValidationJson(response, "message");
 		assertTrue(message.contains("Required request body is missing"));
 	}
+	
+	@Test(enabled = true, groups = { "APItest" }, retryAnalyzer = RetryAnalyzer.class)
+	public void testAnnouncementSave() throws NullPointerException, Exception {
+		
+		String b=payloadDB.saveAnnouncementPayload();
+
+		logStep("Verifying the response");
+		Response response = postAPIRequestDB.saveAnnouncement(practiceid, b);
+		apv.responseCodeValidation(response, 200);
+		apv.responseTimeValidation(response);
+	}
+	
+	@Test(enabled = true, groups = { "APItest" }, retryAnalyzer = RetryAnalyzer.class)
+	public void testAnnouncement_Create_Delete() throws NullPointerException, Exception {
+		
+		String b=payloadDB.createAnnouncementPayload();
+
+		logStep("Verifying the response");
+		Response response = postAPIRequestDB.saveAnnouncement(practiceid, b);
+		apv.responseCodeValidation(response, 200);
+		apv.responseTimeValidation(response);
+		
+		String ann_id=apv.responseKeyValidationJson(response, "id");
+		log("ann_id- "+ann_id);
+		Response delete_Response=postAPIRequestDB.deleteAnnouncement(practiceid, Integer.parseInt(ann_id));
+		apv.responseCodeValidation(delete_Response, 200);
+		apv.responseTimeValidation(delete_Response);
+	}
 
 	@Test(enabled = true, groups = { "APItest" }, retryAnalyzer = RetryAnalyzer.class)
 	public void testAnnouncementDeleteInvalid() throws NullPointerException, Exception {
@@ -230,6 +258,8 @@ public class PSS2DBAdapterModulatorTests extends BaseTestNG {
 		log("Patient Id- " + apv.responseKeyValidationJson(response, "patientId"));
 	}
 	
+	//Appointment Controller
+	
 	@Test(enabled = true, groups = { "APItest" }, retryAnalyzer = RetryAnalyzer.class)
 	public void testAppointmentsForPracticeGet() throws NullPointerException, Exception {
 
@@ -254,17 +284,65 @@ public class PSS2DBAdapterModulatorTests extends BaseTestNG {
 	}
 	
 	@Test(enabled = true, groups = { "APItest" }, retryAnalyzer = RetryAnalyzer.class)
+	public void testAppointment_SaveAppointment() throws NullPointerException, Exception {
+
+		String b = payloadDB.saveAppointmentPayload();
+		Response response = postAPIRequestDB.saveAppointment(practiceid, b);
+		apv.responseCodeValidation(response, 200);
+		apv.responseTimeValidation(response);
+	}
+	
+	@Test(enabled = true, groups = { "APItest" }, retryAnalyzer = RetryAnalyzer.class)
+	public void testAppointment_UpdateAppointment() throws NullPointerException, Exception {
+
+		String b = payloadDB.updateAppointmentPayload();
+		Response response = postAPIRequestDB.updateAppointment(practiceid, b);
+		apv.responseCodeValidation(response, 200);
+		apv.responseTimeValidation(response);
+	}
+	
+	@Test(enabled = true, groups = { "APItest" }, retryAnalyzer = RetryAnalyzer.class)
+	public void testAppointment_getAppointmentByExtApptIdForPractice() throws NullPointerException, Exception {
+
+		Response response = postAPIRequestDB.getAppointmentsForPractice(practiceid);
+		apv.responseCodeValidation(response, 200);
+		
+		JSONArray arr = new JSONArray(response.body().asString());
+
+		String extapptid = arr.getJSONObject(1).getString("extApptId");
+
+		Response extApptResponse = postAPIRequestDB.getAppointmentByExtApptIdForPractice(practiceid, extapptid);
+		apv.responseCodeValidation(extApptResponse, 200);
+		apv.responseTimeValidation(extApptResponse);
+		apv.responseKeyValidation(extApptResponse, "patientId");
+		apv.responseKeyValidationJson(extApptResponse, "id");
+
+	}
+	
+	@Test(enabled = true, groups = { "APItest" }, retryAnalyzer = RetryAnalyzer.class)
 	public void testAppointmentsByPatientIdForPracticeGet() throws NullPointerException, Exception {
 
 		String patientid = propertyData.getProperty("patientid.upcommingapp.id");
 		String currentdate = pssPatientUtils.sampleDateTime("MM/dd/yyyy");
 		String enddate= pssPatientUtils.createFutureDate(currentdate, 60);
+		String startdate=propertyData.getProperty("patientid.upcommingapp.startdate");
 
 		Response response = postAPIRequestDB.patientappointmentsbyrange(practiceid, patientid,
-				currentdate, enddate);
+				startdate, enddate);
 		apv.responseCodeValidation(response, 200);
 		apv.responseTimeValidation(response);
-		apv.responseKeyValidation(response, "patientId");
+		apv.responseKeyValidation(response, "patientId");		
+		
+		JSONArray arr = new JSONArray(response.body().asString());
+
+		String extapptid = arr.getJSONObject(0).getString("extApptId");
+		log("extApptId-"+extapptid);
+
+		Response extApptResponse = postAPIRequestDB.getAppointmentByExtApptIdForPractice(practiceid, extapptid);
+		apv.responseCodeValidation(extApptResponse, 200);
+		apv.responseTimeValidation(extApptResponse);
+		apv.responseKeyValidation(extApptResponse, "patientId");
+		apv.responseKeyValidationJson(extApptResponse, "id");
 	}
 	
 	//Appointment Type Config Controller
@@ -574,10 +652,11 @@ public class PSS2DBAdapterModulatorTests extends BaseTestNG {
 	public void testBook_getBooksByLocation() throws NullPointerException, Exception {		
 
 		String locationid = propertyData.getProperty("bookapttype.location.id.db");
-		Response response = postAPIRequestDB.getBooksByLocation(practiceid,locationid);
+		Response response = postAPIRequestDB.getBooksByLocation(practiceid,Integer.parseInt(locationid));
 		apv.responseCodeValidation(response, 200);
 		apv.responseTimeValidation(response);
 	}
+	
 	@Test(enabled = true, groups = { "APItest" }, retryAnalyzer = RetryAnalyzer.class)
 	public void testBook_getBooksByLocationAndAppointmentTypes() throws NullPointerException, Exception {
 		
@@ -654,7 +733,7 @@ public class PSS2DBAdapterModulatorTests extends BaseTestNG {
 	public void testCareTeamBook_getBookAssociatedToCareTeam() throws NullPointerException, Exception {
 		
 		String careteamid=propertyData.getProperty("careteambook.careteam.id.db");
-		Response response = postAPIRequestDB.getBookAssociatedToCareTeam(practiceid, careteamid);
+		Response response = postAPIRequestDB.getBookAssociatedToCareTeam(practiceid, Integer.parseInt(careteamid));
 		apv.responseCodeValidation(response, 200);
 		apv.responseKeyValidationJson(response, "careteam");
 		apv.responseKeyValidationJson(response, "id");
@@ -663,7 +742,33 @@ public class PSS2DBAdapterModulatorTests extends BaseTestNG {
 		apv.responseTimeValidation(response);
 	}
 	
+	@Test(enabled = true, groups = { "APItest" }, retryAnalyzer = RetryAnalyzer.class)
+	public void testCareTeamBook_save_get_delete() throws NullPointerException, Exception {
+		
+		String b=payloadDB.careTeamBookPayload();
+		
+		Response saveResponse = postAPIRequestDB.associateCareTeamToBook(practiceid, b);
+		apv.responseCodeValidation(saveResponse, 200);
+		apv.responseTimeValidation(saveResponse);
+		
+		JSONArray arr = new JSONArray(saveResponse.body().asString());
+
+		int careteamid = arr.getJSONObject(0).getJSONObject("careTeam").getInt("id");
+		log("Care Team Id- "+careteamid);
+		String bookid=propertyData.getProperty("careteambook.boook.id.db") ;
+		log("Book Id- "+bookid);
+
+		Response response = postAPIRequestDB.getBookAssociatedToCareTeam(practiceid, careteamid);
+		apv.responseCodeValidation(response, 200);
+		
+		Response deleteResponse= postAPIRequestDB.deleteCareTeamBook(practiceid, careteamid, Integer.parseInt(bookid));
+		apv.responseCodeValidation(deleteResponse, 200);
+		apv.responseTimeValidation(deleteResponse);
+	}
 	
+	
+	
+	//care-team-controller
 	
 	@Test(enabled = true, groups = { "APItest" }, retryAnalyzer = RetryAnalyzer.class)
 	public void testCareTeam_getCareteamsForPracticel() throws NullPointerException, Exception {
@@ -672,16 +777,42 @@ public class PSS2DBAdapterModulatorTests extends BaseTestNG {
 		apv.responseCodeValidation(response, 200);
 		apv.responseTimeValidation(response);
 	}
+	
 	@Test(enabled = true, groups = { "APItest" }, retryAnalyzer = RetryAnalyzer.class)
 	public void testCareTeam_getCareTeamById() throws NullPointerException, Exception {
 		
 		String careteamid=propertyData.getProperty("careteambook.careteam.id.db");
-		Response response = postAPIRequestDB.getCareTeamById(practiceid, careteamid);
+		Response response = postAPIRequestDB.getCareTeamById(practiceid, Integer.parseInt(careteamid));
 		apv.responseCodeValidation(response, 200);
 		apv.responseKeyValidationJson(response, "createdUserId");
 		apv.responseKeyValidationJson(response, "id");
 		apv.responseKeyValidationJson(response, "name");
 		apv.responseTimeValidation(response);
+	}
+	
+	@Test(enabled = true, groups = { "APItest" }, retryAnalyzer = RetryAnalyzer.class)
+	public void testCareTeam_save_update_delete() throws NullPointerException, Exception {
+		
+		String b=payloadDB.createCareTeam();
+		String c=payloadDB.saveCareTeamPayload();
+		
+		Response saveResponse=postAPIRequestDB.saveCareTeam(practiceid, c);
+		apv.responseCodeValidation(saveResponse, 200);
+		apv.responseTimeValidation(saveResponse);
+		
+		Response createResponse=postAPIRequestDB.saveCareTeam(practiceid, b);
+		apv.responseCodeValidation(createResponse, 200);
+		apv.responseTimeValidation(createResponse);
+		
+		JSONArray arr = new JSONArray(createResponse.body().asString());
+		int careteamid = arr.getJSONObject(0).getInt("id");
+
+		Response response = postAPIRequestDB.getCareTeamById(practiceid, careteamid);
+		apv.responseCodeValidation(response, 200);
+		
+		Response deleteResponse=postAPIRequestDB.deleteCareTeamById(practiceid, careteamid);
+		apv.responseCodeValidation(deleteResponse, 200);
+		apv.responseTimeValidation(deleteResponse);
 	}
 	
 	//Category App Type Controller
@@ -706,6 +837,10 @@ public class PSS2DBAdapterModulatorTests extends BaseTestNG {
 		apv.responseTimeValidation(response);
 	}
 	
+	
+	
+	//Category App Type Location Controller
+	
 	@Test(enabled = true, groups = { "APItest" }, retryAnalyzer = RetryAnalyzer.class)
 	public void testCatgoryAppType_getLocationsForCategoryAppType() throws NullPointerException, Exception {
 		
@@ -715,6 +850,8 @@ public class PSS2DBAdapterModulatorTests extends BaseTestNG {
 		apv.responseCodeValidation(response, 200);
 		apv.responseTimeValidation(response);
 	}
+	
+	
 	
 	//Category Controller
 	
@@ -751,6 +888,72 @@ public class PSS2DBAdapterModulatorTests extends BaseTestNG {
 		apv.responseCodeValidation(response, 200);
 		apv.responseTimeValidation(response);
 	}
+	
+	@Test(enabled = true, groups = { "APItest" }, retryAnalyzer = RetryAnalyzer.class)
+	public void testCategory_save_get_delete() throws NullPointerException, Exception {
+		
+		String b= payloadDB.saveCategory();
+		
+		Response saveResponse=postAPIRequestDB.saveCategory(practiceid, b);
+		apv.responseCodeValidation(saveResponse, 200);
+		
+		JSONArray arr = new JSONArray(saveResponse.body().asString());
+
+		int categoryid = arr.getJSONObject(0).getInt("id");
+		
+		Response deleteResponse = postAPIRequestDB.deleteCategory(practiceid, categoryid);
+		apv.responseCodeValidation(deleteResponse, 200);
+		apv.responseTimeValidation(deleteResponse);
+	}
+	
+	@Test(enabled = true, groups = { "APItest" }, retryAnalyzer = RetryAnalyzer.class)
+	public void testCategory_reorderCategory() throws NullPointerException, Exception {
+		
+		String b=payloadDB.reorderPayload();
+		
+		Response response = postAPIRequestDB.reorderCategory(practiceid, b);
+		apv.responseCodeValidation(response, 200);
+		apv.responseTimeValidation(response);
+	}
+	
+	@Test(enabled = true, groups = { "APItest" }, retryAnalyzer = RetryAnalyzer.class)
+	public void testCategory_getVisitReason() throws NullPointerException, Exception {
+		
+		String b=payloadDB.visitReasonPayload();
+		
+		Response response = postAPIRequestDB.getVisitReason(practiceid, b);
+		apv.responseCodeValidation(response, 200);
+		apv.responseTimeValidation(response);
+	}
+	
+	//Category Specialty Controller
+	
+	@Test(enabled = true, groups = { "APItest" }, retryAnalyzer = RetryAnalyzer.class)
+	public void testCategory_Specialty_Save_delete() throws NullPointerException, Exception {
+		
+		String b=payloadDB.categoryspecialtyPayload();
+		String categoryid=propertyData.getProperty("categoryspecialty.category.id.db");
+		String specialtyid=propertyData.getProperty("categoryspecialty.specialty.id.db");
+		
+		Response response = postAPIRequestDB.saveCategorySpecialty(practiceid, b);
+		apv.responseCodeValidation(response, 200);
+		apv.responseTimeValidation(response);
+		
+		Response deleteResponse = postAPIRequestDB.deleteCategorySpecialty(practiceid,categoryid, specialtyid);
+		apv.responseCodeValidation(deleteResponse, 200);
+		apv.responseTimeValidation(deleteResponse);		
+	}
+	
+	@Test(enabled = true, groups = { "APItest" }, retryAnalyzer = RetryAnalyzer.class)
+	public void testCategory_getSpecialtiesAssociatedToCategory() throws NullPointerException, Exception {
+		
+		String b=payloadDB.getSpecialtiesAssociatedToCategoryPayload();
+		
+		Response response = postAPIRequestDB.getSpecialtiesAssociatedToCategory(practiceid, b);
+		apv.responseCodeValidation(response, 200);
+		apv.responseTimeValidation(response);
+	}
+
 	
 	public void testStateGET() throws NullPointerException, Exception {
 
