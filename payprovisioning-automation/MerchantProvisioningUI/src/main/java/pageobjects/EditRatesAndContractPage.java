@@ -14,7 +14,9 @@ import org.openqa.selenium.support.FindAll;
 import org.openqa.selenium.support.FindBy;
 import org.openqa.selenium.support.How;
 import org.openqa.selenium.support.PageFactory;
+import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.openqa.selenium.support.ui.Select;
+import org.openqa.selenium.support.ui.WebDriverWait;
 import org.testng.Assert;
 
 import com.intuit.ifs.csscat.core.utils.Log4jUtil;
@@ -44,10 +46,11 @@ public class EditRatesAndContractPage extends NavigationMenu {
 
 		Select sec = new Select(feeSettelementTypeDropDown);
 		sec.selectByVisibleText(settlementType);
-		driver.manage().timeouts().implicitlyWait(2, TimeUnit.SECONDS);
+		driver.manage().timeouts().implicitlyWait(3, TimeUnit.SECONDS);
 
 		updateRateContractButton.click();
-		Thread.sleep(10000);
+		
+	
 
 	}
 

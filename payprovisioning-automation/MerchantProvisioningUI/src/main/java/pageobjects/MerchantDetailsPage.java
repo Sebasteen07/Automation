@@ -227,6 +227,8 @@ public class MerchantDetailsPage extends NavigationMenu {
 	public void waitToCheckEditRatesContractButton() {
 		WebDriverWait wait = new WebDriverWait(driver, 30);
 		wait.until(ExpectedConditions.visibilityOf(editRatesContractButton));
+		wait.until(ExpectedConditions.visibilityOf(settlement));
+	
 	}
 
 }
