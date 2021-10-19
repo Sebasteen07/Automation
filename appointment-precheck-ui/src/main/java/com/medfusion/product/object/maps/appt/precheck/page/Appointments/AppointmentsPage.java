@@ -150,7 +150,22 @@ public class AppointmentsPage extends BasePageObject {
 
 	@FindBy(how = How.XPATH, using = "//*[@class='rt-th precheck-header'][4]")
 	private WebElement broadcastTextColoumn;
+	
+	@FindBy(how = How.XPATH, using = "//*[@class='rt-th precheck-header first-reminders-column'][1]")
+	private WebElement reminderEmailColumn;
+	
+	@FindBy(how = How.XPATH, using = "//*[@class='rt-th precheck-header first-reminders-column'][2]")
+	private WebElement broadcastEmailColoumn;
 
+	@FindBy(how = How.XPATH, using = "//*[@id=\"page-content-container\"]/div/div/div/div[1]/div[2]/div/div[17]/div")
+	private WebElement broadcastMessageTextColoumn;
+	
+	@FindBy(how = How.XPATH, using = "//*[@id=\"page-content-container\"]/div/div/div/div[1]/div[2]/div/div[16]/div")
+	private WebElement sendReminderTextColoumn;
+	
+	@FindBy(how = How.XPATH, using = "//*[text()='Emails']")
+	private WebElement sendReminderEmailColumn;
+	
 	public AppointmentsPage(WebDriver driver) {
 		super(driver);
 		PageFactory.initElements(driver, this);
@@ -546,6 +561,51 @@ public class AppointmentsPage extends BasePageObject {
 			return true;
 		} catch (NoSuchElementException e) {
 			log("Broadcast text coloumn is not displayed");
+			return false;
+		}
+	}
+	
+	public boolean broadcastMessageEmailColumn() {
+		try {
+			broadcastEmailColoumn.isDisplayed();
+			log("Broadcast Email coloumn is displayed");
+			return true;
+		} catch (NoSuchElementException e) {
+			log("Broadcast Email coloumn is not displayed");
+			return false;
+		}
+	}
+	
+	public boolean visibilityBroadcastMessageTextColumn() {
+		try {
+			IHGUtil.waitForElement(driver, 5, broadcastMessageTextColoumn);
+			broadcastMessageTextColoumn.isDisplayed();
+			log("Broadcast text coloumn is displayed");
+			return true;
+		} catch (NoSuchElementException e) {
+			log("Broadcast text coloumn is not displayed");
+			return false;
+		}
+	}
+	public boolean visibilitySendReminderTextColumn() {
+		try {
+			IHGUtil.waitForElement(driver, 5, sendReminderTextColoumn);
+			sendReminderTextColoumn.isDisplayed();
+			log("Broadcast text coloumn is displayed");
+			return true;
+		} catch (NoSuchElementException e) {
+			log("Broadcast text coloumn is not displayed");
+			return false;
+		}
+	}
+	
+	public boolean sendReminderEmailColumn() {
+		try {
+			sendReminderEmailColumn.isDisplayed();
+			log("Broadcast Email coloumn is displayed");
+			return true;
+		} catch (NoSuchElementException e) {
+			log("Broadcast Email coloumn is not displayed");
 			return false;
 		}
 	}
