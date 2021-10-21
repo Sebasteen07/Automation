@@ -21,11 +21,6 @@
 			<name>IHG-nexus</name>
 			<url>http://maven.qhg.local/nexus/content/groups/qhg-dev/</url>
 		</repository>
-		<repository>
-			<id>nextgen-pxp-mf-build--pxp-mf</id>
-			<name>nextgen-pxp-mf-build--pxp-mf Repository Mirror</name>
-			<url>https://nextgen-pxp-mf-build-997401518295.d.codeartifact.us-east-2.amazonaws.com/maven/pxp-mf/</url>
-		</repository>
 	</repositories>
 
 	<dependencies>
