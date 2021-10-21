@@ -15,6 +15,7 @@ import java.io.IOException;
 import java.math.BigInteger;
 import java.net.URL;
 
+import com.medfusion.funding.pojo.Reports;
 import org.apache.http.HttpResponse;
 import org.apache.http.client.ClientProtocolException;
 import org.apache.http.client.HttpClient;
@@ -29,6 +30,7 @@ import com.datastax.driver.core.Row;
 import com.datastax.driver.core.Session;
 import com.intuit.ifs.csscat.core.BaseTestNG;
 import com.medfusion.transaction.details.TransactionEntity;
+import org.springframework.util.Assert;
 
 public class IBFService extends BaseTestNG {
 	/*
@@ -164,6 +166,15 @@ public class IBFService extends BaseTestNG {
 				.one();
 		assertTrue((ledgertable == null), "Ledger table not cleared");
 
+	}
+
+	public void verifyGetReportResponse(Reports report) {
+		Assert.notNull(report.getApiCustomerName());
+		Assert.isTrue(report.getApiCustomerName().equalsIgnoreCase("NG Pay") ||
+				report.getApiCustomerName().equalsIgnoreCase("NG Enterprise") ||
+				report.getApiCustomerName().equalsIgnoreCase("NG Office") ||
+				report.getApiCustomerName().equalsIgnoreCase("Test Pay Customer"));
+		Assert.notNull(report.getCountOfMMIDs());
 	}
 
 }

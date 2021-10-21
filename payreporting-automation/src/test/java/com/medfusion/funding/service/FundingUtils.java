@@ -4,10 +4,13 @@ package com.medfusion.funding.service;
 import java.io.FileInputStream;
 import java.io.IOException;
 import java.io.InputStream;
+import java.util.List;
 import java.util.Properties;
-
+import static io.restassured.RestAssured.given;
 import com.intuit.ifs.csscat.core.BaseTestNG;
 import com.medfusion.common.utils.PropertyFileLoader;
+import com.medfusion.funding.pojo.Reports;
+import io.restassured.response.Response;
 
 public class FundingUtils extends BaseTestNG {
 	public static PropertyFileLoader testData;
@@ -50,4 +53,21 @@ public class FundingUtils extends BaseTestNG {
 
 	}
 
+	public Response getReportsYearly(String url, String financialYearStart, String financialYearEnd) {
+		return given().queryParam("financialYearStart", financialYearStart)
+				.queryParam("financialYearEnd", financialYearEnd).when().get(url)
+				.then().and().extract().response();
+	}
+
+	public Response getReportsQuarterly(String url, String quarter, String financialYearStart, String financialYearEnd) {
+		return given().queryParam("quarter", quarter).queryParam("financialYearStart", financialYearStart)
+				.queryParam("financialYearEnd", financialYearEnd).when().get(url)
+				.then().extract().response();
+	}
+
+	public Response getReportsMonthly(String url, String month, String year) {
+		return given().queryParam("month", month)
+				.queryParam("year", year).when().get(url)
+				.then().extract().response();
+	}
 }
