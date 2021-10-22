@@ -261,14 +261,9 @@ public class PSS2DBAdapterModulatorTests extends BaseTestNG {
 	public void testUpcomingAppointmentsByPatientIdForPracticeGet01() throws NullPointerException, Exception {
 
 		String patientid = propertyData.getProperty("patientid.upcommingapp.id");
-<<<<<<< HEAD
 		String currentdate = pssPatientUtils.sampleDateTime("MM/dd/yyyy");
+		Response response = postAPIRequestDB.getUpcomingAppointmentsByPatientIdForPractice(practiceid, patientid,
 
-		Response response = postAPIRequestDB.getUpcomingAppointmentsByPatientIdForPractice(practiceid, patientid,
-=======
-	    String currentdate = pssPatientUtils.sampleDateTime("MM/dd/yyyy");
-		Response response = postAPIRequestDB.getUpcomingAppointmentsByPatientIdForPractice(practiceid, patientid,
->>>>>>> f56f2e8f26cb5696b0f667129e8226fff5f2f8e0
 				currentdate);
 		apv.responseCodeValidation(response, 200);
 		apv.responseTimeValidation(response);
