@@ -107,8 +107,7 @@ public class MerchantSearchPage extends NavigationMenu {
 	public void viewDetailsButtonClick() throws InterruptedException {
 
 		viewDetailsButton.click();
-		// Thread.sleep(5000);
-
+		
 	}
 
 	public void duplicateRecords() {
