@@ -25,48 +25,53 @@ data "aws_iam_policy_document" "cwevent_assume_role_policy" {
   }
 }
 
-# CodeBuild project needs the below IAM permissions to get authentication token from CodeArtifact and upload packages to it
-data "aws_iam_policy_document" "codebuild_inline" {
+data "aws_iam_policy_document" "common_codepipeline_permissions" {
 
   statement {
-    sid     = "StsPermissions"
+    sid = "S3bucket"
+
     actions = [
-      "sts:GetServiceBearerToken"
+      "s3:PutObject",
+      "s3:GetBucketPolicy",
+      "s3:GetObject",
+      "s3:GetObjectVersion",
+      "s3:ListBucket",
+      "s3:GetBucketVersioning",
     ]
-    resources = ["*"]
-    condition {
-      test     = "StringEquals"
-      variable = "sts:AWSServiceName"
-      values   = ["codeartifact.amazonaws.com"]
-    }
+
+    resources = [
+      "${local.pipeline_artifact_bucket_arn}",
+      "${local.pipeline_artifact_bucket_arn}/*",
+    ]
   }
 
   statement {
-    sid     = "CodeArtifactDomainPermissions"
+    sid = "kms"
+
     actions = [
-      "codeartifact:GetAuthorizationToken"
+      "kms:Decrypt",
+      "kms:Encrypt",
+      "kms:GenerateDataKey",
+      "kms:DescribeKey",
+      "kms:ReEncrypt*",
     ]
-    resources = ["arn:aws:codeartifact:${data.aws_region.current.name}:${data.aws_caller_identity.current.account_id}:domain/${var.codeartifact_maven_domain}"]
+
+    resources = [
+      local.kms_key_id,
+    ]
   }
 
   statement {
-    sid     = "CodeArtifactRepositoryPermissions"
-    actions = [
-      "codeartifact:DescribeRepository",
-      "codeartifact:ReadFromRepository",
-      "codeartifact:GetRepositoryEndpoint",
-      "codeartifact:UpdateRepository"
-    ]
-    resources = ["arn:aws:codeartifact:${data.aws_region.current.name}:${data.aws_caller_identity.current.account_id}:repository/${var.codeartifact_maven_domain}/${var.codeartifact_maven_repo}"]
-  }
+    sid = "Source"
 
-  statement {
-    sid     = "CodeArtifactPackagePermissions"
     actions = [
-      "codeartifact:UpdatePackageVersionsStatus",
-      "codeartifact:PublishPackageVersion",
-      "codeartifact:PutPackageMetadata"
+      "codecommit:Get*",
+      "codecommit:UploadArchive",
     ]
-    resources = ["arn:aws:codeartifact:${data.aws_region.current.name}:${data.aws_caller_identity.current.account_id}:package/${var.codeartifact_maven_domain}/${var.codeartifact_maven_repo}/*/*/*"]
+
+    resources = [
+      data.aws_codecommit_repository.qa_automation.arn
+    ]
   }
 }
+

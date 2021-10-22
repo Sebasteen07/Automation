@@ -13,21 +13,15 @@ phases:
            echo "Unable to generate CodeArtifact auth token ... exiting"
            exit 1;
          fi
-      - echo '<settings xmlns="http://maven.apache.org/SETTINGS/1.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/SETTINGS/1.0.0 https://maven.apache.org/xsd/settings-1.0.0.xsd"> 
-                <localRepository/> 
-                <interactiveMode/> 
-                <offline/> 
-                <pluginGroups/> 
-                <server> 
-                    <id>nextgen-pxp-mf-build--pxp-mf</id> 
-                    <username>aws</username> 
-                    <password>$${env.CODEARTIFACT_AUTH_TOKEN}</password> 
-                </server> 
-                <mirrors/> 
-                <proxies/> 
-                <profiles/> 
-                <activeProfiles/> 
-              </settings> 
+      - echo -e '<settings xmlns="http://maven.apache.org/SETTINGS/1.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/SETTINGS/1.0.0 https://maven.apache.org/xsd/settings-1.0.0.xsd">\n 
+                \t<servers> \n
+                \t\t<server> \n
+                \t\t\t<id>nextgen-pxp-mf-build--pxp-mf</id> \n
+                \t\t\t<username>aws</username> \n
+                \t\t\t<password>$${env.CODEARTIFACT_AUTH_TOKEN}</password> \n
+                \t\t</server> \n
+                \t</servers> \n
+              </settings> \n
           ' >> ~/.m2/settings.xml
       - echo '********************************************************************************' && echo 'Showing contents of settings.xml' && echo '********************************************************************************' && cat ~/.m2/settings.xml
   build:
