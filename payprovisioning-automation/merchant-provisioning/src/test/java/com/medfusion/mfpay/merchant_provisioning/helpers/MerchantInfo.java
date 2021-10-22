@@ -36,8 +36,8 @@ public class MerchantInfo extends BaseRest {
 				testData.getProperty("per.transaction.authfee"), testData.getProperty("per.transaction.refund.fee"),
 				testData.getProperty("qfee.percent"), testData.getProperty("qupper.percent"));
 
-		return given().spec(requestSpec).body(merchantdetails).when().post(ProvisioningUtils.postMerchant).then()
-				.spec(responseSpec).and().extract().response();
+		return given().spec(requestSpec).log().all().body(merchantdetails).when().post(ProvisioningUtils.postMerchant)
+				.then().spec(responseSpec).and().extract().response();
 
 	}
 
@@ -102,6 +102,38 @@ public class MerchantInfo extends BaseRest {
 				.spec(responseSpec).extract().response();
 		ContractedRates readJSON = objectMapper.readValue(response.asString(), ContractedRates.class);
 		return response;
+	}
+
+	public Response createMerchantDiffAccounts() throws IOException {
+
+		testData = new PropertyFileLoader();
+		Map<String, Object> merchantdetails = Merchant.createMerchantAccMap((testData.getProperty("merchant.name")),
+				testData.getProperty("doing.business.as"), testData.getProperty("external.merchantid"),
+				testData.getProperty("customer.account.number"), testData.getProperty("merchant.phonenumber"),
+				testData.getProperty("transaction.limit"), testData.getProperty("primary.firstname"),
+				testData.getProperty("primary.lastname"), testData.getProperty("primary.phonenumber"),
+				testData.getProperty("primary.email"), testData.getProperty("merchant.address1"),
+				testData.getProperty("merchant.city"), testData.getProperty("merchant.state"),
+				testData.getProperty("merchant.zip"), testData.getProperty("account.number"),
+				testData.getProperty("separate.funding.account"), testData.getProperty("routing.number"),
+				testData.getProperty("federal.taxid"), testData.getProperty("business.established.date"),
+				testData.getProperty("business.type"), testData.getProperty("mcccode"),
+				testData.getProperty("ownership.type"), testData.getProperty("website.url"),
+				testData.getProperty("amex.percent"), testData.getProperty("mid.qfee.percent"),
+				testData.getProperty("mid.qupper.fee.percent"), testData.getProperty("nqfee.percent"),
+				testData.getProperty("nqupper.fee.percent"), testData.getProperty("per.transaction.authfee"),
+				testData.getProperty("per.transaction.refund.fee"), testData.getProperty("qfee.percent"),
+				testData.getProperty("qupper.percent"));
+
+		ObjectMapper objectMapper = new ObjectMapper();
+		String convertTOJson = objectMapper.writeValueAsString(merchantdetails);
+
+		String createmerchant = ProvisioningUtils.postMerchant;
+		Response response = given().spec(requestSpec).body(convertTOJson).when().post(createmerchant).then()
+				.spec(responseSpec).extract().response();
+		Merchant readJSON = objectMapper.readValue(response.asString(), Merchant.class);
+		return response;
+
 	}
 
 }
