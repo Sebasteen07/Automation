@@ -5,8 +5,10 @@ import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
+import java.util.Timer;
 import java.util.concurrent.TimeUnit;
 import org.openqa.selenium.By;
+import org.openqa.selenium.Keys;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.FindAll;
@@ -16,7 +18,6 @@ import org.openqa.selenium.support.PageFactory;
 import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.openqa.selenium.support.ui.WebDriverWait;
 import com.medfusion.common.utils.IHGUtil;
-
 
 import com.intuit.ifs.csscat.core.utils.Log4jUtil;
 
@@ -39,7 +40,7 @@ public class MerchantSearchPage extends NavigationMenu {
 
 	@FindBy(how = How.XPATH, using = "//tbody/tr")
 	private WebElement tableRow;
-	
+
 	@FindBy(how = How.XPATH, using = "//*[@class='btn btn-primary btn-xs']")
 	private WebElement viewDetailsButton;
 
@@ -72,23 +73,42 @@ public class MerchantSearchPage extends NavigationMenu {
 	}
 
 	public void findByMerchantId(String merchantId) throws InterruptedException {
+
 		WebDriverWait wait = new WebDriverWait(driver, 10);
 		wait.until(ExpectedConditions.elementToBeClickable(searchField));
+		driver.navigate().refresh();
+		searchField.sendKeys(Keys.TAB);
+		searchField.sendKeys(Keys.ENTER);
 		searchField.sendKeys(merchantId);
+
+	}
+
+	public void TypeInField(WebElement element, String value) throws InterruptedException {
+		String val = value;
+
+		element.clear();
+
+		for (int i = 0; i < val.length(); i++) {
+			char c = val.charAt(i);
+			String s = new StringBuilder().append(c).toString();
+			element.sendKeys(s);
+			wait();
+		}
 	}
 
 	public void searchButtonClick() {
-		
+
 		searchButton.click();
-	
+		WebDriverWait wait = new WebDriverWait(driver, 10);
+		wait.until(ExpectedConditions.elementToBeClickable(viewDetailsButton));
+
 	}
-	
+
 	public void viewDetailsButtonClick() throws InterruptedException {
-		
 
 		viewDetailsButton.click();
-		Thread.sleep(5000);
-		
+		// Thread.sleep(5000);
+
 	}
 
 	public void duplicateRecords() {
@@ -112,14 +132,14 @@ public class MerchantSearchPage extends NavigationMenu {
 		}
 		Boolean verify = hasDuplicate(list);
 		assertFalse(verify);
-		Log4jUtil.log("Assert value" +verify);
+		Log4jUtil.log("Assert value" + verify);
 
 	}
 
 	public static <TableData> boolean hasDuplicate(Iterable<TableData> rowset) {
 		Set<TableData> set = new HashSet<TableData>();
 		for (TableData each : rowset) {
-			Log4jUtil.log("tabledata" +each);
+			Log4jUtil.log("tabledata" + each);
 			if (!set.add(each))
 
 				return true;

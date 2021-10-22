@@ -10,6 +10,7 @@ import java.util.concurrent.TimeUnit;
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
+import org.openqa.selenium.interactions.Actions;
 import org.openqa.selenium.support.FindAll;
 import org.openqa.selenium.support.FindBy;
 import org.openqa.selenium.support.How;
@@ -32,8 +33,8 @@ public class EditRatesAndContractPage extends NavigationMenu {
 		testData = new PropertyFileLoader();
 	}
 
-	@FindBy(how = How.ID, using = "feeSettlementType")
-	private WebElement feeSettelementTypeDropDown;
+	@FindBy(how = How.NAME, using = "feeSettlementType")
+	private WebElement feeSettelementTypeDropDownByName;
 
 	@FindBy(how = How.XPATH, using = "//button[@data-ng-if='editMode']")
 	private WebElement updateRateContractButton;
@@ -44,14 +45,10 @@ public class EditRatesAndContractPage extends NavigationMenu {
 
 	public void editSettlementType(String settlementType) throws InterruptedException {
 
-		Select sec = new Select(feeSettelementTypeDropDown);
-		sec.selectByVisibleText(settlementType);
-		driver.manage().timeouts().implicitlyWait(3, TimeUnit.SECONDS);
+		Select objSelect = new Select(driver.findElement(By.id("feeSettlementType")));
+		objSelect.selectByVisibleText("DAILY");
 
 		updateRateContractButton.click();
-		
-	
-
 	}
 
 }

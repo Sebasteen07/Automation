@@ -215,7 +215,7 @@ public class MerchantDetailsPage extends NavigationMenu {
 
 	public void clickOnRatesNContractButton() throws InterruptedException {
 		editRatesContractButton.click();
-		Thread.sleep(5000);
+		
 	}
 
 	public void verifySettlementType(String settlementType) throws InterruptedException {
