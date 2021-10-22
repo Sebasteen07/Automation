@@ -126,4 +126,17 @@ public class MerchantResourceAsFinance extends BaseRest {
 		Assert.assertEquals(jsonPath.get("feeSettlementType").toString(),
 				testData.getProperty("fee.settlement.type").toString());
 	}
+	
+	
+	@Test
+	public void testCreateNewMerchantDiffAccounts() throws IOException {
+
+		MerchantInfo merchantinfo = new MerchantInfo();
+		Response response = merchantinfo.createMerchantDiffAccounts();
+
+		JsonPath jsonpath = new JsonPath(response.asString());
+		Validations validate = new Validations();
+		validate.verifyMerchantWithDiffAccounts(response.asString());
+		ProvisioningUtils.saveMMID(jsonpath.get("id").toString());
+	}
 }
