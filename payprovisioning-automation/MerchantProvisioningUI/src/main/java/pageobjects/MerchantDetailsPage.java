@@ -3,12 +3,10 @@ package pageobjects;
 import static org.testng.Assert.assertNotNull;
 
 import java.io.IOException;
-import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
 
-import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.FindAll;
@@ -19,7 +17,6 @@ import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.openqa.selenium.support.ui.WebDriverWait;
 import org.testng.Assert;
 
-import com.intuit.ifs.csscat.core.utils.Log4jUtil;
 import com.medfusion.common.utils.PropertyFileLoader;
 
 public class MerchantDetailsPage extends NavigationMenu {
@@ -122,7 +119,7 @@ public class MerchantDetailsPage extends NavigationMenu {
 
 	}
 
-	public void verifyProcessorInformation(String processorType) throws InterruptedException {
+	public void verifyProcessorInformation(String processorType){
 
 		assertNotNull(processor);
 		assertNotNull(mmidInternal);
