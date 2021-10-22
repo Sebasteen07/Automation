@@ -73,6 +73,43 @@ public class Merchant {
 		return merchantdetails;
 		
 	}
+
+	public static Map<String, Object> createMerchantAccMap(String merchantname, String doingbusinessas, String externalmerchantid,
+			String customeraccountnumber, String merchantphonenumber,String transactionlimit,String primaryfirstname,
+			String primarylastname,String primaryphonenumber,String primaryemail,String merchantaddress1,String merchantcity,
+			String merchantstate, String merchantzip,String accountnumber, String routingnumber, String separatefundingacc, String federaltaxid,
+			String businessestablisheddate, String businesstype, String mcccode, String ownershiptype, String websiteurl,
+			String amexpercent, String midqfeepercent,String midqupperfeepercent,String nqfeepercent, String nqupperfeepercent,
+			String pertransactionauthfee,String pertransactionrefundfee,String qfeepercent,String qupperpercent){
+			
+			Map<String, Object> merchantdetails = new HashMap<String, Object>(); 
+			merchantdetails.put("merchantName", merchantname+ProvisioningUtils.randomizeMerchantIdentifiers());
+			merchantdetails.put("doingBusinessAs",doingbusinessas); 
+			merchantdetails.put("externalMerchantId", Integer.parseInt(externalmerchantid));
+			merchantdetails.put("customerAccountNumber",customeraccountnumber); 
+			merchantdetails.put("phoneNumber", merchantphonenumber);
+			merchantdetails.put("maxTransactionLimit",Integer.parseInt(transactionlimit)); 
+			merchantdetails.put("primaryContactFirstName", primaryfirstname);
+			merchantdetails.put("primaryContactLastName",primarylastname); 
+			merchantdetails.put("primaryContactPhoneNumber",primaryphonenumber); 
+			merchantdetails.put("primaryContactEmail", primaryemail);
+			merchantdetails.put("merchantLegalName",doingbusinessas); 
+			merchantdetails.put("alsoKnownAsName",doingbusinessas); 
+			merchantdetails.put("merchantAddress",MerchantAddress.getMerchantAddressMap(merchantaddress1, merchantcity,
+					merchantstate, merchantzip));
+			merchantdetails.put("remitToAddress", RemitToAddress.getMerchantRemitAddressMap(merchantaddress1, merchantcity, 
+					merchantstate, merchantzip));
+			merchantdetails.put("accountDetails", AccountDetails.getMerchantAccountDetailsMap(accountnumber,routingnumber,federaltaxid,
+					doingbusinessas,businessestablisheddate,businesstype,mcccode,ownershiptype,websiteurl));
+			merchantdetails.put("feeAccDetails", AccountDetails.getFeeAccountDetailsMap(accountnumber, routingnumber));
+			merchantdetails.put("separateFundingAccounts",separatefundingacc);
+			merchantdetails.put("contractedRates", ContractedRates.getContractedRatesMap(amexpercent, midqfeepercent, midqupperfeepercent,
+				    nqfeepercent,nqupperfeepercent,pertransactionauthfee, pertransactionrefundfee, qfeepercent, qupperpercent));
+			merchantdetails.put("acceptedCreditCards", Arrays.asList(PracticeConstants.CARD_ARRAY_LIST));
+			merchantdetails.put("payAPICustomer", PayAPICustomer.getPayCustomerMap(0, PracticeConstants.PAY_CUSTOMER_DEFAULT));
+			return merchantdetails;
+			
+		}
 	
 	
 
