@@ -12,7 +12,30 @@ module "qa_automation_utils_rel_codebuild" {
   artifact_kms_key_ids = []
   artifacts_type       = var.codebuild_artifacts_type
 
-  source_buildspec = templatefile("templates/buildspec.tpl", {domain = var.codeartifact_maven_domain, owner = data.aws_caller_identity.current.account_id, execution_folder = local.qa_automation_utils_rel.execution_folder, maven_command = "${local.qa_automation_utils_rel.maven_parameter} -Dmaven.test.skip=${local.qa_automation_utils_rel.maven_test_skip}"}) # var.source_buildspec
+  environment_variables = [
+    {
+      name  = "maven_command"
+      value = "${local.qa_automation_utils_rel.maven_parameter} -Dmaven.test.skip=${local.qa_automation_utils_rel.maven_test_skip}"
+      type  = "PLAINTEXT"
+    },
+    {
+      name  = "execution_folder"
+      value = local.qa_automation_utils_rel.execution_folder
+      type  = "PLAINTEXT"
+    },
+    {
+      name  = "domain"
+      value = var.codeartifact_maven_domain
+      type  = "PLAINTEXT"
+    },
+    {
+      name  = "owner"
+      value = data.aws_caller_identity.current.account_id
+      type  = "PLAINTEXT"
+    }
+  ]
+
+  source_buildspec = var.source_buildspec
   source_type      = var.codebuild_source_type
   build_timeout    = local.qa_automation_utils_rel.build_timeout
   queued_timeout   = local.qa_automation_utils_rel.queued_timeout
@@ -146,41 +169,7 @@ resource "aws_iam_role" "qa_automation_utils_rel" {
   assume_role_policy = data.aws_iam_policy_document.pipeline_assume_role_policy.json
 }
 
-data "aws_iam_policy_document" "qa_automation_utils_rel_codepipeline" {
-
-  statement {
-    sid = "S3bucket"
-
-    actions = [
-      "s3:PutObject",
-      "s3:GetBucketPolicy",
-      "s3:GetObject",
-      "s3:GetObjectVersion",
-      "s3:ListBucket",
-      "s3:GetBucketVersioning",
-    ]
-
-    resources = [
-      "${local.pipeline_artifact_bucket_arn}",
-      "${local.pipeline_artifact_bucket_arn}/*",
-    ]
-  }
-
-  statement {
-    sid = "kms"
-
-    actions = [
-      "kms:Decrypt",
-      "kms:Encrypt",
-      "kms:GenerateDataKey",
-      "kms:DescribeKey",
-      "kms:ReEncrypt*",
-    ]
-
-    resources = [
-      local.kms_key_id,
-    ]
-  }
+data "aws_iam_policy_document" "qa_automation_utils_rel_codebuild" {
 
   statement {
     sid = "Builds"
@@ -195,18 +184,53 @@ data "aws_iam_policy_document" "qa_automation_utils_rel_codepipeline" {
       module.qa_automation_utils_rel_codebuild.codebuild_project.arn
     ]
   }
+}
+
+data "aws_iam_policy_document" "codeartifact_token" {
+# CodeBuild project needs the below IAM permissions to get authentication token from CodeArtifact and upload packages to it
 
   statement {
-    sid = "Source"
-
+    sid     = "StsPermissions"
     actions = [
-      "codecommit:Get*",
-      "codecommit:UploadArchive",
+      "sts:GetServiceBearerToken"
     ]
-
     resources = [
-      data.aws_codecommit_repository.qa_automation.arn
+      "arn:aws:sts::${data.aws_caller_identity.current.id}:assumed-role/${module.qa_automation_utils_rel_codebuild.codebuild_role.name}/*"
     ]
+    condition {
+      test     = "StringEquals"
+      variable = "sts:AWSServiceName"
+      values   = ["codeartifact.amazonaws.com"]
+    }
+  }
+
+  statement {
+    sid     = "CodeArtifactDomainPermissions"
+    actions = [
+      "codeartifact:GetAuthorizationToken"
+    ]
+    resources = ["arn:aws:codeartifact:${data.aws_region.current.name}:${data.aws_caller_identity.current.account_id}:domain/${var.codeartifact_maven_domain}"]
+  }
+
+  statement {
+    sid     = "CodeArtifactRepositoryPermissions"
+    actions = [
+      "codeartifact:DescribeRepository",
+      "codeartifact:ReadFromRepository",
+      "codeartifact:GetRepositoryEndpoint",
+      "codeartifact:UpdateRepository"
+    ]
+    resources = ["arn:aws:codeartifact:${data.aws_region.current.name}:${data.aws_caller_identity.current.account_id}:repository/${var.codeartifact_maven_domain}/${var.codeartifact_maven_repo}"]
+  }
+
+  statement {
+    sid     = "CodeArtifactPackagePermissions"
+    actions = [
+      "codeartifact:UpdatePackageVersionsStatus",
+      "codeartifact:PublishPackageVersion",
+      "codeartifact:PutPackageMetadata"
+    ]
+    resources = ["arn:aws:codeartifact:${data.aws_region.current.name}:${data.aws_caller_identity.current.account_id}:package/${var.codeartifact_maven_domain}/${var.codeartifact_maven_repo}/*/*/*"]
   }
 }
 
@@ -214,13 +238,20 @@ resource "aws_iam_role_policy" "qa_automation_utils_rel_pipeline" {
 
   name   = "${local.qa_automation_utils_rel.name}-pipeline-policy"
   role   = aws_iam_role.qa_automation_utils_rel.name
-  policy = data.aws_iam_policy_document.qa_automation_utils_rel_codepipeline.json
+  policy = data.aws_iam_policy_document.common_codepipeline_permissions.json
 }
 
-resource "aws_iam_role_policy" "qa_automation_utils_rel_codebuild_inline_policy" {
-  name   = "${local.qa_automation_utils_rel.name}-codebuild-inline-policy"
+resource "aws_iam_role_policy" "qa_automation_utils_rel_codebuild" {
+
+  name   = "${local.qa_automation_utils_rel.name}-codebuild-policy"
+  role   = aws_iam_role.qa_automation_utils_rel.name
+  policy = data.aws_iam_policy_document.qa_automation_utils_rel_codebuild.json
+}
+
+resource "aws_iam_role_policy" "qa_automation_utils_rel_codeartifact_token_inline_policy" {
+  name   = "${local.qa_automation_utils_rel.name}-codeartifact-token-inline-policy"
   role   = module.qa_automation_utils_rel_codebuild.codebuild_role.name
-  policy = data.aws_iam_policy_document.codebuild_inline.json
+  policy = data.aws_iam_policy_document.codeartifact_token.json
 }
 
 ###################################################################################
