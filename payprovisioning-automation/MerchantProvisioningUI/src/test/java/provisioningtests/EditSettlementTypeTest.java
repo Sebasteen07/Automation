@@ -20,7 +20,7 @@ import pageobjects.MerchantSearchPage;
 public class EditSettlementTypeTest extends ProvisioningBaseTest {
 
 	@Test(dataProvider = "edit_settlement_type", enabled = true)
-	public void testEditSettlemntType(String settlementType)
+	public void testEditSettlementType(String settlementType)
 			throws IOException, NullPointerException, InterruptedException {
 
 		PropertyFileLoader testData = new PropertyFileLoader();

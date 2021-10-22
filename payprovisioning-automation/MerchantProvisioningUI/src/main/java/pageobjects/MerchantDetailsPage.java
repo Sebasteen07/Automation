@@ -124,7 +124,6 @@ public class MerchantDetailsPage extends NavigationMenu {
 
 	public void verifyProcessorInformation(String processorType) throws InterruptedException {
 
-		Thread.sleep(2000);
 		assertNotNull(processor);
 		assertNotNull(mmidInternal);
 		assertNotNull(merchantIdExternal);
