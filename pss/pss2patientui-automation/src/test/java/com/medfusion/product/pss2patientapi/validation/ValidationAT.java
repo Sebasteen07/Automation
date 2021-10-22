@@ -255,7 +255,7 @@ public class ValidationAT extends BaseTestNG {
 	
 	public void verifyNextavailableSlotsResponse(Response response) throws IOException {
 		propertyData = new PSSPropertyFileLoader();
-
+		apiVerification.responseCodeValidation(response, 200);
 		apiVerification.responseTimeValidation(response);
 	}
 	

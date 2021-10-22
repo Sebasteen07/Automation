@@ -1,5 +1,7 @@
+// Copyright 2021 NXGN Management, LLC. All Rights Reserved.
 package com.medfusion.product.appt.precheck.stepDefinations;
 
+import static org.junit.Assert.assertEquals;
 import static org.testng.Assert.assertEquals;
 import static org.testng.Assert.assertFalse;
 import static org.testng.Assert.assertTrue;
@@ -34,6 +36,7 @@ public class ApptPrecheckSteps extends BaseTest {
 	AppointmentsPage apptPage;
 	NotificationsPage notifPage;
 	CommonMethods commonMethod;
+	GeneralPage generalPage;
 
 	@Given("user lauch practice provisioning url")
 	public void user_lauch_practice_provisioning_url() throws Exception {
@@ -41,6 +44,8 @@ public class ApptPrecheckSteps extends BaseTest {
 		apptPage = new AppointmentsPage(driver);
 		notifPage = new NotificationsPage(driver);
 		mainPage = new ApptPrecheckMainPage(driver);
+		notifPage = new NotificationsPage(driver);
+		generalPage= new GeneralPage();
 		log("Practice provisining url-- " + propertyData.getProperty("practice.provisining.url.ge"));
 		loginPage = new AppointmentPrecheckLogin(driver, propertyData.getProperty("practice.provisining.url.ge"));
 		log("Verify medfusion page");
@@ -77,7 +82,8 @@ public class ApptPrecheckSteps extends BaseTest {
 			Response response = apptSched.aptPutAppointment(
 					propertyData.getProperty("baseurl.mf.appointment.scheduler"),
 					propertyData.getProperty("mf.apt.scheduler.practice.id"),
-					payload.putAppointmentPayload(plus20Minutes, propertyData.getProperty("mf.apt.scheduler.email")),
+					payload.putAppointmentPayload(plus20Minutes, propertyData.getProperty("mf.apt.scheduler.email"),
+							propertyData.getProperty("mf.apt.scheduler.email")),
 					headerConfig.HeaderwithToken(accessToken.getaccessTokenPost()),
 					propertyData.getProperty("mf.apt.scheduler.put.patient.id") + i,
 					propertyData.getProperty("mf.apt.scheduler.put.appt.id") + i);
@@ -152,7 +158,8 @@ public class ApptPrecheckSteps extends BaseTest {
 			Response response = apptSched.aptPutAppointment(
 					propertyData.getProperty("baseurl.mf.appointment.scheduler"),
 					propertyData.getProperty("mf.apt.scheduler.practice.id"),
-					payload.putAppointmentPayload(nowPlus2Days, propertyData.getProperty("mf.apt.scheduler.email")),
+					payload.putAppointmentPayload(nowPlus2Days, propertyData.getProperty("mf.apt.scheduler.email"),
+							propertyData.getProperty("mf.apt.scheduler.email")),
 					headerConfig.HeaderwithToken(accessToken.getaccessTokenPost()),
 					propertyData.getProperty("mf.apt.scheduler.put.patient.id") + i,
 					propertyData.getProperty("mf.apt.scheduler.put.appt.id") + i);
@@ -268,5 +275,289 @@ public class ApptPrecheckSteps extends BaseTest {
 		assertEquals(Appointment.bannerMessage, apptPage.getBannerAfterSendBroadcast());
 		log("Verify current page should be displayed");
 		assertEquals(Appointment.pageNo, apptPage.getPageNo());
+	}
+
+	@When("from setting dashboard in notifications disable Broadcast messaging checkbox")
+	public void from_setting_dashboard_in_notifications_disable_broadcast_messaging_checkbox()
+			throws InterruptedException {
+		mainPage.clickOnSettingTab();
+		notifPage.clickOnNotificationTab();
+		log("user should be on notification page");
+		assertTrue(notifPage.getNotificationTitle().contains("Notifications"));
+		notifPage.disableBroadcastMessagingCheckbox();
+		notifPage.saveNotification();
+	}
+
+	@Then("verify on appointments dashboard user is not able to see Broadcast message button in actions dropdown")
+	public void verify_on_appointments_dashboard_user_is_not_able_to_see_broadcast_message_button_in_actions_dropdown()
+			throws InterruptedException {
+		mainPage.clickOnAppointmentsTab();
+		apptPage.clickOnActions();
+		log("verify user is not able to see broadcast message button in actions dropdown");
+		assertFalse(apptPage.broadcastMessage(), "user is able to see broadcast message button");
+	}
+
+	@When("from setting dashboard in notifications Enable Broadcast messaging checkbox")
+	public void from_setting_dashboard_in_notifications_enable_broadcast_messaging_checkbox()
+			throws InterruptedException {
+		mainPage.clickOnSettingTab();
+		notifPage.clickOnNotificationTab();
+		log("user should be on notification page");
+		assertTrue(notifPage.getNotificationTitle().contains("Notifications"));
+		notifPage.disableBroadcastMessagingCheckbox();
+		notifPage.saveNotification();
+	}
+
+	@Then("verify on appointments dashboard user is able to see Broadcast message button in actions dropdown")
+	public void verify_on_appointments_dashboard_user_is_able_to_see_broadcast_message_button_in_actions_dropdown() {
+		mainPage.clickOnAppointmentsTab();
+		apptPage.clickOnActions();
+		log("verify user is able to see broadcast message button in actions dropdown");
+		assertTrue(apptPage.broadcastMessage(), "user is not able to see broadcast message button");
+	}
+
+	@When("schedule an appointment without email and phone number")
+	public void schedule_an_appointment_without_email_and_phone_number() throws NullPointerException, IOException {
+		PostAPIRequestMfAppointmentScheduler apptSched = PostAPIRequestMfAppointmentScheduler
+				.getPostAPIRequestMfAppointmentScheduler();
+		MfAppointmentSchedulerPayload payload = MfAppointmentSchedulerPayload.getMfAppointmentSchedulerPayload();
+		HeaderConfig headerConfig = HeaderConfig.getHeaderConfig();
+		AccessToken accessToken = AccessToken.getAccessToken();
+		log("schedule an appointments ");
+		long currentTimestamp = System.currentTimeMillis();
+		long plus20Minutes = currentTimestamp + TimeUnit.MINUTES.toMillis(20);
+		log("Getting patients since timestamp: " + plus20Minutes);
+		Response response = apptSched.aptPutAppointment(propertyData.getProperty("baseurl.mf.appointment.scheduler"),
+				propertyData.getProperty("mf.apt.scheduler.practice.id"),
+				payload.putAppointmentPayload(plus20Minutes, null, ""),
+				headerConfig.HeaderwithToken(accessToken.getaccessTokenPost()),
+				propertyData.getProperty("patient.id.with.blank.email.and.phone"),
+				propertyData.getProperty("appt.id.with.blank.email.and.phone"));
+	}
+
+	@Then("select patient which is having blank email and phone number and send broadcast message")
+	public void select_patient_which_is_having_blank_email_and_phone_number_and_send_broadcast_message()
+			throws Exception {
+		mainPage.clickOnAppointmentsTab();
+		apptPage.selectPatientWithoutEmailAndPhone();
+		log("Click on Actions tab and select broadcast message");
+		apptPage.performAction();
+		log("Enter message in English and Spanish");
+		apptPage.sendBroadcastMessage(propertyData.getProperty("broadcast.message.en"),
+				propertyData.getProperty("broadcast.message.es"));
+		log("banner meassage :" + apptPage.broadcastBannerMessage());
+	}
+
+	@Then("verify failed count will consider for blank email and phone number")
+	public void verify_failed_count_will_consider_for_blank_email_and_phone_number() {
+		assertTrue(apptPage.broadcastMessageSuccessStatus(),
+				"Successful Broadcast message sent status was not displyed");
+		assertTrue(apptPage.broadcastMessageFailedStatus(), "Failed Broadcast message sent status was not displyed");
+		log("Verify Broadcast successful count in banner message is coming correct");
+		log("Verify Broadcast successful count := " + apptPage.getBroadcastMessageSuccessStatus());
+		assertEquals(apptPage.getBroadcastMessageSuccessStatus(), 0);
+		log("Verify Broadcast failed count : " + apptPage.getBroadcastMessageFailedStatus());
+		assertEquals(apptPage.getBroadcastMessageFailedStatus(), 1);
+	}
+
+	@When("schedule an appointment with invalid email and phone number")
+	public void schedule_an_appointment_with_invalid_email_and_phone_number() throws Exception {
+		PostAPIRequestMfAppointmentScheduler apptSched = PostAPIRequestMfAppointmentScheduler
+				.getPostAPIRequestMfAppointmentScheduler();
+		MfAppointmentSchedulerPayload payload = MfAppointmentSchedulerPayload.getMfAppointmentSchedulerPayload();
+		HeaderConfig headerConfig = HeaderConfig.getHeaderConfig();
+		AccessToken accessToken = AccessToken.getAccessToken();
+		log("schedule an appointments ");
+		long currentTimestamp = System.currentTimeMillis();
+		long plus20Minutes = currentTimestamp + TimeUnit.MINUTES.toMillis(20);
+		log("Getting patients since timestamp: " + plus20Minutes);
+		Response response = apptSched.aptPutAppointment(propertyData.getProperty("baseurl.mf.appointment.scheduler"),
+				propertyData.getProperty("mf.apt.scheduler.practice.id"),
+				payload.putAppointmentPayload(plus20Minutes, "12345678", "abcxyzgmail.com"),
+				headerConfig.HeaderwithToken(accessToken.getaccessTokenPost()),
+				propertyData.getProperty("patient.id.with.invalid.email.and.phone"),
+				propertyData.getProperty("appt.id.with.invalid.email.and.phone"));
+	}
+
+	@Then("select patient which is having invalid email and blank phone number and send broadcast message")
+	public void select_patient_which_is_having_invalid_email_and_blank_phone_number_and_send_broadcast_message()
+			throws Exception {
+		mainPage.clickOnAppointmentsTab();
+		apptPage.selectPatientWithInvalidEmailAndPhone();
+		log("Click on Actions tab and select broadcast message");
+		apptPage.performAction();
+		log("Enter message in English and Spanish");
+		apptPage.sendBroadcastMessage(propertyData.getProperty("broadcast.message.en"),
+				propertyData.getProperty("broadcast.message.es"));
+		log("banner meassage :" + apptPage.broadcastBannerMessage());
+	}
+
+	@Then("verify broadcast message send successfully and success count will consider for invalid email and and blank phone number")
+	public void verify_broadcast_message_send_successfully_and_success_count_will_consider_for_invalid_email_and_and_blank_phone_number() {
+		log("Show count for failure and sucess on banner");
+		assertTrue(apptPage.broadcastMessageSuccessStatus(),
+				"Successful Broadcast message sent status was not displyed");
+		assertTrue(apptPage.broadcastMessageFailedStatus(), "Failed Broadcast message sent status was not displyed");
+		log("Verify Broadcast successful count in banner message is coming correct");
+		log("Verify Broadcast successful count := " + apptPage.getBroadcastMessageSuccessStatus());
+		assertEquals(apptPage.getBroadcastMessageSuccessStatus(), 1);
+		log("Verify Broadcast failed count : " + apptPage.getBroadcastMessageFailedStatus());
+		assertEquals(apptPage.getBroadcastMessageFailedStatus(), 0);
+	}
+
+	@When("schedule an appointment with invalid phone number and blank email")
+	public void schedule_an_appointment_with_invalid_phone_number_and_blank_email() throws Exception {
+		PostAPIRequestMfAppointmentScheduler apptSched = PostAPIRequestMfAppointmentScheduler
+				.getPostAPIRequestMfAppointmentScheduler();
+		MfAppointmentSchedulerPayload payload = MfAppointmentSchedulerPayload.getMfAppointmentSchedulerPayload();
+		HeaderConfig headerConfig = HeaderConfig.getHeaderConfig();
+		AccessToken accessToken = AccessToken.getAccessToken();
+		log("schedule an appointments ");
+		long currentTimestamp = System.currentTimeMillis();
+		long plus20Minutes = currentTimestamp + TimeUnit.MINUTES.toMillis(20);
+		log("Getting patients since timestamp: " + plus20Minutes);
+		Response response = apptSched.aptPutAppointment(propertyData.getProperty("baseurl.mf.appointment.scheduler"),
+				propertyData.getProperty("mf.apt.scheduler.practice.id"),
+				payload.putAppointmentPayload(plus20Minutes, "12345678", ""),
+				headerConfig.HeaderwithToken(accessToken.getaccessTokenPost()),
+				propertyData.getProperty("patient.id.with.invalid.phone"),
+				propertyData.getProperty("appt.id.with.blank.email"));
+	}
+
+	@Then("select patient which is having invalid phone number and blank email and send broadcast message")
+	public void select_patient_which_is_having_invalid_phone_number_and_blank_email_and_send_broadcast_message()
+			throws Exception {
+		mainPage.clickOnAppointmentsTab();
+		apptPage.selectPatientWithInvalidPhoneAndBlankEmail();
+		log("Click on Actions tab and select broadcast message");
+		apptPage.performAction();
+		log("Enter message in English and Spanish");
+		apptPage.sendBroadcastMessage(propertyData.getProperty("broadcast.message.en"),
+				propertyData.getProperty("broadcast.message.es"));
+		log("banner meassage :" + apptPage.broadcastBannerMessage());
+	}
+
+	@Then("verify broadcast message send successfully and count will consider for invalid phone number and blank email")
+	public void verify_broadcast_message_send_successfully_and_count_will_consider_for_invalid_phone_number_and_blank_email() {
+		assertTrue(apptPage.broadcastMessageSuccessStatus(),
+				"Successful Broadcast message sent status was not displyed");
+		assertTrue(apptPage.broadcastMessageFailedStatus(), "Failed Broadcast message sent status was not displyed");
+		log("Verify Broadcast successful count in banner message is coming correct");
+		log("Verify Broadcast successful count := " + apptPage.getBroadcastMessageSuccessStatus());
+		assertEquals(apptPage.getBroadcastMessageSuccessStatus(), 0);
+		log("Verify Broadcast failed count : " + apptPage.getBroadcastMessageFailedStatus());
+		assertEquals(apptPage.getBroadcastMessageFailedStatus(), 1);
+	}
+
+	@Then("also verify banner will close after clicked on cross button")
+	public void also_verify_banner_will_close_after_clicked_on_cross_button() throws InterruptedException {
+		log("Broadcast message is --" + apptPage.broadcastBannerMessage());
+		assertTrue(apptPage.visibilityOfBroadcastMessage());
+		apptPage.clickOnBannerCrossButton();
+		assertFalse(apptPage.visibilityOfBroadcastMessage());
+	}
+
+	@When("select patients and click on actions dropdown")
+	public void select_patients_and_click_on_actions_dropdown() throws InterruptedException {
+		log("Select all patients");
+		apptPage.selectAllCheckboxes();
+		apptPage.clickOnActions();
+	}
+
+	@When("verify count will be reflected on send reminder and broadcast message button")
+	public void verify_count_will_be_reflected_on_send_reminder_and_broadcast_message_button() {
+		String broadcastMessageCount = apptPage.getbroadcastMessageText();
+		String getBroadcastCount = broadcastMessageCount.substring(19, 20);
+		int broadcastCount = Integer.parseInt(getBroadcastCount);
+		if (broadcastCount > 0) {
+			assertTrue(true);
+			log("Total broadcast message count :" + broadcastCount);
+		} else {
+			assertTrue(false);
+			log("No total count for broadcast message ");
+		}
+		String sendReminderCount = apptPage.getSendReminderText();
+		String getReminderCount = sendReminderCount.substring(15, 16);
+		int reminderCount = Integer.parseInt(getReminderCount);
+		log("Total count on banner meassage :" + reminderCount);
+		if (reminderCount > 0) {
+			assertTrue(true);
+			log("Total send reminder count :" + broadcastCount);
+		} else {
+			assertTrue(false);
+			log("No total count for send reminder");
+		}
+	}
+	
+	@When("from setting dashboard in general enable email check box and disable text checkbox")
+	public void from_setting_dashboard_in_general_enable_email_check_box_and_disable_text_checkbox() throws InterruptedException {
+		mainPage.clickOnSettingTab();
+		notifPage.clickOnNotificationTab();
+		log("user should be on notification page");
+		assertTrue(notifPage.getNotificationTitle().contains("Notifications"));
+		notifPage.enableBroadcastMessagingCheckbox();
+		notifPage.saveNotification();
+		generalPage.clickOnGeneralTab();
+		log("Disable text checkbox");
+		generalPage.enableAndDisableTextCheckbox();
+		generalPage.clickOnUpdateSettingbutton();
+		mainPage.clickOnAppointmentsTab();
+	}
+	
+	@Then("verify on appointment dashboard user is able to see only mail column under send reminder column and Text column is disappear")
+	public void verify_on_appointment_dashboard_user_is_able_to_see_only_mail_column_under_send_reminder_column_and_text_column_is_disappear() {
+		log("verify text column will not display under send reminder column on oppointments dashboard");
+		assertFalse(apptPage.sendRemibderTextColumn());
+	}
+	
+	@And("from setting dashboard in general enable email check box and enable text checkbox")
+	public void from_setting_dashboard_in_general_enable_email_check_box_and_enable_text_checkbox() throws InterruptedException {
+		mainPage.clickOnSettingTab();
+		log("Enable text checkbox");
+		generalPage.enableAndDisableTextCheckbox();
+		generalPage.clickOnUpdateSettingbutton();
+		mainPage.clickOnAppointmentsTab();
+	}
+	
+	@Then("verify on appointment dashboard user is able to see only mail column under broadcast message column and Text column is disappear")
+	public void verify_on_appointment_dashboard_user_is_able_to_see_only_mail_column_under_broadcast_message_column_and_text_column_is_disappear() {
+		log("verify text coloumn will not display under broadcast message coloumn on oppointments dashboard");
+		assertFalse(apptPage.broadcastMessageTextColumn());
+	}
+	
+	@When("from setting dashboard in general text checkbox is enable and email checkbox is disable")
+	public void from_setting_dashboard_in_general_text_checkbox_is_enable_and_email_checkbox_is_disable()  throws InterruptedException {
+		mainPage.clickOnSettingTab();
+		notifPage.clickOnNotificationTab();
+		log("user should be on notification page");
+		assertTrue(notifPage.getNotificationTitle().contains("Notifications"));
+		notifPage.enableBroadcastMessagingCheckbox();
+		notifPage.saveNotification();
+		generalPage.clickOnGeneralTab();
+		log("Disable email checkbox");
+		generalPage.enableAndDisableEmailCheckbox();
+		generalPage.clickOnUpdateSettingbutton();
+		mainPage.clickOnAppointmentsTab();
+	}
+	
+	@Then("verify on appointment dashboard user is able to see only text column under broadcast message column and mail column is disappear")
+	public void verify_on_appointment_dashboard_user_is_able_to_see_only_text_column_under_broadcast_message_column_and_mail_column_is_disappear() throws InterruptedException {
+		log("verify email column will not display under broadcast message column on oppointments dashboard");
+		assertTrue(apptPage.visibilityBroadcastMessageTextColumn());
+		assertFalse(apptPage.broadcastMessageEmailColumn());
+	}
+	@And("from setting dashboard in general enable email check box")
+	public void from_setting_dashboard_in_general_enable_email_check_box() throws InterruptedException {
+		mainPage.clickOnSettingTab();
+		log("Enable text checkbox");
+		generalPage.enableAndDisableEmailCheckbox();
+		generalPage.clickOnUpdateSettingbutton();
+	}
+	
+	@Then("verify on appointment dashboard user is able to see only text column under send reminder column and mail column is disappear")
+	public void verify_on_appointment_dashboard_user_is_able_to_see_only_text_column_under_send_reminder_column_and_mail_column_is_disappear() {
+		log("verify email column will not display under send reminder message column on oppointments dashboard");
+		assertTrue(apptPage.visibilitySendReminderTextColumn());
+		assertFalse(apptPage.sendReminderEmailColumn());
 	}
 }

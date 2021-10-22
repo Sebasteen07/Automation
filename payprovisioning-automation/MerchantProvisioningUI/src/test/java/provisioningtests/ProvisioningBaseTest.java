@@ -1,10 +1,14 @@
 package provisioningtests;
 
 import java.io.IOException;
+
 import org.testng.annotations.BeforeMethod;
+import org.testng.annotations.BeforeSuite;
+
 import pageobjects.LoginPage;
 import com.intuit.ifs.csscat.core.BaseTestNGWebDriver;
 import com.intuit.ifs.csscat.core.TestConfig;
+import com.intuit.ifs.csscat.core.utils.Log4jUtil;
 import com.medfusion.common.utils.IHGUtil;
 import com.medfusion.common.utils.PropertyFileLoader;
 
@@ -12,10 +16,15 @@ public class ProvisioningBaseTest extends BaseTestNGWebDriver {
 
 	protected PropertyFileLoader testData;
 
+
+	
 	@BeforeMethod
 	public void logIntoMP() throws IOException, NullPointerException, InterruptedException {
+		
+		
 		log("Execution Environment: " + IHGUtil.getEnvironmentType());
 		log("Execution Browser: " + TestConfig.getBrowserType());
+		
 		logStep("Getting Test Data");
 		testData = new PropertyFileLoader();
 

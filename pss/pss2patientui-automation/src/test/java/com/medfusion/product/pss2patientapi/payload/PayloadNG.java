@@ -78,6 +78,7 @@ public class PayloadNG {
 			+ "   \"locationDBId\":\"205605\"\r\n"
 			+ "}";
 	
+
 	public static String past_appt_payload(String patientId, String practiceDisplayName, String practiceId, String endate) {
 		
 		String past_appt="{\r\n"
@@ -91,6 +92,7 @@ public class PayloadNG {
 				+ "    \"practiceName\": \""+practiceDisplayName+"\",\r\n"
 				+ "    \"practiceTimezone\": \"America/New_York\"\r\n"
 				+ "  },\r\n"
+
 				+ "  \"startDate\": \"07/08/2021\"\r\n"
 				+ "}\r\n"
 				+ "";

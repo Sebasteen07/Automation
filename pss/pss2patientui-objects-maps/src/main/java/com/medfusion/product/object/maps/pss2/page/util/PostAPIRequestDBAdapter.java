@@ -86,11 +86,6 @@ public class PostAPIRequestDBAdapter {
 		return response;
 	}
 
-	public Response validatePractice(String practiceid, String path) throws Exception {
-		Response response = given().spec(requestSpec).log().all().when().get(practiceid + path).then().log().all()
-				.extract().response();
-		return response;
-	}
 
 	public Response saveAppointmenttype(String practiceid, String b) throws Exception {
 		Response response = given().spec(requestSpec).body(b).log().all().when().post(practiceid + "/appointmenttype")

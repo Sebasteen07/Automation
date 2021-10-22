@@ -65,7 +65,7 @@ public class PSS2PSSAdapterModulatorTests extends BaseTestNG {
 	public void testvalidatePracticeGET() throws NullPointerException, Exception {
 
 		logStep("Verifying the response");
-		Response response = postAPIRequestAM.validatePractice(practiceId, "validatepractice");
+		Response response = postAPIRequestAM.validatePractice(practiceId, "/validatepractice");
 		aPIVerification.responseCodeValidation(response, 200);
 	}
 
@@ -467,8 +467,8 @@ public class PSS2PSSAdapterModulatorTests extends BaseTestNG {
 	@Test(enabled = true, groups = { "APItest" }, retryAnalyzer = RetryAnalyzer.class)
 	public void test05BookLocationSave() throws NullPointerException, Exception {
 
-		String bookid = propertyData.getProperty("booklocation.bookid");
-		String locationid = propertyData.getProperty("booklocation.locationid");
+		String bookid = propertyData.getProperty("booklocation.bookid.am");
+		String locationid = propertyData.getProperty("booklocation.locationid.am");
 
 		logStep("First verify the Save call -BookLocationPost");
 
@@ -502,7 +502,7 @@ public class PSS2PSSAdapterModulatorTests extends BaseTestNG {
 	@Test(enabled = true, groups = { "APItest" }, retryAnalyzer = RetryAnalyzer.class)
 	public void test06BookLocationGETInvalid() throws NullPointerException, Exception {
 
-		Response response = postAPIRequestAM.bookLocationGET(practiceId, "12345");
+		Response response = postAPIRequestAM.bookLocationGET(practiceId, "0000");
 		aPIVerification.responseCodeValidation(response, 400);
 		aPIVerification.responseTimeValidation(response);
 	}
@@ -769,7 +769,7 @@ public class PSS2PSSAdapterModulatorTests extends BaseTestNG {
 	@Test(enabled = true, groups = { "APItest" }, retryAnalyzer = RetryAnalyzer.class)
 	public void test17CancellationReasonPracticeInvalid() throws NullPointerException, Exception {
 
-		Response response = postAPIRequestAM.getPracticeCancellationReason(practiceId, "/practicecancellationreason");
+		Response response = postAPIRequestAM.getPracticeCancellationReason(practiceId, "/practicecancellationreasonaa");
 		aPIVerification.responseCodeValidation(response, 404);
 		aPIVerification.responseTimeValidation(response);
 	}
@@ -1059,7 +1059,7 @@ public class PSS2PSSAdapterModulatorTests extends BaseTestNG {
 	@Test(enabled = true, groups = { "APItest" }, retryAnalyzer = RetryAnalyzer.class)
 	public void testCategoryGETInvalid() throws NullPointerException, Exception {
 
-		Response response = postAPIRequestAM.getcategoryById(practiceId, "22222");
+		Response response = postAPIRequestAM.getcategoryById(practiceId, "000111");
 		logStep("Validate GetCategoryById Response");
 		aPIVerification.responseCodeValidation(response, 400);
 		aPIVerification.responseTimeValidation(response);
@@ -1070,7 +1070,7 @@ public class PSS2PSSAdapterModulatorTests extends BaseTestNG {
 	@Test(enabled = true, groups = { "APItest" }, retryAnalyzer = RetryAnalyzer.class)
 	public void testCategoryDeleteInvalid() throws NullPointerException, Exception {
 
-		Response response = postAPIRequestAM.deleteCategory(practiceId, "12345");
+		Response response = postAPIRequestAM.deleteCategory(practiceId, "12345111");
 		logStep("Validate DeleteCategory Response");
 		aPIVerification.responseCodeValidation(response, 400);
 		aPIVerification.responseTimeValidation(response);
@@ -1210,7 +1210,7 @@ public class PSS2PSSAdapterModulatorTests extends BaseTestNG {
 
 		Response response = postAPIRequestAM.resourceConfigSavePost(practiceId,
 				"");
-		aPIVerification.responseCodeValidation(response, 500);
+		aPIVerification.responseCodeValidation(response, 400);
 		aPIVerification.responseTimeValidation(response);
 	}
 
@@ -1269,7 +1269,7 @@ public class PSS2PSSAdapterModulatorTests extends BaseTestNG {
 	public void testResourceConfigVersionInvalidPathGET() throws NullPointerException, Exception {
 
 		Response response = postAPIRequestAM.versionGet(practiceId, "/versionaa");
-		aPIVerification.responseCodeValidation(response, 200);
+		aPIVerification.responseCodeValidation(response, 404);
 		aPIVerification.responseTimeValidation(response);
 	}
 
@@ -1310,7 +1310,7 @@ public class PSS2PSSAdapterModulatorTests extends BaseTestNG {
 
 	@Test(enabled = true, groups = { "APItest" }, retryAnalyzer = RetryAnalyzer.class)
 	public void testLinkGetInvalidPath() throws NullPointerException, Exception {
-		Response response = postAPIRequestAM.linkGet(practiceId, "/link");
+		Response response = postAPIRequestAM.linkGet(practiceId, "/linkaa");
 		aPIVerification.responseCodeValidation(response, 404);
 
 	}

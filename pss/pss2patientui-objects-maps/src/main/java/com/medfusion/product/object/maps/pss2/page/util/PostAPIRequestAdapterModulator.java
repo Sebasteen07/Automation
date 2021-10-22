@@ -752,7 +752,7 @@ public class PostAPIRequestAdapterModulator {
 	}
 
 	public Response patientInfoWithoutFlowTypeGet(String practiceid) throws Exception {
-		Response response = given().spec(requestSpec).log().all().when().get(practiceid + "/patientinfo/1").then().log()
+		Response response = given().spec(requestSpec).log().all().when().get(practiceid + "/patientinfo/").then().log()
 				.all().extract().response();
 		return response;
 	}
