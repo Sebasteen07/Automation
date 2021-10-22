@@ -153,6 +153,9 @@ public class JalapenoAskAStaffV2Page1 extends JalapenoMenu {
     
     @FindBy(how = How.XPATH, using = "//div[contains(@class,'ng-option-marked')]")
     private WebElement firstProvider;
+    
+    @FindBy(how = How.XPATH, using = "//input[contains(@name,'attachments')]")
+    private WebElement chooseFile;
 	
 	private long createdTS;
 
@@ -201,6 +204,31 @@ public class JalapenoAskAStaffV2Page1 extends JalapenoMenu {
 		return PageFactory.initElements(driver, JalapenoAskAStaffV2Page2.class);
 	}
 
+	public JalapenoAskAStaffV2Page2 uploadAttachment(String subject, String question,String correctfilePath) throws InterruptedException {
+		if (subject != null && !subject.trim().isEmpty()) {
+			wait.until(ExpectedConditions.visibilityOf(subjectBox));
+			subjectBox.clear();
+			Thread.sleep(1000);
+			subjectBox.sendKeys(subject);
+		}
+		Thread.sleep(2000);			
+		log("Selecting Provider ");
+		try {
+			IHGUtil.waitForElement(driver, 10, ProviderDropDown);
+			ProviderDropDown.click();
+			Thread.sleep(1000);
+			firstProvider.click();
+		}
+		catch(NoSuchElementException e) {
+			log("Provider drop down not displayed");
+		}
+		questionBox.sendKeys(question);
+		chooseFile.sendKeys(correctfilePath);
+		continueButton.click();
+		return PageFactory.initElements(driver, JalapenoAskAStaffV2Page2.class);
+		
+	}
+	
 	public JalapenoAskAStaffV2Page2 fillAndContinue(String invalidLengthText, String question, String validLengthText)
 			throws InterruptedException {
 		for (int i = 0; i < 2; i++) {

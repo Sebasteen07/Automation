@@ -324,8 +324,8 @@ public class PostAPIRequestAT {
 				.response();
 		return response;
 	}
-	public Response preventSchedulingDate(String practiceid) throws Exception {
-		Response response = given().log().all().spec(requestSpec).get(practiceid + "/preventschedulingdate/10282/82").then().spec(responseSpec).log().all().extract()
+	public Response preventSchedulingDate(String practiceid,String endPoint) throws Exception {
+		Response response = given().log().all().spec(requestSpec).get(practiceid + endPoint).then().log().all().extract()
 				.response();
 		return response;
 	}
