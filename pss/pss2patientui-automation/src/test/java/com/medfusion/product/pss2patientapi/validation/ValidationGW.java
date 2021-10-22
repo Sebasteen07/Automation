@@ -77,6 +77,7 @@ public class ValidationGW extends BaseTestNG {
 
 	public void verifyAvailiableSlotResponse(Response response) throws IOException {
 		propertyData = new PSSPropertyFileLoader();
+		apiVerification.responseTimeValidation(response);
 		apiVerification.responseKeyValidationJson(response, "availableSlots");
 
 	}

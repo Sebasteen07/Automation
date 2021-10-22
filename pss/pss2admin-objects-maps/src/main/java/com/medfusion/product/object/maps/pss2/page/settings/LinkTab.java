@@ -84,18 +84,17 @@ public class LinkTab extends SettingsTab {
 	}
 
 	public void addLink(String locationConfig, String providerConfig) throws InterruptedException {
-		log("Location for link generation-"+locationConfig);
-		log("Provider for link generation-"+providerConfig);
-		
+		log("Location for link generation-" + locationConfig);
+		log("Provider for link generation-" + providerConfig);
+
 		linkPlusButton.click();
 		log("Clicked on link plus button");
 		clickDropType.click();
 		log("Clicked on type  button");
 		Select type = new Select(typeSelect);
 		type.selectByVisibleText("LOGINLESS");
-		IHGUtil.waitForElement(driver, 3, locationSelect);	
+		IHGUtil.waitForElement(driver, 3, locationSelect);
 		javascriptClick(locationSelect);
-		//Thread.sleep(3000);
 		log("LocationTypeList " + checklistLocation.size());
 		for (int i = 0; i < checklistLocation.size(); i++) {
 			if (checklistLocation.get(i).getText().contains(locationConfig)) {
@@ -105,7 +104,6 @@ public class LinkTab extends SettingsTab {
 				log("Location checkbox selected");
 			}
 		}
-		//Thread.sleep(3000);
 		resourceSelect.click();
 		log("ProviderTypeList " + checklistResource.size());
 		for (int i = 0; i < checklistResource.size(); i++) {
@@ -114,7 +112,6 @@ public class LinkTab extends SettingsTab {
 				Thread.sleep(3000);
 				javascriptClick(checklistResource.get(i));
 				log("Provider checkbox selected");
-
 			}
 		}
 		createLinkButton.click();
@@ -128,7 +125,6 @@ public class LinkTab extends SettingsTab {
 		String link = (String) Toolkit.getDefaultToolkit().getSystemClipboard().getData(DataFlavor.stringFlavor);
 		log("Link is   " + link);
 		return link;
-
 	}
 
 	public void removelink() {

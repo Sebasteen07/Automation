@@ -855,11 +855,7 @@ public class PSSAdminUtils extends BaseTestNGWebDriver{
 		LinkTab linkTab = pssPracticeConfig.linksTab();
 		Log4jUtil.log("Clicked On LinkTab");
 		linkTab.addLinkForProvider(testData.getLinkProvider());
-		//testData.setLinkProviderURL(testData.getLinkProviderURL());
-		
-		testData.setLinkProviderURL(linkTab.getURL(testData.getLinkProvider()));
-		
-		
+		testData.setLinkProviderURL(linkTab.getURL(testData.getLinkProvider()));		
 	    patientFlow = pssPracticeConfig.gotoPatientFlowTab();
 		AdminPatientMatching adminPatientMatching = patientFlow.gotoPatientMatchingTab();
 		adminPatientMatching.patientMatchingSelection();
