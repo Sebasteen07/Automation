@@ -5752,8 +5752,6 @@ public class PatientPortal2AcceptanceTests extends BaseTestNGWebDriver {
 		logStep("Find history entry by subject/reason and navigate to detail");
 		JalapenoAskAStaffV2HistoryDetailPage askHistoryDetail = askHistoryList
 				.goToDetailByReason(askaSubjectForDependent);
-		
-		Thread.sleep(10000);
 
 		logStep("Verify the subject and question in history detail match submission");
 		assertTrue(askaSubjectForDependent.equals(askHistoryDetail.getRequestDetailSubject()),

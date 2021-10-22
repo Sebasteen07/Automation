@@ -206,26 +206,24 @@ public class JalapenoAskAStaffV2Page1 extends JalapenoMenu {
 
 	public JalapenoAskAStaffV2Page2 uploadAttachment(String subject, String question,String correctfilePath) throws InterruptedException {
 		if (subject != null && !subject.trim().isEmpty()) {
-			subjectBox.clear();
 			wait.until(ExpectedConditions.visibilityOf(subjectBox));
+			subjectBox.clear();
+			Thread.sleep(1000);
 			subjectBox.sendKeys(subject);
-			Thread.sleep(2000);
 		}
 		Thread.sleep(2000);			
 		log("Selecting Provider ");
 		try {
-			IHGUtil.waitForElement(driver, 0, ProviderDropDown);
+			IHGUtil.waitForElement(driver, 10, ProviderDropDown);
 			ProviderDropDown.click();
-			Thread.sleep(2000);
+			Thread.sleep(1000);
 			firstProvider.click();
 		}
 		catch(NoSuchElementException e) {
 			log("Provider drop down not displayed");
 		}
 		questionBox.sendKeys(question);
-		Thread.sleep(2000);
 		chooseFile.sendKeys(correctfilePath);
-		Thread.sleep(2000);
 		continueButton.click();
 		return PageFactory.initElements(driver, JalapenoAskAStaffV2Page2.class);
 		
