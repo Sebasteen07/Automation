@@ -89,7 +89,7 @@ public class PSSPropertyFileLoader {
 		appointValues.setOldPatientUserName(property.getProperty("oldpatient.username.gw"));
 		appointValues.setOldPatientPassword(property.getProperty("oldpatient.password.gw"));
 		appointValues.setProviderImageAPI(property.getProperty("provider.image.api.gw"));
-		appointValues.setGmailUserName(property.getProperty("gmail.gw"));
+		appointValues.setGmailUserName(property.getProperty("email.gw"));
 		appointValues.setPopUpMessege(property.getProperty("popup.messege"));
 		appointValues.setNextAvailiableText(property.getProperty("nextavailable.text"));
 		appointValues.setExcludeSlotFirstValue(property.getProperty("exclude.firstvalue.gw"));
@@ -109,6 +109,7 @@ public class PSSPropertyFileLoader {
 		appointValues.setEmailSubject(property.getProperty("email.subject"));
 		appointValues.setFindInEmail(property.getProperty("find.in.email"));
 		appointValues.setInsurancePhone(property.getProperty("insrance.phone"));
+		appointValues.setMaxperDay(property.getProperty("max.per.day.gw"));
 	}
 
 	public void setAdminGW(AdminUser adminuser) {

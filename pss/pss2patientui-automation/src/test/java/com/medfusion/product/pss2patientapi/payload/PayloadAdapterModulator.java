@@ -708,18 +708,36 @@ public class PayloadAdapterModulator {
 	
 	public String saveCancellationReasonPayload() {
 		String payload="[\r\n"
-				+ "    {\r\n"
-				+ "        \"id\": null,\r\n"
-				+ "        \"name\": \"Equipment Problem\",\r\n"
-				+ "        \"selected\": true,\r\n"
-				+ "        \"extCancellationReasonId\": \"59B156FD-646E-4226-AE18-A92F4C0D0C38\",\r\n"
-				+ "        \"displayName\": \"Equipment Problem\",\r\n"
-				+ "        \"type\": {\r\n"
-				+ "            \"name\": \"Rescheduling Reason\",\r\n"
-				+ "            \"code\": \"CR_RESCHEDULE\",\r\n"
-				+ "            \"grouptype\": \"CANCEL_REASON\"\r\n"
-				+ "        }\r\n"
+				+ "  {\r\n"
+				+ "    \"id\": null,\r\n"
+				+ "    \"name\": \"Not Covered By Insurance\",\r\n"
+				+ "    \"sortOrder\": 6,\r\n"
+				+ "    \"extCancellationReasonId\": \"1297CE8A-C43A-4FF8-9DFB-4922F69AC14E\",\r\n"
+				+ "    \"displayName\": \"Not Covered By Insurance\",\r\n"
+				+ "    \"type\": {\r\n"
+				+ "      \"name\": \"Cancellation Reason\",\r\n"
+				+ "      \"code\": \"CR_CANCEL\",\r\n"
+				+ "      \"grouptype\": \"CANCEL_REASON\"\r\n"
 				+ "    }\r\n"
+				+ "  }\r\n"
+				+ "]";
+		return payload;
+	}
+	
+	public String saveCancellationReasonPayload(String name, String extid, String dname, String typename, String typecode, String grouptype) {
+		String payload="[\r\n"
+				+ "  {\r\n"
+				+ "    \"id\": null,\r\n"
+				+ "    \"name\": \""+name+",\r\n"
+				+ "    \"selected\": true,\r\n"
+				+ "    \"extCancellationReasonId\": \""+extid+"\",\r\n"
+				+ "    \"displayName\": \""+dname+"\",\r\n"
+				+ "    \"type\": {\r\n"
+				+ "      \"name\": \""+typename+"\",\r\n"
+				+ "      \"code\": \""+typecode+",\r\n"
+				+ "      \"grouptype\": \""+grouptype+"\"\r\n"
+				+ "    }\r\n"
+				+ "  }\r\n"
 				+ "]";
 		return payload;
 	}

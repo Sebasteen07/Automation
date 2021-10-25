@@ -111,12 +111,30 @@ public class PostAPIRequestDBAdapter {
 		return response;
 	}
 	
+	public Response saveAppointment(String practiceid, String b) throws Exception {
+		Response response = given().spec(requestSpec).body(b).log().all().when()
+				.post(practiceid + "/appointment").then().log().all().extract().response();
+		return response;
+	}
+	
+	public Response updateAppointment(String practiceid, String b) throws Exception {
+		Response response = given().spec(requestSpec).body(b).log().all().when()
+				.post(practiceid + "/updateappointment").then().log().all().extract().response();
+		return response;
+	}
+	
 	public Response getAppointmentsForPractice(String practiceid) throws Exception {
 		Response response = given().spec(requestSpec).log().all().when().get(practiceid + "/appointments")
 				.then().log().all().extract().response();
 		return response;
 	}
 
+	public Response getAppointmentByExtApptIdForPractice(String practiceid, String extapptid) throws Exception {
+		Response response = given().spec(requestSpec).log().all().when().get(practiceid + "/appointment/"+extapptid )
+				.then().extract().response();
+		return response;
+	}
+	
 	public Response getUpcomingAppointmentsByPatientIdForPractice(String practiceid, String patientid, String fromdate) throws Exception {
 		Response response = given().spec(requestSpec).queryParam("fromDate", fromdate).log().all().when()
 				.get(practiceid + "/patientappointments/" + patientid).then().log().all().extract().response();
@@ -270,7 +288,7 @@ public class PostAPIRequestDBAdapter {
 		return response;
 	}
 
-	public Response getBookById(String practiceid, String bookid) throws Exception {
+	public Response getBookById(String practiceid, int bookid) throws Exception {
 		Response response = given().spec(requestSpec).log().all().when()
 				.get(practiceid + "/book/" + bookid).then().log().all()
 				.extract().response();
@@ -310,7 +328,7 @@ public class PostAPIRequestDBAdapter {
 				.extract().response();
 		return response;
 	}
-	public Response getBooksByLocation(String practiceid, String locationid) throws Exception {
+	public Response getBooksByLocation(String practiceid, int locationid) throws Exception {
 		Response response = given().spec(requestSpec).header("language", "es").log().all().when()
 				.get(practiceid+"/books/location/"+locationid).then().log().all()
 				.extract().response();
@@ -362,14 +380,49 @@ public class PostAPIRequestDBAdapter {
 		return response;
 	}
 	
+	public Response getCancellationReasonById(String practiceid, int reasonid) throws Exception {
+		Response response = given().spec(requestSpec).log().all().when()
+				.get(practiceid+ "/cancellationreason/"+reasonid).then().log().all()
+				.extract().response();
+		return response;
+	}
+	
+	public Response cancellationReasonDelete(String practiceid, int reasonid) throws Exception {
+		Response response = given().spec(requestSpec).log().all().when()
+				.delete(practiceid+ "/cancellationreason/"+reasonid).then().log().all()
+				.extract().response();
+		return response;
+	}
+	
+	public Response reorderCancellationReason(String practiceid, String b) throws Exception {
+		Response response = given().spec(requestSpec).body(b).log().all().when()
+				.post(practiceid+ "/cancellationreason/reorder").then().log().all()
+				.extract().response();
+		return response;
+	}
+	
 	//Care Team Book Controller
-	public Response getBookAssociatedToCareTeam(String practiceid, String careteamid) throws Exception {
+	public Response getBookAssociatedToCareTeam(String practiceid, int careteamid) throws Exception {
 		Response response = given().spec(requestSpec).log().all().when()
 				.get(practiceid+"/careteambook/"+ careteamid).then().log().all()
 				.extract().response();
 		return response;
 	}
 	
+	public Response associateCareTeamToBook(String practiceid, String b) throws Exception {
+		Response response = given().spec(requestSpec).log().all().body(b).when()
+				.post(practiceid+"/careteambook").then().log().all()
+				.extract().response();
+		return response;
+	}
+	
+	public Response deleteCareTeamBook(String practiceid, int careteamid, int bookid) throws Exception {
+		Response response = given().spec(requestSpec).log().all().when()
+				.delete(practiceid+"/careteambook/"+ careteamid +"/book/"+ bookid).then().log().all()
+				.extract().response();
+		return response;
+	}
+
 	//Care Team Controller
 	
 	public Response getCareteamsForPractice(String practiceid) throws Exception {
@@ -428,16 +481,65 @@ public class PostAPIRequestDBAdapter {
 		return response;
 	}
 	
+	public Response saveCategory(String practiceid, String b) throws Exception {
+		Response response = given().spec(requestSpec).body(b).log().all().when().post(practiceid + "/category")
+				.then().log().all().extract().response();
+		return response;
+	}
+	
+	public Response deleteCategory(String practiceid, int categoryid ) throws Exception {
+		Response response = given().spec(requestSpec).log().all().when().delete(practiceid + "/category/"+categoryid)
+				.then().log().all().extract().response();
+		return response;
+	}
+	
+	public Response reorderCategory(String practiceid, String b ) throws Exception {
+		Response response = given().spec(requestSpec).body(b).log().all().when().post(practiceid + "/category/reorder")
+				.then().log().all().extract().response();
+		return response;
+	}
+	
+	public Response getVisitReason(String practiceid, String b ) throws Exception {
+		Response response = given().spec(requestSpec).body(b).log().all().when().post(practiceid + "/getVisitReason")
+				.then().log().all().extract().response();
+		return response;
+	}
+	
 	//Category Specialty Controller
 	
-	public Response saveCategorySpecialty(String practiceid, String careteamid) throws Exception {
+	public Response saveCategorySpecialty(String practiceid, String b) throws Exception {
+		Response response = given().spec(requestSpec).body(b).log().all().when().get(practiceid + "/categoryspecialty")
+				.then().log().all().extract().response();
+		return response;
+	}
+	
+	public Response deleteCategorySpecialty(String practiceid, String categoryid, String specialty) throws Exception {
+		Response response = given().spec(requestSpec).log().all().when()
+				.delete(practiceid + "/categoryspecialty/category/" + categoryid + "/specialty/" + specialty).then().log()
+				.all().extract().response();
+		return response;
+	}
+	
+	public Response getSpecialtiesAssociatedToCategory(String practiceid, String b) throws Exception {
+		Response response = given().spec(requestSpec).body(b).log().all().when().post(practiceid + "/categoryspecialtys")
+				.then().log().all().extract().response();
+		return response;
+	}
+	
+	public Response getCareTeamById(String practiceid, int careteamid) throws Exception {
 		Response response = given().spec(requestSpec).log().all().when().get(practiceid + "/careteam/" + careteamid)
 				.then().log().all().extract().response();
 		return response;
 	}
 	
-	public Response getCareTeamById(String practiceid, String careteamid) throws Exception {
-		Response response = given().spec(requestSpec).log().all().when().get(practiceid + "/careteam/" + careteamid)
+	public Response saveCareTeam(String practiceid, String b) throws Exception {
+		Response response = given().spec(requestSpec).log().all().body(b).when().post(practiceid + "/careteam")
+				.then().log().all().extract().response();
+		return response;
+	}
+	
+	public Response deleteCareTeamById(String practiceid, int careteamid) throws Exception {
+		Response response = given().spec(requestSpec).log().all().when().delete(practiceid + "/careteam/" + careteamid)
 				.then().log().all().extract().response();
 		return response;
 	}
@@ -736,6 +838,54 @@ public class PostAPIRequestDBAdapter {
 				.extract().response();
 		return response;
 	}
+	
+	public Response saveBook(String practiceid, String path, String b) throws Exception {
+		Response response = given().spec(requestSpec).log().all().body(b).when().post(practiceid+path).then().log().all()
+				.extract().response();
+		return response;
+	}
+	
+	public Response deleteBook(String practiceid, String path, int bookid) throws Exception {
+		Response response = given().spec(requestSpec).log().all().when().delete(practiceid+path+bookid).then().log().all()
+				.extract().response();
+		return response;
+	}
+	
+	public Response saveBookLocation(String practiceid, String path, String b) throws Exception {
+		Response response = given().spec(requestSpec).body(b).log().all().when().post(practiceid+path).then().log().all()
+				.extract().response();
+		return response;
+	}
+	
+	public Response deleteBookLocation(String practiceid,int bookid, int locationid) throws Exception {
+		Response response = given().spec(requestSpec).log().all().when().delete(practiceid+"/booklocation/book/"+ bookid+"/location/"+ locationid).then().log().all()
+				.extract().response();
+		return response;
+	}
+	
+	public Response bookLocations(String practiceid, String b) throws Exception {
+		Response response = given().spec(requestSpec).body(b).log().all().when().post(practiceid+"/booklocations").then().log().all()
+				.extract().response();
+		return response;
+	}
+	
+	public Response cancellationReasonSave(String practiceid, String b) throws Exception {
+		Response response = given().spec(requestSpec).body(b).log().all().when().post(practiceid+"/cancellationreason").then().log().all()
+				.extract().response();
+		return response;
+	}
+
+
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
 }
 
 
