@@ -875,16 +875,229 @@ public class PostAPIRequestDBAdapter {
 		return response;
 	}
 
+	public Response getCodeMapTranslation(String practiceid, String path) throws Exception {
+		Response response = given().spec(requestSpec).log().all().when().get(practiceid + path).then().log().all()
+				.extract().response();
+		return response;
+	}
 
-	
-	
-	
-	
-	
-	
-	
-	
-	
+	public Response getGenderMapMaster(String practiceid, String path) throws Exception {
+		Response response = given().queryParam("codeGroup", "gender").spec(requestSpec).log().all().when()
+				.get(practiceid + path).then().log().all().extract().response();
+		return response;
+	}
+
+	public Response getLookUpCodeValueForGroup(String practiceid, String path) throws Exception {
+		Response response = given().queryParam("groupType", "genderrule").queryParam("name", "Gender rule")
+				.spec(requestSpec).log().all().when().get(practiceid + path).then().log().all().extract().response();
+		return response;
+	}
+
+	public Response getPartnerCodeValueForGroup(String practiceid, String path) throws Exception {
+		Response response = given().queryParam("group", "gender").queryParam("pssCode", "UN").spec(requestSpec).log()
+				.all().when().get(practiceid + path).then().log().all().extract().response();
+		return response;
+	}
+
+	public Response getPssCodeValueForGroup(String practiceid, String path) throws Exception {
+		Response response = given().queryParam("group", "gender").queryParam("partnerCode", "U").spec(requestSpec).log()
+				.all().when().get(practiceid + path).then().log().all().extract().response();
+		return response;
+	}
+
+	public Response getSpecialtyRule(String practiceid, String path) throws Exception {
+		Response response = given().spec(requestSpec).log().all().when().get(practiceid + path).then().log().all()
+				.extract().response();
+		return response;
+	}
+
+	public Response getCodesByPartnerAndGroup(String path) throws Exception {
+		Response response = given().spec(requestSpec).log().all().when().get(path).then().log().all().extract()
+				.response();
+		return response;
+	}
+
+	public Response gendermap(String practiceid, String b, String endPointPath) throws Exception {
+		Response response = given().spec(requestSpec).body(b).log().all().when().post(practiceid + endPointPath).then()
+				.log().all().extract().response();
+		return response;
+	}
+
+	public Response saveConfigurationsWithGroup(String practiceid, String b, String endPointPath) throws Exception {
+		Response response = given().spec(requestSpec).body(b).log().all().when().post(practiceid + endPointPath).then()
+				.log().all().extract().response();
+		return response;
+	}
+
+	public Response getAllConfigurationsByGroup(String practiceid, String b, String endPointPath) throws Exception {
+		Response response = given().spec(requestSpec).body(b).log().all().when().post(practiceid + endPointPath).then()
+				.log().all().extract().response();
+		return response;
+	}
+
+	public Response saveOrUpdateFlowIdentityByPractice(String practiceid, String b, String endPointPath)
+			throws Exception {
+		Response response = given().spec(requestSpec).body(b).log().all().when().post(practiceid + endPointPath).then()
+				.log().all().extract().response();
+		return response;
+	}
+
+	public Response saveInsuranceCarrier(String practiceid, String b, String endPointPath) throws Exception {
+		Response response = given().spec(requestSpec).body(b).log().all().when().post(practiceid + endPointPath).then()
+				.log().all().extract().response();
+		return response;
+	}
+
+	public Response getinsuranceById(String practiceid, int insuranceId) throws Exception {
+		Response response = given().spec(requestSpec).log().all().when()
+				.get(practiceid + "/insurancecarrier/" + insuranceId).then().log().all().extract().response();
+		return response;
+	}
+
+	public Response deleteInsurance(String practiceid, String path, int insuranceId) throws Exception {
+		Response response = given().spec(requestSpec).log().all().when().delete(practiceid + path + insuranceId).then()
+				.log().all().extract().response();
+		return response;
+	}
+
+	public Response reorderInsuranceCarrier(String practiceid, String b, String endPointPath) throws Exception {
+		Response response = given().spec(requestSpec).body(b).log().all().when().post(practiceid + endPointPath).then()
+				.log().all().extract().response();
+		return response;
+	}
+
+	public Response saveSSOConfigurations(String practiceid, String b, String endPointPath) throws Exception {
+		Response response = given().spec(requestSpec).body(b).log().all().when().post(practiceid + endPointPath).then()
+				.log().all().extract().response();
+		return response;
+	}
+
+	public Response deleteSSO(String practiceid, String path) throws Exception {
+		Response response = given().spec(requestSpec).log().all().when().delete(practiceid + path).then().log().all()
+				.extract().response();
+		return response;
+	}
+
+	public Response saveSpecialities(String practiceid, String b, String endPointPath) throws Exception {
+		Response response = given().spec(requestSpec).body(b).log().all().when().post(practiceid + endPointPath).then()
+				.log().all().extract().response();
+		return response;
+	}
+
+	public Response getSpecialityById(String practiceId, int specialityId) throws Exception {
+		Response response = given().spec(requestSpec).log().all().when().get(practiceId + "/speciality/" + specialityId)
+				.then().log().all().extract().response();
+		return response;
+	}
+
+	public Response reorderSpeciality(String practiceid, String b, String endPointPath) throws Exception {
+		Response response = given().spec(requestSpec).body(b).log().all().when().post(practiceid + endPointPath).then()
+				.log().all().extract().response();
+		return response;
+	}
+
+	public Response deleteSpecility(String practiceid, String path, int insuranceId) throws Exception {
+		Response response = given().spec(requestSpec).log().all().when().delete(practiceid + path + insuranceId).then()
+				.log().all().extract().response();
+		return response;
+	}
+
+	public Response saveRule(String practiceid, String b, String endPointPath) throws Exception {
+		Response response = given().spec(requestSpec).body(b).log().all().when().post(practiceid + endPointPath).then()
+				.log().all().extract().response();
+		return response;
+	}
+
+	public Response deleteRule(String practiceid, String path, String ruleId) throws Exception {
+		Response response = given().spec(requestSpec).log().all().when().delete(practiceid + path + ruleId).then().log()
+				.all().extract().response();
+		return response;
+	}
+
+	public Response saveOrUpdateReseller(String practiceid, String b, String endPointPath) throws Exception {
+		Response response = given().spec(requestSpec).body(b).log().all().when().post(practiceid + endPointPath).then()
+				.log().all().extract().response();
+		return response;
+	}
+
+	public Response savePrerequisiteappointment(String practiceid, String b, String endPointPath) throws Exception {
+		Response response = given().spec(requestSpec).body(b).log().all().when().post(practiceid + endPointPath).then()
+				.log().all().extract().response();
+		return response;
+	}
+
+	public Response getPrerequisiteappointment(String practiceId, String endPointPath, String preAppId)
+			throws Exception {
+		Response response = given().spec(requestSpec).log().all().when().get(practiceId + endPointPath + preAppId)
+				.then().log().all().extract().response();
+		return response;
+	}
+
+	public Response lockout(String practiceid, String b, String endPointPath) throws Exception {
+		Response response = given().spec(requestSpec).body(b).log().all().when().post(practiceid + endPointPath).then()
+				.log().all().extract().response();
+		return response;
+	}
+
+	public Response saveLockout(String practiceid, String b, String endPointPath) throws Exception {
+		Response response = given().spec(requestSpec).body(b).log().all().when().post(practiceid + endPointPath).then()
+				.log().all().extract().response();
+		return response;
+	}
+
+	public Response deletelockout(String practiceid, String path, int id) throws Exception {
+		Response response = given().spec(requestSpec).log().all().when().delete(practiceid + path + id).then().log()
+				.all().extract().response();
+		return response;
+	}
+
+	public Response loginless(String practiceid, String b, String endPointPath) throws Exception {
+		Response response = given().spec(requestSpec).body(b).log().all().when().post(practiceid + endPointPath).then()
+				.log().all().extract().response();
+		return response;
+	}
+
+	public Response patientInfo(String practiceid, String b, String endPointPath) throws Exception {
+		Response response = given().spec(requestSpec).body(b).log().all().when().post(practiceid + endPointPath).then()
+				.log().all().extract().response();
+		return response;
+	}
+
+	public Response patientmatch(String practiceid, String b, String endPointPath) throws Exception {
+		Response response = given().spec(requestSpec).body(b).log().all().when().post(practiceid + endPointPath).then()
+				.log().all().extract().response();
+		return response;
+	}
+
+	public Response links(String practiceid, String b, String endPointPath) throws Exception {
+		Response response = given().spec(requestSpec).body(b).log().all().when().post(practiceid + endPointPath).then()
+				.log().all().extract().response();
+		return response;
+	}
+
+	public Response reschedule(String practiceid, String b, String endPointPath) throws Exception {
+		Response response = given().spec(requestSpec).body(b).log().all().when().post(practiceid + endPointPath).then()
+				.log().all().extract().response();
+		return response;
+	}
+
+	public Response getfetchRule(String practiceid, String path) throws Exception {
+		Response response = given().spec(requestSpec).log().all().when().get("rules/" + practiceid + path).then().log()
+				.all().extract().response();
+		return response;
+	}
+
+	public Response location(String practiceid, String b, String endPointPath) throws Exception {
+		Response response = given().spec(requestSpec).body(b).log().all().when().post(practiceid + endPointPath).then()
+				.log().all().extract().response();
+		return response;
+	}
+
+	public Response locationReorder(String practiceid, String b, String endPointPath) throws Exception {
+		Response response = given().spec(requestSpec).body(b).log().all().when().post(practiceid + endPointPath).then()
+				.log().all().extract().response();
+		return response;
+	}	
 	
 }
 
