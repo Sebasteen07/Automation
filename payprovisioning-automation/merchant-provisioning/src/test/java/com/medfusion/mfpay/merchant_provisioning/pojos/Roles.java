@@ -58,4 +58,11 @@ public static Map<String, Object> getPracticeRoleMap(String staffusername, Strin
 	return user;
 }
 
+public static Map<String, Object> getPracticeRolesMap(String staffusername, List<String> roleList){
+	Map<String, Object> user = new HashMap<String, Object>();
+	user.put("userName",staffusername);
+	user.put("roles", roleList);
+	
+	return user;
+}
 }
