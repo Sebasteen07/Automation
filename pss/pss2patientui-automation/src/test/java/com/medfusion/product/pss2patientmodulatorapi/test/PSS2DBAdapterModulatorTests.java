@@ -2315,5 +2315,442 @@ public class PSS2DBAdapterModulatorTests extends BaseTestNG {
 		apv.responseCodeValidation(reorderResponse, 200);
 	}
 	
+	@Test(enabled = true, groups = { "APItest" }, retryAnalyzer = RetryAnalyzer.class)
+	public void testgetCodeMapTranslation() throws NullPointerException, Exception {
+
+		logStep("Verifying the response");
+		Response response = postAPIRequestDB.getCodeMapTranslation(practiceId, "/codemaptranslation");
+		apv.responseCodeValidation(response, 200);
+		apv.responseTimeValidation(response);
+
+	}
+
+	@Test(enabled = true, groups = { "APItest" }, retryAnalyzer = RetryAnalyzer.class)
+	public void testgetCodeMapTranslationInvalidPath() throws NullPointerException, Exception {
+
+		logStep("Verifying the response");
+		Response response = postAPIRequestDB.getCodeMapTranslation(practiceId, "/codemaptranslationaa");
+		apv.responseCodeValidation(response, 404);
+		apv.responseTimeValidation(response);
+
+	}
+
+	@Test(enabled = true, groups = { "APItest" }, retryAnalyzer = RetryAnalyzer.class)
+	public void testgendermap() throws NullPointerException, Exception {
+
+		logStep("Verifying the response");
+		Response response = postAPIRequestDB.getCodeMapTranslation(practiceId, "/gendermap");
+		apv.responseCodeValidation(response, 200);
+		apv.responseTimeValidation(response);
+		apv.responseKeyValidationJson(response, "id");
+		apv.responseKeyValidationJson(response, "practice.id");
+		apv.responseKeyValidationJson(response, "practice.extPracticeId");
+	}
+
+	@Test(enabled = true, groups = { "APItest" }, retryAnalyzer = RetryAnalyzer.class)
+	public void testgendermapInvalidPath() throws NullPointerException, Exception {
+
+		logStep("Verifying the response");
+		Response response = postAPIRequestDB.getCodeMapTranslation(practiceId, "/gendermapaa");
+		apv.responseCodeValidation(response, 404);
+		apv.responseTimeValidation(response);
+
+	}
+
+	@Test(enabled = true, groups = { "APItest" }, retryAnalyzer = RetryAnalyzer.class)
+	public void testgetGenderMapMaster() throws NullPointerException, Exception {
+
+		logStep("Verifying the response");
+		Response response = postAPIRequestDB.getGenderMapMaster(practiceId, "/gendermapmaster");
+		apv.responseCodeValidation(response, 200);
+		apv.responseTimeValidation(response);
+		apv.responseKeyValidationJson(response, "id");
+		apv.responseKeyValidationJson(response, "codeGroup");
+		apv.responseKeyValidationJson(response, "displayName");
+		apv.responseKeyValidationJson(response, "partnerCode");
+		apv.responseKeyValidationJson(response, "pssCode");
+
+	}
+
+	@Test(enabled = true, groups = { "APItest" }, retryAnalyzer = RetryAnalyzer.class)
+	public void testgetGenderMapMasterInvalidPath() throws NullPointerException, Exception {
+
+		logStep("Verifying the response");
+		Response response = postAPIRequestDB.getGenderMapMaster(practiceId, "/gendermapmasteraa");
+		apv.responseCodeValidation(response, 404);
+		apv.responseTimeValidation(response);
+	}
+
+	@Test(enabled = true, groups = { "APItest" }, retryAnalyzer = RetryAnalyzer.class)
+	public void testgetLookUpCodeValueForGroup() throws NullPointerException, Exception {
+
+		logStep("Verifying the response");
+		Response response = postAPIRequestDB.getLookUpCodeValueForGroup(practiceId, "/getlookupcode");
+		apv.responseCodeValidation(response, 200);
+		apv.responseTimeValidation(response);
+		apv.responseKeyValidationJson(response, "code");
+		apv.responseKeyValidationJson(response, "name");
+		apv.responseKeyValidationJson(response, "grouptype");
+	}
+
+	@Test(enabled = true, groups = { "APItest" }, retryAnalyzer = RetryAnalyzer.class)
+	public void testgetLookUpCodeValueForGroupInvalidPath() throws NullPointerException, Exception {
+
+		logStep("Verifying the response");
+		Response response = postAPIRequestDB.getLookUpCodeValueForGroup(practiceId, "/getlookupcodeaa");
+		apv.responseCodeValidation(response, 404);
+		apv.responseTimeValidation(response);
+
+	}
+
+	@Test(enabled = true, groups = { "APItest" }, retryAnalyzer = RetryAnalyzer.class)
+	public void testgetPartnerCodeValueForGroup() throws NullPointerException, Exception {
+
+		logStep("Verifying the response");
+		Response response = postAPIRequestDB.getPartnerCodeValueForGroup(practiceId, "/getpartnercode");
+		apv.responseCodeValidation(response, 200);
+		apv.responseTimeValidation(response);
+
+	}
+
+	@Test(enabled = true, groups = { "APItest" }, retryAnalyzer = RetryAnalyzer.class)
+	public void testgetPartnerCodeValueForGroupInvalidPath() throws NullPointerException, Exception {
+
+		logStep("Verifying the response");
+		Response response = postAPIRequestDB.getPartnerCodeValueForGroup(practiceId, "/getpartnercodeaa");
+		apv.responseCodeValidation(response, 404);
+		apv.responseTimeValidation(response);
+
+	}
+
+	@Test(enabled = true, groups = { "APItest" }, retryAnalyzer = RetryAnalyzer.class)
+	public void testgetPssCodeValueForGroup() throws NullPointerException, Exception {
+
+		logStep("Verifying the response");
+		Response response = postAPIRequestDB.getPssCodeValueForGroup(practiceId, "/getpsscode");
+		apv.responseCodeValidation(response, 200);
+		apv.responseTimeValidation(response);
+
+	}
+
+	@Test(enabled = true, groups = { "APItest" }, retryAnalyzer = RetryAnalyzer.class)
+	public void testgetPssCodeValueForGroupInvalidPath() throws NullPointerException, Exception {
+
+		logStep("Verifying the response");
+		Response response = postAPIRequestDB.getPssCodeValueForGroup(practiceId, "/getpsscodeaa");
+		apv.responseCodeValidation(response, 404);
+		apv.responseTimeValidation(response);
+
+	}
+
+	@Test(enabled = true, groups = { "APItest" }, retryAnalyzer = RetryAnalyzer.class)
+	public void testgetSpecialtyRule() throws NullPointerException, Exception {
+
+		logStep("Verifying the response");
+		Response response = postAPIRequestDB.getSpecialtyRule(practiceId, "/specialtyrule/O");
+		apv.responseCodeValidation(response, 200);
+		apv.responseTimeValidation(response);
+		apv.responseKeyValidationJson(response, "id");
+
+	}
+
+	@Test(enabled = true, groups = { "APItest" }, retryAnalyzer = RetryAnalyzer.class)
+	public void testgetSpecialtyRuleInvalidPath() throws NullPointerException, Exception {
+
+		logStep("Verifying the response");
+		Response response = postAPIRequestDB.getSpecialtyRule(practiceId, "/specialtyruleaa/O");
+		apv.responseCodeValidation(response, 404);
+		apv.responseTimeValidation(response);
+
+	}
+
+	@Test(enabled = true, groups = { "APItest" }, retryAnalyzer = RetryAnalyzer.class)
+	public void testgetCodesByPartnerAndGroup() throws NullPointerException, Exception {
+
+		logStep("Verifying the response");
+		Response response = postAPIRequestDB.getCodesByPartnerAndGroup("/codesbypartner/2/group/gender");
+		apv.responseCodeValidation(response, 200);
+		apv.responseTimeValidation(response);
+
+	}
+
+	@Test(enabled = true, groups = { "APItest" }, retryAnalyzer = RetryAnalyzer.class)
+	public void testgetCodesByPartnerAndGroupInvalidPath() throws NullPointerException, Exception {
+
+		logStep("Verifying the response");
+		Response response = postAPIRequestDB.getCodesByPartnerAndGroup("/codesbypartneraa/2/group/gender");
+		apv.responseCodeValidation(response, 404);
+		apv.responseTimeValidation(response);
+
+	}
+
+	@Test(enabled = true, groups = { "APItest" }, retryAnalyzer = RetryAnalyzer.class)
+	public void testGendermapSavePost() throws NullPointerException, Exception {
+		Response response = postAPIRequestDB.gendermap(practiceId, payloadDB.gendermap(), "/gendermap");
+		apv.responseCodeValidation(response, 200);
+		apv.responseTimeValidation(response);
+		apv.responseKeyValidationJson(response, "id");
+		apv.responseKeyValidationJson(response, "practice.id");
+
+	}
+
+	@Test(enabled = true, groups = { "APItest" }, retryAnalyzer = RetryAnalyzer.class)
+	public void testsaveConfigurationsWithGroup() throws NullPointerException, Exception {
+		Response response = postAPIRequestDB.saveConfigurationsWithGroup(practiceId,
+				payloadDB.saveConfigurationsWithGroup(), "/configurations/save");
+		apv.responseCodeValidation(response, 200);
+		apv.responseTimeValidation(response);
+		apv.responseKeyValidationJson(response, "id");
+		apv.responseKeyValidation(response, "configItem");
+		apv.responseKeyValidation(response, "configValue");
+		apv.responseKeyValidation(response, "group");
+		apv.responseKeyValidationJson(response, "practice.id");
+
+
+	}
+
+	@Test(enabled = true, groups = { "APItest" }, retryAnalyzer = RetryAnalyzer.class)
+	public void testgetAllConfigurationsByGroup() throws NullPointerException, Exception {
+		Response response = postAPIRequestDB.getAllConfigurationsByGroup(practiceId,
+				payloadDB.getAllConfigurationsByGroup(), "/configurations");
+		apv.responseCodeValidation(response, 200);
+		apv.responseTimeValidation(response);
+		apv.responseKeyValidation(response, "group");
+	}
+
+	@Test(enabled = true, groups = { "APItest" }, retryAnalyzer = RetryAnalyzer.class)
+	public void testsaveOrUpdateFlowIdentityByPractice() throws NullPointerException, Exception {
+		Response response = postAPIRequestDB.saveOrUpdateFlowIdentityByPractice(practiceId,
+				payloadDB.saveOrUpdateFlowIdentityByPractice(), "/flowidentity");
+		apv.responseCodeValidation(response, 200);
+		apv.responseTimeValidation(response);
+		apv.responseKeyValidationJson(response, "id");
+		apv.responseKeyValidationJson(response, "code");
+
+	}
+
+	@Test(enabled = true, groups = { "APItest" }, retryAnalyzer = RetryAnalyzer.class)
+	public void reorderInsuranceCarrierReorder() throws NullPointerException, Exception {
+		Response response = postAPIRequestDB.reorderInsuranceCarrier(practiceId, payloadDB.reorderInsuranceCarrier(),
+				"/insurancecarrier/reorder");
+		apv.responseCodeValidation(response, 200);
+		apv.responseTimeValidation(response);
+	}
+
+	@Test(enabled = true, groups = { "APItest" }, retryAnalyzer = RetryAnalyzer.class)
+	public void testSave_get_del_InsuranceCarrier() throws NullPointerException, Exception {
+		String b = payloadDB.saveInsuranceCarrier();
+		logStep("Verifying the response");
+		Response response = postAPIRequestDB.saveInsuranceCarrier(practiceId, b, "/insurancecarrier");
+		apv.responseCodeValidation(response, 200);
+		apv.responseTimeValidation(response);
+		apv.responseKeyValidation(response, "extInsuranceCarrierId");
+		apv.responseKeyValidation(response, "name");
+		JSONArray arr = new JSONArray(response.body().asString());
+		int insuranceId = arr.getJSONObject(0).getInt("id");
+		log("insuranceId- " + insuranceId);
+
+		Response getResponse = postAPIRequestDB.getinsuranceById(practiceId, insuranceId);
+		apv.responseKeyValidationJson(getResponse, "id");
+
+		Response deleteResponse = postAPIRequestDB.deleteInsurance(practiceId, "/insurancecarrier/", insuranceId);
+		apv.responseCodeValidation(deleteResponse, 200);
+	}
+
+	@Test(enabled = true, groups = { "APItest" }, retryAnalyzer = RetryAnalyzer.class)
+	public void testSave_get_del_SSO() throws NullPointerException, Exception {
+		String b = payloadDB.saveSSOConfigurations();
+		logStep("Verifying the response");
+		Response response = postAPIRequestDB.saveSSOConfigurations(practiceId, b, "/sso");
+		apv.responseCodeValidation(response, 200);
+		apv.responseTimeValidation(response);
+		apv.responseKeyValidation(response, "guid");
+        apv.responseKeyValidation(response, "code");
+
+		Response deleteResponse = postAPIRequestDB.deleteSSO(practiceId, "/sso/MF");
+		apv.responseCodeValidation(deleteResponse, 200);
+	}
+
+	@Test(enabled = true, groups = { "APItest" }, retryAnalyzer = RetryAnalyzer.class)
+	public void testSave_get_del_Speciality() throws NullPointerException, Exception {
+		String b = payloadDB.saveSpecialities();
+		logStep("Verifying the response");
+		Response response = postAPIRequestDB.saveSpecialities(practiceId, b, "/speciality");
+		apv.responseCodeValidation(response, 200);
+		apv.responseTimeValidation(response);
+        
+		JSONArray arr = new JSONArray(response.body().asString());
+		int specialityId = arr.getJSONObject(0).getInt("id");
+		log("Speciality- " + specialityId);
+
+		Response getResponse = postAPIRequestDB.getSpecialityById(practiceId, specialityId);
+		apv.responseCodeValidation(getResponse, 200);
+		apv.responseTimeValidation(getResponse);
+		apv.responseKeyValidationJson(getResponse, "id");
+
+		Response deleteResponse = postAPIRequestDB.deleteSpecility(practiceId, "/speciality/", specialityId);
+		apv.responseCodeValidation(deleteResponse, 200);
+	}
+
+	@Test(enabled = true, groups = { "APItest" }, retryAnalyzer = RetryAnalyzer.class)
+	public void testreorderSpecialityReorder() throws NullPointerException, Exception {
+		Response response = postAPIRequestDB.reorderSpeciality(practiceId, payloadDB.reorderSpeciality(),
+				"/speciality/reorder");
+		apv.responseCodeValidation(response, 200);
+		apv.responseTimeValidation(response);
+	}
+
+	@Test(enabled = true, groups = { "APItest" }, retryAnalyzer = RetryAnalyzer.class)
+	public void testSave_del_Rule() throws NullPointerException, Exception {
+		String b = payloadDB.saveRule();
+		logStep("Verifying the response");
+		Response response = postAPIRequestDB.saveRule(practiceId, b, "/configurations/rules");
+		apv.responseCodeValidation(response, 200);
+		apv.responseTimeValidation(response);
+		String ruleId = apv.responseKeyValidationJson(response, "id");
+
+		log("Rule Id Is- " + ruleId);
+
+		Response deleteResponse = postAPIRequestDB.deleteRule(practiceId, "/configurations/rules/", ruleId);
+		apv.responseCodeValidation(deleteResponse, 200);
+	}
+
+	@Test(enabled = true, groups = { "APItest" }, retryAnalyzer = RetryAnalyzer.class)
+	public void testsaveOrUpdateReseller() throws NullPointerException, Exception {
+		Response response = postAPIRequestDB.saveOrUpdateReseller(practiceId, payloadDB.saveOrUpdateReseller(),
+				"/reseller");
+		apv.responseCodeValidation(response, 200);
+		apv.responseTimeValidation(response);
+	}
+
+	@Test(enabled = true, groups = { "APItest" }, retryAnalyzer = RetryAnalyzer.class)
+	public void testSave_get_del_Prerequisite() throws NullPointerException, Exception {
+		String b = payloadDB.savePrerequisiteappointment();
+		String prerequisiteAppId = "4244";
+		logStep("Verifying the response");
+		Response response = postAPIRequestDB.savePrerequisiteappointment(practiceId, b,
+				"/prerequisiteappointmenttypes/" + prerequisiteAppId);
+		apv.responseCodeValidation(response, 200);
+		apv.responseTimeValidation(response);
+
+		JSONArray arr = new JSONArray(response.body().asString());
+		int prerequisiteId = arr.getJSONObject(0).getInt("id");
+		log("Speciality- " + prerequisiteId);
+
+		Response getResponse = postAPIRequestDB.getPrerequisiteappointment(practiceId, "/prerequisiteappointmenttypes/",
+				prerequisiteAppId);
+		apv.responseCodeValidation(getResponse, 200);
+		apv.responseTimeValidation(getResponse);
+		apv.responseKeyValidationJson(getResponse, "id");
+
+		Response deleteResponse = postAPIRequestDB.deleteSpecility(practiceId, "/prerequisiteappointmenttypes/",
+				prerequisiteId);
+		apv.responseCodeValidation(deleteResponse, 200);
+	}
+
+	@Test(enabled = true, groups = { "APItest" }, retryAnalyzer = RetryAnalyzer.class)
+	public void testSave_get_del_lockOut() throws NullPointerException, Exception {
+		String b = payloadDB.lockout();
+		logStep("Verifying the response");
+		Response response = postAPIRequestDB.lockout(practiceId, b, "/lockout");
+		apv.responseCodeValidation(response, 200);
+		apv.responseTimeValidation(response);
+
+		JSONArray arr = new JSONArray(response.body().asString());
+		int id = arr.getJSONObject(0).getInt("id");
+		log("lockout id is - " + id);
+
+		String lockoutsave = payloadDB.saveLockout(id);
+		logStep("Verifying the response");
+		Response responselockoutsave = postAPIRequestDB.saveLockout(practiceId, lockoutsave, "/lockout/save");
+		apv.responseCodeValidation(responselockoutsave, 200);
+		apv.responseTimeValidation(responselockoutsave);
+
+		Response deleteResponse = postAPIRequestDB.deletelockout(practiceId, "/lockout/", id);
+		apv.responseCodeValidation(deleteResponse, 200);
+	}
+
+	@Test(enabled = true, groups = { "APItest" }, retryAnalyzer = RetryAnalyzer.class)
+	public void testloginless() throws NullPointerException, Exception {
+		Response response = postAPIRequestDB.loginless(practiceId, payloadDB.loginless(), "/loginless");
+		apv.responseCodeValidation(response, 200);
+		apv.responseTimeValidation(response);
+		apv.responseKeyValidationJson(response, "id");
+		apv.responseKeyValidationJson(response, "guid");
+		apv.responseKeyValidationJson(response, "existingPatient");
+
+	}
+
+	@Test(enabled = true, groups = { "APItest" }, retryAnalyzer = RetryAnalyzer.class)
+	public void testPatientInfo() throws NullPointerException, Exception {
+		Response response = postAPIRequestDB.patientInfo(practiceId, payloadDB.patientInfo(), "/patientinfo");
+		apv.responseCodeValidation(response, 200);
+		apv.responseTimeValidation(response);
+		apv.responseKeyValidationJson(response, "id");
+		apv.responseKeyValidationJson(response, "entity");
+		apv.responseKeyValidationJson(response, "isSearchRequired");
+		apv.responseKeyValidationJson(response, "field");
+	}
+
+	@Test(enabled = true, groups = { "APItest" }, retryAnalyzer = RetryAnalyzer.class)
+	public void testPatientMatch() throws NullPointerException, Exception {
+		Response response = postAPIRequestDB.patientmatch(practiceId, payloadDB.patientInfo(), "/patientmatch");
+		apv.responseCodeValidation(response, 200);
+		apv.responseTimeValidation(response);
+		apv.responseKeyValidationJson(response, "id");
+		apv.responseKeyValidationJson(response, "entity");
+		apv.responseKeyValidationJson(response, "isSearchRequired");
+		apv.responseKeyValidationJson(response, "field");
+	}
+
+	@Test(enabled = true, groups = { "APItest" }, retryAnalyzer = RetryAnalyzer.class)
+	public void testSavelinks() throws NullPointerException, Exception {
+		String b = payloadDB.links();
+		logStep("Verifying the response");
+		Response response = postAPIRequestDB.links(practiceId, b, "/savelinks");
+		apv.responseCodeValidation(response, 200);
+		apv.responseTimeValidation(response);
+
+	}
+
+	@Test(enabled = true, groups = { "APItest" }, retryAnalyzer = RetryAnalyzer.class)
+	public void testReschedule() throws NullPointerException, Exception {
+		String b = payloadDB.reschedule();
+		logStep("Verifying the response");
+		Response response = postAPIRequestDB.reschedule(practiceId, b, "/reschedule");
+		apv.responseCodeValidation(response, 200);
+		apv.responseTimeValidation(response);
+
+	}
+
+	@Test(enabled = true, groups = { "APItest" }, retryAnalyzer = RetryAnalyzer.class)
+	public void testfetchRule() throws NullPointerException, Exception {
+
+		logStep("Verifying the response");
+		Response response = postAPIRequestDB.getfetchRule(practiceId, "/LTB/rule");
+		apv.responseCodeValidation(response, 200);
+		apv.responseTimeValidation(response);
+
+	}
+
+	@Test(enabled = true, groups = { "APItest" }, retryAnalyzer = RetryAnalyzer.class)
+	public void testLocation() throws NullPointerException, Exception {
+		String b = payloadDB.location();
+		logStep("Verifying the response");
+		Response response = postAPIRequestDB.location(practiceId, b, "/location");
+		apv.responseCodeValidation(response, 200);
+		apv.responseTimeValidation(response);
+
+	}
+
+	@Test(enabled = true, groups = { "APItest" }, retryAnalyzer = RetryAnalyzer.class)
+	public void testLocationReorder() throws NullPointerException, Exception {
+		String b = payloadDB.locationReorder();
+		logStep("Verifying the response");
+		Response response = postAPIRequestDB.locationReorder(practiceId, b, "/location/reorder");
+		apv.responseCodeValidation(response, 200);
+		apv.responseTimeValidation(response);
+
+	}
 
 }
