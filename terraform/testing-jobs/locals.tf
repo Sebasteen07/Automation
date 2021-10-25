@@ -121,6 +121,34 @@ locals {
       chrome_driver_version = "92.0.4515.107"
       cron_shedule          = "cron(45 23 ? * 6 *)"
     }
+
+    "git-taf-prod-precheck" = {
+      codecommit_branch     = "development"
+      PollForSourceChanges  = false
+      execution_folder      = "rcm-precheck"
+      test_environment      = "prod"
+      suite_xml             = "precheck.xml"
+      build_timeout         = 240 #Number of minutes, from 5 to 480. Default value is 60 mins
+      queued_timeout        = 480 #Number of minutes, from 5 to 480. Default value is 480 mins
+      maven_parameter       = "mvn clean install -U"
+      google_chrome_version = "93.0.4577.82-1"
+      chrome_driver_version = "92.0.4515.107"
+      cron_shedule          = "cron(0 1 ? * 1 *)"
+    }
+
+    "git-taf-prod-precheck-rsdk-patientupdates" = {
+      codecommit_branch     = "development"
+      PollForSourceChanges  = false
+      execution_folder      = "pi-integration-platform-acceptance"
+      test_environment      = "prod"
+      suite_xml             = "integration-platform-regression-preCheckAppointment.xml"
+      build_timeout         = 240 #Number of minutes, from 5 to 480. Default value is 60 mins
+      queued_timeout        = 480 #Number of minutes, from 5 to 480. Default value is 480 mins
+      maven_parameter       = "mvn clean install -U"
+      google_chrome_version = "93.0.4577.82-1"
+      chrome_driver_version = "92.0.4515.107"
+      cron_shedule          = "cron(45 0 ? * 1 *)"
+    }
   }
 
   selected_test_environment      = try(local.inputs[local.name].test_environment)
