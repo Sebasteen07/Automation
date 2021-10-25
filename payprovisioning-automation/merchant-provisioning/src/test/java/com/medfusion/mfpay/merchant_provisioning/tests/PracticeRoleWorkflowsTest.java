@@ -17,7 +17,7 @@ import java.io.IOException;
 import java.util.Arrays;
 import java.util.List;
 
-public class PracticeRoleWorkflows extends BaseRest {
+public class PracticeRoleWorkflowsTest extends BaseRest {
 	protected PropertyFileLoader testData;
 
 	@BeforeTest
@@ -77,28 +77,10 @@ public class PracticeRoleWorkflows extends BaseRest {
 		Assert.assertEquals(jsonpath.get("practiceId").toString(), testData.getProperty("practice.id"));
 	}
 	
-	@Test(enabled = true)
-	public void testSetPracticeRolesToMerchantUser() throws Throwable {
-		String practiceStaffId = IHGUtil.createRandomNumericString(5);
 
-		String getusers = ProvisioningUtils.PRACTICE_ROLE + "practice/" + testData.getProperty("practice.id")
-				+ "/practiceStaffId/" + practiceStaffId;
-		UsersDetails usersdetails = new UsersDetails();
-		List<String> roleList = usersdetails.getRolesAsAList(testData.getProperty("practice.role"),
-				Integer.parseInt(testData.getProperty("practice.role.count")));
-
-		Response response = usersdetails
-				.createPracticeUserWithMultipleRoles(getusers,
-				testData.getProperty("staff.username"), roleList);
-
-		Validations validations = new Validations();
-		JsonPath jsonpath = new JsonPath(response.asString());
-		validations.validatePracticeRoles(jsonpath, practiceStaffId, testData.getProperty("practice.id"), roleList);
-
-	}
 	
 	@Test(enabled = true)
-	public void testVerifyDBForPracticeRolesToMerchantUser() throws Throwable {
+	public void testVerifyDbForPracticeRolesToMerchantUser() throws Throwable {
 
 		String practiceStaffId = IHGUtil.createRandomNumericString(5);
 
@@ -112,7 +94,7 @@ public class PracticeRoleWorkflows extends BaseRest {
 				+ "/practiceStaffId/" + practiceStaffId;
 		UsersDetails usersdetails = new UsersDetails();
 		List<String> roleList = usersdetails.getRolesAsAList(testData.getProperty("practice.role"),
-				Integer.parseInt("1"));
+				Integer.parseInt(testData.getProperty("practice.role.count")));
 
 		Response response = usersdetails.createPracticeUserWithMultipleRoles(getusers,
 				testData.getProperty("staff.username"), roleList);
@@ -125,32 +107,15 @@ public class PracticeRoleWorkflows extends BaseRest {
 				"SELECT * FROM public.practice_user_role where p_org_staff_id=" + practiceStaffId, "role_name");
 
 		// Verifying role in DB after assigning role
-		Assert.assertEquals(jsonPath.get("practiceLevelRoles[0]").toString(), roleCheckAfterCreation);
-	}
-
-	@Test(enabled = true)
-	public void testVerifyDbRoleCountForPracticeRolesToMerchantUser() throws Throwable {
-		String
-
-		practiceStaffId = IHGUtil.createRandomNumericString(5);
-
-		String getusers = ProvisioningUtils.PRACTICE_ROLE + "practice/" + testData.getProperty("practice.id")
-				+ "/practiceStaffId/" + practiceStaffId;
-		UsersDetails usersdetails = new UsersDetails();
-		List<String> roleList = usersdetails.getRolesAsAList(testData.getProperty("practice.role"),
-				Integer.parseInt(testData.getProperty("practice.role.count")));
-
-		Response response = usersdetails.createPracticeUserWithMultipleRoles(getusers,
-				testData.getProperty("staff.username"), roleList);
-
-		Validations validations = new Validations();
-		JsonPath jsonPath = new JsonPath(response.asString());
-		validations.validatePracticeRoles(jsonPath, practiceStaffId, testData.getProperty("practice.id"), roleList);
-
+		Assert.assertEquals(jsonPath.get("practiceLevelRoles[1]").toString(), roleCheckAfterCreation);
+		
+		
 		String countOfRoleForPracticeStaff = DBUtils.executeQueryOnDB("rcm",
 				"SELECT COUNT(*) FROM public.practice_user_role where p_org_staff_id=" + practiceStaffId);
 
 		// Verifying role in DB after assigning role
 		Assert.assertEquals(countOfRoleForPracticeStaff, testData.getProperty("practice.role.count"));
 	}
+
+
 }
