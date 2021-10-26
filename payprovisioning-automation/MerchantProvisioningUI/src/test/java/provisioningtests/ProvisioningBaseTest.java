@@ -14,7 +14,7 @@ import com.medfusion.common.utils.PropertyFileLoader;
 
 public class ProvisioningBaseTest extends BaseTestNGWebDriver {
 
-	protected PropertyFileLoader testData;
+	protected static PropertyFileLoader testData;
 
 
 	

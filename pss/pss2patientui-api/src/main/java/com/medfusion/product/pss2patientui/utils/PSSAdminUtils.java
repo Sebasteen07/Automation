@@ -634,6 +634,7 @@ public class PSSAdminUtils extends BaseTestNGWebDriver{
 		adminpatientmatching.patientMatchingSelection();
 		Log4jUtil.log("adminSettings Step 5: Logout from PSS Admin Portal");
 		Thread.sleep(4000);
+		adminpatientmatching.logout();
 	}
 
 	public void adminSettingLinkGenandDeleteLink(WebDriver driver, AdminUser adminuser, Appointment testData, String urlToUse) throws Exception {
@@ -854,7 +855,7 @@ public class PSSAdminUtils extends BaseTestNGWebDriver{
 		LinkTab linkTab = pssPracticeConfig.linksTab();
 		Log4jUtil.log("Clicked On LinkTab");
 		linkTab.addLinkForProvider(testData.getLinkProvider());
-		testData.setLinkProviderURL(testData.getLinkProviderURL());
+		testData.setLinkProviderURL(linkTab.getURL(testData.getLinkProvider()));		
 	    patientFlow = pssPracticeConfig.gotoPatientFlowTab();
 		AdminPatientMatching adminPatientMatching = patientFlow.gotoPatientMatchingTab();
 		adminPatientMatching.patientMatchingSelection();

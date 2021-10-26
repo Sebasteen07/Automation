@@ -46,6 +46,15 @@ public class AccountDetails {
 		
 	}
 	
+	public static Map<String, Object> getFeeAccountDetailsMap(String accountnumber, String routingnumber){
+		Map<String, Object> accountdetails = new HashMap<String, Object>(); 
+		accountdetails.put("accountType", PracticeConstants.ACCOUNT_TYPE);
+		accountdetails.put("routingNumber",routingnumber); 
+		accountdetails.put("accountNumber", accountnumber);
+		return accountdetails;
+		
+	}
+	
 	
 	private String preferredProcessor;
 	private String routingNumber;

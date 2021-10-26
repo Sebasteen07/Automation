@@ -4658,6 +4658,10 @@ public class PatientPortal2AcceptanceTests extends BaseTestNGWebDriver {
 		JalapenoHomePage homePage = loginPage.login(testData.getProperty("med.username"),
 				testData.getProperty("med.password"));
 		driver.navigate().refresh();
+		
+		logStep("Switching to dependent account");
+		homePage.faChangePatient();
+		
 		homePage.clickOnMedications(driver);
 
 		log("Initiating Medications 2.0 Request from Patient Portal");
@@ -5715,7 +5719,52 @@ public class PatientPortal2AcceptanceTests extends BaseTestNGWebDriver {
 		MedicalRecordSummariesPage healthrecord=homePage.clickOnMedicalRecordSummaries(driver);
 		assertTrue(healthrecord.isViewButtonDisplayed());
 		}
-    }
-
 	
+	@Test(enabled = true, groups = { "acceptance-solutions" }, retryAnalyzer = RetryAnalyzer.class)
+	public void testAttachmentInQuestionHistory() throws Exception {
+		String questionText = "wat";
+		String expectedCorrectFileText = "sw-test-academy.txt";
 
+		logStep("Login patient");
+		JalapenoLoginPage loginPage = new JalapenoLoginPage(driver, testData.getProperty("url"));
+		JalapenoHomePage homePage = loginPage.login(testData.getProperty("aska.v2.user"),
+				testData.getProperty("aska.v2.password"));
+
+		logStep("Click Ask A Staff tab");
+		JalapenoAskAStaffV2Page1 askPageFreequs = homePage.openSpecificAskaFree(testData.getProperty("aska.v2.name"));
+
+		String askaSubjectForDependent = Long.toString(askPageFreequs.getCreatedTimeStamp());
+
+		logStep("Fill question and continue");
+		JalapenoAskAStaffV2Page2 askPage2 = askPageFreequs.uploadAttachment(askaSubjectForDependent, questionText, CorrectfilePath);
+
+		assertTrue(askaSubjectForDependent.equals(askPage2.getSubject()),
+				"Expected: " + askaSubjectForDependent + ", found: " + askPage2.getSubject());
+		assertTrue(questionText.equals(askPage2.getQuestion()),
+				"Expected: " + questionText + ", found: " + askPage2.getQuestion());
+
+		homePage = askPage2.submit();
+
+		logStep("Go back to the aska and check question history");
+		askPageFreequs = homePage.openSpecificAskaFree(testData.getProperty("aska.v2.name"));
+		JalapenoAskAStaffV2HistoryListPage askHistoryList = askPageFreequs.clickOnHistory();
+
+		logStep("Find history entry by subject/reason and navigate to detail");
+		JalapenoAskAStaffV2HistoryDetailPage askHistoryDetail = askHistoryList
+				.goToDetailByReason(askaSubjectForDependent);
+
+		logStep("Verify the subject and question in history detail match submission");
+		assertTrue(askaSubjectForDependent.equals(askHistoryDetail.getRequestDetailSubject()),
+				"Expected: " + askaSubjectForDependent + ", found: " + askHistoryDetail.getRequestDetailSubject());
+		assertTrue(questionText.equals(askHistoryDetail.getRequestDetailQuestion()),
+				"Expected: " + questionText + ", found: " + askHistoryDetail.getRequestDetailQuestion());
+		assertTrue("Open".equals(askHistoryDetail.getRequestDetailStatus()),
+				"Expected: Open" + ", found: " + askHistoryDetail.getRequestDetailStatus());
+		assertTrue(expectedCorrectFileText.equals(askHistoryDetail.getRequestAttachedFile()),
+				"Expected: " + expectedCorrectFileText + ", found: " + askHistoryDetail.getRequestAttachedFile());
+		
+		
+		logStep("Logout patient");
+		askHistoryDetail.clickOnLogout();
+	}
+    }
