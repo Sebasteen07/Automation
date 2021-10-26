@@ -159,7 +159,7 @@ public class JalapenoAskAStaffV2Page1 extends JalapenoMenu {
     private WebElement chooseFile;
     
     @FindBy(how = How.XPATH, using = "//span[text()='Error_Files_Testing1.json']")
-	private WebElement errorFileName1;
+	private WebElement invalidFileName;
 	
 	private long createdTS;
 
@@ -629,15 +629,15 @@ public class JalapenoAskAStaffV2Page1 extends JalapenoMenu {
         return PageFactory.initElements(driver, JalapenoAskAStaffV2Page2.class);
     }
     
-    public void uploadInvalidAndValidFileWithRobotRepeat(String errorfilePath, String correctfilePath) throws InterruptedException {
+    public void uploadInvalidAndValidFile(String errorfilePath, String correctfilePath) throws InterruptedException {
 
 				setClipboardData(errorfilePath);
 				log("Path of Error File " + errorfilePath);
 				JalapenoAskAStaffV2Page1 ref = new JalapenoAskAStaffV2Page1(driver);
 				ref.uploadFileWithRobot(errorfilePath, correctfilePath);
-				log("Uploaded more than 10 MB file  " + errorFileName1.getText());
-				assertTrue(errorFileName1.getText().equals("Error_Files_Testing1.json"),
-						"Expected: " + errorFileName1.getText() + ", found: " + "Error_Files_Testing.pdf");
+				log("Uploaded more than 10 MB file  " + invalidFileName.getText());
+				assertTrue(invalidFileName.getText().equals("Error_Files_Testing1.json"),
+						"Expected: " + invalidFileName.getText() + ", found: " + "Error_Files_Testing.pdf");
 				assertTrue(fileUploadErrorMsg.getText().equals("Invalid file type. Allowed file types are .bmp, .png, .jpg, .jpeg, .tiff, .tif, .doc, .docx, .pdf, .txt"),
 						"Expected: " + fileUploadErrorMsg.getText() + ", found: " + "Invalid file type. Allowed file types are .bmp, .png, .jpg, .jpeg, .tiff, .tif, .doc, .docx, .pdf, .txt");
 				log("Verifying continue button is disabled");
@@ -648,7 +648,7 @@ public class JalapenoAskAStaffV2Page1 extends JalapenoMenu {
 
 				setClipboardData(correctfilePath);
 				//wait for the window to open the folder
-				Thread.sleep(5000);
+				Thread.sleep(2000);
 				JalapenoAskAStaffV2Page1 ref1 = new JalapenoAskAStaffV2Page1(driver);
 				ref1.uploadFileWithRobot(errorfilePath, correctfilePath);
 				log("Uploaded  2 MB file  " + properFileName.getText());

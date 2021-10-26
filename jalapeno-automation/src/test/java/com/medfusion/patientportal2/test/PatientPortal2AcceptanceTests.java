@@ -134,7 +134,7 @@ public class PatientPortal2AcceptanceTests extends BaseTestNGWebDriver {
 			+ "\\src\\test\\resources\\documents\\QuickSend.pdf";
 	private static final String MessageErrorfilePath = System.getProperty("user.dir")
 			+ "\\src\\test\\resources\\documents\\SecureMessageFile.pdf";
-	private static final String ErrorfilePath1 = System.getProperty("user.dir")
+	private static final String InvalidfilePath = System.getProperty("user.dir")
 			+ "\\src\\test\\resources\\File_Attachment\\Error_Files_Testing1.json";
 
 	private PropertyFileLoader testData;
@@ -5770,7 +5770,7 @@ public class PatientPortal2AcceptanceTests extends BaseTestNGWebDriver {
 		askHistoryDetail.clickOnLogout();
 	}
 	
-	@Test
+	@Test(enabled = true, groups = { "acceptance-solutions" }, retryAnalyzer = RetryAnalyzer.class)
 	public void testAskInvalidAttachment() throws Exception {
 		String expectedCorrectFileText = "sw-test-academy.txt";
 
@@ -5787,8 +5787,8 @@ public class PatientPortal2AcceptanceTests extends BaseTestNGWebDriver {
 		logStep("Fill question and continue");
 		JalapenoAskAStaffV2Page2 askPage2 = askPage1.fillAndContinueAttachment(askaSubject, questionText);
 
-		logStep("Add Attachmnet and remove Attachment ");
-		askPage1.uploadInvalidAndValidFileWithRobotRepeat(ErrorfilePath1, CorrectfilePath);
+		logStep("Add Attachment and remove Attachment ");
+		askPage1.uploadInvalidAndValidFile(InvalidfilePath, CorrectfilePath);
 
 		logStep("Remove All the Attachment Except one and click on continue button ");
 		askPage1.removeAttachment();
