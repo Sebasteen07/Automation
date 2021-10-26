@@ -18,6 +18,7 @@ import com.medfusion.product.object.maps.patientportal2.page.JalapenoMenu;
 import com.medfusion.product.patientportal2.pojo.CreditCard;
 import com.medfusion.product.patientportal2.pojo.CreditCard.CardType;
 
+import static org.testng.Assert.assertFalse;
 import static org.testng.Assert.assertTrue;
 
 import java.awt.AWTException;
@@ -156,6 +157,9 @@ public class JalapenoAskAStaffV2Page1 extends JalapenoMenu {
     
     @FindBy(how = How.XPATH, using = "//input[contains(@name,'attachments')]")
     private WebElement chooseFile;
+    
+    @FindBy(how = How.XPATH, using = "//span[text()='Error_Files_Testing1.json']")
+	private WebElement errorFileName1;
 	
 	private long createdTS;
 
@@ -624,5 +628,33 @@ public class JalapenoAskAStaffV2Page1 extends JalapenoMenu {
         continueButton.click();
         return PageFactory.initElements(driver, JalapenoAskAStaffV2Page2.class);
     }
+    
+    public void uploadInvalidAndValidFileWithRobotRepeat(String errorfilePath, String correctfilePath) throws InterruptedException {
+
+				setClipboardData(errorfilePath);
+				log("Path of Error File " + errorfilePath);
+				JalapenoAskAStaffV2Page1 ref = new JalapenoAskAStaffV2Page1(driver);
+				ref.uploadFileWithRobot(errorfilePath, correctfilePath);
+				log("Uploaded more than 10 MB file  " + errorFileName1.getText());
+				assertTrue(errorFileName1.getText().equals("Error_Files_Testing1.json"),
+						"Expected: " + errorFileName1.getText() + ", found: " + "Error_Files_Testing.pdf");
+				assertTrue(fileUploadErrorMsg.getText().equals("Invalid file type. Allowed file types are .bmp, .png, .jpg, .jpeg, .tiff, .tif, .doc, .docx, .pdf, .txt"),
+						"Expected: " + fileUploadErrorMsg.getText() + ", found: " + "Invalid file type. Allowed file types are .bmp, .png, .jpg, .jpeg, .tiff, .tif, .doc, .docx, .pdf, .txt");
+				log("Verifying continue button is disabled");
+				assertFalse(continueButton.isEnabled(), "Continue button is disabled");
+				errorFileRemove.click();
+				log("Verifying continue button is enabled");
+				assertTrue(continueButton.isEnabled(), "Continue button is disabled");
+
+				setClipboardData(correctfilePath);
+				//wait for the window to open the folder
+				Thread.sleep(5000);
+				JalapenoAskAStaffV2Page1 ref1 = new JalapenoAskAStaffV2Page1(driver);
+				ref1.uploadFileWithRobot(errorfilePath, correctfilePath);
+				log("Uploaded  2 MB file  " + properFileName.getText());
+				assertTrue(properFileName.getText().equals("sw-test-academy.txt"),
+						"Expected: " + properFileName.getText() + ", found: " + "sw-test-academy.txt");
+		
+	}
     
 }
