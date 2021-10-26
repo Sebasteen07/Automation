@@ -9,6 +9,8 @@ locals {
     prod-patientportal-regression2 = "prod-patientportal-regression2"
     prod-patientportal-regression3 = "prod-patientportal-regression3"
     prod-patientportal-regression4 = "prod-patientportal-regression4"
+    git-taf-prod-precheck = "git-taf-prod-precheck"
+    git-taf-prod-precheck-rsdk-patientupdates = "git-taf-prod-precheck-rsdk-patientupdates"
   }
   selected_workspace = local.valid_workspaces[terraform.workspace]
 }
