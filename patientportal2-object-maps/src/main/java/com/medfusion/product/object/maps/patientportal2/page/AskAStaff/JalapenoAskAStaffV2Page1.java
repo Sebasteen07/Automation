@@ -635,7 +635,7 @@ public class JalapenoAskAStaffV2Page1 extends JalapenoMenu {
 				log("Path of Error File " + errorfilePath);
 				JalapenoAskAStaffV2Page1 ref = new JalapenoAskAStaffV2Page1(driver);
 				ref.uploadFileWithRobot(errorfilePath, correctfilePath);
-				log("Uploaded more than 10 MB file  " + invalidFileName.getText());
+				log("Uploaded invalid file  " + invalidFileName.getText());
 				assertTrue(invalidFileName.getText().equals("Error_Files_Testing1.json"),
 						"Expected: " + invalidFileName.getText() + ", found: " + "Error_Files_Testing.pdf");
 				assertTrue(fileUploadErrorMsg.getText().equals("Invalid file type. Allowed file types are .bmp, .png, .jpg, .jpeg, .tiff, .tif, .doc, .docx, .pdf, .txt"),
@@ -651,7 +651,7 @@ public class JalapenoAskAStaffV2Page1 extends JalapenoMenu {
 				Thread.sleep(2000);
 				JalapenoAskAStaffV2Page1 ref1 = new JalapenoAskAStaffV2Page1(driver);
 				ref1.uploadFileWithRobot(errorfilePath, correctfilePath);
-				log("Uploaded  2 MB file  " + properFileName.getText());
+				log("Uploaded valid file  " + properFileName.getText());
 				assertTrue(properFileName.getText().equals("sw-test-academy.txt"),
 						"Expected: " + properFileName.getText() + ", found: " + "sw-test-academy.txt");
 		
