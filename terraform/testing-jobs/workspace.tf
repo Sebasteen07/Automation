@@ -9,6 +9,8 @@ locals {
     prod-patientportal-regression2 = "prod-patientportal-regression2"
     prod-patientportal-regression3 = "prod-patientportal-regression3"
     prod-patientportal-regression4 = "prod-patientportal-regression4"
+    prod-forms-regression1         = "prod-forms-regression1"
+    prod-forms-regression2         = "prod-forms-regression2"
   }
   selected_workspace = local.valid_workspaces[terraform.workspace]
 }
