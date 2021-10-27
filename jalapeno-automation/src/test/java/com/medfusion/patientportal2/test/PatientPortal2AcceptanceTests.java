@@ -5774,7 +5774,7 @@ public class PatientPortal2AcceptanceTests extends BaseTestNGWebDriver {
 	public void testAskInvalidAttachment() throws Exception {
 		String expectedCorrectFileText = "sw-test-academy.txt";
 
-		logStep("Login patient");
+		logStep("Login as patient");
 		JalapenoLoginPage loginPage = new JalapenoLoginPage(driver, testData.getProperty("url"));
 		JalapenoHomePage homePage = loginPage.login(testData.getProperty("aska.v2.user"),
 				testData.getProperty("aska.v2.password"));
@@ -5824,8 +5824,6 @@ public class PatientPortal2AcceptanceTests extends BaseTestNGWebDriver {
 		assertTrue(expectedCorrectFileText.equals(askHistoryDetail.getRequestAttachedFile()),
 				"Expected: " + expectedCorrectFileText + ", found: " + askHistoryDetail.getRequestAttachedFile());
 
-		logStep("Logout patient");
-		askHistoryDetail.clickOnLogout();
 	}
 
 }
