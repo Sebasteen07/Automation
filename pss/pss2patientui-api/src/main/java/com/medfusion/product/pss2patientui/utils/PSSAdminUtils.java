@@ -723,6 +723,7 @@ public class PSSAdminUtils extends BaseTestNGWebDriver{
 		ManageSpecialty manageSpecialty = pss2practiceconfig.gotoSpeciality();
 		manageSpecialty.selectSpecility(appointment.getSpeciality());
 		manageSpecialty.isgenderRuleTrue();
+		Thread.sleep(5000);
 		Log4jUtil.log("Gender Rule Status  " + manageSpecialty.isgenderRuleTrue());
 		if (manageSpecialty.isgenderRuleTrue() == false) {
 			manageSpecialty.clickGender();
@@ -861,7 +862,7 @@ public class PSSAdminUtils extends BaseTestNGWebDriver{
 		adminPatientMatching.patientMatchingSelection();
 		ManageResource manageResource = pssPracticeConfig.gotoResource();
 		pageRefresh(driver);
-		manageResource.selectResource(testData.getLinkProvider());
+		manageResource.selectResource(testData.getProvider());
 		manageResource.clickLocation();
 		manageResource.offAllLocationToggle();
 		patientFlow.logout();

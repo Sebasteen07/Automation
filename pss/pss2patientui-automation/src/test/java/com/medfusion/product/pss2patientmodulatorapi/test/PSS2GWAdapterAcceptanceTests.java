@@ -203,6 +203,73 @@ public class PSS2GWAdapterAcceptanceTests extends BaseTestNG {
 	}
 	
 	@Test(enabled = true, groups = { "APItest" }, retryAnalyzer = RetryAnalyzer.class)
+	public void testSchedReschPOST() throws NullPointerException, Exception {
+		
+		String startDate=pssPatientUtils.sampleDateTime("MM/dd/yyyy HH:mm:ss");
+		String endDate=pssPatientUtils.createFutureDate(startDate, 10);	
+		String practiceid=propertyData.getProperty("practice.id.gw");
+		//String b=payloadAT.getavailableSlotPayload(startDate, endDate, propertyData.getProperty("patient.id.at"));		
+
+		Response response = postAPIRequestgw
+				.avaliableSlot1(payload.AvailiableSlots11(propertyData.getProperty("appointment.cat.id.gw"),
+						propertyData.getProperty("appointment.type.id"), propertyData.getProperty("extapp.id.gw"),
+						propertyData.getProperty("location.id.gw"), propertyData.getProperty("patient.id.gw"),
+						propertyData.getProperty("resource.cat.id.gw"), propertyData.getProperty("resource.id"),
+						startDate), practiceid);
+		aPIVerification.responseTimeValidation(response);
+
+		JsonPath js = new JsonPath(response.asString());
+
+		String startDateTime=js.getString("availableSlots[0].startDateTime");;
+		String endDateTime=js.getString("availableSlots[0].endDateTime");
+		String slotId=js.getString("availableSlots[0].slotId");
+		
+		String startDateTime_resch=js.getString("availableSlots[1].startDateTime");;
+		String endDateTime_resch=js.getString("availableSlots[1].endDateTime");
+		String slotId_resch=js.getString("availableSlots[1].slotId");
+		
+		String patientId= propertyData.getProperty("patient.id.at");
+		
+		log("startDateTime- "+startDateTime);
+		log("endDateTime- "+endDateTime);
+		log("slotId- "+slotId);
+		log("patientId- "+patientId);
+		
+		log("startDateTime- "+startDateTime_resch);
+		log("endDateTime- "+endDateTime_resch);
+		log("slotId- "+slotId_resch);
+		log("patientId- "+patientId);
+		
+		Response scheduleApptResponse = postAPIRequestgw.scheduleappointment(
+				payload.schedulePayload(startDateTime, endDateTime,propertyData.getProperty("patient.id.gw")),
+				propertyData.getProperty("practice.id.gw"));
+		logStep("Verifying the response");
+		assertEquals(scheduleApptResponse.getStatusCode(), 200);
+		
+		
+		
+		
+		
+//		String schedPayload=payloadAT.schedulePayload(startDateTime, endDateTime, patientId, slotId);
+//		
+//		Response scheduleApptResponse =postAPIRequestat.scheduleAppt(propertyData.getProperty("practice.id.at"), schedPayload);
+//		aPIVerification.responseTimeValidation(scheduleApptResponse);
+//		String apptid=aPIVerification.responseKeyValidationJson(scheduleApptResponse, "id");
+//		aPIVerification.responseKeyValidationJson(scheduleApptResponse, "slotAlreadyTaken");
+//		aPIVerification.responseKeyValidationJson(scheduleApptResponse, "rescheduleNotAllowed");
+//		
+//		log("Appointment id - "+apptid);
+//		
+//		String reschPayload=payloadAT.reschPayload(startDateTime_resch, endDateTime_resch, patientId, slotId_resch,apptid);
+//			
+//		Response rescheduleResponse=postAPIRequestat.rescheduleAppt(practiceid, reschPayload);
+//		aPIVerification.responseTimeValidation(rescheduleResponse);
+//		aPIVerification.responseKeyValidationJson(rescheduleResponse, "id");
+//		aPIVerification.responseKeyValidationJson(rescheduleResponse, "slotAlreadyTaken");
+//		aPIVerification.responseKeyValidationJson(rescheduleResponse, "rescheduleNotAllowed");			
+	}
+	
+	@Test(enabled = true, groups = { "APItest" }, retryAnalyzer = RetryAnalyzer.class)
 	public void testScheduleAppWithoutPidPOST() throws IOException, InterruptedException {
 		Response scheduleApptResponse = postAPIRequestgw.scheduleappointment(
 				payload.scheduleWithoutPidPayload(propertyData.getProperty("start.date.time.gw"), propertyData.getProperty("end.date.time.gw")),

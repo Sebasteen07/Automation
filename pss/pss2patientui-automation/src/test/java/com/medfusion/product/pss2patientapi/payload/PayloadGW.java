@@ -514,5 +514,32 @@ public class PayloadGW extends BaseTestNGWebDriver {
 		
 		return reschedulePayload;
 	}
-
+	public String AvailiableSlots11(String appointmentCatId,String appointmentTypeId,String extId,String locationId,
+			String patientId,String resourceCatId,String resourceId,String startTime) {
+		String schedulePayload="{\r\n"
+				+ "    \"nextAvailability\": true,\r\n"
+				+ "    \"stackingFlag\": true,\r\n"
+				+ "    \"resourceId\": \""+resourceId+"\",\r\n"
+				+ "    \"slotSize\": \"5\",\r\n"
+				+ "    \"endDate\": null,\r\n"
+				+ "    \"patientId\":  \""+patientId+"\",\r\n"
+				+ "    \"extApptId\": \""+extId+"\",\r\n"
+				+ "    \"resourceCategoryId\": \""+resourceCatId+"\",\r\n"
+				+ "    \"leadTime\": \"0\",\r\n"
+				+ "    \"appointmentTypeId\": \""+appointmentTypeId+"\",\r\n"
+				+ "    \"apptTypeAllocated\": true,\r\n"
+				+ "    \"duration\": null,\r\n"
+				+ "    \"practiceTimezone\": \"America/New_York\",\r\n"
+				+ "    \"locationId\": \""+locationId+"\",\r\n"
+				+ "    \"slotCount\": 0,\r\n"
+				+ "    \"appointmentCategoryId\": \""+appointmentCatId+"\",\r\n"
+				+ "    \"preventScheduling\": 0,\r\n"
+				+ "    \"reservedForSameDay\": true,\r\n"
+				+ "    \"sameDayAppointment\": true,\r\n"
+				+ "    \"slotLimit\": null,\r\n"
+				+ "    \"startDate\": \""+startTime+"\"\r\n"
+				+ "}";		
+		
+		return schedulePayload;
+	}
 }
