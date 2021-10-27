@@ -135,3 +135,23 @@ Feature: Test fuctionality of Appointment precheck
     Then verify on appointment dashboard user is able to see only text column under send reminder column and mail column is disappear
     And from setting dashboard in general enable email check box
     And logout from practice provisioning portal
+    
+     Scenario: Verify if the Broadcast message is not sent to any patients when start date and end date is more than passed one month
+    When enter date and time for backdated greater than one month
+    And filter is applied only for provider
+    And select patients based on filters
+    And send broadcast message to all selected patient
+    Then verify the count in banner message is coming correct for one month backdated
+    And logout from practice provisioning portal
+
+    Scenario: verify in appointment dashboard broadcast column for email and text should be visible by default count will be zero
+    When in setting dashboard in notifications Enable Broadcast messaging checkbox
+    And schedule an appointments
+    Then verify in appointment dashboard broadcast column for email and text should be visible by default count will be zero
+    And logout from practice provisioning portal
+    
+    Scenario: Verify on clicking icon for email and text pop up appears and patient name , time , status , message field is displayed
+    When in setting dashboard in notifications Enable Broadcast messaging checkbox
+    And schedule an appointments
+    Then Verify on clicking icon for email and text pop up appears and patient name , time , status , message field is displayed
+    And logout from practice provisioning portal

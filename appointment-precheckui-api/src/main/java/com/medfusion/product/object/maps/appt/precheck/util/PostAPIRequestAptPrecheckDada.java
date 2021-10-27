@@ -65,7 +65,7 @@ public class PostAPIRequestAptPrecheckDada extends BaseTestNGWebDriver {
 	public Response savesApptAction(Map<String, String> Header, String practiceId, String patientId, String apptId,
 			String apptAction) {
 		log("Execute Put request Saves Appt Action");
-		Response response = given().log().all().headers(Header).when()
+		Response response = given().spec(requestSpec).log().all().headers(Header).when()
 				.put("appointment_actions/practice/" + practiceId + "/patient/" + patientId + "/appointment/" + apptId
 						+ "/action/" + apptAction)
 				.then().log().all().extract().response();
