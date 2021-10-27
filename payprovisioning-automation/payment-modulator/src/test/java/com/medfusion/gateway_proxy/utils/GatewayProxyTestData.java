@@ -11,6 +11,7 @@ import com.medfusion.gateway_proxy.utils.GatewayProxyUtils;
 import com.medfusion.gateway_proxy.utils.MPUsersUtility;
 
 public class GatewayProxyTestData extends GatewayProxyBaseTest {
+	String env = GatewayProxyUtils.getEnvironmentType().toString();
 
 	@DataProvider(name = "refund_data")
 	public static Object[][] dataProvider() throws Exception {
@@ -111,26 +112,28 @@ public class GatewayProxyTestData extends GatewayProxyBaseTest {
 	}
 
 	@DataProvider(name = "card_details")
-	public Object[][] dpMethodDigitalWallet() {
+	public Object[][] dpMethodDigitalWallet() throws IOException {
+		PropertyFileLoad testData = new PropertyFileLoad(env);
 		return new Object[][] {
-				{ "", testData.getProperty("type"), testData.getProperty("card.number"),
+				{testData.getProperty("test.pay.customer.uuid"),  "", testData.getProperty("type"), testData.getProperty("card.number"),
 						testData.getProperty("expiration.number"), testData.getProperty("card.alias"),
 						testData.getProperty("zipcode"), true },
-				{ testData.getProperty("consumer.name"), "", testData.getProperty("card.number"),
+				{testData.getProperty("test.pay.customer.uuid"), testData.getProperty("consumer.name"), "", testData.getProperty("card.number"),
 						testData.getProperty("expiration.number"), testData.getProperty("card.alias"),
 						testData.getProperty("zipcode"), true },
-				{ testData.getProperty("consumer.name"), testData.getProperty("type"), "",
+				{testData.getProperty("test.pay.customer.uuid"), testData.getProperty("consumer.name"), testData.getProperty("type"), "",
 						testData.getProperty("expiration.number"), testData.getProperty("card.alias"),
 						testData.getProperty("zipcode"), true },
-				{ testData.getProperty("consumer.name"), testData.getProperty("type"),
+				{testData.getProperty("test.pay.customer.uuid"), testData.getProperty("consumer.name"), testData.getProperty("type"),
 						testData.getProperty("card.number"), "1220", testData.getProperty("card.alias"),
 						testData.getProperty("zipcode"), true },
-				{ testData.getProperty("consumer.name"), testData.getProperty("type"),
+				{testData.getProperty("test.pay.customer.uuid"), testData.getProperty("consumer.name"), testData.getProperty("type"),
 						testData.getProperty("card.number"), testData.getProperty("expiration.number"),
 						testData.getProperty("card.alias"), "", true },
-				{ testData.getProperty("consumer.name"), testData.getProperty("type"),
+				{testData.getProperty("test.pay.customer.uuid"), testData.getProperty("consumer.name"), testData.getProperty("type"),
 						testData.getProperty("card.number"), testData.getProperty("expiration.number"),
-						testData.getProperty("card.alias"), "", true }, };
+						testData.getProperty("card.alias"), "", true },
+						};
 	}
 
 	@DataProvider(name = "txn_data_for_sale")
@@ -252,7 +255,7 @@ public class GatewayProxyTestData extends GatewayProxyBaseTest {
 
 	@DataProvider(name = "delete_invalid_data")
 	public static Object[][] dataProvider_delete_card() throws Exception {
-		testData = new PropertyFileLoader();
+//		testData = new PropertyFileLoader();
 		String token = GatewayProxyUtils.getTokenForCustomer();
 		return new Object[][] {
 
