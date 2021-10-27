@@ -5767,9 +5767,9 @@ public class PatientPortal2AcceptanceTests extends BaseTestNGWebDriver {
 		logStep("Logout patient");
 		askHistoryDetail.clickOnLogout();
 	}	
-	  @Test(enabled = true, groups = { "acceptance-linkedaccounts" }, retryAnalyzer = RetryAnalyzer.class)
+	  @Test(enabled = true, groups = { "acceptance-solutions" }, retryAnalyzer = RetryAnalyzer.class)
 	   public void testConsolidatedHealthRecord() throws Exception {
-		logStep("Load trusted representatives user role");
+		logStep("Login as a patient user role");
 		JalapenoLoginPage  loginPage = new JalapenoLoginPage(driver, testData.getUrl());
 		JalapenoHomePage homePage = loginPage.login(testData.getProperty("caremanager.trustedrep.healthrecord.username"), testData.getProperty("password"));
 
