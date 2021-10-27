@@ -3,21 +3,20 @@ package pageobjects;
 import static org.testng.Assert.assertNotNull;
 
 import java.io.IOException;
-import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
 
-import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.FindAll;
 import org.openqa.selenium.support.FindBy;
 import org.openqa.selenium.support.How;
 import org.openqa.selenium.support.PageFactory;
+import org.openqa.selenium.support.ui.ExpectedConditions;
+import org.openqa.selenium.support.ui.WebDriverWait;
 import org.testng.Assert;
 
-import com.intuit.ifs.csscat.core.utils.Log4jUtil;
 import com.medfusion.common.utils.PropertyFileLoader;
 
 public class MerchantDetailsPage extends NavigationMenu {
@@ -35,7 +34,7 @@ public class MerchantDetailsPage extends NavigationMenu {
 
 	List<String> payApiCustomers = Collections.unmodifiableList(Arrays.asList("NG Pay", "NG Enterprise"));
 
-	List<String> settlementType = Collections.unmodifiableList(Arrays.asList("Daily", "Monthly"));
+	List<String> settlementType = Collections.unmodifiableList(Arrays.asList("DAILY", "MONTHLY"));
 
 	@FindBy(how = How.XPATH, using = "//*[@id='Processor']")
 	private WebElement processor;
@@ -98,7 +97,7 @@ public class MerchantDetailsPage extends NavigationMenu {
 	private WebElement editRatesContractButton;
 
 	// Percentage Fee Tiers
-	@FindBy(how = How.XPATH, using = "//span[@class='ng-binding'][text()='Daily']")
+	@FindBy(how = How.XPATH, using = "//span[@class='ng-binding']")
 	private WebElement settlement;
 
 	@FindBy(how = How.XPATH, using = "//a[text()=' Collect Chargeback ']")
@@ -107,16 +106,20 @@ public class MerchantDetailsPage extends NavigationMenu {
 	@FindBy(how = How.XPATH, using = "//a[text()=' Edit Fraud/Risk Variables ']")
 	private WebElement editFraudButton;
 
-	@FindBy(how=How.XPATH,using="//*[@id='top-nav']/div/div[2]/div[1]/span[1]")
+	@FindBy(how = How.XPATH, using = "//*[@id='top-nav']/div/div[2]/div[1]/span[1]")
 	private WebElement mmid;
+
+	@FindBy(how = How.XPATH, using = "//div[@id='feeSettlement']/following-sibling::div")
+	private WebElement feeSettlement;
 
 	public void verifyPageTitle() {
 
 		String title = this.driver.getTitle();
+		assertNotNull(title);
 
 	}
 
-	public void verifyProcessorInformation(String processorType) {
+	public void verifyProcessorInformation(String processorType){
 
 		assertNotNull(processor);
 		assertNotNull(mmidInternal);
@@ -202,8 +205,26 @@ public class MerchantDetailsPage extends NavigationMenu {
 
 	}
 
-	public String getMMID(){
+	public String getMMID() {
 		return mmid.getText();
+	}
+
+	public void clickOnRatesNContractButton() throws InterruptedException {
+		editRatesContractButton.click();
+		
+	}
+
+	public void verifySettlementType(String settlementType) throws InterruptedException {
+
+		Assert.assertEquals(feeSettlement.getText().toUpperCase(), settlementType.toUpperCase());
+
+	}
+
+	public void waitToCheckEditRatesContractButton() {
+		WebDriverWait wait = new WebDriverWait(driver, 30);
+		wait.until(ExpectedConditions.visibilityOf(editRatesContractButton));
+		wait.until(ExpectedConditions.visibilityOf(settlement));
+	
 	}
 
 }
