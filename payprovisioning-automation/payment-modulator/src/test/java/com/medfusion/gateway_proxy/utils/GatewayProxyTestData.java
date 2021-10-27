@@ -255,7 +255,7 @@ public class GatewayProxyTestData extends GatewayProxyBaseTest {
 
 	@DataProvider(name = "delete_invalid_data")
 	public static Object[][] dataProvider_delete_card() throws Exception {
-//		testData = new PropertyFileLoader();
+		testData = new PropertyFileLoader();
 		String token = GatewayProxyUtils.getTokenForCustomer();
 		return new Object[][] {
 
