@@ -134,6 +134,8 @@ public class PatientPortal2AcceptanceTests extends BaseTestNGWebDriver {
 			+ "\\src\\test\\resources\\documents\\QuickSend.pdf";
 	private static final String MessageErrorfilePath = System.getProperty("user.dir")
 			+ "\\src\\test\\resources\\documents\\SecureMessageFile.pdf";
+	private static final String InvalidfilePath = System.getProperty("user.dir")
+			+ "\\src\\test\\resources\\File_Attachment\\Error_Files_Testing1.json";
 
 	private PropertyFileLoader testData;
 	private Patient patient = null;
@@ -5766,8 +5768,63 @@ public class PatientPortal2AcceptanceTests extends BaseTestNGWebDriver {
 		
 		logStep("Logout patient");
 		askHistoryDetail.clickOnLogout();
-	}	
-	  @Test(enabled = true, groups = { "acceptance-solutions" }, retryAnalyzer = RetryAnalyzer.class)
+
+	}
+	@Test(enabled = true, groups = { "acceptance-solutions" }, retryAnalyzer = RetryAnalyzer.class)
+	public void testAskInvalidAttachment() throws Exception {
+		String expectedCorrectFileText = "sw-test-academy.txt";
+
+		logStep("Login as patient");
+		JalapenoLoginPage loginPage = new JalapenoLoginPage(driver, testData.getProperty("url"));
+		JalapenoHomePage homePage = loginPage.login(testData.getProperty("aska.v2.user"),
+				testData.getProperty("aska.v2.password"));
+
+		logStep("Click Ask A Staff tab");
+		JalapenoAskAStaffV2Page1 askPage1 = homePage.openSpecificAskaV2(testData.getProperty("aska.v2.name"));
+
+		String askaSubject = Long.toString(askPage1.getCreatedTimeStamp());
+
+		logStep("Fill question and continue");
+		JalapenoAskAStaffV2Page2 askPage2 = askPage1.fillAndContinueAttachment(askaSubject, questionText);
+
+		logStep("Add Attachment and remove Attachment ");
+		askPage1.uploadInvalidAndValidFile(InvalidfilePath, CorrectfilePath);
+
+		logStep("Remove All the Attachment Except one and click on continue button ");
+		askPage1.removeAttachment();
+
+		logStep("Verify Uploaded file name in submit page ");
+		assertTrue(expectedCorrectFileText.equals(askPage1.getProperFileText()),
+				"Expected: " + expectedCorrectFileText + ", found: " + askPage1.getProperFileText());
+
+		logStep("Verify Subject in submit page ");
+		assertTrue(askaSubject.equals(askPage2.getSubject()),
+				"Expected: " + askaSubject + ", found: " + askPage2.getSubject());
+
+		logStep("Verify Quesion in Submit paget ");
+		assertTrue(questionText.equals(askPage2.getQuestion()),
+				"Expected: " + questionText + ", found: " + askPage2.getQuestion());
+
+		homePage = askPage2.submit();
+
+		logStep("Go back to the aska and check question history");
+		askPage1 = homePage.openSpecificAskaV2(testData.getProperty("aska.v2.name"));
+		JalapenoAskAStaffV2HistoryListPage askHistoryList = askPage1.clickOnHistory();
+
+		logStep("Find history entry by subject/reason and navigate to detail");
+		JalapenoAskAStaffV2HistoryDetailPage askHistoryDetail = askHistoryList.goToDetailByReason(askaSubject);
+
+		logStep("Verify the subject and question in history detail match submission");
+		assertTrue(askaSubject.equals(askHistoryDetail.getRequestDetailSubject()),
+				"Expected: " + askaSubject + ", found: " + askHistoryDetail.getRequestDetailSubject());
+		assertTrue(questionText.equals(askHistoryDetail.getRequestDetailQuestion()),
+				"Expected: " + questionText + ", found: " + askHistoryDetail.getRequestDetailQuestion());
+		assertTrue("Open".equals(askHistoryDetail.getRequestDetailStatus()),
+				"Expected: Open" + ", found: " + askHistoryDetail.getRequestDetailStatus());
+		assertTrue(expectedCorrectFileText.equals(askHistoryDetail.getRequestAttachedFile()),
+				"Expected: " + expectedCorrectFileText + ", found: " + askHistoryDetail.getRequestAttachedFile());
+        }
+	@Test(enabled = true, groups = { "acceptance-solutions" }, retryAnalyzer = RetryAnalyzer.class)
 	   public void testConsolidatedHealthRecord() throws Exception {
 		logStep("Login as a patient user role");
 		JalapenoLoginPage  loginPage = new JalapenoLoginPage(driver, testData.getUrl());
@@ -5792,5 +5849,7 @@ public class PatientPortal2AcceptanceTests extends BaseTestNGWebDriver {
 	    logStep("Verify the Request Recived message");
 	    assertTrue(healthrecord.isRequestRecivedMessageDisplayed());
 		
-    }
-    }
+        }
+
+}
+
