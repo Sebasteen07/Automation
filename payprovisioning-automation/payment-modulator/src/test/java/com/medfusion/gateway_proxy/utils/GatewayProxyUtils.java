@@ -2,6 +2,8 @@
 package com.medfusion.gateway_proxy.utils;
 
 import static io.restassured.RestAssured.given;
+
+import com.intuit.ifs.csscat.core.TestConfig;
 import io.restassured.RestAssured;
 import io.restassured.http.ContentType;
 import io.restassured.path.json.JsonPath;
@@ -16,6 +18,7 @@ import org.apache.commons.lang.StringUtils;
 public class GatewayProxyUtils {
 
 	protected static PropertyFileLoader testData;
+	protected static PropertyFileLoad testsData;
 
 	public void setUp() throws Exception {
 		testData = new PropertyFileLoader();
@@ -42,6 +45,34 @@ public class GatewayProxyUtils {
 
 	}
 
+	public static String getTokenForCustomerForEnv(String env) throws Exception {
+		Map<String, Object> tokenpayload = new HashMap<String, Object>();
+		Response response;
+		testsData = new PropertyFileLoad(env);
+		tokenpayload.put("clientId", testsData.getProperty("client.id"));
+		tokenpayload.put("clientSecret", testsData.getProperty("client.secret"));
+		tokenpayload.put("scope", "api:pay");
+
+		if(env.equalsIgnoreCase("DEMO") || env.equalsIgnoreCase("DEV3")) {
+			response = given().contentType(ContentType.JSON).body(tokenpayload).and().log().body().when()
+					.post((testsData.getProperty("post.token.url"))
+							+ (testsData.getProperty("test.pay.customer.uuid") + "/tokens"))
+					.then().statusCode(200).and().extract().response();
+		}
+		else {
+			response = given().header("x-api-key", testsData.getProperty("x-api-key"))
+					.contentType(ContentType.JSON).body(tokenpayload).and().log().body().when()
+					.post(testsData.getProperty("post.token.url")
+							+ (testsData.getProperty("test.pay.customer.uuid") + "/tokens"))
+					.then().statusCode(200).and().extract().response();
+
+		}
+		JsonPath jsonpath = new JsonPath(response.asString());
+		System.out.println(jsonpath.get("token").toString());
+
+		return jsonpath.get("token").toString();
+	}
+
 
 	public static long getEpochDate(int amount){
 		/*
@@ -53,5 +84,9 @@ public class GatewayProxyUtils {
 		Calendar calendar = Calendar.getInstance();
 		calendar.add(Calendar.DATE, amount);
 		return calendar.getTime().getTime();
+	}
+
+	public static Object getEnvironmentType() {
+		return TestConfig.getUserDefinedProperty("test.environment");
 	}
 }
