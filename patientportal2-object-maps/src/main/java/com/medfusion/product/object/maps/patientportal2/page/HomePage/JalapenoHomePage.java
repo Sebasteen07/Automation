@@ -145,6 +145,9 @@ public class JalapenoHomePage extends JalapenoMenu {
 
 	@FindBy(how = How.XPATH, using = "//button[text()='Live Chat']")
 	private WebElement btnLiveChat;
+	
+	@FindBy(how = How.ID, using = "feature_ccdList")
+	private WebElement healthrecord;
 
 	public JalapenoHomePage(WebDriver driver) {
 		super(driver);
@@ -367,6 +370,7 @@ public class JalapenoHomePage extends JalapenoMenu {
 	public JalapenoAskAStaffV2Page1 openSpecificAskaFree(String askaName) throws InterruptedException {
 		IHGUtil.PrintMethodName();
 		wait.until(ExpectedConditions.visibilityOf(askAQuestion));
+		handleWeNeedToConfirmSomethingModal();
 		askAQuestion.click();
 		System.out.println("It clicked on the ASK a question in homepage");
 		try {
@@ -629,6 +633,14 @@ public class JalapenoHomePage extends JalapenoMenu {
 			return appointments.isDisplayed();
 		} catch (NoSuchElementException e) {
 			log("Verify Appointment Solution  for Trusted Rep shoud not display");
+			return false;
+		}
+	}
+	public boolean isHealthRecordSolutionisplayed() {
+		try {
+			return healthrecord.isDisplayed();
+		} catch (NoSuchElementException e) {
+			log("Verify Health Record Solution for Trusted Rep shoud not display");
 			return false;
 		}
 	}

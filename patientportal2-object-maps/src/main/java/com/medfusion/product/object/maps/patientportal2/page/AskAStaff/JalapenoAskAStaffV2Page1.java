@@ -3,6 +3,7 @@ package com.medfusion.product.object.maps.patientportal2.page.AskAStaff;
 
 import org.openqa.selenium.By;
 import org.openqa.selenium.Keys;
+import org.openqa.selenium.NoSuchElementException;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.FindBy;
@@ -17,6 +18,7 @@ import com.medfusion.product.object.maps.patientportal2.page.JalapenoMenu;
 import com.medfusion.product.patientportal2.pojo.CreditCard;
 import com.medfusion.product.patientportal2.pojo.CreditCard.CardType;
 
+import static org.testng.Assert.assertFalse;
 import static org.testng.Assert.assertTrue;
 
 import java.awt.AWTException;
@@ -152,6 +154,12 @@ public class JalapenoAskAStaffV2Page1 extends JalapenoMenu {
     
     @FindBy(how = How.XPATH, using = "//div[contains(@class,'ng-option-marked')]")
     private WebElement firstProvider;
+    
+    @FindBy(how = How.XPATH, using = "//input[contains(@name,'attachments')]")
+    private WebElement chooseFile;
+    
+    @FindBy(how = How.XPATH, using = "//span[text()='Error_Files_Testing1.json']")
+	private WebElement invalidFileName;
 	
 	private long createdTS;
 
@@ -181,19 +189,50 @@ public class JalapenoAskAStaffV2Page1 extends JalapenoMenu {
 			subjectBox.clear();
 			wait.until(ExpectedConditions.visibilityOf(subjectBox));
 			subjectBox.sendKeys(subject);
-			Thread.sleep(5000);
+			Thread.sleep(2000);
 		}
-		Thread.sleep(4000);			
+		Thread.sleep(2000);			
 		log("Selecting Provider ");
-		ProviderDropDown.click();
-		Thread.sleep(10000);
-		firstProvider.click();
+		try {
+			IHGUtil.waitForElement(driver, 0, ProviderDropDown);
+			ProviderDropDown.click();
+			Thread.sleep(2000);
+			firstProvider.click();
+		}
+		catch(NoSuchElementException e) {
+			log("Provider drop down not displayed");
+		}
 		questionBox.sendKeys(question);
-		Thread.sleep(5000);
+		Thread.sleep(2000);
 		continueButton.click();
 		return PageFactory.initElements(driver, JalapenoAskAStaffV2Page2.class);
 	}
 
+	public JalapenoAskAStaffV2Page2 uploadAttachment(String subject, String question,String correctfilePath) throws InterruptedException {
+		if (subject != null && !subject.trim().isEmpty()) {
+			wait.until(ExpectedConditions.visibilityOf(subjectBox));
+			subjectBox.clear();
+			Thread.sleep(1000);
+			subjectBox.sendKeys(subject);
+		}
+		Thread.sleep(2000);			
+		log("Selecting Provider ");
+		try {
+			IHGUtil.waitForElement(driver, 10, ProviderDropDown);
+			ProviderDropDown.click();
+			Thread.sleep(1000);
+			firstProvider.click();
+		}
+		catch(NoSuchElementException e) {
+			log("Provider drop down not displayed");
+		}
+		questionBox.sendKeys(question);
+		chooseFile.sendKeys(correctfilePath);
+		continueButton.click();
+		return PageFactory.initElements(driver, JalapenoAskAStaffV2Page2.class);
+		
+	}
+	
 	public JalapenoAskAStaffV2Page2 fillAndContinue(String invalidLengthText, String question, String validLengthText)
 			throws InterruptedException {
 		for (int i = 0; i < 2; i++) {
@@ -237,6 +276,16 @@ public class JalapenoAskAStaffV2Page1 extends JalapenoMenu {
 			subjectBox.sendKeys(subject);
 			Thread.sleep(1000);
 		}
+		try {
+			IHGUtil.waitForElement(driver, 0, ProviderDropDown);
+			ProviderDropDown.click();
+			Thread.sleep(2000);
+			firstProvider.click();
+		}
+		catch(NoSuchElementException e) {
+			log("Provider drop down not displayed");
+		}
+			
 		questionBox.sendKeys(question);
 		Thread.sleep(1000);
 		return PageFactory.initElements(driver, JalapenoAskAStaffV2Page2.class);
@@ -281,11 +330,11 @@ public class JalapenoAskAStaffV2Page1 extends JalapenoMenu {
 				log("Path of Error File " + errorfilePath);
 				JalapenoAskAStaffV2Page1 ref = new JalapenoAskAStaffV2Page1(driver);
 				ref.uploadFileWithRobot(errorfilePath, correctfilePath);
-				log("Uploaded more than 2 MB file  " + errorFileName.getText());
+				log("Uploaded more than 10 MB file  " + errorFileName.getText());
 				assertTrue(errorFileName.getText().equals("Error_Files_Testing.pdf"),
 						"Expected: " + errorFileName.getText() + ", found: " + "Error_Files_Testing.pdf");
-				assertTrue(fileUploadErrorMsg.getText().equals("Your attachments exceed the maximum size of 2MB."),
-						"Expected: " + fileUploadErrorMsg.getText() + ", found: " + "Your attachments exceed the maximum size of 2MB.");	
+				assertTrue(fileUploadErrorMsg.getText().equals("Your attachments exceed the maximum size of 10MB."),
+						"Expected: " + fileUploadErrorMsg.getText() + ", found: " + "Your attachments exceed the maximum size of 10MB.");	
 				errorFileRemove.click();
 				continue;
 			} else {
@@ -579,5 +628,33 @@ public class JalapenoAskAStaffV2Page1 extends JalapenoMenu {
         continueButton.click();
         return PageFactory.initElements(driver, JalapenoAskAStaffV2Page2.class);
     }
+    
+    public void uploadInvalidAndValidFile(String errorfilePath, String correctfilePath) throws InterruptedException {
+
+				setClipboardData(errorfilePath);
+				log("Path of Error File " + errorfilePath);
+				JalapenoAskAStaffV2Page1 ref = new JalapenoAskAStaffV2Page1(driver);
+				ref.uploadFileWithRobot(errorfilePath, correctfilePath);
+				log("Uploaded invalid file  " + invalidFileName.getText());
+				assertTrue(invalidFileName.getText().equals("Error_Files_Testing1.json"),
+						"Expected: " + invalidFileName.getText() + ", found: " + "Error_Files_Testing.pdf");
+				assertTrue(fileUploadErrorMsg.getText().equals("Invalid file type. Allowed file types are .bmp, .png, .jpg, .jpeg, .tiff, .tif, .doc, .docx, .pdf, .txt"),
+						"Expected: " + fileUploadErrorMsg.getText() + ", found: " + "Invalid file type. Allowed file types are .bmp, .png, .jpg, .jpeg, .tiff, .tif, .doc, .docx, .pdf, .txt");
+				log("Verifying continue button is disabled");
+				assertFalse(continueButton.isEnabled(), "Continue button is disabled");
+				errorFileRemove.click();
+				log("Verifying continue button is enabled");
+				assertTrue(continueButton.isEnabled(), "Continue button is disabled");
+
+				setClipboardData(correctfilePath);
+				//wait for the window to open the folder
+				Thread.sleep(2000);
+				JalapenoAskAStaffV2Page1 ref1 = new JalapenoAskAStaffV2Page1(driver);
+				ref1.uploadFileWithRobot(errorfilePath, correctfilePath);
+				log("Uploaded valid file  " + properFileName.getText());
+				assertTrue(properFileName.getText().equals("sw-test-academy.txt"),
+						"Expected: " + properFileName.getText() + ", found: " + "sw-test-academy.txt");
+		
+	}
     
 }

@@ -134,6 +134,8 @@ public class PatientPortal2AcceptanceTests extends BaseTestNGWebDriver {
 			+ "\\src\\test\\resources\\documents\\QuickSend.pdf";
 	private static final String MessageErrorfilePath = System.getProperty("user.dir")
 			+ "\\src\\test\\resources\\documents\\SecureMessageFile.pdf";
+	private static final String InvalidfilePath = System.getProperty("user.dir")
+			+ "\\src\\test\\resources\\File_Attachment\\Error_Files_Testing1.json";
 
 	private PropertyFileLoader testData;
 	private Patient patient = null;
@@ -4658,6 +4660,10 @@ public class PatientPortal2AcceptanceTests extends BaseTestNGWebDriver {
 		JalapenoHomePage homePage = loginPage.login(testData.getProperty("med.username"),
 				testData.getProperty("med.password"));
 		driver.navigate().refresh();
+		
+		logStep("Switching to dependent account");
+		homePage.faChangePatient();
+		
 		homePage.clickOnMedications(driver);
 
 		log("Initiating Medications 2.0 Request from Patient Portal");
@@ -5735,4 +5741,210 @@ public class PatientPortal2AcceptanceTests extends BaseTestNGWebDriver {
 		logStep("Verify Medications module is not present");
 		assertFalse(homePage.isMedicationSolutionisplayed());
 	}
+
+	@Test(enabled = true, groups = { "acceptance-solutions" }, retryAnalyzer = RetryAnalyzer.class)
+	public void testGreenLight() throws Exception {
+		logStep("Load login page");
+		JalapenoLoginPage jalapenoLoginPage = new JalapenoLoginPage(driver, testData.getUrl());
+
+		JalapenoHomePage jalapenoHomePage = jalapenoLoginPage
+				.login(testData.getProperty("patient.education.with.issue.username"), testData.getPassword());
+
+		logStep("Navigate to Medical Record Summaries Page");
+		MedicalRecordSummariesPage recordSummaries = jalapenoHomePage.clickOnMedicalRecordSummaries(driver);
+
+		logStep("Click on Green Light Button ");
+		recordSummaries.clickGreenLight();
+
+		logStep("Validating the Green Light Health Page");
+		assertTrue(recordSummaries.isGreenLightLogoDisplayed());
+		assertEquals(recordSummaries.getCreateYourNewAccount(), "Create your new account");
+
+	}
+	@Test(enabled = true, groups = { "acceptance-linkedaccounts" }, retryAnalyzer = RetryAnalyzer.class)
+	public void testLATrustedRepresentativeAcessForHealthRecordFromPatient() throws Exception {
+		
+        logStep("Load login page");
+		JalapenoLoginPage loginPage = new JalapenoLoginPage(driver, testData.getUrl());
+		JalapenoHomePage homePage = loginPage.login(testData.getProperty("user.id"), testData.getProperty("password"));
+		
+		logStep("Click on the acount button");
+		JalapenoAccountPage accountPage = homePage.clickOnAccount();
+		
+		logStep("Click on the edit trusted representatives button");
+		homePage.editTrustedRepAccount();
+		
+		logStep("Select manage access per category radio button");
+		accountPage.clickOnRdoManageAccessPerCategory();
+		
+		logStep("Unchecked the full access to health record and click on save my change button");
+		accountPage.givingPermissionWithModuleName("Health Record", "fullAccessHealthRecord");
+		accountPage.clickOnSaveMyChangesButton();
+		
+		logStep("Load trusted representatives user role");
+		loginPage = new JalapenoLoginPage(driver, testData.getUrl());
+		homePage = loginPage.login(testData.getProperty("caremanager.trustedrep.healthrecord.username"), testData.getProperty("password"));
+
+		logStep("Verify that system should not display the Health Record");
+		assertFalse(homePage.isHealthRecordSolutionisplayed());
+		
+		logStep("Load login page with the parent role");
+		loginPage = new JalapenoLoginPage(driver, testData.getUrl());
+		homePage = loginPage.login(testData.getProperty("user.id"), testData.getProperty("password"));
+			
+		logStep("Click on the acount button");
+		accountPage = homePage.clickOnAccount();
+			
+		logStep("Click on the edit trusted representatives button");
+		homePage.editTrustedRepAccount();
+			
+		logStep("Select manage access per category radio button");
+		accountPage.clickOnRdoManageAccessPerCategory();
+			
+		logStep("Unchecked the full access to health record and click on save my change button");
+		accountPage.givingPermissionWithModuleName("Health Record", "fullAccessHealthRecord");
+		accountPage.clickOnSaveMyChangesButton();
+		
+		logStep("Load trusted representatives user role");
+		loginPage = new JalapenoLoginPage(driver, testData.getUrl());
+		homePage = loginPage.login(testData.getProperty("caremanager.trustedrep.healthrecord.username"), testData.getProperty("password"));
+
+		logStep("Verify that system should not display the Health Record");
+		assertTrue(homePage.isHealthRecordSolutionisplayed());
+		
+		logStep("Verify that system should allow user to view the Health Record");
+		MedicalRecordSummariesPage healthrecord=homePage.clickOnMedicalRecordSummaries(driver);
+		assertTrue(healthrecord.isViewButtonDisplayed());
+		}
+	
+	@Test(enabled = true, groups = { "acceptance-solutions" }, retryAnalyzer = RetryAnalyzer.class)
+	public void testAttachmentInQuestionHistory() throws Exception {
+		String questionText = "wat";
+		String expectedCorrectFileText = "sw-test-academy.txt";
+
+		logStep("Login patient");
+		JalapenoLoginPage loginPage = new JalapenoLoginPage(driver, testData.getProperty("url"));
+		JalapenoHomePage homePage = loginPage.login(testData.getProperty("aska.v2.user"),
+				testData.getProperty("aska.v2.password"));
+
+		logStep("Click Ask A Staff tab");
+		JalapenoAskAStaffV2Page1 askPageFreequs = homePage.openSpecificAskaFree(testData.getProperty("aska.v2.name"));
+
+		String askaSubjectForDependent = Long.toString(askPageFreequs.getCreatedTimeStamp());
+
+		logStep("Fill question and continue");
+		JalapenoAskAStaffV2Page2 askPage2 = askPageFreequs.uploadAttachment(askaSubjectForDependent, questionText, CorrectfilePath);
+
+		assertTrue(askaSubjectForDependent.equals(askPage2.getSubject()),
+				"Expected: " + askaSubjectForDependent + ", found: " + askPage2.getSubject());
+		assertTrue(questionText.equals(askPage2.getQuestion()),
+				"Expected: " + questionText + ", found: " + askPage2.getQuestion());
+
+		homePage = askPage2.submit();
+
+		logStep("Go back to the aska and check question history");
+		askPageFreequs = homePage.openSpecificAskaFree(testData.getProperty("aska.v2.name"));
+		JalapenoAskAStaffV2HistoryListPage askHistoryList = askPageFreequs.clickOnHistory();
+
+		logStep("Find history entry by subject/reason and navigate to detail");
+		JalapenoAskAStaffV2HistoryDetailPage askHistoryDetail = askHistoryList
+				.goToDetailByReason(askaSubjectForDependent);
+
+		logStep("Verify the subject and question in history detail match submission");
+		assertTrue(askaSubjectForDependent.equals(askHistoryDetail.getRequestDetailSubject()),
+				"Expected: " + askaSubjectForDependent + ", found: " + askHistoryDetail.getRequestDetailSubject());
+		assertTrue(questionText.equals(askHistoryDetail.getRequestDetailQuestion()),
+				"Expected: " + questionText + ", found: " + askHistoryDetail.getRequestDetailQuestion());
+		assertTrue("Open".equals(askHistoryDetail.getRequestDetailStatus()),
+				"Expected: Open" + ", found: " + askHistoryDetail.getRequestDetailStatus());
+		assertTrue(expectedCorrectFileText.equals(askHistoryDetail.getRequestAttachedFile()),
+				"Expected: " + expectedCorrectFileText + ", found: " + askHistoryDetail.getRequestAttachedFile());
+		
+		
+		logStep("Logout patient");
+		askHistoryDetail.clickOnLogout();
+
+	}
+	@Test(enabled = true, groups = { "acceptance-solutions" }, retryAnalyzer = RetryAnalyzer.class)
+	public void testAskInvalidAttachment() throws Exception {
+		String expectedCorrectFileText = "sw-test-academy.txt";
+
+		logStep("Login as patient");
+		JalapenoLoginPage loginPage = new JalapenoLoginPage(driver, testData.getProperty("url"));
+		JalapenoHomePage homePage = loginPage.login(testData.getProperty("aska.v2.user"),
+				testData.getProperty("aska.v2.password"));
+
+		logStep("Click Ask A Staff tab");
+		JalapenoAskAStaffV2Page1 askPage1 = homePage.openSpecificAskaV2(testData.getProperty("aska.v2.name"));
+
+		String askaSubject = Long.toString(askPage1.getCreatedTimeStamp());
+
+		logStep("Fill question and continue");
+		JalapenoAskAStaffV2Page2 askPage2 = askPage1.fillAndContinueAttachment(askaSubject, questionText);
+
+		logStep("Add Attachment and remove Attachment ");
+		askPage1.uploadInvalidAndValidFile(InvalidfilePath, CorrectfilePath);
+
+		logStep("Remove All the Attachment Except one and click on continue button ");
+		askPage1.removeAttachment();
+
+		logStep("Verify Uploaded file name in submit page ");
+		assertTrue(expectedCorrectFileText.equals(askPage1.getProperFileText()),
+				"Expected: " + expectedCorrectFileText + ", found: " + askPage1.getProperFileText());
+
+		logStep("Verify Subject in submit page ");
+		assertTrue(askaSubject.equals(askPage2.getSubject()),
+				"Expected: " + askaSubject + ", found: " + askPage2.getSubject());
+
+		logStep("Verify Quesion in Submit paget ");
+		assertTrue(questionText.equals(askPage2.getQuestion()),
+				"Expected: " + questionText + ", found: " + askPage2.getQuestion());
+
+		homePage = askPage2.submit();
+
+		logStep("Go back to the aska and check question history");
+		askPage1 = homePage.openSpecificAskaV2(testData.getProperty("aska.v2.name"));
+		JalapenoAskAStaffV2HistoryListPage askHistoryList = askPage1.clickOnHistory();
+
+		logStep("Find history entry by subject/reason and navigate to detail");
+		JalapenoAskAStaffV2HistoryDetailPage askHistoryDetail = askHistoryList.goToDetailByReason(askaSubject);
+
+		logStep("Verify the subject and question in history detail match submission");
+		assertTrue(askaSubject.equals(askHistoryDetail.getRequestDetailSubject()),
+				"Expected: " + askaSubject + ", found: " + askHistoryDetail.getRequestDetailSubject());
+		assertTrue(questionText.equals(askHistoryDetail.getRequestDetailQuestion()),
+				"Expected: " + questionText + ", found: " + askHistoryDetail.getRequestDetailQuestion());
+		assertTrue("Open".equals(askHistoryDetail.getRequestDetailStatus()),
+				"Expected: Open" + ", found: " + askHistoryDetail.getRequestDetailStatus());
+		assertTrue(expectedCorrectFileText.equals(askHistoryDetail.getRequestAttachedFile()),
+				"Expected: " + expectedCorrectFileText + ", found: " + askHistoryDetail.getRequestAttachedFile());
+        }
+	@Test(enabled = true, groups = { "acceptance-solutions" }, retryAnalyzer = RetryAnalyzer.class)
+	   public void testConsolidatedHealthRecord() throws Exception {
+		logStep("Login as a patient user role");
+		JalapenoLoginPage  loginPage = new JalapenoLoginPage(driver, testData.getUrl());
+		JalapenoHomePage homePage = loginPage.login(testData.getProperty("caremanager.trustedrep.healthrecord.username"), testData.getProperty("password"));
+
+		logStep("Verify that system should display the Health Record");
+		assertTrue(homePage.isHealthRecordSolutionisplayed());
+		
+		logStep("Verify that system should allow user to view the Health Record");
+		MedicalRecordSummariesPage healthrecord=homePage.clickOnMedicalRecordSummaries(driver);
+		assertTrue(healthrecord.isViewButtonDisplayed());
+		
+		logStep("Click on the Consolidated Health Record");
+		healthrecord.clickOnConsolidatedHealthRecordBtn();
+		
+		logStep("Select the Consolidated Health Record check box");
+		healthrecord.selectCheckBox();
+		
+		logStep("Select the Request Record Button");
+	    healthrecord.clickOnRequestRecordButton();
+	    
+	    logStep("Verify the Request Recived message");
+	    assertTrue(healthrecord.isRequestRecivedMessageDisplayed());
+		
+        }
+
 }
+

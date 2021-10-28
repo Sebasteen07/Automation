@@ -16,6 +16,7 @@ import com.medfusion.product.object.maps.pss2.page.util.PostAPIRequestAT;
 import com.medfusion.product.pss2patientapi.payload.PayloadAT;
 import com.medfusion.product.pss2patientapi.validation.ValidationAT;
 import com.medfusion.product.pss2patientui.pojo.Appointment;
+import com.medfusion.product.pss2patientui.utils.PSSPatientUtils;
 import com.medfusion.product.pss2patientui.utils.PSSPropertyFileLoader;
 
 import io.restassured.path.json.JsonPath;
@@ -29,6 +30,8 @@ public class PSS2ATAdapterAcceptanceTests extends BaseTestNG {
 	public static PSSPropertyFileLoader propertyData;
 	public static Appointment testData;
 	public static PostAPIRequestAT postAPIRequestat;
+	public PSSPatientUtils pssPatientUtils;
+
 
 	ValidationAT validateAT = new ValidationAT();
 	Timestamp timestamp = new Timestamp();
@@ -43,6 +46,7 @@ public class PSS2ATAdapterAcceptanceTests extends BaseTestNG {
 		payloadAT = new PayloadAT();
 		propertyData = new PSSPropertyFileLoader();
 		postAPIRequestat = new PostAPIRequestAT();
+		pssPatientUtils=new PSSPatientUtils();
 		postAPIRequestat.setupRequestSpecBuilder(propertyData.getProperty("base.url.at"));
 		log("BASE URL-" + propertyData.getProperty("base.url.at"));
 	}
@@ -86,8 +90,10 @@ public class PSS2ATAdapterAcceptanceTests extends BaseTestNG {
 
 	@Test(enabled = true, groups = { "APItest" }, retryAnalyzer = RetryAnalyzer.class)
 	public void testCancelAppointmentGET() throws NullPointerException, Exception {
-
-		String b=payloadAT.getavailableSlotPayload(propertyData.getProperty("start.date.time.at"), propertyData.getProperty("end.date.time.at"), propertyData.getProperty("patient.id.at"));		
+		
+		String startDate=pssPatientUtils.sampleDateTime("MM/dd/yyyy HH:mm:ss");
+		String endDate=pssPatientUtils.createFutureDate(startDate, 10);
+		String b=payloadAT.getavailableSlotPayload(startDate,endDate, propertyData.getProperty("patient.id.at"));		
 
 		Response response = postAPIRequestat.availableSlots(propertyData.getProperty("practice.id.at"),b);
 
@@ -144,8 +150,11 @@ public class PSS2ATAdapterAcceptanceTests extends BaseTestNG {
 	@Test(enabled = true, groups = { "APItest" }, retryAnalyzer = RetryAnalyzer.class)
 	public void testSchedReschPOST() throws NullPointerException, Exception {
 		
+		String startDate=pssPatientUtils.sampleDateTime("MM/dd/yyyy HH:mm:ss");
+		String endDate=pssPatientUtils.createFutureDate(startDate, 10);
+		
 		String practiceid=propertyData.getProperty("practice.id.at");
-		String b=payloadAT.getavailableSlotPayload(propertyData.getProperty("start.date.time.at"), propertyData.getProperty("end.date.time.at"), propertyData.getProperty("patient.id.at"));		
+		String b=payloadAT.getavailableSlotPayload(startDate, endDate, propertyData.getProperty("patient.id.at"));		
 
 		Response response = postAPIRequestat.availableSlots(propertyData.getProperty("practice.id.at"),b);
 		aPIVerification.responseTimeValidation(response);
@@ -193,9 +202,11 @@ public class PSS2ATAdapterAcceptanceTests extends BaseTestNG {
 	
 	@Test(enabled = true, groups = { "APItest" }, retryAnalyzer = RetryAnalyzer.class)
 	public void testScheduleInvalidPOST() throws NullPointerException, Exception {
+		String startDate=pssPatientUtils.sampleDateTime("MM/dd/yyyy HH:mm:ss");
+		String endDate=pssPatientUtils.createFutureDate(startDate, 10);
 		
 		String practiceid=propertyData.getProperty("practice.id.at");
-		String b=payloadAT.getavailableSlotPayload(propertyData.getProperty("start.date.time.at"), propertyData.getProperty("end.date.time.at"), propertyData.getProperty("patient.id.at"));		
+		String b=payloadAT.getavailableSlotPayload(startDate,endDate, propertyData.getProperty("patient.id.at"));		
 
 		Response response = postAPIRequestat.availableSlots(practiceid,b);
 
@@ -462,14 +473,14 @@ public class PSS2ATAdapterAcceptanceTests extends BaseTestNG {
 	@Test(enabled = true, groups = { "APItest" }, retryAnalyzer = RetryAnalyzer.class)
 	public void testPreventSchedulingdateGET() throws NullPointerException, Exception {
 
-		Response response = postAPIRequestat.preventSchedulingDate(propertyData.getProperty("practice.id.at"));
+		Response response = postAPIRequestat.preventSchedulingDate(propertyData.getProperty("practice.id.at"), "/preventschedulingdate/10282/82");
 		aPIVerification.responseTimeValidation(response);		
 	}
 	
 	@Test(enabled = true, groups = { "APItest" }, retryAnalyzer = RetryAnalyzer.class)
 	public void testPreventschedulingdateInvalidGET() throws NullPointerException, Exception {
 
-		Response response = postAPIRequestat.preventSchedulingDate(propertyData.getProperty("practice.id.at"));
+		Response response = postAPIRequestat.preventSchedulingDate(propertyData.getProperty("practice.id.at"),"/preventschedulingdateaa/10282/82");
 		aPIVerification.responseTimeValidation(response);		
 		aPIVerification.responseCodeValidation(response, 404);
 	}

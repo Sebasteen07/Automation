@@ -386,7 +386,7 @@ public class PSS2PatientPortalAcceptanceTests extends BaseTestNGWebDriver {
 		JalapenoHomePage homePage = loginPage.login(testData.getPatientPortalUserName(),
 				testData.getPatientPortalPassword());
 		log("Detecting if Home Page is opened");
-		assertTrue(homePage.isHomeButtonPresent(driver));
+		
 		homePage.clickFeaturedAppointmentsReq();
 		log("Wait for PSS 2.0 Patient UI to be loaded.");
 		Thread.sleep(6000);
@@ -427,7 +427,7 @@ public class PSS2PatientPortalAcceptanceTests extends BaseTestNGWebDriver {
 		JalapenoHomePage homePage = loginPage.login(testData.getPatientPortalUserName(),
 				testData.getPatientPortalPassword());
 		log("Detecting if Home Page is opened");
-		assertTrue(homePage.isHomeButtonPresent(driver));
+		
 		homePage.clickFeaturedAppointmentsReq();
 		log("Wait for PSS 2.0 Patient UI to be loaded.");
 		Thread.sleep(6000);
@@ -472,7 +472,7 @@ public class PSS2PatientPortalAcceptanceTests extends BaseTestNGWebDriver {
 		JalapenoHomePage homePage = loginPage.login(testData.getPatientPortalUserName(),
 				testData.getPatientPortalPassword());
 		log("Detecting if Home Page is opened");
-		assertTrue(homePage.isHomeButtonPresent(driver));
+		
 		homePage.clickFeaturedAppointmentsReq();
 		log("Wait for PSS 2.0 Patient UI to be loaded.");
 		Thread.sleep(6000);
@@ -516,7 +516,7 @@ public class PSS2PatientPortalAcceptanceTests extends BaseTestNGWebDriver {
 		JalapenoHomePage homePage = loginPage.login(testData.getPatientPortalUserName(),
 				testData.getPatientPortalPassword());
 		log("Detecting if Home Page is opened");
-		assertTrue(homePage.isHomeButtonPresent(driver));
+		
 		homePage.clickFeaturedAppointmentsReq();
 		log("Wait for PSS 2.0 Patient UI to be loaded.");
 		Thread.sleep(6000);
@@ -554,7 +554,7 @@ public class PSS2PatientPortalAcceptanceTests extends BaseTestNGWebDriver {
 		JalapenoHomePage homePage = loginPage.login(testData.getPatientPortalUserName(),
 				testData.getPatientPortalPassword());
 		log("Detecting if Home Page is opened");
-		assertTrue(homePage.isHomeButtonPresent(driver));
+		
 		homePage.clickFeaturedAppointmentsReq();
 		log("Wait for PSS 2.0 Patient UI to be loaded.");
 		Thread.sleep(6000);
@@ -591,7 +591,7 @@ public class PSS2PatientPortalAcceptanceTests extends BaseTestNGWebDriver {
 		JalapenoHomePage homePage = accountDetailsPage.fillAccountDetailsAndContinue(patient.getEmail(),
 				patient.getPassword(), testDataPFL);
 		log("Detecting if Home Page is opened");
-		assertTrue(homePage.isHomeButtonPresent(driver));
+		
 		homePage.clickFeaturedAppointmentsReq();
 		assertEquals(homePage.appointmentNotScheduled(), "Online Scheduling Unavailable");
 		homePage.closeModalPopUp();
@@ -618,7 +618,7 @@ public class PSS2PatientPortalAcceptanceTests extends BaseTestNGWebDriver {
 		JalapenoHomePage homePage = accountDetailsPage.fillAccountDetailsAndContinue(patient.getEmail(),
 				patient.getPassword(), testDataPFL);
 		log("Detecting if Home Page is opened");
-		assertTrue(homePage.isHomeButtonPresent(driver));
+		
 		homePage.clickFeaturedAppointmentsReq();
 		assertEquals(homePage.appointmentNotScheduled(), "Online Scheduling Unavailable");
 		homePage.closeModalPopUp();
@@ -918,6 +918,8 @@ public class PSS2PatientPortalAcceptanceTests extends BaseTestNGWebDriver {
 
 		PSSPatientUtils psspatientutils = new PSSPatientUtils();
 		PSSAdminUtils adminUtils = new PSSAdminUtils();
+		
+		testData.setFutureApt(false);
 
 		logStep("Login to PSS 2.0 Admin portal and do the seetings for Last Question Required");
 		adminUtils.lastQuestionEnable(driver, adminUser, testData, PSSConstants.LOGINLESS);
@@ -945,6 +947,7 @@ public class PSS2PatientPortalAcceptanceTests extends BaseTestNGWebDriver {
 		logStep("Start booking an appointment in PSS---> PATIENT UI STEPS ");
 		homepage.btnStartSchedClick();
 		psspatientutils.selectAFlow(driver, rule, homepage, testData);
+		
 	}
 
 	@Test(enabled = true, groups = { "AcceptanceTests" }, retryAnalyzer = RetryAnalyzer.class)
@@ -1804,7 +1807,7 @@ public class PSS2PatientPortalAcceptanceTests extends BaseTestNGWebDriver {
 		HomePage homepage = loginlessPatientInformation.fillNewPatientForm(testData.getFirstName(),
 				testData.getLastName(), testData.getDob(), testData.getEmail(), testData.getGender(),
 				testData.getZipCode(), testData.getPrimaryNumber());
-		ScheduledAppointment scheduledAppointment = psspatientutils.selectAFlow(driver, rule, homepage, testData);
+		ScheduledAppointment scheduledAppointment = psspatientutils.selectAFlow_New(driver, rule, homepage, testData);
 
 		homepage = scheduledAppointment.backtoHomePage();
 
@@ -1867,7 +1870,7 @@ public class PSS2PatientPortalAcceptanceTests extends BaseTestNGWebDriver {
 				testData.getZipCode(), testData.getPrimaryNumber());
 
 		homepage.btnStartSchedClick();
-		ScheduledAppointment scheduledAppointment = psspatientutils.selectAFlow(driver, rule, homepage, testData);
+		ScheduledAppointment scheduledAppointment = psspatientutils.selectAFlow_New(driver, rule, homepage, testData);
 
 		homepage = scheduledAppointment.backtoHomePage();
 		String popupmsg = "We understand that there are times when you must miss an appointment due to emergencies or obligations for work or family. However, when you do not call to cancel an appointment, you may be preventing another patient from getting much needed treatment. If an appointment is not cancelled in advance you may be charged a fee; this will not be covered by your insurance company.";
@@ -2135,8 +2138,7 @@ public class PSS2PatientPortalAcceptanceTests extends BaseTestNGWebDriver {
 		psspatientutils.deleteEmail_Mailinator(driver, "https://www.mailinator.com/", testData.getEmail());
 	}
 
-	@Test(enabled = true, groups = {
-			"AcceptanceTests" }, retryAnalyzer = RetryAnalyzer.class, dependsOnMethods = "testE2ELoginlessForExistingPatientNG")
+	@Test(enabled = true, groups = {"AcceptanceTests" }, retryAnalyzer = RetryAnalyzer.class, dependsOnMethods = "testE2ELoginlessForExistingPatientNG")
 	public void testCancelFromEmailNG() throws Exception {
 		log("Test to verify if Cancel Appointment button available only after given hours.");
 		log("Step 1: Load test Data from External Property file.");
@@ -2250,7 +2252,7 @@ public class PSS2PatientPortalAcceptanceTests extends BaseTestNGWebDriver {
 		HomePage homepage = loginlessPatientInformation.fillNewPatientForm(testData.getFirstName(),
 				testData.getLastName(), testData.getDob(), testData.getEmail(), testData.getGender(),
 				testData.getZipCode(), testData.getPrimaryNumber());
-		ScheduledAppointment scheduledAppointment = psspatientutils.selectAFlow(driver, rule, homepage, testData);
+		ScheduledAppointment scheduledAppointment = psspatientutils.selectAFlow_New(driver, rule, homepage, testData);
 
 		homepage = scheduledAppointment.backtoHomePage();
 
@@ -2339,7 +2341,7 @@ public class PSS2PatientPortalAcceptanceTests extends BaseTestNGWebDriver {
 		HomePage homepage = loginlessPatientInformation.fillNewPatientForm(testData.getFirstName(),
 				testData.getLastName(), testData.getDob(), testData.getEmail(), testData.getGender(),
 				testData.getZipCode(), testData.getPrimaryNumber());
-		ScheduledAppointment scheduledAppointment = psspatientutils.selectAFlow(driver, rule, homepage, testData);
+		ScheduledAppointment scheduledAppointment = psspatientutils.selectAFlow_New(driver, rule, homepage, testData);
 
 		homepage = scheduledAppointment.backtoHomePage();
 
@@ -2442,7 +2444,7 @@ public class PSS2PatientPortalAcceptanceTests extends BaseTestNGWebDriver {
 				testData.getLastName(), testData.getDob(), testData.getEmail(), testData.getGender(),
 				testData.getZipCode(), testData.getPrimaryNumber());
 		homepage.btnStartSchedClick();
-		ScheduledAppointment scheduledAppointment = psspatientutils.selectAFlow(driver, rule, homepage, testData);
+		ScheduledAppointment scheduledAppointment = psspatientutils.selectAFlow_New(driver, rule, homepage, testData);
 
 		homepage = scheduledAppointment.backtoHomePage();
 
@@ -2516,7 +2518,7 @@ public class PSS2PatientPortalAcceptanceTests extends BaseTestNGWebDriver {
 				testData.getLastName(), testData.getDob(), testData.getEmail(), testData.getGender(),
 				testData.getZipCode(), testData.getPrimaryNumber());
 		homepage.btnStartSchedClick();
-		ScheduledAppointment scheduledAppointment = psspatientutils.selectAFlow(driver, rule, homepage, testData);
+		ScheduledAppointment scheduledAppointment = psspatientutils.selectAFlow_New(driver, rule, homepage, testData);
 
 		homepage = scheduledAppointment.backtoHomePage();
 
@@ -2586,7 +2588,7 @@ public class PSS2PatientPortalAcceptanceTests extends BaseTestNGWebDriver {
 				testData.getZipCode(), testData.getPrimaryNumber());
 
 		homepage.btnStartSchedClick();
-		ScheduledAppointment scheduledAppointment = psspatientutils.selectAFlow(driver, rule, homepage, testData);
+		ScheduledAppointment scheduledAppointment = psspatientutils.selectAFlow_New(driver, rule, homepage, testData);
 
 		homepage = scheduledAppointment.backtoHomePage();
 		assertTrue(homepage.getFutureAppointmentListSize() > 0, "No Future Appointment found.");
@@ -2645,7 +2647,7 @@ public class PSS2PatientPortalAcceptanceTests extends BaseTestNGWebDriver {
 				testData.getPatientPortalPassword());
 
 		log("Detecting if Home Page is opened");
-		assertTrue(homePage.isHomeButtonPresent(driver));
+		
 		homePage.clickFeaturedAppointmentsReq();
 
 		log("Wait for PSS 2.0 Patient UI to be loaded.");
@@ -2664,7 +2666,7 @@ public class PSS2PatientPortalAcceptanceTests extends BaseTestNGWebDriver {
 
 		homepage.btnStartSchedClick();
 
-		ScheduledAppointment scheduledAppointment = psspatientutils.selectAFlow(driver, rule, homepage, testData);
+		ScheduledAppointment scheduledAppointment = psspatientutils.selectAFlow_New(driver, rule, homepage, testData);
 		homepage = scheduledAppointment.backtoHomePage();
 
 		homepage.clickRescheduleLink();
@@ -2706,7 +2708,6 @@ public class PSS2PatientPortalAcceptanceTests extends BaseTestNGWebDriver {
 				testData.getPatientPortalPassword());
 
 		log("Detecting if Home Page is opened");
-		assertTrue(homePage.isHomeButtonPresent(driver));
 		homePage.clickFeaturedAppointmentsReq();
 
 		log("Wait for PSS 2.0 Patient UI to be loaded.");
@@ -2725,7 +2726,7 @@ public class PSS2PatientPortalAcceptanceTests extends BaseTestNGWebDriver {
 
 		homepage.btnStartSchedClick();
 
-		ScheduledAppointment scheduledAppointment = psspatientutils.selectAFlow(driver, rule, homepage, testData);
+		ScheduledAppointment scheduledAppointment = psspatientutils.selectAFlow_New(driver, rule, homepage, testData);
 		homepage = scheduledAppointment.backtoHomePage();
 
 		homepage.clickRescheduleLink();
@@ -2759,7 +2760,7 @@ public class PSS2PatientPortalAcceptanceTests extends BaseTestNGWebDriver {
 				testData.getPatientPortalPassword());
 
 		log("Detecting if Home Page is opened");
-		assertTrue(homePage.isHomeButtonPresent(driver));
+		
 		homePage.clickFeaturedAppointmentsReq();
 
 		log("Wait for PSS 2.0 Patient UI to be loaded.");
@@ -2778,7 +2779,7 @@ public class PSS2PatientPortalAcceptanceTests extends BaseTestNGWebDriver {
 
 		homepage.btnStartSchedClick();
 
-		ScheduledAppointment scheduledAppointment = psspatientutils.selectAFlow(driver, rule, homepage, testData);
+		ScheduledAppointment scheduledAppointment = psspatientutils.selectAFlow_New(driver, rule, homepage, testData);
 		homepage = scheduledAppointment.backtoHomePage();
 
 		homepage.clickRescheduleLink();
@@ -2814,7 +2815,7 @@ public class PSS2PatientPortalAcceptanceTests extends BaseTestNGWebDriver {
 				testData.getPatientPortalPassword());
 
 		log("Detecting if Home Page is opened");
-		assertTrue(homePage.isHomeButtonPresent(driver));
+		
 		homePage.clickFeaturedAppointmentsReq();
 
 		log("Wait for PSS 2.0 Patient UI to be loaded.");
@@ -2833,7 +2834,7 @@ public class PSS2PatientPortalAcceptanceTests extends BaseTestNGWebDriver {
 
 		homepage.btnStartSchedClick();
 
-		ScheduledAppointment scheduledAppointment = psspatientutils.selectAFlow(driver, rule, homepage, testData);
+		ScheduledAppointment scheduledAppointment = psspatientutils.selectAFlow_New(driver, rule, homepage, testData);
 		homepage = scheduledAppointment.backtoHomePage();
 
 		homepage.clickRescheduleLink();
@@ -2869,22 +2870,6 @@ public class PSS2PatientPortalAcceptanceTests extends BaseTestNGWebDriver {
 		log("rule set in admin = " + rule);
 		rule = rule.replaceAll(" ", "");
 
-		log("Step 4: Login to PSS Appointment");
-		DismissPage dismissPage = new DismissPage(driver, testData.getUrlLoginLess());
-		Thread.sleep(2000);
-
-		log("Step 5: LoginlessPatientInformation****");
-		log("Clicked on Dismiss");
-		LoginlessPatientInformation loginlessPatientInformation = dismissPage.clickDismiss();
-
-		Thread.sleep(1000);
-
-		HomePage homepage = loginlessPatientInformation.fillNewPatientForm(testData.getFirstName(),
-				testData.getLastName(), testData.getDob(), testData.getEmail(), testData.getGender(),
-				testData.getZipCode(), testData.getPrimaryNumber());
-
-		homepage.patientLogout(driver);
-
 		log("Step 8: Fetch the Cancel/Reschedule link from email");
 		Mailinator mail = new Mailinator();
 		String subject = testData.getEmailSubject();
@@ -2917,8 +2902,7 @@ public class PSS2PatientPortalAcceptanceTests extends BaseTestNGWebDriver {
 
 	}
 
-	@Test(enabled = true, groups = {
-			"AcceptanceTests" }, retryAnalyzer = RetryAnalyzer.class, dependsOnMethods = "testE2ELoginlessForExistingPatientAT")
+	@Test(enabled = true, groups = {"AcceptanceTests" }, retryAnalyzer = RetryAnalyzer.class, dependsOnMethods = "testE2ELoginlessForExistingPatientAT")
 	public void testRescheduleviaEmailNotifiicationAT() throws Exception {
 
 		log("Test to verify if Reschedule an Appointment via Email Notification");
@@ -2944,22 +2928,6 @@ public class PSS2PatientPortalAcceptanceTests extends BaseTestNGWebDriver {
 		log("rule set in admin = " + rule);
 		rule = rule.replaceAll(" ", "");
 
-		log("Step 4: Login to PSS Appointment");
-		DismissPage dismissPage = new DismissPage(driver, testData.getUrlLoginLess());
-		Thread.sleep(2000);
-
-		log("Step 5: LoginlessPatientInformation****");
-		log("Clicked on Dismiss");
-		LoginlessPatientInformation loginlessPatientInformation = dismissPage.clickDismiss();
-
-		Thread.sleep(1000);
-
-		HomePage homepage = loginlessPatientInformation.fillNewPatientForm(testData.getFirstName(),
-				testData.getLastName(), testData.getDob(), testData.getEmail(), testData.getGender(),
-				testData.getZipCode(), testData.getPrimaryNumber());
-
-		homepage.patientLogout(driver);
-
 		log("Step 8: Fetch the Cancel/Reschedule link from email");
 		Mailinator mail = new Mailinator();
 		String subject = testData.getEmailSubject();
@@ -2993,7 +2961,7 @@ public class PSS2PatientPortalAcceptanceTests extends BaseTestNGWebDriver {
 	}
 
 	@Test(enabled = true, groups = {
-			"AcceptanceTests" }, retryAnalyzer = RetryAnalyzer.class, dependsOnMethods = "testE2ELoginlessForExistingPatientGW")
+			"AcceptanceTests" }, retryAnalyzer = RetryAnalyzer.class, dependsOnMethods = "testBookApptWithoutLastQuestionGW")
 	public void testRescheduleviaEmailNotifiicationGW() throws Exception {
 
 		log("Test to verify if Reschedule an Appointment via Email Notification");
@@ -3356,7 +3324,7 @@ public class PSS2PatientPortalAcceptanceTests extends BaseTestNGWebDriver {
 				testData.getPatientPortalPassword());
 
 		log("Step 8: Detecting if Home Page is opened");
-		assertTrue(homePage.isHomeButtonPresent(driver));
+		
 		homePage.clickFeaturedAppointmentsReq();
 		Thread.sleep(1000);
 
@@ -3437,7 +3405,7 @@ public class PSS2PatientPortalAcceptanceTests extends BaseTestNGWebDriver {
 				testData.getPatientPortalPassword());
 
 		log("Step 8: Detecting if Home Page is opened");
-		assertTrue(homePage.isHomeButtonPresent(driver));
+		
 		homePage.clickFeaturedAppointmentsReq();
 		Thread.sleep(1000);
 
@@ -3588,7 +3556,7 @@ public class PSS2PatientPortalAcceptanceTests extends BaseTestNGWebDriver {
 
 	@Test(enabled = true, groups = { "AcceptanceTests" }, retryAnalyzer = RetryAnalyzer.class)
 	public void testSSOFlowNG() throws Exception {
-		Thread.sleep(12000);
+
 		log("Test To Verify if a Patient is able to login via SSO Flow from Patient 2.0 portal.");
 		log("Step 1: Login to Patient Portal 2.0");
 		PSSPropertyFileLoader propertyData = new PSSPropertyFileLoader();
@@ -3608,7 +3576,6 @@ public class PSS2PatientPortalAcceptanceTests extends BaseTestNGWebDriver {
 		JalapenoHomePage homePage = loginPage.login(testData.getPatientPortalUserName(),
 				testData.getPatientPortalPassword());
 		log("Detecting if Home Page is opened");
-		assertTrue(homePage.isHomeButtonPresent(driver));
 		homePage.clickFeaturedAppointmentsReq();
 		log("Wait for PSS 2.0 Patient UI to be loaded.");
 		Thread.sleep(6000);
@@ -3647,7 +3614,7 @@ public class PSS2PatientPortalAcceptanceTests extends BaseTestNGWebDriver {
 		JalapenoHomePage homePage = loginPage.login(testData.getPatientPortalUserName(),
 				testData.getPatientPortalPassword());
 		log("Detecting if Home Page is opened");
-		assertTrue(homePage.isHomeButtonPresent(driver));
+		
 		homePage.clickFeaturedAppointmentsReq();
 		log("Wait for PSS 2.0 Patient UI to be loaded.");
 		Thread.sleep(6000);
@@ -3684,7 +3651,7 @@ public class PSS2PatientPortalAcceptanceTests extends BaseTestNGWebDriver {
 		JalapenoHomePage homePage = loginPage.login(testData.getPatientPortalUserName(),
 				testData.getPatientPortalPassword());
 		log("Detecting if Home Page is opened");
-		assertTrue(homePage.isHomeButtonPresent(driver));
+		
 		homePage.clickFeaturedAppointmentsReq();
 		log("Wait for PSS 2.0 Patient UI to be loaded.");
 		Thread.sleep(6000);
@@ -3756,7 +3723,7 @@ public class PSS2PatientPortalAcceptanceTests extends BaseTestNGWebDriver {
 		JalapenoHomePage homePage = loginPage.login(testData.getPatientPortalUserName(),
 				testData.getPatientPortalPassword());
 		log("Detecting if Home Page is opened");
-		assertTrue(homePage.isHomeButtonPresent(driver));
+		
 		homePage.clickFeaturedAppointmentsReq();
 		log("Wait for PSS 2.0 Patient UI to be loaded.");
 		Thread.sleep(6000);
@@ -3828,7 +3795,7 @@ public class PSS2PatientPortalAcceptanceTests extends BaseTestNGWebDriver {
 		JalapenoHomePage homePage = loginPage.login(testData.getPatientPortalUserName(),
 				testData.getPatientPortalPassword());
 		log("Detecting if Home Page is opened");
-		assertTrue(homePage.isHomeButtonPresent(driver));
+		
 		homePage.clickFeaturedAppointmentsReq();
 		log("Wait for PSS 2.0 Patient UI to be loaded.");
 		Thread.sleep(6000);
@@ -3902,7 +3869,7 @@ public class PSS2PatientPortalAcceptanceTests extends BaseTestNGWebDriver {
 		JalapenoHomePage homePage = loginPage.login(testData.getPatientPortalUserName(),
 				testData.getPatientPortalPassword());
 		log("Detecting if Home Page is opened");
-		assertTrue(homePage.isHomeButtonPresent(driver));
+		
 		homePage.clickFeaturedAppointmentsReq();
 		log("Wait for PSS 2.0 Patient UI to be loaded.");
 		Thread.sleep(6000);
@@ -3976,7 +3943,7 @@ public class PSS2PatientPortalAcceptanceTests extends BaseTestNGWebDriver {
 		JalapenoHomePage homePage = loginPage.login(testData.getPatientPortalUserName(),
 				testData.getPatientPortalPassword());
 		log("Detecting if Home Page is opened");
-		assertTrue(homePage.isHomeButtonPresent(driver));
+		
 		homePage.clickFeaturedAppointmentsReq();
 		log("Wait for PSS 2.0 Patient UI to be loaded.");
 		Thread.sleep(6000);
@@ -4109,7 +4076,7 @@ public class PSS2PatientPortalAcceptanceTests extends BaseTestNGWebDriver {
 		JalapenoHomePage homePage = loginPage.login(testData.getPatientPortalUserName(),
 				testData.getPatientPortalPassword());
 		log("Detecting if Home Page is opened");
-		assertTrue(homePage.isHomeButtonPresent(driver));
+		
 		homePage.clickFeaturedAppointmentsReq();
 		log("Wait for PSS 2.0 Patient UI to be loaded.");
 		Thread.sleep(6000);
@@ -4179,7 +4146,7 @@ public class PSS2PatientPortalAcceptanceTests extends BaseTestNGWebDriver {
 		JalapenoHomePage homePage = loginPage.login(testData.getPatientPortalUserName(),
 				testData.getPatientPortalPassword());
 		log("Detecting if Home Page is opened");
-		assertTrue(homePage.isHomeButtonPresent(driver));
+		
 		homePage.clickFeaturedAppointmentsReq();
 		log("Wait for PSS 2.0 Patient UI to be loaded.");
 		Thread.sleep(6000);
@@ -4434,14 +4401,18 @@ public class PSS2PatientPortalAcceptanceTests extends BaseTestNGWebDriver {
 		logStep("Clicked on Dismiss");
 		LoginlessPatientInformation loginlessPatientInformation = dismissPage.clickDismiss();
 
-		logStep("Enter the below mentioned patient details in demographic page- ");
-		log("Demographic Details- " + testData.getFirstName() + " " + testData.getLastName() + " " + testData.getDob()
-				+ " " + testData.getGender() + " " + testData.getEmail() + " " + testData.getPrimaryNumber() + " "
-				+ testData.getZipCode());
+		String fn = propertyData.getProperty("preventsched.future.fn");
+		String ln = propertyData.getProperty("preventsched.future.ln");
+		String dob = propertyData.getProperty("preventsched.future.dob");
+		String email = propertyData.getProperty("preventsched.future.email");
+		String zip = propertyData.getProperty("preventsched.future.zip");
+		String gender = propertyData.getProperty("preventsched.future.gender");
+		String phone = propertyData.getProperty("preventsched.future.phone");
 
-		HomePage homePage = loginlessPatientInformation.fillNewPatientForm(testData.getFirstName(),
-				testData.getLastName(), testData.getDob(), testData.getEmail(), testData.getGender(),
-				testData.getZipCode(), testData.getPrimaryNumber());
+		logStep("Enter the below mentioned patient details in demographic page- ");
+		log("Demographic Details- " + fn + " " + ln + " " + dob + " " + gender + " " + email + " " + phone + " " + zip);
+		
+		HomePage homePage = loginlessPatientInformation.fillNewPatientForm(fn, ln, dob, email, gender, zip, phone);
 
 		homePage.btnStartSchedClick();
 		Location location = null;
@@ -4470,7 +4441,7 @@ public class PSS2PatientPortalAcceptanceTests extends BaseTestNGWebDriver {
 		Appointment testData = new Appointment();
 		AdminUser adminuser = new AdminUser();
 
-		propertyData.setAdminNG(adminuser);
+		propertyData.setAdminNG24249(adminuser);
 		propertyData.setAppointmentResponseNG(testData);
 
 		PSSAdminUtils adminUtils = new PSSAdminUtils();
@@ -4487,15 +4458,20 @@ public class PSS2PatientPortalAcceptanceTests extends BaseTestNGWebDriver {
 
 		logStep("Clicked on Dismiss");
 		LoginlessPatientInformation loginlessPatientInformation = dismissPage.clickDismiss();
+		
+
+		String fn = propertyData.getProperty("preventsched.past.fn");
+		String ln = propertyData.getProperty("preventsched.past.ln");
+		String dob = propertyData.getProperty("preventsched.past.dob");
+		String email = propertyData.getProperty("preventsched.past.email");
+		String zip = propertyData.getProperty("preventsched.past.zip");
+		String gender = propertyData.getProperty("preventsched.past.gender");
+		String phone = propertyData.getProperty("preventsched.past.phone");
 
 		logStep("Enter the below mentioned patient details in demographic page- ");
-		log("Demographic Details- " + testData.getFirstName() + " " + testData.getLastName() + " " + testData.getDob()
-				+ " " + testData.getGender() + " " + testData.getEmail() + " " + testData.getPrimaryNumber() + " "
-				+ testData.getZipCode());
-
-		HomePage homePage = loginlessPatientInformation.fillNewPatientForm(testData.getFirstNameCarePatient(),
-				testData.getLastNameCarePatient(), testData.getDobCarePatient(), testData.getEmailCarePatient(),
-				testData.getGenderCarePatient(), testData.getZipCarePatient(), testData.getPhoneCarePatient());
+		log("Demographic Details- " + fn + " " + ln + " " + dob + " " + gender + " " + email + " " + phone + " " + zip);
+		
+		HomePage homePage = loginlessPatientInformation.fillNewPatientForm(fn, ln, dob, email, gender, zip, phone);
 
 		logStep("Fetch the Past Appointment Date from home page");
 		String pastAptDate = homePage.fetchPastAptDate();
@@ -5469,7 +5445,7 @@ public class PSS2PatientPortalAcceptanceTests extends BaseTestNGWebDriver {
 		PSSPropertyFileLoader propertyData = new PSSPropertyFileLoader();
 		Appointment testData = new Appointment();
 		AdminUser adminuser = new AdminUser();
-		propertyData.setAdminAT(adminuser);
+		propertyData.setAdminGW(adminuser);
 		propertyData.setAppointmentResponseGW(testData);
 		adminuser.setIsExisting(true);
 		PSSPatientUtils psspatientutils = new PSSPatientUtils();
@@ -6665,51 +6641,7 @@ public class PSS2PatientPortalAcceptanceTests extends BaseTestNGWebDriver {
 		assertEquals(aptDateTime.getNextTimeWithMinute(), psspatientutils.addTimeinFixedTime(testData));
 
 	}
-	@Test(enabled = true, groups = { "AcceptanceTests" }, retryAnalyzer = RetryAnalyzer.class)
-	public void testE2EMergeSlotAT() throws Exception {
-		PSSPropertyFileLoader propertyData = new PSSPropertyFileLoader();
-		Appointment testData = new Appointment();
-		AdminUser adminUser = new AdminUser();
-		PSSNewPatient pssNewPatient = new PSSNewPatient();
-		propertyData.setAdminAT(adminUser);
-		propertyData.setAppointmentResponseAT(testData);
-		pssNewPatient.createPatientDetails(testData);
-		PSSPatientUtils psspatientutils = new PSSPatientUtils();
-		PSSAdminUtils adminUtils = new PSSAdminUtils();
-		logStep("Login to PSS Admin portal and do setting related to merge Slot");
-		adminUtils.mergeSlot(driver, adminUser, testData, PSSConstants.LOGINLESS);
-		logStep("Move to PSS patient Portal 2.0 to book an Appointment");
-		logStep("Login to PSS Appointment");
-		DismissPage dismissPage = new DismissPage(driver, testData.getUrlLoginLess());
-		logStep("Clicked on Dismiss");
-		LoginlessPatientInformation loginlessPatientInformation = dismissPage.clickDismiss();
-		HomePage homePage = loginlessPatientInformation.fillNewPatientForm(testData.getFirstName(),
-				testData.getLastName(), testData.getDob(), testData.getEmail(), testData.getGender(),
-				testData.getZipCode(), testData.getPrimaryNumber());
-		homePage.btnStartSchedClick();
-		Location location = null;
-		StartAppointmentInOrder startappointmentInOrder = null;
-		startappointmentInOrder = homePage.skipInsurance(driver);
-		location = startappointmentInOrder.selectFirstLocation(PSSConstants.START_LOCATION);
-		logStep("Verfiy Location Page and location =" + testData.getLocation());
-		AppointmentPage appointment = location.selectAppointment(testData.getLocation());
-		logStep("Verfiy Appointment Page and appointment to be selected = " + testData.getAppointmenttype());
-		Provider provider = appointment.selectTypeOfProvider(testData.getAppointmenttype(),
-				Boolean.valueOf(testData.getIsAppointmentPopup()));
-		logStep("Verfiy Provider Page and Provider = " + testData.getProvider());
-		AppointmentDateTime aptDateTime = provider.getProviderandClick(testData.getProvider());
-		aptDateTime.selectFutureDate(testData.getIsNextDayBooking());
-		testData.setFirstHour(aptDateTime.getFirstTimeWithHour());
-		testData.setFirstMinute(aptDateTime.getFirstTimeWithMinute());
-		String time = aptDateTime.getfirsttime();
-		log("First Time is  " + time);
-		String nexttime = aptDateTime.getNextTimeWithMinute();
-		log("Next Time is " + nexttime);
-		log("Time Add After  " + psspatientutils.addTimeinFixedTime(testData));
-		assertEquals(aptDateTime.getNextTimeWithMinute(), psspatientutils.addTimeinFixedTime(testData));
-
-	}
-
+	
 	@Test(enabled = true, groups = { "AcceptanceTests" }, retryAnalyzer = RetryAnalyzer.class)
 	public void testTimeMarkWithShowProOffAT() throws Exception {
 		PSSPropertyFileLoader propertyData = new PSSPropertyFileLoader();

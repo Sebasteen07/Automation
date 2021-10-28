@@ -1,9 +1,16 @@
 # Copyright 2021 NXGN Management, LLC. All Rights Reserved.
 locals {
   valid_workspaces = {
-    #Subfolder-env-XmlFile format to maintain uniqueness
-    #piIntPlatformAcceptance-demo-codebuild = "piIntPlatformAcceptance-demo-codebuild"
-    default = "default"
+    demo-integrations2-acceptance = "demo-integrations2-acceptance"
+    git-taf-prod-mu2-accessibility = "git-taf-prod-mu2-accessibility"
+    git-taf-prod-mu2-regression = "git-taf-prod-mu2-regression"
+    git-taf-prod-mu2-acceptance = "git-taf-prod-mu2-acceptance"
+    prod-patientportal-regression1 = "prod-patientportal-regression1"
+    prod-patientportal-regression2 = "prod-patientportal-regression2"
+    prod-patientportal-regression3 = "prod-patientportal-regression3"
+    prod-patientportal-regression4 = "prod-patientportal-regression4"
+    git-taf-prod-precheck = "git-taf-prod-precheck"
+    git-taf-prod-precheck-rsdk-patientupdates = "git-taf-prod-precheck-rsdk-patientupdates"
   }
   selected_workspace = local.valid_workspaces[terraform.workspace]
 }

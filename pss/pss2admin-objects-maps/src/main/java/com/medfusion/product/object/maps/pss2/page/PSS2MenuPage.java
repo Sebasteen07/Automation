@@ -100,7 +100,8 @@ public class PSS2MenuPage extends PSS2MainPage {
 		return PageFactory.initElements(driver, ManageCancelReason.class);
 	}
 
-	public void logout() {
+	public void logout() throws InterruptedException {
+		scrollAndWait(0, 800, 1000);
 		log("logging out from admin...need to add logic to check which page it redirects too");
 		try {
 			settingsLogout.click();

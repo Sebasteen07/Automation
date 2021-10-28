@@ -1,3 +1,4 @@
+// Copyright 2021 NXGN Management, LLC. All Rights Reserved.
 package com.medfusion.product.object.maps.appt.precheck.page.Appointments;
 
 import java.util.Calendar;
@@ -132,6 +133,39 @@ public class AppointmentsPage extends BasePageObject {
 	@FindBy(how = How.XPATH, using = "//*[@id=\"page-content-container\"]/div/div[1]/span")
 	private WebElement broadcastBannerMessage;
 
+	@FindBy(how = How.XPATH, using = "//*[@id='select-45789-18902']")
+	private WebElement selectPatientWithoutEmailAndPhone;
+
+	@FindBy(how = How.XPATH, using = "//*[@id='select-20000-3000']")
+	private WebElement selectPatientWithInvalidEmailAndPhone;
+
+	@FindBy(how = How.XPATH, using = "//*[@id='select-44444-3434']")
+	private WebElement selectPatientWithInvalidPhoneAndBlankEmail;
+
+	@FindBy(how = How.XPATH, using = "//*[@class='close']")
+	private WebElement BannerCloseButton;
+
+	@FindBy(how = How.XPATH, using = "//*[@class='rt-th precheck-header'][3]")
+	private WebElement reminderTextColumn;
+
+	@FindBy(how = How.XPATH, using = "//*[@class='rt-th precheck-header'][4]")
+	private WebElement broadcastTextColoumn;
+	
+	@FindBy(how = How.XPATH, using = "//*[@class='rt-th precheck-header first-reminders-column'][1]")
+	private WebElement reminderEmailColumn;
+	
+	@FindBy(how = How.XPATH, using = "//*[@class='rt-th precheck-header first-reminders-column'][2]")
+	private WebElement broadcastEmailColoumn;
+
+	@FindBy(how = How.XPATH, using = "//*[@id=\"page-content-container\"]/div/div/div/div[1]/div[2]/div/div[17]/div")
+	private WebElement broadcastMessageTextColoumn;
+	
+	@FindBy(how = How.XPATH, using = "//*[@id=\"page-content-container\"]/div/div/div/div[1]/div[2]/div/div[16]/div")
+	private WebElement sendReminderTextColoumn;
+	
+	@FindBy(how = How.XPATH, using = "//*[text()='Emails']")
+	private WebElement sendReminderEmailColumn;
+	
 	public AppointmentsPage(WebDriver driver) {
 		super(driver);
 		PageFactory.initElements(driver, this);
@@ -467,8 +501,112 @@ public class AppointmentsPage extends BasePageObject {
 	}
 
 	public String broadcastBannerMessage() {
-		IHGUtil.waitForElement(driver, 5, broadcastBannerMessage);
+		IHGUtil.waitForElement(driver, 60, broadcastBannerMessage);
 		return broadcastBannerMessage.getText();
 	}
 
+	public void selectPatientWithoutEmailAndPhone() {
+		jse.executeScript("arguments[0].click();", selectPatientWithoutEmailAndPhone);
+	}
+
+	public void selectPatientWithInvalidEmailAndPhone() {
+		jse.executeScript("arguments[0].click();", selectPatientWithInvalidEmailAndPhone);
+	}
+
+	public void selectPatientWithInvalidPhoneAndBlankEmail() {
+		jse.executeScript("arguments[0].click();", selectPatientWithInvalidPhoneAndBlankEmail);
+	}
+
+	public boolean visibilityOfBroadcastMessage() {
+		try {
+			IHGUtil.waitForElement(driver, 60, broadcastBannerMessage);
+			broadcastBannerMessage.isDisplayed();
+			log("Broadcast Banner Message is visible");
+			return true;
+		} catch (NoSuchElementException e) {
+			log("Broadcast Banner Message is not visible");
+			return false;
+		}
+	}
+
+	public void clickOnBannerCrossButton() {
+		IHGUtil.waitForElement(driver, 5, BannerCloseButton);
+		BannerCloseButton.click();
+	}
+
+	public String getbroadcastMessageText() {
+		IHGUtil.waitForElement(driver, 5, broadcastMessage);
+		return broadcastMessage.getText();
+	}
+
+	public String getSendReminderText() {
+		IHGUtil.waitForElement(driver, 5, sendReminder);
+		return sendReminder.getText();
+	}
+
+	public boolean sendRemibderTextColumn() {
+		try {
+			reminderTextColumn.isDisplayed();
+			log("Send remibder text coloumn is displayed");
+			return true;
+		} catch (NoSuchElementException e) {
+			log("Send remibder text coloumn is is not displayed");
+			return false;
+		}
+	}
+	public boolean broadcastMessageTextColumn() {
+		try {
+			broadcastTextColoumn.isDisplayed();
+			log("Broadcast text coloumn is displayed");
+			return true;
+		} catch (NoSuchElementException e) {
+			log("Broadcast text coloumn is not displayed");
+			return false;
+		}
+	}
+	
+	public boolean broadcastMessageEmailColumn() {
+		try {
+			broadcastEmailColoumn.isDisplayed();
+			log("Broadcast Email coloumn is displayed");
+			return true;
+		} catch (NoSuchElementException e) {
+			log("Broadcast Email coloumn is not displayed");
+			return false;
+		}
+	}
+	
+	public boolean visibilityBroadcastMessageTextColumn() {
+		try {
+			IHGUtil.waitForElement(driver, 5, broadcastMessageTextColoumn);
+			broadcastMessageTextColoumn.isDisplayed();
+			log("Broadcast text coloumn is displayed");
+			return true;
+		} catch (NoSuchElementException e) {
+			log("Broadcast text coloumn is not displayed");
+			return false;
+		}
+	}
+	public boolean visibilitySendReminderTextColumn() {
+		try {
+			IHGUtil.waitForElement(driver, 5, sendReminderTextColoumn);
+			sendReminderTextColoumn.isDisplayed();
+			log("Broadcast text coloumn is displayed");
+			return true;
+		} catch (NoSuchElementException e) {
+			log("Broadcast text coloumn is not displayed");
+			return false;
+		}
+	}
+	
+	public boolean sendReminderEmailColumn() {
+		try {
+			sendReminderEmailColumn.isDisplayed();
+			log("Broadcast Email coloumn is displayed");
+			return true;
+		} catch (NoSuchElementException e) {
+			log("Broadcast Email coloumn is not displayed");
+			return false;
+		}
+	}
 }

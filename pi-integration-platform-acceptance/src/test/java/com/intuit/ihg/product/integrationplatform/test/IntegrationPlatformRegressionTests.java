@@ -1163,9 +1163,14 @@ public class IntegrationPlatformRegressionTests extends BaseTestNGWebDriver {
 				patient.getFirstName(), patient.getLastName(), patient.getDOBDay(), patient.getDOBMonth(),
 				patient.getDOBYear(), patient.getEmail(), patient.getZipCode(), medfusionID);
 		if (version.equalsIgnoreCase("v2"))
+		{
 			patientPayload = patientPayload.replaceAll("v1", "v2");
+		}
 		if (version.equalsIgnoreCase("v3"))
+		{
 			patientPayload = patientPayload.replaceAll("v1", "v3");
+			patientPayload = patientPayload.replace("IntuitPracticeId", "IntegrationPracticeId");
+		}
 		Thread.sleep(600);
 
 		log("Step 5: Post Patient");

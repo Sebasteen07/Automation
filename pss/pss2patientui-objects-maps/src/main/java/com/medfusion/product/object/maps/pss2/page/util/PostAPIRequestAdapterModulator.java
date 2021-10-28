@@ -103,9 +103,9 @@ public class PostAPIRequestAdapterModulator {
 		return response;
 	}
 
-	public Response getAppointmentTypeById(String practiceid, String b) throws Exception {
-		Response response = given().spec(requestSpec).body(b).log().all().when()
-				.put(practiceid + "/appointmenttype/205755").then().log().all().extract().response();
+	public Response getAppointmentTypeById(String practiceid) throws Exception {
+		Response response = given().spec(requestSpec).log().all().when()
+				.get(practiceid + "/appointmenttype/205755").then().log().all().extract().response();
 		return response;
 	}
 
@@ -328,13 +328,13 @@ public class PostAPIRequestAdapterModulator {
 		return response;
 	}
 
-	public Response getCancellationReasonById(String practiceid, String cancelreasonid) throws Exception {
+	public Response getCancellationReasonById(String practiceid, int cancelreasonid) throws Exception {
 		Response response = given().spec(requestSpec).log().all().when()
 				.get(practiceid + "/cancellationreason/" + cancelreasonid).then().log().all().extract().response();
 		return response;
 	}
 
-	public Response deleteCancellationReason(String practiceid, String cancelreasonid) throws Exception {
+	public Response deleteCancellationReason(String practiceid, int cancelreasonid) throws Exception {
 		Response response = given().spec(requestSpec).log().all().when()
 				.delete(practiceid + "/cancellationreason/" + cancelreasonid).then().log().all().extract().response();
 		return response;
@@ -752,7 +752,7 @@ public class PostAPIRequestAdapterModulator {
 	}
 
 	public Response patientInfoWithoutFlowTypeGet(String practiceid) throws Exception {
-		Response response = given().spec(requestSpec).log().all().when().get(practiceid + "/patientinfo/1").then().log()
+		Response response = given().spec(requestSpec).log().all().when().get(practiceid + "/patientinfo/").then().log()
 				.all().extract().response();
 		return response;
 	}

@@ -65,7 +65,7 @@ public class PSS2PSSAdapterModulatorTests extends BaseTestNG {
 	public void testvalidatePracticeGET() throws NullPointerException, Exception {
 
 		logStep("Verifying the response");
-		Response response = postAPIRequestAM.validatePractice(practiceId, "validatepractice");
+		Response response = postAPIRequestAM.validatePractice(practiceId, "/validatepractice");
 		aPIVerification.responseCodeValidation(response, 200);
 	}
 
@@ -237,11 +237,10 @@ public class PSS2PSSAdapterModulatorTests extends BaseTestNG {
 	@Test(enabled = true, groups = { "APItest" }, retryAnalyzer = RetryAnalyzer.class)
 	public void testGetAppointmentTypeById() throws NullPointerException, Exception {
 
-		String b = payloadAM.saveApptTypePayload();
-		Response response = postAPIRequestAM.getAppointmentTypeById(practiceId, b);
+		Response response = postAPIRequestAM.getAppointmentTypeById(practiceId);
 		aPIVerification.responseCodeValidation(response, 200);
-		log("Body- " + response.getBody().asString());
-		assertEquals(response.getBody().asString(), "true");
+		aPIVerification.responseTimeValidation(response);
+
 	}
 
 	@Test(enabled = true, groups = { "APItest" }, retryAnalyzer = RetryAnalyzer.class)
@@ -452,29 +451,6 @@ public class PSS2PSSAdapterModulatorTests extends BaseTestNG {
 	}
 
 	@Test(enabled = true, groups = { "APItest" }, retryAnalyzer = RetryAnalyzer.class)
-	public void test03BookAppointmentTypePUT() throws NullPointerException, Exception {
-		logStep("Verify the Update call -testBookappointmenttypePUT");
-
-		String bookIdActual = propertyData.getProperty("bookappointmenttype.bookid.am");
-		String apptIdActual = propertyData.getProperty("bookappointmenttype.apptid.am");
-
-		String c = payloadAM.bookAppointmentTypUpdatePayload(bookIdActual, apptIdActual);
-
-		Response updateResponse = postAPIRequestAM.bookAppointmentTypeUpdate(practiceId, c);
-		JsonPath js1 = new JsonPath(updateResponse.asString());
-		String bookIdExp1 = js1.getString("book.id");
-		log("Expected book Id " + bookIdExp1);
-		String apptIdExp1 = js1.getString("appointmentType.id");
-		log("Expected Appt Id " + apptIdExp1);
-
-		assertEquals(bookIdActual, bookIdExp1, "Book Id is not matching with input Book_ID ");
-		assertEquals(apptIdActual, apptIdExp1, "Appointment Id is not matching with input Book_ID ");
-
-		aPIVerification.responseCodeValidation(updateResponse, 200);
-		aPIVerification.responseTimeValidation(updateResponse);
-	}
-
-	@Test(enabled = true, groups = { "APItest" }, retryAnalyzer = RetryAnalyzer.class)
 	public void test04BookAppointmentTypeDELETE() throws NullPointerException, Exception {
 
 		String bookIdActual = propertyData.getProperty("bookappointmenttype.bookid.am");
@@ -491,8 +467,8 @@ public class PSS2PSSAdapterModulatorTests extends BaseTestNG {
 	@Test(enabled = true, groups = { "APItest" }, retryAnalyzer = RetryAnalyzer.class)
 	public void test05BookLocationSave() throws NullPointerException, Exception {
 
-		String bookid = propertyData.getProperty("booklocation.bookid");
-		String locationid = propertyData.getProperty("booklocation.locationid");
+		String bookid = propertyData.getProperty("booklocation.bookid.am");
+		String locationid = propertyData.getProperty("booklocation.locationid.am");
 
 		logStep("First verify the Save call -BookLocationPost");
 
@@ -526,7 +502,7 @@ public class PSS2PSSAdapterModulatorTests extends BaseTestNG {
 	@Test(enabled = true, groups = { "APItest" }, retryAnalyzer = RetryAnalyzer.class)
 	public void test06BookLocationGETInvalid() throws NullPointerException, Exception {
 
-		Response response = postAPIRequestAM.bookLocationGET(practiceId, "12345");
+		Response response = postAPIRequestAM.bookLocationGET(practiceId, "0000");
 		aPIVerification.responseCodeValidation(response, 400);
 		aPIVerification.responseTimeValidation(response);
 	}
@@ -550,7 +526,7 @@ public class PSS2PSSAdapterModulatorTests extends BaseTestNG {
 		Response response = postAPIRequestAM.bookLocationDelete(practiceId, bookid, "12345");
 		aPIVerification.responseCodeValidation(response, 400);
 		String message = aPIVerification.responseKeyValidationJson(response, "message");
-		assertTrue(message.contains("No location found for locationid"));
+		assertTrue(message.contains("No location"));
 	}
 
 	@Test(enabled = true, groups = { "APItest" }, retryAnalyzer = RetryAnalyzer.class)
@@ -710,10 +686,10 @@ public class PSS2PSSAdapterModulatorTests extends BaseTestNG {
 
 	@Test(enabled = true, groups = { "APItest" }, retryAnalyzer = RetryAnalyzer.class)
 	public void test13CancellationReasonGET() throws NullPointerException, Exception {
-
+		
 		Response response = postAPIRequestAM.getPracticeCancellationReason(practiceId, "/practicecancellationreason");
 		aPIVerification.responseCodeValidation(response, 200);
-		aPIVerification.responseTimeValidation(response);
+		aPIVerification.responseTimeValidation(response);				
 	}
 
 	@Test(enabled = true, groups = { "APItest" }, retryAnalyzer = RetryAnalyzer.class)
@@ -767,7 +743,7 @@ public class PSS2PSSAdapterModulatorTests extends BaseTestNG {
 	public void test16CancellationReasonDelete() throws NullPointerException, Exception {
 
 		String cancelreasonid = propertyData.getProperty("cancelreason.id.delete.am");
-		Response response = postAPIRequestAM.deleteCancellationReason(practiceId, cancelreasonid);
+		Response response = postAPIRequestAM.deleteCancellationReason(practiceId, Integer.parseInt(cancelreasonid));
 		aPIVerification.responseCodeValidation(response, 200);
 		aPIVerification.responseTimeValidation(response);
 	}
@@ -775,7 +751,7 @@ public class PSS2PSSAdapterModulatorTests extends BaseTestNG {
 	@Test(enabled = true, groups = { "APItest" }, retryAnalyzer = RetryAnalyzer.class)
 	public void test16CancellationReasonDeleteInvalid() throws NullPointerException, Exception {
 
-		Response response = postAPIRequestAM.deleteCancellationReason(practiceId, "1222");
+		Response response = postAPIRequestAM.deleteCancellationReason(practiceId, 1222);
 		aPIVerification.responseCodeValidation(response, 400);
 		aPIVerification.responseTimeValidation(response);
 		String message = aPIVerification.responseKeyValidationJson(response, "message");
@@ -793,7 +769,7 @@ public class PSS2PSSAdapterModulatorTests extends BaseTestNG {
 	@Test(enabled = true, groups = { "APItest" }, retryAnalyzer = RetryAnalyzer.class)
 	public void test17CancellationReasonPracticeInvalid() throws NullPointerException, Exception {
 
-		Response response = postAPIRequestAM.getPracticeCancellationReason(practiceId, "/practicecancellationreason");
+		Response response = postAPIRequestAM.getPracticeCancellationReason(practiceId, "/practicecancellationreasonaa");
 		aPIVerification.responseCodeValidation(response, 404);
 		aPIVerification.responseTimeValidation(response);
 	}
@@ -803,7 +779,7 @@ public class PSS2PSSAdapterModulatorTests extends BaseTestNG {
 
 		String cancelreasonid = propertyData.getProperty("cancelreason.id.am");
 
-		Response response = postAPIRequestAM.getCancellationReasonById(practiceId, cancelreasonid);
+		Response response = postAPIRequestAM.getCancellationReasonById(practiceId, Integer.parseInt(cancelreasonid));
 		aPIVerification.responseCodeValidation(response, 200);
 		aPIVerification.responseTimeValidation(response);
 	}
@@ -811,7 +787,7 @@ public class PSS2PSSAdapterModulatorTests extends BaseTestNG {
 	@Test(enabled = true, groups = { "APItest" }, retryAnalyzer = RetryAnalyzer.class)
 	public void test18CancellationReasonByIdInvalid() throws NullPointerException, Exception {
 
-		Response response = postAPIRequestAM.getCancellationReasonById(practiceId, "1222");
+		Response response = postAPIRequestAM.getCancellationReasonById(practiceId, 1222);
 		aPIVerification.responseCodeValidation(response, 400);
 		aPIVerification.responseTimeValidation(response);
 	}
@@ -1083,7 +1059,7 @@ public class PSS2PSSAdapterModulatorTests extends BaseTestNG {
 	@Test(enabled = true, groups = { "APItest" }, retryAnalyzer = RetryAnalyzer.class)
 	public void testCategoryGETInvalid() throws NullPointerException, Exception {
 
-		Response response = postAPIRequestAM.getcategoryById(practiceId, "22222");
+		Response response = postAPIRequestAM.getcategoryById(practiceId, "000111");
 		logStep("Validate GetCategoryById Response");
 		aPIVerification.responseCodeValidation(response, 400);
 		aPIVerification.responseTimeValidation(response);
@@ -1094,7 +1070,7 @@ public class PSS2PSSAdapterModulatorTests extends BaseTestNG {
 	@Test(enabled = true, groups = { "APItest" }, retryAnalyzer = RetryAnalyzer.class)
 	public void testCategoryDeleteInvalid() throws NullPointerException, Exception {
 
-		Response response = postAPIRequestAM.deleteCategory(practiceId, "12345");
+		Response response = postAPIRequestAM.deleteCategory(practiceId, "12345111");
 		logStep("Validate DeleteCategory Response");
 		aPIVerification.responseCodeValidation(response, 400);
 		aPIVerification.responseTimeValidation(response);
@@ -1234,7 +1210,7 @@ public class PSS2PSSAdapterModulatorTests extends BaseTestNG {
 
 		Response response = postAPIRequestAM.resourceConfigSavePost(practiceId,
 				"");
-		aPIVerification.responseCodeValidation(response, 500);
+		aPIVerification.responseCodeValidation(response, 400);
 		aPIVerification.responseTimeValidation(response);
 	}
 
@@ -1293,7 +1269,7 @@ public class PSS2PSSAdapterModulatorTests extends BaseTestNG {
 	public void testResourceConfigVersionInvalidPathGET() throws NullPointerException, Exception {
 
 		Response response = postAPIRequestAM.versionGet(practiceId, "/versionaa");
-		aPIVerification.responseCodeValidation(response, 200);
+		aPIVerification.responseCodeValidation(response, 404);
 		aPIVerification.responseTimeValidation(response);
 	}
 
@@ -1334,7 +1310,7 @@ public class PSS2PSSAdapterModulatorTests extends BaseTestNG {
 
 	@Test(enabled = true, groups = { "APItest" }, retryAnalyzer = RetryAnalyzer.class)
 	public void testLinkGetInvalidPath() throws NullPointerException, Exception {
-		Response response = postAPIRequestAM.linkGet(practiceId, "/link");
+		Response response = postAPIRequestAM.linkGet(practiceId, "/linkaa");
 		aPIVerification.responseCodeValidation(response, 404);
 
 	}
