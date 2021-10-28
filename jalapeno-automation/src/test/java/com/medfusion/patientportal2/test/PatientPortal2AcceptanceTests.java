@@ -5768,8 +5768,8 @@ public class PatientPortal2AcceptanceTests extends BaseTestNGWebDriver {
 		
 		logStep("Logout patient");
 		askHistoryDetail.clickOnLogout();
+
 	}
-	
 	@Test(enabled = true, groups = { "acceptance-solutions" }, retryAnalyzer = RetryAnalyzer.class)
 	public void testAskInvalidAttachment() throws Exception {
 		String expectedCorrectFileText = "sw-test-academy.txt";
@@ -5823,7 +5823,33 @@ public class PatientPortal2AcceptanceTests extends BaseTestNGWebDriver {
 				"Expected: Open" + ", found: " + askHistoryDetail.getRequestDetailStatus());
 		assertTrue(expectedCorrectFileText.equals(askHistoryDetail.getRequestAttachedFile()),
 				"Expected: " + expectedCorrectFileText + ", found: " + askHistoryDetail.getRequestAttachedFile());
+        }
+	@Test(enabled = true, groups = { "acceptance-solutions" }, retryAnalyzer = RetryAnalyzer.class)
+	   public void testConsolidatedHealthRecord() throws Exception {
+		logStep("Login as a patient user role");
+		JalapenoLoginPage  loginPage = new JalapenoLoginPage(driver, testData.getUrl());
+		JalapenoHomePage homePage = loginPage.login(testData.getProperty("caremanager.trustedrep.healthrecord.username"), testData.getProperty("password"));
 
-	}
+		logStep("Verify that system should display the Health Record");
+		assertTrue(homePage.isHealthRecordSolutionisplayed());
+		
+		logStep("Verify that system should allow user to view the Health Record");
+		MedicalRecordSummariesPage healthrecord=homePage.clickOnMedicalRecordSummaries(driver);
+		assertTrue(healthrecord.isViewButtonDisplayed());
+		
+		logStep("Click on the Consolidated Health Record");
+		healthrecord.clickOnConsolidatedHealthRecordBtn();
+		
+		logStep("Select the Consolidated Health Record check box");
+		healthrecord.selectCheckBox();
+		
+		logStep("Select the Request Record Button");
+	    healthrecord.clickOnRequestRecordButton();
+	    
+	    logStep("Verify the Request Recived message");
+	    assertTrue(healthrecord.isRequestRecivedMessageDisplayed());
+		
+        }
 
 }
+

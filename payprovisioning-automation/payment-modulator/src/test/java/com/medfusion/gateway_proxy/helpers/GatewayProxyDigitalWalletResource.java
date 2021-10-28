@@ -5,6 +5,7 @@ import com.medfusion.common.utils.PropertyFileLoader;
 import com.medfusion.gateway_proxy.tests.GatewayProxyBaseTest;
 import com.medfusion.payment_modulator.pojos.PayloadDetails;
 
+import io.restassured.http.ContentType;
 import io.restassured.path.json.JsonPath;
 import io.restassured.response.Response;
 import java.io.IOException;
@@ -42,6 +43,27 @@ public class GatewayProxyDigitalWalletResource extends GatewayProxyBaseTest {
 		return response;
 	}
 
+	public Response createNewWalletWithDifferentEnv(String token, String env, String xpi, String customeruuid,
+													String consumerName, String cardType, String cardnumber,
+									String expiryDate, String cardAlias, String zipcode, boolean primaryCardFlag) throws Exception {
+		Map<String, Object> digitalWallet = PayloadDetails.getPayloadForAddingCardToDigitalWallet(consumerName,
+				cardType, cardnumber, expiryDate, cardAlias, zipcode, primaryCardFlag);
+		Response response;
+
+		String url  = null;
+		if(env.equalsIgnoreCase("DEV3") || env.equalsIgnoreCase("DEMO")){
+			url = customeruuid + "/wallets";
+			response = given().auth().oauth2(token)
+					.contentType(ContentType.JSON).body(digitalWallet).when().log().all()
+					.post(url).then().extract().response();
+		}else {
+			url = customeruuid + "/pay/wallets";
+			response = given().auth().oauth2(token).header("x-api-key",xpi)
+					.contentType(ContentType.JSON).body(digitalWallet).when().log().all()
+					.post(url).then().log().all().extract().response();
+		}
+		return response;
+	}
 	public Response getListOfCardsInWallet(String token, String externalWalletId) throws IOException {
 
 		testData = new PropertyFileLoader();
