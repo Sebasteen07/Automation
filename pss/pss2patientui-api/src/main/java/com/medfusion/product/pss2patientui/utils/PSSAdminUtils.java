@@ -1013,5 +1013,30 @@ public class PSSAdminUtils extends BaseTestNGWebDriver{
 		log("Slot Size is  " + testData.getSlotSize());
 		manageResource.logout();
 	}
+	
+	
+	public void acceptforsameDayWithShowProviderOFF(WebDriver driver, AdminUser adminuser, Appointment appointment)
+			throws Exception {
+		PSS2PracticeConfiguration pssPracticeConfig = loginToAdminPortal(driver, adminuser);
+		pssPracticeConfig = pssPracticeConfig.gotoPracticeConfigTab();
+		PatientFlow patientFlow = pssPracticeConfig.gotoPatientFlowTab();
+		patientFlow.turnOffProvider();
+		AdminPatientMatching adminPatientMatching = patientFlow.gotoPatientMatchingTab();
+		adminPatientMatching.patientMatchingSelection();
+		ManageAppointmentType manageAppointmentType = pssPracticeConfig.gotoAppointment();
+		pageRefresh(driver);
+		manageAppointmentType.selectAppointment(appointment.getAppointmenttype());
+		manageAppointmentType.gotoConfiguration();
+
+		manageAppointmentType.notreserve();
+		appointment.setAccepttoggleStatus(manageAppointmentType.acceptforStatus());
+		Log4jUtil.log("Status for AcceptFor Same day is   " + appointment.isAccepttoggleStatus());
+		if (appointment.isAccepttoggleStatus() == true) {
+			manageAppointmentType.clickacceptsameday();
+			appointment.setAccepttoggleStatus(manageAppointmentType.acceptforStatus());
+			Log4jUtil.log("Status for AcceptFor Same day is   " + appointment.isAccepttoggleStatus());
+		}
+
+	}
 
 }

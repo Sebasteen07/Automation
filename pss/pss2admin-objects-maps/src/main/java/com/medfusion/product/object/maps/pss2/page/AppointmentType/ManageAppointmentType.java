@@ -71,8 +71,16 @@ public class ManageAppointmentType extends PSS2MenuPage {
 	
 	@FindBy(how = How.XPATH, using = "//*[@id='tabX33']/form/fieldset[2]/div/div/button[1]")
 	private WebElement saveConfig;
-		
 	
+	@FindBy(how = How.XPATH, using = "//label[@for='allowSameDayAppts']//input")
+	private WebElement acceptToggle;
+
+	@FindBy(how = How.XPATH, using = "//*[@name='apptTypeReservedReason']")
+	private WebElement reservefor;
+
+	@FindBy(how = How.XPATH, using = "//div[@class='col-md-12']//label[@for='allowSameDayAppts']/i")
+	private WebElement acceptToggleclick;
+
 	public ManageAppointmentType(WebDriver driver) {
 		super(driver);
 	}
@@ -136,6 +144,25 @@ public class ManageAppointmentType extends PSS2MenuPage {
 		selectOptions.selectByValue(timeMarkValue);
 		timeMarkOption.click();
 		saveConfig.click();
-
 	}
+	
+	public boolean acceptforStatus() {
+		boolean bool = acceptToggle.isSelected();
+		log("Status of Accept for the Same Day -" + bool);
+		return bool;
+	}
+
+	public void notreserve() {
+		Select objSelect = new Select(reservefor);
+		objSelect.selectByVisibleText("Not Reserved");
+		reservefor.click();
+		saveConfig.click();
+	}
+
+	public void clickacceptsameday() {
+		acceptToggleclick.click();
+		saveConfig.click();
+		log("clicked on accceptfor sameday");
+	}
+
 }
