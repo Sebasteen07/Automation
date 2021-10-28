@@ -47,6 +47,9 @@ public class PatientTrustedRepresentativePage extends BasePageObject {
 
 	@FindBy(how = How.XPATH, using = "(//input[@name='forms'])[3]")
 	private WebElement rdoFormsNoAccess;
+	
+	@FindBy(how = How.ID, using = "submit")
+	private WebElement btnUpdate;
 
 
 	public void inviteTrustedRepresentative(Patient patient,String textModule,String manageAccessPref) throws InterruptedException {
@@ -99,7 +102,22 @@ public class PatientTrustedRepresentativePage extends BasePageObject {
 			}
 
 		}
-		btnInvite.click();
+		//btnInvite.click();
+	}
+
+	public void clickOnInviteBtn() {
+		btnInvite.click();		
+	}
+	
+	public void clickOnUpdateBtn() {
+		btnUpdate.click();		
+	}
+
+	public void clearAllFields() {
+		lblFirstName.clear();
+		lblLastName.clear();
+		lblEmail.clear();
+		
 	}
 
 }

@@ -509,6 +509,7 @@ public class JalapenoHomePage extends JalapenoMenu {
 	}
 
 	public void clickonHomeButton() {
+		driver.navigate().refresh(); //Side Panel menu isnt visible until refreshed
 		homeButton.click();
 	}
 
