@@ -28,4 +28,13 @@ public class MPTestData extends BaseRest {
                         testData.getProperty("staff.username"), "POINTOFSALE"},
         };
     }
+
+    @DataProvider(name = "mmids_for_bank_details")
+    public Object[][] dpMethodForGetBankAccounts() throws IOException {
+        testData = new PropertyFileLoader();
+        return new Object[][]{
+                {testData.getProperty("multiple.bank.accounts.mmid")},
+                {testData.getProperty("mmid")},
+        };
+    }
 }

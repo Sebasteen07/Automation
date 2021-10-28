@@ -6,6 +6,7 @@ import java.io.IOException;
 import com.medfusion.mfpay.merchant_provisioning.helpers.Validations;
 import com.medfusion.mfpay.merchant_provisioning.pojos.Merchant;
 import com.medfusion.mfpay.merchant_provisioning.utils.DBUtils;
+import com.medfusion.mfpay.merchant_provisioning.utils.MPTestData;
 import com.medfusion.mfpay.merchant_provisioning.utils.ProvisioningUtils;
 import io.restassured.path.json.JsonPath;
 import io.restassured.response.Response;
@@ -20,6 +21,12 @@ import com.medfusion.mfpay.merchant_provisioning.helpers.PaypalDetails;
 public class MerchantResourceAsFinance extends BaseRest {
 	protected PropertyFileLoader testData;
 
+	@BeforeTest
+	public void setUp() throws IOException {
+		testData = new PropertyFileLoader();
+		setupFinanceRequestSpecBuilder();
+		setupResponsetSpecBuilder();
+	}
 	// Creates a new element merchant as Finance user.
 	@Test
 	public void testCreateNewElementMerchantAsFinance() throws IOException {
@@ -139,4 +146,15 @@ public class MerchantResourceAsFinance extends BaseRest {
 		validate.verifyMerchantWithDiffAccounts(response.asString());
 		ProvisioningUtils.saveMMID(jsonpath.get("id").toString());
 	}
+
+	@Test(dataProvider = "mmids_for_bank_details", dataProviderClass = MPTestData.class)
+	public void testGetMerchantMultipleBankAccounts(String mmid) throws IOException {
+		MerchantInfo merchantinfo = new MerchantInfo();
+		Response response = merchantinfo.getMerchantBankDetails(mmid);
+
+		JsonPath jsonpath = new JsonPath(response.asString());
+		Validations validate = new Validations();
+		validate.verifyMerchantBankAccounts(response.asString());
+	}
+
 }
