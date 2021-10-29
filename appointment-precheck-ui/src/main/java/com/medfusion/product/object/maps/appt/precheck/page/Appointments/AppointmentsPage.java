@@ -150,21 +150,48 @@ public class AppointmentsPage extends BasePageObject {
 
 	@FindBy(how = How.XPATH, using = "//*[@class='rt-th precheck-header'][4]")
 	private WebElement broadcastTextColoumn;
-	
+
 	@FindBy(how = How.XPATH, using = "//*[@class='rt-th precheck-header first-reminders-column'][1]")
 	private WebElement reminderEmailColumn;
-	
+
 	@FindBy(how = How.XPATH, using = "//*[@class='rt-th precheck-header first-reminders-column'][2]")
 	private WebElement broadcastEmailColoumn;
 
 	@FindBy(how = How.XPATH, using = "//*[@id=\"page-content-container\"]/div/div/div/div[1]/div[2]/div/div[17]/div")
 	private WebElement broadcastMessageTextColoumn;
-	
+
 	@FindBy(how = How.XPATH, using = "//*[@id=\"page-content-container\"]/div/div/div/div[1]/div[2]/div/div[16]/div")
 	private WebElement sendReminderTextColoumn;
-	
+
 	@FindBy(how = How.XPATH, using = "//*[text()='Emails']")
 	private WebElement sendReminderEmailColumn;
+
+	@FindBy(how = How.XPATH, using = "//*[@id='select-39393-7534']")
+	private WebElement selectPatientWithNewAppt;
+
+	@FindBy(how = How.XPATH, using = "//*[@id=\"page-content-container\"]/div/div/div/div/div[3]/div[2]/div/div[18]/div/span[2]")
+	private WebElement broadcastEmail;
+
+	@FindBy(how = How.XPATH, using = "//*[@id=\"page-content-container\"]/div/div/div/div/div[3]/div[1]/div/div[19]/div/span[2]")
+	private WebElement broadcastText;
+
+	@FindBy(how = How.XPATH, using = "//*[text()='Broadcast logs']")
+	private WebElement broadcastLogs;
+
+	@FindBy(how = How.XPATH, using = "//*[@class='patient-name']")
+	private WebElement patientName;
+
+	@FindBy(how = How.XPATH, using = "//*[@class='rt-resizable-header-content']/b[text()='Time']")
+	private WebElement time;
+
+	@FindBy(how = How.XPATH, using = "//*[@class='rt-resizable-header-content']/b[text()='Message']")
+	private WebElement messageText;
+
+	@FindBy(how = How.XPATH, using = "//*[@class='rt-resizable-header-content']/b[text()='Status']")
+	private WebElement statusText; 
+
+	@FindBy(how = How.XPATH, using = "//*[@id=\"closeReminderStatusesModal\"]")
+	private WebElement closeBroadcastEmailBox;
 	
 	public AppointmentsPage(WebDriver driver) {
 		super(driver);
@@ -554,6 +581,7 @@ public class AppointmentsPage extends BasePageObject {
 			return false;
 		}
 	}
+
 	public boolean broadcastMessageTextColumn() {
 		try {
 			broadcastTextColoumn.isDisplayed();
@@ -564,7 +592,7 @@ public class AppointmentsPage extends BasePageObject {
 			return false;
 		}
 	}
-	
+
 	public boolean broadcastMessageEmailColumn() {
 		try {
 			broadcastEmailColoumn.isDisplayed();
@@ -575,7 +603,7 @@ public class AppointmentsPage extends BasePageObject {
 			return false;
 		}
 	}
-	
+
 	public boolean visibilityBroadcastMessageTextColumn() {
 		try {
 			IHGUtil.waitForElement(driver, 5, broadcastMessageTextColoumn);
@@ -587,6 +615,7 @@ public class AppointmentsPage extends BasePageObject {
 			return false;
 		}
 	}
+
 	public boolean visibilitySendReminderTextColumn() {
 		try {
 			IHGUtil.waitForElement(driver, 5, sendReminderTextColoumn);
@@ -598,7 +627,7 @@ public class AppointmentsPage extends BasePageObject {
 			return false;
 		}
 	}
-	
+
 	public boolean sendReminderEmailColumn() {
 		try {
 			sendReminderEmailColumn.isDisplayed();
@@ -608,5 +637,66 @@ public class AppointmentsPage extends BasePageObject {
 			log("Broadcast Email coloumn is not displayed");
 			return false;
 		}
+	}
+
+	public void selectPatientWithNewAppt() {
+		jse.executeScript("arguments[0].click();", selectPatientWithNewAppt);
+	}
+
+	public String broadcastEmailTextCount() {
+		IHGUtil.waitForElement(driver, 10, broadcastEmail);
+		log("Get broadcast email count" + broadcastEmail.getText());
+		return broadcastEmail.getText();
+	}
+
+	public String broadcastTextsTextCount() {
+		IHGUtil.waitForElement(driver, 10, broadcastText);
+		log("Get broadcast text count");
+		return broadcastText.getText();
+	}
+
+	public void clickOnBroadcastEmail() throws InterruptedException {
+		IHGUtil.waitForElement(driver, 10, broadcastEmail);
+		broadcastEmail.click();
+		log("Switch on Broadcast email screen");
+		Thread.sleep(5000);
+	}
+	
+	
+
+	public void clickOnBroadcastText() throws InterruptedException {
+		IHGUtil.waitForElement(driver, 10, broadcastText);
+		broadcastText.click();
+		log("Switch on Broadcast text screen");
+		Thread.sleep(5000);
+	}
+
+	public String broadcastLogsText() {
+		IHGUtil.waitForElement(driver, 10, broadcastLogs);
+		return broadcastLogs.getText();
+	}
+
+	public String getPatientName() {
+		IHGUtil.waitForElement(driver, 10, patientName);
+		return patientName.getText();
+	}
+
+	public String getMessageText() {
+		IHGUtil.waitForElement(driver, 10, messageText);
+		return messageText.getText();
+	}
+
+	public String getTimeText() {
+		IHGUtil.waitForElement(driver, 10, time);
+		return time.getText();
+	}
+
+	public String getStatusText() {
+		IHGUtil.waitForElement(driver, 10, statusText);
+		return statusText.getText();
+	}
+	public void closeBroadcastEmailandTextBox() {
+		IHGUtil.waitForElement(driver, 10, statusText);
+		closeBroadcastEmailBox.click();
 	}
 }
