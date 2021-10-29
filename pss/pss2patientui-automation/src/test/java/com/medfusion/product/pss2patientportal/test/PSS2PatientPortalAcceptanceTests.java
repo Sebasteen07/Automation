@@ -5445,8 +5445,6 @@ public class PSS2PatientPortalAcceptanceTests extends BaseTestNGWebDriver {
 	
 	@Test(enabled = true, groups = { "AcceptanceTests" }, retryAnalyzer = RetryAnalyzer.class)
 	public void testGenderRuleGE() throws Exception {
-		log(" VeriFy Gender Rule with the Specility for GW PArtner");
-		log("Step 1: Load test Data from External Property file.");
 		PSSPropertyFileLoader propertyData = new PSSPropertyFileLoader();
 		Appointment testData = new Appointment();
 		AdminUser adminuser = new AdminUser();
@@ -5459,29 +5457,20 @@ public class PSS2PatientPortalAcceptanceTests extends BaseTestNGWebDriver {
 		String rule = adminuser.getRule();
 		rule = rule.replaceAll(" ", "");
 		log("Rule -" + rule);
-		log("Step 3: Move to PSS patient Portal 2.0 to book an Appointment");
-		log("Step 4: Login to PSS Appointment");
+		logStep("Move to PSS patient Portal 2.0 to book an Appointment");
+		logStep("Login to PSS Appointment");
 		DismissPage dismissPage = new DismissPage(driver, testData.getUrlLoginLess());
-		Thread.sleep(1000);
-		log("Step 5: LoginlessPatientInformation****");
-		log("Clicked on Dismiss");
+		logStep("Clicked on Dismiss");
 		LoginlessPatientInformation loginlessPatientInformation = dismissPage.clickDismiss();
-		log("Step 6: Fill Patient criteria");
-		log("First Name- " + testData.getFirstName());
-		log("Last Name- " + testData.getLastName());
-		log("Gender- " + testData.getGender());
-		log("Date Of Birth- " + testData.getDob());
-		Thread.sleep(3000);
-		HomePage homepage = loginlessPatientInformation.fillNewPatientForm(testData.getFirstName(),
+				HomePage homepage = loginlessPatientInformation.fillNewPatientForm(testData.getFirstName(),
 				testData.getLastName(), testData.getDob(), testData.getEmail(), testData.getGender(),
 				testData.getZipCode(), testData.getPrimaryNumber());
 		homepage.btnStartSchedClick();
 		Speciality speciality = null;
 		speciality = homepage.skipInsuranceForSpeciality(driver);
 		speciality.selectSpeciality1(testData.getSpeciality());
-		Log4jUtil.log("Specility Name is....." + speciality.selectSpeciality1(testData.getSpeciality()));
+		logStep("Specility Name is....." + speciality.selectSpeciality1(testData.getSpeciality()));
 		assertEquals(speciality.selectSpeciality1(testData.getSpeciality()), testData.getSpeciality());
-		Log4jUtil.log("Test Case Passed.....");
 	}
 
 
