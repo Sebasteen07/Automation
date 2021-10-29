@@ -21,7 +21,7 @@ public class MfNotificationModulatorPayload {
 				+ "    \"subjectId\": \""+subjectId+"\",\r\n"
 				+ "    \"subjectUrn\": \""+subjectUrn+"\",\r\n"
 				+ "    \"type\": \""+type+"\",\r\n"
-				+ "    \"sender address\":\"appointments@medfusion.net\",\r\n"
+				+ "    \"sender address\":\"no-reply@medfusion.net\",\r\n"
 				+ "    \"recipient address\":\""+recipientAddress+"\",\r\n"
 				+ "    \"subject\":\""+subject+"\",\r\n"
 				+ "    \"content\": \"Your appointment is coming up\"\r\n"
