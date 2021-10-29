@@ -1784,20 +1784,6 @@ public class PSSPatientUtils extends BaseTestNGWebDriver {
 		return currentleddate;
 	}
 
-	public String currentDateWithTimeZone(Appointment testData) {
-		TimeZone timeZone = TimeZone.getTimeZone(testData.getCurrentTimeZone());
-		String dateFormat = "dd MMMM,yyyy";
-		SimpleDateFormat f1 = new SimpleDateFormat(dateFormat);
-		Calendar c = Calendar.getInstance();
-		TimeZone time_zone = TimeZone.getTimeZone(testData.getCurrentTimeZone());
-		f1.setTimeZone(timeZone);
-		c.setTimeZone(time_zone);
-		String currentDate = f1.format(c.getTime());
-		log("Current Date is " + currentDate);
-		String currentleddate = currentDate.substring(0, 2);
-		return currentleddate;
-	}
-
 	public String currentESTTimeandLeadTime(Appointment testData) {
 		DateFormat dateFormat = new SimpleDateFormat("hh.mm aa");
 		Calendar now = Calendar.getInstance();
@@ -2083,6 +2069,20 @@ public class PSSPatientUtils extends BaseTestNGWebDriver {
 		return afterAddTime;
 	}
 	
+	public String currentDateWithTimeZone(Appointment testData) {
+		TimeZone timeZone = TimeZone.getTimeZone(testData.getCurrentTimeZone());
+		String dateFormat = "dd MMMM,yyyy";
+		SimpleDateFormat f1 = new SimpleDateFormat(dateFormat);
+		Calendar c = Calendar.getInstance();
+		TimeZone time_zone = TimeZone.getTimeZone(testData.getCurrentTimeZone());
+		f1.setTimeZone(timeZone);
+		c.setTimeZone(time_zone);
+		String currentDate = f1.format(c.getTime());
+		log("Current Date is " + currentDate);
+		String currentleddate = currentDate.substring(0, 2);
+		return currentleddate;
+	}
+
 	public String nextDate(Appointment testData) {
 		int MILLIS_IN_DAY = 1000 * 60 * 60 * 24;
 		log("current est date is  " + currentDateWithTimeZone(testData));

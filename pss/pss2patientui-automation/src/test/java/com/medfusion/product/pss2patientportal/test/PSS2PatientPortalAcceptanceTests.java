@@ -11,8 +11,6 @@ import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
-
-import org.testng.annotations.BeforeTest;
 import org.testng.annotations.DataProvider;
 import org.testng.annotations.Parameters;
 import org.testng.annotations.Test;
@@ -6890,11 +6888,11 @@ public class PSS2PatientPortalAcceptanceTests extends BaseTestNGWebDriver {
 		location = startAppointmentInOrder.selectFirstLocation(PSSConstants.START_LOCATION);
 		logStep("Verfiy Location Page and location =" + testData.getLocation());
 		AppointmentPage appointment = location.selectAppointment(testData.getLocation());
-		log("Verfiy Appointment Page and appointment to be selected = " + testData.getAppointmenttype());
+		logStep("Verfiy Appointment Page and appointment to be selected = " + testData.getAppointmenttype());
 		AppointmentDateTime aptDateTime = appointment.selectAptTyper(testData.getAppointmenttype(),
 				Boolean.valueOf(testData.getIsAppointmentPopup()));
 		String date = aptDateTime.selectDate(testData.getIsNextDayBooking());
-		log("Date selected is for App" + date);
+		logStep("Date selected is for App" + date);
 		if (testData.isAccepttoggleStatus() == false) {
 			assertEquals(date, psspatientutils.nextDate(testData));
 		} else {
@@ -6968,11 +6966,11 @@ public class PSS2PatientPortalAcceptanceTests extends BaseTestNGWebDriver {
 		location = startAppointmentInOrder.selectFirstLocation(PSSConstants.START_LOCATION);
 		logStep("Verfiy Location Page and location =" + testData.getLocation());
 		AppointmentPage appointment = location.selectAppointment(testData.getLocation());
-		log("Verfiy Appointment Page and appointment to be selected = " + testData.getAppointmenttype());
+		logStep("Verfiy Appointment Page and appointment to be selected = " + testData.getAppointmenttype());
 		AppointmentDateTime aptDateTime = appointment.selectAptTyper(testData.getAppointmenttype(),
 				Boolean.valueOf(testData.getIsAppointmentPopup()));
 		String date = aptDateTime.selectDate(testData.getIsNextDayBooking());
-		log("Date selected is for App" + date);
+		logStep("Date selected is for App" + date);
 		if (testData.isAccepttoggleStatus() == false) {
 			assertEquals(date, psspatientutils.nextDate(testData));
 		} else {

@@ -75,12 +75,6 @@ public class PostAPIRequestGW extends BaseTestNGWebDriver {
 		return given().spec(requestSpec).log().all().body(map).when().post(practiceid + "/availableslots").then().log()
 				.all().extract().response();
 	}
-	
-	public Response avaliableSlot1(String b, String practiceid) throws IOException {
-
-		return given().spec(requestSpec).log().all().body(b).when().post(practiceid + "/availableslots").then().log()
-				.all().extract().response();
-	}
 
 	public Response nextavaliableSlot(Map<String, Object> map, String practiceid) throws IOException {
 
