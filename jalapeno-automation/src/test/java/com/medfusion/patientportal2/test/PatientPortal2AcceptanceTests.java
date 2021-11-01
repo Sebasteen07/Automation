@@ -5325,6 +5325,7 @@ public class PatientPortal2AcceptanceTests extends BaseTestNGWebDriver {
 		logStep("Set Patient Search Fields");
 		patientInviteTrustedRepresentative = pPatientSearchPage.editTrustedRepresentativeAccess();
 		patientInviteTrustedRepresentative.updateWithModuleNameAndAccess("Messages", "viewOnly");
+		patientInviteTrustedRepresentative.clickOnInviteBtn();
 
 		logStep("Login to patient portal");
 		loginPage = new JalapenoLoginPage(driver, testData.getUrl());
@@ -5366,6 +5367,7 @@ public class PatientPortal2AcceptanceTests extends BaseTestNGWebDriver {
 		logStep("Invite Trusted Representative With View Only Access");
 		patientInviteTrustedRepresentative = patientSearchPage.clickInviteTrustedRepresentative();
 		patientInviteTrustedRepresentative.inviteTrustedRepresentative(trustedPatient, "Forms", "viewOnly");
+		patientInviteTrustedRepresentative.clickOnInviteBtn();
 		assertTrue(patientSearchPage.wasInviteTrustedRepresentativeSuccessful());
 
 		logStep("Waiting for invitation email");
@@ -5406,6 +5408,7 @@ public class PatientPortal2AcceptanceTests extends BaseTestNGWebDriver {
 		logStep("Forms: Update Trusted Representative Access with No Access");
 		patientInviteTrustedRepresentative = patientSearchPage.editTrustedRepresentativeAccess();
 		patientInviteTrustedRepresentative.updateWithModuleNameAndAccess("Forms", "noAccess");
+		patientInviteTrustedRepresentative.clickOnUpdateBtn();
 
 		logStep("Login as Trusted Representative and verify Forms Solution");
 		loginPage = new JalapenoLoginPage(driver, testData.getUrl());
@@ -5561,7 +5564,7 @@ public class PatientPortal2AcceptanceTests extends BaseTestNGWebDriver {
 	@Test(enabled = true, groups = { "acceptance-linkedaccounts",
 			"commonpatient" }, retryAnalyzer = RetryAnalyzer.class)
 
-	public void careManagerTrustedRepForAppointmentMedication() throws Exception {
+	public void testCareManagerTrustedRepForAppointmentMedication() throws Exception {
 
 		String username = PortalUtil2.generateUniqueUsername(testData.getProperty("user.id"), testData);
 		patient = PatientFactory.createJalapenoPatient(username, testData);
@@ -5647,6 +5650,98 @@ public class PatientPortal2AcceptanceTests extends BaseTestNGWebDriver {
 
 	}
 	
+	@Test(enabled = true, groups = { "acceptance-linkedaccounts" }, retryAnalyzer = RetryAnalyzer.class)
+	public void testLATrustedRepresentativeAccessForAppointmentsRxRFromPractice() throws Exception {
+		patient = null;
+		JalapenoLoginPage loginPage;
+		JalapenoHomePage homePage;
+		PracticeLoginPage practiceLogin;
+		PracticeHomePage practiceHome;
+		PatientSearchPage patientSearchPage;
+		PatientTrustedRepresentativePage patientInviteTrustedRepresentative;
+		String username = PortalUtil2.generateUniqueUsername(testData.getProperty("user.id"), testData);
+		patient = PatientFactory.createJalapenoPatient(username, testData);
+		patient = new CreatePatient().selfRegisterPatient(driver, patient, testData.getProperty("med.wf.portal.url"));
+		Patient trustedPatient = PatientFactory.createJalapenoPatient(
+				PortalUtil2.generateUniqueUsername(testData.getProperty("user.id"), testData), testData);
+		logStep("Load login page");
+		loginPage = new JalapenoLoginPage(driver, testData.getProperty("med.wf.portal.url"));
+		homePage = loginPage.login(patient.getUsername(), patient.getPassword());
+
+		logStep("Login to Practice Portal");
+		practiceLogin = new PracticeLoginPage(driver, testData.getPortalUrl());
+		practiceHome = practiceLogin.login(testData.getProperty("med.wf.doc.user.id"), testData.getProperty("med.wf.doc.password"));
+
+		logStep("Click on Search");
+		patientSearchPage = practiceHome.clickPatientSearchLink();
+		patientSearchPage.searchForPatientInPatientSearch(patient.getEmail());
+		patientSearchPage.clickOnPatient(patient.getFirstName(), patient.getLastName());
+		logStep("Invite Trusted Representative With View Only Access for Appointments");
+		PatientTrustedRepresentativePage patientInviteTR = patientSearchPage.clickInviteTrustedRepresentative();
+		patientInviteTR.inviteTrustedRepresentative(trustedPatient, "Appointments", "viewOnly");
+		patientInviteTR.clearAllFields();
+		patientInviteTR.inviteTrustedRepresentative(trustedPatient, "Medications", "viewOnly");
+		patientInviteTR.clickOnInviteBtn();
+		assertTrue(patientSearchPage.wasInviteTrustedRepresentativeSuccessful());
+
+		logStep("Waiting for invitation email");
+		String patientUrl = new Mailinator().getLinkFromEmail(trustedPatient.getEmail(),
+				INVITE_EMAIL_SUBJECT_REPRESENTATIVE, INVITE_EMAIL_BUTTON_TEXT, 15);
+		assertNotNull(patientUrl, "Error: Activation patients link not found.");
+
+		logStep("Redirecting to verification page");
+		PatientVerificationPage patientVerificationPage = new PatientVerificationPage(driver, patientUrl);
+
+		logStep("Identify patient");
+		AuthUserLinkAccountPage linkAccountPage = patientVerificationPage.fillDependentInfoAndContinue(
+				patient.getZipCode(), patient.getDOBMonth(), patient.getDOBDay(), patient.getDOBYear());
+
+		logStep("Continue registration - check dependent info and fill trusted representative name");
+		linkAccountPage.checkDependentInfo(patient.getFirstName(), patient.getLastName(), trustedPatient.getEmail());
+		SecurityDetailsPage accountDetailsPage = linkAccountPage
+				.continueToCreateGuardianOnly(trustedPatient.getFirstName(), trustedPatient.getLastName(), "Child");
+
+		logStep("Continue registration - create dependents credentials and continue to Home page");
+		accountDetailsPage.fillAccountDetailsAndContinue(trustedPatient.getUsername(), trustedPatient.getPassword(),
+				testData.getSecretQuestion(), testData.getSecretAnswer(), testData.getPhoneNumber());
+
+		assertTrue(homePage.assessFamilyAccountElements(false));
+
+		logStep("Verify Appointment Solutions");
+		JalapenoAppointmentRequestPage appReqPage=homePage.clickOnAppointment(driver);
+		
+		logStep("Verify Request An Appointment Button is not present");
+		assertFalse(appReqPage.isAppointmentRequestBtnDisplayed());
+		
+		homePage.clickonHomeButton();
+		
+		MedicationsHomePage medReqPage=homePage.clickOnMedications(driver);
+		logStep("Verify Rx Request Button is not present in Medications module");
+		assertFalse(medReqPage.isRxRequestBtnDisplayed());
+		
+		logStep("Login to Practice Portal");
+		practiceLogin = new PracticeLoginPage(driver, testData.getPortalUrl());
+		practiceHome = practiceLogin.login(testData.getProperty("med.wf.doc.user.id"), testData.getProperty("med.wf.doc.password"));
+
+		logStep("Click on Search");
+		patientSearchPage = practiceHome.clickPatientSearchLink();
+		patientSearchPage.searchForPatientInPatientSearch(patient.getEmail());
+		patientSearchPage.clickOnPatient(patient.getFirstName(), patient.getLastName());
+		logStep("Update Trusted Representative Access with No Access for Appointments and Medications");
+		
+		patientInviteTrustedRepresentative = patientSearchPage.editTrustedRepresentativeAccess();
+		patientInviteTrustedRepresentative.updateWithModuleNameAndAccess("Appointments", "noAccess");
+		patientInviteTrustedRepresentative.updateWithModuleNameAndAccess("Medications", "noAccess");
+		patientInviteTrustedRepresentative.clickOnUpdateBtn();
+
+		logStep("Login as Trusted Representative and verify Appointments module is not present");
+		loginPage = new JalapenoLoginPage(driver, testData.getProperty("med.wf.portal.url"));
+		homePage = loginPage.login(trustedPatient.getUsername(), trustedPatient.getPassword());
+		assertFalse(homePage.isAppointmentSolutionisplayed());
+		logStep("Verify Medications module is not present");
+		assertFalse(homePage.isMedicationSolutionisplayed());
+	}
+
 	@Test(enabled = true, groups = { "acceptance-solutions" }, retryAnalyzer = RetryAnalyzer.class)
 	public void testGreenLight() throws Exception {
 		logStep("Load login page");
