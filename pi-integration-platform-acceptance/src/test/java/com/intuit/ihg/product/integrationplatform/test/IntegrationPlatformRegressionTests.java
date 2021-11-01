@@ -4559,7 +4559,7 @@ public class IntegrationPlatformRegressionTests extends BaseTestNGWebDriver {
 			log("Test Case: Appointment Request for Existing Patient From Partner");
 			log("Execution Environment: " + IHGUtil.getEnvironmentType());
 			log("Execution Browser: " + TestConfig.getBrowserType());
-			log("Step 1: Get Data from property file");
+			logStep("Get Data from property file");
 			LoadPreTestData LoadPreTestDataObj = new LoadPreTestData();
 			AppointmentData testData = new AppointmentData();
 			LoadPreTestDataObj.loadAppointmentDataFromProperty(testData);
@@ -4569,7 +4569,7 @@ public class IntegrationPlatformRegressionTests extends BaseTestNGWebDriver {
 			workingDir = workingDir + testData.csvFilePath;
 			aDUtils.csvFileReader(testData, workingDir);
 
-			log("Step 2: Post NEW AppointMentData ");
+			logStep("Post NEW AppointMentData ");
 			testData.Status = "NEW";
 			testData.FirstName = testData.FirstName;
 			testData.LastName = testData.LastName;
@@ -4584,14 +4584,14 @@ public class IntegrationPlatformRegressionTests extends BaseTestNGWebDriver {
 			testData.Reason = testData.appointmentDetailList.get(1).getReason();
 			testData.Description = testData.appointmentDetailList.get(1).getDescription();
 
-			log("Step 3: Setup Oauth client");
+			logStep("Setup Oauth client");
 			RestUtils.oauthSetup(testData.OAuthKeyStore, testData.OAuthProperty, testData.OAuthAppToken,
 					testData.OAuthUsername, testData.OAuthPassword);
 
 			aDUtils.checkAppointmentV4(testData, driver);
 			Thread.sleep(6000);
 			
-			log("Step 4: Post UPDATE AppointMentData ");
+			logStep("Post UPDATE AppointMentData ");
 			testData.Status = "UPDATE";
 			testData.Time = testData.appointmentDetailList.get(3).getTime();
 			testData.Location = "Update";
@@ -4605,7 +4605,7 @@ public class IntegrationPlatformRegressionTests extends BaseTestNGWebDriver {
 			aDUtils.checkAppointmentV4(testData, driver);
 			Thread.sleep(3000);
 
-			log("Step 5: Post CANCEL AppointMentData ");
+			logStep("Post CANCEL AppointMentData ");
 			testData.Status = "CANCEL";
 			testData.Time = testData.appointmentDetailList.get(4).getTime();
 			testData.Location = "Cancel";
