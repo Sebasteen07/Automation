@@ -1027,12 +1027,12 @@ public class PSSAdminUtils extends BaseTestNGWebDriver{
 		manageAppointmentType.selectAppointment(appointment.getAppointmenttype());
 		manageAppointmentType.gotoConfiguration();
 
-		manageAppointmentType.notreserve();
-		appointment.setAccepttoggleStatus(manageAppointmentType.acceptforStatus());
+		manageAppointmentType.notReserve();
+		appointment.setAccepttoggleStatus(manageAppointmentType.acceptForStatus());
 		Log4jUtil.log("Status for AcceptFor Same day is   " + appointment.isAccepttoggleStatus());
 		if (appointment.isAccepttoggleStatus() == true) {
-			manageAppointmentType.clickacceptsameday();
-			appointment.setAccepttoggleStatus(manageAppointmentType.acceptforStatus());
+			manageAppointmentType.clickAcceptSameDay();
+			appointment.setAccepttoggleStatus(manageAppointmentType.acceptForStatus());
 			Log4jUtil.log("Status for AcceptFor Same day is   " + appointment.isAccepttoggleStatus());
 		}
 

@@ -6857,7 +6857,7 @@ public class PSS2PatientPortalAcceptanceTests extends BaseTestNGWebDriver {
 		
 		PSSAdminUtils adminUtils = new PSSAdminUtils();
 		logStep("Login to PSS 2.0 Admin portal");
-		adminUtils.acceptforsameDayWithShowProviderOFF(driver, adminuser, testData);
+		adminUtils.acceptForSameDayWithShowProviderOFF(driver, adminuser, testData);
 		log("Fetch the rules set in Admin");
 		String rule = adminuser.getRule();
 		log("rule are " + rule);
@@ -6935,7 +6935,7 @@ public class PSS2PatientPortalAcceptanceTests extends BaseTestNGWebDriver {
 		
 		PSSAdminUtils adminUtils = new PSSAdminUtils();
 		logStep("Login to PSS 2.0 Admin portal");
-		adminUtils.acceptforsameDayWithShowProviderOFF(driver, adminuser, testData);
+		adminUtils.acceptForSameDayWithShowProviderOFF(driver, adminuser, testData);
 		log("Fetch the rules set in Admin");
 		String rule = adminuser.getRule();
 		log("rule are " + rule);
