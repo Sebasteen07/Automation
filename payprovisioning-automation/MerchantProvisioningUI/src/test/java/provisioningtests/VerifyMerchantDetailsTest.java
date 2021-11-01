@@ -1,14 +1,13 @@
 package provisioningtests;
 
-import java.io.IOException;
-import java.util.concurrent.TimeUnit;
-import org.openqa.selenium.support.PageFactory;
-import org.testng.Assert;
-import org.testng.annotations.Test;
 import com.medfusion.common.utils.PropertyFileLoader;
-
+import org.openqa.selenium.support.PageFactory;
+import org.testng.annotations.Test;
 import pageobjects.MerchantDetailsPage;
 import pageobjects.MerchantSearchPage;
+
+import java.io.IOException;
+import java.util.concurrent.TimeUnit;
 
 public class VerifyMerchantDetailsTest extends ProvisioningBaseTest {
 
