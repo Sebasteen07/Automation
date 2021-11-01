@@ -146,23 +146,23 @@ public class ManageAppointmentType extends PSS2MenuPage {
 		saveConfig.click();
 	}
 	
-	public boolean acceptforStatus() {
+	public boolean acceptForStatus() {
 		boolean bool = acceptToggle.isSelected();
 		log("Status of Accept for the Same Day -" + bool);
 		return bool;
 	}
 
-	public void notreserve() {
+	public void notReserve() {
 		Select objSelect = new Select(reservefor);
 		objSelect.selectByVisibleText("Not Reserved");
 		reservefor.click();
 		saveConfig.click();
 	}
 
-	public void clickacceptsameday() {
+	public void clickAcceptSameDay() {
 		acceptToggleclick.click();
 		saveConfig.click();
-		log("clicked on accceptfor sameday");
+
 	}
 
 }

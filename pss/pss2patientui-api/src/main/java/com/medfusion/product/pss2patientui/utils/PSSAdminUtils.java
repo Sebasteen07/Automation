@@ -1014,7 +1014,7 @@ public class PSSAdminUtils extends BaseTestNGWebDriver{
 	}
 	
 	
-	public void acceptforsameDayWithShowProviderOFF(WebDriver driver, AdminUser adminuser, Appointment appointment)
+	public void acceptForSameDayWithShowProviderOFF(WebDriver driver, AdminUser adminuser, Appointment appointment)
 			throws Exception {
 		PSS2PracticeConfiguration pssPracticeConfig = loginToAdminPortal(driver, adminuser);
 		pssPracticeConfig = pssPracticeConfig.gotoPracticeConfigTab();
