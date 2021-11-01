@@ -55,7 +55,7 @@ public class PSS2PSSAdapterModulatorTests extends BaseTestNG {
 
 		log("BASE URL AM -" + propertyData.getProperty("base.url.am"));
 		openToken = postAPIRequestAM.openToken(propertyData.getProperty("base.url.am"), practiceId,
-				payloadAM.openTokenPayload(practiceId));
+				payloadAM.openTokenPayload(practiceId,propertyData.getProperty("mf.authuserid.am")));
 
 		postAPIRequestAM.setupRequestSpecBuilder(propertyData.getProperty("base.url.am"),
 				headerConfig.HeaderwithToken(openToken));
