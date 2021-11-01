@@ -148,13 +148,12 @@ public class MerchantResourceAsFinance extends BaseRest {
 	}
 
 	@Test(dataProvider = "mmids_for_bank_details", dataProviderClass = MPTestData.class)
-	public void testGetMerchantMultipleBankAccounts(String mmid) throws IOException {
+	public void testGetMerchantMultipleBankAccounts(String url, String mmid) throws IOException {
 		MerchantInfo merchantinfo = new MerchantInfo();
-		Response response = merchantinfo.getMerchantBankDetails(mmid);
+		Response response = merchantinfo.getMerchantBankDetails(url, mmid);
 
-		JsonPath jsonpath = new JsonPath(response.asString());
 		Validations validate = new Validations();
-		validate.verifyMerchantBankAccounts(response.asString());
+		validate.verifyMerchantBankAccounts(url, response.asString());
 	}
 
 }

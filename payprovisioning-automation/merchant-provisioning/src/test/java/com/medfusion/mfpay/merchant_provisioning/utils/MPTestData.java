@@ -33,8 +33,10 @@ public class MPTestData extends BaseRest {
     public Object[][] dpMethodForGetBankAccounts() throws IOException {
         testData = new PropertyFileLoader();
         return new Object[][]{
-                {testData.getProperty("multiple.bank.accounts.mmid")},
-                {testData.getProperty("mmid")},
+                {ProvisioningUtils.postMerchant + "/" + testData.getProperty("multiple.bank.accounts.mmid"), testData.getProperty("multiple.bank.accounts.mmid")},
+                {ProvisioningUtils.postMerchant + "/" + testData.getProperty("mmid"), testData.getProperty("mmid")},
+                {(ProvisioningUtils.v9_endpoint + "merchants/" + testData.getProperty("multiple.bank.accounts.mmid")), testData.getProperty("multiple.bank.accounts.mmid")},
+                {(ProvisioningUtils.v9_endpoint + "merchants/" + testData.getProperty("mmid")), testData.getProperty("mmid")}
         };
     }
 }

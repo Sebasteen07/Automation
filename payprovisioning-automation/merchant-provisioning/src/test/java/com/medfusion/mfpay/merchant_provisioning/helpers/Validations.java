@@ -158,7 +158,7 @@ public class Validations {
 		Assert.assertEquals(jsonpath.get("separateFundingAccounts"), testData.getProperty("separate.funding.account"));
 	}
 
-	public void verifyMerchantBankAccounts(String merchantdetails) throws IOException {
+	public void verifyMerchantBankAccounts(String url, String merchantdetails) throws IOException {
 
 		testData = new PropertyFileLoader();
 		JsonPath jsonpath = new JsonPath(merchantdetails);
@@ -169,8 +169,10 @@ public class Validations {
 		Assert.assertNotNull(jsonpath.get("accountDetails.accountType"), "Account Type was not in the response");
 		Assert.assertTrue(jsonpath.get("accountDetails.accountType").toString().equalsIgnoreCase("C") ||
 				jsonpath.get("accountDetails.accountType").toString().equalsIgnoreCase("S") );
-		if(jsonpath.get("accountDetails.accountType").toString().equalsIgnoreCase("C")) {
-			Assert.assertNotNull(jsonpath.get("accountDetails.checkingDepositType"), "Checking Deposit Type was not in the response");
+		if(url.contains("internal")){
+			if(jsonpath.get("accountDetails.accountType").toString().equalsIgnoreCase("C")) {
+				Assert.assertNotNull(jsonpath.get("accountDetails.checkingDepositType"), "Checking Deposit Type was not in the response");
+			}
 		}
 		if(jsonpath.get("accountDetails.separateFundingAccounts").equals(true)){
 			System.out.println("The Merchant has a single bank account for deposits and fees");
