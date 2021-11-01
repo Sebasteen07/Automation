@@ -148,7 +148,7 @@ public class MerchantResourceAsFinance extends BaseRest {
 	}
 
 	@Test(dataProvider = "mmids_for_bank_details", dataProviderClass = MPTestData.class)
-	public void testGetMerchantMultipleBankAccounts(String url, String mmid) throws IOException {
+	public void testGetMerchantsBankAccountDetails(String url, String mmid) throws IOException {
 		MerchantInfo merchantinfo = new MerchantInfo();
 		Response response = merchantinfo.getMerchantBankDetails(url, mmid);
 
