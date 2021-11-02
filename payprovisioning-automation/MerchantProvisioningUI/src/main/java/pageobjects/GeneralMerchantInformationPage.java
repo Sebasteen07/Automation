@@ -9,6 +9,9 @@ import org.openqa.selenium.support.PageFactory;
 import org.openqa.selenium.support.ui.Select;
 
 import java.io.IOException;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
 
 import static org.testng.Assert.assertNotNull;
 
@@ -69,54 +72,49 @@ public class GeneralMerchantInformationPage extends MerchantDetailsPage {
         assertNotNull(title);
     }
 
-    public void fillMerchantName(String merchant) {
+    public void editMerchantName(String merchant) {
         merchantName.clear();
         merchantName.sendKeys(merchant);
     }
 
-    public void fillDoingBusinessAs(String doingBusinessAsName) {
+    public void editDoingBusinessAs(String doingBusinessAsName) {
         doingBusinessAs.clear();
         doingBusinessAs.sendKeys(doingBusinessAsName);
     }
 
-    public void fillPracticeID(String practiceID) {
+    public void editPracticeID(String practiceID) {
         practiceId.clear();
         practiceId.sendKeys(practiceID);
     }
 
-    public void fillCustomerAccountNumber(String customerAccountNo) {
+    public void editCustomerAccountNumber(String customerAccountNo) {
         customerAccountNumber.clear();
         customerAccountNumber.sendKeys(customerAccountNo);
     }
 
-    public void fillPhoneNumber(String merchantPhoneNumber) {
+    public void editPhoneNumber(String merchantPhoneNumber) {
         phoneNumber.clear();
         phoneNumber.sendKeys(merchantPhoneNumber);
     }
 
-    public void fillMaxTransactionLimit(String maxTxnLimit) {
+    public void editMaxTransactionLimit(String maxTxnLimit) {
         maxTransactionLimit.clear();
         maxTransactionLimit.sendKeys(maxTxnLimit);
     }
 
-    public void fillBillingDescriptor(String billingDescriptorValue) {
+    public void editBillingDescriptor(String billingDescriptorValue) {
         billingDescriptor.clear();
         billingDescriptor.sendKeys(billingDescriptorValue);
     }
 
-    public void fillBusinessEstablishedDate(String businessEstablishedDateValue) {
+    public void editBusinessEstablishedDate(String businessEstablishedDateValue) {
         businessEstablishedDate.clear();
         businessEstablishedDate.sendKeys(businessEstablishedDateValue);
     }
 
-    public void fillWebsiteURL(String businessWebsiteURL) {
+    public void editWebsiteURL(String businessWebsiteURL) {
         websiteURL.clear();
         websiteURL.sendKeys(businessWebsiteURL);
-    }
-
-    public void selectOwnershipType(String ownershipTypeValue) {
-        Select select = new Select(ownershipType);
-        select.selectByVisibleText(ownershipTypeValue);
     }
 
     public void selectBusinessType(String businessTypeValue) {
@@ -134,8 +132,37 @@ public class GeneralMerchantInformationPage extends MerchantDetailsPage {
         select.selectByVisibleText(apiCustomers);
     }
 
-    public void verifyElementsOnEditGeneralMerchantInfoPage(){
+    public void verifyFieldsOnEditGeneralMerchantInfoPage(){
+        if(merchantName.isDisplayed() && doingBusinessAs.isDisplayed()
+                && practiceId.isDisplayed() && customerAccountNumber.isDisplayed()
+        && phoneNumber.isDisplayed() && maxTransactionLimit.isDisplayed()
+                && businessEstablishedDate.isDisplayed() && websiteURL.isDisplayed());
+    }
 
+    public Boolean verifyBusinessType(){
+        Select select = new Select(businessType);
+        List<WebElement> businessType = select.getOptions();
+        List<String> expectedbusinessType = new ArrayList<String>();
+        for(int i=1; i<businessType.size(); i++){
+            expectedbusinessType.add(businessType.get(i).getText());
+        }
+
+        List<String> actualBusinessTypes = Arrays.asList("Auto Rental", "eCommerce", "Lodging", "MOTO", "Restaurant", "Retail");
+        return actualBusinessTypes.equals(expectedbusinessType);
+    }
+
+    public Boolean verifySICMCCCode(){
+        Select select = new Select(sicMccCode);
+        List<WebElement> businessType = select.getOptions();
+        List<String> expectedbusinessType = new ArrayList<String>();
+        for(int i=1; i<businessType.size(); i++){
+            expectedbusinessType.add(businessType.get(i).getText());
+        }
+
+        List<String> actualBusinessTypes = Arrays.asList("Doctors", "Dentists, Orthodontists", "Osteopaths",
+                "Chiropractors", "Optometrists, Ophthalmologist", "Opticians, Eyeglasses", "Chiropodists, Podiatrists", "Nursing/Personal Care",
+                "Hospitals", "Medical and Dental Labs", "Medical Services");
+        return actualBusinessTypes.equals(expectedbusinessType);
     }
 
 }

@@ -2,6 +2,7 @@ package provisioningtests;
 
 import com.medfusion.common.utils.PropertyFileLoader;
 import org.openqa.selenium.support.PageFactory;
+import org.testng.Assert;
 import org.testng.annotations.DataProvider;
 import org.testng.annotations.Test;
 import pageobjects.EditRatesAndContractPage;
@@ -82,6 +83,20 @@ public class EditSettlementTypeTest extends ProvisioningBaseTest {
 		logStep("Going to click on Edit General Merchant Info Button");
 		GeneralMerchantInformationPage generalMerchantInformationPage;
 		generalMerchantInformationPage = merchantDetailsPage.clickEditGeneralMerchantInfoButton();
+		generalMerchantInformationPage.verifyFieldsOnEditGeneralMerchantInfoPage();
+
+		logStep("Edit Doing Business Name");
+		generalMerchantInformationPage.editDoingBusinessAs("NEXTGEN");
+		generalMerchantInformationPage.editPracticeID("23456");
+		generalMerchantInformationPage.editCustomerAccountNumber("98765");
+		generalMerchantInformationPage.editPhoneNumber("98765412");
+		generalMerchantInformationPage.editMaxTransactionLimit("1000");
+		generalMerchantInformationPage.editBillingDescriptor("Test");
+		generalMerchantInformationPage.editBusinessEstablishedDate("21/02/2000");
+		generalMerchantInformationPage.editWebsiteURL("www.google.com");
+
+		Assert.assertTrue(generalMerchantInformationPage.verifyBusinessType(), "Business Type Name is missing");
+		Assert.assertTrue(generalMerchantInformationPage.verifySICMCCCode(), "SIC/MCC Code is missing");
 
 
 	}
