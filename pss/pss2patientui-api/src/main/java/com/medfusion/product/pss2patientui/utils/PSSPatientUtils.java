@@ -1817,6 +1817,8 @@ public class PSSPatientUtils extends BaseTestNGWebDriver {
 		return currentDate;
 	}
 
+	
+	
 	public void rescheduleAPT(Appointment testData, WebDriver driver) throws Exception {
 		AppointmentDateTime aptDateTime = new AppointmentDateTime(driver);
 		aptDateTime = aptDateTime.selectDt(testData.getIsNextDayBooking());
@@ -1849,7 +1851,7 @@ public class PSSPatientUtils extends BaseTestNGWebDriver {
 		}
 		return date2;
 	}
-
+	
 	public long timeDifferenceendTime(Appointment testData) throws ParseException {
 		log("Bussiness Hour Endtime is  " + testData.getBusinesshourEndTime());
 		Calendar now = Calendar.getInstance();
@@ -2065,6 +2067,46 @@ public class PSSPatientUtils extends BaseTestNGWebDriver {
 			pe.printStackTrace();
 		}
 		return afterAddTime;
+	}
+	
+	public String currentDateWithTimeZone(Appointment testData) {
+		TimeZone timeZone = TimeZone.getTimeZone(testData.getCurrentTimeZone());
+		String dateFormat = "dd MMMM,yyyy";
+		SimpleDateFormat f1 = new SimpleDateFormat(dateFormat);
+		Calendar c = Calendar.getInstance();
+		TimeZone time_zone = TimeZone.getTimeZone(testData.getCurrentTimeZone());
+		f1.setTimeZone(timeZone);
+		c.setTimeZone(time_zone);
+		String currentDate = f1.format(c.getTime());
+		log("Current Date is " + currentDate);
+		String currentleddate = currentDate.substring(0, 2);
+		return currentleddate;
+	}
+
+	public String nextDate(Appointment testData) {
+		int MILLIS_IN_DAY = 1000 * 60 * 60 * 24;
+		log("current est date is  " + currentDateWithTimeZone(testData));
+		String date = currentDateWithTimeZone(testData);
+		String dateFormat = "dd";
+		SimpleDateFormat f1 = new SimpleDateFormat(dateFormat);
+		java.util.Date dateSelectedFrom = null;
+		java.util.Date dateNextDate = null;
+		String date2 = "";
+		try {
+			dateSelectedFrom = f1.parse(date);
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		String nextDate = f1.format(dateSelectedFrom.getTime() + MILLIS_IN_DAY);
+		try {
+			dateNextDate = f1.parse(nextDate);
+			String date1 = dateNextDate.toString();
+			date2 = date1.substring(8, 10);
+			log("Next day's date: " + dateNextDate);
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		return date2;
 	}
 
 }

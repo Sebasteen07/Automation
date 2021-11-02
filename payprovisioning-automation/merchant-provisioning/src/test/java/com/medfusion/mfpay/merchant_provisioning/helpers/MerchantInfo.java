@@ -136,4 +136,9 @@ public class MerchantInfo extends BaseRest {
 
 	}
 
+	public Response getMerchantBankDetails(String getmerchant, String mmid) {
+		return given().spec(requestSpec).when().get(getmerchant).then().spec(responseSpec).extract().response();
+
+	}
+
 }
