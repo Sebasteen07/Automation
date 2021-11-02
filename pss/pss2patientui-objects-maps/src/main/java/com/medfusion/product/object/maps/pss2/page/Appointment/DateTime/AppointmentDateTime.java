@@ -233,7 +233,7 @@ public class AppointmentDateTime extends PSS2MainPage {
 
 	}
 
-	public String selectdateforreserve() {
+	public String selectDateForReserve() {
 		log("Total Dates present on patientUI is " + getAppointmentDateList());
 		String dt = null;
 		List<WebElement> appointmentList = driver.findElements(By.cssSelector(".rbc-event-content"));
