@@ -66,6 +66,9 @@ public class Location extends PSS2MainPage {
 		for (int i = 0; i < locationList.size(); i++) {
 			if (locationList.get(i).getText().contains(locationName)) {
 				log("Location is ---> " + locationList.get(i).getText());
+				log("Search Provider");
+				log("Provider of user found at " + locationList.get(i).getText());
+				IHGUtil.waitForElement(driver, 5, locationList.get(i));
 				locationList.get(i).click();
 				return PageFactory.initElements(driver, Provider.class);
 			}

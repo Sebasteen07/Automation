@@ -908,6 +908,10 @@ public class PSS2PatientPortalAcceptanceTests extends BaseTestNGWebDriver {
 
 	@Test(enabled = true, groups = { "AcceptanceTests" }, retryAnalyzer = RetryAnalyzer.class)
 	public void testBookApptWithoutLastQuestionNG() throws Exception {
+		
+		logStep("This TC verifies the Book Appointment without last question on confirmation Screen ");
+		logStep("This TC verifies the Book Appointment with insurance at End- Loginless flow");
+		logStep("This TC verifies the loginless flow for existing patient");
 
 		PSSPropertyFileLoader propertyData = new PSSPropertyFileLoader();
 		Appointment testData = new Appointment();
@@ -920,6 +924,7 @@ public class PSS2PatientPortalAcceptanceTests extends BaseTestNGWebDriver {
 		PSSAdminUtils adminUtils = new PSSAdminUtils();
 		
 		testData.setFutureApt(false);
+		testData.setInsuranceAtEnd(true);
 
 		logStep("Login to PSS 2.0 Admin portal and do the seetings for Last Question Required");
 		adminUtils.lastQuestionEnable(driver, adminUser, testData, PSSConstants.LOGINLESS);
@@ -962,6 +967,9 @@ public class PSS2PatientPortalAcceptanceTests extends BaseTestNGWebDriver {
 
 		PSSPatientUtils psspatientutils = new PSSPatientUtils();
 		PSSAdminUtils adminUtils = new PSSAdminUtils();
+		
+		testData.setFutureApt(true);
+		testData.setInsuranceAtEnd(true);
 
 		logStep("Login to PSS 2.0 Admin portal and do the seetings for Last Question Required");
 		adminUtils.lastQuestionEnable(driver, adminUser, testData, PSSConstants.LOGINLESS);
@@ -3564,6 +3572,9 @@ public class PSS2PatientPortalAcceptanceTests extends BaseTestNGWebDriver {
 		AdminUser adminuser = new AdminUser();
 		propertyData.setAdminNG(adminuser);
 		propertyData.setAppointmentResponseNG(testData);
+		
+		testData.setInsuranceAtEnd(true);
+		
 		PSSPatientUtils psspatientutils = new PSSPatientUtils();
 		PSSAdminUtils adminUtils = new PSSAdminUtils();
 		log("Login to PSS 2.0 Admin portal");
@@ -5772,6 +5783,7 @@ public class PSS2PatientPortalAcceptanceTests extends BaseTestNGWebDriver {
 
 		testData.setFutureApt(true);
 		testData.setInsuranceDetails(true);
+		testData.setInsuranceAtEnd(true);
 
 		logStep("Test Data for book an appointment");
 		log(testData.getUrlLoginLess());

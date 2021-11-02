@@ -358,7 +358,7 @@ public class PSSPatientUtils extends BaseTestNGWebDriver {
 			bookAnonymousApt(aptDateTime, testData, driver);
 		} else {
 			log("This is not an Anonymous flow so comes is else block");
-			clickOnSubmitAppt(false, aptDateTime, testData, driver);
+			clickOnSubmitAppt(true, aptDateTime, testData, driver);
 		}
 		log("Test Case Passed");
 	}
@@ -370,26 +370,41 @@ public class PSSPatientUtils extends BaseTestNGWebDriver {
 		log("Insurance is Enabled " + testData.isInsuranceVisible());
 		log("startpage is Visible " + testData.isStartPointPresent());
 		if (testData.isInsuranceVisible()) {
+			
+			if(testData.isInsuranceAtEnd() == true) {
+				
+				if (testData.isStartPointPresent()) {
+					log("Starting point is present after insurance skipped ");
+					startappointmentInOrder= new StartAppointmentInOrder(driver);
+					appointment = startappointmentInOrder.selectFirstAppointment(PSSConstants.START_APPOINTMENT);
+					log("Successfully clicked on  " + PSSConstants.START_APPOINTMENT);
+				} else {
+					appointment = homepage.appointmentpage();
+					log("Starting point not Present going to select next provider ");
+				}
+				
+			}else {
+				if (testData.isInsuranceDetails() == true) {
+					log("Member ID- " + testData.getMemberID() + " Group Id- " + testData.getGroupID() + " Phone Number- "
+							+ testData.getInsurancePhone());
+					startappointmentInOrder = homepage.updateInsuranceInfo(driver, testData.getMemberID(),
+							testData.getGroupID(), testData.getInsurancePhone());
 
-			if (testData.isInsuranceDetails() == true) {
-				log("Member ID- " + testData.getMemberID() + " Group Id- " + testData.getGroupID() + " Phone Number- "
-						+ testData.getInsurancePhone());
-				startappointmentInOrder = homepage.updateInsuranceInfo(driver, testData.getMemberID(),
-						testData.getGroupID(), testData.getInsurancePhone());
+				} else {
+					log("insurance is present on home Page going to skip insurance page");
+					startappointmentInOrder = homepage.skipInsurance(driver);
+				}
 
-			} else {
-				log("insurance is present on home Page going to skip insurance page");
-				startappointmentInOrder = homepage.skipInsurance(driver);
-			}
-
-			if (testData.isStartPointPresent()) {
-				log("Starting point is present after insurance skipped ");
-				appointment = startappointmentInOrder.selectFirstAppointment(PSSConstants.START_APPOINTMENT);
-				log("Successfully clicked on  " + PSSConstants.START_APPOINTMENT);
-			} else {
-				appointment = homepage.appointmentpage();
-				log("Starting point not Present going to select next provider ");
-			}
+				if (testData.isStartPointPresent()) {
+					log("Starting point is present after insurance skipped ");
+					appointment = startappointmentInOrder.selectFirstAppointment(PSSConstants.START_APPOINTMENT);
+					log("Successfully clicked on  " + PSSConstants.START_APPOINTMENT);
+				} else {
+					appointment = homepage.appointmentpage();
+					log("Starting point not Present going to select next provider ");
+				}
+			}	
+			
 		} else if (testData.isStartPointPresent()) {
 			startappointmentInOrder = homepage.startpage();
 			log("in else part  click on  " + PSSConstants.START_APPOINTMENT);
@@ -421,7 +436,7 @@ public class PSSPatientUtils extends BaseTestNGWebDriver {
 			bookAnonymousApt(aptDateTime, testData, driver);
 		} else {
 			log("This is not an Anonymous flow so comes is else block");
-			clickOnSubmitAppt(false, aptDateTime, testData, driver);
+			clickOnSubmitAppt(testData.isInsuranceAtEnd(), aptDateTime, testData, driver);
 		}
 		log("Test Case Passed");
 	}
@@ -1162,10 +1177,13 @@ public class PSSPatientUtils extends BaseTestNGWebDriver {
 		log("Verify Confirmation page and Scheduled page");
 		log("Is Insurance Page Displayed= " + isInsuranceDisplated);
 		log("I am in clickOnSubmitAppt METHOD-------");
-		Thread.sleep(2000);
+		//Thread.sleep(2000);
 		if (isInsuranceDisplated) {
 			UpdateInsurancePage updateinsurancePage = aptDateTime.selectAppointmentDateAndTime(driver);
-			ConfirmationPage confirmationpage = updateinsurancePage.skipInsuranceUpdate();
+//			ConfirmationPage confirmationpage = updateinsurancePage.skipInsuranceUpdate();
+
+			ConfirmationPage confirmationpage = updateinsurancePage.selectInsuranceAtEnd(testData.getMemberID(),
+					testData.getGroupID(), testData.getInsurancePhone());
 			appointmentToScheduled(confirmationpage, testData);
 		} else {
 			ConfirmationPage confirmationpage;
