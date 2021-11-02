@@ -157,4 +157,35 @@ public class Validations {
 				(PracticeConstants.PREFERRED_PROCESSOR_ELEMENT));
 		Assert.assertEquals(jsonpath.get("separateFundingAccounts"), testData.getProperty("separate.funding.account"));
 	}
+
+	public void verifyMerchantBankAccounts(String url, String merchantdetails) throws IOException {
+
+		testData = new PropertyFileLoader();
+		JsonPath jsonpath = new JsonPath(merchantdetails);
+		Assert.assertNotNull(jsonpath, "Response was null");
+		Assert.assertNotNull(jsonpath.get("id"), "Merchant id was not in the response");
+		Assert.assertNotNull(jsonpath.get("accountDetails.routingNumber"), "Routing number was not in the response");
+		Assert.assertNotNull(jsonpath.get("accountDetails.accountNumber"), "Account Number was not in the response");
+		Assert.assertNotNull(jsonpath.get("accountDetails.accountType"), "Account Type was not in the response");
+		Assert.assertTrue(jsonpath.get("accountDetails.accountType").toString().equalsIgnoreCase("C") ||
+				jsonpath.get("accountDetails.accountType").toString().equalsIgnoreCase("S") );
+		if(url.contains("internal")){
+			if(jsonpath.get("accountDetails.accountType").toString().equalsIgnoreCase("C")) {
+				Assert.assertNotNull(jsonpath.get("accountDetails.checkingDepositType"), "Checking Deposit Type was not in the response");
+			}
+		}
+		if(jsonpath.get("accountDetails.separateFundingAccounts").equals(true)){
+			System.out.println("The Merchant has a single bank account for deposits and fees");
+			Assert.assertNotNull(jsonpath.get("accountDetails.feeAccountDetails.routingNumber"), "Fee Account Type's Routing Number was not in the response");
+			Assert.assertNotNull(jsonpath.get("accountDetails.feeAccountDetails.accountNumber"), "Fee Account Type's Account Number was not in the response");
+			Assert.assertNotNull(jsonpath.get("accountDetails.feeAccountDetails.accountType"), "Fee Account Type's Account Type was not in the response");
+		}
+		else {
+			System.out.println("The Merchant has a two different bank account for deposits and fees");
+			Assert.assertNull(jsonpath.get("accountDetails.feeAccountDetails.routingNumber"), "Fee Account Type's Routing Number was not NULL in the response");
+			Assert.assertNull(jsonpath.get("accountDetails.feeAccountDetails.accountNumber"), "Fee Account Type's Account Number was not NULL in the response");
+			Assert.assertNull(jsonpath.get("accountDetails.feeAccountDetails.accountType"), "Fee Account Type's Account Type was not NULL in the response");
+		}
+
+	}
 }
