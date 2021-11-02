@@ -28,4 +28,15 @@ public class MPTestData extends BaseRest {
                         testData.getProperty("staff.username"), "POINTOFSALE"},
         };
     }
+
+    @DataProvider(name = "mmids_for_bank_details")
+    public Object[][] dpMethodForGetBankAccounts() throws IOException {
+        testData = new PropertyFileLoader();
+        return new Object[][]{
+                {ProvisioningUtils.postMerchant + "/" + testData.getProperty("multiple.bank.accounts.mmid"), testData.getProperty("multiple.bank.accounts.mmid")},
+                {ProvisioningUtils.postMerchant + "/" + testData.getProperty("mmid"), testData.getProperty("mmid")},
+                {(ProvisioningUtils.v9_endpoint + "merchants/" + testData.getProperty("multiple.bank.accounts.mmid")), testData.getProperty("multiple.bank.accounts.mmid")},
+                {(ProvisioningUtils.v9_endpoint + "merchants/" + testData.getProperty("mmid")), testData.getProperty("mmid")}
+        };
+    }
 }
