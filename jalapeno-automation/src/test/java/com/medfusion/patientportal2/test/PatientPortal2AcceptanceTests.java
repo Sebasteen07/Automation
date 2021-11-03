@@ -5713,6 +5713,7 @@ public class PatientPortal2AcceptanceTests extends BaseTestNGWebDriver {
 		logStep("Verify Request An Appointment Button is not present");
 		assertFalse(appReqPage.isAppointmentRequestBtnDisplayed());
 		
+		logStep("Go back to home");
 		homePage.clickonHomeButton();
 		
 		MedicationsHomePage medReqPage=homePage.clickOnMedications(driver);
