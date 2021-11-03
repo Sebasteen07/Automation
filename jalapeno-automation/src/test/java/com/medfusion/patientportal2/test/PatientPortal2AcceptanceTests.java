@@ -5714,7 +5714,7 @@ public class PatientPortal2AcceptanceTests extends BaseTestNGWebDriver {
 		assertFalse(appReqPage.isAppointmentRequestBtnDisplayed());
 		
 		logStep("Go back to home");
-		homePage.clickonHomeButton();
+		appReqPage.clickonHomeButton(driver);
 		
 		MedicationsHomePage medReqPage=homePage.clickOnMedications(driver);
 		logStep("Verify Rx Request Button is not present in Medications module");
