@@ -46,9 +46,15 @@ public class JalapenoAppointmentRequestPage extends JalapenoMenu {
 
 	@FindBy(how = How.ID, using = "id1b")
 	private WebElement homeButton; // this is not Home button from Jalapeno Menu
+	
+	@FindBy(how = How.XPATH, using = "//div[@id='menu']//li[@id='home']")
+	private WebElement btnHome; //Home link from side Panel
 
 	@FindBy(how = How.ID, using = "appointmentSolutionBtn")
 	private WebElement appointmentSolutionBtn;
+	
+	@FindBy(how = How.ID, using = "leftMenuToggle")
+	private WebElement leftMenuToggle;
 
 	public JalapenoAppointmentRequestPage(WebDriver driver) {
 		super(driver);
@@ -147,5 +153,20 @@ public class JalapenoAppointmentRequestPage extends JalapenoMenu {
 			log("Verify Appointment Request Button view access for Trusted Rep shoud not display");
 			return false;
 		}
+	}
+
+	public void clickonHomeButton(WebDriver driver) {
+		if(btnHome.isDisplayed())
+		{
+			log("Home button is displayed");
+			btnHome.click();
+		}
+		else
+		{
+			log("Home button is not  displayed,so click on left menu toggle(3lines)");
+			leftMenuToggle.click();
+			log("Then click on Home link");
+			btnHome.click();
+		}	
 	}
 }
