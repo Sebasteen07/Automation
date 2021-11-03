@@ -35,7 +35,8 @@ public class VerifyMerchantDetailsTest extends ProvisioningBaseTest {
 		merchantDetailsPage.verifyProcessorInformation(testData.getProperty("merchant.processor.get"));
 
 		logStep("Going to verify general merchant information");
-		merchantDetailsPage.verifyGeneralMerchantInformation(testData.getProperty("merchant.practice.id"));
+		merchantDetailsPage.verifyGeneralMerchantInformation(testData.getProperty("merchant.practice.id"),
+				testData.getProperty("customer.account.number"), testData.getProperty("doing.business.as"));
 
 		logStep("Going to verify Accepted cards ");
 		merchantDetailsPage.verifyAcceptedCards();

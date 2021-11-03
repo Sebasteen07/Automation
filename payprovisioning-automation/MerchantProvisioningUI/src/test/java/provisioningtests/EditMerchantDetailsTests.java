@@ -3,18 +3,18 @@ package provisioningtests;
 import com.medfusion.common.utils.PropertyFileLoader;
 import org.openqa.selenium.support.PageFactory;
 import org.testng.Assert;
-import org.testng.annotations.DataProvider;
 import org.testng.annotations.Test;
 import pageobjects.EditRatesAndContractPage;
 import pageobjects.GeneralMerchantInformationPage;
 import pageobjects.MerchantDetailsPage;
 import pageobjects.MerchantSearchPage;
+import utils.MPUITestData;
 
 import java.io.IOException;
 
-public class EditSettlementTypeTest extends ProvisioningBaseTest {
+public class EditMerchantDetailsTests extends ProvisioningBaseTest {
 
-	@Test(dataProvider = "edit_settlement_type", enabled = true)
+	@Test(dataProvider = "edit_settlement_type", dataProviderClass = MPUITestData.class, enabled = true)
 	public void testEditSettlementType(String settlementType)
 			throws IOException, NullPointerException, InterruptedException {
 
@@ -51,26 +51,16 @@ public class EditSettlementTypeTest extends ProvisioningBaseTest {
 
 	}
 
-	@DataProvider(name = "edit_settlement_type")
-	public static Object[][] dpMethod() throws IOException {
-		testData = new PropertyFileLoader();
-		return new Object[][] {
 
-				{ testData.getProperty("settlement.type.monthly") },
-
-		};
-
-	}
-
-	@Test(dataProvider = "edit_settlement_type", enabled = true)
-	public void testEditGeneralMerchantInfo(String settlementType)
+	@Test(dataProvider = "edit_general_merchant_info", dataProviderClass = MPUITestData.class, enabled = true)
+	public void testEditGeneralMerchantInfo(String doingBusinessAs, String practiceID, String customerAccNo, String phoneNo)
 			throws IOException, NullPointerException, InterruptedException {
 
 		PropertyFileLoader testData = new PropertyFileLoader();
 		logStep("Navigating to search Merchant");
 		MerchantSearchPage merchantSearchPage = PageFactory.initElements(driver, MerchantSearchPage.class);
 
-		merchantSearchPage.findByMerchantId(testData.getProperty("merchant.id.settlement.edit"));
+		merchantSearchPage.findByMerchantId(testData.getProperty("edit.merchant.id"));
 		merchantSearchPage.searchButtonClick();
 
 		logStep("Going to click on view Merchant details page");
@@ -86,18 +76,27 @@ public class EditSettlementTypeTest extends ProvisioningBaseTest {
 		generalMerchantInformationPage.verifyFieldsOnEditGeneralMerchantInfoPage();
 
 		logStep("Edit Doing Business Name");
-		generalMerchantInformationPage.editDoingBusinessAs("NEXTGEN");
-		generalMerchantInformationPage.editPracticeID("23456");
-		generalMerchantInformationPage.editCustomerAccountNumber("98765");
-		generalMerchantInformationPage.editPhoneNumber("98765412");
-		generalMerchantInformationPage.editMaxTransactionLimit("1000");
-		generalMerchantInformationPage.editBillingDescriptor("Test");
-		generalMerchantInformationPage.editBusinessEstablishedDate("21/02/2000");
-		generalMerchantInformationPage.editWebsiteURL("www.google.com");
+		generalMerchantInformationPage.editDoingBusinessAs(doingBusinessAs);
 
+		logStep("Edit Practice ID");
+		generalMerchantInformationPage.editPracticeID(practiceID);
+
+		logStep("Edit Customer Account Numer");
+		generalMerchantInformationPage.editCustomerAccountNumber(customerAccNo);
+
+		logStep("Edit Phone Number");
+		generalMerchantInformationPage.editPhoneNumber(phoneNo);
+
+		Assert.assertTrue(generalMerchantInformationPage.verifyOwnershipTypeIsDisabled());
 		Assert.assertTrue(generalMerchantInformationPage.verifyBusinessType(), "Business Type Name is missing");
 		Assert.assertTrue(generalMerchantInformationPage.verifySICMCCCode(), "SIC/MCC Code is missing");
 
+		logStep("Click Update General Merchant Info Button");
+		merchantDetailsPage = generalMerchantInformationPage.clickUpdateGeneralMerchantInfoButton();
+
+		logStep("Going to verify merchant details page & verify updated information");
+		merchantDetailsPage.verifyPageTitle();
+		merchantDetailsPage.verifyGeneralMerchantInformation(practiceID, customerAccNo, doingBusinessAs);
 
 	}
 

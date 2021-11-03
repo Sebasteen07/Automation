@@ -56,6 +56,12 @@ public class MerchantDetailsPage extends NavigationMenu {
 	@FindBy(how = How.ID, using = "payApiCustomer")
 	private WebElement payApiCustomer;
 
+	@FindBy(how = How.ID, using = "doingBusinessAs")
+	private WebElement doingBusinessAs;
+
+	@FindBy(how = How.ID, using = "customerAccountNumber")
+	private WebElement customerAccountNumber;
+
 	// Accepted cards
 	@FindBy(how = How.XPATH, using = "//div[@data-ng-repeat='card in acceptedCards']/img[@alt='Visa']")
 	private WebElement visaCard;
@@ -133,10 +139,12 @@ public class MerchantDetailsPage extends NavigationMenu {
 
 	}
 
-	public void verifyGeneralMerchantInformation(String practiceId) {
+	public void verifyGeneralMerchantInformation(String practiceId, String customerNo, String doingBusinessAsName) {
 
 		assertNotNull(payApiCustomer);
 		Assert.assertEquals(practiceID.getText(), practiceId);
+		Assert.assertEquals(customerAccountNumber.getText(), customerNo);
+		Assert.assertEquals(doingBusinessAs.getText(), doingBusinessAsName);
 
 		if (payApiCustomers.contains(payApiCustomer.getText())) {
 

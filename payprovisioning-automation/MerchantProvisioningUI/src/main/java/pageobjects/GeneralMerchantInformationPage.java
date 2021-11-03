@@ -1,12 +1,15 @@
 package pageobjects;
 
 import com.medfusion.common.utils.PropertyFileLoader;
+import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.FindBy;
 import org.openqa.selenium.support.How;
 import org.openqa.selenium.support.PageFactory;
+import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.openqa.selenium.support.ui.Select;
+import org.openqa.selenium.support.ui.WebDriverWait;
 
 import java.io.IOException;
 import java.util.ArrayList;
@@ -67,6 +70,9 @@ public class GeneralMerchantInformationPage extends MerchantDetailsPage {
     @FindBy(how = How.XPATH, using = "//*[@id='sicMccCode']")
     private WebElement sicMccCode ;
 
+    @FindBy(how = How.XPATH, using = "//*[@id='viewContent']/div/form/div[2]/fieldset/div/button[1]")
+    private WebElement updateButton ;
+
     public void verifyPageTitle() {
         String title = this.driver.getTitle();
         assertNotNull(title);
@@ -80,6 +86,11 @@ public class GeneralMerchantInformationPage extends MerchantDetailsPage {
     public void editDoingBusinessAs(String doingBusinessAsName) {
         doingBusinessAs.clear();
         doingBusinessAs.sendKeys(doingBusinessAsName);
+    }
+
+    public void waitForAlert(){
+        WebDriverWait wait = new WebDriverWait(driver, 20);
+        wait.until(ExpectedConditions.visibilityOf((WebElement) By.cssSelector("div[role='alert']")));
     }
 
     public void editPracticeID(String practiceID) {
@@ -155,14 +166,23 @@ public class GeneralMerchantInformationPage extends MerchantDetailsPage {
         Select select = new Select(sicMccCode);
         List<WebElement> businessType = select.getOptions();
         List<String> expectedbusinessType = new ArrayList<String>();
-        for(int i=1; i<businessType.size(); i++){
+        for(int i=0; i<businessType.size(); i++){
             expectedbusinessType.add(businessType.get(i).getText());
         }
-
+        System.out.println(expectedbusinessType);
         List<String> actualBusinessTypes = Arrays.asList("Doctors", "Dentists, Orthodontists", "Osteopaths",
                 "Chiropractors", "Optometrists, Ophthalmologist", "Opticians, Eyeglasses", "Chiropodists, Podiatrists", "Nursing/Personal Care",
                 "Hospitals", "Medical and Dental Labs", "Medical Services");
         return actualBusinessTypes.equals(expectedbusinessType);
+    }
+
+    public Boolean verifyOwnershipTypeIsDisabled(){
+        return ownershipType.isDisplayed();
+    }
+
+    public MerchantDetailsPage clickUpdateGeneralMerchantInfoButton(){
+        updateButton.click();
+        return PageFactory.initElements(driver, MerchantDetailsPage.class);
     }
 
 }
