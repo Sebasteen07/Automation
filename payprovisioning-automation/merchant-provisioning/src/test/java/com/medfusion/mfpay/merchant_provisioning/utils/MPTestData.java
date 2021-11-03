@@ -39,4 +39,24 @@ public class MPTestData extends BaseRest {
                 {(ProvisioningUtils.v9_endpoint + "merchants/" + testData.getProperty("mmid")), testData.getProperty("mmid")}
         };
     }
+    
+    
+	@DataProvider(name = "edit_account_details")
+	public Object[][] dpMethodEditAccountDetails() throws IOException {
+		testData = new PropertyFileLoader();
+		return new Object[][] {
+
+				{ "true", testData.getProperty("edit.multiple.bank.accounts.fee.routing.number"),
+						testData.getProperty("edit.multiple.bank.accounts.fee.account.type"),
+						testData.getProperty("edit.multiple.bank.accounts.fee.account.number"),
+						testData.getProperty("edit.multiple.bank.accounts.routing.number"),
+						testData.getProperty("edit.multiple.bank.accounts.account.type"),
+						testData.getProperty("edit.multiple.bank.accounts.account.number") },
+
+				{ "false", null, null, null, testData.getProperty("edit.multiple.bank.accounts.routing.number"),
+						testData.getProperty("edit.multiple.bank.accounts.account.type"),
+						testData.getProperty("edit.multiple.bank.accounts.account.number") },
+
+		};
+	}
 }

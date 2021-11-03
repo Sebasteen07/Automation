@@ -5,9 +5,11 @@ import static io.restassured.RestAssured.given;
 import io.restassured.path.json.JsonPath;
 import io.restassured.response.Response;
 import java.io.IOException;
+import java.util.Arrays;
 import java.util.Map;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.medfusion.common.utils.PropertyFileLoader;
+import com.medfusion.mfpay.merchant_provisioning.pojos.AccountDetails;
 import com.medfusion.mfpay.merchant_provisioning.pojos.ContractedRates;
 import com.medfusion.mfpay.merchant_provisioning.pojos.Merchant;
 import com.medfusion.mfpay.merchant_provisioning.tests.BaseRest;
@@ -138,6 +140,26 @@ public class MerchantInfo extends BaseRest {
 
 	public Response getMerchantBankDetails(String getmerchant, String mmid) {
 		return given().spec(requestSpec).when().get(getmerchant).then().spec(responseSpec).extract().response();
+
+	}
+	
+	public Response editAccountDetails(String mmid, String acceptedCards, String accountNumber, String accountType,
+			String checkingDeposit, String feeAccountNumber, String feeAccountType, String feeRoutingNumber,
+			String preferredProcessor, String seprateFunding, String routingNumber, String merchantName,
+			String maxTransactionLimit) throws IOException {
+
+		Map<String, Object> accountDetails = AccountDetails.editAccountDetailsMap(
+				Arrays.asList(acceptedCards), accountNumber, accountType, checkingDeposit, feeAccountNumber,
+				feeAccountType, feeRoutingNumber, preferredProcessor, seprateFunding, routingNumber, merchantName,
+				maxTransactionLimit);
+
+		
+		String updateMerchantAccountDetails = ProvisioningUtils.postMerchant + "/" + mmid
+				+ "/wpSubMerchant?updateType=BANK_ACCOUNT";
+		Response response = given().spec(requestSpec).body(accountDetails).when().put(updateMerchantAccountDetails)
+				.then().spec(responseSpec).extract().response();
+
+		return response;
 
 	}
 
