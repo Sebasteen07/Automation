@@ -5713,8 +5713,9 @@ public class PatientPortal2AcceptanceTests extends BaseTestNGWebDriver {
 		logStep("Verify Request An Appointment Button is not present");
 		assertFalse(appReqPage.isAppointmentRequestBtnDisplayed());
 		
-		logStep("Go back to home");
-		appReqPage.clickonHomeButton(driver);
+		logStep("Load login page");
+		loginPage = new JalapenoLoginPage(driver, testData.getProperty("med.wf.portal.url"));
+		homePage = loginPage.login(trustedPatient.getUsername(), trustedPatient.getPassword());
 		
 		MedicationsHomePage medReqPage=homePage.clickOnMedications(driver);
 		logStep("Verify Rx Request Button is not present in Medications module");
