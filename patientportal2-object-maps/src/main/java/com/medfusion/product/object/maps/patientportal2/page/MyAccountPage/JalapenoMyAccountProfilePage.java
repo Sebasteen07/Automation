@@ -6,6 +6,7 @@ import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.concurrent.TimeUnit;
 
 import org.apache.commons.lang.StringUtils;
 import org.openqa.selenium.Keys;
@@ -81,6 +82,12 @@ public class JalapenoMyAccountProfilePage extends JalapenoMyAccountPage {
 
 	@FindBy(how = How.ID, using = "lastName")
 	private WebElement lastName;
+	
+	@FindBy(how = How.ID, using = "phone2")
+	private WebElement phone2;
+	
+	@FindBy(how = How.XPATH, using = "//input[@id='phone3']")
+	private WebElement phone3;
 
 	@FindBy(how = How.XPATH, using = "//input[@id='phone4']")
 	private WebElement phone4;
@@ -90,7 +97,11 @@ public class JalapenoMyAccountProfilePage extends JalapenoMyAccountPage {
 
 	@FindBy(how = How.XPATH, using = "//input[@id='phone6']")
 	private WebElement phone6;
-
+	
+	@FindBy(how = How.XPATH, using = "//p[text()=' Your profile information has been updated. ']")
+	private WebElement notificationMessage;
+	
+    
 	public JalapenoMyAccountProfilePage(WebDriver driver) {
 		super(driver);
 		IHGUtil.PrintMethodName();
@@ -102,6 +113,14 @@ public class JalapenoMyAccountProfilePage extends JalapenoMyAccountPage {
 
 	public String getDOByear() {
 		return DOByear.getAttribute("value");
+	}
+	
+	public String getPhone3() {
+		return phone3.getAttribute("value");
+	}
+
+	public String getZipCodeTextbox() {
+		return zipCodeTextbox.getAttribute("value");
 	}
 
 	public String getDOBmonth() {
@@ -395,4 +414,30 @@ public class JalapenoMyAccountProfilePage extends JalapenoMyAccountPage {
 		devicesTab.click();
 		return PageFactory.initElements(driver, JalapenoMyAccountDevicesPage.class);
 	}
+	public void updateDobZipPhoneFields(String phoneNumber,String zipcode,String yeardob) throws InterruptedException {
+		Thread.sleep(1500);// Waiting page to load.
+		phone3.clear();
+		IHGUtil.exists(driver, 200, phone3);
+		phone3.sendKeys(phoneNumber);
+		zipCodeTextbox.clear();
+		IHGUtil.exists(driver, 200, zipCodeTextbox);
+		zipCodeTextbox.sendKeys(zipcode);
+		DOByear.clear();
+		IHGUtil.exists(driver, 200, DOByear);
+     	DOByear.sendKeys(yeardob);
+		}
+	public void clickOnSaveAccountButton() {
+		IHGUtil.waitForElement(driver, 50, saveMyChanges);
+		saveMyChanges.click();
+	}
+	public boolean isProfileInformationUpdateMessageDisplayed() {
+		try {
+			log("Looking for Profile Information Update Message");
+			new WebDriverWait(driver, 60).until(ExpectedConditions.visibilityOf(notificationMessage));
+			return notificationMessage.isDisplayed();
+		} catch (Exception e) {
+		}
+		return false;
+	}
+	
 }
