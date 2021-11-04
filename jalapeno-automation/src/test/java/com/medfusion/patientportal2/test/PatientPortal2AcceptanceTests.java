@@ -25,6 +25,7 @@ import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.PageFactory;
 import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.openqa.selenium.support.ui.WebDriverWait;
+import org.testng.Assert;
 import org.testng.annotations.*;
 import com.intuit.ifs.csscat.core.RetryAnalyzer;
 import com.intuit.ifs.csscat.core.pojo.ExpectedEmail;
@@ -5713,8 +5714,9 @@ public class PatientPortal2AcceptanceTests extends BaseTestNGWebDriver {
 		logStep("Verify Request An Appointment Button is not present");
 		assertFalse(appReqPage.isAppointmentRequestBtnDisplayed());
 		
-		logStep("Go back to home");
-		appReqPage.clickonHomeButton(driver);
+		logStep("Load login page");
+		loginPage = new JalapenoLoginPage(driver, testData.getProperty("med.wf.portal.url"));
+		homePage = loginPage.login(trustedPatient.getUsername(), trustedPatient.getPassword());
 		
 		MedicationsHomePage medReqPage=homePage.clickOnMedications(driver);
 		logStep("Verify Rx Request Button is not present in Medications module");
@@ -5946,6 +5948,36 @@ public class PatientPortal2AcceptanceTests extends BaseTestNGWebDriver {
 	    assertTrue(healthrecord.isRequestRecivedMessageDisplayed());
 		
         }
+	@Test(enabled = true, groups = { "acceptance-basics" }, retryAnalyzer = RetryAnalyzer.class)
+	public void testUpdateZipcodeDobPhoneInMyAccount() throws Exception {
+		String phoneNumberLastDigit = IHGUtil.createRandomNumericString(4);
+		String zipCode = IHGUtil.createRandomZip();
+		String yearDob = IHGUtil.createRandomNumericStringInRange(1980,2021);
+		
+	    logStep("Login as a patient user role");
+		JalapenoLoginPage  loginPage = new JalapenoLoginPage(driver, testData.getUrl());
+		JalapenoHomePage homePage = loginPage.login(testData.getProperty("user.id"), testData.getProperty("password"));
+		
+		logStep("Go to security tab on my account page");
+		JalapenoAccountPage accountPage = homePage.clickOnAccount();
+		
+		logStep("Click on the edit my account button");
+		JalapenoMyAccountProfilePage myAccountPage = accountPage.clickOnEditMyAccount();
+		
+		logStep("Update phone number, zipcode and year");
+		myAccountPage.updateDobZipPhoneFields(phoneNumberLastDigit,zipCode,yearDob);
+		
+		logStep("Click on the save button");
+		myAccountPage.clickOnSaveAccountButton();
+		
+		logStep("Verify the updated message");
+		assertTrue(myAccountPage.isProfileInformationUpdateMessageDisplayed());
+		
+		logStep("Verify the update dob,phone and zipcode");
+		Assert.assertEquals(myAccountPage.getDOByear(), yearDob);
+		Assert.assertEquals(myAccountPage.getPhone3(), phoneNumberLastDigit);
+		Assert.assertEquals(myAccountPage.getZipCodeTextbox(), zipCode);
+		}
 
 }
 
