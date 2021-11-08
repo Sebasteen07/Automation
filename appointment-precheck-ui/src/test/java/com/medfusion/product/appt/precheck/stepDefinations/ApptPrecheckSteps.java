@@ -560,4 +560,62 @@ public class ApptPrecheckSteps extends BaseTest {
 		assertTrue(apptPage.visibilitySendReminderTextColumn());
 		assertFalse(apptPage.sendReminderEmailColumn());
 	}
+	
+	@When("schedule an appointments")
+	public void schedule_an_appointments() throws NullPointerException, IOException {
+		PostAPIRequestMfAppointmentScheduler apptSched = PostAPIRequestMfAppointmentScheduler
+				.getPostAPIRequestMfAppointmentScheduler();
+		MfAppointmentSchedulerPayload payload = MfAppointmentSchedulerPayload.getMfAppointmentSchedulerPayload();
+		HeaderConfig headerConfig = HeaderConfig.getHeaderConfig();
+		AccessToken accessToken = AccessToken.getAccessToken();
+		log("schedule an appointments ");
+		long currentTimestamp = System.currentTimeMillis();
+		long plus20Minutes = currentTimestamp + TimeUnit.MINUTES.toMillis(5);
+		log("Getting patients since timestamp: " + plus20Minutes);
+		Response response = apptSched.aptPutAppointment(
+				propertyData.getProperty("baseurl.mf.appointment.scheduler"),
+				propertyData.getProperty("mf.apt.scheduler.practice.id"),
+				payload.putAppointmentPayload(plus20Minutes, propertyData.getProperty("mf.apt.scheduler.phone"),
+						propertyData.getProperty("mf.apt.scheduler.email")),
+				headerConfig.HeaderwithToken(accessToken.getaccessTokenPost()),
+				propertyData.getProperty("mf.scheduler.patient.id"),
+				propertyData.getProperty("mf.scheduler.appt.id") );
+	}
+	
+	@And("in setting dashboard in notifications Enable Broadcast messaging checkbox")
+	public void in_setting_dashboard_in_notifications_enable_broadcast_messaging_checkbox() throws InterruptedException {
+		mainPage.clickOnSettingTab();
+		notifPage.clickOnNotificationTab();
+		log("user should be on notification page");
+		assertTrue(notifPage.getNotificationTitle().contains("Notifications"));
+		notifPage.enableBroadcastMessagingCheckbox();
+		notifPage.saveNotification();
+	}
+	
+	@Then("verify in appointment dashboard broadcast column for email and text should be visible by default count will be zero")
+	public void verify_in_appointment_dashboard_broadcast_column_for_email_and_text_should_be_visible_by_default_count_will_be_zero() {
+		mainPage.clickOnAppointmentsTab();
+		apptPage.selectPatientWithNewAppt();
+		 assertEquals(apptPage.broadcastEmailTextCount(), "0");
+		 assertEquals(apptPage.broadcastTextsTextCount(), "0");
+	}
+	
+	@Then("Verify on clicking icon for email and text pop up appears and patient name , time , status , message field is displayed")
+	public void verify_on_clicking_icon_for_email_and_text_pop_up_appears_and_patient_name_time_status_message_field_is_displayed() throws InterruptedException {
+		mainPage.clickOnAppointmentsTab();
+		apptPage.clickOnBroadcastEmail();
+		assertEquals(apptPage.broadcastLogsText(), "Broadcast logs");
+		assertEquals(apptPage.getPatientName(), propertyData.getProperty("mf.scheduler.patient.name"));
+		assertEquals(apptPage.getMessageText(), "Message");
+		assertEquals(apptPage.getTimeText(), "Time");
+		assertEquals(apptPage.getStatusText(), "Status");
+		apptPage.closeBroadcastEmailandTextBox();
+		apptPage.clickOnBroadcastText();
+		assertEquals(apptPage.broadcastLogsText(), "Broadcast logs");
+		assertEquals(apptPage.getPatientName(), propertyData.getProperty("mf.scheduler.patient.name"));
+		assertEquals(apptPage.getMessageText(), "Message");
+		assertEquals(apptPage.getTimeText(), "Time");
+		assertEquals(apptPage.getStatusText(), "Status");
+		apptPage.closeBroadcastEmailandTextBox();
+	}
 }

@@ -861,7 +861,7 @@ public class PSSAdminUtils extends BaseTestNGWebDriver{
 		adminPatientMatching.patientMatchingSelection();
 		ManageResource manageResource = pssPracticeConfig.gotoResource();
 		pageRefresh(driver);
-		manageResource.selectResource(testData.getLinkProvider());
+		manageResource.selectResource(testData.getProvider());
 		manageResource.clickLocation();
 		manageResource.offAllLocationToggle();
 		patientFlow.logout();
@@ -1011,6 +1011,31 @@ public class PSSAdminUtils extends BaseTestNGWebDriver{
 		testData.setSlotSize(manageResource.getslotSize());
 		log("Slot Size is  " + testData.getSlotSize());
 		manageResource.logout();
+	}
+	
+	
+	public void acceptForSameDayWithShowProviderOFF(WebDriver driver, AdminUser adminuser, Appointment appointment)
+			throws Exception {
+		PSS2PracticeConfiguration pssPracticeConfig = loginToAdminPortal(driver, adminuser);
+		pssPracticeConfig = pssPracticeConfig.gotoPracticeConfigTab();
+		PatientFlow patientFlow = pssPracticeConfig.gotoPatientFlowTab();
+		patientFlow.turnOffProvider();
+		AdminPatientMatching adminPatientMatching = patientFlow.gotoPatientMatchingTab();
+		adminPatientMatching.patientMatchingSelection();
+		ManageAppointmentType manageAppointmentType = pssPracticeConfig.gotoAppointment();
+		pageRefresh(driver);
+		manageAppointmentType.selectAppointment(appointment.getAppointmenttype());
+		manageAppointmentType.gotoConfiguration();
+
+		manageAppointmentType.notReserve();
+		appointment.setAccepttoggleStatus(manageAppointmentType.acceptForStatus());
+		Log4jUtil.log("Status for AcceptFor Same day is   " + appointment.isAccepttoggleStatus());
+		if (appointment.isAccepttoggleStatus() == true) {
+			manageAppointmentType.clickAcceptSameDay();
+			appointment.setAccepttoggleStatus(manageAppointmentType.acceptForStatus());
+			Log4jUtil.log("Status for AcceptFor Same day is   " + appointment.isAccepttoggleStatus());
+		}
+
 	}
 
 }

@@ -513,6 +513,8 @@ public class JalapenoHomePage extends JalapenoMenu {
 	}
 
 	public void clickonHomeButton() {
+		driver.navigate().refresh();
+		new WebDriverWait(driver, 30).until(ExpectedConditions.elementToBeClickable(homeButton));
 		homeButton.click();
 	}
 

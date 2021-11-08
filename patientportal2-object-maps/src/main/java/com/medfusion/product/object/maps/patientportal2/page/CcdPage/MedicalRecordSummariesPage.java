@@ -156,6 +156,18 @@ public class MedicalRecordSummariesPage extends JalapenoMenu {
 		
 	@FindBy(how = How.XPATH, using = "//*[text()='Create your new account']")
 	private WebElement lblCreateYourNewAccount;
+	
+	@FindBy(how = How.ID, using = "healthRecordRequest")
+	private WebElement requestConsolidatedHealthRecord;
+	
+	@FindBy(how = How.XPATH, using = "//*[contains(text(),'Request complete record.')]/../input")
+	private WebElement chkRequestcompleterecord;
+	
+	@FindBy(how = How.XPATH, using = "//button[@id=\"requestCcdContinueButton\"]")
+	private WebElement btnRequestRecord;
+	
+	@FindBy(how = How.XPATH, using = "//h3[text()='Request received']")
+	private WebElement notificationMessage;
 
 	public MedicalRecordSummariesPage(WebDriver driver) {
 		super(driver);
@@ -459,6 +471,31 @@ public class MedicalRecordSummariesPage extends JalapenoMenu {
 			return false;
 		}
 	}
+	public void clickOnConsolidatedHealthRecordBtn() throws InterruptedException {
+		IHGUtil.waitForElement(driver, 60, requestConsolidatedHealthRecord);
+		JavascriptExecutor jse = (JavascriptExecutor) driver;
+		jse.executeScript("arguments[0].scrollIntoView(true);", requestConsolidatedHealthRecord);
+		requestConsolidatedHealthRecord.click();
+	}
 	
+	public void selectCheckBox() throws InterruptedException {
+		new WebDriverWait(driver, 60).until(ExpectedConditions.elementToBeClickable(chkRequestcompleterecord));
+		chkRequestcompleterecord.click();
+		}
+	
+	public void clickOnRequestRecordButton() throws InterruptedException {
+		new WebDriverWait(driver, 60).until(ExpectedConditions.elementToBeClickable(btnRequestRecord));
+		btnRequestRecord.click();
+		Thread.sleep(9000);
+		}
+	public boolean isRequestRecivedMessageDisplayed() {
+		try {
+			log("Looking for the Request Recived message");
+			new WebDriverWait(driver, 60).until(ExpectedConditions.visibilityOf(notificationMessage));
+			return notificationMessage.isDisplayed();
+		} catch (Exception e) {
+		}
+		return false;
+	}
 
 }

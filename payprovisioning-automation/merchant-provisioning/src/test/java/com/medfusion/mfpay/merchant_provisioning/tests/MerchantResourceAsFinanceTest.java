@@ -6,6 +6,7 @@ import java.io.IOException;
 import com.medfusion.mfpay.merchant_provisioning.helpers.Validations;
 import com.medfusion.mfpay.merchant_provisioning.pojos.Merchant;
 import com.medfusion.mfpay.merchant_provisioning.utils.DBUtils;
+import com.medfusion.mfpay.merchant_provisioning.utils.MPTestData;
 import com.medfusion.mfpay.merchant_provisioning.utils.ProvisioningUtils;
 import io.restassured.path.json.JsonPath;
 import io.restassured.response.Response;
@@ -17,9 +18,15 @@ import com.medfusion.common.utils.PropertyFileLoader;
 import com.medfusion.mfpay.merchant_provisioning.helpers.MerchantInfo;
 import com.medfusion.mfpay.merchant_provisioning.helpers.PaypalDetails;
 
-public class MerchantResourceAsFinance extends BaseRest {
+public class MerchantResourceAsFinanceTest extends BaseRest {
 	protected PropertyFileLoader testData;
 
+	@BeforeTest
+	public void setUp() throws IOException {
+		testData = new PropertyFileLoader();
+		setupFinanceRequestSpecBuilder();
+		setupResponsetSpecBuilder();
+	}
 	// Creates a new element merchant as Finance user.
 	@Test
 	public void testCreateNewElementMerchantAsFinance() throws IOException {
@@ -139,4 +146,50 @@ public class MerchantResourceAsFinance extends BaseRest {
 		validate.verifyMerchantWithDiffAccounts(response.asString());
 		ProvisioningUtils.saveMMID(jsonpath.get("id").toString());
 	}
+
+	@Test(dataProvider = "mmids_for_bank_details", dataProviderClass = MPTestData.class)
+	public void testGetMerchantsBankAccountDetails(String url, String mmid) throws IOException {
+		MerchantInfo merchantinfo = new MerchantInfo();
+		Response response = merchantinfo.getMerchantBankDetails(url, mmid);
+
+		Validations validate = new Validations();
+		validate.verifyMerchantBankAccounts(url, response.asString());
+	}
+	
+	//Edit merchant account details single to multiple & vice versa
+	@Test(dataProvider = "edit_account_details", dataProviderClass = MPTestData.class, enabled = true)
+
+	public void testEditMerchantAccount(String seprateFunding, String feeRoutingNumber, String feeAccountType,
+			String feeAccountNumber, String accountRoutingNumber, String accountType, String accountNumber)
+			throws IOException {
+
+		MerchantInfo merchantinfo = new MerchantInfo();
+		Response response = merchantinfo.editAccountDetails(testData.getProperty("edit.multiple.bank.accounts.mmid"),
+				testData.getProperty("edit.multiple.bank.accounts.accepted.cards"),
+				testData.getProperty("edit.multiple.bank.accounts.account.number"),
+				testData.getProperty("edit.multiple.bank.accounts.account.type"),
+				testData.getProperty("edit.multiple.bank.accounts.checking.deposit"),
+				testData.getProperty("edit.multiple.bank.accounts.fee.account.number"),
+				testData.getProperty("edit.multiple.bank.accounts.fee.account.type"),
+				testData.getProperty("edit.multiple.bank.accounts.fee.routing.number"),
+				testData.getProperty("edit.multiple.bank.accounts.preferred.processor"), seprateFunding,
+				testData.getProperty("edit.multiple.bank.accounts.routing.number"),
+				testData.getProperty("edit.multiple.bank.accounts.merchant.name"),
+				testData.getProperty("edit.multiple.bank.accounts.maxtransactionlimit"));
+
+		JsonPath jsonPath = new JsonPath(response.asString());
+
+		Assert.assertNotNull(jsonPath, "Response was null");
+		Assert.assertNotNull(jsonPath.get("merchantName"), "Response was null");
+		Assert.assertEquals(jsonPath.get("accountDetails.feeAccountDetails.routingNumber"), feeRoutingNumber);
+		Assert.assertEquals(jsonPath.get("accountDetails.feeAccountDetails.accountType"), feeAccountType);
+		Assert.assertEquals(jsonPath.get("accountDetails.feeAccountDetails.accountNumber"), feeAccountNumber);
+		Assert.assertEquals(jsonPath.get("accountDetails.separateFundingAccounts").toString(), seprateFunding);
+
+		Assert.assertEquals(jsonPath.get("accountDetails.routingNumber"), accountRoutingNumber);
+		Assert.assertEquals(jsonPath.get("accountDetails.accountType"), accountType);
+		Assert.assertEquals(jsonPath.get("accountDetails.accountNumber"), accountNumber);
+
+	}
+
 }
