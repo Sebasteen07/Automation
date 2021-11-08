@@ -87,7 +87,7 @@ public class EditMerchantDetailsTests extends ProvisioningBaseTest {
 		logStep("Edit Phone Number");
 		generalMerchantInformationPage.editPhoneNumber(phoneNo);
 
-		Assert.assertTrue(generalMerchantInformationPage.verifyOwnershipTypeIsDisabled());
+		Assert.assertTrue(generalMerchantInformationPage.isOwnershipTypeDisabled());
 		Assert.assertTrue(generalMerchantInformationPage.verifyBusinessType(), "Business Type Name is missing");
 		Assert.assertTrue(generalMerchantInformationPage.verifySICMCCCode(), "SIC/MCC Code is missing");
 

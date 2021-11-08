@@ -176,8 +176,11 @@ public class GeneralMerchantInformationPage extends MerchantDetailsPage {
         return actualBusinessTypes.equals(expectedbusinessType);
     }
 
-    public Boolean verifyOwnershipTypeIsDisabled(){
-        return ownershipType.isDisplayed();
+    public Boolean isOwnershipTypeDisabled(){
+        String isDisabledAttributeValue = ownershipType.getAttribute("data-ng-disabled");
+        if(isDisabledAttributeValue.equalsIgnoreCase("true")){
+            return true;
+        }else return false;
     }
 
     public MerchantDetailsPage clickUpdateGeneralMerchantInfoButton(){
