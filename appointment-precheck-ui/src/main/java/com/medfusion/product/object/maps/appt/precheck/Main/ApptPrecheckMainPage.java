@@ -91,7 +91,7 @@ public class ApptPrecheckMainPage extends BasePageObject {
 	}
 
 	public void clickOnSettingTab() {
-		settingTab.click();
+		jse.executeScript("arguments[0].click();", settingTab);
 		log("Switch to Setting Dashboard");
 		driver.navigate().refresh();
 	}

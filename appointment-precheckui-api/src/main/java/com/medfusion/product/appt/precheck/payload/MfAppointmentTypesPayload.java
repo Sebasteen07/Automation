@@ -13,15 +13,14 @@ public class MfAppointmentTypesPayload {
 		return payload;
 	}
 
-	public String apptTypePayload(String uuid,String practiceId) {
+	public String apptTypePayload(String integrationId,String practiceId) {
 		String aptType=" {\r\n"
-				+ "  \"id\": \""+uuid+"\",\r\n"
+				+ "  \"active\": true,\r\n"
 				+ "  \"appointmentTypeId\": \"16\",\r\n"
 				+ "  \"appointmentTypeName\": \"TestOne Apt Type\",\r\n"
 				+ "  \"categoryId\": \"test\",\r\n"
 				+ "  \"categoryName\": \"Default\",\r\n"
-				+ "	\"active\": true,\r\n"
-				+ "  \"integrationId\": \"9\",\r\n"
+				+ "  \"integrationId\": \""+integrationId+"\",\r\n"
 				+ "  \"practiceId\": \""+practiceId+"\"\r\n"
 				+ "}";
 		return aptType;
@@ -48,6 +47,32 @@ public class MfAppointmentTypesPayload {
 				+ "  \"categoryName\": \"Default\",\r\n"
 				+ "  \"integrationId\": \""+integrationId+"\",\r\n"
 				+ "  \"practiceId\": \""+practiceId+"\"\r\n"
+				+ "}";
+		return updateAptType;
+	}
+	
+	public String updateMorethanOneApptTypePayload(String integrationId,String practiceId) {
+		String updateAptType="{\r\n"
+				+ "  \"appointmentTypes\": [\r\n"
+				+ "    {\r\n"
+				+ "    \"active\": true,\r\n"
+				+ "    \"appointmentTypeId\": \"16\",\r\n"
+				+ "    \"appointmentTypeName\": \"TestOne Apt Type\",\r\n"
+				+ "    \"categoryId\": \"test\",\r\n"
+				+ "    \"categoryName\": \"Default\",\r\n"
+				+ "    \"integrationId\": \"9\",\r\n"
+				+ "    \"practiceId\": \"24333\"\r\n"
+				+ "},\r\n"
+				+ "{\r\n"
+				+ "    \"active\": true,\r\n"
+				+ "    \"appointmentTypeId\": \"18\",\r\n"
+				+ "    \"appointmentTypeName\": \"TestOne Apt Type\",\r\n"
+				+ "    \"categoryId\": \"test\",\r\n"
+				+ "    \"categoryName\": \"Default\",\r\n"
+				+ "    \"integrationId\": \"9\",\r\n"
+				+ "    \"practiceId\": \"24333\"\r\n"
+				+ "}\r\n"
+				+ "  ]\r\n"
 				+ "}";
 		return updateAptType;
 	}

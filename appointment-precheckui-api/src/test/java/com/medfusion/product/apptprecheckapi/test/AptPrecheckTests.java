@@ -899,7 +899,6 @@ public class AptPrecheckTests extends BaseTestNG {
 			apiVerification.verifyAppointmentActionPast(response);
 		}
 		apiVerification.responseTimeValidation(response);
-
 	}
 
 	@Test(enabled = true, groups = { "APItest" }, retryAnalyzer = RetryAnalyzer.class)
@@ -1283,7 +1282,6 @@ public class AptPrecheckTests extends BaseTestNG {
 		apiVerification.verifyCopayfromApiPay(response, propertyData.getProperty("apt.precheck.balance.practice.id"),
 				patientId, propertyData.getProperty("appt.precheck.balance.pay.appt.id"),
 				propertyData.getProperty("apt.precheck.balance.complete.status"));
-		apiVerification.responseTimeValidation(response);
 		apiVerification.responseTimeValidation(response);
 	}
 

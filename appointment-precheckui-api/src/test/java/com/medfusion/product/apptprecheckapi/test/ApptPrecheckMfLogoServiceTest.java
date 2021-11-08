@@ -119,19 +119,19 @@ public class ApptPrecheckMfLogoServiceTest extends BaseTestNG {
 
 	@Test(enabled = true, groups = { "APItest" }, retryAnalyzer = RetryAnalyzer.class)
 	public void testUpdateLogoByIdPut() throws IOException {
-		Response response = postAPIRequest.updateLogoById(propertyData.getProperty("update.logo"),
-				headerConfig.HeaderwithToken(getaccessToken),
+		Response response = postAPIRequest.updateLogoById(propertyData.getProperty("upload.logo"),
+				headerConfig.HeaderWithToken(getaccessToken),
 				propertyData.getProperty("logo.id"));
 		log("Verifying the response");
 		assertEquals(response.getStatusCode(), 200);
 		apiVerification.responseTimeValidation(response);
 		apiVerification.verifyUpdateLogo(response, propertyData.getProperty("logo.id"),
-				propertyData.getProperty("mf.logo.service.practice.id"));
+				propertyData.getProperty("mf.logo.service.practice.id"),propertyData.getProperty("mf.logo.service.practice.name"));
 	}
 
 	@Test(enabled = true, groups = { "APItest" }, retryAnalyzer = RetryAnalyzer.class)
 	public void testUpdateLogoByIdPutWithoutLogoId() throws IOException {
-		Response response = postAPIRequest.updateLogoByIdWithoutLogoId(propertyData.getProperty("update.logo"),
+		Response response = postAPIRequest.updateLogoByIdWithoutLogoId(propertyData.getProperty("upload.logo"),
 				headerConfig.HeaderwithToken(getaccessToken));
 		log("Verifying the response");
 		assertEquals(response.getStatusCode(), 404);
@@ -140,13 +140,13 @@ public class ApptPrecheckMfLogoServiceTest extends BaseTestNG {
 
 	@Test(enabled = true, groups = { "APItest" }, retryAnalyzer = RetryAnalyzer.class)
 	public void testUpdateLogoByPracticeIdPut() throws IOException {
-		Response response = postAPIRequest.updateLogoByPracticeId(propertyData.getProperty("update.logo"),
-				headerConfig.HeaderwithToken(getaccessToken), propertyData.getProperty("mf.logo.service.practice.id"));
+		Response response = postAPIRequest.updateLogoByPracticeId(propertyData.getProperty("upload.logo"),
+				headerConfig.HeaderWithToken(getaccessToken), propertyData.getProperty("mf.logo.service.practice.id"));
 		log("Verifying the response");
 		assertEquals(response.getStatusCode(), 200);
 		apiVerification.responseTimeValidation(response);
 		apiVerification.verifyUpdateLogo(response, propertyData.getProperty("logo.id"),
-				propertyData.getProperty("mf.logo.service.practice.id"));
+				propertyData.getProperty("mf.logo.service.practice.id"),propertyData.getProperty("mf.logo.service.practice.name"));
 	}
 
 	@Test(enabled = true, groups = { "APItest" }, retryAnalyzer = RetryAnalyzer.class)
@@ -159,19 +159,28 @@ public class ApptPrecheckMfLogoServiceTest extends BaseTestNG {
 	}
 
 	@Test(enabled = true, groups = { "APItest" }, retryAnalyzer = RetryAnalyzer.class)
-	public void testUploadLogoPost() throws IOException {
-		Response response = postAPIRequest.uploadLogo(propertyData.getProperty("update.logo"),
-				headerConfig.HeaderwithToken(getaccessToken), propertyData.getProperty("mf.logo.service.practice.id"));
+	public void testUploadLogoByPracticeIdPost() throws IOException {
+		Response response = postAPIRequest.uploadLogo(propertyData.getProperty("upload.logo"),
+				headerConfig.HeaderWithToken(getaccessToken), propertyData.getProperty("mf.logo.service.practice.id"));
+		
 		log("Verifying the response");
-		assertEquals(response.getStatusCode(), 200);
+		if (response.getStatusCode() == 200) {
+			log("Post an appointments action");
+			assertEquals(response.getStatusCode(), 200);
+			apiVerification.verifyUpdateLogo(response, propertyData.getProperty("logo.id"),
+					propertyData.getProperty("mf.logo.service.practice.id"),propertyData.getProperty("mf.logo.service.practice.name"));
+		}
+		if (response.getStatusCode() == 400) {
+			log("An appointment action not allowed");
+			assertEquals(response.getStatusCode(), 400);
+			apiVerification.verifyIfLogoAlreadyExists(response);
+		}
 		apiVerification.responseTimeValidation(response);
-		apiVerification.verifyUpdateLogo(response, propertyData.getProperty("logo.id"),
-				propertyData.getProperty("mf.logo.service.practice.id"));
 	}
 
 	@Test(enabled = true, groups = { "APItest" }, retryAnalyzer = RetryAnalyzer.class)
 	public void testUploadLogoPostWithoutPracticeId() throws IOException {
-		Response response = postAPIRequest.uploadLogoWithoutPracticeId(propertyData.getProperty("update.logo"),
+		Response response = postAPIRequest.uploadLogoWithoutPracticeId(propertyData.getProperty("upload.logo"),
 				headerConfig.HeaderwithToken(getaccessToken));
 		log("Verifying the response");
 		assertEquals(response.getStatusCode(), 405);
