@@ -3,10 +3,10 @@ package com.medfusion.product.pss2patientapi.payload;
 
 public class PayloadAdapterModulator {
 	
-	public String openTokenPayload(String practiceid) {
+	public String openTokenPayload(String practiceid,String authUser) {
 		String openToken = "{\r\n"
 				+ "    \"practiceId\": \""+practiceid+"\",\r\n"
-				+ "    \"authUserId\": \"mf:company:pssngpga16\"\r\n"
+				+ "    \"authUserId\": \""+authUser+"\"\r\n"
 				+ "}";
 		return openToken;
 	}
@@ -976,6 +976,14 @@ public class PayloadAdapterModulator {
 		return resourceConfigRule;
 	}
 	
+	public String resourceConfigRulePostPayloadTL() {
+		String resourceConfigRule = "{\r\n"
+				+ "    \"name\": \"TL\",\r\n"
+				+ "    \"rule\": \"T,L\"\r\n"
+				+ "}";
+		return resourceConfigRule;
+	}
+	
 	
 	public String resourceConfigRulePutPayload() {
 		String resourceConfigRule = "{\r\n"
@@ -984,6 +992,16 @@ public class PayloadAdapterModulator {
 				+ "}";
 		return resourceConfigRule;
 	}
+	
+
+	public String resourceConfigRulePutPayloadLT() {
+		String resourceConfigRule = "{\r\n"
+				+ "    \"name\": \"LT\",\r\n"
+				+ "    \"rule\": \"L,T\"\r\n"
+				+ "}";
+		return resourceConfigRule;
+	}
+	
 	public String genderMapPayload() {
 		String genderMap = "[\r\n"
 				+ "    {\r\n"

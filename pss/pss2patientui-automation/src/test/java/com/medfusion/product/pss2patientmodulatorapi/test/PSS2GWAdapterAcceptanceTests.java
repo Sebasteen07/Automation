@@ -201,7 +201,7 @@ public class PSS2GWAdapterAcceptanceTests extends BaseTestNG {
 		validateGW.verifytestScheduleAppPOST(scheduleApptResponse);
 
 	}
-	
+			
 	@Test(enabled = true, groups = { "APItest" }, retryAnalyzer = RetryAnalyzer.class)
 	public void testScheduleAppWithoutPidPOST() throws IOException, InterruptedException {
 		Response scheduleApptResponse = postAPIRequestgw.scheduleappointment(
