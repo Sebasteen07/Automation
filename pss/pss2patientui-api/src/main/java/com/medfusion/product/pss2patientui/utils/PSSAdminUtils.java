@@ -749,8 +749,8 @@ public class PSSAdminUtils extends BaseTestNGWebDriver{
 
 		setRulesNoSpecialitySet1(patientFlow);
 
-		adminUser.setRule(patientFlow.getRule());
-		log("rule= " + patientFlow.getRule());
+//		adminUser.setRule(patientFlow.getRule());
+//		log("rule= " + patientFlow.getRule());
 
 		appointment.setInsuranceVisible(patientFlow.insuracetogglestatus());
 		log("Insurance is Enabled= " + patientFlow.insuracetogglestatus());
