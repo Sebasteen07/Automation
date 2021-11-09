@@ -397,5 +397,46 @@ public class PatientActivationPage extends BasePageObject {
 		}
 		clickDone();
 	}
+	
+	public void setInitialDetailsFields(String firstName, String lastName, String gender, String patientID, String homePhone, String email, String month,
+			String day, String year, String address1, String address2, String city, String state, String zipCode) {
+		IHGUtil.PrintMethodName();
+
+		log("Patient Name is " + firstName + " " + lastName);
+		this.firstName.sendKeys(firstName);
+		this.lastName.sendKeys(lastName);
+		if (gender.equals("M"))
+			this.male.click();
+		else
+			this.female.click();
+
+		log("PatientID " + patientID);
+		this.patientId.sendKeys(patientID);
+		this.Home_No1.sendKeys(homePhone.substring(0, 3));
+		this.Home_No2.sendKeys(homePhone.substring(3, 6));
+		this.Home_No3.sendKeys(homePhone.substring(6, 10));
+
+		log("Patient email is " + email);
+		this.email.sendKeys(email);
+		this.confirmEmail.sendKeys(email);
+
+		log("Patient DOB is " + month + "/" + day + "/" + year);
+		Select dobMonth = new Select(driver.findElement(By.name("dob_m")));
+		dobMonth.selectByValue(month);
+		Select dobDay = new Select(driver.findElement(By.name("dob_d")));
+		dobDay.selectByVisibleText(day);
+		Select dobYear = new Select(driver.findElement(By.name("dob_y")));
+		dobYear.selectByVisibleText(year);
+
+		log("Patient ZIP is " + zipCode);
+		this.AddLine1.sendKeys(address1);
+		this.AddLine2.sendKeys(address2);
+		this.City.sendKeys(city);
+		Select stateSelect = new Select(State);
+		stateSelect.selectByVisibleText(state);
+		this.zip.sendKeys(zipCode);
+
+		clickRegPatient();
+	}
 
 }
