@@ -5,9 +5,15 @@ import org.testng.annotations.BeforeClass;
 import org.testng.annotations.Test;
 import com.medfusion.common.utils.Mailinator;
 import com.medfusion.common.utils.PropertyFileLoader;
+import com.medfusion.pojos.Patient;
 import com.intuit.ifs.csscat.core.BaseTestNGWebDriver;
 import com.intuit.ifs.csscat.core.RetryAnalyzer;
 import com.intuit.ihg.common.utils.monitoring.PerformanceReporter;
+import com.intuit.ihg.product.object.maps.sitegen.page.SiteGenLoginPage;
+import com.intuit.ihg.product.object.maps.sitegen.page.home.SiteGenHomePage;
+import com.intuit.ihg.product.object.maps.sitegen.page.SiteGenLoginPage;
+import com.intuit.ihg.product.object.maps.sitegen.page.home.SiteGenHomePage;
+import com.intuit.ihg.product.object.maps.sitegen.page.home.SiteGenPracticeHomePage;
 import com.medfusion.common.utils.IHGUtil;
 import com.medfusion.product.object.maps.practice.page.PracticeHomePage;
 import com.medfusion.product.object.maps.practice.page.PracticeLoginPage;
@@ -23,8 +29,12 @@ import com.medfusion.product.practice.api.utils.ReadFilePath;
 import com.medfusion.product.practice.tests.VirtualCardSwiperTest;
 import com.medfusion.qa.mailinator.Email;
 import com.medfusion.qa.mailinator.Mailer;
+import com.medfusion.product.object.maps.patientportal2.page.JalapenoLoginPage;
+import com.medfusion.product.object.maps.patientportal2.page.AccountPage.JalapenoAccountPage;
 import com.medfusion.product.object.maps.patientportal2.page.ForgotPasswordPage.JalapenoForgotPasswordPage4;
 import com.medfusion.product.object.maps.patientportal2.page.HomePage.JalapenoHomePage;
+import com.medfusion.product.object.maps.patientportal2.page.MyAccountPage.JalapenoMyAccountPreferencesPage;
+import com.medfusion.product.object.maps.patientportal2.page.MyAccountPage.JalapenoMyAccountProfilePage;
 
 import static org.testng.Assert.*;
 
@@ -617,5 +627,67 @@ public class PracticePortalAcceptanceTests extends BaseTestNGWebDriver {
 		}
 		return originUrl;
 	}
+	
+	@Test(enabled = true, groups = { "AcceptanceTests" }, retryAnalyzer = RetryAnalyzer.class)
+	public void testChangePatientDetails() throws Exception {
+		logStep("Login to Practice Portal");
+		PracticeLoginPage practiceLogin = new PracticeLoginPage(driver, testData.getProperty("practice.url1"));
+		PracticeHomePage pPracticeHomePage = practiceLogin.login(testData.getProperty("doctor.login1"),
+				testData.getProperty("doctor.password1"));
+
+		logStep("Click on Patient Search Link");
+		PatientSearchPage pPatientSearchPage = pPracticeHomePage.clickPatientSearchLink();
+		
+		logStep("Set Patient Search Fields");
+		PatientDashboardPage pPatientDashboardPage = pPatientSearchPage.modifiedPatientSearch(testData.getProperty("change.email.first.name1"),
+				testData.getProperty("change.email.last.name1"));
+
+
+		logStep("Click Edit email");
+		pPatientSearchPage = pPatientDashboardPage.clickEditEmail();
+
+		logStep("Update email");
+		pPatientDashboardPage = pPatientSearchPage.changeEmail(testData.getProperty("change.email.new.email"));
+		assertEquals(true, pPatientDashboardPage.getFeedback().contains("Patient Email Address / User Id Was Updated"));
+		
+		logStep("Click Edit name");
+		pPatientSearchPage = pPatientDashboardPage.clickEditName();
+		String patName = pPatientSearchPage.changeName(testData.getProperty("change.email.first.name1"),
+				testData.getProperty("change.email.last.name1"));
+		
+		
+		logStep("Click Edit gender");
+		pPatientSearchPage = pPatientDashboardPage.clickEditGender();
+		String g = pPatientSearchPage.changeGender();
+		
+		logStep("Click Edit zip");
+		pPatientSearchPage = pPatientDashboardPage.clickEditZip();
+		String zip = pPatientSearchPage.changeZip();
+		
+		logStep("Load login page");
+		JalapenoLoginPage loginPage = new JalapenoLoginPage(driver, testData.getProperty("Patient.url"));
+
+		logStep("Fill in credentials and log in");
+		JalapenoHomePage jalapenoHomePage = loginPage.login(testData.getUserId(), testData.getPassword());
+        
+		logStep("Go to account page");
+		JalapenoAccountPage accountPage = jalapenoHomePage.clickOnAccount();
+		
+		logStep("Go to MyAccount page");
+		JalapenoMyAccountProfilePage myAccountPage = jalapenoHomePage.goToAccountPage();
+
+		logStep("Verify Patient Details");
+		assertTrue(myAccountPage.checkZipCode(zip));
+		assertTrue(myAccountPage.checkPatientName(patName));
+		Thread.sleep(2000);
+		if (g.equals("Male")) {
+			assertTrue(myAccountPage.checkGender(Patient.GenderExtended.MALE));
+		}
+		else {
+			assertTrue(myAccountPage.checkGender(Patient.GenderExtended.FEMALE));
+		}
+        
+	}
+
 	}
 	
