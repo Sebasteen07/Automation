@@ -188,11 +188,143 @@ public class AppointmentsPage extends BasePageObject {
 	private WebElement messageText;
 
 	@FindBy(how = How.XPATH, using = "//*[@class='rt-resizable-header-content']/b[text()='Status']")
-	private WebElement statusText; 
+	private WebElement statusText;
 
 	@FindBy(how = How.XPATH, using = "//*[@id=\"closeReminderStatusesModal\"]")
 	private WebElement closeBroadcastEmailBox;
-	
+
+	@FindBy(how = How.XPATH, using = "//*[@id=\"page-content-container\"]/div/div/div/div/div[3]/div[1]/div/div[16]/div")
+	private WebElement afterEmailEnableBroadcastTextColoumn;
+
+	@FindBy(how = How.XPATH, using = "//*[@id=\"page-content-container\"]/div/div/div/div/div[3]/div[1]/div/div[17]/div/span[1]")
+	private WebElement afterEmailEnableBroadcastText;
+
+	@FindBy(how = How.XPATH, using = "//*[@id=\"page-content-container\"]/div/div/div/div/div[2]/div/div[18]/div")
+	private WebElement braodcastEmailColoumn;
+
+	@FindBy(how = How.XPATH, using = "//*[@id=\"page-content-container\"]/div/div/div/div/div[2]/div/div[19]/div")
+	private WebElement broadcastTextColumn;
+
+	@FindBy(how = How.XPATH, using = "//*[@id=\"page-content-container\"]/div/div[2]/div/div/div[3]/div[1]/div[1]/div[17]/div/span[2]")
+	private WebElement broadcastTextCount;
+
+	@FindBy(how = How.XPATH, using = "//*[@id=\"page-content-container\"]/div/div/div/div/div[2]/div/div[17]/div")
+	private WebElement emailColoumnAfterTextDisable;
+
+	@FindBy(how = How.CSS, using = "#remove")
+	private WebElement removeButton;
+
+	@FindBy(how = How.XPATH, using = "//*[@class='mf-modal-remove-body']/p[1]")
+	private WebElement removeButtonMessage;
+
+	@FindBy(how = How.XPATH, using = "//*[@class='mf-modal-remove-body']/p[2]")
+	private WebElement removeButtonQuestion;
+
+	@FindBy(how = How.XPATH, using = "//*[text()='Cancel']")
+	private WebElement cancelButtonFromRemove;
+
+	@FindBy(how = How.XPATH, using = "//*[text()='Confirm']")
+	private WebElement confirmButtonFromRemove;
+
+	@FindBy(how = How.CSS, using = "#sendReminder")
+	private WebElement sendReminderButton;
+
+	@FindBy(how = How.CSS, using = "#broadcastMessage")
+	private WebElement broadcastMessageButton;
+
+	@FindBy(how = How.CSS, using = "#create")
+	private WebElement createButton;
+
+	@FindBy(how = How.XPATH, using = "//*[@id=\"closeCreateanewappointment\"]//following-sibling::h2")
+	private WebElement createNewAppointment;
+
+	@FindBy(how = How.XPATH, using = "//*[@name=\"locationName\"]")
+	private WebElement locationName;
+
+	@FindBy(how = How.XPATH, using = "//*[@name=\"appointmentType\"]")
+	private WebElement appointmentType;
+
+	@FindBy(how = How.XPATH, using = "//*[@name=\"pmExternalId\"]")
+	private WebElement patientId;
+
+	@FindBy(how = How.XPATH, using = "//*[@name=\"firstName\"]")
+	private WebElement firstName;
+
+	@FindBy(how = How.XPATH, using = "//*[@name=\"middleName\"]")
+	private WebElement middleName;
+
+	@FindBy(how = How.XPATH, using = "//*[@name=\"lastName\"]")
+	private WebElement lastName;
+
+	@FindBy(how = How.XPATH, using = "//*[@name=\"dob\"]")
+	private WebElement dateOfBirth;
+
+	@FindBy(how = How.XPATH, using = "//*[@name=\"phone\"]")
+	private WebElement phone;
+
+	@FindBy(how = How.XPATH, using = "//*[@name=\"email\"]")
+	private WebElement email;
+
+	@FindBy(how = How.XPATH, using = "//*[@name=\"address\"]")
+	private WebElement addressline1;
+
+	@FindBy(how = How.XPATH, using = "//*[@name=\"address2\"]")
+	private WebElement addressline2;
+
+	@FindBy(how = How.XPATH, using = "//*[@name=\"city\"]")
+	private WebElement patientCity;
+
+	@FindBy(how = How.XPATH, using = "//*[@class=\"mf-select-dropdown\"]")
+	private WebElement patientStateDropdown;
+
+	@FindBy(how = How.XPATH, using = "//*[@name=\"zip\"]")
+	private WebElement patientZip;
+
+	@FindBy(how = How.XPATH, using = "//*[@name=\"providerName\"]")
+	private WebElement providerName;
+
+	@FindBy(how = How.XPATH, using = "//*[@name=\"copay\"]")
+	private WebElement copay;
+
+	@FindBy(how = How.XPATH, using = "//*[@name=\"balance\"]")
+	private WebElement balance;
+
+	@FindBy(how = How.XPATH, using = "//*[@name=\"primaryInsuranceName\"]")
+	private WebElement primaryInsuranceName;
+
+	@FindBy(how = How.XPATH, using = "//*[@name=\"primaryInsuranceGroupNumber\"]")
+	private WebElement primaryInsuranceGroupNumber;
+
+	@FindBy(how = How.XPATH, using = "//*[@name=\"primaryInsuranceMemberId\"]")
+	private WebElement primaryInsuranceMemberId;
+
+	@FindBy(how = How.XPATH, using = "//*[text()=\"Create appointment\"]")
+	private WebElement createAppointmentButton;
+
+	@FindBy(how = How.XPATH, using = "//*[@class=\"rt-td\"][1]")
+	private WebElement selectCreatedPatient;
+
+	@FindBy(how = How.XPATH, using = "//*[@class=\"rt-td\"]//following-sibling::div[3][@class='rt-td patient-name-cell'][1]")
+	private WebElement selectApptPrecheckPatient;
+
+	@FindBy(how = How.XPATH, using = "//*[@id=\"app\"]/div/div[3]/div[2]/div/div[1]/div/div[1]/h2")
+	private WebElement precheckApptname;
+
+	@FindBy(how = How.CSS, using = "div.insurance-name-container > div.name-bold")
+	private WebElement insuranceName;
+
+	@FindBy(how = How.XPATH, using = "//*[@id=\"Name\"]/div[2]/div/div/p[1]")
+	private WebElement precheckPatientName;
+
+	@FindBy(how = How.XPATH, using = "//*[@id=\"Email\"]/div[2]/div/div/p[1]")
+	private WebElement precheckPatientEmail;
+
+	@FindBy(how = How.XPATH, using = "//*[@id=\"ZipCode\"]/div[2]/div/div/p[1]")
+	private WebElement precheckPatientZipcode;
+
+	@FindBy(how = How.XPATH, using = "//*[text()='Close']")
+	private WebElement closeApptDetail;
+
 	public AppointmentsPage(WebDriver driver) {
 		super(driver);
 		PageFactory.initElements(driver, this);
@@ -230,9 +362,8 @@ public class AppointmentsPage extends BasePageObject {
 		WebElement date = driver.findElement(By.xpath(
 				"//*[@id=\"page-content-container\"]/div/header/div[2]/div[1]/div[2]/div/div[2]/div[2]//div[text()="
 						+ "'" + dd + "'" + "]"));
-		date.click();
+		jse.executeScript("arguments[0].click();", date);
 		log("Date : " + dd);
-
 	}
 
 	public String getPracticeName() {
@@ -255,6 +386,7 @@ public class AppointmentsPage extends BasePageObject {
 	public void clickOnRefreshTab() throws InterruptedException {
 		IHGUtil.waitForElement(driver, 10, refreshTab);
 		jse.executeScript("arguments[0].click();", refreshTab);
+		Thread.sleep(10000);
 	}
 
 	public void enterProviderName(String providerName) throws Exception {
@@ -344,7 +476,8 @@ public class AppointmentsPage extends BasePageObject {
 	}
 
 	public void clickOnActions() {
-		actionDropdown.click();
+		IHGUtil.waitForElement(driver, 5, actionDropdown);
+		jse.executeScript("arguments[0].click();", actionDropdown);
 	}
 
 	public boolean broadcastMessage() {
@@ -513,7 +646,7 @@ public class AppointmentsPage extends BasePageObject {
 	}
 
 	public String getPageNo() throws InterruptedException {
-		jse.executeScript("arguments[0].scrollIntoView(true);", jumpToNextPage);
+		jse.executeScript("arguments[0].scrollIntoView(true);", jumpToPage);
 		Thread.sleep(500);
 		String pageNo = jumpToPage.getAttribute("value");
 		return pageNo;
@@ -661,8 +794,6 @@ public class AppointmentsPage extends BasePageObject {
 		log("Switch on Broadcast email screen");
 		Thread.sleep(5000);
 	}
-	
-	
 
 	public void clickOnBroadcastText() throws InterruptedException {
 		IHGUtil.waitForElement(driver, 10, broadcastText);
@@ -695,8 +826,283 @@ public class AppointmentsPage extends BasePageObject {
 		IHGUtil.waitForElement(driver, 10, statusText);
 		return statusText.getText();
 	}
+
 	public void closeBroadcastEmailandTextBox() {
 		IHGUtil.waitForElement(driver, 10, statusText);
 		closeBroadcastEmailBox.click();
 	}
+
+	public boolean visibilityBroadcastTextColumnAfterEmailEnable() {
+		try {
+			IHGUtil.waitForElement(driver, 5, afterEmailEnableBroadcastText);
+			afterEmailEnableBroadcastText.isDisplayed();
+			log("Broadcast text coloumn is displayed");
+			return true;
+		} catch (NoSuchElementException e) {
+			log("Broadcast text coloumn is not displayed");
+			return false;
+		}
+	}
+
+	public void clickOnBroadcastTextAfterEmailEnable() throws InterruptedException {
+		IHGUtil.waitForElement(driver, 10, afterEmailEnableBroadcastText);
+		afterEmailEnableBroadcastText.click();
+		log("Switch on Broadcast text screen");
+		Thread.sleep(5000);
+	}
+
+	public boolean visibilityBroadcasrEmailColoumn() {
+		try {
+			braodcastEmailColoumn.isDisplayed();
+			log("Broadcast Email coloumn is displayed");
+			return true;
+		} catch (NoSuchElementException e) {
+			log("Broadcast Email coloumn is not displayed");
+			return false;
+		}
+	}
+
+	public void selectPatient(String patientId, String practiceId) {
+		driver.navigate().refresh();
+		WebElement selectPatient = driver
+				.findElement(By.xpath("//*[@id='select-" + patientId + "-" + practiceId + "'" + "]"));
+		selectPatient.click();
+	}
+
+	public boolean visibilityBroadcastTextColumnAfterTextDisable() {
+		try {
+			IHGUtil.waitForElement(driver, 5, broadcastTextColumn);
+			broadcastTextColumn.isDisplayed();
+			log("Broadcast text coloumn is displayed");
+			return true;
+		} catch (NoSuchElementException e) {
+			log("Broadcast text coloumn is not displayed");
+			return false;
+		}
+	}
+
+	public boolean visibilityBroadcastTextColumn() {
+		try {
+			IHGUtil.waitForElement(driver, 5, broadcastTextColumn);
+			broadcastTextColumn.isDisplayed();
+			log("Broadcast text coloumn is displayed");
+			return true;
+		} catch (NoSuchElementException e) {
+			log("Broadcast text coloumn is not displayed");
+			return false;
+		}
+	}
+
+	public String getBroadcastTextsCount() {
+		IHGUtil.waitForElement(driver, 10, broadcastTextCount);
+		log("Get broadcast text count");
+		return broadcastTextCount.getText();
+	}
+
+	public boolean visibilityBroadcasrEmailColoumnAfterTextDisable() {
+		try {
+			emailColoumnAfterTextDisable.isDisplayed();
+			log("Broadcast Email coloumn is displayed");
+			return true;
+		} catch (NoSuchElementException e) {
+			log("Broadcast Email coloumn is not displayed");
+			return false;
+		}
+	}
+
+	public void selectRemoveButton() {
+		IHGUtil.waitForElement(driver, 10, removeButton);
+		removeButton.click();
+	}
+
+	public void clickOnRemoveButton() {
+		IHGUtil.waitForElement(driver, 10, removeButton);
+		removeButton.click();
+	}
+
+	public String removeButtonMessage() {
+		IHGUtil.waitForElement(driver, 10, removeButtonMessage);
+		return removeButtonMessage.getText();
+	}
+
+	public String removeButtonQues() {
+		IHGUtil.waitForElement(driver, 10, removeButtonQuestion);
+		return removeButtonQuestion.getText();
+	}
+
+	public void clickOnCancel() {
+		IHGUtil.waitForElement(driver, 10, cancelButtonFromRemove);
+		cancelButtonFromRemove.click();
+	}
+
+	public void clickOnConfirm() throws InterruptedException {
+		IHGUtil.waitForElement(driver, 10, cancelButtonFromRemove);
+		confirmButtonFromRemove.click();
+		Thread.sleep(10000);
+	}
+
+	public String broadcastMessageStatus() {
+		IHGUtil.waitForElement(driver, 10, broadcastMessageStatus);
+		return broadcastMessageStatus.getText();
+	}
+
+	public boolean visibilityOfDeletedPatient(String patientId, String practiceId) {
+		try {
+			WebElement selectPatient = driver
+					.findElement(By.xpath("//*[@id='select-" + patientId + "-" + practiceId + "'" + "]"));
+			selectPatient.isDisplayed();
+			log("Patient is displayed");
+			return true;
+		} catch (NoSuchElementException e) {
+			log("Patient is not displayed");
+			return false;
+		}
+	}
+
+	public boolean removeButton() {
+		IHGUtil.waitForElement(driver, 10, removeButton);
+		if (removeButton.isEnabled()) {
+			System.out.print("Remove button is enabled. ");
+			return true;
+		} else {
+			System.out.print("Remove button is not disabled.");
+			return false;
+		}
+	}
+
+	public boolean sendReminderButton() {
+		IHGUtil.waitForElement(driver, 10, sendReminderButton);
+		if (sendReminderButton.isEnabled()) {
+			System.out.print("Send Reminder button is enabled. ");
+			return true;
+		} else {
+			System.out.print("Send Reminder button is not disabled.");
+			return false;
+		}
+	}
+
+	public boolean broadcastMessageButton() {
+		IHGUtil.waitForElement(driver, 10, broadcastMessageButton);
+		if (broadcastMessageButton.isEnabled()) {
+			System.out.print("Broadcast Message button is enabled.");
+			return true;
+		} else {
+			System.out.print("Broadcast Message button is not disabled.");
+			return false;
+		}
+	}
+
+	public boolean createButton() {
+		IHGUtil.waitForElement(driver, 10, createButton);
+		if (createButton.isEnabled()) {
+			System.out.print("Create button is enabled.");
+			return true;
+		} else {
+			System.out.print("Create button is not disabled.");
+			return false;
+		}
+	}
+
+	public void clickOnPatientFilter() {
+		patientIdFilter.click();
+	}
+
+	public void scrollUp() {
+		jse.executeScript("arguments[0].scrollIntoView(true);", appointmentsTab);
+	}
+
+	public boolean visibilityOfRemoveButton() {
+		IHGUtil.waitForElement(driver, 10, removeButton);
+		if (removeButton.isDisplayed()) {
+			System.out.print("Remove button is displayed.");
+			return true;
+		} else {
+			System.out.print("Remove button is not displayed.");
+			return false;
+		}
+	}
+
+	public boolean visibilityOfCreateButton() {
+		IHGUtil.waitForElement(driver, 10, createButton);
+		if (createButton.isDisplayed()) {
+			System.out.print("Create button is displayed.");
+			return true;
+		} else {
+			System.out.print("Create button is not displayed.");
+			return false;
+		}
+	}
+
+	public void clickOnCreate() {
+		jse.executeScript("arguments[0].click();", createButton);
+	}
+
+	public String createNewPatientText() {
+		return createNewAppointment.getText();
+	}
+
+	public void createNewPatient(String lName, String apptType, String pId, String fName, String mName, String lstName,
+			String dob, String phoneNo, String emailId, String address1, String city, String state, String zip,
+			String pName, String copayAmount, String balanceAmount, String primaryInsName, String primaryInsGroupNo,
+			String primaryInsMemberId) throws InterruptedException {
+		log("Add patient details");
+		locationName.sendKeys(lName);
+		appointmentType.sendKeys(apptType);
+		patientId.sendKeys(pId);
+		firstName.sendKeys(fName);
+		middleName.sendKeys(mName);
+		lastName.sendKeys(lstName);
+		dateOfBirth.sendKeys(dob);
+		phone.click();
+		phone.sendKeys(phoneNo);
+		email.sendKeys(emailId);
+		addressline1.sendKeys(address1);
+		patientCity.sendKeys(city);
+		patientStateDropdown.click();
+		Select select = new Select(patientStateDropdown);
+		select.selectByVisibleText(state);
+		patientZip.sendKeys(zip);
+		providerName.sendKeys(pName);
+		copay.sendKeys(copayAmount);
+		balance.sendKeys(balanceAmount);
+		primaryInsuranceName.sendKeys(primaryInsName);
+		primaryInsuranceGroupNumber.sendKeys(primaryInsGroupNo);
+		primaryInsuranceMemberId.sendKeys(primaryInsMemberId);
+		createAppointmentButton.click();
+		Thread.sleep(10000);
+	}
+
+	public void selectCreatedPatient() {
+		selectCreatedPatient.click();
+	}
+
+	public void selectApptPrecheckPatient() throws InterruptedException {
+		selectApptPrecheckPatient.click();
+		Thread.sleep(5000);
+	}
+
+	public String insuranceName() {
+		return insuranceName.getText();
+	}
+
+	public String precheckPatientName() {
+		return precheckPatientName.getText();
+	}
+
+	public String precheckPatientEmail() {
+		return precheckPatientEmail.getText();
+	}
+
+	public String precheckPatientZipcode() {
+		return precheckPatientZipcode.getText();
+	}
+
+	public void closeApptDetail() {
+		closeApptDetail.click();
+	}
+	public void filterPatientId(String id) throws InterruptedException {
+		patientIdFilter.sendKeys(id);
+		Thread.sleep(5000);
+	}
+
 }

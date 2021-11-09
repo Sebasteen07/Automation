@@ -164,5 +164,10 @@ public class ManageAppointmentType extends PSS2MenuPage {
 		saveConfig.click();
 
 	}
-
+	public void reserveForSameDay() {
+		Select objSelect = new Select(reservefor);
+		objSelect.selectByVisibleText("Same Day");
+		reservefor.click();
+		saveConfig.click();
+	}
 }

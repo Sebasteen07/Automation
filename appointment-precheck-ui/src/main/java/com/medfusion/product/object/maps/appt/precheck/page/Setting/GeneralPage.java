@@ -89,4 +89,34 @@ public class GeneralPage extends BaseTest {
 			log("Select Notification checkbox");
 		}
 	}
+	
+	public void enableTextCheckbox() {
+		driver.navigate().refresh();
+		IHGUtil.waitForElement(driver, 10, textCheckbox);
+		boolean selected = textCheckbox.isSelected();
+		if (selected) {
+			log("Text checkbox is already enable");
+		}else if(!selected){
+			textCheckbox.click();
+			log("Enable Text checkbox");
+		}
+	}
+	public void enableEmailCheckbox() {
+		driver.navigate().refresh();
+		IHGUtil.waitForElement(driver, 10, emailCheckbox);
+		boolean selected = emailCheckbox.isSelected();
+		if (selected) {
+			log("Email checkbox is already enable");
+		}else if(!selected){
+			emailCheckbox.click();
+			log("Enable Email checkbox");
+		}
+	}
+	
+	public void clickOnTextCheckbox() {
+		driver.navigate().refresh();
+		IHGUtil.waitForElement(driver, 10, textCheckbox);
+			textCheckbox.click();
+			log("Disable text checkbox");
+	}
 }

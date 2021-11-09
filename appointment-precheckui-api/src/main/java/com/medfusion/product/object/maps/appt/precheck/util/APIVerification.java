@@ -1053,10 +1053,11 @@ public class APIVerification extends BaseTestNGWebDriver {
 		assertEquals(jsonPath.get("message"), "No logo was found with practiceId=info");
 	}
 
-	public void verifyUpdateLogo(Response response, String Id, String practiceId) throws IOException {
+	public void verifyUpdateLogo(Response response, String Id, String practiceId,String name) throws IOException {
 		JsonPath jsonPath = new JsonPath(response.asString());
 		assertEquals(jsonPath.get("id"), Id, "Id  was incorrect");
 		assertEquals(jsonPath.get("practiceId"), practiceId, "Practice Id  was incorrect");
+		assertEquals(jsonPath.get("name"), name, "Practice Id  was incorrect");
 	}
 
 	public void verifyDefaultConfirmationSetting(Response response, String deliveryMtd, String apptMethod,
@@ -1585,4 +1586,35 @@ public class APIVerification extends BaseTestNGWebDriver {
 		assertEquals(js.getString("fail"), "0", "Fail  was incorrect");
 	}
 	
+	public void verifyIfLogoAlreadyExists(Response response)  {
+		JsonPath jsonPath = new JsonPath(response.asString());
+		assertEquals(jsonPath.get("message"), "Logo with practiceId=24333 already exists.");
+	}
+	
+	public void verifyGetAppt(Response response, String practiceId, String pmPatientId, String pmAppointmentId)
+			throws IOException {
+		JsonPath js = new JsonPath(response.asString());
+		log("Validate appointment to be deleted");
+		assertEquals(js.getString("practiceId"), practiceId, "Practice id was incorrect");
+		assertEquals(js.getString("pmPatientId"), pmPatientId, "Patient id was incorrect");
+		assertEquals(js.getString("pmAppointmentId"), pmAppointmentId, "Appointment id was incorrect");
+	}
+	
+	public void verifyCreateNewApptType(Response response, String appointmentTypeId, String appointmentTypeName, String categoryId)
+			throws IOException {
+		JsonPath js = new JsonPath(response.asString());
+		log("Validate appointment to be deleted");
+		assertEquals(js.getString("appointmentTypeId"), appointmentTypeId, "Appointment type id was incorrect");
+		assertEquals(js.getString("appointmentTypeName"), appointmentTypeName, "appointmentTypeName id was incorrect");
+		assertEquals(js.getString("categoryId"), categoryId, "categoryId id was incorrect");
+	}
+	
+	public void verifyApptTypeKeyValidation(Response response, String key) {
+		JSONObject jsonObject = new JSONObject(response.asString());
+		JSONArray jsonArray = (JSONArray) jsonObject.get("appointmentTypes");
+		for (int i = 0; i < jsonArray.length(); i++) {
+			log("Validated key-> " + key + " value is-  " +jsonArray.getJSONObject(i).getString("id"));
+			
+		}
+	}
 }

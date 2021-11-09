@@ -135,8 +135,8 @@ Feature: Test fuctionality of Appointment precheck
     Then verify on appointment dashboard user is able to see only text column under send reminder column and mail column is disappear
     And from setting dashboard in general enable email check box
     And logout from practice provisioning portal
-    
-     Scenario: Verify if the Broadcast message is not sent to any patients when start date and end date is more than passed one month
+
+  Scenario: Verify if the Broadcast message is not sent to any patients when start date and end date is more than passed one month
     When enter date and time for backdated greater than one month
     And filter is applied only for provider
     And select patients based on filters
@@ -144,14 +144,95 @@ Feature: Test fuctionality of Appointment precheck
     Then verify the count in banner message is coming correct for one month backdated
     And logout from practice provisioning portal
 
-    Scenario: verify in appointment dashboard broadcast column for email and text should be visible by default count will be zero
+  Scenario: verify in appointment dashboard broadcast column for email and text should be visible by default count will be zero
     When in setting dashboard in notifications Enable Broadcast messaging checkbox
     And schedule an appointments
     Then verify in appointment dashboard broadcast column for email and text should be visible by default count will be zero
     And logout from practice provisioning portal
-    
-    Scenario: Verify on clicking icon for email and text pop up appears and patient name , time , status , message field is displayed
+
+  Scenario: Verify on clicking icon for email and text pop up appears and patient name , time , status , message field is displayed
     When in setting dashboard in notifications Enable Broadcast messaging checkbox
     And schedule an appointments
     Then Verify on clicking icon for email and text pop up appears and patient name , time , status , message field is displayed
+    And logout from practice provisioning portal
+
+  Scenario: verify if text and email are enable from Notification setting then text and email should be display on appointment dashboard
+    When schedule a new appointment
+    And from setting dashboard in general enable email and text checkbox
+    And from notifications in setting dashboard Enable Broadcast messaging checkbox
+    Then verify in appointment dashboard in broadcast column  email and text should be visible and by default count will be zero
+    And logout from practice provisioning portal
+
+  Scenario: verify if text enable and email disable from notification setting then on text broadcast icon , broadcast logs should appear with patient name , time ,message and status field
+    When schedule a new appointment
+    And from setting in notifications dashboard Enable Broadcast messaging checkbox
+    And from setting in general text checkbox is enable and email checkbox is disable
+    Then verify on clicking on text broadcast icon , broadcast logs should appear with patient name , time ,message and status field
+    And logout from practice provisioning portal
+
+  Scenario: verify if text disable and email enable from notification setting then broadcast will be sent to patient on email only and broadcast text column entry will not be seen
+    When schedule a new appointment
+    And from setting in notifications dashboard Enable Broadcast messaging checkbox
+    And from setting in general text checkbox is disable and email checkbox is enable
+    And select patient and send broadcast
+    Then verify on appointment dashboard in broadcast broadcast will be sent to patient on email only and broadcast text column entry will not be seen
+    And logout from practice provisioning portal
+
+  Scenario: verify if when notification setting are disable then appointment dashboard does not show broadcast column
+    And from setting in notifications dashboard Enable Broadcast messaging checkbox
+    When from setting in general disable notification setting
+    Then verify in appointment dashboard in broadcast column text and email column should not be display
+    And logout from practice provisioning portal
+
+  Scenario: Verify if pop up message is coming as per requirement on clicking remove button
+    When schedule a new appointment
+    And select patient and from action dropdown click on remove
+    Then Verify the pop up message is displayed as per requirement
+    And logout from practice provisioning portal
+
+  Scenario: verfiy after deleting single appointments message at the top indicated how many were deleted successfully without clicking on refresh
+    When schedule a new appointment and confirm
+    And select patient and from action dropdown click on remove
+    Then verify after click on confirm banner message should be display and appointment should be deleted successfully
+    And logout from practice provisioning portal
+
+  Scenario: verfiy after deleting multiple appointments message at the top indicated how many were deleted successfully without clicking on refresh
+    When logout from practice provisioning portal
+    And user login to practice provisioning
+    And schedule multiple new appointments and confirm
+    And select multiple patients and from action dropdown click on remove
+    Then verify after deleting multiple appointments banner message should be display and appointment should be deleted successfully
+    And logout from practice provisioning portal
+
+  Scenario: verfiy after deleting all appointments message at the top indicated how many were deleted successfully without clicking on refresh
+    When logout from practice provisioning portal
+    And user login to practice provisioning
+    And schedule multiple appointments and confirm
+    And select multiple patients and from action dropdown click on remove
+    Then verify after deleting multiple appointments banner message should be display and appointment should be deleted successfully
+    And logout from practice provisioning portal
+
+  Scenario: verify on selecting all 50+ appointment records remove button should not be enabled
+    When apply the filter such that count of appointment is greater than fifty count and more than one page is coming
+    And select all appointments from appointment dashboard and select banner message
+    Then verify remove button should be disabled and only broadcast button should be enabled
+    And logout from practice provisioning portal
+
+  Scenario: To verify after deleting appointment and clicking on refresh button page count should be same as it was after deleting record
+    When logout from practice provisioning portal
+    And user login to practice provisioning
+    And schedule multiple appointments
+    And from appointment dashboard select all appointments and remove from action dropdown
+    Then verify after clicking on refresh button page count should be count should be same
+    And logout from practice provisioning portal
+
+  Scenario: verify if notification are off then only create and remove button are visible
+    When from setting in general disable notification setting
+    Then verify if notification are off then only create appointment and remove button are visible.
+    And logout from practice provisioning portal
+
+  Scenario: verify if create button functionality is working and appointment is getting created
+    When from setting in general disable notification setting
+    And from appointment dashboard click on action button and click on create option for schedule new appointment
+    Then verify appointment get succesfully created and from remove button suceesfully deleted
     And logout from practice provisioning portal

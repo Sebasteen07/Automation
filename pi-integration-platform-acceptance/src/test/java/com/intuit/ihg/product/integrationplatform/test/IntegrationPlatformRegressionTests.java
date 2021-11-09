@@ -4553,4 +4553,70 @@ public class IntegrationPlatformRegressionTests extends BaseTestNGWebDriver {
 			
 
 		}
+		
+		@Test(enabled = true, groups = { "RegressionTests" }, retryAnalyzer = RetryAnalyzer.class)
+		public void testAppointmentDataExistingPatientV4() throws Exception {
+			log("Test Case: Appointment Request for Existing Patient From Partner");
+			log("Execution Environment: " + IHGUtil.getEnvironmentType());
+			log("Execution Browser: " + TestConfig.getBrowserType());
+			logStep("Get Data from property file");
+			LoadPreTestData LoadPreTestDataObj = new LoadPreTestData();
+			AppointmentData testData = new AppointmentData();
+			LoadPreTestDataObj.loadAppointmentDataFromProperty(testData);
+			AppointmentDataUtils aDUtils = new AppointmentDataUtils();
+
+			String workingDir = System.getProperty("user.dir");
+			workingDir = workingDir + testData.csvFilePath;
+			aDUtils.csvFileReader(testData, workingDir);
+
+			logStep("Post NEW AppointMentData ");
+			testData.Status = "NEW";
+			testData.FirstName = testData.FirstName;
+			testData.LastName = testData.LastName;
+			testData.EmailUserName = testData.EmailUserName;
+			testData.BatchSize = "2";
+
+			testData.Time = testData.appointmentDetailList.get(1).getTime();
+			testData.appointmentType = "FUTURE";
+			testData.Location = "NEW";
+
+			testData.Type = testData.appointmentDetailList.get(1).getType();
+			testData.Reason = testData.appointmentDetailList.get(1).getReason();
+			testData.Description = testData.appointmentDetailList.get(1).getDescription();
+
+			logStep("Setup Oauth client");
+			RestUtils.oauthSetup(testData.OAuthKeyStore, testData.OAuthProperty, testData.OAuthAppToken,
+					testData.OAuthUsername, testData.OAuthPassword);
+
+			aDUtils.checkAppointmentV4(testData, driver);
+			Thread.sleep(6000);
+			
+			logStep("Post UPDATE AppointMentData ");
+			testData.Status = "UPDATE";
+			testData.Time = testData.appointmentDetailList.get(3).getTime();
+			testData.Location = "Update";
+			testData.appointmentType = "FUTURE";
+
+			testData.Type = testData.appointmentDetailList.get(3).getType();
+			testData.Reason = testData.appointmentDetailList.get(3).getReason();
+			testData.Description = testData.appointmentDetailList.get(3).getDescription();
+			testData.BatchSize = "1";
+
+			aDUtils.checkAppointmentV4(testData, driver);
+			Thread.sleep(3000);
+
+			logStep("Post CANCEL AppointMentData ");
+			testData.Status = "CANCEL";
+			testData.Time = testData.appointmentDetailList.get(4).getTime();
+			testData.Location = "Cancel";
+			testData.appointmentType = "FUTURE";
+
+			testData.Type = testData.appointmentDetailList.get(4).getType();
+			testData.Reason = testData.appointmentDetailList.get(4).getReason();
+			testData.Description = testData.appointmentDetailList.get(4).getDescription();
+			testData.BatchSize = "1";
+
+			aDUtils.checkAppointmentV4(testData, driver);
+
+		}
 }

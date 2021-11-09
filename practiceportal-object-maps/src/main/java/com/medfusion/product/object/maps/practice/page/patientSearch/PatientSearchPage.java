@@ -134,6 +134,12 @@ public class PatientSearchPage extends BasePageObject {
 	
 	@FindBy(how = How.XPATH, using = "//*[contains(text(),'Trusted representative access has been updated')]")
 	private WebElement msgUpdateTrustedRepresentative;
+	
+	@FindBy(how = How.XPATH, using = "//*[contains(text(),\"Duplicate Patient ID\")]")
+	private WebElement msgDuplicatePatientID;
+	
+	@FindBy(how = How.XPATH, using = "//*[contains(text(),\"A not activated patient with the same Patient ID already exists. Please click\")]")
+	private WebElement msgErrorPatientCreation;
 
 	/**
 	 * @Description:Set Patient First Name
@@ -480,6 +486,30 @@ public class PatientSearchPage extends BasePageObject {
 			return msgInviteTrustedRepresentative.isDisplayed();
 		} catch (Exception e) {
 			log("Invite TrustedRepresentative was unsuccessful");
+			return false;
+		}
+	}
+	
+	public boolean isDuplicatePatientIDErrorDisplayed() {
+
+		try {
+			log("Looking For Duplicate PatientID Error");
+			new WebDriverWait(driver, 30).until(ExpectedConditions.visibilityOf(msgDuplicatePatientID));
+			return msgDuplicatePatientID.isDisplayed();
+		} catch (Exception e) {
+			log("Duplicate PatientID Error not displayed");
+			return false;
+		}
+	}
+	
+	public boolean isPatientCreationErrorDisplayed() {
+
+		try {
+			log("Looking For Duplicate PatientID Error");
+			new WebDriverWait(driver, 30).until(ExpectedConditions.visibilityOf(msgErrorPatientCreation));
+			return msgErrorPatientCreation.isDisplayed();
+		} catch (Exception e) {
+			log("Duplicate PatientID Error not displayed");
 			return false;
 		}
 	}
