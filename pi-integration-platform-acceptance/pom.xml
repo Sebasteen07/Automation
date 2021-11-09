@@ -6,7 +6,7 @@
 <parent>
 	  <groupId>com.intuit.ihg</groupId>
 	  <artifactId>ihg-depot-parent-pom</artifactId>
-	  <version>21.5.0</version>
+	  <version>21.6.0</version>
 </parent>
 
   <artifactId>pi-integration-platform-automation</artifactId>
@@ -15,8 +15,8 @@
   
   <properties>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
-        <ihg.version>21.5.0</ihg.version>
-        <dcf-version>21.5.0</dcf-version>
+        <ihg.version>21.6.0</ihg.version>
+        <dcf-version>21.6.0</dcf-version>
   </properties>
   
   <repositories>
@@ -24,6 +24,14 @@
 			<id>IHG-nexus</id>
 			<name>IHG-nexus</name>
 			<url>http://maven.qhg.local/nexus/content/groups/qhg-dev/</url>
+		</repository>
+		<repository>
+			<snapshots>
+				<enabled>false</enabled>
+			</snapshots>
+			<id>bintray-epam-reportportal</id>
+			<name>bintray</name>
+			<url>http://dl.bintray.com/epam/reportportal</url>
 		</repository>
 	</repositories>
 
@@ -36,36 +44,36 @@
 		<dependency>
 			<groupId>com.intuit.api.security</groupId>
 			<artifactId>oauth-core-common</artifactId>
-			<version>${dcf-version}</version>
+			<version>${ihg.version}</version>
 		</dependency>
 
 		<dependency>
 			<groupId>com.intuit.api.security</groupId>
 			<artifactId>oauth-core-client-bootstrap</artifactId>
-			<version>${dcf-version}</version>
+			<version>${ihg.version}</version>
 		</dependency>
 
 		<dependency>
 			<groupId>com.intuit.api.security</groupId>
 			<artifactId>oauth-core-client</artifactId>
-			<version>${dcf-version}</version>
+			<version>${ihg.version}</version>
 		</dependency>
 		<dependency>
 			<groupId>com.intuit.framework.dc</groupId>
 			<artifactId>datachannel-framework-core</artifactId>
-			<version>${dcf-version}</version>
+			<version>${ihg.version}</version>
 			<type>jar</type>
 		</dependency>
 		<dependency>
 			<groupId>com.intuit.framework.dc.services.objstore</groupId>
 			<artifactId>datachannel-framework-services-objstore</artifactId>
-			<version>${dcf-version}</version>
+			<version>${ihg.version}</version>
 			<type>jar</type>
 		</dependency>
 		<dependency>
 			<groupId>com.intuit.framework.dc.services.tracking</groupId>
 			<artifactId>datachannel-framework-services-tracking</artifactId>
-			<version>${dcf-version}</version>
+			<version>${ihg.version}</version>
 			<type>jar</type>
 		</dependency>
 
@@ -90,13 +98,13 @@
 		<dependency>
 			<groupId>com.intuit.rwsdk.core</groupId>
 			<artifactId>rwsdk-core-dto</artifactId>
-			<version>${dcf-version}</version>
+			<version>${ihg.version}</version>
 		</dependency>
 
 		<dependency>
 			<groupId>com.intuit.health.integration</groupId>
 			<artifactId>am-core-dto</artifactId>
-			<version>${dcf-version}</version>
+			<version>${ihg.version}</version>
 		</dependency>
 
 		<dependency>
@@ -122,12 +130,12 @@
 		<dependency>
 			<groupId>com.intuit.ihg</groupId>
 			<artifactId>integrationplatform-service</artifactId>
-			<version>21.5.0</version>
+			<version>21.6.0</version>
 		</dependency>
 		<dependency>
 			<groupId>com.intuit.ihg</groupId>
 			<artifactId>precheckAppointment-object-maps</artifactId>
-			<version>21.5.0</version>
+			<version>21.6.0</version>
 		</dependency>
 
 			  <dependency>
@@ -143,12 +151,12 @@
 			  <dependency>
 				<groupId>com.intuit.ihg</groupId>
 				<artifactId>integrationplatform-service</artifactId>
-				<version>21.5.0</version>
+				<version>21.6.0</version>
 			  </dependency>
 			  <dependency>
 				<groupId>com.intuit.ihg</groupId>
 				<artifactId>precheckAppointment-object-maps</artifactId>
-				<version>21.5.0</version>
+				<version>21.6.0</version>
 			  </dependency>
 			  
     </dependencies>

@@ -1,7 +1,4 @@
 <?xml version="1.0" encoding="UTF-8"?>
-
-<!-- Copyright 2020 NXGN Management, LLC. All Rights Reserved. -->
-
 <project xmlns="http://maven.apache.org/POM/4.0.0"
 	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
 	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
@@ -10,9 +7,15 @@
 	<parent>
         <groupId>com.intuit.ihg</groupId>
         <artifactId>ihg-depot-parent-pom</artifactId>
-        <version>21.5.0</version>
+        <version>21.6.0</version>
     </parent>
 	
+	<parent>
+		<groupId>com.intuit.ihg</groupId>
+		<artifactId>ihg-depot-parent-pom</artifactId>
+		<version>21.6.0</version>
+	</parent>
+
 	<artifactId>ng-integration</artifactId>
 	<name>ng-integration</name>
 	<packaging>jar</packaging>
@@ -35,7 +38,7 @@
 
 	<properties>
 		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
-		<ihg.version>21.5.0</ihg.version>
+		<ihg.version>21.6.0</ihg.version>
 	</properties>
 
 	<dependencies>
@@ -92,18 +95,6 @@
 			<artifactId>commons-codec</artifactId>
 			<version>1.10</version>
 		</dependency>
-		<!-- Report Portal Dependencies -->
-		<dependency>
-			<groupId>com.epam.reportportal</groupId>
-			<artifactId>agent-java-testng</artifactId>
-			<version>5.0.11</version>
-		</dependency>
-
-		<dependency>
-			<groupId>com.epam.reportportal</groupId>
-			<artifactId>logger-java-log4j</artifactId>
-			<version>5.0.3</version>
-		</dependency>
 	</dependencies>
 	<build>
 		<plugins>
@@ -129,17 +120,6 @@
 							<properties>
 								<usedefaultlisteners>false</usedefaultlisteners>
 								<workingDirectory>target/surefire-reports/</workingDirectory>
-
-								<!-- adding property to log in to Report Portal -->
-								<property>
-									<name>usedefaultlisteners</name>
-									<value>false</value>
-								</property>
-								<property>
-									<name>listener</name>
-									<value>com.epam.reportportal.testng.ReportPortalTestNGListener</value>
-								</property>
-
 							</properties>
 						</configuration>
 						<goals>

@@ -45,8 +45,8 @@ public class JalapenoHomePage extends JalapenoMenu {
 	
 	@FindBy(how = How.XPATH, using = "//span[text()='Messages']")
 	private WebElement messagesSideBar;
-
-	@FindBy(how = How.XPATH, using = "//h3[contains(text(),'Schedule an Appointment')]")
+	
+	@FindBy(how = How.XPATH, using = "//span[contains(text(),'Schedule an Appointment')]")
 	private WebElement sheduleanappointment;
 	
 	@FindBy(how = How.XPATH, using = "//a[@id = 'feature_appointments'] | //a[@id = 'feature_appointment_request'][1]")
@@ -269,7 +269,7 @@ public class JalapenoHomePage extends JalapenoMenu {
 		log("Looking for notification: " + text);
 
 		try {
-			return driver.findElement(By.xpath("//p[contains(text(),'" + text + "')]")).getText().contains(text);
+			return driver.findElement(By.xpath("//p[contains(text(),'" +text+ "')]")).getText().contains(text);
 		} catch (Exception e) {
 			log("Text: '" + text + "' wasn't found on the page.");
 			return false;
@@ -352,6 +352,7 @@ public class JalapenoHomePage extends JalapenoMenu {
 
 	public JalapenoAskAStaffV2Page1 openSpecificAskaPaidV2(String askaName) throws InterruptedException {
 		IHGUtil.PrintMethodName();
+		wait.until(ExpectedConditions.visibilityOf(askAQuestion));
 		askAQuestion.click();
 		System.out.println("It clicked on the ASK a question in homepage");
 		try {
@@ -365,6 +366,21 @@ public class JalapenoHomePage extends JalapenoMenu {
 		return PageFactory.initElements(driver, JalapenoAskAStaffV2Page1.class);
 	}
 
+	public JalapenoAskAStaffV2Page1 openSpecificAskaFree(String askaName) throws InterruptedException {
+		IHGUtil.PrintMethodName();
+		wait.until(ExpectedConditions.visibilityOf(askAQuestion));
+		askAQuestion.click();
+		System.out.println("It clicked on the ASK a question in homepage");
+		try {
+			IHGUtil.waitForElement(driver, 80, askPaid);
+			driver.findElement(By.xpath("//a[text()='Ask (free)']")).click();
+			System.out.println("clciked the element ASK Paid");
+		} catch (NoSuchElementException e) {
+			log("No question with the specified link text found! name: " + askaName);
+			e.printStackTrace();
+		}
+		return PageFactory.initElements(driver, JalapenoAskAStaffV2Page1.class);
+	}
 	public void faChangePatient() throws InterruptedException {
 		IHGUtil.PrintMethodName();
 		clickOnBubbleIcon();
@@ -398,7 +414,7 @@ public class JalapenoHomePage extends JalapenoMenu {
 
 	public void clickFeaturedAppointmentsReq() {
 		javascriptClick(sheduleanappointment);
-		IHGUtil.waitForElement(driver, 1, buttonContinue);
+		IHGUtil.waitForElement(driver, 5, buttonContinue);
 		javascriptClick(buttonContinue);
 	}
 

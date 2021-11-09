@@ -89,9 +89,9 @@ public class PSSPropertyFileLoader {
 		appointValues.setOldPatientUserName(property.getProperty("oldpatient.username.gw"));
 		appointValues.setOldPatientPassword(property.getProperty("oldpatient.password.gw"));
 		appointValues.setProviderImageAPI(property.getProperty("provider.image.api.gw"));
-		appointValues.setGmailUserName(property.getProperty("gmail.username.gw"));
+		appointValues.setGmailUserName(property.getProperty("gmail.gw"));
 		appointValues.setPopUpMessege(property.getProperty("popup.messege"));
-		appointValues.setNextAvailiableText(property.getProperty("next.availi.text"));
+		appointValues.setNextAvailiableText(property.getProperty("nextavailable.text"));
 		appointValues.setExcludeSlotFirstValue(property.getProperty("exclude.firstvalue.gw"));
 		appointValues.setExcludeSlotSecondValue(property.getProperty("exclude.secondvalue.gw"));
 		appointValues.setSlotValue(property.getProperty("slotvalue.gw"));
@@ -137,7 +137,6 @@ public class PSSPropertyFileLoader {
 		adminuser.setPassword(property.getProperty("admin.password.ng"));
 		adminuser.setPracticeId(property.getProperty("practice.id.ng"));
 		adminuser.setRule(property.getProperty("rule"));
-		adminuser.setPracticeId(property.getProperty("practice.id.ng"));
 	}
 
 	public void setAdminAthena(AdminUser adminuser) {
@@ -182,13 +181,13 @@ public class PSSPropertyFileLoader {
 		appointValues.setUrlLoginLess(property.getProperty("loginless.url.at"));
 		appointValues.setAppointmentFlow(property.getProperty("appointment.flow.at"));
 		appointValues.setFirstTimeUser(property.getProperty("is.first.time.user.at"));
-		appointValues.setFirstName(property.getProperty("first.name.at"));
-		appointValues.setLastName(property.getProperty("last.name.at"));
-		appointValues.setEmail(property.getProperty("email.at"));
-		appointValues.setDob(property.getProperty("dob.at"));
-		appointValues.setGender(property.getProperty("gender.at"));
-		appointValues.setZipCode(property.getProperty("zip.code.at"));
-		appointValues.setPrimaryNumber(property.getProperty("primary.number.at"));
+		appointValues.setFirstName(property.getProperty("ll.first.name.at"));
+		appointValues.setLastName(property.getProperty("ll.last.name.at"));
+		appointValues.setEmail(property.getProperty("ll.email.at"));
+		appointValues.setDob(property.getProperty("ll.dob.at"));
+		appointValues.setGender(property.getProperty("ll.gender.at"));
+		appointValues.setZipCode(property.getProperty("ll.zip.code.at"));
+		appointValues.setPrimaryNumber(property.getProperty("ll.primary.number.at"));
 		appointValues.setUrlIPD(property.getProperty("url.idp.at"));
 		appointValues.setCity(property.getProperty("city.at"));
 		appointValues.setStreet(property.getProperty("street.at"));
@@ -221,9 +220,9 @@ public class PSSPropertyFileLoader {
 		appointValues.setAssociatedLocation3(property.getProperty("associated.location3.at"));
 		appointValues.setAssociatedSpeciality3(property.getProperty("associated.speciality3.at"));
 		appointValues.setAssociatedApt3(property.getProperty("associated.apt3.at"));
-		appointValues.setGmailUserName(property.getProperty("email.at"));
+		appointValues.setGmailUserName(property.getProperty("ll.email.at"));
 		appointValues.setPopUpMessege(property.getProperty("popup.messege"));
-		appointValues.setNextAvailiableText(property.getProperty("next.availi.text"));
+		appointValues.setNextAvailiableText(property.getProperty("nextavailable.text"));
 		appointValues.setExcludeSlotFirstValue(property.getProperty("exclude.firstvalue.at"));
 		appointValues.setExcludeSlotSecondValue(property.getProperty("exclude.secondvalue.at"));
 		appointValues.setMemberID(property.getProperty("member.id"));
@@ -231,6 +230,7 @@ public class PSSPropertyFileLoader {
 		appointValues.setEmailSubject(property.getProperty("email.subject"));
 		appointValues.setFindInEmail(property.getProperty("find.in.email"));
 		appointValues.setInsurancePhone(property.getProperty("insrance.phone"));
+		appointValues.setSlotValue(property.getProperty("slotvalue.at"));
 	}
 
 	public void setAppointmentResponseGE(Appointment appointValues) {
@@ -296,7 +296,7 @@ public class PSSPropertyFileLoader {
 		appointValues.setOldPatientPassword(property.getProperty("old.patient.password.ge"));
 		appointValues.setGmailUserName(property.getProperty("email.ge"));
 		appointValues.setPopUpMessege(property.getProperty("popup.messege"));
-		appointValues.setNextAvailiableText(property.getProperty("next.availi.text"));
+		appointValues.setNextAvailiableText(property.getProperty("nextavailable.text"));
 		appointValues.setExcludeSlotFirstValue(property.getProperty("exclude.firstvalue.ge"));
 		appointValues.setExcludeSlotSecondValue(property.getProperty("exclude.secondvalue.ge"));
 		appointValues.setSlotValue(property.getProperty("slotvalue.ge"));
@@ -333,13 +333,13 @@ public class PSSPropertyFileLoader {
 		appointValues.setLocation(property.getProperty("location.ng"));
 		appointValues.setPassword(property.getProperty("password.ng"));
 		appointValues.setProvider(property.getProperty("provider.ng"));
-		appointValues.setSpeciality(property.getProperty("specialty.ng"));
+		appointValues.setSpeciality(property.getProperty("speciality.ng"));
 		appointValues.setUsername(property.getProperty("username.ng"));
 		appointValues.setUrlLoginLess(property.getProperty("loginless.url.ng"));
 		appointValues.setAppointmentFlow(property.getProperty("appointment.flow.ng"));
 		appointValues.setFirstTimeUser(property.getProperty("is.first.time.user.ng"));
-		appointValues.setFirstName(property.getProperty("first.name.ng"));
-		appointValues.setLastName(property.getProperty("last.name.ng"));
+		appointValues.setFirstName(property.getProperty("firstname.ng"));
+		appointValues.setLastName(property.getProperty("lastname.ng"));
 		appointValues.setEmail(property.getProperty("email.ng"));
 		appointValues.setDob(property.getProperty("dob.ng"));
 		appointValues.setGender(property.getProperty("gender.ng"));
@@ -382,7 +382,7 @@ public class PSSPropertyFileLoader {
 		appointValues.setProviderImageAPI(property.getProperty("providerImageAPING"));
 		appointValues.setGmailUserName(property.getProperty("email.ng"));
 		appointValues.setPopUpMessege(property.getProperty("popup.messege"));
-		appointValues.setNextAvailiableText(property.getProperty("next.availi.text"));
+		appointValues.setNextAvailiableText(property.getProperty("nextavailable.text"));
 		appointValues.setExcludeSlotFirstValue(property.getProperty("exclude.firstvalue.ng"));
 		appointValues.setExcludeSlotSecondValue(property.getProperty("exclude.secondvalue.ng"));
 		appointValues.setSlotValue(property.getProperty("slotvalue.ng"));
@@ -401,6 +401,7 @@ public class PSSPropertyFileLoader {
 		appointValues.setInsurancePhone(property.getProperty("insrance.phone"));
 		appointValues.setShowCancellationReasonPM(true);
 		appointValues.setShowCancellationRescheduleReason(true);
+		appointValues.setPreSchedDays(Integer.parseInt(property.getProperty("preventscheddays.ng")));
 	}
 
 	public void setAppointmentResponseAthena(Appointment appointValues) {

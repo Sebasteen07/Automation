@@ -1,9 +1,11 @@
 <project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
   <modelVersion>4.0.0</modelVersion>
+  <!-- Copyright 2013-2021 NXGN Management, LLC. All Rights Reserved. -->
+  
   <parent>
 	  <groupId>com.intuit.ihg</groupId>
 	  <artifactId>ihg-depot-parent-pom</artifactId>
-	  <version>21.5.0</version>
+	  <version>21.6.0</version>
   </parent>
 
 	<artifactId>pss2patientui-api</artifactId>
@@ -14,11 +16,19 @@
 			<name>IHG-nexus</name>
 			<url>http://maven.qhg.local/nexus/content/groups/qhg-dev/</url>
 		</repository>
+		<repository>
+			<snapshots>
+				<enabled>false</enabled>
+			</snapshots>
+			<id>bintray-epam-reportportal</id>
+			<name>bintray</name>
+			<url>http://dl.bintray.com/epam/reportportal</url>
+		</repository>
 	</repositories>
 
 	<properties>
 		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
-		<ihg.version>21.5.0</ihg.version>
+		<ihg.version>21.6.0</ihg.version>
 	</properties>
 
 	<dependencies>

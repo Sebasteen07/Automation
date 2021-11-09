@@ -2,6 +2,7 @@
 package com.medfusion.payment_modulator.pojos;
 
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -10,6 +11,10 @@ import com.fasterxml.jackson.annotation.JsonAnySetter;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonPropertyOrder;
+import com.medfusion.common.utils.PropertyFileLoader;
+import com.medfusion.gateway_proxy.helpers.GatewayProxyDigitalWalletResource;
+import io.restassured.response.Response;
+import org.testng.Assert;
 
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonPropertyOrder({ "mfGatewayConsumer", "mfGatewayMerchant", "transactionAmount", "initialTransactionInSeries",
@@ -135,6 +140,8 @@ public class PayloadDetails {
 		return voidmap;
 	}
 
+
+	
 	public static Map<String, Object> getPayloadForChargeback(String mmid, String transactionid, String orderid,
 			String chargebackamount) {
 		Map<String, Object> chargebackmap = new HashMap<String, Object>();
@@ -145,10 +152,10 @@ public class PayloadDetails {
 	}
 
 	public static Map<String, Object> getPayloadForAddingCardToDigitalWallet(String cardHolderName, String type,
-			String cardNumber, String expirationNumber, String cardAlias, String zipCode) {
+			String cardNumber, String expirationNumber, String cardAlias, String zipCode, boolean primaryCardFlag) {
 		Map<String, Object> cardsMap = new HashMap<String, Object>();
 		cardsMap.put("cards",
-				Card.getCardsListDigitalWallet(cardHolderName, type, cardNumber, expirationNumber, cardAlias, zipCode));
+				Card.getCardsListDigitalWallet(cardHolderName, type, cardNumber, expirationNumber, cardAlias, zipCode, primaryCardFlag));
 		return cardsMap;
 	}
 
@@ -178,6 +185,69 @@ public class PayloadDetails {
 	public static Map<String, Object> getPayloadForNewSaleAPI(String paymentSource, int transactionAmount) {
 		Map<String, Object> cardsMap = new HashMap<String, Object>();
 		cardsMap.putAll(Card.payloadForSale(paymentSource, transactionAmount));
+		return cardsMap;
+	}
+	
+	public static Map<String, Object> getPayloadForCreatingChargeBack( String transactionid, String orderid,
+			String chargeBackAmount) {
+
+		Map<String, Object> chargeBackMap = new HashMap<String, Object>();
+	
+		chargeBackMap.put("parentExternalTransactionId", transactionid);
+		chargeBackMap.put("parentOrderId", orderid);
+		chargeBackMap.put("chargebackAmount", Integer.parseInt(chargeBackAmount));
+		
+		return chargeBackMap;
+	}
+	public static Map<String, Object> getPayloadForUpdatingCardDetails(String cardAlias, String zipCode, boolean makeCardPrimaryFlag) {
+		Map<String, Object> cardsMap = new HashMap<String, Object>();
+		cardsMap.put("cardAlias", cardAlias);
+		cardsMap.put("makeCardPrimary", makeCardPrimaryFlag);
+		cardsMap.put("zipCode", zipCode);
+		return cardsMap;
+	}
+
+	public static Map<String, Object> getPayloadForAddingCardsToDigitalWallet(PropertyFileLoader testData, int noOfCards, int cardNoPrimary) throws Exception {
+		ArrayList<Map<String, Object>> list = new ArrayList<Map<String, Object>>();
+		boolean primaryFlag = false;
+
+		for(int i=1; i<noOfCards+1; i++){
+			if(cardNoPrimary == i){
+				primaryFlag = true;
+			}
+			Map<String, Object> cardMap = Card.getCardsListDigitalWalletMap(testData.getProperty("consumer.name"), testData.getProperty("type"+i),
+					testData.getProperty("card.number"+i), testData.getProperty("expiration.number"+i), testData.getProperty("card.alias"+i),
+					testData.getProperty("zipcode"+i), primaryFlag);
+
+			list.add(cardMap);
+			primaryFlag = false;
+		}
+		Map<String, Object> cardsMap = new HashMap<String, Object>();
+		cardsMap.put("cards", list);
+		return cardsMap;
+	}
+
+	public static Map<String, Object> getMultipleCardsPayload(String name1, String type1, String cardNumber1, String expiry1, String alias1, String zipCode1, boolean primaryFlag1,
+											  String name2, String type2, String cardNumber2, String expiry2, String alias2, String zipCode2, boolean primaryFlag2,
+											  String name3, String type3, String cardNumber3, String expiry3, String alias3, String zipCode3, boolean primaryFlag3) throws Exception {
+
+		Map<String, Object> cardMap1 = Card.getCardsListDigitalWalletMap(name1, type1,
+				cardNumber1, expiry1, alias1, zipCode1, primaryFlag1);
+
+		Map<String, Object> cardMap2 = Card.getCardsListDigitalWalletMap(name2, type2,
+				cardNumber2, expiry2, alias2, zipCode2, primaryFlag2);
+
+		Map<String, Object> cardMap3 = Card.getCardsListDigitalWalletMap(name3, type3,
+				cardNumber3, expiry3, alias3, zipCode3, primaryFlag3);
+
+
+		ArrayList<Map<String, Object>> list = new ArrayList<Map<String, Object>>();
+		list.add(cardMap1);
+		list.add(cardMap2);
+		list.add(cardMap3);
+
+		Map<String, Object> cardsMap = new HashMap<String, Object>();
+		cardsMap.put("cards", list);
 		return cardsMap;
 	}
 }

@@ -81,5 +81,14 @@ public class MerchantInfo extends BaseRest {
 			 
 	}
 
+	public Response getMerchantFeeType(String mmid) {
+
+		String getmerchant = ProvisioningUtils.postMerchant+"/"+mmid+"/rates";
+		Response response = given().spec(requestSpec).
+				when().get(getmerchant).then().and()
+				.extract().response();
+		return response;
+	}
+
 
 }

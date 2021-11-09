@@ -7,7 +7,7 @@
   <parent> 
   <artifactId>ihg-depot-parent-pom</artifactId> 
   <groupId>com.intuit.ihg</groupId> 
-  <version>21.5.0</version> 
+  <version>21.6.0</version> 
   </parent>
     
 	<groupId>com.medfusion</groupId>
@@ -15,69 +15,36 @@
 	<version>0.0.1-SNAPSHOT</version>
 	<name>payment-modulator</name>
 	<packaging>jar</packaging>
-	
-  <properties>
-    <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
-    <maven.compiler.source>1.7</maven.compiler.source>
-    <maven.compiler.target>1.7</maven.compiler.target>
-     <java.version>1.7</java.version>
-  </properties>
-  <repositories>
-        <repository>
-            <id>IHG-nexus</id>
-            <name>IHG-nexus</name>
-            <url>http://maven.qhg.local/nexus/content/groups/qhg-dev/</url>
-        </repository>
-    </repositories>
 
-  <dependencies>
-    	<dependency>
+	<properties>
+		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+	</properties>
+	<repositories>
+		<repository>
+			<id>IHG-nexus</id>
+			<name>IHG-nexus</name>
+			<url>http://maven.qhg.local/nexus/content/groups/qhg-dev/</url>
+		</repository>
+		<repository>
+			<snapshots>
+				<enabled>false</enabled>
+			</snapshots>
+			<id>bintray-epam-reportportal</id>
+			<name>bintray</name>
+			<url>http://dl.bintray.com/epam/reportportal</url>
+		</repository>
+	</repositories>
+
+	<dependencies>
+		<dependency>
 			<groupId>com.intuit.ifs.csscat.core</groupId>
 			<artifactId>Core</artifactId>
 			<version>2.3-SNAPSHOT</version>
 		</dependency>
+	</dependencies>
 
-		<dependency>
-    		<groupId>io.rest-assured</groupId>
-    		<artifactId>rest-assured</artifactId>
-    		<version>4.3.3</version>
-		</dependency>
-		<dependency>
-    		<groupId>io.rest-assured</groupId>
-    		<artifactId>json-path</artifactId>
-    		<version>4.3.3</version>
-		</dependency>
-		<dependency>
-   			<groupId>io.rest-assured</groupId>
-    		<artifactId>json-schema-validator</artifactId>
-    		<version>4.3.3</version>
-		</dependency>
-		<dependency>
-    		<groupId>io.rest-assured</groupId>
-    		<artifactId>xml-path</artifactId>
-    		<version>4.3.3</version>
-		</dependency>
-		<dependency>
-    <groupId>org.json</groupId>
-    <artifactId>json</artifactId>
-    <version>20201115</version>
-</dependency>
-<dependency>
-    <groupId>junit</groupId>
-    <artifactId>junit</artifactId>
-    <version>4.11</version>
-    <scope>test</scope>
-</dependency>
-<dependency>
-    <groupId>org.hamcrest</groupId>
-    <artifactId>hamcrest</artifactId>
-    <version>2.2</version>
-</dependency>
- 
-  </dependencies>
-  
 
-  <build>
+	<build>
 		<plugins>
 			<plugin>
 				<groupId>org.apache.maven.plugins</groupId>
@@ -89,11 +56,11 @@
 						<configuration>
 							<failBuild>false</failBuild>
 							<!--<groups>${testGroups}</groups> -->
-						
+
 							<systemPropertyVariables>
 								<testRoot>${basedir}</testRoot>
 								<org.uncommons.reportng.escape-output>false</org.uncommons.reportng.escape-output>
-								
+
 							</systemPropertyVariables>
 							<properties>
 								<usedefaultlisteners>false</usedefaultlisteners>

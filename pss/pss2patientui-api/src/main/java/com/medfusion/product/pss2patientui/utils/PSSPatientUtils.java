@@ -70,7 +70,25 @@ public class PSSPatientUtils extends BaseTestNGWebDriver {
 		icsfilereader.ICSFile(path);
 		log("Is file deleted ? " + deleteFile(path));
 	}
+	
+	public String sampleDateTime(String datetimeformat) {
+		
+		DateFormat dateFormat = new SimpleDateFormat(datetimeformat);
+		Date d = new Date();
+		String currentdate = dateFormat.format(d);
+		log("Current Date- " + currentdate);
+		return currentdate;
+	}
 
+	public String sampleDateTime(String datetimeformat) {
+	       
+        DateFormat dateFormat = new SimpleDateFormat(datetimeformat);
+        Date d = new Date();
+        String currentdate = dateFormat.format(d);
+        log("Current Date- " + currentdate);
+        return currentdate;
+    }
+	
 	public String filePath() {
 		String home = System.getProperty("user.home");
 		File latestFile = lastFileModified(home + PSSConstants.DOWNLOADFILENAME);
@@ -1153,9 +1171,6 @@ public class PSSPatientUtils extends BaseTestNGWebDriver {
 		for (WebElement ele : confirmationpage.getAppointmentDetails()) {
 			log("apt Details= " + ele.getText());
 		}
-		confirmationpage.apptConfm();
-		log("Appointment is SuccesFull");
-
 		ScheduledAppointment scheduledappointment = confirmationpage.appointmentConfirmed();
 		log("appointment ID = " + scheduledappointment.getAppointmentID());
 		log("Add to calendar option is displayed and is clickable.");

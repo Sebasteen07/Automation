@@ -18,10 +18,10 @@ public class JalapenoAppoinmentSchedulingPage extends JalapenoMenu {
 	@FindBy(how = How.ID, using = "actionButton")
 	private WebElement continueButton;
 
-	@FindBy(how = How.XPATH, using = "//h4[text()='Schedule an Appointment']")
+	@FindBy(how = How.XPATH, using = "//h3[text()='Schedule an Appointment']")
 	private WebElement scheduledanappoinmentheader;
 
-	@FindBy(how = How.XPATH, using = "//div[@id='viewModalContent']/div/div/p")
+	@FindBy(how = How.XPATH, using = "//div[@id='viewModalContent']")
 	private WebElement popupmessage;
 
 	@FindBy(how = How.XPATH, using = "//button[@class='close']")

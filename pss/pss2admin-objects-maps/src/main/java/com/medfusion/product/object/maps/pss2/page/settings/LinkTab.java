@@ -14,6 +14,7 @@ import org.openqa.selenium.support.FindAll;
 import org.openqa.selenium.support.FindBy;
 import org.openqa.selenium.support.How;
 import org.openqa.selenium.support.ui.Select;
+
 import com.medfusion.common.utils.IHGUtil;
 public class LinkTab extends SettingsTab {
 
@@ -88,18 +89,23 @@ public class LinkTab extends SettingsTab {
 		type.selectByVisibleText("LOGINLESS");
 		IHGUtil.waitForElement(driver, 3, locationSelect);	
 		javascriptClick(locationSelect);
+		Thread.sleep(3000);
 		log("LocationTypeList " + checklistLocation.size());
 		for (int i = 0; i < checklistLocation.size(); i++) {
 			if (checklistLocation.get(i).getText().contains(locationConfig)) {
-				IHGUtil.waitForElement(driver, 3, checklistLocation.get(i));	
+				IHGUtil.waitForElement(driver, 5, checklistLocation.get(i));
+				Thread.sleep(3000);
 				javascriptClick(checklistLocation.get(i));
 				log("Location checkbox selected");
 			}
 		}
+		Thread.sleep(3000);
 		resourceSelect.click();
 		log("ProviderTypeList " + checklistLocation.size());
 		for (int i = 0; i < checklistLocation.size(); i++) {
 			if (checklistLocation.get(i).getText().contains(providerConfig)) {
+				IHGUtil.waitForElement(driver, 5, checklistLocation.get(i));
+				Thread.sleep(3000);
 				javascriptClick(checklistLocation.get(i));
 				log("Provider checkbox selected");
 
@@ -130,10 +136,12 @@ public class LinkTab extends SettingsTab {
 		log("Clicked on type  button");
 		Select type = new Select(typeSelect);
 		type.selectByVisibleText("LOGINLESS");
+		IHGUtil.waitForElement(driver, 3, locationSelect);	
 		javascriptClick(resourceSelect);
 		log("Resource Type List size " + checklistLocation.size());
 		for (int i = 0; i < checklistLocation.size(); i++) {
 			if (checklistLocation.get(i).getText().contains(providerConfig)) {
+				IHGUtil.waitForElement(driver, 5, checklistLocation.get(i));
 				checklistLocation.get(i).click();
 				log("Resource checkbox selected");
 			}
@@ -149,11 +157,13 @@ public class LinkTab extends SettingsTab {
 		log("Clicked on type  button");
 		Select type = new Select(typeSelect);
 		type.selectByVisibleText("LOGINLESS");
+		IHGUtil.waitForElement(driver, 3, locationSelect);	
 		javascriptClick(locationSelect);
 
 		log("Location Type List size " + checklistLocation.size());
 		for (int i = 0; i < checklistLocation.size(); i++) {
 			if (checklistLocation.get(i).getText().contains(locationConfig)) {
+				IHGUtil.waitForElement(driver, 5, checklistLocation.get(i));
 				javascriptClick(checklistLocation.get(i));
 				log("Location checkbox selected");
 			}

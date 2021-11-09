@@ -149,6 +149,9 @@ public class JalapenoAskAStaffV2Page1 extends JalapenoMenu {
    
     @FindBy(how = How.XPATH, using = "//*[@class='ng-option ng-option-marked']")
     private WebElement setProvider;
+    
+    @FindBy(how = How.XPATH, using = "//div[contains(@class,'ng-option-marked')]")
+    private WebElement firstProvider;
 	
 	private long createdTS;
 
@@ -180,6 +183,11 @@ public class JalapenoAskAStaffV2Page1 extends JalapenoMenu {
 			subjectBox.sendKeys(subject);
 			Thread.sleep(5000);
 		}
+		Thread.sleep(4000);			
+		log("Selecting Provider ");
+		ProviderDropDown.click();
+		Thread.sleep(10000);
+		firstProvider.click();
 		questionBox.sendKeys(question);
 		Thread.sleep(5000);
 		continueButton.click();

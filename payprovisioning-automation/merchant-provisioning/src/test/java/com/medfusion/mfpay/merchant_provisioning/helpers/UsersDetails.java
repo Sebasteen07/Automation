@@ -7,6 +7,8 @@ import static org.hamcrest.Matchers.*;
 
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
 import java.util.Map;
 import com.medfusion.mfpay.merchant_provisioning.pojos.Roles;
 import com.medfusion.mfpay.merchant_provisioning.tests.BaseRest;
@@ -42,7 +44,12 @@ public class UsersDetails extends BaseRest {
 		given().spec(requestSpec).when().get(getusers+"/"+practicestaffid).then().spec(responseSpec)
 		.assertThat().body("roles" ,containsInAnyOrder("USER","FUNDINGANDFEES", "FULLDRR","POINTOFSALE", "POS_ADMIN", "VOIDREFUND"));
 	}
-	
+
+	public Response createPracticeUser(String getusers, String staffusername, String practiceRoles) throws IOException {
+		Map<String, Object> body = Roles.getPracticeRoleMap(staffusername, practiceRoles);
+		return given().spec(requestSpec).log().all().
+				body(body).when().post(getusers).then().extract().response();
+	}
 	
 
 }

@@ -130,7 +130,9 @@ public class Card {
 		return cardmap;
 	}
 
-	public static List<Map<String, Object>> getCardsListDigitalWallet(String cardHolderName, String type, String cardNumber, String expirationNumber, String cardAlias, String zipCode){
+	public static List<Map<String, Object>> getCardsListDigitalWallet(String cardHolderName, String type,
+																	  String cardNumber, String expirationNumber,
+																	  String cardAlias, String zipCode, boolean primaryCardFlag){
 		Map<String, Object> cardMap = new HashMap<String, Object>();
 		cardMap.put("cardHolderName", cardHolderName);
 		cardMap.put("cardType", type);
@@ -138,6 +140,7 @@ public class Card {
 		cardMap.put("cardExpiryDate", expirationNumber);
 		cardMap.put("cardAlias", cardAlias);
 		cardMap.put("billingAddress", BillToAddress.getBillingAdressMap(zipCode));
+		cardMap.put("primaryCard", primaryCardFlag);
 		List<Map<String, Object>> cards = new ArrayList<Map<String, Object>>();
 		cards.add(cardMap);
 		return cards;
@@ -149,4 +152,18 @@ public class Card {
 		cardMap.put("transactionAmount", transactionAmount);
 		return cardMap;
 	}
+
+		public static Map<String, Object> getCardsListDigitalWalletMap(String cardHolderName, String type,
+																		  String cardNumber, String expirationNumber,
+																		  String cardAlias, String zipCode, boolean primaryCardFlag){
+			Map<String, Object> cardMap = new HashMap<String, Object>();
+			cardMap.put("cardHolderName", cardHolderName);
+			cardMap.put("cardType", type);
+			cardMap.put("cardNumber", cardNumber);
+			cardMap.put("cardExpiryDate", expirationNumber);
+			cardMap.put("cardAlias", cardAlias);
+			cardMap.put("billingAddress", BillToAddress.getBillingAdressMap(zipCode));
+			cardMap.put("primaryCard", primaryCardFlag);
+			return cardMap;
+		}
 }
