@@ -1,12 +1,6 @@
 package pageobjects;
 
-import static org.testng.Assert.assertNotNull;
-
-import java.io.IOException;
-import java.util.Arrays;
-import java.util.Collections;
-import java.util.List;
-
+import com.medfusion.common.utils.PropertyFileLoader;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.FindAll;
@@ -17,7 +11,12 @@ import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.openqa.selenium.support.ui.WebDriverWait;
 import org.testng.Assert;
 
-import com.medfusion.common.utils.PropertyFileLoader;
+import java.io.IOException;
+import java.util.Arrays;
+import java.util.Collections;
+import java.util.List;
+
+import static org.testng.Assert.assertNotNull;
 
 public class MerchantDetailsPage extends NavigationMenu {
 	protected static PropertyFileLoader testData;
@@ -56,6 +55,12 @@ public class MerchantDetailsPage extends NavigationMenu {
 
 	@FindBy(how = How.ID, using = "payApiCustomer")
 	private WebElement payApiCustomer;
+
+	@FindBy(how = How.ID, using = "doingBusinessAs")
+	private WebElement doingBusinessAs;
+
+	@FindBy(how = How.ID, using = "customerAccountNumber")
+	private WebElement customerAccountNumber;
 
 	// Accepted cards
 	@FindBy(how = How.XPATH, using = "//div[@data-ng-repeat='card in acceptedCards']/img[@alt='Visa']")
@@ -112,6 +117,9 @@ public class MerchantDetailsPage extends NavigationMenu {
 	@FindBy(how = How.XPATH, using = "//div[@id='feeSettlement']/following-sibling::div")
 	private WebElement feeSettlement;
 
+	@FindBy(how = How.XPATH, using = "//a[text()=' Edit General Merchant Info ']")
+	private WebElement editGeneralMerchantInfoButton;
+
 	public void verifyPageTitle() {
 
 		String title = this.driver.getTitle();
@@ -131,10 +139,12 @@ public class MerchantDetailsPage extends NavigationMenu {
 
 	}
 
-	public void verifyGeneralMerchantInformation(String practiceId) {
+	public void verifyGeneralMerchantInformation(String practiceId, String customerNo, String doingBusinessAsName) {
 
 		assertNotNull(payApiCustomer);
 		Assert.assertEquals(practiceID.getText(), practiceId);
+		Assert.assertEquals(customerAccountNumber.getText(), customerNo);
+		Assert.assertEquals(doingBusinessAs.getText(), doingBusinessAsName);
 
 		if (payApiCustomers.contains(payApiCustomer.getText())) {
 
@@ -225,6 +235,12 @@ public class MerchantDetailsPage extends NavigationMenu {
 		wait.until(ExpectedConditions.visibilityOf(editRatesContractButton));
 		wait.until(ExpectedConditions.visibilityOf(settlement));
 	
+	}
+
+	public GeneralMerchantInformationPage clickEditGeneralMerchantInfoButton() throws InterruptedException {
+		editGeneralMerchantInfoButton.click();
+		return PageFactory.initElements(driver, GeneralMerchantInformationPage.class);
+
 	}
 
 }

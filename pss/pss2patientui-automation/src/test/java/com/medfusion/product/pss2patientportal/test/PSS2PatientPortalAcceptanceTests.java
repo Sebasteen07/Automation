@@ -7104,5 +7104,163 @@ public class PSS2PatientPortalAcceptanceTests extends BaseTestNGWebDriver {
 
 	}
 
+	@Test(enabled = true, groups = { "AcceptanceTests" }, retryAnalyzer = RetryAnalyzer.class)
+	public void testAcceptSameDayWithReserveShowProviderOffNG() throws Exception {
+		PSSPropertyFileLoader propertyData = new PSSPropertyFileLoader();
+		Appointment testData = new Appointment();
+		AdminUser adminuser = new AdminUser();
+		propertyData.setAdminNG(adminuser);
+		propertyData.setAppointmentResponseNG(testData);
+		PSSPatientUtils psspatientutils = new PSSPatientUtils();	
 
+		
+        setUp(propertyData.getProperty("mf.practice.id.ng"), propertyData.getProperty("mf.authuserid.am.ng"));
+
+        Response response = postAPIRequestAM.medfusionpracticeTimeZone(practiceId, "/medfusionpractice");
+		String timezone=aPIVerification.responseKeyValidationJson(response, "practiceTimezone");	
+		testData.setCurrentTimeZone(timezone);	
+		
+		log("Current Time Zone Is"+testData.getCurrentTimeZone());
+		Response response1 = postAPIRequestAM.resourceConfigRuleGet(practiceId);
+		validateAdapter.verifyResourceConfigRuleGet(response1);
+		JsonPath js = new JsonPath(response1.asString());
+		String ruleId = js.getString("id[0]");
+		String ruleId1 = js.getString("id[1]");
+		log("Rule id is    " + ruleId);
+		log("Rule id is    " + ruleId1);
+
+		Response responseForDeleteRule = postAPIRequestAM.deleteRuleById(practiceId, ruleId);
+		aPIVerification.responseCodeValidation(responseForDeleteRule, 200);
+
+		Response responseForDeleteRule1 = postAPIRequestAM.deleteRuleById(practiceId, ruleId1);
+		aPIVerification.responseCodeValidation(responseForDeleteRule1, 200);
+
+		Response responseRulePost = postAPIRequestAM.resourceConfigRulePost(practiceId,
+				payloadAM.resourceConfigRulePostPayloadTL());
+		aPIVerification.responseCodeValidation(responseRulePost, 200);
+		aPIVerification.responseKeyValidationJson(responseRulePost, "name");
+		aPIVerification.responseKeyValidationJson(responseRulePost, "rule");
+
+		Response responseRulePut = postAPIRequestAM.resourceConfigRulePost(practiceId,
+				payloadAM.resourceConfigRulePutPayloadLT());
+		aPIVerification.responseCodeValidation(responseRulePut, 200);
+		aPIVerification.responseKeyValidationJson(responseRulePut, "name");
+		aPIVerification.responseKeyValidationJson(responseRulePut, "rule");
+
+		
+		PSSAdminUtils adminUtils = new PSSAdminUtils();
+		logStep("Login to PSS 2.0 Admin portal");
+		adminUtils.acceptForSameDayWithReserveShowProviderOFF(driver, adminuser, testData);
+		log("Fetch the rules set in Admin");
+		String rule = adminuser.getRule();
+		log("rule are " + rule);
+		logStep("Move to PSS patient Portal 2.0 to book an Appointment");
+		logStep("Login to PSS Appointment");
+		DismissPage dismissPage = new DismissPage(driver, testData.getUrlLoginLess());
+		logStep("LoginlessPatientInformation****");
+		log("Clicked on Dismiss");
+		LoginlessPatientInformation loginlessPatientInformation = dismissPage.clickDismiss();
+		HomePage homePage = loginlessPatientInformation.fillNewPatientForm(testData.getFirstName(),
+				testData.getLastName(), testData.getDob(), testData.getEmail(), testData.getGender(),
+				testData.getZipCode(), testData.getPrimaryNumber());
+		homePage.btnStartSchedClick();
+		Location location = null;
+    	StartAppointmentInOrder startAppointmentInOrder = null;
+		startAppointmentInOrder = homePage.skipInsurance(driver);
+		location = startAppointmentInOrder.selectFirstLocation(PSSConstants.START_LOCATION);
+		logStep("Verfiy Location Page and location =" + testData.getLocation());
+		AppointmentPage appointment = location.selectAppointment(testData.getLocation());
+		logStep("Verfiy Appointment Page and appointment to be selected = " + testData.getAppointmenttype());
+		AppointmentDateTime aptDateTime = appointment.selectAptTyper(testData.getAppointmenttype(),
+				Boolean.valueOf(testData.getIsAppointmentPopup()));
+		
+		String date = aptDateTime.selectDate(testData.getIsNextDayBooking());
+		int size=aptDateTime.getAppointmentDateList();
+		logStep("Date selected is for App" + date);
+		String dateSize=String.valueOf(size);  
+		assertEquals(dateSize, "1");
+		log("current date is"+psspatientutils.currentESTDate(testData));
+		assertEquals(date, psspatientutils.currentESTDate(testData));
+	}
+	
+	@Test(enabled = true, groups = { "AcceptanceTests" }, retryAnalyzer = RetryAnalyzer.class)
+	public void testAcceptSameDayWithReserveShowProviderOffAT() throws Exception {
+		PSSPropertyFileLoader propertyData = new PSSPropertyFileLoader();
+		Appointment testData = new Appointment();
+		AdminUser adminuser = new AdminUser();
+		propertyData.setAdminAT(adminuser);
+		propertyData.setAppointmentResponseAT(testData);
+		PSSPatientUtils psspatientutils = new PSSPatientUtils();	
+
+		
+		setUp(propertyData.getProperty("mf.practice.id.at"), propertyData.getProperty("mf.authuserid.am.at"));
+		Response response = postAPIRequestAM.medfusionpracticeTimeZone(practiceId, "/medfusionpractice");
+		String timezone=aPIVerification.responseKeyValidationJson(response, "practiceTimezone");	
+		testData.setCurrentTimeZone(timezone);	
+		log("Current Time Zone Is"+testData.getCurrentTimeZone());
+		
+		Response response1 = postAPIRequestAM.resourceConfigRuleGet(practiceId);
+		validateAdapter.verifyResourceConfigRuleGet(response1);
+		JsonPath js = new JsonPath(response1.asString());
+		String ruleId = js.getString("id[0]");
+		String ruleId1 = js.getString("id[1]");
+		log("Rule id is    " + ruleId);
+		log("Rule id is    " + ruleId1);
+
+		Response responseForDeleteRule = postAPIRequestAM.deleteRuleById(practiceId, ruleId);
+		aPIVerification.responseCodeValidation(responseForDeleteRule, 200);
+
+		Response responseForDeleteRule1 = postAPIRequestAM.deleteRuleById(practiceId, ruleId1);
+		aPIVerification.responseCodeValidation(responseForDeleteRule1, 200);
+
+		Response responseRulePost = postAPIRequestAM.resourceConfigRulePost(practiceId,
+				payloadAM.resourceConfigRulePostPayloadTL());
+		aPIVerification.responseCodeValidation(responseRulePost, 200);
+		aPIVerification.responseKeyValidationJson(responseRulePost, "name");
+		aPIVerification.responseKeyValidationJson(responseRulePost, "rule");
+
+		Response responseRulePut = postAPIRequestAM.resourceConfigRulePost(practiceId,
+				payloadAM.resourceConfigRulePutPayloadLT());
+		aPIVerification.responseCodeValidation(responseRulePut, 200);
+		aPIVerification.responseKeyValidationJson(responseRulePut, "name");
+		aPIVerification.responseKeyValidationJson(responseRulePut, "rule");
+
+		
+		PSSAdminUtils adminUtils = new PSSAdminUtils();
+		logStep("Login to PSS 2.0 Admin portal");
+		adminUtils.acceptForSameDayWithReserveShowProviderOFF(driver, adminuser, testData);
+		log("Fetch the rules set in Admin");
+		String rule = adminuser.getRule();
+		log("rule are " + rule);
+		logStep("Move to PSS patient Portal 2.0 to book an Appointment");
+		logStep("Login to PSS Appointment");
+		DismissPage dismissPage = new DismissPage(driver, testData.getUrlLoginLess());
+		logStep("LoginlessPatientInformation****");
+		log("Clicked on Dismiss");
+		LoginlessPatientInformation loginlessPatientInformation = dismissPage.clickDismiss();
+		HomePage homePage = loginlessPatientInformation.fillNewPatientForm(testData.getFirstName(),
+				testData.getLastName(), testData.getDob(), testData.getEmail(), testData.getGender(),
+				testData.getZipCode(), testData.getPrimaryNumber());
+		homePage.btnStartSchedClick();
+		Location location = null;
+    	StartAppointmentInOrder startAppointmentInOrder = null;
+		startAppointmentInOrder = homePage.skipInsurance(driver);
+		location = startAppointmentInOrder.selectFirstLocation(PSSConstants.START_LOCATION);
+		logStep("Verfiy Location Page and location =" + testData.getLocation());
+		AppointmentPage appointment = location.selectAppointment(testData.getLocation());
+		logStep("Verfiy Appointment Page and appointment to be selected = " + testData.getAppointmenttype());
+		AppointmentDateTime aptDateTime = appointment.selectAptTyper(testData.getAppointmenttype(),
+				Boolean.valueOf(testData.getIsAppointmentPopup()));
+		
+		String date = aptDateTime.selectDate(testData.getIsNextDayBooking());
+		int size=aptDateTime.getAppointmentDateList();
+		logStep("Date selected is for App" + date);
+		String dateSize=String.valueOf(size);  
+		assertEquals(dateSize, "1");
+		log("current date is"+psspatientutils.currentESTDate(testData));
+		assertEquals(date, psspatientutils.currentESTDate(testData));
+		
+
+
+	}
 }
