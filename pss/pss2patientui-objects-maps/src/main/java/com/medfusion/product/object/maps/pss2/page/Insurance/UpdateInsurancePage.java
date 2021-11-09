@@ -23,9 +23,6 @@ public class UpdateInsurancePage extends PSS2MainPage {
 
 	@FindBy(how = How.XPATH, using = "//div[@id=\"react-select-3--value\"]")
 	private WebElement insuranceCarrier;
-
-//	@FindBy(how = How.XPATH, using = "//div[@class=\" css-tlfecz-indicatorContainer\"]")
-//	private WebElement selectArrow;
 	
 	@FindBy(how = How.XPATH, using = "//div[@class=\" css-1wy0on6\"]")
 	private WebElement selectArrow;

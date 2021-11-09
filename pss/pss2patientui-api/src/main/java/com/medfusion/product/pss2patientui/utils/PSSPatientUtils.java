@@ -358,7 +358,7 @@ public class PSSPatientUtils extends BaseTestNGWebDriver {
 			bookAnonymousApt(aptDateTime, testData, driver);
 		} else {
 			log("This is not an Anonymous flow so comes is else block");
-			clickOnSubmitAppt(true, aptDateTime, testData, driver);
+			clickOnSubmitAppt(testData.isInsuranceAtEnd(), aptDateTime, testData, driver);
 		}
 		log("Test Case Passed");
 	}
@@ -1177,11 +1177,8 @@ public class PSSPatientUtils extends BaseTestNGWebDriver {
 		log("Verify Confirmation page and Scheduled page");
 		log("Is Insurance Page Displayed= " + isInsuranceDisplated);
 		log("I am in clickOnSubmitAppt METHOD-------");
-		//Thread.sleep(2000);
 		if (isInsuranceDisplated) {
 			UpdateInsurancePage updateinsurancePage = aptDateTime.selectAppointmentDateAndTime(driver);
-//			ConfirmationPage confirmationpage = updateinsurancePage.skipInsuranceUpdate();
-
 			ConfirmationPage confirmationpage = updateinsurancePage.selectInsuranceAtEnd(testData.getMemberID(),
 					testData.getGroupID(), testData.getInsurancePhone());
 			appointmentToScheduled(confirmationpage, testData);
