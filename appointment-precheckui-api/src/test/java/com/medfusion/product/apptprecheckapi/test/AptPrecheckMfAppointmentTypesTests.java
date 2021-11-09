@@ -3,7 +3,10 @@ package com.medfusion.product.apptprecheckapi.test;
 import static org.testng.Assert.assertEquals;
 
 import java.io.IOException;
+import java.util.Random;
 
+import org.json.JSONArray;
+import org.json.JSONObject;
 import org.testng.ITestResult;
 import org.testng.annotations.BeforeMethod;
 import org.testng.annotations.BeforeTest;
@@ -19,6 +22,7 @@ import com.medfusion.product.object.maps.appt.precheck.util.AccessToken;
 import com.medfusion.product.object.maps.appt.precheck.util.HeaderConfig;
 import com.medfusion.product.object.maps.appt.precheck.util.PostAPIRequestMfAppointmentTypes;
 
+import io.restassured.path.json.JsonPath;
 import io.restassured.response.Response;
 
 public class AptPrecheckMfAppointmentTypesTests extends BaseTestNG {
@@ -51,15 +55,32 @@ public class AptPrecheckMfAppointmentTypesTests extends BaseTestNG {
 		log("Verifying the response");
 		assertEquals(response.getStatusCode(), 200);
 		apiVerification.responseTimeValidation(response);
+		apiVerification.verifyApptTypeKeyValidation(response, "id");
+		apiVerification.verifyApptTypeKeyValidation(response, "appointmentTypeId");
+		apiVerification.verifyApptTypeKeyValidation(response, "appointmentTypeName");
+		apiVerification.verifyApptTypeKeyValidation(response, "categoryId");
 	}
 
 	@Test(enabled = true, groups = { "APItest" }, retryAnalyzer = RetryAnalyzer.class)
 	public void testGETAppointmentsTypesUuid() throws IOException {
-		Response response = postAPIRequest.getAppointmentTypesUuid(propertyData.getProperty("mf.apt.types.uuid"),
+		Random random = new Random();
+		int randamNo = random.nextInt(100);
+		String integrationId = String.valueOf(randamNo);
+		Response postApptTypeResponse = postAPIRequest.aptpostAppointmentTypes(
+				payload.apptTypePayload(integrationId, propertyData.getProperty("mf.apt.scheduler.practice.id")),
+				headerConfig.HeaderwithToken(getaccessToken), propertyData.getProperty("mf.apt.scheduler.practice.id"));
+		assertEquals(postApptTypeResponse.getStatusCode(), 200);
+		JsonPath js = new JsonPath(postApptTypeResponse.asString());
+		String getUuid = js.getString("id");
+
+		log("Get Appointment type");
+		Response response = postAPIRequest.getAppointmentTypesUuid(getUuid,
 				headerConfig.HeaderwithToken(getaccessToken));
 		log("Verifying the response");
 		assertEquals(response.getStatusCode(), 200);
 		apiVerification.responseTimeValidation(response);
+		apiVerification.verifyCreateNewApptType(response, propertyData.getProperty("mf.appt.type.id"),
+				propertyData.getProperty("mf.appt.type.name"), propertyData.getProperty("mf.appt.type.category.id"));
 	}
 
 	@Test(enabled = true, groups = { "APItest" }, retryAnalyzer = RetryAnalyzer.class)
@@ -73,24 +94,22 @@ public class AptPrecheckMfAppointmentTypesTests extends BaseTestNG {
 	}
 
 	@Test(enabled = true, groups = { "APItest" }, retryAnalyzer = RetryAnalyzer.class)
-	public void testPostAppointmentTypes() throws IOException {
-		Response response = postAPIRequest.aptpostAppointmentTypes(propertyData.getProperty("mf.apt.types.uuid"),
-				payload.apptTypePayload(propertyData.getProperty("mf.apt.types.uuid"),
-						propertyData.getProperty("mf.apt.scheduler.practice.id")),
+	public void testPostCreateNewApptType() throws IOException {
+		Random random = new Random();
+		int randamNo = random.nextInt(100);
+		String integrationId = String.valueOf(randamNo);
+		Response response = postAPIRequest.aptpostAppointmentTypes(
+				payload.apptTypePayload(integrationId, propertyData.getProperty("mf.apt.scheduler.practice.id")),
 				headerConfig.HeaderwithToken(getaccessToken), propertyData.getProperty("mf.apt.scheduler.practice.id"));
-		log("Verifying the response");
-		log("Payload- " + payload.apptTypePayload(propertyData.getProperty("mf.apt.types.uuid"),
-				propertyData.getProperty("mf.apt.scheduler.practice.id")));
 
+		log("Verifying the response");
 		if (response.getStatusCode() == 200) {
 			log("Post Appointment Type");
 			assertEquals(response.getStatusCode(), 200);
-			apiVerification.responseKeyValidationJson(response, "id");
-			apiVerification.responseKeyValidationJson(response, "appointmentTypeId");
-			apiVerification.responseKeyValidationJson(response, "appointmentTypeName");
-			apiVerification.responseKeyValidationJson(response, "categoryId");
-			apiVerification.responseKeyValidationJson(response, "categoryName");
-			apiVerification.responseKeyValidationJson(response, "active");
+			apiVerification.verifyCreateNewApptType(response, propertyData.getProperty("mf.appt.type.id"),
+					propertyData.getProperty("mf.appt.type.name"),
+					propertyData.getProperty("mf.appt.type.category.id"));
+
 		}
 		if (response.getStatusCode() == 400) {
 			log("Appointment type already exists");
@@ -101,34 +120,62 @@ public class AptPrecheckMfAppointmentTypesTests extends BaseTestNG {
 	}
 
 	@Test(enabled = true, groups = { "APItest" }, retryAnalyzer = RetryAnalyzer.class)
-	public void testPostApptTypeUpdate() throws IOException {
+	public void testPostOneApptTypeUpdate() throws IOException {
 		Response response = postAPIRequest.aptpostUpdateAppointmentTypes(
 				propertyData.getProperty("mf.app.type.integration.id"),
 				payload.updateApptTypePayload(propertyData.getProperty("mf.app.type.integration.id"),
 						propertyData.getProperty("mf.apt.scheduler.practice.id")),
 				headerConfig.HeaderwithToken(getaccessToken), propertyData.getProperty("mf.apt.scheduler.practice.id"));
 		log("Verifying the response");
-		log("Payload- " + payload.updateApptTypePayload(propertyData.getProperty("mf.apt.types.uuid"),
-				propertyData.getProperty("mf.apt.scheduler.practice.id")));
-
 		assertEquals(response.getStatusCode(), 200);
 		apiVerification.responseTimeValidation(response);
 	}
 	
 	@Test(enabled = true, groups = { "APItest" }, retryAnalyzer = RetryAnalyzer.class)
+	public void testPostMoreThanOneApptTypeUpdate() throws IOException {
+		Response response = postAPIRequest.aptpostUpdateAppointmentTypes(
+				propertyData.getProperty("mf.app.type.integration.id"),
+				payload.updateMorethanOneApptTypePayload(propertyData.getProperty("mf.app.type.integration.id"),
+						propertyData.getProperty("mf.apt.scheduler.practice.id")),
+				headerConfig.HeaderwithToken(getaccessToken), propertyData.getProperty("mf.apt.scheduler.practice.id"));
+		log("Verifying the response");
+		assertEquals(response.getStatusCode(), 200);
+		apiVerification.responseTimeValidation(response);
+	}
+
+	@Test(enabled = true, groups = { "APItest" }, retryAnalyzer = RetryAnalyzer.class)
 	public void testPutApptTypesUuid() throws IOException {
-		Response response = postAPIRequest.aptPutUpdateAppointmentTypesUuid(
-				propertyData.getProperty("mf.appointment.Type.uuid.update"),
-				payload.updateApptTypesUuidPayload(propertyData.getProperty("mf.appointment.Type.Id"),
-						propertyData.getProperty("mf.app.type.integration.id"),
+		Random random = new Random();
+		int randamNo = random.nextInt(100);
+		String integrationId = String.valueOf(randamNo);
+		Response postApptTypeResponse = postAPIRequest.aptpostAppointmentTypes(
+				payload.apptTypePayload(integrationId, propertyData.getProperty("mf.apt.scheduler.practice.id")),
+				headerConfig.HeaderwithToken(getaccessToken), propertyData.getProperty("mf.apt.scheduler.practice.id"));
+		assertEquals(postApptTypeResponse.getStatusCode(), 200);
+
+		JsonPath js = new JsonPath(postApptTypeResponse.asString());
+		String getUuid = js.getString("id");
+
+		Response response = postAPIRequest.aptPutUpdateAppointmentTypesUuid(getUuid,
+				payload.updateApptTypesUuidPayload(propertyData.getProperty("mf.appointment.type.id"), integrationId,
 						propertyData.getProperty("mf.apt.scheduler.practice.id")),
 				headerConfig.HeaderwithToken(getaccessToken));
 		log("Verifying the response");
-		log("Payload- " + payload.updateApptTypesUuidPayload(propertyData.getProperty("mf.appointment.Type.Id"),
-				propertyData.getProperty("mf.app.type.integration.id"),
-				propertyData.getProperty("mf.apt.scheduler.practice.id")));
-
 		assertEquals(response.getStatusCode(), 200);
+		apiVerification.responseTimeValidation(response);
+		apiVerification.verifyCreateNewApptType(response, propertyData.getProperty("mf.appointment.type.id"),
+				propertyData.getProperty("mf.appt.type.name"), propertyData.getProperty("mf.appt.type.category.id"));
+	}
+	
+	@Test(enabled = true, groups = { "APItest" }, retryAnalyzer = RetryAnalyzer.class)
+	public void testPutApptTypesWithIncorrectUuid() throws IOException {
+
+		Response response = postAPIRequest.aptPutUpdateAppointmentTypesUuid(propertyData.getProperty("mf.apt.types.incorrect.uuid"),
+				payload.updateApptTypesUuidPayload(propertyData.getProperty("mf.appointment.type.id"), propertyData.getProperty("mf.app.type.integration.id"),
+						propertyData.getProperty("mf.apt.scheduler.practice.id")),
+				headerConfig.HeaderwithToken(getaccessToken));
+		log("Verifying the response");
+		assertEquals(response.getStatusCode(), 500);
 		apiVerification.responseTimeValidation(response);
 	}
 

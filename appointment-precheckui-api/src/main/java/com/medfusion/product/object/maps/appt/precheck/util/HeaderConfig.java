@@ -33,5 +33,10 @@ public class HeaderConfig {
 		df.put("", "");		
 		return df;
 	}
+	public Map<String, String> HeaderWithToken(String bearerToken) {
+		Map<String, String> df = new HashMap<String, String>();
+		df.put("Authorization", "Bearer " + bearerToken);
+		return df;
+	}
 	
 }
