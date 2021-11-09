@@ -611,7 +611,6 @@ public class PracticePortalAcceptanceTests extends BaseTestNGWebDriver {
 		PatientSearchPage pPatientSearchPage = pPracticeHomePage.clickPatientSearchLink();
 
 		logStep("Search for patient in Patient Search");
-		// pPatientSearchPage.setPatientSearchFields();
 		pPatientSearchPage.searchForPatientWithPatientID(testData.getProperty("search.valid.patientID"));
 
 		logStep("Verify the Search Result");
@@ -620,7 +619,6 @@ public class PracticePortalAcceptanceTests extends BaseTestNGWebDriver {
 		pPracticeHomePage.clickPatientSearchLink();
 		
 		logStep("Search for patient in Patient Search");
-		// pPatientSearchPage.setPatientSearchFields();
 		pPatientSearchPage.searchForPatientWithPatientID(testData.getProperty("search.invalid.patientID"));
 		assertTrue(pPatientSearchPage.isNoRecordsFoundMsgDisplayed());
 	}
