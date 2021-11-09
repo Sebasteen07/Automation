@@ -620,7 +620,7 @@ public class PracticePortalAcceptanceTests extends BaseTestNGWebDriver {
 		
 		pPatientSearchPage.clickOnAddNewPatient();
 		patientActivationPage.setInitialDetailsFields("Guardian", patientLastName, "F",
-				"101010", testData.getProperty("phone.number"), patientEmail, testData.getProperty("dob.month"),
+				PracticeConstants.PATIENT_ID, testData.getProperty("phone.number"), patientEmail, testData.getProperty("dob.month"),
 				testData.getProperty("dob.day"), testData.getProperty("dob.year"), "address1", "address2", "city", "Alabama",
 				testData.getProperty("zip.code"));
 		assertTrue(pPatientSearchPage.isDuplicatePatientIDErrorDisplayed());
