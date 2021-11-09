@@ -51,6 +51,7 @@ public class PracticeConstants {
 		public final static String PATIENT_FIRST_NAME = "ihgqa";
 		public final static String PATIENT_LAST_NAME = "automation";
 		public final static String PATIENT_EMAIL = "ihgqa.dev3@gmail.com";
+		public final static String PATIENT_ID="101010";
 
 		// Quick Send //TODO check usage of this strings
 		public final static String PDF_NAME = "QuickSend";

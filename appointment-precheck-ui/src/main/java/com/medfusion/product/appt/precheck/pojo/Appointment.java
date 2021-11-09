@@ -4,4 +4,6 @@ package com.medfusion.product.appt.precheck.pojo;
 public class Appointment {
 	public static String bannerMessage;
 	public static String pageNo;
+	public static String patientId;
+	public static String apptId;
 }
