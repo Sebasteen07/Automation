@@ -1115,8 +1115,8 @@ public class PSS2PatientPortalAcceptanceTests extends BaseTestNGWebDriver {
 
 		Response response;
 
-		setUp(propertyData.getProperty("mf.practice.id.gw"), propertyData.getProperty("mf.authuserid.am.gw"));
-		response = postAPIRequestAM.resourceConfigSavePost(practiceId, payloadAM.insuranceAtStartorEnd(false));
+		setUp(propertyData.getProperty("mf.practice.id.ge"), propertyData.getProperty("mf.authuserid.am.ge"));
+		response = postAPIRequestAM.resourceConfigSavePost(practiceId, payloadAM.insuranceAtStartorEndAT(false));
 		aPIVerification.responseCodeValidation(response, 200);
 
 		logStep("Set up the desired rule in Admin UI using API");
@@ -7042,7 +7042,7 @@ public class PSS2PatientPortalAcceptanceTests extends BaseTestNGWebDriver {
 		testData.setCurrentTimeZone(timezone);	
 		log("Current Time Zone Is"+testData.getCurrentTimeZone());
 		
-		/*Response response1 = postAPIRequestAM.resourceConfigRuleGet(practiceId);
+		Response response1 = postAPIRequestAM.resourceConfigRuleGet(practiceId);
 		validateAdapter.verifyResourceConfigRuleGet(response1);
 		JsonPath js = new JsonPath(response1.asString());
 		String ruleId = js.getString("id[0]");
@@ -7100,7 +7100,7 @@ public class PSS2PatientPortalAcceptanceTests extends BaseTestNGWebDriver {
 			assertEquals(date, psspatientutils.nextDate(testData));
 		} else {
 			assertEquals(date, psspatientutils.currentESTDate(testData));
-		}*/
+		}
 
 	}
 
