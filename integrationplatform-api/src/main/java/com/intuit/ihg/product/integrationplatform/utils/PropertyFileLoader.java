@@ -1949,6 +1949,10 @@ public class PropertyFileLoader {
 	public String getAppointmentRequestV3URL() {
 		return property.getProperty("appointment.request.v3url");
 	}
+	
+	public String getAppointmentRequestV4URL() {
+		return property.getProperty("appointment.request.v4url");
+	}
 
 	public String getPATIENT_INVITE_RESTV3URL() {
 		return property.getProperty("resturl.pidcv3");
