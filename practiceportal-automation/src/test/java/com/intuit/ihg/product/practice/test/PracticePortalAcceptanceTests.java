@@ -627,6 +627,29 @@ public class PracticePortalAcceptanceTests extends BaseTestNGWebDriver {
 		assertTrue(pPatientSearchPage.isPatientCreationErrorDisplayed());		
 	}
 
+	@Test(enabled = true, groups = { "AcceptanceTests" }, retryAnalyzer = RetryAnalyzer.class)
+	public void testSearchValidAndInvalidPatientID() throws Exception {
+		logStep("Login to Practice Portal");
+		PracticeLoginPage practiceLogin = new PracticeLoginPage(driver, testData.getUrl());
+		PracticeHomePage pPracticeHomePage = practiceLogin.login(testData.getDoctorLogin(),
+				testData.getDoctorPassword());
+
+		logStep("Click on Patient Search Link");
+		PatientSearchPage pPatientSearchPage = pPracticeHomePage.clickPatientSearchLink();
+
+		logStep("Search for patient in Patient Search");
+		pPatientSearchPage.searchForPatientWithPatientID(testData.getProperty("search.valid.patientID"));
+
+		logStep("Verify the Search Result");
+		IHGUtil.waitForElement(driver, 30, pPatientSearchPage.searchResult);
+		assertEquals(true, pPatientSearchPage.searchResult.getText().contains(PracticeConstants.PATIENT_FIRST_NAME));
+		pPracticeHomePage.clickPatientSearchLink();
+		
+		logStep("Search for patient in Patient Search");
+		pPatientSearchPage.searchForPatientWithPatientID(testData.getProperty("search.invalid.patientID"));
+		assertTrue(pPatientSearchPage.isNoRecordsFoundMsgDisplayed());
+	}
+	
 	private String getRedirectUrl(String originUrl) {
 		log("Navigating to input URL and checking redirection for 10 seconds");
 		driver.get(originUrl);
