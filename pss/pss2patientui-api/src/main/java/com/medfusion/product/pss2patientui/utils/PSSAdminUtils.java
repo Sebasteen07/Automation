@@ -746,9 +746,6 @@ public class PSSAdminUtils extends BaseTestNGWebDriver{
 			appointment.setUrlAnonymous(accessRule.getAnonymousUrl());
 		}
 		PatientFlow patientFlow = accessRule.gotoPatientFlowTab();
-
-		setRulesNoSpecialitySet1(patientFlow);
-
 		adminUser.setRule(patientFlow.getRule());
 		log("rule= " + patientFlow.getRule());
 

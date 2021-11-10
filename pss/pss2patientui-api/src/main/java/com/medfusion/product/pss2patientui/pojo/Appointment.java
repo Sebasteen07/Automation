@@ -155,6 +155,7 @@ public class Appointment {
 	private String urlAnonymousNG;
 	private boolean isAnonymousFlow = false;
 	private boolean insuranceVisible = false;
+	private boolean insuranceAtEnd=false;
 	private boolean startPointPresent = false;
 	private boolean resourcetoggleStatus = false;
 	private boolean accepttoggleStatus = false;
@@ -274,6 +275,14 @@ public class Appointment {
 	public Appointment() {
 	}
 	
+	public boolean isInsuranceAtEnd() {
+		return insuranceAtEnd;
+	}
+
+	public void setInsuranceAtEnd(boolean insuranceAtEnd) {
+		this.insuranceAtEnd = insuranceAtEnd;
+	}
+
 	public String getPatientDemographicsDOB() {
 		return patientDemographicsDOB;
 	}

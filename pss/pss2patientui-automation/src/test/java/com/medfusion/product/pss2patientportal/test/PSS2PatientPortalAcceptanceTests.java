@@ -11,6 +11,8 @@ import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
+
+import org.json.JSONArray;
 import org.testng.annotations.DataProvider;
 import org.testng.annotations.Parameters;
 import org.testng.annotations.Test;
@@ -586,6 +588,9 @@ public class PSS2PatientPortalAcceptanceTests extends BaseTestNGWebDriver {
 		AdminUser adminuser = new AdminUser();
 		propertyData.setAdminGE(adminuser);
 		propertyData.setAppointmentResponseGE(testData);
+		
+		testData.setInsuranceAtEnd(true);
+		
 		PSSPatientUtils psspatientutils = new PSSPatientUtils();
 		PSSAdminUtils adminUtils = new PSSAdminUtils();
 		log("Login to PSS 2.0 Admin portal");
@@ -953,6 +958,10 @@ public class PSS2PatientPortalAcceptanceTests extends BaseTestNGWebDriver {
 	@Test(enabled = true, groups = { "AcceptanceTests" }, retryAnalyzer = RetryAnalyzer.class)
 	public void testBookApptWithoutLastQuestionNG() throws Exception {
 
+		logStep("This TC verifies the Book Appointment without last question on confirmation Screen ");
+		logStep("This TC verifies the Book Appointment with insurance at End- Loginless flow");
+		logStep("This TC verifies the loginless flow for existing patient");
+
 		PSSPropertyFileLoader propertyData = new PSSPropertyFileLoader();
 		Appointment testData = new Appointment();
 		AdminUser adminUser = new AdminUser();
@@ -963,7 +972,29 @@ public class PSS2PatientPortalAcceptanceTests extends BaseTestNGWebDriver {
 		PSSPatientUtils psspatientutils = new PSSPatientUtils();
 		PSSAdminUtils adminUtils = new PSSAdminUtils();
 		
+		Response response;
+
+		setUp(propertyData.getProperty("mf.practice.id.ng"), propertyData.getProperty("mf.authuserid.am.ng"));
+
 		testData.setFutureApt(false);
+		testData.setInsuranceAtEnd(true);
+
+		logStep("Set up the desired rule in Admin UI using API");
+		response = postAPIRequestAM.resourceConfigRuleGet(practiceId);
+		JSONArray arr = new JSONArray(response.body().asString());
+		int l = arr.length();
+		log("Length is- " + l);
+
+		for (int i = 0; i < l; i++) {
+			int ruleId = arr.getJSONObject(i).getInt("id");
+			log("Object No." + i + "- " + ruleId);
+			Response responseForDeleteRule = postAPIRequestAM.deleteRuleById(practiceId, Integer.toString(ruleId));
+			aPIVerification.responseCodeValidation(responseForDeleteRule, 200);
+		}
+
+		Response responseRulePost = postAPIRequestAM.resourceConfigRulePost(practiceId,
+				payloadAM.resourceConfigRulePutPayload());
+		aPIVerification.responseCodeValidation(responseRulePost, 200);
 
 		logStep("Login to PSS 2.0 Admin portal and do the seetings for Last Question Required");
 		adminUtils.lastQuestionEnable(driver, adminUser, testData, PSSConstants.LOGINLESS);
@@ -992,6 +1023,9 @@ public class PSS2PatientPortalAcceptanceTests extends BaseTestNGWebDriver {
 		homepage.btnStartSchedClick();
 		psspatientutils.selectAFlow(driver, rule, homepage, testData);
 		
+		response = postAPIRequestAM.resourceConfigSavePost(practiceId, payloadAM.insuranceAtStartorEnd(true));
+		aPIVerification.responseCodeValidation(response, 200);
+
 	}
 
 	@Test(enabled = true, groups = { "AcceptanceTests" }, retryAnalyzer = RetryAnalyzer.class)
@@ -1006,6 +1040,34 @@ public class PSS2PatientPortalAcceptanceTests extends BaseTestNGWebDriver {
 
 		PSSPatientUtils psspatientutils = new PSSPatientUtils();
 		PSSAdminUtils adminUtils = new PSSAdminUtils();
+		
+		testData.setFutureApt(true);
+
+		logStep("Make the settings in admin- Insurance at end");
+		testData.setInsuranceAtEnd(true);
+
+		Response response;
+
+		setUp(propertyData.getProperty("mf.practice.id.at"), propertyData.getProperty("mf.authuserid.am.at"));
+		response = postAPIRequestAM.resourceConfigSavePost(practiceId, payloadAM.insuranceAtStartorEndAT(false));
+		aPIVerification.responseCodeValidation(response, 200);
+
+		logStep("Set up the desired rule in Admin UI using API");
+		response = postAPIRequestAM.resourceConfigRuleGet(practiceId);
+		JSONArray arr = new JSONArray(response.body().asString());
+		int l = arr.length();
+		log("Length is- " + l);
+
+		for (int i = 0; i < l; i++) {
+			int ruleId = arr.getJSONObject(i).getInt("id");
+			log("Object No." + i + "- " + ruleId);
+			Response responseForDeleteRule = postAPIRequestAM.deleteRuleById(practiceId, Integer.toString(ruleId));
+			aPIVerification.responseCodeValidation(responseForDeleteRule, 200);
+		}
+
+		Response responseRulePost = postAPIRequestAM.resourceConfigRulePost(practiceId,
+				payloadAM.resourceConfigRulePutPayload());
+		aPIVerification.responseCodeValidation(responseRulePost, 200);
 
 		logStep("Login to PSS 2.0 Admin portal and do the seetings for Last Question Required");
 		adminUtils.lastQuestionEnable(driver, adminUser, testData, PSSConstants.LOGINLESS);
@@ -1034,6 +1096,8 @@ public class PSS2PatientPortalAcceptanceTests extends BaseTestNGWebDriver {
 		homepage.btnStartSchedClick();
 		psspatientutils.selectAFlow(driver, rule, homepage, testData);
 
+		response = postAPIRequestAM.resourceConfigSavePost(practiceId, payloadAM.insuranceAtStartorEndAT(true));
+		aPIVerification.responseCodeValidation(response, 200);
 	}
 
 	@Test(enabled = true, groups = { "AcceptanceTests" }, retryAnalyzer = RetryAnalyzer.class)
@@ -1044,7 +1108,33 @@ public class PSS2PatientPortalAcceptanceTests extends BaseTestNGWebDriver {
 		AdminUser adminUser = new AdminUser();
 
 		propertyData.setAdminGE(adminUser);
-		propertyData.setAppointmentResponseGE(testData);
+		propertyData.setAppointmentResponseGE(testData);		
+
+		logStep("Make the settings in admin- Insurance at end");
+		testData.setInsuranceAtEnd(true);
+
+		Response response;
+
+		setUp(propertyData.getProperty("mf.practice.id.ge"), propertyData.getProperty("mf.authuserid.am.ge"));
+		response = postAPIRequestAM.resourceConfigSavePost(practiceId, payloadAM.insuranceAtStartorEndAT(false));
+		aPIVerification.responseCodeValidation(response, 200);
+
+		logStep("Set up the desired rule in Admin UI using API");
+		response = postAPIRequestAM.resourceConfigRuleGet(practiceId);
+		JSONArray arr = new JSONArray(response.body().asString());
+		int l = arr.length();
+		log("Length is- " + l);
+
+		for (int i = 0; i < l; i++) {
+			int ruleId = arr.getJSONObject(i).getInt("id");
+			log("Object No." + i + "- " + ruleId);
+			Response responseForDeleteRule = postAPIRequestAM.deleteRuleById(practiceId, Integer.toString(ruleId));
+			aPIVerification.responseCodeValidation(responseForDeleteRule, 200);
+		}
+
+		Response responseRulePost = postAPIRequestAM.resourceConfigRulePost(practiceId,
+				payloadAM.resourceConfigRulePutPayload());
+		aPIVerification.responseCodeValidation(responseRulePost, 200);
 
 		PSSPatientUtils psspatientutils = new PSSPatientUtils();
 		PSSAdminUtils adminUtils = new PSSAdminUtils();
@@ -1075,6 +1165,9 @@ public class PSS2PatientPortalAcceptanceTests extends BaseTestNGWebDriver {
 		logStep("Start booking an appointment in PSS---> PATIENT UI STEPS ");
 		homepage.btnStartSchedClick();
 		psspatientutils.selectAFlow(driver, rule, homepage, testData);
+		
+		response = postAPIRequestAM.resourceConfigSavePost(practiceId, payloadAM.insuranceAtStartorEnd(true));
+		aPIVerification.responseCodeValidation(response, 200);
 
 	}
 
@@ -1088,6 +1181,32 @@ public class PSS2PatientPortalAcceptanceTests extends BaseTestNGWebDriver {
 		propertyData.setAdminGW(adminUser);
 		propertyData.setAppointmentResponseGW(testData);
 
+		logStep("Make the settings in admin- Insurance at end");
+		testData.setInsuranceAtEnd(true);
+
+		Response response;
+
+		setUp(propertyData.getProperty("mf.practice.id.gw"), propertyData.getProperty("mf.authuserid.am.gw"));
+		response = postAPIRequestAM.resourceConfigSavePost(practiceId, payloadAM.insuranceAtStartorEnd(false));
+		aPIVerification.responseCodeValidation(response, 200);
+
+		logStep("Set up the desired rule in Admin UI using API");
+		response = postAPIRequestAM.resourceConfigRuleGet(practiceId);
+		JSONArray arr = new JSONArray(response.body().asString());
+		int l = arr.length();
+		log("Length is- " + l);
+
+		for (int i = 0; i < l; i++) {
+			int ruleId = arr.getJSONObject(i).getInt("id");
+			log("Object No." + i + "- " + ruleId);
+			Response responseForDeleteRule = postAPIRequestAM.deleteRuleById(practiceId, Integer.toString(ruleId));
+			aPIVerification.responseCodeValidation(responseForDeleteRule, 200);
+		}
+
+		Response responseRulePost = postAPIRequestAM.resourceConfigRulePost(practiceId,
+				payloadAM.resourceConfigRulePutPayload());
+		aPIVerification.responseCodeValidation(responseRulePost, 200);
+
 		PSSPatientUtils psspatientutils = new PSSPatientUtils();
 		PSSAdminUtils adminUtils = new PSSAdminUtils();
 
@@ -1117,6 +1236,9 @@ public class PSS2PatientPortalAcceptanceTests extends BaseTestNGWebDriver {
 		logStep("Start booking an appointment in PSS---> PATIENT UI STEPS ");
 		homepage.btnStartSchedClick();
 		psspatientutils.selectAFlow(driver, rule, homepage, testData);
+		
+		response = postAPIRequestAM.resourceConfigSavePost(practiceId, payloadAM.insuranceAtStartorEnd(true));
+		aPIVerification.responseCodeValidation(response, 200);
 
 	}
 
@@ -3592,7 +3714,7 @@ public class PSS2PatientPortalAcceptanceTests extends BaseTestNGWebDriver {
 				testData.getPatientPassword());
 		log("Step 6 : dont set Is Next Day Booking ");
 		testData.setIsNextDayBooking(false);
-		log("Step 7: Select the flow as per the rule." + rule);
+		logStep("Step 7: Select the flow as per the rule." + rule);
 		testData.setIsCancelApt(false);
 		testData.setIsNextDayBooking(false);
 		psspatientutils.selectAFlow(driver, rule, homepage, testData);
@@ -3601,39 +3723,52 @@ public class PSS2PatientPortalAcceptanceTests extends BaseTestNGWebDriver {
 	@Test(enabled = true, groups = { "AcceptanceTests" }, retryAnalyzer = RetryAnalyzer.class)
 	public void testSSOFlowNG() throws Exception {
 
-		log("Test To Verify if a Patient is able to login via SSO Flow from Patient 2.0 portal.");
-		log("Step 1: Login to Patient Portal 2.0");
+		logStep("Test To Verify if a Patient is able to login via SSO Flow from Patient 2.0 portal.");
+		logStep("This test verfies the book appointment with Insurance at the end of workflow");
+		
+		logStep("Login to Patient Portal 2.0");
 		PSSPropertyFileLoader propertyData = new PSSPropertyFileLoader();
 		Appointment testData = new Appointment();
 		AdminUser adminuser = new AdminUser();
 		propertyData.setAdminNG(adminuser);
 		propertyData.setAppointmentResponseNG(testData);
+		
+		logStep("Make the settings in admin- Insurance at end");		
+		testData.setInsuranceAtEnd(true);	
+		
+		Response response;
+		
+		setUp(propertyData.getProperty("mf.practice.id.ng"), propertyData.getProperty("mf.authuserid.am.ng"));
+		response = postAPIRequestAM.resourceConfigSavePost(practiceId, payloadAM.insuranceAtStartorEnd(false));
+		aPIVerification.responseCodeValidation(response, 200);
+		
 		PSSPatientUtils psspatientutils = new PSSPatientUtils();
 		PSSAdminUtils adminUtils = new PSSAdminUtils();
-		log("Login to PSS 2.0 Admin portal");
+		
+		logStep("Login to PSS 2.0 Admin portal");
 		adminUtils.getInsuranceStateandRule(driver, adminuser, testData);
-		log("Fetch the rules set in Admin");
+		logStep("Fetch the rules set in Admin");
 		String rule = adminuser.getRule();
-		log("rule are " + rule);
+		logStep("rule are " + rule);
 		rule = rule.replaceAll(" ", "");
 		JalapenoLoginPage loginPage = new JalapenoLoginPage(driver, testData.getPatientPortalURL());
 		JalapenoHomePage homePage = loginPage.login(testData.getPatientPortalUserName(),
 				testData.getPatientPortalPassword());
-		log("Detecting if Home Page is opened");
+		logStep("Detecting if Home Page is opened");
 		homePage.clickFeaturedAppointmentsReq();
-		log("Wait for PSS 2.0 Patient UI to be loaded.");
-		Thread.sleep(6000);
-		log("Switching tabs");
+		logStep("Wait for PSS 2.0 Patient UI to be loaded.");
+		logStep("Switching tabs");
 		String currentUrl = psspatientutils.switchtabs(driver);
 		HomePage homepage = new HomePage(driver, currentUrl);
-		Thread.sleep(15000);
 		if (homepage.isPopUP()) {
 			homepage.popUPClick();
 		}
-
-		log("Successfully upto Home page");
+		logStep("Successfully upto Home page");
 		homepage.btnStartSchedClick();
 		psspatientutils.selectAFlow(driver, rule, homepage, testData);
+		
+		response = postAPIRequestAM.resourceConfigSavePost(practiceId, payloadAM.insuranceAtStartorEnd(true));
+		aPIVerification.responseCodeValidation(response, 200);
 	}
 
 	@Test(enabled = true, groups = { "AcceptanceTests" }, retryAnalyzer = RetryAnalyzer.class)
@@ -5847,6 +5982,7 @@ public class PSS2PatientPortalAcceptanceTests extends BaseTestNGWebDriver {
 
 		testData.setFutureApt(true);
 		testData.setInsuranceDetails(true);
+		testData.setInsuranceAtEnd(true);
 
 		logStep("Test Data for book an appointment");
 		log(testData.getUrlLoginLess());
