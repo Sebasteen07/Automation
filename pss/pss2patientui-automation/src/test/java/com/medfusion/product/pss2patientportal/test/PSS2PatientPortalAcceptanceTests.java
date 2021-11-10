@@ -7259,8 +7259,60 @@ public class PSS2PatientPortalAcceptanceTests extends BaseTestNGWebDriver {
 		assertEquals(dateSize, "1");
 		log("current date is"+psspatientutils.currentESTDate(testData));
 		assertEquals(date, psspatientutils.currentESTDate(testData));
+	}
+	
+	@Test(enabled = true, groups = { "AcceptanceTests" }, retryAnalyzer = RetryAnalyzer.class)
+	public void testDisableAnonymous() throws Exception {
+		PSSPropertyFileLoader propertyData = new PSSPropertyFileLoader();
+		Appointment testData = new Appointment();
+		AdminUser adminuser = new AdminUser();
+		propertyData.setAdminNG(adminuser);
+		propertyData.setAppointmentResponseNG(testData);
 		
+		Response response;
 
+		setUp(propertyData.getProperty("mf.practice.id.ng"), propertyData.getProperty("mf.authuserid.am.ng"));
+		
+		response= postAPIRequestAM.resourceConfigSavePost(practiceId, payloadAM.anonymousConfg(false));
+		aPIVerification.responseCodeValidation(response, 200);
+		
+		response= postAPIRequestAM.anonymousGet(practiceId, "/anonymous");
+		
+		JsonPath js = new JsonPath(response.asString());
+		String loginlessLink=js.getString("link");
+		DismissPage dismissPage = new DismissPage(driver, loginlessLink);
+		Thread.sleep(1000);
+		String errorMessage=dismissPage.verifyErrorPage();
+		assertEquals(errorMessage, "Link is currently unavailable for the practice.","Error message in wrong");
+		
+		response= postAPIRequestAM.resourceConfigSavePost(practiceId, payloadAM.anonymousConfg(true));
+	}
+	
+	@Test(enabled = true, groups = { "AcceptanceTests" }, retryAnalyzer = RetryAnalyzer.class)
+	public void testDisableLoginless() throws Exception {
+		PSSPropertyFileLoader propertyData = new PSSPropertyFileLoader();
+		Appointment testData = new Appointment();
+		AdminUser adminuser = new AdminUser();
+		propertyData.setAdminNG(adminuser);
+		propertyData.setAppointmentResponseNG(testData);
+	
+		Response response;
+
+		setUp(propertyData.getProperty("mf.practice.id.ng"), propertyData.getProperty("mf.authuserid.am.ng"));
+		
+		response= postAPIRequestAM.resourceConfigSavePost(practiceId, payloadAM.loginlessDisable());
+		aPIVerification.responseCodeValidation(response, 200);
+		
+		response= postAPIRequestAM.loginlessGet(practiceId, "/loginless");
+		
+		JsonPath js = new JsonPath(response.asString());
+		String loginlessLink=js.getString("link");
+		DismissPage dismissPage = new DismissPage(driver, loginlessLink);
+		Thread.sleep(1000);
+		String errorMessage=dismissPage.verifyErrorPage();
+		assertEquals(errorMessage, "Link is currently unavailable for the practice.","Error message in wrong");
+		
+		response= postAPIRequestAM.resourceConfigSavePost(practiceId, payloadAM.loginlessEnable());
 
 	}
 }
