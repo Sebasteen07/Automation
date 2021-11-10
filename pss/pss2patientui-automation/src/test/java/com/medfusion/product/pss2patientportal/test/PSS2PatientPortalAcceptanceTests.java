@@ -7262,7 +7262,7 @@ public class PSS2PatientPortalAcceptanceTests extends BaseTestNGWebDriver {
 	}
 	
 	@Test(enabled = true, groups = { "AcceptanceTests" }, retryAnalyzer = RetryAnalyzer.class)
-	public void testDisableAnonymous() throws Exception {
+	public void testDisableAnonymousNG() throws Exception {
 		PSSPropertyFileLoader propertyData = new PSSPropertyFileLoader();
 		Appointment testData = new Appointment();
 		AdminUser adminuser = new AdminUser();
@@ -7289,7 +7289,7 @@ public class PSS2PatientPortalAcceptanceTests extends BaseTestNGWebDriver {
 	}
 	
 	@Test(enabled = true, groups = { "AcceptanceTests" }, retryAnalyzer = RetryAnalyzer.class)
-	public void testDisableLoginless() throws Exception {
+	public void testDisableLoginlessNG() throws Exception {
 		PSSPropertyFileLoader propertyData = new PSSPropertyFileLoader();
 		Appointment testData = new Appointment();
 		AdminUser adminuser = new AdminUser();
@@ -7313,6 +7313,113 @@ public class PSS2PatientPortalAcceptanceTests extends BaseTestNGWebDriver {
 		assertEquals(errorMessage, "Link is currently unavailable for the practice.","Error message in wrong");
 		
 		response= postAPIRequestAM.resourceConfigSavePost(practiceId, payloadAM.loginlessEnable());
+	}
+	
+	@Test(enabled = true, groups = { "AcceptanceTests" }, retryAnalyzer = RetryAnalyzer.class)
+	public void testDisableAnonymousAT() throws Exception {
+		PSSPropertyFileLoader propertyData = new PSSPropertyFileLoader();
+		Appointment testData = new Appointment();
+		AdminUser adminuser = new AdminUser();
+		propertyData.setAdminAT(adminuser);
+		propertyData.setAppointmentResponseAT(testData);
 
+		Response response;
+
+		setUp(propertyData.getProperty("mf.practice.id.at"), propertyData.getProperty("mf.authuserid.am.at"));
+
+		response = postAPIRequestAM.resourceConfigSavePost(practiceId, payloadAM.anonymousConfg(false));
+		aPIVerification.responseCodeValidation(response, 200);
+
+		response = postAPIRequestAM.anonymousGet(practiceId, "/anonymous");
+
+		JsonPath js = new JsonPath(response.asString());
+		String loginlessLink = js.getString("link");
+		DismissPage dismissPage = new DismissPage(driver, loginlessLink);
+		Thread.sleep(1000);
+		String errorMessage = dismissPage.verifyErrorPage();
+		assertEquals(errorMessage, "Link is currently unavailable for the practice.", "Error message in wrong");
+
+		response = postAPIRequestAM.resourceConfigSavePost(practiceId, payloadAM.anonymousConfg(true));
+	}
+
+	@Test(enabled = true, groups = { "AcceptanceTests" }, retryAnalyzer = RetryAnalyzer.class)
+	public void testDisableLoginlessAT() throws Exception {
+		PSSPropertyFileLoader propertyData = new PSSPropertyFileLoader();
+		Appointment testData = new Appointment();
+		AdminUser adminuser = new AdminUser();
+		propertyData.setAdminAT(adminuser);
+		propertyData.setAppointmentResponseAT(testData);
+
+		Response response;
+
+		setUp(propertyData.getProperty("mf.practice.id.at"), propertyData.getProperty("mf.authuserid.am.at"));
+
+		response = postAPIRequestAM.resourceConfigSavePost(practiceId, payloadAM.loginlessDisable());
+		aPIVerification.responseCodeValidation(response, 200);
+
+		response = postAPIRequestAM.loginlessGet(practiceId, "/loginless");
+
+		JsonPath js = new JsonPath(response.asString());
+		String loginlessLink = js.getString("link");
+		DismissPage dismissPage = new DismissPage(driver, loginlessLink);
+		Thread.sleep(1000);
+		String errorMessage = dismissPage.verifyErrorPage();
+		assertEquals(errorMessage, "Link is currently unavailable for the practice.", "Error message in wrong");
+
+		response = postAPIRequestAM.resourceConfigSavePost(practiceId, payloadAM.loginlessEnable());
+	}
+	
+	@Test(enabled = true, groups = { "AcceptanceTests" }, retryAnalyzer = RetryAnalyzer.class)
+	public void testDisableLoginlessGW() throws Exception {
+		PSSPropertyFileLoader propertyData = new PSSPropertyFileLoader();
+		Appointment testData = new Appointment();
+		AdminUser adminuser = new AdminUser();
+		propertyData.setAdminGW(adminuser);
+		propertyData.setAppointmentResponseGW(testData);
+
+		Response response;
+
+		setUp(propertyData.getProperty("mf.practice.id.gw"), propertyData.getProperty("mf.authuserid.am.gw"));
+
+		response = postAPIRequestAM.resourceConfigSavePost(practiceId, payloadAM.loginlessDisable());
+		aPIVerification.responseCodeValidation(response, 200);
+
+		response = postAPIRequestAM.loginlessGet(practiceId, "/loginless");
+
+		JsonPath js = new JsonPath(response.asString());
+		String loginlessLink = js.getString("link");
+		DismissPage dismissPage = new DismissPage(driver, loginlessLink);
+		Thread.sleep(1000);
+		String errorMessage = dismissPage.verifyErrorPage();
+		assertEquals(errorMessage, "Link is currently unavailable for the practice.", "Error message in wrong");
+
+		response = postAPIRequestAM.resourceConfigSavePost(practiceId, payloadAM.loginlessEnable());
+	}
+
+	@Test(enabled = true, groups = { "AcceptanceTests" }, retryAnalyzer = RetryAnalyzer.class)
+	public void testDisableLoginlessGE() throws Exception {
+		PSSPropertyFileLoader propertyData = new PSSPropertyFileLoader();
+		Appointment testData = new Appointment();
+		AdminUser adminuser = new AdminUser();
+		propertyData.setAdminGE(adminuser);
+		propertyData.setAppointmentResponseGE(testData);
+
+		Response response;
+
+		setUp(propertyData.getProperty("mf.practice.id.ge"), propertyData.getProperty("mf.authuserid.am.ge"));
+
+		response = postAPIRequestAM.resourceConfigSavePost(practiceId, payloadAM.loginlessDisable());
+		aPIVerification.responseCodeValidation(response, 200);
+
+		response = postAPIRequestAM.loginlessGet(practiceId, "/loginless");
+
+		JsonPath js = new JsonPath(response.asString());
+		String loginlessLink = js.getString("link");
+		DismissPage dismissPage = new DismissPage(driver, loginlessLink);
+		Thread.sleep(1000);
+		String errorMessage = dismissPage.verifyErrorPage();
+		assertEquals(errorMessage, "Link is currently unavailable for the practice.", "Error message in wrong");
+
+		response = postAPIRequestAM.resourceConfigSavePost(practiceId, payloadAM.loginlessEnable());
 	}
 }
