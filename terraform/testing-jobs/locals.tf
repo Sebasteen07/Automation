@@ -167,6 +167,7 @@ locals {
       execution_folder      = "forms-automation"
       test_environment      = "prod"
       suite_xml             = "forms-acceptance.xml"
+      pxp_application       = "Portal"
       build_timeout         = 240 #Number of minutes, from 5 to 480. Default value is 60 mins
       queued_timeout        = 480 #Number of minutes, from 5 to 480. Default value is 480 mins
       maven_parameter       = "mvn clean install -U"
@@ -181,6 +182,7 @@ locals {
       execution_folder      = "forms-automation"
       test_environment      = "prod"
       suite_xml             = "forms-calculated-acceptance.xml"
+      pxp_application       = "Portal"
       build_timeout         = 240 #Number of minutes, from 5 to 480. Default value is 60 mins
       queued_timeout        = 480 #Number of minutes, from 5 to 480. Default value is 480 mins
       maven_parameter       = "mvn clean install -U"
