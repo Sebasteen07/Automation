@@ -16,10 +16,12 @@ import com.medfusion.product.object.maps.practice.page.onlinebillpay.PayMyBillOn
 import com.medfusion.product.object.maps.practice.page.patientMessaging.PatientMessagingPage;
 import com.medfusion.product.object.maps.practice.page.patientSearch.PatientDashboardPage;
 import com.medfusion.product.object.maps.practice.page.patientSearch.PatientSearchPage;
+import com.medfusion.product.object.maps.practice.page.patientactivation.PatientActivationPage;
 import com.medfusion.product.object.maps.practice.page.treatmentplanpage.TreatmentPlansPage;
 import com.medfusion.product.practice.api.utils.PracticeConstants;
 import com.medfusion.product.practice.api.utils.PracticeUtil;
 import com.medfusion.product.practice.api.utils.ReadFilePath;
+import com.medfusion.product.practice.tests.PatientActivationSearchTest;
 import com.medfusion.product.practice.tests.VirtualCardSwiperTest;
 import com.medfusion.qa.mailinator.Email;
 import com.medfusion.qa.mailinator.Mailer;
@@ -599,7 +601,55 @@ public class PracticePortalAcceptanceTests extends BaseTestNGWebDriver {
 		JalapenoForgotPasswordPage4 forgotPasswordPage = new JalapenoForgotPasswordPage4(driver);
 		forgotPasswordPage.fillInPassword(testData.getProperty("new.password"));
 	}
+	
+	@Test(enabled = true, groups = { "AcceptanceTests" }, retryAnalyzer = RetryAnalyzer.class)
+	public void testDuplicatePatientCreation() throws Exception {
+		
+		String patientLastName = "Duplicate";
+		String patientEmail = "Duplicate@mailinator.com";
+		logStep("Login to Practice Portal");
+		PracticeLoginPage practiceLogin = new PracticeLoginPage(driver, testData.getUrl());
+		PracticeHomePage pPracticeHomePage = practiceLogin.login(testData.getDoctorLogin(),
+				testData.getDoctorPassword());
 
+		logStep("Click on Patient Search Link");
+		PatientSearchPage pPatientSearchPage = pPracticeHomePage.clickPatientSearchLink();
+
+		logStep("Click on Add new Patient");
+		PatientActivationPage patientActivationPage = pPatientSearchPage.clickOnAddNewPatient();
+		
+		pPatientSearchPage.clickOnAddNewPatient();
+		patientActivationPage.setInitialDetailsFields("Guardian", patientLastName, "F",
+				PracticeConstants.PATIENT_ID, testData.getProperty("phone.number"), patientEmail, testData.getProperty("dob.month"),
+				testData.getProperty("dob.day"), testData.getProperty("dob.year"), "address1", "address2", "city", "Alabama",
+				testData.getProperty("zip.code"));
+		assertTrue(pPatientSearchPage.isDuplicatePatientIDErrorDisplayed());
+		assertTrue(pPatientSearchPage.isPatientCreationErrorDisplayed());		
+	}
+
+	@Test(enabled = true, groups = { "AcceptanceTests" }, retryAnalyzer = RetryAnalyzer.class)
+	public void testSearchValidAndInvalidPatientID() throws Exception {
+		logStep("Login to Practice Portal");
+		PracticeLoginPage practiceLogin = new PracticeLoginPage(driver, testData.getUrl());
+		PracticeHomePage pPracticeHomePage = practiceLogin.login(testData.getDoctorLogin(),
+				testData.getDoctorPassword());
+
+		logStep("Click on Patient Search Link");
+		PatientSearchPage pPatientSearchPage = pPracticeHomePage.clickPatientSearchLink();
+
+		logStep("Search for patient in Patient Search");
+		pPatientSearchPage.searchForPatientWithPatientID(testData.getProperty("search.valid.patientID"));
+
+		logStep("Verify the Search Result");
+		IHGUtil.waitForElement(driver, 30, pPatientSearchPage.searchResult);
+		assertEquals(true, pPatientSearchPage.searchResult.getText().contains(PracticeConstants.PATIENT_FIRST_NAME));
+		pPracticeHomePage.clickPatientSearchLink();
+		
+		logStep("Search for patient in Patient Search");
+		pPatientSearchPage.searchForPatientWithPatientID(testData.getProperty("search.invalid.patientID"));
+		assertTrue(pPatientSearchPage.isNoRecordsFoundMsgDisplayed());
+	}
+	
 	private String getRedirectUrl(String originUrl) {
 		log("Navigating to input URL and checking redirection for 10 seconds");
 		driver.get(originUrl);

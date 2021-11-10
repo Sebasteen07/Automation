@@ -21,11 +21,17 @@ public class NotificationsPage extends BaseTest {
 	@FindBy(how = How.XPATH, using = "//button[text()='Save']")
 	private WebElement saveButton;
 
-	@FindBy(how = How.XPATH, using = "//section/div/div/div[1]/header/h1")
+	@FindBy(how = How.XPATH, using = "//*[@class='mf-body-header mf-appointments-header']/h1[text()='Notifications']")
 	private WebElement notificationTitle;
 
 	@FindBy(how = How.CSS, using = "div.notification-features-checkbox > div:nth-child(1) > input")
 	private WebElement broadcastMessagingCheckbox;
+	
+	@FindBy(how = How.XPATH, using = "//*[@id='off']")
+	private WebElement offNotificationButton;
+
+	@FindBy(how = How.XPATH, using = " //*[@id='on']")
+	private WebElement onNotificationButton;
 
 	public NotificationsPage(WebDriver driver) {
 		PageFactory.initElements(driver, this);
@@ -83,7 +89,18 @@ public class NotificationsPage extends BaseTest {
 			broadcastMessagingCheckbox.click();
 			Thread.sleep(10000);
 		}
-		
+	}
+	
+	public void offNotification() {
+		IHGUtil.PrintMethodName();
+		IHGUtil.waitForElement(driver, 5, offNotificationButton);
+		offNotificationButton.click();
+	}
+	
+	public void onNotification() {
+		IHGUtil.PrintMethodName();
+		IHGUtil.waitForElement(driver, 5, onNotificationButton);
+		onNotificationButton.click();
 	}
 
 }
