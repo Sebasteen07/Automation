@@ -20,9 +20,9 @@ resource "aws_codepipeline" "main" {
       output_artifacts = ["SourceZip"]
 
       configuration = {
-        BranchName           = try(local.inputs[local.name].codecommit_branch)
+        BranchName           = try(local.inputs[terraform.workspace].codecommit_branch)
         RepositoryName       = var.repository_name
-        PollForSourceChanges = try(local.inputs[local.name].PollForSourceChanges)
+        PollForSourceChanges = try(local.inputs[terraform.workspace].PollForSourceChanges)
       }
     }
   }
