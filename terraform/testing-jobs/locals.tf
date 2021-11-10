@@ -8,6 +8,7 @@ locals {
   name                          = terraform.workspace
   selenium_browser              = "*chrome"
   test_execution_mode           = "headless"
+  qa_chrome_driver_version      = "93.0.4577.63"
 
   inputs = {
     "demo-integrations2-acceptance" = {
