@@ -8,11 +8,14 @@ provider "aws" {
 
   default_tags {
     tags = {
+      "Name"                        = local.name
       "nextgen.automation"          = true
       "nextgen.component"           = var.component
       "nextgen.data-classification" = var.data_classification
       "nextgen.environment"         = var.environment
       "nextgen.environment-type"    = var.environment-type
+      "pxp.application"             = try(local.inputs[terraform.workspace].pxp_application)
+      "pxp.component"               = var.bitbucket_repository_name
     }
   }
 }

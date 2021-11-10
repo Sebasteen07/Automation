@@ -23,6 +23,12 @@ variable "environment-type" {
   description = "The type of environment according to function/purpose. Used to differentiate costs between different types of use"
 }
 
+variable "bitbucket_repository_name" {
+  type        = string
+  default     = "qa-automation"
+  description = "Same as bitbucket repository name"
+}
+
 variable "repository_name" {
   type        = string
   description = "The name of the repository that would be used to trigger the pipeline"
