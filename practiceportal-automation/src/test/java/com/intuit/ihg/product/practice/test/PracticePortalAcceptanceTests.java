@@ -657,6 +657,11 @@ public class PracticePortalAcceptanceTests extends BaseTestNGWebDriver {
 	
 	@Test(enabled = true, groups = { "AcceptanceTests" }, retryAnalyzer = RetryAnalyzer.class)
 	public void testChangePatientDetails() throws Exception {
+		//*A patient has been created with first name "Test" and last name "PatientDetails".
+		//*This script will update the first name and last name to "Update" and "PD" respectively and verify the same in patient portal.
+		//*However from the second execution onwards, first name and last name will be updated.
+		//*In order to handle this scenario, I have put a condition to check for both "Test" and "Update" before searching the patient and making changes to its name. 
+		
 		logStep("Login to Practice Portal");
 		PracticeLoginPage practiceLogin = new PracticeLoginPage(driver, testData.getProperty("practice.url1"));
 		PracticeHomePage pPracticeHomePage = practiceLogin.login(testData.getProperty("doctor.login1"),
@@ -667,8 +672,8 @@ public class PracticePortalAcceptanceTests extends BaseTestNGWebDriver {
 		
 		logStep("Set Patient Search Fields");
 		PatientDashboardPage pPatientDashboardPage = pPatientSearchPage.modifiedPatientSearch(testData.getProperty("change.email.first.name1"),
-				testData.getProperty("change.email.last.name1"));
-
+				testData.getProperty("change.email.last.name1"), testData.getProperty("change.email.first.name2"),
+				testData.getProperty("change.email.last.name2"));
 
 		logStep("Click Edit email");
 		pPatientSearchPage = pPatientDashboardPage.clickEditEmail();
@@ -680,8 +685,8 @@ public class PracticePortalAcceptanceTests extends BaseTestNGWebDriver {
 		logStep("Click Edit name");
 		pPatientSearchPage = pPatientDashboardPage.clickEditName();
 		String patName = pPatientSearchPage.changeName(testData.getProperty("change.email.first.name1"),
-				testData.getProperty("change.email.last.name1"));
-		
+				testData.getProperty("change.email.last.name1"), testData.getProperty("change.email.first.name2"),
+				testData.getProperty("change.email.last.name2"));
 		
 		logStep("Click Edit gender");
 		pPatientSearchPage = pPatientDashboardPage.clickEditGender();
@@ -705,7 +710,9 @@ public class PracticePortalAcceptanceTests extends BaseTestNGWebDriver {
 
 		logStep("Verify Patient Details");
 		assertTrue(myAccountPage.checkZipCode(zip));
-		assertTrue(myAccountPage.checkPatientName(patName));
+		assertTrue(myAccountPage.checkPatientName(patName, testData.getProperty("change.email.first.name1"),
+				testData.getProperty("change.email.last.name1"), testData.getProperty("change.email.first.name2"),
+				testData.getProperty("change.email.last.name2")));
 		Thread.sleep(2000);
 		if (g.equals("Male")) {
 			assertTrue(myAccountPage.checkGender(Patient.GenderExtended.MALE));

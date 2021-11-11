@@ -207,7 +207,7 @@ public class PatientSearchPage extends BasePageObject {
 		searchForPatient.click();
 	}
 	
-	public PatientDashboardPage modifiedPatientSearch(String fName, String lName) throws InterruptedException {
+	public PatientDashboardPage modifiedPatientSearch(String fName, String lName, String uFName, String uLName ) throws InterruptedException {
 		IHGUtil.PrintMethodName();
 		firstName.clear();
 		firstName.sendKeys(fName);
@@ -226,10 +226,10 @@ public class PatientSearchPage extends BasePageObject {
 			patientSearchLinkText.click();
 			IHGUtil.waitForElementInDefaultFrame(driver, 20, firstName);
 			firstName.clear();
-			firstName.sendKeys("Update");
+			firstName.sendKeys(uFName);
 			lastName.clear();
 			searchForPatient.click();
-			patient = driver.findElement(By.xpath("//a[@title='Click to View/Edit " + "PD" + ", " + "Update" + "']"));
+			patient = driver.findElement(By.xpath("//a[@title='Click to View/Edit " + uLName + ", " + uFName + "']"));
 			IHGUtil.waitForElement(driver, 30, patient);
 			patient.click();
 			return PageFactory.initElements(driver, PatientDashboardPage.class);
@@ -307,22 +307,20 @@ public class PatientSearchPage extends BasePageObject {
 
 	}
 	
-	public String changeName(String fName,String lName) throws InterruptedException {
+	public String changeName(String fName, String lName, String uFName, String uLName) throws InterruptedException {
 		
-		IHGUtil.waitForElement(driver, 0, editFirstName);
+		IHGUtil.waitForElement(driver, 10, editFirstName);
 	    String currentFirstName = editFirstName.getAttribute("value");
 	    log(currentFirstName);
-	    if(currentFirstName.equals("Test")) {
+	    if(currentFirstName.equals(fName)) {
 	    	editFirstName.clear();
 			Thread.sleep(1000); //Adding sleep, so that two actions doesn't overlap
-			String name = "Update";
-			editFirstName.sendKeys(name);
+			editFirstName.sendKeys(uFName);
 			editLastName.clear();
 			Thread.sleep(1000); //Adding sleep, so that two actions doesn't overlap
-			String lname = "PD";
-			editLastName.sendKeys(lname);
+			editLastName.sendKeys(uLName);
 			updateEmail.click();
-			return (name);
+			return (uFName);
 	    }
 	    else {
 	    	editFirstName.clear();
@@ -342,17 +340,14 @@ public class PatientSearchPage extends BasePageObject {
 		IHGUtil.waitForElement(driver, 15, checkedGender);
 		if(Integer.parseInt(val) == 2) 
 		{
-			log("Inside if");
 			radioFemale.click();
 			updateEmail.click();
-			String currentGen="Female";
-			return currentGen;
+			return "Female" ;
 			
 		}else {
 				radioMale.click();
 				updateEmail.click();
-				String currentGen="Male";
-				return currentGen;
+				return "Male";
 		}
 		
 	}

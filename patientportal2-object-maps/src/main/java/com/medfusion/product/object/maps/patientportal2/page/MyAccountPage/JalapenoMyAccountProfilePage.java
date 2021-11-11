@@ -228,14 +228,14 @@ public class JalapenoMyAccountProfilePage extends JalapenoMyAccountPage {
 		return true;
 	}
 	
-	public boolean checkPatientName(String firstName) {
+	public boolean checkPatientName(String firstName, String fName, String lName, String uFName, String uLName) {
 		String lastName = "";
 		log("Checking Patient first name and last name");
-		if(firstName.equals("Test")) {
-			lastName = "PatientDetails";
+		if(firstName.equals(fName)) {
+			lastName = lName;
 		}
-		else if(firstName.equals("Update")) {
-			lastName = "PD";
+		else if(firstName.equals(uFName)) {
+			lastName = uLName;
 		}
 		new WebDriverWait(driver, 25).until(ExpectedConditions.textToBePresentInElementValue(firstNameTextbox, firstName));
 		String frstName = firstNameTextbox.getAttribute("value");
