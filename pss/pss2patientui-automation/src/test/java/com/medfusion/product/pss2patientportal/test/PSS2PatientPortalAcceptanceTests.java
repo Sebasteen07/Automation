@@ -7269,10 +7269,9 @@ public class PSS2PatientPortalAcceptanceTests extends BaseTestNGWebDriver {
 		propertyData.setAdminNG(adminuser);
 		propertyData.setAppointmentResponseNG(testData);
 		
-		Response response;
-
 		setUp(propertyData.getProperty("mf.practice.id.ng"), propertyData.getProperty("mf.authuserid.am.ng"));
 		
+		Response response;
 		response= postAPIRequestAM.resourceConfigSavePost(practiceId, payloadAM.anonymousConfg(false));
 		aPIVerification.responseCodeValidation(response, 200);
 		
@@ -7294,12 +7293,11 @@ public class PSS2PatientPortalAcceptanceTests extends BaseTestNGWebDriver {
 		Appointment testData = new Appointment();
 		AdminUser adminuser = new AdminUser();
 		propertyData.setAdminNG(adminuser);
-		propertyData.setAppointmentResponseNG(testData);
-	
-		Response response;
+		propertyData.setAppointmentResponseNG(testData);		
 
 		setUp(propertyData.getProperty("mf.practice.id.ng"), propertyData.getProperty("mf.authuserid.am.ng"));
 		
+		Response response;
 		response= postAPIRequestAM.resourceConfigSavePost(practiceId, payloadAM.loginlessDisable());
 		aPIVerification.responseCodeValidation(response, 200);
 		
