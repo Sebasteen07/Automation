@@ -8,6 +8,7 @@ locals {
   name                          = "${var.bitbucket_repository_name}_${terraform.workspace}"
   selenium_browser              = "*chrome"
   test_execution_mode           = "headless"
+  qa_chrome_driver_version      = "93.0.4577.63"
 
   inputs = {
     "demo-integrations2-acceptance" = {
@@ -158,6 +159,36 @@ locals {
       chrome_driver_version = "92.0.4515.107"
       cron_shedule          = "cron(45 0 ? * 1 *)"
       pxp_application       = "Portal"
+    }
+
+    "prod-forms-regression1" = {
+      codecommit_branch     = "development"
+      PollForSourceChanges  = false
+      execution_folder      = "forms-automation"
+      test_environment      = "prod"
+      suite_xml             = "forms-acceptance.xml"
+      pxp_application       = "Portal"
+      build_timeout         = 240 #Number of minutes, from 5 to 480. Default value is 60 mins
+      queued_timeout        = 480 #Number of minutes, from 5 to 480. Default value is 480 mins
+      maven_parameter       = "mvn clean install -U"
+      google_chrome_version = "93.0.4577.82-1"
+      chrome_driver_version = "92.0.4515.107"
+      cron_shedule          = "cron(0 23 ? * 6 *)"
+    }
+
+    "prod-forms-regression2" = {
+      codecommit_branch     = "development"
+      PollForSourceChanges  = false
+      execution_folder      = "forms-automation"
+      test_environment      = "prod"
+      suite_xml             = "forms-calculated-acceptance.xml"
+      pxp_application       = "Portal"
+      build_timeout         = 240 #Number of minutes, from 5 to 480. Default value is 60 mins
+      queued_timeout        = 480 #Number of minutes, from 5 to 480. Default value is 480 mins
+      maven_parameter       = "mvn clean install -U"
+      google_chrome_version = "93.0.4577.82-1"
+      chrome_driver_version = local.qa_chrome_driver_version
+      cron_shedule          = "cron(30 23 ? * 6 *)"
     }
   }
 
