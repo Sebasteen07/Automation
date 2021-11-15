@@ -7422,4 +7422,175 @@ public class PSS2PatientPortalAcceptanceTests extends BaseTestNGWebDriver {
 
 		response = postAPIRequestAM.resourceConfigSavePost(practiceId, payloadAM.loginlessEnable());
 	}
+	
+	@Test(enabled = true, groups = { "AcceptanceTests" }, retryAnalyzer = RetryAnalyzer.class)
+	public void testUpcomingPastApptDisableNG() throws Exception {
+
+		PSSPropertyFileLoader propertyData = new PSSPropertyFileLoader();
+		Appointment testData = new Appointment();
+		AdminUser adminUser = new AdminUser();
+
+		propertyData.setAdminNG(adminUser);
+		propertyData.setAppointmentResponseNG(testData);
+		adminUser.setLastQuestionMandatory(true);
+
+		PSSAdminUtils adminUtils = new PSSAdminUtils();
+
+		logStep("Login to PSS 2.0 Admin portal and do the seetings for Last Question Required");
+		adminUtils.upcomingPastApptSetting(driver, adminUser, testData, PSSConstants.LOGINLESS);
+		
+		Response response;
+
+		setUp(propertyData.getProperty("mf.practice.id.ng"), propertyData.getProperty("mf.authuserid.am.ng"));
+
+		response = postAPIRequestAM.resourceConfigSavePost(practiceId, payloadAM.upcimingPastAptOnOff(false));
+		aPIVerification.responseCodeValidation(response, 200);
+
+		logStep("Login to PSS Appointment");
+		DismissPage dismissPage = new DismissPage(driver, testData.getUrlLoginLess());
+
+		logStep("Clicked on Dismiss");
+		LoginlessPatientInformation loginlessPatientInformation = dismissPage.clickDismiss();
+
+		logStep("Patient details are as mentioned below-");
+		log("Demographic Details- " + testData.getFirstName() + " " + testData.getLastName() + " " + testData.getDob()
+				+ " " + testData.getGender() + " " + testData.getEmail() + " " + testData.getPrimaryNumber() + " "
+				+ testData.getZipCode());
+
+		HomePage homePage = loginlessPatientInformation.fillNewPatientForm(testData.getFirstName(),
+				testData.getLastName(), testData.getDob(), testData.getEmail(), testData.getGender(),
+				testData.getZipCode(), testData.getPrimaryNumber());
+		
+		boolean bool=homePage.isUpcomingAptPresent();
+		
+		assertEquals(bool, false, "Upcoming and past appointment list is present on the screen");			
+	}
+	
+	@Test(enabled = true, groups = { "AcceptanceTests" }, retryAnalyzer = RetryAnalyzer.class)
+	public void testUpcomingPastApptDisableGE() throws Exception {
+
+		PSSPropertyFileLoader propertyData = new PSSPropertyFileLoader();
+		Appointment testData = new Appointment();
+		AdminUser adminUser = new AdminUser();
+
+		propertyData.setAdminGE(adminUser);
+		propertyData.setAppointmentResponseGE(testData);
+
+		PSSAdminUtils adminUtils = new PSSAdminUtils();
+
+		logStep("Login to PSS 2.0 Admin portal and do the seetings for Last Question Required");
+		adminUtils.upcomingPastApptSetting(driver, adminUser, testData, PSSConstants.LOGINLESS);
+		
+		Response response;
+
+		setUp(propertyData.getProperty("mf.practice.id.ge"), propertyData.getProperty("mf.authuserid.am.ge"));
+
+		response = postAPIRequestAM.resourceConfigSavePost(practiceId, payloadAM.upcimingPastAptOnOff(false));
+		aPIVerification.responseCodeValidation(response, 200);
+
+		logStep("Login to PSS Appointment");
+		DismissPage dismissPage = new DismissPage(driver, testData.getUrlLoginLess());
+
+		logStep("Clicked on Dismiss");
+		LoginlessPatientInformation loginlessPatientInformation = dismissPage.clickDismiss();
+
+		logStep("Patient details are as mentioned below-");
+		log("Demographic Details- " + testData.getFirstName() + " " + testData.getLastName() + " " + testData.getDob()
+				+ " " + testData.getGender() + " " + testData.getEmail() + " " + testData.getPrimaryNumber() + " "
+				+ testData.getZipCode());
+
+		HomePage homePage = loginlessPatientInformation.fillNewPatientForm(testData.getFirstName(),
+				testData.getLastName(), testData.getDob(), testData.getEmail(), testData.getGender(),
+				testData.getZipCode(), testData.getPrimaryNumber());
+		
+		boolean bool=homePage.isUpcomingAptPresent();
+		
+		assertEquals(bool, false, "Upcoming and past appointment list is present on the screen");			
+	}
+	
+	@Test(enabled = true, groups = { "AcceptanceTests" }, retryAnalyzer = RetryAnalyzer.class)
+	public void testUpcomingPastApptDisableGW() throws Exception {
+
+		PSSPropertyFileLoader propertyData = new PSSPropertyFileLoader();
+		Appointment testData = new Appointment();
+		AdminUser adminUser = new AdminUser();
+
+		propertyData.setAdminGW(adminUser);
+		propertyData.setAppointmentResponseGW(testData);
+
+		PSSAdminUtils adminUtils = new PSSAdminUtils();
+
+		logStep("Login to PSS 2.0 Admin portal and do the seetings for Last Question Required");
+		adminUtils.upcomingPastApptSetting(driver, adminUser, testData, PSSConstants.LOGINLESS);
+		
+		Response response;
+
+		setUp(propertyData.getProperty("mf.practice.id.gw"), propertyData.getProperty("mf.authuserid.am.gw"));
+
+		response = postAPIRequestAM.resourceConfigSavePost(practiceId, payloadAM.upcimingPastAptOnOffGW(false));
+		aPIVerification.responseCodeValidation(response, 200);
+
+		logStep("Login to PSS Appointment");
+		DismissPage dismissPage = new DismissPage(driver, testData.getUrlLoginLess());
+
+		logStep("Clicked on Dismiss");
+		LoginlessPatientInformation loginlessPatientInformation = dismissPage.clickDismiss();
+
+		logStep("Patient details are as mentioned below-");
+		log("Demographic Details- " + testData.getFirstName() + " " + testData.getLastName() + " " + testData.getDob()
+				+ " " + testData.getGender() + " " + testData.getEmail() + " " + testData.getPrimaryNumber() + " "
+				+ testData.getZipCode());
+
+		HomePage homePage = loginlessPatientInformation.fillNewPatientForm(testData.getFirstName(),
+				testData.getLastName(), testData.getDob(), testData.getEmail(), testData.getGender(),
+				testData.getZipCode(), testData.getPrimaryNumber());
+		
+		boolean bool=homePage.isUpcomingAptPresent();
+		
+		assertEquals(bool, false, "Upcoming and past appointment list is present on the screen");			
+	}
+
+	@Test(enabled = true, groups = { "AcceptanceTests" }, retryAnalyzer = RetryAnalyzer.class)
+	public void testUpcomingPastApptDisableAT() throws Exception {
+
+		PSSPropertyFileLoader propertyData = new PSSPropertyFileLoader();
+		Appointment testData = new Appointment();
+		AdminUser adminUser = new AdminUser();
+
+		propertyData.setAdminAT(adminUser);
+		propertyData.setAppointmentResponseAT(testData);
+
+		PSSAdminUtils adminUtils = new PSSAdminUtils();
+
+		logStep("Login to PSS 2.0 Admin portal and do the seetings for Last Question Required");
+		adminUtils.upcomingPastApptSetting(driver, adminUser, testData, PSSConstants.LOGINLESS);
+		
+		Response response;
+
+		setUp(propertyData.getProperty("mf.practice.id.at"), propertyData.getProperty("mf.authuserid.am.at"));
+
+		response = postAPIRequestAM.resourceConfigSavePost(practiceId, payloadAM.upcimingPastAptOnOff(false));
+		aPIVerification.responseCodeValidation(response, 200);
+
+		logStep("Login to PSS Appointment");
+		DismissPage dismissPage = new DismissPage(driver, testData.getUrlLoginLess());
+
+		logStep("Clicked on Dismiss");
+		LoginlessPatientInformation loginlessPatientInformation = dismissPage.clickDismiss();
+
+		logStep("Patient details are as mentioned below-");
+		log("Demographic Details- " + testData.getFirstName() + " " + testData.getLastName() + " " + testData.getDob()
+				+ " " + testData.getGender() + " " + testData.getEmail() + " " + testData.getPrimaryNumber() + " "
+				+ testData.getZipCode());
+
+		HomePage homePage = loginlessPatientInformation.fillNewPatientForm(testData.getFirstName(),
+				testData.getLastName(), testData.getDob(), testData.getEmail(), testData.getGender(),
+				testData.getZipCode(), testData.getPrimaryNumber());
+		
+		boolean bool=homePage.isUpcomingAptPresent();
+		
+		assertEquals(bool, false, "Upcoming and past appointment list is present on the screen");			
+	}
+	
+	
 }
