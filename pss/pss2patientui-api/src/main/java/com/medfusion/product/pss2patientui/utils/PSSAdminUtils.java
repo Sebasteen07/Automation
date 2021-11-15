@@ -1060,8 +1060,8 @@ public class PSSAdminUtils extends BaseTestNGWebDriver{
 
 	}
 	
-	public void leadTimeWithReserveShowProviderOFF(WebDriver driver, AdminUser adminuser, Appointment appointment,String leadValue)
-			throws Exception {
+	public void leadTimeWithReserveShowProviderOFF(WebDriver driver, AdminUser adminuser, Appointment appointment,
+			String leadValue) throws Exception {
 		PSS2PracticeConfiguration pssPracticeConfig = loginToAdminPortal(driver, adminuser);
 		pssPracticeConfig = pssPracticeConfig.gotoPracticeConfigTab();
 		PatientFlow patientFlow = pssPracticeConfig.gotoPatientFlowTab();
@@ -1072,22 +1072,18 @@ public class PSSAdminUtils extends BaseTestNGWebDriver{
 		pageRefresh(driver);
 		manageAppointmentType.selectAppointment(appointment.getAppointmenttype());
 		manageAppointmentType.gotoConfiguration();
-
 		manageAppointmentType.notReserve();
 		manageAppointmentType.leadTime(leadValue);
-		int i=Integer.parseInt(leadValue);  
+		int i = Integer.parseInt(leadValue);
 		appointment.setLeadtimeDay(i);
-		//log("Value of leadTime is"+leadValue);
-		log("lead time day get  "+appointment.getLeadtimeDay());
-
+		log("lead time day get  " + appointment.getLeadtimeDay());
 		appointment.setAccepttoggleStatus(manageAppointmentType.acceptForStatus());
-		Log4jUtil.log("Status for AcceptFor Same day is   " + appointment.isAccepttoggleStatus());
+		log("Status for AcceptFor Same day is   " + appointment.isAccepttoggleStatus());
 		if (appointment.isAccepttoggleStatus() == false) {
 			manageAppointmentType.clickAcceptSameDay();
 			appointment.setAccepttoggleStatus(manageAppointmentType.acceptForStatus());
-			Log4jUtil.log("Status for AcceptFor Same day is   " + appointment.isAccepttoggleStatus());
+			log("Status for AcceptFor Same day is   " + appointment.isAccepttoggleStatus());
 		}
 
-
-}
+	}
 }
