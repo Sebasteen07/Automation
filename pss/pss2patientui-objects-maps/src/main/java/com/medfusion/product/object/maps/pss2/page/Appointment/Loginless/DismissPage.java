@@ -21,7 +21,9 @@ public class DismissPage extends PSS2MainPage {
 
 	@FindBy(how = How.XPATH, using = "//*[@class='announcementmessage']/div")
 	private WebElement popUpMessege;
-
+	
+	@FindBy(how = How.XPATH, using = "//span[normalize-space()='Link is currently unavailable for the practice.']")
+	private WebElement linkUnavailableMsg;
 
 	public DismissPage(WebDriver driver, String url) {
 		super(driver, url);
@@ -52,6 +54,11 @@ public class DismissPage extends PSS2MainPage {
 		commonMethods.highlightElement(dismissBtn);
 		dismissBtn.click();
 		return PageFactory.initElements(driver, PatientIdentificationPage.class);
+	}
+	
+	public String verifyErrorPage() {
+		commonMethods.highlightElement(linkUnavailableMsg);
+		return linkUnavailableMsg.getText();
 	}
 	
 	

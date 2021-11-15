@@ -7245,40 +7245,6 @@ public class PSS2PatientPortalAcceptanceTests extends BaseTestNGWebDriver {
 		PSSPatientUtils psspatientutils = new PSSPatientUtils();	
 
 		
-//		setUp(propertyData.getProperty("mf.practice.id.at"), propertyData.getProperty("mf.authuserid.am.at"));
-//		Response response = postAPIRequestAM.medfusionpracticeTimeZone(practiceId, "/medfusionpractice");
-//		String timezone=aPIVerification.responseKeyValidationJson(response, "practiceTimezone");	
-//		testData.setCurrentTimeZone(timezone);	
-//		log("Current Time Zone Is"+testData.getCurrentTimeZone());
-//		
-//		Response response1 = postAPIRequestAM.resourceConfigRuleGet(practiceId);
-//		validateAdapter.verifyResourceConfigRuleGet(response1);
-//		JsonPath js = new JsonPath(response1.asString());
-//		String ruleId = js.getString("id[0]");
-//		String ruleId1 = js.getString("id[1]");
-//		log("Rule id is    " + ruleId);
-//		log("Rule id is    " + ruleId1);
-//
-//		Response responseForDeleteRule = postAPIRequestAM.deleteRuleById(practiceId, ruleId);
-//		aPIVerification.responseCodeValidation(responseForDeleteRule, 200);
-//
-//		Response responseForDeleteRule1 = postAPIRequestAM.deleteRuleById(practiceId, ruleId1);
-//		aPIVerification.responseCodeValidation(responseForDeleteRule1, 200);
-//
-//		Response responseRulePost = postAPIRequestAM.resourceConfigRulePost(practiceId,
-//				payloadAM.resourceConfigRulePostPayloadTL());
-//		aPIVerification.responseCodeValidation(responseRulePost, 200);
-//		aPIVerification.responseKeyValidationJson(responseRulePost, "name");
-//		aPIVerification.responseKeyValidationJson(responseRulePost, "rule");
-//
-//		Response responseRulePut = postAPIRequestAM.resourceConfigRulePost(practiceId,
-//				payloadAM.resourceConfigRulePutPayloadLT());
-//		aPIVerification.responseCodeValidation(responseRulePut, 200);
-//		aPIVerification.responseKeyValidationJson(responseRulePut, "name");
-//		aPIVerification.responseKeyValidationJson(responseRulePut, "rule");
-		
-		
-		
 		setUp(propertyData.getProperty("mf.practice.id.at"), propertyData.getProperty("mf.authuserid.am.at"));
 		Response response;
         response = postAPIRequestAM.medfusionpracticeTimeZone(practiceId, "/medfusionpractice");
@@ -7304,9 +7270,6 @@ public class PSS2PatientPortalAcceptanceTests extends BaseTestNGWebDriver {
         Response responseRulePostTL = postAPIRequestAM.resourceConfigRulePost(practiceId,
                 payloadAM.resourceConfigRulePostPayloadTL());
                 aPIVerification.responseCodeValidation(responseRulePostTL, 200);
-
-
-
 		
 		PSSAdminUtils adminUtils = new PSSAdminUtils();
 		logStep("Login to PSS 2.0 Admin portal");
@@ -7341,22 +7304,73 @@ public class PSS2PatientPortalAcceptanceTests extends BaseTestNGWebDriver {
 		assertEquals(dateSize, "1");
 		log("current date is"+psspatientutils.currentESTDate(testData));
 		assertEquals(date, psspatientutils.currentESTDate(testData));
-		
 	}
 	
-
 	@Test(enabled = true, groups = { "AcceptanceTests" }, retryAnalyzer = RetryAnalyzer.class)
-	public void testAccLeadTimeShowProviderOffNG() throws Exception {
+	public void testDisableAnonymous() throws Exception {
 		PSSPropertyFileLoader propertyData = new PSSPropertyFileLoader();
 		Appointment testData = new Appointment();
 		AdminUser adminuser = new AdminUser();
 		propertyData.setAdminNG(adminuser);
 		propertyData.setAppointmentResponseNG(testData);
+
+		setUp(propertyData.getProperty("mf.practice.id.ng"), propertyData.getProperty("mf.authuserid.am.ng"));
+
+		Response response;
+		response = postAPIRequestAM.resourceConfigSavePost(practiceId, payloadAM.anonymousConfg(false));
+		aPIVerification.responseCodeValidation(response, 200);
+
+		response = postAPIRequestAM.anonymousGet(practiceId, "/anonymous");
+
+		JsonPath js = new JsonPath(response.asString());
+		String loginlessLink = js.getString("link");
+		DismissPage dismissPage = new DismissPage(driver, loginlessLink);
+		Thread.sleep(1000);
+		String errorMessage = dismissPage.verifyErrorPage();
+		assertEquals(errorMessage, "Link is currently unavailable for the practice.", "Error message in wrong");
+
+		response = postAPIRequestAM.resourceConfigSavePost(practiceId, payloadAM.anonymousConfg(true));
+	}
+
+	@Test(enabled = true, groups = { "AcceptanceTests" }, retryAnalyzer = RetryAnalyzer.class)
+	public void testDisableLoginless() throws Exception {
+		PSSPropertyFileLoader propertyData = new PSSPropertyFileLoader();
+		Appointment testData = new Appointment();
+		AdminUser adminuser = new AdminUser();
+		propertyData.setAdminNG(adminuser);
+		propertyData.setAppointmentResponseNG(testData);
+
+		setUp(propertyData.getProperty("mf.practice.id.ng"), propertyData.getProperty("mf.authuserid.am.ng"));
+
+		Response response;
+		response = postAPIRequestAM.resourceConfigSavePost(practiceId, payloadAM.loginlessDisable());
+		aPIVerification.responseCodeValidation(response, 200);
+
+		response = postAPIRequestAM.loginlessGet(practiceId, "/loginless");
+
+		JsonPath js = new JsonPath(response.asString());
+		String loginlessLink = js.getString("link");
+		DismissPage dismissPage = new DismissPage(driver, loginlessLink);
+		Thread.sleep(1000);
+		String errorMessage = dismissPage.verifyErrorPage();
+		assertEquals(errorMessage, "Link is currently unavailable for the practice.", "Error message in wrong");
+
+		response = postAPIRequestAM.resourceConfigSavePost(practiceId, payloadAM.loginlessEnable());
+
+	}
+	@Test(enabled = true, groups = { "AcceptanceTests" }, retryAnalyzer = RetryAnalyzer.class)
+	public void testLeadTimeShowProviderOffNG() throws Exception {
+
+		PSSPropertyFileLoader propertyData = new PSSPropertyFileLoader();
+		Appointment testData = new Appointment();
+		AdminUser adminuser = new AdminUser();
+		propertyData.setAdminAT(adminuser);
+		propertyData.setAppointmentResponseAT(testData);
 		PSSPatientUtils psspatientutils = new PSSPatientUtils();	
 
-        Response response;
-        setUp(propertyData.getProperty("mf.practice.id.ng"), propertyData.getProperty("mf.authuserid.am.ng"));
-
+		
+		setUp(propertyData.getProperty("mf.practice.id.ng"), propertyData.getProperty("mf.authuserid.am.ng"));
+		Response response;
         response = postAPIRequestAM.medfusionpracticeTimeZone(practiceId, "/medfusionpractice");
 		String timezone=aPIVerification.responseKeyValidationJson(response, "practiceTimezone");	
 		testData.setCurrentTimeZone(timezone);	
@@ -7412,7 +7426,7 @@ public class PSS2PatientPortalAcceptanceTests extends BaseTestNGWebDriver {
 	}
 	
 	@Test(enabled = true, groups = { "AcceptanceTests" }, retryAnalyzer = RetryAnalyzer.class)
-	public void testAccLeadTimeShowProviderOffAT() throws Exception {
+	public void testLeadTimeShowProviderOffAT() throws Exception {
 		PSSPropertyFileLoader propertyData = new PSSPropertyFileLoader();
 		Appointment testData = new Appointment();
 		AdminUser adminuser = new AdminUser();
@@ -7446,7 +7460,6 @@ public class PSS2PatientPortalAcceptanceTests extends BaseTestNGWebDriver {
         Response responseRulePostTL = postAPIRequestAM.resourceConfigRulePost(practiceId,
                 payloadAM.resourceConfigRulePostPayloadTL());
                 aPIVerification.responseCodeValidation(responseRulePostTL, 200);
-
 		PSSAdminUtils adminUtils = new PSSAdminUtils();
 		logStep("Login to PSS 2.0 Admin portal");
 		adminUtils.leadTimeWithReserveShowProviderOFF(driver, adminuser, testData, "3");

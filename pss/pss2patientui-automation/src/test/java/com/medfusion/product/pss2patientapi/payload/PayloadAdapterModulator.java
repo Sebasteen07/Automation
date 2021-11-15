@@ -1045,6 +1045,40 @@ public class PayloadAdapterModulator {
 		return payload;
 	}
 	
+	public String loginlessEnable() {
+		String resourceConfigSave = "[\r\n"
+				+ "  {\r\n"
+				+ "    \"group\": \"APPOINTMENT\",\r\n"
+				+ "    \"key\": \"loginless\",\r\n"
+				+ "    \"value\": true\r\n"
+				+ "  }\r\n"
+				+ "]";
+		return resourceConfigSave;
+	}
+	
+	public String loginlessDisable() {
+		String resourceConfigSave = "[\r\n"
+				+ "  {\r\n"
+				+ "    \"group\": \"APPOINTMENT\",\r\n"
+				+ "    \"key\": \"loginless\",\r\n"
+				+ "    \"value\": null\r\n"
+				+ "  }\r\n"
+				+ "]";
+		return resourceConfigSave;
+	}
+	
+	public String anonymousConfg(boolean bool) {
+		String resourceConfigSave = "[\r\n"
+				+ "  {\r\n"
+				+ "    \"group\": \"RULEENGINE\",\r\n"
+				+ "    \"key\": \"anonymous\",\r\n"
+				+ "    \"value\": "+bool+"\r\n"
+				+ "  }\r\n"
+				+ "]";
+		return resourceConfigSave;
+	}
+
+	
 	public String resourceConfigRulePostPayload() {
 		String resourceConfigRule = "{\r\n"
 				+ "    \"name\": \"LTB\",\r\n"
