@@ -5,6 +5,8 @@ import static io.restassured.RestAssured.given;
 
 import com.medfusion.common.utils.IHGUtil;
 import com.medfusion.payment_modulator.pojos.Transactions;
+
+import io.restassured.http.ContentType;
 import io.restassured.response.Response;
 
 import java.io.IOException;
@@ -12,6 +14,7 @@ import java.util.List;
 import java.util.Map;
 import com.medfusion.common.utils.PropertyFileLoader;
 import com.medfusion.gateway_proxy.tests.GatewayProxyBaseTest;
+import com.medfusion.gateway_proxy.utils.PropertyFileLoad;
 import com.medfusion.payment_modulator.pojos.PayloadDetails;
 
 public class GatewayProxyTransactionResource extends GatewayProxyBaseTest {
@@ -144,5 +147,155 @@ public class GatewayProxyTransactionResource extends GatewayProxyBaseTest {
 		return response;
 	}
 
+	
+	public Response makeAuthorizeTransactionWithDiffEnv(String token,String env, String paymentSource, String cardType, String cardNo,
+			String expiry, String customeruuid, String mmid,PropertyFileLoad testData) throws Exception {
+		
+		Response response;
+		System.out.println("testdata"+testData);
+		Map<String, Object> transactiondetails = PayloadDetails.getPayloadForAuthorizeSaleMap(
+				(testData.getProperty("transaction.amount")), testData.getProperty("account.number"),
+				testData.getProperty("consumer.name"), paymentSource, testData.getProperty("cvv"), cardType, cardNo,
+				expiry, testData.getProperty("bin"), testData.getProperty("zipcode"), testData.getProperty("last.name"),
+				testData.getProperty("address.line1"), testData.getProperty("city"), testData.getProperty("state"),
+				testData.getProperty("first.name"));
 
+		String url = getUrl( env,customeruuid, mmid, "/authorize");
+	
+		
+		if(env.equalsIgnoreCase("DEV3") || env.equalsIgnoreCase("DEMO")){
+			
+			response = given().auth().oauth2(token)
+					.contentType(ContentType.JSON).body(transactiondetails).when().log().all()
+					.post(url).then().log().all().extract().response();
+		}else {
+			System.out.println("printing property "+testData.getProperty("x-api-key"));
+			
+			response = given().auth().oauth2(token).header("x-api-key",testData.getProperty("x-api-key"))
+					.contentType(ContentType.JSON).body(transactiondetails).when().log().all()
+					.post(url).then().log().all().extract().response();
+		}
+			return response;
+	}
+
+
+	public Response makeSaleTransactionWithDiffEnv(String token,String env, String paymentSource, String cardType, String cardNo,
+			String expiry, String customeruuid, String mmid,PropertyFileLoad testData,String transactionAmount) throws Exception {
+		
+		Response response;
+		System.out.println("testdata"+testData);
+		Map<String, Object> transactiondetails = PayloadDetails.getPayloadForAuthorizeSaleMap(
+				transactionAmount, testData.getProperty("account.number"),
+				testData.getProperty("consumer.name"), paymentSource, testData.getProperty("cvv"), cardType, cardNo,
+				expiry, testData.getProperty("bin"), testData.getProperty("zipcode"), testData.getProperty("last.name"),
+				testData.getProperty("address.line1"), testData.getProperty("city"), testData.getProperty("state"),
+				testData.getProperty("first.name"));
+
+		String url = getUrl( env,customeruuid, mmid, "/sale");
+	
+		
+		if(env.equalsIgnoreCase("DEV3") || env.equalsIgnoreCase("DEMO")){
+			
+			response = given().auth().oauth2(token)
+					.contentType(ContentType.JSON).body(transactiondetails).when().log().all()
+					.post(url).then().extract().response();
+		}else {
+			System.out.println("printing property "+testData.getProperty("x-api-key"));
+			
+			response = given().auth().oauth2(token).header("x-api-key",testData.getProperty("x-api-key"))
+					.contentType(ContentType.JSON).body(transactiondetails).when().log().all()
+					.post(url).then().log().all().extract().response();
+		}
+			return response;
+	}
+	
+	
+	public Response makeCaptureTransactionWithDiffEnv(String token,String env, String paymentSource, String cardType, String cardNo,
+			String expiry, String customeruuid, String mmid,String externalTransactionId,String orderId,PropertyFileLoad testData) throws Exception {
+	
+
+		Response response;
+			
+		Map<String, Object> transactiondetails = PayloadDetails.getPayloadForCaptureMap(
+				IHGUtil.createRandomNumericString(3), testData.getProperty("account.number"),
+				testData.getProperty("consumer.name"), paymentSource, testData.getProperty("cvv"), cardType, cardNo,
+				expiry, testData.getProperty("bin"), testData.getProperty("zipcode"), testData.getProperty("last.name"),
+				testData.getProperty("address.line1"), testData.getProperty("city"), testData.getProperty("state"),
+				testData.getProperty("first.name"), externalTransactionId, orderId);
+
+
+		String url = getUrl( env,customeruuid, mmid, "/capture");
+			
+		if(env.equalsIgnoreCase("DEV3") || env.equalsIgnoreCase("DEMO")){
+			
+			response = given().auth().oauth2(token)
+					.contentType(ContentType.JSON).body(transactiondetails).when().log().all()
+					.post(url).then().log().all().extract().response();
+		}else {
+			System.out.println("printing property "+testData.getProperty("x-api-key"));
+			
+			response = given().auth().oauth2(token).header("x-api-key",testData.getProperty("x-api-key"))
+					.contentType(ContentType.JSON).body(transactiondetails).when().log().all()
+					.post(url).then().log().all().extract().response();
+		}
+			return response;
+	}
+	
+	
+	public Response makeAVoidWithDiffEnv(String token,String env, 
+			  String mmid,String customeruuid,String comment ,String customerId ,String externalTransactionId,String orderId,PropertyFileLoad testData) throws Exception {
+	
+		Response response;
+	
+		
+		Map<String, Object> transactiondetails = PayloadDetails.getPayloadForVoidSaleMap(comment, customerId,
+				externalTransactionId, orderId);
+
+
+		String url = getUrl( env,customeruuid, mmid, "/void");
+	
+		
+		if(env.equalsIgnoreCase("DEV3") || env.equalsIgnoreCase("DEMO")){
+			
+			response = given().auth().oauth2(token)
+					.contentType(ContentType.JSON).body(transactiondetails).when().log().all()
+					.post(url).then().log().all().extract().response();
+		}else {
+			System.out.println("printing property "+testData.getProperty("x-api-key"));
+			
+			response = given().auth().oauth2(token).header("x-api-key",testData.getProperty("x-api-key"))
+					.contentType(ContentType.JSON).body(transactiondetails).when().log().all()
+					.post(url).then().log().all().extract().response();
+		}
+			return response;
+	}
+	
+	
+	public Response makeARefundWithDiffEnv(String token,String env, 
+			  String mmid,String customeruuid,String comment ,String customerId ,String externalTransactionId,String orderId,String transanctionAmount,PropertyFileLoad testData) throws Exception {
+	
+		
+		
+		Response response;
+		
+		Map<String, Object> transactiondetails = PayloadDetails.getPayloadForRefundSaleMap(comment, customerId,
+				externalTransactionId, orderId, transanctionAmount);
+
+		String url = getUrl( env,customeruuid, mmid, "/credit");
+		System.out.println("transanctionAmount"+transanctionAmount);
+		if(env.equalsIgnoreCase("DEV3") || env.equalsIgnoreCase("DEMO")){
+			
+			response = given().auth().oauth2(token)
+					.contentType(ContentType.JSON).body(transactiondetails).when().log().all()
+					.post(url).then().log().all().extract().response();
+		}else {
+			System.out.println("printing property "+testData.getProperty("x-api-key"));
+			
+			response = given().auth().oauth2(token).header("x-api-key",testData.getProperty("x-api-key"))
+					.contentType(ContentType.JSON).body(transactiondetails).when().log().all()
+					.post(url).then().log().all().extract().response();
+		}
+			return response;
+	}
+	
 }

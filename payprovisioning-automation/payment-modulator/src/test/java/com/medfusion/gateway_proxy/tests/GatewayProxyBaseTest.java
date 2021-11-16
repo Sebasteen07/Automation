@@ -41,5 +41,23 @@ public class GatewayProxyBaseTest extends GatewayProxyUtils {
 		Assert.assertEquals(jsonPath.get("walletCards[0].primaryCard"), true);
 
 	}
+	
+	public static String  getUrl (String env ,String customeruuid,String mmid ,String endpoint ) {
+		
+		
+
+		String url  = null;
+		if(env.equalsIgnoreCase("DEV3") || env.equalsIgnoreCase("DEMO")){
+			//url = customeruuid + endpoint;
+			
+			url = customeruuid + "/merchant/" + mmid + endpoint;
+			
+		}else {
+			url = customeruuid + "/pay/merchants/" +mmid+ endpoint;
+		
+		}
+		
+		return url;
+	}
 
 }
