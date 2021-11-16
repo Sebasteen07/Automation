@@ -202,7 +202,7 @@ locals {
       queued_timeout        = 480 #Number of minutes, from 5 to 480. Default value is 480 mins
       maven_parameter       = "mvn clean install -U"
       google_chrome_version = "93.0.4577.82-1"
-      chrome_driver_version = local.qa_chrome_driver_version
+      chrome_driver_version = "92.0.4515.107"
       cron_shedule          = "cron(5 1 ? * 1 *)"
     }
   }
