@@ -1266,6 +1266,22 @@ public class PayloadAdapterModulator {
 		return resourceConfigRule;
 	}
 	
+	public String resourceConfigRuleLBTPayload() {
+		String resourceConfigRule = "{\r\n"
+				+ "    \"name\": \"LBT\",\r\n"
+				+ "    \"rule\": \"L,B,T\"\r\n"
+				+ "}";
+		return resourceConfigRule;
+	}
+	
+	public String rulePayload(String name, String rule) {
+		String payload = "{\r\n"
+				+ "    \"name\": \""+name+"\",\r\n"
+				+ "    \"rule\": \""+rule+"\"\r\n"
+				+ "}";
+		return payload;
+	}
+	
 
 	public String resourceConfigRulePutPayloadLT() {
 		String resourceConfigRule = "{\r\n"
