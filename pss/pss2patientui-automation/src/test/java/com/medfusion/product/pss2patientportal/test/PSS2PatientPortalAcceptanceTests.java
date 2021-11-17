@@ -6989,9 +6989,6 @@ public class PSS2PatientPortalAcceptanceTests extends BaseTestNGWebDriver {
 		PSSAdminUtils adminUtils = new PSSAdminUtils();
 		logStep("Login to PSS 2.0 Admin portal");
 		adminUtils.acceptForSameDayWithShowProviderOFF(driver, adminuser, testData);
-		log("Fetch the rules set in Admin");
-		String rule = adminuser.getRule();
-		log("rule are " + rule);
 		logStep("Move to PSS patient Portal 2.0 to book an Appointment");
 		logStep("Login to PSS Appointment");
 		DismissPage dismissPage = new DismissPage(driver, testData.getUrlLoginLess());
@@ -7057,9 +7054,6 @@ public class PSS2PatientPortalAcceptanceTests extends BaseTestNGWebDriver {
 		PSSAdminUtils adminUtils = new PSSAdminUtils();
 		logStep("Login to PSS 2.0 Admin portal");
 		adminUtils.acceptForSameDayWithShowProviderOFF(driver, adminuser, testData);
-		log("Fetch the rules set in Admin");
-		String rule = adminuser.getRule();
-		log("rule are " + rule);
 		logStep("Move to PSS patient Portal 2.0 to book an Appointment");
 		logStep("Login to PSS Appointment");
 		DismissPage dismissPage = new DismissPage(driver, testData.getUrlLoginLess());
@@ -7126,9 +7120,6 @@ public class PSS2PatientPortalAcceptanceTests extends BaseTestNGWebDriver {
 		PSSAdminUtils adminUtils = new PSSAdminUtils();
 		logStep("Login to PSS 2.0 Admin portal");
 		adminUtils.acceptForSameDayWithReserveShowProviderOFF(driver, adminuser, testData);
-		log("Fetch the rules set in Admin");
-		String rule = adminuser.getRule();
-		log("rule are " + rule);
 		logStep("Move to PSS patient Portal 2.0 to book an Appointment");
 		logStep("Login to PSS Appointment");
 		DismissPage dismissPage = new DismissPage(driver, testData.getUrlLoginLess());
@@ -7197,9 +7188,6 @@ public class PSS2PatientPortalAcceptanceTests extends BaseTestNGWebDriver {
 		PSSAdminUtils adminUtils = new PSSAdminUtils();
 		logStep("Login to PSS 2.0 Admin portal");
 		adminUtils.acceptForSameDayWithReserveShowProviderOFF(driver, adminuser, testData);
-		log("Fetch the rules set in Admin");
-		String rule = adminuser.getRule();
-		log("rule are " + rule);
 		logStep("Move to PSS patient Portal 2.0 to book an Appointment");
 		logStep("Login to PSS Appointment");
 		DismissPage dismissPage = new DismissPage(driver, testData.getUrlLoginLess());
@@ -7321,9 +7309,6 @@ public class PSS2PatientPortalAcceptanceTests extends BaseTestNGWebDriver {
 		PSSAdminUtils adminUtils = new PSSAdminUtils();
 		logStep("Login to PSS 2.0 Admin portal");
 		adminUtils.leadTimeWithReserveShowProviderOFF(driver, adminuser, testData, propertyData.getProperty("leadtime.ng"));
-		log("Fetch the rules set in Admin");
-		String rule = adminuser.getRule();
-		log("rule are " + rule);
 		logStep("Move to PSS patient Portal 2.0 to book an Appointment");
 		logStep("Login to PSS Appointment");
 		DismissPage dismissPage = new DismissPage(driver, testData.getUrlLoginLess());
@@ -7386,9 +7371,6 @@ public class PSS2PatientPortalAcceptanceTests extends BaseTestNGWebDriver {
 		PSSAdminUtils adminUtils = new PSSAdminUtils();
 		logStep("Login to PSS 2.0 Admin portal");
 		adminUtils.leadTimeWithReserveShowProviderOFF(driver, adminuser, testData,propertyData.getProperty("leadtime.at"));
-		log("Fetch the rules set in Admin");
-		String rule = adminuser.getRule();
-		log("rule are " + rule);
 		logStep("Move to PSS patient Portal 2.0 to book an Appointment");
 		logStep("Login to PSS Appointment");
 		DismissPage dismissPage = new DismissPage(driver, testData.getUrlLoginLess());
@@ -7412,6 +7394,5 @@ public class PSS2PatientPortalAcceptanceTests extends BaseTestNGWebDriver {
 		logStep("Date selected is for App" + date);
 			assertEquals(date, psspatientutils.currentDateandLeadDay(testData));
 	}
-
 
 }
