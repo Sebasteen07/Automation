@@ -11,9 +11,7 @@ import io.restassured.path.json.JsonPath;
 import io.restassured.response.Response;
 import io.restassured.specification.RequestSpecification;
 import io.restassured.specification.ResponseSpecification;
-
 import org.testng.Assert;
-
 import com.medfusion.common.utils.PropertyFileLoader;
 import com.medfusion.gateway_proxy.utils.GatewayProxyUtils;
 

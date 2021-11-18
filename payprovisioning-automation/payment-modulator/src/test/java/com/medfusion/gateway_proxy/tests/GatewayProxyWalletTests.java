@@ -9,7 +9,6 @@ import com.medfusion.gateway_proxy.utils.GatewayProxyUtils;
 import com.medfusion.gateway_proxy.utils.PropertyFileLoad;
 import com.medfusion.payment_modulator.utils.CommonUtils;
 import com.medfusion.payment_modulator.utils.Validations;
-
 import io.restassured.RestAssured;
 import io.restassured.path.json.JsonPath;
 import io.restassured.response.Response;

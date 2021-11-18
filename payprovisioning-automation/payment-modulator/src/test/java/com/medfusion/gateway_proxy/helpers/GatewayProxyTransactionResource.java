@@ -5,10 +5,8 @@ import static io.restassured.RestAssured.given;
 
 import com.medfusion.common.utils.IHGUtil;
 import com.medfusion.payment_modulator.pojos.Transactions;
-
 import io.restassured.http.ContentType;
 import io.restassured.response.Response;
-
 import java.io.IOException;
 import java.util.List;
 import java.util.Map;
