@@ -5,19 +5,19 @@
 	<!-- Copyright 2013-2021 NXGN Management, LLC. All Rights Reserved. -->
 
 	<parent>
-	  <groupId>com.intuit.ihg</groupId>
-	  <artifactId>ihg-depot-parent-pom</artifactId>
-	  <version>21.7.0-SNAPSHOT</version>
+		<groupId>com.intuit.ihg</groupId>
+		<artifactId>ihg-depot-parent-pom</artifactId>
+		<version>22.1.0-SNAPSHOT</version>
 	</parent>
 
 	<artifactId>forms-automation</artifactId>
 	<name>forms-automation</name>
 	<description>Forms automation tests</description>
 
-    <properties>
-        <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
-        <ihg.version>21.7.0-SNAPSHOT</ihg.version>
-    </properties>
+	<properties>
+		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+		<ihg.version>22.1.0-SNAPSHOT</ihg.version>
+	</properties>
 
 	<repositories>
 		<repository>

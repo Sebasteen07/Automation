@@ -13,6 +13,7 @@ import org.openqa.selenium.support.How;
 import org.openqa.selenium.support.PageFactory;
 
 import com.medfusion.common.utils.IHGUtil;
+import com.medfusion.product.object.maps.pss2.page.AppEntryPoint.StartAppointmentInOrder;
 import com.medfusion.product.object.maps.pss2.page.Appointment.HomePage.HomePage;
 import com.medfusion.product.object.maps.pss2.page.Appointment.Main.PSS2MainPage;
 import com.medfusion.product.object.maps.pss2.page.ConfirmationPage.ConfirmationPage;
@@ -22,8 +23,8 @@ public class UpdateInsurancePage extends PSS2MainPage {
 
 	@FindBy(how = How.XPATH, using = "//div[@id=\"react-select-3--value\"]")
 	private WebElement insuranceCarrier;
-
-	@FindBy(how = How.XPATH, using = "//div[@class=\" css-1wy0on6\"]/div")
+	
+	@FindBy(how = How.XPATH, using = "//div[@class=\" css-1wy0on6\"]")
 	private WebElement selectArrow;
 
 	@FindBy(how = How.ID, using = "insurancecarrier")
@@ -115,5 +116,23 @@ public class UpdateInsurancePage extends PSS2MainPage {
 		scrollAndWait(0, 800, 500);
 		commonMethods.highlightElement(buttonUpdateInsuranceInfo);
 		buttonUpdateInsuranceInfo.click();
+	}
+	
+	public ConfirmationPage selectInsuranceAtEnd(String memberID, String groupID, String phoneNumber) throws InterruptedException {
+		log("In selectInsurance of UpdateInsurance page.");
+		selectInsuranceCarrier();
+		inputMemberID.clear();
+		commonMethods.highlightElement(inputMemberID);
+		inputMemberID.sendKeys(memberID);
+		inputGroupID.clear();
+		commonMethods.highlightElement(inputGroupID);
+		inputGroupID.sendKeys(groupID);
+		inputInsurancePhone.clear();
+		commonMethods.highlightElement(inputInsurancePhone);
+		inputInsurancePhone.sendKeys(phoneNumber);
+		scrollAndWait(0, 800, 500);
+		commonMethods.highlightElement(buttonUpdateInsuranceInfo);
+		buttonUpdateInsuranceInfo.click();
+		return PageFactory.initElements(driver, ConfirmationPage.class);
 	}
 }

@@ -4,10 +4,7 @@ import com.medfusion.common.utils.PropertyFileLoader;
 import org.openqa.selenium.support.PageFactory;
 import org.testng.Assert;
 import org.testng.annotations.Test;
-import pageobjects.EditRatesAndContractPage;
-import pageobjects.GeneralMerchantInformationPage;
-import pageobjects.MerchantDetailsPage;
-import pageobjects.MerchantSearchPage;
+import pageobjects.*;
 import utils.MPUITestData;
 
 import java.io.IOException;
@@ -98,6 +95,44 @@ public class EditMerchantDetailsTests extends ProvisioningBaseTest {
 		merchantDetailsPage.verifyPageTitle();
 		merchantDetailsPage.verifyGeneralMerchantInformation(practiceID, customerAccNo, doingBusinessAs);
 
+	}
+
+	@Test
+	public void testAddRemoveBeneficialOwner() throws IOException, InterruptedException {
+		PropertyFileLoader testData = new PropertyFileLoader();
+		logStep("Navigating to search Merchant");
+		MerchantSearchPage merchantSearchPage = PageFactory.initElements(driver, MerchantSearchPage.class);
+
+		merchantSearchPage.findByMerchantId(testData.getProperty("edit.merchant.id"));
+		merchantSearchPage.searchButtonClick();
+
+		logStep("Going to click on view Merchant details page");
+		merchantSearchPage.viewDetailsButtonClick();
+
+		logStep("Going to verify title of merchant details page");
+		MerchantDetailsPage merchantDetailsPage = PageFactory.initElements(driver, MerchantDetailsPage.class);
+		merchantDetailsPage.verifyPageTitle();
+
+		logStep("Going to click on Edit General Merchant Info Button");
+		AddBeneficialOwnerPage addBeneficialOwnerPage;
+		addBeneficialOwnerPage = merchantDetailsPage.clickAddNewBeneficialOwnerButton();
+		Assert.assertTrue(addBeneficialOwnerPage.verifyFieldsOnEditAddbeneficialOwnerPage());
+
+		logStep("Fill in Add Beneficial Owner Details");
+		addBeneficialOwnerPage.editFirstName(testData.getProperty("customer.first.name"));
+		addBeneficialOwnerPage.editLastName(testData.getProperty("customer.last.name"));
+		addBeneficialOwnerPage.editPercentOwned(testData.getProperty("percent.owned"));
+		addBeneficialOwnerPage.editPrincipalAddressLine1(testData.getProperty("merchant.address.line1"));
+		addBeneficialOwnerPage.editPrincipalCity(testData.getProperty("merchant.city"));
+		addBeneficialOwnerPage.selectState(testData.getProperty("merchant.state"));
+		addBeneficialOwnerPage.editPrincipalZip(testData.getProperty("merchant.zip"));
+
+		logStep("Click on Create Beneficial Owner Button");
+		Assert.assertTrue(addBeneficialOwnerPage.verifyButtonsPresent());
+		merchantDetailsPage = addBeneficialOwnerPage.clickCreateBeneficialOwnerBtn();
+
+		logStep("Remove All Beneficial Owners");
+		merchantDetailsPage.removeBeneficialOwner();
 	}
 
 }
