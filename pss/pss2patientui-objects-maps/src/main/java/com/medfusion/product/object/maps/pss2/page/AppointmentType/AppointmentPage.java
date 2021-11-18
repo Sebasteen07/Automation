@@ -36,6 +36,12 @@ public class AppointmentPage extends PSS2MainPage {
 	
 	@FindBy(how = How.XPATH, using = "//div[contains(text(),'The practice does not allow this appointment to be scheduled within')]")
 	private WebElement preventApptSchedPopUpMsg;
+	
+	@FindBy(how = How.XPATH, using = "//div[@id='providerwizard']//div[2]//a[1]//div[1]//div[2]//span[1]")
+	private WebElement apptNextAvailable;
+	
+	@FindBy(how = How.XPATH, using = "//button[@class='btn appointmentType-btn handle-text-Overflow outer-div']")
+	private WebElement apptBox;	
 
 	public AppointmentPage(WebDriver driver) {
 		super(driver);
@@ -137,5 +143,15 @@ public class AppointmentPage extends PSS2MainPage {
 
 	public List<WebElement> getAppointmentNames() {
 		return appointmentTypeList;
+	}
+	
+	public String getNextavaliableText() {
+		IHGUtil.waitForElement(driver, 10, apptNextAvailable);
+		return apptNextAvailable.getText();
+	}
+	
+	public String getNextAvailableOffText() {
+		IHGUtil.waitForElement(driver, 5, apptBox);
+		return apptBox.getText();
 	}
 }
