@@ -55,6 +55,7 @@ public class GatewayProxyTransactionResource extends GatewayProxyBaseTest {
 
 	public Response makeAuthorizeTransaction(String token, String paymentSource, String cardType, String cardNo,
 			String expiry, String customeruuid, String mmid) throws Exception {
+
 		testData = new PropertyFileLoader();
 		Map<String, Object> transactiondetails = PayloadDetails.getPayloadForAuthorizeSaleMap(
 				(testData.getProperty("transaction.amount")), testData.getProperty("account.number"),
@@ -104,55 +105,48 @@ public class GatewayProxyTransactionResource extends GatewayProxyBaseTest {
 				.then().extract().response();
 
 		return response;
-
 	}
 
-	public Response getTransactions(String token, String customeruuid,
-									String mmid, long epochStartDate,
-									long epochEndDate, String paymentSource) throws IOException {
+	public Response getTransactions(String token, String customeruuid, String mmid, long epochStartDate,
+			long epochEndDate, String paymentSource) throws IOException {
 		testData = new PropertyFileLoader();
 
 		Response response = given().that().spec(requestSpec).auth().oauth2(token).log().all()
-				.param("startDate", epochStartDate)
-				.param("endDate",epochEndDate)
-				.param("paymentSource",paymentSource).when()
-				.get(customeruuid + "/merchant/" + mmid +"/transactions").then().and()
-				.extract().response();
+				.param("startDate", epochStartDate).param("endDate", epochEndDate).param("paymentSource", paymentSource)
+				.when().get(customeruuid + "/merchant/" + mmid + "/transactions").then().and().extract().response();
 
 		return response;
 	}
 
-	public List getTransactionsAsList(String token, String customeruuid,
-									  String mmid, long epochStartDate,
-									  long epochEndDate, String paymentSource) throws IOException {
+	public List getTransactionsAsList(String token, String customeruuid, String mmid, long epochStartDate,
+			long epochEndDate, String paymentSource) throws IOException {
 		testData = new PropertyFileLoader();
 
-		return given().that().spec(requestSpec).auth().oauth2(token).log().all()
-				.param("startDate", epochStartDate)
-				.param("endDate",epochEndDate)
-				.param("paymentSource",paymentSource).when()
-				.get(customeruuid + "/merchant/" + mmid +"/transactions").then().and()
-				.extract().body().jsonPath().getList(".", Transactions.class);
+		return given().that().spec(requestSpec).auth().oauth2(token).log().all().param("startDate", epochStartDate)
+				.param("endDate", epochEndDate).param("paymentSource", paymentSource).when()
+				.get(customeruuid + "/merchant/" + mmid + "/transactions").then().and().extract().body().jsonPath()
+				.getList(".", Transactions.class);
 
 	}
 
-	public Response getReceiptData(String token, String customeruuid,
-									String mmid, String transactionId, String orderId) throws IOException {
+	public Response getReceiptData(String token, String customeruuid, String mmid, String transactionId, String orderId)
+			throws IOException {
 		testData = new PropertyFileLoader();
 
-		Response response = given().that().spec(requestSpec).auth().oauth2(token).when()
-				.get(customeruuid + "/merchant/" + mmid +"/transaction/" + transactionId + "/orderId/" + orderId + "/receipt").then().and()
-				.extract().response();
+		Response response = given()
+				.that().spec(requestSpec).auth().oauth2(token).when().get(customeruuid + "/merchant/" + mmid
+						+ "/transaction/" + transactionId + "/orderId/" + orderId + "/receipt")
+				.then().and().extract().response();
 
 		return response;
 	}
 
-	
-	public Response makeAuthorizeTransactionWithDiffEnv(String token,String env, String paymentSource, String cardType, String cardNo,
-			String expiry, String customeruuid, String mmid,PropertyFileLoad testData) throws Exception {
-		
+	public Response makeAuthorizeTransactionWithDiffEnv(String token, String env, String paymentSource, String cardType,
+			String cardNo, String expiry, String customeruuid, String mmid, PropertyFileLoad testData)
+			throws Exception {
+
 		Response response;
-		System.out.println("testdata"+testData);
+		System.out.println("testdata" + testData);
 		Map<String, Object> transactiondetails = PayloadDetails.getPayloadForAuthorizeSaleMap(
 				(testData.getProperty("transaction.amount")), testData.getProperty("account.number"),
 				testData.getProperty("consumer.name"), paymentSource, testData.getProperty("cvv"), cardType, cardNo,
@@ -160,62 +154,55 @@ public class GatewayProxyTransactionResource extends GatewayProxyBaseTest {
 				testData.getProperty("address.line1"), testData.getProperty("city"), testData.getProperty("state"),
 				testData.getProperty("first.name"));
 
-		String url = getUrl( env,customeruuid, mmid, "/authorize");
-	
-		
-		if(env.equalsIgnoreCase("DEV3") || env.equalsIgnoreCase("DEMO")){
-			
-			response = given().auth().oauth2(token)
-					.contentType(ContentType.JSON).body(transactiondetails).when().log().all()
-					.post(url).then().log().all().extract().response();
-		}else {
-			System.out.println("printing property "+testData.getProperty("x-api-key"));
-			
-			response = given().auth().oauth2(token).header("x-api-key",testData.getProperty("x-api-key"))
-					.contentType(ContentType.JSON).body(transactiondetails).when().log().all()
-					.post(url).then().log().all().extract().response();
+		String url = getUrl(env, customeruuid, mmid, "/authorize");
+
+		if (env.equalsIgnoreCase("DEV3") || env.equalsIgnoreCase("DEMO")) {
+
+			response = given().auth().oauth2(token).contentType(ContentType.JSON).body(transactiondetails).when().log()
+					.all().post(url).then().log().all().extract().response();
+		} else {
+			System.out.println("printing property " + testData.getProperty("x-api-key"));
+
+			response = given().auth().oauth2(token).header("x-api-key", testData.getProperty("x-api-key"))
+					.contentType(ContentType.JSON).body(transactiondetails).when().log().all().post(url).then().log()
+					.all().extract().response();
 		}
-			return response;
+		return response;
 	}
 
-
-	public Response makeSaleTransactionWithDiffEnv(String token,String env, String paymentSource, String cardType, String cardNo,
-			String expiry, String customeruuid, String mmid,PropertyFileLoad testData,String transactionAmount) throws Exception {
-		
+	public Response makeSaleTransactionWithDiffEnv(String token, String env, String paymentSource, String cardType,
+			String cardNo, String expiry, String customeruuid, String mmid, PropertyFileLoad testData,
+			String transactionAmount) throws Exception {
 		Response response;
-		System.out.println("testdata"+testData);
-		Map<String, Object> transactiondetails = PayloadDetails.getPayloadForAuthorizeSaleMap(
-				transactionAmount, testData.getProperty("account.number"),
-				testData.getProperty("consumer.name"), paymentSource, testData.getProperty("cvv"), cardType, cardNo,
-				expiry, testData.getProperty("bin"), testData.getProperty("zipcode"), testData.getProperty("last.name"),
+		System.out.println("testdata" + testData);
+		Map<String, Object> transactiondetails = PayloadDetails.getPayloadForAuthorizeSaleMap(transactionAmount,
+				testData.getProperty("account.number"), testData.getProperty("consumer.name"), paymentSource,
+				testData.getProperty("cvv"), cardType, cardNo, expiry, testData.getProperty("bin"),
+				testData.getProperty("zipcode"), testData.getProperty("last.name"),
 				testData.getProperty("address.line1"), testData.getProperty("city"), testData.getProperty("state"),
 				testData.getProperty("first.name"));
 
-		String url = getUrl( env,customeruuid, mmid, "/sale");
-	
-		
-		if(env.equalsIgnoreCase("DEV3") || env.equalsIgnoreCase("DEMO")){
-			
-			response = given().auth().oauth2(token)
-					.contentType(ContentType.JSON).body(transactiondetails).when().log().all()
-					.post(url).then().extract().response();
-		}else {
-			System.out.println("printing property "+testData.getProperty("x-api-key"));
-			
-			response = given().auth().oauth2(token).header("x-api-key",testData.getProperty("x-api-key"))
-					.contentType(ContentType.JSON).body(transactiondetails).when().log().all()
-					.post(url).then().log().all().extract().response();
+		String url = getUrl(env, customeruuid, mmid, "/sale");
+
+		if (env.equalsIgnoreCase("DEV3") || env.equalsIgnoreCase("DEMO")) {
+
+			response = given().auth().oauth2(token).contentType(ContentType.JSON).body(transactiondetails).when().log()
+					.all().post(url).then().extract().response();
+		} else {
+			System.out.println("printing property " + testData.getProperty("x-api-key"));
+
+			response = given().auth().oauth2(token).header("x-api-key", testData.getProperty("x-api-key"))
+					.contentType(ContentType.JSON).body(transactiondetails).when().log().all().post(url).then().log()
+					.all().extract().response();
 		}
-			return response;
+		return response;
 	}
-	
-	
-	public Response makeCaptureTransactionWithDiffEnv(String token,String env, String paymentSource, String cardType, String cardNo,
-			String expiry, String customeruuid, String mmid,String externalTransactionId,String orderId,PropertyFileLoad testData) throws Exception {
-	
+
+	public Response makeCaptureTransactionWithDiffEnv(String token, String env, String paymentSource, String cardType,
+			String cardNo, String expiry, String customeruuid, String mmid, String externalTransactionId,
+			String orderId, PropertyFileLoad testData) throws Exception {
 
 		Response response;
-			
 		Map<String, Object> transactiondetails = PayloadDetails.getPayloadForCaptureMap(
 				IHGUtil.createRandomNumericString(3), testData.getProperty("account.number"),
 				testData.getProperty("consumer.name"), paymentSource, testData.getProperty("cvv"), cardType, cardNo,
@@ -223,79 +210,66 @@ public class GatewayProxyTransactionResource extends GatewayProxyBaseTest {
 				testData.getProperty("address.line1"), testData.getProperty("city"), testData.getProperty("state"),
 				testData.getProperty("first.name"), externalTransactionId, orderId);
 
+		String url = getUrl(env, customeruuid, mmid, "/capture");
 
-		String url = getUrl( env,customeruuid, mmid, "/capture");
-			
-		if(env.equalsIgnoreCase("DEV3") || env.equalsIgnoreCase("DEMO")){
-			
-			response = given().auth().oauth2(token)
-					.contentType(ContentType.JSON).body(transactiondetails).when().log().all()
-					.post(url).then().log().all().extract().response();
-		}else {
-			System.out.println("printing property "+testData.getProperty("x-api-key"));
-			
-			response = given().auth().oauth2(token).header("x-api-key",testData.getProperty("x-api-key"))
-					.contentType(ContentType.JSON).body(transactiondetails).when().log().all()
-					.post(url).then().log().all().extract().response();
+		if (env.equalsIgnoreCase("DEV3") || env.equalsIgnoreCase("DEMO")) {
+
+			response = given().auth().oauth2(token).contentType(ContentType.JSON).body(transactiondetails).when().log()
+					.all().post(url).then().log().all().extract().response();
+		} else {
+			System.out.println("printing property " + testData.getProperty("x-api-key"));
+
+			response = given().auth().oauth2(token).header("x-api-key", testData.getProperty("x-api-key"))
+					.contentType(ContentType.JSON).body(transactiondetails).when().log().all().post(url).then().log()
+					.all().extract().response();
 		}
-			return response;
+		return response;
 	}
-	
-	
-	public Response makeAVoidWithDiffEnv(String token,String env, 
-			  String mmid,String customeruuid,String comment ,String customerId ,String externalTransactionId,String orderId,PropertyFileLoad testData) throws Exception {
-	
+
+	public Response makeAVoidWithDiffEnv(String token, String env, String mmid, String customeruuid, String comment,
+			String customerId, String externalTransactionId, String orderId, PropertyFileLoad testData)
+			throws Exception {
 		Response response;
-	
-		
 		Map<String, Object> transactiondetails = PayloadDetails.getPayloadForVoidSaleMap(comment, customerId,
 				externalTransactionId, orderId);
+		String url = getUrl(env, customeruuid, mmid, "/void");
 
+		if (env.equalsIgnoreCase("DEV3") || env.equalsIgnoreCase("DEMO")) {
 
-		String url = getUrl( env,customeruuid, mmid, "/void");
-	
-		
-		if(env.equalsIgnoreCase("DEV3") || env.equalsIgnoreCase("DEMO")){
-			
-			response = given().auth().oauth2(token)
-					.contentType(ContentType.JSON).body(transactiondetails).when().log().all()
-					.post(url).then().log().all().extract().response();
-		}else {
-			System.out.println("printing property "+testData.getProperty("x-api-key"));
-			
-			response = given().auth().oauth2(token).header("x-api-key",testData.getProperty("x-api-key"))
-					.contentType(ContentType.JSON).body(transactiondetails).when().log().all()
-					.post(url).then().log().all().extract().response();
+			response = given().auth().oauth2(token).contentType(ContentType.JSON).body(transactiondetails).when().log()
+					.all().post(url).then().log().all().extract().response();
+		} else {
+			System.out.println("printing property " + testData.getProperty("x-api-key"));
+
+			response = given().auth().oauth2(token).header("x-api-key", testData.getProperty("x-api-key"))
+					.contentType(ContentType.JSON).body(transactiondetails).when().log().all().post(url).then().log()
+					.all().extract().response();
 		}
-			return response;
+		return response;
 	}
-	
-	
-	public Response makeARefundWithDiffEnv(String token,String env, 
-			  String mmid,String customeruuid,String comment ,String customerId ,String externalTransactionId,String orderId,String transanctionAmount,PropertyFileLoad testData) throws Exception {
-	
-		
+
+	public Response makeARefundWithDiffEnv(String token, String env, String mmid, String customeruuid, String comment,
+			String customerId, String externalTransactionId, String orderId, String transanctionAmount,
+			PropertyFileLoad testData) throws Exception {
 		
 		Response response;
-		
 		Map<String, Object> transactiondetails = PayloadDetails.getPayloadForRefundSaleMap(comment, customerId,
 				externalTransactionId, orderId, transanctionAmount);
 
-		String url = getUrl( env,customeruuid, mmid, "/credit");
-		System.out.println("transanctionAmount"+transanctionAmount);
-		if(env.equalsIgnoreCase("DEV3") || env.equalsIgnoreCase("DEMO")){
-			
-			response = given().auth().oauth2(token)
-					.contentType(ContentType.JSON).body(transactiondetails).when().log().all()
-					.post(url).then().log().all().extract().response();
-		}else {
-			System.out.println("printing property "+testData.getProperty("x-api-key"));
-			
-			response = given().auth().oauth2(token).header("x-api-key",testData.getProperty("x-api-key"))
-					.contentType(ContentType.JSON).body(transactiondetails).when().log().all()
-					.post(url).then().log().all().extract().response();
+		String url = getUrl(env, customeruuid, mmid, "/credit");
+		System.out.println("transanctionAmount" + transanctionAmount);
+		if (env.equalsIgnoreCase("DEV3") || env.equalsIgnoreCase("DEMO")) {
+
+			response = given().auth().oauth2(token).contentType(ContentType.JSON).body(transactiondetails).when().log()
+					.all().post(url).then().log().all().extract().response();
+		} else {
+			System.out.println("printing property " + testData.getProperty("x-api-key"));
+
+			response = given().auth().oauth2(token).header("x-api-key", testData.getProperty("x-api-key"))
+					.contentType(ContentType.JSON).body(transactiondetails).when().log().all().post(url).then().log()
+					.all().extract().response();
 		}
-			return response;
+		return response;
 	}
-	
+
 }

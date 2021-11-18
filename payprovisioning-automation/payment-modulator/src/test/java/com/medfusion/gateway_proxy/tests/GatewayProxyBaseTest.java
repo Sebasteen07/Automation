@@ -32,28 +32,24 @@ public class GatewayProxyBaseTest extends GatewayProxyUtils {
 
 	public static void setupResponsetSpecBuilder() {
 		responseSpec = new ResponseSpecBuilder().expectStatusCode(200).expectContentType(ContentType.JSON).build();
-
 	}
 
 	public static void verifySuccessfulResponce(Response responce) {
 		JsonPath jsonPath = new JsonPath(responce.asString());
 		Assert.assertTrue(!jsonPath.get("walletCards[0].externalCardId").toString().isEmpty());
 		Assert.assertEquals(jsonPath.get("walletCards[0].primaryCard"), true);
-
 	}
-	
-	public static String  getUrl (String env ,String customeruuid,String mmid ,String endpoint ) {
-		
-		String url  = null;
-		if(env.equalsIgnoreCase("DEV3") || env.equalsIgnoreCase("DEMO")){
-						
+
+	public static String getUrl(String env, String customeruuid, String mmid, String endpoint) {
+
+		String url = null;
+		if (env.equalsIgnoreCase("DEV3") || env.equalsIgnoreCase("DEMO")) {
+
 			url = customeruuid + "/merchant/" + mmid + endpoint;
-			
-		}else {
-			url = customeruuid + "/pay/merchants/" +mmid+ endpoint;
-		
+		} else {
+			url = customeruuid + "/pay/merchants/" + mmid + endpoint;
+
 		}
-		
 		return url;
 	}
 
