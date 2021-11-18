@@ -1059,22 +1059,7 @@ public class PSSAdminUtils extends BaseTestNGWebDriver{
 		}
 
 	}
-	
-	public void upcomingPastApptSetting(WebDriver driver, AdminUser adminUser, Appointment appointment, String urlToUse) throws Exception {
-		
-		PSS2PracticeConfiguration pssPracticeConfig = loginToAdminPortal(driver, adminUser);
 
-		AccessRules accessRule = pssPracticeConfig.gotoAccessTab();
-
-		if (urlToUse.equalsIgnoreCase(PSSConstants.LOGINLESS)) {
-			log("PSS Patient URL : " + accessRule.getLoginlessURL());
-			appointment.setUrlLoginLess(accessRule.getLoginlessURL());
-		}
-		if (urlToUse.equalsIgnoreCase(PSSConstants.ANONYMOUS)) {
-			log("PSS Patient URL : " + accessRule.getAnonymousUrl());
-			appointment.setUrlAnonymous(accessRule.getAnonymousUrl());
-		}
-	}
 
 
 }
