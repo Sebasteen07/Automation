@@ -249,7 +249,7 @@ public class GatewayProxyTransactionResource extends GatewayProxyBaseTest {
 	public Response makeARefundWithDiffEnv(String token, String env, String mmid, String customeruuid, String comment,
 			String customerId, String externalTransactionId, String orderId, String transanctionAmount,
 			PropertyFileLoad testData) throws Exception {
-		
+
 		Response response;
 		Map<String, Object> transactiondetails = PayloadDetails.getPayloadForRefundSaleMap(comment, customerId,
 				externalTransactionId, orderId, transanctionAmount);

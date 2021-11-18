@@ -174,11 +174,11 @@ public class GatewayProxyWalletTests extends GatewayProxyBaseTest {
 		String externalTransactionId = jsonPath.get("externalTransactionId").toString();
 		String orderId = jsonPath.get("orderId").toString();
 
-			Response response = transaction.makeARefundWithDiffEnv(token, env, testData.getProperty("proxy.mmid"),
-					testData.getProperty("test.pay.customer.uuid"), testData.getProperty("comment"),
-					testData.getProperty("customer.id"), externalTransactionId, orderId, transanctionAmount, testData);
+		Response response = transaction.makeARefundWithDiffEnv(token, env, testData.getProperty("proxy.mmid"),
+				testData.getProperty("test.pay.customer.uuid"), testData.getProperty("comment"),
+				testData.getProperty("customer.id"), externalTransactionId, orderId, transanctionAmount, testData);
 
-			validate.verifyTransactionDetails(response.asString());
+		validate.verifyTransactionDetails(response.asString());
 
 	}
 
