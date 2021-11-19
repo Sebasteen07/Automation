@@ -34,8 +34,11 @@ public class ReportingNavigationMenu {
 	
 	@FindBy(how = How.XPATH, using = "/html/body/div[2]/aside/div/ul/li[4]/a")
 	public WebElement menuFeeReport;
+
+	@FindBy(how = How.XPATH, using = "//*[@id='summary']")
+	public WebElement menuSummaryReport;
 	
-	@FindBy(how = How.XPATH, using = "/html/body/div[2]/aside/div/ul/li[5]/a/span")
+	@FindBy(how = How.XPATH, using = "//*[@id='pos']")
 	public WebElement menuMakeAPayment;
 	
 	@FindBy(how = How.XPATH, using = "//span[normalize-space()='Configure Terminals']")
@@ -92,6 +95,12 @@ public class ReportingNavigationMenu {
 		openMenuIfNotOpened();
 		menuFeeReport.click();
 		return PageFactory.initElements(driver, ReportingFeeReportPage.class);		
+	}
+
+	public ReportingPOSPage navigateSummaryReport() throws InterruptedException {
+		openMenuIfNotOpened();
+		((JavascriptExecutor) driver).executeScript("arguments[0].click();", menuSummaryReport);
+		return PageFactory.initElements(driver, ReportingPOSPage.class);
 	}
 
 	public ReportingPOSPage navigateMakeAPayment() throws InterruptedException {

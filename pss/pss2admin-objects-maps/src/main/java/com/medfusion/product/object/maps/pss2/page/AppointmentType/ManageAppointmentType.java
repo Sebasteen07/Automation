@@ -80,6 +80,10 @@ public class ManageAppointmentType extends PSS2MenuPage {
 
 	@FindBy(how = How.XPATH, using = "//div[@class='col-md-12']//label[@for='allowSameDayAppts']/i")
 	private WebElement acceptToggleclick;
+	
+	@FindBy(how = How.XPATH, using = "//input[@id='leadTimedays']")
+	private WebElement leadDay;
+
 
 	public ManageAppointmentType(WebDriver driver) {
 		super(driver);
@@ -170,4 +174,12 @@ public class ManageAppointmentType extends PSS2MenuPage {
 		reservefor.click();
 		saveConfig.click();
 	}
+	
+
+	public void leadTime(String leadValue) {
+		leadDay.clear();
+		leadDay.sendKeys(leadValue);
+		saveConfig.click();
+	}
+
 }
