@@ -1103,4 +1103,18 @@ public class PSSAdminUtils extends BaseTestNGWebDriver{
 		}
 	}
 
+public void ageRuleAppointmentType(WebDriver driver, AdminUser adminUser, Appointment appointment, String urlToUse) throws Exception {
+		
+		PSS2PracticeConfiguration pssPracticeConfig = loginToAdminPortal(driver, adminUser);
+
+		ManageAppointmentType manageAppointmentType = pssPracticeConfig.gotoAppointment();
+		pageRefresh(driver);
+		manageAppointmentType.selectAppointment(appointment.getAppointmenttype());
+		Log4jUtil.log("Status of Checkbox" + manageAppointmentType.checkBoxStatus());
+		manageAppointmentType.ageRule();
+		manageAppointmentType.ageRuleparameter(appointment.getAgeRuleMonthFirst(), appointment.getAgeRuleMonthSecond());
+
+}
+
+	
 }
