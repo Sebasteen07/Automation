@@ -190,6 +190,21 @@ locals {
       chrome_driver_version = local.qa_chrome_driver_version
       cron_shedule          = "cron(30 23 ? * 6 *)"
     }
+
+    "git-taf-prod-pss-acceptance" = {
+      codecommit_branch     = "development"
+      PollForSourceChanges  = false
+      execution_folder      = "pss/pss2patientui-automation"
+      test_environment      = "prod"
+      suite_xml             = "pss-smoketests.xml"
+      pxp_application       = "PatientSelfScheduling"
+      build_timeout         = 240 #Number of minutes, from 5 to 480. Default value is 60 mins
+      queued_timeout        = 480 #Number of minutes, from 5 to 480. Default value is 480 mins
+      maven_parameter       = "mvn clean install -U"
+      google_chrome_version = "93.0.4577.82-1"
+      chrome_driver_version = "92.0.4515.107"
+      cron_shedule          = "cron(5 1 ? * 1 *)"
+    }
   }
 
   selected_test_environment      = try(local.inputs[terraform.workspace].test_environment)
