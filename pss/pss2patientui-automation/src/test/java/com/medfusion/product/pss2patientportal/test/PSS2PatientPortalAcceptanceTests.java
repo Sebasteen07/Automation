@@ -14,6 +14,7 @@ import java.util.Calendar;
 import java.util.Date;
 
 import org.json.JSONArray;
+import org.testng.Assert;
 import org.testng.annotations.DataProvider;
 import org.testng.annotations.Parameters;
 import org.testng.annotations.Test;
@@ -8175,5 +8176,71 @@ public class PSS2PatientPortalAcceptanceTests extends BaseTestNGWebDriver {
 			assertNotEquals(testData.getAppointmenttype(), name);
 
 		}
+	}
+
+	@Test(enabled = true, groups = {"AcceptanceTests"}, retryAnalyzer = RetryAnalyzer.class)
+	public void testMaxPerDayShowProviderOFFNG() throws Exception {
+		PSSPropertyFileLoader propertyData = new PSSPropertyFileLoader();
+		Appointment testData = new Appointment();
+		AdminUser adminuser = new AdminUser();
+		propertyData.setAdminNG(adminuser);
+		propertyData.setAppointmentResponseNG(testData);
+		setUp(propertyData.getProperty("mf.practice.id.ng"), propertyData.getProperty("mf.authuserid.am.ng"));
+		Response response;
+		response = postAPIRequestAM.resourceConfigRuleGet(practiceId);
+		validateAdapter.verifyResourceConfigRuleGet(response);
+		JSONArray arr = new JSONArray(response.body().asString());
+		int l = arr.length();
+		log("Length is- " + l);
+		for (int i = 0; i < l; i++) {
+			int ruleId = arr.getJSONObject(i).getInt("id");
+			log("Object No." + i + "- " + ruleId);
+			Response responseForDeleteRule = postAPIRequestAM.deleteRuleById(practiceId, Integer.toString(ruleId));
+			aPIVerification.responseCodeValidation(responseForDeleteRule, 200);
+		}
+		Response responseRulePost = postAPIRequestAM.resourceConfigRulePost(practiceId, payloadAM.resourceConfigRulePutPayloadLT());
+		aPIVerification.responseCodeValidation(responseRulePost, 200);
+
+		Response responseRulePostTL = postAPIRequestAM.resourceConfigRulePost(practiceId, payloadAM.resourceConfigRulePostPayloadTL());
+		aPIVerification.responseCodeValidation(responseRulePostTL, 200);
+
+		PSSAdminUtils adminUtils = new PSSAdminUtils();
+		logStep("Login to PSS 2.0 Admin portal");
+		adminUtils.maxPerDayWithReserveShowProviderOFF(driver, adminuser, testData);
+		Assert.assertFalse(testData.isMaxPerDayStatus());
+
+	}
+
+	@Test(enabled = true, groups = {"AcceptanceTests"}, retryAnalyzer = RetryAnalyzer.class)
+	public void testMaxPerDayShowProviderOFFAT() throws Exception {
+		PSSPropertyFileLoader propertyData = new PSSPropertyFileLoader();
+		Appointment testData = new Appointment();
+		AdminUser adminuser = new AdminUser();
+		propertyData.setAdminAT(adminuser);
+		propertyData.setAppointmentResponseAT(testData);
+		setUp(propertyData.getProperty("mf.practice.id.at"), propertyData.getProperty("mf.authuserid.am.at"));
+		Response response;
+		response = postAPIRequestAM.resourceConfigRuleGet(practiceId);
+		validateAdapter.verifyResourceConfigRuleGet(response);
+		JSONArray arr = new JSONArray(response.body().asString());
+		int l = arr.length();
+		log("Length is- " + l);
+		for (int i = 0; i < l; i++) {
+			int ruleId = arr.getJSONObject(i).getInt("id");
+			log("Object No." + i + "- " + ruleId);
+			Response responseForDeleteRule = postAPIRequestAM.deleteRuleById(practiceId, Integer.toString(ruleId));
+			aPIVerification.responseCodeValidation(responseForDeleteRule, 200);
+		}
+		Response responseRulePost = postAPIRequestAM.resourceConfigRulePost(practiceId, payloadAM.resourceConfigRulePutPayloadLT());
+		aPIVerification.responseCodeValidation(responseRulePost, 200);
+
+		Response responseRulePostTL = postAPIRequestAM.resourceConfigRulePost(practiceId, payloadAM.resourceConfigRulePostPayloadTL());
+		aPIVerification.responseCodeValidation(responseRulePostTL, 200);
+
+		PSSAdminUtils adminUtils = new PSSAdminUtils();
+		logStep("Login to PSS 2.0 Admin portal");
+		adminUtils.maxPerDayWithReserveShowProviderOFF(driver, adminuser, testData);
+		Assert.assertFalse(testData.isMaxPerDayStatus());
+
 	}
 }

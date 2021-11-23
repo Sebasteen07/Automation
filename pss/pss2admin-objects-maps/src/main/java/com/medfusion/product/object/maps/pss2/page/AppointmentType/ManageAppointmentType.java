@@ -108,6 +108,8 @@ public class ManageAppointmentType extends PSS2MenuPage {
 	@FindBy(how = How.XPATH, using = "//input[@id='line1' and @name='rightVal']")
 	private WebElement sendMonthsecond;
 
+	@FindBy(how = How.XPATH, using = "//*[contains(text(),'Max Per Day')]")
+	private WebElement maxPerDay;
 
 
 	public ManageAppointmentType(WebDriver driver) {
@@ -237,4 +239,17 @@ public class ManageAppointmentType extends PSS2MenuPage {
 		saveConfig.click();
 	}
 
+	public int maxPerDaySize() {
+		List<WebElement> aptNameList = driver.findElements(By.xpath("//*[contains(text(),'Max Per Day')]"));
+		int size = aptNameList.size();
+		return size;
+	}
+
+	public boolean maxPerDayStatus() {
+		if (maxPerDaySize() > 0) {
+			return true;
+		} else {
+			return false;
+		}
+	}
 }

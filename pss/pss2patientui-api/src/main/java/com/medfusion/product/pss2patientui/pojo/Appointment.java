@@ -88,10 +88,12 @@ public class Appointment {
 	private int leadtimeHour;
 	private int leadtimeMinute;
 	private int preSchedDays;
-
+	private boolean maxPerDayStatus;
 	private String currentDate;
+
 	private String currentTimeZone;
 	private String businesshourStartTime;
+
 	private String businesshourEndTime;
 	private String maxperDay;
 	private String gmailUserName;
@@ -263,6 +265,15 @@ public class Appointment {
 		this.appointmenttype = appointmentConfig;
 		this.speciality = specialityConfig;
 	}
+
+	public boolean isMaxPerDayStatus() {
+		return maxPerDayStatus;
+	}
+
+	public void setMaxPerDayStatus(boolean maxPerDayStatus) {
+		this.maxPerDayStatus = maxPerDayStatus;
+	}
+
 
 	public int getPreSchedDays() {
 		return preSchedDays;

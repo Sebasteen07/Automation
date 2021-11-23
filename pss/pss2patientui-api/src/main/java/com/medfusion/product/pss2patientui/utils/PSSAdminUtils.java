@@ -1116,5 +1116,15 @@ public void ageRuleAppointmentType(WebDriver driver, AdminUser adminUser, Appoin
 
 }
 
-	
+public void maxPerDayWithReserveShowProviderOFF(WebDriver driver, AdminUser adminuser, Appointment appointment) throws Exception {
+	PSS2PracticeConfiguration pssPracticeConfig = loginToAdminPortal(driver, adminuser);
+	pssPracticeConfig = pssPracticeConfig.gotoPracticeConfigTab();
+	PatientFlow patientFlow = pssPracticeConfig.gotoPatientFlowTab();
+	patientFlow.turnOffProvider();
+	ManageAppointmentType manageAppointmentType = pssPracticeConfig.gotoAppointment();
+	manageAppointmentType.selectAppointment(appointment.getAppointmenttype());
+	manageAppointmentType.gotoConfiguration();
+	appointment.setMaxPerDayStatus(manageAppointmentType.maxPerDayStatus());
+	log("Max Per Day Status is" + appointment.isMaxPerDayStatus());
+}
 }
