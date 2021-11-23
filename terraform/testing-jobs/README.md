@@ -36,6 +36,7 @@ The following resources are the pre-requisites from common folder
 | data\_classification | Data classification for the CI/CD pipeline | `string` | `"confidential"` | no |
 | environment | The name of environment. Used to differentiate costs between stacks or pipelines including those of the same type | `string` | `"dev"` | no |
 | environment-type | The type of environment according to function/purpose. Used to differentiate costs between different types of use | `string` | `"test"` | no |
+| bitbucket_repository_name | Same as bitbucket repository name | `string` | `"qa-automation"` | yes |
 | repository\_name | The name of the repository that would be used to trigger the pipeline | `string` | `"qa-automation-mirror"` | no |
 | source\_buildspec | Location of the buildspec file in the nextgen-portal-api-gateway repository | `string` | `"terraform/testing-jobs/buildspecfolder/buildspec.yaml"` | no |
 
@@ -56,7 +57,7 @@ kms_key_id                    = data.aws_ssm_parameter.kms_data_default.value
 aws_codebuild_project_arn     = "arn:aws:codebuild:${data.aws_region.current.name}:${data.aws_caller_identity.current.account_id}:project/${module.build.codebuild_project.name}"
 pipeline_artifact_bucket_name = data.aws_ssm_parameter.codepipeline_artifact_store.value
 pipeline_artifact_bucket_arn  = "arn:aws:s3:::${local.pipeline_artifact_bucket_name}"
-name                          = terraform.workspace
+name                          = "${var.bitbucket_repository_name}_${terraform.workspace}"
 aws_codecommit_repo_arn       = "arn:aws:codecommit:${data.aws_region.current.name}:${data.aws_caller_identity.current.account_id}:${var.repository_name}"
 selenium_browser              = "*chrome"
 test_execution_mode           = "headless"
@@ -78,6 +79,7 @@ inputs = {
     google_chrome_version = "93.0.4577.82-1"
     chrome_driver_version = "92.0.4515.107"
     cron_shedule          = "cron(10 6 ? * 3 *)"
+    pxp_application       = "Portal"
   }
 }
 ````

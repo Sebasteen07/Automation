@@ -300,32 +300,38 @@ public class AddNewMerchantPage extends NavigationMenu{
         merchantLegalName.sendKeys(legalEntityName);
     }
 
-    public void fillBeneficialOwnerFirstName(String beneficialOwnerFName) {
-        beneficialOwnerFirstName.clear();
-        beneficialOwnerFirstName.sendKeys(beneficialOwnerFName);
+    public void fillBeneficialOwnerFirstName(String beneficialOwnerFName, int ownerNumber) {
+        WebElement firstName = driver.findElement(By.id("principalFirstName_"+ownerNumber));
+        firstName.clear();
+        firstName.sendKeys(beneficialOwnerFName);
     }
 
-    public void fillBeneficialOwnerLastName(String beneficialOwnerLName) {
-        beneficialOwnerLastName.clear();
-        beneficialOwnerLastName.sendKeys(beneficialOwnerLName);
+    public void fillBeneficialOwnerLastName(String beneficialOwnerLName, int ownerNumber) {
+        WebElement lastName = driver.findElement(By.id("principalLastName_"+ownerNumber));
+        lastName.clear();
+        lastName.sendKeys(beneficialOwnerLName);
     }
 
-    public void fillPercentOwnership(String ownershipPercentage) {
-        percentOwnership.clear();
-        percentOwnership.sendKeys(ownershipPercentage);
+    public void fillPercentOwnership(String ownershipPercentage, int ownerNumber) {
+        WebElement percentageOwnership = driver.findElement(By.id("percentOwnership_"+ownerNumber));
+        percentageOwnership.clear();
+        percentageOwnership.sendKeys(ownershipPercentage);
     }
 
-    public void fillBeneficialOwnerAddressLine1(String beneficialOwnerAddLine1) {
-        beneficialOwnerAddressLine1.clear();
-        beneficialOwnerAddressLine1.sendKeys(beneficialOwnerAddLine1);
+    public void fillBeneficialOwnerAddressLine1(String beneficialOwnerAddLine1, int ownerNumber) {
+        WebElement beneficialOwnerAdd = driver.findElement(By.id("principaladdressLine1_"+ownerNumber));
+        beneficialOwnerAdd.clear();
+        beneficialOwnerAdd.sendKeys(beneficialOwnerAddLine1);
     }
 
-    public void fillBeneficialOwnerCity(String beneficialOwnerCityName) {
+    public void fillBeneficialOwnerCity(String beneficialOwnerCityName, int ownerNumber) {
+        WebElement beneficialOwnerCity = driver.findElement(By.id("principalcity_"+ownerNumber));
         beneficialOwnerCity.clear();
         beneficialOwnerCity.sendKeys(beneficialOwnerCityName);
     }
 
-    public void fillBeneficialOwnerZip(String beneficialOwnerZipcode) {
+    public void fillBeneficialOwnerZip(String beneficialOwnerZipcode, int ownerNumber) {
+        WebElement beneficialOwnerZip = driver.findElement(By.id("principalzip_"+ownerNumber));
         beneficialOwnerZip.clear();
         beneficialOwnerZip.sendKeys(beneficialOwnerZipcode);
     }
@@ -409,8 +415,9 @@ public class AddNewMerchantPage extends NavigationMenu{
         }
     }
 
-    public void clickAddBeneficialOwnerBtn() {
-        addbeneficialOwnerButton.click();
+    public void clickAddBeneficialOwnerBtn(int ownerNumber) {
+        WebElement addbeneficialOwnerBtn = driver.findElement(By.xpath("//*[@id='viewContent']/div/div/div/form/fieldset[7]/fieldset["+ownerNumber+"]/div[16]/div/span[1]"));
+        addbeneficialOwnerBtn.click();
     }
 
     public void clickRemoveBeneficialOwnerBtn() {
@@ -497,13 +504,15 @@ public class AddNewMerchantPage extends NavigationMenu{
         select.selectByVisibleText(merchantCountry);
     }
 
-    public void selectBeneficialOwnerState(String beneficialOwnersState) {
-        Select select = new Select(beneficialOwnerState);
+    public void selectBeneficialOwnerState(String beneficialOwnersState, int beneficialOwnerNumber) {
+        WebElement stateBeneficialOwner = driver.findElement(By.id("principalstate_"+beneficialOwnerNumber));
+        Select select = new Select(stateBeneficialOwner);
         select.selectByVisibleText(beneficialOwnersState);
     }
 
-    public void selectBeneficialOwnerCountry(String beneficialOwnersCountry) {
-        Select select = new Select(beneficialOwnerCountry);
+    public void selectBeneficialOwnerCountry(String beneficialOwnersCountry, int beneficialOwnerNumber) {
+        WebElement stateBeneficialOwner = driver.findElement(By.id("principalcountry_"+beneficialOwnerNumber));
+        Select select = new Select(stateBeneficialOwner);
         select.selectByVisibleText(beneficialOwnersCountry);
     }
 
@@ -601,18 +610,30 @@ public class AddNewMerchantPage extends NavigationMenu{
                                                String addressLine1, String city, String state,
                                                String zipcode, String country, String ownerType) {
         if(numberOfBeneficialOwners <= 1) {
-            fillBeneficialOwnerFirstName(firstName);
-            fillBeneficialOwnerLastName(lastName);
-            fillPercentOwnership(ownershipPercent);
-            fillBeneficialOwnerAddressLine1(addressLine1);
-            fillBeneficialOwnerCity(city);
-            selectBeneficialOwnerState(state);
-            fillBeneficialOwnerZip(zipcode);
-            selectBeneficialOwnerCountry(country);
+            fillBeneficialOwnerFirstName(firstName, numberOfBeneficialOwners);
+            fillBeneficialOwnerLastName(lastName, numberOfBeneficialOwners);
+            fillPercentOwnership(ownershipPercent, numberOfBeneficialOwners);
+            fillBeneficialOwnerAddressLine1(addressLine1, numberOfBeneficialOwners);
+            fillBeneficialOwnerCity(city, numberOfBeneficialOwners);
+            selectBeneficialOwnerState(state,numberOfBeneficialOwners);
+            fillBeneficialOwnerZip(zipcode, numberOfBeneficialOwners);
+            selectBeneficialOwnerCountry(country, numberOfBeneficialOwners);
             selectControlOwnerType(ownerType);
         }
         else {
-            clickAddBeneficialOwnerBtn();
+            for(int i=1;i<=numberOfBeneficialOwners+1;i++){
+                System.out.println("Beneficial Owner Number : "+i);
+                fillBeneficialOwnerFirstName(firstName, i);
+                fillBeneficialOwnerLastName(lastName, i);
+                fillPercentOwnership(ownershipPercent, i);
+                fillBeneficialOwnerAddressLine1(addressLine1, i);
+                fillBeneficialOwnerCity(city, i);
+                selectBeneficialOwnerState(state, i);
+                fillBeneficialOwnerZip(zipcode, i);
+                selectBeneficialOwnerCountry(country, i);
+                if(i<numberOfBeneficialOwners+1){
+                clickAddBeneficialOwnerBtn(i+1);}
+            }
 
         }
     }
