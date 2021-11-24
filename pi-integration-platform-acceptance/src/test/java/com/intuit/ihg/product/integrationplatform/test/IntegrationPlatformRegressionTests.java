@@ -4679,13 +4679,13 @@ public class IntegrationPlatformRegressionTests extends BaseTestNGWebDriver {
 			IHGUtil.waitForElement(driver, 60, pPatientSearchPage.searchResult);
 			assertTrue(pPatientSearchPage.searchResult.getText().contains(patient.getFirstName()));
 			pPatientSearchPage.clickOnSearch();
-			Thread.sleep(3000);
+	
 			pPatientSearchPage.clickOnEdit();
-			Thread.sleep(3000);
+			
 			pPatientSearchPage.sendPatientIDAndClickOnUpdate(patient.getFirstName());
-			Thread.sleep(3000);
+			
 			pPatientSearchPage.clickOnEdit();
-			Thread.sleep(3000);
+			
 			String patientExternalID = pPatientSearchPage.verifypatientExternalID();
 			log("Actual patient ID " + patientExternalID);
 			log("Expected patient ID " + patient.getFirstName());
