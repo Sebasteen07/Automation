@@ -4631,7 +4631,7 @@ public class IntegrationPlatformRegressionTests extends BaseTestNGWebDriver {
 			AppointmentData testData = new AppointmentData();
 			LoadPreTestDataObj.loadAppointmentDataFromProperty(testData);
 
-			log("Step 1: Create patient");
+			logStep("Create patient");
 			PropertyFileLoader testDataPFL = new PropertyFileLoader();
 			JalapenoPatient patient = new JalapenoPatient(testDataPFL);
 			JalapenoLoginPage loginPage = new JalapenoLoginPage(driver, patient.getUrl());
@@ -4648,7 +4648,7 @@ public class IntegrationPlatformRegressionTests extends BaseTestNGWebDriver {
 			Thread.sleep(6000);
 			homePage.clickOnLogout();
 
-			log("Step 2: Setup Oauth client");
+			logStep("Setup Oauth client");
 			RestUtils.oauthSetup(testData.OAuthKeyStore, testData.OAuthProperty, testData.OAuthAppToken,
 					testData.OAuthUsername, testData.OAuthPassword);
 
@@ -4660,23 +4660,22 @@ public class IntegrationPlatformRegressionTests extends BaseTestNGWebDriver {
 			String medfusionID = aDUtils.getMedfusionID(patient.getEmail(), responseXML);
 			log("medfusionID " + medfusionID);
 
-			log("step 3: Login to Practice Portal");
+			logStep("Login to Practice Portal");
 			Practice practice = new Practice();
 			practice.url = testData.portalURL;
 			practice.username = testData.practiceUserName;
 			practice.password = testData.practicePassword;
 
-			// Now start login with practice data
 			PracticeLoginPage practiceLogin = new PracticeLoginPage(driver, practice.url);
 			PracticeHomePage pPracticeHomePage = practiceLogin.login(practice.username, practice.password);
 
-			log("step 4: Click on Patient Search Link");
+			logStep("Click on Patient Search Link");
 			PatientSearchPage pPatientSearchPage = pPracticeHomePage.clickPatientSearchLink();
 
-			log("step 5:Set Patient Search Fields");
+			logStep("Set Patient Search Fields");
 			pPatientSearchPage.searchForPatientInPatientSearch(patient.getFirstName(), patient.getLastName());
 
-			log("step 6:Verify the Search Result");
+			logStep("Verify the Search Result");
 			IHGUtil.waitForElement(driver, 60, pPatientSearchPage.searchResult);
 			assertTrue(pPatientSearchPage.searchResult.getText().contains(patient.getFirstName()));
 			pPatientSearchPage.clickOnSearch();
@@ -4697,7 +4696,7 @@ public class IntegrationPlatformRegressionTests extends BaseTestNGWebDriver {
 			aDUtils.csvFileReader(testData, workingDir);
 			;
 
-			log("Step 7: Post New AppointMentData with MFPatientID");
+			logStep("Post New AppointMentData with MFPatientID");
 			testData.FirstName = patient.getFirstName();
 			testData.LastName = patient.getLastName();
 			testData.EmailUserName = patient.getEmail();
@@ -4718,7 +4717,7 @@ public class IntegrationPlatformRegressionTests extends BaseTestNGWebDriver {
 			aDUtils.checkAppointmentV4(testData, driver);
 			Thread.sleep(6000);
 
-			log("Step 8: Post UPDATE AppointMentData ");
+			logStep("Post UPDATE AppointMentData ");
 			testData.Status = "UPDATE";
 			testData.Time = testData.appointmentDetailList.get(3).getTime(); // "2017-03-13T16:30:59.999Z";
 			testData.Location = testData.appointmentDetailList.get(3).getLocation();
@@ -4731,7 +4730,7 @@ public class IntegrationPlatformRegressionTests extends BaseTestNGWebDriver {
 
 			aDUtils.checkAppointmentV4(testData, driver);
 
-			log("Step 9: Post CANCEL AppointMentData ");
+			logStep("Post CANCEL AppointMentData ");
 			Thread.sleep(3000);
 			testData.Status = "CANCEL";
 			testData.Time = testData.appointmentDetailList.get(4).getTime(); // "2017-03-13T16:30:59.999Z";
