@@ -10,6 +10,9 @@ public class Appointment {
 	private String pmPatientId = null;
 	private String pmPracticeId = null;
 	private boolean pssSetting = true;
+	public static String apptId;
+	public static String patientId;
+	public static long plus20Minutes;
 
 	public boolean isGenerateEmailTrue() {
 		return generateEmailTrue;
