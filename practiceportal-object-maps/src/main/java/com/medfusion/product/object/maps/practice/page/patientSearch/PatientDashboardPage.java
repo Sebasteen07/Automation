@@ -24,6 +24,15 @@ public class PatientDashboardPage extends BasePageObject {
 
 	@FindBy(xpath = "//td/strong[text()='Email']/../following-sibling::node()/a")
 	private WebElement editEmail;
+	
+	@FindBy(xpath = "//a[contains(@href,\"msrch.editname\")]")
+	private WebElement editName;
+	
+	@FindBy(xpath = "//a[contains(@href,\"msrch.editgender\")]")
+	private WebElement editGender;
+	
+	@FindBy(xpath = "//a[contains(@href,\"msrch.editzip\")]")
+	private WebElement editZip;
 
 	@FindBy(xpath = "//a[contains(.,'Send email with the username to the patient')]")
 	private WebElement userIdEmail;
@@ -129,6 +138,27 @@ public class PatientDashboardPage extends BasePageObject {
 		IHGUtil.PrintMethodName();
 		IHGUtil.waitForElement(driver, 10, editEmail);
 		editEmail.click();
+		return PageFactory.initElements(driver, PatientSearchPage.class);
+	}
+	
+	public PatientSearchPage clickEditName() {
+		IHGUtil.PrintMethodName();
+		IHGUtil.waitForElement(driver, 10, editName);
+		editName.click();
+		return PageFactory.initElements(driver, PatientSearchPage.class);
+	}
+	
+	public PatientSearchPage clickEditGender() {
+		IHGUtil.PrintMethodName();
+		IHGUtil.waitForElement(driver, 10, editGender);
+		editGender.click();
+		return PageFactory.initElements(driver, PatientSearchPage.class);
+	}
+	
+	public PatientSearchPage clickEditZip() {
+		IHGUtil.PrintMethodName();
+		IHGUtil.waitForElement(driver, 10, editZip);
+		editZip.click();
 		return PageFactory.initElements(driver, PatientSearchPage.class);
 	}
 

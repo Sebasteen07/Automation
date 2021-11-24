@@ -40,6 +40,12 @@ public class JalapenoMyAccountProfilePage extends JalapenoMyAccountPage {
 
 	@FindBy(how = How.XPATH, using = "//input[@id='postalCode']")
 	private WebElement zipCodeTextbox;
+	
+	@FindBy(how = How.XPATH, using = "//input[@name='firstName']")
+	private WebElement firstNameTextbox;
+	
+	@FindBy(how = How.XPATH, using = "//input[@name='lastName']")
+	private WebElement lastNameTextbox;
 
 	@FindBy(how = How.XPATH, using = "//input[@id='gender_male']")
 	private WebElement maleRadioButton;
@@ -219,6 +225,34 @@ public class JalapenoMyAccountProfilePage extends JalapenoMyAccountPage {
 		}
 
 		log("ZipCode value: " + savedZipCode);
+		return true;
+	}
+	
+	public boolean checkPatientName(String firstName, String fName, String lName, String uFName, String uLName) {
+		String lastName = "";
+		log("Checking Patient first name and last name");
+		if(firstName.equals(fName)) {
+			lastName = lName;
+		}
+		else if(firstName.equals(uFName)) {
+			lastName = uLName;
+		}
+		new WebDriverWait(driver, 25).until(ExpectedConditions.textToBePresentInElementValue(firstNameTextbox, firstName));
+		String frstName = firstNameTextbox.getAttribute("value");
+		String lstName = lastNameTextbox.getAttribute("value");
+
+		if (!StringUtils.equals(firstName, frstName)) {
+			log("FirstName does not match, expected '" + firstName + "' but there is '" + frstName + "'");
+			return false;
+		}
+		
+		if (!StringUtils.equals(lastName, lstName)) {
+			log("LastName does not match, expected '" + lastName + "' but there is '" + lstName + "'");
+			return false;
+		}
+
+		log("First Name value: " + frstName);
+		log("Last Name value: " + lstName);
 		return true;
 	}
 
