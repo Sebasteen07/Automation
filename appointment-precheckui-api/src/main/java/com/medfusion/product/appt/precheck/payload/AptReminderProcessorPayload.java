@@ -13,16 +13,16 @@ public class AptReminderProcessorPayload {
 	}
 
 	public String getProcessReminderDataPayload(String cadence, String practiceId, String patientId,
-			String appointmentId, String type, String status) {
+			String appointmentId, String type, long time, String status) {
 		String processReminderData = "{\r\n"
-				+ "  \"cadence\": \"1\",\r\n"
+				+ "  \"cadence\": \""+cadence+"\",\r\n"
 				+ "  \"checkAppointmentTimeWithinCadence\": true,\r\n"
 				+ "  \"metadata\": {\r\n"
 				+ "    \"practiceId\": \""+practiceId+"\",\r\n"
 				+ "    \"pmPatientId\": \""+patientId+"\",\r\n"
 				+ "    \"pmAppointmentId\": \""+appointmentId+"\",\r\n"
 				+ "    \"type\": \""+type+"\",\r\n"
-				+ "    \"time\": 1623372340000,\r\n"
+				+ "    \"time\": "+time+",\r\n"
 				+ "    \"status\": \""+status+"\"\r\n"
 				+ "  }\r\n"
 				+ "}";
@@ -30,7 +30,7 @@ public class AptReminderProcessorPayload {
 	}
 
 	public String getProcessReminderDataPayloadWithoutCadence(String practiceId, String patientId,
-			String appointmentId, String type, String status) {
+			String appointmentId, String type,long time, String status) {
 		String processReminderData = "{\r\n"
 				+ "  \"cadence\": null,\r\n"
 				+ "  \"checkAppointmentTimeWithinCadence\": true,\r\n"
@@ -39,14 +39,14 @@ public class AptReminderProcessorPayload {
 				+ "    \"pmPatientId\": \""+patientId+"\",\r\n"
 				+ "    \"pmAppointmentId\": \""+appointmentId+"\",\r\n"
 				+ "    \"type\": \""+type+"\",\r\n"
-				+ "    \"time\": 1623372340000,\r\n"
+				+ "    \"time\": "+time+",\r\n"
 				+ "    \"status\": \""+status+"\"\r\n"
 				+ "  }\r\n"
 				+ "}";
 		return processReminderData;
 	}
 	public String getProcessReminderDataPayloadWithoutStatus(String cadence, String practiceId, String patientId,
-			String appointmentId, String type) {
+			String appointmentId, String type,long time) {
 		String processReminderData = "{\r\n"
 				+ "  \"cadence\": \"1\",\r\n"
 				+ "  \"checkAppointmentTimeWithinCadence\": true,\r\n"
@@ -55,7 +55,7 @@ public class AptReminderProcessorPayload {
 				+ "    \"pmPatientId\": \""+patientId+"\",\r\n"
 				+ "    \"pmAppointmentId\": \""+appointmentId+"\",\r\n"
 				+ "    \"type\": \""+type+"\",\r\n"
-				+ "    \"time\": 1623372340000\r\n"
+				+ "    \"time\": "+time+"\r\n"
 				+ "  }\r\n"
 				+ "}";
 		return processReminderData;
