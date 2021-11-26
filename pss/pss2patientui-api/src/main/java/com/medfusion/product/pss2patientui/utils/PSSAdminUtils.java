@@ -1113,6 +1113,19 @@ public void ageRuleAppointmentType(WebDriver driver, AdminUser adminUser, Appoin
 		Log4jUtil.log("Status of Checkbox" + manageAppointmentType.checkBoxStatus());
 		manageAppointmentType.ageRule();
 		manageAppointmentType.ageRuleparameter(appointment.getAgeRuleMonthFirst(), appointment.getAgeRuleMonthSecond());
+		Thread.sleep(2000);
+		manageAppointmentType.logout();
+
+}
+
+public void resetAgeRuleAppointmentType(WebDriver driver, AdminUser adminUser, Appointment appointment, String urlToUse) throws Exception {
+	
+	PSS2PracticeConfiguration pssPracticeConfig = loginToAdminPortal(driver, adminUser);
+	ManageAppointmentType manageAppointmentType = pssPracticeConfig.gotoAppointment();
+	pageRefresh(driver);
+	manageAppointmentType.selectAppointment(appointment.getAppointmenttype());
+	manageAppointmentType.resetAgeRule();
+	manageAppointmentType.logout();
 
 }
 

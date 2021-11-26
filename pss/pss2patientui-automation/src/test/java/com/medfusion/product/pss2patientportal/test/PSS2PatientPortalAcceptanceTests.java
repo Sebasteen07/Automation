@@ -7912,7 +7912,7 @@ public class PSS2PatientPortalAcceptanceTests extends BaseTestNGWebDriver {
 	}
 
 	
-	@Test(enabled = true, groups = { "AcceptanceTests" }, retryAnalyzer = RetryAnalyzer.class)
+	@Test(enabled = true, groups = {"AcceptanceTests"}, retryAnalyzer = RetryAnalyzer.class)
 	public void testAgeRuleAppointmentTypeNG() throws Exception {
 		PSSPropertyFileLoader propertyData = new PSSPropertyFileLoader();
 		Appointment testData = new Appointment();
@@ -7974,8 +7974,8 @@ public class PSS2PatientPortalAcceptanceTests extends BaseTestNGWebDriver {
 			log("No App avaliable Beacuase age Rule");
 			String name = appointment.selectTypeOfApp(testData.getAppointmenttype(), Boolean.valueOf(testData.getIsAppointmentPopup()));
 			assertNotEquals(testData.getAppointmenttype(), name);
-
 		}
+		adminUtils.resetAgeRuleAppointmentType(driver, adminUser, testData, PSSConstants.LOGINLESS);
 	}
 
 	@Test(enabled = true, groups = {"AcceptanceTests"}, retryAnalyzer = RetryAnalyzer.class)
@@ -8042,6 +8042,8 @@ public class PSS2PatientPortalAcceptanceTests extends BaseTestNGWebDriver {
 			assertNotEquals(testData.getAppointmenttype(), name);
 
 		}
+		adminUtils.resetAgeRuleAppointmentType(driver, adminUser, testData, PSSConstants.LOGINLESS);
+
 	}
 
 	@Test(enabled = true, groups = {"AcceptanceTests"}, retryAnalyzer = RetryAnalyzer.class)
@@ -8106,11 +8108,8 @@ public class PSS2PatientPortalAcceptanceTests extends BaseTestNGWebDriver {
 			log("No Appointment avaliable Beacuase age Rule");
 			String name = appointment.selectTypeOfApp(testData.getAppointmenttype(), Boolean.valueOf(testData.getIsAppointmentPopup()));
 			assertNotEquals(testData.getAppointmenttype(), name);
-
 		}
-		String b = payloadAM.saveApptTypePayload();
-		response = postAPIRequestAM.saveAppointmenttype(practiceId, b);
-		aPIVerification.responseCodeValidation(response, 200);
+		adminUtils.resetAgeRuleAppointmentType(driver, adminUser, testData, PSSConstants.LOGINLESS);
 	}
 
 
@@ -8176,8 +8175,8 @@ public class PSS2PatientPortalAcceptanceTests extends BaseTestNGWebDriver {
 			log("No App avaliable Beacuase age Rule");
 			String name = appointment.selectTypeOfApp(testData.getAppointmenttype(), Boolean.valueOf(testData.getIsAppointmentPopup()));
 			assertNotEquals(testData.getAppointmenttype(), name);
-
 		}
+		adminUtils.resetAgeRuleAppointmentType(driver, adminUser, testData, PSSConstants.LOGINLESS);
 	}
 
 	@Test(enabled = true, groups = {"AcceptanceTests"}, retryAnalyzer = RetryAnalyzer.class)
@@ -8260,6 +8259,9 @@ public class PSS2PatientPortalAcceptanceTests extends BaseTestNGWebDriver {
 		logStep("Set up the API authentication");
 		setUp(propertyData.getProperty("mf.practice.id.ge"), propertyData.getProperty("mf.authuserid.am.ge"));
 		Response response;
+		response = postAPIRequestAM.medfusionpracticeTimeZone(practiceId, "/medfusionpractice");
+		String timezone = aPIVerification.responseKeyValidationJson(response, "practiceTimezone");
+		testData.setCurrentTimeZone(timezone);
 
 		logStep("Set up the desired rule in Admin UI using API");
 		response = postAPIRequestAM.resourceConfigRuleGet(practiceId);
@@ -8308,8 +8310,6 @@ public class PSS2PatientPortalAcceptanceTests extends BaseTestNGWebDriver {
 		assertEquals(dateSize, "1");
 		log("current date is" + psspatientutils.currentESTDate(testData));
 		assertEquals(date, psspatientutils.currentESTDate(testData));
-
-
 	}
 
 	@Test(enabled = true, groups = {"AcceptanceTests"}, retryAnalyzer = RetryAnalyzer.class)
@@ -8326,6 +8326,9 @@ public class PSS2PatientPortalAcceptanceTests extends BaseTestNGWebDriver {
 		logStep("Set up the API authentication");
 		setUp(propertyData.getProperty("mf.practice.id.gw"), propertyData.getProperty("mf.authuserid.am.gw"));
 		Response response;
+		response = postAPIRequestAM.medfusionpracticeTimeZone(practiceId, "/medfusionpractice");
+		String timezone = aPIVerification.responseKeyValidationJson(response, "practiceTimezone");
+		testData.setCurrentTimeZone(timezone);
 
 		logStep("Set up the desired rule in Admin UI using API");
 		response = postAPIRequestAM.resourceConfigRuleGet(practiceId);
@@ -8359,11 +8362,8 @@ public class PSS2PatientPortalAcceptanceTests extends BaseTestNGWebDriver {
 		startappointmentInOrder = homepage.skipInsurance(driver);
 		location = startappointmentInOrder.selectFirstLocation(PSSConstants.START_LOCATION);
 		logStep("Verfiy Location Page and location =" + testData.getLocation());
-
 		AppointmentPage appointment = location.selectAppointment(testData.getLocation());
 		logStep("Verfiy Appointment Page and appointment to be selected = " + testData.getAppointmenttype());
-
-		Thread.sleep(20000);
 		Provider provider = appointment.selectTypeOfProvider(testData.getAppointmenttype(), Boolean.valueOf(testData.getIsAppointmentPopup()));
 		logStep("Verfiy Provider Page and Provider = " + testData.getProvider());
 		AppointmentDateTime aptDateTime = provider.getProviderandClick(testData.getProvider());
@@ -8374,8 +8374,6 @@ public class PSS2PatientPortalAcceptanceTests extends BaseTestNGWebDriver {
 		assertEquals(dateSize, "1");
 		log("current date is" + psspatientutils.currentESTDate(testData));
 		assertEquals(date, psspatientutils.currentESTDate(testData));
-
-
 	}
 
 	@Test(enabled = true, groups = {"AcceptanceTests"}, retryAnalyzer = RetryAnalyzer.class)
@@ -8383,7 +8381,6 @@ public class PSS2PatientPortalAcceptanceTests extends BaseTestNGWebDriver {
 		PSSPropertyFileLoader propertyData = new PSSPropertyFileLoader();
 		Appointment testData = new Appointment();
 		AdminUser adminUser = new AdminUser();
-
 		propertyData.setAdminNG(adminUser);
 		propertyData.setAppointmentResponseNG(testData);
 		PSSAdminUtils adminUtils = new PSSAdminUtils();
