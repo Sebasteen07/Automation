@@ -8050,6 +8050,8 @@ public class PSS2PatientPortalAcceptanceTests extends BaseTestNGWebDriver {
 		PSSPropertyFileLoader propertyData = new PSSPropertyFileLoader();
 		Appointment testData = new Appointment();
 		AdminUser adminUser = new AdminUser();
+		
+		String welcomeMsg=propertyData.getProperty("welcome.message");
 
 		propertyData.setAdminNG(adminUser);
 		propertyData.setAppointmentResponseNG(testData);
@@ -8058,16 +8060,44 @@ public class PSS2PatientPortalAcceptanceTests extends BaseTestNGWebDriver {
 		setUp(propertyData.getProperty("mf.practice.id.ng"), propertyData.getProperty("mf.authuserid.am.ng"));
 		Response response;
 		
-		response=postAPIRequestAM.saveAnnouncement(practiceId, payloadAM.annSavePayload("Greetings", "AG"));
+		logStep("Remove the already set announcement ");
+		response=postAPIRequestAM.getAnnouncementByCode(practiceId, "AG");
+		aPIVerification.responseCodeValidation(response, 200);
+		
+		JsonPath js= new JsonPath(response.asString());
+		int id=js.getInt("id");
+		
+		response=postAPIRequestAM.deleteAnnouncement(practiceId, id);
+		aPIVerification.responseCodeValidation(response, 200);
+		
+		response=postAPIRequestAM.saveAnnouncement(practiceId, payloadAM.annSavePayload("Greetings", "AG", welcomeMsg));
 		aPIVerification.responseCodeValidation(response, 200);
 
 		logStep("Move to PSS patient Portal 2.0 to book an Appointment");
 		DismissPage dismissPage = new DismissPage(driver, testData.getUrlLoginLess());
 		String actualGreetingText=dismissPage.getDismissText();
 		log("Text present- "+actualGreetingText);
-		assertEquals(actualGreetingText, "Good Morning PSS English", "Greeting message in not matching with admin UI");
+		assertEquals(actualGreetingText, welcomeMsg, "Greeting message in not matching with admin UI");
+	}
+	
+	@Test(enabled = true, groups = { "AcceptanceTests" }, retryAnalyzer = RetryAnalyzer.class)
+	public void testWelcomeMessageGW() throws Exception {
+
+		logStep("Verify the Announcemnet- Greetings on welcome page");
+		PSSPropertyFileLoader propertyData = new PSSPropertyFileLoader();
+		Appointment testData = new Appointment();
+		AdminUser adminUser = new AdminUser();
 		
-		logStep("Reverse the admin settings");
+		String welcomeMsg=propertyData.getProperty("welcome.message");
+
+		propertyData.setAdminGW(adminUser);
+		propertyData.setAppointmentResponseGW(testData);
+
+		logStep("Set up the API authentication");
+		setUp(propertyData.getProperty("mf.practice.id.gw"), propertyData.getProperty("mf.authuserid.am.gw"));
+		Response response;
+		
+		logStep("Remove the already set announcement ");
 		response=postAPIRequestAM.getAnnouncementByCode(practiceId, "AG");
 		aPIVerification.responseCodeValidation(response, 200);
 		
@@ -8076,6 +8106,91 @@ public class PSS2PatientPortalAcceptanceTests extends BaseTestNGWebDriver {
 		
 		response=postAPIRequestAM.deleteAnnouncement(practiceId, id);
 		aPIVerification.responseCodeValidation(response, 200);	
+		
+		response=postAPIRequestAM.saveAnnouncement(practiceId, payloadAM.annSavePayload("Greetings", "AG",welcomeMsg));
+		aPIVerification.responseCodeValidation(response, 200);
+
+		logStep("Move to PSS patient Portal 2.0 to book an Appointment");
+		DismissPage dismissPage = new DismissPage(driver, testData.getUrlLoginLess());
+		String actualGreetingText=dismissPage.getDismissText();
+		log("Text present- "+actualGreetingText);
+		assertEquals(actualGreetingText, welcomeMsg, "Greeting message in not matching with admin UI");
+
+	}
+	
+	@Test(enabled = true, groups = { "AcceptanceTests" }, retryAnalyzer = RetryAnalyzer.class)
+	public void testWelcomeMessageAT() throws Exception {
+
+		logStep("Verify the Announcemnet- Greetings on welcome page");
+		PSSPropertyFileLoader propertyData = new PSSPropertyFileLoader();
+		Appointment testData = new Appointment();
+		AdminUser adminUser = new AdminUser();
+		
+		String welcomeMsg=propertyData.getProperty("welcome.message");
+
+		propertyData.setAdminAT(adminUser);
+		propertyData.setAppointmentResponseAT(testData);
+
+		logStep("Set up the API authentication");
+		setUp(propertyData.getProperty("mf.practice.id.at"), propertyData.getProperty("mf.authuserid.am.at"));
+		Response response;
+		
+		logStep("Remove the already set announcement ");
+		response=postAPIRequestAM.getAnnouncementByCode(practiceId, "AG");
+		aPIVerification.responseCodeValidation(response, 200);
+		
+		JsonPath js= new JsonPath(response.asString());
+		int id=js.getInt("id");
+		
+		response=postAPIRequestAM.deleteAnnouncement(practiceId, id);
+		aPIVerification.responseCodeValidation(response, 200);	
+		
+		response=postAPIRequestAM.saveAnnouncement(practiceId, payloadAM.annSavePayload("Greetings", "AG", welcomeMsg));
+		aPIVerification.responseCodeValidation(response, 200);
+
+		logStep("Move to PSS patient Portal 2.0 to book an Appointment");
+		DismissPage dismissPage = new DismissPage(driver, testData.getUrlLoginLess());
+		String actualGreetingText=dismissPage.getDismissText();
+		log("Text present- "+actualGreetingText);
+		assertEquals(actualGreetingText, welcomeMsg, "Greeting message in not matching with admin UI");
+		
+	}
+	
+	@Test(enabled = true, groups = { "AcceptanceTests" }, retryAnalyzer = RetryAnalyzer.class)
+	public void testWelcomeMessageGE() throws Exception {
+
+		logStep("Verify the Announcemnet- Greetings on welcome page");
+		PSSPropertyFileLoader propertyData = new PSSPropertyFileLoader();
+		Appointment testData = new Appointment();
+		AdminUser adminUser = new AdminUser();
+		
+		String welcomeMsg=propertyData.getProperty("welcome.message");
+
+		propertyData.setAdminGE(adminUser);
+		propertyData.setAppointmentResponseGE(testData);
+
+		logStep("Set up the API authentication");
+		setUp(propertyData.getProperty("mf.practice.id.ge"), propertyData.getProperty("mf.authuserid.am.ge"));
+		Response response;
+		
+		logStep("Remove the already set announcement ");
+		response=postAPIRequestAM.getAnnouncementByCode(practiceId, "AG");
+		aPIVerification.responseCodeValidation(response, 200);
+		
+		JsonPath js= new JsonPath(response.asString());
+		int id=js.getInt("id");
+		
+		response=postAPIRequestAM.deleteAnnouncement(practiceId, id);
+		aPIVerification.responseCodeValidation(response, 200);
+		
+		response=postAPIRequestAM.saveAnnouncement(practiceId, payloadAM.annSavePayload("Greetings", "AG", welcomeMsg));
+		aPIVerification.responseCodeValidation(response, 200);
+
+		logStep("Move to PSS patient Portal 2.0 to book an Appointment");
+		DismissPage dismissPage = new DismissPage(driver, testData.getUrlLoginLess());
+		String actualGreetingText=dismissPage.getDismissText();
+		log("Text present- "+actualGreetingText);
+		assertEquals(actualGreetingText, welcomeMsg, "Greeting message in not matching with admin UI");
 	}
 	
 	@Test(enabled = true, groups = { "AcceptanceTests" }, retryAnalyzer = RetryAnalyzer.class)

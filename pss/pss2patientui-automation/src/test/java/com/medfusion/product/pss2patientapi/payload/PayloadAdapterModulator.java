@@ -27,10 +27,10 @@ public class PayloadAdapterModulator {
 		return saveAnn;
 	}
 	
-	public String annSavePayload(String type,String code ) {
+	public String annSavePayload(String type,String code, String welcomeMsg) {
 		String saveAnn = "{\r\n"
 				+ "  \"text\": {\r\n"
-				+ "    \"EN\": \"Good Morning PSS English\",\r\n"
+				+ "    \"EN\": \""+welcomeMsg+"\",\r\n"
 				+ "    \"ES\": \"Su mensaje-Espanol\"\r\n"
 				+ "  },\r\n"
 				+ "  \"display\": \"Your welcome message will be displayed here. Please contact Medfusion support to add your own text or disable this message.\",\r\n"
