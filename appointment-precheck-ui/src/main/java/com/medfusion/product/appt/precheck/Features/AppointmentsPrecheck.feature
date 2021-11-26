@@ -236,3 +236,126 @@ Feature: Test fuctionality of Appointment precheck
     And from appointment dashboard click on action button and click on create option for schedule new appointment
     Then verify appointment get succesfully created and from remove button suceesfully deleted
     And logout from practice provisioning portal
+
+  Scenario: verify refresh button functionality is working fine when confirmed appointment
+    When schedule a new appointment
+    And confirm appointment
+    Then verify after refresh appointment should get confirmed and green tick should be appeared in apt dashbord
+    And logout from practice provisioning portal
+
+  Scenario: verify refresh button functionality is working fine when curbside checkin and curbside arrival done
+    When schedule a new appointment
+    And confirm appointment
+    And curbside checkin and curbside arrival done
+    Then verify after refresh appointment should get curbside checkin done and black check in symbol should appeared
+    And logout from practice provisioning portal
+
+  Scenario: verify refresh button functionality is working fine when check in done
+    When schedule a new appointment
+    And confirm appointment
+    And curbside checkin and curbside arrival done
+    And check in done
+    Then verify after refresh appointment should get check in done and green check in symbol should appeared
+    And logout from practice provisioning portal
+
+  Scenario: verify refresh button functionality is working fine when manual reminder send
+    When schedule a new appointment
+    And confirm appointment
+    And curbside checkin and curbside arrival done
+    And check in done
+    And select patient and send manual reminder to patient
+    Then verify after refresh appointment manual reminder paper plane symbol should appear after sending reminder
+    And logout from practice provisioning portal
+
+  Scenario: verify refresh button functionality is working fine when broadcast send
+    When schedule a new appointment
+    And confirm appointment
+    And curbside checkin and curbside arrival done
+    And check in done
+    And get broadcast count before broadcast send
+    And select patient and send broadcast
+    Then verify after refresh appointment broadcast count should get updated after sending broadcast
+    And logout from practice provisioning portal
+
+  Scenario: verify if on selecting few records from appointment dashboard and clicking on action and later on refresh button count should be same for broadcast and reminder
+    When schedule multiple appointments and select patients
+    And click on actions button and get broadcast message and send reminder count
+    Then verify after click on refresh button count should be same for broadcast message and send reminder button
+    And logout from practice provisioning portal
+
+  Scenario: verify on selecting all records and later going to page 2 and redirecting to page 1 system does show the selected banner and appointment count should be same on brodcast button
+    When enter date and time within one month
+    And select all patients and click on banner
+    And click on actions button and only broadcast count should be seen
+    And going to second page and redirecting to page one
+    Then verify system should show the selected banner and appointment count should be same on brodcast button by clicking action button
+    And logout from practice provisioning portal
+
+  Scenario: verify on selecting all records from page 1 and going to page 2 only create button should be enabled
+    When enter date and time within one month
+    And select all patients and going to second page
+    And verify after clicking on action only create button should be enabled
+    And logout from practice provisioning portal
+
+  Scenario: verify if on selecting few records or selecting all records broadcast,send reminder,remove button count gets updated
+    When schedule multiple appointments and select patients
+    And click on action and get count for broadcast, send reminder, remove button
+    Then verify when select all records count get updated for broadcast,send reminder,remove button in action button
+    And logout from practice provisioning portal
+
+  Scenario: verify on selecting all records from page 1 and later deselecting and going to next page 2 and coming back to page 1 system does not selected records and in action button only create button should be enabled
+    When enter date and time within one month
+    And select all patients and later deselect
+    And going to second page and coming back to page one
+    Then Verify system does not show selected records and in action button only create button should be enabled
+    And logout from practice provisioning portal
+
+  Scenario: verify if user is not able to see build and preview section for appointment reminders in edit for text
+    When from setting in notifications user click on text edit section of appointment reminders
+    Then verify user is not able to see preview and build section on template editor page
+    And logout from practice provisioning portal
+
+  Scenario: verify if user is not able to see build and preview appointment reminders in edit for email
+    When from setting in notifications user click on email edit section of appointment reminders
+    And verify user is not able to see preview and build section on template editor page
+    And logout from practice provisioning portal
+
+  Scenario: verify if system is not allowing user to enter 0 in timing unit section for sms in appointment reminders
+    When from setting in notifications user click on text edit section of appointment reminders
+    Then verify user not able to enter zero in timing unit section for sms in appointment reminders
+    And logout from practice provisioning portal
+
+  Scenario: verify if system is not allowing user to enter 0 in timing unit section for sms in appointment reminders
+    When from setting in notifications user click on email edit section of appointment reminders
+    Then verify user not able to enter zero in timing unit section for email in appointment reminders
+    And logout from practice provisioning portal
+
+  Scenario: verify on preview page from appointment confirmation all fields display properly for email
+    When from setting in notifications user click on email hamburgerButton section
+    And user click preview of appointment confirmation
+    Then verify in settings section all fields are display related to email templates
+    And logout from practice provisioning portal
+
+  Scenario: verify desktop view in preview page from appointment confirmation all fields display properly for email
+    When from setting in notifications user click on email hamburgerButton section
+    And user click preview of appointment confirmation
+    Then verify in desktop view all fields are display related to templates
+    And logout from practice provisioning portal
+
+  Scenario: verify mobile view in preview page from appointment confirmation all fields display properly for email
+    When from setting in notifications user click on email hamburgerButton section
+    And user click preview of appointment confirmation
+    Then verify in mobile view all fields are display related to templates
+    And logout from practice provisioning portal
+
+  Scenario: verify on preview page from appointment confirmation all fields display properly for texts
+    When from setting in notifications user click on text hamburgerButton section
+    And user click preview of appointment confirmation
+    Then verify in settings section all fields are display related to templates
+    And logout from practice provisioning portal
+
+  Scenario: verify desktop view in preview page from appointment confirmation all fields display properly for text
+    When from setting in notifications user click on text hamburgerButton section
+    And user click preview of appointment confirmation
+    Then verify in setting section view all fields are display related to text templates
+    And logout from practice provisioning portal

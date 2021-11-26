@@ -4,6 +4,7 @@ package com.medfusion.product.appt.precheck.stepDefinations;
 import static org.junit.Assert.assertEquals;
 import static org.testng.Assert.assertEquals;
 import static org.testng.Assert.assertFalse;
+import static org.testng.Assert.assertNotEquals;
 import static org.testng.Assert.assertTrue;
 
 import java.io.IOException;
@@ -11,6 +12,7 @@ import java.util.Random;
 import java.util.concurrent.TimeUnit;
 
 import com.medfusion.common.utils.PropertyFileLoader;
+import com.medfusion.product.appt.precheck.payload.AptPrecheckPayload;
 import com.medfusion.product.appt.precheck.payload.MfAppointmentSchedulerPayload;
 import com.medfusion.product.appt.precheck.pojo.Appointment;
 import com.medfusion.product.object.maps.appt.precheck.Main.ApptPrecheckMainPage;
@@ -44,6 +46,7 @@ public class ApptPrecheckSteps extends BaseTest {
 	HeaderConfig headerConfig;
 	AccessToken accessToken;
 	PostAPIRequestAptPrecheck aptPrecheckPost;
+	AptPrecheckPayload aptPrecheckPayload;
 
 	@Given("user lauch practice provisioning url")
 	public void user_lauch_practice_provisioning_url() throws Exception {
@@ -58,6 +61,7 @@ public class ApptPrecheckSteps extends BaseTest {
 		headerConfig = HeaderConfig.getHeaderConfig();
 		accessToken = AccessToken.getAccessToken();
 		aptPrecheckPost = PostAPIRequestAptPrecheck.getPostAPIRequestAptPrecheck();
+		aptPrecheckPayload = AptPrecheckPayload.getAptPrecheckPayload();
 		log("Practice provisining url-- " + propertyData.getProperty("practice.provisining.url.ge"));
 		loginPage = new AppointmentPrecheckLogin(driver, propertyData.getProperty("practice.provisining.url.ge"));
 		log("Verify medfusion page");
@@ -868,7 +872,8 @@ public class ApptPrecheckSteps extends BaseTest {
 	}
 
 	@When("schedule multiple new appointments and confirm")
-	public void schedule_multiple_new_appointments_and_confirm() throws NullPointerException, IOException, InterruptedException {
+	public void schedule_multiple_new_appointments_and_confirm()
+			throws NullPointerException, IOException, InterruptedException {
 		for (int i = 0; i < 25; i++) {
 			Random random = new Random();
 			int randamNo = random.nextInt(100000);
@@ -994,7 +999,7 @@ public class ApptPrecheckSteps extends BaseTest {
 	public void from_appointment_dashboard_select_all_appointments_and_remove_from_action_dropdown()
 			throws InterruptedException {
 		Appointment.pageNo = apptPage.getPageNo();
-		log("get page no." +Appointment.pageNo);
+		log("get page no." + Appointment.pageNo);
 		apptPage.scrollUp();
 		apptPage.selectAllCheckboxes();
 		log("Click on Actions tab and select remove button");
@@ -1090,4 +1095,569 @@ public class ApptPrecheckSteps extends BaseTest {
 		notifPage.onNotification();
 		notifPage.saveNotification();
 	}
+
+	@When("confirm appointment")
+	public void confirm_appointment() throws NullPointerException, IOException {
+		Response actionResponse = aptPrecheckPost.aptAppointmentActionsConfirm(
+				propertyData.getProperty("baseurl.apt.precheck"), propertyData.getProperty("apt.precheck.practice.id"),
+				headerConfig.HeaderwithToken(accessToken.getaccessTokenPost()), Appointment.patientId,
+				Appointment.apptId);
+		assertEquals(actionResponse.getStatusCode(), 200);
+	}
+
+	@Then("verify after refresh appointment should get confirmed and green tick should be appeared in apt dashbord")
+	public void verify_after_refresh_appointment_should_get_confirmed_and_green_tick_should_be_appeared_in_apt_dashbord()
+			throws InterruptedException {
+		apptPage.clickOnRefreshTab();
+		apptPage.selectPatient(Appointment.patientId, Appointment.apptId);
+		log("Verify confirmed tick should be display");
+		assertTrue(apptPage.displayComfirmTickMark());
+	}
+
+	@When("curbside checkin and curbside arrival done")
+	public void curbside_checkin_and_curbside_arrival_done() throws NullPointerException, IOException {
+		Response curbsideCheckinResponse = aptPrecheckPost.aptArrivalActionsCurbsideCurbscheckin(
+				propertyData.getProperty("baseurl.apt.precheck"), propertyData.getProperty("apt.precheck.practice.id"),
+				headerConfig.HeaderwithToken(accessToken.getaccessTokenPost()), Appointment.patientId,
+				Appointment.apptId);
+		assertEquals(curbsideCheckinResponse.getStatusCode(), 200);
+
+		Response arrivalResponse = aptPrecheckPost.aptArrivalActionsCurbsideArrival(
+				propertyData.getProperty("baseurl.apt.precheck"), propertyData.getProperty("apt.precheck.practice.id"),
+				headerConfig.HeaderwithToken(accessToken.getaccessTokenPost()), Appointment.patientId,
+				Appointment.apptId);
+		assertEquals(arrivalResponse.getStatusCode(), 200);
+	}
+
+	@Then("verify after refresh appointment should get curbside checkin done and black check in symbol should appeared")
+	public void verify_after_refresh_appointment_should_get_curbside_checkin_done_and_black_check_in_symbol_should_appeared()
+			throws InterruptedException {
+		apptPage.clickOnRefreshTab();
+		apptPage.selectPatient(Appointment.patientId, Appointment.apptId);
+		log("Verify curbside checkin done and black check should be display");
+		assertTrue(apptPage.displaycurbsideArrivalMark());
+	}
+
+	@When("check in done")
+	public void check_in_done() throws NullPointerException, IOException {
+		Response checkInResponse = aptPrecheckPost.getCheckinActions(propertyData.getProperty("baseurl.apt.precheck"),
+				propertyData.getProperty("apt.precheck.practice.id"),
+				aptPrecheckPayload.getCheckinActionsPayload(Appointment.patientId, Appointment.apptId,
+						propertyData.getProperty("apt.precheck.practice.id")),
+				headerConfig.HeaderwithToken(accessToken.getaccessTokenPost()));
+		assertEquals(checkInResponse.getStatusCode(), 200);
+	}
+
+	@Then("verify after refresh appointment should get check in done and green check in symbol should appeared")
+	public void verify_after_refresh_appointment_should_get_check_in_done_and_green_check_in_symbol_should_appeared()
+			throws InterruptedException {
+		apptPage.clickOnRefreshTab();
+		apptPage.selectPatient(Appointment.patientId, Appointment.apptId);
+		log("Verify checkin done and green check in symbol should be display");
+		assertTrue(apptPage.displayCheckInMark());
+	}
+
+	@When("select patient and send manual reminder to patient")
+	public void select_patient_and_send_manual_reminder_to_patient() throws Exception {
+		apptPage.clickOnRefreshTab();
+		log("Select patient");
+		apptPage.selectPatient(Appointment.patientId, Appointment.apptId);
+		Thread.sleep(5000);
+		log("send manual reminder to patient");
+		apptPage.clickOnActions();
+		apptPage.clickOnSendReminder();
+	}
+
+	@Then("verify after refresh appointment manual reminder paper plane symbol should appear after sending reminder")
+	public void verify_after_refresh_appointment_manual_reminder_paper_plane_symbol_should_appear_after_sending_reminder()
+			throws InterruptedException {
+		apptPage.clickOnRefreshTab();
+		log("Verify send reminder message and tick mark");
+		assertTrue(apptPage.displaySendReminderMessageTickMark());
+		assertEquals(apptPage.getReminderMessage(), "Reminder(s) will be sent for 1 appointment(s)");
+		assertTrue(apptPage.displayPaperPlaneSymbol());
+	}
+
+	@When("get broadcast count before broadcast send")
+	public void get_broadcast_count_before_broadcast_send() throws InterruptedException {
+		apptPage.clickOnRefreshTab();
+		log("Broadcast Email count before broadcast send--- "
+				+ apptPage.getBroadcastEmailCountForSelectedPatient(Appointment.patientId));
+		log("Broadcast Text count before broadcast send--- "
+				+ apptPage.getBroadcastTextCountForSelectedPatient(Appointment.patientId));
+		assertEquals(apptPage.getBroadcastEmailCountForSelectedPatient(Appointment.patientId), "0");
+		assertEquals(apptPage.getBroadcastTextCountForSelectedPatient(Appointment.patientId), "0");
+	}
+
+	@Then("verify after refresh appointment broadcast count should get updated after sending broadcast")
+	public void verify_after_refresh_appointment_broadcast_count_should_get_updated_after_sending_broadcast()
+			throws InterruptedException {
+		apptPage.clickOnRefreshTab();
+		Thread.sleep(200000);
+		log("Broadcast message get updated to--- "
+				+ apptPage.getBroadcastEmailCountForSelectedPatient(Appointment.patientId));
+		log("Broadcast message get updated to--- "
+				+ apptPage.getBroadcastTextCountForSelectedPatient(Appointment.patientId));
+		assertEquals(apptPage.getBroadcastEmailCountForSelectedPatient(Appointment.patientId), "1");
+		assertEquals(apptPage.getBroadcastTextCountForSelectedPatient(Appointment.patientId), "1");
+	}
+
+	@When("schedule multiple appointments and select patients")
+	public void schedule_multiple_appointments_and_select_patients() throws Exception {
+		for (int i = 0; i < 10; i++) {
+			log("Schedule multiple new Appointments");
+			Random random = new Random();
+			int randamNo = random.nextInt(100000);
+			Appointment.patientId = String.valueOf(randamNo);
+			Appointment.apptId = String.valueOf(randamNo);
+			long currentTimestamp = System.currentTimeMillis();
+			long plus20Minutes = currentTimestamp + TimeUnit.MINUTES.toMillis(10);
+			log("schedule more than 10 an appointments ");
+			Response resonse = apptSched.aptPutAppointment(propertyData.getProperty("baseurl.mf.appointment.scheduler"),
+					propertyData.getProperty("mf.apt.scheduler.practice.id"),
+					payload.putAppointmentPayload(plus20Minutes, propertyData.getProperty("mf.apt.scheduler.phone"),
+							propertyData.getProperty("mf.apt.scheduler.email")),
+					headerConfig.HeaderwithToken(accessToken.getaccessTokenPost()), Appointment.patientId,
+					Appointment.apptId);
+			assertEquals(resonse.statusCode(), 200);
+			apptPage.clickOnRefreshTab();
+			apptPage.selectPatients(Appointment.patientId, Appointment.apptId);
+		}
+	}
+
+	@When("click on actions button and get broadcast message and send reminder count")
+	public void click_on_actions_button_and_get_broadcast_message_and_send_reminder_count() {
+		apptPage.clickOnActions();
+		String broadcastMessageCount = apptPage.getbroadcastMessageText();
+		String getBroadcastCount = broadcastMessageCount.substring(19, 21);
+		Appointment.broadcastCount = Integer.parseInt(getBroadcastCount);
+		if (Appointment.broadcastCount > 0) {
+			assertTrue(Appointment.broadcastCount > 0);
+			log("Total broadcast message count :" + Appointment.broadcastCount);
+		} else {
+			assertFalse(Appointment.broadcastCount > 0);
+			log("No total count for broadcast message ");
+		}
+
+		String sendReminderCount = apptPage.getSendReminderText();
+		String getReminderCount = sendReminderCount.substring(15, 17);
+		Appointment.sendReminderCount = Integer.parseInt(getReminderCount);
+		log("Total count on send reminder :" + Appointment.sendReminderCount);
+		if (Appointment.sendReminderCount > 0) {
+			assertTrue(Appointment.sendReminderCount > 0);
+			log("Total send reminder count :" + Appointment.sendReminderCount);
+		} else {
+			assertFalse(Appointment.sendReminderCount > 0);
+			log("No total count for send reminder");
+		}
+	}
+
+	@Then("verify after click on refresh button count should be same for broadcast message and send reminder button")
+	public void verify_after_click_on_refresh_button_count_should_be_same_for_broadcast_message_and_send_reminder_button()
+			throws InterruptedException {
+		apptPage.clickOnRefreshTab();
+		apptPage.clickOnActions();
+		String broadcastMessageCount = apptPage.getbroadcastMessageText();
+		String getBroadcastCount = broadcastMessageCount.substring(19, 21);
+		int broadcastCount = Integer.parseInt(getBroadcastCount);
+		log("Get current broadcast message count:-  " + broadcastCount);
+		String sendReminderCount = apptPage.getSendReminderText();
+		String getReminderCount = sendReminderCount.substring(15, 17);
+		int reminderCount = Integer.parseInt(getReminderCount);
+		log("Get current send reminder count:-  " + reminderCount);
+		assertEquals(Appointment.broadcastCount, broadcastCount, "Broadcast message count was not same");
+		assertEquals(Appointment.sendReminderCount, reminderCount, "Send reminder count was not same");
+	}
+
+	@When("select all patients and click on banner")
+	public void select_all_patients_and_click_on_banner() throws InterruptedException {
+		Thread.sleep(10000);
+		mainPage.switchOnAppointmentsTab();
+		apptPage.selectAllCheckboxes();
+		apptPage.clickOnBannerMessage();
+		Appointment.bannerMessage = apptPage.getSelectedBannerMessage();
+		log("Get banner message-:" + Appointment.bannerMessage);
+	}
+
+	@When("click on actions button and only broadcast count should be seen")
+	public void click_on_actions_button_and_only_broadcast_count_should_be_seen() {
+		apptPage.clickOnActions();
+		Appointment.broadcastMessageButtonText = apptPage.getBroadcastMessageButtonText();
+		log("Broadcast message button text is:- " + Appointment.broadcastMessageButtonText);
+		assertFalse(apptPage.removeButton());
+		assertFalse(apptPage.sendReminderButton());
+		assertTrue(apptPage.broadcastMessageButton());
+		assertFalse(apptPage.createButton());
+	}
+
+	@When("going to second page and redirecting to page one")
+	public void going_to_second_page_and_redirecting_to_page_one() throws InterruptedException {
+		scrollAndWait(0, 3000, 5000);
+		log("switch on second page");
+		assertEquals(apptPage.jumbToNextPage(), "2");
+		log("Redirecting to page one");
+		assertEquals(apptPage.jumbToPreviousPage(), "1");
+	}
+
+	@Then("verify system should show the selected banner and appointment count should be same on brodcast button by clicking action button")
+	public void verify_system_should_show_the_selected_banner_and_appointment_count_should_be_same_on_brodcast_button_by_clicking_action_button()
+			throws InterruptedException {
+		log("Verify banner message");
+		scrollAndWait(0, -3000, 10000);
+		assertEquals(Appointment.bannerMessage, apptPage.getSelectedBannerMessage(), "Banner message was not same");
+		apptPage.clickOnActions();
+		String broadcastMessageButtonCount = apptPage.getBroadcastMessageButtonText();
+		log("Broadcast message button text is:- " + broadcastMessageButtonCount);
+		log("Verify broadcast message button count");
+		assertEquals(Appointment.broadcastMessageButtonText, broadcastMessageButtonCount,
+				"Broadcast message button count was not same");
+	}
+
+	@When("select all patients and going to second page")
+	public void select_all_patients_and_going_to_second_page() throws InterruptedException {
+		mainPage.switchOnAppointmentsTab();
+		apptPage.selectAllCheckboxes();
+		scrollAndWait(0, 2000, 5000);
+		log("switch on second page");
+		assertEquals(apptPage.jumbToNextPage(), "2");
+	}
+
+	@Then("verify after clicking on action only create button should be enabled")
+	public void verify_after_clicking_on_action_only_create_button_should_be_enabled() throws InterruptedException {
+		log("Click on actions and verify only create button should be enabled");
+		scrollAndWait(0, -2000, 5000);
+		apptPage.clickOnActions();
+		assertFalse(apptPage.removeButton());
+		assertFalse(apptPage.sendReminderButton());
+		assertFalse(apptPage.broadcastMessageButton());
+		assertTrue(apptPage.createButton());
+	}
+
+	@When("click on action and get count for broadcast, send reminder, remove button")
+	public void click_on_action_and_get_count_for_broadcast_send_reminder_remove_button() {
+		apptPage.clickOnActions();
+		log("get count messages from broadcast, send reminder, remove button");
+		Appointment.sendReminderButtonCount = apptPage.getSendReminderButtonText();
+		log("count messages from Send reminder button:-  " + Appointment.sendReminderButtonCount);
+		Appointment.broadcastMessageCount = apptPage.getBroadcastMessageButtonText();
+		log("count messages from broadcast Message button:-  " + Appointment.broadcastMessageCount);
+		Appointment.removeButtonCount = apptPage.getRemoveButtonText();
+		log("count messages from Remove button:-  " + Appointment.removeButtonCount);
+	}
+
+	@Then("verify when select all records count get updated for broadcast,send reminder,remove button in action button")
+	public void verify_when_select_all_records_count_get_updated_for_broadcast_send_reminder_remove_button_in_action_button()
+			throws InterruptedException {
+		driver.navigate().refresh();
+		Thread.sleep(10000);
+		apptPage.selectAllCheckboxes();
+		apptPage.clickOnActions();
+		log("get count messages from broadcast, send reminder, remove button");
+		String sendReminderButtonCount = apptPage.getSendReminderButtonText();
+		log("count messages from Send reminder button:-  " + sendReminderButtonCount);
+		String broadcastMessageCount = apptPage.getBroadcastMessageButtonText();
+		log("count messages from broadcast Message button:-  " + broadcastMessageCount);
+		String removeButtonCount = apptPage.getRemoveButtonText();
+		log("count messages from Remove button:-  " + removeButtonCount);
+		assertNotEquals(Appointment.sendReminderButtonCount, sendReminderButtonCount,
+				"Send reminder button message was same");
+		assertNotEquals(Appointment.broadcastMessageCount, broadcastMessageCount, "Broadcast button message was same");
+		assertNotEquals(Appointment.removeButtonCount, removeButtonCount, "Remove button message was not same");
+	}
+
+	@When("select all patients and later deselect")
+	public void select_all_patients_and_later_deselect() throws InterruptedException {
+		log("Select all patients");
+		apptPage.selectAllCheckboxes();
+		log("Deselect all patients");
+		apptPage.selectAllCheckboxes();
+	}
+
+	@When("going to second page and coming back to page one")
+	public void going_to_second_page_and_coming_back_to_page_one() throws InterruptedException {
+		scrollAndWait(0, 2000, 5000);
+		log("switch on second page");
+		assertEquals(apptPage.jumbToNextPage(), "2");
+		log("Redirecting to page one");
+		assertEquals(apptPage.jumbToPreviousPage(), "1");
+	}
+
+	@Then("Verify system does not show selected records and in action button only create button should be enabled")
+	public void verify_system_does_not_show_selected_records_and_in_action_button_only_create_button_should_be_enabled()
+			throws InterruptedException {
+		scrollAndWait(0, -2000, 5000);
+		assertFalse(apptPage.allCheckboxes());
+		log("Click on actions and verify only create button should be enabled");
+		apptPage.clickOnActions();
+		assertFalse(apptPage.removeButton());
+		assertFalse(apptPage.sendReminderButton());
+		assertFalse(apptPage.broadcastMessageButton());
+		assertTrue(apptPage.createButton());
+	}
+
+	@When("from setting in notifications user click on text edit section of appointment reminders")
+	public void from_setting_in_notifications_user_click_on_text_edit_section_of_appointment_reminders()
+			throws InterruptedException {
+		mainPage.clickOnSettingTab();
+		notifPage.clickOnNotificationTab();
+		assertTrue(notifPage.getNotificationTitle().contains("Notifications"));
+		log("user on notification page");
+		log("From Appointment reminders open edit section for text");
+		scrollAndWait(0, 2000, 5000);
+		notifPage.clickApptReminderSmsHamburgerButton();
+		notifPage.clickApptReminderSmsEditButton();
+	}
+
+	@When("verify user is not able to see preview and build section on template editor page")
+	public void verify_user_is_not_able_to_see_preview_and_build_section_on_template_editor_page() {
+		notifPage.clickOnPreview();
+		notifPage.clickOnBuild();
+		assertFalse(notifPage.previewTabInEditButton());
+		assertFalse(notifPage.buildTabInEditButton());
+		notifPage.clickOnBackArrow();
+	}
+
+	@When("from setting in notifications user click on email edit section of appointment reminders")
+	public void from_setting_in_notifications_user_click_on_email_edit_section_of_appointment_reminders()
+			throws InterruptedException {
+		mainPage.clickOnSettingTab();
+		notifPage.clickOnNotificationTab();
+		assertTrue(notifPage.getNotificationTitle().contains("Notifications"));
+		log("user on notification page");
+		log("From Appointment reminders open edit section for text");
+		scrollAndWait(0, 2000, 5000);
+		notifPage.clickApptReminderEmailHamburgerButton();
+		notifPage.clickApptReminderEmailEditButton();
+	}
+
+	@Then("verify user not able to enter zero in timing unit section for sms in appointment reminders")
+	public void verify_user_not_able_to_enter_zero_in_timing_unit_section_for_sms_in_appointment_reminders() {
+		log("Verify invalid timing unit for sms for one day");
+		notifPage.enterInvalidTimingForSmsInOneDay();
+		assertEquals(notifPage.getInvalidTimingTextForSmsInOneDay(), "Invalid Units", "Text was not match");
+		assertEquals(notifPage.getColorForInvalidTimingForSmsInOneDay(), "#c72828",
+				"Invalid Units text color was not match");
+		log("Verify invalid timing unit for sms for three day");
+		notifPage.enterInvalidTimingForSmsInThreeDay();
+		assertEquals(notifPage.getInvalidTimingTextForSmsInThreeDay(), "Invalid Units", "Text was not match");
+		assertEquals(notifPage.getColorForInvalidTimingForSmsInThreeDay(), "#c72828",
+				"Invalid Units text color was not match");
+		log("Verify invalid timing unit for sms for minutes");
+		notifPage.enterInvalidTimingForSmsInminutes();
+		assertEquals(notifPage.getInvalidTimingTextForSmsInMinutes(), "Invalid Units", "Text was not match");
+		assertEquals(notifPage.getColorForInvalidTimingForSmsInMinutes(), "#c72828",
+				"Invalid Units text color was not match");
+		log("Verify invalid timing unit for sms for hours");
+		notifPage.enterInvalidTimingForSmsInHours();
+		assertEquals(notifPage.getInvalidTimingTextForSmsInHours(), "Invalid Units", "Text was not match");
+		assertEquals(notifPage.getColorForInvalidTimingForSmsInHours(), "#c72828",
+				"Invalid Units text color was not match");
+		notifPage.clickOnBackArrow();
+	}
+
+	@Then("verify user not able to enter zero in timing unit section for email in appointment reminders")
+	public void verify_user_not_able_to_enter_zero_in_timing_unit_section_for_email_in_appointment_reminders() {
+		log("Verify invalid timing for email for hours");
+		notifPage.enterInvalidTimingForEmailInHours();
+		assertEquals(notifPage.getInvalidTimingTextForEmailInHours(), "Invalid Units", "Text was not match");
+		assertEquals(notifPage.getColorForInvalidTimingForEmailInHours(), "#c72828",
+				"Invalid Units text color was not match");
+		log("Verify invalid timing for email for minutes");
+		notifPage.enterInvalidTimingForEmailInMinutes();
+		assertEquals(notifPage.getInvalidTimingTextForEmailInMinutes(), "Invalid Units", "Text was not match");
+		assertEquals(notifPage.getColorForInvalidTimingForEmailInMinutes(), "#c72828",
+				"Invalid Units text color was not match");
+		log("Verify invalid timing for email for days");
+		notifPage.enterInvalidTimingForEmailInDays();
+		assertEquals(notifPage.getInvalidTimingTextForEmailInDays(), "Invalid Units", "Text was not match");
+		assertEquals(notifPage.getColorForInvalidTimingForEmailInDays(), "#c72828",
+				"Invalid Units text color was not match");
+		notifPage.clickOnBackArrow();
+	}
+
+	@When("from setting in notifications user click on email hamburgerButton section")
+	public void from_setting_in_notifications_user_click_on_email_hamburger_button_section()
+			throws InterruptedException {
+		mainPage.clickOnSettingTab();
+		notifPage.clickOnNotificationTab();
+		assertTrue(notifPage.getNotificationTitle().contains("Notifications"));
+		log("user on notification page");
+		log("From Appointment reminders open edit section for text");
+		scrollAndWait(0, 400, 5000);
+		notifPage.clickOnApptConfirmationsEmailhumburgerButton();
+	}
+
+	@And("user click preview of appointment confirmation")
+	public void user_click_preview_of_appointment_confirmation() {
+		notifPage.clickOnPreviewButton();
+	}
+
+	@Then("verify in settings section all fields are display related to email templates")
+	public void verify_in_settings_section_all_fields_are_display_related_to_email_templates() {
+		assertEquals(notifPage.visibilityOfPreviewPageTitle(), "Preview", "Preview text was not match");
+		assertEquals(notifPage.visibilityOfViewingText(), "Viewing in:", "Viewing in text was not match");
+		assertEquals(notifPage.visibilityOfEnglishLang(), "English", "English text was not match");
+		assertEquals(notifPage.visibilityOfCloseButton(), "Close", "Text was not match");
+		assertEquals(notifPage.visibilityOfSettingText(), "Settings", "Settings text was not match");
+		assertEquals(notifPage.visibilityOfNotiTypeText(), "Notification Type:",
+				"Notification Type text was not match");
+		assertEquals(notifPage.visibilityOfApptConfigText(), "Appointment Confirmation",
+				" Appointment Confirmation text was not match");
+		assertEquals(notifPage.visibilityOfVersionText(), "Version:", "Version text was not match");
+		assertEquals(notifPage.visibilityOfApptMethodText(), "Appointment Method:",
+				"Appointment Method text was not match");
+		assertEquals(notifPage.visibilityOfInOfficeText(), "In Office", "In Office text was not match");
+		assertEquals(notifPage.visibilityOfDeliveryMethodText(), "Delivery Method:",
+				"Delivery Method text was not match");
+		assertEquals(notifPage.visibilityOfEmailText(), "Email", "Email text was not match");
+		assertEquals(notifPage.visibilityOfTimingText(), "Timing:", "Timing text was not match");
+		assertEquals(notifPage.visibilityOfUponSchedulingText(), "Upon Scheduling",
+				"Upon Scheduling text was not match");
+		assertEquals(notifPage.visibilityOfResourcesText(), "Resource(s):", "Text was not match");
+		assertEquals(notifPage.visibilityOfAllResourcesText(), "All", "All text was not match");
+		assertEquals(notifPage.visibilityOfApptTypesText(), "Appointment Type(s):",
+				"Appointment Type(s): text was not match");
+		assertEquals(notifPage.visibilityOfAllApptTypesText(), "All", "All text was not match");
+		assertEquals(notifPage.visibilityOfLocationText(), "Location(s):", "Location text was not match");
+		assertEquals(notifPage.visibilityOfAllLocationText(), "All", "all text was not match");
+		notifPage.closePreviewPage();
+		assertTrue(notifPage.getNotificationTitle().contains("Notifications"));
+		log("user on notification page");
+	}
+
+	@Then("verify in desktop view all fields are display related to templates")
+	public void verify_in_desktop_view_all_fields_are_display_related_to_templates() throws InterruptedException {
+		notifPage.openDesktopViewPage();
+		scrollAndWait(0, 500, 5000);
+		assertEquals(notifPage.visibilityOfClickHereText(), "CLICK HERETO VIEW THIS IN A BROWSER WINDOW",
+				"click here text was not match");
+		assertTrue(notifPage.visibilityOfCadenceImage());
+		assertEquals(notifPage.visibilityOfApptScheduledText(), "Appointment Scheduled", "all text was not match");
+		assertEquals(notifPage.visibilityOfPatientNameText(), "[Patient Name], your appointment has been scheduled",
+				"Appt Scheduled text was not match");
+		assertEquals(notifPage.visibilityOfDateAndTimeText(), "Date and Time", "Date And Time text was not match");
+		assertEquals(notifPage.visibilityOfDayOfTheWeekText(), "Day of the week at 00:00 AM/PM",
+				"Day Of The Week text was not match");
+		assertEquals(notifPage.visibilityOfDateFormatText(), "Month DD, YYYY", "Date Format text was not match");
+		assertEquals(notifPage.visibilityOfLocationTextInPreview(), "Location", "Location text was not match");
+		assertEquals(notifPage.visibilityOfLocationNameText(), "Location Name", "Location Name text was not match");
+		assertEquals(notifPage.visibilityOfAddress1Text(), "Location Address1", "Address1 text was not match");
+		assertEquals(notifPage.visibilityOfAddress2Text(), "Location Address2", "Address2 text was not match");
+		assertEquals(notifPage.visibilityOfCityStateZipText(), "City State, Zip", "City State Zip text was not match");
+		assertEquals(notifPage.visibilityOfMobileNoFormatText(), "(XXX) XXX-XXXX", "MobileNoFormat text was not match");
+		assertEquals(notifPage.visibilityOfPinToMapText(), "Pin on Map", "Pin To Map text was not match");
+		assertEquals(notifPage.visibilityOfProviderText(), "Provider", "Provider text was not match");
+		assertEquals(notifPage.visibilityOfProviderNameText(), "Provider Name", "Provider Name text was not match");
+		assertEquals(notifPage.visibilityOfRescheduleOrCancelText(), "Reschedule or Cancel",
+				"Reschedule Or Cancel text was not match");
+		assertEquals(notifPage.visibilityOfInstructionsText(),
+				"Please do not reply to this auto generated message. If you have questions about this email, please contact your doctor’s office.",
+				"Instructions text was not match");
+		assertEquals(notifPage.visibilityOfConfidentialityNoticeText(), "Confidentiality Notice:",
+				"Confidentiality Notice text was not match");
+		assertEquals(notifPage.visibilityOfUnsubscribeText(), "Unsubscribe", "Unsubscribe text was not match");
+		assertEquals(notifPage.visibilityOfBottomInfoText(),
+				"*Information included in this communication is based on the data sent from the practice management system.",
+				"Bottom Info text was not match");
+		notifPage.closePreviewPage();
+		assertTrue(notifPage.getNotificationTitle().contains("Notifications"));
+		log("user on notification page");
+	}
+
+	@Then("verify in mobile view all fields are display related to templates")
+	public void verify_in_mobile_view_all_fields_are_display_related_to_templates() throws InterruptedException {
+		notifPage.openMobileViewPage();
+		scrollAndWait(0, 500, 5000);
+		log("Click here Text :- " + notifPage.visibilityOfClickHereText());
+		assertTrue(notifPage.visibilityOfCadenceImage());
+		assertEquals(notifPage.visibilityOfApptScheduledText(), "Appointment Scheduled", "all text was not match");
+		log("Patient name text :- " + notifPage.visibilityOfPatientNameText());
+		assertEquals(notifPage.visibilityOfDateAndTimeText(), "Date and Time", "Date And Time text was not match");
+		assertEquals(notifPage.visibilityOfDayOfTheWeekText(), "Day of the week at 00:00 AM/PM",
+				"Day Of The Week text was not match");
+		assertEquals(notifPage.visibilityOfDateFormatText(), "Month DD, YYYY", "Date Format text was not match");
+		assertEquals(notifPage.visibilityOfLocationTextInPreview(), "Location", "Location text was not match");
+		assertEquals(notifPage.visibilityOfLocationNameText(), "Location Name", "Location Name text was not match");
+		assertEquals(notifPage.visibilityOfAddress1Text(), "Location Address1", "Address1 text was not match");
+		assertEquals(notifPage.visibilityOfAddress2Text(), "Location Address2", "Address2 text was not match");
+		assertEquals(notifPage.visibilityOfCityStateZipText(), "City State, Zip", "City State Zip text was not match");
+		assertEquals(notifPage.visibilityOfMobileNoFormatText(), "(XXX) XXX-XXXX", "MobileNoFormat text was not match");
+		assertEquals(notifPage.visibilityOfPinToMapText(), "Pin on Map", "Pin To Map text was not match");
+		assertEquals(notifPage.visibilityOfProviderText(), "Provider", "Provider text was not match");
+		assertEquals(notifPage.visibilityOfProviderNameText(), "Provider Name", "Provider Name text was not match");
+		assertEquals(notifPage.visibilityOfRescheduleOrCancelText(), "Reschedule or Cancel",
+				"Reschedule Or Cancel text was not match");
+		assertEquals(notifPage.visibilityOfInstructionsText(),
+				"Please do not reply to this auto generated message. If you have questions about this email, please contact your doctor’s office.",
+				"Instructions text was not match");
+		assertEquals(notifPage.visibilityOfConfidentialityNoticeText(), "Confidentiality Notice:",
+				"Confidentiality Notice text was not match");
+		assertEquals(notifPage.visibilityOfUnsubscribeText(), "Unsubscribe", "Unsubscribe text was not match");
+		assertEquals(notifPage.visibilityOfBottomInfoText(),
+				"*Information included in this communication is based on the data sent from the practice management system.",
+				"Bottom Info text was not match");
+		notifPage.closePreviewPage();
+		assertTrue(notifPage.getNotificationTitle().contains("Notifications"));
+		log("user on notification page");
+	}
+
+	@When("from setting in notifications user click on text hamburgerButton section")
+	public void from_setting_in_notifications_user_click_on_text_hamburger_button_section()
+			throws InterruptedException {
+		mainPage.clickOnSettingTab();
+		notifPage.clickOnNotificationTab();
+		assertTrue(notifPage.getNotificationTitle().contains("Notifications"));
+		log("user on notification page");
+		log("From Appointment reminders open edit section for text");
+		scrollAndWait(0, 400, 5000);
+		notifPage.clickOnApptConfirmationsTextshumburgerButton();
+	}
+
+	@Then("verify in settings section all fields are display related to templates")
+	public void verify_in_settings_section_all_fields_are_display_related_to_templates() {
+		assertEquals(notifPage.visibilityOfPreviewPageTitle(), "Preview", "Preview text was not match");
+		assertEquals(notifPage.visibilityOfViewingText(), "Viewing in:", "Viewing in text was not match");
+		assertEquals(notifPage.visibilityOfEnglishLang(), "English", "English text was not match");
+		assertEquals(notifPage.visibilityOfCloseButton(), "Close", "Text was not match");
+		assertEquals(notifPage.visibilityOfSettingText(), "Settings", "Settings text was not match");
+		assertEquals(notifPage.visibilityOfNotiTypeText(), "Notification Type:",
+				"Notification Type text was not match");
+		assertEquals(notifPage.visibilityOfApptConfigText(), "Appointment Confirmation",
+				" Appointment Confirmation text was not match");
+		assertEquals(notifPage.visibilityOfVersionText(), "Version:", "Version text was not match");
+		assertEquals(notifPage.visibilityOfApptMethodText(), "Appointment Method:",
+				"Appointment Method text was not match");
+		assertEquals(notifPage.visibilityOfInOfficeText(), "In Office", "In Office text was not match");
+		assertEquals(notifPage.visibilityOfDeliveryMethodText(), "Delivery Method:",
+				"Delivery Method text was not match");
+		assertEquals(notifPage.visibilityOfSmsText(), "SMS", "Email text was not match");
+		assertEquals(notifPage.visibilityOfTimingText(), "Timing:", "Timing text was not match");
+		assertEquals(notifPage.visibilityOfUponSchedulingText(), "Upon Scheduling",
+				"Upon Scheduling text was not match");
+		assertEquals(notifPage.visibilityOfResourcesText(), "Resource(s):", "Text was not match");
+		assertEquals(notifPage.visibilityOfAllResourcesText(), "All", "All text was not match");
+		assertEquals(notifPage.visibilityOfApptTypesText(), "Appointment Type(s):",
+				"Appointment Type(s): text was not match");
+		assertEquals(notifPage.visibilityOfAllApptTypesText(), "All", "All text was not match");
+		assertEquals(notifPage.visibilityOfLocationText(), "Location(s):", "Location text was not match");
+		assertEquals(notifPage.visibilityOfAllLocationText(), "All", "all text was not match");
+		notifPage.closePreviewPage();
+		assertTrue(notifPage.getNotificationTitle().contains("Notifications"));
+		log("user on notification page");
+	}
+
+	@Then("verify in setting section view all fields are display related to text templates")
+	public void verify_in_setting_section_view_all_fields_are_display_related_to_text_templates() {
+		assertTrue(notifPage.visibilityOfRescheduleAndCancelAppointmentText());
+		assertTrue(notifPage.visibilityOfGetDitectionText());
+		assertTrue(notifPage.visibilityOfTextStopToUnsubscribeText());
+		assertEquals(notifPage.visibilityOfPatientInfoInTextMsg(),
+				"[Patient Name], your appointment with [Practice Name] (XXX) XXX-XXXX on [Day of the week], [Month] [DD] [YYYY] [00:00 AM/PM]: is scheduled.",
+				"Patient info text was not match");
+		assertTrue(notifPage.visibilityOfSmsPreviewBottomtext());
+		notifPage.closePreviewPage();
+		assertTrue(notifPage.getNotificationTitle().contains("Notifications"));
+		log("user on notification page");
+	}
+
 }
