@@ -30,11 +30,13 @@ import com.medfusion.qa.mailinator.Email;
 import com.medfusion.qa.mailinator.Mailer;
 import com.medfusion.product.object.maps.patientportal2.page.JalapenoLoginPage;
 import com.medfusion.product.object.maps.patientportal2.page.AccountPage.JalapenoAccountPage;
+import com.medfusion.product.object.maps.patientportal2.page.AppointmentRequestPage.JalapenoAppointmentRequestPage;
 import com.medfusion.product.object.maps.patientportal2.page.CreateAccount.AuthUserLinkAccountPage;
 import com.medfusion.product.object.maps.patientportal2.page.CreateAccount.PatientVerificationPage;
 import com.medfusion.product.object.maps.patientportal2.page.CreateAccount.SecurityDetailsPage;
 import com.medfusion.product.object.maps.patientportal2.page.ForgotPasswordPage.JalapenoForgotPasswordPage4;
 import com.medfusion.product.object.maps.patientportal2.page.HomePage.JalapenoHomePage;
+import com.medfusion.product.object.maps.patientportal2.page.MedicationsPage.MedicationsHomePage;
 import com.medfusion.product.object.maps.patientportal2.page.MyAccountPage.JalapenoMyAccountProfilePage;
 
 import static org.testng.Assert.*;
@@ -660,8 +662,8 @@ public class PracticePortalAcceptanceTests extends BaseTestNGWebDriver {
 	}
 	
 	@Test(enabled = true, groups = { "AcceptanceTests" }, retryAnalyzer = RetryAnalyzer.class)
-	public void testInviteGuardian() throws Exception {
-		String patientLogin = PortalUtil2.generateUniqueUsername("login", testData); // guardian login
+	public void testInviteGuardianWithFullAcess() throws Exception {
+		String patientLogin = PortalUtil2.generateUniqueUsername("login", testData);
 		String patientLastName = patientLogin.replace("login", "last");
 		String patientEmail = patientLogin.replace("login", "mail") + "@mailinator.com";
 		Patient localpatient = PatientFactory.createJalapenoPatient(patientLogin, testData);
@@ -715,9 +717,25 @@ public class PracticePortalAcceptanceTests extends BaseTestNGWebDriver {
 		JalapenoHomePage homePage = accountDetailsPage.fillAccountDetailsAndContinue(patientLogin,
 				"Medfusion123", testData.getSecretQuestion(), testData.getSecretAnswer(),
 				testData.getPhoneNumber());
-
-		assertTrue(homePage.assessFamilyAccountElements(false));
+        assertTrue(homePage.assessFamilyAccountElements(false));
 		
+		logStep("Verify Appointment Solutions");
+		JalapenoAppointmentRequestPage appReqPage=homePage.clickOnAppointment(driver);
+		
+		logStep("Verify Request An Appointment Button is not present");
+		assertTrue(appReqPage.isAppointmentRequestBtnDisplayed());
+		appReqPage.clickonHomeButton(driver);
+		
+		logStep("Verify Appointment Solutions");
+		MedicationsHomePage medReqPage=homePage.clickOnMedications(driver);
+		
+		logStep("Verify Rx Request Button is not present in Medications module");
+		assertTrue(medReqPage.isRxRequestBtnDisplayed());
+		appReqPage.clickonHomeButton(driver);
+		
+		logStep("Click on forms solution");
+		assertTrue(homePage.isFormsSolutionDisplayed());
+		homePage.clickOnHealthForms();
 	}
 	
 	private String getRedirectUrl(String originUrl) {
