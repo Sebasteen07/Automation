@@ -27,6 +27,21 @@ public class PayloadAdapterModulator {
 		return saveAnn;
 	}
 	
+	public String annSavePayload(String type,String code, String welcomeMsg) {
+		String saveAnn = "{\r\n"
+				+ "  \"text\": {\r\n"
+				+ "    \"EN\": \""+welcomeMsg+"\",\r\n"
+				+ "    \"ES\": \"Su mensaje-Espanol\"\r\n"
+				+ "  },\r\n"
+				+ "  \"display\": \"Your welcome message will be displayed here. Please contact Medfusion support to add your own text or disable this message.\",\r\n"
+				+ "  \"type\": \""+type+"\",\r\n"
+				+ "  \"code\": \""+code+"\",\r\n"
+				+ "  \"selected\": false,\r\n"
+				+ "  \"description\": \"Displayed in dialog when PSS first page loads\"\r\n"
+				+ "}";
+		return saveAnn;
+	}
+	
 	public String updateAnnouncementPayload(int id, String type,String code ) {
 		String updateAnn = "{\r\n"
 				+ "    \"id\": "+id+",\r\n"
@@ -1289,6 +1304,17 @@ public class PayloadAdapterModulator {
 				+ "    \"rule\": \"L,T\"\r\n"
 				+ "}";
 		return resourceConfigRule;
+	}
+	
+	public String providerOff() {
+		String payload = "[\r\n"
+				+ "  {\r\n"
+				+ "    \"group\": \"RULEENGINE\",\r\n"
+				+ "    \"key\": \"showProvider\",\r\n"
+				+ "    \"value\": false\r\n"
+				+ "  }\r\n"
+				+ "]";
+		return payload;
 	}
 	
 	public String genderMapPayload() {
