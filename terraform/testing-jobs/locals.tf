@@ -8,7 +8,7 @@ locals {
   name                          = "${var.bitbucket_repository_name}_${terraform.workspace}"
   selenium_browser              = "*chrome"
   test_execution_mode           = "headless"
-  qa_chrome_driver_version      = "93.0.4577.63"
+
 
   inputs = {
     "demo-integrations2-acceptance" = {
@@ -187,7 +187,7 @@ locals {
       queued_timeout        = 480 #Number of minutes, from 5 to 480. Default value is 480 mins
       maven_parameter       = "mvn clean install -U"
       google_chrome_version = "93.0.4577.82-1"
-      chrome_driver_version = local.qa_chrome_driver_version
+      chrome_driver_version = "93.0.4577.63"
       cron_shedule          = "cron(30 23 ? * 6 *)"
     }
 
@@ -201,8 +201,8 @@ locals {
       build_timeout         = 240 #Number of minutes, from 5 to 480. Default value is 60 mins
       queued_timeout        = 480 #Number of minutes, from 5 to 480. Default value is 480 mins
       maven_parameter       = "mvn clean install -U"
-      google_chrome_version = "93.0.4577.82-1"
-      chrome_driver_version = local.qa_chrome_driver_version
+      google_chrome_version = "96.0.4664.45-1"
+      chrome_driver_version = "95.0.4638.17"
       cron_shedule          = "cron(20 0 ? * 1 *)"
     }
 
@@ -216,8 +216,8 @@ locals {
       build_timeout         = 240 #Number of minutes, from 5 to 480. Default value is 60 mins
       queued_timeout        = 480 #Number of minutes, from 5 to 480. Default value is 480 mins
       maven_parameter       = "mvn clean install -U"
-      google_chrome_version = "93.0.4577.82-1"
-      chrome_driver_version = local.qa_chrome_driver_version
+      google_chrome_version = "96.0.4664.45-1"
+      chrome_driver_version = "95.0.4638.17"
       cron_shedule          = "cron(25 0 ? * 1 *)"
     }
 
@@ -231,8 +231,8 @@ locals {
       build_timeout         = 240 #Number of minutes, from 5 to 480. Default value is 60 mins
       queued_timeout        = 480 #Number of minutes, from 5 to 480. Default value is 480 mins
       maven_parameter       = "mvn clean install -U"
-      google_chrome_version = "93.0.4577.82-1"
-      chrome_driver_version = local.qa_chrome_driver_version
+      google_chrome_version = "96.0.4664.45-1"
+      chrome_driver_version = "95.0.4638.17"
       cron_shedule          = "cron(25 0 ? * 1 *)"
     }
 
@@ -246,8 +246,8 @@ locals {
       build_timeout         = 240 #Number of minutes, from 5 to 480. Default value is 60 mins
       queued_timeout        = 480 #Number of minutes, from 5 to 480. Default value is 480 mins
       maven_parameter       = "mvn clean install -U"
-      google_chrome_version = "93.0.4577.82-1"
-      chrome_driver_version = local.qa_chrome_driver_version
+      google_chrome_version = "96.0.4664.45-1"
+      chrome_driver_version = "95.0.4638.17"
       cron_shedule          = "cron(25 0 ? * 1 *)"
     }
   }
