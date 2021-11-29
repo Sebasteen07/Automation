@@ -8,10 +8,12 @@ import com.medfusion.common.utils.PropertyFileLoader;
 import com.medfusion.pojos.Patient;
 import com.intuit.ifs.csscat.core.BaseTestNGWebDriver;
 import com.intuit.ifs.csscat.core.RetryAnalyzer;
+import com.intuit.ihg.common.utils.PatientFactory;
 import com.intuit.ihg.common.utils.monitoring.PerformanceReporter;
 import com.medfusion.common.utils.IHGUtil;
 import com.medfusion.product.object.maps.practice.page.PracticeHomePage;
 import com.medfusion.product.object.maps.practice.page.PracticeLoginPage;
+import com.medfusion.product.object.maps.practice.page.familyManagement.PatientTrustedRepresentativePage;
 import com.medfusion.product.object.maps.practice.page.onlinebillpay.OnlineBillPaySearchPage;
 import com.medfusion.product.object.maps.practice.page.onlinebillpay.PayMyBillOnlinePage;
 import com.medfusion.product.object.maps.practice.page.patientMessaging.PatientMessagingPage;
@@ -19,6 +21,7 @@ import com.medfusion.product.object.maps.practice.page.patientSearch.PatientDash
 import com.medfusion.product.object.maps.practice.page.patientSearch.PatientSearchPage;
 import com.medfusion.product.object.maps.practice.page.patientactivation.PatientActivationPage;
 import com.medfusion.product.object.maps.practice.page.treatmentplanpage.TreatmentPlansPage;
+import com.medfusion.product.patientportal2.utils.PortalUtil2;
 import com.medfusion.product.practice.api.utils.PracticeConstants;
 import com.medfusion.product.practice.api.utils.PracticeUtil;
 import com.medfusion.product.practice.api.utils.ReadFilePath;
@@ -27,8 +30,13 @@ import com.medfusion.qa.mailinator.Email;
 import com.medfusion.qa.mailinator.Mailer;
 import com.medfusion.product.object.maps.patientportal2.page.JalapenoLoginPage;
 import com.medfusion.product.object.maps.patientportal2.page.AccountPage.JalapenoAccountPage;
+import com.medfusion.product.object.maps.patientportal2.page.AppointmentRequestPage.JalapenoAppointmentRequestPage;
+import com.medfusion.product.object.maps.patientportal2.page.CreateAccount.AuthUserLinkAccountPage;
+import com.medfusion.product.object.maps.patientportal2.page.CreateAccount.PatientVerificationPage;
+import com.medfusion.product.object.maps.patientportal2.page.CreateAccount.SecurityDetailsPage;
 import com.medfusion.product.object.maps.patientportal2.page.ForgotPasswordPage.JalapenoForgotPasswordPage4;
 import com.medfusion.product.object.maps.patientportal2.page.HomePage.JalapenoHomePage;
+import com.medfusion.product.object.maps.patientportal2.page.MedicationsPage.MedicationsHomePage;
 import com.medfusion.product.object.maps.patientportal2.page.MyAccountPage.JalapenoMyAccountProfilePage;
 
 import static org.testng.Assert.*;
@@ -651,6 +659,83 @@ public class PracticePortalAcceptanceTests extends BaseTestNGWebDriver {
 		logStep("Search for patient in Patient Search");
 		pPatientSearchPage.searchForPatientWithPatientID(testData.getProperty("search.invalid.patientID"));
 		assertTrue(pPatientSearchPage.isNoRecordsFoundMsgDisplayed());
+	}
+	
+	@Test(enabled = true, groups = { "AcceptanceTests" }, retryAnalyzer = RetryAnalyzer.class)
+	public void testInviteGuardianWithFullAcess() throws Exception {
+		String patientLogin = PortalUtil2.generateUniqueUsername("login", testData);
+		String patientLastName = patientLogin.replace("login", "last");
+		String patientEmail = patientLogin.replace("login", "mail") + "@mailinator.com";
+		Patient localpatient = PatientFactory.createJalapenoPatient(patientLogin, testData);
+
+		logStep("Login to Practice Portal");
+		PracticeLoginPage practiceLogin = new PracticeLoginPage(driver, testData.getUrl());
+		PracticeHomePage pPracticeHomePage = practiceLogin.login(testData.getProperty("doctor2.login"),
+				testData.getProperty("doctor2.password"));
+
+		logStep("Click on Patient Search Link");
+		PatientSearchPage pPatientSearchPage = pPracticeHomePage.clickPatientSearchLink();
+
+		logStep("Click on Add new Patient");
+		PatientActivationPage patientActivationPage = pPatientSearchPage.clickOnAddNewPatient();
+
+		logStep("Register Dependent - Enter all the details and click on Register");
+		patientActivationPage.setInitialDetailsAllFields("Dependent", patientLastName, "M",
+				patientLastName + "D", testData.getPhoneNumber(), patientEmail, testData.getDOBMonth(),
+				testData.getDOBDay(), testData.getDOBYearUnderage(), "address1", "address2", "city", "Alabama",
+				testData.getZipCode());
+		
+		logStep("Click on Patient Search Link");
+		pPatientSearchPage = pPracticeHomePage.clickPatientSearchLink();
+
+		logStep("Search for patient in Patient Search");
+		pPatientSearchPage.searchForPatientInPatientSearch(patientEmail);
+		pPatientSearchPage.clickOnPatient("Dependent", patientLastName);
+		
+		logStep("Invite Guardian");
+		PatientTrustedRepresentativePage patientInviteTrustedRepresentative = pPatientSearchPage.clickInviteTrustedRepresentative();
+		patientInviteTrustedRepresentative.inviteGuardian(localpatient);
+		
+		logStep("Waiting for invitation email");
+		String patientUrl = new Mailinator().getLinkFromEmail(localpatient.getEmail(), "You are invited to create a Patient Portal guardian account at",
+				"Sign Up!", 15);
+		assertNotNull(patientUrl, "Error: Activation patients link not found.");
+		
+		logStep("Redirecting to verification page");
+		PatientVerificationPage patientVerificationPage = new PatientVerificationPage(driver, patientUrl);
+
+		logStep("Identify patient");
+		AuthUserLinkAccountPage linkAccountPage = patientVerificationPage.fillDependentInfoAndContinue(
+				testData.getZipCode(), testData.getDOBMonth(), testData.getDOBDay(), testData.getDOBYearUnderage());
+
+		logStep("Continue registration - check dependent info and fill guardian name");
+		linkAccountPage.checkDependentInfo("Dependent", patientLastName, localpatient.getEmail());
+		SecurityDetailsPage accountDetailsPage = linkAccountPage.continueToCreateGuardianOnly("Guardian",
+				patientLastName, "Parent");
+
+		logStep("Continue registration - create dependents credentials and continue to Home page");
+		JalapenoHomePage homePage = accountDetailsPage.fillAccountDetailsAndContinue(patientLogin,
+				"Medfusion123", testData.getSecretQuestion(), testData.getSecretAnswer(),
+				testData.getPhoneNumber());
+        assertTrue(homePage.assessFamilyAccountElements(false));
+		
+		logStep("Verify Appointment Solutions");
+		JalapenoAppointmentRequestPage appReqPage=homePage.clickOnAppointment(driver);
+		
+		logStep("Verify Request An Appointment Button is not present");
+		assertTrue(appReqPage.isAppointmentRequestBtnDisplayed());
+		appReqPage.clickonHomeButton(driver);
+		
+		logStep("Verify Appointment Solutions");
+		MedicationsHomePage medReqPage=homePage.clickOnMedications(driver);
+		
+		logStep("Verify Rx Request Button is not present in Medications module");
+		assertTrue(medReqPage.isRxRequestBtnDisplayed());
+		appReqPage.clickonHomeButton(driver);
+		
+		logStep("Click on forms solution");
+		assertTrue(homePage.isFormsSolutionDisplayed());
+		homePage.clickOnHealthForms();
 	}
 	
 	private String getRedirectUrl(String originUrl) {
