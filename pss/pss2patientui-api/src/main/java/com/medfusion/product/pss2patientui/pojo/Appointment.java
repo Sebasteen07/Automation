@@ -266,15 +266,6 @@ public class Appointment {
 		this.speciality = specialityConfig;
 	}
 
-	public boolean isMaxPerDayStatus() {
-		return maxPerDayStatus;
-	}
-
-	public void setMaxPerDayStatus(boolean maxPerDayStatus) {
-		this.maxPerDayStatus = maxPerDayStatus;
-	}
-
-
 	public int getPreSchedDays() {
 		return preSchedDays;
 	}
@@ -285,7 +276,15 @@ public class Appointment {
 
 	public Appointment() {
 	}
-	
+
+	public boolean isMaxPerDayStatus() {
+		return maxPerDayStatus;
+	}
+
+	public void setMaxPerDayStatus(boolean maxPerDayStatus) {
+		this.maxPerDayStatus = maxPerDayStatus;
+	}
+
 	public boolean isInsuranceAtEnd() {
 		return insuranceAtEnd;
 	}

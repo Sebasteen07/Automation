@@ -7947,11 +7947,9 @@ public class PSS2PatientPortalAcceptanceTests extends BaseTestNGWebDriver {
 		aPIVerification.responseCodeValidation(response, 200);
 
 		adminUtils.ageRuleAppointmentType(driver, adminUser, testData, PSSConstants.LOGINLESS);
-		log("Step 3: Move to PSS patient Portal 2.0 to book an Appointment");
-		log("Step 4: Login to PSS Appointment");
+		logStep("Move to PSS patient Portal 2.0 to book an Appointment");
 		DismissPage dismissPage = new DismissPage(driver, testData.getUrlLoginLess());
 		Thread.sleep(1000);
-		log("Step 5: LoginlessPatientInformation****");
 		log("Clicked on Dismiss");
 		LoginlessPatientInformation loginlessPatientInformation = dismissPage.clickDismiss();
 		HomePage homepage = loginlessPatientInformation.fillNewPatientForm(testData.getFirstName(), testData.getLastName(), testData.getDob(), testData.getEmail(),
@@ -7962,7 +7960,7 @@ public class PSS2PatientPortalAcceptanceTests extends BaseTestNGWebDriver {
 		StartAppointmentInOrder startappointmentInOrder = null;
 		startappointmentInOrder = homepage.skipInsurance(driver);
 		location = startappointmentInOrder.selectFirstLocation(PSSConstants.START_LOCATION);
-		Log4jUtil.log("Step 9: Verfiy Location Page and location =" + testData.getLocation());
+		logStep("Step 9: Verfiy Location Page and location =" + testData.getLocation());
 		AppointmentPage appointment = null;
 		appointment = location.selectAppointment(testData.getLocation());
 		int i = Integer.parseInt(testData.getAgeRuleMonthFirst());
@@ -7971,7 +7969,6 @@ public class PSS2PatientPortalAcceptanceTests extends BaseTestNGWebDriver {
 			String name = appointment.selectTypeOfApp(testData.getAppointmenttype(), Boolean.valueOf(testData.getIsAppointmentPopup()));
 			assertEquals(testData.getAppointmenttype(), name);
 		} else {
-			log("No App avaliable Beacuase age Rule");
 			String name = appointment.selectTypeOfApp(testData.getAppointmenttype(), Boolean.valueOf(testData.getIsAppointmentPopup()));
 			assertNotEquals(testData.getAppointmenttype(), name);
 		}
@@ -8013,11 +8010,9 @@ public class PSS2PatientPortalAcceptanceTests extends BaseTestNGWebDriver {
 		aPIVerification.responseCodeValidation(response, 200);
 
 		adminUtils.ageRuleAppointmentType(driver, adminUser, testData, PSSConstants.LOGINLESS);
-		log("Step 3: Move to PSS patient Portal 2.0 to book an Appointment");
-		log("Step 4: Login to PSS Appointment");
+		logStep(" Move to PSS patient Portal 2.0 to book an Appointment");
 		DismissPage dismissPage = new DismissPage(driver, testData.getUrlLoginLess());
 		Thread.sleep(1000);
-		log("Step 5: LoginlessPatientInformation****");
 		log("Clicked on Dismiss");
 		LoginlessPatientInformation loginlessPatientInformation = dismissPage.clickDismiss();
 		HomePage homepage = loginlessPatientInformation.fillNewPatientForm(testData.getFirstName(), testData.getLastName(), testData.getDob(), testData.getEmail(),
@@ -8028,7 +8023,7 @@ public class PSS2PatientPortalAcceptanceTests extends BaseTestNGWebDriver {
 		StartAppointmentInOrder startappointmentInOrder = null;
 		startappointmentInOrder = homepage.skipInsurance(driver);
 		location = startappointmentInOrder.selectFirstLocation(PSSConstants.START_LOCATION);
-		Log4jUtil.log("Step 9: Verfiy Location Page and location =" + testData.getLocation());
+		logStep("Verfiy Location Page and location =" + testData.getLocation());
 		AppointmentPage appointment = null;
 		appointment = location.selectAppointment(testData.getLocation());
 		int i = Integer.parseInt(testData.getAgeRuleMonthFirst());
@@ -8037,10 +8032,8 @@ public class PSS2PatientPortalAcceptanceTests extends BaseTestNGWebDriver {
 			String name = appointment.selectTypeOfApp(testData.getAppointmenttype(), Boolean.valueOf(testData.getIsAppointmentPopup()));
 			assertEquals(testData.getAppointmenttype(), name);
 		} else {
-			log("No App avaliable Beacuase age Rule");
 			String name = appointment.selectTypeOfApp(testData.getAppointmenttype(), Boolean.valueOf(testData.getIsAppointmentPopup()));
 			assertNotEquals(testData.getAppointmenttype(), name);
-
 		}
 		adminUtils.resetAgeRuleAppointmentType(driver, adminUser, testData, PSSConstants.LOGINLESS);
 
@@ -8081,12 +8074,9 @@ public class PSS2PatientPortalAcceptanceTests extends BaseTestNGWebDriver {
 		aPIVerification.responseCodeValidation(response, 200);
 
 		adminUtils.ageRuleAppointmentType(driver, adminUser, testData, PSSConstants.LOGINLESS);
-		log("Step 3: Move to PSS patient Portal 2.0 to book an Appointment");
-		log("Step 4: Login to PSS Appointment");
+		logStep("Move to PSS patient Portal 2.0 to book an Appointment");
 		DismissPage dismissPage = new DismissPage(driver, testData.getUrlLoginLess());
 		Thread.sleep(1000);
-		log("Step 5: LoginlessPatientInformation****");
-		log("Clicked on Dismiss");
 		LoginlessPatientInformation loginlessPatientInformation = dismissPage.clickDismiss();
 		HomePage homepage = loginlessPatientInformation.fillNewPatientForm(testData.getFirstName(), testData.getLastName(), testData.getDob(), testData.getEmail(),
 				testData.getGender(), testData.getZipCode(), testData.getPrimaryNumber());
@@ -8096,7 +8086,7 @@ public class PSS2PatientPortalAcceptanceTests extends BaseTestNGWebDriver {
 		StartAppointmentInOrder startappointmentInOrder = null;
 		startappointmentInOrder = homepage.skipInsurance(driver);
 		location = startappointmentInOrder.selectFirstLocation(PSSConstants.START_LOCATION);
-		Log4jUtil.log("Step 9: Verfiy Location Page and location =" + testData.getLocation());
+		logStep("Verfiy Location Page and location =" + testData.getLocation());
 		AppointmentPage appointment = null;
 		appointment = location.selectAppointment(testData.getLocation());
 		int i = Integer.parseInt(testData.getAgeRuleMonthFirst());
@@ -8105,7 +8095,6 @@ public class PSS2PatientPortalAcceptanceTests extends BaseTestNGWebDriver {
 			String name = appointment.selectTypeOfApp(testData.getAppointmenttype(), Boolean.valueOf(testData.getIsAppointmentPopup()));
 			assertEquals(testData.getAppointmenttype(), name);
 		} else {
-			log("No Appointment avaliable Beacuase age Rule");
 			String name = appointment.selectTypeOfApp(testData.getAppointmenttype(), Boolean.valueOf(testData.getIsAppointmentPopup()));
 			assertNotEquals(testData.getAppointmenttype(), name);
 		}
@@ -8148,11 +8137,9 @@ public class PSS2PatientPortalAcceptanceTests extends BaseTestNGWebDriver {
 		aPIVerification.responseCodeValidation(response, 200);
 
 		adminUtils.ageRuleAppointmentType(driver, adminUser, testData, PSSConstants.LOGINLESS);
-		log("Step 3: Move to PSS patient Portal 2.0 to book an Appointment");
-		log("Step 4: Login to PSS Appointment");
+		logStep("Move to PSS patient Portal 2.0 to book an Appointment");
 		DismissPage dismissPage = new DismissPage(driver, testData.getUrlLoginLess());
 		Thread.sleep(1000);
-		log("Step 5: LoginlessPatientInformation****");
 		log("Clicked on Dismiss");
 		LoginlessPatientInformation loginlessPatientInformation = dismissPage.clickDismiss();
 		HomePage homepage = loginlessPatientInformation.fillNewPatientForm(testData.getFirstName(), testData.getLastName(), testData.getDob(), testData.getEmail(),
@@ -8163,7 +8150,7 @@ public class PSS2PatientPortalAcceptanceTests extends BaseTestNGWebDriver {
 		StartAppointmentInOrder startappointmentInOrder = null;
 		startappointmentInOrder = homepage.skipInsurance(driver);
 		location = startappointmentInOrder.selectFirstLocation(PSSConstants.START_LOCATION);
-		Log4jUtil.log("Step 9: Verfiy Location Page and location =" + testData.getLocation());
+		logStep("Verfiy Location Page and location =" + testData.getLocation());
 		AppointmentPage appointment = null;
 		appointment = location.selectAppointment(testData.getLocation());
 		int i = Integer.parseInt(testData.getAgeRuleMonthFirst());
@@ -8172,7 +8159,6 @@ public class PSS2PatientPortalAcceptanceTests extends BaseTestNGWebDriver {
 			String name = appointment.selectTypeOfApp(testData.getAppointmenttype(), Boolean.valueOf(testData.getIsAppointmentPopup()));
 			assertEquals(testData.getAppointmenttype(), name);
 		} else {
-			log("No App avaliable Beacuase age Rule");
 			String name = appointment.selectTypeOfApp(testData.getAppointmenttype(), Boolean.valueOf(testData.getIsAppointmentPopup()));
 			assertNotEquals(testData.getAppointmenttype(), name);
 		}
