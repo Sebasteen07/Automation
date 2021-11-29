@@ -102,7 +102,7 @@ public class PatientTrustedRepresentativePage extends BasePageObject {
 			}
 
 		}
-		//btnInvite.click();
+		btnInvite.click();
 	}
 
 	public void clickOnInviteBtn() {
