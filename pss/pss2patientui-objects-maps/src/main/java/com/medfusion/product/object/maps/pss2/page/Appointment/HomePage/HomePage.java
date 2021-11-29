@@ -161,9 +161,13 @@ public class HomePage extends PSS2MainPage {
 
 	
 	@FindBy(how = How.XPATH, using = "//*[@id='upcomingevents']/h1/span")
-    private WebElement upCmgAptLabel;
-   
-    
+    private WebElement upCmgAptLabel;  
+	
+	@FindAll({ @FindBy(xpath = "//*[@id='upcomingevents']/h1/span") })
+	private List<WebElement> upcomingAptList;
+	
+	@FindAll({ @FindBy(xpath = "//*[@id='pastappointmentevent']/h1/span") })
+	private List<WebElement> pastAptList;
 	
 	@FindBy(how = How.XPATH, using = "//*[@id='pastappointmentevent']/h1/span")
 	private WebElement pastAptLabel;
@@ -784,4 +788,14 @@ public class HomePage extends PSS2MainPage {
 		log("Provider preselected is" +providerText);
 		return providerText;
 	}
+	
+	public boolean isUpcomingAptPresent() {
+
+		if (upcomingAptList.size() > 0 & pastAptList.size()>0) {
+			return true;
+		} else {
+			return false;
+		}
+	}
+
 }

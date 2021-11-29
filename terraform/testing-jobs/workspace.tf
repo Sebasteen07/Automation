@@ -17,6 +17,7 @@ locals {
     prod-integrations2-regression1     = "prod-integrations2-regression1"
     prod-integrations2-regression2     = "prod-integrations2-regression2"
     prod-integrations2-regression3     = "prod-integrations2-regression3"
+    git-taf-prod-pss-acceptance        = "git-taf-prod-pss-acceptance"
   }
   selected_workspace = local.valid_workspaces[terraform.workspace]
 }

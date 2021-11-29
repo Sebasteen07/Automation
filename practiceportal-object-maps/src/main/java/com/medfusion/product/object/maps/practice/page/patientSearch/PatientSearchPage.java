@@ -18,6 +18,7 @@ import org.openqa.selenium.support.ui.WebDriverWait;
 
 import com.intuit.ifs.csscat.core.pageobject.BasePageObject;
 import com.medfusion.common.utils.IHGUtil;
+import com.medfusion.product.object.maps.practice.page.PracticeHomePage;
 import com.medfusion.product.object.maps.practice.page.familyManagement.PatientTrustedRepresentativePage;
 import com.medfusion.product.object.maps.practice.page.onlinebillpay.PayMyBillOnlinePage;
 import com.medfusion.product.object.maps.practice.page.patientactivation.PatientActivationPage;
@@ -41,6 +42,9 @@ public class PatientSearchPage extends BasePageObject {
 
 	@FindBy(xpath = "//table[@class='searchForm']//input[@id='search_now']")
 	private WebElement searchForPatient;
+	
+	@FindBy(linkText = "Patient Search")
+	private WebElement patientSearchLinkText;
 
 	@FindBy(xpath = "//table[@class='sort-table']/tbody/tr/td/a")
 	public WebElement searchResult;
@@ -68,6 +72,24 @@ public class PatientSearchPage extends BasePageObject {
 
 	@FindBy(name = "submitted")
 	private WebElement updateEmail;
+	
+	@FindBy(xpath = "//input[@name='firstName']")
+	private WebElement editFirstName;
+	
+	@FindBy(xpath = "//input[@name='lastName']")
+	private WebElement editLastName;
+	
+	@FindBy(xpath = "//input[@checked]")
+	private WebElement checkedGender;
+	
+	@FindBy(xpath = "//input[@value = 1]")
+	private WebElement radioFemale;
+	
+	@FindBy(xpath = "//input[@value = 2]")
+	private WebElement radioMale;
+	
+	@FindBy(xpath = "//input[@name='member_zip']")
+	private WebElement inputZip;
 
 	@FindBy(xpath = "//table[@class='searchForm']//input[@name='member_type']")
 	private List<WebElement> patientStatus;
@@ -190,6 +212,37 @@ public class PatientSearchPage extends BasePageObject {
 		lastName.sendKeys(lName);
 		searchForPatient.click();
 	}
+	
+	public PatientDashboardPage modifiedPatientSearch(String fName, String lName, String uFName, String uLName ) throws InterruptedException {
+		IHGUtil.PrintMethodName();
+		firstName.clear();
+		firstName.sendKeys(fName);
+		lastName.clear();
+		lastName.sendKeys(lName);
+		searchForPatient.click();
+		try {
+			log("Looking for Patient");
+			patient = driver.findElement(By.xpath("//a[@title='Click to View/Edit " + lName + ", " + fName + "']"));
+			IHGUtil.waitForElement(driver, 30, patient);
+			patient.click();
+			return PageFactory.initElements(driver, PatientDashboardPage.class);
+		} catch (Exception e) {
+			log("Search with updated name");
+			IHGUtil.waitForElementInDefaultFrame(driver, 20, patientSearchLinkText);
+			patientSearchLinkText.click();
+			IHGUtil.waitForElementInDefaultFrame(driver, 20, firstName);
+			firstName.clear();
+			firstName.sendKeys(uFName);
+			lastName.clear();
+			searchForPatient.click();
+			patient = driver.findElement(By.xpath("//a[@title='Click to View/Edit " + uLName + ", " + uFName + "']"));
+			IHGUtil.waitForElement(driver, 30, patient);
+			patient.click();
+			return PageFactory.initElements(driver, PatientDashboardPage.class);
+			
+		}
+		
+	}
 
 	public void searchForPatientInPatientSearch(String email) {
 		IHGUtil.PrintMethodName();
@@ -258,6 +311,65 @@ public class PatientSearchPage extends BasePageObject {
 
 		return PageFactory.initElements(driver, PatientDashboardPage.class);
 
+	}
+	
+	public String changeName(String fName, String lName, String uFName, String uLName) throws InterruptedException {
+		
+		IHGUtil.waitForElement(driver, 10, editFirstName);
+	    String currentFirstName = editFirstName.getAttribute("value");
+	    log(currentFirstName);
+	    if(currentFirstName.equals(fName)) {
+	    	editFirstName.clear();
+			Thread.sleep(1000); //Adding sleep, so that two actions doesn't overlap
+			editFirstName.sendKeys(uFName);
+			editLastName.clear();
+			Thread.sleep(1000); //Adding sleep, so that two actions doesn't overlap
+			editLastName.sendKeys(uLName);
+			updateEmail.click();
+			return (uFName);
+	    }
+	    else {
+	    	editFirstName.clear();
+			Thread.sleep(1000); //Adding sleep, so that two actions doesn't overlap
+			editFirstName.sendKeys(fName);
+			editLastName.clear();
+			Thread.sleep(1000);
+			editLastName.sendKeys(lName);
+			updateEmail.click();
+		    return(fName);
+	    }
+	
+	}
+	
+	public String changeGender() throws InterruptedException {
+		String val = checkedGender.getAttribute("Value");
+		IHGUtil.waitForElement(driver, 15, checkedGender);
+		if(Integer.parseInt(val) == 2) 
+		{
+			radioFemale.click();
+			updateEmail.click();
+			return "Female" ;
+			
+		}else {
+				radioMale.click();
+				updateEmail.click();
+				return "Male";
+		}
+		
+	}
+	
+	public String changeZip() throws InterruptedException {
+		String curZip = inputZip.getAttribute("value");
+		int updatedZip1=Integer.parseInt(curZip)+1;
+		String updatedZip = Integer.toString(updatedZip1);
+
+		IHGUtil.waitForElement(driver, 15, inputZip);
+		inputZip.clear();
+		Thread.sleep(1000); //Adding sleep, so that two actions doesn't overlap
+		inputZip.sendKeys(updatedZip);
+		updateEmail.click();
+		return updatedZip;
+		
 	}
 
 	public PatientDashboardPage changeEmailWithoutModify(String baseEmail) {
@@ -338,14 +450,19 @@ public class PatientSearchPage extends BasePageObject {
 		IHGUtil.PrintMethodName();
 		patientIdTextbox.clear();
 		patientIdTextbox.sendKeys(fName);
+		IHGUtil.waitForElement(driver, 10, updateInfo);
 		updateInfo.click();
 	}
 
 	public void clickOnSearch() {
+		IHGUtil.PrintMethodName();
+		IHGUtil.waitForElement(driver, 10, searchResult);
 		searchResult.click();
 	}
 
 	public void clickOnEdit() {
+		IHGUtil.PrintMethodName();
+		IHGUtil.waitForElement(driver, 10, editPatientID);
 		editPatientID.click();
 	}
 

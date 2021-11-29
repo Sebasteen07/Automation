@@ -1059,6 +1059,48 @@ public class PSSAdminUtils extends BaseTestNGWebDriver{
 		}
 
 	}
+	
+	public void leadTimeWithReserveShowProviderOFF(WebDriver driver, AdminUser adminuser, Appointment appointment,
+			String leadValue) throws Exception {
+		PSS2PracticeConfiguration pssPracticeConfig = loginToAdminPortal(driver, adminuser);
+		pssPracticeConfig = pssPracticeConfig.gotoPracticeConfigTab();
+		PatientFlow patientFlow = pssPracticeConfig.gotoPatientFlowTab();
+		patientFlow.turnOffProvider();
+		AdminPatientMatching adminPatientMatching = patientFlow.gotoPatientMatchingTab();
+		adminPatientMatching.patientMatchingSelection();
+		ManageAppointmentType manageAppointmentType = pssPracticeConfig.gotoAppointment();
+		pageRefresh(driver);
+		manageAppointmentType.selectAppointment(appointment.getAppointmenttype());
+		manageAppointmentType.gotoConfiguration();
+		manageAppointmentType.notReserve();
+		manageAppointmentType.leadTime(leadValue);
+		int i = Integer.parseInt(leadValue);
+		appointment.setLeadtimeDay(i);
+		log("lead time day get  " + appointment.getLeadtimeDay());
+		appointment.setAccepttoggleStatus(manageAppointmentType.acceptForStatus());
+		log("Status for AcceptFor Same day is   " + appointment.isAccepttoggleStatus());
+		if (appointment.isAccepttoggleStatus() == false) {
+			manageAppointmentType.clickAcceptSameDay();
+			appointment.setAccepttoggleStatus(manageAppointmentType.acceptForStatus());
+			log("Status for AcceptFor Same day is   " + appointment.isAccepttoggleStatus());
+		}
 
+	}
+	
+	public void upcomingPastApptSetting(WebDriver driver, AdminUser adminUser, Appointment appointment, String urlToUse) throws Exception {
+		
+		PSS2PracticeConfiguration pssPracticeConfig = loginToAdminPortal(driver, adminUser);
+
+		AccessRules accessRule = pssPracticeConfig.gotoAccessTab();
+
+		if (urlToUse.equalsIgnoreCase(PSSConstants.LOGINLESS)) {
+			log("PSS Patient URL : " + accessRule.getLoginlessURL());
+			appointment.setUrlLoginLess(accessRule.getLoginlessURL());
+		}
+		if (urlToUse.equalsIgnoreCase(PSSConstants.ANONYMOUS)) {
+			log("PSS Patient URL : " + accessRule.getAnonymousUrl());
+			appointment.setUrlAnonymous(accessRule.getAnonymousUrl());
+		}
+	}
 
 }
