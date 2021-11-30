@@ -8,7 +8,7 @@ locals {
   name                          = "${var.bitbucket_repository_name}_${terraform.workspace}"
   selenium_browser              = "*chrome"
   test_execution_mode           = "headless"
-  qa_chrome_driver_version      = "93.0.4577.63"
+
 
   inputs = {
     "demo-integrations2-acceptance" = {
@@ -187,10 +187,69 @@ locals {
       queued_timeout        = 480 #Number of minutes, from 5 to 480. Default value is 480 mins
       maven_parameter       = "mvn clean install -U"
       google_chrome_version = "93.0.4577.82-1"
-      chrome_driver_version = local.qa_chrome_driver_version
+      chrome_driver_version = "93.0.4577.63"
       cron_shedule          = "cron(30 23 ? * 6 *)"
     }
 
+    "prod-integrations2-acceptance" = {
+      codecommit_branch     = "development"
+      PollForSourceChanges  = false
+      execution_folder      = "pi-integration-platform-acceptance"
+      test_environment      = "prod"
+      suite_xml             = "integration-platform-acceptance.xml"
+      pxp_application       = "Portal"
+      build_timeout         = 240 #Number of minutes, from 5 to 480. Default value is 60 mins
+      queued_timeout        = 480 #Number of minutes, from 5 to 480. Default value is 480 mins
+      maven_parameter       = "mvn clean install -U"
+      google_chrome_version = "96.0.4664.45-1"
+      chrome_driver_version = "95.0.4638.17"
+      cron_shedule          = "cron(20 0 ? * 1 *)"
+    }
+
+    "prod-integrations2-regression1" = {
+      codecommit_branch     = "development"
+      PollForSourceChanges  = false
+      execution_folder      = "pi-integration-platform-acceptance"
+      test_environment      = "prod"
+      suite_xml             = "integration-platform-regression.xml"
+      pxp_application       = "Portal"
+      build_timeout         = 240 #Number of minutes, from 5 to 480. Default value is 60 mins
+      queued_timeout        = 480 #Number of minutes, from 5 to 480. Default value is 480 mins
+      maven_parameter       = "mvn clean install -U"
+      google_chrome_version = "96.0.4664.45-1"
+      chrome_driver_version = "95.0.4638.17"
+      cron_shedule          = "cron(25 0 ? * 1 *)"
+    }
+
+    "prod-integrations2-regression2" = {
+      codecommit_branch     = "development"
+      PollForSourceChanges  = false
+      execution_folder      = "pi-integration-platform-acceptance"
+      test_environment      = "prod"
+      suite_xml             = "integration-platform-regression2.xml"
+      pxp_application       = "Portal"
+      build_timeout         = 240 #Number of minutes, from 5 to 480. Default value is 60 mins
+      queued_timeout        = 480 #Number of minutes, from 5 to 480. Default value is 480 mins
+      maven_parameter       = "mvn clean install -U"
+      google_chrome_version = "96.0.4664.45-1"
+      chrome_driver_version = "95.0.4638.17"
+      cron_shedule          = "cron(25 0 ? * 1 *)"
+    }
+
+    "prod-integrations2-regression3" = {
+      codecommit_branch     = "development"
+      PollForSourceChanges  = false
+      execution_folder      = "pi-integration-platform-acceptance"
+      test_environment      = "prod"
+      suite_xml             = "integration-platform-regression3.xml"
+      pxp_application       = "Portal"
+      build_timeout         = 240 #Number of minutes, from 5 to 480. Default value is 60 mins
+      queued_timeout        = 480 #Number of minutes, from 5 to 480. Default value is 480 mins
+      maven_parameter       = "mvn clean install -U"
+      google_chrome_version = "96.0.4664.45-1"
+      chrome_driver_version = "95.0.4638.17"
+      cron_shedule          = "cron(25 0 ? * 1 *)"
+    }
     "git-taf-prod-pss-acceptance" = {
       codecommit_branch     = "development"
       PollForSourceChanges  = false

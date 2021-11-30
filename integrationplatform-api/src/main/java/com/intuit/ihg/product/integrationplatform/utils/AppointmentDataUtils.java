@@ -45,7 +45,7 @@ public class AppointmentDataUtils {
 		Boolean completed = false;
 		for (int i = 0; i < 3; i++) {
 			// wait 10 seconds so the message can be processed
-			Thread.sleep(60000);
+			Thread.sleep(10000);
 			RestUtils.setupHttpGetRequest(processingUrl, testData.ResponsePath);
 			if(testData.BatchSize.equalsIgnoreCase("1")) {
 				if (RestUtils.isMessageProcessingCompleted(testData.ResponsePath)) {
@@ -265,7 +265,7 @@ public class AppointmentDataUtils {
 		Boolean completed = false;
 		for (int i = 0; i < 3; i++) {
 			// wait 10 seconds so the message can be processed
-			Thread.sleep(60000);
+			Thread.sleep(10000);
 			RestUtils.setupHttpGetRequest(processingUrl, testData.ResponsePath);
 			if(testData.BatchSize.equalsIgnoreCase("1")) {
 				if (RestUtils.isMessageProcessingCompleted(testData.ResponsePath)) {

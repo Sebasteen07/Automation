@@ -118,5 +118,12 @@ public class PatientTrustedRepresentativePage extends BasePageObject {
 		lblEmail.clear();
 		
 	}
+	
+	public void inviteGuardian(Patient patient) throws InterruptedException {
+		IHGUtil.PrintMethodName();
+		wait.until(ExpectedConditions.visibilityOf(btnInvite));
+		fillLightboxInputs(patient);
+		btnInvite.click();
+	}
 
 }
