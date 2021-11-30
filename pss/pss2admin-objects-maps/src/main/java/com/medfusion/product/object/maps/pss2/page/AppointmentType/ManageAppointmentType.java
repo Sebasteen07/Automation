@@ -109,10 +109,10 @@ public class ManageAppointmentType extends PSS2MenuPage {
 	private WebElement maxPerDay;
 
 	@FindBy(how = How.XPATH, using = "//*[@id='app']/nav[2]/ul[2]/li[4]/a")
-	private WebElement logoutBtn;
+	private WebElement settingBtn;
 
 	@FindBy(how = How.XPATH, using = "//*[@id='app']/nav[2]/ul[2]/li[4]/ul")
-	private WebElement logoutBtnClick;
+	private WebElement logoutBtn;
 
 	public ManageAppointmentType(WebDriver driver) {
 		super(driver);
@@ -225,16 +225,12 @@ public class ManageAppointmentType extends PSS2MenuPage {
 		}
 	}
 
-
 	public void resetAgeRule() throws InterruptedException {
 		ageRuleCheckbox.click();
 		log("Clicked On Age Rule");
 		saveConfig.click();
-
-
 	}
 
-	
 	public void ageRuleparameter(String ageStartMonth, String ageEndMonths) {
 		Select select = new Select(ageruleDropFirst);
 		Select and = new Select(ageruleAnd);
@@ -265,7 +261,7 @@ public class ManageAppointmentType extends PSS2MenuPage {
 	}
 
 	public void logout() throws InterruptedException {
+		settingBtn.click();
 		logoutBtn.click();
-		logoutBtnClick.click();
 	}
 }
