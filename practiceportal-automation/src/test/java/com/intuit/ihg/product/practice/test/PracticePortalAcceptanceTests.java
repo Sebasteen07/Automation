@@ -681,9 +681,9 @@ public class PracticePortalAcceptanceTests extends BaseTestNGWebDriver {
 		//*In order to handle this scenario, I have put a condition to check for both "Test" and "Update" before searching the patient and making changes to its name. 
 		
 		logStep("Login to Practice Portal");
-		PracticeLoginPage practiceLogin = new PracticeLoginPage(driver, testData.getProperty("practice.url1"));
-		PracticeHomePage pPracticeHomePage = practiceLogin.login(testData.getProperty("doctor.login1"),
-				testData.getProperty("doctor.password1"));
+		PracticeLoginPage practiceLogin = new PracticeLoginPage(driver, testData.getUrl());
+		PracticeHomePage pPracticeHomePage = practiceLogin.login(testData.getProperty("doctor2.login"),
+				testData.getProperty("doctor2.password"));
 
 		logStep("Click on Patient Search Link");
 		PatientSearchPage pPatientSearchPage = pPracticeHomePage.clickPatientSearchLink();
@@ -742,7 +742,7 @@ public class PracticePortalAcceptanceTests extends BaseTestNGWebDriver {
 	}
 	
 	@Test(enabled = true, groups = { "AcceptanceTests" }, retryAnalyzer = RetryAnalyzer.class)
-	public void testLATrustedRepresentativeAcessForMessagesFromPracticePortal() throws Exception {
+	public void testLAGuardianAcessForMessagesFromPracticePortal() throws Exception {
 
 		PracticeLoginPage practiceLogin;
 		PracticeHomePage practiceHome;
@@ -754,9 +754,9 @@ public class PracticePortalAcceptanceTests extends BaseTestNGWebDriver {
 		PatientTrustedRepresentativePage patientInviteTrustedRepresentative;
 
 		logStep("Login to Practice Portal");
-		practiceLogin = new PracticeLoginPage(driver, testData.getProperty("practice.url1"));
-		practiceHome = practiceLogin.login(testData.getProperty("doctor.login1"),
-				testData.getProperty("doctor.password1"));
+		practiceLogin = new PracticeLoginPage(driver, testData.getUrl());
+		practiceHome = practiceLogin.login(testData.getProperty("doctor2.login"),
+				testData.getProperty("doctor2.password"));
 
 		logStep("Click on Patient Search Link");
 		pPatientSearchPage = practiceHome.clickPatientSearchLink();
@@ -764,17 +764,18 @@ public class PracticePortalAcceptanceTests extends BaseTestNGWebDriver {
 
 		logStep("Set Patient Search Fields");
 		pPatientSearchPage.searchForPatientInPatientSearch(
-				testData.getProperty("trusted.rep.care.management.first.name"),
-				testData.getProperty("trusted.rep.care.management.last.name"));
+				testData.getProperty("Guardian.first.name"),
+				testData.getProperty("Guardian.last.name"));
 		pPatientDashboardPage = pPatientSearchPage.clickOnPatient(
-				testData.getProperty("trusted.rep.care.management.first.name"),
-				testData.getProperty("trusted.rep.care.management.last.name"));
+				testData.getProperty("Guardian.first.name"),
+				testData.getProperty("Guardian.last.name"));
 
 		logStep("EditAccess");
 		patientInviteTrustedRepresentative = pPatientSearchPage.editTrustedRepresentativeAccess();
 		patientInviteTrustedRepresentative.selectCustomAccess();
 		patientInviteTrustedRepresentative.updateWithModuleNameAndAccess("Messages", "noAccess");
-
+		patientInviteTrustedRepresentative.clickOnInviteBtn();
+		
 		logStep("Login to patient portal");
 		loginPage = new JalapenoLoginPage(driver, testData.getProperty("Patient.url2"));
 		homePage = loginPage.login(testData.getProperty("patient.login1"), testData.getProperty("patient.password1"));
@@ -784,24 +785,26 @@ public class PracticePortalAcceptanceTests extends BaseTestNGWebDriver {
 		homePage.clickOnLogout();
 
 		logStep("Login to Practice Portal");
-		practiceLogin = new PracticeLoginPage(driver, testData.getProperty("practice.url1"));
-		practiceLogin.login(testData.getProperty("doctor.login1"),
-				testData.getProperty("doctor.password1"));
+		practiceLogin = new PracticeLoginPage(driver, testData.getUrl());
+		practiceHome = practiceLogin.login(testData.getProperty("doctor2.login"),
+				testData.getProperty("doctor2.password"));
 
 		logStep("Click on Patient Search Link");
 		practiceHome.clickPatientSearchLink();
 
 		logStep("Set Patient Search Fields");
 		pPatientSearchPage.searchForPatientInPatientSearch(
-				testData.getProperty("trusted.rep.care.management.first.name"),
-				testData.getProperty("trusted.rep.care.management.last.name"));
-		pPatientSearchPage.clickOnPatient(testData.getProperty("trusted.rep.care.management.first.name"),
-				testData.getProperty("trusted.rep.care.management.last.name"));
+				testData.getProperty("Guardian.first.name"),
+				testData.getProperty("Guardian.last.name"));
+		pPatientDashboardPage = pPatientSearchPage.clickOnPatient(
+				testData.getProperty("Guardian.first.name"),
+				testData.getProperty("Guardian.last.name"));
 
 		logStep("Set Patient Search Fields");
 		patientInviteTrustedRepresentative = pPatientSearchPage.editTrustedRepresentativeAccess();
 		patientInviteTrustedRepresentative.updateWithModuleNameAndAccess("Messages", "viewOnly");
-
+		patientInviteTrustedRepresentative.clickOnInviteBtn();
+		
 		logStep("Login to patient portal");
 		loginPage = new JalapenoLoginPage(driver, testData.getProperty("Patient.url2"));
 		loginPage.login(testData.getProperty("patient.login1"), testData.getProperty("patient.password1"));
