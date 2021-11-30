@@ -37,6 +37,7 @@ import com.medfusion.product.object.maps.patientportal2.page.CreateAccount.Secur
 import com.medfusion.product.object.maps.patientportal2.page.ForgotPasswordPage.JalapenoForgotPasswordPage4;
 import com.medfusion.product.object.maps.patientportal2.page.HomePage.JalapenoHomePage;
 import com.medfusion.product.object.maps.patientportal2.page.MedicationsPage.MedicationsHomePage;
+import com.medfusion.product.object.maps.patientportal2.page.MessagesPage.JalapenoMessagesPage;
 import com.medfusion.product.object.maps.patientportal2.page.MyAccountPage.JalapenoMyAccountProfilePage;
 
 import static org.testng.Assert.*;
@@ -764,9 +765,9 @@ public class PracticePortalAcceptanceTests extends BaseTestNGWebDriver {
 		//*In order to handle this scenario, I have put a condition to check for both "Test" and "Update" before searching the patient and making changes to its name. 
 		
 		logStep("Login to Practice Portal");
-		PracticeLoginPage practiceLogin = new PracticeLoginPage(driver, testData.getProperty("practice.url1"));
-		PracticeHomePage pPracticeHomePage = practiceLogin.login(testData.getProperty("doctor.login1"),
-				testData.getProperty("doctor.password1"));
+        PracticeLoginPage practiceLogin = new PracticeLoginPage(driver, testData.getUrl());
+        PracticeHomePage pPracticeHomePage = practiceLogin.login(testData.getProperty("doctor2.login"),
+                testData.getProperty("doctor2.password"));
 
 		logStep("Click on Patient Search Link");
 		PatientSearchPage pPatientSearchPage = pPracticeHomePage.clickPatientSearchLink();
@@ -823,6 +824,81 @@ public class PracticePortalAcceptanceTests extends BaseTestNGWebDriver {
 		}
         
 	}
-
-	}
 	
+	@Test(enabled = true, groups = { "AcceptanceTests" }, retryAnalyzer = RetryAnalyzer.class)
+    public void testLAGuardianAcessForMessagesFromPracticePortal() throws Exception {
+
+		PracticeLoginPage practiceLogin;
+		PracticeHomePage practiceHome;
+		JalapenoLoginPage loginPage;
+		JalapenoHomePage homePage;
+		JalapenoMessagesPage messagesPage;
+		PatientSearchPage pPatientSearchPage;
+		PatientDashboardPage pPatientDashboardPage;
+		PatientTrustedRepresentativePage patientInviteTrustedRepresentative;
+
+		logStep("Login to Practice Portal");
+        practiceLogin = new PracticeLoginPage(driver, testData.getUrl());
+        practiceHome = practiceLogin.login(testData.getProperty("doctor2.login"),
+                testData.getProperty("doctor2.password"));
+
+		logStep("Click on Patient Search Link");
+		pPatientSearchPage = practiceHome.clickPatientSearchLink();
+		
+
+		logStep("Set Patient Search Fields");
+		pPatientSearchPage.searchForPatientInPatientSearch(
+                testData.getProperty("Guardian.first.name"),
+                testData.getProperty("Guardian.last.name"));
+		pPatientDashboardPage = pPatientSearchPage.clickOnPatient(
+                testData.getProperty("Guardian.first.name"),
+                testData.getProperty("Guardian.last.name"));
+
+		logStep("EditAccess");
+		patientInviteTrustedRepresentative = pPatientSearchPage.editTrustedRepresentativeAccess();
+		patientInviteTrustedRepresentative.selectCustomAccess();
+		patientInviteTrustedRepresentative.updateWithModuleNameAndAccess("Messages", "noAccess");
+        patientInviteTrustedRepresentative.clickOnInviteBtn();
+		
+		logStep("Login to patient portal");
+		loginPage = new JalapenoLoginPage(driver, testData.getProperty("Patient.url2"));
+		homePage = loginPage.login(testData.getProperty("patient.login1"), testData.getProperty("patient.password1"));
+
+		logStep("Go to Messages and ASKA Question Not displayed when No Access is granted");
+		assertFalse(homePage.isMessagesDisplayed(), "Messages Not Accessible");
+		homePage.clickOnLogout();
+
+		logStep("Login to Practice Portal");
+        practiceLogin = new PracticeLoginPage(driver, testData.getUrl());
+        practiceHome = practiceLogin.login(testData.getProperty("doctor2.login"),
+                testData.getProperty("doctor2.password"));
+
+		logStep("Click on Patient Search Link");
+		practiceHome.clickPatientSearchLink();
+
+		logStep("Set Patient Search Fields");
+		pPatientSearchPage.searchForPatientInPatientSearch(
+                testData.getProperty("Guardian.first.name"),
+                testData.getProperty("Guardian.last.name"));
+        pPatientDashboardPage = pPatientSearchPage.clickOnPatient(
+                testData.getProperty("Guardian.first.name"),
+                testData.getProperty("Guardian.last.name"));
+
+		logStep("Set Patient Search Fields");
+		patientInviteTrustedRepresentative = pPatientSearchPage.editTrustedRepresentativeAccess();
+		patientInviteTrustedRepresentative.updateWithModuleNameAndAccess("Messages", "viewOnly");
+        patientInviteTrustedRepresentative.clickOnInviteBtn();
+		
+		logStep("Login to patient portal");
+		loginPage = new JalapenoLoginPage(driver, testData.getProperty("Patient.url2"));
+		loginPage.login(testData.getProperty("patient.login1"), testData.getProperty("patient.password1"));
+
+		logStep("Go to messages");
+		messagesPage = homePage.showMessages(driver);
+		assertTrue(messagesPage.returnSubjectMessage().length() > 0);
+
+		logStep("Verify Aska question button should not display for view only access");
+		assertFalse(messagesPage.isAskaQuestionButtonDisplayed());
+		homePage.clickOnLogout();
+	}
+	}
