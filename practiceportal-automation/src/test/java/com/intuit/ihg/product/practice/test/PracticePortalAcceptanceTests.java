@@ -861,8 +861,8 @@ public class PracticePortalAcceptanceTests extends BaseTestNGWebDriver {
         patientInviteTrustedRepresentative.clickOnInviteBtn();
 		
 		logStep("Login to patient portal");
-		loginPage = new JalapenoLoginPage(driver, testData.getProperty("Patient.url2"));
-		homePage = loginPage.login(testData.getProperty("patient.login1"), testData.getProperty("patient.password1"));
+		loginPage = new JalapenoLoginPage(driver, testData.getProperty("Patient.guardian.url"));
+		homePage = loginPage.login(testData.getProperty("patient.guardianlogin"), testData.getProperty("patient.guardianpassword"));
 
 		logStep("Go to Messages and ASKA Question Not displayed when No Access is granted");
 		assertFalse(homePage.isMessagesDisplayed(), "Messages Not Accessible");
@@ -890,8 +890,8 @@ public class PracticePortalAcceptanceTests extends BaseTestNGWebDriver {
         patientInviteTrustedRepresentative.clickOnInviteBtn();
 		
 		logStep("Login to patient portal");
-		loginPage = new JalapenoLoginPage(driver, testData.getProperty("Patient.url2"));
-		loginPage.login(testData.getProperty("patient.login1"), testData.getProperty("patient.password1"));
+		loginPage = new JalapenoLoginPage(driver, testData.getProperty("Patient.guardian.url"));
+		loginPage.login(testData.getProperty("patient.guardianlogin"), testData.getProperty("patient.guardianpassword"));
 
 		logStep("Go to messages");
 		messagesPage = homePage.showMessages(driver);
