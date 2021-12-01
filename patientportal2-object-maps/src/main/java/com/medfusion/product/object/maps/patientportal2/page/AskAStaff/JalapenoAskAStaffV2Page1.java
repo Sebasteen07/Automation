@@ -605,9 +605,9 @@ public class JalapenoAskAStaffV2Page1 extends JalapenoMenu {
 
     public JalapenoAskAStaffV2Page2 fillAndContinueWithProviderAndLocation(String subject, String question) throws InterruptedException {
         if (subject != null && !subject.trim().isEmpty()) {   
-            subjectBox.clear();
+        	IHGUtil.waitForElement(driver, 60, subjectBox);
+        	subjectBox.clear();
             wait.until(ExpectedConditions.visibilityOf(subjectBox));
-            
             subjectBox.sendKeys(subject);
         }
         if (new IHGUtil(driver).isRendered(lstLocation)) {
@@ -619,7 +619,7 @@ public class JalapenoAskAStaffV2Page1 extends JalapenoMenu {
         if (new IHGUtil(driver).isRendered(lstProvider)) {
             log("Set primary location");
             lstProvider.click();
-            IHGUtil.waitForElement(driver, 60, setLocation);
+            IHGUtil.waitForElement(driver, 60, setProvider);
             javascriptClick(setProvider);
         }
         IHGUtil.waitForElement(driver, 60, questionBox);
