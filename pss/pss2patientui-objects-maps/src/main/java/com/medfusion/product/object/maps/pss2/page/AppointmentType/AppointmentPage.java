@@ -154,4 +154,16 @@ public class AppointmentPage extends PSS2MainPage {
 		IHGUtil.waitForElement(driver, 5, apptBox);
 		return apptBox.getText();
 	}
+	
+	public String selectTypeOfApp(String providerConfig, Boolean isPopUpSelected) {
+		log("appointmentTypeList " + appointmentTypeList.size());
+		for (int i = 0; i < appointmentTypeList.size(); i++) {
+			if (appointmentTypeList.get(i).getText().contains(providerConfig)) {
+				String a=appointmentTypeList.get(i).getText();
+				return a;
+			}
+		}
+		log("no matching appointment found ");
+		return null;
+	}
 }
