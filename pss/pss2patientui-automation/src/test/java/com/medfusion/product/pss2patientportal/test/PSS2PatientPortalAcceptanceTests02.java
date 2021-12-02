@@ -1,29 +1,80 @@
 // Copyright 2013-2021 NXGN Management, LLC. All Rights Reserved.
 package com.medfusion.product.pss2patientportal.test;
 
+import java.io.IOException;
 import java.util.ArrayList;
 
+import org.testng.Assert;
 import org.testng.annotations.DataProvider;
 import org.testng.annotations.Test;
 
 import com.intuit.ifs.csscat.core.BaseTestNGWebDriver;
 import com.intuit.ifs.csscat.core.RetryAnalyzer;
+import com.intuit.ihg.eh.core.dto.Timestamp;
 import com.medfusion.common.utils.Mailinator;
+import com.medfusion.product.object.maps.pss2.page.AppEntryPoint.StartAppointmentInOrder;
 import com.medfusion.product.object.maps.pss2.page.Appointment.Anonymous.AnonymousDismissPage;
 import com.medfusion.product.object.maps.pss2.page.Appointment.CancResc.CancelRescheduleDecisionPage;
 import com.medfusion.product.object.maps.pss2.page.Appointment.CancResc.PatientIdentificationPage;
+import com.medfusion.product.object.maps.pss2.page.Appointment.DateTime.AppointmentDateTime;
 import com.medfusion.product.object.maps.pss2.page.Appointment.HomePage.HomePage;
+import com.medfusion.product.object.maps.pss2.page.Appointment.Location.Location;
+import com.medfusion.product.object.maps.pss2.page.Appointment.Loginless.DismissPage;
+import com.medfusion.product.object.maps.pss2.page.Appointment.Loginless.LoginlessPatientInformation;
+import com.medfusion.product.object.maps.pss2.page.Appointment.Provider.Provider;
+import com.medfusion.product.object.maps.pss2.page.AppointmentType.AppointmentPage;
 import com.medfusion.product.object.maps.pss2.page.settings.AdminAppointment;
+import com.medfusion.product.object.maps.pss2.page.util.APIVerification;
+import com.medfusion.product.object.maps.pss2.page.util.HeaderConfig;
+import com.medfusion.product.object.maps.pss2.page.util.PostAPIRequestAdapterModulator;
+import com.medfusion.product.pss2patientapi.payload.PayloadAdapterModulator;
+import com.medfusion.product.pss2patientapi.validation.ValidationAdapterModulator;
 import com.medfusion.product.pss2patientui.pojo.AdminUser;
 import com.medfusion.product.pss2patientui.pojo.Appointment;
 import com.medfusion.product.pss2patientui.utils.PSSAdminUtils;
+import com.medfusion.product.pss2patientui.utils.PSSConstants;
 import com.medfusion.product.pss2patientui.utils.PSSPatientUtils;
+import com.medfusion.product.pss2patientui.utils.PSSPropertyFileLoader;
+
+import io.restassured.response.Response;
+import io.restassured.specification.RequestSpecification;
+import io.restassured.specification.ResponseSpecification;
 
 public class PSS2PatientPortalAcceptanceTests02 extends BaseTestNGWebDriver {
 
+	public static PayloadAdapterModulator payloadAM;
+	public static PSSPropertyFileLoader propertyData;
+	public static Appointment testData;
+	public static PostAPIRequestAdapterModulator postAPIRequestAM;
+	HeaderConfig headerConfig;
+	public static String openToken;
+	public static String practiceId;
+
+	ValidationAdapterModulator validateAdapter = new ValidationAdapterModulator();
+	Timestamp timestamp = new Timestamp();
+	public static RequestSpecification requestSpec;
+	public static ResponseSpecification responseSpec;
+
+	APIVerification aPIVerification = new APIVerification();
+
+
+	public void setUp(String practiceId1, String userID) throws IOException {
+		payloadAM = new PayloadAdapterModulator();
+		propertyData = new PSSPropertyFileLoader();
+		postAPIRequestAM = new PostAPIRequestAdapterModulator();
+		headerConfig = new HeaderConfig();
+
+		practiceId = practiceId1;
+
+		log("BASE URL AM -" + propertyData.getProperty("base.url.am"));
+		openToken = postAPIRequestAM.openToken(propertyData.getProperty("base.url.am"), practiceId, payloadAM.openTokenPayload(practiceId, userID));
+
+		postAPIRequestAM.setupRequestSpecBuilder(propertyData.getProperty("base.url.am"), headerConfig.HeaderwithToken(openToken));
+	}
+
 	@Test(enabled = true, dataProvider = "partnerType", groups = {"AcceptanceTests"}, retryAnalyzer = RetryAnalyzer.class)
-	public void testE2EAnonymousAT(String partnerPractice) throws Exception {
-		
+	public void testE2EAnonymousWithoutPrivacyPolicyAT(String partnerPractice) throws Exception {
+		PSSPropertyFileLoader propertyData = new PSSPropertyFileLoader();
 		log("Step 1: set test data for new patient ");
 		Appointment testData = new Appointment();
 		AdminUser adminuser = new AdminUser();
@@ -32,9 +83,14 @@ public class PSS2PatientPortalAcceptanceTests02 extends BaseTestNGWebDriver {
 		psspatientutils.setTestData("AT", testData, adminuser);
 		adminuser.setIsAnonymousFlow(true);
 		adminuser.setIsExisting(true);
-		
+
 		testData.setFutureApt(true);
-		
+		logStep("Set up the API authentication");
+		setUp(propertyData.getProperty("mf.practice.id.at"), propertyData.getProperty("mf.authuserid.am.at"));
+		Response response;
+		response = postAPIRequestAM.resourceConfigSavePost(practiceId, payloadAM.privacyPolicyToggleOFFAnonymous());
+		aPIVerification.responseCodeValidation(response, 200);
+
 		PSSAdminUtils adminUtils = new PSSAdminUtils();
 		log("Step 2: Fetch rule and settings from PSS 2.0 Admin portal");
 		adminUtils.getInsuranceStateandRule(driver, adminuser, testData);
@@ -49,7 +105,7 @@ public class PSS2PatientPortalAcceptanceTests02 extends BaseTestNGWebDriver {
 		Thread.sleep(1000);
 		psspatientutils.selectAFlow(driver, rule, homePage, testData);
 	}
-	
+
 	@Test(enabled = true, groups = {"AcceptanceTests"}, retryAnalyzer = RetryAnalyzer.class, dependsOnMethods="testE2EAnonymousAT")
 	public void testRescheduleAnonymousviaEmailAT() throws Exception {
 		
@@ -108,25 +164,28 @@ public class PSS2PatientPortalAcceptanceTests02 extends BaseTestNGWebDriver {
 	}
 	
 	@Test(enabled = true, groups = {"AcceptanceTests"}, retryAnalyzer = RetryAnalyzer.class)
-	public void testE2EAnonymousNG() throws Exception {
+	public void testE2EAnonymousWithoutPrivacyPolicyNG() throws Exception {
 		
 		log("Step 1: set test data for new patient ");
+		PSSPropertyFileLoader propertyData = new PSSPropertyFileLoader();
 		Appointment testData = new Appointment();
 		AdminUser adminuser = new AdminUser();
 		testData.setAnonymousFlow(true);
 		PSSPatientUtils psspatientutils = new PSSPatientUtils();
 		psspatientutils.setTestData("NG", testData, adminuser);
+		propertyData.setAdminNG(adminuser);
 		adminuser.setIsAnonymousFlow(true);
 		adminuser.setIsExisting(true);
-
 		testData.setAnonymousFlow(true);
-		
+		logStep("Set up the API authentication");
+		setUp(propertyData.getProperty("mf.practice.id.ng"), propertyData.getProperty("mf.authuserid.am.ng"));
+		Response response;
+		response = postAPIRequestAM.resourceConfigSavePost(practiceId, payloadAM.privacyPolicyToggleOFFAnonymous());
+		aPIVerification.responseCodeValidation(response, 200);
 		PSSAdminUtils adminUtils = new PSSAdminUtils();
-		log("Step 2: Fetch rule and settings from PSS 2.0 Admin portal");
+		logStep("Fetch rule and settings from PSS 2.0 Admin portal");
 		adminUtils.getInsuranceStateandRule(driver, adminuser, testData);
-		log("Step 3: Fetch the rules set in Admin");
 		String rule = adminuser.getRule();
-
 		log("rule are " + rule);
 		rule = rule.replaceAll(" ", "");
 		log("Step 4: Move to PSS patient Portal 2.0 to book an Appointment - " + testData.getUrlAnonymous());
@@ -368,8 +427,174 @@ public class PSS2PatientPortalAcceptanceTests02 extends BaseTestNGWebDriver {
 		psspatientutils.deleteEmail_Mailinator(driver, "https://www.mailinator.com", testData.getGmailUserName());
 	}
 
+	@Test(enabled = true, groups = {"AcceptanceTests"}, retryAnalyzer = RetryAnalyzer.class)
+	public void testPrivacyPolicyLLNG() throws Exception {
+		PSSPropertyFileLoader propertyData = new PSSPropertyFileLoader();
+		Appointment testData = new Appointment();
+		AdminUser adminUser = new AdminUser();
+		propertyData.setAdminNG(adminUser);
+		propertyData.setAppointmentResponseNG(testData);
+
+		logStep("Set up the API authentication");
+		setUp(propertyData.getProperty("mf.practice.id.ng"), propertyData.getProperty("mf.authuserid.am.ng"));
+		Response response;
+
+		response = postAPIRequestAM.resourceConfigSavePost(practiceId, payloadAM.privacyPolicyToggleOFFLL());
+		aPIVerification.responseCodeValidation(response, 200);
+		logStep("Login To Patient Portal To Verify Privacy Policy");
+		DismissPage dismissPage = new DismissPage(driver, testData.getUrlLoginLess());
+		Thread.sleep(1000);
+		logStep("Clicked on Dismiss");
+		LoginlessPatientInformation loginlessPatientInformation = dismissPage.clickDismiss();
+		Thread.sleep(2000);
+		Assert.assertFalse(loginlessPatientInformation.privacyPolicyStatus());
+		response = postAPIRequestAM.resourceConfigSavePost(practiceId, payloadAM.privacyPolicyToggleOnLL());
+		aPIVerification.responseCodeValidation(response, 200);
+
+	}
+
+	@Test(enabled = true, groups = {"AcceptanceTests"}, retryAnalyzer = RetryAnalyzer.class)
+	public void testPrivacyPolicyLLAT() throws Exception {
+		PSSPropertyFileLoader propertyData = new PSSPropertyFileLoader();
+		Appointment testData = new Appointment();
+		AdminUser adminUser = new AdminUser();
+		propertyData.setAdminAT(adminUser);
+		propertyData.setAppointmentResponseAT(testData);
+
+		logStep("Set up the API authentication");
+		setUp(propertyData.getProperty("mf.practice.id.at"), propertyData.getProperty("mf.authuserid.am.at"));
+		Response response;
+
+		response = postAPIRequestAM.resourceConfigSavePost(practiceId, payloadAM.privacyPolicyToggleOFFLL());
+		aPIVerification.responseCodeValidation(response, 200);
+		logStep("Login To Patient Portal To Verify Privacy Policy");
+		DismissPage dismissPage = new DismissPage(driver, testData.getUrlLoginLess());
+		Thread.sleep(1000);
+		logStep("Clicked on Dismiss");
+		LoginlessPatientInformation loginlessPatientInformation = dismissPage.clickDismiss();
+		Thread.sleep(2000);
+		Assert.assertFalse(loginlessPatientInformation.privacyPolicyStatus());
+		response = postAPIRequestAM.resourceConfigSavePost(practiceId, payloadAM.privacyPolicyToggleOnLL());
+		aPIVerification.responseCodeValidation(response, 200);
+
+	}
+
+	@Test(enabled = true, groups = {"AcceptanceTests"}, retryAnalyzer = RetryAnalyzer.class)
+	public void testPrivacyPolicyLLGW() throws Exception {
+		PSSPropertyFileLoader propertyData = new PSSPropertyFileLoader();
+		Appointment testData = new Appointment();
+		AdminUser adminUser = new AdminUser();
+		propertyData.setAdminGW(adminUser);
+		propertyData.setAppointmentResponseGW(testData);
+
+		logStep("Set up the API authentication");
+		setUp(propertyData.getProperty("mf.practice.id.gw"), propertyData.getProperty("mf.authuserid.am.gw"));
+		Response response;
+
+		response = postAPIRequestAM.resourceConfigSavePost(practiceId, payloadAM.privacyPolicyToggleOFFLL());
+		aPIVerification.responseCodeValidation(response, 200);
+		logStep("Login To Patient Portal To Verify Privacy Policy");
+		DismissPage dismissPage = new DismissPage(driver, testData.getUrlLoginLess());
+		Thread.sleep(1000);
+		logStep("Clicked on Dismiss");
+		LoginlessPatientInformation loginlessPatientInformation = dismissPage.clickDismiss();
+		Thread.sleep(2000);
+		Assert.assertFalse(loginlessPatientInformation.privacyPolicyStatus());
+		response = postAPIRequestAM.resourceConfigSavePost(practiceId, payloadAM.privacyPolicyToggleOnLL());
+		aPIVerification.responseCodeValidation(response, 200);
+
+	}
+
+	@Test(enabled = true, groups = {"AcceptanceTests"}, retryAnalyzer = RetryAnalyzer.class)
+	public void testPrivacyPolicyLLGE() throws Exception {
+		PSSPropertyFileLoader propertyData = new PSSPropertyFileLoader();
+		Appointment testData = new Appointment();
+		AdminUser adminUser = new AdminUser();
+		propertyData.setAdminGE(adminUser);
+		propertyData.setAppointmentResponseGE(testData);
+
+		logStep("Set up the API authentication");
+		setUp(propertyData.getProperty("mf.practice.id.ge"), propertyData.getProperty("mf.authuserid.am.ge"));
+		Response response;
+
+		response = postAPIRequestAM.resourceConfigSavePost(practiceId, payloadAM.privacyPolicyToggleOFFLL());
+		aPIVerification.responseCodeValidation(response, 200);
+		logStep("Login To Patient Portal To Verify Privacy Policy");
+		DismissPage dismissPage = new DismissPage(driver, testData.getUrlLoginLess());
+		Thread.sleep(1000);
+		logStep("Clicked on Dismiss");
+		LoginlessPatientInformation loginlessPatientInformation = dismissPage.clickDismiss();
+		Thread.sleep(2000);
+		Assert.assertFalse(loginlessPatientInformation.privacyPolicyStatus());
+		response = postAPIRequestAM.resourceConfigSavePost(practiceId, payloadAM.privacyPolicyToggleOnLL());
+		aPIVerification.responseCodeValidation(response, 200);
+
+	}
+
+	@Test(enabled = true, groups = {"AcceptanceTests"}, retryAnalyzer = RetryAnalyzer.class)
+	public void testE2EAnonymousWithPrivacyPolicyNG() throws Exception {
+		PSSPropertyFileLoader propertyData = new PSSPropertyFileLoader();
+		Appointment testData = new Appointment();
+		AdminUser adminUser = new AdminUser();
+		PSSPatientUtils psspatientutils = new PSSPatientUtils();
+		propertyData.setAdminNG(adminUser);
+		propertyData.setAppointmentResponseNG(testData);
+		logStep("Set up the API authentication");
+		setUp(propertyData.getProperty("mf.practice.id.ng"), propertyData.getProperty("mf.authuserid.am.ng"));
+		Response response;
+		response = postAPIRequestAM.resourceConfigSavePost(practiceId, payloadAM.privacyPolicyToggleONAnonymous());
+		aPIVerification.responseCodeValidation(response, 200);
+		logStep("Login To Patient Portal To Verify Privacy Policy");
+		logStep("Move to PSS patient Portal 2.0 to book an Appointment - " + testData.getUrlAnonymous());
+		AnonymousDismissPage anonymousDismissPage = new AnonymousDismissPage(driver, testData.getUrlAnonymous());
+		HomePage homePage = anonymousDismissPage.clickDismiss();
+		Thread.sleep(1000);
+		Location location = null;
+		StartAppointmentInOrder startappointmentInOrder = null;
+		startappointmentInOrder = homePage.skipInsurance(driver);
+		location = startappointmentInOrder.selectFirstLocation(PSSConstants.START_LOCATION);
+		logStep("Verfiy Location Page and location =" + testData.getLocation());
+		AppointmentPage appointment = location.selectAppointment(testData.getLocation());
+		logStep("Verfiy Appointment Page and appointment to be selected = " + testData.getAppointmenttype());
+		Provider provider = appointment.selectTypeOfProvider(testData.getAppointmenttype(), Boolean.valueOf(testData.getIsAppointmentPopup()));
+		logStep("Verfiy Provider Page and Provider = " + testData.getProvider());
+		AppointmentDateTime aptDateTime = provider.getProviderandClick(testData.getProvider());
+		aptDateTime.selectDate(testData.getIsNextDayBooking());
+		psspatientutils.bookAnonymousAptWithPrivacyPolicy(aptDateTime, testData, driver);
+	}
 
 
+	@Test(enabled = true, groups = {"AcceptanceTests"}, retryAnalyzer = RetryAnalyzer.class)
+	public void testE2EAnonymousWithPrivacyPolicyAT() throws Exception {
+		PSSPropertyFileLoader propertyData = new PSSPropertyFileLoader();
+		Appointment testData = new Appointment();
+		AdminUser adminUser = new AdminUser();
+		PSSPatientUtils psspatientutils = new PSSPatientUtils();
+		propertyData.setAdminAT(adminUser);
+		propertyData.setAppointmentResponseAT(testData);
+		logStep("Set up the API authentication");
+		setUp(propertyData.getProperty("mf.practice.id.at"), propertyData.getProperty("mf.authuserid.am.at"));
+		Response response;
+		response = postAPIRequestAM.resourceConfigSavePost(practiceId, payloadAM.privacyPolicyToggleONAnonymous());
+		aPIVerification.responseCodeValidation(response, 200);
+		logStep("Login To Patient Portal To Verify Privacy Policy");
+		logStep("Move to PSS patient Portal 2.0 to book an Appointment - " + testData.getUrlAnonymous());
+		AnonymousDismissPage anonymousDismissPage = new AnonymousDismissPage(driver, testData.getUrlAnonymous());
+		HomePage homePage = anonymousDismissPage.clickDismiss();
+		Thread.sleep(1000);
+		Location location = null;
+		StartAppointmentInOrder startappointmentInOrder = null;
+		startappointmentInOrder = homePage.skipInsurance(driver);
+		location = startappointmentInOrder.selectFirstLocation(PSSConstants.START_LOCATION);
+		logStep("Verfiy Location Page and location =" + testData.getLocation());
+		AppointmentPage appointment = location.selectAppointment(testData.getLocation());
+		logStep("Verfiy Appointment Page and appointment to be selected = " + testData.getAppointmenttype());
+		Provider provider = appointment.selectTypeOfProvider(testData.getAppointmenttype(), Boolean.valueOf(testData.getIsAppointmentPopup()));
+		logStep("Verfiy Provider Page and Provider = " + testData.getProvider());
+		AppointmentDateTime aptDateTime = provider.getProviderandClick(testData.getProvider());
+		aptDateTime.selectDate(testData.getIsNextDayBooking());
+		psspatientutils.bookAnonymousAptWithPrivacyPolicy(aptDateTime, testData, driver);
+	}
 
 	@DataProvider(name = "partnerType")
 	public Object[][] portalVersionForRegistration() {

@@ -78,6 +78,9 @@ public class LoginlessPatientInformation extends PSS2MainPage {
 	@FindBy(how = How.XPATH, using = "//span[@class='recaptcha-checkbox goog-inline-block recaptcha-checkbox-unchecked rc-anchor-checkbox']")
 	private WebElement recaptchaClick;
 
+	@FindAll({@FindBy(how = How.XPATH, using = "//div[@class='acceptpolicy']//label")})
+	public List<WebElement> privacyPolicy;
+
 	public LoginlessPatientInformation(WebDriver driver) {
 		super(driver);
 	}
@@ -224,4 +227,20 @@ public class LoginlessPatientInformation extends PSS2MainPage {
 			}
 		}
 	}
+
+	public int privacyPolicySize() {
+		List<WebElement> privacyList = privacyPolicy;
+		int size = privacyList.size();
+		log("Size Of Privacy Policy list is " + size);
+		return size;
+	}
+
+	public boolean privacyPolicyStatus() {
+		if (privacyPolicySize() > 0) {
+			return true;
+		} else {
+			return false;
+		}
+	}
+
 }
