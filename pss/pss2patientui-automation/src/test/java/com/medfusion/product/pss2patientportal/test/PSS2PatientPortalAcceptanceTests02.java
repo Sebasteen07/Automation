@@ -92,14 +92,14 @@ public class PSS2PatientPortalAcceptanceTests02 extends BaseTestNGWebDriver {
 		aPIVerification.responseCodeValidation(response, 200);
 
 		PSSAdminUtils adminUtils = new PSSAdminUtils();
-		log("Step 2: Fetch rule and settings from PSS 2.0 Admin portal");
+		logStep("Fetch rule and settings from PSS 2.0 Admin portal");
 		adminUtils.getInsuranceStateandRule(driver, adminuser, testData);
-		log("Step 3: Fetch the rules set in Admin");
+		logStep("Fetch the rules set in Admin");
 		String rule = adminuser.getRule();
 
 		log("rule are " + rule);
 		rule = rule.replaceAll(" ", "");
-		log("Step 4: Move to PSS patient Portal 2.0 to book an Appointment - " + testData.getUrlAnonymous());
+		logStep("Move to PSS patient Portal 2.0 to book an Appointment - " + testData.getUrlAnonymous());
 		AnonymousDismissPage anonymousDismissPage = new AnonymousDismissPage(driver, testData.getUrlAnonymous());
 		HomePage homePage = anonymousDismissPage.clickDismiss();
 		Thread.sleep(1000);
@@ -601,7 +601,4 @@ public class PSS2PatientPortalAcceptanceTests02 extends BaseTestNGWebDriver {
 		Object[][] obj = new Object[][] {{"AT"}};
 		return obj;
 	}
-
-
-
 }
