@@ -1015,12 +1015,16 @@ public class PracticePortalAcceptanceTests extends BaseTestNGWebDriver {
 		JalapenoAppointmentRequestPage appReqPage=homePage.clickOnAppointment(driver);
 		logStep("Verify Request An Appointment Button is not present");
 		assertFalse(appReqPage.isAppointmentRequestBtnDisplayed());
-		appReqPage.clickonHomeButton(driver);
-
-		MedicationsHomePage medReqPage=homePage.clickOnMedications(driver);
-		logStep("Verify Rx Request Button is not present in Medications module");
-		assertFalse(medReqPage.isRxRequestBtnDisplayed());
 		homePage.clickOnLogout();
+
+		logStep("Login to patient portal");
+		loginPage = new JalapenoLoginPage(driver, testData.getProperty("Patient.guardian.url"));
+		homePage = loginPage.login(testData.getProperty("patient.guardianlogin"), testData.getProperty("patient.guardianpassword"));
+
+		logStep("Verify Rx Request Button is not present in Medications module");
+		MedicationsHomePage medReqPage=homePage.clickOnMedications(driver);
+		assertFalse(medReqPage.isRxRequestBtnDisplayed());
+		homePage.clickOnLogout();		
 
 		logStep("Login to Practice Portal");
 		practiceLogin = new PracticeLoginPage(driver, testData.getUrl());
@@ -1048,10 +1052,10 @@ public class PracticePortalAcceptanceTests extends BaseTestNGWebDriver {
 		loginPage = new JalapenoLoginPage(driver, testData.getProperty("Patient.guardian.url"));
 		loginPage.login(testData.getProperty("patient.guardianlogin"), testData.getProperty("patient.guardianpassword"));
 
-		logStep("Verify Request An Appointment Button is not present");
+		logStep("Verify Request An Appointment solution is not displayed");
 		assertFalse(appReqPage.isAppointmentRequestBtnDisplayed());
 
-		logStep("Verify Rx Request Button is not present in Medications module");
+		logStep("Verify Rx Request solution is not displayed");
 		assertFalse(medReqPage.isRxRequestBtnDisplayed());
 		homePage.clickOnLogout();
 	}
