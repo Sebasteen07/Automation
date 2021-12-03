@@ -49,26 +49,20 @@ public class PSS2PatientPortalAcceptanceTests02 extends BaseTestNGWebDriver {
 	HeaderConfig headerConfig;
 	public static String openToken;
 	public static String practiceId;
-
 	ValidationAdapterModulator validateAdapter = new ValidationAdapterModulator();
 	Timestamp timestamp = new Timestamp();
 	public static RequestSpecification requestSpec;
 	public static ResponseSpecification responseSpec;
-
 	APIVerification aPIVerification = new APIVerification();
-
 
 	public void setUp(String practiceId1, String userID) throws IOException {
 		payloadAM = new PayloadAdapterModulator();
 		propertyData = new PSSPropertyFileLoader();
 		postAPIRequestAM = new PostAPIRequestAdapterModulator();
 		headerConfig = new HeaderConfig();
-
 		practiceId = practiceId1;
-
 		log("BASE URL AM -" + propertyData.getProperty("base.url.am"));
 		openToken = postAPIRequestAM.openToken(propertyData.getProperty("base.url.am"), practiceId, payloadAM.openTokenPayload(practiceId, userID));
-
 		postAPIRequestAM.setupRequestSpecBuilder(propertyData.getProperty("base.url.am"), headerConfig.HeaderwithToken(openToken));
 	}
 
