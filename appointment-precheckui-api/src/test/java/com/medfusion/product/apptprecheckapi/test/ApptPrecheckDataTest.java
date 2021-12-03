@@ -575,8 +575,6 @@ public class ApptPrecheckDataTest extends BaseTestNG {
 		log("Verifying the response");
 		assertEquals(response.getStatusCode(), 200);
 		apiVerification.responseTimeValidation(response);
-		apiVerification.responseKeyValidationJson(response, "success");
-		apiVerification.responseKeyValidationJson(response, "fail");
 	}
 
 	@Test(enabled = true, groups = { "APItest" }, retryAnalyzer = RetryAnalyzer.class)

@@ -936,10 +936,10 @@ public class PatientPortal2AcceptanceTests extends BaseTestNGWebDriver {
 		String name = "TestPatient CreditCard";
 		CreditCard creditCard = new CreditCard(CardType.Mastercard, name);
 
+		createCommonPatient();
 		logStep("Load login page");
 		JalapenoLoginPage loginPage = new JalapenoLoginPage(driver, testData.getUrl());
-
-		JalapenoHomePage homePage = loginPage.login(testData.getUserId(), testData.getPassword());
+		JalapenoHomePage homePage = loginPage.login(patient.getUsername(), patient.getPassword());
 		JalapenoPayBillsMakePaymentPage payBillsPage = homePage.clickOnNewPayBills(driver);
 		logStep("Remove all cards because Selenium can't see AddNewCard button");
 		payBillsPage.removeAllCards();
@@ -982,7 +982,7 @@ public class PatientPortal2AcceptanceTests extends BaseTestNGWebDriver {
 				+ PracticeConstants.BILL_PAYMENT_SUBJECT;
 
 		loginPage = new JalapenoLoginPage(driver, testData.getUrl());
-		homePage = loginPage.login(testData.getUserId(), testData.getPassword());
+		homePage = loginPage.login(patient.getUsername(), patient.getPassword());
 
 		logStep("Click on messages solution");
 		JalapenoMessagesPage messagesPage = homePage.showMessages(driver);
@@ -2938,10 +2938,11 @@ public class PatientPortal2AcceptanceTests extends BaseTestNGWebDriver {
 		Instant messageBuildingStart = Instant.now();
 		String messageSubject = "Pay My Bill";
 
+		createCommonPatient();
 		logStep("Load login page");
 		JalapenoLoginPage loginPage = new JalapenoLoginPage(driver, testData.getUrl());
+		JalapenoHomePage homePage = loginPage.login(patient.getUsername(), patient.getPassword());
 
-		JalapenoHomePage homePage = loginPage.login(testData.getUserId(), testData.getPassword());
 		JalapenoPayBillsMakePaymentPage payBillsPage = homePage.clickOnNewPayBills(driver);
 		logStep("Remove all cards because Selenium can't see AddNewCard button");
 		payBillsPage.removeAllCards();
@@ -2970,7 +2971,7 @@ public class PatientPortal2AcceptanceTests extends BaseTestNGWebDriver {
 
 		logStep("Load login page");
 		loginPage = new JalapenoLoginPage(driver, testData.getUrl());
-		homePage = loginPage.login(testData.getUserId(), testData.getPassword());
+		homePage = loginPage.login(patient.getUsername(), patient.getPassword());
 
 		logStep("Click on messages solution and navigate to Inbox");
 		JalapenoMessagesPage messagesPage = homePage.showMessagesSent(driver);
@@ -2980,8 +2981,8 @@ public class PatientPortal2AcceptanceTests extends BaseTestNGWebDriver {
 
 		logStep("Verifying the Payment Notification Mail is received by the patient or not");
 		String notificationEmailSubject = "Payment Receipt";
-		String[] mailAddress = "automationjalapeno2@mailinator.com".split("@");
-		Email email = new Mailer(mailAddress[0]).pollForNewEmailWithSubject(notificationEmailSubject, 90,
+		String mailAddress = patient.getUsername();
+		Email email = new Mailer(mailAddress).pollForNewEmailWithSubject(notificationEmailSubject, 90,
 				testSecondsTaken(messageBuildingStart));
 		assertNotNull(email, "Error: No new message notification recent enough found");
 		String emailBody = email.getBody();
@@ -4067,10 +4068,10 @@ public class PatientPortal2AcceptanceTests extends BaseTestNGWebDriver {
 		String name = "TestPatient CreditCard";
 		CreditCard creditCard = new CreditCard(CardType.Mastercard, name);
 
+		createCommonPatient();
 		logStep("Load login page");
 		JalapenoLoginPage loginPage = new JalapenoLoginPage(driver, testData.getUrl());
-
-		JalapenoHomePage homePage = loginPage.login(testData.getUserId(), testData.getPassword());
+		JalapenoHomePage homePage = loginPage.login(patient.getUsername(), patient.getPassword());
 		JalapenoPayBillsMakePaymentPage payBillsPage = homePage.clickOnNewPayBills(driver);
 		logStep("Remove all cards because Selenium can't see AddNewCard button");
 		payBillsPage.removeAllCards();
@@ -4106,7 +4107,7 @@ public class PatientPortal2AcceptanceTests extends BaseTestNGWebDriver {
 		JalapenoAskAStaffV2Page1 askPage1 = homePage.openSpecificAskaV2(testData.getProperty("aska.v2.name"));
 
 		String askaSubject = Long.toString(askPage1.getCreatedTimeStamp());
-
+		Thread.sleep(5000);
 		logStep("Fill question and continue");
 		JalapenoAskAStaffV2Page2 askPage2 = askPage1.fillAndContinueWithProviderAndLocation(askaSubject, questionText);
 
@@ -4661,10 +4662,10 @@ public class PatientPortal2AcceptanceTests extends BaseTestNGWebDriver {
 		JalapenoHomePage homePage = loginPage.login(testData.getProperty("med.username"),
 				testData.getProperty("med.password"));
 		driver.navigate().refresh();
-		
+
 		logStep("Switching to dependent account");
 		homePage.faChangePatient();
-		
+
 		homePage.clickOnMedications(driver);
 
 		log("Initiating Medications 2.0 Request from Patient Portal");
@@ -5650,7 +5651,7 @@ public class PatientPortal2AcceptanceTests extends BaseTestNGWebDriver {
 		assertFalse(homePage.isAppointmentSolutionisplayed());
 
 	}
-	
+
 	@Test(enabled = true, groups = { "acceptance-linkedaccounts" }, retryAnalyzer = RetryAnalyzer.class)
 	public void testLATrustedRepresentativeAccessForAppointmentsRxRFromPractice() throws Exception {
 		patient = null;
@@ -5671,7 +5672,8 @@ public class PatientPortal2AcceptanceTests extends BaseTestNGWebDriver {
 
 		logStep("Login to Practice Portal");
 		practiceLogin = new PracticeLoginPage(driver, testData.getPortalUrl());
-		practiceHome = practiceLogin.login(testData.getProperty("med.wf.doc.user.id"), testData.getProperty("med.wf.doc.password"));
+		practiceHome = practiceLogin.login(testData.getProperty("med.wf.doc.user.id"),
+				testData.getProperty("med.wf.doc.password"));
 
 		logStep("Click on Search");
 		patientSearchPage = practiceHome.clickPatientSearchLink();
@@ -5709,29 +5711,30 @@ public class PatientPortal2AcceptanceTests extends BaseTestNGWebDriver {
 		assertTrue(homePage.assessFamilyAccountElements(false));
 
 		logStep("Verify Appointment Solutions");
-		JalapenoAppointmentRequestPage appReqPage=homePage.clickOnAppointment(driver);
-		
+		JalapenoAppointmentRequestPage appReqPage = homePage.clickOnAppointment(driver);
+
 		logStep("Verify Request An Appointment Button is not present");
 		assertFalse(appReqPage.isAppointmentRequestBtnDisplayed());
-		
+
 		logStep("Load login page");
 		loginPage = new JalapenoLoginPage(driver, testData.getProperty("med.wf.portal.url"));
 		homePage = loginPage.login(trustedPatient.getUsername(), trustedPatient.getPassword());
-		
-		MedicationsHomePage medReqPage=homePage.clickOnMedications(driver);
+
+		MedicationsHomePage medReqPage = homePage.clickOnMedications(driver);
 		logStep("Verify Rx Request Button is not present in Medications module");
 		assertFalse(medReqPage.isRxRequestBtnDisplayed());
-		
+
 		logStep("Login to Practice Portal");
 		practiceLogin = new PracticeLoginPage(driver, testData.getPortalUrl());
-		practiceHome = practiceLogin.login(testData.getProperty("med.wf.doc.user.id"), testData.getProperty("med.wf.doc.password"));
+		practiceHome = practiceLogin.login(testData.getProperty("med.wf.doc.user.id"),
+				testData.getProperty("med.wf.doc.password"));
 
 		logStep("Click on Search");
 		patientSearchPage = practiceHome.clickPatientSearchLink();
 		patientSearchPage.searchForPatientInPatientSearch(patient.getEmail());
 		patientSearchPage.clickOnPatient(patient.getFirstName(), patient.getLastName());
 		logStep("Update Trusted Representative Access with No Access for Appointments and Medications");
-		
+
 		patientInviteTrustedRepresentative = patientSearchPage.editTrustedRepresentativeAccess();
 		patientInviteTrustedRepresentative.updateWithModuleNameAndAccess("Appointments", "noAccess");
 		patientInviteTrustedRepresentative.updateWithModuleNameAndAccess("Medications", "noAccess");
@@ -5764,62 +5767,65 @@ public class PatientPortal2AcceptanceTests extends BaseTestNGWebDriver {
 		assertEquals(recordSummaries.getCreateYourNewAccount(), "Create your new account");
 
 	}
+
 	@Test(enabled = true, groups = { "acceptance-linkedaccounts" }, retryAnalyzer = RetryAnalyzer.class)
 	public void testLATrustedRepresentativeAcessForHealthRecordFromPatient() throws Exception {
-		
-        logStep("Load login page");
+
+		logStep("Load login page");
 		JalapenoLoginPage loginPage = new JalapenoLoginPage(driver, testData.getUrl());
 		JalapenoHomePage homePage = loginPage.login(testData.getProperty("user.id"), testData.getProperty("password"));
-		
+
 		logStep("Click on the acount button");
 		JalapenoAccountPage accountPage = homePage.clickOnAccount();
-		
+
 		logStep("Click on the edit trusted representatives button");
 		homePage.editTrustedRepAccount();
-		
+
 		logStep("Select manage access per category radio button");
 		accountPage.clickOnRdoManageAccessPerCategory();
-		
+
 		logStep("Unchecked the full access to health record and click on save my change button");
 		accountPage.givingPermissionWithModuleName("Health Record", "fullAccessHealthRecord");
 		accountPage.clickOnSaveMyChangesButton();
-		
+
 		logStep("Load trusted representatives user role");
 		loginPage = new JalapenoLoginPage(driver, testData.getUrl());
-		homePage = loginPage.login(testData.getProperty("caremanager.trustedrep.healthrecord.username"), testData.getProperty("password"));
+		homePage = loginPage.login(testData.getProperty("caremanager.trustedrep.healthrecord.username"),
+				testData.getProperty("password"));
 
 		logStep("Verify that system should not display the Health Record");
 		assertFalse(homePage.isHealthRecordSolutionisplayed());
-		
+
 		logStep("Load login page with the parent role");
 		loginPage = new JalapenoLoginPage(driver, testData.getUrl());
 		homePage = loginPage.login(testData.getProperty("user.id"), testData.getProperty("password"));
-			
+
 		logStep("Click on the acount button");
 		accountPage = homePage.clickOnAccount();
-			
+
 		logStep("Click on the edit trusted representatives button");
 		homePage.editTrustedRepAccount();
-			
+
 		logStep("Select manage access per category radio button");
 		accountPage.clickOnRdoManageAccessPerCategory();
-			
+
 		logStep("Unchecked the full access to health record and click on save my change button");
 		accountPage.givingPermissionWithModuleName("Health Record", "fullAccessHealthRecord");
 		accountPage.clickOnSaveMyChangesButton();
-		
+
 		logStep("Load trusted representatives user role");
 		loginPage = new JalapenoLoginPage(driver, testData.getUrl());
-		homePage = loginPage.login(testData.getProperty("caremanager.trustedrep.healthrecord.username"), testData.getProperty("password"));
+		homePage = loginPage.login(testData.getProperty("caremanager.trustedrep.healthrecord.username"),
+				testData.getProperty("password"));
 
 		logStep("Verify that system should not display the Health Record");
 		assertTrue(homePage.isHealthRecordSolutionisplayed());
-		
+
 		logStep("Verify that system should allow user to view the Health Record");
-		MedicalRecordSummariesPage healthrecord=homePage.clickOnMedicalRecordSummaries(driver);
+		MedicalRecordSummariesPage healthrecord = homePage.clickOnMedicalRecordSummaries(driver);
 		assertTrue(healthrecord.isViewButtonDisplayed());
-		}
-	
+	}
+
 	@Test(enabled = true, groups = { "acceptance-solutions" }, retryAnalyzer = RetryAnalyzer.class)
 	public void testAttachmentInQuestionHistory() throws Exception {
 		String questionText = "wat";
@@ -5836,7 +5842,8 @@ public class PatientPortal2AcceptanceTests extends BaseTestNGWebDriver {
 		String askaSubjectForDependent = Long.toString(askPageFreequs.getCreatedTimeStamp());
 
 		logStep("Fill question and continue");
-		JalapenoAskAStaffV2Page2 askPage2 = askPageFreequs.uploadAttachment(askaSubjectForDependent, questionText, CorrectfilePath);
+		JalapenoAskAStaffV2Page2 askPage2 = askPageFreequs.uploadAttachment(askaSubjectForDependent, questionText,
+				CorrectfilePath);
 
 		assertTrue(askaSubjectForDependent.equals(askPage2.getSubject()),
 				"Expected: " + askaSubjectForDependent + ", found: " + askPage2.getSubject());
@@ -5862,12 +5869,12 @@ public class PatientPortal2AcceptanceTests extends BaseTestNGWebDriver {
 				"Expected: Open" + ", found: " + askHistoryDetail.getRequestDetailStatus());
 		assertTrue(expectedCorrectFileText.equals(askHistoryDetail.getRequestAttachedFile()),
 				"Expected: " + expectedCorrectFileText + ", found: " + askHistoryDetail.getRequestAttachedFile());
-		
-		
+
 		logStep("Logout patient");
 		askHistoryDetail.clickOnLogout();
 
 	}
+
 	@Test(enabled = true, groups = { "acceptance-solutions" }, retryAnalyzer = RetryAnalyzer.class)
 	public void testAskInvalidAttachment() throws Exception {
 		String expectedCorrectFileText = "sw-test-academy.txt";
@@ -5921,63 +5928,65 @@ public class PatientPortal2AcceptanceTests extends BaseTestNGWebDriver {
 				"Expected: Open" + ", found: " + askHistoryDetail.getRequestDetailStatus());
 		assertTrue(expectedCorrectFileText.equals(askHistoryDetail.getRequestAttachedFile()),
 				"Expected: " + expectedCorrectFileText + ", found: " + askHistoryDetail.getRequestAttachedFile());
-        }
+	}
+
 	@Test(enabled = true, groups = { "acceptance-solutions" }, retryAnalyzer = RetryAnalyzer.class)
-	   public void testConsolidatedHealthRecord() throws Exception {
+	public void testConsolidatedHealthRecord() throws Exception {
 		logStep("Login as a patient user role");
-		JalapenoLoginPage  loginPage = new JalapenoLoginPage(driver, testData.getUrl());
-		JalapenoHomePage homePage = loginPage.login(testData.getProperty("caremanager.trustedrep.healthrecord.username"), testData.getProperty("password"));
+		JalapenoLoginPage loginPage = new JalapenoLoginPage(driver, testData.getUrl());
+		JalapenoHomePage homePage = loginPage.login(
+				testData.getProperty("caremanager.trustedrep.healthrecord.username"), testData.getProperty("password"));
 
 		logStep("Verify that system should display the Health Record");
 		assertTrue(homePage.isHealthRecordSolutionisplayed());
-		
+
 		logStep("Verify that system should allow user to view the Health Record");
-		MedicalRecordSummariesPage healthrecord=homePage.clickOnMedicalRecordSummaries(driver);
+		MedicalRecordSummariesPage healthrecord = homePage.clickOnMedicalRecordSummaries(driver);
 		assertTrue(healthrecord.isViewButtonDisplayed());
-		
+
 		logStep("Click on the Consolidated Health Record");
 		healthrecord.clickOnConsolidatedHealthRecordBtn();
-		
+
 		logStep("Select the Consolidated Health Record check box");
 		healthrecord.selectCheckBox();
-		
+
 		logStep("Select the Request Record Button");
-	    healthrecord.clickOnRequestRecordButton();
-	    
-	    logStep("Verify the Request Recived message");
-	    assertTrue(healthrecord.isRequestRecivedMessageDisplayed());
-		
-        }
+		healthrecord.clickOnRequestRecordButton();
+
+		logStep("Verify the Request Recived message");
+		assertTrue(healthrecord.isRequestRecivedMessageDisplayed());
+
+	}
+
 	@Test(enabled = true, groups = { "acceptance-basics" }, retryAnalyzer = RetryAnalyzer.class)
 	public void testUpdateZipcodeDobPhoneInMyAccount() throws Exception {
 		String phoneNumberLastDigit = IHGUtil.createRandomNumericString(4);
 		String zipCode = IHGUtil.createRandomZip();
-		String yearDob = IHGUtil.createRandomNumericStringInRange(1980,2021);
-		
-	    logStep("Login as a patient user role");
-		JalapenoLoginPage  loginPage = new JalapenoLoginPage(driver, testData.getUrl());
+		String yearDob = IHGUtil.createRandomNumericStringInRange(1980, 2021);
+
+		logStep("Login as a patient user role");
+		JalapenoLoginPage loginPage = new JalapenoLoginPage(driver, testData.getUrl());
 		JalapenoHomePage homePage = loginPage.login(testData.getProperty("user.id"), testData.getProperty("password"));
-		
+
 		logStep("Go to security tab on my account page");
 		JalapenoAccountPage accountPage = homePage.clickOnAccount();
-		
+
 		logStep("Click on the edit my account button");
 		JalapenoMyAccountProfilePage myAccountPage = accountPage.clickOnEditMyAccount();
-		
+
 		logStep("Update phone number, zipcode and year");
-		myAccountPage.updateDobZipPhoneFields(phoneNumberLastDigit,zipCode,yearDob);
-		
+		myAccountPage.updateDobZipPhoneFields(phoneNumberLastDigit, zipCode, yearDob);
+
 		logStep("Click on the save button");
 		myAccountPage.clickOnSaveAccountButton();
-		
+
 		logStep("Verify the updated message");
 		assertTrue(myAccountPage.isProfileInformationUpdateMessageDisplayed());
-		
+
 		logStep("Verify the update dob,phone and zipcode");
 		Assert.assertEquals(myAccountPage.getDOByear(), yearDob);
 		Assert.assertEquals(myAccountPage.getPhone3(), phoneNumberLastDigit);
 		Assert.assertEquals(myAccountPage.getZipCodeTextbox(), zipCode);
-		}
+	}
 
 }
-

@@ -3,6 +3,7 @@ package com.medfusion.product.object.maps.appt.precheck.page.Setting;
 
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
+import org.openqa.selenium.interactions.Actions;
 import org.openqa.selenium.support.Color;
 import org.openqa.selenium.support.FindBy;
 import org.openqa.selenium.support.How;
@@ -10,7 +11,6 @@ import org.openqa.selenium.support.PageFactory;
 
 import com.intuit.ifs.csscat.core.pageobject.BasePageObject;
 import com.medfusion.common.utils.IHGUtil;
-import com.medfusion.product.object.maps.appt.precheck.util.BaseTest;
 
 public class NotificationsPage extends BasePageObject {
 
@@ -35,7 +35,7 @@ public class NotificationsPage extends BasePageObject {
 	@FindBy(how = How.XPATH, using = " //*[@id='on']")
 	private WebElement onNotificationButton;
 
-	@FindBy(how = How.XPATH, using = "(//*[@class=\"right\"])[5]/child::div[@class='table-data']/div/span")
+	@FindBy(how = How.XPATH, using = "(//*[@class='body-opacity'])[3]")
 	private WebElement apptReminderEmailhumburgerButton;
 
 	@FindBy(how = How.XPATH, using = "//*[@class=\"dropdown\"]/ul/li[1]")
@@ -172,7 +172,7 @@ public class NotificationsPage extends BasePageObject {
 
 	@FindBy(how = How.XPATH, using = "//*[text()='Location(s): ']/following-sibling::div")
 	private WebElement allLocationInPreviewPage;
-	
+
 	@FindBy(how = How.XPATH, using = "(//*[@class=\"sidebar-bottom-nav\"]/div)[1]")
 	private WebElement desktopIcon;
 
@@ -262,9 +262,63 @@ public class NotificationsPage extends BasePageObject {
 
 	@FindBy(how = How.XPATH, using = "(//*[@class='text'])[4]")
 	private WebElement textStopToUnsubscribe;
-	
-	@FindBy(how=How.XPATH,using="//div[@class='sms-preview-bottom']")
-    private WebElement smsPreviewBottom;
+
+	@FindBy(how = How.XPATH, using = "//div[@class='sms-preview-bottom']")
+	private WebElement smsPreviewBottom;
+
+	@FindBy(how = How.XPATH, using = "//*[text()='Your Logo Here']")
+	private WebElement newPracticeBlankLogoText;
+
+	@FindBy(how = How.XPATH, using = "//*[text()='Confirm Appointment']")
+	private WebElement confirmApptButton;
+
+	@FindBy(how = How.XPATH, using = "//*[text()='Start PreCheck']")
+	private WebElement startPreCheck;
+
+	@FindBy(how = How.XPATH, using = "(//*[text()='Appointment Reminder'])[2]")
+	private WebElement apptReminderText;
+
+	@FindBy(how = How.XPATH, using = "//*[@class='pt-20']")
+	private WebElement apptComingUpMessage;
+
+	@FindBy(how = How.XPATH, using = "(//*[text()='Appointment Reminder'])[1]")
+	private WebElement apptReminderInPreviewPage;
+
+	@FindBy(how = How.XPATH, using = "(//*[text()='Edit'])[1]")
+	private WebElement editButtonInPreviewPage;
+
+	@FindBy(how = How.XPATH, using = "(//*[text()='Default'])[1]")
+	private WebElement defaultTextInPreviewPage;
+
+	@FindBy(how = How.XPATH, using = "//*[text()='Editing:']")
+	private WebElement emailEditingPage;
+
+	@FindBy(how = How.XPATH, using = "//*[text()='Design']")
+	private WebElement emaildesignPage;
+
+	@FindBy(how = How.XPATH, using = "(//*[@class='text'])[2]")
+	private WebElement confirmApptlink;
+
+	@FindBy(how = How.XPATH, using = "(//*[@class='text'])[3]")
+	private WebElement rescheduleAndCancelLink;
+
+	@FindBy(how = How.XPATH, using = "(//*[@class='text'])[4]")
+	private WebElement getDirectionLink;
+
+	@FindBy(how = How.XPATH, using = "(//*[@class='text'])[5]")
+	private WebElement textToStopUnsubscribe;
+
+	@FindBy(how = How.XPATH, using = "//div[@class='appointment-data-tab-icon']")
+	private WebElement apptDataTraingleTab;
+
+	@FindBy(how = How.XPATH, using = "//*[text()='Will not affect Appointment Confirmations sent via PSS']")
+	private WebElement sendNotifTraingleTabText;
+
+	@FindBy(how = How.XPATH, using = "//*[@class='cadence-select-dropdown']")
+	private WebElement setTiming;
+
+	@FindBy(how = How.XPATH, using = "//button[text()='Save changes']")
+	private WebElement saveChangesButton;
 
 	public NotificationsPage(WebDriver driver) {
 		super(driver);
@@ -393,9 +447,10 @@ public class NotificationsPage extends BasePageObject {
 		}
 	}
 
-	public void clickOnBackArrow() {
+	public void clickOnBackArrow() throws InterruptedException {
 		IHGUtil.waitForElement(driver, 10, clickOnBackArrow);
 		clickOnBackArrow.click();
+		Thread.sleep(10000);
 	}
 
 	public void enterInvalidTimingForSmsInOneDay() {
@@ -879,7 +934,7 @@ public class NotificationsPage extends BasePageObject {
 		}
 	}
 
-	public boolean visibilityOfGetDitectionText() {
+	public boolean visibilityOfGetDirectionText() {
 		IHGUtil.waitForElement(driver, 10, getDitectionText);
 		if (getDitectionText.isDisplayed()) {
 			log("Patient inf in sms is displayed.");
@@ -902,7 +957,7 @@ public class NotificationsPage extends BasePageObject {
 			return false;
 		}
 	}
-	
+
 	public boolean visibilityOfSmsPreviewBottomtext() {
 		IHGUtil.waitForElement(driver, 10, smsPreviewBottom);
 		if (smsPreviewBottom.isDisplayed()) {
@@ -913,5 +968,155 @@ public class NotificationsPage extends BasePageObject {
 			log("SMS preview bottom text is not displayed.");
 			return false;
 		}
+	}
+
+	public String visibilityOfNewPracticeLogoText() {
+		IHGUtil.waitForElement(driver, 10, newPracticeBlankLogoText);
+		newPracticeBlankLogoText.isDisplayed();
+		log("Patient inf in sms is displayed.");
+		return newPracticeBlankLogoText.getText();
+	}
+
+	public boolean visibilityOfConfirmApptButton() {
+		IHGUtil.PrintMethodName();
+		IHGUtil.waitForElement(driver, 10, confirmApptButton);
+		confirmApptButton.isDisplayed();
+		log("Confirm Appointment button is displayed.");
+		log("Confirm Appointment button text is :- " + confirmApptButton.getText());
+		if (confirmApptButton.isEnabled()) {
+			log("Confirm Appointment button is enabled.");
+			return true;
+		} else {
+			log("Confirm Appointment button is not enabled.");
+			return false;
+		}
+	}
+
+	public String visibilityOfStartPrechecklink() {
+		IHGUtil.waitForElement(driver, 10, startPreCheck);
+		startPreCheck.isDisplayed();
+		log("Start Precheck links is displayed.");
+		return startPreCheck.getText();
+	}
+
+	public String visibilityOfApptReminderText() {
+		IHGUtil.waitForElement(driver, 10, apptReminderText);
+		apptReminderText.isDisplayed();
+		log("Appointment scheduled text is displayed.");
+		return apptReminderText.getText();
+	}
+
+	public String visibilityOfapptComingUpMessageText() {
+		IHGUtil.waitForElement(driver, 10, apptComingUpMessage);
+		apptComingUpMessage.isDisplayed();
+		log("Patient Name text is displayed.");
+		return apptComingUpMessage.getText();
+	}
+
+	public String visibilityOfApptReminderTextforPreview() {
+		IHGUtil.waitForElement(driver, 10, apptReminderInPreviewPage);
+		apptReminderInPreviewPage.isDisplayed();
+		log("Appointment reminder text is displayed.");
+		return apptReminderInPreviewPage.getText();
+	}
+
+	public boolean visibilityOfEditbuttonInPreview() {
+		IHGUtil.waitForElement(driver, 10, editButtonInPreviewPage);
+		apptReminderInPreviewPage.isDisplayed();
+		log("Appointment reminder text is displayed.");
+		if (editButtonInPreviewPage.isEnabled()) {
+			log("Edit button is enabled.");
+			return true;
+		} else {
+			log("Edit button is enabled.");
+			return false;
+		}
+	}
+
+	public void clickOnEditButtonInPreviewPage() {
+		IHGUtil.waitForElement(driver, 10, editButtonInPreviewPage);
+		jse.executeScript("arguments[0].click();", editButtonInPreviewPage);
+	}
+
+	public String visibilityOfDefaultVersionText() {
+		IHGUtil.waitForElement(driver, 10, defaultTextInPreviewPage);
+		log("Delivery Method Text is displayed.");
+		return defaultTextInPreviewPage.getText();
+	}
+
+	public String emailDesignPage() {
+		IHGUtil.PrintMethodName();
+		IHGUtil.waitForElement(driver, 10, emaildesignPage);
+		return emaildesignPage.getText();
+	}
+
+	public String emailEditingPage() {
+		IHGUtil.PrintMethodName();
+		IHGUtil.waitForElement(driver, 10, emailEditingPage);
+		return emailEditingPage.getText();
+	}
+
+	public boolean visibilityOfPatientInfoInTextMsgForApptRemText() {
+		IHGUtil.PrintMethodName();
+		IHGUtil.waitForElement(driver, 10, patientInfoInTextMsg);
+		if (patientInfoInTextMsg.isDisplayed()) {
+			log("Patient information in sms is displayed.");
+			return true;
+		} else {
+			log("Patient information in sms is not displayed.");
+			return false;
+		}
+	}
+
+	public boolean visibilityOfConfirmApptlinkForApptRemText() {
+		IHGUtil.PrintMethodName();
+		IHGUtil.waitForElement(driver, 10, confirmApptlink);
+		if (patientInfoInTextMsg.isDisplayed()) {
+			log("Confirm appointment link is displayed.");
+			return true;
+		} else {
+			log("Confirm appointment link is not displayed.");
+			return false;
+		}
+	}
+
+	public boolean visibilityOfRescheduleAndCancelLinkApptRemText() {
+		IHGUtil.PrintMethodName();
+		IHGUtil.waitForElement(driver, 10, rescheduleAndCancelLink);
+		if (rescheduleAndCancelLink.isDisplayed()) {
+			log("Reschedule And Cancel Link is displayed.");
+			return true;
+		} else {
+			log("Reschedule And Cancel Link is not displayed.");
+			return false;
+		}
+	}
+
+	public boolean visibilityGetDirectionLinkApptRemText() {
+		IHGUtil.PrintMethodName();
+		IHGUtil.waitForElement(driver, 10, getDirectionLink);
+		if (getDirectionLink.isDisplayed()) {
+			log("Get Direction Link is displayed.");
+			return true;
+		} else {
+			log("Get Direction Link is not displayed.");
+			return false;
+		}
+	}
+
+	public String visibilityTextToStopUnsubscribeApptRemText() {
+		IHGUtil.PrintMethodName();
+		IHGUtil.waitForElement(driver, 10, textToStopUnsubscribe);
+		textToStopUnsubscribe.isDisplayed();
+		log("Patient information in sms is displayed.");
+		return textToStopUnsubscribe.getText();
+	}
+
+	public String getTextFronSendNotifTraingleTab() {
+		IHGUtil.PrintMethodName();
+		log("Hover on send notification traingle");
+		Actions action = new Actions(driver);
+		action.moveToElement(apptDataTraingleTab).perform();
+		return sendNotifTraingleTabText.getText();
 	}
 }
