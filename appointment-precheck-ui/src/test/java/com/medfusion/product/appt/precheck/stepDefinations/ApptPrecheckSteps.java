@@ -1409,7 +1409,8 @@ public class ApptPrecheckSteps extends BaseTest {
 	}
 
 	@When("verify user is not able to see preview and build section on template editor page")
-	public void verify_user_is_not_able_to_see_preview_and_build_section_on_template_editor_page() {
+	public void verify_user_is_not_able_to_see_preview_and_build_section_on_template_editor_page()
+			throws InterruptedException {
 		notifPage.clickOnPreview();
 		notifPage.clickOnBuild();
 		assertFalse(notifPage.previewTabInEditButton());
@@ -1431,7 +1432,8 @@ public class ApptPrecheckSteps extends BaseTest {
 	}
 
 	@Then("verify user not able to enter zero in timing unit section for sms in appointment reminders")
-	public void verify_user_not_able_to_enter_zero_in_timing_unit_section_for_sms_in_appointment_reminders() {
+	public void verify_user_not_able_to_enter_zero_in_timing_unit_section_for_sms_in_appointment_reminders()
+			throws InterruptedException {
 		log("Verify invalid timing unit for sms for one day");
 		notifPage.enterInvalidTimingForSmsInOneDay();
 		assertEquals(notifPage.getInvalidTimingTextForSmsInOneDay(), "Invalid Units", "Text was not match");
@@ -1456,7 +1458,8 @@ public class ApptPrecheckSteps extends BaseTest {
 	}
 
 	@Then("verify user not able to enter zero in timing unit section for email in appointment reminders")
-	public void verify_user_not_able_to_enter_zero_in_timing_unit_section_for_email_in_appointment_reminders() {
+	public void verify_user_not_able_to_enter_zero_in_timing_unit_section_for_email_in_appointment_reminders()
+			throws InterruptedException {
 		log("Verify invalid timing for email for hours");
 		notifPage.enterInvalidTimingForEmailInHours();
 		assertEquals(notifPage.getInvalidTimingTextForEmailInHours(), "Invalid Units", "Text was not match");
@@ -1649,7 +1652,7 @@ public class ApptPrecheckSteps extends BaseTest {
 	@Then("verify in setting section view all fields are display related to text templates")
 	public void verify_in_setting_section_view_all_fields_are_display_related_to_text_templates() {
 		assertTrue(notifPage.visibilityOfRescheduleAndCancelAppointmentText());
-		assertTrue(notifPage.visibilityOfGetDitectionText());
+		assertTrue(notifPage.visibilityOfGetDirectionText());
 		assertTrue(notifPage.visibilityOfTextStopToUnsubscribeText());
 		assertEquals(notifPage.visibilityOfPatientInfoInTextMsg(),
 				"[Patient Name], your appointment with [Practice Name] (XXX) XXX-XXXX on [Day of the week], [Month] [DD] [YYYY] [00:00 AM/PM]: is scheduled.",
@@ -1658,6 +1661,351 @@ public class ApptPrecheckSteps extends BaseTest {
 		notifPage.closePreviewPage();
 		assertTrue(notifPage.getNotificationTitle().contains("Notifications"));
 		log("user on notification page");
+	}
+
+	@When("user login to new practice")
+	public void user_login_to_new_practice() throws NullPointerException, InterruptedException {
+		log("Practice provisining login details");
+		log("Username : " + propertyData.getProperty("new.practice.username.ge"));
+		log("Password : " + propertyData.getProperty("new.practice.password.ge"));
+		loginPage.login(propertyData.getProperty("new.practice.username.ge"),
+				propertyData.getProperty("new.practice.password.ge"));
+		scrollAndWait(200, 300, 10000);
+		log("Verify practice Name-- " + apptPage.getPracticeName());
+		assertTrue(apptPage.getPracticeName().contains(propertyData.getProperty("new.practice.name.ge")));
+		log("Verify focus on Appointments page-- " + apptPage.getApptPageTitle());
+		assertTrue(apptPage.getApptPageTitle().contains(propertyData.getProperty("appointment.page")));
+	}
+
+	@Then("verify in mobile view all fields are display related to templates for new practice")
+	public void verify_in_mobile_view_all_fields_are_display_related_to_templates_for_new_practice()
+			throws InterruptedException {
+		notifPage.openMobileViewPage();
+		scrollAndWait(0, 500, 5000);
+		log("Click here Text :- " + notifPage.visibilityOfClickHereText());
+		assertEquals(notifPage.visibilityOfNewPracticeLogoText(), "Your Logo Here", "Logo text was not match");
+		assertEquals(notifPage.visibilityOfApptScheduledText(), "Appointment Scheduled", "all text was not match");
+		log("Patient name text :- " + notifPage.visibilityOfPatientNameText());
+		assertEquals(notifPage.visibilityOfDateAndTimeText(), "Date and Time", "Date And Time text was not match");
+		assertEquals(notifPage.visibilityOfDayOfTheWeekText(), "Day of the week at 00:00 AM/PM",
+				"Day Of The Week text was not match");
+		assertEquals(notifPage.visibilityOfDateFormatText(), "Month DD, YYYY", "Date Format text was not match");
+		assertEquals(notifPage.visibilityOfLocationTextInPreview(), "Location", "Location text was not match");
+		assertEquals(notifPage.visibilityOfLocationNameText(), "Location Name", "Location Name text was not match");
+		assertEquals(notifPage.visibilityOfAddress1Text(), "Location Address1", "Address1 text was not match");
+		assertEquals(notifPage.visibilityOfAddress2Text(), "Location Address2", "Address2 text was not match");
+		assertEquals(notifPage.visibilityOfCityStateZipText(), "City State, Zip", "City State Zip text was not match");
+		assertEquals(notifPage.visibilityOfMobileNoFormatText(), "(XXX) XXX-XXXX", "MobileNoFormat text was not match");
+		assertEquals(notifPage.visibilityOfPinToMapText(), "Pin on Map", "Pin To Map text was not match");
+		assertEquals(notifPage.visibilityOfProviderText(), "Provider", "Provider text was not match");
+		assertEquals(notifPage.visibilityOfProviderNameText(), "Provider Name", "Provider Name text was not match");
+		assertEquals(notifPage.visibilityOfRescheduleOrCancelText(), "Reschedule or Cancel",
+				"Reschedule Or Cancel text was not match");
+		assertEquals(notifPage.visibilityOfInstructionsText(),
+				"Please do not reply to this auto generated message. If you have questions about this email, please contact your doctor’s office.",
+				"Instructions text was not match");
+		assertEquals(notifPage.visibilityOfConfidentialityNoticeText(), "Confidentiality Notice:",
+				"Confidentiality Notice text was not match");
+		assertEquals(notifPage.visibilityOfUnsubscribeText(), "Unsubscribe", "Unsubscribe text was not match");
+		assertEquals(notifPage.visibilityOfBottomInfoText(),
+				"*Information included in this communication is based on the data sent from the practice management system.",
+				"Bottom Info text was not match");
+		notifPage.closePreviewPage();
+		assertTrue(notifPage.getNotificationTitle().contains("Notifications"));
+		log("user on notification page");
+	}
+
+	@When("from setting in notifications user click on email hamburgerButton section of appointment reminder")
+	public void from_setting_in_notifications_user_click_on_email_hamburger_button_section_of_appointment_reminder()
+			throws InterruptedException {
+		mainPage.clickOnSettingTab();
+		notifPage.clickOnNotificationTab();
+		assertTrue(notifPage.getNotificationTitle().contains("Notifications"));
+		log("user on notification page");
+		log("From Appointment reminders open edit section for text");
+		scrollAndWait(0, 1000, 5000);
+		notifPage.clickApptReminderEmailHamburgerButton();
+	}
+
+	@When("user click preview of appointment reminder")
+	public void user_click_preview_of_appointment_reminder() {
+		notifPage.clickOnPreviewButton();
+	}
+
+	@Then("verify in desktop view all fields are display related to templates for appointment reminder")
+	public void verify_in_desktop_view_all_fields_are_display_related_to_templates_for_appointment_reminder()			throws InterruptedException {
+		notifPage.openDesktopViewPage();
+		scrollAndWait(0, 1000, 5000);
+		assertEquals(notifPage.visibilityOfClickHereText(), "CLICK HERETO VIEW THIS IN A BROWSER WINDOW",
+				"click here text was not match");
+		assertTrue(notifPage.visibilityOfCadenceImage());
+		assertTrue(notifPage.visibilityOfConfirmApptButton());
+		assertEquals(notifPage.visibilityOfStartPrechecklink(), "Start PreCheck", "Start PreCheck text was not match");
+		assertEquals(notifPage.visibilityOfApptReminderText(), "Appointment Reminder", "all text was not match");
+		assertEquals(notifPage.visibilityOfapptComingUpMessageText(), "[Patient Name], your appointment is coming up.",
+				"Appt Scheduled text was not match");
+		assertEquals(notifPage.visibilityOfDateAndTimeText(), "Date and Time", "Date And Time text was not match");
+		assertEquals(notifPage.visibilityOfDayOfTheWeekText(), "Day of the week at 00:00 AM/PM",
+				"Day Of The Week text was not match");
+		assertEquals(notifPage.visibilityOfDateFormatText(), "Month DD, YYYY", "Date Format text was not match");
+		assertEquals(notifPage.visibilityOfLocationTextInPreview(), "Location", "Location text was not match");
+		assertEquals(notifPage.visibilityOfLocationNameText(), "Location Name", "Location Name text was not match");
+		assertEquals(notifPage.visibilityOfAddress1Text(), "Location Address1", "Address1 text was not match");
+		assertEquals(notifPage.visibilityOfAddress2Text(), "Location Address2", "Address2 text was not match");
+		assertEquals(notifPage.visibilityOfCityStateZipText(), "City State, Zip", "City State Zip text was not match");
+		assertEquals(notifPage.visibilityOfMobileNoFormatText(), "(XXX) XXX-XXXX", "MobileNoFormat text was not match");
+		assertEquals(notifPage.visibilityOfPinToMapText(), "Pin on Map", "Pin To Map text was not match");
+		assertEquals(notifPage.visibilityOfProviderText(), "Provider", "Provider text was not match");
+		assertEquals(notifPage.visibilityOfProviderNameText(), "Provider Name", "Provider Name text was not match");
+		assertEquals(notifPage.visibilityOfRescheduleOrCancelText(), "Reschedule or Cancel",
+				"Reschedule Or Cancel text was not match");
+		assertEquals(notifPage.visibilityOfInstructionsText(),
+				"Please do not reply to this auto generated message. If you have questions about this email, please contact your doctor’s office.",
+				"Instructions text was not match");
+		assertEquals(notifPage.visibilityOfConfidentialityNoticeText(), "Confidentiality Notice:",
+				"Confidentiality Notice text was not match");
+		assertEquals(notifPage.visibilityOfUnsubscribeText(), "Unsubscribe", "Unsubscribe text was not match");
+		assertEquals(notifPage.visibilityOfBottomInfoText(),
+				"*Information included in this communication is based on the data sent from the practice management system.",
+				"Bottom Info text was not match");
+		notifPage.closePreviewPage();
+		assertTrue(notifPage.getNotificationTitle().contains("Notifications"));
+		log("user on notification page");
+	}
+
+	@Then("verify in desktop view all fields are display related to templates for appointment reminder for new practice")
+	public void verify_in_desktop_view_all_fields_are_display_related_to_templates_for_appointment_reminder_for_new_practice()
+			throws InterruptedException {
+		notifPage.openDesktopViewPage();
+		scrollAndWait(0, 1000, 5000);
+		assertEquals(notifPage.visibilityOfClickHereText(), "CLICK HERETO VIEW THIS IN A BROWSER WINDOW",
+				"click here text was not match");
+		assertEquals(notifPage.visibilityOfNewPracticeLogoText(), "Your Logo Here", "Logo text was not match");
+		assertTrue(notifPage.visibilityOfConfirmApptButton());
+		assertEquals(notifPage.visibilityOfStartPrechecklink(), "Start PreCheck", "Start PreCheck text was not match");
+		assertEquals(notifPage.visibilityOfApptReminderText(), "Appointment Reminder", "all text was not match");
+		assertEquals(notifPage.visibilityOfapptComingUpMessageText(), "[Patient Name], your appointment is coming up.",
+				"Appt Scheduled text was not match");
+		assertEquals(notifPage.visibilityOfDateAndTimeText(), "Date and Time", "Date And Time text was not match");
+		assertEquals(notifPage.visibilityOfDayOfTheWeekText(), "Day of the week at 00:00 AM/PM",
+				"Day Of The Week text was not match");
+		assertEquals(notifPage.visibilityOfDateFormatText(), "Month DD, YYYY", "Date Format text was not match");
+		assertEquals(notifPage.visibilityOfLocationTextInPreview(), "Location", "Location text was not match");
+		assertEquals(notifPage.visibilityOfLocationNameText(), "Location Name", "Location Name text was not match");
+		assertEquals(notifPage.visibilityOfAddress1Text(), "Location Address1", "Address1 text was not match");
+		assertEquals(notifPage.visibilityOfAddress2Text(), "Location Address2", "Address2 text was not match");
+		assertEquals(notifPage.visibilityOfCityStateZipText(), "City State, Zip", "City State Zip text was not match");
+		assertEquals(notifPage.visibilityOfMobileNoFormatText(), "(XXX) XXX-XXXX", "MobileNoFormat text was not match");
+		assertEquals(notifPage.visibilityOfPinToMapText(), "Pin on Map", "Pin To Map text was not match");
+		assertEquals(notifPage.visibilityOfProviderText(), "Provider", "Provider text was not match");
+		assertEquals(notifPage.visibilityOfProviderNameText(), "Provider Name", "Provider Name text was not match");
+		assertEquals(notifPage.visibilityOfRescheduleOrCancelText(), "Reschedule or Cancel",
+				"Reschedule Or Cancel text was not match");
+		assertEquals(notifPage.visibilityOfInstructionsText(),
+				"Please do not reply to this auto generated message. If you have questions about this email, please contact your doctor’s office.",
+				"Instructions text was not match");
+		assertEquals(notifPage.visibilityOfConfidentialityNoticeText(), "Confidentiality Notice:",
+				"Confidentiality Notice text was not match");
+		assertEquals(notifPage.visibilityOfUnsubscribeText(), "Unsubscribe", "Unsubscribe text was not match");
+		assertEquals(notifPage.visibilityOfBottomInfoText(),
+				"*Information included in this communication is based on the data sent from the practice management system.",
+				"Bottom Info text was not match");
+		notifPage.closePreviewPage();
+		assertTrue(notifPage.getNotificationTitle().contains("Notifications"));
+		log("user on notification page");
+	}
+
+	@Then("verify in mobile view all fields are display related to templates for appointment reminder")
+	public void verify_in_mobile_view_all_fields_are_display_related_to_templates_for_appointment_reminder()
+			throws InterruptedException {
+		notifPage.openMobileViewPage();
+		scrollAndWait(0, 1000, 5000);
+		assertTrue(notifPage.visibilityOfCadenceImage());
+		assertTrue(notifPage.visibilityOfConfirmApptButton());
+		assertEquals(notifPage.visibilityOfStartPrechecklink(), "Start PreCheck", "Start PreCheck text was not match");
+		assertEquals(notifPage.visibilityOfApptReminderText(), "Appointment Reminder", "all text was not match");
+		assertEquals(notifPage.visibilityOfapptComingUpMessageText(), "[Patient Name], your appointment is coming up.",
+				"Appt Scheduled text was not match");
+		assertEquals(notifPage.visibilityOfDateAndTimeText(), "Date and Time", "Date And Time text was not match");
+		assertEquals(notifPage.visibilityOfDayOfTheWeekText(), "Day of the week at 00:00 AM/PM",
+				"Day Of The Week text was not match");
+		assertEquals(notifPage.visibilityOfDateFormatText(), "Month DD, YYYY", "Date Format text was not match");
+		assertEquals(notifPage.visibilityOfLocationTextInPreview(), "Location", "Location text was not match");
+		assertEquals(notifPage.visibilityOfLocationNameText(), "Location Name", "Location Name text was not match");
+		assertEquals(notifPage.visibilityOfAddress1Text(), "Location Address1", "Address1 text was not match");
+		assertEquals(notifPage.visibilityOfAddress2Text(), "Location Address2", "Address2 text was not match");
+		assertEquals(notifPage.visibilityOfCityStateZipText(), "City State, Zip", "City State Zip text was not match");
+		assertEquals(notifPage.visibilityOfMobileNoFormatText(), "(XXX) XXX-XXXX", "MobileNoFormat text was not match");
+		assertEquals(notifPage.visibilityOfPinToMapText(), "Pin on Map", "Pin To Map text was not match");
+		assertEquals(notifPage.visibilityOfProviderText(), "Provider", "Provider text was not match");
+		assertEquals(notifPage.visibilityOfProviderNameText(), "Provider Name", "Provider Name text was not match");
+		assertEquals(notifPage.visibilityOfRescheduleOrCancelText(), "Reschedule or Cancel",
+				"Reschedule Or Cancel text was not match");
+		assertEquals(notifPage.visibilityOfInstructionsText(),
+				"Please do not reply to this auto generated message. If you have questions about this email, please contact your doctor’s office.",
+				"Instructions text was not match");
+		assertEquals(notifPage.visibilityOfConfidentialityNoticeText(), "Confidentiality Notice:",
+				"Confidentiality Notice text was not match");
+		assertEquals(notifPage.visibilityOfUnsubscribeText(), "Unsubscribe", "Unsubscribe text was not match");
+		assertEquals(notifPage.visibilityOfBottomInfoText(),
+				"*Information included in this communication is based on the data sent from the practice management system.",
+				"Bottom Info text was not match");
+		notifPage.closePreviewPage();
+		assertTrue(notifPage.getNotificationTitle().contains("Notifications"));
+		log("user on notification page");
+	}
+
+	@Then("verify in mobile view all fields are display related to templates for appointment reminder for new practice")
+	public void verify_in_mobile_view_all_fields_are_display_related_to_templates_for_appointment_reminder_for_new_practice()
+			throws InterruptedException {
+		notifPage.openMobileViewPage();
+		scrollAndWait(0, 1000, 5000);
+		assertEquals(notifPage.visibilityOfNewPracticeLogoText(), "Your Logo Here", "Logo text was not match");
+		assertTrue(notifPage.visibilityOfConfirmApptButton());
+		assertEquals(notifPage.visibilityOfStartPrechecklink(), "Start PreCheck", "Start PreCheck text was not match");
+		assertEquals(notifPage.visibilityOfApptReminderText(), "Appointment Reminder", "all text was not match");
+		assertEquals(notifPage.visibilityOfapptComingUpMessageText(), "[Patient Name], your appointment is coming up.",
+				"Appt Scheduled text was not match");
+		assertEquals(notifPage.visibilityOfDateAndTimeText(), "Date and Time", "Date And Time text was not match");
+		assertEquals(notifPage.visibilityOfDayOfTheWeekText(), "Day of the week at 00:00 AM/PM",
+				"Day Of The Week text was not match");
+		assertEquals(notifPage.visibilityOfDateFormatText(), "Month DD, YYYY", "Date Format text was not match");
+		assertEquals(notifPage.visibilityOfLocationTextInPreview(), "Location", "Location text was not match");
+		assertEquals(notifPage.visibilityOfLocationNameText(), "Location Name", "Location Name text was not match");
+		assertEquals(notifPage.visibilityOfAddress1Text(), "Location Address1", "Address1 text was not match");
+		assertEquals(notifPage.visibilityOfAddress2Text(), "Location Address2", "Address2 text was not match");
+		assertEquals(notifPage.visibilityOfCityStateZipText(), "City State, Zip", "City State Zip text was not match");
+		assertEquals(notifPage.visibilityOfMobileNoFormatText(), "(XXX) XXX-XXXX", "MobileNoFormat text was not match");
+		assertEquals(notifPage.visibilityOfPinToMapText(), "Pin on Map", "Pin To Map text was not match");
+		assertEquals(notifPage.visibilityOfProviderText(), "Provider", "Provider text was not match");
+		assertEquals(notifPage.visibilityOfProviderNameText(), "Provider Name", "Provider Name text was not match");
+		assertEquals(notifPage.visibilityOfRescheduleOrCancelText(), "Reschedule or Cancel",
+				"Reschedule Or Cancel text was not match");
+		assertEquals(notifPage.visibilityOfInstructionsText(),
+				"Please do not reply to this auto generated message. If you have questions about this email, please contact your doctor’s office.",
+				"Instructions text was not match");
+		assertEquals(notifPage.visibilityOfConfidentialityNoticeText(), "Confidentiality Notice:",
+				"Confidentiality Notice text was not match");
+		assertEquals(notifPage.visibilityOfUnsubscribeText(), "Unsubscribe", "Unsubscribe text was not match");
+		assertEquals(notifPage.visibilityOfBottomInfoText(),
+				"*Information included in this communication is based on the data sent from the practice management system.",
+				"Bottom Info text was not match");
+		notifPage.closePreviewPage();
+		assertTrue(notifPage.getNotificationTitle().contains("Notifications"));
+		log("user on notification page");
+	}
+
+	@Then("verify in settings section all fields are display related to email templates of appointment reminder")
+	public void verify_in_settings_section_all_fields_are_display_related_to_email_templates_of_appointment_reminder() {
+		assertEquals(notifPage.visibilityOfPreviewPageTitle(), "Preview", "Preview text was not match");
+		assertEquals(notifPage.visibilityOfViewingText(), "Viewing in:", "Viewing in text was not match");
+		assertEquals(notifPage.visibilityOfEnglishLang(), "English", "English text was not match");
+		assertTrue(notifPage.visibilityOfEditbuttonInPreview());
+		assertEquals(notifPage.visibilityOfCloseButton(), "Close", "Text was not match");
+		assertEquals(notifPage.visibilityOfSettingText(), "Settings", "Settings text was not match");
+		assertEquals(notifPage.visibilityOfNotiTypeText(), "Notification Type:",
+				"Notification Type text was not match");
+		assertEquals(notifPage.visibilityOfApptReminderTextforPreview(), "Appointment Reminder",
+				" Appointment Confirmation text was not match");
+		assertEquals(notifPage.visibilityOfVersionText(), "Version:", "Version text was not match");
+		assertEquals(notifPage.visibilityOfApptMethodText(), "Appointment Method:",
+				"Appointment Method text was not match");
+		assertEquals(notifPage.visibilityOfInOfficeText(), "In Office", "In Office text was not match");
+		assertEquals(notifPage.visibilityOfDeliveryMethodText(), "Delivery Method:",
+				"Delivery Method text was not match");
+		assertEquals(notifPage.visibilityOfEmailText(), "Email", "Email text was not match");
+		assertEquals(notifPage.visibilityOfTimingText(), "Timing:", "Timing text was not match");
+		assertEquals(notifPage.visibilityOfResourcesText(), "Resource(s):", "Text was not match");
+		assertEquals(notifPage.visibilityOfAllResourcesText(), "All", "All text was not match");
+		assertEquals(notifPage.visibilityOfApptTypesText(), "Appointment Type(s):",
+				"Appointment Type(s): text was not match");
+		assertEquals(notifPage.visibilityOfAllApptTypesText(), "All", "All text was not match");
+		assertEquals(notifPage.visibilityOfLocationText(), "Location(s):", "Location text was not match");
+		assertEquals(notifPage.visibilityOfAllLocationText(), "All", "all text was not match");
+		notifPage.closePreviewPage();
+		assertTrue(notifPage.getNotificationTitle().contains("Notifications"));
+		log("user on notification page");
+	}
+
+	@Then("verify on preview page from appointment reminder edit button working properly")
+	public void verify_on_preview_page_from_appointment_reminder_edit_button_working_properly_for_email()
+			throws InterruptedException {
+		notifPage.clickOnEditButtonInPreviewPage();
+		log("User redirect on template design page");
+		assertEquals(notifPage.emailDesignPage(), "Design", "Design page was not display");
+		;
+		assertEquals(notifPage.emailEditingPage(), "Editing:", "Editing page was not display");
+		log("Editing and design page displayed");
+		notifPage.clickOnBackArrow();
+		assertTrue(notifPage.getNotificationTitle().contains("Notifications"));
+		log("user on notification page");
+	}
+
+	@When("from setting in notifications user click on text hamburgerButton section of appointment reminder")
+	public void from_setting_in_notifications_user_click_on_text_hamburger_button_section_of_appointment_reminder()
+			throws InterruptedException {
+		mainPage.clickOnSettingTab();
+		notifPage.clickOnNotificationTab();
+		assertTrue(notifPage.getNotificationTitle().contains("Notifications"));
+		log("user on notification page");
+		log("From Appointment reminders open edit section for text");
+		scrollAndWait(0, 1000, 5000);
+		notifPage.clickApptReminderSmsHamburgerButton();
+	}
+
+	@Then("verify in settings section all fields are display related to text templates of appointment reminder")
+	public void verify_in_settings_section_all_fields_are_display_related_to_text_templates_of_appointment_reminder() {
+		assertEquals(notifPage.visibilityOfPreviewPageTitle(), "Preview", "Preview text was not match");
+		assertEquals(notifPage.visibilityOfViewingText(), "Viewing in:", "Viewing in text was not match");
+		assertEquals(notifPage.visibilityOfEnglishLang(), "English", "English text was not match");
+		assertTrue(notifPage.visibilityOfEditbuttonInPreview());
+		assertEquals(notifPage.visibilityOfCloseButton(), "Close", "Text was not match");
+		assertEquals(notifPage.visibilityOfSettingText(), "Settings", "Settings text was not match");
+		assertEquals(notifPage.visibilityOfNotiTypeText(), "Notification Type:",
+				"Notification Type text was not match");
+		assertEquals(notifPage.visibilityOfApptReminderTextforPreview(), "Appointment Reminder",
+				" Appointment Confirmation text was not match");
+		assertEquals(notifPage.visibilityOfVersionText(), "Version:", "Version text was not match");
+		assertEquals(notifPage.visibilityOfDefaultVersionText(), "Default", "Default Version text was not match");
+		assertEquals(notifPage.visibilityOfApptMethodText(), "Appointment Method:",
+				"Appointment Method text was not match");
+		assertEquals(notifPage.visibilityOfInOfficeText(), "In Office", "In Office text was not match");
+		assertEquals(notifPage.visibilityOfDeliveryMethodText(), "Delivery Method:",
+				"Delivery Method text was not match");
+		assertEquals(notifPage.visibilityOfSmsText(), "SMS", "Email text was not match");
+		assertEquals(notifPage.visibilityOfTimingText(), "Timing:", "Timing text was not match");
+		assertEquals(notifPage.visibilityOfResourcesText(), "Resource(s):", "Text was not match");
+		assertEquals(notifPage.visibilityOfAllResourcesText(), "All", "All text was not match");
+		assertEquals(notifPage.visibilityOfApptTypesText(), "Appointment Type(s):",
+				"Appointment Type(s): text was not match");
+		assertEquals(notifPage.visibilityOfAllApptTypesText(), "All", "All text was not match");
+		assertEquals(notifPage.visibilityOfLocationText(), "Location(s):", "Location text was not match");
+		assertEquals(notifPage.visibilityOfAllLocationText(), "All", "all text was not match");
+		assertTrue(notifPage.visibilityOfPatientInfoInTextMsgForApptRemText());
+		assertTrue(notifPage.visibilityOfConfirmApptlinkForApptRemText());
+		assertTrue(notifPage.visibilityOfRescheduleAndCancelLinkApptRemText());
+		assertTrue(notifPage.visibilityGetDirectionLinkApptRemText());
+		assertEquals(notifPage.visibilityTextToStopUnsubscribeApptRemText(), "Text STOP to unsubscribe",
+				"Text STOP to unsubscribe was mot match");
+		assertTrue(notifPage.visibilityOfSmsPreviewBottomtext());
+		notifPage.closePreviewPage();
+		assertTrue(notifPage.getNotificationTitle().contains("Notifications"));
+		log("user on notification page");
+	}
+
+	@When("user mouse hover on info tab from setting in notifications")
+	public void user_mouse_hover_on_info_tab_from_setting_in_notifications() {
+		mainPage.clickOnSettingTab();
+		notifPage.clickOnNotificationTab();
+		assertTrue(notifPage.getNotificationTitle().contains("Notifications"));
+		log("user on notification page");
+	}
+
+	@Then("verify {string} message will be display")
+	public void verify_message_will_be_display(String sendNotificationText) throws InterruptedException {
+		log("Send notification traingle text:- " + notifPage.getTextFronSendNotifTraingleTab());
+		assertEquals(notifPage.getTextFronSendNotifTraingleTab(), sendNotificationText,
+				"Send notification text was not match");
 	}
 
 }

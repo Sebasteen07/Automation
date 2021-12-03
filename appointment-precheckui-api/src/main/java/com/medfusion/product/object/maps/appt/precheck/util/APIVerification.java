@@ -1636,4 +1636,55 @@ public class APIVerification extends BaseTestNGWebDriver {
 			
 		}
 	}
+	
+	public void verifyCreatePrecheckNotif(Response response,  String practiceId, String practiceName) {
+		JsonPath js = new JsonPath(response.asString());
+		log("Validate Create Precheck Notifications");
+		assertEquals(js.getString("practiceId"), practiceId, "Practice id was incorrect");
+		assertEquals(js.getString("practiceName"), practiceName, "Practice Name was incorrect");
+	}
+	
+	public void verifyCreateScheduleNotif(Response response,  String practiceId, String practiceName) {
+		JsonPath js = new JsonPath(response.asString());
+		log("Validate Create Schedule Notifications");
+		assertEquals(js.getString("practiceId"), practiceId, "Practice id was incorrect");
+		assertEquals(js.getString("practiceName"), practiceName, "Practice Name was incorrect");
+	}
+	
+	public void verifyGetNotificationById(Response response,  String practiceId, String practiceName) {
+		JsonPath js = new JsonPath(response.asString());
+		log("Validate Get Notification By Id");
+		assertEquals(js.getString("practiceId"), practiceId, "Practice id was incorrect");
+		assertEquals(js.getString("practiceName"), practiceName, "Practice Name was incorrect");
+	}
+	
+	public void verifyApptserviceGet(Response response,  String practiceId, String patientId,String apptId,String integrationId) {
+		JsonPath js = new JsonPath(response.asString());
+		log("Validate Appt service");
+		assertEquals(js.getString("practiceId"), practiceId, "Practice id was incorrect");
+		assertEquals(js.getString("pmPatientId"), patientId, "Patient Id was incorrect");
+		assertEquals(js.getString("pmAppointmentId"), apptId, "Appointment Id Name was incorrect");
+		assertEquals(js.getString("integrationId"), integrationId, "Integration id Name was incorrect");
+	}
+	
+	public void verifyBroadcastAppointment(Response response) {
+		JsonPath js = new JsonPath(response.asString());
+		log("Validate Appt service for broadcast appointment");
+		assertEquals(js.getString("resourceType"), "Bundle", "Resouurce type was incorrect");
+	}
+	
+	public void verifyfilters(Response response) {
+		JSONObject jsonObject = new JSONObject(response.asString());
+		log("Validate filter services");
+		assertEquals(jsonObject.getJSONArray("filters").getJSONObject(0).getString("filterKey"), "AppointmentStatus",
+				"Filter key was incorrect");
+		assertEquals(jsonObject.getJSONArray("filters").getJSONObject(0).getString("filterValue"), "booked",
+				"Filter value was incorrect");
+	}
+	
+	public void verifyMappingPractice(Response response,String practiceId) {
+		JsonPath js = new JsonPath(response.asString());
+		log("Validate mapping practice id");
+		assertEquals(js.getString("practiceId"), practiceId, "Resouurce type was incorrect");
+	}
 }
