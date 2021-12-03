@@ -13,10 +13,10 @@ public class MfAppointmentTypesPayload {
 		return payload;
 	}
 
-	public String apptTypePayload(String integrationId,String practiceId) {
+	public String apptTypePayload(String apptType,String integrationId,String practiceId) {
 		String aptType=" {\r\n"
 				+ "  \"active\": true,\r\n"
-				+ "  \"appointmentTypeId\": \"16\",\r\n"
+				+ "  \"appointmentTypeId\": \""+apptType+"\",\r\n"
 				+ "  \"appointmentTypeName\": \"TestOne Apt Type\",\r\n"
 				+ "  \"categoryId\": \"test\",\r\n"
 				+ "  \"categoryName\": \"Default\",\r\n"
@@ -25,11 +25,12 @@ public class MfAppointmentTypesPayload {
 				+ "}";
 		return aptType;
 	}
-	public String updateApptTypePayload(String integrationId,String practiceId) {
+	
+	public String updateApptTypePayload(String apptType,String integrationId,String practiceId) {
 		String updateAptType=" {\r\n"
 				+ "	\"active\": true,\r\n"
-				+ "  \"appointmentTypeId\": \"16\",\r\n"
-				+ "  \"appointmentTypeName\": \"TestOne Apt Type\",\r\n"
+				+ "  \"appointmentTypeId\": \""+apptType+"\",\r\n"
+				+ "  \"appointmentTypeName\": \"TestOne Apt Type3\",\r\n"
 				+ "  \"categoryId\": \"test\",\r\n"
 				+ "  \"categoryName\": \"Default\",\r\n"
 				+ "  \"integrationId\": \""+integrationId+"\",\r\n"
@@ -53,28 +54,41 @@ public class MfAppointmentTypesPayload {
 	
 	public String updateMorethanOneApptTypePayload(String integrationId,String practiceId) {
 		String updateAptType="{\r\n"
-				+ "  \"appointmentTypes\": [\r\n"
-				+ "    {\r\n"
-				+ "    \"active\": true,\r\n"
-				+ "    \"appointmentTypeId\": \"16\",\r\n"
-				+ "    \"appointmentTypeName\": \"TestOne Apt Type\",\r\n"
-				+ "    \"categoryId\": \"test\",\r\n"
-				+ "    \"categoryName\": \"Default\",\r\n"
-				+ "    \"integrationId\": \"9\",\r\n"
-				+ "    \"practiceId\": \"24333\"\r\n"
-				+ "},\r\n"
-				+ "{\r\n"
-				+ "    \"active\": true,\r\n"
-				+ "    \"appointmentTypeId\": \"18\",\r\n"
-				+ "    \"appointmentTypeName\": \"TestOne Apt Type\",\r\n"
-				+ "    \"categoryId\": \"test\",\r\n"
-				+ "    \"categoryName\": \"Default\",\r\n"
-				+ "    \"integrationId\": \"9\",\r\n"
-				+ "    \"practiceId\": \"24333\"\r\n"
-				+ "}\r\n"
-				+ "  ]\r\n"
+				+ "    \"appointmentTypes\": [\r\n"
+				+ "        {\r\n"
+				+ "            \"active\": true,\r\n"
+				+ "            \"appointmentTypeId\": \"16\",\r\n"
+				+ "            \"appointmentTypeName\": \"TestOne Apt Type\",\r\n"
+				+ "            \"categoryId\": \"test\",\r\n"
+				+ "            \"categoryName\": \"Default\",\r\n"
+				+ "            \"integrationId\": \""+integrationId+"\",\r\n"
+				+ "            \"practiceId\": \""+practiceId+"\"\r\n"
+				+ "        },\r\n"
+				+ "        {\r\n"
+				+ "            \"active\": true,\r\n"
+				+ "            \"appointmentTypeId\": \"40\",\r\n"
+				+ "            \"appointmentTypeName\": \"TestOne Apt Type\",\r\n"
+				+ "            \"categoryId\": \"test\",\r\n"
+				+ "            \"categoryName\": \"Default\",\r\n"
+				+ "            \"integrationId\": \""+integrationId+"\",\r\n"
+				+ "            \"practiceId\": \""+practiceId+"\"\r\n"
+				+ "        }\r\n"
+				+ "    ]\r\n"
 				+ "}";
 		return updateAptType;
+	}
+	
+	public String oldApptTypePayload(String apptType,String integrationId,String practiceId) {
+		String aptType=" {\r\n"
+				+ "  \"active\": true,\r\n"
+				+ "  \"appointmentTypeId\": \""+apptType+"\",\r\n"
+				+ "  \"appointmentTypeName\": \"TestOne Apt Type\",\r\n"
+				+ "  \"categoryId\": \"test\",\r\n"
+				+ "  \"categoryName\": \"Default\",\r\n"
+				+ "  \"integrationId\": \""+integrationId+"\",\r\n"
+				+ "  \"practiceId\": \""+practiceId+"\"\r\n"
+				+ "}";
+		return aptType;
 	}
 	
 }

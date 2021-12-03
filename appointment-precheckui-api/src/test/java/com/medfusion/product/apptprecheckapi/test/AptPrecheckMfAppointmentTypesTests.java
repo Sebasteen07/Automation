@@ -64,10 +64,11 @@ public class AptPrecheckMfAppointmentTypesTests extends BaseTestNG {
 	@Test(enabled = true, groups = { "APItest" }, retryAnalyzer = RetryAnalyzer.class)
 	public void testGETAppointmentsTypesUuid() throws IOException {
 		Random random = new Random();
-		int randamNo = random.nextInt(100);
+		int randamNo = random.nextInt(1000);
 		String integrationId = String.valueOf(randamNo);
 		Response postApptTypeResponse = postAPIRequest.aptpostAppointmentTypes(
-				payload.apptTypePayload(integrationId, propertyData.getProperty("mf.apt.scheduler.practice.id")),
+				payload.apptTypePayload(propertyData.getProperty("mf.apt.scheduler.appt.type.id"), integrationId,
+						propertyData.getProperty("mf.apt.scheduler.practice.id")),
 				headerConfig.HeaderwithToken(getaccessToken), propertyData.getProperty("mf.apt.scheduler.practice.id"));
 		assertEquals(postApptTypeResponse.getStatusCode(), 200);
 		JsonPath js = new JsonPath(postApptTypeResponse.asString());
@@ -96,20 +97,21 @@ public class AptPrecheckMfAppointmentTypesTests extends BaseTestNG {
 	@Test(enabled = true, groups = { "APItest" }, retryAnalyzer = RetryAnalyzer.class)
 	public void testPostCreateNewApptType() throws IOException {
 		Random random = new Random();
-		int randamNo = random.nextInt(100);
+		int randamNo = random.nextInt(1000);
 		String integrationId = String.valueOf(randamNo);
+		String appointmentTypeId = String.valueOf(randamNo);
 		Response response = postAPIRequest.aptpostAppointmentTypes(
-				payload.apptTypePayload(integrationId, propertyData.getProperty("mf.apt.scheduler.practice.id")),
+				payload.apptTypePayload(appointmentTypeId, integrationId,
+						propertyData.getProperty("mf.apt.scheduler.practice.id")),
 				headerConfig.HeaderwithToken(getaccessToken), propertyData.getProperty("mf.apt.scheduler.practice.id"));
 
 		log("Verifying the response");
 		if (response.getStatusCode() == 200) {
 			log("Post Appointment Type");
 			assertEquals(response.getStatusCode(), 200);
-			apiVerification.verifyCreateNewApptType(response, propertyData.getProperty("mf.appt.type.id"),
+			apiVerification.verifyCreateNewApptType(response, appointmentTypeId,
 					propertyData.getProperty("mf.appt.type.name"),
 					propertyData.getProperty("mf.appt.type.category.id"));
-
 		}
 		if (response.getStatusCode() == 400) {
 			log("Appointment type already exists");
@@ -121,21 +123,45 @@ public class AptPrecheckMfAppointmentTypesTests extends BaseTestNG {
 
 	@Test(enabled = true, groups = { "APItest" }, retryAnalyzer = RetryAnalyzer.class)
 	public void testPostOneApptTypeUpdate() throws IOException {
+		Random random = new Random();
+		int randamNo = random.nextInt(1000);
+		String integrationId = String.valueOf(randamNo);
+		String appointmentTypeId = String.valueOf(integrationId);
+		Response postResponse = postAPIRequest.aptpostAppointmentTypes(
+				payload.oldApptTypePayload(appointmentTypeId, integrationId,
+						propertyData.getProperty("mf.apt.scheduler.practice.id")),
+				headerConfig.HeaderwithToken(getaccessToken), propertyData.getProperty("mf.apt.scheduler.practice.id"));
+		assertEquals(postResponse.getStatusCode(), 200);
+
+		int randomNum = random.nextInt(1000);
+		String updateintegrationId = String.valueOf(randomNum);
 		Response response = postAPIRequest.aptpostUpdateAppointmentTypes(
 				propertyData.getProperty("mf.app.type.integration.id"),
-				payload.updateApptTypePayload(propertyData.getProperty("mf.app.type.integration.id"),
+				payload.updateApptTypePayload(appointmentTypeId, updateintegrationId,
 						propertyData.getProperty("mf.apt.scheduler.practice.id")),
 				headerConfig.HeaderwithToken(getaccessToken), propertyData.getProperty("mf.apt.scheduler.practice.id"));
 		log("Verifying the response");
 		assertEquals(response.getStatusCode(), 200);
 		apiVerification.responseTimeValidation(response);
 	}
-	
+
 	@Test(enabled = true, groups = { "APItest" }, retryAnalyzer = RetryAnalyzer.class)
 	public void testPostMoreThanOneApptTypeUpdate() throws IOException {
-		Response response = postAPIRequest.aptpostUpdateAppointmentTypes(
-				propertyData.getProperty("mf.app.type.integration.id"),
-				payload.updateMorethanOneApptTypePayload(propertyData.getProperty("mf.app.type.integration.id"),
+		Random random = new Random();
+		int randamNo = random.nextInt(1000);
+		String integrationId = String.valueOf(randamNo);
+
+		Response postResponse = postAPIRequest.aptpostUpdateAppointmentTypes(integrationId,
+				payload.updateMorethanOneApptTypePayload(integrationId,
+						propertyData.getProperty("mf.apt.scheduler.practice.id")),
+				headerConfig.HeaderwithToken(getaccessToken), propertyData.getProperty("mf.apt.scheduler.practice.id"));
+		assertEquals(postResponse.getStatusCode(), 200);
+
+		int randomNum = random.nextInt(1000);
+		String updateIntId = String.valueOf(randomNum);
+
+		Response response = postAPIRequest.aptpostUpdateAppointmentTypes(updateIntId,
+				payload.updateMorethanOneApptTypePayload(updateIntId,
 						propertyData.getProperty("mf.apt.scheduler.practice.id")),
 				headerConfig.HeaderwithToken(getaccessToken), propertyData.getProperty("mf.apt.scheduler.practice.id"));
 		log("Verifying the response");
@@ -146,10 +172,12 @@ public class AptPrecheckMfAppointmentTypesTests extends BaseTestNG {
 	@Test(enabled = true, groups = { "APItest" }, retryAnalyzer = RetryAnalyzer.class)
 	public void testPutApptTypesUuid() throws IOException {
 		Random random = new Random();
-		int randamNo = random.nextInt(100);
+		int randamNo = random.nextInt(1000);
 		String integrationId = String.valueOf(randamNo);
+		String appointmentTypeId = String.valueOf(randamNo);
 		Response postApptTypeResponse = postAPIRequest.aptpostAppointmentTypes(
-				payload.apptTypePayload(integrationId, propertyData.getProperty("mf.apt.scheduler.practice.id")),
+				payload.apptTypePayload(appointmentTypeId, integrationId,
+						propertyData.getProperty("mf.apt.scheduler.practice.id")),
 				headerConfig.HeaderwithToken(getaccessToken), propertyData.getProperty("mf.apt.scheduler.practice.id"));
 		assertEquals(postApptTypeResponse.getStatusCode(), 200);
 
@@ -166,12 +194,14 @@ public class AptPrecheckMfAppointmentTypesTests extends BaseTestNG {
 		apiVerification.verifyCreateNewApptType(response, propertyData.getProperty("mf.appointment.type.id"),
 				propertyData.getProperty("mf.appt.type.name"), propertyData.getProperty("mf.appt.type.category.id"));
 	}
-	
+
 	@Test(enabled = true, groups = { "APItest" }, retryAnalyzer = RetryAnalyzer.class)
 	public void testPutApptTypesWithIncorrectUuid() throws IOException {
 
-		Response response = postAPIRequest.aptPutUpdateAppointmentTypesUuid(propertyData.getProperty("mf.apt.types.incorrect.uuid"),
-				payload.updateApptTypesUuidPayload(propertyData.getProperty("mf.appointment.type.id"), propertyData.getProperty("mf.app.type.integration.id"),
+		Response response = postAPIRequest.aptPutUpdateAppointmentTypesUuid(
+				propertyData.getProperty("mf.apt.types.incorrect.uuid"),
+				payload.updateApptTypesUuidPayload(propertyData.getProperty("mf.appointment.type.id"),
+						propertyData.getProperty("mf.app.type.integration.id"),
 						propertyData.getProperty("mf.apt.scheduler.practice.id")),
 				headerConfig.HeaderwithToken(getaccessToken));
 		log("Verifying the response");
@@ -183,5 +213,4 @@ public class AptPrecheckMfAppointmentTypesTests extends BaseTestNG {
 	public void getMethodName(ITestResult result) throws IOException {
 		log("Method Name-- " + result.getMethod().getMethodName());
 	}
-
 }
