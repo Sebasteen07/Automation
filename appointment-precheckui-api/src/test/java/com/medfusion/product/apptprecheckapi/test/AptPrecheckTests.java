@@ -13,6 +13,7 @@ import org.testng.annotations.Test;
 
 import com.intuit.ifs.csscat.core.BaseTestNG;
 import com.intuit.ifs.csscat.core.RetryAnalyzer;
+import com.medfusion.common.utils.IHGUtil;
 import com.medfusion.common.utils.PropertyFileLoader;
 import com.medfusion.product.appt.precheck.payload.AptPrecheckPayload;
 import com.medfusion.product.appt.precheck.payload.MfAppointmentSchedulerPayload;
@@ -30,7 +31,7 @@ public class AptPrecheckTests extends BaseTestNG {
 	String getaccessToken;
 	public static PropertyFileLoader propertyData;
 	public static AptPrecheckPayload payload;
-	public static MfAppointmentSchedulerPayload schedulerPayload; 
+	public static MfAppointmentSchedulerPayload schedulerPayload;
 	public static PostAPIRequestAptPrecheck postAPIRequest;
 	public static PostAPIRequestMfAppointmentScheduler postAPIRequestApptSche;
 	public static AccessToken accessToken;
@@ -292,19 +293,44 @@ public class AptPrecheckTests extends BaseTestNG {
 
 	@Test(enabled = true, groups = { "APItest" }, retryAnalyzer = RetryAnalyzer.class)
 	public void testPOSTCheckinActions() throws IOException {
+		Random random = new Random();
+		int randamNo = random.nextInt(100000);
+		String patientId = String.valueOf(randamNo);
+		String apptId = String.valueOf(randamNo);
+		long currentTimestamp = System.currentTimeMillis();
+		long plus20Minutes = currentTimestamp + TimeUnit.MINUTES.toMillis(20);
+		log("Getting patients since timestamp: " + plus20Minutes);
+		log("Schedule a new Appointment");
+		Response scheduleResponse = postAPIRequestApptSche.aptPutAppointment(propertyData.getProperty("baseurl.mf.appointment.scheduler"),
+				propertyData.getProperty("apt.precheck.practice.id"),schedulerPayload.putAppointmentPayload(plus20Minutes,
+				propertyData.getProperty("mf.apt.scheduler.phone"),propertyData.getProperty("mf.apt.scheduler.email")),
+				headerConfig.HeaderwithToken(getaccessToken), patientId, apptId);
+		assertEquals(scheduleResponse.getStatusCode(), 200);
+
+		Response actionResponse = postAPIRequest.aptAppointmentActionsConfirm(
+				propertyData.getProperty("baseurl.apt.precheck"), propertyData.getProperty("apt.precheck.practice.id"),
+				headerConfig.HeaderwithToken(getaccessToken), patientId, apptId);
+		assertEquals(actionResponse.getStatusCode(), 200);
+
+		Response CheckInResponse = postAPIRequest.aptArrivalActionsCurbsideCurbscheckin(
+				propertyData.getProperty("baseurl.apt.precheck"), propertyData.getProperty("apt.precheck.practice.id"),
+				headerConfig.HeaderwithToken(getaccessToken), patientId, apptId);
+		assertEquals(CheckInResponse.getStatusCode(), 200);
+
+		Response arrivalResponse = postAPIRequest.aptArrivalActionsCurbsideArrival(
+				propertyData.getProperty("baseurl.apt.precheck"), propertyData.getProperty("apt.precheck.practice.id"),
+				headerConfig.HeaderwithToken(getaccessToken), patientId, apptId);
+		assertEquals(arrivalResponse.getStatusCode(), 200);
+
 		Response response = postAPIRequest.getCheckinActions(propertyData.getProperty("baseurl.apt.precheck"),
-				propertyData.getProperty("apt.precheck.practice.id"),
-				payload.getCheckinActionsPayload(propertyData.getProperty("apt.precheck.copay.skip.appointment.id"),
-						propertyData.getProperty("apt.precheck.copay.skip.patient.id"),
-						propertyData.getProperty("apt.precheck.balance.practice.id")),
-				headerConfig.HeaderwithToken(getaccessToken));
+				propertyData.getProperty("apt.precheck.practice.id"),payload.getCheckinActionsPayload(apptId, patientId,
+				propertyData.getProperty("apt.precheck.practice.id")),headerConfig.HeaderwithToken(getaccessToken));
 
 		log("Verifying the response");
 		assertEquals(response.getStatusCode(), 200);
 		apiVerification.responseTimeValidation(response);
 		apiVerification.verifyCheckInAppointments(response, propertyData.getProperty("apt.precheck.practice.id"),
-				propertyData.getProperty("apt.precheck.copay.skip.patient.id"),
-				propertyData.getProperty("apt.precheck.copay.skip.appointment.id"), "CHECKIN");
+				patientId, apptId, "CHECKIN");
 	}
 
 	@Test(enabled = true, groups = { "APItest" }, retryAnalyzer = RetryAnalyzer.class)
@@ -372,8 +398,6 @@ public class AptPrecheckTests extends BaseTestNG {
 		log("Verifying the response");
 		assertEquals(response.getStatusCode(), 200);
 		apiVerification.responseTimeValidation(response);
-		apiVerification.responseKeyValidationJson(response, "success");
-		apiVerification.responseKeyValidationJson(response, "fail");
 	}
 
 	@Test(enabled = true, groups = { "APItest" }, retryAnalyzer = RetryAnalyzer.class)
@@ -426,8 +450,6 @@ public class AptPrecheckTests extends BaseTestNG {
 		log("Verifying the response");
 		assertEquals(response.getStatusCode(), 200);
 		apiVerification.responseTimeValidation(response);
-		apiVerification.responseKeyValidationJson(response, "success");
-		apiVerification.responseKeyValidationJson(response, "fail");
 	}
 
 	@Test(enabled = true, groups = { "APItest" }, retryAnalyzer = RetryAnalyzer.class)
@@ -506,7 +528,7 @@ public class AptPrecheckTests extends BaseTestNG {
 
 		log("Verifying the response");
 		assertEquals(response.getStatusCode(), 400);
-		apiVerification.responseTimeValidation(response); 
+		apiVerification.responseTimeValidation(response);
 		apiVerification.verifyprecheckApptWithoutPhone(response);
 	}
 
@@ -597,16 +619,25 @@ public class AptPrecheckTests extends BaseTestNG {
 
 	@Test(enabled = true, groups = { "APItest" }, retryAnalyzer = RetryAnalyzer.class)
 	public void testPUTForms() throws IOException {
+		log("Schedule a new Appointment");
+		Random random = new Random();
+		int randamNo = random.nextInt(100000);
+		String patientId = String.valueOf(randamNo);
+		String apptId = String.valueOf(randamNo);
+		long currentTimestamp = System.currentTimeMillis();
+		long plus20Minutes = currentTimestamp + TimeUnit.MINUTES.toMillis(20);
+		postAPIRequestApptSche.aptPutAppointment(propertyData.getProperty("baseurl.mf.appointment.scheduler"),
+				propertyData.getProperty("apt.precheck.practice.id"),schedulerPayload.putAppointmentPayload(plus20Minutes,
+				propertyData.getProperty("mf.apt.scheduler.phone"),propertyData.getProperty("mf.apt.scheduler.email")),
+				headerConfig.HeaderwithToken(getaccessToken), patientId, apptId);
+
 		Response response = postAPIRequest.aptPutForms(propertyData.getProperty("apt.precheck.practice.id"),
-				payload.getFormsPayload(), headerConfig.HeaderwithToken(getaccessToken),
-				propertyData.getProperty("apt.precheck.copay.skip.patient.id"),
-				propertyData.getProperty("apt.precheck.copay.skip.appointment.id"));
+				payload.getFormsPayload(), headerConfig.HeaderwithToken(getaccessToken), patientId, apptId);
 
 		log("Verify response");
 		assertEquals(response.getStatusCode(), 200);
-		apiVerification.verifyPutForms(response, propertyData.getProperty("apt.precheck.practice.id"),
-				propertyData.getProperty("apt.precheck.copay.skip.patient.id"),
-				propertyData.getProperty("apt.precheck.copay.skip.appointment.id"));
+		apiVerification.verifyPutForms(response, propertyData.getProperty("apt.precheck.practice.id"), patientId,
+				apptId);
 		apiVerification.responseTimeValidation(response);
 	}
 
@@ -625,31 +656,49 @@ public class AptPrecheckTests extends BaseTestNG {
 
 	@Test(enabled = true, groups = { "APItest" }, retryAnalyzer = RetryAnalyzer.class)
 	public void testPUTInsurance() throws IOException {
+		log("Schedule a new Appointment");
+		Random random = new Random();
+		int randamNo = random.nextInt(100000);
+		String patientId = String.valueOf(randamNo);
+		String apptId = String.valueOf(randamNo);
+		long currentTimestamp = System.currentTimeMillis();
+		long plus20Minutes = currentTimestamp + TimeUnit.MINUTES.toMillis(20);
+		postAPIRequestApptSche.aptPutAppointment(propertyData.getProperty("baseurl.mf.appointment.scheduler"),
+				propertyData.getProperty("apt.precheck.practice.id"),schedulerPayload.putAppointmentPayload(plus20Minutes,
+			    propertyData.getProperty("mf.apt.scheduler.phone"),propertyData.getProperty("mf.apt.scheduler.email")),
+				headerConfig.HeaderwithToken(getaccessToken), patientId, apptId);
+
 		Response response = postAPIRequest.aptPutInsurance(propertyData.getProperty("apt.precheck.practice.id"),
-				payload.getInsurancePayload(), headerConfig.HeaderwithToken(getaccessToken),
-				propertyData.getProperty("apt.precheck.copay.skip.patient.id"),
-				propertyData.getProperty("apt.precheck.copay.skip.appointment.id"));
+				payload.getInsurancePayload(), headerConfig.HeaderwithToken(getaccessToken), patientId, apptId);
 
 		log("Verifying the response");
 		assertEquals(response.getStatusCode(), 200);
-		apiVerification.verifyPutInsurance(response, propertyData.getProperty("apt.precheck.practice.id"),
-				propertyData.getProperty("apt.precheck.copay.skip.patient.id"),
-				propertyData.getProperty("apt.precheck.copay.skip.appointment.id"));
+		apiVerification.verifyPutInsurance(response, propertyData.getProperty("apt.precheck.practice.id"), patientId,
+				apptId);
 		apiVerification.responseTimeValidation(response);
 	}
 
 	@Test(enabled = true, groups = { "APItest" }, retryAnalyzer = RetryAnalyzer.class)
 	public void testPutDemographics() throws IOException {
+		log("Schedule a new Appointment");
+		Random random = new Random();
+		int randamNo = random.nextInt(100000);
+		String patientId = String.valueOf(randamNo);
+		String apptId = String.valueOf(randamNo);
+		long currentTimestamp = System.currentTimeMillis();
+		long plus20Minutes = currentTimestamp + TimeUnit.MINUTES.toMillis(20);
+		postAPIRequestApptSche.aptPutAppointment(propertyData.getProperty("baseurl.mf.appointment.scheduler"),
+				propertyData.getProperty("apt.precheck.practice.id"),schedulerPayload.putAppointmentPayload(plus20Minutes,
+		        propertyData.getProperty("mf.apt.scheduler.phone"),propertyData.getProperty("mf.apt.scheduler.email")),
+				headerConfig.HeaderwithToken(getaccessToken), patientId, apptId);
+
 		Response response = postAPIRequest.aptPutDemographics(propertyData.getProperty("apt.precheck.practice.id"),
-				payload.getDemographicsPayload(), headerConfig.HeaderwithToken(getaccessToken),
-				propertyData.getProperty("apt.precheck.copay.skip.patient.id"),
-				propertyData.getProperty("apt.precheck.copay.skip.appointment.id"));
+				payload.getDemographicsPayload(), headerConfig.HeaderwithToken(getaccessToken), patientId, apptId);
 
 		log("Verify Put Demographics");
 		assertEquals(response.getStatusCode(), 200);
-		apiVerification.verifyDemographics(response, propertyData.getProperty("apt.precheck.practice.id"),
-				propertyData.getProperty("apt.precheck.copay.skip.patient.id"),
-				propertyData.getProperty("apt.precheck.copay.skip.appointment.id"));
+		apiVerification.verifyDemographics(response, propertyData.getProperty("apt.precheck.practice.id"), patientId,
+				apptId);
 		apiVerification.responseTimeValidation(response);
 	}
 
@@ -663,10 +712,8 @@ public class AptPrecheckTests extends BaseTestNG {
 		long plus20Minutes = currentTimestamp + TimeUnit.MINUTES.toMillis(20);
 		log("Getting patients since timestamp: " + plus20Minutes);
 		postAPIRequestApptSche.aptPutAppointment(propertyData.getProperty("baseurl.mf.appointment.scheduler"),
-				propertyData.getProperty("apt.precheck.balance.practice.id"),
-				schedulerPayload.putAppointmentPayload(plus20Minutes,
-						propertyData.getProperty("mf.apt.scheduler.phone"),
-						propertyData.getProperty("mf.apt.scheduler.email")),
+				propertyData.getProperty("apt.precheck.balance.practice.id"),schedulerPayload.putAppointmentPayload(plus20Minutes,
+				propertyData.getProperty("mf.apt.scheduler.phone"),propertyData.getProperty("mf.apt.scheduler.email")),
 				headerConfig.HeaderwithToken(getaccessToken), patientId,
 				propertyData.getProperty("appt.precheck.balance.pay.appt.id"));
 
@@ -771,34 +818,55 @@ public class AptPrecheckTests extends BaseTestNG {
 
 	@Test(enabled = true, groups = { "APItest" }, retryAnalyzer = RetryAnalyzer.class)
 	public void testPOSTAppointmentActionsConfirm() throws IOException {
+		Random random = new Random();
+		int randamNo = random.nextInt(100000);
+		String patientId = String.valueOf(randamNo);
+		String apptId = String.valueOf(randamNo);
+		long currentTimestamp = System.currentTimeMillis();
+		long plus20Minutes = currentTimestamp + TimeUnit.MINUTES.toMillis(20);
+		log("Getting patients since timestamp: " + plus20Minutes);
+		log("Schedule a new Appointment");
+		Response scheduleResponse = postAPIRequestApptSche.aptPutAppointment(propertyData.getProperty("baseurl.mf.appointment.scheduler"),
+				propertyData.getProperty("apt.precheck.practice.id"),schedulerPayload.putAppointmentPayload(plus20Minutes,
+				propertyData.getProperty("mf.apt.scheduler.phone"),propertyData.getProperty("mf.apt.scheduler.email")),
+				headerConfig.HeaderwithToken(getaccessToken), patientId, apptId);
+		assertEquals(scheduleResponse.getStatusCode(), 200);
+
 		Response response = postAPIRequest.aptAppointmentActionsConfirm(
 				propertyData.getProperty("baseurl.apt.precheck"), propertyData.getProperty("apt.precheck.practice.id"),
-				headerConfig.HeaderwithToken(getaccessToken),
-				propertyData.getProperty("apt.precheck.copay.skip.patient.id"),
-				propertyData.getProperty("apt.precheck.copay.skip.appointment.id"));
+				headerConfig.HeaderwithToken(getaccessToken), patientId, apptId);
 		log("Verifying the response");
 
 		assertEquals(response.getStatusCode(), 200);
 		apiVerification.verifyAppointmentActions(response, propertyData.getProperty("confirm.appt.action"),
-				propertyData.getProperty("apt.precheck.practice.id"),
-				propertyData.getProperty("apt.precheck.copay.skip.patient.id"),
-				propertyData.getProperty("apt.precheck.copay.skip.appointment.id"));
+				propertyData.getProperty("apt.precheck.practice.id"), patientId, apptId);
 		apiVerification.responseTimeValidation(response);
 	}
 
 	@Test(enabled = true, groups = { "APItest" }, retryAnalyzer = RetryAnalyzer.class)
 	public void testPOSTAppointmentActionsCancel() throws IOException {
+		Random random = new Random();
+		int randamNo = random.nextInt(100000);
+		String patientId = String.valueOf(randamNo);
+		String apptId = String.valueOf(randamNo);
+		long currentTimestamp = System.currentTimeMillis();
+		long plus20Minutes = currentTimestamp + TimeUnit.MINUTES.toMillis(20);
+		log("Getting patients since timestamp: " + plus20Minutes);
+		log("Schedule a new Appointment");
+		Response scheduleResponse = postAPIRequestApptSche.aptPutAppointment(propertyData.getProperty("baseurl.mf.appointment.scheduler"),
+				propertyData.getProperty("apt.precheck.practice.id"),schedulerPayload.putAppointmentPayload(plus20Minutes,
+				propertyData.getProperty("mf.apt.scheduler.phone"),propertyData.getProperty("mf.apt.scheduler.email")),
+				headerConfig.HeaderwithToken(getaccessToken), patientId, apptId);
+		assertEquals(scheduleResponse.getStatusCode(), 200);
+
 		Response response = postAPIRequest.aptAppointmentActionsCancel(
 				propertyData.getProperty("apt.precheck.practice.id"), headerConfig.HeaderwithToken(getaccessToken),
-				propertyData.getProperty("apt.precheck.copay.skip.patient.id"),
-				propertyData.getProperty("apt.precheck.copay.skip.appointment.id"));
+				patientId, apptId);
 
 		log("Verifying the response");
 		assertEquals(response.getStatusCode(), 200);
 		apiVerification.verifyAppointmentActions(response, propertyData.getProperty("cancel.appt.action"),
-				propertyData.getProperty("apt.precheck.practice.id"),
-				propertyData.getProperty("apt.precheck.copay.skip.patient.id"),
-				propertyData.getProperty("apt.precheck.copay.skip.appointment.id"));
+				propertyData.getProperty("apt.precheck.practice.id"), patientId, apptId);
 		apiVerification.responseTimeValidation(response);
 	}
 
@@ -925,26 +993,41 @@ public class AptPrecheckTests extends BaseTestNG {
 			apiVerification.verifyAppointmentActionPast(response);
 		}
 		apiVerification.responseTimeValidation(response);
-
 	}
 
 	@Test(enabled = true, groups = { "APItest" }, retryAnalyzer = RetryAnalyzer.class)
-	public void testPOSTArrivalActionsCurbsideCurbscheckin() throws IOException {
-		Response response = postAPIRequest.aptArrivalActionsCurbsideCurbscheckin(
-				propertyData.getProperty("baseurl.apt.precheck"),
-				propertyData.getProperty("apt.precheck.balance.practice.id"),
-				headerConfig.HeaderwithToken(getaccessToken),
-				propertyData.getProperty("apt.precheck.balance.patient.id"),
-				propertyData.getProperty("apt.precheck.pm.balance.appmnt.id"));
-		log("Verifying the response");
+	public void testPOSTArrivalActionsCurbsideCheckIn() throws IOException {
+		Random random = new Random();
+		int randamNo = random.nextInt(100000);
+		String patientId = String.valueOf(randamNo);
+		String apptId = String.valueOf(randamNo);
+		long currentTimestamp = System.currentTimeMillis();
+		long plus20Minutes = currentTimestamp + TimeUnit.MINUTES.toMillis(20);
+		log("Getting patients since timestamp: " + plus20Minutes);
+		log("Schedule a new Appointment");
+		Response scheduleResponse = postAPIRequestApptSche.aptPutAppointment(propertyData.getProperty("baseurl.mf.appointment.scheduler"),
+				propertyData.getProperty("apt.precheck.practice.id"),schedulerPayload.putAppointmentPayload(plus20Minutes,
+				propertyData.getProperty("mf.apt.scheduler.phone"),propertyData.getProperty("mf.apt.scheduler.email")),
+				headerConfig.HeaderwithToken(getaccessToken), patientId, apptId);
+		assertEquals(scheduleResponse.getStatusCode(), 200);
 
+		Response actionResponse = postAPIRequest.aptAppointmentActionsConfirm(
+				propertyData.getProperty("baseurl.apt.precheck"), propertyData.getProperty("apt.precheck.practice.id"),
+				headerConfig.HeaderwithToken(getaccessToken), patientId, apptId);
+		assertEquals(actionResponse.getStatusCode(), 200);
+
+		Response response = postAPIRequest.aptArrivalActionsCurbsideCurbscheckin(
+				propertyData.getProperty("baseurl.apt.precheck"), propertyData.getProperty("apt.precheck.practice.id"),
+				headerConfig.HeaderwithToken(getaccessToken), patientId, apptId);
+		assertEquals(response.getStatusCode(), 200);
+		
+		log("Verifying the response");
 		if (response.getStatusCode() == 200) {
 			log("Post an appointments action");
 			assertEquals(response.getStatusCode(), 200);
-			apiVerification.verifyAppointmentActions(response, propertyData.getProperty("curbscheckin.appt.action"),
-					propertyData.getProperty("apt.precheck.balance.practice.id"),
-					propertyData.getProperty("apt.precheck.balance.patient.id"),
-					propertyData.getProperty("apt.precheck.pm.balance.appmnt.id"));
+			apiVerification.verifyAppointmentActions(response,
+					propertyData.getProperty("curbs.side.checkin.appt.action"),
+					propertyData.getProperty("apt.precheck.practice.id"), patientId, apptId);
 		}
 		if (response.getStatusCode() == 400) {
 			log("An appointment action not allowed");
@@ -1248,7 +1331,6 @@ public class AptPrecheckTests extends BaseTestNG {
 		apiVerification.responseTimeValidation(response);
 		apiVerification.verifyPostBalancePay(response, propertyData.getProperty("apt.precheck.balance.practice.id"),
 				patientId, apptPrecheckApptId, propertyData.getProperty("apt.precheck.balance.complete.status"));
-
 	}
 
 	@Test(enabled = true, groups = { "APItest" }, retryAnalyzer = RetryAnalyzer.class)
@@ -1319,11 +1401,11 @@ public class AptPrecheckTests extends BaseTestNG {
 		apiVerification.responseTimeValidation(response);
 		apiVerification.verifyCopayfromApiPay(response, propertyData.getProperty("apt.precheck.balance.practice.id"),
 				patientId, apptPrecheckApptId, propertyData.getProperty("apt.precheck.balance.complete.status"));
-
 	}
 
 	@BeforeMethod(enabled = true, groups = { "APItest" })
 	public void getMethodName(ITestResult result) throws IOException {
 		log("Method Name-- " + result.getMethod().getMethodName());
+		log("Execution Environment: " + IHGUtil.getEnvironmentType());
 	}
 }

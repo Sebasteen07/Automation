@@ -359,3 +359,98 @@ Feature: Test fuctionality of Appointment precheck
     And user click preview of appointment confirmation
     Then verify in setting section view all fields are display related to text templates
     And logout from practice provisioning portal
+
+  Scenario: verify mobile view in preview page from appointment confirmation all fields display properly for email for existing practice
+    When from setting in notifications user click on email hamburgerButton section
+    And user click preview of appointment confirmation
+    Then verify in mobile view all fields are display related to templates
+    And logout from practice provisioning portal
+
+  Scenario: verify mobile view in preview page from appointment confirmation all fields display properly for email for new practice
+    When logout from practice provisioning portal
+    And user login to new practice
+    And from setting in notifications user click on email hamburgerButton section
+    And user click preview of appointment confirmation
+    Then verify in mobile view all fields are display related to templates for new practice
+    And logout from practice provisioning portal
+
+  Scenario: verify on preview page from appointment confirmation all fields display properly for texts
+    When from setting in notifications user click on text hamburgerButton section
+    And user click preview of appointment confirmation
+    Then verify in settings section all fields are display related to templates
+    And logout from practice provisioning portal
+
+  Scenario: verify on preview page from appointment reminder mail template are properly display for desktop view
+    When from setting in notifications user click on email hamburgerButton section of appointment reminder
+    And user click preview of appointment reminder
+    Then verify in desktop view all fields are display related to templates for appointment reminder
+    And logout from practice provisioning portal
+
+  Scenario: verify on preview page from appointment reminder mail template are properly display for desktop view for new practice
+    When logout from practice provisioning portal
+    And user login to new practice
+    And from setting in notifications user click on email hamburgerButton section of appointment reminder
+    And user click preview of appointment reminder
+    Then verify in desktop view all fields are display related to templates for appointment reminder for new practice
+    And logout from practice provisioning portal
+
+  Scenario: verify on preview page from appointment reminder mail template are properly display for mobile view
+    When from setting in notifications user click on email hamburgerButton section of appointment reminder
+    And user click preview of appointment reminder
+    Then verify in mobile view all fields are display related to templates for appointment reminder
+    And logout from practice provisioning portal
+
+  Scenario: verify on preview page from appointment reminder mail template are properly display for mobile view for new practice
+    When logout from practice provisioning portal
+    And user login to new practice
+    And from setting in notifications user click on email hamburgerButton section of appointment reminder
+    And user click preview of appointment reminder
+    Then verify in mobile view all fields are display related to templates for appointment reminder for new practice
+    And logout from practice provisioning portal
+
+  Scenario: verify on preview page from appointment reminder all fields display properly for email
+    When from setting in notifications user click on email hamburgerButton section of appointment reminder
+    And user click preview of appointment reminder
+    Then verify in settings section all fields are display related to email templates of appointment reminder
+    And logout from practice provisioning portal
+
+  Scenario: verify desktop view in preview page from appointment reminder all fields display properly for email
+    When from setting in notifications user click on email hamburgerButton section of appointment reminder
+    And user click preview of appointment reminder
+    Then verify in desktop view all fields are display related to templates for appointment reminder
+    And logout from practice provisioning portal
+
+  Scenario: verify mobile view in preview page from appointment reminder all fields display properly for email
+    When from setting in notifications user click on email hamburgerButton section of appointment reminder
+    And user click preview of appointment reminder
+    Then verify in mobile view all fields are display related to templates for appointment reminder
+    And logout from practice provisioning portal
+
+  Scenario: verify on preview page from appointment reminder after clickinh on edit button working properly for email
+    When from setting in notifications user click on email hamburgerButton section of appointment reminder
+    And user click preview of appointment reminder
+    Then verify on preview page from appointment reminder edit button working properly
+    And logout from practice provisioning portal
+
+  Scenario: verify on preview page from appointment reminder all fields display properly for text
+    When from setting in notifications user click on text hamburgerButton section of appointment reminder
+    And user click preview of appointment reminder
+    Then verify in settings section all fields are display related to text templates of appointment reminder
+    And logout from practice provisioning portal
+
+  Scenario: verify on preview page from appointment reminder after clicking on edit button working properly for text
+    When from setting in notifications user click on text hamburgerButton section of appointment reminder
+    And user click preview of appointment reminder
+    Then verify on preview page from appointment reminder edit button working properly
+    And logout from practice provisioning portal
+
+  Scenario: verify on preview page from appointment reminder all fields display properly for text
+    When from setting in notifications user click on text hamburgerButton section of appointment reminder
+    And user click preview of appointment reminder
+    Then verify in settings section all fields are display related to text templates of appointment reminder
+    And logout from practice provisioning portal
+
+  Scenario: verify if info tab (triangle ) near Send Notification text shows info Will not affect Appointment Confirmation sent via PSS when mouse hover on traingle
+    When user mouse hover on info tab from setting in notifications
+    Then verify 'Will not affect Appointment Confirmations sent via PSS' message will be display
+    And logout from practice provisioning portal
