@@ -102,7 +102,6 @@ public class PatientTrustedRepresentativePage extends BasePageObject {
 			}
 
 		}
-		//btnInvite.click();
 	}
 
 	public void clickOnInviteBtn() {
@@ -118,6 +117,13 @@ public class PatientTrustedRepresentativePage extends BasePageObject {
 		lblLastName.clear();
 		lblEmail.clear();
 		
+	}
+	
+	public void inviteGuardian(Patient patient) throws InterruptedException {
+		IHGUtil.PrintMethodName();
+		wait.until(ExpectedConditions.visibilityOf(btnInvite));
+		fillLightboxInputs(patient);
+		btnInvite.click();
 	}
 
 }

@@ -450,14 +450,19 @@ public class PatientSearchPage extends BasePageObject {
 		IHGUtil.PrintMethodName();
 		patientIdTextbox.clear();
 		patientIdTextbox.sendKeys(fName);
+		IHGUtil.waitForElement(driver, 10, updateInfo);
 		updateInfo.click();
 	}
 
 	public void clickOnSearch() {
+		IHGUtil.PrintMethodName();
+		IHGUtil.waitForElement(driver, 10, searchResult);
 		searchResult.click();
 	}
 
 	public void clickOnEdit() {
+		IHGUtil.PrintMethodName();
+		IHGUtil.waitForElement(driver, 10, editPatientID);
 		editPatientID.click();
 	}
 
