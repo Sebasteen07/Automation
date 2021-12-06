@@ -2361,4 +2361,35 @@ public class PayloadAdapterModulator {
 		return privacyPolicyToggleOFFAnonymous;
 	}
 	
+	public String alertAndLocakout(String lockoutkey,String lockoutValue,String lockoutType,String lockoutGroup, String msg) {
+		String lockout ="{\r\n"
+				+ "        \"key\": \""+lockoutkey+"\",\r\n"
+				+ "        \"value\": \""+lockoutValue+"\",\r\n"
+				+ "        \"type\": \""+lockoutType+"\",\r\n"
+				+ "        \"group\": \""+lockoutGroup+"\",\r\n"
+				+ " 	    \"messages\": {\r\n"
+				+ "    \"EN\": \""+msg+"\",\r\n"
+				+ "    \"ES\": \"\"\r\n"
+				+ "  }\r\n"
+				+ "}";
+		return lockout;
+	}
+	
+	
+	public String patientStatusPost(String id,String key,String type,String lockoutGroup, String engMsg, String spMsg,String displayMsg) {
+		String lockout ="{\r\n"
+				+ "  \"id\": "+id+",\r\n"
+				+ "  \"key\": \""+key+"\",\r\n"
+				+ "  \"value\": \""+key+"\",\r\n"
+				+ "  \"type\": \""+type+"\",\r\n"
+				+ "  \"messages\": {\r\n"
+				+ "    \"EN\": \""+engMsg+"\",\r\n"
+				+ "    \"ES\": \""+spMsg+"\"\r\n"
+				+ "  },\r\n"
+				+ "  \"group\": \""+lockoutGroup+"\",\r\n"
+				+ "  \"displayMessage\": \""+displayMsg+"\"\r\n"
+				+ "}";
+		return lockout;
+	}
+	
 }
