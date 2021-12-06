@@ -2302,7 +2302,63 @@ public class PayloadAdapterModulator {
 				+ "}";
 		return customData;
 	}
+	public String privacyPolicyToggleOnLL() {
+		String resourceConfigSave = "[\r\n"
+				+ "    {\r\n"
+				+ "        \"group\": \"ANNOUNCEMENT\",\r\n"
+				+ "        \"key\": \"showPrivacyPolicyMessage\",\r\n"
+				+ "        \"value\": true\r\n"
+				+ "    }\r\n"
+				+ "]\r\n"
+				+ "\r\n"
+				+ "";
+		return resourceConfigSave;
+	}
 	
 
+	public String privacyPolicyToggleOFFLL() {
+		String resourceConfigSave = "[\r\n"
+				+ "    {\r\n"
+				+ "        \"group\": \"ANNOUNCEMENT\",\r\n"
+				+ "        \"key\": \"showPrivacyPolicyMessage\",\r\n"
+				+ "        \"value\": false\r\n"
+				+ "    }\r\n"
+				+ "]\r\n"
+				+ "\r\n"
+				+ "";
+		return resourceConfigSave;
+	}
+	
+	public String privacyPolicyToggleONAnonymous() {
+		String privacyPolicyToggleONAnonymous = "[\r\n"
+				+ "    {\r\n"
+				+ "        \"group\": \"RULEENGINE\",\r\n"
+				+ "        \"key\": \"showPrivacyForAnonymous\",\r\n"
+				+ "        \"value\": true\r\n"
+				+ "    },\r\n"
+				+ "    {\r\n"
+				+ "        \"group\": \"RULEENGINE\",\r\n"
+				+ "        \"key\": \"allowDuplicatePatient\",\r\n"
+				+ "        \"value\": true\r\n"
+				+ "    }\r\n"
+				+ "]";
+		return privacyPolicyToggleONAnonymous;
+	}
 
+	public String privacyPolicyToggleOFFAnonymous() {
+		String privacyPolicyToggleOFFAnonymous = "[\r\n"
+				+ "    {\r\n"
+				+ "        \"group\": \"RULEENGINE\",\r\n"
+				+ "        \"key\": \"showPrivacyForAnonymous\",\r\n"
+				+ "        \"value\": false\r\n"
+				+ "    },\r\n"
+				+ "    {\r\n"
+				+ "        \"group\": \"RULEENGINE\",\r\n"
+				+ "        \"key\": \"allowDuplicatePatient\",\r\n"
+				+ "        \"value\": true\r\n"
+				+ "    }\r\n"
+				+ "]";
+		return privacyPolicyToggleOFFAnonymous;
+	}
+	
 }

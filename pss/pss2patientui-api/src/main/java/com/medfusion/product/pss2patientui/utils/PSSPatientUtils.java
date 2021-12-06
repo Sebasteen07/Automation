@@ -1166,9 +1166,18 @@ public class PSSPatientUtils extends BaseTestNGWebDriver {
 		Thread.sleep(2000);
 		AnonymousPatientInformation anonymousPatientInformation = aptDateTime
 				.selectAppointmentTimeSlot(testData.getIsNextDayBooking());
-		ConfirmationPage confirmationpage = anonymousPatientInformation.fillPatientForm(testData.getFirstName(),
+		ConfirmationPage confirmationpage = anonymousPatientInformation.fillPatientFormWithoutPrivacyPolicy(testData.getFirstName(),
 				testData.getLastName(), testData.getDob(), testData.getEmail(), testData.getGender(),
 				testData.getPrimaryNumber());
+		appointmentToScheduledAnonymous(confirmationpage, testData);
+	}
+
+	public void bookAnonymousAptWithPrivacyPolicy(AppointmentDateTime aptDateTime, Appointment testData, WebDriver driver) throws Exception {
+		log("Verify Confirmation page and Scheduled page");
+		Thread.sleep(2000);
+		AnonymousPatientInformation anonymousPatientInformation = aptDateTime.selectAppointmentTimeSlot(testData.getIsNextDayBooking());
+		ConfirmationPage confirmationpage = anonymousPatientInformation.fillPatientFormWithPrivacyPolicy(testData.getFirstName(), testData.getLastName(),
+				testData.getDob(), testData.getEmail(), testData.getGender(), testData.getPrimaryNumber());
 		appointmentToScheduledAnonymous(confirmationpage, testData);
 	}
 
