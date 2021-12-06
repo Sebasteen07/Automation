@@ -47,7 +47,7 @@ public abstract class JalapenoMenu extends MedfusionPage {
 	@FindBy(how = How.XPATH, using = "//*[@id='appointments_lhn']/a/span")
 	private WebElement appointmentsMenu;
 
-	@FindBy(how = How.XPATH, using = "//*[@id='aska_lhn']/a/span")
+	@FindBy(how = How.XPATH, using = "//*[@id='aska_lhn']")
 	private WebElement askAQuestionMenu;
 
 	@FindBy(how = How.XPATH, using = "//*[@id='prescriptions_lhn']/a/span")

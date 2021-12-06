@@ -53,9 +53,9 @@ public class LocationAndProviderPage {
 		PropertyFileLoader testData = new PropertyFileLoader();
 
 		locationDropdown.click();
-		locationDropdown.sendKeys(testData.getProperty("provider.wf.name"));
+		locationDropdown.sendKeys(testData.getProperty("provider.wf.location"));
 		providerDropdown.click();
-		providerDropdown.sendKeys(testData.getProperty("provider.wf.location"));
+		providerDropdown.sendKeys(testData.getProperty("provider.wf.name"));
 		btnContinue.click();
 
 	}
