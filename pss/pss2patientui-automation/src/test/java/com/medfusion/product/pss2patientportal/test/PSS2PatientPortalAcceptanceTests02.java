@@ -605,7 +605,6 @@ public class PSS2PatientPortalAcceptanceTests02 extends BaseTestNGWebDriver {
 		logStep("Set up the API authentication");
 		setUp(propertyData.getProperty("mf.practice.id.ng"), propertyData.getProperty("mf.authuserid.am.ng"));
 		Response response;
-
 		logStep("Set up the desired rule in Admin UI using API");
 		response = postAPIRequestAM.resourceConfigRuleGet(practiceId);
 		JSONArray arr = new JSONArray(response.body().asString());
@@ -618,26 +617,25 @@ public class PSS2PatientPortalAcceptanceTests02 extends BaseTestNGWebDriver {
 			response = postAPIRequestAM.deleteRuleById(practiceId, Integer.toString(ruleId));
 			aPIVerification.responseCodeValidation(response, 200);
 		}
-
 		response = postAPIRequestAM.resourceConfigRulePost(practiceId, payloadAM.rulePayload("TBL", "T,B,L"));
 		aPIVerification.responseCodeValidation(response, 200);
-
 		response = postAPIRequestAM.resourceConfigRulePost(practiceId, payloadAM.rulePayload("LTB", "L,T,B"));
 		aPIVerification.responseCodeValidation(response, 200);
-
-
 		response = postAPIRequestAM.locationAssociated(practiceId, "/associatedlocation");
 		aPIVerification.responseCodeValidation(response, 200);
 		JSONArray array = new JSONArray(response.body().asString());
-		int length = arr.length();
-		log("Length is- " + length);
-		for (int i = 0; i < length; i++) {
-			String name = array.getJSONObject(length).getString("name");
+		int len = array.length();
+		log("Length is- " + len);
+		log("Location is" + testData.getLocation());
+		for (int i = 0; i < len; i++) {
+			String name = array.getJSONObject(i).getString("name");
 			if (name.equalsIgnoreCase(testData.getLocation())) {
-				addressLine2 = array.getJSONObject(length).getJSONObject("address").getString("address2");
+				addressLine2 = array.getJSONObject(i).getJSONObject("address").getString("address2");
 				log("Address Line 2 is - " + addressLine2);
 			}
 		}
+
+
 		DismissPage dismissPage = new DismissPage(driver, testData.getUrlLoginLess());
 		Thread.sleep(1000);
 		logStep("Clicked on Dismiss");
@@ -665,6 +663,65 @@ public class PSS2PatientPortalAcceptanceTests02 extends BaseTestNGWebDriver {
 		logStep("Set up the API authentication");
 		setUp(propertyData.getProperty("mf.practice.id.at"), propertyData.getProperty("mf.authuserid.am.at"));
 		Response response;
+		logStep("Set up the desired rule in Admin UI using API");
+		response = postAPIRequestAM.resourceConfigRuleGet(practiceId);
+		JSONArray arr = new JSONArray(response.body().asString());
+		int l = arr.length();
+		log("Length is- " + l);
+		for (int i = 0; i < l; i++) {
+			int ruleId = arr.getJSONObject(i).getInt("id");
+			log("Object No." + i + "- " + ruleId);
+			response = postAPIRequestAM.deleteRuleById(practiceId, Integer.toString(ruleId));
+			aPIVerification.responseCodeValidation(response, 200);
+		}
+
+		response = postAPIRequestAM.resourceConfigRulePost(practiceId, payloadAM.rulePayload("TBL", "T,B,L"));
+		aPIVerification.responseCodeValidation(response, 200);
+
+		response = postAPIRequestAM.resourceConfigRulePost(practiceId, payloadAM.rulePayload("LTB", "L,T,B"));
+		aPIVerification.responseCodeValidation(response, 200);
+
+		response = postAPIRequestAM.locationAssociated(practiceId, "/associatedlocation");
+		aPIVerification.responseCodeValidation(response, 200);
+		JSONArray array = new JSONArray(response.body().asString());
+		int len = array.length();
+		log("Length is- " + len);
+		log("Location is" + testData.getLocation());
+		for (int i = 0; i < len; i++) {
+			String name = array.getJSONObject(i).getString("name");
+			if (name.equalsIgnoreCase(testData.getLocation())) {
+				addressLine2 = array.getJSONObject(i).getJSONObject("address").getString("address2");
+				log("Address Line 2 is - " + addressLine2);
+			}
+		}
+
+		DismissPage dismissPage = new DismissPage(driver, testData.getUrlLoginLess());
+		Thread.sleep(1000);
+		logStep("Clicked on Dismiss");
+		LoginlessPatientInformation loginlessPatientInformation = dismissPage.clickDismiss();
+		HomePage homepage = loginlessPatientInformation.fillNewPatientForm(testData.getFirstName(), testData.getLastName(), testData.getDob(), testData.getEmail(),
+				testData.getGender(), testData.getZipCode(), testData.getPrimaryNumber());
+		homepage.btnStartSchedClick();
+		Location location = null;
+		StartAppointmentInOrder startappointmentInOrder = null;
+		startappointmentInOrder = homepage.skipInsurance(driver);
+		location = startappointmentInOrder.selectFirstLocation(PSSConstants.START_LOCATION);
+		logStep("Verfiy Location Page and location =" + testData.getLocation());
+		String addresslineUI = location.address2(addressLine2);
+		Assert.assertEquals(addresslineUI, addressLine2);
+	}
+
+	@Test(enabled = true, groups = {"AcceptanceTests"}, retryAnalyzer = RetryAnalyzer.class)
+	public void testAddressLine2GW() throws Exception {
+		PSSPropertyFileLoader propertyData = new PSSPropertyFileLoader();
+		Appointment testData = new Appointment();
+		AdminUser adminUser = new AdminUser();
+		propertyData.setAdminGW(adminUser);
+		propertyData.setAppointmentResponseGW(testData);
+		String addressLine2 = "";
+		logStep("Set up the API authentication");
+		setUp(propertyData.getProperty("mf.practice.id.gw"), propertyData.getProperty("mf.authuserid.am.gw"));
+		Response response;
 
 		logStep("Set up the desired rule in Admin UI using API");
 		response = postAPIRequestAM.resourceConfigRuleGet(practiceId);
@@ -689,12 +746,13 @@ public class PSS2PatientPortalAcceptanceTests02 extends BaseTestNGWebDriver {
 		response = postAPIRequestAM.locationAssociated(practiceId, "/associatedlocation");
 		aPIVerification.responseCodeValidation(response, 200);
 		JSONArray array = new JSONArray(response.body().asString());
-		int length = arr.length();
-		log("Length is- " + length);
-		for (int i = 0; i < length; i++) {
-			String name = array.getJSONObject(length).getString("name");
+		int len = array.length();
+		log("Length is- " + len);
+		log("Location is" + testData.getLocation());
+		for (int i = 0; i < len; i++) {
+			String name = array.getJSONObject(i).getString("name");
 			if (name.equalsIgnoreCase(testData.getLocation())) {
-				addressLine2 = array.getJSONObject(length).getJSONObject("address").getString("address2");
+				addressLine2 = array.getJSONObject(i).getJSONObject("address").getString("address2");
 				log("Address Line 2 is - " + addressLine2);
 			}
 		}
@@ -711,6 +769,72 @@ public class PSS2PatientPortalAcceptanceTests02 extends BaseTestNGWebDriver {
 		location = startappointmentInOrder.selectFirstLocation(PSSConstants.START_LOCATION);
 		logStep("Verfiy Location Page and location =" + testData.getLocation());
 		String addresslineUI = location.address2(addressLine2);
+		log("Address Line2 In Admin UI......" + addressLine2);
+		log("Address Line2 In Patient UI......" + addresslineUI);
+		Assert.assertEquals(addresslineUI, addressLine2);
+	}
+
+
+	@Test(enabled = true, groups = {"AcceptanceTests"}, retryAnalyzer = RetryAnalyzer.class)
+	public void testAddressLine2GE() throws Exception {
+		PSSPropertyFileLoader propertyData = new PSSPropertyFileLoader();
+		Appointment testData = new Appointment();
+		AdminUser adminUser = new AdminUser();
+		propertyData.setAdminGE(adminUser);
+		propertyData.setAppointmentResponseGE(testData);
+		String addressLine2 = "";
+		logStep("Set up the API authentication");
+		setUp(propertyData.getProperty("mf.practice.id.ge"), propertyData.getProperty("mf.authuserid.am.ge"));
+		Response response;
+
+		logStep("Set up the desired rule in Admin UI using API");
+		response = postAPIRequestAM.resourceConfigRuleGet(practiceId);
+		JSONArray arr = new JSONArray(response.body().asString());
+		int l = arr.length();
+		log("Length is- " + l);
+
+		for (int i = 0; i < l; i++) {
+			int ruleId = arr.getJSONObject(i).getInt("id");
+			log("Object No." + i + "- " + ruleId);
+			response = postAPIRequestAM.deleteRuleById(practiceId, Integer.toString(ruleId));
+			aPIVerification.responseCodeValidation(response, 200);
+		}
+
+		response = postAPIRequestAM.resourceConfigRulePost(practiceId, payloadAM.rulePayload("TBL", "T,B,L"));
+		aPIVerification.responseCodeValidation(response, 200);
+
+		response = postAPIRequestAM.resourceConfigRulePost(practiceId, payloadAM.rulePayload("LTB", "L,T,B"));
+		aPIVerification.responseCodeValidation(response, 200);
+
+
+		response = postAPIRequestAM.locationAssociated(practiceId, "/associatedlocation");
+		aPIVerification.responseCodeValidation(response, 200);
+		JSONArray array = new JSONArray(response.body().asString());
+		int len = array.length();
+		log("Length is- " + len);
+		log("Location is" + testData.getLocation());
+		for (int i = 0; i < len; i++) {
+			String name = array.getJSONObject(i).getString("name");
+			if (name.equalsIgnoreCase(testData.getLocation())) {
+				addressLine2 = array.getJSONObject(i).getJSONObject("address").getString("address2");
+				log("Address Line 2 is - " + addressLine2);
+			}
+		}
+		DismissPage dismissPage = new DismissPage(driver, testData.getUrlLoginLess());
+		Thread.sleep(1000);
+		logStep("Clicked on Dismiss");
+		LoginlessPatientInformation loginlessPatientInformation = dismissPage.clickDismiss();
+		HomePage homepage = loginlessPatientInformation.fillNewPatientForm(testData.getFirstName(), testData.getLastName(), testData.getDob(), testData.getEmail(),
+				testData.getGender(), testData.getZipCode(), testData.getPrimaryNumber());
+		homepage.btnStartSchedClick();
+		Location location = null;
+		StartAppointmentInOrder startappointmentInOrder = null;
+		startappointmentInOrder = homepage.skipInsurance(driver);
+		location = startappointmentInOrder.selectFirstLocation(PSSConstants.START_LOCATION);
+		logStep("Verfiy Location Page and location =" + testData.getLocation());
+		String addresslineUI = location.address2(addressLine2);
+		log("Address Line2 In Admin UI......" + addressLine2);
+		log("Address Line2 In Patient UI......" + addresslineUI);
 		Assert.assertEquals(addresslineUI, addressLine2);
 	}
 
