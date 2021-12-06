@@ -13,7 +13,7 @@ variable "data_classification" {
 
 variable "environment" {
   type        = string
-  default     = "dev"
+  default     = "build"
   description = "The name of environment. Used to differentiate costs between stacks or pipelines including those of the same type"
 }
 
