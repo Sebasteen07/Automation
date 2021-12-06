@@ -55,8 +55,14 @@ public class SelectPharmacyPage extends MedfusionPage {
 	@FindBy(how = How.ID, using = "nameOfPharmacy")
 	private WebElement pharmacyName;
 
-	@FindBy(how = How.ID, using = "phoneNumber")
-	private WebElement pharmacyPhone;
+	@FindBy(how = How.ID, using = "phoneNumber1")
+	private WebElement pharmacyPhone1;
+	
+	@FindBy(how = How.ID, using = "phoneNumber2")
+	private WebElement pharmacyPhone2;
+	
+	@FindBy(how = How.ID, using = "phoneNumber3")
+	private WebElement pharmacyPhone3;
 
 	@FindBy(how = How.ID, using = "faxNumber")
 	private WebElement pharmacyFax;
@@ -75,8 +81,10 @@ public class SelectPharmacyPage extends MedfusionPage {
 
 	@FindBy(how = How.XPATH, using = "//div[@class='modal-button']/button[@class='btn btn-secondary ng-binding']")
 	private WebElement popupBackbtn;
+	
 	@FindBy(how = How.XPATH, using = "//button[@class='close']")
 	private WebElement addPharmacyClosePopupbtn;
+	
 	@FindBy(how = How.XPATH, using = "//*[contains(text(),'Save & Continue')]")
 	private WebElement popupContinueBtn;
 
@@ -88,10 +96,13 @@ public class SelectPharmacyPage extends MedfusionPage {
 
 	@FindBy(how = How.XPATH, using = "//div[@class='ng-option ng-option-marked']")
 	private WebElement selectPharmacyName;
+	
 	@FindBy(how = How.XPATH, using = "//span[@class='pharmacy-radio-button selected']/../../..//a[text()='Delete']")
 	private WebElement btnDelete;
+	
 	@FindBy(how = How.ID, using = "removePharmacyOkButton")
 	private WebElement btnRemovePharmacyOkButton;
+	
 	@FindBy(how = How.XPATH, using = "//span[@class='pharmacy-radio-button selected']/../span[@class='pharmacy-name']")
 	private WebElement rdoPharmacy;
 
@@ -108,7 +119,7 @@ public class SelectPharmacyPage extends MedfusionPage {
 		ArrayList<WebElement> webElementsList = new ArrayList<WebElement>();
 
 		webElementsList.add(pharmacyName);
-		webElementsList.add(pharmacyPhone);
+		webElementsList.add(pharmacyPhone1);
 		webElementsList.add(pharmacyFax);
 		webElementsList.add(pharmacyAddress);
 		webElementsList.add(pharmacyCity);
@@ -145,10 +156,12 @@ public class SelectPharmacyPage extends MedfusionPage {
 		pharmacyCity.sendKeys(testData.getProperty("city"));
 		pharmacyState.sendKeys(testData.getProperty("state"));
 		pharmacyState.sendKeys(Keys.ENTER);
-		pharmacyZip.sendKeys(testData.getProperty("zip.code"));
+		pharmacyZip.sendKeys(testData.getProperty("zip.code"));;
 		log("Verifying continue button is disabled since Phone number is mandatory");
 		assertFalse(popupContinueBtn.isEnabled(), "Continue button is disabled");
-		pharmacyPhone.sendKeys(IHGUtil.createRandomNumericString(10));
+		pharmacyPhone1.sendKeys(IHGUtil.createRandomNumericString(3));
+		pharmacyPhone2.sendKeys(IHGUtil.createRandomNumericString(3));
+		pharmacyPhone3.sendKeys(IHGUtil.createRandomNumericString(4));
 		new WebDriverWait(driver, 10).until(ExpectedConditions.elementToBeClickable(popupContinueBtn));
 		popupContinueBtn.click();
 		log("Pharmacy is added");
@@ -166,8 +179,10 @@ public class SelectPharmacyPage extends MedfusionPage {
 		log("Click on Add a Pharmacy button");
 		wait.until(ExpectedConditions.visibilityOf(addPharmacy));
 		addPharmacy.click();
+		Thread.sleep(1000);
 		wait.until(ExpectedConditions.visibilityOf(addProviderSuggestPharmacy));
 		javascriptClick(addProviderSuggestPharmacy);
+		wait.until(ExpectedConditions.visibilityOf(EnterPharmacyNameActivate));
 		log("Click on Enter Pharmacy Name Activate TextBox");
 		EnterPharmacyNameActivate.click();
 		log("It enter the pharmacy name ");
@@ -207,7 +222,9 @@ public class SelectPharmacyPage extends MedfusionPage {
 		assertTrue(arePopupPageElementsPresent());
 		log("Enter Pharmacy Details");
 		pharmacyName.sendKeys(testData.getProperty("pharmacy.name") + IHGUtil.createRandomNumericString(4));
-		pharmacyPhone.sendKeys(IHGUtil.createRandomNumericString(10));
+		pharmacyPhone1.sendKeys(IHGUtil.createRandomNumericString(3));
+		pharmacyPhone2.sendKeys(IHGUtil.createRandomNumericString(3));
+		pharmacyPhone3.sendKeys(IHGUtil.createRandomNumericString(4));
 		popupContinueBtn.click();
 		log("Pharmacy is added");
 	}

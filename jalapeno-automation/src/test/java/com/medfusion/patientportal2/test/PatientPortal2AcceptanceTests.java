@@ -2,7 +2,6 @@
 package com.medfusion.patientportal2.test;
 
 import static org.testng.Assert.*;
-
 import java.io.File;
 import java.io.IOException;
 import java.time.Instant;
@@ -20,6 +19,7 @@ import com.medfusion.product.patientportal2.utils.JalapenoConstants;
 import com.medfusion.product.patientportal2.utils.PortalUtil2;
 import org.apache.commons.io.FileUtils;
 import org.openqa.selenium.By;
+import org.openqa.selenium.Dimension;
 import org.openqa.selenium.WebDriverException;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.PageFactory;
@@ -47,6 +47,7 @@ import com.medfusion.product.object.maps.patientportal2.page.AppointmentRequestP
 import com.medfusion.product.object.maps.patientportal2.page.AppointmentRequestPage.JalapenoAppointmentRequestV2HistoryPage;
 import com.medfusion.product.object.maps.patientportal2.page.AppointmentRequestPage.JalapenoAppointmentRequestV2Step1;
 import com.medfusion.product.object.maps.patientportal2.page.AppointmentRequestPage.JalapenoAppointmentRequestV2Step2;
+import com.medfusion.product.object.maps.patientportal2.page.AskAStaff.JalapenoAskAStaffPage;
 import com.medfusion.product.object.maps.patientportal2.page.AskAStaff.JalapenoAskAStaffV2HistoryDetailPage;
 import com.medfusion.product.object.maps.patientportal2.page.AskAStaff.JalapenoAskAStaffV2HistoryListPage;
 import com.medfusion.product.object.maps.patientportal2.page.AskAStaff.JalapenoAskAStaffV2Page1;
@@ -1034,8 +1035,8 @@ public class PatientPortal2AcceptanceTests extends BaseTestNGWebDriver {
 
 		logStep("Login to practice portal");
 		PracticeLoginPage practiceLogin = new PracticeLoginPage(driver, testData.getPortalUrl());
-		PracticeHomePage practiceHome = practiceLogin.login(testData.getProperty("aska.v2.doctor.login"),
-				testData.getProperty("aska.v2.doctor.password"));
+		PracticeHomePage practiceHome = practiceLogin.login(testData.getProperty("sa.provider.username"),
+				testData.getProperty("sa.provider.password"));
 
 		logStep("Click Ask A Staff tab");
 		AskAStaffSearchPage searchQ = practiceHome.clickAskAStaffTab();
@@ -1065,17 +1066,20 @@ public class PatientPortal2AcceptanceTests extends BaseTestNGWebDriver {
 		logStep("Login patient");
 		loginPage = new JalapenoLoginPage(driver, testData.getProperty("url"));
 		homePage = loginPage.login(testData.getProperty("aska.v2.user"), testData.getProperty("aska.v2.password"));
-
+		
 		logStep("Go to messages");
 		JalapenoMessagesPage messagesPage = homePage.showMessages(driver);
 
 		logStep("Check if message was delivered");
 		assertTrue(messagesPage.isMessageDisplayed(driver,
 				"Automated Test " + (Long.toString(detailStep2.getCreatedTimeStamp()))));
-
-		logStep("Go back to the aska again and check submission status changed");
-		homePage = messagesPage.clickOnMenuHome();
-		askPage1 = homePage.openSpecificAskaV2(testData.getProperty("aska.v2.name"));
+		
+		JalapenoLoginPage loginPageNew = new JalapenoLoginPage(driver, testData.getProperty("url"));
+		JalapenoHomePage homePageNew = loginPageNew.login(testData.getProperty("aska.v2.user"),
+				testData.getProperty("aska.v2.password"));
+		
+		logStep("Click Ask A Staff tab");
+		askPage1 = homePageNew.openSpecificAskaV2(testData.getProperty("aska.v2.name"));
 		askHistoryList = askPage1.clickOnHistory();
 
 		logStep("Find history entry by subject/reason and navigate to detail");
@@ -1792,9 +1796,14 @@ public class PatientPortal2AcceptanceTests extends BaseTestNGWebDriver {
 		assertTrue(messagesPage.isMessageDisplayed(driver,
 				"Automated Test " + (Long.toString(detailStep2.getCreatedTimeStamp()))));
 
-		logStep("Go back to the aska again and check submission status changed");
-		homePage = messagesPage.clickOnMenuHome();
-		askPage1 = homePage.openSpecificAskaPaidV2(testData.getProperty("aska.v2.name"));
+//		logStep("Go back to the aska again and check submission status changed");
+//		homePage = messagesPage.clickOnMenuHome();
+		
+		JalapenoLoginPage loginPageNew = new JalapenoLoginPage(driver, testData.getProperty("url"));
+		JalapenoHomePage homePageNew = loginPageNew.login(testData.getProperty("aska.v2.user"),
+				testData.getProperty("aska.v2.password"));
+		
+		askPage1 = homePageNew.openSpecificAskaPaidV2(testData.getProperty("aska.v2.name"));
 		askHistoryList = askPage1.clickOnHistory();
 
 		logStep("Find history entry by subject/reason and navigate to detail");
@@ -3541,18 +3550,11 @@ public class PatientPortal2AcceptanceTests extends BaseTestNGWebDriver {
 		pSiteGenPracticeHomePage.clickOnPharmacy();
 
 		ManageYourPharmacies managepharmacy = new ManageYourPharmacies(driver);
-		managepharmacy.removeAllPharmacy();
-		driver.get(driver.getCurrentUrl());
-		assertFalse(managepharmacy.isAnyPharmacyPresent());
-		Thread.sleep(5000);
 		managepharmacy.clickOnAddPharmacyButton();
 
 		AddPharmacyPage addPharmacyPage = new AddPharmacyPage(driver);
 		String externalid = IHGUtil.createRandomNumericString(12);
 		addPharmacyPage.fillPharmacyDetails(externalid, true);
-
-		managepharmacy.confirmPharmacyInTable(pharmacyName);
-		log("This should print the pharmacy Name1  :" + pharmacyName);
 
 		logStep("Load login page and login");
 		JalapenoLoginPage loginPage = new JalapenoLoginPage(driver, testData.getProperty("med.wf.portal.url"));
@@ -3737,10 +3739,12 @@ public class PatientPortal2AcceptanceTests extends BaseTestNGWebDriver {
 		logStep("Check if message was delivered");
 		assertTrue(messagesPage.isMessageDisplayed(driver,
 				"Automated Test " + (Long.toString(detailStep2.getCreatedTimeStamp()))));
-
-		logStep("Go back to the aska again and check submission status changed");
-		homePage = messagesPage.clickOnMenuHome();
-		askPage1 = homePage.openSpecificAskaPaidV2(testData.getProperty("aska.v2.name"));
+		
+		JalapenoLoginPage loginPageNew = new JalapenoLoginPage(driver, testData.getProperty("url"));
+		JalapenoHomePage homePageNew = loginPageNew.login(testData.getProperty("aska.v2.user"),
+				testData.getProperty("aska.v2.password"));
+		
+		askPage1 = homePageNew.openSpecificAskaPaidV2(testData.getProperty("aska.v2.name"));
 		askHistoryList = askPage1.clickOnHistory();
 
 		logStep("Find history entry by subject/reason and navigate to detail");
@@ -5232,10 +5236,15 @@ public class PatientPortal2AcceptanceTests extends BaseTestNGWebDriver {
 		logStep("Check if message was delivered");
 		assertTrue(messagesPage.isMessageDisplayed(driver,
 				"Automated Test " + (Long.toString(detailStep2.getCreatedTimeStamp()))));
-
-		logStep("Go back to the aska again and check submission status changed");
-		homePage = messagesPage.clickOnMenuHome();
-		askPageFreequs = homePage.openSpecificAskaFree(testData.getProperty("aska.v2.name"));
+		
+		JalapenoLoginPage loginPageNew = new JalapenoLoginPage(driver, testData.getProperty("url"));
+		JalapenoHomePage homePageNew = loginPageNew.login(testData.getProperty("aska.v2.user"),
+				testData.getProperty("aska.v2.password"));	
+		
+		logStep("Switching to Dependent Account");
+		homePage.faChangePatient();
+		
+		askPageFreequs = homePageNew.openSpecificAskaFree(testData.getProperty("aska.v2.name"));
 		askHistoryList = askPageFreequs.clickOnHistory();
 
 		logStep("Find history entry by subject/reason and navigate to detail");
