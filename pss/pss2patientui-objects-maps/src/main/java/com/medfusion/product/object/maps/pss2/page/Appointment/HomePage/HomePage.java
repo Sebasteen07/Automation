@@ -192,6 +192,22 @@ public class HomePage extends PSS2MainPage {
 	
 	@FindBy(how = How.XPATH, using = "//li[2]/div[1]/div[1]/div")
 	private WebElement providerPreSelected;
+	
+	@FindBy(how = How.XPATH, using = "//div[@id='patientmatch']//span[contains(text(),'Message')]")
+	private WebElement lockoutPopUp;	
+	
+	@FindBy(how = How.XPATH, using = "//div[@id='alertModalheader']//span[contains(text(),'Alert')]")
+	private WebElement alertPopUp;
+	
+	@FindBy(how = How.XPATH, using = "//div[2]/div[1]/div[1]/div[1]/div[2]/pre[1]/div[1]")
+	private WebElement alertPopUpMsg;
+	
+	@FindBy(how = How.XPATH, using = "//div[@id='patientmatch']//div[@class='modal-body']/p/pre")
+	private WebElement lockoutPopUpMsg;
+	
+	@FindBy(how = How.ID, using = "closeAlertPopup")
+	private WebElement alertDismiss;
+
 
 	public HomePage(WebDriver driver) {
 		super(driver);
@@ -796,6 +812,30 @@ public class HomePage extends PSS2MainPage {
 		} else {
 			return false;
 		}
+	}
+	
+	
+	
+	public String getTextLockoutPopUpMsg() {
+		
+		IHGUtil.waitForElement(driver, 3, lockoutPopUpMsg);
+		commonMethods.highlightElement(lockoutPopUpMsg);
+		String popupText=lockoutPopUpMsg.getText();
+		return popupText;		
+	}
+	
+	public String getTextAlertPopUpMsg() {
+		
+		IHGUtil.waitForElement(driver, 3, alertPopUp);
+		commonMethods.highlightElement(alertPopUpMsg);
+		String popupText=alertPopUpMsg.getText();
+		return popupText;		
+	}
+	
+	public void clickAlertPopUp() {
+		
+		commonMethods.highlightElement(alertDismiss);
+		alertDismiss.click();
 	}
 
 }

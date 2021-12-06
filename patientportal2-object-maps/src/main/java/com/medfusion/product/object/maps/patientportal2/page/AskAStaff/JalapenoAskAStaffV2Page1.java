@@ -188,8 +188,9 @@ public class JalapenoAskAStaffV2Page1 extends JalapenoMenu {
 		if (subject != null && !subject.trim().isEmpty()) {
 			subjectBox.clear();
 			wait.until(ExpectedConditions.visibilityOf(subjectBox));
-			subjectBox.sendKeys(subject);
 			Thread.sleep(2000);
+			subjectBox.sendKeys(subject);
+			
 		}
 		Thread.sleep(2000);			
 		log("Selecting Provider ");

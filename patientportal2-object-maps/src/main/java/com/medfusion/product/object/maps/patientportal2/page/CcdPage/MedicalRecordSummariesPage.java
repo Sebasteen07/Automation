@@ -180,7 +180,9 @@ public class MedicalRecordSummariesPage extends JalapenoMenu {
 		log("System default time zone: " + ZoneId.systemDefault().toString());
 
 		ZonedDateTime ccdDateUTC = MFDateUtil.parseDateToUTCZonedTime(firstVisibleCCDDate.getText());
+		log("date after parsing: " +ccdDateUTC);
 		ZonedDateTime weekAgoDateUTC = MFDateUtil.getCurrentTimeUTC().minus(days, ChronoUnit.DAYS);
+		log("week later: " +weekAgoDateUTC);
 
 		log("CCD Date found:" + firstVisibleCCDDate.getText() + " parsed from local to utc as: "
 				+ ccdDateUTC.toString());
