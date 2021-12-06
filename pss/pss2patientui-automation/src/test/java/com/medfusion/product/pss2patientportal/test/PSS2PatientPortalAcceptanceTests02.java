@@ -861,8 +861,8 @@ public class PSS2PatientPortalAcceptanceTests02 extends BaseTestNGWebDriver {
 		logStep("Open the link and click on Dismiss Button ");
 		LoginlessPatientInformation loginlessPatientInformation = dismissPage.clickDismiss();
 
-		String fn = "kt";
-		String ln = "kt";
+		String fn = propertyData.getProperty("preventsched.past.fn");
+		String ln = propertyData.getProperty("preventsched.past.ln");
 		String dob = propertyData.getProperty("dob.lockout.ng");
 		String gender = propertyData.getProperty("gender.lockout.ng");
 		
