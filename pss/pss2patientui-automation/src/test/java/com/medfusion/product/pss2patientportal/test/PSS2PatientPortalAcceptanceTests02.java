@@ -828,35 +828,35 @@ public class PSS2PatientPortalAcceptanceTests02 extends BaseTestNGWebDriver {
 	@Test(enabled = true, groups = { "AcceptanceTests" }, retryAnalyzer = RetryAnalyzer.class)
 	public void testAlerts_PatientStatusNG() throws Exception {
 
-		logStep("Verify the Announcemnet- Greetings on welcome page");
+		logStep("Verify the Address Line 2 from location");
 		PSSPropertyFileLoader propertyData = new PSSPropertyFileLoader();
 		Appointment testData = new Appointment();
 		AdminUser adminUser = new AdminUser();
-		
+
 		propertyData.setAdminNG(adminUser);
 		propertyData.setAppointmentResponseNG(testData);
 
 		logStep("Set up the API authentication");
 		setUp(propertyData.getProperty("mf.practice.id.ng"), propertyData.getProperty("mf.authuserid.am.ng"));
 		Response response;
-		
-		String enMessage=propertyData.getProperty("patientstatus.msg.en.ng");
-		String esMessage=propertyData.getProperty("patientstatus.msg.es.ng");
-		String alertId=propertyData.getProperty("patientstatus.id.ng");
-		
-		String group=propertyData.getProperty("alertgroup.ng");
-		String lockouttype=propertyData.getProperty("patientnote.type.ng");
-		String key=propertyData.getProperty("patientstatus.key.ng");
-		
-		String lockoutPayload=payloadAM.patientStatusPost(alertId,key, lockouttype, group, enMessage,esMessage,enMessage);
-		
+
+		String enMessage = propertyData.getProperty("patientstatus.msg.en.ng");
+		String esMessage = propertyData.getProperty("patientstatus.msg.es.ng");
+		String alertId = propertyData.getProperty("patientstatus.id.ng");
+
+		String group = propertyData.getProperty("alertgroup.ng");
+		String lockouttype = propertyData.getProperty("patientnote.type.ng");
+		String key = propertyData.getProperty("patientstatus.key.ng");
+
+		String lockoutPayload = payloadAM.patientStatusPost(alertId, key, lockouttype, group, enMessage, esMessage,
+				enMessage);
+
 		logStep("Remove the already set announcement ");
-		response=postAPIRequestAM.lockoutPost(practiceId, lockoutPayload, "/lockout");
+		response = postAPIRequestAM.lockoutPost(practiceId, lockoutPayload, "/lockout");
 		aPIVerification.responseCodeValidation(response, 200);
-		
+
 		logStep("Move to PSS patient Portal 2.0 to book an Appointment");
 		DismissPage dismissPage = new DismissPage(driver, testData.getUrlLoginLess());
-		
 
 		logStep("Open the link and click on Dismiss Button ");
 		LoginlessPatientInformation loginlessPatientInformation = dismissPage.clickDismiss();
@@ -865,15 +865,20 @@ public class PSS2PatientPortalAcceptanceTests02 extends BaseTestNGWebDriver {
 		String ln = propertyData.getProperty("preventsched.past.ln");
 		String dob = propertyData.getProperty("dob.lockout.ng");
 		String gender = propertyData.getProperty("gender.lockout.ng");
-		
+
 		logStep("Enter the below mentioned patient details in demographic page- ");
 		log("Demographic Details- " + fn + " " + ln + " " + dob + " " + gender + " ");
-		
-		HomePage homePage = loginlessPatientInformation.fillNewPatientForm(fn, ln, dob, "", gender, "", "");	
-		String actualPopUpMessage=homePage.getTextAlertPopUpMsg();
-		
-		assertEquals(actualPopUpMessage, enMessage, "Lockout message is wrong");
 
+		HomePage homePage = loginlessPatientInformation.fillNewPatientForm(fn, ln, dob, "", gender, "", "");
+		String actualPopUpMessage = homePage.getTextAlertPopUpMsg();
+
+		assertEquals(actualPopUpMessage, enMessage, "Alert message is wrong");
+
+		homePage.clickAlertPopUp();
+		boolean bool = homePage.isbtnstartSchedulingPresent();
+
+		assertEquals(bool, true, "Alert workflow is wrong");
+		log("Start Schedule Button is visible. So Test Case passed.");
 	}
 	
 	@Test(enabled = true, groups = { "AcceptanceTests" }, retryAnalyzer = RetryAnalyzer.class)
@@ -930,6 +935,86 @@ public class PSS2PatientPortalAcceptanceTests02 extends BaseTestNGWebDriver {
 		
 		response=postAPIRequestAM.deleteLockoutById(practiceId, id);
 		aPIVerification.responseCodeValidation(response, 200);	
+	}
+	
+	@Test(enabled = true, groups = { "AcceptanceTests" }, retryAnalyzer = RetryAnalyzer.class)
+	public void testLockoutMessageNG() throws Exception {
+
+		PSSPropertyFileLoader propertyData = new PSSPropertyFileLoader();
+		Appointment testData = new Appointment();
+		AdminUser adminUser = new AdminUser();
+
+		propertyData.setAdminNG(adminUser);
+		propertyData.setAppointmentResponseNG(testData);
+		adminUser.setLastQuestionMandatory(true);
+
+		PSSAdminUtils adminUtils = new PSSAdminUtils();
+
+		logStep("Login to PSS 2.0 Admin portal and do the seetings for Last Question Required");
+		adminUtils.LockoutAndNotification(driver, adminUser, testData);
+		
+		
+	}
+	
+	@Test(enabled = true, groups = { "AcceptanceTests" }, retryAnalyzer = RetryAnalyzer.class)
+	public void testAlertMessageNG() throws Exception {
+
+		PSSPropertyFileLoader propertyData = new PSSPropertyFileLoader();
+		Appointment testData = new Appointment();
+		AdminUser adminUser = new AdminUser();
+
+		propertyData.setAdminNG(adminUser);
+		propertyData.setAppointmentResponseNG(testData);
+		adminUser.setLastQuestionMandatory(true);
+
+		PSSAdminUtils adminUtils = new PSSAdminUtils();
+
+		logStep("Login to PSS 2.0 Admin portal and do the seetings for Last Question Required");
+		adminUtils.alertsAndNotification(driver, adminUser, testData);		
+	}
+	
+	@Test(enabled = true, groups = { "AcceptanceTests" }, retryAnalyzer = RetryAnalyzer.class)
+	public void testAlertMessageGW() throws Exception {
+
+		PSSPropertyFileLoader propertyData = new PSSPropertyFileLoader();
+		Appointment testData = new Appointment();
+		AdminUser adminUser = new AdminUser();
+
+		propertyData.setAdminGW(adminUser);
+		propertyData.setAppointmentResponseGW(testData);
+
+		PSSAdminUtils adminUtils = new PSSAdminUtils();
+
+		logStep("Login to PSS 2.0 Admin portal and do the seetings for Last Question Required");
+		adminUtils.alertsAndNotification(driver, adminUser, testData);		
+	}
+	
+	@Test(enabled = true, groups = { "AcceptanceTests" }, retryAnalyzer = RetryAnalyzer.class)
+	public void testAlertMessageGE() throws Exception {
+
+		PSSPropertyFileLoader propertyData = new PSSPropertyFileLoader();
+		Appointment testData = new Appointment();
+		AdminUser adminUser = new AdminUser();
+
+		propertyData.setAdminGE(adminUser);
+		PSSAdminUtils adminUtils = new PSSAdminUtils();
+
+		logStep("Login to PSS 2.0 Admin portal and do the seetings for Last Question Required");
+		adminUtils.alertsAndNotification(driver, adminUser, testData);		
+	}
+	
+	@Test(enabled = true, groups = { "AcceptanceTests" }, retryAnalyzer = RetryAnalyzer.class)
+	public void testAlertMessageAT() throws Exception {
+
+		PSSPropertyFileLoader propertyData = new PSSPropertyFileLoader();
+		Appointment testData = new Appointment();
+		AdminUser adminUser = new AdminUser();
+
+		propertyData.setAdminAT(adminUser);
+		PSSAdminUtils adminUtils = new PSSAdminUtils();
+
+		logStep("Login to PSS 2.0 Admin portal and do the seetings for Last Question Required");
+		adminUtils.alertsAndNotification(driver, adminUser, testData);		
 	}
 
 	@DataProvider(name = "partnerType")
