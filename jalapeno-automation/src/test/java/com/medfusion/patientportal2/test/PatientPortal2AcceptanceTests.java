@@ -5310,6 +5310,7 @@ public class PatientPortal2AcceptanceTests extends BaseTestNGWebDriver {
 		patientInviteTrustedRepresentative = pPatientSearchPage.editTrustedRepresentativeAccess();
 		patientInviteTrustedRepresentative.selectCustomAccess();
 		patientInviteTrustedRepresentative.updateWithModuleNameAndAccess("Messages", "noAccess");
+		patientInviteTrustedRepresentative.clickOnInviteBtn();
 
 		logStep("Login to patient portal");
 		loginPage = new JalapenoLoginPage(driver, testData.getUrl());
