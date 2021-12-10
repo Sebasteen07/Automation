@@ -38,6 +38,7 @@ import com.medfusion.product.pss2patientui.utils.PSSAdminUtils;
 import com.medfusion.product.pss2patientui.utils.PSSConstants;
 import com.medfusion.product.pss2patientui.utils.PSSPatientUtils;
 import com.medfusion.product.pss2patientui.utils.PSSPropertyFileLoader;
+import com.medfusion.product.pss2patientui.utils.YopMailUtility;
 
 import io.restassured.response.Response;
 import io.restassured.specification.RequestSpecification;
@@ -130,14 +131,12 @@ public class PSS2PatientPortalAcceptanceTests02 extends BaseTestNGWebDriver {
 		rule = rule.replaceAll(" ", "");
 		
 		log("Step 8: Fetch the Cancel/Reschedule link from email");
-		Mailinator mail = new Mailinator();
-		String subject = testData.getEmailSubject();
-		String messageLink = "Reschedule or cancel";
-		String CancelReschedulelink = mail.getLinkFromEmail(testData.getGmailUserName(), subject, messageLink, 5);
+		String userName=testData.getEmail();
+		YopMailUtility yo = new YopMailUtility(driver);
+		String CancelReschedulelink = yo.getCancelRescheduleLink(driver, userName);
 		
 		log(CancelReschedulelink+" ---This is cancel link");	
 		log("Email Used for Link- "+ testData.getGmailUserName());
-		log("Subject of email- "+ subject);
 		
 		PatientIdentificationPage patientIdentificationPage = new PatientIdentificationPage(driver,CancelReschedulelink);
 		
@@ -219,15 +218,14 @@ public class PSS2PatientPortalAcceptanceTests02 extends BaseTestNGWebDriver {
 		rule = rule.replaceAll(" ", "");
 		
 		log("Step 8: Fetch the Cancel/Reschedule link from email");
-		Mailinator mail = new Mailinator();
-		String subject = testData.getEmailSubject();
-		String messageLink = "Reschedule or cancel";
-		String CancelReschedulelink = mail.getLinkFromEmail(testData.getGmailUserName(), subject, messageLink, 5);
+		String userName=testData.getEmail();
+		YopMailUtility yo = new YopMailUtility(driver);
+		String CancelReschedulelink = yo.getCancelRescheduleLink(driver, userName);
+
 		
 		log(CancelReschedulelink+" ---This is cancel link");
 		log("Email Used for Link- "+ testData.getGmailUserName());
-		log("Subject of email- "+ subject);
-		
+			
 		PatientIdentificationPage patientIdentificationPage = new PatientIdentificationPage(driver,CancelReschedulelink);
 		
 		log("Step 9: Click on Cancel/Reschedule link from email");
@@ -282,14 +280,12 @@ public class PSS2PatientPortalAcceptanceTests02 extends BaseTestNGWebDriver {
 		HomePage homepage;
 
 		log("Step 8: Fetch the Cancel/Reschedule link from email");
-		Mailinator mail = new Mailinator();
-		String subject = testData.getEmailSubject();
-		String messageLink = "Reschedule or cancel";
-		String CancelReschedulelink = mail.getLinkFromEmail(testData.getGmailUserName(), subject, messageLink, 5);
+		String userName=testData.getEmail();
+		YopMailUtility yo = new YopMailUtility(driver);
+		String CancelReschedulelink = yo.getCancelRescheduleLink(driver, userName);
 
 		log(CancelReschedulelink + " ---This is cancel link");
 		log("Email Used for Link- "+ testData.getGmailUserName());
-		log("Subject of email- "+ subject);
 
 		PatientIdentificationPage patientIdentificationPage = new PatientIdentificationPage(driver, CancelReschedulelink);
 
@@ -333,14 +329,6 @@ public class PSS2PatientPortalAcceptanceTests02 extends BaseTestNGWebDriver {
 	
 	}
 	
-	@Test(enabled = true, groups = {"AcceptanceTests"}, retryAnalyzer = RetryAnalyzer.class)
-	public void TestDeleteEmail() throws InterruptedException {
-		
-		PSSPatientUtils psspatientutils= new PSSPatientUtils();
-		
-		psspatientutils.deleteEmail_Mailinator(driver, "https://www.mailinator.com/", "ast@mailinator.com");
-	}
-	
 	@Test(enabled = true, groups = {"AcceptanceTests"}, retryAnalyzer = RetryAnalyzer.class, dependsOnMethods="testE2EAnonymousAT")
 	public void testCancelAnonymousviaEmailAT() throws Exception {
 		log("Test to verify if Cancel Appointment for anonymous flow for the Athena Partners.");
@@ -374,14 +362,12 @@ public class PSS2PatientPortalAcceptanceTests02 extends BaseTestNGWebDriver {
 		HomePage homepage;
 
 		log("Step 8: Fetch the Cancel/Reschedule link from email");
-		Mailinator mail = new Mailinator();
-		String subject = testData.getEmailSubject();
-		String messageLink = "Reschedule or cancel";
-		String CancelReschedulelink = mail.getLinkFromEmail(testData.getGmailUserName(), subject, messageLink, 5);
+		String userName=testData.getEmail();
+		YopMailUtility yo = new YopMailUtility(driver);
+		String CancelReschedulelink = yo.getCancelRescheduleLink(driver, userName);
 
 		log(CancelReschedulelink + " ---This is cancel link");
 		log("Email Used for Link- "+ testData.getGmailUserName());
-		log("Subject of email- "+ subject);
 
 		PatientIdentificationPage patientIdentificationPage = new PatientIdentificationPage(driver, CancelReschedulelink);
 
@@ -951,8 +937,7 @@ public class PSS2PatientPortalAcceptanceTests02 extends BaseTestNGWebDriver {
 		PSSAdminUtils adminUtils = new PSSAdminUtils();
 
 		logStep("Login to PSS 2.0 Admin portal and do the seetings for Last Question Required");
-		adminUtils.LockoutAndNotification(driver, adminUser, testData);
-		
+		adminUtils.LockoutAndNotification(driver, adminUser, testData);	
 		
 	}
 	

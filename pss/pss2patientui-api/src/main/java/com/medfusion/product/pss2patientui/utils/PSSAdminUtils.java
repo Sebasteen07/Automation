@@ -1163,20 +1163,20 @@ public class PSSAdminUtils extends BaseTestNGWebDriver{
 		manageResource.logout();
 	}
 	
-	public void alertsAndNotification(WebDriver driver, AdminUser adminuser, Appointment appointment)
-			throws Exception {
-		PSS2PracticeConfiguration pssPracticeConfig = loginToAdminPortal(driver, adminuser);
-		pageRefresh(driver);
-		ManageLockoutRules lockout = pssPracticeConfig.gotoLockOut();
-		lockout.addAlertWithoutMsg();
-	}
-	
 	public void LockoutAndNotification(WebDriver driver, AdminUser adminuser, Appointment appointment)
 			throws Exception {
 		PSS2PracticeConfiguration pssPracticeConfig = loginToAdminPortal(driver, adminuser);
 		pageRefresh(driver);
 		ManageLockoutRules lockout = pssPracticeConfig.gotoLockOut();
 		lockout.addLockoutWithoutMsg();
+	}
+	
+	public void alertsAndNotification(WebDriver driver, AdminUser adminuser, Appointment appointment)
+			throws Exception {
+		PSS2PracticeConfiguration pssPracticeConfig = loginToAdminPortal(driver, adminuser);
+		pageRefresh(driver);
+		ManageLockoutRules lockout = pssPracticeConfig.gotoLockOut();
+		lockout.addAlertWithoutMsg();		
 	}
 
 }

@@ -55,7 +55,7 @@ public class ManageLockoutRules extends PSS2MenuPage {
 	
 	CommonMethods commonMethods= new CommonMethods(driver);	
 	
-	public void addLockoutWithoutMsg() {
+	public void addAlertWithoutMsg() {
 
 		commonMethods.highlightElement(addAlertsNotifications);
 		addAlertsNotifications.click();
@@ -75,13 +75,14 @@ public class ManageLockoutRules extends PSS2MenuPage {
 		commonMethods.highlightElement(saveLockout);
 		saveLockout.click();
 
+		IHGUtil.waitForElement(driver, 2, blankAlertErrorMessage);
 		String errorMsg = blankAlertErrorMessage.getText();
 
 		log("Error Message- " + errorMsg);
 
 	}
 	
-	public void addAlertWithoutMsg() {
+	public void addLockoutWithoutMsg() {
 
 		commonMethods.highlightElement(addAlertsNotifications);
 		addAlertsNotifications.click();
@@ -92,8 +93,8 @@ public class ManageLockoutRules extends PSS2MenuPage {
 		Select s = new Select(typeDropdown);
 		s.selectByValue("NOTES");
 
-		ruleTextBox.sendKeys("Alert without message");
-		keyTextBox.sendKeys("Alert without message");
+		ruleTextBox.sendKeys("Lockout without message");
+		keyTextBox.sendKeys("Lockout without message");
 
 		commonMethods.highlightElement(saveLockout);
 		saveLockout.click();

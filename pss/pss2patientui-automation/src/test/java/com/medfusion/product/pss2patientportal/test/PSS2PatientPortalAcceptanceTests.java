@@ -65,6 +65,8 @@ import com.medfusion.product.pss2patientui.utils.PSSConstants;
 import com.medfusion.product.pss2patientui.utils.PSSNewPatient;
 import com.medfusion.product.pss2patientui.utils.PSSPatientUtils;
 import com.medfusion.product.pss2patientui.utils.PSSPropertyFileLoader;
+import com.medfusion.product.pss2patientui.utils.YopMailUtility;
+import com.medfusion.product.pss2patientui.utils.YopMailUtility;
 
 import io.restassured.path.json.JsonPath;
 import io.restassured.response.Response;
@@ -1336,8 +1338,8 @@ public class PSS2PatientPortalAcceptanceTests extends BaseTestNGWebDriver {
 		Appointment testData = new Appointment();
 		AdminUser adminUser = new AdminUser();
 
-		propertyData.setAdminNG(adminUser);
-		propertyData.setAppointmentResponseNG(testData);
+		propertyData.setAdminGW(adminUser);
+		propertyData.setAppointmentResponseGW(testData);
 		testData.setLastQuestionOptional(true);
 
 		PSSPatientUtils psspatientutils = new PSSPatientUtils();
@@ -2023,6 +2025,9 @@ public class PSS2PatientPortalAcceptanceTests extends BaseTestNGWebDriver {
 
 		log("rule set in admin = " + rule);
 		rule = rule.replaceAll(" ", "");
+		
+		YopMailUtility yo = new YopMailUtility(driver);
+		String userName=testData.getEmail();
 
 		log("Step 4: Login to PSS Appointment");
 		DismissPage dismissPage = new DismissPage(driver, testData.getUrlLoginLess());
@@ -2046,7 +2051,7 @@ public class PSS2PatientPortalAcceptanceTests extends BaseTestNGWebDriver {
 
 		homepage.defaultcancelAppointment(popupmsg, confirmCancelmsg);
 
-		psspatientutils.deleteEmail_Mailinator(driver, "https://www.mailinator.com/", testData.getEmail());
+		yo.deletemail(driver, userName);
 	}
 
 	@Test(enabled = true, groups = {
@@ -2058,8 +2063,6 @@ public class PSS2PatientPortalAcceptanceTests extends BaseTestNGWebDriver {
 		AdminUser adminuser = new AdminUser();
 		PSSAdminUtils pssadminutils = new PSSAdminUtils();
 
-		PSSPatientUtils psspatientutils = new PSSPatientUtils();
-
 		PSSPropertyFileLoader propertyData = new PSSPropertyFileLoader();
 		propertyData.setAppointmentResponseGW(testData);
 		propertyData.setAdminGW(adminuser);
@@ -2069,6 +2072,9 @@ public class PSS2PatientPortalAcceptanceTests extends BaseTestNGWebDriver {
 
 		log("rule set in admin = " + rule);
 		rule = rule.replaceAll(" ", "");
+		
+		YopMailUtility yo = new YopMailUtility(driver);
+		String userName=testData.getEmail();
 
 		log("Step 4: Login to PSS Appointment");
 		DismissPage dismissPage = new DismissPage(driver, testData.getUrlLoginLess());
@@ -2117,7 +2123,7 @@ public class PSS2PatientPortalAcceptanceTests extends BaseTestNGWebDriver {
 
 		homepage.defaultcancelAppointmentviaEmail(popupmsg, confirmCancelmsg);
 
-		psspatientutils.deleteEmail_Mailinator(driver, "https://www.mailinator.com/", testData.getEmail());
+		yo.deletemail(driver, userName);
 	}
 
 	@Test(enabled = true, groups = {
@@ -2147,6 +2153,9 @@ public class PSS2PatientPortalAcceptanceTests extends BaseTestNGWebDriver {
 
 		log("rule set in admin = " + rule);
 		rule = rule.replaceAll(" ", "");
+		
+		YopMailUtility yo = new YopMailUtility(driver);
+		String userName=testData.getEmail();
 
 		log("Step 4: Login to PSS Appointment");
 		DismissPage dismissPage = new DismissPage(driver, testData.getUrlLoginLess());
@@ -2210,7 +2219,7 @@ public class PSS2PatientPortalAcceptanceTests extends BaseTestNGWebDriver {
 			homepage.defaultcancelAppointmentviaEmail(popupmsg, confirmCancelmsg);
 		}
 
-		psspatientutils.deleteEmail_Mailinator(driver, "https://www.mailinator.com/", testData.getEmail());
+		yo.deletemail(driver, userName);
 	}
 
 	@Test(enabled = true, groups = {
@@ -2240,6 +2249,9 @@ public class PSS2PatientPortalAcceptanceTests extends BaseTestNGWebDriver {
 
 		log("rule set in admin = " + rule);
 		rule = rule.replaceAll(" ", "");
+		
+		YopMailUtility yo = new YopMailUtility(driver);
+		String userName=testData.getEmail();
 
 		log("Step 4: Login to PSS Appointment");
 		DismissPage dismissPage = new DismissPage(driver, testData.getUrlLoginLess());
@@ -2303,10 +2315,10 @@ public class PSS2PatientPortalAcceptanceTests extends BaseTestNGWebDriver {
 			homepage.defaultcancelAppointmentviaEmail(popupmsg, confirmCancelmsg);
 		}
 
-		psspatientutils.deleteEmail_Mailinator(driver, "https://www.mailinator.com/", testData.getEmail());
+		yo.deletemail(driver, userName);
 	}
 
-	@Test(enabled = true, groups = {"AcceptanceTests" }, retryAnalyzer = RetryAnalyzer.class, dependsOnMethods = "testE2ELoginlessForExistingPatientNG")
+	@Test(enabled = true, groups = {"AcceptanceTests" }, retryAnalyzer = RetryAnalyzer.class)
 	public void testCancelFromEmailNG() throws Exception {
 		log("Test to verify if Cancel Appointment button available only after given hours.");
 		log("Step 1: Load test Data from External Property file.");
@@ -2331,11 +2343,10 @@ public class PSS2PatientPortalAcceptanceTests extends BaseTestNGWebDriver {
 		HomePage homepage;
 
 		log("Step 8: Fetch the Cancel/Reschedule link from email");
-		Mailinator mail = new Mailinator();
-		String subject = testData.getEmailSubject();
-		String messageLink = "Reschedule or cancel";
-		String CancelReschedulelink = mail.getLinkFromEmail(testData.getGmailUserName(), subject, messageLink, 5);
+		YopMailUtility yo = new YopMailUtility(driver);
+		String userName=testData.getEmail();
 
+		String CancelReschedulelink =yo.getCancelRescheduleLink(driver, userName);		
 		log(CancelReschedulelink + " ---This is cancel link");
 
 		PatientIdentificationPage patientIdentificationPage = new PatientIdentificationPage(driver,
@@ -2376,7 +2387,7 @@ public class PSS2PatientPortalAcceptanceTests extends BaseTestNGWebDriver {
 			homepage.defaultcancelAppointmentviaEmail(popupmsg, confirmCancelmsg);
 		}
 
-		psspatientutils.deleteEmail_Mailinator(driver, "https://www.mailinator.com/", testData.getEmail());
+		yo.deletemail(driver, userName);
 	}
 
 	@Test(enabled = true, groups = {
@@ -2557,17 +2568,17 @@ public class PSS2PatientPortalAcceptanceTests extends BaseTestNGWebDriver {
 
 	}
 
-	@Test(enabled = true, groups = { "AcceptanceTests" }, retryAnalyzer = RetryAnalyzer.class)
-	public void testDeleteEmail() throws Exception {
-
-		Appointment testData = new Appointment();
-		AdminUser adminuser = new AdminUser();
-		PSSPatientUtils psspatientutils = new PSSPatientUtils();
-
-		psspatientutils.setTestData("GE", testData, adminuser);
-
-		psspatientutils.deleteEmail_Mailinator(driver, "https://www.mailinator.com/", testData.getEmail());
-	}
+//	@Test(enabled = true, groups = { "AcceptanceTests" }, retryAnalyzer = RetryAnalyzer.class)
+//	public void testDeleteEmail() throws Exception {
+//
+//		Appointment testData = new Appointment();
+//		AdminUser adminuser = new AdminUser();
+//		PSSPatientUtils psspatientutils = new PSSPatientUtils();
+//
+//		psspatientutils.setTestData("GE", testData, adminuser);
+//
+//		yo.deletemail(driver, userName);
+//	}
 
 	@Test(enabled = true, groups = { "AcceptanceTests" }, retryAnalyzer = RetryAnalyzer.class)
 	public void testCancelE2ETestingGE() throws Exception {
@@ -2597,6 +2608,9 @@ public class PSS2PatientPortalAcceptanceTests extends BaseTestNGWebDriver {
 		String rule = adminuser.getRule();
 		log("rule set in admin = " + rule);
 		rule = rule.replaceAll(" ", "");
+		
+		YopMailUtility yo = new YopMailUtility(driver);
+		String userName=testData.getEmail();
 
 		log("Step 4: Login to PSS Appointment");
 		DismissPage dismissPage = new DismissPage(driver, testData.getUrlLoginLess());
@@ -2639,7 +2653,7 @@ public class PSS2PatientPortalAcceptanceTests extends BaseTestNGWebDriver {
 			homepage.defaultcancelAppointment(popupmsg, confirmCancelmsg);
 		}
 
-		psspatientutils.deleteEmail_Mailinator(driver, "https://www.mailinator.com/", testData.getEmail());
+		yo.deletemail(driver, userName);
 	}
 
 	@Test(enabled = true, groups = { "AcceptanceTests" }, retryAnalyzer = RetryAnalyzer.class)
@@ -2670,6 +2684,9 @@ public class PSS2PatientPortalAcceptanceTests extends BaseTestNGWebDriver {
 		String rule = adminuser.getRule();
 		log("rule set in admin = " + rule);
 		rule = rule.replaceAll(" ", "");
+		
+		YopMailUtility yo = new YopMailUtility(driver);
+		String userName=testData.getEmail();
 
 		log("Step 4: Login to PSS Appointment");
 		DismissPage dismissPage = new DismissPage(driver, testData.getUrlLoginLess());
@@ -2709,7 +2726,7 @@ public class PSS2PatientPortalAcceptanceTests extends BaseTestNGWebDriver {
 			homepage.defaultcancelAppointment(popupmsg, confirmCancelmsg);
 		}
 
-		psspatientutils.deleteEmail_Mailinator(driver, "https://www.mailinator.com/", testData.getEmail());
+		yo.deletemail(driver, userName);
 	}
 
 	@Test(enabled = true, groups = { "AcceptanceTests" }, retryAnalyzer = RetryAnalyzer.class)
@@ -2740,6 +2757,9 @@ public class PSS2PatientPortalAcceptanceTests extends BaseTestNGWebDriver {
 		String rule = adminuser.getRule();
 		log("rule set in admin = " + rule);
 		rule = rule.replaceAll(" ", "");
+		
+		YopMailUtility yo = new YopMailUtility(driver);
+		String userName=testData.getEmail();
 
 		log("Step 4: Login to PSS Appointment");
 		DismissPage dismissPage = new DismissPage(driver, testData.getUrlLoginLess());
@@ -2777,7 +2797,7 @@ public class PSS2PatientPortalAcceptanceTests extends BaseTestNGWebDriver {
 			homepage.defaultcancelAppointment(popupmsg, confirmCancelmsg);
 		}
 
-		psspatientutils.deleteEmail_Mailinator(driver, "https://www.mailinator.com/", testData.getEmail());
+		yo.deletemail(driver, userName);
 
 	}
 
@@ -2977,6 +2997,9 @@ public class PSS2PatientPortalAcceptanceTests extends BaseTestNGWebDriver {
 
 		log("rule set in admin = " + rule);
 		rule = rule.replaceAll(" ", "");
+		
+		YopMailUtility yo = new YopMailUtility(driver);
+		String userName=testData.getEmail();
 
 		JalapenoLoginPage loginPage = new JalapenoLoginPage(driver, testData.getPatientPortalURL());
 		JalapenoHomePage homePage = loginPage.login(testData.getPatientPortalUserName(),
@@ -3008,7 +3031,7 @@ public class PSS2PatientPortalAcceptanceTests extends BaseTestNGWebDriver {
 		homepage.clickRescheduleLink();
 		psspatientutils.rescheduleAPT(testData, driver);
 
-		psspatientutils.deleteEmail_Mailinator(driver, "https://www.mailinator.com/", testData.getEmail());
+		yo.deletemail(driver, userName);
 	}
 
 	@Test(enabled = true, groups = {
@@ -3039,15 +3062,16 @@ public class PSS2PatientPortalAcceptanceTests extends BaseTestNGWebDriver {
 		rule = rule.replaceAll(" ", "");
 
 		log("Step 8: Fetch the Cancel/Reschedule link from email");
-		Mailinator mail = new Mailinator();
-		String subject = testData.getEmailSubject();
-		String messageLink = "Reschedule or cancel";
-		String CancelReschedulelink = mail.getLinkFromEmail(testData.getGmailUserName(), subject, messageLink, 5);
-
+		log("Step 8: Fetch the Cancel/Reschedule link from email");		
+		YopMailUtility yo = new YopMailUtility(driver);
+		String CancelReschedulelink = yo.getCancelRescheduleLink(driver, testData.getGmailUserName());
+		
 		log(CancelReschedulelink + " ---This is cancel link");
 
 		PatientIdentificationPage patientIdentificationPage = new PatientIdentificationPage(driver,
 				CancelReschedulelink);
+
+		String userName=testData.getEmail();
 
 		log("Step 9: Click on Cancel/Reschedule link from email");
 
@@ -3066,11 +3090,11 @@ public class PSS2PatientPortalAcceptanceTests extends BaseTestNGWebDriver {
 		cancelRescheduleDecisionPage.clickReschedule();
 		psspatientutils.rescheduleAPT(testData, driver);
 
-		psspatientutils.deleteEmail_Mailinator(driver, "https://www.mailinator.com/", testData.getEmail());
+		yo.deletemail(driver, userName);
 
 	}
 
-	@Test(enabled = true, groups = {"AcceptanceTests" }, retryAnalyzer = RetryAnalyzer.class, dependsOnMethods = "testE2ELoginlessForExistingPatientAT")
+	@Test(enabled = true, groups = {"AcceptanceTests" }, retryAnalyzer = RetryAnalyzer.class, dependsOnMethods = "testBookApptWithLastQuestionAT")
 	public void testRescheduleviaEmailNotifiicationAT() throws Exception {
 
 		log("Test to verify if Reschedule an Appointment via Email Notification");
@@ -3096,12 +3120,12 @@ public class PSS2PatientPortalAcceptanceTests extends BaseTestNGWebDriver {
 		log("rule set in admin = " + rule);
 		rule = rule.replaceAll(" ", "");
 
-		log("Step 8: Fetch the Cancel/Reschedule link from email");
-		Mailinator mail = new Mailinator();
-		String subject = testData.getEmailSubject();
-		String messageLink = "Reschedule or cancel";
-		String CancelReschedulelink = mail.getLinkFromEmail(testData.getGmailUserName(), subject, messageLink, 5);
-
+		
+		log("Step 8: Fetch the Cancel/Reschedule link from email");		
+		YopMailUtility yo = new YopMailUtility(driver);
+		String userName=testData.getEmail();
+		String CancelReschedulelink = yo.getCancelRescheduleLink(driver, userName);
+		
 		log(CancelReschedulelink + " ---This is cancel link");
 
 		PatientIdentificationPage patientIdentificationPage = new PatientIdentificationPage(driver,
@@ -3124,12 +3148,12 @@ public class PSS2PatientPortalAcceptanceTests extends BaseTestNGWebDriver {
 		cancelRescheduleDecisionPage.clickReschedule();
 		psspatientutils.rescheduleAPT(testData, driver);
 
-		psspatientutils.deleteEmail_Mailinator(driver, "https://www.mailinator.com/", testData.getEmail());
+		yo.deletemail(driver, userName);
 
 	}
 
 	@Test(enabled = true, groups = {
-			"AcceptanceTests" }, retryAnalyzer = RetryAnalyzer.class, dependsOnMethods = "testBookApptWithoutLastQuestionGW")
+			"AcceptanceTests" }, retryAnalyzer = RetryAnalyzer.class, dependsOnMethods = "testBookApptWithLastQuestionGW")
 	public void testRescheduleviaEmailNotifiicationGW() throws Exception {
 
 		log("Test to verify if Reschedule an Appointment via Email Notification");
@@ -3142,17 +3166,17 @@ public class PSS2PatientPortalAcceptanceTests extends BaseTestNGWebDriver {
 		psspatientutils.setTestData("GW", testData, adminuser);
 		testData.setFutureApt(true);
 
+		String userName=testData.getEmail();
+
 		pssadminutils.getInsuranceStateandRule(driver, adminuser, testData);
 
 		log("isShowCancellationRescheduleReason --" + testData.isShowCancellationRescheduleReason());
 		log("isShowCancellationReasonPM ---" + testData.isShowCancellationReasonPM());
 
-		log("Step 8: Fetch the Cancel/Reschedule link from email");
-		Mailinator mail = new Mailinator();
-		String subject = testData.getEmailSubject();
-		String messageLink = "Reschedule or cancel";
-		String CancelReschedulelink = mail.getLinkFromEmail(testData.getGmailUserName(), subject, messageLink, 5);
-
+		log("Step 8: Fetch the Cancel/Reschedule link from email");		
+		YopMailUtility yo = new YopMailUtility(driver);
+		String CancelReschedulelink = yo.getCancelRescheduleLink(driver, testData.getGmailUserName());
+		
 		log(CancelReschedulelink + " ---This is cancel link");
 
 		PatientIdentificationPage patientIdentificationPage = new PatientIdentificationPage(driver,
@@ -3175,7 +3199,7 @@ public class PSS2PatientPortalAcceptanceTests extends BaseTestNGWebDriver {
 		cancelRescheduleDecisionPage.clickReschedule();
 		psspatientutils.rescheduleAPT(testData, driver);
 
-		psspatientutils.deleteEmail_Mailinator(driver, "https://www.mailinator.com/", testData.getEmail());
+		yo.deletemail(driver, userName);
 
 	}
 
@@ -6683,7 +6707,7 @@ public class PSS2PatientPortalAcceptanceTests extends BaseTestNGWebDriver {
 		log("isShowCancellationReasonPM ---" + testData.isShowCancellationReasonPM());
 
 		logStep("Fetch the Cancel/Reschedule link from email");
-		Mailinator mail = new Mailinator();
+
 		String subject = testData.getEmailSubject();
 		String messageLink = "Reschedule or cancel";
 		String userName = testData.getGmailUserName();
@@ -6692,7 +6716,9 @@ public class PSS2PatientPortalAcceptanceTests extends BaseTestNGWebDriver {
 		log("messageLink- " + messageLink);
 		log("userName- " + userName);
 
-		String CancelReschedulelink = mail.getLinkFromEmail(userName, subject, messageLink, 5);
+		YopMailUtility yo = new YopMailUtility(driver);
+
+		String CancelReschedulelink = yo.getCancelRescheduleLink(driver, userName);
 
 		logStep("Hit the Cancel/Reschedule link which we get from email in browser");
 		PatientIdentificationPage patientIdentificationPage = new PatientIdentificationPage(driver,
@@ -6714,8 +6740,7 @@ public class PSS2PatientPortalAcceptanceTests extends BaseTestNGWebDriver {
 		cancelRescheduleDecisionPage.clickReschedule();
 		pssPatientUtils.rescheduleAPT(testData, driver);
 
-		logStep("Delete all the emails from inbox");
-		pssPatientUtils.deleteEmail_Mailinator(driver, "https://www.mailinator.com/", testData.getEmail());
+		yo.deletemail(driver, userName);
 
 	}
 
