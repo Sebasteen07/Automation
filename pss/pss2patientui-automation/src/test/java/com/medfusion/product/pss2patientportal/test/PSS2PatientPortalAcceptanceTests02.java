@@ -154,7 +154,7 @@ public class PSS2PatientPortalAcceptanceTests02 extends BaseTestNGWebDriver {
 		cancelRescheduleDecisionPage.clickReschedule();
 		psspatientutils.rescheduleAPT( testData, driver);
 		
-		yo.deletemail(driver, userName);	
+		yo.deleteEmail(driver, userName);	
 
 	}
 	
@@ -244,7 +244,7 @@ public class PSS2PatientPortalAcceptanceTests02 extends BaseTestNGWebDriver {
 		cancelRescheduleDecisionPage.clickReschedule();
 		psspatientutils.rescheduleAPT( testData, driver);
 		
-		yo.deletemail(driver, userName);
+		yo.deleteEmail(driver, userName);
 
 	}
 	
@@ -326,7 +326,7 @@ public class PSS2PatientPortalAcceptanceTests02 extends BaseTestNGWebDriver {
 			homepage.defaultcancelAppointmentviaEmail(popupmsg, confirmCancelmsg);
 		}
 		
-		yo.deletemail(driver, userName);		
+		yo.deleteEmail(driver, userName);		
 	
 	}
 	
@@ -408,7 +408,7 @@ public class PSS2PatientPortalAcceptanceTests02 extends BaseTestNGWebDriver {
 			homepage.defaultcancelAppointmentviaEmail(popupmsg, confirmCancelmsg);
 		}
 		
-		yo.deletemail(driver, userName);	
+		yo.deleteEmail(driver, userName);	
 	}
 
 	@Test(enabled = true, groups = {"AcceptanceTests"}, retryAnalyzer = RetryAnalyzer.class)

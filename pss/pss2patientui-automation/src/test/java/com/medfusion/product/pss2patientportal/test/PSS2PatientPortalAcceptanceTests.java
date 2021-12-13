@@ -2051,7 +2051,7 @@ public class PSS2PatientPortalAcceptanceTests extends BaseTestNGWebDriver {
 
 		homepage.defaultcancelAppointment(popupmsg, confirmCancelmsg);
 
-		yo.deletemail(driver, userName);
+		yo.deleteEmail(driver, userName);
 	}
 
 	@Test(enabled = true, groups = {
@@ -2123,7 +2123,7 @@ public class PSS2PatientPortalAcceptanceTests extends BaseTestNGWebDriver {
 
 		homepage.defaultcancelAppointmentviaEmail(popupmsg, confirmCancelmsg);
 
-		yo.deletemail(driver, userName);
+		yo.deleteEmail(driver, userName);
 	}
 
 	@Test(enabled = true, groups = {
@@ -2219,7 +2219,7 @@ public class PSS2PatientPortalAcceptanceTests extends BaseTestNGWebDriver {
 			homepage.defaultcancelAppointmentviaEmail(popupmsg, confirmCancelmsg);
 		}
 
-		yo.deletemail(driver, userName);
+		yo.deleteEmail(driver, userName);
 	}
 
 	@Test(enabled = true, groups = {
@@ -2315,7 +2315,7 @@ public class PSS2PatientPortalAcceptanceTests extends BaseTestNGWebDriver {
 			homepage.defaultcancelAppointmentviaEmail(popupmsg, confirmCancelmsg);
 		}
 
-		yo.deletemail(driver, userName);
+		yo.deleteEmail(driver, userName);
 	}
 
 	@Test(enabled = true, groups = {"AcceptanceTests" }, retryAnalyzer = RetryAnalyzer.class)
@@ -2387,7 +2387,7 @@ public class PSS2PatientPortalAcceptanceTests extends BaseTestNGWebDriver {
 			homepage.defaultcancelAppointmentviaEmail(popupmsg, confirmCancelmsg);
 		}
 
-		yo.deletemail(driver, userName);
+		yo.deleteEmail(driver, userName);
 	}
 	
 	@Test(enabled = true, groups = { "AcceptanceTests" }, retryAnalyzer = RetryAnalyzer.class)
@@ -2463,7 +2463,7 @@ public class PSS2PatientPortalAcceptanceTests extends BaseTestNGWebDriver {
 			homepage.defaultcancelAppointment(popupmsg, confirmCancelmsg);
 		}
 
-		yo.deletemail(driver, userName);
+		yo.deleteEmail(driver, userName);
 	}
 
 	@Test(enabled = true, groups = { "AcceptanceTests" }, retryAnalyzer = RetryAnalyzer.class)
@@ -2536,7 +2536,7 @@ public class PSS2PatientPortalAcceptanceTests extends BaseTestNGWebDriver {
 			homepage.defaultcancelAppointment(popupmsg, confirmCancelmsg);
 		}
 
-		yo.deletemail(driver, userName);
+		yo.deleteEmail(driver, userName);
 	}
 
 	@Test(enabled = true, groups = { "AcceptanceTests" }, retryAnalyzer = RetryAnalyzer.class)
@@ -2607,7 +2607,7 @@ public class PSS2PatientPortalAcceptanceTests extends BaseTestNGWebDriver {
 			homepage.defaultcancelAppointment(popupmsg, confirmCancelmsg);
 		}
 
-		yo.deletemail(driver, userName);
+		yo.deleteEmail(driver, userName);
 
 	}
 
@@ -2841,7 +2841,7 @@ public class PSS2PatientPortalAcceptanceTests extends BaseTestNGWebDriver {
 		homepage.clickRescheduleLink();
 		psspatientutils.rescheduleAPT(testData, driver);
 
-		yo.deletemail(driver, userName);
+		yo.deleteEmail(driver, userName);
 	}
 
 	@Test(enabled = true, groups = {
@@ -2900,7 +2900,7 @@ public class PSS2PatientPortalAcceptanceTests extends BaseTestNGWebDriver {
 		cancelRescheduleDecisionPage.clickReschedule();
 		psspatientutils.rescheduleAPT(testData, driver);
 
-		yo.deletemail(driver, userName);
+		yo.deleteEmail(driver, userName);
 
 	}
 
@@ -2958,7 +2958,7 @@ public class PSS2PatientPortalAcceptanceTests extends BaseTestNGWebDriver {
 		cancelRescheduleDecisionPage.clickReschedule();
 		psspatientutils.rescheduleAPT(testData, driver);
 
-		yo.deletemail(driver, userName);
+		yo.deleteEmail(driver, userName);
 
 	}
 
@@ -3009,7 +3009,7 @@ public class PSS2PatientPortalAcceptanceTests extends BaseTestNGWebDriver {
 		cancelRescheduleDecisionPage.clickReschedule();
 		psspatientutils.rescheduleAPT(testData, driver);
 
-		yo.deletemail(driver, userName);
+		yo.deleteEmail(driver, userName);
 
 	}
 
@@ -6550,7 +6550,7 @@ public class PSS2PatientPortalAcceptanceTests extends BaseTestNGWebDriver {
 		cancelRescheduleDecisionPage.clickReschedule();
 		pssPatientUtils.rescheduleAPT(testData, driver);
 
-		yo.deletemail(driver, userName);
+		yo.deleteEmail(driver, userName);
 
 	}
 
