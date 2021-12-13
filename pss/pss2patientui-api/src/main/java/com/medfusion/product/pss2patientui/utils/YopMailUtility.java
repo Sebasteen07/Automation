@@ -59,7 +59,7 @@ public class YopMailUtility extends PSS2MainPage{
 		return cancelRescheduleLink;
 	}
 	
-	public void deletemail(WebDriver driver, String em) throws InterruptedException {
+	public void deleteEmail(WebDriver driver, String em) throws InterruptedException {
 		driver.get("https://yopmail.com/en/");
 		driver.manage().window().maximize();
 		Thread.sleep(2000);
@@ -94,11 +94,11 @@ public class YopMailUtility extends PSS2MainPage{
 		Thread.sleep(1000);
 		driver.switchTo().parentFrame();
 
-		WebElement btndelete = driver.findElement(By.xpath("//button[@id='delsel']"));
+		WebElement buttonDelete = driver.findElement(By.xpath("//button[@id='delsel']"));
 
 		driver.manage().deleteAllCookies();
-		cm.highlightElement(btndelete);
-		btndelete.click();
+		cm.highlightElement(buttonDelete);
+		buttonDelete.click();
 	}
 
 }
