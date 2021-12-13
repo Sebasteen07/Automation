@@ -724,7 +724,6 @@ public class PracticePortalAcceptanceTests extends BaseTestNGWebDriver {
 
 		logStep("Verify Request An Appointment Button is present");
 		assertTrue(appReqPage.isAppointmentRequestBtnDisplayed());
-		appReqPage.clickonHomeButton(driver);
 
 		logStep("Log out and Login to patient portal");
 		homePage.clickOnLogout();
@@ -736,7 +735,6 @@ public class PracticePortalAcceptanceTests extends BaseTestNGWebDriver {
 
 		logStep("Verify Rx Request Button is present in Medications module");
 		assertTrue(medReqPage.isRxRequestBtnDisplayed());
-		appReqPage.clickonHomeButton(driver);
 
 		logStep("Log out and Login to patient portal");
 		homePage.clickOnLogout();
