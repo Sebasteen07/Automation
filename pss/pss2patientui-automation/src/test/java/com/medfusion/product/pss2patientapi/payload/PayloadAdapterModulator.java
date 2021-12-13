@@ -2392,4 +2392,18 @@ public class PayloadAdapterModulator {
 		return lockout;
 	}
 	
+	public String multiplePatientAnnoucement(String customMessage) {
+		String saveAnn = "{\r\n"
+				+ "    \"text\": {\r\n"
+				+ "        \"EN\": \"" + customMessage + "\",\r\n"
+				+ "        \"ES\": \"Según la información proporcionada, no podemos localizar con precisión su registro de salud. Por favor, póngase en contacto con la práctica para verificar su información y programar su cita.\"\r\n"
+				+ "    },\r\n"
+				+ "    \"display\": \"Based on the information provided, we cannot accurately locate your health record. Please contact the practice to verify your information and schedule your appointment.\",\r\n"
+				+ "    \"type\": \"Inactive or Multiple Patient\",\r\n"
+				+ "    \"code\": \"IOMP\",\r\n"
+				+ "    \"selected\": false,\r\n"
+				+ "    \"description\": \"Displayed when patient matching returns multiple patients or the patient found is inactive\"\r\n"
+				+ "}";
+		return saveAnn;
+	}
 }

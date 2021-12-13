@@ -81,6 +81,9 @@ public class LoginlessPatientInformation extends PSS2MainPage {
 	@FindAll({@FindBy(how = How.XPATH, using = "//div[@class='acceptpolicy']//label")})
 	public List<WebElement> privacyPolicy;
 
+	@FindBy(how = How.XPATH, using = "//*[@class='modal fade in']/div/div/div[2]/p/pre/div[1]")
+	private WebElement multiplePatientMsg;
+
 	public LoginlessPatientInformation(WebDriver driver) {
 		super(driver);
 	}
@@ -215,6 +218,61 @@ public class LoginlessPatientInformation extends PSS2MainPage {
 		return PageFactory.initElements(driver, HomePage.class);
 	}
 
+	public HomePage fillNewPatientFormWithoutEmailZipPhone(String firstName, String lastName, String dob, String gender) throws InterruptedException {
+
+		IHGUtil.waitForElement(driver, 5, inputFirstName);
+		commonMethods.highlightElement(inputFirstName);
+		inputFirstName.sendKeys(firstName);
+
+		commonMethods.highlightElement(inputLastName);
+		inputLastName.sendKeys(lastName);
+
+		IHGUtil.waitForElement(driver, 5, dateOfBirth);
+		commonMethods.highlightElement(dateOfBirth);
+		datePicker.click();
+		log("datePicker clicked ");
+		try {
+			Thread.sleep(200);
+		} catch (InterruptedException e) {
+			e.printStackTrace();
+		}
+		DateMatcher dateMatcher = new DateMatcher();
+		dateMatcher.selectDate(dob, driver);
+
+		commonMethods.highlightElement(selectGender);
+		selectGender.click();
+		Select selectGenderType = new Select(selectGender);
+		selectGenderType.selectByValue(gender);
+		try {
+			Thread.sleep(200);
+		} catch (InterruptedException e) {
+			e.printStackTrace();
+		}
+		jse.executeScript("window.scrollTo(0, 300)");
+		Thread.sleep(3000);
+		commonMethods.highlightElement(privacyPolicyCheckbox);
+		privacyPolicyCheckbox.click();
+		log("Privacy Policy has been checked successfully");
+		log("formfilled ...");
+		jse.executeScript("window.scrollBy(0,250)", "");
+		Thread.sleep(2000);
+		log("first wait completed ...");
+
+		driver.switchTo().frame(recaptchaFrame);
+		commonMethods.highlightElement(recaptchaBox);
+		recaptchaClick.click();
+		Thread.sleep(3000);
+		driver.switchTo().parentFrame();
+
+		log("........Captcha clicked......");
+		Thread.sleep(2000);
+
+		wait.until(ExpectedConditions.elementToBeClickable(buttonNext));
+		commonMethods.highlightElement(buttonNext);
+		buttonNext.click();
+		log("Submit Button cliked ...");
+		return PageFactory.initElements(driver, HomePage.class);
+	}
 
 	public void isPageLoaded() {
 		IHGUtil.waitForElement(driver, 80, this.buttonNext);
@@ -243,4 +301,8 @@ public class LoginlessPatientInformation extends PSS2MainPage {
 		}
 	}
 
+	public String multiplePatientMessage() {
+		String multiplePatientMessage = multiplePatientMsg.getText();
+		return multiplePatientMessage;
+	}
 }

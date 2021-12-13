@@ -14,7 +14,6 @@ import org.testng.annotations.Test;
 import com.intuit.ifs.csscat.core.BaseTestNGWebDriver;
 import com.intuit.ifs.csscat.core.RetryAnalyzer;
 import com.intuit.ihg.eh.core.dto.Timestamp;
-import com.medfusion.common.utils.Mailinator;
 import com.medfusion.product.object.maps.pss2.page.AppEntryPoint.StartAppointmentInOrder;
 import com.medfusion.product.object.maps.pss2.page.Appointment.Anonymous.AnonymousDismissPage;
 import com.medfusion.product.object.maps.pss2.page.Appointment.CancResc.CancelRescheduleDecisionPage;
@@ -1247,6 +1246,209 @@ public class PSS2PatientPortalAcceptanceTests02 extends BaseTestNGWebDriver {
 		Assert.assertEquals(addresslineUI, addressLine2);
 	}
 
+	@Test(enabled = true, groups = {"AcceptanceTests"}, retryAnalyzer = RetryAnalyzer.class)
+	public void testDefaultMsgMultiplePatientNG() throws Exception {
+		PSSPropertyFileLoader propertyData = new PSSPropertyFileLoader();
+		Appointment testData = new Appointment();
+		AdminUser adminUser = new AdminUser();
+		propertyData.setAdminNG(adminUser);
+		propertyData.setAppointmentResponseNG(testData);
+		DismissPage dismissPage = new DismissPage(driver, testData.getUrlLoginLess());
+		Thread.sleep(1000);
+		logStep("Clicked on Dismiss");
+		LoginlessPatientInformation loginlessPatientInformation = dismissPage.clickDismiss();
+		loginlessPatientInformation.fillNewPatientFormWithoutEmailZipPhone(propertyData.getProperty("firstname.dup.ng"),
+				propertyData.getProperty("lastname.dup.ng"),
+				propertyData.getProperty("dob.dup.ng"), propertyData.getProperty("gender.dup.ng"));
+		String actualMessage = loginlessPatientInformation.multiplePatientMessage();
+		log("Actual Message" + actualMessage);
+		String expectedMessage = propertyData.getProperty("multiple.patient.msg.ng");
+		log("Expected Message " + expectedMessage);
+		assertEquals(actualMessage, expectedMessage, "Default Announcement message is wrong");
+	}
+
+	@Test(enabled = true, groups = {"AcceptanceTests"}, retryAnalyzer = RetryAnalyzer.class)
+	public void testDefaultMsgMultiplePatientGE() throws Exception {
+		PSSPropertyFileLoader propertyData = new PSSPropertyFileLoader();
+		Appointment testData = new Appointment();
+		AdminUser adminUser = new AdminUser();
+		propertyData.setAdminGE(adminUser);
+		propertyData.setAppointmentResponseGE(testData);
+		DismissPage dismissPage = new DismissPage(driver, testData.getUrlLoginLess());
+		Thread.sleep(1000);
+		logStep("Clicked on Dismiss");
+		LoginlessPatientInformation loginlessPatientInformation = dismissPage.clickDismiss();
+		loginlessPatientInformation.fillNewPatientFormWithoutEmailZipPhone(propertyData.getProperty("firstname.dup.ge"),
+				propertyData.getProperty("lastname.dup.ge"),
+				propertyData.getProperty("dob.dup.ge"), propertyData.getProperty("gender.dup.ge"));
+		String actualMessage = loginlessPatientInformation.multiplePatientMessage();
+		log("Actual Message" + actualMessage);
+		String expectedMessage = propertyData.getProperty("multiple.patient.msg.ge");
+		log("Expected Message " + expectedMessage);
+		assertEquals(actualMessage, expectedMessage, "Default Announcement message is wrong");
+	}
+
+
+	@Test(enabled = true, groups = {"AcceptanceTests"}, retryAnalyzer = RetryAnalyzer.class)
+	public void testDefaultMsgMultiplePatientGW() throws Exception {
+		PSSPropertyFileLoader propertyData = new PSSPropertyFileLoader();
+		Appointment testData = new Appointment();
+		AdminUser adminUser = new AdminUser();
+		propertyData.setAdminGW(adminUser);
+		propertyData.setAppointmentResponseGW(testData);
+		DismissPage dismissPage = new DismissPage(driver, testData.getUrlLoginLess());
+		Thread.sleep(1000);
+		logStep("Clicked on Dismiss");
+		LoginlessPatientInformation loginlessPatientInformation = dismissPage.clickDismiss();
+		loginlessPatientInformation.fillNewPatientFormWithoutEmailZipPhone(propertyData.getProperty("firstname.dup.gw"),
+				propertyData.getProperty("lastname.dup.gw"),
+				propertyData.getProperty("dob.dup.gw"), propertyData.getProperty("gender.dup.gw"));
+		String actualMessage = loginlessPatientInformation.multiplePatientMessage();
+		log("Actual Message" + actualMessage);
+		String expectedMessage = propertyData.getProperty("multiple.patient.msg.gw");
+		log("Expected Message " + expectedMessage);
+		assertEquals(actualMessage, expectedMessage, "Default Announcement message is wrong");
+	}
+
+	@Test(enabled = true, groups = {"AcceptanceTests"}, retryAnalyzer = RetryAnalyzer.class)
+	public void testCustomMsgMultiplePatientGW() throws Exception {
+		PSSPropertyFileLoader propertyData = new PSSPropertyFileLoader();
+		Appointment testData = new Appointment();
+		AdminUser adminUser = new AdminUser();
+		propertyData.setAdminGW(adminUser);
+		propertyData.setAppointmentResponseGW(testData);
+
+		logStep("Set up the API authentication");
+		setUp(propertyData.getProperty("mf.practice.id.gw"), propertyData.getProperty("mf.authuserid.am.gw"));
+		Response response;
+		String b = payloadAM.multiplePatientAnnoucement(propertyData.getProperty("multiple.patient.custommsg.gw"));
+		response = postAPIRequestAM.saveAnnouncement(practiceId, b);
+		aPIVerification.responseCodeValidation(response, 200);
+
+		DismissPage dismissPage = new DismissPage(driver, testData.getUrlLoginLess());
+		Thread.sleep(1000);
+		logStep("Clicked on Dismiss");
+		LoginlessPatientInformation loginlessPatientInformation = dismissPage.clickDismiss();
+		loginlessPatientInformation.fillNewPatientFormWithoutEmailZipPhone(propertyData.getProperty("firstname.dup.gw"),
+				propertyData.getProperty("lastname.dup.gw"),
+				propertyData.getProperty("dob.dup.gw"), propertyData.getProperty("gender.dup.gw"));
+		String actualMessage = loginlessPatientInformation.multiplePatientMessage();
+		log("Actual Message  " + actualMessage);
+		String expectedMessage = propertyData.getProperty("multiple.patient.custommsg.gw");
+		log("Expected Message " + expectedMessage);
+		assertEquals(actualMessage, expectedMessage, "Default Announcement message is wrong");
+		response = postAPIRequestAM.getAnnouncement(practiceId, "/announcement");
+		aPIVerification.responseCodeValidation(response, 200);
+		JSONArray array = new JSONArray(response.body().asString());
+		int len = array.length();
+		int id = 0;
+		log("Length is- " + len);
+		for (int i = 0; i < len; i++) {
+			String type = array.getJSONObject(i).getString("type");
+			if (type.equalsIgnoreCase("Inactive or Multiple Patient")) {
+				log("id Is  " + array.getJSONObject(i).getInt("id"));
+				id = array.getJSONObject(i).getInt("id");
+				break;
+			}
+
+		}
+		log("Announcement Id is  " + id);
+		response = postAPIRequestAM.deleteAnnouncement(practiceId, id);
+		aPIVerification.responseCodeValidation(response, 200);
+	}
+
+	@Test(enabled = true, groups = {"AcceptanceTests"}, retryAnalyzer = RetryAnalyzer.class)
+	public void testCustomMsgMultiplePatientGE() throws Exception {
+		PSSPropertyFileLoader propertyData = new PSSPropertyFileLoader();
+		Appointment testData = new Appointment();
+		AdminUser adminUser = new AdminUser();
+		propertyData.setAdminGE(adminUser);
+		propertyData.setAppointmentResponseGE(testData);
+
+		logStep("Set up the API authentication");
+		setUp(propertyData.getProperty("mf.practice.id.ge"), propertyData.getProperty("mf.authuserid.am.ge"));
+		Response response;
+		String b = payloadAM.multiplePatientAnnoucement(propertyData.getProperty("multiple.patient.custommsg.ge"));
+		response = postAPIRequestAM.saveAnnouncement(practiceId, b);
+		aPIVerification.responseCodeValidation(response, 200);
+
+		DismissPage dismissPage = new DismissPage(driver, testData.getUrlLoginLess());
+		Thread.sleep(1000);
+		logStep("Clicked on Dismiss");
+		LoginlessPatientInformation loginlessPatientInformation = dismissPage.clickDismiss();
+		loginlessPatientInformation.fillNewPatientFormWithoutEmailZipPhone(propertyData.getProperty("firstname.dup.ge"),
+				propertyData.getProperty("lastname.dup.ge"),
+				propertyData.getProperty("dob.dup.ge"), propertyData.getProperty("gender.dup.ge"));
+		String actualMessage = loginlessPatientInformation.multiplePatientMessage();
+		log("Actual Message  " + actualMessage);
+		String expectedMessage = propertyData.getProperty("multiple.patient.custommsg.ge");
+		log("Expected Message " + expectedMessage);
+		assertEquals(actualMessage, expectedMessage, "Default Announcement message is wrong");
+		response = postAPIRequestAM.getAnnouncement(practiceId, "/announcement");
+		aPIVerification.responseCodeValidation(response, 200);
+		JSONArray array = new JSONArray(response.body().asString());
+		int len = array.length();
+		int id = 0;
+		log("Length is- " + len);
+		for (int i = 0; i < len; i++) {
+			String type = array.getJSONObject(i).getString("type");
+			if (type.equalsIgnoreCase("Inactive or Multiple Patient")) {
+				log("id Is  " + array.getJSONObject(i).getInt("id"));
+				id = array.getJSONObject(i).getInt("id");
+				break;
+			}
+
+		}
+		log("Announcement Id is  " + id);
+		response = postAPIRequestAM.deleteAnnouncement(practiceId, id);
+		aPIVerification.responseCodeValidation(response, 200);
+	}
+
+	@Test(enabled = true, groups = {"AcceptanceTests"}, retryAnalyzer = RetryAnalyzer.class)
+	public void testCustomMsgMultiplePatientNG() throws Exception {
+		PSSPropertyFileLoader propertyData = new PSSPropertyFileLoader();
+		Appointment testData = new Appointment();
+		AdminUser adminUser = new AdminUser();
+		propertyData.setAdminNG(adminUser);
+		propertyData.setAppointmentResponseNG(testData);
+
+		logStep("Set up the API authentication");
+		setUp(propertyData.getProperty("mf.practice.id.ng"), propertyData.getProperty("mf.authuserid.am.ng"));
+		Response response;
+		String b = payloadAM.multiplePatientAnnoucement(propertyData.getProperty("multiple.patient.custommsg.ng"));
+		response = postAPIRequestAM.saveAnnouncement(practiceId, b);
+		aPIVerification.responseCodeValidation(response, 200);
+
+		DismissPage dismissPage = new DismissPage(driver, testData.getUrlLoginLess());
+		Thread.sleep(1000);
+		logStep("Clicked on Dismiss");
+		LoginlessPatientInformation loginlessPatientInformation = dismissPage.clickDismiss();
+		loginlessPatientInformation.fillNewPatientFormWithoutEmailZipPhone(propertyData.getProperty("firstname.dup.ng"),
+				propertyData.getProperty("lastname.dup.ng"), propertyData.getProperty("dob.dup.ng"), propertyData.getProperty("gender.dup.ng"));
+		String actualMessage = loginlessPatientInformation.multiplePatientMessage();
+		log("Actual Message  " + actualMessage);
+		String expectedMessage = propertyData.getProperty("multiple.patient.custommsg.ng");
+		log("Expected Message " + expectedMessage);
+		assertEquals(actualMessage, expectedMessage, "Default Announcement message is wrong");
+		response = postAPIRequestAM.getAnnouncement(practiceId, "/announcement");
+		aPIVerification.responseCodeValidation(response, 200);
+		JSONArray array = new JSONArray(response.body().asString());
+		int len = array.length();
+		int id = 0;
+		log("Length is- " + len);
+		for (int i = 0; i < len; i++) {
+			String type = array.getJSONObject(i).getString("type");
+			if (type.equalsIgnoreCase("Inactive or Multiple Patient")) {
+				log("id Is  " + array.getJSONObject(i).getInt("id"));
+				id = array.getJSONObject(i).getInt("id");
+				break;
+			}
+
+		}
+		log("Announcement Id is  " + id);
+		response = postAPIRequestAM.deleteAnnouncement(practiceId, id);
+		aPIVerification.responseCodeValidation(response, 200);
+	}
 
 	@DataProvider(name = "partnerType")
 	public Object[][] portalVersionForRegistration() {
