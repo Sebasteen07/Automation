@@ -307,7 +307,7 @@ locals {
       maven_parameter       = "mvn clean install -U"
       google_chrome_version = "96.0.4664.45-1"
       chrome_driver_version = "95.0.4638.17"
-      cron_shedule          = "cron(0 23 ? * 6 *)"
+      cron_shedule          = "cron(30 22 ? * 6 *)"
     }
 
   }
