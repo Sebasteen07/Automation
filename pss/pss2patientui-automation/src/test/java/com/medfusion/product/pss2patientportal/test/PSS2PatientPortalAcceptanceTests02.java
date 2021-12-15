@@ -190,7 +190,7 @@ public class PSS2PatientPortalAcceptanceTests02 extends BaseTestNGWebDriver {
 		psspatientutils.selectAFlow(driver, rule, homePage, testData);
 	}
 
-	@Test(enabled = true, groups = {"AcceptanceTests"}, retryAnalyzer = RetryAnalyzer.class, dependsOnMethods="testE2EAnonymousNG")
+	@Test(enabled = true, groups = {"AcceptanceTests"}, retryAnalyzer = RetryAnalyzer.class, dependsOnMethods="testE2EAnonymousWithPrivacyPolicyNG")
 	public void testRescheduleAnonymousviaEmailNG() throws Exception {
 		
 		log("Test to verify if Reschedule an Appointment via Email Notification");		
@@ -811,6 +811,61 @@ public class PSS2PatientPortalAcceptanceTests02 extends BaseTestNGWebDriver {
 		aPIVerification.responseCodeValidation(response, 200);	
 	}
 	
+	@Test(enabled = true, groups = { "AcceptanceTests" }, retryAnalyzer = RetryAnalyzer.class)
+	public void testAlerts_PatientNotesGW() throws Exception {
+
+		logStep("Verify the Patient Note- ALERTS for GreenWay partner");
+		PSSPropertyFileLoader propertyData = new PSSPropertyFileLoader();
+		Appointment testData = new Appointment();
+		AdminUser adminUser = new AdminUser();
+		
+		propertyData.setAdminGW(adminUser);
+		propertyData.setAppointmentResponseGW(testData);
+
+		logStep("Set up the API authentication");
+		setUp(propertyData.getProperty("mf.practice.id.gw"), propertyData.getProperty("mf.authuserid.am.gw"));
+		Response response;
+		
+		String group=propertyData.getProperty("alertgroup.ng");
+		String lockoutmessage=propertyData.getProperty("lockoutbillingnote.ng");
+		String lockouttype=propertyData.getProperty("patientnote.type.ng");
+		String key=propertyData.getProperty("patientnote.key.gw");
+		
+		String lockoutPayload=payloadAM.alertAndLocakout(key, key, lockouttype, group, lockoutmessage);
+		
+		logStep("Remove the already set announcement ");
+		response=postAPIRequestAM.lockoutPost(practiceId, lockoutPayload, "/lockout");
+		aPIVerification.responseCodeValidation(response, 200);
+		
+		logStep("Move to PSS patient Portal 2.0 to book an Appointment");
+		DismissPage dismissPage = new DismissPage(driver, testData.getUrlLoginLess());
+		
+
+		logStep("Open the link and click on Dismiss Button ");
+		LoginlessPatientInformation loginlessPatientInformation = dismissPage.clickDismiss();
+
+		String fn = propertyData.getProperty("lockout.fn.gw");
+		String ln = propertyData.getProperty("lockout.ln.gw");
+		String dob = propertyData.getProperty("lockout.dob.gw");
+		String gender = propertyData.getProperty("lockout.gender.gw");
+		
+		logStep("Enter the below mentioned patient details in demographic page- ");
+		log("Demographic Details- " + fn + " " + ln + " " + dob + " " + gender + " ");
+		
+		HomePage homePage = loginlessPatientInformation.fillNewPatientForm(fn, ln, dob, "", gender, "", "");	
+		String actualPopUpMessage=homePage.getTextAlertPopUpMsg();
+		
+		assertEquals(actualPopUpMessage, lockoutmessage, "Lockout message is wrong");
+		
+		response=postAPIRequestAM.associatedlockout(practiceId, "/associatedlockout");
+		aPIVerification.responseCodeValidation(response, 200);	
+		
+		JSONArray arr = new JSONArray(response.body().asString());
+		int id = arr.getJSONObject(0).getInt("id");
+		
+		response=postAPIRequestAM.deleteLockoutById(practiceId, id);
+		aPIVerification.responseCodeValidation(response, 200);	
+	}
 	
 	@Test(enabled = true, groups = { "AcceptanceTests" }, retryAnalyzer = RetryAnalyzer.class)
 	public void testAlerts_PatientStatusNG() throws Exception {
