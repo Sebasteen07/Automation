@@ -5998,5 +5998,78 @@ public class PatientPortal2AcceptanceTests extends BaseTestNGWebDriver {
 		Assert.assertEquals(myAccountPage.getPhone3(), phoneNumberLastDigit);
 		Assert.assertEquals(myAccountPage.getZipCodeTextbox(), zipCode);
 	}
+	
+	@Test(enabled = true, groups = { "acceptance-linkedaccounts" }, retryAnalyzer = RetryAnalyzer.class)
+	public void testValidateDependentPharmacy() throws Exception {
 
+		String name = "Medication Patient CreditCard";
+		CreditCard creditCard = new CreditCard(CardType.Mastercard, name);
+
+		logStep("Load login page and login");
+		JalapenoLoginPage loginPage = new JalapenoLoginPage(driver, testData.getProperty("med.portal.url"));
+		JalapenoHomePage homePage = loginPage.login(testData.getProperty("guardian.username"),
+				testData.getProperty("guardian.password"));
+		
+		logStep("Switch to the Dependent and place a Rx Request foor dependent");
+
+		JalapenoHomePage jalapenoHomePage= new JalapenoHomePage(driver);
+		jalapenoHomePage.faChangePatient();
+		
+		logStep("Click on Medications");
+		homePage.clickOnMedications(driver);
+
+		log("Initiating Medications 2.0 Request from Patient Portal");
+		MedicationsHomePage medPage = new MedicationsHomePage(driver);
+		medPage.clickOnRxRequest();
+
+		logStep("Select Location and Provider");
+		LocationAndProviderPage select = new LocationAndProviderPage(driver);
+		select.chooseLocationAndProvider();
+
+		logStep("Enter Credit Card Details");
+		PrescriptionFeePage feePage = new PrescriptionFeePage(driver);
+		feePage.fillRenewalFee(driver, creditCard);
+
+		logStep("Select a pharmacy");
+		SelectPharmacyPage dependentPharmaPage = new SelectPharmacyPage(driver);
+		String selectedPharmacy = dependentPharmaPage.addNewPharmacy(driver,testData.getProperty("dependent.pharmacy"));
+
+		logStep("Select Medications");
+		SelectMedicationsPage selectMedPage = new SelectMedicationsPage(driver);
+		selectMedPage.selectMedications();
+
+		logStep("Confirm Medication Request from Patient Portal");
+		MedicationsConfirmationPage confirmPage = new MedicationsConfirmationPage(driver);
+
+		String successMsg = confirmPage.confirmMedication(driver);
+		assertEquals(successMsg, "Your prescription request has been submitted.");
+		
+		logStep("Login as Guardian and verify Dependent pharmacy is not present");
+		JalapenoLoginPage loginPageNew = new JalapenoLoginPage(driver, testData.getProperty("med.portal.url"));
+		JalapenoHomePage homePageNew = loginPageNew.login(testData.getProperty("guardian.username"),
+				testData.getProperty("guardian.password"));
+		
+		logStep("Click on Medications");
+		homePageNew.clickOnMedications(driver);
+
+		log("Initiating Medications 2.0 Request from Patient Portal");
+		MedicationsHomePage medPageNew = new MedicationsHomePage(driver);
+		medPageNew.clickOnRxRequest();
+
+		logStep("Select Location and Provider");
+		LocationAndProviderPage selectNew = new LocationAndProviderPage(driver);
+		selectNew.chooseLocationAndProvider();
+
+		logStep("Enter Credit Card Details");
+		PrescriptionFeePage feePageNew = new PrescriptionFeePage(driver);
+		feePageNew.fillRenewalFee(driver, creditCard);
+		
+		logStep("Validate that Pharmacy added by dependent is not present in list of pharmacies");
+		SelectPharmacyPage guardianPharmaPage = new SelectPharmacyPage(driver);
+		assertTrue(guardianPharmaPage.validateIfDependentPharmacyPresent(selectedPharmacy));	
+
+		homePage.clickOnLogout();
+
+
+	}
 }
