@@ -2822,6 +2822,18 @@ public class PayloadAdapterModulator {
 		return patientInfoWithOptionalAno;
 	}
 
-
+	public String preRequisiteAppointmentTypesDefualt(String name, String extAppID, String catId, String catName) {
+		String saveAnn = "[\r\n"
+				+ "    {\r\n"
+				+ "        \"name\": \"" + name + "\",\r\n"
+				+ "        \"extPreAppTypeId\": \"" + extAppID + "\",\r\n"
+				+ "        \"numOfDays\": -1,\r\n"
+				+ "        \"categoryId\": \"" + catId + "\",\r\n"
+				+ "        \"categoryName\": \"" + catName + "\",\r\n"
+				+ "        \"selected\": true\r\n"
+				+ "    }\r\n"
+				+ "]";
+		return saveAnn;
+	}
 }
 
