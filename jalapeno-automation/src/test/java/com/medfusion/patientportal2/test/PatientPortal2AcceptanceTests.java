@@ -350,7 +350,6 @@ public class PatientPortal2AcceptanceTests extends BaseTestNGWebDriver {
 	@Test(enabled = true, groups = { "acceptance-basics" }, retryAnalyzer = RetryAnalyzer.class)
 	public void testPatientActivation() throws Exception {
 		String patientsEmail = IHGUtil.createRandomEmailAddress(testData.getEmail(), '.');
-		System.out.println(patientsEmail);
 
 		logStep("Patient Activation on Practice Portal");
 		PatientActivationSearchTest patientActivationSearchTest = new PatientActivationSearchTest();
