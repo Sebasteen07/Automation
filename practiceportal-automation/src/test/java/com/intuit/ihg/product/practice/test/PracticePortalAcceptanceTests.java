@@ -5,6 +5,7 @@ import org.testng.annotations.BeforeClass;
 import org.testng.annotations.Test;
 import com.medfusion.common.utils.Mailinator;
 import com.medfusion.common.utils.PropertyFileLoader;
+import com.medfusion.common.utils.YopMail;
 import com.medfusion.pojos.Patient;
 import com.intuit.ifs.csscat.core.BaseTestNGWebDriver;
 import com.intuit.ifs.csscat.core.RetryAnalyzer;
@@ -251,10 +252,14 @@ public class PracticePortalAcceptanceTests extends BaseTestNGWebDriver {
 		assertTrue(pPatientDashboardPage.getFeedback().contains("Username email sent to patient"),
 				"No success message on send!");
 		logStep("Access Mailinator and check for received email");
-		Mailinator mailinator = new Mailinator();
-		assertTrue(mailinator.catchNewMessageCheckContent(testData.getProperty("forgot.username.mail"),
+//		Mailinator mailinator = new Mailinator();
+		YopMail mail = new YopMail(driver);
+		assertTrue(mail.getEmailContent(testData.getProperty("forgot.username.mail"),
 				testData.getProperty("forgot.username.mail.subject"), testData.getProperty("forgot.username.login"), 10),
 				"Mail not received after max retries");
+//		assertTrue(mailinator.catchNewMessageCheckContent(testData.getProperty("forgot.username.mail"),
+//				testData.getProperty("forgot.username.mail.subject"), testData.getProperty("forgot.username.login"), 10),
+//				"Mail not received after max retries");
 	}
 
 	/**
@@ -561,10 +566,15 @@ public class PracticePortalAcceptanceTests extends BaseTestNGWebDriver {
 		String[] mailAddress = testData.getProperty("forgot.password.mail").split("@");
 		String emailSubject = "Help with your user name or password";
 		String inEmail = "Reset Password Now";
-		Email receivedEmail = new Mailer(mailAddress[0]).pollForNewEmailWithSubject(emailSubject, 60,
-				passwordResetStart.until(Instant.now(), ChronoUnit.SECONDS));
-		String resetPasswordLink = Mailer.getLinkByText(receivedEmail, inEmail);
-		System.out.println("Link from mail is" +resetPasswordLink );
+		YopMail mail=new YopMail(driver);
+		String resetPasswordLink = mail.getLinkFromEmail(mailAddress[0],emailSubject, inEmail, 15);
+		log("Link from mail is" +resetPasswordLink );
+
+//		Email receivedEmail = new Mailer(mailAddress[0]).pollForNewEmailWithSubject(emailSubject, 60,
+//				passwordResetStart.until(Instant.now(), ChronoUnit.SECONDS));
+//		String resetPasswordLink = Mailer.getLinkByText(receivedEmail, inEmail);
+		
+//		log("Link from mail is" +resetPasswordLink );
 		String url = getRedirectUrl(resetPasswordLink);
 		System.out.println("Redirected url is" +url);
 		assertNotNull(url, "Error: Reset Password link not found.");
@@ -602,11 +612,16 @@ public class PracticePortalAcceptanceTests extends BaseTestNGWebDriver {
 		String[] mailAddress = testData.getProperty("forgot.password.mail").split("@");
 		String emailSubject = "Help with your user name or password";
 		String inEmail = "Reset Password Now";
-		Email receivedEmail = new Mailer(mailAddress[0]).pollForNewEmailWithSubject(emailSubject, 60,
-				passwordResetStart.until(Instant.now(), ChronoUnit.SECONDS));
-		String resetPasswordLink = Mailer.getLinkByText(receivedEmail, inEmail);
-		System.out.println("Link from mail is" +resetPasswordLink );
-		String url = getRedirectUrl(resetPasswordLink);
+//		Email receivedEmail = new Mailer(mailAddress[0]).pollForNewEmailWithSubject(emailSubject, 60,
+//				passwordResetStart.until(Instant.now(), ChronoUnit.SECONDS));
+//		String resetPasswordLink = Mailer.getLinkByText(receivedEmail, inEmail);
+		
+		YopMail email = new YopMail(driver);
+		String receivedEmail = email.getLinkFromEmail(mailAddress[0],emailSubject, inEmail, 15);
+		log("Link from mail is" +receivedEmail );
+		
+		System.out.println("Link from mail is" +receivedEmail );
+		String url = getRedirectUrl(receivedEmail);
 		System.out.println("Redirected url is" +url);
 		assertNotNull(url, "Error: Reset Password link not found.");
 		
@@ -651,7 +666,7 @@ public class PracticePortalAcceptanceTests extends BaseTestNGWebDriver {
 
 		logStep("Search for patient in Patient Search");
 		pPatientSearchPage.searchForPatientWithPatientID(testData.getProperty("search.valid.patientID"));
-
+		
 		logStep("Verify the Search Result");
 		IHGUtil.waitForElement(driver, 30, pPatientSearchPage.searchResult);
 		assertEquals(true, pPatientSearchPage.searchResult.getText().contains(PracticeConstants.PATIENT_FIRST_NAME));
