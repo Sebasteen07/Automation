@@ -60,12 +60,9 @@ public class PSS2PatientPortalAcceptanceTests03 extends BaseTestNGWebDriver {
 		propertyData = new PSSPropertyFileLoader();
 		postAPIRequestAM = new PostAPIRequestAdapterModulator();
 		headerConfig = new HeaderConfig();
-
 		practiceId = practiceId1;
-
 		log("BASE URL AM -" + propertyData.getProperty("base.url.am"));
 		openToken = postAPIRequestAM.openToken(propertyData.getProperty("base.url.am"), practiceId, payloadAM.openTokenPayload(practiceId, userID));
-
 		postAPIRequestAM.setupRequestSpecBuilder(propertyData.getProperty("base.url.am"), headerConfig.HeaderwithToken(openToken));
 	}
 
@@ -102,6 +99,7 @@ public class PSS2PatientPortalAcceptanceTests03 extends BaseTestNGWebDriver {
 
 	@Test(enabled = true, groups = {"AcceptanceTests"}, retryAnalyzer = RetryAnalyzer.class)
 	public void testDefaultMsgMultiplePatientNG() throws Exception {
+		log("Multiple Patient Default message is displayed on Patient UI Loginless Flow For NG");
 		PSSPropertyFileLoader propertyData = new PSSPropertyFileLoader();
 		Appointment testData = new Appointment();
 		AdminUser adminUser = new AdminUser();
@@ -132,6 +130,7 @@ public class PSS2PatientPortalAcceptanceTests03 extends BaseTestNGWebDriver {
 
 	@Test(enabled = true, groups = {"AcceptanceTests"}, retryAnalyzer = RetryAnalyzer.class)
 	public void testDefaultMsgMultiplePatientGE() throws Exception {
+		log("Multiple Patient Default message is displayed on Patient UI Loginless Flow For GE");
 		PSSPropertyFileLoader propertyData = new PSSPropertyFileLoader();
 		Appointment testData = new Appointment();
 		AdminUser adminUser = new AdminUser();
@@ -163,6 +162,7 @@ public class PSS2PatientPortalAcceptanceTests03 extends BaseTestNGWebDriver {
 
 	@Test(enabled = true, groups = {"AcceptanceTests"}, retryAnalyzer = RetryAnalyzer.class)
 	public void testDefaultMsgMultiplePatientGW() throws Exception {
+		log("Multiple Patient Default message is displayed on Patient UI Loginless Flow For GW");
 		PSSPropertyFileLoader propertyData = new PSSPropertyFileLoader();
 		Appointment testData = new Appointment();
 		AdminUser adminUser = new AdminUser();
@@ -194,27 +194,24 @@ public class PSS2PatientPortalAcceptanceTests03 extends BaseTestNGWebDriver {
 
 	@Test(enabled = true, groups = {"AcceptanceTests"}, retryAnalyzer = RetryAnalyzer.class)
 	public void testCustomMsgMultiplePatientGW() throws Exception {
+		log("Multiple Patient message is displayed on Patient UI when message is configured from Admin UI Loginless Flow For GW");
 		PSSPropertyFileLoader propertyData = new PSSPropertyFileLoader();
 		Appointment testData = new Appointment();
 		AdminUser adminUser = new AdminUser();
 		propertyData.setAdminGW(adminUser);
 		propertyData.setAppointmentResponseGW(testData);
-
 		logStep("Set up the API authentication");
 		setUp(propertyData.getProperty("mf.practice.id.gw"), propertyData.getProperty("mf.authuserid.am.gw"));
 		Response response;
 		String b = payloadAM.multiplePatientAnnoucement(propertyData.getProperty("multiple.patient.custommsg.gw"));
 		response = postAPIRequestAM.saveAnnouncement(practiceId, b);
 		aPIVerification.responseCodeValidation(response, 200);
-
 		response = postAPIRequestAM.patientInfoPost(practiceId, payloadAM.patientInfoWithOptionalLL());
 		aPIVerification.responseCodeValidation(response, 200);
-
 		String firstName = propertyData.getProperty("firstname.dup.gw");
 		String lastName = propertyData.getProperty("lastname.dup.gw");
 		String gender = propertyData.getProperty("gender.dup.gw");
 		String dob = propertyData.getProperty("dob.dup.gw");
-
 		DismissPage dismissPage = new DismissPage(driver, testData.getUrlLoginLess());
 		Thread.sleep(1000);
 		logStep("Clicked on Dismiss");
@@ -239,7 +236,6 @@ public class PSS2PatientPortalAcceptanceTests03 extends BaseTestNGWebDriver {
 				id = array.getJSONObject(i).getInt("id");
 				break;
 			}
-
 		}
 		log("Announcement Id is  " + id);
 		response = postAPIRequestAM.deleteAnnouncement(practiceId, id);
@@ -248,6 +244,7 @@ public class PSS2PatientPortalAcceptanceTests03 extends BaseTestNGWebDriver {
 
 	@Test(enabled = true, groups = {"AcceptanceTests"}, retryAnalyzer = RetryAnalyzer.class)
 	public void testCustomMsgMultiplePatientGE() throws Exception {
+		log("Multiple Patient message is displayed on Patient UI when message is configured from Admin UI Loginless Flow For GE");
 		PSSPropertyFileLoader propertyData = new PSSPropertyFileLoader();
 		Appointment testData = new Appointment();
 		AdminUser adminUser = new AdminUser();
@@ -302,6 +299,7 @@ public class PSS2PatientPortalAcceptanceTests03 extends BaseTestNGWebDriver {
 
 	@Test(enabled = true, groups = {"AcceptanceTests"}, retryAnalyzer = RetryAnalyzer.class)
 	public void testCustomMsgMultiplePatientNG() throws Exception {
+		log("Multiple Patient message is displayed on Patient UI when message is configured from Admin UI Loginless Flow For NG");
 		PSSPropertyFileLoader propertyData = new PSSPropertyFileLoader();
 		Appointment testData = new Appointment();
 		AdminUser adminUser = new AdminUser();
@@ -356,6 +354,7 @@ public class PSS2PatientPortalAcceptanceTests03 extends BaseTestNGWebDriver {
 
 	@Test(enabled = true, groups = {"AcceptanceTests"}, retryAnalyzer = RetryAnalyzer.class)
 	public void testAllowDuplicatePatientOFFDefaultMsgNG() throws Exception {
+		log("Duplicate Patient Default message is displayed on Patient UI when Duplicate Patient is OFF In Admin UI Anonymous Flow For NG");
 		PSSPropertyFileLoader propertyData = new PSSPropertyFileLoader();
 		Appointment testData = new Appointment();
 		AdminUser adminUser = new AdminUser();
@@ -403,6 +402,7 @@ public class PSS2PatientPortalAcceptanceTests03 extends BaseTestNGWebDriver {
 
 	@Test(enabled = true, groups = {"AcceptanceTests"}, retryAnalyzer = RetryAnalyzer.class)
 	public void testAllowDuplicatePatientCustomMsgOFFNG() throws Exception {
+		log("Duplicate Patient Custom message is displayed on Patient UI when Duplicate Patient is OFF In Admin UI Anonymous Flow For NG");
 		PSSPropertyFileLoader propertyData = new PSSPropertyFileLoader();
 		Appointment testData = new Appointment();
 		AdminUser adminUser = new AdminUser();
@@ -472,6 +472,7 @@ public class PSS2PatientPortalAcceptanceTests03 extends BaseTestNGWebDriver {
 
 	@Test(enabled = true, groups = {"AcceptanceTests"}, retryAnalyzer = RetryAnalyzer.class)
 	public void testAllowDuplicatePatientONNG() throws Exception {
+		log("Duplicate Patient message is Not displayed on Patient UI when Duplicate Patient is ON In Admin UI Anonymous Flow For NG");
 		PSSPropertyFileLoader propertyData = new PSSPropertyFileLoader();
 		Appointment testData = new Appointment();
 		AdminUser adminUser = new AdminUser();
