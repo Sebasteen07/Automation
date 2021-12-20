@@ -14,7 +14,6 @@ import org.testng.annotations.Test;
 import com.intuit.ifs.csscat.core.BaseTestNGWebDriver;
 import com.intuit.ifs.csscat.core.RetryAnalyzer;
 import com.intuit.ihg.eh.core.dto.Timestamp;
-import com.medfusion.common.utils.Mailinator;
 import com.medfusion.product.object.maps.pss2.page.AppEntryPoint.StartAppointmentInOrder;
 import com.medfusion.product.object.maps.pss2.page.Appointment.Anonymous.AnonymousDismissPage;
 import com.medfusion.product.object.maps.pss2.page.Appointment.CancResc.CancelRescheduleDecisionPage;
@@ -1246,7 +1245,6 @@ public class PSS2PatientPortalAcceptanceTests02 extends BaseTestNGWebDriver {
 		log("Address Line2 In Patient UI......" + addresslineUI);
 		Assert.assertEquals(addresslineUI, addressLine2);
 	}
-
 
 	@DataProvider(name = "partnerType")
 	public Object[][] portalVersionForRegistration() {

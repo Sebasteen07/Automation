@@ -19,7 +19,6 @@ import com.medfusion.product.patientportal2.utils.JalapenoConstants;
 import com.medfusion.product.patientportal2.utils.PortalUtil2;
 import org.apache.commons.io.FileUtils;
 import org.openqa.selenium.By;
-import org.openqa.selenium.Dimension;
 import org.openqa.selenium.WebDriverException;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.PageFactory;
@@ -48,7 +47,6 @@ import com.medfusion.product.object.maps.patientportal2.page.AppointmentRequestP
 import com.medfusion.product.object.maps.patientportal2.page.AppointmentRequestPage.JalapenoAppointmentRequestV2HistoryPage;
 import com.medfusion.product.object.maps.patientportal2.page.AppointmentRequestPage.JalapenoAppointmentRequestV2Step1;
 import com.medfusion.product.object.maps.patientportal2.page.AppointmentRequestPage.JalapenoAppointmentRequestV2Step2;
-import com.medfusion.product.object.maps.patientportal2.page.AskAStaff.JalapenoAskAStaffPage;
 import com.medfusion.product.object.maps.patientportal2.page.AskAStaff.JalapenoAskAStaffV2HistoryDetailPage;
 import com.medfusion.product.object.maps.patientportal2.page.AskAStaff.JalapenoAskAStaffV2HistoryListPage;
 import com.medfusion.product.object.maps.patientportal2.page.AskAStaff.JalapenoAskAStaffV2Page1;
@@ -117,7 +115,7 @@ public class PatientPortal2AcceptanceTests extends BaseTestNGWebDriver {
 	private static final String USERNAME_CHANGE_NOTIFICATION_EMAIL_CONTENT = "User ID associated with your Patient Portal account has been changed";
 	private static final String DIRECT_EMAIL_ADDRESS = "medfusionqa@service2.directaddress.net";
 	private static final String INVITE_EMAIL_SUBJECT_PATIENT = "You're invited to create a Patient Portal account at ";
-	private static final String INVITE_EMAIL_SUBJECT_REPRESENTATIVE = "You're invited to create a Portal account to be a trustedrepresentative of a patient at ";
+	private static final String INVITE_EMAIL_SUBJECT_REPRESENTATIVE = "You're invited to create a Portal account to be a trusted representative of a patient at ";
 	private static final String INVITE_EMAIL_BUTTON_TEXT = "Sign Up!";
 	private static final String WELCOME_EMAIL_BUTTON_TEXT = "Visit our patient portal now";
 	private static final String WELCOME_EMAIL_SUBJECT_PATIENT = "New Member Confirmation";
@@ -139,7 +137,7 @@ public class PatientPortal2AcceptanceTests extends BaseTestNGWebDriver {
 			+ "\\src\\test\\resources\\documents\\SecureMessageFile.pdf";
 	private static final String InvalidfilePath = System.getProperty("user.dir")
 			+ "\\src\\test\\resources\\File_Attachment\\Error_Files_Testing1.json";
-	private static final String WEBSITE_LINK ="Visit our website";
+	private static final String WEBSITE_LINK = "Visit our website";
 
 	private PropertyFileLoader testData;
 	private Patient patient = null;
@@ -155,7 +153,7 @@ public class PatientPortal2AcceptanceTests extends BaseTestNGWebDriver {
 	// @BeforeMethod(alwaysRun = true, onlyForGroups = "commonpatient")
 	public void createCommonPatient() throws Exception {
 		if (patient == null) {
-			String username = PortalUtil2.generateUniqueUsername(testData.getProperty("user.id"), testData);
+			String username = PortalUtil2.generateUniqueUsername(testData.getProperty("tr.user.id"), testData);
 			patient = PatientFactory.createJalapenoPatient(username, testData);
 			patient = new CreatePatient().selfRegisterPatient(driver, patient, testData.getUrl());
 		}
@@ -385,9 +383,10 @@ public class PatientPortal2AcceptanceTests extends BaseTestNGWebDriver {
 		jalapenoLoginPage = jalapenoHomePage.clickOnLogout();
 
 		logStep("Logging into Mailinator and getting Patient Activation url");
-		YopMail yp=new YopMail(driver);
+		YopMail yp = new YopMail(driver);
 		String unlockLinkEmail = yp.getLinkFromEmail(patientsEmail,
-				INVITE_EMAIL_SUBJECT_PATIENT + testData.getPracticeName().replace(" ", ""), INVITE_EMAIL_BUTTON_TEXT, 10);
+				INVITE_EMAIL_SUBJECT_PATIENT + testData.getPracticeName().replace(" ", ""), INVITE_EMAIL_BUTTON_TEXT,
+				10);
 		assertNotNull(unlockLinkEmail, "Error: Activation link not found.");
 		logStep("Retrieved activation link is " + unlockLinkEmail);
 		if (!isInviteLinkFinal(unlockLinkEmail)) {
@@ -431,9 +430,13 @@ public class PatientPortal2AcceptanceTests extends BaseTestNGWebDriver {
 		String[] mailAddress = email.split("@");
 		String emailSubject = "Help with your user name or password";
 		String inEmail = "Reset Password Now";
-		Email receivedEmail = new Mailer(mailAddress[0]).pollForNewEmailWithSubject(emailSubject, 60,
-				testSecondsTaken(passwordResetStart));
-		String url = Mailer.getLinkByText(receivedEmail, inEmail);
+
+		YopMail mail = new YopMail(driver);
+		String url = mail.getLinkFromEmail(mailAddress[0], emailSubject, inEmail, 10);
+
+//		Email receivedEmail = new Mailer(mailAddress[0]).pollForNewEmailWithSubject(emailSubject, 60,
+//				testSecondsTaken(passwordResetStart));
+//		String url = Mailer.getLinkByText(receivedEmail, inEmail);
 		if (!isInviteLinkFinal(url)) {
 			url = getRedirectUrl(url);
 		}
@@ -1073,18 +1076,18 @@ public class PatientPortal2AcceptanceTests extends BaseTestNGWebDriver {
 		logStep("Login patient");
 		loginPage = new JalapenoLoginPage(driver, testData.getProperty("url"));
 		homePage = loginPage.login(testData.getProperty("aska.v2.user"), testData.getProperty("aska.v2.password"));
-		
+
 		logStep("Go to messages");
 		JalapenoMessagesPage messagesPage = homePage.showMessages(driver);
 
 		logStep("Check if message was delivered");
 		assertTrue(messagesPage.isMessageDisplayed(driver,
 				"Automated Test " + (Long.toString(detailStep2.getCreatedTimeStamp()))));
-		
+
 		JalapenoLoginPage loginPageNew = new JalapenoLoginPage(driver, testData.getProperty("url"));
 		JalapenoHomePage homePageNew = loginPageNew.login(testData.getProperty("aska.v2.user"),
 				testData.getProperty("aska.v2.password"));
-		
+
 		logStep("Click Ask A Staff tab");
 		askPage1 = homePageNew.openSpecificAskaV2(testData.getProperty("aska.v2.name"));
 		askHistoryList = askPage1.clickOnHistory();
@@ -1110,7 +1113,6 @@ public class PatientPortal2AcceptanceTests extends BaseTestNGWebDriver {
 	// guardian email
 	@Test(enabled = true, groups = { "acceptance-linkedaccounts" }, retryAnalyzer = RetryAnalyzer.class)
 	public void testLACreateGuardianOnly() throws Exception {
-		Instant testStart = Instant.now();
 		String patientLogin = PortalUtil2.generateUniqueUsername("login", testData); // guardian's login
 		String patientLastName = patientLogin.replace("login", "last"); // lastname for both
 		String patientEmail = patientLogin.replace("login", "mail") + "@yopmail.com"; /// email for both
@@ -1161,7 +1163,7 @@ public class PatientPortal2AcceptanceTests extends BaseTestNGWebDriver {
 
 		String emailSubjectGuardian = "You are invited to create a Patient Portal guardian account at "
 				+ testData.getPracticeName();
-		
+
 		YopMail mail=new YopMail(driver);
 		String guardianUrlEmail = mail.getLinkFromEmail(patientEmail,
 				emailSubjectGuardian, INVITE_EMAIL_BUTTON_TEXT, 15);
@@ -1171,6 +1173,7 @@ public class PatientPortal2AcceptanceTests extends BaseTestNGWebDriver {
 		//assertNotNull(emailGuardian,
 				//"Error: No email found for guardian recent enough and with specified subject: " + emailSubjectGuardian);
 		//String guardianUrlEmail = Mailer.getLinkByText(emailGuardian, INVITE_EMAIL_BUTTON_TEXT);
+
 		assertTrue(guardianUrlEmail.length() > 0, "Error: No matching link found in guardian invite email!");
 		// SendInBlue workaround, go through the redirect and save the actual URL if the
 		// invite link does not contain a specific string
@@ -1185,10 +1188,10 @@ public class PatientPortal2AcceptanceTests extends BaseTestNGWebDriver {
 
 	@Test(enabled = true, groups = { "acceptance-linkedaccounts" }, retryAnalyzer = RetryAnalyzer.class)
 	public void testLACreateDependentAndGuardian() throws Exception {
-		Instant testStart = Instant.now();
+		// Instant testStart = Instant.now();
 		String patientLogin = PortalUtil2.generateUniqueUsername("login", testData); // guardian login
 		String patientLastName = patientLogin.replace("login", "last");
-		String patientEmail = patientLogin.replace("login", "mail") + "@mailinator.com";
+		String patientEmail = patientLogin.replace("login", "mail") + "@yopmail.com";
 
 		logStep("Login to Practice Portal");
 		PracticeLoginPage practiceLogin = new PracticeLoginPage(driver, testData.getPortalUrl());
@@ -1249,11 +1252,16 @@ public class PatientPortal2AcceptanceTests extends BaseTestNGWebDriver {
 
 		String emailSubjectGuardian = "You are invited to create a Patient Portal guardian account at "
 				+ testData.getPracticeName();
-		Email emailGuardian = new Mailer(patientEmail).pollForNewEmailWithSubject(emailSubjectGuardian, 30,
-				testSecondsTaken(testStart));
-		assertNotNull(emailGuardian,
-				"Error: No email found for guardian recent enough and with specified subject: " + emailSubjectGuardian);
-		String guardianUrlEmail = Mailer.getLinkByText(emailGuardian, INVITE_EMAIL_BUTTON_TEXT);
+		System.out.println("This is the emailSubjectGuardian::" + emailSubjectGuardian);
+		YopMail mail = new YopMail(driver);
+		String guardianUrlEmail = mail.getLinkFromEmail(patientEmail, emailSubjectGuardian, INVITE_EMAIL_BUTTON_TEXT,
+				10);
+
+//		Email emailGuardian = new Mailer(patientEmail).pollForNewEmailWithSubject(emailSubjectGuardian, 30,
+//				testSecondsTaken(testStart));
+//		assertNotNull(emailGuardian,
+//				"Error: No email found for guardian recent enough and with specified subject: " + emailSubjectGuardian);
+//		String guardianUrlEmail = Mailer.getLinkByText(emailGuardian, INVITE_EMAIL_BUTTON_TEXT);
 
 		assertTrue(guardianUrlEmail.length() > 0, "Error: No matching link found in guardian invite email!");
 
@@ -1269,11 +1277,13 @@ public class PatientPortal2AcceptanceTests extends BaseTestNGWebDriver {
 				"Practice portal and email unlock links for guardian are not equal!");
 
 		String emailSubjectPatient = INVITE_EMAIL_SUBJECT_PATIENT + testData.getPracticeName();
-		Email emailPatient = new Mailer(patientEmail).pollForNewEmailWithSubject(emailSubjectPatient, 30,
-				testSecondsTaken(testStart));
-		assertNotNull(emailPatient,
-				"Error: No email found for patient recent enough and with specified subject: " + emailSubjectPatient);
-		String patientUrlEmail = Mailer.getLinkByText(emailPatient, INVITE_EMAIL_BUTTON_TEXT);
+		String patientUrlEmail = mail.getLinkFromEmail(patientEmail, emailSubjectPatient, INVITE_EMAIL_BUTTON_TEXT, 10);
+
+//		Email emailPatient = new Mailer(patientEmail).pollForNewEmailWithSubject(emailSubjectPatient, 30,
+//				testSecondsTaken(testStart));
+//		assertNotNull(emailPatient,
+//				"Error: No email found for patient recent enough and with specified subject: " + emailSubjectPatient);
+//		String patientUrlEmail = Mailer.getLinkByText(emailPatient, INVITE_EMAIL_BUTTON_TEXT);
 		assertTrue(patientUrlEmail.length() > 0, "Error: No matching link found in dependent invite email!");
 
 		// SendInBlue workaround, go through the redirect and save the actual URL if the
@@ -1578,7 +1588,7 @@ public class PatientPortal2AcceptanceTests extends BaseTestNGWebDriver {
 	@Test(enabled = true, groups = { "acceptance-linkedaccounts" }, retryAnalyzer = RetryAnalyzer.class)
 	public void testInviteTrustedRepresentativeWithAccount() throws Exception {
 		createPatient();
-		String email = testData.getTrustedRepEmail() + IHGUtil.createRandomNumber() + "@mailinator.com";
+		String email = testData.getProperty("tr.user.id") + IHGUtil.createRandomNumber() + "@yopmail.com";
 
 		logStep("Go to account page");
 		JalapenoHomePage homePage = new JalapenoHomePage(driver);
@@ -1589,8 +1599,11 @@ public class PatientPortal2AcceptanceTests extends BaseTestNGWebDriver {
 				email);
 
 		logStep("Waiting for invitation email");
-		String patientUrl = new Mailinator().getLinkFromEmail(email, INVITE_EMAIL_SUBJECT_REPRESENTATIVE,
-				INVITE_EMAIL_BUTTON_TEXT, 15);
+		YopMail yp = new YopMail(driver);
+		String patientUrl = yp.getLinkFromEmail(email, INVITE_EMAIL_SUBJECT_REPRESENTATIVE, INVITE_EMAIL_BUTTON_TEXT,
+				15);
+//		String patientUrl = new Mailinator().getLinkFromEmail(email, INVITE_EMAIL_SUBJECT_REPRESENTATIVE,
+//				INVITE_EMAIL_BUTTON_TEXT, 15);
 		assertNotNull(patientUrl, "Error: Activation patients link not found.");
 
 		logStep("Redirecting to verification page");
@@ -1820,11 +1833,11 @@ public class PatientPortal2AcceptanceTests extends BaseTestNGWebDriver {
 
 //		logStep("Go back to the aska again and check submission status changed");
 //		homePage = messagesPage.clickOnMenuHome();
-		
+
 		JalapenoLoginPage loginPageNew = new JalapenoLoginPage(driver, testData.getProperty("url"));
 		JalapenoHomePage homePageNew = loginPageNew.login(testData.getProperty("aska.v2.user"),
 				testData.getProperty("aska.v2.password"));
-		
+
 		askPage1 = homePageNew.openSpecificAskaPaidV2(testData.getProperty("aska.v2.name"));
 		askHistoryList = askPage1.clickOnHistory();
 
@@ -2186,8 +2199,13 @@ public class PatientPortal2AcceptanceTests extends BaseTestNGWebDriver {
 		logStep("Activation Link of First Practice is " + unlockLinkPortal);
 
 		logStep("Logging into Mailinator and getting Patient Activation url for first Practice");
-		String unlockLinkEmail = new Mailinator().getLinkFromEmail(firstPatientEmail,
-				INVITE_EMAIL_SUBJECT_PATIENT + testData.getProperty("practice.name1"), INVITE_EMAIL_BUTTON_TEXT, 60);
+		YopMail mail = new YopMail(driver);
+		String unlockLinkEmail = mail.getLinkFromEmail(firstPatientEmail,
+				INVITE_EMAIL_SUBJECT_PATIENT + testData.getProperty("practice.name1").replace(" ", ""),
+				INVITE_EMAIL_BUTTON_TEXT, 10);
+
+//		String unlockLinkEmail = new Mailinator().getLinkFromEmail(firstPatientEmail,
+//				INVITE_EMAIL_SUBJECT_PATIENT + testData.getProperty("practice.name1"), INVITE_EMAIL_BUTTON_TEXT, 60);
 		assertNotNull(unlockLinkEmail, "Error: Activation link not found.");
 
 		logStep("Retrieved activation link for first Practice is " + unlockLinkEmail);
@@ -2216,12 +2234,17 @@ public class PatientPortal2AcceptanceTests extends BaseTestNGWebDriver {
 				testData.getPortalUrl(), firstPatientEmail, patientId);
 
 		log("Waiting for welcome mail at patient inbox from second practice");
-		Instant testStart = Instant.now();
-		Email visitPortal = new Mailer(firstPatientEmail).pollForNewEmailWithSubject(WELCOME_EMAIL_SUBJECT_PATIENT, 60,
-				testSecondsTaken(testStart));
-		assertNotNull(visitPortal,
-				"Error: No Welcome email found recent enough with specified subject: " + WELCOME_EMAIL_SUBJECT_PATIENT);
-		String portalUrlLink = Mailer.getLinkByText(visitPortal, WELCOME_EMAIL_BUTTON_TEXT);
+
+		// Instant testStart = Instant.now();
+		String portalUrlLink = mail.getLinkFromEmail(firstPatientEmail,
+				WELCOME_EMAIL_SUBJECT_PATIENT + testData.getProperty("practice.name1").replace(" ", ""),
+				WELCOME_EMAIL_BUTTON_TEXT, 10);
+
+//		Email visitPortal = new Mailer(firstPatientEmail).pollForNewEmailWithSubject(WELCOME_EMAIL_SUBJECT_PATIENT, 60,
+//				testSecondsTaken(testStart));
+//		assertNotNull(visitPortal,
+//				"Error: No Welcome email found recent enough with specified subject: " + WELCOME_EMAIL_SUBJECT_PATIENT);
+//		String portalUrlLink = Mailer.getLinkByText(visitPortal, WELCOME_EMAIL_BUTTON_TEXT);
 		assertTrue(portalUrlLink.length() > 0, "Error: No matching link found in patient welcome email!");
 
 		if (!isWelcomeLinkFinal(portalUrlLink)) {
@@ -2337,8 +2360,13 @@ public class PatientPortal2AcceptanceTests extends BaseTestNGWebDriver {
 				testData.getPortalUrl(), patientFirstName);
 
 		logStep("Logging into Mailinator and getting Patient Activation url");
-		String unlockLinkEmail01 = new Mailinator().getLinkFromEmail(guardianpatientEmail,
-				GUARDIAN_INVITE_SUBJECT + testData.getProperty("practice.name1"), INVITE_EMAIL_BUTTON_TEXT, 10);
+		YopMail mail = new YopMail(driver);
+		String unlockLinkEmail01 = mail.getLinkFromEmail(guardianpatientEmail,
+				GUARDIAN_INVITE_SUBJECT + testData.getProperty("practice.name1").replace(" ", ""),
+				INVITE_EMAIL_BUTTON_TEXT, 10);
+
+//		String unlockLinkEmail01 = new Mailinator().getLinkFromEmail(guardianpatientEmail,
+//				GUARDIAN_INVITE_SUBJECT + testData.getProperty("practice.name1"), INVITE_EMAIL_BUTTON_TEXT, 10);
 		log("Guardian invite subject from mail is " + unlockLinkEmail01);
 		assertNotNull(unlockLinkEmail01, "Error: Activation link not found.");
 
@@ -2373,13 +2401,16 @@ public class PatientPortal2AcceptanceTests extends BaseTestNGWebDriver {
 		logStep("Validate Welcome mail recieved by guardianpatient at Practice Portal2");
 
 		log("Waiting for welcome mail at patient inbox from second practice");
-		Instant testStart = Instant.now();
-		Email visitPortal = new Mailer(guardianpatientEmail).pollForNewEmailWithSubject(WELCOME_EMAIL_SUBJECT_PATIENT,
-				70, testSecondsTaken(testStart));
-		assertNotNull(visitPortal,
-				"Error: No Welcome email found recent enough with specified subject: " + WELCOME_EMAIL_SUBJECT_PATIENT);
+		String portalUrlLink = mail.getLinkFromEmail(guardianpatientEmail, WELCOME_EMAIL_SUBJECT_PATIENT,
+				WELCOME_EMAIL_BUTTON_TEXT, 10);
 
-		String portalUrlLink = Mailer.getLinkByText(visitPortal, WELCOME_EMAIL_BUTTON_TEXT);
+//		Instant testStart = Instant.now();
+//		Email visitPortal = new Mailer(guardianpatientEmail).pollForNewEmailWithSubject(WELCOME_EMAIL_SUBJECT_PATIENT,
+//				70, testSecondsTaken(testStart));
+//		assertNotNull(visitPortal,
+//				"Error: No Welcome email found recent enough with specified subject: " + WELCOME_EMAIL_SUBJECT_PATIENT);
+//
+//		String portalUrlLink = Mailer.getLinkByText(visitPortal, WELCOME_EMAIL_BUTTON_TEXT);
 
 		assertTrue(portalUrlLink.length() > 0, "Error: No matching link found in patient welcome email!");
 
@@ -2588,6 +2619,8 @@ public class PatientPortal2AcceptanceTests extends BaseTestNGWebDriver {
 		String patientLogin = PortalUtil2.generateUniqueUsername("login", testData);
 		String patientLastName = patientLogin.replace("login", "last");
 		String patientEmail = patientLogin.replace("login", "mail") + "@yopmail.com";
+
+//		String patientEmail = patientLogin.replace("login", "mail") + "@mailinator.com";
 
 		logStep("Login to Practice Portal");
 		PracticeLoginPage practiceLogin = new PracticeLoginPage(driver, testData.getPortalUrl());
@@ -2844,6 +2877,7 @@ public class PatientPortal2AcceptanceTests extends BaseTestNGWebDriver {
 		String patientLogin = PortalUtil2.generateUniqueUsername("login", testData);
 		String patientLastName = patientLogin.replace("login", "last");
 		String patientEmail = patientLogin.replace("login", "mail") + "@yopmail.com";
+//		String patientEmail = patientLogin.replace("login", "mail") + "@mailinator.com";
 
 		logStep("Login to Practice Portal");
 		PracticeLoginPage practiceLogin = new PracticeLoginPage(driver, testData.getPortalUrl());
@@ -3019,13 +3053,20 @@ public class PatientPortal2AcceptanceTests extends BaseTestNGWebDriver {
 		assertTrue(messagesPage.isMessageDisplayed(driver, messageSubject));
 
 		logStep("Verifying the Payment Notification Mail is received by the patient or not");
+
+		YopMail mail = new YopMail(driver);
 		String notificationEmailSubject = "Payment Receipt";
 		String mailAddress = patient.getUsername();
-		Email email = new Mailer(mailAddress).pollForNewEmailWithSubject(notificationEmailSubject, 90,
-				testSecondsTaken(messageBuildingStart));
-		assertNotNull(email, "Error: No new message notification recent enough found");
-		String emailBody = email.getBody();
-		assertTrue(emailBody.contains("************" + creditCardEnding));
+		assertTrue(mail.getEmailContent(mailAddress, notificationEmailSubject, "************", 10));
+
+		/*
+		 * Email email = new
+		 * Mailer(mailAddress).pollForNewEmailWithSubject(notificationEmailSubject, 90,
+		 * testSecondsTaken(messageBuildingStart)); assertNotNull(email,
+		 * "Error: No new message notification recent enough found"); String emailBody =
+		 * email.getBody(); assertTrue(emailBody.contains("************" +
+		 * creditCardEnding));
+		 */
 
 		homePage.clickOnLogout();
 
@@ -3519,9 +3560,9 @@ public class PatientPortal2AcceptanceTests extends BaseTestNGWebDriver {
 				email);
 
 		logStep("Waiting for invitation email");
-		YopMail yp=new YopMail(driver);
-		String patientUrl = yp.getLinkFromEmail(email, INVITE_EMAIL_SUBJECT_REPRESENTATIVE,
-				INVITE_EMAIL_BUTTON_TEXT, 15);
+		YopMail yp = new YopMail(driver);
+		String patientUrl = yp.getLinkFromEmail(email, INVITE_EMAIL_SUBJECT_REPRESENTATIVE, INVITE_EMAIL_BUTTON_TEXT,
+				15);
 		assertNotNull(patientUrl, "Error: Activation patients link not found.");
 
 		logStep("Redirecting to verification page");
@@ -3559,8 +3600,8 @@ public class PatientPortal2AcceptanceTests extends BaseTestNGWebDriver {
 		logStep("Using YOPMail Mailer to retrieve the latest emails for Trusted Representative");
 		String emailSubjectTrustedRepresentative = "Unlink notification of your account at "
 				+ testData.getPracticeName();
-		String emailTrustedRepresentative = yp.getLinkFromEmail(email, emailSubjectTrustedRepresentative,
-				WEBSITE_LINK, 15);
+		String emailTrustedRepresentative = yp.getLinkFromEmail(email, emailSubjectTrustedRepresentative, WEBSITE_LINK,
+				15);
 		assertNotNull(emailTrustedRepresentative,
 				"Error: No email found for Trusted Representative recent enough and with specified subject: "
 						+ emailSubjectTrustedRepresentative);
@@ -3776,11 +3817,11 @@ public class PatientPortal2AcceptanceTests extends BaseTestNGWebDriver {
 		logStep("Check if message was delivered");
 		assertTrue(messagesPage.isMessageDisplayed(driver,
 				"Automated Test " + (Long.toString(detailStep2.getCreatedTimeStamp()))));
-		
+
 		JalapenoLoginPage loginPageNew = new JalapenoLoginPage(driver, testData.getProperty("url"));
 		JalapenoHomePage homePageNew = loginPageNew.login(testData.getProperty("aska.v2.user"),
 				testData.getProperty("aska.v2.password"));
-		
+
 		askPage1 = homePageNew.openSpecificAskaPaidV2(testData.getProperty("aska.v2.name"));
 		askHistoryList = askPage1.clickOnHistory();
 
@@ -3931,9 +3972,9 @@ public class PatientPortal2AcceptanceTests extends BaseTestNGWebDriver {
 				email);
 
 		logStep("Waiting for invitation email");
-		YopMail yp=new YopMail(driver);
-		String patientUrl = yp.getLinkFromEmail(email, INVITE_EMAIL_SUBJECT_REPRESENTATIVE,
-				INVITE_EMAIL_BUTTON_TEXT, 15);
+		YopMail yp = new YopMail(driver);
+		String patientUrl = yp.getLinkFromEmail(email, INVITE_EMAIL_SUBJECT_REPRESENTATIVE, INVITE_EMAIL_BUTTON_TEXT,
+				15);
 		assertNotNull(patientUrl, "Error: Activation patients link not found.");
 
 		logStep("Redirecting to verification page");
@@ -4073,7 +4114,7 @@ public class PatientPortal2AcceptanceTests extends BaseTestNGWebDriver {
 	public void testLACreateDependentWithInvalidGuardianCredentials() throws Exception {
 		String patientLogin = PortalUtil2.generateUniqueUsername("login", testData);
 		String patientLastName = patientLogin.replace("login", "last");
-		String patientEmail = patientLogin.replace("login", "mail") + "@mailinator.com";
+		String patientEmail = patientLogin.replace("login", "mail") + "@yopmail.com";
 
 		logStep("Login to Practice Portal");
 		PracticeLoginPage practiceLogin = new PracticeLoginPage(driver, testData.getPortalUrl());
@@ -5288,14 +5329,14 @@ public class PatientPortal2AcceptanceTests extends BaseTestNGWebDriver {
 		logStep("Check if message was delivered");
 		assertTrue(messagesPage.isMessageDisplayed(driver,
 				"Automated Test " + (Long.toString(detailStep2.getCreatedTimeStamp()))));
-		
+
 		JalapenoLoginPage loginPageNew = new JalapenoLoginPage(driver, testData.getProperty("url"));
 		JalapenoHomePage homePageNew = loginPageNew.login(testData.getProperty("aska.v2.user"),
-				testData.getProperty("aska.v2.password"));	
-		
+				testData.getProperty("aska.v2.password"));
+
 		logStep("Switching to Dependent Account");
 		homePage.faChangePatient();
-		
+
 		askPageFreequs = homePageNew.openSpecificAskaFree(testData.getProperty("aska.v2.name"));
 		askHistoryList = askPageFreequs.clickOnHistory();
 
@@ -5666,8 +5707,14 @@ public class PatientPortal2AcceptanceTests extends BaseTestNGWebDriver {
 		accountPage.inviteTrustedRepresentativeWithPermission(trustedPatient);
 
 		logStep("Waiting for invitation email");
-		String patientUrl = new Mailinator().getLinkFromEmail(trustedPatient.getEmail(),
-				INVITE_EMAIL_SUBJECT_REPRESENTATIVE, INVITE_EMAIL_BUTTON_TEXT, 60);
+
+		YopMail yp = new YopMail(driver);
+		String patientUrl = yp.getLinkFromEmail(trustedPatient.getEmail(), INVITE_EMAIL_SUBJECT_REPRESENTATIVE,
+				INVITE_EMAIL_BUTTON_TEXT, 10);
+
+		// String patientUrl = new
+		// Mailinator().getLinkFromEmail(trustedPatient.getEmail(),
+		// INVITE_EMAIL_SUBJECT_REPRESENTATIVE, INVITE_EMAIL_BUTTON_TEXT, 60);
 		assertNotNull(patientUrl, "Error: Activation patients link not found.");
 
 		logStep("Redirecting to verification page");
@@ -6070,7 +6117,7 @@ public class PatientPortal2AcceptanceTests extends BaseTestNGWebDriver {
 		Assert.assertEquals(myAccountPage.getPhone3(), phoneNumberLastDigit);
 		Assert.assertEquals(myAccountPage.getZipCodeTextbox(), zipCode);
 	}
-	
+
 	@Test(enabled = true, groups = { "acceptance-linkedaccounts" }, retryAnalyzer = RetryAnalyzer.class)
 	public void testValidateDependentPharmacy() throws Exception {
 
@@ -6081,12 +6128,12 @@ public class PatientPortal2AcceptanceTests extends BaseTestNGWebDriver {
 		JalapenoLoginPage loginPage = new JalapenoLoginPage(driver, testData.getProperty("med.portal.url"));
 		JalapenoHomePage homePage = loginPage.login(testData.getProperty("guardian.username"),
 				testData.getProperty("guardian.password"));
-		
+
 		logStep("Switch to the Dependent and place a Rx Request foor dependent");
 
-		JalapenoHomePage jalapenoHomePage= new JalapenoHomePage(driver);
+		JalapenoHomePage jalapenoHomePage = new JalapenoHomePage(driver);
 		jalapenoHomePage.faChangePatient();
-		
+
 		logStep("Click on Medications");
 		homePage.clickOnMedications(driver);
 
@@ -6104,7 +6151,8 @@ public class PatientPortal2AcceptanceTests extends BaseTestNGWebDriver {
 
 		logStep("Select a pharmacy");
 		SelectPharmacyPage dependentPharmaPage = new SelectPharmacyPage(driver);
-		String selectedPharmacy = dependentPharmaPage.addNewPharmacy(driver,testData.getProperty("dependent.pharmacy"));
+		String selectedPharmacy = dependentPharmaPage.addNewPharmacy(driver,
+				testData.getProperty("dependent.pharmacy"));
 
 		logStep("Select Medications");
 		SelectMedicationsPage selectMedPage = new SelectMedicationsPage(driver);
@@ -6115,12 +6163,12 @@ public class PatientPortal2AcceptanceTests extends BaseTestNGWebDriver {
 
 		String successMsg = confirmPage.confirmMedication(driver);
 		assertEquals(successMsg, "Your prescription request has been submitted.");
-		
+
 		logStep("Login as Guardian and verify Dependent pharmacy is not present");
 		JalapenoLoginPage loginPageNew = new JalapenoLoginPage(driver, testData.getProperty("med.portal.url"));
 		JalapenoHomePage homePageNew = loginPageNew.login(testData.getProperty("guardian.username"),
 				testData.getProperty("guardian.password"));
-		
+
 		logStep("Click on Medications");
 		homePageNew.clickOnMedications(driver);
 
@@ -6135,13 +6183,12 @@ public class PatientPortal2AcceptanceTests extends BaseTestNGWebDriver {
 		logStep("Enter Credit Card Details");
 		PrescriptionFeePage feePageNew = new PrescriptionFeePage(driver);
 		feePageNew.fillRenewalFee(driver, creditCard);
-		
+
 		logStep("Validate that Pharmacy added by dependent is not present in list of pharmacies");
 		SelectPharmacyPage guardianPharmaPage = new SelectPharmacyPage(driver);
-		assertTrue(guardianPharmaPage.validateIfDependentPharmacyPresent(selectedPharmacy));	
+		assertTrue(guardianPharmaPage.validateIfDependentPharmacyPresent(selectedPharmacy));
 
 		homePage.clickOnLogout();
-
 
 	}
 }
