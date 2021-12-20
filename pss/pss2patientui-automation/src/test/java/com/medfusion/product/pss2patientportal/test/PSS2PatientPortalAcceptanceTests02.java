@@ -1037,7 +1037,7 @@ public class PSS2PatientPortalAcceptanceTests02 extends BaseTestNGWebDriver {
 	@Test(enabled = true, groups = { "AcceptanceTests" }, retryAnalyzer = RetryAnalyzer.class)
 	public void testLockout_PatientStatusGW() throws Exception {
 
-		logStep("Verify the Announcemnet- Greetings on welcome page");
+		logStep("Verfiy the Lockout -Patient Status for GreenWay");
 		PSSPropertyFileLoader propertyData = new PSSPropertyFileLoader();
 		Appointment testData = new Appointment();
 		AdminUser adminUser = new AdminUser();
@@ -1093,7 +1093,7 @@ public class PSS2PatientPortalAcceptanceTests02 extends BaseTestNGWebDriver {
 	@Test(enabled = true, groups = { "AcceptanceTests" }, retryAnalyzer = RetryAnalyzer.class)
 	public void testAlerts_PatientStatusGW() throws Exception {
 
-		logStep("Verify the Announcemnet- Greetings on welcome page");
+		logStep("Verfiy the Alerts -Patient Status for GreenWay");
 		PSSPropertyFileLoader propertyData = new PSSPropertyFileLoader();
 		Appointment testData = new Appointment();
 		AdminUser adminUser = new AdminUser();
