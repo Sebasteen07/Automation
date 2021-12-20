@@ -56,10 +56,10 @@ public class NGIntegrationE2EEnrollment_CCDTests extends BaseTestNGWebDriver {
 	String enterprisebaseURL;
 	NGAPIFlows ngAPIFlows;
 
-	private static final String NEWDEPENDENT_ACTIVATION_MESSAGE = "You are invited to create a Patient Portal guardian account at ";
+	private static final String NEWDEPENDENT_ACTIVATION_MESSAGE = "You are invited to create a Patient Portal guardian account at";
 	private static final String MEMBER_CONFIRMATION_MESSAGE = "New Member Confirmation";
 	private static final String PORTAL_URL = "Visit our patient portal now";
-	private static final String INVITE_EMAIL_SUBJECT_REPRESENTATIVE = "You're invited to create a Portal account to be a trusted representative of a patient at ";
+	private static final String INVITE_EMAIL_SUBJECT_REPRESENTATIVE = "You're invited to create a Portal account to be a trusted representative of a patient at";
 	private static final String INVITE_EMAIL_BUTTON_TEXT = "Sign Up!";
 	private static final String WELCOME_EMAIL_BUTTON_TEXT = "Visit our patient portal now";
 	private static final String WELCOME_EMAIL_SUBJECT_PATIENT = "New Member Confirmation";
@@ -555,7 +555,7 @@ public class NGIntegrationE2EEnrollment_CCDTests extends BaseTestNGWebDriver {
 		PatientEnrollment.verifyProcessingStatusto3WithoutValidatingGetProcessingStatusCall(propertyLoaderObj,
 				dependentperson_id.trim(), propertyLoaderObj.getProperty("ng.enterprise1.practice1"),
 				propertyLoaderObj.getProperty("integration.practice.id.e1.p1"));
-
+		
 		YopMail mail = new YopMail(driver);
 		Thread.sleep(15000);
 		logStep("Verify the Guardian mail");

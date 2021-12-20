@@ -56,13 +56,13 @@ public class NGIntegrationE2EEnterpriseEnrollmentTests extends BaseTestNGWebDriv
 	String enterprisebaseURL;
 	NGAPIFlows ngAPIFlows;
 
-	private static final String INVITE_EMAIL_SUBJECT_REPRESENTATIVE = "You're invited to create a Portal account to be a trusted representative of a patient at ";
+	private static final String INVITE_EMAIL_SUBJECT_REPRESENTATIVE = "You're invited to create a Portal account to be a trusted representative of a patient at";
 	private static final String INVITE_EMAIL_BUTTON_TEXT = "Sign Up!";
-	private static final String INVITE_EMAIL_SUBJECT_PATIENT = "You're invited to create a Patient Portal account at ";
+	private static final String INVITE_EMAIL_SUBJECT_PATIENT = "You're invited to create a Patient Portal account at";
 	private static final String WELCOME_EMAIL_BODY_PATTERN_PRACTICE = "Thank you for creating an account with PracticeName";
 	private static final String WELCOME_EMAIL_SUBJECT_PATIENT = "New Member Confirmation";
 	private static final String WELCOME_EMAIL_BUTTON_TEXT = "Visit our patient portal now";
-	private static final String NEWDEPENDENT_ACTIVATION_MESSAGE = "You are invited to create a Patient Portal guardian account at ";
+	private static final String NEWDEPENDENT_ACTIVATION_MESSAGE = "You are invited to create a Patient Portal guardian account at";
 
 	@BeforeClass(alwaysRun = true)
 	public void prepareTestData() throws Throwable {

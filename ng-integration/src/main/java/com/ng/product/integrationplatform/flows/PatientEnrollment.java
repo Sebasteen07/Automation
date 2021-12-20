@@ -27,7 +27,7 @@ import com.ng.product.integrationplatform.utils.DBUtils;
 public class PatientEnrollment {
 
 	static int arg_timeOut = 1800;
-	private static final String INVITE_EMAIL_SUBJECT_PATIENT = "You're invited to create a Patient Portal account at ";
+	private static final String INVITE_EMAIL_SUBJECT_PATIENT = "You're invited to create a Patient Portal account at";
 
 	public static void verifyProcessingStatusto4(String person_id) throws Throwable {
 		String processingStatus = DBUtils.executeQueryOnDB("NGCoreDB",
