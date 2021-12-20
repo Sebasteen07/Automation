@@ -251,6 +251,7 @@ public class PracticePortalAcceptanceTests extends BaseTestNGWebDriver {
 		pPatientDashboardPage = pPatientSearchPage.sendUserNameEmail();
 		assertTrue(pPatientDashboardPage.getFeedback().contains("Username email sent to patient"),
 				"No success message on send!");
+		
 		logStep("Access Mailinator and check for received email");
 //		Mailinator mailinator = new Mailinator();
 		YopMail mail = new YopMail(driver);
@@ -562,10 +563,16 @@ public class PracticePortalAcceptanceTests extends BaseTestNGWebDriver {
 		assertTrue(pPatientDashboardPage.getFeedback().contains("Password reset email sent to Patient"),
 				"No success message on send!");
 		
-		logStep("Access Mailinator and check for Reset Password Link");
+		logStep("Access Yopmail and check for Reset Password Link");
 		String[] mailAddress = testData.getProperty("forgot.password.mail").split("@");
 		String emailSubject = "Help with your user name or password";
 		String inEmail = "Reset Password Now";
+				
+		//Email receivedEmail = new Mailer(mailAddress[0]).pollForNewEmailWithSubject(emailSubject, 60,
+				//passwordResetStart.until(Instant.now(), ChronoUnit.SECONDS));
+		//String resetPasswordLink = Mailer.getLinkByText(receivedEmail, inEmail);
+		//System.out.println("Link from mail is" +resetPasswordLink );
+
 		YopMail mail=new YopMail(driver);
 		String resetPasswordLink = mail.getLinkFromEmail(mailAddress[0],emailSubject, inEmail, 15);
 		log("Link from mail is" +resetPasswordLink );
@@ -585,7 +592,7 @@ public class PracticePortalAcceptanceTests extends BaseTestNGWebDriver {
 	
 	@Test(enabled = true, groups = { "AcceptanceTests" }, retryAnalyzer = RetryAnalyzer.class)
 	public void testPasswordResetEmailForTrustedRepresentative() throws Exception {
-		Instant passwordResetStart = Instant.now();
+		//Instant passwordResetStart = Instant.now();
 		logStep("Login to Practice Portal");
 		PracticeLoginPage practiceLogin = new PracticeLoginPage(driver, testData.getUrl());
 		PracticeHomePage pPracticeHomePage = practiceLogin.login(testData.getProperty("doctor2.login"),
@@ -608,7 +615,7 @@ public class PracticePortalAcceptanceTests extends BaseTestNGWebDriver {
 		assertTrue(pPatientDashboardPage.getFeedback().contains("Password reset email sent to Guardian or Trusted Representative"),
 				"No success message on send!");
 		
-		logStep("Access Mailinator and check for Reset Password Link");
+		logStep("Access Yopmail and check for Reset Password Link");
 		String[] mailAddress = testData.getProperty("forgot.password.mail").split("@");
 		String emailSubject = "Help with your user name or password";
 		String inEmail = "Reset Password Now";
@@ -633,7 +640,7 @@ public class PracticePortalAcceptanceTests extends BaseTestNGWebDriver {
 	public void testDuplicatePatientCreation() throws Exception {
 		
 		String patientLastName = "Duplicate";
-		String patientEmail = "Duplicate@mailinator.com";
+		String patientEmail = "Duplicate@yopmail.com";
 		logStep("Login to Practice Portal");
 		PracticeLoginPage practiceLogin = new PracticeLoginPage(driver, testData.getUrl());
 		PracticeHomePage pPracticeHomePage = practiceLogin.login(testData.getDoctorLogin(),
@@ -681,7 +688,7 @@ public class PracticePortalAcceptanceTests extends BaseTestNGWebDriver {
 	public void testInviteGuardianWithFullAcess() throws Exception {
 		String patientLogin = PortalUtil2.generateUniqueUsername("login", testData);
 		String patientLastName = patientLogin.replace("login", "last");
-		String patientEmail = patientLogin.replace("login", "mail") + "@mailinator.com";
+		String patientEmail = patientLogin.replace("login", "mail") + "@yopmail.com";
 		Patient localpatient = PatientFactory.createJalapenoPatient(patientLogin, testData);
 
 		logStep("Login to Practice Portal");
@@ -712,8 +719,12 @@ public class PracticePortalAcceptanceTests extends BaseTestNGWebDriver {
 		patientInviteTrustedRepresentative.inviteGuardian(localpatient);
 
 		logStep("Waiting for invitation email");
-		String patientUrl = new Mailinator().getLinkFromEmail(localpatient.getEmail(), "You are invited to create a Patient Portal guardian account at",
-				"Sign Up!", 15);
+		YopMail mail=new YopMail(driver);
+		String patientUrl = mail.getLinkFromEmail(localpatient.getEmail(),
+				"You are invited to create a Patient Portal guardian account at", "Sign Up!", 15);
+		
+		//String patientUrl = new Mailinator().getLinkFromEmail(localpatient.getEmail(), "You are invited to create a Patient Portal guardian account at",
+				//"Sign Up!", 15);
 		assertNotNull(patientUrl, "Error: Activation patients link not found.");
 
 		logStep("Redirecting to verification page");
@@ -921,6 +932,7 @@ public class PracticePortalAcceptanceTests extends BaseTestNGWebDriver {
 		logStep("Verify Aska question button should not display for view only access");
 		assertFalse(messagesPage.isAskaQuestionButtonDisplayed());
 		homePage.clickOnLogout();
+		
 	}
 	@Test(enabled = true, groups = { "AcceptanceTests" }, retryAnalyzer = RetryAnalyzer.class)
     public void testLAGuardianAcessForFormsFromPracticePortal() throws Exception {
