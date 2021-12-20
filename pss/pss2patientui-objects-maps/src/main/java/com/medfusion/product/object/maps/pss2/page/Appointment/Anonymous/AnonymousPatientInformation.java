@@ -54,6 +54,9 @@ public class AnonymousPatientInformation extends PSS2MainPage {
 	@FindBy(how = How.XPATH, using = "//div[@class='acceptpolicy']//label")
 	private WebElement privacyPolicyCheckbox;
 
+	@FindBy(how = How.XPATH, using = "//*[@class='modal fade in']/div/div/div[2]/p/pre/div[1]")
+	private WebElement multiplePatientMsg;
+
 	public AnonymousPatientInformation(WebDriver driver) {
 		super(driver);
 	}
@@ -131,4 +134,8 @@ public class AnonymousPatientInformation extends PSS2MainPage {
 		return PageFactory.initElements(driver, ConfirmationPage.class);
 	}
 
+	public String multiplePatientMessage() {
+		String multiplePatientMessage = multiplePatientMsg.getText();
+		return multiplePatientMessage;
+	}
 }
