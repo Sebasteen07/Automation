@@ -166,4 +166,17 @@ public class AppointmentPage extends PSS2MainPage {
 		log("no matching appointment found ");
 		return null;
 	}
+
+	public String selectTypeOfApp1(String appName) {
+		log("appointmentTypeList " + appointmentTypeList.size());
+		for (int i = 0; i < appointmentTypeList.size(); i++) {
+			if (appointmentTypeList.get(i).getText().equalsIgnoreCase(appName)) {
+				String a = appointmentTypeList.get(i).getText();
+				return a;
+			}
+		}
+		log("no matching appointment found ");
+		return null;
+	}
+
 }

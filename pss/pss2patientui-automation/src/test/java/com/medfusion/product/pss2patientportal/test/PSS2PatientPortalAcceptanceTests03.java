@@ -524,12 +524,11 @@ public class PSS2PatientPortalAcceptanceTests03 extends BaseTestNGWebDriver {
 		logStep("Set up the API authentication");
 		setUp(propertyData.getProperty("mf.practice.id.ng"), propertyData.getProperty("mf.authuserid.am.ng"));
 		Response response;
-		String appName = propertyData.getProperty("prerequisite.appointmenttype.name");
-		String name = propertyData.getProperty("prerequisite.appointmenttype.name");
-		String extAppID = propertyData.getProperty("prerequisite.appointmenttype.extapp.id");
-		String catId = propertyData.getProperty("prerequisite.appointmenttype.cat.id");
-		String catName = propertyData.getProperty("prerequisite.appointmenttype.cat.name");
-		String preReqAppId = propertyData.getProperty("appointment.id.prerequisite");
+		String name = propertyData.getProperty("prerequisite.appointmenttype.name.ng");
+		String extAppID = propertyData.getProperty("prerequisite.appointmenttype.extapp.id.ng");
+		String catId = propertyData.getProperty("prerequisite.appointmenttype.cat.id.ng");
+		String catName = propertyData.getProperty("prerequisite.appointmenttype.cat.name.ng");
+		String preReqAppId = propertyData.getProperty("appointment.id.prerequisite.ng");
 
 		response = postAPIRequestAM.preRequisiteAppointmenttypes(practiceId, preReqAppId,
 				payloadAM.preRequisiteAppointmentTypesDefualt(name, extAppID, catId, catName));
@@ -550,13 +549,93 @@ public class PSS2PatientPortalAcceptanceTests03 extends BaseTestNGWebDriver {
 		HomePage homePage = loginlessPatientInformation.fillNewPatientForm(firstNamePreReq, lastNamePreReq, dobPreReq, "", genderPreReq, "", "");
 		homePage.btnStartSchedClick();
 		logStep("Clicked on the Start Button ");
-
+		String appName = propertyData.getProperty("appointmenttypefor.prereqname.ng");
 		StartAppointmentInOrder startAppointmentInOrder = null;
 		startAppointmentInOrder = homePage.skipInsurance(driver);
 		logStep("Clicked on the Skip Insurance Button ");
 		AppointmentPage appointment = startAppointmentInOrder.selectFirstAppointment(PSSConstants.START_APPOINTMENT);
 		log("Verfiy Appointment Page and appointment =" + testData.getAppointmenttype());
-		String appTypeName = appointment.selectTypeOfApp(appName, Boolean.valueOf(testData.getIsAppointmentPopup()));
-		log("App type Name is " + appTypeName);
+		String appTypeName = appointment.selectTypeOfApp1(appName);
+		log("Actaul Appointment Type " + appTypeName);
+		String expectedAppTpe = appTypeName;
+		assertEquals(appTypeName, expectedAppTpe);
+
+		response = postAPIRequestAM.preRequisiteAppById(practiceId, preReqAppId);
+		aPIVerification.responseCodeValidation(response, 200);
+		JSONArray arr = new JSONArray(response.body().asString());
+		int l = arr.length();
+		int id = 0;
+		log("Length is- " + l);
+		for (int i = 0; i < l; i++) {
+			id = arr.getJSONObject(i).getInt("id");
+		}
+		String s = Integer.toString(id);
+		log("preRequisiteApp Id is for Delete " + s);
+		response = postAPIRequestAM.preRequisiteAppDeleteById(practiceId, s);
+		aPIVerification.responseCodeValidation(response, 200);
+
+	}
+
+	@Test(enabled = true, groups = {"AcceptanceTests"}, retryAnalyzer = RetryAnalyzer.class)
+	public void testPreRequisiteDefaultGE() throws Exception {
+		PSSPropertyFileLoader propertyData = new PSSPropertyFileLoader();
+		Appointment testData = new Appointment();
+		AdminUser adminUser = new AdminUser();
+		propertyData.setAdminGE(adminUser);
+		propertyData.setAppointmentResponseGE(testData);
+
+		logStep("Set up the API authentication");
+		setUp(propertyData.getProperty("mf.practice.id.ge"), propertyData.getProperty("mf.authuserid.am.ge"));
+		Response response;
+
+		String name = propertyData.getProperty("prerequisite.appointmenttype.name.ng");
+		String extAppID = propertyData.getProperty("prerequisite.appointmenttype.extapp.id.ng");
+		String catId = propertyData.getProperty("prerequisite.appointmenttype.cat.id.ng");
+		String catName = propertyData.getProperty("prerequisite.appointmenttype.cat.name.ng");
+		String preReqAppId = propertyData.getProperty("appointment.id.prerequisite.ng");
+		response =
+				postAPIRequestAM.preRequisiteAppointmenttypes(practiceId, preReqAppId, payloadAM.preRequisiteAppointmentTypesDefualt(name, extAppID, catId, catName));
+		aPIVerification.responseCodeValidation(response, 200);
+
+		response = postAPIRequestAM.patientInfoPost(practiceId, payloadAM.patientInfoWithOptionalLL());
+		aPIVerification.responseCodeValidation(response, 200);
+
+		String firstNamePreReq = propertyData.getProperty("firstname.prereqpast.ng");
+		String lastNamePreReq = propertyData.getProperty("lastname.prereqpast.ng");
+		String genderPreReq = propertyData.getProperty("gender.prereqpast.ng");
+		String dobPreReq = propertyData.getProperty("dob.prereqpast.ng");
+
+		DismissPage dismissPage = new DismissPage(driver, testData.getUrlLoginLess());
+		Thread.sleep(1000);
+		logStep("Clicked on Dismiss");
+		LoginlessPatientInformation loginlessPatientInformation = dismissPage.clickDismiss();
+		HomePage homePage = loginlessPatientInformation.fillNewPatientForm(firstNamePreReq, lastNamePreReq, dobPreReq, "", genderPreReq, "", "");
+		homePage.btnStartSchedClick();
+		logStep("Clicked on the Start Button ");
+		String appName = propertyData.getProperty("appointmenttype.prereqname.ng");
+		StartAppointmentInOrder startAppointmentInOrder = null;
+		startAppointmentInOrder = homePage.skipInsurance(driver);
+		logStep("Clicked on the Skip Insurance Button ");
+		AppointmentPage appointment = startAppointmentInOrder.selectFirstAppointment(PSSConstants.START_APPOINTMENT);
+		log("Verfiy Appointment Page and appointment =" + testData.getAppointmenttype());
+		String appTypeName = appointment.selectTypeOfApp1(appName);
+		log("Actaul Appointment Type " + appTypeName);
+		String expectedAppTpe = appTypeName;
+		assertEquals(appTypeName, expectedAppTpe);
+
+		response = postAPIRequestAM.preRequisiteAppById(practiceId, preReqAppId);
+		aPIVerification.responseCodeValidation(response, 200);
+		JSONArray arr = new JSONArray(response.body().asString());
+		int l = arr.length();
+		int id = 0;
+		log("Length is- " + l);
+		for (int i = 0; i < l; i++) {
+			id = arr.getJSONObject(i).getInt("id");
+		}
+		String s = Integer.toString(id);
+		log("preRequisiteApp Id is for Delete " + s);
+		response = postAPIRequestAM.preRequisiteAppDeleteById(practiceId, s);
+		aPIVerification.responseCodeValidation(response, 200);
+
 	}
 }
