@@ -81,6 +81,9 @@ public class LoginlessPatientInformation extends PSS2MainPage {
 	@FindAll({@FindBy(how = How.XPATH, using = "//div[@class='acceptpolicy']//label")})
 	public List<WebElement> privacyPolicy;
 
+	@FindBy(how = How.XPATH, using = "//*[@class='modal fade in']/div/div/div[2]/p/pre/div[1]")
+	private WebElement multiplePatientMsg;
+
 	public LoginlessPatientInformation(WebDriver driver) {
 		super(driver);
 	}
@@ -215,7 +218,6 @@ public class LoginlessPatientInformation extends PSS2MainPage {
 		return PageFactory.initElements(driver, HomePage.class);
 	}
 
-
 	public void isPageLoaded() {
 		IHGUtil.waitForElement(driver, 80, this.buttonNext);
 	}
@@ -243,4 +245,8 @@ public class LoginlessPatientInformation extends PSS2MainPage {
 		}
 	}
 
+	public String multiplePatientMessage() {
+		String multiplePatientMessage = multiplePatientMsg.getText();
+		return multiplePatientMessage;
+	}
 }
