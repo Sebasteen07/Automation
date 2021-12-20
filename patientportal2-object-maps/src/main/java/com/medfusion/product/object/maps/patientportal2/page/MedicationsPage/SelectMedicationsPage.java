@@ -87,6 +87,7 @@ public class SelectMedicationsPage  extends BasePageObject {
 		btnAddInactiveMedication.click();
 		IHGUtil.waitForElement(driver, 5, CheckbxInactiveMedication);
 		log("Verifying add button is disabled as medication is not selected");
+		IHGUtil.waitForElement(driver, 5, btnAddMedication);
 		assertFalse(btnAddMedication.isEnabled(), "Add button is disabled");
 		CheckbxInactiveMedication.click();
 		btnAddMedication.click();

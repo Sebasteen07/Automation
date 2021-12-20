@@ -685,23 +685,22 @@ public class PracticePortalAcceptanceTests extends BaseTestNGWebDriver {
 				patientLastName + "D", testData.getPhoneNumber(), patientEmail, testData.getDOBMonth(),
 				testData.getDOBDay(), testData.getDOBYearUnderage(), "address1", "address2", "city", "Alabama",
 				testData.getZipCode());
-		
+
 		logStep("Click on Patient Search Link");
 		pPatientSearchPage = pPracticeHomePage.clickPatientSearchLink();
-
 		logStep("Search for patient in Patient Search");
 		pPatientSearchPage.searchForPatientInPatientSearch(patientEmail);
 		pPatientSearchPage.clickOnPatient("Dependent", patientLastName);
-		
+
 		logStep("Invite Guardian");
 		PatientTrustedRepresentativePage patientInviteTrustedRepresentative = pPatientSearchPage.clickInviteTrustedRepresentative();
 		patientInviteTrustedRepresentative.inviteGuardian(localpatient);
-		
+
 		logStep("Waiting for invitation email");
 		String patientUrl = new Mailinator().getLinkFromEmail(localpatient.getEmail(), "You are invited to create a Patient Portal guardian account at",
 				"Sign Up!", 15);
 		assertNotNull(patientUrl, "Error: Activation patients link not found.");
-		
+
 		logStep("Redirecting to verification page");
 		PatientVerificationPage patientVerificationPage = new PatientVerificationPage(driver, patientUrl);
 
@@ -718,22 +717,29 @@ public class PracticePortalAcceptanceTests extends BaseTestNGWebDriver {
 		JalapenoHomePage homePage = accountDetailsPage.fillAccountDetailsAndContinue(patientLogin,
 				"Medfusion123", testData.getSecretQuestion(), testData.getSecretAnswer(),
 				testData.getPhoneNumber());
-        assertTrue(homePage.assessFamilyAccountElements(false));
-		
+		assertTrue(homePage.assessFamilyAccountElements(false));
+
 		logStep("Verify Appointment Solutions");
 		JalapenoAppointmentRequestPage appReqPage=homePage.clickOnAppointment(driver);
-		
-		logStep("Verify Request An Appointment Button is not present");
+
+		logStep("Verify Request An Appointment Button is present");
 		assertTrue(appReqPage.isAppointmentRequestBtnDisplayed());
-		appReqPage.clickonHomeButton(driver);
-		
-		logStep("Verify Appointment Solutions");
+
+		logStep("Log out and Login to patient portal");
+		homePage.clickOnLogout();
+		JalapenoLoginPage loginPage = new JalapenoLoginPage(driver);
+		homePage = loginPage.login(patientLogin, testData.getProperty("patient.guardianpassword"));
+
+		logStep("Verify MedicationsHome Solutions");
 		MedicationsHomePage medReqPage=homePage.clickOnMedications(driver);
-		
-		logStep("Verify Rx Request Button is not present in Medications module");
+
+		logStep("Verify Rx Request Button is present in Medications module");
 		assertTrue(medReqPage.isRxRequestBtnDisplayed());
-		appReqPage.clickonHomeButton(driver);
-		
+
+		logStep("Log out and Login to patient portal");
+		homePage.clickOnLogout();
+		homePage = loginPage.login(patientLogin, testData.getProperty("patient.guardianpassword"));
+
 		logStep("Click on forms solution");
 		assertTrue(homePage.isFormsSolutionDisplayed());
 		homePage.clickOnHealthForms();
@@ -1015,12 +1021,16 @@ public class PracticePortalAcceptanceTests extends BaseTestNGWebDriver {
 		JalapenoAppointmentRequestPage appReqPage=homePage.clickOnAppointment(driver);
 		logStep("Verify Request An Appointment Button is not present");
 		assertFalse(appReqPage.isAppointmentRequestBtnDisplayed());
-		appReqPage.clickonHomeButton(driver);
-
-		MedicationsHomePage medReqPage=homePage.clickOnMedications(driver);
-		logStep("Verify Rx Request Button is not present in Medications module");
-		assertFalse(medReqPage.isRxRequestBtnDisplayed());
 		homePage.clickOnLogout();
+
+		logStep("Login to patient portal");
+		loginPage = new JalapenoLoginPage(driver, testData.getProperty("Patient.guardian.url"));
+		homePage = loginPage.login(testData.getProperty("patient.guardianlogin"), testData.getProperty("patient.guardianpassword"));
+
+		logStep("Verify Rx Request Button is not present in Medications module");
+		MedicationsHomePage medReqPage=homePage.clickOnMedications(driver);
+		assertFalse(medReqPage.isRxRequestBtnDisplayed());
+		homePage.clickOnLogout();		
 
 		logStep("Login to Practice Portal");
 		practiceLogin = new PracticeLoginPage(driver, testData.getUrl());
@@ -1048,11 +1058,152 @@ public class PracticePortalAcceptanceTests extends BaseTestNGWebDriver {
 		loginPage = new JalapenoLoginPage(driver, testData.getProperty("Patient.guardian.url"));
 		loginPage.login(testData.getProperty("patient.guardianlogin"), testData.getProperty("patient.guardianpassword"));
 
-		logStep("Verify Request An Appointment Button is not present");
+		logStep("Verify Request An Appointment solution is not displayed");
 		assertFalse(appReqPage.isAppointmentRequestBtnDisplayed());
 
-		logStep("Verify Rx Request Button is not present in Medications module");
+		logStep("Verify Rx Request solution is not displayed");
 		assertFalse(medReqPage.isRxRequestBtnDisplayed());
 		homePage.clickOnLogout();
 	}
+	
+	@Test(enabled = true, groups = { "AcceptanceTests" }, retryAnalyzer = RetryAnalyzer.class)
+	public void testLAGuardianAcessForHealthRecordFromPracticePortal() throws Exception {
+
+		PracticeLoginPage practiceLogin;
+		PracticeHomePage practiceHome;
+		JalapenoLoginPage loginPage;
+		JalapenoHomePage homePage;
+		PatientSearchPage pPatientSearchPage;
+		PatientTrustedRepresentativePage patientInviteTrustedRepresentative;
+
+		logStep("Login to Practice Portal");
+		practiceLogin = new PracticeLoginPage(driver, testData.getUrl());
+		practiceHome = practiceLogin.login(testData.getProperty("doctor2.login"),
+				testData.getProperty("doctor2.password"));
+
+		logStep("Click on Patient Search Link");
+		pPatientSearchPage = practiceHome.clickPatientSearchLink();
+
+		logStep("Set Patient Search Fields");
+		pPatientSearchPage.searchForPatientInPatientSearch(
+				testData.getProperty("Guardian.first.name"),
+				testData.getProperty("Guardian.last.name"));
+		pPatientSearchPage.clickOnPatient(
+				testData.getProperty("Guardian.first.name"),
+				testData.getProperty("Guardian.last.name"));
+
+		logStep("EditAccess");
+		patientInviteTrustedRepresentative = pPatientSearchPage.editTrustedRepresentativeAccess();
+		patientInviteTrustedRepresentative.selectCustomAccess();
+		patientInviteTrustedRepresentative.updateWithModuleNameAndAccess("Health Record", "noAccessHealthRecord");
+		patientInviteTrustedRepresentative.clickOnUpdateBtn();
+
+		logStep("Login to patient portal");
+		loginPage = new JalapenoLoginPage(driver, testData.getProperty("Patient.guardian.url"));
+		homePage = loginPage.login(testData.getProperty("patient.guardianlogin"), testData.getProperty("patient.guardianpassword"));
+
+		logStep("Verify that system should not display the Health Record");
+		assertFalse(homePage.isHealthRecordSolutionisplayed());
+		homePage.clickOnLogout();
+
+		logStep("Login to Practice Portal");
+		practiceLogin = new PracticeLoginPage(driver, testData.getUrl());
+		practiceHome = practiceLogin.login(testData.getProperty("doctor2.login"),
+				testData.getProperty("doctor2.password"));
+
+		logStep("Click on Patient Search Link");
+		practiceHome.clickPatientSearchLink();
+
+		logStep("Set Patient Search Fields");
+		pPatientSearchPage.searchForPatientInPatientSearch(
+				testData.getProperty("Guardian.first.name"),
+				testData.getProperty("Guardian.last.name"));
+		pPatientSearchPage.clickOnPatient(
+				testData.getProperty("Guardian.first.name"),
+				testData.getProperty("Guardian.last.name"));
+
+		logStep("Set Patient Search Fields");
+		patientInviteTrustedRepresentative = pPatientSearchPage.editTrustedRepresentativeAccess();
+		patientInviteTrustedRepresentative.updateWithModuleNameAndAccess("Health Record", "fullAccessHealthRecord");
+		patientInviteTrustedRepresentative.clickOnUpdateBtn();
+
+		logStep("Login to patient portal");
+		loginPage = new JalapenoLoginPage(driver, testData.getProperty("Patient.guardian.url"));
+		loginPage.login(testData.getProperty("patient.guardianlogin"), testData.getProperty("patient.guardianpassword"));
+
+		logStep("Verify that system should display the Health Record");
+		assertTrue(homePage.isHealthRecordSolutionisplayed());
+		homePage.clickOnLogout();
+	}
+	
+	@Test(enabled = true, groups = { "AcceptanceTests" }, retryAnalyzer = RetryAnalyzer.class)
+	public void testLATrustedRepAcessForHealthRecordFromPracticePortal() throws Exception {
+
+		PracticeLoginPage practiceLogin;
+		PracticeHomePage practiceHome;
+		JalapenoLoginPage loginPage;
+		JalapenoHomePage homePage;
+		PatientSearchPage pPatientSearchPage;
+		PatientTrustedRepresentativePage patientInviteTrustedRepresentative;
+
+		logStep("Login to Practice Portal");
+		practiceLogin = new PracticeLoginPage(driver, testData.getUrl());
+		practiceHome = practiceLogin.login(testData.getProperty("doctor2.login"),
+				testData.getProperty("doctor2.password"));
+
+		logStep("Click on Patient Search Link");
+		pPatientSearchPage = practiceHome.clickPatientSearchLink();
+
+		logStep("Set Patient Search Fields");
+		pPatientSearchPage.searchForPatientInPatientSearch(
+				testData.getProperty("trusted.rep.care.management.first.name"),
+				testData.getProperty("trusted.rep.care.management.last.name"));
+		pPatientSearchPage.clickOnPatient(
+				testData.getProperty("trusted.rep.care.management.first.name"),
+				testData.getProperty("trusted.rep.care.management.last.name"));
+
+		logStep("EditAccess");
+		patientInviteTrustedRepresentative = pPatientSearchPage.editTrustedRepresentativeAccess();
+		patientInviteTrustedRepresentative.selectCustomAccess();
+		patientInviteTrustedRepresentative.updateWithModuleNameAndAccess("Health Record", "noAccessHealthRecord");
+		patientInviteTrustedRepresentative.clickOnUpdateBtn();
+
+		logStep("Login to patient portal");
+		loginPage = new JalapenoLoginPage(driver, testData.getProperty("Patient.guardian.url"));
+		homePage = loginPage.login(testData.getProperty("trusted.rep.login"), testData.getProperty("trusted.rep.password"));
+
+		logStep("Verify that system should not display the Health Record");
+		assertFalse(homePage.isHealthRecordSolutionisplayed());
+		homePage.clickOnLogout();
+
+		logStep("Login to Practice Portal");
+		practiceLogin = new PracticeLoginPage(driver, testData.getUrl());
+		practiceHome = practiceLogin.login(testData.getProperty("doctor2.login"),
+				testData.getProperty("doctor2.password"));
+
+		logStep("Click on Patient Search Link");
+		practiceHome.clickPatientSearchLink();
+
+		logStep("Set Patient Search Fields");
+		pPatientSearchPage.searchForPatientInPatientSearch(
+				testData.getProperty("trusted.rep.care.management.first.name"),
+				testData.getProperty("trusted.rep.care.management.last.name"));
+		pPatientSearchPage.clickOnPatient(
+				testData.getProperty("trusted.rep.care.management.first.name"),
+				testData.getProperty("trusted.rep.care.management.last.name"));
+
+		logStep("Set Patient Search Fields");
+		patientInviteTrustedRepresentative = pPatientSearchPage.editTrustedRepresentativeAccess();
+		patientInviteTrustedRepresentative.updateWithModuleNameAndAccess("Health Record", "fullAccessHealthRecord");
+		patientInviteTrustedRepresentative.clickOnUpdateBtn();
+
+		logStep("Login to patient portal");
+		loginPage = new JalapenoLoginPage(driver, testData.getProperty("Patient.guardian.url"));
+		homePage = loginPage.login(testData.getProperty("trusted.rep.login"), testData.getProperty("trusted.rep.password"));
+
+		logStep("Verify that system should display the Health Record");
+		assertTrue(homePage.isHealthRecordSolutionisplayed());
+		homePage.clickOnLogout();
+	}
 }
+

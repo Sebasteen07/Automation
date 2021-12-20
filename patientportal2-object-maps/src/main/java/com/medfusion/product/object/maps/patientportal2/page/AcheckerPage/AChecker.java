@@ -24,7 +24,7 @@ import com.intuit.ifs.csscat.core.pageobject.BasePageObject;
 public class AChecker extends BasePageObject {
 
 	public static final String SUCCESS_MESSAGE = "Congratulations! No known problems.";
-	public static final String ACECKER_URL = "https://achecker.us/checker/index.php";
+	public static final String ACECKER_URL = "https://achecker.achecks.ca/checker/index.php";
 
 	// The Options link
 	@FindBy(how = How.XPATH, using = ".//*[@id='center-content']/table/tbody/tr/td/div/form/div/fieldset/div[5]/h2/a")
