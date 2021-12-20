@@ -492,8 +492,7 @@ public class PSS2GEAdapterAcceptanceTests extends BaseTestNG {
         apiVerification.responseCodeValidation(response, 200);
         apiVerification.responseTimeValidation(response);
         apiVerification.responseKeyValidation(response, "id");
-        //apiVerification.responseKeyValidation(response, "patientId");
-        apiVerification.responseKeyValidation(response, "28044");
+        apiVerification.responseKeyValidation(response, "patientId");
         apiVerification.responseKeyValidation(response, "startDateTime");
         apiVerification.responseKeyValidation(response, "endDateTime");
 	}
@@ -574,7 +573,6 @@ public class PSS2GEAdapterAcceptanceTests extends BaseTestNG {
 		String body=PayloadGE.addPatientPayload();
 		Response response =postAPIRequestge.addPatientPost(body,propertyData.getProperty("practiceid.ge"));
 		apiVerification.responseCodeValidation(response, 200);
-		//apiVerification.responseTimeValidation(response);
 		apiVerification.responseKeyValidationJson(response, "id");
 		apiVerification.responseKeyValidationJson(response, "firstName");
 		apiVerification.responseKeyValidationJson(response, "lastName");
