@@ -185,20 +185,15 @@ public class PSS2GWAdapterAcceptanceTests extends BaseTestNG {
 				propertyData.getProperty("practice.id.gw"));
 		logStep("Verifying the response");
 		assertEquals(rescheduleResponse.getStatusCode(), 200);
-		aPIVerification.responseKeyValidationJson(rescheduleResponse, "id");
+		String apptid2=aPIVerification.responseKeyValidationJson(rescheduleResponse, "id");
 		aPIVerification.responseKeyValidationJson(rescheduleResponse, "slotAlreadyTaken");
 		aPIVerification.responseKeyValidationJson(rescheduleResponse, "rescheduleNotAllowed");
-
-	}
-	
-	@Test(enabled = true, groups = { "APItest" }, retryAnalyzer = RetryAnalyzer.class)
-	public void testScheduleAppPOST() throws IOException, InterruptedException {
-		Response scheduleApptResponse = postAPIRequestgw.scheduleappointment(
-				payload.schedulePayload(propertyData.getProperty("start.date.time.gw"), propertyData.getProperty("end.date.time.gw"), propertyData.getProperty("patient.id.gw")),
-				propertyData.getProperty("practice.id.gw"));
+		
+		Response responseCancel = postAPIRequestgw.cancelappointment(
+				payload.cancelAppointmentPayload(apptid2),
+				propertyData.getProperty("practice.id.gw"), propertyData.getProperty("patient.id.gw"));
 		logStep("Verifying the response");
-		assertEquals(scheduleApptResponse.getStatusCode(), 200);
-		validateGW.verifytestScheduleAppPOST(scheduleApptResponse);
+		assertEquals(responseCancel.getStatusCode(), 200);
 
 	}
 			
@@ -621,17 +616,7 @@ public class PSS2GWAdapterAcceptanceTests extends BaseTestNG {
 
 	}
 
-	@Test(enabled = true, groups = { "APItest" }, retryAnalyzer = RetryAnalyzer.class)
-	public void testCancelAppointmentPOST() throws IOException, InterruptedException {
 
-		Response response = postAPIRequestgw.cancelappointment(
-				payload.cancelAppointmentPayload(propertyData.getProperty("cancel.app.id.gw")),
-				propertyData.getProperty("practice.id.gw"), propertyData.getProperty("patient.id.gw"));
-		logStep("Verifying the response");
-		assertEquals(response.getStatusCode(), 200);
-		validateGW.verifyCancelStateResponse(response);
-	}
-	
 	@Test(enabled = true, groups = { "APItest" }, retryAnalyzer = RetryAnalyzer.class)
 	public void testCancelAppointmentWithInvalidAppIDPOST() throws IOException, InterruptedException {
 		Response negResponse = postAPIRequestgw.cancelappointment(

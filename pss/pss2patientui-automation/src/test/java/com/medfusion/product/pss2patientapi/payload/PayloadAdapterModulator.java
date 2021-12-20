@@ -2392,4 +2392,20 @@ public class PayloadAdapterModulator {
 		return lockout;
 	}
 	
+	public String patientStatusGW	(String id,String key,String type,String lockoutGroup, String engMsg,String displayMsg) {
+		String lockout ="{\r\n"
+				+ "  \"id\": "+id+",\r\n"
+				+ "  \"key\": \""+key+"\",\r\n"
+				+ "  \"value\": \"Active\",\r\n"
+				+ "  \"type\": \""+type+"\",\r\n"
+				+ "  \"messages\": {\r\n"
+				+ "    \"EN\": \""+engMsg+"\"\r\n"
+				+ "  },\r\n"
+				+ "  \"group\": \""+lockoutGroup+"\",\r\n"
+				+ "  \"displayMessage\": \""+engMsg+"\"\r\n"
+				+ "}";
+		return lockout;
+	}
+	
+	
 }

@@ -818,7 +818,7 @@ public class HomePage extends PSS2MainPage {
 	
 	public String getTextLockoutPopUpMsg() {
 		
-		IHGUtil.waitForElement(driver, 3, lockoutPopUpMsg);
+		IHGUtil.waitForElement(driver, 10, lockoutPopUpMsg);
 		commonMethods.highlightElement(lockoutPopUpMsg);
 		String popupText=lockoutPopUpMsg.getText();
 		return popupText;		
