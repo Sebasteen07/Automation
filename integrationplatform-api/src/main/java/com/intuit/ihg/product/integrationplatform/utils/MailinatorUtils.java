@@ -21,13 +21,8 @@ public class MailinatorUtils extends MedfusionPage{
 	@FindBy(how = How.XPATH, using = "(//tr[@ng-repeat='email in emails'])[1]/td[3]")
 	private WebElement firstRowSubject;
 
-	private WebElement signInToView;
-
 	@FindBy(how = How.XPATH, using = "//iframe[@id='html_msg_body']")
 	private WebElement iframe;
-
-	@FindBy(how = How.ID, using = "paymentPreference_Electronic")
-	private WebElement electronicPaymentPreference;
 
 	public MailinatorUtils(WebDriver driver, String url) {
 	    super(driver, url);
