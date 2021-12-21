@@ -2822,8 +2822,8 @@ public class PayloadAdapterModulator {
 		return patientInfoWithOptionalAno;
 	}
 
-	public String preRequisiteAppointmentTypesDefualt(String name, String extAppID, String catId, String catName) {
-		String saveAnn = "[\r\n"
+	public String preRequisiteAppointmentTypesDefualtNG(String name, String extAppID, String catId, String catName) {
+		String preRequisiteAppointmentTypesDefualtNG = "[\r\n"
 				+ "    {\r\n"
 				+ "        \"name\": \"" + name + "\",\r\n"
 				+ "        \"extPreAppTypeId\": \"" + extAppID + "\",\r\n"
@@ -2833,7 +2833,50 @@ public class PayloadAdapterModulator {
 				+ "        \"selected\": true\r\n"
 				+ "    }\r\n"
 				+ "]";
-		return saveAnn;
+		return preRequisiteAppointmentTypesDefualtNG;
 	}
+	
+
+	public String preRequisiteAppointmentTypesNoOfDaysNG(String name, String extAppID, String catId, String catName, String numberOfDay, int prereqId) {
+		String preRequisiteAppointmentTypesNoOfDaysNG = "\r\n"
+				+ "[\r\n"
+				+ "    {\r\n"
+				+ "        \"id\": "+prereqId+",\r\n"
+				+ "        \"name\": \""+name+"\",\r\n"
+				+ "        \"extPreAppTypeId\": \""+extAppID+"\",\r\n"
+				+ "        \"numOfDays\": \"" + numberOfDay + "\",\r\n"
+				+ "        \"categoryId\": \""+catId+"\",\r\n"
+				+ "        \"categoryName\": \""+catName+"\",\r\n"
+				+ "        \"selected\": false\r\n"
+				+ "    }\r\n"
+				+ "]";
+		return preRequisiteAppointmentTypesNoOfDaysNG;
+	}
+
+	public String preRequisiteAppointmentTypesDefualtGE(String name, String extAppID) {
+		String preRequisiteAppointmentTypesDefualtGE = "[\r\n"
+				+ "    {\r\n"
+				+ "        \"name\": \""+name+"\",\r\n"
+				+ "        \"extPreAppTypeId\": \"" + extAppID + "\",\r\n"
+				+ "        \"selected\": true\r\n"
+				+ "    }\r\n"
+				+ "]";
+		return preRequisiteAppointmentTypesDefualtGE;
+	}
+	
+	public String preRequisiteAppointmentTypesWithNoOfDaysGE(String name, String extAppID,String numberOfDays) {
+		String preRequisiteAppointmentTypesDefualtGE = "[\r\n"
+				+ "    {\r\n"
+				+ "        \"id\": 204792,\r\n"
+				+ "        \"name\": \""+name+"\",\r\n"
+				+ "        \"extPreAppTypeId\": \""+extAppID+"\",\r\n"
+				+ "        \"numOfDays\": \""+numberOfDays+"\",\r\n"
+				+ "        \"selected\": false\r\n"
+				+ "    }\r\n"
+				+ "]";
+		return preRequisiteAppointmentTypesDefualtGE;
+	}
+	
+
 }
 

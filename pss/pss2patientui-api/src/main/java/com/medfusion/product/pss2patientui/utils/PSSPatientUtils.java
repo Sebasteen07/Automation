@@ -2133,4 +2133,31 @@ public class PSSPatientUtils extends BaseTestNGWebDriver {
 		return date2;
 	}
 
+	public String currentFullDateWithTimeZone(Appointment testData) {
+		TimeZone timeZone = TimeZone.getTimeZone(testData.getCurrentTimeZone());
+		String dateFormat = "MM/dd/yyyy";
+		SimpleDateFormat f1 = new SimpleDateFormat(dateFormat);
+		Calendar c = Calendar.getInstance();
+		TimeZone time_zone = TimeZone.getTimeZone(testData.getCurrentTimeZone());
+		f1.setTimeZone(timeZone);
+		c.setTimeZone(time_zone);
+		String currentDate = f1.format(c.getTime());
+		log("Current Date is " + currentDate);
+		return currentDate;
+	}
+
+	public long dateDiffPastandCurrentDate(Appointment testData, String pastDate) throws ParseException {
+		// String pastDate = "12/14/2021";
+		String currentDate = currentFullDateWithTimeZone(testData);
+		// HH converts hour in 24 hours format (0-23), day calculation
+		SimpleDateFormat format = new SimpleDateFormat("MM/dd/yyyy");
+		Date d1 = null;
+		Date d2 = null;
+		d1 = format.parse(pastDate);
+		d2 = format.parse(currentDate);
+		// in milliseconds
+		long diff = d2.getTime() - d1.getTime();
+		long diffDays = diff / (24 * 60 * 60 * 1000);
+		return diffDays;
+	}
 }
