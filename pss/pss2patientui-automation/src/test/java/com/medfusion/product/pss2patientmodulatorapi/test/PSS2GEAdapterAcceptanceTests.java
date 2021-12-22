@@ -487,7 +487,7 @@ public class PSS2GEAdapterAcceptanceTests extends BaseTestNG {
 
 	@Test(enabled = true, groups = { "APItest" }, retryAnalyzer = RetryAnalyzer.class)
 	public void testUpcommingApptPOST() throws IOException {
-        String body=PayloadGE.upcommingApt_Payload(propertyData.getProperty("patientid.ge"), propertyData.getProperty("practiceid.ge"),propertyData.getProperty("practice.display.name.ge"), propertyData.getProperty("start.date.time.ge"));	
+        String body=PayloadGE.upcommingApt_Payload(propertyData.getProperty("upcomingappt.patientid.ge"), propertyData.getProperty("practiceid.ge"),propertyData.getProperty("practice.display.name.ge"), propertyData.getProperty("start.date.time.ge"));	
         Response response =postAPIRequestge.upcomingAppt(body,propertyData.getProperty("practiceid.ge"));
         apiVerification.responseCodeValidation(response, 200);
         apiVerification.responseTimeValidation(response);
@@ -495,9 +495,6 @@ public class PSS2GEAdapterAcceptanceTests extends BaseTestNG {
         apiVerification.responseKeyValidation(response, "patientId");
         apiVerification.responseKeyValidation(response, "startDateTime");
         apiVerification.responseKeyValidation(response, "endDateTime");
-
-
-
 	}
 	
 	@Test(enabled = true, groups = { "APItest" }, retryAnalyzer = RetryAnalyzer.class)
@@ -576,7 +573,6 @@ public class PSS2GEAdapterAcceptanceTests extends BaseTestNG {
 		String body=PayloadGE.addPatientPayload();
 		Response response =postAPIRequestge.addPatientPost(body,propertyData.getProperty("practiceid.ge"));
 		apiVerification.responseCodeValidation(response, 200);
-		apiVerification.responseTimeValidation(response);
 		apiVerification.responseKeyValidationJson(response, "id");
 		apiVerification.responseKeyValidationJson(response, "firstName");
 		apiVerification.responseKeyValidationJson(response, "lastName");
@@ -607,7 +603,6 @@ public class PSS2GEAdapterAcceptanceTests extends BaseTestNG {
 				propertyData.getProperty("appt.id.ge"));
 		Response response = postAPIRequestge.careProviderPost(body, propertyData.getProperty("practiceid.ge"));
 		apiVerification.responseCodeValidation(response, 200);
-		apiVerification.responseTimeValidation(response);
 		apiVerification.responseKeyValidationJson(response, "careProvider[0].resourceId");
 		apiVerification.responseKeyValidationJson(response, "careProvider[0].nextAvailabledate");
 

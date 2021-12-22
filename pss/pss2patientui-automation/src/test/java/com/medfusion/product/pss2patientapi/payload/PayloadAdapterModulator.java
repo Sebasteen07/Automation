@@ -2392,6 +2392,22 @@ public class PayloadAdapterModulator {
 		return lockout;
 	}
 	
+
+	public String patientStatusGW	(String id,String key,String type,String lockoutGroup, String engMsg,String displayMsg) {
+		String lockout ="{\r\n"
+				+ "  \"id\": "+id+",\r\n"
+				+ "  \"key\": \""+key+"\",\r\n"
+				+ "  \"value\": \"Active\",\r\n"
+				+ "  \"type\": \""+type+"\",\r\n"
+				+ "  \"messages\": {\r\n"
+				+ "    \"EN\": \""+engMsg+"\"\r\n"
+				+ "  },\r\n"
+				+ "  \"group\": \""+lockoutGroup+"\",\r\n"
+				+ "  \"displayMessage\": \""+engMsg+"\"\r\n"
+				+ "}";
+		return lockout;
+	}
+
 	public String multiplePatientAnnoucement(String customMessage) {
 		String saveAnn = "{\r\n"
 				+ "    \"text\": {\r\n"
@@ -2405,8 +2421,7 @@ public class PayloadAdapterModulator {
 				+ "    \"description\": \"Displayed when patient matching returns multiple patients or the patient found is inactive\"\r\n"
 				+ "}";
 		return saveAnn;
-	}
-	
+	}	
 
 	public String allowDuplicateONOff(boolean dupValue) {
 		String allowDuplicateOff = "[\r\n"
@@ -2876,7 +2891,5 @@ public class PayloadAdapterModulator {
 				+ "]";
 		return preRequisiteAppointmentTypesDefualtGE;
 	}
-	
-
 }
 

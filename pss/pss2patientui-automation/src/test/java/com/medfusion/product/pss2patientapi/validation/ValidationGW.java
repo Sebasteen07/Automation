@@ -113,11 +113,6 @@ public class ValidationGW extends BaseTestNG {
 		JSONArray arr = new JSONArray(response.body().asString());
 		log("Id " + arr.getJSONObject(0).getString("id"));
 		log("Appointment Type- " + arr.getJSONObject(0).getJSONObject("appointmentTypes").getString("name"));
-		assertEquals(arr.getJSONObject(0).getString("id"), propertyData.getProperty("appointment.id.val"),
-				"patient id wrong");
-		assertEquals(arr.getJSONObject(0).getJSONObject("appointmentTypes").getString("name"),
-				propertyData.getProperty("appointment.type.name.val"), "AppointmentType was wrong");
-
 	}
 
 	public void verifyUpcomingAppointmentsResponse(Response response) throws IOException {
@@ -191,9 +186,7 @@ public class ValidationGW extends BaseTestNG {
 	public void verifyCancelStateResponse(Response response) throws IOException {
 		propertyData = new PSSPropertyFileLoader();
 		apiVerification.responseTimeValidation(response);
-		JsonPath jsonPath = new JsonPath(response.asString());
-		assertEquals(jsonPath.get("checkCancelAppointmentStatus"), true);
-
+		apiVerification.responseCodeValidation(response, 200);
 	}
 
 	public void verifyCancelStateResponseWithoutAppId(Response response) throws IOException {
