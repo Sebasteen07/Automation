@@ -576,7 +576,7 @@ public class PSS2PatientPortalAcceptanceTests03 extends BaseTestNGWebDriver {
 		logStep("Clicked on the Skip Insurance Button ");
 		AppointmentPage appointment = startAppointmentInOrder.selectFirstAppointment(PSSConstants.START_APPOINTMENT);
 		log("Verfiy Appointment Page and appointment =" + testData.getAppointmenttype());
-		String appTypeName = appointment.selectTypeOfApp1(appName);
+		String appTypeName = appointment.selectTypeOfAppointment(appName);
 		log("Actual Appointment Type " + appTypeName);
 		String expectedAppTpe = appTypeName;
 		assertEquals(appTypeName, expectedAppTpe);
@@ -655,7 +655,7 @@ public class PSS2PatientPortalAcceptanceTests03 extends BaseTestNGWebDriver {
 		logStep("Clicked on the Skip Insurance Button ");
 		AppointmentPage appointment = startAppointmentInOrder.selectFirstAppointment(PSSConstants.START_APPOINTMENT);
 		log("Verfiy Appointment Page and appointment =" + testData.getAppointmenttype());
-		String appTypeName = appointment.selectTypeOfApp1(appName);
+		String appTypeName = appointment.selectTypeOfAppointment(appName);
 		log("Actaul Appointment Type " + appTypeName);
 		String expectedAppTpe = appTypeName;
 		assertEquals(appTypeName, expectedAppTpe);
@@ -754,12 +754,12 @@ public class PSS2PatientPortalAcceptanceTests03 extends BaseTestNGWebDriver {
 		String appTypeName = null;
 		String expectedAppTpe = appName;
 		if (n >= dateDiffBetPastandCurrent) {
-			appTypeName = appointment.selectTypeOfApp1(appName);
+			appTypeName = appointment.selectTypeOfAppointment(appName);
 			log("Actaul Appointment Type " + appTypeName);
 			log("Expected Appointment Type " + expectedAppTpe);
 			assertEquals(appTypeName, expectedAppTpe);
 		} else {
-			appTypeName = appointment.selectTypeOfApp1(appName);
+			appTypeName = appointment.selectTypeOfAppointment(appName);
 			log("app type not found ");
 			log("Expected Appointment Type " + expectedAppTpe);
 			log("Actaul Appointment Type " + appTypeName);
@@ -856,12 +856,12 @@ public class PSS2PatientPortalAcceptanceTests03 extends BaseTestNGWebDriver {
 		String expectedAppTpe = appName;
 		log("Expected Appointment Type " + expectedAppTpe);
 		if (n >= dateDiffBetPastandCurrent) {
-			appTypeName = appointment.selectTypeOfApp1(appName);
+			appTypeName = appointment.selectTypeOfAppointment(appName);
 			log("Actaul Appointment Type " + appTypeName);
 			log("Expected Appointment Type " + expectedAppTpe);
 			assertEquals(appTypeName, expectedAppTpe);
 		} else {
-			appTypeName = appointment.selectTypeOfApp1(appName);
+			appTypeName = appointment.selectTypeOfAppointment(appName);
 			log("app type not found ");
 			log("Expected Appointment Type " + expectedAppTpe);
 			log("Actaul Appointment Type " + appTypeName);
@@ -955,7 +955,7 @@ public class PSS2PatientPortalAcceptanceTests03 extends BaseTestNGWebDriver {
 		logStep("Clicked on the Skip Insurance Button ");
 		AppointmentPage appointment = startAppointmentInOrder.selectFirstAppointment(PSSConstants.START_APPOINTMENT);
 		log("Verfiy Appointment Page and appointment =" + testData.getAppointmenttype());
-		String appTypeName = appointment.selectTypeOfApp1(appName);
+		String appTypeName = appointment.selectTypeOfAppointment(appName);
 		log("Actual Appointment Type " + appTypeName);
 		String expectedAppTpe = appTypeName;
 		assertEquals(appTypeName, expectedAppTpe);
@@ -1041,7 +1041,7 @@ public class PSS2PatientPortalAcceptanceTests03 extends BaseTestNGWebDriver {
 		logStep("Clicked on the Skip Insurance Button ");
 		AppointmentPage appointment = startAppointmentInOrder.selectFirstAppointment(PSSConstants.START_APPOINTMENT);
 		log("Verfiy Appointment Page and appointment =" + testData.getAppointmenttype());
-		String appTypeName = appointment.selectTypeOfApp1(appName);
+		String appTypeName = appointment.selectTypeOfAppointment(appName);
 		log("Actaul Appointment Type " + appTypeName);
 		String expectedAppTpe = appTypeName;
 		assertEquals(appTypeName, expectedAppTpe);

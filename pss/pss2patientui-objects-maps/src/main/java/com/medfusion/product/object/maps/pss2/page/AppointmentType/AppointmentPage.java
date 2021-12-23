@@ -167,7 +167,7 @@ public class AppointmentPage extends PSS2MainPage {
 		return null;
 	}
 
-	public String selectTypeOfApp1(String appName) {
+	public String selectTypeOfAppointment(String appName) {
 		log("appointmentTypeList " + appointmentTypeList.size());
 		for (int i = 0; i < appointmentTypeList.size(); i++) {
 			if (appointmentTypeList.get(i).getText().equalsIgnoreCase(appName)) {
