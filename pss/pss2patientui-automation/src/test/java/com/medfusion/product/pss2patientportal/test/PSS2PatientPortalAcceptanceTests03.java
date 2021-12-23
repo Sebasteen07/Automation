@@ -517,6 +517,7 @@ public class PSS2PatientPortalAcceptanceTests03 extends BaseTestNGWebDriver {
 
 	@Test(enabled = true, groups = {"AcceptanceTests"}, retryAnalyzer = RetryAnalyzer.class)
 	public void testPreRequisiteDefaultNG() throws Exception {
+		log("Verify complete history is searched if pre-requisite set to default");
 		PSSPropertyFileLoader propertyData = new PSSPropertyFileLoader();
 		Appointment testData = new Appointment();
 		AdminUser adminUser = new AdminUser();
@@ -578,8 +579,7 @@ public class PSS2PatientPortalAcceptanceTests03 extends BaseTestNGWebDriver {
 		log("Verfiy Appointment Page and appointment =" + testData.getAppointmenttype());
 		String appTypeName = appointment.selectTypeOfAppointment(appName);
 		log("Actual Appointment Type " + appTypeName);
-		String expectedAppTpe = appTypeName;
-		assertEquals(appTypeName, expectedAppTpe);
+		assertEquals(appTypeName, appName);
 
 		response = postAPIRequestAM.preRequisiteAppById(practiceId, preReqAppId);
 		aPIVerification.responseCodeValidation(response, 200);
@@ -599,6 +599,7 @@ public class PSS2PatientPortalAcceptanceTests03 extends BaseTestNGWebDriver {
 
 	@Test(enabled = true, groups = {"AcceptanceTests"}, retryAnalyzer = RetryAnalyzer.class)
 	public void testPreRequisiteDefaultGE() throws Exception {
+		log("Verify complete history is searched if pre-requisite set to default");
 		PSSPropertyFileLoader propertyData = new PSSPropertyFileLoader();
 		Appointment testData = new Appointment();
 		AdminUser adminUser = new AdminUser();
@@ -657,8 +658,7 @@ public class PSS2PatientPortalAcceptanceTests03 extends BaseTestNGWebDriver {
 		log("Verfiy Appointment Page and appointment =" + testData.getAppointmenttype());
 		String appTypeName = appointment.selectTypeOfAppointment(appName);
 		log("Actaul Appointment Type " + appTypeName);
-		String expectedAppTpe = appTypeName;
-		assertEquals(appTypeName, expectedAppTpe);
+		assertEquals(appTypeName, appName);
 
 		response = postAPIRequestAM.preRequisiteAppById(practiceId, preReqAppId);
 		aPIVerification.responseCodeValidation(response, 200);
@@ -678,6 +678,7 @@ public class PSS2PatientPortalAcceptanceTests03 extends BaseTestNGWebDriver {
 
 	@Test(enabled = true, groups = {"AcceptanceTests"}, retryAnalyzer = RetryAnalyzer.class)
 	public void testPreRequisiteWithNoOfDaysNG() throws Exception {
+		log("Verify Number of Days Configured in Admin UI Then re-requisites Appointment type are available within configured period");
 		PSSPropertyFileLoader propertyData = new PSSPropertyFileLoader();
 		Appointment testData = new Appointment();
 		AdminUser adminUser = new AdminUser();
@@ -752,18 +753,17 @@ public class PSS2PatientPortalAcceptanceTests03 extends BaseTestNGWebDriver {
 		long dateDiffBetPastandCurrent = psspatientutils.dateDiffPastandCurrentDate(testData, pastDate);
 		log("Number of Days within current and past date " + dateDiffBetPastandCurrent);
 		String appTypeName = null;
-		String expectedAppTpe = appName;
 		if (n >= dateDiffBetPastandCurrent) {
 			appTypeName = appointment.selectTypeOfAppointment(appName);
 			log("Actaul Appointment Type " + appTypeName);
-			log("Expected Appointment Type " + expectedAppTpe);
-			assertEquals(appTypeName, expectedAppTpe);
+			log("Expected Appointment Type " + appName);
+			assertEquals(appTypeName, appName);
 		} else {
 			appTypeName = appointment.selectTypeOfAppointment(appName);
 			log("app type not found ");
-			log("Expected Appointment Type " + expectedAppTpe);
+			log("Expected Appointment Type " + appName);
 			log("Actaul Appointment Type " + appTypeName);
-			assertNotEquals(appTypeName, expectedAppTpe);
+			assertNotEquals(appTypeName, appName);
 
 		}
 
@@ -784,6 +784,7 @@ public class PSS2PatientPortalAcceptanceTests03 extends BaseTestNGWebDriver {
 
 	@Test(enabled = true, groups = {"AcceptanceTests"}, retryAnalyzer = RetryAnalyzer.class)
 	public void testPreRequisiteWithNoOfDaysGE() throws Exception {
+		log("Verify Number of Days Configured in Admin UI Then re-requisites Appointment type are available within configured period");
 		PSSPropertyFileLoader propertyData = new PSSPropertyFileLoader();
 		Appointment testData = new Appointment();
 		AdminUser adminUser = new AdminUser();
@@ -853,19 +854,18 @@ public class PSS2PatientPortalAcceptanceTests03 extends BaseTestNGWebDriver {
 		long dateDiffBetPastandCurrent = psspatientutils.dateDiffPastandCurrentDate(testData, pastDate);
 		log("Number of Days within current and past date " + dateDiffBetPastandCurrent);
 		String appTypeName = null;
-		String expectedAppTpe = appName;
-		log("Expected Appointment Type " + expectedAppTpe);
+		log("Expected Appointment Type " + appName);
 		if (n >= dateDiffBetPastandCurrent) {
 			appTypeName = appointment.selectTypeOfAppointment(appName);
 			log("Actaul Appointment Type " + appTypeName);
-			log("Expected Appointment Type " + expectedAppTpe);
-			assertEquals(appTypeName, expectedAppTpe);
+			log("Expected Appointment Type " + appName);
+			assertEquals(appTypeName, appName);
 		} else {
 			appTypeName = appointment.selectTypeOfAppointment(appName);
 			log("app type not found ");
-			log("Expected Appointment Type " + expectedAppTpe);
+			log("Expected Appointment Type " + appName);
 			log("Actaul Appointment Type " + appTypeName);
-			assertNotEquals(appTypeName, expectedAppTpe);
+			assertNotEquals(appTypeName, appName);
 
 		}
 
@@ -886,6 +886,7 @@ public class PSS2PatientPortalAcceptanceTests03 extends BaseTestNGWebDriver {
 
 	@Test(enabled = true, groups = {"AcceptanceTests"}, retryAnalyzer = RetryAnalyzer.class)
 	public void testPreRequisiteMultipleDefaultNG() throws Exception {
+		log("Verify appointment type when multiple pre-requisites are associated and set to as default");
 		PSSPropertyFileLoader propertyData = new PSSPropertyFileLoader();
 		Appointment testData = new Appointment();
 		AdminUser adminUser = new AdminUser();
@@ -957,8 +958,7 @@ public class PSS2PatientPortalAcceptanceTests03 extends BaseTestNGWebDriver {
 		log("Verfiy Appointment Page and appointment =" + testData.getAppointmenttype());
 		String appTypeName = appointment.selectTypeOfAppointment(appName);
 		log("Actual Appointment Type " + appTypeName);
-		String expectedAppTpe = appTypeName;
-		assertEquals(appTypeName, expectedAppTpe);
+		assertEquals(appTypeName, appName);
 
 		response = postAPIRequestAM.preRequisiteAppById(practiceId, preReqAppId);
 		aPIVerification.responseCodeValidation(response, 200);
@@ -979,6 +979,7 @@ public class PSS2PatientPortalAcceptanceTests03 extends BaseTestNGWebDriver {
 
 	@Test(enabled = true, groups = {"AcceptanceTests"}, retryAnalyzer = RetryAnalyzer.class)
 	public void testPreRequisiteMultipleDefaultGE() throws Exception {
+		log("Verify appointment type when multiple pre-requisites are associated and set to as default");
 		PSSPropertyFileLoader propertyData = new PSSPropertyFileLoader();
 		Appointment testData = new Appointment();
 		AdminUser adminUser = new AdminUser();
@@ -1043,8 +1044,7 @@ public class PSS2PatientPortalAcceptanceTests03 extends BaseTestNGWebDriver {
 		log("Verfiy Appointment Page and appointment =" + testData.getAppointmenttype());
 		String appTypeName = appointment.selectTypeOfAppointment(appName);
 		log("Actaul Appointment Type " + appTypeName);
-		String expectedAppTpe = appTypeName;
-		assertEquals(appTypeName, expectedAppTpe);
+		assertEquals(appTypeName, appName);
 
 		response = postAPIRequestAM.preRequisiteAppById(practiceId, preReqAppId);
 		aPIVerification.responseCodeValidation(response, 200);
