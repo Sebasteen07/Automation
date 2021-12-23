@@ -15,13 +15,11 @@ import java.util.StringTokenizer;
 import javax.xml.parsers.ParserConfigurationException;
 
 import org.openqa.selenium.WebDriver;
-
 import org.xml.sax.SAXException;
 
 import com.intuit.ifs.csscat.core.utils.Log4jUtil;
 import com.intuit.ihg.product.integrationplatform.pojo.PIDCInfo;
 import com.intuit.ihg.product.integrationplatform.pojo.PatientDetail;
-import com.medfusion.common.utils.Mailinator;
 import com.medfusion.product.object.maps.patientportal2.page.CreateAccount.AuthUserLinkAccountPage;
 import com.medfusion.product.object.maps.patientportal2.page.CreateAccount.PatientVerificationPage;
 import com.medfusion.product.object.maps.patientportal2.page.CreateAccount.SecurityDetailsPage;
@@ -182,7 +180,7 @@ public class PatientRegistrationUtils {
 			Boolean completed = checkMessageProcessingOntime(processingUrl, testData.getResponsePath());
 			assertTrue(completed, "Message processing was not completed in time");
 
-			Mailinator mail = new Mailinator();
+			MailinatorUtils mail = new MailinatorUtils(driver);
 
 			for (int i = 0; i < Integer.parseInt(testData.getBatchSize()); i++) {
 				Thread.sleep(15000);
@@ -230,7 +228,7 @@ public class PatientRegistrationUtils {
 			Boolean completed = checkMessageProcessingOntime(processingUrl, testData.getResponsePath());
 			assertTrue(completed, "Message processing was not completed in time");
 
-			Mailinator mail = new Mailinator();
+			MailinatorUtils mail = new MailinatorUtils(driver);
 
 			for (int i = 0; i < Integer.parseInt(testData.getBatchSize()); i++) {
 				Thread.sleep(15000);
@@ -316,7 +314,7 @@ public class PatientRegistrationUtils {
 		Boolean completed = checkMessageProcessingOntime(processingUrl, testData.getResponsePath());
 		assertTrue(completed, "Message processing was not completed in time");
 
-		Mailinator mail = new Mailinator();
+		MailinatorUtils mail = new MailinatorUtils(driver);
 
 		for (int i = 0; i < Integer.parseInt(testData.getBatchSize()); i++) {
 			Thread.sleep(15000);
