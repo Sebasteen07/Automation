@@ -1530,7 +1530,7 @@ public class PatientPortal2AcceptanceTests extends BaseTestNGWebDriver {
 				PASSWORD_CHANGE_NOTIFICATION_EMAIL_CONTENT));
 
 		logStep("Check notification emails");
-		assertTrue(new YopMail(driver).areAllMessagesInInbox(mails, 15));
+		assertTrue(new Mailinator().areAllMessagesInInbox(mails, 15));
 	}
 
 	@Test(enabled = true, groups = { "acceptance-linkedaccounts",
