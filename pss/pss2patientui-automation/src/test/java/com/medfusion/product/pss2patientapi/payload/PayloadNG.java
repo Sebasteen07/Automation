@@ -249,28 +249,23 @@ public static String nextAvailable_New() {
 		return upcommingappt;
 	}
 	
-	public static String careprovideravailability_Payload () {	
+	public static String careprovideravailability_Payload(String startDate, String endDate) {
 		
 		String careprovideravailability="{\r\n"
-				+ "  \"appointmentTypeCatId\": \"8F563A6C-7098-4446-97E2-7EF9345ED469\",\r\n"
-				+ "  \"appointmentTypeId\": \"86D0E00F-C136-4A24-BF7A-6C17E9AB35ED\",\r\n"
-				+ "  \"careProvider\": [\r\n"
-				+ "    {\r\n"
-				+ "      \"nextAvailabledate\": \"10/08/2021 08:45:00\",\r\n"
-				+ "      \"resourceCatId\": \"437DCCDB-8D78-475F-B661-EF393674F1F8\",\r\n"
-				+ "      \"resourceId\": \"78E497EF-0C8F-4D59-AD40-FE7BE12B9842\",\r\n"
-				+ "      \"slotSize\": 15\r\n"
-				+ "    },\r\n"
-				+ "    {\r\n"
-				+ "      \"nextAvailabledate\": null,\r\n"
-				+ "      \"resourceCatId\": \"ECA5CE18-7EA7-42EE-B3AD-65A2D607F127\",\r\n"
-				+ "      \"resourceId\": \"7DB3D384-149E-41E3-8FA4-102488DBDD6B\",\r\n"
-				+ "      \"slotSize\": 5\r\n"
-				+ "    }\r\n"
-				+ "  ],\r\n"
-				+ "  \"endDateTime\": \"10/11/2021 07:39:11\",\r\n"
-				+ "  \"locationId\": \"283BB437-B0C6-4626-A7CC-57FD0D1D6574\",\r\n"
-				+ "  \"startDateTime\": \"10/08/2021 07:39:11\"\r\n"
+				+ "    \"appointmentTypeCatId\": \"8F563A6C-7098-4446-97E2-7EF9345ED469\",\r\n"
+				+ "    \"appointmentTypeId\": \"86D0E00F-C136-4A24-BF7A-6C17E9AB35ED\",\r\n"
+				+ "    \"careProvider\": [\r\n"
+				+ "        {\r\n"
+				+ "            \"nextAvailabledate\": \"10/08/2021 08:45:00\",\r\n"
+				+ "            \"resourceCatId\": \"437DCCDB-8D78-475F-B661-EF393674F1F8\",\r\n"
+				+ "            \"resourceId\": \"78E497EF-0C8F-4D59-AD40-FE7BE12B9842\",\r\n"
+				+ "            \"slotSize\": 5\r\n"
+				+ "        }\r\n"
+				+ "        \r\n"
+				+ "    ],\r\n"
+				+ "    \"endDateTime\": \""+endDate+"\",\r\n"
+				+ "    \"locationId\": \"283BB437-B0C6-4626-A7CC-57FD0D1D6574\",\r\n"
+				+ "    \"startDateTime\": \""+startDate+"\"\r\n"
 				+ "}";
 		return careprovideravailability;
 		
