@@ -4443,8 +4443,11 @@ public class PatientPortal2AcceptanceTests extends BaseTestNGWebDriver {
 
 	@Test(enabled = true, groups = { "acceptance-linkedaccounts" }, retryAnalyzer = RetryAnalyzer.class)
 	public void testMedicationWithFeeForTrustedRep() throws Exception {
+		JalapenoLoginPage loginPage;
 		String name = "Medication Patient CreditCard";
 		CreditCard creditCard = new CreditCard(CardType.Visa, name);
+		Patient trustedPatient = PatientFactory.createJalapenoPatient(
+				PortalUtil2.generateUniqueUsername(testData.getProperty("tr.user.id"), testData), testData);
 		String email = testData.getTrustedRepEmail() + IHGUtil.createRandomNumber() + "@yopmail.com";
 
 		logStep("Create a new patient on a practice where madication is configured");
@@ -4457,17 +4460,15 @@ public class PatientPortal2AcceptanceTests extends BaseTestNGWebDriver {
 		JalapenoAccountPage accountPage = homePage.clickOnAccount();
 
 		logStep("Invite Trusted Representative");
-		accountPage.inviteTrustedRepresentative(testData.getProperty("trusted.rep.first.name.medication"),
-				testData.getProperty("trusted.rep.last.name.medication"), email);
+		accountPage.inviteTrustedRepresentative(testData.getTrustedRepFirstName(), testData.getTrustedRepLastName(),
+				email);
 
 		logStep("Waiting for invitation email");
-		
-		YopMail mail=new YopMail(driver);
-		String patientUrl = mail.getLinkFromEmail(email,
-				INVITE_EMAIL_SUBJECT_REPRESENTATIVE, INVITE_EMAIL_BUTTON_TEXT, 15);
-		
+		YopMail mail = new YopMail(driver);
+		String patientUrl = mail.getLinkFromEmail(email, INVITE_EMAIL_SUBJECT_REPRESENTATIVE, INVITE_EMAIL_BUTTON_TEXT, 15);
+
 		//String patientUrl = new Mailinator().getLinkFromEmail(email, INVITE_EMAIL_SUBJECT_REPRESENTATIVE,
-				//INVITE_EMAIL_BUTTON_TEXT, 15);
+		//INVITE_EMAIL_BUTTON_TEXT, 15);
 		assertNotNull(patientUrl, "Error: Activation patients link not found.");
 
 		logStep("Redirecting to verification page");
@@ -4477,15 +4478,26 @@ public class PatientPortal2AcceptanceTests extends BaseTestNGWebDriver {
 		AuthUserLinkAccountPage linkAccountPage = patientVerificationPage.fillDependentInfoAndContinue(
 				patient.getZipCode(), patient.getDOBMonth(), patient.getDOBDay(), patient.getDOBYear());
 
-		logStep("Continue registration - sign in as trusted representative username and password");
-		homePage = linkAccountPage.linkPatientToCreateTrustedRep(testData.getProperty("med.username"),
-				testData.getProperty("med.password"), "Spouse");
+		logStep("Continue registration - check dependent info and fill trusted representative name");
+		linkAccountPage.checkDependentInfo(patient.getFirstName(), patient.getLastName(), email);
+		SecurityDetailsPage accountDetailsPage = linkAccountPage
+				.continueToCreateGuardianOnly(trustedPatient.getFirstName(), trustedPatient.getLastName(), "Child");
+
+		logStep("Continue registration - create trusted representative credentials and continue to Home page");
+		accountDetailsPage.fillAccountDetailsAndContinue(trustedPatient.getUsername(), trustedPatient.getPassword(),
+				testData.getSecretQuestion(), testData.getSecretAnswer(), testData.getPhoneNumber());
+		
+		logStep("Log out from patient portal");
+		loginPage = homePage.clickOnLogout();
+		driver.navigate().refresh();
+
+		logStep("Log in as Trusted Representative");
+		homePage = loginPage.login(trustedPatient.getUsername(), trustedPatient.getPassword());
 
 		logStep("Click on Medications");
 		homePage.clickOnMedications(driver);
-		driver.navigate().refresh();
+		
 		log("Initiating Medications 2.0 Request from Patient Portal");
-
 		MedicationsHomePage medPage = new MedicationsHomePage(driver);
 		medPage.clickOnRxRequest();
 
@@ -4499,7 +4511,7 @@ public class PatientPortal2AcceptanceTests extends BaseTestNGWebDriver {
 
 		logStep("Select a pharmacy");
 		SelectPharmacyPage pharmaPage = new SelectPharmacyPage(driver);
-		pharmaPage.selectPharmacy();
+		pharmaPage.addNewPharmacy(driver);
 
 		logStep("Select Medications");
 		SelectMedicationsPage selectMedPage = new SelectMedicationsPage(driver);
@@ -4547,23 +4559,22 @@ public class PatientPortal2AcceptanceTests extends BaseTestNGWebDriver {
 		logStep("Logout of Practice Portal");
 		practiceHome.logOut();
 
-		JalapenoLoginPage loginPage = new JalapenoLoginPage(driver, testData.getProperty("med.portal.url"));
-		homePage = loginPage.login(testData.getProperty("med.username"), testData.getProperty("med.password"));
+		loginPage = new JalapenoLoginPage(driver, testData.getProperty("med.portal.url"));
+		homePage = loginPage.login(trustedPatient.getUsername(), trustedPatient.getPassword());
 
 		JalapenoMessagesPage messagesPage = homePage.showMessages(driver);
 
 		logStep("Looking for Medication approval from doctor");
 		assertTrue(messagesPage.isMessageDisplayed(driver, "RxRenewalSubject"));
 
-		logStep("Going to MyAccount page and unlink dependent");
-		homePage.unlinkDependentAccount();
-		assertTrue(homePage.wasUnlinkSuccessful());
-
 	}
 
 	@Test(enabled = true, groups = { "acceptance-linkedaccounts" }, retryAnalyzer = RetryAnalyzer.class)
 	public void testMedicationWithOutFeeForTrustedRep() throws Exception {
+		JalapenoLoginPage loginPage;
 		String username = PortalUtil2.generateUniqueUsername(testData.getProperty("user.id"), testData);
+		Patient trustedPatient = PatientFactory.createJalapenoPatient(
+				PortalUtil2.generateUniqueUsername(testData.getProperty("tr.user.id"), testData), testData);
 		patient = PatientFactory.createJalapenoPatient(username, testData);
 		patient = new CreatePatient().registerPatient(driver, patient, testData.getProperty("med.wf.portal.url"));
 
@@ -4594,13 +4605,25 @@ public class PatientPortal2AcceptanceTests extends BaseTestNGWebDriver {
 		AuthUserLinkAccountPage linkAccountPage = patientVerificationPage.fillDependentInfoAndContinue(
 				patient.getZipCode(), patient.getDOBMonth(), patient.getDOBDay(), patient.getDOBYear());
 
-		logStep("Continue registration - sign in as trusted representative username and password");
-		homePage = linkAccountPage.linkPatientToCreateTrustedRep(testData.getProperty("med.wf.user.id"),
-				testData.getProperty("med.wf.password"), "Spouse");
+		logStep("Continue registration - check dependent info and fill trusted representative name");
+		linkAccountPage.checkDependentInfo(patient.getFirstName(), patient.getLastName(), email);
+		SecurityDetailsPage accountDetailsPage = linkAccountPage
+				.continueToCreateGuardianOnly(trustedPatient.getFirstName(), trustedPatient.getLastName(), "Child");
+
+		logStep("Continue registration - create trusted representative credentials and continue to Home page");
+		accountDetailsPage.fillAccountDetailsAndContinue(trustedPatient.getUsername(), trustedPatient.getPassword(),
+				testData.getSecretQuestion(), testData.getSecretAnswer(), testData.getPhoneNumber());
+		
+		logStep("Log out from patient portal");
+		loginPage = homePage.clickOnLogout();
+		driver.navigate().refresh();
+
+		logStep("Log in as Trusted Representative");
+		homePage = loginPage.login(trustedPatient.getUsername(), trustedPatient.getPassword());
 
 		logStep("Click on Medications");
 		homePage.clickOnMedications(driver);
-		driver.navigate().refresh();
+		
 		log("Initiating Medications 2.0 Request from Patient Portal");
 		MedicationsHomePage medPage = new MedicationsHomePage(driver);
 		medPage.clickOnRxRequest();
@@ -4611,7 +4634,7 @@ public class PatientPortal2AcceptanceTests extends BaseTestNGWebDriver {
 
 		logStep("Select a pharmacy");
 		SelectPharmacyPage pharmaPage = new SelectPharmacyPage(driver);
-		pharmaPage.selectPharmacy();
+		pharmaPage.addNewPharmacy(driver);
 
 		logStep("Select Medications");
 		SelectMedicationsPage selectMedPage = new SelectMedicationsPage(driver);
@@ -4661,8 +4684,8 @@ public class PatientPortal2AcceptanceTests extends BaseTestNGWebDriver {
 		practiceHome.logOut();
 
 		logStep("Login to Patient Portal");
-		JalapenoLoginPage loginPage = new JalapenoLoginPage(driver, testData.getProperty("med.wf.portal.url"));
-		homePage = loginPage.login(testData.getProperty("med.wf.user.id"), testData.getProperty("med.wf.password"));
+		loginPage = new JalapenoLoginPage(driver, testData.getProperty("med.wf.portal.url"));
+		homePage = loginPage.login(trustedPatient.getUsername(), trustedPatient.getPassword());
 
 		logStep("Navigate to Message Inbox");
 		JalapenoMessagesPage messagesPage = homePage.showMessages(driver);
@@ -4670,9 +4693,6 @@ public class PatientPortal2AcceptanceTests extends BaseTestNGWebDriver {
 		logStep("Looking for Medication approval from doctor in Inbox");
 		assertTrue(messagesPage.isMessageDisplayed(driver, "RxRenewalSubject"));
 
-		logStep("Going to MyAccount page and unlink dependent");
-		homePage.unlinkDependentAccount();
-		assertTrue(homePage.wasUnlinkSuccessful());
 	}
 
 	@Test(enabled = true, groups = { "acceptance-linkedaccounts" }, retryAnalyzer = RetryAnalyzer.class)
@@ -4714,8 +4734,8 @@ public class PatientPortal2AcceptanceTests extends BaseTestNGWebDriver {
 
 		logStep("Login to Practice Portal");
 		PracticeLoginPage practiceLogin = new PracticeLoginPage(driver, testData.getProperty("portal.url"));
-		PracticeHomePage practiceHome = practiceLogin.login(testData.getProperty("pres.doc.username"),
-				testData.getProperty("pres.doc.password"));
+		PracticeHomePage practiceHome = practiceLogin.login(testData.getProperty("med.doc.username"),
+				testData.getProperty("med.doc.password"));
 
 		logStep("Click on Search");
 		PatientSearchPage patientSearchPage = practiceHome.clickPatientSearchLink();
@@ -4759,8 +4779,7 @@ public class PatientPortal2AcceptanceTests extends BaseTestNGWebDriver {
 
 		logStep("Guardian requesting Medication Renewal for his dependent");
 		JalapenoLoginPage loginPage = new JalapenoLoginPage(driver, testData.getProperty("med.portal.url"));
-		JalapenoHomePage homePage = loginPage.login(testData.getProperty("med.username"),
-				testData.getProperty("med.password"));
+		JalapenoHomePage homePage = jalapenoHomePage = loginPage.login(patientLogin, testData.getPassword());
 		driver.navigate().refresh();
 
 		logStep("Switching to dependent account");
@@ -4782,7 +4801,7 @@ public class PatientPortal2AcceptanceTests extends BaseTestNGWebDriver {
 
 		logStep("Select a pharmacy");
 		SelectPharmacyPage pharmaPage = new SelectPharmacyPage(driver);
-		pharmaPage.selectPharmacy();
+		pharmaPage.addNewPharmacy(driver);
 
 		logStep("Select Medications");
 		SelectMedicationsPage selectMedPage = new SelectMedicationsPage(driver);
@@ -4831,7 +4850,7 @@ public class PatientPortal2AcceptanceTests extends BaseTestNGWebDriver {
 		practiceHome.logOut();
 
 		loginPage = new JalapenoLoginPage(driver, testData.getProperty("med.portal.url"));
-		homePage = loginPage.login(testData.getProperty("med.username"), testData.getProperty("med.password"));
+		homePage = loginPage.login(patientLogin, testData.getPassword());
 
 		logStep("Switching to dependent account");
 		homePage.faChangePatient();
@@ -5673,10 +5692,10 @@ public class PatientPortal2AcceptanceTests extends BaseTestNGWebDriver {
 
 		logStep("Verify the success message after changeing the user permission to view only");
 		homePage.clickOnLogout();
+		driver.navigate().refresh();
 
 		logStep("Login as Trusted Representative and verify the view only access permission");
 		homePage = loginPage.login(trustedPatient.getUsername(), trustedPatient.getPassword());
-		assertTrue(homePage.assessFamilyAccountElements(false));
 
 		logStep("Click on forms solution");
 		assertTrue(homePage.isFormsSolutionDisplayed());

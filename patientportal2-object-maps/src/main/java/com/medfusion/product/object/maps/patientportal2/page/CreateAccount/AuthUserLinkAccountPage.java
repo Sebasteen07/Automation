@@ -48,6 +48,12 @@ public class AuthUserLinkAccountPage extends MedfusionPage {
 	
 	@FindBy(how = How.XPATH, using = "//*[contains(text(),'The user name and/or password you entered is incorrect. Please try again.')]")
 	private WebElement msgIncorrectUsernamePasswordError;
+	
+	@FindBy(how = How.TAG_NAME, using = "ng-select")
+	private WebElement primaryLocationElement;
+	
+	@FindBy(how = How.XPATH, using = "(//*[@class='ng-option'])[1]")
+	private WebElement setLocation;
 
 	public AuthUserLinkAccountPage(WebDriver driver) {
 		super(driver);
@@ -62,6 +68,13 @@ public class AuthUserLinkAccountPage extends MedfusionPage {
 
 		Select relationshipPatient = new Select(relationshipFirstSelect);
 		relationshipPatient.selectByVisibleText(relationship);
+		
+		if (new IHGUtil(driver).isRendered(primaryLocationElement)) {
+			log("Set primary location");
+			primaryLocationElement.click();
+			IHGUtil.waitForElement(driver, 60, setLocation);
+			javascriptClick(setLocation);
+		}
 
 		wait.until(ExpectedConditions.elementToBeClickable(enterPortalButton));
 		enterPortalButton.click();

@@ -259,7 +259,7 @@ public class PSS2NGAdapterAcceptanceTests extends BaseTestNG {
 
 	@Test(enabled = true, groups = { "APItest" }, retryAnalyzer = RetryAnalyzer.class)
 	public void testRescheduleApptNGPInvalidAppIdPOST() throws IOException {
-
+		// this test case actual failed case
 		Response response = postAPIRequest.rescheduleApptNG(propertyData.getProperty("practice.id.ng"),
 				PayloadNG.reschedule_Payload(propertyData.getProperty("start.date.time.ng"),
 						propertyData.getProperty("end.date.time.ng"), propertyData.getProperty("patient.id.ng"),
@@ -332,9 +332,10 @@ public class PSS2NGAdapterAcceptanceTests extends BaseTestNG {
 
 	@Test(enabled = true, groups = { "APItest" }, retryAnalyzer = RetryAnalyzer.class)
 	public void testCareproviderAvailabilityPOST() throws IOException {
-
+		String startdate = pSSPatientUtils.sampleDateTime("MM/dd/yyyy");
+		String enddate1 = pSSPatientUtils.addDaysToDate(startdate, "100", "MM/dd/yyyy");
 		Response response = postAPIRequest.careproviderAvailability(propertyData.getProperty("practice.id.ng"),
-				PayloadNG.careprovideravailability_Payload());
+				PayloadNG.careprovideravailability_Payload(startdate, enddate1));
 
 		aPIVerification.responseCodeValidation(response, 200);
 		aPIVerification.responseTimeValidation(response);

@@ -1367,7 +1367,7 @@ public class PSS2PatientPortalAcceptanceTests02 extends BaseTestNGWebDriver {
 		setUp(propertyData.getProperty("mf.practice.id.gw"), propertyData.getProperty("mf.authuserid.am.gw"));
 		Response response;
 		
-		String patientMatch=payloadAM.patientInfoWithOptionalLL();
+		String patientMatch = payloadAM.patientInfoWithOptionalGW();
 		response = postAPIRequestAM.patientInfoPost(practiceId, patientMatch);
 		aPIVerification.responseCodeValidation(response, 200);
 		
@@ -1631,7 +1631,7 @@ public class PSS2PatientPortalAcceptanceTests02 extends BaseTestNGWebDriver {
 		setUp(propertyData.getProperty("mf.practice.id.gw"), propertyData.getProperty("mf.authuserid.am.gw"));
 		Response response;
 		
-		String patientMatch=payloadAM.patientInfoWithOptionalLL();
+		String patientMatch = payloadAM.patientInfoWithOptionalGW();
 		response = postAPIRequestAM.patientInfoPost(practiceId, patientMatch);
 		aPIVerification.responseCodeValidation(response, 200);
 		
