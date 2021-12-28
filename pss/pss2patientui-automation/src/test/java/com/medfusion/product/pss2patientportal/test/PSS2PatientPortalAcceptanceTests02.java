@@ -651,11 +651,11 @@ public class PSS2PatientPortalAcceptanceTests02 extends BaseTestNGWebDriver {
 		Response response;
 		
 		String group=propertyData.getProperty("lockoutgroup.ng");
-		String lockoutmessage=propertyData.getProperty("lockoutbillingnote.ng");
-		String lockouttype=propertyData.getProperty("billingnote.type.ng");
+		String lockoutMessage=propertyData.getProperty("lockoutbillingnote.ng");
+		String lockoutType=propertyData.getProperty("billingnote.type.ng");
 		String key=propertyData.getProperty("billingnote.key.ge");
 		
-		String lockoutPayload=payloadAM.alertAndLocakout(key, key, lockouttype, group, lockoutmessage);
+		String lockoutPayload=payloadAM.alertAndLocakout(key, key, lockoutType, group, lockoutMessage);
 		
 		logStep("Remove the already set announcement ");
 		response=postAPIRequestAM.lockoutPost(practiceId, lockoutPayload, "/lockout");
@@ -664,7 +664,6 @@ public class PSS2PatientPortalAcceptanceTests02 extends BaseTestNGWebDriver {
 		logStep("Move to PSS patient Portal 2.0 to book an Appointment");
 		DismissPage dismissPage = new DismissPage(driver, testData.getUrlLoginLess());
 		
-
 		logStep("Open the link and click on Dismiss Button ");
 		LoginlessPatientInformation loginlessPatientInformation = dismissPage.clickDismiss();
 
@@ -680,7 +679,7 @@ public class PSS2PatientPortalAcceptanceTests02 extends BaseTestNGWebDriver {
 		HomePage homePage = loginlessPatientInformation.fillNewPatientForm(fn, ln, dob, email, gender, "", "");	
 		String actualPopUpMessage=homePage.getTextLockoutPopUpMsg();
 		
-		assertEquals(actualPopUpMessage, lockoutmessage, "Lockout message is wrong");
+		assertEquals(actualPopUpMessage, lockoutMessage, "Lockout message is wrong");
 		
 		response=postAPIRequestAM.associatedlockout(practiceId, "/associatedlockout");
 		aPIVerification.responseCodeValidation(response, 200);	
@@ -719,8 +718,7 @@ public class PSS2PatientPortalAcceptanceTests02 extends BaseTestNGWebDriver {
 		aPIVerification.responseCodeValidation(response, 200);
 		
 		logStep("Move to PSS patient Portal 2.0 to book an Appointment");
-		DismissPage dismissPage = new DismissPage(driver, testData.getUrlLoginLess());
-		
+		DismissPage dismissPage = new DismissPage(driver, testData.getUrlLoginLess());		
 
 		logStep("Open the link and click on Dismiss Button ");
 		LoginlessPatientInformation loginlessPatientInformation = dismissPage.clickDismiss();
@@ -776,8 +774,7 @@ public class PSS2PatientPortalAcceptanceTests02 extends BaseTestNGWebDriver {
 		aPIVerification.responseCodeValidation(response, 200);
 		
 		logStep("Move to PSS patient Portal 2.0 to book an Appointment");
-		DismissPage dismissPage = new DismissPage(driver, testData.getUrlLoginLess());
-		
+		DismissPage dismissPage = new DismissPage(driver, testData.getUrlLoginLess());		
 
 		logStep("Open the link and click on Dismiss Button ");
 		LoginlessPatientInformation loginlessPatientInformation = dismissPage.clickDismiss();
@@ -832,8 +829,7 @@ public class PSS2PatientPortalAcceptanceTests02 extends BaseTestNGWebDriver {
 		aPIVerification.responseCodeValidation(response, 200);
 		
 		logStep("Move to PSS patient Portal 2.0 to book an Appointment");
-		DismissPage dismissPage = new DismissPage(driver, testData.getUrlLoginLess());
-		
+		DismissPage dismissPage = new DismissPage(driver, testData.getUrlLoginLess());		
 
 		logStep("Open the link and click on Dismiss Button ");
 		LoginlessPatientInformation loginlessPatientInformation = dismissPage.clickDismiss();
@@ -892,8 +888,7 @@ public class PSS2PatientPortalAcceptanceTests02 extends BaseTestNGWebDriver {
 		aPIVerification.responseCodeValidation(response, 200);
 		
 		logStep("Move to PSS patient Portal 2.0 to book an Appointment");
-		DismissPage dismissPage = new DismissPage(driver, testData.getUrlLoginLess());
-		
+		DismissPage dismissPage = new DismissPage(driver, testData.getUrlLoginLess());		
 
 		logStep("Open the link and click on Dismiss Button ");
 		LoginlessPatientInformation loginlessPatientInformation = dismissPage.clickDismiss();
@@ -958,8 +953,7 @@ public class PSS2PatientPortalAcceptanceTests02 extends BaseTestNGWebDriver {
 		aPIVerification.responseCodeValidation(response, 200);
 		
 		logStep("Move to PSS patient Portal 2.0 to book an Appointment");
-		DismissPage dismissPage = new DismissPage(driver, testData.getUrlLoginLess());
-		
+		DismissPage dismissPage = new DismissPage(driver, testData.getUrlLoginLess());		
 
 		logStep("Open the link and click on Dismiss Button ");
 		LoginlessPatientInformation loginlessPatientInformation = dismissPage.clickDismiss();
@@ -1020,8 +1014,7 @@ public class PSS2PatientPortalAcceptanceTests02 extends BaseTestNGWebDriver {
 		aPIVerification.responseCodeValidation(response, 200);
 		
 		logStep("Move to PSS patient Portal 2.0 to book an Appointment");
-		DismissPage dismissPage = new DismissPage(driver, testData.getUrlLoginLess());
-		
+		DismissPage dismissPage = new DismissPage(driver, testData.getUrlLoginLess());		
 
 		logStep("Open the link and click on Dismiss Button ");
 		LoginlessPatientInformation loginlessPatientInformation = dismissPage.clickDismiss();
@@ -1083,8 +1076,7 @@ public class PSS2PatientPortalAcceptanceTests02 extends BaseTestNGWebDriver {
 		aPIVerification.responseCodeValidation(response, 200);
 		
 		logStep("Move to PSS patient Portal 2.0 to book an Appointment");
-		DismissPage dismissPage = new DismissPage(driver, testData.getUrlLoginLess());
-		
+		DismissPage dismissPage = new DismissPage(driver, testData.getUrlLoginLess());		
 
 		logStep("Open the link and click on Dismiss Button ");
 		LoginlessPatientInformation loginlessPatientInformation = dismissPage.clickDismiss();
@@ -1139,8 +1131,7 @@ public class PSS2PatientPortalAcceptanceTests02 extends BaseTestNGWebDriver {
 		aPIVerification.responseCodeValidation(response, 200);
 		
 		logStep("Move to PSS patient Portal 2.0 to book an Appointment");
-		DismissPage dismissPage = new DismissPage(driver, testData.getUrlLoginLess());
-		
+		DismissPage dismissPage = new DismissPage(driver, testData.getUrlLoginLess());		
 
 		logStep("Open the link and click on Dismiss Button ");
 		LoginlessPatientInformation loginlessPatientInformation = dismissPage.clickDismiss();
@@ -1323,8 +1314,7 @@ public class PSS2PatientPortalAcceptanceTests02 extends BaseTestNGWebDriver {
 		aPIVerification.responseCodeValidation(response, 200);
 		
 		logStep("Move to PSS patient Portal 2.0 to book an Appointment");
-		DismissPage dismissPage = new DismissPage(driver, testData.getUrlLoginLess());
-		
+		DismissPage dismissPage = new DismissPage(driver, testData.getUrlLoginLess());		
 
 		logStep("Open the link and click on Dismiss Button ");
 		LoginlessPatientInformation loginlessPatientInformation = dismissPage.clickDismiss();
@@ -1384,8 +1374,7 @@ public class PSS2PatientPortalAcceptanceTests02 extends BaseTestNGWebDriver {
 		aPIVerification.responseCodeValidation(response, 200);
 		
 		logStep("Move to PSS patient Portal 2.0 to book an Appointment");
-		DismissPage dismissPage = new DismissPage(driver, testData.getUrlLoginLess());
-		
+		DismissPage dismissPage = new DismissPage(driver, testData.getUrlLoginLess());		
 
 		logStep("Open the link and click on Dismiss Button ");
 		LoginlessPatientInformation loginlessPatientInformation = dismissPage.clickDismiss();
@@ -1648,8 +1637,7 @@ public class PSS2PatientPortalAcceptanceTests02 extends BaseTestNGWebDriver {
 		aPIVerification.responseCodeValidation(response, 200);
 		
 		logStep("Move to PSS patient Portal 2.0 to book an Appointment");
-		DismissPage dismissPage = new DismissPage(driver, testData.getUrlLoginLess());
-		
+		DismissPage dismissPage = new DismissPage(driver, testData.getUrlLoginLess());		
 
 		logStep("Open the link and click on Dismiss Button ");
 		LoginlessPatientInformation loginlessPatientInformation = dismissPage.clickDismiss();
