@@ -123,7 +123,7 @@ public class PatientPortal2AcceptanceTests extends BaseTestNGWebDriver {
 	private static final String WELCOME_EMAIL_BODY_PATTERN_SECOND_PRACTICE = "Thank you for creating an account with TestPracticeELE01";
 	private static final String INVITE_LINK_FRAGMENT = "invite";
 	private static final String ACTIVATE_LINK_FRAGMENT = "activate";
-	private static final String GUARDIAN_INVITE_SUBJECT = "You are invited to create a Patient Portal guardian account at ";
+	private static final String GUARDIAN_INVITE_SUBJECT = "You are invited to create a Patient Portal guardian account atJalapeno Automation";
 	private static final String questionText = "What is the question";
 	private static final String DRUG_DOSAGE = "35 mg";
 	private static final String DEPENDENT_DRUG_DOSAGE = "150 mg";
@@ -1161,8 +1161,8 @@ public class PatientPortal2AcceptanceTests extends BaseTestNGWebDriver {
 
 		logStep("Using Yopmail Mailer to retrieve the latest emails for patient and guardian");
 
-		String emailSubjectGuardian = "You are invited to create a Patient Portal guardian account at "
-				+ testData.getPracticeName();
+		String emailSubjectGuardian = "You are invited to create a Patient Portal guardian account atJalapeno Automation";
+		testData.getPracticeName();
 
 		YopMail mail=new YopMail(driver);
 		String guardianUrlEmail = mail.getLinkFromEmail(patientEmail,
@@ -2361,9 +2361,12 @@ public class PatientPortal2AcceptanceTests extends BaseTestNGWebDriver {
 
 		logStep("Logging into yopmail and getting Patient Activation url");
 		YopMail mail = new YopMail(driver);
+//		String unlockLinkEmail01 = mail.getLinkFromEmail(guardianpatientEmail,
+//				GUARDIAN_INVITE_SUBJECT + testData.getProperty("practice.name1").replace(" ", ""),
+//				INVITE_EMAIL_BUTTON_TEXT, 10);
+		
 		String unlockLinkEmail01 = mail.getLinkFromEmail(guardianpatientEmail,
-				GUARDIAN_INVITE_SUBJECT + testData.getProperty("practice.name1").replace(" ", ""),
-				INVITE_EMAIL_BUTTON_TEXT, 10);
+				GUARDIAN_INVITE_SUBJECT ,INVITE_EMAIL_BUTTON_TEXT, 10);
 
 //		String unlockLinkEmail01 = new Mailinator().getLinkFromEmail(guardianpatientEmail,
 //				GUARDIAN_INVITE_SUBJECT + testData.getProperty("practice.name1"), INVITE_EMAIL_BUTTON_TEXT, 10);
