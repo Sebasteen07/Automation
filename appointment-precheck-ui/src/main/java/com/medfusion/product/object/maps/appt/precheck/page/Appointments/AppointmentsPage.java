@@ -324,31 +324,31 @@ public class AppointmentsPage extends BasePageObject {
 
 	@FindBy(how = How.XPATH, using = "//*[text()='Close']")
 	private WebElement closeApptDetail;
-	
+
 	@FindBy(how = How.XPATH, using = "//*[@class='mf-icon mf-icon__check--small mf-color__positive time-cell-action-icon']")
 	private WebElement confirmTickMark;
 
 	@FindBy(how = How.XPATH, using = "//*[@class='mf-icon mf-icon__checkin']")
 	private WebElement curbsideArrivalMark;
 
-	@FindBy(how= How.XPATH,using="//*[@id=\"page-content-container\"]/div/div[2]/div[1]/div/div[3]/div[1]/div/div[16]/div/span[2]/span/span[1]")
-    private WebElement selectPaperPlaneSymbol;
-	
-	@FindBy(how= How.XPATH,using="//*[@class='mf-icon mf-icon__check-v01--exact mf-color__positive']")
-    private WebElement sendReminderMessageTickMark;
-	
-	@FindBy(how=How.XPATH,using="//*[@class='mf-color__positive']")
+	@FindBy(how = How.XPATH, using = "//*[@id=\"page-content-container\"]/div/div[2]/div[1]/div/div[3]/div[1]/div/div[16]/div/span[2]/span/span[1]")
+	private WebElement selectPaperPlaneSymbol;
+
+	@FindBy(how = How.XPATH, using = "//*[@class='mf-icon mf-icon__check-v01--exact mf-color__positive']")
+	private WebElement sendReminderMessageTickMark;
+
+	@FindBy(how = How.XPATH, using = "//*[@class='mf-color__positive']")
 	private WebElement sendReminderMessage;
-	
+
 	@FindBy(how = How.XPATH, using = "//*[@class='mf-icon mf-icon__checkin']")
 	private WebElement checkInMark;
-	
+
 	@FindBy(how = How.XPATH, using = "//*[@id=\"alert\"]/div/div/span")
 	private WebElement selectBannerMessage;
-	
+
 	@FindBy(how = How.XPATH, using = "//*[@id='minus']")
 	private WebElement previousPage;
-	
+
 	public AppointmentsPage(WebDriver driver) {
 		super(driver);
 		PageFactory.initElements(driver, this);
@@ -1124,11 +1124,12 @@ public class AppointmentsPage extends BasePageObject {
 	public void closeApptDetail() {
 		closeApptDetail.click();
 	}
+
 	public void filterPatientId(String id) throws InterruptedException {
 		patientIdFilter.sendKeys(id);
 		Thread.sleep(5000);
 	}
-	
+
 	public boolean displayComfirmTickMark() throws InterruptedException {
 		IHGUtil.waitForElement(driver, 10, confirmTickMark);
 		if (confirmTickMark.isDisplayed()) {
@@ -1161,12 +1162,12 @@ public class AppointmentsPage extends BasePageObject {
 			return false;
 		}
 	}
-	
+
 	public void clickOnSendReminder() throws InterruptedException {
 		IHGUtil.waitForElement(driver, 10, sendReminder);
 		jse.executeScript("arguments[0].click();", sendReminder);
 	}
-	
+
 	public boolean displayPaperPlaneSymbol() {
 		IHGUtil.waitForElement(driver, 10, selectPaperPlaneSymbol);
 		if (selectPaperPlaneSymbol.isDisplayed()) {
@@ -1177,12 +1178,12 @@ public class AppointmentsPage extends BasePageObject {
 			return false;
 		}
 	}
-	
+
 	public String getReminderMessage() {
 		IHGUtil.waitForElement(driver, 10, sendReminderMessage);
 		return sendReminderMessage.getText();
 	}
-	
+
 	public boolean displaySendReminderMessageTickMark() {
 		IHGUtil.waitForElement(driver, 10, sendReminderMessageTickMark);
 		if (sendReminderMessageTickMark.isDisplayed()) {
@@ -1193,16 +1194,18 @@ public class AppointmentsPage extends BasePageObject {
 			return false;
 		}
 	}
-	
+
 	public String getBroadcastEmailCountForSelectedPatient(String patientId) {
-		WebElement getPatient= driver.findElement(By.xpath("//*[text()="+"'"+patientId+"'"+"]/following::div[22]/div/span[2]"));
+		WebElement getPatient = driver
+				.findElement(By.xpath("//*[text()=" + "'" + patientId + "'" + "]/following::div[22]/div/span[2]"));
 		IHGUtil.waitForElement(driver, 10, getPatient);
 		log("Get broadcast email count" + getPatient.getText());
 		return getPatient.getText();
 	}
-	
+
 	public String getBroadcastTextCountForSelectedPatient(String patientId) {
-		WebElement getPatient= driver.findElement(By.xpath("//*[text()="+"'"+patientId+"'"+"]/following::div[24]/div/span[2]"));
+		WebElement getPatient = driver
+				.findElement(By.xpath("//*[text()=" + "'" + patientId + "'" + "]/following::div[24]/div/span[2]"));
 		IHGUtil.waitForElement(driver, 10, getPatient);
 		log("Get broadcast text count" + getPatient.getText());
 		return getPatient.getText();
@@ -1213,13 +1216,13 @@ public class AppointmentsPage extends BasePageObject {
 				.findElement(By.xpath("//*[@id='select-" + patientId + "-" + practiceId + "'" + "]"));
 		selectPatient.click();
 	}
-	
+
 	public String getSelectedBannerMessage() {
 		IHGUtil.waitForElement(driver, 10, selectBannerMessage);
 		log("Get broadcast email count" + selectBannerMessage.getText());
 		return selectBannerMessage.getText();
 	}
-	
+
 	public String jumbToNextPage() throws InterruptedException {
 		IHGUtil.waitForElement(driver, 10, jumpToNextPage);
 		jse.executeScript("arguments[0].click();", jumpToNextPage);
@@ -1227,7 +1230,7 @@ public class AppointmentsPage extends BasePageObject {
 		String pageNo = jumpToPage.getAttribute("value");
 		return pageNo;
 	}
-	
+
 	public String jumbToPreviousPage() throws InterruptedException {
 		IHGUtil.waitForElement(driver, 10, previousPage);
 		jse.executeScript("arguments[0].click();", previousPage);
@@ -1235,26 +1238,26 @@ public class AppointmentsPage extends BasePageObject {
 		String pageNo = jumpToPage.getAttribute("value");
 		return pageNo;
 	}
-	
+
 	public String getBroadcastMessageButtonText() {
 		IHGUtil.waitForElement(driver, 10, broadcastMessageButton);
 		return broadcastMessageButton.getText();
 	}
-	
+
 	public void clickOnPatientNameFilter() {
 		jse.executeScript("arguments[0].click();", patientFilter);
 	}
-	
+
 	public String getSendReminderButtonText() {
 		IHGUtil.waitForElement(driver, 10, sendReminderButton);
 		return sendReminderButton.getText();
 	}
-	
+
 	public String getRemoveButtonText() {
 		IHGUtil.waitForElement(driver, 10, removeButton);
 		return removeButton.getText();
 	}
-	
+
 	public boolean allCheckboxes() {
 		IHGUtil.waitForElement(driver, 10, allCheckboxes);
 		if (allCheckboxes.isSelected()) {
@@ -1265,5 +1268,5 @@ public class AppointmentsPage extends BasePageObject {
 			return false;
 		}
 	}
-	
+
 }
