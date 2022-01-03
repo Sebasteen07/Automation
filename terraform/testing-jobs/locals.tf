@@ -264,6 +264,51 @@ locals {
       chrome_driver_version = "92.0.4515.107"
       cron_shedule          = "cron(5 1 ? * 1 *)"
     }
+
+    "demo-integrations-acceptance-oauth10" = {
+      codecommit_branch     = "development"
+      PollForSourceChanges  = false
+      execution_folder      = "integration-platform-acceptance"
+      test_environment      = "demo"
+      suite_xml             = "integration-platform-acceptance10.xml"
+      pxp_application       = "Portal"
+      build_timeout         = 240 #Number of minutes, from 5 to 480. Default value is 60 mins
+      queued_timeout        = 480 #Number of minutes, from 5 to 480. Default value is 480 mins
+      maven_parameter       = "mvn -U clean install"
+      google_chrome_version = "96.0.4664.45-1"
+      chrome_driver_version = "95.0.4638.17"
+      cron_shedule          = "cron(0 0 ? * 3 *)"
+    }
+
+    "demo-integrations1-acceptance" = {
+      codecommit_branch     = "development"
+      PollForSourceChanges  = false
+      execution_folder      = "integration-platform-acceptance"
+      test_environment      = "demo"
+      suite_xml             = "integration-platform-acceptance.xml"
+      pxp_application       = "Portal"
+      build_timeout         = 240 #Number of minutes, from 5 to 480. Default value is 60 mins
+      queued_timeout        = 480 #Number of minutes, from 5 to 480. Default value is 480 mins
+      maven_parameter       = "mvn clean install -U"
+      google_chrome_version = "96.0.4664.93-1"
+      chrome_driver_version = "95.0.4638.17"
+      cron_shedule          = "cron(10 0 ? * 3 *)"
+    }
+
+    "demo-integrations1-regression" = {
+      codecommit_branch     = "development"
+      PollForSourceChanges  = false
+      execution_folder      = "integration-platform-acceptance"
+      test_environment      = "demo"
+      suite_xml             = "integration-platform-regression.xml"
+      pxp_application       = "Portal"
+      build_timeout         = 240 #Number of minutes, from 5 to 480. Default value is 60 mins
+      queued_timeout        = 480 #Number of minutes, from 5 to 480. Default value is 480 mins
+      maven_parameter       = "mvn -U clean install"
+      google_chrome_version = "96.0.4664.110-1"
+      chrome_driver_version = "95.0.4638.17"
+      cron_shedule          = "cron(50 0 ? * 3 *)"
+    }
   }
 
   selected_test_environment      = try(local.inputs[terraform.workspace].test_environment)
