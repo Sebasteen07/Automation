@@ -317,7 +317,4 @@ public class MerchantDetailsPage extends NavigationMenu {
 		}
 
 	}
-	
-	
-	
 }
