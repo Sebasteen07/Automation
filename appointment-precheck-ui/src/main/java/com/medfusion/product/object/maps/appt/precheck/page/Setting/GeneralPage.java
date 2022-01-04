@@ -32,6 +32,18 @@ public class GeneralPage extends BaseTest {
 	@FindBy(how = How.CSS, using = "#react-tabs-1 > section > div > div > div > h3:nth-child(1) > span")
 	private WebElement emailCheckbox;
 	
+	@FindBy(how = How.XPATH, using ="//div[@class='mf-mid-page-tabs']//ul//li[contains(text(),'Manage solutions')]")
+	private WebElement manageSolutionTab;
+	
+	@FindBy(how=How.XPATH, using ="//input[@name='displayName']")
+	private WebElement practiceDisplayName;
+	
+	@FindBy(how = How.XPATH, using = "//label[contains(text(),'This is a required field. Please enter a valid display name')]")
+	private WebElement practiceDisplayNameError;
+	
+	@FindBy(how = How.XPATH, using = "//a[contains(text(),'Forms')]")
+	private WebElement formsTab;
+	
 	private static GeneralPage generalPage = new GeneralPage();
 
 	public GeneralPage() {
@@ -119,4 +131,55 @@ public class GeneralPage extends BaseTest {
 			textCheckbox.click();
 			log("Disable text checkbox");
 	}
+	
+	public void clickOnManageSolutionsTab() {
+		IHGUtil.PrintMethodName();
+		IHGUtil.waitForElement(driver, 10, manageSolutionTab);
+		manageSolutionTab.click();
+		log("Switch on Manage Solutions tab");
+		driver.navigate().refresh();
+	}
+	
+	public void clearPracticeDisplayName() throws InterruptedException {
+		IHGUtil.PrintMethodName();
+		IHGUtil.waitForElement(driver, 10, practiceDisplayName);
+		log("Practice display name is displayed.");
+		practiceDisplayName.clear();
+	}
+	
+	public String visibilityOfPracticeDisplayNameError() {
+		IHGUtil.PrintMethodName();
+		IHGUtil.waitForElement(driver, 10, practiceDisplayNameError);
+		log("Error message is displayed");
+		return practiceDisplayNameError.getText();
+	}
+	
+	public void clickOnFormsTab() throws InterruptedException {
+		IHGUtil.PrintMethodName();
+		IHGUtil.waitForElement(driver, 10, formsTab);
+		formsTab.click();
+		Thread.sleep(5000);
+	}
+	
+	public String getFormsText() {
+		IHGUtil.PrintMethodName();
+		IHGUtil.waitForElement(driver, 10, formsTab);
+		return formsTab.getText();
+	}
+	
+	public String visibilityOfPracticeDisplayName() {
+		IHGUtil.PrintMethodName();
+		IHGUtil.waitForElement(driver, 10, practiceDisplayName);
+		log("Practice display name is displayed.");
+		return practiceDisplayName.getAttribute("value");
+	}
+	
+	public void savePracticeDisplayName() {
+		IHGUtil.PrintMethodName();
+		IHGUtil.waitForElement(driver, 10, practiceDisplayName);
+		log("Practice display name is displayed.");
+		practiceDisplayName.sendKeys(" ");
+		
+	}
+	
 }
