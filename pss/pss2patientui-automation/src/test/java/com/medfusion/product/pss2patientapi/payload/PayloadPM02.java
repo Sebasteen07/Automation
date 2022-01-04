@@ -68,9 +68,43 @@ public class PayloadPM02 {
 	}	
 	
 	
-	public String Pyaload() {
+	public String SchedWithDecisionTreePyaload(String date, String slottime, String book ) {
 
-		String payload = "";
+		String payload = "{\r\n"
+				+ "  \"patientType\": \"PT_EXISTING\",\r\n"
+				+ "  \"slotId\": \"0001\",\r\n"
+				+ "  \"specialty\": null,\r\n"
+				+ "  \"book\": "+book+",\r\n"
+				+ "  \"appointmentType\": 4235,\r\n"
+				+ "  \"location\": 206321,\r\n"
+				+ "  \"startDateTime\": \""+date+" "+slottime+"\",\r\n"
+				+ "  \"customQuestion\": null,\r\n"
+				+ "  \"insuranceInfo\": null,\r\n"
+				+ "  \"patientInfo\": {},\r\n"
+				+ "  \"allowDuplicatePatient\": false,\r\n"
+				+ "  \"updatePatientDetails\": {\r\n"
+				+ "    \"FN\": \"kiya\",\r\n"
+				+ "    \"LN\": \"kiya\",\r\n"
+				+ "    \"DOB\": \"01/01/2000\",\r\n"
+				+ "    \"GENDER\": \"M\",\r\n"
+				+ "    \"EMAIL\": null,\r\n"
+				+ "    \"PHONE\": null,\r\n"
+				+ "    \"INSID\": null,\r\n"
+				+ "    \"ADDR1\": null,\r\n"
+				+ "    \"ADDR2\": null,\r\n"
+				+ "    \"CITY\": null,\r\n"
+				+ "    \"STATE\": null,\r\n"
+				+ "    \"ZIP\": null\r\n"
+				+ "  },\r\n"
+				+ "  \"flow\": \"loginless\",\r\n"
+				+ "  \"appTypeDetail\": {\r\n"
+				+ "    \"categoryId\": \"208293\",\r\n"
+				+ "    \"guid\": \"b31443df-12bc-4571-bec0-9b8f7fa6a4c2\",\r\n"
+				+ "    \"appTypeId\": \"4235\"\r\n"
+				+ "  },\r\n"
+				+ "  \"rule\": \"L,T\",\r\n"
+				+ "  \"leafNode\": null\r\n"
+				+ "}";
 		return payload;
 	}	
 	public String Pyaload() {

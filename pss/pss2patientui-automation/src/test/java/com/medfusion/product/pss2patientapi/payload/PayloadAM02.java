@@ -48,7 +48,19 @@ public class PayloadAM02 {
 				+ "  }\r\n"
 				+ "]";
 		return turnOFFShowProvider;
-	}		
+	}	
+	
+	public String confgSaveAdmin(String key,boolean bool) {
+
+		String payload = "[\r\n"
+				+ "  {\r\n"
+				+ "    \"group\": \"RULEENGINE\",\r\n"
+				+ "    \"key\": \""+key+"\",\r\n"
+				+ "    \"value\": "+bool+"\r\n"
+				+ "  }\r\n"
+				+ "]";
+		return payload;
+	}	
 						
 
 	public String timeMark() {
@@ -384,9 +396,30 @@ public class PayloadAM02 {
 		String payload = "";
 		return payload;
 	}	
-	public String Pyaload() {
+	public String apptTypeConfgPyaload(boolean bool) {
 
-		String payload = "";
+		String payload = "{\r\n"
+				+ "  \"id\": 4052,\r\n"
+				+ "  \"appointmentStacking\": false,\r\n"
+				+ "  \"slotCount\": 1,\r\n"
+				+ "  \"allowSameDayAppts\": "+bool+",\r\n"
+				+ "  \"apptTimeMark\": 0,\r\n"
+				+ "  \"apptTypeAllocated\": true,\r\n"
+				+ "  \"isContiguous\": false,\r\n"
+				+ "  \"leadTime\": {\r\n"
+				+ "    \"days\": \"0\",\r\n"
+				+ "    \"hours\": \"0\",\r\n"
+				+ "    \"mins\": \"0\"\r\n"
+				+ "  },\r\n"
+				+ "  \"excludeSlots\": [],\r\n"
+				+ "  \"apptTypeReservedReason\": \"n\",\r\n"
+				+ "  \"acceptComment\": false,\r\n"
+				+ "  \"allowOnlineCancellation\": true,\r\n"
+				+ "  \"slotSize\": 5,\r\n"
+				+ "  \"schedulingDuration\": 30,\r\n"
+				+ "  \"pttype\": \"PT_ALL\",\r\n"
+				+ "  \"lastQuestRequired\": false\r\n"
+				+ "}";
 		return payload;
 	}	
 	public String Pyaload() {
