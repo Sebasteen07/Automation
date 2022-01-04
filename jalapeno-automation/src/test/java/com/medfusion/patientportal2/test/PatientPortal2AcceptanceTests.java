@@ -6216,4 +6216,38 @@ public class PatientPortal2AcceptanceTests extends BaseTestNGWebDriver {
 		homePage.clickOnLogout();
 
 	}
+	
+	@Test(enabled = true, groups = { "acceptance-solutions" }, retryAnalyzer = RetryAnalyzer.class)
+	public void testResetPasswordWithSameEmailAndDOB() throws Exception {
+		logStep("Load login page");
+		JalapenoLoginPage loginPage = new JalapenoLoginPage(driver, testData.getUrl());
+		
+		logStep("Clicking on forgot username or password");
+		JalapenoForgotPasswordPage forgotPasswordPage = loginPage.clickForgotPasswordButton();
+		JalapenoForgotPasswordPage2 forgotPasswordPage2 = forgotPasswordPage.fillInDataPageWithSameEmailAndDOB(testData.getProperty("forgot.password.email"), testData.getDOBMonth(), testData.getDOBDay(), testData.getDOBYear(), testData.getProperty("forgot.password.first.name"));
+		
+		logStep("Message was sent, closing");
+		forgotPasswordPage2.clickCloseButton();
+		logStep("Logging into yopmail and getting ResetPassword url");
+		String[] mailAddress = testData.getProperty("forgot.password.email").split("@");
+		String emailSubject = "Help with your user name or password";
+		String inEmail = "Reset Password Now";
+		YopMail mail = new YopMail(driver);
+		String url = mail.getLinkFromEmail(mailAddress[0], emailSubject, inEmail, 10);
+		if (!isInviteLinkFinal(url)) {
+			url = getRedirectUrl(url);
+		}
+		assertNotNull(url, "Url is null.");
+		JalapenoForgotPasswordPage3 forgotPasswordPage3 = new JalapenoForgotPasswordPage3(driver, url);
+		
+		logStep("Redirecting to patient portal, filling secret answer as: " + testData.getProperty("secret.answer"));
+		JalapenoForgotPasswordPage4 forgotPasswordPage4 = forgotPasswordPage3
+				.fillInSecretAnswer(testData.getProperty("secret.answer"));
+		
+		logStep("Filling new password");
+		JalapenoHomePage homePage = forgotPasswordPage4.fillInNewPassword(testData.getPassword());
+		
+		logStep("Logging out");
+		loginPage = homePage.clickOnLogout();
+	}
 }
