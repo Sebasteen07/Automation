@@ -3,8 +3,11 @@ package provisioningtests;
 import java.io.IOException;
 import java.util.concurrent.TimeUnit;
 import org.openqa.selenium.support.PageFactory;
+import org.testng.Assert;
 import org.testng.annotations.Test;
 import com.medfusion.common.utils.PropertyFileLoader;
+
+import pageobjects.MerchantDetailsPage;
 import pageobjects.MerchantSearchPage;
 
 public class SearchMerchantTest extends ProvisioningBaseTest {
@@ -21,4 +24,9 @@ public class SearchMerchantTest extends ProvisioningBaseTest {
 		driver.manage().timeouts().implicitlyWait(20, TimeUnit.SECONDS);
 		merchantSearchPage.duplicateRecords();
 	}
+
+
+
+
+
 }

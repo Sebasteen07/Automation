@@ -35,7 +35,7 @@ public class JalapenoAskAStaffV2HistoryDetailPage extends JalapenoMenu {
 	@FindBy(how = How.XPATH, using = "//*[contains(text(),'This online encounter was charged')]")
 	private WebElement requestDetailsPayment;
 	
-	@FindBy(how = How.XPATH, using = "//li[@class='attachment ng-scope']")
+	@FindBy(how = How.XPATH, using = "//li[contains(@class,'attachment')]")
 	private WebElement requestAttachedFile;
 	
 

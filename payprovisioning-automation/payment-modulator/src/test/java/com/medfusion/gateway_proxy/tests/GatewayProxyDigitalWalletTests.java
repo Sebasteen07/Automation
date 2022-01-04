@@ -15,6 +15,7 @@ import org.testng.Assert;
 import org.testng.annotations.BeforeTest;
 import org.testng.annotations.Test;
 
+import java.util.HashMap;
 import java.util.Map;
 
 public class GatewayProxyDigitalWalletTests extends GatewayProxyBaseTest {
@@ -73,7 +74,7 @@ public class GatewayProxyDigitalWalletTests extends GatewayProxyBaseTest {
 		String externalWalletId = jsonPathCreate.get("externalWalletId").toString();
 		Response responseOfAddMoreCard = digitalWallet.addNewCardToExistingWallet(
 				testData.getProperty("test.pay.customer.uuid"), externalWalletId, token,
-				testData.getProperty("consumer.name1"), testData.getProperty("card.type1"),
+				testData.getProperty("consumer.name1"), testData.getProperty("type1"),
 				testData.getProperty("card.number1"), testData.getProperty("expiration.number1"),
 				testData.getProperty("card.alias1"), testData.getProperty("zip.code1"), true);
 
@@ -99,7 +100,6 @@ public class GatewayProxyDigitalWalletTests extends GatewayProxyBaseTest {
 
 	}
 
-	
 	@Test(priority = 5, dataProvider = "card_details", dataProviderClass = GatewayProxyTestData.class, enabled = true)
 	public void testAddNewCardAndCreateWalletWithNullValues(String consumerName, String cardType, String cardnumber,
 			String expiryDate, String cardAlias, String zipcode, boolean primaryCardFlag) throws Exception {
@@ -176,7 +176,8 @@ public class GatewayProxyDigitalWalletTests extends GatewayProxyBaseTest {
 	}
 
 	@Test(priority = 9, dataProvider = "update_card", dataProviderClass = GatewayProxyTestData.class, enabled = true)
-	public void testCardDetailsWithInvalidData(String alias, String zipcode, boolean isPrimary) throws Exception {
+	public void testCardDetailsWithInvalidData(String alias, String zipcode, boolean isPrimary, int statusCodeVerify,
+			String verifyValidationMessage) throws Exception {
 		GatewayProxyDigitalWalletResource digitalWallet = new GatewayProxyDigitalWalletResource();
 		String token = GatewayProxyUtils.getTokenForCustomer();
 
@@ -184,23 +185,13 @@ public class GatewayProxyDigitalWalletTests extends GatewayProxyBaseTest {
 				testData.getProperty("wallet"), testData.getProperty("card"), alias, zipcode, isPrimary);
 		JsonPath jsonPath = new JsonPath(response.asString());
 
-		if (zipcode.isEmpty()) {
-			Assert.assertEquals("Bad Request", jsonPath.get("error"));
-			Assert.assertTrue(!jsonPath.get("message").toString().isEmpty());
-			Assert.assertEquals("Zip code should be 5 digits or 9 digits number, Zip code is mandatory",
-					jsonPath.get("message"));
-		} else if (zipcode.length() < 5 || zipcode.length() > 9) {
-			Assert.assertEquals("Bad Request", jsonPath.get("error"));
-			Assert.assertTrue(!jsonPath.get("message").toString().isEmpty());
-			Assert.assertEquals("Zip code should be 5 digits or 9 digits number", jsonPath.get("message"));
-		} else if (alias.isEmpty()) {
-			Assert.assertTrue(response.getStatusCode() == 400);
-			Assert.assertEquals("Bad Request", jsonPath.get("error"));
-			Assert.assertTrue(!jsonPath.get("message").toString().isEmpty());
-			Assert.assertEquals("Card Alias is required", jsonPath.get("message"));
-		} else {
-			Assert.assertTrue(jsonPath.get("primaryCard").equals(true),
-					"Default card will always be have primary flag as true");
+		Assert.assertNotNull(jsonPath, "Response was null");
+		Assert.assertEquals(response.getStatusCode(), statusCodeVerify);
+
+		if (jsonPath.get("message") != null) {
+
+			Assert.assertTrue(jsonPath.get("message").toString().contains(verifyValidationMessage));
+
 		}
 
 	}
@@ -238,7 +229,7 @@ public class GatewayProxyDigitalWalletTests extends GatewayProxyBaseTest {
 		Assert.assertTrue(deleteResponse.getStatusCode() == 200);
 
 	}
-	
+
 	@Test(enabled = true, priority = 11)
 	public void testDeleteCardInWalletByInvalidAuth() throws Exception {
 		String token = GatewayProxyUtils.getTokenForCustomer();
@@ -251,7 +242,6 @@ public class GatewayProxyDigitalWalletTests extends GatewayProxyBaseTest {
 
 	}
 
-
 	@Test(enabled = true, priority = 12)
 	public void testAddOneOrMoreCardToExistingWalletByInvalidAuth() throws Exception {
 		String token = GatewayProxyUtils.getTokenForCustomer() + "Jdjfh1";
@@ -259,7 +249,7 @@ public class GatewayProxyDigitalWalletTests extends GatewayProxyBaseTest {
 		String externalWalletId = testData.getProperty("external.wallet.id");
 		Response responseOfAddMoreCard = digitalWallet.addNewCardToExistingWallet(
 				testData.getProperty("test.pay.customer.uuid"), externalWalletId, token,
-				testData.getProperty("consumer.name1"), testData.getProperty("card.type1"),
+				testData.getProperty("consumer.name1"), testData.getProperty("type1"),
 				testData.getProperty("card.number1"), testData.getProperty("expiration.number1"),
 				testData.getProperty("card.alias1"), testData.getProperty("zip.code1"), true);
 
@@ -273,11 +263,20 @@ public class GatewayProxyDigitalWalletTests extends GatewayProxyBaseTest {
 		GatewayProxyDigitalWalletResource digitalWallet = new GatewayProxyDigitalWalletResource();
 		String token = GatewayProxyUtils.getTokenForCustomer();
 
+		Response responseCreate = digitalWallet.createNewWallet(token, testData.getProperty("consumer.name"),
+				testData.getProperty("type"), testData.getProperty("card.to.delete"),
+				testData.getProperty("expiration.number"), testData.getProperty("card.alias"),
+				testData.getProperty("zipcode"), true);
+
+		JsonPath jsonPathCreate = new JsonPath(responseCreate.asString());
+
+		String externalWalletId = jsonPathCreate.get("externalWalletId").toString();
+		String externalCardId = jsonPathCreate.get("walletCards[0].externalCardId").toString();
+
 		int transanctionAmount = Integer.parseInt(IHGUtil.createRandomNumericString(4));
 
 		Response response = digitalWallet.saleAPI(token, testData.getProperty("test.pay.customer.uuid"),
-				testData.getProperty("proxy.mmid"), testData.getProperty("external.wallet.id"),
-				testData.getProperty("external.card.id"), transanctionAmount);
+				testData.getProperty("proxy.mmid"), externalWalletId, externalCardId, transanctionAmount);
 		JsonPath jsonPath = new JsonPath(response.asString());
 
 		Assert.assertTrue(!jsonPath.get("externalTransactionId").toString().isEmpty());
@@ -370,7 +369,7 @@ public class GatewayProxyDigitalWalletTests extends GatewayProxyBaseTest {
 		}
 	}
 
-	@Test(priority = 18, dataProvider = "delete_invalid_data", dataProviderClass = GatewayProxyTestData.class, enabled = true)
+	@Test(priority = 1, dataProvider = "delete_invalid_data", dataProviderClass = GatewayProxyTestData.class, enabled = true)
 
 	public void testDeleteCardInWalletByInvalidData(String token, String customerId, String externalWalletId,
 			String externalCardId, int statusCodeVerify, String verifyErrorMessage) throws Exception {
@@ -414,16 +413,17 @@ public class GatewayProxyDigitalWalletTests extends GatewayProxyBaseTest {
 	}
 
 	@Test(dataProvider = "cards_details", dataProviderClass = GatewayProxyTestData.class, enabled = true)
-	public void testAddMultipleCardsAndCreateWalletWithInvalidData(String name1, String type1, String cardNumber1, String expiry1, String alias1, String zipCode1, boolean primaryFlag1,
-																   String name2, String type2, String cardNumber2, String expiry2, String alias2, String zipCode2, boolean primaryFlag2,
-																   String name3, String type3, String cardNumber3, String expiry3, String alias3, String zipCode3, boolean primaryFlag3,
-																   int statusCodeVerify, String verifyErrorMessage) throws Exception {
+	public void testAddMultipleCardsAndCreateWalletWithInvalidData(String name1, String type1, String cardNumber1,
+			String expiry1, String alias1, String zipCode1, boolean primaryFlag1, String name2, String type2,
+			String cardNumber2, String expiry2, String alias2, String zipCode2, boolean primaryFlag2, String name3,
+			String type3, String cardNumber3, String expiry3, String alias3, String zipCode3, boolean primaryFlag3,
+			int statusCodeVerify, String verifyErrorMessage) throws Exception {
 
 		String token = GatewayProxyUtils.getTokenForCustomer();
 		GatewayProxyDigitalWalletResource digitalWallet = new GatewayProxyDigitalWalletResource();
 
-		Map<String, Object> cardsMap = PayloadDetails.getMultipleCardsPayload(name1, type1, cardNumber1, expiry1, alias1,
-				zipCode1, primaryFlag1, name2, type2, cardNumber2, expiry2, alias2, zipCode2, primaryFlag2,
+		Map<String, Object> cardsMap = PayloadDetails.getMultipleCardsPayload(name1, type1, cardNumber1, expiry1,
+				alias1, zipCode1, primaryFlag1, name2, type2, cardNumber2, expiry2, alias2, zipCode2, primaryFlag2,
 				name3, type3, cardNumber3, expiry3, alias3, zipCode3, primaryFlag3);
 
 		Response response = digitalWallet.createNewWallet(token, cardsMap);
@@ -437,4 +437,151 @@ public class GatewayProxyDigitalWalletTests extends GatewayProxyBaseTest {
 			Assert.assertTrue(jsonPath1.get("message").toString().contains(verifyErrorMessage));
 		}
 	}
+
+	@Test(dataProvider = "empty_Wallet_Add_Cards", dataProviderClass = GatewayProxyTestData.class, enabled = true)
+	public void testEmptyWalletAddMultipleCards(int noOfCards, int noofCrdsToBeTrue, int noOfCrdsToBeFalse,
+			int noOfCrdsToBeNull, int noOfCrdsToBeOmitted, int noOfcardsTobeRandom, int statusCodeVerify,
+			String verifyValidationMessage) throws Exception {
+		String emptyWalletId;
+
+		String token = GatewayProxyUtils.getTokenForCustomer();
+		GatewayProxyDigitalWalletResource digitalWallet = new GatewayProxyDigitalWalletResource();
+
+		emptyWalletId = digitalWallet.getEmptyWallet(token, testData, digitalWallet);
+
+		Map<String, Object> cardsMap = PayloadDetails.getPayloadForAddingMultipeCardsToDigitalWallet(testData,
+				noOfCards, noofCrdsToBeTrue, noOfCrdsToBeFalse, noOfCrdsToBeNull, noOfCrdsToBeOmitted,
+				noOfcardsTobeRandom);
+
+		if (cardsMap != null) {
+			Response responseAddCrdsToExisting = digitalWallet.addCardsToWallet(token, cardsMap, emptyWalletId);
+			JsonPath jPAddCrdsToExisting = new JsonPath(responseAddCrdsToExisting.asString());
+
+			Assert.assertNotNull(jPAddCrdsToExisting, "Response was null");
+			Assert.assertEquals(responseAddCrdsToExisting.getStatusCode(), statusCodeVerify);
+
+			if (statusCodeVerify == 200) {
+				verifySuccessfulResponce(responseAddCrdsToExisting);
+			}
+
+			if (jPAddCrdsToExisting.get("message") != null) {
+
+				Assert.assertTrue(jPAddCrdsToExisting.get("message").toString().contains(verifyValidationMessage));
+			}
+
+		}
+
+	}
+
+	@Test(dataProvider = "delete_card_with_sepcific_flag", dataProviderClass = GatewayProxyTestData.class, enabled = true)
+
+	public void testWalletAddDeleteCardWithSpecificFlag(int noOfCards, int noofCrdsToBeTrue, int noOfCrdsToBeFalse,
+			int noOfCrdsToBeNull, int noOfCrdsToBeOmitted, int noOfcardsTobeRandom, String cardFlagToBeDeleted,
+			int statusCodeVerify, String verifyValidationMessage, int noOfCardsAfterDeletion) throws Exception {
+		String token = GatewayProxyUtils.getTokenForCustomer();
+		GatewayProxyDigitalWalletResource digitalWallet = new GatewayProxyDigitalWalletResource();
+
+		Map<String, Object> cardsMapToBeCreated = PayloadDetails.getPayloadForAddingMultipeCardsToDigitalWallet(
+				testData, noOfCards, noofCrdsToBeTrue, noOfCrdsToBeFalse, noOfCrdsToBeNull, noOfCrdsToBeOmitted,
+				noOfcardsTobeRandom);
+
+		Response response = digitalWallet.createNewWallet(token, cardsMapToBeCreated);
+		JsonPath jsonPath = new JsonPath(response.asString());
+
+		Assert.assertTrue(response.getStatusCode() == 200);
+		Assert.assertTrue(!jsonPath.get("externalWalletId").toString().isEmpty());
+
+		String walletId = jsonPath.get("externalWalletId").toString();
+
+		Response deleteResponce = digitalWallet.makeWalletEmpty(token, testData, digitalWallet, walletId,
+				cardFlagToBeDeleted);
+		JsonPath jsonPathDelete = new JsonPath(deleteResponce.asString());
+
+		if (statusCodeVerify == 200) {
+
+			Response getCardsResponce = digitalWallet.getListOfCardsInWallet(token, walletId);
+
+			JsonPath jsonPathgetCards = new JsonPath(getCardsResponce.asString());
+
+			if (noOfCardsAfterDeletion == 0) {
+				Assert.assertEquals("[]", jsonPathgetCards.get("walletCards[]").toString());
+			} else if (statusCodeVerify == getCardsResponce.getStatusCode()) {
+				Assert.assertEquals(jsonPathgetCards.get("walletCards[0].primaryCard"), true,
+						"First Card is a Primary Card");
+			}
+		}
+
+		else if (jsonPathDelete.get("message") != null) {
+
+			Assert.assertTrue(jsonPathDelete.get("message").toString().contains(verifyValidationMessage));
+		}
+
+	}
+
+	@Test(dataProvider = "Add_Multiple_Cards_with_specific_flag", dataProviderClass = GatewayProxyTestData.class, enabled = true)
+	public void testWalletAddMultipleCardsWithPrimaryFlag(int noOfCardsToBeCreated, int noofCrdsCreatedToBeTrue,
+			int noOfCrdsCreatedToBefalse, int noOfCardsToBeAdded, int noofCrdsToBeAddedTrue, int noOfCrdsToBeAddedFalse,
+			int noOfCrdsToBeAddedNull, int noOfCrdsToBeAddedAsOmitted, int noOfcardsTobeAddedAsRandom,
+			int statusCodeVerify, String verifyValidationMessage, String CardFlagToCheck) throws Exception {
+
+		String token = GatewayProxyUtils.getTokenForCustomer();
+		GatewayProxyDigitalWalletResource digitalWallet = new GatewayProxyDigitalWalletResource();
+
+		int flagForCardCount = 0;
+		int maxNoOfCards = Integer.parseInt(testData.getProperty("max.dw.cards"));
+
+		Map<String, Object> cardsMapToBeCreated = PayloadDetails.getPayloadForAddingMultipeCardsToDigitalWallet(
+				testData, noOfCardsToBeCreated, noofCrdsCreatedToBeTrue, noOfCrdsCreatedToBefalse, 0, 0, 0);
+		Response response = digitalWallet.createNewWallet(token, cardsMapToBeCreated);
+		JsonPath jsonPath = new JsonPath(response.asString());
+
+		Assert.assertTrue(response.getStatusCode() == 200);
+		Assert.assertTrue(!jsonPath.get("externalWalletId").toString().isEmpty());
+		String WalletId = jsonPath.get("externalWalletId").toString();
+
+		if (response.getStatusCode() == 200) {
+
+			HashMap<String, String> cardDetails = digitalWallet.verifyFlagInResponce("true", noOfCardsToBeCreated,
+					jsonPath);
+
+			Assert.assertTrue(cardDetails.containsKey("true"), "Verified the flag for newely added card");
+
+		}
+
+		int totalCards = noOfCardsToBeCreated + noOfCardsToBeAdded;
+		if (totalCards <= maxNoOfCards) {
+
+			flagForCardCount = noOfCardsToBeCreated + 1;
+
+			Map<String, Object> cardsMapToBeAdded = PayloadDetails
+					.getPayloadForAddingMultipeCardsToExistingDigitalWallet(testData, noOfCardsToBeAdded,
+							noofCrdsToBeAddedTrue, noOfCrdsToBeAddedFalse, noOfCrdsToBeAddedNull,
+							noOfCrdsToBeAddedAsOmitted, noOfcardsTobeAddedAsRandom, flagForCardCount);
+
+			Response responseAddCrdsToExisting = digitalWallet.addCardsToWallet(token, cardsMapToBeAdded, WalletId);
+			JsonPath jPAddCrdsToExisting = new JsonPath(responseAddCrdsToExisting.asString());
+
+			Assert.assertNotNull(jPAddCrdsToExisting, "Response was null");
+
+			if (statusCodeVerify == 200) {
+
+				HashMap<String, String> cardDetails = digitalWallet.verifyFlagInResponce(CardFlagToCheck,
+						noOfCardsToBeAdded, jPAddCrdsToExisting);
+
+				Assert.assertTrue(cardDetails.containsKey("true"), "Verified the flag for newely added card");
+
+			} else {
+				Assert.assertEquals(statusCodeVerify, responseAddCrdsToExisting.getStatusCode());
+				Assert.assertTrue(jPAddCrdsToExisting.get("message").toString().contains(verifyValidationMessage));
+
+			}
+		}
+
+		else {
+			System.out.println("Total cards are not matching ");
+
+		}
+
+	}
+
 }

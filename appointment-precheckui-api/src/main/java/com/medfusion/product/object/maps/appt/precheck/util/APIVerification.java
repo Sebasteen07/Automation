@@ -611,13 +611,21 @@ public class APIVerification extends BaseTestNGWebDriver {
 		assertEquals(jsonPath.get("message"), "Action not allowed");
 	}
 
-	public void verifyAppointments(Response response, String practiceId, String IntegrationId, String pmPatientId)
-			throws IOException {
+	public void verifyAppointments(Response response, String practiceId, String IntegrationId, String pmPatientId,
+			String firstName, String lastName, String birthDate) throws IOException {
 		JsonPath js = new JsonPath(response.asString());
 		log("Validate Apppointments");
 		assertEquals(js.getString("practiceId"), practiceId, "Practice id was incorrect");
 		assertEquals(js.getString("integrationId"), IntegrationId, "integrationId was incorrect");
 		assertEquals(js.getString("pmPatientId"), pmPatientId, "Patient id was incorrect");
+		JSONObject jsonObject = new JSONObject(response.asString());
+		log("Validate Message history");
+		assertEquals(jsonObject.getJSONObject("patientDemographics").getString("firstName"), firstName,
+				"Patient firstName was incorrect");
+		assertEquals(jsonObject.getJSONObject("patientDemographics").getString("lastName"), lastName,
+				"Patient firstName was incorrect");
+		assertEquals(jsonObject.getJSONObject("patientDemographics").getString("birthDate"), birthDate,
+				"Patient firstName was incorrect");
 	}
 
 	public void verifyBalancePay(Response response, String practiceId, String pmPatientId, String pmAppointmentId)
@@ -1045,10 +1053,11 @@ public class APIVerification extends BaseTestNGWebDriver {
 		assertEquals(jsonPath.get("message"), "No logo was found with practiceId=info");
 	}
 
-	public void verifyUpdateLogo(Response response, String Id, String practiceId) throws IOException {
+	public void verifyUpdateLogo(Response response, String Id, String practiceId,String name) throws IOException {
 		JsonPath jsonPath = new JsonPath(response.asString());
 		assertEquals(jsonPath.get("id"), Id, "Id  was incorrect");
 		assertEquals(jsonPath.get("practiceId"), practiceId, "Practice Id  was incorrect");
+		assertEquals(jsonPath.get("name"), name, "Practice Id  was incorrect");
 	}
 
 	public void verifyDefaultConfirmationSetting(Response response, String deliveryMtd, String apptMethod,
@@ -1368,5 +1377,244 @@ public class APIVerification extends BaseTestNGWebDriver {
 		JsonPath jsonPath = new JsonPath(response.asString());
 		assertEquals(jsonPath.get("message"),
 				"getMessagesHistory.type: 'type' must be one of: 'CHECK-IN', 'BROADCAST'.");
+	}
+
+	public void verifyApptData(Response response, String practiceId, String patientId) throws IOException {
+		JSONObject jsonObject = new JSONObject(response.asString());
+		JSONArray jsonArray = (JSONArray) jsonObject.get("appointments");
+		assertEquals(jsonArray.getJSONObject(0).getString("practiceId"), practiceId, "practiceId  was incorrect");
+		assertEquals(jsonArray.getJSONObject(0).getString("pmPatientId"), patientId, "practiceId  was incorrect");
+	}
+
+	public void verifyApptDataForStartDay(Response response, String practiceId) throws IOException {
+		JSONObject jsonObject = new JSONObject(response.asString());
+		JSONArray jsonArray = (JSONArray) jsonObject.get("appointments");
+		for (int i = 0; i < jsonArray.length(); i++) {
+			assertEquals(jsonArray.getJSONObject(i).getString("practiceId"), practiceId, "practiceId  was incorrect");
+		}
+	}
+
+	public void verifyPerticularIdApptData(Response response, String practiceId, String pmPatientId,
+			String pmAppointmentId) throws IOException {
+		JsonPath js = new JsonPath(response.asString());
+		assertEquals(js.getString("practiceId"), practiceId, "practiceId  was incorrect");
+		assertEquals(js.getString("pmPatientId"), pmPatientId, "pmPatientId id was incorrect");
+		assertEquals(js.getString("pmAppointmentId"), pmAppointmentId, "pmAppointmentId id was incorrect");
+	}
+
+	public void verifyAppointmentsBasedOnPaging(Response response, String practiceId) throws IOException {
+		JsonPath js = new JsonPath(response.asString());
+		assertEquals(js.getString("pageNumber"), "1", "practiceId  was incorrect");
+		JSONObject jsonObject = new JSONObject(response.asString());
+		JSONArray jsonArray = (JSONArray) jsonObject.get("appointments");
+		for (int i = 0; i < jsonArray.length(); i++) {
+			assertEquals(jsonArray.getJSONObject(i).getString("practiceId"), practiceId, "practiceId  was incorrect");
+		}
+	}
+
+	public void verifyAppointmentsWithInvalidDateRange(Response response, String dateRange) throws IOException {
+		JsonPath jsonPath = new JsonPath(response.asString());
+		assertEquals(jsonPath.get("message"), "400 Could not parse start date " + dateRange);
+	}
+
+	public void verifyMessageHistoryForAppt(Response response, String practiceId, String pmPatientId,
+			String pmAppointmentId) throws IOException {
+		JsonPath js = new JsonPath(response.asString());
+		log("Validate Message history");
+		assertEquals(js.getString("practiceId"), practiceId, "Practice id was incorrect");
+		assertEquals(js.getString("pmPatientId"), pmPatientId, "Patient id was incorrect");
+		assertEquals(js.getString("pmAppointmentId"), pmAppointmentId, "Appointment id was incorrect");
+	}
+
+	public void verifyFormInformation(Response response, String firstName, String lastName, String birthDate,
+			String email) throws IOException {
+		JSONObject jsonObject = new JSONObject(response.asString());
+		log("Validate Message history");
+		assertEquals(jsonObject.getJSONObject("demographics").getString("firstName"), firstName,
+				"Patient firstName was incorrect");
+		assertEquals(jsonObject.getJSONObject("demographics").getString("lastName"), lastName,
+				"Patient lastName was incorrect");
+		assertEquals(jsonObject.getJSONObject("demographics").getString("birthDate"), birthDate,
+				"Birth date was incorrect");
+		assertEquals(jsonObject.getJSONObject("demographics").getString("email"), email, "email was incorrect");
+	}
+
+	public void verifyFormInfoWithInvalidPatientToken(Response response) throws IOException {
+		JsonPath jsonPath = new JsonPath(response.asString());
+		assertEquals(jsonPath.get("message"), "Could not decode token.");
+	}
+
+	public void verifyCheckInAppointments(Response response, String practiceId, String pmPatientId,
+			String pmAppointmentId, String action) throws IOException {
+		JSONArray arr = new JSONArray(response.getBody().asString());
+		assertEquals(arr.getJSONObject(0).getString("practiceId"), practiceId, "practiceId  was incorrect");
+		assertEquals(arr.getJSONObject(0).getString("pmPatientId"), pmPatientId, "PatientId  was incorrect");
+		assertEquals(arr.getJSONObject(0).getString("pmAppointmentId"), pmAppointmentId,
+				"pmAppointmentId  was incorrect");
+		assertEquals(arr.getJSONObject(0).getJSONObject("properties").getString("practionerAction"), action,
+				"practionerAction  was incorrect");
+	}
+
+	public void verifyCheckinActionsWithInvalidId(Response response) throws IOException {
+		JsonPath jsonPath = new JsonPath(response.asString());
+		assertEquals(jsonPath.get("message"), "404 Arrival is not confirm by patient");
+	}
+
+	public void verifyPatientsIdentification(Response response, String practiceId, String integrationId,
+			String pmPatientId) throws IOException {
+		JsonPath jsonPath = new JsonPath(response.asString());
+		assertEquals(jsonPath.get("practiceId"), practiceId, "PracticeId  was incorrect");
+		assertEquals(jsonPath.get("integrationId"), integrationId, "IntegrationId  was incorrect");
+		assertEquals(jsonPath.get("pmPatientId"), pmPatientId, "pmPatientId  was incorrect");
+	}
+
+	public void verifyprecheckApptWithoutTime(Response response) throws IOException {
+		JsonPath jsonPath = new JsonPath(response.asString());
+		assertEquals(jsonPath.get("message"), "Time must be a positive value");
+	}
+
+	public void verifyprecheckApptWithoutPhone(Response response) throws IOException {
+		JsonPath jsonPath = new JsonPath(response.asString());
+		assertEquals(jsonPath.get("message"), "Phone must be positive");
+	}
+
+	public void verifyBalanceSkipPay(Response response, String practiceId, String pmPatientId, String pmAppointmentId,
+			String status) throws IOException {
+		JsonPath js = new JsonPath(response.asString());
+		log("Validate Balance Pay");
+		assertEquals(js.getString("practiceId"), practiceId, "Practice id was incorrect");
+		assertEquals(js.getString("pmPatientId"), pmPatientId, "Patient id was incorrect");
+		assertEquals(js.getString("pmAppointmentId"), pmAppointmentId, "Appointment id was incorrect");
+		JSONObject jsonObject = new JSONObject(response.asString());
+		assertEquals(jsonObject.getJSONObject("precheckAppointment").getJSONObject("balance").getString("status"),
+				status, " was incorrect");
+	}
+
+	public void verifyPostBalancePay(Response response, String practiceId, String pmPatientId, String pmAppointmentId,
+			String status) throws IOException {
+		JsonPath js = new JsonPath(response.asString());
+		log("Validate Balance Pay");
+		assertEquals(js.getString("practiceId"), practiceId, "Practice id was incorrect");
+		assertEquals(js.getString("pmPatientId"), pmPatientId, "Patient id was incorrect");
+		assertEquals(js.getString("pmAppointmentId"), pmAppointmentId, "Appointment id was incorrect");
+		JSONObject jsonObject = new JSONObject(response.asString());
+		assertEquals(jsonObject.getJSONObject("precheckAppointment").getJSONObject("balance").getString("status"),
+				status, " was incorrect");
+	}
+
+	public void verifyCopayfromApiPay(Response response, String practiceId, String pmPatientId, String pmAppointmentId,
+			String status) throws IOException {
+		JsonPath js = new JsonPath(response.asString());
+		log("Validate Balance Pay");
+		assertEquals(js.getString("practiceId"), practiceId, "Practice id was incorrect");
+		assertEquals(js.getString("pmPatientId"), pmPatientId, "Patient id was incorrect");
+		assertEquals(js.getString("pmAppointmentId"), pmAppointmentId, "Appointment id was incorrect");
+		JSONObject jsonObject = new JSONObject(response.asString());
+		assertEquals(jsonObject.getJSONObject("precheckAppointment").getJSONObject("copay").getString("status"), status,
+				" was incorrect");
+	}
+
+	public void verifyAppointmentsGuest(Response response, String practiceId, String pmPatientId,
+			String pmAppointmentId) throws IOException {
+		JSONObject jsonObject = new JSONObject(response.asString());
+		JSONArray jsonArray = (JSONArray) jsonObject.get("appointments");
+		assertEquals(jsonArray.getJSONObject(0).getString("practiceId"), practiceId, "practiceId  was incorrect");
+		assertEquals(jsonArray.getJSONObject(0).getString("pmPatientId"), pmPatientId, "pmPatientId  was incorrect");
+		assertEquals(jsonArray.getJSONObject(0).getString("pmAppointmentId"), pmAppointmentId,
+				"pmAppointmentId  was incorrect");
+	}
+
+	public void verifyGuestAuthorization(Response response, String practiceId, String pmPatientId,
+			String pmAppointmentId) throws IOException {
+		JSONObject jsonObject = new JSONObject(response.asString());
+		JSONArray jsonArray = (JSONArray) jsonObject.getJSONArray("roles");
+		JsonPath js = new JsonPath(response.asString());
+		assertEquals(js.getString("practiceId"), practiceId, "practiceId  was incorrect");
+		assertEquals(js.getString("pmPatientId"), pmPatientId, "pmPatientId  was incorrect");
+		assertEquals(js.getString("pmAppointmentId"), pmAppointmentId, "pmAppointmentId  was incorrect");
+	}
+
+	public void verifyApptIdGuest(Response response, String practiceId, String pmPatientId, String pmAppointmentId)
+			throws IOException {
+		JsonPath js = new JsonPath(response.asString());
+		assertEquals(js.getString("practiceId"), practiceId, "practiceId  was incorrect");
+		assertEquals(js.getString("pmPatientId"), pmPatientId, "pmPatientId  was incorrect");
+		assertEquals(js.getString("pmAppointmentId"), pmAppointmentId, "pmAppointmentId  was incorrect");
+	}
+
+	public void verifyPutInsurance(Response response, String practiceId, String pmPatientId, String pmAppointmentId,
+			String insuranceName, String memberId, String insuranceGroupName) throws IOException {
+		JsonPath js = new JsonPath(response.asString());
+		log("Validate Insurance");
+		assertEquals(js.getString("practiceId"), practiceId, "Practice id was incorrect");
+		assertEquals(js.getString("pmPatientId"), pmPatientId, "Patient id was incorrect");
+		assertEquals(js.getString("pmAppointmentId"), pmAppointmentId, "Appointment id was incorrect");
+		JSONObject jsonObject = new JSONObject(response.asString());
+		assertEquals(
+				jsonObject.getJSONObject("precheckAppointment").getJSONObject("insurance").getJSONArray("insuranceList")
+						.getJSONObject(0).getJSONObject("details").getString("insuranceName"),
+				insuranceName, "Insurance Name was incorrect");
+		assertEquals(
+				jsonObject.getJSONObject("precheckAppointment").getJSONObject("insurance").getJSONArray("insuranceList")
+						.getJSONObject(0).getJSONObject("details").getString("groupNumber"),
+				insuranceGroupName, "insuranceGroupName was incorrect");
+		assertEquals(
+				jsonObject.getJSONObject("precheckAppointment").getJSONObject("insurance").getJSONArray("insuranceList")
+						.getJSONObject(0).getJSONObject("details").getString("memberId"),
+				memberId, "memberId was incorrect");
+
+	}
+
+	public void verifyGuestDemographics(Response response, String practiceId, String pmPatientId,
+			String pmAppointmentId, String firstname, String lastName) throws IOException {
+		JsonPath js = new JsonPath(response.asString());
+		log("Validate demographis data");
+		assertEquals(js.getString("practiceId"), practiceId, "Practice id was incorrect");
+		assertEquals(js.getString("pmPatientId"), pmPatientId, "Patient id was incorrect");
+		assertEquals(js.getString("pmAppointmentId"), pmAppointmentId, "Appointment id was incorrect");
+		JSONObject jsonObject = new JSONObject(response.asString());
+		log("Validate Message history");
+		assertEquals(jsonObject.getJSONObject("patientDemographics").getString("firstName"), firstname,
+				"Patient firstName was incorrect");
+		assertEquals(jsonObject.getJSONObject("patientDemographics").getString("lastName"), lastName,
+				"Patient lastName was incorrect");
+	}
+
+	public void verifyDeleteApptWithSelectAllFalse(Response response) throws IOException {
+		JsonPath js = new JsonPath(response.asString());
+		assertEquals(js.getString("success"), "5", "Success  was incorrect");
+		assertEquals(js.getString("fail"), "0", "Fail  was incorrect");
+	}
+	
+	public void verifyIfLogoAlreadyExists(Response response)  {
+		JsonPath jsonPath = new JsonPath(response.asString());
+		assertEquals(jsonPath.get("message"), "Logo with practiceId=24333 already exists.");
+	}
+	
+	public void verifyGetAppt(Response response, String practiceId, String pmPatientId, String pmAppointmentId)
+			throws IOException {
+		JsonPath js = new JsonPath(response.asString());
+		log("Validate appointment to be deleted");
+		assertEquals(js.getString("practiceId"), practiceId, "Practice id was incorrect");
+		assertEquals(js.getString("pmPatientId"), pmPatientId, "Patient id was incorrect");
+		assertEquals(js.getString("pmAppointmentId"), pmAppointmentId, "Appointment id was incorrect");
+	}
+	
+	public void verifyCreateNewApptType(Response response, String appointmentTypeId, String appointmentTypeName, String categoryId)
+			throws IOException {
+		JsonPath js = new JsonPath(response.asString());
+		log("Validate appointment to be deleted");
+		assertEquals(js.getString("appointmentTypeId"), appointmentTypeId, "Appointment type id was incorrect");
+		assertEquals(js.getString("appointmentTypeName"), appointmentTypeName, "appointmentTypeName id was incorrect");
+		assertEquals(js.getString("categoryId"), categoryId, "categoryId id was incorrect");
+	}
+	
+	public void verifyApptTypeKeyValidation(Response response, String key) {
+		JSONObject jsonObject = new JSONObject(response.asString());
+		JSONArray jsonArray = (JSONArray) jsonObject.get("appointmentTypes");
+		for (int i = 0; i < jsonArray.length(); i++) {
+			log("Validated key-> " + key + " value is-  " +jsonArray.getJSONObject(i).getString("id"));
+			
+		}
 	}
 }

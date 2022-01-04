@@ -51,5 +51,30 @@ public class UsersDetails extends BaseRest {
 				body(body).when().post(getusers).then().extract().response();
 	}
 	
+	public Response getMerchantUserRoles(String getusers) {
+		return given().spec(requestSpec).when().get(getusers).then().extract().response();
+		
+	}
+	
+	
+	public List<String> getRolesAsAList(String practiceRoles, int noofRollesToBeAdded) {
+		ArrayList<String> rolesList = new ArrayList<String>();
+		for (int i = 1; i <= noofRollesToBeAdded; i++) {
+			String roleToAddExtract = "practice.role" + i;
+			String roleToAdd = testData.getProperty(roleToAddExtract);
+			rolesList.add(roleToAdd);
+		}
+
+		return rolesList;
+	}
+	
+	public Response createPracticeUserWithMultipleRoles(String getusers, String staffusername, List<String> roleList)
+			throws IOException {
+		
+		Map<String, Object> body = Roles.getPracticeRolesMap(staffusername, roleList);
+		return given().spec(requestSpec).log().all().body(body).when().post(getusers).then().extract().response();
+	}
+
+
 
 }

@@ -1,0 +1,29 @@
+# Copyright 2021 NXGN Management, LLC. All Rights Reserved.
+
+AWSTemplateFormatVersion: '2010-09-09'
+
+Parameters:
+  configName:
+    Type: String
+  slackChannelId:
+    Type: String
+  slackChannelWorkspace:
+    Type: String
+  iamRoleArn:
+    Type: String
+  snsTopicArn:
+    Type: String
+  loggingLevel:
+    Type: String
+
+Resources:
+  Default:
+    Type: AWS::Chatbot::SlackChannelConfiguration
+    Properties: 
+      ConfigurationName: !Ref configName
+      IamRoleArn: !Ref iamRoleArn
+      LoggingLevel: !Ref loggingLevel
+      SlackChannelId: !Ref slackChannelId
+      SlackWorkspaceId: !Ref slackChannelWorkspace
+      SnsTopicArns: 
+        - !Ref snsTopicArn

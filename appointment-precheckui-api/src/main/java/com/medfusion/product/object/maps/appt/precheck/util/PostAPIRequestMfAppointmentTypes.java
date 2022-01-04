@@ -57,11 +57,11 @@ public class PostAPIRequestMfAppointmentTypes extends BaseTestNGWebDriver {
 		return response;
 	}
 	
-	public Response aptpostAppointmentTypes(String uuid, String payload, Map<String, String> Header,
+	public Response aptpostAppointmentTypes(String payload, Map<String, String> Header,
 			 String PracticeId) {
 		log("Execute POST request for appointmentTypes");
 		Response response = given()
-				.when().headers(Header).body(payload).log().all().when().post("appointmentTypes/")
+				.when().headers(Header).body(payload).log().all().when().post("appointmentTypes")
 				.then().log().all().extract().response();
 		return response;
 	}
@@ -69,10 +69,7 @@ public class PostAPIRequestMfAppointmentTypes extends BaseTestNGWebDriver {
 	public Response aptpostUpdateAppointmentTypes(String integrationId, String payload, Map<String, String> Header,
 			 String PracticeId) {
 		log("Execute POST request for Update appointmentType");
-		Response response = given()
-				.when().
-				queryParam("integrationId", integrationId).
-				queryParam("practiceId", PracticeId).
+		Response response = given().when().queryParam("integrationId", integrationId).queryParam("practiceId", PracticeId).
 				headers(Header).body(payload).log().all().when().post("appointmentTypes/update")
 				.then().log().all().extract().response();
 		return response;

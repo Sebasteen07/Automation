@@ -10,7 +10,7 @@ import java.util.Map;
 import org.testng.annotations.BeforeTest;
 import org.testng.annotations.Test;
 
-import com.intuit.ifs.csscat.core.BaseTestNGWebDriver;
+import com.intuit.ifs.csscat.core.BaseTestNG;
 import com.intuit.ifs.csscat.core.RetryAnalyzer;
 import com.medfusion.product.object.maps.pss2.page.util.APIVerification;
 import com.medfusion.product.object.maps.pss2.page.util.PostAPIRequestGW;
@@ -26,8 +26,8 @@ import io.restassured.response.Response;
 import io.restassured.specification.RequestSpecification;
 import io.restassured.specification.ResponseSpecification;
 
-public class PSS2GWAdapterAcceptanceTests extends BaseTestNGWebDriver {
-	public PSSPatientUtils pssPatientUtils;
+
+public class PSS2GWAdapterAcceptanceTests extends BaseTestNG {
 	public static PayloadGW payload;
 	public static PSSPropertyFileLoader propertyData;
 	public static Appointment testData;
@@ -39,6 +39,7 @@ public class PSS2GWAdapterAcceptanceTests extends BaseTestNGWebDriver {
 
 	public static RequestSpecification requestSpec;
 	public static ResponseSpecification responseSpec;
+	public PSSPatientUtils pssPatientUtils;
 
 	APIVerification aPIVerification = new APIVerification();
 
@@ -200,7 +201,7 @@ public class PSS2GWAdapterAcceptanceTests extends BaseTestNGWebDriver {
 		validateGW.verifytestScheduleAppPOST(scheduleApptResponse);
 
 	}
-	
+			
 	@Test(enabled = true, groups = { "APItest" }, retryAnalyzer = RetryAnalyzer.class)
 	public void testScheduleAppWithoutPidPOST() throws IOException, InterruptedException {
 		Response scheduleApptResponse = postAPIRequestgw.scheduleappointment(

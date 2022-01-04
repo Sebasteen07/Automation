@@ -28,4 +28,35 @@ public class MPTestData extends BaseRest {
                         testData.getProperty("staff.username"), "POINTOFSALE"},
         };
     }
+
+    @DataProvider(name = "mmids_for_bank_details")
+    public Object[][] dpMethodForGetBankAccounts() throws IOException {
+        testData = new PropertyFileLoader();
+        return new Object[][]{
+                {ProvisioningUtils.postMerchant + "/" + testData.getProperty("multiple.bank.accounts.mmid"), testData.getProperty("multiple.bank.accounts.mmid")},
+                {ProvisioningUtils.postMerchant + "/" + testData.getProperty("mmid"), testData.getProperty("mmid")},
+                {(ProvisioningUtils.v9_endpoint + "merchants/" + testData.getProperty("multiple.bank.accounts.mmid")), testData.getProperty("multiple.bank.accounts.mmid")},
+                {(ProvisioningUtils.v9_endpoint + "merchants/" + testData.getProperty("mmid")), testData.getProperty("mmid")}
+        };
+    }
+    
+    
+	@DataProvider(name = "edit_account_details")
+	public Object[][] dpMethodEditAccountDetails() throws IOException {
+		testData = new PropertyFileLoader();
+		return new Object[][] {
+
+				{ "true", testData.getProperty("edit.multiple.bank.accounts.fee.routing.number"),
+						testData.getProperty("edit.multiple.bank.accounts.fee.account.type"),
+						testData.getProperty("edit.multiple.bank.accounts.fee.account.number"),
+						testData.getProperty("edit.multiple.bank.accounts.routing.number"),
+						testData.getProperty("edit.multiple.bank.accounts.account.type"),
+						testData.getProperty("edit.multiple.bank.accounts.account.number") },
+
+				{ "false", null, null, null, testData.getProperty("edit.multiple.bank.accounts.routing.number"),
+						testData.getProperty("edit.multiple.bank.accounts.account.type"),
+						testData.getProperty("edit.multiple.bank.accounts.account.number") },
+
+		};
+	}
 }

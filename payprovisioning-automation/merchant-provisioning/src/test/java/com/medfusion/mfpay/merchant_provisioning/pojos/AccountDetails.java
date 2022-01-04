@@ -2,6 +2,7 @@
 package com.medfusion.mfpay.merchant_provisioning.pojos;
 
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 import com.fasterxml.jackson.annotation.JsonAnyGetter;
 import com.fasterxml.jackson.annotation.JsonAnySetter;
@@ -42,6 +43,15 @@ public class AccountDetails {
 		accountdetails.put("checkingDepositType", PracticeConstants.CHECKING_TYPE);
 		accountdetails.put("worldPayAccountDetails",WorldPayAccountDetails.getWPAccountDetailsMap(doingbusinessas,
 				businessestablisheddate,businesstype,mcccode,ownershiptype,websiteurl )); 
+		return accountdetails;
+		
+	}
+	
+	public static Map<String, Object> getFeeAccountDetailsMap(String accountnumber, String routingnumber){
+		Map<String, Object> accountdetails = new HashMap<String, Object>(); 
+		accountdetails.put("accountType", PracticeConstants.ACCOUNT_TYPE);
+		accountdetails.put("routingNumber",routingnumber); 
+		accountdetails.put("accountNumber", accountnumber);
 		return accountdetails;
 		
 	}
@@ -136,6 +146,61 @@ public class AccountDetails {
 				+ ", worldPayAccountDetails=" + this.worldPayAccountDetails + "]";
 	}
 	
+	public static Map<String, Object> editAccountDetailsMap(List<String> cardList,
+			String 	accountNumber,String accountType ,String checkingDepositType ,String feeAccountNumber ,String feeAccountType ,String feeRoutingNumber,String preferredProcessor,String seprateFunding,String routingNumber,String merchantName,String maxTransactionLimit) {
+		Map<String, Object> merchantAccountDetails = new HashMap<String, Object>();
+		
+		Map<String, Object> statementOptions = new HashMap<String, Object>();
+
+		merchantAccountDetails.put("acceptedCreditCards",cardList);
+		
+		merchantAccountDetails.put("accountDetails", getAccountDetailsMap(accountNumber,accountType,checkingDepositType,feeAccountNumber,feeAccountType,feeRoutingNumber,seprateFunding,routingNumber, preferredProcessor));
+		
+		long maxTransactionLimitLong=Long.parseLong(maxTransactionLimit);  
+
+		merchantAccountDetails.put("maxTransactionLimit",maxTransactionLimitLong);
+		merchantAccountDetails.put("merchantName",merchantName);
+		merchantAccountDetails.put("statementOptions",statementOptions );
+
+		return merchantAccountDetails;
+
+	}
 	
+	public static Map<String, Object> getAccountDetailsMap(String accountNumber, String accountType,
+			String checkingDepositType,String feeAccountNumber ,String feeAccountType,String feeRoutingNumber,String seprateFunding,String routingNumber,String preferredProcessor ){
+
+		Map<String, Object> accountDetailsMap = new HashMap<String, Object>(); 
+		Map<String, Object> worldPayAccountDetailsMap = new HashMap<String, Object>();
+		
+		accountDetailsMap.put("accountNumber", accountNumber);
+		accountDetailsMap.put("accountType",accountType); 
+		accountDetailsMap.put("checkingDepositType", checkingDepositType);
+	
+		accountDetailsMap.put("preferredProcessor",preferredProcessor );
+		
+		boolean bool = Boolean.parseBoolean(seprateFunding);
+		accountDetailsMap.put("separateFundingAccounts",bool );
+		accountDetailsMap.put("routingNumber",routingNumber );
+		
+		accountDetailsMap.put("worldPayAccountDetails", worldPayAccountDetailsMap);
+		
+		accountDetailsMap.put("feeAccountDetails", getFeeAccountDetailsMap(feeAccountNumber,feeAccountType,feeRoutingNumber));
+		return accountDetailsMap;
+		
+	}
+
+	
+	public static Map<String, Object> getFeeAccountDetailsMap(String feeAccountNumber, String feeAccountType,
+			String routingNumber){
+		
+		Map<String, Object> feeAccountDetailsMap = new HashMap<String, Object>(); 
+		feeAccountDetailsMap.put("accountNumber", "7294732085023");
+		feeAccountDetailsMap.put("accountType","C"); 
+		feeAccountDetailsMap.put("routingNumber", "042000313");
+		
+		return feeAccountDetailsMap;
+		
+	}
+
 
 }

@@ -70,18 +70,8 @@ public class PSSPatientUtils extends BaseTestNGWebDriver {
 		icsfilereader.ICSFile(path);
 		log("Is file deleted ? " + deleteFile(path));
 	}
-	
-	public String sampleDateTime(String datetimeformat) {
-		
-		DateFormat dateFormat = new SimpleDateFormat(datetimeformat);
-		Date d = new Date();
-		String currentdate = dateFormat.format(d);
-		log("Current Date- " + currentdate);
-		return currentdate;
-	}
 
-	public String sampleDateTime(String datetimeformat) {
-	       
+	public String sampleDateTime(String datetimeformat) { 
         DateFormat dateFormat = new SimpleDateFormat(datetimeformat);
         Date d = new Date();
         String currentdate = dateFormat.format(d);
@@ -89,6 +79,43 @@ public class PSSPatientUtils extends BaseTestNGWebDriver {
         return currentdate;
     }
 	
+	public String createFutureDate(String date, int futuredays) {
+
+		SimpleDateFormat sdf = new SimpleDateFormat("MM/dd/yyyy");
+		Calendar c = Calendar.getInstance();
+		try {
+			// Setting the date to the given date
+			c.setTime(sdf.parse(date));
+		} catch (ParseException e) {
+			e.printStackTrace();
+		}
+
+		// Number of days to add to create the future date
+		c.add(Calendar.DAY_OF_MONTH, futuredays);
+
+		String newDate = sdf.format(c.getTime());
+
+		// Displaying the new Date after addition of Days
+		log("Future Date: " + newDate);
+
+		return newDate;
+	}
+	
+	//This method will give you future date- Future Date
+	public String addDaysToDate(String date, String days, String DATE_FORMAT) {
+		Calendar c = Calendar.getInstance();
+		DateFormat df = new SimpleDateFormat(DATE_FORMAT);
+		try {
+			Date myDate = df.parse(date.trim());
+			c.setTime(myDate);
+			c.add(Calendar.DATE, Integer.parseInt(days));
+		} catch (ParseException e) {
+			e.printStackTrace();
+		}
+		String toDate = df.format(c.getTime());
+		return toDate;
+	}
+
 	public String filePath() {
 		String home = System.getProperty("user.home");
 		File latestFile = lastFileModified(home + PSSConstants.DOWNLOADFILENAME);
@@ -208,6 +235,7 @@ public class PSSPatientUtils extends BaseTestNGWebDriver {
 			clickOnSubmitAppt(false, aptDateTime, testData, driver);
 		}
 
+		log("Test Case Passed");
 	}
 
 	public void BTLFlow(HomePage homepage, Appointment testData, String startOrderOn, WebDriver driver)
@@ -263,6 +291,7 @@ public class PSSPatientUtils extends BaseTestNGWebDriver {
 			log("This is not an Anonymous flow so comes is else block");
 			clickOnSubmitAppt(false, aptDateTime, testData, driver);
 		}
+		log("Test Case Passed");
 	}
 
 	public void LTBFlow(HomePage homepage, Appointment testData, String startOrderOn, WebDriver driver)
@@ -276,8 +305,16 @@ public class PSSPatientUtils extends BaseTestNGWebDriver {
 
 		if (testData.isInsuranceVisible()) {
 			Thread.sleep(3500);
-			log("insurance is present on home Page going to skip insurance page");
-			startappointmentInOrder = homepage.skipInsurance(driver);
+			if (testData.isInsuranceDetails() == true) {
+				log("Member ID- " + testData.getMemberID() + " Group Id- " + testData.getGroupID() + " Phone Number- "
+						+ testData.getInsurancePhone());
+				startappointmentInOrder = homepage.updateInsuranceInfo(driver, testData.getMemberID(),
+						testData.getGroupID(), testData.getInsurancePhone());
+
+			} else {
+				log("insurance is present on home Page going to skip insurance page");
+				startappointmentInOrder = homepage.skipInsurance(driver);
+			}
 			if (testData.isStartPointPresent()) {
 				log("Starting point is present after insurance skipped ");
 				location = startappointmentInOrder.selectFirstLocation(PSSConstants.START_LOCATION);
@@ -472,6 +509,7 @@ public class PSSPatientUtils extends BaseTestNGWebDriver {
 
 		Thread.sleep(6000);
 		bookAppointment(false, aptDateTime, testData, driver);
+		log("Test Case Passed");
 	}
 
 	public void STBLFlow(HomePage homepage, Appointment testData, String startOrderOn, WebDriver driver)
@@ -1165,18 +1203,18 @@ public class PSSPatientUtils extends BaseTestNGWebDriver {
 	public void appointmentToScheduled(ConfirmationPage confirmationpage, Appointment testData) throws Exception {
 		log("--------I AM IN appointmentToScheduled METHOD---------");
 		log("Verify if Appointment is scheduled and download ics file");
-		String aptScheduledAt = confirmationpage.getAppointmentDetails()
-				.get((confirmationpage.getAppointmentDetails().size() - 1)).getText();
-		log(">> " + aptScheduledAt);
-		for (WebElement ele : confirmationpage.getAppointmentDetails()) {
-			log("apt Details= " + ele.getText());
+
+		List<WebElement> ele = confirmationpage.getAppointmentDetails();
+		int l = ele.size();
+		for (int i = 0; i < l; i++) {
+
+			log("apt details-" + ele.get(i).getText());
 		}
+
 		ScheduledAppointment scheduledappointment = confirmationpage.appointmentConfirmed();
-		log("appointment ID = " + scheduledappointment.getAppointmentID());
+		String apptid = scheduledappointment.getAppointmentID();
+		log("appointment ID = " + apptid);
 		log("Add to calendar option is displayed and is clickable.");
-		scheduledappointment.downloadCalander();
-		Thread.sleep(2000);
-		readICSFile(filePath());
 	}
 
 	public void appointmentToRescheduled(ConfirmationPage confirmationpage, Appointment testData) throws Exception {
@@ -1238,14 +1276,14 @@ public class PSSPatientUtils extends BaseTestNGWebDriver {
 		confirmationpage.selectRescheduleReason();
 
 		ScheduledAppointment scheduledappointment = confirmationpage.rescheduleAppointmentConfirmed();
-		log("appointment ID = " + scheduledappointment.getAppointmentID());
+		String successmsg=scheduledappointment.getAppointmentID();
+		log("Success Message- "+successmsg);
+		assertTrue(successmsg.contains("Your appointment has been rescheduled"));
 		log("Add to calendar option is displayed and is clickable.");
-		scheduledappointment.downloadCalander();
-		Thread.sleep(2000);
-		readICSFile(filePath());
+
 	}
 
-	public ScheduledAppointment selectAFlow(WebDriver driver, String rule, HomePage homepage, Appointment testData)
+	public ScheduledAppointment selectAFlow_New(WebDriver driver, String rule, HomePage homepage, Appointment testData)
 			throws Exception {
 		log("selectAFlow method started");
 		log("------------I am in selectAFlow METHOD-----");
@@ -1296,6 +1334,59 @@ public class PSSPatientUtils extends BaseTestNGWebDriver {
 			LTFlow(homepage, testData, Boolean.toString(testData.getIsInsuranceEnabled()), driver);
 		}
 		return PageFactory.initElements(driver, ScheduledAppointment.class);
+	}
+	
+	public void selectAFlow(WebDriver driver, String rule, HomePage homepage, Appointment testData)
+			throws Exception {
+		log("selectAFlow method started");
+		log("------------I am in selectAFlow METHOD-----");
+		Thread.sleep(1000);
+		testData.setIsInsuranceEnabled(false);
+		Thread.sleep(1000);
+		if (rule.equalsIgnoreCase(PSSConstants.LBT)) {
+			LBTFlow(homepage, testData, Boolean.toString(testData.getIsInsuranceEnabled()), driver);
+		}
+		if (rule.equalsIgnoreCase(PSSConstants.LTB)) {
+			LTBFlow(homepage, testData, Boolean.toString(testData.getIsInsuranceEnabled()), driver);
+		}
+		if (rule.equalsIgnoreCase(PSSConstants.BLT)) {
+			BLTFlow(homepage, testData, Boolean.toString(testData.getIsInsuranceEnabled()), driver);
+		}
+		if (rule.equalsIgnoreCase(PSSConstants.BTL)) {
+			BTLFlow(homepage, testData, Boolean.toString(testData.getIsInsuranceEnabled()), driver);
+		}
+		if (rule.equalsIgnoreCase(PSSConstants.TLB)) {
+			TLBFlow(homepage, testData, Boolean.toString(testData.getIsInsuranceEnabled()), driver);
+		}
+		if (rule.equalsIgnoreCase(PSSConstants.TBL)) {
+			TBLFlow(homepage, testData, Boolean.toString(testData.getIsInsuranceEnabled()), driver);
+		}
+		if (rule.equalsIgnoreCase(PSSConstants.STBL)) {
+			STBLFlow(homepage, testData, Boolean.toString(testData.getIsInsuranceEnabled()), driver);
+		}
+		if (rule.equalsIgnoreCase(PSSConstants.STLB)) {
+			log("Method STLBFlow will start now......");
+			STLBFlow(homepage, testData, Boolean.toString(testData.getIsInsuranceEnabled()), driver);
+		}
+		if (rule.equalsIgnoreCase(PSSConstants.SLTB)) {
+			SLTBFlow(homepage, testData, Boolean.toString(testData.getIsInsuranceEnabled()), driver);
+		}
+		if (rule.equalsIgnoreCase(PSSConstants.SLBT)) {
+			SLBTFlow(homepage, testData, Boolean.toString(testData.getIsInsuranceEnabled()), driver);
+		}
+		if (rule.equalsIgnoreCase(PSSConstants.SBTL)) {
+			SBTLFlow(homepage, testData, Boolean.toString(testData.getIsInsuranceEnabled()), driver);
+		}
+		if (rule.equalsIgnoreCase(PSSConstants.SBLT)) {
+			SBLTFlow(homepage, testData, Boolean.toString(testData.getIsInsuranceEnabled()), driver);
+		}
+		if (rule.equalsIgnoreCase(PSSConstants.TL)) {
+			TLFlow(homepage, testData, Boolean.toString(testData.getIsInsuranceEnabled()), driver);
+		}
+		if (rule.equalsIgnoreCase(PSSConstants.LT)) {
+			LTFlow(homepage, testData, Boolean.toString(testData.getIsInsuranceEnabled()), driver);
+		}
+		
 	}
 
 	public void checkPrivacyPage(WebDriver driver) {
@@ -1726,6 +1817,8 @@ public class PSSPatientUtils extends BaseTestNGWebDriver {
 		return currentDate;
 	}
 
+	
+	
 	public void rescheduleAPT(Appointment testData, WebDriver driver) throws Exception {
 		AppointmentDateTime aptDateTime = new AppointmentDateTime(driver);
 		aptDateTime = aptDateTime.selectDt(testData.getIsNextDayBooking());
@@ -1758,7 +1851,7 @@ public class PSSPatientUtils extends BaseTestNGWebDriver {
 		}
 		return date2;
 	}
-
+	
 	public long timeDifferenceendTime(Appointment testData) throws ParseException {
 		log("Bussiness Hour Endtime is  " + testData.getBusinesshourEndTime());
 		Calendar now = Calendar.getInstance();
@@ -1974,6 +2067,46 @@ public class PSSPatientUtils extends BaseTestNGWebDriver {
 			pe.printStackTrace();
 		}
 		return afterAddTime;
+	}
+	
+	public String currentDateWithTimeZone(Appointment testData) {
+		TimeZone timeZone = TimeZone.getTimeZone(testData.getCurrentTimeZone());
+		String dateFormat = "dd MMMM,yyyy";
+		SimpleDateFormat f1 = new SimpleDateFormat(dateFormat);
+		Calendar c = Calendar.getInstance();
+		TimeZone time_zone = TimeZone.getTimeZone(testData.getCurrentTimeZone());
+		f1.setTimeZone(timeZone);
+		c.setTimeZone(time_zone);
+		String currentDate = f1.format(c.getTime());
+		log("Current Date is " + currentDate);
+		String currentleddate = currentDate.substring(0, 2);
+		return currentleddate;
+	}
+
+	public String nextDate(Appointment testData) {
+		int MILLIS_IN_DAY = 1000 * 60 * 60 * 24;
+		log("current est date is  " + currentDateWithTimeZone(testData));
+		String date = currentDateWithTimeZone(testData);
+		String dateFormat = "dd";
+		SimpleDateFormat f1 = new SimpleDateFormat(dateFormat);
+		java.util.Date dateSelectedFrom = null;
+		java.util.Date dateNextDate = null;
+		String date2 = "";
+		try {
+			dateSelectedFrom = f1.parse(date);
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		String nextDate = f1.format(dateSelectedFrom.getTime() + MILLIS_IN_DAY);
+		try {
+			dateNextDate = f1.parse(nextDate);
+			String date1 = dateNextDate.toString();
+			date2 = date1.substring(8, 10);
+			log("Next day's date: " + dateNextDate);
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		return date2;
 	}
 
 }

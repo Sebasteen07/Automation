@@ -493,4 +493,45 @@ public class GatewayProxyTransactionTests extends GatewayProxyBaseTest {
 		validate.verifyTransactionList(transactions);
 	}
 
+
+	@Test(enabled = true)
+	public void testGetReceiptDataWithValidAuth() throws Exception {
+		GatewayProxyTransactionResource transaction = new GatewayProxyTransactionResource();
+
+		Response response = transaction.getReceiptData(token, testData.getProperty("test.pay.customer.uuid"),
+				testData.getProperty("element.mmid"), testData.getProperty("proxy.cpos.transactionId"),
+				testData.getProperty("proxy.cpos.orderId"));
+
+		Validations validate = new Validations();
+		validate.verifyReceiptDetails(response.asString(), "CPOS");
+	}
+
+	@Test(enabled = true)
+	public void testGetReceiptDataWithInvalidAuth() throws Exception {
+		GatewayProxyTransactionResource transaction = new GatewayProxyTransactionResource();
+
+		Response response = transaction.getReceiptData(token+"erf", testData.getProperty("test.pay.customer.uuid"),
+				testData.getProperty("element.mmid"), testData.getProperty("proxy.cpos.transactionId"),
+				testData.getProperty("proxy.cpos.orderId"));
+
+		JsonPath jsonpath = new JsonPath(response.asString());
+		Assert.assertTrue(response.getStatusCode() == 401);
+		Assert.assertEquals("Unauthorized", jsonpath.get("message"));
+	}
+
+	@Test(dataProvider = "get_txns_for_receipt_data", dataProviderClass = GatewayProxyTestData.class, enabled = true)
+	public void testGetReceiptDataWithDifferentPaymentTypes(String customeruuid, String mmid,
+															  String transactionId, String orderId,
+															  String paymentSource, int statusCode) throws Exception {
+		GatewayProxyTransactionResource transaction = new GatewayProxyTransactionResource();
+
+		Response response = transaction.getReceiptData(token, customeruuid,
+				mmid, transactionId, orderId);
+		Validations validate = new Validations();
+		Assert.assertTrue(response.getStatusCode() == statusCode);
+		if(response.getStatusCode() == 200) {
+			validate.verifyReceiptDetails(response.asString(), paymentSource);
+		}
+	}
+
 }

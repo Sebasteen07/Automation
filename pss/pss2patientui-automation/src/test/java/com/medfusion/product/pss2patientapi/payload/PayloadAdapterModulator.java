@@ -3,10 +3,10 @@ package com.medfusion.product.pss2patientapi.payload;
 
 public class PayloadAdapterModulator {
 	
-	public String openTokenPayload(String practiceid) {
+	public String openTokenPayload(String practiceid,String authUser) {
 		String openToken = "{\r\n"
 				+ "    \"practiceId\": \""+practiceid+"\",\r\n"
-				+ "    \"authUserId\": \"mf:ad:username:nshirodkar\"\r\n"
+				+ "    \"authUserId\": \""+authUser+"\"\r\n"
 				+ "}";
 		return openToken;
 	}
@@ -708,18 +708,36 @@ public class PayloadAdapterModulator {
 	
 	public String saveCancellationReasonPayload() {
 		String payload="[\r\n"
-				+ "    {\r\n"
-				+ "        \"id\": 202626,\r\n"
-				+ "        \"name\": \"Patient Request\",\r\n"
-				+ "        \"sortOrder\": 1,\r\n"
-				+ "        \"extCancellationReasonId\": \"35312D39-C27B-4A56-ADDC-43B3C27AB236\",\r\n"
-				+ "        \"displayName\": \"Patient Request\",\r\n"
-				+ "        \"type\": {\r\n"
-				+ "            \"name\": \"Rescheduling Reason\",\r\n"
-				+ "            \"code\": \"CR_RESCHEDULE\",\r\n"
-				+ "            \"grouptype\": \"CANCEL_REASON\"\r\n"
-				+ "        }\r\n"
+				+ "  {\r\n"
+				+ "    \"id\": null,\r\n"
+				+ "    \"name\": \"Not Covered By Insurance\",\r\n"
+				+ "    \"sortOrder\": 6,\r\n"
+				+ "    \"extCancellationReasonId\": \"1297CE8A-C43A-4FF8-9DFB-4922F69AC14E\",\r\n"
+				+ "    \"displayName\": \"Not Covered By Insurance\",\r\n"
+				+ "    \"type\": {\r\n"
+				+ "      \"name\": \"Cancellation Reason\",\r\n"
+				+ "      \"code\": \"CR_CANCEL\",\r\n"
+				+ "      \"grouptype\": \"CANCEL_REASON\"\r\n"
 				+ "    }\r\n"
+				+ "  }\r\n"
+				+ "]";
+		return payload;
+	}
+	
+	public String saveCancellationReasonPayload(String name, String extid, String dname, String typename, String typecode, String grouptype) {
+		String payload="[\r\n"
+				+ "  {\r\n"
+				+ "    \"id\": null,\r\n"
+				+ "    \"name\": \""+name+",\r\n"
+				+ "    \"selected\": true,\r\n"
+				+ "    \"extCancellationReasonId\": \""+extid+"\",\r\n"
+				+ "    \"displayName\": \""+dname+"\",\r\n"
+				+ "    \"type\": {\r\n"
+				+ "      \"name\": \""+typename+"\",\r\n"
+				+ "      \"code\": \""+typecode+",\r\n"
+				+ "      \"grouptype\": \""+grouptype+"\"\r\n"
+				+ "    }\r\n"
+				+ "  }\r\n"
 				+ "]";
 		return payload;
 	}
@@ -921,19 +939,6 @@ public class PayloadAdapterModulator {
 		return categorySpeciality;
 	}
 	
-	public String categorySpecInvalidIdPayload(String bookId,String specialityInvalidId) {
-		String categorySpeciality = "{\r\n"
-				+ "    \"category\": {\r\n"
-				+ "        \"id\": \""+bookId+"\"\r\n"
-				+ "    },\r\n"
-				+ "    \"specialty\": [\r\n"
-				+ "        {\r\n"
-				+ "            \"id\": \""+specialityInvalidId+"\"\r\n"
-				+ "        }\r\n"
-				+ "    ]\r\n"
-				+ "}";
-		return categorySpeciality;
-	}
 	public String resourceConfigPayload() {
 		String resourceConfig = "[\r\n"
 				+ "    {\r\n"
@@ -952,26 +957,10 @@ public class PayloadAdapterModulator {
 		return resourceConfig;
 	}
 	
-	public String resourceConfigBlankPayload() {
-		String resourceConfig = "";
-		return resourceConfig;
-	}
-
-	
 	public String resourceConfigSavePayload() {
 		String resourceConfigSave = "[\r\n"
 				+ "  {\r\n"
 				+ "    \"group\": \"LOCATION\",\r\n"
-				+ "    \"key\": \"searchLocation\",\r\n"
-				+ "    \"value\": \"true\"\r\n"
-				+ "  }\r\n"
-				+ "]";
-		return resourceConfigSave;
-	}
-	
-	public String resourceConfigSaveInvalidPayload() {
-		String resourceConfigSave = "[\r\n"
-				+ "  {\r\n"
 				+ "    \"key\": \"searchLocation\",\r\n"
 				+ "    \"value\": \"true\"\r\n"
 				+ "  }\r\n"
@@ -987,6 +976,14 @@ public class PayloadAdapterModulator {
 		return resourceConfigRule;
 	}
 	
+	public String resourceConfigRulePostPayloadTL() {
+		String resourceConfigRule = "{\r\n"
+				+ "    \"name\": \"TL\",\r\n"
+				+ "    \"rule\": \"T,L\"\r\n"
+				+ "}";
+		return resourceConfigRule;
+	}
+	
 	
 	public String resourceConfigRulePutPayload() {
 		String resourceConfigRule = "{\r\n"
@@ -995,6 +992,16 @@ public class PayloadAdapterModulator {
 				+ "}";
 		return resourceConfigRule;
 	}
+	
+
+	public String resourceConfigRulePutPayloadLT() {
+		String resourceConfigRule = "{\r\n"
+				+ "    \"name\": \"LT\",\r\n"
+				+ "    \"rule\": \"L,T\"\r\n"
+				+ "}";
+		return resourceConfigRule;
+	}
+	
 	public String genderMapPayload() {
 		String genderMap = "[\r\n"
 				+ "    {\r\n"
@@ -1141,143 +1148,6 @@ public class PayloadAdapterModulator {
 		return genderMap;
 	}
 	
-	public String genderMapInvalidPayload() {
-		String genderMap = "[\r\n"
-				+ "    {\r\n"
-				+ "        \"practice\": {\r\n"
-				+ "            \"active\": true,\r\n"
-				+ "            \"name\": \"PSS-NG-PG16CN\",\r\n"
-				+ "            \"partner\": {\r\n"
-				+ "                \"id\": 2,\r\n"
-				+ "                \"name\": \"NextGen\",\r\n"
-				+ "                \"code\": \"NG\",\r\n"
-				+ "                \"integrationId\": \"88\"\r\n"
-				+ "            },\r\n"
-				+ "            \"timeZone\": null,\r\n"
-				+ "            \"language\": [\r\n"
-				+ "                {\r\n"
-				+ "                    \"name\": \"English\",\r\n"
-				+ "                    \"code\": \"EN\",\r\n"
-				+ "                    \"flag\": \"us\"\r\n"
-				+ "                },\r\n"
-				+ "                {\r\n"
-				+ "                    \"name\": \"Español\",\r\n"
-				+ "                    \"code\": \"ES\",\r\n"
-				+ "                    \"flag\": \"mx\"\r\n"
-				+ "                }\r\n"
-				+ "            ],\r\n"
-				+ "            \"startTime\": \"00:00\",\r\n"
-				+ "            \"endTime\": \"04:00\",\r\n"
-				+ "            \"themes\": \"#008c7f\",\r\n"
-				+ "            \"reseller\": {\r\n"
-				+ "                \"id\": 201050,\r\n"
-				+ "                \"logoUrl\": null,\r\n"
-				+ "                \"logo\": \"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\",\r\n"
-				+ "                \"resellerTranslation\": [\r\n"
-				+ "                    {\r\n"
-				+ "                        \"id\": 200700,\r\n"
-				+ "                        \"language\": {\r\n"
-				+ "                            \"name\": \"Español\",\r\n"
-				+ "                            \"code\": \"ES\",\r\n"
-				+ "                            \"flag\": \"mx\"\r\n"
-				+ "                        },\r\n"
-				+ "                        \"disclaimer\": \"hi\",\r\n"
-				+ "                        \"reseller\": null\r\n"
-				+ "                    }\r\n"
-				+ "                ]\r\n"
-				+ "            },\r\n"
-				+ "            \"logo\": null,\r\n"
-				+ "            \"rules\": [\r\n"
-				+ "                {\r\n"
-				+ "                    \"id\": 32861,\r\n"
-				+ "                    \"name\": \"Location\",\r\n"
-				+ "                    \"rule\": \"L,T,B\"\r\n"
-				+ "                },\r\n"
-				+ "                {\r\n"
-				+ "                    \"id\": 32880,\r\n"
-				+ "                    \"name\": \"Provider\",\r\n"
-				+ "                    \"rule\": \"B,T,L\"\r\n"
-				+ "                }\r\n"
-				+ "            ]\r\n"
-				+ "        },\r\n"
-				+ "        \"displayName\": \"Male\",\r\n"
-				+ "        \"pssCode\": \"M\",\r\n"
-				+ "        \"active\": true,\r\n"
-				+ "        \"partnerCode\": \"M\",\r\n"
-				+ "        \"createdTsz\": null,\r\n"
-				+ "        \"updatedTsz\": null,\r\n"
-				+ "        \"seq\": 1,\r\n"
-				+ "        \"codeGroup\": null\r\n"
-				+ "    },\r\n"
-				+ "    {\r\n"
-				+ "        \"id\": 201969,\r\n"
-				+ "        \"practice\": {\r\n"
-				+ "            \"id\": 24702,\r\n"
-				+ "            \"extPracticeId\": \"24702\",\r\n"
-				+ "            \"active\": true,\r\n"
-				+ "            \"name\": \"PSS-NG-PG16CN\",\r\n"
-				+ "            \"practiceId\": \"24702\",\r\n"
-				+ "            \"partner\": {\r\n"
-				+ "                \"id\": 2,\r\n"
-				+ "                \"name\": \"NextGen\",\r\n"
-				+ "                \"code\": \"NG\",\r\n"
-				+ "                \"integrationId\": \"88\"\r\n"
-				+ "            },\r\n"
-				+ "            \"timeZone\": null,\r\n"
-				+ "            \"language\": [\r\n"
-				+ "                {\r\n"
-				+ "                    \"name\": \"English\",\r\n"
-				+ "                    \"code\": \"EN\",\r\n"
-				+ "                    \"flag\": \"us\"\r\n"
-				+ "                },\r\n"
-				+ "                {\r\n"
-				+ "                    \"name\": \"Español\",\r\n"
-				+ "                    \"code\": \"ES\",\r\n"
-				+ "                    \"flag\": \"mx\"\r\n"
-				+ "                }\r\n"
-				+ "            ],\r\n"
-				+ "            \"startTime\": \"00:00\",\r\n"
-				+ "            \"endTime\": \"04:00\",\r\n"
-				+ "            \"themes\": \"#008c7f\",\r\n"
-				+ "            \"reseller\": {\r\n"
-				+ "                \"id\": 201050,\r\n"
-				+ "                \"logoUrl\": null,\r\n"
-				+ "                \"logo\": \"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\",\r\n"
-				+ "                \"resellerTranslation\": [\r\n"
-				+ "                    {\r\n"
-				+ "                        \"id\": 200700,\r\n"
-				+ "                        \"language\": {\r\n"
-				+ "                            \"name\": \"Español\",\r\n"
-				+ "                            \"code\": \"ES\",\r\n"
-				+ "                            \"flag\": \"mx\"\r\n"
-				+ "                        },\r\n"
-				+ "                        \"disclaimer\": \"hi\",\r\n"
-				+ "                        \"reseller\": null\r\n"
-				+ "                    }\r\n"
-				+ "                ]\r\n"
-				+ "            },\r\n"
-				+ "            \"logo\": null,\r\n"
-				+ "            \"rules\": [\r\n"
-				+ "                {\r\n"
-				+ "                    \"id\": 32861,\r\n"
-				+ "                    \"name\": \"Location\",\r\n"
-				+ "                    \"rule\": \"L,T,B\"\r\n"
-				+ "                },\r\n"
-				+ "                {\r\n"
-				+ "                    \"id\": 32880,\r\n"
-				+ "                    \"name\": \"Provider\",\r\n"
-				+ "                    \"rule\": \"B,T,L\"\r\n"
-				+ "                }\r\n"
-				+ "            ]\r\n"
-				+ "        },\r\n"
-				+ "        \"createdTsz\": null,\r\n"
-				+ "        \"updatedTsz\": null,\r\n"
-				+ "        \"seq\": 1,\r\n"
-				+ "        \"codeGroup\": null\r\n"
-				+ "    }\r\n"
-				+ "]";
-		return genderMap;
-	}
 	
 	public String saveLink(String linkId,String linkProvider,String extBookIdLink,String catId,String displayName) {
 		String saveLink ="{\r\n"
@@ -1897,15 +1767,6 @@ public class PayloadAdapterModulator {
 		return practice;
 	}
 	
-	public String practiceInvalidPayload(String startTime,String endTime,String practiceId,String name,String timeZone) {
-		String practice ="{\r\n"
-				+ "    \"active\": true,\r\n"
-				+ "    \"id\": 0\r\n"
-				+ "    \r\n"
-				+ "  \r\n"
-				+ "}";
-		return practice;
-	}
 
 	public String preRequisiteAppPayload(String id,String name,String extPreAppTypeId,String categoryId,String categoryName) {
 		String resourceConfig = "[\r\n"
@@ -2078,11 +1939,6 @@ public class PayloadAdapterModulator {
 		return speciality;
 	}
 	
-	public String specialityReorderEmptyPayload( ) {
-		String speciality = "";
-		return speciality;
-	}
-	
 	public String insuranceReorder() {
 		String insuranceReorder ="{\r\n"
 				+ "    \"source\": 2,\r\n"
@@ -2091,11 +1947,6 @@ public class PayloadAdapterModulator {
 		return insuranceReorder;
 	}
 	
-	public String insuranceReorderInvalid() {
-		String insuranceReorder ="";
-		return insuranceReorder;
-	}
-
 	public String insuranceSave() {
 		String insuranceSave ="[\r\n"
 				+ "    {\r\n"
@@ -2103,17 +1954,6 @@ public class PayloadAdapterModulator {
 				+ "        \"name\": \"Blue Cross Payer\",\r\n"
 				+ "        \"selected\": true,\r\n"
 				+ "        \"extInsuranceCarrierId\": \"F5B58B41-6E28-4FAC-912D-4AB682AF310E\"\r\n"
-				+ "    }\r\n"
-				+ "]";
-		return insuranceSave;
-	}
-	
-	public String insuranceSaveInvalidPayload() {
-		String insuranceSave ="[\r\n"
-				+ "    {\r\n"
-				+ "        \"id\": null,\r\n"
-				+ "        \"name\": \"Blue Cross Payer\",\r\n"
-				+ "        \"selected\": true\r\n"
 				+ "    }\r\n"
 				+ "]";
 		return insuranceSave;
@@ -2148,9 +1988,6 @@ public class PayloadAdapterModulator {
 		return customData;
 	}
 	
-	public String customDataInvalidPayload() {
-		String customData ="";
-		return customData;
-	}
+	
 
 }

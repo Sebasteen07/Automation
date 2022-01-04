@@ -87,7 +87,7 @@ public class PatientDashboardPage extends BasePageObject {
 	
 	@FindBy(linkText = "Send password reset")
 	private WebElement trPasswordResetLink;
-
+	
 	private WebElement feedback;
 
 	public static String medfusionID = null;
@@ -293,5 +293,5 @@ public class PatientDashboardPage extends BasePageObject {
 		trPasswordResetLink.click();
 		return PageFactory.initElements(driver, PatientSearchPage.class);
 	}
-
 }
+

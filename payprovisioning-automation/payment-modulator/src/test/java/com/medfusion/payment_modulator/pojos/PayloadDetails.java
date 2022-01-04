@@ -250,4 +250,106 @@ public class PayloadDetails {
 		cardsMap.put("cards", list);
 		return cardsMap;
 	}
+	
+	public static Map<String, Object> getPayloadForAddingMultipeCardsToDigitalWallet(PropertyFileLoader testData,
+			int noOfCards, int noofCrdsToBeTrue, int noOfCrdsToBeFalse, int noOfCrdsToBeNull, int noOfCrdsToBeOmit,
+			int noOfCrdsToBeRandom) throws Exception {
+		ArrayList<Map<String, Object>> list = new ArrayList<Map<String, Object>>();
+		String primaryFlag = "false";
+		int noOfTotalcards = noofCrdsToBeTrue + noOfCrdsToBeFalse + noOfCrdsToBeNull + noOfCrdsToBeOmit
+				+ noOfCrdsToBeRandom;
+
+		for (int i = 1; i < noOfCards + 1; i++) {
+
+			if (noOfTotalcards != noOfCards) {
+				System.out.println("Please enter proper flags which will match total no of cards");
+				break;
+			}
+			if (noOfCards > 0 && noofCrdsToBeTrue > 0) {
+
+				primaryFlag = "true";
+				noofCrdsToBeTrue--;
+
+			} else if (noOfCards > 0 && noOfCrdsToBeFalse > 0) {
+				primaryFlag = "false";
+				noOfCrdsToBeFalse--;
+			}
+
+			else if (noOfCards > 0 && noOfCrdsToBeNull > 0) {
+				primaryFlag = null;
+				noOfCrdsToBeNull--;
+
+			} else if (noOfCards > 0 && noOfCrdsToBeOmit > 0) {
+				primaryFlag = "ommit";
+				noOfCrdsToBeOmit--;
+
+			} else if (noOfCards > 0 && noOfCrdsToBeRandom > 0) {
+				primaryFlag = "Random";
+				noOfCrdsToBeRandom--;
+			}
+
+			Map<String, Object> cardMap = Card.getMulitipleCardsDigitalWalletMap(testData.getProperty("consumer.name"),
+					testData.getProperty("type" + i), testData.getProperty("card.number" + i),
+					testData.getProperty("expiration.number" + i), testData.getProperty("card.alias" + i),
+					testData.getProperty("zipcode" + i), primaryFlag);
+
+			list.add(cardMap);
+			primaryFlag = "false";
+		}
+		Map<String, Object> cardsMap = new HashMap<String, Object>();
+		cardsMap.put("cards", list);
+
+		return cardsMap;
+	}
+	
+	
+	public static Map<String, Object> getPayloadForAddingMultipeCardsToExistingDigitalWallet(
+			PropertyFileLoader testData, int noOfCards, int noofCrdsToBeTrue, int noOfCrdsToBeFalse,
+			int noOfCrdsToBeNull, int noOfCrdsToBeOmit, int noOfCrdsToBeRandom, int flagForCardCount) throws Exception {
+		ArrayList<Map<String, Object>> list = new ArrayList<Map<String, Object>>();
+		String primaryFlag = "false";
+		int noOfTotalcards = noofCrdsToBeTrue + noOfCrdsToBeFalse + noOfCrdsToBeNull + noOfCrdsToBeOmit
+				+ noOfCrdsToBeRandom;
+
+		int j = flagForCardCount;
+		for (int i = 1; i < noOfCards + 1; i++, j++) {
+
+			if (noOfTotalcards != noOfCards) {
+				System.out.println("Please enter the flags which will match no of cards");
+				break;
+			}
+			if (noOfCards > 0 && noofCrdsToBeTrue > 0) {
+
+				primaryFlag = "true";
+				noofCrdsToBeTrue--;
+			} else if (noOfCards > 0 && noOfCrdsToBeFalse > 0) {
+				primaryFlag = "false";
+				noOfCrdsToBeFalse--;
+			}
+
+			else if (noOfCards > 0 && noOfCrdsToBeNull > 0) {
+				primaryFlag = null;
+				noOfCrdsToBeNull--;
+			} else if (noOfCards > 0 && noOfCrdsToBeOmit > 0) {
+				primaryFlag = "ommit";
+				noOfCrdsToBeOmit--;
+			} else if (noOfCards > 0 && noOfCrdsToBeRandom > 0) {
+				primaryFlag = "Random";
+				noOfCrdsToBeRandom--;
+			}
+
+			Map<String, Object> cardMap = Card
+					.getMulitipleCardsDigitalWalletMap(testData.getProperty("consumer.name"),
+					testData.getProperty("type" + j), testData.getProperty("card.number" + j),
+					testData.getProperty("expiration.number" + j), testData.getProperty("card.alias" + j),
+					testData.getProperty("zipcode" + j), primaryFlag);
+
+			list.add(cardMap);
+			primaryFlag = "false";
+		}
+		Map<String, Object> cardsMap = new HashMap<String, Object>();
+		cardsMap.put("cards", list);
+
+		return cardsMap;
+	}
 }

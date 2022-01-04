@@ -467,7 +467,8 @@ public class PSSAdminUtils extends BaseTestNGWebDriver{
 			Log4jUtil.log("Cancel/Reschedule reason setting is OFF-Defaults pop up message will display");
 			Log4jUtil.log("cancel 1 - OFF and Cancel2 - OFF");
 		}
-		adminAppointment.saveSlotCancelReasonSetting();
+		adminAppointment.saveSlotCancelReasonSetting();		
+		patientflow.logout();
 	}
 
 	public void leadTimenotReserve(WebDriver driver, AdminUser adminuser, Appointment appointment) throws Exception {
@@ -633,6 +634,7 @@ public class PSSAdminUtils extends BaseTestNGWebDriver{
 		adminpatientmatching.patientMatchingSelection();
 		Log4jUtil.log("adminSettings Step 5: Logout from PSS Admin Portal");
 		Thread.sleep(4000);
+		adminpatientmatching.logout();
 	}
 
 	public void adminSettingLinkGenandDeleteLink(WebDriver driver, AdminUser adminuser, Appointment testData, String urlToUse) throws Exception {
@@ -853,13 +855,13 @@ public class PSSAdminUtils extends BaseTestNGWebDriver{
 		LinkTab linkTab = pssPracticeConfig.linksTab();
 		Log4jUtil.log("Clicked On LinkTab");
 		linkTab.addLinkForProvider(testData.getLinkProvider());
-		testData.setLinkProviderURL(testData.getLinkProviderURL());
+		testData.setLinkProviderURL(linkTab.getURL(testData.getLinkProvider()));		
 	    patientFlow = pssPracticeConfig.gotoPatientFlowTab();
 		AdminPatientMatching adminPatientMatching = patientFlow.gotoPatientMatchingTab();
 		adminPatientMatching.patientMatchingSelection();
 		ManageResource manageResource = pssPracticeConfig.gotoResource();
 		pageRefresh(driver);
-		manageResource.selectResource(testData.getLinkProvider());
+		manageResource.selectResource(testData.getProvider());
 		manageResource.clickLocation();
 		manageResource.offAllLocationToggle();
 		patientFlow.logout();
@@ -1010,5 +1012,56 @@ public class PSSAdminUtils extends BaseTestNGWebDriver{
 		log("Slot Size is  " + testData.getSlotSize());
 		manageResource.logout();
 	}
+	
+	
+	public void acceptForSameDayWithShowProviderOFF(WebDriver driver, AdminUser adminuser, Appointment appointment)
+			throws Exception {
+		PSS2PracticeConfiguration pssPracticeConfig = loginToAdminPortal(driver, adminuser);
+		pssPracticeConfig = pssPracticeConfig.gotoPracticeConfigTab();
+		PatientFlow patientFlow = pssPracticeConfig.gotoPatientFlowTab();
+		patientFlow.turnOffProvider();
+		AdminPatientMatching adminPatientMatching = patientFlow.gotoPatientMatchingTab();
+		adminPatientMatching.patientMatchingSelection();
+		ManageAppointmentType manageAppointmentType = pssPracticeConfig.gotoAppointment();
+		pageRefresh(driver);
+		manageAppointmentType.selectAppointment(appointment.getAppointmenttype());
+		manageAppointmentType.gotoConfiguration();
+
+		manageAppointmentType.notReserve();
+		appointment.setAccepttoggleStatus(manageAppointmentType.acceptForStatus());
+		Log4jUtil.log("Status for AcceptFor Same day is   " + appointment.isAccepttoggleStatus());
+		if (appointment.isAccepttoggleStatus() == true) {
+			manageAppointmentType.clickAcceptSameDay();
+			appointment.setAccepttoggleStatus(manageAppointmentType.acceptForStatus());
+			Log4jUtil.log("Status for AcceptFor Same day is   " + appointment.isAccepttoggleStatus());
+		}
+
+	}
+	
+
+	public void acceptForSameDayWithReserveShowProviderOFF(WebDriver driver, AdminUser adminuser, Appointment appointment)
+			throws Exception {
+		PSS2PracticeConfiguration pssPracticeConfig = loginToAdminPortal(driver, adminuser);
+		pssPracticeConfig = pssPracticeConfig.gotoPracticeConfigTab();
+		PatientFlow patientFlow = pssPracticeConfig.gotoPatientFlowTab();
+		patientFlow.turnOffProvider();
+		AdminPatientMatching adminPatientMatching = patientFlow.gotoPatientMatchingTab();
+		adminPatientMatching.patientMatchingSelection();
+		ManageAppointmentType manageAppointmentType = pssPracticeConfig.gotoAppointment();
+		pageRefresh(driver);
+		manageAppointmentType.selectAppointment(appointment.getAppointmenttype());
+		manageAppointmentType.gotoConfiguration();
+
+		manageAppointmentType.reserveForSameDay();
+		appointment.setAccepttoggleStatus(manageAppointmentType.acceptForStatus());
+		Log4jUtil.log("Status for AcceptFor Same day is   " + appointment.isAccepttoggleStatus());
+		if (appointment.isAccepttoggleStatus() == true) {
+			manageAppointmentType.clickAcceptSameDay();
+			appointment.setAccepttoggleStatus(manageAppointmentType.acceptForStatus());
+			Log4jUtil.log("Status for AcceptFor Same day is   " + appointment.isAccepttoggleStatus());
+		}
+
+	}
+
 
 }
