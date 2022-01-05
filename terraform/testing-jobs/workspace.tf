@@ -18,9 +18,12 @@ locals {
     prod-integrations2-regression2     = "prod-integrations2-regression2"
     prod-integrations2-regression3     = "prod-integrations2-regression3"
     git-taf-prod-pss-acceptance        = "git-taf-prod-pss-acceptance"
-    demo-integrations-acceptance-oauth10     = "demo-integrations-acceptance-oauth10"
-    demo-integrations1-acceptance     = "demo-integrations1-acceptance"
-    demo-integrations1-regression     = "demo-integrations1-regression"
+    demo-integrations2-regression1     = "demo-integrations2-regression1"
+    demo-integrations2-regression2     = "demo-integrations2-regression2"
+    demo-integrations2-regression3     = "demo-integrations2-regression3"
+    demo-integrations-acceptance-oauth10 = "demo-integrations-acceptance-oauth10"
+    demo-integrations1-acceptance      = "demo-integrations1-acceptance"
+    demo-integrations1-regression      = "demo-integrations1-regression"
   }
   selected_workspace = local.valid_workspaces[terraform.workspace]
 }
