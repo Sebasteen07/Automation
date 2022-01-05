@@ -336,7 +336,7 @@ locals {
       build_timeout         = 240 #Number of minutes, from 5 to 480. Default value is 60 mins
       queued_timeout        = 480 #Number of minutes, from 5 to 480. Default value is 480 mins
       maven_parameter       = "mvn clean install -U"
-      google_chrome_version = "96.0.4664.93-1"
+      google_chrome_version = "96.0.4664.110-1"
       chrome_driver_version = "95.0.4638.17"
       cron_shedule          = "cron(10 0 ? * 3 *)"
     }
