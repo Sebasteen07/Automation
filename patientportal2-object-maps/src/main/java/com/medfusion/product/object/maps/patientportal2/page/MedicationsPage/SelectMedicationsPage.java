@@ -43,7 +43,7 @@ public class SelectMedicationsPage  extends BasePageObject {
 	@FindBy(how=How.XPATH,using="(//*[@class='checkbox'])[1]")
 	private WebElement availablemedicationcheckbx;
 	
-	@FindBy(how=How.XPATH,using="//div[@class='ng-value-container']//following::input")
+	@FindBy(how=How.XPATH,using="//div[@class='select-imo-medication']//following::input")
 	private WebElement multiSelectDependentMedication;
 	
 	@FindBy(how=How.ID,using="add-new-medication")
@@ -75,6 +75,7 @@ public class SelectMedicationsPage  extends BasePageObject {
 	public void selectDependentMedications() throws IOException, InterruptedException {
 		PropertyFileLoader testData = new PropertyFileLoader();
 		wait.until(ExpectedConditions.visibilityOf(multiSelectDependentMedication));
+		Thread.sleep(2000);
 		multiSelectDependentMedication.sendKeys(testData.getProperty("med.dep.one"));
 		Thread.sleep(2000);
 		multiSelectDependentMedication.sendKeys(Keys.ENTER);	
@@ -87,6 +88,7 @@ public class SelectMedicationsPage  extends BasePageObject {
 		btnAddInactiveMedication.click();
 		IHGUtil.waitForElement(driver, 5, CheckbxInactiveMedication);
 		log("Verifying add button is disabled as medication is not selected");
+		IHGUtil.waitForElement(driver, 5, btnAddMedication);
 		assertFalse(btnAddMedication.isEnabled(), "Add button is disabled");
 		CheckbxInactiveMedication.click();
 		btnAddMedication.click();

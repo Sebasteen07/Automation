@@ -1733,7 +1733,8 @@ public class ApptPrecheckSteps extends BaseTest {
 	}
 
 	@Then("verify in desktop view all fields are display related to templates for appointment reminder")
-	public void verify_in_desktop_view_all_fields_are_display_related_to_templates_for_appointment_reminder()			throws InterruptedException {
+	public void verify_in_desktop_view_all_fields_are_display_related_to_templates_for_appointment_reminder()
+			throws InterruptedException {
 		notifPage.openDesktopViewPage();
 		scrollAndWait(0, 1000, 5000);
 		assertEquals(notifPage.visibilityOfClickHereText(), "CLICK HERETO VIEW THIS IN A BROWSER WINDOW",
@@ -2006,6 +2007,484 @@ public class ApptPrecheckSteps extends BaseTest {
 		log("Send notification traingle text:- " + notifPage.getTextFronSendNotifTraingleTab());
 		assertEquals(notifPage.getTextFronSendNotifTraingleTab(), sendNotificationText,
 				"Send notification text was not match");
+	}
+
+	@When("from setting dashboard in notifications disable broadcast checkbox")
+	public void from_setting_dashboard_in_notifications_disable_broadcast_checkbox() throws InterruptedException {
+		mainPage.clickOnSettingTab();
+		notifPage.clickOnNotificationTab();
+		log("user should be on notification page");
+		assertTrue(notifPage.getNotificationTitle().contains("Notifications"));
+		notifPage.disableBroadcastMessagingCheckbox();
+		notifPage.saveNotification();
+	}
+
+	@Then("verify in appointment dashboard in broadcast column should not be display")
+	public void verify_in_appointment_dashboard_in_broadcast_column_should_not_be_display() {
+		mainPage.clickOnAppointmentsTab();
+		log("verify on appointment dashboard email and text column should not be visible");
+		assertFalse(apptPage.broadcastMessageTextColumn());
+		assertFalse(apptPage.broadcastMessageEmailColumn());
+	}
+
+	@When("from setting in notifications user click on curbside checkin tab and click on english button")
+	public void from_setting_in_notifications_user_click_on_curbside_checkin_tab_and_click_on_english_button()
+			throws InterruptedException {
+		mainPage.clickOnSettingTab();
+		notifPage.clickOnNotificationTab();
+		assertTrue(notifPage.getNotificationTitle().contains("Notifications"));
+		log("user on notification page");
+		notifPage.clickOnCurbsideCheckInTabInNotif();
+		scrollAndWait(0, 500, 3000);
+		notifPage.clickOnEnglishButton();
+	}
+
+	@Then("verify if user is able see additional arrival instruction message in english")
+	public void verify_if_user_is_able_see_additional_arrival_instruction_message_in_english() {
+		log("Additional Arrival Instruction Msg In English:- "
+				+ notifPage.getAdditionalArrivalInstructionMsgTextInEnglish());
+		log("Additional Arrival instructions is displayed.");
+		assertEquals(notifPage.getAdditionalArrivalInstructionMsgTextInEnglish(),
+				"hello welcome to curbside checkin", "Additional arrival instruction text in english is not matched");
+	}
+
+	@When("from setting in notifications user click on curbside checkin tab and click on spanish button")
+	public void from_setting_in_notifications_user_click_on_curbside_checkin_tab_and_click_on_spanish_button()
+			throws InterruptedException {
+		mainPage.clickOnSettingTab();
+		notifPage.clickOnNotificationTab();
+		assertTrue(notifPage.getNotificationTitle().contains("Notifications"));
+		log("user on notification page");
+		notifPage.clickOnCurbsideCheckInTabInNotif();
+		scrollAndWait(0, 500, 3000);
+		notifPage.clickOnSpanishButton();
+	}
+
+	@Then("verify if user is able see additional arrival instruction message in spanish")
+	public void verify_if_user_is_able_see_additional_arrival_instruction_message_in_spanish() {
+		log("Additional Arrival Instruction Msg In Spanish:- "
+				+ notifPage.getAdditionalArrivalInstructionMsgTextInSpanish());
+		log("Additional Arrival instructions is displayed.");
+		assertEquals(notifPage.getAdditionalArrivalInstructionMsgTextInSpanish(),
+				"hola bienvenido al registro en la acera",
+				"Arrival confirmation message text in spanish is not matched");
+	}
+
+	@Then("verify if user is able see arrival confirmation message in english")
+	public void verify_if_user_is_able_see_arrival_confirmation_message_in_english() throws InterruptedException {
+		scrollAndWait(0, 500, 3000);
+		notifPage.clickOnEnglishButton();
+		assertEquals(notifPage.visibilityOfArrivalConfirmationMsgInEnglish(), "Arrival confirmation message",
+				"Arrival confirmation message text is not matched");
+	}
+
+	@Then("verify if user is able see arrival confirmation message in spanish")
+	public void verify_if_user_is_able_see_arrival_confirmation_message_in_spanish() throws InterruptedException {
+		scrollAndWait(0, 500, 3000);
+		notifPage.clickOnSpanishButton();
+		assertEquals(notifPage.visibilityOfArrivalConfirmationMsgInSpanish(), "Arrival confirmation message",
+				"Arrival confirmation message text is not matched");
+	}
+
+	@When("from setting in notifications user click on notification tab")
+	public void from_setting_in_notifications_user_click_on_notification_tab() {
+		mainPage.clickOnSettingTab();
+		notifPage.clickOnNotificationTab();
+		assertTrue(notifPage.getNotificationTitle().contains("Notifications"));
+		log("user on notification page");
+	}
+
+	@Then("verify if user is able to see appointment confirmation and appointment reminder section")
+	public void verify_if_user_is_able_to_see_appointment_confirmation_and_appointment_reminder_section() {
+		assertEquals(notifPage.getAppointmentConfirmationsText(), "Appointment confirmations",
+				"Appointment confirmations text is not matched");
+		assertEquals(notifPage.getAppointmentRemindersText(), "Appointment reminders",
+				"Appointment reminders text is not matched");
+	}
+
+	@Then("verify if user is able to see two templates one for mail and another for text templates under appointment confirmation section")
+	public void verify_if_user_is_able_to_see_two_templates_one_for_mail_and_another_for_text_templates_under_appointment_confirmation_section()
+			throws InterruptedException {
+		scrollAndWait(0, 500, 3000);
+		assertEquals(notifPage.visibilityOfEmailTemplateUnderAptConfirmation(), "Email",
+				"Email section is not matched");
+		assertEquals(notifPage.visibilityOfSMSTemplateUnderAptConfirmation(), "SMS", "SMS section is not matched");
+	}
+
+	@Then("verify if user is able to see two templates one for mail and another for text templates under appointment reminder section")
+	public void verify_if_user_is_able_to_see_two_templates_one_for_mail_and_another_for_text_templates_under_appointment_reminder_section()
+			throws InterruptedException {
+		scrollAndWait(0, 500, 3000);
+		assertEquals(notifPage.visibilityOfEmailTemplateUnderAptReminder(), "Email", "Email text is not matched");
+		assertEquals(notifPage.visibilityOfSMSTemplateUnderAptReminder(), "SMS", "SMS text is not matched");
+	}
+
+	@Then("verify if user is able to see published status under appointment reminder and appointment confirmation section")
+	public void verify_if_user_is_able_to_see_published_status_under_appointment_reminder_and_appointment_confirmation_section()
+			throws InterruptedException {
+		scrollAndWait(0, 500, 3000);
+		assertEquals(notifPage.visibilityOfPublishedStatusEmailAptConf(), "Published", "Published text is not matched");
+		assertEquals(notifPage.visibilityOfPublishedStatusSMSAptConf(), "Published", "Published text is not matched");
+		assertEquals(notifPage.visibilityOfPublishedStatusEmailAptRem(), "Published", "Published text is not matched");
+		assertEquals(notifPage.visibilityOfPublishedStatusSMSAptRem(), "Published", "Published text is not matched");
+	}
+
+	@Then("verify if user is able to see appointment confirmation text in bold fonts along with info icon")
+	public void verify_if_user_is_able_to_see_appointment_confirmation_text_in_bold_fonts_along_with_info_icon() {
+		assertEquals(notifPage.getAppointmentConfirmationsText(), "Appointment confirmations",
+				"Appointment confirmations text is not in bold");
+		assertTrue(notifPage.visibiliyOfAptConfirmationInfoIcon());
+	}
+
+	@Then("verify mouse hover over to info icon and system shows {string} on pop up")
+	public void verify_mouse_hover_over_to_info_icon_and_system_shows_on_pop_up(String aptConfirmationInfoIconText) {
+		log("Info icon of Appointment Confirmation text :- " + notifPage.getTextFromAptConfirmationInfoIcon());
+		assertEquals(notifPage.getTextFromAptConfirmationInfoIcon(), aptConfirmationInfoIconText,
+				" Appointment confirmation info icon text is not match");
+	}
+
+	@Then("verify in delivery method section mail and text fields are display under appointment confirmation section")
+	public void verify_in_delivery_method_section_mail_and_text_fields_are_display_under_appointment_confirmation_section()
+			throws InterruptedException {
+		scrollAndWait(0, 500, 3000);
+		assertEquals(notifPage.visibilityOfDeliveryMethodTextNotificationTab(), "Delivery Method",
+				"Delivery Method text is not match");
+		assertEquals(notifPage.visibilityOfEmailTemplateUnderAptConfirmation(), "Email", "Email text is not matched");
+		assertEquals(notifPage.visibilityOfSMSTemplateUnderAptConfirmation(), "SMS", "SMS text is not matched");
+	}
+
+	@Then("verify user is able to see default status for mail and sms under version section of appointment confirmation")
+	public void verify_user_is_able_to_see_default_status_for_mail_and_sms_under_version_section_of_appointment_confirmation_section()
+			throws InterruptedException {
+		scrollAndWait(0, 500, 3000);
+		assertEquals(notifPage.visibilityOfDefaultEmailAptConf(), "Default", "Default text is not match");
+		assertEquals(notifPage.visibilityOfDefaultSMSAptConf(), "Default", "Default text is not match");
+		assertEquals(notifPage.visibilityOfVersionTextAptConfNotificationTab(), "Version", "Version text is not match");
+	}
+
+	@Then("verify by default user is able to see in office status for mail and text fields under appointment method section of appointment confirmation")
+	public void verify_by_default_user_is_able_to_see_in_office_status_for_mail_and_text_fields_under_appointment_method_section_of_appointment_confirmation_section()
+			throws InterruptedException {
+		scrollAndWait(0, 500, 3000);
+		assertEquals(notifPage.visibilityOfApptMethodTextAptConfNotificationTab(), "Appt. Method",
+				"Appt. Method is not match");
+		assertEquals(notifPage.visibilityOfInOfficeTextEmailAptConf(), "In Office", "In Office text is not match");
+		assertEquals(notifPage.visibilityOfInOfficeTextSMSAptConf(), "In Office", "In Office text is not match");
+	}
+
+	@Then("verify user is able to see upon scheduling status for mail and text fields under timing section of appointment confirmation")
+	public void verify_user_is_able_to_see_upon_scheduling_status_for_mail_and_text_fields_under_timing_section_of_appointment_confirmation_section()
+			throws InterruptedException {
+		scrollAndWait(0, 500, 3000);
+		assertEquals(notifPage.visibilityOfUponSchedulingEmailAptConfNotificationTab(), "Upon Scheduling",
+				"Upon Scheduling is not match");
+		assertEquals(notifPage.visibilityOfUponSchedulingSMSAptConfNotificationTab(), "Upon Scheduling",
+				"Upon Scheduling is not match");
+		assertEquals(notifPage.visibilityOfTimingTextNotificationTab(), "Timing", "Timing text is not match");
+	}
+
+	@Then("verify by default user is able to see published status under status section for mail and text fields under timing section of appointment confirmation")
+	public void verify_by_default_user_is_able_to_see_published_status_under_status_section_for_mail_and_text_fields_under_timing_section_of_appointment_confirmation_section()
+			throws InterruptedException {
+		scrollAndWait(0, 500, 3000);
+		assertEquals(notifPage.visibilityOfPublishedStatusEmailAptConf(), "Published", "Published text is not matched");
+		assertEquals(notifPage.visibilityOfPublishedStatusSMSAptConf(), "Published", "Published text is not matched");
+		assertEquals(notifPage.visibilityOfStatusTextAptConf(), "Status", "Status text is not matched");
+	}
+
+	@Then("verify if user is able to see appointment reminder text in bold fonts along with info icon")
+	public void verify_if_user_is_able_to_see_appointment_reminder_text_in_bold_fonts_along_with_info_icon()
+			throws InterruptedException {
+		scrollAndWait(0, 500, 3000);
+		assertEquals(notifPage.visibilityOfApptReminderText(), "Appointment reminders",
+				"Appointment reminders text is not in bold");
+		assertTrue(notifPage.visibiliyOfAptReminderInfoIcon());
+	}
+
+	@Then("verify mouse hover over to info icon of appointment reminders and system shows {string} on pop up")
+	public void verify_mouse_hover_over_to_info_icon_of_appointment_reminders_and_system_shows_on_pop_up(
+			String aptRemindersInfoIconText) throws InterruptedException {
+		scrollAndWait(0, 500, 3000);
+		log("Info icon of Appointment Reminders text :- " + notifPage.visibiliyOfAptReminderInfoIcon());
+		log("Appointment Reminders icon message text :- " + notifPage.getTextFromAptRemindersInfoIcon());
+		assertEquals(notifPage.getTextFromAptRemindersInfoIcon(), aptRemindersInfoIconText,
+				" Appointment reminders info icon text is not match");
+	}
+
+	@Then("verify in delivery method section mail and text fields are display under appointment reminders section")
+	public void verify_in_delivery_method_section_mail_and_text_fields_are_display_under_appointment_reminders_section()
+			throws InterruptedException {
+		scrollAndWait(0, 500, 3000);
+		assertEquals(notifPage.visibilityOfDeliveryMethodTextNotificationTab(), "Delivery Method",
+				"Delivery Method text is not match");
+		assertEquals(notifPage.visibilityOfEmailTemplateUnderAptReminder(), "Email", "Email text is not matched");
+		assertEquals(notifPage.visibilityOfSMSTemplateUnderAptReminder(), "SMS", "SMS text is not matched");
+	}
+
+	@Then("verify user is able to see default status for mail and sms under version section of appointment reminders")
+	public void verify_user_is_able_to_see_default_status_for_mail_and_sms_under_version_section_of_appointment_reminders_section()
+			throws InterruptedException {
+		scrollAndWait(0, 500, 3000);
+		assertEquals(notifPage.visibilityOfv2EmailAptRem(), "v2", "v2 text is not match");
+		assertEquals(notifPage.visibilityOfDefaultSMSAptRem(), "Default", "Default text is not match");
+		assertEquals(notifPage.visibilityOfVersionTextAptRemNotificationTab(), "Version", "Version text is not match");
+	}
+
+	@Then("verify by default user is able to see in office status for mail and text fields under appointment method section of appointment reminders")
+	public void verify_by_default_user_is_able_to_see_in_office_status_for_mail_and_text_fields_under_appointment_method_section_of_appointment_reminders_section()
+			throws InterruptedException {
+		scrollAndWait(0, 500, 3000);
+		assertEquals(notifPage.visibilityOfApptMethodTextAptRemNotificationTab(), "Appt. Method",
+				"Appt. Method is not match");
+		assertEquals(notifPage.visibilityOfInOfficeTextEmailAptRem(), "In Office", "In Office text is not match");
+		assertEquals(notifPage.visibilityOfInOfficeTextSMSAptRem(), "In Office", "In Office text is not match");
+	}
+
+	@Then("verify if day,hour and minutes are configured in email and sms template then it reflect in timing section of appointment reminder")
+	public void verify_if_day_hour_and_minutes_are_configured_in_email_and_sms_template_then_it_reflect_in_timing_section_of_appointment_reminder_section() {
+		assertEquals(notifPage.visibilityOfDaysEmailAptRemNotificationTab(), "Days", "Days is not match");
+		assertEquals(notifPage.visibilityOfDaysSMSAptRemNotificationTab(), "Days", "Days is not match");
+		assertEquals(notifPage.visibilityOfHoursEmailAptRemNotificationTab(), "Hours", "Hours is not match");
+		assertEquals(notifPage.visibilityOfHoursSMSAptRemNotificationTab(), "Hours", "Hours is not match");
+		assertEquals(notifPage.visibilityOfMinutesEmailAptRemNotificationTab(), "Minutes", "Minutes is not match");
+		assertEquals(notifPage.visibilityOfMinutesSMSAptRemNotificationTab(), "Minutes", "Minutes is not match");
+		assertEquals(notifPage.visibilityOfTimingTextUnderAptRemNotificationTab(), "Timing", "Timing is not match");
+	}
+
+	@Then("verify if user is able to see timing units under timing unit section of appointment reminder")
+	public void verify_if_user_is_able_to_see_timing_units_under_timing_unit_section_of_appointment_reminder_section() {
+		assertEquals(notifPage.visibilityOfOneUnitUnderTimingUnitNotificationTab(), "1", "1 is not match");
+		assertEquals(notifPage.visibilityOfthirtyUnitUnderTimingUnitNotificationTab(), "30", "30 is not match");
+		assertEquals(notifPage.visibilityOfTimingUnitsUnderAptRemNotificationTab(), "Timing Units",
+				"Timing Units not is match");
+	}
+
+	@Then("verify by default user is able to see published status under status section for mail and text fields under timing section of appointment reminder section")
+	public void verify_by_default_user_is_able_to_see_published_status_under_status_section_for_mail_and_text_fields_under_timing_section_of_appointment_reminder_section() {
+		assertEquals(notifPage.visibilityOfPublishedStatusEmailAptRem(), "Published", "Published text is not matched");
+		assertEquals(notifPage.visibilityOfPublishedStatusSMSAptRem(), "Published", "Published text is not matched");
+		assertEquals(notifPage.visibilityOfStatusTextAptRem(), "Status", "Status text is not matched");
+	}
+
+	@Then("verify if user is able to see preview button")
+	public void verify_if_user_is_able_to_see_preview_button() throws InterruptedException {
+		notifPage.clickOnApptConfirmationsEmailhumburgerButton();
+		log("Preview button is displayed");
+		assertEquals(notifPage.getOnPreviewButtonText(), "Preview", "Preview button is not match");
+	}
+
+	@Then("verify if user is able to see edit and preview button")
+	public void verify_if_user_is_able_to_see_edit_and_preview_button() throws InterruptedException {
+		scrollAndWait(0, 1000, 3000);
+		assertEquals(notifPage.visibilityOfEditTextUnderHamburger(), "Edit", "Edit text is not matched");
+		assertEquals(notifPage.getOnPreviewButtonText(), "Preview", "Preview text is not matched");
+		log("Preview and Edit buttons are displayed");
+	}
+
+	@Then("user hit edit button of email for appointment reminder")
+	public void user_hit_edit_button_of_email_for_appointment_reminder() throws InterruptedException {
+		scrollAndWait(0, 1000, 3000);
+		notifPage.clickOnEditButtonHamburgerButton();
+		log("User redirect on edit template design page");
+	}
+
+	@Then("verify if user is able to hit back button and system should redirect back user on notification tab")
+	public void verify_if_user_is_able_to_hit_back_button_and_system_should_redirect_back_user_on_notification_tab()
+			throws InterruptedException {
+		notifPage.clickOnBackArrow();
+		assertTrue(notifPage.getNotificationTitle().contains("Notifications"));
+		log("user on notification page");
+	}
+
+	@Then("verify if user is able to hit preview button and system should redirect on preview template page")
+	public void verify_if_user_is_able_to_hit_preview_button_and_system_should_redirect_on_preview_template_page()
+			throws InterruptedException {
+		Thread.sleep(5000);
+		notifPage.clickOnPreviewButton();
+		assertEquals(notifPage.visibilityOfPreviewPageTitle(), "Preview", "Preview template design page is not match");
+		log("User redirect on preview template design page");
+	}
+
+	@Then("user hit preview button")
+	public void user_hit_preview_button() throws InterruptedException {
+		Thread.sleep(5000);
+		notifPage.clickOnPreviewButton();
+		log("User redirect on preview template design page");
+	}
+
+	@Then("verify if user is able to hit close button and system should redirect back user on notification tab")
+	public void verify_if_user_is_able_to_hit_close_button_and_system_should_redirect_back_user_on_notification_tab() {
+		notifPage.closePreviewPage();
+		assertTrue(notifPage.getNotificationTitle().contains("Notifications"));
+		log("user on notification page");
+	}
+
+	@When("from settings in general under manage solutions tab remove practice display name")
+	public void from_settings_in_general_under_manage_solutions_tab_remove_practice_display_name()
+			throws InterruptedException {
+		mainPage.clickOnSettingTab();
+		generalPage.clickOnManageSolutionsTab();
+		log("verify General setting Text: " + propertyData.getProperty("general.setting.title"));
+		assertTrue(generalPage.generalSettingTitle().contains(propertyData.getProperty("general.setting.title")));
+		log("verify Mamage solutions Text: " + propertyData.getProperty("manage.solution.board"));
+		assertTrue(generalPage.manageSolutionTab().contains(propertyData.getProperty("manage.solution.board")));
+		log("user on Manage Solutions Tab");
+		generalPage.clearPracticeDisplayName();
+	}
+
+	@When("click on update settings and it showing {string} error")
+	public void click_on_update_settings_and_it_showing_error(String practiceDisplayNameError)
+			throws InterruptedException {
+		scrollAndWait(0, 500, 3000);
+		generalPage.clickOnUpdateSettingbutton();
+		log("Error is shown after removing practice display name :- "
+				+ generalPage.visibilityOfPracticeDisplayNameError());
+		assertEquals(generalPage.visibilityOfPracticeDisplayNameError(), practiceDisplayNameError,
+				"Error is shown after removing practice display text is not match");
+	}
+
+	@Then("navigate to forms tab and again navigate to manage solutions tab")
+	public void navigate_to_forms_tab_and_again_navigate_to_manage_solutions_tab() throws InterruptedException {
+		generalPage.clickOnFormsTab();
+		assertTrue(generalPage.getFormsText().contains("Forms"));
+		log("user on Forms Tab");
+		generalPage.clickOnGeneralTab();
+		generalPage.clickOnManageSolutionsTab();
+		scrollAndWait(0, 500, 3000);
+		assertTrue(generalPage.manageSolutionTab().contains(propertyData.getProperty("manage.solution.board")));
+	}
+
+	@Then("verify if the user is able to see the practice display name remains as initial value")
+	public void verify_if_the_user_is_able_to_see_the_practice_display_name_remains_as_initial_value()
+			throws InterruptedException {
+		assertEquals(generalPage.visibilityOfPracticeDisplayName(), "PSS-GE-24333-PRACTICE",
+				"PSS-GE-24333-PRACTICE is not match");
+	}
+
+	@Then("press space bar on textbox")
+	public void press_space_bar_on_textbox() {
+		generalPage.savePracticeDisplayName();
+	}
+
+	@When("click on update settings")
+	public void click_on_update_settings() throws InterruptedException {
+		generalPage.clickOnUpdateSettingbutton();
+	}
+
+	@Then("verify if user is able to see validation message {string}")
+	public void verify_if_user_is_able_to_see_validation_message(String practiceDisplayNameError) {
+		log("Error is shown after removing practice display name :- "
+				+ generalPage.visibilityOfPracticeDisplayNameError());
+		assertEquals(generalPage.visibilityOfPracticeDisplayNameError(), practiceDisplayNameError,
+				"Error is shown after removing practice display text is not match");
+	}
+
+	@When("from setting in notifications user turn off send notification radio button")
+	public void from_setting_in_notifications_user_turn_off_send_notification_radio_button() {
+		mainPage.clickOnSettingTab();
+		notifPage.clickOnNotificationTab();
+		assertTrue(notifPage.getNotificationTitle().contains("Notifications"));
+		log("user on notification page");
+		notifPage.offNotification();
+		log("send notification radio button is off");
+	}
+
+	@Then("click on save button")
+	public void click_on_save_button() throws InterruptedException {
+		notifPage.saveNotification();
+	}
+
+	@Then("verify if user is able to see changes are reflected in notification tab as send notification is off")
+	public void verify_if_user_is_able_to_see_changes_are_reflected_in_notification_tab_as_send_notification_is_off() {
+		assertTrue(notifPage.visibilityOfNotificationOffRadioButton());
+	}
+
+	@When("from setting in notifications user turn on send notification radio button")
+	public void from_setting_in_notifications_user_turn_on_send_notification_radio_button() {
+		mainPage.clickOnSettingTab();
+		notifPage.clickOnNotificationTab();
+		assertTrue(notifPage.getNotificationTitle().contains("Notifications"));
+		log("user on notification page");
+		notifPage.onNotification();
+		log("send notification radio button is on");
+	}
+
+	@Then("verify if user is able to see changes are reflected in notification tab as send notification is on")
+	public void verify_if_user_is_able_to_see_changes_are_reflected_in_notification_tab_as_send_notification_is_on() {
+		assertTrue(notifPage.visibilityOfNotificationOnRadioButton());
+	}
+
+	@Then("user keep blank additional arrival instructions text box of english language")
+	public void user_keep_blank_additional_arrival_instructions_text_box_of_english_language()
+			throws InterruptedException {
+		notifPage.clearAdditionalArrivalInstTextboxEn();
+		Thread.sleep(5000);
+	}
+
+	@Then("verify if user is able to see changes are reflected in curbside checkin tab of english language")
+	public void verify_if_user_is_able_to_see_changes_are_reflected_in_curbside_checkin_tab_of_english_language() {
+		assertEquals(notifPage.AdditionalArrivalInstTextboxBlankEn(), "",
+				"Additional arrival instrunction textbox is not blank");
+	}
+
+	@Then("user rewrite additional arrival instructions text box of english language")
+	public void user_rewrite_additional_arrival_instructions_text_box_of_english_language() {
+		notifPage.addArrivalInstructionTextInEnglish("hello welcome to curbside checkin");
+	}
+
+	@Then("user keep blank additional arrival instructions text box of spanish language")
+	public void user_keep_blank_additional_arrival_instructions_text_box_of_spanish_language() {
+		notifPage.clearAdditionalArrivalInstTextboxEs();
+	}
+
+	@Then("verify if user is able to see changes are reflected in curbside checkin tab of spanish language")
+	public void verify_if_user_is_able_to_see_changes_are_reflected_in_curbside_checkin_tab_of_spanish_language()
+			throws InterruptedException {
+		Thread.sleep(5000);
+		assertEquals(notifPage.additionalArrivalInstTextboxBlankEs(), "",
+				"Additional arrival instrunction textbox is not blank");
+	}
+
+	@Then("user rewrite additional arrival instructions text box of spanish language")
+	public void user_rewrite_additional_arrival_instructions_text_box_of_spanish_language() {
+		notifPage.addArrivalInstructionTextInEnglish("hola bienvenido al registro en la acera");
+	}
+
+	@When("from setting in notifications user click on practice language preference drop down and select english and spanish language")
+	public void from_setting_in_notifications_user_click_on_practice_language_preference_drop_down_and_select_english_and_spanish_language()
+			throws InterruptedException {
+		mainPage.clickOnSettingTab();
+		notifPage.clickOnNotificationTab();
+		assertTrue(notifPage.getNotificationTitle().contains("Notifications"));
+		log("user on notification page");
+		notifPage.clickOnPracticePrefLangDropDown();
+		notifPage.selectEnglishSpanishPracticePrefLang();
+		log("user select english and spanish practice preference language");
+		notifPage.saveNotification();
+	}
+
+	@Then("verify if user is able to see changes are reflected in notification tab as english and spanish language")
+	public void verify_if_user_is_able_to_see_changes_are_reflected_in_notification_tab_as_english_and_spanish_language() {
+		assertTrue(notifPage.visiblityOfBroadcastMessageTextBoxInEnEs(),
+				"English & Spanish language preferance is not match");
+	}
+
+	@When("from setting in notifications user click on practice language preference drop down and select english")
+	public void from_setting_in_notifications_user_click_on_practice_language_preference_drop_down_and_select_english()
+			throws InterruptedException {
+		mainPage.clickOnSettingTab();
+		notifPage.clickOnNotificationTab();
+		assertTrue(notifPage.getNotificationTitle().contains("Notifications"));
+		log("user on notification page");
+		notifPage.clickOnPracticePrefLangDropDown();
+		notifPage.clickOnEnglishPracticePrefLang();
+		log("user select english practice preference language");
+		notifPage.saveNotification();
+	}
+
+	@Then("verify if user is able to see changes are reflected in notification tab english language")
+	public void verify_if_user_is_able_to_see_changes_are_reflected_in_notification_tab_english_language() {
+		assertTrue(notifPage.visibilityOfPracticePrefenceLangEn(), "English language preferance is not match");
 	}
 
 }

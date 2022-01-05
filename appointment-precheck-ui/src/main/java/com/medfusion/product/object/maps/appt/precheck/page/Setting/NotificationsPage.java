@@ -275,7 +275,7 @@ public class NotificationsPage extends BasePageObject {
 	@FindBy(how = How.XPATH, using = "//*[text()='Start PreCheck']")
 	private WebElement startPreCheck;
 
-	@FindBy(how = How.XPATH, using = "(//*[text()='Appointment Reminder'])[2]")
+	@FindBy(how = How.XPATH, using = "//*[text()='Appointment reminders']")
 	private WebElement apptReminderText;
 
 	@FindBy(how = How.XPATH, using = "//*[@class='pt-20']")
@@ -320,6 +320,177 @@ public class NotificationsPage extends BasePageObject {
 	@FindBy(how = How.XPATH, using = "//button[text()='Save changes']")
 	private WebElement saveChangesButton;
 
+	@FindBy(how = How.XPATH, using = "//li[contains(text(),'Curbside check-in')]")
+	private WebElement curbsideCheckInTabInNotif;
+
+	@FindBy(how = How.XPATH, using = "//button[contains(text(),'English')]")
+	private WebElement englishButton;
+
+	@FindBy(how = How.XPATH, using = "//textarea[contains(text(),'hello welcome to curbside checkin')]")
+	private WebElement additionalArrivalInstrInEnglish;
+
+	@FindBy(how = How.XPATH, using = "//textarea[contains(text(),'hola bienvenido al registro en la acera')]")
+	private WebElement additionalArrivalInstrInSpanish;
+
+	@FindBy(how = How.XPATH, using = "//button[contains(text(),'Spanish')]")
+	private WebElement spanishButton;
+
+	@FindBy(how = How.XPATH, using = "//div[contains(text(),'Arrival confirmation message')]")
+	private WebElement arrivalConfirmationMsg;
+
+	@FindBy(how = How.XPATH, using = "	//*[text()='Appointment confirmations']")
+	private WebElement apptConfirmationsText;
+
+	@FindBy(how = How.XPATH, using = "//div[contains(text(),'Appointment reminders')][1]")
+	private WebElement appointmentRemindersText;
+
+	@FindBy(how = How.XPATH, using = "//div[contains(text(),'Appointment confirmations')]//following::div[text()='Email'][1]")
+	private WebElement emailAppointmentConfirmations;
+
+	@FindBy(how = How.XPATH, using = "//div[contains(text(),'Appointment confirmations')]//following::div[text()='SMS'][1]")
+	private WebElement smsAppointmentConfirmations;
+
+	@FindBy(how = How.XPATH, using = "//div[contains(text(),'Appointment reminders')]//following::div[text()='Email']")
+	private WebElement emailAppointmentReminders;
+
+	@FindBy(how = How.XPATH, using = "//div[contains(text(),'Appointment reminders')]//following::div[text()='SMS']")
+	private WebElement smsAppointmentReminders;
+
+	@FindBy(how = How.XPATH, using = "//div[contains(text(),'Appointment confirmations')]//following::div[text()='Published'][1]")
+	private WebElement publishedStatusEmailForApptConfirmations;
+
+	@FindBy(how = How.XPATH, using = "//div[contains(text(),'Appointment confirmations')]//following::div[text()='Published'][2]")
+	private WebElement publishedStatusSmsForApptConfirmations;
+
+	@FindBy(how = How.XPATH, using = "//div[contains(text(),'Appointment reminders')]//following::div[text()='Published'][1]")
+	private WebElement publishedStatusEmailForApptReminders;
+
+	@FindBy(how = How.XPATH, using = "//div[contains(text(),'Appointment reminders')]//following::div[text()='Published'][2]")
+	private WebElement publishedStatusSmsApptReminders;
+
+	@FindBy(how = How.XPATH, using = "//div[@data-for='notification-info-confirmation']//span[@class='mf-icon mf-icon__notification-heading-information']")
+	private WebElement aptConfirmationInfoIcon;
+
+	@FindBy(how = How.XPATH, using = "//*[text()='Appointment confirmations are communications sent to notify a patient that an appointment has been scheduled.']")
+	private WebElement aptConfirmationInfoIconText;
+
+	@FindBy(how = How.XPATH, using = "//div[contains(text(),'Delivery Method')]")
+	private WebElement deliveryMethodOfAptConf;
+
+	@FindBy(how = How.XPATH, using = "//div[contains(text(),'Appointment confirmations')]//following::div[contains(text(),'Default')][1]")
+	private WebElement defaultTextEmailAptConf;
+
+	@FindBy(how = How.XPATH, using = "//div[contains(text(),'Appointment confirmations')]//following::div[contains(text(),'Default')][2]")
+	private WebElement defaultTextSMSAptConf;
+
+	@FindBy(how = How.XPATH, using = "//div[contains(text(),'Appointment reminders')]//following::div[contains(text(),'v2')]")
+	private WebElement v2TextEmailAptRem;
+
+	@FindBy(how = How.XPATH, using = "//div[contains(text(),'Appointment reminders')]//following::div[contains(text(),'Default')]")
+	private WebElement defaultTextSMSAptRem;
+
+	@FindBy(how = How.XPATH, using = "//div[contains(text(),'Appointment confirmations')]//following::div[contains(text(),'Version')]")
+	private WebElement versionTextAptConf;
+
+	@FindBy(how = How.XPATH, using = "//div[contains(text(),'Appointment confirmations')]//following::div[contains(text(),'Appt. Method')][1]")
+	private WebElement apptMethodTextAptConf;
+
+	@FindBy(how = How.XPATH, using = "//div[contains(text(),'In Office')]")
+	private WebElement inOfficeTextEmailAptConf;
+
+	@FindBy(how = How.XPATH, using = "//div[contains(text(),'In Office')]")
+	private WebElement inOfficeTextSMSAptConf;
+
+	@FindBy(how = How.XPATH, using = "//div[contains(text(),'Appointment confirmations')]//following::div[contains(text(),'Upon Scheduling')][1]")
+	private WebElement uponSchedulingEmailAptConf;
+
+	@FindBy(how = How.XPATH, using = "//div[contains(text(),'Appointment confirmations')]//following::div[contains(text(),'Upon Scheduling')][2]")
+	private WebElement uponSchedulingSMSAptConf;
+
+	@FindBy(how = How.XPATH, using = "//div[contains(text(),'Upon Scheduling')]//preceding::div[contains(text(),'Timing')]")
+	private WebElement timingText;
+
+	@FindBy(how = How.XPATH, using = "//div[contains(text(),'Appointment confirmations')]//following::div[contains(text(),'Status')][1]")
+	private WebElement statusTextAptConf;
+
+	@FindBy(how = How.XPATH, using = "(//span[@class='mf-icon mf-icon__notification-heading-information'])[2]")
+	private WebElement aptRemInfoIcon;
+
+	@FindBy(how = How.XPATH, using = "//*[text()='Appointment reminders are communications sent to remind a patient they have an upcoming appointment.']")
+	private WebElement aptRemindersInfoIconText;
+
+	@FindBy(how = How.XPATH, using = "(//div[contains(text(),'Delivery Method')])[2]")
+	private WebElement delivaryMtdForApptRemindert;
+
+	@FindBy(how = How.XPATH, using = "//div[contains(text(),'Appointment reminders')]//following::div[contains(text(),'Version')]")
+	private WebElement versionTextAptRem;
+
+	@FindBy(how = How.XPATH, using = "//div[contains(text(),'Appointment reminders')]//following::div[contains(text(),'Appt. Method')]")
+	private WebElement apptMethodTextAptRem;
+
+	@FindBy(how = How.XPATH, using = "(//div[contains(text(),'In Office')])[3]")
+	private WebElement inOfficeTextEmailAptRem;
+
+	@FindBy(how = How.XPATH, using = "(//div[contains(text(),'In Office')])[4]")
+	private WebElement inOfficeTextSMSAptRem;
+
+	@FindBy(how = How.XPATH, using = "//div[contains(text(),'Timing')]//following::div[contains(text(),'Days')][1]")
+	private WebElement daysTextEmailAptRem;
+
+	@FindBy(how = How.XPATH, using = "//div[contains(text(),'Timing')]//following::div[contains(text(),'Hours')][1]")
+	private WebElement hoursTextEmailAptRem;
+
+	@FindBy(how = How.XPATH, using = "//div[contains(text(),'Timing')]//following::div[contains(text(),'Minutes')][1]")
+	private WebElement minutesTextEmailAptRem;
+
+	@FindBy(how = How.XPATH, using = "//div[contains(text(),'Timing')]//following::div[contains(text(),'Days')][2]")
+	private WebElement daysTextSMSAptRem;
+
+	@FindBy(how = How.XPATH, using = "//div[contains(text(),'Timing')]//following::div[contains(text(),'Hours')][2]")
+	private WebElement hoursTextSMsAptRem;
+
+	@FindBy(how = How.XPATH, using = "//div[contains(text(),'Timing')]//following::div[contains(text(),'Minutes')][2]")
+	private WebElement minutesTextSMSAptRem;
+
+	@FindBy(how = How.XPATH, using = "//div[contains(text(),'Upon Scheduling')]//following::div[contains(text(),'Timing')][1]")
+	private WebElement timingTextUnderAptRem;
+
+	@FindBy(how = How.XPATH, using = "//div[@class='table-content']//div[contains(text(),'1')]")
+	private WebElement oneTimeUnit;
+
+	@FindBy(how = How.XPATH, using = "//div[@class='table-content']//div[contains(text(),'30')]")
+	private WebElement thirtyTimeUnit;
+
+	@FindBy(how = How.XPATH, using = "//div[contains(text(),'Timing Units')]")
+	private WebElement timingunitsTextUnderAptRem;
+
+	@FindBy(how = How.XPATH, using = "//div[contains(text(),'Appointment reminders')]//following::div[contains(text(),'Status')]")
+	private WebElement statusTextAptRem;
+
+	@FindBy(how = How.XPATH, using = "//li[contains(text(),'Edit')]")
+	private WebElement editTextUnderHamburgerButton;
+
+	@FindBy(how = How.XPATH, using = "//textarea[contains(text(),'hello welcome to curbside checkin')]")
+	private WebElement additionalArrivalInstructionsTextBoxEn;
+
+	@FindBy(how = How.XPATH, using = "//textarea[@name='arrivalsConfirmationInstructionsEN']")
+	private WebElement additionalArrivalInstructionsTextBoxText;
+
+	@FindBy(how = How.XPATH, using = "//textarea[contains(text(),'hola bienvenido al registro en la acera')]")
+	private WebElement additionalArrivalInstructionsTextBoxEs;
+
+	@FindBy(how = How.XPATH, using = "(//input[@class='mf-notification-checkbox'])[2]")
+	private WebElement curbsideCheckInReminderCheckbox;
+
+	@FindBy(how = How.XPATH, using = "//div[@class=' css-tlfecz-indicatorContainer']")
+	private WebElement practicePrefenceLangDropDown;
+
+	@FindBy(how = How.XPATH, using = "//*[text()='English & Spanish']")
+	private WebElement englishSpanishPracticePrefenceLang;
+
+	@FindBy(how = How.XPATH, using = "//*[text()='English']")
+	private WebElement englishPracticePrefenceLang;
+
 	public NotificationsPage(WebDriver driver) {
 		super(driver);
 		PageFactory.initElements(driver, this);
@@ -342,7 +513,7 @@ public class NotificationsPage extends BasePageObject {
 
 	public void saveNotification() throws InterruptedException {
 		IHGUtil.waitForElement(driver, 5, saveButton);
-		saveButton.click();
+		jse.executeScript("arguments[0].click();", saveButton);
 		Thread.sleep(10000);
 	}
 
@@ -358,6 +529,7 @@ public class NotificationsPage extends BasePageObject {
 	}
 
 	public void disableBroadcastMessagingCheckbox() throws InterruptedException {
+		driver.navigate().refresh();
 		IHGUtil.waitForElement(driver, 5, broadcastMessagingCheckbox);
 		boolean selected = broadcastMessagingCheckbox.isSelected();
 		if (selected) {
@@ -370,13 +542,11 @@ public class NotificationsPage extends BasePageObject {
 	}
 
 	public void enableBroadcastMessagingCheckbox() throws InterruptedException {
+		driver.navigate().refresh();
 		IHGUtil.waitForElement(driver, 5, broadcastMessagingCheckbox);
-		boolean selected = broadcastMessagingCheckbox.isSelected();
-		if (!selected) {
-			log("Enable 'Broadcast Messaging' checkbox");
-			broadcastMessagingCheckbox.click();
-			Thread.sleep(10000);
-		}
+		log("Enable 'Broadcast Messaging' checkbox");
+		broadcastMessagingCheckbox.click();
+		Thread.sleep(10000);
 	}
 
 	public void offNotification() {
@@ -1118,5 +1288,495 @@ public class NotificationsPage extends BasePageObject {
 		Actions action = new Actions(driver);
 		action.moveToElement(apptDataTraingleTab).perform();
 		return sendNotifTraingleTabText.getText();
+	}
+
+	public void clickOnCurbsideCheckInTabInNotif() {
+		IHGUtil.PrintMethodName();
+		IHGUtil.waitForElement(driver, 5, curbsideCheckInTabInNotif);
+		curbsideCheckInTabInNotif.click();
+	}
+
+	public void clickOnEnglishButton() {
+		IHGUtil.PrintMethodName();
+		IHGUtil.waitForElement(driver, 5, englishButton);
+		englishButton.click();
+	}
+
+	public String getAdditionalArrivalInstructionMsgTextInEnglish() {
+		IHGUtil.PrintMethodName();
+		IHGUtil.waitForElement(driver, 10, additionalArrivalInstrInEnglish);
+		return additionalArrivalInstrInEnglish.getText();
+	}
+
+	public void clickOnSpanishButton() {
+		IHGUtil.PrintMethodName();
+		IHGUtil.waitForElement(driver, 5, spanishButton);
+		spanishButton.click();
+	}
+
+	public String getAdditionalArrivalInstructionMsgTextInSpanish() {
+		IHGUtil.PrintMethodName();
+		IHGUtil.waitForElement(driver, 10, additionalArrivalInstrInSpanish);
+		return additionalArrivalInstrInSpanish.getText();
+	}
+
+	public String visibilityOfArrivalConfirmationMsgInEnglish() {
+		IHGUtil.PrintMethodName();
+		IHGUtil.waitForElement(driver, 10, arrivalConfirmationMsg);
+		log("Arrival Confirmation Message is displayed.");
+		return arrivalConfirmationMsg.getText();
+	}
+
+	public String visibilityOfArrivalConfirmationMsgInSpanish() {
+		IHGUtil.PrintMethodName();
+		IHGUtil.waitForElement(driver, 10, arrivalConfirmationMsg);
+		log("Arrival Confirmation Message is displayed.");
+		return arrivalConfirmationMsg.getText();
+	}
+
+	public String getAppointmentConfirmationsText() {
+		IHGUtil.PrintMethodName();
+		IHGUtil.waitForElement(driver, 10, apptConfirmationsText);
+		log("Appointment Confirmations section is displayed under notification type.");
+		return apptConfirmationsText.getText();
+	}
+
+	public String getAppointmentRemindersText() {
+		IHGUtil.PrintMethodName();
+		IHGUtil.waitForElement(driver, 10, appointmentRemindersText);
+		log("Appointment Reminders section is displayed under notification type.");
+		return appointmentRemindersText.getText();
+	}
+
+	public String visibilityOfEmailTemplateUnderAptConfirmation() {
+		IHGUtil.PrintMethodName();
+		IHGUtil.waitForElement(driver, 10, emailAppointmentConfirmations);
+		log("Email template is displayed under Appointment Confirmations section");
+		return emailAppointmentConfirmations.getText();
+	}
+
+	public String visibilityOfSMSTemplateUnderAptConfirmation() {
+		IHGUtil.PrintMethodName();
+		IHGUtil.waitForElement(driver, 10, smsAppointmentConfirmations);
+		log("SMS template is displayed under Appointment Confirmations section");
+		return smsAppointmentConfirmations.getText();
+	}
+
+	public String visibilityOfEmailTemplateUnderAptReminder() {
+		IHGUtil.PrintMethodName();
+		IHGUtil.waitForElement(driver, 10, emailAppointmentReminders);
+		log("Email template is displayed under Appointment Reminder section");
+		return emailAppointmentReminders.getText();
+	}
+
+	public String visibilityOfSMSTemplateUnderAptReminder() {
+		IHGUtil.PrintMethodName();
+		IHGUtil.waitForElement(driver, 10, smsAppointmentReminders);
+		log("SMS template is displayed under Appointment Reminder section");
+		return smsAppointmentReminders.getText();
+	}
+
+	public String visibilityOfPublishedStatusEmailAptConf() {
+		IHGUtil.PrintMethodName();
+		IHGUtil.waitForElement(driver, 10, publishedStatusEmailForApptConfirmations);
+		log("Publish status is displayed under Appointment Confirmation section of email template");
+		return publishedStatusEmailForApptConfirmations.getText();
+	}
+
+	public String visibilityOfPublishedStatusSMSAptConf() {
+		IHGUtil.PrintMethodName();
+		IHGUtil.waitForElement(driver, 10, publishedStatusSmsForApptConfirmations);
+		log("Publish status is displayed under Appointment Confirmation section of sms template");
+		return publishedStatusSmsForApptConfirmations.getText();
+	}
+
+	public String visibilityOfPublishedStatusEmailAptRem() {
+		IHGUtil.PrintMethodName();
+		IHGUtil.waitForElement(driver, 10, publishedStatusEmailForApptReminders);
+		log("Publish status is displayed under Appointment reminders section of email template");
+		return publishedStatusEmailForApptReminders.getText();
+	}
+
+	public String visibilityOfPublishedStatusSMSAptRem() {
+		IHGUtil.PrintMethodName();
+		IHGUtil.waitForElement(driver, 10, publishedStatusSmsApptReminders);
+		log("Publish status is displayed under Appointment reminders section of sms template");
+		return publishedStatusSmsApptReminders.getText();
+	}
+
+	public boolean visibiliyOfAptConfirmationInfoIcon() {
+		IHGUtil.PrintMethodName();
+		IHGUtil.waitForElement(driver, 5, aptConfirmationInfoIcon);
+		aptConfirmationInfoIcon.isDisplayed();
+		if (aptConfirmationInfoIcon.isDisplayed()) {
+			log("Appointment Confirmation Info Icon is visible");
+			return true;
+		} else {
+			log("Appointment Confirmation Info Icon is not visible");
+			return false;
+		}
+	}
+
+	public String getTextFromAptConfirmationInfoIcon() {
+		IHGUtil.PrintMethodName();
+		IHGUtil.waitForElement(driver, 5, aptConfirmationInfoIcon);
+		log("Hover on info icon of Appointment confirmation");
+		Actions action = new Actions(driver);
+		action.moveToElement(aptConfirmationInfoIcon).perform();
+		return aptConfirmationInfoIconText.getText();
+	}
+
+	public String visibilityOfDeliveryMethodTextNotificationTab() {
+		IHGUtil.PrintMethodName();
+		IHGUtil.waitForElement(driver, 10, deliveryMethodOfAptConf);
+		log("In appointment confirmation under Delivery Method section mail and text fields are display");
+		return deliveryMethodOfAptConf.getText();
+	}
+
+	public String visibilityOfDefaultEmailAptConf() {
+		IHGUtil.PrintMethodName();
+		IHGUtil.waitForElement(driver, 10, defaultTextEmailAptConf);
+		log("Default status is displayed for mail under version section of appointment confirmation section");
+		return defaultTextEmailAptConf.getText();
+	}
+
+	public String visibilityOfDefaultSMSAptConf() {
+		IHGUtil.PrintMethodName();
+		IHGUtil.waitForElement(driver, 10, defaultTextSMSAptConf);
+		log("Default status is displayed for sms under version section of appointment confirmation section");
+		return defaultTextSMSAptConf.getText();
+	}
+
+	public String visibilityOfVersionTextAptConfNotificationTab() {
+		IHGUtil.PrintMethodName();
+		IHGUtil.waitForElement(driver, 10, versionTextAptConf);
+		log("Version section of appointment confirmation section is display");
+		return versionTextAptConf.getText();
+	}
+
+	public String visibilityOfApptMethodTextAptConfNotificationTab() {
+		IHGUtil.PrintMethodName();
+		IHGUtil.waitForElement(driver, 10, apptMethodTextAptConf);
+		log("Appointment method Text is displayed under Appointment confirmations.");
+		return apptMethodTextAptConf.getText();
+	}
+
+	public String visibilityOfInOfficeTextEmailAptConf() {
+		IHGUtil.PrintMethodName();
+		IHGUtil.waitForElement(driver, 10, inOfficeTextEmailAptConf);
+		log("In Office Text is displayed for email under Appt method of Appointment confirmations section.");
+		return inOfficeTextEmailAptConf.getText();
+	}
+
+	public String visibilityOfInOfficeTextSMSAptConf() {
+		IHGUtil.PrintMethodName();
+		IHGUtil.waitForElement(driver, 10, inOfficeTextSMSAptConf);
+		log("In Office Text is displayed for sms under Appt method of Appointment confirmations section.");
+		return inOfficeTextSMSAptConf.getText();
+	}
+
+	public String visibilityOfUponSchedulingEmailAptConfNotificationTab() {
+		IHGUtil.PrintMethodName();
+		IHGUtil.waitForElement(driver, 10, uponSchedulingEmailAptConf);
+		log("Upon scheduling Text is displayed for email under Timing of appointment confirmations section.");
+		return uponSchedulingEmailAptConf.getText();
+	}
+
+	public String visibilityOfUponSchedulingSMSAptConfNotificationTab() {
+		IHGUtil.PrintMethodName();
+		IHGUtil.waitForElement(driver, 10, uponSchedulingSMSAptConf);
+		log("Upon scheduling Text is displayed for sms under Timing of appointment confirmations section.");
+		return uponSchedulingSMSAptConf.getText();
+	}
+
+	public String visibilityOfTimingTextNotificationTab() {
+		IHGUtil.PrintMethodName();
+		IHGUtil.waitForElement(driver, 10, timingText);
+		log("Timing Text is displayed in appointment confirmation section.");
+		return timingText.getText();
+	}
+
+	public String visibilityOfStatusTextAptConf() {
+		IHGUtil.PrintMethodName();
+		IHGUtil.waitForElement(driver, 10, statusTextAptConf);
+		log("Publish status is displayed under Status Section of Appointment Confirmation");
+		return statusTextAptConf.getText();
+	}
+
+	public boolean visibiliyOfAptReminderInfoIcon() {
+		IHGUtil.PrintMethodName();
+		IHGUtil.waitForElement(driver, 5, aptRemInfoIcon);
+		if (aptRemInfoIcon.isDisplayed()) {
+			log("Appointment Reminders Info Icon is visible");
+			return true;
+		} else {
+			log("Appointment Reminders Info Icon is not visible");
+			return false;
+		}
+	}
+
+	public String getTextFromAptRemindersInfoIcon() {
+		IHGUtil.PrintMethodName();
+		IHGUtil.waitForElement(driver, 5, aptRemInfoIcon);
+		Actions action = new Actions(driver);
+		action.moveToElement(aptRemInfoIcon).perform();
+		log("Hover on info icon of Appointment reminders");
+		return aptRemindersInfoIconText.getText();
+	}
+
+	public String visibilityOfDeliveryMethodTextForApptRem() {
+		IHGUtil.PrintMethodName();
+		IHGUtil.waitForElement(driver, 10, delivaryMtdForApptRemindert);
+		log("In Delivery Method section is displayed for mail and text fields under appointment reminder section");
+		return delivaryMtdForApptRemindert.getText();
+	}
+
+	public String visibilityOfv2EmailAptRem() {
+		IHGUtil.PrintMethodName();
+		IHGUtil.waitForElement(driver, 10, v2TextEmailAptRem);
+		log("v2 status is displayed for mail under version section of appointment reminders section");
+		return v2TextEmailAptRem.getText();
+	}
+
+	public String visibilityOfDefaultSMSAptRem() {
+		IHGUtil.PrintMethodName();
+		IHGUtil.waitForElement(driver, 10, defaultTextSMSAptRem);
+		log("Default status is displayed for sms under version section of appointment reminders section ");
+		return defaultTextSMSAptRem.getText();
+	}
+
+	public String visibilityOfVersionTextAptRemNotificationTab() {
+		IHGUtil.PrintMethodName();
+		IHGUtil.waitForElement(driver, 10, versionTextAptRem);
+		log("Version section of appointment reminders section is display");
+		return versionTextAptRem.getText();
+	}
+
+	public String visibilityOfApptMethodTextAptRemNotificationTab() {
+		IHGUtil.PrintMethodName();
+		IHGUtil.waitForElement(driver, 10, apptMethodTextAptRem);
+		log("Appointment method Text is displayed under Appointment reminders.");
+		return apptMethodTextAptRem.getText();
+	}
+
+	public String visibilityOfInOfficeTextEmailAptRem() {
+		IHGUtil.PrintMethodName();
+		IHGUtil.waitForElement(driver, 10, inOfficeTextEmailAptRem);
+		log("In Office Text is displayed for email under Appt method of Appointment reminders section.");
+		return inOfficeTextEmailAptRem.getText();
+	}
+
+	public String visibilityOfInOfficeTextSMSAptRem() {
+		IHGUtil.PrintMethodName();
+		IHGUtil.waitForElement(driver, 10, inOfficeTextSMSAptRem);
+		log("In Office Text is displayed for email under Appt method of Appointment confirmations section.");
+		return inOfficeTextSMSAptRem.getText();
+	}
+
+	public String visibilityOfDaysEmailAptRemNotificationTab() {
+		IHGUtil.PrintMethodName();
+		IHGUtil.waitForElement(driver, 10, daysTextEmailAptRem);
+		log("Days Text is displayed under timing section of email template.");
+		return daysTextEmailAptRem.getText();
+	}
+
+	public String visibilityOfHoursEmailAptRemNotificationTab() {
+		IHGUtil.PrintMethodName();
+		IHGUtil.waitForElement(driver, 10, hoursTextEmailAptRem);
+		log("Hours Text is displayed under timing section of email template.");
+		return hoursTextEmailAptRem.getText();
+	}
+
+	public String visibilityOfMinutesEmailAptRemNotificationTab() {
+		IHGUtil.PrintMethodName();
+		IHGUtil.waitForElement(driver, 10, minutesTextEmailAptRem);
+		log("Minutes Text is displayed under timing section of email template");
+		return minutesTextEmailAptRem.getText();
+	}
+
+	public String visibilityOfDaysSMSAptRemNotificationTab() {
+		IHGUtil.PrintMethodName();
+		IHGUtil.waitForElement(driver, 10, daysTextSMSAptRem);
+		log("Days Text is displayed under timing section of sms template.");
+		return daysTextSMSAptRem.getText();
+	}
+
+	public String visibilityOfHoursSMSAptRemNotificationTab() {
+		IHGUtil.PrintMethodName();
+		IHGUtil.waitForElement(driver, 10, hoursTextSMsAptRem);
+		log("Hours Text is displayed under timing section of sms template.");
+		return hoursTextSMsAptRem.getText();
+	}
+
+	public String visibilityOfMinutesSMSAptRemNotificationTab() {
+		IHGUtil.PrintMethodName();
+		IHGUtil.waitForElement(driver, 10, minutesTextSMSAptRem);
+		log("Minutes Text is displayed under timing section of sms template");
+		return minutesTextSMSAptRem.getText();
+	}
+
+	public String visibilityOfTimingTextUnderAptRemNotificationTab() {
+		IHGUtil.PrintMethodName();
+		IHGUtil.waitForElement(driver, 10, timingTextUnderAptRem);
+		log("Timing section is displayed under Appointment Reminders.");
+		return timingTextUnderAptRem.getText();
+	}
+
+	public String visibilityOfOneUnitUnderTimingUnitNotificationTab() {
+		IHGUtil.PrintMethodName();
+		IHGUtil.waitForElement(driver, 10, oneTimeUnit);
+		log("One unit is displayed under Timing Unit section");
+		return oneTimeUnit.getText();
+	}
+
+	public String visibilityOfthirtyUnitUnderTimingUnitNotificationTab() {
+		IHGUtil.PrintMethodName();
+		IHGUtil.waitForElement(driver, 10, thirtyTimeUnit);
+		log("Thirty unit is displayed under Timing Unit section");
+		return thirtyTimeUnit.getText();
+	}
+
+	public String visibilityOfTimingUnitsUnderAptRemNotificationTab() {
+		IHGUtil.PrintMethodName();
+		IHGUtil.waitForElement(driver, 10, timingunitsTextUnderAptRem);
+		log("Timing units section is displayed under Appointment Reminders");
+		return timingunitsTextUnderAptRem.getText();
+	}
+
+	public String visibilityOfStatusTextAptRem() {
+		IHGUtil.PrintMethodName();
+		IHGUtil.waitForElement(driver, 10, statusTextAptRem);
+		log("Publish status is displayed under Status Section of Appointment reminders");
+		return statusTextAptRem.getText();
+	}
+
+	public String getOnPreviewButtonText() {
+		IHGUtil.PrintMethodName();
+		IHGUtil.waitForElement(driver, 10, previewButton);
+		return previewButton.getText();
+	}
+
+	public String visibilityOfEditTextUnderHamburger() {
+		IHGUtil.PrintMethodName();
+		IHGUtil.waitForElement(driver, 10, editTextUnderHamburgerButton);
+		log("Edit button is displayed.");
+		return editTextUnderHamburgerButton.getText();
+	}
+
+	public void clickOnEditButtonHamburgerButton() throws InterruptedException {
+		IHGUtil.PrintMethodName();
+		IHGUtil.waitForElement(driver, 10, editTextUnderHamburgerButton);
+		jse.executeScript("arguments[0].click();", editTextUnderHamburgerButton);
+		Thread.sleep(5000);
+	}
+
+	public boolean visibilityOfNotificationOffRadioButton() {
+		IHGUtil.PrintMethodName();
+		IHGUtil.waitForElement(driver, 10, offNotificationButton);
+		log("send notification radio button is displayed.");
+		if (offNotificationButton.isEnabled()) {
+			log("send notification radio button is enabled.");
+			return true;
+		} else {
+			log("send notification radio button is disabled.");
+			return false;
+		}
+	}
+
+	public boolean visibilityOfNotificationOnRadioButton() {
+		IHGUtil.PrintMethodName();
+		IHGUtil.waitForElement(driver, 10, onNotificationButton);
+		log("send notification radio button is displayed.");
+		if (onNotificationButton.isEnabled()) {
+			log("send notification radio button is enabled.");
+			return true;
+		} else {
+			log("send notification radio button is disabled.");
+			return false;
+		}
+	}
+
+	public void clearAdditionalArrivalInstTextboxEn() {
+		IHGUtil.PrintMethodName();
+		IHGUtil.waitForElement(driver, 10, additionalArrivalInstructionsTextBoxEn);
+		additionalArrivalInstructionsTextBoxEn.clear();
+		log("Clear Additional arrival instrunction textbox");
+	}
+
+	public String AdditionalArrivalInstTextboxBlankEn() {
+		IHGUtil.PrintMethodName();
+		IHGUtil.waitForElement(driver, 10, additionalArrivalInstructionsTextBoxText);
+		log("Additional arrival instrunction textbox is blank.");
+		return additionalArrivalInstructionsTextBoxText.getText();
+	}
+
+	public void addArrivalInstructionTextInEnglish(String addArrivalInstruction) {
+		IHGUtil.PrintMethodName();
+		IHGUtil.waitForElement(driver, 10, additionalArrivalInstructionsTextBoxText);
+		additionalArrivalInstructionsTextBoxText.sendKeys(addArrivalInstruction);
+		log("Add Additional arrival instrunction message for english");
+	}
+
+	public void clearAdditionalArrivalInstTextboxEs() {
+		IHGUtil.PrintMethodName();
+		IHGUtil.waitForElement(driver, 10, additionalArrivalInstructionsTextBoxEs);
+		additionalArrivalInstructionsTextBoxEs.clear();
+		log("Clear Additional arrival instrunction textbox for spanish");
+	}
+
+	public String additionalArrivalInstTextboxBlankEs() {
+		IHGUtil.PrintMethodName();
+		IHGUtil.waitForElement(driver, 10, additionalArrivalInstructionsTextBoxText);
+		log("Additional arrival instrunction textbox is blank.");
+		return additionalArrivalInstructionsTextBoxText.getText();
+	}
+
+	public void addArrivalInstructionTextInSpanish(String addArrivalInstruction) {
+		IHGUtil.PrintMethodName();
+		IHGUtil.waitForElement(driver, 10, additionalArrivalInstructionsTextBoxText);
+		additionalArrivalInstructionsTextBoxText.sendKeys(addArrivalInstruction);
+		log("Add Additional arrival instrunction message in spanish");
+	}
+
+	public void clickOnPracticePrefLangDropDown() {
+		IHGUtil.PrintMethodName();
+		IHGUtil.waitForElement(driver, 5, practicePrefenceLangDropDown);
+		practicePrefenceLangDropDown.click();
+	}
+
+	public void selectEnglishSpanishPracticePrefLang() {
+		IHGUtil.PrintMethodName();
+		IHGUtil.waitForElement(driver, 5, englishSpanishPracticePrefenceLang);
+		englishSpanishPracticePrefenceLang.click();
+	}
+
+	public boolean visiblityOfBroadcastMessageTextBoxInEnEs() {
+		IHGUtil.PrintMethodName();
+		IHGUtil.waitForElement(driver, 10, englishSpanishPracticePrefenceLang);
+		if (englishSpanishPracticePrefenceLang.isDisplayed()) {
+			log("Broadcast Message Text box in english and spanish language is visible");
+			return true;
+		} else {
+			log("Broadcast Message Text box in english and spanish language is not visible");
+			return false;
+		}
+	}
+
+	public void clickOnEnglishPracticePrefLang() throws InterruptedException {
+		IHGUtil.PrintMethodName();
+		IHGUtil.waitForElement(driver, 5, englishPracticePrefenceLang);
+		jse.executeScript("arguments[0].click();", englishPracticePrefenceLang);
+	}
+
+	public boolean visibilityOfPracticePrefenceLangEn() {
+		IHGUtil.PrintMethodName();
+		IHGUtil.waitForElement(driver, 10, englishPracticePrefenceLang);
+		if (englishPracticePrefenceLang.isDisplayed()) {
+			log("Broadcast Message Text box in english language is visible");
+			return true;
+		} else {
+			log("Broadcast Message Text box in english language is not visible");
+			return false;
+		}
 	}
 }

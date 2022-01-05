@@ -1,7 +1,8 @@
 // Copyright 2013-2021 NXGN Management, LLC. All Rights Reserved.
 package com.intuit.ihg.product.integrationplatform.test;
 
-import static org.testng.Assert.*;
+import static org.testng.Assert.assertNotNull;
+import static org.testng.Assert.assertTrue;
 
 import org.apache.commons.lang.StringUtils;
 import org.testng.SkipException;
@@ -11,7 +12,6 @@ import org.testng.annotations.Test;
 import com.intuit.ifs.csscat.core.BaseTestNGWebDriver;
 import com.intuit.ifs.csscat.core.RetryAnalyzer;
 import com.intuit.ifs.csscat.core.TestConfig;
-import com.intuit.ihg.common.utils.mail.GmailBot;
 import com.intuit.ihg.product.integrationplatform.utils.AMDC;
 import com.intuit.ihg.product.integrationplatform.utils.AMDCTestData;
 import com.intuit.ihg.product.integrationplatform.utils.Appointment;
@@ -22,6 +22,7 @@ import com.intuit.ihg.product.integrationplatform.utils.EHDC;
 import com.intuit.ihg.product.integrationplatform.utils.EHDCTestData;
 import com.intuit.ihg.product.integrationplatform.utils.IntegrationConstants;
 import com.intuit.ihg.product.integrationplatform.utils.LoadPreTestData;
+import com.intuit.ihg.product.integrationplatform.utils.MailinatorUtils;
 import com.intuit.ihg.product.integrationplatform.utils.Medication;
 import com.intuit.ihg.product.integrationplatform.utils.MedicationPayLoad;
 import com.intuit.ihg.product.integrationplatform.utils.MedicationTestData;
@@ -35,7 +36,6 @@ import com.intuit.ihg.product.integrationplatform.utils.StatementEventData;
 import com.intuit.ihg.product.integrationplatform.utils.StatementPreference;
 import com.intuit.ihg.product.integrationplatform.utils.StatementPreferenceTestData;
 import com.medfusion.common.utils.IHGUtil;
-import com.medfusion.common.utils.Mailinator;
 import com.medfusion.product.object.maps.patientportal2.page.JalapenoLoginPage;
 import com.medfusion.product.object.maps.patientportal2.page.AppointmentRequestPage.JalapenoAppointmentRequestPage;
 import com.medfusion.product.object.maps.patientportal2.page.AppointmentRequestPage.JalapenoAppointmentRequestV2Step1;
@@ -130,7 +130,7 @@ public class IntegrationPlatformAcceptanceTests extends BaseTestNGWebDriver {
 		log("Step 5: Checking for the activation link inside the patient mailinator inbox");
 		// Searching for the link for patient activation in the mailinator Inbox
 
-		Mailinator mail = new Mailinator();
+		MailinatorUtils mail = new MailinatorUtils(driver);
 		String activationUrl = mail.getLinkFromEmail(email,JalapenoConstants.NEW_PATIENT_ACTIVATION_MESSAGE,
 				JalapenoConstants.NEW_PATIENT_ACTIVATION_MESSAGE_LINK_TEXT, 40);
 
@@ -261,7 +261,7 @@ public class IntegrationPlatformAcceptanceTests extends BaseTestNGWebDriver {
 		log("Step 6: Check secure message in patient gmail inbox");
 		// String link = RestUtils.verifyEmailNotification(testData.getGmailUserName(),
 		// testData.getGmailPassword(), testData.getSender3(), 3, "Portal 2.0");
-		Mailinator mail = new Mailinator();
+		MailinatorUtils mail = new MailinatorUtils(driver);
 		String subject = "New message from PI Automation rsdk Integrated";
 		String messageLink = "Sign in to view this message";
 		String emailMessageLink = mail.getLinkFromEmail(testData.getUserName(), subject, messageLink, 5);
@@ -558,7 +558,7 @@ public class IntegrationPlatformAcceptanceTests extends BaseTestNGWebDriver {
 		}
 		log("Step 12: Check secure message in patient mailinator inbox");
 
-		Mailinator mail = new Mailinator();
+		MailinatorUtils mail = new MailinatorUtils(driver);
 		String subject = "New message from PI Automation rsdk Integrated";
 		String messageLink = "Sign in to view this message";
 		String emailMessageLink = mail.getLinkFromEmail(testData.getUserName(), subject, messageLink, 10);
@@ -697,7 +697,7 @@ public class IntegrationPlatformAcceptanceTests extends BaseTestNGWebDriver {
 		Thread.sleep(90000);
 
 		log("Step 13: Check secure message in patient gmail inbox");
-		Mailinator mail = new Mailinator();
+		MailinatorUtils mail = new MailinatorUtils(driver);
 		String subject = "New message from " + OLBPData.getPracticeName();
 		String messageLink = "Sign in to view this message";
 		assertTrue(mail.isMessageInInbox(OLBPData.getUserName(), subject, messageLink, 5));
@@ -1310,7 +1310,7 @@ public class IntegrationPlatformAcceptanceTests extends BaseTestNGWebDriver {
 		logStep("Checking for the activation link inside the patient mailinator inbox");
 		// Searching for the link for patient activation in the mailinator Inbox
 
-		Mailinator mail = new Mailinator();
+		MailinatorUtils mail = new MailinatorUtils(driver);
 		String activationUrl = mail.getLinkFromEmail(email,JalapenoConstants.NEW_PATIENT_ACTIVATION_MESSAGE,
 				JalapenoConstants.NEW_PATIENT_ACTIVATION_MESSAGE_LINK_TEXT, 40);
 

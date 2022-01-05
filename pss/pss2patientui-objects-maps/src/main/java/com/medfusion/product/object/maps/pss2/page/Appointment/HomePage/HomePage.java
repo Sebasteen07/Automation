@@ -199,7 +199,7 @@ public class HomePage extends PSS2MainPage {
 	@FindBy(how = How.XPATH, using = "//div[@id='alertModalheader']//span[contains(text(),'Alert')]")
 	private WebElement alertPopUp;
 	
-	@FindBy(how = How.XPATH, using = "//div[2]/div[1]/div[1]/div[1]/div[2]/pre[1]/div[1]")
+	@FindBy(how = How.CSS, using = "div[id='alertModalheader'] div[class='modal-body'] div")
 	private WebElement alertPopUpMsg;
 	
 	@FindBy(how = How.XPATH, using = "//div[@id='patientmatch']//div[@class='modal-body']/p/pre")
@@ -818,7 +818,7 @@ public class HomePage extends PSS2MainPage {
 	
 	public String getTextLockoutPopUpMsg() {
 		
-		IHGUtil.waitForElement(driver, 3, lockoutPopUpMsg);
+		IHGUtil.waitForElement(driver, 10, lockoutPopUpMsg);
 		commonMethods.highlightElement(lockoutPopUpMsg);
 		String popupText=lockoutPopUpMsg.getText();
 		return popupText;		
@@ -826,7 +826,7 @@ public class HomePage extends PSS2MainPage {
 	
 	public String getTextAlertPopUpMsg() {
 		
-		IHGUtil.waitForElement(driver, 3, alertPopUp);
+		IHGUtil.waitForElement(driver, 10, alertPopUpMsg);
 		commonMethods.highlightElement(alertPopUpMsg);
 		String popupText=alertPopUpMsg.getText();
 		return popupText;		

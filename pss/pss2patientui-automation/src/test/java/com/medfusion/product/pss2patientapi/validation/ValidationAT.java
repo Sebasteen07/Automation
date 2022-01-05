@@ -156,6 +156,7 @@ public class ValidationAT extends BaseTestNG {
 		apiVerification.responseKeyValidationJson(response, "careProvider[0].slotSize");
 		apiVerification.responseKeyValidationJson(response, "careProvider[0].nextAvilabledate");
 		apiVerification.responseTimeValidation(response);
+		apiVerification.responseCodeValidation(response,200);
 		
 		assertEquals(catid, propertyData.getProperty("cpresourcecat.id.at"));
 		assertEquals(resourceid,propertyData.getProperty("cpresource.id.at"));	
@@ -256,7 +257,7 @@ public class ValidationAT extends BaseTestNG {
 	public void verifyNextavailableSlotsResponse(Response response) throws IOException {
 		propertyData = new PSSPropertyFileLoader();
 		apiVerification.responseCodeValidation(response, 200);
-		apiVerification.responseTimeValidation(response);
+		
 	}
 	
 	public void verifyNextavailableSlotsWithInvalidApptIdResponse(Response response) throws IOException {

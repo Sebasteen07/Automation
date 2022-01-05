@@ -53,6 +53,7 @@ public class MedicationsConfirmationPage extends BasePageObject {
 		IHGUtil.waitForElement(driver, 20, confirmPopup);
 		String successMsgOnPopup = successMsg.getText();
 		btnClose.click();
+		Thread.sleep(1000);
 		return successMsgOnPopup;
 	}
 

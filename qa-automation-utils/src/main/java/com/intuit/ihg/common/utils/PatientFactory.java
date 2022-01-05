@@ -10,7 +10,7 @@ public class PatientFactory {
 		public static Patient createJalapenoPatient(String username, PropertyFileLoader testData) throws NullPointerException, Exception {
 				Patient patient = new Patient();
 				patient.setUsername(username);
-				patient.setEmail(username + "@mailinator.com");
+				patient.setEmail(testData.getProperty("last.name") + IHGUtil.createRandomNumber()+"@yopmail.com");
 				patient.setFirstName(testData.getProperty("first.name") + IHGUtil.createRandomNumber());
 				patient.setLastName(testData.getProperty("last.name"));
 				patient.setPassword(testData.getProperty("password"));

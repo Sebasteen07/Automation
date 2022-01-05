@@ -14,7 +14,6 @@ import org.testng.annotations.Test;
 import com.intuit.ifs.csscat.core.BaseTestNGWebDriver;
 import com.intuit.ifs.csscat.core.RetryAnalyzer;
 import com.intuit.ihg.eh.core.dto.Timestamp;
-import com.medfusion.common.utils.Mailinator;
 import com.medfusion.product.object.maps.pss2.page.AppEntryPoint.StartAppointmentInOrder;
 import com.medfusion.product.object.maps.pss2.page.Appointment.Anonymous.AnonymousDismissPage;
 import com.medfusion.product.object.maps.pss2.page.Appointment.CancResc.CancelRescheduleDecisionPage;
@@ -190,7 +189,7 @@ public class PSS2PatientPortalAcceptanceTests02 extends BaseTestNGWebDriver {
 		psspatientutils.selectAFlow(driver, rule, homePage, testData);
 	}
 
-	@Test(enabled = true, groups = {"AcceptanceTests"}, retryAnalyzer = RetryAnalyzer.class, dependsOnMethods="testE2EAnonymousNG")
+	@Test(enabled = true, groups = {"AcceptanceTests"}, retryAnalyzer = RetryAnalyzer.class, dependsOnMethods="testE2EAnonymousWithPrivacyPolicyNG")
 	public void testRescheduleAnonymousviaEmailNG() throws Exception {
 		
 		log("Test to verify if Reschedule an Appointment via Email Notification");		
@@ -583,7 +582,7 @@ public class PSS2PatientPortalAcceptanceTests02 extends BaseTestNGWebDriver {
 	@Test(enabled = true, groups = { "AcceptanceTests" }, retryAnalyzer = RetryAnalyzer.class)
 	public void testLockout_BillingNotesNG() throws Exception {
 
-		logStep("Verify the Announcemnet- Greetings on welcome page");
+		logStep("Verify Lockout - Billing Note for NG");
 		PSSPropertyFileLoader propertyData = new PSSPropertyFileLoader();
 		Appointment testData = new Appointment();
 		AdminUser adminUser = new AdminUser();
@@ -599,62 +598,6 @@ public class PSS2PatientPortalAcceptanceTests02 extends BaseTestNGWebDriver {
 		String lockoutmessage=propertyData.getProperty("lockoutbillingnote.ng");
 		String lockouttype=propertyData.getProperty("billingnote.type.ng");
 		String key=propertyData.getProperty("lockoutkey.ng");
-		
-		String lockoutPayload=payloadAM.alertAndLocakout(key, key, lockouttype, group, lockoutmessage);
-		
-		logStep("Remove the already set announcement ");
-		response=postAPIRequestAM.lockoutPost(practiceId, lockoutPayload, "/lockout");
-		aPIVerification.responseCodeValidation(response, 200);
-		
-		logStep("Move to PSS patient Portal 2.0 to book an Appointment");
-		DismissPage dismissPage = new DismissPage(driver, testData.getUrlLoginLess());
-		
-
-		logStep("Open the link and click on Dismiss Button ");
-		LoginlessPatientInformation loginlessPatientInformation = dismissPage.clickDismiss();
-
-		String fn = propertyData.getProperty("firstname.lockout.ng");
-		String ln = propertyData.getProperty("lastname.lockout.ng");
-		String dob = propertyData.getProperty("dob.lockout.ng");
-		String gender = propertyData.getProperty("gender.lockout.ng");
-		
-		logStep("Enter the below mentioned patient details in demographic page- ");
-		log("Demographic Details- " + fn + " " + ln + " " + dob + " " + gender + " ");
-		
-		HomePage homePage = loginlessPatientInformation.fillNewPatientForm(fn, ln, dob, "", gender, "", "");	
-		String actualPopUpMessage=homePage.getTextLockoutPopUpMsg();
-		
-		assertEquals(actualPopUpMessage, lockoutmessage, "Lockout message is wrong");
-		
-		response=postAPIRequestAM.associatedlockout(practiceId, "/associatedlockout");
-		aPIVerification.responseCodeValidation(response, 200);	
-		
-		JSONArray arr = new JSONArray(response.body().asString());
-		int id = arr.getJSONObject(0).getInt("id");
-		
-		response=postAPIRequestAM.deleteLockoutById(practiceId, id);
-		aPIVerification.responseCodeValidation(response, 200);	
-	}
-
-	@Test(enabled = true, groups = { "AcceptanceTests" }, retryAnalyzer = RetryAnalyzer.class)
-	public void testLockout_PatientNotesNG() throws Exception {
-
-		logStep("Verify the Announcemnet- Greetings on welcome page");
-		PSSPropertyFileLoader propertyData = new PSSPropertyFileLoader();
-		Appointment testData = new Appointment();
-		AdminUser adminUser = new AdminUser();
-		
-		propertyData.setAdminNG(adminUser);
-		propertyData.setAppointmentResponseNG(testData);
-
-		logStep("Set up the API authentication");
-		setUp(propertyData.getProperty("mf.practice.id.ng"), propertyData.getProperty("mf.authuserid.am.ng"));
-		Response response;
-		
-		String group=propertyData.getProperty("lockoutgroup.ng");
-		String lockoutmessage=propertyData.getProperty("lockoutbillingnote.ng");
-		String lockouttype=propertyData.getProperty("patientnote.type.ng");
-		String key=propertyData.getProperty("patientnote.key.ng");
 		
 		String lockoutPayload=payloadAM.alertAndLocakout(key, key, lockouttype, group, lockoutmessage);
 		
@@ -693,9 +636,361 @@ public class PSS2PatientPortalAcceptanceTests02 extends BaseTestNGWebDriver {
 	}
 	
 	@Test(enabled = true, groups = { "AcceptanceTests" }, retryAnalyzer = RetryAnalyzer.class)
+	public void testLockout_BillingNotesGE() throws Exception {
+
+		logStep("Verify Lockout - Billing Note for GE");
+		PSSPropertyFileLoader propertyData = new PSSPropertyFileLoader();
+		Appointment testData = new Appointment();
+		AdminUser adminUser = new AdminUser();
+		
+		propertyData.setAdminGE(adminUser);
+		propertyData.setAppointmentResponseGE(testData);
+
+		logStep("Set up the API authentication");
+		setUp(propertyData.getProperty("mf.practice.id.ge"), propertyData.getProperty("mf.authuserid.am.ge"));
+		Response response;
+		
+		String group=propertyData.getProperty("lockoutgroup.ng");
+		String lockoutMessage=propertyData.getProperty("lockoutbillingnote.ng");
+		String lockoutType=propertyData.getProperty("billingnote.type.ng");
+		String key=propertyData.getProperty("billingnote.key.ge");
+		
+		String lockoutPayload=payloadAM.alertAndLocakout(key, key, lockoutType, group, lockoutMessage);
+		
+		logStep("Remove the already set announcement ");
+		response=postAPIRequestAM.lockoutPost(practiceId, lockoutPayload, "/lockout");
+		aPIVerification.responseCodeValidation(response, 200);
+		
+		logStep("Move to PSS patient Portal 2.0 to book an Appointment");
+		DismissPage dismissPage = new DismissPage(driver, testData.getUrlLoginLess());
+		
+		logStep("Open the link and click on Dismiss Button ");
+		LoginlessPatientInformation loginlessPatientInformation = dismissPage.clickDismiss();
+
+		String fn = propertyData.getProperty("lockout.fn.ge");
+		String ln = propertyData.getProperty("lockout.fn.ge");
+		String dob = propertyData.getProperty("lockout.dob.ge");
+		String gender = propertyData.getProperty("lockout.gender.ge");
+		String email = propertyData.getProperty("lockout.email.ge");
+		
+		logStep("Enter the below mentioned patient details in demographic page- ");
+		log("Demographic Details- " + fn + " " + ln + " " + dob + " " + gender + " ");
+		
+		HomePage homePage = loginlessPatientInformation.fillNewPatientForm(fn, ln, dob, email, gender, "", "");	
+		String actualPopUpMessage=homePage.getTextLockoutPopUpMsg();
+		
+		assertEquals(actualPopUpMessage, lockoutMessage, "Lockout message is wrong");
+		
+		response=postAPIRequestAM.associatedlockout(practiceId, "/associatedlockout");
+		aPIVerification.responseCodeValidation(response, 200);	
+		
+		JSONArray arr = new JSONArray(response.body().asString());
+		int id = arr.getJSONObject(0).getInt("id");
+		
+		response=postAPIRequestAM.deleteLockoutById(practiceId, id);
+		aPIVerification.responseCodeValidation(response, 200);	
+	}
+	
+	@Test(enabled = true, groups = { "AcceptanceTests" }, retryAnalyzer = RetryAnalyzer.class)
+	public void testLockout_PatientNotesGE() throws Exception {
+
+		logStep("Verify Lockout - Patient Note for GE");
+		PSSPropertyFileLoader propertyData = new PSSPropertyFileLoader();
+		Appointment testData = new Appointment();
+		AdminUser adminUser = new AdminUser();
+		
+		propertyData.setAdminGE(adminUser);
+		propertyData.setAppointmentResponseGE(testData);
+
+		logStep("Set up the API authentication");
+		setUp(propertyData.getProperty("mf.practice.id.ge"), propertyData.getProperty("mf.authuserid.am.ge"));
+		Response response;
+		
+		String group=propertyData.getProperty("lockoutgroup.ng");
+		String lockoutmessage=propertyData.getProperty("lockoutbillingnote.ng");
+		String lockouttype=propertyData.getProperty("billingnote.type.ng");
+		String key=propertyData.getProperty("billingnote.key.ge");
+		
+		String lockoutPayload=payloadAM.alertAndLocakout(key, key, lockouttype, group, lockoutmessage);
+		
+		logStep("Remove the already set announcement ");
+		response=postAPIRequestAM.lockoutPost(practiceId, lockoutPayload, "/lockout");
+		aPIVerification.responseCodeValidation(response, 200);
+		
+		logStep("Move to PSS patient Portal 2.0 to book an Appointment");
+		DismissPage dismissPage = new DismissPage(driver, testData.getUrlLoginLess());		
+
+		logStep("Open the link and click on Dismiss Button ");
+		LoginlessPatientInformation loginlessPatientInformation = dismissPage.clickDismiss();
+
+		String fn = propertyData.getProperty("lockout.fn.ge");
+		String ln = propertyData.getProperty("lockout.fn.ge");
+		String dob = propertyData.getProperty("lockout.dob.ge");
+		String gender = propertyData.getProperty("lockout.gender.ge");
+		String email = propertyData.getProperty("lockout.email.ge");
+		
+		logStep("Enter the below mentioned patient details in demographic page- ");
+		log("Demographic Details- " + fn + " " + ln + " " + dob + " " + gender + " ");
+		
+		HomePage homePage = loginlessPatientInformation.fillNewPatientForm(fn, ln, dob, email, gender, "", "");	
+		String actualPopUpMessage=homePage.getTextLockoutPopUpMsg();
+		
+		assertEquals(actualPopUpMessage, lockoutmessage, "Lockout message is wrong");
+		
+		response=postAPIRequestAM.associatedlockout(practiceId, "/associatedlockout");
+		aPIVerification.responseCodeValidation(response, 200);	
+		
+		JSONArray arr = new JSONArray(response.body().asString());
+		int id = arr.getJSONObject(0).getInt("id");
+		
+		response=postAPIRequestAM.deleteLockoutById(practiceId, id);
+		aPIVerification.responseCodeValidation(response, 200);	
+	}
+
+	@Test(enabled = true, groups = { "AcceptanceTests" }, retryAnalyzer = RetryAnalyzer.class)
+	public void testLockout_PatientNotesGW() throws Exception {
+
+		logStep("Verify Lockout - Patient Note for GreenWay");
+		PSSPropertyFileLoader propertyData = new PSSPropertyFileLoader();
+		Appointment testData = new Appointment();
+		AdminUser adminUser = new AdminUser();
+		
+		propertyData.setAdminGW(adminUser);
+		propertyData.setAppointmentResponseGW(testData);
+
+		logStep("Set up the API authentication");
+		setUp(propertyData.getProperty("mf.practice.id.gw"), propertyData.getProperty("mf.authuserid.am.gw"));
+		Response response;
+		
+		String group=propertyData.getProperty("lockoutgroup.ng");
+		String lockoutmessage=propertyData.getProperty("lockoutbillingnote.ng");
+		String lockouttype=propertyData.getProperty("patientnote.type.ng");
+		String key=propertyData.getProperty("patientnote.key.gw");
+		
+		String lockoutPayload=payloadAM.alertAndLocakout(key, key, lockouttype, group, lockoutmessage);
+		
+		logStep("Remove the already set announcement ");
+		response=postAPIRequestAM.lockoutPost(practiceId, lockoutPayload, "/lockout");
+		aPIVerification.responseCodeValidation(response, 200);
+		
+		logStep("Move to PSS patient Portal 2.0 to book an Appointment");
+		DismissPage dismissPage = new DismissPage(driver, testData.getUrlLoginLess());		
+
+		logStep("Open the link and click on Dismiss Button ");
+		LoginlessPatientInformation loginlessPatientInformation = dismissPage.clickDismiss();
+		
+		String fn = propertyData.getProperty("lockout.fn.gw");
+		String ln = propertyData.getProperty("lockout.ln.gw");
+		String dob = propertyData.getProperty("lockout.dob.gw");
+		String gender = propertyData.getProperty("lockout.gender.gw");
+		
+		logStep("Enter the below mentioned patient details in demographic page- ");
+		log("Demographic Details- " + fn + " " + ln + " " + dob + " " + gender + " ");
+		
+		HomePage homePage = loginlessPatientInformation.fillNewPatientForm(fn, ln, dob, "", gender, "", "");	
+		String actualPopUpMessage=homePage.getTextLockoutPopUpMsg();
+		
+		assertEquals(actualPopUpMessage, lockoutmessage, "Lockout message is wrong");
+		
+		response=postAPIRequestAM.associatedlockout(practiceId, "/associatedlockout");
+		aPIVerification.responseCodeValidation(response, 200);	
+		
+		JSONArray arr = new JSONArray(response.body().asString());
+		int id = arr.getJSONObject(0).getInt("id");
+		
+		response=postAPIRequestAM.deleteLockoutById(practiceId, id);
+		aPIVerification.responseCodeValidation(response, 200);	
+	}
+	
+	@Test(enabled = true, groups = { "AcceptanceTests" }, retryAnalyzer = RetryAnalyzer.class)
+	public void testLockout_PatientNotesNG() throws Exception {
+
+		logStep("Verify Lockout - Patient Note for NG");
+		PSSPropertyFileLoader propertyData = new PSSPropertyFileLoader();
+		Appointment testData = new Appointment();
+		AdminUser adminUser = new AdminUser();
+		
+		propertyData.setAdminNG(adminUser);
+		propertyData.setAppointmentResponseNG(testData);
+
+		logStep("Set up the API authentication");
+		setUp(propertyData.getProperty("mf.practice.id.ng"), propertyData.getProperty("mf.authuserid.am.ng"));
+		Response response;
+		
+		String group=propertyData.getProperty("lockoutgroup.ng");
+		String lockoutmessage=propertyData.getProperty("lockoutbillingnote.ng");
+		String lockouttype=propertyData.getProperty("patientnote.type.ng");
+		String key=propertyData.getProperty("patientnote.key.ng");
+		
+		String lockoutPayload=payloadAM.alertAndLocakout(key, key, lockouttype, group, lockoutmessage);
+		
+		logStep("Remove the already set announcement ");
+		response=postAPIRequestAM.lockoutPost(practiceId, lockoutPayload, "/lockout");
+		aPIVerification.responseCodeValidation(response, 200);
+		
+		logStep("Move to PSS patient Portal 2.0 to book an Appointment");
+		DismissPage dismissPage = new DismissPage(driver, testData.getUrlLoginLess());		
+
+		logStep("Open the link and click on Dismiss Button ");
+		LoginlessPatientInformation loginlessPatientInformation = dismissPage.clickDismiss();
+
+		String fn = propertyData.getProperty("firstname.lockout.ng");
+		String ln = propertyData.getProperty("lastname.lockout.ng");
+		String dob = propertyData.getProperty("dob.lockout.ng");
+		String gender = propertyData.getProperty("gender.lockout.ng");
+		
+		logStep("Enter the below mentioned patient details in demographic page- ");
+		log("Demographic Details- " + fn + " " + ln + " " + dob + " " + gender + " ");
+		
+		HomePage homePage = loginlessPatientInformation.fillNewPatientForm(fn, ln, dob, "", gender, "", "");	
+		String actualPopUpMessage=homePage.getTextLockoutPopUpMsg();
+		
+		assertEquals(actualPopUpMessage, lockoutmessage, "Lockout message is wrong");
+		
+		response=postAPIRequestAM.associatedlockout(practiceId, "/associatedlockout");
+		aPIVerification.responseCodeValidation(response, 200);	
+		
+		JSONArray arr = new JSONArray(response.body().asString());
+		int id = arr.getJSONObject(0).getInt("id");
+		
+		response=postAPIRequestAM.deleteLockoutById(practiceId, id);
+		aPIVerification.responseCodeValidation(response, 200);	
+	}
+	
+	@Test(enabled = true, groups = { "AcceptanceTests" }, retryAnalyzer = RetryAnalyzer.class)
+	public void testAlerts_PatientNotesGE() throws Exception {
+
+		logStep("Verify Alerts - Patient Note for GE");
+		PSSPropertyFileLoader propertyData = new PSSPropertyFileLoader();
+		Appointment testData = new Appointment();
+		AdminUser adminUser = new AdminUser();
+		
+		propertyData.setAdminGE(adminUser);
+		propertyData.setAppointmentResponseGE(testData);
+
+		logStep("Set up the API authentication");
+		setUp(propertyData.getProperty("mf.practice.id.ge"), propertyData.getProperty("mf.authuserid.am.ge"));
+		Response response;
+		
+		String patientMatch = payloadAM.patientMatchGE();
+		response = postAPIRequestAM.patientInfoPost(practiceId, patientMatch);
+		aPIVerification.responseCodeValidation(response, 200);	
+		
+		String group=propertyData.getProperty("alertgroup.ng");
+		String lockoutmessage=propertyData.getProperty("lockoutbillingnote.ng");
+		String lockouttype=propertyData.getProperty("billingnote.type.ng");
+		String key=propertyData.getProperty("billingnote.key.ge");
+		
+		String lockoutPayload=payloadAM.alertAndLocakout(key, key, lockouttype, group, lockoutmessage);
+		
+		logStep("Remove the already set announcement ");
+		response=postAPIRequestAM.lockoutPost(practiceId, lockoutPayload, "/lockout");
+		aPIVerification.responseCodeValidation(response, 200);
+		
+		logStep("Move to PSS patient Portal 2.0 to book an Appointment");
+		DismissPage dismissPage = new DismissPage(driver, testData.getUrlLoginLess());		
+
+		logStep("Open the link and click on Dismiss Button ");
+		LoginlessPatientInformation loginlessPatientInformation = dismissPage.clickDismiss();
+
+		String fn = propertyData.getProperty("lockout.fn.ge");
+		String ln = propertyData.getProperty("lockout.fn.ge");
+		String dob = propertyData.getProperty("lockout.dob.ge");
+		String gender = propertyData.getProperty("lockout.gender.ge");
+		String email = propertyData.getProperty("lockout.email.ge");
+		
+		logStep("Enter the below mentioned patient details in demographic page- ");
+		log("Demographic Details- " + fn + " " + ln + " " + dob + " " + gender + " ");
+		
+		HomePage homePage = loginlessPatientInformation.fillNewPatientForm(fn, ln, dob, email, gender, "", "");	
+		String actualPopUpMessage=homePage.getTextAlertPopUpMsg();
+		
+		assertEquals(actualPopUpMessage, lockoutmessage, "Lockout message is wrong");	
+		
+		homePage.clickAlertPopUp();		
+		boolean bool=homePage.isbtnstartSchedulingPresent();
+		
+		assertEquals(bool, true, "Alert workflow is wrong");		
+		log("Start Schedule Button is visible. So Test Case passed.");
+		
+		response=postAPIRequestAM.associatedlockout(practiceId, "/associatedlockout");
+		aPIVerification.responseCodeValidation(response, 200);			
+		
+		JSONArray arr = new JSONArray(response.body().asString());
+		int id = arr.getJSONObject(0).getInt("id");
+		response=postAPIRequestAM.deleteLockoutById(practiceId, id);
+		aPIVerification.responseCodeValidation(response, 200);	
+	}
+	
+	@Test(enabled = true, groups = { "AcceptanceTests" }, retryAnalyzer = RetryAnalyzer.class)
+	public void testAlerts_BillingNotesGE() throws Exception {
+
+		logStep("Verify Alerts - Billing Note for GE");
+		PSSPropertyFileLoader propertyData = new PSSPropertyFileLoader();
+		Appointment testData = new Appointment();
+		AdminUser adminUser = new AdminUser();
+		
+		propertyData.setAdminGE(adminUser);
+		propertyData.setAppointmentResponseGE(testData);
+
+		logStep("Set up the API authentication");
+		setUp(propertyData.getProperty("mf.practice.id.ge"), propertyData.getProperty("mf.authuserid.am.ge"));
+		Response response;
+		
+		String patientMatch = payloadAM.patientMatchGE();
+		response = postAPIRequestAM.patientInfoPost(practiceId, patientMatch);
+		aPIVerification.responseCodeValidation(response, 200);	
+		
+		String group=propertyData.getProperty("alertgroup.ng");
+		String lockoutmessage=propertyData.getProperty("lockoutbillingnote.ng");
+		String lockouttype=propertyData.getProperty("billingnote.type.ng");
+		String key=propertyData.getProperty("billingnote.key.ge");
+		
+		String lockoutPayload=payloadAM.alertAndLocakout(key, key, lockouttype, group, lockoutmessage);
+		
+		logStep("Remove the already set announcement ");
+		response=postAPIRequestAM.lockoutPost(practiceId, lockoutPayload, "/lockout");
+		aPIVerification.responseCodeValidation(response, 200);
+		
+		logStep("Move to PSS patient Portal 2.0 to book an Appointment");
+		DismissPage dismissPage = new DismissPage(driver, testData.getUrlLoginLess());		
+
+		logStep("Open the link and click on Dismiss Button ");
+		LoginlessPatientInformation loginlessPatientInformation = dismissPage.clickDismiss();
+
+		String fn = propertyData.getProperty("lockout.fn.ge");
+		String ln = propertyData.getProperty("lockout.fn.ge");
+		String dob = propertyData.getProperty("lockout.dob.ge");
+		String gender = propertyData.getProperty("lockout.gender.ge");
+		String email = propertyData.getProperty("lockout.email.ge");
+		
+		logStep("Enter the below mentioned patient details in demographic page- ");
+		log("Demographic Details- " + fn + " " + ln + " " + dob + " " + gender + " ");
+		
+		HomePage homePage = loginlessPatientInformation.fillNewPatientForm(fn, ln, dob, email, gender, "", "");	
+		String actualPopUpMessage=homePage.getTextAlertPopUpMsg();
+		
+		assertEquals(actualPopUpMessage, lockoutmessage, "Lockout message is wrong");	
+		
+		homePage.clickAlertPopUp();		
+		boolean bool=homePage.isbtnstartSchedulingPresent();
+		
+		assertEquals(bool, true, "Alert workflow is wrong");		
+		log("Start Schedule Button is visible. So Test Case passed.");
+		
+		response=postAPIRequestAM.associatedlockout(practiceId, "/associatedlockout");
+		aPIVerification.responseCodeValidation(response, 200);			
+		
+		JSONArray arr = new JSONArray(response.body().asString());
+		int id = arr.getJSONObject(0).getInt("id");
+		response=postAPIRequestAM.deleteLockoutById(practiceId, id);
+		aPIVerification.responseCodeValidation(response, 200);	
+	}
+	
+	@Test(enabled = true, groups = { "AcceptanceTests" }, retryAnalyzer = RetryAnalyzer.class)
 	public void testAlerts_BillingNotesNG() throws Exception {
 
-		logStep("Verify the Announcemnet- Greetings on welcome page");
+		logStep("Verify Alerts - Billing Note for NG");
 		PSSPropertyFileLoader propertyData = new PSSPropertyFileLoader();
 		Appointment testData = new Appointment();
 		AdminUser adminUser = new AdminUser();
@@ -719,8 +1014,7 @@ public class PSS2PatientPortalAcceptanceTests02 extends BaseTestNGWebDriver {
 		aPIVerification.responseCodeValidation(response, 200);
 		
 		logStep("Move to PSS patient Portal 2.0 to book an Appointment");
-		DismissPage dismissPage = new DismissPage(driver, testData.getUrlLoginLess());
-		
+		DismissPage dismissPage = new DismissPage(driver, testData.getUrlLoginLess());		
 
 		logStep("Open the link and click on Dismiss Button ");
 		LoginlessPatientInformation loginlessPatientInformation = dismissPage.clickDismiss();
@@ -758,7 +1052,7 @@ public class PSS2PatientPortalAcceptanceTests02 extends BaseTestNGWebDriver {
 	@Test(enabled = true, groups = { "AcceptanceTests" }, retryAnalyzer = RetryAnalyzer.class)
 	public void testAlerts_PatientNotesNG() throws Exception {
 
-		logStep("Verify the Announcemnet- Greetings on welcome page");
+		logStep("Verify Alerts - Patient Note for NG");
 		PSSPropertyFileLoader propertyData = new PSSPropertyFileLoader();
 		Appointment testData = new Appointment();
 		AdminUser adminUser = new AdminUser();
@@ -782,8 +1076,7 @@ public class PSS2PatientPortalAcceptanceTests02 extends BaseTestNGWebDriver {
 		aPIVerification.responseCodeValidation(response, 200);
 		
 		logStep("Move to PSS patient Portal 2.0 to book an Appointment");
-		DismissPage dismissPage = new DismissPage(driver, testData.getUrlLoginLess());
-		
+		DismissPage dismissPage = new DismissPage(driver, testData.getUrlLoginLess());		
 
 		logStep("Open the link and click on Dismiss Button ");
 		LoginlessPatientInformation loginlessPatientInformation = dismissPage.clickDismiss();
@@ -811,11 +1104,65 @@ public class PSS2PatientPortalAcceptanceTests02 extends BaseTestNGWebDriver {
 		aPIVerification.responseCodeValidation(response, 200);	
 	}
 	
+	@Test(enabled = true, groups = { "AcceptanceTests" }, retryAnalyzer = RetryAnalyzer.class)
+	public void testAlerts_PatientNotesGW() throws Exception {
+
+		logStep("Verify the Patient Note- ALERTS for GreenWay partner");
+		PSSPropertyFileLoader propertyData = new PSSPropertyFileLoader();
+		Appointment testData = new Appointment();
+		AdminUser adminUser = new AdminUser();
+		
+		propertyData.setAdminGW(adminUser);
+		propertyData.setAppointmentResponseGW(testData);
+
+		logStep("Set up the API authentication");
+		setUp(propertyData.getProperty("mf.practice.id.gw"), propertyData.getProperty("mf.authuserid.am.gw"));
+		Response response;
+		
+		String group=propertyData.getProperty("alertgroup.ng");
+		String lockoutmessage=propertyData.getProperty("lockoutbillingnote.ng");
+		String lockouttype=propertyData.getProperty("patientnote.type.ng");
+		String key=propertyData.getProperty("patientnote.key.gw");
+		
+		String lockoutPayload=payloadAM.alertAndLocakout(key, key, lockouttype, group, lockoutmessage);
+		
+		logStep("Remove the already set announcement ");
+		response=postAPIRequestAM.lockoutPost(practiceId, lockoutPayload, "/lockout");
+		aPIVerification.responseCodeValidation(response, 200);
+		
+		logStep("Move to PSS patient Portal 2.0 to book an Appointment");
+		DismissPage dismissPage = new DismissPage(driver, testData.getUrlLoginLess());		
+
+		logStep("Open the link and click on Dismiss Button ");
+		LoginlessPatientInformation loginlessPatientInformation = dismissPage.clickDismiss();
+
+		String fn = propertyData.getProperty("lockout.fn.gw");
+		String ln = propertyData.getProperty("lockout.ln.gw");
+		String dob = propertyData.getProperty("lockout.dob.gw");
+		String gender = propertyData.getProperty("lockout.gender.gw");
+		
+		logStep("Enter the below mentioned patient details in demographic page- ");
+		log("Demographic Details- " + fn + " " + ln + " " + dob + " " + gender + " ");
+		
+		HomePage homePage = loginlessPatientInformation.fillNewPatientForm(fn, ln, dob, "", gender, "", "");	
+		String actualPopUpMessage=homePage.getTextAlertPopUpMsg();
+		
+		assertEquals(actualPopUpMessage, lockoutmessage, "Lockout message is wrong");
+		
+		response=postAPIRequestAM.associatedlockout(practiceId, "/associatedlockout");
+		aPIVerification.responseCodeValidation(response, 200);	
+		
+		JSONArray arr = new JSONArray(response.body().asString());
+		int id = arr.getJSONObject(0).getInt("id");
+		
+		response=postAPIRequestAM.deleteLockoutById(practiceId, id);
+		aPIVerification.responseCodeValidation(response, 200);	
+	}
 	
 	@Test(enabled = true, groups = { "AcceptanceTests" }, retryAnalyzer = RetryAnalyzer.class)
 	public void testAlerts_PatientStatusNG() throws Exception {
 
-		logStep("Verify the Address Line 2 from location");
+		logStep("Verify Alerts - Patient Status Note for NG");
 		PSSPropertyFileLoader propertyData = new PSSPropertyFileLoader();
 		Appointment testData = new Appointment();
 		AdminUser adminUser = new AdminUser();
@@ -869,9 +1216,81 @@ public class PSS2PatientPortalAcceptanceTests02 extends BaseTestNGWebDriver {
 	}
 	
 	@Test(enabled = true, groups = { "AcceptanceTests" }, retryAnalyzer = RetryAnalyzer.class)
+	public void testAlerts_PatientStatusAT() throws Exception {
+
+		logStep("Verify Alerts - Patient Status Athena");
+		PSSPropertyFileLoader propertyData = new PSSPropertyFileLoader();
+		Appointment testData = new Appointment();
+		AdminUser adminUser = new AdminUser();
+
+		propertyData.setAdminAT(adminUser);
+		propertyData.setAppointmentResponseAT(testData);
+
+		logStep("Set up the API authentication");
+		setUp(propertyData.getProperty("mf.practice.id.at"), propertyData.getProperty("mf.authuserid.am.at"));
+		Response response;
+
+		String patientMatch = payloadAM.patientMatchAt();
+		response = postAPIRequestAM.patientInfoPost(practiceId, patientMatch);
+		aPIVerification.responseCodeValidation(response, 200);		
+
+		String group = propertyData.getProperty("alertgroup.ng");
+		String lockoutMessage = propertyData.getProperty("patientstatus.msg.en.at");
+		String lockouType = propertyData.getProperty("patientstatus.type");
+		String key = propertyData.getProperty("patientstatus.key.at");
+
+		String activeL = payloadAM.activeLockoutAT(group);
+		response = postAPIRequestAM.lockoutPost(practiceId, activeL, "/lockout");
+		aPIVerification.responseCodeValidation(response, 200);
+
+		String lockoutid = aPIVerification.responseKeyValidationJson(response, "id");
+
+		log("Lockout Id- " + lockoutid);
+
+		String lockoutPayload = payloadAM.patientStatusAT(lockoutid, key, lockouType, group, lockoutMessage);
+		log("Payload for update lockout- " + lockoutPayload);
+
+		logStep("Set Patient Status- Alert in Athena");
+		response = postAPIRequestAM.lockoutPost(practiceId, lockoutPayload, "/lockout");
+		aPIVerification.responseCodeValidation(response, 200);
+
+
+		logStep("Move to PSS patient Portal 2.0 to book an Appointment");
+		DismissPage dismissPage = new DismissPage(driver, testData.getUrlLoginLess());
+
+		logStep("Open the link and click on Dismiss Button ");
+		LoginlessPatientInformation loginlessPatientInformation = dismissPage.clickDismiss();
+
+		String fn = propertyData.getProperty("lockout.fn.at");
+		String ln = propertyData.getProperty("lockout.ln.at");
+		String dob = propertyData.getProperty("lockout.dob.at");
+		String gender = propertyData.getProperty("lockout.gender.at");
+
+		logStep("Enter the below mentioned patient details in demographic page- ");
+		log("Demographic Details- " + fn + " " + ln + " " + dob + " " + gender + " ");
+
+		HomePage homePage = loginlessPatientInformation.fillNewPatientForm(fn, ln, dob, "", gender, "", "");
+		String actualPopUpMessage = homePage.getTextAlertPopUpMsg();
+
+		assertEquals(actualPopUpMessage, lockoutMessage, "Alert message is wrong");
+
+		homePage.clickAlertPopUp();
+		boolean bool = homePage.isbtnstartSchedulingPresent();
+
+		assertEquals(bool, true, "Alert workflow is wrong");
+		log("Start Schedule Button is visible. So Test Case passed.");
+		
+		response = postAPIRequestAM.associatedlockout(practiceId, "/associatedlockout");
+		aPIVerification.responseCodeValidation(response, 200);
+
+		response = postAPIRequestAM.deleteLockoutById(practiceId, lockoutid);
+		aPIVerification.responseCodeValidation(response, 200);
+	}
+	
+	@Test(enabled = true, groups = { "AcceptanceTests" }, retryAnalyzer = RetryAnalyzer.class)
 	public void testLockout_PatientStatusNG() throws Exception {
 
-		logStep("Verify the Announcemnet- Greetings on welcome page");
+		logStep("Verify Lockout - Patient Status for NG");
 		PSSPropertyFileLoader propertyData = new PSSPropertyFileLoader();
 		Appointment testData = new Appointment();
 		AdminUser adminUser = new AdminUser();
@@ -895,8 +1314,7 @@ public class PSS2PatientPortalAcceptanceTests02 extends BaseTestNGWebDriver {
 		aPIVerification.responseCodeValidation(response, 200);
 		
 		logStep("Move to PSS patient Portal 2.0 to book an Appointment");
-		DismissPage dismissPage = new DismissPage(driver, testData.getUrlLoginLess());
-		
+		DismissPage dismissPage = new DismissPage(driver, testData.getUrlLoginLess());		
 
 		logStep("Open the link and click on Dismiss Button ");
 		LoginlessPatientInformation loginlessPatientInformation = dismissPage.clickDismiss();
@@ -925,8 +1343,330 @@ public class PSS2PatientPortalAcceptanceTests02 extends BaseTestNGWebDriver {
 	}
 	
 	@Test(enabled = true, groups = { "AcceptanceTests" }, retryAnalyzer = RetryAnalyzer.class)
+	public void testLockout_PatientStatusGW() throws Exception {
+
+		logStep("Verfiy the Lockout -Patient Status for GreenWay");
+		PSSPropertyFileLoader propertyData = new PSSPropertyFileLoader();
+		Appointment testData = new Appointment();
+		AdminUser adminUser = new AdminUser();
+		
+		propertyData.setAdminGW(adminUser);
+		propertyData.setAppointmentResponseGW(testData);
+
+		logStep("Set up the API authentication");
+		setUp(propertyData.getProperty("mf.practice.id.gw"), propertyData.getProperty("mf.authuserid.am.gw"));
+		Response response;
+		
+		String patientMatch = payloadAM.patientInfoWithOptionalGW();
+		response = postAPIRequestAM.patientInfoPost(practiceId, patientMatch);
+		aPIVerification.responseCodeValidation(response, 200);
+		
+		String idPatientStatus= propertyData.getProperty("patientstatus.id.gw");
+		String group=propertyData.getProperty("lockoutgroup.ng");
+		String lockoutMessage=propertyData.getProperty("patientstatus.msg.en.gw");
+		String lockouType=propertyData.getProperty("patientstatus.type");
+		String key=propertyData.getProperty("patientstatus.key.gw");
+		
+		String lockoutPayload=payloadAM.patientStatusGW(idPatientStatus, key, lockouType, group, lockoutMessage, lockoutMessage);
+		
+		logStep("Remove the already set announcement ");
+		response=postAPIRequestAM.lockoutPost(practiceId, lockoutPayload, "/lockout");
+		aPIVerification.responseCodeValidation(response, 200);
+		
+		logStep("Move to PSS patient Portal 2.0 to book an Appointment");
+		DismissPage dismissPage = new DismissPage(driver, testData.getUrlLoginLess());		
+
+		logStep("Open the link and click on Dismiss Button ");
+		LoginlessPatientInformation loginlessPatientInformation = dismissPage.clickDismiss();
+
+		String fn = propertyData.getProperty("lockout.fn.gw");
+		String ln = propertyData.getProperty("lockout.ln.gw");
+		String dob = propertyData.getProperty("lockout.dob.gw");
+		String gender = propertyData.getProperty("lockout.gender.gw");
+		
+		logStep("Enter the below mentioned patient details in demographic page- ");
+		log("Demographic Details- " + fn + " " + ln + " " + dob + " " + gender + " ");
+		
+		HomePage homePage = loginlessPatientInformation.fillNewPatientForm(fn, ln, dob, "", gender, "", "");	
+		String actualPopUpMessage=homePage.getTextLockoutPopUpMsg();
+		
+		assertEquals(actualPopUpMessage, lockoutMessage, "Lockout message is wrong");
+		
+		response=postAPIRequestAM.associatedlockout(practiceId, "/associatedlockout");
+		aPIVerification.responseCodeValidation(response, 200);	
+	
+	}
+	
+	@Test(enabled = true, groups = { "AcceptanceTests" }, retryAnalyzer = RetryAnalyzer.class)
+	public void testLockout_PatientStatusAT() throws Exception {
+
+		logStep("Verfiy the Lockout -Patient Status for Athena");
+		PSSPropertyFileLoader propertyData = new PSSPropertyFileLoader();
+		Appointment testData = new Appointment();
+		AdminUser adminUser = new AdminUser();
+
+		propertyData.setAdminAT(adminUser);
+		propertyData.setAppointmentResponseAT(testData);
+
+		logStep("Set up the API authentication");
+		setUp(propertyData.getProperty("mf.practice.id.at"), propertyData.getProperty("mf.authuserid.am.at"));
+		Response response;
+
+		String patientMatch = payloadAM.patientMatchAt();
+		response = postAPIRequestAM.patientInfoPost(practiceId, patientMatch);
+		aPIVerification.responseCodeValidation(response, 200);
+
+		String group = propertyData.getProperty("lockoutgroup.ng");
+		String lockoutMessage = propertyData.getProperty("patientstatus.msg.en.at");
+		String lockouType = propertyData.getProperty("patientstatus.type");
+		String key = propertyData.getProperty("patientstatus.key.at");
+
+		String activeL = payloadAM.activeLockoutAT(group);
+		response = postAPIRequestAM.lockoutPost(practiceId, activeL, "/lockout");
+		aPIVerification.responseCodeValidation(response, 200);
+
+		String lockoutid = aPIVerification.responseKeyValidationJson(response, "id");
+
+		log("Lockout Id- " + lockoutid);
+
+		String lockoutPayload = payloadAM.patientStatusAT(lockoutid, key, lockouType, group, lockoutMessage);
+		log("Payload for update lockout- " + lockoutPayload);
+
+		logStep("Remove the already set announcement ");
+		response = postAPIRequestAM.lockoutPost(practiceId, lockoutPayload, "/lockout");
+		aPIVerification.responseCodeValidation(response, 200);
+
+		logStep("Move to PSS patient Portal 2.0 to book an Appointment");
+		DismissPage dismissPage = new DismissPage(driver, testData.getUrlLoginLess());
+
+		logStep("Open the link and click on Dismiss Button ");
+		LoginlessPatientInformation loginlessPatientInformation = dismissPage.clickDismiss();
+
+		String fn = propertyData.getProperty("lockout.fn.at");
+		String ln = propertyData.getProperty("lockout.ln.at");
+		String dob = propertyData.getProperty("lockout.dob.at");
+		String gender = propertyData.getProperty("lockout.gender.at");
+
+		logStep("Enter the below mentioned patient details in demographic page- ");
+		log("Demographic Details- " + fn + " " + ln + " " + dob + " " + gender + " ");
+
+		HomePage homePage = loginlessPatientInformation.fillNewPatientForm(fn, ln, dob, "", gender, "", "");
+		String actualPopUpMessage = homePage.getTextLockoutPopUpMsg();
+
+		assertEquals(actualPopUpMessage, lockoutMessage, "Lockout message is wrong");
+
+		response = postAPIRequestAM.associatedlockout(practiceId, "/associatedlockout");
+		aPIVerification.responseCodeValidation(response, 200);
+
+		response = postAPIRequestAM.deleteLockoutById(practiceId, lockoutid);
+		aPIVerification.responseCodeValidation(response, 200);
+
+	}
+	
+	@Test(enabled = true, groups = { "AcceptanceTests" }, retryAnalyzer = RetryAnalyzer.class)
+	public void testLockout_PatientStatusGE() throws Exception {
+
+		logStep("Verfiy the Lockout -Patient Status for GE");
+		PSSPropertyFileLoader propertyData = new PSSPropertyFileLoader();
+		Appointment testData = new Appointment();
+		AdminUser adminUser = new AdminUser();
+
+		propertyData.setAdminGE(adminUser);
+		propertyData.setAppointmentResponseGE(testData);
+
+		logStep("Set up the API authentication");
+		setUp(propertyData.getProperty("mf.practice.id.ge"), propertyData.getProperty("mf.authuserid.am.ge"));
+		Response response;
+
+		String patientMatch = payloadAM.patientMatchAt();
+		response = postAPIRequestAM.patientInfoPost(practiceId, patientMatch);
+		aPIVerification.responseCodeValidation(response, 200);
+
+		String group = propertyData.getProperty("lockoutgroup.ng");
+		String lockoutEngMessage = propertyData.getProperty("patientstatus.msg.en.ge");
+		String lockoutSpanMessage = propertyData.getProperty("patientstatus.msg.es.ge");
+		String lockouType = propertyData.getProperty("patientstatus.type");
+		String key = propertyData.getProperty("patientstatus.key.ge");
+
+		String activeL = payloadAM.patientStatusGE();
+		response = postAPIRequestAM.lockoutPost(practiceId, activeL, "/lockout");
+		aPIVerification.responseCodeValidation(response, 200);
+
+		String lockoutid = aPIVerification.responseKeyValidationJson(response, "id");
+
+		log("Lockout Id- " + lockoutid);
+
+		String lockoutPayload = payloadAM.patientStatusUpdateGE(lockoutid, key, lockouType, group, lockoutEngMessage, lockoutSpanMessage);
+		log("Payload for update lockout- " + lockoutPayload);
+
+		logStep("Remove the already set announcement ");
+		response = postAPIRequestAM.lockoutPost(practiceId, lockoutPayload, "/lockout");
+		aPIVerification.responseCodeValidation(response, 200);
+
+		logStep("Move to PSS patient Portal 2.0 to book an Appointment");
+		DismissPage dismissPage = new DismissPage(driver, testData.getUrlLoginLess());
+
+		logStep("Open the link and click on Dismiss Button ");
+		LoginlessPatientInformation loginlessPatientInformation = dismissPage.clickDismiss();
+
+		String fn = propertyData.getProperty("lockout.fn.ge");
+		String ln = propertyData.getProperty("lockout.ln.ge");
+		String dob = propertyData.getProperty("lockout.dob.ge");
+		String gender = propertyData.getProperty("lockout.gender.ge");		
+		String email = propertyData.getProperty("lockout.email.ge");
+		
+		logStep("Enter the below mentioned patient details in demographic page- ");
+		log("Demographic Details- " + fn + " " + ln + " " + dob + " " + gender + " ");
+
+		HomePage homePage = loginlessPatientInformation.fillNewPatientForm(fn, ln, dob, email, gender, "", "");
+		String actualPopUpMessage = homePage.getTextLockoutPopUpMsg();
+
+		assertEquals(actualPopUpMessage, lockoutEngMessage, "Lockout message is wrong");
+
+		response = postAPIRequestAM.associatedlockout(practiceId, "/associatedlockout");
+		aPIVerification.responseCodeValidation(response, 200);
+
+		response = postAPIRequestAM.deleteLockoutById(practiceId, lockoutid);
+		aPIVerification.responseCodeValidation(response, 200);
+
+	}
+	
+	@Test(enabled = true, groups = { "AcceptanceTests" }, retryAnalyzer = RetryAnalyzer.class)
+	public void testAlerts_PatientStatusGE() throws Exception {
+
+		logStep("Verfiy the Lockout -Patient Status for GE");
+		PSSPropertyFileLoader propertyData = new PSSPropertyFileLoader();
+		Appointment testData = new Appointment();
+		AdminUser adminUser = new AdminUser();
+
+		propertyData.setAdminGE(adminUser);
+		propertyData.setAppointmentResponseGE(testData);
+
+		logStep("Set up the API authentication");
+		setUp(propertyData.getProperty("mf.practice.id.ge"), propertyData.getProperty("mf.authuserid.am.ge"));
+		Response response;
+
+		String patientMatch = payloadAM.patientMatchGE();
+		response = postAPIRequestAM.patientInfoPost(practiceId, patientMatch);
+		aPIVerification.responseCodeValidation(response, 200);
+
+		String group = propertyData.getProperty("alertgroup.ng");
+		String lockoutEngMessage = propertyData.getProperty("patientstatus.msg.en.ge");
+		String lockoutSpanMessage = propertyData.getProperty("patientstatus.msg.es.ge");
+		String lockouType = propertyData.getProperty("patientstatus.type");
+		String key = propertyData.getProperty("patientstatus.key.ge");
+
+		String activeL = payloadAM.patientStatusGE();
+		response = postAPIRequestAM.lockoutPost(practiceId, activeL, "/lockout");
+		aPIVerification.responseCodeValidation(response, 200);
+
+		String lockoutid = aPIVerification.responseKeyValidationJson(response, "id");
+
+		log("Lockout Id- " + lockoutid);
+
+		String lockoutPayload = payloadAM.patientStatusUpdateGE(lockoutid, key, lockouType, group, lockoutEngMessage, lockoutSpanMessage);
+		log("Payload for update lockout- " + lockoutPayload);
+
+		logStep("Remove the already set announcement ");
+		response = postAPIRequestAM.lockoutPost(practiceId, lockoutPayload, "/lockout");
+		aPIVerification.responseCodeValidation(response, 200);
+
+		logStep("Move to PSS patient Portal 2.0 to book an Appointment");
+		DismissPage dismissPage = new DismissPage(driver, testData.getUrlLoginLess());
+
+		logStep("Open the link and click on Dismiss Button ");
+		LoginlessPatientInformation loginlessPatientInformation = dismissPage.clickDismiss();
+
+		String fn = propertyData.getProperty("lockout.fn.ge");
+		String ln = propertyData.getProperty("lockout.ln.ge");
+		String dob = propertyData.getProperty("lockout.dob.ge");
+		String gender = propertyData.getProperty("lockout.gender.ge");		
+		String email = propertyData.getProperty("lockout.email.ge");
+		
+		logStep("Enter the below mentioned patient details in demographic page- ");
+		log("Demographic Details- " + fn + " " + ln + " " + dob + " " + gender + " ");
+
+		HomePage homePage = loginlessPatientInformation.fillNewPatientForm(fn, ln, dob, email, gender, "", "");
+		String actualPopUpMessage = homePage.getTextAlertPopUpMsg();
+
+		assertEquals(actualPopUpMessage, lockoutEngMessage, "Lockout message is wrong");
+		
+		homePage.clickAlertPopUp();		
+		boolean bool=homePage.isbtnstartSchedulingPresent();
+		
+		assertEquals(bool, true, "Alert workflow is wrong");		
+		log("Start Schedule Button is visible. So Test Case passed.");
+
+		response = postAPIRequestAM.associatedlockout(practiceId, "/associatedlockout");
+		aPIVerification.responseCodeValidation(response, 200);
+
+		response = postAPIRequestAM.deleteLockoutById(practiceId, lockoutid);
+		aPIVerification.responseCodeValidation(response, 200);
+
+	}
+	
+	@Test(enabled = true, groups = { "AcceptanceTests" }, retryAnalyzer = RetryAnalyzer.class)
+	public void testAlerts_PatientStatusGW() throws Exception {
+
+		logStep("Verfiy the Alerts -Patient Status for GreenWay");
+		PSSPropertyFileLoader propertyData = new PSSPropertyFileLoader();
+		Appointment testData = new Appointment();
+		AdminUser adminUser = new AdminUser();
+		
+		propertyData.setAdminGW(adminUser);
+		propertyData.setAppointmentResponseGW(testData);
+
+		logStep("Set up the API authentication");
+		setUp(propertyData.getProperty("mf.practice.id.gw"), propertyData.getProperty("mf.authuserid.am.gw"));
+		Response response;
+		
+		String patientMatch = payloadAM.patientInfoWithOptionalGW();
+		response = postAPIRequestAM.patientInfoPost(practiceId, patientMatch);
+		aPIVerification.responseCodeValidation(response, 200);
+		
+		String idPatientStatus= propertyData.getProperty("patientstatus.id.gw");
+		String group=propertyData.getProperty("alertgroup.ng");
+		String lockoutMessage=propertyData.getProperty("patientstatus.msg.en.gw");
+		String lockouType=propertyData.getProperty("patientstatus.type");
+		String key=propertyData.getProperty("patientstatus.key.gw");
+		
+		String lockoutPayload=payloadAM.patientStatusGW(idPatientStatus, key, lockouType, group, lockoutMessage, lockoutMessage);
+		
+		logStep("Remove the already set announcement ");
+		response=postAPIRequestAM.lockoutPost(practiceId, lockoutPayload, "/lockout");
+		aPIVerification.responseCodeValidation(response, 200);
+		
+		logStep("Move to PSS patient Portal 2.0 to book an Appointment");
+		DismissPage dismissPage = new DismissPage(driver, testData.getUrlLoginLess());		
+
+		logStep("Open the link and click on Dismiss Button ");
+		LoginlessPatientInformation loginlessPatientInformation = dismissPage.clickDismiss();
+
+		String fn = propertyData.getProperty("lockout.fn.gw");
+		String ln = propertyData.getProperty("lockout.ln.gw");
+		String dob = propertyData.getProperty("lockout.dob.gw");
+		String gender = propertyData.getProperty("lockout.gender.gw");
+		
+		logStep("Enter the below mentioned patient details in demographic page- ");
+		log("Demographic Details- " + fn + " " + ln + " " + dob + " " + gender + " ");
+		
+		HomePage homePage = loginlessPatientInformation.fillNewPatientForm(fn, ln, dob, "", gender, "", "");
+		String actualPopUpMessage = homePage.getTextAlertPopUpMsg();
+
+		assertEquals(actualPopUpMessage, lockoutMessage, "Alert message is wrong");
+
+		homePage.clickAlertPopUp();
+		boolean bool = homePage.isbtnstartSchedulingPresent();
+
+		assertEquals(bool, true, "Alert workflow is wrong");
+		log("Start Schedule Button is visible. So Test Case passed.");	
+	
+	}
+	
+	@Test(enabled = true, groups = { "AcceptanceTests" }, retryAnalyzer = RetryAnalyzer.class)
 	public void testLockoutMessageNG() throws Exception {
 
+		logStep("Verify Lockout Message in Admin UI");
 		PSSPropertyFileLoader propertyData = new PSSPropertyFileLoader();
 		Appointment testData = new Appointment();
 		AdminUser adminUser = new AdminUser();
@@ -945,6 +1685,7 @@ public class PSS2PatientPortalAcceptanceTests02 extends BaseTestNGWebDriver {
 	@Test(enabled = true, groups = { "AcceptanceTests" }, retryAnalyzer = RetryAnalyzer.class)
 	public void testAlertMessageNG() throws Exception {
 
+		logStep("Verify Alert Message in Admin UI");
 		PSSPropertyFileLoader propertyData = new PSSPropertyFileLoader();
 		Appointment testData = new Appointment();
 		AdminUser adminUser = new AdminUser();
@@ -962,6 +1703,7 @@ public class PSS2PatientPortalAcceptanceTests02 extends BaseTestNGWebDriver {
 	@Test(enabled = true, groups = { "AcceptanceTests" }, retryAnalyzer = RetryAnalyzer.class)
 	public void testAlertMessageGW() throws Exception {
 
+		logStep("Verify Alert Message in Admin UI");
 		PSSPropertyFileLoader propertyData = new PSSPropertyFileLoader();
 		Appointment testData = new Appointment();
 		AdminUser adminUser = new AdminUser();
@@ -978,6 +1720,7 @@ public class PSS2PatientPortalAcceptanceTests02 extends BaseTestNGWebDriver {
 	@Test(enabled = true, groups = { "AcceptanceTests" }, retryAnalyzer = RetryAnalyzer.class)
 	public void testAlertMessageGE() throws Exception {
 
+		logStep("Verify Alert Message in Admin UI");
 		PSSPropertyFileLoader propertyData = new PSSPropertyFileLoader();
 		Appointment testData = new Appointment();
 		AdminUser adminUser = new AdminUser();
@@ -992,6 +1735,7 @@ public class PSS2PatientPortalAcceptanceTests02 extends BaseTestNGWebDriver {
 	@Test(enabled = true, groups = { "AcceptanceTests" }, retryAnalyzer = RetryAnalyzer.class)
 	public void testAlertMessageAT() throws Exception {
 
+		logStep("Verify Alert Message in Admin UI");
 		PSSPropertyFileLoader propertyData = new PSSPropertyFileLoader();
 		Appointment testData = new Appointment();
 		AdminUser adminUser = new AdminUser();
@@ -1246,7 +1990,6 @@ public class PSS2PatientPortalAcceptanceTests02 extends BaseTestNGWebDriver {
 		log("Address Line2 In Patient UI......" + addresslineUI);
 		Assert.assertEquals(addresslineUI, addressLine2);
 	}
-
 
 	@DataProvider(name = "partnerType")
 	public Object[][] portalVersionForRegistration() {

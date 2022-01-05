@@ -454,3 +454,246 @@ Feature: Test fuctionality of Appointment precheck
     When user mouse hover on info tab from setting in notifications
     Then verify 'Will not affect Appointment Confirmations sent via PSS' message will be display
     And logout from practice provisioning portal
+
+  Scenario: verify if user is able to see broadcast column on appointment dashboard after disable broadcast messaging checkbox
+    When from setting dashboard in notifications disable Broadcast messaging checkbox
+    Then verify in appointment dashboard in broadcast column should not be display
+    And from setting dashboard in notifications Enable Broadcast messaging checkbox
+    And logout from practice provisioning portal
+
+  Scenario: verify if user is able to see additional arrival instruction message in english language when check-in tab is visible
+    When from setting in notifications user click on curbside checkin tab and click on english button
+    Then verify if user is able see additional arrival instruction message in english
+    And logout from practice provisioning portal
+
+  Scenario: verify if user is able to see additional arrival instruction message in spanish language when check-in tab is visible
+    When from setting in notifications user click on curbside checkin tab and click on spanish button
+    Then verify if user is able see additional arrival instruction message in spanish
+    And logout from practice provisioning portal
+
+  Scenario: verify if user is able to see arrival confirmation message in english language in english tab when check-in tab is visible
+    When from setting in notifications user click on curbside checkin tab and click on english button
+    Then verify if user is able see arrival confirmation message in english
+    And logout from practice provisioning portal
+
+  Scenario: verify if user is able to see arrival confirmation message in spanish language in spanish tab when check-in tab is visible
+    When from setting in notifications user click on curbside checkin tab and click on spanish button
+    Then verify if user is able see arrival confirmation message in spanish
+    And logout from practice provisioning portal
+
+  Scenario: verify if user is able to see two section under notification type one for appointment confirmation and another for appointment reminder
+    When from setting in notifications user click on notification tab
+    Then verify if user is able to see appointment confirmation and appointment reminder section
+    And logout from practice provisioning portal
+
+  Scenario: verify if user is able to see two templates display under appointment confirmation section one for mail and another for text
+    When from setting in notifications user click on notification tab
+    Then verify if user is able to see two templates one for mail and another for text templates under appointment confirmation section
+    And logout from practice provisioning portal
+
+  Scenario: verify if user is able to see two templates display under appointment reminder one for mail and another for text
+    When from setting in notifications user click on notification tab
+    Then verify if user is able to see two templates one for mail and another for text templates under appointment reminder section
+    And logout from practice provisioning portal
+
+  Scenario: verify if user is able to see published status for all the templates under appointment confirmation and appointment reminder section.
+    When from setting in notifications user click on notification tab
+    Then verify if user is able to see published status under appointment reminder and appointment confirmation section
+    And logout from practice provisioning portal
+
+  Scenario: verify if user is able to see appointment confirmation text in bold fonts also user is able to see info icon along with this
+    When from setting in notifications user click on notification tab
+    Then verify if user is able to see appointment confirmation text in bold fonts along with info icon
+    And logout from practice provisioning portal
+
+  Scenario: verify if user is able to mouse hover over to info icon on appointment confirmation section then system shows one message on pop up.
+    When from setting in notifications user click on notification tab
+    Then verify mouse hover over to info icon and system shows 'Appointment confirmations are communications sent to notify a patient that an appointment has been scheduled.' on pop up
+    And logout from practice provisioning portal
+
+  Scenario: verify in delivery method section mail and text fields are display under appointment confirmation section
+    When from setting in notifications user click on notification tab
+    Then verify in delivery method section mail and text fields are display under appointment confirmation section
+    And logout from practice provisioning portal
+
+  Scenario: verify user is able to see default status under version section of appointment confirmation
+    When from setting in notifications user click on notification tab
+    Then verify user is able to see default status for mail and sms under version section of appointment confirmation
+    And logout from practice provisioning portal
+
+  Scenario: verify by default user is able to see in office status under appointment method section of appointment confirmation
+    When from setting in notifications user click on notification tab
+    Then verify by default user is able to see in office status for mail and text fields under appointment method section of appointment confirmation
+    And logout from practice provisioning portal
+
+  Scenario: verify by default user is able to see upon scheduling status under timing section of appointment confirmation
+    When from setting in notifications user click on notification tab
+    Then verify user is able to see upon scheduling status for mail and text fields under timing section of appointment confirmation
+    And logout from practice provisioning portal
+
+  Scenario: verify by default user is able to see published status under status section of appointment confirmation
+    When from setting in notifications user click on notification tab
+    Then verify by default user is able to see published status under status section for mail and text fields under timing section of appointment confirmation
+    And logout from practice provisioning portal
+
+  Scenario: verify if user is able to see appointment reminder text in bold fonts also user is able to see info icon along with this
+    When from setting in notifications user click on notification tab
+    Then verify if user is able to see appointment reminder text in bold fonts along with info icon
+    And logout from practice provisioning portal
+
+  Scenario: verify if user is able to mouse hover over to info icon on Appointment reminders section then system shows one message on pop up.
+    When from setting in notifications user click on notification tab
+    Then verify mouse hover over to info icon of appointment reminders and system shows 'Appointment reminders are communications sent to remind a patient they have an upcoming appointment.' on pop up
+    And logout from practice provisioning portal
+
+  Scenario: verify in delivery method section mail and text fields are display under appointment reminders
+    When from setting in notifications user click on notification tab
+    Then verify in delivery method section mail and text fields are display under appointment reminders section
+    And logout from practice provisioning portal
+
+  Scenario: verify user is able to see default status under version section of appointment reminders
+    When from setting in notifications user click on notification tab
+    Then verify user is able to see default status for mail and sms under version section of appointment reminders
+    And logout from practice provisioning portal
+
+  Scenario: verify by default user is able to see in office status under appointment method section of appointment reminders
+    When from setting in notifications user click on notification tab
+    Then verify by default user is able to see in office status for mail and text fields under appointment method section of appointment reminders
+    And logout from practice provisioning portal
+
+  Scenario: verify if day, hour and minutes are configured in email and sms template then it reflect in timing section appointment reminder
+    When from setting in notifications user click on notification tab
+    Then verify if day,hour and minutes are configured in email and sms template then it reflect in timing section of appointment reminder
+    And logout from practice provisioning portal
+
+  Scenario: verify is able to see day,hours and minutes in proper orders and proper sequence in timing section of appointment reminder
+    When from setting in notifications user click on notification tab
+    Then verify is able to see day,hours and minutes in proper orders and proper sequence in timing section of appointment reminder section
+    And logout from practice provisioning portal
+
+  Scenario: verify if user is able to see timing units under timing unit section of appointment reminder
+    When from setting in notifications user click on notification tab
+    Then verify if user is able to see timing units under timing unit section of appointment reminder
+    And logout from practice provisioning portal
+
+  Scenario: verify by default user is able to see published status under status section of appointment reminder
+    When from setting in notifications user click on notification tab
+    Then verify by default user is able to see published status under status section for mail and text fields under timing section of appointment reminder section
+    And logout from practice provisioning portal
+
+  Scenario: verify system should display preview button for appointment confirmation for email when user click on hamburger button
+    When from setting in notifications user click on email hamburger button section
+    Then verify if user is able to see preview button
+    And logout from practice provisioning portal
+
+  Scenario: verify system should display preview button for appointment reminder for text when user click on hamburger button
+    When from setting in notifications user click on text hamburgerButton section
+    Then verify if user is able to see preview button
+    And logout from practice provisioning portal
+
+  Scenario: verify if user hit hamburger button then edit and preview button display for appointment reminder
+    When from setting in notifications user click on email hamburgerButton section of appointment reminder
+    Then verify if user is able to see edit and preview button
+    And logout from practice provisioning portal
+
+  Scenario: verify if user hit hamburger button then edit and preview button display
+    When from setting in notifications user click on text hamburgerButton section of appointment reminder
+    Then verify if user is able to see edit and preview button
+    And logout from practice provisioning portal
+
+  Scenario: verify if user is able to hit back button from template design page for appointment reminder and system should redirect back user on notification tab
+    When from setting in notifications user click on email hamburgerButton section of appointment reminder
+    And user hit edit button of email for appointment reminder
+    Then verify if user is able to hit back button and system should redirect back user on notification tab
+    And logout from practice provisioning portal
+
+  Scenario: verify if user is able to hit back button from template design page
+    When from setting in notifications user click on text hamburgerButton section of appointment reminder
+    And user hit edit button of email for appointment reminder
+    Then verify if user is able to hit back button and system should redirect back user on notification tab
+    And logout from practice provisioning portal
+
+  Scenario: verify if user is able to hit preview button for appointment reminder for email
+    When from setting in notifications user click on email hamburgerButton section of appointment reminder
+    Then verify if user is able to hit preview button and system should redirect on preview template page
+    And logout from practice provisioning portal
+
+  Scenario: verify if user is able to hit preview button for appointment reminder for text
+    When from setting in notifications user click on text hamburgerButton section of appointment reminder
+    Then verify if user is able to hit preview button and system should redirect on preview template page
+    And logout from practice provisioning portal
+
+  Scenario: verify if user is able to hit close button from appointment reminder from email template design page and system should redirect back user on notification tab
+    When from setting in notifications user click on email hamburgerButton section of appointment reminder
+    And user hit preview button
+    Then verify if user is able to hit close button and system should redirect back user on notification tab
+    And logout from practice provisioning portal
+
+  Scenario: verify if user is able to hit close button from text template design page and system should redirect back user on notification tab
+    When from setting in notifications user click on text hamburgerButton section of appointment reminder
+    And user hit preview button
+    Then verify if user is able to hit close button and system should redirect back user on notification tab
+    And logout from practice provisioning portal
+
+  Scenario: verify if the user is able to see the practice display name remains as initial value after removing the name
+    When from settings in general under manage solutions tab remove practice display name
+    And click on update settings and it showing 'This is a required field. Please enter a valid display name' error
+    And navigate to forms tab and again navigate to manage solutions tab
+    Then verify if the user is able to see the practice display name remains as initial value
+    And logout from practice provisioning portal
+
+  Scenario: verify if the user is able to see the practice display name remains as initial value after removing the name
+    When from settings in general under manage solutions tab remove practice display name
+    And press space bar on textbox
+    And click on update settings and it showing 'This is a required field. Please enter a valid display name' error
+    And navigate to forms tab and again navigate to manage solutions tab
+    Then verify if the user is able to see the practice display name remains as initial value
+    And logout from practice provisioning portal
+
+  Scenario: verify if user is able to see validation message when practice display name will be blank
+    When from settings in general under manage solutions tab remove practice display name
+    And click on update settings
+    Then verify if user is able to see validation message 'This is a required field. Please enter a valid display name'
+    And logout from practice provisioning portal
+
+  Scenario: verify if user is able to see changes are reflected by clicking save button when send notification Radio is off
+    When from setting in notifications user turn off send notification radio button
+    And click on save button
+    Then verify if user is able to see changes are reflected in notification tab as send notification is off
+    And logout from practice provisioning portal
+
+  Scenario: verify if user is able to see changes are reflected by clicking save button when send notification Radio is on
+    When from setting in notifications user turn on send notification radio button
+    And click on save button
+    Then verify if user is able to see changes are reflected in notification tab as send notification is on
+    And logout from practice provisioning portal
+
+  Scenario: verify if user is able to see changes are reflected by clicking save button when user keep blank additional arrival instructions text box
+    When from setting in notifications user click on curbside checkin tab and click on english button
+    And user keep blank additional arrival instructions text box of english language
+    And click on save button
+    Then verify if user is able to see changes are reflected in curbside checkin tab of english language
+    And user rewrite additional arrival instructions text box of english language
+    And click on save button
+    And logout from practice provisioning portal
+
+  Scenario: verify if user is able to see changes are reflected by clicking save button when user keep blank additional arrival instructions text box
+    When from setting in notifications user click on curbside checkin tab and click on spanish button
+    And user keep blank additional arrival instructions text box of spanish language
+    And click on save button
+    Then verify if user is able to see changes are reflected in curbside checkin tab of spanish language
+    And user rewrite additional arrival instructions text box of spanish language
+    And click on save button
+    And logout from practice provisioning portal
+
+  Scenario: verify if user is able to see changes are reflected by clicking save button when user click on select  english and spanish language
+    When from setting in notifications user click on practice language preference drop down and select english and spanish language
+    And click on save button
+    Then verify if user is able to see changes are reflected in notification tab as english and spanish language
+    And logout from practice provisioning portal
+
+  Scenario: verify if user is able to see changes are reflected by clicking save button when user click on select english language
+    When from setting in notifications user click on practice language preference drop down and select english
+    And click on save button
+    Then verify if user is able to see changes are reflected in notification tab english language
+    And logout from practice provisioning portal

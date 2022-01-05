@@ -1,8 +1,8 @@
 // Copyright 2013-2021 NXGN Management, LLC. All Rights Reserved.
 package com.intuit.ihg.product.integrationplatform.test;
 
-import static org.testng.Assert.assertFalse;
 import static org.testng.Assert.assertEquals;
+import static org.testng.Assert.assertFalse;
 import static org.testng.Assert.assertTrue;
 
 import java.awt.Robot;
@@ -24,7 +24,6 @@ import org.openqa.selenium.WebElement;
 import org.openqa.selenium.chrome.ChromeDriver;
 import org.openqa.selenium.firefox.FirefoxDriver;
 import org.openqa.selenium.support.PageFactory;
-
 import org.testng.SkipException;
 import org.testng.annotations.DataProvider;
 import org.testng.annotations.Test;
@@ -40,7 +39,6 @@ import com.intuit.ihg.product.integrationplatform.implementedExternals.SendPatie
 import com.intuit.ihg.product.integrationplatform.pojo.PIDCInfo;
 import com.intuit.ihg.product.integrationplatform.utils.AMDC;
 import com.intuit.ihg.product.integrationplatform.utils.AMDCPayload;
-import com.intuit.ihg.product.integrationplatform.utils.AMDCTestData;
 import com.intuit.ihg.product.integrationplatform.utils.AppointmentData;
 import com.intuit.ihg.product.integrationplatform.utils.AppointmentDataUtils;
 import com.intuit.ihg.product.integrationplatform.utils.AppointmentTypePayload;
@@ -58,8 +56,7 @@ import com.intuit.ihg.product.integrationplatform.utils.IntegrationConstants;
 import com.intuit.ihg.product.integrationplatform.utils.LoadPreTestData;
 import com.intuit.ihg.product.integrationplatform.utils.MU2GetEventData;
 import com.intuit.ihg.product.integrationplatform.utils.MU2Utils;
-import com.intuit.ihg.product.integrationplatform.utils.Medication;
-import com.intuit.ihg.product.integrationplatform.utils.MedicationTestData;
+import com.intuit.ihg.product.integrationplatform.utils.MailinatorUtils;
 import com.intuit.ihg.product.integrationplatform.utils.P2PUnseenMessageList;
 import com.intuit.ihg.product.integrationplatform.utils.PatientFormsExportInfo;
 import com.intuit.ihg.product.integrationplatform.utils.PatientRegistrationUtils;
@@ -67,20 +64,15 @@ import com.intuit.ihg.product.integrationplatform.utils.Patient_Login;
 import com.intuit.ihg.product.integrationplatform.utils.Pharmacies;
 import com.intuit.ihg.product.integrationplatform.utils.PharmacyPayload;
 import com.intuit.ihg.product.integrationplatform.utils.PrecheckAppointmentUtils;
-import com.intuit.ihg.product.integrationplatform.utils.Prescription;
 import com.intuit.ihg.product.integrationplatform.utils.Prescription20;
 import com.intuit.ihg.product.integrationplatform.utils.Prescription20TestData;
-import com.intuit.ihg.product.integrationplatform.utils.PrescriptionTestData;
 import com.intuit.ihg.product.integrationplatform.utils.RestUtils;
 import com.intuit.ihg.product.integrationplatform.utils.SendDirectMessage;
 import com.intuit.ihg.product.integrationplatform.utils.SendDirectMessageUtils;
 import com.intuit.ihg.product.integrationplatform.utils.StatementEventData;
 import com.intuit.ihg.product.integrationplatform.utils.StatementEventUtils;
 import com.intuit.ihg.product.integrationplatform.utils.StatementsMessagePayload;
-import com.intuit.ihg.product.integrationplatform.utils.sendPatientInvitePayloadV3;
-import com.intuit.ihg.product.integrationplatform.utils.sendPrecheckPatientSubscriberPayloadV4;
 import com.medfusion.common.utils.IHGUtil;
-import com.medfusion.common.utils.Mailinator;
 import com.medfusion.common.utils.PropertyFileLoader;
 import com.medfusion.product.object.maps.forms.page.HealthFormListPage;
 import com.medfusion.product.object.maps.forms.page.questionnaires.prereg_pages.FormBasicInfoPage;
@@ -281,7 +273,7 @@ public class IntegrationPlatformRegressionTests extends BaseTestNGWebDriver {
 					3, "Portal 2.0");
 		}
 		if (emailType.contains("mailinator")) {
-			Mailinator mail = new Mailinator();
+		    MailinatorUtils mail = new MailinatorUtils(driver);
 			String subject = "New message from " + testData.Sender3;
 			String messageLink = "Sign in to view this message";
 			link = mail.getLinkFromEmail(testData.GmailUserName, subject, messageLink, 5);
@@ -449,7 +441,7 @@ public class IntegrationPlatformRegressionTests extends BaseTestNGWebDriver {
 					3, "Portal 2.0");
 		}
 		if (emailType.contains("mailinator")) {
-			Mailinator mail = new Mailinator();
+		    MailinatorUtils mail = new MailinatorUtils(driver);
 			String subject = "New message from " + testData.Sender3;
 			String messageLink = "Sign in to view this message";
 			link = mail.getLinkFromEmail(testData.UserName, subject, messageLink, 5);
@@ -577,7 +569,7 @@ public class IntegrationPlatformRegressionTests extends BaseTestNGWebDriver {
 		}
 		log("checking email for activation UrL link");
 		Thread.sleep(5000);
-		Mailinator mail = new Mailinator();
+		MailinatorUtils mail = new MailinatorUtils(driver);
 		String activationUrl = mail.getLinkFromEmail(patientDetail.get(4), JalapenoConstants.NEW_PATIENT_ACTIVATION_MESSAGE,
 				JalapenoConstants.NEW_PATIENT_ACTIVATION_MESSAGE_LINK_TEXT, 20);
 		assertTrue(activationUrl != null, "Error: Activation link not found.");
@@ -965,7 +957,7 @@ public class IntegrationPlatformRegressionTests extends BaseTestNGWebDriver {
 			log("Step 6: Check secure message in patient Email inbox");
 
 			String link = "";
-			Mailinator mail = new Mailinator();
+			MailinatorUtils mail = new MailinatorUtils(driver);
 			String email = testData.PatientEmailArray[i - 1];
 			String messageLink = "Sign in to view this message";
 			link = mail.getLinkFromEmail(email, subject, messageLink, 20);
@@ -2437,7 +2429,7 @@ public class IntegrationPlatformRegressionTests extends BaseTestNGWebDriver {
 		log("checking email for activation UrL link");
 		Thread.sleep(5000);
 		log("Step 3: Check and extract Invite link in patient Email");
-		Mailinator mail = new Mailinator();
+		MailinatorUtils mail = new MailinatorUtils(driver);
 		String activationUrl = mail.getLinkFromEmail(patientDetail.get(4),
 				"You are invited to create a Patient Portal guardian account at PI Automation rsdk Integrated",
 				JalapenoConstants.NEW_PATIENT_ACTIVATION_MESSAGE_LINK_TEXT, 20);
@@ -2596,7 +2588,7 @@ public class IntegrationPlatformRegressionTests extends BaseTestNGWebDriver {
 		log("checking email for activation UrL link");
 		Thread.sleep(5000);
 		log("Step 3: Check and extract Invite link in patient Email");
-		Mailinator mail = new Mailinator();
+		MailinatorUtils mail = new MailinatorUtils(driver);
 		String activationUrl = mail.getLinkFromEmail(patientDetail.get(4),
 				"You are invited to create a Patient Portal guardian account at PI Automation rsdk Integrated",
 				JalapenoConstants.NEW_PATIENT_ACTIVATION_MESSAGE_LINK_TEXT, 20);
@@ -4241,7 +4233,7 @@ public class IntegrationPlatformRegressionTests extends BaseTestNGWebDriver {
 		}
 		// Patient portal validation
 		logStep("Check secure message in patient mailinator inbox");
-		Mailinator mail = new Mailinator();
+		MailinatorUtils mail = new MailinatorUtils(driver);
 		String subject = "New message from "+testData.getPracticeName();
 		String messageLink = "Sign in to view this message";
 		String emailMessageLink = mail.getLinkFromEmail(testData.getUserName(), subject, messageLink, 20);
@@ -4369,7 +4361,7 @@ public class IntegrationPlatformRegressionTests extends BaseTestNGWebDriver {
 			assertTrue(completed, "Message processing was not completed in time");
 		}
 		logStep(" Validate if patient has received the email for the secure message sent");
-		Mailinator mail = new Mailinator();
+		MailinatorUtils mail = new MailinatorUtils(driver);
 		String subject = "New message from " + AMDCtestData.Sender3;
 		String messageLink = "Sign in to view this message";
 		String link = mail.getLinkFromEmail(AMDCtestData.UserName, subject, messageLink, 10);
@@ -4498,7 +4490,7 @@ public class IntegrationPlatformRegressionTests extends BaseTestNGWebDriver {
 			logStep("Check secure message in patient Email inbox");
 
 			String link = "";
-			Mailinator mail = new Mailinator();
+			MailinatorUtils mail = new MailinatorUtils(driver);
 			String email = bulkMessageTestData.PatientEmailArray[i - 1];
 			String messageLink = "Sign in to view this message";
 			link = mail.getLinkFromEmail(email, subject, messageLink, 20);

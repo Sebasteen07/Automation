@@ -29,6 +29,12 @@ public class SecurityDetailsPage extends MedfusionPage {
 
 		@FindBy(how = How.ID, using = "secretAnswer")
 		private WebElement inputSecretAnswer;
+		
+		@FindBy(how = How.XPATH, using = "//span[contains(text(),'Just one quick thing')]")
+		private WebElement confirmationPopup;
+		
+		@FindBy(how = How.XPATH, using = "//button[@id='updateMissingInfoButton']")
+		private WebElement updateMissingInfoButton;
 
 		@FindBy(how = How.ID, using = "phone1")
 		private WebElement inputPhone1;
@@ -102,6 +108,9 @@ public class SecurityDetailsPage extends MedfusionPage {
 				scrollAndWait(0,300,3000);
 				log("Clicking finish btn");
 				buttonFinishStep.click();
+				if (new IHGUtil(driver).exists(confirmationPopup)) {
+					updateMissingInfoButton.click();
+				} 
 				selectStatementIfRequired(statementPreference); //TODO move to handleWeNeedToConfirmSomethingModal
 				handleWeNeedToConfirmSomethingModal();
 				return PageFactory.initElements(driver, JalapenoHomePage.class);
@@ -144,15 +153,22 @@ public class SecurityDetailsPage extends MedfusionPage {
 							new WebDriverWait(driver, 10).until(ExpectedConditions.elementToBeClickable(paperPaymentPreference));
 								paperPaymentPreference.click();
 						} else if (deliveryPref == 2) {
-							new WebDriverWait(driver, 10).until(ExpectedConditions.elementToBeClickable(electronicPaymentPreference));
+							if (new IHGUtil(driver).exists(electronicPaymentPreference)) {
+								new WebDriverWait(driver, 10).until(ExpectedConditions.elementToBeClickable(electronicPaymentPreference));
 								electronicPaymentPreference.click();
+							}
+							
 						} else if (deliveryPref == 3) {
 							new WebDriverWait(driver, 10).until(ExpectedConditions.elementToBeClickable(bothPaymentPreference));
 								bothPaymentPreference.click();
 						}
-						new WebDriverWait(driver, 15).until(ExpectedConditions.elementToBeClickable(okButton));
+						
+						if (new IHGUtil(driver).exists(okButton)) {
+							new WebDriverWait(driver, 15).until(ExpectedConditions.elementToBeClickable(okButton));
 
-						okButton.click();
+							okButton.click();
+						}
+						
 
 						/*
 						 * try { Thread.sleep(2000); } catch (InterruptedException e) { e.printStackTrace(); }

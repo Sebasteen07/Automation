@@ -47,8 +47,8 @@ public class ReferralsAcceptanceTests extends BaseTestNGWebDriver {
 			boolean patientExists) throws Exception {
 		logStep("Login to Practice Portal");
 		PracticeLoginPage practiceLogin = new PracticeLoginPage(driver, testReferralsData.getUrl());
-		PracticeHomePage practiceHome = practiceLogin.login(testReferralsData.getProperty("user.id"),
-				testReferralsData.getProperty("password"));
+		PracticeHomePage practiceHome = practiceLogin.login(testReferralsData.getProperty("ref.user.id"),
+				testReferralsData.getProperty("ref.password"));
 
 		logStep("Go into Referrals");
 		ReferralsPage referralsPage = practiceHome.clickOnReferrals();
