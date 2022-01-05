@@ -21,6 +21,9 @@ locals {
     demo-integrations2-regression1     = "demo-integrations2-regression1"
     demo-integrations2-regression2     = "demo-integrations2-regression2"
     demo-integrations2-regression3     = "demo-integrations2-regression3"
+    prod-integrations-acceptance-oauth10 = "prod-integrations-acceptance-oauth10"
+    prod-integrations1-acceptance      = "prod-integrations1-acceptance"
+    prod-integrations1-regression      = "prod-integrations1-regression"
   }
   selected_workspace = local.valid_workspaces[terraform.workspace]
 }
