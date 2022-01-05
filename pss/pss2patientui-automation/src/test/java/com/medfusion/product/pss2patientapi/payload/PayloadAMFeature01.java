@@ -38,27 +38,7 @@ public class PayloadAMFeature01 {
 		return timeMark;
 	}
 	
-	public String turnOFFShowProvider() {
-		String turnOFFShowProvider = "[\r\n"
-				+ "    {\r\n"
-				+ "        \"group\": \"RULEENGINE\",\r\n"
-				+ "        \"key\": \"showProvider\",\r\n"
-				+ "        \"value\": false\r\n"
-				+ "    }\r\n"
-				+ "]";
-		return turnOFFShowProvider;
-	}
 	
-	public String turnONShowProvider() {
-		String turnONShowProvider = "[\r\n"
-				+ "    {\r\n"
-				+ "        \"group\": \"RULEENGINE\",\r\n"
-				+ "        \"key\": \"showProvider\",\r\n"
-				+ "        \"value\": true\r\n"
-				+ "    }\r\n"
-				+ "]";
-		return turnONShowProvider;
-	}
 	
 	public String turnONOFFShowProvider(boolean value) {
 		String turnONShowProvider = "[\r\n"
@@ -72,24 +52,24 @@ public class PayloadAMFeature01 {
 	}
 
 	
-	public String turnONDecisionTree(boolean value) {
+	public String turnONOFFDecisionTree(boolean value) {
 		String turnOFFShowProvider = "[\r\n"
-				+ "    {\r\n"
-				+ "        \"group\": \"RULEENGINE\",\r\n"
-				+ "        \"key\": \"showProvider\",\r\n"
-				+ "        \"value\": "+value+"\r\n"
-				+ "    }\r\n"
+				+ "  {\r\n"
+				+ "    \"group\": \"RULEENGINE\",\r\n"
+				+ "    \"key\": \"showCategory\",\r\n"
+				+ "    \"value\": "+value+"\r\n"
+				+ "  }\r\n"
 				+ "]";
 		return turnOFFShowProvider;
 	}
 	
-	public String reserveForSameDay(String value) {
+	public String reserveForSameDay(String reserveValue,boolean acceptValue,int timeMark) {
 		String reserveForSameDay = "{\r\n"
-				+ "    \"id\": 203099,\r\n"
+				+ "    \"id\": 4054,\r\n"
 				+ "    \"appointmentStacking\": false,\r\n"
 				+ "    \"slotCount\": 1,\r\n"
-				+ "    \"allowSameDayAppts\": true,\r\n"
-				+ "    \"apptTimeMark\": 0,\r\n"
+				+ "    \"allowSameDayAppts\": "+acceptValue+",\r\n"
+				+ "    \"apptTimeMark\": "+timeMark+",\r\n"
 				+ "    \"apptTypeAllocated\": true,\r\n"
 				+ "    \"isContiguous\": false,\r\n"
 				+ "    \"leadTime\": {\r\n"
@@ -98,7 +78,7 @@ public class PayloadAMFeature01 {
 				+ "        \"mins\": \"0\"\r\n"
 				+ "    },\r\n"
 				+ "    \"excludeSlots\": [],\r\n"
-				+ "    \"apptTypeReservedReason\": \""+value+"\",\r\n"
+				+ "    \"apptTypeReservedReason\": \""+reserveValue+"\",\r\n"
 				+ "    \"acceptComment\": false,\r\n"
 				+ "    \"allowOnlineCancellation\": true,\r\n"
 				+ "    \"slotSize\": 5,\r\n"
@@ -109,28 +89,29 @@ public class PayloadAMFeature01 {
 		return reserveForSameDay;
 	}
 	
-	public String hideSlots()
+	public String hideSlots(int leadValue)
 	{
 		String hideSlots="{\r\n"
-				+ "\"id\": 201600,\r\n"
-				+ "\"appointmentStacking\": false,\r\n"
-				+ "\"slotCount\": 1,\r\n"
-				+ "\"allowSameDayAppts\": true,\r\n"
-				+ "\"apptTimeMark\": 0,\r\n"
-				+ "\"apptTypeAllocated\": true,\r\n"
-				+ "\"isContiguous\": false,\r\n"
-				+ "\"leadTime\":\r\n"
-				+ "\r\n"
-				+ "{ \"days\": \"5\", \"hours\": \"0\", \"mins\": \"0\" }\r\n"
-				+ ",\r\n"
-				+ "\"excludeSlots\": [],\r\n"
-				+ "\"apptTypeReservedReason\": \"n\",\r\n"
-				+ "\"acceptComment\": false,\r\n"
-				+ "\"allowOnlineCancellation\": true,\r\n"
-				+ "\"slotSize\": 5,\r\n"
-				+ "\"schedulingDuration\": 0,\r\n"
-				+ "\"pttype\": \"PT_ALL\",\r\n"
-				+ "\"lastQuestRequired\": false\r\n"
+				+ "  \"id\": 4054,\r\n"
+				+ "  \"appointmentStacking\": true,\r\n"
+				+ "  \"slotCount\": 1,\r\n"
+				+ "  \"allowSameDayAppts\": true,\r\n"
+				+ "  \"apptTimeMark\": 0,\r\n"
+				+ "  \"apptTypeAllocated\": true,\r\n"
+				+ "  \"isContiguous\": false,\r\n"
+				+ "  \"leadTime\": {\r\n"
+				+ "    \"days\": "+leadValue+",\r\n"
+				+ "    \"hours\": \"0\",\r\n"
+				+ "    \"mins\": \"0\"\r\n"
+				+ "  },\r\n"
+				+ "  \"excludeSlots\": [],\r\n"
+				+ "  \"apptTypeReservedReason\": \"n\",\r\n"
+				+ "  \"acceptComment\": false,\r\n"
+				+ "  \"allowOnlineCancellation\": true,\r\n"
+				+ "  \"slotSize\": 5,\r\n"
+				+ "  \"schedulingDuration\": 0,\r\n"
+				+ "  \"pttype\": \"PT_ALL\",\r\n"
+				+ "  \"lastQuestRequired\": false\r\n"
 				+ "}";
 		return hideSlots;
 		
@@ -222,6 +203,33 @@ public class PayloadAMFeature01 {
 				+ "]";
 		return showUpcomingToggle;
 		
+	}
+	
+
+	public String acceptForSameDayONOFF(String value) {
+		String reserveForSameDay = "{\r\n"
+				+ "    \"id\": 203099,\r\n"
+				+ "    \"appointmentStacking\": false,\r\n"
+				+ "    \"slotCount\": 1,\r\n"
+				+ "    \"allowSameDayAppts\": true,\r\n"
+				+ "    \"apptTimeMark\": 0,\r\n"
+				+ "    \"apptTypeAllocated\": true,\r\n"
+				+ "    \"isContiguous\": false,\r\n"
+				+ "    \"leadTime\": {\r\n"
+				+ "        \"days\": 0,\r\n"
+				+ "        \"hours\": \"0\",\r\n"
+				+ "        \"mins\": \"0\"\r\n"
+				+ "    },\r\n"
+				+ "    \"excludeSlots\": [],\r\n"
+				+ "    \"apptTypeReservedReason\": \""+value+"\",\r\n"
+				+ "    \"acceptComment\": false,\r\n"
+				+ "    \"allowOnlineCancellation\": true,\r\n"
+				+ "    \"slotSize\": 5,\r\n"
+				+ "    \"schedulingDuration\": 0,\r\n"
+				+ "    \"pttype\": \"PT_ALL\",\r\n"
+				+ "    \"lastQuestRequired\": false\r\n"
+				+ "}";
+		return reserveForSameDay;
 	}
 }
 
