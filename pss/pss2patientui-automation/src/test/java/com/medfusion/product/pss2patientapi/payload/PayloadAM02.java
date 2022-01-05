@@ -1,3 +1,4 @@
+// Copyright 2022 NXGN Management, LLC. All Rights Reserved.
 package com.medfusion.product.pss2patientapi.payload;
 
 public class PayloadAM02 {
@@ -422,82 +423,5 @@ public class PayloadAM02 {
 				+ "}";
 		return payload;
 	}	
-	public String Pyaload() {
-
-		String payload = "";
-		return payload;
-	}	
-	public String Pyaload() {
-
-		String payload = "";
-		return payload;
-	}	
-	public String Pyaload() {
-
-		String payload = "";
-		return payload;
-	}	
-	public String Pyaload() {
-
-		String payload = "";
-		return payload;
-	}	
-	public String Pyaload() {
-
-		String payload = "";
-		return payload;
-	}	
-	public String Pyaload() {
-
-		String payload = "";
-		return payload;
-	}	
-	public String Pyaload() {
-
-		String payload = "";
-		return payload;
-	}	
-	public String Pyaload() {
-
-		String payload = "";
-		return payload;
-	}	
-	public String Pyaload() {
-
-		String payload = "";
-		return payload;
-	}	
-	public String Pyaload() {
-
-		String payload = "";
-		return payload;
-	}	
-	public String Pyaload() {
-
-		String payload = "";
-		return payload;
-	}	
-	public String Pyaload() {
-
-		String payload = "";
-		return payload;
-	}	
-	public String Pyaload() {
-
-		String payload = "";
-		return payload;
-	}	
-	public String Pyaload() {
-
-		String payload = "";
-		return payload;
-	}	
-	public String Pyaload() {
-
-		String payload = "";
-		return payload;
-	}	
-	
-	
 
 }

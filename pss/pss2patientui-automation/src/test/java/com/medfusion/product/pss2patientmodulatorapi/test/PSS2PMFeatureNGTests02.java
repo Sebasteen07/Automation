@@ -51,7 +51,7 @@ public class PSS2PMFeatureNGTests02 extends BaseTestNG {
 	APIVerification apv;
 
 	@BeforeTest(enabled = true, groups = { "APItest" })
-	public void setUp() throws IOException {
+	public void setUpPM() throws IOException {
 
 		log("Set the Authorization for Patient Modulator");
 
