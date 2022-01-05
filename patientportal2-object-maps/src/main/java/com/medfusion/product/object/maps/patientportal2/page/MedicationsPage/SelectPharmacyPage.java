@@ -223,9 +223,14 @@ public class SelectPharmacyPage extends MedfusionPage {
 		addPharmacy.click();
 		log("Click on Add Your Pharmacy button from the popup");
 		Thread.sleep(2000);
-		addYourPharmacy.click();
-		log("Verify all the popup elements are present");
-		assertTrue(arePopupPageElementsPresent());
+		if (new IHGUtil(driver).exists(addYourPharmacy)) {
+			addYourPharmacy.click();
+			log("Verify all the popup elements are present");
+			assertTrue(arePopupPageElementsPresent());
+		} 
+//		addYourPharmacy.click();
+//		log("Verify all the popup elements are present");
+//		assertTrue(arePopupPageElementsPresent());
 		log("Enter Pharmacy Details");
 		pharmacyName.sendKeys(testData.getProperty("pharmacy.name") + IHGUtil.createRandomNumericString(4));
 		pharmacyPhone1.sendKeys(IHGUtil.createRandomNumericString(3));

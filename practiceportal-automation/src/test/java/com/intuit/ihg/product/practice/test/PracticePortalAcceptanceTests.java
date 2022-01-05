@@ -567,21 +567,11 @@ public class PracticePortalAcceptanceTests extends BaseTestNGWebDriver {
 		String[] mailAddress = testData.getProperty("forgot.password.mail").split("@");
 		String emailSubject = "Help with your user name or password";
 		String inEmail = "Reset Password Now";
-				
-		//Email receivedEmail = new Mailer(mailAddress[0]).pollForNewEmailWithSubject(emailSubject, 60,
-				//passwordResetStart.until(Instant.now(), ChronoUnit.SECONDS));
-		//String resetPasswordLink = Mailer.getLinkByText(receivedEmail, inEmail);
-		//System.out.println("Link from mail is" +resetPasswordLink );
 
 		YopMail mail=new YopMail(driver);
 		String resetPasswordLink = mail.getLinkFromEmail(mailAddress[0],emailSubject, inEmail, 15);
 		log("Link from mail is" +resetPasswordLink );
 
-//		Email receivedEmail = new Mailer(mailAddress[0]).pollForNewEmailWithSubject(emailSubject, 60,
-//				passwordResetStart.until(Instant.now(), ChronoUnit.SECONDS));
-//		String resetPasswordLink = Mailer.getLinkByText(receivedEmail, inEmail);
-		
-//		log("Link from mail is" +resetPasswordLink );
 		String url = getRedirectUrl(resetPasswordLink);
 		System.out.println("Redirected url is" +url);
 		assertNotNull(url, "Error: Reset Password link not found.");
