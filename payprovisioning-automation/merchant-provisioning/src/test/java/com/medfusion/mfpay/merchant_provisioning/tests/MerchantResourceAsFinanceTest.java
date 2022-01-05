@@ -14,7 +14,6 @@ import org.codehaus.jackson.map.ObjectMapper;
 import org.testng.Assert;
 import org.testng.annotations.BeforeTest;
 import org.testng.annotations.Test;
-
 import com.medfusion.common.utils.IHGUtil;
 import com.medfusion.common.utils.PropertyFileLoader;
 import com.medfusion.mfpay.merchant_provisioning.helpers.MerchantInfo;
