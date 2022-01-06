@@ -33,6 +33,17 @@ public class ContractedRates {
 
 	}
 
+	public static Map<String, Object> getUpdatedContractedRatesMap(Double midqfeepercent, Double nqfeepercent,
+			Double pertransactionauthfee, Double qfeepercent) {
+		Map<String, Object> contractrates = new HashMap<String, Object>();
+		contractrates.put("perTransAuthFee", pertransactionauthfee);
+		contractrates.put("qualifiedFeePercent", qfeepercent);
+		contractrates.put("midQualifiedFeePercent", midqfeepercent);
+		contractrates.put("nonQualifiedFeePercent", nqfeepercent);
+		return contractrates;
+
+	}
+
 	private Double qualifiedFeePercent;
 	private Double midQualifiedFeePercent;
 	private Double midQualifiedUpperBoundaryPercent;

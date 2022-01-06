@@ -63,7 +63,6 @@ public class BaseRest extends BaseTestNG {
 	public void setupResponsetSpecBuilder()
 	{
 		responseSpec = new ResponseSpecBuilder()
-	   .expectStatusCode(200)
 	   .expectContentType(ContentType.JSON)
 	   .build();
 
