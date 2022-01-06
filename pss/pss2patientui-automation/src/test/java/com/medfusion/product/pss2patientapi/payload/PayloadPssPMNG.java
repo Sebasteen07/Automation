@@ -653,6 +653,27 @@ public class PayloadPssPMNG {
 		return cancelAppointment;
 	}
 	
+	public String  cancelAppointmentWithReasonOtherPayload(String extApptId)
+	{
+		String  cancelAppointment="{\r\n"
+				+ "    \"appointmentId\": \""+extApptId+"\",\r\n"
+				+ "    \"cancellationMap\": {\r\n"
+				+ "        \"id\": null,\r\n"
+				+ "        \"name\": \"Other\"\r\n"
+				+ "    }\r\n"
+				+ "}";
+		return cancelAppointment;
+	}
+	
+	public String  cancelAppointmentWithoutReasonPayload(String extApptId)
+	{
+		String  cancelAppointment="{\r\n"
+				+ "  \"appointmentId\": \""+extApptId+"\",\r\n"
+				+ "  \"cancellationMap\": null\r\n"
+				+ "}";
+		return cancelAppointment;
+	}
+	
 	public String  rescheduleAppointmentPayload(String slotid, String startdate, String apptid, String bookid, String locationid, String appttypeid)
 	{
 		String  rescheduleAppointment="{\r\n"
