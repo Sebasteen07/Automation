@@ -16,7 +16,7 @@
 		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
 		<ihg.version>22.2.0-SNAPSHOT</ihg.version>
 		<dcf-version>22.2.0-SNAPSHOT</dcf-version>
-		<eh-core-version>22.1.0-SNAPSHOT</eh-core-version>
+		<eh-core-version>22.2.0-SNAPSHOT</eh-core-version>
 		<messages-version>22.2.0-SNAPSHOT</messages-version>
 		<codification-version>13.6.0.5</codification-version>
 	</properties>
