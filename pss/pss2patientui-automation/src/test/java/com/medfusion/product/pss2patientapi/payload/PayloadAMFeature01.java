@@ -231,5 +231,156 @@ public class PayloadAMFeature01 {
 				+ "}";
 		return reserveForSameDay;
 	}
+	
+	public String specialityPost(int specialityId,String specialityName,String displayName,String ageValue) {
+		String specialityPost = "[\r\n"
+				+ "  {\r\n"
+				+ "    \"isageRule\": true,\r\n"
+				+ "    \"isgenderRule\": false,\r\n"
+				+ "    \"id\": "+specialityId+",\r\n"
+				+ "    \"name\": \""+specialityName+"\",\r\n"
+				+ "    \"displayNames\": {\r\n"
+				+ "      \"EN\": \"Internal Medicine\",\r\n"
+				+ "      \"ES\": \"\"\r\n"
+				+ "    },\r\n"
+				+ "    \"displayName\": \""+displayName+"\",\r\n"
+				+ "    \"sortOrder\": 0,\r\n"
+				+ "    \"ageRule\": \""+ageValue+"\",\r\n"
+				+ "    \"genderRule\": [\r\n"
+				+ "      {\r\n"
+				+ "        \"id\": 0,\r\n"
+				+ "        \"displayName\": \"Female\",\r\n"
+				+ "        \"pssCode\": \"F\",\r\n"
+				+ "        \"partnerCode\": \"F\",\r\n"
+				+ "        \"active\": true,\r\n"
+				+ "        \"seq\": 2,\r\n"
+				+ "        \"codeGroup\": \"gender\"\r\n"
+				+ "      },\r\n"
+				+ "      {\r\n"
+				+ "        \"id\": 0,\r\n"
+				+ "        \"displayName\": \"Male\",\r\n"
+				+ "        \"pssCode\": \"M\",\r\n"
+				+ "        \"partnerCode\": \"M\",\r\n"
+				+ "        \"active\": true,\r\n"
+				+ "        \"seq\": 1,\r\n"
+				+ "        \"codeGroup\": \"gender\"\r\n"
+				+ "      },\r\n"
+				+ "      {\r\n"
+				+ "        \"id\": 0,\r\n"
+				+ "        \"displayName\": \"Unknown\",\r\n"
+				+ "        \"pssCode\": \"U\",\r\n"
+				+ "        \"partnerCode\": \"U\",\r\n"
+				+ "        \"active\": true,\r\n"
+				+ "        \"seq\": 3,\r\n"
+				+ "        \"codeGroup\": \"gender\"\r\n"
+				+ "      },\r\n"
+				+ "      {\r\n"
+				+ "        \"id\": 0,\r\n"
+				+ "        \"displayName\": \"Undifferentiated (Other)\",\r\n"
+				+ "        \"pssCode\": \"UN\",\r\n"
+				+ "        \"partnerCode\": \"O\",\r\n"
+				+ "        \"active\": true,\r\n"
+				+ "        \"seq\": 5,\r\n"
+				+ "        \"codeGroup\": \"gender\"\r\n"
+				+ "      }\r\n"
+				+ "    ]\r\n"
+				+ "  }\r\n"
+				+ "]";
+		return specialityPost;
+
+	}
+	
+	public String mergeSlotPyaload(int slotCount)
+	{
+		String mergeSlotPyaload="{\r\n"
+				+ "  \"id\": 4054,\r\n"
+				+ "  \"appointmentStacking\": false,\r\n"
+				+ "  \"slotCount\": "+slotCount+",\r\n"
+				+ "  \"allowSameDayAppts\": true,\r\n"
+				+ "  \"apptTimeMark\": 0,\r\n"
+				+ "  \"apptTypeAllocated\": true,\r\n"
+				+ "  \"isContiguous\": false,\r\n"
+				+ "  \"leadTime\": {\r\n"
+				+ "    \"days\": \"0\",\r\n"
+				+ "    \"hours\": \"0\",\r\n"
+				+ "    \"mins\": \"0\"\r\n"
+				+ "  },\r\n"
+				+ "  \"excludeSlots\": [],\r\n"
+				+ "  \"apptTypeReservedReason\": \"n\",\r\n"
+				+ "  \"acceptComment\": true,\r\n"
+				+ "  \"allowOnlineCancellation\": true,\r\n"
+				+ "  \"slotSize\": 5,\r\n"
+				+ "  \"schedulingDuration\": 0,\r\n"
+				+ "  \"pttype\": \"PT_ALL\",\r\n"
+				+ "  \"lastQuestRequired\": false\r\n"
+				+ "}";
+		return mergeSlotPyaload;
+		
+	}
+	
+	public String excludeSlotPyaload()
+	{
+		String excludeSlotPyaload="{\r\n"
+				+ "  \"id\": 4054,\r\n"
+				+ "  \"appointmentStacking\": false,\r\n"
+				+ "  \"slotCount\": 1,\r\n"
+				+ "  \"allowSameDayAppts\": true,\r\n"
+				+ "  \"apptTimeMark\": 0,\r\n"
+				+ "  \"apptTypeAllocated\": true,\r\n"
+				+ "  \"isContiguous\": false,\r\n"
+				+ "  \"leadTime\": {\r\n"
+				+ "    \"days\": \"0\",\r\n"
+				+ "    \"hours\": \"0\",\r\n"
+				+ "    \"mins\": \"0\"\r\n"
+				+ "  },\r\n"
+				+ "  \"excludeSlots\": [\r\n"
+				+ "    {\r\n"
+				+ "      \"startTime\": \"11:00\",\r\n"
+				+ "      \"endTime\": \"01:00\",\r\n"
+				+ "      \"beforeAfterStart\": \">\",\r\n"
+				+ "      \"beforeAfterEnd\": \"<\",\r\n"
+				+ "      \"condition\": \"And\"\r\n"
+				+ "    }\r\n"
+				+ "  ],\r\n"
+				+ "  \"apptTypeReservedReason\": \"n\",\r\n"
+				+ "  \"acceptComment\": true,\r\n"
+				+ "  \"allowOnlineCancellation\": true,\r\n"
+				+ "  \"slotSize\": 5,\r\n"
+				+ "  \"schedulingDuration\": 0,\r\n"
+				+ "  \"pttype\": \"PT_ALL\",\r\n"
+				+ "  \"lastQuestRequired\": false\r\n"
+				+ "}";
+		return excludeSlotPyaload;
+		
+	}
+	
+	public String lastQEnable(boolean lastValue)
+	{
+		String lastQEnable="{\r\n"
+				+ "  \"id\": 4054,\r\n"
+				+ "  \"appointmentStacking\": false,\r\n"
+				+ "  \"slotCount\": 1,\r\n"
+				+ "  \"allowSameDayAppts\": true,\r\n"
+				+ "  \"apptTimeMark\": 0,\r\n"
+				+ "  \"apptTypeAllocated\": true,\r\n"
+				+ "  \"isContiguous\": false,\r\n"
+				+ "  \"leadTime\": {\r\n"
+				+ "    \"days\": \"0\",\r\n"
+				+ "    \"hours\": \"0\",\r\n"
+				+ "    \"mins\": \"0\"\r\n"
+				+ "  },\r\n"
+				+ "  \"excludeSlots\": [],\r\n"
+				+ "  \"apptTypeReservedReason\": \"n\",\r\n"
+				+ "  \"acceptComment\": "+lastValue+",\r\n"
+				+ "  \"allowOnlineCancellation\": true,\r\n"
+				+ "  \"slotSize\": 5,\r\n"
+				+ "  \"schedulingDuration\": 0,\r\n"
+				+ "  \"pttype\": \"PT_ALL\",\r\n"
+				+ "  \"lastQuestRequired\": false\r\n"
+				+ "}";
+		return lastQEnable;
+		
+	}
+
 }
 

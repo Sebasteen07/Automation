@@ -1019,4 +1019,10 @@ public class PostAPIRequestAdapterModulator {
 				.then().log().all().extract().response();
 		return response;
 	}
+	
+	public Response specialitySave(String practiceid, String b) throws Exception {
+		Response response = given().spec(requestSpec).body(b).log().all().when().post(practiceid + "/specialty")
+				.then().log().all().extract().response();
+		return response;
+	}
 }
