@@ -2181,4 +2181,16 @@ public class PSSPatientUtils extends BaseTestNGWebDriver {
 	String newTime = df.format(cal.getTime());
 	return newTime;
 	}
+	
+	public int ageCurrentmonths(String date) {
+		DateTimeFormatter formatter = DateTimeFormatter.ofPattern("d-MMM-yyyy");
+		LocalDate pdate = LocalDate.parse(date, formatter);
+		LocalDate now = LocalDate.now();
+		Period diff = Period.between(pdate, now);
+		int yearmonth = diff.getYears() * 12;
+		int month = yearmonth + diff.getMonths();
+		log("Total Month of patient from date of Birth is  " + month);
+		return month;
+
+	}
 }

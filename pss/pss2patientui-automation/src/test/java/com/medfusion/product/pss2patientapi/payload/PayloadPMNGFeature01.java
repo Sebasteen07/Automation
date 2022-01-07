@@ -815,4 +815,37 @@ public String specialityPost() {
 	return specialityPost;
 
 }
+
+public String lastQueReqShowProOff(String locationId,String apptId,String date)
+{
+	String lastQueReq="{\r\n"
+			+ "  \"specialty\": null,\r\n"
+			+ "  \"location\": "+locationId+",\r\n"
+			+ "  \"book\": null,\r\n"
+			+ "  \"appointmentType\": "+apptId+",\r\n"
+			+ "  \"startDateTime\": \""+date+"\",\r\n"
+			+ "  \"slotId\": \"0001\",\r\n"
+			+ "  \"traversal\": false,\r\n"
+			+ "  \"patientType\": \"PT_EXISTING\",\r\n"
+			+ "  \"extApptId\": null\r\n"
+			+ "}";
+	return lastQueReq;
+ }
+
+
+public String lastQueReqShowProON(String locationId,String bookId,String apptId,String date)
+{
+	String lastQueReq="{\r\n"
+			+ "  \"specialty\": null,\r\n"
+			+ "  \"location\": "+locationId+",\r\n"
+			+ "  \"book\": "+bookId+",\r\n"
+			+ "  \"appointmentType\": "+apptId+",\r\n"
+			+ "  \"startDateTime\": \""+date+"\",\r\n"
+			+ "  \"slotId\": \"0001\",\r\n"
+			+ "  \"traversal\": false,\r\n"
+			+ "  \"patientType\": \"PT_EXISTING\",\r\n"
+			+ "  \"extApptId\": null\r\n"
+			+ "}";
+	return lastQueReq;
+}
 }

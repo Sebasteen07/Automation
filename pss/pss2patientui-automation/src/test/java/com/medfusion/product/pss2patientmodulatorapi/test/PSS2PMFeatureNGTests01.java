@@ -2,6 +2,8 @@
 package com.medfusion.product.pss2patientmodulatorapi.test;
 
 import static org.testng.Assert.assertEquals;
+import static org.testng.Assert.assertNotEquals;
+import static org.testng.Assert.assertTrue;
 
 import java.io.IOException;
 import java.util.ArrayList;
@@ -27,6 +29,7 @@ import com.medfusion.product.pss2patientui.pojo.Appointment;
 import com.medfusion.product.pss2patientui.utils.PSSPatientUtils;
 import com.medfusion.product.pss2patientui.utils.PSSPropertyFileLoader;
 
+import io.restassured.path.json.JsonPath;
 import io.restassured.response.Response;
 
 public class PSS2PMFeatureNGTests01 extends BaseTestNG {
@@ -1560,7 +1563,8 @@ public class PSS2PMFeatureNGTests01 extends BaseTestNG {
 	public void testAgeRuleWithSpeciality() throws Exception {
 
 		log("Verify Age Rule in Specialty");
-		
+		String patientDob="01-Jan-2000";
+		int totalMonth=pssPatientUtils.ageCurrentmonths(patientDob);
 		logStep("Set up the API authentication");
 		setUpAM(propertyData.getProperty("practice.id.feature.pm.ng"),
 				propertyData.getProperty("mf.authuserid.am.feature.ng"));
@@ -1588,30 +1592,52 @@ public class PSS2PMFeatureNGTests01 extends BaseTestNG {
 		String displayName= propertyData.getProperty("speciality.displayname.pm02");
 		String ageValue= propertyData.getProperty("agevalue.pm02");
 		int id=Integer.parseInt(id1);
-		String b=payloadAMFeature01.specialityPost(id, name, displayName, ageValue);
+		String fVal="210";
+		String sVal="240";
+		String b=payloadAMFeature01.specialityAgeRulePost(id, name, displayName, fVal, sVal);
 		response = postAPIRequestAM.specialitySave(practiceIdAm,b);
 		apv.responseCodeValidation(response, 200);
 
 		String b1 = payloadPssPMNG1.specialityPost();
 		String patientId = propertyData.getProperty("patient.id.feature.pm.ng");
-		response = postAPIRequest.specialtyByRule(baseurl, b1, headerConfig.HeaderwithToken(accessToken), practiceid,
+	     response = postAPIRequest.specialtyByRule(baseurl, b1, headerConfig.HeaderwithToken(accessToken), practiceid,
 				patientId);
 		apv.responseCodeValidation(response, 200);
 		apv.responseTimeValidation(response);
 		JSONObject jo = new JSONObject(response.asString());
 		int len = jo.getJSONArray("specialtyList").length();
 		String kk = null;
+		ArrayList<String> arrayList=new ArrayList<String>();
 		for (int i = 0; i < len; i++) {
 			kk = jo.getJSONArray("specialtyList").getJSONObject(i).getString("displayName");
-			log("kk is  " + kk);
-			if (kk.equalsIgnoreCase("specialty 1")) {
-				log("test case passed");
-				break;
-			} else {
-				log("test case failed");
-			}
+			arrayList.add(kk);
+			
 		}
-
+//		log("AL IS "+arrayList);	
+//		String expectedValue="specialty 1";
+//		boolean sExist=arrayList.contains(expectedValue);
+//		log("Actual ......."+sExist);
+//		assertEquals(true, sExist);
+		
+		int i = Integer.parseInt(fVal);
+		int j = Integer.parseInt(sVal);
+		boolean sExist = false;
+		if (totalMonth > i && totalMonth < j) {
+			log("AL IS "+arrayList);	
+			String expectedValue="Internal Medicine";
+		    sExist=arrayList.contains(expectedValue);
+			log("Actual ......."+sExist);
+			assertEquals(true, sExist);
+		} else {
+			log("AL IS "+arrayList);	
+			String expectedValue="Internal Medicine";
+		    sExist=arrayList.contains(expectedValue);
+			log("Actual ......."+sExist);
+			assertNotEquals(true, sExist);
+		}
+		log("Resetting the age rule");
+		response = postAPIRequestAM.specialitySave(practiceIdAm,payloadAMFeature01.specialityAgeRuleResetPost(id, name, displayName));
+		apv.responseCodeValidation(response, 200);
 	}
 	
 	@Test(enabled = true, groups = { "APItest" }, retryAnalyzer = RetryAnalyzer.class)
@@ -1751,11 +1777,20 @@ public class PSS2PMFeatureNGTests01 extends BaseTestNG {
 	}
 
 	@Test(enabled = true, groups = { "APItest" }, retryAnalyzer = RetryAnalyzer.class)
-	public void testLastQEnable() throws Exception {
+	public void testLastQuestionFFShowProviOFF() throws Exception {
 		logStep("Set up the API authentication");
-		setUpAM(propertyData.getProperty("practice.id.feature.pm.ng"),
-				propertyData.getProperty("mf.authuserid.am.feature.ng"));
+		boolean lastQueEnableValue=false;
+		boolean lastQueRequValue=false;
+		setUpAM(propertyData.getProperty("practice.id.feature.pm.ng"),propertyData.getProperty("mf.authuserid.am.feature.ng"));
 		Response response;
+		response = postAPIRequestAM.locationById(practiceIdAm, propertyData.getProperty("availableslot.locationid.pm.feature.ng"));
+		apv.responseCodeValidation(response, 200);
+		String locationTimeZone=apv.responseKeyValidationJson(response, "timezone");
+		log("TimeZone- "+locationTimeZone);
+		
+		String currentdate=pssPatientUtils.currentDateWithTimeZone(locationTimeZone);
+		log("currentdate - "+currentdate);
+
 		logStep("Set up the desired rule in Admin UI using API");
 		response = postAPIRequestAM.resourceConfigRuleGet(practiceIdAm);
 		JSONArray arr = new JSONArray(response.body().asString());
@@ -1777,22 +1812,434 @@ public class PSS2PMFeatureNGTests01 extends BaseTestNG {
 		response = postAPIRequestAM.resourceConfigSavePost(practiceIdAm,payloadAMFeature01.turnONOFFShowProvider(false));
 		apv.responseCodeValidation(response, 200);
 		
-		String payloadLastQEnable=payloadAMFeature01.lastQEnable(false);
+		String payloadLastQEnable=payloadAMFeature01.lastQEnableshowProviderOFF(lastQueEnableValue,lastQueRequValue);
 		String apptid = propertyData.getProperty("availableslot.apptid.pm.feature.ng");
 		
 		response = postAPIRequestAM.appointmenttypeConfgWithBookOff(practiceIdAm,payloadLastQEnable, apptid);
 		apv.responseCodeValidation(response, 200);
 		
 		String patientid = propertyData.getProperty("patient.id.feature.pm.ng");
-		String currentdate = pssPatientUtils.sampleDateTime("MM/dd/yyyy");
+				
+		String b = payloadPssPMNG1.lastQueReqShowProOff(propertyData.getProperty("availableslot.locationid.pm.feature.ng"),
+				propertyData.getProperty("availableslot.apptid.pm.feature.ng"),currentdate);
+		
+		
+		response = postAPIRequest.commentDetails(baseurl, b, headerConfig.HeaderwithToken(accessToken), practiceid,
+				patientid);
+		apv.responseCodeValidation(response, 200);
+		apv.responseTimeValidation(response);
+		JsonPath js=new JsonPath(response.asString());
+		boolean acceptComment= js.getBoolean("acceptComment");
+		boolean lastQuestRequired= js.getBoolean("lastQuestRequired");
+		assertTrue(lastQueEnableValue == acceptComment);
+		assertTrue(lastQueRequValue == lastQuestRequired);	
+	}
+	
+	@Test(enabled = true, groups = { "APItest" }, retryAnalyzer = RetryAnalyzer.class)
+	public void testLastQuestionTFShowProviOFF() throws Exception {
+		logStep("Set up the API authentication");
+		boolean lastQueEnableValue=true;
+		boolean lastQueRequValue=false;
+		setUpAM(propertyData.getProperty("practice.id.feature.pm.ng"),propertyData.getProperty("mf.authuserid.am.feature.ng"));
+		Response response;
+		response = postAPIRequestAM.locationById(practiceIdAm, propertyData.getProperty("availableslot.locationid.pm.feature.ng"));
+		apv.responseCodeValidation(response, 200);
+		String locationTimeZone=apv.responseKeyValidationJson(response, "timezone");
+		log("TimeZone- "+locationTimeZone);
+		
+		String currentdate=pssPatientUtils.currentDateWithTimeZone(locationTimeZone);
+		log("currentdate - "+currentdate);
+
+		logStep("Set up the desired rule in Admin UI using API");
+		response = postAPIRequestAM.resourceConfigRuleGet(practiceIdAm);
+		JSONArray arr = new JSONArray(response.body().asString());
+		int l = arr.length();
+		log("Length is- " + l);
+		for (int i = 0; i < l; i++) {
+			int ruleId = arr.getJSONObject(i).getInt("id");
+			log("Object No." + i + "- " + ruleId);
+			response = postAPIRequestAM.deleteRuleById(practiceIdAm, Integer.toString(ruleId));
+			apv.responseCodeValidation(response, 200);
+		}
+
+		response = postAPIRequestAM.resourceConfigRulePost(practiceIdAm, payloadAM.rulePayload("LT", "L,T"));
+		apv.responseCodeValidation(response, 200);
+
+		response = postAPIRequestAM.resourceConfigRulePost(practiceIdAm, payloadAM.rulePayload("TL", "T,L"));
+		apv.responseCodeValidation(response, 200);
+
+		response = postAPIRequestAM.resourceConfigSavePost(practiceIdAm,payloadAMFeature01.turnONOFFShowProvider(false));
+		apv.responseCodeValidation(response, 200);
+	
+		String payloadLastQEnable=payloadAMFeature01.lastQEnableshowProviderOFF(lastQueEnableValue,lastQueRequValue);
+		String apptid = propertyData.getProperty("availableslot.apptid.pm.feature.ng");
+		
+		response = postAPIRequestAM.appointmenttypeConfgWithBookOff(practiceIdAm,payloadLastQEnable, apptid);
+		apv.responseCodeValidation(response, 200);
+		
+		String patientid = propertyData.getProperty("patient.id.feature.pm.ng");
+				
+		String b = payloadPssPMNG1.lastQueReqShowProOff(propertyData.getProperty("availableslot.locationid.pm.feature.ng"),
+				propertyData.getProperty("availableslot.apptid.pm.feature.ng"),currentdate);
+		
+		
+		response = postAPIRequest.commentDetails(baseurl, b, headerConfig.HeaderwithToken(accessToken), practiceid,
+				patientid);
+		apv.responseCodeValidation(response, 200);
+		apv.responseTimeValidation(response);
+		JsonPath js=new JsonPath(response.asString());
+		boolean acceptComment= js.getBoolean("acceptComment");
+		boolean lastQuestRequired= js.getBoolean("lastQuestRequired");
+		assertTrue(lastQueEnableValue == acceptComment);
+		assertTrue(lastQueRequValue == lastQuestRequired);	
+	}
+	
+	@Test(enabled = true, groups = { "APItest" }, retryAnalyzer = RetryAnalyzer.class)
+	public void testLastQuestionTTShowProviOFF() throws Exception {
+		logStep("Set up the API authentication");
+		boolean lastQueEnableValue=true;
+		boolean lastQueRequValue=true;
+		setUpAM(propertyData.getProperty("practice.id.feature.pm.ng"),propertyData.getProperty("mf.authuserid.am.feature.ng"));
+		Response response;
+		response = postAPIRequestAM.locationById(practiceIdAm, propertyData.getProperty("availableslot.locationid.pm.feature.ng"));
+		apv.responseCodeValidation(response, 200);
+		String locationTimeZone=apv.responseKeyValidationJson(response, "timezone");
+		log("TimeZone- "+locationTimeZone);
+		
+		String currentdate=pssPatientUtils.currentDateWithTimeZone(locationTimeZone);
+		log("currentdate - "+currentdate);
+
+		logStep("Set up the desired rule in Admin UI using API");
+		response = postAPIRequestAM.resourceConfigRuleGet(practiceIdAm);
+		JSONArray arr = new JSONArray(response.body().asString());
+		int l = arr.length();
+		log("Length is- " + l);
+		for (int i = 0; i < l; i++) {
+			int ruleId = arr.getJSONObject(i).getInt("id");
+			log("Object No." + i + "- " + ruleId);
+			response = postAPIRequestAM.deleteRuleById(practiceIdAm, Integer.toString(ruleId));
+			apv.responseCodeValidation(response, 200);
+		}
+
+		response = postAPIRequestAM.resourceConfigRulePost(practiceIdAm, payloadAM.rulePayload("LT", "L,T"));
+		apv.responseCodeValidation(response, 200);
+
+		response = postAPIRequestAM.resourceConfigRulePost(practiceIdAm, payloadAM.rulePayload("TL", "T,L"));
+		apv.responseCodeValidation(response, 200);
+
+		response = postAPIRequestAM.resourceConfigSavePost(practiceIdAm,payloadAMFeature01.turnONOFFShowProvider(false));
+		apv.responseCodeValidation(response, 200);
+	
+		String payloadLastQEnable=payloadAMFeature01.lastQEnableshowProviderOFF(lastQueEnableValue,lastQueRequValue);
+		String apptid = propertyData.getProperty("availableslot.apptid.pm.feature.ng");
+		
+		response = postAPIRequestAM.appointmenttypeConfgWithBookOff(practiceIdAm,payloadLastQEnable, apptid);
+		apv.responseCodeValidation(response, 200);
+		
+		String patientid = propertyData.getProperty("patient.id.feature.pm.ng");
+				
+		String b = payloadPssPMNG1.lastQueReqShowProOff(propertyData.getProperty("availableslot.locationid.pm.feature.ng"),
+				propertyData.getProperty("availableslot.apptid.pm.feature.ng"),currentdate);
+		
+		
+		response = postAPIRequest.commentDetails(baseurl, b, headerConfig.HeaderwithToken(accessToken), practiceid,
+				patientid);
+		apv.responseCodeValidation(response, 200);
+		apv.responseTimeValidation(response);
+		JsonPath js=new JsonPath(response.asString());
+		boolean acceptComment= js.getBoolean("acceptComment");
+		boolean lastQuestRequired= js.getBoolean("lastQuestRequired");
+		assertTrue(lastQueEnableValue == acceptComment);
+		assertTrue(lastQueRequValue == lastQuestRequired);	
+	}
+	
+	@Test(enabled = true, groups = { "APItest" }, retryAnalyzer = RetryAnalyzer.class)
+	public void testLastQuestionFFShowProviON() throws Exception {
+		logStep("Set up the API authentication");
+		boolean lastQueEnableValue=false;
+		boolean lastQueRequValue=false;
+		setUpAM(propertyData.getProperty("practice.id.feature.pm.ng"),propertyData.getProperty("mf.authuserid.am.feature.ng"));
+		Response response;
+		response = postAPIRequestAM.locationById(practiceIdAm, propertyData.getProperty("availableslot.locationid.pm.feature.ng"));
+		apv.responseCodeValidation(response, 200);
+		String locationTimeZone=apv.responseKeyValidationJson(response, "timezone");
+		log("TimeZone- "+locationTimeZone);
+		
+		String currentdate=pssPatientUtils.currentDateWithTimeZone(locationTimeZone);
+		log("currentdate - "+currentdate);
+
+		logStep("Set up the desired rule in Admin UI using API");
+		response = postAPIRequestAM.resourceConfigRuleGet(practiceIdAm);
+		JSONArray arr = new JSONArray(response.body().asString());
+		int l = arr.length();
+		log("Length is- " + l);
+		for (int i = 0; i < l; i++) {
+			int ruleId = arr.getJSONObject(i).getInt("id");
+			log("Object No." + i + "- " + ruleId);
+			response = postAPIRequestAM.deleteRuleById(practiceIdAm, Integer.toString(ruleId));
+			apv.responseCodeValidation(response, 200);
+		}
+
+		response = postAPIRequestAM.resourceConfigRulePost(practiceIdAm, payloadAM.rulePayload("LTB", "L,T,B"));
+		apv.responseCodeValidation(response, 200);
+
+		response = postAPIRequestAM.resourceConfigRulePost(practiceIdAm, payloadAM.rulePayload("TLB", "T,L,B"));
+		apv.responseCodeValidation(response, 200);
+
+		response = postAPIRequestAM.resourceConfigSavePost(practiceIdAm,payloadAMFeature01.turnONOFFShowProvider(true));
+		apv.responseCodeValidation(response, 200);
+		String locationId=propertyData.getProperty("availableslot.locationid.pm.feature.ng");
+		String apptId = propertyData.getProperty("availableslot.apptid.pm.feature.ng");
+		String bookId = propertyData.getProperty("availableslot.bookid.pm.feature.ng");
+
+		String bookName="Ng3 Pss [PSS,NG3]";
+		String extId="C20178B6-BE4A-4176-B7FD-B6901C38A051";
+		String payloadLastQueEnable=payloadAMFeature01.bookPayload(bookId,bookName,extId,lastQueEnableValue);
+		
+		String payloadLastQueReq=payloadAMFeature01.bookAppTypePayload(bookId,apptId,lastQueRequValue);
+
+		response = postAPIRequestAM.saveBook(practiceIdAm,payloadLastQueEnable);
+		apv.responseCodeValidation(response, 200);
+		
+		response = postAPIRequestAM.bookAppointmentTypeUpdate(practiceIdAm,payloadLastQueReq);
+		apv.responseCodeValidation(response, 200);
+		
+		String patientid = propertyData.getProperty("patient.id.feature.pm.ng");
+				
+		String b = payloadPssPMNG1.lastQueReqShowProON(locationId,bookId,apptId,currentdate);	
+		
+		response = postAPIRequest.commentDetails(baseurl, b, headerConfig.HeaderwithToken(accessToken), practiceid,
+				patientid);
+		apv.responseCodeValidation(response, 200);
+		apv.responseTimeValidation(response);
+		JsonPath js=new JsonPath(response.asString());
+		boolean acceptComment= js.getBoolean("acceptComment");
+		boolean lastQuestRequired= js.getBoolean("lastQuestRequired");
+		assertTrue(lastQueEnableValue == acceptComment);
+		assertTrue(lastQueRequValue == lastQuestRequired);	
+	}
+	
+	@Test(enabled = true, groups = { "APItest" }, retryAnalyzer = RetryAnalyzer.class)
+	public void testLastQuestionTTShowProviON() throws Exception {
+		logStep("Set up the API authentication");
+		boolean lastQueEnableValue=true;
+		boolean lastQueRequValue=true;
+		setUpAM(propertyData.getProperty("practice.id.feature.pm.ng"),propertyData.getProperty("mf.authuserid.am.feature.ng"));
+		Response response;
+		response = postAPIRequestAM.locationById(practiceIdAm, propertyData.getProperty("availableslot.locationid.pm.feature.ng"));
+		apv.responseCodeValidation(response, 200);
+		String locationTimeZone=apv.responseKeyValidationJson(response, "timezone");
+		log("TimeZone- "+locationTimeZone);
+		
+		String currentdate=pssPatientUtils.currentDateWithTimeZone(locationTimeZone);
+		log("currentdate - "+currentdate);
+
+		logStep("Set up the desired rule in Admin UI using API");
+		response = postAPIRequestAM.resourceConfigRuleGet(practiceIdAm);
+		JSONArray arr = new JSONArray(response.body().asString());
+		int l = arr.length();
+		log("Length is- " + l);
+		for (int i = 0; i < l; i++) {
+			int ruleId = arr.getJSONObject(i).getInt("id");
+			log("Object No." + i + "- " + ruleId);
+			response = postAPIRequestAM.deleteRuleById(practiceIdAm, Integer.toString(ruleId));
+			apv.responseCodeValidation(response, 200);
+		}
+
+		response = postAPIRequestAM.resourceConfigRulePost(practiceIdAm, payloadAM.rulePayload("LTB", "L,T,B"));
+		apv.responseCodeValidation(response, 200);
+
+		response = postAPIRequestAM.resourceConfigRulePost(practiceIdAm, payloadAM.rulePayload("TLB", "T,L,B"));
+		apv.responseCodeValidation(response, 200);
+
+		response = postAPIRequestAM.resourceConfigSavePost(practiceIdAm,payloadAMFeature01.turnONOFFShowProvider(true));
+		apv.responseCodeValidation(response, 200);
+		String locationId=propertyData.getProperty("availableslot.locationid.pm.feature.ng");
+		String apptId = propertyData.getProperty("availableslot.apptid.pm.feature.ng");
+		String bookId = propertyData.getProperty("availableslot.bookid.pm.feature.ng");
+
+		String bookName="Ng3 Pss [PSS,NG3]";
+		String extId="C20178B6-BE4A-4176-B7FD-B6901C38A051";
+		String payloadLastQueEnable=payloadAMFeature01.bookPayload(bookId,bookName,extId,lastQueEnableValue);
+		
+		String payloadLastQueReq=payloadAMFeature01.bookAppTypePayload(bookId,apptId,lastQueRequValue);
+		response = postAPIRequestAM.saveBook(practiceIdAm,payloadLastQueEnable);
+		apv.responseCodeValidation(response, 200);
+		
+		response = postAPIRequestAM.bookAppointmentTypeUpdate(practiceIdAm,payloadLastQueReq);
+		apv.responseCodeValidation(response, 200);
+		
+		String patientid = propertyData.getProperty("patient.id.feature.pm.ng");
+				
+		String b = payloadPssPMNG1.lastQueReqShowProON(locationId,bookId,apptId,currentdate);	
+		
+		response = postAPIRequest.commentDetails(baseurl, b, headerConfig.HeaderwithToken(accessToken), practiceid,
+				patientid);
+		apv.responseCodeValidation(response, 200);
+		apv.responseTimeValidation(response);
+		JsonPath js=new JsonPath(response.asString());
+		boolean acceptComment= js.getBoolean("acceptComment");
+		boolean lastQuestRequired= js.getBoolean("lastQuestRequired");
+		assertTrue(lastQueEnableValue == acceptComment);
+		assertTrue(lastQueRequValue == lastQuestRequired);	
+	}
+	
+	@Test(enabled = true, groups = { "APItest" }, retryAnalyzer = RetryAnalyzer.class)
+	public void testLastQuestionTFShowProviON() throws Exception {
+		logStep("Set up the API authentication");
+		boolean lastQueEnableValue=true;
+		boolean lastQueRequValue=false;
+		setUpAM(propertyData.getProperty("practice.id.feature.pm.ng"),propertyData.getProperty("mf.authuserid.am.feature.ng"));
+		Response response;
+		response = postAPIRequestAM.locationById(practiceIdAm, propertyData.getProperty("availableslot.locationid.pm.feature.ng"));
+		apv.responseCodeValidation(response, 200);
+		String locationTimeZone=apv.responseKeyValidationJson(response, "timezone");
+		log("TimeZone- "+locationTimeZone);
+		
+		String currentdate=pssPatientUtils.currentDateWithTimeZone(locationTimeZone);
+		log("currentdate - "+currentdate);
+
+		logStep("Set up the desired rule in Admin UI using API");
+		response = postAPIRequestAM.resourceConfigRuleGet(practiceIdAm);
+		JSONArray arr = new JSONArray(response.body().asString());
+		int l = arr.length();
+		log("Length is- " + l);
+		for (int i = 0; i < l; i++) {
+			int ruleId = arr.getJSONObject(i).getInt("id");
+			log("Object No." + i + "- " + ruleId);
+			response = postAPIRequestAM.deleteRuleById(practiceIdAm, Integer.toString(ruleId));
+			apv.responseCodeValidation(response, 200);
+		}
+
+		response = postAPIRequestAM.resourceConfigRulePost(practiceIdAm, payloadAM.rulePayload("LTB", "L,T,B"));
+		apv.responseCodeValidation(response, 200);
+
+		response = postAPIRequestAM.resourceConfigRulePost(practiceIdAm, payloadAM.rulePayload("TLB", "T,L,B"));
+		apv.responseCodeValidation(response, 200);
+
+		response = postAPIRequestAM.resourceConfigSavePost(practiceIdAm,payloadAMFeature01.turnONOFFShowProvider(true));
+		apv.responseCodeValidation(response, 200);
+		String locationId=propertyData.getProperty("availableslot.locationid.pm.feature.ng");
+		String apptId = propertyData.getProperty("availableslot.apptid.pm.feature.ng");
+		String bookId = propertyData.getProperty("availableslot.bookid.pm.feature.ng");
+
+		String bookName="Ng3 Pss [PSS,NG3]";
+		String extId="C20178B6-BE4A-4176-B7FD-B6901C38A051";
+		String payloadLastQueEnable=payloadAMFeature01.bookPayload(bookId,bookName,extId,lastQueEnableValue);
+		
+		String payloadLastQueReq=payloadAMFeature01.bookAppTypePayload(bookId,apptId,lastQueRequValue);
+
+		response = postAPIRequestAM.saveBook(practiceIdAm,payloadLastQueEnable);
+		apv.responseCodeValidation(response, 200);
+		
+		response = postAPIRequestAM.bookAppointmentTypeUpdate(practiceIdAm,payloadLastQueReq);
+		apv.responseCodeValidation(response, 200);
+		
+		String patientid = propertyData.getProperty("patient.id.feature.pm.ng");
+				
+		String b = payloadPssPMNG1.lastQueReqShowProON(locationId,bookId,apptId,currentdate);	
+		response = postAPIRequest.commentDetails(baseurl, b, headerConfig.HeaderwithToken(accessToken), practiceid,
+				patientid);
+		apv.responseCodeValidation(response, 200);
+		apv.responseTimeValidation(response);
+		JsonPath js=new JsonPath(response.asString());
+		boolean acceptComment= js.getBoolean("acceptComment");
+		boolean lastQuestRequired= js.getBoolean("lastQuestRequired");
+		assertTrue(lastQueEnableValue == acceptComment);
+		assertTrue(lastQueRequValue == lastQuestRequired);	
+	}
+	
+
+	@Test(enabled = true, groups = { "APItest" }, retryAnalyzer = RetryAnalyzer.class)
+	public void testPreventBackToBackWithShowProviOFF() throws Exception {
+		logStep("Set up the API authentication");
+		setUpAM(propertyData.getProperty("practice.id.feature.pm.ng"),
+				propertyData.getProperty("mf.authuserid.am.feature.ng"));
+		Response response;
+		logStep("Set up the desired rule in Admin UI using API");
+		JSONArray arr;
+		int slotsize = 5;
+		int apptDuration = 2 * slotsize;
+
+		response = postAPIRequestAM.locationById(practiceIdAm,propertyData.getProperty("availableslot.locationid.pm.ng"));
+		apv.responseCodeValidation(response, 200);
+		String locationTimeZone = apv.responseKeyValidationJson(response, "timezone");
+		log("TimeZone- " + locationTimeZone);
+
+		response = postAPIRequestAM.resourceConfigRuleGet(practiceIdAm);
+		arr = new JSONArray(response.body().asString());
+		int l = arr.length();
+		log("Length is- " + l);
+		for (int i = 0; i < l; i++) {
+			int ruleId = arr.getJSONObject(i).getInt("id");
+			log("Object No." + i + "- " + ruleId);
+			response = postAPIRequestAM.deleteRuleById(practiceIdAm, Integer.toString(ruleId));
+			apv.responseCodeValidation(response, 200);
+		}
+
+		response = postAPIRequestAM.resourceConfigRulePost(practiceIdAm, payloadAM.rulePayload("LT", "L,T"));
+		apv.responseCodeValidation(response, 200);
+
+		response = postAPIRequestAM.resourceConfigRulePost(practiceIdAm, payloadAM.rulePayload("TL", "T,L"));
+		apv.responseCodeValidation(response, 200);
+
+		response = postAPIRequestAM.resourceConfigSavePost(practiceIdAm,payloadAMFeature01.turnONOFFShowProvider(false));
+		apv.responseCodeValidation(response, 200);
+
+		String currentdate = pssPatientUtils.currentDateWithTimeZone(locationTimeZone);
+		log("currentdate - " + currentdate);
+
+		String patientid = propertyData.getProperty("patient.id.feature.pm.sso.ng");
+
 		String b = payloadPssPMNG1.availableslotsPayloadLT(currentdate,
 				propertyData.getProperty("availableslot.locationid.pm.feature.ng"),
 				propertyData.getProperty("availableslot.apptid.pm.feature.ng"));
+
 		response = postAPIRequest.availableSlots(baseurl, b, headerConfig.HeaderwithToken(accessToken), practiceid,
 				patientid);
 		apv.responseCodeValidation(response, 200);
 		apv.responseTimeValidation(response);
 
+		arr = new JSONArray(response.body().asString());
+
+		String slotid = arr.getJSONObject(0).getJSONArray("slotList").getJSONObject(0).getString("slotId");
+		String time = arr.getJSONObject(0).getJSONArray("slotList").getJSONObject(0).getString("slotTime");
+		String date = arr.getJSONObject(0).getString("date");
+
+		log("slotTime-" + time);
+		log("slotId- " + slotid);
+		log("Date-" + date);
+
+		String nextSlotInApptDuration = pssPatientUtils.addToTime(time, apptDuration);
+		String c = payloadPssPMNG1.ssoScheduleWithoutCatShowProviderOFF(slotid, date, time,
+				propertyData.getProperty("availableslot.locationid.pm.feature.ng"),
+				propertyData.getProperty("availableslot.apptid.pm.feature.ng"));
+
+		log("Payload-" + c);
+		Response schedResponse = postAPIRequest.scheduleAppointment(baseurl, c,
+				headerConfig.HeaderwithToken(accessToken), practiceid, patientid, testData.getPatientType());
+		apv.responseCodeValidation(schedResponse, 200);
+		apv.responseTimeValidation(schedResponse);
+		//String extApptId = apv.responseKeyValidationJson(response, "extApptId");
+
+		response = postAPIRequest.availableSlots(baseurl, b, headerConfig.HeaderwithToken(accessToken), practiceid,
+				patientid);
+		apv.responseCodeValidation(response, 200);
+		apv.responseTimeValidation(response);
+
+		arr = new JSONArray(response.body().asString());
+		String slotid2 = arr.getJSONObject(0).getJSONArray("slotList").getJSONObject(0).getString("slotId");
+		String time2 = arr.getJSONObject(0).getJSONArray("slotList").getJSONObject(0).getString("slotTime");
+		String date2 = arr.getJSONObject(0).getString("date");
+
+		log("slotTime-" + time2);
+		log("slotId- " + slotid2);
+		log("Date-" + date2);
+		logStep("Slot Booked on fits attenpt- " + time);
+		logStep("Slot will book on second attempt- " + time2);
+		logStep("Expected slot in Appt Duration is - " + nextSlotInApptDuration);
+		assertEquals(time2, nextSlotInApptDuration);
 		
 	}
-	}
+	
+}
