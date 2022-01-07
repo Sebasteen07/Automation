@@ -2170,4 +2170,17 @@ public class PSSPatientUtils extends BaseTestNGWebDriver {
 		long diffDays = diff / (24 * 60 * 60 * 1000);
 		return diffDays;
 	}
+	
+	// This method will give you new time after time addition
+	public String addToTime(String myTime, int mintime) throws ParseException {
+
+		SimpleDateFormat df = new SimpleDateFormat("HH:mm:ss");
+		Date d = df.parse(myTime);
+		Calendar cal = Calendar.getInstance();
+		cal.setTime(d);
+		cal.add(Calendar.MINUTE, mintime);
+		String newTime = df.format(cal.getTime());
+		return newTime;
+	}
+
 }

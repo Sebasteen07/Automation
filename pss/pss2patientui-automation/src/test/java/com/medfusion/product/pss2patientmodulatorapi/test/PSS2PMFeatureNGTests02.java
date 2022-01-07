@@ -3,8 +3,10 @@ package com.medfusion.product.pss2patientmodulatorapi.test;
 
 import static org.testng.Assert.assertEquals;
 import static org.testng.Assert.assertFalse;
+import static org.testng.Assert.assertTrue;
 
 import java.io.IOException;
+import java.util.ArrayList;
 
 import org.json.JSONArray;
 import org.json.JSONObject;
@@ -25,6 +27,7 @@ import com.medfusion.product.pss2patientui.pojo.Appointment;
 import com.medfusion.product.pss2patientui.utils.PSSPatientUtils;
 import com.medfusion.product.pss2patientui.utils.PSSPropertyFileLoader;
 
+import io.restassured.path.json.JsonPath;
 import io.restassured.response.Response;
 
 public class PSS2PMFeatureNGTests02 extends BaseTestNG {
@@ -530,16 +533,168 @@ public class PSS2PMFeatureNGTests02 extends BaseTestNG {
 		adminPayload=payloaAM02.bookappointmenttypePyaload(0);
 		response=postAPIRequestAM.bookAppointmentTypeUpdate(practiceId, adminPayload);
 		apv.responseCodeValidation(response, 200);	
+	}	
+	
+	@Test(enabled = true, groups = { "APItest" }, retryAnalyzer = RetryAnalyzer.class)
+	public void testApptDuration() throws Exception {
+
+		logStep("Set up the API authentication");
+		setUpAM(propertyData.getProperty("mf.practice.id.ng"), propertyData.getProperty("mf.authuserid.am.ng"));
+
+		Response response;
+		String adminPayload;
+		JSONArray arr;
+		int apptDuration=30;		
+		
+		response = postAPIRequestAM.locationById(practiceId, propertyData.getProperty("availableslot.locationid.pm.ng"));
+		apv.responseCodeValidation(response, 200);
+		String locationTimeZone=apv.responseKeyValidationJson(response, "timezone");
+		log("TimeZone- "+locationTimeZone);
+		
+		adminPayload=payloaAM02.apptDurationPyaload(apptDuration);
+		response=postAPIRequestAM.bookAppointmentTypeUpdate(practiceId, adminPayload);
+		apv.responseCodeValidation(response, 200);		
+		
+		String patientId = propertyData.getProperty("patient.id.pm.ng");
+		String bookid = propertyData.getProperty("availableslot.bookid.pm.ng03");
+		String locationid = propertyData.getProperty("availableslot.locationid.pm.ng");
+		String apptid = propertyData.getProperty("availableslot.apptid.pm.ng");
+		
+		String currentdate=pssPatientUtils.currentDateWithTimeZone(locationTimeZone);		
+		log("currentdate - "+currentdate);
+		
+		String b = payloadPatientMod.availableslotsPayload(currentdate,bookid,locationid,apptid);
+		response = postAPIRequest.availableSlots(baseurl, b, headerConfig.HeaderwithTokenES(accessToken),
+				practiceid, patientId);
+		apv.responseCodeValidation(response, 200);
+		apv.responseTimeValidation(response);
+
+		arr= new JSONArray(response.body().asString());
+
+		String slotid = arr.getJSONObject(0).getJSONArray("slotList").getJSONObject(0).getString("slotId");
+		String time = arr.getJSONObject(0).getJSONArray("slotList").getJSONObject(0).getString("slotTime");
+		String date = arr.getJSONObject(0).getString("date");
+
+		log("slotTime-" + time);
+		log("slotId- " + slotid);
+		log("Date-" + date);
+		
+		String nextSlotInApptDuration=pssPatientUtils.addToTime(time, apptDuration);
+		
+		String schedPayload= payloadPatientMod.scheduleAppointmentPayload(slotid, date, time, bookid, locationid, apptid);
+		
+		response=postAPIRequest.scheduleAppointment(baseurl, schedPayload, headerConfig.HeaderwithToken(accessToken), practiceId, patientId, "PT_EXISTING");
+		apv.responseCodeValidation(response, 200);		
+		String extApptId = apv.responseKeyValidationJson(response, "extApptId");
+
+		response = postAPIRequest.availableSlots(baseurl, b, headerConfig.HeaderwithTokenES(accessToken), practiceid,
+				patientId);
+		apv.responseCodeValidation(response, 200);
+		
+		arr= new JSONArray(response.body().asString());
+		String slotid2 = arr.getJSONObject(0).getJSONArray("slotList").getJSONObject(0).getString("slotId");
+		String time2 = arr.getJSONObject(0).getJSONArray("slotList").getJSONObject(0).getString("slotTime");
+		String date2 = arr.getJSONObject(0).getString("date");
+		
+		log("slotTime-" + time2);
+		log("slotId- " + slotid2);
+		log("Date-" + date2);
+		
+		logStep("Slot Booked on fits attenpt- "+time);
+		logStep("Slot will book on second attempt- "+time2);
+		logStep("Expected slot in Appt Duration is - "+nextSlotInApptDuration);
+
+		assertEquals(time2, nextSlotInApptDuration);
+		Response cancelResponse = postAPIRequest.cancelAppointment(baseurl,
+				payloadPatientMod.cancelAppointmentPayload(extApptId), headerConfig.HeaderwithToken(accessToken),
+				practiceid, patientId);
+		apv.responseCodeValidation(cancelResponse, 200);		
+				
+		adminPayload=payloaAM02.apptDurationPyaload(0);
+		response=postAPIRequestAM.bookAppointmentTypeUpdate(practiceId, adminPayload);
+		apv.responseCodeValidation(response, 200);	
 
 	}	
+	
+	@Test(enabled = true, groups = { "APItest" }, retryAnalyzer = RetryAnalyzer.class)
+	public void testMergeSlot() throws Exception {
+
+		logStep("Set up the API authentication");
+		setUpAM(propertyData.getProperty("mf.practice.id.ng"), propertyData.getProperty("mf.authuserid.am.ng"));
+
+		Response response;
+		String adminPayload;
+		JSONArray arr;
+		int slotCount=3;		
+		
+		response = postAPIRequestAM.locationById(practiceId, propertyData.getProperty("availableslot.locationid.pm.ng"));
+		apv.responseCodeValidation(response, 200);
+		String locationTimeZone=apv.responseKeyValidationJson(response, "timezone");
+		log("TimeZone- "+locationTimeZone);
+		
+		String patientId = propertyData.getProperty("patient.id.pm.ng");
+		String bookid = propertyData.getProperty("availableslot.bookid.pm.ng03");
+		String locationid = propertyData.getProperty("availableslot.locationid.pm.ng");
+		String apptid = propertyData.getProperty("availableslot.apptid.pm.ng");
+		
+		String currentdate=pssPatientUtils.currentDateWithTimeZone(locationTimeZone);		
+		log("currentdate - "+currentdate);
+		
+		String b = payloadPatientMod.availableslotsPayload(currentdate,bookid,locationid,apptid);
+		response = postAPIRequest.availableSlots(baseurl, b, headerConfig.HeaderwithTokenES(accessToken),
+				practiceid, patientId);
+		apv.responseCodeValidation(response, 200);
+		apv.responseTimeValidation(response);
+
+		arr= new JSONArray(response.body().asString());
+
+		String slotid = arr.getJSONObject(0).getJSONArray("slotList").getJSONObject(0).getString("slotId");
+		String time = arr.getJSONObject(0).getJSONArray("slotList").getJSONObject(0).getString("slotTime");
+		String date = arr.getJSONObject(0).getString("date");
+
+		log("slotTime-" + time);
+		log("slotId- " + slotid);
+		log("Date-" + date);
+		
+		
+		adminPayload=payloaAM02.mergeSlotPyaload(slotCount);
+		response=postAPIRequestAM.bookAppointmentTypeUpdate(practiceId, adminPayload);
+		apv.responseCodeValidation(response, 200);
+		
+		int mergeslottime=slotCount*5;
+		String nextSlotInApptDuration=pssPatientUtils.addToTime(time, mergeslottime);		
+
+		response = postAPIRequest.availableSlots(baseurl, b, headerConfig.HeaderwithTokenES(accessToken), practiceid,
+				patientId);
+		apv.responseCodeValidation(response, 200);
+		
+		arr= new JSONArray(response.body().asString());
+		String slotid2 = arr.getJSONObject(0).getJSONArray("slotList").getJSONObject(1).getString("slotId");
+		String time2 = arr.getJSONObject(0).getJSONArray("slotList").getJSONObject(1).getString("slotTime");
+		String date2 = arr.getJSONObject(0).getString("date");
+		
+		log("slotTime-" + time2);
+		log("slotId- " + slotid2);
+		log("Date-" + date2);
+		
+		logStep("Slot Booked on fits attenpt- "+time);
+		logStep("Slot will book on second attempt- "+time2);
+		logStep("Expected slot in Appt Duration is - "+nextSlotInApptDuration);
+
+		assertEquals(time2, nextSlotInApptDuration);
+
+				
+		adminPayload=payloaAM02.mergeSlotPyaload(1);
+		response=postAPIRequestAM.bookAppointmentTypeUpdate(practiceId, adminPayload);
+		apv.responseCodeValidation(response, 200);	
+
+	}
 
 	@Test(enabled = true, groups = { "APItest" }, retryAnalyzer = RetryAnalyzer.class)
 	public void testLocationsByNextAvailable_BookOff_NewPatient() throws Exception {
 
 		String patientid = null;
-		String adminPayload;
-		Response response;
-		
+		Response response;		
 		logStep("Set up the desired rule in Admin UI using API");
 		response = postAPIRequestAM.resourceConfigRuleGet(practiceId);
 		JSONArray arr;
@@ -650,7 +805,35 @@ public class PSS2PMFeatureNGTests02 extends BaseTestNG {
 	@Test(enabled = true, groups = { "APItest" }, retryAnalyzer = RetryAnalyzer.class)
 	public void toekn() throws Exception {
 		log("Generate Token");
+		
+//		int len = jo.getJSONArray("specialtyList").length();
+//
+//		for (int i = 0; i < len; i++) {
+//			String kk = jo.getJSONArray("specialtyList").getJSONObject(i).getString("displayName");
+//			log("Spec- " + kk);
+//		}
+		
+		logStep("Set up the API authentication");
+		setUpAM(propertyData.getProperty("mf.practice.id.ng"), propertyData.getProperty("mf.authuserid.am.ng"));
 
+		String ss = payloaAM02.slotPyaload();
+
+		JSONArray js = new JSONArray(ss);
+		int mainlength = js.length();
+		int len = js.getJSONObject(0).getJSONArray("slotList").length();
+
+		for (int i = 0; i < mainlength; i++) {
+
+			if (js.getJSONObject(i).getJSONArray("slotList").length() == 1) {
+				String date = js.getJSONObject(i).getString("date");
+				log("This date has only 1 slot -" + date);
+
+			} else {
+				log("TC Failed");
+				break;
+			}
+
+		}
 	}
 	
 	@Test(enabled = true, groups = { "APItest" }, retryAnalyzer = RetryAnalyzer.class)
@@ -970,4 +1153,360 @@ public class PSS2PMFeatureNGTests02 extends BaseTestNG {
 				practiceid, patientId);
 		apv.responseCodeValidation(cancelResponse, 200);
 	}
+	
+	@Test(enabled = true, groups = { "APItest" }, retryAnalyzer = RetryAnalyzer.class)
+	public void testPatientStatusInactiveAlert_Spanish() throws Exception {
+
+		logStep("Set up the API authentication");
+		setUpAM(propertyData.getProperty("mf.practice.id.ng"), propertyData.getProperty("mf.authuserid.am.ng"));
+
+		Response response;
+		String adminPayload;
+
+		String patientId = propertyData.getProperty("patient.id.inactive.pm.ng");
+		String patientStatus = propertyData.getProperty("patientstatus.id.ng");
+
+		adminPayload = payloaAM02.inactivePatientPyaload(Integer.parseInt(patientStatus));
+
+		response = postAPIRequestAM.lockoutPost(practiceId, adminPayload, "/lockout");
+		apv.responseCodeValidation(response, 200);
+		apv.responseTimeValidation(response);
+
+		response = postAPIRequest.patientDemographics(baseurl, headerConfig.HeaderwithTokenES(accessToken), practiceId,
+				patientId);
+		apv.responseCodeValidation(response, 200);
+		apv.responseTimeValidation(response);
+
+		String showAlerts = apv.responseKeyValidationJson(response, "showAlert");
+
+		boolean showAlertsValue = Boolean.parseBoolean(showAlerts);
+		assertEquals(showAlertsValue, true, "Alert is not getting displayed so test case failed");
+	}
+	
+	@Test(enabled = true, groups = { "APItest" }, retryAnalyzer = RetryAnalyzer.class)
+	public void testPatientStatusActiveAlert() throws Exception {
+
+		logStep("Set up the API authentication");
+		setUpAM(propertyData.getProperty("mf.practice.id.ng"), propertyData.getProperty("mf.authuserid.am.ng"));
+
+		Response response;
+		String adminPayload;
+
+		String patientId = propertyData.getProperty("patient.id.active.pm.ng");
+		adminPayload = payloaAM02.activeLockoutPyaload();
+
+		response = postAPIRequestAM.lockoutPost(practiceId, adminPayload, "/lockout");
+		apv.responseCodeValidation(response, 200);
+		apv.responseTimeValidation(response);
+		
+		String activeStatusID =apv.responseKeyValidationJson(response, "id");
+		int idActiveStatus=Integer.parseInt(activeStatusID);
+
+		response = postAPIRequest.patientDemographics(baseurl, headerConfig.HeaderwithToken(accessToken), practiceId,
+				patientId);
+		apv.responseCodeValidation(response, 200);
+		apv.responseTimeValidation(response);
+
+		String message = apv.responseKeyValidationJson(response, "message");
+		
+		String expectedMessage=propertyData.getProperty("activestatus.message.pm.ng");
+
+		assertEquals(message, expectedMessage, "Active Alert message is not default message");
+		
+		response=postAPIRequestAM.deleteLockoutById(practiceId, idActiveStatus);
+		apv.responseCodeValidation(response, 200);
+		apv.responseTimeValidation(response);
+	}
+
+	@Test(enabled = true, groups = { "APItest" }, retryAnalyzer = RetryAnalyzer.class)
+	public void testApptStackingOverbooking() throws Exception {
+
+		logStep("Set up the API authentication");
+		setUpAM(propertyData.getProperty("mf.practice.id.ng"), propertyData.getProperty("mf.authuserid.am.ng"));
+
+		Response response;
+		JSONArray arr;
+		String adminPayload;
+		
+		adminPayload=payloaAM02.overbookingPyaload(true);
+		response=postAPIRequestAM.bookAppointmentTypeUpdate(practiceId, adminPayload);
+		apv.responseCodeValidation(response, 200);
+		apv.responseTimeValidation(response);
+		
+		String patientId01 = propertyData.getProperty("patient.id.pm.ng");
+		String patientId02 = propertyData.getProperty("patient.id.overbooking.pm.ng");
+
+		String currentdate = pssPatientUtils.sampleDateTime("MM/dd/yyyy");
+
+		String b = payloadPatientMod.availableslotsPayload(currentdate,
+				propertyData.getProperty("availableslot.bookid.pm.ng03"),
+				propertyData.getProperty("availableslot.locationid.pm.ng"),
+				propertyData.getProperty("availableslot.apptid.pm.ng"));
+
+		response = postAPIRequest.availableSlots(baseurl, b, headerConfig.HeaderwithToken(accessToken),
+				practiceid, patientId01);
+		apv.responseCodeValidation(response, 200);
+		apv.responseTimeValidation(response);
+
+		arr= new JSONArray(response.body().asString());
+
+		String slotid = arr.getJSONObject(0).getJSONArray("slotList").getJSONObject(0).getString("slotId");
+		String time = arr.getJSONObject(0).getJSONArray("slotList").getJSONObject(0).getString("slotTime");
+		String date = arr.getJSONObject(0).getString("date");
+
+		log("slotTime-" + time);
+		log("slotId- " + slotid);
+		log("Date-" + date);
+
+		String c = payloadPatientMod.scheduleAppointmentPayload(slotid, date, time,
+				propertyData.getProperty("availableslot.bookid.pm.ng03"),
+				propertyData.getProperty("availableslot.locationid.pm.ng"),
+				propertyData.getProperty("availableslot.apptid.pm.ng"));
+
+		log("Payload-" + c);
+
+		Response schedResponse = postAPIRequest.scheduleAppointment(baseurl, c,
+				headerConfig.HeaderwithToken(accessToken), practiceid, patientId01, testData.getPatientType());
+		apv.responseCodeValidation(schedResponse, 200);
+		apv.responseTimeValidation(schedResponse);
+
+		apv.responseKeyValidationJson(schedResponse, "confirmationNo");
+		apv.responseKeyValidationJson(schedResponse, "patientId");
+		String extApptId = apv.responseKeyValidationJson(schedResponse, "extApptId");
+		
+		response = postAPIRequest.availableSlots(baseurl, b, headerConfig.HeaderwithToken(accessToken),
+				practiceid, patientId02);
+		apv.responseCodeValidation(response, 200);
+		apv.responseTimeValidation(response);
+
+		arr = new JSONArray(response.body().asString());
+
+		String time2 = arr.getJSONObject(0).getJSONArray("slotList").getJSONObject(0).getString("slotTime");
+		String date2 = arr.getJSONObject(0).getString("date");
+
+		log("slotTime-" + time);
+		log("slotId- " + slotid);
+		log("Date-" + date);
+		
+		assertEquals(date2, date);
+		assertEquals(time2, time);	
+
+		Response cancelResponse = postAPIRequest.cancelAppointment(baseurl,
+				payloadPatientMod.cancelAppointmentPayload(extApptId), headerConfig.HeaderwithToken(accessToken),
+				practiceid, patientId01);
+		apv.responseCodeValidation(cancelResponse, 200);
+		
+		adminPayload=payloaAM02.overbookingPyaload(true);
+		response=postAPIRequestAM.bookAppointmentTypeUpdate(practiceId, adminPayload);
+		apv.responseCodeValidation(response, 200);
+
+	}
+	
+	@Test(enabled = true, groups = { "APItest" }, retryAnalyzer = RetryAnalyzer.class)
+	public void testPreventBackToBack() throws Exception {
+
+		logStep("Set up the API authentication");
+		setUpAM(propertyData.getProperty("mf.practice.id.ng"), propertyData.getProperty("mf.authuserid.am.ng"));
+
+		Response response;
+		String adminPayload;
+		JSONArray arr;
+		int slotsize=5;
+		int apptDuration= 2*slotsize;
+		
+		response = postAPIRequestAM.locationById(practiceId, propertyData.getProperty("availableslot.locationid.pm.ng"));
+		apv.responseCodeValidation(response, 200);
+		String locationTimeZone=apv.responseKeyValidationJson(response, "timezone");
+		log("TimeZone- "+locationTimeZone);
+		
+		adminPayload=payloaAM02.preventBackToBackPyaload(true);
+		response=postAPIRequestAM.bookAppointmentTypeUpdate(practiceId, adminPayload);
+		apv.responseCodeValidation(response, 200);		
+		
+		String patientId = propertyData.getProperty("patient.id.pm.ng");
+		String bookid = propertyData.getProperty("availableslot.bookid.pm.ng03");
+		String locationid = propertyData.getProperty("availableslot.locationid.pm.ng");
+		String apptid = propertyData.getProperty("availableslot.apptid.pm.ng");
+		
+		String currentdate=pssPatientUtils.currentDateWithTimeZone(locationTimeZone);		
+		log("currentdate - "+currentdate);
+		
+		String b = payloadPatientMod.availableslotsPayload(currentdate,bookid,locationid,apptid);
+		response = postAPIRequest.availableSlots(baseurl, b, headerConfig.HeaderwithTokenES(accessToken),
+				practiceid, patientId);
+		apv.responseCodeValidation(response, 200);
+		apv.responseTimeValidation(response);
+
+		arr= new JSONArray(response.body().asString());
+
+		String slotid = arr.getJSONObject(0).getJSONArray("slotList").getJSONObject(0).getString("slotId");
+		String time = arr.getJSONObject(0).getJSONArray("slotList").getJSONObject(0).getString("slotTime");
+		String date = arr.getJSONObject(0).getString("date");
+
+		log("slotTime-" + time);
+		log("slotId- " + slotid);
+		log("Date-" + date);
+		
+		String nextSlotInApptDuration=pssPatientUtils.addToTime(time, apptDuration);
+		
+		String schedPayload= payloadPatientMod.scheduleAppointmentPayload(slotid, date, time, bookid, locationid, apptid);
+		
+		response=postAPIRequest.scheduleAppointment(baseurl, schedPayload, headerConfig.HeaderwithToken(accessToken), practiceId, patientId, "PT_EXISTING");
+		apv.responseCodeValidation(response, 200);		
+		String extApptId = apv.responseKeyValidationJson(response, "extApptId");
+
+		response = postAPIRequest.availableSlots(baseurl, b, headerConfig.HeaderwithTokenES(accessToken), practiceid,
+				patientId);
+		apv.responseCodeValidation(response, 200);
+		
+		arr= new JSONArray(response.body().asString());
+		String slotid2 = arr.getJSONObject(0).getJSONArray("slotList").getJSONObject(0).getString("slotId");
+		String time2 = arr.getJSONObject(0).getJSONArray("slotList").getJSONObject(0).getString("slotTime");
+		String date2 = arr.getJSONObject(0).getString("date");
+		
+		log("slotTime-" + time2);
+		log("slotId- " + slotid2);
+		log("Date-" + date2);
+		
+		logStep("Slot Booked on fits attenpt- "+time);
+		logStep("Slot will book on second attempt- "+time2);
+		logStep("Expected slot in Appt Duration is - "+nextSlotInApptDuration);
+
+		assertEquals(time2, nextSlotInApptDuration);
+		Response cancelResponse = postAPIRequest.cancelAppointment(baseurl,
+				payloadPatientMod.cancelAppointmentPayload(extApptId), headerConfig.HeaderwithToken(accessToken),
+				practiceid, patientId);
+		apv.responseCodeValidation(cancelResponse, 200);		
+				
+		adminPayload=payloaAM02.preventBackToBackPyaload(false);
+		response=postAPIRequestAM.bookAppointmentTypeUpdate(practiceId, adminPayload);
+		apv.responseCodeValidation(response, 200);	
+
+	}	
+	
+	@Test(enabled = true, groups = { "APItest" }, retryAnalyzer = RetryAnalyzer.class)
+	public void testMaxPerDay() throws Exception {
+
+		logStep("Set up the API authentication");
+		setUpAM(propertyData.getProperty("mf.practice.id.ng"), propertyData.getProperty("mf.authuserid.am.ng"));
+
+		Response response;
+		String adminPayload;
+		JSONArray arr;
+		int maxPerDay=1;
+	
+		response = postAPIRequestAM.locationById(practiceId, propertyData.getProperty("availableslot.locationid.pm.ng"));
+		apv.responseCodeValidation(response, 200);
+		String locationTimeZone=apv.responseKeyValidationJson(response, "timezone");
+		log("TimeZone- "+locationTimeZone);
+		
+		adminPayload=payloaAM02.maxPerDayPyaload(maxPerDay);
+		response=postAPIRequestAM.bookAppointmentTypeUpdate(practiceId, adminPayload);
+		apv.responseCodeValidation(response, 200);		
+		
+		String patientId = propertyData.getProperty("patient.id.pm.ng");
+		String bookid = propertyData.getProperty("availableslot.bookid.pm.ng03");
+		String locationid = propertyData.getProperty("availableslot.locationid.pm.ng");
+		String apptid = propertyData.getProperty("availableslot.apptid.pm.ng");
+		
+		String currentdate=pssPatientUtils.currentDateWithTimeZone(locationTimeZone);		
+		log("currentdate - "+currentdate);
+		
+		String b = payloadPatientMod.availableslotsPayload(currentdate,bookid,locationid,apptid);
+		response = postAPIRequest.availableSlots(baseurl, b, headerConfig.HeaderwithTokenES(accessToken),
+				practiceid, patientId);
+		apv.responseCodeValidation(response, 200);
+		apv.responseTimeValidation(response);
+		
+		arr= new JSONArray(response.body().asString());
+		
+		String slotid = arr.getJSONObject(0).getJSONArray("slotList").getJSONObject(0).getString("slotId");
+		String time = arr.getJSONObject(0).getJSONArray("slotList").getJSONObject(0).getString("slotTime");
+		String date = arr.getJSONObject(0).getString("date");
+
+		log("slotTime-" + time);
+		log("slotId- " + slotid);
+		log("Date-" + date);
+		
+		String schedPayload= payloadPatientMod.scheduleAppointmentPayload(slotid, date, time, bookid, locationid, apptid);
+		
+		response=postAPIRequest.scheduleAppointment(baseurl, schedPayload, headerConfig.HeaderwithToken(accessToken), practiceId, patientId, "PT_EXISTING");
+		apv.responseCodeValidation(response, 200);		
+		String extApptId = apv.responseKeyValidationJson(response, "extApptId");
+
+		response = postAPIRequest.availableSlots(baseurl, b, headerConfig.HeaderwithTokenES(accessToken), practiceid,
+				patientId);
+		apv.responseCodeValidation(response, 200);		
+
+		arr= new JSONArray(response.body().asString());
+		int mainlength = arr.length();
+		ArrayList<String> lis= new ArrayList<String>();
+		
+		for(int i=0; i<mainlength; i++) {
+			
+			String datee=arr.getJSONObject(i).getString("date");
+			
+			lis.add(datee);
+		}
+		
+		boolean stringExist=lis.contains(date);
+		log("Actual ......."+stringExist);
+		assertEquals(false, stringExist);	
+
+		Response cancelResponse = postAPIRequest.cancelAppointment(baseurl,
+				payloadPatientMod.cancelAppointmentPayload(extApptId), headerConfig.HeaderwithToken(accessToken),
+				practiceid, patientId);
+		apv.responseCodeValidation(cancelResponse, 200);		
+				
+		adminPayload=payloaAM02.maxPerDayPyaload(0);
+		response=postAPIRequestAM.bookAppointmentTypeUpdate(practiceId, adminPayload);
+		apv.responseCodeValidation(response, 200);	
+
+	}
+
+	@Test(enabled = true, groups = { "APItest" }, retryAnalyzer = RetryAnalyzer.class)
+	public void testPreventScheduling() throws Exception {
+
+		logStep("Set up the API authentication");
+		setUpAM(propertyData.getProperty("mf.practice.id.ng"), propertyData.getProperty("mf.authuserid.am.ng"));
+
+		Response response;
+		String adminPayload;
+		int preventSchedDays=30;
+	
+		response = postAPIRequestAM.locationById(practiceId, propertyData.getProperty("availableslot.locationid.pm.ng"));
+		apv.responseCodeValidation(response, 200);
+		String locationTimeZone=apv.responseKeyValidationJson(response, "timezone");
+		log("TimeZone- "+locationTimeZone);
+		
+		adminPayload=payloaAM02.preventSchedPyaload(preventSchedDays);
+		response=postAPIRequestAM.saveAppointmenttype(practiceId, adminPayload);
+		apv.responseCodeValidation(response, 200);		
+		
+		String patientId = propertyData.getProperty("patient.id.pm.ng");
+		String bookid = propertyData.getProperty("availableslot.bookid.pm.ng03");
+		String locationid = propertyData.getProperty("availableslot.locationid.pm.ng");
+		String apptid = propertyData.getProperty("availableslot.apptid.pm.ng");
+
+		String currentdate = pssPatientUtils.currentDateWithTimeZone(locationTimeZone);
+		log("currentdate - " + currentdate);
+
+		String b = payloadPatientMod.availableslotsPayload(currentdate, bookid, locationid, apptid);
+		response = postAPIRequest.availableSlots(baseurl, b, headerConfig.HeaderwithTokenES(accessToken), practiceid,
+				patientId);
+		apv.responseCodeValidation(response, 412);
+		apv.responseTimeValidation(response);
+		String errorMessage=apv.responseKeyValidationJson(response, "message");
+		
+		assertTrue(errorMessage.contains("Prevent Scheduling"));
+		
+		response=postAPIRequest.announcementByName(baseurl, headerConfig.HeaderwithToken(accessToken), practiceId, "ARP");
+		apv.responseCodeValidation(response, 200);	
+				
+		adminPayload=payloaAM02.preventSchedPyaload(0);
+		response=postAPIRequestAM.saveAppointmenttype(practiceId, adminPayload);
+		apv.responseCodeValidation(response, 200);	
+
+	}
+	
 }
