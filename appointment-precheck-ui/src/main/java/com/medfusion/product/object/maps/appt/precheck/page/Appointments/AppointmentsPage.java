@@ -348,6 +348,13 @@ public class AppointmentsPage extends BasePageObject {
 
 	@FindBy(how = How.XPATH, using = "//*[@id='minus']")
 	private WebElement previousPage;
+	
+	@FindBy(how = How.XPATH, using = "//div[@class='navbar-right-arrivals-number']")
+	private WebElement notificationIcon;
+	
+	@FindBy(how = How.CSS, using = "#alert > p")
+	private WebElement selectBannerMesssage;
+	
 
 	public AppointmentsPage(WebDriver driver) {
 		super(driver);
@@ -885,7 +892,6 @@ public class AppointmentsPage extends BasePageObject {
 			return false;
 		}
 	}
-
 	public void selectPatient(String patientId, String practiceId) {
 		driver.navigate().refresh();
 		WebElement selectPatient = driver
@@ -1268,5 +1274,38 @@ public class AppointmentsPage extends BasePageObject {
 			return false;
 		}
 	}
+	
+	public void clickOnNotifIcon() throws InterruptedException {
+		driver.navigate().refresh();
+		Thread.sleep(10000);
+		IHGUtil.PrintMethodName();
+		IHGUtil.waitForElement(driver, 10, notificationIcon);
+		jse.executeScript("arguments[0].click();", notificationIcon);
+	}
+	
+	public boolean visibilityBannerMessage() {
+		IHGUtil.PrintMethodName();
+		IHGUtil.waitForElement(driver, 10, selectBannerMesssage);
+		if (selectBannerMesssage.isDisplayed()) {
+			log("Banner message is displayed.");
+			return true;
+		} else {
+			log("Banner message is not displayed.");
+			return false;
+		}
+	}
+	
+	public boolean visibilityOfBannerMessageBaseOnFilter() {
+		IHGUtil.PrintMethodName();
+		IHGUtil.waitForElement(driver, 5, bannerMessage);
+		if (bannerMessage.isDisplayed()) {
+			log("Banner message Base On Filter is displayed.");
+			return true;
+		} else {
+			log("Banner message Base On Filter is not displayed.");
+			return false;
+		}
+	}
+	
 
 }

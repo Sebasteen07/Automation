@@ -697,3 +697,170 @@ Feature: Test fuctionality of Appointment precheck
     And click on save button
     Then verify if user is able to see changes are reflected in notification tab english language
     And logout from practice provisioning portal
+
+  Scenario: verify Notification tab is showing all the feilds,button,textbox ,radio button , infobutton as per the requirement
+    When user is on notification tab in setting
+    Then verify that notification tab is showing all the fields,button,textbox,radio button,infobutton as per requirement
+    And logout from practice provisioning portal
+
+  Scenario: verify the grid section and column names in arrival dashboard screen
+    When logged into precheck admin and user is able to view appointment dashboard screen
+    And click on Curbside check-in tab
+    Then verify the column header of grid section in arrival dashboard screen.
+    And logout from practice provisioning portal
+
+  Scenario: verify that in precheck admin settings  "Curbside check-in notifications will be sent 1 hour prior to the appointment." is displayed
+    When logged into precheck admin and user is able to view appointment dashboard screen
+    And click on Notifications tab in Setting tab
+    Then verify the Curbside check-in reminder option
+    And logout from practice provisioning portal
+
+  Scenario: verify if the notification number is displayed near the account icon
+    When schedule an appointment for four patient and have confirmed their arrival
+    And click on the notification icon
+    Then verify the notification icon count on the top
+    And logout from practice provisioning portal
+
+  Scenario: verify that for every patient details there are common fields & buttons are avialable
+    When logged into precheck admin and user is able to view appointment dashboard screen
+    And schedule an appointment and confirmed their arrival
+    And click on Curbside check-in tab
+    And select patient and click on dropdown
+    Then verify common fields and buttons are available for every patient details
+    And logout from practice provisioning portal
+
+  Scenario: Verify once a message is sent to a patient it is added to the history link of messages with date and time stamp
+    When schedule an appointment and confirmed their arrival
+    And click on Curbside check-in tab
+    And sent message from dropdown
+    And click on the history link
+    Then verify on curbside notification logs popup patient name,date,time,message and medium to be displayed
+    And logout from practice provisioning portal
+
+  Scenario: Verify that (current day -1) filtaration is not allowed in end time in curb side check-in tab if the current date is set as start time
+    When logged into precheck admin and user is able to view appointment dashboard screen
+    And click on Curbside check-in tab
+    Then select end time of previous day in end time filter and verify previous day date is disable in curbside check in
+    And logout from practice provisioning portal
+
+  Scenario: verify that Pre-populated dropdown list of messages in Send message drop down field on curbside checkin page
+    When schedule an appointment and confirmed their arrival
+    And logged into precheck admin and user is able to view appointment dashboard screen
+    And click on Curbside check-in tab
+    And select patient and click on dropdown
+    Then verify messages list should be displayed in send message dropdown
+    And logout from practice provisioning portal
+
+  Scenario: Verify multiple records are selected from different pages then it will not show the ribbon on top of the page
+    When schedule multiple appointments and confirm
+    And from setting dashboard in notifications disable Broadcast messaging checkbox
+    And switch on appointment dashboard and Select all appointment
+    Then verify after selecting all appointment ribbon message should be display as per expected
+    And from setting dashboard in notifications Enable Broadcast messaging checkbox
+    And logout from practice provisioning portal
+
+  Scenario: Verify timing and timing units of email only for 'Days' of appointmrnt reminder
+    When from setting in notifications user click on email edit section of appointment reminders
+    And enter timing and timing unit only for Days for 'Email' and click on save button
+    Then verify system should allow only days
+    And logout from practice provisioning portal
+
+  Scenario: Verify timing and timing units of email only for 'Hours' of appointmrnt reminder
+    When from setting in notifications user click on email edit section of appointment reminders
+    And enter timing and timing unit only for Hours for 'Email' and click on save button
+    Then verify system should allow only hours
+    And logout from practice provisioning portal
+
+  Scenario: Verify timing and timing units of email only for 'Minutes' of appointmrnt reminder
+    When from setting in notifications user click on email edit section of appointment reminders
+    And enter timing and timing unit only for Minutes for 'Email' and click on save button
+    Then verify system should allow only Minutes
+    And logout from practice provisioning portal
+
+  Scenario: Verify combinations for timing and timing units of email for 'hours,minutes,day,day' of appointmrnt reminder
+    When from setting in notifications user click on email edit section of appointment reminders
+    And enter timing and timing unit for hours,minutes,day,day for 'Email' and click on save button
+    Then verify system should allow hours,minutes,day,day timing
+    And click on edit for email and remove one cadence and save
+    And logout from practice provisioning portal
+
+  Scenario: Verify combinations for timing and timing units of email for 'day,hours,hours,minutes' of appointmrnt reminder
+    When from setting in notifications user click on email edit section of appointment reminders
+    And enter timing and timing unit for day,hours,hours,minutes for 'Email' and click on save button
+    Then verify system should allow day,hours,minutes,minutes timing
+    And click on edit for email and remove one cadence and save
+    And logout from practice provisioning portal
+
+  Scenario: Verify combinations for timing and timing units of email for 'minutes,minutes,hours,day' of appointmrnt reminder
+    When from setting in notifications user click on email edit section of appointment reminders
+    And enter timing and timing unit for minutes,minutes,hours,day for 'Email' and click on save button
+    Then verify system should allow minutes,minutes,hours,day timing
+    And click on edit for email and remove one cadence and save
+    And logout from practice provisioning portal
+
+  Scenario: Verify if user able to see validation message when user enter something wrong in fields
+    When from setting in notifications user click on email edit section of appointment reminders
+    Then verify user not able to enter zero in timing unit section for email in appointment reminders
+    And logout from practice provisioning portal
+
+  Scenario: Verify timing and timing units of text only for 'Days' of appointmrnt reminder
+    When from setting in notifications user click on text edit section of appointment reminders
+    And enter timing and timing unit only for Days for 'SMS' and click on save button
+    Then verify system should allow only days for SMS
+    And logout from practice provisioning portal
+
+  Scenario: Verify timing and timing units of text only for 'Hours' of appointmrnt reminder
+    When from setting in notifications user click on text edit section of appointment reminders
+    And enter timing and timing unit only for Hours for 'SMS' and click on save button
+    Then verify system should allow only hours SMS
+    And logout from practice provisioning portal
+
+  Scenario: Verify timing and timing units of text only for 'Minutes' of appointmrnt reminder
+    When from setting in notifications user click on text edit section of appointment reminders
+    And enter timing and timing unit only for Minutes for 'SMS' and click on save button
+    Then verify system should allow only Minutes SMS
+    And logout from practice provisioning portal
+
+  Scenario: Verify combinations for timing and timing units of text for 'hours,minutes,day,day' of appointmrnt reminder
+    When from setting in notifications user click on text edit section of appointment reminders
+    And enter timing and timing unit for hours,minutes,day,day for 'SMS' and click on save button
+    Then verify system should allow hours,minutes,day,day timing for SMS
+    And click on edit for text and remove one cadence and save
+    And logout from practice provisioning portal
+
+  Scenario: Verify combinations for timing and timing units of text for 'day,hours,hours,minutes' of appointmrnt reminder
+    When from setting in notifications user click on text edit section of appointment reminders
+    And enter timing and timing unit for day,hours,hours,minutes for 'SMS' and click on save button
+    Then verify system should allow day,hours,minutes,minutes timing for SMS
+    And click on edit for text and remove one cadence and save
+    And logout from practice provisioning portal
+
+  Scenario: Verify combinations for timing and timing units of text for 'minutes,minutes,hours,day' of appointmrnt reminder
+    When from setting in notifications user click on text edit section of appointment reminders
+    And enter timing and timing unit for minutes,minutes,hours,day for 'SMS' and click on save button
+    Then verify system should allow minutes,minutes,hours,day timing for SMS
+    And click on edit for text and remove one cadence and save
+    And logout from practice provisioning portal
+
+  Scenario: Verify if user able to see validation message when user enter something wrong in fields
+    When from setting in notifications user click on text edit section of appointment reminders
+    Then verify user not able to enter zero in timing unit section for email in appointment reminders
+    And logout from practice provisioning portal
+
+  Scenario: verify the functionality of checkin for multiple patients at a time
+    When user on curbside checkin tab and clear all appointments
+    And schedule multiple appointments and confirm their appointment
+    Then verify checkin button fuctionality after one patient gets checkin
+    And logout from practice provisioning portal
+
+  Scenario: verify the functionality of checkin for multiple patients at a time
+    When user on curbside checkin tab and clear all appointments
+    And schedule multiple appointments and confirm their appointment
+    Then verify checkin button fuctionality after two patient gets checkin
+    And logout from practice provisioning portal
+
+  Scenario: verify the functionality of checkin for multiple patients at a time
+    When user on curbside checkin tab and clear all appointments
+    Then schedule multiple appointments and confirm their appointment
+    Then verify checkin button fuctionality after all patient gets checkin
+    And logout from practice provisioning portal
