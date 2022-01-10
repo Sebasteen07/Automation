@@ -119,6 +119,14 @@ public class MerchantDetailsPage extends NavigationMenu {
 
 	@FindBy(how = How.XPATH, using = "//a[text()=' Add New Beneficial Owner ']")
 	private WebElement addNewBeneficialOwnerButton;
+	
+	//Add User Roles
+	
+    @FindBy(how = How.XPATH, using ="//a[text()=' Add Users and Roles ']")
+	private WebElement addUsersRoleButton;
+    
+    @FindAll({ @FindBy(how = How.XPATH, using = "//span[@data-ng-repeat='role in user.roles']") })
+	private List<WebElement> AddedUserRolesList;
 
 	@FindBys({
 			@FindBy(how = How.CLASS_NAME, using="btn btn-danger"),
@@ -283,5 +291,30 @@ public class MerchantDetailsPage extends NavigationMenu {
 	public void waitForPageToLoad(){
 		WebDriverWait wait = new WebDriverWait(driver, 10);
 		wait.until(ExpectedConditions.visibilityOf(paymentProcessorInformation));
+	}
+	
+	public AddUsersAndRolesPage clickAddUsersAndRoles() {
+		addUsersRoleButton.click();
+		return PageFactory.initElements(driver, AddUsersAndRolesPage.class);
+	}
+	
+	public Boolean verifyAddUserRoleButtonsPresent(){
+        if(addUsersRoleButton.isDisplayed()){
+            return true;
+        }else{return false;}
+    }
+	
+	public void verifyAddedUserRoles() {
+
+		for (WebElement userRoleElement : AddedUserRolesList) {
+			String userRole = userRoleElement.getText().replace(",", "");
+
+			if (userRoles.contains(userRole)) {
+
+				Assert.assertTrue(userRoles.contains(userRole));
+
+			}
+		}
+
 	}
 }
