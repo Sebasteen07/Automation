@@ -52,7 +52,9 @@ module "qa_automation_utils_codebuild" {
     security_group_ids = [data.aws_security_group.codebuild_sg.id]
   }]
 
-  common_tags = {}
+    common_tags = {
+      "pxp.application" = "Platform"
+    }
 }
 
 ###################################################################################
@@ -104,6 +106,10 @@ resource "aws_codepipeline" "qa_automation_utils_codepipeline" {
       }
     }
   }
+
+  tags = {
+    "pxp.application" = "Platform"
+  }
 }
 
 ###################################################################################
@@ -125,6 +131,10 @@ resource "aws_cloudwatch_event_rule" "trigger_qa_automation_utils_codepipeline" 
   }
 }
 EOF
+
+  tags = {
+    "pxp.application" = "Platform"
+  }
 }
 
 resource "aws_cloudwatch_event_target" "trigger_qa_automation_utils_codepipeline" {
@@ -142,6 +152,10 @@ resource "aws_cloudwatch_event_target" "trigger_qa_automation_utils_codepipeline
 resource "aws_iam_role" "qa_automation_utils_cwevent" {
   name               = "${local.qa_automation_utils.name}-cwevent"
   assume_role_policy = data.aws_iam_policy_document.cwevent_assume_role_policy.json
+
+  tags = {
+    "pxp.application" = "Platform"
+  }
 }
 
 data "aws_iam_policy_document" "qa_automation_utils_cwevent" {
@@ -268,5 +282,9 @@ resource "aws_codestarnotifications_notification_rule" "qa_automation_utils" {
   target {
     address = var.aws_chatbot_channel_arn
     type    = "AWSChatbotSlack"
+  }
+
+  tags = {
+    "pxp.application" = "Platform"
   }
 }
