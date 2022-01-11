@@ -759,39 +759,39 @@ Feature: Test fuctionality of Appointment precheck
     And from setting dashboard in notifications Enable Broadcast messaging checkbox
     And logout from practice provisioning portal
 
-  Scenario: Verify timing and timing units of email only for 'Days' of appointmrnt reminder
+  Scenario: Verify timing and timing units of email only for 'Days' of appointment reminder
     When from setting in notifications user click on email edit section of appointment reminders
     And enter timing and timing unit only for Days for 'Email' and click on save button
     Then verify system should allow only days
     And logout from practice provisioning portal
 
-  Scenario: Verify timing and timing units of email only for 'Hours' of appointmrnt reminder
+  Scenario: Verify timing and timing units of email only for 'Hours' of appointment reminder
     When from setting in notifications user click on email edit section of appointment reminders
     And enter timing and timing unit only for Hours for 'Email' and click on save button
     Then verify system should allow only hours
     And logout from practice provisioning portal
 
-  Scenario: Verify timing and timing units of email only for 'Minutes' of appointmrnt reminder
+  Scenario: Verify timing and timing units of email only for 'Minutes' of appointment reminder
     When from setting in notifications user click on email edit section of appointment reminders
     And enter timing and timing unit only for Minutes for 'Email' and click on save button
     Then verify system should allow only Minutes
     And logout from practice provisioning portal
 
-  Scenario: Verify combinations for timing and timing units of email for 'hours,minutes,day,day' of appointmrnt reminder
+  Scenario: Verify combinations for timing and timing units of email for 'hours,minutes,day,day' of appointment reminder
     When from setting in notifications user click on email edit section of appointment reminders
     And enter timing and timing unit for hours,minutes,day,day for 'Email' and click on save button
     Then verify system should allow hours,minutes,day,day timing
     And click on edit for email and remove one cadence and save
     And logout from practice provisioning portal
 
-  Scenario: Verify combinations for timing and timing units of email for 'day,hours,hours,minutes' of appointmrnt reminder
+  Scenario: Verify combinations for timing and timing units of email for 'day,hours,hours,minutes' of appointment reminder
     When from setting in notifications user click on email edit section of appointment reminders
     And enter timing and timing unit for day,hours,hours,minutes for 'Email' and click on save button
     Then verify system should allow day,hours,minutes,minutes timing
     And click on edit for email and remove one cadence and save
     And logout from practice provisioning portal
 
-  Scenario: Verify combinations for timing and timing units of email for 'minutes,minutes,hours,day' of appointmrnt reminder
+  Scenario: Verify combinations for timing and timing units of email for 'minutes,minutes,hours,day' of appointment reminder
     When from setting in notifications user click on email edit section of appointment reminders
     And enter timing and timing unit for minutes,minutes,hours,day for 'Email' and click on save button
     Then verify system should allow minutes,minutes,hours,day timing
@@ -803,39 +803,39 @@ Feature: Test fuctionality of Appointment precheck
     Then verify user not able to enter zero in timing unit section for email in appointment reminders
     And logout from practice provisioning portal
 
-  Scenario: Verify timing and timing units of text only for 'Days' of appointmrnt reminder
+  Scenario: Verify timing and timing units of text only for 'Days' of appointment reminder
     When from setting in notifications user click on text edit section of appointment reminders
     And enter timing and timing unit only for Days for 'SMS' and click on save button
     Then verify system should allow only days for SMS
     And logout from practice provisioning portal
 
-  Scenario: Verify timing and timing units of text only for 'Hours' of appointmrnt reminder
+  Scenario: Verify timing and timing units of text only for 'Hours' of appointment reminder
     When from setting in notifications user click on text edit section of appointment reminders
     And enter timing and timing unit only for Hours for 'SMS' and click on save button
     Then verify system should allow only hours SMS
     And logout from practice provisioning portal
 
-  Scenario: Verify timing and timing units of text only for 'Minutes' of appointmrnt reminder
+  Scenario: Verify timing and timing units of text only for 'Minutes' of appointment reminder
     When from setting in notifications user click on text edit section of appointment reminders
     And enter timing and timing unit only for Minutes for 'SMS' and click on save button
     Then verify system should allow only Minutes SMS
     And logout from practice provisioning portal
 
-  Scenario: Verify combinations for timing and timing units of text for 'hours,minutes,day,day' of appointmrnt reminder
+  Scenario: Verify combinations for timing and timing units of text for 'hours,minutes,day,day' of appointment reminder
     When from setting in notifications user click on text edit section of appointment reminders
     And enter timing and timing unit for hours,minutes,day,day for 'SMS' and click on save button
     Then verify system should allow hours,minutes,day,day timing for SMS
     And click on edit for text and remove one cadence and save
     And logout from practice provisioning portal
 
-  Scenario: Verify combinations for timing and timing units of text for 'day,hours,hours,minutes' of appointmrnt reminder
+  Scenario: Verify combinations for timing and timing units of text for 'day,hours,hours,minutes' of appointment reminder
     When from setting in notifications user click on text edit section of appointment reminders
     And enter timing and timing unit for day,hours,hours,minutes for 'SMS' and click on save button
     Then verify system should allow day,hours,minutes,minutes timing for SMS
     And click on edit for text and remove one cadence and save
     And logout from practice provisioning portal
 
-  Scenario: Verify combinations for timing and timing units of text for 'minutes,minutes,hours,day' of appointmrnt reminder
+  Scenario: Verify combinations for timing and timing units of text for 'minutes,minutes,hours,day' of appointment reminder
     When from setting in notifications user click on text edit section of appointment reminders
     And enter timing and timing unit for minutes,minutes,hours,day for 'SMS' and click on save button
     Then verify system should allow minutes,minutes,hours,day timing for SMS

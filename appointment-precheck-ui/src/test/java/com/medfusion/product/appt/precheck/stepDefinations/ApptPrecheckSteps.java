@@ -2502,30 +2502,30 @@ public class ApptPrecheckSteps extends BaseTest {
 	@Then("verify that notification tab is showing all the fields,button,textbox,radio button,infobutton as per requirement")
 	public void verify_that_notification_tab_is_showing_all_the_fields_button_textbox_radio_button_infobutton_as_per_requirement() {
 		assertEquals(notifPage.getNotificationTitle(), "Notifications", "Notifications text was not match");
-		assertEquals(notifPage.visibilityOfSaveButton(), "Save", "Save Button text was not match");
-		assertEquals(notifPage.visibilityOfOnNotification(), "ON", "ON Button text was not match");
-		assertEquals(notifPage.visibilityOfOffNotification(), "OFF", "OFF Button text was not match");
-		assertEquals(notifPage.visibilityOfFeatureText(), "Features", "Features text was not match");
-		assertEquals(notifPage.visibilityOfBroadcastMessaging(), "Broadcast messaging",
+		assertEquals(notifPage.getSaveButtonText(), "Save", "Save Button text was not match");
+		assertEquals(notifPage.getOnNotificationText(), "ON", "ON Button text was not match");
+		assertEquals(notifPage.getOfOffNotificationText(), "OFF", "OFF Button text was not match");
+		assertEquals(notifPage.getFeatureText(), "Features", "Features text was not match");
+		assertEquals(notifPage.getBroadcastMessagingText(), "Broadcast messaging",
 				"Broadcast messaging text was not match");
-		assertEquals(notifPage.visibilityOfCurbsideReminder(), "Curbside check-in reminder",
+		assertEquals(notifPage.getCurbsideReminderText(), "Curbside check-in reminder",
 				"Curbside check-in reminder text was not match");
-		assertEquals(notifPage.visibilityOfPatientFirstName(), "Display patient's first name",
+		assertEquals(notifPage.getPatientFirstNameText(), "Display patient's first name",
 				"Display patient's first name text was not match");
 		notifPage.onNotification();
-		assertEquals(notifPage.visibilityOfNotificationType(), "Notification Type",
+		assertEquals(notifPage.getNotificationTypeText(), "Notification Type",
 				"Notification Type Text was not match");
-		assertEquals(notifPage.visibilityOfApptConfirmationText(), "Appointment confirmations",
+		assertEquals(notifPage.getApptConfirmationText(), "Appointment confirmations",
 				"Appointment confirmations Text was not match");
-		assertEquals(notifPage.visibilityOfApptReminderTextOnNotif(), "Appointment reminders",
+		assertEquals(notifPage.getApptReminderTextOnNotif(), "Appointment reminders",
 				"Appointment reminders Text was not match");
 		notifPage.clickOnCurbsideOption();
 		String str = "Curbside check-in notifications will be sent 1 hour prior to the appointment.";
-		assertEquals(notifPage.visibilityOfCurbsideParagraph(), str, "Curbside Paragraph Text was not match");
-		assertEquals(notifPage.visibilityOfEnglishButton(), "English", "English Button Text was not match");
-		assertEquals(notifPage.visibilityOfSpanishButton(), "Spanish", "Spanish Button Text was not match");
+		assertEquals(notifPage.getCurbsideParagraphText(), str, "Curbside Paragraph Text was not match");
+		assertEquals(notifPage.getEnglishButtonText(), "English", "English Button Text was not match");
+		assertEquals(notifPage.getSpanishButtonText(), "Spanish", "Spanish Button Text was not match");
 		notifPage.clickOnEnglishButton();
-		assertEquals(notifPage.visibilityOfArrivalConfMsgHeading(), "Arrival confirmation message",
+		assertEquals(notifPage.getArrivalConfMsgHeadingText(), "Arrival confirmation message",
 				"Arrival confirmation message Heading was not match");
 	}
 
@@ -2757,17 +2757,20 @@ public class ApptPrecheckSteps extends BaseTest {
 		assertEquals(notifPage.getDeliveryMethod(), deliveryMethod, "Delivery method was not match");
 		log("Delivery Method:" + notifPage.getDeliveryMethod());
 		notifPage.checkingFourthTimingIfPresent();
-		notifPage.enterTimingAndTimingUnit(1, "Days", "1");
-		notifPage.enterTimingAndTimingUnit(2, "Days", "2");
-		notifPage.enterTimingAndTimingUnit(3, "Days", "3");
-		assertTrue(notifPage.clickOnSaveChangesbutton());
+		Appointment.day1=notifPage.enterDays();
+		notifPage.enterTimingAndTimingUnit(1, "Days",Appointment.day1);
+		Appointment.day2=notifPage.enterDays();
+		notifPage.enterTimingAndTimingUnit(2, "Days", Appointment.day2);
+		Appointment.day3=notifPage.enterDays();
+		notifPage.enterTimingAndTimingUnit(3, "Days", Appointment.day3);
+		assertTrue(notifPage.visibilityOfSaveChangesbutton());
 	}
 
 	@Then("verify system should allow only days")
 	public void verify_system_should_allow_only_days() throws InterruptedException {
 		scrollAndWait(0, 1000, 5000);
 		assertEquals(notifPage.getSingleTimingText(), "Days", "Days Timing was not match");
-		assertEquals(notifPage.getTimingUnitText(), "1, 2, 3", "Days Timing unit was not match");
+		assertEquals(notifPage.getTimingUnitText(),Appointment.day1+", "+Appointment.day2+", "+Appointment.day3, "Days Timing unit was not match");
 	}
 
 	@When("enter timing and timing unit only for Hours for {string} and click on save button")
@@ -2777,17 +2780,20 @@ public class ApptPrecheckSteps extends BaseTest {
 		assertEquals(notifPage.getDeliveryMethod(), deliveryMethod, "Delivery method was not match");
 		log("Delivery Method:" + notifPage.getDeliveryMethod());
 		notifPage.checkingFourthTimingIfPresent();
-		notifPage.enterTimingAndTimingUnit(1, "Hours", "1");
-		notifPage.enterTimingAndTimingUnit(2, "Hours", "4");
-		notifPage.enterTimingAndTimingUnit(3, "Hours", "23");
-		assertTrue(notifPage.clickOnSaveChangesbutton());
+		Appointment.hour1=notifPage.enterHours();
+		notifPage.enterTimingAndTimingUnit(1, "Hours", Appointment.hour1);
+		Appointment.hour2=notifPage.enterHours();
+		notifPage.enterTimingAndTimingUnit(2, "Hours", Appointment.hour2);
+		Appointment.hour3=notifPage.enterHours();
+		notifPage.enterTimingAndTimingUnit(3, "Hours", Appointment.hour3);
+		assertTrue(notifPage.visibilityOfSaveChangesbutton());
 	}
 
 	@Then("verify system should allow only hours")
 	public void verify_system_should_allow_only_hours() throws InterruptedException {
 		scrollAndWait(0, 1000, 5000);
 		assertEquals(notifPage.getSingleTimingText(), "Hours", "Hours Timing was not match");
-		assertEquals(notifPage.getTimingUnitText(), "1, 4, 23", "Hours Timing unit was not match");
+		assertEquals(notifPage.getTimingUnitText(), Appointment.hour1+", "+Appointment.hour2+", "+Appointment.hour3, "Hours Timing unit was not match");
 	}
 
 	@When("enter timing and timing unit only for Minutes for {string} and click on save button")
@@ -2797,17 +2803,20 @@ public class ApptPrecheckSteps extends BaseTest {
 		assertEquals(notifPage.getDeliveryMethod(),deliveryMethod,"Delivery method was not match");
 		log("Delivery Method:"+notifPage.getDeliveryMethod());
 		notifPage.checkingFourthTimingIfPresent();
-		notifPage.enterTimingAndTimingUnit(1, "Minutes", "10");
-		notifPage.enterTimingAndTimingUnit(2, "Minutes", "30");
-		notifPage.enterTimingAndTimingUnit(3, "Minutes", "59");
-		assertTrue(notifPage.clickOnSaveChangesbutton());
+		Appointment.minute1=notifPage.enterMinutes();
+		notifPage.enterTimingAndTimingUnit(1, "Minutes", Appointment.minute1);
+		Appointment.minute2=notifPage.enterMinutes();
+		notifPage.enterTimingAndTimingUnit(2, "Minutes", Appointment.minute2);
+		Appointment.minute3=notifPage.enterMinutes();
+		notifPage.enterTimingAndTimingUnit(3, "Minutes", Appointment.minute3);
+		assertTrue(notifPage.visibilityOfSaveChangesbutton());
 	}
 
 	@Then("verify system should allow only Minutes")
 	public void verify_system_should_allow_only_minutes() throws InterruptedException {
 		scrollAndWait(0, 1000, 5000);
 		assertEquals(notifPage.getSingleTimingText(), "Minutes", "Minutes Timing was not match");
-		assertEquals(notifPage.getTimingUnitText(), "10, 30, 59", "Minutes Timing unit was not match");
+		assertEquals(notifPage.getTimingUnitText(), Appointment.minute1+", "+Appointment.minute2+", "+Appointment.minute3, "Minutes Timing unit was not match");
 	}
 
 	@When("enter timing and timing unit for hours,minutes,day,day for {string} and click on save button")
@@ -2817,11 +2826,15 @@ public class ApptPrecheckSteps extends BaseTest {
 		assertEquals(notifPage.getDeliveryMethod(),deliveryMethod,"Delivery method was not match");
 		log("Delivery Method:"+notifPage.getDeliveryMethod());
 		notifPage.addFourthTimingAndTimingUnit();
-		notifPage.enterTimingAndTimingUnit(1, "Hours", "23");
-		notifPage.enterTimingAndTimingUnit(2, "Minutes", "49");
-		notifPage.enterTimingAndTimingUnit(3, "Days", "21");
-		notifPage.enterTimingAndTimingUnit(4, "Days", "24");
-		assertTrue(notifPage.clickOnSaveChangesbutton());
+		Appointment.hours=notifPage.enterHours();
+		notifPage.enterTimingAndTimingUnit(1, "Hours", Appointment.hours);
+		Appointment.minutes=notifPage.enterMinutes();
+		notifPage.enterTimingAndTimingUnit(2, "Minutes", Appointment.minutes);
+		Appointment.day1=notifPage.enterDays();
+		notifPage.enterTimingAndTimingUnit(3, "Days", Appointment.day1);
+		Appointment.day2=notifPage.enterDays();
+		notifPage.enterTimingAndTimingUnit(4, "Days", Appointment.day2);
+		assertTrue(notifPage.visibilityOfSaveChangesbutton());
 	}
 
 	@Then("verify system should allow hours,minutes,day,day timing")
@@ -2830,9 +2843,9 @@ public class ApptPrecheckSteps extends BaseTest {
 		assertEquals(notifPage.getDaysTimingText(), "Days", "Days Timing was not match");
 		assertEquals(notifPage.getHoursTimingText(), "Hours", "Hours Timing was not match");
 		assertEquals(notifPage.getMinutesTimingText(), "Minutes", "Minutes Timing was not match");
-		assertEquals(notifPage.getTimeUnitTextForDays(), "21, 24", "Days Timing unit was not match");
-		assertEquals(notifPage.getTimeUnitTextForHours(), "23", "Hours Timing unit was not match");
-		assertEquals(notifPage.getTimeUnitTextForMinutes(), "49", "Minutes Timing unit was not match");
+		assertEquals(notifPage.getTimeUnitTextForDays(), Appointment.day1+", "+Appointment.day2, "Days Timing unit was not match");
+		assertEquals(notifPage.getTimeUnitTextForHours(), Appointment.hours, "Hours Timing unit was not match");
+		assertEquals(notifPage.getTimeUnitTextForMinutes(), Appointment.minutes, "Minutes Timing unit was not match");
 	}
 
 	@Then("click on edit for email and remove one cadence and save")
@@ -2844,7 +2857,7 @@ public class ApptPrecheckSteps extends BaseTest {
 		notifPage.clickApptReminderEmailHamburgerButton();
 		notifPage.clickApptReminderEmailEditButton();
 		notifPage.clickOnRemoveTiming();
-		assertTrue(notifPage.clickOnSaveChangesbutton());
+		assertTrue(notifPage.visibilityOfSaveChangesbutton());
 	}
 
 	@When("enter timing and timing unit for day,hours,hours,minutes for {string} and click on save button")
@@ -2854,11 +2867,15 @@ public class ApptPrecheckSteps extends BaseTest {
 		assertEquals(notifPage.getDeliveryMethod(),deliveryMethod,"Delivery method was not match");
 		log("Delivery Method:"+notifPage.getDeliveryMethod());
 		notifPage.addFourthTimingAndTimingUnit();
-		notifPage.enterTimingAndTimingUnit(1, "Days", "7");
-		notifPage.enterTimingAndTimingUnit(2, "Hours", "15");
-		notifPage.enterTimingAndTimingUnit(3, "Hours", "22");
-		notifPage.enterTimingAndTimingUnit(4, "Minutes", "59");
-		assertTrue(notifPage.clickOnSaveChangesbutton());
+		Appointment.days=notifPage.enterDays();
+		notifPage.enterTimingAndTimingUnit(1, "Days", Appointment.days);
+		Appointment.hour1=notifPage.enterHours();
+		notifPage.enterTimingAndTimingUnit(2, "Hours", Appointment.hour1);
+		Appointment.hour2=notifPage.enterHours();
+		notifPage.enterTimingAndTimingUnit(3, "Hours", Appointment.hour2);
+		Appointment.minutes=notifPage.enterMinutes();
+		notifPage.enterTimingAndTimingUnit(4, "Minutes", Appointment.minutes);
+		assertTrue(notifPage.visibilityOfSaveChangesbutton());
 	}
 
 	@Then("verify system should allow day,hours,minutes,minutes timing")
@@ -2867,9 +2884,9 @@ public class ApptPrecheckSteps extends BaseTest {
 		assertEquals(notifPage.getDaysTimingText(), "Days", "Days Timing was not match");
 		assertEquals(notifPage.getHoursTimingText(), "Hours", "Hours Timing was not match");
 		assertEquals(notifPage.getMinutesTimingText(), "Minutes", "Minutes Timing was not match");
-		assertEquals(notifPage.getTimeUnitTextForDays(), "7", "Days Timing unit was not match");
-		assertEquals(notifPage.getTimeUnitTextForHours(), "15, 22", "Hours Timing unit was not match");
-		assertEquals(notifPage.getTimeUnitTextForMinutes(), "59", "Minutes Timing unit was not match");
+		assertEquals(notifPage.getTimeUnitTextForDays(), Appointment.days, "Days Timing unit was not match");
+		assertEquals(notifPage.getTimeUnitTextForHours(), Appointment.hour1+", "+Appointment.hour2, "Hours Timing unit was not match");
+		assertEquals(notifPage.getTimeUnitTextForMinutes(), Appointment.minutes, "Minutes Timing unit was not match");
 	}
 
 	@When("enter timing and timing unit for minutes,minutes,hours,day for {string} and click on save button")
@@ -2879,11 +2896,15 @@ public class ApptPrecheckSteps extends BaseTest {
 		assertEquals(notifPage.getDeliveryMethod(),deliveryMethod,"Delivery method was not match");
 		log("Delivery Method:"+notifPage.getDeliveryMethod());
 		notifPage.addFourthTimingAndTimingUnit();
-		notifPage.enterTimingAndTimingUnit(1, "Minutes", "34");
-		notifPage.enterTimingAndTimingUnit(2, "Minutes", "24");
-		notifPage.enterTimingAndTimingUnit(3, "Hours", "12");
-		notifPage.enterTimingAndTimingUnit(4, "Days", "9");
-		assertTrue(notifPage.clickOnSaveChangesbutton());
+		Appointment.minute1=notifPage.enterMinutes();
+		notifPage.enterTimingAndTimingUnit(1, "Minutes", Appointment.minute1);
+		Appointment.minute2=notifPage.enterMinutes();
+		notifPage.enterTimingAndTimingUnit(2, "Minutes", Appointment.minute2);
+		Appointment.hours=notifPage.enterHours();
+		notifPage.enterTimingAndTimingUnit(3, "Hours", Appointment.hours);
+		Appointment.days=notifPage.enterDays();
+		notifPage.enterTimingAndTimingUnit(4, "Days", Appointment.days);
+		assertTrue(notifPage.visibilityOfSaveChangesbutton());
 	}
 
 	@Then("verify system should allow minutes,minutes,hours,day timing")
@@ -2892,30 +2913,30 @@ public class ApptPrecheckSteps extends BaseTest {
 		assertEquals(notifPage.getDaysTimingText(), "Days", "Days Timing was not match");
 		assertEquals(notifPage.getHoursTimingText(), "Hours", "Hours Timing was not match");
 		assertEquals(notifPage.getMinutesTimingText(), "Minutes", "Minutes Timing was not match");
-		assertEquals(notifPage.getTimeUnitTextForDays(), "9", "Days Timing unit was not match");
-		assertEquals(notifPage.getTimeUnitTextForHours(), "12", "Hours Timing unit was not match");
-		assertEquals(notifPage.getTimeUnitTextForMinutes(), "34, 24", "Minutes Timing unit was not match");
+		assertEquals(notifPage.getTimeUnitTextForDays(), Appointment.days, "Days Timing unit was not match");
+		assertEquals(notifPage.getTimeUnitTextForHours(), Appointment.hours, "Hours Timing unit was not match");
+		assertEquals(notifPage.getTimeUnitTextForMinutes(), Appointment.minute1+", "+Appointment.minute2, "Minutes Timing unit was not match");
 	}
 
 	@Then("verify system should allow only days for SMS")
 	public void verify_system_should_allow_only_days_for_sms() throws InterruptedException {
 		scrollAndWait(0, 1000, 5000);
 		assertEquals(notifPage.getSingleTimingTextForSMS(), "Days", "Days Timing was not match");
-		assertEquals(notifPage.getTimingUnitTextForSMS(), "1, 2, 3", "Days Timing unit was not match");
+		assertEquals(notifPage.getTimingUnitTextForSMS(), Appointment.day1+", "+Appointment.day2+", "+Appointment.day3, "Days Timing unit was not match");
 	}
 
 	@Then("verify system should allow only hours SMS")
 	public void verify_system_should_allow_only_hours_sms() throws InterruptedException {
 		scrollAndWait(0, 1000, 5000);
 		assertEquals(notifPage.getSingleTimingTextForSMS(), "Hours", "Hours Timing was not match");
-		assertEquals(notifPage.getTimingUnitTextForSMS(), "1, 4, 23", "Hours Timing unit was not match");
+		assertEquals(notifPage.getTimingUnitTextForSMS(), Appointment.hour1+", "+Appointment.hour2+", "+Appointment.hour3, "Hours Timing unit was not match");
 	}
 
 	@Then("verify system should allow only Minutes SMS")
 	public void verify_system_should_allow_only_minutes_sms() throws InterruptedException {
 		scrollAndWait(0, 1000, 5000);
 		assertEquals(notifPage.getSingleTimingTextForSMS(), "Minutes", "Minutes Timing was not match");
-		assertEquals(notifPage.getTimingUnitTextForSMS(), "10, 30, 59", "Minutes Timing unit was not match");
+		assertEquals(notifPage.getTimingUnitTextForSMS(), Appointment.minute1+", "+Appointment.minute2+", "+Appointment.minute3, "Minutes Timing unit was not match");
 	}
 	
 	@Then("verify system should allow hours,minutes,day,day timing for SMS")
@@ -2924,9 +2945,9 @@ public class ApptPrecheckSteps extends BaseTest {
 		assertEquals(notifPage.getDaysTimingTextForSMS(), "Days", "Days Timing was not match");
 		assertEquals(notifPage.getHoursTimingTextForSMS(), "Hours", "Hours Timing was not match");
 		assertEquals(notifPage.getMinutesTimingTextForSMS(), "Minutes", "Minutes Timing was not match");
-		assertEquals(notifPage.getDaysTimeUnitTextForSMS(), "21, 24", "Days Timing unit was not match");
-		assertEquals(notifPage.getHoursTimeUnitTextForSMS(), "23", "Hours Timing unit was not match");
-		assertEquals(notifPage.getMinutesTimeUnitTextForSMS(), "49", "Minutes Timing unit was not match");
+		assertEquals(notifPage.getDaysTimeUnitTextForSMS(), Appointment.day1+", "+Appointment.day2, "Days Timing unit was not match");
+		assertEquals(notifPage.getHoursTimeUnitTextForSMS(), Appointment.hours, "Hours Timing unit was not match");
+		assertEquals(notifPage.getMinutesTimeUnitTextForSMS(), Appointment.minutes, "Minutes Timing unit was not match");
 	}
 	
 	@Then("click on edit for text and remove one cadence and save")
@@ -2938,7 +2959,7 @@ public class ApptPrecheckSteps extends BaseTest {
 		notifPage.clickApptReminderSmsHamburgerButton();
 		notifPage.clickApptReminderSmsEditButton();
 		notifPage.clickOnRemoveTiming();
-		assertTrue(notifPage.clickOnSaveChangesbutton());
+		assertTrue(notifPage.visibilityOfSaveChangesbutton());
 	}
 	
 	@Then("verify system should allow day,hours,minutes,minutes timing for SMS")
@@ -2947,9 +2968,9 @@ public class ApptPrecheckSteps extends BaseTest {
 		assertEquals(notifPage.getDaysTimingTextForSMS(), "Days", "Days Timing was not match");
 		assertEquals(notifPage.getHoursTimingTextForSMS(), "Hours", "Hours Timing was not match");
 		assertEquals(notifPage.getMinutesTimingTextForSMS(), "Minutes", "Minutes Timing was not match");
-		assertEquals(notifPage.getDaysTimeUnitTextForSMS(), "7", "Days Timing unit was not match");
-		assertEquals(notifPage.getHoursTimeUnitTextForSMS(), "15, 22", "Hours Timing unit was not match");
-		assertEquals(notifPage.getMinutesTimeUnitTextForSMS(), "59", "Minutes Timing unit was not match");
+		assertEquals(notifPage.getDaysTimeUnitTextForSMS(), Appointment.days, "Days Timing unit was not match");
+		assertEquals(notifPage.getHoursTimeUnitTextForSMS(), Appointment.hour1+", "+Appointment.hour2, "Hours Timing unit was not match");
+		assertEquals(notifPage.getMinutesTimeUnitTextForSMS(), Appointment.minutes, "Minutes Timing unit was not match");
 	}
 	
 	@Then("verify system should allow minutes,minutes,hours,day timing for SMS")
@@ -2958,9 +2979,9 @@ public class ApptPrecheckSteps extends BaseTest {
 		assertEquals(notifPage.getDaysTimingTextForSMS(), "Days", "Days Timing was not match");
 		assertEquals(notifPage.getHoursTimingTextForSMS(), "Hours", "Hours Timing was not match");
 		assertEquals(notifPage.getMinutesTimingTextForSMS(), "Minutes", "Minutes Timing was not match");
-		assertEquals(notifPage.getDaysTimeUnitTextForSMS(), "9", "Days Timing unit was not match");
-		assertEquals(notifPage.getHoursTimeUnitTextForSMS(), "12", "Hours Timing unit was not match");
-		assertEquals(notifPage.getMinutesTimeUnitTextForSMS(), "34, 24", "Minutes Timing unit was not match");
+		assertEquals(notifPage.getDaysTimeUnitTextForSMS(), Appointment.days, "Days Timing unit was not match");
+		assertEquals(notifPage.getHoursTimeUnitTextForSMS(), Appointment.hours, "Hours Timing unit was not match");
+		assertEquals(notifPage.getMinutesTimeUnitTextForSMS(), Appointment.minute1+", "+Appointment.minute2, "Minutes Timing unit was not match");
 	}
 	
 	@When("user on curbside checkin tab and clear all appointments")
@@ -2968,7 +2989,7 @@ public class ApptPrecheckSteps extends BaseTest {
 		mainPage.clickOnCurbsideTab();
 		assertTrue(curbsidePage.getCurbsideTitle().contains("Curbside Check-ins"));
 		log("User is on Curbside check in tab");
-		assertFalse(notifPage.checkingCheckinButton());
+		notifPage.checkingCheckinButton();
 		log("Curbside button is disable");
 		notifPage.selectAllAppointment();
 		notifPage.clickOnCheckinButton();
@@ -3016,12 +3037,12 @@ public class ApptPrecheckSteps extends BaseTest {
 	public void verify_checkin_button_fuctionality_after_one_patient_gets_checkin() throws InterruptedException {
 		scrollAndWait(0, -500, 5000);
 		notifPage.selectOnePatient();
-		assertTrue(notifPage.checkingCheckinButton());
+		notifPage.checkingCheckinButton();
 		log("Check in button is enable");
 		assertEquals(notifPage.getCheckinButtonText(),"Check-In (1)","Checkin button text is not match");
 		log("Checkin button text:-  "+notifPage.getCheckinButtonText());
 		notifPage.clickOnCheckinButton();
-		assertFalse(notifPage.checkingCheckinButton());
+		notifPage.checkingCheckinButton();
 		log("Check in button is disable");
 		assertEquals(notifPage.countOfCurbsideCheckinPatient(),9,"Count of Curbside checkin patient was not match");
 		
@@ -3031,12 +3052,12 @@ public class ApptPrecheckSteps extends BaseTest {
 	public void verify_checkin_button_fuctionality_after_two_patient_gets_checkin() throws InterruptedException {
 		scrollAndWait(0, -500, 5000);
 		notifPage.selectTwoPatient();
-		assertTrue(notifPage.checkingCheckinButton());
+		notifPage.checkingCheckinButton();
 		log("Check in button is enable");
 		assertEquals(notifPage.getCheckinButtonText(),"Check-In (2)","Checkin button text is not match");
 		log("Checkin button text:-  "+notifPage.getCheckinButtonText());
 		notifPage.clickOnCheckinButton();
-		assertFalse(notifPage.checkingCheckinButton());
+		notifPage.checkingCheckinButton();
 		log("Check in button is disable");
 		assertEquals(notifPage.countOfCurbsideCheckinPatient(),8,"Count of Curbside checkin patient was not match");
 	}
@@ -3045,13 +3066,13 @@ public class ApptPrecheckSteps extends BaseTest {
 	public void verify_checkin_button_fuctionality_after_all_patient_gets_checkin() throws InterruptedException {
 		scrollAndWait(0, -500, 15000);
 		notifPage.selectAllAppointment();
-		assertTrue(notifPage.checkingCheckinButton());
+		notifPage.checkingCheckinButton();
 		log("Check in button is enable");
 		assertEquals(notifPage.getCheckinButtonText(),"Check-In (10)","Checkin button text is not match");
 		log("Checkin button text:-  "+notifPage.getCheckinButtonText());
 		notifPage.clickOnCheckinButton();
 		Thread.sleep(10000);
-		assertFalse(notifPage.checkingCheckinButton());
+		notifPage.checkingCheckinButton();
 		log("Check in button is disable");
 		assertEquals(notifPage.countOfCurbsideCheckinPatient(),0,"Count of Curbside checkin patient was not match");
 	}

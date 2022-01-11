@@ -3,6 +3,7 @@ package com.medfusion.product.object.maps.appt.precheck.page.Setting;
 
 import java.util.Iterator;
 import java.util.List;
+import java.util.Random;
 
 import org.openqa.selenium.By;
 import org.openqa.selenium.Keys;
@@ -18,6 +19,7 @@ import org.openqa.selenium.support.PageFactory;
 
 import com.intuit.ifs.csscat.core.pageobject.BasePageObject;
 import com.medfusion.common.utils.IHGUtil;
+import com.medfusion.product.appt.precheck.pojo.Appointment;
 
 public class NotificationsPage extends BasePageObject {
 
@@ -1889,113 +1891,65 @@ public class NotificationsPage extends BasePageObject {
 		}
 	}
 
-	public String visibilityOfSaveButton() {
+	public String getSaveButtonText() {
 		IHGUtil.PrintMethodName();
 		IHGUtil.waitForElement(driver, 10, saveButton);
 		log("Save button is displayed.");
 		return saveButton.getText();
 	}
 
-	public String visibilityOfOnNotification() {
+	public String getOnNotificationText() {
 		IHGUtil.PrintMethodName();
 		IHGUtil.waitForElement(driver, 5, onNotificationButton);
-		boolean onButton = onNotificationButton.isDisplayed();
-		if (onButton == true)
-			log("On Notification button is displayed");
-		else {
-			log("On Notification button is not displayed");
-		}
 		return onText.getText();
 	}
 
-	public String visibilityOfOffNotification() {
+	public String getOfOffNotificationText() {
 		IHGUtil.PrintMethodName();
 		IHGUtil.waitForElement(driver, 5, offNotificationButton);
-		boolean offButton = offNotificationButton.isDisplayed();
-		if (offButton == true)
-			log("Off Notification button is displayed");
-		else {
-			log("Off Notification button is not displayed");
-		}
 		return offText.getText();
 	}
 
-	public String visibilityOfFeatureText() {
+	public String getFeatureText() {
 		IHGUtil.PrintMethodName();
 		IHGUtil.waitForElement(driver, 10, featureText);
 		log("Feature Text is displayed.");
 		return featureText.getText();
 	}
 
-	public String visibilityOfBroadcastMessaging() {
+	public String getBroadcastMessagingText() {
 		IHGUtil.PrintMethodName();
 		IHGUtil.waitForElement(driver, 5, broadcastMessagingCheckbox);
-		boolean broadcast = broadcastMessagingCheckbox.isDisplayed();
-		if (broadcast == true)
-			log("Broadcast Messaging checkbox is displayed");
-		else {
-			log("Broadcast Messaging checkbox is not displayed");
-		}
 		return broadcastText.getText();
 	}
 
-	public String visibilityOfCurbsideReminder() {
+	public String getCurbsideReminderText() {
 		IHGUtil.PrintMethodName();
 		IHGUtil.waitForElement(driver, 5, curbsideCheckbox);
-		boolean curbsideRem = curbsideCheckbox.isDisplayed();
-		if (curbsideRem == true)
-			log("Curbside checkbox  is displayed");
-		else {
-			log("Curbside checkbox  is not displayed");
-		}
 		return curbsideText.getText();
 	}
 
-	public String visibilityOfPatientFirstName() {
+	public String getPatientFirstNameText() {
 		IHGUtil.PrintMethodName();
 		IHGUtil.waitForElement(driver, 5, patientNameCheckbox);
-		boolean patientName = patientNameCheckbox.isDisplayed();
-		if (patientName == true)
-			log("Patient First Name checkbox is displayed");
-		else {
-			log("Patient First Name checkbox is not displayed");
-		}
 		return patientFirstText.getText();
 	}
 
-	public String visibilityOfNotificationType() {
+	public String getNotificationTypeText() {
 		IHGUtil.PrintMethodName();
 		IHGUtil.waitForElement(driver, 5, notifTypeText);
-		boolean notifType = notifTypeText.isDisplayed();
-		if (notifType == true)
-			log("Notification type title is displayed");
-		else {
-			log("Notification type title  is not displayed");
-		}
 		return notifTypeText.getText();
 	}
 
-	public String visibilityOfApptConfirmationText() {
+	public String getApptConfirmationText() {
 		IHGUtil.PrintMethodName();
 		IHGUtil.waitForElement(driver, 5, apptConfirmText);
-		boolean apptConfText = apptConfirmText.isDisplayed();
-		if (apptConfText == true)
-			log("Appointment confirmations is displayed");
-		else {
-			log("Appointment confirmations is not displayed");
-		}
 		return apptConfirmText.getText();
 	}
 
-	public String visibilityOfApptReminderTextOnNotif() {
+	public String getApptReminderTextOnNotif() {
 		IHGUtil.PrintMethodName();
 		IHGUtil.waitForElement(driver, 5, apptReminderText);
-		boolean apptRemText = apptReminderText.isDisplayed();
-		if (apptRemText == true)
-			log("Appointment confirmations is displayed");
-		else {
-			log("Appointment confirmations is not displayed");
-		}
 		return apptReminderText.getText();
 	}
 
@@ -2005,51 +1959,27 @@ public class NotificationsPage extends BasePageObject {
 
 	}
 
-	public String visibilityOfCurbsideParagraph() {
+	public String getCurbsideParagraphText() {
 		IHGUtil.PrintMethodName();
 		IHGUtil.waitForElement(driver, 5, curbsidePara);
-		boolean curbsideParagraph = curbsidePara.isDisplayed();
-		if (curbsideParagraph = true)
-			log("Paraghraph text is displayed");
-		else {
-			log("Paragraph text is not displayed");
-		}
 		return curbsidePara.getText();
 	}
 
-	public String visibilityOfEnglishButton() {
+	public String getEnglishButtonText() {
 		IHGUtil.PrintMethodName();
 		IHGUtil.waitForElement(driver, 5, englishButton);
-		boolean engButton = englishButton.isDisplayed();
-		if (engButton == true)
-			log("English Button is displayed");
-		else {
-			log("English Button is not displayed");
-		}
 		return englishButton.getText();
 	}
 
-	public String visibilityOfSpanishButton() {
+	public String getSpanishButtonText() {
 		IHGUtil.PrintMethodName();
 		IHGUtil.waitForElement(driver, 5, spanishButton);
-		boolean spanishBut = spanishButton.isDisplayed();
-		if (spanishBut == true)
-			log("Spanish Button is displayed");
-		else {
-			log("Spanish Button is not displayed");
-		}
 		return spanishButton.getText();
 	}
 
-	public String visibilityOfArrivalConfMsgHeading() {
+	public String getArrivalConfMsgHeadingText() {
 		IHGUtil.PrintMethodName();
 		IHGUtil.waitForElement(driver, 5, arrivalConfirmationMsg);
-		boolean arrivalHeading = arrivalConfirmationMsg.isDisplayed();
-		if (arrivalHeading == true)
-			log("Arrival Confirmation Message Heading is displayed");
-		else {
-			log("Arrival Confirmation Message Heading is not displayed");
-		}
 		return arrivalConfirmationMsg.getText();
 	}
 
@@ -2077,7 +2007,7 @@ public class NotificationsPage extends BasePageObject {
 				.sendKeys(timingUnit);
 	}
 
-	public boolean clickOnSaveChangesbutton() throws InterruptedException {
+	public boolean visibilityOfSaveChangesbutton() throws InterruptedException {
 		IHGUtil.PrintMethodName();
 		IHGUtil.waitForElement(driver, 5, saveChangesButton);
 		if (saveChangesButton.isEnabled()) {
@@ -2229,16 +2159,10 @@ public class NotificationsPage extends BasePageObject {
 		selectAllCheckinAppt.click();
 	}
 
-	public boolean checkingCheckinButton() {
+	public void checkingCheckinButton() {
 		IHGUtil.PrintMethodName();
 		IHGUtil.waitForElement(driver, 5, checkinButton);
-		if (checkinButton.isEnabled()) {
-			log("Check in button is enable");
-			return true;
-		} else {
-			log("Check in button is disable");
-			return false;
-		}
+		checkinButton.isEnabled();
 	}
 
 	public void clickOnCheckinButton() throws InterruptedException {
@@ -2276,6 +2200,25 @@ public class NotificationsPage extends BasePageObject {
 			WebElement twoPatient = allAppointment.get(i);
 			twoPatient.click();
 		}
-
+	}
+	
+	public String enterDays() {
+		Random random = new Random();
+		int randamNo = random.nextInt(400);
+		return Appointment.days = String.valueOf(randamNo);
+	}
+	
+	public String enterHours() {
+		Random random = new Random();
+		int randamNo = random.nextInt(23);
+		return Appointment.hours = String.valueOf(randamNo);
+		
+	}
+	
+	public String enterMinutes() {
+		Random random = new Random();
+		int randamNo = random.nextInt(59);
+		return Appointment.minutes = String.valueOf(randamNo);
+		
 	}
 }
