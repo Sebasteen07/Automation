@@ -25,6 +25,9 @@ public class ApptPrecheckMainPage extends BasePageObject {
 
 	@FindBy(how = How.XPATH, using = "//*[text()='Appointments']")
 	private WebElement appointmentsTab;
+	
+	@FindBy(how = How.XPATH, using = "//a[contains(text(),'Curbside Check-in')]")
+	private WebElement curbsideTab;
 
 	public ApptPrecheckMainPage(WebDriver driver) {
 		super(driver);
@@ -106,5 +109,14 @@ public class ApptPrecheckMainPage extends BasePageObject {
 	public void switchOnAppointmentsTab() {
 		IHGUtil.waitForElement(driver, 6, appointmentsTab);
 		jse.executeScript("arguments[0].click();", appointmentsTab);
+	}
+	
+	public void clickOnCurbsideTab() throws InterruptedException {
+		IHGUtil.PrintMethodName();
+		IHGUtil.waitForElement(driver, 6, appointmentsTab);
+		javascriptClick(curbsideTab);
+		log("Switch to Curbside Check-in Tab");
+		driver.navigate().refresh();
+		Thread.sleep(3000);
 	}
 }
