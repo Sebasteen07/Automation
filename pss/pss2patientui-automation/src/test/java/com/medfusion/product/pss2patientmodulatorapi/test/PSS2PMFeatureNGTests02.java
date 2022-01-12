@@ -3,6 +3,7 @@ package com.medfusion.product.pss2patientmodulatorapi.test;
 
 import static org.testng.Assert.assertEquals;
 import static org.testng.Assert.assertFalse;
+import static org.testng.Assert.assertNotEquals;
 import static org.testng.Assert.assertTrue;
 
 import java.io.IOException;
@@ -15,15 +16,23 @@ import org.testng.annotations.Test;
 
 import com.intuit.ifs.csscat.core.BaseTestNG;
 import com.intuit.ifs.csscat.core.RetryAnalyzer;
+import com.medfusion.product.object.maps.pss2.page.AppEntryPoint.StartAppointmentInOrder;
+import com.medfusion.product.object.maps.pss2.page.Appointment.HomePage.HomePage;
+import com.medfusion.product.object.maps.pss2.page.Appointment.Loginless.DismissPage;
+import com.medfusion.product.object.maps.pss2.page.Appointment.Loginless.LoginlessPatientInformation;
+import com.medfusion.product.object.maps.pss2.page.AppointmentType.AppointmentPage;
 import com.medfusion.product.object.maps.pss2.page.util.APIVerification;
 import com.medfusion.product.object.maps.pss2.page.util.HeaderConfig;
+import com.medfusion.product.object.maps.pss2.page.util.ParseJSONFile;
 import com.medfusion.product.object.maps.pss2.page.util.PostAPIRequestAdapterModulator;
 import com.medfusion.product.object.maps.pss2.page.util.PostAPIRequestPMNG;
 import com.medfusion.product.pss2patientapi.payload.PayloadAM02;
 import com.medfusion.product.pss2patientapi.payload.PayloadAdapterModulator;
 import com.medfusion.product.pss2patientapi.payload.PayloadPM02;
 import com.medfusion.product.pss2patientapi.payload.PayloadPssPMNG;
+import com.medfusion.product.pss2patientui.pojo.AdminUser;
 import com.medfusion.product.pss2patientui.pojo.Appointment;
+import com.medfusion.product.pss2patientui.utils.PSSConstants;
 import com.medfusion.product.pss2patientui.utils.PSSPatientUtils;
 import com.medfusion.product.pss2patientui.utils.PSSPropertyFileLoader;
 
@@ -805,35 +814,7 @@ public class PSS2PMFeatureNGTests02 extends BaseTestNG {
 	@Test(enabled = true, groups = { "APItest" }, retryAnalyzer = RetryAnalyzer.class)
 	public void toekn() throws Exception {
 		log("Generate Token");
-		
-//		int len = jo.getJSONArray("specialtyList").length();
-//
-//		for (int i = 0; i < len; i++) {
-//			String kk = jo.getJSONArray("specialtyList").getJSONObject(i).getString("displayName");
-//			log("Spec- " + kk);
-//		}
-		
-		logStep("Set up the API authentication");
-		setUpAM(propertyData.getProperty("mf.practice.id.ng"), propertyData.getProperty("mf.authuserid.am.ng"));
 
-		String ss = payloaAM02.slotPyaload();
-
-		JSONArray js = new JSONArray(ss);
-		int mainlength = js.length();
-		int len = js.getJSONObject(0).getJSONArray("slotList").length();
-
-		for (int i = 0; i < mainlength; i++) {
-
-			if (js.getJSONObject(i).getJSONArray("slotList").length() == 1) {
-				String date = js.getJSONObject(i).getString("date");
-				log("This date has only 1 slot -" + date);
-
-			} else {
-				log("TC Failed");
-				break;
-			}
-
-		}
 	}
 	
 	@Test(enabled = true, groups = { "APItest" }, retryAnalyzer = RetryAnalyzer.class)
@@ -1505,8 +1486,311 @@ public class PSS2PMFeatureNGTests02 extends BaseTestNG {
 				
 		adminPayload=payloaAM02.preventSchedPyaload(0);
 		response=postAPIRequestAM.saveAppointmenttype(practiceId, adminPayload);
-		apv.responseCodeValidation(response, 200);	
+		apv.responseCodeValidation(response, 200);
+	}
+	
+	@Test(enabled = true, groups = { "AcceptanceTests" }, retryAnalyzer = RetryAnalyzer.class)
+	public void testPreRequisiteDefaultNG() throws Exception {
+		log("Verify complete history is searched if pre-requisite set to default");
+		PSSPropertyFileLoader propertyData = new PSSPropertyFileLoader();
+		Appointment testData = new Appointment();
+		AdminUser adminUser = new AdminUser();
+		propertyData.setAdminNG(adminUser);
+		propertyData.setAppointmentResponseNG(testData);
+
+		logStep("Set up the API authentication");
+		setUpAM(propertyData.getProperty("mf.practice.id.ng"), propertyData.getProperty("mf.authuserid.am.ng"));
+		Response response;
+		
+		String name = propertyData.getProperty("prerequisite.appointmenttype.name.ng");
+		String extAppID = propertyData.getProperty("prerequisite.appointmenttype.extapp.id.ng");
+		String catId = propertyData.getProperty("prerequisite.appointmenttype.cat.id.ng");
+		String catName = propertyData.getProperty("prerequisite.appointmenttype.cat.name.ng");
+		String preReqAppId = propertyData.getProperty("appointment.id.prerequisite.ng");
+
+		response = postAPIRequestAM.preRequisiteAppointmenttypes(practiceId, preReqAppId,
+				payloadAM.preRequisiteAppointmentTypesDefualtNG(name, extAppID, catId, catName));
+		apv.responseCodeValidation(response, 200);
+
+		response = postAPIRequestAM.patientInfoPost(practiceId, payloadAM.patientInfoWithOptionalLLNG());
+		apv.responseCodeValidation(response, 200);
+
+		String appName = propertyData.getProperty("appointmenttypefor.prereqname.ng");
+		String patientId = propertyData.getProperty("prerequisite.appointmenttype.patientid.ng");
+
+		String apptTypeRule = payloadPM02.preReqApptTypeRulePyaload();
+
+		response = postAPIRequest.appointmentTypesByRule(baseurl, apptTypeRule,
+				headerConfig.HeaderwithToken(accessToken), practiceId, patientId);
+		apv.responseCodeValidation(response, 200);
+		
+		ArrayList<String> ls = new ArrayList<String>();
+		JSONObject jo = new JSONObject(response.asString());
+		int len = jo.getJSONArray("exposedAppointmentType").length();
+		String appTypeNameActual;
+		
+		for (int i = 0; i < len; i++) {
+			appTypeNameActual = jo.getJSONArray("exposedAppointmentType").getJSONObject(i).getString("displayName");
+			ls.add(appTypeNameActual);
+		}
+
+		boolean stringExist = ls.contains(appName);
+		assertEquals(true, stringExist);
+
+		response = postAPIRequestAM.preRequisiteAppById(practiceId, preReqAppId);
+		apv.responseCodeValidation(response, 200);
+		JSONArray arr1 = new JSONArray(response.body().asString());
+		int l1 = arr1.length();
+		int id = 0;
+		log("Length is- " + l1);
+		for (int i = 0; i < l1; i++) {
+			id = arr1.getJSONObject(i).getInt("id");
+		}
+		String s = Integer.toString(id);
+		log("preRequisiteApp Id is for Delete " + s);
+		response = postAPIRequestAM.preRequisiteAppDeleteById(practiceId, s);
+		apv.responseCodeValidation(response, 200);
+	}
+	
+
+	@Test(enabled = true, groups = {"AcceptanceTests"}, retryAnalyzer = RetryAnalyzer.class)
+	public void testPreRequisiteWithNoOfDaysNG() throws Exception {
+		log("Verify Number of Days Configured in Admin UI Then re-requisites Appointment type are available within configured period");
+		PSSPropertyFileLoader propertyData = new PSSPropertyFileLoader();
+		Appointment testData = new Appointment();
+		AdminUser adminUser = new AdminUser();
+		propertyData.setAdminNG(adminUser);
+		propertyData.setAppointmentResponseNG(testData);
+		PSSPatientUtils psspatientutils = new PSSPatientUtils();
+		logStep("Set up the API authentication");
+
+		setUpAM(propertyData.getProperty("mf.practice.id.ng"), propertyData.getProperty("mf.authuserid.am.ng"));
+		Response response;
+		logStep("Set up the desired rule in Admin UI using API");
+		response = postAPIRequestAM.resourceConfigRuleGet(practiceId);
+		JSONArray arr = new JSONArray(response.body().asString());
+		int l = arr.length();
+		log("Length is- " + l);
+
+		for (int i = 0; i < l; i++) {
+			int ruleId = arr.getJSONObject(i).getInt("id");
+			log("Object No." + i + "- " + ruleId);
+			response = postAPIRequestAM.deleteRuleById(practiceId, Integer.toString(ruleId));
+			apv.responseCodeValidation(response, 200);
+		}
+
+		response = postAPIRequestAM.resourceConfigRulePost(practiceId, payloadAM.rulePayload("TBL", "T,B,L"));
+		apv.responseCodeValidation(response, 200);
+
+		response = postAPIRequestAM.resourceConfigRulePost(practiceId, payloadAM.rulePayload("LTB", "L,T,B"));
+		apv.responseCodeValidation(response, 200);
+
+		response = postAPIRequestAM.medfusionpracticeTimeZone(practiceId, "/medfusionpractice");
+		String timezone = apv.responseKeyValidationJson(response, "practiceTimezone");
+		testData.setCurrentTimeZone(timezone);
+		String pastDate = propertyData.getProperty("pastappointment.date.ng");
+		String noofDays = propertyData.getProperty("no.ofdays.prereq.ng");
+		String name = propertyData.getProperty("prerequisite.appointmenttype.name.ng");
+		String extAppID = propertyData.getProperty("prerequisite.appointmenttype.extapp.id.ng");
+		String catId = propertyData.getProperty("prerequisite.appointmenttype.cat.id.ng");
+		String catName = propertyData.getProperty("prerequisite.appointmenttype.cat.name.ng");
+		String preReqAppId = propertyData.getProperty("appointment.id.prerequisite.ng");
+		String prereqId = propertyData.getProperty("prerequisite.id.ng");
+		int preId = Integer.parseInt(prereqId);
+		logStep("Setting For No. Of Days For PreRequisite Appointment type");
+		response = postAPIRequestAM.preRequisiteAppointmenttypes(practiceId, preReqAppId,
+				payloadAM.preRequisiteAppointmentTypesNoOfDaysNG(name, extAppID, catId, catName, noofDays, preId));
+		apv.responseCodeValidation(response, 200);
+
+		response = postAPIRequestAM.patientInfoPost(practiceId, payloadAM.patientInfoWithOptionalLLNG());
+		apv.responseCodeValidation(response, 200);
+		String appName = propertyData.getProperty("appointmenttypefor.prereqname.ng");
+		
+		
+		String patientId = propertyData.getProperty("prerequisite.appointmenttype.patientid.ng");
+
+		String apptTypeRule = payloadPM02.preReqApptTypeRulePyaload();
+
+		response = postAPIRequest.appointmentTypesByRule(baseurl, apptTypeRule,
+				headerConfig.HeaderwithToken(accessToken), practiceId, patientId);
+		apv.responseCodeValidation(response, 200);
+		
+		ArrayList<String> ls = new ArrayList<String>();
+		JSONObject jo = new JSONObject(response.asString());
+		int len = jo.getJSONArray("exposedAppointmentType").length();
+		String appTypeNameActual;
+		
+		for (int i = 0; i < len; i++) {
+			appTypeNameActual = jo.getJSONArray("exposedAppointmentType").getJSONObject(i).getString("displayName");
+			ls.add(appTypeNameActual);
+		}
+
+		boolean stringExist = ls.contains(appName);
+		logStep("Value of APPT Type "+appName+" present or not- "+stringExist);
+	
+		
+		logStep("Verfiy Appointment Page and appointment =" + appName);
+		int n = Integer.parseInt(noofDays);
+		log("NO of Days is In Admin UI  " + n);
+		log("Past Date is  " + pastDate);
+		long dateDiffBetPastandCurrent = psspatientutils.dateDiffPastandCurrentDate(testData, pastDate);
+		log("Number of Days within current and past date " + dateDiffBetPastandCurrent);
+		
+		if (n >= dateDiffBetPastandCurrent) {
+			
+			assertEquals(true, stringExist);
+			log("First Condition Executed");
+			log("Appointment Type is displayed in the list - Pre-Requistite Satisfied");
+		} else {
+			assertEquals(false, stringExist);
+
+			log("Second Condition Executed");
+			log("Appointment Type is not displayed in the list - Pre-Requistite not satisfied");
+		}
+
+		response = postAPIRequestAM.preRequisiteAppById(practiceId, preReqAppId);
+		apv.responseCodeValidation(response, 200);
+		JSONArray arr1 = new JSONArray(response.body().asString());
+		int l1 = arr1.length();
+		int id = 0;
+		log("Length is- " + l1);
+		for (int i = 0; i < l1; i++) {
+			id = arr1.getJSONObject(i).getInt("id");
+			String s = Integer.toString(id);
+			log("preRequisiteApp Id is for Delete " + s);
+			response = postAPIRequestAM.preRequisiteAppDeleteById(practiceId, s);
+			apv.responseCodeValidation(response, 200);
+		}
+	}
+	
+	@Test(enabled = true, groups = { "APItest" }, retryAnalyzer = RetryAnalyzer.class)
+	public void testTimeMark() throws Exception {
+		logStep("Set up the API authentication");
+		setUpAM(propertyData.getProperty("mf.practice.id.ng"), propertyData.getProperty("mf.authuserid.am.ng"));
+		Response response;
+		logStep("Set up the desired rule in Admin UI using API");
+		response = postAPIRequestAM.resourceConfigRuleGet(practiceId);
+		JSONArray arr = new JSONArray(response.body().asString());
+		int l = arr.length();
+		log("Length is- " + l);
+		for (int i = 0; i < l; i++) {
+			int ruleId = arr.getJSONObject(i).getInt("id");
+			log("Object No." + i + "- " + ruleId);
+			response = postAPIRequestAM.deleteRuleById(practiceId, Integer.toString(ruleId));
+			apv.responseCodeValidation(response, 200);
+		}
+
+		response = postAPIRequestAM.resourceConfigRulePost(practiceId, payloadAM.rulePayload("LTB", "L,T,B"));
+		apv.responseCodeValidation(response, 200);
+
+		response = postAPIRequestAM.resourceConfigRulePost(practiceId, payloadAM.rulePayload("TLB", "T,L"));
+		apv.responseCodeValidation(response, 200);
+
+		response = postAPIRequestAM.resourceConfigSavePost(practiceId, payloaAM02.turnOFFShowProvider(false));
+		apv.responseCodeValidation(response, 200);
+		String timeMarkValue = "30";
+
+		String adapPayload = payloaAM02.timeMarkPayload(timeMarkValue);
+		response = postAPIRequestAM.bookAppointmentTypeUpdate(practiceId, adapPayload);
+		apv.responseCodeValidation(response, 200);
+
+		response = postAPIRequestAM.locationById(practiceId,
+				propertyData.getProperty("availableslot.locationid.pm.ng"));
+		apv.responseCodeValidation(response, 200);
+		String locationTimeZone = apv.responseKeyValidationJson(response, "timezone");
+		log("TimeZone- " + locationTimeZone);
+
+		String patientId = propertyData.getProperty("patient.id.pm.ng");
+		String bookid = propertyData.getProperty("availableslot.bookid.pm.ng03");
+		String locationid = propertyData.getProperty("availableslot.locationid.pm.ng");
+		String apptid = propertyData.getProperty("availableslot.apptid.pm.ng");
+
+		String currentdate = pssPatientUtils.currentDateWithTimeZone(locationTimeZone);
+		log("currentdate - " + currentdate);
+
+		String b = payloadPatientMod.availableslotsPayload(currentdate, bookid, locationid, apptid);
+		response = postAPIRequest.availableSlots(baseurl, b, headerConfig.HeaderwithTokenES(accessToken), practiceid,
+				patientId);
+
+		apv.responseCodeValidation(response, 200);
+		apv.responseTimeValidation(response);
+
+		JSONArray arr1 = new JSONArray(response.body().asString());
+		String time = arr1.getJSONObject(0).getJSONArray("slotList").getJSONObject(0).getString("slotTime");
+		String actualTime = time.substring(3, 5);
+		String expectedTime = String.valueOf(timeMarkValue);
+		log("Actual Time is " + actualTime);
+		assertEquals(actualTime, expectedTime, "TimeMark is not working properly");
+
+		adapPayload = payloaAM02.timeMarkPayload("0");
+		response = postAPIRequestAM.bookAppointmentTypeUpdate(practiceId, adapPayload);
+		apv.responseCodeValidation(response, 200);
 
 	}
+	
+	@Test(enabled = true, groups = { "APItest" }, retryAnalyzer = RetryAnalyzer.class)
+	public void testExcludeSlot() throws Exception {
+
+		logStep("Set up the API authentication");
+		setUpAM(propertyData.getProperty("mf.practice.id.ng"), propertyData.getProperty("mf.authuserid.am.ng"));
+
+		Response response;
+		String adminPayload;
+		JSONArray arr;
+		int noOfSlots=3;		
+		String firstExpectedSlotTime="01:00:00";
+		String lastExpectedSlotTime= "01:10:00";
+		
+		response = postAPIRequestAM.locationById(practiceId, propertyData.getProperty("availableslot.locationid.pm.ng"));
+		apv.responseCodeValidation(response, 200);
+		String locationTimeZone=apv.responseKeyValidationJson(response, "timezone");
+		log("TimeZone- "+locationTimeZone);
+		
+		adminPayload=payloaAM02.apptTabSettingPyaload(30, 12);		
+		response=postAPIRequestAM.resourceConfigSavePost(practiceId, adminPayload);
+		apv.responseCodeValidation(response, 200);
+		
+		adminPayload=payloaAM02.excludeSlotPyaload();
+		response=postAPIRequestAM.bookAppointmentTypeUpdate(practiceId, adminPayload);
+		apv.responseCodeValidation(response, 200);		
+		
+		String patientId = propertyData.getProperty("patient.id.pm.ng");
+		String bookid = propertyData.getProperty("availableslot.bookid.pm.ng03");
+		String locationid = propertyData.getProperty("availableslot.locationid.pm.ng");
+		String apptid = propertyData.getProperty("availableslot.apptid.pm.ng");
+		
+		String currentdate=pssPatientUtils.currentDateWithTimeZone(locationTimeZone);		
+		log("currentdate - "+currentdate);
+		
+		String b = payloadPatientMod.availableslotsPayload(currentdate,bookid,locationid,apptid);
+		response = postAPIRequest.availableSlots(baseurl, b, headerConfig.HeaderwithTokenES(accessToken),
+				practiceid, patientId);
+		apv.responseCodeValidation(response, 200);
+		apv.responseTimeValidation(response);
+
+		arr= new JSONArray(response.body().asString());
+		
+		int n=arr.length()-2;
+		
+		int actualSlotLength=arr.getJSONObject(n).getJSONArray("slotList").length();
+
+		String slotid = arr.getJSONObject(n).getJSONArray("slotList").getJSONObject(0).getString("slotId");
+		String time = arr.getJSONObject(n).getJSONArray("slotList").getJSONObject(0).getString("slotTime");
+		String date = arr.getJSONObject(n).getString("date");	
+
+		log("slotTime-" + time);
+		log("slotId- " + slotid);
+		log("Date-" + date);
+		
+		String time3 = arr.getJSONObject(n).getJSONArray("slotList").getJSONObject(actualSlotLength-1).getString("slotTime");
+
+		log("slotTime-" + time3);		
+		assertEquals(actualSlotLength, noOfSlots);
+		
+		assertEquals(time, firstExpectedSlotTime,"Slot Times are not matching");
+		assertEquals(time3, lastExpectedSlotTime,"Slot Times are not matching");
+
+	}	
+	
 	
 }
