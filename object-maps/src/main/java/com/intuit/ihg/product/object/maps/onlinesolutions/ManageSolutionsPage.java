@@ -46,6 +46,7 @@ public class ManageSolutionsPage extends BasePageObject {
 		System.out.println(chckBox.getText());
 		if(chckBoxName.getText().contains("Activate"))
 		{
+			Thread.sleep(1000);
 			chckBox.click();
 		}
 		
@@ -59,7 +60,7 @@ public class ManageSolutionsPage extends BasePageObject {
 		IHGUtil.waitForElement(driver, 10, chckBox);
 		if(chckBoxName.getText().contains("Deactivate"))
 		{
-			Thread.sleep(10000);
+			Thread.sleep(1000);
 			chckBox.click();
 		}
 		
