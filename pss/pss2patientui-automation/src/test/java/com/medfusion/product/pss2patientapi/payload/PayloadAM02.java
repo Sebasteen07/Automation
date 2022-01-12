@@ -1539,6 +1539,362 @@ public class PayloadAM02 {
 				+ "}";
 		return payload;
 	}	
+	public String lastSeenProviderPyaload(int lastSeenMonth) {
+
+		String payload = "[\r\n"
+				+ "  {\r\n"
+				+ "    \"group\": \"MF_SERVICES\",\r\n"
+				+ "    \"key\": \"ShowProviderImages\",\r\n"
+				+ "    \"value\": true\r\n"
+				+ "  },\r\n"
+				+ "  {\r\n"
+				+ "    \"group\": \"PROVIDER\",\r\n"
+				+ "    \"key\": \"PrimaryCareProvider\",\r\n"
+				+ "    \"value\": false\r\n"
+				+ "  },\r\n"
+				+ "  {\r\n"
+				+ "    \"group\": \"APPOINTMENT\",\r\n"
+				+ "    \"key\": \"displayLastSeenProvider\",\r\n"
+				+ "    \"value\": true\r\n"
+				+ "  },\r\n"
+				+ "  {\r\n"
+				+ "    \"group\": \"APPOINTMENT\",\r\n"
+				+ "    \"key\": \"lastSeenProviderMonths\",\r\n"
+				+ "    \"value\": \""+lastSeenMonth+"\"\r\n"
+				+ "  },\r\n"
+				+ "  {\r\n"
+				+ "    \"group\": \"PROVIDER\",\r\n"
+				+ "    \"key\": \"forceCareTeam\",\r\n"
+				+ "    \"value\": false\r\n"
+				+ "  },\r\n"
+				+ "  {\r\n"
+				+ "    \"group\": \"PROVIDER\",\r\n"
+				+ "    \"key\": \"forceCareTeamDuration\",\r\n"
+				+ "    \"value\": \"6\"\r\n"
+				+ "  },\r\n"
+				+ "  {\r\n"
+				+ "    \"group\": \"PROVIDER\",\r\n"
+				+ "    \"key\": \"pcpAvailabilityDuration\",\r\n"
+				+ "    \"value\": \"0\"\r\n"
+				+ "  },\r\n"
+				+ "  {\r\n"
+				+ "    \"group\": \"CARE_TEAM\",\r\n"
+				+ "    \"key\": \"rcp\",\r\n"
+				+ "    \"value\": \"true\"\r\n"
+				+ "  },\r\n"
+				+ "  {\r\n"
+				+ "    \"group\": \"CARE_TEAM\",\r\n"
+				+ "    \"key\": \"pcp\",\r\n"
+				+ "    \"value\": \"false\"\r\n"
+				+ "  }\r\n"
+				+ "]";
+		return payload;
+	}	
+	public String bookRulePyaload(int location, int appt) {
+
+		String payload = "{\r\n"
+				+ "  \"specialty\": null,\r\n"
+				+ "  \"location\": "+location+",\r\n"
+				+ "  \"book\": null,\r\n"
+				+ "  \"appointmentType\": "+appt+",\r\n"
+				+ "  \"slotId\": null,\r\n"
+				+ "  \"patientType\": \"PT_EXISTING\",\r\n"
+				+ "  \"linkGenerationFlow\": false,\r\n"
+				+ "  \"patientDetails\": {\r\n"
+				+ "    \"FN\": \"shri\",\r\n"
+				+ "    \"LN\": \"kant\",\r\n"
+				+ "    \"DOB\": \"01/01/2001\",\r\n"
+				+ "    \"GENDER\": \"UN\",\r\n"
+				+ "    \"EMAIL\": null,\r\n"
+				+ "    \"PHONE\": null,\r\n"
+				+ "    \"INSID\": null,\r\n"
+				+ "    \"ADDR1\": null,\r\n"
+				+ "    \"ADDR2\": null,\r\n"
+				+ "    \"CITY\": null,\r\n"
+				+ "    \"STATE\": null,\r\n"
+				+ "    \"ZIP\": null\r\n"
+				+ "  },\r\n"
+				+ "  \"flow\": \"loginless\"\r\n"
+				+ "}";
+		return payload;
+	}	
+	
+	public String lastSeenNewPatientPyaload() {
+
+		String payload = "{\r\n"
+				+ "  \"specialty\": null,\r\n"
+				+ "  \"location\": 206321,\r\n"
+				+ "  \"book\": null,\r\n"
+				+ "  \"appointmentType\": 4235,\r\n"
+				+ "  \"startDateTime\": \"01/15/2022 00:35:00\",\r\n"
+				+ "  \"slotId\": null,\r\n"
+				+ "  \"traversal\": false,\r\n"
+				+ "  \"patientType\": \"PT_NEW\",\r\n"
+				+ "  \"extApptId\": null,\r\n"
+				+ "  \"linkGenerationFlow\": false,\r\n"
+				+ "  \"patientDetails\": {\r\n"
+				+ "    \"FN\": \"lastseen\",\r\n"
+				+ "    \"LN\": \"lastseen\",\r\n"
+				+ "    \"DOB\": \"01/01/2000\",\r\n"
+				+ "    \"GENDER\": \"M\",\r\n"
+				+ "    \"EMAIL\": null,\r\n"
+				+ "    \"PHONE\": null,\r\n"
+				+ "    \"INSID\": null,\r\n"
+				+ "    \"ADDR1\": null,\r\n"
+				+ "    \"ADDR2\": null,\r\n"
+				+ "    \"CITY\": null,\r\n"
+				+ "    \"STATE\": null,\r\n"
+				+ "    \"ZIP\": null\r\n"
+				+ "  },\r\n"
+				+ "  \"flow\": \"loginless\"\r\n"
+				+ "}";
+		return payload;
+	}	
+	
+	public String patientTypeAdminSetting(int a, int b) {
+		
+		String payload="[\r\n"
+				+ "  {\r\n"
+				+ "    \"group\": \"APPOINTMENT\",\r\n"
+				+ "    \"key\": \"allowCancellationHours\",\r\n"
+				+ "    \"value\": \"00:00\"\r\n"
+				+ "  },\r\n"
+				+ "  {\r\n"
+				+ "    \"group\": \"PATIENT_ACCESS\",\r\n"
+				+ "    \"key\": \"ValidDuration\",\r\n"
+				+ "    \"value\": \"12\"\r\n"
+				+ "  },\r\n"
+				+ "  {\r\n"
+				+ "    \"group\": \"SLOTS\",\r\n"
+				+ "    \"key\": \"displaySlotsCount\",\r\n"
+				+ "    \"value\": \"2\"\r\n"
+				+ "  },\r\n"
+				+ "  {\r\n"
+				+ "    \"group\": \"SLOTS\",\r\n"
+				+ "    \"key\": \"maxCalendarMonths\",\r\n"
+				+ "    \"value\": \"121\"\r\n"
+				+ "  },\r\n"
+				+ "  {\r\n"
+				+ "    \"group\": \"APPOINTMENT\",\r\n"
+				+ "    \"key\": \"ageRestriction\",\r\n"
+				+ "    \"value\": \"18\"\r\n"
+				+ "  },\r\n"
+				+ "  {\r\n"
+				+ "    \"group\": \"APPOINTMENT\",\r\n"
+				+ "    \"key\": \"maxAppointments\",\r\n"
+				+ "    \"value\": \"1\"\r\n"
+				+ "  },\r\n"
+				+ "  {\r\n"
+				+ "    \"group\": \"APPOINTMENT\",\r\n"
+				+ "    \"key\": \"ShowPastAppointmentMonths\",\r\n"
+				+ "    \"value\": \"5\"\r\n"
+				+ "  },\r\n"
+				+ "  {\r\n"
+				+ "    \"group\": \"PROVIDER\",\r\n"
+				+ "    \"key\": \"showNextAvailable\",\r\n"
+				+ "    \"value\": true\r\n"
+				+ "  },\r\n"
+				+ "  {\r\n"
+				+ "    \"group\": \"LOCATION\",\r\n"
+				+ "    \"key\": \"searchLocation\",\r\n"
+				+ "    \"value\": true\r\n"
+				+ "  },\r\n"
+				+ "  {\r\n"
+				+ "    \"group\": \"APPOINTMENT\",\r\n"
+				+ "    \"key\": \"showUpcoming\",\r\n"
+				+ "    \"value\": true\r\n"
+				+ "  },\r\n"
+				+ "  {\r\n"
+				+ "    \"group\": \"APPOINTMENT\",\r\n"
+				+ "    \"key\": \"showPast\",\r\n"
+				+ "    \"value\": true\r\n"
+				+ "  },\r\n"
+				+ "  {\r\n"
+				+ "    \"group\": \"APPOINTMENT\",\r\n"
+				+ "    \"key\": \"patientUpdateConfig\",\r\n"
+				+ "    \"value\": \"PATIENT_NOTES\"\r\n"
+				+ "  },\r\n"
+				+ "  {\r\n"
+				+ "    \"group\": \"APPOINTMENT\",\r\n"
+				+ "    \"key\": \"establishPatientLastVisit\",\r\n"
+				+ "    \"value\": \""+a+"\"\r\n"
+				+ "  },\r\n"
+				+ "  {\r\n"
+				+ "    \"group\": \"APPOINTMENT\",\r\n"
+				+ "    \"key\": \"showCancelReason\",\r\n"
+				+ "    \"value\": true\r\n"
+				+ "  },\r\n"
+				+ "  {\r\n"
+				+ "    \"group\": \"RULEENGINE\",\r\n"
+				+ "    \"key\": \"patientCreationDuration\",\r\n"
+				+ "    \"value\": \""+b+"\"\r\n"
+				+ "  },\r\n"
+				+ "  {\r\n"
+				+ "    \"group\": \"MULTI_PRACTICE_SETTING\",\r\n"
+				+ "    \"key\": \"sharePatientAcrossPractices\",\r\n"
+				+ "    \"value\": true\r\n"
+				+ "  }\r\n"
+				+ "]";
+		
+		return payload;
+	}
+	
+	public String forceLastSeenPyaload(int days) {
+
+		String payload = "{\r\n"
+				+ "  \"isageRule\": false,\r\n"
+				+ "  \"id\": 4400,\r\n"
+				+ "  \"description\": null,\r\n"
+				+ "  \"book\": {\r\n"
+				+ "    \"id\": 4303,\r\n"
+				+ "    \"name\": null,\r\n"
+				+ "    \"displayName\": null,\r\n"
+				+ "    \"emailAddress\": null,\r\n"
+				+ "    \"extBookId\": null,\r\n"
+				+ "    \"acceptComment\": null,\r\n"
+				+ "    \"acceptEmail\": null,\r\n"
+				+ "    \"acceptNew\": null,\r\n"
+				+ "    \"ageRule\": null,\r\n"
+				+ "    \"deleted\": null,\r\n"
+				+ "    \"providerMessage\": null,\r\n"
+				+ "    \"sharePatients\": null,\r\n"
+				+ "    \"slotSize\": null,\r\n"
+				+ "    \"status\": false,\r\n"
+				+ "    \"categoryId\": null,\r\n"
+				+ "    \"categoryName\": null,\r\n"
+				+ "    \"practice\": null,\r\n"
+				+ "    \"specialty\": null,\r\n"
+				+ "    \"bookSort\": null,\r\n"
+				+ "    \"bookTranslations\": null,\r\n"
+				+ "    \"bookType\": null,\r\n"
+				+ "    \"bookLevel\": null,\r\n"
+				+ "    \"careteam\": null,\r\n"
+				+ "    \"links\": null\r\n"
+				+ "  },\r\n"
+				+ "  \"appointmentType\": {\r\n"
+				+ "    \"id\": 4235,\r\n"
+				+ "    \"name\": null,\r\n"
+				+ "    \"displayName\": null,\r\n"
+				+ "    \"description\": null,\r\n"
+				+ "    \"extAppointmentTypeId\": null,\r\n"
+				+ "    \"duration\": null,\r\n"
+				+ "    \"categoryId\": null,\r\n"
+				+ "    \"categoryName\": null,\r\n"
+				+ "    \"messages\": null,\r\n"
+				+ "    \"customQuestion\": null,\r\n"
+				+ "    \"customMessage\": null,\r\n"
+				+ "    \"appointmentTypeTranslation\": null,\r\n"
+				+ "    \"preventRescheduleOnCancel\": null,\r\n"
+				+ "    \"ageRule\": null,\r\n"
+				+ "    \"preventScheduling\": null,\r\n"
+				+ "    \"appointmentTypeSort\": null\r\n"
+				+ "  },\r\n"
+				+ "  \"appointmentStacking\": false,\r\n"
+				+ "  \"preventScheduling\": 0,\r\n"
+				+ "  \"slotCount\": 1,\r\n"
+				+ "  \"allowSameDayAppts\": true,\r\n"
+				+ "  \"apptTimeMark\": 0,\r\n"
+				+ "  \"apptTypeAllocated\": true,\r\n"
+				+ "  \"isContiguous\": false,\r\n"
+				+ "  \"leadTime\": {\r\n"
+				+ "    \"days\": \"0\",\r\n"
+				+ "    \"hours\": \"0\",\r\n"
+				+ "    \"mins\": \"0\"\r\n"
+				+ "  },\r\n"
+				+ "  \"maxPerDay\": 0,\r\n"
+				+ "  \"excludeSlots\": [],\r\n"
+				+ "  \"apptTypeReservedReason\": \"n\",\r\n"
+				+ "  \"ageRule\": \"\",\r\n"
+				+ "  \"status\": true,\r\n"
+				+ "  \"allowOnlineCancellation\": true,\r\n"
+				+ "  \"providerAvailabilityDays\": "+days+",\r\n"
+				+ "  \"schedulingDuration\": 0,\r\n"
+				+ "  \"locations\": [\r\n"
+				+ "    {\r\n"
+				+ "      \"id\": \"206321\",\r\n"
+				+ "      \"name\": \"PSS WLA\",\r\n"
+				+ "      \"displayName\": \"PSS WLA\",\r\n"
+				+ "      \"address\": {\r\n"
+				+ "        \"id\": 206321,\r\n"
+				+ "        \"address1\": \"Address line 1\",\r\n"
+				+ "        \"address2\": \"Address line 2\",\r\n"
+				+ "        \"city\": \"Cary\",\r\n"
+				+ "        \"state\": \"NC\",\r\n"
+				+ "        \"zipCode\": \"27518\",\r\n"
+				+ "        \"country\": \"string\",\r\n"
+				+ "        \"latitude\": 35.7469276,\r\n"
+				+ "        \"longitude\": -78.77481569999999,\r\n"
+				+ "        \"locAddress\": \"Address line 1 Address line 2 Cary NC 27518\"\r\n"
+				+ "      },\r\n"
+				+ "      \"timezone\": \"\",\r\n"
+				+ "      \"extLocationId\": \"283BB437-B0C6-4626-A7CC-57FD0D1D6574\",\r\n"
+				+ "      \"directionUrl\": \"https://dev3-pss-adminportal-ui.dev.medfusion.net/#/app/location\",\r\n"
+				+ "      \"selected\": true,\r\n"
+				+ "      \"phoneNumber\": \"\",\r\n"
+				+ "      \"restrictToCareteam\": false,\r\n"
+				+ "      \"locationLinks\": {}\r\n"
+				+ "    }\r\n"
+				+ "  ],\r\n"
+				+ "  \"pttype\": \"PT_ALL\",\r\n"
+				+ "  \"lastQuestRequired\": false\r\n"
+				+ "}";
+		return payload;
+	}	
+	public String Pyaload() {
+
+		String payload = "";
+		return payload;
+	}	
+	public String Pyaload() {
+
+		String payload = "";
+		return payload;
+	}	
+	public String Pyaload() {
+
+		String payload = "";
+		return payload;
+	}	
+	public String Pyaload() {
+
+		String payload = "";
+		return payload;
+	}	
+	public String Pyaload() {
+
+		String payload = "";
+		return payload;
+	}	
+	public String Pyaload() {
+
+		String payload = "";
+		return payload;
+	}	
+	public String Pyaload() {
+
+		String payload = "";
+		return payload;
+	}	
+	public String Pyaload() {
+
+		String payload = "";
+		return payload;
+	}	
+	public String Pyaload() {
+
+		String payload = "";
+		return payload;
+	}	
+	public String Pyaload() {
+
+		String payload = "";
+		return payload;
+	}	
+	public String Pyaload() {
+
+		String payload = "";
+		return payload;
+	}	
 	public String Pyaload() {
 
 		String payload = "";
@@ -1556,6 +1912,7 @@ public class PayloadAM02 {
 	}	
 	
 	
+
 
 
 }

@@ -2,8 +2,7 @@
 package com.medfusion.product.pss2patientmodulatorapi.test;
 
 import static org.testng.Assert.assertEquals;
-import static org.testng.Assert.assertFalse;
-import static org.testng.Assert.assertNotEquals;
+import static org.testng.Assert.assertNotNull;
 import static org.testng.Assert.assertTrue;
 
 import java.io.IOException;
@@ -16,14 +15,8 @@ import org.testng.annotations.Test;
 
 import com.intuit.ifs.csscat.core.BaseTestNG;
 import com.intuit.ifs.csscat.core.RetryAnalyzer;
-import com.medfusion.product.object.maps.pss2.page.AppEntryPoint.StartAppointmentInOrder;
-import com.medfusion.product.object.maps.pss2.page.Appointment.HomePage.HomePage;
-import com.medfusion.product.object.maps.pss2.page.Appointment.Loginless.DismissPage;
-import com.medfusion.product.object.maps.pss2.page.Appointment.Loginless.LoginlessPatientInformation;
-import com.medfusion.product.object.maps.pss2.page.AppointmentType.AppointmentPage;
 import com.medfusion.product.object.maps.pss2.page.util.APIVerification;
 import com.medfusion.product.object.maps.pss2.page.util.HeaderConfig;
-import com.medfusion.product.object.maps.pss2.page.util.ParseJSONFile;
 import com.medfusion.product.object.maps.pss2.page.util.PostAPIRequestAdapterModulator;
 import com.medfusion.product.object.maps.pss2.page.util.PostAPIRequestPMNG;
 import com.medfusion.product.pss2patientapi.payload.PayloadAM02;
@@ -32,11 +25,9 @@ import com.medfusion.product.pss2patientapi.payload.PayloadPM02;
 import com.medfusion.product.pss2patientapi.payload.PayloadPssPMNG;
 import com.medfusion.product.pss2patientui.pojo.AdminUser;
 import com.medfusion.product.pss2patientui.pojo.Appointment;
-import com.medfusion.product.pss2patientui.utils.PSSConstants;
 import com.medfusion.product.pss2patientui.utils.PSSPatientUtils;
 import com.medfusion.product.pss2patientui.utils.PSSPropertyFileLoader;
 
-import io.restassured.path.json.JsonPath;
 import io.restassured.response.Response;
 
 public class PSS2PMFeatureNGTests02 extends BaseTestNG {
@@ -1789,6 +1780,172 @@ public class PSS2PMFeatureNGTests02 extends BaseTestNG {
 		
 		assertEquals(time, firstExpectedSlotTime,"Slot Times are not matching");
 		assertEquals(time3, lastExpectedSlotTime,"Slot Times are not matching");
+
+	}	
+	
+	@Test(enabled = true, groups = { "APItest" }, retryAnalyzer = RetryAnalyzer.class)
+	public void testLastSeenProviderExPatient() throws Exception {
+
+		logStep("Set up the API authentication");
+		setUpAM(propertyData.getProperty("mf.practice.id.ng"), propertyData.getProperty("mf.authuserid.am.ng"));
+
+		Response response;
+		String adminPayload;
+		JSONArray arr;
+
+		adminPayload=payloaAM02.lastSeenProviderPyaload(12);
+		response=postAPIRequestAM.resourceConfigSavePost(practiceId, adminPayload);
+		apv.responseCodeValidation(response, 200);		
+		
+		String patientId = propertyData.getProperty("patient.id.lastseen.pm.ng");
+		String bookid = propertyData.getProperty("availableslot.bookid.pm.ng");
+		String locationid = propertyData.getProperty("availableslot.locationid.pm.ng");
+		String apptid = propertyData.getProperty("availableslot.apptid.pm.ng");
+		
+		String b = payloaAM02.bookRulePyaload(Integer.parseInt(locationid), Integer.parseInt(apptid));
+		
+		response = postAPIRequest.booksByRule(baseurl, b, headerConfig.HeaderwithTokenES(accessToken),
+				practiceid, patientId);
+		apv.responseCodeValidation(response, 200);
+		apv.responseTimeValidation(response);
+		
+		JSONObject jo= new JSONObject(response.asString());
+		
+		arr=jo.getJSONArray("books");
+		int l=arr.length();
+		String lastseen = null;
+		
+		log("Lenth of the Array is- "+l);
+		
+		for (int i = 0; i < l; i++) {
+
+			int actualBookId = arr.getJSONObject(i).getInt("id");
+
+			if (actualBookId == Integer.parseInt(bookid)) {
+
+				lastseen = arr.getJSONObject(i).getString("lastSeen");
+			}
+		}
+		
+		assertNotNull(lastseen, "Last Seen Value is null so Test Case Failed for Last Seen Provider");		
+				
+		adminPayload=payloaAM02.lastSeenProviderPyaload(1);
+		response=postAPIRequestAM.resourceConfigSavePost(practiceId, adminPayload);
+		apv.responseCodeValidation(response, 200);	
+
+	}	
+	
+	@Test(enabled = true, groups = { "APItest" }, retryAnalyzer = RetryAnalyzer.class)
+	public void testLastSeenProviderNewPatient() throws Exception {
+
+		logStep("Set up the API authentication");
+		setUpAM(propertyData.getProperty("mf.practice.id.ng"), propertyData.getProperty("mf.authuserid.am.ng"));
+
+		Response response;
+		String adminPayload;
+		JSONArray arr;
+
+		adminPayload = payloaAM02.lastSeenProviderPyaload(12);
+		response = postAPIRequestAM.resourceConfigSavePost(practiceId, adminPayload);
+		apv.responseCodeValidation(response, 200);
+		
+		adminPayload=payloaAM02.patientTypeAdminSetting(5, 5);
+		response= postAPIRequestAM.resourceConfigSavePost(practiceId, adminPayload);
+		apv.responseCodeValidation(response, 200);
+
+		String patientId = propertyData.getProperty("patient.id.new.lastseen.pm.ng");
+		String bookid = propertyData.getProperty("availableslot.bookid.pm.ng");
+		
+		String b = payloaAM02.lastSeenNewPatientPyaload();
+		response = postAPIRequest.booksByRule(baseurl, b, headerConfig.HeaderwithTokenES(accessToken), practiceid,
+				patientId);
+		apv.responseCodeValidation(response, 200);
+		apv.responseTimeValidation(response);
+
+		JSONObject jo = new JSONObject(response.asString());
+
+		arr = jo.getJSONArray("books");
+		int l = arr.length();
+		String lastseen = null;
+		log("Lenth of the Array is- " + l);
+		
+		for (int i = 0; i < l; i++) {
+			int actualBookId = arr.getJSONObject(i).getInt("id");
+			if (actualBookId == Integer.parseInt(bookid)) {
+				lastseen = arr.getJSONObject(i).getString("lastSeen");
+			}
+		}
+
+		assertNotNull(lastseen, "Last Seen Value is null so Test Case Failed for Last Seen Provider");
+
+		adminPayload = payloaAM02.lastSeenProviderPyaload(1);
+		response = postAPIRequestAM.resourceConfigSavePost(practiceId, adminPayload);
+		apv.responseCodeValidation(response, 200);
+		
+		adminPayload=payloaAM02.patientTypeAdminSetting(1095, 1095);
+		response= postAPIRequestAM.resourceConfigSavePost(practiceId, adminPayload);
+		apv.responseCodeValidation(response, 200);
+
+	}	
+	
+	@Test(enabled = true, groups = { "APItest" }, retryAnalyzer = RetryAnalyzer.class)
+	public void testForceLastSeenProviderExPatient() throws Exception {
+
+		logStep("Set up the API authentication");
+		setUpAM(propertyData.getProperty("mf.practice.id.ng"), propertyData.getProperty("mf.authuserid.am.ng"));
+
+		Response response;
+		String adminPayload;
+		JSONArray arr;
+		
+		adminPayload=payloaAM02.lastSeenProviderPyaload(12);
+		response=postAPIRequestAM.resourceConfigSavePost(practiceId, adminPayload);
+		apv.responseCodeValidation(response, 200);
+		
+		adminPayload=payloaAM02.forceLastSeenPyaload(365);
+		response = postAPIRequestAM.bookAppointmentTypeUpdate(practiceId, adminPayload);
+		apv.responseCodeValidation(response, 200);		
+		
+		String patientId = propertyData.getProperty("patient.id.lastseen.pm.ng");
+		String bookid = propertyData.getProperty("availableslot.bookid.pm.ng");
+		String locationid = propertyData.getProperty("availableslot.locationid.pm.ng");
+		String apptid = propertyData.getProperty("availableslot.apptid.pm.ng");
+		
+		String b = payloaAM02.bookRulePyaload(Integer.parseInt(locationid), Integer.parseInt(apptid));
+		
+		response = postAPIRequest.booksByRule(baseurl, b, headerConfig.HeaderwithTokenES(accessToken),
+				practiceid, patientId);
+		apv.responseCodeValidation(response, 200);
+		apv.responseTimeValidation(response);
+		
+		JSONObject jo= new JSONObject(response.asString());
+		
+		arr=jo.getJSONArray("books");
+		int l=arr.length();
+		String lastseen = null;
+		
+		log("Lenth of the Array is- "+l);
+		assertEquals(l, 1,"In Force Last Seen only 1 Provider should get display");
+		
+		for (int i = 0; i < l; i++) {
+
+			int actualBookId = arr.getJSONObject(i).getInt("id");
+
+			if (actualBookId == Integer.parseInt(bookid)) {
+
+				lastseen = arr.getJSONObject(i).getString("lastSeen");
+			}
+		}
+		
+		assertNotNull(lastseen, "Last Seen Value is null so Test Case Failed for Last Seen Provider");		
+				
+		adminPayload=payloaAM02.lastSeenProviderPyaload(1);
+		response=postAPIRequestAM.resourceConfigSavePost(practiceId, adminPayload);
+		apv.responseCodeValidation(response, 200);	
+		
+		adminPayload=payloaAM02.forceLastSeenPyaload(0);
+		response = postAPIRequestAM.bookAppointmentTypeUpdate(practiceId, adminPayload);
+		apv.responseCodeValidation(response, 200);		
 
 	}	
 	
