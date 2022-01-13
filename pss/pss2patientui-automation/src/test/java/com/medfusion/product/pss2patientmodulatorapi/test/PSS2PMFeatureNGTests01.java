@@ -26,8 +26,8 @@ import com.medfusion.product.object.maps.pss2.page.util.HeaderConfig;
 import com.medfusion.product.object.maps.pss2.page.util.PostAPIRequestAdapterModulator;
 import com.medfusion.product.object.maps.pss2.page.util.PostAPIRequestPMNG;
 import com.medfusion.product.pss2patientapi.payload.PayloadAdapterModulator;
-import com.medfusion.product.pss2patientapi.payload.PayloadAMFeature01;
-import com.medfusion.product.pss2patientapi.payload.PayloadPMNGFeature01;
+import com.medfusion.product.pss2patientapi.payload.PayloadAM01;
+import com.medfusion.product.pss2patientapi.payload.PayloadPM01;
 import com.medfusion.product.pss2patientapi.payload.PayloadPssPMNG;
 import com.medfusion.product.pss2patientui.pojo.Appointment;
 import com.medfusion.product.pss2patientui.utils.PSSPatientUtils;
@@ -43,7 +43,7 @@ public class PSS2PMFeatureNGTests01 extends BaseTestNG {
 
 	public static Appointment testData;
 	public static PostAPIRequestPMNG postAPIRequest;
-	public static PayloadPMNGFeature01 payloadPssPMNG1;
+	public static PayloadPM01 payloadPssPMNG1;
 	public static PayloadPssPMNG payloadPatientMod;
 
 	public static String accessToken;
@@ -53,7 +53,7 @@ public class PSS2PMFeatureNGTests01 extends BaseTestNG {
 
 	APIVerification apv;
 	public static PayloadAdapterModulator payloadAM;
-	public static PayloadAMFeature01 payloadAMFeature01;
+	public static PayloadAM01 ayloadAM01;
 	public static PostAPIRequestAdapterModulator postAPIRequestAM;
 	public static String openToken;
 	public static String practiceIdAm;
@@ -68,7 +68,7 @@ public class PSS2PMFeatureNGTests01 extends BaseTestNG {
 		testData = new Appointment();
 		propertyData.setRestAPIDataPatientModulator(testData);
 		postAPIRequest = new PostAPIRequestPMNG();
-		payloadPssPMNG1 = new PayloadPMNGFeature01();
+		payloadPssPMNG1 = new PayloadPM01();
 		payloadPatientMod = new PayloadPssPMNG();
 		baseurl = propertyData.getProperty("base.url.pm.ng");
 		practiceid = propertyData.getProperty("practice.id.pm01");
@@ -81,7 +81,7 @@ public class PSS2PMFeatureNGTests01 extends BaseTestNG {
 	}
 
 	public void setUpAM(String practiceId1, String userID) throws IOException {
-		payloadAMFeature01 = new PayloadAMFeature01();
+		ayloadAM01 = new PayloadAM01();
 		payloadAM = new PayloadAdapterModulator();
 		propertyData = new PSSPropertyFileLoader();
 		postAPIRequestAM = new PostAPIRequestAdapterModulator();
@@ -89,7 +89,7 @@ public class PSS2PMFeatureNGTests01 extends BaseTestNG {
 		practiceIdAm = practiceId1;
 		log("BASE URL AM -" + propertyData.getProperty("base.url.am"));
 		openToken = postAPIRequestAM.openToken(propertyData.getProperty("base.url.am"), practiceIdAm,
-				payloadAMFeature01.openTokenPayload(practiceIdAm, userID));
+				ayloadAM01.openTokenPayload(practiceIdAm, userID));
 		postAPIRequestAM.setupRequestSpecBuilder(propertyData.getProperty("base.url.am"),
 				headerConfig.HeaderwithToken(openToken));
 	}
@@ -125,11 +125,11 @@ public class PSS2PMFeatureNGTests01 extends BaseTestNG {
 		apv.responseCodeValidation(response, 200);
 
 		response = postAPIRequestAM.resourceConfigSavePost(practiceIdAm,
-				payloadAMFeature01.turnONOFFShowProvider(true));
+				ayloadAM01.turnONOFFShowProvider(true));
 		apv.responseCodeValidation(response, 200);
 
 		response = postAPIRequestAM.resourceConfigSavePost(practiceIdAm,
-				payloadAMFeature01.turnONOFFDecisionTree(true));
+				ayloadAM01.turnONOFFDecisionTree(true));
 		apv.responseCodeValidation(response, 200);
 
 		String patientId = propertyData.getProperty("patient.id.sso.pm01");
@@ -179,7 +179,7 @@ public class PSS2PMFeatureNGTests01 extends BaseTestNG {
 		log("ext App ID is " + extapptid_new);
 
 		response = postAPIRequestAM.resourceConfigSavePost(practiceIdAm,
-				payloadAMFeature01.turnONOFFDecisionTree(false));
+				ayloadAM01.turnONOFFDecisionTree(false));
 		apv.responseCodeValidation(response, 200);
 	}
 
@@ -216,11 +216,11 @@ public class PSS2PMFeatureNGTests01 extends BaseTestNG {
 		apv.responseCodeValidation(response, 200);
 
 		response = postAPIRequestAM.resourceConfigSavePost(practiceIdAm,
-				payloadAMFeature01.turnONOFFShowProvider(true));
+				ayloadAM01.turnONOFFShowProvider(true));
 		apv.responseCodeValidation(response, 200);
 
 		response = postAPIRequestAM.resourceConfigSavePost(practiceIdAm,
-				payloadAMFeature01.turnONOFFDecisionTree(false));
+				ayloadAM01.turnONOFFDecisionTree(false));
 		apv.responseCodeValidation(response, 200);
 		String patientId = propertyData.getProperty("patient.id.sso.pm01");
 		String b = payloadPssPMNG1.availableslotsPayloadLTB(currentDate, propertyData.getProperty("location.id.pm01"),
@@ -304,11 +304,11 @@ public class PSS2PMFeatureNGTests01 extends BaseTestNG {
 		apv.responseCodeValidation(response, 200);
 
 		response = postAPIRequestAM.resourceConfigSavePost(practiceIdAm,
-				payloadAMFeature01.turnONOFFShowProvider(false));
+				ayloadAM01.turnONOFFShowProvider(false));
 		apv.responseCodeValidation(response, 200);
 
 		response = postAPIRequestAM.resourceConfigSavePost(practiceIdAm,
-				payloadAMFeature01.turnONOFFDecisionTree(false));
+				ayloadAM01.turnONOFFDecisionTree(false));
 		apv.responseCodeValidation(response, 200);
 
 		String patientid = propertyData.getProperty("patient.id.sso.pm01");
@@ -389,11 +389,11 @@ public class PSS2PMFeatureNGTests01 extends BaseTestNG {
 		apv.responseCodeValidation(response, 200);
 
 		response = postAPIRequestAM.resourceConfigSavePost(practiceIdAm,
-				payloadAMFeature01.turnONOFFShowProvider(false));
+				ayloadAM01.turnONOFFShowProvider(false));
 		apv.responseCodeValidation(response, 200);
 
 		response = postAPIRequestAM.resourceConfigSavePost(practiceIdAm,
-				payloadAMFeature01.turnONOFFDecisionTree(true));
+				ayloadAM01.turnONOFFDecisionTree(true));
 		apv.responseCodeValidation(response, 200);
 
 		String patientid = propertyData.getProperty("patient.id.sso.pm01");
@@ -474,13 +474,13 @@ public class PSS2PMFeatureNGTests01 extends BaseTestNG {
 		apv.responseCodeValidation(response, 200);
 
 		response = postAPIRequestAM.resourceConfigSavePost(practiceIdAm,
-				payloadAMFeature01.turnONOFFShowProvider(false));
+				ayloadAM01.turnONOFFShowProvider(false));
 		apv.responseCodeValidation(response, 200);
 
 		String resValue = "s";
 		boolean accValue = true;
 		int timeMarkValue = 0;
-		String adapPayload = payloadAMFeature01.reserveForSameDay(resValue, accValue, timeMarkValue);
+		String adapPayload = ayloadAM01.reserveForSameDay(resValue, accValue, timeMarkValue);
 		String apptId = propertyData.getProperty("appt.id.pm01");
 		String locationId = propertyData.getProperty("location.id.pm01");
 		response = postAPIRequestAM.appointmenttypeConfgWithBookOff(practiceIdAm, adapPayload, apptId);
@@ -499,7 +499,7 @@ public class PSS2PMFeatureNGTests01 extends BaseTestNG {
 			log("Validated key-> " + "date" + " value is-  " + obj.getString("date"));
 			assertEquals(currentDate, obj.getString("date"));
 		}
-		String adapPayloadforReset = payloadAMFeature01.reserveForSameDay("n", accValue, 0);
+		String adapPayloadforReset = ayloadAM01.reserveForSameDay("n", accValue, 0);
 		response = postAPIRequestAM.appointmenttypeConfgWithBookOff(practiceIdAm, adapPayloadforReset, apptId);
 		apv.responseCodeValidation(response, 200);
 	}
@@ -536,11 +536,11 @@ public class PSS2PMFeatureNGTests01 extends BaseTestNG {
 		apv.responseCodeValidation(response, 200);
 
 		response = postAPIRequestAM.resourceConfigSavePost(practiceIdAm,
-				payloadAMFeature01.turnONOFFShowProvider(true));
+				ayloadAM01.turnONOFFShowProvider(true));
 		apv.responseCodeValidation(response, 200);
 
 		response = postAPIRequestAM.resourceConfigSavePost(practiceIdAm,
-				payloadAMFeature01.turnONOFFDecisionTree(false));
+				ayloadAM01.turnONOFFDecisionTree(false));
 		apv.responseCodeValidation(response, 200);
 
 		String patientid = propertyData.getProperty("patient.id.ano.pm01");
@@ -629,12 +629,12 @@ public class PSS2PMFeatureNGTests01 extends BaseTestNG {
 
 		logStep("Show Provider On by using resourceConfigSavePost Call");
 		response = postAPIRequestAM.resourceConfigSavePost(practiceIdAm,
-				payloadAMFeature01.turnONOFFShowProvider(true));
+				ayloadAM01.turnONOFFShowProvider(true));
 		apv.responseCodeValidation(response, 200);
 
 		logStep("Category On by using resourceConfigSavePost Call");
 		response = postAPIRequestAM.resourceConfigSavePost(practiceIdAm,
-				payloadAMFeature01.turnONOFFDecisionTree(true));
+				ayloadAM01.turnONOFFDecisionTree(true));
 		apv.responseCodeValidation(response, 200);
 
 		String patientid = propertyData.getProperty("patient.id.ano.pm01");
@@ -684,7 +684,7 @@ public class PSS2PMFeatureNGTests01 extends BaseTestNG {
 		apv.responseCodeValidation(cancelResponse, 200);
 
 		response = postAPIRequestAM.resourceConfigSavePost(practiceIdAm,
-				payloadAMFeature01.turnONOFFDecisionTree(false));
+				ayloadAM01.turnONOFFDecisionTree(false));
 		apv.responseCodeValidation(response, 200);
 
 	}
@@ -722,12 +722,12 @@ public class PSS2PMFeatureNGTests01 extends BaseTestNG {
 
 		logStep("Turn Off The Decision Tree By Using resourceConfigSavePost ");
 		response = postAPIRequestAM.resourceConfigSavePost(practiceIdAm,
-				payloadAMFeature01.turnONOFFShowProvider(false));
+				ayloadAM01.turnONOFFShowProvider(false));
 		apv.responseCodeValidation(response, 200);
 
 		logStep("Turn On The Show Provider By Using resourceConfigSavePost ");
 		response = postAPIRequestAM.resourceConfigSavePost(practiceIdAm,
-				payloadAMFeature01.turnONOFFDecisionTree(true));
+				ayloadAM01.turnONOFFDecisionTree(true));
 		apv.responseCodeValidation(response, 200);
 
 		String patientid = propertyData.getProperty("patient.id.pm01");
@@ -816,12 +816,12 @@ public class PSS2PMFeatureNGTests01 extends BaseTestNG {
 
 		logStep("Show Provider Off by using resourceConfigSavePost Call");
 		response = postAPIRequestAM.resourceConfigSavePost(practiceIdAm,
-				payloadAMFeature01.turnONOFFShowProvider(false));
+				ayloadAM01.turnONOFFShowProvider(false));
 		apv.responseCodeValidation(response, 200);
 
 		logStep("Category On by using resourceConfigSavePost Call");
 		response = postAPIRequestAM.resourceConfigSavePost(practiceIdAm,
-				payloadAMFeature01.turnONOFFDecisionTree(false));
+				ayloadAM01.turnONOFFDecisionTree(false));
 		apv.responseCodeValidation(response, 200);
 
 		String patientid = propertyData.getProperty("patient.id.pm01");
@@ -903,7 +903,7 @@ public class PSS2PMFeatureNGTests01 extends BaseTestNG {
 		apv.responseCodeValidation(response, 200);
 
 		response = postAPIRequestAM.resourceConfigSavePost(practiceIdAm,
-				payloadAMFeature01.turnONOFFShowProvider(false));
+				ayloadAM01.turnONOFFShowProvider(false));
 		apv.responseCodeValidation(response, 200);
 
 		response = postAPIRequestAM.locationById(practiceIdAm, propertyData.getProperty("location.id.pm01"));
@@ -917,7 +917,7 @@ public class PSS2PMFeatureNGTests01 extends BaseTestNG {
 		String futuredate = pssPatientUtils.addDaysToDate(currentDate1, Integer.toString(leadTime), "MM/dd/yyyy");
 		log("Future Date -" + futuredate);
 
-		String hideSlotPayload = payloadAMFeature01.hideSlots(leadTime);
+		String hideSlotPayload = ayloadAM01.hideSlots(leadTime);
 		String appTypeId = propertyData.getProperty("appt.id.pm01");
 		response = postAPIRequestAM.appointmenttypeConfgWithBookOff(practiceIdAm, hideSlotPayload, appTypeId);
 		apv.responseCodeValidation(response, 200);
@@ -937,7 +937,7 @@ public class PSS2PMFeatureNGTests01 extends BaseTestNG {
 
 		assertEquals(date, futuredate, "Lead Time is not working properly");
 
-		String resetHideSlotPayload = payloadAMFeature01.hideSlots(0);
+		String resetHideSlotPayload = ayloadAM01.hideSlots(0);
 		response = postAPIRequestAM.appointmenttypeConfgWithBookOff(practiceIdAm, resetHideSlotPayload, appTypeId);
 		apv.responseCodeValidation(response, 200);
 
@@ -974,11 +974,11 @@ public class PSS2PMFeatureNGTests01 extends BaseTestNG {
 		apv.responseCodeValidation(response, 200);
 
 		response = postAPIRequestAM.resourceConfigSavePost(practiceIdAm,
-				payloadAMFeature01.turnONOFFShowProvider(true));
+				ayloadAM01.turnONOFFShowProvider(true));
 		apv.responseCodeValidation(response, 200);
 
 		response = postAPIRequestAM.resourceConfigSavePost(practiceIdAm,
-				payloadAMFeature01.turnONOFFDecisionTree(false));
+				ayloadAM01.turnONOFFDecisionTree(false));
 		apv.responseCodeValidation(response, 200);
 
 		String patientid = propertyData.getProperty("patient.id.pm01");
@@ -1061,11 +1061,11 @@ public class PSS2PMFeatureNGTests01 extends BaseTestNG {
 		apv.responseCodeValidation(response, 200);
 
 		response = postAPIRequestAM.resourceConfigSavePost(practiceIdAm,
-				payloadAMFeature01.turnONOFFShowProvider(true));
+				ayloadAM01.turnONOFFShowProvider(true));
 		apv.responseCodeValidation(response, 200);
 
 		response = postAPIRequestAM.resourceConfigSavePost(practiceIdAm,
-				payloadAMFeature01.turnONOFFDecisionTree(false));
+				ayloadAM01.turnONOFFDecisionTree(false));
 		apv.responseCodeValidation(response, 200);
 
 		String patientid = propertyData.getProperty("patient.id.pm01");
@@ -1149,11 +1149,11 @@ public class PSS2PMFeatureNGTests01 extends BaseTestNG {
 		apv.responseCodeValidation(response, 200);
 
 		response = postAPIRequestAM.resourceConfigSavePost(practiceIdAm,
-				payloadAMFeature01.turnONOFFShowProvider(true));
+				ayloadAM01.turnONOFFShowProvider(true));
 		apv.responseCodeValidation(response, 200);
 
 		response = postAPIRequestAM.resourceConfigSavePost(practiceIdAm,
-				payloadAMFeature01.turnONOFFDecisionTree(true));
+				ayloadAM01.turnONOFFDecisionTree(true));
 		apv.responseCodeValidation(response, 200);
 
 		String patientid = propertyData.getProperty("patient.id.pm01");
@@ -1201,7 +1201,7 @@ public class PSS2PMFeatureNGTests01 extends BaseTestNG {
 		apv.responseTimeValidation(rescheduleResponse);
 
 		response = postAPIRequestAM.resourceConfigSavePost(practiceIdAm,
-				payloadAMFeature01.turnONOFFDecisionTree(false));
+				ayloadAM01.turnONOFFDecisionTree(false));
 		apv.responseCodeValidation(response, 200);
 
 		Response cancelResponse = postAPIRequest.cancelAppointment(baseurl,
@@ -1243,11 +1243,11 @@ public class PSS2PMFeatureNGTests01 extends BaseTestNG {
 		apv.responseCodeValidation(response, 200);
 
 		response = postAPIRequestAM.resourceConfigSavePost(practiceIdAm,
-				payloadAMFeature01.turnONOFFShowProvider(false));
+				ayloadAM01.turnONOFFShowProvider(false));
 		apv.responseCodeValidation(response, 200);
 
 		response = postAPIRequestAM.resourceConfigSavePost(practiceIdAm,
-				payloadAMFeature01.turnONOFFDecisionTree(false));
+				ayloadAM01.turnONOFFDecisionTree(false));
 		apv.responseCodeValidation(response, 200);
 
 		String patientid = propertyData.getProperty("patient.id.pm01");
@@ -1330,11 +1330,11 @@ public class PSS2PMFeatureNGTests01 extends BaseTestNG {
 		apv.responseCodeValidation(response, 200);
 
 		response = postAPIRequestAM.resourceConfigSavePost(practiceIdAm,
-				payloadAMFeature01.turnONOFFShowProvider(false));
+				ayloadAM01.turnONOFFShowProvider(false));
 		apv.responseCodeValidation(response, 200);
 
 		response = postAPIRequestAM.resourceConfigSavePost(practiceIdAm,
-				payloadAMFeature01.turnONOFFDecisionTree(true));
+				ayloadAM01.turnONOFFDecisionTree(true));
 		apv.responseCodeValidation(response, 200);
 
 		String patientid = propertyData.getProperty("patient.id.pm01");
@@ -1412,12 +1412,12 @@ public class PSS2PMFeatureNGTests01 extends BaseTestNG {
 
 		logStep("Set up Admin Setting provider Off");
 		response = postAPIRequestAM.resourceConfigSavePost(practiceIdAm,
-				payloadAMFeature01.turnONOFFShowProvider(false));
+				ayloadAM01.turnONOFFShowProvider(false));
 		apv.responseCodeValidation(response, 200);
 		String reserveSameDayValue = "n";
 		boolean acceptSameDayValue = false;
 		int timeMarkValue = 0;
-		String adapPayload = payloadAMFeature01.reserveForSameDay(reserveSameDayValue, acceptSameDayValue,
+		String adapPayload = ayloadAM01.reserveForSameDay(reserveSameDayValue, acceptSameDayValue,
 				timeMarkValue);
 		String appTypeId = propertyData.getProperty("appt.id.pm01");
 
@@ -1447,7 +1447,7 @@ public class PSS2PMFeatureNGTests01 extends BaseTestNG {
 		String date = arr1.getJSONObject(0).getString("date");
 		assertEquals(date, futuredate, "Accept Same day is not working properly");
 
-		String adapPayload1 = payloadAMFeature01.reserveForSameDay("n", true, 0);
+		String adapPayload1 = ayloadAM01.reserveForSameDay("n", true, 0);
 		propertyData.getProperty("appt.id.pm01");
 		response = postAPIRequestAM.appointmenttypeConfgWithBookOff(practiceIdAm, adapPayload1, appTypeId);
 		apv.responseCodeValidation(response, 200);
@@ -1477,12 +1477,12 @@ public class PSS2PMFeatureNGTests01 extends BaseTestNG {
 		apv.responseCodeValidation(response, 200);
 
 		response = postAPIRequestAM.resourceConfigSavePost(practiceIdAm,
-				payloadAMFeature01.turnONOFFShowProvider(false));
+				ayloadAM01.turnONOFFShowProvider(false));
 		apv.responseCodeValidation(response, 200);
 		String reserveSameDayValue = "n";
 		boolean acceptSameDayValue = true;
 		int timeMarkValue = 0;
-		String adapPayload = payloadAMFeature01.reserveForSameDay(reserveSameDayValue, acceptSameDayValue,
+		String adapPayload = ayloadAM01.reserveForSameDay(reserveSameDayValue, acceptSameDayValue,
 				timeMarkValue);
 		String appTypeId = propertyData.getProperty("appt.id.pm01");
 		response = postAPIRequestAM.appointmenttypeConfgWithBookOff(practiceIdAm, adapPayload, appTypeId);
@@ -1536,12 +1536,12 @@ public class PSS2PMFeatureNGTests01 extends BaseTestNG {
 		apv.responseCodeValidation(response, 200);
 
 		response = postAPIRequestAM.resourceConfigSavePost(practiceIdAm,
-				payloadAMFeature01.turnONOFFShowProvider(false));
+				ayloadAM01.turnONOFFShowProvider(false));
 		apv.responseCodeValidation(response, 200);
 		String reserveSameDayValue = "n";
 		boolean acceptSameDayValue = true;
 		int timeMarkValue = 15;
-		String adapPayload = payloadAMFeature01.reserveForSameDay(reserveSameDayValue, acceptSameDayValue,
+		String adapPayload = ayloadAM01.reserveForSameDay(reserveSameDayValue, acceptSameDayValue,
 				timeMarkValue);
 		String appTypeId = propertyData.getProperty("appt.id.pm01");
 		response = postAPIRequestAM.appointmenttypeConfgWithBookOff(practiceIdAm, adapPayload, appTypeId);
@@ -1563,7 +1563,7 @@ public class PSS2PMFeatureNGTests01 extends BaseTestNG {
 		log("Actual Time is " + actualTime);
 		assertEquals(actualTime, expectedTime, "TimeMark is not working properly");
 
-		String adapPayload1 = payloadAMFeature01.reserveForSameDay(reserveSameDayValue, acceptSameDayValue, 0);
+		String adapPayload1 = ayloadAM01.reserveForSameDay(reserveSameDayValue, acceptSameDayValue, 0);
 		response = postAPIRequestAM.appointmenttypeConfgWithBookOff(practiceIdAm, adapPayload1, appTypeId);
 		apv.responseCodeValidation(response, 200);
 
@@ -1601,7 +1601,7 @@ public class PSS2PMFeatureNGTests01 extends BaseTestNG {
 		int id = Integer.parseInt(id1);
 		String firstVal = propertyData.getProperty("agerule.firstvalue.pm01");
 		String secondVal = propertyData.getProperty("agerule.secondvalue.pm01");
-		String b = payloadAMFeature01.specialityAgeRulePost(id, name, displayName, firstVal, secondVal);
+		String b = ayloadAM01.specialityAgeRulePost(id, name, displayName, firstVal, secondVal);
 		response = postAPIRequestAM.specialitySave(practiceIdAm, b);
 		apv.responseCodeValidation(response, 200);
 
@@ -1634,7 +1634,7 @@ public class PSS2PMFeatureNGTests01 extends BaseTestNG {
 		}
 		log("Resetting the age rule");
 		response = postAPIRequestAM.specialitySave(practiceIdAm,
-				payloadAMFeature01.specialityAgeRuleResetPost(id, name, displayName));
+				ayloadAM01.specialityAgeRuleResetPost(id, name, displayName));
 		apv.responseCodeValidation(response, 200);
 	}
 
@@ -1665,7 +1665,7 @@ public class PSS2PMFeatureNGTests01 extends BaseTestNG {
 		apv.responseCodeValidation(response, 200);
 
 		response = postAPIRequestAM.resourceConfigSavePost(practiceIdAm,
-				payloadAMFeature01.turnONOFFShowProvider(true));
+				ayloadAM01.turnONOFFShowProvider(true));
 		apv.responseCodeValidation(response, 200);
 
 		String id1 = propertyData.getProperty("book.id.pm01");
@@ -1676,7 +1676,7 @@ public class PSS2PMFeatureNGTests01 extends BaseTestNG {
 		String firstVal = propertyData.getProperty("agerule.firstvalue.pm01");
 		String secondVal = propertyData.getProperty("agerule.secondvalue.pm01");
 
-		String b = payloadAMFeature01.bookAgeRulePost(id, bookName, displayName, extId, firstVal, secondVal);
+		String b = ayloadAM01.bookAgeRulePost(id, bookName, displayName, extId, firstVal, secondVal);
 		response = postAPIRequestAM.bookSave(practiceIdAm, b);
 		apv.responseCodeValidation(response, 200);
 
@@ -1708,13 +1708,13 @@ public class PSS2PMFeatureNGTests01 extends BaseTestNG {
 			assertNotEquals(true, sExist);
 		}
 		log("Resetting the age rule");
-		String resetPayload = payloadAMFeature01.resetBookAgeRulePost(id, bookName, displayName, extId);
+		String resetPayload = ayloadAM01.resetBookAgeRulePost(id, bookName, displayName, extId);
 		response = postAPIRequestAM.bookSave(practiceIdAm, resetPayload);
 		apv.responseCodeValidation(response, 200);
 	}
 
 	@Test(enabled = true, groups = { "APItest" }, retryAnalyzer = RetryAnalyzer.class)
-	public void testMergeSlot() throws Exception {
+	public void testMergeSlotShowProviderOFF() throws Exception {
 		log("Verify the Merge slot with Show provider off with POST call of /pss-patient-modulator/v1/{practiceId}/availableslot");
 		logStep("Set up the API authentication");
 		setUpAM(propertyData.getProperty("practice.id.pm01"), propertyData.getProperty("mf.authuserid.am01"));
@@ -1751,7 +1751,7 @@ public class PSS2PMFeatureNGTests01 extends BaseTestNG {
 		log("slotId- " + slotid);
 		log("Date-" + date);
 
-		adminPayload = payloadAMFeature01.mergeSlotPyaload(slotCount, size);
+		adminPayload = ayloadAM01.mergeSlotPyaload(slotCount, size);
 		response = postAPIRequestAM.appointmenttypeConfgWithBookOff(practiceIdAm, adminPayload, apptid);
 		apv.responseCodeValidation(response, 200);
 
@@ -1777,14 +1777,14 @@ public class PSS2PMFeatureNGTests01 extends BaseTestNG {
 
 		assertEquals(time2, nextSlotInApptDuration);
 
-		adminPayload = payloadAMFeature01.mergeSlotPyaload(1, 5);
+		adminPayload = ayloadAM01.mergeSlotPyaload(1, 5);
 		response = postAPIRequestAM.appointmenttypeConfgWithBookOff(practiceIdAm, adminPayload, apptid);
 		apv.responseCodeValidation(response, 200);
 
 	}
 
 	@Test(enabled = true, groups = { "APItest" }, retryAnalyzer = RetryAnalyzer.class)
-	public void testMergeSlotInvalidData() throws Exception {
+	public void testMergeSlotInvalidDataShowProviderOFF() throws Exception {
 		log("Verify the Merge slot with invalid data for show provider off with POST call of /pss-patient-modulator/v1/{practiceId}/availableslot");
 		logStep("Set up the API authentication");
 		setUpAM(propertyData.getProperty("practice.id.pm01"), propertyData.getProperty("mf.authuserid.am01"));
@@ -1807,7 +1807,7 @@ public class PSS2PMFeatureNGTests01 extends BaseTestNG {
 		String currentDate = pssPatientUtils.currentDateWithTimeZone(locationTimeZone);
 		log("currentDate - " + currentDate);
 
-		adminPayload = payloadAMFeature01.mergeSlotPyaload(1, 5);
+		adminPayload = ayloadAM01.mergeSlotPyaload(1, 5);
 		response = postAPIRequestAM.appointmenttypeConfgWithBookOff(practiceIdAm, adminPayload, apptid);
 		apv.responseCodeValidation(response, 200);
 
@@ -1826,7 +1826,7 @@ public class PSS2PMFeatureNGTests01 extends BaseTestNG {
 		log("slotId- " + slotid);
 		log("Date-" + date);
 
-		adminPayload = payloadAMFeature01.mergeSlotPyaload(slotCount, size);
+		adminPayload = ayloadAM01.mergeSlotPyaload(slotCount, size);
 		response = postAPIRequestAM.appointmenttypeConfgWithBookOff(practiceIdAm, adminPayload, apptid);
 		apv.responseCodeValidation(response, 200);
 
@@ -1834,7 +1834,7 @@ public class PSS2PMFeatureNGTests01 extends BaseTestNG {
 				patientId);
 		apv.responseCodeValidation(response, 204);
 
-		adminPayload = payloadAMFeature01.mergeSlotPyaload(1, 5);
+		adminPayload = ayloadAM01.mergeSlotPyaload(1, 5);
 		response = postAPIRequestAM.appointmenttypeConfgWithBookOff(practiceIdAm, adminPayload, apptid);
 		apv.responseCodeValidation(response, 200);
 
@@ -1873,7 +1873,7 @@ public class PSS2PMFeatureNGTests01 extends BaseTestNG {
 		apv.responseCodeValidation(response, 200);
 
 		response = postAPIRequestAM.resourceConfigSavePost(practiceIdAm,
-				payloadAMFeature01.turnONOFFShowProvider(false));
+				ayloadAM01.turnONOFFShowProvider(false));
 		apv.responseCodeValidation(response, 200);
 
 		response = postAPIRequestAM.locationById(practiceIdAm, propertyData.getProperty("location.id.pm01"));
@@ -1881,7 +1881,7 @@ public class PSS2PMFeatureNGTests01 extends BaseTestNG {
 		String locationTimeZone = apv.responseKeyValidationJson(response, "timezone");
 		log("TimeZone- " + locationTimeZone);
 
-		adminPayload = payloadAMFeature01.excludeSlotPyaload();
+		adminPayload = ayloadAM01.excludeSlotPyaload();
 		response = postAPIRequestAM.appointmenttypeConfgWithBookOff(practiceIdAm, adminPayload, apptid);
 		apv.responseCodeValidation(response, 200);
 
@@ -1915,7 +1915,7 @@ public class PSS2PMFeatureNGTests01 extends BaseTestNG {
 		assertEquals(time, firstExpectedSlotTime, "Slot Times are not matching");
 		assertEquals(time3, lastExpectedSlotTime, "Slot Times are not matching");
 
-		adminPayload = payloadAMFeature01.resetExcludeSlotPyaload();
+		adminPayload = ayloadAM01.resetExcludeSlotPyaload();
 		response = postAPIRequestAM.appointmenttypeConfgWithBookOff(practiceIdAm, adminPayload, apptid);
 		apv.responseCodeValidation(response, 200);
 
@@ -1956,10 +1956,10 @@ public class PSS2PMFeatureNGTests01 extends BaseTestNG {
 		apv.responseCodeValidation(response, 200);
 
 		response = postAPIRequestAM.resourceConfigSavePost(practiceIdAm,
-				payloadAMFeature01.turnONOFFShowProvider(false));
+				ayloadAM01.turnONOFFShowProvider(false));
 		apv.responseCodeValidation(response, 200);
 
-		String payloadLastQEnable = payloadAMFeature01.lastQEnableshowProviderOFF(lastQueEnableValue, lastQueRequValue);
+		String payloadLastQEnable = ayloadAM01.lastQEnableshowProviderOFF(lastQueEnableValue, lastQueRequValue);
 		String apptid = propertyData.getProperty("appt.id.pm01");
 
 		response = postAPIRequestAM.appointmenttypeConfgWithBookOff(practiceIdAm, payloadLastQEnable, apptid);
@@ -2016,10 +2016,10 @@ public class PSS2PMFeatureNGTests01 extends BaseTestNG {
 		apv.responseCodeValidation(response, 200);
 
 		response = postAPIRequestAM.resourceConfigSavePost(practiceIdAm,
-				payloadAMFeature01.turnONOFFShowProvider(false));
+				ayloadAM01.turnONOFFShowProvider(false));
 		apv.responseCodeValidation(response, 200);
 
-		String payloadLastQEnable = payloadAMFeature01.lastQEnableshowProviderOFF(lastQueEnableValue, lastQueRequValue);
+		String payloadLastQEnable = ayloadAM01.lastQEnableshowProviderOFF(lastQueEnableValue, lastQueRequValue);
 		String apptid = propertyData.getProperty("appt.id.pm01");
 
 		response = postAPIRequestAM.appointmenttypeConfgWithBookOff(practiceIdAm, payloadLastQEnable, apptid);
@@ -2076,10 +2076,10 @@ public class PSS2PMFeatureNGTests01 extends BaseTestNG {
 		apv.responseCodeValidation(response, 200);
 
 		response = postAPIRequestAM.resourceConfigSavePost(practiceIdAm,
-				payloadAMFeature01.turnONOFFShowProvider(false));
+				ayloadAM01.turnONOFFShowProvider(false));
 		apv.responseCodeValidation(response, 200);
 
-		String payloadLastQEnable = payloadAMFeature01.lastQEnableshowProviderOFF(lastQueEnableValue, lastQueRequValue);
+		String payloadLastQEnable = ayloadAM01.lastQEnableshowProviderOFF(lastQueEnableValue, lastQueRequValue);
 		String apptid = propertyData.getProperty("appt.id.pm01");
 
 		response = postAPIRequestAM.appointmenttypeConfgWithBookOff(practiceIdAm, payloadLastQEnable, apptid);
@@ -2136,7 +2136,7 @@ public class PSS2PMFeatureNGTests01 extends BaseTestNG {
 		apv.responseCodeValidation(response, 200);
 
 		response = postAPIRequestAM.resourceConfigSavePost(practiceIdAm,
-				payloadAMFeature01.turnONOFFShowProvider(true));
+				ayloadAM01.turnONOFFShowProvider(true));
 		apv.responseCodeValidation(response, 200);
 		String locationId = propertyData.getProperty("location.id.pm01");
 		String apptId = propertyData.getProperty("appt.id.pm01");
@@ -2144,8 +2144,8 @@ public class PSS2PMFeatureNGTests01 extends BaseTestNG {
 
 		String bookName = propertyData.getProperty("book.name.pm01");
 		String extId = propertyData.getProperty("book.ext.id.pm01");
-		String payloadLastQueEnable = payloadAMFeature01.bookPayload(bookId, bookName, extId, lastQueEnableValue);
-		String payloadLastQueReq = payloadAMFeature01.bookAppTypePayload(bookId, apptId, lastQueRequValue);
+		String payloadLastQueEnable = ayloadAM01.bookPayload(bookId, bookName, extId, lastQueEnableValue);
+		String payloadLastQueReq = ayloadAM01.bookAppTypePayload(bookId, apptId, lastQueRequValue);
 
 		response = postAPIRequestAM.saveBook(practiceIdAm, payloadLastQueEnable);
 		apv.responseCodeValidation(response, 200);
@@ -2203,7 +2203,7 @@ public class PSS2PMFeatureNGTests01 extends BaseTestNG {
 		apv.responseCodeValidation(response, 200);
 
 		response = postAPIRequestAM.resourceConfigSavePost(practiceIdAm,
-				payloadAMFeature01.turnONOFFShowProvider(true));
+				ayloadAM01.turnONOFFShowProvider(true));
 		apv.responseCodeValidation(response, 200);
 		String locationId = propertyData.getProperty("location.id.pm01");
 		String apptId = propertyData.getProperty("appt.id.pm01");
@@ -2211,9 +2211,9 @@ public class PSS2PMFeatureNGTests01 extends BaseTestNG {
 
 		String bookName = propertyData.getProperty("book.name.pm01");
 		String extId = propertyData.getProperty("book.ext.id.pm01");
-		String payloadLastQueEnable = payloadAMFeature01.bookPayload(bookId, bookName, extId, lastQueEnableValue);
+		String payloadLastQueEnable = ayloadAM01.bookPayload(bookId, bookName, extId, lastQueEnableValue);
 
-		String payloadLastQueReq = payloadAMFeature01.bookAppTypePayload(bookId, apptId, lastQueRequValue);
+		String payloadLastQueReq = ayloadAM01.bookAppTypePayload(bookId, apptId, lastQueRequValue);
 		response = postAPIRequestAM.saveBook(practiceIdAm, payloadLastQueEnable);
 		apv.responseCodeValidation(response, 200);
 
@@ -2270,7 +2270,7 @@ public class PSS2PMFeatureNGTests01 extends BaseTestNG {
 		apv.responseCodeValidation(response, 200);
 
 		response = postAPIRequestAM.resourceConfigSavePost(practiceIdAm,
-				payloadAMFeature01.turnONOFFShowProvider(true));
+				ayloadAM01.turnONOFFShowProvider(true));
 		apv.responseCodeValidation(response, 200);
 		String locationId = propertyData.getProperty("location.id.pm01");
 		String apptId = propertyData.getProperty("appt.id.pm01");
@@ -2278,9 +2278,9 @@ public class PSS2PMFeatureNGTests01 extends BaseTestNG {
 
 		String bookName = propertyData.getProperty("book.name.pm01");
 		String extId = propertyData.getProperty("book.ext.id.pm01");
-		String payloadLastQueEnable = payloadAMFeature01.bookPayload(bookId, bookName, extId, lastQueEnableValue);
+		String payloadLastQueEnable = ayloadAM01.bookPayload(bookId, bookName, extId, lastQueEnableValue);
 
-		String payloadLastQueReq = payloadAMFeature01.bookAppTypePayload(bookId, apptId, lastQueRequValue);
+		String payloadLastQueReq = ayloadAM01.bookAppTypePayload(bookId, apptId, lastQueRequValue);
 
 		response = postAPIRequestAM.saveBook(practiceIdAm, payloadLastQueEnable);
 		apv.responseCodeValidation(response, 200);
@@ -2338,10 +2338,10 @@ public class PSS2PMFeatureNGTests01 extends BaseTestNG {
 		apv.responseCodeValidation(response, 200);
 
 		response = postAPIRequestAM.resourceConfigSavePost(practiceIdAm,
-				payloadAMFeature01.turnONOFFShowProvider(false));
+				ayloadAM01.turnONOFFShowProvider(false));
 		apv.responseCodeValidation(response, 200);
 
-		adminPayload = payloadAMFeature01.preventBackToBackPyaload(true);
+		adminPayload = ayloadAM01.preventBackToBackPyaload(true);
 		response = postAPIRequestAM.appointmenttypeConfgWithBookOff(practiceIdAm, adminPayload, apptid);
 		apv.responseCodeValidation(response, 200);
 
@@ -2402,7 +2402,7 @@ public class PSS2PMFeatureNGTests01 extends BaseTestNG {
 				practiceid, patientid);
 		apv.responseCodeValidation(cancelResponse, 200);
 
-		adminPayload = payloadAMFeature01.preventBackToBackPyaload(false);
+		adminPayload = ayloadAM01.preventBackToBackPyaload(false);
 		response = postAPIRequestAM.appointmenttypeConfgWithBookOff(practiceIdAm, adminPayload, apptid);
 		apv.responseCodeValidation(response, 200);
 
@@ -2444,7 +2444,7 @@ public class PSS2PMFeatureNGTests01 extends BaseTestNG {
 		apv.responseCodeValidation(response, 200);
 
 		response = postAPIRequestAM.resourceConfigSavePost(practiceIdAm,
-				payloadAMFeature01.turnONOFFShowProvider(false));
+				ayloadAM01.turnONOFFShowProvider(false));
 		apv.responseCodeValidation(response, 200);
 
 		response = postAPIRequestAM.locationById(practiceIdAm,
@@ -2453,7 +2453,7 @@ public class PSS2PMFeatureNGTests01 extends BaseTestNG {
 		String locationTimeZone = apv.responseKeyValidationJson(response, "timezone");
 		log("TimeZone- " + locationTimeZone);
 
-		adminPayload = payloadAMFeature01.preventSchedulePyaload(id, preventSchedDays, apptName, displayName, extId);
+		adminPayload = ayloadAM01.preventSchedulePyaload(id, preventSchedDays, apptName, displayName, extId);
 		response = postAPIRequestAM.saveAppointmenttype(practiceIdAm, adminPayload);
 		apv.responseCodeValidation(response, 200);
 
@@ -2497,7 +2497,7 @@ public class PSS2PMFeatureNGTests01 extends BaseTestNG {
 		log("Actual Date- " + actualDate);
 		assertEquals(actualDate, strDateExp, "Prevent Scheduling not working properly");
 
-		adminPayload = payloadAMFeature01.preventSchedulePyaload(id, 0, apptName, displayName, extId);
+		adminPayload = ayloadAM01.preventSchedulePyaload(id, 0, apptName, displayName, extId);
 		response = postAPIRequestAM.saveAppointmenttype(practiceIdAm, adminPayload);
 		apv.responseCodeValidation(response, 200);
 
@@ -2513,7 +2513,7 @@ public class PSS2PMFeatureNGTests01 extends BaseTestNG {
 		JsonPath js;
 		String expectedMsg = propertyData.getProperty("lockout.billing.expected.msg.pm01");
 		String patientId = propertyData.getProperty("lockout.patient.id.pm01");
-		adminPayload = payloadAMFeature01.lockoutBillingNotesPayload();
+		adminPayload = ayloadAM01.lockoutBillingNotesPayload();
 		response = postAPIRequestAM.lockoutPost(practiceIdAm, adminPayload, "/lockout");
 		apv.responseCodeValidation(response, 200);
 		String id = apv.responseKeyValidationJson(response, "id");
@@ -2541,7 +2541,7 @@ public class PSS2PMFeatureNGTests01 extends BaseTestNG {
 		JsonPath js;
 		String expectedMsg = propertyData.getProperty("lockout.billing.expected.msg.pm01");
 		String patientId = propertyData.getProperty("lockout.patient.id.pm01");
-		adminPayload = payloadAMFeature01.lockoutPatientNotesPayload();
+		adminPayload = ayloadAM01.lockoutPatientNotesPayload();
 		response = postAPIRequestAM.lockoutPost(practiceIdAm, adminPayload, "/lockout");
 		apv.responseCodeValidation(response, 200);
 		String id = apv.responseKeyValidationJson(response, "id");
@@ -2589,7 +2589,7 @@ public class PSS2PMFeatureNGTests01 extends BaseTestNG {
 		apv.responseCodeValidation(response, 200);
 
 		response = postAPIRequestAM.resourceConfigSavePost(practiceIdAm,
-				payloadAMFeature01.turnONOFFShowProvider(false));
+				ayloadAM01.turnONOFFShowProvider(false));
 		apv.responseCodeValidation(response, 200);
 
 		response = postAPIRequestAM.locationById(practiceIdAm, locationId);
@@ -2600,7 +2600,7 @@ public class PSS2PMFeatureNGTests01 extends BaseTestNG {
 		String currentDate = pssPatientUtils.currentDateWithTimeZone(locationTimeZone);
 		log("currentDate - " + currentDate);
 
-		adminPayload = payloadAMFeature01.overBookingPayload(true);
+		adminPayload = ayloadAM01.overBookingPayload(true);
 		response = postAPIRequestAM.appointmenttypeConfgWithBookOff(practiceIdAm, adminPayload, apptId);
 		apv.responseCodeValidation(response, 200);
 		apv.responseTimeValidation(response);
@@ -2653,7 +2653,7 @@ public class PSS2PMFeatureNGTests01 extends BaseTestNG {
 				practiceid, patientId01);
 
 		apv.responseCodeValidation(cancelResponse, 200);
-		adminPayload = payloadAMFeature01.overBookingPayload(false);
+		adminPayload = ayloadAM01.overBookingPayload(false);
 		response = postAPIRequestAM.appointmenttypeConfgWithBookOff(practiceIdAm, adminPayload, apptId);
 		apv.responseCodeValidation(response, 200);
 		apv.responseTimeValidation(response);

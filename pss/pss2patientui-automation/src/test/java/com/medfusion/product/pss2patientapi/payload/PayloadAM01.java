@@ -1,7 +1,7 @@
 // Copyright 2021 NXGN Management, LLC. All Rights Reserved.
 package com.medfusion.product.pss2patientapi.payload;
 
-public class PayloadAMFeature01 {
+public class PayloadAM01 {
 	
 	public String openTokenPayload(String practiceid,String authUser) {
 		String openToken = "{\r\n"

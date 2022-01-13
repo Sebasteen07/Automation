@@ -1,7 +1,7 @@
 // Copyright 2021 NXGN Management, LLC. All Rights Reserved.
 package com.medfusion.product.pss2patientapi.payload;
 
-public class PayloadPMNGFeature01 {
+public class PayloadPM01 {
 	
 	
 	public String ssoScheduleWithCatShowProviderON(String slotId, String date, String slotTime,String locationId,String appId,String bookId)
