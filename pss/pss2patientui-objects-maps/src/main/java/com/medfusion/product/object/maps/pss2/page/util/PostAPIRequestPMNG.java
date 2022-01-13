@@ -703,25 +703,22 @@ public class PostAPIRequestPMNG extends BaseTestNGWebDriver {
 				.post(practiceId + "/getotpdetails").then().log().all().extract().response();
 		return response;
 	}
+	
 	public Response ssorescheduleAppointment(String baseurl, String b, Map<String, String> Header, String practiceId,
 			String patientId) {
 		RestAssured.baseURI = baseurl;
-
 		Response response = given().when().headers(Header).body(b).log().all().when()
 				.post(practiceId + "/rescheduleappointment/" + patientId).then().log().all().extract().response();
-
 		return response;
 	}
+
 	public Response scheduleAppointment_PTNEW(String baseurl, String b, Map<String, String> Header, String practiceId) {
 		RestAssured.baseURI = baseurl;
-
 		Response response = given().when().headers(Header).body(b).log().all().when()
 				.post(practiceId + "/scheduleappointment").then().log().all().extract().response();
-
 		return response;
-
 	}
-	
+
 	public Response scheduleAppointmentExisting(String baseurl, String b, Map<String, String> Header, String practiceId,
 			String patientId) {
 		RestAssured.baseURI = baseurl;
@@ -729,16 +726,16 @@ public class PostAPIRequestPMNG extends BaseTestNGWebDriver {
 				.post(practiceId + "/scheduleappointment/" + patientId).then().log().all().extract().response();
 		return response;
 	}
-	
 
 	public Response upComingAppointmentsByPage(String baseurl, Map<String, String> Header, String practiceId,
 			String patientId) {
 		RestAssured.baseURI = baseurl;
 		Response response = given().queryParam("pageIndex", "1").when().headers(Header).log().all().when()
-				.get(practiceId + "/upcomingappointmentsbypage/" + patientId+"/loginless").then().log().all().extract().response();
+				.get(practiceId + "/upcomingappointmentsbypage/" + patientId + "/loginless").then().log().all()
+				.extract().response();
 		return response;
 	}
-	
+
 	public Response patientDemographicsWithQueryParameter(String baseurl, Map<String, String> Header, String practiceId,
 			String patientId) {
 		RestAssured.baseURI = baseurl;

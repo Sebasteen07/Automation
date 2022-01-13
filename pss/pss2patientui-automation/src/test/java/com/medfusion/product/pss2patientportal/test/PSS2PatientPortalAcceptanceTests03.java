@@ -553,7 +553,8 @@ public class PSS2PatientPortalAcceptanceTests03 extends BaseTestNGWebDriver {
 		String catName = propertyData.getProperty("prerequisite.appointmenttype.cat.name.ng");
 		String preReqAppId = propertyData.getProperty("appointment.id.prerequisite.ng");
 
-		response =postAPIRequestAM.preRequisiteAppointmenttypes(practiceId, preReqAppId, payloadAM.preRequisiteAppointmentTypesDefualtNG(name, extAppID, catId, catName));
+		response =
+				postAPIRequestAM.preRequisiteAppointmenttypes(practiceId, preReqAppId, payloadAM.preRequisiteAppointmentTypesDefualtNG(name, extAppID, catId, catName));
 		aPIVerification.responseCodeValidation(response, 200);
 
 		response = postAPIRequestAM.patientInfoPost(practiceId, payloadAM.patientInfoWithOptionalLLNG());

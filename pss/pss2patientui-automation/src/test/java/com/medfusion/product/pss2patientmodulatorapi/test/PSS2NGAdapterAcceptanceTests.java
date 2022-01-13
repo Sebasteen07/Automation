@@ -362,6 +362,7 @@ public class PSS2NGAdapterAcceptanceTests extends BaseTestNG {
 		aPIVerification.responseKeyValidation(response, "name");
 		aPIVerification.responseKeyValidation(response, "zipCode");
 		aPIVerification.responseKeyValidation(response, "address1");
+		aPIVerification.responseKeyValidation(response, "address2");
 		aPIVerification.responseKeyValidation(response, "state");
 		aPIVerification.responseKeyValidation(response, "city");
 
