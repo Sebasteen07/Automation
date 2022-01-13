@@ -1,16 +1,25 @@
 // Copyright 2021 NXGN Management, LLC. All Rights Reserved.
 package com.medfusion.product.object.maps.appt.precheck.page.Setting;
 
+import java.util.Iterator;
+import java.util.List;
+import java.util.Random;
+
+import org.openqa.selenium.By;
+import org.openqa.selenium.Keys;
+import org.openqa.selenium.NoSuchElementException;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.interactions.Actions;
 import org.openqa.selenium.support.Color;
+import org.openqa.selenium.support.FindAll;
 import org.openqa.selenium.support.FindBy;
 import org.openqa.selenium.support.How;
 import org.openqa.selenium.support.PageFactory;
 
 import com.intuit.ifs.csscat.core.pageobject.BasePageObject;
 import com.medfusion.common.utils.IHGUtil;
+import com.medfusion.product.appt.precheck.pojo.Appointment;
 
 public class NotificationsPage extends BasePageObject {
 
@@ -490,6 +499,108 @@ public class NotificationsPage extends BasePageObject {
 
 	@FindBy(how = How.XPATH, using = "//*[text()='English']")
 	private WebElement englishPracticePrefenceLang;
+
+	@FindBy(how = How.XPATH, using = "//h1[contains(text(),'Features')]")
+	private WebElement featureText;
+
+	@FindBy(how = How.XPATH, using = " //label[contains(text(),'ON')]")
+	private WebElement onText;
+
+	@FindBy(how = How.XPATH, using = "//label[contains(text(),'OFF')]")
+	private WebElement offText;
+
+	@FindBy(how = How.XPATH, using = "//label[contains(text(),'Broadcast messaging')]")
+	private WebElement broadcastText;
+
+	@FindBy(how = How.XPATH, using = "//div[@class='notification-features-checkbox']/div[2]/input[@type='checkbox']")
+	private WebElement curbsideCheckbox;
+
+	@FindBy(how = How.XPATH, using = "//label[contains(text(),'Curbside check-in reminder')]")
+	private WebElement curbsideText;
+
+	@FindBy(how = How.XPATH, using = "//*[contains(text(),'Notification Type')]")
+	private WebElement notifTypeText;
+
+	@FindBy(how = How.XPATH, using = "//div[@class='notification-heading'and contains(text(),'Appointment confirmations')]")
+	private WebElement apptConfirmText;
+
+	@FindBy(how = How.XPATH, using = "//div[@class='curbside-tab']/p")
+	private WebElement curbsidePara;
+
+	@FindBy(how = How.XPATH, using = "//li[@id='react-tabs-10']")
+	private WebElement curbOption;
+
+	@FindBy(how = How.XPATH, using = "//div[@class='notification-features-checkbox']/div[3]/input[@type='checkbox']")
+	private WebElement patientNameCheckbox;
+
+	@FindBy(how = How.XPATH, using = "//label[contains(text(),\"Display patient's first name\")]")
+	private WebElement patientFirstText;
+
+	@FindBy(how = How.XPATH, using = "(//div[@class='table-data']/div)[3]")
+	private WebElement daysText;
+
+	@FindBy(how = How.XPATH, using = "(//div[@class='table-data']/div)[4]")
+	private WebElement timingUnitText;
+
+	@FindBy(how = How.XPATH, using = "//button[text()='+ Add']")
+	private WebElement addButtonInEdit;
+
+	@FindBy(how = How.XPATH, using = "(//div[@class='cadence-remove-icon'])[4]")
+	private WebElement removeButtonInEdit;
+
+	@FindBy(how = How.XPATH, using = "(//div[@class='table-data']/div)[4]")
+	private WebElement hoursText;
+
+	@FindBy(how = How.XPATH, using = "(//div[@class='table-data']/div)[5]")
+	private WebElement minutesText;
+
+	@FindBy(how = How.XPATH, using = "(//div[@class='table-data']/div)[6]")
+	private WebElement timeUnitTextForDays;
+
+	@FindBy(how = How.XPATH, using = "(//div[@class='table-data']/div)[7]")
+	private WebElement timeUnitTextForHours;
+
+	@FindBy(how = How.XPATH, using = "(//div[@class='table-data']/div)[8]")
+	private WebElement timeUnitTextForMinutes;
+
+	@FindBy(how = How.CSS, using = "div:nth-child(2) > div.left > div:nth-child(4) > div")
+	private WebElement timingTextForSMS;
+
+	@FindBy(how = How.CSS, using = "div.table-content > div:nth-child(2) > div.gap > div > div")
+	private WebElement timingUnitTextForSMS;
+
+	@FindBy(how = How.CSS, using = "div:nth-child(4) > div.version-value")
+	private WebElement deliveryMethod;
+
+	@FindBy(how = How.CSS, using = "div:nth-child(2) > div.left > div:nth-child(4)>div:nth-child(1)")
+	private WebElement daysTimingTextForSMS;
+
+	@FindBy(how = How.CSS, using = "div:nth-child(2) > div.left > div:nth-child(4)>div:nth-child(2)")
+	private WebElement hoursTimingTextForSMS;
+
+	@FindBy(how = How.CSS, using = "div:nth-child(2) > div.left > div:nth-child(4)>div:nth-child(3)")
+	private WebElement minutesTimingTextForSMS;
+
+	@FindBy(how = How.CSS, using = "div:nth-child(2) > div.gap > div > div:nth-child(1)")
+	private WebElement daysTimeUnitTextForSMS;
+
+	@FindBy(how = How.CSS, using = "div:nth-child(2) > div.gap > div > div:nth-child(2)")
+	private WebElement hoursTimeUnitTextForSMS;
+
+	@FindBy(how = How.CSS, using = "div:nth-child(2) > div.gap > div > div:nth-child(3)")
+	private WebElement minutesTimeUnitTextForSMS;
+
+	@FindBy(how = How.XPATH, using = "(//input[@id='select-all'])")
+	private WebElement selectAllCheckinAppt;
+
+	@FindBy(how = How.XPATH, using = "//button[contains(text(),'Check-In')]")
+	private WebElement checkinButton;
+
+	@FindBy(how = How.XPATH, using = "(//input[@type='checkbox'])[2]")
+	private WebElement selectOnePatient;
+
+	@FindAll({ @FindBy(how = How.XPATH, using = "(//input[@type='checkbox'])") })
+	public List<WebElement> allAppointment;
 
 	public NotificationsPage(WebDriver driver) {
 		super(driver);
@@ -1778,5 +1889,336 @@ public class NotificationsPage extends BasePageObject {
 			log("Broadcast Message Text box in english language is not visible");
 			return false;
 		}
+	}
+
+	public String getSaveButtonText() {
+		IHGUtil.PrintMethodName();
+		IHGUtil.waitForElement(driver, 10, saveButton);
+		log("Save button is displayed.");
+		return saveButton.getText();
+	}
+
+	public String getOnNotificationText() {
+		IHGUtil.PrintMethodName();
+		IHGUtil.waitForElement(driver, 5, onNotificationButton);
+		return onText.getText();
+	}
+
+	public String getOfOffNotificationText() {
+		IHGUtil.PrintMethodName();
+		IHGUtil.waitForElement(driver, 5, offNotificationButton);
+		return offText.getText();
+	}
+
+	public String getFeatureText() {
+		IHGUtil.PrintMethodName();
+		IHGUtil.waitForElement(driver, 10, featureText);
+		log("Feature Text is displayed.");
+		return featureText.getText();
+	}
+
+	public String getBroadcastMessagingText() {
+		IHGUtil.PrintMethodName();
+		IHGUtil.waitForElement(driver, 5, broadcastMessagingCheckbox);
+		return broadcastText.getText();
+	}
+
+	public String getCurbsideReminderText() {
+		IHGUtil.PrintMethodName();
+		IHGUtil.waitForElement(driver, 5, curbsideCheckbox);
+		return curbsideText.getText();
+	}
+
+	public String getPatientFirstNameText() {
+		IHGUtil.PrintMethodName();
+		IHGUtil.waitForElement(driver, 5, patientNameCheckbox);
+		return patientFirstText.getText();
+	}
+
+	public String getNotificationTypeText() {
+		IHGUtil.PrintMethodName();
+		IHGUtil.waitForElement(driver, 5, notifTypeText);
+		return notifTypeText.getText();
+	}
+
+	public String getApptConfirmationText() {
+		IHGUtil.PrintMethodName();
+		IHGUtil.waitForElement(driver, 5, apptConfirmText);
+		return apptConfirmText.getText();
+	}
+
+	public String getApptReminderTextOnNotif() {
+		IHGUtil.PrintMethodName();
+		IHGUtil.waitForElement(driver, 5, apptReminderText);
+		return apptReminderText.getText();
+	}
+
+	public void clickOnCurbsideOption() {
+		IHGUtil.waitForElement(driver, 5, curbOption);
+		jse.executeScript("arguments[0].click();", curbOption);
+
+	}
+
+	public String getCurbsideParagraphText() {
+		IHGUtil.PrintMethodName();
+		IHGUtil.waitForElement(driver, 5, curbsidePara);
+		return curbsidePara.getText();
+	}
+
+	public String getEnglishButtonText() {
+		IHGUtil.PrintMethodName();
+		IHGUtil.waitForElement(driver, 5, englishButton);
+		return englishButton.getText();
+	}
+
+	public String getSpanishButtonText() {
+		IHGUtil.PrintMethodName();
+		IHGUtil.waitForElement(driver, 5, spanishButton);
+		return spanishButton.getText();
+	}
+
+	public String getArrivalConfMsgHeadingText() {
+		IHGUtil.PrintMethodName();
+		IHGUtil.waitForElement(driver, 5, arrivalConfirmationMsg);
+		return arrivalConfirmationMsg.getText();
+	}
+
+	public String visibilityOf1HrPriorCurbsideReminder() {
+		IHGUtil.PrintMethodName();
+		IHGUtil.waitForElement(driver, 5, curbsidePara);
+		if (curbsidePara.isDisplayed()) {
+			log("1 hour prior - Curbside check-in reminder is displayed");
+			return curbsidePara.getText();
+		} else {
+			log("1 hour prior - Curbside check-in reminder is not displayed");
+		}
+		return null;
+	}
+
+	public void enterTimingAndTimingUnit(int pathIndex, String timing, String timingUnit) throws InterruptedException {
+		IHGUtil.PrintMethodName();
+		log("Select timing and timing unit for: " + timing);
+		driver.findElement(By.xpath("(//div[@class=' css-1hwfws3'])[" + pathIndex + "]")).click();
+		Actions action = new Actions(driver);
+		action.sendKeys(driver.findElement(By.xpath("(//div[@class=' css-1uccc91-singleValue'])[" + pathIndex + "]")),
+				timing).sendKeys(Keys.ENTER).build().perform();
+		driver.findElement(By.xpath("(//input[@class='cadence-period-value'])[" + pathIndex + "]")).clear();
+		driver.findElement(By.xpath("(//input[@class='cadence-period-value'])[" + pathIndex + "]"))
+				.sendKeys(timingUnit);
+	}
+
+	public boolean visibilityOfSaveChangesbutton() throws InterruptedException {
+		IHGUtil.PrintMethodName();
+		IHGUtil.waitForElement(driver, 5, saveChangesButton);
+		if (saveChangesButton.isEnabled()) {
+			jse.executeScript("arguments[0].click();", saveChangesButton);
+			log("Save changes button is enable");
+			Thread.sleep(5000);
+			return true;
+		} else {
+			log("Save changes button is enable");
+			return false;
+		}
+	}
+
+	public String getSingleTimingText() {
+		IHGUtil.PrintMethodName();
+		IHGUtil.waitForElement(driver, 5, daysText);
+		return daysText.getText();
+	}
+
+	public String getTimingUnitText() {
+		IHGUtil.PrintMethodName();
+		IHGUtil.waitForElement(driver, 5, timingUnitText);
+		return timingUnitText.getText();
+	}
+
+	public void addFourthTimingAndTimingUnit() {
+		IHGUtil.PrintMethodName();
+		try {
+			IHGUtil.waitForElement(driver, 60, addButtonInEdit);
+			addButtonInEdit.isDisplayed();
+			addButtonInEdit.click();
+			log("Added Fourth Timing and Timing unit");
+		} catch (NoSuchElementException e) {
+			log("Fourth Timing and Timing unit already present");
+		}
+	}
+
+	public void clickOnRemoveTiming() {
+		IHGUtil.PrintMethodName();
+		IHGUtil.waitForElement(driver, 5, removeButtonInEdit);
+		removeButtonInEdit.click();
+	}
+
+	public String getDaysTimingText() {
+		IHGUtil.PrintMethodName();
+		IHGUtil.waitForElement(driver, 5, daysText);
+		return daysText.getText();
+	}
+
+	public String getMinutesTimingText() {
+		IHGUtil.PrintMethodName();
+		IHGUtil.waitForElement(driver, 5, minutesText);
+		return minutesText.getText();
+	}
+
+	public String getHoursTimingText() {
+		IHGUtil.PrintMethodName();
+		IHGUtil.waitForElement(driver, 5, hoursText);
+		return hoursText.getText();
+	}
+
+	public String getTimeUnitTextForDays() {
+		IHGUtil.PrintMethodName();
+		IHGUtil.waitForElement(driver, 5, timeUnitTextForDays);
+		return timeUnitTextForDays.getText();
+	}
+
+	public String getTimeUnitTextForHours() {
+		IHGUtil.PrintMethodName();
+		IHGUtil.waitForElement(driver, 5, timeUnitTextForHours);
+		return timeUnitTextForHours.getText();
+	}
+
+	public String getTimeUnitTextForMinutes() {
+		IHGUtil.PrintMethodName();
+		IHGUtil.waitForElement(driver, 5, timeUnitTextForMinutes);
+		return timeUnitTextForMinutes.getText();
+	}
+
+	public void checkingFourthTimingIfPresent() {
+		IHGUtil.PrintMethodName();
+		try {
+			IHGUtil.waitForElement(driver, 60, removeButtonInEdit);
+			removeButtonInEdit.isDisplayed();
+			removeButtonInEdit.click();
+			log("Remove Fourth Timing and Timing unit");
+		} catch (NoSuchElementException e) {
+			log("only three Timing and Timing is present");
+		}
+	}
+
+	public String getSingleTimingTextForSMS() {
+		IHGUtil.PrintMethodName();
+		IHGUtil.waitForElement(driver, 5, timingTextForSMS);
+		return timingTextForSMS.getText();
+	}
+
+	public String getTimingUnitTextForSMS() {
+		IHGUtil.PrintMethodName();
+		IHGUtil.waitForElement(driver, 5, timingUnitTextForSMS);
+		return timingUnitTextForSMS.getText();
+	}
+
+	public String getDeliveryMethod() {
+		IHGUtil.PrintMethodName();
+		IHGUtil.waitForElement(driver, 5, deliveryMethod);
+		return deliveryMethod.getText();
+	}
+
+	public String getDaysTimingTextForSMS() {
+		IHGUtil.PrintMethodName();
+		IHGUtil.waitForElement(driver, 5, daysTimingTextForSMS);
+		return daysTimingTextForSMS.getText();
+	}
+
+	public String getHoursTimingTextForSMS() {
+		IHGUtil.PrintMethodName();
+		IHGUtil.waitForElement(driver, 5, hoursTimingTextForSMS);
+		return hoursTimingTextForSMS.getText();
+	}
+
+	public String getMinutesTimingTextForSMS() {
+		IHGUtil.PrintMethodName();
+		IHGUtil.waitForElement(driver, 5, minutesTimingTextForSMS);
+		return minutesTimingTextForSMS.getText();
+	}
+
+	public String getDaysTimeUnitTextForSMS() {
+		IHGUtil.PrintMethodName();
+		IHGUtil.waitForElement(driver, 5, daysTimeUnitTextForSMS);
+		return daysTimeUnitTextForSMS.getText();
+	}
+
+	public String getHoursTimeUnitTextForSMS() {
+		IHGUtil.PrintMethodName();
+		IHGUtil.waitForElement(driver, 5, hoursTimeUnitTextForSMS);
+		return hoursTimeUnitTextForSMS.getText();
+	}
+
+	public String getMinutesTimeUnitTextForSMS() {
+		IHGUtil.PrintMethodName();
+		IHGUtil.waitForElement(driver, 5, minutesTimeUnitTextForSMS);
+		return minutesTimeUnitTextForSMS.getText();
+	}
+
+	public void selectAllAppointment() throws InterruptedException {
+		IHGUtil.PrintMethodName();
+		IHGUtil.waitForElement(driver, 5, selectAllCheckinAppt);
+		selectAllCheckinAppt.click();
+	}
+
+	public void checkingCheckinButton() {
+		IHGUtil.PrintMethodName();
+		IHGUtil.waitForElement(driver, 5, checkinButton);
+		checkinButton.isEnabled();
+	}
+
+	public void clickOnCheckinButton() throws InterruptedException {
+		IHGUtil.PrintMethodName();
+		IHGUtil.waitForElement(driver, 5, checkinButton);
+		checkinButton.click();
+		Thread.sleep(10000);
+	}
+
+	public void selectOnePatient() {
+		IHGUtil.PrintMethodName();
+		IHGUtil.waitForElement(driver, 5, selectOnePatient);
+		selectOnePatient.click();
+	}
+
+	public String getCheckinButtonText() {
+		IHGUtil.PrintMethodName();
+		IHGUtil.waitForElement(driver, 5, checkinButton);
+		return checkinButton.getText();
+	}
+
+	public int countOfCurbsideCheckinPatient() {
+		IHGUtil.PrintMethodName();
+		int patientSize = allAppointment.size();
+		log("Size of checkin Appointments " + patientSize);
+		return patientSize - 1;
+	}
+
+	public void selectTwoPatient() throws InterruptedException {
+		driver.navigate().refresh();
+		Thread.sleep(10000);
+		IHGUtil.PrintMethodName();
+		int patientSize = allAppointment.size();
+		for (int i = 1; i <= patientSize - 9; i++) {
+			WebElement twoPatient = allAppointment.get(i);
+			twoPatient.click();
+		}
+	}
+	
+	public String enterDays() {
+		Random random = new Random();
+		int randamNo = random.nextInt(400);
+		return Appointment.days = String.valueOf(randamNo);
+	}
+	
+	public String enterHours() {
+		Random random = new Random();
+		int randamNo = random.nextInt(23);
+		return Appointment.hours = String.valueOf(randamNo);
+		
+	}
+	
+	public String enterMinutes() {
+		Random random = new Random();
+		int randamNo = random.nextInt(59);
+		return Appointment.minutes = String.valueOf(randamNo);
+		
 	}
 }

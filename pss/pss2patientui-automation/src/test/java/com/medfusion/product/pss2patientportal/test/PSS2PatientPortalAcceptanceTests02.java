@@ -1002,6 +1002,10 @@ public class PSS2PatientPortalAcceptanceTests02 extends BaseTestNGWebDriver {
 		setUp(propertyData.getProperty("mf.practice.id.ng"), propertyData.getProperty("mf.authuserid.am.ng"));
 		Response response;
 		
+		String patientMatch = payloadAM.patientInfoWithOptionalLLNG();
+		response = postAPIRequestAM.patientInfoPost(practiceId, patientMatch);
+		aPIVerification.responseCodeValidation(response, 200);
+		
 		String group=propertyData.getProperty("alertgroup.ng");
 		String lockoutmessage=propertyData.getProperty("lockoutbillingnote.ng");
 		String lockouttype=propertyData.getProperty("billingnote.type.ng");

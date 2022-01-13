@@ -364,14 +364,14 @@ public class PatientMessagingPage extends BasePageObject {
 
 	public ArrayList<String> setFieldsAndPublishMessage(PropertyFileLoader testData, String templateName,
 			String subjectText) {
-		return setFieldsAndPublishMessage(testData.getFirstName(), testData.getLastName(), testData.getEmail(),
-				templateName, subjectText);
+		return setFieldsAndPublishMessage(testData.getFirstName(), testData.getProperty("last.name.build"),
+				testData.getProperty("eamil.build.message"), templateName, subjectText);
 	}
 
 	public ArrayList<String> setFieldsAndPublishMessageforBuild(PropertyFileLoader testData, String templateName,
-			String subjectText) {
-		return setFieldsAndPublishBuildMessage(testData.getFirstName(), testData.getLastName(), testData.getEmail(),
-				templateName, subjectText);
+			String subjectText) throws NullPointerException, InterruptedException {
+		return setFieldsAndPublishBuildMessage(testData.getFirstName(), testData.getProperty("last.name.build"),
+				testData.getProperty("eamil.build.message"), templateName, subjectText);
 	}
 
 	public ArrayList<String> setFieldsAndPublishMessage(String firstName, String lastName, String email,
@@ -391,7 +391,7 @@ public class PatientMessagingPage extends BasePageObject {
 	}
 
 	public ArrayList<String> setFieldsAndPublishBuildMessage(String firstName, String lastName, String email,
-			String templateName, String subjectText) {
+			String templateName, String subjectText) throws InterruptedException {
 		IHGUtil.PrintMethodName();
 		setBuildMessageFields(templateName, subjectText);
 		setBuildRecipient(firstName, lastName, email);

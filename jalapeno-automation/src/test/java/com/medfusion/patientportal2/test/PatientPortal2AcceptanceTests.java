@@ -158,6 +158,14 @@ public class PatientPortal2AcceptanceTests extends BaseTestNGWebDriver {
 			patient = new CreatePatient().selfRegisterPatient(driver, patient, testData.getUrl());
 		}
 	}
+	
+	public void createCommonPatientWithStatement() throws Exception {
+		if (patient == null) {
+			String username = PortalUtil2.generateUniqueUsername(testData.getProperty("tr.user.id"), testData);
+			patient = PatientFactory.createJalapenoPatient(username, testData);
+			patient = new CreatePatient().selfRegisterPatientWithPreference(driver, patient, testData.getUrl(),2);
+		}
+	}
 
 	// TODO Consolidate these create patients and make sure we are not using the
 	// method to logout at the end. Logging out every time is time consuming when we
@@ -511,7 +519,7 @@ public class PatientPortal2AcceptanceTests extends BaseTestNGWebDriver {
 		// also need to check that the email is fresh enough as there might be email
 		// with the same content from different test run
 		String notificationEmailSubject = "New message from " + testData.getPracticeName();
-		String[] mailAddress = testData.getEmail().split("@");
+		String[] mailAddress = testData.getProperty("eamil.build.message").split("@");
 		String emailBody = "Sign in to view this message";
 		YopMail mail = new YopMail(driver);
 		String email = mail.getLinkFromEmail(mailAddress[0], notificationEmailSubject, emailBody, 15);
@@ -949,7 +957,7 @@ public class PatientPortal2AcceptanceTests extends BaseTestNGWebDriver {
 		String name = "TestPatient CreditCard";
 		CreditCard creditCard = new CreditCard(CardType.Mastercard, name);
 
-		createCommonPatient();
+		createCommonPatientWithStatement();
 		logStep("Load login page");
 		JalapenoLoginPage loginPage = new JalapenoLoginPage(driver, testData.getUrl());
 		JalapenoHomePage homePage = loginPage.login(patient.getUsername(), patient.getPassword());
@@ -3023,26 +3031,23 @@ public class PatientPortal2AcceptanceTests extends BaseTestNGWebDriver {
 		String amount = IHGUtil.createRandomNumericString(3);
 		String name = "TestPatient CreditCard";
 		CreditCard creditCard = new CreditCard(CardType.Mastercard, name);
-		Instant messageBuildingStart = Instant.now();
 		String messageSubject = "Pay My Bill";
 
-		createCommonPatient();
+		createCommonPatientWithStatement();
 		logStep("Load login page");
 		JalapenoLoginPage loginPage = new JalapenoLoginPage(driver, testData.getUrl());
 		JalapenoHomePage homePage = loginPage.login(patient.getUsername(), patient.getPassword());
-
 		JalapenoPayBillsMakePaymentPage payBillsPage = homePage.clickOnNewPayBills(driver);
 		logStep("Remove all cards because Selenium can't see AddNewCard button");
 		payBillsPage.removeAllCards();
+
 		logStep("Check that no card is present");
 		assertFalse(payBillsPage.isAnyCardPresent());
-
 		JalapenoPayBillsConfirmationPage confirmationPage = payBillsPage.fillPaymentInfo(amount, accountNumber,
 				creditCard);
 
 		logStep("Verifying credit card ending");
 		assertTrue(confirmationPage.getCreditCardEnding().equals(creditCard.getLastFourDigits()));
-
 		homePage = confirmationPage.commentAndSubmitPayment("Testing payment from number: " + accountNumber);
 		assertTrue(homePage.wasPayBillsSuccessfull());
 
@@ -3068,12 +3073,10 @@ public class PatientPortal2AcceptanceTests extends BaseTestNGWebDriver {
 		assertTrue(messagesPage.isMessageDisplayed(driver, messageSubject));
 
 		logStep("Verifying the Payment Notification Mail is received by the patient or not");
-
 		YopMail mail = new YopMail(driver);
 		String notificationEmailSubject = "Payment Receipt";
-		String mailAddress = patient.getUsername();
+		String mailAddress = patient.getEmail();
 		assertTrue(mail.getEmailContent(mailAddress, notificationEmailSubject, "************", 10));
-
 		/*
 		 * Email email = new
 		 * Mailer(mailAddress).pollForNewEmailWithSubject(notificationEmailSubject, 90,
@@ -3082,7 +3085,6 @@ public class PatientPortal2AcceptanceTests extends BaseTestNGWebDriver {
 		 * email.getBody(); assertTrue(emailBody.contains("************" +
 		 * creditCardEnding));
 		 */
-
 		homePage.clickOnLogout();
 
 	}
@@ -6271,4 +6273,5 @@ public class PatientPortal2AcceptanceTests extends BaseTestNGWebDriver {
 		logStep("Logging out");
 		loginPage = homePage.clickOnLogout();
 	}
+
 }

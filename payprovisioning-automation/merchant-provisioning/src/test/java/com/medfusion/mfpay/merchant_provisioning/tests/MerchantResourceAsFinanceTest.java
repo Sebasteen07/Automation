@@ -14,6 +14,7 @@ import org.codehaus.jackson.map.ObjectMapper;
 import org.testng.Assert;
 import org.testng.annotations.BeforeTest;
 import org.testng.annotations.Test;
+import com.medfusion.common.utils.IHGUtil;
 import com.medfusion.common.utils.PropertyFileLoader;
 import com.medfusion.mfpay.merchant_provisioning.helpers.MerchantInfo;
 import com.medfusion.mfpay.merchant_provisioning.helpers.PaypalDetails;
@@ -27,6 +28,7 @@ public class MerchantResourceAsFinanceTest extends BaseRest {
 		setupFinanceRequestSpecBuilder();
 		setupResponsetSpecBuilder();
 	}
+
 	// Creates a new element merchant as Finance user.
 	@Test
 	public void testCreateNewElementMerchantAsFinance() throws IOException {
@@ -102,7 +104,7 @@ public class MerchantResourceAsFinanceTest extends BaseRest {
 
 		String qualifiedUpperBoundaryPercent = DBUtils.executeQueryOnDB("rcm",
 				"SELECT qualified_ubound_pct FROM public.merchant where mmid = " + testData.getProperty("mmid"));
-		
+
 		String midQualifiedUpperBoundaryPercent = DBUtils.executeQueryOnDB("rcm",
 				"SELECT mid_qualified_ubound_pct FROM public.merchant where mmid = " + testData.getProperty("mmid"));
 
@@ -133,8 +135,7 @@ public class MerchantResourceAsFinanceTest extends BaseRest {
 		Assert.assertEquals(jsonPath.get("feeSettlementType").toString(),
 				testData.getProperty("fee.settlement.type").toString());
 	}
-	
-	
+
 	@Test
 	public void testCreateNewMerchantDiffAccounts() throws IOException {
 
@@ -155,8 +156,8 @@ public class MerchantResourceAsFinanceTest extends BaseRest {
 		Validations validate = new Validations();
 		validate.verifyMerchantBankAccounts(url, response.asString());
 	}
-	
-	//Edit merchant account details single to multiple & vice versa
+
+	// Edit merchant account details single to multiple & vice versa
 	@Test(dataProvider = "edit_account_details", dataProviderClass = MPTestData.class, enabled = true)
 
 	public void testEditMerchantAccount(String seprateFunding, String feeRoutingNumber, String feeAccountType,
@@ -192,4 +193,108 @@ public class MerchantResourceAsFinanceTest extends BaseRest {
 
 	}
 
+	@Test
+	public void testCreateNewInstamedMerchantAsFinance() throws NullPointerException, Throwable {
+
+		MerchantInfo merchantinfo = new MerchantInfo();
+		String merchantId = IHGUtil.createRandomNumericString(8);
+
+		Response response = merchantinfo.createInstamedMerchant(
+				"Instamed" + testData.getProperty("merchant.name") + ProvisioningUtils.randomizeMerchantIdentifiers(),
+				testData.getProperty("external.merchantid"), testData.getProperty("customer.account.number"),
+				Double.parseDouble(testData.getProperty("mid.qfee.percent")),
+				Double.parseDouble(testData.getProperty("nqfee.percent")),
+				Double.parseDouble(testData.getProperty("per.transaction.authfee")),
+				Double.parseDouble(testData.getProperty("qfee.percent")),
+				testData.getProperty("instamed.preferred.processor"), merchantId,
+				testData.getProperty("instamed.store.id"), testData.getProperty("instamed.virtual.visit"),
+				testData.getProperty("instamed.patient.portal"), testData.getProperty("instamed.precheck"));
+
+		JsonPath jsonpath = new JsonPath(response.asString());
+		Assert.assertNotNull(jsonpath, "Response was null");
+		Assert.assertNotNull(jsonpath.get("id"), "Merchant id was not in the response");
+		Assert.assertEquals(jsonpath.get("customerAccountNumber"), (testData.getProperty("customer.account.number")));
+		Assert.assertEquals(jsonpath.get("externalMerchantId"),
+				Integer.parseInt((testData.getProperty("external.merchantid"))));
+		Assert.assertEquals(jsonpath.get("accountDetails.preferredProcessor"),
+				(testData.getProperty("instamed.preferred.processor")));
+		String merchantIdJP = jsonpath.get("id").toString();
+
+		String merchantIdDb = DBUtils.executeQueryOnDB("rcm",
+				"SELECT merchant_name FROM public.merchant where mmid = " + merchantIdJP);
+		Assert.assertEquals(jsonpath.get("merchantName").toString(), merchantIdDb);
+
+		String instamedMerchantId = DBUtils.executeQueryOnDB("rcm",
+				"SELECT instamed_merchant_id FROM merchant_instamed where mmid = " + merchantIdJP);
+		Assert.assertEquals(jsonpath.get("accountDetails.instaMedAccountDetails.merchantId").toString(),
+				instamedMerchantId);
+
+		String store_id = DBUtils.executeQueryOnDB("rcm",
+				"SELECT store_id FROM merchant_instamed where mmid = " + merchantIdJP);
+		Assert.assertEquals(jsonpath.get("accountDetails.instaMedAccountDetails.storeId").toString(), store_id);
+
+		String terminalId = DBUtils.executeQueryOnDB("rcm",
+				"SELECT terminal_id FROM merchant_instamed_terminal_type where (mmid =  " + merchantIdJP
+						+ "AND  type = 'VIRTUAL_VISITS')");
+
+		Assert.assertEquals(
+				jsonpath.get("accountDetails.instaMedAccountDetails.instaMedTerminalIDList.VIRTUAL_VISITS").toString(),
+				testData.getProperty("instamed.virtual.visit"));
+		Assert.assertEquals(
+				jsonpath.get("accountDetails.instaMedAccountDetails.instaMedTerminalIDList.VIRTUAL_VISITS").toString(),
+				terminalId);
+
+		Assert.assertEquals(
+				jsonpath.get("accountDetails.instaMedAccountDetails.instaMedTerminalIDList.VIRTUAL_VISITS").toString(),
+				testData.getProperty("instamed.virtual.visit"));
+		Assert.assertEquals(
+				jsonpath.get("accountDetails.instaMedAccountDetails.instaMedTerminalIDList.VIRTUAL_VISITS").toString(),
+				terminalId);
+
+		String terminalIdPre = DBUtils.executeQueryOnDB("rcm",
+				"SELECT terminal_id FROM merchant_instamed_terminal_type where (mmid =  " + merchantIdJP
+						+ "AND  type = 'PRECHECK')");
+
+		Assert.assertEquals(
+				jsonpath.get("accountDetails.instaMedAccountDetails.instaMedTerminalIDList.PRECHECK").toString(),
+				testData.getProperty("instamed.precheck"));
+		Assert.assertEquals(
+				jsonpath.get("accountDetails.instaMedAccountDetails.instaMedTerminalIDList.PRECHECK").toString(),
+				terminalIdPre);
+
+		String terminalIdPat = DBUtils.executeQueryOnDB("rcm",
+				"SELECT terminal_id FROM merchant_instamed_terminal_type where (mmid =  " + merchantIdJP
+						+ "AND  type = 'PATIENT_PORTAL')");
+
+		Assert.assertEquals(
+				jsonpath.get("accountDetails.instaMedAccountDetails.instaMedTerminalIDList.PATIENT_PORTAL").toString(),
+				testData.getProperty("instamed.patient.portal"));
+		Assert.assertEquals(
+				jsonpath.get("accountDetails.instaMedAccountDetails.instaMedTerminalIDList.PATIENT_PORTAL").toString(),
+				terminalIdPat);
+
+	}
+
+	@Test(dataProvider = "instamed_create_with_invalid", dataProviderClass = MPTestData.class)
+	public void testCreateNewInstamedMerchantWithInvalid(String merchantName, String externalMerchantId,
+			String customerAccountNumber, Double midQfeePercent, Double nonQFeePercent, Double authFee,
+			Double qualifiedFeePercent, String preferredProcessor, String merchantId, String storeId,
+			String virtualVisit, String patientPortal, String preCheck, String statusCodeVerify,
+			String validationMessage) throws NullPointerException, Throwable {
+
+		MerchantInfo merchantinfo = new MerchantInfo();
+
+		Response response = merchantinfo.createInstamedMerchant(merchantName, externalMerchantId, customerAccountNumber,
+				midQfeePercent, nonQFeePercent, authFee, qualifiedFeePercent, preferredProcessor, merchantId, storeId,
+				virtualVisit, patientPortal, preCheck);
+		JsonPath jsonPath = new JsonPath(response.asString());
+		Assert.assertNotNull(jsonPath, "Response was null");
+		Assert.assertEquals(response.getStatusCode(), Integer.parseInt(statusCodeVerify));
+		if (jsonPath.get("message") != null) {
+
+			Assert.assertTrue(jsonPath.get("message").toString().contains(validationMessage));
+
+		}
+
+	}
 }

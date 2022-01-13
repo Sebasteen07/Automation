@@ -349,6 +349,12 @@ public class AppointmentsPage extends BasePageObject {
 	@FindBy(how = How.XPATH, using = "//*[@id='minus']")
 	private WebElement previousPage;
 
+	@FindBy(how = How.XPATH, using = "//div[@class='navbar-right-arrivals-number']")
+	private WebElement notificationIcon;
+
+	@FindBy(how = How.CSS, using = "#alert > p")
+	private WebElement selectBannerMesssage;
+
 	public AppointmentsPage(WebDriver driver) {
 		super(driver);
 		PageFactory.initElements(driver, this);
@@ -1269,4 +1275,27 @@ public class AppointmentsPage extends BasePageObject {
 		}
 	}
 
+	public void clickOnNotifIcon() throws InterruptedException {
+		driver.navigate().refresh();
+		Thread.sleep(10000);
+		IHGUtil.PrintMethodName();
+		IHGUtil.waitForElement(driver, 10, notificationIcon);
+		jse.executeScript("arguments[0].click();", notificationIcon);
+	}
+
+	public boolean visibilityBannerMessage() {
+		IHGUtil.PrintMethodName();
+		IHGUtil.waitForElement(driver, 10, selectBannerMesssage);
+		boolean visibility = false;
+		visibility = selectBannerMesssage.isDisplayed();
+		return visibility;
+	}
+
+	public boolean visibilityOfBannerMessageBaseOnFilter() {
+		IHGUtil.PrintMethodName();
+		IHGUtil.waitForElement(driver, 5, bannerMessage);
+		boolean visibility = false;
+		visibility = bannerMessage.isDisplayed();
+		return visibility;
+	}
 }

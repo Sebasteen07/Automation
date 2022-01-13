@@ -335,9 +335,18 @@ public class PostAPIRequestPMNG extends BaseTestNGWebDriver {
 			String patientId) {
 
 		RestAssured.baseURI = baseurl;
-		Response response = RestAssured.given().when().headers(Header).body(b).log().all().when()
-				.post(practiceId + "/apptype/nextavailable/" + patientId).then().log().all().extract().response();
-		return response;
+		Response response;
+		if (patientId == null) {
+
+			response = given().when().headers(Header).body(b).log().all().when()
+					.post(practiceId + "/apptype/nextavailable").then().log().all().extract().response();
+			return response;
+
+		} else {
+			response = given().when().headers(Header).body(b).log().all().when()
+					.post(practiceId + "/apptype/nextavailable/" + patientId).then().log().all().extract().response();
+			return response;
+		}
 	}
 
 	public Response booksBynextAvailable(String baseurl, String b, Map<String, String> Header, String practiceid,

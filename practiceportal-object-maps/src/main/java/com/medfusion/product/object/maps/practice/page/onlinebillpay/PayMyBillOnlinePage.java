@@ -671,11 +671,15 @@ public class PayMyBillOnlinePage extends BasePageObject {
 		budgetSearchfirstName.sendKeys(fName);
 		budgetSearchlastName.clear();
 		budgetSearchlastName.sendKeys(lName);
+		Thread.sleep(2000);
 		searchForPatients.click();
 		Thread.sleep(8000);
+//		WebElement searchOption = driver
+//				.findElement(By.xpath("//table[@id='MfAjaxFallbackDefaultDataTable']//td[span[contains(text(),'" + lName
+//						+ ", " + fName + "')]]/preceding-sibling::td"));
 		WebElement searchOption = driver
-				.findElement(By.xpath("//table[@id='MfAjaxFallbackDefaultDataTable']//td[span[contains(text(),'" + lName
-						+ ", " + fName + "')]]/preceding-sibling::td"));
+				.findElement(By.xpath("//table[@id='MfAjaxFallbackDefaultDataTable']//td/span[contains(text(),'" + lName + ", " + fName + "')]/../preceding-sibling::td//a"));
+		
 		IHGUtil.waitForElement(driver, 30, searchOption);
 		searchOption.click();
 		Thread.sleep(10000);

@@ -13,7 +13,7 @@ public class ManageSolutionsPage extends BasePageObject {
 	@FindBy(xpath = "//input[@name='btn_edit']")
 	private WebElement btnEdit;
 	
-	@FindBy(xpath = "//td/b[text()='Patient Support']/../following-sibling::td/input[@type='Checkbox']")
+	@FindBy(xpath = "//td/b[contains(text(),'Patient Support')]/../following-sibling::td/input[@type='Checkbox']")
 	private WebElement	chckBox;
 	
 	@FindBy(xpath = "//td/b[text()='Patient Support']/../following-sibling::td/input[@type='Checkbox']/..")
@@ -33,6 +33,7 @@ public class ManageSolutionsPage extends BasePageObject {
 		jse.executeScript("scroll(0, document.body.scrollHeight);");
 	    IHGUtil.setFrame(driver,"iframebody");
 		IHGUtil.waitForElement(driver, 10,btnEdit);
+		Thread.sleep(1000);
 		btnEdit.click();
 		IHGUtil.setDefaultFrame(driver);
 		return PageFactory.initElements(driver, ManageSolutionsPage.class);
@@ -45,6 +46,7 @@ public class ManageSolutionsPage extends BasePageObject {
 		System.out.println(chckBox.getText());
 		if(chckBoxName.getText().contains("Activate"))
 		{
+			Thread.sleep(1000);
 			chckBox.click();
 		}
 		
@@ -58,6 +60,7 @@ public class ManageSolutionsPage extends BasePageObject {
 		IHGUtil.waitForElement(driver, 10, chckBox);
 		if(chckBoxName.getText().contains("Deactivate"))
 		{
+			Thread.sleep(1000);
 			chckBox.click();
 		}
 		
