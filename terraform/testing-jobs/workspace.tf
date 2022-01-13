@@ -27,6 +27,9 @@ locals {
     demo-integrations-acceptance-oauth10 = "demo-integrations-acceptance-oauth10"
     demo-integrations1-acceptance      = "demo-integrations1-acceptance"
     demo-integrations1-regression      = "demo-integrations1-regression"
+    prod-practiceportal-regression1    = "prod-practiceportal-regression1"
+    git-taf-prod-p2p-directmessage     = "git-taf-prod-p2p-directmessage"
+    git-taf-prod-rcm-acceptance        = "git-taf-prod-rcm-acceptance"
   }
   selected_workspace = local.valid_workspaces[terraform.workspace]
 }
