@@ -2170,31 +2170,18 @@ public class PSSPatientUtils extends BaseTestNGWebDriver {
 		long diffDays = diff / (24 * 60 * 60 * 1000);
 		return diffDays;
 	}
-	
-	public String currentDateWithTimeZone(String timezone) {
-		TimeZone timeZone = TimeZone.getTimeZone(timezone);
-		String dateFormat = "MM/dd/yyyy";
-		SimpleDateFormat f1 = new SimpleDateFormat(dateFormat);
-		Calendar c = Calendar.getInstance();
-		TimeZone time_zone = TimeZone.getTimeZone(timezone);
-		f1.setTimeZone(timeZone);
-		c.setTimeZone(time_zone);
-		String currentDate = f1.format(c.getTime());
-		log("Current Date is " + currentDate);
-		return currentDate;
-		}
-	
+
 	// This method will give you new time after time addition
 	public String addToTime(String myTime, int mintime) throws ParseException {
-	SimpleDateFormat df = new SimpleDateFormat("HH:mm:ss");
-	Date d = df.parse(myTime);
-	Calendar cal = Calendar.getInstance();
-	cal.setTime(d);
-	cal.add(Calendar.MINUTE, mintime);
-	String newTime = df.format(cal.getTime());
-	return newTime;
+		SimpleDateFormat df = new SimpleDateFormat("HH:mm:ss");
+		Date d = df.parse(myTime);
+		Calendar cal = Calendar.getInstance();
+		cal.setTime(d);
+		cal.add(Calendar.MINUTE, mintime);
+		String newTime = df.format(cal.getTime());
+		return newTime;
 	}
-	
+
 	public int ageCurrentmonths(String date) {
 		DateTimeFormatter formatter = DateTimeFormatter.ofPattern("d-MMM-yyyy");
 		LocalDate pdate = LocalDate.parse(date, formatter);
