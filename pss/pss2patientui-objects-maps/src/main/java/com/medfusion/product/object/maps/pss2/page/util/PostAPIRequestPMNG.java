@@ -730,5 +730,11 @@ public class PostAPIRequestPMNG extends BaseTestNGWebDriver {
 		return response;
 	}
 	
-	
+	public Response patientDemographicsWithQueryParameter(String baseurl, Map<String, String> Header, String practiceId,
+			String patientId) {
+		RestAssured.baseURI = baseurl;
+		Response response = given().queryParam("language", "EN").log().all().headers(Header).log().all().when()
+				.get(practiceId + "/demographics/" + patientId).then().log().all().extract().response();
+		return response;
+	}
 }
