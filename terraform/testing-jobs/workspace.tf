@@ -18,6 +18,18 @@ locals {
     prod-integrations2-regression2     = "prod-integrations2-regression2"
     prod-integrations2-regression3     = "prod-integrations2-regression3"
     git-taf-prod-pss-acceptance        = "git-taf-prod-pss-acceptance"
+    demo-integrations2-regression1     = "demo-integrations2-regression1"
+    demo-integrations2-regression2     = "demo-integrations2-regression2"
+    demo-integrations2-regression3     = "demo-integrations2-regression3"
+    prod-integrations-acceptance-oauth10 = "prod-integrations-acceptance-oauth10"
+    prod-integrations1-acceptance      = "prod-integrations1-acceptance"
+    prod-integrations1-regression      = "prod-integrations1-regression"
+    demo-integrations-acceptance-oauth10 = "demo-integrations-acceptance-oauth10"
+    demo-integrations1-acceptance      = "demo-integrations1-acceptance"
+    demo-integrations1-regression      = "demo-integrations1-regression"
+    prod-practiceportal-regression1    = "prod-practiceportal-regression1"
+    git-taf-prod-p2p-directmessage     = "git-taf-prod-p2p-directmessage"
+    git-taf-prod-rcm-acceptance        = "git-taf-prod-rcm-acceptance"
   }
   selected_workspace = local.valid_workspaces[terraform.workspace]
 }

@@ -108,9 +108,6 @@ public class SecurityDetailsPage extends MedfusionPage {
 				scrollAndWait(0,300,3000);
 				log("Clicking finish btn");
 				buttonFinishStep.click();
-				if (new IHGUtil(driver).exists(confirmationPopup)) {
-					updateMissingInfoButton.click();
-				} 
 				selectStatementIfRequired(statementPreference); //TODO move to handleWeNeedToConfirmSomethingModal
 				handleWeNeedToConfirmSomethingModal();
 				return PageFactory.initElements(driver, JalapenoHomePage.class);

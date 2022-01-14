@@ -112,6 +112,22 @@ public class Merchant {
 		}
 	
 	
+	public static Map<String, Object> createInstamedMerchantAccMap(String merchantname, String externalmerchantid,
+			String customerAccountNumber, Double midQfeePercent,Double nonQFeePercent,
+			Double authFee,Double qualifiedFeePercent,String preferredProcessor,String merchantId,String storeId ,String virtualVisit,String patientPortal,String preCheck){
+			Map<String, Object> merchantdetails = new HashMap<String, Object>(); 
+			merchantdetails.put("merchantName",merchantname);
+			merchantdetails.put("externalMerchantId", Integer.parseInt(externalmerchantid));
+			merchantdetails.put("customerAccountNumber",customerAccountNumber); 
+			merchantdetails.put("acceptedCreditCards", Arrays.asList(PracticeConstants.CARD_ARRAY_LIST));			
+			merchantdetails.put("accountDetails", InstamedAccountDetails.getAccountDetailsMap(preferredProcessor, merchantId, storeId , virtualVisit, patientPortal, preCheck));
+			merchantdetails.put("contractedRates", ContractedRates.getUpdatedContractedRatesMap(midQfeePercent,
+					nonQFeePercent,authFee, qualifiedFeePercent));
+			return merchantdetails;
+			
+		}
+	
+	
 
 	@Override
 	public String toString() {
