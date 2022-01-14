@@ -1284,7 +1284,9 @@ public class PSS2PMFeatureNGTests02 extends BaseTestNG {
 		Response response;
 		String adminPayload;
 		JSONArray arr;
-		int slotsize=5;
+		
+		String m=propertyData.getProperty("preventbacktoback.slotsize.pm.ng");		
+		int slotsize=Integer.parseInt(m);
 		int apptDuration= 2*slotsize;
 		
 		response = postAPIRequestAM.locationById(practiceId, propertyData.getProperty("availableslot.locationid.pm.ng"));
@@ -1366,7 +1368,9 @@ public class PSS2PMFeatureNGTests02 extends BaseTestNG {
 		Response response;
 		String adminPayload;
 		JSONArray arr;
-		int maxPerDay=1;
+		
+		String m=propertyData.getProperty("maxperday.count.pm.ng");		
+		int maxPerDay=Integer.parseInt(m);
 	
 		response = postAPIRequestAM.locationById(practiceId, propertyData.getProperty("availableslot.locationid.pm.ng"));
 		apv.responseCodeValidation(response, 200);
@@ -1445,7 +1449,9 @@ public class PSS2PMFeatureNGTests02 extends BaseTestNG {
 
 		Response response;
 		String adminPayload;
-		int preventSchedDays=30;
+		
+		String m=propertyData.getProperty("preventsched.days.pm.ng");		
+		int preventSchedDays=Integer.parseInt(m);
 	
 		response = postAPIRequestAM.locationById(practiceId, propertyData.getProperty("availableslot.locationid.pm.ng"));
 		apv.responseCodeValidation(response, 200);
@@ -2164,17 +2170,19 @@ public class PSS2PMFeatureNGTests02 extends BaseTestNG {
 		setUpAM(propertyData.getProperty("mf.practice.id.ng"), propertyData.getProperty("mf.authuserid.am.ng"));
 
 		Response response;
+		String adminPayload;
 		
-		int pcp=1;
-		int fct=60;
+		String pcpvalue=propertyData.getProperty("patient.id.careteam.pcp.pm.ng");
+		String fctvalue=propertyData.getProperty("patient.id.careteam.fct.pm.ng");
 		
-//		String cancelReasonPayload = payloadAM02.careTeamSettingPyaload(pcp, fct);
-//		response = postAPIRequestAM.resourceConfigSavePost(practiceId, cancelReasonPayload);
-//		apv.responseCodeValidation(response, 200);
+		int pcp=Integer.parseInt(pcpvalue);
+		int fct=Integer.parseInt(fctvalue);
+		
+		adminPayload=payloadAM02.careTeamSettingPyaload(pcp, fct);
+		response=postAPIRequestAM.resourceConfigSavePost(practiceId, adminPayload);
+		apv.responseCodeValidation(response, 200);
 
-		String patientId = "58569";
-		//String patientId = propertyData.getProperty("patient.id.lastseen.pm.ng");
-		String bookid = propertyData.getProperty("availableslot.bookid.pm.ng");
+		String patientId = propertyData.getProperty("patient.id.careteam.pm.ng");
 		String locationid = propertyData.getProperty("availableslot.locationid.pm.ng");
 		String apptid = propertyData.getProperty("availableslot.apptid.pm.ng");
 
@@ -2212,9 +2220,8 @@ public class PSS2PMFeatureNGTests02 extends BaseTestNG {
 		adminPayload = payloadAM02.pcpSharePatientPyaload(false);
 		response = postAPIRequestAM.bookSave(practiceId, adminPayload);
 		apv.responseCodeValidation(response, 200);
-		
-		String patientId = "58569";
-		//String patientId = propertyData.getProperty("patient.id.lastseen.pm.ng");
+
+		String patientId = propertyData.getProperty("patient.id.careteam.pm.ng");
 		String bookid = propertyData.getProperty("availableslot.bookid.pm.ng");
 		String locationid = propertyData.getProperty("availableslot.locationid.pm.ng");
 		String apptid = propertyData.getProperty("availableslot.apptid.pm.ng");
@@ -2249,6 +2256,7 @@ public class PSS2PMFeatureNGTests02 extends BaseTestNG {
 	@Test(enabled = true, groups = { "APItest" }, retryAnalyzer = RetryAnalyzer.class)
 	public void testPrivacyPolicyTrue() throws Exception {
 		
+		log("Verify the response when Privacy Policy is ON");
 
 		logStep("Set up the API authentication");
 		setUpAM(propertyData.getProperty("mf.practice.id.ng"), propertyData.getProperty("mf.authuserid.am.ng"));
@@ -2280,6 +2288,7 @@ public class PSS2PMFeatureNGTests02 extends BaseTestNG {
 	@Test(enabled = true, groups = { "APItest" }, retryAnalyzer = RetryAnalyzer.class)
 	public void testPrivacyPolicyFalse() throws Exception {
 		
+		log("Verify the response when Privacy Policy is off");
 
 		logStep("Set up the API authentication");
 		setUpAM(propertyData.getProperty("mf.practice.id.ng"), propertyData.getProperty("mf.authuserid.am.ng"));
