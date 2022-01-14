@@ -28,7 +28,6 @@ import com.medfusion.product.pss2patientui.pojo.Appointment;
 import com.medfusion.product.pss2patientui.utils.PSSPatientUtils;
 import com.medfusion.product.pss2patientui.utils.PSSPropertyFileLoader;
 
-import io.restassured.path.json.JsonPath;
 import io.restassured.response.Response;
 
 public class PSS2PMFeatureNGTests02 extends BaseTestNG {
@@ -545,7 +544,9 @@ public class PSS2PMFeatureNGTests02 extends BaseTestNG {
 		Response response;
 		String adminPayload;
 		JSONArray arr;
-		int apptDuration=30;		
+		
+		String m=propertyData.getProperty("apppointment.duration.pm.ng");		
+		int apptDuration=Integer.parseInt(m);
 		
 		response = postAPIRequestAM.locationById(practiceId, propertyData.getProperty("availableslot.locationid.pm.ng"));
 		apv.responseCodeValidation(response, 200);
