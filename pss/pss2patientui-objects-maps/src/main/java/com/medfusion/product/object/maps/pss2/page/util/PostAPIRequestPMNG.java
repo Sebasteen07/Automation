@@ -464,18 +464,9 @@ public class PostAPIRequestPMNG extends BaseTestNGWebDriver {
 	public Response cancelAppointment(String baseurl, String b, Map<String, String> Header, String practiceId,
 			String patientId) {
 		RestAssured.baseURI = baseurl;
-		Response response;
 
-//		Response response = given().when().headers(Header).body(b).log().all().when()
-//				.post(practiceId + "/cancelappointment/" + patientId).then().log().all().extract().response();
-		
-		if (patientId == null) {
-			response = given().when().headers(Header).body(b).log().all().when().post(practiceId + "/cancelappointment")
-					.then().log().all().extract().response();
-		} else {
-			response = given().when().headers(Header).body(b).log().all().when()
-					.post(practiceId + "/cancelappointment/" + patientId).then().log().all().extract().response();
-		}
+		Response response = given().when().headers(Header).body(b).log().all().when()
+				.post(practiceId + "/cancelappointment/" + patientId).then().log().all().extract().response();
 
 		return response;
 	}
