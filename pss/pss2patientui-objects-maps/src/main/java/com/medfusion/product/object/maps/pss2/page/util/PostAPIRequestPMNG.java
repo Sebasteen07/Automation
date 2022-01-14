@@ -135,6 +135,16 @@ public class PostAPIRequestPMNG extends BaseTestNGWebDriver {
 		log("The Access Token is    " + jsonPath.get("token"));
 		return access_Token;
 	}
+	
+	public String createToken(String baseurl, String practiceid, String flowtype) {
+		RestAssured.baseURI = baseurl;
+		Response response = given().log().all().header("flowType", flowtype).get(practiceid + "/createtoken").then()
+				.assertThat().statusCode(200).body("token", Matchers.notNullValue()).extract().response();
+		JsonPath jsonPath = response.jsonPath();
+		String access_Token = jsonPath.get("token");
+		log("The Access Token is    " + jsonPath.get("token"));
+		return access_Token;
+	}
 
 	public Response upcomingConfiguration(String baseurl, Map<String, String> Header, String practiceId) {
 		RestAssured.baseURI = baseurl;
@@ -454,9 +464,18 @@ public class PostAPIRequestPMNG extends BaseTestNGWebDriver {
 	public Response cancelAppointment(String baseurl, String b, Map<String, String> Header, String practiceId,
 			String patientId) {
 		RestAssured.baseURI = baseurl;
+		Response response;
 
-		Response response = given().when().headers(Header).body(b).log().all().when()
-				.post(practiceId + "/cancelappointment/" + patientId).then().log().all().extract().response();
+//		Response response = given().when().headers(Header).body(b).log().all().when()
+//				.post(practiceId + "/cancelappointment/" + patientId).then().log().all().extract().response();
+		
+		if (patientId == null) {
+			response = given().when().headers(Header).body(b).log().all().when().post(practiceId + "/cancelappointment")
+					.then().log().all().extract().response();
+		} else {
+			response = given().when().headers(Header).body(b).log().all().when()
+					.post(practiceId + "/cancelappointment/" + patientId).then().log().all().extract().response();
+		}
 
 		return response;
 	}
@@ -474,9 +493,15 @@ public class PostAPIRequestPMNG extends BaseTestNGWebDriver {
 	public Response scheduleAppointment(String baseurl, String b, Map<String, String> Header, String practiceId,
 			String patientId, String patientType) {
 		RestAssured.baseURI = baseurl;
-
-		Response response = given().when().headers(Header).body(b).log().all().when()
-				.post(practiceId + "/scheduleappointment/" + patientId).then().log().all().extract().response();
+		Response response;
+		
+		if (patientId == null) {
+			response = given().when().headers(Header).body(b).log().all().when()
+					.post(practiceId + "/scheduleappointment").then().log().all().extract().response();
+		} else {
+			response = given().when().headers(Header).body(b).log().all().when()
+					.post(practiceId + "/scheduleappointment/" + patientId).then().log().all().extract().response();
+		}
 
 		return response;
 
