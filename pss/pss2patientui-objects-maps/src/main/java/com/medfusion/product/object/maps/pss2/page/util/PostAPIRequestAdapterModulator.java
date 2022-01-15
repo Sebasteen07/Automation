@@ -1014,10 +1014,18 @@ public class PostAPIRequestAdapterModulator {
 				.all().extract().response();
 		return response;
 	}
+
+	public Response specialitySave(String practiceid, String b) throws Exception {
+		Response response = given().spec(requestSpec).body(b).log().all().when().post(practiceid + "/specialty")
+				.then().log().all().extract().response();
+		return response;
+	}
+
 	
 	public Response appointmenttypeConfgWithBookOff(String practiceid, String b,String appID) throws Exception {
 		Response response = given().spec(requestSpec).body(b).log().all().when().post(practiceid + "/appointmenttype/"+appID+"/config")
 		.then().log().all().extract().response();
 		return response;
 		}
+
 }
