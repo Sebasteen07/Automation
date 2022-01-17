@@ -2206,7 +2206,165 @@ public class PayloadAM02 {
 		return payload;
 	}	
 
+	public String onlineCancelLeadTimePyaload(String time) {
+
+		String payload = "[\r\n"
+				+ "  {\r\n"
+				+ "    \"group\": \"APPOINTMENT\",\r\n"
+				+ "    \"key\": \"allowCancellationHours\",\r\n"
+				+ "    \"value\": \""+time+"\"\r\n"
+				+ "  },\r\n"
+				+ "  {\r\n"
+				+ "    \"group\": \"PATIENT_ACCESS\",\r\n"
+				+ "    \"key\": \"ValidDuration\",\r\n"
+				+ "    \"value\": \"12\"\r\n"
+				+ "  },\r\n"
+				+ "  {\r\n"
+				+ "    \"group\": \"SLOTS\",\r\n"
+				+ "    \"key\": \"displaySlotsCount\",\r\n"
+				+ "    \"value\": 10\r\n"
+				+ "  },\r\n"
+				+ "  {\r\n"
+				+ "    \"group\": \"SLOTS\",\r\n"
+				+ "    \"key\": \"maxCalendarMonths\",\r\n"
+				+ "    \"value\": \"2\"\r\n"
+				+ "  },\r\n"
+				+ "  {\r\n"
+				+ "    \"group\": \"APPOINTMENT\",\r\n"
+				+ "    \"key\": \"ageRestriction\",\r\n"
+				+ "    \"value\": \"18\"\r\n"
+				+ "  },\r\n"
+				+ "  {\r\n"
+				+ "    \"group\": \"APPOINTMENT\",\r\n"
+				+ "    \"key\": \"maxAppointments\",\r\n"
+				+ "    \"value\": \"10\"\r\n"
+				+ "  },\r\n"
+				+ "  {\r\n"
+				+ "    \"group\": \"APPOINTMENT\",\r\n"
+				+ "    \"key\": \"ShowPastAppointmentMonths\",\r\n"
+				+ "    \"value\": \"5\"\r\n"
+				+ "  },\r\n"
+				+ "  {\r\n"
+				+ "    \"group\": \"PROVIDER\",\r\n"
+				+ "    \"key\": \"showNextAvailable\",\r\n"
+				+ "    \"value\": false\r\n"
+				+ "  },\r\n"
+				+ "  {\r\n"
+				+ "    \"group\": \"LOCATION\",\r\n"
+				+ "    \"key\": \"searchLocation\",\r\n"
+				+ "    \"value\": true\r\n"
+				+ "  },\r\n"
+				+ "  {\r\n"
+				+ "    \"group\": \"APPOINTMENT\",\r\n"
+				+ "    \"key\": \"showUpcoming\",\r\n"
+				+ "    \"value\": true\r\n"
+				+ "  },\r\n"
+				+ "  {\r\n"
+				+ "    \"group\": \"APPOINTMENT\",\r\n"
+				+ "    \"key\": \"showPast\",\r\n"
+				+ "    \"value\": true\r\n"
+				+ "  },\r\n"
+				+ "  {\r\n"
+				+ "    \"group\": \"APPOINTMENT\",\r\n"
+				+ "    \"key\": \"patientUpdateConfig\",\r\n"
+				+ "    \"value\": \"PATIENT_NOTES\"\r\n"
+				+ "  },\r\n"
+				+ "  {\r\n"
+				+ "    \"group\": \"APPOINTMENT\",\r\n"
+				+ "    \"key\": \"establishPatientLastVisit\",\r\n"
+				+ "    \"value\": \"1095\"\r\n"
+				+ "  },\r\n"
+				+ "  {\r\n"
+				+ "    \"group\": \"APPOINTMENT\",\r\n"
+				+ "    \"key\": \"showCancelReason\",\r\n"
+				+ "    \"value\": false\r\n"
+				+ "  },\r\n"
+				+ "  {\r\n"
+				+ "    \"group\": \"RULEENGINE\",\r\n"
+				+ "    \"key\": \"patientCreationDuration\",\r\n"
+				+ "    \"value\": \"1095\"\r\n"
+				+ "  },\r\n"
+				+ "  {\r\n"
+				+ "    \"group\": \"MULTI_PRACTICE_SETTING\",\r\n"
+				+ "    \"key\": \"sharePatientAcrossPractices\",\r\n"
+				+ "    \"value\": true\r\n"
+				+ "  }\r\n"
+				+ "]";
+		return payload;
+	}	
+	public String Pyaload() {
+
+		String payload = "";
+		return payload;
+	}	
+	public String Pyaload() {
+
+		String payload = "";
+		return payload;
+	}	
+	public String Pyaload() {
+
+		String payload = "";
+		return payload;
+	}	
+	public String Pyaload() {
+
+		String payload = "";
+		return payload;
+	}	
+	public String Pyaload() {
+
+		String payload = "";
+		return payload;
+	}	
+	public String Pyaload() {
+
+		String payload = "";
+		return payload;
+	}	
+	public String Pyaload() {
+
+		String payload = "";
+		return payload;
+	}	
+	public String Pyaload() {
+
+		String payload = "";
+		return payload;
+	}	
+	public String Pyaload() {
+
+		String payload = "";
+		return payload;
+	}	
+	public String Pyaload() {
+
+		String payload = "";
+		return payload;
+	}	
+	public String Pyaload() {
+
+		String payload = "";
+		return payload;
+	}	
+	public String Pyaload() {
+
+		String payload = "";
+		return payload;
+	}	
+	public String Pyaload() {
+
+		String payload = "";
+		return payload;
+	}	
+	public String Pyaload() {
+
+		String payload = "";
+		return payload;
+	}	
 	
+	
+
 	
 
 
