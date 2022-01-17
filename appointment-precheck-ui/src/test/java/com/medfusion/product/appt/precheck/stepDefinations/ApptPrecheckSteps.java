@@ -28,6 +28,8 @@ import com.medfusion.product.object.maps.appt.precheck.util.CommonMethods;
 import com.medfusion.product.object.maps.appt.precheck.util.HeaderConfig;
 import com.medfusion.product.object.maps.appt.precheck.util.PostAPIRequestAptPrecheck;
 import com.medfusion.product.object.maps.appt.precheck.util.PostAPIRequestMfAppointmentScheduler;
+import com.medfusion.product.object.maps.appt.precheck.util.PostAPIRequestMfNotificationSubscriptionManager;
+import com.medfusion.product.object.maps.appt.precheck.util.YopMail;
 
 import io.cucumber.java.en.And;
 import io.cucumber.java.en.Given;
@@ -50,6 +52,7 @@ public class ApptPrecheckSteps extends BaseTest {
 	PostAPIRequestAptPrecheck aptPrecheckPost;
 	AptPrecheckPayload aptPrecheckPayload;
 	CurbsideCheckInPage curbsidePage;
+	PostAPIRequestMfNotificationSubscriptionManager subsManager;;
 
 	@Given("user lauch practice provisioning url")
 	public void user_lauch_practice_provisioning_url() throws Exception {
@@ -66,6 +69,7 @@ public class ApptPrecheckSteps extends BaseTest {
 		accessToken = AccessToken.getAccessToken();
 		aptPrecheckPost = PostAPIRequestAptPrecheck.getPostAPIRequestAptPrecheck();
 		aptPrecheckPayload = AptPrecheckPayload.getAptPrecheckPayload();
+		subsManager=PostAPIRequestMfNotificationSubscriptionManager.getPostAPIRequestMfNotificationSubscriptionManager();
 		log("Practice provisining url-- " + propertyData.getProperty("practice.provisining.url.ge"));
 		loginPage = new AppointmentPrecheckLogin(driver, propertyData.getProperty("practice.provisining.url.ge"));
 		log("Verify medfusion page");
@@ -2991,7 +2995,7 @@ public class ApptPrecheckSteps extends BaseTest {
 		log("User is on Curbside check in tab");
 		notifPage.checkingCheckinButton();
 		log("Curbside button is disable");
-		notifPage.selectAllAppointment();
+		curbsidePage.selectAllAppointment();
 		notifPage.clickOnCheckinButton();
 		log("Clear all appointment");
 	}
@@ -3044,14 +3048,14 @@ public class ApptPrecheckSteps extends BaseTest {
 		notifPage.clickOnCheckinButton();
 		notifPage.checkingCheckinButton();
 		log("Check in button is disable");
-		assertEquals(notifPage.countOfCurbsideCheckinPatient(),9,"Count of Curbside checkin patient was not match");
+		assertEquals(curbsidePage.countOfCurbsideCheckinPatient(),9,"Count of Curbside checkin patient was not match");
 		
 	}
 	
 	@Then("verify checkin button fuctionality after two patient gets checkin")
 	public void verify_checkin_button_fuctionality_after_two_patient_gets_checkin() throws InterruptedException {
 		scrollAndWait(0, -500, 5000);
-		notifPage.selectTwoPatient();
+		curbsidePage.selectTwoPatient();
 		notifPage.checkingCheckinButton();
 		log("Check in button is enable");
 		assertEquals(notifPage.getCheckinButtonText(),"Check-In (2)","Checkin button text is not match");
@@ -3059,13 +3063,13 @@ public class ApptPrecheckSteps extends BaseTest {
 		notifPage.clickOnCheckinButton();
 		notifPage.checkingCheckinButton();
 		log("Check in button is disable");
-		assertEquals(notifPage.countOfCurbsideCheckinPatient(),8,"Count of Curbside checkin patient was not match");
+		assertEquals(curbsidePage.countOfCurbsideCheckinPatient(),8,"Count of Curbside checkin patient was not match");
 	}
 	
 	@Then("verify checkin button fuctionality after all patient gets checkin")
 	public void verify_checkin_button_fuctionality_after_all_patient_gets_checkin() throws InterruptedException {
 		scrollAndWait(0, -500, 15000);
-		notifPage.selectAllAppointment();
+		curbsidePage.selectAllAppointment();
 		notifPage.checkingCheckinButton();
 		log("Check in button is enable");
 		assertEquals(notifPage.getCheckinButtonText(),"Check-In (10)","Checkin button text is not match");
@@ -3074,6 +3078,108 @@ public class ApptPrecheckSteps extends BaseTest {
 		Thread.sleep(10000);
 		notifPage.checkingCheckinButton();
 		log("Check in button is disable");
-		assertEquals(notifPage.countOfCurbsideCheckinPatient(),0,"Count of Curbside checkin patient was not match");
+		assertEquals(curbsidePage.countOfCurbsideCheckinPatient(),0,"Count of Curbside checkin patient was not match");
 	}
+	
+	@Then("verify seclect and deselect functionality of all checkbox")
+	public void verify_seclect_and_deselect_functionality_of_all_checkbox() throws InterruptedException {
+		assertFalse(curbsidePage.getVisibilityOfAllCheckbox());
+		Thread.sleep(10000);
+		curbsidePage.selectAllAppointment();
+		notifPage.checkingCheckinButton();
+		log("Check in button is enabled");
+		assertEquals(notifPage.getCheckinButtonText(),"Check-In (10)","Checkin button text is not match");
+		assertTrue(curbsidePage.getVisibilityOfAllCheckbox());
+		curbsidePage.deselectAllAppointment();
+		assertFalse(curbsidePage.getVisibilityOfAllCheckbox());
+	}
+	
+	@Then("verify select functionality of individual checkbox")
+	public void verify_select_functionality_of_individual_checkbox() throws InterruptedException {
+		Thread.sleep(10000);
+		curbsidePage.selectMultiplePatients(8);
+		assertEquals(notifPage.getCheckinButtonText(),"Check-In (3)","Checkin button text is not match");
+		curbsidePage.getVisibilityOfMultiplePatient(8);
+		log("Multiple patient got selected ");
+	}
+	
+	@When("schedule a appointment without phone number")
+	public void schedule_a_appointment_without_phone_number() throws NullPointerException, IOException {
+		Random random = new Random();
+		int randamNo = random.nextInt(100000);
+		Appointment.patientId = String.valueOf(randamNo);
+		Appointment.apptId = String.valueOf(randamNo);
+		long currentTimestamp = System.currentTimeMillis();
+		long plus20Minutes = currentTimestamp + TimeUnit.MINUTES.toMillis(5);
+		apptSched.aptPutAppointment(propertyData.getProperty("baseurl.mf.appointment.scheduler"),
+				propertyData.getProperty("mf.apt.scheduler.practice.id"),
+				payload.putAppointmentPayload(plus20Minutes, null,
+						propertyData.getProperty("unsubscribed.email")),
+				headerConfig.HeaderwithToken(accessToken.getaccessTokenPost()), Appointment.patientId,
+				Appointment.apptId);
+	}
+	
+	@When("go to on yopmail and from mail unsubscribe a patient")
+	public void go_to_on_yopmail_and_from_mail_unsubscribe_a_patient() throws InterruptedException {
+		YopMail yopMail= new YopMail(driver);
+		String unsubscribeMessage=yopMail.unsubscribeEmail(propertyData.getProperty("unsubscribed.email"));
+		assertEquals(unsubscribeMessage,"You will no longer receive emails from PreCheck and reminder services. Please contact your practice if you wish to opt back in.","Message was nor correct");
+	}
+	
+	@When("user switch on practice provisioning url")
+	public void user_switch_on_practice_provisioning_url() {
+		loginPage = new AppointmentPrecheckLogin(driver, propertyData.getProperty("practice.provisining.url.ge"));
+	}
+	
+	@When("from appointment dashboard select patient and send broadcast message")
+	public void from_appointment_dashboard_select_patient_and_send_broadcast_message() throws Exception {
+		mainPage.clickOnAppointmentsTab();
+		apptPage.selectPatient(Appointment.patientId, Appointment.patientId);
+		log("Click on Actions tab and select broadcast message");
+		apptPage.performAction();
+		log("Enter message in English and Spanish");
+		apptPage.sendBroadcastMessage(propertyData.getProperty("broadcast.message.en"),
+				propertyData.getProperty("broadcast.message.es"));
+		log("banner meassage :" + apptPage.broadcastBannerMessage());
+	}
+	
+	@Then("verify banner status should come as failure")
+	public void verify_banner_status_should_come_as_failure() throws NullPointerException, IOException {
+		assertEquals(apptPage.broadcastMessageStatus(),"Broadcast Message Sent. 0 successful. 1 failed.","Message was nor correct");
+	log("Delete Subscription Data");
+				Response response = subsManager.deleteAllSubscriptionDataUsingEmailId(propertyData.getProperty("baseurl.mf.notif.subscription.manager"),
+						headerConfig.HeaderwithToken(accessToken.getaccessTokenPost()), propertyData.getProperty("unsubscribed.email"));
+				log("Verifying the response");
+				assertEquals(response.getStatusCode(), 200);
+	}
+	
+	@When("send message to selected patient")
+	public void send_message_to_selected_patient() throws InterruptedException {
+		curbsidePage.selectMessageFromDropdown(Appointment.patientId, propertyData.getProperty("curbside.checkin.message.parking.lot"));
+		curbsidePage.clickOnSendButtonOfSelectedPatient(Appointment.patientId);
+	}
+	
+	@Then("verify last message send succesfully from curbside checkin")
+	public void verify_last_message_send_succesfully_from_curbside_checkin() {
+		assertEquals("Last Message: "+propertyData.getProperty("curbside.checkin.message.parking.lot"),curbsidePage.getSentMessageSelectedPatient(Appointment.patientId),"Message was not correct");
+	}
+	
+	@When("select patient and click on check in")
+	public void select_patient_and_click_on_check_in() {
+		curbsidePage.selectPatient(Appointment.patientId, Appointment.apptId);
+		curbsidePage.clickOnCheckInButton();
+	}
+	
+	@When("switch on appoinement dashboard")
+	public void switch_on_appoinement_dashboard() throws InterruptedException {
+		scrollAndWait(0, 100, 5000);
+		mainPage.clickOnAppointmentsTab();
+	}
+	
+	@Then("verify check in patient should be added in the appointments dashboard")
+	public void verify_check_in_patient_should_be_added_in_the_appointments_dashboard() {
+		apptPage.selectPatient(Appointment.patientId, Appointment.patientId);
+		assertTrue(apptPage.visibilityPatient(Appointment.patientId));
+	}
+	
 }

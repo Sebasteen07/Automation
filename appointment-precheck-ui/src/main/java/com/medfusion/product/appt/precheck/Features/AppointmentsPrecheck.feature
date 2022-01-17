@@ -864,3 +864,41 @@ Feature: Test fuctionality of Appointment precheck
     Then schedule multiple appointments and confirm their appointment
     Then verify checkin button fuctionality after all patient gets checkin
     And logout from practice provisioning portal
+
+  Scenario: verify the functionality of all checkbox on curbside checkin page
+    When user on curbside checkin tab and clear all appointments
+    And schedule multiple appointments and confirm their appointment
+    Then verify seclect and deselect functionality of all checkbox
+    And logout from practice provisioning portal
+
+  Scenario: verify the functionality of individual checkbox on curbside checkin page
+    When user on curbside checkin tab and clear all appointments
+    And schedule multiple appointments and confirm their appointment
+    Then verify select functionality of individual checkbox
+    And logout from practice provisioning portal
+
+  Scenario: verify when appointment is schedule only with mail and broadcast is send then banner status should come as failure when email is unsubscribed
+    When schedule a appointment without phone number
+    And go to on yopmail and from mail unsubscribe a patient
+    And user switch on practice provisioning url
+    And from appointment dashboard select patient and send broadcast message
+    Then verify banner status should come as failure
+    And logout from practice provisioning portal
+
+  Scenario: Verify if patient confirmed appointment then message from curbside checkin send succesfully
+    When schedule an appointment and confirmed their arrival
+    And logged into precheck admin and user is able to view appointment dashboard screen
+    And click on Curbside check-in tab
+    And select patient and click on dropdown
+    And send message to selected patient
+    Then verify last message send succesfully from curbside checkin
+    And logout from practice provisioning portal
+
+  Scenario: Verify if patient checkin his appointment then patient entry should be on appointment dashboard
+    When schedule an appointment and confirmed their arrival
+    And logged into precheck admin and user is able to view appointment dashboard screen
+    And click on Curbside check-in tab
+    And select patient and click on check in
+    And switch on appoinement dashboard
+    Then verify check in patient should be added in the appointments dashboard
+    And logout from practice provisioning portal
