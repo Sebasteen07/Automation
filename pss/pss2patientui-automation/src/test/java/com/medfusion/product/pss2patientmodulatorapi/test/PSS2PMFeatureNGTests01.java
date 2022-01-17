@@ -1,4 +1,4 @@
-// Copyright 2021 NXGN Management, LLC. All Rights Reserved.
+// Copyright 2022 NXGN Management, LLC. All Rights Reserved.
 package com.medfusion.product.pss2patientmodulatorapi.test;
 
 import static org.testng.Assert.assertEquals;
@@ -47,8 +47,8 @@ public class PSS2PMFeatureNGTests01 extends BaseTestNG {
 	public static PayloadPssPMNG payloadPatientMod;
 
 	public static String accessToken;
-	public static String practiceid;
-	public static String baseurl;
+	public static String practiceId;
+	public static String baseUrl;
 	public PSSPatientUtils pssPatientUtils;
 
 	APIVerification apv;
@@ -59,10 +59,9 @@ public class PSS2PMFeatureNGTests01 extends BaseTestNG {
 	public static String practiceIdAm;
 
 	@BeforeTest(enabled = true, groups = { "APItest" })
-	public void setUp() throws IOException {
+	public void setUpPM() throws IOException {
 
 		log("Set the Authorization for Patient Modulator");
-
 		headerConfig = new HeaderConfig();
 		propertyData = new PSSPropertyFileLoader();
 		testData = new Appointment();
@@ -70,13 +69,12 @@ public class PSS2PMFeatureNGTests01 extends BaseTestNG {
 		postAPIRequest = new PostAPIRequestPMNG();
 		payloadPssPMNG1 = new PayloadPM01();
 		payloadPatientMod = new PayloadPssPMNG();
-		baseurl = propertyData.getProperty("base.url.pm.ng");
-		practiceid = propertyData.getProperty("practice.id.pm01");
-		accessToken = postAPIRequest.createToken(baseurl, practiceid);
+		baseUrl = propertyData.getProperty("base.url.pm.ng");
+		practiceId = propertyData.getProperty("practice.id.pm01");
+		accessToken = postAPIRequest.createToken(baseUrl, practiceId);
 		pssPatientUtils = new PSSPatientUtils();
 		apv = new APIVerification();
-
-		log("Base URL for Patient Modulator - " + baseurl);
+		log("Base URL for Patient Modulator - " + baseUrl);
 
 	}
 
@@ -98,8 +96,10 @@ public class PSS2PMFeatureNGTests01 extends BaseTestNG {
 	public void testSSOWithCatShowProviONPost() throws Exception {
 		log("SSO flow : Verify the POST call for Schedule Appointment with Decision Tree and with Show Provider ON.");
 		logStep("Set up the API authentication");
-		setUpAM(propertyData.getProperty("practice.id.pm01"), propertyData.getProperty("mf.authuserid.am01"));
+		setUpAM(propertyData.getProperty("practice.id.pm01"), propertyData.getProperty("mf.authuserid.am.ng01"));
 		Response response;
+		String accessToken_SSO;
+		accessToken_SSO = postAPIRequest.createToken(baseUrl, practiceId, "SSO");
 		response = postAPIRequestAM.locationById(practiceIdAm, propertyData.getProperty("location.id.pm01"));
 		apv.responseCodeValidation(response, 200);
 		String locationTimeZone = apv.responseKeyValidationJson(response, "timezone");
@@ -136,25 +136,25 @@ public class PSS2PMFeatureNGTests01 extends BaseTestNG {
 		String b = payloadPssPMNG1.availableslotsPayloadLTB(currentDate, propertyData.getProperty("location.id.pm01"),
 				propertyData.getProperty("appt.id.pm01"), propertyData.getProperty("book.id.pm01"));
 
-		response = postAPIRequest.availableSlots(baseurl, b, headerConfig.HeaderwithToken(accessToken), practiceid,
+		response = postAPIRequest.availableSlots(baseUrl, b, headerConfig.HeaderwithToken( accessToken_SSO), practiceId,
 				patientId);
 		apv.responseCodeValidation(response, 200);
 		apv.responseTimeValidation(response);
 
 		JSONArray arr1 = new JSONArray(response.body().asString());
-		String slotid = arr1.getJSONObject(2).getJSONArray("slotList").getJSONObject(0).getString("slotId");
+		String slotId = arr1.getJSONObject(2).getJSONArray("slotList").getJSONObject(0).getString("slotId");
 		String time = arr1.getJSONObject(2).getJSONArray("slotList").getJSONObject(0).getString("slotTime");
 		String date = arr1.getJSONObject(2).getString("date");
 		log("slotTime-" + time);
-		log("slotId- " + slotid);
+		log("slotId- " + slotId);
 		log("Date-" + date);
-		String c = payloadPssPMNG1.ssoScheduleWithCatShowProviderON(slotid, date, time,
+		String c = payloadPssPMNG1.ssoScheduleWithCatShowProviderON(slotId, date, time,
 				propertyData.getProperty("location.id.pm01"), propertyData.getProperty("appt.id.pm01"),
 				propertyData.getProperty("book.id.pm01"));
 
 		log("Payload-" + c);
-		Response schedResponse = postAPIRequest.scheduleAppointment(baseurl, c,
-				headerConfig.HeaderwithToken(accessToken), practiceid, patientId, testData.getPatientType());
+		Response schedResponse = postAPIRequest.scheduleAppointment(baseUrl, c,
+				headerConfig.HeaderwithToken( accessToken_SSO), practiceId, patientId, testData.getPatientType());
 		apv.responseCodeValidation(schedResponse, 200);
 		apv.responseTimeValidation(schedResponse);
 		apv.responseKeyValidationJson(schedResponse, "confirmationNo");
@@ -164,12 +164,12 @@ public class PSS2PMFeatureNGTests01 extends BaseTestNG {
 
 		String startdate = date + " " + time;
 
-		String d = payloadPssPMNG1.rescheduleWithCatLTB(slotid, startdate, confirmationno,
+		String d = payloadPssPMNG1.rescheduleWithCatLTB(slotId, startdate, confirmationno,
 				propertyData.getProperty("location.id.pm01"), propertyData.getProperty("appt.id.pm01"),
 				propertyData.getProperty("book.id.pm01"));
 
-		Response rescheduleResponse = postAPIRequest.rescheduleAppointment(baseurl, d,
-				headerConfig.HeaderwithToken(accessToken), practiceid, patientId, testData.getPatientType());
+		Response rescheduleResponse = postAPIRequest.rescheduleAppointment(baseUrl, d,
+				headerConfig.HeaderwithToken( accessToken_SSO), practiceId, patientId, testData.getPatientType());
 
 		apv.responseCodeValidation(rescheduleResponse, 200);
 		apv.responseTimeValidation(rescheduleResponse);
@@ -188,8 +188,11 @@ public class PSS2PMFeatureNGTests01 extends BaseTestNG {
 
 		log("SSO flow : Verify the POST call for Schedule Appointment without Decision Tree and with Show Provider OFF.");
 		logStep("Set up the API authentication");
-		setUpAM(propertyData.getProperty("practice.id.pm01"), propertyData.getProperty("mf.authuserid.am01"));
+		setUpAM(propertyData.getProperty("practice.id.pm01"), propertyData.getProperty("mf.authuserid.am.ng01"));
 		Response response;
+		String accessToken_SSO;
+		accessToken_SSO = postAPIRequest.createToken(baseUrl, practiceId, "SSO");
+		response = postAPIRequestAM.locationById(practiceIdAm, propertyData.getProperty("location.id.pm01"));
 		response = postAPIRequestAM.locationById(practiceIdAm, propertyData.getProperty("location.id.pm01"));
 		apv.responseCodeValidation(response, 200);
 		String locationTimeZone = apv.responseKeyValidationJson(response, "timezone");
@@ -226,25 +229,25 @@ public class PSS2PMFeatureNGTests01 extends BaseTestNG {
 		String b = payloadPssPMNG1.availableslotsPayloadLTB(currentDate, propertyData.getProperty("location.id.pm01"),
 				propertyData.getProperty("appt.id.pm01"), propertyData.getProperty("book.id.pm01"));
 
-		response = postAPIRequest.availableSlots(baseurl, b, headerConfig.HeaderwithToken(accessToken), practiceid,
+		response = postAPIRequest.availableSlots(baseUrl, b, headerConfig.HeaderwithToken(accessToken_SSO), practiceId,
 				patientId);
 		apv.responseCodeValidation(response, 200);
 		apv.responseTimeValidation(response);
 
 		JSONArray arr1 = new JSONArray(response.body().asString());
-		String slotid = arr1.getJSONObject(2).getJSONArray("slotList").getJSONObject(0).getString("slotId");
+		String slotId = arr1.getJSONObject(2).getJSONArray("slotList").getJSONObject(0).getString("slotId");
 		String time = arr1.getJSONObject(2).getJSONArray("slotList").getJSONObject(0).getString("slotTime");
 		String date = arr1.getJSONObject(2).getString("date");
 		log("slotTime-" + time);
-		log("slotId- " + slotid);
+		log("slotId- " + slotId);
 		log("Date-" + date);
-		String c = payloadPssPMNG1.ssoScheduleWithoutCatShowProviderON(slotid, date, time,
+		String c = payloadPssPMNG1.ssoScheduleWithoutCatShowProviderON(slotId, date, time,
 				propertyData.getProperty("location.id.pm01"), propertyData.getProperty("appt.id.pm01"),
 				propertyData.getProperty("book.id.pm01"));
 
 		log("Payload-" + c);
-		Response schedResponse = postAPIRequest.scheduleAppointment(baseurl, c,
-				headerConfig.HeaderwithToken(accessToken), practiceid, patientId, testData.getPatientType());
+		Response schedResponse = postAPIRequest.scheduleAppointment(baseUrl, c,
+				headerConfig.HeaderwithToken(accessToken_SSO), practiceId, patientId, testData.getPatientType());
 		apv.responseCodeValidation(schedResponse, 200);
 		apv.responseTimeValidation(schedResponse);
 		apv.responseKeyValidationJson(schedResponse, "confirmationNo");
@@ -257,12 +260,12 @@ public class PSS2PMFeatureNGTests01 extends BaseTestNG {
 
 		String startdate = date + " " + time;
 
-		String d = payloadPatientMod.rescheduleAppointmentPayload(slotid, startdate, confirmationno,
+		String d = payloadPatientMod.rescheduleAppointmentPayload(slotId, startdate, confirmationno,
 				propertyData.getProperty("book.id.pm01"), propertyData.getProperty("location.id.pm01"),
 				propertyData.getProperty("appt.id.pm01"));
 
-		Response rescheduleResponse = postAPIRequest.rescheduleAppointment(baseurl, d,
-				headerConfig.HeaderwithToken(accessToken), practiceid, patientId, testData.getPatientType());
+		Response rescheduleResponse = postAPIRequest.rescheduleAppointment(baseUrl, d,
+				headerConfig.HeaderwithToken(accessToken_SSO), practiceId, patientId, testData.getPatientType());
 
 		apv.responseCodeValidation(rescheduleResponse, 200);
 		apv.responseTimeValidation(rescheduleResponse);
@@ -277,8 +280,10 @@ public class PSS2PMFeatureNGTests01 extends BaseTestNG {
 	public void testSSOWithoutCatShowProviOffPost() throws Exception {
 		log("SSO flow : Verify the POST call for Schedule Appointment without Decision Tree and with Show Provider ON.");
 		logStep("Set up the API authentication");
-		setUpAM(propertyData.getProperty("practice.id.pm01"), propertyData.getProperty("mf.authuserid.am01"));
+		setUpAM(propertyData.getProperty("practice.id.pm01"), propertyData.getProperty("mf.authuserid.am.ng01"));
 		Response response;
+		String accessToken_SSO;
+		accessToken_SSO = postAPIRequest.createToken(baseUrl, practiceId, "SSO");
 		response = postAPIRequestAM.locationById(practiceIdAm, propertyData.getProperty("location.id.pm01"));
 		apv.responseCodeValidation(response, 200);
 		String locationTimeZone = apv.responseKeyValidationJson(response, "timezone");
@@ -311,44 +316,40 @@ public class PSS2PMFeatureNGTests01 extends BaseTestNG {
 				payloadAM01.turnONOFFDecisionTree(false));
 		apv.responseCodeValidation(response, 200);
 
-		String patientid = propertyData.getProperty("patient.id.sso.pm01");
+		String patientId = propertyData.getProperty("patient.id.sso.pm01");
 		String b = payloadPssPMNG1.availableslotsPayloadLT(currentDate, propertyData.getProperty("location.id.pm01"),
 				propertyData.getProperty("appt.id.pm01"));
 
-		response = postAPIRequest.availableSlots(baseurl, b, headerConfig.HeaderwithToken(accessToken), practiceid,
-				patientid);
+		response = postAPIRequest.availableSlots(baseUrl, b, headerConfig.HeaderwithToken(accessToken_SSO), practiceId,
+				patientId);
 		apv.responseCodeValidation(response, 200);
 		apv.responseTimeValidation(response);
 
 		JSONArray arr1 = new JSONArray(response.body().asString());
-		String slotid = arr1.getJSONObject(2).getJSONArray("slotList").getJSONObject(0).getString("slotId");
+		String slotId = arr1.getJSONObject(2).getJSONArray("slotList").getJSONObject(0).getString("slotId");
 		String time = arr1.getJSONObject(2).getJSONArray("slotList").getJSONObject(0).getString("slotTime");
 		String date = arr1.getJSONObject(2).getString("date");
 		log("slotTime-" + time);
-		log("slotId- " + slotid);
+		log("slotId- " + slotId);
 		log("Date-" + date);
-		String c = payloadPssPMNG1.ssoScheduleWithoutCatShowProviderOFF(slotid, date, time,
+		String c = payloadPssPMNG1.ssoScheduleWithoutCatShowProviderOFF(slotId, date, time,
 				propertyData.getProperty("location.id.pm01"), propertyData.getProperty("appt.id.pm01"));
 
 		log("Payload-" + c);
-		Response schedResponse = postAPIRequest.scheduleAppointment(baseurl, c,
-				headerConfig.HeaderwithToken(accessToken), practiceid, patientid, testData.getPatientType());
+		Response schedResponse = postAPIRequest.scheduleAppointment(baseUrl, c,
+				headerConfig.HeaderwithToken(accessToken_SSO), practiceId, patientId, testData.getPatientType());
 		apv.responseCodeValidation(schedResponse, 200);
 		apv.responseTimeValidation(schedResponse);
 		apv.responseKeyValidationJson(schedResponse, "confirmationNo");
 		apv.responseKeyValidationJson(schedResponse, "patientId");
 		String confirmationno = apv.responseKeyValidationJson(schedResponse, "confirmationNo");
 		apv.responseKeyValidationJson(schedResponse, "slotAlreadyTaken");
-
-		String startdate = date + " " + time;
-
-		String d = payloadPssPMNG1.rescheduleWithoutCatLT(slotid, startdate, confirmationno,
+		String startDate = date + " " + time;
+		String d = payloadPssPMNG1.rescheduleWithoutCatLT(slotId, startDate, confirmationno,
 				propertyData.getProperty("location.id.pm01"), propertyData.getProperty("appt.id.pm01"));
-
-		Response rescheduleResponse = postAPIRequest.rescheduleAppointment(baseurl, d,
-				headerConfig.HeaderwithToken(accessToken), practiceid, patientid, testData.getPatientType());
-
-		apv.responseCodeValidation(rescheduleResponse, 200);
+		Response rescheduleResponse = postAPIRequest.rescheduleAppointment(baseUrl, d,
+				headerConfig.HeaderwithToken(accessToken_SSO), practiceId, patientId, testData.getPatientType());
+       	apv.responseCodeValidation(rescheduleResponse, 200);
 		apv.responseTimeValidation(rescheduleResponse);
 
 		apv.responseKeyValidationJson(schedResponse, "confirmationNo");
@@ -362,8 +363,10 @@ public class PSS2PMFeatureNGTests01 extends BaseTestNG {
 
 		log("SSO flow : Verify the POST call for Schedule Appointment with Decision Tree and with Show Provider OFF.");
 		logStep("Set up the API authentication");
-		setUpAM(propertyData.getProperty("practice.id.pm01"), propertyData.getProperty("mf.authuserid.am01"));
+		setUpAM(propertyData.getProperty("practice.id.pm01"), propertyData.getProperty("mf.authuserid.am.ng01"));
 		Response response;
+		String accessToken_SSO;
+		accessToken_SSO = postAPIRequest.createToken(baseUrl, practiceId, "SSO");
 		response = postAPIRequestAM.locationById(practiceIdAm, propertyData.getProperty("location.id.pm01"));
 		apv.responseCodeValidation(response, 200);
 		String locationTimeZone = apv.responseKeyValidationJson(response, "timezone");
@@ -396,28 +399,28 @@ public class PSS2PMFeatureNGTests01 extends BaseTestNG {
 				payloadAM01.turnONOFFDecisionTree(true));
 		apv.responseCodeValidation(response, 200);
 
-		String patientid = propertyData.getProperty("patient.id.sso.pm01");
+		String patientId = propertyData.getProperty("patient.id.sso.pm01");
 		String b = payloadPssPMNG1.availableslotsPayloadLT(currentDate, propertyData.getProperty("location.id.pm01"),
 				propertyData.getProperty("appt.id.pm01"));
 
-		response = postAPIRequest.availableSlots(baseurl, b, headerConfig.HeaderwithToken(accessToken), practiceid,
-				patientid);
+		response = postAPIRequest.availableSlots(baseUrl, b, headerConfig.HeaderwithToken(accessToken_SSO), practiceId,
+				patientId);
 		apv.responseCodeValidation(response, 200);
 		apv.responseTimeValidation(response);
 
 		JSONArray arr1 = new JSONArray(response.body().asString());
-		String slotid = arr1.getJSONObject(2).getJSONArray("slotList").getJSONObject(0).getString("slotId");
+		String slotId = arr1.getJSONObject(2).getJSONArray("slotList").getJSONObject(0).getString("slotId");
 		String time = arr1.getJSONObject(2).getJSONArray("slotList").getJSONObject(0).getString("slotTime");
 		String date = arr1.getJSONObject(2).getString("date");
 		log("slotTime-" + time);
-		log("slotId- " + slotid);
+		log("slotId- " + slotId);
 		log("Date-" + date);
-		String c = payloadPssPMNG1.ssoScheduleWithCatShowProviderOFF(slotid, date, time,
+		String c = payloadPssPMNG1.ssoScheduleWithCatShowProviderOFF(slotId, date, time,
 				propertyData.getProperty("location.id.pm01"), propertyData.getProperty("appt.id.pm01"));
 
 		log("Payload-" + c);
-		Response schedResponse = postAPIRequest.scheduleAppointment(baseurl, c,
-				headerConfig.HeaderwithToken(accessToken), practiceid, patientid, testData.getPatientType());
+		Response schedResponse = postAPIRequest.scheduleAppointment(baseUrl, c,
+				headerConfig.HeaderwithToken(accessToken_SSO), practiceId, patientId, testData.getPatientType());
 		apv.responseCodeValidation(schedResponse, 200);
 		apv.responseTimeValidation(schedResponse);
 		apv.responseKeyValidationJson(schedResponse, "confirmationNo");
@@ -427,11 +430,11 @@ public class PSS2PMFeatureNGTests01 extends BaseTestNG {
 
 		String startdate = date + " " + time;
 
-		String d = payloadPssPMNG1.rescheduleWithCatLT(slotid, startdate, confirmationno,
+		String d = payloadPssPMNG1.rescheduleWithCatLT(slotId, startdate, confirmationno,
 				propertyData.getProperty("location.id.pm01"), propertyData.getProperty("appt.id.pm01"));
 
-		Response rescheduleResponse = postAPIRequest.rescheduleAppointment(baseurl, d,
-				headerConfig.HeaderwithToken(accessToken), practiceid, patientid, testData.getPatientType());
+		Response rescheduleResponse = postAPIRequest.rescheduleAppointment(baseUrl, d,
+				headerConfig.HeaderwithToken(accessToken_SSO), practiceId, patientId, testData.getPatientType());
 
 		apv.responseCodeValidation(rescheduleResponse, 200);
 		apv.responseTimeValidation(rescheduleResponse);
@@ -446,7 +449,7 @@ public class PSS2PMFeatureNGTests01 extends BaseTestNG {
 	public void testReserveForSameDayShowProviderOFF() throws Exception {
 		log("Verify the Reserve for same day with Show provider OFF with POST call of /pss-patient-modulator/v1/{practiceId}/availableslot");
 		logStep("Set up the API authentication");
-		setUpAM(propertyData.getProperty("practice.id.pm01"), propertyData.getProperty("mf.authuserid.am01"));
+		setUpAM(propertyData.getProperty("practice.id.pm01"), propertyData.getProperty("mf.authuserid.am.ng01"));
 		Response response;
 		response = postAPIRequestAM.locationById(practiceIdAm, propertyData.getProperty("location.id.pm01"));
 		apv.responseCodeValidation(response, 200);
@@ -489,14 +492,18 @@ public class PSS2PMFeatureNGTests01 extends BaseTestNG {
 		String b = payloadPssPMNG1.availableslotsPayloadLT(currentDate, locationId, apptId);
 
 		String patientID = propertyData.getProperty("patient.id.pm01");
-		response = postAPIRequest.availableSlots(baseurl, b, headerConfig.HeaderwithToken(accessToken), practiceid,
+		response = postAPIRequest.availableSlots(baseUrl, b, headerConfig.HeaderwithToken(accessToken), practiceId,
 				patientID);
 		apv.responseCodeValidation(response, 200);
 		apv.responseTimeValidation(response);
+		
 		JSONArray arr1 = new JSONArray(response.getBody().asString());
 		for (int i = 0; i < arr1.length(); i++) {
 			JSONObject obj = arr1.getJSONObject(i);
 			log("Validated key-> " + "date" + " value is-  " + obj.getString("date"));
+			int noOfDaysInReserveForSameDay = arr1.length();
+			assertEquals(noOfDaysInReserveForSameDay, 1, "Accept Same Day is not working");
+			log("No of Days is "+noOfDaysInReserveForSameDay);
 			assertEquals(currentDate, obj.getString("date"));
 		}
 		String adapPayloadforReset = payloadAM01.reserveForSameDay("n", accValue, 0);
@@ -508,8 +515,10 @@ public class PSS2PMFeatureNGTests01 extends BaseTestNG {
 	public void testAnoSchedReschWithoutCatShowProviON() throws Exception {
 		log("Annonymous flow : Verify the POST call for Reschedule appointment Without Decision Tree and Show Provider is On");
 		logStep("Set up the API authentication");
-		setUpAM(propertyData.getProperty("practice.id.pm01"), propertyData.getProperty("mf.authuserid.am01"));
+		setUpAM(propertyData.getProperty("practice.id.pm01"), propertyData.getProperty("mf.authuserid.am.ng01"));
 		Response response;
+		String accessToken_AN;
+		accessToken_AN = postAPIRequest.createToken(baseUrl, practiceId, "ANONYMOUS");
 		logStep("Set up the desired Setting in Admin UI using API");
 		response = postAPIRequestAM.locationById(practiceIdAm, propertyData.getProperty("location.id.pm01"));
 		apv.responseCodeValidation(response, 200);
@@ -543,31 +552,31 @@ public class PSS2PMFeatureNGTests01 extends BaseTestNG {
 				payloadAM01.turnONOFFDecisionTree(false));
 		apv.responseCodeValidation(response, 200);
 
-		String patientid = propertyData.getProperty("patient.id.ano.pm01");
+		String patientId = propertyData.getProperty("patient.id.ano.pm01");
 		String b = payloadPssPMNG1.availableslotsPayloadLTB(currentDate, propertyData.getProperty("location.id.pm01"),
 				propertyData.getProperty("appt.id.pm01"), propertyData.getProperty("book.id.pm01"));
 
-		response = postAPIRequest.availableSlots(baseurl, b, headerConfig.HeaderwithToken(accessToken), practiceid,
-				patientid);
+		response = postAPIRequest.availableSlots(baseUrl, b, headerConfig.HeaderwithToken(accessToken_AN), practiceId,
+				patientId);
 		apv.responseCodeValidation(response, 200);
 		apv.responseTimeValidation(response);
 
 		JSONArray arr1 = new JSONArray(response.body().asString());
 
-		String slotid = arr1.getJSONObject(2).getJSONArray("slotList").getJSONObject(0).getString("slotId");
+		String slotId = arr1.getJSONObject(2).getJSONArray("slotList").getJSONObject(0).getString("slotId");
 		String time = arr1.getJSONObject(2).getJSONArray("slotList").getJSONObject(0).getString("slotTime");
 		String date = arr1.getJSONObject(2).getString("date");
 
 		log("slotTime-" + time);
-		log("slotId- " + slotid);
+		log("slotId- " + slotId);
 		log("Date-" + date);
 
-		String c = payloadPssPMNG1.anoScheduleAppointmentPayloadLTBWithoutDecTree(slotid, date, time,
+		String c = payloadPssPMNG1.anoScheduleAppointmentPayloadLTBWithoutDecTree(slotId, date, time,
 				propertyData.getProperty("location.id.pm01"), propertyData.getProperty("appt.id.pm01"),
 				propertyData.getProperty("book.id.pm01"));
 		log("Payload-" + c);
-		Response schedResponse = postAPIRequest.scheduleAppointment(baseurl, c,
-				headerConfig.HeaderwithToken(accessToken), practiceid, patientid, testData.getPatientType());
+		Response schedResponse = postAPIRequest.scheduleAppointment(baseUrl, c,
+				headerConfig.HeaderwithToken(accessToken_AN), practiceId, patientId, testData.getPatientType());
 		apv.responseCodeValidation(schedResponse, 200);
 		apv.responseTimeValidation(schedResponse);
 		apv.responseKeyValidationJson(schedResponse, "confirmationNo");
@@ -579,18 +588,18 @@ public class PSS2PMFeatureNGTests01 extends BaseTestNG {
 
 		String startdate = date + " " + time;
 
-		String d = payloadPssPMNG1.anoRescheduleWithoutCatLTB(slotid, startdate, confirmationno,
+		String d = payloadPssPMNG1.anoRescheduleWithoutCatLTB(slotId, startdate, confirmationno,
 				propertyData.getProperty("location.id.pm01"), propertyData.getProperty("appt.id.pm01"),
 				propertyData.getProperty("book.id.pm01"));
 
-		Response rescheduleResponse = postAPIRequest.rescheduleAppointment(baseurl, d,
-				headerConfig.HeaderwithToken(accessToken), practiceid, patientid, testData.getPatientType());
+		Response rescheduleResponse = postAPIRequest.rescheduleAppointment(baseUrl, d,
+				headerConfig.HeaderwithToken(accessToken_AN), practiceId, patientId, testData.getPatientType());
 
 		apv.responseCodeValidation(rescheduleResponse, 200);
 		apv.responseTimeValidation(rescheduleResponse);
-		Response cancelResponse = postAPIRequest.cancelAppointment(baseurl,
-				payloadPatientMod.cancelAppointmentPayload(extapptid_new), headerConfig.HeaderwithToken(accessToken),
-				practiceid, patientid);
+		Response cancelResponse = postAPIRequest.cancelAppointment(baseUrl,
+				payloadPatientMod.cancelAppointmentPayload(extapptid_new), headerConfig.HeaderwithToken(accessToken_AN),
+				practiceId, patientId);
 		apv.responseCodeValidation(cancelResponse, 200);
 
 	}
@@ -599,7 +608,9 @@ public class PSS2PMFeatureNGTests01 extends BaseTestNG {
 	public void testAnoSchedReschWithCatShowProviON() throws Exception {
 		log("Annonymous flow : Verify the POST call for Schedule Appointment with Decision Tree and with Show Provider ON.");
 		logStep("Set up the API authentication");
-		setUpAM(propertyData.getProperty("practice.id.pm01"), propertyData.getProperty("mf.authuserid.am01"));
+		setUpAM(propertyData.getProperty("practice.id.pm01"), propertyData.getProperty("mf.authuserid.am.ng01"));
+		String accessToken_AN;
+		accessToken_AN = postAPIRequest.createToken(baseUrl, practiceId, "ANONYMOUS");
 		Response response;
 		response = postAPIRequestAM.locationById(practiceIdAm, propertyData.getProperty("location.id.pm01"));
 		apv.responseCodeValidation(response, 200);
@@ -637,27 +648,27 @@ public class PSS2PMFeatureNGTests01 extends BaseTestNG {
 				payloadAM01.turnONOFFDecisionTree(true));
 		apv.responseCodeValidation(response, 200);
 
-		String patientid = propertyData.getProperty("patient.id.ano.pm01");
+		String patientId = propertyData.getProperty("patient.id.ano.pm01");
 		String b = payloadPssPMNG1.availableslotsPayloadLTB(currentDate, propertyData.getProperty("location.id.pm01"),
 				propertyData.getProperty("appt.id.pm01"), propertyData.getProperty("book.id.pm01"));
 
-		response = postAPIRequest.availableSlots(baseurl, b, headerConfig.HeaderwithToken(accessToken), practiceid,
-				patientid);
+		response = postAPIRequest.availableSlots(baseUrl, b, headerConfig.HeaderwithToken(accessToken_AN), practiceId,
+				patientId);
 		apv.responseCodeValidation(response, 200);
 		apv.responseTimeValidation(response);
 		JSONArray arr1 = new JSONArray(response.body().asString());
-		String slotid = arr1.getJSONObject(2).getJSONArray("slotList").getJSONObject(0).getString("slotId");
+		String slotId = arr1.getJSONObject(2).getJSONArray("slotList").getJSONObject(0).getString("slotId");
 		String time = arr1.getJSONObject(2).getJSONArray("slotList").getJSONObject(0).getString("slotTime");
 		String date = arr1.getJSONObject(2).getString("date");
 		log("slotTime-" + time);
-		log("slotId- " + slotid);
+		log("slotId- " + slotId);
 		log("Date-" + date);
-		String c = payloadPssPMNG1.anoScheduleAppointmentPayloadLTBWithDecTree(slotid, date, time,
+		String c = payloadPssPMNG1.anoScheduleAppointmentPayloadLTBWithDecTree(slotId, date, time,
 				propertyData.getProperty("location.id.pm01"), propertyData.getProperty("appt.id.pm01"),
 				propertyData.getProperty("book.id.pm01"));
 		log("Payload-" + c);
-		Response schedResponse = postAPIRequest.scheduleAppointment(baseurl, c,
-				headerConfig.HeaderwithToken(accessToken), practiceid, patientid, testData.getPatientType());
+		Response schedResponse = postAPIRequest.scheduleAppointment(baseUrl, c,
+				headerConfig.HeaderwithToken(accessToken_AN), practiceId, patientId, testData.getPatientType());
 		apv.responseCodeValidation(schedResponse, 200);
 		apv.responseTimeValidation(schedResponse);
 		apv.responseKeyValidationJson(schedResponse, "confirmationNo");
@@ -669,18 +680,18 @@ public class PSS2PMFeatureNGTests01 extends BaseTestNG {
 		String startdate = date + " " + time;
 
 		log("Annonymous flow : Verify the POST call for Reschedule appointment With Decision Tree and Show Provider is On");
-		String d = payloadPssPMNG1.anoRescheduleWithCatLTB(slotid, startdate, confirmationno,
+		String d = payloadPssPMNG1.anoRescheduleWithCatLTB(slotId, startdate, confirmationno,
 				propertyData.getProperty("location.id.pm01"), propertyData.getProperty("appt.id.pm01"),
 				propertyData.getProperty("book.id.pm01"));
 
-		Response rescheduleResponse = postAPIRequest.rescheduleAppointment(baseurl, d,
-				headerConfig.HeaderwithToken(accessToken), practiceid, patientid, testData.getPatientType());
+		Response rescheduleResponse = postAPIRequest.rescheduleAppointment(baseUrl, d,
+				headerConfig.HeaderwithToken(accessToken_AN), practiceId, patientId, testData.getPatientType());
 
 		apv.responseCodeValidation(rescheduleResponse, 200);
 		apv.responseTimeValidation(rescheduleResponse);
-		Response cancelResponse = postAPIRequest.cancelAppointment(baseurl,
-				payloadPatientMod.cancelAppointmentPayload(extapptid_new), headerConfig.HeaderwithToken(accessToken),
-				practiceid, patientid);
+		Response cancelResponse = postAPIRequest.cancelAppointment(baseUrl,
+				payloadPatientMod.cancelAppointmentPayload(extapptid_new), headerConfig.HeaderwithToken(accessToken_AN),
+				practiceId, patientId);
 		apv.responseCodeValidation(cancelResponse, 200);
 
 		response = postAPIRequestAM.resourceConfigSavePost(practiceIdAm,
@@ -693,7 +704,9 @@ public class PSS2PMFeatureNGTests01 extends BaseTestNG {
 	public void testAnoSchedReschWithCatShowProviOFF() throws Exception {
 		log("Annonymous flow : Verify the POST call for Schedule Appointment with Decision Tree and with Show Provider OFF.");
 		logStep("Set up the API authentication");
-		setUpAM(propertyData.getProperty("practice.id.pm01"), propertyData.getProperty("mf.authuserid.am01"));
+		setUpAM(propertyData.getProperty("practice.id.pm01"), propertyData.getProperty("mf.authuserid.am.ng01"));
+		String accessToken_AN;
+		accessToken_AN = postAPIRequest.createToken(baseUrl, practiceId, "ANONYMOUS");
 		Response response;
 		response = postAPIRequestAM.locationById(practiceIdAm, propertyData.getProperty("location.id.pm01"));
 		apv.responseCodeValidation(response, 200);
@@ -730,32 +743,32 @@ public class PSS2PMFeatureNGTests01 extends BaseTestNG {
 				payloadAM01.turnONOFFDecisionTree(true));
 		apv.responseCodeValidation(response, 200);
 
-		String patientid = propertyData.getProperty("patient.id.pm01");
+		String patientId = propertyData.getProperty("patient.id.pm01");
 		String b = payloadPssPMNG1.availableslotsPayloadLT(currentDate, propertyData.getProperty("location.id.pm01"),
 				propertyData.getProperty("appt.id.pm01"));
 
-		response = postAPIRequest.availableSlots(baseurl, b, headerConfig.HeaderwithToken(accessToken), practiceid,
-				patientid);
+		response = postAPIRequest.availableSlots(baseUrl, b, headerConfig.HeaderwithToken(accessToken_AN), practiceId,
+				patientId);
 		apv.responseCodeValidation(response, 200);
 		apv.responseTimeValidation(response);
 
 		JSONArray arr1 = new JSONArray(response.body().asString());
 
-		String slotid = arr1.getJSONObject(2).getJSONArray("slotList").getJSONObject(0).getString("slotId");
+		String slotId = arr1.getJSONObject(2).getJSONArray("slotList").getJSONObject(0).getString("slotId");
 		String time = arr1.getJSONObject(2).getJSONArray("slotList").getJSONObject(0).getString("slotTime");
 		String date = arr1.getJSONObject(2).getString("date");
 
 		log("slotTime-" + time);
-		log("slotId- " + slotid);
+		log("slotId- " + slotId);
 		log("Date-" + date);
 
-		String c = payloadPssPMNG1.anoscheduleAppointmentPayloadWithDecTreeLT(slotid, date, time,
+		String c = payloadPssPMNG1.anoscheduleAppointmentPayloadWithDecTreeLT(slotId, date, time,
 				propertyData.getProperty("location.id.pm01"), propertyData.getProperty("appt.id.pm01"));
 
 		log("Payload-" + c);
 
-		Response schedResponse = postAPIRequest.scheduleAppointment(baseurl, c,
-				headerConfig.HeaderwithToken(accessToken), practiceid, patientid, testData.getPatientType());
+		Response schedResponse = postAPIRequest.scheduleAppointment(baseUrl, c,
+				headerConfig.HeaderwithToken(accessToken_AN), practiceId, patientId, testData.getPatientType());
 		apv.responseCodeValidation(schedResponse, 200);
 		apv.responseTimeValidation(schedResponse);
 		apv.responseKeyValidationJson(schedResponse, "confirmationNo");
@@ -766,18 +779,18 @@ public class PSS2PMFeatureNGTests01 extends BaseTestNG {
 		log("ext App ID is " + extapptid_new);
 		String startdate = date + " " + time;
 		logStep("Annonymous flow : Verify the POST call for Reschedule appointment With Decision Tree and Show Provider is OFF");
-		String d = payloadPssPMNG1.anoRescheduleWithCatLT(slotid, startdate, confirmationno,
+		String d = payloadPssPMNG1.anoRescheduleWithCatLT(slotId, startdate, confirmationno,
 				propertyData.getProperty("location.id.pm01"), propertyData.getProperty("appt.id.pm01"));
 
-		Response rescheduleResponse = postAPIRequest.rescheduleAppointment(baseurl, d,
-				headerConfig.HeaderwithToken(accessToken), practiceid, patientid, testData.getPatientType());
+		Response rescheduleResponse = postAPIRequest.rescheduleAppointment(baseUrl, d,
+				headerConfig.HeaderwithToken(accessToken_AN), practiceId, patientId, testData.getPatientType());
 
 		apv.responseCodeValidation(rescheduleResponse, 200);
 		apv.responseTimeValidation(rescheduleResponse);
 
-		Response cancelResponse = postAPIRequest.cancelAppointment(baseurl,
+		Response cancelResponse = postAPIRequest.cancelAppointment(baseUrl,
 				payloadPatientMod.cancelAppointmentPayload(extapptid_new), headerConfig.HeaderwithToken(accessToken),
-				practiceid, patientid);
+				practiceId, patientId);
 		apv.responseCodeValidation(cancelResponse, 200);
 
 	}
@@ -786,7 +799,9 @@ public class PSS2PMFeatureNGTests01 extends BaseTestNG {
 	public void testAnoSchedReschWithoutCatShowProviOFF() throws Exception {
 		log("Annonymous flow : Verify the POST call for Reschedule appointment Without Decision Tree and Show Provider is OFF");
 		logStep("Set up the API authentication");
-		setUpAM(propertyData.getProperty("practice.id.pm01"), propertyData.getProperty("mf.authuserid.am01"));
+		setUpAM(propertyData.getProperty("practice.id.pm01"), propertyData.getProperty("mf.authuserid.am.ng01"));
+		String accessToken_AN;
+		accessToken_AN = postAPIRequest.createToken(baseUrl, practiceId, "ANONYMOUS");
 		Response response;
 		response = postAPIRequestAM.locationById(practiceIdAm, propertyData.getProperty("location.id.pm01"));
 		apv.responseCodeValidation(response, 200);
@@ -824,32 +839,32 @@ public class PSS2PMFeatureNGTests01 extends BaseTestNG {
 				payloadAM01.turnONOFFDecisionTree(false));
 		apv.responseCodeValidation(response, 200);
 
-		String patientid = propertyData.getProperty("patient.id.pm01");
+		String patientId = propertyData.getProperty("patient.id.pm01");
 		String b = payloadPssPMNG1.availableslotsPayloadLT(currentDate, propertyData.getProperty("location.id.pm01"),
 				propertyData.getProperty("appt.id.pm01"));
 
-		response = postAPIRequest.availableSlots(baseurl, b, headerConfig.HeaderwithToken(accessToken), practiceid,
-				patientid);
+		response = postAPIRequest.availableSlots(baseUrl, b, headerConfig.HeaderwithToken(accessToken_AN), practiceId,
+				patientId);
 		apv.responseCodeValidation(response, 200);
 		apv.responseTimeValidation(response);
 
 		JSONArray arr1 = new JSONArray(response.body().asString());
 
-		String slotid = arr1.getJSONObject(2).getJSONArray("slotList").getJSONObject(0).getString("slotId");
+		String slotId = arr1.getJSONObject(2).getJSONArray("slotList").getJSONObject(0).getString("slotId");
 		String time = arr1.getJSONObject(2).getJSONArray("slotList").getJSONObject(0).getString("slotTime");
 		String date = arr1.getJSONObject(2).getString("date");
 
 		log("slotTime-" + time);
-		log("slotId- " + slotid);
+		log("slotId- " + slotId);
 		log("Date-" + date);
 
-		String c = payloadPssPMNG1.anoscheduleAppointmentPayloadWithoutDecTreeLT(slotid, date, time,
+		String c = payloadPssPMNG1.anoscheduleAppointmentPayloadWithoutDecTreeLT(slotId, date, time,
 				propertyData.getProperty("location.id.pm01"), propertyData.getProperty("appt.id.pm01"));
 
 		log("Payload-" + c);
 
-		Response schedResponse = postAPIRequest.scheduleAppointment(baseurl, c,
-				headerConfig.HeaderwithToken(accessToken), practiceid, patientid, testData.getPatientType());
+		Response schedResponse = postAPIRequest.scheduleAppointment(baseUrl, c,
+				headerConfig.HeaderwithToken(accessToken_AN), practiceId, patientId, testData.getPatientType());
 
 		apv.responseCodeValidation(schedResponse, 200);
 		apv.responseTimeValidation(schedResponse);
@@ -862,17 +877,17 @@ public class PSS2PMFeatureNGTests01 extends BaseTestNG {
 
 		String startdate = date + " " + time;
 		logStep("Annonymous flow : Verify the POST call for Schedule Appointment without Decision Tree and with Show Provider OFF.");
-		String d = payloadPssPMNG1.anoRescheduleWithoutCatLT(slotid, startdate, confirmationno,
+		String d = payloadPssPMNG1.anoRescheduleWithoutCatLT(slotId, startdate, confirmationno,
 				propertyData.getProperty("location.id.pm01"), propertyData.getProperty("appt.id.pm01"));
 
-		Response rescheduleResponse = postAPIRequest.rescheduleAppointment(baseurl, d,
-				headerConfig.HeaderwithToken(accessToken), practiceid, patientid, testData.getPatientType());
+		Response rescheduleResponse = postAPIRequest.rescheduleAppointment(baseUrl, d,
+				headerConfig.HeaderwithToken(accessToken_AN), practiceId, patientId, testData.getPatientType());
 
 		apv.responseCodeValidation(rescheduleResponse, 200);
 		apv.responseTimeValidation(rescheduleResponse);
-		Response cancelResponse = postAPIRequest.cancelAppointment(baseurl,
-				payloadPatientMod.cancelAppointmentPayload(extapptid_new), headerConfig.HeaderwithToken(accessToken),
-				practiceid, patientid);
+		Response cancelResponse = postAPIRequest.cancelAppointment(baseUrl,
+				payloadPatientMod.cancelAppointmentPayload(extapptid_new), headerConfig.HeaderwithToken(accessToken_AN),
+				practiceId, patientId);
 		apv.responseCodeValidation(cancelResponse, 200);
 
 	}
@@ -881,7 +896,7 @@ public class PSS2PMFeatureNGTests01 extends BaseTestNG {
 	public void testHideSlotShowProviderOFF() throws Exception {
 		log("Verify the Hide slot duration with Show provider OFF with POST call of /pss-patient-modulator/v1/{practiceId}/availableslot");
 		logStep("Set up the API authentication");
-		setUpAM(propertyData.getProperty("practice.id.pm01"), propertyData.getProperty("mf.authuserid.am01"));
+		setUpAM(propertyData.getProperty("practice.id.pm01"), propertyData.getProperty("mf.authuserid.am.ng01"));
 		Response response;
 		logStep("Set up the desired rule in Admin UI using API");
 		int leadTime = 3;
@@ -922,13 +937,13 @@ public class PSS2PMFeatureNGTests01 extends BaseTestNG {
 		response = postAPIRequestAM.appointmenttypeConfgWithBookOff(practiceIdAm, hideSlotPayload, appTypeId);
 		apv.responseCodeValidation(response, 200);
 
-		String patientid = propertyData.getProperty("patient.id.pm01");
+		String patientId = propertyData.getProperty("patient.id.pm01");
 		String currentDate = pssPatientUtils.sampleDateTime("MM/dd/yyyy");
 		String b = payloadPssPMNG1.availableslotsPayloadLT(currentDate, propertyData.getProperty("location.id.pm01"),
 				propertyData.getProperty("appt.id.pm01"));
 
-		response = postAPIRequest.availableSlots(baseurl, b, headerConfig.HeaderwithToken(accessToken), practiceid,
-				patientid);
+		response = postAPIRequest.availableSlots(baseUrl, b, headerConfig.HeaderwithToken(accessToken), practiceId,
+				patientId);
 		apv.responseCodeValidation(response, 200);
 		apv.responseTimeValidation(response);
 
@@ -981,36 +996,36 @@ public class PSS2PMFeatureNGTests01 extends BaseTestNG {
 				payloadAM01.turnONOFFDecisionTree(false));
 		apv.responseCodeValidation(response, 200);
 
-		String patientid = propertyData.getProperty("patient.id.pm01");
+		String patientId = propertyData.getProperty("patient.id.pm01");
 
 		String b = payloadPssPMNG1.availableslotsPayloadLTB(currentDate, propertyData.getProperty("location.id.pm01"),
 				propertyData.getProperty("appt.id.pm01"), propertyData.getProperty("book.id.pm01"));
 
-		response = postAPIRequest.availableSlots(baseurl, b, headerConfig.HeaderwithToken(accessToken), practiceid,
-				patientid);
+		response = postAPIRequest.availableSlots(baseUrl, b, headerConfig.HeaderwithToken(accessToken), practiceId,
+				patientId);
 		apv.responseCodeValidation(response, 200);
 		apv.responseTimeValidation(response);
 
 		JSONArray arr1 = new JSONArray(response.body().asString());
 
-		String slotid = arr1.getJSONObject(2).getJSONArray("slotList").getJSONObject(0).getString("slotId");
+		String slotId = arr1.getJSONObject(2).getJSONArray("slotList").getJSONObject(0).getString("slotId");
 		String time = arr1.getJSONObject(2).getJSONArray("slotList").getJSONObject(0).getString("slotTime");
 		String date = arr1.getJSONObject(2).getString("date");
 
 		log("slotTime-" + time);
-		log("slotId- " + slotid);
+		log("slotId- " + slotId);
 		log("Date-" + date);
 
-		String c = payloadPssPMNG1.llScheduleAppointmentPayloadLTBWithoutDecTree(slotid, date, time,
+		String c = payloadPssPMNG1.llScheduleAppointmentPayloadLTBWithoutDecTree(slotId, date, time,
 				propertyData.getProperty("location.id.pm01"), propertyData.getProperty("appt.id.pm01"),
 				propertyData.getProperty("book.id.pm01"));
 		log("Payload-" + c);
-		Response schedResponse = postAPIRequest.scheduleAppointment(baseurl, c,
-				headerConfig.HeaderwithToken(accessToken), practiceid, patientid, testData.getPatientType());
+		Response schedResponse = postAPIRequest.scheduleAppointment(baseUrl, c,
+				headerConfig.HeaderwithToken(accessToken), practiceId, patientId, testData.getPatientType());
 		apv.responseCodeValidation(schedResponse, 200);
 
-		response = postAPIRequest.upComingAppointmentsByPage(baseurl, headerConfig.HeaderwithToken(accessToken),
-				practiceid, patientid);
+		response = postAPIRequest.upcomingAppointmentsByPage(baseUrl, headerConfig.HeaderwithToken(accessToken),
+				practiceId, patientId);
 		apv.responseCodeValidation(response, 200);
 		apv.responseTimeValidation(response);
 	}
@@ -1021,7 +1036,7 @@ public class PSS2PMFeatureNGTests01 extends BaseTestNG {
 		logStep("Set up the API authentication");
 		String patientId = propertyData.getProperty("patient.id.pm01");
 		Response response;
-		response = postAPIRequest.pastAppointmentsByPage(baseurl, headerConfig.HeaderwithToken(accessToken), practiceid,
+		response = postAPIRequest.pastAppointmentsByPage(baseUrl, headerConfig.HeaderwithToken(accessToken), practiceId,
 				patientId);
 		apv.responseCodeValidation(response, 200);
 		apv.responseTimeValidation(response);
@@ -1033,7 +1048,7 @@ public class PSS2PMFeatureNGTests01 extends BaseTestNG {
 	@Test(enabled = true, groups = { "APItest" }, retryAnalyzer = RetryAnalyzer.class)
 	public void testLLAvailSchedRescheAppoWithoutCatShowProON() throws Exception {
 		log("Loginless flow : Verify the POST call for Reschedule appointment Without Decision Tree and Show Provider is On");
-		setUpAM(propertyData.getProperty("practice.id.pm01"), propertyData.getProperty("mf.authuserid.am01"));
+		setUpAM(propertyData.getProperty("practice.id.pm01"), propertyData.getProperty("mf.authuserid.am.ng01"));
 		Response response;
 		response = postAPIRequestAM.locationById(practiceIdAm, propertyData.getProperty("location.id.pm01"));
 		apv.responseCodeValidation(response, 200);
@@ -1068,29 +1083,29 @@ public class PSS2PMFeatureNGTests01 extends BaseTestNG {
 				payloadAM01.turnONOFFDecisionTree(false));
 		apv.responseCodeValidation(response, 200);
 
-		String patientid = propertyData.getProperty("patient.id.pm01");
+		String patientId = propertyData.getProperty("patient.id.pm01");
 		String b = payloadPssPMNG1.availableslotsPayloadLTB(currentDate, propertyData.getProperty("location.id.pm01"),
 				propertyData.getProperty("appt.id.pm01"), propertyData.getProperty("book.id.pm01"));
 
-		response = postAPIRequest.availableSlots(baseurl, b, headerConfig.HeaderwithToken(accessToken), practiceid,
-				patientid);
+		response = postAPIRequest.availableSlots(baseUrl, b, headerConfig.HeaderwithToken(accessToken), practiceId,
+				patientId);
 		apv.responseCodeValidation(response, 200);
 		apv.responseTimeValidation(response);
 
 		JSONArray arr1 = new JSONArray(response.body().asString());
-		String slotid = arr1.getJSONObject(2).getJSONArray("slotList").getJSONObject(0).getString("slotId");
+		String slotId = arr1.getJSONObject(2).getJSONArray("slotList").getJSONObject(0).getString("slotId");
 		String time = arr1.getJSONObject(2).getJSONArray("slotList").getJSONObject(0).getString("slotTime");
 		String date = arr1.getJSONObject(2).getString("date");
 		log("slotTime-" + time);
-		log("slotId- " + slotid);
+		log("slotId- " + slotId);
 		log("Date-" + date);
-		String c = payloadPssPMNG1.llScheduleAppointmentPayloadLTBWithoutDecTree(slotid, date, time,
+		String c = payloadPssPMNG1.llScheduleAppointmentPayloadLTBWithoutDecTree(slotId, date, time,
 				propertyData.getProperty("location.id.pm01"), propertyData.getProperty("appt.id.pm01"),
 				propertyData.getProperty("book.id.pm01"));
 
 		log("Payload-" + c);
-		Response schedResponse = postAPIRequest.scheduleAppointment(baseurl, c,
-				headerConfig.HeaderwithToken(accessToken), practiceid, patientid, testData.getPatientType());
+		Response schedResponse = postAPIRequest.scheduleAppointment(baseUrl, c,
+				headerConfig.HeaderwithToken(accessToken), practiceId, patientId, testData.getPatientType());
 		apv.responseCodeValidation(schedResponse, 200);
 		apv.responseTimeValidation(schedResponse);
 		apv.responseKeyValidationJson(schedResponse, "confirmationNo");
@@ -1101,18 +1116,18 @@ public class PSS2PMFeatureNGTests01 extends BaseTestNG {
 
 		String startdate = date + " " + time;
 
-		String d = payloadPatientMod.rescheduleAppointmentPayload(slotid, startdate, confirmationno,
+		String d = payloadPatientMod.rescheduleAppointmentPayload(slotId, startdate, confirmationno,
 				propertyData.getProperty("book.id.pm01"), propertyData.getProperty("location.id.pm01"),
 				propertyData.getProperty("appt.id.pm01"));
 
-		Response rescheduleResponse = postAPIRequest.rescheduleAppointment(baseurl, d,
-				headerConfig.HeaderwithToken(accessToken), practiceid, patientid, testData.getPatientType());
+		Response rescheduleResponse = postAPIRequest.rescheduleAppointment(baseUrl, d,
+				headerConfig.HeaderwithToken(accessToken), practiceId, patientId, testData.getPatientType());
 
 		apv.responseCodeValidation(rescheduleResponse, 200);
 		apv.responseTimeValidation(rescheduleResponse);
-		Response cancelResponse = postAPIRequest.cancelAppointment(baseurl,
+		Response cancelResponse = postAPIRequest.cancelAppointment(baseUrl,
 				payloadPatientMod.cancelAppointmentPayload(extapptid_new), headerConfig.HeaderwithToken(accessToken),
-				practiceid, patientid);
+				practiceId, patientId);
 		apv.responseCodeValidation(cancelResponse, 200);
 
 	}
@@ -1120,7 +1135,7 @@ public class PSS2PMFeatureNGTests01 extends BaseTestNG {
 	@Test(enabled = true, groups = { "APItest" }, retryAnalyzer = RetryAnalyzer.class)
 	public void testLLAvailSchedRescheduleAppWithDecShowProON() throws Exception {
 		log("Loginless flow : Verify the POST call for Reschedule appointment With Decision Tree and Show Provider is On");
-		setUpAM(propertyData.getProperty("practice.id.pm01"), propertyData.getProperty("mf.authuserid.am01"));
+		setUpAM(propertyData.getProperty("practice.id.pm01"), propertyData.getProperty("mf.authuserid.am.ng01"));
 		Response response;
 		response = postAPIRequestAM.locationById(practiceIdAm, propertyData.getProperty("location.id.pm01"));
 		apv.responseCodeValidation(response, 200);
@@ -1156,29 +1171,29 @@ public class PSS2PMFeatureNGTests01 extends BaseTestNG {
 				payloadAM01.turnONOFFDecisionTree(true));
 		apv.responseCodeValidation(response, 200);
 
-		String patientid = propertyData.getProperty("patient.id.pm01");
+		String patientId = propertyData.getProperty("patient.id.pm01");
 		String b = payloadPssPMNG1.availableslotsPayloadLTB(currentDate, propertyData.getProperty("location.id.pm01"),
 				propertyData.getProperty("appt.id.pm01"), propertyData.getProperty("book.id.pm01"));
 
-		response = postAPIRequest.availableSlots(baseurl, b, headerConfig.HeaderwithToken(accessToken), practiceid,
-				patientid);
+		response = postAPIRequest.availableSlots(baseUrl, b, headerConfig.HeaderwithToken(accessToken), practiceId,
+				patientId);
 		apv.responseCodeValidation(response, 200);
 		apv.responseTimeValidation(response);
 
 		JSONArray arr1 = new JSONArray(response.body().asString());
-		String slotid = arr1.getJSONObject(2).getJSONArray("slotList").getJSONObject(0).getString("slotId");
+		String slotId = arr1.getJSONObject(2).getJSONArray("slotList").getJSONObject(0).getString("slotId");
 		String time = arr1.getJSONObject(2).getJSONArray("slotList").getJSONObject(0).getString("slotTime");
 		String date = arr1.getJSONObject(2).getString("date");
 		log("slotTime-" + time);
-		log("slotId- " + slotid);
+		log("slotId- " + slotId);
 		log("Date-" + date);
-		String c = payloadPssPMNG1.llScheduleAppointmentPayloadLTBWithDecTree(slotid, date, time,
+		String c = payloadPssPMNG1.llScheduleAppointmentPayloadLTBWithDecTree(slotId, date, time,
 				propertyData.getProperty("location.id.pm01"), propertyData.getProperty("appt.id.pm01"),
 				propertyData.getProperty("book.id.pm01"));
 
 		log("Payload-" + c);
-		Response schedResponse = postAPIRequest.scheduleAppointment(baseurl, c,
-				headerConfig.HeaderwithToken(accessToken), practiceid, patientid, testData.getPatientType());
+		Response schedResponse = postAPIRequest.scheduleAppointment(baseUrl, c,
+				headerConfig.HeaderwithToken(accessToken), practiceId, patientId, testData.getPatientType());
 		apv.responseCodeValidation(schedResponse, 200);
 		apv.responseTimeValidation(schedResponse);
 		apv.responseKeyValidationJson(schedResponse, "confirmationNo");
@@ -1188,14 +1203,14 @@ public class PSS2PMFeatureNGTests01 extends BaseTestNG {
 		String extapptid_new = apv.responseKeyValidationJson(schedResponse, "extApptId");
 		log("ext App ID is " + extapptid_new);
 
-		String startdate = date + " " + time;
+		String startDate = date + " " + time;
 
-		String d = payloadPssPMNG1.rescheduleWithCatLTB(slotid, startdate, confirmationno,
+		String d = payloadPssPMNG1.rescheduleWithCatLTB(slotId, startDate, confirmationno,
 				propertyData.getProperty("location.id.pm01"), propertyData.getProperty("appt.id.pm01"),
 				propertyData.getProperty("book.id.pm01"));
 
-		Response rescheduleResponse = postAPIRequest.rescheduleAppointment(baseurl, d,
-				headerConfig.HeaderwithToken(accessToken), practiceid, patientid, testData.getPatientType());
+		Response rescheduleResponse = postAPIRequest.rescheduleAppointment(baseUrl, d,
+				headerConfig.HeaderwithToken(accessToken), practiceId, patientId, testData.getPatientType());
 
 		apv.responseCodeValidation(rescheduleResponse, 200);
 		apv.responseTimeValidation(rescheduleResponse);
@@ -1204,9 +1219,9 @@ public class PSS2PMFeatureNGTests01 extends BaseTestNG {
 				payloadAM01.turnONOFFDecisionTree(false));
 		apv.responseCodeValidation(response, 200);
 
-		Response cancelResponse = postAPIRequest.cancelAppointment(baseurl,
+		Response cancelResponse = postAPIRequest.cancelAppointment(baseUrl,
 				payloadPatientMod.cancelAppointmentPayload(extapptid_new), headerConfig.HeaderwithToken(accessToken),
-				practiceid, patientid);
+				practiceId, patientId);
 		apv.responseCodeValidation(cancelResponse, 200);
 
 	}
@@ -1215,7 +1230,7 @@ public class PSS2PMFeatureNGTests01 extends BaseTestNG {
 	public void testLLAvailSchedRescheAppWithoutCatShowProOFF() throws Exception {
 		log("Loginless flow : Verify the POST call for Reschedule appointment Without Decision Tree and Show Provider is OFF");
 
-		setUpAM(propertyData.getProperty("practice.id.pm01"), propertyData.getProperty("mf.authuserid.am01"));
+		setUpAM(propertyData.getProperty("practice.id.pm01"), propertyData.getProperty("mf.authuserid.am.ng01"));
 		Response response;
 		response = postAPIRequestAM.locationById(practiceIdAm, propertyData.getProperty("location.id.pm01"));
 		apv.responseCodeValidation(response, 200);
@@ -1250,28 +1265,28 @@ public class PSS2PMFeatureNGTests01 extends BaseTestNG {
 				payloadAM01.turnONOFFDecisionTree(false));
 		apv.responseCodeValidation(response, 200);
 
-		String patientid = propertyData.getProperty("patient.id.pm01");
+		String patientId = propertyData.getProperty("patient.id.pm01");
 		String b = payloadPssPMNG1.availableslotsPayloadLT(currentDate, propertyData.getProperty("location.id.pm01"),
 				propertyData.getProperty("appt.id.pm01"));
 
-		response = postAPIRequest.availableSlots(baseurl, b, headerConfig.HeaderwithToken(accessToken), practiceid,
-				patientid);
+		response = postAPIRequest.availableSlots(baseUrl, b, headerConfig.HeaderwithToken(accessToken), practiceId,
+				patientId);
 		apv.responseCodeValidation(response, 200);
 		apv.responseTimeValidation(response);
 
 		JSONArray arr1 = new JSONArray(response.body().asString());
-		String slotid = arr1.getJSONObject(2).getJSONArray("slotList").getJSONObject(0).getString("slotId");
+		String slotId = arr1.getJSONObject(2).getJSONArray("slotList").getJSONObject(0).getString("slotId");
 		String time = arr1.getJSONObject(2).getJSONArray("slotList").getJSONObject(0).getString("slotTime");
 		String date = arr1.getJSONObject(2).getString("date");
 		log("slotTime-" + time);
-		log("slotId- " + slotid);
+		log("slotId- " + slotId);
 		log("Date-" + date);
-		String c = payloadPssPMNG1.llScheduleAppointmentPayloadLTWithoutDecTree(slotid, date, time,
+		String c = payloadPssPMNG1.llScheduleAppointmentPayloadLTWithoutDecTree(slotId, date, time,
 				propertyData.getProperty("location.id.pm01"), propertyData.getProperty("appt.id.pm01"));
 
 		log("Payload-" + c);
-		Response schedResponse = postAPIRequest.scheduleAppointment(baseurl, c,
-				headerConfig.HeaderwithToken(accessToken), practiceid, patientid, testData.getPatientType());
+		Response schedResponse = postAPIRequest.scheduleAppointment(baseUrl, c,
+				headerConfig.HeaderwithToken(accessToken), practiceId, patientId, testData.getPatientType());
 		apv.responseCodeValidation(schedResponse, 200);
 		apv.responseTimeValidation(schedResponse);
 		apv.responseKeyValidationJson(schedResponse, "confirmationNo");
@@ -1283,18 +1298,18 @@ public class PSS2PMFeatureNGTests01 extends BaseTestNG {
 
 		String startdate = date + " " + time;
 
-		String d = payloadPssPMNG1.rescheduleWithoutCatLT(slotid, startdate, confirmationno,
+		String d = payloadPssPMNG1.rescheduleWithoutCatLT(slotId, startdate, confirmationno,
 				propertyData.getProperty("location.id.pm01"), propertyData.getProperty("appt.id.pm01"));
 
-		Response rescheduleResponse = postAPIRequest.rescheduleAppointment(baseurl, d,
-				headerConfig.HeaderwithToken(accessToken), practiceid, patientid, testData.getPatientType());
+		Response rescheduleResponse = postAPIRequest.rescheduleAppointment(baseUrl, d,
+				headerConfig.HeaderwithToken(accessToken), practiceId, patientId, testData.getPatientType());
 
 		apv.responseCodeValidation(rescheduleResponse, 200);
 		apv.responseTimeValidation(rescheduleResponse);
 
-		Response cancelResponse = postAPIRequest.cancelAppointment(baseurl,
+		Response cancelResponse = postAPIRequest.cancelAppointment(baseUrl,
 				payloadPatientMod.cancelAppointmentPayload(extapptid_new), headerConfig.HeaderwithToken(accessToken),
-				practiceid, patientid);
+				practiceId, patientId);
 		apv.responseCodeValidation(cancelResponse, 200);
 
 	}
@@ -1303,7 +1318,7 @@ public class PSS2PMFeatureNGTests01 extends BaseTestNG {
 	public void testLLAvailSchedRescheAppWithCatShowProvOFF() throws Exception {
 		log("Loginless flow : Verify the POST call for Reschedule appointment With Decision Tree and Show Provider is OFF");
 
-		setUpAM(propertyData.getProperty("practice.id.pm01"), propertyData.getProperty("mf.authuserid.am01"));
+		setUpAM(propertyData.getProperty("practice.id.pm01"), propertyData.getProperty("mf.authuserid.am.ng01"));
 		Response response;
 		response = postAPIRequestAM.locationById(practiceIdAm, propertyData.getProperty("location.id.pm01"));
 		apv.responseCodeValidation(response, 200);
@@ -1337,28 +1352,28 @@ public class PSS2PMFeatureNGTests01 extends BaseTestNG {
 				payloadAM01.turnONOFFDecisionTree(true));
 		apv.responseCodeValidation(response, 200);
 
-		String patientid = propertyData.getProperty("patient.id.pm01");
+		String patientId = propertyData.getProperty("patient.id.pm01");
 		String b = payloadPssPMNG1.availableslotsPayloadLT(currentDate, propertyData.getProperty("location.id.pm01"),
 				propertyData.getProperty("appt.id.pm01"));
 
-		response = postAPIRequest.availableSlots(baseurl, b, headerConfig.HeaderwithToken(accessToken), practiceid,
-				patientid);
+		response = postAPIRequest.availableSlots(baseUrl, b, headerConfig.HeaderwithToken(accessToken), practiceId,
+				patientId);
 		apv.responseCodeValidation(response, 200);
 		apv.responseTimeValidation(response);
 
 		JSONArray arr1 = new JSONArray(response.body().asString());
-		String slotid = arr1.getJSONObject(2).getJSONArray("slotList").getJSONObject(0).getString("slotId");
+		String slotId = arr1.getJSONObject(2).getJSONArray("slotList").getJSONObject(0).getString("slotId");
 		String time = arr1.getJSONObject(2).getJSONArray("slotList").getJSONObject(0).getString("slotTime");
 		String date = arr1.getJSONObject(2).getString("date");
 		log("slotTime-" + time);
-		log("slotId- " + slotid);
+		log("slotId- " + slotId);
 		log("Date-" + date);
-		String c = payloadPssPMNG1.llScheduleAppointmentPayloadLTWithDecTree(slotid, date, time,
+		String c = payloadPssPMNG1.llScheduleAppointmentPayloadLTWithDecTree(slotId, date, time,
 				propertyData.getProperty("location.id.pm01"), propertyData.getProperty("appt.id.pm01"));
 
 		log("Payload-" + c);
-		Response schedResponse = postAPIRequest.scheduleAppointment(baseurl, c,
-				headerConfig.HeaderwithToken(accessToken), practiceid, patientid, testData.getPatientType());
+		Response schedResponse = postAPIRequest.scheduleAppointment(baseUrl, c,
+				headerConfig.HeaderwithToken(accessToken), practiceId, patientId, testData.getPatientType());
 		apv.responseCodeValidation(schedResponse, 200);
 		apv.responseTimeValidation(schedResponse);
 		apv.responseKeyValidationJson(schedResponse, "confirmationNo");
@@ -1370,18 +1385,18 @@ public class PSS2PMFeatureNGTests01 extends BaseTestNG {
 
 		String startdate = date + " " + time;
 
-		String d = payloadPssPMNG1.rescheduleWithCatLT(slotid, startdate, confirmationno,
+		String d = payloadPssPMNG1.rescheduleWithCatLT(slotId, startdate, confirmationno,
 				propertyData.getProperty("location.id.pm01"), propertyData.getProperty("appt.id.pm01"));
 
-		Response rescheduleResponse = postAPIRequest.rescheduleAppointment(baseurl, d,
-				headerConfig.HeaderwithToken(accessToken), practiceid, patientid, testData.getPatientType());
+		Response rescheduleResponse = postAPIRequest.rescheduleAppointment(baseUrl, d,
+				headerConfig.HeaderwithToken(accessToken), practiceId, patientId, testData.getPatientType());
 
 		apv.responseCodeValidation(rescheduleResponse, 200);
 		apv.responseTimeValidation(rescheduleResponse);
 
-		Response cancelResponse = postAPIRequest.cancelAppointment(baseurl,
+		Response cancelResponse = postAPIRequest.cancelAppointment(baseUrl,
 				payloadPatientMod.cancelAppointmentPayload(extapptid_new), headerConfig.HeaderwithToken(accessToken),
-				practiceid, patientid);
+				practiceId, patientId);
 		apv.responseCodeValidation(cancelResponse, 200);
 
 	}
@@ -1390,7 +1405,7 @@ public class PSS2PMFeatureNGTests01 extends BaseTestNG {
 	public void testAcceptSameDayOFFShowProvidrOFF() throws Exception {
 		log("Verify the Accept same day OFF with Show provider OFF with POST call of /pss-patient-modulator/v1/{practiceId}/availableslot");
 		logStep("Set up the API authentication");
-		setUpAM(propertyData.getProperty("practice.id.pm01"), propertyData.getProperty("mf.authuserid.am01"));
+		setUpAM(propertyData.getProperty("practice.id.pm01"), propertyData.getProperty("mf.authuserid.am.ng01"));
 		Response response;
 		logStep("Set up the desired rule in Admin UI using API");
 		response = postAPIRequestAM.resourceConfigRuleGet(practiceIdAm);
@@ -1434,12 +1449,12 @@ public class PSS2PMFeatureNGTests01 extends BaseTestNG {
 		String futuredate = pssPatientUtils.addDaysToDate(currentDate1, Integer.toString(futureAdd), "MM/dd/yyyy");
 		log("Future Date -" + futuredate);
 
-		String patientid = propertyData.getProperty("patient.id.pm01");
+		String patientId = propertyData.getProperty("patient.id.pm01");
 		String currentDate = pssPatientUtils.sampleDateTime("MM/dd/yyyy");
 		String b = payloadPssPMNG1.availableslotsPayloadLT(currentDate, propertyData.getProperty("location.id.pm01"),
 				propertyData.getProperty("appt.id.pm01"));
-		response = postAPIRequest.availableSlots(baseurl, b, headerConfig.HeaderwithToken(accessToken), practiceid,
-				patientid);
+		response = postAPIRequest.availableSlots(baseUrl, b, headerConfig.HeaderwithToken(accessToken), practiceId,
+				patientId);
 		apv.responseCodeValidation(response, 200);
 		apv.responseTimeValidation(response);
 
@@ -1456,7 +1471,7 @@ public class PSS2PMFeatureNGTests01 extends BaseTestNG {
 	@Test(enabled = true, groups = { "APItest" }, retryAnalyzer = RetryAnalyzer.class)
 	public void testAcceptSameDayONShowProviderOFF() throws Exception {
 		logStep("Set up the API authentication");
-		setUpAM(propertyData.getProperty("practice.id.pm01"), propertyData.getProperty("mf.authuserid.am01"));
+		setUpAM(propertyData.getProperty("practice.id.pm01"), propertyData.getProperty("mf.authuserid.am.ng01"));
 		Response response;
 		logStep("Set up the desired rule in Admin UI using API");
 		response = postAPIRequestAM.resourceConfigRuleGet(practiceIdAm);
@@ -1496,12 +1511,12 @@ public class PSS2PMFeatureNGTests01 extends BaseTestNG {
 		String currentDate1 = pssPatientUtils.currentDateWithTimeZone(locationTimeZone);
 		log("currentDate - " + currentDate1);
 
-		String patientid = propertyData.getProperty("patient.id.pm01");
+		String patientId = propertyData.getProperty("patient.id.pm01");
 		String currentDate = pssPatientUtils.sampleDateTime("MM/dd/yyyy");
 		String b = payloadPssPMNG1.availableslotsPayloadLT(currentDate, propertyData.getProperty("location.id.pm01"),
 				propertyData.getProperty("appt.id.pm01"));
-		response = postAPIRequest.availableSlots(baseurl, b, headerConfig.HeaderwithToken(accessToken), practiceid,
-				patientid);
+		response = postAPIRequest.availableSlots(baseUrl, b, headerConfig.HeaderwithToken(accessToken), practiceId,
+				patientId);
 		apv.responseCodeValidation(response, 200);
 		apv.responseTimeValidation(response);
 
@@ -1515,7 +1530,7 @@ public class PSS2PMFeatureNGTests01 extends BaseTestNG {
 	public void testTimeMarkShowProviderOFF() throws Exception {
 		log("Verify the Timemark with Show provider OFF with POST call of /pss-patient-modulator/v1/{practiceId}/availableslot");
 		logStep("Set up the API authentication");
-		setUpAM(propertyData.getProperty("practice.id.pm01"), propertyData.getProperty("mf.authuserid.am01"));
+		setUpAM(propertyData.getProperty("practice.id.pm01"), propertyData.getProperty("mf.authuserid.am.ng01"));
 		Response response;
 		logStep("Set up the desired rule in Admin UI using API");
 		response = postAPIRequestAM.resourceConfigRuleGet(practiceIdAm);
@@ -1547,12 +1562,12 @@ public class PSS2PMFeatureNGTests01 extends BaseTestNG {
 		response = postAPIRequestAM.appointmenttypeConfgWithBookOff(practiceIdAm, adapPayload, appTypeId);
 		apv.responseCodeValidation(response, 200);
 
-		String patientid = propertyData.getProperty("patient.id.pm01");
+		String patientId = propertyData.getProperty("patient.id.pm01");
 		String currentDate = pssPatientUtils.sampleDateTime("MM/dd/yyyy");
 		String b = payloadPssPMNG1.availableslotsPayloadLT(currentDate, propertyData.getProperty("location.id.pm01"),
 				propertyData.getProperty("appt.id.pm01"));
-		response = postAPIRequest.availableSlots(baseurl, b, headerConfig.HeaderwithToken(accessToken), practiceid,
-				patientid);
+		response = postAPIRequest.availableSlots(baseUrl, b, headerConfig.HeaderwithToken(accessToken), practiceId,
+				patientId);
 		apv.responseCodeValidation(response, 200);
 		apv.responseTimeValidation(response);
 
@@ -1575,7 +1590,7 @@ public class PSS2PMFeatureNGTests01 extends BaseTestNG {
 		String patientDob = "01-Jan-2000";
 		int totalMonth = pssPatientUtils.ageCurrentmonths(patientDob);
 		logStep("Set up the API authentication");
-		setUpAM(propertyData.getProperty("practice.id.pm01"), propertyData.getProperty("mf.authuserid.am01"));
+		setUpAM(propertyData.getProperty("practice.id.pm01"), propertyData.getProperty("mf.authuserid.am.ng01"));
 		Response response;
 		logStep("Set up the desired rule in Admin UI using API");
 		response = postAPIRequestAM.resourceConfigRuleGet(practiceIdAm);
@@ -1607,7 +1622,7 @@ public class PSS2PMFeatureNGTests01 extends BaseTestNG {
 
 		String b1 = payloadPssPMNG1.specialityPost();
 		String patientId = propertyData.getProperty("patient.id.pm01");
-		response = postAPIRequest.specialtyByRule(baseurl, b1, headerConfig.HeaderwithToken(accessToken), practiceid,
+		response = postAPIRequest.specialtyByRule(baseUrl, b1, headerConfig.HeaderwithToken(accessToken), practiceId,
 				patientId);
 		apv.responseCodeValidation(response, 200);
 		apv.responseTimeValidation(response);
@@ -1644,7 +1659,7 @@ public class PSS2PMFeatureNGTests01 extends BaseTestNG {
 		String patientDob = "01-Jan-2000";
 		int totalMonth = pssPatientUtils.ageCurrentmonths(patientDob);
 		logStep("Set up the API authentication");
-		setUpAM(propertyData.getProperty("practice.id.pm01"), propertyData.getProperty("mf.authuserid.am01"));
+		setUpAM(propertyData.getProperty("practice.id.pm01"), propertyData.getProperty("mf.authuserid.am.ng01"));
 		Response response;
 		logStep("Set up the desired rule in Admin UI using API");
 		response = postAPIRequestAM.resourceConfigRuleGet(practiceIdAm);
@@ -1682,7 +1697,7 @@ public class PSS2PMFeatureNGTests01 extends BaseTestNG {
 
 		String b1 = payloadPssPMNG1.bookRulePost();
 		String patientId = propertyData.getProperty("patient.id.pm01");
-		response = postAPIRequest.booksByRule(baseurl, b1, headerConfig.HeaderwithToken(accessToken), practiceid,
+		response = postAPIRequest.booksByRule(baseUrl, b1, headerConfig.HeaderwithToken(accessToken), practiceId,
 				patientId);
 		apv.responseCodeValidation(response, 200);
 		apv.responseTimeValidation(response);
@@ -1717,7 +1732,7 @@ public class PSS2PMFeatureNGTests01 extends BaseTestNG {
 	public void testMergeSlotShowProviderOFF() throws Exception {
 		log("Verify the Merge slot with Show provider off with POST call of /pss-patient-modulator/v1/{practiceId}/availableslot");
 		logStep("Set up the API authentication");
-		setUpAM(propertyData.getProperty("practice.id.pm01"), propertyData.getProperty("mf.authuserid.am01"));
+		setUpAM(propertyData.getProperty("practice.id.pm01"), propertyData.getProperty("mf.authuserid.am.ng01"));
 		Response response;
 		String adminPayload;
 		JSONArray arr;
@@ -1737,18 +1752,18 @@ public class PSS2PMFeatureNGTests01 extends BaseTestNG {
 		log("currentDate - " + currentDate);
 
 		String b = payloadPssPMNG1.availableslotsPayloadLT(currentDate, locationid, apptid);
-		response = postAPIRequest.availableSlots(baseurl, b, headerConfig.HeaderwithToken(accessToken), practiceid,
+		response = postAPIRequest.availableSlots(baseUrl, b, headerConfig.HeaderwithToken(accessToken), practiceId,
 				patientId);
 		apv.responseCodeValidation(response, 200);
 		apv.responseTimeValidation(response);
 
 		arr = new JSONArray(response.body().asString());
-		String slotid = arr.getJSONObject(0).getJSONArray("slotList").getJSONObject(0).getString("slotId");
+		String slotId = arr.getJSONObject(0).getJSONArray("slotList").getJSONObject(0).getString("slotId");
 		String time = arr.getJSONObject(0).getJSONArray("slotList").getJSONObject(0).getString("slotTime");
 		String date = arr.getJSONObject(0).getString("date");
 
 		log("slotTime-" + time);
-		log("slotId- " + slotid);
+		log("slotId- " + slotId);
 		log("Date-" + date);
 
 		adminPayload = payloadAM01.mergeSlotPyaload(slotCount, size);
@@ -1758,17 +1773,17 @@ public class PSS2PMFeatureNGTests01 extends BaseTestNG {
 		int mergeslottime = slotCount * size;
 		String nextSlotInApptDuration = pssPatientUtils.addToTime(time, mergeslottime);
 
-		response = postAPIRequest.availableSlots(baseurl, b, headerConfig.HeaderwithToken(accessToken), practiceid,
+		response = postAPIRequest.availableSlots(baseUrl, b, headerConfig.HeaderwithToken(accessToken), practiceId,
 				patientId);
 		apv.responseCodeValidation(response, 200);
 
 		arr = new JSONArray(response.body().asString());
-		String slotid2 = arr.getJSONObject(0).getJSONArray("slotList").getJSONObject(1).getString("slotId");
+		String slotId2 = arr.getJSONObject(0).getJSONArray("slotList").getJSONObject(1).getString("slotId");
 		String time2 = arr.getJSONObject(0).getJSONArray("slotList").getJSONObject(1).getString("slotTime");
 		String date2 = arr.getJSONObject(0).getString("date");
 
 		log("slotTime-" + time2);
-		log("slotId- " + slotid2);
+		log("slotId- " + slotId2);
 		log("Date-" + date2);
 
 		logStep("Slot Booked on fits attenpt- " + time);
@@ -1787,7 +1802,7 @@ public class PSS2PMFeatureNGTests01 extends BaseTestNG {
 	public void testMergeSlotInvalidDataShowProviderOFF() throws Exception {
 		log("Verify the Merge slot with invalid data for show provider off with POST call of /pss-patient-modulator/v1/{practiceId}/availableslot");
 		logStep("Set up the API authentication");
-		setUpAM(propertyData.getProperty("practice.id.pm01"), propertyData.getProperty("mf.authuserid.am01"));
+		setUpAM(propertyData.getProperty("practice.id.pm01"), propertyData.getProperty("mf.authuserid.am.ng01"));
 		Response response;
 		String adminPayload;
 		JSONArray arr;
@@ -1812,25 +1827,25 @@ public class PSS2PMFeatureNGTests01 extends BaseTestNG {
 		apv.responseCodeValidation(response, 200);
 
 		String b = payloadPssPMNG1.availableslotsPayloadLT(currentDate, locationid, apptid);
-		response = postAPIRequest.availableSlots(baseurl, b, headerConfig.HeaderwithToken(accessToken), practiceid,
+		response = postAPIRequest.availableSlots(baseUrl, b, headerConfig.HeaderwithToken(accessToken), practiceId,
 				patientId);
 		apv.responseCodeValidation(response, 200);
 		apv.responseTimeValidation(response);
 
 		arr = new JSONArray(response.body().asString());
-		String slotid = arr.getJSONObject(0).getJSONArray("slotList").getJSONObject(0).getString("slotId");
+		String slotId = arr.getJSONObject(0).getJSONArray("slotList").getJSONObject(0).getString("slotId");
 		String time = arr.getJSONObject(0).getJSONArray("slotList").getJSONObject(0).getString("slotTime");
 		String date = arr.getJSONObject(0).getString("date");
 
 		log("slotTime-" + time);
-		log("slotId- " + slotid);
+		log("slotId- " + slotId);
 		log("Date-" + date);
 
 		adminPayload = payloadAM01.mergeSlotPyaload(slotCount, size);
 		response = postAPIRequestAM.appointmenttypeConfgWithBookOff(practiceIdAm, adminPayload, apptid);
 		apv.responseCodeValidation(response, 200);
 
-		response = postAPIRequest.availableSlots(baseurl, b, headerConfig.HeaderwithToken(accessToken), practiceid,
+		response = postAPIRequest.availableSlots(baseUrl, b, headerConfig.HeaderwithToken(accessToken), practiceId,
 				patientId);
 		apv.responseCodeValidation(response, 204);
 
@@ -1844,7 +1859,7 @@ public class PSS2PMFeatureNGTests01 extends BaseTestNG {
 	public void testExcludeSlotShowProviderOFF() throws Exception {
 		log("Verify the Exclude slot with Show provider OFF with POST call of /pss-patient-modulator/v1/{practiceId}/availableslot");
 		logStep("Set up the API authentication");
-		setUpAM(propertyData.getProperty("practice.id.pm01"), propertyData.getProperty("mf.authuserid.am01"));
+		setUpAM(propertyData.getProperty("practice.id.pm01"), propertyData.getProperty("mf.authuserid.am.ng01"));
 		Response response;
 		String adminPayload;
 		JSONArray arr;
@@ -1889,7 +1904,7 @@ public class PSS2PMFeatureNGTests01 extends BaseTestNG {
 		log("currentDate - " + currentDate);
 
 		String b = payloadPssPMNG1.availableslotsPayloadLT(currentDate, locationid, apptid);
-		response = postAPIRequest.availableSlots(baseurl, b, headerConfig.HeaderwithToken(accessToken), practiceid,
+		response = postAPIRequest.availableSlots(baseUrl, b, headerConfig.HeaderwithToken(accessToken), practiceId,
 				patientId);
 		apv.responseCodeValidation(response, 200);
 		apv.responseTimeValidation(response);
@@ -1900,11 +1915,11 @@ public class PSS2PMFeatureNGTests01 extends BaseTestNG {
 
 		int actualSlotLength = arr.getJSONObject(n).getJSONArray("slotList").length();
 
-		String slotid = arr.getJSONObject(n).getJSONArray("slotList").getJSONObject(0).getString("slotId");
+		String slotId = arr.getJSONObject(n).getJSONArray("slotList").getJSONObject(0).getString("slotId");
 		String time = arr.getJSONObject(n).getJSONArray("slotList").getJSONObject(0).getString("slotTime");
 
 		log("slotTime-" + time);
-		log("slotId- " + slotid);
+		log("slotId- " + slotId);
 
 		String time3 = arr.getJSONObject(n).getJSONArray("slotList").getJSONObject(actualSlotLength - 1)
 				.getString("slotTime");
@@ -1927,7 +1942,7 @@ public class PSS2PMFeatureNGTests01 extends BaseTestNG {
 		logStep("Set up the API authentication");
 		boolean lastQueEnableValue = false;
 		boolean lastQueRequValue = false;
-		setUpAM(propertyData.getProperty("practice.id.pm01"), propertyData.getProperty("mf.authuserid.am01"));
+		setUpAM(propertyData.getProperty("practice.id.pm01"), propertyData.getProperty("mf.authuserid.am.ng01"));
 		Response response;
 		response = postAPIRequestAM.locationById(practiceIdAm, propertyData.getProperty("location.id.pm01"));
 		apv.responseCodeValidation(response, 200);
@@ -1965,13 +1980,13 @@ public class PSS2PMFeatureNGTests01 extends BaseTestNG {
 		response = postAPIRequestAM.appointmenttypeConfgWithBookOff(practiceIdAm, payloadLastQEnable, apptid);
 		apv.responseCodeValidation(response, 200);
 
-		String patientid = propertyData.getProperty("patient.id.pm01");
+		String patientId = propertyData.getProperty("patient.id.pm01");
 
 		String b = payloadPssPMNG1.lastQueReqShowProOff(propertyData.getProperty("location.id.pm01"),
 				propertyData.getProperty("appt.id.pm01"), currentDate);
 
-		response = postAPIRequest.commentDetails(baseurl, b, headerConfig.HeaderwithToken(accessToken), practiceid,
-				patientid);
+		response = postAPIRequest.commentDetails(baseUrl, b, headerConfig.HeaderwithToken(accessToken), practiceId,
+				patientId);
 		apv.responseCodeValidation(response, 200);
 		apv.responseTimeValidation(response);
 		JsonPath js = new JsonPath(response.asString());
@@ -1987,7 +2002,7 @@ public class PSS2PMFeatureNGTests01 extends BaseTestNG {
 		logStep("Set up the API authentication");
 		boolean lastQueEnableValue = true;
 		boolean lastQueRequValue = false;
-		setUpAM(propertyData.getProperty("practice.id.pm01"), propertyData.getProperty("mf.authuserid.am01"));
+		setUpAM(propertyData.getProperty("practice.id.pm01"), propertyData.getProperty("mf.authuserid.am.ng01"));
 		Response response;
 		response = postAPIRequestAM.locationById(practiceIdAm, propertyData.getProperty("location.id.pm01"));
 		apv.responseCodeValidation(response, 200);
@@ -2025,13 +2040,13 @@ public class PSS2PMFeatureNGTests01 extends BaseTestNG {
 		response = postAPIRequestAM.appointmenttypeConfgWithBookOff(practiceIdAm, payloadLastQEnable, apptid);
 		apv.responseCodeValidation(response, 200);
 
-		String patientid = propertyData.getProperty("patient.id.pm01");
+		String patientId = propertyData.getProperty("patient.id.pm01");
 
 		String b = payloadPssPMNG1.lastQueReqShowProOff(propertyData.getProperty("location.id.pm01"),
 				propertyData.getProperty("appt.id.pm01"), currentDate);
 
-		response = postAPIRequest.commentDetails(baseurl, b, headerConfig.HeaderwithToken(accessToken), practiceid,
-				patientid);
+		response = postAPIRequest.commentDetails(baseUrl, b, headerConfig.HeaderwithToken(accessToken), practiceId,
+				patientId);
 		apv.responseCodeValidation(response, 200);
 		apv.responseTimeValidation(response);
 		JsonPath js = new JsonPath(response.asString());
@@ -2047,7 +2062,7 @@ public class PSS2PMFeatureNGTests01 extends BaseTestNG {
 		logStep("Set up the API authentication");
 		boolean lastQueEnableValue = true;
 		boolean lastQueRequValue = true;
-		setUpAM(propertyData.getProperty("practice.id.pm01"), propertyData.getProperty("mf.authuserid.am01"));
+		setUpAM(propertyData.getProperty("practice.id.pm01"), propertyData.getProperty("mf.authuserid.am.ng01"));
 		Response response;
 		response = postAPIRequestAM.locationById(practiceIdAm, propertyData.getProperty("location.id.pm01"));
 		apv.responseCodeValidation(response, 200);
@@ -2085,13 +2100,13 @@ public class PSS2PMFeatureNGTests01 extends BaseTestNG {
 		response = postAPIRequestAM.appointmenttypeConfgWithBookOff(practiceIdAm, payloadLastQEnable, apptid);
 		apv.responseCodeValidation(response, 200);
 
-		String patientid = propertyData.getProperty("patient.id.pm01");
+		String patientId = propertyData.getProperty("patient.id.pm01");
 
 		String b = payloadPssPMNG1.lastQueReqShowProOff(propertyData.getProperty("location.id.pm01"),
 				propertyData.getProperty("appt.id.pm01"), currentDate);
 
-		response = postAPIRequest.commentDetails(baseurl, b, headerConfig.HeaderwithToken(accessToken), practiceid,
-				patientid);
+		response = postAPIRequest.commentDetails(baseUrl, b, headerConfig.HeaderwithToken(accessToken), practiceId,
+				patientId);
 		apv.responseCodeValidation(response, 200);
 		apv.responseTimeValidation(response);
 		JsonPath js = new JsonPath(response.asString());
@@ -2107,7 +2122,7 @@ public class PSS2PMFeatureNGTests01 extends BaseTestNG {
 		logStep("Set up the API authentication");
 		boolean lastQueEnableValue = false;
 		boolean lastQueRequValue = false;
-		setUpAM(propertyData.getProperty("practice.id.pm01"), propertyData.getProperty("mf.authuserid.am01"));
+		setUpAM(propertyData.getProperty("practice.id.pm01"), propertyData.getProperty("mf.authuserid.am.ng01"));
 		Response response;
 		response = postAPIRequestAM.locationById(practiceIdAm, propertyData.getProperty("location.id.pm01"));
 		apv.responseCodeValidation(response, 200);
@@ -2153,12 +2168,12 @@ public class PSS2PMFeatureNGTests01 extends BaseTestNG {
 		response = postAPIRequestAM.bookAppointmentTypeUpdate(practiceIdAm, payloadLastQueReq);
 		apv.responseCodeValidation(response, 200);
 
-		String patientid = propertyData.getProperty("patient.id.pm01");
+		String patientId = propertyData.getProperty("patient.id.pm01");
 
 		String b = payloadPssPMNG1.lastQueReqShowProON(locationId, bookId, apptId, currentDate);
 
-		response = postAPIRequest.commentDetails(baseurl, b, headerConfig.HeaderwithToken(accessToken), practiceid,
-				patientid);
+		response = postAPIRequest.commentDetails(baseUrl, b, headerConfig.HeaderwithToken(accessToken), practiceId,
+				patientId);
 		apv.responseCodeValidation(response, 200);
 		apv.responseTimeValidation(response);
 		JsonPath js = new JsonPath(response.asString());
@@ -2174,7 +2189,7 @@ public class PSS2PMFeatureNGTests01 extends BaseTestNG {
 		logStep("Set up the API authentication");
 		boolean lastQueEnableValue = true;
 		boolean lastQueRequValue = true;
-		setUpAM(propertyData.getProperty("practice.id.pm01"), propertyData.getProperty("mf.authuserid.am01"));
+		setUpAM(propertyData.getProperty("practice.id.pm01"), propertyData.getProperty("mf.authuserid.am.ng01"));
 		Response response;
 		response = postAPIRequestAM.locationById(practiceIdAm, propertyData.getProperty("location.id.pm01"));
 		apv.responseCodeValidation(response, 200);
@@ -2220,12 +2235,12 @@ public class PSS2PMFeatureNGTests01 extends BaseTestNG {
 		response = postAPIRequestAM.bookAppointmentTypeUpdate(practiceIdAm, payloadLastQueReq);
 		apv.responseCodeValidation(response, 200);
 
-		String patientid = propertyData.getProperty("patient.id.pm01");
+		String patientId = propertyData.getProperty("patient.id.pm01");
 
 		String b = payloadPssPMNG1.lastQueReqShowProON(locationId, bookId, apptId, currentDate);
 
-		response = postAPIRequest.commentDetails(baseurl, b, headerConfig.HeaderwithToken(accessToken), practiceid,
-				patientid);
+		response = postAPIRequest.commentDetails(baseUrl, b, headerConfig.HeaderwithToken(accessToken), practiceId,
+				patientId);
 		apv.responseCodeValidation(response, 200);
 		apv.responseTimeValidation(response);
 		JsonPath js = new JsonPath(response.asString());
@@ -2241,7 +2256,7 @@ public class PSS2PMFeatureNGTests01 extends BaseTestNG {
 		logStep("Set up the API authentication");
 		boolean lastQueEnableValue = true;
 		boolean lastQueRequValue = false;
-		setUpAM(propertyData.getProperty("practice.id.pm01"), propertyData.getProperty("mf.authuserid.am01"));
+		setUpAM(propertyData.getProperty("practice.id.pm01"), propertyData.getProperty("mf.authuserid.am.ng01"));
 		Response response;
 		response = postAPIRequestAM.locationById(practiceIdAm, propertyData.getProperty("location.id.pm01"));
 		apv.responseCodeValidation(response, 200);
@@ -2288,11 +2303,11 @@ public class PSS2PMFeatureNGTests01 extends BaseTestNG {
 		response = postAPIRequestAM.bookAppointmentTypeUpdate(practiceIdAm, payloadLastQueReq);
 		apv.responseCodeValidation(response, 200);
 
-		String patientid = propertyData.getProperty("patient.id.pm01");
+		String patientId = propertyData.getProperty("patient.id.pm01");
 
 		String b = payloadPssPMNG1.lastQueReqShowProON(locationId, bookId, apptId, currentDate);
-		response = postAPIRequest.commentDetails(baseurl, b, headerConfig.HeaderwithToken(accessToken), practiceid,
-				patientid);
+		response = postAPIRequest.commentDetails(baseUrl, b, headerConfig.HeaderwithToken(accessToken), practiceId,
+				patientId);
 		apv.responseCodeValidation(response, 200);
 		apv.responseTimeValidation(response);
 		JsonPath js = new JsonPath(response.asString());
@@ -2306,7 +2321,7 @@ public class PSS2PMFeatureNGTests01 extends BaseTestNG {
 	public void testPreventBackToBackShowProviderOff() throws Exception {
 		log("Verify the Prevent back to back with Show provider off with POST call of /pss-patient-modulator/v1/{practiceId}/availableslot");
 		logStep("Set up the API authentication");
-		setUpAM(propertyData.getProperty("practice.id.pm01"), propertyData.getProperty("mf.authuserid.am01"));
+		setUpAM(propertyData.getProperty("practice.id.pm01"), propertyData.getProperty("mf.authuserid.am.ng01"));
 		Response response;
 		String adminPayload;
 		JSONArray arr;
@@ -2348,46 +2363,46 @@ public class PSS2PMFeatureNGTests01 extends BaseTestNG {
 		String currentDate = pssPatientUtils.currentDateWithTimeZone(locationTimeZone);
 		log("currentDate - " + currentDate);
 
-		String patientid = propertyData.getProperty("patient.id.pm01");
+		String patientId = propertyData.getProperty("patient.id.pm01");
 		String b = payloadPssPMNG1.availableslotsPayloadLT(currentDate, propertyData.getProperty("location.id.pm01"),
 				propertyData.getProperty("appt.id.pm01"));
 
-		response = postAPIRequest.availableSlots(baseurl, b, headerConfig.HeaderwithToken(accessToken), practiceid,
-				patientid);
+		response = postAPIRequest.availableSlots(baseUrl, b, headerConfig.HeaderwithToken(accessToken), practiceId,
+				patientId);
 		apv.responseCodeValidation(response, 200);
 		apv.responseTimeValidation(response);
 
 		arr = new JSONArray(response.body().asString());
-		String slotid = arr.getJSONObject(0).getJSONArray("slotList").getJSONObject(0).getString("slotId");
+		String slotId = arr.getJSONObject(0).getJSONArray("slotList").getJSONObject(0).getString("slotId");
 		String time = arr.getJSONObject(0).getJSONArray("slotList").getJSONObject(0).getString("slotTime");
 		String date = arr.getJSONObject(0).getString("date");
 		log("slotTime-" + time);
-		log("slotId- " + slotid);
+		log("slotId- " + slotId);
 		log("Date-" + date);
 		String nextSlotInApptDuration = pssPatientUtils.addToTime(time, apptDuration);
 
-		String c = payloadPssPMNG1.llScheduleAppointmentPayloadLTWithoutDecTree(slotid, date, time,
+		String c = payloadPssPMNG1.llScheduleAppointmentPayloadLTWithoutDecTree(slotId, date, time,
 				propertyData.getProperty("location.id.pm01"), propertyData.getProperty("appt.id.pm01"));
 
 		log("Payload-" + c);
-		Response schedResponse = postAPIRequest.scheduleAppointment(baseurl, c,
-				headerConfig.HeaderwithToken(accessToken), practiceid, patientid, testData.getPatientType());
+		Response schedResponse = postAPIRequest.scheduleAppointment(baseUrl, c,
+				headerConfig.HeaderwithToken(accessToken), practiceId, patientId, testData.getPatientType());
 		apv.responseCodeValidation(schedResponse, 200);
 		apv.responseTimeValidation(schedResponse);
 		String extApptId = apv.responseKeyValidationJson(schedResponse, "extApptId");
 
-		response = postAPIRequest.availableSlots(baseurl, b, headerConfig.HeaderwithToken(accessToken), practiceid,
-				patientid);
+		response = postAPIRequest.availableSlots(baseUrl, b, headerConfig.HeaderwithToken(accessToken), practiceId,
+				patientId);
 		apv.responseCodeValidation(response, 200);
 		apv.responseTimeValidation(response);
 
 		arr = new JSONArray(response.body().asString());
-		String slotid2 = arr.getJSONObject(0).getJSONArray("slotList").getJSONObject(0).getString("slotId");
+		String slotId2 = arr.getJSONObject(0).getJSONArray("slotList").getJSONObject(0).getString("slotId");
 		String time2 = arr.getJSONObject(0).getJSONArray("slotList").getJSONObject(0).getString("slotTime");
 		String date2 = arr.getJSONObject(0).getString("date");
 
 		log("slotTime-" + time2);
-		log("slotId- " + slotid2);
+		log("slotId- " + slotId2);
 		log("Date-" + date2);
 
 		logStep("Slot Booked on fits attenpt- " + time);
@@ -2397,9 +2412,9 @@ public class PSS2PMFeatureNGTests01 extends BaseTestNG {
 
 		String cancelPayload = payloadPatientMod.cancelAppointmentPayload(extApptId);
 		log("CancelPayload is  " + cancelPayload);
-		Response cancelResponse = postAPIRequest.cancelAppointment(baseurl,
+		Response cancelResponse = postAPIRequest.cancelAppointment(baseUrl,
 				payloadPatientMod.cancelAppointmentPayload(extApptId), headerConfig.HeaderwithToken(accessToken),
-				practiceid, patientid);
+				practiceId, patientId);
 		apv.responseCodeValidation(cancelResponse, 200);
 
 		adminPayload = payloadAM01.preventBackToBackPyaload(false);
@@ -2412,7 +2427,7 @@ public class PSS2PMFeatureNGTests01 extends BaseTestNG {
 	public void testPreventSchedulingPastAppShowProviderOFF() throws Exception {
 		log("Verify the Prevent Scheduling appointment type within (Days) with Show Provider OFF with POST call of /pss-patient-modulator/v1/{practiceId}/availableslot");
 		logStep("Set up the API authentication");
-		setUpAM(propertyData.getProperty("practice.id.pm01"), propertyData.getProperty("mf.authuserid.am01"));
+		setUpAM(propertyData.getProperty("practice.id.pm01"), propertyData.getProperty("mf.authuserid.am.ng01"));
 		Response response;
 		String adminPayload;
 		JSONArray arr;
@@ -2479,18 +2494,18 @@ public class PSS2PMFeatureNGTests01 extends BaseTestNG {
 		String b = payloadPssPMNG1.availableslotsPayloadLT(currentDate, propertyData.getProperty("location.id.pm01"),
 				propertyData.getProperty("appt.id.pm01"));
 
-		response = postAPIRequest.availableSlots(baseurl, b, headerConfig.HeaderwithToken(accessToken), practiceid,
+		response = postAPIRequest.availableSlots(baseUrl, b, headerConfig.HeaderwithToken(accessToken), practiceId,
 				patientId);
 		apv.responseCodeValidation(response, 200);
 		apv.responseTimeValidation(response);
 		arr = new JSONArray(response.body().asString());
-		String slotid2 = arr.getJSONObject(0).getJSONArray("slotList").getJSONObject(0).getString("slotId");
+		String slotId2 = arr.getJSONObject(0).getJSONArray("slotList").getJSONObject(0).getString("slotId");
 		String time2 = arr.getJSONObject(0).getJSONArray("slotList").getJSONObject(0).getString("slotTime");
 		String date2 = arr.getJSONObject(0).getString("date");
 		String actualDate = date2.substring(3, 5);
 
 		log("slotTime-" + time2);
-		log("slotId- " + slotid2);
+		log("slotId- " + slotId2);
 		log("Date-" + actualDate);
 
 		log("Expected Date in DD format- " + strDateExp);
@@ -2507,7 +2522,7 @@ public class PSS2PMFeatureNGTests01 extends BaseTestNG {
 	public void testlockoutBillingNotes() throws Exception {
 		log("Verify Lockout - Billing Notes");
 		logStep("Set up the API authentication");
-		setUpAM(propertyData.getProperty("practice.id.pm01"), propertyData.getProperty("mf.authuserid.am01"));
+		setUpAM(propertyData.getProperty("practice.id.pm01"), propertyData.getProperty("mf.authuserid.am.ng01"));
 		Response response;
 		String adminPayload;
 		JsonPath js;
@@ -2517,8 +2532,8 @@ public class PSS2PMFeatureNGTests01 extends BaseTestNG {
 		response = postAPIRequestAM.lockoutPost(practiceIdAm, adminPayload, "/lockout");
 		apv.responseCodeValidation(response, 200);
 		String id = apv.responseKeyValidationJson(response, "id");
-		response = postAPIRequest.patientDemographicsWithQueryParameter(baseurl,
-				headerConfig.HeaderwithToken(accessToken), practiceid, patientId);
+		response = postAPIRequest.patientDemographicsWithQueryParameter(baseUrl,
+				headerConfig.HeaderwithToken(accessToken), practiceId, patientId);
 		apv.responseCodeValidation(response, 200);
 		js = new JsonPath(response.body().asString());
 		boolean lockOut = js.getBoolean("lockOut");
@@ -2535,7 +2550,7 @@ public class PSS2PMFeatureNGTests01 extends BaseTestNG {
 	@Test(enabled = true, groups = { "APItest" }, retryAnalyzer = RetryAnalyzer.class)
 	public void testLockoutPatientNotes() throws Exception {
 		logStep("Set up the API authentication");
-		setUpAM(propertyData.getProperty("practice.id.pm01"), propertyData.getProperty("mf.authuserid.am01"));
+		setUpAM(propertyData.getProperty("practice.id.pm01"), propertyData.getProperty("mf.authuserid.am.ng01"));
 		Response response;
 		String adminPayload;
 		JsonPath js;
@@ -2545,8 +2560,8 @@ public class PSS2PMFeatureNGTests01 extends BaseTestNG {
 		response = postAPIRequestAM.lockoutPost(practiceIdAm, adminPayload, "/lockout");
 		apv.responseCodeValidation(response, 200);
 		String id = apv.responseKeyValidationJson(response, "id");
-		response = postAPIRequest.patientDemographicsWithQueryParameter(baseurl,
-				headerConfig.HeaderwithToken(accessToken), practiceid, patientId);
+		response = postAPIRequest.patientDemographicsWithQueryParameter(baseUrl,
+				headerConfig.HeaderwithToken(accessToken), practiceId, patientId);
 		apv.responseCodeValidation(response, 200);
 		js = new JsonPath(response.body().asString());
 		boolean lockOut = js.getBoolean("lockOut");
@@ -2564,7 +2579,7 @@ public class PSS2PMFeatureNGTests01 extends BaseTestNG {
 	public void testOverBookingStackingApp() throws Exception {
 		log("Verify the Overbooking (Stacking ) with Show provider off with for POST call of /pss-patient-modulator/v1/{practiceId}/availableslot");
 		logStep("Set up the API authentication");
-		setUpAM(propertyData.getProperty("practice.id.pm01"), propertyData.getProperty("mf.authuserid.am01"));
+		setUpAM(propertyData.getProperty("practice.id.pm01"), propertyData.getProperty("mf.authuserid.am.ng01"));
 		Response response;
 		String adminPayload;
 		JSONArray arr;
@@ -2610,31 +2625,31 @@ public class PSS2PMFeatureNGTests01 extends BaseTestNG {
 
 		String b = payloadPssPMNG1.availableslotsPayloadLT(currentDate, locationId, apptId);
 
-		response = postAPIRequest.availableSlots(baseurl, b, headerConfig.HeaderwithToken(accessToken), practiceid,
+		response = postAPIRequest.availableSlots(baseUrl, b, headerConfig.HeaderwithToken(accessToken), practiceId,
 				patientId01);
 		apv.responseCodeValidation(response, 200);
 		apv.responseTimeValidation(response);
 		arr = new JSONArray(response.body().asString());
-		String slotid = arr.getJSONObject(0).getJSONArray("slotList").getJSONObject(0).getString("slotId");
+		String slotId = arr.getJSONObject(0).getJSONArray("slotList").getJSONObject(0).getString("slotId");
 		String time = arr.getJSONObject(0).getJSONArray("slotList").getJSONObject(0).getString("slotTime");
 		String date = arr.getJSONObject(0).getString("date");
 
 		log("slotTime-" + time);
-		log("slotId- " + slotid);
+		log("slotId- " + slotId);
 		log("date2- " + date);
 
-		String c = payloadPssPMNG1.llScheduleAppointmentPayloadLTWithoutDecTree(slotid, date, time, locationId, apptId);
+		String c = payloadPssPMNG1.llScheduleAppointmentPayloadLTWithoutDecTree(slotId, date, time, locationId, apptId);
 
 		log("Payload-" + c);
-		Response schedResponse = postAPIRequest.scheduleAppointment(baseurl, c,
-				headerConfig.HeaderwithToken(accessToken), practiceid, patientId01, testData.getPatientType());
+		Response schedResponse = postAPIRequest.scheduleAppointment(baseUrl, c,
+				headerConfig.HeaderwithToken(accessToken), practiceId, patientId01, testData.getPatientType());
 		apv.responseCodeValidation(schedResponse, 200);
 		apv.responseTimeValidation(schedResponse);
 		apv.responseKeyValidationJson(schedResponse, "confirmationNo");
 		apv.responseKeyValidationJson(schedResponse, "patientId");
 		String extapptid_new = apv.responseKeyValidationJson(schedResponse, "extApptId");
 
-		response = postAPIRequest.availableSlots(baseurl, b, headerConfig.HeaderwithToken(accessToken), practiceid,
+		response = postAPIRequest.availableSlots(baseUrl, b, headerConfig.HeaderwithToken(accessToken), practiceId,
 				patientId02);
 		apv.responseCodeValidation(response, 200);
 		apv.responseTimeValidation(response);
@@ -2643,14 +2658,14 @@ public class PSS2PMFeatureNGTests01 extends BaseTestNG {
 		String date2 = arr.getJSONObject(0).getString("date");
 
 		log("slotTime-" + time);
-		log("slotId- " + slotid);
+		log("slotId- " + slotId);
 		log("Date-" + date);
 
 		assertEquals(date2, date);
 		assertEquals(time2, time);
-		Response cancelResponse = postAPIRequest.cancelAppointment(baseurl,
+		Response cancelResponse = postAPIRequest.cancelAppointment(baseUrl,
 				payloadPatientMod.cancelAppointmentPayload(extapptid_new), headerConfig.HeaderwithToken(accessToken),
-				practiceid, patientId01);
+				practiceId, patientId01);
 
 		apv.responseCodeValidation(cancelResponse, 200);
 		adminPayload = payloadAM01.overBookingPayload(false);
