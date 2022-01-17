@@ -374,6 +374,12 @@ public class PSS2PatientPortalAcceptanceTests extends BaseTestNGWebDriver {
 		log("Step 2: Fetch rule and settings from PSS 2.0 Admin portal");
 		PSSAdminUtils adminUtils = new PSSAdminUtils();
 		adminUtils.adminSettingsLoginless(driver, adminuser, testData, PSSConstants.LOGINLESS);
+		
+		APIVerification apv= new APIVerification();
+		
+		Response response = postAPIRequestAM.patientInfoPost(practiceId, payloadAM.patientInfoWithOptionalLLNG());
+		apv.responseCodeValidation(response, 200);
+		
 		String rule = adminuser.getRule();
 		rule = rule.replaceAll(" ", "");
 		log("Step 3: Move to PSS patient Portal 2.0 to book an Appointment");

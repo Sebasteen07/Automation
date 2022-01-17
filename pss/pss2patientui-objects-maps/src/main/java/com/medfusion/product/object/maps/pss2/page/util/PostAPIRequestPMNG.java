@@ -135,16 +135,17 @@ public class PostAPIRequestPMNG extends BaseTestNGWebDriver {
 		log("The Access Token is    " + jsonPath.get("token"));
 		return access_Token;
 	}
-	
-	public String createToken(String baseUrl, String practiceid, String flowtype) {
-		RestAssured.baseURI = baseUrl;
+
+	public String createToken(String baseurl, String practiceid, String flowtype) {
+		RestAssured.baseURI = baseurl;
 		Response response = given().log().all().header("flowType", flowtype).get(practiceid + "/createtoken").then()
-		.assertThat().statusCode(200).body("token", Matchers.notNullValue()).extract().response();
+				.assertThat().statusCode(200).body("token", Matchers.notNullValue()).extract().response();
 		JsonPath jsonPath = response.jsonPath();
 		String access_Token = jsonPath.get("token");
-		log("The Access Token is " + jsonPath.get("token"));
+		log("The Access Token is    " + jsonPath.get("token"));
 		return access_Token;
-		}
+	}
+
 
 	public Response upcomingConfiguration(String baseUrl, Map<String, String> Header, String practiceId) {
 		RestAssured.baseURI = baseUrl;
@@ -483,10 +484,17 @@ public class PostAPIRequestPMNG extends BaseTestNGWebDriver {
 
 	public Response scheduleAppointment(String baseUrl, String b, Map<String, String> Header, String practiceId,
 			String patientId, String patientType) {
-		RestAssured.baseURI = baseUrl;
 
-		Response response = given().when().headers(Header).body(b).log().all().when()
-				.post(practiceId + "/scheduleappointment/" + patientId).then().log().all().extract().response();
+		RestAssured.baseURI = baseUrl;
+		Response response;
+		
+		if (patientId == null) {
+			response = given().when().headers(Header).body(b).log().all().when()
+					.post(practiceId + "/scheduleappointment").then().log().all().extract().response();
+		} else {
+			response = given().when().headers(Header).body(b).log().all().when()
+					.post(practiceId + "/scheduleappointment/" + patientId).then().log().all().extract().response();
+		}
 
 		return response;
 

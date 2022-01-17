@@ -108,10 +108,61 @@ public class PayloadPM02 {
 				+ "}";
 		return payload;
 	}	
-	public String Pyaload() {
-
-		String payload = "";
+	
+	public String preReqApptTypeRulePyaload() {
+		String payload = "{\r\n"
+				+ "  \"specialty\": null,\r\n"
+				+ "  \"location\": null,\r\n"
+				+ "  \"book\": null,\r\n"
+				+ "  \"appointmentType\": null,\r\n"
+				+ "  \"slotId\": null,\r\n"
+				+ "  \"patientType\": \"PT_EXISTING\",\r\n"
+				+ "  \"linkGenerationFlow\": false,\r\n"
+				+ "  \"patientDetails\": {\r\n"
+				+ "    \"FN\": \"prepast\",\r\n"
+				+ "    \"LN\": \"prepast\",\r\n"
+				+ "    \"DOB\": \"01/01/2000\",\r\n"
+				+ "    \"GENDER\": \"M\",\r\n"
+				+ "    \"EMAIL\": null,\r\n"
+				+ "    \"PHONE\": null,\r\n"
+				+ "    \"INSID\": null,\r\n"
+				+ "    \"ADDR1\": null,\r\n"
+				+ "    \"ADDR2\": null,\r\n"
+				+ "    \"CITY\": null,\r\n"
+				+ "    \"STATE\": null,\r\n"
+				+ "    \"ZIP\": null\r\n"
+				+ "  },\r\n"
+				+ "  \"flow\": \"loginless\"\r\n"
+				+ "}";
 		return payload;
 	}	
+	
+	public String bookRuleCareTeamPyaload(String location, String appt, String specialty) {
 
+		String payload = "{\r\n"
+				+ "  \"specialty\": "+specialty+",\r\n"
+				+ "  \"location\": "+location+",\r\n"
+				+ "  \"book\": null,\r\n"
+				+ "  \"appointmentType\": "+appt+",\r\n"
+				+ "  \"slotId\": null,\r\n"
+				+ "  \"patientType\": \"PT_NEW\",\r\n"
+				+ "  \"linkGenerationFlow\": false,\r\n"
+				+ "  \"patientDetails\": {\r\n"
+				+ "    \"FN\": \"mm\",\r\n"
+				+ "    \"LN\": \"mm\",\r\n"
+				+ "    \"DOB\": \"01/01/2000\",\r\n"
+				+ "    \"GENDER\": \"M\",\r\n"
+				+ "    \"EMAIL\": null,\r\n"
+				+ "    \"PHONE\": null,\r\n"
+				+ "    \"INSID\": null,\r\n"
+				+ "    \"ADDR1\": null,\r\n"
+				+ "    \"ADDR2\": null,\r\n"
+				+ "    \"CITY\": null,\r\n"
+				+ "    \"STATE\": null,\r\n"
+				+ "    \"ZIP\": null\r\n"
+				+ "  },\r\n"
+				+ "  \"flow\": \"loginless\"\r\n"
+				+ "}";
+		return payload;
+	}	
 }
