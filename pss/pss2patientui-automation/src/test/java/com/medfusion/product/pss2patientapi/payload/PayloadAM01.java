@@ -1686,5 +1686,60 @@ public class PayloadAM01 {
 				+ "}";
 		return bookAppointmentTypePatientType;
 	}
+	
+	
+	public String appTypeDuration()
+	{
+		String payload="{\r\n"
+				+ "  \"id\": 4048,\r\n"
+				+ "  \"appointmentStacking\": false,\r\n"
+				+ "  \"slotCount\": 1,\r\n"
+				+ "  \"allowSameDayAppts\": true,\r\n"
+				+ "  \"apptTimeMark\": 0,\r\n"
+				+ "  \"apptTypeAllocated\": true,\r\n"
+				+ "  \"isContiguous\": false,\r\n"
+				+ "  \"leadTime\": {\r\n"
+				+ "    \"days\": \"0\",\r\n"
+				+ "    \"hours\": \"0\",\r\n"
+				+ "    \"mins\": \"0\"\r\n"
+				+ "  },\r\n"
+				+ "  \"excludeSlots\": [],\r\n"
+				+ "  \"apptTypeReservedReason\": \"n\",\r\n"
+				+ "  \"acceptComment\": true,\r\n"
+				+ "  \"allowOnlineCancellation\": true,\r\n"
+				+ "  \"slotSize\": 5,\r\n"
+				+ "  \"schedulingDuration\": 30,\r\n"
+				+ "  \"pttype\": \"PT_EXISTING\",\r\n"
+				+ "  \"lastQuestRequired\": false\r\n"
+				+ "}";
+		return payload;
+	}
+	
+	public String resetAppTypeDuration()
+	{
+		String payload="{\r\n"
+				+ "  \"id\": 4048,\r\n"
+				+ "  \"appointmentStacking\": false,\r\n"
+				+ "  \"slotCount\": 1,\r\n"
+				+ "  \"allowSameDayAppts\": true,\r\n"
+				+ "  \"apptTimeMark\": 0,\r\n"
+				+ "  \"apptTypeAllocated\": true,\r\n"
+				+ "  \"isContiguous\": false,\r\n"
+				+ "  \"leadTime\": {\r\n"
+				+ "    \"days\": \"0\",\r\n"
+				+ "    \"hours\": \"0\",\r\n"
+				+ "    \"mins\": \"0\"\r\n"
+				+ "  },\r\n"
+				+ "  \"excludeSlots\": [],\r\n"
+				+ "  \"apptTypeReservedReason\": \"n\",\r\n"
+				+ "  \"acceptComment\": true,\r\n"
+				+ "  \"allowOnlineCancellation\": true,\r\n"
+				+ "  \"slotSize\": 5,\r\n"
+				+ "  \"schedulingDuration\": 0,\r\n"
+				+ "  \"pttype\": \"PT_EXISTING\",\r\n"
+				+ "  \"lastQuestRequired\": false\r\n"
+				+ "}";
+		return payload;
+	}
 }
 
