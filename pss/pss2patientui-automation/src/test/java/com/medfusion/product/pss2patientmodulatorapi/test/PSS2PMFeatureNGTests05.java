@@ -39,8 +39,7 @@ public class PSS2PMFeatureNGTests05 extends BaseTestNG {
 	public static PayloadPssPMNG payloadPatientMod;
 	public static PayloadPM02 payloadPM02;
 	public static String accessToken;
-	public static String practiceid;
-	public static String baseurl;
+	public static String baseUrl;
 	public PSSPatientUtils pssPatientUtils;
 	public PSS2PatientModulatorrAcceptanceNGTests pmng;
 	
@@ -66,13 +65,13 @@ public class PSS2PMFeatureNGTests05 extends BaseTestNG {
 
 		payloadPM02 = new PayloadPM02();
 
-		baseurl = propertyData.getProperty("base.url.pm.ng");
-		practiceid = propertyData.getProperty("mf.practice.id.ng");
-		accessToken = postAPIRequest.createToken(baseurl, practiceid);
+		baseUrl = propertyData.getProperty("base.url.pm.ng");
+		practiceId = propertyData.getProperty("mf.practice.id.ng");
+		accessToken = postAPIRequest.createToken(baseUrl, practiceId);
 		pssPatientUtils = new PSSPatientUtils();
 		apv = new APIVerification();
 		pmng = new PSS2PatientModulatorrAcceptanceNGTests();
-		log("Base URL for Patient Modulator - " + baseurl);
+		log("Base URL for Patient Modulator - " + baseUrl);
 	}
 	
 	public void setUpAM(String practiceId1, String userID) throws IOException {
@@ -97,8 +96,8 @@ public class PSS2PMFeatureNGTests05 extends BaseTestNG {
 
 		Response response;
 
-		response = postAPIRequest.announcementByLanguage(baseurl, headerConfig.HeaderwithToken(accessToken),
-				practiceid);
+		response = postAPIRequest.announcementByLanguage(baseUrl, headerConfig.HeaderwithToken(accessToken),
+				practiceId);
 		apv.responseCodeValidation(response, 200);
 		apv.responseTimeValidation(response);
 	}
@@ -121,7 +120,7 @@ public class PSS2PMFeatureNGTests05 extends BaseTestNG {
 		apv.responseCodeValidation(response, 200);
 		apv.responseTimeValidation(response);
 
-		response = postAPIRequest.patientDemographics(baseurl, headerConfig.HeaderwithTokenES(accessToken), practiceId,
+		response = postAPIRequest.patientDemographics(baseUrl, headerConfig.HeaderwithTokenES(accessToken), practiceId,
 				patientId);
 		apv.responseCodeValidation(response, 200);
 		apv.responseTimeValidation(response);
@@ -157,8 +156,8 @@ public class PSS2PMFeatureNGTests05 extends BaseTestNG {
 				propertyData.getProperty("availableslot.locationid.pm.ng"),
 				propertyData.getProperty("availableslot.apptid.pm.ng"));
 
-		response = postAPIRequest.availableSlots(baseurl, b, headerConfig.HeaderwithToken(accessToken),
-				practiceid, patientId01);
+		response = postAPIRequest.availableSlots(baseUrl, b, headerConfig.HeaderwithToken(accessToken),
+				practiceId, patientId01);
 		apv.responseCodeValidation(response, 200);
 		apv.responseTimeValidation(response);
 
@@ -179,8 +178,8 @@ public class PSS2PMFeatureNGTests05 extends BaseTestNG {
 
 		log("Payload-" + c);
 
-		Response schedResponse = postAPIRequest.scheduleAppointment(baseurl, c,
-				headerConfig.HeaderwithToken(accessToken), practiceid, patientId01, testData.getPatientType());
+		Response schedResponse = postAPIRequest.scheduleAppointment(baseUrl, c,
+				headerConfig.HeaderwithToken(accessToken), practiceId, patientId01, testData.getPatientType());
 		apv.responseCodeValidation(schedResponse, 200);
 		apv.responseTimeValidation(schedResponse);
 
@@ -188,8 +187,8 @@ public class PSS2PMFeatureNGTests05 extends BaseTestNG {
 		apv.responseKeyValidationJson(schedResponse, "patientId");
 		String extApptId = apv.responseKeyValidationJson(schedResponse, "extApptId");
 		
-		response = postAPIRequest.availableSlots(baseurl, b, headerConfig.HeaderwithToken(accessToken),
-				practiceid, patientId02);
+		response = postAPIRequest.availableSlots(baseUrl, b, headerConfig.HeaderwithToken(accessToken),
+				practiceId, patientId02);
 		apv.responseCodeValidation(response, 200);
 		apv.responseTimeValidation(response);
 
@@ -205,9 +204,9 @@ public class PSS2PMFeatureNGTests05 extends BaseTestNG {
 		assertEquals(date2, date);
 		assertEquals(time2, time);	
 
-		Response cancelResponse = postAPIRequest.cancelAppointment(baseurl,
+		Response cancelResponse = postAPIRequest.cancelAppointment(baseUrl,
 				payloadPatientMod.cancelAppointmentPayload(extApptId), headerConfig.HeaderwithToken(accessToken),
-				practiceid, patientId01);
+				practiceId, patientId01);
 		apv.responseCodeValidation(cancelResponse, 200);
 		
 		adminPayload=payloadAM02.overbookingPyaload(true);
