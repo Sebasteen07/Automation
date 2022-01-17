@@ -5,10 +5,7 @@ import java.util.ArrayList;
 
 import org.testng.annotations.BeforeTest;
 
-import static org.junit.Assert.assertFalse;
-import static org.junit.Assert.assertNotEquals;
 import static org.testng.Assert.assertEquals;
-import static org.testng.Assert.assertNotEquals;
 import static org.testng.Assert.assertTrue;
 
 import org.json.JSONArray;
@@ -248,96 +245,5 @@ public class PSS2PMFeatureNGTests06 extends BaseTestNG {
 		apv.responseCodeValidation(response, 200);
 
 	}	
-	
-	@Test(enabled = true, groups = { "APItest" }, retryAnalyzer = RetryAnalyzer.class)
-	public void testPreventSchedulingFutureShowProviderOFF() throws Exception {
-		log("Verify the Prevent Scheduling appointment type within (Days) with Show Provider OFF with POST call of /pss-patient-modulator/v1/{practiceId}/availableslot");
-		logStep("Set up the API authentication");		
-		setUpAM(propertyData.getProperty("practice.id.pm01"), propertyData.getProperty("mf.authuserid.am.ng01"));
-		Response response;
-		String adminPayload;
-		JSONArray arr;
-		int preventSchedDays = 30;
-		String patientId = propertyData.getProperty("patient.id.pm01");
-		String apptId1 = propertyData.getProperty("appt.id.pm01");
-		String apptName = propertyData.getProperty("appt.name.pm01");
-		String displayName = propertyData.getProperty("appt.disp.name.pm01");
-		String extId = propertyData.getProperty("appt.ext.id.pm01");
-		int id = Integer.parseInt(apptId1);
-
-		logStep("Set up the desired rule in Admin UI using API");
-		response = postAPIRequestAM.resourceConfigRuleGet(practiceIdAm);
-		arr = new JSONArray(response.body().asString());
-		int l = arr.length();
-		log("Length is- " + l);
-		for (int i = 0; i < l; i++) {
-			int ruleId = arr.getJSONObject(i).getInt("id");
-			log("Object No." + i + "- " + ruleId);
-			response = postAPIRequestAM.deleteRuleById(practiceIdAm, Integer.toString(ruleId));
-			apv.responseCodeValidation(response, 200);
-		}
-
-		response = postAPIRequestAM.resourceConfigRulePost(practiceIdAm, payloadAM.rulePayload("LT", "L,T"));
-		apv.responseCodeValidation(response, 200);
-
-		response = postAPIRequestAM.resourceConfigRulePost(practiceIdAm, payloadAM.rulePayload("TL", "T,L"));
-		apv.responseCodeValidation(response, 200);
-
-		response = postAPIRequestAM.resourceConfigSavePost(practiceIdAm,
-				payloadAM01.turnONOFFShowProvider(false));
-		apv.responseCodeValidation(response, 200);
-
-		response = postAPIRequestAM.locationById(practiceIdAm,
-				propertyData.getProperty("availableslot.locationid.pm.ng"));
-		apv.responseCodeValidation(response, 200);
-		String locationTimeZone = apv.responseKeyValidationJson(response, "timezone");
-		log("TimeZone- " + locationTimeZone);
-
-		adminPayload = payloadAM01.preventSchedulePyaload(id, preventSchedDays, apptName, displayName, extId);
-		response = postAPIRequestAM.saveAppointmenttype(practiceIdAm, adminPayload);
-		apv.responseCodeValidation(response, 200);
-
-		String currentDate = pssPatientUtils.currentDateWithTimeZone(locationTimeZone);
-		log("currentDate - " + currentDate);
-
-		String b = payloadPssPMNG1.availableslotsPayloadLT(currentDate,
-				propertyData.getProperty("location.id.pm01"),
-				propertyData.getProperty("appt.id.pm01"));
-
-		response = postAPIRequest.availableSlots(baseUrl, b, headerConfig.HeaderwithToken(accessToken), practiceId,
-				patientId);
-		apv.responseCodeValidation(response, 412);
-		apv.responseTimeValidation(response);
-		String errorMessage = apv.responseKeyValidationJson(response, "message");
-		assertTrue(errorMessage.contains("Prevent Scheduling"));
-
-		response = postAPIRequest.announcementByName(baseUrl, headerConfig.HeaderwithToken(accessToken), practiceId,
-				"ARP");
-		apv.responseCodeValidation(response, 200);
-
-		adminPayload = payloadAM01.preventSchedulePyaload(id, 0, apptName, displayName, extId);
-		response = postAPIRequestAM.saveAppointmenttype(practiceIdAm, adminPayload);
-		apv.responseCodeValidation(response, 200);
-
-	}
-
-
-	@Test(enabled = true, groups = { "APItest" }, retryAnalyzer = RetryAnalyzer.class)
-	public void rough() throws Exception {
-		ArrayList<String> arrayList = new ArrayList<String>();
-		arrayList.add("atul");
-		arrayList.add("atul1");
-		arrayList.add("atul11");
-		arrayList.add("atul111");
-
-	   boolean aa= arrayList.contains("atul11");
-	   log("value of aa is   "+aa);
-		
-		
-       
-		
-	}
-	
 
 }
-
