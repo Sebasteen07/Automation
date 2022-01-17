@@ -2171,7 +2171,9 @@ public class PSSPatientUtils extends BaseTestNGWebDriver {
 		return diffDays;
 	}
 
+	// This method will give you new time after time addition
 	public String addToTime(String myTime, int mintime) throws ParseException {
+
 		SimpleDateFormat df = new SimpleDateFormat("HH:mm:ss");
 		Date d = df.parse(myTime);
 		Calendar cal = Calendar.getInstance();
@@ -2192,4 +2194,5 @@ public class PSSPatientUtils extends BaseTestNGWebDriver {
 		return month;
 
 	}
+
 }
