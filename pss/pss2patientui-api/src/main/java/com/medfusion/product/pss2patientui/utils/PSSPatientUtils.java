@@ -2170,7 +2170,7 @@ public class PSSPatientUtils extends BaseTestNGWebDriver {
 		long diffDays = diff / (24 * 60 * 60 * 1000);
 		return diffDays;
 	}
-	
+
 	// This method will give you new time after time addition
 	public String addToTime(String myTime, int mintime) throws ParseException {
 
@@ -2181,6 +2181,18 @@ public class PSSPatientUtils extends BaseTestNGWebDriver {
 		cal.add(Calendar.MINUTE, mintime);
 		String newTime = df.format(cal.getTime());
 		return newTime;
+	}
+
+	public int ageCurrentmonths(String date) {
+		DateTimeFormatter formatter = DateTimeFormatter.ofPattern("d-MMM-yyyy");
+		LocalDate pdate = LocalDate.parse(date, formatter);
+		LocalDate now = LocalDate.now();
+		Period diff = Period.between(pdate, now);
+		int yearmonth = diff.getYears() * 12;
+		int month = yearmonth + diff.getMonths();
+		log("Total Month of patient from date of Birth is  " + month);
+		return month;
+
 	}
 
 }
