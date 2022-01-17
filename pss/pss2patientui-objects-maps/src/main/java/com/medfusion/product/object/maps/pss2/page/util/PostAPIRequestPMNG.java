@@ -494,7 +494,6 @@ public class PostAPIRequestPMNG extends BaseTestNGWebDriver {
 			response = given().when().headers(Header).body(b).log().all().when()
 					.post(practiceId + "/scheduleappointment/" + patientId).then().log().all().extract().response();
 		}
-		
 		return response;
 	}
 

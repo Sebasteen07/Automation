@@ -2174,7 +2174,8 @@ public class PSSPatientUtils extends BaseTestNGWebDriver {
 	// This method will give you new time after time addition
 	public String addToTime(String myTime, int mintime) throws ParseException {
 
-	SimpleDateFormat df = new SimpleDateFormat("HH:mm:ss");
+		SimpleDateFormat df = new SimpleDateFormat("HH:mm:ss");
+
 		Date d = df.parse(myTime);
 		Calendar cal = Calendar.getInstance();
 		cal.setTime(d);
