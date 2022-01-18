@@ -3131,8 +3131,8 @@ public class ApptPrecheckSteps extends BaseTest {
 		loginPage = new AppointmentPrecheckLogin(driver, propertyData.getProperty("practice.provisining.url.ge"));
 	}
 	
-	@When("from appointment dashboard select patient and send broadcast message")
-	public void from_appointment_dashboard_select_patient_and_send_broadcast_message() throws Exception {
+	@When("I select patient and send broadcast message from appointment dashboard")
+	public void I_select_patient_and_send_broadcast_message_from_appointment_dashboard() throws Exception {
 		mainPage.clickOnAppointmentsTab();
 		apptPage.selectPatient(Appointment.patientId, Appointment.patientId);
 		log("Click on Actions tab and select broadcast message");
@@ -3164,14 +3164,14 @@ public class ApptPrecheckSteps extends BaseTest {
 		assertEquals("Last Message: "+propertyData.getProperty("curbside.checkin.message.parking.lot"),curbsidePage.getSentMessageSelectedPatient(Appointment.patientId),"Message was not correct");
 	}
 	
-	@When("select patient and click on check in")
-	public void select_patient_and_click_on_check_in() {
+	@When("I select patient and click on check in")
+	public void I_select_patient_and_click_on_check_in() {
 		curbsidePage.selectPatient(Appointment.patientId, Appointment.apptId);
 		curbsidePage.clickOnCheckInButton();
 	}
 	
-	@When("switch on appoinement dashboard")
-	public void switch_on_appoinement_dashboard() throws InterruptedException {
+	@When("I switch to the appointment dashboard tab")
+	public void I_switch_to_the_appointment_dashboard_tab() throws InterruptedException {
 		scrollAndWait(0, 100, 5000);
 		mainPage.clickOnAppointmentsTab();
 	}

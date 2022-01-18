@@ -898,7 +898,7 @@ Feature: Test fuctionality of Appointment precheck
     When schedule an appointment and confirmed their arrival
     And logged into precheck admin and user is able to view appointment dashboard screen
     And click on Curbside check-in tab
-    And select patient and click on check in
-    And switch on appoinement dashboard
+    And I select patient and click on check in
+    And I switch to the appointment dashboard tab
     Then verify check in patient should be added in the appointments dashboard
     And logout from practice provisioning portal
