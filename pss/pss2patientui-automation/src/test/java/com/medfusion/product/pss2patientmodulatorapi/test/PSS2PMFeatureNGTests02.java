@@ -1127,5 +1127,69 @@ public class PSS2PMFeatureNGTests02 extends BaseTestNG {
 		apv.responseCodeValidation(cancelResponse, 200);
 	}
 	
-	
+	@Test(enabled = true, groups = { "APItest" }, retryAnalyzer = RetryAnalyzer.class)
+	public void testPreventSchedulingFutureShowProviderOFF() throws Exception {
+		logStep("Set up the API authentication");
+		setUpAM(propertyData.getProperty("mf.practice.id.ng"), propertyData.getProperty("mf.authuserid.am.ng"));
+		Response response;
+		String adminPayload;
+		JSONArray arr;
+		logStep("Set up the desired rule in Admin UI using API");
+		response = postAPIRequestAM.resourceConfigRuleGet(practiceId);
+		arr = new JSONArray(response.body().asString());
+		int l = arr.length();
+		log("Length is- " + l);
+		for (int i = 0; i < l; i++) {
+			int ruleId = arr.getJSONObject(i).getInt("id");
+			log("Object No." + i + "- " + ruleId);
+			response = postAPIRequestAM.deleteRuleById(practiceId, Integer.toString(ruleId));
+			apv.responseCodeValidation(response, 200);
+		}
+
+		response = postAPIRequestAM.resourceConfigRulePost(practiceId, payloadAM.rulePayload("LT", "L,T"));
+		apv.responseCodeValidation(response, 200);
+
+		response = postAPIRequestAM.resourceConfigRulePost(practiceId, payloadAM.rulePayload("TL", "T,L"));
+		apv.responseCodeValidation(response, 200);
+
+		response = postAPIRequestAM.resourceConfigSavePost(practiceId, payloadAM02.turnOFFShowProvider(false));
+		apv.responseCodeValidation(response, 200);
+
+		String m = propertyData.getProperty("preventsched.days.pm.ng");
+		int preventSchedDays = Integer.parseInt(m);
+
+		response = postAPIRequestAM.locationById(practiceId,propertyData.getProperty("availableslot.locationid.pm.ng"));
+		apv.responseCodeValidation(response, 200);
+		String locationTimeZone = apv.responseKeyValidationJson(response, "timezone");
+		log("TimeZone- " + locationTimeZone);
+
+		adminPayload = payloadAM02.preventSchedPyaload1(preventSchedDays);
+		response = postAPIRequestAM.saveAppointmenttype(practiceId, adminPayload);
+		apv.responseCodeValidation(response, 200);
+
+		String patientId = propertyData.getProperty("patient.id.pm.ng");
+		String locationid = propertyData.getProperty("availableslot.locationid.pm.ng");
+		String apptid = propertyData.getProperty("availableslot.apptid.pm.ng");
+
+		String currentdate = pssPatientUtils.currentDateWithTimeZone(locationTimeZone);
+		log("currentdate - " + currentdate);
+
+		String b = payloadPM02.availableslotsPayloadLT(currentdate, locationid, apptid);
+		response = postAPIRequest.availableSlots(baseUrl, b, headerConfig.HeaderwithTokenES(accessToken), practiceId,
+				patientId);
+		apv.responseCodeValidation(response, 412);
+		apv.responseTimeValidation(response);
+
+		String errorMessage = apv.responseKeyValidationJson(response, "message");
+
+		assertTrue(errorMessage.contains("Prevent Scheduling"));
+
+		response = postAPIRequest.announcementByName(baseUrl, headerConfig.HeaderwithToken(accessToken), practiceId,
+				"ARP");
+		apv.responseCodeValidation(response, 200);
+
+		adminPayload = payloadAM02.preventSchedPyaload1(0);
+		response = postAPIRequestAM.saveAppointmenttype(practiceId, adminPayload);
+		apv.responseCodeValidation(response, 200);
+	}
 }

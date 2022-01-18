@@ -165,4 +165,20 @@ public class PayloadPM02 {
 				+ "}";
 		return payload;
 	}	
+	
+	public String  availableslotsPayloadLT(String date, String locationid, String apptid)
+	{
+		String  availableSlots="{\r\n"
+				+ "    \"specialty\": null,\r\n"
+				+ "    \"location\": "+locationid+",\r\n"
+				+ "    \"book\": null,\r\n"
+				+ "    \"appointmentType\": "+apptid+",\r\n"
+				+ "    \"startDateTime\": \""+date+"\",\r\n"
+				+ "    \"slotId\": \"0001\",\r\n"
+				+ "    \"traversal\": false,\r\n"
+				+ "    \"patientType\": \"PT_NEW\",\r\n"
+				+ "    \"extApptId\": null\r\n"
+				+ "}";
+		return availableSlots;
+	}
 }
