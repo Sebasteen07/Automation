@@ -275,5 +275,296 @@ public class PSS2PMFeatureNGTests05 extends BaseTestNG {
 		assertTrue(l2.containsAll(l1));
 
 	}
+	
+	
+	@Test(enabled = true, groups = { "APItest" }, retryAnalyzer = RetryAnalyzer.class)
+	public void testCareTeam04() throws Exception {
+
+		log("PSS-19766: Verify if all the providers whose Share Patient config is ON are displayed");
+		log("when PCP is not a part of Care team");
+
+		logStep("Set up the API authentication");
+		setUpAM(propertyData.getProperty("mf.practice.id.ng"), propertyData.getProperty("mf.authuserid.am.ng"));
+
+		Response response;
+		String adminPayload;
+
+		String pcpvalue = propertyData.getProperty("patient.id.careteam.pcpwith0Confg.pm05");
+		String fctvalue = propertyData.getProperty("patient.id.careteam.fct.pm.ng");
+		String careTeamId = propertyData.getProperty("patient.id.careteam.id.pm05");
+		String bookid = propertyData.getProperty("availableslot.bookid.pm.ng");
+		String patientId = propertyData.getProperty("patient.id.careteam.pm.ng");
+		String locationid = propertyData.getProperty("availableslot.locationid.pm.ng");
+		String apptid = propertyData.getProperty("availableslot.apptid.pm.ng");
+		String bookNotInCareTeam=propertyData.getProperty("sharepatients.book.id.pm05");
+
+		int pcp = Integer.parseInt(pcpvalue);
+		int fct = Integer.parseInt(fctvalue);
+
+		adminPayload = payloadAM02.careTeamSettingPyaload(pcp, fct);
+		response = postAPIRequestAM.resourceConfigSavePost(practiceId, adminPayload);
+		apv.responseCodeValidation(response, 200);
+		
+		response=postAPIRequestAM.getBookAssociatedToCareTeam(practiceId, careTeamId);
+		apv.responseCodeValidation(response, 200);
+		
+		logStep("Remove the PCP from CareTeam-");
+		log("This is the PCP- "+bookid+" for the patient "+patientId);
+		
+		response=postAPIRequestAM.deleteCareTeamBook(practiceId, careTeamId, bookid);
+		apv.responseCodeValidation(response, 200);
+		
+		response=postAPIRequestAM.getBookById(practiceId, bookNotInCareTeam);
+		apv.responseCodeValidation(response, 200);
+		String expected_BookID=apv.responseKeyValidationJson(response, "name");		
+		assertEquals(apv.responseKeyValidationJson(response, "sharePatients"),"true");	
+		
+		String b = payloadPM02.bookRuleCareTeamPyaload(locationid, apptid, null);
+		response = postAPIRequest.booksByRule(baseUrl, b, headerConfig.HeaderwithToken(accessToken), practiceId,
+				patientId);
+		apv.responseCodeValidation(response, 200);
+
+		JSONObject jo = new JSONObject(response.asString());
+
+		HashSet<String> l1 = new HashSet<String>();
+
+		int l = jo.getJSONArray("books").length();
+		for (int i = 0; i < l; i++) {
+			String bookFromBookRule = jo.getJSONArray("books").getJSONObject(i).getString("displayName");
+			l1.add(bookFromBookRule);
+		}
+
+		assertTrue(l1.contains(expected_BookID));
+		
+		int book=Integer.parseInt(bookid);
+		adminPayload=payloadAM02.addBookInCareTeamPyaload(book);
+		response=postAPIRequestAM.saveCareTeamBook(practiceId, adminPayload);
+		apv.responseCodeValidation(response, 200);
+	}
+	
+	@Test(enabled = true, groups = { "APItest" }, retryAnalyzer = RetryAnalyzer.class)
+	public void testCareTeam05() throws Exception {
+
+		log("Test Case ID- PSS-19774");
+		log("Verify if No Providers are displayed when PCP's share patient config is OFF");
+
+		logStep("Set up the API authentication");
+		setUpAM(propertyData.getProperty("mf.practice.id.ng"), propertyData.getProperty("mf.authuserid.am.ng"));
+
+		Response response;
+		String adminPayload;
+
+		adminPayload= payloadAM02.careTeamSettingPyaload(1, 4);
+		response = postAPIRequestAM.resourceConfigSavePost(practiceId, adminPayload);
+		apv.responseCodeValidation(response, 200);
+		
+		adminPayload = payloadAM02.pcpSharePatientPyaload(false);
+		response = postAPIRequestAM.bookSave(practiceId, adminPayload);
+		apv.responseCodeValidation(response, 200);
+
+		String careTeamId = propertyData.getProperty("patient.id.careteam.id.pm05");
+		String bookid = propertyData.getProperty("availableslot.bookid.pm.ng03");
+		String patientId = propertyData.getProperty("patient.id.careteam.pm.ng");
+		String locationid = propertyData.getProperty("availableslot.locationid.pm.ng");
+		String apptid = propertyData.getProperty("availableslot.apptid.pm.ng");
+		String specialty=propertyData.getProperty("specialty.careteam.id.pm05");
+
+		response=postAPIRequestAM.deleteCareTeamBook(practiceId, careTeamId, bookid);
+		apv.responseCodeValidation(response, 200);
+		
+		String b=payloadPM02.bookRuleCareTeamPyaload(locationid, apptid, specialty);	
+		response = postAPIRequest.booksByRule(baseUrl, b, headerConfig.HeaderwithToken(accessToken), practiceId,
+				patientId);
+		apv.responseCodeValidation(response, 200);
+		apv.responseTimeValidation(response);
+		
+		String pcpUnavailability=apv.responseKeyValidationJson(response, "pcpUnavailability");
+		String restrictCareTeam =apv.responseKeyValidationJson(response, "restrictCareTeam");
+		
+		assertEquals(pcpUnavailability, "false");
+		assertEquals(restrictCareTeam, "true");
+
+		int book=Integer.parseInt(bookid);
+		
+		adminPayload=payloadAM02.addBookInCareTeamPyaload(book);
+		response=postAPIRequestAM.saveCareTeamBook(practiceId, adminPayload);
+		apv.responseCodeValidation(response, 200);
+
+	}
+	
+	@Test(enabled = true, groups = { "APItest" }, retryAnalyzer = RetryAnalyzer.class)
+	public void testCareTeam06() throws Exception {
+
+		log("Test Case ID- PSS-19774");
+		log("Verify if No Providers are displayed when PCP's share patient config is OFF");
+
+		logStep("Set up the API authentication");
+		setUpAM(propertyData.getProperty("mf.practice.id.ng"), propertyData.getProperty("mf.authuserid.am.ng"));
+
+		Response response;
+		String adminPayload;
+
+		adminPayload= payloadAM02.careTeamSettingPyaload(1, 4);
+		response = postAPIRequestAM.resourceConfigSavePost(practiceId, adminPayload);
+		apv.responseCodeValidation(response, 200);
+		
+		adminPayload = payloadAM02.pcpSharePatientPyaload(true);
+		response = postAPIRequestAM.bookSave(practiceId, adminPayload);
+		apv.responseCodeValidation(response, 200);
+
+		String careTeamId = propertyData.getProperty("patient.id.careteam.id.pm05");
+		String bookid = propertyData.getProperty("availableslot.bookid.pm.ng03");
+		String patientId = propertyData.getProperty("patient.id.careteam.pm.ng");
+		String locationid = propertyData.getProperty("availableslot.locationid.pm.ng");
+		String apptid = propertyData.getProperty("availableslot.apptid.pm.ng");
+		String specialty=propertyData.getProperty("specialty.careteam.id.pm05");
+
+		response=postAPIRequestAM.deleteCareTeamBook(practiceId, careTeamId, bookid);
+		apv.responseCodeValidation(response, 200);
+		
+		String b=payloadPM02.bookRuleCareTeamPyaload(locationid, apptid, specialty);	
+		response = postAPIRequest.booksByRule(baseUrl, b, headerConfig.HeaderwithToken(accessToken), practiceId,
+				patientId);
+		apv.responseCodeValidation(response, 200);
+		apv.responseTimeValidation(response);
+		
+		String pcpUnavailability=apv.responseKeyValidationJson(response, "pcpUnavailability");
+		String restrictCareTeam =apv.responseKeyValidationJson(response, "restrictCareTeam");
+		
+		assertEquals(pcpUnavailability, "false");
+		assertEquals(restrictCareTeam, "true");
+
+		int book=Integer.parseInt(bookid);
+		
+		adminPayload=payloadAM02.addBookInCareTeamPyaload(book);
+		response=postAPIRequestAM.saveCareTeamBook(practiceId, adminPayload);
+		apv.responseCodeValidation(response, 200);
+
+	}
+	
+	@Test(enabled = true, groups = { "APItest" }, retryAnalyzer = RetryAnalyzer.class)
+	public void testInsuranceCarrierOff() throws Exception {
+
+		logStep("Set up the API authentication");
+		setUpAM(propertyData.getProperty("mf.practice.id.ng"), propertyData.getProperty("mf.authuserid.am.ng"));
+
+		Response response;
+		JSONArray arr;
+		String adminPayload;
+		
+		adminPayload=payloadAM02.insurancePyaload(false);
+		response = postAPIRequestAM.resourceConfigSavePost(practiceId, adminPayload);
+		apv.responseCodeValidation(response, 200);
+
+		String patientId01 = propertyData.getProperty("patient.id.careteam.pm.ng");
+		log("Patient Id -"+patientId01);
+		String currentdate = pssPatientUtils.sampleDateTime("MM/dd/yyyy");
+
+		String b = payloadPatientMod.availableslotsPayload(currentdate,
+				propertyData.getProperty("availableslot.bookid.pm.ng03"),
+				propertyData.getProperty("availableslot.locationid.pm.ng"),
+				propertyData.getProperty("availableslot.apptid.pm.ng"));
+
+		response = postAPIRequest.availableSlots(baseUrl, b, headerConfig.HeaderwithToken(accessToken), practiceId,
+				patientId01);
+		apv.responseCodeValidation(response, 200);
+		apv.responseTimeValidation(response);
+
+		arr = new JSONArray(response.body().asString());
+
+		String slotid = arr.getJSONObject(1).getJSONArray("slotList").getJSONObject(0).getString("slotId");
+		String time = arr.getJSONObject(1).getJSONArray("slotList").getJSONObject(0).getString("slotTime");
+		String date = arr.getJSONObject(1).getString("date");
+
+		log("slotTime-" + time);
+		log("slotId- " + slotid);
+		log("Date-" + date);
+
+		String c = payloadPM02.scheduleAppointmentPayload(slotid, date, time,
+				propertyData.getProperty("availableslot.bookid.pm.ng03"),
+				propertyData.getProperty("availableslot.locationid.pm.ng"),
+				propertyData.getProperty("availableslot.apptid.pm.ng"));
+
+		log("Payload-" + c);
+
+		Response schedResponse = postAPIRequest.scheduleAppointment(baseUrl, c,
+				headerConfig.HeaderwithToken(accessToken), practiceId, patientId01, testData.getPatientType());
+		apv.responseCodeValidation(schedResponse, 200);
+		apv.responseTimeValidation(schedResponse);
+
+		apv.responseKeyValidationJson(schedResponse, "confirmationNo");
+		apv.responseKeyValidationJson(schedResponse, "patientId");
+		String extApptId = apv.responseKeyValidationJson(schedResponse, "extApptId");
+
+		Response cancelResponse = postAPIRequest.cancelAppointment(baseUrl,
+				payloadPatientMod.cancelAppointmentPayload(extApptId), headerConfig.HeaderwithToken(accessToken),
+				practiceId, patientId01);
+		apv.responseCodeValidation(cancelResponse, 200);
+		
+		adminPayload=payloadAM02.insurancePyaload(true);
+		response = postAPIRequestAM.resourceConfigSavePost(practiceId, adminPayload);
+		apv.responseCodeValidation(response, 200);
+	}
+	
+	@Test(enabled = true, groups = { "APItest" }, retryAnalyzer = RetryAnalyzer.class)
+	public void testInsuranceCarrierOn() throws Exception {
+
+		logStep("Set up the API authentication");
+		setUpAM(propertyData.getProperty("mf.practice.id.ng"), propertyData.getProperty("mf.authuserid.am.ng"));
+
+		Response response;
+		JSONArray arr;
+		String adminPayload;
+		
+		adminPayload=payloadAM02.insurancePyaload(true);
+		response = postAPIRequestAM.resourceConfigSavePost(practiceId, adminPayload);
+		apv.responseCodeValidation(response, 200);
+
+		String patientId01 = propertyData.getProperty("patient.id.careteam.pm.ng");
+		log("Patient Id -"+patientId01);
+		String currentdate = pssPatientUtils.sampleDateTime("MM/dd/yyyy");
+
+		String b = payloadPatientMod.availableslotsPayload(currentdate,
+				propertyData.getProperty("availableslot.bookid.pm.ng03"),
+				propertyData.getProperty("availableslot.locationid.pm.ng"),
+				propertyData.getProperty("availableslot.apptid.pm.ng"));
+
+		response = postAPIRequest.availableSlots(baseUrl, b, headerConfig.HeaderwithToken(accessToken), practiceId,
+				patientId01);
+		apv.responseCodeValidation(response, 200);
+		apv.responseTimeValidation(response);
+
+		arr = new JSONArray(response.body().asString());
+
+		String slotid = arr.getJSONObject(1).getJSONArray("slotList").getJSONObject(0).getString("slotId");
+		String time = arr.getJSONObject(1).getJSONArray("slotList").getJSONObject(0).getString("slotTime");
+		String date = arr.getJSONObject(1).getString("date");
+
+		log("slotTime-" + time);
+		log("slotId- " + slotid);
+		log("Date-" + date);
+
+		String c = payloadPatientMod.scheduleAppointmentPayload(slotid, date, time,
+				propertyData.getProperty("availableslot.bookid.pm.ng03"),
+				propertyData.getProperty("availableslot.locationid.pm.ng"),
+				propertyData.getProperty("availableslot.apptid.pm.ng"));
+
+		log("Payload-" + c);
+
+		Response schedResponse = postAPIRequest.scheduleAppointment(baseUrl, c,
+				headerConfig.HeaderwithToken(accessToken), practiceId, patientId01, testData.getPatientType());
+		apv.responseCodeValidation(schedResponse, 200);
+		apv.responseTimeValidation(schedResponse);
+
+		apv.responseKeyValidationJson(schedResponse, "confirmationNo");
+		apv.responseKeyValidationJson(schedResponse, "patientId");
+		String extApptId = apv.responseKeyValidationJson(schedResponse, "extApptId");
+
+		Response cancelResponse = postAPIRequest.cancelAppointment(baseUrl,
+				payloadPatientMod.cancelAppointmentPayload(extApptId), headerConfig.HeaderwithToken(accessToken),
+				practiceId, patientId01);
+		apv.responseCodeValidation(cancelResponse, 200);
+
+	}
 
 }

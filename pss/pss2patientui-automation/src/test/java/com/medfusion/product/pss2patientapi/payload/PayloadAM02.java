@@ -2292,21 +2292,69 @@ public class PayloadAM02 {
 				+ "]";
 		return payload;
 	}	
-	public String Pyaload() {
-
-		String payload = "";
+	
+	public String addBookInCareTeamPyaload(int bookid) {
+		String payload = "{\r\n"
+				+ "  \"careTeam\": {\r\n"
+				+ "    \"id\": 4068\r\n"
+				+ "  },\r\n"
+				+ "  \"book\": [\r\n"
+				+ "    {\r\n"
+				+ "      \"id\": "+bookid+"\r\n"
+				+ "    }\r\n"
+				+ "  ]\r\n"
+				+ "}";
 		return payload;
 	}	
-	public String Pyaload() {
+	
+	
+	public String insurancePyaload(boolean bool) {
 
-		String payload = "";
+		String payload = "[\r\n"
+				+ "  {\r\n"
+				+ "    \"group\": \"INSURANCE\",\r\n"
+				+ "    \"key\": \"showInsuranceStart\",\r\n"
+				+ "    \"value\": true\r\n"
+				+ "  },\r\n"
+				+ "  {\r\n"
+				+ "    \"group\": \"INSURANCE\",\r\n"
+				+ "    \"key\": \"insuranceMandatory\",\r\n"
+				+ "    \"value\": false\r\n"
+				+ "  },\r\n"
+				+ "  {\r\n"
+				+ "    \"group\": \"INSURANCE\",\r\n"
+				+ "    \"key\": \"selfPay\",\r\n"
+				+ "    \"value\": true\r\n"
+				+ "  },\r\n"
+				+ "  {\r\n"
+				+ "    \"group\": \"INSURANCE\",\r\n"
+				+ "    \"key\": \"showInsuranceCarrierFromPM\",\r\n"
+				+ "    \"value\": "+bool+"\r\n"
+				+ "  },\r\n"
+				+ "  {\r\n"
+				+ "    \"group\": \"INSURANCE\",\r\n"
+				+ "    \"key\": \"restrictPatient\",\r\n"
+				+ "    \"value\": true\r\n"
+				+ "  },\r\n"
+				+ "  {\r\n"
+				+ "    \"group\": \"INSURANCE\",\r\n"
+				+ "    \"key\": \"allowSpecialCharForInsurance\",\r\n"
+				+ "    \"value\": false\r\n"
+				+ "  },\r\n"
+				+ "  {\r\n"
+				+ "    \"group\": \"INSURANCE_ROUTING\",\r\n"
+				+ "    \"key\": \"one\",\r\n"
+				+ "    \"value\": \"true\"\r\n"
+				+ "  },\r\n"
+				+ "  {\r\n"
+				+ "    \"group\": \"INSURANCE_ROUTING\",\r\n"
+				+ "    \"key\": \"two\",\r\n"
+				+ "    \"value\": \"false\"\r\n"
+				+ "  }\r\n"
+				+ "]";
 		return payload;
 	}	
-	public String Pyaload() {
-
-		String payload = "";
-		return payload;
-	}	
+	
 	public String Pyaload() {
 
 		String payload = "";
