@@ -444,7 +444,37 @@ locals {
       google_chrome_version = "96.0.4664.110-1"
       chrome_driver_version = "95.0.4638.17"
       cron_shedule          = "cron(0 2 ? * 1 *)"
-    }   
+    }
+
+    "prod-practiceportal-regression2" = {
+      codecommit_branch     = "development"
+      PollForSourceChanges  = false
+      execution_folder      = "practiceportal-automation"
+      test_environment      = "prod"
+      suite_xml             = "referrals-portal-testng.xml"
+      pxp_application       = "Portal"
+      build_timeout         = 240 #Number of minutes, from 5 to 480. Default value is 60 mins
+      queued_timeout        = 480 #Number of minutes, from 5 to 480. Default value is 480 mins
+      maven_parameter       = "mvn clean install -U"
+      google_chrome_version = "96.0.4664.110-1"
+      chrome_driver_version = "95.0.4638.17"
+      cron_shedule          = "cron(15 0 ? * 1 *)"
+    } 
+
+    "prod-sitegen-regression" = {
+      codecommit_branch     = "development"
+      PollForSourceChanges  = false
+      execution_folder      = "sitegen-automation"
+      test_environment      = "prod"
+      suite_xml             = "sitegen-testng.xml"
+      pxp_application       = "Portal"
+      build_timeout         = 240 #Number of minutes, from 5 to 480. Default value is 60 mins
+      queued_timeout        = 480 #Number of minutes, from 5 to 480. Default value is 480 mins
+      maven_parameter       = "mvn clean install -U"
+      google_chrome_version = "96.0.4664.110-1"
+      chrome_driver_version = "95.0.4638.17"
+      cron_shedule          = "cron(30 0 ? * 1 *)"
+    } 
   }
 
   selected_test_environment      = try(local.inputs[terraform.workspace].test_environment)

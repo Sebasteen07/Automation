@@ -2205,7 +2205,85 @@ public class PayloadAM02 {
 				+ "]";
 		return payload;
 	}	
-
+	
+	public String preventSchedPyaload1(int day) {
+		String payload = "[\r\n"
+				+ "  {\r\n"
+				+ "    \"isageRule\": false,\r\n"
+				+ "    \"id\": 4235,\r\n"
+				+ "    \"name\": \"Insomnia\",\r\n"
+				+ "    \"displayName\": \"Insomnia\",\r\n"
+				+ "    \"displayNames\": {\r\n"
+				+ "      \"EN\": \"Insomnia\"\r\n"
+				+ "    },\r\n"
+				+ "    \"message\": {\r\n"
+				+ "      \"EN\": \"ss\"\r\n"
+				+ "    },\r\n"
+				+ "    \"question\": {\r\n"
+				+ "      \"EN\": null\r\n"
+				+ "    },\r\n"
+				+ "    \"customMessages\": {\r\n"
+				+ "      \"EN\": null\r\n"
+				+ "    },\r\n"
+				+ "    \"sortOrder\": 1,\r\n"
+				+ "    \"categoryId\": \"24A7DC4F-4DB6-427C-9FA5-EB76FA2142D0\",\r\n"
+				+ "    \"categoryName\": \"Insomnia\",\r\n"
+				+ "    \"extAppointmentTypeId\": \"E0F61D51-3AFB-412E-AA3C-18786D23821C\",\r\n"
+				+ "    \"preventRescheduleOnCancel\": 0,\r\n"
+				+ "    \"preventScheduling\": \""+day+"\",\r\n"
+				+ "    \"locations\": [\r\n"
+				+ "      {\r\n"
+				+ "        \"id\": \"206321\",\r\n"
+				+ "        \"name\": \"PSS WLA\",\r\n"
+				+ "        \"displayName\": \"PSS WLA\",\r\n"
+				+ "        \"address\": {\r\n"
+				+ "          \"id\": 206321,\r\n"
+				+ "          \"address1\": \"Address line 1\",\r\n"
+				+ "          \"address2\": \"Address line 2\",\r\n"
+				+ "          \"city\": \"Cary\",\r\n"
+				+ "          \"state\": \"NC\",\r\n"
+				+ "          \"zipCode\": \"27518\",\r\n"
+				+ "          \"country\": \"string\",\r\n"
+				+ "          \"latitude\": 35.7469276,\r\n"
+				+ "          \"longitude\": -78.77481569999999\r\n"
+				+ "        },\r\n"
+				+ "        \"timezone\": \"\",\r\n"
+				+ "        \"extLocationId\": \"283BB437-B0C6-4626-A7CC-57FD0D1D6574\",\r\n"
+				+ "        \"directionUrl\": \"https://dev3-pss-adminportal-ui.dev.medfusion.net/#/app/location\",\r\n"
+				+ "        \"selected\": false,\r\n"
+				+ "        \"phoneNumber\": \"\",\r\n"
+				+ "        \"restrictToCareteam\": false,\r\n"
+				+ "        \"locationLinks\": {}\r\n"
+				+ "      }\r\n"
+				+ "    ],\r\n"
+				+ "    \"param\": {\r\n"
+				+ "      \"id\": 4052,\r\n"
+				+ "      \"appointmentStacking\": false,\r\n"
+				+ "      \"slotCount\": 1,\r\n"
+				+ "      \"allowSameDayAppts\": true,\r\n"
+				+ "      \"apptTimeMark\": 0,\r\n"
+				+ "      \"apptTypeAllocated\": true,\r\n"
+				+ "      \"isContiguous\": false,\r\n"
+				+ "      \"leadTime\": {\r\n"
+				+ "        \"days\": \"0\",\r\n"
+				+ "        \"hours\": \"0\",\r\n"
+				+ "        \"mins\": \"0\"\r\n"
+				+ "      },\r\n"
+				+ "      \"excludeSlots\": [],\r\n"
+				+ "      \"apptTypeReservedReason\": \"n\",\r\n"
+				+ "      \"acceptComment\": false,\r\n"
+				+ "      \"allowOnlineCancellation\": true,\r\n"
+				+ "      \"slotSize\": 5,\r\n"
+				+ "      \"schedulingDuration\": 30,\r\n"
+				+ "      \"pttype\": \"PT_ALL\",\r\n"
+				+ "      \"lastQuestRequired\": false\r\n"
+				+ "    },\r\n"
+				+ "    \"ageRule\": \"\"\r\n"
+				+ "  }\r\n"
+				+ "]";
+		return payload;
+	}
+	
 	public String onlineCancelLeadTimePyaload(String time) {
 
 		String payload = "[\r\n"
@@ -2353,68 +2431,7 @@ public class PayloadAM02 {
 				+ "  }\r\n"
 				+ "]";
 		return payload;
-	}	
-	
-	public String Pyaload() {
-
-		String payload = "";
-		return payload;
-	}	
-	public String Pyaload() {
-
-		String payload = "";
-		return payload;
-	}	
-	public String Pyaload() {
-
-		String payload = "";
-		return payload;
-	}	
-	public String Pyaload() {
-
-		String payload = "";
-		return payload;
-	}	
-	public String Pyaload() {
-
-		String payload = "";
-		return payload;
-	}	
-	public String Pyaload() {
-
-		String payload = "";
-		return payload;
-	}	
-	public String Pyaload() {
-
-		String payload = "";
-		return payload;
-	}	
-	public String Pyaload() {
-
-		String payload = "";
-		return payload;
-	}	
-	public String Pyaload() {
-
-		String payload = "";
-		return payload;
-	}	
-	public String Pyaload() {
-
-		String payload = "";
-		return payload;
-	}	
-	public String Pyaload() {
-
-		String payload = "";
-		return payload;
-	}	
+	}
 	
 	
-
-	
-
-
-
 }

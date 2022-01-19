@@ -30,6 +30,8 @@ locals {
     prod-practiceportal-regression1    = "prod-practiceportal-regression1"
     git-taf-prod-p2p-directmessage     = "git-taf-prod-p2p-directmessage"
     git-taf-prod-rcm-acceptance        = "git-taf-prod-rcm-acceptance"
+    prod-practiceportal-regression2    = "prod-practiceportal-regression2"
+    prod-sitegen-regression            = "prod-sitegen-regression"
   }
   selected_workspace = local.valid_workspaces[terraform.workspace]
 }

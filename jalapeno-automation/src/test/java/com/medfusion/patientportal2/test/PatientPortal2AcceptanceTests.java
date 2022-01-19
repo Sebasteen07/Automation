@@ -6240,6 +6240,10 @@ public class PatientPortal2AcceptanceTests extends BaseTestNGWebDriver {
 
 	@Test(enabled = true, groups = { "acceptance-solutions" }, retryAnalyzer = RetryAnalyzer.class)
 	public void testResetPasswordWithSameEmailAndDOB() throws Exception {
+		logStep("Logging into yopmail and getting ResetPassword url");
+		YopMail mail = new YopMail(driver);
+		mail.deleteAllEmails(testData.getProperty("forgot.password.email"));
+		
 		logStep("Load login page");
 		JalapenoLoginPage loginPage = new JalapenoLoginPage(driver, testData.getUrl());
 
@@ -6255,7 +6259,6 @@ public class PatientPortal2AcceptanceTests extends BaseTestNGWebDriver {
 		String[] mailAddress = testData.getProperty("forgot.password.email").split("@");
 		String emailSubject = "Help with your user name or password";
 		String inEmail = "Reset Password Now";
-		YopMail mail = new YopMail(driver);
 		String url = mail.getLinkFromEmail(mailAddress[0], emailSubject, inEmail, 10);
 		if (!isInviteLinkFinal(url)) {
 			url = getRedirectUrl(url);
