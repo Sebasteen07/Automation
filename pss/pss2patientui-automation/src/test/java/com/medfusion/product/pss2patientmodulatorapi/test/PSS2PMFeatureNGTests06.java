@@ -6,6 +6,7 @@ import java.util.ArrayList;
 import org.testng.annotations.BeforeTest;
 
 import static org.testng.Assert.assertEquals;
+import static org.testng.Assert.assertNotEquals;
 import static org.testng.Assert.assertTrue;
 
 import org.json.JSONArray;
@@ -245,5 +246,837 @@ public class PSS2PMFeatureNGTests06 extends BaseTestNG {
 		apv.responseCodeValidation(response, 200);
 
 	}	
+	
+	@Test(enabled = true, groups = { "APItest" }, retryAnalyzer = RetryAnalyzer.class)
+	public void utestShowProviderImages() throws Exception {
+		log("Verify Gender Rule in Specialty");
+		logStep("Set up the API authentication");
+		setUpAM(propertyData.getProperty("practice.id.pm01"), propertyData.getProperty("mf.authuserid.am.ng01"));
+		Response response;
+		String adminPayload;
+		adminPayload = payloadAM01.providerImages(true);
+		response = postAPIRequestAM.resourceConfigSavePost(practiceIdAm, adminPayload);
+		apv.responseCodeValidation(response, 200);
 
+		String bookId=propertyData.getProperty("book.id.showimages.pm01");
+		response = postAPIRequest.getImages(baseUrl, headerConfig.HeaderwithToken(accessToken), practiceId,bookId);
+		apv.responseCodeValidation(response, 200);
+		apv.responseTimeValidation(response);
+		
+		adminPayload = payloadAM01.providerImages(false);
+		response = postAPIRequestAM.resourceConfigSavePost(practiceIdAm, adminPayload);
+		apv.responseCodeValidation(response, 200);
+		
+		response = postAPIRequest.getImages(baseUrl, headerConfig.HeaderwithToken(accessToken), practiceId,bookId);
+		apv.responseCodeValidation(response, 200);
+		apv.responseTimeValidation(response);
+
+	}
+	
+	@Test(enabled = true, groups = { "APItest" }, retryAnalyzer = RetryAnalyzer.class)
+	public void utestAgeRuleBookApptBeforeAppointment() throws Exception {
+		log(" PSS-19717 : Verify the Age Rule : Book-Appointment type Level when Book is before Appointment type in RULE");
+		String patientDob = "01-Jan-2000";
+		int totalMonth = pssPatientUtils.ageCurrentmonths(patientDob);
+		logStep("Set up the API authentication");
+		setUpAM(propertyData.getProperty("practice.id.pm01"), propertyData.getProperty("mf.authuserid.am.ng01"));
+		Response response;
+		logStep("Set up the desired rule in Admin UI using API");
+		response = postAPIRequestAM.resourceConfigRuleGet(practiceIdAm);
+		JSONArray arr = new JSONArray(response.body().asString());
+		int l = arr.length();
+		log("Length is- " + l);
+		for (int i = 0; i < l; i++) {
+			int ruleId = arr.getJSONObject(i).getInt("id");
+			log("Object No." + i + "- " + ruleId);
+			response = postAPIRequestAM.deleteRuleById(practiceIdAm, Integer.toString(ruleId));
+			apv.responseCodeValidation(response, 200);
+		}
+
+		response = postAPIRequestAM.resourceConfigRulePost(practiceIdAm, payloadAM.rulePayload("BTL", "B,T,L"));
+		apv.responseCodeValidation(response, 200);
+
+		response = postAPIRequestAM.resourceConfigRulePost(practiceIdAm, payloadAM.rulePayload("LBT", "L,B,T"));
+		apv.responseCodeValidation(response, 200);
+
+		response = postAPIRequestAM.resourceConfigSavePost(practiceIdAm,
+				payloadAM01.turnONOFFShowProvider(true));
+		apv.responseCodeValidation(response, 200);
+
+		String bookName = propertyData.getProperty("book.name.pm01");
+		String id1 = propertyData.getProperty("book.id.pm01");
+		String apptId1 = propertyData.getProperty("appt.id.pm01");
+		int bookId = Integer.parseInt(id1);
+		int apptId = Integer.parseInt(apptId1);
+		String firstVal = propertyData.getProperty("agerule.firstvalue.pm01");
+		String secondVal = propertyData.getProperty("agerule.secondvalue.pm01");
+
+		String b = payloadAM01.ageRuleOnBookAppointmentType(bookId,apptId, firstVal, secondVal);
+		response = postAPIRequestAM.bookAppointmentTypeUpdate(practiceIdAm, b);
+		apv.responseCodeValidation(response, 200);
+
+		String b1 = payloadPssPMNG1.bookRulePost();
+		String patientId = propertyData.getProperty("patient.id.pm01");
+		response = postAPIRequest.booksByRule(baseUrl, b1, headerConfig.HeaderwithToken(accessToken), practiceId,
+				patientId);
+		apv.responseCodeValidation(response, 200);
+		apv.responseTimeValidation(response);
+
+		JSONObject jo = new JSONObject(response.asString());
+		int len = jo.getJSONArray("books").length();
+		String kk = null;
+		ArrayList<String> arrayList = new ArrayList<String>();
+		for (int i = 0; i < len; i++) {
+			kk = jo.getJSONArray("books").getJSONObject(i).getString("displayName");
+			arrayList.add(kk);
+		}
+		int i = Integer.parseInt(firstVal);
+		int j = Integer.parseInt(secondVal);
+		boolean sExist = false;
+		if (totalMonth > i && totalMonth < j) {
+			String expectedValue = bookName;
+			sExist = arrayList.contains(expectedValue);
+			assertEquals(true, sExist);
+		} else {
+			String expectedValue = bookName;
+			sExist = arrayList.contains(expectedValue);
+			assertNotEquals(true, sExist);
+
+		}
+		log("Resetting the age rule");
+		String resetAgePayload = payloadAM01.resetAgeRuleOnBookAppointmentType(bookId,apptId);
+		response = postAPIRequestAM.bookAppointmentTypeUpdate(practiceIdAm, resetAgePayload);
+		apv.responseCodeValidation(response, 200);		
+	}
+	
+
+	@Test(enabled = true, groups = { "APItest" }, retryAnalyzer = RetryAnalyzer.class)
+	public void utestAgeRuleBookAppTypeBeforeProvider() throws Exception {
+		log("Verify the Age Rule at Book-Appointment type level when Appointment Type is before Provider in the RULE");
+		String patientDob = "01-Jan-2000";
+		int totalMonth = pssPatientUtils.ageCurrentmonths(patientDob);
+		logStep("Set up the API authentication");
+		setUpAM(propertyData.getProperty("practice.id.pm01"), propertyData.getProperty("mf.authuserid.am.ng01"));
+		Response response;
+		String adminPayload;
+		logStep("Set up the desired rule in Admin UI using API");
+		response = postAPIRequestAM.resourceConfigRuleGet(practiceIdAm);
+		JSONArray arr = new JSONArray(response.body().asString());
+		int l = arr.length();
+		log("Length is- " + l);
+		for (int i = 0; i < l; i++) {
+			int ruleId = arr.getJSONObject(i).getInt("id");
+			log("Object No." + i + "- " + ruleId);
+			response = postAPIRequestAM.deleteRuleById(practiceIdAm, Integer.toString(ruleId));
+			apv.responseCodeValidation(response, 200);
+		}
+
+		response = postAPIRequestAM.resourceConfigRulePost(practiceIdAm, payloadAM.rulePayload("BTL", "B,T,L"));
+		apv.responseCodeValidation(response, 200);
+
+		response = postAPIRequestAM.resourceConfigRulePost(practiceIdAm, payloadAM.rulePayload("LBT", "L,B,T"));
+		apv.responseCodeValidation(response, 200);
+
+		response = postAPIRequestAM.resourceConfigSavePost(practiceIdAm,
+				payloadAM01.turnONOFFShowProvider(true));
+		apv.responseCodeValidation(response, 200);
+		
+		response = postAPIRequestAM.resourceConfigSavePost(practiceIdAm,
+				payloadAM01.turnONOFFDecisionTree(true));
+		apv.responseCodeValidation(response, 200);
+		
+		String catName="ageRuleCat";
+		adminPayload = payloadAM01.createDecisionTree();
+		response = postAPIRequestAM.saveCategory(practiceIdAm, adminPayload);
+		apv.responseCodeValidation(response, 200);
+
+		String id1 = propertyData.getProperty("book.id.pm01");
+		String apptId1 = propertyData.getProperty("appt.id.pm01");
+		int bookId = Integer.parseInt(id1);
+		int apptId = Integer.parseInt(apptId1);
+		String firstVal = propertyData.getProperty("agerule.firstvalue.pm01");
+		String secondVal = propertyData.getProperty("agerule.secondvalue.pm01");
+
+		String b = payloadAM01.ageRuleOnBookAppointmentType(bookId,apptId, firstVal, secondVal);
+		response = postAPIRequestAM.bookAppointmentTypeUpdate(practiceIdAm, b);
+		apv.responseCodeValidation(response, 200);
+
+		String b1 = payloadPssPMNG1.bookRulePost();
+		String patientId = propertyData.getProperty("patient.id.pm01");
+		response = postAPIRequest.appointmentTypesByRule(baseUrl, b1, headerConfig.HeaderwithToken(accessToken), practiceId,
+				patientId);
+		apv.responseCodeValidation(response, 200);
+		apv.responseTimeValidation(response);
+
+		JSONObject jo = new JSONObject(response.asString());
+		int len = jo.getJSONArray("exposedCategory").length();
+		String kk = null;
+		ArrayList<String> arrayList = new ArrayList<String>();
+		for (int i = 0; i < len; i++) {
+			kk = jo.getJSONArray("exposedCategory").getJSONObject(i).getString("displayName");
+			arrayList.add(kk);
+		}
+		int i = Integer.parseInt(firstVal);
+		int j = Integer.parseInt(secondVal);
+		boolean sExist = false;
+		if (totalMonth > i && totalMonth < j) {
+			String expectedValue = catName;
+			sExist = arrayList.contains(expectedValue);
+			assertEquals(true, sExist);
+		} else {
+			String expectedValue = catName;
+			sExist = arrayList.contains(expectedValue);
+			assertNotEquals(true, sExist);
+
+		}
+		log("Resetting the age rule");
+		response = postAPIRequestAM.resourceConfigSavePost(practiceIdAm,
+				payloadAM01.turnONOFFDecisionTree(false));
+		
+		apv.responseCodeValidation(response, 200);
+		String resetAgePayload = payloadAM01.resetAgeRuleOnBookAppointmentType(bookId,apptId);
+		response = postAPIRequestAM.bookAppointmentTypeUpdate(practiceIdAm, resetAgePayload);
+		apv.responseCodeValidation(response, 200);		
+	}
+	
+	@Test(enabled = true, groups = { "APItest" }, retryAnalyzer = RetryAnalyzer.class)
+	public void utestExistingUserPatientTypePT_NEW_ApptRule() throws Exception {
+		log(" PSS-19718 Verify Existing User with Patient type : NEW for https://dev3-pss.dev.medfusion.net/pss-patient-modulator/v1/24293/appointmenttypes/rule");
+		logStep("Set up the API authentication");
+		setUpAM(propertyData.getProperty("practice.id.pm01"), propertyData.getProperty("mf.authuserid.am.ng01"));
+     	Response response;
+		logStep("Set up the desired rule in Admin UI using API");
+		response = postAPIRequestAM.resourceConfigRuleGet(practiceIdAm);
+		JSONArray arr = new JSONArray(response.body().asString());
+		int l = arr.length();
+		log("Length is- " + l);
+		for (int i = 0; i < l; i++) {
+			int ruleId = arr.getJSONObject(i).getInt("id");
+			log("Object No." + i + "- " + ruleId);
+			response = postAPIRequestAM.deleteRuleById(practiceIdAm, Integer.toString(ruleId));
+			apv.responseCodeValidation(response, 200);
+		}
+
+		response = postAPIRequestAM.resourceConfigRulePost(practiceIdAm, payloadAM.rulePayload("BTL", "B,T,L"));
+		apv.responseCodeValidation(response, 200);
+
+		response = postAPIRequestAM.resourceConfigRulePost(practiceIdAm, payloadAM.rulePayload("LBT", "L,B,T"));
+		apv.responseCodeValidation(response, 200);
+
+		response = postAPIRequestAM.resourceConfigSavePost(practiceIdAm,
+				payloadAM01.turnONOFFShowProvider(true));
+		apv.responseCodeValidation(response, 200);
+		
+		response = postAPIRequestAM.resourceConfigSavePost(practiceIdAm,
+				payloadAM01.turnONOFFDecisionTree(false));
+		apv.responseCodeValidation(response, 200);
+		
+
+		String id1 = propertyData.getProperty("book.id.pm01");
+		String apptId1 = propertyData.getProperty("appt.id.pm01");
+		int bookId = Integer.parseInt(id1);
+		int apptId = Integer.parseInt(apptId1);
+		String apptName = propertyData.getProperty("appt.name.pm01");
+		
+        String patientType="PT_NEW";
+		String b = payloadAM01.bookAppointmentTypePatientType(bookId,apptId,patientType);
+		response = postAPIRequestAM.bookAppointmentTypeUpdate(practiceIdAm, b);
+		apv.responseCodeValidation(response, 200);
+
+		String b1 = payloadPssPMNG1.appointmentRulePost();
+		String patientId = propertyData.getProperty("patient.id.pm01");
+		response = postAPIRequest.appointmentTypesByRule(baseUrl, b1, headerConfig.HeaderwithToken(accessToken), practiceId,
+				patientId);
+		apv.responseCodeValidation(response, 200);
+		apv.responseTimeValidation(response);
+
+		JSONObject jo = new JSONObject(response.asString());
+		int len = jo.getJSONArray("exposedAppointmentType").length();
+		String kk = null;
+		ArrayList<String> arrayList = new ArrayList<String>();
+		for (int i = 0; i < len; i++) {
+			kk = jo.getJSONArray("exposedAppointmentType").getJSONObject(i).getString("displayName");
+			arrayList.add(kk);
+		}
+		log("Appointment List is ........."+arrayList);
+		boolean apptExist = arrayList.contains(apptName);
+		assertNotEquals(true, apptExist);
+
+		String resetAppType = payloadAM01.bookAppointmentTypePatientType(bookId, apptId, "PT_ALL");
+		response = postAPIRequestAM.bookAppointmentTypeUpdate(practiceIdAm, resetAppType);
+		apv.responseCodeValidation(response, 200);
+
+
+	}
+	
+	
+	@Test(enabled = true, groups = { "APItest" }, retryAnalyzer = RetryAnalyzer.class)
+	public void utestExistingUserPatientTypePT_EXISTING_ApptRule() throws Exception {
+		log("PSS-19727 Verify Existing User with Patient type : NEW for https://dev3-pss.dev.medfusion.net/pss-patient-modulator/v1/24293/appointmenttypes/rule");
+		logStep("Set up the API authentication");
+		setUpAM(propertyData.getProperty("practice.id.pm01"), propertyData.getProperty("mf.authuserid.am.ng01"));
+		Response response;
+		logStep("Set up the desired rule in Admin UI using API");
+		response = postAPIRequestAM.resourceConfigRuleGet(practiceIdAm);
+		JSONArray arr = new JSONArray(response.body().asString());
+		int l = arr.length();
+		log("Length is- " + l);
+		for (int i = 0; i < l; i++) {
+			int ruleId = arr.getJSONObject(i).getInt("id");
+			log("Object No." + i + "- " + ruleId);
+			response = postAPIRequestAM.deleteRuleById(practiceIdAm, Integer.toString(ruleId));
+			apv.responseCodeValidation(response, 200);
+		}
+
+		response = postAPIRequestAM.resourceConfigRulePost(practiceIdAm, payloadAM.rulePayload("BTL", "B,T,L"));
+		apv.responseCodeValidation(response, 200);
+
+		response = postAPIRequestAM.resourceConfigRulePost(practiceIdAm, payloadAM.rulePayload("LBT", "L,B,T"));
+		apv.responseCodeValidation(response, 200);
+
+		response = postAPIRequestAM.resourceConfigSavePost(practiceIdAm,
+				payloadAM01.turnONOFFShowProvider(true));
+		apv.responseCodeValidation(response, 200);
+		
+		response = postAPIRequestAM.resourceConfigSavePost(practiceIdAm,
+				payloadAM01.turnONOFFDecisionTree(false));
+		apv.responseCodeValidation(response, 200);
+		
+
+		String id1 = propertyData.getProperty("book.id.pm01");
+		String apptId1 = propertyData.getProperty("appt.id.pm01");
+		int bookId = Integer.parseInt(id1);
+		int apptId = Integer.parseInt(apptId1);
+		String apptName = propertyData.getProperty("appt.name.pm01");
+		
+        String patientType="PT_EXISTING";
+		String b = payloadAM01.bookAppointmentTypePatientType(bookId,apptId,patientType);
+		response = postAPIRequestAM.bookAppointmentTypeUpdate(practiceIdAm, b);
+		apv.responseCodeValidation(response, 200);
+
+		String b1 = payloadPssPMNG1.appointmentRulePost();
+		String patientId = propertyData.getProperty("patient.id.pm01");
+		response = postAPIRequest.appointmentTypesByRule(baseUrl, b1, headerConfig.HeaderwithToken(accessToken), practiceId,
+				patientId);
+		apv.responseCodeValidation(response, 200);
+		apv.responseTimeValidation(response);
+
+		JSONObject jo = new JSONObject(response.asString());
+		int len = jo.getJSONArray("exposedAppointmentType").length();
+		String kk = null;
+		ArrayList<String> arrayList = new ArrayList<String>();
+		for (int i = 0; i < len; i++) {
+			 kk = jo.getJSONArray("exposedAppointmentType").getJSONObject(i).getString("displayName");
+			 arrayList.add(kk);
+		}
+		log("Appointment List is ........." + arrayList);
+		boolean apptExist = arrayList.contains(apptName);
+		assertEquals(true, apptExist);
+
+		String resetAppType = payloadAM01.bookAppointmentTypePatientType(bookId, apptId, "PT_ALL");
+		response = postAPIRequestAM.bookAppointmentTypeUpdate(practiceIdAm, resetAppType);
+		apv.responseCodeValidation(response, 200);
+
+	}
+	@Test(enabled = true, groups = { "APItest" }, retryAnalyzer = RetryAnalyzer.class)
+	public void ztestAgeRuleBookApptBeforeAppointment() throws Exception {
+		log("PSS-19741 : Verify the Age Rule at Appointment Type Level when Provider is before Appointment type in Rule");
+		String patientDob = "01-Jan-2000";
+		int totalMonth = pssPatientUtils.ageCurrentmonths(patientDob);
+		logStep("Set up the API authentication");
+		setUpAM(propertyData.getProperty("practice.id.pm01"), propertyData.getProperty("mf.authuserid.am.ng01"));
+		Response response;
+		logStep("Set up the desired rule in Admin UI using API");
+		response = postAPIRequestAM.resourceConfigRuleGet(practiceIdAm);
+		JSONArray arr = new JSONArray(response.body().asString());
+		int l = arr.length();
+		log("Length is- " + l);
+		for (int i = 0; i < l; i++) {
+			int ruleId = arr.getJSONObject(i).getInt("id");
+			log("Object No." + i + "- " + ruleId);
+			response = postAPIRequestAM.deleteRuleById(practiceIdAm, Integer.toString(ruleId));
+			apv.responseCodeValidation(response, 200);
+		}
+
+		response = postAPIRequestAM.resourceConfigRulePost(practiceIdAm, payloadAM.rulePayload("BTL", "B,T,L"));
+		apv.responseCodeValidation(response, 200);
+
+		response = postAPIRequestAM.resourceConfigRulePost(practiceIdAm, payloadAM.rulePayload("LBT", "L,B,T"));
+		apv.responseCodeValidation(response, 200);
+
+		response = postAPIRequestAM.resourceConfigSavePost(practiceIdAm,
+				payloadAM01.turnONOFFShowProvider(true));
+		apv.responseCodeValidation(response, 200);
+
+		String bookName = propertyData.getProperty("book.name.pm01");
+		String id1 = propertyData.getProperty("book.id.pm01");
+		String apptId1 = propertyData.getProperty("appt.id.pm01");
+		int bookId = Integer.parseInt(id1);
+		int apptId = Integer.parseInt(apptId1);
+		String firstVal = propertyData.getProperty("agerule.firstvalue.pm01");
+		String secondVal = propertyData.getProperty("agerule.secondvalue.pm01");
+
+		String b = payloadAM01.ageRuleAppType(apptId, firstVal, secondVal);
+		response = postAPIRequestAM.saveAppointmenttype(practiceIdAm, b);
+		apv.responseCodeValidation(response, 200);
+
+		String b1 = payloadPssPMNG1.bookRulePost();
+		String patientId = propertyData.getProperty("patient.id.pm01");
+		response = postAPIRequest.booksByRule(baseUrl, b1, headerConfig.HeaderwithToken(accessToken), practiceId,
+				patientId);
+		apv.responseCodeValidation(response, 200);
+		apv.responseTimeValidation(response);
+
+		JSONObject jo = new JSONObject(response.asString());
+		int len = jo.getJSONArray("books").length();
+		String kk = null;
+		ArrayList<String> arrayList = new ArrayList<String>();
+		for (int i = 0; i < len; i++) {
+			kk = jo.getJSONArray("books").getJSONObject(i).getString("displayName");
+			arrayList.add(kk);
+		}
+		int i = Integer.parseInt(firstVal);
+		int j = Integer.parseInt(secondVal);
+		log("firstvalue value is   "+i);
+		log("second value is "+j);
+		log("total Month is "+totalMonth);
+		log("Array List is "+arrayList);
+		//boolean sExist = false;
+		if (totalMonth > i && totalMonth < j) {
+			String expectedValue = bookName;
+			boolean sExist = arrayList.contains(expectedValue);
+			log("in if Value of boolean "+sExist);
+			assertEquals(true, sExist);
+		} else {
+			String expectedValue = bookName;
+			boolean value = arrayList.contains(expectedValue);
+			log("in else Value of boolean "+value);
+			assertNotEquals(true, value);
+
+		}
+		
+		
+
+		String b11 = payloadPssPMNG1.bookRulePost();
+		//String patientId = propertyData.getProperty("patient.id.pm01");
+		response = postAPIRequest.appointmentTypesByRule(baseUrl, b11, headerConfig.HeaderwithToken(accessToken), practiceId,
+				patientId);
+		apv.responseCodeValidation(response, 200);
+		apv.responseTimeValidation(response);
+
+//		log("Resetting the age rule");
+//		
+//
+//		String resetAgePayload = payloadAM01.resetAgeRuleOnBookAppointmentType(bookId,apptId);
+//		response = postAPIRequestAM.bookAppointmentTypeUpdate(practiceIdAm, resetAgePayload);
+//		apv.responseCodeValidation(response, 200);		
+	}
+	
+	
+
+	@Test(enabled = true, groups = { "APItest" }, retryAnalyzer = RetryAnalyzer.class)
+	public void utestExistingUserPatientTypePT_NEW_BookRule() throws Exception {
+		log(" PSS-19728 Verify EXISTING User with Patient type : New for https://dev3-pss.dev.medfusion.net/pss-patient-modulator/v1/24293/book/rule");
+		logStep("Set up the API authentication");
+		setUpAM(propertyData.getProperty("practice.id.pm01"), propertyData.getProperty("mf.authuserid.am.ng01"));
+     	Response response;
+		logStep("Set up the desired rule in Admin UI using API");
+		response = postAPIRequestAM.resourceConfigRuleGet(practiceIdAm);
+		JSONArray arr = new JSONArray(response.body().asString());
+		int l = arr.length();
+		log("Length is- " + l);
+		for (int i = 0; i < l; i++) {
+			int ruleId = arr.getJSONObject(i).getInt("id");
+			log("Object No." + i + "- " + ruleId);
+			response = postAPIRequestAM.deleteRuleById(practiceIdAm, Integer.toString(ruleId));
+			apv.responseCodeValidation(response, 200);
+		}
+
+		response = postAPIRequestAM.resourceConfigRulePost(practiceIdAm, payloadAM.rulePayload("TBL", "T,B,L"));
+		apv.responseCodeValidation(response, 200);
+
+		response = postAPIRequestAM.resourceConfigRulePost(practiceIdAm, payloadAM.rulePayload("LBT", "L,B,T"));
+		apv.responseCodeValidation(response, 200);
+
+		response = postAPIRequestAM.resourceConfigSavePost(practiceIdAm,
+				payloadAM01.turnONOFFShowProvider(true));
+		apv.responseCodeValidation(response, 200);
+		
+		response = postAPIRequestAM.resourceConfigSavePost(practiceIdAm,
+				payloadAM01.turnONOFFDecisionTree(false));
+		apv.responseCodeValidation(response, 200);
+		
+
+		String id1 = propertyData.getProperty("book.id.pm01");
+		String apptId1 = propertyData.getProperty("appt.id.pm01");
+		int bookId = Integer.parseInt(id1);
+		int apptId = Integer.parseInt(apptId1);
+		String bookName = propertyData.getProperty("book.name.pm01");
+		
+        String patientType="PT_NEW";
+		String b = payloadAM01.bookAppointmentTypePatientType(bookId,apptId,patientType);
+		response = postAPIRequestAM.bookAppointmentTypeUpdate(practiceIdAm, b);
+		apv.responseCodeValidation(response, 200);
+
+		String b1 = payloadPssPMNG1.bookRuleBeforeApptPost();
+		String patientId = propertyData.getProperty("patient.id.pm01");
+		response = postAPIRequest.booksByRule(baseUrl, b1, headerConfig.HeaderwithToken(accessToken), practiceId,
+				patientId);
+		apv.responseCodeValidation(response, 200);
+		apv.responseTimeValidation(response);
+
+		JSONObject jo = new JSONObject(response.asString());
+		int len = jo.getJSONArray("books").length();
+		String kk = null;
+		ArrayList<String> arrayList = new ArrayList<String>();
+		for (int i = 0; i < len; i++) {
+			kk = jo.getJSONArray("books").getJSONObject(i).getString("displayName");
+			arrayList.add(kk);
+		}
+		log("Books List is ........."+arrayList);
+		boolean apptExist = arrayList.contains(bookName);
+		assertNotEquals(true, apptExist);
+
+		String resetAppType = payloadAM01.bookAppointmentTypePatientType(bookId, apptId, "PT_ALL");
+		response = postAPIRequestAM.bookAppointmentTypeUpdate(practiceIdAm, resetAppType);
+		apv.responseCodeValidation(response, 200);
+
+
+	}
+	
+	@Test(enabled = true, groups = { "APItest" }, retryAnalyzer = RetryAnalyzer.class)
+	public void utestExistingUserPatientTypePT_EXISTINGBookRule() throws Exception {
+		log("PSS-19729  Verify EXISTING User with Patient type : EXISTING for https://dev3-pss.dev.medfusion.net/pss-patient-modulator/v1/24293/book/rule");
+		logStep("Set up the API authentication");
+		setUpAM(propertyData.getProperty("practice.id.pm01"), propertyData.getProperty("mf.authuserid.am.ng01"));
+     	Response response;
+		logStep("Set up the desired rule in Admin UI using API");
+		response = postAPIRequestAM.resourceConfigRuleGet(practiceIdAm);
+		JSONArray arr = new JSONArray(response.body().asString());
+		int l = arr.length();
+		log("Length is- " + l);
+		for (int i = 0; i < l; i++) {
+			int ruleId = arr.getJSONObject(i).getInt("id");
+			log("Object No." + i + "- " + ruleId);
+			response = postAPIRequestAM.deleteRuleById(practiceIdAm, Integer.toString(ruleId));
+			apv.responseCodeValidation(response, 200);
+		}
+
+		response = postAPIRequestAM.resourceConfigRulePost(practiceIdAm, payloadAM.rulePayload("TBL", "T,B,L"));
+		apv.responseCodeValidation(response, 200);
+
+		response = postAPIRequestAM.resourceConfigRulePost(practiceIdAm, payloadAM.rulePayload("LBT", "L,B,T"));
+		apv.responseCodeValidation(response, 200);
+
+		response = postAPIRequestAM.resourceConfigSavePost(practiceIdAm,
+				payloadAM01.turnONOFFShowProvider(true));
+		apv.responseCodeValidation(response, 200);
+		
+		response = postAPIRequestAM.resourceConfigSavePost(practiceIdAm,
+				payloadAM01.turnONOFFDecisionTree(false));
+		apv.responseCodeValidation(response, 200);
+		
+
+		String id1 = propertyData.getProperty("book.id.pm01");
+		String apptId1 = propertyData.getProperty("appt.id.pm01");
+		int bookId = Integer.parseInt(id1);
+		int apptId = Integer.parseInt(apptId1);
+		String bookName = propertyData.getProperty("book.name.pm01");
+		
+        String patientType="PT_EXISTING";
+		String b = payloadAM01.bookAppointmentTypePatientType(bookId,apptId,patientType);
+		response = postAPIRequestAM.bookAppointmentTypeUpdate(practiceIdAm, b);
+		apv.responseCodeValidation(response, 200);
+
+		String b1 = payloadPssPMNG1.bookRuleBeforeApptPost();
+		String patientId = propertyData.getProperty("patient.id.pm01");
+		response = postAPIRequest.booksByRule(baseUrl, b1, headerConfig.HeaderwithToken(accessToken), practiceId,
+				patientId);
+		apv.responseCodeValidation(response, 200);
+		apv.responseTimeValidation(response);
+
+		JSONObject jo = new JSONObject(response.asString());
+		int len = jo.getJSONArray("books").length();
+		String kk = null;
+		ArrayList<String> arrayList = new ArrayList<String>();
+		for (int i = 0; i < len; i++) {
+			kk = jo.getJSONArray("books").getJSONObject(i).getString("displayName");
+			arrayList.add(kk);
+		}
+		log("Books List is ........."+arrayList);
+		boolean apptExist = arrayList.contains(bookName);
+		assertEquals(true, apptExist);
+
+		String resetAppType = payloadAM01.bookAppointmentTypePatientType(bookId, apptId, "PT_ALL");
+		response = postAPIRequestAM.bookAppointmentTypeUpdate(practiceIdAm, resetAppType);
+		apv.responseCodeValidation(response, 200);
+
+
+	}
+	
+	@Test(enabled = true, groups = { "APItest" }, retryAnalyzer = RetryAnalyzer.class)
+	public void utestNewUserPatientTypePT_NEW_ApptRuleShowProviderOFF() throws Exception {
+		log("PSS-19735 :Verify New User with Patient type : New (Show provider OFF ) for https://dev3-pss.dev.medfusion.net/pss-patient-modulator/v1/24293/appointmenttypes/rule");
+		logStep("Set up the API authentication");
+		setUpAM(propertyData.getProperty("practice.id.pm01"), propertyData.getProperty("mf.authuserid.am.ng01"));
+		Response response;
+		response = postAPIRequestAM.locationById(practiceIdAm, propertyData.getProperty("location.id.pm01"));
+		apv.responseCodeValidation(response, 200);
+		String locationTimeZone = apv.responseKeyValidationJson(response, "timezone");
+		log("TimeZone- " + locationTimeZone);
+
+		String currentDate = pssPatientUtils.currentDateWithTimeZone(locationTimeZone);
+		log("currentDate - " + currentDate);
+		logStep("Set up the desired rule in Admin UI using API");
+		response = postAPIRequestAM.resourceConfigRuleGet(practiceIdAm);
+		JSONArray arr = new JSONArray(response.body().asString());
+		int l = arr.length();
+		log("Length is- " + l);
+		for (int i = 0; i < l; i++) {
+			int ruleId = arr.getJSONObject(i).getInt("id");
+			log("Object No." + i + "- " + ruleId);
+			response = postAPIRequestAM.deleteRuleById(practiceIdAm, Integer.toString(ruleId));
+			apv.responseCodeValidation(response, 200);
+		}
+
+		response = postAPIRequestAM.resourceConfigRulePost(practiceIdAm, payloadAM.rulePayload("LT", "L,T"));
+		apv.responseCodeValidation(response, 200);
+
+		response = postAPIRequestAM.resourceConfigRulePost(practiceIdAm, payloadAM.rulePayload("TL", "T,L"));
+		apv.responseCodeValidation(response, 200);
+
+		response = postAPIRequestAM.resourceConfigSavePost(practiceIdAm,
+				payloadAM01.turnONOFFShowProvider(false));
+		apv.responseCodeValidation(response, 200);
+
+		String apptName = propertyData.getProperty("appt.name.pm01");
+        String patientType="PT_NEW";
+		String adapPayload = payloadAM01.patientTypeShowProviderOFF(patientType);
+		String apptId = propertyData.getProperty("appt.id.pm01");
+		
+		response = postAPIRequestAM.appointmenttypeConfgWithBookOff(practiceIdAm, adapPayload, apptId);
+		apv.responseCodeValidation(response, 200);
+		
+		String b1 = payloadPssPMNG1.appTypeRulePTNew();
+		response = postAPIRequest.appointmentTypesByRule(baseUrl, b1, headerConfig.HeaderwithToken(accessToken), practiceId,"");
+		apv.responseCodeValidation(response, 200);
+		apv.responseTimeValidation(response);
+
+		JSONObject jo = new JSONObject(response.asString());
+		int len = jo.getJSONArray("exposedAppointmentType").length();
+		String kk = null;
+		ArrayList<String> arrayList = new ArrayList<String>();
+		for (int i = 0; i < len; i++) {
+			 kk = jo.getJSONArray("exposedAppointmentType").getJSONObject(i).getString("displayName");
+			 arrayList.add(kk);
+		}
+		log("Appointment List is ........." + arrayList);
+		boolean apptExist = arrayList.contains(apptName);
+		assertEquals(true, apptExist);
+
+
+		String resetPayload = payloadAM01.patientTypeShowProviderOFF("PT_ALL");
+				response = postAPIRequestAM.appointmenttypeConfgWithBookOff(practiceIdAm, resetPayload, apptId);
+		apv.responseCodeValidation(response, 200);
+
+
+}
+
+	@Test(enabled = true, groups = { "APItest" }, retryAnalyzer = RetryAnalyzer.class)
+	public void utestNewUserPatientTypePT_Existing_ApptRuleShowProviderOFF() throws Exception {
+		log("PSS-19736 Verify New User with Patient type : EXISTING (Show provider OFF ) for https://dev3-pss.dev.medfusion.net/pss-patient-modulator/v1/24293/appointmenttypes/rule");
+		logStep("Set up the API authentication");
+		setUpAM(propertyData.getProperty("practice.id.pm01"), propertyData.getProperty("mf.authuserid.am.ng01"));
+		Response response;
+		response = postAPIRequestAM.locationById(practiceIdAm, propertyData.getProperty("location.id.pm01"));
+		apv.responseCodeValidation(response, 200);
+		String locationTimeZone = apv.responseKeyValidationJson(response, "timezone");
+		log("TimeZone- " + locationTimeZone);
+
+		String currentDate = pssPatientUtils.currentDateWithTimeZone(locationTimeZone);
+		log("currentDate - " + currentDate);
+		logStep("Set up the desired rule in Admin UI using API");
+		response = postAPIRequestAM.resourceConfigRuleGet(practiceIdAm);
+		JSONArray arr = new JSONArray(response.body().asString());
+		int l = arr.length();
+		log("Length is- " + l);
+		for (int i = 0; i < l; i++) {
+			int ruleId = arr.getJSONObject(i).getInt("id");
+			log("Object No." + i + "- " + ruleId);
+			response = postAPIRequestAM.deleteRuleById(practiceIdAm, Integer.toString(ruleId));
+			apv.responseCodeValidation(response, 200);
+		}
+
+		response = postAPIRequestAM.resourceConfigRulePost(practiceIdAm, payloadAM.rulePayload("LT", "L,T"));
+		apv.responseCodeValidation(response, 200);
+
+		response = postAPIRequestAM.resourceConfigRulePost(practiceIdAm, payloadAM.rulePayload("TL", "T,L"));
+		apv.responseCodeValidation(response, 200);
+
+		response = postAPIRequestAM.resourceConfigSavePost(practiceIdAm,
+				payloadAM01.turnONOFFShowProvider(false));
+		apv.responseCodeValidation(response, 200);
+
+		String apptName = propertyData.getProperty("appt.name.pm01");
+        String patientType="PT_EXISTING";
+		String adapPayload = payloadAM01.patientTypeShowProviderOFF(patientType);
+		String apptId = propertyData.getProperty("appt.id.pm01");
+		
+		response = postAPIRequestAM.appointmenttypeConfgWithBookOff(practiceIdAm, adapPayload, apptId);
+		apv.responseCodeValidation(response, 200);
+		//String patientId = propertyData.getProperty("patient.id.pm01");
+
+		String b1 = payloadPssPMNG1.appTypeRulePTNew();
+		response = postAPIRequest.appointmentTypesByRule(baseUrl, b1, headerConfig.HeaderwithToken(accessToken), practiceId,"");
+		apv.responseCodeValidation(response, 200);
+		apv.responseTimeValidation(response);
+
+		JSONObject jo = new JSONObject(response.asString());
+		int len = jo.getJSONArray("exposedAppointmentType").length();
+		String kk = null;
+		ArrayList<String> arrayList = new ArrayList<String>();
+		for (int i = 0; i < len; i++) {
+			 kk = jo.getJSONArray("exposedAppointmentType").getJSONObject(i).getString("displayName");
+			 arrayList.add(kk);
+		}
+		log("Appointment List is ........." + arrayList);
+		boolean apptExist = arrayList.contains(apptName);
+		assertNotEquals(true, apptExist);
+
+
+		String resetPayload = payloadAM01.patientTypeShowProviderOFF("PT_ALL");
+				response = postAPIRequestAM.appointmenttypeConfgWithBookOff(practiceIdAm, resetPayload, apptId);
+		apv.responseCodeValidation(response, 200);
+
+
+}
+	@Test(enabled = true, groups = { "APItest" }, retryAnalyzer = RetryAnalyzer.class)
+	public void utestExistingUserPatientTypePT_Existing_ApptRuleShowProviderOFF() throws Exception {
+		log("PSS-19737 Verify Existing User with Patient type : EXISTING (Show provider OFF ) for https://dev3-pss.dev.medfusion.net/pss-patient-modulator/v1/24293/appointmenttypes/rule");
+		logStep("Set up the API authentication");
+		setUpAM(propertyData.getProperty("practice.id.pm01"), propertyData.getProperty("mf.authuserid.am.ng01"));
+		Response response;
+		response = postAPIRequestAM.locationById(practiceIdAm, propertyData.getProperty("location.id.pm01"));
+		apv.responseCodeValidation(response, 200);
+		String locationTimeZone = apv.responseKeyValidationJson(response, "timezone");
+		log("TimeZone- " + locationTimeZone);
+
+		String currentDate = pssPatientUtils.currentDateWithTimeZone(locationTimeZone);
+		log("currentDate - " + currentDate);
+		logStep("Set up the desired rule in Admin UI using API");
+		response = postAPIRequestAM.resourceConfigRuleGet(practiceIdAm);
+		JSONArray arr = new JSONArray(response.body().asString());
+		int l = arr.length();
+		log("Length is- " + l);
+		for (int i = 0; i < l; i++) {
+			int ruleId = arr.getJSONObject(i).getInt("id");
+			log("Object No." + i + "- " + ruleId);
+			response = postAPIRequestAM.deleteRuleById(practiceIdAm, Integer.toString(ruleId));
+			apv.responseCodeValidation(response, 200);
+		}
+
+		response = postAPIRequestAM.resourceConfigRulePost(practiceIdAm, payloadAM.rulePayload("LT", "L,T"));
+		apv.responseCodeValidation(response, 200);
+
+		response = postAPIRequestAM.resourceConfigRulePost(practiceIdAm, payloadAM.rulePayload("TL", "T,L"));
+		apv.responseCodeValidation(response, 200);
+
+		response = postAPIRequestAM.resourceConfigSavePost(practiceIdAm,
+				payloadAM01.turnONOFFShowProvider(false));
+		apv.responseCodeValidation(response, 200);
+
+		String apptName = propertyData.getProperty("appt.name.pm01");
+        String patientType="PT_EXISTING";
+		String adapPayload = payloadAM01.patientTypeShowProviderOFF(patientType);
+		String apptId = propertyData.getProperty("appt.id.pm01");
+		
+		response = postAPIRequestAM.appointmenttypeConfgWithBookOff(practiceIdAm, adapPayload, apptId);
+		apv.responseCodeValidation(response, 200);
+		String patientId = propertyData.getProperty("patient.id.pm01");
+
+		String b1 = payloadPssPMNG1.bookRuleBeforeApptPost();
+		response = postAPIRequest.appointmentTypesByRule(baseUrl, b1, headerConfig.HeaderwithToken(accessToken), practiceId,patientId);
+		apv.responseCodeValidation(response, 200);
+		apv.responseTimeValidation(response);
+
+		JSONObject jo = new JSONObject(response.asString());
+		int len = jo.getJSONArray("exposedAppointmentType").length();
+		String kk = null;
+		ArrayList<String> arrayList = new ArrayList<String>();
+		for (int i = 0; i < len; i++) {
+			 kk = jo.getJSONArray("exposedAppointmentType").getJSONObject(i).getString("displayName");
+			 arrayList.add(kk);
+		}
+		log("Appointment List is ........." + arrayList);
+		boolean apptExist = arrayList.contains(apptName);
+		assertEquals(true, apptExist);
+
+
+		String resetPayload = payloadAM01.patientTypeShowProviderOFF("PT_ALL");
+				response = postAPIRequestAM.appointmenttypeConfgWithBookOff(practiceIdAm, resetPayload, apptId);
+		apv.responseCodeValidation(response, 200);
+}
+	
+	@Test(enabled = true, groups = { "APItest" }, retryAnalyzer = RetryAnalyzer.class)
+	public void utestExistingUserPatientTypePT_ALL_ApptRuleShowProviderOFF() throws Exception {
+		log("PSS-19739 Verify Existing User with Patient type : ALL (Show provider OFF ) for https://dev3-pss.dev.medfusion.net/pss-patient-modulator/v1/24293/appointmenttypes/rule");
+		logStep("Set up the API authentication");
+		setUpAM(propertyData.getProperty("practice.id.pm01"), propertyData.getProperty("mf.authuserid.am.ng01"));
+		Response response;
+		response = postAPIRequestAM.locationById(practiceIdAm, propertyData.getProperty("location.id.pm01"));
+		apv.responseCodeValidation(response, 200);
+		String locationTimeZone = apv.responseKeyValidationJson(response, "timezone");
+		log("TimeZone- " + locationTimeZone);
+
+		String currentDate = pssPatientUtils.currentDateWithTimeZone(locationTimeZone);
+		log("currentDate - " + currentDate);
+		logStep("Set up the desired rule in Admin UI using API");
+		response = postAPIRequestAM.resourceConfigRuleGet(practiceIdAm);
+		JSONArray arr = new JSONArray(response.body().asString());
+		int l = arr.length();
+		log("Length is- " + l);
+		for (int i = 0; i < l; i++) {
+			int ruleId = arr.getJSONObject(i).getInt("id");
+			log("Object No." + i + "- " + ruleId);
+			response = postAPIRequestAM.deleteRuleById(practiceIdAm, Integer.toString(ruleId));
+			apv.responseCodeValidation(response, 200);
+		}
+
+		response = postAPIRequestAM.resourceConfigRulePost(practiceIdAm, payloadAM.rulePayload("LT", "L,T"));
+		apv.responseCodeValidation(response, 200);
+
+		response = postAPIRequestAM.resourceConfigRulePost(practiceIdAm, payloadAM.rulePayload("TL", "T,L"));
+		apv.responseCodeValidation(response, 200);
+
+		response = postAPIRequestAM.resourceConfigSavePost(practiceIdAm,
+				payloadAM01.turnONOFFShowProvider(false));
+		apv.responseCodeValidation(response, 200);
+
+		String apptName = propertyData.getProperty("appt.name.pm01");
+        String patientType="PT_ALL";
+		String adapPayload = payloadAM01.patientTypeShowProviderOFF(patientType);
+		String apptId = propertyData.getProperty("appt.id.pm01");
+		
+		response = postAPIRequestAM.appointmenttypeConfgWithBookOff(practiceIdAm, adapPayload, apptId);
+		apv.responseCodeValidation(response, 200);
+		String patientId = propertyData.getProperty("patient.id.pm01");
+
+		String b1 = payloadPssPMNG1.bookRuleBeforeApptPost();
+		response = postAPIRequest.appointmentTypesByRule(baseUrl, b1, headerConfig.HeaderwithToken(accessToken), practiceId,patientId);
+		apv.responseCodeValidation(response, 200);
+		apv.responseTimeValidation(response);
+
+		JSONObject jo = new JSONObject(response.asString());
+		int len = jo.getJSONArray("exposedAppointmentType").length();
+		String kk = null;
+		ArrayList<String> arrayList = new ArrayList<String>();
+		for (int i = 0; i < len; i++) {
+			 kk = jo.getJSONArray("exposedAppointmentType").getJSONObject(i).getString("displayName");
+			 arrayList.add(kk);
+		}
+		log("Appointment List is ........." + arrayList);
+		boolean apptExist = arrayList.contains(apptName);
+		assertEquals(true, apptExist);
+
+}
 }
