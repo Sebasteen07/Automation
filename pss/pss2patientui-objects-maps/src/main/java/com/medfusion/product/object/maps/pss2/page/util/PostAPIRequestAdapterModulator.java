@@ -1028,4 +1028,11 @@ public class PostAPIRequestAdapterModulator {
 		return response;
 		}
 
+	
+
+	public Response getSessionTimeout(String practiceid) throws Exception {
+		Response response = given().spec(requestSpec).log().all().when().get(practiceid + "/getsessionconfiguration").then()
+				.log().all().extract().response();
+		return response;
+	}
 }
