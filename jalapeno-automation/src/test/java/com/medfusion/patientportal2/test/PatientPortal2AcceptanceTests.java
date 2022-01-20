@@ -158,12 +158,12 @@ public class PatientPortal2AcceptanceTests extends BaseTestNGWebDriver {
 			patient = new CreatePatient().selfRegisterPatient(driver, patient, testData.getUrl());
 		}
 	}
-	
+
 	public void createCommonPatientWithStatement() throws Exception {
 		if (patient == null) {
 			String username = PortalUtil2.generateUniqueUsername(testData.getProperty("tr.user.id"), testData);
 			patient = PatientFactory.createJalapenoPatient(username, testData);
-			patient = new CreatePatient().selfRegisterPatientWithPreference(driver, patient, testData.getUrl(),2);
+			patient = new CreatePatient().selfRegisterPatientWithPreference(driver, patient, testData.getUrl(), 2);
 		}
 	}
 
@@ -6272,6 +6272,104 @@ public class PatientPortal2AcceptanceTests extends BaseTestNGWebDriver {
 
 		logStep("Logging out");
 		loginPage = homePage.clickOnLogout();
+	}
+
+	@Test(enabled = true, groups = { "acceptance-linkedaccounts" }, retryAnalyzer = RetryAnalyzer.class)
+	public void testPatientTrustedRep() throws Exception {
+		PracticeLoginPage practiceLogin;
+		PracticeHomePage practiceHome;
+		PatientSearchPage patientSearchPage;
+		JalapenoHomePage jalapenoHomePage;
+		JalapenoLoginPage jalapenoLoginPage;
+		String email = IHGUtil.createRandomEmailAddress(testData.getEmail(), '.');
+		String firstname = testData.getProperty("first.name") + IHGUtil.createRandomNumber();
+		String lastname = testData.getProperty("last.name");
+		String patientsEmail = IHGUtil.createRandomEmailAddress(testData.getEmail(), '.');
+
+		logStep("Patient Activation on Practice Portal");
+		PatientActivationSearchTest patientActivationSearchTest = new PatientActivationSearchTest();
+		String unlockLinkPortal = patientActivationSearchTest.getPatientActivationLink(driver, testData, patientsEmail);
+
+		logStep("Finishing of patient activation: step 1 - verifying identity");
+		PatientVerificationPage patientVerificationPage = new PatientVerificationPage(driver, unlockLinkPortal);
+		SecurityDetailsPage accountDetailsPage = patientVerificationPage.fillPatientInfoAndContinue(
+				PracticeConstants.ZIP_CODE, JalapenoConstants.DATE_OF_BIRTH_MONTH_NO,
+				JalapenoConstants.DATE_OF_BIRTH_DAY, JalapenoConstants.DATE_OF_BIRTH_YEAR);
+		String firstNameAccount = patientActivationSearchTest.getFirstNameString();
+
+		logStep("Finishing of patient activation: step 2 - filling patient data");
+		jalapenoHomePage = accountDetailsPage.fillAccountDetailsAndContinue(
+				patientActivationSearchTest.getPatientIdString(), testData.getPassword(), testData);
+
+		logStep("Logging out");
+		jalapenoLoginPage = jalapenoHomePage.clickOnLogout();
+
+		logStep("Logging again: " + patientActivationSearchTest.getPatientIdString() + " \\ " + testData.getPassword());
+		jalapenoHomePage = jalapenoLoginPage.login(patientActivationSearchTest.getPatientIdString(),
+				testData.getPassword());
+
+		logStep("Nvaigating to account and fetch the first name");
+		JalapenoAccountPage accountPage = jalapenoHomePage.clickOnAccount();
+		JalapenoMyAccountProfilePage myAccountPage = new JalapenoMyAccountProfilePage(driver);
+		myAccountPage = accountPage.clickOnEditMyAccount();
+
+		logStep("Logging out");
+		jalapenoLoginPage = jalapenoHomePage.clickOnLogout();
+
+		YopMail mail = new YopMail(driver);
+		logStep("Logging into Mailinator and getting Patient Activation url");
+		String unlockLinkEmail = mail.getLinkFromEmail(patientsEmail,
+				INVITE_EMAIL_SUBJECT_PATIENT + testData.getPracticeName(), INVITE_EMAIL_BUTTON_TEXT, 30);
+		assertNotNull(unlockLinkEmail, "Error: Activation link not found.");
+
+		logStep("Retrieved activation link is " + unlockLinkEmail);
+		if (!isInviteLinkFinal(unlockLinkEmail)) {
+			unlockLinkEmail = getRedirectUrl(unlockLinkEmail);
+			log("Retrieved link was redirect link. Final link is " + unlockLinkEmail);
+		}
+		logStep("Comparing with portal unlock link " + unlockLinkPortal);
+		assertEquals(unlockLinkEmail, unlockLinkPortal, "!patient unlock links are not equal!");
+
+		logStep("Login to Practice Portal");
+		practiceLogin = new PracticeLoginPage(driver, testData.getPortalUrl());
+		practiceHome = practiceLogin.login(testData.getProperty("doctor.login"),
+				testData.getProperty("doctor.password"));
+
+		logStep("Click on Search");
+		patientSearchPage = practiceHome.clickPatientSearchLink();
+		patientSearchPage.searchForPatientInPatientSearch(patientsEmail);
+		patientSearchPage.clickOnPatient(firstNameAccount, "Tester");
+		patientSearchPage.clickInviteTrustedRepresentative();
+		PatientTrustedRepresentativePage trustedrep = new PatientTrustedRepresentativePage(driver);
+		trustedrep.inviteTrustedRepresentativenew(firstname, lastname, email);
+		String patientUrl = mail.getLinkFromEmail(email, INVITE_EMAIL_SUBJECT_REPRESENTATIVE, INVITE_EMAIL_BUTTON_TEXT,
+				15);
+
+		logStep("Redirecting to verification page");
+		patientVerificationPage = new PatientVerificationPage(driver, patientUrl);
+
+		logStep("Identify patient");
+		AuthUserLinkAccountPage linkAccountPage = patientVerificationPage.fillDependentInfoAndContinue(
+				PracticeConstants.ZIP_CODE, JalapenoConstants.DATE_OF_BIRTH_MONTH_NO,
+				JalapenoConstants.DATE_OF_BIRTH_DAY, JalapenoConstants.DATE_OF_BIRTH_YEAR);
+
+		logStep("Continue registration - sign in as trusted representative username and password");
+
+		linkAccountPage.continueWithAuthUserTurstedRep();
+
+		logStep("Continue registration - create dependents credentials and continue to Home page");
+		accountDetailsPage.fillAccountDetailsAndContinue(firstname, testData.getPassword(),
+				testData.getSecretQuestion(), testData.getSecretAnswer(), testData.getPhoneNumber());
+
+		assertTrue(jalapenoHomePage.assessFamilyAccountElements(false));
+
+		logStep("Log out and log in");
+		jalapenoLoginPage = jalapenoHomePage.clickOnLogout();
+		jalapenoHomePage = jalapenoLoginPage.login(firstname, testData.getPassword());
+		assertTrue(jalapenoHomePage.assessFamilyAccountElements(false));
+
+		jalapenoHomePage.clickOnLogout();
+
 	}
 
 }
