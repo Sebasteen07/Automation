@@ -59,6 +59,9 @@ public class JalapenoLoginPage extends MedfusionPage {
 
 	@FindBy(how = How.XPATH, using = "//span[contains(text(),'Your account is no longer active. Please contact our practice in order re-activate it.')]")
 	private WebElement msgInactivePatientError;
+	
+	@FindBy(how = How.ID, using = "diff")
+	private WebElement msgAlreadyHaveAnAccountError;
 
 	public JalapenoLoginPage(WebDriver driver, String url) {
 		super(driver, url);
@@ -180,6 +183,10 @@ public class JalapenoLoginPage extends MedfusionPage {
 		} catch (Exception e) {
 		}
 		return false;
+	}
+	
+	public String getAlreadyHaveAnAccountErrorText() {
+		return msgAlreadyHaveAnAccountError.getText();
 	}
 
 }

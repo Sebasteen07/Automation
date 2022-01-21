@@ -6240,7 +6240,7 @@ public class PatientPortal2AcceptanceTests extends BaseTestNGWebDriver {
 
 	@Test(enabled = true, groups = { "acceptance-solutions" }, retryAnalyzer = RetryAnalyzer.class)
 	public void testResetPasswordWithSameEmailAndDOB() throws Exception {
-		logStep("Logging into yopmail and getting ResetPassword url");
+		logStep("Logging into yopmail and delete older mails");
 		YopMail mail = new YopMail(driver);
 		mail.deleteAllEmails(testData.getProperty("forgot.password.email"));
 		
@@ -6275,6 +6275,26 @@ public class PatientPortal2AcceptanceTests extends BaseTestNGWebDriver {
 
 		logStep("Logging out");
 		loginPage = homePage.clickOnLogout();
+	}
+	
+	@Test(enabled = true, groups = { "acceptance-basics", "commonpatient" }, retryAnalyzer = RetryAnalyzer.class)
+	public void testCreateSamePatientWithVaildPhonenumber() throws Exception {
+		createCommonPatient();
+		logStep("Load login page and login");
+		JalapenoLoginPage loginPage = new JalapenoLoginPage(driver, testData.getUrl());
+		logStep("Try to create the same patient");
+		PatientDemographicPage patientDemographicPage = loginPage.clickCreateANewAccountButton();
+
+		patientDemographicPage.fillInPatientData(patient.getFirstName(), patient.getLastName(), testData.getProperty("email"),
+				testData.getProperty("dob.month.text"), patient.getDOBDay(), patient.getDOBYear(),
+				patient.getGender(), patient.getZipCode(), patient.getAddress2(), patient.getAddress1(),
+				patient.getCity(), patient.getState());
+
+		patientDemographicPage.tryToContinueToSecurityPage();
+		patientDemographicPage.tryToVerifyPhonenumber(testData.getProperty("phone.number"));
+		logStep("Verify password error displayed");
+		assertTrue(loginPage.getAlreadyHaveAnAccountErrorText().contentEquals("Thanks for verifying your account. We've determined that you already have an account at this practice. Please sign in or click the 'I forgot…' link to recover your user name or password."));
+
 	}
 
 }
