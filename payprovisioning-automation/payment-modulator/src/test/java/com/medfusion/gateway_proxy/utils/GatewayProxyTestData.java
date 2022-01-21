@@ -21,8 +21,8 @@ public class GatewayProxyTestData extends GatewayProxyBaseTest {
 
 				{ token, " ", testData.getProperty("test.pay.customer.uuid"), "Testing refund with blank mmid ",
 						testData.getProperty("customer.id"), testData.getProperty("external.transaction.id"),
-						testData.getProperty("order.id"), testData.getProperty("transaction.amount"), 400,
-						"For input string: \" \"" },
+						testData.getProperty("order.id"), testData.getProperty("transaction.amount"), 500,
+						"HTTP 500 Internal Server Error" },
 
 				{ token, testData.getProperty("proxy.mmid"), " ", "Testing refund with blank customer uuid  ",
 						testData.getProperty("customer.id"), testData.getProperty("external.transaction.id"),
@@ -37,7 +37,7 @@ public class GatewayProxyTestData extends GatewayProxyBaseTest {
 				{ token, testData.getProperty("proxy.mmid"), testData.getProperty("test.pay.customer.uuid"),
 						"Testing refund with blank transaction id ", testData.getProperty("customer.id"), " ",
 						testData.getProperty("order.id"), testData.getProperty("transaction.amount"), 500,
-						"500 Internal Server Error" },
+						"Could not find transaction" },
 
 				{ token, testData.getProperty("proxy.mmid"), testData.getProperty("test.pay.customer.uuid"),
 						"Testing refund with transaction amount as 0", testData.getProperty("customer.id"),
@@ -60,7 +60,7 @@ public class GatewayProxyTestData extends GatewayProxyBaseTest {
 
 				{ token, " ", testData.getProperty("test.pay.customer.uuid"), "Testing refund with blank mmid ",
 						testData.getProperty("customer.id"), testData.getProperty("external.transaction.id"),
-						testData.getProperty("order.id"), 400, "For input string: \" \"" },
+						testData.getProperty("order.id"), 500, "HTTP 500 Internal Server Error" },
 
 				{ token, testData.getProperty("proxy.mmid"), " ", "Testing refund with blank customer uuid  ",
 						testData.getProperty("customer.id"), testData.getProperty("external.transaction.id"),
@@ -72,7 +72,7 @@ public class GatewayProxyTestData extends GatewayProxyBaseTest {
 
 				{ token, testData.getProperty("proxy.mmid"), testData.getProperty("test.pay.customer.uuid"),
 						"Testing refund with blank transaction id ", testData.getProperty("customer.id"), " ",
-						testData.getProperty("order.id"), 500, "Unexpected Server Error" },
+						testData.getProperty("order.id"), 500, "Could not find transaction" },
 
 				{ token, testData.getProperty("proxy.mmid"), testData.getProperty("test.pay.customer.uuid"),
 						"Testing refund with diffrent customer Id ", "12855",
@@ -202,7 +202,7 @@ public class GatewayProxyTestData extends GatewayProxyBaseTest {
 		return new Object[][] {
 				{ token, testData.getProperty("proxy.chargeback.url"), " ",
 						testData.getProperty("external.transaction.id"), testData.getProperty("order.id"), "1",
-						"Failed to convert value of type", 500 },
+						"HTTP 500 Internal Server Error", 500 },
 				{ token, testData.getProperty("proxy.chargeback.url"), testData.getProperty("proxy.mmid"), " ",
 						testData.getProperty("order.id"), "1",
 						"Field error in object 'chargeback' on field 'parentExternalTransactionId'", 400 },
@@ -214,7 +214,7 @@ public class GatewayProxyTestData extends GatewayProxyBaseTest {
 						"Field error in object 'chargeback' on field 'chargebackAmount'", 400 },
 				{ "invalid" + token, testData.getProperty("proxy.chargeback.url"), testData.getProperty("proxy.mmid"),
 						testData.getProperty("external.transaction.id"), testData.getProperty("order.id"), "1", "",
-						401 },
+						403 },
 				// { token ,testData.getProperty("proxy.chargeback.url"),"2560809338"
 				// ,testData.getProperty("external.transaction.id"),testData.getProperty("order.id"),"1"
 				// ,"",403},
@@ -247,9 +247,9 @@ public class GatewayProxyTestData extends GatewayProxyBaseTest {
 	public static Object[][] dataProvider_CB_get() throws IOException {
 		testData = new PropertyFileLoader();
 		String token = MPUsersUtility.getCredentialsEncodedInBase("FINANCE");
-		return new Object[][] { { token, " ", "Failed to convert value of type", 500 },
+		return new Object[][] { { token, " ", "HTTP 500 Internal Server Error", 500 },
 				{ token, "$$$$", "Failed to convert value of type", 500 },
-				{ "invalid" + token, testData.getProperty("proxy.mmid"), "", 401 }, };
+				{ "invalid" + token, testData.getProperty("proxy.mmid"), "", 403 }, };
 
 	}
 
@@ -268,9 +268,8 @@ public class GatewayProxyTestData extends GatewayProxyBaseTest {
 						testData.getProperty("external.wallet.id"), testData.getProperty("external.card.id"), 403, "" },
 
 				{ token, testData.getProperty("test.pay.customer.uuid"), " ", testData.getProperty("external.card.id"),
-						404,
-						"The card with external_card_id " + testData.getProperty("external.card.id")
-								+ " does not exist" },
+						500,
+						"HTTP 500 Internal Server Error" },
 
 				{ token, testData.getProperty("test.pay.customer.uuid"),
 						testData.getProperty("external.wallet.id") + "abcdef", testData.getProperty("external.card.id"),
@@ -301,7 +300,7 @@ public class GatewayProxyTestData extends GatewayProxyBaseTest {
 		String token = GatewayProxyUtils.getTokenForCustomer();
 		return new Object[][] {
 
-				{ token, "$$$$$", 404, "The wallet with external_wallet_id " + "$$$$$" + " does not exist" },
+				{ token, "$$$$$", 500, "500 INTERNAL_SERVER_ERROR \"Internal Server Error\""},
 
 				{ token, testData.getProperty("external.wallet.id") + "invalid", 404,
 						"The wallet with external_wallet_id " + testData.getProperty("external.wallet.id") + "invalid"
@@ -319,8 +318,8 @@ public class GatewayProxyTestData extends GatewayProxyBaseTest {
 
 				{ testData.getProperty("test.pay.customer.uuid"), token, " ", testData.getProperty("consumer.name"),
 						testData.getProperty("type"), testData.getProperty("card.number"),
-						testData.getProperty("expiration.number"), testData.getProperty("zipcode"), true, 404,
-						"The wallet with external_wallet_id   does not exist" },
+						testData.getProperty("expiration.number"), testData.getProperty("zipcode"), true, 500,
+						"HTTP 500 Internal Server Error" },
 				{ testData.getProperty("test.pay.customer.uuid"), token, testData.getProperty("external.wallet.id"),
 						testData.getProperty("consumer.name"), " ", testData.getProperty("card.number"),
 						testData.getProperty("expiration.number"), testData.getProperty("zipcode"), true, 400,
