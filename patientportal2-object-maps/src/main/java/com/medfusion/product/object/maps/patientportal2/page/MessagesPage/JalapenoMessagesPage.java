@@ -228,9 +228,11 @@ public class JalapenoMessagesPage extends JalapenoMenu {
 		return lableSent.getText().toString();
 	}
 
-	public JalapenoPayBillsStatementPdfPage openPDFStatement() {
+	public JalapenoPayBillsStatementPdfPage openPDFStatement() throws InterruptedException {
 		log("Statement: " + statementLinkText.getText());
+		Thread.sleep(3000);
 		statementLinkText.click();
+		Thread.sleep(3000);
 		return PageFactory.initElements(driver, JalapenoPayBillsStatementPdfPage.class);
 	}
 
