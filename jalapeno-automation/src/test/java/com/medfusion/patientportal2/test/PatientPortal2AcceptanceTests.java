@@ -3866,6 +3866,7 @@ public class PatientPortal2AcceptanceTests extends BaseTestNGWebDriver {
 		askHistoryDetail.clickOnLogout();
 	}
 
+	@Test(enabled = true, groups = { "acceptance-basics" }, retryAnalyzer = RetryAnalyzer.class)
 	public void testPatientAutoEnrollment() throws Exception {
 		PropertyFileLoader testData = new PropertyFileLoader();
 		String patientsEmail = IHGUtil.createRandomEmailAddress(testData.getEmail(), '.');
@@ -6298,7 +6299,6 @@ public class PatientPortal2AcceptanceTests extends BaseTestNGWebDriver {
 
 	}
 	
-	@Test(enabled = true, groups = { "acceptance-solutions" }, retryAnalyzer = RetryAnalyzer.class)
 	public void testSuppressPayments() throws Exception {
 		
 		logStep("Login patient");
