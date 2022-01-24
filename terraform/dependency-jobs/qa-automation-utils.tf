@@ -200,7 +200,7 @@ data "aws_iam_policy_document" "qa_automation_utils_codebuild" {
   }
 }
 
-data "aws_iam_policy_document" "codeartifact_token" {
+data "aws_iam_policy_document" "qa_automation_utils_codeartifact_token" {
 # CodeBuild project needs the below IAM permissions to get authentication token from CodeArtifact and upload packages to it
 
   statement {
@@ -265,7 +265,7 @@ resource "aws_iam_role_policy" "qa_automation_utils_codebuild" {
 resource "aws_iam_role_policy" "qa_automation_utils_codeartifact_token_inline_policy" {
   name   = "${local.qa_automation_utils.name}-codeartifact-token-inline-policy"
   role   = module.qa_automation_utils_codebuild.codebuild_role.name
-  policy = data.aws_iam_policy_document.codeartifact_token.json
+  policy = data.aws_iam_policy_document.qa_automation_utils_codeartifact_token.json
 }
 
 ###################################################################################
