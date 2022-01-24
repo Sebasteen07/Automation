@@ -74,6 +74,7 @@ import com.medfusion.product.object.maps.patientportal2.page.MyAccountPage.Jalap
 import com.medfusion.product.object.maps.patientportal2.page.MyAccountPage.JalapenoMyAccountSecurityPage;
 import com.medfusion.product.object.maps.patientportal2.page.NewPayBillsPage.JalapenoPayBillsConfirmationPage;
 import com.medfusion.product.object.maps.patientportal2.page.NewPayBillsPage.JalapenoPayBillsMakePaymentPage;
+import com.medfusion.product.object.maps.patientportal2.page.NewPayBillsPage.JalapenoPayBillsStatementPdfPage;
 import com.medfusion.product.object.maps.patientportal2.page.PrescriptionsPage.JalapenoPrescriptionsPage;
 import com.medfusion.product.object.maps.patientportal2.page.ScheduleAppoinment.JalapenoAppoinmentSchedulingPage;
 import com.medfusion.product.object.maps.patientportal2.page.ThirdPartySso.ThirdPartySsoPage;
@@ -3865,6 +3866,7 @@ public class PatientPortal2AcceptanceTests extends BaseTestNGWebDriver {
 		askHistoryDetail.clickOnLogout();
 	}
 
+	@Test(enabled = true, groups = { "acceptance-basics" }, retryAnalyzer = RetryAnalyzer.class)
 	public void testPatientAutoEnrollment() throws Exception {
 		PropertyFileLoader testData = new PropertyFileLoader();
 		String patientsEmail = IHGUtil.createRandomEmailAddress(testData.getEmail(), '.');
@@ -6296,6 +6298,30 @@ public class PatientPortal2AcceptanceTests extends BaseTestNGWebDriver {
 		assertTrue(loginPage.getAlreadyHaveAnAccountErrorText().contentEquals("Thanks for verifying your account. We've determined that you already have an account at this practice. Please sign in or click the 'I forgot…' link to recover your user name or password."));
 
 	}
+	
+	public void testSuppressPayments() throws Exception {
+		
+		logStep("Login patient");
+		JalapenoLoginPage loginPage = new JalapenoLoginPage(driver, testData.getProperty("statements.portal.url"));
+		JalapenoHomePage homePage = loginPage.login(testData.getProperty("statements.pat.username"), testData.getProperty("statments.pat.password"));
+
+		logStep("Click on messages solution");
+		JalapenoMessagesPage messagesPage = homePage.showMessages(driver);
+		
+		logStep("Verify Statements Message is Displayed in Inbox");
+		assertTrue(messagesPage.isMessageFromEstatementsDisplayed(driver));
+		
+		logStep("Verify Statements PDF is displayed");
+		JalapenoPayBillsStatementPdfPage statementPage= messagesPage.openPDFStatement();
+		assertTrue(statementPage.isStatementPDFdisplayed(driver));
+		
+		logStep("Click on Return to Statements to view Statements history and details");
+		statementPage.clickOnStatementsHistory();
+		statementPage.showStatementDetails();
+		
+		
+	}
+	
 
 	@Test(enabled = true, groups = { "acceptance-linkedaccounts" }, retryAnalyzer = RetryAnalyzer.class)
 	public void testPatientTrustedRep() throws Exception {
