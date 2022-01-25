@@ -6264,7 +6264,7 @@ public class PatientPortal2AcceptanceTests extends BaseTestNGWebDriver {
 		String[] mailAddress = testData.getProperty("forgot.password.email").split("@");
 		String emailSubject = "Help with your user name or password";
 		String inEmail = "Reset Password Now";
-		String url = mail.getLinkFromEmail(mailAddress[0], emailSubject, inEmail, 10);
+		String url = mail.getLinkFromEmail(mailAddress[0], emailSubject, inEmail, 20);
 		if (!isInviteLinkFinal(url)) {
 			url = getRedirectUrl(url);
 		}
