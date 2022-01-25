@@ -412,6 +412,9 @@ public class PatientPortal2AcceptanceTests extends BaseTestNGWebDriver {
 		patient = PatientFactory.createJalapenoPatient(username, testData);
 		patient = new CreatePatient().selfRegisterPatient(driver, patient, testData.getUrl());
 		resetForgottenPasswordOrUsername(patient.getEmail());
+		logStep("Login with Old Password");
+		JalapenoLoginPage loginPage = new JalapenoLoginPage(driver, testData.getUrl());
+		loginPage.loginUnsuccessfuly(patient.getUsername(), patient.getPassword());
 	}
 
 	@Test(enabled = true, groups = { "acceptance-basics" }, retryAnalyzer = RetryAnalyzer.class)
@@ -457,7 +460,7 @@ public class PatientPortal2AcceptanceTests extends BaseTestNGWebDriver {
 				.fillInSecretAnswer(patient.getSecurityQuestionAnswer());
 
 		logStep("Filling new password");
-		JalapenoHomePage homePage = forgotPasswordPage4.fillInNewPassword(patient.getPassword());
+		JalapenoHomePage homePage = forgotPasswordPage4.fillInNewPassword(testData.getProperty("med.wf.password"));
 
 		logStep("Logging out");
 		loginPage = homePage.clickOnLogout();
