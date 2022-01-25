@@ -1,4 +1,4 @@
-//Copyright 2013-2021 NXGN Management, LLC. All Rights Reserved.
+//Copyright 2013-2022 NXGN Management, LLC. All Rights Reserved.
 package com.intuit.ihg.product.object.maps.sitegen.page.personnel;
 
 import static org.testng.Assert.assertNotNull;
@@ -20,13 +20,6 @@ import org.openqa.selenium.support.PageFactory;
 import com.intuit.ifs.csscat.core.pageobject.BasePageObject;
 import com.medfusion.common.utils.IHGUtil;
 import com.intuit.ihg.product.sitegen.utils.SitegenConstants;
-
-/**
- * @author bkrishnankutty
- * @Date 7/9/2013
- * @Description :- Page Object for ImportPersonnelAndPhysicians Page
- * @Note :
- */
 
 public class ImportPersonnelAndPhysiciansPage extends BasePageObject {
 
@@ -57,21 +50,10 @@ public class ImportPersonnelAndPhysiciansPage extends BasePageObject {
 	@FindBy(xpath = "//table[@id = 'MfAjaxFallbackDefaultDataTable']/tbody/tr[1]/td[5]")
 	private WebElement tableFirstRowStatus;
 
-	/**
-	 * @author bkrishnankutty
-	 * @Desc:- constructor for this Page
-	 * @param driver
-	 */
 	public ImportPersonnelAndPhysiciansPage(WebDriver driver) {
 		super(driver);
-		// TODO Auto-generated constructor stub
 	}
 
-	/**
-	 * @author bkrishnankutty
-	 * @Desc:-Indicates if the search page is loaded
-	 * @return true or false
-	 */
 	public boolean isSearchPageLoaded() {
 
 		IHGUtil.PrintMethodName();
@@ -81,16 +63,9 @@ public class ImportPersonnelAndPhysiciansPage extends BasePageObject {
 		} catch (Exception e) {
 			// Catch any element not found errors
 		}
-
 		return result;
 	}
 
-	/**
-	 * @author bkrishnankutty
-	 * @Desc:- upload the import staff doc in .csv format
-	 * @param
-	 * @return ImportOrExportProgressPage
-	 */
 	public ImportOrExportProgressPage clickbtnimportStaffFile() {
 		IHGUtil.PrintMethodName();
 		File url = new File(SitegenConstants.FILEPATH);
@@ -101,39 +76,17 @@ public class ImportPersonnelAndPhysiciansPage extends BasePageObject {
 		return PageFactory.initElements(driver, ImportOrExportProgressPage.class);
 	}
 
-	/**
-	 * @author bkrishnankutty
-	 * @return CreateDate from the tables FirstRow
-	 */
 	public String getImportStaffCreateDate() {
 		return tableFirstRowCreateDate.getText();
 	}
 
-	/**
-	 * @author bkrishnankutty
-	 * @return FileName (String Format) from the tables FirstRow
-	 */
 	public String getFileName() {
 		return tableFirstRowFileName.getText();
 	}
 
-	/**
-	 * @author bkrishnankutty
-	 * @return Status (String Format) from the tables FirstRow
-	 */
 	public String getStatus() {
 		return tableFirstRowStatus.getText();
 	}
-
-	/**
-	 * @author bkrishnankutty
-	 * @Desc:- Assertion of CreationDate ie verify ImportStaff CreationDate in table with Current EST time or server time
-	 * 
-	 * @param importStaffCreateDate
-	 * @param currentEstTiming
-	 * @return true or false
-	 * @throws ParseException
-	 */
 
 	public boolean verifyImportStaffCreationDate(String importStaffCreateDate, String currentEstTiming) throws ParseException {
 
@@ -159,12 +112,6 @@ public class ImportPersonnelAndPhysiciansPage extends BasePageObject {
 			return true;
 	}
 
-	/**
-	 * @author bkrishnankutty
-	 * @Desc:- click on Link ExportPersonnel
-	 * @param
-	 * @return ExportPersonnel Page
-	 */
 	public ExportPersonnelPage clickLinkExportPersonnel() {
 		IHGUtil.PrintMethodName();
 		lnkExportPersonnel.click();

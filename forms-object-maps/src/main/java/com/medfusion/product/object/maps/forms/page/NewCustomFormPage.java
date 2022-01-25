@@ -1,3 +1,4 @@
+// Copyright 2013-2022 NXGN Management, LLC. All Rights Reserved.
 package com.medfusion.product.object.maps.forms.page;
 
 import java.util.List;
@@ -28,10 +29,6 @@ public class NewCustomFormPage extends PortalFormPage {
 
 	/**
 	 * returns nth visible question of current section
-	 * 
-	 * @param sectionOrdinalString
-	 * @param questionOrdinal
-	 * @return
 	 */
 	public WebElement getVisibleQuestion(int questionOrdinal) {
 		return driver
@@ -59,12 +56,6 @@ public class NewCustomFormPage extends PortalFormPage {
 		return false;
 	}
 
-	/**
-	 * 
-	 * @param questionOfSelectType WebElement &lt;ul&gt; object
-	 * @param answerIndex index from 1
-	 * @throws InterruptedException
-	 */
 	public void selectAnswer(WebElement questionOfSelectType, int answerIndex) throws InterruptedException {
 		scrollAndWait(0, 0, 500);
 		javascriptClick(questionOfSelectType.findElement(By.xpath("((./label)[" + answerIndex + "])/input")));
@@ -93,8 +84,6 @@ public class NewCustomFormPage extends PortalFormPage {
 
 	/**
 	 * clears all inputs of specified section, in case of radio buttons it always selects the last option
-	 * 
-	 * @throws InterruptedException
 	 */
 	public void clearAllInputs() throws InterruptedException {
 		driver.manage().timeouts().implicitlyWait(100, TimeUnit.MILLISECONDS);

@@ -1,3 +1,4 @@
+//  Copyright 2013-2022 NXGN Management, LLC. All Rights Reserved.
 package com.intuit.ihg.product.object.maps.apiehcore.page;
 
 import org.openqa.selenium.WebDriver;
@@ -8,12 +9,6 @@ import org.openqa.selenium.support.PageFactory;
 import com.intuit.ifs.csscat.core.pageobject.BasePageObject;
 import com.medfusion.common.utils.IHGUtil;
 
-/**
- * @author bkrishnankutty
- * @Date 6/Aug/2013
- * @Description :-
- * @Note :
- */
 public class TestPage extends BasePageObject {
 
 

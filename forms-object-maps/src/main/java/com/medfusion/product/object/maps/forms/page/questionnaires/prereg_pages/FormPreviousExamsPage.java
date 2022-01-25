@@ -1,4 +1,4 @@
-//  Copyright 2013-2021 NXGN Management, LLC. All Rights Reserved.
+//  Copyright 2013-2022 NXGN Management, LLC. All Rights Reserved.
 package com.medfusion.product.object.maps.forms.page.questionnaires.prereg_pages;
 
 import org.openqa.selenium.By;
@@ -31,11 +31,6 @@ public class FormPreviousExamsPage extends PortalFormPage {
 		super(driver);
 	}
 
-	/**
-	 * @Description:Set Test Type
-	 * @return
-	 * @throws Exception
-	 */
 	public void setTest(String type) throws Exception {
 		PortalUtil2.PrintMethodName();
 		PortalUtil2.setquestionnarieFrame(driver);
@@ -45,6 +40,7 @@ public class FormPreviousExamsPage extends PortalFormPage {
 		IHGUtil.waitForElement(driver, 100, autoComplete);
 		autoComplete.click();
 	}
+
 	public void setTest_20(String type) throws Exception {
 		PortalUtil2.PrintMethodName();
 		examortestName.clear();
@@ -52,33 +48,31 @@ public class FormPreviousExamsPage extends PortalFormPage {
 		examortestName.sendKeys(Keys.TAB);
 		autoComplete.click();
 	}
-	/**
-	 * @Description:Set Test TimeFrame
-	 * @return
-	 * @throws Exception
-	 */
+
 	public void setTestTimeFrame(String type) throws Exception {
 		PortalUtil2.PrintMethodName();
 		PortalUtil2.setquestionnarieFrame(driver);
 		Select selector = new Select(testTimeFrame);
 		selector.selectByVisibleText(type);
 	}
+
 	public void setTestTimeFrame_20(String type) throws Exception {
 		PortalUtil2.PrintMethodName();
 		Select selector = new Select(testTimeFrame);
 		selector.selectByVisibleText(type);
 	}
-	public FormPastMedicalHistoryPage fillTestDetails(String Test1, String TestTimeFrame1) throws Exception
-	{
-		
+
+	public FormPastMedicalHistoryPage fillTestDetails(String Test1, String TestTimeFrame1) throws Exception {
 		setTest_20(Test1);
 		setTestTimeFrame_20(TestTimeFrame1);
 		saveAndContinuebtn.click();
 		return PageFactory.initElements(driver, FormPastMedicalHistoryPage.class);
-		
 	}
+
 	@Override
 	public boolean isPageLoaded() {
-		return driver.findElement(By.xpath(String.format(PAGE_LOADED_XPATH_TEMPLATE, "Previous Exams, Tests & Procedures"))).isDisplayed();
+		return driver
+				.findElement(By.xpath(String.format(PAGE_LOADED_XPATH_TEMPLATE, "Previous Exams, Tests & Procedures")))
+				.isDisplayed();
 	}
 }

@@ -1,3 +1,4 @@
+//  Copyright 2013-2022 NXGN Management, LLC. All Rights Reserved.
 package com.intuit.ihg.common.utils.dataprovider;
 
 import com.intuit.ihg.common.entities.TestObject;
@@ -12,18 +13,12 @@ import java.math.BigDecimal;
 import java.text.SimpleDateFormat;
 import java.util.*;
 
-/**
- * Created by IntelliJ IDEA. User: vvalsan Date: 3/20/13 Time: 6:09 PM To change this template use File | Settings | File Templates.
- */
 public class ExcelSheetUtil {
 
 	private static Logger logger = Logger.getLogger(ExcelSheetUtil.class);
 
-	/** Primitive type name -> class map. */
-
 	private static final Map<Class<?>, Class<?>> PRIMITIVE_TYPE_MAP = new HashMap<Class<?>, Class<?>>();
 
-	/** Setup the primitives map. */
 	static {
 		PRIMITIVE_TYPE_MAP.put(Boolean.TYPE, Boolean.class);
 		PRIMITIVE_TYPE_MAP.put(Byte.TYPE, Byte.class);
@@ -47,10 +42,7 @@ public class ExcelSheetUtil {
 					Array.set(fieldValue, j, readFieldValue(fieldClz.getComponentType(), combinedFieldName + "." + j, dataMap));
 				}
 			}
-		} else if (fieldClz.isAssignableFrom(List.class)) {// Take
-			// care
-			// of
-			// Collections
+		} else if (fieldClz.isAssignableFrom(List.class)) {
 			ArrayList list = ArrayList.class.newInstance();
 			int size = getArraySize(dataMap, combinedFieldName);
 			if (size > 0) {
@@ -93,39 +85,14 @@ public class ExcelSheetUtil {
 		return (valueFound ? count + 1 : count);
 	}
 
-	/**
-	 * @param class1
-	 * @param filename
-	 * @param sheetNumber
-	 * @param columnNames
-	 * @param filter
-	 * @return
-	 */
 	public static synchronized Iterator<Object[]> getDataFromSpreadsheet(Class<?> class1, String filename, int sheetNumber, String[] columnNames, Filter filter) {
 		return ExcelSheetUtil.getDataFromSpreadsheet(class1, filename, null, sheetNumber, columnNames, filter, false);
 	}
 
-	/**
-	 * Reads data from spreadsheet. If sheetName and sheetNumber both are supplied the sheetName takes precedence. Put the excel sheet in the same folder as the
-	 * test case and specify class1 as <code>this.getClass()</code> .
-	 *
-	 * @param class1
-	 * @param filename
-	 * @param sheetName
-	 * @param sheetNumber
-	 * @param fields
-	 * @param filter
-	 * @param readHeaders
-	 * @return
-	 * @throws Exception
-	 */
-
 	public static synchronized Iterator<Object[]> getDataFromSpreadsheet(Class<?> class1, String filename, String sheetName, int sheetNumber, String[] fields,
 			Filter filter, boolean readHeaders) {
 
-		System.gc(); // KEEPME
-
-		// Let CSVUtil handle CSV Files
+		System.gc(); 
 		if (filename.toLowerCase().endsWith(".csv")) {
 			return CSVUtil.getDataFromCSVFile(class1, filename, fields, filter, readHeaders);
 		}
@@ -157,10 +124,8 @@ public class ExcelSheetUtil {
 				}
 			}
 
-			// Get the sheet
 			Sheet sheet = w.getSheet(sheetNumber);
 
-			// ignore blank columns
 			int columnCount = sheet.getColumns();
 			for (int j = 0; j < sheet.getColumns(); j++) {
 				String content = sheet.getCell(j, 0).getContents();
@@ -187,7 +152,6 @@ public class ExcelSheetUtil {
 
 			int testTitleColumnIndex = -1;
 			int testEnvColumnIndex = -1;
-			// Search for Title & Env column
 			for (int i = 0; i < columnCount; i++) {
 				if (testTitleColumnIndex == -1 && TestObject.TEST_TITLE.equalsIgnoreCase(sheet.getCell(i, 0).getContents())) {
 					testTitleColumnIndex = i;
@@ -200,8 +164,6 @@ public class ExcelSheetUtil {
 				}
 			}
 
-			// Let's check for blank rows first
-			// The first row is the header
 			StringBuffer sbBlank = new StringBuffer();
 			for (int i = 1; i < sheet.getRows(); i++) {
 				if (testTitleColumnIndex != -1 && testEnvColumnIndex != -1
@@ -218,9 +180,7 @@ public class ExcelSheetUtil {
 			Set<String> uniqueDataSet = new TreeSet<String>();
 
 
-			// The first row is the header
 			for (int i = 1; i < sheet.getRows(); i++) {
-				// Check for duplicate Title & Env
 				if (testTitleColumnIndex != -1 && testEnvColumnIndex != -1) {
 					String uniqueString = sheet.getCell(testTitleColumnIndex, i).getContents() + "$$$$####$$$$" + sheet.getCell(testEnvColumnIndex, i).getContents();
 					if (uniqueDataSet.contains(uniqueString))
@@ -233,7 +193,6 @@ public class ExcelSheetUtil {
 				Map<String, Object> rowDataMap = new HashMap<String, Object>();
 				List<Object> rowData = new ArrayList<Object>();
 
-				// Create the mapping between headers and column data
 				for (int j = 0; j < columnCount; j++) {
 					rowDataMap.put(sheet.getCell(j, 0).getContents(), sheet.getCell(j, i).getContents());
 				}
@@ -271,7 +230,7 @@ public class ExcelSheetUtil {
 				try {
 					is.close();
 				} catch (Exception e) {
-				} // KEEPME
+				} 
 			}
 		}
 	}
@@ -280,13 +239,11 @@ public class ExcelSheetUtil {
 
 		List<Object[]> sheetData = new ArrayList<Object[]>();
 
-		// The first row is the header
 		String[] fields = (String[]) table.get(0);
 
 		for (int i = 1; i < table.size(); i++) {
 			Map<String, Object> rowDataMap = new HashMap<String, Object>();
 			Object[] rowData = table.get(i);
-			// Create the mapping between headers and column data
 			for (int j = 0; j < rowData.length; j++) {
 				rowDataMap.put(fields[j], rowData[j]);
 			}
@@ -300,29 +257,11 @@ public class ExcelSheetUtil {
 		return sheetData;
 	}
 
-	/**
-	 * Create Entity Objects based on data in spreadsheet.
-	 *
-	 * This method is only for Data Provider. Because it also filer the data based on the dpTagsInclude/dpTagsExclude which is defined in testng configuration
-	 * file
-	 */
 	public static Iterator<Object[]> getObjectsFromSpreadsheet(Class<?> class1, LinkedHashMap<String, Class<?>> entityclass1Map, String filename, int sheetNumber,
 			String[] fields, Filter filter) throws Exception {
 		return ExcelSheetUtil.getObjectsFromSpreadsheet(class1, entityclass1Map, filename, null, sheetNumber, fields, filter);
 	}
 
-	/**
-	 * Create Entity Objects based on data in spreadsheet.
-	 *
-	 * @param entityclass1Map
-	 * @param filename
-	 * @param sheetName
-	 * @param sheetNumber
-	 * @param fields
-	 * @param filter
-	 * @return
-	 * @throws Exception
-	 */
 	public static Iterator<Object[]> getObjectsFromSpreadsheet(Class<?> class1, LinkedHashMap<String, Class<?>> entityclass1Map, String filename,
 			String sheetName, int sheetNumber, String[] fields, Filter filter) throws Exception {
 
@@ -435,7 +374,6 @@ public class ExcelSheetUtil {
 		Object fieldValue = null;
 		String tempValue = (String) getValue(dataMap, fieldName);
 
-		// Return null when field is atomic and value is null or blank
 		if ((tempValue == null || tempValue.length() == 0)
 				&& (fieldClz.isEnum() || fieldClz.getName().equals("java.util.Calendar") || fieldClz.getName().equals("java.math.BigDecimal") || isPrimitive(fieldClz)))
 			return null;
@@ -446,17 +384,11 @@ public class ExcelSheetUtil {
 			} catch (Exception e) {
 				logger.warn("Ex", e);
 			}
-		} else if (fieldClz.getName().equals("java.util.Calendar")) {// Take
-			// care
-			// of
-			// Date
+		} else if (fieldClz.getName().equals("java.util.Calendar")) {
 			Calendar calendar = Calendar.getInstance();
 			calendar.setTime(new SimpleDateFormat("MM/dd/yyyy").parse(tempValue));
 			fieldValue = calendar;
-		} else if (fieldClz.getName().equals("java.math.BigDecimal")) {// Take
-			// care
-			// of
-			// BigDecimal
+		} else if (fieldClz.getName().equals("java.math.BigDecimal")) {
 			fieldValue = new BigDecimal(tempValue);
 		} else if (isPrimitive(fieldClz)) {// Take care of primitives
 			Constructor<?> constructor;
@@ -522,7 +454,6 @@ public class ExcelSheetUtil {
 				}
 			}
 
-			// execute the Setter Method
 			try {
 				if (fieldValue != null) {
 
@@ -530,7 +461,6 @@ public class ExcelSheetUtil {
 						try {
 							object = clz.newInstance();
 						} catch (InstantiationException e) {
-							// handle no null parameter constructor
 							Class<?>[] parameterTypes = new Class<?>[1];
 							parameterTypes[0] = fieldValue.getClass();
 							Constructor<?> constructor = clz.getDeclaredConstructor(parameterTypes);

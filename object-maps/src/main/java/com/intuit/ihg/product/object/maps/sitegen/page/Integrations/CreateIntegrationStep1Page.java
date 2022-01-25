@@ -1,3 +1,4 @@
+//  Copyright 2013-2022 NXGN Management, LLC. All Rights Reserved.
 package com.intuit.ihg.product.object.maps.sitegen.page.Integrations;
 
 import org.openqa.selenium.WebDriver;
@@ -9,12 +10,6 @@ import org.openqa.selenium.support.ui.Select;
 import com.intuit.ifs.csscat.core.pageobject.BasePageObject;
 import com.medfusion.common.utils.IHGUtil;
 
-/**
- * @author bkrishnankutty
- * @Date 7/3/2013
- * @Description :- Page Object for SiteGen Create IntegrationStep1
- * @Note :
- */
 public class CreateIntegrationStep1Page extends BasePageObject {
 
 	@FindBy(name = "externalSystemSelect")
@@ -35,21 +30,10 @@ public class CreateIntegrationStep1Page extends BasePageObject {
 	@FindBy(name = "buttons:cancel")
 	private WebElement btnCancel;
 
-	/**
-	 * @author bkrishnankutty
-	 * @Desc:- constructor for this Page
-	 * @param driver
-	 */
 	public CreateIntegrationStep1Page(WebDriver driver) {
 		super(driver);
-		// TODO Auto-generated constructor stub
 	}
 
-	/**
-	 * @author bkrishnankutty
-	 * @Desc:-Indicates if the search page is loaded
-	 * @return true or false
-	 */
 	public boolean isSearchPageLoaded() {
 		IHGUtil.PrintMethodName();
 
@@ -62,19 +46,6 @@ public class CreateIntegrationStep1Page extends BasePageObject {
 
 		return result;
 	}
-
-	/**
-	 * @author bkrishnankutty
-	 * @Desc:- Add New IntegrationEngine
-	 * @return CreateIntegrationStep2Page
-	 * 
-	 * @param externalSystem
-	 * @param channel
-	 * @param integrationName
-	 * @param reviewType
-	 * 
-	 * @throws InterruptedException
-	 */
 
 	public CreateIntegrationStep2Page addNewIntegrationEng(String externalSystem, String channel, String integrationName, String reviewType)
 			throws InterruptedException {
@@ -96,6 +67,5 @@ public class CreateIntegrationStep1Page extends BasePageObject {
 		btnContinue.click();
 
 		return PageFactory.initElements(driver, CreateIntegrationStep2Page.class);
-
 	}
 }

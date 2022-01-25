@@ -1,4 +1,4 @@
-//Copyright 2013-2021 NXGN Management, LLC. All Rights Reserved.
+//Copyright 2013-2022 NXGN Management, LLC. All Rights Reserved.
 package com.medfusion.product.object.maps.patientportal2.page.AskAStaff;
 
 import org.openqa.selenium.By;
@@ -29,7 +29,6 @@ import java.awt.event.KeyEvent;
 import java.util.ArrayList;
 
 public class JalapenoAskAStaffV2Page1 extends JalapenoMenu {
-	// Navigation
 	@FindBy(how = How.ID, using = "historyButton")
 	private WebElement historyButton;
 
@@ -173,17 +172,6 @@ public class JalapenoAskAStaffV2Page1 extends JalapenoMenu {
 		return createdTS;
 	}
 
-	/**
-	 * fills the subject and question fields then continues to the next page and
-	 * returns its page object null or empty subject param will leave the default (=
-	 * the aska label)
-	 *
-	 * @param subject
-	 * @param question
-	 * @param subjectbox
-	 * @return
-	 * @throws InterruptedException
-	 */
 	public JalapenoAskAStaffV2Page2 fillAndContinue(String subject, String question) throws InterruptedException {
 		if (subject != null && !subject.trim().isEmpty()) {
 			subjectBox.clear();
@@ -631,7 +619,6 @@ public class JalapenoAskAStaffV2Page1 extends JalapenoMenu {
     }
     
     public void uploadInvalidAndValidFile(String errorfilePath, String correctfilePath) throws InterruptedException {
-
 				setClipboardData(errorfilePath);
 				log("Path of Error File " + errorfilePath);
 				JalapenoAskAStaffV2Page1 ref = new JalapenoAskAStaffV2Page1(driver);

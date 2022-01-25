@@ -1,4 +1,4 @@
-//Copyright 2013-2021 NXGN Management, LLC. All Rights Reserved.
+//Copyright 2013-2022 NXGN Management, LLC. All Rights Reserved.
 package com.medfusion.product.object.maps.practice.page.patientSearch;
 
 import static org.testng.Assert.assertEquals;
@@ -109,10 +109,6 @@ public class PatientDashboardPage extends BasePageObject {
 		PageFactory.initElements(driver, this);
 	}
 
-	/**
-	 * @throws InterruptedException
-	 * @Description:click on Patient with name
-	 */
 	public PatientSearchPage sendEmailUserID() throws InterruptedException {
 		IHGUtil.PrintMethodName();
 		IHGUtil.waitForElement(driver, 10, userIdEmail);
@@ -162,11 +158,6 @@ public class PatientDashboardPage extends BasePageObject {
 		return PageFactory.initElements(driver, PatientSearchPage.class);
 	}
 
-	/**
-	 * Read MedfusionID and Set ExternalPatientID
-	 * 
-	 * @return ExternalPatientID
-	 */
 	public String setExternalPatientID() {
 		IHGUtil.PrintMethodName();
 		editPatientLink();
@@ -195,11 +186,6 @@ public class PatientDashboardPage extends BasePageObject {
 		return emrID;
 	}
 
-	/**
-	 * 
-	 * @param patientID
-	 * @return medfusionID
-	 */
 	public String medfusionID() {
 		IHGUtil.PrintMethodName();
 		IHGUtil.waitForElement(driver, 30, txtMedfusionID);
@@ -207,9 +193,6 @@ public class PatientDashboardPage extends BasePageObject {
 		return patientID;
 	}
 
-	/**
-	 * 
-	 */
 	public void editPatientLink() {
 		IHGUtil.PrintMethodName();
 		IHGUtil.waitForElement(driver, 60, editPatientID);
@@ -222,9 +205,6 @@ public class PatientDashboardPage extends BasePageObject {
 		ediPatientID1.click();
 	}
 
-	/*
-	 * return Activation Link
-	 */
 	public String unlockLink() {
 		IHGUtil.PrintMethodName();
 		IHGUtil.waitForElement(driver, 60, lblunlockLink);
@@ -232,9 +212,6 @@ public class PatientDashboardPage extends BasePageObject {
 
 	}
 
-	/*
-	 * return Activation Code
-	 */
 	public String activationCode() {
 		IHGUtil.waitForElement(driver, 60, lblactivationCode);
 		return lblactivationCode.getText().toString();
@@ -246,11 +223,6 @@ public class PatientDashboardPage extends BasePageObject {
 		return PageFactory.initElements(driver, ViewPatientFormPage.class);
 	}
 
-	/**
-	 * 
-	 * @param configExternalID
-	 * @return
-	 */
 	public String externalID(String configExternalID) {
 		IHGUtil.PrintMethodName();
 		IHGUtil.waitForElement(driver, 120, editPatientID);
@@ -263,12 +235,6 @@ public class PatientDashboardPage extends BasePageObject {
 		return externalID.getAttribute("value").toString();
 	}
 
-	/**
-	 * 
-	 * @param patientID
-	 * @param fName
-	 * @param lName
-	 */
 	public void verifyDetails(String patientID, String fName, String lName) {
 		IHGUtil.PrintMethodName();
 		IHGUtil.waitForElement(driver, 60, patientName);
@@ -298,10 +264,6 @@ public class PatientDashboardPage extends BasePageObject {
 		}
 	}
 
-	/**
-	 * 
-	 * @return externalID
-	 */
 	public String readExternalPatientID() {
 		IHGUtil.PrintMethodName();
 		IHGUtil.waitForElement(driver, 120, externalID);

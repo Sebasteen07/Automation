@@ -1,3 +1,4 @@
+//  Copyright 2013-2022 NXGN Management, LLC. All Rights Reserved.
 package com.intuit.ihg.product.object.maps.sitegen.page.discreteforms;
 
 import java.io.File;
@@ -39,11 +40,6 @@ import com.intuit.ihg.product.sitegen.utils.SitegenlUtil;
 import com.medfusion.common.utils.IHGConstants;
 import com.medfusion.common.utils.IHGUtil;
 import com.medfusion.product.object.maps.forms.page.questionnaires.FormWelcomePage;
-
-/**
- *
- * @author bbinisha @ Date : 11/12/2013
- */
 
 public class DiscreteFormsList extends BasePageObject {
 
@@ -140,11 +136,6 @@ public class DiscreteFormsList extends BasePageObject {
 		return opt;
 	}
 
-	/**
-	 * Description: Unpublishes all the published forms present in the Discrete Forms page.
-	 * 
-	 * @throws Exception
-	 */
 	public DiscreteFormsList unpublishForms(String formName) throws Exception {
 		IHGUtil utils = new IHGUtil(driver);
 		IHGUtil.PrintMethodName();
@@ -221,12 +212,6 @@ public class DiscreteFormsList extends BasePageObject {
 		return PageFactory.initElements(driver, nextPageClass);
 	}
 
-	/**
-	 * Description : Publish the Saved Form.
-	 * 
-	 * @param discreteFormName : Form name of the form which needs to be deleted.
-	 * @throws Exception
-	 */
 	public DiscreteFormsList publishForm(String discreteFormName) throws Exception {
 		IHGUtil.PrintMethodName();
 		IHGUtil utils = new IHGUtil(driver);
@@ -278,12 +263,6 @@ public class DiscreteFormsList extends BasePageObject {
 		IHGUtil.waitForElement(driver, 10, getFormOptions(discreteFormName));
 	}
 
-	/**
-	 * Description : Open the newly created discrete Form.
-	 * 
-	 * @return
-	 * @throws Exception
-	 */
 	public WelcomeScreenPage openDiscreteForm(String formName) throws Exception {
 		return openForm(formName, WelcomeScreenPage.class);
 	}
@@ -299,13 +278,6 @@ public class DiscreteFormsList extends BasePageObject {
 		return PageFactory.initElements(driver, nextPageClass);
 	}
 
-	/**
-	 * Click on link - General Registration and Health History
-	 * 
-	 * @return
-	 * @throws InterruptedException
-	 */
-
 	public BasicInformationAboutYouPage clicklnkAutomationPracticeDiscreteForm() throws InterruptedException {
 		IHGUtil.PrintMethodName();
 		SitegenlUtil.setDefaultFrame(driver);
@@ -317,11 +289,6 @@ public class DiscreteFormsList extends BasePageObject {
 		return PageFactory.initElements(driver, BasicInformationAboutYouPage.class);
 	}
 
-	/**
-	 * Checks if the Patient Forms page is loaded by checking if crucial element of it is present
-	 * 
-	 * @return True if the button is present, false otherwise
-	 */
 	public boolean isPageLoaded() {
 		boolean result = false;
 		try {

@@ -1,3 +1,4 @@
+//  Copyright 2013-2022 NXGN Management, LLC. All Rights Reserved.
 package com.medfusion.product.object.maps.forms.page.questionnaires.prereg_pages;
 
 import org.openqa.selenium.By;
@@ -17,25 +18,22 @@ public class FormSecondaryInsurancePage extends PortalFormPage {
 
 	@FindBy(id = "idonot_secondary_insurance")
 	private WebElement idonotSecondaryInsurance;
-	
-	@FindBy(id ="secondary_insurance_company")
+
+	@FindBy(id = "secondary_insurance_company")
 	private WebElement secondaryCompany;
-	
-	@FindBy(id ="secondary_policy_holder_firstname")
+
+	@FindBy(id = "secondary_policy_holder_firstname")
 	private WebElement secondaryFirstName;
-	
+
 	@FindBy(xpath = "//input[@type='submit' and @value='Save & Continue']")
 	private WebElement saveAndContinueButton;
 
-	/**
-	 * @Description:Set no secondary insurance
-	 * @throws Exception
-	 */
 	public void setNoSecondaryInsurance() throws Exception {
 		idonotSecondaryInsurance.click();
 	}
-	public void setSecondaryInsuranceName(String nameOfSecondInsurance,String patientName) throws InterruptedException
-	{
+
+	public void setSecondaryInsuranceName(String nameOfSecondInsurance, String patientName)
+			throws InterruptedException {
 		IHGUtil.waitForElement(driver, 20, secondaryCompany);
 		secondaryCompany.clear();
 		secondaryCompany.sendKeys(nameOfSecondInsurance);
@@ -43,16 +41,20 @@ public class FormSecondaryInsurancePage extends PortalFormPage {
 		secondaryFirstName.sendKeys(patientName);
 		saveAndContinueButton.click();
 	}
-	public FormMedicationsPage fillSecondInsurance(String nameofSecondInsurance,String Patientname) throws InterruptedException
-	{
-		setSecondaryInsuranceName(nameofSecondInsurance,Patientname);
-		
+
+	public FormMedicationsPage fillSecondInsurance(String nameofSecondInsurance, String Patientname)
+			throws InterruptedException {
+		setSecondaryInsuranceName(nameofSecondInsurance, Patientname);
+
 		return PageFactory.initElements(driver, FormMedicationsPage.class);
-		
+
 	}
 
 	@Override
 	public boolean isPageLoaded() {
-		return driver.findElement(By.xpath(String.format(PAGE_LOADED_XPATH_TEMPLATE, "Secondary Health Insurance Information"))).isDisplayed();
+		return driver
+				.findElement(
+						By.xpath(String.format(PAGE_LOADED_XPATH_TEMPLATE, "Secondary Health Insurance Information")))
+				.isDisplayed();
 	}
 }
