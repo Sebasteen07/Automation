@@ -53,7 +53,7 @@ public abstract class PortalFormPage extends BasePageObject {
 	}
 
 	/**
-	 * @brief Click on Continue Button
+	 * Click on Continue Button
 	 * @param nextPageClass Class of the following page in the form continueButton WebElement of the continue button
 	 * @return initialized PageObject for the next page
 	 * @throws Exception
@@ -104,7 +104,7 @@ public abstract class PortalFormPage extends BasePageObject {
 	}
 
 	/**
-	 * @brief Click on Continue Button
+	 * Click on Continue Button
 	 * @param nextPageClass Class of the following page in the form
 	 * @return initialized PageObject for the next page
 	 * @throws Exception
@@ -114,7 +114,7 @@ public abstract class PortalFormPage extends BasePageObject {
 	}
 
 	/**
-	 * @brief Click on Continue Button
+	 * Click on Continue Button
 	 * @return initialized PageObject for the next page
 	 * @throws Exception
 	 */

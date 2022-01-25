@@ -15,7 +15,7 @@ public class PortalCustomFormPage extends PortalFormPage {
 	}
 
 	/**
-	 * @brief Click on Continue Button
+	 * Click on Continue Button
 	 * @param nextPageClass Class of the following page in the form
 	 * @return initialized PageObject for the next page
 	 * @throws Exception
@@ -26,7 +26,7 @@ public class PortalCustomFormPage extends PortalFormPage {
 	}
 
 	/**
-	 * @brief Click on Continue Button
+	 * Click on Continue Button
 	 * @return initialized PageObject for the next page
 	 * @throws Exception
 	 */
