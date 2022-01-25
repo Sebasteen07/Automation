@@ -8,11 +8,13 @@ import static org.testng.Assert.assertNotEquals;
 import static org.testng.Assert.assertTrue;
 
 import java.io.IOException;
+import java.util.Date;
 import java.util.Iterator;
 import java.util.Random;
 import java.util.concurrent.TimeUnit;
 
 import com.medfusion.common.utils.PropertyFileLoader;
+import com.medfusion.common.utils.YopMail;
 import com.medfusion.product.appt.precheck.payload.AptPrecheckPayload;
 import com.medfusion.product.appt.precheck.payload.MfAppointmentSchedulerPayload;
 import com.medfusion.product.appt.precheck.pojo.Appointment;
@@ -29,7 +31,6 @@ import com.medfusion.product.object.maps.appt.precheck.util.HeaderConfig;
 import com.medfusion.product.object.maps.appt.precheck.util.PostAPIRequestAptPrecheck;
 import com.medfusion.product.object.maps.appt.precheck.util.PostAPIRequestMfAppointmentScheduler;
 import com.medfusion.product.object.maps.appt.precheck.util.PostAPIRequestMfNotificationSubscriptionManager;
-import com.medfusion.product.object.maps.appt.precheck.util.YopMail;
 
 import io.cucumber.java.en.And;
 import io.cucumber.java.en.Given;
@@ -70,6 +71,7 @@ public class ApptPrecheckSteps extends BaseTest {
 		aptPrecheckPost = PostAPIRequestAptPrecheck.getPostAPIRequestAptPrecheck();
 		aptPrecheckPayload = AptPrecheckPayload.getAptPrecheckPayload();
 		subsManager=PostAPIRequestMfNotificationSubscriptionManager.getPostAPIRequestMfNotificationSubscriptionManager();
+		commonMethod= new CommonMethods(driver);
 		log("Practice provisining url-- " + propertyData.getProperty("practice.provisining.url.ge"));
 		loginPage = new AppointmentPrecheckLogin(driver, propertyData.getProperty("practice.provisining.url.ge"));
 		log("Verify medfusion page");
@@ -650,10 +652,8 @@ public class ApptPrecheckSteps extends BaseTest {
 
 	@When("schedule a new appointment")
 	public void schedule_a_new_appointment() throws NullPointerException, IOException {
-		Random random = new Random();
-		int randamNo = random.nextInt(100000);
-		Appointment.patientId = String.valueOf(randamNo);
-		Appointment.apptId = String.valueOf(randamNo);
+		Appointment.patientId = commonMethod.generatRandomNum();
+		Appointment.apptId = commonMethod.generatRandomNum();
 		long currentTimestamp = System.currentTimeMillis();
 		long plus20Minutes = currentTimestamp + TimeUnit.MINUTES.toMillis(5);
 		apptSched.aptPutAppointment(propertyData.getProperty("baseurl.mf.appointment.scheduler"),
@@ -833,10 +833,8 @@ public class ApptPrecheckSteps extends BaseTest {
 	@When("schedule a new appointment and confirm")
 	public void schedule_a_new_appointment_and_confirm() throws NullPointerException, IOException {
 		log("Schedule a new Appointment");
-		Random random = new Random();
-		int randamNo = random.nextInt(100000);
-		Appointment.patientId = String.valueOf(randamNo);
-		Appointment.apptId = String.valueOf(randamNo);
+		Appointment.patientId = commonMethod.generatRandomNum();
+		Appointment.apptId = commonMethod.generatRandomNum();
 		long currentTimestamp = System.currentTimeMillis();
 		long plus20Minutes = currentTimestamp + TimeUnit.MINUTES.toMillis(5);
 		apptSched.aptPutAppointment(propertyData.getProperty("baseurl.mf.appointment.scheduler"),
@@ -883,10 +881,8 @@ public class ApptPrecheckSteps extends BaseTest {
 	public void schedule_multiple_new_appointments_and_confirm()
 			throws NullPointerException, IOException, InterruptedException {
 		for (int i = 0; i < 25; i++) {
-			Random random = new Random();
-			int randamNo = random.nextInt(100000);
-			Appointment.patientId = String.valueOf(randamNo);
-			Appointment.apptId = String.valueOf(randamNo);
+			Appointment.patientId = commonMethod.generatRandomNum();
+			Appointment.apptId = commonMethod.generatRandomNum();
 			long currentTimestamp = System.currentTimeMillis();
 			long plus20Minutes = currentTimestamp + TimeUnit.MINUTES.toMillis(10);
 			apptSched.aptPutAppointment(propertyData.getProperty("baseurl.mf.appointment.scheduler"),
@@ -934,10 +930,8 @@ public class ApptPrecheckSteps extends BaseTest {
 			throws NullPointerException, IOException, InterruptedException {
 		for (int i = 0; i < 54; i++) {
 			log("Schedule multiple new Appointments");
-			Random random = new Random();
-			int randamNo = random.nextInt(100000);
-			Appointment.patientId = String.valueOf(randamNo);
-			Appointment.apptId = String.valueOf(randamNo);
+			Appointment.patientId = commonMethod.generatRandomNum();
+			Appointment.apptId = commonMethod.generatRandomNum();
 			long currentTimestamp = System.currentTimeMillis();
 			long plus20Minutes = currentTimestamp + TimeUnit.MINUTES.toMillis(10);
 			log("schedule more than 50 an appointments ");
@@ -986,10 +980,8 @@ public class ApptPrecheckSteps extends BaseTest {
 	public void schedule_multiple_appointments() throws NullPointerException, IOException, InterruptedException {
 		for (int i = 0; i < 100; i++) {
 			log("Schedule multiple new Appointments");
-			Random random = new Random();
-			int randamNo = random.nextInt(100000);
-			Appointment.patientId = String.valueOf(randamNo);
-			Appointment.apptId = String.valueOf(randamNo);
+			Appointment.patientId = commonMethod.generatRandomNum();
+			Appointment.apptId = commonMethod.generatRandomNum();
 			long currentTimestamp = System.currentTimeMillis();
 			long plus20Minutes = currentTimestamp + TimeUnit.MINUTES.toMillis(10);
 			log("schedule more than 50 an appointments ");
@@ -1214,10 +1206,8 @@ public class ApptPrecheckSteps extends BaseTest {
 	public void schedule_multiple_appointments_and_select_patients() throws Exception {
 		for (int i = 0; i < 10; i++) {
 			log("Schedule multiple new Appointments");
-			Random random = new Random();
-			int randamNo = random.nextInt(100000);
-			Appointment.patientId = String.valueOf(randamNo);
-			Appointment.apptId = String.valueOf(randamNo);
+			Appointment.patientId = commonMethod.generatRandomNum();
+			Appointment.apptId = commonMethod.generatRandomNum();
 			long currentTimestamp = System.currentTimeMillis();
 			long plus20Minutes = currentTimestamp + TimeUnit.MINUTES.toMillis(10);
 			log("schedule more than 10 an appointments ");
@@ -1792,7 +1782,7 @@ public class ApptPrecheckSteps extends BaseTest {
 		assertEquals(notifPage.visibilityOfNewPracticeLogoText(), "Your Logo Here", "Logo text was not match");
 		assertTrue(notifPage.visibilityOfConfirmApptButton());
 		assertEquals(notifPage.visibilityOfStartPrechecklink(), "Start PreCheck", "Start PreCheck text was not match");
-		assertEquals(notifPage.visibilityOfApptReminderText(), "Appointment Reminder", "all text was not match");
+		assertEquals(notifPage.visibilityOfApptReminderText(), "Appointment reminders", "all text was not match");
 		assertEquals(notifPage.visibilityOfapptComingUpMessageText(), "[Patient Name], your appointment is coming up.",
 				"Appt Scheduled text was not match");
 		assertEquals(notifPage.visibilityOfDateAndTimeText(), "Date and Time", "Date And Time text was not match");
@@ -2582,10 +2572,8 @@ public class ApptPrecheckSteps extends BaseTest {
 	public void schedule_an_appointment_for_four_patient_and_have_confirmed_their_arrival()
 			throws NullPointerException, IOException {
 		for (int i = 0; i < 4; i++) {
-			Random random = new Random();
-			int randamNo = random.nextInt(100000);
-			Appointment.patientId = String.valueOf(randamNo);
-			Appointment.apptId = String.valueOf(randamNo);
+			Appointment.patientId = commonMethod.generatRandomNum();
+			Appointment.apptId = commonMethod.generatRandomNum();
 			long currentTimestamp = System.currentTimeMillis();
 			long plus20Minutes = currentTimestamp + TimeUnit.MINUTES.toMillis(10);
 			apptSched.aptPutAppointment(propertyData.getProperty("baseurl.mf.appointment.scheduler"),
@@ -2633,10 +2621,8 @@ public class ApptPrecheckSteps extends BaseTest {
 
 	@When("schedule an appointment and confirmed their arrival")
 	public void schedule_an_appointment_and_confirmed_their_arrival() throws NullPointerException, IOException {
-		Random random = new Random();
-		int randamNo = random.nextInt(100000);
-		Appointment.patientId = String.valueOf(randamNo);
-		Appointment.apptId = String.valueOf(randamNo);
+		Appointment.patientId = commonMethod.generatRandomNum();
+		Appointment.apptId = commonMethod.generatRandomNum();
 		long currentTimestamp = System.currentTimeMillis();
 		long plus20Minutes = currentTimestamp + TimeUnit.MINUTES.toMillis(10);
 		apptSched.aptPutAppointment(propertyData.getProperty("baseurl.mf.appointment.scheduler"),
@@ -2896,7 +2882,7 @@ public class ApptPrecheckSteps extends BaseTest {
 	@When("enter timing and timing unit for minutes,minutes,hours,day for {string} and click on save button")
 	public void enter_timing_and_timing_unit_for_minutes_minutes_hours_day_for_and_click_on_save_button(String deliveryMethod)
 			throws InterruptedException {
-		scrollAndWait(0, 500, 5000);
+		scrollAndWait(0, -500, 5000);
 		assertEquals(notifPage.getDeliveryMethod(),deliveryMethod,"Delivery method was not match");
 		log("Delivery Method:"+notifPage.getDeliveryMethod());
 		notifPage.addFourthTimingAndTimingUnit();
@@ -3003,10 +2989,8 @@ public class ApptPrecheckSteps extends BaseTest {
 	@When("schedule multiple appointments and confirm their appointment")
 	public void schedule_multiple_appointments_and_confirm_their_appointment() throws NullPointerException, IOException {
 		for (int i=0;i<=9;i++) {
-		Random random = new Random();
-		int randamNo = random.nextInt(100000);
-		Appointment.patientId = String.valueOf(randamNo);
-		Appointment.apptId = String.valueOf(randamNo);
+			Appointment.patientId = commonMethod.generatRandomNum();
+			Appointment.apptId = commonMethod.generatRandomNum();
 		long currentTimestamp = System.currentTimeMillis();
 		long plus20Minutes = currentTimestamp + TimeUnit.MINUTES.toMillis(10);
 		apptSched.aptPutAppointment(propertyData.getProperty("baseurl.mf.appointment.scheduler"),
@@ -3081,8 +3065,8 @@ public class ApptPrecheckSteps extends BaseTest {
 		assertEquals(curbsidePage.countOfCurbsideCheckinPatient(),0,"Count of Curbside checkin patient was not match");
 	}
 	
-	@Then("verify seclect and deselect functionality of all checkbox")
-	public void verify_seclect_and_deselect_functionality_of_all_checkbox() throws InterruptedException {
+	@Then("verify select and deselect functionality of all checkbox")
+	public void verify_select_and_deselect_functionality_of_all_checkbox() throws InterruptedException {
 		assertFalse(curbsidePage.getVisibilityOfAllCheckbox());
 		Thread.sleep(10000);
 		curbsidePage.selectAllAppointment();
@@ -3105,10 +3089,8 @@ public class ApptPrecheckSteps extends BaseTest {
 	
 	@When("schedule a appointment without phone number")
 	public void schedule_a_appointment_without_phone_number() throws NullPointerException, IOException {
-		Random random = new Random();
-		int randamNo = random.nextInt(100000);
-		Appointment.patientId = String.valueOf(randamNo);
-		Appointment.apptId = String.valueOf(randamNo);
+		Appointment.patientId = commonMethod.generatRandomNum();
+		Appointment.apptId = commonMethod.generatRandomNum();
 		long currentTimestamp = System.currentTimeMillis();
 		long plus20Minutes = currentTimestamp + TimeUnit.MINUTES.toMillis(5);
 		apptSched.aptPutAppointment(propertyData.getProperty("baseurl.mf.appointment.scheduler"),
@@ -3122,19 +3104,19 @@ public class ApptPrecheckSteps extends BaseTest {
 	@When("go to on yopmail and from mail unsubscribe a patient")
 	public void go_to_on_yopmail_and_from_mail_unsubscribe_a_patient() throws InterruptedException {
 		YopMail yopMail= new YopMail(driver);
-		String unsubscribeMessage=yopMail.unsubscribeEmail(propertyData.getProperty("unsubscribed.email"));
+		String unsubscribeMessage=yopMail.unsubscribeEmail(propertyData.getProperty("unsubscribed.email"),propertyData.getProperty("appt.email.subject"));
 		assertEquals(unsubscribeMessage,"You will no longer receive emails from PreCheck and reminder services. Please contact your practice if you wish to opt back in.","Message was nor correct");
 	}
 	
-	@When("user switch on practice provisioning url")
-	public void user_switch_on_practice_provisioning_url() {
+	@When("I switch on practice provisioning url")
+	public void I_switch_on_practice_provisioning_url() {
 		loginPage = new AppointmentPrecheckLogin(driver, propertyData.getProperty("practice.provisining.url.ge"));
 	}
 	
 	@When("I select patient and send broadcast message from appointment dashboard")
 	public void I_select_patient_and_send_broadcast_message_from_appointment_dashboard() throws Exception {
 		mainPage.clickOnAppointmentsTab();
-		apptPage.selectPatient(Appointment.patientId, Appointment.patientId);
+		apptPage.selectPatient(Appointment.patientId, Appointment.apptId);
 		log("Click on Actions tab and select broadcast message");
 		apptPage.performAction();
 		log("Enter message in English and Spanish");
@@ -3153,8 +3135,8 @@ public class ApptPrecheckSteps extends BaseTest {
 				assertEquals(response.getStatusCode(), 200);
 	}
 	
-	@When("send message to selected patient")
-	public void send_message_to_selected_patient() throws InterruptedException {
+	@When("I send message to selected patient")
+	public void I_send_message_to_selected_patient() throws InterruptedException {
 		curbsidePage.selectMessageFromDropdown(Appointment.patientId, propertyData.getProperty("curbside.checkin.message.parking.lot"));
 		curbsidePage.clickOnSendButtonOfSelectedPatient(Appointment.patientId);
 	}
@@ -3181,5 +3163,5 @@ public class ApptPrecheckSteps extends BaseTest {
 		apptPage.selectPatient(Appointment.patientId, Appointment.patientId);
 		assertTrue(apptPage.visibilityPatient(Appointment.patientId));
 	}
-	
+		       
 }

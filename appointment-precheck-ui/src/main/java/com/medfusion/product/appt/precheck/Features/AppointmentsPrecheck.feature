@@ -868,7 +868,7 @@ Feature: Test fuctionality of Appointment precheck
   Scenario: verify the functionality of all checkbox on curbside checkin page
     When user on curbside checkin tab and clear all appointments
     And schedule multiple appointments and confirm their appointment
-    Then verify seclect and deselect functionality of all checkbox
+    Then verify select and deselect functionality of all checkbox
     And logout from practice provisioning portal
 
   Scenario: verify the functionality of individual checkbox on curbside checkin page
@@ -880,8 +880,8 @@ Feature: Test fuctionality of Appointment precheck
   Scenario: verify when appointment is schedule only with mail and broadcast is send then banner status should come as failure when email is unsubscribed
     When schedule a appointment without phone number
     And go to on yopmail and from mail unsubscribe a patient
-    And user switch on practice provisioning url
-    And from appointment dashboard select patient and send broadcast message
+    And I switch on practice provisioning url
+    And I select patient and send broadcast message from appointment dashboard
     Then verify banner status should come as failure
     And logout from practice provisioning portal
 
@@ -890,7 +890,7 @@ Feature: Test fuctionality of Appointment precheck
     And logged into precheck admin and user is able to view appointment dashboard screen
     And click on Curbside check-in tab
     And select patient and click on dropdown
-    And send message to selected patient
+    And I send message to selected patient
     Then verify last message send succesfully from curbside checkin
     And logout from practice provisioning portal
 
@@ -902,3 +902,5 @@ Feature: Test fuctionality of Appointment precheck
     And I switch to the appointment dashboard tab
     Then verify check in patient should be added in the appointments dashboard
     And logout from practice provisioning portal
+    
+    
