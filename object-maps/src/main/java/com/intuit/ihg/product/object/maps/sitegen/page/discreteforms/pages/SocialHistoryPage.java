@@ -1,3 +1,4 @@
+//  Copyright 2013-2022 NXGN Management, LLC. All Rights Reserved.
 package com.intuit.ihg.product.object.maps.sitegen.page.discreteforms.pages;
 
 import static org.testng.Assert.assertTrue;
@@ -97,38 +98,20 @@ public class SocialHistoryPage extends ConfiguratorFormPage {
 	public SocialHistoryPage(WebDriver driver) {
 		super(driver);
 		jse = (JavascriptExecutor) driver;
-		// TODO Auto-generated constructor stub
 	}
 
-	/**
-	 * Deselects the checkbox for hiding the page Adds a tea-drinking question so that the page does not hide again
-	 */
 	public void showThisPage() {
 		if (hideSocialhistorySectionCheck.isSelected()) {
 			hideSocialhistorySectionCheck.click();
 			teacoffeeHealthhabits.click();
 		}
-
 	}
 
-	/**
-	 * Description: Sets the name of the section. Name is passe as parameter
-	 * 
-	 * @param newName: A name to be set
-	 * @throws InterruptedException
-	 *
-	 */
 	public void setSectionName(String newName) throws InterruptedException {
 		scrollAndWait(0, 0, 500);
 		customSectionName.sendKeys(newName);
 	}
 
-	/**
-	 * Description: Sets the name of the section. Name is passe as parameter
-	 * 
-	 * @param newName: A name to be set
-	 *
-	 */
 	public void setQuestionName(String newName) {
 		IHGUtil.PrintMethodName();
 		questionNameField.sendKeys(newName);
@@ -155,11 +138,6 @@ public class SocialHistoryPage extends ConfiguratorFormPage {
 		}
 	}
 
-	/**
-	 * Description: Enters possible answers to the text field. Answers are comma separated values
-	 * 
-	 * @param newAnswerText Answer text that will be shown to patient
-	 */
 	public void addPossibleAnswer(String newAnswerText) {
 		addAnswerButton.click();
 
@@ -169,9 +147,6 @@ public class SocialHistoryPage extends ConfiguratorFormPage {
 		lastAnswer.sendKeys(newAnswerText);
 	}
 
-	/**
-	 * Asserts that error notification message appeared. For example when user tried to save form with incomplete question
-	 */
 	public void errorMessageAppearedTest() {
 		assertTrue(errorNotification.isDisplayed());
 	}

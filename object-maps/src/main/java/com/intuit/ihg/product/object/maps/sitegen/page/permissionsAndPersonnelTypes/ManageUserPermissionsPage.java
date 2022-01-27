@@ -1,3 +1,4 @@
+//  Copyright 2013-2022 NXGN Management, LLC. All Rights Reserved.
 package com.intuit.ihg.product.object.maps.sitegen.page.permissionsAndPersonnelTypes;
 
 import org.openqa.selenium.By;
@@ -14,12 +15,6 @@ import com.medfusion.common.utils.IHGUtil;
 import com.intuit.ihg.product.object.maps.sitegen.page.home.SiteGenPracticeHomePage;
 import com.intuit.ihg.product.sitegen.utils.SitegenlUtil;
 
-/**
- * @author bkrishnankutty
- * @Date 6/10/2013
- * @Description :- Page Object for SiteGen Manage User Permissions Page
- * @Note :
- */
 public class ManageUserPermissionsPage extends BasePageObject {
 
 	@FindBy(name = "personneltype")
@@ -43,21 +38,10 @@ public class ManageUserPermissionsPage extends BasePageObject {
 	@FindBy(xpath = ".//a[contains(@href,'generator.home')]")
 	private WebElement lnkHome;
 
-	/**
-	 * @author bkrishnankutty
-	 * @Desc:- constructor for this Page
-	 * @param driver
-	 */
 	public ManageUserPermissionsPage(WebDriver driver) {
 		super(driver);
-		// TODO Auto-generated constructor stub
 	}
 
-	/**
-	 * @author bkrishnankutty
-	 * @Desc:-Indicates if the search page is loaded
-	 * @return true or false
-	 */
 	public boolean isSearchPageLoaded() {
 
 		IHGUtil.PrintMethodName();
@@ -73,22 +57,8 @@ public class ManageUserPermissionsPage extends BasePageObject {
 		return result;
 	}
 
-	/**
-	 * 
-	 * @author bkrishnankutty
-	 * @Desc:- Give permission to the Nurses
-	 * @return SiteGenPracticeHomePage
-	 * 
-	 * @param personneltype1
-	 * @param personneltype2
-	 * @param solutions
-	 * @param locations
-	 * @param users
-	 * @return
-	 * @throws Exception
-	 */
-	public SiteGenPracticeHomePage givePermission2Nurse(String personneltype1, String personneltype2, String solutions, String locations, String users)
-			throws Exception {
+	public SiteGenPracticeHomePage givePermission2Nurse(String personneltype1, String personneltype2, String solutions,
+			String locations, String users) throws Exception {
 
 		IHGUtil.PrintMethodName();
 		SitegenlUtil.setDefaultFrame(driver);
@@ -135,9 +105,6 @@ public class ManageUserPermissionsPage extends BasePageObject {
 		IHGUtil.waitForElement(driver, 30, lnkHome);
 		lnkHome.click();
 		return PageFactory.initElements(driver, SiteGenPracticeHomePage.class);
-
-
-
 	}
 
 	private static Function<WebDriver, WebElement> presenceOfElementLocated(final By locator) {

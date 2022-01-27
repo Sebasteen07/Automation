@@ -1,3 +1,4 @@
+// Copyright 2013-2022 NXGN Management, LLC. All Rights Reserved.
 package com.intuit.ihg.product.support.utils;
 
 
@@ -19,16 +20,6 @@ import com.intuit.ifs.csscat.core.TestConfig;
 
 
 public class ReadFilePath {
-
-	/**
-	 * @Description Get the path of the excel sheet at run time.The usability of the function is it can get the test data path both from eclipse and from the Jar
-	 *              files. Apart from that it create a absolute path of the folder structure in the same location where the jar is Present when the the scripts
-	 *              gets triggered as a Jar file
-	 * @param Filename
-	 * @return
-	 * @throws Exception
-	 */
-
 	public String getExcelSheetFilepath(String Filename) throws Exception {
 		String filePath = "";
 		File targetDataDrivenFile = null;
@@ -65,15 +56,6 @@ public class ReadFilePath {
 		return filePath;
 	}
 
-	/**
-	 * @Description Get the path of the properties file at run time.The usability of the function is it can get the test data path both from eclipse and from the
-	 *              Jar files. Apart from that it create a absolute path of the folder structure in the same location where the jar is Present when the the
-	 *              scripts gets triggered as a Jar file
-	 * @param Filename
-	 * @return
-	 * @throws Exception
-	 */
-
 	public String getPropertiesFilepath(String Filename) throws Exception {
 		String filePath = "";
 		File targetDataDrivenFile = null;
@@ -109,15 +91,6 @@ public class ReadFilePath {
 		return filePath;
 	}
 
-	/**
-	 * @Description Get the path of the Folder location when running the scripts from both eclipse and from the Jar files Apart from that it create a absolute
-	 *              path of the folder structure in the same location where the jar is Present when the the scripts gets triggered as a Jar file
-	 * @param DirectoryName
-	 * @return
-	 * @throws Exception
-	 */
-
-
 	public String getFilepath(String directoryName) throws Exception {
 		String filePath = "";
 		File targetDataDrivenFile = null;
@@ -138,13 +111,6 @@ public class ReadFilePath {
 		return filePath;
 	}
 
-	/**
-	 * @Description To copy t he files from a source file to a destination file
-	 * @param toCopy File to be copy
-	 * @param destFile File to which the Copied file should targeted to
-	 * @return
-	 */
-
 	public static boolean copyFile(final File toCopy, final File destFile) {
 		try {
 			return ReadFilePath.copyStream(new FileInputStream(toCopy), new FileOutputStream(destFile));
@@ -153,13 +119,6 @@ public class ReadFilePath {
 		}
 		return false;
 	}
-
-	/**
-	 * @Description Copy the files from a source to the destination directory recursively
-	 * @param toCopy
-	 * @param destDir
-	 * @return Returns true if all files are moved else returns false
-	 */
 
 	public static boolean copyFilesRecusively(final File toCopy, final File destDir) {
 		assert destDir.isDirectory();
@@ -179,13 +138,6 @@ public class ReadFilePath {
 		}
 		return true;
 	}
-
-	/**
-	 * @Description Copy the content of Jar files from a source to the destination directory recursively
-	 * @param toCopy
-	 * @param destDir
-	 * @return Returns true if all files are moved else returns false
-	 */
 
 	public static boolean copyJarResourcesRecursively(final File destDir, final JarURLConnection jarConnection) throws IOException {
 
@@ -214,12 +166,6 @@ public class ReadFilePath {
 		return true;
 	}
 
-	/**
-	 * @Description Copy the content of Resource in the Jar files from a source to the destination directory recursively
-	 * @param originUrl
-	 * @param destination
-	 * @return Returns true if all files are moved else returns false
-	 */
 	public static boolean copyResourcesRecursively(final URL originUrl, final File destination) {
 		try {
 			final URLConnection urlConnection = originUrl.openConnection();

@@ -1,3 +1,4 @@
+//  Copyright 2013-2022 NXGN Management, LLC. All Rights Reserved.
 package com.intuit.ihg.product.object.maps.sitegen.page.home;
 
 import org.openqa.selenium.By;
@@ -10,13 +11,6 @@ import org.openqa.selenium.support.PageFactory;
 import com.intuit.ifs.csscat.core.pageobject.BasePageObject;
 import com.intuit.ihg.product.sitegen.utils.SitegenlUtil;
 import com.medfusion.common.utils.IHGUtil;
-
-/**
- * @author bkrishnankutty
- * @Date 6/10/2013
- * @Description :- Page Object for SiteGen SiteGen HomePage
- * @Note :if you log in as a Normal user, you will land on this page
- */
 
 public class SiteGenHomePage extends BasePageObject {
 
@@ -41,23 +35,12 @@ public class SiteGenHomePage extends BasePageObject {
 	@FindBy(xpath = ".//input[@value ='Search']")
 	private WebElement searchPracticeButton;
 
-	/**
-	 * @author bkrishnankutty
-	 * @Desc:- constructor for this Page
-	 * @param driver
-	 */
 	public SiteGenHomePage(WebDriver driver) {
 		super(driver);
 		PageFactory.initElements(driver, this);
 	}
 
-	/**
-	 * @author bkrishnankutty
-	 * @Desc:-Indicates if the search page is loaded
-	 * @return true or false
-	 */
 	public boolean isSearchPageLoaded() {
-
 		IHGUtil.PrintMethodName();
 		SitegenlUtil.setDefaultFrame(driver);
 		boolean result = false;
@@ -70,11 +53,6 @@ public class SiteGenHomePage extends BasePageObject {
 		return result;
 	}
 
-	/**
-	 * @author bkrishnankutty
-	 * @Desc :- Click on Link MedfusionSiteAdministration
-	 * @return SiteGenPracticeHomePage
-	 */
 	public SiteGenPracticeHomePage clickLinkMedfusionSiteAdministration() {
 		IHGUtil.PrintMethodName();
 		IHGUtil.waitForElement(driver, 10, lnkMedfusionSiteAdministration);

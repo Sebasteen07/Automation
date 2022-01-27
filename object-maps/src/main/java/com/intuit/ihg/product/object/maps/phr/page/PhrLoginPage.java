@@ -1,4 +1,4 @@
-//  Copyright 2013-2021 NXGN Management, LLC. All Rights Reserved.
+//  Copyright 2013-2022 NXGN Management, LLC. All Rights Reserved.
 package com.intuit.ihg.product.object.maps.phr.page;
 
 import static org.testng.Assert.assertFalse;
@@ -9,14 +9,6 @@ import org.openqa.selenium.support.FindBy;
 
 import com.intuit.ifs.csscat.core.pageobject.BasePageObject;
 import com.medfusion.common.utils.IHGUtil;
-
-
-/**
- * @author bkrishnankutty
- * @Date 2-12-2013
- * @Description :- Page Object for PHR Portal LoginPage
- * 
- */
 
 public class PhrLoginPage extends BasePageObject {
 
@@ -31,50 +23,26 @@ public class PhrLoginPage extends BasePageObject {
 	@FindBy(xpath = "//input[@name='password']")
 	private WebElement txtpassword;
 
-	// TODO - Not the best option for mapping.
 	@FindBy(xpath = "(//a)[1]")
 	private WebElement btnLogin;
 
-
 	public PhrLoginPage(WebDriver driver) {
 		super(driver);
-		// TODO Auto-generated constructor stub
 	}
 
-	/**
-	 * Type username
-	 * 
-	 * @param sLogin
-	 */
 	public void setLoginName(String sLogin) {
 		IHGUtil.PrintMethodName();
 		log("LOGIN: [" + sLogin + "]");
 		txtloginName.sendKeys(sLogin);
 	}
 
-	/**
-	 * Type PASSWORD
-	 * 
-	 * @param sPassword
-	 */
 	public void setPassword(String sPassword) {
 		IHGUtil.PrintMethodName();
 		log("PASSWORD: [" + sPassword + "]");
 		txtpassword.sendKeys(sPassword);
 	}
 
-
-
-	/**
-	 * login the user into the PHR portal
-	 * 
-	 * @param sUsername
-	 * @param sPassword
-	 * @return
-	 * @throws InterruptedException
-	 */
 	public PhrHomePage login(String sUser, String sPassword) throws InterruptedException {
-
 		IHGUtil.PrintMethodName();
 		log("Waiting for the Login Name element, max wait time is 60 seconds");
 		IHGUtil.waitForElement(driver, 60, txtloginName);
@@ -83,14 +51,6 @@ public class PhrLoginPage extends BasePageObject {
 		btnLogin.click();
 		return PageFactory.initElements(driver, PhrHomePage.class);
 	}
-
-
-	/**
-	 * Loads the PHR Login Page
-	 * 
-	 * @param driver
-	 * @param baseURL
-	 */
 
 	public PhrLoginPage(WebDriver driver, String baseURL) {
 		super(driver);
@@ -101,32 +61,17 @@ public class PhrLoginPage extends BasePageObject {
 		driver.get(sanitizedUrl);
 		maxWindow();
 		// See if SSL setup properly
-		assertFalse(driver.getTitle().contains("Untrusted Connection"), "### PHR SSL CERT ISSUE (Untrusted Connection) ?");
+		assertFalse(driver.getTitle().contains("Untrusted Connection"),
+				"### PHR SSL CERT ISSUE (Untrusted Connection) ?");
 		PageFactory.initElements(driver, this);
 	}
-
-
-	/**
-	 * Verify if the password Test field is presents on page or not
-	 * 
-	 * @param driver
-	 * @return
-	 * @throws InterruptedException
-	 */
-
+	
 	public boolean waitforTXTPassword(WebDriver driver, int n) throws InterruptedException {
 		IHGUtil.PrintMethodName();
 		return IHGUtil.waitForElement(driver, n, txtpassword);
 	}
 
-
-	/**
-	 * @author bkrishnankutty
-	 * @Desc:-Indicates if the search page is loaded
-	 * @return true or false
-	 */
 	public boolean isSearchPageLoaded() {
-
 		IHGUtil.PrintMethodName();
 		boolean result = false;
 		try {

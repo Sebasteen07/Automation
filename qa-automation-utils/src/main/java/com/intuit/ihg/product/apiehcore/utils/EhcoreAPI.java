@@ -1,11 +1,6 @@
+// Copyright 2013-2022 NXGN Management, LLC. All Rights Reserved.
 package com.intuit.ihg.product.apiehcore.utils;
 
-/**
- * @author bkrishnankutty
- * @Date 6/Aug/2013
- * @Description :-
- * @Note :
- */
 public class EhcoreAPI {
 
 	public String host = "";

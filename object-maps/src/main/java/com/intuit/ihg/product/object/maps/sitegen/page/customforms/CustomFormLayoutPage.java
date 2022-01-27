@@ -1,3 +1,4 @@
+//  Copyright 2013-2022 NXGN Management, LLC. All Rights Reserved.
 package com.intuit.ihg.product.object.maps.sitegen.page.customforms;
 
 import org.openqa.selenium.WebDriver;
@@ -43,14 +44,8 @@ public class CustomFormLayoutPage extends BasePageObject {
 	// This page to contain all validation points passed during form creation.
 	public CustomFormLayoutPage(WebDriver driver) {
 		super(driver);
-		// TODO Auto-generated constructor stub
 	}
 
-	/**
-	 * Indicates if the search page is loaded
-	 * 
-	 * @return true or false
-	 */
 	public boolean isSearchPageLoaded() {
 
 		IHGUtil.PrintMethodName();
@@ -62,18 +57,9 @@ public class CustomFormLayoutPage extends BasePageObject {
 		} catch (Exception e) {
 			// Catch any element not found errors
 		}
-
 		return result;
 	}
 
-	/**
-	 * Enter form layout page number
-	 * 
-	 * @param formpage
-	 * @param formcategory
-	 * @return
-	 * @throws Exception
-	 */
 	public void addFormLayout(String formpage, String formcategory) throws Exception {
 
 		IHGUtil.PrintMethodName();
@@ -105,7 +91,6 @@ public class CustomFormLayoutPage extends BasePageObject {
 
 		Select dropdownseq2 = new Select(thirdSeq);
 		dropdownseq2.selectByVisibleText("2");
-
 	}
 
 	public CustomFormPreviewPage saveFormLayout() throws Exception {
@@ -114,6 +99,4 @@ public class CustomFormLayoutPage extends BasePageObject {
 
 		return PageFactory.initElements(driver, CustomFormPreviewPage.class);
 	}
-
-
 }

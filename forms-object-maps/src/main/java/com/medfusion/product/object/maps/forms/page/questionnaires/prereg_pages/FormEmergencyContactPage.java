@@ -1,4 +1,4 @@
-//  Copyright 2013-2021 NXGN Management, LLC. All Rights Reserved.
+//  Copyright 2013-2022 NXGN Management, LLC. All Rights Reserved.
 package com.medfusion.product.object.maps.forms.page.questionnaires.prereg_pages;
 
 import org.openqa.selenium.By;
@@ -40,77 +40,59 @@ public class FormEmergencyContactPage extends PortalFormPage {
 	@FindBy(xpath = "//input[@type='submit' and @value='Save & Continue']")
 	private WebElement saveAndContinuebtn;
 
-	/**
-	 * @Description:Set First Name
-	 * @param input
-	 * @throws Exception
-	 */
 	public void setFirstName(String input) throws Exception {
 		PortalUtil2.PrintMethodName();
-		//PortalUtil2.setquestionnarieFrame(driver);
+		// PortalUtil2.setquestionnarieFrame(driver);
 		firstName.clear();
 		firstName.sendKeys(input);
 	}
-	public void setFirstName_20(String input,Boolean isFormTypePreCheck) throws Exception {
+
+	public void setFirstName_20(String input, Boolean isFormTypePreCheck) throws Exception {
 		PortalUtil2.PrintMethodName();
-		if(!isFormTypePreCheck) {
-			WebElement W1=driver.findElement(By.xpath("//iframe[@title='Forms']"));
+		if (!isFormTypePreCheck) {
+			WebElement W1 = driver.findElement(By.xpath("//iframe[@title='Forms']"));
 			driver.switchTo().frame(W1);
 		}
 		IHGUtil.waitForElement(driver, 50, firstName);
 		firstName.clear();
 		firstName.sendKeys(input);
-		
 	}
-	/**
-	 * @Description:Set Last Name
-	 * @param input
-	 * @throws Exception
-	 */
+
 	public void setLastName(String input) throws Exception {
 		PortalUtil2.PrintMethodName();
-		//PortalUtil2.setquestionnarieFrame(driver);
+		// PortalUtil2.setquestionnarieFrame(driver);
 		lastName.clear();
 		lastName.sendKeys(input);
 	}
+
 	public void setLastName_20(String input) throws Exception {
 		PortalUtil2.PrintMethodName();
 		lastName.clear();
 		lastName.sendKeys(input);
-		
 	}
-	/**
-	 * @Description:Set Relation
-	 * @param type
-	 * @throws Exception
-	 */
+
 	public void setRelation(String type) throws Exception {
 		PortalUtil2.PrintMethodName();
-		//PortalUtil2.setquestionnarieFrame(driver);
+		// PortalUtil2.setquestionnarieFrame(driver);
 		Select selector = new Select(relation);
 		selector.selectByVisibleText(type);
 	}
+
 	public void setRelation_20(String relation1) throws Exception {
 		PortalUtil2.PrintMethodName();
 		Select selector = new Select(relation);
 		selector.selectByVisibleText(relation1);
-		
 	}
 
-	/**
-	 * @Description:Set Primary Phone
-	 * @param input
-	 * @param phoneType
-	 * @throws Exception
-	 */
 	public void setPrimaryPhone(String input, String phoneType) throws Exception {
 		PortalUtil2.PrintMethodName();
-		//PortalUtil2.setquestionnarieFrame(driver);
+		// PortalUtil2.setquestionnarieFrame(driver);
 		primaryPhone.clear();
 		primaryPhone.sendKeys(input);
 		Select selector = new Select(primaryPhoneType);
 		selector.selectByVisibleText(phoneType);
 	}
+
 	public void setPrimaryPhone_20(String input, String phoneType) throws Exception {
 		PortalUtil2.PrintMethodName();
 		IHGUtil.waitForElement(driver, 10, primaryPhone);
@@ -118,25 +100,16 @@ public class FormEmergencyContactPage extends PortalFormPage {
 		primaryPhone.sendKeys(input);
 		Select selector = new Select(primaryPhoneType);
 		selector.selectByVisibleText(phoneType);
-		
+
 	}
-	/**
-	 * @Description:Set Email
-	 * @param input
-	 * @throws Exception
-	 */
+
 	public void setEmail(String input) throws Exception {
 		PortalUtil2.PrintMethodName();
-		//PortalUtil2.setquestionnarieFrame(driver);
+		// PortalUtil2.setquestionnarieFrame(driver);
 		email.clear();
 		email.sendKeys(input);
 	}
 
-	/**
-	 * 
-	 * @return
-	 * @throws Exception
-	 */
 	public FormCurrentSymptomsPage fillEmergencyContactFormFields() throws Exception {
 		setFirstName(JalapenoConstants.FIRST_NAME);
 
@@ -150,23 +123,27 @@ public class FormEmergencyContactPage extends PortalFormPage {
 
 		return PageFactory.initElements(driver, FormCurrentSymptomsPage.class);
 	}
-public FormCurrentSymptomsPage fillEmergencyContactFormFields_20(String relFirstNAme,String relLastName,String relation1, String number ,String phonetype1,Boolean isFormTypePreCheck) throws Exception {
-		
-		setFirstName_20(relFirstNAme,isFormTypePreCheck);
+
+	public FormCurrentSymptomsPage fillEmergencyContactFormFields_20(String relFirstNAme, String relLastName,
+			String relation1, String number, String phonetype1, Boolean isFormTypePreCheck) throws Exception {
+
+		setFirstName_20(relFirstNAme, isFormTypePreCheck);
 
 		setLastName_20(relLastName);
 
 		setRelation_20(relation1);
 
-		setPrimaryPhone_20(number,phonetype1);
+		setPrimaryPhone_20(number, phonetype1);
 
 		clickSaveContinue();
 
 		return PageFactory.initElements(driver, FormCurrentSymptomsPage.class);
 	}
+
 	@Override
 	public boolean isPageLoaded() {
-		return driver.findElement(By.xpath(String.format(PAGE_LOADED_XPATH_TEMPLATE, "Emergency Contact Information"))).isDisplayed();
+		return driver.findElement(By.xpath(String.format(PAGE_LOADED_XPATH_TEMPLATE, "Emergency Contact Information")))
+				.isDisplayed();
 	}
 
 }

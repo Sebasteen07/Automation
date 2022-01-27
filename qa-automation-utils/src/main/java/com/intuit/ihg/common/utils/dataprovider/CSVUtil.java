@@ -1,3 +1,4 @@
+//  Copyright 2013-2022 NXGN Management, LLC. All Rights Reserved.
 package com.intuit.ihg.common.utils.dataprovider;
 
 import com.intuit.ihg.common.entities.TestObject;
@@ -7,32 +8,19 @@ import java.net.URL;
 import java.net.URLConnection;
 import java.util.*;
 
-/**
- * Created by IntelliJ IDEA. User: vvalsan Date: 3/20/13 Time: 6:07 PM To change this template use File | Settings | File Templates.
- */
 public class CSVUtil {
-
 
 	public static final String DOUBLE_QUOTE = "\"";
 	public static final String DELIM_CHAR = ",";
 	public static final String TAB_CHAR = "	";
 
-	/**
-	 * Reads data from csv formatted file. Put the excel sheet in the same folder as the test case and specify clazz as <code>this.getClass()</code>.
-	 *
-	 * @param clazz
-	 * @param filename
-	 * @param fields
-	 * @param filter
-	 * @param readHeaders
-	 * @return
-	 * @throws Exception
-	 */
-	public static Iterator<Object[]> getDataFromCSVFile(Class<?> clazz, String filename, String[] fields, Filter filter, boolean readHeaders) {
+	public static Iterator<Object[]> getDataFromCSVFile(Class<?> clazz, String filename, String[] fields, Filter filter,
+			boolean readHeaders) {
 		return getDataFromCSVFile(clazz, filename, fields, filter, readHeaders, null);
 	}
 
-	public static Iterator<Object[]> getDataFromCSVFile(Class<?> clazz, String filename, String[] fields, Filter filter, boolean readHeaders, String delimiter) {
+	public static Iterator<Object[]> getDataFromCSVFile(Class<?> clazz, String filename, String[] fields, Filter filter,
+			boolean readHeaders, String delimiter) {
 
 		InputStream is = null;
 		try {
@@ -76,12 +64,11 @@ public class CSVUtil {
 					break;
 			}
 
-			// Let's check for blank rows first
-			// The first row is the header
 			StringBuffer sbBlank = new StringBuffer();
 			for (int i = 1; i < csvData.length; i++) {
 				if (testTitleColumnIndex != -1 && testEnvColumnIndex != -1
-						&& (csvData[i][testTitleColumnIndex].trim().length() == 0 || csvData[i][testEnvColumnIndex].trim().length() == 0)) {
+						&& (csvData[i][testTitleColumnIndex].trim().length() == 0
+								|| csvData[i][testEnvColumnIndex].trim().length() == 0)) {
 					sbBlank.append(i + 1).append(',');
 				}
 			}
@@ -92,17 +79,16 @@ public class CSVUtil {
 
 			Set<String> uniqueDataSet = new TreeSet<String>();
 
-
-			// End
-			// The first row is the header
 			for (int i = 1; i < csvData.length; i++) {
 
 				// Check for duplicate Title & Env
 				if (testTitleColumnIndex != -1 && testEnvColumnIndex != -1) {
-					String uniqueString = csvData[i][testTitleColumnIndex] + "$$$$####$$$$" + csvData[i][testEnvColumnIndex];
+					String uniqueString = csvData[i][testTitleColumnIndex] + "$$$$####$$$$"
+							+ csvData[i][testEnvColumnIndex];
 					if (uniqueDataSet.contains(uniqueString))
-						throw new Exception("Duplicate TestTitle and Env combination found in the spreadsheet " + "with TestTitle = {" + csvData[i][testTitleColumnIndex]
-								+ "} " + "and Env = {" + csvData[i][testEnvColumnIndex] + "}");
+						throw new Exception("Duplicate TestTitle and Env combination found in the spreadsheet "
+								+ "with TestTitle = {" + csvData[i][testTitleColumnIndex] + "} " + "and Env = {"
+								+ csvData[i][testEnvColumnIndex] + "}");
 
 					uniqueDataSet.add(uniqueString);
 				}
@@ -110,14 +96,12 @@ public class CSVUtil {
 				Map<String, Object> rowDataMap = new HashMap<String, Object>();
 				List<Object> rowData = new ArrayList<Object>();
 
-				// Create the mapping between headers and column data
 				for (int j = 0; j < csvData[i].length; j++) {
 					rowDataMap.put(csvData[0][j], csvData[i][j]);
 				}
 
 				if (fields == null) {
 					for (int j = 0; j < csvData[0].length; j++) {
-						// Fix for null values not getting created when number of columns in a row is less than expected.
 						if (csvData[i].length > j)
 							rowData.add(csvData[i][j]);
 						else
@@ -129,14 +113,14 @@ public class CSVUtil {
 					}
 				}
 
-
 				if (filter == null || filter.match(rowDataMap)) {
 					sheetData.add(rowData.toArray(new Object[rowData.size()]));
 				}
 			}
 
 			if ((!readHeaders && sheetData.isEmpty()) || (readHeaders && sheetData.size() <= 1))
-				System.out.println("No matching data found on csv file: " + filename + " with filter criteria: " + filter.toString());
+				System.out.println("No matching data found on csv file: " + filename + " with filter criteria: "
+						+ filter.toString());
 
 			return sheetData.iterator();
 		} catch (Throwable e) {
@@ -146,18 +130,11 @@ public class CSVUtil {
 				try {
 					is.close();
 				} catch (Exception e) {
-				} // KEEPME
+				} 
 			}
 		}
 	}
 
-	/**
-	 * Parse a line
-	 *
-	 * @param line
-	 * @param delim
-	 * @return
-	 */
 	public static String[] parseLine(String line, String delim) {
 		if (line == null || line.trim().length() == 0) {
 			return null;
@@ -197,13 +174,6 @@ public class CSVUtil {
 
 	}
 
-	/**
-	 * Parses an file and returns a String[][] object
-	 *
-	 * @param file
-	 * @return
-	 * @throws java.io.IOException
-	 */
 	public static String[][] read(File file) throws IOException {
 		FileInputStream fis = new FileInputStream(file);
 		return read(fis);
@@ -213,13 +183,6 @@ public class CSVUtil {
 		return read(is, null);
 	}
 
-	/**
-	 * Parses an input stream and returns a String[][] object
-	 *
-	 * @param is
-	 * @return
-	 * @throws java.io.IOException
-	 */
 	public static String[][] read(InputStream is, String delim) throws IOException {
 
 		String[][] result = null;
@@ -248,13 +211,6 @@ public class CSVUtil {
 		return result;
 	}
 
-	/**
-	 * Parses an URL and returns a String[][] object
-	 *
-	 * @param url
-	 * @return
-	 * @throws java.io.IOException
-	 */
 	public static String[][] read(URL url) throws IOException {
 		URLConnection con = url.openConnection();
 		return read(con.getInputStream());
