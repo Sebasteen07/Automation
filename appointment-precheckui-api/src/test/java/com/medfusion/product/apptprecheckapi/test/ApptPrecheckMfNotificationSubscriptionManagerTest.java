@@ -48,7 +48,7 @@ public class ApptPrecheckMfNotificationSubscriptionManagerTest extends BaseTestN
 
 	@Test(enabled = true, groups = { "APItest" }, retryAnalyzer = RetryAnalyzer.class)
 	public void testDeleteAllSubscriptionDataUsingEmailId() throws IOException {
-		Response response = postAPIRequest.deleteAllSubscriptionDataUsingEmailId(
+		Response response = postAPIRequest.deleteAllSubscriptionDataUsingEmailId(propertyData.getProperty("baseurl.mf.notif.subscription.manager"),
 				headerConfig.HeaderwithToken(getaccessToken), propertyData.getProperty("notif.subs.email.id"));
 		log("Verifying the response");
 		assertEquals(response.getStatusCode(), 200);
