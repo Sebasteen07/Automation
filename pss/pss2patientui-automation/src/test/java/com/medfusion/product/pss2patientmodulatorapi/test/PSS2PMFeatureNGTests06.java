@@ -261,7 +261,7 @@ public class PSS2PMFeatureNGTests06 extends BaseTestNG {
 		response = postAPIRequest.getImages(baseUrl, headerConfig.HeaderwithToken(accessToken), practiceId, bookId);
 		apv.responseCodeValidation(response, 200);
 		apv.responseTimeValidation(response);
-		
+
 		log("Verify provider images when OFF");
 		adminPayload = payloadAM01.providerImages(false);
 		response = postAPIRequestAM.resourceConfigSavePost(practiceIdAm, adminPayload);
@@ -310,15 +310,12 @@ public class PSS2PMFeatureNGTests06 extends BaseTestNG {
 		adminPayload = payloadAM01.createDecisionTree();
 		response = postAPIRequestAM.saveCategory(practiceIdAm, adminPayload);
 		apv.responseCodeValidation(response, 200);
-
-		String id1 = propertyData.getProperty("book.id.pm01");
-		String apptId1 = propertyData.getProperty("appt.id.pm01");
-		int bookId = Integer.parseInt(id1);
-		int apptId = Integer.parseInt(apptId1);
+		int bookId = Integer.parseInt(propertyData.getProperty("book.id.pm01"));
+		int apptId = Integer.parseInt(propertyData.getProperty("appt.id.pm01"));
 		String firstVal = propertyData.getProperty("agerule.firstvalue.pm01");
 		String secondVal = propertyData.getProperty("agerule.secondvalue.pm01");
-
-		String b = payloadAM01.ageRuleOnBookAppointmentType(bookId, apptId, firstVal, secondVal);
+        int bookConfigId=Integer.parseInt(propertyData.getProperty("book.appt.config.id.pm01"));
+		String b = payloadAM01.ageRuleOnBookAppointmentType(bookId, apptId, firstVal, secondVal,bookConfigId);
 		response = postAPIRequestAM.bookAppointmentTypeUpdate(practiceIdAm, b);
 		apv.responseCodeValidation(response, 200);
 
@@ -391,11 +388,11 @@ public class PSS2PMFeatureNGTests06 extends BaseTestNG {
 		apv.responseCodeValidation(response, 200);
 
 		int bookId = Integer.parseInt(propertyData.getProperty("book.id.pm01"));
-		int apptId = Integer.parseInt( propertyData.getProperty("appt.id.pm01"));
+		int apptId = Integer.parseInt(propertyData.getProperty("appt.id.pm01"));
 		String apptName = propertyData.getProperty("appt.name.pm01");
 		String patientType = "PT_NEW";
 		int bookApptConfigId = Integer.parseInt(propertyData.getProperty("book.appt.config.id.pm01"));
-		String b = payloadAM01.bookAppointmentTypePatientType(bookId, apptId, patientType,bookApptConfigId);
+		String b = payloadAM01.bookAppointmentTypePatientType(bookId, apptId, patientType, bookApptConfigId);
 		response = postAPIRequestAM.bookAppointmentTypeUpdate(practiceIdAm, b);
 		apv.responseCodeValidation(response, 200);
 
@@ -417,7 +414,7 @@ public class PSS2PMFeatureNGTests06 extends BaseTestNG {
 		boolean apptExist = arrayList.contains(apptName);
 		assertNotEquals(true, apptExist);
 
-		String resetAppType = payloadAM01.bookAppointmentTypePatientType(bookId, apptId, "PT_ALL",bookApptConfigId);
+		String resetAppType = payloadAM01.bookAppointmentTypePatientType(bookId, apptId, "PT_ALL", bookApptConfigId);
 		response = postAPIRequestAM.bookAppointmentTypeUpdate(practiceIdAm, resetAppType);
 		apv.responseCodeValidation(response, 200);
 
@@ -453,12 +450,12 @@ public class PSS2PMFeatureNGTests06 extends BaseTestNG {
 		response = postAPIRequestAM.resourceConfigSavePost(practiceIdAm, payloadAM01.turnONOFFDecisionTree(false));
 		apv.responseCodeValidation(response, 200);
 
-		int bookId = Integer.parseInt( propertyData.getProperty("book.id.pm01"));
+		int bookId = Integer.parseInt(propertyData.getProperty("book.id.pm01"));
 		int apptId = Integer.parseInt(propertyData.getProperty("appt.id.pm01"));
 		String apptName = propertyData.getProperty("appt.name.pm01");
 		String patientType = "PT_EXISTING";
 		int bookApptConfigId = Integer.parseInt(propertyData.getProperty("book.appt.config.id.pm01"));
-		String b = payloadAM01.bookAppointmentTypePatientType(bookId, apptId, patientType,bookApptConfigId);
+		String b = payloadAM01.bookAppointmentTypePatientType(bookId, apptId, patientType, bookApptConfigId);
 		response = postAPIRequestAM.bookAppointmentTypeUpdate(practiceIdAm, b);
 		apv.responseCodeValidation(response, 200);
 
@@ -480,7 +477,7 @@ public class PSS2PMFeatureNGTests06 extends BaseTestNG {
 		boolean apptExist = arrayList.contains(apptName);
 		assertEquals(true, apptExist);
 
-		String resetAppType = payloadAM01.bookAppointmentTypePatientType(bookId, apptId, "PT_ALL",bookApptConfigId);
+		String resetAppType = payloadAM01.bookAppointmentTypePatientType(bookId, apptId, "PT_ALL", bookApptConfigId);
 		response = postAPIRequestAM.bookAppointmentTypeUpdate(practiceIdAm, resetAppType);
 		apv.responseCodeValidation(response, 200);
 
@@ -488,7 +485,7 @@ public class PSS2PMFeatureNGTests06 extends BaseTestNG {
 
 	@Test(enabled = true, groups = { "APItest" }, retryAnalyzer = RetryAnalyzer.class)
 	public void testExistingUserPatientTypePT_NEW_BookRule() throws Exception {
-		log(" PSS-19728 Verify EXISTING User with Patient type : New for https://dev3-pss.dev.medfusion.net/pss-patient-modulator/v1/24293/book/rule");
+		log("Verify EXISTING User with Patient type : New for https://dev3-pss.dev.medfusion.net/pss-patient-modulator/v1/24293/book/rule");
 		logStep("Set up the API authentication");
 		setUpAM(propertyData.getProperty("practice.id.pm01"), propertyData.getProperty("mf.authuserid.am.ng01"));
 		Response response;
@@ -516,12 +513,12 @@ public class PSS2PMFeatureNGTests06 extends BaseTestNG {
 		response = postAPIRequestAM.resourceConfigSavePost(practiceIdAm, payloadAM01.turnONOFFDecisionTree(false));
 		apv.responseCodeValidation(response, 200);
 
-		int bookId = Integer.parseInt( propertyData.getProperty("book.id.pm01"));
+		int bookId = Integer.parseInt(propertyData.getProperty("book.id.pm01"));
 		int apptId = Integer.parseInt(propertyData.getProperty("appt.id.pm01"));
 		String bookName = propertyData.getProperty("book.name.pm01");
 		String patientType = "PT_NEW";
 		int bookApptConfigId = Integer.parseInt(propertyData.getProperty("book.appt.config.id.pm01"));
-		String b = payloadAM01.bookAppointmentTypePatientType(bookId, apptId, patientType,bookApptConfigId);
+		String b = payloadAM01.bookAppointmentTypePatientType(bookId, apptId, patientType, bookApptConfigId);
 		response = postAPIRequestAM.bookAppointmentTypeUpdate(practiceIdAm, b);
 		apv.responseCodeValidation(response, 200);
 
@@ -543,7 +540,7 @@ public class PSS2PMFeatureNGTests06 extends BaseTestNG {
 		boolean apptExist = arrayList.contains(bookName);
 		assertNotEquals(true, apptExist);
 
-		String resetAppType = payloadAM01.bookAppointmentTypePatientType(bookId, apptId, "PT_ALL",bookApptConfigId);
+		String resetAppType = payloadAM01.bookAppointmentTypePatientType(bookId, apptId, "PT_ALL", bookApptConfigId);
 		response = postAPIRequestAM.bookAppointmentTypeUpdate(practiceIdAm, resetAppType);
 		apv.responseCodeValidation(response, 200);
 
@@ -551,7 +548,7 @@ public class PSS2PMFeatureNGTests06 extends BaseTestNG {
 
 	@Test(enabled = true, groups = { "APItest" }, retryAnalyzer = RetryAnalyzer.class)
 	public void testExistingUserPatientTypePT_EXISTINGBookRule() throws Exception {
-		log("PSS-19729  Verify EXISTING User with Patient type : EXISTING for https://dev3-pss.dev.medfusion.net/pss-patient-modulator/v1/24293/book/rule");
+		log("Verify EXISTING User with Patient type : EXISTING for https://dev3-pss.dev.medfusion.net/pss-patient-modulator/v1/24293/book/rule");
 		logStep("Set up the API authentication");
 		setUpAM(propertyData.getProperty("practice.id.pm01"), propertyData.getProperty("mf.authuserid.am.ng01"));
 		Response response;
@@ -584,7 +581,7 @@ public class PSS2PMFeatureNGTests06 extends BaseTestNG {
 
 		String patientType = "PT_EXISTING";
 		int bookApptConfigId = Integer.parseInt(propertyData.getProperty("book.appt.config.id.pm01"));
-		String b = payloadAM01.bookAppointmentTypePatientType(bookId, apptId, patientType,bookApptConfigId);
+		String b = payloadAM01.bookAppointmentTypePatientType(bookId, apptId, patientType, bookApptConfigId);
 		response = postAPIRequestAM.bookAppointmentTypeUpdate(practiceIdAm, b);
 		apv.responseCodeValidation(response, 200);
 
@@ -606,7 +603,7 @@ public class PSS2PMFeatureNGTests06 extends BaseTestNG {
 		boolean apptExist = arrayList.contains(bookName);
 		assertEquals(true, apptExist);
 
-		String resetAppType = payloadAM01.bookAppointmentTypePatientType(bookId, apptId, "PT_ALL",bookApptConfigId);
+		String resetAppType = payloadAM01.bookAppointmentTypePatientType(bookId, apptId, "PT_ALL", bookApptConfigId);
 		response = postAPIRequestAM.bookAppointmentTypeUpdate(practiceIdAm, resetAppType);
 		apv.responseCodeValidation(response, 200);
 
@@ -649,7 +646,7 @@ public class PSS2PMFeatureNGTests06 extends BaseTestNG {
 		String apptName = propertyData.getProperty("appt.name.pm01");
 		String patientType = "PT_NEW";
 		int apptConfigId = Integer.parseInt(propertyData.getProperty("appt.config.id.pm01"));
-		String adapPayload = payloadAM01.patientTypeShowProviderOFF(patientType,apptConfigId);
+		String adapPayload = payloadAM01.patientTypeShowProviderOFF(patientType, apptConfigId);
 		String apptId = propertyData.getProperty("appt.id.pm01");
 
 		response = postAPIRequestAM.appointmenttypeConfgWithBookOff(practiceIdAm, adapPayload, apptId);
@@ -672,7 +669,7 @@ public class PSS2PMFeatureNGTests06 extends BaseTestNG {
 		boolean apptExist = arrayList.contains(apptName);
 		assertEquals(true, apptExist);
 
-		String resetPayload = payloadAM01.patientTypeShowProviderOFF("PT_ALL",apptConfigId);
+		String resetPayload = payloadAM01.patientTypeShowProviderOFF("PT_ALL", apptConfigId);
 		response = postAPIRequestAM.appointmenttypeConfgWithBookOff(practiceIdAm, resetPayload, apptId);
 		apv.responseCodeValidation(response, 200);
 
@@ -715,7 +712,7 @@ public class PSS2PMFeatureNGTests06 extends BaseTestNG {
 		String apptName = propertyData.getProperty("appt.name.pm01");
 		String patientType = "PT_EXISTING";
 		int apptConfigId = Integer.parseInt(propertyData.getProperty("appt.config.id.pm01"));
-		String adapPayload = payloadAM01.patientTypeShowProviderOFF(patientType,apptConfigId);
+		String adapPayload = payloadAM01.patientTypeShowProviderOFF(patientType, apptConfigId);
 		String apptId = propertyData.getProperty("appt.id.pm01");
 
 		response = postAPIRequestAM.appointmenttypeConfgWithBookOff(practiceIdAm, adapPayload, apptId);
@@ -738,7 +735,7 @@ public class PSS2PMFeatureNGTests06 extends BaseTestNG {
 		boolean apptExist = arrayList.contains(apptName);
 		assertNotEquals(true, apptExist);
 
-		String resetPayload = payloadAM01.patientTypeShowProviderOFF("PT_ALL",apptConfigId);
+		String resetPayload = payloadAM01.patientTypeShowProviderOFF("PT_ALL", apptConfigId);
 		response = postAPIRequestAM.appointmenttypeConfgWithBookOff(practiceIdAm, resetPayload, apptId);
 		apv.responseCodeValidation(response, 200);
 
@@ -782,12 +779,12 @@ public class PSS2PMFeatureNGTests06 extends BaseTestNG {
 		String patientType = "PT_EXISTING";
 		int apptConfigId = Integer.parseInt(propertyData.getProperty("appt.config.id.pm01"));
 		String apptId = propertyData.getProperty("appt.id.pm01");
-    	String adapPayload = payloadAM01.patientTypeShowProviderOFF(patientType,apptConfigId);
-    	response = postAPIRequestAM.appointmenttypeConfgWithBookOff(practiceIdAm, adapPayload, apptId);
+		String adapPayload = payloadAM01.patientTypeShowProviderOFF(patientType, apptConfigId);
+		response = postAPIRequestAM.appointmenttypeConfgWithBookOff(practiceIdAm, adapPayload, apptId);
 		apv.responseCodeValidation(response, 200);
 		String patientId = propertyData.getProperty("patient.id.pm01");
 		int apptId1 = Integer.parseInt(propertyData.getProperty("appt.id.pm01"));
-	
+
 		String b1 = payloadPssPMNG1.bookRuleBeforeApptPost(apptId1);
 		response = postAPIRequest.appointmentTypesByRule(baseUrl, b1, headerConfig.HeaderwithToken(accessToken),
 				practiceId, patientId);
@@ -806,14 +803,14 @@ public class PSS2PMFeatureNGTests06 extends BaseTestNG {
 		boolean apptExist = arrayList.contains(apptName);
 		assertEquals(true, apptExist);
 
-		String resetPayload = payloadAM01.patientTypeShowProviderOFF("PT_ALL",apptConfigId);
+		String resetPayload = payloadAM01.patientTypeShowProviderOFF("PT_ALL", apptConfigId);
 		response = postAPIRequestAM.appointmenttypeConfgWithBookOff(practiceIdAm, resetPayload, apptId);
 		apv.responseCodeValidation(response, 200);
 	}
 
 	@Test(enabled = true, groups = { "APItest" }, retryAnalyzer = RetryAnalyzer.class)
 	public void testExiUserPT_ALL_ApptRuleShowProviderOFF() throws Exception {
-		log("PSS-19739 Verify Existing User with Patient type : ALL (Show provider OFF ) for https://dev3-pss.dev.medfusion.net/pss-patient-modulator/v1/24293/appointmenttypes/rule");
+		log("Verify Existing User with Patient type : ALL (Show provider OFF ) for https://dev3-pss.dev.medfusion.net/pss-patient-modulator/v1/24293/appointmenttypes/rule");
 		logStep("Set up the API authentication");
 		setUpAM(propertyData.getProperty("practice.id.pm01"), propertyData.getProperty("mf.authuserid.am.ng01"));
 		Response response;
@@ -850,7 +847,7 @@ public class PSS2PMFeatureNGTests06 extends BaseTestNG {
 		int apptConfigId = Integer.parseInt(propertyData.getProperty("appt.config.id.pm01"));
 		String apptId = propertyData.getProperty("appt.id.pm01");
 		int apptId1 = Integer.parseInt(propertyData.getProperty("appt.id.pm01"));
-		String adapPayload = payloadAM01.patientTypeShowProviderOFF(patientType,apptConfigId);		
+		String adapPayload = payloadAM01.patientTypeShowProviderOFF(patientType, apptConfigId);
 		response = postAPIRequestAM.appointmenttypeConfgWithBookOff(practiceIdAm, adapPayload, apptId);
 		apv.responseCodeValidation(response, 200);
 		String patientId = propertyData.getProperty("patient.id.pm01");
@@ -1001,7 +998,7 @@ public class PSS2PMFeatureNGTests06 extends BaseTestNG {
 		String apptName = propertyData.getProperty("appt.name.pm01");
 		String apptCatId = propertyData.getProperty("appt.cat.id.pm01");
 
-		String b = payloadAM01.ageRuleAppTypeLevel(firstVal, secondVal,apptId,apptName,apptCatId);
+		String b = payloadAM01.ageRuleAppTypeLevel(firstVal, secondVal, apptId, apptName, apptCatId);
 		response = postAPIRequestAM.saveAppointmenttype(practiceIdAm, b);
 		apv.responseCodeValidation(response, 200);
 
@@ -1037,14 +1034,13 @@ public class PSS2PMFeatureNGTests06 extends BaseTestNG {
 		response = postAPIRequestAM.saveAppointmenttype(practiceIdAm, resetAppType);
 		apv.responseCodeValidation(response, 200);
 	}
-	
+
 	@Test(enabled = true, groups = { "APItest" }, retryAnalyzer = RetryAnalyzer.class)
 	public void testPCP() throws Exception {
 		log("Verify the Age Rule at Appointment Type Level when Appointment type is before Provider in Rule");
 		logStep("Set up the API authentication");
 		setUpAM(propertyData.getProperty("practice.id.pm01"), propertyData.getProperty("mf.authuserid.am.ng01"));
 		Response response;
-
 		String fctValue = propertyData.getProperty("careteam.fct.pm01");
 		String pcpValue = propertyData.getProperty("careteam.pcp.pm01");
 		int f = Integer.parseInt(fctValue);
@@ -1056,22 +1052,21 @@ public class PSS2PMFeatureNGTests06 extends BaseTestNG {
 		int apptId = Integer.parseInt(propertyData.getProperty("appt.id.pm01"));
 		int locationId = Integer.parseInt(propertyData.getProperty("location.id.pm01"));
 
-		String b1 = payloadPssPMNG1.lastBookRulePayload(locationId,apptId);
+		String b1 = payloadPssPMNG1.lastBookRulePayload(locationId, apptId);
 		String patientId = propertyData.getProperty("patient.id.careteam.pm01");
 		response = postAPIRequest.booksByRule(baseUrl, b1, headerConfig.HeaderwithToken(accessToken), practiceId,
 				patientId);
 		apv.responseCodeValidation(response, 200);
-        String expectedBookName="Ng1 Pss [PSS, NG1]";
+		String expectedBookName = propertyData.getProperty("care.book.name");
 		JSONObject jo = new JSONObject(response.asString());
 		int len = jo.getJSONArray("books").length();
 		log("Length is- " + len);
 		assertEquals(len, 1);
 		ArrayList<String> arrayList = new ArrayList<String>();
-		
-			String bookName = jo.getJSONArray("books").getJSONObject(0).getString("displayName");
-			arrayList.add(bookName);
-			log("Book Added in list l2-" + bookName);
-			assertEquals(expectedBookName, bookName);
-	
+		String bookName = jo.getJSONArray("books").getJSONObject(0).getString("displayName");
+		arrayList.add(bookName);
+		log("Book Added in list l2-" + bookName);
+		assertEquals(expectedBookName, bookName);
+
 	}
 }

@@ -1304,14 +1304,14 @@ public class PayloadAM01 {
 		return providerImages;
 	}
 	
-	public String ageRuleOnBookAppointmentType(int bookId,int apptId,String firstValue,String secondValue )
+	public String ageRuleOnBookAppointmentType(int bookId,int apptId,String firstValue,String secondValue,int bookConfigId)
 	{
 		String ageRuleBookAppType="{\r\n"
 				+ "  \"isageRule\": true,\r\n"
-				+ "  \"id\": 212088,\r\n"
+				+ "  \"id\": "+bookConfigId+",\r\n"
 				+ "  \"description\": null,\r\n"
 				+ "  \"book\": {\r\n"
-				+ "    \"id\": 4310,\r\n"
+				+ "    \"id\": "+bookId+",\r\n"
 				+ "    \"name\": null,\r\n"
 				+ "    \"displayName\": null,\r\n"
 				+ "    \"emailAddress\": null,\r\n"
@@ -1337,7 +1337,7 @@ public class PayloadAM01 {
 				+ "    \"links\": null\r\n"
 				+ "  },\r\n"
 				+ "  \"appointmentType\": {\r\n"
-				+ "    \"id\": 209179,\r\n"
+				+ "    \"id\": "+apptId+",\r\n"
 				+ "    \"name\": null,\r\n"
 				+ "    \"displayName\": null,\r\n"
 				+ "    \"description\": null,\r\n"
@@ -1369,7 +1369,7 @@ public class PayloadAM01 {
 				+ "  \"maxPerDay\": 0,\r\n"
 				+ "  \"excludeSlots\": [],\r\n"
 				+ "  \"apptTypeReservedReason\": \"n\",\r\n"
-				+ "  \"ageRule\": \"> 240 And < 270\",\r\n"
+				+ "  \"ageRule\": \"> "+firstValue+" And < "+secondValue+"\",\r\n"
 				+ "  \"status\": true,\r\n"
 				+ "  \"allowOnlineCancellation\": true,\r\n"
 				+ "  \"providerAvailabilityDays\": 0,\r\n"
