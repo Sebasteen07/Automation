@@ -1,4 +1,4 @@
-//Copyright 2013-2021 NXGN Management, LLC. All Rights Reserved.
+//Copyright 2013-2022 NXGN Management, LLC. All Rights Reserved.
 package com.intuit.ihg.common.utils.ccd;
 
 import static org.testng.Assert.assertEquals;
@@ -53,14 +53,6 @@ public class CCDTest {
 		}
 	}
 
-	/**
-	 * Retrieves CCD produced by form using rest call.
-	 * 
-	 * @param timeStamp The time (unix timestamp) to define when the form was submitted. The form should be submitted sometime between the timestamp time and
-	 *        present time
-	 * @param restUrl URL for the rest call (includes practice integration ID retrievable from - SiteGenerator > Interface Setup > External Systems)
-	 * @return Method returns CCD in the form of xml as a String value
-	 */
 	public static String getFormCCD(long timeStamp, String restUrl) throws Exception {
 		String xml;
 		restUrl = completeRestUrl(restUrl, timeStamp);
@@ -97,17 +89,7 @@ public class CCDTest {
 
 		return xml;
 	}
-	/**
-	 *  Calls the specified oauth endpoing to get a token, using password grant type, to then use for ccd sends 
-	 *  
-	 * @param url environment specific oauth get endpoint
-	 * @param clientId clientId for the oauth calls, per external system token
-	 * @param clientSecret clientSecret for the oauth calls, per external system token
-	 * @param username practice specific externalSystem username
-	 * @param password practice specific externalSystem password
-	 * @return the accessToken xml attribute returned if the call was successful
-	 * @throws Exception if unsuccessful
-	 */
+
 	public static String getAccessTokenForSystem(String url, String clientId, String clientSecret, String username, String password) throws Exception{		
 		String urlForm = "grant_type=password&username=" + username + "&password=" + password;
 		byte[] postData = urlForm.getBytes( StandardCharsets.UTF_8 );

@@ -1,3 +1,4 @@
+//  Copyright 2013-2022 NXGN Management, LLC. All Rights Reserved.
 package com.intuit.ihg.product.object.maps.sitegen.page.location;
 
 import org.openqa.selenium.WebDriver;
@@ -16,14 +17,8 @@ public class EditSiteGenAutomationPage extends BasePageObject {
 
 	public EditSiteGenAutomationPage(WebDriver driver) {
 		super(driver);
-		// TODO Auto-generated constructor stub
 	}
-
-	/**
-	 * Indicates if the search page is loaded
-	 * 
-	 * @return true or false
-	 */
+	
 	public boolean isSearchPageLoaded() {
 
 		IHGUtil.PrintMethodName();
@@ -35,9 +30,7 @@ public class EditSiteGenAutomationPage extends BasePageObject {
 		} catch (Exception e) {
 			// Catch any element not found errors
 		}
-
 		return result;
-
 	}
 
 	public ManageYourLocationsPage deleteLocation() {

@@ -1,3 +1,4 @@
+//  Copyright 2013-2022 NXGN Management, LLC. All Rights Reserved.
 package com.intuit.ihg.product.object.maps.phr.page.phrHealthInformationPage;
 
 import java.util.ArrayList;
@@ -21,8 +22,6 @@ import com.intuit.ihg.product.phr.utils.PhrConstants;
 import com.intuit.ihg.product.phr.utils.PhrUtil;
 
 public class PhrHealthInformationPage extends BasePageObject {
-
-
 
 	@FindBy(id = "medicationInput")
 	private WebElement medicationInput;
@@ -53,8 +52,6 @@ public class PhrHealthInformationPage extends BasePageObject {
 	@FindBy(xpath = ".//a//img[@alt='ADD IMMUNIZATION']")
 	private WebElement addImmunizationsButton;
 
-
-
 	public PhrHealthInformationPage(WebDriver driver) {
 		super(driver);
 		PageFactory.initElements(driver, this);
@@ -72,12 +69,6 @@ public class PhrHealthInformationPage extends BasePageObject {
 		return PageFactory.initElements(driver, PhrConditionsAndDiagnosesPage.class);
 	}
 
-
-	/**
-	 * @Description:Set the Medication
-	 * @param input
-	 * @throws InterruptedException
-	 */
 	public void setMedication(String input) throws InterruptedException {
 		PhrUtil.PrintMethodName();
 		IHGUtil.waitForElement(driver, 10, medicationInput);
@@ -85,19 +76,11 @@ public class PhrHealthInformationPage extends BasePageObject {
 		selectAutoCompleteItem(input);
 	}
 
-	/**
-	 * @Description:Add the Medication
-	 */
 	public void addMedication() {
 		PhrUtil.PrintMethodName();
 		addMedication.click();
 	}
 
-	/**
-	 * @Description:Select the AutoComplete Item
-	 * @param input
-	 * @throws InterruptedException
-	 */
 	public void selectAutoCompleteItem(String input) throws InterruptedException {
 		PhrUtil.PrintMethodName();
 
@@ -111,13 +94,11 @@ public class PhrHealthInformationPage extends BasePageObject {
 			WebElement autocompleteItem = driver.findElement(By.xpath(xpath));
 			autocompleteItem.click();
 		} catch (Exception e) {
-			System.out.println("### PhrHealthInformationPage.selectAutoCompleteItem --- No autocomplete options found." + " Likely because no input was sent .");
+			System.out.println("### PhrHealthInformationPage.selectAutoCompleteItem --- No autocomplete options found."
+					+ " Likely because no input was sent .");
 		}
 	}
 
-	/**
-	 * @Description:Verify Added Medication Value in Table
-	 */
 	public void verifyAddedMedication() {
 		PhrUtil.PrintMethodName();
 		List<Object> list = IHGUtil.searchResultTable(driver, "//table[@id='custom_table_list_id']/tbody",
@@ -129,12 +110,6 @@ public class PhrHealthInformationPage extends BasePageObject {
 		}
 	}
 
-
-	/**
-	 * @Description:Remove Values in Table
-	 * @throws InterruptedException
-	 * @throws NoSuchElementException
-	 */
 	public void removeValues() throws InterruptedException, NoSuchElementException {
 		PhrUtil.PrintMethodName();
 		boolean visible = false;
@@ -180,20 +155,12 @@ public class PhrHealthInformationPage extends BasePageObject {
 		return PageFactory.initElements(driver, VitalSignsPage.class);
 	}
 
-	/**
-	 * @Description:Add Surgeries Button
-	 * @return
-	 */
 	public boolean addSurgeriesButton() {
 		PhrUtil.PrintMethodName();
 		addSurgeriesAndProcedures.isDisplayed();
 		return true;
 	}
 
-	/**
-	 * @Description:find all check boxes
-	 * @return
-	 */
 	public List<WebElement> findAllCheckBoxes() {
 		PhrUtil.PrintMethodName();
 
@@ -201,11 +168,6 @@ public class PhrHealthInformationPage extends BasePageObject {
 		return driver.findElements(By.xpath(xpath));
 	}
 
-	/**
-	 * @Description:Select first check box
-	 * @param input
-	 * @throws InterruptedException
-	 */
 	public void selectFirstCheckBox(boolean input) throws InterruptedException {
 		PhrUtil.PrintMethodName();
 
@@ -222,10 +184,6 @@ public class PhrHealthInformationPage extends BasePageObject {
 		}
 	}
 
-	/**
-	 * @Description:Set Any Other Field
-	 * @param input
-	 */
 	public void setAnyOtherField(String input) {
 		PhrUtil.PrintMethodName();
 		WebElement anyOtherField = driver.findElement(By.xpath(addAnotherXpath));
@@ -235,18 +193,11 @@ public class PhrHealthInformationPage extends BasePageObject {
 		anyOtherField.sendKeys(input);
 	}
 
-	/**
-	 * @Description:Submit Surgeries And Procedures
-	 */
 	public void submitSurgeriesAndProcedures() {
 		PhrUtil.PrintMethodName();
 		addSurgeriesAndProceduresSubmit.click();
 	}
 
-	/**
-	 * @Description:Add Surgeries And Procedures
-	 * @throws InterruptedException
-	 */
 	public void addSurgeriesAndProcedures() throws InterruptedException {
 		PhrUtil.PrintMethodName();
 		Thread.sleep(5000);
@@ -262,23 +213,16 @@ public class PhrHealthInformationPage extends BasePageObject {
 		}
 	}
 
-	/**
-	 * @Description:Remove Surgeries And Procedures
-	 * @throws InterruptedException
-	 */
 	public void removeSurgeriesAndProcedures() throws InterruptedException {
 		PhrUtil.PrintMethodName();
 		Thread.sleep(5000);
 		removeValues();
 	}
 
-	/**
-	 * @Description:Verify Added Surgery Value in Table
-	 */
 	public void verifyAddedSurgery() {
 		PhrUtil.PrintMethodName();
-		List<Object> list =
-				IHGUtil.searchResultTable(driver, "//table[@id='custom_table_list_id']/tbody", new ArrayList<String>(Arrays.asList("Abdominal Surgery")));
+		List<Object> list = IHGUtil.searchResultTable(driver, "//table[@id='custom_table_list_id']/tbody",
+				new ArrayList<String>(Arrays.asList("Abdominal Surgery")));
 		if (!list.isEmpty()) {
 			assertTrue(((Boolean) list.get(1)).booleanValue());
 		} else {
@@ -286,18 +230,11 @@ public class PhrHealthInformationPage extends BasePageObject {
 		}
 	}
 
-	/**
-	 * @Description:Submit immunizations
-	 */
 	public void submitImmunizations() {
 		PhrUtil.PrintMethodName();
 		addImmunizationsButton.click();
 	}
 
-	/**
-	 * @Description:Add Immunizations
-	 * @throws Exception
-	 */
 	public void addImmunizations() throws Exception {
 		PhrUtil.PrintMethodName();
 		Thread.sleep(5000);
@@ -314,20 +251,12 @@ public class PhrHealthInformationPage extends BasePageObject {
 
 	}
 
-	/**
-	 * @Description:Remove Immunizations
-	 * @throws InterruptedException
-	 */
 	public void removeImmunizations() throws InterruptedException {
 		PhrUtil.PrintMethodName();
 		Thread.sleep(5000);
 		removeValues();
 	}
 
-
-	/**
-	 * @Description:Verify Added Immunization Value in Table
-	 */
 	public void verifyAddedImmunization() {
 		PhrUtil.PrintMethodName();
 		List<Object> list = IHGUtil.searchResultTable(driver, "//table[@id='custom_table_list_id']/tbody",

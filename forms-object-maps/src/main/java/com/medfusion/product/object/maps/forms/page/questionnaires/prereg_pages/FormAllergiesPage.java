@@ -1,4 +1,4 @@
-//  Copyright 2013-2021 NXGN Management, LLC. All Rights Reserved.
+//  Copyright 2013-2022 NXGN Management, LLC. All Rights Reserved.
 package com.medfusion.product.object.maps.forms.page.questionnaires.prereg_pages;
 
 import org.openqa.selenium.By;
@@ -28,65 +28,53 @@ public class FormAllergiesPage extends PortalFormPage {
 
 	@FindBy(xpath = "//input[@type='submit' and @value='Save & Continue']")
 	private WebElement saveAndContinuebtn;
-	
-	@FindBy(id ="generalanesthetic_allergy_drug")
+
+	@FindBy(id = "generalanesthetic_allergy_drug")
 	WebElement generalAnesthetic;
-	
+
 	@FindBy(id = "peanuts_allergy_food")
 	WebElement peanuts;
-	
-	/**
-	 * @Description:Set No Drug Allergies
-	 * @throws Exception
-	 */
+
 	public void setNoDrugAllergies() throws Exception {
 		PortalUtil2.PrintMethodName();
 		PortalUtil2.setquestionnarieFrame(driver);
 		noDrugAllergies.click();
-
 	}
 
-	/**
-	 * @Description:Set No Food Allergies
-	 * @throws Exception
-	 */
 	public void setNoFoodAllergies() throws Exception {
 		PortalUtil2.PrintMethodName();
 		PortalUtil2.setquestionnarieFrame(driver);
 		noFoodAllergies.click();
-
 	}
+
 	public void setGeneralAnesthetic_20(Boolean isFormTypePreCheck) throws Exception {
 		PortalUtil2.PrintMethodName();
-		
-		if(!isFormTypePreCheck) {
-			WebElement W1=driver.findElement(By.xpath("//iframe[@title='Forms']"));
+
+		if (!isFormTypePreCheck) {
+			WebElement W1 = driver.findElement(By.xpath("//iframe[@title='Forms']"));
 			driver.switchTo().frame(W1);
 		}
-		if(!generalAnesthetic.isSelected()) {
+		if (!generalAnesthetic.isSelected()) {
 			IHGUtil.waitForElement(driver, 60, generalAnesthetic);
 			generalAnesthetic.click();
 		}
-		
 	}
+
 	public void setPeanuts_20() throws Exception {
 		PortalUtil2.PrintMethodName();
-		if(!peanuts.isSelected()) {
+		if (!peanuts.isSelected()) {
 			peanuts.click();
 		}
 	}
-	public FormVaccinePage setAllergies(Boolean isFormTypePreCheck) throws Exception
-	{
+
+	public FormVaccinePage setAllergies(Boolean isFormTypePreCheck) throws Exception {
 		setGeneralAnesthetic_20(isFormTypePreCheck);
 		setPeanuts_20();
 		saveAndContinuebtn.click();
 		return PageFactory.initElements(driver, FormVaccinePage.class);
 
 	}
-	/**
-	 * @Description:Set No Environment Allergies
-	 * @throws Exception
-	 */
+
 	public void setNoEnvironmentalAllergies() throws Exception {
 		PortalUtil2.PrintMethodName();
 		PortalUtil2.setquestionnarieFrame(driver);

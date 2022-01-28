@@ -1,4 +1,4 @@
-//  Copyright 2013-2021 NXGN Management, LLC. All Rights Reserved.
+//  Copyright 2013-2022 NXGN Management, LLC. All Rights Reserved.
 package com.medfusion.product.object.maps.forms.page.questionnaires.prereg_pages;
 
 import org.openqa.selenium.By;
@@ -27,18 +27,14 @@ public class FormInsurancePage extends PortalFormPage {
 
 	@FindBy(xpath = "//label[@for='primary_policy_holder_firstname']/../input")
 	private WebElement policyHolderFirstName;
-	/**
-	/**
-	 * @Description:Set Self Pay
-	 * @throws Exception
-	 */
 
 	public void setSelfPay() throws Exception {
 		PortalUtil2.PrintMethodName();
 		selfPay.click();
 	}
-	public void setNameofPolicyHolderFirstname (String PrimaryInsurance,String PatientName) throws InterruptedException
-	{
+
+	public void setNameofPolicyHolderFirstname(String PrimaryInsurance, String PatientName)
+			throws InterruptedException {
 		Thread.sleep(4000);
 		nameOfPrimaryInsurance.clear();
 		nameOfPrimaryInsurance.sendKeys(PrimaryInsurance);
@@ -46,15 +42,17 @@ public class FormInsurancePage extends PortalFormPage {
 		policyHolderFirstName.sendKeys(PatientName);
 		saveAndContinuebtn.click();
 	}
-	public FormSecondaryInsurancePage fillfirstInsurance(String PrimaryInsurance, String PatientName) throws InterruptedException
-	{
+
+	public FormSecondaryInsurancePage fillfirstInsurance(String PrimaryInsurance, String PatientName)
+			throws InterruptedException {
 		setNameofPolicyHolderFirstname(PrimaryInsurance, PatientName);
-		
+
 		return PageFactory.initElements(driver, FormSecondaryInsurancePage.class);
 	}
 
 	@Override
 	public boolean isPageLoaded() {
-		return driver.findElement(By.xpath(String.format(PAGE_LOADED_XPATH_TEMPLATE, "Health Insurance Information"))).isDisplayed();
+		return driver.findElement(By.xpath(String.format(PAGE_LOADED_XPATH_TEMPLATE, "Health Insurance Information")))
+				.isDisplayed();
 	}
 }

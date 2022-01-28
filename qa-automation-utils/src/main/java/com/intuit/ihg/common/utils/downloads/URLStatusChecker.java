@@ -1,3 +1,4 @@
+//  Copyright 2013-2022 NXGN Management, LLC. All Rights Reserved.
 package com.intuit.ihg.common.utils.downloads;
 
 import org.apache.http.HttpResponse;
@@ -23,8 +24,6 @@ import java.net.URISyntaxException;
 import java.net.URL;
 import java.util.Set;
 
-
-// Source: http://ardesco.lazerycode.com/index.php/2012/07/how-to-download-files-with-selenium-and-why-you-shouldnt/
 public class URLStatusChecker {
 
 	private static final Logger LOG = Logger.getLogger(URLStatusChecker.class);
@@ -38,61 +37,26 @@ public class URLStatusChecker {
 		this.driver = driverObject;
 	}
 
-	/**
-	 * Specify a URL that you want to perform an HTTP Status Check upon
-	 *
-	 * @param linkToCheck
-	 * @throws MalformedURLException
-	 * @throws URISyntaxException
-	 */
 	public void setURIToCheck(String linkToCheck) throws MalformedURLException, URISyntaxException {
 		this.linkToCheck = new URI(linkToCheck);
 	}
 
-	/**
-	 * Specify a URL that you want to perform an HTTP Status Check upon
-	 *
-	 * @param linkToCheck
-	 * @throws MalformedURLException
-	 */
 	public void setURIToCheck(URI linkToCheck) throws MalformedURLException {
 		this.linkToCheck = linkToCheck;
 	}
 
-	/**
-	 * Specify a URL that you want to perform an HTTP Status Check upon
-	 *
-	 * @param linkToCheck
-	 */
 	public void setURIToCheck(URL linkToCheck) throws URISyntaxException {
 		this.linkToCheck = linkToCheck.toURI();
 	}
 
-	/**
-	 * Set the HTTP Request Method (Defaults to 'GET')
-	 *
-	 * @param requestMethod
-	 */
 	public void setHTTPRequestMethod(RequestMethod requestMethod) {
 		this.httpRequestMethod = requestMethod;
 	}
 
-	/**
-	 * Should redirects be followed before returning status code? If set to true a 302 will not be returned, instead you will get the status code after the
-	 * redirect has been followed DEFAULT: false
-	 *
-	 * @param value
-	 */
 	public void followRedirects(Boolean value) {
 		this.followRedirects = value;
 	}
 
-	/**
-	 * Perform an HTTP Status check and return the response code
-	 *
-	 * @return
-	 * @throws IOException
-	 */
 	public int getHTTPStatusCode() throws IOException {
 
 		HttpClient client = new DefaultHttpClient();
@@ -115,22 +79,10 @@ public class URLStatusChecker {
 		return response.getStatusLine().getStatusCode();
 	}
 
-	/**
-	 * Mimic the cookie state of WebDriver (Defaults to true) This will enable you to access files that are only available when logged in. If set to false the
-	 * connection will be made as an anonymous user
-	 *
-	 * @param value
-	 */
 	public void mimicWebDriverCookieState(boolean value) {
 		this.mimicWebDriverCookieState = value;
 	}
 
-	/**
-	 * Load in all the cookies WebDriver currently knows about so that we can mimic the browser cookie state
-	 *
-	 * @param seleniumCookieSet
-	 * @return
-	 */
 	private BasicCookieStore mimicCookieState(Set<Cookie> seleniumCookieSet) {
 		BasicCookieStore mimicWebDriverCookieStore = new BasicCookieStore();
 		for (Cookie seleniumCookie : seleniumCookieSet) {
@@ -145,11 +97,6 @@ public class URLStatusChecker {
 		return mimicWebDriverCookieStore;
 	}
 
-	/**
-	 * Simulates Text Insurance HealthFormdownload link click by accessing the link URL and downloading it via the URLStatusChecker class.
-	 *
-	 * @return the http status code from the download
-	 */
 	public int getDownloadStatusCode(String url, RequestMethod method) throws URISyntaxException, IOException {
 		IHGUtil.PrintMethodName();
 		URLStatusChecker urlChecker = new URLStatusChecker(driver);

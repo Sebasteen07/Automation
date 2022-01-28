@@ -1298,4 +1298,14 @@ public class AppointmentsPage extends BasePageObject {
 		visibility = bannerMessage.isDisplayed();
 		return visibility;
 	}
+	
+	public boolean visibilityPatient(String patientId) {
+		IHGUtil.PrintMethodName();
+		IHGUtil.waitForElement(driver, 5, driver.findElement(By.xpath("//span[text()='"+patientId+"']")));
+		boolean visibility = false;
+		visibility = driver.findElement(By.xpath("//span[text()='"+patientId+"']")).isDisplayed();
+		return visibility;
+	}
+	
+	
 }

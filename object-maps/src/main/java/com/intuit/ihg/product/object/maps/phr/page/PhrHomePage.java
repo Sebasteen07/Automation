@@ -1,3 +1,4 @@
+//  Copyright 2013-2022 NXGN Management, LLC. All Rights Reserved.
 package com.intuit.ihg.product.object.maps.phr.page;
 
 import java.io.IOException;
@@ -17,8 +18,6 @@ import com.intuit.ihg.product.object.maps.phr.page.phrHealthInformationPage.PhrH
 import com.intuit.ihg.product.object.maps.phr.page.phrRegistrationInformationPage.PhrRegistrationInformationPage;
 import com.intuit.ihg.product.object.maps.phr.page.profile.PhrProfilePage;
 import com.intuit.ihg.product.phr.utils.PhrUtil;
-
-
 
 public class PhrHomePage extends BasePageObject {
 
@@ -72,20 +71,11 @@ public class PhrHomePage extends BasePageObject {
 	@FindBy(xpath = "//em[starts-with(text(), 'Messages')]")
 	private WebElement btnMessages;
 
-
-	/* <a class="clickable1" href="/phr/ui/action/taskmanager.do">View all messages</a> */
-
-
 	public PhrHomePage(WebDriver driver) {
 		super(driver);
 		PageFactory.initElements(driver, this);
 	}
 
-	/**
-	 * @author bkrishnankutty
-	 * @Desc:-Indicates if the search page is loaded
-	 * @return true or false
-	 */
 	public boolean isSearchPageLoaded() {
 
 		IHGUtil.PrintMethodName();
@@ -94,28 +84,13 @@ public class PhrHomePage extends BasePageObject {
 
 	}
 
-
-	// Currently pops up annoying survey
-	// TODO - return page object
-	/**
-	 * Click on log out button and return PHR LogIn page
-	 * 
-	 * @return
-	 */
 	public PhrLoginPage clickLogout() {
-
 		IHGUtil.PrintMethodName();
 		IHGUtil.waitForElement(driver, 60, btnLogout);
 		btnLogout.click();
 		return PageFactory.initElements(driver, PhrLoginPage.class);
 	}
 
-	/**
-	 * Returns TRUE if survey was found.
-	 * 
-	 * @return
-	 * @throws InterruptedException
-	 */
 	public boolean clearSurveyIfAny() throws InterruptedException {
 
 		IHGUtil.PrintMethodName();
@@ -128,51 +103,20 @@ public class PhrHomePage extends BasePageObject {
 		return false;
 	}
 
-
-	/**
-	 * Verify if the profile button presents on page or not
-	 * 
-	 * @param driver
-	 * @return
-	 * @throws InterruptedException
-	 */
-
 	public boolean waitforbtnProfile(WebDriver driver, int n) throws InterruptedException {
 		IHGUtil.PrintMethodName();
 		return IHGUtil.waitForElement(driver, n, btnProfile);
 	}
-
-
-	/**
-	 * Clicks on Blue button download pdf
-	 * 
-	 * @param driver
-	 * @return
-	 * @throws InterruptedException
-	 * @throws IOException
-	 * @throws URISyntaxException
-	 */
 
 	public int clickBlueButtonDownloadPdf() throws InterruptedException, URISyntaxException, IOException {
 		IHGUtil.PrintMethodName();
 		return validateBlueButtonDownload(btnBlueButtonDownloadPdf.getAttribute("href"), RequestMethod.GET);
 	}
 
-	/**
-	 * Clicks on Blue button
-	 * 
-	 * @param driver
-	 * @return
-	 * @throws InterruptedException
-	 * @throws IOException
-	 * @throws URISyntaxException
-	 */
-
 	public int clickBlueButtonDownloadtext() throws InterruptedException, URISyntaxException, IOException {
 		IHGUtil.PrintMethodName();
 		return validateBlueButtonDownload(btnBlueButtonDownloadtext.getAttribute("href"), RequestMethod.GET);
 	}
-
 
 	private int validateBlueButtonDownload(String url, RequestMethod method) throws URISyntaxException, IOException {
 		URLStatusChecker urlChecker = new URLStatusChecker(driver);
@@ -184,21 +128,11 @@ public class PhrHomePage extends BasePageObject {
 		return urlChecker.getHTTPStatusCode();
 	}
 
-
-
-	/**
-	 * Click on profile Link return PHR Profile Page
-	 */
-
 	public PhrProfilePage clickProfileButton() {
 		IHGUtil.PrintMethodName();
 		btnProfile.click();
 		return PageFactory.initElements(driver, PhrProfilePage.class);
 	}
-
-	/**
-	 * Click on profile Link return PHR Profile Page
-	 */
 
 	public PhrAlleryPage clickHelthInformation() {
 		IHGUtil.PrintMethodName();
@@ -206,9 +140,6 @@ public class PhrHomePage extends BasePageObject {
 		return PageFactory.initElements(driver, PhrAlleryPage.class);
 	}
 
-	/**
-	 * Click on Document Link return Document Page
-	 */
 	public PhrDocumentsPage clickDocuments() {
 
 		IHGUtil.PrintMethodName();
@@ -218,29 +149,16 @@ public class PhrHomePage extends BasePageObject {
 		return PageFactory.initElements(driver, PhrDocumentsPage.class);
 	}
 
-
-	/**
-	 * Calls the method 'ccdImportFromAllScripts' which will Post consolidated CCd request
-	 * 
-	 * @param allScriptAdapterURL
-	 * @throws Exception
-	 */
 	public void postCCdRequest(String allScriptAdapterURL) throws Exception {
 		PhrUtil pPhrUtil = new PhrUtil(driver);
-		pPhrUtil.ccdImportFromAllScripts(IHGUtil.getConsolidatedCCD(), allScriptAdapterURL, IHGUtil.getEnvironmentType().toString());
+		pPhrUtil.ccdImportFromAllScripts(IHGUtil.getConsolidatedCCD(), allScriptAdapterURL,
+				IHGUtil.getEnvironmentType().toString());
 	}
 
-
-
-	/**
-	 * Calls the method 'ccdImportFromAllScripts' which will Post consolidated CCd request
-	 * 
-	 * @param allScriptAdapterURL
-	 * @throws Exception
-	 */
 	public void postNonCCdRequest(String allScriptAdapterURL) throws Exception {
 		PhrUtil pPhrUtil = new PhrUtil(driver);
-		pPhrUtil.ccdImportFromAllScripts(IHGUtil.getNonConsolidatedCCD(), allScriptAdapterURL, IHGUtil.getEnvironmentType().toString());
+		pPhrUtil.ccdImportFromAllScripts(IHGUtil.getNonConsolidatedCCD(), allScriptAdapterURL,
+				IHGUtil.getEnvironmentType().toString());
 	}
 
 	public void postElektaCCdRequest(String EHDCAdapterURL) throws Exception {
@@ -248,24 +166,14 @@ public class PhrHomePage extends BasePageObject {
 		pPhrUtil.ccdImportFromElekta(IHGUtil.getElektaCCD(), EHDCAdapterURL, IHGUtil.getEnvironmentType().toString());
 	}
 
-	/**
-	 * @Description: Click on Medications Link
-	 * @return
-	 */
 	public PhrHealthInformationPage clickMedications() {
 		PhrUtil.PrintMethodName();
 		HealthInformation.click();
 		IHGUtil.waitForElement(driver, 10, Medicationlnktext);
 		Medicationlnktext.click();
 		return PageFactory.initElements(driver, PhrHealthInformationPage.class);
-
 	}
 
-
-	/**
-	 * @Description: Click on Profile Tab
-	 * @return
-	 */
 	public PhrRegistrationInformationPage clickProfile() {
 		PhrUtil.PrintMethodName();
 		profile.click();
@@ -273,10 +181,6 @@ public class PhrHomePage extends BasePageObject {
 
 	}
 
-	/**
-	 * @author bbinisha
-	 * @Desc : To navigate to Health Information Page
-	 */
 	public PhrHealthInformationPage clickOnHealthInformationTab() {
 		IHGUtil.PrintMethodName();
 		log("Navigating to 'Health Information' page");
@@ -289,10 +193,6 @@ public class PhrHomePage extends BasePageObject {
 		return PageFactory.initElements(driver, PhrHealthInformationPage.class);
 	}
 
-	/**
-	 * @Description: Click on surgeriesandProcedures Link
-	 * @return
-	 */
 	public PhrHealthInformationPage clickSurgeriesandProcedures() {
 		PhrUtil.PrintMethodName();
 		HealthInformation.click();
@@ -302,34 +202,19 @@ public class PhrHomePage extends BasePageObject {
 
 	}
 
-
-	/**
-	 * @Description: Click on Immunizations Link
-	 * @return
-	 */
 	public PhrHealthInformationPage clickImmunizations() {
 		PhrUtil.PrintMethodName();
 		HealthInformation.click();
 		IHGUtil.waitForElement(driver, 10, immunizationslnktext);
 		immunizationslnktext.click();
 		return PageFactory.initElements(driver, PhrHealthInformationPage.class);
-
 	}
-
-
-	/**
-	 * Click on sharing
-	 */
 
 	public PhrSharingPage clickSharing() {
 		IHGUtil.PrintMethodName();
 		btnSharing.click();
 		return PageFactory.initElements(driver, PhrSharingPage.class);
 	}
-
-	/**
-	 * Click on View All Messages
-	 */
 
 	public PhrMessagesPage clickOnViewAllMessages() {
 		IHGUtil.PrintMethodName();

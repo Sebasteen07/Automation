@@ -1,4 +1,4 @@
-//Copyright 2013-2020 NXGN Management, LLC. All Rights Reserved.
+//Copyright 2013-2022 NXGN Management, LLC. All Rights Reserved.
 package com.medfusion.product.object.maps.forms.page.questionnaires;
 
 import java.rmi.UnexpectedException;
@@ -53,19 +53,9 @@ public abstract class PortalFormPage extends BasePageObject {
 		super(driver);
 	}
 
-	/**
-	 * @brief Click on Continue Button
-	 * @param nextPageClass Class of the following page in the form continueButton WebElement of the continue button
-	 * @return initialized PageObject for the next page
-	 * @throws Exception
-	 */
 	public <T extends PortalFormPage> T clickSaveContinue(Class<T> nextPageClass, WebElement continueButton) throws Exception {
 		IHGUtil.PrintMethodName();
 		WebDriverWait wait = new WebDriverWait(driver, 10);
-		// we need this here as demo is acting up sometimes with longer delays
-		// and newrelic, doing this twice blocks the occasional
-		// org.openqa.selenium.WebDriverException: Permission denied to access
-		// property 'handleEvent'
 		try {
 
 			wait.until(ExpectedConditions.elementToBeClickable(continueButton));
@@ -104,21 +94,10 @@ public abstract class PortalFormPage extends BasePageObject {
 			return PageFactory.initElements(driver, nextPageClass);
 	}
 
-	/**
-	 * @brief Click on Continue Button
-	 * @param nextPageClass Class of the following page in the form
-	 * @return initialized PageObject for the next page
-	 * @throws Exception
-	 */
 	public <T extends PortalFormPage> T clickSaveContinue(Class<T> nextPageClass) throws Exception {
 		return clickSaveContinue(nextPageClass, this.btnContinue);
 	}
 
-	/**
-	 * @brief Click on Continue Button
-	 * @return initialized PageObject for the next page
-	 * @throws Exception
-	 */
 	public <T extends PortalFormPage> T clickSaveContinue() throws Exception {
 		return clickSaveContinue(null, this.btnContinue);
 	}
@@ -143,12 +122,6 @@ public abstract class PortalFormPage extends BasePageObject {
 		return PageFactory.initElements(driver, previousPageClass);
 	}
 
-	/**
-	 * @Description Click on Submit Form Button
-	 * @return
-	 * @throws Exception
-	 * 
-	 */
 	public void submitForm() throws Exception {
 		WebDriverWait wait = new WebDriverWait(driver, 25);
 		wait.until(ExpectedConditions.visibilityOf(submitForm));
@@ -180,10 +153,6 @@ public abstract class PortalFormPage extends BasePageObject {
 		JavascriptExecutor jsExecutor = (JavascriptExecutor) driver;
 		String continueButtonID;
 
-		// we need this here as demo is acting up sometimes with longer delays
-		// and newrelic, doing this twice blocks the occasional
-		// org.openqa.selenium.WebDriverException: Permission denied to access
-		// property 'handleEvent'
 		try {
 			continueButtonID = previousPageButton.getAttribute("id");
 		} catch (org.openqa.selenium.WebDriverException e) {

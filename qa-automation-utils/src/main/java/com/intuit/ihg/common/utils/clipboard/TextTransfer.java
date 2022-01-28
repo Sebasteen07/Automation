@@ -1,3 +1,4 @@
+//  Copyright 2013-2022 NXGN Management, LLC. All Rights Reserved.
 package com.intuit.ihg.common.utils.clipboard;
 
 import java.awt.datatransfer.Clipboard;
@@ -9,24 +10,14 @@ import java.awt.datatransfer.UnsupportedFlavorException;
 import java.awt.Toolkit;
 import java.io.*;
 
-
-// Source: http://www.javapractices.com/topic/TopicAction.do?Id=82
 public final class TextTransfer implements ClipboardOwner {
 
-	/**
-	 * Place a String on the clipboard, and make this class the owner of the Clipboard's contents.
-	 */
 	public void setClipboardContents(String aString) {
 		StringSelection stringSelection = new StringSelection(aString);
 		Clipboard clipboard = Toolkit.getDefaultToolkit().getSystemClipboard();
 		clipboard.setContents(stringSelection, this);
 	}
 
-	/**
-	 * Get the String residing on the clipboard.
-	 *
-	 * @return any text found on the Clipboard; if none found, return an empty String.
-	 */
 	public String getClipboardContents() {
 		String result = "";
 		Clipboard clipboard = Toolkit.getDefaultToolkit().getSystemClipboard();

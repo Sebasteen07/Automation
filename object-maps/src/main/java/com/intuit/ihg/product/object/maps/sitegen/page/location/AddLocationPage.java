@@ -1,3 +1,4 @@
+//  Copyright 2013-2022 NXGN Management, LLC. All Rights Reserved.
 package com.intuit.ihg.product.object.maps.sitegen.page.location;
 
 import org.openqa.selenium.WebDriver;
@@ -10,12 +11,6 @@ import com.intuit.ifs.csscat.core.pageobject.BasePageObject;
 import com.medfusion.common.utils.IHGUtil;
 import com.intuit.ihg.product.sitegen.utils.SitegenlUtil;
 
-/**
- * @author bkrishnankutty
- * @Date 6/12/2013
- * @Description :- Page Object for SiteGen Location Page
- * @Note :
- */
 public class AddLocationPage extends BasePageObject {
 
 	@FindBy(name = "Practice_Name")
@@ -48,21 +43,10 @@ public class AddLocationPage extends BasePageObject {
 	@FindBy(name = "btn_Done")
 	private WebElement btnAddLocation;
 
-	/**
-	 * @author bkrishnankutty
-	 * @Desc:- constructor for this Page
-	 * @param driver
-	 */
 	public AddLocationPage(WebDriver driver) {
 		super(driver);
-		// TODO Auto-generated constructor stub
 	}
 
-	/**
-	 * @author bkrishnankutty
-	 * @Desc:-Indicates if the search page is loaded
-	 * @return true or false
-	 */
 	public boolean isSearchPageLoaded() {
 
 		IHGUtil.PrintMethodName();
@@ -71,7 +55,6 @@ public class AddLocationPage extends BasePageObject {
 
 		try {
 			result = IHGUtil.waitForElement(driver, 6, btnAddLocation);
-			// result = btnAddLocation.isDisplayed();
 		} catch (Exception e) {
 			// Catch any element not found errors
 		}
@@ -79,25 +62,8 @@ public class AddLocationPage extends BasePageObject {
 		return result;
 	}
 
-	/**
-	 * 
-	 * @author bkrishnankutty
-	 * @Desc:- Add New Location
-	 * @return ManageYourLocationsPage
-	 * 
-	 * @param practiceName
-	 * @param streetAddress
-	 * @param city
-	 * @param state
-	 * @param country
-	 * @param zipCode
-	 * @param officePhone
-	 * @param contactPerson
-	 * @param email
-	 * @return
-	 */
-	public ManageYourLocationsPage addLocation(String practiceName, String streetAddress, String city, String state, String country, String zipCode,
-			String officePhone, String contactPerson, String email) {
+	public ManageYourLocationsPage addLocation(String practiceName, String streetAddress, String city, String state,
+			String country, String zipCode, String officePhone, String contactPerson, String email) {
 
 		SitegenlUtil.setSiteGenFrame(driver);
 

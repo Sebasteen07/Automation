@@ -1,4 +1,4 @@
-// Copyright 2013-2021 NXGN Management, LLC. All Rights Reserved.
+// Copyright 2013-2022 NXGN Management, LLC. All Rights Reserved.
 package com.medfusion.gateway_proxy.tests;
 
 import com.medfusion.common.utils.IHGUtil;
@@ -101,7 +101,7 @@ public class GatewayProxyDigitalWalletTests extends GatewayProxyBaseTest {
 	}
 
 	@Test(priority = 5, dataProvider = "card_details", dataProviderClass = GatewayProxyTestData.class, enabled = true)
-	public void testAddNewCardAndCreateWalletWithNullValues(String consumerName, String cardType, String cardnumber,
+	public void testAddNewCardAndCreateWalletWithNullValues(String customerUuid, String consumerName, String cardType, String cardnumber,
 			String expiryDate, String cardAlias, String zipcode, boolean primaryCardFlag) throws Exception {
 		String token = GatewayProxyUtils.getTokenForCustomer();
 		GatewayProxyDigitalWalletResource digitalWallet = new GatewayProxyDigitalWalletResource();
@@ -299,7 +299,7 @@ public class GatewayProxyDigitalWalletTests extends GatewayProxyBaseTest {
 
 		JsonPath jsonpath = new JsonPath(response.asString());
 		Assert.assertTrue(response.getStatusCode() == 401);
-		Assert.assertEquals("Unauthorized", jsonpath.get("message"));
+		Assert.assertEquals("Authentication Failed", jsonpath.get("message"));
 	}
 
 	@Test(priority = 15, dataProvider = "txn_data_for_sale", dataProviderClass = GatewayProxyTestData.class, enabled = true)

@@ -1,3 +1,4 @@
+//  Copyright 2013-2022 NXGN Management, LLC. All Rights Reserved.
 package com.medfusion.product.object.maps.forms.page.questionnaires.supplemental_pages;
 
 import org.openqa.selenium.WebDriver;
@@ -29,20 +30,11 @@ public class CurrentSymptomsSupplementalPage extends PortalFormPage {
 		customQuestions[1] = secondQuestion;
 		customQuestions[2] = thirdQuestion;
 	}
-
-	/**
-	 * Send string answer to selected question
-	 * 
-	 * @param questionNumber index of the question to answer
-	 * @param answer
-	 */
+	
 	public void answerCustomQuestion(int questionNumber, String answer) {
 		customQuestions[questionNumber].sendKeys(answer);
 	}
 
-	/**
-	 * Fills out the questions on the page for form PDF test Fills out weight in lbs and height in foots and inches or whatever the correct imperial units are
-	 */
 	public void fillLogicalAnswersForPdfTest() {
 		answerCustomQuestion(0, "Random comment");
 		answerCustomQuestion(1, "6'4\"");

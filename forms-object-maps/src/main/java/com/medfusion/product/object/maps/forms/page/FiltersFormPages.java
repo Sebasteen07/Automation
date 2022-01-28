@@ -1,3 +1,4 @@
+// Copyright 2013-2022 NXGN Management, LLC. All Rights Reserved.
 package com.medfusion.product.object.maps.forms.page;
 
 import java.util.concurrent.TimeUnit;
@@ -79,8 +80,6 @@ public class FiltersFormPages extends BasePageObject {
 	/**
 	 * If multiple locations and providers are configured for a pratice This method
 	 * will select first option from dropdown and click on select button
-	 * @return HealthFormListPage
-	 * @throws InterruptedException
 	 */
 	public HealthFormListPage selectfilterforms() throws InterruptedException {
 		IHGUtil iHGUtil = new IHGUtil(driver);

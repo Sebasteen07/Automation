@@ -1,4 +1,4 @@
-//Copyright 2013-2021 NXGN Management, LLC. All Rights Reserved.
+//Copyright 2013-2022 NXGN Management, LLC. All Rights Reserved.
 package com.intuit.ihg.product.phr.utils;
 
 import static org.testng.Assert.assertNotNull;
@@ -75,21 +75,6 @@ public class PhrUtil extends IHGUtil {
 			System.out.println("Browser is NOT IE");
 	}
 
-
-	/**
-	 * 
-	 * ////////////////////////////////////// // REFERENCE: //
-	 * http://ihgportal.corp.intuit.net/engineering/Engineering%20Wiki/CCD%20Import%20-%20Test%20Procedure.aspx
-	 * 
-	 * ////////////////////////////////////////////////// // REST EASY
-	 * 
-	 * 
-	 * @param ccdType
-	 * @param allScriptAdapterURL
-	 * @param env
-	 * @throws Exception
-	 */
-
 	public void ccdImportFromAllScripts(CcdType ccdType, String allScriptAdapterURL, String env) throws Exception {
 
 		IHGUtil.PrintMethodName();
@@ -163,12 +148,7 @@ public class PhrUtil extends IHGUtil {
 
 
 	}
-	/**
-	 * rework of the original method, now using a PropertyFileLoader - EHDCAdapterURL, elektaSystemId
-	 * @param testData
-	 * @param token
-	 * @throws Exception
-	 */
+
 	public static void ccdImportFromElekta(PropertyFileLoader testData, String token) throws Exception {
 
 		IHGUtil.PrintMethodName();		
@@ -186,13 +166,6 @@ public class PhrUtil extends IHGUtil {
 		Thread.sleep(10000);
 	}
 
-	/**
-	 * @author bbinisha
-	 * @Description : To get the filepath.
-	 * @param directoryName
-	 * @return
-	 * @throws Exception
-	 */
 	public String getFilepath(String directoryName) throws Exception {
 
 		String filePath = "";
@@ -214,14 +187,6 @@ public class PhrUtil extends IHGUtil {
 		return filePath;
 	}
 
-
-	/**
-	 * @author bbinisha
-	 * @Description Copy the content of Resource in the Jar files from a source to the destination directory recursively
-	 * @param originUrl
-	 * @param destination
-	 * @return Returns true if all files are moved else returns false
-	 */
 	public static boolean copyResourcesRecursively(final URL originUrl, final File destination) {
 		try {
 			final URLConnection urlConnection = originUrl.openConnection();
@@ -236,11 +201,6 @@ public class PhrUtil extends IHGUtil {
 		return false;
 	}
 
-	/**
-	 * @author bbinisha
-	 * @Description : Get the Arguments.
-	 * @return
-	 */
 	public String[] getExeArg() {
 		return exeArg;
 	}

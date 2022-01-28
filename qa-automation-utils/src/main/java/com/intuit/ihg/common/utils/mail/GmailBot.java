@@ -1,4 +1,4 @@
-//Copyright 2013-2021 NXGN Management, LLC. All Rights Reserved.
+//Copyright 2013-2022 NXGN Management, LLC. All Rights Reserved.
 package com.intuit.ihg.common.utils.mail;
 
 /**
@@ -27,7 +27,6 @@ import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 import com.intuit.ifs.csscat.core.utils.Log4jUtil;
-
 
 public class GmailBot implements MailBot {
 
@@ -74,31 +73,31 @@ public class GmailBot implements MailBot {
 		Properties props = new Properties();
 
 		switch (mt) {
-			case SMTP:
+		case SMTP:
 
-				// TODO
+			// TODO
 
-				Log4jUtil.log("INTERNAL ERROR: SMTP not available for GmailBot yet.");
+			Log4jUtil.log("INTERNAL ERROR: SMTP not available for GmailBot yet.");
 
-				break;
+			break;
 
-			case IMAP:
+		case IMAP:
 
-				// /////////////
-				// IMAP
-				props.setProperty("mail.store.protocol", "imaps");
-				props.setProperty("mail.imap.host", "imap.gmail.com");
-				props.setProperty("mail.imap.port", "993");
-				props.setProperty("mail.imap.connectiontimeout", "5000");
-				props.setProperty("mail.imap.timeout", "5000");
-				props.setProperty("mail.imap.socketFactory.class", "javax.net.ssl.SSLSocketFactory");
-				props.setProperty("mail.imap.socketFactory.fallback", "false");
-				break;
+			// /////////////
+			// IMAP
+			props.setProperty("mail.store.protocol", "imaps");
+			props.setProperty("mail.imap.host", "imap.gmail.com");
+			props.setProperty("mail.imap.port", "993");
+			props.setProperty("mail.imap.connectiontimeout", "5000");
+			props.setProperty("mail.imap.timeout", "5000");
+			props.setProperty("mail.imap.socketFactory.class", "javax.net.ssl.SSLSocketFactory");
+			props.setProperty("mail.imap.socketFactory.fallback", "false");
+			break;
 
-			default:
+		default:
 
-				Log4jUtil.log("INTERNAL ERROR: Unhandled MailSessionType");
-				return null;
+			Log4jUtil.log("INTERNAL ERROR: Unhandled MailSessionType");
+			return null;
 		}
 
 		mailSession = Session.getDefaultInstance(props);
@@ -110,26 +109,26 @@ public class GmailBot implements MailBot {
 	public Store connect(MailSessionType mt, String sUser, String sPassword) throws MessagingException {
 
 		IHGUtil.PrintMethodName();
-		
+
 		Log4jUtil.log("Gmail Password :" + sPassword);
 
 		mailSession = setup(mt);
 
 		switch (mt) {
-			case SMTP:
+		case SMTP:
 
-				throw new Error("### GmailBot SMTP currently not available");
+			throw new Error("### GmailBot SMTP currently not available");
 
-			case IMAP:
+		case IMAP:
 
-				store = mailSession.getStore("imaps");
-				Log4jUtil.log(sPassword);
-				store.connect("imap.gmail.com", sUser, sPassword);
-				break;
+			store = mailSession.getStore("imaps");
+			Log4jUtil.log(sPassword);
+			store.connect("imap.gmail.com", sUser, sPassword);
+			break;
 
-			default:
+		default:
 
-				throw new Error("### GmailBot - Unhandled mail type");
+			throw new Error("### GmailBot - Unhandled mail type");
 		}
 
 		/*
@@ -153,8 +152,8 @@ public class GmailBot implements MailBot {
 		}
 	}
 
-	public List<HashMap<String, String>> findTrashMessageTo(String recipient, String sSubject, String sBody, int minutesAgo, boolean bFindSeen, boolean bMarkSeen)
-			throws MessagingException, IOException {
+	public List<HashMap<String, String>> findTrashMessageTo(String recipient, String sSubject, String sBody,
+			int minutesAgo, boolean bFindSeen, boolean bMarkSeen) throws MessagingException, IOException {
 
 		IHGUtil.PrintMethodName();
 
@@ -165,8 +164,8 @@ public class GmailBot implements MailBot {
 	 * Find messages in inbox folder with Subject sSubject and returns it
 	 * 
 	 */
-	public List<HashMap<String, String>> findMessageTo(String recipient, String folder, String sSubject, String sBody, int minutesAgo, boolean bFindSeen,
-			boolean bMarkSeen) throws MessagingException, IOException {
+	public List<HashMap<String, String>> findMessageTo(String recipient, String folder, String sSubject, String sBody,
+			int minutesAgo, boolean bFindSeen, boolean bMarkSeen) throws MessagingException, IOException {
 
 		IHGUtil.PrintMethodName();
 
@@ -387,7 +386,8 @@ public class GmailBot implements MailBot {
 	///////////////////////
 
 	// TODO - moved to GmailBot
-	// Find location of string original string and trim everything beyond that location
+	// Find location of string original string and trim everything beyond that
+	// location
 	public String trimFromString(String s, String sEnd) {
 
 		if (s.contains(sEnd)) {
@@ -403,8 +403,6 @@ public class GmailBot implements MailBot {
 		return s;
 	}
 
-
-	// TODO moved to GmailBot
 	public String trimIfLastChar(String s, String sLast) {
 
 		// TODO - make sure last is only 1 char long
@@ -419,8 +417,8 @@ public class GmailBot implements MailBot {
 		return s;
 	}
 
-	public String findTrashEmailLink(String sUser, String sSubjectContains, String sLinkContains, int minutesAgo, boolean bFindSeen, boolean bMarkSeen)
-			throws Exception {
+	public String findTrashEmailLink(String sUser, String sSubjectContains, String sLinkContains, int minutesAgo,
+			boolean bFindSeen, boolean bMarkSeen) throws Exception {
 
 		IHGUtil.PrintMethodName();
 
@@ -449,7 +447,8 @@ public class GmailBot implements MailBot {
 		return sURL;
 	}
 
-	public Set<String> findTrashEmailLinks(String sUser, String sSubjectContains, int minutesAgo, boolean bFindSeen, boolean bMarkSeen) throws Exception {
+	public Set<String> findTrashEmailLinks(String sUser, String sSubjectContains, int minutesAgo, boolean bFindSeen,
+			boolean bMarkSeen) throws Exception {
 
 		IHGUtil.PrintMethodName();
 
@@ -536,7 +535,8 @@ public class GmailBot implements MailBot {
 
 		if (messageList.size() <= 0) {
 
-			throw new Exception("### No messages found in trash folder for: " + sUser + ", retries: " + mailTries + ", sleep(ms): " + iSleep);
+			throw new Exception("### No messages found in trash folder for: " + sUser + ", retries: " + mailTries
+					+ ", sleep(ms): " + iSleep);
 		}
 
 		// Parse message list.
@@ -630,7 +630,8 @@ public class GmailBot implements MailBot {
 
 					int iEndURL = sHREF.indexOf("\"", iStartURL + 1);
 
-					assertTrue(iEndURL > -1, "### ERROR: Can't find closing quote in HREF: [" + sHREF.substring(iStartURL) + "]");
+					assertTrue(iEndURL > -1,
+							"### ERROR: Can't find closing quote in HREF: [" + sHREF.substring(iStartURL) + "]");
 
 					sURL = sHREF.substring(iStartURL + 1, iEndURL);
 				}
@@ -720,8 +721,8 @@ public class GmailBot implements MailBot {
 
 	}
 
-	public HashMap<String, String> findTrashEmailSubjectAndBodyContains(String sUser, String sSubjectContains, String sBodyContains, int minutesAgo,
-			boolean bFindSeen, boolean bMarkSeen) throws Exception {
+	public HashMap<String, String> findTrashEmailSubjectAndBodyContains(String sUser, String sSubjectContains,
+			String sBodyContains, int minutesAgo, boolean bFindSeen, boolean bMarkSeen) throws Exception {
 
 		IHGUtil.PrintMethodName();
 
@@ -811,7 +812,8 @@ public class GmailBot implements MailBot {
 
 		if (messageList.size() <= 0) {
 
-			throw new Exception("### No messages found in trash folder for: " + sUser + ", retries: " + mailTries + ", sleep(ms): " + iSleep);
+			throw new Exception("### No messages found in trash folder for: " + sUser + ", retries: " + mailTries
+					+ ", sleep(ms): " + iSleep);
 		}
 
 		// Parse message list.
@@ -857,7 +859,8 @@ public class GmailBot implements MailBot {
 		inbox.close(false);
 	}
 
-	public String findTrashEmailSecurityCode(String sUser, String sSubjectContains, int minutesAgo, boolean bFindSeen, boolean bMarkSeen) throws Exception {
+	public String findTrashEmailSecurityCode(String sUser, String sSubjectContains, int minutesAgo, boolean bFindSeen,
+			boolean bMarkSeen) throws Exception {
 
 		IHGUtil.PrintMethodName();
 
@@ -944,7 +947,8 @@ public class GmailBot implements MailBot {
 
 		if (messageList.size() <= 0) {
 
-			throw new Exception("### No messages found in trash folder for: " + sUser + ", retries: " + mailTries + ", sleep(ms): " + iSleep);
+			throw new Exception("### No messages found in trash folder for: " + sUser + ", retries: " + mailTries
+					+ ", sleep(ms): " + iSleep);
 		}
 
 		// Parse message list.
@@ -978,8 +982,8 @@ public class GmailBot implements MailBot {
 
 	}
 
-
-	public String findTrashEmailID(String sUser, String sSubjectContains, int minutesAgo, boolean bFindSeen, boolean bMarkSeen) throws Exception {
+	public String findTrashEmailID(String sUser, String sSubjectContains, int minutesAgo, boolean bFindSeen,
+			boolean bMarkSeen) throws Exception {
 
 		IHGUtil.PrintMethodName();
 
@@ -1066,7 +1070,8 @@ public class GmailBot implements MailBot {
 
 		if (messageList.size() <= 0) {
 
-			throw new Exception("### No messages found in trash folder for: " + sUser + ", retries: " + mailTries + ", sleep(ms): " + iSleep);
+			throw new Exception("### No messages found in trash folder for: " + sUser + ", retries: " + mailTries
+					+ ", sleep(ms): " + iSleep);
 		}
 
 		// Parse message list.
@@ -1089,7 +1094,9 @@ public class GmailBot implements MailBot {
 
 		String secCode = "";
 
-		Pattern pattern = Pattern.compile("Your user ID is:\\s<.*>(.+)</.*>"); // Should be "Your user ID is:\\s<.*>([^<]+)</.*>" but not working
+		Pattern pattern = Pattern.compile("Your user ID is:\\s<.*>(.+)</.*>"); // Should be "Your user ID
+																				// is:\\s<.*>([^<]+)</.*>" but not
+																				// working
 		Matcher matcher = pattern.matcher(sPlainText);
 
 		if (matcher.find()) {
@@ -1101,23 +1108,8 @@ public class GmailBot implements MailBot {
 
 	}
 
-
-	/**
-	 * findTrashEmailLink will return the URL which contains String "sLinkContains". It does this operation with help of another method findInboxEmailLinks
-	 * 
-	 * @param sUser
-	 * @param sPassword
-	 * @param sSubjectContains
-	 * @param sLinkContains
-	 * @param minutesAgo
-	 * @param bFindSeen
-	 * @param bMarkSeen
-	 * @return
-	 * @throws Exception
-	 */
-
-	public String findInboxEmailLink(String sUser, String sPassword, String sSubjectContains, String sLinkContains, int minutesAgo, boolean bFindSeen,
-			boolean bMarkSeen) throws Exception {
+	public String findInboxEmailLink(String sUser, String sPassword, String sSubjectContains, String sLinkContains,
+			int minutesAgo, boolean bFindSeen, boolean bMarkSeen) throws Exception {
 
 		IHGUtil.PrintMethodName();
 
@@ -1143,30 +1135,12 @@ public class GmailBot implements MailBot {
 		return sURL;
 	}
 
-
-	/***
-	 * 
-	 * findTrashEmailLinks method login to the gmail account Filters the inbox with Subject Go through the mail body and returns all the links
-	 * 
-	 * 
-	 * @param sUser
-	 * @param sPassword
-	 * @param sSubjectContains
-	 * @param minutesAgo
-	 * @param bFindSeen
-	 * @param bMarkSeen
-	 * @return
-	 * @throws Exception
-	 */
-
-
-	public Set<String> findInboxEmailLinks(String sUser, String sPassword, String sSubjectContains, int minutesAgo, boolean bFindSeen, boolean bMarkSeen)
-			throws Exception {
+	public Set<String> findInboxEmailLinks(String sUser, String sPassword, String sSubjectContains, int minutesAgo,
+			boolean bFindSeen, boolean bMarkSeen) throws Exception {
 
 		IHGUtil.PrintMethodName();
 
 		Set<String> urlList = new HashSet<String>();
-
 
 		Log4jUtil.log("Use GmailBot to parse email:--GmailBot gBot = gbotConnect()");
 		this.connect(MailSessionType.IMAP, sUser, sPassword);
@@ -1207,14 +1181,6 @@ public class GmailBot implements MailBot {
 
 				// TODO verify is recent - may have to account for time zones!
 				// sDate = message.get("DATE");
-
-				// sFrom = message.get("FROM"); // TODO verify expected FROM
-				// address
-				// sTo = message.get("TO"); // Format is (sans []):
-				// ["com.test.igh+FOO@gmail.com"
-				// <com.test.igh+FOO@gmail.com>]
-				// sSubject = message.get("SUBJECT"); // TODO verify expected
-				// subject
 				sContent = message.get("CONTENT");
 				sPlainText = message.get("PLAIN_TEXT");
 				sHTML = message.get("HTML");
@@ -1236,22 +1202,13 @@ public class GmailBot implements MailBot {
 
 		if (messageList.size() <= 0) {
 
-			throw new Exception("### No messages found in Inbox folder for: " + sUser + ", retries: " + mailTries + ", sleep(ms): " + iSleep);
+			throw new Exception("### No messages found in Inbox folder for: " + sUser + ", retries: " + mailTries
+					+ ", sleep(ms): " + iSleep);
 		}
-
-		// Parse message list.
-
-		// HashMap<String, String> message = messageList.get(0);
 
 		if (!bSubjectFound) {
 			throw new Exception("### ERROR: Message with matching subject not found.");
 		}
-
-		/*
-		 * if (!sTo.toLowerCase().contains( sUser.toLowerCase() )) { throw new Exception("### ERROR: Recipient retrieved doesn't match. [" + sTo + "] vs. [" + sUser
-		 * + "] "); }
-		 */
-
 		Log4jUtil.log("DEBUG: CONTENT: " + sContent);
 		Log4jUtil.log("DEBUG: PLAIN TEXT: " + sPlainText);
 		Log4jUtil.log("DEBUG: HTML: " + sHTML);
@@ -1280,74 +1237,35 @@ public class GmailBot implements MailBot {
 			urlList.add(sURL);
 
 		} else if (sContentType.matches("STRING")) {
-
-			// ///////////////////////////////////////////////////
-			// WORK AROUND (for <a href=qa.../>)
-
 			int iPos = 0;
-
-			// ////////////////////////////////
-			// Search for URL in <a href=...>
-			// <a href=qa/login>, <a href="qa/login">, <a href=http...>, <a
-			// href="http...">
-
 			while (iPos != -1) {
-
 				// Search for: <a href=qa/login>, <a href="qa/login">, <a
 				// href=http...>, <a href="http...">
 
 				String aHref = "href=";
-
 				// TODO - port this to multipart handler above
-
 				int iStartHREF = sPlainText.indexOf(aHref, iPos);
-
 				if (iStartHREF == -1)
 					break; // No more <a href...
-
 				iStartHREF += aHref.length();
-
 				int iEndHREF = sPlainText.indexOf(">", iStartHREF);
-
 				String sHREF = sPlainText.substring(iStartHREF, iEndHREF);
-
 				Log4jUtil.log("#### HREF: " + sHREF);
-
-				// //////////////////////////////////////////////////
-
-				// Look for enclosing quote.
 				int iStartURL = sHREF.indexOf("\"");
-
 				if (iStartURL == -1) {
-
-					// If no quote, just use extracted string.
-
 					sURL = sHREF;
-
 				} else {
-
-					// If quote, find closing quote and extract URL from between
-					// quotes
-
 					int iEndURL = sHREF.indexOf("\"", iStartURL + 1);
-
-					assertTrue(iEndURL > -1, "### ERROR: Can't find closing quote in HREF: [" + sHREF.substring(iStartURL) + "]");
-
+					assertTrue(iEndURL > -1,
+							"### ERROR: Can't find closing quote in HREF: [" + sHREF.substring(iStartURL) + "]");
 					sURL = sHREF.substring(iStartURL + 1, iEndURL);
 				}
-
-				// //////////////////////////////////////////////////
-
-				// Look for enclosing single quote.
 
 				int iStartSingle = sURL.indexOf("\'");
 
 				if (iStartSingle != -1) {
-
 					int iEndSingle = sURL.indexOf("\'", iStartSingle + 1);
-
 					assertTrue(iEndSingle > -1, "### ERROR: Can't find closing single quote in URL.");
-
 					sURL = sURL.substring(iStartSingle + 1, iEndSingle);
 				}
 				System.out.println("URL+++++++====<a href=qa/login>====+++++:-  " + sURL);
@@ -1355,9 +1273,6 @@ public class GmailBot implements MailBot {
 
 				iPos = iEndHREF;
 			}
-
-			// //////////////////////////////////
-			// Search for http surrounded by square brackets ( "[http... ]" )
 
 			iPos = 0;
 
@@ -1369,11 +1284,9 @@ public class GmailBot implements MailBot {
 
 				if (iStartURL == -1)
 					break; // No more <http...
-
 				// Find closing space.
 
 				int iEndURL = sPlainText.indexOf("]", iStartURL + 1);
-
 				assertTrue(iEndURL > -1, "### ERROR: Can't find closing bracket for URL.");
 
 				sURL = sPlainText.substring(iStartURL + 1, iEndURL);
@@ -1383,26 +1296,17 @@ public class GmailBot implements MailBot {
 				iPos = iEndURL;
 			}
 
-			// //////////////////////////////////
-			// Search for http surrounded by spaces ( " http... " )
-
 			iPos = 0;
 
 			while (iPos != -1) {
-
 				String spacePlusHttp = " http";
-
 				int iStartURL = sPlainText.indexOf(spacePlusHttp, iPos);
-
 				if (iStartURL == -1)
 					break; // No more <http...
 
 				// Find closing space.
-
 				int iEndURL = sPlainText.indexOf(" ", iStartURL + 1);
-
 				assertTrue(iEndURL > -1, "### ERROR: Can't find closing space for URL.");
-
 				sURL = sPlainText.substring(iStartURL + 1, iEndURL);
 				System.out.println("URL+++++++====Search for http surrounded by spaces ====+++++:-  " + sURL);
 				urlList.add(sURL);
@@ -1421,44 +1325,20 @@ public class GmailBot implements MailBot {
 
 	}
 
-	/**
-	 * returns all mails with Subject "sSubject"
-	 * 
-	 * @param recipient
-	 * @param sSubject
-	 * @param sBody
-	 * @param minutesAgo
-	 * @param bFindSeen
-	 * @param bMarkSeen
-	 * @return
-	 * @throws MessagingException
-	 * @throws IOException
-	 */
-	public List<HashMap<String, String>> findInboxMessageTo(String recipient, String sSubject, String sBody, int minutesAgo, boolean bFindSeen, boolean bMarkSeen)
-			throws MessagingException, IOException {
+	public List<HashMap<String, String>> findInboxMessageTo(String recipient, String sSubject, String sBody,
+			int minutesAgo, boolean bFindSeen, boolean bMarkSeen) throws MessagingException, IOException {
 
 		IHGUtil.PrintMethodName();
 		List<HashMap<String, String>> messageList = null;
 
 		messageList = findMessageTo(recipient, GMAIL_FOLDER_INBOX, sSubject, sBody, minutesAgo, bFindSeen, bMarkSeen);
 		if (messageList == null) {
-			messageList = findMessageTo(recipient, GMAIL_FOLDER_SPAM, sSubject, sBody, minutesAgo, bFindSeen, bMarkSeen);
+			messageList = findMessageTo(recipient, GMAIL_FOLDER_SPAM, sSubject, sBody, minutesAgo, bFindSeen,
+					bMarkSeen);
 		}
 		return messageList;
 	}
 
-
-
-	/**
-	 * bkrishnankutty
-	 * Deletes all e-mail messages whose subject field contain a string specified by 'subjectToDelete'
-	 *
-	 * @param userName
-	 * @param password
-	 * @param subject
-	 * 
-	 * ToDelete delete if the message's subject contains this value.
-	 */
 	public void deleteMessagesFromInbox(String userName, String password, String subjectToDelete) {
 		IHGUtil.PrintMethodName();
 		int j = 0;
@@ -1485,7 +1365,8 @@ public class GmailBot implements MailBot {
 				}
 				String subject = message.getSubject();
 				if (subject.contains(subjectToDelete)) {
-					Log4jUtil.log("#######if one needs to be delete, mark it as deleted by invoking the below method.#######");
+					Log4jUtil.log(
+							"#######if one needs to be delete, mark it as deleted by invoking the below method.#######");
 					message.setFlag(Flags.Flag.DELETED, true);
 					System.out.println("Marked DELETE for message: " + subject);
 					j = j + 1;
@@ -1495,10 +1376,6 @@ public class GmailBot implements MailBot {
 
 			Log4jUtil.log(
 					"######## call the expunge() method on the Folder object, or close the folder with expunge set to trueto delete the messages marked Delete########");
-			/*
-			 * boolean expunge = true; folderInbox.close(expunge);
-			 */
-			// another way:
 			folderInbox.expunge();
 
 			folderInbox.close(false);
@@ -1536,7 +1413,8 @@ public class GmailBot implements MailBot {
 				/*
 				 * if (subject.contains(subjectToDelete)) {
 				 */
-				Log4jUtil.log("#######if one needs to be delete, mark it as deleted by invoking the below method.#######");
+				Log4jUtil.log(
+						"#######if one needs to be delete, mark it as deleted by invoking the below method.#######");
 				message.setFlag(Flags.Flag.DELETED, true);
 				System.out.println("Marked DELETE for message: " + subject);
 				j = j + 1;
@@ -1544,10 +1422,6 @@ public class GmailBot implements MailBot {
 			// }
 			Log4jUtil.log(
 					"######## call the expunge() method on the Folder object, or close the folder with expunge set to trueto delete the messages marked Delete########");
-			/*
-			 * boolean expunge = true; folderInbox.close(expunge);
-			 */
-			// another way:
 			folderInbox.expunge();
 
 			folderInbox.close(false);

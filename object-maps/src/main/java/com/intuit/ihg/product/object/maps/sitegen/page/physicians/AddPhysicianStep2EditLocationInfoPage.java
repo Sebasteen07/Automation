@@ -1,3 +1,4 @@
+//  Copyright 2013-2022 NXGN Management, LLC. All Rights Reserved.
 package com.intuit.ihg.product.object.maps.sitegen.page.physicians;
 
 import org.openqa.selenium.WebDriver;
@@ -9,12 +10,6 @@ import com.intuit.ifs.csscat.core.pageobject.BasePageObject;
 import com.medfusion.common.utils.IHGUtil;
 import com.intuit.ihg.product.sitegen.utils.SitegenlUtil;
 
-/**
- * @author bkrishnankutty
- * @Date 6/17/2013
- * @Description :- Page Object for SiteGen AddPhysician Step2 EditLocationInfoPage
- * @Note :
- */
 public class AddPhysicianStep2EditLocationInfoPage extends BasePageObject {
 
 	@FindBy(xpath = "//input[@value='Edit Location Information']")
@@ -26,21 +21,10 @@ public class AddPhysicianStep2EditLocationInfoPage extends BasePageObject {
 	@FindBy(name = "btnDelete")
 	private WebElement btnConfirmDeletePhysican;
 
-	/**
-	 * @author bkrishnankutty
-	 * @Desc:- constructor for this Page
-	 * @param driver
-	 */
 	public AddPhysicianStep2EditLocationInfoPage(WebDriver driver) {
 		super(driver);
-		// TODO Auto-generated constructor stub
 	}
 
-	/**
-	 * @author bkrishnankutty
-	 * @Desc:-Indicates if the search page is loaded
-	 * @return true or false
-	 */
 	public boolean isSearchPageLoaded() {
 
 		IHGUtil.PrintMethodName();
@@ -56,12 +40,6 @@ public class AddPhysicianStep2EditLocationInfoPage extends BasePageObject {
 		return result;
 	}
 
-	/**
-	 * @author bkrishnankutty
-	 * @Desc:- Click on Button GoBackToManagePhysicians
-	 * @return ManageYourPhysiciansPage
-	 * 
-	 */
 	public ManageYourPhysiciansPage clickBtnGoBackToManagePhysicians() {
 		IHGUtil.PrintMethodName();
 		SitegenlUtil.setSiteGenFrame(driver);
@@ -69,12 +47,6 @@ public class AddPhysicianStep2EditLocationInfoPage extends BasePageObject {
 		return PageFactory.initElements(driver, ManageYourPhysiciansPage.class);
 	}
 
-	/**
-	 * @author bkrishnankutty
-	 * @Desc:- Click on Button ConfirmDeletePhysican
-	 * @return ManageYourPhysiciansPage
-	 * 
-	 */
 	public ManageYourPhysiciansPage deletePhysican() {
 		IHGUtil.PrintMethodName();
 		SitegenlUtil.setSiteGenFrame(driver);
