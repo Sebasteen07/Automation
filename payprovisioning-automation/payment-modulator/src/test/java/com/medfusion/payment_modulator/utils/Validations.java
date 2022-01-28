@@ -84,4 +84,16 @@ public class Validations {
 			Assert.assertTrue(!jsonpath.get("cardSuffix").toString().isEmpty(), "Card Type was not found in the response");
 		}
 	}
+
+	public void verifyInstaMedTransactionDetails(String response) throws IOException {
+		JsonPath jsonpath = new JsonPath(response);
+		Assert.assertNotNull(jsonpath, "Response was null");
+		Assert.assertEquals(jsonpath.get("responseCode"), "000","Response code was: "+jsonpath.get("responseCode"));
+		Assert.assertTrue(jsonpath.get("message").equals("APPROVAL"),"Response message was: "+jsonpath.get("message"));
+		Assert.assertTrue(!jsonpath.get("responseTime").toString().isEmpty(), "Response time was not found in the response");
+		Assert.assertTrue(!jsonpath.get("orderId").toString().isEmpty(), "Order id was not found in the response");
+		Assert.assertTrue(!jsonpath.get("externalTransactionId").toString().isEmpty(), "Transaction ID was not found in the response");
+		Assert.assertTrue(jsonpath.getBoolean("initialTransactionInSeries"), "InitialTransactionInSeries was not true in the response");
+
+	}
 }
