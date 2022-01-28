@@ -651,7 +651,7 @@ public class PSS2PatientPortalAcceptanceTests03 extends BaseTestNGWebDriver {
 		HomePage homePage = loginlessPatientInformation.fillNewPatientForm(firstNamePreReq, lastNamePreReq, dobPreReq, "", genderPreReq, "", "");
 		homePage.btnStartSchedClick();
 		logStep("Clicked on the Start Button ");
-		String appName = propertyData.getProperty("appointmenttypefor.prereqname.ng");
+		String appName = propertyData.getProperty("appointmenttypefor.prereqname.ge");
 		StartAppointmentInOrder startAppointmentInOrder = null;
 		startAppointmentInOrder = homePage.skipInsurance(driver);
 		logStep("Clicked on the Skip Insurance Button ");
@@ -1037,7 +1037,7 @@ public class PSS2PatientPortalAcceptanceTests03 extends BaseTestNGWebDriver {
 		HomePage homePage = loginlessPatientInformation.fillNewPatientForm(firstNamePreReq, lastNamePreReq, dobPreReq, "", genderPreReq, "", "");
 		homePage.btnStartSchedClick();
 		logStep("Clicked on the Start Button ");
-		String appName = propertyData.getProperty("appointmenttypefor.prereqname.ng");
+		String appName = propertyData.getProperty("appointmenttypefor.prereqname.ge");
 		StartAppointmentInOrder startAppointmentInOrder = null;
 		startAppointmentInOrder = homePage.skipInsurance(driver);
 		logStep("Clicked on the Skip Insurance Button ");

@@ -2850,8 +2850,7 @@ public class PSS2PatientPortalAcceptanceTests extends BaseTestNGWebDriver {
 		yo.deleteEmail(driver, userName);
 	}
 
-	@Test(enabled = true, groups = {
-			"AcceptanceTests" }, retryAnalyzer = RetryAnalyzer.class, dependsOnMethods = "testE2ELoginlessForExistingPatientGE")
+	@Test(enabled = true, groups = {"AcceptanceTests" }, retryAnalyzer = RetryAnalyzer.class, dependsOnMethods = "testE2ELoginlessForExistingPatientGE")
 	public void testRescheduleviaEmailNotifiicationGE() throws Exception {
 
 		log("Test to verify if Reschedule an Appointment via Email Notification");
@@ -7615,12 +7614,12 @@ public class PSS2PatientPortalAcceptanceTests extends BaseTestNGWebDriver {
 		Appointment testData = new Appointment();
 		AdminUser adminUser = new AdminUser();
 
-		propertyData.setAdminNG(adminUser);
-		propertyData.setAppointmentResponseNG(testData);
+		propertyData.setAdminGE(adminUser);
+		propertyData.setAppointmentResponseGE(testData);
 		PSSAdminUtils adminUtils = new PSSAdminUtils();
 
 		logStep("Set up the API authentication");
-		setUp(propertyData.getProperty("mf.practice.id.ng"), propertyData.getProperty("mf.authuserid.am.ng"));
+		setUp(propertyData.getProperty("mf.practice.id.ge"), propertyData.getProperty("mf.authuserid.am.ge"));
 		Response response;
 
 		logStep("Set up the desired rule in Admin UI using API");
@@ -8321,12 +8320,12 @@ public class PSS2PatientPortalAcceptanceTests extends BaseTestNGWebDriver {
 		Appointment testData = new Appointment();
 		AdminUser adminUser = new AdminUser();
 
-		propertyData.setAdminNG(adminUser);
-		propertyData.setAppointmentResponseNG(testData);
+		propertyData.setAdminGE(adminUser);
+		propertyData.setAppointmentResponseGE(testData);
 		PSSAdminUtils adminUtils = new PSSAdminUtils();
 
 		logStep("Set up the API authentication");
-		setUp(propertyData.getProperty("mf.practice.id.ng"), propertyData.getProperty("mf.authuserid.am.ng"));
+		setUp(propertyData.getProperty("mf.practice.id.ge"), propertyData.getProperty("mf.authuserid.am.ge"));
 		Response response;
 
 		logStep("Set up the desired rule in Admin UI using API");

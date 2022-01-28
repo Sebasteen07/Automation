@@ -190,7 +190,7 @@ public class HomePage extends PSS2MainPage {
 	@FindBy(how = How.XPATH, using = "//div[@class='value-wizard']//div")
 	private WebElement locationPreSelected;
 	
-	@FindBy(how = How.XPATH, using = "//li[2]/div[1]/div[1]/div")
+	@FindBy(how = How.XPATH, using = "//*[@id='wizardwebview']/ol/li[4]/div/div[1]/div")
 	private WebElement providerPreSelected;
 	
 	@FindBy(how = How.XPATH, using = "//div[@id='patientmatch']//span[contains(text(),'Message')]")
