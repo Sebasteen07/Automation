@@ -2,6 +2,7 @@
 package com.medfusion.product.object.maps.appt.precheck.util;
 
 import java.util.Calendar;
+import java.util.Random;
 
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
@@ -20,6 +21,12 @@ public class CommonMethods extends ApptPrecheckMainPage {
 
 	public String getDate(Calendar cal) {
 		return "" + cal.get(Calendar.DATE) + "-" + (cal.get(Calendar.MONTH) + 1) + "-" + cal.get(Calendar.YEAR);
+	}
+
+	public String generatRandomNum() {
+		Random random = new Random();
+		int randamNo = random.nextInt(100000);
+		return String.valueOf(randamNo);
 	}
 
 }

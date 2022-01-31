@@ -1,12 +1,14 @@
 package com.medfusion.product.object.maps.appt.precheck.page.CurbsideCheckIn;
 
 import java.util.Calendar;
+import java.util.List;
 import java.util.TimeZone;
 
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.Color;
+import org.openqa.selenium.support.FindAll;
 import org.openqa.selenium.support.FindBy;
 import org.openqa.selenium.support.How;
 import org.openqa.selenium.support.PageFactory;
@@ -136,6 +138,12 @@ public class CurbsideCheckInPage extends BasePageObject {
 	
 	@FindBy(how = How.XPATH, using = "//*[@class='react-datepicker__year-select']")
 	private WebElement years;
+	
+	@FindBy(how = How.XPATH, using = "(//input[@id='select-all'])")
+	private WebElement selectAllCheckinAppt;
+	
+	@FindAll({ @FindBy(how = How.XPATH, using = "(//input[@type='checkbox'])") })
+	public List<WebElement> allAppointment;
 	
 	public CurbsideCheckInPage(WebDriver driver) {
 		super(driver);
@@ -662,4 +670,93 @@ public class CurbsideCheckInPage extends BasePageObject {
 	    
 	}
 	
+	public int countOfCurbsideCheckinPatient() {
+		IHGUtil.PrintMethodName();
+		int patientSize = allAppointment.size();
+		log("Size of checkin Appointments " + patientSize);
+		return patientSize - 1;
+	}
+
+	public void selectTwoPatient() throws InterruptedException {
+		driver.navigate().refresh();
+		Thread.sleep(10000);
+		IHGUtil.PrintMethodName();
+		int patientSize = allAppointment.size();
+		for (int i = 1; i <= patientSize - 9; i++) {
+			WebElement twoPatient = allAppointment.get(i);
+			twoPatient.click();
+		}
+	}
+	
+	public void selectAllAppointment() throws InterruptedException {
+		IHGUtil.PrintMethodName();
+		IHGUtil.waitForElement(driver, 5, selectAllCheckinAppt);
+		selectAllCheckinAppt.click();
+	}
+	
+	public void deselectAllAppointment() throws InterruptedException {
+		IHGUtil.PrintMethodName();
+		IHGUtil.waitForElement(driver, 5, selectAllCheckinAppt);
+		selectAllCheckinAppt.click();
+	}
+	
+	public void selectMultiplePatients(int selectPatients) throws InterruptedException {
+		driver.navigate().refresh();
+		Thread.sleep(10000);
+		IHGUtil.PrintMethodName();
+		int patientSize = allAppointment.size();
+		log("Total patient size: "+patientSize);
+		for (int i = 1; i <= patientSize - selectPatients; i++) {
+			WebElement patients = allAppointment.get(i);
+			patients.click();
+		}
+	}
+	
+	public boolean getVisibilityOfMultiplePatient(int deselectPatients) throws InterruptedException {
+		IHGUtil.PrintMethodName();
+		int patientSize = allAppointment.size();
+		boolean visibility = false;
+		log("Total patient size: "+patientSize);
+		for (int i = 1; i <= patientSize - deselectPatients; i++) {
+			WebElement patients = allAppointment.get(i);
+			visibility = patients.isSelected();
+		}
+		return visibility;
+	}
+	
+	public boolean getVisibilityOfAllCheckbox() {
+		IHGUtil.PrintMethodName();
+		IHGUtil.waitForElement(driver, 10, selectAllCheckinAppt);
+		boolean visibility = false;
+		visibility = selectAllCheckinAppt.isSelected();
+		return visibility;
+	}
+
+	
+	public void selectMessageFromDropdown(String patientId,String message) {
+		IHGUtil.PrintMethodName();
+		WebElement selectedPatientDropdown = driver.findElement(By.xpath("//select[@id='" + patientId + "']"));
+		Select selectedDropdown = new Select(selectedPatientDropdown);
+		selectedDropdown.selectByVisibleText(message);
+	}
+	
+	public void clickOnSendButtonOfSelectedPatient(String patientId) throws InterruptedException {
+		IHGUtil.PrintMethodName();
+		WebElement selectedPatientSendButton= driver.findElement(By.xpath("//select[@id='"+ patientId +"']/following-sibling::button"));
+		selectedPatientSendButton.click();
+		Thread.sleep(5000);
+	}
+	
+	public String getSentMessageSelectedPatient(String patientId){
+		IHGUtil.PrintMethodName();
+		WebElement getSentMessage= driver.findElement(By.xpath("//select[@id='"+ patientId +"']/following-sibling::div/p"));
+		return getSentMessage.getText();
+	}
+	
+	public void clickOnCheckInButton(){
+		IHGUtil.PrintMethodName();
+		IHGUtil.waitForElement(driver, 5, checkInButton);
+		jse.executeScript("arguments[0].click();", checkInButton);
+	}
+
 }

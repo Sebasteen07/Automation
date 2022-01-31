@@ -1,3 +1,4 @@
+// Copyright 2013-2022 NXGN Management, LLC. All Rights Reserved.
 package com.medfusion.product.practice.api.utils;
 
 import java.awt.AWTException;
@@ -12,16 +13,12 @@ import java.net.URLConnection;
 import java.util.Set;
 
 import org.openqa.selenium.Dimension;
-import org.openqa.selenium.Point;
 import org.openqa.selenium.WebDriver;
-import org.openqa.selenium.WebElement;
-import org.openqa.selenium.interactions.Actions;
 import org.openqa.selenium.support.PageFactory;
 
 import com.intuit.ifs.csscat.core.TestConfig;
 import com.medfusion.common.utils.IHGUtil;
 import com.medfusion.product.practice.api.utils.PracticeUtil;
-import com.medfusion.product.practice.api.utils.ReadFilePath;
 
 public class PracticeUtil extends IHGUtil implements Runnable {
 
@@ -29,9 +26,11 @@ public class PracticeUtil extends IHGUtil implements Runnable {
 	public static int timeout = 0;
 
 	Toolkit toolkit = Toolkit.getDefaultToolkit();
-	Dimension screenResolution = new Dimension((int) toolkit.getScreenSize().getWidth(), (int) toolkit.getScreenSize().getHeight());
+	Dimension screenResolution = new Dimension((int) toolkit.getScreenSize().getWidth(),
+			(int) toolkit.getScreenSize().getHeight());
 
-	Dimension halfWidthscreenResolution = new Dimension((int) toolkit.getScreenSize().getWidth() / 2, (int) toolkit.getScreenSize().getHeight());
+	Dimension halfWidthscreenResolution = new Dimension((int) toolkit.getScreenSize().getWidth() / 2,
+			(int) toolkit.getScreenSize().getHeight());
 
 	protected WebDriver driver;
 
@@ -40,20 +39,11 @@ public class PracticeUtil extends IHGUtil implements Runnable {
 		PageFactory.initElements(driver, this);
 	}
 
-	/**
-	 * @author bbinisha Sets frame for Practice portal pages. This is typically Wicket pages.
-	 * @param driver
-	 */
 	public static void setPracticeFrame(WebDriver driver) {
 		IHGUtil.PrintMethodName();
 		IHGUtil.setFrame(driver, "iframebody");
 	}
 
-	/**
-	 * @author bbinisha
-	 * @Description : Set the Arguments
-	 * @param args
-	 */
 	public void setExeArg(String[] args) {
 		PracticeUtil.exeArg = null;
 		PracticeUtil.exeArg = args;
@@ -64,28 +54,16 @@ public class PracticeUtil extends IHGUtil implements Runnable {
 		}
 	}
 
-	/**
-	 * @author bbinisha
-	 * @Description : Get the Arguments.
-	 * @return
-	 */
 	public String[] getExeArg() {
 		return exeArg;
 	}
 
-	/**
-	 * @author bbinisha
-	 * @Description : To get the filepath.
-	 * @param directoryName
-	 * @return
-	 * @throws Exception
-	 */
 	public String getFilepath(String directoryName) throws Exception {
 
 		String filePath = "";
 		File targetDataDrivenFile = null;
-		targetDataDrivenFile =
-				new File(TestConfig.getTestRoot() + File.separator + "src" + File.separator + "test" + File.separator + "resources" + File.separator + directoryName);
+		targetDataDrivenFile = new File(TestConfig.getTestRoot() + File.separator + "src" + File.separator + "test"
+				+ File.separator + "resources" + File.separator + directoryName);
 
 		// To extract the excel sheet from the jar and use it
 
@@ -101,13 +79,6 @@ public class PracticeUtil extends IHGUtil implements Runnable {
 		return filePath;
 	}
 
-	/**
-	 * @author bbinisha
-	 * @Description Copy the content of Resource in the Jar files from a source to the destination directory recursively
-	 * @param originUrl
-	 * @param destination
-	 * @return Returns true if all files are moved else returns false
-	 */
 	public static boolean copyResourcesRecursively(final URL originUrl, final File destination) {
 		try {
 			final URLConnection urlConnection = originUrl.openConnection();
@@ -122,10 +93,6 @@ public class PracticeUtil extends IHGUtil implements Runnable {
 		return false;
 	}
 
-	/**
-	 * @description : Used to run the Autoit IT command in the command prompt.
-	 * @return void
-	 */
 	public void run() {
 		// TODO Auto-generated method stub
 		String command = "";
@@ -179,10 +146,6 @@ public class PracticeUtil extends IHGUtil implements Runnable {
 		Thread.sleep(2000);
 	}
 
-	/**
-	 * @author :bbinisha Description: This method switches the driver control to the print pop up window
-	 * @throws InterruptedException
-	 */
 	public void switchToNewWindow() throws InterruptedException {
 		Thread.sleep(2000);
 		Set<String> availableWindows = driver.getWindowHandles();
@@ -202,5 +165,5 @@ public class PracticeUtil extends IHGUtil implements Runnable {
 			rb.keyRelease(KeyEvent.VK_TAB);
 		}
 	}
-	
+
 }

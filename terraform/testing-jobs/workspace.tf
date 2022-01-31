@@ -32,6 +32,10 @@ locals {
     git-taf-prod-rcm-acceptance        = "git-taf-prod-rcm-acceptance"
     prod-practiceportal-regression2    = "prod-practiceportal-regression2"
     prod-sitegen-regression            = "prod-sitegen-regression"
+    demo-ng-integration-pf-acceptance  = "demo-ng-integration-pf-acceptance"
+    demo-ng-int-pf-acceptance-index    = "demo-ng-int-pf-acceptance-index"
+    demo-ng-int-pf-acceptance-payment  = "demo-ng-int-pf-acceptance-payment"
+    demo-ng-int-pf-regression          = "demo-ng-int-pf-regression"
   }
   selected_workspace = local.valid_workspaces[terraform.workspace]
 }

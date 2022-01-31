@@ -590,17 +590,11 @@ public class NotificationsPage extends BasePageObject {
 	@FindBy(how = How.CSS, using = "div:nth-child(2) > div.gap > div > div:nth-child(3)")
 	private WebElement minutesTimeUnitTextForSMS;
 
-	@FindBy(how = How.XPATH, using = "(//input[@id='select-all'])")
-	private WebElement selectAllCheckinAppt;
-
 	@FindBy(how = How.XPATH, using = "//button[contains(text(),'Check-In')]")
 	private WebElement checkinButton;
 
 	@FindBy(how = How.XPATH, using = "(//input[@type='checkbox'])[2]")
 	private WebElement selectOnePatient;
-
-	@FindAll({ @FindBy(how = How.XPATH, using = "(//input[@type='checkbox'])") })
-	public List<WebElement> allAppointment;
 
 	public NotificationsPage(WebDriver driver) {
 		super(driver);
@@ -2153,12 +2147,6 @@ public class NotificationsPage extends BasePageObject {
 		return minutesTimeUnitTextForSMS.getText();
 	}
 
-	public void selectAllAppointment() throws InterruptedException {
-		IHGUtil.PrintMethodName();
-		IHGUtil.waitForElement(driver, 5, selectAllCheckinAppt);
-		selectAllCheckinAppt.click();
-	}
-
 	public void checkingCheckinButton() {
 		IHGUtil.PrintMethodName();
 		IHGUtil.waitForElement(driver, 5, checkinButton);
@@ -2184,41 +2172,22 @@ public class NotificationsPage extends BasePageObject {
 		return checkinButton.getText();
 	}
 
-	public int countOfCurbsideCheckinPatient() {
-		IHGUtil.PrintMethodName();
-		int patientSize = allAppointment.size();
-		log("Size of checkin Appointments " + patientSize);
-		return patientSize - 1;
-	}
-
-	public void selectTwoPatient() throws InterruptedException {
-		driver.navigate().refresh();
-		Thread.sleep(10000);
-		IHGUtil.PrintMethodName();
-		int patientSize = allAppointment.size();
-		for (int i = 1; i <= patientSize - 9; i++) {
-			WebElement twoPatient = allAppointment.get(i);
-			twoPatient.click();
-		}
-	}
-	
 	public String enterDays() {
 		Random random = new Random();
 		int randamNo = random.nextInt(400);
 		return Appointment.days = String.valueOf(randamNo);
 	}
-	
+
 	public String enterHours() {
 		Random random = new Random();
 		int randamNo = random.nextInt(23);
 		return Appointment.hours = String.valueOf(randamNo);
-		
 	}
-	
+
 	public String enterMinutes() {
 		Random random = new Random();
 		int randamNo = random.nextInt(59);
 		return Appointment.minutes = String.valueOf(randamNo);
-		
 	}
+
 }

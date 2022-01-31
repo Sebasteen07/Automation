@@ -30,9 +30,10 @@ public class PostAPIRequestMfNotificationSubscriptionManager extends BaseTestNGW
 		requestSpec = new RequestSpecBuilder().setContentType(ContentType.JSON).build();
 	}
 
-	public Response deleteAllSubscriptionDataUsingEmailId(Map<String, String> Header, String emailId) {
+	public Response deleteAllSubscriptionDataUsingEmailId(String baseurl,Map<String, String> Header, String emailId) {
+		RestAssured.baseURI = baseurl;
 		log("Execute Delete request for Delete all subscription data using Email ID");
-		Response response = given().spec(requestSpec).log().all().headers(Header).when().delete("data/id/" + emailId)
+		Response response = given().log().all().headers(Header).when().delete("data/id/" + emailId)
 				.then().log().all().extract().response();
 		return response;
 	}

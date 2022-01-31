@@ -6,7 +6,6 @@ phases:
       java: corretto8
   pre_build:
     commands:
-      - yum update -y
       - yum install GConf2 liberation-fonts-common gtk3 libappindicator-gtk3 yum-utils libXScrnSaver redhat-lsb-core alsa-lib-devel dbus-x11 ImageMagick Xvfb net-tools -y
       #- curl -O https://dl.google.com/linux/direct/google-chrome-stable_current_x86_64.rpm
       - curl -O https://dl.google.com/linux/chrome/rpm/stable/x86_64/google-chrome-stable-${google_chrome_version}.x86_64.rpm

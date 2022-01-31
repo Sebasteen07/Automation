@@ -1,3 +1,4 @@
+//Copyright 2013-2022 NXGN Management, LLC. All Rights Reserved.
 package com.medfusion.product.object.maps.forms.page.questionnaires;
 
 import org.openqa.selenium.WebDriver;
@@ -13,22 +14,11 @@ public class PortalCustomFormPage extends PortalFormPage {
 		super(driver);
 	}
 
-	/**
-	 * @brief Click on Continue Button
-	 * @param nextPageClass Class of the following page in the form
-	 * @return initialized PageObject for the next page
-	 * @throws Exception
-	 */
 	@Override
 	public <T extends PortalFormPage> T clickSaveContinue(Class<T> nextPageClass) throws Exception {
 		return super.clickSaveContinue(nextPageClass, this.btnContinue);
 	}
 
-	/**
-	 * @brief Click on Continue Button
-	 * @return initialized PageObject for the next page
-	 * @throws Exception
-	 */
 	@Override
 	public <T extends PortalFormPage> T clickSaveContinue() throws Exception {
 		return clickSaveContinue(null, this.btnContinue);

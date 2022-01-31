@@ -1,3 +1,4 @@
+// Copyright 2013-2022 NXGN Management, LLC. All Rights Reserved.
 package com.medfusion.product.forms.services;
 
 import java.util.HashSet;
@@ -39,11 +40,6 @@ public class QuestionsService {
 		return result;
 	}
 
-	/**
-	 * 
-	 * @param question WebElement &lt;ul&gt; object containing question
-	 * @return question object
-	 */
 	public static Question parseQuestion(WebElement question) {
 		String elClass = question.getAttribute("class");
 		if (elClass != null && elClass.contains("list_spacing")) {

@@ -1,3 +1,4 @@
+//  Copyright 2013-2022 NXGN Management, LLC. All Rights Reserved.
 package com.intuit.ihg.product.object.maps.sitegen.page.customforms;
 
 import org.openqa.selenium.WebDriver;
@@ -22,14 +23,8 @@ public class CreateCustomForms extends BasePageObject {
 
 	public CreateCustomForms(WebDriver driver) {
 		super(driver);
-		// TODO Auto-generated constructor stub
 	}
 
-	/**
-	 * Indicates if the search page is loaded
-	 * 
-	 * @return true or false
-	 */
 	public boolean isSearchPageLoaded() {
 
 		IHGUtil.PrintMethodName();
@@ -45,12 +40,6 @@ public class CreateCustomForms extends BasePageObject {
 		return result;
 	}
 
-	/**
-	 * Click on link - Create custom form
-	 * 
-	 * @return
-	 */
-
 	public CreateCustomFormPage clicklnkCreateCustomForm() {
 		SitegenlUtil.setDefaultFrame(driver);
 		IHGUtil.waitForElement(driver, 30, lnkCreateCustomForm);
@@ -59,16 +48,6 @@ public class CreateCustomForms extends BasePageObject {
 		return PageFactory.initElements(driver, CreateCustomFormPage.class);
 	}
 
-
-
-	/**
-	 * * @author Shanthala
-	 * 
-	 * @Desc:- click on Manage your forms
-	 * @return ViewIntegrationsPage
-	 * @throws InterruptedException
-	 * 
-	 */
 	public ManageYourFormsPage clicklnkManageCustomForm() throws InterruptedException {
 		IHGUtil.PrintMethodName();
 		log("Clicking on Manage Custom Forms");
@@ -85,10 +64,6 @@ public class CreateCustomForms extends BasePageObject {
 		for (String winHandle : driver.getWindowHandles()) {
 			driver.switchTo().window(winHandle);
 		}
-
 		return PageFactory.initElements(driver, ManageYourFormsPage.class);
-
 	}
-
-
 }

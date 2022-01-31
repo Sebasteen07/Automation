@@ -1,11 +1,6 @@
+//Copyright 2013-2022 NXGN Management, LLC. All Rights Reserved.
 package com.intuit.ihg.product.integrationplatform.utils;
 
-/**
- * @author bkrishnankutty
- * @Date 5/Aug/2013
- * @Description :-
- * @Note :
- */
 public class Integration {
 
 	public String AMDCUrl = "";
