@@ -30,7 +30,7 @@ import com.medfusion.product.pss2patientui.utils.PSSPropertyFileLoader;
 
 import io.restassured.response.Response;
 
-public class PSS2PMFeatureNGTests02 extends BaseTestNG {
+public class PSS2PMFeatureNGTests07 extends BaseTestNG {
 
 	public static HeaderConfig headerConfig;
 	public static PSSPropertyFileLoader propertyData;
@@ -67,7 +67,7 @@ public class PSS2PMFeatureNGTests02 extends BaseTestNG {
 		payloadPM02 = new PayloadPM02();
 
 		baseUrl = propertyData.getProperty("base.url.pm.ng");
-		practiceId = propertyData.getProperty("mf.practice.id.ng");
+		practiceId = propertyData.getProperty("mf.practice.id.ng02");
 		accessToken = postAPIRequest.createToken(baseUrl, practiceId);
 		pssPatientUtils = new PSSPatientUtils();
 		apv = new APIVerification();

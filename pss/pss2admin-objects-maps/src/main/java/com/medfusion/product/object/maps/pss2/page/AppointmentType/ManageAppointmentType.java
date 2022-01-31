@@ -69,7 +69,7 @@ public class ManageAppointmentType extends PSS2MenuPage {
 	@FindBy(how = How.XPATH, using = "//*[@name='apptTimeMark']")
 	private WebElement timeMarkOption;
 	
-	@FindBy(how = How.XPATH, using = "//*[contains(text(),'Save')]")
+	@FindBy(how = How.XPATH, using = "//form[@class='form-horizontal ng-pristine ng-valid ng-star-inserted ng-touched']//button[@type='submit'][normalize-space()='Save']")
 	private WebElement saveConfig;
 	
 	@FindBy(how = How.XPATH, using = "//label[@for='allowSameDayAppts']//input")
@@ -172,10 +172,11 @@ public class ManageAppointmentType extends PSS2MenuPage {
 
 	}
 	
-	public void timeMark(String timeMarkValue) {
+	public void timeMark(String timeMarkValue) throws InterruptedException {
 		Select selectOptions = new Select(timeMarkOption);
 		selectOptions.selectByValue(timeMarkValue);
 		timeMarkOption.click();
+		scrollAndWait(0, 1000, 100);
 		saveConfig.click();
 	}
 	

@@ -56,6 +56,7 @@ import com.medfusion.product.object.maps.pss2.page.util.APIVerification;
 import com.medfusion.product.object.maps.pss2.page.util.HeaderConfig;
 import com.medfusion.product.object.maps.pss2.page.util.PostAPIRequestAdapterModulator;
 import com.medfusion.product.patientportal2.pojo.JalapenoPatient;
+import com.medfusion.product.pss2patientapi.payload.PayloadAM02;
 import com.medfusion.product.pss2patientapi.payload.PayloadAdapterModulator;
 import com.medfusion.product.pss2patientapi.validation.ValidationAdapterModulator;
 import com.medfusion.product.pss2patientui.pojo.AdminUser;
@@ -82,6 +83,7 @@ public class PSS2PatientPortalAcceptanceTests extends BaseTestNGWebDriver {
 	HeaderConfig headerConfig;
 	public static String openToken;
 	public static String practiceId;
+	public static PayloadAM02 payloadAM02;
 
 	ValidationAdapterModulator validateAdapter = new ValidationAdapterModulator();
 	Timestamp timestamp = new Timestamp();
@@ -5742,6 +5744,44 @@ public class PSS2PatientPortalAcceptanceTests extends BaseTestNGWebDriver {
 		adminuser.setIsExisting(true);
 		PSSPatientUtils psspatientutils = new PSSPatientUtils();
 		PSSAdminUtils pssadminutils = new PSSAdminUtils();
+		
+		logStep("Set up the API authentication");
+		setUp(propertyData.getProperty("mf.practice.id.at"), propertyData.getProperty("mf.authuserid.am.at"));
+		Response response;
+		response = postAPIRequestAM.medfusionpracticeTimeZone(practiceId, "/medfusionpractice");
+		String timezone = aPIVerification.responseKeyValidationJson(response, "practiceTimezone");
+		testData.setCurrentTimeZone(timezone);
+
+		logStep("Set up the desired rule in Admin UI using API");
+		response = postAPIRequestAM.resourceConfigRuleGet(practiceId);
+		JSONArray arr = new JSONArray(response.body().asString());
+		int l = arr.length();
+		log("Length is- " + l);
+
+		for (int i = 0; i < l; i++) {
+			int ruleId = arr.getJSONObject(i).getInt("id");
+			log("Object No." + i + "- " + ruleId);
+			response = postAPIRequestAM.deleteRuleById(practiceId, Integer.toString(ruleId));
+			aPIVerification.responseCodeValidation(response, 200);
+		}
+		
+	
+		payloadAM02= new PayloadAM02();
+		
+		response = postAPIRequestAM.resourceConfigSavePost(practiceId,
+				payloadAM02.turnOFFShowProvider(true));
+		aPIVerification.responseCodeValidation(response, 200);
+
+		response = postAPIRequestAM.resourceConfigRulePost(practiceId, payloadAM.rulePayload("TLB", "T,L,B"));
+		aPIVerification.responseCodeValidation(response, 200);
+
+		response = postAPIRequestAM.resourceConfigRulePost(practiceId, payloadAM.rulePayload("LTB", "L,T,B"));
+		aPIVerification.responseCodeValidation(response, 200);
+		
+		response = postAPIRequestAM.resourceConfigSavePost(practiceId,
+				payloadAM02.turnOFFShowProvider(true));
+		aPIVerification.responseCodeValidation(response, 200);
+		
 		logStep("Move to PSS admin portal and Click on the timemark Functionality on Book Appointment Type");
 		pssadminutils.timeMark(driver, adminuser, testData);
 		String rule = adminuser.getRule();
@@ -6704,6 +6744,41 @@ public class PSS2PatientPortalAcceptanceTests extends BaseTestNGWebDriver {
 		propertyData.setAppointmentResponseAT(testData);
 		adminuser.setIsExisting(true);
 		PSSAdminUtils pssadminutils = new PSSAdminUtils();
+		
+		
+		logStep("Set up the API authentication");
+		setUp(propertyData.getProperty("mf.practice.id.at"), propertyData.getProperty("mf.authuserid.am.at"));
+		Response response;
+		response = postAPIRequestAM.medfusionpracticeTimeZone(practiceId, "/medfusionpractice");
+		String timezone = aPIVerification.responseKeyValidationJson(response, "practiceTimezone");
+		testData.setCurrentTimeZone(timezone);
+
+		logStep("Set up the desired rule in Admin UI using API");
+		response = postAPIRequestAM.resourceConfigRuleGet(practiceId);
+		JSONArray arr = new JSONArray(response.body().asString());
+		int l = arr.length();
+		log("Length is- " + l);
+
+		for (int i = 0; i < l; i++) {
+			int ruleId = arr.getJSONObject(i).getInt("id");
+			log("Object No." + i + "- " + ruleId);
+			response = postAPIRequestAM.deleteRuleById(practiceId, Integer.toString(ruleId));
+			aPIVerification.responseCodeValidation(response, 200);
+		}
+		
+	
+		payloadAM02= new PayloadAM02();
+
+		response = postAPIRequestAM.resourceConfigRulePost(practiceId, payloadAM.rulePayload("TL", "T,L"));
+		aPIVerification.responseCodeValidation(response, 200);
+
+		response = postAPIRequestAM.resourceConfigRulePost(practiceId, payloadAM.rulePayload("LT", "L,T"));
+		aPIVerification.responseCodeValidation(response, 200);
+		
+		response = postAPIRequestAM.resourceConfigSavePost(practiceId,
+				payloadAM02.turnOFFShowProvider(false));
+		aPIVerification.responseCodeValidation(response, 200);
+		
 		logStep("Move to PSS admin portal and Click on the timemark Functionality on Book Appointment Type");
 		pssadminutils.timeMarkWithShowOff(driver, adminuser, testData);
 		String rule = adminuser.getRule();
@@ -8105,7 +8180,7 @@ public class PSS2PatientPortalAcceptanceTests extends BaseTestNGWebDriver {
 
 	
 	@Test(enabled = true, groups = { "AcceptanceTests" }, retryAnalyzer = RetryAnalyzer.class)
-	public void testNextAvailable_LT_GE() throws Exception {
+	public void testNextAvailable_LT_Athena() throws Exception {
 
 		logStep("To verify that Next available is displayed on location (TL) when show provider is off");
 		PSSPropertyFileLoader propertyData = new PSSPropertyFileLoader();
@@ -8114,11 +8189,11 @@ public class PSS2PatientPortalAcceptanceTests extends BaseTestNGWebDriver {
 		
 		PSSNewPatient pssNewPatient= new PSSNewPatient();	
 
-		propertyData.setAdminGE(adminUser);
-		propertyData.setAppointmentResponseGE(testData);
+		propertyData.setAdminAT(adminUser);
+		propertyData.setAppointmentResponseAT(testData);
 
 		logStep("Set up the API authentication");
-		setUp(propertyData.getProperty("mf.practice.id.ge"), propertyData.getProperty("mf.authuserid.am.ge"));
+		setUp(propertyData.getProperty("mf.practice.id.at"), propertyData.getProperty("mf.authuserid.am.at"));
 		Response response;
 
 		logStep("Set up the desired rule in Admin UI using API");
