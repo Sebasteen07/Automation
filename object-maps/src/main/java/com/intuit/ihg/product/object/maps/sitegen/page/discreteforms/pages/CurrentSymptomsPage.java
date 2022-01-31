@@ -1,3 +1,4 @@
+//  Copyright 2013-2022 NXGN Management, LLC. All Rights Reserved.
 package com.intuit.ihg.product.object.maps.sitegen.page.discreteforms.pages;
 
 import org.openqa.selenium.JavascriptExecutor;
@@ -48,14 +49,7 @@ public class CurrentSymptomsPage extends ConfiguratorFormPage {
 	public CurrentSymptomsPage(WebDriver driver) {
 		super(driver);
 		jse = (JavascriptExecutor) driver;
-		// TODO Auto-generated constructor stub
 	}
-
-	/**
-	 * Select basic symptoms to appear in the form
-	 * 
-	 * @throws InterruptedException
-	 */
 
 	public void selectBasicSymptoms() throws InterruptedException {
 		log("Check General Health");

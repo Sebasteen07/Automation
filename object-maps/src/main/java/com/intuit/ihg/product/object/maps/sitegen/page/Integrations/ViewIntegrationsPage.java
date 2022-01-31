@@ -1,3 +1,4 @@
+//  Copyright 2013-2022 NXGN Management, LLC. All Rights Reserved.
 package com.intuit.ihg.product.object.maps.sitegen.page.Integrations;
 
 import java.util.List;
@@ -12,13 +13,6 @@ import org.openqa.selenium.support.ui.WebDriverWait;
 import com.intuit.ifs.csscat.core.pageobject.BasePageObject;
 import com.medfusion.common.utils.IHGUtil;
 
-
-/**
- * @author bkrishnankutty
- * @Date 6/28/2013
- * @Description :- Page Object for SiteGen ViewIntegrations Page
- * @Note :
- */
 public class ViewIntegrationsPage extends BasePageObject {
 
 	@FindBy(xpath = "(//a[contains(@href, '../ie/CreateIntegrationPage')])[2]")
@@ -47,21 +41,10 @@ public class ViewIntegrationsPage extends BasePageObject {
 
 	public final String table_row = "//table[contains(@class,'dataview clear intengine-permissions')]/tbody/tr";
 
-	/**
-	 * @author bkrishnankutty
-	 * @Desc:- constructor for this Page
-	 * @param driver
-	 */
 	public ViewIntegrationsPage(WebDriver driver) {
 		super(driver);
-		// TODO Auto-generated constructor stub
 	}
 
-	/**
-	 * @author bkrishnankutty
-	 * @Desc:-Indicates if the search page is loaded
-	 * @return true or false
-	 */
 	public boolean isSearchPageLoaded() {
 		IHGUtil.PrintMethodName();
 
@@ -71,30 +54,15 @@ public class ViewIntegrationsPage extends BasePageObject {
 		} catch (Exception e) {
 			// Catch any element not found errors
 		}
-
 		return result;
 	}
 
-	/**
-	 * @author bkrishnankutty
-	 * @Desc:- click on Link CreateIntegration
-	 * @return CreateIntegrationStep1Page
-	 * @throws InterruptedException
-	 * 
-	 */
 	public CreateIntegrationStep1Page clickLnkCreateIntegration() throws InterruptedException {
 		IHGUtil.PrintMethodName();
 		lnkCreateIntegration.click();
 		return PageFactory.initElements(driver, CreateIntegrationStep1Page.class);
-
 	}
 
-	/**
-	 * @author bkrishnankutty
-	 * @Desc:- Assert if the new Integration Engine is added or not
-	 * @return true or false
-	 * 
-	 */
 	public boolean verifyIfIntegrationsEngineIsAdded(String integrationName) {
 
 		int flag = 0;
@@ -113,7 +81,6 @@ public class ViewIntegrationsPage extends BasePageObject {
 				if (tdElement.getText().equals(integrationName)) {
 					flag = flag + 1;
 				}
-
 				col_num++;
 			}
 			row_num++;
@@ -121,16 +88,9 @@ public class ViewIntegrationsPage extends BasePageObject {
 		if (flag > 0) {
 			return true;
 		}
-
 		return false;
 	}
 
-	/**
-	 * @author bkrishnankutty
-	 * @Desc:- Will delete the Integration Eng added
-	 * @return Void
-	 * 
-	 */
 	public void cleanIntegrationTestData() {
 		IHGUtil.PrintMethodName();
 		IHGUtil util = new IHGUtil(driver);
@@ -149,7 +109,5 @@ public class ViewIntegrationsPage extends BasePageObject {
 		} catch (Exception e) {
 			log("The test data was already clean");
 		}
-
 	}
-
 }

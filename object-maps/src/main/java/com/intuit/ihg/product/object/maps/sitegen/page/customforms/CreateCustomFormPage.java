@@ -1,3 +1,4 @@
+//  Copyright 2013-2022 NXGN Management, LLC. All Rights Reserved.
 package com.intuit.ihg.product.object.maps.sitegen.page.customforms;
 
 import org.openqa.selenium.WebDriver;
@@ -29,14 +30,8 @@ public class CreateCustomFormPage extends BasePageObject {
 
 	public CreateCustomFormPage(WebDriver driver) {
 		super(driver);
-		// TODO Auto-generated constructor stub
 	}
 
-	/**
-	 * Indicates if the search page is loaded
-	 * 
-	 * @return true or false
-	 */
 	public boolean isSearchPageLoaded() {
 
 		IHGUtil.PrintMethodName();
@@ -52,16 +47,6 @@ public class CreateCustomFormPage extends BasePageObject {
 		return result;
 	}
 
-	/**
-	 * Create a custom form with below parameters
-	 * 
-	 * @param formtype
-	 * @param formtitle
-	 * @param forminstructions
-	 * @param formmessage
-	 * @return
-	 * @throws Exception
-	 */
 	public CustomFormAddCategoriesPage enterCustomFormDetails(String formtype, String formtitle, String forminstructions, String formmessage) throws Exception {
 
 		IHGUtil.PrintMethodName();
@@ -84,9 +69,7 @@ public class CreateCustomFormPage extends BasePageObject {
 		IHGUtil.waitForElement(driver, 30, btnSave);
 		btnSave.click();
 
-
 		return PageFactory.initElements(driver, CustomFormAddCategoriesPage.class);
-
 	}
 
 

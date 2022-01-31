@@ -1,3 +1,4 @@
+//  Copyright 2013-2022 NXGN Management, LLC. All Rights Reserved.
 package com.intuit.ihg.product.object.maps.sitegen.page.Integrations;
 
 import org.openqa.selenium.WebDriver;
@@ -8,12 +9,6 @@ import org.openqa.selenium.support.PageFactory;
 import com.intuit.ifs.csscat.core.pageobject.BasePageObject;
 import com.medfusion.common.utils.IHGUtil;
 
-/**
- * @author bkrishnankutty
- * @Date 7/27/2013
- * @Description :- Page Object for CreateIntegrationStep2 Page
- * @Note :
- */
 public class CreateIntegrationStep2Page extends BasePageObject {
 
 	@FindBy(name = "integrationName")
@@ -25,21 +20,10 @@ public class CreateIntegrationStep2Page extends BasePageObject {
 	@FindBy(name = "buttons:submit")
 	private WebElement btnSaveAndContinue;
 
-	/**
-	 * @author bkrishnankutty
-	 * @Desc:- constructor for this Page
-	 * @param driver
-	 */
 	public CreateIntegrationStep2Page(WebDriver driver) {
 		super(driver);
-		// TODO Auto-generated constructor stub
 	}
 
-	/**
-	 * @author bkrishnankutty
-	 * @Desc:-Indicates if the search page is loaded
-	 * @return true or false
-	 */
 	public boolean isSearchPageLoaded() {
 		IHGUtil.PrintMethodName();
 
@@ -53,16 +37,9 @@ public class CreateIntegrationStep2Page extends BasePageObject {
 		return result;
 	}
 
-	/**
-	 * @author bkrishnankutty
-	 * @Desc:- click Button SaveAndContinue
-	 * @return ViewIntegrationsPage
-	 * 
-	 */
 	public ViewIntegrationsPage clickbtnSaveAndContinue() {
 		IHGUtil.PrintMethodName();
 		javascriptClick(btnSaveAndContinue);
 		return PageFactory.initElements(driver, ViewIntegrationsPage.class);
 	}
-
 }

@@ -1,4 +1,4 @@
-//  Copyright 2013-2021 NXGN Management, LLC. All Rights Reserved.
+//  Copyright 2013-2022 NXGN Management, LLC. All Rights Reserved.
 package com.intuit.ihg.product.object.maps.sitegen.page.customforms;
 
 import org.openqa.selenium.By;
@@ -29,14 +29,8 @@ public class CustomFormPreviewPage extends BasePageObject {
 	// This page to contain all validation points passed during form creation.
 	public CustomFormPreviewPage(WebDriver driver) {
 		super(driver);
-		// TODO Auto-generated constructor stub
 	}
 
-	/**
-	 * Indicates if the search page is loaded
-	 * 
-	 * @return true or false
-	 */
 	public boolean isSearchPageLoaded() {
 
 		IHGUtil.PrintMethodName();
@@ -53,11 +47,6 @@ public class CustomFormPreviewPage extends BasePageObject {
 		return result;
 	}
 
-	/**
-	 * Indicates if the search page is loaded
-	 * 
-	 * @return true or false
-	 */
 	public boolean isSearchPageLoadedForUnpublishLink() {
 
 		IHGUtil.PrintMethodName();
@@ -98,12 +87,6 @@ public class CustomFormPreviewPage extends BasePageObject {
 		log("Unpublish link found successfuly");
 	}
 
-	/**
-	 * Click on publish link
-	 * 
-	 * @return
-	 * @throws Exception
-	 */
 	public ManageYourFormsPage clickOnPublishLink() throws Exception {
 
 		IHGUtil.PrintMethodName();
@@ -114,12 +97,6 @@ public class CustomFormPreviewPage extends BasePageObject {
 		return PageFactory.initElements(driver, ManageYourFormsPage.class);
 	}
 
-	/**
-	 * Click on Unpublish link
-	 * 
-	 * @return
-	 * @throws Exception
-	 */
 	public ManageYourFormsPage clickOnUnPublishLink() throws Exception {
 
 		IHGUtil.PrintMethodName();

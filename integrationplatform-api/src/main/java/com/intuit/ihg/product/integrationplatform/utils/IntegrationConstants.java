@@ -1,12 +1,5 @@
-// Copyright 2013-2021 NXGN Management, LLC. All Rights Reserved.
+// Copyright 2013-2022 NXGN Management, LLC. All Rights Reserved.
 package com.intuit.ihg.product.integrationplatform.utils;
-
-/**
- * @author bkrishnankutty
- * @Date 5/Aug/2013
- * @Description :-
- * @Note :
- */
 
 public class IntegrationConstants {
 	public final static String QUESTION_SUBJECT = "Subject";

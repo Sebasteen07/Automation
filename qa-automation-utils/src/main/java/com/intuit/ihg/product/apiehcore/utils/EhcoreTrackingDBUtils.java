@@ -1,4 +1,4 @@
-//Copyright 2013-2021 NXGN Management, LLC. All Rights Reserved.
+//Copyright 2013-2022 NXGN Management, LLC. All Rights Reserved.
 package com.intuit.ihg.product.apiehcore.utils;
 
 import static org.testng.Assert.assertNotNull;
@@ -44,13 +44,6 @@ public class EhcoreTrackingDBUtils {
 	private static String GETSNAPSHOT_DETAILS = "SELECT * FROM(" + "SELECT * FROM msg WHERE subject_id = ("
 			+ "SELECT subject_id FROM msg WHERE data_job_guid = ? and msg_id= ?) AND processing_status_type = 'COMPLETED' ORDER BY msg_id ASC)" + "WHERE rownum < 3";
 
-
-
-	/**
-	 * This method is used to estalblish a connection with Oracle -Tracking DB
-	 * 
-	 * @throws Exception
-	 */
 	public static Connection getDBConnection() throws Exception {
 
 		try {
@@ -77,15 +70,6 @@ public class EhcoreTrackingDBUtils {
 		return dbConnPs;
 	}
 
-	/**
-	 * This Method is used to get the Message Details in TrackingDB
-	 * 
-	 * @param djId - DatajobId
-	 * @param msg_type - msg type for import and export message details
-	 * @return Message Details List<Message>
-	 * @throws Exception
-	 */
-
 	public static List<Message> getMessageDetails(String Id, String msg_type) throws Exception {
 
 		getDBConnection();
@@ -93,7 +77,6 @@ public class EhcoreTrackingDBUtils {
 		List<Message> details = new ArrayList<Message>();
 		PreparedStatement stmt = null;
 		ResultSet rs = null;
-		// String attributes = null;
 
 		try {
 
@@ -143,14 +126,6 @@ public class EhcoreTrackingDBUtils {
 		return details;
 	}
 
-	/**
-	 * This Method is used to get the Message Details in TrackingDB
-	 * 
-	 * @param messageGuid - msg type for import and export message details
-	 * @return Message Details List<Message>
-	 * @throws Exception
-	 */
-
 	public static String getDataJobId(String messageGuid) throws Exception {
 		getDBConnection();
 		PreparedStatement stmt = null;
@@ -175,15 +150,6 @@ public class EhcoreTrackingDBUtils {
 		}
 		return djId;
 	}
-
-
-	/**
-	 * This Method is used to get the Datajob Details in Tracking DB
-	 * 
-	 * @param djId -Datajob ID
-	 * @return
-	 * @throws Exception
-	 */
 
 	public static String getDatajobDetails(String djId) throws Exception {
 
@@ -211,11 +177,6 @@ public class EhcoreTrackingDBUtils {
 		return djStatus;
 	}
 
-	/**
-	 * This method checks the ActivityStatus(Completed/Error) in TrackingDB
-	 * 
-	 * @throws Exception
-	 */
 	public static boolean isActivityStatusCompleted(String qid, String activityType, String activityName) throws Exception {
 
 		getDBConnection();
@@ -251,12 +212,6 @@ public class EhcoreTrackingDBUtils {
 		return activityStatus;
 	}
 
-	/**
-	 * This method returns the objectRefDetails(ref_id) in TrackingDB
-	 * 
-	 * @throws Exception
-	 */
-
 	public static String getObjRefDetails(String msgId, String nodeType) throws Exception {
 
 		getDBConnection();
@@ -278,13 +233,6 @@ public class EhcoreTrackingDBUtils {
 		}
 		return objRefId;
 	}
-
-	/**
-	 * This method returns true if previous snapshot is present for the same patient. To check the previous snapshot, 'suject_id' of the current snapshot is being
-	 * searched in message table.
-	 * 
-	 * @throws Exception
-	 */
 
 	public static boolean isSnapshotPreviousVersionPresent(String dataJobId, String qid) throws Exception {
 		getDBConnection();
@@ -318,8 +266,6 @@ public class EhcoreTrackingDBUtils {
 		return status;
 	}
 
-
-	// US3775 - Enhancement in datajob attributes
 	public static String getAttributesDetails(String djId, String msg_type) {
 		PreparedStatement stmt = null;
 		ResultSet rs = null;

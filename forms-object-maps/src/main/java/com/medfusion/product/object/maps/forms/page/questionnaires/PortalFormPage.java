@@ -1,3 +1,4 @@
+//  Copyright 2013-2022 NXGN Management, LLC. All Rights Reserved.
 package com.medfusion.product.object.maps.forms.page.questionnaires;
 
 import java.rmi.UnexpectedException;
@@ -52,13 +53,8 @@ public abstract class PortalFormPage extends BasePageObject {
 		super(driver);
 	}
 
-	/**
-	 * Click on Continue Button
-	 * @param nextPageClass Class of the following page in the form continueButton WebElement of the continue button
-	 * @return initialized PageObject for the next page
-	 * @throws Exception
-	 */
-	public <T extends PortalFormPage> T clickSaveContinue(Class<T> nextPageClass, WebElement continueButton) throws Exception {
+	public <T extends PortalFormPage> T clickSaveContinue(Class<T> nextPageClass, WebElement continueButton)
+			throws Exception {
 		IHGUtil.PrintMethodName();
 		WebDriverWait wait = new WebDriverWait(driver, 10);
 		// we need this here as demo is acting up sometimes with longer delays
@@ -79,7 +75,8 @@ public abstract class PortalFormPage extends BasePageObject {
 			return PageFactory.initElements(driver, nextPageClass);
 	}
 
-	public <T extends PortalFormPage> T clickSaveContinueWithRetry(Class<T> nextPageClass, WebElement continueButton, int maxRetry) throws Exception {
+	public <T extends PortalFormPage> T clickSaveContinueWithRetry(Class<T> nextPageClass, WebElement continueButton,
+			int maxRetry) throws Exception {
 		IHGUtil.PrintMethodName();
 		WebDriverWait wait = new WebDriverWait(driver, 10);
 
@@ -103,21 +100,10 @@ public abstract class PortalFormPage extends BasePageObject {
 			return PageFactory.initElements(driver, nextPageClass);
 	}
 
-	/**
-	 * Click on Continue Button
-	 * @param nextPageClass Class of the following page in the form
-	 * @return initialized PageObject for the next page
-	 * @throws Exception
-	 */
 	public <T extends PortalFormPage> T clickSaveContinue(Class<T> nextPageClass) throws Exception {
 		return clickSaveContinue(nextPageClass, this.btnContinue);
 	}
 
-	/**
-	 * Click on Continue Button
-	 * @return initialized PageObject for the next page
-	 * @throws Exception
-	 */
 	public <T extends PortalFormPage> T clickSaveContinue() throws Exception {
 		return clickSaveContinue(null, this.btnContinue);
 	}
@@ -131,10 +117,11 @@ public abstract class PortalFormPage extends BasePageObject {
 	}
 
 	public <T extends PortalFormPage> T goBack(Class<T> previousPageClass) {
-	    javascriptClick(previousPageButton);
-	    //not the cleanest solution, but one that makes most sense
-	    //the javascript action can get queued up too fast after page load and get to negative page numbers (and then it loops...)
-	    try {
+		javascriptClick(previousPageButton);
+		// not the cleanest solution, but one that makes most sense
+		// the javascript action can get queued up too fast after page load and get to
+		// negative page numbers (and then it loops...)
+		try {
 			Thread.sleep(2000);
 		} catch (InterruptedException e) {
 			e.printStackTrace();
@@ -142,12 +129,6 @@ public abstract class PortalFormPage extends BasePageObject {
 		return PageFactory.initElements(driver, previousPageClass);
 	}
 
-	/**
-	 * @Description Click on Submit Form Button
-	 * @return
-	 * @throws Exception
-	 * 
-	 */
 	public void submitForm() throws Exception {
 		WebDriverWait wait = new WebDriverWait(driver, 25);
 		wait.until(ExpectedConditions.visibilityOf(submitForm));
@@ -216,8 +197,8 @@ public abstract class PortalFormPage extends BasePageObject {
 	public void goToFirstPage() {
 		scrollToFooter();
 		while (previousPageButton.isDisplayed()) {
-		    javascriptClick(previousPageButton);
-		    try {
+			javascriptClick(previousPageButton);
+			try {
 				Thread.sleep(3000);
 			} catch (InterruptedException e) {
 				// TODO Auto-generated catch block

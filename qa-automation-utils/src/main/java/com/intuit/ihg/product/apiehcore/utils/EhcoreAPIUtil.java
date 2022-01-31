@@ -1,4 +1,4 @@
-//Copyright 2013-2021 NXGN Management, LLC. All Rights Reserved.
+//Copyright 2013-2022 NXGN Management, LLC. All Rights Reserved.
 package com.intuit.ihg.product.apiehcore.utils;
 
 import static org.testng.Assert.*;
@@ -67,12 +67,6 @@ import com.intuit.ihg.eh.core.dto.ReprocessRequest;
 import com.intuit.qhg.hub.schemas.messages.CCDMessageType;
 import com.sun.xml.bind.marshaller.NamespacePrefixMapper;
 
-/**
- * @author bkrishnankutty
- * @Date 6/Aug/2013
- * @Description :-
- * @Note :
- */
 public class EhcoreAPIUtil extends IHGUtil {
 
 	private static final String SOAP_BODY_END = "</soap:Body>";
@@ -88,70 +82,31 @@ public class EhcoreAPIUtil extends IHGUtil {
 
 	protected WebDriver driver;
 
-	/**
-	 * @author bkrishnankutty
-	 * @Desc:- constructor for this Page
-	 * @param driver
-	 * @throws Exception
-	 */
 	public EhcoreAPIUtil(WebDriver driver) throws Exception {
 		super(driver);
 		PageFactory.initElements(driver, this);
 	}
 
-	/**
-	 * @author bkrishnankutty
-	 * @Desc:- Get the driver
-	 * @return WebDriver
-	 * @param driver
-	 */
 	public WebDriver getDriver(WebDriver driver) {
 		IHGUtil.PrintMethodName();
 		return driver;
 	}
 
-	/**
-	 * @author bkrishnankutty
-	 * @Desc:- Set the Site Gen Frame
-	 * @return void
-	 * @param driver
-	 */
 	public static void setSiteGenFrame(WebDriver driver) {
 		IHGUtil.PrintMethodName();
 		IHGUtil.setFrame(driver, "iframebody");
 	}
 
-	/**
-	 * @author bkrishnankutty
-	 * @Desc:- set Default Frame
-	 * @return void
-	 * @param driver
-	 */
 	public static void setDefaultFrame(WebDriver driver) {
 		IHGUtil.PrintMethodName();
 		IHGUtil.setDefaultFrame(driver);
 	}
 
-	/**
-	 * @author bkrishnankutty
-	 * @Desc:- For setting generic frame
-	 * @return void
-	 * @param driver
-	 * @param frame
-	 */
 	public static void setFrame(WebDriver driver, String frame) {
 		IHGUtil.PrintMethodName();
 		IHGUtil.setFrame(driver, frame);
 	}
 
-	/**
-	 * @author bkrishnankutty
-	 * @Desc:- For setting Consolidated frame ,Here 2 frames iframebody &
-	 *         externalframe
-	 * @return void
-	 * @param driver
-	 * @param frame
-	 */
 	public static void setConsolidatedInboxFrame(WebDriver driver) {
 		IHGUtil.PrintMethodName();
 
@@ -162,29 +117,11 @@ public class EhcoreAPIUtil extends IHGUtil {
 		IHGUtil.setFrameChain(driver, frames);
 	}
 
-	/**
-	 * @author bkrishnankutty
-	 * @Desc:- Verify text ,Note :- this fun is already present in IFS but cannot be
-	 *         used pages,So redefining it
-	 * @return true or false
-	 * 
-	 * @param driver
-	 * @param value
-	 * @param waitTime
-	 * @return
-	 * @throws Exception
-	 */
 	public static boolean verifyTextPresent(WebDriver driver, String value, int waitTime) throws Exception {
 		Thread.sleep(waitTime);
 		return driver.getPageSource().contains(value);
 	}
 
-	/**
-	 * @author bkrishnankutty
-	 * @Desc:- for dealing with browser alerts
-	 * @return void
-	 * @param driver
-	 */
 	public void checkAlert(WebDriver driver) {
 		try {
 			wait.until(ExpectedConditions.alertIsPresent());
@@ -197,17 +134,6 @@ public class EhcoreAPIUtil extends IHGUtil {
 		}
 	}
 
-	/**
-	 * This method publishes a request (an xml message) to EDI's rest interface. It
-	 * gets an HTTP/HTTPS connection to a given URL, writes the request to the
-	 * connection, reads the response and returns
-	 * 
-	 * @param url         - URL to connect to
-	 * @param requestType - get/post type
-	 * @param requestXml  - xml msg to be published to EDI
-	 * @return - Datajob JAXB object
-	 * @throws Exception
-	 */
 	public static DataJob processRequest(String url, String requestType, String requestXml, String expectedResponse)
 			throws Exception {
 
@@ -249,12 +175,6 @@ public class EhcoreAPIUtil extends IHGUtil {
 		return EhcoreAPIUtil.unmarshallFromString(xmlResponse);
 	}
 
-	/**
-	 * This method publishes a invalid request(invalid/null/blank contentType in
-	 * header,invalid message in body) to EDI's rest interface.
-	 * 
-	 * @throws Exception
-	 */
 	public static void processRequest_invalid(String url, String requestType, String requestXml, String djId,
 			String contentType, String expectedResponse) throws Exception {
 
@@ -300,16 +220,6 @@ public class EhcoreAPIUtil extends IHGUtil {
 		}
 	}
 
-	/**
-	 * Setting up an HTTPS connection to the EDI host that hosts REST web-services
-	 * 
-	 * @param strUrl      - URL
-	 * @param reqMethod   - request type (can be get or post)
-	 * @param xmlFilePath - path to XML file, the contents of which will be
-	 *                    published to URL
-	 * @param value       - to set valid content -type in header
-	 * @return HttpsURLConnection connection object
-	 */
 	public static HttpsURLConnection setupHttpsConnection(String strUrl, String reqMethod, String xmlFilePath,
 			String value, String djId, boolean isCCDImport) {
 
@@ -382,13 +292,6 @@ public class EhcoreAPIUtil extends IHGUtil {
 		return connection;
 	}
 
-	/**
-	 * Given a filepath, converts the file contents into bytes that can be written
-	 * to an OutputStream of an HttpConnection
-	 * 
-	 * @param filePath - path to the file that needs to be written to HttpConnection
-	 * @return byte array
-	 */
 	public static byte[] fileToBytes(String filePath) {
 		File file = new File(filePath);
 		InputStream is;
@@ -434,16 +337,6 @@ public class EhcoreAPIUtil extends IHGUtil {
 		return bytes;
 	}
 
-	/**
-	 * Setting up an HTTP connection to the EDI host that hosts REST web-services
-	 * 
-	 * @param strUrl      - URL
-	 * @param reqMethod   - request type (can be get or post)
-	 * @param xmlFilePath - path to XML file, the contents of which will be
-	 *                    published to URL
-	 * @param value       - to check contentType (valid/invalid/null)
-	 * @return HttpURLConnection connection object
-	 */
 	public static HttpURLConnection setupHttpConnection(String strUrl, String reqMethod, String xmlFilePath,
 			String contentType, String djId, boolean isValidDjID) {
 
@@ -520,12 +413,6 @@ public class EhcoreAPIUtil extends IHGUtil {
 		return connection;
 	}
 
-	/**
-	 * Reads the contents from an InputStream and captures them in a String
-	 * 
-	 * @param is InputStream object
-	 * @return String that contains the content read from InputStream
-	 */
 	public static String readResponse(InputStream is) {
 		StringBuilder response = new StringBuilder();
 		try {
@@ -578,19 +465,6 @@ public class EhcoreAPIUtil extends IHGUtil {
 
 	}
 
-	/**
-	 * This method publishes a request (an xml message) to EDI's rest interface. It
-	 * gets an HTTP/HTTPS connection to a given URL, writes the request to the
-	 * connection, reads the response and returns
-	 * 
-	 * @param url              - URL to connect to
-	 * @param requestType      - get/post type
-	 * @param requestXml       - xml msg to be published to EDI
-	 * @param djId             -set valid djId in req header
-	 * @param expectedresponse - assert actual with expected
-	 * @return - boolean value
-	 * @throws Exception
-	 */
 	public static ProcessingResponse processRequestCCDMessage(String url, String requestType, String requestXml,
 			String djId, String expectedResponse) throws Exception {
 
@@ -644,18 +518,6 @@ public class EhcoreAPIUtil extends IHGUtil {
 		return EhcoreAPIUtil.unmarshallCCDResponse(xmlResponse);
 	}
 
-	/**
-	 * This method publishes a reprocess request (an xml message) to EDI's rest
-	 * interface. It gets an HTTP/HTTPS connection to a given URL, writes the
-	 * request to the connection, reads the response and returns
-	 * 
-	 * @param url              - URL to connect to
-	 * @param requestType      - get/post type
-	 * @param requestXml       - xml msg to be published to EDI
-	 * @param expectedresponse - assert actual with expected
-	 * @return - boolean value
-	 * @throws Exception
-	 */
 	public static boolean reprocessRequest(String url, String requestType, String requestXml, String expectedResponse)
 			throws Exception {
 
@@ -693,11 +555,6 @@ public class EhcoreAPIUtil extends IHGUtil {
 		return xmlResponse;
 	}
 
-	/**
-	 * Use this method to send CCDImport Message to EDI Rest interface.
-	 * 
-	 * @throws Exception
-	 */
 	public static ProcessingResponse sendMessage(String djId, String UPN, String type) throws Exception {
 
 		String url = null;
@@ -878,12 +735,6 @@ public class EhcoreAPIUtil extends IHGUtil {
 		return schema;
 	}
 
-	/**
-	 * This Method is used to validate CCDExchange against XSD.
-	 * 
-	 * @param xml - Request xml
-	 * @return
-	 */
 	public static boolean isValidXML(String xml) {
 
 		boolean isValidxml = false;
@@ -894,16 +745,7 @@ public class EhcoreAPIUtil extends IHGUtil {
 		String ccdXml = xml
 				.substring(xml.indexOf("<CcdXml>") + 8, xml.indexOf("</CcdXml>")).replace("&lt;",
 						"<")
-				.replace("&gt;", ">").replace("&quot;", "\"").replace("&apos;", "'").replace("&amp;", "&") /*
-																											 * VERY
-																											 * IMPORTANT
-																											 * &amp;
-																											 * replacement
-																											 * IS AFTER
-																											 * lt/gt/
-																											 * quot/
-																											 * apos!
-																											 */
+				.replace("&gt;", ">").replace("&quot;", "\"").replace("&apos;", "'").replace("&amp;", "&")
 				.replace("<![CDATA[", "").replace("]]>", "");
 
 		boolean isValidCCD = validateXML(EhcoreAPIConstants.CCD_XSD, ccdXml);
@@ -913,11 +755,6 @@ public class EhcoreAPIUtil extends IHGUtil {
 		return isValidxml;
 	}
 
-	/**
-	 * This Method tests ProcessingResponse values are not null for valid inputs
-	 * 
-	 * @throws Exception
-	 */
 	public static ProcessingResponse processCCD_CheckResponse(String url, String requestType, String requestXml,
 			String djId, String expectedResponse, String type) throws Exception {
 
@@ -932,11 +769,6 @@ public class EhcoreAPIUtil extends IHGUtil {
 		return response;
 	}
 
-	/**
-	 * This Method tests ProcessingResponse values for invalid inputs
-	 * 
-	 * @throws Exception
-	 */
 	public static ProcessingResponse processInvalidCCD_CheckResponse(String url, String requestType, String requestXml,
 			String djId, String expectedResponse) throws Exception {
 
@@ -947,12 +779,6 @@ public class EhcoreAPIUtil extends IHGUtil {
 		return response;
 	}
 
-	/**
-	 * Marshall a JAXB Datajob object into a XML file
-	 * 
-	 * @param dj       - JAXB Datajob object
-	 * @param filePath - Path to the xml file
-	 */
 	public static void marshall(DataJob dj, String filePath) {
 		Marshaller marshaller = null;
 		try {
@@ -976,12 +802,6 @@ public class EhcoreAPIUtil extends IHGUtil {
 		}
 	}
 
-	/**
-	 * Marshall a JAXB ReprocessRequest object into a XML file
-	 * 
-	 * @param req      - JAXB ReprocessRequest object
-	 * @param filePath - Path to the xml file
-	 */
 	public static void marshallReprocessRequest(ReprocessRequest req, String filePath) {
 		Marshaller marshaller = null;
 		try {
@@ -1005,12 +825,6 @@ public class EhcoreAPIUtil extends IHGUtil {
 		}
 	}
 
-	/**
-	 * Unmarshall a String capturing xml data into a JAXB Datajob object
-	 * 
-	 * @param xmlFilepath - String capturing xml data
-	 * @return JAXB Datajob object
-	 */
 	public static DataJob unmarshallFromFile(String xmlFilepath) {
 		DataJob dj = null;
 		Unmarshaller um = null;
@@ -1036,13 +850,6 @@ public class EhcoreAPIUtil extends IHGUtil {
 		return dj;
 	}
 
-	/**
-	 * Unmarshall a String capturing xml data into a JAXB CcdExchange object
-	 * 
-	 * @param xmlFilepath - String capturing xml data
-	 * @return JAXB CcdExchange object
-	 *         \eh\services\src\main\java\com\intuit\ihg\eh\ccd\builder\CCDXMLUtils.java
-	 */
 	public static CcdExchange unmarshallCCD(String xmlFilepath) {
 		CcdExchange Ccd = null;
 		try {
@@ -1063,12 +870,6 @@ public class EhcoreAPIUtil extends IHGUtil {
 
 	}
 
-	/**
-	 * Unmarshall a String capturing xml data into a JAXB ReprocessRequest object
-	 * 
-	 * @param xmlFilepath - String capturing xml data
-	 * @return JAXB ReprocessRequest object
-	 */
 	public static ReprocessRequest unmarshallReprocessRequest(String xmlFilepath) {
 		ReprocessRequest req = null;
 		Unmarshaller um = null;
@@ -1230,12 +1031,6 @@ public class EhcoreAPIUtil extends IHGUtil {
 		marshall(dj, toXML);
 	}
 
-	/**
-	 * Unmarshall a String capturing xml data into a JAXB Datajob object
-	 * 
-	 * @param str String capturing xml data
-	 * @return JAXB Datajob object
-	 */
 	public static DataJob unmarshallFromString(String str) {
 		DataJob dj = null;
 		Unmarshaller um = null;
@@ -1255,12 +1050,6 @@ public class EhcoreAPIUtil extends IHGUtil {
 		return dj;
 	}
 
-	/**
-	 * Unmarshall a String capturing xml data into a JAXB ProcessingResponse object
-	 * 
-	 * @param str String capturing xml data
-	 * @return JAXB ProcessingResponse object
-	 */
 	public static ProcessingResponse unmarshallCCDResponse(String str) {
 		ProcessingResponse res = null;
 		Unmarshaller um = null;
@@ -1280,12 +1069,6 @@ public class EhcoreAPIUtil extends IHGUtil {
 		return res;
 	}
 
-	/**
-	 * Unmarshall a String capturing xml data into a JAXB ProcessingResponse object
-	 * 
-	 * @param str String capturing xml data
-	 * @return JAXB AllscriptsMessageEnvelope object
-	 */
 	public static AllscriptsMessageEnvelope unmarshallAllScriptsCCDImportResponse(String str) {
 		String envelope = null;
 		if (null != str && str.contains(SOAP_BODY_START)) {
@@ -1430,12 +1213,6 @@ public class EhcoreAPIUtil extends IHGUtil {
 		}
 	}
 
-	/**
-	 * Unmarshall a String capturing xml data into a JAXB ProcessingResponse object
-	 * 
-	 * @param str String capturing xml data
-	 * @return JAXB ProcessingResponse object
-	 */
 	public static ProcessingResponse unmarshallString(String str) {
 		ProcessingResponse response = null;
 		Unmarshaller um = null;
@@ -1480,15 +1257,6 @@ public class EhcoreAPIUtil extends IHGUtil {
 		return url;
 	}
 
-	/**
-	 * Checks if the datajob status has become the status we are expecting. It runs
-	 * in a loop and polls every 5 seconds to check on the status, until it times
-	 * out.
-	 * 
-	 * @param djId               - id of the datajob we are checking the status of.
-	 * @param expectedProcStatus - datajob status we are expecting
-	 * @throws Exception
-	 */
 	public static void verifyExpectedDataJobProcStatus(String djId, String expectedProcStatus) throws Exception {
 
 		int procTime = Integer.parseInt(DataJobConstant.DJ_MGR_PROC_TIME);
@@ -1518,12 +1286,6 @@ public class EhcoreAPIUtil extends IHGUtil {
 				+ " for DataJob Id " + djId);
 	}
 
-	/**
-	 * open Data Job WithTransmissionEnd
-	 * 
-	 * @param transStatus
-	 * @throws Exception
-	 */
 	public static void openDJWithTransmissionEnd(String transStatus) throws Exception {
 
 		String url = getUrl(EhcoreAPIConstants.DATAJOB);
@@ -1536,13 +1298,6 @@ public class EhcoreAPIUtil extends IHGUtil {
 				EhcoreAPIConstants.EXPECTEDRESPONSE_BADREQUEST);
 	}
 
-	/**
-	 * Get the URL (the common part of it for all messages) from the properties
-	 * defined in config file
-	 * 
-	 * @return String that represents the URL
-	 * @throws Exception
-	 */
 	private static String getAllScriptsCCDExportURL() throws Exception {
 		EhcoreAPI ehcoreApi = new EhcoreAPI();
 		EhcoreAPITestData testData = new EhcoreAPITestData(ehcoreApi);
@@ -1550,13 +1305,6 @@ public class EhcoreAPIUtil extends IHGUtil {
 				+ testData.getAllscriptsccdexporturl();
 	}
 
-	/**
-	 * Get the URL (the common part of it for all messages) from the properties
-	 * defined in config file
-	 * 
-	 * @return String that represents the URL
-	 * @throws Exception
-	 */
 	private static String getAllScriptsFormsExportURL() throws Exception {
 		EhcoreAPI ehcoreApi = new EhcoreAPI();
 		EhcoreAPITestData testData = new EhcoreAPITestData(ehcoreApi);
@@ -1564,27 +1312,13 @@ public class EhcoreAPIUtil extends IHGUtil {
 				+ testData.getAllscriptsccdexporturl();
 	}
 
-	/**
-	 * Get the URL (the common part of it for all messages) from the properties
-	 * defined in config file
-	 * 
-	 * @return String that represents the URL
-	 * @throws Exception
-	 */
 	public static String getAllScriptsCCDImportURL() throws Exception {
 		EhcoreAPI ehcoreApi = new EhcoreAPI();
 		EhcoreAPITestData testData = new EhcoreAPITestData(ehcoreApi);
 		return EhcoreAPIConstants.PROTOCOL + "://" + EhcoreAPIConstants.HOST + ":" + EhcoreAPIConstants.PORT
 				+ testData.getAllscriptsccdimporturl();
-		// //http://dev3vip-eh-core-svc.qhg.local:80/asehr/service/hub
-
 	}
 
-	/**
-	 * Use this method to send invalid content type in request header
-	 * 
-	 * @throws Exception
-	 */
 	public static void requestWithInvalidHeader(String type, String djId, String transStatus, String contentType,
 			String expectedResponse) throws Exception {
 
@@ -1628,12 +1362,6 @@ public class EhcoreAPIUtil extends IHGUtil {
 		processRequest_invalid(url, EhcoreAPIConstants.POST_REQUEST, xmlFile, "", contentType, expectedResponse);
 	}
 
-	/**
-	 * Get the URL to Create Retriable Exception from the properties defined in
-	 * config file
-	 * 
-	 * @return String that represents the URL
-	 */
 	private static String getURL_ERROR() {
 		return EhcoreAPIConstants.PROTOCOL + "://" + EhcoreAPIConstants.HOST + ":"
 				+ EhcoreAPIConstants.REPROCESSREQ_PORT + EhcoreAPIConstants.WS_URL;
@@ -1706,14 +1434,6 @@ public class EhcoreAPIUtil extends IHGUtil {
 				EhcoreAPIConstants.EXPECTEDRESPONSE_BADREQUEST);
 	}
 
-	/**
-	 * Asserts that an object isn't null. If it is an {@link AssertionError} is
-	 * thrown with the given message.
-	 * 
-	 * @param message the identifying message for the {@link AssertionError}
-	 *                (<code>null</code> okay)
-	 * @param object  Object to check or <code>null</code>
-	 */
 	static public void assertIsNotNull(String message, Object object) {
 		assertTrue(object != null, message);
 	}
@@ -1736,12 +1456,6 @@ public class EhcoreAPIUtil extends IHGUtil {
 
 		return dj;
 	}
-
-	/**
-	 * Use this method to validate datajob response
-	 * 
-	 * @throws Exception
-	 */
 
 	public static DataJob openDataJob(String transStatus) throws Exception {
 		String url = getUrl(EhcoreAPIConstants.DATAJOB);
@@ -1806,17 +1520,6 @@ public class EhcoreAPIUtil extends IHGUtil {
 				EhcoreAPIConstants.EXPECTEDRESPONSE_BADREQUEST);
 	}
 
-	/**
-	 * Checks if the Message status has become the status we are expecting. It runs
-	 * in a loop and polls every 5 seconds to check on the status, until it times
-	 * out.
-	 * 
-	 * @param djId               - id of the datajob we are checking the status of.
-	 * @param rowNo              - row number in particular datajob if more than one
-	 *                           message has sent.
-	 * @param expectedProcStatus - Message status we are expecting
-	 * @throws Exception
-	 */
 	public static List<Message> verifyExpectedMessageProcStatus(int rowNo, String djId, String expectedStatus,
 			String msg_type) throws Exception {
 		int procTime = Integer.parseInt(DataJobConstant.DJ_MGR_PROC_TIME);
@@ -1851,12 +1554,6 @@ public class EhcoreAPIUtil extends IHGUtil {
 
 		return details;
 	}
-
-	/**
-	 * Use this method to update CCDExchange message
-	 * 
-	 * @throws Exception
-	 */
 
 	public static void updateCCD_Data(String fromXML, String toXML, String subjectId) throws Exception {
 
@@ -1898,20 +1595,6 @@ public class EhcoreAPIUtil extends IHGUtil {
 
 		return response;
 	}
-
-	/**
-	 * This method publishes a request (an xml message) to EDI's rest interface. It
-	 * gets an HTTP/HTTPS connection to a given URL, writes the request to the
-	 * connection, reads the response and returns
-	 * 
-	 * @param url              - URL to connect to
-	 * @param requestType      - get/post type
-	 * @param requestXml       - xml msg to be published to EDI
-	 * @param djId             -set valid djId in req header
-	 * @param expectedresponse - assert actual with expected
-	 * @return - boolean value
-	 * @throws Exception
-	 */
 
 	public static AllscriptsMessageEnvelope processAS_CCD(String url, String requestType, String requestXml,
 			String expectedResponse) throws Exception {
@@ -1958,12 +1641,6 @@ public class EhcoreAPIUtil extends IHGUtil {
 		return EhcoreAPIUtil.unmarshallAllScriptsCCDImportResponse(xmlResponse);
 	}
 
-	/**
-	 * Get Mongo DB Response using API
-	 * 
-	 * @param transStatus
-	 * @return
-	 */
 	public static void verifyMongoDBResponseUsingAPI(String node, String obj_ref_id, String expected) {
 
 		String url = null;
@@ -2030,11 +1707,6 @@ public class EhcoreAPIUtil extends IHGUtil {
 	/**
 	 * Get the actual CDM List using message_guid from mongoDB.It runs in a loop and
 	 * polls every 10 seconds to check on the status, until it times out.
-	 * 
-	 * @param msg_guid -expected message guid
-	 * @param nodePath - Actual node path to get the node name and node value.
-	 * @param nodeName - node name
-	 * @throws Exception
 	 */
 	public static SortedMap<String, String> getActualCDMList(String msg_guid, String nodePath, String nodeName,
 			String type) throws Exception {
@@ -2164,8 +1836,6 @@ public class EhcoreAPIUtil extends IHGUtil {
 	/**
 	 * This Method is used to send the valid Export Message(CCD/Questionnaire) to
 	 * EDI's rest interface
-	 * 
-	 * @throws Exception
 	 */
 	public static ProcessingResponse sendCCDExportMessage(String value, String type) throws Exception {
 
@@ -2251,7 +1921,6 @@ public class EhcoreAPIUtil extends IHGUtil {
 	 * Get the URL (the common part of it for all messages) from the properties
 	 * defined in config file
 	 * 
-	 * @return String that represents the URL
 	 */
 	private static String getURL() {
 		return EhcoreAPIConstants.PROTOCOL + "://" + EhcoreAPIConstants.HOST + ":" + EhcoreAPIConstants.PORT
@@ -2307,8 +1976,6 @@ public class EhcoreAPIUtil extends IHGUtil {
 	/**
 	 * This Method is used to send the invalidCCDMessage to check OUTBOUND flow(with
 	 * null UPN,null MsgId)
-	 * 
-	 * @throws Exception
 	 */
 	public static void sendInvalidCCDMessage(String UPN, String msgId, String type) throws Exception {
 
@@ -2336,8 +2003,6 @@ public class EhcoreAPIUtil extends IHGUtil {
 
 	/**
 	 * Use this method to send the updated version of CCDEXchange.
-	 * 
-	 * @throws Exception
 	 */
 	public static ProcessingResponse sendUpdatedMessage(String djId, String UPN, String type) throws Exception {
 
