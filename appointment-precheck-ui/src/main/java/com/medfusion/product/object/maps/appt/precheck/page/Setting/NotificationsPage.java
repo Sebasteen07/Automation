@@ -35,7 +35,7 @@ public class NotificationsPage extends BasePageObject {
 	@FindBy(how = How.XPATH, using = "//*[@class='mf-body-header mf-appointments-header']/h1[text()='Notifications']")
 	private WebElement notificationTitle;
 
-	@FindBy(how = How.CSS, using = "div.notification-features-checkbox > div:nth-child(1) > input")
+	@FindBy(how = How.XPATH, using = "(//*[@class='features-checkbox'])[1]")
 	private WebElement broadcastMessagingCheckbox;
 
 	@FindBy(how = How.XPATH, using = "//*[@id='off']")
