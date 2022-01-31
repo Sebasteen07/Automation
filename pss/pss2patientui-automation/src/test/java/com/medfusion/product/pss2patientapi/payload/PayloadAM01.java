@@ -63,9 +63,9 @@ public class PayloadAM01 {
 		return turnOFFShowProvider;
 	}
 	
-	public String reserveForSameDay(String reserveValue,boolean acceptValue,int timeMark) {
+	public String reserveForSameDay(String reserveValue,boolean acceptValue,int timeMark,int confirmId) {
 		String reserveForSameDay = "{\r\n"
-				+ "    \"id\": 4054,\r\n"
+				+ "    \"id\": "+confirmId+",\r\n"
 				+ "    \"appointmentStacking\": false,\r\n"
 				+ "    \"slotCount\": 1,\r\n"
 				+ "    \"allowSameDayAppts\": "+acceptValue+",\r\n"
@@ -89,10 +89,10 @@ public class PayloadAM01 {
 		return reserveForSameDay;
 	}
 	
-	public String hideSlots(int leadValue)
+	public String hideSlots(int leadValue,int configId)
 	{
 		String hideSlots="{\r\n"
-				+ "  \"id\": 4054,\r\n"
+				+ "  \"id\": "+configId+",\r\n"
 				+ "  \"appointmentStacking\": true,\r\n"
 				+ "  \"slotCount\": 1,\r\n"
 				+ "  \"allowSameDayAppts\": true,\r\n"
@@ -625,10 +625,10 @@ public class PayloadAM01 {
 	}
 	
 	
-	public String mergeSlotPyaload(int slotCount,int slotSize)
+	public String mergeSlotPyaload(int slotCount,int slotSize,int configId)
 	{
 		String mergeSlotPyaload="{\r\n"
-				+ "  \"id\": 4054,\r\n"
+				+ "  \"id\": "+configId+",\r\n"
 				+ "  \"appointmentStacking\": false,\r\n"
 				+ "  \"slotCount\": "+slotCount+",\r\n"
 				+ "  \"allowSameDayAppts\": true,\r\n"
@@ -653,10 +653,10 @@ public class PayloadAM01 {
 		
 	}
 	
-	public String excludeSlotPyaload()
+	public String excludeSlotPyaload(int configId)
 	{
 		String excludeSlotPyaload="{\r\n"
-				+ "  \"id\": 4054,\r\n"
+				+ "  \"id\": "+configId+",\r\n"
 				+ "  \"appointmentStacking\": false,\r\n"
 				+ "  \"slotCount\": 1,\r\n"
 				+ "  \"allowSameDayAppts\": true,\r\n"
@@ -692,10 +692,10 @@ public class PayloadAM01 {
 		
 	}
 	
-	public String resetExcludeSlotPyaload()
+	public String resetExcludeSlotPyaload(int configId)
 	{
 		String resetExcludeSlotPyaload="{\r\n"
-				+ "  \"id\": 4054,\r\n"
+				+ "  \"id\": "+configId+",\r\n"
 				+ "  \"appointmentStacking\": false,\r\n"
 				+ "  \"slotCount\": 1,\r\n"
 				+ "  \"allowSameDayAppts\": true,\r\n"
@@ -720,10 +720,10 @@ public class PayloadAM01 {
 		
 	}
 	
-	public String lastQEnableshowProviderOFF(boolean lastValue,boolean lastQueRequired)
+	public String lastQEnableshowProviderOFF(boolean lastValue,boolean lastQueRequired,int configId)
 	{
 		String lastQEnable="{\r\n"
-				+ "  \"id\": 4054,\r\n"
+				+ "  \"id\": "+configId+",\r\n"
 				+ "  \"appointmentStacking\": false,\r\n"
 				+ "  \"slotCount\": 1,\r\n"
 				+ "  \"allowSameDayAppts\": true,\r\n"
@@ -748,11 +748,11 @@ public class PayloadAM01 {
 		
 	}
 	
-	public String bookAppTypePayload(String bookId,String apptId,boolean lastQueRequired)
+	public String bookAppTypePayload(String bookId,String apptId,boolean lastQueRequired,int configId)
 	{
 		String lastQEnable="{\r\n"
 				+ "  \"isageRule\": false,\r\n"
-				+ "  \"id\": 211153,\r\n"
+				+ "  \"id\": "+configId+",\r\n"
 				+ "  \"description\": null,\r\n"
 				+ "  \"book\": {\r\n"
 				+ "    \"id\": "+bookId+",\r\n"
@@ -849,7 +849,7 @@ public class PayloadAM01 {
 		
 	}
 	
-	public String bookPayload(String bookId,String bookName,String extId,boolean lastQueEnable)
+	public String bookPayload(String bookId,String bookName,String extId,boolean lastQueEnable,String catId,String appExtId)
 	{
 		String bookPayload="[\r\n"
 				+ "  {\r\n"
@@ -924,9 +924,9 @@ public class PayloadAM01 {
 				+ "        \"message\": {},\r\n"
 				+ "        \"question\": {},\r\n"
 				+ "        \"customMessages\": {},\r\n"
-				+ "        \"categoryId\": \"362C3DF3-A4D9-490A-AFC8-3BD6017BD025\",\r\n"
+				+ "        \"categoryId\": \""+catId+"\",\r\n"
 				+ "        \"categoryName\": \"Aapt Category1\",\r\n"
-				+ "        \"extAppointmentTypeId\": \"E0F61D51-3AFB-412E-AA3C-18786D23821C\",\r\n"
+				+ "        \"extAppointmentTypeId\": \""+appExtId+"\",\r\n"
 				+ "        \"preventRescheduleOnCancel\": 0,\r\n"
 				+ "        \"preventScheduling\": 0\r\n"
 				+ "      },\r\n"
@@ -1087,10 +1087,10 @@ public class PayloadAM01 {
 	}
 	
 	
-	public String preventBackToBackPyaload(boolean backToBack )
+	public String preventBackToBackPyaload(boolean backToBack,int confirmId )
 	{
 		String preventBackToBackPyaload="{\r\n"
-				+ "  \"id\": 4054,\r\n"
+				+ "  \"id\": "+confirmId+",\r\n"
 				+ "  \"appointmentStacking\": false,\r\n"
 				+ "  \"slotCount\": 1,\r\n"
 				+ "  \"allowSameDayAppts\": true,\r\n"
@@ -1114,7 +1114,7 @@ public class PayloadAM01 {
 		return preventBackToBackPyaload;
 	}
 	
-	public String preventSchedulePyaload(int appId,int preventSchedulingDays,String name,String dispName,String extId)
+	public String preventSchedulePyaload(int appId,int preventSchedulingDays,String name,String dispName,String extId,String catId)
 	{
 		String preventSchedulePyaload="[\r\n"
 				+ "  {\r\n"
@@ -1139,7 +1139,7 @@ public class PayloadAM01 {
 				+ "      \"ES\": \"This is confirmation message\"\r\n"
 				+ "    },\r\n"
 				+ "    \"sortOrder\": 0,\r\n"
-				+ "    \"categoryId\": \"24A7DC4F-4DB6-427C-9FA5-EB76FA2142D0\",\r\n"
+				+ "    \"categoryId\": \""+catId+"\",\r\n"
 				+ "    \"categoryName\": \"Insomnia\",\r\n"
 				+ "    \"extAppointmentTypeId\": \""+extId+"\",\r\n"
 				+ "    \"preventRescheduleOnCancel\": 0,\r\n"
@@ -1225,10 +1225,10 @@ public class PayloadAM01 {
 		return lockoutPayload;
 	}
 	
-	public String overBookingPayload(boolean stackingValue)
+	public String overBookingPayload(boolean stackingValue,int confirmId)
 	{
 		String overBookingPayload="{\r\n"
-				+ "  \"id\": 4054,\r\n"
+				+ "  \"id\": "+confirmId+",\r\n"
 				+ "  \"appointmentStacking\": "+stackingValue+",\r\n"
 				+ "  \"slotCount\": 1,\r\n"
 				+ "  \"allowSameDayAppts\": true,\r\n"
@@ -1304,11 +1304,11 @@ public class PayloadAM01 {
 		return providerImages;
 	}
 	
-	public String ageRuleOnBookAppointmentType(int bookId,int apptId,String firstValue,String secondValue )
+	public String ageRuleOnBookAppointmentType(int bookId,int apptId,String firstValue,String secondValue,int bookConfigId)
 	{
 		String ageRuleBookAppType="{\r\n"
 				+ "  \"isageRule\": true,\r\n"
-				+ "  \"id\": 211153,\r\n"
+				+ "  \"id\": "+bookConfigId+",\r\n"
 				+ "  \"description\": null,\r\n"
 				+ "  \"book\": {\r\n"
 				+ "    \"id\": "+bookId+",\r\n"
@@ -1408,10 +1408,10 @@ public class PayloadAM01 {
 	{
 		String ageRuleBookAppType="{\r\n"
 				+ "  \"isageRule\": false,\r\n"
-				+ "  \"id\": 211153,\r\n"
+				+ "  \"id\": 212088,\r\n"
 				+ "  \"description\": null,\r\n"
 				+ "  \"book\": {\r\n"
-				+ "    \"id\": "+bookId+",\r\n"
+				+ "    \"id\": 4310,\r\n"
 				+ "    \"name\": null,\r\n"
 				+ "    \"displayName\": null,\r\n"
 				+ "    \"emailAddress\": null,\r\n"
@@ -1437,7 +1437,7 @@ public class PayloadAM01 {
 				+ "    \"links\": null\r\n"
 				+ "  },\r\n"
 				+ "  \"appointmentType\": {\r\n"
-				+ "    \"id\": "+apptId+",\r\n"
+				+ "    \"id\": 209179,\r\n"
 				+ "    \"name\": null,\r\n"
 				+ "    \"displayName\": null,\r\n"
 				+ "    \"description\": null,\r\n"
@@ -1509,76 +1509,81 @@ public class PayloadAM01 {
 		
 		String createDecisionTree="[\r\n"
 				+ "  {\r\n"
-				+ "    \"id\": 210173,\r\n"
-				+ "    \"name\": \"ageRuleCat\",\r\n"
+				+ "    \"id\": 210200,\r\n"
+				+ "    \"name\": \"NewCat\",\r\n"
 				+ "    \"type\": \"CG_APPOINTMENT_TYPE\",\r\n"
 				+ "    \"nodes\": [\r\n"
 				+ "      {\r\n"
-				+ "        \"guid\": 210173,\r\n"
+				+ "        \"guid\": 210200,\r\n"
 				+ "        \"type\": \"CATEGORY\",\r\n"
-				+ "        \"displayName\": \"ageRuleCat\",\r\n"
+				+ "        \"displayName\": \"NewCat\",\r\n"
 				+ "        \"displayNames\": {\r\n"
-				+ "          \"EN\": \"ageRuleCat\"\r\n"
+				+ "          \"EN\": \"NewCat\",\r\n"
+				+ "          \"ES\": \"NewCat\"\r\n"
 				+ "        },\r\n"
 				+ "        \"entity\": null,\r\n"
 				+ "        \"children\": [\r\n"
-				+ "          \"8db60f1a-4545-408c-8984-4ca9c3c444d3\"\r\n"
+				+ "          \"747ff512-133a-4c8e-9dfc-c59a85bde07a\"\r\n"
 				+ "        ]\r\n"
 				+ "      },\r\n"
 				+ "      {\r\n"
-				+ "        \"guid\": \"8db60f1a-4545-408c-8984-4ca9c3c444d3\",\r\n"
+				+ "        \"guid\": \"747ff512-133a-4c8e-9dfc-c59a85bde07a\",\r\n"
 				+ "        \"type\": \"QUESTION\",\r\n"
 				+ "        \"displayName\": \"[QUESTION0]\",\r\n"
 				+ "        \"displayNames\": {\r\n"
-				+ "          \"EN\": \"Tester\"\r\n"
+				+ "          \"EN\": \"Tester\",\r\n"
+				+ "          \"ES\": \"[QUESTION0]\"\r\n"
 				+ "        },\r\n"
-				+ "        \"parentId\": 210173,\r\n"
+				+ "        \"parentId\": 210200,\r\n"
 				+ "        \"entity\": null,\r\n"
 				+ "        \"children\": [\r\n"
-				+ "          \"65381216-77fe-44fb-8524-e8665b7fb7f7\",\r\n"
-				+ "          \"80c1c04d-ab11-4f7b-9bc6-7b0e7a19fe80\"\r\n"
+				+ "          \"1d5411ce-68a9-4aaa-8db1-c1d22870f489\",\r\n"
+				+ "          \"5e75ce3c-e630-4c1f-8486-c65219921c3e\"\r\n"
 				+ "        ]\r\n"
 				+ "      },\r\n"
 				+ "      {\r\n"
-				+ "        \"guid\": \"65381216-77fe-44fb-8524-e8665b7fb7f7\",\r\n"
+				+ "        \"guid\": \"1d5411ce-68a9-4aaa-8db1-c1d22870f489\",\r\n"
 				+ "        \"type\": \"ANSWER\",\r\n"
 				+ "        \"displayName\": \"[ANSWER0]\",\r\n"
 				+ "        \"displayNames\": {\r\n"
-				+ "          \"EN\": \"Manual\"\r\n"
+				+ "          \"EN\": \"Selenium\",\r\n"
+				+ "          \"ES\": \"[ANSWER0]\"\r\n"
 				+ "        },\r\n"
-				+ "        \"parentId\": \"8db60f1a-4545-408c-8984-4ca9c3c444d3\",\r\n"
+				+ "        \"parentId\": \"747ff512-133a-4c8e-9dfc-c59a85bde07a\",\r\n"
 				+ "        \"entity\": {\r\n"
 				+ "          \"type\": \"appointment_type\",\r\n"
-				+ "          \"id\": 209164,\r\n"
+				+ "          \"id\": 209179,\r\n"
 				+ "          \"name\": \"Insomnia\",\r\n"
-				+ "          \"categoryId\": \"362C3DF3-A4D9-490A-AFC8-3BD6017BD025\",\r\n"
-				+ "          \"categoryName\": \"Aapt Category1\",\r\n"
+				+ "          \"categoryId\": \"73D35CC3-EACA-447C-B728-17BD077D3FD5\",\r\n"
+				+ "          \"categoryName\": \"Insomnia\",\r\n"
 				+ "          \"extAppointmentTypeId\": \"E0F61D51-3AFB-412E-AA3C-18786D23821C\"\r\n"
 				+ "        },\r\n"
 				+ "        \"children\": []\r\n"
 				+ "      },\r\n"
 				+ "      {\r\n"
-				+ "        \"guid\": \"80c1c04d-ab11-4f7b-9bc6-7b0e7a19fe80\",\r\n"
+				+ "        \"guid\": \"5e75ce3c-e630-4c1f-8486-c65219921c3e\",\r\n"
 				+ "        \"type\": \"ANSWER\",\r\n"
 				+ "        \"displayName\": \"[ANSWER1]\",\r\n"
 				+ "        \"displayNames\": {\r\n"
-				+ "          \"EN\": \"Automation\"\r\n"
+				+ "          \"EN\": \"Manual\",\r\n"
+				+ "          \"ES\": \"[ANSWER1]\"\r\n"
 				+ "        },\r\n"
-				+ "        \"parentId\": \"8db60f1a-4545-408c-8984-4ca9c3c444d3\",\r\n"
+				+ "        \"parentId\": \"747ff512-133a-4c8e-9dfc-c59a85bde07a\",\r\n"
 				+ "        \"entity\": {\r\n"
 				+ "          \"type\": \"appointment_type\",\r\n"
-				+ "          \"id\": 209164,\r\n"
+				+ "          \"id\": 209179,\r\n"
 				+ "          \"name\": \"Insomnia\",\r\n"
-				+ "          \"categoryId\": \"362C3DF3-A4D9-490A-AFC8-3BD6017BD025\",\r\n"
-				+ "          \"categoryName\": \"Aapt Category1\",\r\n"
+				+ "          \"categoryId\": \"73D35CC3-EACA-447C-B728-17BD077D3FD5\",\r\n"
+				+ "          \"categoryName\": \"Insomnia\",\r\n"
 				+ "          \"extAppointmentTypeId\": \"E0F61D51-3AFB-412E-AA3C-18786D23821C\"\r\n"
 				+ "        },\r\n"
 				+ "        \"children\": []\r\n"
 				+ "      }\r\n"
 				+ "    ],\r\n"
-				+ "    \"displayName\": \"ageRuleCat\",\r\n"
+				+ "    \"displayName\": \"NewCat\",\r\n"
 				+ "    \"displayNames\": {\r\n"
-				+ "      \"EN\": \"ageRuleCat\"\r\n"
+				+ "      \"EN\": \"NewCat\",\r\n"
+				+ "      \"ES\": \"NewCat\"\r\n"
 				+ "    },\r\n"
 				+ "    \"status\": \"PUBLISHED\"\r\n"
 				+ "  }\r\n"
@@ -1587,11 +1592,11 @@ public class PayloadAM01 {
 		
 	}
 	
-	public String bookAppointmentTypePatientType(int bookId,int apptId,String patientType )
+	public String bookAppointmentTypePatientType(int bookId,int apptId,String patientType,int configId)
 	{
 		String bookAppointmentTypePatientType="{\r\n"
 				+ "  \"isageRule\": false,\r\n"
-				+ "  \"id\": 211153,\r\n"
+				+ "  \"id\": "+configId+",\r\n"
 				+ "  \"description\": null,\r\n"
 				+ "  \"book\": {\r\n"
 				+ "    \"id\": "+bookId+",\r\n"
@@ -1740,6 +1745,327 @@ public class PayloadAM01 {
 				+ "  \"lastQuestRequired\": false\r\n"
 				+ "}";
 		return payload;
+	}
+	
+	public String ageRuleAppType(int apptId,String firstValue,String secondValue)
+	{
+		String payload="[\r\n"
+				+ "  {\r\n"
+				+ "    \"isageRule\": true,\r\n"
+				+ "    \"id\": "+apptId+",\r\n"
+				+ "    \"name\": \"Insomnia\",\r\n"
+				+ "    \"displayName\": \"Insomnia\",\r\n"
+				+ "    \"displayNames\": {\r\n"
+				+ "      \"EN\": \"Insomnia\",\r\n"
+				+ "      \"ES\": \"\"\r\n"
+				+ "    },\r\n"
+				+ "    \"message\": {\r\n"
+				+ "      \"EN\": null,\r\n"
+				+ "      \"ES\": null\r\n"
+				+ "    },\r\n"
+				+ "    \"question\": {\r\n"
+				+ "      \"EN\": null,\r\n"
+				+ "      \"ES\": null\r\n"
+				+ "    },\r\n"
+				+ "    \"customMessages\": {\r\n"
+				+ "      \"EN\": \"This is confirmation message\",\r\n"
+				+ "      \"ES\": \"This is confirmation message\"\r\n"
+				+ "    },\r\n"
+				+ "    \"sortOrder\": 0,\r\n"
+				+ "    \"categoryId\": \"24A7DC4F-4DB6-427C-9FA5-EB76FA2142D0\",\r\n"
+				+ "    \"categoryName\": \"Insomnia\",\r\n"
+				+ "    \"extAppointmentTypeId\": \"E0F61D51-3AFB-412E-AA3C-18786D23821C\",\r\n"
+				+ "    \"preventRescheduleOnCancel\": 0,\r\n"
+				+ "    \"preventScheduling\": 0,\r\n"
+				+ "    \"locations\": [\r\n"
+				+ "      {\r\n"
+				+ "        \"id\": \"205604\",\r\n"
+				+ "        \"name\": \"PSS WLA\",\r\n"
+				+ "        \"displayName\": \"pss wla\",\r\n"
+				+ "        \"address\": {\r\n"
+				+ "          \"id\": 205504,\r\n"
+				+ "          \"address1\": \"5501\",\r\n"
+				+ "          \"address2\": \"Dillard Dr\",\r\n"
+				+ "          \"city\": \"Cary\",\r\n"
+				+ "          \"state\": \"North Carolina\",\r\n"
+				+ "          \"zipCode\": \"27518\",\r\n"
+				+ "          \"latitude\": 35.7531299,\r\n"
+				+ "          \"longitude\": -78.73247119999999\r\n"
+				+ "        },\r\n"
+				+ "        \"timezone\": \"\",\r\n"
+				+ "        \"extLocationId\": \"283BB437-B0C6-4626-A7CC-57FD0D1D6574\",\r\n"
+				+ "        \"selected\": false,\r\n"
+				+ "        \"phoneNumber\": \"\",\r\n"
+				+ "        \"restrictToCareteam\": true,\r\n"
+				+ "        \"locationLinks\": {}\r\n"
+				+ "      }\r\n"
+				+ "    ],\r\n"
+				+ "    \"param\": {\r\n"
+				+ "      \"id\": 4054,\r\n"
+				+ "      \"appointmentStacking\": false,\r\n"
+				+ "      \"slotCount\": 1,\r\n"
+				+ "      \"allowSameDayAppts\": true,\r\n"
+				+ "      \"apptTimeMark\": 0,\r\n"
+				+ "      \"apptTypeAllocated\": true,\r\n"
+				+ "      \"isContiguous\": false,\r\n"
+				+ "      \"leadTime\": {\r\n"
+				+ "        \"days\": \"0\",\r\n"
+				+ "        \"hours\": \"0\",\r\n"
+				+ "        \"mins\": \"0\"\r\n"
+				+ "      },\r\n"
+				+ "      \"excludeSlots\": [],\r\n"
+				+ "      \"apptTypeReservedReason\": \"n\",\r\n"
+				+ "      \"acceptComment\": false,\r\n"
+				+ "      \"allowOnlineCancellation\": true,\r\n"
+				+ "      \"slotSize\": 5,\r\n"
+				+ "      \"schedulingDuration\": 0,\r\n"
+				+ "      \"pttype\": \"PT_ALL\",\r\n"
+				+ "      \"lastQuestRequired\": false\r\n"
+				+ "    },\r\n"
+				+ "    \"ageRule\": \"> "+firstValue+" And < "+secondValue+"\"\r\n"
+				+ "  }\r\n"
+				+ "]";
+		return payload;
+	}
+	
+	public String resetAgeRuleAppType()
+	{
+		String payload="[\r\n"
+				+ "  {\r\n"
+				+ "    \"isageRule\": false,\r\n"
+				+ "    \"id\": 4237,\r\n"
+				+ "    \"name\": \"Insomnia\",\r\n"
+				+ "    \"displayName\": \"Insomnia\",\r\n"
+				+ "    \"displayNames\": {\r\n"
+				+ "      \"EN\": \"Insomnia\",\r\n"
+				+ "      \"ES\": \"\"\r\n"
+				+ "    },\r\n"
+				+ "    \"message\": {\r\n"
+				+ "      \"EN\": null,\r\n"
+				+ "      \"ES\": null\r\n"
+				+ "    },\r\n"
+				+ "    \"question\": {\r\n"
+				+ "      \"EN\": null,\r\n"
+				+ "      \"ES\": null\r\n"
+				+ "    },\r\n"
+				+ "    \"customMessages\": {\r\n"
+				+ "      \"EN\": \"This is confirmation message\",\r\n"
+				+ "      \"ES\": \"This is confirmation message\"\r\n"
+				+ "    },\r\n"
+				+ "    \"sortOrder\": 0,\r\n"
+				+ "    \"categoryId\": \"24A7DC4F-4DB6-427C-9FA5-EB76FA2142D0\",\r\n"
+				+ "    \"categoryName\": \"Insomnia\",\r\n"
+				+ "    \"extAppointmentTypeId\": \"E0F61D51-3AFB-412E-AA3C-18786D23821C\",\r\n"
+				+ "    \"preventRescheduleOnCancel\": 0,\r\n"
+				+ "    \"preventScheduling\": 0,\r\n"
+				+ "    \"locations\": [\r\n"
+				+ "      {\r\n"
+				+ "        \"id\": \"205604\",\r\n"
+				+ "        \"name\": \"PSS WLA\",\r\n"
+				+ "        \"displayName\": \"pss wla\",\r\n"
+				+ "        \"address\": {\r\n"
+				+ "          \"id\": 205504,\r\n"
+				+ "          \"address1\": \"5501\",\r\n"
+				+ "          \"address2\": \"Dillard Dr\",\r\n"
+				+ "          \"city\": \"Cary\",\r\n"
+				+ "          \"state\": \"North Carolina\",\r\n"
+				+ "          \"zipCode\": \"27518\",\r\n"
+				+ "          \"latitude\": 35.7531299,\r\n"
+				+ "          \"longitude\": -78.73247119999999\r\n"
+				+ "        },\r\n"
+				+ "        \"timezone\": \"\",\r\n"
+				+ "        \"extLocationId\": \"283BB437-B0C6-4626-A7CC-57FD0D1D6574\",\r\n"
+				+ "        \"selected\": false,\r\n"
+				+ "        \"phoneNumber\": \"\",\r\n"
+				+ "        \"restrictToCareteam\": true,\r\n"
+				+ "        \"locationLinks\": {}\r\n"
+				+ "      }\r\n"
+				+ "    ],\r\n"
+				+ "    \"param\": {\r\n"
+				+ "      \"id\": 4054,\r\n"
+				+ "      \"appointmentStacking\": false,\r\n"
+				+ "      \"slotCount\": 1,\r\n"
+				+ "      \"allowSameDayAppts\": true,\r\n"
+				+ "      \"apptTimeMark\": 0,\r\n"
+				+ "      \"apptTypeAllocated\": true,\r\n"
+				+ "      \"isContiguous\": false,\r\n"
+				+ "      \"leadTime\": {\r\n"
+				+ "        \"days\": \"0\",\r\n"
+				+ "        \"hours\": \"0\",\r\n"
+				+ "        \"mins\": \"0\"\r\n"
+				+ "      },\r\n"
+				+ "      \"excludeSlots\": [],\r\n"
+				+ "      \"apptTypeReservedReason\": \"n\",\r\n"
+				+ "      \"acceptComment\": false,\r\n"
+				+ "      \"allowOnlineCancellation\": true,\r\n"
+				+ "      \"slotSize\": 5,\r\n"
+				+ "      \"schedulingDuration\": 0,\r\n"
+				+ "      \"pttype\": \"PT_ALL\",\r\n"
+				+ "      \"lastQuestRequired\": false\r\n"
+				+ "    },\r\n"
+				+ "    \"ageRule\": \"\"\r\n"
+				+ "  }\r\n"
+				+ "]";
+	    return payload;
+	}
+	
+	public String patientTypeShowProviderOFF(String patientType,int apptConfigId) {
+		String payload = "{\r\n"
+				+ "  \"id\": "+apptConfigId+",\r\n"
+				+ "  \"appointmentStacking\": false,\r\n"
+				+ "  \"slotCount\": 1,\r\n"
+				+ "  \"allowSameDayAppts\": true,\r\n"
+				+ "  \"apptTimeMark\": 0,\r\n"
+				+ "  \"apptTypeAllocated\": true,\r\n"
+				+ "  \"isContiguous\": false,\r\n"
+				+ "  \"leadTime\": {\r\n"
+				+ "    \"days\": \"0\",\r\n"
+				+ "    \"hours\": \"0\",\r\n"
+				+ "    \"mins\": \"0\"\r\n"
+				+ "  },\r\n"
+				+ "  \"excludeSlots\": [],\r\n"
+				+ "  \"apptTypeReservedReason\": \"n\",\r\n"
+				+ "  \"acceptComment\": false,\r\n"
+				+ "  \"allowOnlineCancellation\": true,\r\n"
+				+ "  \"slotSize\": 5,\r\n"
+				+ "  \"schedulingDuration\": 0,\r\n"
+				+ "  \"pttype\": \""+patientType+"\",\r\n"
+				+ "  \"lastQuestRequired\": false\r\n"
+				+ "}";
+		return payload;
+	}
+	
+	public String ageRuleAppTypeLevel(String fValue,String lValue,int apptId,String apptName,String catId) {
+		String payload = "[\r\n"
+				+ "  {\r\n"
+				+ "    \"isageRule\": true,\r\n"
+				+ "    \"id\": "+apptId+",\r\n"
+				+ "    \"name\": \"Insomnia\",\r\n"
+				+ "    \"displayName\": \""+apptName+"\",\r\n"
+				+ "    \"displayNames\": {\r\n"
+				+ "      \"EN\": \"Insomnia\",\r\n"
+				+ "      \"ES\": \"\"\r\n"
+				+ "    },\r\n"
+				+ "    \"message\": {\r\n"
+				+ "      \"EN\": null,\r\n"
+				+ "      \"ES\": null\r\n"
+				+ "    },\r\n"
+				+ "    \"question\": {\r\n"
+				+ "      \"EN\": null,\r\n"
+				+ "      \"ES\": null\r\n"
+				+ "    },\r\n"
+				+ "    \"customMessages\": {\r\n"
+				+ "      \"EN\": \"This is confirmation message\",\r\n"
+				+ "      \"ES\": \"This is confirmation message\"\r\n"
+				+ "    },\r\n"
+				+ "    \"sortOrder\": 0,\r\n"
+				+ "    \"categoryId\": \""+catId+"\",\r\n"
+				+ "    \"categoryName\": \"Insomnia\",\r\n"
+				+ "    \"extAppointmentTypeId\": \"E0F61D51-3AFB-412E-AA3C-18786D23821C\",\r\n"
+				+ "    \"preventRescheduleOnCancel\": 0,\r\n"
+				+ "    \"preventScheduling\": 0,\r\n"
+				+ "    \"locations\": [\r\n"
+				+ "      {\r\n"
+				+ "        \"id\": \"205604\",\r\n"
+				+ "        \"name\": \"PSS WLA\",\r\n"
+				+ "        \"displayName\": \"pss wla\",\r\n"
+				+ "        \"address\": {\r\n"
+				+ "          \"id\": 205504,\r\n"
+				+ "          \"address1\": \"5501\",\r\n"
+				+ "          \"address2\": \"Dillard Dr\",\r\n"
+				+ "          \"city\": \"Cary\",\r\n"
+				+ "          \"state\": \"North Carolina\",\r\n"
+				+ "          \"zipCode\": \"27518\",\r\n"
+				+ "          \"latitude\": 35.7531299,\r\n"
+				+ "          \"longitude\": -78.73247119999999\r\n"
+				+ "        },\r\n"
+				+ "        \"timezone\": \"\",\r\n"
+				+ "        \"extLocationId\": \"283BB437-B0C6-4626-A7CC-57FD0D1D6574\",\r\n"
+				+ "        \"selected\": false,\r\n"
+				+ "        \"phoneNumber\": \"\",\r\n"
+				+ "        \"restrictToCareteam\": true,\r\n"
+				+ "        \"locationLinks\": {}\r\n"
+				+ "      }\r\n"
+				+ "    ],\r\n"
+				+ "    \"param\": {\r\n"
+				+ "      \"id\": 4054,\r\n"
+				+ "      \"appointmentStacking\": false,\r\n"
+				+ "      \"slotCount\": 1,\r\n"
+				+ "      \"allowSameDayAppts\": true,\r\n"
+				+ "      \"apptTimeMark\": 0,\r\n"
+				+ "      \"apptTypeAllocated\": true,\r\n"
+				+ "      \"isContiguous\": false,\r\n"
+				+ "      \"leadTime\": {\r\n"
+				+ "        \"days\": \"0\",\r\n"
+				+ "        \"hours\": \"0\",\r\n"
+				+ "        \"mins\": \"0\"\r\n"
+				+ "      },\r\n"
+				+ "      \"excludeSlots\": [],\r\n"
+				+ "      \"apptTypeReservedReason\": \"n\",\r\n"
+				+ "      \"acceptComment\": false,\r\n"
+				+ "      \"allowOnlineCancellation\": true,\r\n"
+				+ "      \"slotSize\": 5,\r\n"
+				+ "      \"schedulingDuration\": 0,\r\n"
+				+ "      \"pttype\": \"PT_ALL\",\r\n"
+				+ "      \"lastQuestRequired\": false\r\n"
+				+ "    },\r\n"
+				+ "    \"ageRule\": \"> "+fValue+" And < "+lValue+"\"\r\n"
+				+ "  }\r\n"
+				+ "]";
+		return payload;
+	}
+	
+	public String careTeamSettingPyaload(int a,int b)
+	{
+		String payload="[\r\n"
+				+ "  {\r\n"
+				+ "    \"group\": \"MF_SERVICES\",\r\n"
+				+ "    \"key\": \"ShowProviderImages\",\r\n"
+				+ "    \"value\": false\r\n"
+				+ "  },\r\n"
+				+ "  {\r\n"
+				+ "    \"group\": \"PROVIDER\",\r\n"
+				+ "    \"key\": \"PrimaryCareProvider\",\r\n"
+				+ "    \"value\": true\r\n"
+				+ "  },\r\n"
+				+ "  {\r\n"
+				+ "    \"group\": \"APPOINTMENT\",\r\n"
+				+ "    \"key\": \"displayLastSeenProvider\",\r\n"
+				+ "    \"value\": true\r\n"
+				+ "  },\r\n"
+				+ "  {\r\n"
+				+ "    \"group\": \"APPOINTMENT\",\r\n"
+				+ "    \"key\": \"lastSeenProviderMonths\",\r\n"
+				+ "    \"value\": \"5\"\r\n"
+				+ "  },\r\n"
+				+ "  {\r\n"
+				+ "    \"group\": \"PROVIDER\",\r\n"
+				+ "    \"key\": \"forceCareTeam\",\r\n"
+				+ "    \"value\": true\r\n"
+				+ "  },\r\n"
+				+ "  {\r\n"
+				+ "    \"group\": \"PROVIDER\",\r\n"
+				+ "    \"key\": \"forceCareTeamDuration\",\r\n"
+				+ "    \"value\": "+a+"\r\n"
+				+ "  },\r\n"
+				+ "  {\r\n"
+				+ "    \"group\": \"PROVIDER\",\r\n"
+				+ "    \"key\": \"pcpAvailabilityDuration\",\r\n"
+				+ "    \"value\": "+b+"\r\n"
+				+ "  },\r\n"
+				+ "  {\r\n"
+				+ "    \"group\": \"CARE_TEAM\",\r\n"
+				+ "    \"key\": \"rcp\",\r\n"
+				+ "    \"value\": \"false\"\r\n"
+				+ "  },\r\n"
+				+ "  {\r\n"
+				+ "    \"group\": \"CARE_TEAM\",\r\n"
+				+ "    \"key\": \"pcp\",\r\n"
+				+ "    \"value\": \"true\"\r\n"
+				+ "  }\r\n"
+				+ "]";
+		return payload;
+		
 	}
 }
 
