@@ -5763,10 +5763,8 @@ public class PSS2PatientPortalAcceptanceTests extends BaseTestNGWebDriver {
 			response = postAPIRequestAM.deleteRuleById(practiceId, Integer.toString(ruleId));
 			aPIVerification.responseCodeValidation(response, 200);
 		}
-		
 	
-		payloadAM02= new PayloadAM02();
-		
+		payloadAM02= new PayloadAM02();		
 		response = postAPIRequestAM.resourceConfigSavePost(practiceId,
 				payloadAM02.turnOFFShowProvider(true));
 		aPIVerification.responseCodeValidation(response, 200);
@@ -6765,9 +6763,7 @@ public class PSS2PatientPortalAcceptanceTests extends BaseTestNGWebDriver {
 			aPIVerification.responseCodeValidation(response, 200);
 		}
 		
-	
 		payloadAM02= new PayloadAM02();
-
 		response = postAPIRequestAM.resourceConfigRulePost(practiceId, payloadAM.rulePayload("TL", "T,L"));
 		aPIVerification.responseCodeValidation(response, 200);
 
