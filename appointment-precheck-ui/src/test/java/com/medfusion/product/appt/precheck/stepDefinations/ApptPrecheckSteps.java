@@ -3163,5 +3163,152 @@ public class ApptPrecheckSteps extends BaseTest {
 		apptPage.selectPatient(Appointment.patientId, Appointment.patientId);
 		assertTrue(apptPage.visibilityPatient(Appointment.patientId));
 	}
+	
+	@When("I schedule {int} appointments and select patients")
+	public void i_schedule_appointments_and_select_patients(int  appt) throws Exception {
+		for (int i = 0; i <appt; i++) {
+			log("Schedule multiple Appointments");
+			Appointment.patientId = commonMethod.generatRandomNum();
+			Appointment.apptId = commonMethod.generatRandomNum();
+			long currentTimestamp = System.currentTimeMillis();
+			long plus20Minutes = currentTimestamp + TimeUnit.MINUTES.toMillis(10);
+			log("schedule more than 10 an appointments ");
+			Response resonse = apptSched.aptPutAppointment(propertyData.getProperty("baseurl.mf.appointment.scheduler"),
+					propertyData.getProperty("mf.apt.scheduler.practice.id"),
+					payload.putAppointmentPayload(plus20Minutes, propertyData.getProperty("mf.apt.scheduler.phone"),
+							propertyData.getProperty("mf.apt.scheduler.email")),
+					headerConfig.HeaderwithToken(accessToken.getaccessTokenPost()), Appointment.patientId,
+					Appointment.apptId);
+			assertEquals(resonse.statusCode(), 200);
+			apptPage.clickOnRefreshTab();
+			apptPage.selectPatients(Appointment.patientId, Appointment.apptId);
+		}
+	}
+
+	@When("I select broadcast message button from action dropdown")
+	public void i_select_broadcast_message_button_from_action_dropdown() throws Exception {
+		scrollAndWait(0, -2000, 5000);
+		log("Click on Actions tab and select broadcast message");
+		apptPage.performAction();
+	}
+	
+	@Then("verify broadcast message UI template visibility and when broadcast message entered in english and spanish footer note character count get decremented")
+	public void verify_broadcast_message_ui_template_visibility_and_when_broadcast_message_entered_in_english_and_spanish_footer_note_character_count_get_decremented() throws NullPointerException, Exception {
+		assertEquals(apptPage.getBroadcastMessagePopupText(),"Broadcast Message","Broadcast Message text was not match");
+		assertEquals(apptPage.getBroadcastMessagePopupInstr(),"Use the space below to write a message to be sent to the [5] patients selected based on these filters.","Broadcast Message instruction was not match");
+		assertEquals(apptPage.getBroadcastMessagePopupStartTime(),"Start Time: "+apptPage.currentDate()+" 12:00 AM","Start time was not match");
+		assertEquals(apptPage.getBroadcastMessagePopupEndTime(),"End Time: "+apptPage.futureDate(13)+" 11:59 PM","Endtart time was not match");
+		assertEquals(apptPage.getBroadcastMessagePopupProvider(),"Provider: All","All Provider was not match ");
+		assertEquals(apptPage.getBroadcastMessagePopupLoaction(),"Location: All","All Provider was not match");
+		assertEquals(apptPage.getBroadcastMsgPopupEnglishLabel(),"Broadcast Message (English)","Broadcast Message English label was not match");
+		assertEquals(apptPage.getBroadcastMsgPopupSpanishLabel(),"Broadcast Message (Spanish)","Broadcast Message Spanish label was not match");
+		assertEquals(apptPage.getBroadcastMsgPopupConfirmThisMsgLabel(),"Confirm this message","Confirm this message label was not match");
+		assertFalse(apptPage.checkConfirmThisMsgCheckbox());
+		assertEquals(apptPage.getBroadcastMsgPopupCloseButton(),"Close","Close Button text was not match");
+		apptPage.hoverOnCloseButton();
+		log("After hover check the visibility of close");
+		assertTrue(apptPage.closeButtonFromBroadcastMsgPopup());
+		assertEquals(apptPage.getBroadcastMsgPopupSendButton(),"Send Message (5)","Send Message text was not match");
+		assertFalse(apptPage.sendButtonFromBroadcastMsgPopup());
+		assertTrue(apptPage.visibilityOfBroadcastMsgCrossButton());
+		assertEquals(apptPage.getBroadcastMsgPopupEnIncrDecrChar(),"450 characters remaining.","450 characters remaining. text for english text box was not match");
+		assertEquals(apptPage.getBroadcastMsgPopupEsIncrDecrChar(),"450 characters remaining.","450 characters remaining. text for sapnish text box was not match");
+		log("Enter message in English and Spanish");
+		apptPage.EnterBroadcastMessageEnEs(propertyData.getProperty("broadcast.message.en"),
+				propertyData.getProperty("broadcast.message.es"));
+		assertNotEquals(apptPage.getBroadcastMsgPopupEnIncrDecrChar(),"450 characters remaining.");
+		assertNotEquals(apptPage.getBroadcastMsgPopupEsIncrDecrChar(),"450 characters remaining.");
+		apptPage.clickOnSendForBroadcastMsg();
+	}
+	
+	@When("I schedule {int} appointments")
+	public void i_schedule_appointments(int appt) throws NullPointerException, IOException, InterruptedException {
+			for (int i = 0; i <appt; i++) {
+				log("Schedule multiple new Appointments");
+				Appointment.patientId = commonMethod.generatRandomNum();
+				Appointment.apptId = commonMethod.generatRandomNum();
+				long currentTimestamp = System.currentTimeMillis();
+				long plus20Minutes = currentTimestamp + TimeUnit.MINUTES.toMillis(10);
+				log("schedule more than 10 an appointments ");
+				Response resonse = apptSched.aptPutAppointment(propertyData.getProperty("baseurl.mf.appointment.scheduler"),
+						propertyData.getProperty("mf.apt.scheduler.practice.id"),
+						payload.putAppointmentPayload(plus20Minutes, propertyData.getProperty("mf.apt.scheduler.phone"),
+								propertyData.getProperty("mf.apt.scheduler.email")),
+						headerConfig.HeaderwithToken(accessToken.getaccessTokenPost()), Appointment.patientId,
+						Appointment.apptId);
+				assertEquals(resonse.statusCode(), 200);
+			}
+			apptPage.clickOnRefreshTab();
+	}
+	
+	@When("I select all patients")
+	public void i_select_all_patients() throws InterruptedException {
+		apptPage.selectAllCheckboxes();
+	}
+	
+	@When("verify after closing banner message all selected appointments are deselected")
+	public void verify_after_closing_banner_message_all_selected_appointments_are_deselected() {
+		assertTrue(apptPage.visibilitySelectedPatientBanner());
+		apptPage.closeSelectedPatientBanner();
+		assertFalse(apptPage.visibilitySelectedPatientBanner());
+	}
+	
+	@When("I schedule a new appointment")
+	public void i_schedule_a_new_appointment() throws NullPointerException, IOException {
+		Appointment.patientId = commonMethod.generatRandomNum();
+		Appointment.apptId = commonMethod.generatRandomNum();
+		long currentTimestamp = System.currentTimeMillis();
+		long plus20Minutes = currentTimestamp + TimeUnit.MINUTES.toMillis(10);
+		log("schedule more than 10 an appointments ");
+		Response resonse = apptSched.aptPutAppointment(propertyData.getProperty("baseurl.mf.appointment.scheduler"),
+				propertyData.getProperty("mf.apt.scheduler.practice.id"),
+				payload.putAppointmentPayload(plus20Minutes, propertyData.getProperty("mf.apt.scheduler.phone"),
+						propertyData.getProperty("mf.apt.scheduler.email")),
+				headerConfig.HeaderwithToken(accessToken.getaccessTokenPost()), Appointment.patientId,
+				Appointment.apptId);
+		assertEquals(resonse.statusCode(), 200);
+	}
+	
+	@When("I select patient from appointment dashboard and send broadcast message")
+	public void I_select_patient_from_appointment_dashboard_and_send_broadcast_message() throws Exception {
+		mainPage.clickOnAppointmentsTab();
+		apptPage.clickOnRefreshTab();
+		apptPage.selectPatient(Appointment.patientId, Appointment.apptId);
+		log("Click on Actions tab and select broadcast message");
+		apptPage.performAction();
+		log("Enter message in English and Spanish");
+		apptPage.sendBroadcastMessage(propertyData.getProperty("broadcast.message.en"),
+				propertyData.getProperty("broadcast.message.es"));
+	}
+	
+	@When("I click on selected patient broadcast message for email and get message")
+	public void I_click_on_selected_patient_broadcast_message_for_email() throws InterruptedException {
+		Thread.sleep(10000);
+		apptPage.clickOnBroadcastEmailForSelectedPatient(Appointment.patientId,	Appointment.apptId);
+		Appointment.broadcastMessage=apptPage.getBroadcastMessage();
+		log("Sent broadcast message: "+Appointment.broadcastMessage);
+	}
+	
+	@When("I reschedule an appointment")
+	public void I_reschedule_an_appointment() throws NullPointerException, IOException {
+		long currentTimestamp = System.currentTimeMillis();
+		long plus20Minutes = currentTimestamp + TimeUnit.MINUTES.toMillis(10);
+		log("schedule more than 10 an appointments ");
+		Response resonse = apptSched.aptPutAppointment(propertyData.getProperty("baseurl.mf.appointment.scheduler"),
+				propertyData.getProperty("mf.apt.scheduler.practice.id"),
+				payload.putAppointmentPayload(plus20Minutes, propertyData.getProperty("mf.apt.scheduler.phone"),
+						propertyData.getProperty("mf.apt.scheduler.email")),
+				headerConfig.HeaderwithToken(accessToken.getaccessTokenPost()), Appointment.patientId,
+				Appointment.apptId);
+		assertEquals(resonse.statusCode(), 200);
+		driver.navigate().refresh();
+	}
+	
+	@Then("verify old broadcast message sent should not be shown")
+	public void verify_old_broadcast_message_sent_should_not_be_shown() throws InterruptedException {
+		scrollAndWait(0, -1000, 5000);
+		apptPage.clickOnBroadcastEmailForSelectedPatient(Appointment.patientId,	Appointment.apptId);
+	    assertNotEquals(Appointment.broadcastMessage,apptPage.getBroadcastMessage(),"old broadcast message shown");
+	}
 		       
 }
