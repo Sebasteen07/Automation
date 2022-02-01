@@ -13,6 +13,7 @@ import com.intuit.ifs.csscat.core.utils.Log4jUtil;
 import com.intuit.ihg.product.integrationplatform.utils.PropertyFileLoader;
 import com.intuit.ihg.product.integrationplatform.utils.RestUtils;
 import com.medfusion.common.utils.Mailinator;
+import com.medfusion.common.utils.YopMail;
 import com.medfusion.product.object.maps.patientportal2.page.CreateAccount.PatientVerificationPage;
 import com.medfusion.product.object.maps.patientportal2.page.CreateAccount.SecurityDetailsPage;
 import com.medfusion.product.object.maps.patientportal2.page.HomePage.JalapenoHomePage;
@@ -26,7 +27,7 @@ import com.ng.product.integrationplatform.utils.DBUtils;
 public class PatientEnrollment {
 
 	static int arg_timeOut = 1800;
-	private static final String INVITE_EMAIL_SUBJECT_PATIENT = "You're invited to create a Patient Portal account at ";
+	private static final String INVITE_EMAIL_SUBJECT_PATIENT = "You're invited to create a Patient Portal account at";
 
 	public static void verifyProcessingStatusto4(String person_id) throws Throwable {
 		String processingStatus = DBUtils.executeQueryOnDB("NGCoreDB",
@@ -220,12 +221,12 @@ public class PatientEnrollment {
 		PatientEnrollment.verifyProcessingStatusto3WithoutValidatingGetProcessingStatusCall(propertyLoaderObj,
 				person_id, practice_id, integrationID);
 
-		Mailinator mail = new Mailinator();
+		YopMail mail = new YopMail(driver);
 		Thread.sleep(15000);
 		Log4jUtil.log(createPatient.getEmailAddress() + "   :    " + INVITE_EMAIL_SUBJECT_PATIENT + practiceName
 				+ "     :   " + JalapenoConstants.NEW_PATIENT_ACTIVATION_MESSAGE_LINK_TEXT);
 		Thread.sleep(60000);
-		Log4jUtil.log("Step Begins: Logging into Mailinator and getting Patient Activation url for first Practice");
+		Log4jUtil.log("Step Begins: Logging into YopMail and getting Patient Activation url for first Practice");
 		String activationUrl = mail.getLinkFromEmail(createPatient.getEmailAddress(),
 				INVITE_EMAIL_SUBJECT_PATIENT + practiceName, JalapenoConstants.NEW_PATIENT_ACTIVATION_MESSAGE_LINK_TEXT,
 				80);
