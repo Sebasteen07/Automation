@@ -1,4 +1,4 @@
-//  Copyright 2013-2021 NXGN Management, LLC. All Rights Reserved.
+//  Copyright 2013-2022 NXGN Management, LLC. All Rights Reserved.
 package com.medfusion.product.object.maps.forms.page.questionnaires.prereg_pages;
 
 import org.openqa.selenium.By;
@@ -36,11 +36,7 @@ public class FormSurgeriesHospitalizationsPage extends PortalFormPage {
 
 	@FindBy(xpath = "//input[@type='submit' and @value='Save & Continue']")
 	private WebElement saveAndContinuebtn;
-	/**
-	 * @Description:Set Surgery Name
-	 * @return
-	 * @throws Exception
-	 */
+
 	public void setSurgeryName(String type) throws Exception {
 		PortalUtil2.PrintMethodName();
 		PortalUtil2.setquestionnarieFrame(driver);
@@ -49,6 +45,7 @@ public class FormSurgeriesHospitalizationsPage extends PortalFormPage {
 		surgeryName.sendKeys(Keys.TAB);
 		autoComplete.click();
 	}
+
 	public void setSurgeryName_20(String SurgeryName) throws Exception {
 		PortalUtil2.PrintMethodName();
 		IHGUtil.waitForElement(driver, 20, surgeryName);
@@ -57,28 +54,21 @@ public class FormSurgeriesHospitalizationsPage extends PortalFormPage {
 		surgeryName.sendKeys(Keys.ARROW_UP);
 		autoComplete.click();
 	}
-	/**
-	 * @Description:Set Surgery TimeFrame
-	 * @return
-	 * @throws Exception
-	 */
+
 	public void setSurgeryTimeFrame(String type) throws Exception {
 		PortalUtil2.PrintMethodName();
 		PortalUtil2.setquestionnarieFrame(driver);
 		Select selector = new Select(surgeryTimeFrame);
 		selector.selectByVisibleText(type);
 	}
+
 	public void setSurgeryTimeFrame_20(String SurgeryNameFrame) throws Exception {
 		PortalUtil2.PrintMethodName();
 		IHGUtil.waitForElement(driver, 30, surgeryTimeFrame);
 		Select selector = new Select(surgeryTimeFrame);
 		selector.selectByVisibleText(SurgeryNameFrame);
 	}
-	/**
-	 * @Description:Set Hospitalization Reason
-	 * @return
-	 * @throws Exception
-	 */
+
 	public void setHospitalizationReason(String type) throws Exception {
 		PortalUtil2.PrintMethodName();
 		PortalUtil2.setquestionnarieFrame(driver);
@@ -87,6 +77,7 @@ public class FormSurgeriesHospitalizationsPage extends PortalFormPage {
 		hospitalizationReason.sendKeys(Keys.TAB);
 		autoComplete.click();
 	}
+
 	public void setHospitalizationReason_20(String HospitalizationReason) throws Exception {
 		PortalUtil2.PrintMethodName();
 		hospitalizationReason.clear();
@@ -94,25 +85,23 @@ public class FormSurgeriesHospitalizationsPage extends PortalFormPage {
 		hospitalizationReason.sendKeys(Keys.TAB);
 		autoComplete.click();
 	}
-	/**
-	 * @Description:Set Hospitalization TimeFrame
-	 * @return
-	 * @throws Exception
-	 */
+
 	public void setHospitalizationTimeFrame(String type) throws Exception {
 		PortalUtil2.PrintMethodName();
 		PortalUtil2.setquestionnarieFrame(driver);
 		Select selector = new Select(hospitalizationTimeFrame);
 		selector.selectByVisibleText(type);
 	}
+
 	public void setHospitalizationTimeFrame_20(String HospitalizationReasonframe) throws Exception {
 		PortalUtil2.PrintMethodName();
 		IHGUtil.waitForElement(driver, 10, hospitalizationTimeFrame);
 		Select selector = new Select(hospitalizationTimeFrame);
 		selector.selectByVisibleText(HospitalizationReasonframe);
 	}
-	public FormPreviousExamsPage fillSurgiesForm(String SurgeryName, String SurgeryTimeFrame, String HospitalizationReason, String HospitalizationTimeFrame)throws Exception
-	{
+
+	public FormPreviousExamsPage fillSurgiesForm(String SurgeryName, String SurgeryTimeFrame,
+			String HospitalizationReason, String HospitalizationTimeFrame) throws Exception {
 		setSurgeryName_20(SurgeryName);
 		setSurgeryTimeFrame_20(SurgeryTimeFrame);
 		setHospitalizationReason_20(HospitalizationReason);
@@ -120,9 +109,11 @@ public class FormSurgeriesHospitalizationsPage extends PortalFormPage {
 		saveAndContinuebtn.click();
 		return PageFactory.initElements(driver, FormPreviousExamsPage.class);
 	}
+
 	@Override
 	public boolean isPageLoaded() {
-		return driver.findElement(By.xpath(String.format(PAGE_LOADED_XPATH_TEMPLATE, "Surgeries & Hospitalizations"))).isDisplayed();
+		return driver.findElement(By.xpath(String.format(PAGE_LOADED_XPATH_TEMPLATE, "Surgeries & Hospitalizations")))
+				.isDisplayed();
 	}
 
 }

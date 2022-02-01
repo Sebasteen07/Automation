@@ -1,4 +1,4 @@
-//  Copyright 2013-2021 NXGN Management, LLC. All Rights Reserved.
+//  Copyright 2013-2022 NXGN Management, LLC. All Rights Reserved.
 package com.medfusion.product.object.maps.forms.page.questionnaires.prereg_pages;
 
 import org.openqa.selenium.By;
@@ -22,29 +22,27 @@ public class FormOtherProvidersPage extends PortalFormPage {
 	@FindBy(xpath = "//input[@type='submit' and @value='Save & Continue']")
 	private WebElement saveAndContinueButton;
 
-	@FindBy(id= "doctors_seen")
+	@FindBy(id = "doctors_seen")
 	private WebElement doctorsName;
-	/**
-	 * @Description:Set No Providers
-	 * @throws Exception
-	 */
+
 	public void setNoProviders() throws Exception {
 		PortalUtil2.PrintMethodName();
 		PortalUtil2.setquestionnarieFrame(driver);
 		noOtherProviders.click();
 
 	}
-	public FormMedicationsPage setProvidername(String input) throws Exception
-	{
+
+	public FormMedicationsPage setProvidername(String input) throws Exception {
 		doctorsName.clear();
 		doctorsName.sendKeys(input);
-		
+
 		return PageFactory.initElements(driver, FormMedicationsPage.class);
 	}
 
 	@Override
 	public boolean isPageLoaded() {
-		return driver.findElement(By.xpath(String.format(PAGE_LOADED_XPATH_TEMPLATE, "Other Doctors You've Seen"))).isDisplayed();
+		return driver.findElement(By.xpath(String.format(PAGE_LOADED_XPATH_TEMPLATE, "Other Doctors You've Seen")))
+				.isDisplayed();
 	}
 
 }

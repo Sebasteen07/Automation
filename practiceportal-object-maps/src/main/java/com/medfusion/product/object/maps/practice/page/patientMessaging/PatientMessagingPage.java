@@ -1,4 +1,4 @@
-//Copyright 2013-2020 NXGN Management, LLC. All Rights Reserved.
+//Copyright 2013-2022 NXGN Management, LLC. All Rights Reserved.
 package com.medfusion.product.object.maps.practice.page.patientMessaging;
 
 import static org.testng.Assert.assertTrue;
@@ -153,12 +153,8 @@ public class PatientMessagingPage extends BasePageObject {
 
 	public PatientMessagingPage(WebDriver driver) {
 		super(driver);
-		// TODO Auto-generated constructor stub
 	}
 
-	/**
-	 * @Description:Set Delivery Mode
-	 */
 	public void setDeliveryMode() {
 		IHGUtil.PrintMethodName();
 		try {
@@ -173,21 +169,13 @@ public class PatientMessagingPage extends BasePageObject {
 
 	}
 
-	/**
-	 * @Description:Set Message Type
-	 */
 	public void setMessageType() {
 		IHGUtil.PrintMethodName();
 		IHGUtil.setFrame(driver, PracticeConstants.FRAME_NAME);
 		Select sel = new Select(messageType);
 		sel.selectByVisibleText(PracticeConstants.MESSAGE_TYPE);
-
 	}
 
-	/**
-	 * @Description:Set Template
-	 * @throws Exception
-	 */
 	public void setTemplate() throws Exception {
 		IHGUtil.PrintMethodName();
 		IHGUtil.setFrame(driver, PracticeConstants.FRAME_NAME);
@@ -198,12 +186,8 @@ public class PatientMessagingPage extends BasePageObject {
 			sel.selectByVisibleText(PracticeConstants.TEMPLATE2);
 		}
 		Thread.sleep(5000);
-
 	}
 
-	/**
-	 * @Description:Set Subject
-	 */
 	public void setSubject() {
 		this.setSubject(PracticeConstants.SUBJECT);
 	}
@@ -226,16 +210,12 @@ public class PatientMessagingPage extends BasePageObject {
 		buildSubject.sendKeys(subjectText);
 	}
 
-	/**
-	 * @Description:Set Recipient Type
-	 */
 	public void setRecipientType() {
 		IHGUtil.PrintMethodName();
 		IHGUtil.setFrame(driver, PracticeConstants.FRAME_NAME);
 		IHGUtil.waitForElement(driver, 10, recipientType);
 		Select sel = new Select(recipientType);
 		sel.selectByVisibleText(PracticeConstants.RECIPIENT_TYPE);
-
 	}
 
 	public void setBuildRecipientType() {
@@ -246,9 +226,6 @@ public class PatientMessagingPage extends BasePageObject {
 		sel.selectByVisibleText(PracticeConstants.RECIPIENT_TYPE);
 	}
 
-	/**
-	 * @Description:Set First Name
-	 */
 	public void setFirstName() {
 		IHGUtil.PrintMethodName();
 		IHGUtil.setFrame(driver, PracticeConstants.FRAME_NAME);
@@ -256,9 +233,6 @@ public class PatientMessagingPage extends BasePageObject {
 		firstName.sendKeys(PracticeConstants.PATIENT_FIRST_NAME);
 	}
 
-	/**
-	 * @Description:Set First Name
-	 */
 	public void setFirstName(String fname) {
 		IHGUtil.PrintMethodName();
 		IHGUtil.setFrame(driver, PracticeConstants.FRAME_NAME);
@@ -273,9 +247,6 @@ public class PatientMessagingPage extends BasePageObject {
 		buildFirstName.sendKeys(fname);
 	}
 
-	/**
-	 * @Description:Set Last Name
-	 */
 	public void setLastName() {
 		IHGUtil.PrintMethodName();
 		IHGUtil.setFrame(driver, PracticeConstants.FRAME_NAME);
@@ -283,9 +254,6 @@ public class PatientMessagingPage extends BasePageObject {
 		lastName.sendKeys(PracticeConstants.PATIENT_LAST_NAME);
 	}
 
-	/**
-	 * @Description:Set Last Name
-	 */
 	public void setLastName(String lname) {
 		IHGUtil.PrintMethodName();
 		IHGUtil.setFrame(driver, PracticeConstants.FRAME_NAME);
@@ -300,9 +268,6 @@ public class PatientMessagingPage extends BasePageObject {
 		buildLastName.sendKeys(lname);
 	}
 
-	/**
-	 * @Description:Set Email
-	 */
 	public void setEmail() {
 		IHGUtil.PrintMethodName();
 		IHGUtil.setFrame(driver, PracticeConstants.FRAME_NAME);
@@ -324,11 +289,6 @@ public class PatientMessagingPage extends BasePageObject {
 		this.buildEmail.sendKeys(email);
 	}
 
-	/**
-	 * @Description:Set Quick Send Fields
-	 * @param filePath
-	 * @throws Exception
-	 */
 	public void setFieldsAndPublishMessage(String filePath) throws Exception {
 		IHGUtil.PrintMethodName();
 		Thread.sleep(5000);
@@ -355,7 +315,6 @@ public class PatientMessagingPage extends BasePageObject {
 		email.click();
 		publishMessage.click();
 		Thread.sleep(3000);
-
 	}
 
 	public void setFieldsAndPublishMessage(String firstName, String lastName, String templateName, String subjectText) {
@@ -364,14 +323,14 @@ public class PatientMessagingPage extends BasePageObject {
 
 	public ArrayList<String> setFieldsAndPublishMessage(PropertyFileLoader testData, String templateName,
 			String subjectText) {
-		return setFieldsAndPublishMessage(testData.getFirstName(), testData.getLastName(), testData.getEmail(),
-				templateName, subjectText);
+		return setFieldsAndPublishMessage(testData.getFirstName(), testData.getProperty("last.name.build"),
+				testData.getProperty("eamil.build.message"), templateName, subjectText);
 	}
 
 	public ArrayList<String> setFieldsAndPublishMessageforBuild(PropertyFileLoader testData, String templateName,
-			String subjectText) {
-		return setFieldsAndPublishBuildMessage(testData.getFirstName(), testData.getLastName(), testData.getEmail(),
-				templateName, subjectText);
+			String subjectText) throws NullPointerException, InterruptedException {
+		return setFieldsAndPublishBuildMessage(testData.getFirstName(), testData.getProperty("last.name.build"),
+				testData.getProperty("eamil.build.message"), templateName, subjectText);
 	}
 
 	public ArrayList<String> setFieldsAndPublishMessage(String firstName, String lastName, String email,
@@ -391,7 +350,7 @@ public class PatientMessagingPage extends BasePageObject {
 	}
 
 	public ArrayList<String> setFieldsAndPublishBuildMessage(String firstName, String lastName, String email,
-			String templateName, String subjectText) {
+			String templateName, String subjectText) throws InterruptedException {
 		IHGUtil.PrintMethodName();
 		setBuildMessageFields(templateName, subjectText);
 		setBuildRecipient(firstName, lastName, email);

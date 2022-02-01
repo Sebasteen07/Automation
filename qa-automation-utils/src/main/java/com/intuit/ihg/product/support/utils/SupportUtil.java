@@ -1,4 +1,4 @@
-//Copyright 2013-2021 NXGN Management, LLC. All Rights Reserved.
+//Copyright 2013-2022 NXGN Management, LLC. All Rights Reserved.
 package com.intuit.ihg.product.support.utils;
 
 import static org.testng.Assert.assertNotNull;
@@ -41,7 +41,7 @@ public class SupportUtil extends IHGUtil {
 
 	public static int timeout = 0;
 	public static String[] exeArg = null;
-	public static final int WAIT_INCR = 500; // 500 milliseconds
+	public static final int WAIT_INCR = 500; 
 
 	public SupportUtil(WebDriver driver) {
 		super(driver);
@@ -52,15 +52,9 @@ public class SupportUtil extends IHGUtil {
 		return driver;
 	}
 
-	/*
-	 * 
-	 */
 	public static void DeleteAllBrowsingDataIE(WebDriver driver) throws Exception {
 
 		if (TestConfig.getBrowserType() == BrowserType.iexplore) {
-
-			// driver.navigate().to("");
-
 			System.out.println("Browser is IE");
 
 			Runtime rt = Runtime.getRuntime();
@@ -91,21 +85,6 @@ public class SupportUtil extends IHGUtil {
 		else
 			System.out.println("Browser is NOT IE");
 	}
-
-
-	/**
-	 * 
-	 * ////////////////////////////////////// // REFERENCE: //
-	 * http://ihgportal.corp.intuit.net/engineering/Engineering%20Wiki/CCD%20Import%20-%20Test%20Procedure.aspx
-	 * 
-	 * ////////////////////////////////////////////////// // REST EASY
-	 * 
-	 * 
-	 * @param ccdType
-	 * @param allScriptAdapterURL
-	 * @param env
-	 * @throws Exception
-	 */
 
 	public void ccdImportFromAllScripts(CcdType ccdType, String allScriptAdapterURL, String env) throws Exception {
 
@@ -147,13 +126,6 @@ public class SupportUtil extends IHGUtil {
 
 	}
 
-	/**
-	 * @author bbinisha
-	 * @Description : To get the filepath.
-	 * @param directoryName
-	 * @return
-	 * @throws Exception
-	 */
 	public String getFilepath(String directoryName) throws Exception {
 
 		String filePath = "";
@@ -174,15 +146,7 @@ public class SupportUtil extends IHGUtil {
 		}
 		return filePath;
 	}
-
-
-	/**
-	 * @author bbinisha
-	 * @Description Copy the content of Resource in the Jar files from a source to the destination directory recursively
-	 * @param originUrl
-	 * @param destination
-	 * @return Returns true if all files are moved else returns false
-	 */
+	
 	public static boolean copyResourcesRecursively(final URL originUrl, final File destination) {
 		try {
 			final URLConnection urlConnection = originUrl.openConnection();
@@ -198,52 +162,10 @@ public class SupportUtil extends IHGUtil {
 	}
 
 
-	/**
-	 * @author bbinisha
-	 * @Description : Set the Arguments
-	 * @param args
-	 *//*
-		 * public void setExeArg(String[] args) { PracticeUtil.exeArg=null; PracticeUtil.exeArg=args; try {
-		 * timeout=Integer.parseInt(PracticeUtil.exeArg[PracticeUtil.exeArg.length-1]); } catch(NumberFormatException nfe) { timeout=15000; } }
-		 */
-	/**
-	 * @author bbinisha
-	 * @Description : Get the Arguments.
-	 * @return
-	 */
 	public String[] getExeArg() {
 		return exeArg;
 	}
 
-
-	/**
-	 * @description : Used to run the Autoit IT command in the command prompt.
-	 * @return void
-	 *//*
-		 * public void run() { // TODO Auto-generated method stub String command=""; for(int i=0;i<PracticeUtil.exeArg.length;i++) {
-		 * if(i<PracticeUtil.exeArg.length) { if(PracticeUtil.exeArg[i].contains(" ")) { PracticeUtil.exeArg[i]="\""+PracticeUtil.exeArg[i]+"\""; }
-		 * command+=PracticeUtil.exeArg[i]+" "; } else { if(PracticeUtil.exeArg[i].contains(" ")) { PracticeUtil.exeArg[i]="\""+PracticeUtil.exeArg[i]+"\""; }
-		 * command+=PracticeUtil.exeArg[i]; } } try { Thread.sleep(timeout); ReadFilePath path=new ReadFilePath();
-		 * 
-		 * Runtime.getRuntime().exec(path.getFilepath("AutoIT")+File.separator+command);
-		 * 
-		 * } catch (Exception e) {
-		 * 
-		 * e.printStackTrace(); }
-		 * 
-		 * }
-		 */
-
-	/**
-	 * Description: This method reads the test data from excel file and stores them in a HashMap with Column-Header->To List of Data
-	 * 
-	 * @author bbinisha
-	 * @param xlFilePath - Name of the excel file
-	 * @param sheetName - Sheet name in the excel file
-	 * @param tableName - The test case ID
-	 * @return HashMap with [column name->List of Data] mapping
-	 * @throws Exception
-	 */
 	public HashMap<String, List<String>> getTestData(String xlFilePath, String sheetName, String tableName) throws Exception {
 
 		HashMap<String, List<String>> hm = new HashMap<String, List<String>>();
@@ -273,16 +195,6 @@ public class SupportUtil extends IHGUtil {
 		return (hm);
 	}
 
-
-	/**
-	 * Description: This method return the test data in list format from the test data hashmap. Throws an exception if the column provided is not matching with
-	 * that in data excel
-	 * 
-	 * @param td
-	 * @param tableColumn
-	 * @return
-	 * @throws Exception
-	 */
 	public List<String> getTestDataList(HashMap<String, List<String>> td, String tableColumn) throws Exception {
 		List<String> tdList = null;
 		tdList = td.get(tableColumn);
@@ -294,25 +206,12 @@ public class SupportUtil extends IHGUtil {
 		}
 	}
 
-	/**
-	 * Description : Return all the data from 'PatientDetails' table.
-	 * 
-	 * @return
-	 * @throws Exception
-	 */
 	public HashMap<String, List<String>> getPatientsDetails() throws Exception {
 
 		return getTestData(TestConfig.getDataDrivenSpreadsheet(), "Support", "PatientDetails");
 
 	}
 
-	/**
-	 * Description : To get the list of data from a specific column data from 'PatientDetails' table.
-	 * 
-	 * @param tableColumn : Column name of PatientDetails table
-	 * @return
-	 * @throws Exception
-	 */
 	public List<String> getPatientData(String tableColumn) throws Exception {
 		List<String> tdList = null;
 		HashMap<String, List<String>> td = getPatientsDetails();
@@ -410,12 +309,7 @@ public class SupportUtil extends IHGUtil {
 		}
 		return null;
 	}
-
-	/**
-	 * 
-	 * @param xmlFilePath
-	 * @return
-	 */
+	
 	public static String fileToString(String xmlFilePath) {
 		String xmlInString = convertXMLFileToString(xmlFilePath);
 		return xmlInString;

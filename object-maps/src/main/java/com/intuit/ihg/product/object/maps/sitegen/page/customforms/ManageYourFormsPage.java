@@ -1,3 +1,4 @@
+//  Copyright 2013-2022 NXGN Management, LLC. All Rights Reserved.
 package com.intuit.ihg.product.object.maps.sitegen.page.customforms;
 
 import java.util.List;
@@ -60,12 +61,6 @@ public class ManageYourFormsPage extends BasePageObject {
 		}
 	}
 
-	/**
-	 * @author : bbinihsa Verify that published custom form is present in Manage Your Forms ->Published Table
-	 * @param formTitle
-	 * @return true or false
-	 * @throws Exception
-	 */
 	public boolean checkForPublishedPage(String formTitle) throws Exception {
 
 		IHGUtil.PrintMethodName();
@@ -87,12 +82,6 @@ public class ManageYourFormsPage extends BasePageObject {
 		return isPresent;
 	}
 
-	/**
-	 * @author bbinisha verify that published form can be unpublished by clicking on 'Unpublish' link
-	 * @param formTitle
-	 * @return true or false
-	 * @throws Exception
-	 */
 	public void unPublishThepublishedForm(String formTitle) throws Exception {
 
 		IHGUtil.PrintMethodName();
@@ -114,11 +103,6 @@ public class ManageYourFormsPage extends BasePageObject {
 
 	}
 
-	/**
-	 * @author bbinisha
-	 * @param formTitle
-	 * @return
-	 */
 	public boolean isUnPublished(String formTitle) {
 		Boolean isPresent = false;
 		String xpath_Published = "//fieldset//strong[text() = 'Published Forms']/ancestor::fieldset/table/tbody/tr[@class='dark-row' or @class='light-row' ]";
@@ -139,12 +123,6 @@ public class ManageYourFormsPage extends BasePageObject {
 		return isPresent;
 	}
 
-	/**
-	 * @author bbinisha Verify that unpublished form deleted by clicking on 'Delete' link
-	 * @param formTitle
-	 * @return true or false
-	 * @throws Exception
-	 */
 	public void deleteUnpublishedForm(String formTitle) throws Exception {
 		IHGUtil.PrintMethodName();
 		SitegenlUtil.setDefaultFrame(driver);
@@ -164,12 +142,6 @@ public class ManageYourFormsPage extends BasePageObject {
 		}
 	}
 
-	/**
-	 * @author bbinisha Verify that 'Preview' has been clicked for published form
-	 * @param formTitle
-	 * @return true or false
-	 * @throws Exception
-	 */
 	public CustomFormPreviewPage clickOnPublishedFormPreviewLink(String formTitle) throws Exception {
 		IHGUtil.PrintMethodName();
 		// SitegenlUtil.setDefaultFrame(driver);
@@ -192,12 +164,6 @@ public class ManageYourFormsPage extends BasePageObject {
 		return PageFactory.initElements(driver, CustomFormPreviewPage.class);
 	}
 
-	/**
-	 * @author bbinisha Verify that 'Preview' has been clicked for unpublished form
-	 * @param formTitle
-	 * @return true or false
-	 * @throws Exception
-	 */
 	public CustomFormPreviewPage clickOnUnpublishedFormPreviewLink(String formTitle) throws Exception {
 		IHGUtil.PrintMethodName();
 		// SitegenlUtil.setDefaultFrame(driver);
@@ -221,12 +187,6 @@ public class ManageYourFormsPage extends BasePageObject {
 		return PageFactory.initElements(driver, CustomFormPreviewPage.class);
 	}
 
-	/**
-	 * @author bbinisha Verify that 'Preview' has been clicked for unpublished form
-	 * @param formTitle
-	 * @return true or false
-	 * @throws Exception
-	 */
 	public void clickOnUnpublishedFormPublishLink(String formTitle) throws Exception {
 		IHGUtil.PrintMethodName();
 		// SitegenlUtil.setDefaultFrame(driver);

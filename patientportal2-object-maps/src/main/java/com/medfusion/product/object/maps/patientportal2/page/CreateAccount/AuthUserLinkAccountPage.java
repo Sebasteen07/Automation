@@ -119,6 +119,12 @@ public class AuthUserLinkAccountPage extends MedfusionPage {
 
 		return PageFactory.initElements(driver, SecurityDetailsPage.class);
 	}
+	
+	public SecurityDetailsPage continueWithAuthUserTurstedRep() {
+
+		javascriptClick(continueButton2);
+		return PageFactory.initElements(driver, SecurityDetailsPage.class);
+	}
 
 	public void checkDependentInfo(String name, String lastname, String email) {
 		IHGUtil.PrintMethodName();

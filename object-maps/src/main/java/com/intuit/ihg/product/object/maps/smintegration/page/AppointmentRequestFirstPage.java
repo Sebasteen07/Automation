@@ -1,3 +1,4 @@
+//Copyright 2013-2022 NXGN Management, LLC. All Rights Reserved.
 package com.intuit.ihg.product.object.maps.smintegration.page;
 
 import org.openqa.selenium.WebDriver;
@@ -20,15 +21,9 @@ public class AppointmentRequestFirstPage extends BasePageObject {
 	@FindBy(how = How.NAME, using = ":submit")
 	private WebElement btnContinue;
 
-
-	/**
-	 * @Description:Click on Continue Button
-	 */
 	public void clickContinueBtn() {
 		IHGUtil.PrintMethodName();
 		btnContinue.click();
-
-
 	}
 
 }

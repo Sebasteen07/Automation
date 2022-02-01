@@ -1,3 +1,4 @@
+//  Copyright 2013-2022 NXGN Management, LLC. All Rights Reserved.
 package com.intuit.ihg.product.object.maps.sitegen.page.MerchantAccount;
 
 import java.awt.AWTException;
@@ -54,23 +55,12 @@ public class MerchantAccountSetUpPage extends BasePageObject {
 		PageFactory.initElements(driver, this);
 	}
 
-
-	/**
-	 * @throws Exception
-	 * 
-	 */
 	public void clickOnPracticeRadioButton() throws Exception {
 		IHGUtil.PrintMethodName();
 		waitForElement(practiceRadioButton, 30);
 		practiceRadioButton.click();
 	}
 
-	/**
-	 * 
-	 * @param value
-	 * @throws InterruptedException
-	 * @throws AWTException
-	 */
 	public void selectProcessorValue(String value) throws InterruptedException, AWTException {
 		IHGUtil.PrintMethodName();
 		log("Waiting for page to load");
@@ -82,23 +72,12 @@ public class MerchantAccountSetUpPage extends BasePageObject {
 		log("After selecting the processor value" + value);
 	}
 
-	/**
-	 * Select Partner Dropdown value
-	 * 
-	 * @param value
-	 */
 	public void selectPartnerValue(String value) {
 		IHGUtil.PrintMethodName();
 		Select sel = new Select(payPalPartner);
 		sel.selectByVisibleText(value);
 	}
 
-	/**
-	 * To enter user name
-	 * 
-	 * @param value
-	 * @throws Exception
-	 */
 	public void enterUsername(String userName) throws Exception {
 		IHGUtil.PrintMethodName();
 		payPalUsername.click();
@@ -106,31 +85,17 @@ public class MerchantAccountSetUpPage extends BasePageObject {
 
 	}
 
-	/**
-	 * To enter password
-	 * 
-	 * @param value
-	 * @throws Exception
-	 */
 	public void enterPassword(String password) throws Exception {
 		IHGUtil.PrintMethodName();
 		waitForElement(payPalPassword, 30);
 		payPalPassword.sendKeys(password);
 	}
 
-	/**
-	 * 
-	 * @throws Exception
-	 */
 	public void clickOnSaveChanges() throws Exception {
 		waitForElement(saveChangesButton, 30);
 		saveChangesButton.click();
 	}
 
-	/**
-	 * 
-	 * @return
-	 */
 	public String getAccountAddedSuccessMsg() {
 		String text = "";
 		try {
@@ -142,22 +107,12 @@ public class MerchantAccountSetUpPage extends BasePageObject {
 		return text;
 	}
 
-	/**
-	 * 
-	 * @param token
-	 * @throws Exception
-	 */
 	public void enterMerchantToken(String token) throws Exception {
 		waitForElement(tokenQbmsFields, 30);
 		tokenQbmsFields.clear();
 		this.tokenQbmsFields.sendKeys(token);
 	}
 
-	/**
-	 * 
-	 * @param token
-	 * @throws Exception
-	 */
 	public void enterMerchantTestToken(String token) throws Exception {
 
 		waitForElement(tokenQbmsTestField, 30);
@@ -165,10 +120,6 @@ public class MerchantAccountSetUpPage extends BasePageObject {
 		tokenQbmsTestField.sendKeys(token);
 	}
 
-	/**
-	 * 
-	 * @param value
-	 */
 	public void selectStatus(String value) throws InterruptedException {
 		IHGUtil.PrintMethodName();
 		Thread.sleep(4000);
@@ -183,13 +134,6 @@ public class MerchantAccountSetUpPage extends BasePageObject {
 		}
 	}
 
-	/**
-	 * 
-	 * @param we :WebElement
-	 * @param Timeout_Seconds : Preferred Waiting Time in Seconds.
-	 * @return
-	 * @throws Exception
-	 */
 	public boolean waitForElement(WebElement we, int Timeout_Seconds) throws Exception {
 		WebDriverWait wait = new WebDriverWait(driver, Timeout_Seconds);
 		return wait.until(new WaitForWEIsDisplayed(we));

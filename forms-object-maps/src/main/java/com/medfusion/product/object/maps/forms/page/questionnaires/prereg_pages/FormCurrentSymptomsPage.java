@@ -1,4 +1,4 @@
-//  Copyright 2013-2021 NXGN Management, LLC. All Rights Reserved.
+//  Copyright 2013-2022 NXGN Management, LLC. All Rights Reserved.
 package com.medfusion.product.object.maps.forms.page.questionnaires.prereg_pages;
 
 import org.openqa.selenium.By;
@@ -23,7 +23,7 @@ public class FormCurrentSymptomsPage extends PortalFormPage {
 
 	@FindBy(id = "idonot_symptoms_malespecific")
 	WebElement noMaleSymptoms;
-	
+
 	@FindBy(id = "idonot_symptoms_femalespecific")
 	WebElement noFemaleSymptoms;
 
@@ -64,10 +64,6 @@ public class FormCurrentSymptomsPage extends PortalFormPage {
 		return commentsField.getText();
 	}
 
-	/**
-	 * @Description:Set No Symptoms
-	 * @throws Exception
-	 */
 	public void setNoSymptoms() throws Exception {
 		PortalUtil2.PrintMethodName();
 		noSymptoms.click();
@@ -78,29 +74,25 @@ public class FormCurrentSymptomsPage extends PortalFormPage {
 		scrollAndWait(0, 0, 500);
 		noMaleSymptoms.click();
 	}
-	
+
 	public void setNoFemaleSymptoms() throws Exception {
 		PortalUtil2.PrintMethodName();
 		scrollAndWait(0, 0, 500);
 		noFemaleSymptoms.click();
 	}
 
-	/**
-	 * @Description: Set some basic symptom for later PDF test
-	 * @throws: Exception
-	 */
 	public void setBasicSymptoms() throws Exception {
-		if(!checkChills.isSelected()) {
+		if (!checkChills.isSelected()) {
 			checkChills.click();
 		}
-		if(!checkInsomnia.isSelected())	 {
+		if (!checkInsomnia.isSelected()) {
 			checkInsomnia.click();
 		}
-		if(!checkBruising.isSelected()) {
+		if (!checkBruising.isSelected()) {
 			checkBruising.click();
 		}
 		scrollAndWait(0, 200, 500);
-		if(!checkEarache.isSelected()) {
+		if (!checkEarache.isSelected()) {
 			checkEarache.click();
 		}
 	}
@@ -123,6 +115,7 @@ public class FormCurrentSymptomsPage extends PortalFormPage {
 
 	@Override
 	public boolean isPageLoaded() {
-		return driver.findElement(By.xpath(String.format(PAGE_LOADED_XPATH_TEMPLATE, "Current Symptoms"))).isDisplayed();
+		return driver.findElement(By.xpath(String.format(PAGE_LOADED_XPATH_TEMPLATE, "Current Symptoms")))
+				.isDisplayed();
 	}
 }

@@ -1,3 +1,4 @@
+//  Copyright 2013-2022 NXGN Management, LLC. All Rights Reserved.
 package com.intuit.ihg.product.object.maps.sitegen.page.physicians;
 
 import static java.lang.Thread.sleep;
@@ -10,12 +11,6 @@ import com.intuit.ifs.csscat.core.pageobject.BasePageObject;
 import com.medfusion.common.utils.IHGUtil;
 import com.intuit.ihg.product.sitegen.utils.SitegenlUtil;
 
-/**
- * @author bkrishnankutty
- * @Date 6/16/2013
- * @Description :- Page Object for SiteGen Add PhysicianPage
- * @Note :
- */
 public class AddPhysicianPage extends BasePageObject {
 
 	@FindBy(id = "firstname")
@@ -63,21 +58,10 @@ public class AddPhysicianPage extends BasePageObject {
 	@FindBy(name = "btn_Delete")
 	private WebElement btnDeletePhysican;
 
-	/**
-	 * @author bkrishnankutty
-	 * @Desc:- constructor for this Page
-	 * @param driver
-	 */
 	public AddPhysicianPage(WebDriver driver) {
 		super(driver);
-		// TODO Auto-generated constructor stub
 	}
 
-	/**
-	 * @author bkrishnankutty
-	 * @Desc:-Indicates if the search page is loaded
-	 * @return true or false
-	 */
 	public boolean isSearchPageLoaded() {
 
 		IHGUtil.PrintMethodName();
@@ -89,26 +73,11 @@ public class AddPhysicianPage extends BasePageObject {
 		} catch (Exception e) {
 			// Catch any element not found errors
 		}
-
 		return result;
 	}
 
-	/**
-	 * @author bkrishnankutty
-	 * @Desc:- To add the Physician
-	 * @return AddPhysicianStep2EditLocationInfoPage
-	 * 
-	 * @param firstName
-	 * @param lastName
-	 * @param title
-	 * @param dDEANumber
-	 * @param email
-	 * @param userID
-	 * @param password
-	 */
 	public AddPhysicianStep2EditLocationInfoPage addPhysician(String firstName, String lastName, String title, String dDEANumber, String email, String userID,
 			String password) {
-
 		IHGUtil.PrintMethodName();
 		SitegenlUtil.setSiteGenFrame(driver);
 		txtFirstName.sendKeys(firstName);
@@ -127,31 +96,20 @@ public class AddPhysicianPage extends BasePageObject {
 		txtConfirmPassword.sendKeys(password);
 		btnAddPhysican.click();
 		return PageFactory.initElements(driver, AddPhysicianStep2EditLocationInfoPage.class);
-
 	}
 
 	public boolean isActiveGroupMemberYesOptionDisabled() {
 		IHGUtil.PrintMethodName();
 		SitegenlUtil.setSiteGenFrame(driver);
 		return yesActive.getAttribute("disabled") != null;
-
 	}
 
-	/**
-	 * @author bkrishnankutty
-	 * @Desc:- To delete the Physician
-	 * @return AddPhysicianStep2EditLocationInfoPage
-	 * @throws InterruptedException 
-	 * 
-	 */
 	public AddPhysicianStep2EditLocationInfoPage deletePhysician() throws InterruptedException  {
-
 		IHGUtil.PrintMethodName();
 		SitegenlUtil.setSiteGenFrame(driver);
 		javascriptClick(btnDeletePhysican);
 		sleep(5000);
 		return PageFactory.initElements(driver, AddPhysicianStep2EditLocationInfoPage.class);
-
 	}
 
 }

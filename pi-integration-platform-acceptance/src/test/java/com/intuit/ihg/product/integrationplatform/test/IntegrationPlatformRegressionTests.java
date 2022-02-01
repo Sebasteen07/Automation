@@ -1,4 +1,4 @@
-// Copyright 2013-2021 NXGN Management, LLC. All Rights Reserved.
+// Copyright 2013-2022 NXGN Management, LLC. All Rights Reserved.
 package com.intuit.ihg.product.integrationplatform.test;
 
 import static org.testng.Assert.assertEquals;
@@ -114,14 +114,6 @@ import com.medfusion.product.patientportal2.pojo.JalapenoPatient;
 import com.medfusion.product.patientportal2.utils.JalapenoConstants;
 import com.medfusion.product.patientportal2.utils.PortalUtil2;
 import com.medfusion.product.practice.api.pojo.Practice;
-
-/**
- * @author rkhambe
- * @Date 22/Nov/2016
- * @Description :-Regression Test for pi-integration
- * @Note : Optimizing scripts to incorporate different patient, practice and
- *       staff.
- */
 
 public class IntegrationPlatformRegressionTests extends BaseTestNGWebDriver {
 	@Test(enabled = true, dataProvider = "channelVersion", groups = {

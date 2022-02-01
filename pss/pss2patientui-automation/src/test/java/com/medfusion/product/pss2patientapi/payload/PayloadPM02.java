@@ -108,10 +108,119 @@ public class PayloadPM02 {
 				+ "}";
 		return payload;
 	}	
-	public String Pyaload() {
-
-		String payload = "";
+	
+	public String preReqApptTypeRulePyaload() {
+		String payload = "{\r\n"
+				+ "  \"specialty\": null,\r\n"
+				+ "  \"location\": null,\r\n"
+				+ "  \"book\": null,\r\n"
+				+ "  \"appointmentType\": null,\r\n"
+				+ "  \"slotId\": null,\r\n"
+				+ "  \"patientType\": \"PT_EXISTING\",\r\n"
+				+ "  \"linkGenerationFlow\": false,\r\n"
+				+ "  \"patientDetails\": {\r\n"
+				+ "    \"FN\": \"prepast\",\r\n"
+				+ "    \"LN\": \"prepast\",\r\n"
+				+ "    \"DOB\": \"01/01/2000\",\r\n"
+				+ "    \"GENDER\": \"M\",\r\n"
+				+ "    \"EMAIL\": null,\r\n"
+				+ "    \"PHONE\": null,\r\n"
+				+ "    \"INSID\": null,\r\n"
+				+ "    \"ADDR1\": null,\r\n"
+				+ "    \"ADDR2\": null,\r\n"
+				+ "    \"CITY\": null,\r\n"
+				+ "    \"STATE\": null,\r\n"
+				+ "    \"ZIP\": null\r\n"
+				+ "  },\r\n"
+				+ "  \"flow\": \"loginless\"\r\n"
+				+ "}";
 		return payload;
 	}	
+	
+	public String bookRuleCareTeamPyaload(String location, String appt, String specialty) {
+
+		String payload = "{\r\n"
+				+ "  \"specialty\": "+specialty+",\r\n"
+				+ "  \"location\": "+location+",\r\n"
+				+ "  \"book\": null,\r\n"
+				+ "  \"appointmentType\": "+appt+",\r\n"
+				+ "  \"slotId\": null,\r\n"
+				+ "  \"patientType\": \"PT_NEW\",\r\n"
+				+ "  \"linkGenerationFlow\": false,\r\n"
+				+ "  \"patientDetails\": {\r\n"
+				+ "    \"FN\": \"mm\",\r\n"
+				+ "    \"LN\": \"mm\",\r\n"
+				+ "    \"DOB\": \"01/01/2000\",\r\n"
+				+ "    \"GENDER\": \"M\",\r\n"
+				+ "    \"EMAIL\": null,\r\n"
+				+ "    \"PHONE\": null,\r\n"
+				+ "    \"INSID\": null,\r\n"
+				+ "    \"ADDR1\": null,\r\n"
+				+ "    \"ADDR2\": null,\r\n"
+				+ "    \"CITY\": null,\r\n"
+				+ "    \"STATE\": null,\r\n"
+				+ "    \"ZIP\": null\r\n"
+				+ "  },\r\n"
+				+ "  \"flow\": \"loginless\"\r\n"
+				+ "}";
+		return payload;
+	}	
+
+	public String scheduleAppointmentPayload(String slotid, String date, String slottime, String bookid,
+			String locationid, String apptid) {
+		String scheduleAppointment = "{\r\n"
+				+ "    \"patientType\": \"PT_NEW\",\r\n"
+				+ "    \"slotId\": \""+slotid+"\",\r\n"
+				+ "    \"specialty\": null,\r\n"
+				+ "    \"book\": "+bookid+",\r\n"
+				+ "    \"appointmentType\": "+apptid+",\r\n"
+				+ "    \"location\": "+locationid+",\r\n"
+				+ "    \"startDateTime\": \""+date+" "+slottime+"\",\r\n"
+				+ "    \"customQuestion\": null,\r\n"
+				+ "  	\"insuranceInfo\": {\r\n"
+				+ "    \"insuranceCarrier\": \"insurance\",\r\n"
+				+ "    \"memberId\": \"111111\",\r\n"
+				+ "    \"groupId\": \"222222\",\r\n"
+				+ "    \"phoneNumber\": \"404-112-3123\"\r\n"
+				+ " 	 },\r\n"
+				+ "    \"patientInfo\": {},\r\n"
+				+ "    \"allowDuplicatePatient\": false,\r\n"
+				+ "    \"updatePatientDetails\": {\r\n"
+				+ "        \"FN\": \"dd\",\r\n"
+				+ "        \"LN\": \"dd\",\r\n"
+				+ "        \"DOB\": \"01/01/2000\",\r\n"
+				+ "        \"GENDER\": \"M\",\r\n"
+				+ "        \"EMAIL\": \"Shweta.Sontakke@CrossAsyst.com\",\r\n"
+				+ "        \"PHONE\": null,\r\n"
+				+ "        \"INSID\": null,\r\n"
+				+ "        \"ADDR1\": null,\r\n"
+				+ "        \"ADDR2\": null,\r\n"
+				+ "        \"CITY\": null,\r\n"
+				+ "        \"STATE\": null,\r\n"
+				+ "        \"ZIP\": null\r\n"
+				+ "    },\r\n"
+				+ "    \"flow\": \"loginless\",\r\n"
+				+ "    \"appTypeDetail\": null,\r\n"
+				+ "    \"rule\": \"T,L,B\",\r\n"
+				+ "    \"leafNode\": null\r\n"
+				+ "}";
+		return scheduleAppointment;
+	}
+
+	public String  availableslotsPayloadLT(String date, String locationid, String apptid)
+	{
+		String  availableSlots="{\r\n"
+				+ "    \"specialty\": null,\r\n"
+				+ "    \"location\": "+locationid+",\r\n"
+				+ "    \"book\": null,\r\n"
+				+ "    \"appointmentType\": "+apptid+",\r\n"
+				+ "    \"startDateTime\": \""+date+"\",\r\n"
+				+ "    \"slotId\": \"0001\",\r\n"
+				+ "    \"traversal\": false,\r\n"
+				+ "    \"patientType\": \"PT_NEW\",\r\n"
+				+ "    \"extApptId\": null\r\n"
+				+ "}";
+		return availableSlots;
+	}
 
 }

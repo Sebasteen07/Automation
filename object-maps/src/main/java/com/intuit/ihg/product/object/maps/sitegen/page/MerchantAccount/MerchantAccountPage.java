@@ -1,3 +1,4 @@
+//  Copyright 2013-2022 NXGN Management, LLC. All Rights Reserved.
 package com.intuit.ihg.product.object.maps.sitegen.page.MerchantAccount;
 
 import org.openqa.selenium.WebDriver;
@@ -27,19 +28,11 @@ public class MerchantAccountPage extends BasePageObject {
 		PageFactory.initElements(driver, this);
 	}
 
-	/**
-	 * 
-	 * @return true if element is displayed else false.
-	 */
 	public boolean checkMerchantAccountListPage() {
 		IHGUtil.PrintMethodName();
 		return merchantAccountListTitle.isDisplayed();
 	}
 
-	/**
-	 * 
-	 * @throws Exception
-	 */
 	public MerchantAccountSetUpPage clickOnMerchantAccountSetUp() throws Exception {
 		IHGUtil.PrintMethodName();
 		waitForElement(merchantAccountSetUp, 30);
@@ -47,10 +40,6 @@ public class MerchantAccountPage extends BasePageObject {
 		return PageFactory.initElements(driver, MerchantAccountSetUpPage.class);
 	}
 
-	/**
-	 * 
-	 * @return
-	 */
 	public boolean verifyAcctInMerchantAcctList() throws Exception {
 		IHGUtil.PrintMethodName();
 		Thread.sleep(5000);
@@ -58,10 +47,6 @@ public class MerchantAccountPage extends BasePageObject {
 		return (sUtil.isRendered(deleteButton));
 	}
 
-	/**
-	 * 
-	 * @throws Exception
-	 */
 	public void deleteExistingMerchantAcct() throws Exception {
 
 		Thread.sleep(4000);
@@ -75,13 +60,6 @@ public class MerchantAccountPage extends BasePageObject {
 
 	}
 
-	/**
-	 * 
-	 * @param we :WebElement
-	 * @param Timeout_Seconds : Preferred Waiting Time in Seconds.
-	 * @return
-	 * @throws Exception
-	 */
 	public boolean waitForElement(WebElement we, int Timeout_Seconds) throws Exception {
 		WebDriverWait wait = new WebDriverWait(driver, Timeout_Seconds);
 		return wait.until(new WaitForWEIsDisplayed(we));

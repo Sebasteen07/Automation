@@ -27,6 +27,15 @@ locals {
     demo-integrations-acceptance-oauth10 = "demo-integrations-acceptance-oauth10"
     demo-integrations1-acceptance      = "demo-integrations1-acceptance"
     demo-integrations1-regression      = "demo-integrations1-regression"
+    prod-practiceportal-regression1    = "prod-practiceportal-regression1"
+    git-taf-prod-p2p-directmessage     = "git-taf-prod-p2p-directmessage"
+    git-taf-prod-rcm-acceptance        = "git-taf-prod-rcm-acceptance"
+    prod-practiceportal-regression2    = "prod-practiceportal-regression2"
+    prod-sitegen-regression            = "prod-sitegen-regression"
+    demo-ng-integration-pf-acceptance  = "demo-ng-integration-pf-acceptance"
+    demo-ng-int-pf-acceptance-index    = "demo-ng-int-pf-acceptance-index"
+    demo-ng-int-pf-acceptance-payment  = "demo-ng-int-pf-acceptance-payment"
+    demo-ng-int-pf-regression          = "demo-ng-int-pf-regression"
   }
   selected_workspace = local.valid_workspaces[terraform.workspace]
 }

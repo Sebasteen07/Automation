@@ -1346,7 +1346,7 @@ public class NGIntegrationE2EPayment_SendChartItemTests extends BaseTestNGWebDri
 
 		logStep("Get last name of trusted Patient from DB");
 		String actualPatientLastName = DBUtils.executeQueryOnDB("NGCoreDB",
-				"select last_name from person where email_address = '" + username + "@mailinator.com" + "'");
+				"select last_name from person where email_address = '" + username + "@yopmail.com" + "'");
 
 		logStep("Get last name of trusted Patient using PAM api");
 		String patientLastName = CommonFlows.getPAMLastName(response);

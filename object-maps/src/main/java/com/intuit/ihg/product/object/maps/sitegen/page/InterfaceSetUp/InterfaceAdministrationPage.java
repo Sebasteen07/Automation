@@ -1,3 +1,4 @@
+//  Copyright 2013-2022 NXGN Management, LLC. All Rights Reserved.
 package com.intuit.ihg.product.object.maps.sitegen.page.InterfaceSetUp;
 
 import org.openqa.selenium.WebDriver;
@@ -13,12 +14,6 @@ import com.medfusion.common.utils.IHGUtil;
 import com.intuit.ihg.product.object.maps.sitegen.page.home.SiteGenHomePage;
 import com.intuit.ihg.product.sitegen.utils.SitegenlUtil;
 
-/**
- * @author bkrishnankutty
- * @Date 6/28/2013
- * @Description :- Page Object for SiteGen Interface Administration Page
- * @Note :
- */
 public class InterfaceAdministrationPage extends BasePageObject {
 
 	@FindBy(xpath = "(//input[@name='otherfeatures'])[5]")
@@ -45,21 +40,10 @@ public class InterfaceAdministrationPage extends BasePageObject {
 	@FindBy(xpath = "//input[@value='Cancel']")
 	private WebElement btnCancel;
 
-	/**
-	 * @author bkrishnankutty
-	 * @Desc:- constructor for this Page
-	 * @param driver
-	 */
 	public InterfaceAdministrationPage(WebDriver driver) {
 		super(driver);
-		// TODO Auto-generated constructor stub
 	}
 
-	/**
-	 * @author bkrishnankutty
-	 * @Desc:-Indicates if the search page is loaded
-	 * @return true or false
-	 */
 	public boolean isSearchPageLoaded() {
 
 		IHGUtil.PrintMethodName();
@@ -71,16 +55,8 @@ public class InterfaceAdministrationPage extends BasePageObject {
 		} catch (Exception e) {
 			// Catch any element not found errors
 		}
-
 		return result;
 	}
-
-	/**
-	 * @author bkrishnankutty
-	 * @Desc:- Add Integration Type
-	 * @return String
-	 * 
-	 */
 
 	public String AddIntegrationEngine() {
 		IHGUtil.PrintMethodName();
@@ -92,12 +68,6 @@ public class InterfaceAdministrationPage extends BasePageObject {
 		return textIntegrationEngine.getText();
 	}
 
-	/**
-	 * @author bkrishnankutty
-	 * @Desc:- clean TestData Integration type
-	 * @return void
-	 * 
-	 */
 	public void cleanTestDataIntegrationEng() {
 
 		IHGUtil.PrintMethodName();
@@ -120,13 +90,6 @@ public class InterfaceAdministrationPage extends BasePageObject {
 		}
 	}
 
-	/**
-	 * @author bkrishnankutty
-	 * @Desc:- click on Link Home
-	 * @return SiteGenLoginPage
-	 * @throws InterruptedException
-	 * 
-	 */
 	public SiteGenHomePage clickLinkHome() throws InterruptedException {
 		IHGUtil.PrintMethodName();
 		SitegenlUtil.setDefaultFrame(driver);
@@ -138,7 +101,6 @@ public class InterfaceAdministrationPage extends BasePageObject {
 			ac.clickAndHold(lnkHome);
 			log("Clicked on Home Icon");
 		}
-
 		return PageFactory.initElements(driver, SiteGenHomePage.class);
 	}
 }

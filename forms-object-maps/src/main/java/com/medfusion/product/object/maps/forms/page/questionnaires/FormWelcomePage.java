@@ -1,4 +1,4 @@
-//  Copyright 2013-2021 NXGN Management, LLC. All Rights Reserved.
+//  Copyright 2013-2022 NXGN Management, LLC. All Rights Reserved.
 package com.medfusion.product.object.maps.forms.page.questionnaires;
 
 import java.time.Duration;
@@ -61,8 +61,6 @@ public class FormWelcomePage extends PortalFormPage {
 
 	/**
 	 * Checks if the Welcome page of the form is loaded
-	 * 
-	 * @return True if Continue button (which is the main functional part of the page) is loaded, otherwise false
 	 */
 	@Override
 	public boolean isPageLoaded() {
@@ -84,11 +82,6 @@ public class FormWelcomePage extends PortalFormPage {
 		return super.clickSaveContinue(nextPageClass, this.btnContinue);
 	}
 
-	/**
-	 * @param nextPageClass - class of the page that follows immediately after the welcome page
-	 * @return Initiated object for the next page
-	 * @throws Exception
-	 */
 	public <T extends PortalFormPage> T initToFirstPage(Class<T> nextPageClass) throws Exception {
 		if (isPageLoaded()) {
 			return clickSaveContinue(nextPageClass);

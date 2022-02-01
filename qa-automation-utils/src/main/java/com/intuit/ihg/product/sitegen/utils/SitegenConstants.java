@@ -1,12 +1,6 @@
-//Copyright 2013-2021 NXGN Management, LLC. All Rights Reserved.
+//Copyright 2013-2022 NXGN Management, LLC. All Rights Reserved.
 package com.intuit.ihg.product.sitegen.utils;
 
-/**
- * @author bkrishnankutty
- * @Date 6/10/2013
- * @Description :- Constant java for sitegen project
- * @Note :
- */
 
 public class SitegenConstants {
 	// US6144:- Testcase testLocation

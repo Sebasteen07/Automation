@@ -1,4 +1,4 @@
-// Copyright 2013-2021 NXGN Management, LLC. All Rights Reserved.
+// Copyright 2013-2022 NXGN Management, LLC. All Rights Reserved.
 package com.intuit.ihg.product.integrationplatform.test;
 
 import static org.testng.Assert.assertNotNull;
@@ -12,7 +12,6 @@ import org.testng.annotations.Test;
 import com.intuit.ifs.csscat.core.BaseTestNGWebDriver;
 import com.intuit.ifs.csscat.core.RetryAnalyzer;
 import com.intuit.ifs.csscat.core.TestConfig;
-import com.intuit.ihg.product.integrationplatform.utils.AMDC;
 import com.intuit.ihg.product.integrationplatform.utils.AMDCTestData;
 import com.intuit.ihg.product.integrationplatform.utils.Appointment;
 import com.intuit.ihg.product.integrationplatform.utils.AppointmentTestData;
@@ -61,13 +60,6 @@ import com.medfusion.product.patientportal2.pojo.CreditCard;
 import com.medfusion.product.patientportal2.pojo.CreditCard.CardType;
 import com.medfusion.product.patientportal2.pojo.StatementPreferenceType;
 import com.medfusion.product.patientportal2.utils.JalapenoConstants;
-
-/**
- * @author dsalaskar
- * @Date 28/Aug/2015
- * @Description :-
- * @Note :
- */
 
 public class IntegrationPlatformAcceptanceTests extends BaseTestNGWebDriver {
 
@@ -213,8 +205,7 @@ public class IntegrationPlatformAcceptanceTests extends BaseTestNGWebDriver {
 		log("Execution Browser: " + TestConfig.getBrowserType());
 
 		log("Step 1: Get Data from Excel");
-		AMDC AMDCData = new AMDC();
-		AMDCTestData testData = new AMDCTestData(AMDCData);
+		AMDCTestData testData = new AMDCTestData();
 
 		log("Url: " + testData.getUrl());
 		log("User Name: " + testData.getUserName());
