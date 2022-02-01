@@ -902,5 +902,25 @@ Feature: Test fuctionality of Appointment precheck
     And I switch to the appointment dashboard tab
     Then verify check in patient should be added in the appointments dashboard
     And logout from practice provisioning portal
-    
-    
+
+  Scenario: verify broadcast message UI template should be visible
+    When I schedule 5 appointments and select patients
+    And I select broadcast message button from action dropdown
+    Then verify broadcast message UI template visibility and when broadcast message entered in english and spanish footer note character count get decremented
+    And logout from practice provisioning portal
+
+  Scenario: verify after closing banner all selected appointment are deselected
+    When I schedule 5 appointments
+    And I select all patients
+    And verify after closing banner message all selected appointments are deselected
+    Then logout from practice provisioning portal
+
+  Scenario: verify if appointment is rescheduled then in that case old broadcast message sent should not be shown
+    When I schedule a new appointment
+    And from setting dashboard in notifications Enable Broadcast messaging checkbox
+    And I switch to the appointment dashboard tab
+    And I select patient from appointment dashboard and send broadcast message
+    And I click on selected patient broadcast message for email and get message
+    And I reschedule an appointment
+    Then verify old broadcast message sent should not be shown
+    Then logout from practice provisioning portal
