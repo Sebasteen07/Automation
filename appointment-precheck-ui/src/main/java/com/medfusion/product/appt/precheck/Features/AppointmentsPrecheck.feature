@@ -924,3 +924,4 @@ Feature: Test fuctionality of Appointment precheck
     And I reschedule an appointment
     Then verify old broadcast message sent should not be shown
     Then logout from practice provisioning portal
+

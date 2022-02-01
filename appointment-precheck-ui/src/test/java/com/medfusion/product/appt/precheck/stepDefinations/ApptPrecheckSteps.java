@@ -62,6 +62,7 @@ public class ApptPrecheckSteps extends BaseTest {
 		notifPage = new NotificationsPage(driver);
 		mainPage = new ApptPrecheckMainPage(driver);
 		notifPage = new NotificationsPage(driver);
+		curbsidePage = new CurbsideCheckInPage(driver);
 		generalPage = new GeneralPage();
 		curbsidePage = new CurbsideCheckInPage(driver);
 		apptSched = PostAPIRequestMfAppointmentScheduler.getPostAPIRequestMfAppointmentScheduler();
