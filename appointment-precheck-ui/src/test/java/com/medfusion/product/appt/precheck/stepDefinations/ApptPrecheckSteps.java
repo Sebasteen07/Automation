@@ -17,6 +17,7 @@ import com.medfusion.product.appt.precheck.payload.MfAppointmentSchedulerPayload
 import com.medfusion.product.appt.precheck.pojo.Appointment;
 import com.medfusion.product.object.maps.appt.precheck.Main.ApptPrecheckMainPage;
 import com.medfusion.product.object.maps.appt.precheck.page.Appointments.AppointmentsPage;
+import com.medfusion.product.object.maps.appt.precheck.page.CurbsideCheckIn.CurbsideCheckInPage;
 import com.medfusion.product.object.maps.appt.precheck.page.Login.AppointmentPrecheckLogin;
 import com.medfusion.product.object.maps.appt.precheck.page.Setting.GeneralPage;
 import com.medfusion.product.object.maps.appt.precheck.page.Setting.NotificationsPage;
@@ -39,6 +40,7 @@ public class ApptPrecheckSteps extends BaseTest {
 	ApptPrecheckMainPage mainPage;
 	AppointmentsPage apptPage;
 	NotificationsPage notifPage;
+	CurbsideCheckInPage curbsidePage;
 	CommonMethods commonMethod;
 	GeneralPage generalPage;
 	PostAPIRequestMfAppointmentScheduler apptSched;
@@ -55,6 +57,7 @@ public class ApptPrecheckSteps extends BaseTest {
 		notifPage = new NotificationsPage(driver);
 		mainPage = new ApptPrecheckMainPage(driver);
 		notifPage = new NotificationsPage(driver);
+		curbsidePage = new CurbsideCheckInPage(driver);
 		generalPage = new GeneralPage();
 		apptSched = PostAPIRequestMfAppointmentScheduler.getPostAPIRequestMfAppointmentScheduler();
 		payload = MfAppointmentSchedulerPayload.getMfAppointmentSchedulerPayload();
@@ -2486,5 +2489,53 @@ public class ApptPrecheckSteps extends BaseTest {
 	public void verify_if_user_is_able_to_see_changes_are_reflected_in_notification_tab_english_language() {
 		assertTrue(notifPage.visibilityOfPracticePrefenceLangEn(), "English language preferance is not match");
 	}
-
+	
+	@When("user hit edit button")
+	public void user_hit_edit_button() throws InterruptedException {
+		notifPage.clickOnEditButtonHamburgerButton();
+	}
+	
+	@Then("verify on template editor page all fields are displayed properly of appointment reminder")
+	public void verify_on_template_editor_page_all_fields_are_displayed_properly_of_appointment_reminder() throws InterruptedException {
+		assertTrue(notifPage.visibilityOfeditPageTemplate(), "Editing:Appointment Reminder");
+		assertEquals(notifPage.visibilityOfversionTextInEditPage(), "Version:" ,"Version: is not match");
+		assertEquals(notifPage.visibilityOfversionV2TextInEditPage(), "v2" ,"v2 is not match");
+		assertTrue(notifPage.visibilityOflogoInEditPage());
+		assertEquals(notifPage.visibilityOfappointmentReminderTextInEditPage(),"Appointment Reminder","Appointment Reminder is not match");
+		assertEquals(notifPage.visibilityOfconfirmAppointmentButtonInEditPage(), "Confirm Appointment", "Confirm Appointment is not match");
+		assertEquals(notifPage.visibilityOfstartPrecheckLinkInEditPage(), "Start PreCheck", "Start PreCheck is not match");
+		assertEquals(notifPage.visibilityOfpatientTextComingUpInEditPage(), "[Patient Name], your appointment is coming up.","[Patient Name], your appointment is coming up. is not match");
+		assertEquals(notifPage.visibilityOfdateAndTimeTextInEditPage(),"Date and Time","Date and Time is not match");
+		assertEquals(notifPage.visibilityOfdayOfTheWeekTextInEditPage(),"Day of the week at 00:00 AM/PM","Day of the week at 00:00 AM/PM is not match");
+		assertEquals(notifPage.visibilityOfmonthDDYYYYFormatTextInEditPage(),"Month DD, YYYY","Month DD, YYYY is not match");
+		assertEquals(notifPage.visibilityOflocationTextInEditPage(),"Location","Location is not match");
+		assertEquals(notifPage.visibilityOflocationNameTextInEditPage(),"Location Name","Location Name is not match");
+		assertEquals(notifPage.visibilityOflocationAddress1TextInEditPage(),"Location Address1","Location Address1 is not match");
+		assertEquals(notifPage.visibilityOflocationAddress2TextInEditPage(),"Location Address2","Location Address2 is not match");
+		assertEquals(notifPage.visibilityOfcityStateZipTextInEditPage(),"City State, Zip","City State, Zip is not match");
+		assertEquals(notifPage.visibilityOfnumberTextInEditPage(),"(XXX) XXX-XXXX","(XXX) XXX-XXXX is not match");
+		assertEquals(notifPage.visibilityOfpinOnMapLinkTextInEditPage(),"Pin on Map","Pin on Map is not match");
+		assertEquals(notifPage.visibilityOfproviderTextInEditPage(),"Provider","Provider is not match");
+		assertEquals(notifPage.visibilityOfproviderNameTextInEditPage(),"Provider Name","Provider Name is not match");
+		assertEquals(notifPage.visibilityOfrescheduleOrCancelLinkTextInEditPage(),"Reschedule or Cancel","Reschedule or Cancel is not match");
+		notifPage.clickOnBackArrow();
+		 
+	}
+	
+	@Then("verify on template editor page all fields are displayed properly of appointment reminder for text")
+	public void verify_on_template_editor_page_all_fields_are_displayed_properly_of_appointment_reminder_for_text() throws InterruptedException {
+		assertTrue(notifPage.visibilityOfeditPageTemplateForText(), "Editing:Appointment Reminder");
+		assertEquals(notifPage.visibilityOfversionTextInEditPageForText(),"Version:","Version: is not match");
+		assertEquals(notifPage.visibilityOfdefaultTextInEditPageForText(),"Default","Default is not match");
+		assertTrue(notifPage.visibilityOfpatientTextInEditPageForText(),"[Patient Name], check in now for your appointment with [Resource Name] at [Practice Name] -   [Location Name] on [Day of the week], [Month] [DD] [YYYY] [00:00 AM/PM]:https://medfusion.page.link/wnoag9aksagQA");
+		assertTrue(notifPage.visibilityOfconfirmTextInEditPageForText(),"Confirm your appointment at:https://medfusion.page.link/wnoag9aksagQA");
+		assertTrue(notifPage.visibilityOfrescheduleCancelTextInEditPageForText(),"Reschedule/Cancel Appointmentat: https://medfusion.page.link/wnoags0gw29shg");
+		assertTrue(notifPage.visibilityOfdirectionsTextInEditPageForText(),"Get Directions at:https://medfusion.page.link/wnoags0gw29shg");
+		assertEquals(notifPage.visibilityOfstopToUnsubscribeTextInEditPageForText(),"Text STOP to unsubscribe","Text STOP to unsubscribe is not match");
+		notifPage.clickOnBackArrow();
+	
+	}
+	
+		
 }
+	

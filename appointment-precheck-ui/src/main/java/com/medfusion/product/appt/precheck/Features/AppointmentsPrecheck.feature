@@ -697,3 +697,15 @@ Feature: Test fuctionality of Appointment precheck
     And click on save button
     Then verify if user is able to see changes are reflected in notification tab english language
     And logout from practice provisioning portal
+
+  Scenario: verify on template editor page user is able to see proper template
+    When from setting in notifications user click on email hamburgerButton section of appointment reminder
+    And user hit edit button
+    Then verify on template editor page all fields are displayed properly of appointment reminder
+    And logout from practice provisioning portal
+
+  Scenario: verify on template editor page user is able to see proper template
+    When from setting in notifications user click on text hamburgerButton section of appointment reminder
+    And user hit edit button
+    Then verify on template editor page all fields are displayed properly of appointment reminder for text
+    And logout from practice provisioning portal
