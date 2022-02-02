@@ -968,16 +968,3 @@ Feature: Test fuctionality of Appointment precheck
     When I select start date as current date at three AM and select end date as current date before three AM
     Then verify system should not allow user to select end time before three AM for same day and before three AM slots should be disable
     And logout from practice provisioning portal
-  
-  Scenario: verify on template editor page user is able to see proper template
-    When from setting in notifications user click on email hamburgerButton section of appointment reminder
-    And I hit edit button
-    Then verify on template editor page all fields are displayed properly of appointment reminder
-    And logout from practice provisioning portal
-      
-  Scenario: verify on template editor page user is able to see proper template
-    When from setting in notifications user click on text hamburgerButton section of appointment reminder
-    And I hit edit button
-    Then verify on template editor page all fields are displayed properly of appointment reminder for text
-    And logout from practice provisioning portal
-    
