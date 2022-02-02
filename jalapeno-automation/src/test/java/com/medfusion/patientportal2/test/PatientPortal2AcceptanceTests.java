@@ -481,7 +481,7 @@ public class PatientPortal2AcceptanceTests extends BaseTestNGWebDriver {
 		String inEmail = "Reset Password Now";
 
 		YopMail mail = new YopMail(driver);
-		String resetUrl = mail.getLinkFromEmail(mailAddress[0], emailSubject, inEmail, 10);
+		String resetUrl = mail.getLinkFromEmail(mailAddress[0], emailSubject, inEmail, 20);
 
 		if (!isInviteLinkFinal(resetUrl)) {
 			resetUrl = getRedirectUrl(resetUrl);
