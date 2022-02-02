@@ -596,6 +596,92 @@ public class NotificationsPage extends BasePageObject {
 	@FindBy(how = How.XPATH, using = "(//input[@type='checkbox'])[2]")
 	private WebElement selectOnePatient;
 
+	@FindBy(how=How.XPATH, using ="//div[@class='heading d-flex-row']")
+	private WebElement editPageTemplate;
+	
+	@FindBy(how=How.XPATH, using ="(//div[@class='version'])[5]")
+	private WebElement versionTextInEditPage;
+	
+	@FindBy(how=How.XPATH, using ="(//div[@class='version-value'])[5]")
+	private WebElement versionV2TextInEditPage;
+
+	@FindBy(how=How.XPATH, using ="//img[@class='cadence-img']")
+	private WebElement logoInEditPage;
+	
+	@FindBy(how=How.XPATH, using ="//div[@class='template-heading']")
+	private WebElement appointmentReminderTextInEditPage;
+	
+	@FindBy(how=How.XPATH, using ="//button[@id='submitNotifications']")
+	private WebElement confirmAppointmentButtonInEditPage;
+	
+	@FindBy(how=How.XPATH, using ="//div[@class='template-sub-heading']")
+	private WebElement startPrecheckLinkInEditPage;
+	
+	@FindBy(how=How.XPATH, using ="//div[text()='[Patient Name], your appointment is coming up.']")
+	private WebElement patientTextComingUpInEditPage;
+	
+	@FindBy(how=How.XPATH, using ="(//div[@class='bold-heading'])[1]")
+	private WebElement dateAndTimeTextInEditPage;
+	
+	@FindBy(how=How.XPATH, using ="//div[contains(text(),'Day of the week at 00:00 AM/PM')]")
+	private WebElement dayOfTheWeekTextInEditPage;
+	
+	@FindBy(how=How.XPATH, using ="//div[contains(text(),'Month DD, YYYY')]")
+	private WebElement monthDDYYYYFormatTextInEditPage;
+	
+	@FindBy(how=How.XPATH, using ="(//div[@class='bold-heading'])[2]")
+	private WebElement locationTextInEditPage;
+	
+	@FindBy(how=How.XPATH, using ="//div[contains(text(),'Location Name')]")
+	private WebElement locationNameTextInEditPage;
+	
+	@FindBy(how=How.XPATH, using ="//div[contains(text(),'Location Address1')]")
+	private WebElement locationAddress1TextInEditPage;
+
+	@FindBy(how=How.XPATH, using ="//div[contains(text(),'Location Address2')]")
+	private WebElement locationAddress2TextInEditPage;
+	
+	@FindBy(how=How.XPATH, using ="//div[contains(text(),'City State, Zip')]")
+	private WebElement cityStateZipTextInEditPage;
+	
+	@FindBy(how=How.XPATH, using ="//div[contains(text(),'(XXX) XXX-XXXX')]")
+	private WebElement numberTextInEditPage;
+	
+	@FindBy(how=How.XPATH, using ="//div[contains(text(),'Pin on Map')]")
+	private WebElement pinOnMapLinkTextInEditPage;
+	
+	@FindBy(how=How.XPATH, using ="(//div[@class='bold-heading'])[3]")
+	private WebElement providerTextInEditPage;
+	
+	@FindBy(how=How.XPATH, using ="//div[contains(text(),'Provider Name')]")
+	private WebElement providerNameTextInEditPage;
+	
+	@FindBy(how=How.XPATH, using ="//div[contains(text(),'Reschedule or Cancel')]")
+	private WebElement rescheduleOrCancelLinkTextInEditPage;
+	
+	@FindBy(how=How.XPATH, using ="//div[@class='heading d-flex-row']")
+	private WebElement editPageTemplateForText;
+	
+	@FindBy(how=How.XPATH, using ="(//div[@class='version'])[5]")
+	private WebElement versionTextInEditPageForText;
+	
+	@FindBy(how=How.XPATH, using ="(//div[@class='version-value'])[5]")
+	private WebElement defaultTextInEditPageForText;
+	
+	@FindBy(how=How.XPATH, using ="(//div[@class='text'])[1]")
+	private WebElement patientTextInEditPageForText;
+	
+	@FindBy(how=How.XPATH, using ="(//div[@class='text'])[2]")
+	private WebElement confirmTextInEditPageForText;
+	
+	@FindBy(how=How.XPATH, using ="(//div[@class='text'])[3]")
+	private WebElement rescheduleCancelTextInEditPageForText;
+	
+	@FindBy(how=How.XPATH, using ="(//div[@class='text'])[4]")
+	private WebElement directionsTextInEditPageForText;
+	
+	@FindBy(how=How.XPATH, using ="(//div[@class='text'])[5]")
+	private WebElement stopToUnsubscribeTextInEditPageForText;
 	public NotificationsPage(WebDriver driver) {
 		super(driver);
 		PageFactory.initElements(driver, this);
@@ -2190,4 +2276,187 @@ public class NotificationsPage extends BasePageObject {
 		return Appointment.minutes = String.valueOf(randamNo);
 	}
 
+	public boolean visibilityOfeditPageTemplate() {
+		IHGUtil.waitForElement(driver, 10, editPageTemplate);
+		if( editPageTemplate.isDisplayed()) {
+			log("text="+editPageTemplate.getText());
+		return true;
+		}
+		else
+		return false;
+		}
+	
+	public String visibilityOfversionTextInEditPage() {
+		IHGUtil.waitForElement(driver, 10,versionTextInEditPage);
+		return versionTextInEditPage.getText();
+		}
+	
+	public String visibilityOfversionV2TextInEditPage() {
+		IHGUtil.waitForElement(driver, 10,versionV2TextInEditPage);
+		return versionV2TextInEditPage.getText();
+		}
+	
+	public boolean visibilityOflogoInEditPage() {
+		IHGUtil.waitForElement(driver, 10,logoInEditPage);
+		if( logoInEditPage.isDisplayed()) {
+			log("logo is displayed");
+		return true;
+		}
+		else
+		return false;
+	}
+	
+	public String visibilityOfappointmentReminderTextInEditPage() {
+		IHGUtil.waitForElement(driver, 10,appointmentReminderTextInEditPage);
+		return appointmentReminderTextInEditPage.getText();
+	}
+	
+	public String visibilityOfconfirmAppointmentButtonInEditPage() {
+		IHGUtil.waitForElement(driver, 10,confirmAppointmentButtonInEditPage);
+		return confirmAppointmentButtonInEditPage.getText();
+	}
+	
+	public String visibilityOfstartPrecheckLinkInEditPage() {
+		IHGUtil.waitForElement(driver, 10,startPrecheckLinkInEditPage);
+		return startPrecheckLinkInEditPage.getText();
+	}
+	
+	public String visibilityOfpatientTextComingUpInEditPage() {
+		IHGUtil.waitForElement(driver, 10,patientTextComingUpInEditPage);
+		return patientTextComingUpInEditPage.getText();
+		}
+	
+	public String visibilityOfdateAndTimeTextInEditPage() {
+		IHGUtil.waitForElement(driver, 10,dateAndTimeTextInEditPage);
+		return dateAndTimeTextInEditPage.getText();
+		}
+	
+	public String visibilityOfdayOfTheWeekTextInEditPage() {
+		IHGUtil.waitForElement(driver, 10,dayOfTheWeekTextInEditPage);
+		return dayOfTheWeekTextInEditPage.getText();
+		}
+	
+	public String visibilityOfmonthDDYYYYFormatTextInEditPage() {
+		IHGUtil.waitForElement(driver, 10,monthDDYYYYFormatTextInEditPage);
+		return monthDDYYYYFormatTextInEditPage.getText();
+		}
+	
+	public String visibilityOflocationTextInEditPage() {
+		IHGUtil.waitForElement(driver, 10,locationTextInEditPage);
+		return locationTextInEditPage.getText();
+		}
+	
+	public String visibilityOflocationNameTextInEditPage() {
+		IHGUtil.waitForElement(driver, 10,locationNameTextInEditPage);
+		return locationNameTextInEditPage.getText();
+		}
+	
+	public String visibilityOflocationAddress1TextInEditPage() {
+		IHGUtil.waitForElement(driver, 10,locationAddress1TextInEditPage);
+		return locationAddress1TextInEditPage.getText();
+		}
+	
+	public String visibilityOflocationAddress2TextInEditPage() {
+		IHGUtil.waitForElement(driver, 10,locationAddress2TextInEditPage);
+		return locationAddress2TextInEditPage.getText();
+		}
+	
+	public String visibilityOfcityStateZipTextInEditPage() {
+		IHGUtil.waitForElement(driver, 10,cityStateZipTextInEditPage);
+		return cityStateZipTextInEditPage.getText();
+		}
+	
+	public String visibilityOfnumberTextInEditPage() {
+		IHGUtil.waitForElement(driver, 10,numberTextInEditPage);
+		return numberTextInEditPage.getText();
+		}
+	
+	public String visibilityOfpinOnMapLinkTextInEditPage() {
+		IHGUtil.waitForElement(driver, 10,pinOnMapLinkTextInEditPage);
+		return pinOnMapLinkTextInEditPage.getText();
+		}
+	
+	public String visibilityOfproviderTextInEditPage() {
+		IHGUtil.waitForElement(driver, 10,providerTextInEditPage);
+		return providerTextInEditPage.getText();
+		}
+	
+	public String visibilityOfproviderNameTextInEditPage() {
+		IHGUtil.waitForElement(driver, 10,providerNameTextInEditPage);
+		return providerNameTextInEditPage.getText();
+		}
+	
+	public String visibilityOfrescheduleOrCancelLinkTextInEditPage() {
+		IHGUtil.waitForElement(driver, 10,rescheduleOrCancelLinkTextInEditPage);
+		return rescheduleOrCancelLinkTextInEditPage.getText();
+		}
+	
+	public boolean visibilityOfeditPageTemplateForText() {
+		IHGUtil.waitForElement(driver, 10, editPageTemplateForText);
+		if( editPageTemplateForText.isDisplayed()) {
+			log("text="+editPageTemplateForText.getText());
+		return true;
+		}
+		else
+		return false;
+		}
+	
+	public String visibilityOfversionTextInEditPageForText() {
+		IHGUtil.waitForElement(driver, 10,versionTextInEditPageForText);
+		return versionTextInEditPageForText.getText();
+		}
+	
+	public String visibilityOfdefaultTextInEditPageForText() {
+		IHGUtil.waitForElement(driver, 10,defaultTextInEditPageForText);
+		return defaultTextInEditPageForText.getText();
+		}
+	
+	public Boolean visibilityOfpatientTextInEditPageForText() {
+		IHGUtil.waitForElement(driver, 10,patientTextInEditPageForText);
+		if(patientTextInEditPageForText.isDisplayed()) {
+			log("text="+patientTextInEditPageForText.getText());
+		
+		return true;
+		}
+		else
+			return false;
+		}
+	
+	public Boolean visibilityOfconfirmTextInEditPageForText() {
+		IHGUtil.waitForElement(driver, 10,confirmTextInEditPageForText);
+		if(confirmTextInEditPageForText.isDisplayed()) {
+			log("text="+confirmTextInEditPageForText.getText());
+		
+		return true;
+		}
+		else
+			return false;
+		}
+	
+	public Boolean visibilityOfrescheduleCancelTextInEditPageForText() {
+		IHGUtil.waitForElement(driver, 10,rescheduleCancelTextInEditPageForText);
+		if(rescheduleCancelTextInEditPageForText.isDisplayed()) {
+			log("text="+rescheduleCancelTextInEditPageForText.getText());
+		
+		return true;
+		}
+		else
+			return false;
+		}
+	
+	public Boolean visibilityOfdirectionsTextInEditPageForText() {
+		IHGUtil.waitForElement(driver, 10,directionsTextInEditPageForText);
+		if(directionsTextInEditPageForText.isDisplayed()) {
+			log("text="+directionsTextInEditPageForText.getText());
+		
+		return true;
+		}
+		else
+			return false;
+		}
+	
+	public String visibilityOfstopToUnsubscribeTextInEditPageForText() {
+		IHGUtil.waitForElement(driver, 10,stopToUnsubscribeTextInEditPageForText);
+		return stopToUnsubscribeTextInEditPageForText.getText();
+		}
 }
