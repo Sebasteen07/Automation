@@ -1,6 +1,7 @@
-//  Copyright 2013-2021 NXGN Management, LLC. All Rights Reserved.
+//  Copyright 2013-2022 NXGN Management, LLC. All Rights Reserved.
 package com.medfusion.patientportal2.test;
 
+import static org.junit.Assert.assertTrue;
 import static org.testng.Assert.*;
 import java.io.File;
 import java.io.IOException;
@@ -446,9 +447,6 @@ public class PatientPortal2AcceptanceTests extends BaseTestNGWebDriver {
 		YopMail mail = new YopMail(driver);
 		String url = mail.getLinkFromEmail(mailAddress[0], emailSubject, inEmail, 10);
 
-//		Email receivedEmail = new Mailer(mailAddress[0]).pollForNewEmailWithSubject(emailSubject, 60,
-//				testSecondsTaken(passwordResetStart));
-//		String url = Mailer.getLinkByText(receivedEmail, inEmail);
 		if (!isInviteLinkFinal(url)) {
 			url = getRedirectUrl(url);
 		}
@@ -466,6 +464,47 @@ public class PatientPortal2AcceptanceTests extends BaseTestNGWebDriver {
 		loginPage = homePage.clickOnLogout();
 
 	}
+	
+	private String resetForgotPasswordLink(String email) throws InterruptedException {
+		Instant passwordResetStart = Instant.now();
+		logStep("Load login page");
+		JalapenoLoginPage loginPage = new JalapenoLoginPage(driver, testData.getUrl());
+
+		logStep("Clicking on forgot username or password");
+		JalapenoForgotPasswordPage forgotPasswordPage = loginPage.clickForgotPasswordButton();
+
+		JalapenoForgotPasswordPage2 forgotPasswordPage2 = forgotPasswordPage.fillInDataPage(email);
+		logStep("Message was sent, closing");
+		forgotPasswordPage2.clickCloseButton();
+
+		logStep("Logging into yopmail and getting ResetPassword url");
+		String[] mailAddress = email.split("@");
+		String emailSubject = "Help with your user name or password";
+		String inEmail = "Reset Password Now";
+
+		YopMail mail = new YopMail(driver);
+		String resetUrl = mail.getLinkFromEmail(mailAddress[0], emailSubject, inEmail, 10);
+
+		if (!isInviteLinkFinal(resetUrl)) {
+			resetUrl = getRedirectUrl(resetUrl);
+		}
+		assertNotNull(resetUrl, "Url is null.");
+
+		JalapenoForgotPasswordPage3 forgotPasswordPage3 = new JalapenoForgotPasswordPage3(driver, resetUrl);
+		logStep("Redirecting to patient portal, filling secret answer as: " + patient.getSecurityQuestionAnswer());
+		JalapenoForgotPasswordPage4 forgotPasswordPage4 = forgotPasswordPage3
+				.fillInSecretAnswer(patient.getSecurityQuestionAnswer());
+
+		logStep("Filling new password");
+		JalapenoHomePage homePage = forgotPasswordPage4.fillInNewPassword(testData.getProperty("med.wf.password"));
+
+		logStep("Logging out");
+		loginPage = homePage.clickOnLogout();
+		
+		return resetUrl;
+
+	}
+
 
 	@Test(enabled = true, groups = { "acceptance-solutions" }, retryAnalyzer = RetryAnalyzer.class)
 	public void testMessaging() throws Exception {
@@ -6423,5 +6462,18 @@ public class PatientPortal2AcceptanceTests extends BaseTestNGWebDriver {
 		jalapenoHomePage.clickOnLogout();
 
 	}
+	@Test(enabled = true, groups = { "acceptance-basics" }, retryAnalyzer = RetryAnalyzer.class)
+	
+	public void testValidateResetPasswordLink() throws Exception {
 
+		String username = PortalUtil2.generateUniqueUsername(testData.getProperty("user.id"), testData);
+		patient = PatientFactory.createJalapenoPatient(username, testData);
+		patient = new CreatePatient().selfRegisterPatient(driver, patient, testData.getUrl());
+		String resetUrl= resetForgotPasswordLink(patient.getEmail());
+		
+		logStep("Validate Reset Url is invalid");
+		
+		JalapenoLoginPage loginPage= new JalapenoLoginPage(driver);
+		assertTrue(loginPage.checkResetPasswordError(resetUrl),"Reset Password URL is expired");
+}
 }
