@@ -144,6 +144,13 @@ public class CurbsideCheckInPage extends BasePageObject {
 	
 	@FindAll({ @FindBy(how = How.XPATH, using = "(//input[@type='checkbox'])") })
 	public List<WebElement> allAppointment;
+	 
+	@FindBy(how = How.XPATH, using = "//*[@class=\"mf-arrivals-input-text\"]")
+	public WebElement otherMessageTextbox;
+	
+	@FindBy(how = How.XPATH, using = "//input[@class='mf-arrivals-input-text']")
+	public WebElement sendButtonForOtherTextMsg;
+	
 	
 	public CurbsideCheckInPage(WebDriver driver) {
 		super(driver);
@@ -758,5 +765,23 @@ public class CurbsideCheckInPage extends BasePageObject {
 		IHGUtil.waitForElement(driver, 5, checkInButton);
 		jse.executeScript("arguments[0].click();", checkInButton);
 	}
-
+	
+	public void selectOtherOptionFromDropdown(String patientId,String other) throws InterruptedException {
+		IHGUtil.PrintMethodName();
+		WebElement message = driver.findElement(By.xpath("//select[@id='"+patientId+"']"));
+		IHGUtil.waitForElement(driver, 10, message);
+		log("Select message from drodown");
+		Select selectMessage = new Select(message);
+		selectMessage.selectByVisibleText(other);
+	}
+		public String sendCustomizedMessage(String patientId,String CustomizedMsg) throws InterruptedException {
+		log("Click on send button");
+		otherMessageTextbox.sendKeys(CustomizedMsg);
+		driver.findElement(By.xpath("//select[@id='" + patientId + "']/following-sibling::button[text()='Send']")).click();
+		Thread.sleep(5000);
+		WebElement lastSendMessage= driver.findElement(By.xpath("//select[@id='" + patientId + "']/following-sibling::div/p"));
+		return lastSendMessage.getText();
+	}
+	
+	
 }

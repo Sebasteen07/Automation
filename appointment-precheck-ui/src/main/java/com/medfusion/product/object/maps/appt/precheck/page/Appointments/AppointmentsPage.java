@@ -5,6 +5,7 @@ import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Date;
+import java.util.List;
 import java.util.TimeZone;
 
 import org.openqa.selenium.By;
@@ -14,6 +15,7 @@ import org.openqa.selenium.NoSuchElementException;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.interactions.Actions;
+import org.openqa.selenium.support.FindAll;
 import org.openqa.selenium.support.FindBy;
 import org.openqa.selenium.support.How;
 import org.openqa.selenium.support.PageFactory;
@@ -411,6 +413,15 @@ public class AppointmentsPage extends BasePageObject {
 
 	@FindBy(how = How.XPATH, using = "//div[@class='tooltiptext']")
 	private WebElement broadcastEmailMsg;
+	
+	@FindBy(how = How.ID, using = "filter-start-time")
+	private WebElement filterStartTime;
+	
+	@FindAll({ @FindBy(how = How.XPATH, using = "//*[@id=\"page-content-container\"]/div/header/div[2]/div[1]/div[2]/div[2]/div/div/div[3]/div[2]/div/ul/li[6]//following-sibling::li")})
+	private List<WebElement> startDateTime;
+	
+	@FindAll({ @FindBy(how = How.XPATH, using = "//*[@id=\"page-content-container\"]/div/header/div[2]/div[2]/div[2]/div[2]/div/div/div[3]/div[2]/div/ul/li")})
+	private List<WebElement> endDateTime;
 
 	public AppointmentsPage(WebDriver driver) {
 		super(driver);
@@ -1542,5 +1553,107 @@ public class AppointmentsPage extends BasePageObject {
 		broadcastMessageInEs.sendKeys(messageEs);
 		jse.executeScript("arguments[0].click();", confirmThisMsgCheckbox);
 	}
+	
+	public String getStartTime() {
+		IHGUtil.PrintMethodName();
+		IHGUtil.waitForElement(driver, 5, filterStartTime);
+		return filterStartTime.getAttribute("value");
+	}
+
+	public String getEndTime() {
+		IHGUtil.PrintMethodName();
+		IHGUtil.waitForElement(driver, 5, endTime);
+		return endTime.getAttribute("value");
+	}
+	
+	public void selectCurrentDateInEndDateFilter() throws InterruptedException {
+		IHGUtil.PrintMethodName();
+		IHGUtil.waitForElement(driver, 5, endTime);
+		endTime.click();
+		log("click on end date filter");
+		
+		log("Select Month");
+		IHGUtil.waitForElement(driver, 10, months);
+		DateFormat monthFormat = new SimpleDateFormat("M");
+		Calendar cal = Calendar.getInstance();
+		cal.setTime(new Date());
+		String currentMonth=monthFormat.format(cal.getTime());
+		Integer month = Integer.valueOf(currentMonth);
+		String monthValue=String.valueOf(month-1); 
+		Select selectMonth = new Select(months);
+		selectMonth.selectByValue(monthValue);
+		
+		log("Select Year");
+		IHGUtil.waitForElement(driver, 10, years);
+		int yyyy = cal.get(Calendar.YEAR);
+		String year = Integer.toString(yyyy);
+		Select selectYear = new Select(years);
+		selectYear.selectByVisibleText(year);
+		log("Year : " + (cal.get(Calendar.YEAR)));
+		
+		log("Select Date");
+		DateFormat dateFormat = new SimpleDateFormat("d");
+		cal.setTime(new Date());
+		String currentDate=dateFormat.format(cal.getTime());
+		WebElement date = driver.findElement(By.xpath(
+				"(//*[@id=\"page-content-container\"]/div/header/div[2]/div[2]/div[2]/div[2]/div/div/div[2]/div[2]/div//div[text()="
+						+ "'" + currentDate + "'" + "])[1]"));
+		date.click();
+		log("click on current date");
+		Thread.sleep(10000);
+	}
+	
+	public void selectEndTime(String time) throws InterruptedException {
+		WebElement selectEndTime=driver.findElement(By.xpath("//*[@id=\"page-content-container\"]/div/header/div[2]/div[2]/div[2]/div[2]/div/div/div[3]/div[2]/div/ul/li[text()="
+	                  +"'"+time+"'"+"]"));
+		selectEndTime.click();
+		Thread.sleep(10000);
+	}
+	
+	public void clickOnStartDateFilter(){
+		IHGUtil.PrintMethodName();
+		IHGUtil.waitForElement(driver, 5, startTime);
+		startTime.click();
+	}
+	
+	public void selectStartTime(String time) throws InterruptedException {
+		WebElement selectStartTime=driver.findElement(By.xpath("//*[@id='page-content-container']/div/header/div[2]/div[1]/div[2]/div[2]/div/div/div[3]/div[2]/div/ul/li[text()="
+	                  +"'"+time+"'"+"]"));
+		selectStartTime.click();
+		Thread.sleep(10000);
+	}
+	
+    public boolean selectStartDate() {
+    	clickOnStartDateFilter();
+    	IHGUtil.PrintMethodName();
+		int DateAndTimeSize = startDateTime.size();
+		boolean visibility = false;
+		log("Total patient size: "+DateAndTimeSize);
+		for (int i = 1; i < DateAndTimeSize; i++) {
+			WebElement time = startDateTime.get(i);
+			visibility = time.isSelected();
+		}
+		return visibility;
+	}
+	
+    public void clickOnEndTimeFilter() {
+    	IHGUtil.PrintMethodName();
+    	IHGUtil.waitForElement(driver, 5, endTime);
+    	endTime.click();
+	}
+    
+    public boolean selectEndDate() {
+    	clickOnEndTimeFilter();
+    	IHGUtil.PrintMethodName();
+		int DateAndTimeSize = endDateTime.size();
+		boolean visibility = false;
+		log("Total patient size: "+DateAndTimeSize);
+		for (int i = 1; i < DateAndTimeSize-42; i++) {
+			WebElement time = endDateTime.get(i);
+			visibility = time.isSelected();
+		}
+		return visibility;
+	}
+
 
 }

@@ -8,9 +8,6 @@ import static org.testng.Assert.assertNotEquals;
 import static org.testng.Assert.assertTrue;
 
 import java.io.IOException;
-import java.util.Date;
-import java.util.Iterator;
-import java.util.Random;
 import java.util.concurrent.TimeUnit;
 
 import com.medfusion.common.utils.PropertyFileLoader;
@@ -3304,12 +3301,243 @@ public class ApptPrecheckSteps extends BaseTest {
 		assertEquals(resonse.statusCode(), 200);
 		driver.navigate().refresh();
 	}
-	
+
 	@Then("verify old broadcast message sent should not be shown")
 	public void verify_old_broadcast_message_sent_should_not_be_shown() throws InterruptedException {
 		scrollAndWait(0, -1000, 5000);
-		apptPage.clickOnBroadcastEmailForSelectedPatient(Appointment.patientId,	Appointment.apptId);
-	    assertNotEquals(Appointment.broadcastMessage,apptPage.getBroadcastMessage(),"old broadcast message shown");
+		apptPage.clickOnBroadcastEmailForSelectedPatient(Appointment.patientId, Appointment.apptId);
+		assertNotEquals(Appointment.broadcastMessage, apptPage.getBroadcastMessage(), "old broadcast message shown");
 	}
-		       
+
+	@When("I click on Notifications tab from Setting tab and disable curbside remainder checkbox")
+	public void i_click_on_notifications_tab_from_setting_tab_and_disable_curbside_remainder_checkbox()
+			throws InterruptedException {
+		mainPage.clickOnSettingTab();
+		notifPage.clickOnNotificationTab();
+		assertTrue(notifPage.getNotificationTitle().contains("Notifications"));
+		log("user on notification page");
+		notifPage.disableCurbsideCheckinRemCheckbox();
+		log("Disable Curbside Checkin Reminder Checkbox");
+		notifPage.saveNotification();
+	}
+
+	@When("I schedule a new appointment and confirm arrival")
+	public void i_schedule_a_new_appointment_and_confirm_arrival() throws NullPointerException, IOException {
+		Appointment.patientId = commonMethod.generatRandomNum();
+		Appointment.apptId = commonMethod.generatRandomNum();
+		long currentTimestamp = System.currentTimeMillis();
+		long plus20Minutes = currentTimestamp + TimeUnit.MINUTES.toMillis(10);
+		log("schedule more than 10 an appointments ");
+		Response resonse = apptSched.aptPutAppointment(propertyData.getProperty("baseurl.mf.appointment.scheduler"),
+				propertyData.getProperty("mf.apt.scheduler.practice.id"),
+				payload.putAppointmentPayload(plus20Minutes, propertyData.getProperty("mf.apt.scheduler.phone"),
+						propertyData.getProperty("curbside.checkin.mail")),
+				headerConfig.HeaderwithToken(accessToken.getaccessTokenPost()), Appointment.patientId,
+				Appointment.apptId);
+		assertEquals(resonse.statusCode(), 200);
+	}
+
+	@Then("verify curbside reminder is not receive to patient")
+	public void verify_curbside_reminder_is_not_receive_to_patient() throws NullPointerException, Exception {
+		YopMail yopMail = new YopMail(driver);
+		assertFalse(yopMail.isMessageInInbox(propertyData.getProperty("curbside.checkin.mail"),
+				propertyData.getProperty("curbside.checkin.mail.subject"),
+				propertyData.getProperty("curbside.checkin.mail.title"), 5));
+	}
+
+	@Then("from notifications tab in Setting tab and enable curbside remainder checkbox")
+	public void from_notifications_tab_in_setting_tab_and_enable_curbside_remainder_checkbox()
+			throws InterruptedException {
+		loginPage = new AppointmentPrecheckLogin(driver, propertyData.getProperty("practice.provisining.url.ge"));
+		mainPage.clickOnSettingTab();
+		notifPage.clickOnNotificationTab();
+		assertTrue(notifPage.getNotificationTitle().contains("Notifications"));
+		log("user on notification page");
+		notifPage.enableCurbsideCheckinRemCheckbox();
+		log("Enbled Curbside Checkin Reminder Checkbox");
+		notifPage.saveNotification();
+	}
+
+	@When("I enabled curbside remainder checkbox from notifications tab in Setting tab")
+	public void i_enabled_curbside_remainder_checkbox_from_notifications_tab_in_setting_tab()
+			throws InterruptedException {
+		mainPage.clickOnSettingTab();
+		notifPage.clickOnNotificationTab();
+		assertTrue(notifPage.getNotificationTitle().contains("Notifications"));
+		log("user on notification page");
+		notifPage.enableCurbsideCheckinRemCheckbox();
+	}
+
+	@When("I schedule a new appointment after one hour of current time")
+	public void i_schedule_a_new_appointment_after_one_hour_of_current_time() throws NullPointerException, IOException {
+		Appointment.patientId = commonMethod.generatRandomNum();
+		Appointment.apptId = commonMethod.generatRandomNum();
+		long currentTimestamp = System.currentTimeMillis();
+		long plus20Minutes = currentTimestamp + TimeUnit.MINUTES.toMillis(60);
+		log("schedule more than 10 an appointments ");
+		Response resonse = apptSched.aptPutAppointment(propertyData.getProperty("baseurl.mf.appointment.scheduler"),
+				propertyData.getProperty("mf.apt.scheduler.practice.id"),
+				payload.putAppointmentPayload(plus20Minutes, propertyData.getProperty("mf.apt.scheduler.phone"),
+						propertyData.getProperty("curbside.checkin.mail")),
+				headerConfig.HeaderwithToken(accessToken.getaccessTokenPost()), Appointment.patientId,
+				Appointment.apptId);
+		assertEquals(resonse.statusCode(), 200);
+	}
+
+	@Then("I disable curbside remainder checkbox after five minutes of current time")
+	public void i_disable_curbside_remainder_checkbox_after_five_minutes_of_current_time() throws InterruptedException {
+		log("After five minutes disable curbside remainder checkbox");
+		Thread.sleep(300000);
+		notifPage.disableCurbsideCheckinRemCheckbox();
+		log("Disable Curbside Checkin Reminder Checkbox");
+		notifPage.saveNotification();
+	}
+
+	@Then("verify curbside reminder is receive to patient")
+	public void verify_curbside_reminder_is_receive_to_patient() throws NullPointerException, Exception {
+		YopMail yopMail = new YopMail(driver);
+		assertTrue(yopMail.isMessageInInbox(propertyData.getProperty("curbside.checkin.mail"),
+				propertyData.getProperty("curbside.checkin.mail.subject"),
+				propertyData.getProperty("curbside.checkin.mail.title"), 5));
+	}
+
+	@When("I schedule an appointment and have confirmed there arrival")
+	public void i_schedule_an_appointment_and_have_confirmed_there_arrival() throws NullPointerException, IOException {
+		Appointment.patientId = commonMethod.generatRandomNum();
+		Appointment.apptId = commonMethod.generatRandomNum();
+		long currentTimestamp = System.currentTimeMillis();
+		long plus20Minutes = currentTimestamp + TimeUnit.MINUTES.toMillis(60);
+		apptSched.aptPutAppointment(propertyData.getProperty("baseurl.mf.appointment.scheduler"),
+				propertyData.getProperty("apt.precheck.practice.id"),
+				payload.putAppointmentPayload(plus20Minutes, propertyData.getProperty("mf.apt.scheduler.phone"),
+						propertyData.getProperty("precheck.email")),
+				headerConfig.HeaderwithToken(accessToken.getaccessTokenPost()), Appointment.patientId,
+				Appointment.apptId);
+
+		Response actionResponse = aptPrecheckPost.aptAppointmentActionsConfirm(
+				propertyData.getProperty("baseurl.apt.precheck"), propertyData.getProperty("apt.precheck.practice.id"),
+				headerConfig.HeaderwithToken(accessToken.getaccessTokenPost()), Appointment.patientId,
+				Appointment.apptId);
+		assertEquals(actionResponse.getStatusCode(), 200);
+
+		Response curbsideCheckinResponse = aptPrecheckPost.aptArrivalActionsCurbsideCurbscheckin(
+				propertyData.getProperty("baseurl.apt.precheck"), propertyData.getProperty("apt.precheck.practice.id"),
+				headerConfig.HeaderwithToken(accessToken.getaccessTokenPost()), Appointment.patientId,
+				Appointment.apptId);
+		assertEquals(curbsideCheckinResponse.getStatusCode(), 200);
+
+		Response arrivalResponse = aptPrecheckPost.aptArrivalActionsCurbsideArrival(
+				propertyData.getProperty("baseurl.apt.precheck"), propertyData.getProperty("apt.precheck.practice.id"),
+				headerConfig.HeaderwithToken(accessToken.getaccessTokenPost()), Appointment.patientId,
+				Appointment.apptId);
+		assertEquals(arrivalResponse.getStatusCode(), 200);
+	}
+
+	@When("I click on Curbside check-in tab and select patient")
+	public void i_click_on_curbside_check_in_tab_and_select_patient() throws InterruptedException {
+		mainPage.clickOnCurbsideTab();
+		assertTrue(curbsidePage.getCurbsideTitle().contains("Curbside Check-ins"));
+		log("User is on Curbside check in tab");
+		curbsidePage.selectPatient(Appointment.patientId, Appointment.apptId);
+	}
+
+	@When("I click on dropdown and select {string} option")
+	public void i_click_on_dropdown_and_select_option(String other) throws InterruptedException {
+		curbsidePage.selectOtherOptionFromDropdown(Appointment.apptId, other);
+	}
+
+	@Then("verify other message is able to send from curbside checkin in drop down list")
+	public void verify_other_message_is_able_to_send_from_curbside_checkin_in_drop_down_list()
+			throws NullPointerException, InterruptedException {
+		String lastMessage = curbsidePage.sendCustomizedMessage(Appointment.apptId,
+				propertyData.getProperty("customized.message.from.other.option"));
+		log("Send customized message from other option");
+		assertEquals(lastMessage, "Last Message: " + propertyData.getProperty("customized.message.from.other.option"),
+				"Messsage was not same");
+	}
+
+	@When("I send other message from curbside checkin in drop down list")
+	public void i_send_other_message_from_curbside_checkin_in_drop_down_list() throws InterruptedException {
+		curbsidePage.selectOtherOptionFromDropdown(Appointment.apptId, "Other");
+		String lastMessage = curbsidePage.sendCustomizedMessage(Appointment.apptId,
+				propertyData.getProperty("customized.message.from.other.option"));
+		log("Send customized message from other option");
+		assertEquals(lastMessage, "Last Message: " + propertyData.getProperty("customized.message.from.other.option"),
+				"Messsage was not same");
+	}
+
+	@Then("verify practice staff is able to send another message by using other option from the drop down list")
+	public void verify_practice_staff_is_able_to_send_another_message_by_using_other_option_from_the_drop_down_list()
+			throws InterruptedException {
+		curbsidePage.selectOtherOptionFromDropdown(Appointment.apptId, "Other");
+		String lastMessage = curbsidePage.sendCustomizedMessage(Appointment.apptId,
+				propertyData.getProperty("customized.message.from.other.option"));
+		log("Send customized message from other option");
+		assertEquals(lastMessage, "Last Message: " + propertyData.getProperty("customized.message.from.other.option"),
+				"Messsage was not same");
+	}
+
+	@When("I switch on appointment dashboard")
+	public void i_switch_on_appointment_dashboard() {
+		mainPage.clickOnAppointmentsTab();
+		log("Verify focus on Appointments page-- " + apptPage.getApptPageTitle());
+		assertTrue(apptPage.getApptPageTitle().contains(propertyData.getProperty("appointment.page")));
+	}
+
+	@Then("verify System should show default date and time on appointment dashboard")
+	public void verify_system_should_show_default_date_and_time_on_appointment_dashboard() throws InterruptedException {
+		log("Start Time from portal:" + apptPage.getStartTime());
+		log("Current date : " + apptPage.currentDate());
+		assertEquals(apptPage.getStartTime(), apptPage.currentDate() + " 12:00 AM",
+				"Current date and time was not match");
+
+		log("End Time from portal:" + apptPage.getEndTime());
+		log("Two week future date from current date: " + apptPage.futureDate(13));
+		assertEquals(apptPage.getEndTime(), apptPage.futureDate(13) + " 11:59 PM",
+				"Current date and time was not match");
+	}
+
+	@When("I select end date as current date at two AM and select start date as current date after two AM")
+	public void i_select_end_date_as_current_date_at_two_am_and_select_start_date_as_current_date_after_two_am()
+			throws InterruptedException {
+		apptPage.selectCurrentDateInEndDateFilter();
+		apptPage.selectEndTime("2:00 AM");
+		apptPage.clickOnStartDateFilter();
+		apptPage.selectStartTime("2:00 AM");
+	}
+
+	@Then("verify system should not allow user to select start time after two AM for same day and after two AM slots should be disable")
+	public void verify_system_should_not_allow_user_to_select_start_time_after_two_am_for_same_day_and_after_two_am_slots_should_be_disable()
+			throws InterruptedException {
+		apptPage.clickOnStartDateFilter();
+		assertFalse(apptPage.selectStartDate());
+		apptPage.selectStartTime("3:00 AM");
+		log("Start Time from portal:" + apptPage.getStartTime());
+		log("Current date : " + apptPage.currentDate());
+		assertNotEquals(apptPage.getStartTime(), apptPage.currentDate() + " 3:00 AM",
+				"Current date and time was not match");
+	}
+
+	@When("I select start date as current date at three AM and select end date as current date before three AM")
+	public void i_select_start_date_as_current_date_at_three_am_and_select_end_date_as_current_date_before_three_am()
+			throws InterruptedException {
+		apptPage.clickOnStartDateFilter();
+		apptPage.selectStartTime("3:00 AM");
+		apptPage.selectCurrentDateInEndDateFilter();
+		apptPage.selectEndTime("2:00 AM");
+	}
+
+	@Then("verify system should not allow user to select end time before three AM for same day and before three AM slots should be disable")
+	public void verify_system_should_not_allow_user_to_select_end_time_before_three_am_for_same_day_and_before_three_am_slots_should_be_disable()
+			throws InterruptedException {
+		apptPage.clickOnEndTimeFilter();
+		assertFalse(apptPage.selectEndDate());
+		apptPage.selectEndTime("2:00 AM");
+		log("End Time from portal:" + apptPage.getEndTime());
+		assertNotEquals(apptPage.getEndTime(), apptPage.getEndTime() + " 2:00 AM",
+				"Current date and time was not match");
+
+	}
+
 }
+
