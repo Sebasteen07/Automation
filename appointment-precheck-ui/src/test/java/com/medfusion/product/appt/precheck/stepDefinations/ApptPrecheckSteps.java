@@ -3538,6 +3538,34 @@ public class ApptPrecheckSteps extends BaseTest {
 				"Current date and time was not match");
 
 	}
-
+	
+	@When("I select start date and time and navigate on fifth page")
+	public void i_select_start_date_and_time_and_navigate_on_fifth_page() throws InterruptedException {
+		apptPage.selectStartDate(8);
+		apptPage.selectRequiredPage(5);	
+	}
+	
+	@When("I select a appointment and send manual reminder")
+	public void i_select_a_appointment_and_send_manual_reminder() throws InterruptedException {
+		apptPage.selectFirstPatient();
+		scrollAndWait(0, -3000, 10000);
+		apptPage.clickOnActions();
+		apptPage.clickOnSendReminder();
+	}
+	
+	@When("I click on refresh button from apt dashboard and lands on same page")
+	public void i_click_on_refresh_button_from_apt_dashboard_and_lands_on_same_page() throws InterruptedException {
+		apptPage.clickOnRefreshTab();
+	}
+	
+	@Then("verify user is navigate next and back through arrow button")
+	public void verify_user_is_navigate_next_and_back_through_arrow_button() throws InterruptedException {
+		assertEquals(apptPage.jumbToNextPage(),"6", "Not navigate to next page");
+		apptPage.jumpToPreviousPage();
+		log("again jump no previous page");
+		String previousPage=apptPage.jumpToPreviousPage();
+		assertEquals(previousPage,"4", "Not navigate to next page");
+	}
+	
 }
 

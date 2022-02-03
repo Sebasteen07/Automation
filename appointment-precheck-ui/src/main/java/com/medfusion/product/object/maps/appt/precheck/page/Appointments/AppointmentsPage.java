@@ -422,6 +422,9 @@ public class AppointmentsPage extends BasePageObject {
 	
 	@FindAll({ @FindBy(how = How.XPATH, using = "//*[@id=\"page-content-container\"]/div/header/div[2]/div[2]/div[2]/div[2]/div/div/div[3]/div[2]/div/ul/li")})
 	private List<WebElement> endDateTime;
+	
+	@FindBy(how = How.XPATH, using = "(//input[@type='checkbox'])[2]")
+	private WebElement selectFirstPatient;
 
 	public AppointmentsPage(WebDriver driver) {
 		super(driver);
@@ -1654,6 +1657,73 @@ public class AppointmentsPage extends BasePageObject {
 		}
 		return visibility;
 	}
+    
+    public void selectStartDate(int backMonth) throws InterruptedException {
+		IHGUtil.PrintMethodName();
+		IHGUtil.waitForElement(driver, 5, endTime);
+		startTime.click();
+		log("click on start date filter");
+		
+		log("Select Month");
+		IHGUtil.waitForElement(driver, 10, months);
+		DateFormat monthFormat = new SimpleDateFormat("M");
+		Calendar cal = Calendar.getInstance();
+		cal.setTime(new Date());
+		String currentMonth=monthFormat.format(cal.getTime());
+		Integer month = Integer.valueOf(currentMonth);
+		String monthValue=String.valueOf(month+backMonth); 
+		Select selectMonth = new Select(months);
+		selectMonth.selectByValue(monthValue);
+		
+		log("Select Year");
+		IHGUtil.waitForElement(driver, 10, years);
+		int yyyy = cal.get(Calendar.YEAR);
+		String year = Integer.toString(yyyy-1);
+		Select selectYear = new Select(years);
+		selectYear.selectByVisibleText(year);
+		log("Year : " + (cal.get(Calendar.YEAR)));
+		
+		log("Select Date");
+		DateFormat dateFormat = new SimpleDateFormat("d");
+		cal.setTime(new Date());
+		String currentDate=dateFormat.format(cal.getTime());
+		WebElement date = driver.findElement(By.xpath(
+				"//*[@id=\"page-content-container\"]/div/header/div[2]/div[1]/div[2]/div[2]/div/div/div[2]/div[2]/div/div[text()="
+						+ "'" + currentDate + "'" + "]"));
+		date.click();
+		log("click on date");
+		Thread.sleep(10000);
+	}
+    
+    public void selectRequiredPage(int reqPageNo) throws InterruptedException{
+		IHGUtil.PrintMethodName();
+		for(int i=1;i<=10;i++) {
+			String getPageNo=jumpToNextPage();
+			int page=Integer.parseInt(getPageNo);
+			Thread.sleep(3000);
+			if(reqPageNo==page) {
+				log("User is on page no: "+page);
+				break;
+			}
+		}
+		Thread.sleep(5000);
+    }
+    
+    public void selectFirstPatient() {
+    	IHGUtil.PrintMethodName();
+    	IHGUtil.waitForElement(driver, 5, selectFirstPatient);
+    	jse.executeScript("arguments[0].click();", selectFirstPatient);
+	}
+    
+    public String jumpToPreviousPage() throws InterruptedException {
+    	IHGUtil.PrintMethodName();
+		IHGUtil.waitForElement(driver, 10, previousPage);
+		jse.executeScript("arguments[0].click();", previousPage);
+		Thread.sleep(10000);
+		String pageNo = jumpToPage.getAttribute("value");
+		return pageNo;
+	}
+
 
 
 }
