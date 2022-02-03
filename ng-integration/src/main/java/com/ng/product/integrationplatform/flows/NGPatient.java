@@ -51,7 +51,7 @@ public class NGPatient {
 	        else
 	            newpatient.setDateOfBirth(sdf.format(dateofbirth));
 	        
-	        String strEmailAddress = newpatient.getLastName() + "@mailinator.com";
+	        String strEmailAddress = newpatient.getLastName() + "@yopmail.com";
 	        
 	        if(mode.equalsIgnoreCase("withoutEmailaddress"))
 	        	newpatient.setEmailAddress("");
@@ -90,7 +90,7 @@ public class NGPatient {
             	newpatient.setLastName("trustedPatient" + (new Date()).getTime());
             	newpatient.setSex("F");
             	newpatient.setZip(strZipCode);
-            	newpatient.setEmailAddress(newpatient.getFirstName()+"@mailinator.com");
+            	newpatient.setEmailAddress(newpatient.getFirstName()+"@yopmail.com");
             	
      	        String dob = propertyLoaderObj.getProperty("dob.day")+"/"+propertyLoaderObj.getProperty("dob.month")+"/"+propertyLoaderObj.getProperty("dob.year");
      	        Date trustedPatientdob=new SimpleDateFormat("dd/MM/yyyy").parse(dob);

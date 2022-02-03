@@ -69,8 +69,6 @@ public class ManageAppointmentType extends PSS2MenuPage {
 	@FindBy(how = How.XPATH, using = "//*[@name='apptTimeMark']")
 	private WebElement timeMarkOption;
 	
-	//@FindBy(how = How.XPATH, using = "//*[@id='tabX13']/form/fieldset[2]/div/div/button[1]")
-	
 	@FindBy(how = How.XPATH, using = "//*[@id='tabX33']/form/fieldset[2]/div/div/button[1]")
 	private WebElement saveConfig;
 
@@ -174,10 +172,11 @@ public class ManageAppointmentType extends PSS2MenuPage {
 
 	}
 	
-	public void timeMark(String timeMarkValue) {
+	public void timeMark(String timeMarkValue) throws InterruptedException {
 		Select selectOptions = new Select(timeMarkOption);
 		selectOptions.selectByValue(timeMarkValue);
 		timeMarkOption.click();
+		scrollAndWait(0, 1000, 100);
 		saveConfig.click();
 	}
 	

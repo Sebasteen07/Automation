@@ -18,6 +18,7 @@ import com.intuit.ifs.csscat.core.utils.Log4jUtil;
 import com.intuit.ihg.product.integrationplatform.utils.PropertyFileLoader;
 import com.intuit.ihg.product.integrationplatform.utils.RestUtils;
 import com.medfusion.common.utils.Mailinator;
+import com.medfusion.common.utils.YopMail;
 import com.medfusion.product.object.maps.patientportal2.page.JalapenoLoginEnrollment;
 import com.medfusion.product.object.maps.patientportal2.page.NGLoginPage;
 import com.medfusion.product.object.maps.patientportal2.page.AccountPage.JalapenoAccountPage;
@@ -55,13 +56,13 @@ public class NGIntegrationE2EEnterpriseEnrollmentTests extends BaseTestNGWebDriv
 	String enterprisebaseURL;
 	NGAPIFlows ngAPIFlows;
 
-	private static final String INVITE_EMAIL_SUBJECT_REPRESENTATIVE = "You're invited to create a Portal account to be a trusted representative of a patient at ";
+	private static final String INVITE_EMAIL_SUBJECT_REPRESENTATIVE = "You're invited to create a Portal account to be a trusted representative of a patient at";
 	private static final String INVITE_EMAIL_BUTTON_TEXT = "Sign Up!";
-	private static final String INVITE_EMAIL_SUBJECT_PATIENT = "You're invited to create a Patient Portal account at ";
+	private static final String INVITE_EMAIL_SUBJECT_PATIENT = "You're invited to create a Patient Portal account at";
 	private static final String WELCOME_EMAIL_BODY_PATTERN_PRACTICE = "Thank you for creating an account with PracticeName";
 	private static final String WELCOME_EMAIL_SUBJECT_PATIENT = "New Member Confirmation";
 	private static final String WELCOME_EMAIL_BUTTON_TEXT = "Visit our patient portal now";
-	private static final String NEWDEPENDENT_ACTIVATION_MESSAGE = "You are invited to create a Patient Portal guardian account at ";
+	private static final String NEWDEPENDENT_ACTIVATION_MESSAGE = "You are invited to create a Patient Portal guardian account at";
 
 	@BeforeClass(alwaysRun = true)
 	public void prepareTestData() throws Throwable {
@@ -109,7 +110,7 @@ public class NGIntegrationE2EEnterpriseEnrollmentTests extends BaseTestNGWebDriv
 
 		Thread.sleep(90000);
 		logStep("Waiting for welcome mail at patient inbox from second practice");
-		String visitPortal = new Mailinator().getLinkFromEmail(createPatient.getEmailAddress(),
+		String visitPortal = new YopMail(driver).getLinkFromEmail(createPatient.getEmailAddress(),
 				WELCOME_EMAIL_SUBJECT_PATIENT, WELCOME_EMAIL_BUTTON_TEXT, 80);
 		assertNotNull(visitPortal, "Error: Portal link not found.");
 		log("Patient portal url is " + visitPortal);
@@ -153,8 +154,8 @@ public class NGIntegrationE2EEnterpriseEnrollmentTests extends BaseTestNGWebDriv
 				+ propertyLoaderObj.getProperty("practice.name1") + "     :   "
 				+ JalapenoConstants.NEW_PATIENT_ACTIVATION_MESSAGE_LINK_TEXT);
 		Thread.sleep(60000);
-		logStep("Logging into Mailinator and getting Patient Activation url for first Practice");
-		String activationUrlP1 = new Mailinator().getLinkFromEmail(createPatient.getEmailAddress(),
+		logStep("Logging into YopMail and getting Patient Activation url for first Practice");
+		String activationUrlP1 = new YopMail(driver).getLinkFromEmail(createPatient.getEmailAddress(),
 				INVITE_EMAIL_SUBJECT_PATIENT + propertyLoaderObj.getProperty("practice.name1"),
 				JalapenoConstants.NEW_PATIENT_ACTIVATION_MESSAGE_LINK_TEXT, 40);
 		assertNotNull(activationUrlP1, "Error: Activation link not found.");
@@ -179,7 +180,7 @@ public class NGIntegrationE2EEnterpriseEnrollmentTests extends BaseTestNGWebDriv
 		mails.add(new ExpectedEmail(createPatient.getEmailAddress(), WELCOME_EMAIL_SUBJECT_PATIENT,
 				WELCOME_EMAIL_BODY_PATTERN_PRACTICE.replace("PracticeName",
 						propertyLoaderObj.getProperty("practiceName3"))));
-		assertTrue(new Mailinator().areAllMessagesInInbox(mails, 80));
+		assertTrue(new YopMail(driver).areAllMessagesInInbox(mails, 80));
 
 		Thread.sleep(10000);
 		logStep("Waiting for welcome mail at patient inbox from second practice");
@@ -409,13 +410,13 @@ public class NGIntegrationE2EEnterpriseEnrollmentTests extends BaseTestNGWebDriv
 				propertyLoaderObj.getNGEnterpiseEnrollmentE1P4(),
 				propertyLoaderObj.getProperty("integration.practice.id.e1.p4"));
 
-		Mailinator mail = new Mailinator();
+		YopMail mail = new YopMail(driver);
 		Thread.sleep(15000);
 		log(createPatient.getEmailAddress() + "   :    " + INVITE_EMAIL_SUBJECT_PATIENT
 				+ propertyLoaderObj.getProperty("practiceName4") + "     :   "
 				+ JalapenoConstants.NEW_PATIENT_ACTIVATION_MESSAGE_LINK_TEXT);
 		Thread.sleep(60000);
-		logStep("Logging into Mailinator and getting Patient Activation url for first Practice");
+		logStep("Logging into YopMail and getting Patient Activation url for first Practice");
 		String activationUrl = mail.getLinkFromEmail(createPatient.getEmailAddress(),
 				INVITE_EMAIL_SUBJECT_PATIENT + propertyLoaderObj.getProperty("practiceName4"),
 				JalapenoConstants.NEW_PATIENT_ACTIVATION_MESSAGE_LINK_TEXT, 80);
@@ -630,8 +631,8 @@ public class NGIntegrationE2EEnterpriseEnrollmentTests extends BaseTestNGWebDriv
 		log(createPatient.getEmailAddress() + "   :    " + WELCOME_EMAIL_SUBJECT_PATIENT + "     :   "
 				+ WELCOME_EMAIL_BUTTON_TEXT);
 		Thread.sleep(60000);
-		logStep("Logging into Mailinator and getting Patient Activation url for first Practice");
-		String visitPortal = new Mailinator().getLinkFromEmail(createPatient.getEmailAddress(),
+		logStep("Logging into YopMail and getting Patient Activation url for first Practice");
+		String visitPortal = new YopMail(driver).getLinkFromEmail(createPatient.getEmailAddress(),
 				WELCOME_EMAIL_SUBJECT_PATIENT, WELCOME_EMAIL_BUTTON_TEXT, 80);
 		assertNotNull(visitPortal, "Error: Portal link not found.");
 		log("Patient portal url is " + visitPortal);
@@ -650,7 +651,7 @@ public class NGIntegrationE2EEnterpriseEnrollmentTests extends BaseTestNGWebDriv
 				trustedPatient.getEmailAddress());
 
 		log("Waiting for invitation email");
-		String patientTrustedRepresentativeUrl = new Mailinator().getLinkFromEmail(trustedPatient.getEmailAddress(),
+		String patientTrustedRepresentativeUrl = new YopMail(driver).getLinkFromEmail(trustedPatient.getEmailAddress(),
 				INVITE_EMAIL_SUBJECT_REPRESENTATIVE, INVITE_EMAIL_BUTTON_TEXT, 80);
 		assertNotNull(patientTrustedRepresentativeUrl, "Error: Activation patients link not found.");
 
@@ -725,8 +726,8 @@ public class NGIntegrationE2EEnterpriseEnrollmentTests extends BaseTestNGWebDriv
 		log(createPatient.getEmailAddress() + "   :    " + WELCOME_EMAIL_SUBJECT_PATIENT + "     :   "
 				+ WELCOME_EMAIL_BUTTON_TEXT);
 		Thread.sleep(60000);
-		logStep("Logging into Mailinator and getting Patient Activation url for second Practice");
-		String visitPortal = new Mailinator().getLinkFromEmail(createPatient.getEmailAddress(),
+		logStep("Logging into YopMail and getting Patient Activation url for second Practice");
+		String visitPortal = new YopMail(driver).getLinkFromEmail(createPatient.getEmailAddress(),
 				WELCOME_EMAIL_SUBJECT_PATIENT, WELCOME_EMAIL_BUTTON_TEXT, 80);
 		assertNotNull(visitPortal, "Error: Portal link not found.");
 		log("Patient portal url for practice 1 is " + visitPortal);
@@ -736,8 +737,8 @@ public class NGIntegrationE2EEnterpriseEnrollmentTests extends BaseTestNGWebDriv
 		log(trustedPatient.getEmailAddress() + "   :    " + WELCOME_EMAIL_SUBJECT_PATIENT + "     :   "
 				+ WELCOME_EMAIL_BUTTON_TEXT);
 		Thread.sleep(60000);
-		logStep("Logging into Mailinator and getting Patient Activation url for second Practice");
-		String Portal2URL = new Mailinator().getLinkFromEmail(trustedPatient.getEmailAddress(),
+		logStep("Logging into YopMail and getting Patient Activation url for second Practice");
+		String Portal2URL = new YopMail(driver).getLinkFromEmail(trustedPatient.getEmailAddress(),
 				WELCOME_EMAIL_SUBJECT_PATIENT, WELCOME_EMAIL_BUTTON_TEXT, 80);
 		assertNotNull(Portal2URL, "Error: Portal link not found.");
 		log("Patient portal url for practice 2 is " + Portal2URL);
@@ -760,7 +761,7 @@ public class NGIntegrationE2EEnterpriseEnrollmentTests extends BaseTestNGWebDriv
 				trustedPatient.getEmailAddress());
 
 		log("Waiting for invitation email");
-		String patientTrustedRepresentativeUrl = new Mailinator().getLinkFromEmail(trustedPatient.getEmailAddress(),
+		String patientTrustedRepresentativeUrl = new YopMail(driver).getLinkFromEmail(trustedPatient.getEmailAddress(),
 				INVITE_EMAIL_SUBJECT_REPRESENTATIVE, INVITE_EMAIL_BUTTON_TEXT, 15);
 		assertNotNull(patientTrustedRepresentativeUrl, "Error: Activation patients link not found.");
 
@@ -830,8 +831,8 @@ public class NGIntegrationE2EEnterpriseEnrollmentTests extends BaseTestNGWebDriv
 		log(createPatient.getEmailAddress() + "   :    " + WELCOME_EMAIL_SUBJECT_PATIENT + "     :   "
 				+ WELCOME_EMAIL_BUTTON_TEXT);
 		Thread.sleep(60000);
-		logStep("Logging into Mailinator and getting Patient Activation url for first Practice");
-		String visitPortal = new Mailinator().getLinkFromEmail(createPatient.getEmailAddress(),
+		logStep("Logging into YopMail and getting Patient Activation url for first Practice");
+		String visitPortal = new YopMail(driver).getLinkFromEmail(createPatient.getEmailAddress(),
 				WELCOME_EMAIL_SUBJECT_PATIENT, WELCOME_EMAIL_BUTTON_TEXT, 80);
 		assertNotNull(visitPortal, "Error: Portal link not found.");
 		log("Patient portal url for practice 5 is " + visitPortal);
@@ -841,8 +842,8 @@ public class NGIntegrationE2EEnterpriseEnrollmentTests extends BaseTestNGWebDriv
 		log(trustedPatient.getEmailAddress() + "   :    " + WELCOME_EMAIL_SUBJECT_PATIENT + "     :   "
 				+ WELCOME_EMAIL_BUTTON_TEXT);
 		Thread.sleep(60000);
-		logStep("Logging into Mailinator and getting Patient Activation url for first Practice");
-		String Portal4URL = new Mailinator().getLinkFromEmail(trustedPatient.getEmailAddress(),
+		logStep("Logging into YopMail and getting Patient Activation url for first Practice");
+		String Portal4URL = new YopMail(driver).getLinkFromEmail(trustedPatient.getEmailAddress(),
 				WELCOME_EMAIL_SUBJECT_PATIENT, WELCOME_EMAIL_BUTTON_TEXT, 80);
 		assertNotNull(Portal4URL, "Error: Portal link not found.");
 		log("Patient portal url for practice 4 is " + Portal4URL);
@@ -861,7 +862,7 @@ public class NGIntegrationE2EEnterpriseEnrollmentTests extends BaseTestNGWebDriv
 				trustedPatient.getEmailAddress());
 
 		log("Waiting for invitation email");
-		String patientTrustedRepresentativeUrl = new Mailinator().getLinkFromEmail(trustedPatient.getEmailAddress(),
+		String patientTrustedRepresentativeUrl = new YopMail(driver).getLinkFromEmail(trustedPatient.getEmailAddress(),
 				INVITE_EMAIL_SUBJECT_REPRESENTATIVE, INVITE_EMAIL_BUTTON_TEXT, 15);
 		assertNotNull(patientTrustedRepresentativeUrl, "Error: Activation patients link not found.");
 
@@ -947,13 +948,13 @@ public class NGIntegrationE2EEnterpriseEnrollmentTests extends BaseTestNGWebDriv
 				propertyLoaderObj.getNGEnterpiseEnrollmentE2P1(),
 				propertyLoaderObj.getProperty("integration.practice.id.e2.p1"));
 
-		Mailinator mail = new Mailinator();
+		YopMail mail = new YopMail(driver);
 		Thread.sleep(15000);
 		log(createPatient.getEmailAddress() + "   :    " + INVITE_EMAIL_SUBJECT_PATIENT
 				+ propertyLoaderObj.getProperty("e2.practice.name1") + "     :   "
 				+ JalapenoConstants.NEW_PATIENT_ACTIVATION_MESSAGE_LINK_TEXT);
 		Thread.sleep(60000);
-		logStep("Logging into Mailinator and getting Patient Activation url for first Practice");
+		logStep("Logging into YopMail and getting Patient Activation url for first Practice");
 		String activationUrl = mail.getLinkFromEmail(createPatient.getEmailAddress(),
 				INVITE_EMAIL_SUBJECT_PATIENT + propertyLoaderObj.getProperty("e2.practice.name1"),
 				JalapenoConstants.NEW_PATIENT_ACTIVATION_MESSAGE_LINK_TEXT, 80);
@@ -1090,7 +1091,7 @@ public class NGIntegrationE2EEnterpriseEnrollmentTests extends BaseTestNGWebDriv
 		NGAPIFlows.addCharttoProvider(propertyLoaderObj.getNGE1P3Location(), propertyLoaderObj.getNGE1P3Provider(),
 				dependentperson_id);
 
-		Mailinator mail = new Mailinator();
+		YopMail mail = new YopMail(driver);
 		Thread.sleep(15000);
 		logStep("Verify the Guardian mail");
 		Thread.sleep(15000);
@@ -1188,7 +1189,7 @@ public class NGIntegrationE2EEnterpriseEnrollmentTests extends BaseTestNGWebDriv
 
 		String guardianFirstName = "Guardian" + (new Date()).getTime();
 		String guardianLastName = "Guardian" + (new Date()).getTime();
-		System.setProperty("ParentEmailAddress", guardianFirstName + "@mailinator.com");
+		System.setProperty("ParentEmailAddress", guardianFirstName + "@yopmail.com");
 
 		NGAPIUtils.updateLoginDefaultTo("EnterpriseGateway", propertyLoaderObj.getNGEnterpiseEnrollmentE1(),
 				propertyLoaderObj.getNGEnterpiseEnrollmentE1P1());
@@ -1241,7 +1242,7 @@ public class NGIntegrationE2EEnterpriseEnrollmentTests extends BaseTestNGWebDriv
 		NGAPIFlows.addCharttoProvider(propertyLoaderObj.getNGE1P3Location(), propertyLoaderObj.getNGE1P3Provider(),
 				dependentperson_id);
 
-		Mailinator mail = new Mailinator();
+		YopMail mail = new YopMail(driver);
 		Thread.sleep(15000);
 		logStep("Verify the dependent mail");
 		Log4jUtil.log(createdependent.getEmailAddress() + "   :    " + NEWDEPENDENT_ACTIVATION_MESSAGE + "     :   "

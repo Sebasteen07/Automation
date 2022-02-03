@@ -35,7 +35,7 @@ public class NotificationsPage extends BasePageObject {
 	@FindBy(how = How.XPATH, using = "//*[@class='mf-body-header mf-appointments-header']/h1[text()='Notifications']")
 	private WebElement notificationTitle;
 
-	@FindBy(how = How.CSS, using = "div.notification-features-checkbox > div:nth-child(1) > input")
+	@FindBy(how = How.XPATH, using = "(//*[@class='features-checkbox'])[1]")
 	private WebElement broadcastMessagingCheckbox;
 
 	@FindBy(how = How.XPATH, using = "//*[@id='off']")
@@ -595,6 +595,9 @@ public class NotificationsPage extends BasePageObject {
 
 	@FindBy(how = How.XPATH, using = "(//input[@type='checkbox'])[2]")
 	private WebElement selectOnePatient;
+	
+	@FindBy(how = How.XPATH, using = "(//input[@class='mf-notification-checkbox'])[2]")
+	private WebElement curbsideCheckinRemCheckbox;
 
 	public NotificationsPage(WebDriver driver) {
 		super(driver);
@@ -2188,6 +2191,32 @@ public class NotificationsPage extends BasePageObject {
 		Random random = new Random();
 		int randamNo = random.nextInt(59);
 		return Appointment.minutes = String.valueOf(randamNo);
+	}
+	
+	public void disableCurbsideCheckinRemCheckbox() throws InterruptedException {
+		IHGUtil.PrintMethodName();
+		IHGUtil.waitForElement(driver, 5, curbsideCheckinRemCheckbox);
+		boolean selected = curbsideCheckinRemCheckbox.isSelected();
+		if (selected) {
+			curbsideCheckinRemCheckbox.click();
+			log("Curbside checkin reminder checkbox disabled");
+		} else if (!selected) {
+			log("Curbside checkin reminder checkbox is already Enabled");
+		}
+		Thread.sleep(10000);
+	}
+	
+	public void enableCurbsideCheckinRemCheckbox() throws InterruptedException {
+		IHGUtil.PrintMethodName();
+		IHGUtil.waitForElement(driver, 5, curbsideCheckinRemCheckbox);
+		boolean selected = curbsideCheckinRemCheckbox.isSelected();
+		if (selected) {
+			log("Curbside checkin reminder checkbox is already Enabled");
+		} else if (!selected) {
+			curbsideCheckinRemCheckbox.click();
+			log("Curbside checkin reminder checkbox Enabled");
+		}
+		Thread.sleep(10000);
 	}
 
 }

@@ -358,7 +358,7 @@ public class PSS2PMFeatureNGTests04 extends BaseTestNG {
 		apv.responseCodeValidation(response, 200);		
 		
 		String patientId = propertyData.getProperty("patient.id.pm.ng");
-		String bookid = propertyData.getProperty("availableslot.bookid.pm.ng03");
+		String bookid = propertyData.getProperty("availableslot.bookid.pm.ng");
 		String locationid = propertyData.getProperty("availableslot.locationid.pm.ng");
 		String apptid = propertyData.getProperty("availableslot.apptid.pm.ng");
 		

@@ -146,7 +146,6 @@ public class PostAPIRequestPMNG extends BaseTestNGWebDriver {
 		return access_Token;
 	}
 
-
 	public Response upcomingConfiguration(String baseUrl, Map<String, String> Header, String practiceId) {
 		RestAssured.baseURI = baseUrl;
 		Response response = given().log().all().when().get(practiceId + "/upcomingconfiguration").then().log().all()
@@ -495,9 +494,7 @@ public class PostAPIRequestPMNG extends BaseTestNGWebDriver {
 			response = given().when().headers(Header).body(b).log().all().when()
 					.post(practiceId + "/scheduleappointment/" + patientId).then().log().all().extract().response();
 		}
-
 		return response;
-
 	}
 
 	public Response appointmentTypesByRule(String baseUrl, String b, Map<String, String> Header, String practiceId,
