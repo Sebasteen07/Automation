@@ -1505,16 +1505,8 @@ public class PropertyFileLoader {
 		return property.getProperty("portal.category.type");
 	}
 
-	public String getAppointmentPayload() {
-		return property.getProperty("precheck.appointment.payload");
-	}
-
 	public String getPreCheckAppointmentRestUrl() {
 		return property.getProperty("appointment.resturl");
-	}
-
-	public String getBasicAccesstokenPrecheck() {
-		return property.getProperty("basic.acesstoken.precheck");
 	}
 
 	public String getPreCheckZipCode() {

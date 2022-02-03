@@ -1,29 +1,24 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<suite name = "Integration-Platform-Regression" verbose = "2" >
-<listeners>
-  <listener class-name="com.intuit.ifs.csscat.core.TestValidationErrorListener" />
-  <listener class-name="org.uncommons.reportng.HTMLReporter" />
-  <listener class-name="org.uncommons.reportng.JUnitXMLReporter" />
-  <listener class-name="com.epam.reportportal.testng.ReportPortalTestNGListener" />
-</listeners>
- 	
-<test name = "Integration-Platform-Regression" >
-	<classes>
-		<class name = "com.intuit.ihg.product.integrationplatform.test.IntegrationPlatformRegressionTests" />
-		<methods>
-				<include name="testAppoinmentType"/>
-				<include name="testUpdatePharmacies"/>
-				<include name="testAddandDeletePharmacies"/>
-				<include name="testAppointmentRequestForExistingPatientV3"/>
-				<include name="testAppointmentRequestForNewSelfPatientV3"/>
-				<include name="testEHDCSendCCDLargeSize"/>
-				<include name="testE2ERxMedication20"/>
-				<include name="testAppointmentRequestForExistingPatient"/>
-				<include name="testLastLoginEvent"/>
-				<include name="testOnDemandHealthData"/>
-				<include name="testAMDCSecureMessageWithAttachmentRefID"/>
-				<include name="testBulkAdminMessageWithAttachmentRefID"/>
-      		</methods>
-	</classes>
-</test>
+<suite name="Integration-Platform-Regression3" verbose="2">
+	<listeners>
+		<listener
+			class-name="com.intuit.ifs.csscat.core.TestValidationErrorListener" />
+		<listener class-name="org.uncommons.reportng.HTMLReporter" />
+		<listener
+			class-name="org.uncommons.reportng.JUnitXMLReporter" />
+		<listener
+			class-name="com.epam.reportportal.testng.ReportPortalTestNGListener" />
+	</listeners>
+
+	<test name="Integration-Platform-Regression">
+		<groups>
+			<run>
+				<include name="RegressionTests3" />
+			</run>
+		</groups>
+		<classes>
+			<class
+				name="com.intuit.ihg.product.integrationplatform.test.IntegrationPlatformRegressionTests" />
+		</classes>
+	</test>
 </suite>
