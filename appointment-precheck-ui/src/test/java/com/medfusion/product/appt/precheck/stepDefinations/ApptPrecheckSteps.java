@@ -1291,9 +1291,9 @@ public class ApptPrecheckSteps extends BaseTest {
 	public void going_to_second_page_and_redirecting_to_page_one() throws InterruptedException {
 		scrollAndWait(0, 3000, 5000);
 		log("switch on second page");
-		assertEquals(apptPage.jumbToNextPage(), "2");
+		assertEquals(apptPage.jumpToNextPage(), "2");
 		log("Redirecting to page one");
-		assertEquals(apptPage.jumbToPreviousPage(), "1");
+		assertEquals(apptPage.jumpToPreviousPage(), "1");
 	}
 
 	@Then("verify system should show the selected banner and appointment count should be same on brodcast button by clicking action button")
@@ -1316,7 +1316,7 @@ public class ApptPrecheckSteps extends BaseTest {
 		apptPage.selectAllCheckboxes();
 		scrollAndWait(0, 2000, 5000);
 		log("switch on second page");
-		assertEquals(apptPage.jumbToNextPage(), "2");
+		assertEquals(apptPage.jumpToNextPage(), "2");
 	}
 
 	@Then("verify after clicking on action only create button should be enabled")
@@ -1374,9 +1374,9 @@ public class ApptPrecheckSteps extends BaseTest {
 	public void going_to_second_page_and_coming_back_to_page_one() throws InterruptedException {
 		scrollAndWait(0, 2000, 5000);
 		log("switch on second page");
-		assertEquals(apptPage.jumbToNextPage(), "2");
+		assertEquals(apptPage.jumpToNextPage(), "2");
 		log("Redirecting to page one");
-		assertEquals(apptPage.jumbToPreviousPage(), "1");
+		assertEquals(apptPage.jumpToPreviousPage(), "1");
 	}
 
 	@Then("Verify system does not show selected records and in action button only create button should be enabled")
@@ -3601,9 +3601,9 @@ public class ApptPrecheckSteps extends BaseTest {
 		apptPage.clickOnRefreshTab();
 	}
 
-	@Then("verify user is navigate next and back through arrow button")
-	public void verify_user_is_navigate_next_and_back_through_arrow_button() throws InterruptedException {
-		assertEquals(apptPage.jumbToNextPage(), "6", "Not navigate to next page");
+	@Then("I verify that I am still on page five and arrows are working")
+	public void I_verify_that_I_am_still_on_page_five_and_arrows_are_working() throws InterruptedException {
+		assertEquals(apptPage.jumpToNextPage(), "6", "Not navigate to next page");
 		apptPage.jumpToPreviousPage();
 		log("again jump no previous page");
 		String previousPage = apptPage.jumpToPreviousPage();

@@ -973,4 +973,4 @@ Feature: Test fuctionality of Appointment precheck
     When I select start date and time and navigate on fifth page
     And I select a appointment and send manual reminder
     And I click on refresh button from apt dashboard and lands on same page
-    Then verify user is navigate next and back through arrow button
+    Then I verify that I am still on page five and arrows are working

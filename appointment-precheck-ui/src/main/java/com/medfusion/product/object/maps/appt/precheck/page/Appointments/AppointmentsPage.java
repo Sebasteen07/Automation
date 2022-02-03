@@ -1300,22 +1300,6 @@ public class AppointmentsPage extends BasePageObject {
 		return selectBannerMessage.getText();
 	}
 
-	public String jumbToNextPage() throws InterruptedException {
-		IHGUtil.waitForElement(driver, 10, jumpToNextPage);
-		jse.executeScript("arguments[0].click();", jumpToNextPage);
-		Thread.sleep(10000);
-		String pageNo = jumpToPage.getAttribute("value");
-		return pageNo;
-	}
-
-	public String jumbToPreviousPage() throws InterruptedException {
-		IHGUtil.waitForElement(driver, 10, previousPage);
-		jse.executeScript("arguments[0].click();", previousPage);
-		Thread.sleep(10000);
-		String pageNo = jumpToPage.getAttribute("value");
-		return pageNo;
-	}
-
 	public String getBroadcastMessageButtonText() {
 		IHGUtil.waitForElement(driver, 10, broadcastMessageButton);
 		return broadcastMessageButton.getText();
