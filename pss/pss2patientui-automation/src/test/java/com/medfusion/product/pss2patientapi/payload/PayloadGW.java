@@ -385,7 +385,7 @@ public class PayloadGW extends BaseTestNGWebDriver {
 				+ "\"locationId\": \"1019\",\r\n"
 				+ "\"appointmentCategoryId\": \"1087\",\r\n"
 				+ "\"appointmentTypeId\": \"1086\",\r\n"
-				+ "\"duration\": 15,\r\n"
+				+ "\"duration\": 0,\r\n"
 				+ "\"comments\": \"~(pss) 231701 03/12/2021 04:34:27~\",\r\n"
 				+ "\"startDateTime\": \""+startdate+"\",\r\n"
 				+ " \"endDateTime\": \""+enddate+"\",\r\n"

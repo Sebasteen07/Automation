@@ -375,17 +375,19 @@ public class PSS2PatientPortalAcceptanceTests extends BaseTestNGWebDriver {
 		PSSAdminUtils adminUtils = new PSSAdminUtils();
 		adminUtils.adminSettingsLoginless(driver, adminuser, testData, PSSConstants.LOGINLESS);
 		
-		APIVerification apv= new APIVerification();
-		
-		Response response = postAPIRequestAM.patientInfoPost(practiceId, payloadAM.patientInfoWithOptionalLLNG());
-		apv.responseCodeValidation(response, 200);
+//		APIVerification apv= new APIVerification();
+//		
+//		Response response = postAPIRequestAM.patientInfoPost(practiceId, payloadAM.patientInfoWithOptionalLLNG());
+//		apv.responseCodeValidation(response, 200);
 		
 		String rule = adminuser.getRule();
 		rule = rule.replaceAll(" ", "");
 		log("Step 3: Move to PSS patient Portal 2.0 to book an Appointment");
 		PSSPatientUtils psspatientutils = new PSSPatientUtils();
 		log("Step 4: Login to PSS Appointment");
+		log("__________"+testData.getUrlLoginLess());
 		DismissPage dismissPage = new DismissPage(driver, testData.getUrlLoginLess());
+		
 		Thread.sleep(1000);
 		LoginlessPatientInformation loginlessPatientInformation = dismissPage.clickDismiss();
 		log("***LoginlessPatientInformation****");
@@ -3930,17 +3932,17 @@ public class PSS2PatientPortalAcceptanceTests extends BaseTestNGWebDriver {
 			assertEquals(date, psspatientutils.currentESTDate(testData), "Slots are Not Avaliable for current date");
 		}
 		log("Done Confirmation");
-		log("Appointment first time is   " + aptDateTime.getfirsttime());
-		Thread.sleep(6000);
-		ConfirmationPage confirmationpage = aptDateTime.selectAppointmentDateTime(testData.getIsNextDayBooking());
-		confirmationpage.dateConfirm();
-		log("Current plus Lead Date is " + psspatientutils.currentDateandLeadDay(testData));
-		log("Confirmation Date    " + confirmationpage.dateConfirm());
-		assertEquals(psspatientutils.currentDateandLeadDay(testData), confirmationpage.dateConfirm());
-		log("Current Timezone On AdminUi " + testData.getCurrentTimeZone());
-		log("Confirmation Time is " + confirmationpage.timeConfirm());
-		log("Is Confirmation time is Valid   " + psspatientutils.isValidTime(confirmationpage.timeConfirm()));
-		log("Current time and lead time is  " + psspatientutils.leadTime(testData));
+//		log("Appointment first time is   " + aptDateTime.getfirsttime());
+//		Thread.sleep(6000);
+//		ConfirmationPage confirmationpage = aptDateTime.selectAppointmentDateTime(testData.getIsNextDayBooking());
+//		confirmationpage.dateConfirm();
+//		log("Current plus Lead Date is " + psspatientutils.currentDateandLeadDay(testData));
+//		log("Confirmation Date    " + confirmationpage.dateConfirm());
+//		assertEquals(psspatientutils.currentDateandLeadDay(testData), confirmationpage.dateConfirm());
+//		log("Current Timezone On AdminUi " + testData.getCurrentTimeZone());
+//		log("Confirmation Time is " + confirmationpage.timeConfirm());
+//		log("Is Confirmation time is Valid   " + psspatientutils.isValidTime(confirmationpage.timeConfirm()));
+//		log("Current time and lead time is  " + psspatientutils.leadTime(testData));
 	}
 
 	@Test(enabled = true, groups = { "AcceptanceTests" }, retryAnalyzer = RetryAnalyzer.class)
@@ -4461,7 +4463,7 @@ public class PSS2PatientPortalAcceptanceTests extends BaseTestNGWebDriver {
 		Appointment testData = new Appointment();
 		AdminUser adminuser = new AdminUser();
 
-		propertyData.setAdminNG24249(adminuser);
+		propertyData.setAdminNG(adminuser);
 		propertyData.setAppointmentResponseNG(testData);
 
 		PSSAdminUtils adminUtils = new PSSAdminUtils();
@@ -7090,8 +7092,8 @@ public class PSS2PatientPortalAcceptanceTests extends BaseTestNGWebDriver {
 		PSSPropertyFileLoader propertyData = new PSSPropertyFileLoader();
 		Appointment testData = new Appointment();
 		AdminUser adminuser = new AdminUser();
-		propertyData.setAdminAT(adminuser);
-		propertyData.setAppointmentResponseAT(testData);
+		propertyData.setAdminNG(adminuser);
+		propertyData.setAppointmentResponseNG(testData);
 		PSSPatientUtils psspatientutils = new PSSPatientUtils();	
 
 		
@@ -7116,10 +7118,13 @@ public class PSS2PatientPortalAcceptanceTests extends BaseTestNGWebDriver {
         Response responseRulePost = postAPIRequestAM.resourceConfigRulePost(practiceId,
         payloadAM.resourceConfigRulePutPayloadLT());
         aPIVerification.responseCodeValidation(responseRulePost, 200);
-        
-        Response responseRulePostTL = postAPIRequestAM.resourceConfigRulePost(practiceId,
-                payloadAM.resourceConfigRulePostPayloadTL());
-                aPIVerification.responseCodeValidation(responseRulePostTL, 200);
+
+		Response responseRulePostTL = postAPIRequestAM.resourceConfigRulePost(practiceId,
+				payloadAM.resourceConfigRulePostPayloadTL());
+		aPIVerification.responseCodeValidation(responseRulePostTL, 200);
+
+		Response responseShowOff = postAPIRequestAM.resourceConfigSavePost(practiceId, payloadAM.providerOff());
+		aPIVerification.responseCodeValidation(responseShowOff, 200);
 
 		PSSAdminUtils adminUtils = new PSSAdminUtils();
 		logStep("Login to PSS 2.0 Admin portal");
@@ -7147,6 +7152,8 @@ public class PSS2PatientPortalAcceptanceTests extends BaseTestNGWebDriver {
 		logStep("Date selected is for App" + date);
 			assertEquals(date, psspatientutils.currentDateandLeadDay(testData));
 	}
+	
+	
 	
 	@Test(enabled = true, groups = { "AcceptanceTests" }, retryAnalyzer = RetryAnalyzer.class)
 	public void testLeadTimeShowProviderOffAT() throws Exception {
@@ -9254,4 +9261,6 @@ public class PSS2PatientPortalAcceptanceTests extends BaseTestNGWebDriver {
 		log("current date is" + psspatientutils.currentESTDate(testData));
 		assertEquals(date, psspatientutils.currentESTDate(testData));
 	}
+	
+	
 }
