@@ -354,8 +354,8 @@ public static String nextAvailable_New() {
 		
 	public static String addPatient() {
 		String addPatient="{\r\n"
-				+ "  \"firstName\": \"Rai\",\r\n"
-				+ "  \"lastName\": \"Jeera\",\r\n"
+				+ "  \"firstName\": \"Rai01\",\r\n"
+				+ "  \"lastName\": \"Jeera01\",\r\n"
 				+ "  \"dateOfBirth\": \"01/01/2001\",\r\n"
 				+ "  \"gender\": \"F\",\r\n"
 				+ "  \"emailAddress\": \"Shweta.Sontakke@crossasyst.com\",\r\n"

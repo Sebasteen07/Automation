@@ -46,7 +46,7 @@ public class PSS2NGAdapterWithNGEAPI extends BaseTestNG {
 		postAPIRequest.setupRequestSpecBuilder(propertyData.getProperty("base.url.ng"));
 		log("BASE URL-" + propertyData.getProperty("base.url.ng"));
 		
-		practiceid=propertyData.getProperty("practice.id.ng");
+		practiceid=propertyData.getProperty("practice.id.nge.api");
 	}
 
 	@Test(enabled = true, groups = { "APItest" }, retryAnalyzer = RetryAnalyzer.class)
@@ -65,7 +65,7 @@ public class PSS2NGAdapterWithNGEAPI extends BaseTestNG {
 
 	@Test(enabled = true, groups = { "APItest" }, retryAnalyzer = RetryAnalyzer.class)
 	public void testAvailableSlotsNGPostInvalidPayload() throws IOException, InterruptedException {
-		Response response = postAPIRequest.availableSlots("", propertyData.getProperty("practice.id.ng"));
+		Response response = postAPIRequest.availableSlots("", practiceid);
 		aPIVerification.responseCodeValidation(response, 400);
 	}
 
@@ -74,10 +74,10 @@ public class PSS2NGAdapterWithNGEAPI extends BaseTestNG {
 
 		String edate=pSSPatientUtils.sampleDateTime("MM/dd/yyyy");
 
-		Response response = postAPIRequest.pastApptNG(propertyData.getProperty("practice.id.ng"),
+		Response response = postAPIRequest.pastApptNG(practiceid,
 				PayloadNG.past_appt_payload(propertyData.getProperty("patient.id.ng"),
 						propertyData.getProperty("practice.displayname.ng"),
-						propertyData.getProperty("practice.id.ng"), edate));
+						practiceid, edate));
 		aPIVerification.responseCodeValidation(response, 200);
 		aPIVerification.responseTimeValidation(response);
 		aPIVerification.responseKeyValidationJson(response, "appointmentTypes.name");
@@ -88,7 +88,7 @@ public class PSS2NGAdapterWithNGEAPI extends BaseTestNG {
 	@Test(enabled = true, groups = { "APItest" }, retryAnalyzer = RetryAnalyzer.class)
 	public void testPastApptWithoutPayloadPOST() throws IOException, InterruptedException {
 
-		Response response = postAPIRequest.pastApptNG(propertyData.getProperty("practice.id.ng"), "");
+		Response response = postAPIRequest.pastApptNG(practiceid, "");
 		aPIVerification.responseCodeValidation(response, 400);
 		aPIVerification.responseTimeValidation(response);
 
@@ -97,7 +97,7 @@ public class PSS2NGAdapterWithNGEAPI extends BaseTestNG {
 	@Test(enabled = true, groups = { "APItest" }, retryAnalyzer = RetryAnalyzer.class)
 	public void testnextAvailableSlotPost() throws IOException {
 
-		Response response = postAPIRequest.nextAvailableNG(propertyData.getProperty("practice.id.ng"),
+		Response response = postAPIRequest.nextAvailableNG(practiceid,
 				PayloadNG.nextAvailable_New());
 		aPIVerification.responseCodeValidation(response, 200);
 		aPIVerification.responseTimeValidation(response);
@@ -107,7 +107,7 @@ public class PSS2NGAdapterWithNGEAPI extends BaseTestNG {
 	@Test(enabled = true, groups = { "APItest" }, retryAnalyzer = RetryAnalyzer.class)
 	public void testnextAvailableSlotWithoutBodyPost() throws IOException {
 
-		Response response = postAPIRequest.nextAvailableNG(propertyData.getProperty("practice.id.ng"), "");
+		Response response = postAPIRequest.nextAvailableNG(practiceid, "");
 		aPIVerification.responseCodeValidation(response, 400);
 		aPIVerification.responseTimeValidation(response);
 
@@ -116,7 +116,7 @@ public class PSS2NGAdapterWithNGEAPI extends BaseTestNG {
 	@Test(enabled = true, groups = { "APItest" }, retryAnalyzer = RetryAnalyzer.class)
 	public void testAppointmentStatusGET() throws IOException {
 
-		Response response = postAPIRequest.appointmentStatus(propertyData.getProperty("practice.id.ng"), "49911");
+		Response response = postAPIRequest.appointmentStatus(practiceid, "49911");
 		aPIVerification.responseCodeValidation(response, 200);
 		aPIVerification.responseTimeValidation(response);
 		aPIVerification.responseKeyValidationJson(response, "id");
@@ -129,7 +129,7 @@ public class PSS2NGAdapterWithNGEAPI extends BaseTestNG {
 	@Test(enabled = true, groups = { "APItest" }, retryAnalyzer = RetryAnalyzer.class)
 	public void testAppointmentStatusWithoutPidGET() throws IOException {
 
-		Response response = postAPIRequest.appointmentStatus(propertyData.getProperty("practice.id.ng"), "");
+		Response response = postAPIRequest.appointmentStatus(practiceid, "");
 		aPIVerification.responseCodeValidation(response, 500);
 		aPIVerification.responseTimeValidation(response);
 		JsonPath js = new JsonPath(response.asString());
@@ -140,7 +140,7 @@ public class PSS2NGAdapterWithNGEAPI extends BaseTestNG {
 	@Test(enabled = true, groups = { "APItest" }, retryAnalyzer = RetryAnalyzer.class)
 	public void testAppointmentTypesGET() throws IOException {
 
-		Response response = postAPIRequest.appointmentType(propertyData.getProperty("practice.id.ng"));
+		Response response = postAPIRequest.appointmentType(practiceid);
 		aPIVerification.responseCodeValidation(response, 200);
 		aPIVerification.responseTimeValidation(response);
 		aPIVerification.responseKeyValidation(response, "categoryName");
@@ -175,7 +175,7 @@ public class PSS2NGAdapterWithNGEAPI extends BaseTestNG {
 		JsonPath js = new JsonPath(response.asString());
 		String startDateTime = js.getString("availableSlots[0].startDateTime");
 		String startDateTimeResch = js.getString("availableSlots[1].startDateTime");
-		Response scheduleApptResponse = postAPIRequest.scheduleApptNG(propertyData.getProperty("practice.id.ng"),
+		Response scheduleApptResponse = postAPIRequest.scheduleApptNG(practiceid,
 				PayloadNG.schedule_Payload(startDateTime, propertyData.getProperty("slot.end.time.ng")));
 		aPIVerification.responseCodeValidation(scheduleApptResponse, 200);
 		aPIVerification.responseTimeValidation(scheduleApptResponse);
@@ -183,7 +183,7 @@ public class PSS2NGAdapterWithNGEAPI extends BaseTestNG {
 		aPIVerification.responseKeyValidationJson(scheduleApptResponse, "slotAlreadyTaken");
 		log("Appointment id - " + apptid);
 
-		Response rescheduleResponse = postAPIRequest.rescheduleApptNG(propertyData.getProperty("practice.id.ng"),
+		Response rescheduleResponse = postAPIRequest.rescheduleApptNG(practiceid,
 				PayloadNG.reschedule_Payload(startDateTimeResch,
 						propertyData.getProperty("end.date.time.ng"), propertyData.getProperty("patient.id.ng"),
 						propertyData.getProperty("first.name.ng"), propertyData.getProperty("first.name.ng"), apptid));
@@ -197,7 +197,7 @@ public class PSS2NGAdapterWithNGEAPI extends BaseTestNG {
 	@Test(enabled = true, groups = { "APItest" }, retryAnalyzer = RetryAnalyzer.class)
 	public void testscheduleWithoutBody() throws NullPointerException, Exception {
 
-		Response scheduleApptResponse = postAPIRequest.scheduleApptNG(propertyData.getProperty("practice.id.ng"), "");
+		Response scheduleApptResponse = postAPIRequest.scheduleApptNG(practiceid, "");
 		aPIVerification.responseCodeValidation(scheduleApptResponse, 400);
 		aPIVerification.responseTimeValidation(scheduleApptResponse);
 	}
@@ -205,7 +205,7 @@ public class PSS2NGAdapterWithNGEAPI extends BaseTestNG {
 	@Test(enabled = true, groups = { "APItest" }, retryAnalyzer = RetryAnalyzer.class)
 	public void testRescheduleWithoutBody() throws NullPointerException, Exception {
 
-		Response scheduleApptResponse = postAPIRequest.rescheduleApptNG(propertyData.getProperty("practice.id.ng"), "");
+		Response scheduleApptResponse = postAPIRequest.rescheduleApptNG(practiceid, "");
 		aPIVerification.responseCodeValidation(scheduleApptResponse, 400);
 		aPIVerification.responseTimeValidation(scheduleApptResponse);
 	}
@@ -215,9 +215,9 @@ public class PSS2NGAdapterWithNGEAPI extends BaseTestNG {
 		
 		String startdate = pSSPatientUtils.sampleDateTime("MM/dd/YYYY HH:MM:SS");
 
-		Response response = postAPIRequest.upcommingApptNG(propertyData.getProperty("practice.id.ng"),
+		Response response = postAPIRequest.upcommingApptNG(practiceid,
 				PayloadNG.upcommingApt_Payload(propertyData.getProperty("uppcomming.patient.id.ng"),
-						propertyData.getProperty("practice.id.ng"), startdate));
+						practiceid, startdate));
 		
 		aPIVerification.responseCodeValidation(response, 200);
 		aPIVerification.responseTimeValidation(response);
@@ -230,7 +230,7 @@ public class PSS2NGAdapterWithNGEAPI extends BaseTestNG {
 	@Test(enabled = true, groups = { "APItest" }, retryAnalyzer = RetryAnalyzer.class)
 	public void testUpcommingApptWithoutBodyPOST() throws IOException {
 
-		Response response = postAPIRequest.upcommingApptNG(propertyData.getProperty("practice.id.ng"), "");
+		Response response = postAPIRequest.upcommingApptNG(practiceid, "");
 		aPIVerification.responseCodeValidation(response, 400);
 		aPIVerification.responseTimeValidation(response);
 
@@ -239,7 +239,7 @@ public class PSS2NGAdapterWithNGEAPI extends BaseTestNG {
 	@Test(enabled = true, groups = { "APItest" }, retryAnalyzer = RetryAnalyzer.class)
 	public void testAppointmentTypeListGET() throws IOException {
 
-		Response response = postAPIRequest.appointmentType(propertyData.getProperty("practice.id.ng"));
+		Response response = postAPIRequest.appointmentType(practiceid);
 		aPIVerification.responseCodeValidation(response, 200);
 		aPIVerification.responseTimeValidation(response);
 		aPIVerification.responseKeyValidation(response, "id");
@@ -262,7 +262,7 @@ public class PSS2NGAdapterWithNGEAPI extends BaseTestNG {
 	@Test(enabled = true, groups = { "APItest" }, retryAnalyzer = RetryAnalyzer.class)
 	public void testRescheduleApptNGPInvalidAppIdPOST() throws IOException {
 		// this test case actual failed case
-		Response response = postAPIRequest.rescheduleApptNG(propertyData.getProperty("practice.id.ng"),
+		Response response = postAPIRequest.rescheduleApptNG(practiceid,
 				PayloadNG.reschedule_Payload(propertyData.getProperty("start.date.time.ng"),
 						propertyData.getProperty("end.date.time.ng"), propertyData.getProperty("patient.id.ng"),
 						propertyData.getProperty("first.name.ng"), propertyData.getProperty("first.name.ng"),
@@ -278,7 +278,7 @@ public class PSS2NGAdapterWithNGEAPI extends BaseTestNG {
 	@Test(enabled = true, groups = { "APItest" }, retryAnalyzer = RetryAnalyzer.class)
 	public void testCancelAppointmentGet() throws IOException {
 
-		Response response = postAPIRequest.cancelAppointmentGET(propertyData.getProperty("practice.id.ng"),
+		Response response = postAPIRequest.cancelAppointmentGET(practiceid,
 				propertyData.getProperty("appt.id.ng"));
 		aPIVerification.responseCodeValidation(response, 200);
 		aPIVerification.responseTimeValidation(response);
@@ -287,7 +287,7 @@ public class PSS2NGAdapterWithNGEAPI extends BaseTestNG {
 	@Test(enabled = true, groups = { "APItest" }, retryAnalyzer = RetryAnalyzer.class)
 	public void testCancelAppointmentInvalidAppIdGet() throws IOException {
 
-		Response response = postAPIRequest.cancelAppointmentGET(propertyData.getProperty("practice.id.ng"),
+		Response response = postAPIRequest.cancelAppointmentGET(practiceid,
 				propertyData.getProperty("invalidappt.id.ng"));
 		aPIVerification.responseCodeValidation(response, 500);
 		aPIVerification.responseTimeValidation(response);
@@ -296,7 +296,7 @@ public class PSS2NGAdapterWithNGEAPI extends BaseTestNG {
 	@Test(enabled = true, groups = { "APItest" }, retryAnalyzer = RetryAnalyzer.class)
 	public void testCancelAppointmentPost() throws IOException {
 
-		Response response = postAPIRequest.cancelAppointmentPOST(propertyData.getProperty("practice.id.ng"),
+		Response response = postAPIRequest.cancelAppointmentPOST(practiceid,
 				payload.cancelAppointment);
 		aPIVerification.responseCodeValidation(response, 200);
 		aPIVerification.responseTimeValidation(response);
@@ -306,7 +306,7 @@ public class PSS2NGAdapterWithNGEAPI extends BaseTestNG {
 	@Test(enabled = true, groups = { "APItest" }, retryAnalyzer = RetryAnalyzer.class)
 	public void testCancelAppointmentWithoutBodyPost() throws IOException {
 
-		Response response = postAPIRequest.cancelAppointmentPOST(propertyData.getProperty("practice.id.ng"), "");
+		Response response = postAPIRequest.cancelAppointmentPOST(practiceid, "");
 		aPIVerification.responseCodeValidation(response, 400);
 		aPIVerification.responseTimeValidation(response);
 
@@ -315,7 +315,7 @@ public class PSS2NGAdapterWithNGEAPI extends BaseTestNG {
 	@Test(enabled = true, groups = { "APItest" }, retryAnalyzer = RetryAnalyzer.class)
 	public void testCancellationReasonGET() throws IOException {
 
-		Response response = postAPIRequest.cancellationReason(propertyData.getProperty("practice.id.ng"));
+		Response response = postAPIRequest.cancellationReason(practiceid);
 		aPIVerification.responseCodeValidation(response, 200);
 		aPIVerification.responseTimeValidation(response);
 		aPIVerification.responseKeyValidation(response, "id");
@@ -336,7 +336,7 @@ public class PSS2NGAdapterWithNGEAPI extends BaseTestNG {
 	public void testCareproviderAvailabilityPOST() throws IOException {
 		String startdate = pSSPatientUtils.sampleDateTime("MM/dd/yyyy");
 		String enddate1 = pSSPatientUtils.addDaysToDate(startdate, "100", "MM/dd/yyyy");
-		Response response = postAPIRequest.careproviderAvailability(propertyData.getProperty("practice.id.ng"),
+		Response response = postAPIRequest.careproviderAvailability(practiceid,
 				PayloadNG.careprovideravailability_Payload(startdate, enddate1));
 
 		aPIVerification.responseCodeValidation(response, 200);
@@ -347,7 +347,7 @@ public class PSS2NGAdapterWithNGEAPI extends BaseTestNG {
 	@Test(enabled = true, groups = { "APItest" }, retryAnalyzer = RetryAnalyzer.class)
 	public void testCareproviderAvailabilityWithoutBodyPOST() throws IOException {
 
-		Response response = postAPIRequest.careproviderAvailability(propertyData.getProperty("practice.id.ng"), "");
+		Response response = postAPIRequest.careproviderAvailability(practiceid, "");
 
 		aPIVerification.responseCodeValidation(response, 400);
 		aPIVerification.responseTimeValidation(response);
@@ -357,16 +357,16 @@ public class PSS2NGAdapterWithNGEAPI extends BaseTestNG {
 	@Test(enabled = true, groups = { "APItest" }, retryAnalyzer = RetryAnalyzer.class)
 	public void testInsuranceCarrierGET() throws IOException {
 
-		Response response = postAPIRequest.insuranceCarrier(propertyData.getProperty("practice.id.ng"));
+		Response response = postAPIRequest.insuranceCarrier(practiceid);
 		aPIVerification.responseCodeValidation(response, 200);
 		aPIVerification.responseTimeValidation(response);
 		aPIVerification.responseKeyValidation(response, "id");
 		aPIVerification.responseKeyValidation(response, "name");
-		aPIVerification.responseKeyValidation(response, "zipCode");
-		aPIVerification.responseKeyValidation(response, "address1");
-		aPIVerification.responseKeyValidation(response, "address2");
-		aPIVerification.responseKeyValidation(response, "state");
-		aPIVerification.responseKeyValidation(response, "city");
+//		aPIVerification.responseKeyValidation(response, "zipCode");
+//		aPIVerification.responseKeyValidation(response, "address1");
+//		aPIVerification.responseKeyValidation(response, "address2");
+//		aPIVerification.responseKeyValidation(response, "state");
+//		aPIVerification.responseKeyValidation(response, "city");
 
 	}
 
@@ -381,7 +381,7 @@ public class PSS2NGAdapterWithNGEAPI extends BaseTestNG {
 	@Test(enabled = true, groups = { "APItest" }, retryAnalyzer = RetryAnalyzer.class)
 	public void testLocationsListNGGET() throws IOException {
 
-		Response response = postAPIRequest.locations(propertyData.getProperty("practice.id.ng"));
+		Response response = postAPIRequest.locations(practiceid);
 		aPIVerification.responseCodeValidation(response, 200);
 		aPIVerification.responseTimeValidation(response);
 		
@@ -401,7 +401,7 @@ public class PSS2NGAdapterWithNGEAPI extends BaseTestNG {
 	@Test(enabled = true, groups = { "APItest" }, retryAnalyzer = RetryAnalyzer.class)
 	public void testAddPatientPOST() throws IOException {
 
-		Response response = postAPIRequest.addPatient(propertyData.getProperty("practice.id.ng"),
+		Response response = postAPIRequest.addPatient(practiceid,
 				PayloadNG.addPatient());
 		aPIVerification.responseCodeValidation(response, 200);
 		aPIVerification.responseTimeValidation(response);
@@ -418,7 +418,7 @@ public class PSS2NGAdapterWithNGEAPI extends BaseTestNG {
 	@Test(enabled = true, groups = { "APItest" }, retryAnalyzer = RetryAnalyzer.class)
 	public void testAddPatientWithoutBodyPOST() throws IOException {
 
-		Response response = postAPIRequest.addPatient(propertyData.getProperty("practice.id.ng"), "");
+		Response response = postAPIRequest.addPatient(practiceid, "");
 		aPIVerification.responseCodeValidation(response, 400);
 		aPIVerification.responseTimeValidation(response);
 	}
@@ -426,7 +426,7 @@ public class PSS2NGAdapterWithNGEAPI extends BaseTestNG {
 	@Test(enabled = true, groups = { "APItest" }, retryAnalyzer = RetryAnalyzer.class)
 	public void testDemographicsGET() throws IOException {
 
-		Response response = postAPIRequest.demographics(propertyData.getProperty("practice.id.ng"));
+		Response response = postAPIRequest.demographics(practiceid);
 		aPIVerification.responseCodeValidation(response, 200);
 		aPIVerification.responseTimeValidation(response);
 		aPIVerification.responseKeyValidationJson(response, "id");
@@ -446,7 +446,7 @@ public class PSS2NGAdapterWithNGEAPI extends BaseTestNG {
 	@Test(enabled = true, groups = { "APItest" }, retryAnalyzer = RetryAnalyzer.class)
 	public void testLockoutGET() throws IOException {
 
-		Response response = postAPIRequest.lockout(propertyData.getProperty("practice.id.ng"));
+		Response response = postAPIRequest.lockout(practiceid);
 		aPIVerification.responseCodeValidation(response, 200);
 		aPIVerification.responseTimeValidation(response);
 		aPIVerification.responseKeyValidation(response, "key");
@@ -460,7 +460,7 @@ public class PSS2NGAdapterWithNGEAPI extends BaseTestNG {
 
 		PayloadNG payload = new PayloadNG();
 
-		Response response = postAPIRequest.matchPatientPOST(propertyData.getProperty("practice.id.ng"),
+		Response response = postAPIRequest.matchPatientPOST(practiceid,
 				payload.matchpatient);
 		aPIVerification.responseCodeValidation(response, 200);
 		aPIVerification.responseTimeValidation(response);
@@ -470,7 +470,7 @@ public class PSS2NGAdapterWithNGEAPI extends BaseTestNG {
 	@Test(enabled = true, groups = { "APItest" }, retryAnalyzer = RetryAnalyzer.class)
 	public void testMatchPatientWithoutBodyPOST() throws IOException {
 
-		Response response = postAPIRequest.matchPatientPOST(propertyData.getProperty("practice.id.ng"), "");
+		Response response = postAPIRequest.matchPatientPOST(practiceid, "");
 		aPIVerification.responseCodeValidation(response, 400);
 		aPIVerification.responseTimeValidation(response);
 
@@ -479,7 +479,7 @@ public class PSS2NGAdapterWithNGEAPI extends BaseTestNG {
 	@Test(enabled = true, groups = { "APItest" }, retryAnalyzer = RetryAnalyzer.class)
 	public void testPatientLastVisitGET() throws IOException {
 
-		Response response = postAPIRequest.patientLastVisit(propertyData.getProperty("practice.id.ng"));
+		Response response = postAPIRequest.patientLastVisit(practiceid);
 		aPIVerification.responseCodeValidation(response, 200);
 		aPIVerification.responseTimeValidation(response);
 		aPIVerification.responseKeyValidationJson(response, "lastVisitDateTime");
@@ -496,7 +496,7 @@ public class PSS2NGAdapterWithNGEAPI extends BaseTestNG {
 	@Test(enabled = true, groups = { "APItest" }, retryAnalyzer = RetryAnalyzer.class)
 	public void testPatientRecordbyApptTypePOST() throws IOException {
 
-		Response response = postAPIRequest.patientRecordbyApptTypePOST(propertyData.getProperty("practice.id.ng"),
+		Response response = postAPIRequest.patientRecordbyApptTypePOST(practiceid,
 				PayloadNG.patientrecordbyapptypes_payload());
 		aPIVerification.responseCodeValidation(response, 200);
 		aPIVerification.responseTimeValidation(response);
@@ -505,7 +505,7 @@ public class PSS2NGAdapterWithNGEAPI extends BaseTestNG {
 	@Test(enabled = true, groups = { "APItest" }, retryAnalyzer = RetryAnalyzer.class)
 	public void testPatientRecordbyApptTypeWithoutBodyPOST() throws IOException {
 
-		Response response = postAPIRequest.patientRecordbyApptTypePOST(propertyData.getProperty("practice.id.ng"), "");
+		Response response = postAPIRequest.patientRecordbyApptTypePOST(practiceid, "");
 		aPIVerification.responseCodeValidation(response, 400);
 		aPIVerification.responseTimeValidation(response);
 	}
@@ -513,7 +513,7 @@ public class PSS2NGAdapterWithNGEAPI extends BaseTestNG {
 	@Test(enabled = true, groups = { "APItest" }, retryAnalyzer = RetryAnalyzer.class)
 	public void testSearchPatientPOST() throws IOException {
 
-		Response response = postAPIRequest.searchpatient(propertyData.getProperty("practice.id.ng"),
+		Response response = postAPIRequest.searchpatient(practiceid,
 				payload.searchpatient);
 		aPIVerification.responseCodeValidation(response, 200);
 		aPIVerification.responseTimeValidation(response);
@@ -526,7 +526,7 @@ public class PSS2NGAdapterWithNGEAPI extends BaseTestNG {
 	@Test(enabled = true, groups = { "APItest" }, retryAnalyzer = RetryAnalyzer.class)
 	public void testSearchPatientWithoutBodyPOST() throws IOException {
 
-		Response response = postAPIRequest.searchpatient(propertyData.getProperty("practice.id.ng"), "");
+		Response response = postAPIRequest.searchpatient(practiceid, "");
 		aPIVerification.responseCodeValidation(response, 400);
 		aPIVerification.responseTimeValidation(response);
 	}
@@ -534,7 +534,7 @@ public class PSS2NGAdapterWithNGEAPI extends BaseTestNG {
 	@Test(enabled = true, groups = { "APItest" }, retryAnalyzer = RetryAnalyzer.class)
 	public void testPatientStatusGET() throws IOException {
 
-		Response response = postAPIRequest.patietStatus(propertyData.getProperty("practice.id.ng"));
+		Response response = postAPIRequest.patietStatus(practiceid);
 		aPIVerification.responseCodeValidation(response, 200);
 		aPIVerification.responseTimeValidation(response);
 		aPIVerification.responseKeyValidation(response, "key");
@@ -552,7 +552,7 @@ public class PSS2NGAdapterWithNGEAPI extends BaseTestNG {
 	@Test(enabled = true, groups = { "APItest" }, retryAnalyzer = RetryAnalyzer.class)
 	public void testPrerequisteappointmenttypesPOST() throws IOException {
 
-		Response response = postAPIRequest.prerequisteappointmenttypesPOST(propertyData.getProperty("practice.id.ng"),
+		Response response = postAPIRequest.prerequisteappointmenttypesPOST(practiceid,
 				PayloadNG.prerequisteappointmenttypes_Payload());
 		aPIVerification.responseCodeValidation(response, 200);
 		aPIVerification.responseTimeValidation(response);
@@ -565,7 +565,7 @@ public class PSS2NGAdapterWithNGEAPI extends BaseTestNG {
 	@Test(enabled = true, groups = { "APItest" }, retryAnalyzer = RetryAnalyzer.class)
 	public void testPrerequisteappointmenttypesWithoutBodyPOST() throws IOException {
 
-		Response response = postAPIRequest.prerequisteappointmenttypesPOST(propertyData.getProperty("practice.id.ng"),
+		Response response = postAPIRequest.prerequisteappointmenttypesPOST(practiceid,
 				"");
 		aPIVerification.responseCodeValidation(response, 400);
 		aPIVerification.responseTimeValidation(response);
@@ -574,7 +574,7 @@ public class PSS2NGAdapterWithNGEAPI extends BaseTestNG {
 	@Test(enabled = true, groups = { "APItest" }, retryAnalyzer = RetryAnalyzer.class)
 	public void testPatientrecordbybooksPOST() throws IOException {
 
-		Response response = postAPIRequest.patientrecordbyBooks(propertyData.getProperty("practice.id.ng"),
+		Response response = postAPIRequest.patientrecordbyBooks(practiceid,
 				PayloadNG.patientrecordbybooks_payload());
 		aPIVerification.responseCodeValidation(response, 200);
 		aPIVerification.responseTimeValidation(response);
@@ -586,7 +586,7 @@ public class PSS2NGAdapterWithNGEAPI extends BaseTestNG {
 	@Test(enabled = true, groups = { "APItest" }, retryAnalyzer = RetryAnalyzer.class)
 	public void testPatientrecordbybooksWithoutBodyPOST() throws IOException {
 
-		Response response = postAPIRequest.patientrecordbyBooks(propertyData.getProperty("practice.id.ng"), "");
+		Response response = postAPIRequest.patientrecordbyBooks(practiceid, "");
 		aPIVerification.responseCodeValidation(response, 400);
 		aPIVerification.responseTimeValidation(response);
 	}
@@ -594,7 +594,7 @@ public class PSS2NGAdapterWithNGEAPI extends BaseTestNG {
 	@Test(enabled = true, groups = { "APItest" }, retryAnalyzer = RetryAnalyzer.class)
 	public void testLastseenProviderPOST() throws IOException {
 
-		Response response = postAPIRequest.lastseenProvider(propertyData.getProperty("practice.id.ng"),
+		Response response = postAPIRequest.lastseenProvider(practiceid,
 				payload.lastseenprovider);
 		aPIVerification.responseCodeValidation(response, 200);
 		aPIVerification.responseTimeValidation(response);
@@ -606,7 +606,7 @@ public class PSS2NGAdapterWithNGEAPI extends BaseTestNG {
 	@Test(enabled = true, groups = { "APItest" }, retryAnalyzer = RetryAnalyzer.class)
 	public void testLastseenProviderWithoutBodyPOST() throws IOException {
 
-		Response response = postAPIRequest.lastseenProvider(propertyData.getProperty("practice.id.ng"), "");
+		Response response = postAPIRequest.lastseenProvider(practiceid, "");
 		aPIVerification.responseCodeValidation(response, 400);
 		aPIVerification.responseTimeValidation(response);
 	}
@@ -614,7 +614,7 @@ public class PSS2NGAdapterWithNGEAPI extends BaseTestNG {
 	@Test(enabled = true, groups = { "APItest" }, retryAnalyzer = RetryAnalyzer.class)
 	public void testFetchNGBookListGET() throws IOException {
 
-		Response response = postAPIRequest.fetchNGBookList(propertyData.getProperty("practice.id.ng"));
+		Response response = postAPIRequest.fetchNGBookList(practiceid);
 		aPIVerification.responseCodeValidation(response, 200);
 		aPIVerification.responseTimeValidation(response);
 		aPIVerification.responseKeyValidationJson(response, "resourceId");
