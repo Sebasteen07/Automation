@@ -532,7 +532,7 @@ public class PSS2PatientModulatorrAcceptanceNGTests extends BaseTestNG {
 		apv.responseCodeValidation(response, 200);
 		apv.responseTimeValidation(response);
 		assertEquals(bookid_actual, bookid, "Book id is not matching with expected id");
-		assertEquals(displayname, propertyData.getProperty("displayname.book.pm.ng"), "Display name is wrong");
+		assertEquals(displayname, propertyData.getProperty("displayname01.book.pm.ng"), "Display name is wrong");
 	}
 
 	@Test(enabled = true, groups = { "APItest" }, retryAnalyzer = RetryAnalyzer.class)
