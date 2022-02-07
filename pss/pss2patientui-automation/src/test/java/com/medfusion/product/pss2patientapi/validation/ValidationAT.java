@@ -36,7 +36,7 @@ public class ValidationAT extends BaseTestNG {
 		propertyData = new PSSPropertyFileLoader();
 
 		String message = apiVerification.responseKeyValidationJson(response, "message");
-		assertEquals(message, "Required String parameter 'patientId' is not present", "Message is not valid");
+		assertEquals(message, "Required request parameter 'patientId' for method parameter type String is not present");
 		apiVerification.responseTimeValidation(response);
 	}
 
@@ -110,7 +110,7 @@ public class ValidationAT extends BaseTestNG {
 		propertyData = new PSSPropertyFileLoader();
 
 		String message=apiVerification.responseKeyValidationJson(response, "message");
-		assertEquals(message, "Required String parameter 'appointmentId' is not present","Error message is wrong");
+		assertEquals(message, "Required request parameter 'appointmentId' for method parameter type String is not present");
 		assertEquals(response.getStatusCode(), 400);
 		apiVerification.responseTimeValidation(response);
 	}

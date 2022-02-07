@@ -75,6 +75,7 @@ public class PSS2NGAdapterWithNGEAPI extends BaseTestNG {
 	public void testPastApptNgPOST() throws IOException {
 
 		String edate=pSSPatientUtils.sampleDateTime("MM/dd/yyyy");
+
         String patientId="b1d6f475-2074-42e7-a2f8-f9e3fbc8ea9d";
 		Response response = postAPIRequest.pastApptNG(practiceId,
 				PayloadNGEAPI.past_appt_payload(patientId, edate));
@@ -406,14 +407,11 @@ public class PSS2NGAdapterWithNGEAPI extends BaseTestNG {
 		String lastName = testData.getLastName();
 		String dob = testData.getDob();
 		String gender = testData.getGender();
-
 		log("First Name- " + firstName);
 		log("Last Name- " + lastName);
 		log("Gender- " + gender);
 		log("Date Of Birth- " + dob);
-
-		Response response = postAPIRequest.addPatient(practiceId,
-				PayloadNGEAPI.addPatient(firstName, lastName, dob, gender));
+		Response response = postAPIRequest.addPatient(practiceId,PayloadNGEAPI.addPatient(firstName, lastName, dob, gender));
 		aPIVerification.responseCodeValidation(response, 200);
 		aPIVerification.responseTimeValidation(response);
 		String patientId = aPIVerification.responseKeyValidationJson(response, "id");
@@ -421,8 +419,6 @@ public class PSS2NGAdapterWithNGEAPI extends BaseTestNG {
 		Response responseDemographics = postAPIRequest.demographicsNGE(practiceId,patientId);
 		aPIVerification.responseCodeValidation(responseDemographics, 200);
 		aPIVerification.responseTimeValidation(responseDemographics);
-
-
 	}
 
 	@Test(enabled = true, groups = { "APItest" }, retryAnalyzer = RetryAnalyzer.class)
