@@ -12,6 +12,7 @@ import org.testng.annotations.Test;
 import com.intuit.ifs.csscat.core.BaseTestNGWebDriver;
 import com.intuit.ifs.csscat.core.RetryAnalyzer;
 import com.intuit.ifs.csscat.core.TestConfig;
+import com.intuit.ihg.product.integrationplatform.utils.AMDC;
 import com.intuit.ihg.product.integrationplatform.utils.AMDCTestData;
 import com.intuit.ihg.product.integrationplatform.utils.Appointment;
 import com.intuit.ihg.product.integrationplatform.utils.AppointmentTestData;
@@ -205,7 +206,8 @@ public class IntegrationPlatformAcceptanceTests extends BaseTestNGWebDriver {
 		log("Execution Browser: " + TestConfig.getBrowserType());
 
 		log("Step 1: Get Data from Excel");
-		AMDCTestData testData = new AMDCTestData();
+		AMDC AMDCData = new AMDC();
+		AMDCTestData testData = new AMDCTestData(AMDCData);
 
 		log("Url: " + testData.getUrl());
 		log("User Name: " + testData.getUserName());

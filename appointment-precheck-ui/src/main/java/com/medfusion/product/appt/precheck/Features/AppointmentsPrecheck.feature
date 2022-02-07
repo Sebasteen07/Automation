@@ -968,3 +968,9 @@ Feature: Test fuctionality of Appointment precheck
     When I select start date as current date at three AM and select end date as current date before three AM
     Then verify system should not allow user to select end time before three AM for same day and before three AM slots should be disable
     And logout from practice provisioning portal
+
+  Scenario: verify if manual reminder is sent and later page is refresh user is able see navigation button properly
+    When I select start date and time and navigate on fifth page
+    And I select a appointment and send manual reminder
+    And I click on refresh button from apt dashboard and lands on same page
+    Then I verify that I am still on page five and arrows are working
