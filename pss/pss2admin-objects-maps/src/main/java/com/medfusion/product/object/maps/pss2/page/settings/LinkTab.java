@@ -105,7 +105,6 @@ public class LinkTab extends SettingsTab {
 			}
 		}
 		resourceSelect.click();
-		Thread.sleep(1000);
 		log("ProviderTypeList " + checklistResource.size());
 		for (int i = 0; i < checklistResource.size(); i++) {
 			if (checklistResource.get(i).getText().contains(providerConfig)) {
@@ -122,7 +121,6 @@ public class LinkTab extends SettingsTab {
 	public String getURL(String provider)throws InterruptedException, HeadlessException, UnsupportedFlavorException, IOException {
 		searchLink(provider);
 		IHGUtil.waitForElement(driver, 5, copyLink);	
-		Thread.sleep(2000);
 		javascriptClick(copyLink);
 		String link = (String) Toolkit.getDefaultToolkit().getSystemClipboard().getData(DataFlavor.stringFlavor);
 		log("Link is   " + link);
