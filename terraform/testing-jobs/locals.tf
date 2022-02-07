@@ -535,6 +535,51 @@ locals {
       chrome_driver_version = "97.0.4692.71"
       cron_shedule          = "cron(0 21 ? * 2 *)"
     }
+
+    "demo-practiceportal-regression1" = {
+      codecommit_branch     = "development"
+      PollForSourceChanges  = false
+      execution_folder      = "practiceportal-automation"
+      test_environment      = "demo"
+      suite_xml             = "practice-portal-testng.xml"
+      pxp_application       = "Portal"
+      build_timeout         = 240 #Number of minutes, from 5 to 480. Default value is 60 mins
+      queued_timeout        = 480 #Number of minutes, from 5 to 480. Default value is 480 mins
+      maven_parameter       = "mvn clean install -U"
+      google_chrome_version = "97.0.4692.99-1"
+      chrome_driver_version = "97.0.4692.71"
+      cron_shedule          = "cron(40 1 ? * 4 *)"
+    }
+
+    "demo-practiceportal-regression2" = {
+      codecommit_branch     = "development"
+      PollForSourceChanges  = false
+      execution_folder      = "practiceportal-automation"
+      test_environment      = "demo"
+      suite_xml             = "referrals-portal-testng.xml"
+      pxp_application       = "Portal"
+      build_timeout         = 240 #Number of minutes, from 5 to 480. Default value is 60 mins
+      queued_timeout        = 480 #Number of minutes, from 5 to 480. Default value is 480 mins
+      maven_parameter       = "mvn clean install -U"
+      google_chrome_version = "97.0.4692.99-1"
+      chrome_driver_version = "97.0.4692.71"
+      cron_shedule          = "cron(0 3 ? * 4 *)"
+    }
+
+    "demo-sitegen-regression" = {
+      codecommit_branch     = "development"
+      PollForSourceChanges  = false
+      execution_folder      = "sitegen-automation"
+      test_environment      = "demo"
+      suite_xml             = "sitegen-testng.xml"
+      pxp_application       = "Portal"
+      build_timeout         = 240 #Number of minutes, from 5 to 480. Default value is 60 mins
+      queued_timeout        = 480 #Number of minutes, from 5 to 480. Default value is 480 mins
+      maven_parameter       = "mvn clean install -U"
+      google_chrome_version = "97.0.4692.99-1"
+      chrome_driver_version = "97.0.4692.71"
+      cron_shedule          = "cron(0 3 ? * 4 *)"
+    }
   }
 
   selected_test_environment      = try(local.inputs[terraform.workspace].test_environment)

@@ -924,3 +924,53 @@ Feature: Test fuctionality of Appointment precheck
     And I reschedule an appointment
     Then verify old broadcast message sent should not be shown
     Then logout from practice provisioning portal
+
+  Scenario: Verify if curbside check in reminder checkbox is turned off then curbside reminder is not recieved to patient
+    When I click on Notifications tab from Setting tab and disable curbside remainder checkbox
+    And I schedule a new appointment and confirm arrival
+    Then verify curbside reminder is not receive to patient
+    And from notifications tab in Setting tab and enable curbside remainder checkbox
+    And logout from practice provisioning portal
+
+  Scenario: Verify if curbside check in reminder checkbox is turned off then old curbside reminder mail recieved should be allowed to check in
+    When I enabled curbside remainder checkbox from notifications tab in Setting tab
+    Then I schedule a new appointment after one hour of current time
+    Then I disable curbside remainder checkbox after five minutes of current time
+    Then verify curbside reminder is receive to patient
+    And from notifications tab in Setting tab and enable curbside remainder checkbox
+    And logout from practice provisioning portal
+
+  Scenario: verify practice staff is able to send message by selecting the other option from curnside checkin in drop down list
+    When I schedule an appointment and have confirmed there arrival
+    And I click on Curbside check-in tab and select patient
+    And I click on dropdown and select "Other" option
+    Then verify other message is able to send from curbside checkin in drop down list
+    And logout from practice provisioning portal
+
+  Scenario: verify practice staff is able to send message more than one message by selecting other option from curnside checkin in dropdown list
+    When I schedule an appointment and have confirmed there arrival
+    And I click on Curbside check-in tab and select patient
+    And I send other message from curbside checkin in drop down list
+    Then verify practice staff is able to send another message by using other option from the drop down list
+    And logout from practice provisioning portal
+
+  Scenario: verify staff is able to see default time and date on appointments when user first enter on dashboard
+    When I switch on appointment dashboard
+    Then verify System should show default date and time on appointment dashboard
+    And logout from practice provisioning portal
+
+  Scenario: verify system should not allowed user to select wrong start time and end time
+    When I select end date as current date at two AM and select start date as current date after two AM
+    Then verify system should not allow user to select start time after two AM for same day and after two AM slots should be disable
+    And logout from practice provisioning portal
+
+  Scenario: verify system should not allowed user to select wrong start time and end time
+    When I select start date as current date at three AM and select end date as current date before three AM
+    Then verify system should not allow user to select end time before three AM for same day and before three AM slots should be disable
+    And logout from practice provisioning portal
+
+  Scenario: verify if manual reminder is sent and later page is refresh user is able see navigation button properly
+    When I select start date and time and navigate on fifth page
+    And I select a appointment and send manual reminder
+    And I click on refresh button from apt dashboard and lands on same page
+    Then I verify that I am still on page five and arrows are working

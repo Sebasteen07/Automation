@@ -36,6 +36,9 @@ locals {
     demo-ng-int-pf-acceptance-index    = "demo-ng-int-pf-acceptance-index"
     demo-ng-int-pf-acceptance-payment  = "demo-ng-int-pf-acceptance-payment"
     demo-ng-int-pf-regression          = "demo-ng-int-pf-regression"
+    demo-practiceportal-regression1    = "demo-practiceportal-regression1"
+    demo-practiceportal-regression2    = "demo-practiceportal-regression2"
+    demo-sitegen-regression            = "demo-sitegen-regression"
   }
   selected_workspace = local.valid_workspaces[terraform.workspace]
 }
