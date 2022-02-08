@@ -1,7 +1,11 @@
 //  Copyright 2013-2022 NXGN Management, LLC. All Rights Reserved.
 package com.medfusion.product.object.maps.practice.page.onlinebillpay;
 
+import java.text.SimpleDateFormat;
+import java.time.LocalDate;
+import java.time.Month;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 import org.openqa.selenium.Alert;
 import org.openqa.selenium.By;
@@ -159,6 +163,24 @@ public class PayMyBillOnlinePage extends BasePageObject {
 	@FindBy(xpath = "//td[label[text()='Adjusted Amount']]/following-sibling::td/span")
 	private WebElement adjustedAmount;
 
+	@FindBy(name = "searchParams:0:input:Date Begin:month")
+	private WebElement enrolmentdateMonth;
+
+	@FindBy(name = "searchParams:0:input:Date Begin:day")
+	private WebElement enrolmentdateDay;
+
+	@FindBy(name = "searchParams:0:input:Date Begin:year")
+	private WebElement enrolmentdateYear;
+
+	@FindBy(name = "searchParams:0:input:Date End:month")
+	private WebElement enrolmentEndDateMonth;
+
+	@FindBy(name = "searchParams:0:input:Date End:day")
+	private WebElement enrolmentEndDateDay;
+
+	@FindBy(name = "searchParams:0:input:Date End:year")
+	private WebElement enrolmentEndDateYear;
+
 	public void setFirstName() {
 		IHGUtil.PrintMethodName();
 		IHGUtil.setFrame(driver, PracticeConstants.FRAME_NAME);
@@ -278,8 +300,7 @@ public class PayMyBillOnlinePage extends BasePageObject {
 			if (yearInString.equals(drop_down_values)) {
 				sele.selectByVisibleText(yearInString);
 				log("The" + yearInString + "and" + drop_down_values + " Matched");
-			}
-			else {
+			} else {
 				log("The" + yearInString + "and" + drop_down_values + "didnt Matched");
 			}
 		}
@@ -354,6 +375,36 @@ public class PayMyBillOnlinePage extends BasePageObject {
 				"//table[@id='MfAjaxFallbackDefaultDataTable']//span[contains(text(),'" + lName + ", " + fName + "')]"))
 				.click();
 		Thread.sleep(8000);
+	}
+
+	public void setTheEnrollmentDate() {
+		IHGUtil.PrintMethodName();
+		Select sec;
+		IHGUtil.setFrame(driver, PracticeConstants.FRAME_NAME);
+
+		Date date = new Date();
+		SimpleDateFormat formatter = new SimpleDateFormat("d/MMMM/yyyy");
+		String strDate = formatter.format(date);
+		formatter = new SimpleDateFormat("d-MMMM-yyyy");
+		strDate = formatter.format(date);
+		System.out.println("Date Format with dd MM yyyy : " + strDate);
+		String dateParts[] = strDate.split("-");
+		String day = dateParts[0];
+		String month = dateParts[1];
+		String year = dateParts[2];
+		sec = new Select(enrolmentdateMonth);
+		sec.selectByVisibleText(month.substring(0, 3));
+		sec = new Select(enrolmentdateDay);
+		sec.selectByVisibleText(day);
+		sec = new Select(enrolmentdateYear);
+		sec.selectByVisibleText(year);
+
+		sec = new Select(enrolmentEndDateMonth);
+		sec.selectByVisibleText(month.substring(0, 3));
+		sec = new Select(enrolmentEndDateDay);
+		sec.selectByVisibleText(day);
+		sec = new Select(enrolmentEndDateYear);
+		sec.selectByVisibleText(year);
 	}
 
 	public void setTransactionsForOnlineBillPayProcess(String location, String provider, String acctNum, String amount,
