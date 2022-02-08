@@ -1066,7 +1066,6 @@ public class PSSAdminUtils extends BaseTestNGWebDriver{
 		PSS2PracticeConfiguration pssPracticeConfig = loginToAdminPortal(driver, adminuser);
 		pssPracticeConfig = pssPracticeConfig.gotoPracticeConfigTab();
 		PatientFlow patientFlow = pssPracticeConfig.gotoPatientFlowTab();
-		patientFlow.turnOffProvider();
 		AdminPatientMatching adminPatientMatching = patientFlow.gotoPatientMatchingTab();
 		adminPatientMatching.patientMatchingSelection();
 		ManageAppointmentType manageAppointmentType = pssPracticeConfig.gotoAppointment();

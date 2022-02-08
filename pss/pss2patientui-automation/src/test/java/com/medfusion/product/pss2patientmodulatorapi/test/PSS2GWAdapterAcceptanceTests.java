@@ -496,7 +496,7 @@ public class PSS2GWAdapterAcceptanceTests extends BaseTestNG {
 
 		Response response = postAPIRequestgw.upcommingAppt(propertyData.getProperty("practice.id.gw"),
 				payload.upComingAppointmentsPayload(propertyData.getProperty("start.date.time.gw"),
-						propertyData.getProperty("patient.id.gw"), propertyData.getProperty("practice.displayname.gw"),
+						propertyData.getProperty("upcoming.past.patientid.gw"), propertyData.getProperty("practice.displayname.gw"),
 						propertyData.getProperty("practice.id.gw"),
 						propertyData.getProperty("practice.displayname.gw")));
 		logStep("Verifying the response");

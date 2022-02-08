@@ -18,7 +18,9 @@ import com.medfusion.product.object.maps.pss2.page.util.ParseJSONFile;
 import com.medfusion.product.object.maps.pss2.page.util.PostAPIRequestNG;
 import com.medfusion.product.pss2patientapi.payload.PayloadNG;
 import com.medfusion.product.pss2patientapi.payload.PayloadNGEAPI;
+import com.medfusion.product.pss2patientui.pojo.AdminUser;
 import com.medfusion.product.pss2patientui.pojo.Appointment;
+import com.medfusion.product.pss2patientui.utils.PSSNewPatient;
 import com.medfusion.product.pss2patientui.utils.PSSPatientUtils;
 import com.medfusion.product.pss2patientui.utils.PSSPropertyFileLoader;
 
@@ -74,10 +76,9 @@ public class PSS2NGAdapterWithNGEAPI extends BaseTestNG {
 
 		String edate=pSSPatientUtils.sampleDateTime("MM/dd/yyyy");
 
+        String patientId="b1d6f475-2074-42e7-a2f8-f9e3fbc8ea9d";
 		Response response = postAPIRequest.pastApptNG(practiceId,
-				PayloadNG.past_appt_payload(propertyData.getProperty("patient.id.ng"),
-						propertyData.getProperty("practice.displayname.ng"),
-						practiceId, edate));
+				PayloadNGEAPI.past_appt_payload(patientId, edate));
 		aPIVerification.responseCodeValidation(response, 200);
 		aPIVerification.responseTimeValidation(response);
 		aPIVerification.responseKeyValidationJson(response, "appointmentTypes.name");
@@ -362,6 +363,7 @@ public class PSS2NGAdapterWithNGEAPI extends BaseTestNG {
 		aPIVerification.responseTimeValidation(response);
 		aPIVerification.responseKeyValidation(response, "id");
 		aPIVerification.responseKeyValidation(response, "name");
+
 	}
 
 	@Test(enabled = true, groups = { "APItest" }, retryAnalyzer = RetryAnalyzer.class)
@@ -393,20 +395,30 @@ public class PSS2NGAdapterWithNGEAPI extends BaseTestNG {
 	}
 
 	@Test(enabled = true, groups = { "APItest" }, retryAnalyzer = RetryAnalyzer.class)
-	public void testAddPatientPOST() throws IOException {
-
-		Response response = postAPIRequest.addPatient(practiceId,
-				PayloadNG.addPatient());
+	public void testAddPatientDemographics() throws IOException {
+		PSSPropertyFileLoader propertyData = new PSSPropertyFileLoader();
+		AdminUser adminuser = new AdminUser();
+		Appointment testData = new Appointment();
+		propertyData.setAdminNG(adminuser);
+		propertyData.setAppointmentResponseNG(testData);
+		PSSNewPatient pssNewPatient = new PSSNewPatient();
+		pssNewPatient.createPatientDetails(testData);
+		String firstName = testData.getFirstName();
+		String lastName = testData.getLastName();
+		String dob = testData.getDob();
+		String gender = testData.getGender();
+		log("First Name- " + firstName);
+		log("Last Name- " + lastName);
+		log("Gender- " + gender);
+		log("Date Of Birth- " + dob);
+		Response response = postAPIRequest.addPatient(practiceId,PayloadNGEAPI.addPatient(firstName, lastName, dob, gender));
 		aPIVerification.responseCodeValidation(response, 200);
 		aPIVerification.responseTimeValidation(response);
-		aPIVerification.responseKeyValidationJson(response, "id");
-		aPIVerification.responseKeyValidationJson(response, "firstName");
-		aPIVerification.responseKeyValidationJson(response, "lastName");
-		aPIVerification.responseKeyValidationJson(response, "dateOfBirth");
-		aPIVerification.responseKeyValidationJson(response, "emailAddress");
-		aPIVerification.responseKeyValidationJson(response, "gender");
-		aPIVerification.responseKeyValidationJson(response, "phoneNumber");
-
+		String patientId = aPIVerification.responseKeyValidationJson(response, "id");
+		log("Patient Id is " + patientId);
+		Response responseDemographics = postAPIRequest.demographicsNGE(practiceId,patientId);
+		aPIVerification.responseCodeValidation(responseDemographics, 200);
+		aPIVerification.responseTimeValidation(responseDemographics);
 	}
 
 	@Test(enabled = true, groups = { "APItest" }, retryAnalyzer = RetryAnalyzer.class)
@@ -451,11 +463,8 @@ public class PSS2NGAdapterWithNGEAPI extends BaseTestNG {
 
 	@Test(enabled = true, groups = { "APItest" }, retryAnalyzer = RetryAnalyzer.class)
 	public void testMatchPatientPOST() throws IOException {
-
-		PayloadNG payload = new PayloadNG();
-
 		Response response = postAPIRequest.matchPatientPOST(practiceId,
-				payload.matchpatient);
+				PayloadNGEAPI.matchPatient());
 		aPIVerification.responseCodeValidation(response, 200);
 		aPIVerification.responseTimeValidation(response);
 
