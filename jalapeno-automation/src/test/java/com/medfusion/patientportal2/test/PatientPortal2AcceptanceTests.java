@@ -462,7 +462,7 @@ public class PatientPortal2AcceptanceTests extends BaseTestNGWebDriver {
 		loginPage = homePage.clickOnLogout();
 
 	}
-	
+
 	private String resetForgotPasswordLink(String email) throws InterruptedException {
 		Instant passwordResetStart = Instant.now();
 		logStep("Load login page");
@@ -498,11 +498,10 @@ public class PatientPortal2AcceptanceTests extends BaseTestNGWebDriver {
 
 		logStep("Logging out");
 		loginPage = homePage.clickOnLogout();
-		
+
 		return resetUrl;
 
 	}
-
 
 	@Test(enabled = true, groups = { "acceptance-solutions" }, retryAnalyzer = RetryAnalyzer.class)
 	public void testMessaging() throws Exception {
@@ -1593,7 +1592,7 @@ public class PatientPortal2AcceptanceTests extends BaseTestNGWebDriver {
 		YopMail mail = new YopMail(driver);
 		String patientUrl = mail.getLinkFromEmail(trustedPatient.getEmail(), INVITE_EMAIL_SUBJECT_REPRESENTATIVE,
 				INVITE_EMAIL_BUTTON_TEXT, 15);
-		
+
 		assertNotNull(patientUrl, "Error: Activation patients link not found.");
 
 		logStep("Redirecting to verification page");
@@ -3043,7 +3042,6 @@ public class PatientPortal2AcceptanceTests extends BaseTestNGWebDriver {
 		payBillsPage.clickPaymentHistory();
 
 		logStep("Verifying credit card ending in payment receipt");
-		String creditCardEnding = payBillsPage.getReceiptCreditCardDigit();
 		assertTrue(payBillsPage.getReceiptCreditCardDigit().equals(creditCard.getLastFourDigits()));
 		homePage.clickOnLogout();
 
@@ -3061,9 +3059,8 @@ public class PatientPortal2AcceptanceTests extends BaseTestNGWebDriver {
 		YopMail mail = new YopMail(driver);
 		String notificationEmailSubject = "Payment Receipt";
 		String mailAddress = patient.getEmail();
-		assertTrue(mail.getEmailContent(mailAddress, notificationEmailSubject, "************", 10));
-	
-		homePage.clickOnLogout();
+		assertTrue(mail.getEmailContentText(mailAddress, notificationEmailSubject, "************", 10));
+
 
 	}
 
@@ -4455,7 +4452,7 @@ public class PatientPortal2AcceptanceTests extends BaseTestNGWebDriver {
 		YopMail mail = new YopMail(driver);
 		String patientUrl = mail.getLinkFromEmail(email, INVITE_EMAIL_SUBJECT_REPRESENTATIVE, INVITE_EMAIL_BUTTON_TEXT,
 				15);
-		
+
 		assertNotNull(patientUrl, "Error: Activation patients link not found.");
 
 		logStep("Redirecting to verification page");
@@ -6193,7 +6190,7 @@ public class PatientPortal2AcceptanceTests extends BaseTestNGWebDriver {
 		logStep("Logging into yopmail and delete older mails");
 		YopMail mail = new YopMail(driver);
 		mail.deleteAllEmails(testData.getProperty("forgot.password.email"));
-		
+
 		logStep("Load login page");
 		JalapenoLoginPage loginPage = new JalapenoLoginPage(driver, testData.getUrl());
 
@@ -6226,7 +6223,7 @@ public class PatientPortal2AcceptanceTests extends BaseTestNGWebDriver {
 		logStep("Logging out");
 		loginPage = homePage.clickOnLogout();
 	}
-	
+
 	@Test(enabled = true, groups = { "acceptance-basics", "commonpatient" }, retryAnalyzer = RetryAnalyzer.class)
 	public void testCreateSamePatientWithVaildPhonenumber() throws Exception {
 		createCommonPatient();
@@ -6235,41 +6232,41 @@ public class PatientPortal2AcceptanceTests extends BaseTestNGWebDriver {
 		logStep("Try to create the same patient");
 		PatientDemographicPage patientDemographicPage = loginPage.clickCreateANewAccountButton();
 
-		patientDemographicPage.fillInPatientData(patient.getFirstName(), patient.getLastName(), testData.getProperty("email"),
-				testData.getProperty("dob.month.text"), patient.getDOBDay(), patient.getDOBYear(),
-				patient.getGender(), patient.getZipCode(), patient.getAddress2(), patient.getAddress1(),
-				patient.getCity(), patient.getState());
+		patientDemographicPage.fillInPatientData(patient.getFirstName(), patient.getLastName(),
+				testData.getProperty("email"), testData.getProperty("dob.month.text"), patient.getDOBDay(),
+				patient.getDOBYear(), patient.getGender(), patient.getZipCode(), patient.getAddress2(),
+				patient.getAddress1(), patient.getCity(), patient.getState());
 
 		patientDemographicPage.tryToContinueToSecurityPage();
 		patientDemographicPage.tryToVerifyPhonenumber(testData.getProperty("phone.number"));
 		logStep("Verify password error displayed");
-		assertTrue(loginPage.getAlreadyHaveAnAccountErrorText().contentEquals("Thanks for verifying your account. We've determined that you already have an account at this practice. Please sign in or click the 'I forgot…' link to recover your user name or password."));
+		assertTrue(loginPage.getAlreadyHaveAnAccountErrorText().contentEquals(
+				"Thanks for verifying your account. We've determined that you already have an account at this practice. Please sign in or click the 'I forgot…' link to recover your user name or password."));
 
 	}
-	
+
 	public void testSuppressPayments() throws Exception {
-		
+
 		logStep("Login patient");
 		JalapenoLoginPage loginPage = new JalapenoLoginPage(driver, testData.getProperty("statements.portal.url"));
-		JalapenoHomePage homePage = loginPage.login(testData.getProperty("statements.pat.username"), testData.getProperty("statments.pat.password"));
+		JalapenoHomePage homePage = loginPage.login(testData.getProperty("statements.pat.username"),
+				testData.getProperty("statments.pat.password"));
 
 		logStep("Click on messages solution");
 		JalapenoMessagesPage messagesPage = homePage.showMessages(driver);
-		
+
 		logStep("Verify Statements Message is Displayed in Inbox");
 		assertTrue(messagesPage.isMessageFromEstatementsDisplayed(driver));
-		
+
 		logStep("Verify Statements PDF is displayed");
-		JalapenoPayBillsStatementPdfPage statementPage= messagesPage.openPDFStatement();
+		JalapenoPayBillsStatementPdfPage statementPage = messagesPage.openPDFStatement();
 		assertTrue(statementPage.isStatementPDFdisplayed(driver));
-		
+
 		logStep("Click on Return to Statements to view Statements history and details");
 		statementPage.clickOnStatementsHistory();
 		statementPage.showStatementDetails();
-		
-		
+
 	}
-	
 
 	@Test(enabled = true, groups = { "acceptance-linkedaccounts" }, retryAnalyzer = RetryAnalyzer.class)
 	public void testPatientTrustedRep() throws Exception {
@@ -6368,18 +6365,19 @@ public class PatientPortal2AcceptanceTests extends BaseTestNGWebDriver {
 		jalapenoHomePage.clickOnLogout();
 
 	}
+
 	@Test(enabled = true, groups = { "acceptance-basics" }, retryAnalyzer = RetryAnalyzer.class)
-	
 	public void testValidateResetPasswordLink() throws Exception {
 
 		String username = PortalUtil2.generateUniqueUsername(testData.getProperty("user.id"), testData);
 		patient = PatientFactory.createJalapenoPatient(username, testData);
 		patient = new CreatePatient().selfRegisterPatient(driver, patient, testData.getUrl());
-		String resetUrl= resetForgotPasswordLink(patient.getEmail());
-		
+		String resetUrl = resetForgotPasswordLink(patient.getEmail());
+
 		logStep("Validate Reset Url is invalid");
-		
-		JalapenoLoginPage loginPage= new JalapenoLoginPage(driver);
+
+		JalapenoLoginPage loginPage = new JalapenoLoginPage(driver);
 		assertTrue(loginPage.checkResetPasswordError(resetUrl));
-}
+	}
+
 }
