@@ -69,9 +69,9 @@ public class ManageAppointmentType extends PSS2MenuPage {
 	@FindBy(how = How.XPATH, using = "//*[@name='apptTimeMark']")
 	private WebElement timeMarkOption;
 	
-	@FindBy(how = How.XPATH, using = "//form[@class='form-horizontal ng-pristine ng-valid ng-star-inserted ng-touched']//button[@type='submit'][normalize-space()='Save']")
+	@FindBy(how = How.XPATH, using = "//*[@id='tabX33']/form/fieldset[2]/div/div/button[1]")
 	private WebElement saveConfig;
-	
+
 	@FindBy(how = How.XPATH, using = "//label[@for='allowSameDayAppts']//input")
 	private WebElement acceptToggle;
 
@@ -186,11 +186,14 @@ public class ManageAppointmentType extends PSS2MenuPage {
 		return bool;
 	}
 
-	public void notReserve() {
+	public void notReserve() throws InterruptedException {
 		Select objSelect = new Select(reservefor);
 		objSelect.selectByVisibleText("Not Reserved");
+		log("Not Reserved .............");
 		reservefor.click();
+		scrollAndWait(0, 1000, 100);
 		saveConfig.click();
+		log("Saved .............");
 	}
 
 	public void clickAcceptSameDay() {
@@ -198,17 +201,19 @@ public class ManageAppointmentType extends PSS2MenuPage {
 		saveConfig.click();
 
 	}
-	public void reserveForSameDay() {
+	public void reserveForSameDay() throws InterruptedException {
 		Select objSelect = new Select(reservefor);
 		objSelect.selectByVisibleText("Same Day");
 		reservefor.click();
+		scrollAndWait(0, 800, 1000);
 		saveConfig.click();
 	}
 	
 
-	public void leadTime(String leadValue) {
+	public void leadTime(String leadValue) throws InterruptedException {
 		leadDay.clear();
 		leadDay.sendKeys(leadValue);
+		scrollAndWait(0, 1000, 100);
 		saveConfig.click();
 	}
 

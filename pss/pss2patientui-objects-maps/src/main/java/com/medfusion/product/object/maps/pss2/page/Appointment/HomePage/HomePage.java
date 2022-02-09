@@ -202,7 +202,7 @@ public class HomePage extends PSS2MainPage {
 	@FindBy(how = How.CSS, using = "div[id='alertModalheader'] div[class='modal-body'] div")
 	private WebElement alertPopUpMsg;
 	
-	@FindBy(how = How.XPATH, using = "//div[@id='patientmatch']//div[@class='modal-body']/p/pre")
+	@FindBy(how = How.XPATH, using = "//*[@id='patientmatch']/div/div/div[2]/p/pre")
 	private WebElement lockoutPopUpMsg;
 	
 	@FindBy(how = How.ID, using = "closeAlertPopup")

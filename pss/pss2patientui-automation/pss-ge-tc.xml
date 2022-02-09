@@ -4,10 +4,10 @@
 	<test thread-count="5" name="Test">
 		<classes>
 			<class
-				name="com.medfusion.product.pss2patientportal.test.PSS2PatientPortalAcceptanceTests">
+				name="com.medfusion.product.pss2patientportal.test.PSS2PatientPortalAcceptanceTests" >
 				<methods>
 
-					<include name="testSSOFlowGE()" />
+					<include name="testSSOFlowGE" />
 
 					<include name="testPreventSchedPastGE()" />
 					<include name="testPreventSchedFutureGE()" />
@@ -22,22 +22,42 @@
 					<include name="testBookApptWithLastQuestionGE()" />
 
 					<include name="testCancelFromEmailGE()" />
-					<include name="testCancelE2ETestingGE()" />					
-					
+					<include name="testCancelE2ETestingGE()" />
+
 					<include name="testRescheduleAppointmentGE" />
 					<include name="testRescheduleviaEmailNotifiicationGE()" />
 
-					<include name="testAcceptSameDayGE()" />
-					<include name="testAgeRuleGE()" />
-					<include name="testageRulewithSpecialityGE()" />
+					<exclude name="testAcceptSameDayGE()" />
+					<exclude name="testAgeRuleGE()" />
+					<exclude name="testageRulewithSpecialityGE()" />
 					<include name="testE2ELinkGenerationGE()" />
-					<include name="testExcludeSlotsGE()" />
-
+					<exclude name="testExcludeSlotsGE()" />
 
 					<include name="testLeadTimeGE()" />
 					<include name="testMaxperDayGE()" />
 					<include name="testPCPShareONGE()" />
 					<include name="testTimeMarkGE()" />
+
+					<include name="testWelcomeMessageGE()" />
+					<include name="testUpcomingPastApptDisableGE" />
+					<include name="testReserveForSameDayGE()" />
+					<include name="testNextAvailableDisplayedWithLocationGE()" />
+					<include name="testNextAvailable_TLB_GE()" />
+					<include name="testNextAvailable_TBL_GE()" />
+					<include name="testNextAvailable_LBT_GE()" />
+					<include name="testE2ELinkGenWithProviGE()" />
+					<include name="testE2ELinkGenandDeleteLinkGE()" />
+					<include name="testDisableLoginlessGE()" />
+					<include name="testAgeRuleAppointmentTypeGE()" />
+
+				</methods>
+			</class>
+			<class
+				name="com.medfusion.product.pss2patientportal.test.PSS2PatientPortalAcceptanceTests02">
+				<methods>
+
+					<include name="testAddressLine2GE" />
+					<include name="testAlertMessageGE()" />
 
 				</methods>
 			</class>

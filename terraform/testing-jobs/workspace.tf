@@ -39,6 +39,12 @@ locals {
     demo-practiceportal-regression1    = "demo-practiceportal-regression1"
     demo-practiceportal-regression2    = "demo-practiceportal-regression2"
     demo-sitegen-regression            = "demo-sitegen-regression"
+    demo-pss-at-acceptance             = "demo-pss-at-acceptance"
+    demo-pss-ge-acceptance             = "demo-pss-ge-acceptance"
+    demo-pss-geadapter-acceptance      = "demo-pss-geadapter-acceptance"
+    demo-pss-gw-acceptance             = "demo-pss-gw-acceptance"
+    demo-pss-ng-acceptance             = "demo-pss-ng-acceptance"
+    demo-pss-ngadapter-acceptance      = "demo-pss-ngadapter-acceptance"
   }
   selected_workspace = local.valid_workspaces[terraform.workspace]
 }
