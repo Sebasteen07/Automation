@@ -508,6 +508,23 @@ public class PSSAdminUtils extends BaseTestNGWebDriver{
 		Log4jUtil.log("Current Timezone On AdminUi " + appointment.getCurrentTimeZone());
 		patientflow.logout();
 	}
+	
+	public void leadTimenotReserve1(WebDriver driver, AdminUser adminuser, Appointment appointment,String leadTimeValue) throws Exception {
+
+		PSS2PracticeConfiguration psspracticeConfig = loginToAdminPortal(driver, adminuser);
+		psspracticeConfig = psspracticeConfig.gotoPracticeConfigTab();
+		PatientFlow patientflow = psspracticeConfig.gotoPatientFlowTab();
+		ManageResource manageResource = psspracticeConfig.gotoResource();
+		pageRefresh(driver);
+		manageResource.selectResource(appointment.getProvider());
+		manageResource.selectAppointmenttype(appointment.getAppointmenttype());
+		manageResource.notreserve();
+		manageResource.setLeadDay(leadTimeValue);
+		Log4jUtil.log("Status for AcceptFor Same day is" + manageResource.acceptforStatus());
+		appointment.setAccepttoggleStatus(manageResource.acceptforStatus());
+		Log4jUtil.log("Status for AcceptFor Same day is" + appointment.isAccepttoggleStatus());
+		patientflow.logout();
+	}
 
 	public void reserveforDay(WebDriver driver, AdminUser adminuser, Appointment appointment) throws Exception {
 		PSS2PracticeConfiguration psspracticeConfig = loginToAdminPortal(driver, adminuser);
