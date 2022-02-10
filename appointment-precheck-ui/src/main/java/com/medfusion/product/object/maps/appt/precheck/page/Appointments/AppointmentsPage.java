@@ -425,6 +425,12 @@ public class AppointmentsPage extends BasePageObject {
 	
 	@FindBy(how = How.XPATH, using = "(//input[@type='checkbox'])[2]")
 	private WebElement selectFirstPatient;
+	
+	@FindBy(how=How.XPATH, using ="//a[text()='Appointments']")
+	private WebElement appointmentPage ;
+	
+	@FindBy(how=How.XPATH, using ="//div[@class='navbar-right-arrivals-number']")
+	private WebElement notifIcon;
 
 	public AppointmentsPage(WebDriver driver) {
 		super(driver);
@@ -1706,6 +1712,23 @@ public class AppointmentsPage extends BasePageObject {
 		Thread.sleep(10000);
 		String pageNo = jumpToPage.getAttribute("value");
 		return pageNo;
+	}
+    
+    public void clickOnappointmentPage() {
+		IHGUtil.waitForElement(driver, 5, appointmentPage);
+		jse.executeScript("arguments[0].click();",appointmentPage);
+	}
+	
+	public boolean visibiliyOfnotificationCount() {
+		IHGUtil.waitForElement(driver, 5, notifIcon);
+		notifIcon.isDisplayed();
+		if (notifIcon.isDisplayed()) {
+			log("Notification count Icon is visible");
+			return true;
+		} else {
+			log("Notification count Icon is not visible");
+			return false;
+		}
 	}
 
 
