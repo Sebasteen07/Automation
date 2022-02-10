@@ -523,6 +523,11 @@ public class PSSAdminUtils extends BaseTestNGWebDriver{
 		Log4jUtil.log("Status for AcceptFor Same day is" + manageResource.acceptforStatus());
 		appointment.setAccepttoggleStatus(manageResource.acceptforStatus());
 		Log4jUtil.log("Status for AcceptFor Same day is" + appointment.isAccepttoggleStatus());
+		if (appointment.isAccepttoggleStatus() == false) {
+			manageResource.clickacceptsameday();
+		} else {
+			log("Alredy ON Accept Same Day");
+		}
 		patientflow.logout();
 	}
 
