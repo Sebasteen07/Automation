@@ -120,14 +120,14 @@ public class SecurityDetailsPage extends MedfusionPage {
 
 		private void fillAccountDetails(String userId, String password, String secretQuestion, String secretAnswer, String phoneNumber, int statementPreference) throws InterruptedException {
 				log("Setting User Name and Password as " + userId + "/" + password);
-				Thread.sleep(3000);
+				Thread.sleep(1000);
 				inputUserId.sendKeys(userId);
 				inputPassword.sendKeys(password);
-                 Thread.sleep(3000);
+				IHGUtil.waitForElement(driver, 3, selectSecretQuestion);
 				selectSecretQuestion.sendKeys(secretQuestion);
-
 				inputSecretAnswer.sendKeys(secretAnswer);
 				scrollAndWait(0,300,2000);
+				IHGUtil.waitForElement(driver, 3, inputPhone1);
 				inputPhone1.sendKeys(phoneNumber.substring(0, 3));
 				inputPhone2.sendKeys(phoneNumber.substring(3, 6));
 				inputPhone3.sendKeys(phoneNumber.substring(6, 10));
