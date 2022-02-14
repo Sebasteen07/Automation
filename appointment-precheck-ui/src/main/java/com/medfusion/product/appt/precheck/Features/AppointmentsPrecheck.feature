@@ -980,7 +980,7 @@ Feature: Test fuctionality of Appointment precheck
     And I click on save button in notifications tab
     And I schedule an appointment
     And from curbside check-in filtration is done for location
-    Then verify notification count get updated after arrival entry in appointment dashboard without refresh
+    Then I verify notification count get updated after arrival entry in appointment dashboard without refresh
     And logout from practice provisioning portal
   
   Scenario: verify notification count after filteration for location L1 and arrival entry for location L2
@@ -989,7 +989,7 @@ Feature: Test fuctionality of Appointment precheck
     And I click on save button in notifications tab
     And I schedule an appointment
     And from curbside check-in tab filtration is done for location L1 when there is already arrival entry for location L2
-    Then verify notification count should not get updated after arrival entry in curbside dashboard for location L2 without refresh
+    Then I verify notification count should not get updated after arrival entry in curbside dashboard for location L2 without refresh
     And logout from practice provisioning portal
     
   Scenario: verify notification count after filteration for location L1 and arrival entry for location L2
@@ -998,6 +998,6 @@ Feature: Test fuctionality of Appointment precheck
     And I click on save button in notifications tab
     And I schedule an appointment
     And from curbside check-in tab filtration is done for location L1 when there is already arrival entry for location L2
-    Then verify notification count should not get updated after arrival entry in appointment dashboard for location L2 without refresh
+    Then I verify notification count should not get updated after arrival entry in appointment dashboard for location L2 without refresh
     And logout from practice provisioning portal
     

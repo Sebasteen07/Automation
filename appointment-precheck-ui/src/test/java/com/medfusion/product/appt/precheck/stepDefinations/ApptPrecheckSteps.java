@@ -3615,11 +3615,8 @@ public class ApptPrecheckSteps extends BaseTest {
 	@When("from setting in notifications curbside check-in reminder checkbox is check")
 	public void from_setting_in_notifications_curbside_check_in_reminder_checkbox_is_check() throws InterruptedException {
 		mainPage.clickOnSettingTab();
-		Thread.sleep(3000);
 		notifPage.clickOnNotificationTab();
-		Thread.sleep(3000);
 		notifPage.enableCurbsideCheckinRemCheckbox();
-		Thread.sleep(3000);
 	}
 	@When("I click on save button in notifications tab")
 	public void i_click_on_save_button_in_notifications_tab() throws InterruptedException {
@@ -3656,19 +3653,18 @@ public class ApptPrecheckSteps extends BaseTest {
 	}
 	@When("from curbside check-in filtration is done for location")
 	public void from_curbside_check_in_filtration_is_done_for_location() throws InterruptedException {
-		curbsidePage.clickOncurbsideCheckinPage();
+		mainPage.clickOnCurbsideTab();
 		log("user on curbside page");
-		Thread.sleep(3000);
 		curbsidePage.clickOncurbsideCheckinLocationDropDown();
 		log("user clicks on dropdown");
 		curbsidePage.selectLocationinDropDown();
 		log("user select the location");
 	}
-	@Then("verify notification count get updated after arrival entry in appointment dashboard without refresh")
-	public void verify_notification_count_get_updated_after_arrival_entry_in_appointment_dashboard_without_refresh() {
-		apptPage.clickOnappointmentPage();
+	@Then("I verify notification count get updated after arrival entry in appointment dashboard without refresh")
+	public void i_verify_notification_count_get_updated_after_arrival_entry_in_appointment_dashboard_without_refresh() {
+		mainPage.clickOnAppointmentsTab();
 	    log("user on appointments page");
-		assertTrue(apptPage.visibiliyOfnotificationCount());
+		assertTrue(curbsidePage.visibilityOfNotifIcon());
 		log("Notification count is updated");
 		
 	}
@@ -3702,28 +3698,26 @@ public class ApptPrecheckSteps extends BaseTest {
 	}
 	@When("from curbside check-in tab filtration is done for location L1 when there is already arrival entry for location L2")
 	public void from_curbside_check_in_tab_filtration_is_done_for_location_l1_when_there_is_already_arrival_entry_for_location_l2() throws InterruptedException {
-		curbsidePage.clickOncurbsideCheckinPage();
+		mainPage.clickOnCurbsideTab();
 		log("user on curbside page");
-		Thread.sleep(3000);
 		curbsidePage.clickOncurbsideCheckinLocationDropDown();
 		log("user clicks on dropdown");
 		curbsidePage.selectLocationL1inDropDown();
 		log("Location selected");
-		Thread.sleep(3000);
 	}
-	@Then("verify notification count should not get updated after arrival entry in curbside dashboard for location L2 without refresh")
-	public void verify_notification_count_should_not_get_updated_after_arrival_entry_in_curbside_dashboard_for_location_l2_without_refresh() {
-		assertTrue(curbsidePage.visibiliyOfnotificationCount());
+	@Then("I verify notification count should not get updated after arrival entry in curbside dashboard for location L2 without refresh")
+	public void i_verify_notification_count_should_not_get_updated_after_arrival_entry_in_curbside_dashboard_for_location_l2_without_refresh() {
+		assertTrue(curbsidePage.visibilityOfNotifIcon());
 		log("Notification count is not updated for location L2");
 	}
-	@Then("verify notification count should not get updated after arrival entry in appointment dashboard for location L2 without refresh")
-	public void verify_notification_count_should_not_get_updated_after_arrival_entry_in_appointment_dashboard_for_location_l2_without_refresh() {
-		apptPage.clickOnappointmentPage();
+	@Then("I verify notification count should not get updated after arrival entry in appointment dashboard for location L2 without refresh")
+	public void i_verify_notification_count_should_not_get_updated_after_arrival_entry_in_appointment_dashboard_for_location_l2_without_refresh() {
+		mainPage.clickOnAppointmentsTab();;
 	    log("user on appointments page");
-		assertTrue(apptPage.visibiliyOfnotificationCount());
+		assertTrue(curbsidePage.visibilityOfNotifIcon());
 		log("Notification count is not updated for location L2");
 		}
-	}
+}
 
 	
 
