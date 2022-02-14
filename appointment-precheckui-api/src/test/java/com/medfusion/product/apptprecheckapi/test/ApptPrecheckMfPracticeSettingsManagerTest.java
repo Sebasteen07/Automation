@@ -64,7 +64,6 @@ public class ApptPrecheckMfPracticeSettingsManagerTest extends BaseTestNG {
 		log("Verifying the response");
 		assertEquals(response.getStatusCode(), 404);
 		apiVerification.responseTimeValidation(response);
-		apiVerification.verifyWithoutPracticeId(response);
 	}
 
 	@Test(enabled = true, groups = { "APItest" }, retryAnalyzer = RetryAnalyzer.class)
@@ -95,7 +94,6 @@ public class ApptPrecheckMfPracticeSettingsManagerTest extends BaseTestNG {
 		log("Verifying the response");
 		assertEquals(response.getStatusCode(), 404);
 		apiVerification.responseTimeValidation(response);
-		apiVerification.verifyWithoutPracticeId(response);
 	}
 
 	@Test(enabled = true, groups = { "APItest" }, retryAnalyzer = RetryAnalyzer.class)
@@ -126,7 +124,6 @@ public class ApptPrecheckMfPracticeSettingsManagerTest extends BaseTestNG {
 		log("Verifying the response");
 		assertEquals(response.getStatusCode(), 404);
 		apiVerification.responseTimeValidation(response);
-		apiVerification.verifyWithoutPracticeId(response);
 
 	}
 
@@ -178,7 +175,6 @@ public class ApptPrecheckMfPracticeSettingsManagerTest extends BaseTestNG {
 		log("Verifying the response");
 		assertEquals(response.getStatusCode(), 404);
 		apiVerification.responseTimeValidation(response);
-		apiVerification.verifyWithoutPracticeId(response);
 	}
 
 	@Test(enabled = true, groups = { "APItest" }, retryAnalyzer = RetryAnalyzer.class)

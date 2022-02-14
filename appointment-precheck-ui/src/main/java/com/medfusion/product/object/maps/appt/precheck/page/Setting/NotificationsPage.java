@@ -595,7 +595,7 @@ public class NotificationsPage extends BasePageObject {
 
 	@FindBy(how = How.XPATH, using = "(//input[@type='checkbox'])[2]")
 	private WebElement selectOnePatient;
-	
+
 	@FindBy(how = How.XPATH, using = "(//input[@class='mf-notification-checkbox'])[2]")
 	private WebElement curbsideCheckinRemCheckbox;
 
@@ -2189,10 +2189,10 @@ public class NotificationsPage extends BasePageObject {
 
 	public String enterMinutes() {
 		Random random = new Random();
-		int randamNo = random.nextInt(59);
+		int randamNo = random.nextInt(49) + 10;
 		return Appointment.minutes = String.valueOf(randamNo);
 	}
-	
+
 	public void disableCurbsideCheckinRemCheckbox() throws InterruptedException {
 		IHGUtil.PrintMethodName();
 		IHGUtil.waitForElement(driver, 5, curbsideCheckinRemCheckbox);
@@ -2205,7 +2205,7 @@ public class NotificationsPage extends BasePageObject {
 		}
 		Thread.sleep(10000);
 	}
-	
+
 	public void enableCurbsideCheckinRemCheckbox() throws InterruptedException {
 		IHGUtil.PrintMethodName();
 		IHGUtil.waitForElement(driver, 5, curbsideCheckinRemCheckbox);
@@ -2215,6 +2215,19 @@ public class NotificationsPage extends BasePageObject {
 		} else if (!selected) {
 			curbsideCheckinRemCheckbox.click();
 			log("Curbside checkin reminder checkbox Enabled");
+		}
+		Thread.sleep(10000);
+	}
+
+	public void braodcastMessagingCheckbox() throws InterruptedException {
+		IHGUtil.PrintMethodName();
+		IHGUtil.waitForElement(driver, 5, broadcastMessagingCheckbox);
+		boolean selected = broadcastMessagingCheckbox.isSelected();
+		if (selected) {
+			log("Broadcast Messaging checkbox already Enabled");
+		} else if (!selected) {
+			broadcastMessagingCheckbox.click();
+			log("Broadcast Messaging checkbox is Enabled");
 		}
 		Thread.sleep(10000);
 	}
