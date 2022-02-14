@@ -425,6 +425,12 @@ public class AppointmentsPage extends BasePageObject {
 	
 	@FindBy(how = How.XPATH, using = "(//input[@type='checkbox'])[2]")
 	private WebElement selectFirstPatient;
+	
+    @FindBy(how = How.CSS, using = "#alert > p>span>a")
+	private WebElement bannerMesssageBaseOnAppointment;
+	
+	@FindAll({ @FindBy(how = How.XPATH, using = "(//input[@type='checkbox'])") })
+	public List<WebElement> allAppointment;
 
 	public AppointmentsPage(WebDriver driver) {
 		super(driver);
@@ -1708,6 +1714,56 @@ public class AppointmentsPage extends BasePageObject {
 		return pageNo;
 	}
 
+    public boolean getBannerMessageBaseOnAppt() {
+		IHGUtil.PrintMethodName();
+		boolean visibility = false;
+		try {
+			visibility=bannerMesssageBaseOnAppointment.isDisplayed();
+			log("Banner message succuss status is displayed");
+			return visibility;
+		} catch (NoSuchElementException e) {
+			log("Banner message succuss status is not displayed");
+			return visibility;
+		}
+	}
 
+	public boolean visibilityOfBannerMessage() {
+		IHGUtil.PrintMethodName();
+		boolean visibility = false;
+		try {
+			visibility=selectBannerMesssage.isDisplayed();
+			log("Banner message succuss status is displayed");
+			return visibility;
+		} catch (NoSuchElementException e) {
+			log("Banner message succuss status is not displayed");
+			return visibility;
+		}
+	}
+	
+	public void selectMultipleAppointments(int selectPatients) throws InterruptedException {
+		IHGUtil.PrintMethodName();
+		for (int i = 1; i <= selectPatients; i++) {
+			WebElement patients = allAppointment.get(i);
+			jse.executeScript("arguments[0].click();", patients);
+		}
+	}
+	
+	public String jumpToNextPage(int pageNumber) throws InterruptedException {
+		IHGUtil.PrintMethodName();
+		IHGUtil.waitForElement(driver, 5, jumpToNextPage);
+		((JavascriptExecutor) driver).executeScript("arguments[0].scrollIntoView(true);", jumpToNextPage);
+		log("Click on jump to page and move to "+pageNumber+" page");
+		jse.executeScript("arguments[0].click();", jumpToNextPage);
+		IHGUtil.waitForElement(driver, 5, jumpToPage);
+		String pageNo = jumpToPage.getAttribute("value");
+		jse.executeScript("arguments[0].scrollIntoView(true);", appointmentsTab);
+		return pageNo;
+	}
+	
+	public String getBannerMessageSelectAppAppt() {
+		IHGUtil.PrintMethodName();
+		IHGUtil.waitForElement(driver, 5, selectBannerMesssage);
+		return selectBannerMesssage.getText();
+	}
 
 }

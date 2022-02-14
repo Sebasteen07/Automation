@@ -974,3 +974,40 @@ Feature: Test fuctionality of Appointment precheck
     And I select a appointment and send manual reminder
     And I click on refresh button from apt dashboard and lands on same page
     Then I verify that I am still on page five and arrows are working
+
+  Scenario: Verify when select all records from first page then Ribbon message should be display
+    When I enable Broadcast messaging checkbox from setting in notifications dashboard
+    And I switch on appointment dashboard
+    And I select past start date and select all appointment
+    Then I verify ribbon message will be display as per expected
+    And logout from practice provisioning portal
+
+  Scenario: Verify when select multiple records from different pages then ribbon should not display
+    When I enable Broadcast messaging checkbox from setting in notifications dashboard
+    And I switch on appointment dashboard
+    And I select past start date
+    And I select 10 patients records from first page
+    And I select 15 patient records from second page
+    And I select 10 patient records from third page
+    And I select 5 patient records from fourth page
+    Then I verify on appointments dashboard multiple records are selected from different pages then it will not show the ribbon on top of the page
+    And logout from practice provisioning portal
+
+  Scenario: Verify when patient confirms his arrival then a new row is added in the grid
+    When I switch on curbside checkin tab
+    And I schedule 3 appointment and confirmed their arrival
+    And 3 rows should be display on curbside checkin page and notification icon updated
+    And I schedule 2 appointment and confirmed their arrival
+    And 5 rows should be display on curbside checkin page and notification icon updated
+    And I switches to Appointmant dashboard
+    And I schedule 1 appointment and confirmed their arrival
+    And one notification update should be displayed in the notification icon on the top
+    Then I verify when switches to curbside checkin tab 6 row must be displayed without clicking on the notification icon on the top
+    And logout from practice provisioning portal
+
+  Scenario: verify that Pre-populated dropdown list of messages in Send message drop down field
+    When I schedule an appointment and have confirmed there arrival
+    And I click on Curbside check-in tab
+    And I select patient and click on dropdown
+    Then I verify messages list should be displayed in send message dropdown
+    And logout from practice provisioning portal
