@@ -975,14 +975,14 @@ Feature: Test fuctionality of Appointment precheck
     And I click on refresh button from apt dashboard and lands on same page
     Then I verify that I am still on page five and arrows are working
 
-  Scenario: verify when select all records from first page ribben message will be display
+  Scenario: Verify when select all records from first page then Ribbon message should be display
     When I enable Broadcast messaging checkbox from setting in notifications dashboard
     And I switch on appointment dashboard
     And I select past start date and select all appointment
     Then I verify ribbon message will be display as per expected
     And logout from practice provisioning portal
 
-  Scenario: verify select multiple records from different pages and verify if ribbon is not display
+  Scenario: Verify when select multiple records from different pages then ribbon should not display
     When I enable Broadcast messaging checkbox from setting in notifications dashboard
     And I switch on appointment dashboard
     And I select past start date
