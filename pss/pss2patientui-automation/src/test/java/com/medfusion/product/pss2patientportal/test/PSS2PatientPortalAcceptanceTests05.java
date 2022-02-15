@@ -71,7 +71,7 @@ public class PSS2PatientPortalAcceptanceTests05 extends BaseTestNGWebDriver {
 	}
 	
 	@Test(enabled = true, groups = { "APItest" }, retryAnalyzer = RetryAnalyzer.class)
-	public void test01UI_LastSeenProviderExPatient() throws Exception {
+	public void test01UI_LastSeenProvider_NG() throws Exception {
 		
 		logStep("Verify the Next Available should display for LBT Rule-");
 		PSSPropertyFileLoader propertyData = new PSSPropertyFileLoader();
@@ -150,6 +150,269 @@ public class PSS2PatientPortalAcceptanceTests05 extends BaseTestNGWebDriver {
 		assertTrue(actual_BookName.contains("LAST SEEN"));	
 				
 		adminPayload=payloadAM02.lastSeenProviderPyaload(1);
+		response=postAPIRequestAM.resourceConfigSavePost(practiceId, adminPayload);
+		apv.responseCodeValidation(response, 200);	
+
+	}	
+	
+	@Test(enabled = true, groups = { "APItest" }, retryAnalyzer = RetryAnalyzer.class)
+	public void test01UI_LastSeenProvider_GW() throws Exception {
+		
+		logStep("Verify the Next Available should display for LBT Rule-");
+		PSSPropertyFileLoader propertyData = new PSSPropertyFileLoader();
+		Appointment testData = new Appointment();
+		AdminUser adminUser = new AdminUser();
+
+		propertyData.setAdminGW(adminUser);
+		propertyData.setAppointmentResponseGW(testData);
+
+		logStep("Set up the API authentication");
+		setUpAM(propertyData.getProperty("mf.practice.id.gw"), propertyData.getProperty("mf.authuserid.am.gw"));
+
+		Response response;
+		String adminPayload;
+		JSONArray arr;
+
+		logStep("Set up the desired rule in Admin UI using API");
+		response = postAPIRequestAM.resourceConfigRuleGet(practiceId);
+		arr = new JSONArray(response.body().asString());
+		int l = arr.length();
+		log("Length is- " + l);
+
+		for (int i = 0; i < l; i++) {
+			int ruleId = arr.getJSONObject(i).getInt("id");
+			log("Object No." + i + "- " + ruleId);
+			response = postAPIRequestAM.deleteRuleById(practiceId, Integer.toString(ruleId));
+			apv.responseCodeValidation(response, 200);
+		}
+
+		response = postAPIRequestAM.resourceConfigRulePost(practiceId, payloadAM.rulePayload("TLB", "T,L,B"));
+		apv.responseCodeValidation(response, 200);
+
+		response = postAPIRequestAM.resourceConfigRulePost(practiceId, payloadAM.rulePayload("LTB", "L,T,B"));
+		apv.responseCodeValidation(response, 200);
+
+		adminPayload=payloadAM02.lastSeenProviderPyaload(12);
+		response=postAPIRequestAM.resourceConfigSavePost(practiceId, adminPayload);
+		apv.responseCodeValidation(response, 200);		
+		
+		response = postAPIRequestAM.patientInfoPost(practiceId, payloadAM.patientInfoWithOptionalGW());
+		apv.responseCodeValidation(response, 200);
+		
+		String fn = propertyData.getProperty("lastseen.fn.pm.gw");
+		String ln = propertyData.getProperty("lastseen.ln.pm.gw");
+		String dob = propertyData.getProperty("lastseen.dob.pm.gw");
+		String gender = propertyData.getProperty("lastseen.gender.pm.gw");
+		
+		logStep("Move to PSS patient Portal 2.0 to book an Appointment");
+		DismissPage dismissPage = new DismissPage(driver, testData.getUrlLoginLess());
+		Thread.sleep(1000);
+
+		logStep("Open the link and click on Dismiss Button ");
+		LoginlessPatientInformation loginlessPatientInformation = dismissPage.clickDismiss();
+
+		HomePage homePage = loginlessPatientInformation.fillNewPatientForm(fn,ln,dob,"",gender,"","");
+
+		homePage.btnStartSchedClick();
+		logStep("Clicked on the Start Button ");
+
+		StartAppointmentInOrder startAppointmentInOrder = null;
+		startAppointmentInOrder = homePage.skipInsurance(driver);
+		logStep("Clicked on the Skip Insurance Button ");
+		AppointmentPage appointment = startAppointmentInOrder.selectFirstAppointment(PSSConstants.START_APPOINTMENT);
+
+		log("Verfiy Appointment Page and appointment =" + testData.getAppointmenttype());
+		log("does apt has a pop up? " + testData.getIsAppointmentPopup());
+
+		Location location = appointment.selectTypeOfLocation(testData.getAppointmenttype(),
+				Boolean.valueOf(testData.getIsAppointmentPopup()));
+		log("Verfiy Location Page and location to be selected = " + testData.getLocation());
+		Provider provider = location.searchProvider(testData.getLocation());
+		log("address = " + location.getAddressValue());
+
+		log("Verfiy Provider Page and Provider = " + testData.getProvider());
+		
+		String actual_BookName=provider.getProviderText(testData.getProvider());
+		log("Provider Name is-  " +actual_BookName );
+		
+		assertTrue(actual_BookName.contains("LAST SEEN"));	
+				
+		adminPayload=payloadAM02.lastSeenProviderPyaload(1);
+		response=postAPIRequestAM.resourceConfigSavePost(practiceId, adminPayload);
+		apv.responseCodeValidation(response, 200);	
+
+	}	
+	
+	@Test(enabled = true, groups = { "APItest" }, retryAnalyzer = RetryAnalyzer.class)
+	public void test01UI_LastSeenProvider_GE() throws Exception {
+		
+		logStep("Verify the Next Available should display for LBT Rule-");
+		PSSPropertyFileLoader propertyData = new PSSPropertyFileLoader();
+		Appointment testData = new Appointment();
+		AdminUser adminUser = new AdminUser();
+
+		propertyData.setAdminGE(adminUser);
+		propertyData.setAppointmentResponseGE(testData);
+
+		logStep("Set up the API authentication");
+		setUpAM(propertyData.getProperty("mf.practice.id.ge"), propertyData.getProperty("mf.authuserid.am.ge"));
+
+		Response response;
+		String adminPayload;
+		JSONArray arr;
+
+		logStep("Set up the desired rule in Admin UI using API");
+		response = postAPIRequestAM.resourceConfigRuleGet(practiceId);
+		arr = new JSONArray(response.body().asString());
+		int l = arr.length();
+		log("Length is- " + l);
+
+		for (int i = 0; i < l; i++) {
+			int ruleId = arr.getJSONObject(i).getInt("id");
+			log("Object No." + i + "- " + ruleId);
+			response = postAPIRequestAM.deleteRuleById(practiceId, Integer.toString(ruleId));
+			apv.responseCodeValidation(response, 200);
+		}
+
+		response = postAPIRequestAM.resourceConfigRulePost(practiceId, payloadAM.rulePayload("TLB", "T,L,B"));
+		apv.responseCodeValidation(response, 200);
+
+		response = postAPIRequestAM.resourceConfigRulePost(practiceId, payloadAM.rulePayload("LTB", "L,T,B"));
+		apv.responseCodeValidation(response, 200);
+
+		adminPayload=payloadAM02.lastSeenProviderPyaload(12);
+		response=postAPIRequestAM.resourceConfigSavePost(practiceId, adminPayload);
+		apv.responseCodeValidation(response, 200);		
+		
+		response = postAPIRequestAM.patientInfoPost(practiceId, payloadAM.patientInfoWithOptionalGE());
+		apv.responseCodeValidation(response, 200);
+		
+		String firstNamePreReq = propertyData.getProperty("firstname.prereqpast.ge");
+		String lastNamePreReq = propertyData.getProperty("lastname.prereqpast.ge");
+		String genderPreReq = propertyData.getProperty("gender.prereqpast.ge");
+		String dobPreReq = propertyData.getProperty("dob.prereqpast.ge");
+
+		DismissPage dismissPage = new DismissPage(driver, testData.getUrlLoginLess());
+		Thread.sleep(1000);
+		logStep("Clicked on Dismiss");
+		LoginlessPatientInformation loginlessPatientInformation = dismissPage.clickDismiss();
+		
+		logStep("Click on the Start Button ");
+		HomePage homePage = loginlessPatientInformation.fillNewPatientForm(firstNamePreReq, lastNamePreReq, dobPreReq, "", genderPreReq, "", "");
+		homePage.btnStartSchedClick();		
+
+		StartAppointmentInOrder startAppointmentInOrder = null;
+		startAppointmentInOrder = homePage.skipInsurance(driver);
+		logStep("Clicked on the Skip Insurance Button ");
+		
+		AppointmentPage appointment = startAppointmentInOrder.selectFirstAppointment(PSSConstants.START_APPOINTMENT);
+
+		log("Verfiy Appointment Page and appointment =" + testData.getAppointmenttype());
+		log("does apt has a pop up? " + testData.getIsAppointmentPopup());
+
+		Location location = appointment.selectTypeOfLocation(testData.getAppointmenttype(),
+				Boolean.valueOf(testData.getIsAppointmentPopup()));
+		log("Verfiy Location Page and location to be selected = " + testData.getLocation());
+		Provider provider = location.searchProvider(testData.getLocation());
+		log("address = " + location.getAddressValue());
+
+		log("Verfiy Provider Page and Provider = " + testData.getProvider());
+		
+		String actual_BookName=provider.getProviderText(testData.getProvider());
+		log("Provider Name is-  " +actual_BookName );
+		
+		assertTrue(actual_BookName.contains("LAST SEEN"));	
+				
+		adminPayload=payloadAM02.lastSeenProviderPyaload(1);
+		response=postAPIRequestAM.resourceConfigSavePost(practiceId, adminPayload);
+		apv.responseCodeValidation(response, 200);	
+
+	}	
+	
+	@Test(enabled = true, groups = { "APItest" }, retryAnalyzer = RetryAnalyzer.class)
+	public void test01UI_LastSeenProvider_AT() throws Exception {
+		
+		logStep("Verify the Next Available should display for LBT Rule-");
+		PSSPropertyFileLoader propertyData = new PSSPropertyFileLoader();
+		Appointment testData = new Appointment();
+		AdminUser adminUser = new AdminUser();
+
+		propertyData.setAdminAT(adminUser);
+		propertyData.setAppointmentResponseAT(testData);
+
+		logStep("Set up the API authentication");
+		setUpAM(propertyData.getProperty("mf.practice.id.at"), propertyData.getProperty("mf.authuserid.am.at"));
+
+		Response response;
+		String adminPayload;
+		JSONArray arr;
+
+		logStep("Set up the desired rule in Admin UI using API");
+		response = postAPIRequestAM.resourceConfigRuleGet(practiceId);
+		arr = new JSONArray(response.body().asString());
+		int l = arr.length();
+		log("Length is- " + l);
+
+		for (int i = 0; i < l; i++) {
+			int ruleId = arr.getJSONObject(i).getInt("id");
+			log("Object No." + i + "- " + ruleId);
+			response = postAPIRequestAM.deleteRuleById(practiceId, Integer.toString(ruleId));
+			apv.responseCodeValidation(response, 200);
+		}
+
+		response = postAPIRequestAM.resourceConfigRulePost(practiceId, payloadAM.rulePayload("TLB", "T,L,B"));
+		apv.responseCodeValidation(response, 200);
+
+		response = postAPIRequestAM.resourceConfigRulePost(practiceId, payloadAM.rulePayload("LTB", "L,T,B"));
+		apv.responseCodeValidation(response, 200);
+
+		adminPayload=payloadAM02.lastSeenProviderPyaloadAT(12);
+		response=postAPIRequestAM.resourceConfigSavePost(practiceId, adminPayload);
+		apv.responseCodeValidation(response, 200);		
+		
+		response = postAPIRequestAM.patientInfoPost(practiceId, payloadAM.patientMatchAt());
+		apv.responseCodeValidation(response, 200);
+		
+		String fn = propertyData.getProperty("lastseen.fn.at");
+		String ln = propertyData.getProperty("lastseen.ln.at");
+		String dob = propertyData.getProperty("lastseen.dob.at");
+		String gender = propertyData.getProperty("lastseen.gender.at");
+		String email = propertyData.getProperty("lastseen.email.at");
+		
+		logStep("Move to PSS patient Portal 2.0 to book an Appointment");
+		DismissPage dismissPage = new DismissPage(driver, testData.getUrlLoginLess());
+		Thread.sleep(1000);
+
+		logStep("Open the link and click on Dismiss Button ");
+		LoginlessPatientInformation loginlessPatientInformation = dismissPage.clickDismiss();
+
+		HomePage homePage = loginlessPatientInformation.fillNewPatientForm(fn,ln,dob,email,gender,"","");
+
+		homePage.btnStartSchedClick();
+		logStep("Clicked on the Start Button ");
+
+		StartAppointmentInOrder startAppointmentInOrder = null;
+		startAppointmentInOrder = homePage.skipInsurance(driver);
+		logStep("Clicked on the Skip Insurance Button ");
+		AppointmentPage appointment = startAppointmentInOrder.selectFirstAppointment(PSSConstants.START_APPOINTMENT);
+
+		log("Verfiy Appointment Page and appointment =" + testData.getAppointmenttype());
+		log("does apt has a pop up? " + testData.getIsAppointmentPopup());
+
+		Location location = appointment.selectTypeOfLocation(testData.getAppointmenttype(),
+				Boolean.valueOf(testData.getIsAppointmentPopup()));
+		log("Verfiy Location Page and location to be selected = " + testData.getLocation());
+		Provider provider = location.searchProvider(testData.getLocation());
+		log("address = " + location.getAddressValue());
+
+		log("Verfiy Provider Page and Provider = " + testData.getProvider());
+		
+		String actual_BookName=provider.getProviderText(testData.getProvider());
+		log("Provider Name is-  " +actual_BookName );
+		
+		assertTrue(actual_BookName.contains("LAST SEEN"));	
+				
+		adminPayload=payloadAM02.lastSeenProviderPyaloadAT(1);
 		response=postAPIRequestAM.resourceConfigSavePost(practiceId, adminPayload);
 		apv.responseCodeValidation(response, 200);	
 
