@@ -3911,6 +3911,56 @@ public class ApptPrecheckSteps extends BaseTest {
 		
 	}
 	
+	@When("from curbside check-in filtration is done for location L2")
+	public void from_curbside_check_in_filtration_is_done_for_location_l2() throws InterruptedException {
+		mainPage.clickOnCurbsideTab();
+		log("user on curbside page");
+		curbsidePage.clickOncurbsideCheckinLocationDropDown();
+		log("user clicks on dropdown");
+		curbsidePage.selectLocationL2inDropDown();		
+		log("user select the location L2");
+	}
+	@Then("I verify notification count should not get updated after arrival entry in curbside dashboard for location L1")
+	public void i_verify_notification_count_should_not_get_updated_after_arrival_entry_in_curbside_dashboard_for_location_l1() {
+		assertTrue(curbsidePage.visibilityOfNotifIcon());
+		log("Notification count is not updated for location L1");
+	}
+	@When("from curbside check-in remove filter for location L2")
+	public void from_curbside_check_in_remove_filter_for_location_l2() {
+		curbsidePage.removeIconforLocationInCurbsidecheckin();
+		log("filter removed for location L2");
+	}
+	@Then("I verify notification count should get updated for all the patients in curbside dashboard")
+	public void i_verify_notification_count_should_get_updated_for_all_the_patients_in_curbside_dashboard() {
+		assertTrue(curbsidePage.visibilityOfNotifIcon());
+		log("Notification count is updated for all patients");
+	}
+	@When("from curbside check-in filtration is done for location L1")
+	public void from_curbside_check_in_filtration_is_done_for_location_l1() throws InterruptedException {
+		mainPage.clickOnCurbsideTab();
+		log("user on curbside page");
+		curbsidePage.clickOncurbsideCheckinLocationDropDown();
+		log("user clicks on dropdown");
+		curbsidePage.selectLocationL1inDropDown();
+		log("user select the location L1");
+	}
+	@Then("I verify notification count should not get updated after arrival entry in curbside dashboard for location L2 and for location L1 entry should get updated in curbside")
+	public void i_verify_notification_count_should_not_get_updated_after_arrival_entry_in_curbside_dashboard_for_location_l2_and_for_location_l1_entry_should_get_updated_in_curbside() {
+		assertTrue(curbsidePage.visibilityOfNotifIcon());
+		log("Notification count is not updated for location L2");
+	}
+	@When("from curbside check-in remove filter for location L1")
+	public void from_curbside_check_in_remove_filter_for_location_l1() {
+		curbsidePage.removeIconforLocationInCurbsidecheckin();
+		log("filter removed for location L1");
+	}
+	@Then("I verify notification count should get updated for all the patients in arrival grid")
+	public void i_verify_notification_count_should_get_updated_for_all_the_patients_in_arrival_grid() {
+		assertTrue(curbsidePage.visibilityOfNotifIcon());
+		log("Notification count is updated for all patients");
+	}
+
+	
 }
 
 

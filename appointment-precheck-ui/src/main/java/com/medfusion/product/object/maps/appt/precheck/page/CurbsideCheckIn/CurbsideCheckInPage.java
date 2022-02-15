@@ -163,6 +163,12 @@ public class CurbsideCheckInPage extends BasePageObject {
 	@FindBy(how=How.XPATH, using ="//div[contains(text(), 'River Oaks Main')]")
 	private WebElement selectLocationL1inDropDown;
 	
+	@FindBy(how=How.XPATH, using ="//div[contains(text(), 'USA')]")
+	private WebElement selectLocationL2inDropDown;
+	
+	@FindBy(how=How.XPATH, using ="(//div[@class=' css-tlfecz-indicatorContainer'])[1]")
+	private WebElement removeIconforLocationInCurbsidecheckin;
+	
 	public CurbsideCheckInPage(WebDriver driver) {
 		super(driver);
 		PageFactory.initElements(driver, this);
@@ -807,4 +813,18 @@ public class CurbsideCheckInPage extends BasePageObject {
 			IHGUtil.waitForElement(driver, 5, selectLocationL1inDropDown);
 			selectLocationL1inDropDown.click();
 	}
+	
+		public void selectLocationL2inDropDown() {
+			IHGUtil.waitForElement(driver, 5, selectLocationL2inDropDown);
+			selectLocationL2inDropDown.click();
+			
+	}
+		
+		public void removeIconforLocationInCurbsidecheckin() {
+			IHGUtil.waitForElement(driver, 5, removeIconforLocationInCurbsidecheckin);
+			jse.executeScript("arguments[0].click();", removeIconforLocationInCurbsidecheckin);
+			
+	}
+		
+		
 }
