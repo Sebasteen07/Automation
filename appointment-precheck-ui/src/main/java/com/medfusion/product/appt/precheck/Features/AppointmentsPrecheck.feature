@@ -974,6 +974,32 @@ Feature: Test fuctionality of Appointment precheck
     And I select a appointment and send manual reminder
     And I click on refresh button from apt dashboard and lands on same page
     Then I verify that I am still on page five and arrows are working
+  
+  Scenario: verify notification count after filteration for location
+    When from setting in notifications curbside check-in reminder checkbox is check
+    And I click on save button in notifications tab
+    And I schedule an appointment
+    And from curbside check-in filtration is done for location
+    Then I verify notification count get updated after arrival entry in appointment dashboard without refresh
+    And logout from practice provisioning portal
+  
+  Scenario: verify notification count after filteration for location L1 and arrival entry for location L2
+  	And I schedule an appointment for location L2
+    When from setting in notifications curbside check-in reminder checkbox is check
+    And I click on save button in notifications tab
+    And I schedule an appointment
+    And from curbside check-in tab filtration is done for location L1 when there is already arrival entry for location L2
+    Then I verify notification count should not get updated after arrival entry in curbside dashboard for location L2 without refresh
+    And logout from practice provisioning portal
+    
+  Scenario: verify notification count after filteration for location L1 and arrival entry for location L2
+  	And I schedule an appointment for location L2
+    When from setting in notifications curbside check-in reminder checkbox is check
+    And I click on save button in notifications tab
+    And I schedule an appointment
+    And from curbside check-in tab filtration is done for location L1 when there is already arrival entry for location L2
+    Then I verify notification count should not get updated after arrival entry in appointment dashboard for location L2 without refresh
+    And logout from practice provisioning portal
 
   Scenario: Verify when select all records from first page then Ribbon message should be display
     When I enable Broadcast messaging checkbox from setting in notifications dashboard
@@ -1011,3 +1037,4 @@ Feature: Test fuctionality of Appointment precheck
     And I select patient and click on dropdown
     Then I verify messages list should be displayed in send message dropdown
     And logout from practice provisioning portal
+

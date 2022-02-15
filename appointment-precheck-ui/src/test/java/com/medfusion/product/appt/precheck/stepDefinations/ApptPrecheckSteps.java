@@ -8,6 +8,7 @@ import static org.testng.Assert.assertNotEquals;
 import static org.testng.Assert.assertTrue;
 
 import java.io.IOException;
+import java.util.Random;
 import java.util.concurrent.TimeUnit;
 
 import com.medfusion.common.utils.PropertyFileLoader;
@@ -3609,7 +3610,7 @@ public class ApptPrecheckSteps extends BaseTest {
 		String previousPage = apptPage.jumpToPreviousPage();
 		assertEquals(previousPage, "4", "Not navigate to next page");
 	}
-
+	
 	@When("I enable Broadcast messaging checkbox from setting in notifications dashboard")
 	public void i_enable_broadcast_messaging_checkbox_from_setting_in_notifications_dashboard()
 			throws InterruptedException {
@@ -3803,4 +3804,117 @@ public class ApptPrecheckSteps extends BaseTest {
 				"Come in the office now message was not same");
 		assertEquals(curbsidePage.visibilityOfOtherMsg(Appointment.apptId), "Other", "Other message was not same");
 	}
+	
+	@When("from setting in notifications curbside check-in reminder checkbox is check")
+	public void from_setting_in_notifications_curbside_check_in_reminder_checkbox_is_check() throws InterruptedException {
+		mainPage.clickOnSettingTab();
+		notifPage.clickOnNotificationTab();
+		notifPage.enableCurbsideCheckinRemCheckbox();
+	}
+	@When("I click on save button in notifications tab")
+	public void i_click_on_save_button_in_notifications_tab() throws InterruptedException {
+		notifPage.saveNotification();
+		log("notifications saved");
+	}
+	@When("I schedule an appointment")
+	public void i_schedule_an_appointment() throws NullPointerException, IOException {
+		Random random = new Random();
+		int randamNo = random.nextInt(100000);
+		Appointment.patientId = String.valueOf(randamNo);
+		Appointment.apptId = String.valueOf(randamNo);
+		long currentTimestamp = System.currentTimeMillis();
+		long plus20Minutes = currentTimestamp + TimeUnit.MINUTES.toMillis(10);
+		apptSched.aptPutAppointment(propertyData.getProperty("baseurl.mf.appointment.scheduler"),
+		propertyData.getProperty("mf.apt.scheduler.practice.id"),
+		payload.putAppointmentPayload(plus20Minutes, propertyData.getProperty("mf.apt.scheduler.phone"),
+		propertyData.getProperty("mf.apt.scheduler.email")),
+		headerConfig.HeaderwithToken(accessToken.getaccessTokenPost()), Appointment.patientId,
+		Appointment.apptId); 
+		Response actionResponse = aptPrecheckPost.aptAppointmentActionsConfirm(
+		propertyData.getProperty("baseurl.apt.precheck"), propertyData.getProperty("mf.apt.scheduler.practice.id"),
+		headerConfig.HeaderwithToken(accessToken.getaccessTokenPost()), Appointment.patientId,
+		Appointment.apptId);
+		assertEquals(actionResponse.getStatusCode(), 200);
+		Response curbsideCheckinResponse = aptPrecheckPost.aptArrivalActionsCurbsideCurbscheckin(
+		propertyData.getProperty("baseurl.apt.precheck"), propertyData.getProperty("mf.apt.scheduler.practice.id"),
+		headerConfig.HeaderwithToken(accessToken.getaccessTokenPost()), Appointment.patientId, Appointment.apptId);
+		assertEquals(curbsideCheckinResponse.getStatusCode(), 200); Response arrivalResponse = aptPrecheckPost.aptArrivalActionsCurbsideArrival(
+		propertyData.getProperty("baseurl.apt.precheck"), propertyData.getProperty("mf.apt.scheduler.practice.id"),
+		headerConfig.HeaderwithToken(accessToken.getaccessTokenPost()), Appointment.patientId, Appointment.apptId);
+		assertEquals(arrivalResponse.getStatusCode(), 200);
+		
+	}
+	@When("from curbside check-in filtration is done for location")
+	public void from_curbside_check_in_filtration_is_done_for_location() throws InterruptedException {
+		mainPage.clickOnCurbsideTab();
+		log("user on curbside page");
+		curbsidePage.clickOncurbsideCheckinLocationDropDown();
+		log("user clicks on dropdown");
+		curbsidePage.selectLocationinDropDown();
+		log("user select the location");
+	}
+	@Then("I verify notification count get updated after arrival entry in appointment dashboard without refresh")
+	public void i_verify_notification_count_get_updated_after_arrival_entry_in_appointment_dashboard_without_refresh() {
+		mainPage.clickOnAppointmentsTab();
+	    log("user on appointments page");
+		assertTrue(curbsidePage.visibilityOfNotifIcon());
+		log("Notification count is updated");
+		
+	}
+	@When("I schedule an appointment for location L2")
+	public void i_schedule_an_appointment_for_location_l2() throws NullPointerException, IOException {
+		Random random = new Random();
+		int randamNo = random.nextInt(100000);
+		Appointment.patientId = String.valueOf(randamNo);
+		Appointment.apptId = String.valueOf(randamNo);
+		long currentTimestamp = System.currentTimeMillis();
+		long plus20Minutes = currentTimestamp + TimeUnit.MINUTES.toMillis(10);
+		apptSched.aptPutAppointment(propertyData.getProperty("baseurl.mf.appointment.scheduler"),
+		propertyData.getProperty("mf.apt.scheduler.practice.id"),
+		payload.putAppointmentPayloadwithDifferentlocation(plus20Minutes, propertyData.getProperty("mf.apt.scheduler.phone"),
+		propertyData.getProperty("mf.apt.scheduler.email")),
+		headerConfig.HeaderwithToken(accessToken.getaccessTokenPost()), Appointment.patientId,
+		Appointment.apptId); 
+		Response actionResponse = aptPrecheckPost.aptAppointmentActionsConfirm(
+		propertyData.getProperty("baseurl.apt.precheck"), propertyData.getProperty("mf.apt.scheduler.practice.id"),
+		headerConfig.HeaderwithToken(accessToken.getaccessTokenPost()), Appointment.patientId,
+		Appointment.apptId);
+		assertEquals(actionResponse.getStatusCode(), 200);
+		Response curbsideCheckinResponse = aptPrecheckPost.aptArrivalActionsCurbsideCurbscheckin(
+		propertyData.getProperty("baseurl.apt.precheck"), propertyData.getProperty("mf.apt.scheduler.practice.id"),
+		headerConfig.HeaderwithToken(accessToken.getaccessTokenPost()), Appointment.patientId, Appointment.apptId);
+		assertEquals(curbsideCheckinResponse.getStatusCode(), 200); Response arrivalResponse = aptPrecheckPost.aptArrivalActionsCurbsideArrival(
+		propertyData.getProperty("baseurl.apt.precheck"), propertyData.getProperty("mf.apt.scheduler.practice.id"),
+		headerConfig.HeaderwithToken(accessToken.getaccessTokenPost()), Appointment.patientId, Appointment.apptId);
+		assertEquals(arrivalResponse.getStatusCode(), 200);
+	}
+	@When("from curbside check-in tab filtration is done for location L1 when there is already arrival entry for location L2")
+	public void from_curbside_check_in_tab_filtration_is_done_for_location_l1_when_there_is_already_arrival_entry_for_location_l2() throws InterruptedException {
+		mainPage.clickOnCurbsideTab();
+		log("user on curbside page");
+		curbsidePage.clickOncurbsideCheckinLocationDropDown();
+		log("user clicks on dropdown");
+		curbsidePage.selectLocationL1inDropDown();
+		log("user select the location");
+	}
+	@Then("I verify notification count should not get updated after arrival entry in curbside dashboard for location L2 without refresh")
+	public void i_verify_notification_count_should_not_get_updated_after_arrival_entry_in_curbside_dashboard_for_location_l2_without_refresh() {
+		assertTrue(curbsidePage.visibilityOfNotifIcon());
+		log("Notification count is not updated for location L2");
+	}
+	@Then("I verify notification count should not get updated after arrival entry in appointment dashboard for location L2 without refresh")
+	public void i_verify_notification_count_should_not_get_updated_after_arrival_entry_in_appointment_dashboard_for_location_l2_without_refresh() {
+		mainPage.clickOnAppointmentsTab();
+	    log("user on appointments page");
+		assertTrue(curbsidePage.visibilityOfNotifIcon());
+		log("Notification count is not updated for location L2");
+		
+	}
+	
 }
+
+
+
+	
+
+

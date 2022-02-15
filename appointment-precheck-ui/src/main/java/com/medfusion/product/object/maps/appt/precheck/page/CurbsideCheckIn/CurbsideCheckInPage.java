@@ -151,6 +151,17 @@ public class CurbsideCheckInPage extends BasePageObject {
 	@FindBy(how = How.XPATH, using = "//input[@class='mf-arrivals-input-text']")
 	public WebElement sendButtonForOtherTextMsg;
 	
+	@FindBy(how=How.XPATH, using ="(//div[@class=' css-tlfecz-indicatorContainer'])[1]")
+	private WebElement curbsideCheckinLocationDropDown;
+	
+	@FindBy(how=How.XPATH, using ="//div[contains(text() ,'River Oaks Main')]")
+	private WebElement selectLocationinDropDown;
+	
+	@FindBy(how=How.XPATH, using ="//div[@class='navbar-right-arrivals-number']")
+	private WebElement notificationCount;
+	
+	@FindBy(how=How.XPATH, using ="//div[contains(text(), 'River Oaks Main')]")
+	private WebElement selectLocationL1inDropDown;
 	
 	public CurbsideCheckInPage(WebDriver driver) {
 		super(driver);
@@ -783,5 +794,17 @@ public class CurbsideCheckInPage extends BasePageObject {
 		return lastSendMessage.getText();
 	}
 	
-	
+		public void selectLocationinDropDown() {
+			IHGUtil.waitForElement(driver, 5, selectLocationinDropDown);
+			selectLocationinDropDown.click();
+	}
+		public void clickOncurbsideCheckinLocationDropDown() {
+			IHGUtil.waitForElement(driver, 5, curbsideCheckinLocationDropDown);
+			curbsideCheckinLocationDropDown.click();
+	}
+		
+		public void selectLocationL1inDropDown() {
+			IHGUtil.waitForElement(driver, 5, selectLocationL1inDropDown);
+			selectLocationL1inDropDown.click();
+	}
 }
