@@ -5,8 +5,10 @@ import java.util.List;
 import java.util.TimeZone;
 
 import org.openqa.selenium.By;
+import org.openqa.selenium.Keys;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
+import org.openqa.selenium.interactions.Actions;
 import org.openqa.selenium.support.Color;
 import org.openqa.selenium.support.FindAll;
 import org.openqa.selenium.support.FindBy;
@@ -16,6 +18,7 @@ import org.openqa.selenium.support.ui.Select;
 
 import com.intuit.ifs.csscat.core.pageobject.BasePageObject;
 import com.medfusion.common.utils.IHGUtil;
+import com.medfusion.product.object.maps.appt.precheck.util.CommonMethods;
 
 public class CurbsideCheckInPage extends BasePageObject {
 
@@ -162,6 +165,14 @@ public class CurbsideCheckInPage extends BasePageObject {
 	
 	@FindBy(how=How.XPATH, using ="//div[contains(text(), 'River Oaks Main')]")
 	private WebElement selectLocationL1inDropDown;
+	
+	@FindBy(how=How.XPATH, using ="(//div[@class=' css-tlfecz-indicatorContainer'])[1]")
+	private WebElement clearLocationTextbox;
+	
+	@FindBy(how=How.XPATH, using ="(//div[@class=' css-tlfecz-indicatorContainer'])[3]")
+	private WebElement clearProviderTextbox;
+	
+	CommonMethods commonMethods = new CommonMethods(driver);
 	
 	public CurbsideCheckInPage(WebDriver driver) {
 		super(driver);
@@ -807,4 +818,44 @@ public class CurbsideCheckInPage extends BasePageObject {
 			IHGUtil.waitForElement(driver, 5, selectLocationL1inDropDown);
 			selectLocationL1inDropDown.click();
 	}
+		
+		public void enterLocationName(String locationName) throws InterruptedException {
+			IHGUtil.PrintMethodName();
+			IHGUtil.waitForElement(driver, 5, locationFilter);
+			Actions action = new Actions(driver);
+			commonMethods.highlightElement(locationFilter);
+			action.sendKeys(locationFilter, locationName).sendKeys(Keys.ENTER).build().perform();
+			Thread.sleep(10000);
+		}
+		
+		public int getPatientsCount() throws InterruptedException {
+			IHGUtil.PrintMethodName();
+			int patientSize = allAppointment.size();
+			return patientSize-1;
+		}
+		
+		public void clearLocationFilterTextbox() throws InterruptedException {
+			IHGUtil.PrintMethodName();
+			IHGUtil.waitForElement(driver, 5, clearLocationTextbox);
+			clearLocationTextbox.click();
+			driver.navigate().refresh();
+			Thread.sleep(5000);
+		}
+		
+		public void enterProviderName(String providerName) throws InterruptedException {
+			IHGUtil.PrintMethodName();
+			IHGUtil.waitForElement(driver, 5, providerField);
+			Actions action = new Actions(driver);
+			commonMethods.highlightElement(providerField);
+			action.sendKeys(providerField, providerName).sendKeys(Keys.ENTER).build().perform();
+			Thread.sleep(5000);
+		}
+		
+		public void clearProviderFilterTextbox() throws InterruptedException {
+			IHGUtil.PrintMethodName();
+			IHGUtil.waitForElement(driver, 5, clearProviderTextbox);
+			jse.executeScript("arguments[0].click();", clearProviderTextbox);
+			driver.navigate().refresh();
+			Thread.sleep(5000);
+		}
 }
