@@ -3911,14 +3911,41 @@ public class ApptPrecheckSteps extends BaseTest {
 		
 	}
 	
+	
+	
+	
+	@When("I schedule an appointment for location L1")
+	public void i_schedule_an_appointment_for_location_l1() throws NullPointerException, IOException {
+		Random random = new Random();
+		int randamNo = random.nextInt(100000);
+		Appointment.patientId = String.valueOf(randamNo);
+		Appointment.apptId = String.valueOf(randamNo);
+		long currentTimestamp = System.currentTimeMillis();
+		long plus20Minutes = currentTimestamp + TimeUnit.MINUTES.toMillis(10);
+		apptSched.aptPutAppointment(propertyData.getProperty("baseurl.mf.appointment.scheduler"),
+		propertyData.getProperty("mf.apt.scheduler.practice.id"),
+		payload.putAppointmentPayload(plus20Minutes, propertyData.getProperty("mf.apt.scheduler.phone"),
+		propertyData.getProperty("mf.apt.scheduler.email")),
+		headerConfig.HeaderwithToken(accessToken.getaccessTokenPost()), Appointment.patientId,
+		Appointment.apptId); 
+		Response actionResponse = aptPrecheckPost.aptAppointmentActionsConfirm(
+		propertyData.getProperty("baseurl.apt.precheck"), propertyData.getProperty("mf.apt.scheduler.practice.id"),
+		headerConfig.HeaderwithToken(accessToken.getaccessTokenPost()), Appointment.patientId,
+		Appointment.apptId);
+		assertEquals(actionResponse.getStatusCode(), 200);
+		Response curbsideCheckinResponse = aptPrecheckPost.aptArrivalActionsCurbsideCurbscheckin(
+		propertyData.getProperty("baseurl.apt.precheck"), propertyData.getProperty("mf.apt.scheduler.practice.id"),
+		headerConfig.HeaderwithToken(accessToken.getaccessTokenPost()), Appointment.patientId, Appointment.apptId);
+		assertEquals(curbsideCheckinResponse.getStatusCode(), 200); Response arrivalResponse = aptPrecheckPost.aptArrivalActionsCurbsideArrival(
+		propertyData.getProperty("baseurl.apt.precheck"), propertyData.getProperty("mf.apt.scheduler.practice.id"),
+		headerConfig.HeaderwithToken(accessToken.getaccessTokenPost()), Appointment.patientId, Appointment.apptId);
+		assertEquals(arrivalResponse.getStatusCode(), 200);
+	}
 	@When("from curbside check-in filtration is done for location L2")
 	public void from_curbside_check_in_filtration_is_done_for_location_l2() throws InterruptedException {
 		mainPage.clickOnCurbsideTab();
-		log("user on curbside page");
 		curbsidePage.clickOncurbsideCheckinLocationDropDown();
-		log("user clicks on dropdown");
-		curbsidePage.selectLocationL2inDropDown();		
-		log("user select the location L2");
+		curbsidePage.selectLocationL2inDropDown();
 	}
 	@Then("I verify notification count should not get updated after arrival entry in curbside dashboard for location L1")
 	public void i_verify_notification_count_should_not_get_updated_after_arrival_entry_in_curbside_dashboard_for_location_l1() {
@@ -3938,14 +3965,11 @@ public class ApptPrecheckSteps extends BaseTest {
 	@When("from curbside check-in filtration is done for location L1")
 	public void from_curbside_check_in_filtration_is_done_for_location_l1() throws InterruptedException {
 		mainPage.clickOnCurbsideTab();
-		log("user on curbside page");
 		curbsidePage.clickOncurbsideCheckinLocationDropDown();
-		log("user clicks on dropdown");
 		curbsidePage.selectLocationL1inDropDown();
-		log("user select the location L1");
 	}
-	@Then("I verify notification count should not get updated after arrival entry in curbside dashboard for location L2 and for location L1 entry should get updated in curbside")
-	public void i_verify_notification_count_should_not_get_updated_after_arrival_entry_in_curbside_dashboard_for_location_l2_and_for_location_l1_entry_should_get_updated_in_curbside() {
+	@Then("I verify notification count should not get updated after arrival entry in curbside dashboard for location L2")
+	public void i_verify_notification_count_should_not_get_updated_after_arrival_entry_in_curbside_dashboard_for_location_l2() {
 		assertTrue(curbsidePage.visibilityOfNotifIcon());
 		log("Notification count is not updated for location L2");
 	}
