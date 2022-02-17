@@ -1,30 +1,24 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<suite name = "Integration-Platform-Regression" verbose = "2" >
-<listeners>
-  <listener class-name="com.intuit.ifs.csscat.core.TestValidationErrorListener" />
-  <listener class-name="org.uncommons.reportng.HTMLReporter" />
-  <listener class-name="org.uncommons.reportng.JUnitXMLReporter" />
-  <listener class-name="com.epam.reportportal.testng.ReportPortalTestNGListener" />
-</listeners>
- 	
-<test name = "Integration-Platform-Regression" >
-	<classes>
-		<class name = "com.intuit.ihg.product.integrationplatform.test.IntegrationPlatformRegressionTests" />
-		<methods>
-				<include name="testE2EBalancePresentmentAndStatement"/>
-				<include name="testE2EBalancePresentmentOnDemand"/>
-				<include name="testPatientEGQUpdatesFromForms"/>
-				<include name="testAMDCSecureMessagesWithAllCategoryTypes" />
-				<include name="testCCDE2EFormExportfromPracticeRegression" />
-	    		<include name="testEHDCSendCCD" />
-	    		<include name="testAMDCSecureMessages"/>
-	    		<include name="testMU2GetEventForNewPatient"/>
-	    		<include name="testPIDCPatientRegistrationV1"/>
-	    		<include name="testPIDCPatientRegistrationV2"/>  
-	    		<include name="testPIDCPatientRegistrationV3"/>    	  	
-	    		<include name="testAppointmentRequestForNewSelfPatient"/>    	    	
+<suite name="Integration-Platform-Regression" verbose="2">
+	<listeners>
+		<listener
+			class-name="com.intuit.ifs.csscat.core.TestValidationErrorListener" />
+		<listener class-name="org.uncommons.reportng.HTMLReporter" />
+		<listener
+			class-name="org.uncommons.reportng.JUnitXMLReporter" />
+		<listener
+			class-name="com.epam.reportportal.testng.ReportPortalTestNGListener" />
+	</listeners>
 
-      		</methods>
-	</classes>
-</test>
+	<test name="Integration-Platform-Regression">
+		<groups>
+			<run>
+				<include name="RegressionTests1" />
+			</run>
+		</groups>
+		<classes>
+			<class
+				name="com.intuit.ihg.product.integrationplatform.test.IntegrationPlatformRegressionTests" />
+		</classes>
+	</test>
 </suite>

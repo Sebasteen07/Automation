@@ -78,6 +78,15 @@ public class SecurityDetailsPage extends MedfusionPage {
 		@FindBy(how = How.XPATH, using = "//span[@id = 'userid_error_invalid'][contains(text(),'The user name you entered is already taken. Enter another user name.')]")
 		private WebElement usernameTakenError;
 		
+		@FindBy(how = How.XPATH, using = "//*[@id='agree_terms']//a[2]")
+		private WebElement termsOfServiceLink;
+		
+		@FindBy(how = How.XPATH, using = "//div[@id='viewModalContentNPPTOS']")
+		private WebElement termsOfServicePopup;
+		
+		@FindBy(how = How.XPATH, using = "//button[@type='button']")
+		private WebElement popupCloseBtn;
+		
 	    public SecurityDetailsPage(WebDriver driver) {
 				super(driver);
 		}
@@ -120,14 +129,14 @@ public class SecurityDetailsPage extends MedfusionPage {
 
 		private void fillAccountDetails(String userId, String password, String secretQuestion, String secretAnswer, String phoneNumber, int statementPreference) throws InterruptedException {
 				log("Setting User Name and Password as " + userId + "/" + password);
-				Thread.sleep(3000);
+				Thread.sleep(1000);
 				inputUserId.sendKeys(userId);
 				inputPassword.sendKeys(password);
-                 Thread.sleep(3000);
+				IHGUtil.waitForElement(driver, 3, selectSecretQuestion);
 				selectSecretQuestion.sendKeys(secretQuestion);
-
 				inputSecretAnswer.sendKeys(secretAnswer);
 				scrollAndWait(0,300,2000);
+				IHGUtil.waitForElement(driver, 3, inputPhone1);
 				inputPhone1.sendKeys(phoneNumber.substring(0, 3));
 				inputPhone2.sendKeys(phoneNumber.substring(3, 6));
 				inputPhone3.sendKeys(phoneNumber.substring(6, 10));
@@ -182,4 +191,24 @@ public class SecurityDetailsPage extends MedfusionPage {
 				}
 				return false;
 		}
+
+		public boolean isTermsOfServicePopupDisplayed() throws InterruptedException {
+			Thread.sleep(3000);//To hold the execution for few sec
+			scrollAndWait(0, 1500, 2000);
+			log("Clicking on Terms Of Service link");
+			termsOfServiceLink.click();
+			IHGUtil.waitForElement(driver, 60, termsOfServicePopup);
+			if(termsOfServicePopup.isDisplayed())
+			{
+				log(" Terms of Service popup is displayed");
+				popupCloseBtn.click();
+				return true;
+			}
+			else
+			{
+				log(" Terms of Service popup is not displayed");
+				return false;
+			}
+					
 		}
+	}

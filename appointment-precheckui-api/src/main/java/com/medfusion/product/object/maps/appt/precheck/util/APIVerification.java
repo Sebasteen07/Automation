@@ -256,11 +256,6 @@ public class APIVerification extends BaseTestNGWebDriver {
 
 	}
 
-	public void verifyWithoutPracticeId(Response response) throws IOException {
-		JsonPath jsonPath = new JsonPath(response.asString());
-		assertEquals(jsonPath.get("message"), "No message available");
-	}
-
 	public void verifyBalanceInfoWithInvalidStatus(Response response) throws IOException {
 		JsonPath jsonPath = new JsonPath(response.asString());
 		assertEquals(jsonPath.get("message"), "'status' value must be one of: INCOMPLETE, SKIPPED, or COMPLETE.");
@@ -462,8 +457,8 @@ public class APIVerification extends BaseTestNGWebDriver {
 		assertEquals(js.getString("practiceId"), practiceId, "practice Id  was incorrect");
 		assertEquals(js.getString("pmPatientId"), patientId, "Patient Id was incorrect");
 		assertEquals(js.getString("pmAppointmentId"), ApptId, "Appointment Id was incorrect");
-		assertEquals(js.getString("status"), "FHIR_APPOINTMENT_NOT_FOUND", "Status was incorrect");
-		assertEquals(js.getString("message"), "Did not find a FHIR appointment", "Message was incorrect");
+		assertEquals(js.getString("status"), "APPOINTMENT_NOT_WITHIN_ENABLED_CADENCES", "Status was incorrect");
+		assertEquals(js.getString("message"), "The appointment does not occur within the practice's enabled cadences", "Message was incorrect");
 	}
 
 	public void verifySendsPatientProvidedDataWithInvalidApptId(Response response, String practiceId, String patientId,
@@ -473,8 +468,8 @@ public class APIVerification extends BaseTestNGWebDriver {
 		assertEquals(js.getString("practiceId"), practiceId, "practice Id  was incorrect");
 		assertEquals(js.getString("pmPatientId"), patientId, "Patient Id was incorrect");
 		assertEquals(js.getString("pmAppointmentId"), ApptId, "Appointment Id was incorrect");
-		assertEquals(js.getString("status"), "FHIR_APPOINTMENT_NOT_FOUND", "Status was incorrect");
-		assertEquals(js.getString("message"), "Did not find a FHIR appointment", "Message was incorrect");
+		assertEquals(js.getString("status"), "APPOINTMENT_NOT_WITHIN_ENABLED_CADENCES", "Status was incorrect");
+		assertEquals(js.getString("message"), "The appointment does not occur within the practice's enabled cadences", "Message was incorrect");
 	}
 
 	public void verifyEventResponse(Response response, String eventId, String eventSource, String eventTime,

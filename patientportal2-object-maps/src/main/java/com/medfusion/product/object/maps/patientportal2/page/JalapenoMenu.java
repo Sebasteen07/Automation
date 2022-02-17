@@ -56,7 +56,7 @@ public abstract class JalapenoMenu extends MedfusionPage {
 	@FindBy(how = How.XPATH, using = "//*[@id='payments_lhn']/a/span")
 	private WebElement payBillsMenu;
 
-	@FindBy(how = How.XPATH, using = "//*[@id='forms_lhn']/a/span")
+	@FindBy(how = How.XPATH, using = "//*[@id='custom_forms_lhn']/a/span")
 	private WebElement healthFormsMenu;
 
 	// please note that bellow links are not the same, each lead to different page
