@@ -129,12 +129,12 @@ public class PSSAdminUtils extends BaseTestNGWebDriver{
 		Log4jUtil.log("AdminSettings Step 6: Fetch the Starting Point Status");
 		testData.setStartPointPresent(patientflow.isstartpagepresent());
 		Log4jUtil.log("Startpoint  Status= " + patientflow.isstartpagepresent());
+		patientflow.logout();
 
-		AdminPatientMatching adminpatientmatching = patientflow.gotoPatientMatchingTab();
-		adminpatientmatching.patientMatchingSelection();
-		Log4jUtil.log("adminSettings Step 5: Logout from PSS Admin Portal");
-		adminpatientmatching.logout();
-		Thread.sleep(4000);
+//		AdminPatientMatching adminpatientmatching = patientflow.gotoPatientMatchingTab();
+//		adminpatientmatching.patientMatchingSelection();
+//		Log4jUtil.log("adminSettings Step 5: Logout from PSS Admin Portal");
+//		adminpatientmatching.logout();
 	}
 
 	public void adminSettingsAnonymous(WebDriver driver, AdminUser adminuser, Appointment testData, String urlToUse) throws Exception {
