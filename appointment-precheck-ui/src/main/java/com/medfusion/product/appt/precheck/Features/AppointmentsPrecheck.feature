@@ -1076,4 +1076,58 @@ Feature: Test fuctionality of Appointment precheck
     Then I verify notification count should get updated for all the patients in arrival grid
     And logout from practice provisioning portal
     
+  Scenario: verify notification count where filter is applied for location L2 
+  	And I schedule an appointment for location L1
+    When from setting in notifications curbside check-in reminder checkbox is check
+    And I click on save button in notifications tab
+    And I schedule an appointment for location L2
+    And from curbside check-in filtration is done for location L2
+    Then I verify notification count should not get updated after arrival entry in appointment dashboard for location L1 
+    And logout from practice provisioning portal
+   
+  Scenario: verify notification count and remove filter for location L2
+  	And I schedule an appointment for location L1
+    When from setting in notifications curbside check-in reminder checkbox is check
+    And I click on save button in notifications tab
+    And I schedule an appointment for location L2
+    And from curbside check-in filtration is done for location L2
+    And from curbside check-in remove filter for location L2 
+    Then I verify notification count should get updated for all the patients after arrival entry in appointment dashboard for location L1
+    And logout from practice provisioning portal
+    
+  Scenario: verify notification count where filter is applied for location L1
+  	When I schedule an appointment for location L2
+    When from setting in notifications curbside check-in reminder checkbox is check
+    And I click on save button in notifications tab
+    And I schedule an appointment for location L1
+    And from curbside check-in filtration is done for location L1
+    Then I verify notification count should not get updated after arrival entry in appointment dashboard for location L2 
+    And logout from practice provisioning portal
+    
+  Scenario: verify notification count after filteration for location L1 and arrival entry for location L2 and after remove filter for location L1
+    When I schedule an appointment for location L2
+    When from setting in notifications curbside check-in reminder checkbox is check
+    And I click on save button in notifications tab
+    And I schedule an appointment for location L1
+    And from curbside check-in filtration is done for location L1
+    And from curbside check-in remove filter for location L1 
+    Then I verify notification count should get updated for all the patients after arrival entry in appointment dashboard for location L2
+    And logout from practice provisioning portal
+     
+  Scenario: verify notification count in appointment dashboard
+  	And I schedule an appointment for three patients 
+    And I go to curbside check-in where three patients are already there in arrival grid
+    And I go to appointments dashboard
+    Then I verify notification count on top in appointment dashboard should be three
+    And logout from practice provisioning portal
+     
+  Scenario: verify notification count after a new patient confirms the arrival in the parking lot
+  	And I schedule an appointment for three patients
+    And I go to curbside check-in where three patients are already there in arrival tab
+    And I go to appointments dashboard 
+    And I schedule an appointment
+    And I go to curbside check-in tab after new patient arrival 
+    Then I verify notification count on top in appointment dashboard should get updated to four without refresh
+    And logout from practice provisioning portal
+    
   
