@@ -205,4 +205,5 @@ public class PatientPortal2MU3AcceptanceTests extends BaseTestNGWebDriver {
 				achecker.validate();
 				
 		}
-}
+
+	}
