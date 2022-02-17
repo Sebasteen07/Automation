@@ -173,6 +173,12 @@ public class CurbsideCheckInPage extends BasePageObject {
 	private WebElement clearProviderTextbox;
 	
 	CommonMethods commonMethods = new CommonMethods(driver);
+
+	@FindBy(how=How.XPATH, using ="//div[contains(text(), 'USA')]")
+	private WebElement selectLocationL2inDropDown;
+	
+	@FindBy(how=How.XPATH, using ="(//div[@class=' css-tlfecz-indicatorContainer'])[1]")
+	private WebElement removeIconforLocationInCurbsidecheckin;
 	
 	public CurbsideCheckInPage(WebDriver driver) {
 		super(driver);
@@ -858,4 +864,17 @@ public class CurbsideCheckInPage extends BasePageObject {
 			driver.navigate().refresh();
 			Thread.sleep(5000);
 		}
+	
+		public void selectLocationL2inDropDown() {
+			IHGUtil.waitForElement(driver, 5, selectLocationL2inDropDown);
+			selectLocationL2inDropDown.click();
+			
+	}
+		
+		public void removeIconforLocationInCurbsidecheckin() {
+			IHGUtil.waitForElement(driver, 5, removeIconforLocationInCurbsidecheckin);
+			jse.executeScript("arguments[0].click();", removeIconforLocationInCurbsidecheckin);
+			
+	}
+		
 }
