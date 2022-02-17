@@ -652,8 +652,8 @@ public class ApptPrecheckSteps extends BaseTest {
 
 	@When("schedule a new appointment")
 	public void schedule_a_new_appointment() throws NullPointerException, IOException {
-		Appointment.patientId = commonMethod.generatRandomNum();
-		Appointment.apptId = commonMethod.generatRandomNum();
+		Appointment.patientId = commonMethod.generateRandomNum();
+		Appointment.apptId = commonMethod.generateRandomNum();
 		long currentTimestamp = System.currentTimeMillis();
 		long plus20Minutes = currentTimestamp + TimeUnit.MINUTES.toMillis(5);
 		apptSched.aptPutAppointment(propertyData.getProperty("baseurl.mf.appointment.scheduler"),
@@ -833,8 +833,8 @@ public class ApptPrecheckSteps extends BaseTest {
 	@When("schedule a new appointment and confirm")
 	public void schedule_a_new_appointment_and_confirm() throws NullPointerException, IOException {
 		log("Schedule a new Appointment");
-		Appointment.patientId = commonMethod.generatRandomNum();
-		Appointment.apptId = commonMethod.generatRandomNum();
+		Appointment.patientId = commonMethod.generateRandomNum();
+		Appointment.apptId = commonMethod.generateRandomNum();
 		long currentTimestamp = System.currentTimeMillis();
 		long plus20Minutes = currentTimestamp + TimeUnit.MINUTES.toMillis(5);
 		apptSched.aptPutAppointment(propertyData.getProperty("baseurl.mf.appointment.scheduler"),
@@ -881,8 +881,8 @@ public class ApptPrecheckSteps extends BaseTest {
 	public void schedule_multiple_new_appointments_and_confirm()
 			throws NullPointerException, IOException, InterruptedException {
 		for (int i = 0; i < 25; i++) {
-			Appointment.patientId = commonMethod.generatRandomNum();
-			Appointment.apptId = commonMethod.generatRandomNum();
+			Appointment.patientId = commonMethod.generateRandomNum();
+			Appointment.apptId = commonMethod.generateRandomNum();
 			long currentTimestamp = System.currentTimeMillis();
 			long plus20Minutes = currentTimestamp + TimeUnit.MINUTES.toMillis(10);
 			apptSched.aptPutAppointment(propertyData.getProperty("baseurl.mf.appointment.scheduler"),
@@ -930,8 +930,8 @@ public class ApptPrecheckSteps extends BaseTest {
 			throws NullPointerException, IOException, InterruptedException {
 		for (int i = 0; i < 54; i++) {
 			log("Schedule multiple new Appointments");
-			Appointment.patientId = commonMethod.generatRandomNum();
-			Appointment.apptId = commonMethod.generatRandomNum();
+			Appointment.patientId = commonMethod.generateRandomNum();
+			Appointment.apptId = commonMethod.generateRandomNum();
 			long currentTimestamp = System.currentTimeMillis();
 			long plus20Minutes = currentTimestamp + TimeUnit.MINUTES.toMillis(10);
 			log("schedule more than 50 an appointments ");
@@ -980,8 +980,8 @@ public class ApptPrecheckSteps extends BaseTest {
 	public void schedule_multiple_appointments() throws NullPointerException, IOException, InterruptedException {
 		for (int i = 0; i < 100; i++) {
 			log("Schedule multiple new Appointments");
-			Appointment.patientId = commonMethod.generatRandomNum();
-			Appointment.apptId = commonMethod.generatRandomNum();
+			Appointment.patientId = commonMethod.generateRandomNum();
+			Appointment.apptId = commonMethod.generateRandomNum();
 			long currentTimestamp = System.currentTimeMillis();
 			long plus20Minutes = currentTimestamp + TimeUnit.MINUTES.toMillis(10);
 			log("schedule more than 50 an appointments ");
@@ -1206,8 +1206,8 @@ public class ApptPrecheckSteps extends BaseTest {
 	public void schedule_multiple_appointments_and_select_patients() throws Exception {
 		for (int i = 0; i < 10; i++) {
 			log("Schedule multiple new Appointments");
-			Appointment.patientId = commonMethod.generatRandomNum();
-			Appointment.apptId = commonMethod.generatRandomNum();
+			Appointment.patientId = commonMethod.generateRandomNum();
+			Appointment.apptId = commonMethod.generateRandomNum();
 			long currentTimestamp = System.currentTimeMillis();
 			long plus20Minutes = currentTimestamp + TimeUnit.MINUTES.toMillis(10);
 			log("schedule more than 10 an appointments ");
@@ -2571,8 +2571,8 @@ public class ApptPrecheckSteps extends BaseTest {
 	public void schedule_an_appointment_for_four_patient_and_have_confirmed_their_arrival()
 			throws NullPointerException, IOException {
 		for (int i = 0; i < 4; i++) {
-			Appointment.patientId = commonMethod.generatRandomNum();
-			Appointment.apptId = commonMethod.generatRandomNum();
+			Appointment.patientId = commonMethod.generateRandomNum();
+			Appointment.apptId = commonMethod.generateRandomNum();
 			long currentTimestamp = System.currentTimeMillis();
 			long plus20Minutes = currentTimestamp + TimeUnit.MINUTES.toMillis(10);
 			apptSched.aptPutAppointment(propertyData.getProperty("baseurl.mf.appointment.scheduler"),
@@ -2620,8 +2620,8 @@ public class ApptPrecheckSteps extends BaseTest {
 
 	@When("schedule an appointment and confirmed their arrival")
 	public void schedule_an_appointment_and_confirmed_their_arrival() throws NullPointerException, IOException {
-		Appointment.patientId = commonMethod.generatRandomNum();
-		Appointment.apptId = commonMethod.generatRandomNum();
+		Appointment.patientId = commonMethod.generateRandomNum();
+		Appointment.apptId = commonMethod.generateRandomNum();
 		long currentTimestamp = System.currentTimeMillis();
 		long plus20Minutes = currentTimestamp + TimeUnit.MINUTES.toMillis(10);
 		apptSched.aptPutAppointment(propertyData.getProperty("baseurl.mf.appointment.scheduler"),
@@ -3007,8 +3007,8 @@ public class ApptPrecheckSteps extends BaseTest {
 	public void schedule_multiple_appointments_and_confirm_their_appointment()
 			throws NullPointerException, IOException {
 		for (int i = 0; i <= 9; i++) {
-			Appointment.patientId = commonMethod.generatRandomNum();
-			Appointment.apptId = commonMethod.generatRandomNum();
+			Appointment.patientId = commonMethod.generateRandomNum();
+			Appointment.apptId = commonMethod.generateRandomNum();
 			long currentTimestamp = System.currentTimeMillis();
 			long plus20Minutes = currentTimestamp + TimeUnit.MINUTES.toMillis(10);
 			apptSched.aptPutAppointment(propertyData.getProperty("baseurl.mf.appointment.scheduler"),
@@ -3113,8 +3113,8 @@ public class ApptPrecheckSteps extends BaseTest {
 
 	@When("schedule a appointment without phone number")
 	public void schedule_a_appointment_without_phone_number() throws NullPointerException, IOException {
-		Appointment.patientId = commonMethod.generatRandomNum();
-		Appointment.apptId = commonMethod.generatRandomNum();
+		Appointment.patientId = commonMethod.generateRandomNum();
+		Appointment.apptId = commonMethod.generateRandomNum();
 		long currentTimestamp = System.currentTimeMillis();
 		long plus20Minutes = currentTimestamp + TimeUnit.MINUTES.toMillis(5);
 		apptSched.aptPutAppointment(propertyData.getProperty("baseurl.mf.appointment.scheduler"),
@@ -3199,8 +3199,8 @@ public class ApptPrecheckSteps extends BaseTest {
 	public void i_schedule_appointments_and_select_patients(int appt) throws Exception {
 		for (int i = 0; i < appt; i++) {
 			log("Schedule multiple Appointments");
-			Appointment.patientId = commonMethod.generatRandomNum();
-			Appointment.apptId = commonMethod.generatRandomNum();
+			Appointment.patientId = commonMethod.generateRandomNum();
+			Appointment.apptId = commonMethod.generateRandomNum();
 			long currentTimestamp = System.currentTimeMillis();
 			long plus20Minutes = currentTimestamp + TimeUnit.MINUTES.toMillis(10);
 			log("schedule more than 10 an appointments ");
@@ -3267,8 +3267,8 @@ public class ApptPrecheckSteps extends BaseTest {
 	public void i_schedule_appointments(int appt) throws NullPointerException, IOException, InterruptedException {
 		for (int i = 0; i < appt; i++) {
 			log("Schedule multiple new Appointments");
-			Appointment.patientId = commonMethod.generatRandomNum();
-			Appointment.apptId = commonMethod.generatRandomNum();
+			Appointment.patientId = commonMethod.generateRandomNum();
+			Appointment.apptId = commonMethod.generateRandomNum();
 			long currentTimestamp = System.currentTimeMillis();
 			long plus20Minutes = currentTimestamp + TimeUnit.MINUTES.toMillis(10);
 			log("schedule more than 10 an appointments ");
@@ -3297,8 +3297,8 @@ public class ApptPrecheckSteps extends BaseTest {
 
 	@When("I schedule a new appointment")
 	public void i_schedule_a_new_appointment() throws NullPointerException, IOException {
-		Appointment.patientId = commonMethod.generatRandomNum();
-		Appointment.apptId = commonMethod.generatRandomNum();
+		Appointment.patientId = commonMethod.generateRandomNum();
+		Appointment.apptId = commonMethod.generateRandomNum();
 		long currentTimestamp = System.currentTimeMillis();
 		long plus20Minutes = currentTimestamp + TimeUnit.MINUTES.toMillis(10);
 		log("schedule more than 10 an appointments ");
@@ -3367,8 +3367,8 @@ public class ApptPrecheckSteps extends BaseTest {
 
 	@When("I schedule a new appointment and confirm arrival")
 	public void i_schedule_a_new_appointment_and_confirm_arrival() throws NullPointerException, IOException {
-		Appointment.patientId = commonMethod.generatRandomNum();
-		Appointment.apptId = commonMethod.generatRandomNum();
+		Appointment.patientId = commonMethod.generateRandomNum();
+		Appointment.apptId = commonMethod.generateRandomNum();
 		long currentTimestamp = System.currentTimeMillis();
 		long plus20Minutes = currentTimestamp + TimeUnit.MINUTES.toMillis(10);
 		log("schedule more than 10 an appointments ");
@@ -3414,8 +3414,8 @@ public class ApptPrecheckSteps extends BaseTest {
 
 	@When("I schedule a new appointment after one hour of current time")
 	public void i_schedule_a_new_appointment_after_one_hour_of_current_time() throws NullPointerException, IOException {
-		Appointment.patientId = commonMethod.generatRandomNum();
-		Appointment.apptId = commonMethod.generatRandomNum();
+		Appointment.patientId = commonMethod.generateRandomNum();
+		Appointment.apptId = commonMethod.generateRandomNum();
 		long currentTimestamp = System.currentTimeMillis();
 		long plus20Minutes = currentTimestamp + TimeUnit.MINUTES.toMillis(60);
 		log("schedule more than 10 an appointments ");
@@ -3447,8 +3447,8 @@ public class ApptPrecheckSteps extends BaseTest {
 
 	@When("I schedule an appointment and have confirmed there arrival")
 	public void i_schedule_an_appointment_and_have_confirmed_there_arrival() throws NullPointerException, IOException {
-		Appointment.patientId = commonMethod.generatRandomNum();
-		Appointment.apptId = commonMethod.generatRandomNum();
+		Appointment.patientId = commonMethod.generateRandomNum();
+		Appointment.apptId = commonMethod.generateRandomNum();
 		long currentTimestamp = System.currentTimeMillis();
 		long plus20Minutes = currentTimestamp + TimeUnit.MINUTES.toMillis(60);
 		apptSched.aptPutAppointment(propertyData.getProperty("baseurl.mf.appointment.scheduler"),
@@ -3704,8 +3704,8 @@ public class ApptPrecheckSteps extends BaseTest {
 	public void i_schedule_appointment_and_confirmed_their_arrival(int appt)
 			throws NullPointerException, IOException, InterruptedException {
 		for (int i = 0; i < appt; i++) {
-			Appointment.patientId = commonMethod.generatRandomNum();
-			Appointment.apptId = commonMethod.generatRandomNum();
+			Appointment.patientId = commonMethod.generateRandomNum();
+			Appointment.apptId = commonMethod.generateRandomNum();
 			long currentTimestamp = System.currentTimeMillis();
 			long plus20Minutes = currentTimestamp + TimeUnit.MINUTES.toMillis(10);
 			apptSched.aptPutAppointment(propertyData.getProperty("baseurl.mf.appointment.scheduler"),
@@ -3913,8 +3913,8 @@ public class ApptPrecheckSteps extends BaseTest {
 	
 	@When("I booked an appointment for patient {string} and confirmed his arrival for Location {string}")
 	public void i_booked_an_appointment_for_patient_and_confirmed_his_arrival_for_location(String patientName, String locationName) throws NullPointerException, IOException {
-		Appointment.patientId = commonMethod.generatRandomNum();
-		Appointment.apptId = commonMethod.generatRandomNum();
+		Appointment.patientId = commonMethod.generateRandomNum();
+		Appointment.apptId = commonMethod.generateRandomNum();
 		long currentTimestamp = System.currentTimeMillis();
 		long plus30Minutes = currentTimestamp + TimeUnit.MINUTES.toMillis(30);
 		apptSched.aptPutAppointment(propertyData.getProperty("baseurl.mf.appointment.scheduler"),
@@ -4034,8 +4034,8 @@ public class ApptPrecheckSteps extends BaseTest {
 		
 	@When("I booked an appointment for patient {string} and confirmed his arrival for provider {string}")
 	public void i_booked_an_appointment_for_patient_and_confirmed_his_arrival_for_provider(String patientName, String providerName) throws NullPointerException, IOException {
-		Appointment.patientId = commonMethod.generatRandomNum();
-		Appointment.apptId = commonMethod.generatRandomNum();
+		Appointment.patientId = commonMethod.generateRandomNum();
+		Appointment.apptId = commonMethod.generateRandomNum();
 		long currentTimestamp = System.currentTimeMillis();
 		long plus30Minutes = currentTimestamp + TimeUnit.MINUTES.toMillis(30);
 		apptSched.aptPutAppointment(propertyData.getProperty("baseurl.mf.appointment.scheduler"),
