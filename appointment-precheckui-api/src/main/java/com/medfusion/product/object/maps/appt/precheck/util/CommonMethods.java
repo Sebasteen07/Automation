@@ -7,7 +7,7 @@ import com.intuit.ifs.csscat.core.BaseTestNGWebDriver;
 
 public class CommonMethods {
 
-	public String generatRandomNum() {
+	public String generateRandomNum() {
 		Random random = new Random();
 		int randamNo = random.nextInt(100000);
 		return String.valueOf(randamNo);
