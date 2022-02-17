@@ -23,7 +23,7 @@ public class CommonMethods extends ApptPrecheckMainPage {
 		return "" + cal.get(Calendar.DATE) + "-" + (cal.get(Calendar.MONTH) + 1) + "-" + cal.get(Calendar.YEAR);
 	}
 
-	public String generatRandomNum() {
+	public String generateRandomNum() {
 		Random random = new Random();
 		int randamNo = random.nextInt(100000);
 		return String.valueOf(randamNo);
