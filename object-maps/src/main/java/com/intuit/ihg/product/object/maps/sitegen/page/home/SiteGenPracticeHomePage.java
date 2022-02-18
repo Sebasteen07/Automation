@@ -128,6 +128,14 @@ public class SiteGenPracticeHomePage extends BasePageObject {
 		}
 		return PageFactory.initElements(driver, ManageYourPhysiciansPage.class);
 	}
+	
+	public PracticeInfoPage clickPracticeInformation() throws InterruptedException {
+		IHGUtil.PrintMethodName();
+		IHGUtil.waitForElement(driver, 30, practiceInfoLink);		
+		practiceInfoLink.click();
+		return PageFactory.initElements(driver, PracticeInfoPage.class);
+	
+	}
 
 	public ManageYourGroupPersonnelTypesPage clickLnkPermissions() throws InterruptedException {
 		IHGUtil.PrintMethodName();
