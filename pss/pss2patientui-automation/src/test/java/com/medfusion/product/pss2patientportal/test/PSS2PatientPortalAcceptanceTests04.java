@@ -130,7 +130,7 @@ public class PSS2PatientPortalAcceptanceTests04 extends BaseTestNGWebDriver{
 		log("Future Date -"+futuredate);
 		PSSAdminUtils adminUtils = new PSSAdminUtils();
 		logStep("Login to PSS 2.0 Admin portal");
-		adminUtils.leadTimenotReserve1(driver, adminuser, testData, propertyData.getProperty("leadtime.ng"));
+		adminUtils.leadTimenotReserve(driver, adminuser, testData, propertyData.getProperty("leadtime.ng"));
 		logStep("Move to PSS patient Portal 2.0 to book an Appointment");
 		logStep("Login to PSS Appointment");
 		
@@ -159,9 +159,8 @@ public class PSS2PatientPortalAcceptanceTests04 extends BaseTestNGWebDriver{
 		String date = aptDateTime.selectDate(testData.getIsNextDayBooking());
 		logStep("Date selected is for App" + date);
 		assertEquals(date, psspatientUtils.currentDateandLeadDay(testData));
-		log("ReSetting Admin UI Setting");
-		adminUtils.leadTimenotReserve1(driver, adminuser, testData, "0");
-		logStep("Move to PSS patient Portal 2.0 to book an Appointment");
+		logStep("ReSetting Admin UI Setting");
+		adminUtils.leadTimenotReserve(driver, adminuser, testData, "0");
 	}
 	
 	@Test(enabled = true, groups = { "AcceptanceTests" }, retryAnalyzer = RetryAnalyzer.class)
@@ -219,7 +218,7 @@ public class PSS2PatientPortalAcceptanceTests04 extends BaseTestNGWebDriver{
 		log("Future Date -"+futuredate);
 		PSSAdminUtils adminUtils = new PSSAdminUtils();
 		logStep("Login to PSS 2.0 Admin portal");
-		adminUtils.leadTimenotReserve1(driver, adminuser, testData, propertyData.getProperty("leadtime.ng"));
+		adminUtils.leadTimenotReserve(driver, adminuser, testData, propertyData.getProperty("leadtime.ng"));
 		logStep("Move to PSS patient Portal 2.0 to book an Appointment");
 		logStep("Login to PSS Appointment");
 		
@@ -248,9 +247,8 @@ public class PSS2PatientPortalAcceptanceTests04 extends BaseTestNGWebDriver{
 		String date = aptDateTime.selectDate(testData.getIsNextDayBooking());
 		logStep("Date selected is for App" + date);
 		assertEquals(date, psspatientUtils.currentDateandLeadDay(testData));
-		log("ReSetting Admin UI Setting");
-		adminUtils.leadTimenotReserve1(driver, adminuser, testData, "0");
-		logStep("Move to PSS patient Portal 2.0 to book an Appointment");
+		logStep("ReSetting Admin UI Setting");
+		adminUtils.leadTimenotReserve(driver, adminuser, testData, "0");
 	}
 	
 	@Test(enabled = true, groups = { "AcceptanceTests" }, retryAnalyzer = RetryAnalyzer.class)
@@ -308,7 +306,7 @@ public class PSS2PatientPortalAcceptanceTests04 extends BaseTestNGWebDriver{
 		log("Future Date -"+futuredate);
 		PSSAdminUtils adminUtils = new PSSAdminUtils();
 		logStep("Login to PSS 2.0 Admin portal");
-		adminUtils.leadTimenotReserve1(driver, adminuser, testData, propertyData.getProperty("leadtime.ng"));
+		adminUtils.leadTimenotReserve(driver, adminuser, testData, propertyData.getProperty("leadtime.ng"));
 		logStep("Move to PSS patient Portal 2.0 to book an Appointment");
 		logStep("Login to PSS Appointment");
 		
@@ -337,9 +335,8 @@ public class PSS2PatientPortalAcceptanceTests04 extends BaseTestNGWebDriver{
 		String date = aptDateTime.selectDate(testData.getIsNextDayBooking());
 		logStep("Date selected is for App" + date);
 		assertEquals(date, psspatientUtils.currentDateandLeadDay(testData));
-		log("ReSetting Admin UI Setting");
-		adminUtils.leadTimenotReserve1(driver, adminuser, testData, "0");
-		logStep("Move to PSS patient Portal 2.0 to book an Appointment");
+		logStep("ReSetting Admin UI Setting");
+		adminUtils.leadTimenotReserve(driver, adminuser, testData, "0");
 	}
 	
 
@@ -398,7 +395,7 @@ public class PSS2PatientPortalAcceptanceTests04 extends BaseTestNGWebDriver{
 		log("Future Date -"+futuredate);
 		PSSAdminUtils adminUtils = new PSSAdminUtils();
 		logStep("Login to PSS 2.0 Admin portal");
-		adminUtils.leadTimenotReserve1(driver, adminuser, testData, propertyData.getProperty("leadtime.ng"));
+		adminUtils.leadTimenotReserve(driver, adminuser, testData, propertyData.getProperty("leadtime.ng"));
 		logStep("Move to PSS patient Portal 2.0 to book an Appointment");
 		logStep("Login to PSS Appointment");
 		
@@ -428,216 +425,8 @@ public class PSS2PatientPortalAcceptanceTests04 extends BaseTestNGWebDriver{
 		logStep("Date selected is for App" + date);
 		assertEquals(date, psspatientUtils.currentDateandLeadDay(testData));
 		log("ReSetting Admin UI Setting");
-		adminUtils.leadTimenotReserve1(driver, adminuser, testData, "0");
-		logStep("Move to PSS patient Portal 2.0 to book an Appointment");
+		adminUtils.leadTimenotReserve(driver, adminuser, testData, "0");
 	}
 	
-	@Test(enabled = true, groups = { "AcceptanceTests" }, retryAnalyzer = RetryAnalyzer.class)
-	public void testE2ELoginlessForNewPatientGW() throws Exception {
-		log("Test To View if configuration change from Admin is reflected in PSS patient portal");
-		PSSPropertyFileLoader propertyData = new PSSPropertyFileLoader();
-		Appointment testData = new Appointment();
-		AdminUser adminuser = new AdminUser();
-		PSSNewPatient pssNewPatient = new PSSNewPatient();
-		propertyData.setAdminGW(adminuser);
-		propertyData.setAppointmentResponseGW(testData);
-		log("-----Loaded the test data for New Patient----------");
-		pssNewPatient.createPatientDetails(testData);
-		log(testData.getUrlLoginLess());
-		log(testData.getAppointmenttype());
-		testData.setFutureApt(true);
-		setUp(propertyData.getProperty("mf.practice.id.gw"), propertyData.getProperty("mf.authuserid.am.gw"));
-		Response response;
-		response = postAPIRequestAM.patientInfoPost(practiceId, payloadAM.patientInfoWithOptionalGW());
-		apv.responseCodeValidation(response, 200);
-		log("Step 2: Fetch rule and settings from PSS 2.0 Admin portal");
-		PSSAdminUtils adminUtils = new PSSAdminUtils();
-		adminUtils.adminSettingsLoginless(driver, adminuser, testData, PSSConstants.LOGINLESS);
-		String rule = adminuser.getRule();
-		rule = rule.replaceAll(" ", "");
-		log("Step 3: Move to PSS patient Portal 2.0 to book an Appointment");
-		PSSPatientUtils psspatientutils = new PSSPatientUtils();
-		log("Step 4: Login to PSS Appointment");
-		DismissPage dismissPage = new DismissPage(driver, testData.getUrlLoginLess());
-		Thread.sleep(1000);
-		LoginlessPatientInformation loginlessPatientInformation = dismissPage.clickDismiss();
-		Boolean insuranceSelected = adminuser.getIsInsuranceDisplayed();
-		log("insuranceSelected--> " + insuranceSelected);
-		HomePage homepage;
-		insuranceSelected = false;
-		log("insuranceSelected--> " + insuranceSelected);
-		if (insuranceSelected) {
-			log("insuranceSelected--> ON");
-			NewPatientInsuranceInfo newpatientinsuranceinfo = loginlessPatientInformation.fillPatientForm(
-					testData.getFirstName(), testData.getLastName(), testData.getDob(), testData.getEmail(),
-					testData.getGender(), testData.getZipCode(), testData.getPrimaryNumber());
-			homepage = newpatientinsuranceinfo.fillNewPatientInsuranceInfo(PSSConstants.INSURANCE_CARRIER,
-					PSSConstants.INSURANCE_MEMBERID, PSSConstants.INSURANCE_GROUPID,
-					PSSConstants.INSURANCE_PRIMARYPHONE);
-		} else {
-			log("insuranceSelected--> OFF");
-			homepage = loginlessPatientInformation.fillNewPatientForm(testData.getFirstName(), testData.getLastName(),
-					testData.getDob(), testData.getEmail(), testData.getGender(), testData.getZipCode(),
-					testData.getPrimaryNumber());
-		}
-		homepage.btnStartSchedClick();
-		psspatientutils.selectAFlow(driver, rule, homepage, testData);
-	}
-	
-	@Test(enabled = true, groups = { "AcceptanceTests" }, retryAnalyzer = RetryAnalyzer.class)
-	public void testE2ELoginlessForNewPatientGE() throws Exception {
-		log("Test To View if configuration change from Admin is reflected in PSS patient portal");
-		PSSPropertyFileLoader propertyData = new PSSPropertyFileLoader();
-		Appointment testData = new Appointment();
-		AdminUser adminuser = new AdminUser();
-		PSSNewPatient pssNewPatient = new PSSNewPatient();
-		propertyData.setAdminGE(adminuser);
-		propertyData.setAppointmentResponseGE(testData);
-		log("-----Loaded the test data for New Patient----------");
-		pssNewPatient.createPatientDetails(testData);
-		log(testData.getUrlLoginLess());
-		log(testData.getAppointmenttype());
-		testData.setFutureApt(true);
-		setUp(propertyData.getProperty("mf.practice.id.ge"), propertyData.getProperty("mf.authuserid.am.ge"));
-		Response response;
-		response = postAPIRequestAM.patientInfoPost(practiceId, payloadAM.patientInfoWithOptionalGE());
-		apv.responseCodeValidation(response, 200);
-		log("Step 2: Fetch rule and settings from PSS 2.0 Admin portal");
-		PSSAdminUtils adminUtils = new PSSAdminUtils();
-		adminUtils.adminSettingsLoginless(driver, adminuser, testData, PSSConstants.LOGINLESS);
-		String rule = adminuser.getRule();
-		rule = rule.replaceAll(" ", "");
-		log("Step 3: Move to PSS patient Portal 2.0 to book an Appointment");
-		PSSPatientUtils psspatientutils = new PSSPatientUtils();
-		log("Step 4: Login to PSS Appointment");
-		DismissPage dismissPage = new DismissPage(driver, testData.getUrlLoginLess());
-		Thread.sleep(1000);
-		LoginlessPatientInformation loginlessPatientInformation = dismissPage.clickDismiss();
-		Boolean insuranceSelected = adminuser.getIsInsuranceDisplayed();
-		log("insuranceSelected--> " + insuranceSelected);
-		HomePage homepage;
-		insuranceSelected = false;
-		log("insuranceSelected--> " + insuranceSelected);
-		if (insuranceSelected) {
-			log("insuranceSelected--> ON");
-			NewPatientInsuranceInfo newpatientinsuranceinfo = loginlessPatientInformation.fillPatientForm(
-					testData.getFirstName(), testData.getLastName(), testData.getDob(), testData.getEmail(),
-					testData.getGender(), testData.getZipCode(), testData.getPrimaryNumber());
-			homepage = newpatientinsuranceinfo.fillNewPatientInsuranceInfo(PSSConstants.INSURANCE_CARRIER,
-					PSSConstants.INSURANCE_MEMBERID, PSSConstants.INSURANCE_GROUPID,
-					PSSConstants.INSURANCE_PRIMARYPHONE);
-		} else {
-			log("insuranceSelected--> OFF");
-			homepage = loginlessPatientInformation.fillNewPatientForm(testData.getFirstName(), testData.getLastName(),
-					testData.getDob(), testData.getEmail(), testData.getGender(), testData.getZipCode(),
-					testData.getPrimaryNumber());
-		}
-		homepage.btnStartSchedClick();
-		psspatientutils.selectAFlow(driver, rule, homepage, testData);
-	}
-	
-	@Test(enabled = true, groups = { "AcceptanceTests" }, retryAnalyzer = RetryAnalyzer.class)
-	public void testE2ELoginlessForNewPatientNG() throws Exception {
-		log("Test To View if configuration change from Admin is reflected in PSS patient portal");
-		PSSPropertyFileLoader propertyData = new PSSPropertyFileLoader();
-		Appointment testData = new Appointment();
-		AdminUser adminuser = new AdminUser();
-		PSSNewPatient pssNewPatient = new PSSNewPatient();
-		propertyData.setAdminNG(adminuser);
-		propertyData.setAppointmentResponseNG(testData);
-		log("-----Loaded the test data for New Patient----------");
-		pssNewPatient.createPatientDetails(testData);
-		log(testData.getUrlLoginLess());
-		log(testData.getAppointmenttype());
-		testData.setFutureApt(true);
-		setUp(propertyData.getProperty("mf.practice.id.ng"), propertyData.getProperty("mf.authuserid.am.ng"));
-		Response response;
-		response = postAPIRequestAM.patientInfoPost(practiceId, payloadAM.patientInfoWithOptionalLLNG());
-		apv.responseCodeValidation(response, 200);
-		log("Step 2: Fetch rule and settings from PSS 2.0 Admin portal");
-		PSSAdminUtils adminUtils = new PSSAdminUtils();
-		adminUtils.adminSettingsLoginless(driver, adminuser, testData, PSSConstants.LOGINLESS);
-		String rule = adminuser.getRule();
-		rule = rule.replaceAll(" ", "");
-		log("Step 3: Move to PSS patient Portal 2.0 to book an Appointment");
-		PSSPatientUtils psspatientutils = new PSSPatientUtils();
-		log("Step 4: Login to PSS Appointment");
-		DismissPage dismissPage = new DismissPage(driver, testData.getUrlLoginLess());
-		Thread.sleep(1000);
-		LoginlessPatientInformation loginlessPatientInformation = dismissPage.clickDismiss();
-		Boolean insuranceSelected = adminuser.getIsInsuranceDisplayed();
-		log("insuranceSelected--> " + insuranceSelected);
-		HomePage homepage;
-		insuranceSelected = false;
-		log("insuranceSelected--> " + insuranceSelected);
-		if (insuranceSelected) {
-			log("insuranceSelected--> ON");
-			NewPatientInsuranceInfo newpatientinsuranceinfo = loginlessPatientInformation.fillPatientForm(
-					testData.getFirstName(), testData.getLastName(), testData.getDob(), testData.getEmail(),
-					testData.getGender(), testData.getZipCode(), testData.getPrimaryNumber());
-			homepage = newpatientinsuranceinfo.fillNewPatientInsuranceInfo(PSSConstants.INSURANCE_CARRIER,
-					PSSConstants.INSURANCE_MEMBERID, PSSConstants.INSURANCE_GROUPID,
-					PSSConstants.INSURANCE_PRIMARYPHONE);
-		} else {
-			log("insuranceSelected--> OFF");
-			homepage = loginlessPatientInformation.fillNewPatientForm(testData.getFirstName(), testData.getLastName(),
-					testData.getDob(), testData.getEmail(), testData.getGender(), testData.getZipCode(),
-					testData.getPrimaryNumber());
-		}
-		homepage.btnStartSchedClick();
-		psspatientutils.selectAFlow(driver, rule, homepage, testData);
-	}
-
-	@Test(enabled = true, groups = { "AcceptanceTests" }, retryAnalyzer = RetryAnalyzer.class)
-	public void testE2ELoginlessForNewPatientAT() throws Exception {
-		log("Test To View if configuration change from Admin is reflected in PSS patient portal");
-		PSSPropertyFileLoader propertyData = new PSSPropertyFileLoader();
-		Appointment testData = new Appointment();
-		AdminUser adminuser = new AdminUser();
-		PSSNewPatient pssNewPatient = new PSSNewPatient();
-		propertyData.setAdminAT(adminuser);
-		propertyData.setAppointmentResponseAT(testData);
-		log("-----Loaded the test data for New Patient----------");
-		pssNewPatient.createPatientDetails(testData);
-		log(testData.getUrlLoginLess());
-		log(testData.getAppointmenttype());
-		testData.setFutureApt(true);
-		setUp(propertyData.getProperty("mf.practice.id.at"), propertyData.getProperty("mf.authuserid.am.at"));
-		Response response;
-		response = postAPIRequestAM.patientInfoPost(practiceId, payloadAM.patientMatchAt());
-		apv.responseCodeValidation(response, 200);
-		log("Step 2: Fetch rule and settings from PSS 2.0 Admin portal");
-		PSSAdminUtils adminUtils = new PSSAdminUtils();
-		adminUtils.adminSettingsLoginless(driver, adminuser, testData, PSSConstants.LOGINLESS);
-		String rule = adminuser.getRule();
-		rule = rule.replaceAll(" ", "");
-		log("Step 3: Move to PSS patient Portal 2.0 to book an Appointment");
-		PSSPatientUtils psspatientutils = new PSSPatientUtils();
-		log("Step 4: Login to PSS Appointment");
-		DismissPage dismissPage = new DismissPage(driver, testData.getUrlLoginLess());
-		Thread.sleep(1000);
-		LoginlessPatientInformation loginlessPatientInformation = dismissPage.clickDismiss();
-		Boolean insuranceSelected = adminuser.getIsInsuranceDisplayed();
-		log("insuranceSelected--> " + insuranceSelected);
-		HomePage homepage;
-		insuranceSelected = false;
-		log("insuranceSelected--> " + insuranceSelected);
-		if (insuranceSelected) {
-			log("insuranceSelected--> ON");
-			NewPatientInsuranceInfo newpatientinsuranceinfo = loginlessPatientInformation.fillPatientForm(
-					testData.getFirstName(), testData.getLastName(), testData.getDob(), testData.getEmail(),
-					testData.getGender(), testData.getZipCode(), testData.getPrimaryNumber());
-			homepage = newpatientinsuranceinfo.fillNewPatientInsuranceInfo(PSSConstants.INSURANCE_CARRIER,
-					PSSConstants.INSURANCE_MEMBERID, PSSConstants.INSURANCE_GROUPID,
-					PSSConstants.INSURANCE_PRIMARYPHONE);
-		} else {
-			log("insuranceSelected--> OFF");
-			homepage = loginlessPatientInformation.fillNewPatientForm(testData.getFirstName(), testData.getLastName(),
-					testData.getDob(), testData.getEmail(), testData.getGender(), testData.getZipCode(),
-					testData.getPrimaryNumber());
-		}
-		homepage.btnStartSchedClick();
-		psspatientutils.selectAFlow(driver, rule, homepage, testData);
-	}
 
 }

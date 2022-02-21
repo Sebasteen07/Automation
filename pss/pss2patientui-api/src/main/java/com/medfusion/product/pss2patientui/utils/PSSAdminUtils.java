@@ -130,11 +130,6 @@ public class PSSAdminUtils extends BaseTestNGWebDriver{
 		testData.setStartPointPresent(patientflow.isstartpagepresent());
 		Log4jUtil.log("Startpoint  Status= " + patientflow.isstartpagepresent());
 		patientflow.logout();
-
-//		AdminPatientMatching adminpatientmatching = patientflow.gotoPatientMatchingTab();
-//		adminpatientmatching.patientMatchingSelection();
-//		Log4jUtil.log("adminSettings Step 5: Logout from PSS Admin Portal");
-//		adminpatientmatching.logout();
 	}
 
 	public void adminSettingsAnonymous(WebDriver driver, AdminUser adminuser, Appointment testData, String urlToUse) throws Exception {
@@ -472,44 +467,9 @@ public class PSSAdminUtils extends BaseTestNGWebDriver{
 		patientflow.logout();
 	}
 
-	public void leadTimenotReserve(WebDriver driver, AdminUser adminuser, Appointment appointment) throws Exception {
 
-		PSS2PracticeConfiguration psspracticeConfig = loginToAdminPortal(driver, adminuser);
-		psspracticeConfig = psspracticeConfig.gotoPracticeConfigTab();
-		appointment.setBusinesshourStartTime(psspracticeConfig.gettextbusineesHourStarttime());
-		appointment.setBusinesshourEndTime(psspracticeConfig.gettextbusineesHourEndtime());
-		Log4jUtil.log("Starttime is " + appointment.getBusinesshourStartTime());
-		Log4jUtil.log("End time is" + appointment.getBusinesshourEndTime());
-		PatientFlow patientflow = psspracticeConfig.gotoPatientFlowTab();
-		adminuser.setRule(patientflow.getRule());
-		Log4jUtil.log("rule= " + patientflow.getRule());
-		setRulesNoSpecialitySet1(patientflow);
-		appointment.setInsuranceVisible(patientflow.insuracetogglestatus());
-		Log4jUtil.log("Insurance is Enabled= " + patientflow.insuracetogglestatus());
-		appointment.setStartPointPresent(patientflow.isstartpagepresent());
-		Log4jUtil.log("StartPage is Visible= " + patientflow.isstartpagepresent());
-		ManageResource manageResource = psspracticeConfig.gotoResource();
-		pageRefresh(driver);
-		manageResource.selectResource(appointment.getProvider());
-		manageResource.selectAppointmenttype(appointment.getAppointmenttype());
-		appointment.setLeadtimeDay(manageResource.getDay());
-		Log4jUtil.log("Lead time Day is = " + appointment.getLeadtimeDay());
-		appointment.setLeadtimeHour(manageResource.getHour());
-		Log4jUtil.log("Lead time Hour is = " + appointment.getLeadtimeHour());
-		appointment.setLeadtimeMinute(manageResource.getMinut());
-		Log4jUtil.log("Lead time Minute is = " + appointment.getLeadtimeMinute());
-		manageResource.notreserve();
-		Log4jUtil.log("Status for AcceptFor Same day is" + manageResource.acceptforStatus());
-		appointment.setAccepttoggleStatus(manageResource.acceptforStatus());
-		Log4jUtil.log("Status for AcceptFor Same day is" + appointment.isAccepttoggleStatus());
-		ManageLocation manageLocation = psspracticeConfig.gotoLocation();
-		manageLocation.selectlocation(appointment.getLocation());
-		appointment.setCurrentTimeZone(manageLocation.getTimezone());
-		Log4jUtil.log("Current Timezone On AdminUi " + appointment.getCurrentTimeZone());
-		patientflow.logout();
-	}
-	
-	public void leadTimenotReserve1(WebDriver driver, AdminUser adminuser, Appointment appointment,String leadTimeValue) throws Exception {
+
+	public void leadTimenotReserve(WebDriver driver, AdminUser adminuser, Appointment appointment,String leadTimeValue) throws Exception {
 
 		PSS2PracticeConfiguration psspracticeConfig = loginToAdminPortal(driver, adminuser);
 		psspracticeConfig = psspracticeConfig.gotoPracticeConfigTab();
