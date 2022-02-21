@@ -19,7 +19,7 @@ import com.medfusion.product.object.maps.pss2.page.util.CommonMethods;
 
 public class AppointmentPage extends PSS2MainPage {
 
-	@FindBy(how = How.ID, using = "providerserach")
+	@FindBy(how = How.XPATH, using = "//*[@class='form-control appointtype-search-control form-control-lg' or @id='searchappointmenttype1']")
 	private WebElement searchAppointment;
 
 	@FindBy(how = How.XPATH, using = "//*[@class='btn' or @class='appointtypewidthbtn' or @class='col-sm-6 col-xs-12 appointtypewidthbtn' or @class='btn appointmentType-btn handle-text-Overflow outer-div']")
@@ -179,8 +179,7 @@ public class AppointmentPage extends PSS2MainPage {
 		return null;
 	}
 	
-	public boolean verifyApptTypePresent(String appointmentType) {
-		
+	public boolean verifyApptTypePresent(String appointmentType) {		
 		if (appointmentTypeList.contains(appointmentType)) {
 			log("Appointment type present");
 			return true;			
