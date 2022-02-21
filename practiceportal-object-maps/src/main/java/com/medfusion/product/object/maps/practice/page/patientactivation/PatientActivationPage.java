@@ -151,7 +151,7 @@ public class PatientActivationPage extends BasePageObject {
 		addNewPatient.click();
 	}
 
-	public void setInitialDetails(String sEmail) {
+	public void setInitialDetails(String sEmail) throws InterruptedException {
 		lastNameString = "Tester";
 		emailAddressString = sEmail;
 		patientIdString = emailAddressString;
@@ -175,6 +175,7 @@ public class PatientActivationPage extends BasePageObject {
 		zip.sendKeys(PracticeConstants.ZIP_CODE);
 		Log4jUtil.log("Click on the Register Patient Button");
 		clickRegPatient();
+		Thread.sleep(2000); //Holding exec for few secs
 		Log4jUtil.log("Click on the Verify Button");
 		clickVerify();
 
