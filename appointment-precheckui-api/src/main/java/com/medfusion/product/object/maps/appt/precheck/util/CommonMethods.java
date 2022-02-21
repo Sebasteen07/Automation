@@ -10,8 +10,7 @@ import org.openqa.selenium.WebElement;
 import com.intuit.ifs.csscat.core.BaseTestNGWebDriver;
 
 public class CommonMethods extends BaseTestNGWebDriver{
-	JavascriptExecutor jse;
-	
+    JavascriptExecutor jse;
 	public void highlightElement(WebElement element) {
 		jse = (JavascriptExecutor) driver;
 		jse.executeScript("arguments[0].setAttribute('style','border: solid 6px red');", element);

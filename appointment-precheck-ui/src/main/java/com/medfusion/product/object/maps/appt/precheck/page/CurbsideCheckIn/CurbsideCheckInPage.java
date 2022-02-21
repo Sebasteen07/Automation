@@ -172,7 +172,7 @@ public class CurbsideCheckInPage extends BasePageObject {
 	@FindBy(how=How.XPATH, using ="(//div[@class=' css-tlfecz-indicatorContainer'])[3]")
 	private WebElement clearProviderTextbox;
 	
-	CommonMethods commonMethods = new CommonMethods(driver);
+	CommonMethods commonMethods = new CommonMethods();
 
 	@FindBy(how=How.XPATH, using ="//div[contains(text(), 'USA')]")
 	private WebElement selectLocationL2inDropDown;

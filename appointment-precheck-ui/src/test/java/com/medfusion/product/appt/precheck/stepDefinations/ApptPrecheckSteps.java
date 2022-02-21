@@ -37,7 +37,7 @@ import io.cucumber.java.en.When;
 import io.restassured.response.Response;
 
 public class ApptPrecheckSteps extends BaseTest {
-	PropertyFileLoader propertyData;
+	PropertyFileLoader propertyData; 
 	AppointmentPrecheckLogin loginPage;
 	ApptPrecheckMainPage mainPage;
 	AppointmentsPage apptPage;
@@ -51,7 +51,7 @@ public class ApptPrecheckSteps extends BaseTest {
 	PostAPIRequestAptPrecheck aptPrecheckPost;
 	AptPrecheckPayload aptPrecheckPayload;
 	CurbsideCheckInPage curbsidePage;
-	PostAPIRequestMfNotificationSubscriptionManager subsManager;;
+	PostAPIRequestMfNotificationSubscriptionManager subsManager;
 
 	@Given("user lauch practice provisioning url")
 	public void user_lauch_practice_provisioning_url() throws Exception {
@@ -71,7 +71,7 @@ public class ApptPrecheckSteps extends BaseTest {
 		aptPrecheckPayload = AptPrecheckPayload.getAptPrecheckPayload();
 		subsManager = PostAPIRequestMfNotificationSubscriptionManager
 				.getPostAPIRequestMfNotificationSubscriptionManager();
-		commonMethod = new CommonMethods(driver);
+		commonMethod = new CommonMethods();
 		log("Practice provisining url-- " + propertyData.getProperty("practice.provisining.url.ge"));
 		loginPage = new AppointmentPrecheckLogin(driver, propertyData.getProperty("practice.provisining.url.ge"));
 		log("Verify medfusion page");

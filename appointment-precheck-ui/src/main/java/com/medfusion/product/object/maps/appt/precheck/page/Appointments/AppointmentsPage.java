@@ -437,7 +437,7 @@ public class AppointmentsPage extends BasePageObject {
 		PageFactory.initElements(driver, this);
 	}
 
-	CommonMethods commonMethods = new CommonMethods(driver);
+	CommonMethods commonMethods = new CommonMethods();
 
 	public void enterStartTimeWithinMonth() throws InterruptedException {
 		log("Select month and date within month");
