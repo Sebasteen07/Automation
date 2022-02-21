@@ -5997,7 +5997,7 @@ public class PatientPortal2AcceptanceTests extends BaseTestNGWebDriver {
 
 	}
 
-	@Test(enabled = true, groups = { "acceptance-solutions" }, retryAnalyzer = RetryAnalyzer.class)
+	@Test(enabled = true, retryAnalyzer = RetryAnalyzer.class)
 	public void testAskInvalidAttachment() throws Exception {
 		String expectedCorrectFileText = "sw-test-academy.txt";
 
