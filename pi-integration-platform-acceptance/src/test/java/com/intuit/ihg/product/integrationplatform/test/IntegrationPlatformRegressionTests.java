@@ -2860,7 +2860,7 @@ public class IntegrationPlatformRegressionTests extends BaseTestNGWebDriver {
 
 		log("Update Pharmacy with status 'UPDATE' ");
 		testData.Status = "UPDATE";
-		testData.PharmacyName = "UpdateAddedPharmacy";
+		testData.PharmacyName = "UpdatedAddedPharmacy";
 
 		log("ExternalPharmacyId posted is : " + ExternalPharmacyId);
 		String updatePayload = pharmacyObj.getPharmacyAddPayload(testData, ExternalPharmacyId);
@@ -2899,13 +2899,12 @@ public class IntegrationPlatformRegressionTests extends BaseTestNGWebDriver {
 
 		log("Step 7:verify added pharmacy is updated in the list");
 		String addedPharamacy = testData.PharmacyName + ", " + testData.Line1 + ", " + testData.City + ", "
-				+ testData.State;
+				+ testData.State + ", " + testData.ZipCode;
 		log("Added Pharamacy :- " + addedPharamacy);
 		String env = IHGUtil.getEnvironmentType().toString();
 
-		String pharmacyFristWord = "Update";
+		String pharmacyFristWord = "UpdateAddedPharmacy";
 		JalapenoPrescriptionsPageObject.verifyPharamcy(addedPharamacy, pharmacyFristWord, env);
-
 	}
 
 	@Test(enabled = true, groups = { "RegressionTests3" }, retryAnalyzer = RetryAnalyzer.class)
@@ -2954,25 +2953,54 @@ public class IntegrationPlatformRegressionTests extends BaseTestNGWebDriver {
 		}
 		assertTrue(completed, "Message processing was not completed in time");
 
-		log("Step 3: Login to Patient Portal");
+		log("Update Pharmacy with status 'UPDATE' ");
+		testData.Status = "UPDATE";
+		testData.PharmacyName = "SUpdatedAddedPharmacy";
+
+		log("ExternalPharmacyId posted is : " + ExternalPharmacyId);
+		String updatePayload = pharmacyObj.getPharmacyAddPayload(testData, ExternalPharmacyId);
+		log("Payload: " + updatePayload);
+		Thread.sleep(6000);
+		log("Wait to generate Pharmacy Payload");
+
+		log("Step 3: Do UPDATE Pharmacy Post Request");
+		log("ResponsePath: " + testData.ResponsePath);
+		Log4jUtil.log("Generate Payload with Status as " + testData.Status);
+		String processingUpdateUrl = RestUtils.setupHttpPostRequest(testData.PharmacyRenewalUrl, updatePayload, testData.ResponsePath);
+		Log4jUtil.log("processingUrl " + processingUpdateUrl);
+
+		for (int i = 0; i < 3; i++) {
+			// wait 10 seconds so the message can be processed
+			Thread.sleep(60000);
+			RestUtils.setupHttpGetRequest(processingUrl, testData.ResponsePath);
+			if (RestUtils.isMessageProcessingCompleted(testData.ResponsePath)) {
+				completed = true;
+				break;
+			}
+		}
+		assertTrue(completed, "Message processing was not completed in time");
+
+
+		log("Step 4: Login to Patient Portal");
 		JalapenoLoginPage loginPage = new JalapenoLoginPage(driver, testData.URL);
 		JalapenoHomePage homePage = loginPage.login(testData.UserName, testData.Password);
 
-		log("Step 4: Click on Prescription and go to Prescription Page");
+		log("Step 5: Click on Prescription and go to Prescription Page");
 		JalapenoPrescriptionsPage JalapenoPrescriptionsPageObject = homePage.clickOnPrescriptions(driver);
 
-		log("Step 5: Click on Continue ");
+		log("Step 6: Click on Continue ");
 		JalapenoPrescriptionsPageObject.clickContinueButton(driver);
 		Thread.sleep(60000);
 
-		log("Step 6:verify newly added pharmacy in the list");
+		log("Step 7:verify newly added pharmacy in the list");
+
 		String addedPharamacy = testData.PharmacyName + ", " + testData.Line1 + ", " + testData.City + ", "
-				+ testData.State;
+				+ testData.State + ", " + testData.ZipCode;
 		log("Added Pharamacy :- " + addedPharamacy);
 		String env = IHGUtil.getEnvironmentType().toString();
 
-		String pharmacyFristWord = "Added";
-		JalapenoPrescriptionsPageObject.verifyPharamcy(addedPharamacy, pharmacyFristWord, env);
+		String pharmacyFirstWord = "SUpdatedAddedPharmacy";
+		JalapenoPrescriptionsPageObject.verifyPharamcy(addedPharamacy, pharmacyFirstWord, env);
 
 		log("Delete Pharmacy with status 'DELETE' ");
 		testData.Status = "DELETE";
@@ -2983,7 +3011,7 @@ public class IntegrationPlatformRegressionTests extends BaseTestNGWebDriver {
 		Thread.sleep(6000);
 		log("Wait to generate Pharmacy Payload");
 
-		log("Step 3: Do DELETE Pharmacy Post Request");
+		log("Step 8: Do DELETE Pharmacy Post Request");
 		log("ResponsePath: " + testData.ResponsePath);
 		Log4jUtil.log("Generate Payload with Status as " + testData.Status);
 		String processingDeleteUrl = RestUtils.setupHttpPostRequest(testData.PharmacyRenewalUrl, deletePayload,
@@ -3001,24 +3029,27 @@ public class IntegrationPlatformRegressionTests extends BaseTestNGWebDriver {
 		}
 		assertTrue(completed, "Message processing was not completed in time");
 
-		log("Step 4: Login to Patient Portal");
+		log("Step 9: Login to Patient Portal");
 		driver.get(testData.URL);
 		loginPage.login(testData.UserName, testData.Password);
 
-		log("Step 5: Click on Prescription and go to Prescription Page");
+		log("Step 10: Click on Prescription and go to Prescription Page");
 		homePage.clickOnPrescriptions(driver);
 
-		log("Step 6: Click on Continue ");
+		driver.navigate().refresh();
+
+		log("Step 11: Click on Continue ");
 		JalapenoPrescriptionsPageObject.clickContinueButton(driver);
 		Thread.sleep(60000);
 
-		log("Step 7:verify added pharmacy is deleted in the list");
+		log("Step 12:verify added pharmacy is deleted in the list");
 		String deletedPharamacy = testData.PharmacyName + ", " + testData.Line1 + ", " + testData.City + ", "
-				+ testData.State;
+				+ testData.State + ", " + testData.ZipCode;
 		log("Added Pharamacy :- " + deletedPharamacy);
 
-		JalapenoPrescriptionsPageObject.verifyDeletedPharamcy(deletedPharamacy, pharmacyFristWord, env);
-		log("Pharamacy is not visible on the Portal");
+		Thread.sleep(60000);
+
+		JalapenoPrescriptionsPageObject.verifyDeletedPharamcy(deletedPharamacy, pharmacyFirstWord, env);
 
 	}
 

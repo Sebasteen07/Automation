@@ -59,7 +59,7 @@ public class JalapenoHomePage extends JalapenoMenu {
 	@FindBy(how = How.ID, using = "feature_symptomAssesment")
 	private WebElement symptomAss;
 
-	@FindBy(how = How.ID, using = "feature_rx_renewal")
+	@FindBy(how = How.ID, using = "button-rx-request")
 	private WebElement prescriptions;
 
 	@FindBy(how = How.ID, using = "feature_medications")

@@ -24,6 +24,9 @@ public class MailinatorUtils extends MedfusionPage{
 	@FindBy(how = How.XPATH, using = "//iframe[@id='html_msg_body']")
 	private WebElement iframe;
 
+	@FindBy(how = How.XPATH, using = "(//a[contains(@href,'https://www.mailinator.com/linker')])[2]")
+	private WebElement linkInMailBody;
+
 	public MailinatorUtils(WebDriver driver, String url) {
 	    super(driver, url);
 	}
@@ -42,7 +45,13 @@ public class MailinatorUtils extends MedfusionPage{
 			this.driver.switchTo().frame(iframe);
 
 			String parentWindow = driver.getWindowHandle();
-			driver.findElement(By.xpath("//a[contains(text(),'" + findInEmail + "')]")).click();
+
+			try {
+				driver.findElement(By.xpath("//a[contains(text(),'" + findInEmail + "')]")).click();
+			} catch (Exception e) {
+				log("Trying with the next link in email as first attempt failed with exception: " + e.getMessage());
+				linkInMailBody.click();
+			}
 
 			Set<String> handles = driver.getWindowHandles();
 			for (String windowHandle : handles) {
