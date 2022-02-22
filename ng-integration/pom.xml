@@ -5,12 +5,6 @@
 	<modelVersion>4.0.0</modelVersion>
 
 	<parent>
-        <groupId>com.intuit.ihg</groupId>
-        <artifactId>ihg-depot-parent-pom</artifactId>
-        <version>22.2.0rc-SNAPSHOT</version>
-    </parent>
-	
-	<parent>
 		<groupId>com.intuit.ihg</groupId>
 		<artifactId>ihg-depot-parent-pom</artifactId>
 		<version>22.2.0rc-SNAPSHOT</version>
