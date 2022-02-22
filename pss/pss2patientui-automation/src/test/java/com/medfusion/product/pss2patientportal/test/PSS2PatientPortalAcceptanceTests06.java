@@ -56,7 +56,7 @@ public class PSS2PatientPortalAcceptanceTests06 extends BaseTestNGWebDriver {
 	}
 
 	@Test(enabled = true, groups = {"AcceptanceTests"})
-	public void testAgeRuleInApptTypeNG() throws Exception {
+	public void testAgeRuleInCategoryNG() throws Exception {
 		PSSPropertyFileLoader propertyData = new PSSPropertyFileLoader();
 		Appointment testData = new Appointment();
 		AdminUser adminUser = new AdminUser();
@@ -127,7 +127,7 @@ public class PSS2PatientPortalAcceptanceTests06 extends BaseTestNGWebDriver {
 	}
 	
 	@Test(enabled = true, groups = {"AcceptanceTests"})
-	public void testAgeRuleInApptTypeGW() throws Exception {
+	public void testAgeRuleInCategoryGW() throws Exception {
 		PSSPropertyFileLoader propertyData = new PSSPropertyFileLoader();
 		Appointment testData = new Appointment();
 		AdminUser adminUser = new AdminUser();
@@ -200,7 +200,7 @@ public class PSS2PatientPortalAcceptanceTests06 extends BaseTestNGWebDriver {
 	}
 	
 	@Test(enabled = true, groups = {"AcceptanceTests"})
-	public void testAgeRuleInApptTypeAT() throws Exception {
+	public void testAgeRuleInCategoryAT() throws Exception {
 		PSSPropertyFileLoader propertyData = new PSSPropertyFileLoader();
 		Appointment testData = new Appointment();
 		AdminUser adminUser = new AdminUser();
@@ -274,7 +274,7 @@ public class PSS2PatientPortalAcceptanceTests06 extends BaseTestNGWebDriver {
 	}
 	
 	@Test(enabled = true, groups = {"AcceptanceTests"})
-	public void testAgeRuleInApptTypeGE() throws Exception {
+	public void testAgeRuleInCategoryGE() throws Exception {
 		PSSPropertyFileLoader propertyData = new PSSPropertyFileLoader();
 		Appointment testData = new Appointment();
 		AdminUser adminUser = new AdminUser();

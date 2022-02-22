@@ -188,5 +188,5 @@ public class AppointmentPage extends PSS2MainPage {
 			log("Appointment type not present");
 			return false;
 		}
-}
+	}
 }
