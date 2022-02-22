@@ -179,4 +179,14 @@ public class AppointmentPage extends PSS2MainPage {
 		return null;
 	}
 
+	public boolean verifyApptTypePresent(String appointmentType) {
+		if (appointmentTypeList.contains(appointmentType)) {
+			log("Appointment type present");
+			return true;			
+		}
+		else {
+			log("Appointment type not present");
+			return false;
+		}
+}
 }
