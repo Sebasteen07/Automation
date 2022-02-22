@@ -18,6 +18,7 @@
 		<dcf-version>22.2.0-SNAPSHOT</dcf-version>
 		<eh-core-version>22.2.0-SNAPSHOT</eh-core-version>
 		<messages-version>22.2.0-SNAPSHOT</messages-version>
+		<resteasy-version>2.2.2.GA</resteasy-version>
 		<codification-version>13.6.0.5</codification-version>
 	</properties>
 	<repositories>

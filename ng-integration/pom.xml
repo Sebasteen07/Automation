@@ -9,6 +9,12 @@
         <artifactId>ihg-depot-parent-pom</artifactId>
         <version>22.2.0-SNAPSHOT</version>
     </parent>
+	
+	<parent>
+		<groupId>com.intuit.ihg</groupId>
+		<artifactId>ihg-depot-parent-pom</artifactId>
+		<version>22.2.0-SNAPSHOT</version>
+	</parent>
 
 	<artifactId>ng-integration</artifactId>
 	<name>ng-integration</name>

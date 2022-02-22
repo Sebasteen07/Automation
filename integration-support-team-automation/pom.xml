@@ -30,6 +30,7 @@
 	</repositories>
 	<properties>
 		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+		<!--<qa-automation-utils.version>22.2.0-SNAPSHOT</qa-automation-utils.version> -->
 		<ihg.version>22.2.0-SNAPSHOT</ihg.version>
 	</properties>
 	<dependencies>
