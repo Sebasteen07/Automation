@@ -3953,5 +3953,649 @@ public class PayloadAdapterModulator {
 				+ "}";
 		return updateBusinessHours;
 	}
+	public String setAgeRuleOnInApptType() {
+		String payload = "[\r\n" + 
+				"    {\r\n" + 
+				"        \"isageRule\": true,\r\n" + 
+				"        \"id\": 203701,\r\n" + 
+				"        \"name\": \"Joke 10\",\r\n" + 
+				"        \"displayName\": \"Joke 10\",\r\n" + 
+				"        \"displayNames\": {\r\n" + 
+				"            \"EN\": \"Joke 10\"\r\n" + 
+				"        },\r\n" + 
+				"        \"message\": {\r\n" + 
+				"            \"EN\": \"\"\r\n" + 
+				"        },\r\n" + 
+				"        \"question\": {\r\n" + 
+				"            \"EN\": \"\"\r\n" + 
+				"        },\r\n" + 
+				"        \"customMessages\": {\r\n" + 
+				"            \"EN\": null\r\n" + 
+				"        },\r\n" + 
+				"        \"sortOrder\": -1,\r\n" + 
+				"        \"categoryId\": \"65E6117E-F8F3-4619-91BB-D39E2D600EB8\",\r\n" + 
+				"        \"categoryName\": \"Joke 10 Category\",\r\n" + 
+				"        \"extAppointmentTypeId\": \"AB64AC0B-F04A-4B98-B9A1-FF573A54C7BD\",\r\n" + 
+				"        \"preventRescheduleOnCancel\": 0,\r\n" + 
+				"        \"preventScheduling\": 1,\r\n" + 
+				"        \"locations\": [\r\n" + 
+				"            {\r\n" + 
+				"                \"id\": \"201651\",\r\n" + 
+				"                \"name\": \"ABC Optical\",\r\n" + 
+				"                \"displayName\": \"ABC Optical span\",\r\n" + 
+				"                \"address\": {\r\n" + 
+				"                    \"id\": 201601,\r\n" + 
+				"                    \"address1\": \"4421 Lake Boone Trail W\",\r\n" + 
+				"                    \"address2\": \"Address line 2, Updated #3\",\r\n" + 
+				"                    \"city\": \"Raleigh\",\r\n" + 
+				"                    \"state\": \"NC\",\r\n" + 
+				"                    \"zipCode\": \"27607\",\r\n" + 
+				"                    \"latitude\": 38.6624944,\r\n" + 
+				"                    \"longitude\": -90.47854949999999\r\n" + 
+				"                },\r\n" + 
+				"                \"timezone\": \"\",\r\n" + 
+				"                \"extLocationId\": \"80DE19AE-6BBF-477E-BC8B-371AEF0773DA\",\r\n" + 
+				"                \"selected\": false,\r\n" + 
+				"                \"phoneNumber\": \"\",\r\n" + 
+				"                \"restrictToCareteam\": true,\r\n" + 
+				"                \"locationLinks\": {}\r\n" + 
+				"            },\r\n" + 
+				"            {\r\n" + 
+				"                \"id\": \"200350\",\r\n" + 
+				"                \"name\": \"Main Office\",\r\n" + 
+				"                \"displayName\": \"Main Office\",\r\n" + 
+				"                \"address\": {\r\n" + 
+				"                    \"id\": 200350,\r\n" + 
+				"                    \"address1\": \"2011 Falls Valley Dr\",\r\n" + 
+				"                    \"address2\": \"#106\",\r\n" + 
+				"                    \"city\": \"Raleigh\",\r\n" + 
+				"                    \"state\": \"North Carolina\",\r\n" + 
+				"                    \"zipCode\": \"27615\",\r\n" + 
+				"                    \"latitude\": 35.8973143,\r\n" + 
+				"                    \"longitude\": -78.60541409999999\r\n" + 
+				"                },\r\n" + 
+				"                \"timezone\": \"\",\r\n" + 
+				"                \"extLocationId\": \"9d971e61-2b5a-4504-9016-7fd863790ee2\",\r\n" + 
+				"                \"selected\": false,\r\n" + 
+				"                \"phoneNumber\": \"\",\r\n" + 
+				"                \"restrictToCareteam\": false,\r\n" + 
+				"                \"locationLinks\": {}\r\n" + 
+				"            },\r\n" + 
+				"            {\r\n" + 
+				"                \"id\": \"200654\",\r\n" + 
+				"                \"name\": \"NextGen Optical\",\r\n" + 
+				"                \"displayName\": \"Triangle Health Cary-spanish\",\r\n" + 
+				"                \"address\": {\r\n" + 
+				"                    \"id\": 200604,\r\n" + 
+				"                    \"address1\": \"339 Collier Rd\",\r\n" + 
+				"                    \"address2\": \"Atlanta, GA 30324\",\r\n" + 
+				"                    \"city\": \"New york\",\r\n" + 
+				"                    \"state\": \"New york\",\r\n" + 
+				"                    \"zipCode\": \"96985\",\r\n" + 
+				"                    \"latitude\": 35.7665681,\r\n" + 
+				"                    \"longitude\": -78.75688049999997\r\n" + 
+				"                },\r\n" + 
+				"                \"timezone\": \"\",\r\n" + 
+				"                \"extLocationId\": \"54a194e5-19c2-43d0-b7a9-a34d31994ee3\",\r\n" + 
+				"                \"directionUrl\": \"https://www.google.com/intl/en-GB/gmail/about/#\",\r\n" + 
+				"                \"selected\": false,\r\n" + 
+				"                \"phoneNumber\": \"\",\r\n" + 
+				"                \"restrictToCareteam\": false,\r\n" + 
+				"                \"locationLinks\": {}\r\n" + 
+				"            },\r\n" + 
+				"            {\r\n" + 
+				"                \"id\": \"204405\",\r\n" + 
+				"                \"name\": \"Richards Specialty Clinic\",\r\n" + 
+				"                \"displayName\": \"Richards Specialty Clinic\",\r\n" + 
+				"                \"address\": {\r\n" + 
+				"                    \"id\": 204305,\r\n" + 
+				"                    \"address1\": \"120 Dekalb Ave\",\r\n" + 
+				"                    \"city\": \"Decatur\",\r\n" + 
+				"                    \"state\": \"GA\",\r\n" + 
+				"                    \"zipCode\": \"30033\",\r\n" + 
+				"                    \"latitude\": 0,\r\n" + 
+				"                    \"longitude\": 0\r\n" + 
+				"                },\r\n" + 
+				"                \"timezone\": \"\",\r\n" + 
+				"                \"extLocationId\": \"1081EC23-F241-485D-8874-C3A81A242429\",\r\n" + 
+				"                \"selected\": false,\r\n" + 
+				"                \"phoneNumber\": \"\",\r\n" + 
+				"                \"restrictToCareteam\": false,\r\n" + 
+				"                \"locationLinks\": {}\r\n" + 
+				"            },\r\n" + 
+				"            {\r\n" + 
+				"                \"id\": \"205605\",\r\n" + 
+				"                \"name\": \"PSS WLA\",\r\n" + 
+				"                \"displayName\": \"PSS WLA -English\",\r\n" + 
+				"                \"address\": {\r\n" + 
+				"                    \"id\": 205505,\r\n" + 
+				"                    \"address1\": \"New York\",\r\n" + 
+				"                    \"address2\": \"Dillard Dr\",\r\n" + 
+				"                    \"city\": \"Cary\",\r\n" + 
+				"                    \"state\": \"North Carolina\",\r\n" + 
+				"                    \"latitude\": 40.7127753,\r\n" + 
+				"                    \"longitude\": -74.0059728\r\n" + 
+				"                },\r\n" + 
+				"                \"timezone\": \"\",\r\n" + 
+				"                \"extLocationId\": \"283BB437-B0C6-4626-A7CC-57FD0D1D6574\",\r\n" + 
+				"                \"directionUrl\": \"www.google.com123\",\r\n" + 
+				"                \"selected\": false,\r\n" + 
+				"                \"phoneNumber\": \"\",\r\n" + 
+				"                \"restrictToCareteam\": false,\r\n" + 
+				"                \"locationLinks\": {}\r\n" + 
+				"            }\r\n" + 
+				"        ],\r\n" + 
+				"        \"param\": {\r\n" + 
+				"            \"id\": 201200,\r\n" + 
+				"            \"appointmentStacking\": true,\r\n" + 
+				"            \"slotCount\": 1,\r\n" + 
+				"            \"allowSameDayAppts\": true,\r\n" + 
+				"            \"apptTimeMark\": 0,\r\n" + 
+				"            \"apptTypeAllocated\": true,\r\n" + 
+				"            \"isContiguous\": false,\r\n" + 
+				"            \"leadTime\": {\r\n" + 
+				"                \"days\": \"0\",\r\n" + 
+				"                \"hours\": \"0\",\r\n" + 
+				"                \"mins\": \"0\"\r\n" + 
+				"            },\r\n" + 
+				"            \"excludeSlots\": [],\r\n" + 
+				"            \"apptTypeReservedReason\": \"n\",\r\n" + 
+				"            \"acceptComment\": false,\r\n" + 
+				"            \"allowOnlineCancellation\": true,\r\n" + 
+				"            \"slotSize\": 5,\r\n" + 
+				"            \"schedulingDuration\": 0,\r\n" + 
+				"            \"pttype\": \"PT_ALL\",\r\n" + 
+				"            \"lastQuestRequired\": false\r\n" + 
+				"        },\r\n" + 
+				"        \"ageRule\": \"> 1 And < 60\"\r\n" + 
+				"    }\r\n" + 
+				"]";
+		return payload;
+	}
+	
+	public String setAgeRuleOffInApptType() {
+		String payload = "[\r\n" + 
+				"    {\r\n" + 
+				"        \"isageRule\": false,\r\n" + 
+				"        \"id\": 203701,\r\n" + 
+				"        \"name\": \"Joke 10\",\r\n" + 
+				"        \"displayName\": \"Joke 10\",\r\n" + 
+				"        \"displayNames\": {\r\n" + 
+				"            \"EN\": \"Joke 10\"\r\n" + 
+				"        },\r\n" + 
+				"        \"message\": {\r\n" + 
+				"            \"EN\": \"\"\r\n" + 
+				"        },\r\n" + 
+				"        \"question\": {\r\n" + 
+				"            \"EN\": \"\"\r\n" + 
+				"        },\r\n" + 
+				"        \"customMessages\": {\r\n" + 
+				"            \"EN\": null\r\n" + 
+				"        },\r\n" + 
+				"        \"sortOrder\": -1,\r\n" + 
+				"        \"categoryId\": \"65E6117E-F8F3-4619-91BB-D39E2D600EB8\",\r\n" + 
+				"        \"categoryName\": \"Joke 10 Category\",\r\n" + 
+				"        \"extAppointmentTypeId\": \"AB64AC0B-F04A-4B98-B9A1-FF573A54C7BD\",\r\n" + 
+				"        \"preventRescheduleOnCancel\": 0,\r\n" + 
+				"        \"preventScheduling\": 1,\r\n" + 
+				"        \"locations\": [\r\n" + 
+				"            {\r\n" + 
+				"                \"id\": \"201651\",\r\n" + 
+				"                \"name\": \"ABC Optical\",\r\n" + 
+				"                \"displayName\": \"ABC Optical span\",\r\n" + 
+				"                \"address\": {\r\n" + 
+				"                    \"id\": 201601,\r\n" + 
+				"                    \"address1\": \"4421 Lake Boone Trail W\",\r\n" + 
+				"                    \"address2\": \"Address line 2, Updated #3\",\r\n" + 
+				"                    \"city\": \"Raleigh\",\r\n" + 
+				"                    \"state\": \"NC\",\r\n" + 
+				"                    \"zipCode\": \"27607\",\r\n" + 
+				"                    \"latitude\": 38.6624944,\r\n" + 
+				"                    \"longitude\": -90.47854949999999\r\n" + 
+				"                },\r\n" + 
+				"                \"timezone\": \"\",\r\n" + 
+				"                \"extLocationId\": \"80DE19AE-6BBF-477E-BC8B-371AEF0773DA\",\r\n" + 
+				"                \"selected\": false,\r\n" + 
+				"                \"phoneNumber\": \"\",\r\n" + 
+				"                \"restrictToCareteam\": true,\r\n" + 
+				"                \"locationLinks\": {}\r\n" + 
+				"            },\r\n" + 
+				"            {\r\n" + 
+				"                \"id\": \"200350\",\r\n" + 
+				"                \"name\": \"Main Office\",\r\n" + 
+				"                \"displayName\": \"Main Office\",\r\n" + 
+				"                \"address\": {\r\n" + 
+				"                    \"id\": 200350,\r\n" + 
+				"                    \"address1\": \"2011 Falls Valley Dr\",\r\n" + 
+				"                    \"address2\": \"#106\",\r\n" + 
+				"                    \"city\": \"Raleigh\",\r\n" + 
+				"                    \"state\": \"North Carolina\",\r\n" + 
+				"                    \"zipCode\": \"27615\",\r\n" + 
+				"                    \"latitude\": 35.8973143,\r\n" + 
+				"                    \"longitude\": -78.60541409999999\r\n" + 
+				"                },\r\n" + 
+				"                \"timezone\": \"\",\r\n" + 
+				"                \"extLocationId\": \"9d971e61-2b5a-4504-9016-7fd863790ee2\",\r\n" + 
+				"                \"selected\": false,\r\n" + 
+				"                \"phoneNumber\": \"\",\r\n" + 
+				"                \"restrictToCareteam\": false,\r\n" + 
+				"                \"locationLinks\": {}\r\n" + 
+				"            },\r\n" + 
+				"            {\r\n" + 
+				"                \"id\": \"200654\",\r\n" + 
+				"                \"name\": \"NextGen Optical\",\r\n" + 
+				"                \"displayName\": \"Triangle Health Cary-spanish\",\r\n" + 
+				"                \"address\": {\r\n" + 
+				"                    \"id\": 200604,\r\n" + 
+				"                    \"address1\": \"339 Collier Rd\",\r\n" + 
+				"                    \"address2\": \"Atlanta, GA 30324\",\r\n" + 
+				"                    \"city\": \"New york\",\r\n" + 
+				"                    \"state\": \"New york\",\r\n" + 
+				"                    \"zipCode\": \"96985\",\r\n" + 
+				"                    \"latitude\": 35.7665681,\r\n" + 
+				"                    \"longitude\": -78.75688049999997\r\n" + 
+				"                },\r\n" + 
+				"                \"timezone\": \"\",\r\n" + 
+				"                \"extLocationId\": \"54a194e5-19c2-43d0-b7a9-a34d31994ee3\",\r\n" + 
+				"                \"directionUrl\": \"https://www.google.com/intl/en-GB/gmail/about/#\",\r\n" + 
+				"                \"selected\": false,\r\n" + 
+				"                \"phoneNumber\": \"\",\r\n" + 
+				"                \"restrictToCareteam\": false,\r\n" + 
+				"                \"locationLinks\": {}\r\n" + 
+				"            },\r\n" + 
+				"            {\r\n" + 
+				"                \"id\": \"204405\",\r\n" + 
+				"                \"name\": \"Richards Specialty Clinic\",\r\n" + 
+				"                \"displayName\": \"Richards Specialty Clinic\",\r\n" + 
+				"                \"address\": {\r\n" + 
+				"                    \"id\": 204305,\r\n" + 
+				"                    \"address1\": \"120 Dekalb Ave\",\r\n" + 
+				"                    \"city\": \"Decatur\",\r\n" + 
+				"                    \"state\": \"GA\",\r\n" + 
+				"                    \"zipCode\": \"30033\",\r\n" + 
+				"                    \"latitude\": 0,\r\n" + 
+				"                    \"longitude\": 0\r\n" + 
+				"                },\r\n" + 
+				"                \"timezone\": \"\",\r\n" + 
+				"                \"extLocationId\": \"1081EC23-F241-485D-8874-C3A81A242429\",\r\n" + 
+				"                \"selected\": false,\r\n" + 
+				"                \"phoneNumber\": \"\",\r\n" + 
+				"                \"restrictToCareteam\": false,\r\n" + 
+				"                \"locationLinks\": {}\r\n" + 
+				"            },\r\n" + 
+				"            {\r\n" + 
+				"                \"id\": \"205605\",\r\n" + 
+				"                \"name\": \"PSS WLA\",\r\n" + 
+				"                \"displayName\": \"PSS WLA -English\",\r\n" + 
+				"                \"address\": {\r\n" + 
+				"                    \"id\": 205505,\r\n" + 
+				"                    \"address1\": \"New York\",\r\n" + 
+				"                    \"address2\": \"Dillard Dr\",\r\n" + 
+				"                    \"city\": \"Cary\",\r\n" + 
+				"                    \"state\": \"North Carolina\",\r\n" + 
+				"                    \"latitude\": 40.7127753,\r\n" + 
+				"                    \"longitude\": -74.0059728\r\n" + 
+				"                },\r\n" + 
+				"                \"timezone\": \"\",\r\n" + 
+				"                \"extLocationId\": \"283BB437-B0C6-4626-A7CC-57FD0D1D6574\",\r\n" + 
+				"                \"directionUrl\": \"www.google.com123\",\r\n" + 
+				"                \"selected\": false,\r\n" + 
+				"                \"phoneNumber\": \"\",\r\n" + 
+				"                \"restrictToCareteam\": false,\r\n" + 
+				"                \"locationLinks\": {}\r\n" + 
+				"            }\r\n" + 
+				"        ],\r\n" + 
+				"        \"param\": {\r\n" + 
+				"            \"id\": 201200,\r\n" + 
+				"            \"appointmentStacking\": true,\r\n" + 
+				"            \"slotCount\": 1,\r\n" + 
+				"            \"allowSameDayAppts\": true,\r\n" + 
+				"            \"apptTimeMark\": 0,\r\n" + 
+				"            \"apptTypeAllocated\": true,\r\n" + 
+				"            \"isContiguous\": false,\r\n" + 
+				"            \"leadTime\": {\r\n" + 
+				"                \"days\": \"0\",\r\n" + 
+				"                \"hours\": \"0\",\r\n" + 
+				"                \"mins\": \"0\"\r\n" + 
+				"            },\r\n" + 
+				"            \"excludeSlots\": [],\r\n" + 
+				"            \"apptTypeReservedReason\": \"n\",\r\n" + 
+				"            \"acceptComment\": false,\r\n" + 
+				"            \"allowOnlineCancellation\": true,\r\n" + 
+				"            \"slotSize\": 5,\r\n" + 
+				"            \"schedulingDuration\": 0,\r\n" + 
+				"            \"pttype\": \"PT_ALL\",\r\n" + 
+				"            \"lastQuestRequired\": false\r\n" + 
+				"        },\r\n" + 
+				"        \"ageRule\": \"\"\r\n" + 
+				"    }\r\n" + 
+				"]";
+		return payload;
+		}
+	
+	public String setAgeRuleOnInApptTypeGW() {
+		String payload = "[\r\n" + 
+				"    {\r\n" + 
+				"        \"isageRule\": true,\r\n" + 
+				"        \"id\": 205751,\r\n" + 
+				"        \"name\": \"Injection 15\",\r\n" + 
+				"        \"displayName\": \"Injection 15\",\r\n" + 
+				"        \"displayNames\": {\r\n" + 
+				"            \"EN\": \"Injection 15\"\r\n" + 
+				"        },\r\n" + 
+				"        \"message\": {\r\n" + 
+				"            \"EN\": \"sdds\"\r\n" + 
+				"        },\r\n" + 
+				"        \"question\": {\r\n" + 
+				"            \"EN\": null\r\n" + 
+				"        },\r\n" + 
+				"        \"customMessages\": {\r\n" + 
+				"            \"EN\": \"abc\"\r\n" + 
+				"        },\r\n" + 
+				"        \"sortOrder\": 6,\r\n" + 
+				"        \"duration\": \"15\",\r\n" + 
+				"        \"categoryId\": \"1381\",\r\n" + 
+				"        \"categoryName\": \"Polio\",\r\n" + 
+				"        \"extAppointmentTypeId\": \"1374\",\r\n" + 
+				"        \"preventRescheduleOnCancel\": 0,\r\n" + 
+				"        \"preventScheduling\": 0,\r\n" + 
+				"        \"param\": {\r\n" + 
+				"            \"id\": null,\r\n" + 
+				"            \"appointmentStacking\": false,\r\n" + 
+				"            \"slotCount\": 1,\r\n" + 
+				"            \"allowSameDayAppts\": true,\r\n" + 
+				"            \"apptTimeMark\": 0,\r\n" + 
+				"            \"apptTypeAllocated\": true,\r\n" + 
+				"            \"isContiguous\": false,\r\n" + 
+				"            \"leadTime\": {\r\n" + 
+				"                \"days\": 0,\r\n" + 
+				"                \"hours\": 0,\r\n" + 
+				"                \"mins\": 0\r\n" + 
+				"            },\r\n" + 
+				"            \"excludeSlots\": [],\r\n" + 
+				"            \"apptTypeReservedReason\": \"n\",\r\n" + 
+				"            \"acceptComment\": false,\r\n" + 
+				"            \"allowOnlineCancellation\": true,\r\n" + 
+				"            \"slotSize\": 5,\r\n" + 
+				"            \"schedulingDuration\": 0,\r\n" + 
+				"            \"pttype\": \"PT_ALL\",\r\n" + 
+				"            \"lastQuestRequired\": false\r\n" + 
+				"        },\r\n" + 
+				"        \"ageRule\": \"> 1 And < 60\"\r\n" + 
+				"    }\r\n" + 
+				"]";
+		return payload;
+	}
+	
+	public String setAgeRuleOffInApptTypeGW() {
+		String payload = "[\r\n" + 
+				"    {\r\n" + 
+				"        \"isageRule\": false,\r\n" + 
+				"        \"id\": 205751,\r\n" + 
+				"        \"name\": \"Injection 15\",\r\n" + 
+				"        \"displayName\": \"Injection 15\",\r\n" + 
+				"        \"displayNames\": {\r\n" + 
+				"            \"EN\": \"Injection 15\"\r\n" + 
+				"        },\r\n" + 
+				"        \"message\": {\r\n" + 
+				"            \"EN\": \"sdds\"\r\n" + 
+				"        },\r\n" + 
+				"        \"question\": {\r\n" + 
+				"            \"EN\": null\r\n" + 
+				"        },\r\n" + 
+				"        \"customMessages\": {\r\n" + 
+				"            \"EN\": \"abc\"\r\n" + 
+				"        },\r\n" + 
+				"        \"sortOrder\": 6,\r\n" + 
+				"        \"duration\": \"15\",\r\n" + 
+				"        \"categoryId\": \"1381\",\r\n" + 
+				"        \"categoryName\": \"Polio\",\r\n" + 
+				"        \"extAppointmentTypeId\": \"1374\",\r\n" + 
+				"        \"preventRescheduleOnCancel\": 0,\r\n" + 
+				"        \"preventScheduling\": 0,\r\n" + 
+				"        \"param\": {\r\n" + 
+				"            \"id\": null,\r\n" + 
+				"            \"appointmentStacking\": false,\r\n" + 
+				"            \"slotCount\": 1,\r\n" + 
+				"            \"allowSameDayAppts\": true,\r\n" + 
+				"            \"apptTimeMark\": 0,\r\n" + 
+				"            \"apptTypeAllocated\": true,\r\n" + 
+				"            \"isContiguous\": false,\r\n" + 
+				"            \"leadTime\": {\r\n" + 
+				"                \"days\": 0,\r\n" + 
+				"                \"hours\": 0,\r\n" + 
+				"                \"mins\": 0\r\n" + 
+				"            },\r\n" + 
+				"            \"excludeSlots\": [],\r\n" + 
+				"            \"apptTypeReservedReason\": \"n\",\r\n" + 
+				"            \"acceptComment\": false,\r\n" + 
+				"            \"allowOnlineCancellation\": true,\r\n" + 
+				"            \"slotSize\": 5,\r\n" + 
+				"            \"schedulingDuration\": 0,\r\n" + 
+				"            \"pttype\": \"PT_ALL\",\r\n" + 
+				"            \"lastQuestRequired\": false\r\n" + 
+				"        },\r\n" + 
+				"        \"ageRule\": \"\"\r\n" + 
+				"    }\r\n" + 
+				"]";
+		return payload;
+	}
+	
+	public String setAgeRuleOnInApptTypeAT() {
+		String payload = "[\r\n" + 
+				"    {\r\n" + 
+				"        \"isageRule\": true,\r\n" + 
+				"        \"id\": 201953,\r\n" + 
+				"        \"name\": \"Cardiology\",\r\n" + 
+				"        \"displayName\": \"Cardiology\",\r\n" + 
+				"        \"displayNames\": {\r\n" + 
+				"            \"EN\": \"Cardiology\"\r\n" + 
+				"        },\r\n" + 
+				"        \"message\": {\r\n" + 
+				"            \"EN\": null\r\n" + 
+				"        },\r\n" + 
+				"        \"question\": {\r\n" + 
+				"            \"EN\": null\r\n" + 
+				"        },\r\n" + 
+				"        \"customMessages\": {\r\n" + 
+				"            \"EN\": null\r\n" + 
+				"        },\r\n" + 
+				"        \"sortOrder\": 12,\r\n" + 
+				"        \"duration\": \"45\",\r\n" + 
+				"        \"extAppointmentTypeId\": \"182\",\r\n" + 
+				"        \"preventRescheduleOnCancel\": 0,\r\n" + 
+				"        \"preventScheduling\": 0,\r\n" + 
+				"        \"param\": {\r\n" + 
+				"            \"id\": null,\r\n" + 
+				"            \"appointmentStacking\": false,\r\n" + 
+				"            \"slotCount\": 1,\r\n" + 
+				"            \"allowSameDayAppts\": true,\r\n" + 
+				"            \"apptTimeMark\": 0,\r\n" + 
+				"            \"apptTypeAllocated\": true,\r\n" + 
+				"            \"isContiguous\": false,\r\n" + 
+				"            \"leadTime\": {\r\n" + 
+				"                \"days\": 0,\r\n" + 
+				"                \"hours\": 0,\r\n" + 
+				"                \"mins\": 0\r\n" + 
+				"            },\r\n" + 
+				"            \"excludeSlots\": [],\r\n" + 
+				"            \"apptTypeReservedReason\": \"n\",\r\n" + 
+				"            \"acceptComment\": false,\r\n" + 
+				"            \"allowOnlineCancellation\": true,\r\n" + 
+				"            \"slotSize\": 5,\r\n" + 
+				"            \"schedulingDuration\": 0,\r\n" + 
+				"            \"pttype\": \"PT_ALL\",\r\n" + 
+				"            \"lastQuestRequired\": false\r\n" + 
+				"        },\r\n" + 
+				"        \"ageRule\": \"> 1 And < 60\"\r\n" + 
+				"    }\r\n" + 
+				"]";
+		return payload;
+	}
+	public String setAgeRuleOffInApptTypeAT() {
+		String payload = "[\r\n" + 
+				"    {\r\n" + 
+				"        \"isageRule\": false,\r\n" + 
+				"        \"id\": 201953,\r\n" + 
+				"        \"name\": \"Cardiology\",\r\n" + 
+				"        \"displayName\": \"Cardiology\",\r\n" + 
+				"        \"displayNames\": {\r\n" + 
+				"            \"EN\": \"Cardiology\"\r\n" + 
+				"        },\r\n" + 
+				"        \"message\": {\r\n" + 
+				"            \"EN\": null\r\n" + 
+				"        },\r\n" + 
+				"        \"question\": {\r\n" + 
+				"            \"EN\": null\r\n" + 
+				"        },\r\n" + 
+				"        \"customMessages\": {\r\n" + 
+				"            \"EN\": null\r\n" + 
+				"        },\r\n" + 
+				"        \"sortOrder\": 12,\r\n" + 
+				"        \"duration\": \"45\",\r\n" + 
+				"        \"extAppointmentTypeId\": \"182\",\r\n" + 
+				"        \"preventRescheduleOnCancel\": 0,\r\n" + 
+				"        \"preventScheduling\": 0,\r\n" + 
+				"        \"param\": {\r\n" + 
+				"            \"id\": null,\r\n" + 
+				"            \"appointmentStacking\": false,\r\n" + 
+				"            \"slotCount\": 1,\r\n" + 
+				"            \"allowSameDayAppts\": true,\r\n" + 
+				"            \"apptTimeMark\": 0,\r\n" + 
+				"            \"apptTypeAllocated\": true,\r\n" + 
+				"            \"isContiguous\": false,\r\n" + 
+				"            \"leadTime\": {\r\n" + 
+				"                \"days\": 0,\r\n" + 
+				"                \"hours\": 0,\r\n" + 
+				"                \"mins\": 0\r\n" + 
+				"            },\r\n" + 
+				"            \"excludeSlots\": [],\r\n" + 
+				"            \"apptTypeReservedReason\": \"n\",\r\n" + 
+				"            \"acceptComment\": false,\r\n" + 
+				"            \"allowOnlineCancellation\": true,\r\n" + 
+				"            \"slotSize\": 5,\r\n" + 
+				"            \"schedulingDuration\": 0,\r\n" + 
+				"            \"pttype\": \"PT_ALL\",\r\n" + 
+				"            \"lastQuestRequired\": false\r\n" + 
+				"        },\r\n" + 
+				"        \"ageRule\": \"\"\r\n" + 
+				"    }\r\n" + 
+				"]";
+		return payload;
+	}
+	
+	public String setAgeRuleOnInApptTypeGE() {
+		String payload = "[\r\n" + 
+				"    {\r\n" + 
+				"        \"isageRule\": true,\r\n" + 
+				"        \"id\": 204201,\r\n" + 
+				"        \"name\": \"Fever n Cold\",\r\n" + 
+				"        \"displayName\": \"Fever n Cold\",\r\n" + 
+				"        \"displayNames\": {\r\n" + 
+				"            \"EN\": \"Fever n Cold\",\r\n" + 
+				"            \"ES\": \"\"\r\n" + 
+				"        },\r\n" + 
+				"        \"message\": {\r\n" + 
+				"            \"EN\": \"Next Step\",\r\n" + 
+				"            \"ES\": \"Next Step\"\r\n" + 
+				"        },\r\n" + 
+				"        \"question\": {\r\n" + 
+				"            \"EN\": null,\r\n" + 
+				"            \"ES\": null\r\n" + 
+				"        },\r\n" + 
+				"        \"customMessages\": {\r\n" + 
+				"            \"EN\": null,\r\n" + 
+				"            \"ES\": null\r\n" + 
+				"        },\r\n" + 
+				"        \"sortOrder\": 1,\r\n" + 
+				"        \"extAppointmentTypeId\": \"158\",\r\n" + 
+				"        \"preventRescheduleOnCancel\": 0,\r\n" + 
+				"        \"preventScheduling\": 0,\r\n" + 
+				"        \"param\": {\r\n" + 
+				"            \"id\": null,\r\n" + 
+				"            \"appointmentStacking\": false,\r\n" + 
+				"            \"slotCount\": 1,\r\n" + 
+				"            \"allowSameDayAppts\": true,\r\n" + 
+				"            \"apptTimeMark\": 0,\r\n" + 
+				"            \"apptTypeAllocated\": true,\r\n" + 
+				"            \"isContiguous\": false,\r\n" + 
+				"            \"leadTime\": {\r\n" + 
+				"                \"days\": 0,\r\n" + 
+				"                \"hours\": 0,\r\n" + 
+				"                \"mins\": 0\r\n" + 
+				"            },\r\n" + 
+				"            \"excludeSlots\": [],\r\n" + 
+				"            \"apptTypeReservedReason\": \"n\",\r\n" + 
+				"            \"acceptComment\": false,\r\n" + 
+				"            \"allowOnlineCancellation\": true,\r\n" + 
+				"            \"slotSize\": 5,\r\n" + 
+				"            \"schedulingDuration\": 0,\r\n" + 
+				"            \"pttype\": \"PT_ALL\",\r\n" + 
+				"            \"lastQuestRequired\": false\r\n" + 
+				"        },\r\n" + 
+				"        \"ageRule\": \"> 1 And < 60\"\r\n" + 
+				"    }\r\n" + 
+				"]";
+		return payload;
+	}
+	
+	public String setAgeRuleOffInApptTypeGE() {
+		String payload = "[\r\n" + 
+				"    {\r\n" + 
+				"        \"isageRule\": false,\r\n" + 
+				"        \"id\": 204201,\r\n" + 
+				"        \"name\": \"Fever n Cold\",\r\n" + 
+				"        \"displayName\": \"Fever n Cold\",\r\n" + 
+				"        \"displayNames\": {\r\n" + 
+				"            \"EN\": \"Fever n Cold\",\r\n" + 
+				"            \"ES\": \"\"\r\n" + 
+				"        },\r\n" + 
+				"        \"message\": {\r\n" + 
+				"            \"EN\": \"Next Step\",\r\n" + 
+				"            \"ES\": \"Next Step\"\r\n" + 
+				"        },\r\n" + 
+				"        \"question\": {\r\n" + 
+				"            \"EN\": null,\r\n" + 
+				"            \"ES\": null\r\n" + 
+				"        },\r\n" + 
+				"        \"customMessages\": {\r\n" + 
+				"            \"EN\": null,\r\n" + 
+				"            \"ES\": null\r\n" + 
+				"        },\r\n" + 
+				"        \"sortOrder\": 1,\r\n" + 
+				"        \"extAppointmentTypeId\": \"158\",\r\n" + 
+				"        \"preventRescheduleOnCancel\": 0,\r\n" + 
+				"        \"preventScheduling\": 0,\r\n" + 
+				"        \"param\": {\r\n" + 
+				"            \"id\": null,\r\n" + 
+				"            \"appointmentStacking\": false,\r\n" + 
+				"            \"slotCount\": 1,\r\n" + 
+				"            \"allowSameDayAppts\": true,\r\n" + 
+				"            \"apptTimeMark\": 0,\r\n" + 
+				"            \"apptTypeAllocated\": true,\r\n" + 
+				"            \"isContiguous\": false,\r\n" + 
+				"            \"leadTime\": {\r\n" + 
+				"                \"days\": 0,\r\n" + 
+				"                \"hours\": 0,\r\n" + 
+				"                \"mins\": 0\r\n" + 
+				"            },\r\n" + 
+				"            \"excludeSlots\": [],\r\n" + 
+				"            \"apptTypeReservedReason\": \"n\",\r\n" + 
+				"            \"acceptComment\": false,\r\n" + 
+				"            \"allowOnlineCancellation\": true,\r\n" + 
+				"            \"slotSize\": 5,\r\n" + 
+				"            \"schedulingDuration\": 0,\r\n" + 
+				"            \"pttype\": \"PT_ALL\",\r\n" + 
+				"            \"lastQuestRequired\": false\r\n" + 
+				"        },\r\n" + 
+				"        \"ageRule\": \"\"\r\n" + 
+				"    }\r\n" + 
+				"]";
+		return payload;
+	}
+	public String setDecisionTree(boolean enableDecisionTree) {
+		String payload = "[{\"group\":\"RULEENGINE\",\"key\":\"showCategory\",\"value\":"+enableDecisionTree+"}]";
+		return payload;
+	}
 }
 
