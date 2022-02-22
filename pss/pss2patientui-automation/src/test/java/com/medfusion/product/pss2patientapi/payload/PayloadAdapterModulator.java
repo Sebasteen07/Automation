@@ -4563,7 +4563,6 @@ public class PayloadAdapterModulator {
 				"]";
 		return payload;
 	}
-	
 	public String setDecisionTree(boolean enableDecisionTree) {
 		String payload = "[{\"group\":\"RULEENGINE\",\"key\":\"showCategory\",\"value\":"+enableDecisionTree+"}]";
 		return payload;
