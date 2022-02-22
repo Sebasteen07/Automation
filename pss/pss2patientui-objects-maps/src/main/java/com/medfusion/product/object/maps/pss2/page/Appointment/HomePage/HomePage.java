@@ -161,9 +161,13 @@ public class HomePage extends PSS2MainPage {
 
 	
 	@FindBy(how = How.XPATH, using = "//*[@id='upcomingevents']/h1/span")
-    private WebElement upCmgAptLabel;
-   
-    
+    private WebElement upCmgAptLabel;  
+	
+	@FindAll({ @FindBy(xpath = "//*[@id='upcomingevents']/h1/span") })
+	private List<WebElement> upcomingAptList;
+	
+	@FindAll({ @FindBy(xpath = "//*[@id='pastappointmentevent']/h1/span") })
+	private List<WebElement> pastAptList;
 	
 	@FindBy(how = How.XPATH, using = "//*[@id='pastappointmentevent']/h1/span")
 	private WebElement pastAptLabel;
@@ -188,6 +192,22 @@ public class HomePage extends PSS2MainPage {
 	
 	@FindBy(how = How.XPATH, using = "//li[2]/div[1]/div[1]/div")
 	private WebElement providerPreSelected;
+	
+	@FindBy(how = How.XPATH, using = "//div[@id='patientmatch']//span[contains(text(),'Message')]")
+	private WebElement lockoutPopUp;	
+	
+	@FindBy(how = How.XPATH, using = "//div[@id='alertModalheader']//span[contains(text(),'Alert')]")
+	private WebElement alertPopUp;
+	
+	@FindBy(how = How.CSS, using = "div[id='alertModalheader'] div[class='modal-body'] div")
+	private WebElement alertPopUpMsg;
+	
+	@FindBy(how = How.XPATH, using = "//div[@id='patientmatch']//div[@class='modal-body']/p/pre")
+	private WebElement lockoutPopUpMsg;
+	
+	@FindBy(how = How.ID, using = "closeAlertPopup")
+	private WebElement alertDismiss;
+
 
 	public HomePage(WebDriver driver) {
 		super(driver);
@@ -784,4 +804,38 @@ public class HomePage extends PSS2MainPage {
 		log("Provider preselected is" +providerText);
 		return providerText;
 	}
+	
+	public boolean isUpcomingAptPresent() {
+
+		if (upcomingAptList.size() > 0 & pastAptList.size()>0) {
+			return true;
+		} else {
+			return false;
+		}
+	}
+	
+	
+	
+	public String getTextLockoutPopUpMsg() {
+		
+		IHGUtil.waitForElement(driver, 10, lockoutPopUpMsg);
+		commonMethods.highlightElement(lockoutPopUpMsg);
+		String popupText=lockoutPopUpMsg.getText();
+		return popupText;		
+	}
+	
+	public String getTextAlertPopUpMsg() {
+		
+		IHGUtil.waitForElement(driver, 10, alertPopUpMsg);
+		commonMethods.highlightElement(alertPopUpMsg);
+		String popupText=alertPopUpMsg.getText();
+		return popupText;		
+	}
+	
+	public void clickAlertPopUp() {
+		
+		commonMethods.highlightElement(alertDismiss);
+		alertDismiss.click();
+	}
+
 }

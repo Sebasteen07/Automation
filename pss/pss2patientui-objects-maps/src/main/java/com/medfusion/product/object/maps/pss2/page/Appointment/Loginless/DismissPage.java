@@ -18,10 +18,15 @@ public class DismissPage extends PSS2MainPage {
 	
 	@FindBy(how = How.XPATH, using = "//*[@id='myModalsssloginpopup']/div/div/div[3]/button")
 	private WebElement dismissBtn;	
+	
+	@FindBy(how = How.XPATH, using = "//div[4]/div[1]/div[1]/div[2]/pre[1]/div[1]")
+	private WebElement greetingMsg;	
 
 	@FindBy(how = How.XPATH, using = "//*[@class='announcementmessage']/div")
-	private WebElement popUpMessege;
-
+	private WebElement popUpMessege;	
+	
+	@FindBy(how = How.XPATH, using = "//span[normalize-space()='Link is currently unavailable for the practice.']")
+	private WebElement linkUnavailableMsg;
 
 	public DismissPage(WebDriver driver, String url) {
 		super(driver, url);
@@ -34,6 +39,13 @@ public class DismissPage extends PSS2MainPage {
 		commonMethods.highlightElement(dismissBtn);
 		dismissBtn.click();
 		return PageFactory.initElements(driver, LoginlessPatientInformation.class);
+	}
+	
+	public String getDismissText() {
+		IHGUtil.waitForElement(driver, 15, greetingMsg);
+		commonMethods.highlightElement(greetingMsg);
+		String dismissText=greetingMsg.getText();
+		return dismissText;		
 	}
 	
 	public String popUpMessage() {
@@ -52,6 +64,11 @@ public class DismissPage extends PSS2MainPage {
 		commonMethods.highlightElement(dismissBtn);
 		dismissBtn.click();
 		return PageFactory.initElements(driver, PatientIdentificationPage.class);
+	}
+	
+	public String verifyErrorPage() {
+		commonMethods.highlightElement(linkUnavailableMsg);
+		return linkUnavailableMsg.getText();
 	}
 	
 	

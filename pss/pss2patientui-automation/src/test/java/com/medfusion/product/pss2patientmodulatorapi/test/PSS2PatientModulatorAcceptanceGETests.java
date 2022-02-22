@@ -810,7 +810,7 @@ public class PSS2PatientModulatorAcceptanceGETests extends BaseTestNG {
 		apv.responseTimeValidation(response);
 
 		String message = apv.responseKeyValidationJson(response, "message");
-		assertEquals(message, "Link deleted for linkguidb7fb1a34-8538-4a39-bbba-4159f3627dd1");
+		assertTrue(message.contains("No link found"));
 	}
 
 	@Test(enabled = true, groups = { "APItest" }, retryAnalyzer = RetryAnalyzer.class)
@@ -1128,7 +1128,7 @@ public class PSS2PatientModulatorAcceptanceGETests extends BaseTestNG {
 
 		Response response = postAPIRequest.availableSlots(testData.getBasicURI(), b,
 				headerConfig.HeaderwithToken(testData.getAccessToken()), practiceid, patientid);
-		apv.responseCodeValidation(response, 500);
+		apv.responseCodeValidation(response, 400);
 		apv.responseTimeValidation(response);
 	}
 
@@ -1169,7 +1169,7 @@ public class PSS2PatientModulatorAcceptanceGETests extends BaseTestNG {
 
 		Response response = postAPIRequest.availableSlots(testData.getBasicURI(), b,
 				headerConfig.HeaderwithToken(testData.getAccessToken()), practiceid, patientid);
-		apv.responseCodeValidation(response, 500);
+		apv.responseCodeValidation(response, 400);
 		apv.responseTimeValidation(response);
 	}
 

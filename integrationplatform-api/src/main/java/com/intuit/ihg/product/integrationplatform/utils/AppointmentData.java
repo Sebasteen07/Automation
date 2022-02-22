@@ -63,4 +63,5 @@ public class AppointmentData {
 	public String AppointmentRequestV3URL="";
 	public String AppointmentRequestV4URL="";
 	public String PATIENT_INVITE_RESTV3URL="";
+	public String PATIENT_INVITE_RESTV4URL="";
 }

@@ -88,10 +88,12 @@ public class Appointment {
 	private int leadtimeHour;
 	private int leadtimeMinute;
 	private int preSchedDays;
-
+	private boolean maxPerDayStatus;
 	private String currentDate;
+
 	private String currentTimeZone;
 	private String businesshourStartTime;
+
 	private String businesshourEndTime;
 	private String maxperDay;
 	private String gmailUserName;
@@ -155,6 +157,7 @@ public class Appointment {
 	private String urlAnonymousNG;
 	private boolean isAnonymousFlow = false;
 	private boolean insuranceVisible = false;
+	private boolean insuranceAtEnd=false;
 	private boolean startPointPresent = false;
 	private boolean resourcetoggleStatus = false;
 	private boolean accepttoggleStatus = false;
@@ -273,7 +276,23 @@ public class Appointment {
 
 	public Appointment() {
 	}
-	
+
+	public boolean isMaxPerDayStatus() {
+		return maxPerDayStatus;
+	}
+
+	public void setMaxPerDayStatus(boolean maxPerDayStatus) {
+		this.maxPerDayStatus = maxPerDayStatus;
+	}
+
+	public boolean isInsuranceAtEnd() {
+		return insuranceAtEnd;
+	}
+
+	public void setInsuranceAtEnd(boolean insuranceAtEnd) {
+		this.insuranceAtEnd = insuranceAtEnd;
+	}
+
 	public String getPatientDemographicsDOB() {
 		return patientDemographicsDOB;
 	}

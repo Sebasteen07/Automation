@@ -3,7 +3,7 @@ resource "aws_cloudwatch_event_rule" "trigger_codepipeline" {
   name        = "${local.name}-trigger"
   description = "Trigger pipeline execution when changes are pushed to master branch in CodeCommit."
 
-  schedule_expression = try(local.inputs[local.name].cron_shedule)
+  schedule_expression = try(local.inputs[terraform.workspace].cron_shedule)
 }
 
 resource "aws_cloudwatch_event_target" "trigger_codepipeline" {

@@ -33,8 +33,8 @@ module "build" {
 
   source_buildspec = var.source_buildspec
   source_type      = var.codebuild_source_type
-  build_timeout    = try(local.inputs[local.name].build_timeout)
-  queued_timeout   = try(local.inputs[local.name].queued_timeout)
+  build_timeout    = try(local.inputs[terraform.workspace].build_timeout)
+  queued_timeout   = try(local.inputs[terraform.workspace].queued_timeout)
 
   environment_privileged_mode             = var.codebuild_privileged_override
   environment_compute_type                = var.codebuild_compute_type

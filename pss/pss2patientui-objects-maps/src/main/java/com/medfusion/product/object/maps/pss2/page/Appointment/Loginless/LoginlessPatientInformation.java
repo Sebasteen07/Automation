@@ -78,6 +78,12 @@ public class LoginlessPatientInformation extends PSS2MainPage {
 	@FindBy(how = How.XPATH, using = "//span[@class='recaptcha-checkbox goog-inline-block recaptcha-checkbox-unchecked rc-anchor-checkbox']")
 	private WebElement recaptchaClick;
 
+	@FindAll({@FindBy(how = How.XPATH, using = "//div[@class='acceptpolicy']//label")})
+	public List<WebElement> privacyPolicy;
+
+	@FindBy(how = How.XPATH, using = "//*[@class='modal fade in']/div/div/div[2]/p/pre/div[1]")
+	private WebElement multiplePatientMsg;
+
 	public LoginlessPatientInformation(WebDriver driver) {
 		super(driver);
 	}
@@ -212,7 +218,6 @@ public class LoginlessPatientInformation extends PSS2MainPage {
 		return PageFactory.initElements(driver, HomePage.class);
 	}
 
-
 	public void isPageLoaded() {
 		IHGUtil.waitForElement(driver, 80, this.buttonNext);
 	}
@@ -223,5 +228,25 @@ public class LoginlessPatientInformation extends PSS2MainPage {
 				dismissPopUpButton.get(i).click();
 			}
 		}
+	}
+
+	public int privacyPolicySize() {
+		List<WebElement> privacyList = privacyPolicy;
+		int size = privacyList.size();
+		log("Size Of Privacy Policy list is " + size);
+		return size;
+	}
+
+	public boolean privacyPolicyStatus() {
+		if (privacyPolicySize() > 0) {
+			return true;
+		} else {
+			return false;
+		}
+	}
+
+	public String multiplePatientMessage() {
+		String multiplePatientMessage = multiplePatientMsg.getText();
+		return multiplePatientMessage;
 	}
 }

@@ -3,10 +3,7 @@ package pageobjects;
 import com.medfusion.common.utils.PropertyFileLoader;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
-import org.openqa.selenium.support.FindAll;
-import org.openqa.selenium.support.FindBy;
-import org.openqa.selenium.support.How;
-import org.openqa.selenium.support.PageFactory;
+import org.openqa.selenium.support.*;
 import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.openqa.selenium.support.ui.WebDriverWait;
 import org.testng.Assert;
@@ -119,6 +116,34 @@ public class MerchantDetailsPage extends NavigationMenu {
 
 	@FindBy(how = How.XPATH, using = "//a[text()=' Edit General Merchant Info ']")
 	private WebElement editGeneralMerchantInfoButton;
+
+	@FindBy(how = How.XPATH, using = "//a[text()=' Add New Beneficial Owner ']")
+	private WebElement addNewBeneficialOwnerButton;
+
+	@FindBys({
+			@FindBy(how = How.CLASS_NAME, using="btn btn-danger"),
+			@FindBy(how = How.CSS, using = "button[data-ng-click='deleteBeneficialOwner(principal.beneficialOwnerId)']")
+	})
+	private List<WebElement> removeBeneficialOwnerButtons;
+
+	@FindBys({
+			@FindBy(how = How.ID, using="beneficialOwnerFirstName")
+	})
+	private List<WebElement> beneficialOwnerFirstName;
+
+	@FindBys({
+			@FindBy(how = How.XPATH, using = "beneficialOwnerLastName")
+	})
+	private List<WebElement> beneficialOwnerLastName;
+
+	@FindBys({
+			@FindBy(how = How.XPATH, using = "beneficialOwnerPercent")
+	})
+	private List<WebElement> beneficialOwnerPercent;
+
+	@FindBy(how = How.XPATH, using = "//*[@id='merchantDetail']/div[3]/fieldset/div[1]/div/fieldset/legend/div")
+	private WebElement paymentProcessorInformation;
+
 
 	public void verifyPageTitle() {
 
@@ -243,4 +268,20 @@ public class MerchantDetailsPage extends NavigationMenu {
 
 	}
 
+	public AddBeneficialOwnerPage clickAddNewBeneficialOwnerButton(){
+		addNewBeneficialOwnerButton.click();
+		return PageFactory.initElements(driver, AddBeneficialOwnerPage.class);
+
+	}
+
+	public void removeBeneficialOwner(){
+		for(WebElement removeBeneficiary: removeBeneficialOwnerButtons){
+			removeBeneficiary.click();
+		}
+	}
+
+	public void waitForPageToLoad(){
+		WebDriverWait wait = new WebDriverWait(driver, 10);
+		wait.until(ExpectedConditions.visibilityOf(paymentProcessorInformation));
+	}
 }

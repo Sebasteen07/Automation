@@ -14,6 +14,7 @@ import com.medfusion.product.object.maps.pss2.page.PSS2MenuPage;
 import com.medfusion.product.object.maps.pss2.page.AppointmentType.ManageAppointmentType;
 import com.medfusion.product.object.maps.pss2.page.CancelReason.ManageCancelReason;
 import com.medfusion.product.object.maps.pss2.page.Location.ManageLocation;
+import com.medfusion.product.object.maps.pss2.page.Lockout.ManageLockoutRules;
 import com.medfusion.product.object.maps.pss2.page.Login.PSS2AdminLogin;
 import com.medfusion.product.object.maps.pss2.page.Resource.ManageResource;
 import com.medfusion.product.object.maps.pss2.page.Specialty.ManageSpecialty;
@@ -746,9 +747,6 @@ public class PSSAdminUtils extends BaseTestNGWebDriver{
 			appointment.setUrlAnonymous(accessRule.getAnonymousUrl());
 		}
 		PatientFlow patientFlow = accessRule.gotoPatientFlowTab();
-
-		setRulesNoSpecialitySet1(patientFlow);
-
 		adminUser.setRule(patientFlow.getRule());
 		log("rule= " + patientFlow.getRule());
 
@@ -1062,6 +1060,123 @@ public class PSSAdminUtils extends BaseTestNGWebDriver{
 		}
 
 	}
+	
+	public void leadTimeWithReserveShowProviderOFF(WebDriver driver, AdminUser adminuser, Appointment appointment,
+			String leadValue) throws Exception {
+		PSS2PracticeConfiguration pssPracticeConfig = loginToAdminPortal(driver, adminuser);
+		pssPracticeConfig = pssPracticeConfig.gotoPracticeConfigTab();
+		PatientFlow patientFlow = pssPracticeConfig.gotoPatientFlowTab();
+		patientFlow.turnOffProvider();
+		AdminPatientMatching adminPatientMatching = patientFlow.gotoPatientMatchingTab();
+		adminPatientMatching.patientMatchingSelection();
+		ManageAppointmentType manageAppointmentType = pssPracticeConfig.gotoAppointment();
+		pageRefresh(driver);
+		manageAppointmentType.selectAppointment(appointment.getAppointmenttype());
+		manageAppointmentType.gotoConfiguration();
+		manageAppointmentType.notReserve();
+		manageAppointmentType.leadTime(leadValue);
+		int i = Integer.parseInt(leadValue);
+		appointment.setLeadtimeDay(i);
+		log("lead time day get  " + appointment.getLeadtimeDay());
+		appointment.setAccepttoggleStatus(manageAppointmentType.acceptForStatus());
+		log("Status for AcceptFor Same day is   " + appointment.isAccepttoggleStatus());
+		if (appointment.isAccepttoggleStatus() == false) {
+			manageAppointmentType.clickAcceptSameDay();
+			appointment.setAccepttoggleStatus(manageAppointmentType.acceptForStatus());
+			log("Status for AcceptFor Same day is   " + appointment.isAccepttoggleStatus());
+		}
 
+	}
+	
+	public void upcomingPastApptSetting(WebDriver driver, AdminUser adminUser, Appointment appointment, String urlToUse)
+			throws Exception {
+
+		PSS2PracticeConfiguration pssPracticeConfig = loginToAdminPortal(driver, adminUser);
+
+		AccessRules accessRule = pssPracticeConfig.gotoAccessTab();
+
+		if (urlToUse.equalsIgnoreCase(PSSConstants.LOGINLESS)) {
+			log("PSS Patient URL : " + accessRule.getLoginlessURL());
+			appointment.setUrlLoginLess(accessRule.getLoginlessURL());
+		}
+		if (urlToUse.equalsIgnoreCase(PSSConstants.ANONYMOUS)) {
+			log("PSS Patient URL : " + accessRule.getAnonymousUrl());
+			appointment.setUrlAnonymous(accessRule.getAnonymousUrl());
+		}
+	}
+
+	public void ageRuleAppointmentType(WebDriver driver, AdminUser adminUser, Appointment appointment, String urlToUse)
+			throws Exception {
+
+		PSS2PracticeConfiguration pssPracticeConfig = loginToAdminPortal(driver, adminUser);
+
+		ManageAppointmentType manageAppointmentType = pssPracticeConfig.gotoAppointment();
+		pageRefresh(driver);
+		manageAppointmentType.selectAppointment(appointment.getAppointmenttype());
+		Log4jUtil.log("Status of Checkbox" + manageAppointmentType.checkBoxStatus());
+		manageAppointmentType.ageRule();
+		manageAppointmentType.ageRuleparameter(appointment.getAgeRuleMonthFirst(), appointment.getAgeRuleMonthSecond());
+		Thread.sleep(2000);
+		manageAppointmentType.logout();
+
+	}
+
+	public void resetAgeRuleAppointmentType(WebDriver driver, AdminUser adminUser, Appointment appointment,
+			String urlToUse) throws Exception {
+
+		PSS2PracticeConfiguration pssPracticeConfig = loginToAdminPortal(driver, adminUser);
+		ManageAppointmentType manageAppointmentType = pssPracticeConfig.gotoAppointment();
+		pageRefresh(driver);
+		manageAppointmentType.selectAppointment(appointment.getAppointmenttype());
+		manageAppointmentType.resetAgeRule();
+		manageAppointmentType.logout();
+
+	}
+
+	public void maxPerDayWithShowProviderOFF(WebDriver driver, AdminUser adminuser, Appointment appointment)
+			throws Exception {
+		PSS2PracticeConfiguration pssPracticeConfig = loginToAdminPortal(driver, adminuser);
+		pssPracticeConfig = pssPracticeConfig.gotoPracticeConfigTab();
+		PatientFlow patientFlow = pssPracticeConfig.gotoPatientFlowTab();
+		patientFlow.turnOffProvider();
+		ManageAppointmentType manageAppointmentType = pssPracticeConfig.gotoAppointment();
+		manageAppointmentType.selectAppointment(appointment.getAppointmenttype());
+		manageAppointmentType.gotoConfiguration();
+		appointment.setMaxPerDayStatus(manageAppointmentType.maxPerDayStatus());
+		log("Max Per Day Status is" + appointment.isMaxPerDayStatus());
+	}
+
+	public void reserveForSameDay(WebDriver driver, AdminUser adminUser, Appointment testData, String urlToUse)
+			throws Exception {
+
+		PSS2PracticeConfiguration pssPracticeConfig = loginToAdminPortal(driver, adminUser);
+
+		PatientFlow patientFlow = pssPracticeConfig.gotoPatientFlowTab();
+		AdminPatientMatching adminPatientMatching = patientFlow.gotoPatientMatchingTab();
+		adminPatientMatching.patientMatchingSelection();
+
+		ManageResource manageResource = pssPracticeConfig.gotoResource();
+		pageRefresh(driver);
+		manageResource.selectResource(testData.getProvider());
+		manageResource.selectAppointmenttype(testData.getAppointmenttype());
+		manageResource.reserveFor();
+		manageResource.logout();
+	}
+	
+	public void LockoutAndNotification(WebDriver driver, AdminUser adminuser, Appointment appointment)
+			throws Exception {
+		PSS2PracticeConfiguration pssPracticeConfig = loginToAdminPortal(driver, adminuser);
+		pageRefresh(driver);
+		ManageLockoutRules lockout = pssPracticeConfig.gotoLockOut();
+		lockout.addLockoutWithoutMsg();
+	}
+	
+	public void alertsAndNotification(WebDriver driver, AdminUser adminuser, Appointment appointment)
+			throws Exception {
+		PSS2PracticeConfiguration pssPracticeConfig = loginToAdminPortal(driver, adminuser);
+		pageRefresh(driver);
+		ManageLockoutRules lockout = pssPracticeConfig.gotoLockOut();
+		lockout.addAlertWithoutMsg();		
+	}
 
 }

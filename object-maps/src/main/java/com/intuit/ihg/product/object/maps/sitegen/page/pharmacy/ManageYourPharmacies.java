@@ -90,8 +90,9 @@ public class ManageYourPharmacies extends BasePageObject {
 					if (removeButtons.get(j).isDisplayed()) {
 						removePharmacy(removeButtons.get(j));
 						log("pharmacy #" + ++removedPharmacy + " removed");
-						// need to sleep because of modal disappearing time
+						driver.get(driver.getCurrentUrl()); //Refresh the page until removed pharmacy is not in the list
 						Thread.sleep(5000);
+						driver.get(driver.getCurrentUrl());
 						break;
 
 					}
@@ -101,6 +102,15 @@ public class ManageYourPharmacies extends BasePageObject {
 
 			}
 		}
+	}
+
+	public void waitTillPharmacyRemoval() {
+		for(int i=1;i<=getPharmacyList().size();i++)
+		{
+			log("Refresh Page");
+			driver.get(driver.getCurrentUrl()); //Refresh the page until removed pharmacy is not in the list
+		}
+		
 	}
 
 }

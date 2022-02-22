@@ -8,7 +8,7 @@
 	<parent>
 		<artifactId>ihg-depot-parent-pom</artifactId>
 		<groupId>com.intuit.ihg</groupId>
-		<version>21.7.0</version>
+		<version>22.1.0</version>
 	</parent>
 
 	<artifactId>ehcore-api-automation</artifactId>
@@ -17,10 +17,10 @@
 
 	<properties>
 		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
-		<ihg.version>21.7.0</ihg.version>
-		<dcf-version>21.7.0</dcf-version>
-		<eh-core-version>21.7.0</eh-core-version>
-		<messages-version>21.7.0</messages-version>
+		<ihg.version>22.1.0</ihg.version>
+		<dcf-version>22.1.0</dcf-version>
+		<eh-core-version>22.1.0</eh-core-version>
+		<messages-version>22.1.0</messages-version>
 		<resteasy-version>2.2.2.GA</resteasy-version>
 		<codification-version>13.6.0.5</codification-version>
 	</properties>
@@ -248,7 +248,7 @@
 		<dependency>
 			<groupId>com.intuit.ihg</groupId>
 			<artifactId>object-maps</artifactId>
-			<version>21.7.0</version>
+			<version>22.1.0</version>
 		</dependency>
 	</dependencies>
 

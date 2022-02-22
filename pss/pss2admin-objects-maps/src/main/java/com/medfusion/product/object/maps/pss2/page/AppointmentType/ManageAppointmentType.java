@@ -69,7 +69,7 @@ public class ManageAppointmentType extends PSS2MenuPage {
 	@FindBy(how = How.XPATH, using = "//*[@name='apptTimeMark']")
 	private WebElement timeMarkOption;
 	
-	@FindBy(how = How.XPATH, using = "//*[@id='tabX33']/form/fieldset[2]/div/div/button[1]")
+	@FindBy(how = How.XPATH, using = "//*[contains(text(),'Save')]")
 	private WebElement saveConfig;
 	
 	@FindBy(how = How.XPATH, using = "//label[@for='allowSameDayAppts']//input")
@@ -80,6 +80,39 @@ public class ManageAppointmentType extends PSS2MenuPage {
 
 	@FindBy(how = How.XPATH, using = "//div[@class='col-md-12']//label[@for='allowSameDayAppts']/i")
 	private WebElement acceptToggleclick;
+	
+	@FindBy(how = How.XPATH, using = "//input[@id='leadTimedays']")
+	private WebElement leadDay;
+	
+	@FindBy(how = How.XPATH, using = "//strong[contains(text(),'Age Rule')]")
+	private WebElement ageRuleCheckbox;
+
+	@FindBy(how = How.XPATH, using = "//input[@id='myonoffswitch']")
+	private WebElement ageRuleCheckboxStatus;
+
+	@FindBy(how = How.XPATH, using = "//select[@name='leftToken']")
+	private WebElement ageruleDropFirst;
+
+	@FindBy(how = How.XPATH, using = "//select[@name='rightToken']")
+	private WebElement ageruleDropSecond;
+
+	@FindBy(how = How.XPATH, using = "//select[@name='condition']")
+	private WebElement ageruleAnd;
+
+	@FindBy(how = How.XPATH, using = "//input[@id='line1' and @name='leftVal']")
+	private WebElement sendMonthFirst;
+
+	@FindBy(how = How.XPATH, using = "//input[@id='line1' and @name='rightVal']")
+	private WebElement sendMonthsecond;
+
+	@FindBy(how = How.XPATH, using = "//*[contains(text(),'Max Per Day')]")
+	private WebElement maxPerDay;
+
+	@FindBy(how = How.XPATH, using = "//*[@id='app']/nav[2]/ul[2]/li[4]/a")
+	private WebElement settingBtn;
+
+	@FindBy(how = How.XPATH, using = "//*[@id='app']/nav[2]/ul[2]/li[4]/ul")
+	private WebElement logoutBtn;
 
 	public ManageAppointmentType(WebDriver driver) {
 		super(driver);
@@ -169,5 +202,66 @@ public class ManageAppointmentType extends PSS2MenuPage {
 		objSelect.selectByVisibleText("Same Day");
 		reservefor.click();
 		saveConfig.click();
+	}
+	
+
+	public void leadTime(String leadValue) {
+		leadDay.clear();
+		leadDay.sendKeys(leadValue);
+		saveConfig.click();
+	}
+
+	public boolean checkBoxStatus() {
+		log("Status of the age rule checkbox  " + ageRuleCheckboxStatus.isSelected());
+		return ageRuleCheckboxStatus.isSelected();
+	}
+
+	public void ageRule() {
+		if (checkBoxStatus() == false) {
+			ageRuleCheckbox.click();
+			log("Clicked on Checkbox of Age Rule ");
+		} else {
+			log("Not clicked on Age Rule Check Box going to send value in textfield");
+		}
+	}
+
+	public void resetAgeRule() throws InterruptedException {
+		ageRuleCheckbox.click();
+		log("Clicked On Age Rule");
+		saveConfig.click();
+	}
+
+	public void ageRuleparameter(String ageStartMonth, String ageEndMonths) {
+		Select select = new Select(ageruleDropFirst);
+		Select and = new Select(ageruleAnd);
+		Select select1 = new Select(ageruleDropSecond);
+		select.selectByVisibleText(">");
+		sendMonthFirst.clear();
+		sendMonthFirst.sendKeys(ageStartMonth);
+		and.selectByIndex(1);
+		select1.selectByVisibleText("<");
+		sendMonthsecond.clear();
+		sendMonthsecond.sendKeys(ageEndMonths);
+		log("SuccessFully Sent the Values in ageRule textfield");
+		saveConfig.click();
+	}
+
+	public int maxPerDaySize() {
+		List<WebElement> aptNameList = driver.findElements(By.xpath("//*[contains(text(),'Max Per Day')]"));
+		int size = aptNameList.size();
+		return size;
+	}
+
+	public boolean maxPerDayStatus() {
+		if (maxPerDaySize() > 0) {
+			return true;
+		} else {
+			return false;
+		}
+	}
+
+	public void logout() throws InterruptedException {
+		settingBtn.click();
+		logoutBtn.click();
 	}
 }

@@ -41,6 +41,7 @@ import javax.xml.transform.stream.StreamResult;
 import javax.xml.transform.stream.StreamSource;
 
 import org.apache.commons.io.IOUtils;
+import org.apache.commons.lang.StringUtils;
 import org.apache.http.Header;
 import org.apache.http.HttpEntity;
 import org.apache.http.HttpResponse;
@@ -53,7 +54,6 @@ import org.apache.http.impl.client.DefaultHttpClient;
 import org.apache.http.params.CoreConnectionPNames;
 import org.apache.http.util.EntityUtils;
 import org.jdom.JDOMException;
-
 import org.w3c.dom.Attr;
 import org.w3c.dom.DOMException;
 import org.w3c.dom.Document;
@@ -2136,10 +2136,19 @@ public class RestUtils {
 										+ nAddress2.getTextContent());
 						Node nHomePhone = nPatient.getElementsByTagName(IntegrationConstants.HOMEPHONE).item(0);
 						Log4jUtil.log("Searching: Patient Home Phone :" + updateData.get(4)
-								+ ", and Actual Patient Home Phone is:" + nHomePhone.getTextContent().toString());
-						assertEquals(nHomePhone.getTextContent(), updateData.get(4),
-								"Medfusion Patient Home Phone has different than expected. HomePhone is: "
-										+ nHomePhone.getTextContent());
+							+ ", and Actual Patient Home Phone is:"
+							+ StringUtils.remove(StringUtils.remove(
+								StringUtils.remove(StringUtils
+									.remove(nHomePhone.getTextContent(), "("), ")"),
+								"-"), " "));
+						assertEquals(
+							StringUtils.remove(StringUtils.remove(
+								StringUtils.remove(StringUtils
+									.remove(nHomePhone.getTextContent(), "("), ")"),
+								"-"), " "),
+							updateData.get(4),
+							"Medfusion Patient Home Phone has different than expected. HomePhone is: "
+								+ nHomePhone.getTextContent());
 						Node nDOB = nPatient.getElementsByTagName(IntegrationConstants.DATEOFBIRTH).item(0);
 						Log4jUtil.log("Searching: Patient Date of Birth :" + updateData.get(5)
 								+ ", and Actual Patient Date of Birth is:" + nDOB.getTextContent().toString());

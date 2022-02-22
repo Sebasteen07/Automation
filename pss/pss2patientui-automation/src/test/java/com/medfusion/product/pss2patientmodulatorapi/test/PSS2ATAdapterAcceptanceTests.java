@@ -240,21 +240,21 @@ public class PSS2ATAdapterAcceptanceTests extends BaseTestNG {
 	@Test(enabled = true, groups = { "APItest" }, retryAnalyzer = RetryAnalyzer.class)
 	public void testCareProviderAvailabilityPOST() throws NullPointerException, Exception {
 
-		String b = payloadAT.careProviderAvailabilityPayload(
-				propertyData.getProperty("start.date.time.at"),
-				propertyData.getProperty("end.date.time.at"),		
-				propertyData.getProperty("cpresourcecat.id.at"),
-				propertyData.getProperty("cpresource.id.at"),
-				propertyData.getProperty("cpslot.size.at")
-				);
+		String startDate = pssPatientUtils.sampleDateTime("MM/dd/yyyy HH:mm:ss");
+		String endDate = pssPatientUtils.createFutureDate(startDate, 10);
+
+		String b = payloadAT.careProviderAvailabilityPayload(startDate, endDate,
+				propertyData.getProperty("cpresourcecat.id.at"), propertyData.getProperty("cpresource.id.at"),
+				propertyData.getProperty("cpslot.size.at"));
 		Response response = postAPIRequestat.careProviderAvailability(propertyData.getProperty("practice.id.at"), b);
 		validateAT.verifyCareProviderAvailabilityResponse(response);
-		
-		String c= payloadAT.careProviderAvailabilityInvalidPayload();
-		Response responseInvalid= postAPIRequestat.careProviderAvailabilityInvalid(propertyData.getProperty("practice.id.at"),c);
-		validateAT.verifyCareProviderAvailabilityInvalidResponse(responseInvalid);
 
+		String c = payloadAT.careProviderAvailabilityInvalidPayload();
+		Response responseInvalid = postAPIRequestat
+				.careProviderAvailabilityInvalid(propertyData.getProperty("practice.id.at"), c);
+		validateAT.verifyCareProviderAvailabilityInvalidResponse(responseInvalid);
 	}
+	
 	@Test(enabled = true, groups = { "APItest" }, retryAnalyzer = RetryAnalyzer.class)
 	public void testAddpatientPOST() throws NullPointerException, Exception {
 		

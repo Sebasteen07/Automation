@@ -32,7 +32,6 @@ public class APIVerification extends BaseTestNGWebDriver {
 	public String responseKeyValidationJson(Response response, String key) {
 		String value = null;
 			JsonPath js = new JsonPath(response.asString());
-			log("Validated key-> " + key + " value is-  " + js.getString(key));
 			value = js.getString(key);
 		return value;
 	}

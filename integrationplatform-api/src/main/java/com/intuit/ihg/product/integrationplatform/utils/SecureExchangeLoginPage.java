@@ -10,6 +10,8 @@ import org.openqa.selenium.support.PageFactory;
 import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.openqa.selenium.support.ui.WebDriverWait;
 
+import com.medfusion.common.utils.IHGUtil;
+
 
 public class SecureExchangeLoginPage {
 	protected WebDriver driver;
@@ -21,6 +23,15 @@ public class SecureExchangeLoginPage {
 	
 	@FindBy(how = How.XPATH, using = "//button[contains(text(),'Sign In')]")
 	public WebElement buttonSignIn;
+	
+	@FindBy(how = How.XPATH, using = "//a[contains(text(),'Start')]")
+	public WebElement startClick;
+	
+	@FindBy(how = How.XPATH, using = "//span[@title='implementationteam@direct.medfusion.com']")
+	public WebElement mailClick;
+	
+	@FindBy(how = How.XPATH, using ="(//span[text()='Inbox'])[2]")
+	public WebElement inboxClick;
 	
 	public SecureExchangeLoginPage(WebDriver driver,String url) {
 		this.driver = driver;
@@ -34,6 +45,13 @@ public class SecureExchangeLoginPage {
 		inputUserName.sendKeys(username);
 		inputPassword.sendKeys(password);
 		buttonSignIn.click();
+		
+		if(IHGUtil.getEnvironmentType().equals("prod")) {
+			startClick.click();
+			mailClick.click();
+			inboxClick.click();
+			}
+		
 		return PageFactory.initElements(driver, SecureExchangeEmailPage.class);
 	}
 }

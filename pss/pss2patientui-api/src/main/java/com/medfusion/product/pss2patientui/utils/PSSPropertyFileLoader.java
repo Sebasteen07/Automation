@@ -117,7 +117,7 @@ public class PSSPropertyFileLoader {
 		adminuser.setUser(property.getProperty("admin.username.gw"));
 		adminuser.setPassword(property.getProperty("admin.password.gw"));
 		adminuser.setRule(property.getProperty("rule"));
-		adminuser.setPracticeId(property.getProperty("practice.id.gw"));
+		adminuser.setPracticeId(property.getProperty("practice.id.gw.ui"));
 		adminuser.setIsInsuranceDisplayed(false);
 		adminuser.setIsstartpointPresent(false);
 
@@ -127,16 +127,15 @@ public class PSSPropertyFileLoader {
 		adminuser.setAdminUrl(property.getProperty("admin.url"));
 		adminuser.setUser(property.getProperty("admin.username.ge"));
 		adminuser.setPassword(property.getProperty("admin.password.ge"));
-		adminuser.setPracticeId(property.getProperty("practice.id.ge"));
+		adminuser.setPracticeId(property.getProperty("practice.id.ge.ui"));
 		adminuser.setRule(property.getProperty("rule"));
-		adminuser.setPracticeId(property.getProperty("practice.id.ge"));
 	}
 
 	public void setAdminNG(AdminUser adminuser) {
 		adminuser.setAdminUrl(property.getProperty("admin.url"));
 		adminuser.setUser(property.getProperty("admin.user.name.ng"));
 		adminuser.setPassword(property.getProperty("admin.password.ng"));
-		adminuser.setPracticeId(property.getProperty("practice.id.ng"));
+		adminuser.setPracticeId(property.getProperty("practice.id.ng.ui"));
 		adminuser.setRule(property.getProperty("rule"));
 	}
 	
@@ -162,7 +161,7 @@ public class PSSPropertyFileLoader {
 		Log4jUtil.log("adminusernameAT " + adminuser.getUser());
 		adminuser.setPassword(property.getProperty("admin.password.at"));
 		Log4jUtil.log("adminpasswordAT " + adminuser.getPassword());
-		adminuser.setPracticeId(property.getProperty("practice.id.at"));
+		adminuser.setPracticeId(property.getProperty("practice.id.at.ui"));
 		adminuser.setRule(property.getProperty("rule"));
 	}
 

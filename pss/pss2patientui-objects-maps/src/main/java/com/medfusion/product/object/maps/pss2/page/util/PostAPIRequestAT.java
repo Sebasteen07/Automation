@@ -108,7 +108,7 @@ public class PostAPIRequestAT {
 
 	public Response careProviderAvailability(String practiceid, String b) throws Exception {
 		Response response = given().log().all().spec(requestSpec).body(b).post(practiceid + "/careprovideravailability")
-				.then().spec(responseSpec).log().all().extract().response();
+				.then().log().all().extract().response();
 		return response;
 	}
 	

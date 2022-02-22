@@ -714,6 +714,12 @@ public class PostAPIRequestAdapterModulator {
 				.log().all().extract().response();
 		return response;
 	}
+	
+	public Response deleteLockoutById(String practiceid, int id) throws Exception {
+		Response response = given().spec(requestSpec).log().all().when().delete(practiceid + "/lockout/" + id).then()
+				.log().all().extract().response();
+		return response;
+	}
 
 	public Response practicelockout(String practiceid, String endPointPath) throws Exception {
 		Response response = given().spec(requestSpec).log().all().when().get(practiceid + endPointPath).then().log()

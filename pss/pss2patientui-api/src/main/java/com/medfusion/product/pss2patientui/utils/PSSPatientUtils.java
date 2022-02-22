@@ -358,7 +358,7 @@ public class PSSPatientUtils extends BaseTestNGWebDriver {
 			bookAnonymousApt(aptDateTime, testData, driver);
 		} else {
 			log("This is not an Anonymous flow so comes is else block");
-			clickOnSubmitAppt(false, aptDateTime, testData, driver);
+			clickOnSubmitAppt(testData.isInsuranceAtEnd(), aptDateTime, testData, driver);
 		}
 		log("Test Case Passed");
 	}
@@ -370,26 +370,41 @@ public class PSSPatientUtils extends BaseTestNGWebDriver {
 		log("Insurance is Enabled " + testData.isInsuranceVisible());
 		log("startpage is Visible " + testData.isStartPointPresent());
 		if (testData.isInsuranceVisible()) {
+			
+			if(testData.isInsuranceAtEnd() == true) {
+				
+				if (testData.isStartPointPresent()) {
+					log("Starting point is present after insurance skipped ");
+					startappointmentInOrder= new StartAppointmentInOrder(driver);
+					appointment = startappointmentInOrder.selectFirstAppointment(PSSConstants.START_APPOINTMENT);
+					log("Successfully clicked on  " + PSSConstants.START_APPOINTMENT);
+				} else {
+					appointment = homepage.appointmentpage();
+					log("Starting point not Present going to select next provider ");
+				}
+				
+			}else {
+				if (testData.isInsuranceDetails() == true) {
+					log("Member ID- " + testData.getMemberID() + " Group Id- " + testData.getGroupID() + " Phone Number- "
+							+ testData.getInsurancePhone());
+					startappointmentInOrder = homepage.updateInsuranceInfo(driver, testData.getMemberID(),
+							testData.getGroupID(), testData.getInsurancePhone());
 
-			if (testData.isInsuranceDetails() == true) {
-				log("Member ID- " + testData.getMemberID() + " Group Id- " + testData.getGroupID() + " Phone Number- "
-						+ testData.getInsurancePhone());
-				startappointmentInOrder = homepage.updateInsuranceInfo(driver, testData.getMemberID(),
-						testData.getGroupID(), testData.getInsurancePhone());
+				} else {
+					log("insurance is present on home Page going to skip insurance page");
+					startappointmentInOrder = homepage.skipInsurance(driver);
+				}
 
-			} else {
-				log("insurance is present on home Page going to skip insurance page");
-				startappointmentInOrder = homepage.skipInsurance(driver);
-			}
-
-			if (testData.isStartPointPresent()) {
-				log("Starting point is present after insurance skipped ");
-				appointment = startappointmentInOrder.selectFirstAppointment(PSSConstants.START_APPOINTMENT);
-				log("Successfully clicked on  " + PSSConstants.START_APPOINTMENT);
-			} else {
-				appointment = homepage.appointmentpage();
-				log("Starting point not Present going to select next provider ");
-			}
+				if (testData.isStartPointPresent()) {
+					log("Starting point is present after insurance skipped ");
+					appointment = startappointmentInOrder.selectFirstAppointment(PSSConstants.START_APPOINTMENT);
+					log("Successfully clicked on  " + PSSConstants.START_APPOINTMENT);
+				} else {
+					appointment = homepage.appointmentpage();
+					log("Starting point not Present going to select next provider ");
+				}
+			}	
+			
 		} else if (testData.isStartPointPresent()) {
 			startappointmentInOrder = homepage.startpage();
 			log("in else part  click on  " + PSSConstants.START_APPOINTMENT);
@@ -421,7 +436,7 @@ public class PSSPatientUtils extends BaseTestNGWebDriver {
 			bookAnonymousApt(aptDateTime, testData, driver);
 		} else {
 			log("This is not an Anonymous flow so comes is else block");
-			clickOnSubmitAppt(false, aptDateTime, testData, driver);
+			clickOnSubmitAppt(testData.isInsuranceAtEnd(), aptDateTime, testData, driver);
 		}
 		log("Test Case Passed");
 	}
@@ -1151,9 +1166,18 @@ public class PSSPatientUtils extends BaseTestNGWebDriver {
 		Thread.sleep(2000);
 		AnonymousPatientInformation anonymousPatientInformation = aptDateTime
 				.selectAppointmentTimeSlot(testData.getIsNextDayBooking());
-		ConfirmationPage confirmationpage = anonymousPatientInformation.fillPatientForm(testData.getFirstName(),
+		ConfirmationPage confirmationpage = anonymousPatientInformation.fillPatientFormWithoutPrivacyPolicy(testData.getFirstName(),
 				testData.getLastName(), testData.getDob(), testData.getEmail(), testData.getGender(),
 				testData.getPrimaryNumber());
+		appointmentToScheduledAnonymous(confirmationpage, testData);
+	}
+
+	public void bookAnonymousAptWithPrivacyPolicy(AppointmentDateTime aptDateTime, Appointment testData, WebDriver driver) throws Exception {
+		log("Verify Confirmation page and Scheduled page");
+		Thread.sleep(2000);
+		AnonymousPatientInformation anonymousPatientInformation = aptDateTime.selectAppointmentTimeSlot(testData.getIsNextDayBooking());
+		ConfirmationPage confirmationpage = anonymousPatientInformation.fillPatientFormWithPrivacyPolicy(testData.getFirstName(), testData.getLastName(),
+				testData.getDob(), testData.getEmail(), testData.getGender(), testData.getPrimaryNumber());
 		appointmentToScheduledAnonymous(confirmationpage, testData);
 	}
 
@@ -1162,10 +1186,10 @@ public class PSSPatientUtils extends BaseTestNGWebDriver {
 		log("Verify Confirmation page and Scheduled page");
 		log("Is Insurance Page Displayed= " + isInsuranceDisplated);
 		log("I am in clickOnSubmitAppt METHOD-------");
-		Thread.sleep(2000);
 		if (isInsuranceDisplated) {
 			UpdateInsurancePage updateinsurancePage = aptDateTime.selectAppointmentDateAndTime(driver);
-			ConfirmationPage confirmationpage = updateinsurancePage.skipInsuranceUpdate();
+			ConfirmationPage confirmationpage = updateinsurancePage.selectInsuranceAtEnd(testData.getMemberID(),
+					testData.getGroupID(), testData.getInsurancePhone());
 			appointmentToScheduled(confirmationpage, testData);
 		} else {
 			ConfirmationPage confirmationpage;
@@ -2109,4 +2133,28 @@ public class PSSPatientUtils extends BaseTestNGWebDriver {
 		return date2;
 	}
 
+	public String currentFullDateWithTimeZone(Appointment testData) {
+		TimeZone timeZone = TimeZone.getTimeZone(testData.getCurrentTimeZone());
+		String dateFormat = "MM/dd/yyyy";
+		SimpleDateFormat f1 = new SimpleDateFormat(dateFormat);
+		Calendar c = Calendar.getInstance();
+		TimeZone time_zone = TimeZone.getTimeZone(testData.getCurrentTimeZone());
+		f1.setTimeZone(timeZone);
+		c.setTimeZone(time_zone);
+		String currentDate = f1.format(c.getTime());
+		log("Current Date is " + currentDate);
+		return currentDate;
+	}
+
+	public long dateDiffPastandCurrentDate(Appointment testData, String pastDate) throws ParseException {
+		String currentDate = currentFullDateWithTimeZone(testData);
+		SimpleDateFormat format = new SimpleDateFormat("MM/dd/yyyy");
+		Date d1 = null;
+		Date d2 = null;
+		d1 = format.parse(pastDate);
+		d2 = format.parse(currentDate);
+		long diff = d2.getTime() - d1.getTime();
+		long diffDays = diff / (24 * 60 * 60 * 1000);
+		return diffDays;
+	}
 }

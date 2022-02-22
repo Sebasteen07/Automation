@@ -1957,7 +1957,10 @@ public class PropertyFileLoader {
 	public String getPATIENT_INVITE_RESTV3URL() {
 		return property.getProperty("resturl.pidcv3");
 	}
-
+	public String getPATIENT_INVITE_RESTV4URL() {
+		return property.getProperty("resturl.pidcv4");
+	}
+	
 	public String getPatienturl_Event() {
 		return property.getProperty("patient.url.loginevent");
 	}

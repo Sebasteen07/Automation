@@ -3,7 +3,7 @@
 <parent>
 	  <groupId>com.intuit.ihg</groupId>
 	  <artifactId>ihg-depot-parent-pom</artifactId>
-	  <version>21.7.0</version>
+	  <version>22.1.0</version>
 </parent>
 
   <artifactId>integrationplatform-service</artifactId>
@@ -11,7 +11,7 @@
   
    <properties>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
-        <ihg.version>21.7.0</ihg.version>
+        <ihg.version>22.1.0</ihg.version>
   </properties>
    <repositories>
 		<repository>
@@ -24,12 +24,12 @@
         <dependency>
             <groupId>com.intuit.ihg</groupId>
             <artifactId>qa-automation-utils</artifactId>
-            <version>21.7.0</version>
+            <version>22.1.0</version>
         </dependency> 
   		<dependency>
   		<groupId>com.intuit.ihg</groupId>
   		<artifactId>integrationplatform-api</artifactId>
-  		<version>21.7.0</version>
+  		<version>22.1.0</version>
   	</dependency>
     </dependencies>
 </project>

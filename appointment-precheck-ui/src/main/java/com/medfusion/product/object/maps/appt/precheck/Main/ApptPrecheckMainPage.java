@@ -102,4 +102,9 @@ public class ApptPrecheckMainPage extends BasePageObject {
 		jse.executeScript("arguments[0].click();", appointmentsTab);
 		log("Switch to Appointment Dashboard");
 	}
+	
+	public void switchOnAppointmentsTab() {
+		IHGUtil.waitForElement(driver, 6, appointmentsTab);
+		jse.executeScript("arguments[0].click();", appointmentsTab);
+	}
 }

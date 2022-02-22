@@ -152,7 +152,7 @@ public class ApptPrecheckMfLogoServiceTest extends BaseTestNG {
 	@Test(enabled = true, groups = { "APItest" }, retryAnalyzer = RetryAnalyzer.class)
 	public void testUpdateLogoByPracticeIdPutWithoutPracticeId() throws IOException {
 		Response response = postAPIRequest.updateLogoByPracticeIdWithoutPracticeId(
-				propertyData.getProperty("update.logo"), headerConfig.HeaderwithToken(getaccessToken));
+				propertyData.getProperty("upload.logo"), headerConfig.HeaderwithToken(getaccessToken));
 		log("Verifying the response");
 		assertEquals(response.getStatusCode(), 500);
 		apiVerification.responseTimeValidation(response);
@@ -173,7 +173,7 @@ public class ApptPrecheckMfLogoServiceTest extends BaseTestNG {
 		if (response.getStatusCode() == 400) {
 			log("An appointment action not allowed");
 			assertEquals(response.getStatusCode(), 400);
-			apiVerification.verifyIfLogoAlreadyExists(response);
+			apiVerification.verifyIfLogoAlreadyExists(response,propertyData.getProperty("mf.logo.service.practice.id"));
 		}
 		apiVerification.responseTimeValidation(response);
 	}

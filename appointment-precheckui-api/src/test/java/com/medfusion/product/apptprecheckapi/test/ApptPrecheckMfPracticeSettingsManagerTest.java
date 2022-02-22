@@ -459,7 +459,6 @@ public class ApptPrecheckMfPracticeSettingsManagerTest extends BaseTestNG {
 		log("Verifying the response");
 		assertEquals(response.getStatusCode(), 400);
 		apiVerification.responseTimeValidation(response);
-		apiVerification.verifyMerchantSettingsWithoutIdAndName(response);
 	}
 
 	@Test(enabled = true, groups = { "APItest" }, retryAnalyzer = RetryAnalyzer.class)
@@ -624,14 +623,14 @@ public class ApptPrecheckMfPracticeSettingsManagerTest extends BaseTestNG {
 	public void testSettingsForAPracticeGet() throws IOException {
 		Response response = postAPIRequest.getSettingsForAPractice(
 				propertyData.getProperty("baseurl.apt-precheck.resource"), headerConfig.HeaderwithToken(getaccessToken),
-				propertyData.getProperty("apt.precheck.practice.id"),
+				propertyData.getProperty("apt.pre.check.practice.id"),
 				propertyData.getProperty("apt.precheck.patient.id"), propertyData.getProperty("apt.precheck.appt.id"),
 				payload.getGuestTokenPayload(propertyData.getProperty("patient.dob"),
 						propertyData.getProperty("zipcode")));
 		log("Verifying the response");
 		assertEquals(response.getStatusCode(), 200);
 		apiVerification.responseTimeValidation(response);
-		apiVerification.verifyGetSettingsForAPractice(response, propertyData.getProperty("apt.precheck.practice.id"),
+		apiVerification.verifyGetSettingsForAPractice(response, propertyData.getProperty("apt.pre.check.practice.id"),
 				propertyData.getProperty("update.system.id"));
 	}
 

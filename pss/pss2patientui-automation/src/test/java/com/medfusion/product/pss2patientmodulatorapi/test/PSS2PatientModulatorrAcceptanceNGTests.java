@@ -3,6 +3,7 @@ package com.medfusion.product.pss2patientmodulatorapi.test;
 
 import static org.testng.Assert.assertEquals;
 import static org.testng.Assert.assertNotNull;
+
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Date;
@@ -399,7 +400,7 @@ public class PSS2PatientModulatorrAcceptanceNGTests extends BaseTestNG {
 	@Test(enabled = true, groups = { "APItest" }, retryAnalyzer = RetryAnalyzer.class)
 	public void test17CancelStatus_New() throws IOException {
 
-		String patientid = null;
+		String patientid = propertyData.getProperty("patient.id.pm.ng");
 		String extappt = propertyData.getProperty("cancelstatus.ext.apptype.pm.ng");
 		String appcat = propertyData.getProperty("cancelstatus.cat.apptype.pm.ng");
 		String apptid = propertyData.getProperty("nextavailable.apptid.pm.ng");

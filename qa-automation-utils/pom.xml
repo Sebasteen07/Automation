@@ -8,7 +8,7 @@
 	<parent>
         <groupId>com.intuit.ihg</groupId>
         <artifactId>ihg-depot-parent-pom</artifactId>
-        <version>21.7.0</version>
+        <version>22.1.0</version>
     </parent>
 	
 	<artifactId>qa-automation-utils</artifactId>
@@ -75,14 +75,14 @@
 		<dependency>
 	      <groupId>com.intuit.qhg.hub.schemas</groupId>
 	      <artifactId>Messages</artifactId>
-	      <version>21.7.0</version>
+	      <version>22.1.0</version>
 	      <scope>compile</scope>
 		</dependency>
 
 		<dependency>
 			<groupId>com.intuit.api.security</groupId>
 			<artifactId>oauth-core-client</artifactId>
-			<version>21.7.0</version>
+			<version>22.1.0</version>
 		</dependency>
 
 		<dependency>
@@ -94,7 +94,7 @@
 	  	<dependency>
 	  		<groupId>com.intuit.eh.core</groupId>
 	  		<artifactId>eh-core-dto</artifactId>
-	  		<version>21.7.0</version>
+	  		<version>22.1.0</version>
 	  	</dependency>
 	  	
 	  	<dependency>
@@ -106,7 +106,7 @@
 		<dependency>
 			<groupId>com.intuit.eh.core</groupId>
 			<artifactId>eh-core-dto</artifactId>
-			<version>21.7.0</version>
+			<version>22.1.0</version>
 		</dependency>
 
 		<dependency>

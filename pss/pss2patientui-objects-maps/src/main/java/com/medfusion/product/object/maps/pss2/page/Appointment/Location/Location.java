@@ -40,6 +40,10 @@ public class Location extends PSS2MainPage {
 	@FindBy(how = How.XPATH, using = "//span[normalize-space()='Next Available']")
 	private WebElement locationNextAvailable;
 
+	@FindAll({@FindBy(xpath = "//*[@id='locationwizardlist']//a[@class='locationlink locationlinkclick']/following-sibling::div[2]")})
+	private List<WebElement> adddress2;
+
+
 	public Location(WebDriver driver) {
 		super(driver);
 	}
@@ -66,6 +70,9 @@ public class Location extends PSS2MainPage {
 		for (int i = 0; i < locationList.size(); i++) {
 			if (locationList.get(i).getText().contains(locationName)) {
 				log("Location is ---> " + locationList.get(i).getText());
+				log("Search Provider");
+				log("Provider of user found at " + locationList.get(i).getText());
+				IHGUtil.waitForElement(driver, 5, locationList.get(i));
 				locationList.get(i).click();
 				return PageFactory.initElements(driver, Provider.class);
 			}
@@ -139,5 +146,16 @@ public class Location extends PSS2MainPage {
 	public String getNextavaliableText() {
 		IHGUtil.waitForElement(driver, 10, locationNextAvailable);
 		return locationNextAvailable.getText();
+	}
+
+	public String address2(String addressLine2Name) {
+		String name = "";
+		for (int i = 0; i < adddress2.size(); i++) {
+			if (adddress2.get(i).getText().equalsIgnoreCase(addressLine2Name)) {
+				log("adddress2 is ---> " + adddress2.get(i).getText());
+				name = adddress2.get(i).getText();
+			}
+		}
+		return name;
 	}
 }

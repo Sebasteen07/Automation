@@ -85,7 +85,7 @@ public class AddMerchantTest extends ProvisioningBaseTest{
         addNewMerchantPage.fillLegalEntityName(testData.getProperty("customer.first.name"));
 
         log("Fill Beneficial Owners Info");
-        addNewMerchantPage.fillBeneficialOwnerInformation(1, testData.getProperty("customer.first.name"),
+        addNewMerchantPage.fillBeneficialOwnerInformation(10, testData.getProperty("customer.first.name"),
                 testData.getProperty("customer.last.name"), "5", testData.getProperty("merchant.address.line1"),
                 testData.getProperty("merchant.city"), testData.getProperty("merchant.state"), testData.getProperty("merchant.zip"),
                 testData.getProperty("country"), testData.getProperty("beneficial.ownership.type"));

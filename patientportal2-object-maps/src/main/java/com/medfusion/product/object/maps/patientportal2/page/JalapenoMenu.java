@@ -47,7 +47,7 @@ public abstract class JalapenoMenu extends MedfusionPage {
 	@FindBy(how = How.XPATH, using = "//*[@id='appointments_lhn']/a/span")
 	private WebElement appointmentsMenu;
 
-	@FindBy(how = How.XPATH, using = "//*[@id='aska_lhn']/a/span")
+	@FindBy(how = How.XPATH, using = "//*[@id='aska_lhn']")
 	private WebElement askAQuestionMenu;
 
 	@FindBy(how = How.XPATH, using = "//*[@id='prescriptions_lhn']/a/span")
@@ -231,6 +231,7 @@ public abstract class JalapenoMenu extends MedfusionPage {
 		log("Clicking on Logout button - regular resolution");
 
 		try {
+			IHGUtil.waitForElement(driver, 30, signout);
 			javascriptClick(signout);
 
 		} catch (NoSuchElementException ex) {

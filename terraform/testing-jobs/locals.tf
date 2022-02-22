@@ -5,9 +5,10 @@ locals {
   pipeline_artifact_bucket_name = data.aws_ssm_parameter.codepipeline_artifact_store.value
   pipeline_artifact_bucket_arn  = "arn:aws:s3:::${local.pipeline_artifact_bucket_name}"
   slack_chatbot_arn             = "arn:aws:chatbot::${data.aws_caller_identity.current.account_id}:chat-configuration/slack-channel/${var.slack_chatbot}"
-  name                          = terraform.workspace
+  name                          = "${var.bitbucket_repository_name}_${terraform.workspace}"
   selenium_browser              = "*chrome"
   test_execution_mode           = "headless"
+
 
   inputs = {
     "demo-integrations2-acceptance" = {
@@ -22,6 +23,7 @@ locals {
       google_chrome_version = "93.0.4577.82-1"
       chrome_driver_version = "92.0.4515.107"
       cron_shedule          = "cron(10 6 ? * 3 *)"
+      pxp_application       = "Portal"
     }
 
     "git-taf-prod-mu2-accessibility" = {
@@ -36,6 +38,7 @@ locals {
       google_chrome_version = "93.0.4577.82-1"
       chrome_driver_version = "92.0.4515.107"
       cron_shedule          = "cron(45 0 ? * 1 *)"
+      pxp_application       = "Portal"
     }
 
     "git-taf-prod-mu2-regression" = {
@@ -50,6 +53,7 @@ locals {
       google_chrome_version = "93.0.4577.82-1"
       chrome_driver_version = "92.0.4515.107"
       cron_shedule          = "cron(0 1 ? * 1 *)"
+      pxp_application       = "Portal"
     }
 
     "git-taf-prod-mu2-acceptance" = {
@@ -64,6 +68,7 @@ locals {
       google_chrome_version = "93.0.4577.82-1"
       chrome_driver_version = "92.0.4515.107"
       cron_shedule          = "cron(0 0 ? * 1 *)"
+      pxp_application       = "Portal"
     }
 
     "prod-patientportal-regression1" = {
@@ -78,6 +83,7 @@ locals {
       google_chrome_version = "93.0.4577.82-1"
       chrome_driver_version = "92.0.4515.107"
       cron_shedule          = "cron(0 23 ? * 6 *)"
+      pxp_application       = "Portal"
     }
 
     "prod-patientportal-regression2" = {
@@ -92,6 +98,7 @@ locals {
       google_chrome_version = "93.0.4577.82-1"
       chrome_driver_version = "92.0.4515.107"
       cron_shedule          = "cron(0 0 ? * 6 *)"
+      pxp_application       = "Portal"
     }
 
     "prod-patientportal-regression3" = {
@@ -106,6 +113,7 @@ locals {
       google_chrome_version = "93.0.4577.82-1"
       chrome_driver_version = "92.0.4515.107"
       cron_shedule          = "cron(30 23 ? * 6 *)"
+      pxp_application       = "Portal"
     }
 
     "prod-patientportal-regression4" = {
@@ -120,6 +128,7 @@ locals {
       google_chrome_version = "93.0.4577.82-1"
       chrome_driver_version = "92.0.4515.107"
       cron_shedule          = "cron(45 23 ? * 6 *)"
+      pxp_application       = "Portal"
     }
 
     "git-taf-prod-precheck" = {
@@ -134,9 +143,10 @@ locals {
       google_chrome_version = "93.0.4577.82-1"
       chrome_driver_version = "92.0.4515.107"
       cron_shedule          = "cron(0 1 ? * 1 *)"
+      pxp_application       = "PatientSelfScheduling"
     }
 
-    "git-taf-prod-precheck-rsdk-patientupdates" = {
+    "git-taf-prod-precheck-rsdk-patient" = {
       codecommit_branch     = "development"
       PollForSourceChanges  = false
       execution_folder      = "pi-integration-platform-acceptance"
@@ -148,13 +158,118 @@ locals {
       google_chrome_version = "93.0.4577.82-1"
       chrome_driver_version = "92.0.4515.107"
       cron_shedule          = "cron(45 0 ? * 1 *)"
+      pxp_application       = "Portal"
+    }
+
+    "prod-forms-regression1" = {
+      codecommit_branch     = "development"
+      PollForSourceChanges  = false
+      execution_folder      = "forms-automation"
+      test_environment      = "prod"
+      suite_xml             = "forms-acceptance.xml"
+      pxp_application       = "Portal"
+      build_timeout         = 240 #Number of minutes, from 5 to 480. Default value is 60 mins
+      queued_timeout        = 480 #Number of minutes, from 5 to 480. Default value is 480 mins
+      maven_parameter       = "mvn clean install -U"
+      google_chrome_version = "93.0.4577.82-1"
+      chrome_driver_version = "92.0.4515.107"
+      cron_shedule          = "cron(0 23 ? * 6 *)"
+    }
+
+    "prod-forms-regression2" = {
+      codecommit_branch     = "development"
+      PollForSourceChanges  = false
+      execution_folder      = "forms-automation"
+      test_environment      = "prod"
+      suite_xml             = "forms-calculated-acceptance.xml"
+      pxp_application       = "Portal"
+      build_timeout         = 240 #Number of minutes, from 5 to 480. Default value is 60 mins
+      queued_timeout        = 480 #Number of minutes, from 5 to 480. Default value is 480 mins
+      maven_parameter       = "mvn clean install -U"
+      google_chrome_version = "93.0.4577.82-1"
+      chrome_driver_version = "93.0.4577.63"
+      cron_shedule          = "cron(30 23 ? * 6 *)"
+    }
+
+    "prod-integrations2-acceptance" = {
+      codecommit_branch     = "development"
+      PollForSourceChanges  = false
+      execution_folder      = "pi-integration-platform-acceptance"
+      test_environment      = "prod"
+      suite_xml             = "integration-platform-acceptance.xml"
+      pxp_application       = "Portal"
+      build_timeout         = 240 #Number of minutes, from 5 to 480. Default value is 60 mins
+      queued_timeout        = 480 #Number of minutes, from 5 to 480. Default value is 480 mins
+      maven_parameter       = "mvn clean install -U"
+      google_chrome_version = "96.0.4664.45-1"
+      chrome_driver_version = "95.0.4638.17"
+      cron_shedule          = "cron(20 0 ? * 1 *)"
+    }
+
+    "prod-integrations2-regression1" = {
+      codecommit_branch     = "development"
+      PollForSourceChanges  = false
+      execution_folder      = "pi-integration-platform-acceptance"
+      test_environment      = "prod"
+      suite_xml             = "integration-platform-regression.xml"
+      pxp_application       = "Portal"
+      build_timeout         = 240 #Number of minutes, from 5 to 480. Default value is 60 mins
+      queued_timeout        = 480 #Number of minutes, from 5 to 480. Default value is 480 mins
+      maven_parameter       = "mvn clean install -U"
+      google_chrome_version = "96.0.4664.45-1"
+      chrome_driver_version = "95.0.4638.17"
+      cron_shedule          = "cron(25 0 ? * 1 *)"
+    }
+
+    "prod-integrations2-regression2" = {
+      codecommit_branch     = "development"
+      PollForSourceChanges  = false
+      execution_folder      = "pi-integration-platform-acceptance"
+      test_environment      = "prod"
+      suite_xml             = "integration-platform-regression2.xml"
+      pxp_application       = "Portal"
+      build_timeout         = 240 #Number of minutes, from 5 to 480. Default value is 60 mins
+      queued_timeout        = 480 #Number of minutes, from 5 to 480. Default value is 480 mins
+      maven_parameter       = "mvn clean install -U"
+      google_chrome_version = "96.0.4664.45-1"
+      chrome_driver_version = "95.0.4638.17"
+      cron_shedule          = "cron(25 0 ? * 1 *)"
+    }
+
+    "prod-integrations2-regression3" = {
+      codecommit_branch     = "development"
+      PollForSourceChanges  = false
+      execution_folder      = "pi-integration-platform-acceptance"
+      test_environment      = "prod"
+      suite_xml             = "integration-platform-regression3.xml"
+      pxp_application       = "Portal"
+      build_timeout         = 240 #Number of minutes, from 5 to 480. Default value is 60 mins
+      queued_timeout        = 480 #Number of minutes, from 5 to 480. Default value is 480 mins
+      maven_parameter       = "mvn clean install -U"
+      google_chrome_version = "96.0.4664.45-1"
+      chrome_driver_version = "95.0.4638.17"
+      cron_shedule          = "cron(25 0 ? * 1 *)"
+    }
+    "git-taf-prod-pss-acceptance" = {
+      codecommit_branch     = "development"
+      PollForSourceChanges  = false
+      execution_folder      = "pss/pss2patientui-automation"
+      test_environment      = "prod"
+      suite_xml             = "pss-smoketests.xml"
+      pxp_application       = "PatientSelfScheduling"
+      build_timeout         = 240 #Number of minutes, from 5 to 480. Default value is 60 mins
+      queued_timeout        = 480 #Number of minutes, from 5 to 480. Default value is 480 mins
+      maven_parameter       = "mvn clean install -U"
+      google_chrome_version = "93.0.4577.82-1"
+      chrome_driver_version = "92.0.4515.107"
+      cron_shedule          = "cron(5 1 ? * 1 *)"
     }
   }
 
-  selected_test_environment      = try(local.inputs[local.name].test_environment)
-  selected_suite_xml             = try(local.inputs[local.name].suite_xml)
-  selected_execution_folder      = try(local.inputs[local.name].execution_folder)
-  selected_maven_parameter       = try(local.inputs[local.name].maven_parameter)
-  selected_google_chrome_version = try(local.inputs[local.name].google_chrome_version)
-  selected_chrome_driver_version = try(local.inputs[local.name].chrome_driver_version)
+  selected_test_environment      = try(local.inputs[terraform.workspace].test_environment)
+  selected_suite_xml             = try(local.inputs[terraform.workspace].suite_xml)
+  selected_execution_folder      = try(local.inputs[terraform.workspace].execution_folder)
+  selected_maven_parameter       = try(local.inputs[terraform.workspace].maven_parameter)
+  selected_google_chrome_version = try(local.inputs[terraform.workspace].google_chrome_version)
+  selected_chrome_driver_version = try(local.inputs[terraform.workspace].chrome_driver_version)
 }

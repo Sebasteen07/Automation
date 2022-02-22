@@ -267,6 +267,7 @@ public class LoadPreTestData {
 		testData.AppointmentRequestV3URL = propertyData.getAppointmentRequestV3URL();
 		testData.AppointmentRequestV4URL = propertyData.getAppointmentRequestV4URL();
 		testData.PATIENT_INVITE_RESTV3URL = propertyData.getPATIENT_INVITE_RESTV3URL();
+		testData.PATIENT_INVITE_RESTV4URL = propertyData.getPATIENT_INVITE_RESTV4URL();
 		return testData;
 	}
 

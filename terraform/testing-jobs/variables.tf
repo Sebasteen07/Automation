@@ -13,7 +13,7 @@ variable "data_classification" {
 
 variable "environment" {
   type        = string
-  default     = "dev"
+  default     = "build"
   description = "The name of environment. Used to differentiate costs between stacks or pipelines including those of the same type"
 }
 
@@ -21,6 +21,12 @@ variable "environment-type" {
   type        = string
   default     = "test"
   description = "The type of environment according to function/purpose. Used to differentiate costs between different types of use"
+}
+
+variable "bitbucket_repository_name" {
+  type        = string
+  default     = "qa-automation"
+  description = "Same as bitbucket repository name"
 }
 
 variable "repository_name" {

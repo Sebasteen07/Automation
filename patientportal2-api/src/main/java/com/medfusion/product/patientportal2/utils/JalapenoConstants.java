@@ -45,7 +45,7 @@ public class JalapenoConstants {
 	public final static String INFLUENZA = "Within the last 6 months";
 	public final static String PNEUMONIA = "Within the last 2 years";
 
-	public final static String NEW_PATIENT_ACTIVATION_MESSAGE = "You're invited to create a Patient Portal";
+	public final static String NEW_PATIENT_ACTIVATION_MESSAGE = "re invited to create a Patient Portal";
 	public final static String NEW_PATIENT_ACTIVATION_MESSAGE_LINK_TEXT = "Sign Up!";
 	public final static String DATE_OF_BIRTH_MONTH = "January";
 	public final static String DATE_OF_BIRTH_MONTH_NO = "1";

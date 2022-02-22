@@ -2,6 +2,7 @@
 package com.medfusion.product.pss2patientportal.test;
 
 import static org.testng.Assert.assertEquals;
+import static org.testng.Assert.assertFalse;
 import static org.testng.Assert.assertNotEquals;
 import static org.testng.Assert.assertTrue;
 
@@ -11,6 +12,9 @@ import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
+
+import org.json.JSONArray;
+import org.testng.Assert;
 import org.testng.annotations.DataProvider;
 import org.testng.annotations.Parameters;
 import org.testng.annotations.Test;
@@ -61,6 +65,8 @@ import com.medfusion.product.pss2patientui.utils.PSSConstants;
 import com.medfusion.product.pss2patientui.utils.PSSNewPatient;
 import com.medfusion.product.pss2patientui.utils.PSSPatientUtils;
 import com.medfusion.product.pss2patientui.utils.PSSPropertyFileLoader;
+import com.medfusion.product.pss2patientui.utils.YopMailUtility;
+import com.medfusion.product.pss2patientui.utils.YopMailUtility;
 
 import io.restassured.path.json.JsonPath;
 import io.restassured.response.Response;
@@ -586,6 +592,9 @@ public class PSS2PatientPortalAcceptanceTests extends BaseTestNGWebDriver {
 		AdminUser adminuser = new AdminUser();
 		propertyData.setAdminGE(adminuser);
 		propertyData.setAppointmentResponseGE(testData);
+		
+		testData.setInsuranceAtEnd(true);
+		
 		PSSPatientUtils psspatientutils = new PSSPatientUtils();
 		PSSAdminUtils adminUtils = new PSSAdminUtils();
 		log("Login to PSS 2.0 Admin portal");
@@ -953,6 +962,10 @@ public class PSS2PatientPortalAcceptanceTests extends BaseTestNGWebDriver {
 	@Test(enabled = true, groups = { "AcceptanceTests" }, retryAnalyzer = RetryAnalyzer.class)
 	public void testBookApptWithoutLastQuestionNG() throws Exception {
 
+		logStep("This TC verifies the Book Appointment without last question on confirmation Screen ");
+		logStep("This TC verifies the Book Appointment with insurance at End- Loginless flow");
+		logStep("This TC verifies the loginless flow for existing patient");
+
 		PSSPropertyFileLoader propertyData = new PSSPropertyFileLoader();
 		Appointment testData = new Appointment();
 		AdminUser adminUser = new AdminUser();
@@ -963,7 +976,29 @@ public class PSS2PatientPortalAcceptanceTests extends BaseTestNGWebDriver {
 		PSSPatientUtils psspatientutils = new PSSPatientUtils();
 		PSSAdminUtils adminUtils = new PSSAdminUtils();
 		
+		Response response;
+
+		setUp(propertyData.getProperty("mf.practice.id.ng"), propertyData.getProperty("mf.authuserid.am.ng"));
+
 		testData.setFutureApt(false);
+		testData.setInsuranceAtEnd(true);
+
+		logStep("Set up the desired rule in Admin UI using API");
+		response = postAPIRequestAM.resourceConfigRuleGet(practiceId);
+		JSONArray arr = new JSONArray(response.body().asString());
+		int l = arr.length();
+		log("Length is- " + l);
+
+		for (int i = 0; i < l; i++) {
+			int ruleId = arr.getJSONObject(i).getInt("id");
+			log("Object No." + i + "- " + ruleId);
+			Response responseForDeleteRule = postAPIRequestAM.deleteRuleById(practiceId, Integer.toString(ruleId));
+			aPIVerification.responseCodeValidation(responseForDeleteRule, 200);
+		}
+
+		Response responseRulePost = postAPIRequestAM.resourceConfigRulePost(practiceId,
+				payloadAM.resourceConfigRulePutPayload());
+		aPIVerification.responseCodeValidation(responseRulePost, 200);
 
 		logStep("Login to PSS 2.0 Admin portal and do the seetings for Last Question Required");
 		adminUtils.lastQuestionEnable(driver, adminUser, testData, PSSConstants.LOGINLESS);
@@ -992,6 +1027,9 @@ public class PSS2PatientPortalAcceptanceTests extends BaseTestNGWebDriver {
 		homepage.btnStartSchedClick();
 		psspatientutils.selectAFlow(driver, rule, homepage, testData);
 		
+		response = postAPIRequestAM.resourceConfigSavePost(practiceId, payloadAM.insuranceAtStartorEnd(true));
+		aPIVerification.responseCodeValidation(response, 200);
+
 	}
 
 	@Test(enabled = true, groups = { "AcceptanceTests" }, retryAnalyzer = RetryAnalyzer.class)
@@ -1006,6 +1044,34 @@ public class PSS2PatientPortalAcceptanceTests extends BaseTestNGWebDriver {
 
 		PSSPatientUtils psspatientutils = new PSSPatientUtils();
 		PSSAdminUtils adminUtils = new PSSAdminUtils();
+		
+		testData.setFutureApt(true);
+
+		logStep("Make the settings in admin- Insurance at end");
+		testData.setInsuranceAtEnd(true);
+
+		Response response;
+
+		setUp(propertyData.getProperty("mf.practice.id.at"), propertyData.getProperty("mf.authuserid.am.at"));
+		response = postAPIRequestAM.resourceConfigSavePost(practiceId, payloadAM.insuranceAtStartorEndAT(false));
+		aPIVerification.responseCodeValidation(response, 200);
+
+		logStep("Set up the desired rule in Admin UI using API");
+		response = postAPIRequestAM.resourceConfigRuleGet(practiceId);
+		JSONArray arr = new JSONArray(response.body().asString());
+		int l = arr.length();
+		log("Length is- " + l);
+
+		for (int i = 0; i < l; i++) {
+			int ruleId = arr.getJSONObject(i).getInt("id");
+			log("Object No." + i + "- " + ruleId);
+			Response responseForDeleteRule = postAPIRequestAM.deleteRuleById(practiceId, Integer.toString(ruleId));
+			aPIVerification.responseCodeValidation(responseForDeleteRule, 200);
+		}
+
+		Response responseRulePost = postAPIRequestAM.resourceConfigRulePost(practiceId,
+				payloadAM.resourceConfigRulePutPayload());
+		aPIVerification.responseCodeValidation(responseRulePost, 200);
 
 		logStep("Login to PSS 2.0 Admin portal and do the seetings for Last Question Required");
 		adminUtils.lastQuestionEnable(driver, adminUser, testData, PSSConstants.LOGINLESS);
@@ -1034,6 +1100,8 @@ public class PSS2PatientPortalAcceptanceTests extends BaseTestNGWebDriver {
 		homepage.btnStartSchedClick();
 		psspatientutils.selectAFlow(driver, rule, homepage, testData);
 
+		response = postAPIRequestAM.resourceConfigSavePost(practiceId, payloadAM.insuranceAtStartorEndAT(true));
+		aPIVerification.responseCodeValidation(response, 200);
 	}
 
 	@Test(enabled = true, groups = { "AcceptanceTests" }, retryAnalyzer = RetryAnalyzer.class)
@@ -1044,7 +1112,33 @@ public class PSS2PatientPortalAcceptanceTests extends BaseTestNGWebDriver {
 		AdminUser adminUser = new AdminUser();
 
 		propertyData.setAdminGE(adminUser);
-		propertyData.setAppointmentResponseGE(testData);
+		propertyData.setAppointmentResponseGE(testData);		
+
+		logStep("Make the settings in admin- Insurance at end");
+		testData.setInsuranceAtEnd(true);
+
+		Response response;
+
+		setUp(propertyData.getProperty("mf.practice.id.ge"), propertyData.getProperty("mf.authuserid.am.ge"));
+		response = postAPIRequestAM.resourceConfigSavePost(practiceId, payloadAM.insuranceAtStartorEndAT(false));
+		aPIVerification.responseCodeValidation(response, 200);
+
+		logStep("Set up the desired rule in Admin UI using API");
+		response = postAPIRequestAM.resourceConfigRuleGet(practiceId);
+		JSONArray arr = new JSONArray(response.body().asString());
+		int l = arr.length();
+		log("Length is- " + l);
+
+		for (int i = 0; i < l; i++) {
+			int ruleId = arr.getJSONObject(i).getInt("id");
+			log("Object No." + i + "- " + ruleId);
+			Response responseForDeleteRule = postAPIRequestAM.deleteRuleById(practiceId, Integer.toString(ruleId));
+			aPIVerification.responseCodeValidation(responseForDeleteRule, 200);
+		}
+
+		Response responseRulePost = postAPIRequestAM.resourceConfigRulePost(practiceId,
+				payloadAM.resourceConfigRulePutPayload());
+		aPIVerification.responseCodeValidation(responseRulePost, 200);
 
 		PSSPatientUtils psspatientutils = new PSSPatientUtils();
 		PSSAdminUtils adminUtils = new PSSAdminUtils();
@@ -1075,6 +1169,9 @@ public class PSS2PatientPortalAcceptanceTests extends BaseTestNGWebDriver {
 		logStep("Start booking an appointment in PSS---> PATIENT UI STEPS ");
 		homepage.btnStartSchedClick();
 		psspatientutils.selectAFlow(driver, rule, homepage, testData);
+		
+		response = postAPIRequestAM.resourceConfigSavePost(practiceId, payloadAM.insuranceAtStartorEnd(true));
+		aPIVerification.responseCodeValidation(response, 200);
 
 	}
 
@@ -1088,6 +1185,32 @@ public class PSS2PatientPortalAcceptanceTests extends BaseTestNGWebDriver {
 		propertyData.setAdminGW(adminUser);
 		propertyData.setAppointmentResponseGW(testData);
 
+		logStep("Make the settings in admin- Insurance at end");
+		testData.setInsuranceAtEnd(true);
+
+		Response response;
+
+		setUp(propertyData.getProperty("mf.practice.id.gw"), propertyData.getProperty("mf.authuserid.am.gw"));
+		response = postAPIRequestAM.resourceConfigSavePost(practiceId, payloadAM.insuranceAtStartorEnd(false));
+		aPIVerification.responseCodeValidation(response, 200);
+
+		logStep("Set up the desired rule in Admin UI using API");
+		response = postAPIRequestAM.resourceConfigRuleGet(practiceId);
+		JSONArray arr = new JSONArray(response.body().asString());
+		int l = arr.length();
+		log("Length is- " + l);
+
+		for (int i = 0; i < l; i++) {
+			int ruleId = arr.getJSONObject(i).getInt("id");
+			log("Object No." + i + "- " + ruleId);
+			Response responseForDeleteRule = postAPIRequestAM.deleteRuleById(practiceId, Integer.toString(ruleId));
+			aPIVerification.responseCodeValidation(responseForDeleteRule, 200);
+		}
+
+		Response responseRulePost = postAPIRequestAM.resourceConfigRulePost(practiceId,
+				payloadAM.resourceConfigRulePutPayload());
+		aPIVerification.responseCodeValidation(responseRulePost, 200);
+
 		PSSPatientUtils psspatientutils = new PSSPatientUtils();
 		PSSAdminUtils adminUtils = new PSSAdminUtils();
 
@@ -1117,6 +1240,9 @@ public class PSS2PatientPortalAcceptanceTests extends BaseTestNGWebDriver {
 		logStep("Start booking an appointment in PSS---> PATIENT UI STEPS ");
 		homepage.btnStartSchedClick();
 		psspatientutils.selectAFlow(driver, rule, homepage, testData);
+		
+		response = postAPIRequestAM.resourceConfigSavePost(practiceId, payloadAM.insuranceAtStartorEnd(true));
+		aPIVerification.responseCodeValidation(response, 200);
 
 	}
 
@@ -1212,8 +1338,8 @@ public class PSS2PatientPortalAcceptanceTests extends BaseTestNGWebDriver {
 		Appointment testData = new Appointment();
 		AdminUser adminUser = new AdminUser();
 
-		propertyData.setAdminNG(adminUser);
-		propertyData.setAppointmentResponseNG(testData);
+		propertyData.setAdminGW(adminUser);
+		propertyData.setAppointmentResponseGW(testData);
 		testData.setLastQuestionOptional(true);
 
 		PSSPatientUtils psspatientutils = new PSSPatientUtils();
@@ -1899,6 +2025,9 @@ public class PSS2PatientPortalAcceptanceTests extends BaseTestNGWebDriver {
 
 		log("rule set in admin = " + rule);
 		rule = rule.replaceAll(" ", "");
+		
+		YopMailUtility yo = new YopMailUtility(driver);
+		String userName=testData.getEmail();
 
 		log("Step 4: Login to PSS Appointment");
 		DismissPage dismissPage = new DismissPage(driver, testData.getUrlLoginLess());
@@ -1922,7 +2051,7 @@ public class PSS2PatientPortalAcceptanceTests extends BaseTestNGWebDriver {
 
 		homepage.defaultcancelAppointment(popupmsg, confirmCancelmsg);
 
-		psspatientutils.deleteEmail_Mailinator(driver, "https://www.mailinator.com/", testData.getEmail());
+		yo.deleteEmail(driver, userName);
 	}
 
 	@Test(enabled = true, groups = {
@@ -1934,8 +2063,6 @@ public class PSS2PatientPortalAcceptanceTests extends BaseTestNGWebDriver {
 		AdminUser adminuser = new AdminUser();
 		PSSAdminUtils pssadminutils = new PSSAdminUtils();
 
-		PSSPatientUtils psspatientutils = new PSSPatientUtils();
-
 		PSSPropertyFileLoader propertyData = new PSSPropertyFileLoader();
 		propertyData.setAppointmentResponseGW(testData);
 		propertyData.setAdminGW(adminuser);
@@ -1945,6 +2072,9 @@ public class PSS2PatientPortalAcceptanceTests extends BaseTestNGWebDriver {
 
 		log("rule set in admin = " + rule);
 		rule = rule.replaceAll(" ", "");
+		
+		YopMailUtility yo = new YopMailUtility(driver);
+		String userName=testData.getEmail();
 
 		log("Step 4: Login to PSS Appointment");
 		DismissPage dismissPage = new DismissPage(driver, testData.getUrlLoginLess());
@@ -1993,7 +2123,7 @@ public class PSS2PatientPortalAcceptanceTests extends BaseTestNGWebDriver {
 
 		homepage.defaultcancelAppointmentviaEmail(popupmsg, confirmCancelmsg);
 
-		psspatientutils.deleteEmail_Mailinator(driver, "https://www.mailinator.com/", testData.getEmail());
+		yo.deleteEmail(driver, userName);
 	}
 
 	@Test(enabled = true, groups = {
@@ -2023,6 +2153,9 @@ public class PSS2PatientPortalAcceptanceTests extends BaseTestNGWebDriver {
 
 		log("rule set in admin = " + rule);
 		rule = rule.replaceAll(" ", "");
+		
+		YopMailUtility yo = new YopMailUtility(driver);
+		String userName=testData.getEmail();
 
 		log("Step 4: Login to PSS Appointment");
 		DismissPage dismissPage = new DismissPage(driver, testData.getUrlLoginLess());
@@ -2086,7 +2219,7 @@ public class PSS2PatientPortalAcceptanceTests extends BaseTestNGWebDriver {
 			homepage.defaultcancelAppointmentviaEmail(popupmsg, confirmCancelmsg);
 		}
 
-		psspatientutils.deleteEmail_Mailinator(driver, "https://www.mailinator.com/", testData.getEmail());
+		yo.deleteEmail(driver, userName);
 	}
 
 	@Test(enabled = true, groups = {
@@ -2116,6 +2249,9 @@ public class PSS2PatientPortalAcceptanceTests extends BaseTestNGWebDriver {
 
 		log("rule set in admin = " + rule);
 		rule = rule.replaceAll(" ", "");
+		
+		YopMailUtility yo = new YopMailUtility(driver);
+		String userName=testData.getEmail();
 
 		log("Step 4: Login to PSS Appointment");
 		DismissPage dismissPage = new DismissPage(driver, testData.getUrlLoginLess());
@@ -2179,10 +2315,10 @@ public class PSS2PatientPortalAcceptanceTests extends BaseTestNGWebDriver {
 			homepage.defaultcancelAppointmentviaEmail(popupmsg, confirmCancelmsg);
 		}
 
-		psspatientutils.deleteEmail_Mailinator(driver, "https://www.mailinator.com/", testData.getEmail());
+		yo.deleteEmail(driver, userName);
 	}
 
-	@Test(enabled = true, groups = {"AcceptanceTests" }, retryAnalyzer = RetryAnalyzer.class, dependsOnMethods = "testE2ELoginlessForExistingPatientNG")
+	@Test(enabled = true, groups = {"AcceptanceTests" }, retryAnalyzer = RetryAnalyzer.class)
 	public void testCancelFromEmailNG() throws Exception {
 		log("Test to verify if Cancel Appointment button available only after given hours.");
 		log("Step 1: Load test Data from External Property file.");
@@ -2207,11 +2343,10 @@ public class PSS2PatientPortalAcceptanceTests extends BaseTestNGWebDriver {
 		HomePage homepage;
 
 		log("Step 8: Fetch the Cancel/Reschedule link from email");
-		Mailinator mail = new Mailinator();
-		String subject = testData.getEmailSubject();
-		String messageLink = "Reschedule or cancel";
-		String CancelReschedulelink = mail.getLinkFromEmail(testData.getGmailUserName(), subject, messageLink, 5);
+		YopMailUtility yo = new YopMailUtility(driver);
+		String userName=testData.getEmail();
 
+		String CancelReschedulelink =yo.getCancelRescheduleLink(driver, userName);		
 		log(CancelReschedulelink + " ---This is cancel link");
 
 		PatientIdentificationPage patientIdentificationPage = new PatientIdentificationPage(driver,
@@ -2252,199 +2387,9 @@ public class PSS2PatientPortalAcceptanceTests extends BaseTestNGWebDriver {
 			homepage.defaultcancelAppointmentviaEmail(popupmsg, confirmCancelmsg);
 		}
 
-		psspatientutils.deleteEmail_Mailinator(driver, "https://www.mailinator.com/", testData.getEmail());
+		yo.deleteEmail(driver, userName);
 	}
-
-	@Test(enabled = true, groups = {
-			"AcceptanceTests" }, retryAnalyzer = RetryAnalyzer.class, dependsOnMethods = "testE2ELoginlessForExistingPatientGE")
-	public void testCancelFromMalinatorGE() throws Exception {
-		log("Test to verify if Cancel Appointment button available only after given hours.");
-		log("Step 1: Load test Data from External Property file.");
-		Appointment testData = new Appointment();
-		AdminUser adminuser = new AdminUser();
-		PSSPatientUtils psspatientutils = new PSSPatientUtils();
-		PSSAdminUtils pssadminutils = new PSSAdminUtils();
-
-		AdminAppointment adminAppointment = new AdminAppointment(driver);
-
-		psspatientutils.setTestData("GE", testData, adminuser);
-
-		ArrayList<String> adminCancelReasonList = pssadminutils.getCancelRescheduleSettings(driver, adminuser, testData,
-				adminAppointment);
-
-		log("isShowCancellationRescheduleReason --" + testData.isShowCancellationRescheduleReason());
-		log("isShowCancellationReasonPM ---" + testData.isShowCancellationReasonPM());
-
-		boolean can1 = testData.isShowCancellationRescheduleReason();
-		boolean can2 = testData.isShowCancellationReasonPM();
-
-		String rule = adminuser.getRule();
-
-		log("rule set in admin = " + rule);
-		rule = rule.replaceAll(" ", "");
-
-		log("Step 4: Login to PSS Appointment");
-		DismissPage dismissPage = new DismissPage(driver, testData.getUrlLoginLess());
-		Thread.sleep(1000);
-
-		log("Step 5: LoginlessPatientInformation****");
-		log("Clicked on Dismiss");
-		LoginlessPatientInformation loginlessPatientInformation = dismissPage.clickDismiss();
-
-		Thread.sleep(1000);
-
-		HomePage homepage = loginlessPatientInformation.fillNewPatientForm(testData.getFirstName(),
-				testData.getLastName(), testData.getDob(), testData.getEmail(), testData.getGender(),
-				testData.getZipCode(), testData.getPrimaryNumber());
-		ScheduledAppointment scheduledAppointment = psspatientutils.selectAFlow_New(driver, rule, homepage, testData);
-
-		homepage = scheduledAppointment.backtoHomePage();
-
-		homepage.patientLogout(driver);
-
-		log("Step 8: Fetch the Cancel/Reschedule link from email");
-		PatientIdentificationPage patientIdentificationPage = psspatientutils.newtabs(driver,
-				"https://www.mailinator.com/", testData.getEmail());
-
-		log(" ---This is cancel link");
-		log("Step 9: Click on Cancel/Reschedule link from email");
-
-		Thread.sleep(1500);
-		if (patientIdentificationPage.isPopUP()) {
-			patientIdentificationPage.popUPClick();
-		}
-
-		log("Step 10: Fill Patient details for Identification");
-		log("First Name- " + testData.getFirstName());
-		log("Last Name- " + testData.getLastName());
-
-		log("Step 11: Verify the appointment details and click on Cancel button");
-		CancelRescheduleDecisionPage cancelRescheduleDecisionPage = patientIdentificationPage
-				.fillPatientForm(testData.getFirstName(), testData.getLastName());
-		homepage = cancelRescheduleDecisionPage.clickCancel();
-
-		if (can1 == true & can2 == false) {
-
-			homepage.cancelAppointmentWithEmail("CANCEL");
-
-		} else if (can1 == true & can2 == true) {
-
-			log("True- True Conditions follow");
-
-			homepage.cancelAppointmentPMReason(adminCancelReasonList);
-
-		} else if (can1 == false & can2 == false) {
-
-			log("False- False Conditions follow");
-			String popupmsg = "We understand that there are times when you must miss an appointment due to emergencies or obligations for work or family. However, when you do not call to cancel an appointment, you may be preventing another patient from getting much needed treatment. If an appointment is not cancelled in advance you may be charged a fee; this will not be covered by your insurance company.";
-			String confirmCancelmsg = "Are you sure you want to cancel your appointment?";
-
-			homepage.defaultcancelAppointment(popupmsg, confirmCancelmsg);
-		}
-
-	}
-
-	@Test(enabled = true, groups = {
-			"AcceptanceTests" }, retryAnalyzer = RetryAnalyzer.class, dependsOnMethods = "testE2ELoginlessForExistingPatientGW")
-	public void testCancelFromMalinatorGW() throws Exception {
-		log("Test to verify if Cancel Appointment button available only after given hours.");
-		log("Step 1: Load test Data from External Property file.");
-		Appointment testData = new Appointment();
-		AdminUser adminuser = new AdminUser();
-		PSSPatientUtils psspatientutils = new PSSPatientUtils();
-		PSSAdminUtils pssadminutils = new PSSAdminUtils();
-
-		AdminAppointment adminAppointment = new AdminAppointment(driver);
-
-		psspatientutils.setTestData("GW", testData, adminuser);
-
-		ArrayList<String> adminCancelReasonList = pssadminutils.getCancelRescheduleSettings(driver, adminuser, testData,
-				adminAppointment);
-
-		log("isShowCancellationRescheduleReason --" + testData.isShowCancellationRescheduleReason());
-		log("isShowCancellationReasonPM ---" + testData.isShowCancellationReasonPM());
-
-		boolean can1 = testData.isShowCancellationRescheduleReason();
-		boolean can2 = testData.isShowCancellationReasonPM();
-
-		String rule = adminuser.getRule();
-
-		log("rule set in admin = " + rule);
-		rule = rule.replaceAll(" ", "");
-
-		log("Step 4: Login to PSS Appointment");
-		DismissPage dismissPage = new DismissPage(driver, testData.getUrlLoginLess());
-		Thread.sleep(1000);
-
-		log("Step 5: LoginlessPatientInformation****");
-		log("Clicked on Dismiss");
-		LoginlessPatientInformation loginlessPatientInformation = dismissPage.clickDismiss();
-
-		Thread.sleep(1000);
-
-		HomePage homepage = loginlessPatientInformation.fillNewPatientForm(testData.getFirstName(),
-				testData.getLastName(), testData.getDob(), testData.getEmail(), testData.getGender(),
-				testData.getZipCode(), testData.getPrimaryNumber());
-		ScheduledAppointment scheduledAppointment = psspatientutils.selectAFlow_New(driver, rule, homepage, testData);
-
-		homepage = scheduledAppointment.backtoHomePage();
-
-		homepage.patientLogout(driver);
-
-		log("Step 8: Fetch the Cancel/Reschedule link from email");
-		PatientIdentificationPage patientIdentificationPage = psspatientutils.newtabs(driver,
-				"https://www.mailinator.com/", testData.getEmail());
-
-		log(" ---This is cancel link");
-		log("Step 9: Click on Cancel/Reschedule link from email");
-
-		Thread.sleep(1500);
-		if (patientIdentificationPage.isPopUP()) {
-			patientIdentificationPage.popUPClick();
-		}
-
-		log("Step 10: Fill Patient details for Identification");
-		log("First Name- " + testData.getFirstName());
-		log("Last Name- " + testData.getLastName());
-
-		log("Step 11: Verify the appointment details and click on Cancel button");
-		CancelRescheduleDecisionPage cancelRescheduleDecisionPage = patientIdentificationPage
-				.fillPatientForm(testData.getFirstName(), testData.getLastName());
-		homepage = cancelRescheduleDecisionPage.clickCancel();
-
-		if (can1 == true & can2 == false) {
-
-			homepage.cancelAppointmentWithEmail("CANCEL");
-
-		} else if (can1 == true & can2 == true) {
-
-			log("True- True Conditions follow");
-
-			homepage.cancelAppointmentPMReason(adminCancelReasonList);
-
-		} else if (can1 == false & can2 == false) {
-
-			log("False- False Conditions follow");
-			String popupmsg = "We understand that there are times when you must miss an appointment due to emergencies or obligations for work or family. However, when you do not call to cancel an appointment, you may be preventing another patient from getting much needed treatment. If an appointment is not cancelled in advance you may be charged a fee; this will not be covered by your insurance company.";
-			String confirmCancelmsg = "Are you sure you want to cancel your appointment?";
-
-			homepage.defaultcancelAppointment(popupmsg, confirmCancelmsg);
-		}
-
-	}
-
-	@Test(enabled = true, groups = { "AcceptanceTests" }, retryAnalyzer = RetryAnalyzer.class)
-	public void testDeleteEmail() throws Exception {
-
-		Appointment testData = new Appointment();
-		AdminUser adminuser = new AdminUser();
-		PSSPatientUtils psspatientutils = new PSSPatientUtils();
-
-		psspatientutils.setTestData("GE", testData, adminuser);
-
-		psspatientutils.deleteEmail_Mailinator(driver, "https://www.mailinator.com/", testData.getEmail());
-	}
-
+	
 	@Test(enabled = true, groups = { "AcceptanceTests" }, retryAnalyzer = RetryAnalyzer.class)
 	public void testCancelE2ETestingGE() throws Exception {
 		log("Test to verify if Cancel Appointment button available only after given hours.");
@@ -2473,6 +2418,9 @@ public class PSS2PatientPortalAcceptanceTests extends BaseTestNGWebDriver {
 		String rule = adminuser.getRule();
 		log("rule set in admin = " + rule);
 		rule = rule.replaceAll(" ", "");
+		
+		YopMailUtility yo = new YopMailUtility(driver);
+		String userName=testData.getEmail();
 
 		log("Step 4: Login to PSS Appointment");
 		DismissPage dismissPage = new DismissPage(driver, testData.getUrlLoginLess());
@@ -2515,7 +2463,7 @@ public class PSS2PatientPortalAcceptanceTests extends BaseTestNGWebDriver {
 			homepage.defaultcancelAppointment(popupmsg, confirmCancelmsg);
 		}
 
-		psspatientutils.deleteEmail_Mailinator(driver, "https://www.mailinator.com/", testData.getEmail());
+		yo.deleteEmail(driver, userName);
 	}
 
 	@Test(enabled = true, groups = { "AcceptanceTests" }, retryAnalyzer = RetryAnalyzer.class)
@@ -2546,6 +2494,9 @@ public class PSS2PatientPortalAcceptanceTests extends BaseTestNGWebDriver {
 		String rule = adminuser.getRule();
 		log("rule set in admin = " + rule);
 		rule = rule.replaceAll(" ", "");
+		
+		YopMailUtility yo = new YopMailUtility(driver);
+		String userName=testData.getEmail();
 
 		log("Step 4: Login to PSS Appointment");
 		DismissPage dismissPage = new DismissPage(driver, testData.getUrlLoginLess());
@@ -2585,7 +2536,7 @@ public class PSS2PatientPortalAcceptanceTests extends BaseTestNGWebDriver {
 			homepage.defaultcancelAppointment(popupmsg, confirmCancelmsg);
 		}
 
-		psspatientutils.deleteEmail_Mailinator(driver, "https://www.mailinator.com/", testData.getEmail());
+		yo.deleteEmail(driver, userName);
 	}
 
 	@Test(enabled = true, groups = { "AcceptanceTests" }, retryAnalyzer = RetryAnalyzer.class)
@@ -2616,6 +2567,9 @@ public class PSS2PatientPortalAcceptanceTests extends BaseTestNGWebDriver {
 		String rule = adminuser.getRule();
 		log("rule set in admin = " + rule);
 		rule = rule.replaceAll(" ", "");
+		
+		YopMailUtility yo = new YopMailUtility(driver);
+		String userName=testData.getEmail();
 
 		log("Step 4: Login to PSS Appointment");
 		DismissPage dismissPage = new DismissPage(driver, testData.getUrlLoginLess());
@@ -2653,7 +2607,7 @@ public class PSS2PatientPortalAcceptanceTests extends BaseTestNGWebDriver {
 			homepage.defaultcancelAppointment(popupmsg, confirmCancelmsg);
 		}
 
-		psspatientutils.deleteEmail_Mailinator(driver, "https://www.mailinator.com/", testData.getEmail());
+		yo.deleteEmail(driver, userName);
 
 	}
 
@@ -2853,6 +2807,9 @@ public class PSS2PatientPortalAcceptanceTests extends BaseTestNGWebDriver {
 
 		log("rule set in admin = " + rule);
 		rule = rule.replaceAll(" ", "");
+		
+		YopMailUtility yo = new YopMailUtility(driver);
+		String userName=testData.getEmail();
 
 		JalapenoLoginPage loginPage = new JalapenoLoginPage(driver, testData.getPatientPortalURL());
 		JalapenoHomePage homePage = loginPage.login(testData.getPatientPortalUserName(),
@@ -2884,7 +2841,7 @@ public class PSS2PatientPortalAcceptanceTests extends BaseTestNGWebDriver {
 		homepage.clickRescheduleLink();
 		psspatientutils.rescheduleAPT(testData, driver);
 
-		psspatientutils.deleteEmail_Mailinator(driver, "https://www.mailinator.com/", testData.getEmail());
+		yo.deleteEmail(driver, userName);
 	}
 
 	@Test(enabled = true, groups = {
@@ -2915,15 +2872,16 @@ public class PSS2PatientPortalAcceptanceTests extends BaseTestNGWebDriver {
 		rule = rule.replaceAll(" ", "");
 
 		log("Step 8: Fetch the Cancel/Reschedule link from email");
-		Mailinator mail = new Mailinator();
-		String subject = testData.getEmailSubject();
-		String messageLink = "Reschedule or cancel";
-		String CancelReschedulelink = mail.getLinkFromEmail(testData.getGmailUserName(), subject, messageLink, 5);
-
+		log("Step 8: Fetch the Cancel/Reschedule link from email");		
+		YopMailUtility yo = new YopMailUtility(driver);
+		String CancelReschedulelink = yo.getCancelRescheduleLink(driver, testData.getGmailUserName());
+		
 		log(CancelReschedulelink + " ---This is cancel link");
 
 		PatientIdentificationPage patientIdentificationPage = new PatientIdentificationPage(driver,
 				CancelReschedulelink);
+
+		String userName=testData.getEmail();
 
 		log("Step 9: Click on Cancel/Reschedule link from email");
 
@@ -2942,11 +2900,11 @@ public class PSS2PatientPortalAcceptanceTests extends BaseTestNGWebDriver {
 		cancelRescheduleDecisionPage.clickReschedule();
 		psspatientutils.rescheduleAPT(testData, driver);
 
-		psspatientutils.deleteEmail_Mailinator(driver, "https://www.mailinator.com/", testData.getEmail());
+		yo.deleteEmail(driver, userName);
 
 	}
 
-	@Test(enabled = true, groups = {"AcceptanceTests" }, retryAnalyzer = RetryAnalyzer.class, dependsOnMethods = "testE2ELoginlessForExistingPatientAT")
+	@Test(enabled = true, groups = {"AcceptanceTests" }, retryAnalyzer = RetryAnalyzer.class, dependsOnMethods = "testBookApptWithLastQuestionAT")
 	public void testRescheduleviaEmailNotifiicationAT() throws Exception {
 
 		log("Test to verify if Reschedule an Appointment via Email Notification");
@@ -2972,12 +2930,12 @@ public class PSS2PatientPortalAcceptanceTests extends BaseTestNGWebDriver {
 		log("rule set in admin = " + rule);
 		rule = rule.replaceAll(" ", "");
 
-		log("Step 8: Fetch the Cancel/Reschedule link from email");
-		Mailinator mail = new Mailinator();
-		String subject = testData.getEmailSubject();
-		String messageLink = "Reschedule or cancel";
-		String CancelReschedulelink = mail.getLinkFromEmail(testData.getGmailUserName(), subject, messageLink, 5);
-
+		
+		log("Step 8: Fetch the Cancel/Reschedule link from email");		
+		YopMailUtility yo = new YopMailUtility(driver);
+		String userName=testData.getEmail();
+		String CancelReschedulelink = yo.getCancelRescheduleLink(driver, userName);
+		
 		log(CancelReschedulelink + " ---This is cancel link");
 
 		PatientIdentificationPage patientIdentificationPage = new PatientIdentificationPage(driver,
@@ -3000,12 +2958,12 @@ public class PSS2PatientPortalAcceptanceTests extends BaseTestNGWebDriver {
 		cancelRescheduleDecisionPage.clickReschedule();
 		psspatientutils.rescheduleAPT(testData, driver);
 
-		psspatientutils.deleteEmail_Mailinator(driver, "https://www.mailinator.com/", testData.getEmail());
+		yo.deleteEmail(driver, userName);
 
 	}
 
 	@Test(enabled = true, groups = {
-			"AcceptanceTests" }, retryAnalyzer = RetryAnalyzer.class, dependsOnMethods = "testBookApptWithoutLastQuestionGW")
+			"AcceptanceTests" }, retryAnalyzer = RetryAnalyzer.class, dependsOnMethods = "testBookApptWithLastQuestionGW")
 	public void testRescheduleviaEmailNotifiicationGW() throws Exception {
 
 		log("Test to verify if Reschedule an Appointment via Email Notification");
@@ -3018,17 +2976,17 @@ public class PSS2PatientPortalAcceptanceTests extends BaseTestNGWebDriver {
 		psspatientutils.setTestData("GW", testData, adminuser);
 		testData.setFutureApt(true);
 
+		String userName=testData.getEmail();
+
 		pssadminutils.getInsuranceStateandRule(driver, adminuser, testData);
 
 		log("isShowCancellationRescheduleReason --" + testData.isShowCancellationRescheduleReason());
 		log("isShowCancellationReasonPM ---" + testData.isShowCancellationReasonPM());
 
-		log("Step 8: Fetch the Cancel/Reschedule link from email");
-		Mailinator mail = new Mailinator();
-		String subject = testData.getEmailSubject();
-		String messageLink = "Reschedule or cancel";
-		String CancelReschedulelink = mail.getLinkFromEmail(testData.getGmailUserName(), subject, messageLink, 5);
-
+		log("Step 8: Fetch the Cancel/Reschedule link from email");		
+		YopMailUtility yo = new YopMailUtility(driver);
+		String CancelReschedulelink = yo.getCancelRescheduleLink(driver, testData.getGmailUserName());
+		
 		log(CancelReschedulelink + " ---This is cancel link");
 
 		PatientIdentificationPage patientIdentificationPage = new PatientIdentificationPage(driver,
@@ -3051,7 +3009,7 @@ public class PSS2PatientPortalAcceptanceTests extends BaseTestNGWebDriver {
 		cancelRescheduleDecisionPage.clickReschedule();
 		psspatientutils.rescheduleAPT(testData, driver);
 
-		psspatientutils.deleteEmail_Mailinator(driver, "https://www.mailinator.com/", testData.getEmail());
+		yo.deleteEmail(driver, userName);
 
 	}
 
@@ -3592,7 +3550,7 @@ public class PSS2PatientPortalAcceptanceTests extends BaseTestNGWebDriver {
 				testData.getPatientPassword());
 		log("Step 6 : dont set Is Next Day Booking ");
 		testData.setIsNextDayBooking(false);
-		log("Step 7: Select the flow as per the rule." + rule);
+		logStep("Step 7: Select the flow as per the rule." + rule);
 		testData.setIsCancelApt(false);
 		testData.setIsNextDayBooking(false);
 		psspatientutils.selectAFlow(driver, rule, homepage, testData);
@@ -3601,39 +3559,52 @@ public class PSS2PatientPortalAcceptanceTests extends BaseTestNGWebDriver {
 	@Test(enabled = true, groups = { "AcceptanceTests" }, retryAnalyzer = RetryAnalyzer.class)
 	public void testSSOFlowNG() throws Exception {
 
-		log("Test To Verify if a Patient is able to login via SSO Flow from Patient 2.0 portal.");
-		log("Step 1: Login to Patient Portal 2.0");
+		logStep("Test To Verify if a Patient is able to login via SSO Flow from Patient 2.0 portal.");
+		logStep("This test verfies the book appointment with Insurance at the end of workflow");
+		
+		logStep("Login to Patient Portal 2.0");
 		PSSPropertyFileLoader propertyData = new PSSPropertyFileLoader();
 		Appointment testData = new Appointment();
 		AdminUser adminuser = new AdminUser();
 		propertyData.setAdminNG(adminuser);
 		propertyData.setAppointmentResponseNG(testData);
+		
+		logStep("Make the settings in admin- Insurance at end");		
+		testData.setInsuranceAtEnd(true);	
+		
+		Response response;
+		
+		setUp(propertyData.getProperty("mf.practice.id.ng"), propertyData.getProperty("mf.authuserid.am.ng"));
+		response = postAPIRequestAM.resourceConfigSavePost(practiceId, payloadAM.insuranceAtStartorEnd(false));
+		aPIVerification.responseCodeValidation(response, 200);
+		
 		PSSPatientUtils psspatientutils = new PSSPatientUtils();
 		PSSAdminUtils adminUtils = new PSSAdminUtils();
-		log("Login to PSS 2.0 Admin portal");
+		
+		logStep("Login to PSS 2.0 Admin portal");
 		adminUtils.getInsuranceStateandRule(driver, adminuser, testData);
-		log("Fetch the rules set in Admin");
+		logStep("Fetch the rules set in Admin");
 		String rule = adminuser.getRule();
-		log("rule are " + rule);
+		logStep("rule are " + rule);
 		rule = rule.replaceAll(" ", "");
 		JalapenoLoginPage loginPage = new JalapenoLoginPage(driver, testData.getPatientPortalURL());
 		JalapenoHomePage homePage = loginPage.login(testData.getPatientPortalUserName(),
 				testData.getPatientPortalPassword());
-		log("Detecting if Home Page is opened");
+		logStep("Detecting if Home Page is opened");
 		homePage.clickFeaturedAppointmentsReq();
-		log("Wait for PSS 2.0 Patient UI to be loaded.");
-		Thread.sleep(6000);
-		log("Switching tabs");
+		logStep("Wait for PSS 2.0 Patient UI to be loaded.");
+		logStep("Switching tabs");
 		String currentUrl = psspatientutils.switchtabs(driver);
 		HomePage homepage = new HomePage(driver, currentUrl);
-		Thread.sleep(15000);
 		if (homepage.isPopUP()) {
 			homepage.popUPClick();
 		}
-
-		log("Successfully upto Home page");
+		logStep("Successfully upto Home page");
 		homepage.btnStartSchedClick();
 		psspatientutils.selectAFlow(driver, rule, homepage, testData);
+		
+		response = postAPIRequestAM.resourceConfigSavePost(practiceId, payloadAM.insuranceAtStartorEnd(true));
+		aPIVerification.responseCodeValidation(response, 200);
 	}
 
 	@Test(enabled = true, groups = { "AcceptanceTests" }, retryAnalyzer = RetryAnalyzer.class)
@@ -5847,6 +5818,7 @@ public class PSS2PatientPortalAcceptanceTests extends BaseTestNGWebDriver {
 
 		testData.setFutureApt(true);
 		testData.setInsuranceDetails(true);
+		testData.setInsuranceAtEnd(true);
 
 		logStep("Test Data for book an appointment");
 		log(testData.getUrlLoginLess());
@@ -6208,7 +6180,6 @@ public class PSS2PatientPortalAcceptanceTests extends BaseTestNGWebDriver {
 		Provider provider = appointment.selectTypeOfProvider(propertyData.getProperty("link.appointment.ng"),
 				Boolean.valueOf(testData.getIsAppointmentPopup()));
 		logStep("Verfiy Provider Page and Provider = " + testData.getLinkProvider());
-		//provider.selectLocation(testData.getLinkLocation());
 		log("Next availiable text is  " + provider.getNextavaliableText());
 		assertEquals(testData.getNextAvailiableText(), provider.getNextavaliableText());
 	}
@@ -6546,7 +6517,7 @@ public class PSS2PatientPortalAcceptanceTests extends BaseTestNGWebDriver {
 		log("isShowCancellationReasonPM ---" + testData.isShowCancellationReasonPM());
 
 		logStep("Fetch the Cancel/Reschedule link from email");
-		Mailinator mail = new Mailinator();
+
 		String subject = testData.getEmailSubject();
 		String messageLink = "Reschedule or cancel";
 		String userName = testData.getGmailUserName();
@@ -6555,7 +6526,9 @@ public class PSS2PatientPortalAcceptanceTests extends BaseTestNGWebDriver {
 		log("messageLink- " + messageLink);
 		log("userName- " + userName);
 
-		String CancelReschedulelink = mail.getLinkFromEmail(userName, subject, messageLink, 5);
+		YopMailUtility yo = new YopMailUtility(driver);
+
+		String CancelReschedulelink = yo.getCancelRescheduleLink(driver, userName);
 
 		logStep("Hit the Cancel/Reschedule link which we get from email in browser");
 		PatientIdentificationPage patientIdentificationPage = new PatientIdentificationPage(driver,
@@ -6577,8 +6550,7 @@ public class PSS2PatientPortalAcceptanceTests extends BaseTestNGWebDriver {
 		cancelRescheduleDecisionPage.clickReschedule();
 		pssPatientUtils.rescheduleAPT(testData, driver);
 
-		logStep("Delete all the emails from inbox");
-		pssPatientUtils.deleteEmail_Mailinator(driver, "https://www.mailinator.com/", testData.getEmail());
+		yo.deleteEmail(driver, userName);
 
 	}
 
@@ -6824,43 +6796,35 @@ public class PSS2PatientPortalAcceptanceTests extends BaseTestNGWebDriver {
 		propertyData.setAppointmentResponseAT(testData);
 		PSSPatientUtils psspatientutils = new PSSPatientUtils();	
 		setUp(propertyData.getProperty("mf.practice.id.at"), propertyData.getProperty("mf.authuserid.am.at"));
-		Response response = postAPIRequestAM.medfusionpracticeTimeZone(practiceId, "/medfusionpractice");
+		Response response;
+        response = postAPIRequestAM.medfusionpracticeTimeZone(practiceId, "/medfusionpractice");
 		String timezone=aPIVerification.responseKeyValidationJson(response, "practiceTimezone");	
 		testData.setCurrentTimeZone(timezone);	
-		log("Current Time Zone Is"+testData.getCurrentTimeZone());
-		Response response1 = postAPIRequestAM.resourceConfigRuleGet(practiceId);
-		validateAdapter.verifyResourceConfigRuleGet(response1);
-		JsonPath js = new JsonPath(response1.asString());
-		String ruleId = js.getString("id[0]");
-		String ruleId1 = js.getString("id[1]");
-		log("Rule id is    " + ruleId);
-		log("Rule id is    " + ruleId1);
-
-		Response responseForDeleteRule = postAPIRequestAM.deleteRuleById(practiceId, ruleId);
-		aPIVerification.responseCodeValidation(responseForDeleteRule, 200);
-
-		Response responseForDeleteRule1 = postAPIRequestAM.deleteRuleById(practiceId, ruleId1);
-		aPIVerification.responseCodeValidation(responseForDeleteRule1, 200);
-
-		Response responseRulePost = postAPIRequestAM.resourceConfigRulePost(practiceId,
-				payloadAM.resourceConfigRulePostPayloadTL());
-		aPIVerification.responseCodeValidation(responseRulePost, 200);
-		aPIVerification.responseKeyValidationJson(responseRulePost, "name");
-		aPIVerification.responseKeyValidationJson(responseRulePost, "rule");
-
-		Response responseRulePut = postAPIRequestAM.resourceConfigRulePost(practiceId,
-				payloadAM.resourceConfigRulePutPayloadLT());
-		aPIVerification.responseCodeValidation(responseRulePut, 200);
-		aPIVerification.responseKeyValidationJson(responseRulePut, "name");
-		aPIVerification.responseKeyValidationJson(responseRulePut, "rule");
-
 		
+		log("Current Time Zone Is"+testData.getCurrentTimeZone());
+		response = postAPIRequestAM.resourceConfigRuleGet(practiceId);
+		validateAdapter.verifyResourceConfigRuleGet(response);
+        JSONArray arr = new JSONArray(response.body().asString());
+        int l=arr.length();
+        log("Length is- "+l);
+        for (int i=0; i<l; i++) {
+        int ruleId=arr.getJSONObject(i).getInt("id");
+        log("Object No."+i+"- "+ruleId);
+        Response responseForDeleteRule = postAPIRequestAM.deleteRuleById(practiceId, Integer.toString(ruleId));
+        aPIVerification.responseCodeValidation(responseForDeleteRule, 200);
+        }
+        Response responseRulePost = postAPIRequestAM.resourceConfigRulePost(practiceId,
+        payloadAM.resourceConfigRulePutPayloadLT());
+        aPIVerification.responseCodeValidation(responseRulePost, 200);
+        
+        Response responseRulePostTL = postAPIRequestAM.resourceConfigRulePost(practiceId,
+                payloadAM.resourceConfigRulePostPayloadTL());
+                aPIVerification.responseCodeValidation(responseRulePostTL, 200);
+
+
 		PSSAdminUtils adminUtils = new PSSAdminUtils();
 		logStep("Login to PSS 2.0 Admin portal");
 		adminUtils.acceptForSameDayWithShowProviderOFF(driver, adminuser, testData);
-		log("Fetch the rules set in Admin");
-		String rule = adminuser.getRule();
-		log("rule are " + rule);
 		logStep("Move to PSS patient Portal 2.0 to book an Appointment");
 		logStep("Login to PSS Appointment");
 		DismissPage dismissPage = new DismissPage(driver, testData.getUrlLoginLess());
@@ -6898,47 +6862,34 @@ public class PSS2PatientPortalAcceptanceTests extends BaseTestNGWebDriver {
 		propertyData.setAdminNG(adminuser);
 		propertyData.setAppointmentResponseNG(testData);
 		PSSPatientUtils psspatientutils = new PSSPatientUtils();	
-		
-		setUp(propertyData.getProperty("mf.practice.id.ng"), propertyData.getProperty("mf.authuserid.am.ng"));
-		
-		Response response = postAPIRequestAM.medfusionpracticeTimeZone(practiceId, "/medfusionpractice");
+        setUp(propertyData.getProperty("mf.practice.id.ng"), propertyData.getProperty("mf.authuserid.am.ng"));
+        Response response;
+        response = postAPIRequestAM.medfusionpracticeTimeZone(practiceId, "/medfusionpractice");
 		String timezone=aPIVerification.responseKeyValidationJson(response, "practiceTimezone");	
 		testData.setCurrentTimeZone(timezone);	
+		
 		log("Current Time Zone Is"+testData.getCurrentTimeZone());
-		
-		Response response1 = postAPIRequestAM.resourceConfigRuleGet(practiceId);
-		validateAdapter.verifyResourceConfigRuleGet(response1);
-		JsonPath js = new JsonPath(response1.asString());
-		String ruleId = js.getString("id[0]");
-		String ruleId1 = js.getString("id[1]");
-		log("Rule id is    " + ruleId);
-		log("Rule id is    " + ruleId1);
-
-		Response responseForDeleteRule = postAPIRequestAM.deleteRuleById(practiceId, ruleId);
-		aPIVerification.responseCodeValidation(responseForDeleteRule, 200);
-
-		Response responseForDeleteRule1 = postAPIRequestAM.deleteRuleById(practiceId, ruleId1);
-		aPIVerification.responseCodeValidation(responseForDeleteRule1, 200);
-
-		Response responseRulePost = postAPIRequestAM.resourceConfigRulePost(practiceId,
-				payloadAM.resourceConfigRulePostPayloadTL());
-		aPIVerification.responseCodeValidation(responseRulePost, 200);
-		aPIVerification.responseKeyValidationJson(responseRulePost, "name");
-		aPIVerification.responseKeyValidationJson(responseRulePost, "rule");
-
-		Response responseRulePut = postAPIRequestAM.resourceConfigRulePost(practiceId,
-				payloadAM.resourceConfigRulePutPayloadLT());
-		aPIVerification.responseCodeValidation(responseRulePut, 200);
-		aPIVerification.responseKeyValidationJson(responseRulePut, "name");
-		aPIVerification.responseKeyValidationJson(responseRulePut, "rule");
-
-		
+		response = postAPIRequestAM.resourceConfigRuleGet(practiceId);
+		validateAdapter.verifyResourceConfigRuleGet(response);
+        JSONArray arr = new JSONArray(response.body().asString());
+        int l=arr.length();
+        log("Length is- "+l);
+        for (int i=0; i<l; i++) {
+        int ruleId=arr.getJSONObject(i).getInt("id");
+        log("Object No."+i+"- "+ruleId);
+        Response responseForDeleteRule = postAPIRequestAM.deleteRuleById(practiceId, Integer.toString(ruleId));
+        aPIVerification.responseCodeValidation(responseForDeleteRule, 200);
+        }
+        Response responseRulePost = postAPIRequestAM.resourceConfigRulePost(practiceId,
+        payloadAM.resourceConfigRulePutPayloadLT());
+        aPIVerification.responseCodeValidation(responseRulePost, 200);
+        
+        Response responseRulePostTL = postAPIRequestAM.resourceConfigRulePost(practiceId,
+                payloadAM.resourceConfigRulePostPayloadTL());
+                aPIVerification.responseCodeValidation(responseRulePostTL, 200);		
 		PSSAdminUtils adminUtils = new PSSAdminUtils();
 		logStep("Login to PSS 2.0 Admin portal");
 		adminUtils.acceptForSameDayWithShowProviderOFF(driver, adminuser, testData);
-		log("Fetch the rules set in Admin");
-		String rule = adminuser.getRule();
-		log("rule are " + rule);
 		logStep("Move to PSS patient Portal 2.0 to book an Appointment");
 		logStep("Login to PSS Appointment");
 		DismissPage dismissPage = new DismissPage(driver, testData.getUrlLoginLess());
@@ -6976,48 +6927,35 @@ public class PSS2PatientPortalAcceptanceTests extends BaseTestNGWebDriver {
 		propertyData.setAdminNG(adminuser);
 		propertyData.setAppointmentResponseNG(testData);
 		PSSPatientUtils psspatientutils = new PSSPatientUtils();	
-
-		
         setUp(propertyData.getProperty("mf.practice.id.ng"), propertyData.getProperty("mf.authuserid.am.ng"));
-
-        Response response = postAPIRequestAM.medfusionpracticeTimeZone(practiceId, "/medfusionpractice");
+        Response response;
+        response = postAPIRequestAM.medfusionpracticeTimeZone(practiceId, "/medfusionpractice");
 		String timezone=aPIVerification.responseKeyValidationJson(response, "practiceTimezone");	
 		testData.setCurrentTimeZone(timezone);	
 		
 		log("Current Time Zone Is"+testData.getCurrentTimeZone());
-		Response response1 = postAPIRequestAM.resourceConfigRuleGet(practiceId);
-		validateAdapter.verifyResourceConfigRuleGet(response1);
-		JsonPath js = new JsonPath(response1.asString());
-		String ruleId = js.getString("id[0]");
-		String ruleId1 = js.getString("id[1]");
-		log("Rule id is    " + ruleId);
-		log("Rule id is    " + ruleId1);
+		response = postAPIRequestAM.resourceConfigRuleGet(practiceId);
+		validateAdapter.verifyResourceConfigRuleGet(response);
+        JSONArray arr = new JSONArray(response.body().asString());
+        int l=arr.length();
+        log("Length is- "+l);
+        for (int i=0; i<l; i++) {
+        int ruleId=arr.getJSONObject(i).getInt("id");
+        log("Object No."+i+"- "+ruleId);
+        Response responseForDeleteRule = postAPIRequestAM.deleteRuleById(practiceId, Integer.toString(ruleId));
+        aPIVerification.responseCodeValidation(responseForDeleteRule, 200);
+        }
+        Response responseRulePost = postAPIRequestAM.resourceConfigRulePost(practiceId,
+        payloadAM.resourceConfigRulePutPayloadLT());
+        aPIVerification.responseCodeValidation(responseRulePost, 200);
+        
+        Response responseRulePostTL = postAPIRequestAM.resourceConfigRulePost(practiceId,
+                payloadAM.resourceConfigRulePostPayloadTL());
+                aPIVerification.responseCodeValidation(responseRulePostTL, 200);
 
-		Response responseForDeleteRule = postAPIRequestAM.deleteRuleById(practiceId, ruleId);
-		aPIVerification.responseCodeValidation(responseForDeleteRule, 200);
-
-		Response responseForDeleteRule1 = postAPIRequestAM.deleteRuleById(practiceId, ruleId1);
-		aPIVerification.responseCodeValidation(responseForDeleteRule1, 200);
-
-		Response responseRulePost = postAPIRequestAM.resourceConfigRulePost(practiceId,
-				payloadAM.resourceConfigRulePostPayloadTL());
-		aPIVerification.responseCodeValidation(responseRulePost, 200);
-		aPIVerification.responseKeyValidationJson(responseRulePost, "name");
-		aPIVerification.responseKeyValidationJson(responseRulePost, "rule");
-
-		Response responseRulePut = postAPIRequestAM.resourceConfigRulePost(practiceId,
-				payloadAM.resourceConfigRulePutPayloadLT());
-		aPIVerification.responseCodeValidation(responseRulePut, 200);
-		aPIVerification.responseKeyValidationJson(responseRulePut, "name");
-		aPIVerification.responseKeyValidationJson(responseRulePut, "rule");
-
-		
 		PSSAdminUtils adminUtils = new PSSAdminUtils();
 		logStep("Login to PSS 2.0 Admin portal");
 		adminUtils.acceptForSameDayWithReserveShowProviderOFF(driver, adminuser, testData);
-		log("Fetch the rules set in Admin");
-		String rule = adminuser.getRule();
-		log("rule are " + rule);
 		logStep("Move to PSS patient Portal 2.0 to book an Appointment");
 		logStep("Login to PSS Appointment");
 		DismissPage dismissPage = new DismissPage(driver, testData.getUrlLoginLess());
@@ -7058,44 +6996,34 @@ public class PSS2PatientPortalAcceptanceTests extends BaseTestNGWebDriver {
 
 		
 		setUp(propertyData.getProperty("mf.practice.id.at"), propertyData.getProperty("mf.authuserid.am.at"));
-		Response response = postAPIRequestAM.medfusionpracticeTimeZone(practiceId, "/medfusionpractice");
+		Response response;
+        response = postAPIRequestAM.medfusionpracticeTimeZone(practiceId, "/medfusionpractice");
 		String timezone=aPIVerification.responseKeyValidationJson(response, "practiceTimezone");	
 		testData.setCurrentTimeZone(timezone);	
-		log("Current Time Zone Is"+testData.getCurrentTimeZone());
 		
-		Response response1 = postAPIRequestAM.resourceConfigRuleGet(practiceId);
-		validateAdapter.verifyResourceConfigRuleGet(response1);
-		JsonPath js = new JsonPath(response1.asString());
-		String ruleId = js.getString("id[0]");
-		String ruleId1 = js.getString("id[1]");
-		log("Rule id is    " + ruleId);
-		log("Rule id is    " + ruleId1);
-
-		Response responseForDeleteRule = postAPIRequestAM.deleteRuleById(practiceId, ruleId);
-		aPIVerification.responseCodeValidation(responseForDeleteRule, 200);
-
-		Response responseForDeleteRule1 = postAPIRequestAM.deleteRuleById(practiceId, ruleId1);
-		aPIVerification.responseCodeValidation(responseForDeleteRule1, 200);
-
-		Response responseRulePost = postAPIRequestAM.resourceConfigRulePost(practiceId,
-				payloadAM.resourceConfigRulePostPayloadTL());
-		aPIVerification.responseCodeValidation(responseRulePost, 200);
-		aPIVerification.responseKeyValidationJson(responseRulePost, "name");
-		aPIVerification.responseKeyValidationJson(responseRulePost, "rule");
-
-		Response responseRulePut = postAPIRequestAM.resourceConfigRulePost(practiceId,
-				payloadAM.resourceConfigRulePutPayloadLT());
-		aPIVerification.responseCodeValidation(responseRulePut, 200);
-		aPIVerification.responseKeyValidationJson(responseRulePut, "name");
-		aPIVerification.responseKeyValidationJson(responseRulePut, "rule");
-
+		log("Current Time Zone Is"+testData.getCurrentTimeZone());
+		response = postAPIRequestAM.resourceConfigRuleGet(practiceId);
+		validateAdapter.verifyResourceConfigRuleGet(response);
+        JSONArray arr = new JSONArray(response.body().asString());
+        int l=arr.length();
+        log("Length is- "+l);
+        for (int i=0; i<l; i++) {
+        int ruleId=arr.getJSONObject(i).getInt("id");
+        log("Object No."+i+"- "+ruleId);
+        Response responseForDeleteRule = postAPIRequestAM.deleteRuleById(practiceId, Integer.toString(ruleId));
+        aPIVerification.responseCodeValidation(responseForDeleteRule, 200);
+        }
+        Response responseRulePost = postAPIRequestAM.resourceConfigRulePost(practiceId,
+        payloadAM.resourceConfigRulePutPayloadLT());
+        aPIVerification.responseCodeValidation(responseRulePost, 200);
+        
+        Response responseRulePostTL = postAPIRequestAM.resourceConfigRulePost(practiceId,
+                payloadAM.resourceConfigRulePostPayloadTL());
+                aPIVerification.responseCodeValidation(responseRulePostTL, 200);
 		
 		PSSAdminUtils adminUtils = new PSSAdminUtils();
 		logStep("Login to PSS 2.0 Admin portal");
 		adminUtils.acceptForSameDayWithReserveShowProviderOFF(driver, adminuser, testData);
-		log("Fetch the rules set in Admin");
-		String rule = adminuser.getRule();
-		log("rule are " + rule);
 		logStep("Move to PSS patient Portal 2.0 to book an Appointment");
 		logStep("Login to PSS Appointment");
 		DismissPage dismissPage = new DismissPage(driver, testData.getUrlLoginLess());
@@ -7123,8 +7051,2202 @@ public class PSS2PatientPortalAcceptanceTests extends BaseTestNGWebDriver {
 		assertEquals(dateSize, "1");
 		log("current date is"+psspatientutils.currentESTDate(testData));
 		assertEquals(date, psspatientutils.currentESTDate(testData));
+	}
+
+	@Test(enabled = true, groups = { "AcceptanceTests" }, retryAnalyzer = RetryAnalyzer.class)
+	public void testDisableLoginless() throws Exception {
+		PSSPropertyFileLoader propertyData = new PSSPropertyFileLoader();
+		Appointment testData = new Appointment();
+		AdminUser adminuser = new AdminUser();
+		propertyData.setAdminNG(adminuser);
+		propertyData.setAppointmentResponseNG(testData);
+
+		setUp(propertyData.getProperty("mf.practice.id.ng"), propertyData.getProperty("mf.authuserid.am.ng"));
+
+		Response response;
+		response = postAPIRequestAM.resourceConfigSavePost(practiceId, payloadAM.loginlessDisable());
+		aPIVerification.responseCodeValidation(response, 200);
+
+		response = postAPIRequestAM.loginlessGet(practiceId, "/loginless");
+
+		JsonPath js = new JsonPath(response.asString());
+		String loginlessLink = js.getString("link");
+		DismissPage dismissPage = new DismissPage(driver, loginlessLink);
+		Thread.sleep(1000);
+		String errorMessage = dismissPage.verifyErrorPage();
+		assertEquals(errorMessage, "Link is currently unavailable for the practice.", "Error message in wrong");
+
+		response = postAPIRequestAM.resourceConfigSavePost(practiceId, payloadAM.loginlessEnable());
+
+	}
+	@Test(enabled = true, groups = { "AcceptanceTests" }, retryAnalyzer = RetryAnalyzer.class)
+	public void testLeadTimeShowProviderOffNG() throws Exception {
+
+		PSSPropertyFileLoader propertyData = new PSSPropertyFileLoader();
+		Appointment testData = new Appointment();
+		AdminUser adminuser = new AdminUser();
+		propertyData.setAdminAT(adminuser);
+		propertyData.setAppointmentResponseAT(testData);
+		PSSPatientUtils psspatientutils = new PSSPatientUtils();	
+
 		
+		setUp(propertyData.getProperty("mf.practice.id.ng"), propertyData.getProperty("mf.authuserid.am.ng"));
+		Response response;
+        response = postAPIRequestAM.medfusionpracticeTimeZone(practiceId, "/medfusionpractice");
+		String timezone=aPIVerification.responseKeyValidationJson(response, "practiceTimezone");	
+		testData.setCurrentTimeZone(timezone);	
+		
+		log("Current Time Zone Is"+testData.getCurrentTimeZone());
+		response = postAPIRequestAM.resourceConfigRuleGet(practiceId);
+		validateAdapter.verifyResourceConfigRuleGet(response);
+        JSONArray arr = new JSONArray(response.body().asString());
+        int l=arr.length();
+        log("Length is- "+l);
+        for (int i=0; i<l; i++) {
+        int ruleId=arr.getJSONObject(i).getInt("id");
+        log("Object No."+i+"- "+ruleId);
+        Response responseForDeleteRule = postAPIRequestAM.deleteRuleById(practiceId, Integer.toString(ruleId));
+        aPIVerification.responseCodeValidation(responseForDeleteRule, 200);
+        }
+        Response responseRulePost = postAPIRequestAM.resourceConfigRulePost(practiceId,
+        payloadAM.resourceConfigRulePutPayloadLT());
+        aPIVerification.responseCodeValidation(responseRulePost, 200);
+        
+        Response responseRulePostTL = postAPIRequestAM.resourceConfigRulePost(practiceId,
+                payloadAM.resourceConfigRulePostPayloadTL());
+                aPIVerification.responseCodeValidation(responseRulePostTL, 200);
+
+		PSSAdminUtils adminUtils = new PSSAdminUtils();
+		logStep("Login to PSS 2.0 Admin portal");
+		adminUtils.leadTimeWithReserveShowProviderOFF(driver, adminuser, testData, propertyData.getProperty("leadtime.ng"));
+		logStep("Move to PSS patient Portal 2.0 to book an Appointment");
+		logStep("Login to PSS Appointment");
+		DismissPage dismissPage = new DismissPage(driver, testData.getUrlLoginLess());
+		logStep("LoginlessPatientInformation****");
+		log("Clicked on Dismiss");
+		LoginlessPatientInformation loginlessPatientInformation = dismissPage.clickDismiss();
+		HomePage homePage = loginlessPatientInformation.fillNewPatientForm(testData.getFirstName(),
+				testData.getLastName(), testData.getDob(), testData.getEmail(), testData.getGender(),
+				testData.getZipCode(), testData.getPrimaryNumber());
+		homePage.btnStartSchedClick();
+		Location location = null;
+    	StartAppointmentInOrder startAppointmentInOrder = null;
+		startAppointmentInOrder = homePage.skipInsurance(driver);
+		location = startAppointmentInOrder.selectFirstLocation(PSSConstants.START_LOCATION);
+		logStep("Verfiy Location Page and location =" + testData.getLocation());
+		AppointmentPage appointment = location.selectAppointment(testData.getLocation());
+		logStep("Verfiy Appointment Page and appointment to be selected = " + testData.getAppointmenttype());
+		AppointmentDateTime aptDateTime = appointment.selectAptTyper(testData.getAppointmenttype(),
+				Boolean.valueOf(testData.getIsAppointmentPopup()));
+		String date = aptDateTime.selectDate(testData.getIsNextDayBooking());
+		logStep("Date selected is for App" + date);
+			assertEquals(date, psspatientutils.currentDateandLeadDay(testData));
+	}
+	
+	@Test(enabled = true, groups = { "AcceptanceTests" }, retryAnalyzer = RetryAnalyzer.class)
+	public void testLeadTimeShowProviderOffAT() throws Exception {
+		PSSPropertyFileLoader propertyData = new PSSPropertyFileLoader();
+		Appointment testData = new Appointment();
+		AdminUser adminuser = new AdminUser();
+		propertyData.setAdminAT(adminuser);
+		propertyData.setAppointmentResponseAT(testData);
+		PSSPatientUtils psspatientutils = new PSSPatientUtils();	
+
+        Response response;
+        setUp(propertyData.getProperty("mf.practice.id.at"), propertyData.getProperty("mf.authuserid.am.at"));
+
+        response = postAPIRequestAM.medfusionpracticeTimeZone(practiceId, "/medfusionpractice");
+		String timezone=aPIVerification.responseKeyValidationJson(response, "practiceTimezone");	
+		testData.setCurrentTimeZone(timezone);	
+		
+		log("Current Time Zone Is"+testData.getCurrentTimeZone());
+		response = postAPIRequestAM.resourceConfigRuleGet(practiceId);
+		validateAdapter.verifyResourceConfigRuleGet(response);
+        JSONArray arr = new JSONArray(response.body().asString());
+        int l=arr.length();
+        log("Length is- "+l);
+        for (int i=0; i<l; i++) {
+        int ruleId=arr.getJSONObject(i).getInt("id");
+        log("Object No."+i+"- "+ruleId);
+        Response responseForDeleteRule = postAPIRequestAM.deleteRuleById(practiceId, Integer.toString(ruleId));
+        aPIVerification.responseCodeValidation(responseForDeleteRule, 200);
+        }
+        Response responseRulePost = postAPIRequestAM.resourceConfigRulePost(practiceId,
+        payloadAM.resourceConfigRulePutPayloadLT());
+        aPIVerification.responseCodeValidation(responseRulePost, 200);
+        
+        Response responseRulePostTL = postAPIRequestAM.resourceConfigRulePost(practiceId,
+                payloadAM.resourceConfigRulePostPayloadTL());
+                aPIVerification.responseCodeValidation(responseRulePostTL, 200);
+		PSSAdminUtils adminUtils = new PSSAdminUtils();
+		logStep("Login to PSS 2.0 Admin portal");
+		adminUtils.leadTimeWithReserveShowProviderOFF(driver, adminuser, testData,propertyData.getProperty("leadtime.at"));
+		logStep("Move to PSS patient Portal 2.0 to book an Appointment");
+		logStep("Login to PSS Appointment");
+		DismissPage dismissPage = new DismissPage(driver, testData.getUrlLoginLess());
+		logStep("LoginlessPatientInformation****");
+		log("Clicked on Dismiss");
+		LoginlessPatientInformation loginlessPatientInformation = dismissPage.clickDismiss();
+		HomePage homePage = loginlessPatientInformation.fillNewPatientForm(testData.getFirstName(),
+				testData.getLastName(), testData.getDob(), testData.getEmail(), testData.getGender(),
+				testData.getZipCode(), testData.getPrimaryNumber());
+		homePage.btnStartSchedClick();
+		Location location = null;
+    	StartAppointmentInOrder startAppointmentInOrder = null;
+		startAppointmentInOrder = homePage.skipInsurance(driver);
+		location = startAppointmentInOrder.selectFirstLocation(PSSConstants.START_LOCATION);
+		logStep("Verfiy Location Page and location =" + testData.getLocation());
+		AppointmentPage appointment = location.selectAppointment(testData.getLocation());
+		logStep("Verfiy Appointment Page and appointment to be selected = " + testData.getAppointmenttype());
+		AppointmentDateTime aptDateTime = appointment.selectAptTyper(testData.getAppointmenttype(),
+				Boolean.valueOf(testData.getIsAppointmentPopup()));
+		String date = aptDateTime.selectDate(testData.getIsNextDayBooking());
+		logStep("Date selected is for App" + date);
+			assertEquals(date, psspatientutils.currentDateandLeadDay(testData));
+	}
+
+	@Test(enabled = true, groups = { "AcceptanceTests" }, retryAnalyzer = RetryAnalyzer.class)
+	public void testDisableAnonymousNG() throws Exception {
+		PSSPropertyFileLoader propertyData = new PSSPropertyFileLoader();
+		Appointment testData = new Appointment();
+		AdminUser adminuser = new AdminUser();
+		propertyData.setAdminNG(adminuser);
+		propertyData.setAppointmentResponseNG(testData);
+
+		setUp(propertyData.getProperty("mf.practice.id.ng"), propertyData.getProperty("mf.authuserid.am.ng"));
+
+		Response response;
+		response = postAPIRequestAM.resourceConfigSavePost(practiceId, payloadAM.anonymousConfg(false));
+		aPIVerification.responseCodeValidation(response, 200);
+
+		response = postAPIRequestAM.anonymousGet(practiceId, "/anonymous");
+
+		JsonPath js = new JsonPath(response.asString());
+		String loginlessLink = js.getString("link");
+		DismissPage dismissPage = new DismissPage(driver, loginlessLink);
+		Thread.sleep(1000);
+		String errorMessage = dismissPage.verifyErrorPage();
+		assertEquals(errorMessage, "Link is currently unavailable for the practice.", "Error message in wrong");
+
+		response = postAPIRequestAM.resourceConfigSavePost(practiceId, payloadAM.anonymousConfg(true));
+	}
+
+	@Test(enabled = true, groups = { "AcceptanceTests" }, retryAnalyzer = RetryAnalyzer.class)
+	public void testDisableLoginlessNG() throws Exception {
+		PSSPropertyFileLoader propertyData = new PSSPropertyFileLoader();
+		Appointment testData = new Appointment();
+		AdminUser adminuser = new AdminUser();
+		propertyData.setAdminNG(adminuser);
+		propertyData.setAppointmentResponseNG(testData);
+
+		setUp(propertyData.getProperty("mf.practice.id.ng"), propertyData.getProperty("mf.authuserid.am.ng"));
+
+		Response response;
+		response = postAPIRequestAM.resourceConfigSavePost(practiceId, payloadAM.loginlessDisable());
+		aPIVerification.responseCodeValidation(response, 200);
+
+		response = postAPIRequestAM.loginlessGet(practiceId, "/loginless");
+
+		JsonPath js = new JsonPath(response.asString());
+		String loginlessLink = js.getString("link");
+		DismissPage dismissPage = new DismissPage(driver, loginlessLink);
+		Thread.sleep(1000);
+		String errorMessage = dismissPage.verifyErrorPage();
+		assertEquals(errorMessage, "Link is currently unavailable for the practice.", "Error message in wrong");
+
+		response = postAPIRequestAM.resourceConfigSavePost(practiceId, payloadAM.loginlessEnable());
+	}
+
+	@Test(enabled = true, groups = { "AcceptanceTests" }, retryAnalyzer = RetryAnalyzer.class)
+	public void testDisableAnonymousAT() throws Exception {
+		PSSPropertyFileLoader propertyData = new PSSPropertyFileLoader();
+		Appointment testData = new Appointment();
+		AdminUser adminuser = new AdminUser();
+		propertyData.setAdminAT(adminuser);
+		propertyData.setAppointmentResponseAT(testData);
+
+		Response response;
+
+		setUp(propertyData.getProperty("mf.practice.id.at"), propertyData.getProperty("mf.authuserid.am.at"));
+
+		response = postAPIRequestAM.resourceConfigSavePost(practiceId, payloadAM.anonymousConfg(false));
+		aPIVerification.responseCodeValidation(response, 200);
+
+		response = postAPIRequestAM.anonymousGet(practiceId, "/anonymous");
+
+		JsonPath js = new JsonPath(response.asString());
+		String loginlessLink = js.getString("link");
+		DismissPage dismissPage = new DismissPage(driver, loginlessLink);
+		Thread.sleep(1000);
+		String errorMessage = dismissPage.verifyErrorPage();
+		assertEquals(errorMessage, "Link is currently unavailable for the practice.", "Error message in wrong");
+
+		response = postAPIRequestAM.resourceConfigSavePost(practiceId, payloadAM.anonymousConfg(true));
+	}
+
+	@Test(enabled = true, groups = { "AcceptanceTests" }, retryAnalyzer = RetryAnalyzer.class)
+	public void testDisableLoginlessAT() throws Exception {
+		PSSPropertyFileLoader propertyData = new PSSPropertyFileLoader();
+		Appointment testData = new Appointment();
+		AdminUser adminuser = new AdminUser();
+		propertyData.setAdminAT(adminuser);
+		propertyData.setAppointmentResponseAT(testData);
+
+		Response response;
+
+		setUp(propertyData.getProperty("mf.practice.id.at"), propertyData.getProperty("mf.authuserid.am.at"));
+
+		response = postAPIRequestAM.resourceConfigSavePost(practiceId, payloadAM.loginlessDisable());
+		aPIVerification.responseCodeValidation(response, 200);
+
+		response = postAPIRequestAM.loginlessGet(practiceId, "/loginless");
+
+		JsonPath js = new JsonPath(response.asString());
+		String loginlessLink = js.getString("link");
+		DismissPage dismissPage = new DismissPage(driver, loginlessLink);
+		Thread.sleep(1000);
+		String errorMessage = dismissPage.verifyErrorPage();
+		assertEquals(errorMessage, "Link is currently unavailable for the practice.", "Error message in wrong");
+
+		response = postAPIRequestAM.resourceConfigSavePost(practiceId, payloadAM.loginlessEnable());
+	}
+
+	@Test(enabled = true, groups = { "AcceptanceTests" }, retryAnalyzer = RetryAnalyzer.class)
+	public void testDisableLoginlessGW() throws Exception {
+		PSSPropertyFileLoader propertyData = new PSSPropertyFileLoader();
+		Appointment testData = new Appointment();
+		AdminUser adminuser = new AdminUser();
+		propertyData.setAdminGW(adminuser);
+		propertyData.setAppointmentResponseGW(testData);
+
+		Response response;
+
+		setUp(propertyData.getProperty("mf.practice.id.gw"), propertyData.getProperty("mf.authuserid.am.gw"));
+
+		response = postAPIRequestAM.resourceConfigSavePost(practiceId, payloadAM.loginlessDisable());
+		aPIVerification.responseCodeValidation(response, 200);
+
+		response = postAPIRequestAM.loginlessGet(practiceId, "/loginless");
+
+		JsonPath js = new JsonPath(response.asString());
+		String loginlessLink = js.getString("link");
+		DismissPage dismissPage = new DismissPage(driver, loginlessLink);
+		Thread.sleep(1000);
+		String errorMessage = dismissPage.verifyErrorPage();
+		assertEquals(errorMessage, "Link is currently unavailable for the practice.", "Error message in wrong");
+
+		response = postAPIRequestAM.resourceConfigSavePost(practiceId, payloadAM.loginlessEnable());
+	}
+
+	@Test(enabled = true, groups = { "AcceptanceTests" }, retryAnalyzer = RetryAnalyzer.class)
+	public void testDisableLoginlessGE() throws Exception {
+		PSSPropertyFileLoader propertyData = new PSSPropertyFileLoader();
+		Appointment testData = new Appointment();
+		AdminUser adminuser = new AdminUser();
+		propertyData.setAdminGE(adminuser);
+		propertyData.setAppointmentResponseGE(testData);
+
+		Response response;
+
+		setUp(propertyData.getProperty("mf.practice.id.ge"), propertyData.getProperty("mf.authuserid.am.ge"));
+
+		response = postAPIRequestAM.resourceConfigSavePost(practiceId, payloadAM.loginlessDisable());
+		aPIVerification.responseCodeValidation(response, 200);
+
+		response = postAPIRequestAM.loginlessGet(practiceId, "/loginless");
+
+		JsonPath js = new JsonPath(response.asString());
+		String loginlessLink = js.getString("link");
+		DismissPage dismissPage = new DismissPage(driver, loginlessLink);
+		Thread.sleep(1000);
+		String errorMessage = dismissPage.verifyErrorPage();
+		assertEquals(errorMessage, "Link is currently unavailable for the practice.", "Error message in wrong");
+
+		response = postAPIRequestAM.resourceConfigSavePost(practiceId, payloadAM.loginlessEnable());
+	}
+
+	@Test(enabled = true, groups = { "AcceptanceTests" }, retryAnalyzer = RetryAnalyzer.class)
+	public void testUpcomingPastApptDisableNG() throws Exception {
+
+		PSSPropertyFileLoader propertyData = new PSSPropertyFileLoader();
+		Appointment testData = new Appointment();
+		AdminUser adminUser = new AdminUser();
+
+		propertyData.setAdminNG(adminUser);
+		propertyData.setAppointmentResponseNG(testData);
+		adminUser.setLastQuestionMandatory(true);
+
+		PSSAdminUtils adminUtils = new PSSAdminUtils();
+
+		logStep("Login to PSS 2.0 Admin portal and do the seetings for Last Question Required");
+		adminUtils.upcomingPastApptSetting(driver, adminUser, testData, PSSConstants.LOGINLESS);
+
+		Response response;
+
+		setUp(propertyData.getProperty("mf.practice.id.ng"), propertyData.getProperty("mf.authuserid.am.ng"));
+
+		response = postAPIRequestAM.resourceConfigSavePost(practiceId, payloadAM.upcimingPastAptOnOff(false));
+		aPIVerification.responseCodeValidation(response, 200);
+
+		logStep("Login to PSS Appointment");
+		DismissPage dismissPage = new DismissPage(driver, testData.getUrlLoginLess());
+
+		logStep("Clicked on Dismiss");
+		LoginlessPatientInformation loginlessPatientInformation = dismissPage.clickDismiss();
+
+		logStep("Patient details are as mentioned below-");
+		log("Demographic Details- " + testData.getFirstName() + " " + testData.getLastName() + " " + testData.getDob()
+				+ " " + testData.getGender() + " " + testData.getEmail() + " " + testData.getPrimaryNumber() + " "
+				+ testData.getZipCode());
+
+		HomePage homePage = loginlessPatientInformation.fillNewPatientForm(testData.getFirstName(),
+				testData.getLastName(), testData.getDob(), testData.getEmail(), testData.getGender(),
+				testData.getZipCode(), testData.getPrimaryNumber());
+
+		boolean bool = homePage.isUpcomingAptPresent();
+
+		assertEquals(bool, false, "Upcoming and past appointment list is present on the screen");
+	}
+
+	@Test(enabled = true, groups = { "AcceptanceTests" }, retryAnalyzer = RetryAnalyzer.class)
+	public void testUpcomingPastApptDisableGE() throws Exception {
+
+		PSSPropertyFileLoader propertyData = new PSSPropertyFileLoader();
+		Appointment testData = new Appointment();
+		AdminUser adminUser = new AdminUser();
+
+		propertyData.setAdminGE(adminUser);
+		propertyData.setAppointmentResponseGE(testData);
+
+		PSSAdminUtils adminUtils = new PSSAdminUtils();
+
+		logStep("Login to PSS 2.0 Admin portal and do the seetings for Last Question Required");
+		adminUtils.upcomingPastApptSetting(driver, adminUser, testData, PSSConstants.LOGINLESS);
+
+		Response response;
+
+		setUp(propertyData.getProperty("mf.practice.id.ge"), propertyData.getProperty("mf.authuserid.am.ge"));
+
+		response = postAPIRequestAM.resourceConfigSavePost(practiceId, payloadAM.upcimingPastAptOnOff(false));
+		aPIVerification.responseCodeValidation(response, 200);
+
+		logStep("Login to PSS Appointment");
+		DismissPage dismissPage = new DismissPage(driver, testData.getUrlLoginLess());
+
+		logStep("Clicked on Dismiss");
+		LoginlessPatientInformation loginlessPatientInformation = dismissPage.clickDismiss();
+
+		logStep("Patient details are as mentioned below-");
+		log("Demographic Details- " + testData.getFirstName() + " " + testData.getLastName() + " " + testData.getDob()
+				+ " " + testData.getGender() + " " + testData.getEmail() + " " + testData.getPrimaryNumber() + " "
+				+ testData.getZipCode());
+
+		HomePage homePage = loginlessPatientInformation.fillNewPatientForm(testData.getFirstName(),
+				testData.getLastName(), testData.getDob(), testData.getEmail(), testData.getGender(),
+				testData.getZipCode(), testData.getPrimaryNumber());
+
+		boolean bool = homePage.isUpcomingAptPresent();
+
+		assertEquals(bool, false, "Upcoming and past appointment list is present on the screen");
+	}
+
+	@Test(enabled = true, groups = { "AcceptanceTests" }, retryAnalyzer = RetryAnalyzer.class)
+	public void testUpcomingPastApptDisableGW() throws Exception {
+
+		PSSPropertyFileLoader propertyData = new PSSPropertyFileLoader();
+		Appointment testData = new Appointment();
+		AdminUser adminUser = new AdminUser();
+
+		propertyData.setAdminGW(adminUser);
+		propertyData.setAppointmentResponseGW(testData);
+
+		PSSAdminUtils adminUtils = new PSSAdminUtils();
+
+		logStep("Login to PSS 2.0 Admin portal and do the seetings for Last Question Required");
+		adminUtils.upcomingPastApptSetting(driver, adminUser, testData, PSSConstants.LOGINLESS);
+
+		Response response;
+
+		setUp(propertyData.getProperty("mf.practice.id.gw"), propertyData.getProperty("mf.authuserid.am.gw"));
+
+		response = postAPIRequestAM.resourceConfigSavePost(practiceId, payloadAM.upcimingPastAptOnOffGW(false));
+		aPIVerification.responseCodeValidation(response, 200);
+
+		logStep("Login to PSS Appointment");
+		DismissPage dismissPage = new DismissPage(driver, testData.getUrlLoginLess());
+
+		logStep("Clicked on Dismiss");
+		LoginlessPatientInformation loginlessPatientInformation = dismissPage.clickDismiss();
+
+		logStep("Patient details are as mentioned below-");
+		log("Demographic Details- " + testData.getFirstName() + " " + testData.getLastName() + " " + testData.getDob()
+				+ " " + testData.getGender() + " " + testData.getEmail() + " " + testData.getPrimaryNumber() + " "
+				+ testData.getZipCode());
+
+		HomePage homePage = loginlessPatientInformation.fillNewPatientForm(testData.getFirstName(),
+				testData.getLastName(), testData.getDob(), testData.getEmail(), testData.getGender(),
+				testData.getZipCode(), testData.getPrimaryNumber());
+
+		boolean bool = homePage.isUpcomingAptPresent();
+
+		assertEquals(bool, false, "Upcoming and past appointment list is present on the screen");
+	}
+
+	@Test(enabled = true, groups = { "AcceptanceTests" }, retryAnalyzer = RetryAnalyzer.class)
+	public void testUpcomingPastApptDisableAT() throws Exception {
+
+		PSSPropertyFileLoader propertyData = new PSSPropertyFileLoader();
+		Appointment testData = new Appointment();
+		AdminUser adminUser = new AdminUser();
+
+		propertyData.setAdminAT(adminUser);
+		propertyData.setAppointmentResponseAT(testData);
+
+		PSSAdminUtils adminUtils = new PSSAdminUtils();
+
+		logStep("Login to PSS 2.0 Admin portal and do the seetings for Last Question Required");
+		adminUtils.upcomingPastApptSetting(driver, adminUser, testData, PSSConstants.LOGINLESS);
+
+		Response response;
+
+		setUp(propertyData.getProperty("mf.practice.id.at"), propertyData.getProperty("mf.authuserid.am.at"));
+
+		response = postAPIRequestAM.resourceConfigSavePost(practiceId, payloadAM.upcimingPastAptOnOff(false));
+		aPIVerification.responseCodeValidation(response, 200);
+
+		logStep("Login to PSS Appointment");
+		DismissPage dismissPage = new DismissPage(driver, testData.getUrlLoginLess());
+
+		logStep("Clicked on Dismiss");
+		LoginlessPatientInformation loginlessPatientInformation = dismissPage.clickDismiss();
+
+		logStep("Patient details are as mentioned below-");
+		log("Demographic Details- " + testData.getFirstName() + " " + testData.getLastName() + " " + testData.getDob()
+				+ " " + testData.getGender() + " " + testData.getEmail() + " " + testData.getPrimaryNumber() + " "
+				+ testData.getZipCode());
+
+		HomePage homePage = loginlessPatientInformation.fillNewPatientForm(testData.getFirstName(),
+				testData.getLastName(), testData.getDob(), testData.getEmail(), testData.getGender(),
+				testData.getZipCode(), testData.getPrimaryNumber());
+
+		boolean bool = homePage.isUpcomingAptPresent();
+
+		assertEquals(bool, false, "Upcoming and past appointment list is present on the screen");
+	}
+
+	@Test(enabled = true, groups = { "AcceptanceTests" }, retryAnalyzer = RetryAnalyzer.class)
+	public void testNextAvailable_LBT_NG() throws Exception {
+
+		logStep("Verify the Next Available should display for LBT Rule-");
+		PSSPropertyFileLoader propertyData = new PSSPropertyFileLoader();
+		Appointment testData = new Appointment();
+		AdminUser adminUser = new AdminUser();
+
+		propertyData.setAdminNG(adminUser);
+		propertyData.setAppointmentResponseNG(testData);
+		PSSAdminUtils adminUtils = new PSSAdminUtils();
+
+		logStep("Set up the API authentication");
+		setUp(propertyData.getProperty("mf.practice.id.ng"), propertyData.getProperty("mf.authuserid.am.ng"));
+		Response response;
+
+		logStep("Set up the desired rule in Admin UI using API");
+		response = postAPIRequestAM.resourceConfigRuleGet(practiceId);
+		JSONArray arr = new JSONArray(response.body().asString());
+		int l = arr.length();
+		log("Length is- " + l);
+
+		for (int i = 0; i < l; i++) {
+			int ruleId = arr.getJSONObject(i).getInt("id");
+			log("Object No." + i + "- " + ruleId);
+			response = postAPIRequestAM.deleteRuleById(practiceId, Integer.toString(ruleId));
+			aPIVerification.responseCodeValidation(response, 200);
+		}
+
+		response = postAPIRequestAM.resourceConfigRulePost(practiceId, payloadAM.resourceConfigRulePutPayload());
+		aPIVerification.responseCodeValidation(response, 200);
+
+		response = postAPIRequestAM.resourceConfigRulePost(practiceId, payloadAM.resourceConfigRuleLBTPayload());
+		aPIVerification.responseCodeValidation(response, 200);
+
+		logStep("Login To admin portal and Generate link for Provider");
+		adminUtils.upcomingPastApptSetting(driver, adminUser, testData, PSSConstants.LOGINLESS);
+
+		logStep("Move to PSS patient Portal 2.0 to book an Appointment");
+		DismissPage dismissPage = new DismissPage(driver, testData.getUrlLoginLess());
+		Thread.sleep(1000);
+
+		logStep("Open the link and click on Dismiss Button ");
+		LoginlessPatientInformation loginlessPatientInformation = dismissPage.clickDismiss();
+
+		HomePage homePage = loginlessPatientInformation.fillNewPatientForm(testData.getFirstName(),
+				testData.getLastName(), testData.getDob(), testData.getEmail(), testData.getGender(),
+				testData.getZipCode(), testData.getPrimaryNumber());
+
+		homePage.btnStartSchedClick();
+		logStep("Clicked on the Start Button ");
+
+		StartAppointmentInOrder startAppointmentInOrder = null;
+		startAppointmentInOrder = homePage.skipInsurance(driver);
+		logStep("Clicked on the Skip Insurance Button ");
+		Location location = startAppointmentInOrder.selectFirstLocation(PSSConstants.START_LOCATION);
+
+		log("Verfiy location Page and location =" + testData.getLocation());
+		Provider provider = location.searchProvider(testData.getLocation());
+		log("Verfiy Provider Page and provider to be selected = " + testData.getProvider());
+		AppointmentPage appointment = provider.selectAppointment(testData.getProvider());
+
+		String apptLabel = appointment.getNextAvailableOffText();
+		log("Next availiable text is  " + apptLabel);
+		assertFalse(apptLabel.contains("Next Available"));
+	}
+	
+	@Test(enabled = true, groups = { "AcceptanceTests" }, retryAnalyzer = RetryAnalyzer.class)
+	public void testNextAvailable_LBT_GE() throws Exception {
+
+		logStep("Verify the Next Available should display for LBT Rule-");
+		PSSPropertyFileLoader propertyData = new PSSPropertyFileLoader();
+		Appointment testData = new Appointment();
+		AdminUser adminUser = new AdminUser();
+
+		propertyData.setAdminNG(adminUser);
+		propertyData.setAppointmentResponseNG(testData);
+		PSSAdminUtils adminUtils = new PSSAdminUtils();
+
+		logStep("Set up the API authentication");
+		setUp(propertyData.getProperty("mf.practice.id.ng"), propertyData.getProperty("mf.authuserid.am.ng"));
+		Response response;
+
+		logStep("Set up the desired rule in Admin UI using API");
+		response = postAPIRequestAM.resourceConfigRuleGet(practiceId);
+		JSONArray arr = new JSONArray(response.body().asString());
+		int l = arr.length();
+		log("Length is- " + l);
+
+		for (int i = 0; i < l; i++) {
+			int ruleId = arr.getJSONObject(i).getInt("id");
+			log("Object No." + i + "- " + ruleId);
+			response = postAPIRequestAM.deleteRuleById(practiceId, Integer.toString(ruleId));
+			aPIVerification.responseCodeValidation(response, 200);
+		}
+
+		response = postAPIRequestAM.resourceConfigRulePost(practiceId, payloadAM.resourceConfigRulePutPayload());
+		aPIVerification.responseCodeValidation(response, 200);
+
+		response = postAPIRequestAM.resourceConfigRulePost(practiceId, payloadAM.resourceConfigRuleLBTPayload());
+		aPIVerification.responseCodeValidation(response, 200);
+
+		logStep("Login To admin portal and Generate link for Provider");
+		adminUtils.upcomingPastApptSetting(driver, adminUser, testData, PSSConstants.LOGINLESS);
+
+		logStep("Move to PSS patient Portal 2.0 to book an Appointment");
+		DismissPage dismissPage = new DismissPage(driver, testData.getUrlLoginLess());
+		Thread.sleep(1000);
+
+		logStep("Open the link and click on Dismiss Button ");
+		LoginlessPatientInformation loginlessPatientInformation = dismissPage.clickDismiss();
+
+		HomePage homePage = loginlessPatientInformation.fillNewPatientForm(testData.getFirstName(),
+				testData.getLastName(), testData.getDob(), testData.getEmail(), testData.getGender(),
+				testData.getZipCode(), testData.getPrimaryNumber());
+
+		homePage.btnStartSchedClick();
+		logStep("Clicked on the Start Button ");
+
+		StartAppointmentInOrder startAppointmentInOrder = null;
+		startAppointmentInOrder = homePage.skipInsurance(driver);
+		logStep("Clicked on the Skip Insurance Button ");
+		Location location = startAppointmentInOrder.selectFirstLocation(PSSConstants.START_LOCATION);
+
+		log("Verfiy location Page and location =" + testData.getLocation());
+		Provider provider = location.searchProvider(testData.getLocation());
+		log("Verfiy Provider Page and provider to be selected = " + testData.getProvider());
+		AppointmentPage appointment = provider.selectAppointment(testData.getProvider());
+
+		String apptLabel = appointment.getNextAvailableOffText();
+		log("Next availiable text is  " + apptLabel);
+		assertFalse(apptLabel.contains("Next Available"));
+	}
+	
+	@Test(enabled = true, groups = { "AcceptanceTests" }, retryAnalyzer = RetryAnalyzer.class)
+	public void testNextAvailable_LBT_AT() throws Exception {
+
+		logStep("Verify the Next Available should display for LBT Rule-");
+		PSSPropertyFileLoader propertyData = new PSSPropertyFileLoader();
+		Appointment testData = new Appointment();
+		AdminUser adminUser = new AdminUser();
+
+		propertyData.setAdminAT(adminUser);
+		propertyData.setAppointmentResponseAT(testData);
+		PSSAdminUtils adminUtils = new PSSAdminUtils();
+
+		logStep("Set up the API authentication");
+		setUp(propertyData.getProperty("mf.practice.id.at"), propertyData.getProperty("mf.authuserid.am.at"));
+		Response response;
+
+		logStep("Set up the desired rule in Admin UI using API");
+		response = postAPIRequestAM.resourceConfigRuleGet(practiceId);
+		JSONArray arr = new JSONArray(response.body().asString());
+		int l = arr.length();
+		log("Length is- " + l);
+
+		for (int i = 0; i < l; i++) {
+			int ruleId = arr.getJSONObject(i).getInt("id");
+			log("Object No." + i + "- " + ruleId);
+			response = postAPIRequestAM.deleteRuleById(practiceId, Integer.toString(ruleId));
+			aPIVerification.responseCodeValidation(response, 200);
+		}
+
+		response = postAPIRequestAM.resourceConfigRulePost(practiceId, payloadAM.resourceConfigRulePutPayload());
+		aPIVerification.responseCodeValidation(response, 200);
+
+		response = postAPIRequestAM.resourceConfigRulePost(practiceId, payloadAM.resourceConfigRuleLBTPayload());
+		aPIVerification.responseCodeValidation(response, 200);
+
+		logStep("Login To admin portal and Generate link for Provider");
+		adminUtils.upcomingPastApptSetting(driver, adminUser, testData, PSSConstants.LOGINLESS);
+
+		logStep("Move to PSS patient Portal 2.0 to book an Appointment");
+		DismissPage dismissPage = new DismissPage(driver, testData.getUrlLoginLess());
+		Thread.sleep(1000);
+
+		logStep("Open the link and click on Dismiss Button ");
+		LoginlessPatientInformation loginlessPatientInformation = dismissPage.clickDismiss();
+
+		HomePage homePage = loginlessPatientInformation.fillNewPatientForm(testData.getFirstName(),
+				testData.getLastName(), testData.getDob(), testData.getEmail(), testData.getGender(),
+				testData.getZipCode(), testData.getPrimaryNumber());
+
+		homePage.btnStartSchedClick();
+		logStep("Clicked on the Start Button ");
+
+		StartAppointmentInOrder startAppointmentInOrder = null;
+		startAppointmentInOrder = homePage.skipInsurance(driver);
+		logStep("Clicked on the Skip Insurance Button ");
+		Location location = startAppointmentInOrder.selectFirstLocation(PSSConstants.START_LOCATION);
+
+		log("Verfiy location Page and location =" + testData.getLocation());
+		Provider provider = location.searchProvider(testData.getLocation());
+		log("Verfiy Provider Page and provider to be selected = " + testData.getProvider());
+		AppointmentPage appointment = provider.selectAppointment(testData.getProvider());
+
+		String apptLabel = appointment.getNextAvailableOffText();
+		log("Next availiable text is  " + apptLabel);
+		assertFalse(apptLabel.contains("Next Available"));
+	}
+
+	@Test(enabled = true, groups = { "AcceptanceTests" }, retryAnalyzer = RetryAnalyzer.class)
+	public void testNextAvailable_TBL_NG() throws Exception {
+
+		logStep("Verify the Next Available should display for LBT Rule-");
+		PSSPropertyFileLoader propertyData = new PSSPropertyFileLoader();
+		Appointment testData = new Appointment();
+		AdminUser adminUser = new AdminUser();
+
+		propertyData.setAdminNG(adminUser);
+		propertyData.setAppointmentResponseNG(testData);
+		PSSAdminUtils adminUtils = new PSSAdminUtils();
+
+		logStep("Set up the API authentication");
+		setUp(propertyData.getProperty("mf.practice.id.ng"), propertyData.getProperty("mf.authuserid.am.ng"));
+		Response response;
+
+		logStep("Set up the desired rule in Admin UI using API");
+		response = postAPIRequestAM.resourceConfigRuleGet(practiceId);
+		JSONArray arr = new JSONArray(response.body().asString());
+		int l = arr.length();
+		log("Length is- " + l);
+
+		for (int i = 0; i < l; i++) {
+			int ruleId = arr.getJSONObject(i).getInt("id");
+			log("Object No." + i + "- " + ruleId);
+			response = postAPIRequestAM.deleteRuleById(practiceId, Integer.toString(ruleId));
+			aPIVerification.responseCodeValidation(response, 200);
+		}
+
+		response = postAPIRequestAM.resourceConfigRulePost(practiceId, payloadAM.rulePayload("TBL", "T,B,L"));
+		aPIVerification.responseCodeValidation(response, 200);
+
+		response = postAPIRequestAM.resourceConfigRulePost(practiceId, payloadAM.rulePayload("LTB", "L,T,B"));
+		aPIVerification.responseCodeValidation(response, 200);
+
+		logStep("Login To admin portal and Generate link for Provider");
+		adminUtils.upcomingPastApptSetting(driver, adminUser, testData, PSSConstants.LOGINLESS);
+
+		logStep("Move to PSS patient Portal 2.0 to book an Appointment");
+		DismissPage dismissPage = new DismissPage(driver, testData.getUrlLoginLess());
+		Thread.sleep(1000);
+
+		logStep("Open the link and click on Dismiss Button ");
+		LoginlessPatientInformation loginlessPatientInformation = dismissPage.clickDismiss();
+
+		HomePage homePage = loginlessPatientInformation.fillNewPatientForm(testData.getFirstName(),
+				testData.getLastName(), testData.getDob(), testData.getEmail(), testData.getGender(),
+				testData.getZipCode(), testData.getPrimaryNumber());
+
+		homePage.btnStartSchedClick();
+		logStep("Clicked on the Start Button ");
+
+		StartAppointmentInOrder startAppointmentInOrder = null;
+		startAppointmentInOrder = homePage.skipInsurance(driver);
+		logStep("Clicked on the Skip Insurance Button ");
+		AppointmentPage appointment = startAppointmentInOrder.selectFirstAppointment(PSSConstants.START_APPOINTMENT);
+
+		log("Verfiy Appointment Page and appointment =" + testData.getAppointmenttype());
+		log("does apt has a pop up? " + testData.getIsAppointmentPopup());
+
+		Provider provider = appointment.selectTypeOfProvider(testData.getAppointmenttype(),
+				Boolean.valueOf(testData.getIsAppointmentPopup()));
+
+		log("Verfiy Provider Page and Provider = " + testData.getProvider());
+		Location location = provider.selectLocation(testData.getProvider());
+
+		log("Next availiable text is  " + location.getNextavaliableText());
+		assertEquals(location.getNextavaliableText(), testData.getNextAvailiableText());
+	}
+
+	@Test(enabled = true, groups = { "AcceptanceTests" }, retryAnalyzer = RetryAnalyzer.class)
+	public void testNextAvailable_STBL_NG() throws Exception {
+
+		logStep("Verify the Next Available should display for LBT Rule-");
+		PSSPropertyFileLoader propertyData = new PSSPropertyFileLoader();
+		Appointment testData = new Appointment();
+		AdminUser adminUser = new AdminUser();
+
+		propertyData.setAdminNG(adminUser);
+		propertyData.setAppointmentResponseNG(testData);
+		PSSAdminUtils adminUtils = new PSSAdminUtils();
+
+		logStep("Set up the API authentication");
+		setUp(propertyData.getProperty("mf.practice.id.ng"), propertyData.getProperty("mf.authuserid.am.ng"));
+		Response response;
+
+		logStep("Set up the desired rule in Admin UI using API");
+		response = postAPIRequestAM.resourceConfigRuleGet(practiceId);
+		JSONArray arr = new JSONArray(response.body().asString());
+		int l = arr.length();
+		log("Length is- " + l);
+
+		for (int i = 0; i < l; i++) {
+			int ruleId = arr.getJSONObject(i).getInt("id");
+			log("Object No." + i + "- " + ruleId);
+			response = postAPIRequestAM.deleteRuleById(practiceId, Integer.toString(ruleId));
+			aPIVerification.responseCodeValidation(response, 200);
+		}
+
+		response = postAPIRequestAM.resourceConfigRulePost(practiceId, payloadAM.rulePayload("STBL", "S,T,B,L"));
+		aPIVerification.responseCodeValidation(response, 200);
+
+		response = postAPIRequestAM.resourceConfigRulePost(practiceId, payloadAM.rulePayload("SBTL", "S,B,T,L"));
+		aPIVerification.responseCodeValidation(response, 200);
+
+		logStep("Login To admin portal and Generate link for Provider");
+		adminUtils.upcomingPastApptSetting(driver, adminUser, testData, PSSConstants.LOGINLESS);
+
+		logStep("Move to PSS patient Portal 2.0 to book an Appointment");
+		DismissPage dismissPage = new DismissPage(driver, testData.getUrlLoginLess());
+		Thread.sleep(1000);
+
+		logStep("Open the link and click on Dismiss Button ");
+		LoginlessPatientInformation loginlessPatientInformation = dismissPage.clickDismiss();
+
+		HomePage homePage = loginlessPatientInformation.fillNewPatientForm(testData.getFirstName(),
+				testData.getLastName(), testData.getDob(), testData.getEmail(), testData.getGender(),
+				testData.getZipCode(), testData.getPrimaryNumber());
+
+		homePage.btnStartSchedClick();
+		logStep("Clicked on the Start Button ");
+
+		StartAppointmentInOrder startAppointmentInOrder = null;
+		logStep("Clicked on the Skip Insurance Button ");
+
+		Speciality speciality = homePage.skipInsuranceForSpeciality(driver);
+		startAppointmentInOrder = speciality.selectSpeciality(testData.getSpeciality());
+
+		AppointmentPage appointment = startAppointmentInOrder.selectFirstAppointment(PSSConstants.START_APPOINTMENT);
+
+		log("Verfiy Appointment Page and appointment =" + testData.getAppointmenttype());
+		log("does apt has a pop up? " + testData.getIsAppointmentPopup());
+
+		Provider provider = appointment.selectTypeOfProvider(testData.getAppointmenttype(),
+				Boolean.valueOf(testData.getIsAppointmentPopup()));
+
+		log("Verfiy Provider Page and Provider = " + testData.getProvider());
+		Location location = provider.selectLocation(testData.getProvider());
+
+		log("Next availiable text is  " + location.getNextavaliableText());
+		assertEquals(location.getNextavaliableText(), testData.getNextAvailiableText());
+	}
+	
+
+	@Test(enabled = true, groups = { "AcceptanceTests" }, retryAnalyzer = RetryAnalyzer.class)
+	public void testWelcomeMessageNG() throws Exception {
+
+		logStep("Verify the Announcemnet- Greetings on welcome page");
+		PSSPropertyFileLoader propertyData = new PSSPropertyFileLoader();
+		Appointment testData = new Appointment();
+		AdminUser adminUser = new AdminUser();
+		
+		String welcomeMsg=propertyData.getProperty("welcome.message");
+
+		propertyData.setAdminNG(adminUser);
+		propertyData.setAppointmentResponseNG(testData);
+
+		logStep("Set up the API authentication");
+		setUp(propertyData.getProperty("mf.practice.id.ng"), propertyData.getProperty("mf.authuserid.am.ng"));
+		Response response;
+		
+		logStep("Remove the already set announcement ");
+		response=postAPIRequestAM.getAnnouncementByCode(practiceId, "AG");
+		aPIVerification.responseCodeValidation(response, 200);
+		
+		JsonPath js= new JsonPath(response.asString());
+		int id=js.getInt("id");
+		
+		response=postAPIRequestAM.deleteAnnouncement(practiceId, id);
+		aPIVerification.responseCodeValidation(response, 200);
+		
+		response=postAPIRequestAM.saveAnnouncement(practiceId, payloadAM.annSavePayload("Greetings", "AG", welcomeMsg));
+		aPIVerification.responseCodeValidation(response, 200);
+
+		logStep("Move to PSS patient Portal 2.0 to book an Appointment");
+		DismissPage dismissPage = new DismissPage(driver, testData.getUrlLoginLess());
+		String actualGreetingText=dismissPage.getDismissText();
+		log("Text present- "+actualGreetingText);
+		assertEquals(actualGreetingText, welcomeMsg, "Greeting message in not matching with admin UI");
+	}
+	
+	@Test(enabled = true, groups = { "AcceptanceTests" }, retryAnalyzer = RetryAnalyzer.class)
+	public void testWelcomeMessageGW() throws Exception {
+
+		logStep("Verify the Announcemnet- Greetings on welcome page");
+		PSSPropertyFileLoader propertyData = new PSSPropertyFileLoader();
+		Appointment testData = new Appointment();
+		AdminUser adminUser = new AdminUser();
+		
+		String welcomeMsg=propertyData.getProperty("welcome.message");
+
+		propertyData.setAdminGW(adminUser);
+		propertyData.setAppointmentResponseGW(testData);
+
+		logStep("Set up the API authentication");
+		setUp(propertyData.getProperty("mf.practice.id.gw"), propertyData.getProperty("mf.authuserid.am.gw"));
+		Response response;
+		
+		logStep("Remove the already set announcement ");
+		response=postAPIRequestAM.getAnnouncementByCode(practiceId, "AG");
+		aPIVerification.responseCodeValidation(response, 200);
+		
+		JsonPath js= new JsonPath(response.asString());
+		int id=js.getInt("id");
+		
+		response=postAPIRequestAM.deleteAnnouncement(practiceId, id);
+		aPIVerification.responseCodeValidation(response, 200);	
+		
+		response=postAPIRequestAM.saveAnnouncement(practiceId, payloadAM.annSavePayload("Greetings", "AG",welcomeMsg));
+		aPIVerification.responseCodeValidation(response, 200);
+
+		logStep("Move to PSS patient Portal 2.0 to book an Appointment");
+		DismissPage dismissPage = new DismissPage(driver, testData.getUrlLoginLess());
+		String actualGreetingText=dismissPage.getDismissText();
+		log("Text present- "+actualGreetingText);
+		assertEquals(actualGreetingText, welcomeMsg, "Greeting message in not matching with admin UI");
+
+	}
+	
+	@Test(enabled = true, groups = { "AcceptanceTests" }, retryAnalyzer = RetryAnalyzer.class)
+	public void testWelcomeMessageAT() throws Exception {
+
+		logStep("Verify the Announcemnet- Greetings on welcome page");
+		PSSPropertyFileLoader propertyData = new PSSPropertyFileLoader();
+		Appointment testData = new Appointment();
+		AdminUser adminUser = new AdminUser();
+		
+		String welcomeMsg=propertyData.getProperty("welcome.message");
+
+		propertyData.setAdminAT(adminUser);
+		propertyData.setAppointmentResponseAT(testData);
+
+		logStep("Set up the API authentication");
+		setUp(propertyData.getProperty("mf.practice.id.at"), propertyData.getProperty("mf.authuserid.am.at"));
+		Response response;
+		
+		logStep("Remove the already set announcement ");
+		response=postAPIRequestAM.getAnnouncementByCode(practiceId, "AG");
+		aPIVerification.responseCodeValidation(response, 200);
+		
+		JsonPath js= new JsonPath(response.asString());
+		int id=js.getInt("id");
+		
+		response=postAPIRequestAM.deleteAnnouncement(practiceId, id);
+		aPIVerification.responseCodeValidation(response, 200);	
+		
+		response=postAPIRequestAM.saveAnnouncement(practiceId, payloadAM.annSavePayload("Greetings", "AG", welcomeMsg));
+		aPIVerification.responseCodeValidation(response, 200);
+
+		logStep("Move to PSS patient Portal 2.0 to book an Appointment");
+		DismissPage dismissPage = new DismissPage(driver, testData.getUrlLoginLess());
+		String actualGreetingText=dismissPage.getDismissText();
+		log("Text present- "+actualGreetingText);
+		assertEquals(actualGreetingText, welcomeMsg, "Greeting message in not matching with admin UI");
+		
+	}
+	
+	@Test(enabled = true, groups = { "AcceptanceTests" }, retryAnalyzer = RetryAnalyzer.class)
+	public void testWelcomeMessageGE() throws Exception {
+
+		logStep("Verify the Announcemnet- Greetings on welcome page");
+		PSSPropertyFileLoader propertyData = new PSSPropertyFileLoader();
+		Appointment testData = new Appointment();
+		AdminUser adminUser = new AdminUser();
+		
+		String welcomeMsg=propertyData.getProperty("welcome.message");
+
+		propertyData.setAdminGE(adminUser);
+		propertyData.setAppointmentResponseGE(testData);
+
+		logStep("Set up the API authentication");
+		setUp(propertyData.getProperty("mf.practice.id.ge"), propertyData.getProperty("mf.authuserid.am.ge"));
+		Response response;
+		
+		logStep("Remove the already set announcement ");
+		response=postAPIRequestAM.getAnnouncementByCode(practiceId, "AG");
+		aPIVerification.responseCodeValidation(response, 200);
+		
+		JsonPath js= new JsonPath(response.asString());
+		int id=js.getInt("id");
+		
+		response=postAPIRequestAM.deleteAnnouncement(practiceId, id);
+		aPIVerification.responseCodeValidation(response, 200);
+		
+		response=postAPIRequestAM.saveAnnouncement(practiceId, payloadAM.annSavePayload("Greetings", "AG", welcomeMsg));
+		aPIVerification.responseCodeValidation(response, 200);
+
+		logStep("Move to PSS patient Portal 2.0 to book an Appointment");
+		DismissPage dismissPage = new DismissPage(driver, testData.getUrlLoginLess());
+		String actualGreetingText=dismissPage.getDismissText();
+		log("Text present- "+actualGreetingText);
+		assertEquals(actualGreetingText, welcomeMsg, "Greeting message in not matching with admin UI");
+	}
+	
+	@Test(enabled = true, groups = { "AcceptanceTests" }, retryAnalyzer = RetryAnalyzer.class)
+	public void testNextAvailable_LT_NG() throws Exception {
+
+		logStep("To verify that Next available is displayed on location (TL) when show provider is off");
+		PSSPropertyFileLoader propertyData = new PSSPropertyFileLoader();
+		Appointment testData = new Appointment();
+		AdminUser adminUser = new AdminUser();
+		
+		PSSNewPatient pssNewPatient= new PSSNewPatient();	
+
+		propertyData.setAdminNG(adminUser);
+		propertyData.setAppointmentResponseNG(testData);
+
+		logStep("Set up the API authentication");
+		setUp(propertyData.getProperty("mf.practice.id.ng"), propertyData.getProperty("mf.authuserid.am.ng"));
+		Response response;
+
+		logStep("Set up the desired rule in Admin UI using API");
+		response = postAPIRequestAM.resourceConfigRuleGet(practiceId);
+		JSONArray arr = new JSONArray(response.body().asString());
+		int l = arr.length();
+		log("Length is- " + l);
+
+		for (int i = 0; i < l; i++) {
+			int ruleId = arr.getJSONObject(i).getInt("id");
+			log("Object No." + i + "- " + ruleId);
+			response = postAPIRequestAM.deleteRuleById(practiceId, Integer.toString(ruleId));
+			aPIVerification.responseCodeValidation(response, 200);
+		}
+		
+		response=postAPIRequestAM.resourceConfigSavePost(practiceId, payloadAM.providerOff());
+		aPIVerification.responseCodeValidation(response, 200);
+
+		response = postAPIRequestAM.resourceConfigRulePost(practiceId, payloadAM.rulePayload("TL","T,L"));
+		aPIVerification.responseCodeValidation(response, 200);
+		
+		response = postAPIRequestAM.resourceConfigRulePost(practiceId, payloadAM.rulePayload("LT","L,T"));
+		aPIVerification.responseCodeValidation(response, 200);
+
+		logStep("Move to PSS patient Portal 2.0 to book an Appointment");
+		DismissPage dismissPage = new DismissPage(driver, testData.getUrlLoginLess());
+		Thread.sleep(1000);
+
+		logStep("Open the link and click on Dismiss Button ");
+		LoginlessPatientInformation loginlessPatientInformation = dismissPage.clickDismiss();
+		pssNewPatient.createPatientDetails(testData);
+
+		HomePage homePage = loginlessPatientInformation.fillNewPatientForm(testData.getFirstName(),
+				testData.getLastName(), testData.getDob(), testData.getEmail(), testData.getGender(),
+				testData.getZipCode(), testData.getPrimaryNumber());
+
+		homePage.btnStartSchedClick();
+		logStep("Clicked on the Start Button ");
+
+		StartAppointmentInOrder startAppointmentInOrder = null;
+		startAppointmentInOrder = homePage.skipInsurance(driver);
+		logStep("Clicked on the Skip Insurance Button ");
+		Location location = startAppointmentInOrder.selectFirstLocation(PSSConstants.START_LOCATION);
+
+		log("Verfiy Location Page and location =" + testData.getLocation());
+		location.selectAppointment(testData.getLocation());
+		log("Verfiy Appointment Page and appointment to be selected = " + propertyData.getProperty("appointmenttype.ng"));
+		
+		String apptLabel = location.getNextavaliableText();
+		log("Next availiable text is  " + apptLabel);
+		assertTrue(apptLabel.contains("Next Available"));
+	}
+
+	
+	@Test(enabled = true, groups = { "AcceptanceTests" }, retryAnalyzer = RetryAnalyzer.class)
+	public void testNextAvailable_LT_GE() throws Exception {
+
+		logStep("To verify that Next available is displayed on location (TL) when show provider is off");
+		PSSPropertyFileLoader propertyData = new PSSPropertyFileLoader();
+		Appointment testData = new Appointment();
+		AdminUser adminUser = new AdminUser();
+		
+		PSSNewPatient pssNewPatient= new PSSNewPatient();	
+
+		propertyData.setAdminGE(adminUser);
+		propertyData.setAppointmentResponseGE(testData);
+
+		logStep("Set up the API authentication");
+		setUp(propertyData.getProperty("mf.practice.id.ge"), propertyData.getProperty("mf.authuserid.am.ge"));
+		Response response;
+
+		logStep("Set up the desired rule in Admin UI using API");
+		response = postAPIRequestAM.resourceConfigRuleGet(practiceId);
+		JSONArray arr = new JSONArray(response.body().asString());
+		int l = arr.length();
+		log("Length is- " + l);
+
+		for (int i = 0; i < l; i++) {
+			int ruleId = arr.getJSONObject(i).getInt("id");
+			log("Object No." + i + "- " + ruleId);
+			response = postAPIRequestAM.deleteRuleById(practiceId, Integer.toString(ruleId));
+			aPIVerification.responseCodeValidation(response, 200);
+		}
+		
+		response=postAPIRequestAM.resourceConfigSavePost(practiceId, payloadAM.providerOff());
+		aPIVerification.responseCodeValidation(response, 200);
+
+		response = postAPIRequestAM.resourceConfigRulePost(practiceId, payloadAM.rulePayload("TL","T,L"));
+		aPIVerification.responseCodeValidation(response, 200);
+		
+		response = postAPIRequestAM.resourceConfigRulePost(practiceId, payloadAM.rulePayload("LT","L,T"));
+		aPIVerification.responseCodeValidation(response, 200);
+
+		logStep("Move to PSS patient Portal 2.0 to book an Appointment");
+		DismissPage dismissPage = new DismissPage(driver, testData.getUrlLoginLess());
+		Thread.sleep(1000);
+
+		logStep("Open the link and click on Dismiss Button ");
+		LoginlessPatientInformation loginlessPatientInformation = dismissPage.clickDismiss();
+		pssNewPatient.createPatientDetails(testData);
+
+		HomePage homePage = loginlessPatientInformation.fillNewPatientForm(testData.getFirstName(),
+				testData.getLastName(), testData.getDob(), testData.getEmail(), testData.getGender(),
+				testData.getZipCode(), testData.getPrimaryNumber());
+
+		homePage.btnStartSchedClick();
+		logStep("Clicked on the Start Button ");
+
+		StartAppointmentInOrder startAppointmentInOrder = null;
+		startAppointmentInOrder = homePage.skipInsurance(driver);
+		logStep("Clicked on the Skip Insurance Button ");
+		Location location = startAppointmentInOrder.selectFirstLocation(PSSConstants.START_LOCATION);
+
+		log("Verfiy Location Page and location =" + testData.getLocation());
+		location.selectAppointment(testData.getLocation());
+		log("Verfiy Appointment Page and appointment to be selected = " + propertyData.getProperty("appointmenttype.ng"));
+		
+		String apptLabel = location.getNextavaliableText();
+		log("Next availiable text is  " + apptLabel);
+		assertTrue(apptLabel.contains("Next Available"));
+	}
+	
+	@Test(enabled = true, groups = { "AcceptanceTests" }, retryAnalyzer = RetryAnalyzer.class)
+	public void testNextAvailable_TL_NG() throws Exception {
+
+		logStep("To verify that Next available is displayed on location (TL) when show provider is off");
+		PSSPropertyFileLoader propertyData = new PSSPropertyFileLoader();
+		Appointment testData = new Appointment();
+		AdminUser adminUser = new AdminUser();
+		
+		PSSNewPatient pssNewPatient= new PSSNewPatient();	
+
+		propertyData.setAdminNG(adminUser);
+		propertyData.setAppointmentResponseNG(testData);
+
+		logStep("Set up the API authentication");
+		setUp(propertyData.getProperty("mf.practice.id.ng"), propertyData.getProperty("mf.authuserid.am.ng"));
+		Response response;
+
+		logStep("Set up the desired rule in Admin UI using API");
+		response = postAPIRequestAM.resourceConfigRuleGet(practiceId);
+		JSONArray arr = new JSONArray(response.body().asString());
+		int l = arr.length();
+		log("Length is- " + l);
+
+		for (int i = 0; i < l; i++) {
+			int ruleId = arr.getJSONObject(i).getInt("id");
+			log("Object No." + i + "- " + ruleId);
+			response = postAPIRequestAM.deleteRuleById(practiceId, Integer.toString(ruleId));
+			aPIVerification.responseCodeValidation(response, 200);
+		}
+		
+		response=postAPIRequestAM.resourceConfigSavePost(practiceId, payloadAM.providerOff());
+		aPIVerification.responseCodeValidation(response, 200);
+
+		response = postAPIRequestAM.resourceConfigRulePost(practiceId, payloadAM.rulePayload("TL","T,L"));
+		aPIVerification.responseCodeValidation(response, 200);
+		
+		response = postAPIRequestAM.resourceConfigRulePost(practiceId, payloadAM.rulePayload("LT","L,T"));
+		aPIVerification.responseCodeValidation(response, 200);
+
+		logStep("Move to PSS patient Portal 2.0 to book an Appointment");
+		DismissPage dismissPage = new DismissPage(driver, testData.getUrlLoginLess());
+		Thread.sleep(1000);
+
+		logStep("Open the link and click on Dismiss Button ");
+		LoginlessPatientInformation loginlessPatientInformation = dismissPage.clickDismiss();
+		pssNewPatient.createPatientDetails(testData);
+
+		HomePage homePage = loginlessPatientInformation.fillNewPatientForm(testData.getFirstName(),
+				testData.getLastName(), testData.getDob(), testData.getEmail(), testData.getGender(),
+				testData.getZipCode(), testData.getPrimaryNumber());
+
+		homePage.btnStartSchedClick();
+		logStep("Clicked on the Start Button ");
+
+		StartAppointmentInOrder startAppointmentInOrder = null;
+		startAppointmentInOrder = homePage.skipInsurance(driver);
+		logStep("Clicked on the Skip Insurance Button ");
+		AppointmentPage appointment = startAppointmentInOrder.selectFirstAppointment(PSSConstants.START_APPOINTMENT);
+
+		log("Verfiy Appointment Page and appointment =" + propertyData.getProperty("appointmenttype.ng"));
+		Location location = appointment.selectTypeOfLocation(propertyData.getProperty("appointmenttype.ng"),
+				Boolean.valueOf(testData.getIsAppointmentPopup()));
+		
+		String apptLabel = location.getNextavaliableText();
+		log("Next availiable text is  " + apptLabel);
+		assertTrue(apptLabel.contains("Next Available"));
+	}
+	
+	@Test(enabled = true, groups = { "AcceptanceTests" }, retryAnalyzer = RetryAnalyzer.class)
+	public void testNextAvailable_STLB_GW() throws Exception {
+
+		logStep("Verify the Next Available should display for LBT Rule-");
+		PSSPropertyFileLoader propertyData = new PSSPropertyFileLoader();
+		Appointment testData = new Appointment();
+		AdminUser adminUser = new AdminUser();
+
+		propertyData.setAdminGW(adminUser);
+		propertyData.setAppointmentResponseGW(testData);
+		PSSAdminUtils adminUtils = new PSSAdminUtils();
+
+		logStep("Set up the API authentication");
+		setUp(propertyData.getProperty("mf.practice.id.gw"), propertyData.getProperty("mf.authuserid.am.gw"));
+		Response response;
+
+		logStep("Set up the desired rule in Admin UI using API");
+		response = postAPIRequestAM.resourceConfigRuleGet(practiceId);
+		JSONArray arr = new JSONArray(response.body().asString());
+		int l = arr.length();
+		log("Length is- " + l);
+
+		for (int i = 0; i < l; i++) {
+			int ruleId = arr.getJSONObject(i).getInt("id");
+			log("Object No." + i + "- " + ruleId);
+			response = postAPIRequestAM.deleteRuleById(practiceId, Integer.toString(ruleId));
+			aPIVerification.responseCodeValidation(response, 200);
+		}
+
+		response = postAPIRequestAM.resourceConfigRulePost(practiceId, payloadAM.rulePayload("STBL", "S,T,L,B"));
+		aPIVerification.responseCodeValidation(response, 200);
+
+		response = postAPIRequestAM.resourceConfigRulePost(practiceId, payloadAM.rulePayload("SBTL", "S,B,T,L"));
+		aPIVerification.responseCodeValidation(response, 200);
+
+		logStep("Login To admin portal and Generate link for Provider");
+		adminUtils.upcomingPastApptSetting(driver, adminUser, testData, PSSConstants.LOGINLESS);
+
+		logStep("Move to PSS patient Portal 2.0 to book an Appointment");
+		DismissPage dismissPage = new DismissPage(driver, testData.getUrlLoginLess());
+		Thread.sleep(1000);
+
+		logStep("Open the link and click on Dismiss Button ");
+		LoginlessPatientInformation loginlessPatientInformation = dismissPage.clickDismiss();
+
+		HomePage homePage = loginlessPatientInformation.fillNewPatientForm(testData.getFirstName(),
+				testData.getLastName(), testData.getDob(), testData.getEmail(), testData.getGender(),
+				testData.getZipCode(), testData.getPrimaryNumber());
+
+		homePage.btnStartSchedClick();
+		logStep("Clicked on the Start Button ");
+
+		StartAppointmentInOrder startAppointmentInOrder = null;
+		logStep("Clicked on the Skip Insurance Button ");
+
+		Speciality speciality = homePage.skipInsuranceForSpeciality(driver);
+		startAppointmentInOrder = speciality.selectSpeciality(testData.getSpeciality());
+
+		AppointmentPage appointment = startAppointmentInOrder.selectFirstAppointment(PSSConstants.START_APPOINTMENT);
+
+		log("Verfiy Appointment Page and appointment =" + testData.getAppointmenttype());
+		
+		Location location = appointment.selectTypeOfLocation(testData.getAppointmenttype(),
+				Boolean.valueOf(testData.getIsAppointmentPopup()));
+		log("Verfiy Location Page and location to be selected = " + testData.getLocation());
+		Provider provider = location.searchProvider(testData.getLocation());
+		log("address = " + location.getAddressValue());
+		log("Verfiy Provider Page and Provider = " + testData.getProvider());
+
+		log("Next availiable text is  " + location.getNextavaliableText());
+		assertEquals(location.getNextavaliableText(), testData.getNextAvailiableText());
+	}
+	
+	@Test(enabled = true, groups = { "AcceptanceTests" }, retryAnalyzer = RetryAnalyzer.class)
+	public void testNextAvailable_TBL_GE() throws Exception {
+
+		logStep("Verify the Next Available should display for LBT Rule-");
+		PSSPropertyFileLoader propertyData = new PSSPropertyFileLoader();
+		Appointment testData = new Appointment();
+		AdminUser adminUser = new AdminUser();
+
+		propertyData.setAdminNG(adminUser);
+		propertyData.setAppointmentResponseNG(testData);
+		PSSAdminUtils adminUtils = new PSSAdminUtils();
+
+		logStep("Set up the API authentication");
+		setUp(propertyData.getProperty("mf.practice.id.ng"), propertyData.getProperty("mf.authuserid.am.ng"));
+		Response response;
+
+		logStep("Set up the desired rule in Admin UI using API");
+		response = postAPIRequestAM.resourceConfigRuleGet(practiceId);
+		JSONArray arr = new JSONArray(response.body().asString());
+		int l = arr.length();
+		log("Length is- " + l);
+
+		for (int i = 0; i < l; i++) {
+			int ruleId = arr.getJSONObject(i).getInt("id");
+			log("Object No." + i + "- " + ruleId);
+			response = postAPIRequestAM.deleteRuleById(practiceId, Integer.toString(ruleId));
+			aPIVerification.responseCodeValidation(response, 200);
+		}
+
+		response = postAPIRequestAM.resourceConfigRulePost(practiceId, payloadAM.rulePayload("TBL", "T,B,L"));
+		aPIVerification.responseCodeValidation(response, 200);
+
+		response = postAPIRequestAM.resourceConfigRulePost(practiceId, payloadAM.rulePayload("LTB", "L,T,B"));
+		aPIVerification.responseCodeValidation(response, 200);
+
+		logStep("Login To admin portal and Generate link for Provider");
+		adminUtils.upcomingPastApptSetting(driver, adminUser, testData, PSSConstants.LOGINLESS);
+
+		logStep("Move to PSS patient Portal 2.0 to book an Appointment");
+		DismissPage dismissPage = new DismissPage(driver, testData.getUrlLoginLess());
+		Thread.sleep(1000);
+
+		logStep("Open the link and click on Dismiss Button ");
+		LoginlessPatientInformation loginlessPatientInformation = dismissPage.clickDismiss();
+
+		HomePage homePage = loginlessPatientInformation.fillNewPatientForm(testData.getFirstName(),
+				testData.getLastName(), testData.getDob(), testData.getEmail(), testData.getGender(),
+				testData.getZipCode(), testData.getPrimaryNumber());
+
+		homePage.btnStartSchedClick();
+		logStep("Clicked on the Start Button ");
+
+		StartAppointmentInOrder startAppointmentInOrder = null;
+		startAppointmentInOrder = homePage.skipInsurance(driver);
+		logStep("Clicked on the Skip Insurance Button ");
+		AppointmentPage appointment = startAppointmentInOrder.selectFirstAppointment(PSSConstants.START_APPOINTMENT);
+
+		log("Verfiy Appointment Page and appointment =" + testData.getAppointmenttype());
+		log("does apt has a pop up? " + testData.getIsAppointmentPopup());
+
+		Provider provider = appointment.selectTypeOfProvider(testData.getAppointmenttype(),
+				Boolean.valueOf(testData.getIsAppointmentPopup()));
+
+		log("Verfiy Provider Page and Provider = " + testData.getProvider());
+		Location location = provider.selectLocation(testData.getProvider());
+
+		log("Next availiable text is  " + location.getNextavaliableText());
+		assertEquals(location.getNextavaliableText(), testData.getNextAvailiableText());
+	}
+	
+	@Test(enabled = true, groups = { "AcceptanceTests" }, retryAnalyzer = RetryAnalyzer.class)
+	public void testNextAvailable_TBL_AT() throws Exception {
+
+		logStep("Verify the Next Available should display for LBT Rule-");
+		PSSPropertyFileLoader propertyData = new PSSPropertyFileLoader();
+		Appointment testData = new Appointment();
+		AdminUser adminUser = new AdminUser();
+
+		propertyData.setAdminAT(adminUser);
+		propertyData.setAppointmentResponseAT(testData);
+		PSSAdminUtils adminUtils = new PSSAdminUtils();
+
+		logStep("Set up the API authentication");
+		setUp(propertyData.getProperty("mf.practice.id.at"), propertyData.getProperty("mf.authuserid.am.at"));
+		Response response;
+
+		logStep("Set up the desired rule in Admin UI using API");
+		response = postAPIRequestAM.resourceConfigRuleGet(practiceId);
+		JSONArray arr = new JSONArray(response.body().asString());
+		int l = arr.length();
+		log("Length is- " + l);
+
+		for (int i = 0; i < l; i++) {
+			int ruleId = arr.getJSONObject(i).getInt("id");
+			log("Object No." + i + "- " + ruleId);
+			response = postAPIRequestAM.deleteRuleById(practiceId, Integer.toString(ruleId));
+			aPIVerification.responseCodeValidation(response, 200);
+		}
+
+		response = postAPIRequestAM.resourceConfigRulePost(practiceId, payloadAM.rulePayload("TBL", "T,B,L"));
+		aPIVerification.responseCodeValidation(response, 200);
+
+		response = postAPIRequestAM.resourceConfigRulePost(practiceId, payloadAM.rulePayload("LTB", "L,T,B"));
+		aPIVerification.responseCodeValidation(response, 200);
+
+		logStep("Login To admin portal and Generate link for Provider");
+		adminUtils.upcomingPastApptSetting(driver, adminUser, testData, PSSConstants.LOGINLESS);
+
+		logStep("Move to PSS patient Portal 2.0 to book an Appointment");
+		DismissPage dismissPage = new DismissPage(driver, testData.getUrlLoginLess());
+		Thread.sleep(1000);
+
+		logStep("Open the link and click on Dismiss Button ");
+		LoginlessPatientInformation loginlessPatientInformation = dismissPage.clickDismiss();
+
+		HomePage homePage = loginlessPatientInformation.fillNewPatientForm(testData.getFirstName(),
+				testData.getLastName(), testData.getDob(), testData.getEmail(), testData.getGender(),
+				testData.getZipCode(), testData.getPrimaryNumber());
+
+		homePage.btnStartSchedClick();
+		logStep("Clicked on the Start Button ");
+
+		StartAppointmentInOrder startAppointmentInOrder = null;
+		startAppointmentInOrder = homePage.skipInsurance(driver);
+		logStep("Clicked on the Skip Insurance Button ");
+		AppointmentPage appointment = startAppointmentInOrder.selectFirstAppointment(PSSConstants.START_APPOINTMENT);
+
+		log("Verfiy Appointment Page and appointment =" + testData.getAppointmenttype());
+		log("does apt has a pop up? " + testData.getIsAppointmentPopup());
+
+		Provider provider = appointment.selectTypeOfProvider(testData.getAppointmenttype(),
+				Boolean.valueOf(testData.getIsAppointmentPopup()));
+
+		log("Verfiy Provider Page and Provider = " + testData.getProvider());
+		Location location = provider.selectLocation(testData.getProvider());
+
+		log("Next availiable text is  " + location.getNextavaliableText());
+		assertEquals(location.getNextavaliableText(), testData.getNextAvailiableText());
+	}
+	
+	@Test(enabled = true, groups = { "AcceptanceTests" }, retryAnalyzer = RetryAnalyzer.class)
+	public void testNextAvailable_TLB_AT() throws Exception {
+
+		logStep("Verify the Next Available should display for LBT Rule-");
+		PSSPropertyFileLoader propertyData = new PSSPropertyFileLoader();
+		Appointment testData = new Appointment();
+		AdminUser adminUser = new AdminUser();
+
+		propertyData.setAdminAT(adminUser);
+		propertyData.setAppointmentResponseAT(testData);
+		PSSAdminUtils adminUtils = new PSSAdminUtils();
+
+		logStep("Set up the API authentication");
+		setUp(propertyData.getProperty("mf.practice.id.at"), propertyData.getProperty("mf.authuserid.am.at"));
+		Response response;
+
+		logStep("Set up the desired rule in Admin UI using API");
+		response = postAPIRequestAM.resourceConfigRuleGet(practiceId);
+		JSONArray arr = new JSONArray(response.body().asString());
+		int l = arr.length();
+		log("Length is- " + l);
+
+		for (int i = 0; i < l; i++) {
+			int ruleId = arr.getJSONObject(i).getInt("id");
+			log("Object No." + i + "- " + ruleId);
+			response = postAPIRequestAM.deleteRuleById(practiceId, Integer.toString(ruleId));
+			aPIVerification.responseCodeValidation(response, 200);
+		}
+
+		response = postAPIRequestAM.resourceConfigRulePost(practiceId, payloadAM.rulePayload("TLB", "T,L,B"));
+		aPIVerification.responseCodeValidation(response, 200);
+
+		response = postAPIRequestAM.resourceConfigRulePost(practiceId, payloadAM.rulePayload("LTB", "L,T,B"));
+		aPIVerification.responseCodeValidation(response, 200);
+
+		logStep("Login To admin portal and Generate link for Provider");
+		adminUtils.upcomingPastApptSetting(driver, adminUser, testData, PSSConstants.LOGINLESS);
+
+		logStep("Move to PSS patient Portal 2.0 to book an Appointment");
+		DismissPage dismissPage = new DismissPage(driver, testData.getUrlLoginLess());
+		Thread.sleep(1000);
+
+		logStep("Open the link and click on Dismiss Button ");
+		LoginlessPatientInformation loginlessPatientInformation = dismissPage.clickDismiss();
+
+		HomePage homePage = loginlessPatientInformation.fillNewPatientForm(testData.getFirstName(),
+				testData.getLastName(), testData.getDob(), testData.getEmail(), testData.getGender(),
+				testData.getZipCode(), testData.getPrimaryNumber());
+
+		homePage.btnStartSchedClick();
+		logStep("Clicked on the Start Button ");
+
+		StartAppointmentInOrder startAppointmentInOrder = null;
+		startAppointmentInOrder = homePage.skipInsurance(driver);
+		logStep("Clicked on the Skip Insurance Button ");
+		AppointmentPage appointment = startAppointmentInOrder.selectFirstAppointment(PSSConstants.START_APPOINTMENT);
+
+		log("Verfiy Appointment Page and appointment =" + testData.getAppointmenttype());
+		log("does apt has a pop up? " + testData.getIsAppointmentPopup());
+
+		Location location = appointment.selectTypeOfLocation(testData.getAppointmenttype(),
+				Boolean.valueOf(testData.getIsAppointmentPopup()));
+		log("Verfiy Location Page and location to be selected = " + testData.getLocation());
+		Provider provider = location.searchProvider(testData.getLocation());
+		log("address = " + location.getAddressValue());
+
+		log("Verfiy Provider Page and Provider = " + testData.getProvider());
+
+		log("Next availiable text is  " + location.getNextavaliableText());
+		assertEquals(location.getNextavaliableText(), testData.getNextAvailiableText());
+	}
+	
+	@Test(enabled = true, groups = { "AcceptanceTests" }, retryAnalyzer = RetryAnalyzer.class)
+	public void testNextAvailable_TLB_NG() throws Exception {
+
+		logStep("Verify the Next Available should display for LBT Rule-");
+		PSSPropertyFileLoader propertyData = new PSSPropertyFileLoader();
+		Appointment testData = new Appointment();
+		AdminUser adminUser = new AdminUser();
+
+		propertyData.setAdminNG(adminUser);
+		propertyData.setAppointmentResponseNG(testData);
+		PSSAdminUtils adminUtils = new PSSAdminUtils();
+
+		logStep("Set up the API authentication");
+		setUp(propertyData.getProperty("mf.practice.id.ng"), propertyData.getProperty("mf.authuserid.am.ng"));
+		Response response;
+
+		logStep("Set up the desired rule in Admin UI using API");
+		response = postAPIRequestAM.resourceConfigRuleGet(practiceId);
+		JSONArray arr = new JSONArray(response.body().asString());
+		int l = arr.length();
+		log("Length is- " + l);
+
+		for (int i = 0; i < l; i++) {
+			int ruleId = arr.getJSONObject(i).getInt("id");
+			log("Object No." + i + "- " + ruleId);
+			response = postAPIRequestAM.deleteRuleById(practiceId, Integer.toString(ruleId));
+			aPIVerification.responseCodeValidation(response, 200);
+		}
+
+		response = postAPIRequestAM.resourceConfigRulePost(practiceId, payloadAM.rulePayload("TLB", "T,L,B"));
+		aPIVerification.responseCodeValidation(response, 200);
+
+		response = postAPIRequestAM.resourceConfigRulePost(practiceId, payloadAM.rulePayload("LTB", "L,T,B"));
+		aPIVerification.responseCodeValidation(response, 200);
+
+		logStep("Login To admin portal and Generate link for Provider");
+		adminUtils.upcomingPastApptSetting(driver, adminUser, testData, PSSConstants.LOGINLESS);
+
+		logStep("Move to PSS patient Portal 2.0 to book an Appointment");
+		DismissPage dismissPage = new DismissPage(driver, testData.getUrlLoginLess());
+		Thread.sleep(1000);
+
+		logStep("Open the link and click on Dismiss Button ");
+		LoginlessPatientInformation loginlessPatientInformation = dismissPage.clickDismiss();
+
+		HomePage homePage = loginlessPatientInformation.fillNewPatientForm(testData.getFirstName(),
+				testData.getLastName(), testData.getDob(), testData.getEmail(), testData.getGender(),
+				testData.getZipCode(), testData.getPrimaryNumber());
+
+		homePage.btnStartSchedClick();
+		logStep("Clicked on the Start Button ");
+
+		StartAppointmentInOrder startAppointmentInOrder = null;
+		startAppointmentInOrder = homePage.skipInsurance(driver);
+		logStep("Clicked on the Skip Insurance Button ");
+		AppointmentPage appointment = startAppointmentInOrder.selectFirstAppointment(PSSConstants.START_APPOINTMENT);
+
+		log("Verfiy Appointment Page and appointment =" + testData.getAppointmenttype());
+		log("does apt has a pop up? " + testData.getIsAppointmentPopup());
+
+		Location location = appointment.selectTypeOfLocation(testData.getAppointmenttype(),
+				Boolean.valueOf(testData.getIsAppointmentPopup()));
+		log("Verfiy Location Page and location to be selected = " + testData.getLocation());
+		Provider provider = location.searchProvider(testData.getLocation());
+		log("address = " + location.getAddressValue());
+
+		log("Verfiy Provider Page and Provider = " + testData.getProvider());
+
+		log("Next availiable text is  " + location.getNextavaliableText());
+		assertEquals(location.getNextavaliableText(), testData.getNextAvailiableText());
+	}
+	
+	@Test(enabled = true, groups = { "AcceptanceTests" }, retryAnalyzer = RetryAnalyzer.class)
+	public void testNextAvailable_TLB_GE() throws Exception {
+
+		logStep("Verify the Next Available should display for LBT Rule-");
+		PSSPropertyFileLoader propertyData = new PSSPropertyFileLoader();
+		Appointment testData = new Appointment();
+		AdminUser adminUser = new AdminUser();
+
+		propertyData.setAdminGE(adminUser);
+		propertyData.setAppointmentResponseGE(testData);
+		PSSAdminUtils adminUtils = new PSSAdminUtils();
+
+		logStep("Set up the API authentication");
+		setUp(propertyData.getProperty("mf.practice.id.ge"), propertyData.getProperty("mf.authuserid.am.ge"));
+		Response response;
+
+		logStep("Set up the desired rule in Admin UI using API");
+		response = postAPIRequestAM.resourceConfigRuleGet(practiceId);
+		JSONArray arr = new JSONArray(response.body().asString());
+		int l = arr.length();
+		log("Length is- " + l);
+
+		for (int i = 0; i < l; i++) {
+			int ruleId = arr.getJSONObject(i).getInt("id");
+			log("Object No." + i + "- " + ruleId);
+			response = postAPIRequestAM.deleteRuleById(practiceId, Integer.toString(ruleId));
+			aPIVerification.responseCodeValidation(response, 200);
+		}
+
+		response = postAPIRequestAM.resourceConfigRulePost(practiceId, payloadAM.rulePayload("TLB", "T,L,B"));
+		aPIVerification.responseCodeValidation(response, 200);
+
+		response = postAPIRequestAM.resourceConfigRulePost(practiceId, payloadAM.rulePayload("LTB", "L,T,B"));
+		aPIVerification.responseCodeValidation(response, 200);
+
+		logStep("Login To admin portal and Generate link for Provider");
+		adminUtils.upcomingPastApptSetting(driver, adminUser, testData, PSSConstants.LOGINLESS);
+
+		logStep("Move to PSS patient Portal 2.0 to book an Appointment");
+		DismissPage dismissPage = new DismissPage(driver, testData.getUrlLoginLess());
+		Thread.sleep(1000);
+
+		logStep("Open the link and click on Dismiss Button ");
+		LoginlessPatientInformation loginlessPatientInformation = dismissPage.clickDismiss();
+
+		HomePage homePage = loginlessPatientInformation.fillNewPatientForm(testData.getFirstName(),
+				testData.getLastName(), testData.getDob(), testData.getEmail(), testData.getGender(),
+				testData.getZipCode(), testData.getPrimaryNumber());
+
+		homePage.btnStartSchedClick();
+		logStep("Clicked on the Start Button ");
+
+		StartAppointmentInOrder startAppointmentInOrder = null;
+		startAppointmentInOrder = homePage.skipInsurance(driver);
+		logStep("Clicked on the Skip Insurance Button ");
+		AppointmentPage appointment = startAppointmentInOrder.selectFirstAppointment(PSSConstants.START_APPOINTMENT);
+
+		log("Verfiy Appointment Page and appointment =" + testData.getAppointmenttype());
+		log("does apt has a pop up? " + testData.getIsAppointmentPopup());
+
+		Location location = appointment.selectTypeOfLocation(testData.getAppointmenttype(),
+				Boolean.valueOf(testData.getIsAppointmentPopup()));
+		log("Verfiy Location Page and location to be selected = " + testData.getLocation());
+		Provider provider = location.searchProvider(testData.getLocation());
+		log("address = " + location.getAddressValue());
+
+		log("Verfiy Provider Page and Provider = " + testData.getProvider());
+
+		log("Next availiable text is  " + location.getNextavaliableText());
+		assertEquals(location.getNextavaliableText(), testData.getNextAvailiableText());
+	}
 
 
+	
+
+	
+	@Test(enabled = true, groups = {"AcceptanceTests"}, retryAnalyzer = RetryAnalyzer.class)
+	public void testAgeRuleAppointmentTypeNG() throws Exception {
+		PSSPropertyFileLoader propertyData = new PSSPropertyFileLoader();
+		Appointment testData = new Appointment();
+		AdminUser adminUser = new AdminUser();
+
+		propertyData.setAdminNG(adminUser);
+		propertyData.setAppointmentResponseNG(testData);
+		PSSAdminUtils adminUtils = new PSSAdminUtils();
+		PSSPatientUtils psspatientutils = new PSSPatientUtils();
+
+		logStep("Set up the API authentication");
+		setUp(propertyData.getProperty("mf.practice.id.ng"), propertyData.getProperty("mf.authuserid.am.ng"));
+		Response response;
+
+		logStep("Set up the desired rule in Admin UI using API");
+		response = postAPIRequestAM.resourceConfigRuleGet(practiceId);
+		JSONArray arr = new JSONArray(response.body().asString());
+		int l = arr.length();
+		log("Length is- " + l);
+
+		for (int i = 0; i < l; i++) {
+			int ruleId = arr.getJSONObject(i).getInt("id");
+			log("Object No." + i + "- " + ruleId);
+			response = postAPIRequestAM.deleteRuleById(practiceId, Integer.toString(ruleId));
+			aPIVerification.responseCodeValidation(response, 200);
+		}
+
+		response = postAPIRequestAM.resourceConfigRulePost(practiceId, payloadAM.rulePayload("TBL", "T,B,L"));
+		aPIVerification.responseCodeValidation(response, 200);
+
+		response = postAPIRequestAM.resourceConfigRulePost(practiceId, payloadAM.rulePayload("LTB", "L,T,B"));
+		aPIVerification.responseCodeValidation(response, 200);
+
+		adminUtils.ageRuleAppointmentType(driver, adminUser, testData, PSSConstants.LOGINLESS);
+		logStep("Move to PSS patient Portal 2.0 to book an Appointment");
+		DismissPage dismissPage = new DismissPage(driver, testData.getUrlLoginLess());
+		Thread.sleep(1000);
+		log("Clicked on Dismiss");
+		LoginlessPatientInformation loginlessPatientInformation = dismissPage.clickDismiss();
+		HomePage homepage = loginlessPatientInformation.fillNewPatientForm(testData.getFirstName(), testData.getLastName(), testData.getDob(), testData.getEmail(),
+				testData.getGender(), testData.getZipCode(), testData.getPrimaryNumber());
+		log("Successfully upto Home page");
+		homepage.btnStartSchedClick();
+		Location location = null;
+		StartAppointmentInOrder startappointmentInOrder = null;
+		startappointmentInOrder = homepage.skipInsurance(driver);
+		location = startappointmentInOrder.selectFirstLocation(PSSConstants.START_LOCATION);
+		logStep("Step 9: Verfiy Location Page and location =" + testData.getLocation());
+		AppointmentPage appointment = null;
+		appointment = location.selectAppointment(testData.getLocation());
+		int i = Integer.parseInt(testData.getAgeRuleMonthFirst());
+		int j = Integer.parseInt(testData.getAgeRuleMonthSecond());
+		if (psspatientutils.ageCurrentmonths(testData) > i && psspatientutils.ageCurrentmonths(testData) < j) {
+			String name = appointment.selectTypeOfApp(testData.getAppointmenttype(), Boolean.valueOf(testData.getIsAppointmentPopup()));
+			assertEquals(testData.getAppointmenttype(), name);
+		} else {
+			String name = appointment.selectTypeOfApp(testData.getAppointmenttype(), Boolean.valueOf(testData.getIsAppointmentPopup()));
+			assertNotEquals(testData.getAppointmenttype(), name);
+		}
+		adminUtils.resetAgeRuleAppointmentType(driver, adminUser, testData, PSSConstants.LOGINLESS);
+	}
+
+	@Test(enabled = true, groups = {"AcceptanceTests"}, retryAnalyzer = RetryAnalyzer.class)
+	public void testAgeRuleAppointmentTypeAT() throws Exception {
+		PSSPropertyFileLoader propertyData = new PSSPropertyFileLoader();
+		Appointment testData = new Appointment();
+		AdminUser adminUser = new AdminUser();
+
+		propertyData.setAdminAT(adminUser);
+		propertyData.setAppointmentResponseAT(testData);
+		PSSAdminUtils adminUtils = new PSSAdminUtils();
+		PSSPatientUtils psspatientutils = new PSSPatientUtils();
+
+		logStep("Set up the API authentication");
+		setUp(propertyData.getProperty("mf.practice.id.at"), propertyData.getProperty("mf.authuserid.am.at"));
+		Response response;
+
+		logStep("Set up the desired rule in Admin UI using API");
+		response = postAPIRequestAM.resourceConfigRuleGet(practiceId);
+		JSONArray arr = new JSONArray(response.body().asString());
+		int l = arr.length();
+		log("Length is- " + l);
+
+		for (int i = 0; i < l; i++) {
+			int ruleId = arr.getJSONObject(i).getInt("id");
+			log("Object No." + i + "- " + ruleId);
+			response = postAPIRequestAM.deleteRuleById(practiceId, Integer.toString(ruleId));
+			aPIVerification.responseCodeValidation(response, 200);
+		}
+
+		response = postAPIRequestAM.resourceConfigRulePost(practiceId, payloadAM.rulePayload("TBL", "T,B,L"));
+		aPIVerification.responseCodeValidation(response, 200);
+
+		response = postAPIRequestAM.resourceConfigRulePost(practiceId, payloadAM.rulePayload("LTB", "L,T,B"));
+		aPIVerification.responseCodeValidation(response, 200);
+
+		adminUtils.ageRuleAppointmentType(driver, adminUser, testData, PSSConstants.LOGINLESS);
+		logStep(" Move to PSS patient Portal 2.0 to book an Appointment");
+		DismissPage dismissPage = new DismissPage(driver, testData.getUrlLoginLess());
+		Thread.sleep(1000);
+		log("Clicked on Dismiss");
+		LoginlessPatientInformation loginlessPatientInformation = dismissPage.clickDismiss();
+		HomePage homepage = loginlessPatientInformation.fillNewPatientForm(testData.getFirstName(), testData.getLastName(), testData.getDob(), testData.getEmail(),
+				testData.getGender(), testData.getZipCode(), testData.getPrimaryNumber());
+		log("Successfully upto Home page");
+		homepage.btnStartSchedClick();
+		Location location = null;
+		StartAppointmentInOrder startappointmentInOrder = null;
+		startappointmentInOrder = homepage.skipInsurance(driver);
+		location = startappointmentInOrder.selectFirstLocation(PSSConstants.START_LOCATION);
+		logStep("Verfiy Location Page and location =" + testData.getLocation());
+		AppointmentPage appointment = null;
+		appointment = location.selectAppointment(testData.getLocation());
+		int i = Integer.parseInt(testData.getAgeRuleMonthFirst());
+		int j = Integer.parseInt(testData.getAgeRuleMonthSecond());
+		if (psspatientutils.ageCurrentmonths(testData) > i && psspatientutils.ageCurrentmonths(testData) < j) {
+			String name = appointment.selectTypeOfApp(testData.getAppointmenttype(), Boolean.valueOf(testData.getIsAppointmentPopup()));
+			assertEquals(testData.getAppointmenttype(), name);
+		} else {
+			String name = appointment.selectTypeOfApp(testData.getAppointmenttype(), Boolean.valueOf(testData.getIsAppointmentPopup()));
+			assertNotEquals(testData.getAppointmenttype(), name);
+		}
+		adminUtils.resetAgeRuleAppointmentType(driver, adminUser, testData, PSSConstants.LOGINLESS);
+
+	}
+
+	@Test(enabled = true, groups = {"AcceptanceTests"}, retryAnalyzer = RetryAnalyzer.class)
+	public void testAgeRuleAppointmentTypeGE() throws Exception {
+		PSSPropertyFileLoader propertyData = new PSSPropertyFileLoader();
+		Appointment testData = new Appointment();
+		AdminUser adminUser = new AdminUser();
+
+		propertyData.setAdminGE(adminUser);
+		propertyData.setAppointmentResponseGE(testData);
+		PSSAdminUtils adminUtils = new PSSAdminUtils();
+		PSSPatientUtils psspatientutils = new PSSPatientUtils();
+
+		logStep("Set up the API authentication");
+		setUp(propertyData.getProperty("mf.practice.id.ge"), propertyData.getProperty("mf.authuserid.am.ge"));
+		Response response;
+
+		logStep("Set up the desired rule in Admin UI using API");
+		response = postAPIRequestAM.resourceConfigRuleGet(practiceId);
+		JSONArray arr = new JSONArray(response.body().asString());
+		int l = arr.length();
+		log("Length is- " + l);
+
+		for (int i = 0; i < l; i++) {
+			int ruleId = arr.getJSONObject(i).getInt("id");
+			log("Object No." + i + "- " + ruleId);
+			response = postAPIRequestAM.deleteRuleById(practiceId, Integer.toString(ruleId));
+			aPIVerification.responseCodeValidation(response, 200);
+		}
+
+		response = postAPIRequestAM.resourceConfigRulePost(practiceId, payloadAM.rulePayload("TBL", "T,B,L"));
+		aPIVerification.responseCodeValidation(response, 200);
+
+		response = postAPIRequestAM.resourceConfigRulePost(practiceId, payloadAM.rulePayload("LTB", "L,T,B"));
+		aPIVerification.responseCodeValidation(response, 200);
+
+		adminUtils.ageRuleAppointmentType(driver, adminUser, testData, PSSConstants.LOGINLESS);
+		logStep("Move to PSS patient Portal 2.0 to book an Appointment");
+		DismissPage dismissPage = new DismissPage(driver, testData.getUrlLoginLess());
+		Thread.sleep(1000);
+		LoginlessPatientInformation loginlessPatientInformation = dismissPage.clickDismiss();
+		HomePage homepage = loginlessPatientInformation.fillNewPatientForm(testData.getFirstName(), testData.getLastName(), testData.getDob(), testData.getEmail(),
+				testData.getGender(), testData.getZipCode(), testData.getPrimaryNumber());
+		log("Successfully upto Home page");
+		homepage.btnStartSchedClick();
+		Location location = null;
+		StartAppointmentInOrder startappointmentInOrder = null;
+		startappointmentInOrder = homepage.skipInsurance(driver);
+		location = startappointmentInOrder.selectFirstLocation(PSSConstants.START_LOCATION);
+		logStep("Verfiy Location Page and location =" + testData.getLocation());
+		AppointmentPage appointment = null;
+		appointment = location.selectAppointment(testData.getLocation());
+		int i = Integer.parseInt(testData.getAgeRuleMonthFirst());
+		int j = Integer.parseInt(testData.getAgeRuleMonthSecond());
+		if (psspatientutils.ageCurrentmonths(testData) > i && psspatientutils.ageCurrentmonths(testData) < j) {
+			String name = appointment.selectTypeOfApp(testData.getAppointmenttype(), Boolean.valueOf(testData.getIsAppointmentPopup()));
+			assertEquals(testData.getAppointmenttype(), name);
+		} else {
+			String name = appointment.selectTypeOfApp(testData.getAppointmenttype(), Boolean.valueOf(testData.getIsAppointmentPopup()));
+			assertNotEquals(testData.getAppointmenttype(), name);
+		}
+		adminUtils.resetAgeRuleAppointmentType(driver, adminUser, testData, PSSConstants.LOGINLESS);
+	}
+
+
+	@Test(enabled = true, groups = {"AcceptanceTests"}, retryAnalyzer = RetryAnalyzer.class)
+	public void testAgeRuleAppointmentTypeGW() throws Exception {
+		PSSPropertyFileLoader propertyData = new PSSPropertyFileLoader();
+		Appointment testData = new Appointment();
+		AdminUser adminUser = new AdminUser();
+
+		propertyData.setAdminGW(adminUser);
+		propertyData.setAppointmentResponseGW(testData);
+		PSSAdminUtils adminUtils = new PSSAdminUtils();
+		PSSPatientUtils psspatientutils = new PSSPatientUtils();
+
+		logStep("Set up the API authentication");
+		setUp(propertyData.getProperty("mf.practice.id.gw"), propertyData.getProperty("mf.authuserid.am.gw"));
+		Response response;
+
+		logStep("Set up the desired rule in Admin UI using API");
+		response = postAPIRequestAM.resourceConfigRuleGet(practiceId);
+		JSONArray arr = new JSONArray(response.body().asString());
+		int l = arr.length();
+		log("Length is- " + l);
+
+		for (int i = 0; i < l; i++) {
+			int ruleId = arr.getJSONObject(i).getInt("id");
+			log("Object No." + i + "- " + ruleId);
+			response = postAPIRequestAM.deleteRuleById(practiceId, Integer.toString(ruleId));
+			aPIVerification.responseCodeValidation(response, 200);
+		}
+
+		response = postAPIRequestAM.resourceConfigRulePost(practiceId, payloadAM.rulePayload("TBL", "T,B,L"));
+		aPIVerification.responseCodeValidation(response, 200);
+
+		response = postAPIRequestAM.resourceConfigRulePost(practiceId, payloadAM.rulePayload("LTB", "L,T,B"));
+		aPIVerification.responseCodeValidation(response, 200);
+
+		adminUtils.ageRuleAppointmentType(driver, adminUser, testData, PSSConstants.LOGINLESS);
+		logStep("Move to PSS patient Portal 2.0 to book an Appointment");
+		DismissPage dismissPage = new DismissPage(driver, testData.getUrlLoginLess());
+		Thread.sleep(1000);
+		log("Clicked on Dismiss");
+		LoginlessPatientInformation loginlessPatientInformation = dismissPage.clickDismiss();
+		HomePage homepage = loginlessPatientInformation.fillNewPatientForm(testData.getFirstName(), testData.getLastName(), testData.getDob(), testData.getEmail(),
+				testData.getGender(), testData.getZipCode(), testData.getPrimaryNumber());
+		log("Successfully upto Home page");
+		homepage.btnStartSchedClick();
+		Location location = null;
+		StartAppointmentInOrder startappointmentInOrder = null;
+		startappointmentInOrder = homepage.skipInsurance(driver);
+		location = startappointmentInOrder.selectFirstLocation(PSSConstants.START_LOCATION);
+		logStep("Verfiy Location Page and location =" + testData.getLocation());
+		AppointmentPage appointment = null;
+		appointment = location.selectAppointment(testData.getLocation());
+		int i = Integer.parseInt(testData.getAgeRuleMonthFirst());
+		int j = Integer.parseInt(testData.getAgeRuleMonthSecond());
+		if (psspatientutils.ageCurrentmonths(testData) > i && psspatientutils.ageCurrentmonths(testData) < j) {
+			String name = appointment.selectTypeOfApp(testData.getAppointmenttype(), Boolean.valueOf(testData.getIsAppointmentPopup()));
+			assertEquals(testData.getAppointmenttype(), name);
+		} else {
+			String name = appointment.selectTypeOfApp(testData.getAppointmenttype(), Boolean.valueOf(testData.getIsAppointmentPopup()));
+			assertNotEquals(testData.getAppointmenttype(), name);
+		}
+		adminUtils.resetAgeRuleAppointmentType(driver, adminUser, testData, PSSConstants.LOGINLESS);
+	}
+
+	@Test(enabled = true, groups = {"AcceptanceTests"}, retryAnalyzer = RetryAnalyzer.class)
+	public void testMaxPerDayShowProviderOFFNG() throws Exception {
+		PSSPropertyFileLoader propertyData = new PSSPropertyFileLoader();
+		Appointment testData = new Appointment();
+		AdminUser adminuser = new AdminUser();
+		propertyData.setAdminNG(adminuser);
+		propertyData.setAppointmentResponseNG(testData);
+		setUp(propertyData.getProperty("mf.practice.id.ng"), propertyData.getProperty("mf.authuserid.am.ng"));
+		Response response;
+		response = postAPIRequestAM.resourceConfigRuleGet(practiceId);
+		validateAdapter.verifyResourceConfigRuleGet(response);
+		JSONArray arr = new JSONArray(response.body().asString());
+		int l = arr.length();
+		log("Length is- " + l);
+		for (int i = 0; i < l; i++) {
+			int ruleId = arr.getJSONObject(i).getInt("id");
+			log("Object No." + i + "- " + ruleId);
+			Response responseForDeleteRule = postAPIRequestAM.deleteRuleById(practiceId, Integer.toString(ruleId));
+			aPIVerification.responseCodeValidation(responseForDeleteRule, 200);
+		}
+		Response responseRulePost = postAPIRequestAM.resourceConfigRulePost(practiceId, payloadAM.resourceConfigRulePutPayloadLT());
+		aPIVerification.responseCodeValidation(responseRulePost, 200);
+
+		Response responseRulePostTL = postAPIRequestAM.resourceConfigRulePost(practiceId, payloadAM.resourceConfigRulePostPayloadTL());
+		aPIVerification.responseCodeValidation(responseRulePostTL, 200);
+
+		PSSAdminUtils adminUtils = new PSSAdminUtils();
+		logStep("Login to PSS 2.0 Admin portal");
+		adminUtils.maxPerDayWithShowProviderOFF(driver, adminuser, testData);
+		Assert.assertFalse(testData.isMaxPerDayStatus());
+
+	}
+
+	@Test(enabled = true, groups = {"AcceptanceTests"}, retryAnalyzer = RetryAnalyzer.class)
+	public void testMaxPerDayShowProviderOFFAT() throws Exception {
+		PSSPropertyFileLoader propertyData = new PSSPropertyFileLoader();
+		Appointment testData = new Appointment();
+		AdminUser adminuser = new AdminUser();
+		propertyData.setAdminAT(adminuser);
+		propertyData.setAppointmentResponseAT(testData);
+		setUp(propertyData.getProperty("mf.practice.id.at"), propertyData.getProperty("mf.authuserid.am.at"));
+		Response response;
+		response = postAPIRequestAM.resourceConfigRuleGet(practiceId);
+		validateAdapter.verifyResourceConfigRuleGet(response);
+		JSONArray arr = new JSONArray(response.body().asString());
+		int l = arr.length();
+		log("Length is- " + l);
+		for (int i = 0; i < l; i++) {
+			int ruleId = arr.getJSONObject(i).getInt("id");
+			log("Object No." + i + "- " + ruleId);
+			Response responseForDeleteRule = postAPIRequestAM.deleteRuleById(practiceId, Integer.toString(ruleId));
+			aPIVerification.responseCodeValidation(responseForDeleteRule, 200);
+		}
+		Response responseRulePost = postAPIRequestAM.resourceConfigRulePost(practiceId, payloadAM.resourceConfigRulePutPayloadLT());
+		aPIVerification.responseCodeValidation(responseRulePost, 200);
+
+		Response responseRulePostTL = postAPIRequestAM.resourceConfigRulePost(practiceId, payloadAM.resourceConfigRulePostPayloadTL());
+		aPIVerification.responseCodeValidation(responseRulePostTL, 200);
+
+		PSSAdminUtils adminUtils = new PSSAdminUtils();
+		logStep("Login to PSS 2.0 Admin portal");
+		adminUtils.maxPerDayWithShowProviderOFF(driver, adminuser, testData);
+		Assert.assertFalse(testData.isMaxPerDayStatus());
+
+	}
+
+	@Test(enabled = true, groups = {"AcceptanceTests"}, retryAnalyzer = RetryAnalyzer.class)
+	public void testReserveForSameDayGE() throws Exception {
+		PSSPropertyFileLoader propertyData = new PSSPropertyFileLoader();
+		Appointment testData = new Appointment();
+		AdminUser adminUser = new AdminUser();
+
+		propertyData.setAdminGE(adminUser);
+		propertyData.setAppointmentResponseGE(testData);
+		PSSAdminUtils adminUtils = new PSSAdminUtils();
+		PSSPatientUtils psspatientutils = new PSSPatientUtils();
+
+		logStep("Set up the API authentication");
+		setUp(propertyData.getProperty("mf.practice.id.ge"), propertyData.getProperty("mf.authuserid.am.ge"));
+		Response response;
+		response = postAPIRequestAM.medfusionpracticeTimeZone(practiceId, "/medfusionpractice");
+		String timezone = aPIVerification.responseKeyValidationJson(response, "practiceTimezone");
+		testData.setCurrentTimeZone(timezone);
+
+		logStep("Set up the desired rule in Admin UI using API");
+		response = postAPIRequestAM.resourceConfigRuleGet(practiceId);
+		JSONArray arr = new JSONArray(response.body().asString());
+		int l = arr.length();
+		log("Length is- " + l);
+
+		for (int i = 0; i < l; i++) {
+			int ruleId = arr.getJSONObject(i).getInt("id");
+			log("Object No." + i + "- " + ruleId);
+			response = postAPIRequestAM.deleteRuleById(practiceId, Integer.toString(ruleId));
+			aPIVerification.responseCodeValidation(response, 200);
+		}
+
+		response = postAPIRequestAM.resourceConfigRulePost(practiceId, payloadAM.rulePayload("TBL", "T,B,L"));
+		aPIVerification.responseCodeValidation(response, 200);
+
+		response = postAPIRequestAM.resourceConfigRulePost(practiceId, payloadAM.rulePayload("LTB", "L,T,B"));
+		aPIVerification.responseCodeValidation(response, 200);
+
+		adminUtils.reserveForSameDay(driver, adminUser, testData, PSSConstants.LOGINLESS);
+		DismissPage dismissPage = new DismissPage(driver, testData.getUrlLoginLess());
+		Thread.sleep(1000);
+		logStep("Clicked on Dismiss");
+		LoginlessPatientInformation loginlessPatientInformation = dismissPage.clickDismiss();
+		HomePage homepage = loginlessPatientInformation.fillNewPatientForm(testData.getFirstName(), testData.getLastName(), testData.getDob(), testData.getEmail(),
+				testData.getGender(), testData.getZipCode(), testData.getPrimaryNumber());
+		homepage.btnStartSchedClick();
+		Location location = null;
+		StartAppointmentInOrder startappointmentInOrder = null;
+		startappointmentInOrder = homepage.skipInsurance(driver);
+		location = startappointmentInOrder.selectFirstLocation(PSSConstants.START_LOCATION);
+		logStep("Verfiy Location Page and location =" + testData.getLocation());
+
+		AppointmentPage appointment = location.selectAppointment(testData.getLocation());
+		logStep("Verfiy Appointment Page and appointment to be selected = " + testData.getAppointmenttype());
+
+		Thread.sleep(20000);
+		Provider provider = appointment.selectTypeOfProvider(testData.getAppointmenttype(), Boolean.valueOf(testData.getIsAppointmentPopup()));
+		logStep("Verfiy Provider Page and Provider = " + testData.getProvider());
+		AppointmentDateTime aptDateTime = provider.getProviderandClick(testData.getProvider());
+		String date = aptDateTime.selectDate(testData.getIsNextDayBooking());
+		int size = aptDateTime.getAppointmentDateList();
+		logStep("Date selected is for App" + date);
+		String dateSize = String.valueOf(size);
+		assertEquals(dateSize, "1");
+		log("current date is" + psspatientutils.currentESTDate(testData));
+		assertEquals(date, psspatientutils.currentESTDate(testData));
+	}
+
+	@Test(enabled = true, groups = {"AcceptanceTests"}, retryAnalyzer = RetryAnalyzer.class)
+	public void testReserveForSameDayGW() throws Exception {
+		PSSPropertyFileLoader propertyData = new PSSPropertyFileLoader();
+		Appointment testData = new Appointment();
+		AdminUser adminUser = new AdminUser();
+
+		propertyData.setAdminGW(adminUser);
+		propertyData.setAppointmentResponseGW(testData);
+		PSSAdminUtils adminUtils = new PSSAdminUtils();
+		PSSPatientUtils psspatientutils = new PSSPatientUtils();
+
+		logStep("Set up the API authentication");
+		setUp(propertyData.getProperty("mf.practice.id.gw"), propertyData.getProperty("mf.authuserid.am.gw"));
+		Response response;
+		response = postAPIRequestAM.medfusionpracticeTimeZone(practiceId, "/medfusionpractice");
+		String timezone = aPIVerification.responseKeyValidationJson(response, "practiceTimezone");
+		testData.setCurrentTimeZone(timezone);
+
+		logStep("Set up the desired rule in Admin UI using API");
+		response = postAPIRequestAM.resourceConfigRuleGet(practiceId);
+		JSONArray arr = new JSONArray(response.body().asString());
+		int l = arr.length();
+		log("Length is- " + l);
+
+		for (int i = 0; i < l; i++) {
+			int ruleId = arr.getJSONObject(i).getInt("id");
+			log("Object No." + i + "- " + ruleId);
+			response = postAPIRequestAM.deleteRuleById(practiceId, Integer.toString(ruleId));
+			aPIVerification.responseCodeValidation(response, 200);
+		}
+
+		response = postAPIRequestAM.resourceConfigRulePost(practiceId, payloadAM.rulePayload("TBL", "T,B,L"));
+		aPIVerification.responseCodeValidation(response, 200);
+
+		response = postAPIRequestAM.resourceConfigRulePost(practiceId, payloadAM.rulePayload("LTB", "L,T,B"));
+		aPIVerification.responseCodeValidation(response, 200);
+
+		adminUtils.reserveForSameDay(driver, adminUser, testData, PSSConstants.LOGINLESS);
+		DismissPage dismissPage = new DismissPage(driver, testData.getUrlLoginLess());
+		Thread.sleep(1000);
+		logStep("Clicked on Dismiss");
+		LoginlessPatientInformation loginlessPatientInformation = dismissPage.clickDismiss();
+		HomePage homepage = loginlessPatientInformation.fillNewPatientForm(testData.getFirstName(), testData.getLastName(), testData.getDob(), testData.getEmail(),
+				testData.getGender(), testData.getZipCode(), testData.getPrimaryNumber());
+		homepage.btnStartSchedClick();
+		Location location = null;
+		StartAppointmentInOrder startappointmentInOrder = null;
+		startappointmentInOrder = homepage.skipInsurance(driver);
+		location = startappointmentInOrder.selectFirstLocation(PSSConstants.START_LOCATION);
+		logStep("Verfiy Location Page and location =" + testData.getLocation());
+		AppointmentPage appointment = location.selectAppointment(testData.getLocation());
+		logStep("Verfiy Appointment Page and appointment to be selected = " + testData.getAppointmenttype());
+		Provider provider = appointment.selectTypeOfProvider(testData.getAppointmenttype(), Boolean.valueOf(testData.getIsAppointmentPopup()));
+		logStep("Verfiy Provider Page and Provider = " + testData.getProvider());
+		AppointmentDateTime aptDateTime = provider.getProviderandClick(testData.getProvider());
+		String date = aptDateTime.selectDate(testData.getIsNextDayBooking());
+		int size = aptDateTime.getAppointmentDateList();
+		logStep("Date selected is for App" + date);
+		String dateSize = String.valueOf(size);
+		assertEquals(dateSize, "1");
+		log("current date is" + psspatientutils.currentESTDate(testData));
+		assertEquals(date, psspatientutils.currentESTDate(testData));
+	}
+
+	@Test(enabled = true, groups = {"AcceptanceTests"}, retryAnalyzer = RetryAnalyzer.class)
+	public void testReserveForSameDayNG() throws Exception {
+		PSSPropertyFileLoader propertyData = new PSSPropertyFileLoader();
+		Appointment testData = new Appointment();
+		AdminUser adminUser = new AdminUser();
+		propertyData.setAdminNG(adminUser);
+		propertyData.setAppointmentResponseNG(testData);
+		PSSAdminUtils adminUtils = new PSSAdminUtils();
+		PSSPatientUtils psspatientutils = new PSSPatientUtils();
+
+		logStep("Set up the API authentication");
+		setUp(propertyData.getProperty("mf.practice.id.ng"), propertyData.getProperty("mf.authuserid.am.ng"));
+		Response response;
+		response = postAPIRequestAM.medfusionpracticeTimeZone(practiceId, "/medfusionpractice");
+		String timezone = aPIVerification.responseKeyValidationJson(response, "practiceTimezone");
+		testData.setCurrentTimeZone(timezone);
+
+		logStep("Set up the desired rule in Admin UI using API");
+		response = postAPIRequestAM.resourceConfigRuleGet(practiceId);
+		JSONArray arr = new JSONArray(response.body().asString());
+		int l = arr.length();
+		log("Length is- " + l);
+
+		for (int i = 0; i < l; i++) {
+			int ruleId = arr.getJSONObject(i).getInt("id");
+			log("Object No." + i + "- " + ruleId);
+			response = postAPIRequestAM.deleteRuleById(practiceId, Integer.toString(ruleId));
+			aPIVerification.responseCodeValidation(response, 200);
+		}
+
+		response = postAPIRequestAM.resourceConfigRulePost(practiceId, payloadAM.rulePayload("TBL", "T,B,L"));
+		aPIVerification.responseCodeValidation(response, 200);
+
+		response = postAPIRequestAM.resourceConfigRulePost(practiceId, payloadAM.rulePayload("LTB", "L,T,B"));
+		aPIVerification.responseCodeValidation(response, 200);
+
+		adminUtils.reserveForSameDay(driver, adminUser, testData, PSSConstants.LOGINLESS);
+		DismissPage dismissPage = new DismissPage(driver, testData.getUrlLoginLess());
+		Thread.sleep(1000);
+		logStep("Clicked on Dismiss");
+		LoginlessPatientInformation loginlessPatientInformation = dismissPage.clickDismiss();
+		HomePage homepage = loginlessPatientInformation.fillNewPatientForm(testData.getFirstName(), testData.getLastName(), testData.getDob(), testData.getEmail(),
+				testData.getGender(), testData.getZipCode(), testData.getPrimaryNumber());
+		homepage.btnStartSchedClick();
+		Location location = null;
+		StartAppointmentInOrder startappointmentInOrder = null;
+		startappointmentInOrder = homepage.skipInsurance(driver);
+		location = startappointmentInOrder.selectFirstLocation(PSSConstants.START_LOCATION);
+		logStep("Verfiy Location Page and location =" + testData.getLocation());
+
+		AppointmentPage appointment = location.selectAppointment(testData.getLocation());
+		logStep("Verfiy Appointment Page and appointment to be selected = " + testData.getAppointmenttype());
+
+		Thread.sleep(20000);
+		Provider provider = appointment.selectTypeOfProvider(testData.getAppointmenttype(), Boolean.valueOf(testData.getIsAppointmentPopup()));
+		logStep("Verfiy Provider Page and Provider = " + testData.getProvider());
+		AppointmentDateTime aptDateTime = provider.getProviderandClick(testData.getProvider());
+		String date = aptDateTime.selectDate(testData.getIsNextDayBooking());
+		int size = aptDateTime.getAppointmentDateList();
+		logStep("Date selected is for App" + date);
+		String dateSize = String.valueOf(size);
+		assertEquals(dateSize, "1");
+		log("current date is" + psspatientutils.currentESTDate(testData));
+		assertEquals(date, psspatientutils.currentESTDate(testData));
+	}
+
+	@Test(enabled = true, groups = {"AcceptanceTests"}, retryAnalyzer = RetryAnalyzer.class)
+	public void testReserveForSameDayAT() throws Exception {
+		PSSPropertyFileLoader propertyData = new PSSPropertyFileLoader();
+		Appointment testData = new Appointment();
+		AdminUser adminUser = new AdminUser();
+
+		propertyData.setAdminAT(adminUser);
+		propertyData.setAppointmentResponseAT(testData);
+		PSSAdminUtils adminUtils = new PSSAdminUtils();
+		PSSPatientUtils psspatientutils = new PSSPatientUtils();
+
+		logStep("Set up the API authentication");
+		setUp(propertyData.getProperty("mf.practice.id.at"), propertyData.getProperty("mf.authuserid.am.at"));
+		Response response;
+		response = postAPIRequestAM.medfusionpracticeTimeZone(practiceId, "/medfusionpractice");
+		String timezone = aPIVerification.responseKeyValidationJson(response, "practiceTimezone");
+		testData.setCurrentTimeZone(timezone);
+
+		logStep("Set up the desired rule in Admin UI using API");
+		response = postAPIRequestAM.resourceConfigRuleGet(practiceId);
+		JSONArray arr = new JSONArray(response.body().asString());
+		int l = arr.length();
+		log("Length is- " + l);
+
+		for (int i = 0; i < l; i++) {
+			int ruleId = arr.getJSONObject(i).getInt("id");
+			log("Object No." + i + "- " + ruleId);
+			response = postAPIRequestAM.deleteRuleById(practiceId, Integer.toString(ruleId));
+			aPIVerification.responseCodeValidation(response, 200);
+		}
+
+		response = postAPIRequestAM.resourceConfigRulePost(practiceId, payloadAM.rulePayload("TBL", "T,B,L"));
+		aPIVerification.responseCodeValidation(response, 200);
+
+		response = postAPIRequestAM.resourceConfigRulePost(practiceId, payloadAM.rulePayload("LTB", "L,T,B"));
+		aPIVerification.responseCodeValidation(response, 200);
+
+		adminUtils.reserveForSameDay(driver, adminUser, testData, PSSConstants.LOGINLESS);
+		DismissPage dismissPage = new DismissPage(driver, testData.getUrlLoginLess());
+		Thread.sleep(1000);
+		logStep("Clicked on Dismiss");
+		LoginlessPatientInformation loginlessPatientInformation = dismissPage.clickDismiss();
+		HomePage homepage = loginlessPatientInformation.fillNewPatientForm(testData.getFirstName(), testData.getLastName(), testData.getDob(), testData.getEmail(),
+				testData.getGender(), testData.getZipCode(), testData.getPrimaryNumber());
+		homepage.btnStartSchedClick();
+		Location location = null;
+		StartAppointmentInOrder startappointmentInOrder = null;
+		startappointmentInOrder = homepage.skipInsurance(driver);
+		location = startappointmentInOrder.selectFirstLocation(PSSConstants.START_LOCATION);
+		logStep("Verfiy Location Page and location =" + testData.getLocation());
+
+		AppointmentPage appointment = location.selectAppointment(testData.getLocation());
+		logStep("Verfiy Appointment Page and appointment to be selected = " + testData.getAppointmenttype());
+
+		Thread.sleep(20000);
+		Provider provider = appointment.selectTypeOfProvider(testData.getAppointmenttype(), Boolean.valueOf(testData.getIsAppointmentPopup()));
+		logStep("Verfiy Provider Page and Provider = " + testData.getProvider());
+		AppointmentDateTime aptDateTime = provider.getProviderandClick(testData.getProvider());
+		String date = aptDateTime.selectDate(testData.getIsNextDayBooking());
+		int size = aptDateTime.getAppointmentDateList();
+		logStep("Date selected is for App" + date);
+		String dateSize = String.valueOf(size);
+		assertEquals(dateSize, "1");
+		log("current date is" + psspatientutils.currentESTDate(testData));
+		assertEquals(date, psspatientutils.currentESTDate(testData));
 	}
 }

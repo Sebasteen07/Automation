@@ -73,9 +73,9 @@ public class PatientTrustedRepresentativePage extends BasePageObject {
 	 }
 
 
-	public void updateWithModuleNameAndAccess(String textModule, String manageAccessPref) {
+	public void updateWithModuleNameAndAccess(String textModule, String manageAccessPref) throws InterruptedException {
 		int i=0;
-		if (manageAccessPref == "fullAccess") {
+		if (manageAccessPref == "fullAccess"||manageAccessPref == "fullAccessHealthRecord"||manageAccessPref == "noAccessHealthRecord") {
 			i=1;
 		}else if (manageAccessPref == "viewOnly") {
 			i=2;
@@ -87,22 +87,34 @@ public class PatientTrustedRepresentativePage extends BasePageObject {
 		String selectedPreference = moduleName + preferenceValue;
 		WebElement preference = driver.findElement(By.xpath(selectedPreference));
 		log("Printig the full xpath sending :" + preference);
-		if ((new IHGUtil(driver).exists(rdoManageAccess))||(new IHGUtil(driver).exists(rdoCustomAccess))) {
-
-			log("Manage Access Per Category is present");
-			if (manageAccessPref == "fullAccess") {
+		if ((new IHGUtil(driver).exists(rdoManageAccess))||(new IHGUtil(driver).exists(rdoCustomAccess))) { log("Manage Access Per Category is present");
+		if (manageAccessPref == "fullAccess") {
+			new WebDriverWait(driver, 10).until(ExpectedConditions.elementToBeClickable(preference));
+			preference.click();
+		} else if (manageAccessPref == "viewOnly") {
+			new WebDriverWait(driver, 10).until(ExpectedConditions.elementToBeClickable(preference));
+			preference.click();
+		} else if (manageAccessPref == "noAccess") {
+			new WebDriverWait(driver, 10).until(ExpectedConditions.elementToBeClickable(preference));
+			preference.click();
+		}else if (manageAccessPref == "fullAccessHealthRecord") {
+			if (preference.isSelected()==false) {
 				new WebDriverWait(driver, 10).until(ExpectedConditions.elementToBeClickable(preference));
 				preference.click();
-			} else if (manageAccessPref == "viewOnly") {
-				new WebDriverWait(driver, 10).until(ExpectedConditions.elementToBeClickable(preference));
-				preference.click();
-			} else if (manageAccessPref == "noAccess") {
-				new WebDriverWait(driver, 10).until(ExpectedConditions.elementToBeClickable(preference));
-				preference.click();
+			}else {
+				log("Health record have full acess");
 			}
+		}
+		else if (manageAccessPref == "noAccessHealthRecord") {
+			if (preference.isSelected()==true) {
+				new WebDriverWait(driver, 10).until(ExpectedConditions.elementToBeClickable(preference));
+				preference.click();
+			}else {
+				log("Health record acess is removed");
+			}
+		}
 
 		}
-		//btnInvite.click();
 	}
 
 	public void clickOnInviteBtn() {
@@ -118,6 +130,13 @@ public class PatientTrustedRepresentativePage extends BasePageObject {
 		lblLastName.clear();
 		lblEmail.clear();
 		
+	}
+	
+	public void inviteGuardian(Patient patient) throws InterruptedException {
+		IHGUtil.PrintMethodName();
+		wait.until(ExpectedConditions.visibilityOf(btnInvite));
+		fillLightboxInputs(patient);
+		btnInvite.click();
 	}
 
 }
