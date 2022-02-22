@@ -1,46 +1,26 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<suite name = "Integration-Platform-Acceptance" verbose = "2" >
-<listeners>
-  <listener class-name="com.intuit.ifs.csscat.core.TestValidationErrorListener" />
-  <listener class-name="org.uncommons.reportng.HTMLReporter" />
-  <listener class-name="org.uncommons.reportng.JUnitXMLReporter" />
-  <listener class-name="com.epam.reportportal.testng.ReportPortalTestNGListener" />
-</listeners>
- 	
-<test name = "Integration-Platform-Acceptance" >
-	<classes>
-		<class name = "com.intuit.ihg.product.integrationplatform.test.IntegrationPlatformAcceptanceTests" />
-		<methods>
-	    		<exclude name="testEHDCsendCCD" />        		
-        		<include name="testPIDCPatientRegistration" />        		
-        		<include name="testE2EAppointmentRequest20" />
-				<include name="testE2E_OLBP20" />
-				<include name="testStatementPreference" />
-				<include name="testE2EBalancePresentment" />
-				<include name="testAddMedication" />
-				<include name="testAddMultipleMedicatiosandRemoveAll" />
-				<include name="testDeleteMedicationAdded" />
-      	</methods>
-      	<class name = "com.intuit.ihg.product.integrationplatform.test.IntegrationPlatformRegressionTests" />
-		<methods>
-				<include name="testPIDCPatientRegistrationV1"/>
-				<include name="testPIDCPatientRegistrationV2"/>
-	    		<include name="testEHDCSendCCD" />
-	    		<include name="testCCDE2EFormExportfromPractice"/>
-	    		<include name="testAMDCSecureMessages" />
-	    		<include name="testBulkSecureMessage"/>
-				<include name="testAppointmentRequestForExistingPatient"/>
-				<include name="testStatementEventForExistingPatient"/>
-				<include name="testSendDirectMessageXML"/>
-				<include name="testDirectorySearchSingleValue"/>
-				<exclude name="testUnseenMessageList"/>
-				<exclude name="testDeleteP2PMessage"/>
-				<exclude name="testE2EPreCheckUpdatesOnlyDemographics"/>
-				<exclude name="testE2EPreCheckUpdatesOnlyInsurance"/>
-				<exclude name="testE2EPreCheckUpdatesSingleInsuranceImageCard"/>
-	    	 	<include name="testMU2GetEventForExistingPatient"/>
-	    	 	<include name="testOnDemandHealthData"/>
-      	</methods>
-	</classes>
-</test>
+<suite name="Integration-Platform-Acceptance" verbose="2">
+	<listeners>
+		<listener
+			class-name="com.intuit.ifs.csscat.core.TestValidationErrorListener" />
+		<listener class-name="org.uncommons.reportng.HTMLReporter" />
+		<listener
+			class-name="org.uncommons.reportng.JUnitXMLReporter" />
+		<listener
+			class-name="com.epam.reportportal.testng.ReportPortalTestNGListener" />
+	</listeners>
+
+	<test name="Integration-Platform-Acceptance">
+		<groups>
+			<run>
+				<include name="AcceptanceTests" />
+			</run>
+		</groups>
+		<classes>
+			<class
+				name="com.intuit.ihg.product.integrationplatform.test.IntegrationPlatformAcceptanceTests" />
+			<class
+				name="com.intuit.ihg.product.integrationplatform.test.IntegrationPlatformRegressionTests" />
+		</classes>
+	</test>
 </suite>

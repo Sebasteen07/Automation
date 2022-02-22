@@ -974,3 +974,106 @@ Feature: Test fuctionality of Appointment precheck
     And I select a appointment and send manual reminder
     And I click on refresh button from apt dashboard and lands on same page
     Then I verify that I am still on page five and arrows are working
+  
+  Scenario: verify notification count after filteration for location
+    When from setting in notifications curbside check-in reminder checkbox is check
+    And I click on save button in notifications tab
+    And I schedule an appointment
+    And from curbside check-in filtration is done for location
+    Then I verify notification count get updated after arrival entry in appointment dashboard without refresh
+    And logout from practice provisioning portal
+  
+  Scenario: verify notification count after filteration for location L1 and arrival entry for location L2
+  	And I schedule an appointment for location L2
+    When from setting in notifications curbside check-in reminder checkbox is check
+    And I click on save button in notifications tab
+    And I schedule an appointment
+    And from curbside check-in tab filtration is done for location L1 when there is already arrival entry for location L2
+    Then I verify notification count should not get updated after arrival entry in curbside dashboard for location L2 without refresh
+    And logout from practice provisioning portal
+    
+  Scenario: verify notification count after filteration for location L1 and arrival entry for location L2
+  	And I schedule an appointment for location L2
+    When from setting in notifications curbside check-in reminder checkbox is check
+    And I click on save button in notifications tab
+    And I schedule an appointment
+    And from curbside check-in tab filtration is done for location L1 when there is already arrival entry for location L2
+    Then I verify notification count should not get updated after arrival entry in appointment dashboard for location L2 without refresh
+    And logout from practice provisioning portal
+
+  Scenario: Verify when select all records from first page then Ribbon message should be display
+    When I enable Broadcast messaging checkbox from setting in notifications dashboard
+    And I switch on appointment dashboard
+    And I select past start date and select all appointment
+    Then I verify ribbon message will be display as per expected
+    And logout from practice provisioning portal
+
+  Scenario: Verify when select multiple records from different pages then ribbon should not display
+    When I enable Broadcast messaging checkbox from setting in notifications dashboard
+    And I switch on appointment dashboard
+    And I select past start date
+    And I select 10 patients records from first page
+    And I select 15 patient records from second page
+    And I select 10 patient records from third page
+    And I select 5 patient records from fourth page
+    Then I verify on appointments dashboard multiple records are selected from different pages then it will not show the ribbon on top of the page
+    And logout from practice provisioning portal
+
+  Scenario: Verify when patient confirms his arrival then a new row is added in the grid
+    When I switch on curbside checkin tab
+    And I schedule 3 appointment and confirmed their arrival
+    And 3 rows should be display on curbside checkin page and notification icon updated
+    And I schedule 2 appointment and confirmed their arrival
+    And 5 rows should be display on curbside checkin page and notification icon updated
+    And I switches to Appointmant dashboard
+    And I schedule 1 appointment and confirmed their arrival
+    And one notification update should be displayed in the notification icon on the top
+    Then I verify when switches to curbside checkin tab 6 row must be displayed without clicking on the notification icon on the top
+    And logout from practice provisioning portal
+
+  Scenario: verify that Pre-populated dropdown list of messages in Send message drop down field
+    When I schedule an appointment and have confirmed there arrival
+    And I click on Curbside check-in tab
+    And I select patient and click on dropdown
+    Then I verify messages list should be displayed in send message dropdown
+    And logout from practice provisioning portal
+    
+  Scenario: verify notification count  where filter is applied for location L2
+    When I schedule an appointment for location L1
+    When from setting in notifications curbside check-in reminder checkbox is check
+    And I click on save button in notifications tab
+    And I schedule an appointment for location L2
+    And from curbside check-in filtration is done for location L2
+    Then I verify notification count should not get updated after arrival entry in curbside dashboard for location L1 
+    And logout from practice provisioning portal
+    
+  Scenario: verify notification count where filter is removed for location L2 
+    When I schedule an appointment for location L1
+    When from setting in notifications curbside check-in reminder checkbox is check
+    And I click on save button in notifications tab
+    And I schedule an appointment for location L2
+    And from curbside check-in filtration is done for location L2
+    And from curbside check-in remove filter for location L2 
+    Then I verify notification count should get updated for all the patients in curbside dashboard 
+    And logout from practice provisioning portal
+	
+  Scenario: verify notification count where filter is applied for location L1
+    When I schedule an appointment for location L2
+    When from setting in notifications curbside check-in reminder checkbox is check
+    And I click on save button in notifications tab
+    And I schedule an appointment for location L1
+    And from curbside check-in filtration is done for location L1
+    Then I verify notification count should not get updated after arrival entry in curbside dashboard for location L2 
+    And logout from practice provisioning portal
+  
+  Scenario: verify notification count where filter is removed for location L1
+    When I schedule an appointment for location L2
+    When from setting in notifications curbside check-in reminder checkbox is check
+    And I click on save button in notifications tab
+    And I schedule an appointment for location L1
+    And from curbside check-in filtration is done for location L1
+    And from curbside check-in remove filter for location L1 
+    Then I verify notification count should get updated for all the patients in arrival grid
+    And logout from practice provisioning portal
+    
+  

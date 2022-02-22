@@ -1,5 +1,6 @@
 package com.intuti.ihg.product.object.maps.sitegen.page.medfusionadmin;
 
+import org.openqa.selenium.JavascriptExecutor;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.FindBy;
@@ -20,6 +21,12 @@ public class PracticeInfoPage extends BasePageObject {
 	@FindBy(name = "save")
 	private WebElement saveButton;
 
+	@FindBy(xpath = "//input[@name='patientPortal:piPortalURLName']")
+	private WebElement portalUrlName;
+
+	@FindBy(xpath = "//*[@id='portalInspiredUrlLink']")
+	private WebElement portalUrlLink;
+
 	@FindBy(name = "enableExtendedGender")
 	private WebElement genderQuestionsCheckbox;
 
@@ -28,6 +35,7 @@ public class PracticeInfoPage extends BasePageObject {
 
 	public PracticeInfoPage(WebDriver driver) {
 		super(driver);
+		PageFactory.initElements(driver, this);
 	}
 
 	public boolean areGenderQuestionsEnabled() {
@@ -37,7 +45,7 @@ public class PracticeInfoPage extends BasePageObject {
 	}
 
 	public PracticeInfoPage enableGenderQuestions() {
-		if(!areGenderQuestionsEnabled()){
+		if (!areGenderQuestionsEnabled()) {
 			edit();
 			genderQuestionsCheckbox.click();
 			saveEdit();
@@ -59,12 +67,28 @@ public class PracticeInfoPage extends BasePageObject {
 		return PageFactory.initElements(driver, SiteGenPracticeHomePage.class);
 	}
 
-	private void edit() {
+	public void edit() {
+		JavascriptExecutor js = (JavascriptExecutor) driver;
+		js.executeScript("window.scrollBy(0,250)", "");
 		editButton.click();
 		IHGUtil.waitForElement(driver, 10, saveButton);
 	}
 
-	private void saveEdit() {
+	public void saveEdit() {
 		saveButton.click();
+	}
+
+	public String getURLName() {
+		return portalUrlName.getAttribute("value");
+	}
+
+	public String getPortalURL() {
+		return portalUrlLink.getText();
+	}
+
+	public void urlTextBox(String newUrlName) {
+		portalUrlName.clear();
+		portalUrlName.sendKeys(newUrlName);
+
 	}
 }

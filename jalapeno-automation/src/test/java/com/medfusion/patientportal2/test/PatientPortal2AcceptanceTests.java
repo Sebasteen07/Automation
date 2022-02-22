@@ -5997,7 +5997,7 @@ public class PatientPortal2AcceptanceTests extends BaseTestNGWebDriver {
 
 	}
 
-	@Test(enabled = true, groups = { "acceptance-solutions" }, retryAnalyzer = RetryAnalyzer.class)
+	@Test(enabled = true, retryAnalyzer = RetryAnalyzer.class)
 	public void testAskInvalidAttachment() throws Exception {
 		String expectedCorrectFileText = "sw-test-academy.txt";
 
@@ -6379,5 +6379,24 @@ public class PatientPortal2AcceptanceTests extends BaseTestNGWebDriver {
 		JalapenoLoginPage loginPage = new JalapenoLoginPage(driver);
 		assertTrue(loginPage.checkResetPasswordError(resetUrl));
 	}
+	
+	@Test(enabled = true, groups = { "acceptance-basics" }, retryAnalyzer = RetryAnalyzer.class)
+	public void testTermsOfServicePopUp() throws Exception {
 
+		String patientsEmail = IHGUtil.createRandomEmailAddress(testData.getEmail(), '.');
+
+		logStep("Patient Activation on Practice Portal");
+		PatientActivationSearchTest patientActivationSearchTest = new PatientActivationSearchTest();
+		String unlockLinkPortal = patientActivationSearchTest.getPatientActivationLink(driver, testData, patientsEmail);
+
+		logStep("Finishing of patient activation: step 1 - verifying identity");
+		PatientVerificationPage patientVerificationPage = new PatientVerificationPage(driver, unlockLinkPortal);
+		SecurityDetailsPage accountDetailsPage = patientVerificationPage.fillPatientInfoAndContinue(
+				PracticeConstants.ZIP_CODE, JalapenoConstants.DATE_OF_BIRTH_MONTH_NO,
+				JalapenoConstants.DATE_OF_BIRTH_DAY, JalapenoConstants.DATE_OF_BIRTH_YEAR);
+
+		logStep("Validate presence of Terms of Service popup in Security Details Page");
+		assertTrue(accountDetailsPage.isTermsOfServicePopupDisplayed());
+		
+	}
 }
