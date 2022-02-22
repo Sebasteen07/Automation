@@ -38,7 +38,7 @@ public class PSS2PracticeConfiguration extends SettingsTab {
 	@FindBy(how = How.ID, using = "topractice")
 	private WebElement businesshourEnd;
 
-	@FindBy(how = How.XPATH, using = "//*[@id=\"basic\"]/fieldset/div/div/button")
+	@FindBy(how = How.XPATH, using = "//*[@id='basic']/form[1]/fieldset/div/div/button")
 	private WebElement saveButton;
 
 	public PSS2PracticeConfiguration(WebDriver driver) {
@@ -86,11 +86,12 @@ public class PSS2PracticeConfiguration extends SettingsTab {
 		return null;
 	}
 
-	public void busineesHour(String startTime, String endTime) {
+	public void busineesHour(String startTime, String endTime) throws InterruptedException {
 		businesshourStart.clear();
 		businesshourStart.sendKeys(startTime);
 		businesshourEnd.clear();
 		businesshourEnd.sendKeys(endTime);
+		Thread.sleep(2000);
 		saveButton.click();
 		log("Successfully send the keys");
 	}

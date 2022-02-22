@@ -3922,5 +3922,36 @@ public class PayloadAdapterModulator {
 				+ "]";
 		return preRequisiteAppointmentTypesDefualtGE;
 	}
+	
+	public String updateBusinessHoursNG(String startTime,String endTime)
+	{
+		String updateBusinessHours="{\r\n"
+				+ "  \"id\": 24702,\r\n"
+				+ "  \"name\": \"PSS-NG-PG16CN\",\r\n"
+				+ "  \"practiceId\": \"24702\",\r\n"
+				+ "  \"themeColor\": \"#235ba8\",\r\n"
+				+ "  \"extPracticeId\": \"24702\",\r\n"
+				+ "  \"partner\": \"NG\",\r\n"
+				+ "  \"timezone\": \"America/Chicago\",\r\n"
+				+ "  \"active\": true,\r\n"
+				+ "  \"languages\": [\r\n"
+				+ "    {\r\n"
+				+ "      \"code\": \"EN\",\r\n"
+				+ "      \"flag\": \"us\",\r\n"
+				+ "      \"name\": \"English\"\r\n"
+				+ "    },\r\n"
+				+ "    {\r\n"
+				+ "      \"code\": \"ES\",\r\n"
+				+ "      \"flag\": \"mx\",\r\n"
+				+ "      \"name\": \"Español\"\r\n"
+				+ "    }\r\n"
+				+ "  ],\r\n"
+				+ "  \"starttime\": \""+startTime+"\",\r\n"
+				+ "  \"endtime\": \""+endTime+"\",\r\n"
+				+ "  \"logo\": null,\r\n"
+				+ "  \"type\": null\r\n"
+				+ "}";
+		return updateBusinessHours;
+	}
 }
 

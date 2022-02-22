@@ -2196,4 +2196,20 @@ public class PSSPatientUtils extends BaseTestNGWebDriver {
 
 	}
 
+	public long timeDifferenceendTime1(Appointment testData,String endTimeBusinessHours) throws ParseException {
+		log("Bussiness Hour Endtime is  "+endTimeBusinessHours );
+		Calendar now = Calendar.getInstance();
+		TimeZone time_zone = TimeZone.getTimeZone(testData.getCurrentTimeZone());
+		now.setTimeZone(time_zone);
+//		now.add(Calendar.HOUR, testData.getLeadtimeHour());
+//		now.add(Calendar.MINUTE, testData.getLeadtimeMinute());
+		String currenttime = +now.get(Calendar.HOUR_OF_DAY) + ":" + now.get(Calendar.MINUTE);
+//		log("Afetr Add leadTime : " + currenttime);
+		SimpleDateFormat format = new SimpleDateFormat("HH:mm");
+		Date time1 = format.parse(currenttime);
+		Date time2 = format.parse(endTimeBusinessHours);
+		long difference = time2.getTime() - time1.getTime();
+		log("Time Differnce is  " + difference);
+		return difference;
+	}
 }
