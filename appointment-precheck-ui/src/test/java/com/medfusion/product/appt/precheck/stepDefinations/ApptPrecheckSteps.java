@@ -4017,6 +4017,96 @@ public class ApptPrecheckSteps extends BaseTest {
 		assertTrue(curbsidePage.visibilityOfNotifIcon());
 		log("Notification count is updated for all patients");
 	}
+	@Then("I verify notification count should not get updated after arrival entry in appointment dashboard for location L1")
+	public void i_verify_notification_count_should_not_get_updated_after_arrival_entry_in_appointment_dashboard_for_location_l1() {
+	    mainPage.clickOnAppointmentsTab();
+	    assertTrue(curbsidePage.visibilityOfNotifIcon());
+	    log("Notification count is not updated for location L1");
+	}
+	@Then("I verify notification count should get updated for all the patients after arrival entry in appointment dashboard for location L1")
+	public void i_verify_notification_count_should_get_updated_for_all_the_patients_after_arrival_entry_in_appointment_dashboard_for_location_l1() {
+		mainPage.clickOnAppointmentsTab();
+		assertTrue(curbsidePage.visibilityOfNotifIcon());
+		log("Notification count is updated for all patients");
+	}
+	@Then("I verify notification count should not get updated after arrival entry in appointment dashboard for location L2")
+	public void i_verify_notification_count_should_not_get_updated_after_arrival_entry_in_appointment_dashboard_for_location_l2() {
+		mainPage.clickOnAppointmentsTab();
+		assertTrue(curbsidePage.visibilityOfNotifIcon());
+		log("Notification count is not updated for location L2");
+	}
+	@Then("I verify notification count should get updated for all the patients after arrival entry in appointment dashboard for location L2")
+	public void i_verify_notification_count_should_get_updated_for_all_the_patients_after_arrival_entry_in_appointment_dashboard_for_location_l2() {
+		mainPage.clickOnAppointmentsTab();
+		assertTrue(curbsidePage.visibilityOfNotifIcon());
+		log("Notification count is updated for all patients");
+	}
+	
+	@When("I schedule an appointment for three patients")
+	public void i_schedule_an_appointment_for_three_patients() throws NullPointerException, IOException {
+		for (int i = 0; i < 3; i++)
+		{
+			Appointment.patientId = commonMethod.generateRandomNum();
+			Appointment.apptId = commonMethod.generateRandomNum();
+			long currentTimestamp = System.currentTimeMillis();
+			long plus20Minutes = currentTimestamp + TimeUnit.MINUTES.toMillis(10);
+			apptSched.aptPutAppointment(propertyData.getProperty("baseurl.mf.appointment.scheduler"),
+					propertyData.getProperty("apt.precheck.practice.id"),
+					payload.putAppointmentPayload(plus20Minutes, propertyData.getProperty("mf.apt.scheduler.phone"),
+							propertyData.getProperty("mf.apt.scheduler.email")),
+					headerConfig.HeaderwithToken(accessToken.getaccessTokenPost()), Appointment.patientId,
+					Appointment.apptId);
+
+			Response actionResponse = aptPrecheckPost.aptAppointmentActionsConfirm(
+					propertyData.getProperty("baseurl.apt.precheck"),
+					propertyData.getProperty("apt.precheck.practice.id"),
+					headerConfig.HeaderwithToken(accessToken.getaccessTokenPost()), Appointment.patientId,
+					Appointment.apptId);
+			assertEquals(actionResponse.getStatusCode(), 200);
+
+			Response curbsideCheckinResponse = aptPrecheckPost.aptArrivalActionsCurbsideCurbscheckin(
+					propertyData.getProperty("baseurl.apt.precheck"),
+					propertyData.getProperty("apt.precheck.practice.id"),
+					headerConfig.HeaderwithToken(accessToken.getaccessTokenPost()), Appointment.patientId,
+					Appointment.apptId);
+			assertEquals(curbsideCheckinResponse.getStatusCode(), 200);
+
+			Response arrivalResponse = aptPrecheckPost.aptArrivalActionsCurbsideArrival(
+					propertyData.getProperty("baseurl.apt.precheck"),
+					propertyData.getProperty("apt.precheck.practice.id"),
+					headerConfig.HeaderwithToken(accessToken.getaccessTokenPost()), Appointment.patientId,
+					Appointment.apptId);
+			assertEquals(arrivalResponse.getStatusCode(), 200);
+		}
+		
+	}
+	@When("I go to curbside check-in where three patients are already there in arrival grid")
+	public void i_go_to_curbside_check_in_where_three_patients_are_already_there_in_arrival_grid() throws InterruptedException {
+	    mainPage.clickOnCurbsideTab();
+	    
+	}
+	@When("I go to appointments dashboard")
+	public void i_go_to_appointments_dashboard() throws InterruptedException {
+	    mainPage.clickOnAppointmentsTab();
+	}
+	@Then("I verify notification count on top in appointment dashboard should be three")
+	public void i_verify_notification_count_on_top_in_appointment_dashboard_should_be_three() {
+	    assertTrue(curbsidePage.visibilityOfNotifIcon());
+	    assertEquals(curbsidePage.getNotificationCount(), "3", "Notification Count is not match");
+	}
+	@When("I go to curbside check-in where three patients are already there in arrival tab")
+	public void i_go_to_curbside_check_in_where_three_patients_are_already_there_in_arrival_tab() throws InterruptedException {
+		 mainPage.clickOnCurbsideTab();
+	}
+	@When("I go to curbside check-in tab after new patient arrival")
+	public void i_go_to_curbside_check_in_tab_after_new_patient_arrival() throws InterruptedException {
+		 mainPage.clickOnCurbsideTab();
+	} 
+	@Then("I verify notification count on top in appointment dashboard should get updated to four without refresh")
+	public void i_verify_notification_count_on_top_in_appointment_dashboard_should_get_updated_to_four_without_refresh() {
+		assertTrue(curbsidePage.visibilityOfNotifIcon());
+	    assertEquals(curbsidePage.getNotificationCount(), "4", "Notification Count is not match");
+	}
 
 	@Then("I verify the notification count and arrival count on the grid when change the location filter from L1 {string} to L2 {string}")
 	public void i_verify_the_notification_count_and_arrival_count_on_the_grid_when_change_the_location_filter_from_l1_to_l2(String location1, String location2) throws InterruptedException {
