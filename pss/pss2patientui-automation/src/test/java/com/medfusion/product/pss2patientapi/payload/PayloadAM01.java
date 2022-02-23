@@ -2067,5 +2067,68 @@ public class PayloadAM01 {
 		return payload;
 		
 	}
+	
+	public String updateBusinessHoursNG(String startTime,String endTime,String practiceId,String practiceName,String timeZone,String logo)
+	{
+		String updateBusinessHours="{\r\n"
+				+ "  \"id\": "+practiceId+",\r\n"
+				+ "  \"name\": \""+practiceName+"\",\r\n"
+				+ "  \"practiceId\": \""+practiceId+"\",\r\n"
+				+ "  \"themeColor\": \"#235ba8\",\r\n"
+				+ "  \"extPracticeId\": \""+practiceId+"\",\r\n"
+				+ "  \"partner\": \"NG\",\r\n"
+				+ "  \"timezone\": \""+timeZone+"\",\r\n"
+				+ "  \"active\": true,\r\n"
+				+ "  \"languages\": [\r\n"
+				+ "    {\r\n"
+				+ "      \"code\": \"EN\",\r\n"
+				+ "      \"flag\": \"us\",\r\n"
+				+ "      \"name\": \"English\"\r\n"
+				+ "    },\r\n"
+				+ "    {\r\n"
+				+ "      \"code\": \"ES\",\r\n"
+				+ "      \"flag\": \"mx\",\r\n"
+				+ "      \"name\": \"Español\"\r\n"
+				+ "    }\r\n"
+				+ "  ],\r\n"
+				+ "  \"starttime\": \""+startTime+"\",\r\n"
+				+ "  \"endtime\": \""+endTime+"\",\r\n"
+				+ "  \"logo\": \""+logo+"\",\r\n"
+				+ "  \"type\": null\r\n"
+				+ "}";
+		return updateBusinessHours;
+	}
+	
+	public String updateBusinessHoursGW(String startTime,String endTime,String practiceId,String practiceName,String timeZone,String logo)
+	{
+		String updateBusinessHours="{\r\n"
+				+ "  \"id\": "+practiceId+",\r\n"
+				+ "  \"name\": \"   "+practiceName+"\",\r\n"
+				+ "  \"practiceId\": \""+practiceId+"\",\r\n"
+				+ "  \"themeColor\": \"#7b3333\",\r\n"
+				+ "  \"extPracticeId\": \"300011\",\r\n"
+				+ "  \"partner\": \"GW\",\r\n"
+				+ "  \"timezone\": \""+timeZone+"\",\r\n"
+				+ "  \"active\": true,\r\n"
+				+ "  \"languages\": [\r\n"
+				+ "    {\r\n"
+				+ "      \"code\": \"EN\",\r\n"
+				+ "      \"flag\": \"us\",\r\n"
+				+ "      \"name\": \"English\"\r\n"
+				+ "    },\r\n"
+				+ "    {\r\n"
+				+ "      \"code\": \"ES\",\r\n"
+				+ "      \"flag\": \"mx\",\r\n"
+				+ "      \"name\": \"Español\"\r\n"
+				+ "    }\r\n"
+				+ "  ],\r\n"
+				+ "  \"starttime\": \""+startTime+"\",\r\n"
+				+ "  \"endtime\": \""+endTime+"\",\r\n"
+				+ "  \"logo\": \""+logo+"\",\r\n"
+				+ "  \"type\": null\r\n"
+				+ "}";
+		return updateBusinessHours;
+	}
+
 }
 
