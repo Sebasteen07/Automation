@@ -38,6 +38,12 @@ public class AppointmentDateTime extends PSS2MainPage {
 
     @FindBy(how = How.XPATH, using = "//*[@id='calendarslot']/div/div/div/div/div[2]/div[2]/div[2]/div[1]/div[2]/a")
     private WebElement currentDaydisabled;
+    
+    @FindBy(how = How.XPATH, using = "//button[@class=' dropdown-toggle dropdownbutton']")
+   	private WebElement settingBtn;
+
+   	@FindBy(how = How.XPATH, using = "//ul[@class='dropdown-menu']//li//a")
+   	private WebElement logoutBtn;
 
 	public AppointmentDateTime(WebDriver driver) {
 		super(driver);
@@ -300,5 +306,11 @@ public class AppointmentDateTime extends PSS2MainPage {
 		}
 		return time.substring(0,5);
 
+	}
+	
+	public void logout() throws InterruptedException {
+		settingBtn.click();
+		logoutBtn.click();
+		log("logged out");
 	}
 }

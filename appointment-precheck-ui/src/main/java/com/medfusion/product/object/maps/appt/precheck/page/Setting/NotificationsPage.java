@@ -1995,7 +1995,8 @@ public class NotificationsPage extends BasePageObject {
 	public void enterTimingAndTimingUnit(int pathIndex, String timing, String timingUnit) throws InterruptedException {
 		IHGUtil.PrintMethodName();
 		log("Select timing and timing unit for: " + timing);
-		driver.findElement(By.xpath("(//div[@class=' css-1hwfws3'])[" + pathIndex + "]")).click();
+		jse.executeScript("arguments[0].click();",
+				driver.findElement(By.xpath("(//div[@class=' css-1hwfws3'])[" + pathIndex + "]")));
 		Actions action = new Actions(driver);
 		action.sendKeys(driver.findElement(By.xpath("(//div[@class=' css-1uccc91-singleValue'])[" + pathIndex + "]")),
 				timing).sendKeys(Keys.ENTER).build().perform();
@@ -2230,6 +2231,39 @@ public class NotificationsPage extends BasePageObject {
 			log("Broadcast Messaging checkbox is Enabled");
 		}
 		Thread.sleep(10000);
+	}
+
+	public boolean visibilityOfTiming(int pathIndex) {
+		IHGUtil.PrintMethodName();
+		boolean visibility = false;
+		visibility = driver.findElement(By.xpath("(//div[@class=' css-1hwfws3'])[" + pathIndex + "]")).isDisplayed();
+		return visibility;
+	}
+
+	public boolean visibilityOfTimingUnit(int pathIndex) {
+		IHGUtil.PrintMethodName();
+		boolean visibility = false;
+		visibility = driver.findElement(By.xpath("(//input[@class='cadence-period-value'])[" + pathIndex + "]"))
+				.isDisplayed();
+		return visibility;
+	}
+
+	public String getTextTiming(int pathIndex) {
+		IHGUtil.PrintMethodName();
+		return driver.findElement(By.xpath("(//div[@class=' css-1hwfws3'])[" + pathIndex + "]/div[text()='Days']"))
+				.getText();
+	}
+
+	public String getTimingUnit(int pathIndex) {
+		IHGUtil.PrintMethodName();
+		return driver.findElement(By.xpath("(//input[@class='cadence-period-value'])[" + pathIndex + "]"))
+				.getAttribute("value");
+	}
+
+	public String enterUnlimitedDays() {
+		Random random = new Random();
+		int randamNo = random.nextInt(1000000000);
+		return Appointment.days = String.valueOf(randamNo);
 	}
 
 }

@@ -196,8 +196,9 @@ public class PSS2AdminPortalAcceptanceTests extends BaseTestNGWebDriver {
 		AdminUser adminUser = new AdminUser();
 		PSSAdminUtils pssAdminUtils = new PSSAdminUtils();	
 		PSSPatientUtils pssPatientUtils = new PSSPatientUtils();
-		pssPatientUtils.setTestData(staffPracitceName, testData, adminUser);		
-		pssAdminUtils.leadTimenotReserve(driver, adminUser,  testData);
+		pssPatientUtils.setTestData(staffPracitceName, testData, adminUser);
+		String leadTimeValue="0";
+		pssAdminUtils.leadTimenotReserve(driver, adminUser,  testData,leadTimeValue);
 	}
 	
 	@Test(enabled = true, dataProvider = "staffPractice", groups = {"AcceptanceTests"}, retryAnalyzer = RetryAnalyzer.class)

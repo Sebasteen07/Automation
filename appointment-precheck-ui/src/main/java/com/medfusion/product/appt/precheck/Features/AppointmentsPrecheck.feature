@@ -974,7 +974,7 @@ Feature: Test fuctionality of Appointment precheck
     And I select a appointment and send manual reminder
     And I click on refresh button from apt dashboard and lands on same page
     Then I verify that I am still on page five and arrows are working
-  
+
   Scenario: verify notification count after filteration for location
     When from setting in notifications curbside check-in reminder checkbox is check
     And I click on save button in notifications tab
@@ -982,18 +982,18 @@ Feature: Test fuctionality of Appointment precheck
     And from curbside check-in filtration is done for location
     Then I verify notification count get updated after arrival entry in appointment dashboard without refresh
     And logout from practice provisioning portal
-  
+
   Scenario: verify notification count after filteration for location L1 and arrival entry for location L2
-  	And I schedule an appointment for location L2
+    And I schedule an appointment for location L2
     When from setting in notifications curbside check-in reminder checkbox is check
     And I click on save button in notifications tab
     And I schedule an appointment
     And from curbside check-in tab filtration is done for location L1 when there is already arrival entry for location L2
     Then I verify notification count should not get updated after arrival entry in curbside dashboard for location L2 without refresh
     And logout from practice provisioning portal
-    
+
   Scenario: verify notification count after filteration for location L1 and arrival entry for location L2
-  	And I schedule an appointment for location L2
+    And I schedule an appointment for location L2
     When from setting in notifications curbside check-in reminder checkbox is check
     And I click on save button in notifications tab
     And I schedule an appointment
@@ -1036,6 +1036,52 @@ Feature: Test fuctionality of Appointment precheck
     And I click on Curbside check-in tab
     And I select patient and click on dropdown
     Then I verify messages list should be displayed in send message dropdown
+    And logout from practice provisioning portal
+
+  Scenario: Verify the notification count and arrival count on the grid when change the location filter from L1 to L2
+    When user on curbside checkin tab and clear all appointments
+    And I booked an appointment for patient "Micheal" and confirmed his arrival for Location "River Oaks Main"
+    And I booked an appointment for patient "Ricky" and confirmed his arrival for Location "USA"
+    And I booked an appointment for patient "Nicholus" and confirmed his arrival for Location "River Oaks Main"
+    Then I verify the notification count and arrival count on the grid when change the location filter from L1 "River Oaks Main" to L2 "USA"
+    And logout from practice provisioning portal
+
+  Scenario: Verify the notification count and arrival count on the grid when change the provider filter from PR1 to PR2
+    When user on curbside checkin tab and clear all appointments
+    And I booked an appointment for patient "Micheal" and confirmed his arrival for provider "Brown, Jennifer"
+    And I booked an appointment for patient "Ricky" and confirmed his arrival for provider "Brown, Jennifer"
+    And I booked an appointment for patient "Nicholus" and confirmed his arrival for provider "Donald, Anderson"
+    Then I verify the notification count and arrival count on the grid when change the provider filter from PR1 "Brown, Jennifer" to PR2 "Donald, Anderson"
+    And logout from practice provisioning portal
+
+  Scenario: verify if send notifiaction is off then no cadence reminder is sent
+    When I turn off send notification radio button from setting in notifications
+    And I schedule a new appointment
+    Then verify on mail no cadence reminder is sent when send notifiaction is off
+
+  Scenario: verify if user is able to see by default three timing and timing units on template editor page for email
+    When from setting in notifications user click on email hamburgerButton section of appointment reminder
+    And I hit edit button of email for appointment reminder
+    Then I verify is able to see by default three timing with default days configured and timing units with configured one,three,five on template editor page
+    And logout from practice provisioning portal
+
+  Scenario: Verify user select Days from timing section then in timing units user is able to enter unlimited numbers so there is no limit for email
+    When from setting in notifications user click on email hamburgerButton section of appointment reminder
+    And I hit edit button of email for appointment reminder
+    And I select timing days and enter timing unit for "Email"
+    Then I verify user is able to enter unlimited numbers so there is no limit
+    And logout from practice provisioning portal
+
+  Scenario: verify if system is allowing user to enter integers from 1 to 23 in timing unit section for email in appointment reminders
+    When from setting in notifications user click on email hamburgerButton section of appointment reminder
+    And I hit edit button of email for appointment reminder
+    Then I verify system is allowing to enter integers from one to twenty three in timing unit section for email in appointment reminders for 'Email'
+    And logout from practice provisioning portal
+
+  Scenario: verify if system is allowing user to enter integers from 10 to 59 in timing unit section for email in appointment reminders
+    When from setting in notifications user click on email hamburgerButton section of appointment reminder
+    And I hit edit button of email for appointment reminder
+    Then I verify user able to enter integer from ten to fifty nine in timing unit section for minutes in appointment reminders for 'Email'
     And logout from practice provisioning portal
     
   Scenario: verify notification count  where filter is applied for location L2
@@ -1129,5 +1175,3 @@ Feature: Test fuctionality of Appointment precheck
     And I go to curbside check-in tab after new patient arrival 
     Then I verify notification count on top in appointment dashboard should get updated to four without refresh
     And logout from practice provisioning portal
-    
-  
