@@ -59,7 +59,7 @@ public class JalapenoHomePage extends JalapenoMenu {
 	@FindBy(how = How.ID, using = "feature_symptomAssesment")
 	private WebElement symptomAss;
 
-	@FindBy(how = How.ID, using = "feature_rx_renewal")
+	@FindBy(how = How.ID, using = "button-rx-request")
 	private WebElement prescriptions;
 
 	@FindBy(how = How.ID, using = "feature_medications")
@@ -217,8 +217,8 @@ public class JalapenoHomePage extends JalapenoMenu {
 	}
 
 	public JalapenoPrescriptionsPage clickOnPrescriptions(WebDriver driver) {
-
 		log("Clicking on Prescriptions button on dashboard");
+		this.clickOnMedications(driver);
 		prescriptions.click();
 		return PageFactory.initElements(driver, JalapenoPrescriptionsPage.class);
 	}
