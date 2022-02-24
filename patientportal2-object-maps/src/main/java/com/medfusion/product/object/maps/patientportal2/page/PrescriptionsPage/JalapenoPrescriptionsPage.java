@@ -587,11 +587,8 @@ public class JalapenoPrescriptionsPage extends JalapenoMenu {
 		}
 		String textValue = "";
 		try {
-			// click on add pharmacy button
 			addNewPharamcyBtn.click();
-			// click on provider suggested pharmacy button
 			providerSelectedPharmacy.click();
-			// click on search pharmacy drop down.
 			searchPharmacyDropDown.click();
 		} catch (Exception e) {
 			log(e.getMessage());

@@ -2756,7 +2756,7 @@ public class IntegrationPlatformRegressionTests extends BaseTestNGWebDriver {
 		LoadPreTestDataObj.loadPharmaciesFromProperty(testData);
 		log("POST URL: " + testData.PharmacyRenewalUrl);
 
-		log("Step 1: Setup Oauth client");
+		logStep("Setup Oauth client");
 		RestUtils.oauthSetup(testData.OAuthKeyStore, testData.OAuthProperty, testData.OAuthAppToken,
 				testData.OAuthUsername, testData.OAuthPassword);
 
@@ -2772,7 +2772,7 @@ public class IntegrationPlatformRegressionTests extends BaseTestNGWebDriver {
 		Thread.sleep(6000);
 		log("Wait to generate Pharmacy Renewal Payload");
 
-		log("Step 2: Do Message Post Request");
+		logStep("Do Message Post Request");
 		log("ResponsePath: " + testData.ResponsePath);
 		Log4jUtil.log("Generate Payload with Status as " + testData.Status);
 		String processingUrl = RestUtils.setupHttpPostRequest(testData.PharmacyRenewalUrl, pharmacyRenewal,
@@ -2791,18 +2791,18 @@ public class IntegrationPlatformRegressionTests extends BaseTestNGWebDriver {
 		}
 		assertTrue(completed, "Message processing was not completed in time");
 
-		log("Step 3: Login to Patient Portal");
+		logStep("Login to Patient Portal");
 		JalapenoLoginPage loginPage = new JalapenoLoginPage(driver, testData.URL);
 		JalapenoHomePage homePage = loginPage.login(testData.UserName, testData.Password);
 
-		log("Step 5: Click on Prescription and go to Prescription Page");
+		logStep("Click on Prescription and go to Prescription Page");
 		JalapenoPrescriptionsPage JalapenoPrescriptionsPageObject = homePage.clickOnPrescriptions(driver);
 
-		log("Step 6: Click on Continue ");
+		logStep("Click on Continue ");
 		JalapenoPrescriptionsPageObject.clickContinueButton(driver);
 		Thread.sleep(60000);
 
-		log("Step 7:verify added pharmacy is updated in the list");
+		logStep("verify added pharmacy is updated in the list");
 		String addedPharamacy = testData.PharmacyName + ", " + testData.Line1 + ", " + testData.City + ", "
 				+ testData.State + ", " + testData.ZipCode;
 		log("Added Pharamacy :- " + addedPharamacy);
@@ -2824,7 +2824,7 @@ public class IntegrationPlatformRegressionTests extends BaseTestNGWebDriver {
 		LoadPreTestDataObj.loadPharmaciesFromProperty(testData);
 		log("POST URL: " + testData.PharmacyRenewalUrl);
 
-		log("Step 1: Setup Oauth client");
+		logStep("Setup Oauth client");
 		RestUtils.oauthSetup(testData.OAuthKeyStore, testData.OAuthProperty, testData.OAuthAppToken,
 				testData.OAuthUsername, testData.OAuthPassword);
 
@@ -2841,7 +2841,7 @@ public class IntegrationPlatformRegressionTests extends BaseTestNGWebDriver {
 		Thread.sleep(6000);
 		log("Wait to generate Pharmacy New Payload");
 
-		log("Step 2: Do NEW Pharmacy Post Request");
+		logStep("Do NEW Pharmacy Post Request");
 		log("ResponsePath: " + testData.ResponsePath);
 		Log4jUtil.log("Generate Payload with Status as " + testData.Status);
 		String processingUrl = RestUtils.setupHttpPostRequest(testData.PharmacyRenewalUrl, pharmacyNewPayload,
@@ -2870,7 +2870,7 @@ public class IntegrationPlatformRegressionTests extends BaseTestNGWebDriver {
 		Thread.sleep(6000);
 		log("Wait to generate Pharmacy Payload");
 
-		log("Step 3: Do UPDATE Pharmacy Post Request");
+		logStep("Do UPDATE Pharmacy Post Request");
 		log("ResponsePath: " + testData.ResponsePath);
 		Log4jUtil.log("Generate Payload with Status as " + testData.Status);
 		String processingUpdateUrl = RestUtils.setupHttpPostRequest(testData.PharmacyRenewalUrl, updatePayload,
@@ -2888,18 +2888,18 @@ public class IntegrationPlatformRegressionTests extends BaseTestNGWebDriver {
 		}
 		assertTrue(completed, "Message processing was not completed in time");
 
-		log("Step 4: Login to Patient Portal");
+		logStep("Login to Patient Portal");
 		JalapenoLoginPage loginPage = new JalapenoLoginPage(driver, testData.URL);
 		JalapenoHomePage homePage = loginPage.login(testData.UserName, testData.Password);
 
-		log("Step 5: Click on Prescription and go to Prescription Page");
+		logStep("Click on Prescription and go to Prescription Page");
 		JalapenoPrescriptionsPage JalapenoPrescriptionsPageObject = homePage.clickOnPrescriptions(driver);
 
-		log("Step 6: Click on Continue ");
+		logStep("Click on Continue ");
 		JalapenoPrescriptionsPageObject.clickContinueButton(driver);
 		Thread.sleep(60000);
 
-		log("Step 7:verify added pharmacy is updated in the list");
+		logStep("verify added pharmacy is updated in the list");
 		String addedPharamacy = testData.PharmacyName + ", " + testData.Line1 + ", " + testData.City + ", "
 				+ testData.State + ", " + testData.ZipCode;
 		log("Added Pharamacy :- " + addedPharamacy);
@@ -2920,7 +2920,7 @@ public class IntegrationPlatformRegressionTests extends BaseTestNGWebDriver {
 		LoadPreTestDataObj.loadPharmaciesFromProperty(testData);
 		log("POST URL: " + testData.PharmacyRenewalUrl);
 
-		log("Step 1: Setup Oauth client");
+		logStep("Setup Oauth client");
 		RestUtils.oauthSetup(testData.OAuthKeyStore, testData.OAuthProperty, testData.OAuthAppToken,
 				testData.OAuthUsername, testData.OAuthPassword);
 
@@ -2938,7 +2938,7 @@ public class IntegrationPlatformRegressionTests extends BaseTestNGWebDriver {
 		Thread.sleep(6000);
 		log("Wait to generate Pharmacy New Payload");
 
-		log("Step 2: Do NEW Pharmacy Post Request");
+		logStep("Do NEW Pharmacy Post Request");
 		log("ResponsePath: " + testData.ResponsePath);
 		Log4jUtil.log("Generate Payload with Status as " + testData.Status);
 		String processingUrl = RestUtils.setupHttpPostRequest(testData.PharmacyRenewalUrl, pharmacyNewPayload,
@@ -2957,18 +2957,18 @@ public class IntegrationPlatformRegressionTests extends BaseTestNGWebDriver {
 		}
 		assertTrue(completed, "Message processing was not completed in time");
 
-		log("Step 3: Login to Patient Portal");
+		logStep("Login to Patient Portal");
 		JalapenoLoginPage loginPage = new JalapenoLoginPage(driver, testData.URL);
 		JalapenoHomePage homePage = loginPage.login(testData.UserName, testData.Password);
 
-		log("Step 4: Click on Prescription and go to Prescription Page");
+		logStep("Click on Prescription and go to Prescription Page");
 		JalapenoPrescriptionsPage JalapenoPrescriptionsPageObject = homePage.clickOnPrescriptions(driver);
 
-		log("Step 5: Click on Continue ");
+		logStep("Click on Continue ");
 		JalapenoPrescriptionsPageObject.clickContinueButton(driver);
 		Thread.sleep(60000);
 
-		log("Step 6:verify newly added pharmacy in the list");
+		logStep("verify newly added pharmacy in the list");
 
 		String addedPharamacy = testData.PharmacyName + ", " + testData.Line1 + ", " + testData.City + ", "
 				+ testData.State + ", " + testData.ZipCode;
@@ -2978,7 +2978,7 @@ public class IntegrationPlatformRegressionTests extends BaseTestNGWebDriver {
 		String pharmacyFirstWord = testData.PharmacyName;
 		JalapenoPrescriptionsPageObject.verifyPharamcy(addedPharamacy, pharmacyFirstWord, env);
 
-		log("Delete Pharmacy with status 'DELETE' ");
+		logStep("Delete Pharmacy with status 'DELETE' ");
 		testData.Status = "DELETE";
 
 		log("ExternalPharmacyId posted is : " + ExternalPharmacyId);
@@ -2987,7 +2987,7 @@ public class IntegrationPlatformRegressionTests extends BaseTestNGWebDriver {
 		Thread.sleep(6000);
 		log("Wait to generate Pharmacy Payload");
 
-		log("Step 7: Do DELETE Pharmacy Post Request");
+		logStep("Do DELETE Pharmacy Post Request");
 		log("ResponsePath: " + testData.ResponsePath);
 		Log4jUtil.log("Generate Payload with Status as " + testData.Status);
 		String processingDeleteUrl = RestUtils.setupHttpPostRequest(testData.PharmacyRenewalUrl, deletePayload,
@@ -3007,11 +3007,11 @@ public class IntegrationPlatformRegressionTests extends BaseTestNGWebDriver {
 
 		driver.navigate().refresh();
 
-		log("Step 8: Click on Continue ");
+		logStep("Click on Continue ");
 		JalapenoPrescriptionsPageObject.clickContinueButton(driver);
 		Thread.sleep(60000);
 
-		log("Step 9:verify added pharmacy is deleted in the list");
+		logStep("verify added pharmacy is deleted in the list");
 		String deletedPharamacy = testData.PharmacyName + ", " + testData.Line1 + ", " + testData.City + ", "
 				+ testData.State + ", " + testData.ZipCode;
 		log("Added Pharamacy :- " + deletedPharamacy);
