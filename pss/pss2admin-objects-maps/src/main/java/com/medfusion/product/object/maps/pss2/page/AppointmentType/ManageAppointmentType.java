@@ -113,6 +113,33 @@ public class ManageAppointmentType extends PSS2MenuPage {
 
 	@FindBy(how = How.XPATH, using = "//*[@id='app']/nav[2]/ul[2]/li[4]/ul")
 	private WebElement logoutBtn;
+	
+	@FindBy(how = How.XPATH, using = "//a[@title='Add Slots']")
+	private WebElement excludeSlotBtn;
+	
+	@FindBy(how = How.XPATH, using = "//select[@name='beforeAfterStart']")
+	private WebElement excludeSlotBeforeAfterStart;
+
+	@FindBy(how = How.XPATH, using = "//select[@name='beforeAfterEnd']")
+	private WebElement excludeSlotBeforeAfterEnd;
+
+	@FindBy(how = How.XPATH, using = "//select[@name='condition']")
+	private WebElement excludeSlotCondition;
+
+	@FindBy(how = How.XPATH, using = "//input[@name='startTime']")
+	private WebElement startTime;
+
+	@FindBy(how = How.XPATH, using = "//input[@name='endTime']")
+	private WebElement endTime;
+	
+	@FindBy(how = How.XPATH, using = "//a[@title='Add Exclude Slot']")
+	private WebElement addExcludeSlotBtn;
+	
+	@FindBy(how = How.XPATH, using = "//*[@id='tabX33']/form/fieldset[2]/div/div/button[1]")
+	private WebElement appointmenttypeSave;
+
+	@FindBy(how = How.XPATH, using = "//*[@id=\"tabX33\"]/form/div[2]/table/tbody/tr[1]/td[2]/a")
+	private WebElement excludeSlotCheckBox;	
 
 	public ManageAppointmentType(WebDriver driver) {
 		super(driver);
@@ -270,4 +297,31 @@ public class ManageAppointmentType extends PSS2MenuPage {
 		settingBtn.click();
 		logoutBtn.click();
 	}
+	
+	public void excludeBtnWithTwoValues(String firstValue,String secondValue)
+	{
+		excludeSlotBtn.click();
+		Select before = new Select(excludeSlotBeforeAfterStart);
+		before.selectByVisibleText("Before");
+		startTime.clear();
+		startTime.sendKeys(firstValue);
+		log("SuccessFully Sent the First Value in Exclude Slot textfield");
+		addExcludeSlotBtn.click();
+		log("Clicked on yes ");
+		excludeSlotBtn.click();
+		before.selectByVisibleText("After");
+		startTime.clear();
+		startTime.sendKeys(secondValue);
+		log("SuccessFully Sent the Second Value in Exclude Slot textfield");
+		addExcludeSlotBtn.click();
+		log("Clicked on yes ");
+		appointmenttypeSave.click();
+	}
+	
+	public void resetExcludeBtn() {
+		excludeSlotCheckBox.click();
+		log("Exclude Btn reset");
+		appointmenttypeSave.click();	
+	}
+	
 }
