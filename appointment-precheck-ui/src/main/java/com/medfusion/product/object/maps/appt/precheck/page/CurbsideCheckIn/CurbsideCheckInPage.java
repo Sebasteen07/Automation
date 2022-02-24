@@ -180,6 +180,15 @@ public class CurbsideCheckInPage extends BasePageObject {
 	@FindBy(how=How.XPATH, using ="(//div[@class=' css-tlfecz-indicatorContainer'])[1]")
 	private WebElement removeIconforLocationInCurbsidecheckin;
 	
+	@FindBy(how=How.XPATH, using ="(//input[@type='checkbox'])[2]")
+	private WebElement selectPatientscheckbox;
+	
+	@FindBy(how=How.XPATH, using ="(//input[@type='checkbox'])[3]")
+	private WebElement selectPatientscheckbox2;
+	
+	@FindBy(how=How.XPATH, using ="(//input[@type='checkbox'])[4]")
+	private WebElement selectPatientscheckbox3;
+	
 	public CurbsideCheckInPage(WebDriver driver) {
 		super(driver);
 		PageFactory.initElements(driver, this);
@@ -876,5 +885,61 @@ public class CurbsideCheckInPage extends BasePageObject {
 			jse.executeScript("arguments[0].click();", removeIconforLocationInCurbsidecheckin);
 			
 	}
+		
+		public void selectPatientscheckbox() {
+			IHGUtil.waitForElement(driver, 5, selectPatientscheckbox);
+			selectPatientscheckbox.click();
+		}
+		
+		public void selectPatientscheckboxwithTimerOn() {
+			IHGUtil.waitForElement(driver, 5, selectPatientscheckbox);
+			selectPatientscheckbox.click();
+			
+		}
+		
+		public boolean visibilityofselectPatientscheckbox() {
+			IHGUtil.waitForElement(driver, 10, selectPatientscheckbox);
+			if (selectPatientscheckbox.isSelected()) {
+				log("patient is selected");
+				return true;
+			} else {
+				log("patient is not selected");
+				return false;
+			}
+		}
+		
+		public void selectPatientscheckbox2() {
+			IHGUtil.waitForElement(driver, 5, selectPatientscheckbox2);
+			selectPatientscheckbox2.click();
+		}
+		
+		public void selectPatientscheckbox3() {
+			IHGUtil.waitForElement(driver, 5, selectPatientscheckbox3);
+			selectPatientscheckbox3.click();
+		}
+		
+		public boolean visibilityofselectPatientscheckbox2() {
+			IHGUtil.waitForElement(driver, 10, selectPatientscheckbox2);
+			if (selectPatientscheckbox.isSelected()) {
+				log("patient 2 is selected");
+				return true;
+			} else {
+				log("patient 2 is not selected");
+				return false;
+			}
+		}
+		
+		public boolean visibilityofselectPatientscheckbox3() {
+			IHGUtil.waitForElement(driver, 10, selectPatientscheckbox3);
+			if (selectPatientscheckbox.isSelected()) {
+				log("patient 3 is selected");
+				return true;
+			} else {
+				log("patient 3 is not selected");
+				return false;
+			}
+		}
+		
+		
 		
 }

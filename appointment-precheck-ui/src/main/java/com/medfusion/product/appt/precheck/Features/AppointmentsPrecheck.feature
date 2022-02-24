@@ -1175,3 +1175,54 @@ Feature: Test fuctionality of Appointment precheck
     And I go to curbside check-in tab after new patient arrival 
     Then I verify notification count on top in appointment dashboard should get updated to four without refresh
     And logout from practice provisioning portal
+     
+  Scenario: verify that patient comes in the practice and staff marks single or multiple patients as checkedin in curbside checkin grid 
+  	And I schedule an appointment
+    And I go to curbside check-in where there are patients click one or multiple patients as checkedin
+    Then I verify once the patient marked as checkedin that particular entries should not be there in curbside checkin grid
+    And logout from practice provisioning portal
+ 
+  Scenario: verify if the staff clicks on the check in when the timer is still on
+    And I schedule an appointment
+    And I go to curbside check-in where there are patients click one or multiple patients whose timer is still on and check-in
+    Then I verify once the patient marked as checkedin that particular entries should get removed from curbside checkin grid
+    And logout from practice provisioning portal
+    
+  Scenario: verify the patient status on appointments dashboard on clicking on check in button in curbside checkin 
+    And I schedule an appointment
+    And I go to curbside check-in where there are patients click one or multiple patients as checkedin
+    And I go to appointment dashboard
+    Then I verify once the patient marked as checkedin and in appointment dashboard there should be a checkedin symbol for that patient
+    And logout from practice provisioning portal
+  
+  Scenario: verify selecting individual or multiple patients checkbox in the arrival grid
+  	And I schedule an appointment
+  	And I go to curbside check-in tab select individual or multiple patients checkbox 
+  	Then I verify all the patients should be selected on the curbside checkin tab
+  	And logout from practice provisioning portal
+  
+  Scenario: verify selecting three patients checkbox in the arrival grid
+  	And I schedule an appointment for three patients 
+  	And I go to curbside check-in tab select three patients checkbox 
+  	Then I verify three patients checkbox should be selected on the curbside checkin tab
+  	And logout from practice provisioning portal
+
+  Scenario: verify in the appointment grid for patient P1
+  	And I schedule an appointment
+  	And I go to appointment tab and see the arrival displayed for the patient in the arrival grid
+  	Then I verify scheduling details are displayed for patient P1 but checked-in icon is not displayed until the staff checks him in
+  	And logout from practice provisioning portal
+  	
+  Scenario: verify the curbside check-in grid staff member now checks the patient P1 by clicking on the check in button
+  	And I schedule an appointment
+  	And I go to curbside check-in tab and clicks on check-in button for the patient P1
+  	Then I verify patient P1 entry is removed from the curbside check-in grid 
+  	And logout from practice provisioning portal
+  	
+  Scenario: verify the patient P1 detail on the appointment dashboard
+  	And I schedule an appointment
+  	And I go to curbside check-in tab and clicks on check-in button for the patient P1
+  	And I go to appointment dashboard
+  	Then I verify checked in icon is added in a new column for patient P1 along with the other data in appointment dashboard
+  	And logout from practice provisioning portal
+  
