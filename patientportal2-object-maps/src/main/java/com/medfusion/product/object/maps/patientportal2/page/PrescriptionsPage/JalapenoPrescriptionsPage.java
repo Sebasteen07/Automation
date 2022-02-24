@@ -409,7 +409,7 @@ public class JalapenoPrescriptionsPage extends JalapenoMenu {
 				log("Pharamacy is not visible on Portal");
 			}
 		} catch (Exception e) {
-			log(e.getMessage());
+			log("Suggested pharmacy dropdown is not populated.Probably match not found." + e.getMessage());
 		}
 	}
 

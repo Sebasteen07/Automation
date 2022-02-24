@@ -217,8 +217,8 @@ public class JalapenoHomePage extends JalapenoMenu {
 	}
 
 	public JalapenoPrescriptionsPage clickOnPrescriptions(WebDriver driver) {
-
 		log("Clicking on Prescriptions button on dashboard");
+		this.clickOnMedications(driver);
 		prescriptions.click();
 		return PageFactory.initElements(driver, JalapenoPrescriptionsPage.class);
 	}
