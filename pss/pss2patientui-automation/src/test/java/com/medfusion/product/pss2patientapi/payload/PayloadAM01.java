@@ -2099,14 +2099,14 @@ public class PayloadAM01 {
 		return updateBusinessHours;
 	}
 	
-	public String updateBusinessHoursGW(String startTime,String endTime,String practiceId,String practiceName,String timeZone,String logo)
+	public String updateBusinessHoursGW(String startTime,String endTime,String extPracticeId,String practiceId,String practiceName,String timeZone,String logo)
 	{
 		String updateBusinessHours="{\r\n"
 				+ "  \"id\": "+practiceId+",\r\n"
 				+ "  \"name\": \"   "+practiceName+"\",\r\n"
 				+ "  \"practiceId\": \""+practiceId+"\",\r\n"
 				+ "  \"themeColor\": \"#7b3333\",\r\n"
-				+ "  \"extPracticeId\": \"300011\",\r\n"
+				+ "  \"extPracticeId\": \""+extPracticeId+"\",\r\n"
 				+ "  \"partner\": \"GW\",\r\n"
 				+ "  \"timezone\": \""+timeZone+"\",\r\n"
 				+ "  \"active\": true,\r\n"

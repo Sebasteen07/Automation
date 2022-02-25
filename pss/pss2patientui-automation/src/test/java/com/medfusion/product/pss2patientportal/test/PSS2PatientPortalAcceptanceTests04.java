@@ -667,6 +667,7 @@ public class PSS2PatientPortalAcceptanceTests04 extends BaseTestNGWebDriver{
 		log("TimeZone- "+locationTimeZone);
 		testData.setCurrentTimeZone(locationTimeZone);	
 		log("Get Time Zone - "+testData.getCurrentTimeZone());
+		psspatientUtils.currentTimeWithTimeZone(testData);
 
 		String currentdate=psspatientUtils.currentDateWithTimeZone(locationTimeZone);		
 		log("currentdate - "+currentdate);
@@ -677,9 +678,10 @@ public class PSS2PatientPortalAcceptanceTests04 extends BaseTestNGWebDriver{
 		String practiceName=propertyData.getProperty("updatepractice.name.gw");
 		String practiceTimeZone=propertyData.getProperty("updatepratice.timezone.gw");
 		String logo=propertyData.getProperty("updatepractice.logo.gw");
+		String extPracticeId=propertyData.getProperty("updatepractice.extpracticeid.gw");
 		
 		logStep("Update Practice Business Hours By Using AM");
-		response = postAPIRequestAM.practiceUpdate(practiceId, payloadAM01.updateBusinessHoursGW(startTime, endTime,practiceId,practiceName,practiceTimeZone,logo));
+		response = postAPIRequestAM.practiceUpdate(practiceId, payloadAM01.updateBusinessHoursGW(startTime, endTime,extPracticeId,practiceId,practiceName,practiceTimeZone,logo));
 		apv.responseCodeValidation(response, 200);
 	
 		logStep("Move to PSS patient Portal 2.0 to book an Appointment");
@@ -704,7 +706,7 @@ public class PSS2PatientPortalAcceptanceTests04 extends BaseTestNGWebDriver{
 				Boolean.valueOf(testData.getIsAppointmentPopup()));
 		Thread.sleep(2000);
 		logStep("Verfiy Provider Page and Provider = " + testData.getProvider());
-		AppointmentDateTime aptDateTime = provider.getProviderandClickGW(testData.getProvider());
+		AppointmentDateTime aptDateTime = provider.getProviderandClick(testData.getProvider());
 		String date = aptDateTime.selectDate(testData.getIsNextDayBooking());
 		logStep("Date selected is for App" + date);
 		log("date- " + date);
@@ -720,7 +722,7 @@ public class PSS2PatientPortalAcceptanceTests04 extends BaseTestNGWebDriver{
 		log("Appointment Time is "+time);
 		assertEquals(time, startTime);
 		logStep("Resetting the Admin Setting ");
-		response = postAPIRequestAM.practiceUpdate(practiceId, payloadAM01.updateBusinessHoursGW("00:00", "23:59",practiceId,practiceName,practiceTimeZone,logo));
+		response = postAPIRequestAM.practiceUpdate(practiceId, payloadAM01.updateBusinessHoursGW("00:00", "23:59",extPracticeId,practiceId,practiceName,practiceTimeZone,logo));
 		apv.responseCodeValidation(response, 200);
 
 	}
