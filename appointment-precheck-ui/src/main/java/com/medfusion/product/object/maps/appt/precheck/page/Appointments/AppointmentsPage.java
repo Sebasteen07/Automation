@@ -1765,5 +1765,13 @@ public class AppointmentsPage extends BasePageObject {
 		IHGUtil.waitForElement(driver, 5, selectBannerMesssage);
 		return selectBannerMesssage.getText();
 	}
+	
+	public void selectPatientIdAppt(String patientId) throws InterruptedException {
+		WebElement selectPatientId = driver
+				.findElement(By.xpath("//input[@id='filter-patient-id']"));
+		selectPatientId.sendKeys(patientId);
+		log("patient id entered in patientid field");
+		Thread.sleep(2000);
+	}
 
 }
