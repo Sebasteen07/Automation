@@ -883,6 +883,30 @@ public class PSSAdminUtils extends BaseTestNGWebDriver{
 		patientFlow.logout();
 	}
 	
+	public void exclueSlotsWithShowProviderOff(WebDriver driver, AdminUser adminuser, Appointment appointment, String appointmentType, String firstValue,String secondValue) throws Exception {
+		PSS2PracticeConfiguration pssPracticeConfig = loginToAdminPortal(driver, adminuser);
+		pssPracticeConfig = pssPracticeConfig.gotoPracticeConfigTab();
+		PatientFlow patientFlow = pssPracticeConfig.gotoPatientFlowTab();
+		patientFlow.turnOffProvider();
+		AdminPatientMatching adminPatientMatching = patientFlow.gotoPatientMatchingTab();
+		adminPatientMatching.patientMatchingSelection();
+		ManageAppointmentType manageAppointmentType = pssPracticeConfig.gotoAppointment();
+		pageRefresh(driver);
+		manageAppointmentType.selectAppointment(appointmentType);
+		manageAppointmentType.gotoConfiguration();
+		manageAppointmentType.excludeBtnWithTwoValues(firstValue , secondValue);
+	}
+	
+	public void resetExcludeSlotAppointmentType(WebDriver driver, AdminUser adminuser, Appointment appointment, String appointmentType) throws Exception {
+		
+		PSS2PracticeConfiguration pssPracticeConfig = loginToAdminPortal(driver, adminuser);
+		ManageAppointmentType manageAppointmentType = pssPracticeConfig.gotoAppointment();
+		pageRefresh(driver);
+		manageAppointmentType.selectAppointment(appointment.getAppointmenttype());
+		manageAppointmentType.resetExcludeBtn();
+		manageAppointmentType.logout();
+	}
+	
 	public void preventSchedAptSettings(WebDriver driver, AdminUser adminUser, Appointment appointment, String urlToUse)
 			throws Exception {
 
