@@ -50,8 +50,7 @@ public class PSS2PatientPortalAcceptanceTests07 extends BaseTestNGWebDriver {
 		logStep("Move to PSS patient Portal 2.0 to book an Appointment");
 		logStep("Login to PSS Appointment");
 		DismissPage dismissPage = new DismissPage(driver, testData.getUrlLoginLess());
-		logStep("LoginlessPatientInformation****");
-		log("Clicked on Dismiss");
+		logStep("Clicked on Dismiss");
 		LoginlessPatientInformation loginlessPatientInformation = dismissPage.clickDismiss();
 		HomePage homePage = loginlessPatientInformation.fillNewPatientForm(testData.getFirstName(),
 				testData.getLastName(), testData.getDob(), testData.getEmail(), testData.getGender(),
@@ -91,8 +90,7 @@ public class PSS2PatientPortalAcceptanceTests07 extends BaseTestNGWebDriver {
 		logStep("Move to PSS patient Portal 2.0 to book an Appointment");
 		logStep("Login to PSS Appointment");
 		DismissPage dismissPage = new DismissPage(driver, testData.getUrlLoginLess());
-		logStep("LoginlessPatientInformation****");
-		log("Clicked on Dismiss");
+		logStep("Clicked on Dismiss");
 		LoginlessPatientInformation loginlessPatientInformation = dismissPage.clickDismiss();
 		HomePage homePage = loginlessPatientInformation.fillNewPatientForm(testData.getFirstName(),
 				testData.getLastName(), testData.getDob(), testData.getEmail(), testData.getGender(),
