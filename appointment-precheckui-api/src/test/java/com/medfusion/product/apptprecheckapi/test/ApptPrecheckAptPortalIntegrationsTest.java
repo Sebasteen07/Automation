@@ -155,8 +155,8 @@ public class ApptPrecheckAptPortalIntegrationsTest extends BaseTestNG {
 	@BeforeMethod(enabled = true, groups = { "APItest" })
 	public void getMethodName(ITestResult result) throws IOException {
 		log("Method Name-- " + result.getMethod().getMethodName());
-		Appointment.patientId = commonMtd.generatRandomNum();
-		Appointment.apptId = commonMtd.generatRandomNum();
+		Appointment.patientId = commonMtd.generateRandomNum();
+		Appointment.apptId = commonMtd.generateRandomNum();
 		long currentTimestamp = System.currentTimeMillis();
 		long plus20Minutes = currentTimestamp + TimeUnit.MINUTES.toMillis(20);
 		log("Getting patients since timestamp: " + plus20Minutes);

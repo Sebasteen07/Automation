@@ -1590,6 +1590,53 @@ public class PayloadAM02 {
 				+ "]";
 		return payload;
 	}	
+	
+	public String lastSeenProviderPyaloadAT(int lastSeenMonth) {
+		
+		String payload="[\r\n"
+				+ "  {\r\n"
+				+ "    \"group\": \"MF_SERVICES\",\r\n"
+				+ "    \"key\": \"ShowProviderImages\",\r\n"
+				+ "    \"value\": true\r\n"
+				+ "  },\r\n"
+				+ "  {\r\n"
+				+ "    \"group\": \"PROVIDER\",\r\n"
+				+ "    \"key\": \"PrimaryCareProvider\",\r\n"
+				+ "    \"value\": false\r\n"
+				+ "  },\r\n"
+				+ "  {\r\n"
+				+ "    \"group\": \"APPOINTMENT\",\r\n"
+				+ "    \"key\": \"displayLastSeenProvider\",\r\n"
+				+ "    \"value\": true\r\n"
+				+ "  },\r\n"
+				+ "  {\r\n"
+				+ "    \"group\": \"APPOINTMENT\",\r\n"
+				+ "    \"key\": \"lastSeenProviderMonths\",\r\n"
+				+ "    \"value\": \""+lastSeenMonth+"\"\r\n"
+				+ "  },\r\n"
+				+ "  {\r\n"
+				+ "    \"group\": \"PROVIDER\",\r\n"
+				+ "    \"key\": \"forceCareTeam\",\r\n"
+				+ "    \"value\": false\r\n"
+				+ "  },\r\n"
+				+ "  {\r\n"
+				+ "    \"group\": \"PROVIDER\",\r\n"
+				+ "    \"key\": \"forceCareTeamDuration\",\r\n"
+				+ "    \"value\": \"6\"\r\n"
+				+ "  },\r\n"
+				+ "  {\r\n"
+				+ "    \"group\": \"PROVIDER\",\r\n"
+				+ "    \"key\": \"pcpAvailabilityDuration\",\r\n"
+				+ "    \"value\": \"0\"\r\n"
+				+ "  },\r\n"
+				+ "  {\r\n"
+				+ "    \"group\": \"CARE_TEAM\",\r\n"
+				+ "    \"key\": \"pcp\",\r\n"
+				+ "    \"value\": \"true\"\r\n"
+				+ "  }\r\n"
+				+ "]";
+		return payload;
+	}
 	public String bookRulePyaload(int location, int appt) {
 
 		String payload = "{\r\n"
