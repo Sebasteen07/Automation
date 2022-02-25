@@ -95,7 +95,7 @@ public class PharmacyPayload {
 	public static String randomNumbers(int number) {
 		String randomNumbers;
 		randomNumbers = RandomStringUtils.random(number, false, true);
-		randomNumbers = randomNumbers.replaceFirst("^0*", "");
+		randomNumbers = randomNumbers.replaceFirst("0", "5");
 		return randomNumbers;
 	}
 }

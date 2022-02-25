@@ -1,8 +1,6 @@
 //Copyright 2013-2021 NXGN Management, LLC. All Rights Reserved.
 package com.medfusion.product.object.maps.patientportal2.page.CreateAccount;
 
-import com.medfusion.pojos.Patient;
-
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.FindBy;
@@ -13,6 +11,7 @@ import org.openqa.selenium.support.ui.WebDriverWait;
 
 import com.medfusion.common.utils.IHGUtil;
 import com.medfusion.common.utils.PropertyFileLoader;
+import com.medfusion.pojos.Patient;
 import com.medfusion.product.object.maps.patientportal2.page.MedfusionPage;
 import com.medfusion.product.object.maps.patientportal2.page.HomePage.JalapenoHomePage;
 
@@ -111,6 +110,7 @@ public class SecurityDetailsPage extends MedfusionPage {
 
 		public JalapenoHomePage fillAccountDetailsAndContinue(String userId, String password, String secretQuestion, String secretAnswer, String phoneNumber,
 				int statementPreference) throws InterruptedException {
+			Thread.sleep(5000);
 				IHGUtil.PrintMethodName();
 				fillAccountDetails(userId, password, secretQuestion, secretAnswer, phoneNumber, statementPreference);
 				IHGUtil.waitForElement(driver, 60, buttonFinishStep);
@@ -118,6 +118,7 @@ public class SecurityDetailsPage extends MedfusionPage {
 				log("Clicking finish btn");
 				buttonFinishStep.click();
 				selectStatementIfRequired(statementPreference); //TODO move to handleWeNeedToConfirmSomethingModal
+				Thread.sleep(10000);
 				handleWeNeedToConfirmSomethingModal();
 				return PageFactory.initElements(driver, JalapenoHomePage.class);
 		}
