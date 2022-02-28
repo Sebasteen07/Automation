@@ -4275,6 +4275,87 @@ public class ApptPrecheckSteps extends BaseTest {
 		assertEquals(notifPage.getTimingUnitText(), Appointment.minute1+", "+Appointment.minute2+", "+Appointment.minute3, "Minutes Timing unit was not match");
 	}
 	
+	@When("I go to curbside check-in where there are patients click one or multiple patients as checkedin")
+	public void i_go_to_curbside_check_in_where_there_are_patients_click_one_or_multiple_patients_as_checkedin() throws InterruptedException {
+		mainPage.clickOnCurbsideTab();
+		curbsidePage.selectPatientscheckbox();
+		curbsidePage.clickOnCheckInButton();
+	}
+	@Then("I verify once the patient marked as checkedin that particular entries should not be there in curbside checkin grid")
+	public void i_verify_once_the_patient_marked_as_checkedin_that_particular_entries_should_not_be_there_in_curbside_checkin_grid() {
+		assertTrue(curbsidePage.visibilityOfCheckinButton());
+	}
+	@When("I go to curbside check-in where there are patients click one or multiple patients whose timer is still on and check-in")
+	public void i_go_to_curbside_check_in_where_there_are_patients_click_one_or_multiple_patients_whose_timer_is_still_on_and_check_in() throws InterruptedException {
+		mainPage.clickOnCurbsideTab();
+		curbsidePage.selectPatientscheckbox();
+		curbsidePage.selectPatientscheckboxwithTimerOn();
+		curbsidePage.clickOnCheckInButton();
+	}
+	@Then("I verify once the patient marked as checkedin that particular entries should get removed from curbside checkin grid")
+	public void i_verify_once_the_patient_marked_as_checkedin_that_particular_entries_should_get_removed_from_curbside_checkin_grid() {
+		assertTrue(curbsidePage.visibilityOfCheckinButton());
+	}
+	@When("I go to appointment dashboard")
+	public void i_go_to_appointment_dashboard() throws InterruptedException {
+		mainPage.clickOnAppointmentsTab();
+		apptPage.selectPatientIdAppt(Appointment.patientId);	
+	}
+	@Then("I verify once the patient marked as checkedin and in appointment dashboard there should be a checkedin symbol for that patient")
+	public void i_verify_once_the_patient_marked_as_checkedin_and_in_appointment_dashboard_there_should_be_a_checkedin_symbol_for_that_patient() throws InterruptedException {
+		assertTrue(apptPage.displayCheckInMark());
+		
+	}
+	
+	@When("I go to curbside check-in tab select individual or multiple patients checkbox")
+	public void i_go_to_curbside_check_in_tab_select_individual_or_multiple_patients_checkbox() throws InterruptedException {
+	   mainPage.clickOnCurbsideTab();
+	   curbsidePage.selectPatientscheckbox();
+	}
+	@Then("I verify all the patients should be selected on the curbside checkin tab")
+	public void i_verify_all_the_patients_should_be_selected_on_the_curbside_checkin_tab() {
+		 assertTrue(curbsidePage.visibilityofselectPatientscheckbox());
+	}
+	@When("I go to curbside check-in tab select three patients checkbox")
+	public void i_go_to_curbside_check_in_tab_select_three_patients_checkbox() throws InterruptedException {
+		mainPage.clickOnCurbsideTab();
+		curbsidePage.selectPatientscheckbox();
+		curbsidePage.selectPatientscheckbox2();
+		curbsidePage.selectPatientscheckbox3();
+	}
+	@Then("I verify three patients checkbox should be selected on the curbside checkin tab")
+	public void i_verify_three_patients_checkbox_should_be_selected_on_the_curbside_checkin_tab() {
+		 assertTrue(curbsidePage.visibilityofselectPatientscheckbox());
+		 assertTrue(curbsidePage.visibilityofselectPatientscheckbox2());
+		 assertTrue(curbsidePage.visibilityofselectPatientscheckbox3());
+	}
+	
+	@When("I go to appointment tab and see the arrival displayed for the patient in the arrival grid")
+	public void i_go_to_appointment_tab_and_see_the_arrival_displayed_for_the_patient_in_the_arrival_grid() throws InterruptedException {
+		apptPage.selectPatientIdAppt(Appointment.patientId);
+	}
+	@Then("I verify scheduling details are displayed for patient P1 but checked-in icon is not displayed until the staff checks him in")
+	public void i_verify_scheduling_details_are_displayed_for_patient_p1_but_checked_in_icon_is_not_displayed_until_the_staff_checks_him_in() throws InterruptedException {
+		assertTrue(apptPage.displaycurbsideArrivalMark());
+	}
+	@When("I go to curbside check-in tab and clicks on check-in button for the patient P1")
+	public void i_go_to_curbside_check_in_tab_and_clicks_on_check_in_button_for_the_patient_p1() throws InterruptedException {
+	    mainPage.clickOnCurbsideTab();
+	    curbsidePage.selectPatientscheckbox();    
+	    curbsidePage.clickOnCheckInButton();
+	}
+	@Then("I verify patient P1 entry is removed from the curbside check-in grid")
+	public void i_verify_patient_p1_entry_is_removed_from_the_curbside_check_in_grid() {
+	    assertTrue(curbsidePage.visibilityOfNotifIcon());
+	}
+	@Then("I verify checked in icon is added in a new column for patient P1 along with the other data in appointment dashboard")
+	public void i_verify_checked_in_icon_is_added_in_a_new_column_for_patient_p1_along_with_the_other_data_in_appointment_dashboard() throws InterruptedException {
+	    assertTrue(apptPage.displayCheckInMark());
+	    
+	}
+
+
+	
 }
 
 
