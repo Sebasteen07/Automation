@@ -142,7 +142,7 @@ public class Provider extends PSS2MainPage {
 			}
 		}
 	}
-	
+
 	public String getProviderText(String providerName) {
 		log("in select Provider from providerList" + providerName);
 		String book = null;
@@ -172,7 +172,7 @@ public class Provider extends PSS2MainPage {
 		log("in select Provider from providerList" + providerName);
 		log("Size is " + providerList.size());
 		Thread.sleep(1000);
-		for (int i = 0; i <providerList.size(); i++) {
+		for (int i = 0; i < providerList.size(); i++) {
 			log(providerList.get(i).getText() + " match " + providerList.get(i).getText().contains(providerName));
 			if (providerList.get(i).getText().trim().contains(providerName.trim())) {
 				CommonMethods.highlightElement(providerList.get(i));
@@ -214,7 +214,7 @@ public class Provider extends PSS2MainPage {
 		log("Only date is  " + nextDate);
 		return nextDate;
 	}
-	
+
 	public String getNextavaliableText() {
 		return providerNextavaliable.getText();
 	}

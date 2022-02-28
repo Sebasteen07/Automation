@@ -1183,5 +1183,4 @@ public class PSSAdminUtils extends BaseTestNGWebDriver{
 		ManageLockoutRules lockout = pssPracticeConfig.gotoLockOut();
 		lockout.addAlertWithoutMsg();		
 	}
-
 }
