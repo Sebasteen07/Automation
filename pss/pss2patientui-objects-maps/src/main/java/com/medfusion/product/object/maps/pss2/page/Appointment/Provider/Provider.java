@@ -142,7 +142,7 @@ public class Provider extends PSS2MainPage {
 			}
 		}
 	}
-	
+
 	public String getProviderText(String providerName) {
 		log("in select Provider from providerList" + providerName);
 		String book = null;
@@ -172,7 +172,7 @@ public class Provider extends PSS2MainPage {
 		log("in select Provider from providerList" + providerName);
 		log("Size is " + providerList.size());
 		Thread.sleep(1000);
-		for (int i = 0; i <providerList.size(); i++) {
+		for (int i = 0; i < providerList.size(); i++) {
 			log(providerList.get(i).getText() + " match " + providerList.get(i).getText().contains(providerName));
 			if (providerList.get(i).getText().trim().contains(providerName.trim())) {
 				CommonMethods.highlightElement(providerList.get(i));
@@ -188,27 +188,6 @@ public class Provider extends PSS2MainPage {
 		return PageFactory.initElements(driver, AppointmentDateTime.class);
 	}
 
-	public AppointmentDateTime getProviderandClickGW(String providerName) throws InterruptedException {
-		log("in select Provider from providerList1" + providerName);
-		log("Size is " + providerList1.size());
-		Thread.sleep(1000);
-		for (int i = 0; i <providerList1.size(); i++) {
-			log(providerList1.get(i).getText() + " match " + providerList1.get(i).getText().contains(providerName));
-			if (providerList1.get(i).getText().trim().contains(providerName.trim())) {
-				CommonMethods.highlightElement(providerList1.get(i));
-				IHGUtil.waitForElement(driver, 13, providerList1.get(i));
-				Thread.sleep(1000);
-				log("Search Provider");
-				log("Provider of user found at " + providerList1.get(i).getText());
-				providerList1.get(i).click();
-				log("Clicked on Provider");
-				return PageFactory.initElements(driver, AppointmentDateTime.class);
-			}
-		}
-		return PageFactory.initElements(driver, AppointmentDateTime.class);
-	}
-
-	
 	public int searchForProviderFromListt(String providerName) throws InterruptedException {
 		searchForProvider.sendKeys(providerName);
 		log("providerList = " + providerList.size());
@@ -235,7 +214,7 @@ public class Provider extends PSS2MainPage {
 		log("Only date is  " + nextDate);
 		return nextDate;
 	}
-	
+
 	public String getNextavaliableText() {
 		return providerNextavaliable.getText();
 	}

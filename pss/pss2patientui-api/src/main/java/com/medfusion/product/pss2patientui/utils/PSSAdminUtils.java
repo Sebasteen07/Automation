@@ -1183,26 +1183,4 @@ public class PSSAdminUtils extends BaseTestNGWebDriver{
 		ManageLockoutRules lockout = pssPracticeConfig.gotoLockOut();
 		lockout.addAlertWithoutMsg();		
 	}
-
-	public void getBusinessHours(WebDriver driver, AdminUser adminuser,Appointment appointment,String startTime,String endTime) throws Exception {
-
-		PSS2PracticeConfiguration psspracticeConfig = loginToAdminPortal(driver, adminuser);
-		psspracticeConfig = psspracticeConfig.gotoPracticeConfigTab();
-		psspracticeConfig.busineesHour(startTime, endTime);
-		PatientFlow patientflow = psspracticeConfig.gotoPatientFlowTab();
-		ManageResource manageResource = psspracticeConfig.gotoResource();
-		pageRefresh(driver);
-		manageResource.selectResource(appointment.getProvider());
-		manageResource.selectAppointmenttype(appointment.getAppointmenttype());
-		manageResource.notreserve();
-		Log4jUtil.log("Status for AcceptFor Same day is" + manageResource.acceptforStatus());
-		appointment.setAccepttoggleStatus(manageResource.acceptforStatus());
-		Log4jUtil.log("Status for AcceptFor Same day is" + appointment.isAccepttoggleStatus());
-		if (appointment.isAccepttoggleStatus() == false) {
-			manageResource.clickacceptsameday();
-		} else {
-			log("Alredy ON Accept Same Day");
-		}
-		patientflow.logout();
-	}
 }

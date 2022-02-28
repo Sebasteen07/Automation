@@ -2196,7 +2196,7 @@ public class PSSPatientUtils extends BaseTestNGWebDriver {
 
 	}
 
-	public long timeDifferenceendTime1(Appointment testData,String endTimeBusinessHours) throws ParseException {
+	public long timeDifferance(Appointment testData,String endTimeBusinessHours) throws ParseException {
 		log("Bussiness Hour Endtime is  "+endTimeBusinessHours );
 		Calendar now = Calendar.getInstance();
 		TimeZone time_zone = TimeZone.getTimeZone(testData.getCurrentTimeZone());
@@ -2208,16 +2208,5 @@ public class PSSPatientUtils extends BaseTestNGWebDriver {
 		long difference = time2.getTime() - time1.getTime();
 		log("Time Differnce is  " + difference);
 		return difference;
-	}
-	public String currentTimeWithTimeZone(Appointment testData)
-	{
-		Calendar now = Calendar.getInstance();
-		TimeZone time_zone = TimeZone.getTimeZone(testData.getCurrentTimeZone());
-		now.setTimeZone(time_zone);
-		String currenttime = +now.get(Calendar.HOUR_OF_DAY) + ":" + now.get(Calendar.MINUTE);
-		//SimpleDateFormat format = new SimpleDateFormat("HH:mm");
-		log("current Time in "+testData.getCurrentTimeZone() +"is "+ currenttime);
-		return currenttime;
-		
 	}
 }
