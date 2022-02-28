@@ -667,7 +667,7 @@ public class PSS2PatientPortalAcceptanceTests04 extends BaseTestNGWebDriver{
 		log("TimeZone- "+locationTimeZone);
 		testData.setCurrentTimeZone(locationTimeZone);	
 		log("Get Time Zone - "+testData.getCurrentTimeZone());
-		psspatientUtils.currentTimeWithTimeZone(testData);
+//		psspatientUtils.currentTimeWithTimeZone(testData);
 
 		String currentdate=psspatientUtils.currentDateWithTimeZone(locationTimeZone);		
 		log("currentdate - "+currentdate);
@@ -726,5 +726,106 @@ public class PSS2PatientPortalAcceptanceTests04 extends BaseTestNGWebDriver{
 		apv.responseCodeValidation(response, 200);
 
 	}
+	
+	@Test(enabled = true, groups = { "AcceptanceTests" }, retryAnalyzer = RetryAnalyzer.class)
+	public void testBusinessHourAT() throws Exception {
+		PSSPropertyFileLoader propertyData = new PSSPropertyFileLoader();
+		Appointment testData = new Appointment();
+		AdminUser adminuser = new AdminUser();
+		propertyData.setAdminAT(adminuser);
+		propertyData.setAppointmentResponseAT(testData);
+		PSSPatientUtils psspatientUtils = new PSSPatientUtils();		
+		setUp(propertyData.getProperty("mf.practice.id.at"), propertyData.getProperty("mf.authuserid.am.at"));
+		Response response;
+		logStep("Setting Rule By Using Adapter Modulator Api Call");
+		response = postAPIRequestAM.resourceConfigRuleGet(practiceId);
+		apv.responseCodeValidation(response,200);
+        JSONArray arr = new JSONArray(response.body().asString());
+        int l=arr.length();
+        log("Length is- "+l);
+        for (int i=0; i<l; i++) {
+        int ruleId=arr.getJSONObject(i).getInt("id");
+        log("Object No."+i+"- "+ruleId);
+        Response responseForDeleteRule = postAPIRequestAM.deleteRuleById(practiceId, Integer.toString(ruleId));
+        apv.responseCodeValidation(responseForDeleteRule, 200);
+        }
+        Response responseRulePost = postAPIRequestAM.resourceConfigRulePost(practiceId,
+        		 payloadAM.rulePayload("LTB", "L,T,B"));
+        apv.responseCodeValidation(responseRulePost, 200);
 
+		Response responseRulePostTL = postAPIRequestAM.resourceConfigRulePost(practiceId,
+				 payloadAM.rulePayload("TBL", "T,B,L"));
+		apv.responseCodeValidation(responseRulePostTL, 200);
+		logStep("Show Provider On Using AM ");
+		Response responseShowOff = postAPIRequestAM.resourceConfigSavePost(practiceId, payloadAM01.turnONOFFShowProvider(true));
+		apv.responseCodeValidation(responseShowOff, 200);
+		
+		logStep("Patient Matching By Using Adapter Modulator");
+		response = postAPIRequestAM.patientInfoPost(practiceId, payloadAM.patientMatchAt());
+		apv.responseCodeValidation(response, 200);
+		
+		logStep("Get Location TimeZone By Using AM");
+		response = postAPIRequestAM.locationById(practiceId, propertyData.getProperty("locationid.at"));
+		apv.responseCodeValidation(response, 200);
+		String locationTimeZone=apv.responseKeyValidationJson(response, "timezone");
+		log("TimeZone- "+locationTimeZone);
+		testData.setCurrentTimeZone(locationTimeZone);	
+		log("Get Time Zone - "+testData.getCurrentTimeZone());
+
+		String currentdate=psspatientUtils.currentDateWithTimeZone(locationTimeZone);		
+		log("currentdate - "+currentdate);
+		
+		String startTime=propertyData.getProperty("business.hours.starttime");
+		String endTime=propertyData.getProperty("business.hours.endtime");
+		String practiceId=propertyData.getProperty("practice.id.at.ui");
+		String practiceName=propertyData.getProperty("updatepractice.name.at");
+		String practiceTimeZone=propertyData.getProperty("updatepratice.timezone.at");
+		String logo=propertyData.getProperty("updatepractice.logo.at");
+		
+		logStep("Update Practice Business Hours By Using AM");
+		response = postAPIRequestAM.practiceUpdate(practiceId, payloadAM01.updateBusinessHoursAT(startTime, endTime,practiceId,practiceName,practiceTimeZone,logo));
+		apv.responseCodeValidation(response, 200);
+	
+		logStep("Move to PSS patient Portal 2.0 to book an Appointment");
+		logStep("Login to PSS Appointment");	
+		DismissPage dismissPage = new DismissPage(driver, testData.getUrlLoginLess());
+		logStep("Clicked on Dismiss");
+		LoginlessPatientInformation loginlessPatientInformation = dismissPage.clickDismiss();
+		HomePage homePage = loginlessPatientInformation.fillNewPatientForm(testData.getFirstName(),
+				testData.getLastName(), testData.getDob(), testData.getEmail(), testData.getGender(),
+				testData.getZipCode(), testData.getPrimaryNumber());
+		homePage.btnStartSchedClick();
+		Location location = null;
+    	StartAppointmentInOrder startAppointmentInOrder = null;
+		startAppointmentInOrder = homePage.skipInsurance(driver);
+		location = startAppointmentInOrder.selectFirstLocation(PSSConstants.START_LOCATION);
+		logStep("Verfiy Location Page and location =" + testData.getLocation());
+
+		AppointmentPage appointment = location.selectAppointment(testData.getLocation());
+		logStep("Verfiy Appointment Page and appointment to be selected = " + testData.getAppointmenttype());
+
+		Provider provider = appointment.selectTypeOfProvider(testData.getAppointmenttype(),
+				Boolean.valueOf(testData.getIsAppointmentPopup()));
+		logStep("Verfiy Provider Page and Provider = " + testData.getProvider());
+		AppointmentDateTime aptDateTime = provider.getProviderandClick(testData.getProvider());
+		String date = aptDateTime.selectDate(testData.getIsNextDayBooking());
+		logStep("Date selected is for App" + date);
+		log("date- " + date);
+		log("Next date is    " + psspatientUtils.numDate(testData));
+		if (psspatientUtils.timeDifferenceendTime1(testData,endTime) < 0) {
+			log("Time Diff is  less Than 0 print Next date ");
+			assertEquals(date, psspatientUtils.numDate(testData));
+		} else {
+			log("Time Diff is Not less Than 0 print current date ");
+			assertEquals(date, psspatientUtils.currentESTDate(testData), "Slots are Not Avaliable for current date");
+		}
+		String time=aptDateTime.getfirsttime().substring(0, 5);
+		log("Appointment Time is "+time);
+		assertEquals(time, startTime);
+		logStep("Resetting the Admin Setting ");
+		response = postAPIRequestAM.practiceUpdate(practiceId, payloadAM01.updateBusinessHoursNG("00:00", "23:59",practiceId,practiceName,practiceTimeZone,logo));
+		apv.responseCodeValidation(response, 200);
+
+	}
+	
 }

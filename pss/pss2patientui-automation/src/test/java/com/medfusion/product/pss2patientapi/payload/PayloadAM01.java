@@ -2130,5 +2130,35 @@ public class PayloadAM01 {
 		return updateBusinessHours;
 	}
 
+	public String updateBusinessHoursAT(String startTime,String endTime,String practiceId,String practiceName,String timeZone,String logo)
+	{
+		String updateBusinessHours="{\r\n"
+				+ "  \"id\": "+practiceId+",\r\n"
+				+ "  \"name\": \""+practiceName+"\",\r\n"
+				+ "  \"practiceId\": \""+practiceId+"\",\r\n"
+				+ "  \"themeColor\": \"#4caf50\",\r\n"
+				+ "  \"extPracticeId\": \""+practiceId+"\",\r\n"
+				+ "  \"partner\": \"ATHENA\",\r\n"
+				+ "  \"timezone\": \""+timeZone+"\",\r\n"
+				+ "  \"active\": true,\r\n"
+				+ "  \"languages\": [\r\n"
+				+ "    {\r\n"
+				+ "      \"code\": \"EN\",\r\n"
+				+ "      \"flag\": \"us\",\r\n"
+				+ "      \"name\": \"English\"\r\n"
+				+ "    },\r\n"
+				+ "    {\r\n"
+				+ "      \"code\": \"ES\",\r\n"
+				+ "      \"flag\": \"mx\",\r\n"
+				+ "      \"name\": \"Español\"\r\n"
+				+ "    }\r\n"
+				+ "  ],\r\n"
+				+ "  \"starttime\": \""+startTime+"\",\r\n"
+				+ "  \"endtime\": \""+endTime+"\",\r\n"
+				+ "  \"logo\": \""+logo+"\",\r\n"
+				+ "  \"type\": null\r\n"
+				+ "}";
+		return updateBusinessHours;
+	}
 }
 
