@@ -671,7 +671,7 @@ locals {
       cron_shedule          = "cron(0 20 ? * 1-5 *)"
     }
 
-    "git-taf-demo-payreporting-e2e-element" = {
+    "demo-payreporting-e2e-element" = {
       codecommit_branch     = "development"
       PollForSourceChanges  = false
       execution_folder      = "payreporting-automationE2E"
@@ -681,12 +681,12 @@ locals {
       build_timeout         = 240 #Number of minutes, from 5 to 480. Default value is 60 mins
       queued_timeout        = 480 #Number of minutes, from 5 to 480. Default value is 480 mins
       maven_parameter       = "mvn clean install -U"
-      google_chrome_version = "97.0.4692.99-1"
+      google_chrome_version = "98.0.4758.102-1"
       chrome_driver_version = "97.0.4692.71"
       cron_shedule          = "cron(0 0 ? * 2 *)"
     }
 
-    "git-taf-demo-payreporting-e2e-paypal" = {
+    "demo-payreporting-e2e-paypal" = {
       codecommit_branch     = "development"
       PollForSourceChanges  = false
       execution_folder      = "payreporting-automationE2E"
@@ -696,12 +696,12 @@ locals {
       build_timeout         = 240 #Number of minutes, from 5 to 480. Default value is 60 mins
       queued_timeout        = 480 #Number of minutes, from 5 to 480. Default value is 480 mins
       maven_parameter       = "mvn clean install -U"
-      google_chrome_version = "97.0.4692.99-1"
+      google_chrome_version = "98.0.4758.102-1"
       chrome_driver_version = "97.0.4692.71"
       cron_shedule          = "cron(5 0 ? * 2 *)"
     }
 
-    "git-taf-demo-payreporting-e2e-qbms" = {
+    "demo-payreporting-e2e-qbms" = {
       codecommit_branch     = "development"
       PollForSourceChanges  = false
       execution_folder      = "payreporting-automationE2E"
@@ -711,12 +711,12 @@ locals {
       build_timeout         = 240 #Number of minutes, from 5 to 480. Default value is 60 mins
       queued_timeout        = 480 #Number of minutes, from 5 to 480. Default value is 480 mins
       maven_parameter       = "mvn clean install -U"
-      google_chrome_version = "97.0.4692.99-1"
+      google_chrome_version = "98.0.4758.102-1"
       chrome_driver_version = "97.0.4692.71"
       cron_shedule          = "cron(10 0 ? * 2 *)"
     }
 
-    "git-taf-demo-payreporting-payments" = {
+    "demo-payreporting-payments" = {
       codecommit_branch     = "development"
       PollForSourceChanges  = false
       execution_folder      = "payreporting-automation"
@@ -726,12 +726,12 @@ locals {
       build_timeout         = 240 #Number of minutes, from 5 to 480. Default value is 60 mins
       queued_timeout        = 480 #Number of minutes, from 5 to 480. Default value is 480 mins
       maven_parameter       = "mvn clean install -U"
-      google_chrome_version = "97.0.4692.99-1"
+      google_chrome_version = "98.0.4758.102-1"
       chrome_driver_version = "97.0.4692.71"
       cron_shedule          = "cron(15 0 ? * 2 *)"
     }
 
-    "git-taf-demo-payreporting-smoke" = {
+    "demo-payreporting-smoke" = {
       codecommit_branch     = "development"
       PollForSourceChanges  = false
       execution_folder      = "payreporting-automation"
@@ -741,7 +741,7 @@ locals {
       build_timeout         = 240 #Number of minutes, from 5 to 480. Default value is 60 mins
       queued_timeout        = 480 #Number of minutes, from 5 to 480. Default value is 480 mins
       maven_parameter       = "mvn clean install -U"
-      google_chrome_version = "97.0.4692.99-1"
+      google_chrome_version = "98.0.4758.102-1"
       chrome_driver_version = "97.0.4692.71"
       cron_shedule          = "cron(20 0 ? * * *)"
     }

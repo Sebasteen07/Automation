@@ -45,11 +45,11 @@ locals {
     demo-pss-gw-acceptance             = "demo-pss-gw-acceptance"
     demo-pss-ng-acceptance             = "demo-pss-ng-acceptance"
     demo-pss-ngadapter-acceptance      = "demo-pss-ngadapter-acceptance"
-    git-taf-demo-payreporting-e2e-element = "git-taf-demo-payreporting-e2e-element"
-    git-taf-demo-payreporting-e2e-paypal  = "git-taf-demo-payreporting-e2e-paypal"
-    git-taf-demo-payreporting-e2e-qbms = "git-taf-demo-payreporting-e2e-qbms"
-    git-taf-demo-payreporting-payments = "git-taf-demo-payreporting-payments"
-    git-taf-demo-payreporting-smoke    = "git-taf-demo-payreporting-smoke"
+    demo-payreporting-e2e-element      = "demo-payreporting-e2e-element"
+    demo-payreporting-e2e-paypal       = "demo-payreporting-e2e-paypal"
+    demo-payreporting-e2e-qbms         = "demo-payreporting-e2e-qbms"
+    demo-payreporting-payments         = "demo-payreporting-payments"
+    demo-payreporting-smoke            = "demo-payreporting-smoke"
   }
   selected_workspace = local.valid_workspaces[terraform.workspace]
 }
