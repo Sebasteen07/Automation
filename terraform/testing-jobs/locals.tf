@@ -670,6 +670,81 @@ locals {
       chrome_driver_version = "97.0.4692.71"
       cron_shedule          = "cron(0 20 ? * 1-5 *)"
     }
+
+    "demo-payreporting-e2e-element" = {
+      codecommit_branch     = "development"
+      PollForSourceChanges  = false
+      execution_folder      = "payreporting-automationE2E"
+      test_environment      = "demo"
+      suite_xml             = "payreporting-element-e2e.xml"
+      pxp_application       = "Pay"
+      build_timeout         = 240 #Number of minutes, from 5 to 480. Default value is 60 mins
+      queued_timeout        = 480 #Number of minutes, from 5 to 480. Default value is 480 mins
+      maven_parameter       = "mvn clean install -U"
+      google_chrome_version = "98.0.4758.102-1"
+      chrome_driver_version = "97.0.4692.71"
+      cron_shedule          = "cron(0 0 ? * 2 *)"
+    }
+
+    "demo-payreporting-e2e-paypal" = {
+      codecommit_branch     = "development"
+      PollForSourceChanges  = false
+      execution_folder      = "payreporting-automationE2E"
+      test_environment      = "demo"
+      suite_xml             = "payreporting-paypal-e2e.xml"
+      pxp_application       = "Pay"
+      build_timeout         = 240 #Number of minutes, from 5 to 480. Default value is 60 mins
+      queued_timeout        = 480 #Number of minutes, from 5 to 480. Default value is 480 mins
+      maven_parameter       = "mvn clean install -U"
+      google_chrome_version = "98.0.4758.102-1"
+      chrome_driver_version = "97.0.4692.71"
+      cron_shedule          = "cron(5 0 ? * 2 *)"
+    }
+
+    "demo-payreporting-e2e-qbms" = {
+      codecommit_branch     = "development"
+      PollForSourceChanges  = false
+      execution_folder      = "payreporting-automationE2E"
+      test_environment      = "demo"
+      suite_xml             = "payreporting-qbms-e2e.xml"
+      pxp_application       = "Pay"
+      build_timeout         = 240 #Number of minutes, from 5 to 480. Default value is 60 mins
+      queued_timeout        = 480 #Number of minutes, from 5 to 480. Default value is 480 mins
+      maven_parameter       = "mvn clean install -U"
+      google_chrome_version = "98.0.4758.102-1"
+      chrome_driver_version = "97.0.4692.71"
+      cron_shedule          = "cron(10 0 ? * 2 *)"
+    }
+
+    "demo-payreporting-payments" = {
+      codecommit_branch     = "development"
+      PollForSourceChanges  = false
+      execution_folder      = "payreporting-automation"
+      test_environment      = "demo"
+      suite_xml             = "payreporting-payments-acceptance-tests.xml"
+      pxp_application       = "Pay"
+      build_timeout         = 240 #Number of minutes, from 5 to 480. Default value is 60 mins
+      queued_timeout        = 480 #Number of minutes, from 5 to 480. Default value is 480 mins
+      maven_parameter       = "mvn clean install -U"
+      google_chrome_version = "98.0.4758.102-1"
+      chrome_driver_version = "97.0.4692.71"
+      cron_shedule          = "cron(15 0 ? * 2 *)"
+    }
+
+    "demo-payreporting-smoke" = {
+      codecommit_branch     = "development"
+      PollForSourceChanges  = false
+      execution_folder      = "payreporting-automation"
+      test_environment      = "demo"
+      suite_xml             = "payreporting-smoketest.xml"
+      pxp_application       = "Pay"
+      build_timeout         = 240 #Number of minutes, from 5 to 480. Default value is 60 mins
+      queued_timeout        = 480 #Number of minutes, from 5 to 480. Default value is 480 mins
+      maven_parameter       = "mvn clean install -U"
+      google_chrome_version = "98.0.4758.102-1"
+      chrome_driver_version = "97.0.4692.71"
+      cron_shedule          = "cron(20 0 ? * * *)"
+    }
   }
 
   selected_test_environment      = try(local.inputs[terraform.workspace].test_environment)
