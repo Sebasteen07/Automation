@@ -194,6 +194,11 @@ public class Provider extends PSS2MainPage {
 		Thread.sleep(1000);
 		return providerList.size();
 	}
+	
+	public int getNumberOfBook() throws InterruptedException {
+		log("providerList = " + providerList.size());
+		return providerList.size();
+	}
 
 	public AppointmentDateTime searchForProviderFromList1(String providerName) throws InterruptedException {
 		searchForProvider.sendKeys(providerName.trim());
