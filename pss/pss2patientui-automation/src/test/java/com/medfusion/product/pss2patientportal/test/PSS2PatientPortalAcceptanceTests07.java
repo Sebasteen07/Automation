@@ -3,6 +3,13 @@ package com.medfusion.product.pss2patientportal.test;
 
 import static org.testng.Assert.assertEquals;
 
+import java.io.IOException;
+import java.util.List;
+
+import org.json.JSONArray;
+import org.openqa.selenium.By;
+import org.openqa.selenium.WebDriver;
+import org.openqa.selenium.WebElement;
 import org.testng.Assert;
 import org.testng.annotations.Test;
 
@@ -55,8 +62,7 @@ public class PSS2PatientPortalAcceptanceTests07 extends BaseTestNGWebDriver {
 		logStep("Clicked on Dismiss");
 		LoginlessPatientInformation loginlessPatientInformation = dismissPage.clickDismiss();
 		HomePage homePage = loginlessPatientInformation.fillNewPatientForm(testData.getFirstName(), testData.getLastName(), 
-		testData.getDob(), testData.getEmail(), testData.getGender(),testData.getZipCode(), 
-		testData.getPrimaryNumber());
+				testData.getDob(), testData.getEmail(), testData.getGender(),testData.getZipCode(), testData.getPrimaryNumber());
 		homePage.btnStartSchedClick();
 		Location location = null;
 		StartAppointmentInOrder startAppointmentInOrder = null;
@@ -66,7 +72,7 @@ public class PSS2PatientPortalAcceptanceTests07 extends BaseTestNGWebDriver {
 		AppointmentPage appointment = location.selectAppointment(testData.getLocation());
 		logStep("Verfiy Appointment Page and appointment to be selected = " + testData.getAppointmenttype());
 		AppointmentDateTime aptDateTime = appointment.selectAptTyper(testData.getAppointmenttype(),
-		Boolean.valueOf(testData.getIsAppointmentPopup()));
+				Boolean.valueOf(testData.getIsAppointmentPopup()));
 		String date = aptDateTime.selectDate(testData.getIsNextDayBooking());
 		logStep("Date selected is for App " + date);	
 		String time = aptDateTime.getfirsttime();
@@ -93,8 +99,7 @@ public class PSS2PatientPortalAcceptanceTests07 extends BaseTestNGWebDriver {
 		logStep("Clicked on Dismiss");
 		LoginlessPatientInformation loginlessPatientInformation = dismissPage.clickDismiss();
 		HomePage homePage = loginlessPatientInformation.fillNewPatientForm(testData.getFirstName(), testData.getLastName(), 
-		testData.getDob(), testData.getEmail(), testData.getGender(), testData.getZipCode(), 
-		testData.getPrimaryNumber());
+				testData.getDob(), testData.getEmail(), testData.getGender(),	testData.getZipCode(), testData.getPrimaryNumber());
 		homePage.btnStartSchedClick();
 		Location location = null;
 		StartAppointmentInOrder startAppointmentInOrder = null;
@@ -104,7 +109,7 @@ public class PSS2PatientPortalAcceptanceTests07 extends BaseTestNGWebDriver {
 		AppointmentPage appointment = location.selectAppointment(testData.getLocation());
 		logStep("Verfiy Appointment Page and appointment to be selected = " + testData.getAppointmenttype());
 		AppointmentDateTime aptDateTime = appointment.selectAptTyper(testData.getAppointmenttype(),
-		Boolean.valueOf(testData.getIsAppointmentPopup()));
+				Boolean.valueOf(testData.getIsAppointmentPopup()));
 		String date = aptDateTime.selectDate(testData.getIsNextDayBooking());
 		logStep("Date selected is for App " + date);	
 		String time = aptDateTime.getfirsttime();
@@ -136,9 +141,9 @@ public class PSS2PatientPortalAcceptanceTests07 extends BaseTestNGWebDriver {
 		LoginlessPatientInformation loginlessPatientInformation = dismissPage.clickDismiss();
 		newPatient.createPatientDetails(testData);
 		String alternateNumber = propertyData.getProperty("alternate.number.ng07");
-		HomePage homePage = loginlessPatientInformation.fillPatientFormWithAlternateNumber(testData.getFirstName(), 
-		testData.getLastName(), testData.getDob(), testData.getEmail(), testData.getGender(), testData.getZipCode(), 
-		testData.getPrimaryNumber(), alternateNumber);
+		HomePage homePage = loginlessPatientInformation.fillPatientFormWithAlternateNumber(testData.getFirstName(), testData.getLastName(), 
+				testData.getDob(), testData.getEmail(), testData.getGender(), testData.getZipCode(), 
+				testData.getPrimaryNumber(), alternateNumber);
 		homePage.btnStartSchedClick();
 		Location location = null;
 		StartAppointmentInOrder startAppointmentInOrder = null;
@@ -148,20 +153,21 @@ public class PSS2PatientPortalAcceptanceTests07 extends BaseTestNGWebDriver {
 		AppointmentPage appointment = location.selectAppointment(testData.getLocation());
 		logStep("Verfiy Appointment Page and appointment to be selected = " + testData.getAppointmenttype());
 		Provider provider = appointment.selectTypeOfProvider(testData.getAppointmenttype(),
-		Boolean.valueOf(testData.getIsAppointmentPopup()));
+				Boolean.valueOf(testData.getIsAppointmentPopup()));
 		logStep("Verfiy Provider Page and Provider = " + testData.getProvider());
 		AppointmentDateTime aptDateTime = provider.getProviderandClick(testData.getProvider());
 		aptDateTime.selectFutureDate(testData.getIsNextDayBooking());
 		patientUtils.clickOnSubmitAppt1(testData.isInsuranceAtEnd(), aptDateTime, testData, driver);
 		homePage.logout();
-		HomePage homePage1 = loginlessPatientInformation.fillPatientFormWithAlternateNumber(testData.getFirstName(), 
-		testData.getLastName(), testData.getDob(), testData.getEmail(), testData.getGender(), testData.getZipCode(), 
-		testData.getPrimaryNumber(), ""); 
+		HomePage homePage1 = loginlessPatientInformation.fillPatientFormWithAlternateNumber(testData.getFirstName(), testData.getLastName(), 
+				testData.getDob(), testData.getEmail(), testData.getGender(), testData.getZipCode(), 
+				testData.getPrimaryNumber(), ""); 
 		if(homePage.getFutureAppointmentListSize()>0) {
 			Assert.assertTrue(true);
 		}else {
 			Assert.assertTrue(false);
 		}
+
 	}
 
 	@Test(enabled = true, groups = { "AcceptanceTests" }, retryAnalyzer = RetryAnalyzer.class)
@@ -189,8 +195,7 @@ public class PSS2PatientPortalAcceptanceTests07 extends BaseTestNGWebDriver {
 		newPatient.createPatientDetails(testData);
 		String alternateNumber = propertyData.getProperty("alternate.number.ge07");
 		HomePage homePage = loginlessPatientInformation.fillPatientFormWithAlternateNumber(testData.getFirstName(), testData.getLastName(), 
-		testData.getDob(), testData.getEmail(), testData.getGender(), testData.getZipCode(), 
-		testData.getPrimaryNumber(), alternateNumber);
+				testData.getDob(), testData.getEmail(), testData.getGender(), testData.getZipCode(), testData.getPrimaryNumber(), alternateNumber);
 		homePage.btnStartSchedClick();
 		Location location = null;
 		StartAppointmentInOrder startAppointmentInOrder = null;
@@ -200,15 +205,15 @@ public class PSS2PatientPortalAcceptanceTests07 extends BaseTestNGWebDriver {
 		AppointmentPage appointment = location.selectAppointment(testData.getLocation());
 		logStep("Verfiy Appointment Page and appointment to be selected = " + testData.getAppointmenttype());
 		Provider provider = appointment.selectTypeOfProvider(testData.getAppointmenttype(),
-		Boolean.valueOf(testData.getIsAppointmentPopup()));
+				Boolean.valueOf(testData.getIsAppointmentPopup()));
 		logStep("Verfiy Provider Page and Provider = " + testData.getProvider());
 		AppointmentDateTime aptDateTime = provider.getProviderandClick(testData.getProvider());
 		aptDateTime.selectFutureDate(testData.getIsNextDayBooking());
 		patientUtils.clickOnSubmitAppt1(testData.isInsuranceAtEnd(), aptDateTime, testData, driver);
 		homePage.logout();
 		HomePage homePage1 = loginlessPatientInformation.fillPatientFormWithAlternateNumber(testData.getFirstName(), 
-		testData.getLastName(), testData.getDob(), testData.getEmail(), testData.getGender(), testData.getZipCode(), 
-		testData.getPrimaryNumber(), "");
+				testData.getLastName(), testData.getDob(), testData.getEmail(), testData.getGender(), testData.getZipCode(), 
+				testData.getPrimaryNumber(), "");
 		if(homePage.getFutureAppointmentListSize()>0) {
 			Assert.assertTrue(true);
 		}else {
