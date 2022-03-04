@@ -173,8 +173,7 @@ public class PSS2PatientPortalAcceptanceTests07 extends BaseTestNGWebDriver {
 		homePage.logout();
 		HomePage homePage1 = loginlessPatientInformation.fillPatientFormWithAlternateNumber(firstName, lastName, dob, email, gender, 
 				zipCodeValue, phoneNumber, ""); 
-		List<WebElement> selectUpcomingApptList = driver.findElements(By.xpath("//*[@id='upcomingappoitment']/div"));
-		if(selectUpcomingApptList.size()>0) {
+		if(homePage.getFutureAppointmentListSize()>0) {
 			log("Pass");
 			Assert.assertTrue(true);
 		}else {
@@ -236,8 +235,7 @@ public class PSS2PatientPortalAcceptanceTests07 extends BaseTestNGWebDriver {
 		homePage.logout();
 		HomePage homePage1 = loginlessPatientInformation.fillPatientFormWithAlternateNumber(firstName, lastName, dob, email, gender, 
 				zipCodeValue, phoneNumber, ""); 
-		List<WebElement> selectUpcomingApptList = driver.findElements(By.xpath("//*[@id='upcomingappoitment']/div"));
-		if(selectUpcomingApptList.size()>0) {
+		if(homePage.getFutureAppointmentListSize()>0) {
 			log("Pass");
 			Assert.assertTrue(true);
 		}else {
