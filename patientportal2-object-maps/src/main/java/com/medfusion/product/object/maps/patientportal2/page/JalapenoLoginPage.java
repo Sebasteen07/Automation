@@ -66,6 +66,8 @@ public class JalapenoLoginPage extends MedfusionPage {
 	@FindBy(how = How.ID, using = "link")
 	private WebElement invalidPasswordResetLink;
 	
+	@FindBy(how = How.XPATH, using = "//div[contains(@class,'broadcastMessage')]")
+	private WebElement broadCastMessage;
 
 	public JalapenoLoginPage(WebDriver driver, String url) {
 		super(driver, url);
@@ -201,6 +203,12 @@ public class JalapenoLoginPage extends MedfusionPage {
 		} catch (Exception e) {
 		}
 		return false;
+		
+	}
+	
+	public String validateBroadcast() {
+		
+		return broadCastMessage.getText();
 		
 	}
 

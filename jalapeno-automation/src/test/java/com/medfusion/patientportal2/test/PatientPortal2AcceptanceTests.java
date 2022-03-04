@@ -31,6 +31,7 @@ import com.intuit.ihg.common.utils.monitoring.PerformanceReporter;
 import com.intuit.ihg.product.object.maps.sitegen.page.SiteGenLoginPage;
 import com.intuit.ihg.product.object.maps.sitegen.page.home.SiteGenHomePage;
 import com.intuit.ihg.product.object.maps.sitegen.page.home.SiteGenPracticeHomePage;
+import com.intuit.ihg.product.object.maps.sitegen.page.patientportalbroadcast.PatientPortalBroadcastPage;
 import com.intuit.ihg.product.object.maps.sitegen.page.pharmacy.AddPharmacyPage;
 import static com.intuit.ihg.product.object.maps.sitegen.page.pharmacy.AddPharmacyPage.pharmacyName;
 import com.intuit.ihg.product.object.maps.sitegen.page.pharmacy.ManageYourPharmacies;
@@ -3059,7 +3060,7 @@ public class PatientPortal2AcceptanceTests extends BaseTestNGWebDriver {
 		YopMail mail = new YopMail(driver);
 		String notificationEmailSubject = "Payment Receipt";
 		String mailAddress = patient.getEmail();
-		assertTrue(mail.getEmailContentText(mailAddress, notificationEmailSubject, "************", 10));
+		assertTrue(mail.getEmailContent(mailAddress, notificationEmailSubject, "************", 10));
 
 
 	}
@@ -6398,5 +6399,38 @@ public class PatientPortal2AcceptanceTests extends BaseTestNGWebDriver {
 		logStep("Validate presence of Terms of Service popup in Security Details Page");
 		assertTrue(accountDetailsPage.isTermsOfServicePopupDisplayed());
 		
+	}
+	
+	@Test(enabled = true, groups = { "acceptance-solutions" }, retryAnalyzer = RetryAnalyzer.class)
+	public void testBanner() throws Exception {
+		String message=IHGUtil.createRandomNumericString(8);
+		
+		logStep("Login to sitegen as Admin user");
+		SiteGenLoginPage loginpage = new SiteGenLoginPage(driver, testData.getProperty("sitegen.url"));
+		SiteGenHomePage pSiteGenHomePage = loginpage.login(testData.getProperty("sitegen.admin.user"),
+				testData.getProperty("sitegen.password.user"));
+		logStep("Navigate to SiteGen PracticeHomePage");
+		SiteGenPracticeHomePage pSiteGenPracticeHomePage = pSiteGenHomePage.clickLinkMedfusionSiteAdministration();
+		logStep("Check if SiteGen Practice Homepage elements are present ");
+		assertTrue(pSiteGenPracticeHomePage.isSearchPageLoaded(),
+				"Expected the SiteGen Practice HomePage  to be loaded, but it was not.");
+		
+		pSiteGenPracticeHomePage.clickOnPatientBroadcast();
+
+		 PatientPortalBroadcastPage PatientPortalBroadcast = new PatientPortalBroadcastPage(driver);
+		 PatientPortalBroadcast.deleteBroadCast();
+		PatientPortalBroadcast.addBroadCast(testData.getProperty("broadcast.title"),message);
+
+		logStep("Load login page and login");
+		JalapenoLoginPage loginPage = new JalapenoLoginPage(driver, testData.getProperty("med.wf.portal.url"));
+		String actual=loginPage.validateBroadcast();
+		assertEquals(actual, message, "broadcast Message is matching");
+		JalapenoHomePage homePage = loginPage.login(testData.getProperty("med.wf.user.id"),
+				testData.getProperty("med.wf.password"));
+		
+		String actualBroadcastmessage=homePage.validateBroadcast();
+		assertEquals(actualBroadcastmessage, message);
+
+		homePage.clickOnLogout();
 	}
 }
