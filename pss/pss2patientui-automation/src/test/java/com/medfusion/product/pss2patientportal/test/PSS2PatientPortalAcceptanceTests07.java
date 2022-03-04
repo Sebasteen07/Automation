@@ -61,8 +61,9 @@ public class PSS2PatientPortalAcceptanceTests07 extends BaseTestNGWebDriver {
 		DismissPage dismissPage = new DismissPage(driver, testData.getUrlLoginLess());
 		logStep("Clicked on Dismiss");
 		LoginlessPatientInformation loginlessPatientInformation = dismissPage.clickDismiss();
-		HomePage homePage = loginlessPatientInformation.fillNewPatientForm(testData.getFirstName(), testData.getLastName(), 
-				testData.getDob(), testData.getEmail(), testData.getGender(),testData.getZipCode(), testData.getPrimaryNumber());
+		HomePage homePage = loginlessPatientInformation.fillNewPatientForm(testData.getFirstName(), 
+				testData.getLastName(), testData.getDob(), testData.getEmail(), testData.getGender(), 
+				testData.getZipCode(), testData.getPrimaryNumber());
 		homePage.btnStartSchedClick();
 		Location location = null;
 		StartAppointmentInOrder startAppointmentInOrder = null;
@@ -98,8 +99,9 @@ public class PSS2PatientPortalAcceptanceTests07 extends BaseTestNGWebDriver {
 		DismissPage dismissPage = new DismissPage(driver, testData.getUrlLoginLess());
 		logStep("Clicked on Dismiss");
 		LoginlessPatientInformation loginlessPatientInformation = dismissPage.clickDismiss();
-		HomePage homePage = loginlessPatientInformation.fillNewPatientForm(testData.getFirstName(), testData.getLastName(), 
-				testData.getDob(), testData.getEmail(), testData.getGender(),	testData.getZipCode(), testData.getPrimaryNumber());
+		HomePage homePage = loginlessPatientInformation.fillNewPatientForm(testData.getFirstName(), 
+				testData.getLastName(), testData.getDob(), testData.getEmail(), testData.getGender(),	
+				testData.getZipCode(), testData.getPrimaryNumber());
 		homePage.btnStartSchedClick();
 		Location location = null;
 		StartAppointmentInOrder startAppointmentInOrder = null;
@@ -141,9 +143,9 @@ public class PSS2PatientPortalAcceptanceTests07 extends BaseTestNGWebDriver {
 		LoginlessPatientInformation loginlessPatientInformation = dismissPage.clickDismiss();
 		newPatient.createPatientDetails(testData);
 		String alternateNumber = propertyData.getProperty("alternate.number.ng07");
-		HomePage homePage = loginlessPatientInformation.fillPatientFormWithAlternateNumber(testData.getFirstName(), testData.getLastName(), 
-				testData.getDob(), testData.getEmail(), testData.getGender(), testData.getZipCode(), 
-				testData.getPrimaryNumber(), alternateNumber);
+		HomePage homePage = loginlessPatientInformation.fillPatientFormWithAlternateNumber(testData.getFirstName(), 
+				testData.getLastName(), testData.getDob(), testData.getEmail(), testData.getGender(), 
+				testData.getZipCode(), testData.getPrimaryNumber(), alternateNumber);
 		homePage.btnStartSchedClick();
 		Location location = null;
 		StartAppointmentInOrder startAppointmentInOrder = null;
@@ -159,9 +161,9 @@ public class PSS2PatientPortalAcceptanceTests07 extends BaseTestNGWebDriver {
 		aptDateTime.selectFutureDate(testData.getIsNextDayBooking());
 		patientUtils.clickOnSubmitAppt1(testData.isInsuranceAtEnd(), aptDateTime, testData, driver);
 		homePage.logout();
-		HomePage homePage1 = loginlessPatientInformation.fillPatientFormWithAlternateNumber(testData.getFirstName(), testData.getLastName(), 
-				testData.getDob(), testData.getEmail(), testData.getGender(), testData.getZipCode(), 
-				testData.getPrimaryNumber(), ""); 
+		HomePage homePage1 = loginlessPatientInformation.fillPatientFormWithAlternateNumber(testData.getFirstName(), 
+				testData.getLastName(), testData.getDob(), testData.getEmail(), testData.getGender(), 
+				testData.getZipCode(), testData.getPrimaryNumber(), ""); 
 		if(homePage.getFutureAppointmentListSize()>0) {
 			Assert.assertTrue(true);
 		}else {
@@ -194,8 +196,9 @@ public class PSS2PatientPortalAcceptanceTests07 extends BaseTestNGWebDriver {
 		LoginlessPatientInformation loginlessPatientInformation = dismissPage.clickDismiss();
 		newPatient.createPatientDetails(testData);
 		String alternateNumber = propertyData.getProperty("alternate.number.ge07");
-		HomePage homePage = loginlessPatientInformation.fillPatientFormWithAlternateNumber(testData.getFirstName(), testData.getLastName(), 
-				testData.getDob(), testData.getEmail(), testData.getGender(), testData.getZipCode(), testData.getPrimaryNumber(), alternateNumber);
+		HomePage homePage = loginlessPatientInformation.fillPatientFormWithAlternateNumber(testData.getFirstName(), 
+				testData.getLastName(), testData.getDob(), testData.getEmail(), testData.getGender(), 
+				testData.getZipCode(), testData.getPrimaryNumber(), alternateNumber);
 		homePage.btnStartSchedClick();
 		Location location = null;
 		StartAppointmentInOrder startAppointmentInOrder = null;
