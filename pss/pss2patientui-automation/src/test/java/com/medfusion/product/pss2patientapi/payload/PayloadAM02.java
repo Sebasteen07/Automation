@@ -1818,16 +1818,7 @@ public class PayloadAM02 {
 		return payload;
 		
 	}
-	
-	public String FLSbookappt_GW(int bookappointmenttypeid,int bookid,int apptid,int locationid,int fct ) {
 
-		String payload="";
-		
-		return payload;
-		
-	}
-	
-	
 	public String lastSeenProviderPyaloadAT(int lastSeenMonth) {
 		
 		String payload="[\r\n"
@@ -2301,7 +2292,7 @@ public class PayloadAM02 {
 				+ "  {\r\n"
 				+ "    \"group\": \"PROVIDER\",\r\n"
 				+ "    \"key\": \"pcpAvailabilityDuration\",\r\n"
-				+ "    \"value\": \"1\"\r\n"
+				+ "    \"value\": \""+pcp+"\"\r\n"
 				+ "  },\r\n"
 				+ "  {\r\n"
 				+ "    \"group\": \"CARE_TEAM\",\r\n"
