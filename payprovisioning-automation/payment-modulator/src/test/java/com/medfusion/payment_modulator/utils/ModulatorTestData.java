@@ -939,123 +939,134 @@ public class ModulatorTestData extends GatewayProxyBaseTest {
 				//Non-Instamed mmid
 				{ "2560819831", testData.getProperty("transaction.amount"), testData.getProperty("cvv"),
 						testData.getProperty("payment.source"), testData.getProperty("card.number"),
-						testData.getProperty("instamed.card.expiration.number"), 404,
+						testData.getProperty("expiration.number1"), 404,
 						"Not Found", "Merchant account for id 2560819831 not found" },
 
 				//No mmid
 				{ " ", testData.getProperty("transaction.amount"), testData.getProperty("cvv"),
 						testData.getProperty("payment.source"), testData.getProperty("card.number"),
-						testData.getProperty("instamed.card.expiration.number"), 404,
+						testData.getProperty("expiration.number1"), 404,
 						"Not Found", "" },
 
 				//mmid in characters
 				{ "!@#$", testData.getProperty("transaction.amount"), testData.getProperty("cvv"),
 						testData.getProperty("payment.source"), testData.getProperty("card.number"),
-						testData.getProperty("expiration.number"), 400,
-						"Bad Request", "For input string: \\\"!@\\\"" },
+						testData.getProperty("expiration.number1"), 400,
+						"Bad Request", "For input string: \"!@#$\"" },
 
 				//0 transaction amount
 				{ testData.getProperty("instamed.mmid"), "0", testData.getProperty("cvv"),
 						testData.getProperty("payment.source"), testData.getProperty("card.number"),
-						testData.getProperty("expiration.number"), 400,
+						testData.getProperty("expiration.number1"), 400,
 						"Bad Request", "Transaction amount cannot be less than 1"},
-
-				//transaction amount in characters
-				{ testData.getProperty("instamed.mmid"), "**", testData.getProperty("cvv"),
-						testData.getProperty("payment.source"), testData.getProperty("card.number"),
-						testData.getProperty("expiration.number"), 400, "Bad Request" },
 
 				//blank card number
 				{ testData.getProperty("instamed.mmid"), testData.getProperty("transaction.amount"),
 						testData.getProperty("cvv"), testData.getProperty("payment.source"), "",
-						testData.getProperty("expiration.number"), 200, "CardNumber Required" },
+						testData.getProperty("expiration.number1"), 400, "Bad Request",
+						null },
 
 				//incorrect card number
 				{ testData.getProperty("instamed.mmid"), testData.getProperty("transaction.amount"),
 						testData.getProperty("cvv"), testData.getProperty("payment.source"), "5424180279791711",
-						testData.getProperty("expiration.number"), 200, "CardNumber Required" },
+						testData.getProperty("expiration.number1"), 400, "Bad Request", null },
 
 				//characters for card number
 				{ testData.getProperty("instamed.mmid"), testData.getProperty("transaction.amount"),
 						testData.getProperty("cvv"), testData.getProperty("payment.source"), "!@#$%^&*!@#",
-						testData.getProperty("expiration.number"), 200, "CardNumber Required" },
+						testData.getProperty("expiration.number1"), 400, "Bad Request", null },
 
 				//without expiry date
 				{ testData.getProperty("instamed.mmid"), testData.getProperty("transaction.amount"),
 						testData.getProperty("cvv"), testData.getProperty("payment.source"),
-						testData.getProperty("card.number"), "", 200, "INVALID CARD INFO" },
+						testData.getProperty("card.number"), "", 400, "Bad Request", null },
 
 				//expired date
 				{ testData.getProperty("instamed.mmid"), testData.getProperty("transaction.amount"),
 						testData.getProperty("cvv"), testData.getProperty("payment.source"),
-						testData.getProperty("card.number"), "1218", 200, "INVALID CARD INFO" },
+						testData.getProperty("card.number"), "1218", 400, "Bad Request", null },
 
 				//incorrect expiry format
 				{ testData.getProperty("instamed.mmid"), testData.getProperty("transaction.amount"),
 						testData.getProperty("cvv"), testData.getProperty("payment.source"),
-						testData.getProperty("card.number"), "12-25", 200, "INVALID CARD INFO" },
+						testData.getProperty("card.number"), "12-25", 400, "Bad Request", null},
 
 				//incorrect expiry format
 				{ testData.getProperty("instamed.mmid"), testData.getProperty("transaction.amount"),
 						testData.getProperty("cvv"), testData.getProperty("payment.source"),
-						testData.getProperty("card.number"), "25-11", 200, "INVALID CARD INFO" },
+						testData.getProperty("card.number"), "25-11", 400, "Bad Request", null },
 
 				//characters as expiry format
 				{ testData.getProperty("instamed.mmid"), testData.getProperty("transaction.amount"),
 						testData.getProperty("cvv"), testData.getProperty("payment.source"),
-						testData.getProperty("card.number"), "**!@", 200, "INVALID CARD INFO" },
+						testData.getProperty("card.number"), "**!@", 400, "Bad Request", null },
 
-				//incorrect CVV number
+				//MM/YY expiry format
 				{ testData.getProperty("instamed.mmid"), testData.getProperty("transaction.amount"),
-						"987", testData.getProperty("payment.source"),
-						testData.getProperty("card.number"), testData.getProperty("expiration.number"), 200, "INVALID CARD INFO" },
+						testData.getProperty("cvv"), testData.getProperty("payment.source"),
+						testData.getProperty("card.number"), testData.getProperty("instamed.card.expiration.number"),
+						200, "Approved", null },
 
 				//characters as CVV number
 				{ testData.getProperty("instamed.mmid"), testData.getProperty("transaction.amount"),
-						"$#%", testData.getProperty("payment.source"),
-						testData.getProperty("card.number"), testData.getProperty("expiration.number"), 200, "INVALID CARD INFO" },
-
-		};
-	}
-
-	@DataProvider(name = "mod_instamed_different_payment_sources")
-	public static Object[][] dataProviderPaymentSources() throws Exception {
-		testData = new PropertyFileLoader();
-
-		return new Object[][] {
-				//Payment source for patient portal
-				{ testData.getProperty("payment.source"), 404, "Not Found" },
-
-				//Precheck payment source
-				{ "PRCC", 404, "Not Found" },
+						"$#%", testData.getProperty("payment.source"), testData.getProperty("card.number"),
+						testData.getProperty("expiration.number1"), 400, "Bad Request", null },
 
 				//Invalid payment source
-				{ "ABC", 404, "Not Found"  },
+				{ testData.getProperty("instamed.mmid"), testData.getProperty("transaction.amount"),
+						testData.getProperty("cvv"), "ABC", testData.getProperty("card.number"),
+						testData.getProperty("expiration.number1"), 400,
+						"Bad Request", "Payment source provided is not valid" },
 
 				//Characters as payment source
-				{ "#$%", 404, "Not Found" },
+				{ testData.getProperty("instamed.mmid"), testData.getProperty("transaction.amount"),
+						testData.getProperty("cvv"), "#$%", testData.getProperty("card.number"),
+						testData.getProperty("expiration.number1"), 400,
+						"Bad Request", "Payment source provided is not valid" },
 
 				//Null payment source
-				{ "", 404, "Not Found"  },
+				{ testData.getProperty("instamed.mmid"), testData.getProperty("transaction.amount"),
+						testData.getProperty("cvv"), "", testData.getProperty("card.number"),
+						testData.getProperty("expiration.number1"), 400,
+						"Bad Request", "Payment source provided is not valid" },
+
 		};
 	}
 
-	@DataProvider(name = "mod_instamed_different_card_types")
-	public static Object[][] dataProviderDifferentCardTypes() throws Exception {
+	@DataProvider(name = "mod_instamed_positive_scenarios")
+	public static Object[][] dataProviderPositiveFlows() throws Exception {
 		testData = new PropertyFileLoader();
 
 		return new Object[][] {
-				//Card type VISA
-				{ testData.getProperty("type"), 200, "Approved" },
+				//Payment source for patient portal, VISA as card type
+				{ testData.getProperty("transaction.amount"), testData.getProperty("card.number"),
+						testData.getProperty("type"), testData.getProperty("cvv"),
+						testData.getProperty("payment.source.patient.portal"), "Approved", "000"},
 
-				//Card type DISCOVER
-				{ testData.getProperty("type.DI"), 200, "Approved" },
+				//Precheck-Copay payment source, DISCOVER as card type
+				{ testData.getProperty("transaction.amount"), testData.getProperty("instamed.card.number.discover"),
+						testData.getProperty("card.type.discover"), testData.getProperty("cvv"),
+						testData.getProperty("payment.source.precheck.copay"), "Approved", "000"},
 
-				//Card type AMERICAN EXPRESS
-				{ testData.getProperty("type.AX"), 200, "Approved"  },
+				//Precheck-Balance payment source, AMERICAN EXPRESS as card type
+				{ testData.getProperty("transaction.amount"), testData.getProperty("instamed.card.number.amex"),
+						testData.getProperty("card.type.amex"), testData.getProperty("cvv.amex"),
+						testData.getProperty("payment.source.precheck.balance"), "Approved", "000"},
 
-				//Card type MASTERCARD
-				{ testData.getProperty("type.MC"), 200, "Approved" },
+				//VCS Payment source, MASTERCARD as card type
+				{ testData.getProperty("transaction.amount"), testData.getProperty("instamed.card.number.mc"),
+						testData.getProperty("card.type.mastercard"), testData.getProperty("cvv"),
+						testData.getProperty("payment.source"), "Approved", "000"},
+
+				//Declined Request
+				{ testData.getProperty("transaction.amount.decline"), testData.getProperty("card.number"),
+						testData.getProperty("type"), testData.getProperty("cvv"),
+						testData.getProperty("payment.source.patient.portal"), "Declined", "005"},
+
+				//Partial Approved Request
+				{ testData.getProperty("transaction.amount.partial.approval"), testData.getProperty("card.number"),
+						testData.getProperty("type"), testData.getProperty("cvv"),
+						testData.getProperty("payment.source.patient.portal"), "Declined", "051"},
 		};
 	}
 
@@ -1064,29 +1075,42 @@ public class ModulatorTestData extends GatewayProxyBaseTest {
 		testData = new PropertyFileLoader();
 
 		return new Object[][] {
-				//Merchant without Store ID
-				{ testData.getProperty("type"), 200, "Approved" },
+				//Merchant without Terminal ID for PAYN
+				{ testData.getProperty("instamed.mmid.without.terminalid"),
+						testData.getProperty("payment.source.patient.portal"), 400, "Bad Request",
+						"Payment source provided is not valid for merchant" },
 
-				//Merchant without Terminal ID for VCS
-				{ testData.getProperty("type.DI"), 200, "Approved" },
-
-				//Merchant with incorrect Terminal ID for VCS
-				{ testData.getProperty("type.DI"), 200, "Approved" },
+				//Merchant with incorrect Terminal ID for PAYN
+				{ testData.getProperty("instamed.mmid.incorrect.terminalid"),
+						testData.getProperty("payment.source.patient.portal"), 400, "Bad Request", null },
 
 				//Merchant without Terminal ID for PRCC
-				{ testData.getProperty("type.AX"), 200, "Approved"  },
+				{ testData.getProperty("instamed.mmid.without.terminalid"),
+						testData.getProperty("payment.source.precheck.balance"), 400, "Bad Request",
+						"Payment source provided is not valid for merchant"  },
 
 				//Merchant with incorrect Terminal ID for PRCC
-				{ testData.getProperty("type.AX"), 200, "Approved"  },
+				{ testData.getProperty("instamed.mmid.incorrect.terminalid"),
+						testData.getProperty("payment.source.precheck.balance"), 400, "Bad Request", null },
 
 				//Merchant without correct store ID
-				{ testData.getProperty("type.MC"), 200, "Approved" },
+				{ testData.getProperty("instamed.mmid.incorrect.storeid"),
+						testData.getProperty("payment.source.patient.portal"), 400, "Bad Request", null },
 
 				//Merchant without correct Merchant ID
-				{ testData.getProperty("type.MC"), 200, "Approved" },
+				{ testData.getProperty("instamed.mmid.incorrect.mid"),
+						testData.getProperty("payment.source.patient.portal"), 400, "Bad Request", null },
 
-				//Merchant without Merchant ID
-				{ testData.getProperty("type.MC"), 200, "Approved" },
+//				//Merchant with incorrect Client ID & Client Secret
+				{ testData.getProperty("instamed.mmid.incorrect.clientid.secret"),
+				testData.getProperty("payment.source.patient.portal"), 401, "Unauthorized",
+						"Invalid API key/secret pair." },
+
+				//Merchant without Client ID & Client Secret
+				{ testData.getProperty("instamed.mmid.without.clientid.secret"),
+						testData.getProperty("payment.source.patient.portal"), 400, "Bad Request",
+						"Missing API key/secret pair" },
+
 		};
 	}
 

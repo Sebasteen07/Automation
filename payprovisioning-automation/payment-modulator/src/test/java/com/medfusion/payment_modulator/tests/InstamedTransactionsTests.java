@@ -25,29 +25,34 @@ public class InstamedTransactionsTests extends BaseRest {
         setupResponsetSpecBuilder();
     }
 
-    @Test(priority = 5, enabled = true)
-    public void testInstaMedSaleCall() throws Exception {
+    @Test(priority = 1, dataProvider = "mod_instamed_positive_scenarios", dataProviderClass = ModulatorTestData.class, enabled = true)
+    public void testInstaMedSale(String txnAmt, String cardNumer, String cardType, String cvv,
+                                 String paymentSource, String responseMsg, String responseCode) throws Exception {
 
         TransactionResourceDetails transaction = new TransactionResourceDetails();
+        Validations validate = new Validations();
 
-        Response response = transaction.makeASale(testData.getProperty("instamed.mmid"), testData.getProperty("transaction.amount"),
+        Response response = transaction.makeASale(testData.getProperty("instamed.mmid"), txnAmt,
                 testData.getProperty("account.number"), testData.getProperty("consumer.name"),
-                testData.getProperty("payment.source"), testData.getProperty("cvv"), testData.getProperty("type"),
-                testData.getProperty("card.number"), testData.getProperty("instamed.card.expiration.number"),
+                paymentSource, cvv, cardType, cardNumer, testData.getProperty("expiration.number1"),
                 testData.getProperty("bin"), testData.getProperty("zipcode"), testData.getProperty("last.name"),
                 testData.getProperty("address.line1"), testData.getProperty("city"), testData.getProperty("state"),
                 testData.getProperty("first.name"));
-
         Assert.assertEquals(response.getStatusCode(), 200);
 
-        Validations validate = new Validations();
-        validate.verifyInstaMedTransactionDetails(response.asString());
+        JsonPath jsonPath = new JsonPath(response.asString());
+
+        if (jsonPath.get("message") != null) {
+            Assert.assertTrue(jsonPath.get("message").toString().contains(responseMsg));
+            Assert.assertTrue(jsonPath.get("responseCode").toString().contains(responseCode));
+        }
+        validate.verifyInstaMedTransactionDetails(responseCode, jsonPath);
     }
 
-    @Test(priority = 6, dataProvider = "mod_instamed_sale_invalid_data", dataProviderClass = ModulatorTestData.class, enabled = true)
+    @Test(priority = 2, dataProvider = "mod_instamed_sale_invalid_data", dataProviderClass = ModulatorTestData.class, enabled = true)
     public void testInstaMedSaleNegativeScenarios(String mmid, String transactionAmount, String cvv, String paymentSource,
                                                   String cardNumber, String expirationNumber, int statusCodeVerify,
-                                                  String error, String verifyErrorMessage) throws Exception {
+                                                  String errorText, String verifyErrorMessage) throws Exception {
 
         TransactionResourceDetails transaction = new TransactionResourceDetails();
 
@@ -62,72 +67,23 @@ public class InstamedTransactionsTests extends BaseRest {
         Assert.assertNotNull(jsonPath, "Response was null");
         Assert.assertEquals(response.getStatusCode(), statusCodeVerify);
 
-        if (jsonPath.get("message") != null) {
-            Assert.assertTrue(jsonPath.get("error").toString().contains(error));
+        if (jsonPath.get("message") != null && jsonPath.get("error") != null ) {
             Assert.assertTrue(jsonPath.get("message").toString().contains(verifyErrorMessage));
+            Assert.assertTrue(jsonPath.get("error").toString().contains(errorText));
         }
     }
 
-    @Test(priority = 2, dataProvider = "mod_instamed_different_payment_sources", dataProviderClass = ModulatorTestData.class, enabled = true)
-    public void testInstaMedSaleForMultiplePaymentSources(String paymentSource, int statusCodeVerify,
-                                                               String verifyErrorMessage) throws Exception {
-
-        TransactionResourceDetails transaction = new TransactionResourceDetails();
-
-        Response response = transaction.makeASale(testData.getProperty("instamed.mmid"),
-                IHGUtil.createRandomNumericString(3), testData.getProperty("account.number"),
-                testData.getProperty("consumer.name"), paymentSource, testData.getProperty("cvv"),
-                testData.getProperty("type"), testData.getProperty("card.number"),
-                testData.getProperty("instamed.card.expiration.number"), testData.getProperty("bin"),
-                testData.getProperty("zipcode"), testData.getProperty("last.name"),
-                testData.getProperty("address.line1"), testData.getProperty("city"), testData.getProperty("state"),
-                testData.getProperty("first.name"));
-
-        JsonPath jsonPath = new JsonPath(response.asString());
-        Assert.assertNotNull(jsonPath, "Response was null");
-        Assert.assertEquals(response.getStatusCode(), statusCodeVerify);
-
-        if (jsonPath.get("message") != null) {
-
-            Assert.assertTrue(jsonPath.get("message").toString().contains(verifyErrorMessage));
-        }
-    }
-
-    @Test(priority = 2, dataProvider = "mod_instamed_different_card_types", dataProviderClass = ModulatorTestData.class, enabled = true)
-    public void testInstaMedSaleForMultipleCardTypes(String cardNumber, String type, int statusCodeVerify,
-                                                          String verifyErrorMessage) throws Exception {
-
-        TransactionResourceDetails transaction = new TransactionResourceDetails();
-
-        Response response = transaction.makeASale(testData.getProperty("instamed.mmid"),
-                IHGUtil.createRandomNumericString(3), testData.getProperty("account.number"),
-                testData.getProperty("consumer.name"), testData.getProperty("payment.source"), testData.getProperty("cvv"),
-                type, cardNumber, testData.getProperty("instamed.card.expiration.number"), testData.getProperty("bin"),
-                testData.getProperty("zipcode"), testData.getProperty("last.name"),
-                testData.getProperty("address.line1"), testData.getProperty("city"), testData.getProperty("state"),
-                testData.getProperty("first.name"));
-
-        JsonPath jsonPath = new JsonPath(response.asString());
-        Assert.assertNotNull(jsonPath, "Response was null");
-        Assert.assertEquals(response.getStatusCode(), statusCodeVerify);
-
-        if (jsonPath.get("message") != null) {
-
-            Assert.assertTrue(jsonPath.get("message").toString().contains(verifyErrorMessage));
-        }
-    }
-
-    @Test(priority = 2, dataProvider = "mod_instamed_different_merchants", dataProviderClass = ModulatorTestData.class, enabled = true)
-    public void testInstaMedSaleForMultipleMerchants(String mmid, int statusCodeVerify,
-                                                     String verifyErrorMessage) throws Exception {
+    @Test(priority = 3, dataProvider = "mod_instamed_different_merchants", dataProviderClass = ModulatorTestData.class, enabled = true)
+    public void testInstaMedSaleForMultipleMerchants(String mmid, String paymentSource, int statusCodeVerify,
+                                                     String verifyErrorText, String verifyMessageText) throws Exception {
 
         TransactionResourceDetails transaction = new TransactionResourceDetails();
 
         Response response = transaction.makeASale(mmid,
-                IHGUtil.createRandomNumericString(3), testData.getProperty("account.number"),
-                testData.getProperty("consumer.name"), testData.getProperty("payment.source"), testData.getProperty("cvv"),
+                testData.getProperty("transaction.amount"), testData.getProperty("account.number"),
+                testData.getProperty("consumer.name"), paymentSource, testData.getProperty("cvv"),
                 testData.getProperty("type"), testData.getProperty("card.number"),
-                testData.getProperty("instamed.card.expiration.number"), testData.getProperty("bin"),
+                testData.getProperty("expiration.number1"), testData.getProperty("bin"),
                 testData.getProperty("zipcode"), testData.getProperty("last.name"),
                 testData.getProperty("address.line1"), testData.getProperty("city"), testData.getProperty("state"),
                 testData.getProperty("first.name"));
@@ -137,8 +93,11 @@ public class InstamedTransactionsTests extends BaseRest {
         Assert.assertEquals(response.getStatusCode(), statusCodeVerify);
 
         if (jsonPath.get("message") != null) {
-
-            Assert.assertTrue(jsonPath.get("message").toString().contains(verifyErrorMessage));
+            Assert.assertTrue(jsonPath.get("error").toString().contains(verifyErrorText));
+            Assert.assertTrue(jsonPath.get("message").toString().contains(verifyMessageText));
+            if(verifyMessageText.isEmpty()){
+                jsonPath.get("propertyMessages").equals("Could not find outlet");
+            }
         }
     }
 }
