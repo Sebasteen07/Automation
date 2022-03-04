@@ -62,7 +62,6 @@ public class PSS2PatientPortalAcceptanceTests07 extends BaseTestNGWebDriver {
 		logStep("Clicked on Dismiss");
 		LoginlessPatientInformation loginlessPatientInformation = dismissPage.clickDismiss();
 		HomePage homePage = loginlessPatientInformation.fillNewPatientForm(testData.getFirstName(), testData.getLastName(), testData.getDob(), testData.getEmail(), testData.getGender(),testData.getZipCode(), testData.getPrimaryNumber());
-
 		homePage.btnStartSchedClick();
 		Location location = null;
 		StartAppointmentInOrder startAppointmentInOrder = null;
@@ -99,7 +98,6 @@ public class PSS2PatientPortalAcceptanceTests07 extends BaseTestNGWebDriver {
 		logStep("Clicked on Dismiss");
 		LoginlessPatientInformation loginlessPatientInformation = dismissPage.clickDismiss();
 		HomePage homePage = loginlessPatientInformation.fillNewPatientForm(testData.getFirstName(), testData.getLastName(), testData.getDob(), testData.getEmail(), testData.getGender(),	testData.getZipCode(), testData.getPrimaryNumber());
-
 		homePage.btnStartSchedClick();
 		Location location = null;
 		StartAppointmentInOrder startAppointmentInOrder = null;
@@ -138,7 +136,7 @@ public class PSS2PatientPortalAcceptanceTests07 extends BaseTestNGWebDriver {
 		logStep("Login to PSS Appointment");
 		DismissPage dismissPage = new DismissPage(driver, testData.getUrlLoginLess());
 		logStep("Clicked on Dismiss");
-		LoginlessPatientInformation loginlessPatientInformation = dismissPage.clickDismiss();		
+		LoginlessPatientInformation loginlessPatientInformation = dismissPage.clickDismiss();
 		newPatient.createPatientDetails(testData);
 		String alternateNumber = propertyData.getProperty("alternate.number.ng07");
 		HomePage homePage = loginlessPatientInformation.fillPatientFormWithAlternateNumber(testData.getFirstName(), testData.getLastName(), testData.getDob(), testData.getEmail(), testData.getGender(), testData.getZipCode(), testData.getPrimaryNumber(), alternateNumber);
@@ -199,7 +197,6 @@ public class PSS2PatientPortalAcceptanceTests07 extends BaseTestNGWebDriver {
 		logStep("Verfiy Location Page and location =" + testData.getLocation());
 		AppointmentPage appointment = location.selectAppointment(testData.getLocation());
 		logStep("Verfiy Appointment Page and appointment to be selected = " + testData.getAppointmenttype());
-		
 		Provider provider = appointment.selectTypeOfProvider(testData.getAppointmenttype(),
 		Boolean.valueOf(testData.getIsAppointmentPopup()));
 		logStep("Verfiy Provider Page and Provider = " + testData.getProvider());
