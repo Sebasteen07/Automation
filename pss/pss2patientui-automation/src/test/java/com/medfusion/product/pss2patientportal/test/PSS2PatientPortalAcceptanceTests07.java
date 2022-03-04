@@ -137,7 +137,6 @@ public class PSS2PatientPortalAcceptanceTests07 extends BaseTestNGWebDriver {
 		AdminPatientMatching adminPatientMatching = patientFlow.gotoPatientMatchingTab();
 		adminPatientMatching.patientMatchingSelection();
 		adminUtils.pageRefresh(driver);
-		
 		logStep("Move to PSS patient Portal 2.0 to book an Appointment");
 		logStep("Login to PSS Appointment");
 		DismissPage dismissPage = new DismissPage(driver, testData.getUrlLoginLess());
@@ -163,7 +162,6 @@ public class PSS2PatientPortalAcceptanceTests07 extends BaseTestNGWebDriver {
 		logStep("Verfiy Location Page and location =" + testData.getLocation());
 		AppointmentPage appointment = location.selectAppointment(testData.getLocation());
 		logStep("Verfiy Appointment Page and appointment to be selected = " + testData.getAppointmenttype());
-		Thread.sleep(10000);
 		Provider provider = appointment.selectTypeOfProvider(testData.getAppointmenttype(),
 				Boolean.valueOf(testData.getIsAppointmentPopup()));
 		logStep("Verfiy Provider Page and Provider = " + testData.getProvider());
@@ -199,7 +197,6 @@ public class PSS2PatientPortalAcceptanceTests07 extends BaseTestNGWebDriver {
 		AdminPatientMatching adminPatientMatching = patientFlow.gotoPatientMatchingTab();
 		adminPatientMatching.patientMatchingSelection();
 		adminUtils.pageRefresh(driver);
-		
 		logStep("Move to PSS patient Portal 2.0 to book an Appointment");
 		logStep("Login to PSS Appointment");
 		DismissPage dismissPage = new DismissPage(driver, testData.getUrlLoginLess());
@@ -225,7 +222,7 @@ public class PSS2PatientPortalAcceptanceTests07 extends BaseTestNGWebDriver {
 		logStep("Verfiy Location Page and location =" + testData.getLocation());
 		AppointmentPage appointment = location.selectAppointment(testData.getLocation());
 		logStep("Verfiy Appointment Page and appointment to be selected = " + testData.getAppointmenttype());
-		Thread.sleep(10000);
+		
 		Provider provider = appointment.selectTypeOfProvider(testData.getAppointmenttype(),
 				Boolean.valueOf(testData.getIsAppointmentPopup()));
 		logStep("Verfiy Provider Page and Provider = " + testData.getProvider());
