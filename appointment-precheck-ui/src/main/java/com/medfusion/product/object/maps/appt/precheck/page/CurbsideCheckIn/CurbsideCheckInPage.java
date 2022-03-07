@@ -189,6 +189,9 @@ public class CurbsideCheckInPage extends BasePageObject {
 	@FindBy(how=How.XPATH, using ="(//input[@type='checkbox'])[4]")
 	private WebElement selectPatientscheckbox3;
 	
+	@FindAll({ @FindBy(how=How.XPATH, using ="(//*[@type='checkbox'])[1]/following::div")})
+	public List<WebElement> selectPatients;
+	
 	public CurbsideCheckInPage(WebDriver driver) {
 		super(driver);
 		PageFactory.initElements(driver, this);
@@ -940,6 +943,11 @@ public class CurbsideCheckInPage extends BasePageObject {
 			}
 		}
 		
-		
+		public String getPatientsFromCurbside(String patientId, String apptId, int patientNo) {
+			IHGUtil.PrintMethodName();
+			WebElement patient = selectPatients.get(patientNo);
+			String getPatient = patient.getText();
+			return getPatient;
+		}
 		
 }
