@@ -185,6 +185,12 @@ public class ManageResource extends PSS2MenuPage {
 
 	@FindBy(how = How.XPATH, using = "//*[@name='slotCount']")
 	private WebElement slotCount;
+	
+	@FindBy(how = How.XPATH, using = "//input[@id='isContiguous']")
+	private WebElement preventBacktoBackToggle;
+	
+	@FindBy(how = How.XPATH, using = "//*[@id='tab43']/div/form/fieldset[1]/div[11]/div/label[1]/i")
+	private WebElement preventBackToBackToggleclick;
 
 	
 	public ManageResource(WebDriver driver) {
@@ -496,5 +502,16 @@ public class ManageResource extends PSS2MenuPage {
 		leadDay.sendKeys(leadtimeDay);
 		appointmenttypeSave.click();
 
+	}
+	
+	public boolean preventBackToBack() {
+		boolean bool = preventBacktoBackToggle.isSelected();
+		log("Status of Prevent for the Same Day -" + bool);
+		return bool;
+	}
+
+	public void clickBackToBack() {
+		preventBackToBackToggleclick.click();
+		appointmenttypeSave.click();
 	}
 }

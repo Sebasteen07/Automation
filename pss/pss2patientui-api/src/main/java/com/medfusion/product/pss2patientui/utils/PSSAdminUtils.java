@@ -483,11 +483,21 @@ public class PSSAdminUtils extends BaseTestNGWebDriver{
 		Log4jUtil.log("Status for AcceptFor Same day is" + manageResource.acceptforStatus());
 		appointment.setAccepttoggleStatus(manageResource.acceptforStatus());
 		Log4jUtil.log("Status for AcceptFor Same day is" + appointment.isAccepttoggleStatus());
+
 		if (appointment.isAccepttoggleStatus() == false) {
 			manageResource.clickacceptsameday();
 		} else {
 			log("Alredy ON Accept Same Day");
 		}
+		Log4jUtil.log("Status for Back To Back Same day is" + manageResource.preventBackToBack());
+		appointment.setPreventBacktoBackToggleStatus(manageResource.preventBackToBack());
+
+		if (appointment.isPreventBacktoBackToggleStatus() == true) {
+			manageResource.clickBackToBack();
+		} else {
+			log("Prevent Back To Back Already Off");
+		}
+
 		patientflow.logout();
 	}
 
@@ -1182,5 +1192,37 @@ public class PSSAdminUtils extends BaseTestNGWebDriver{
 		pageRefresh(driver);
 		ManageLockoutRules lockout = pssPracticeConfig.gotoLockOut();
 		lockout.addAlertWithoutMsg();		
+	}
+	
+	public void preventBackToBackEnable(WebDriver driver, AdminUser adminuser, Appointment appointment,String leadTimeValue) throws Exception {
+
+		PSS2PracticeConfiguration psspracticeConfig = loginToAdminPortal(driver, adminuser);
+		psspracticeConfig = psspracticeConfig.gotoPracticeConfigTab();
+		PatientFlow patientflow = psspracticeConfig.gotoPatientFlowTab();
+		ManageResource manageResource = psspracticeConfig.gotoResource();
+		pageRefresh(driver);
+		manageResource.selectResource(appointment.getProvider());
+		manageResource.selectAppointmenttype(appointment.getAppointmenttype());
+		manageResource.notreserve();
+		manageResource.setLeadDay(leadTimeValue);
+		Log4jUtil.log("Status for AcceptFor Same day is" + manageResource.acceptforStatus());
+		appointment.setAccepttoggleStatus(manageResource.acceptforStatus());
+		Log4jUtil.log("Status for AcceptFor Same day is" + appointment.isAccepttoggleStatus());
+
+		if (appointment.isAccepttoggleStatus() == false) {
+			manageResource.clickacceptsameday();
+		} else {
+			log("Alredy ON Accept Same Day");
+		}
+		Log4jUtil.log("Status for Back To Back Same day is" + manageResource.preventBackToBack());
+		appointment.setPreventBacktoBackToggleStatus(manageResource.preventBackToBack());
+
+		if (appointment.isPreventBacktoBackToggleStatus() == false) {
+			manageResource.clickBackToBack();
+		} else {
+			log("Prevent Back To Back Already On");
+		}
+
+		patientflow.logout();
 	}
 }

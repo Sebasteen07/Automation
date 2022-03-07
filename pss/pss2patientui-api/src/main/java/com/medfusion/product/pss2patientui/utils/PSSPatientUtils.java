@@ -2209,4 +2209,15 @@ public class PSSPatientUtils extends BaseTestNGWebDriver {
 		log("Time Differnce is  " + difference);
 		return difference;
 	}
+	
+	// This method will give you new time after time addition without seconds
+		public String addToTimeUI(String myTime, int mintime) throws ParseException {
+			SimpleDateFormat df = new SimpleDateFormat("HH:mm");
+			Date d = df.parse(myTime);
+			Calendar cal = Calendar.getInstance();
+			cal.setTime(d);
+			cal.add(Calendar.MINUTE, mintime);
+			String newTime = df.format(cal.getTime());
+			return newTime;
+		}
 }
