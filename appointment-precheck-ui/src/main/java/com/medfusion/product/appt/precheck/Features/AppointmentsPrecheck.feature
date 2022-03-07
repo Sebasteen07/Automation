@@ -1242,3 +1242,13 @@ Feature: Test fuctionality of Appointment precheck
     When from setting in notifications user click on text edit section of appointment reminders
     Then I verify user is able to edit "SMS" cadence template from cadence editor page
     And logout from practice provisioning portal
+
+  Scenario: Verify if additional arrival message text box is present and max size limit for additional arrival message for custom fields for English and Spanish Language
+    When from setting in notifications user click on curbside checkin tab
+    Then I verify if additional arrival message text box is present and max size limit for additional arrival message for custom fields for English and Spanish
+    And logout from practice provisioning portal
+
+  Scenario: Verify default arrival message for English and Spanish in text box
+    When from setting in notifications user click on curbside checkin tab
+    Then I verify user is able see default arrival confirmation message in english and Spanish in text box
+    And logout from practice provisioning portal
