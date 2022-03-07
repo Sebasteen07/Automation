@@ -61,7 +61,7 @@ public class ElementTransactionsTests extends BaseRest {
 
 	public void testMakeElementAuthorizeInvalidValidations(String mmid, String transactionAmount, String accountNumber,
 			String paymentSource, String cardNumber, String expiratioNumber, int statusCodeVerify,
-			String verifyErrorMessage) throws Exception {
+			String verifyErrorText, String messageText) throws Exception {
 
 		TransactionResourceDetails transaction = new TransactionResourceDetails();
 
@@ -76,9 +76,10 @@ public class ElementTransactionsTests extends BaseRest {
 		Assert.assertNotNull(jsonPath, "Response was null");
 		Assert.assertEquals(response.getStatusCode(), statusCodeVerify);
 
-		if (jsonPath.get("message") != null) {
+		if (jsonPath.get("error") != null && jsonPath.get("message") != null) {
 
-			Assert.assertTrue(jsonPath.get("message").toString().contains(verifyErrorMessage));
+			Assert.assertTrue(jsonPath.get("error").toString().contains(verifyErrorText));
+			Assert.assertTrue(jsonPath.get("message").toString().contains(messageText));
 		}
 	}
 
@@ -102,10 +103,21 @@ public class ElementTransactionsTests extends BaseRest {
 
 		String externalTransactionId = jsonPath.get("externalTransactionId").toString();
 		String orderId = jsonPath.get("orderId").toString();
-			
-		CommonUtils.saveTransactionDetails(externalTransactionId, orderId);
 
 		Response responseCapture = transaction.makeACapture(testData.getProperty("element.mmid"), externalTransactionId,
+				"testorderId", transanctionAmount, testData.getProperty("account.number"),
+				testData.getProperty("consumer.name"), testData.getProperty("payment.source"),
+				testData.getProperty("cvv"), testData.getProperty("type"), testData.getProperty("card.number"),
+				testData.getProperty("expiration.number"), testData.getProperty("bin"), testData.getProperty("zipcode"),
+				testData.getProperty("last.name"), testData.getProperty("address.line1"), testData.getProperty("city"),
+				testData.getProperty("state"), testData.getProperty("first.name"));
+
+		JsonPath jsonPathCapture = new JsonPath(responseCapture.asString());
+		Assert.assertEquals(responseCapture.getStatusCode(), 404);
+		Assert.assertTrue(jsonPathCapture.get("error").toString().contains("Not Found"));
+		Assert.assertTrue(jsonPathCapture.get("message").toString().contains("Could not find transactionAmount"));
+
+		responseCapture = transaction.makeACapture(testData.getProperty("element.mmid"), externalTransactionId,
 				orderId, transanctionAmount, testData.getProperty("account.number"),
 				testData.getProperty("consumer.name"), testData.getProperty("payment.source"),
 				testData.getProperty("cvv"), testData.getProperty("type"), testData.getProperty("card.number"),
@@ -115,7 +127,7 @@ public class ElementTransactionsTests extends BaseRest {
 
 		validate.verifyTransactionDetails(responseCapture.asString());
 
-		JsonPath jsonPathCapture = new JsonPath(responseCapture.asString());
+		jsonPathCapture = new JsonPath(responseCapture.asString());
 
 		Assert.assertEquals(responseCapture.getStatusCode(), 200);
 		Assert.assertTrue(!jsonPathCapture.get("externalTransactionId").toString().isEmpty());
@@ -125,26 +137,39 @@ public class ElementTransactionsTests extends BaseRest {
 
 	@Test(priority = 4, dataProvider = "mod_ele_capture_invalid_data", dataProviderClass = ModulatorTestData.class, enabled = true)
 
-	public void testMakeElementCaptureInvalidValidations(String mmid, String externalTransactionId, String orderId,
-			String transactionAmount, String accountNumber, String paymentSource, String cardNumber,
-			String expiratioNumber, int statusCodeVerify, String verifyErrorMessage) throws Exception {
+	public void testMakeElementCaptureInvalidValidations(String mmid, String externalTransactionId,
+			String transactionAmount, int statusCodeVerify, String verifyErrorMessage) throws Exception {
 
 		TransactionResourceDetails transaction = new TransactionResourceDetails();
+		String transanctionAmount = IHGUtil.createRandomNumericString(4);
 
-		Response response = transaction.makeACapture(mmid, externalTransactionId, orderId, transactionAmount,
-				accountNumber, testData.getProperty("consumer.name"), paymentSource, testData.getProperty("cvv"),
-				testData.getProperty("type"), cardNumber, expiratioNumber, testData.getProperty("bin"),
+		Response response = transaction.makeAnAuthorize(testData.getProperty("element.mmid"), transanctionAmount,
+				testData.getProperty("account.number"), testData.getProperty("consumer.name"),
+				testData.getProperty("payment.source"), testData.getProperty("cvv"), testData.getProperty("type"),
+				testData.getProperty("card.number"), testData.getProperty("expiration.number"),
+				testData.getProperty("bin"), testData.getProperty("zipcode"), testData.getProperty("last.name"),
+				testData.getProperty("address.line1"), testData.getProperty("city"), testData.getProperty("state"),
+				testData.getProperty("first.name"));
+		JsonPath jsonPath = new JsonPath(response.asString());
+		Validations validate = new Validations();
+
+		String orderId = jsonPath.get("orderId").toString();
+
+		Response responseCapture = transaction.makeACapture(mmid, externalTransactionId, orderId, transactionAmount,
+				testData.getProperty("account.number"), testData.getProperty("consumer.name"), testData.getProperty("payment.source"),
+				testData.getProperty("cvv"),
+				testData.getProperty("type"), testData.getProperty("card.number"),
+				testData.getProperty("expiration.number"), testData.getProperty("bin"),
 				testData.getProperty("zipcode"), testData.getProperty("last.name"),
 				testData.getProperty("address.line1"), testData.getProperty("city"), testData.getProperty("state"),
 				testData.getProperty("first.name"));
 
-		JsonPath jsonPath = new JsonPath(response.asString());
-		Assert.assertNotNull(jsonPath, "Response was null");
-		Assert.assertEquals(response.getStatusCode(), statusCodeVerify);
+		JsonPath jsonPath1 = new JsonPath(responseCapture.asString());
+		Assert.assertNotNull(jsonPath1, "Response was null");
+		Assert.assertEquals(responseCapture.getStatusCode(), statusCodeVerify);
 
-		if (jsonPath.get("message") != null) {
-
-			Assert.assertTrue(jsonPath.get("message").toString().contains(verifyErrorMessage));
+		if (jsonPath1.get("error") != null) {
+			Assert.assertTrue(jsonPath1.get("error").toString().contains(verifyErrorMessage));
 		}
 	}
 
@@ -153,9 +178,7 @@ public class ElementTransactionsTests extends BaseRest {
 
 		TransactionResourceDetails transaction = new TransactionResourceDetails();
 
-		String intialAmount = IHGUtil.createRandomNumericString(5);
-		String diffrence = IHGUtil.createRandomNumericString(2);
-		Integer transanctionAmount = Integer.parseInt(intialAmount) - Integer.parseInt(diffrence);
+		String transanctionAmount = IHGUtil.createRandomNumericString(5);
 
 		Response response = transaction.makeASale(testData.getProperty("element.mmid"), transanctionAmount.toString(),
 				testData.getProperty("account.number"), testData.getProperty("consumer.name"),
@@ -183,7 +206,7 @@ public class ElementTransactionsTests extends BaseRest {
 
 	public void testMakeElementSaleInvalidValidations(String mmid, String transactionAmount, String accountNumber,
 			String paymentSource, String cardNumber, String expiratioNumber, int statusCodeVerify,
-			String verifyErrorMessage) throws Exception {
+			String verifyErrorText, String messageText) throws Exception {
 
 		TransactionResourceDetails transaction = new TransactionResourceDetails();
 
@@ -198,9 +221,10 @@ public class ElementTransactionsTests extends BaseRest {
 		Assert.assertNotNull(jsonPath, "Response was null");
 		Assert.assertEquals(response.getStatusCode(), statusCodeVerify);
 
-		if (jsonPath.get("message") != null) {
+		if (jsonPath.get("error") != null && jsonPath.get("message") != null) {
 
-			Assert.assertTrue(jsonPath.get("message").toString().contains(verifyErrorMessage));
+			Assert.assertTrue(jsonPath.get("error").toString().contains(verifyErrorText));
+			Assert.assertTrue(jsonPath.get("message").toString().contains(messageText));
 		}
 	}
 
@@ -224,12 +248,10 @@ public class ElementTransactionsTests extends BaseRest {
 
 		Validations validate = new Validations();
 		validate.verifyTransactionDetails(response.asString());
-		
-		CommonUtils.saveTransactionDetails(jsonPath.get("externalTransactionId").toString(),
-				jsonPath.get("orderId").toString());
+		String transactionId = jsonPath.get("externalTransactionId").toString();
 
 		Response responseVoidSale = transaction.makeAVoid(testData.getProperty("element.mmid"),
-				jsonPath.get("externalTransactionId").toString(), transanctionAmount.toString(),
+				transactionId, transanctionAmount.toString(),
 				testData.getProperty("account.number"), testData.getProperty("consumer.name"),
 				testData.getProperty("payment.source"), testData.getProperty("cvv"), testData.getProperty("type"),
 				testData.getProperty("card.number"), testData.getProperty("expiration.number"),
@@ -247,7 +269,7 @@ public class ElementTransactionsTests extends BaseRest {
 
 	public void testMakeElementVoidInvalidValidations(String mmid, String transactionId, String transactionAmount,
 			String accountNumber, String paymentSource, String cardNumber, String expiratioNumber, int statusCodeVerify,
-			String verifyErrorMessage) throws Exception {
+			String verifyErrorText, String messageText) throws Exception {
 
 		TransactionResourceDetails transaction = new TransactionResourceDetails();
 
@@ -262,9 +284,10 @@ public class ElementTransactionsTests extends BaseRest {
 		Assert.assertNotNull(jsonPath, "Response was null");
 		Assert.assertEquals(response.getStatusCode(), statusCodeVerify);
 
-		if (jsonPath.get("message") != null) {
+		if (jsonPath.get("error") != null && jsonPath.get("message") != null) {
 
-			Assert.assertTrue(jsonPath.get("message").toString().contains(verifyErrorMessage));
+			Assert.assertTrue(jsonPath.get("error").toString().contains(verifyErrorText));
+			Assert.assertTrue(jsonPath.get("message").toString().contains(messageText));
 		}
 	}
 
@@ -306,7 +329,7 @@ public class ElementTransactionsTests extends BaseRest {
 
 	public void testMakeElementRefundInvalidValidations(String mmid, String transactionId, String refundAmount,
 			String accountNumber, String paymentSource, String cardNumber, String expiratioNumber, int statusCodeVerify,
-			String verifyErrorMessage) throws Exception {
+			String verifyErrorText, String verifyMessageText) throws Exception {
 
 		TransactionResourceDetails transaction = new TransactionResourceDetails();
 
@@ -321,9 +344,10 @@ public class ElementTransactionsTests extends BaseRest {
 		Assert.assertNotNull(jsonPath, "Response was null");
 		Assert.assertEquals(response.getStatusCode(), statusCodeVerify);
 
-		if (jsonPath.get("message") != null) {
+		if (jsonPath.get("error") != null) {
 
-			Assert.assertTrue(jsonPath.get("message").toString().contains(verifyErrorMessage));
+			Assert.assertTrue(jsonPath.get("error").toString().contains(verifyErrorText));
+			Assert.assertTrue(jsonPath.get("message").toString().contains(verifyMessageText));
 		}
 	}
 
@@ -374,8 +398,8 @@ public class ElementTransactionsTests extends BaseRest {
 		TransactionResourceDetails transaction = new TransactionResourceDetails();
 
 		String intialAmount = IHGUtil.createRandomNumericString(4);
-		String diffrence = IHGUtil.createRandomNumericString(2);
-		Integer chargeBackAmount = Integer.parseInt(intialAmount) - Integer.parseInt(diffrence);
+		String difference = IHGUtil.createRandomNumericString(2);
+		Integer chargeBackAmount = Integer.parseInt(intialAmount) - Integer.parseInt(difference);
 
 		Response response = transaction.makeASale(testData.getProperty("element.mmid"), chargeBackAmount.toString(),
 				testData.getProperty("account.number"), testData.getProperty("consumer.name"),
@@ -419,7 +443,7 @@ public class ElementTransactionsTests extends BaseRest {
 	@Test(priority = 13, dataProvider = "mod_ele_chargeback_invalid_data", dataProviderClass = ModulatorTestData.class, enabled = true)
 
 	public void makeElementChargeBackInvalidValidations(String mmid, String transactionId, String orderId,
-			String chargeBackAmount, int statusCodeVerify, String verifyErrorMessage) throws Exception {
+			String chargeBackAmount, int statusCodeVerify, String verifyErrorText, String verifyMessageText) throws Exception {
 
 		TransactionResourceDetails transaction = new TransactionResourceDetails();
 
@@ -430,9 +454,10 @@ public class ElementTransactionsTests extends BaseRest {
 		Assert.assertNotNull(jsonPath, "Response was null");
 		Assert.assertEquals(response.getStatusCode(), statusCodeVerify);
 
-		if (jsonPath.get("message") != null) {
+		if (jsonPath.get("error") != null) {
 
-			Assert.assertTrue(jsonPath.get("message").toString().contains(verifyErrorMessage));
+			Assert.assertTrue(jsonPath.get("error").toString().contains(verifyErrorText));
+			Assert.assertTrue(jsonPath.get("message").toString().contains(verifyMessageText));
 		}
 	}
 
