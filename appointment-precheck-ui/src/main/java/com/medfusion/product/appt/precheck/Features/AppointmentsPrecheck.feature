@@ -1083,146 +1083,162 @@ Feature: Test fuctionality of Appointment precheck
     And I hit edit button of email for appointment reminder
     Then I verify user able to enter integer from ten to fifty nine in timing unit section for minutes in appointment reminders for 'Email'
     And logout from practice provisioning portal
-    
+
   Scenario: verify notification count  where filter is applied for location L2
     When I schedule an appointment for location L1
     When from setting in notifications curbside check-in reminder checkbox is check
     And I click on save button in notifications tab
     And I schedule an appointment for location L2
     And from curbside check-in filtration is done for location L2
-    Then I verify notification count should not get updated after arrival entry in curbside dashboard for location L1 
+    Then I verify notification count should not get updated after arrival entry in curbside dashboard for location L1
     And logout from practice provisioning portal
-    
-  Scenario: verify notification count where filter is removed for location L2 
+
+  Scenario: verify notification count where filter is removed for location L2
     When I schedule an appointment for location L1
     When from setting in notifications curbside check-in reminder checkbox is check
     And I click on save button in notifications tab
     And I schedule an appointment for location L2
     And from curbside check-in filtration is done for location L2
-    And from curbside check-in remove filter for location L2 
-    Then I verify notification count should get updated for all the patients in curbside dashboard 
+    And from curbside check-in remove filter for location L2
+    Then I verify notification count should get updated for all the patients in curbside dashboard
     And logout from practice provisioning portal
-	
+
   Scenario: verify notification count where filter is applied for location L1
     When I schedule an appointment for location L2
     When from setting in notifications curbside check-in reminder checkbox is check
     And I click on save button in notifications tab
     And I schedule an appointment for location L1
     And from curbside check-in filtration is done for location L1
-    Then I verify notification count should not get updated after arrival entry in curbside dashboard for location L2 
+    Then I verify notification count should not get updated after arrival entry in curbside dashboard for location L2
     And logout from practice provisioning portal
-  
+
   Scenario: verify notification count where filter is removed for location L1
     When I schedule an appointment for location L2
     When from setting in notifications curbside check-in reminder checkbox is check
     And I click on save button in notifications tab
     And I schedule an appointment for location L1
     And from curbside check-in filtration is done for location L1
-    And from curbside check-in remove filter for location L1 
+    And from curbside check-in remove filter for location L1
     Then I verify notification count should get updated for all the patients in arrival grid
     And logout from practice provisioning portal
-    
-  Scenario: verify notification count where filter is applied for location L2 
-  	And I schedule an appointment for location L1
+
+  Scenario: verify notification count where filter is applied for location L2
+    And I schedule an appointment for location L1
     When from setting in notifications curbside check-in reminder checkbox is check
     And I click on save button in notifications tab
     And I schedule an appointment for location L2
     And from curbside check-in filtration is done for location L2
-    Then I verify notification count should not get updated after arrival entry in appointment dashboard for location L1 
+    Then I verify notification count should not get updated after arrival entry in appointment dashboard for location L1
     And logout from practice provisioning portal
-   
+
   Scenario: verify notification count and remove filter for location L2
-  	And I schedule an appointment for location L1
+    And I schedule an appointment for location L1
     When from setting in notifications curbside check-in reminder checkbox is check
     And I click on save button in notifications tab
     And I schedule an appointment for location L2
     And from curbside check-in filtration is done for location L2
-    And from curbside check-in remove filter for location L2 
+    And from curbside check-in remove filter for location L2
     Then I verify notification count should get updated for all the patients after arrival entry in appointment dashboard for location L1
     And logout from practice provisioning portal
-    
+
   Scenario: verify notification count where filter is applied for location L1
-  	When I schedule an appointment for location L2
+    When I schedule an appointment for location L2
     When from setting in notifications curbside check-in reminder checkbox is check
     And I click on save button in notifications tab
     And I schedule an appointment for location L1
     And from curbside check-in filtration is done for location L1
-    Then I verify notification count should not get updated after arrival entry in appointment dashboard for location L2 
+    Then I verify notification count should not get updated after arrival entry in appointment dashboard for location L2
     And logout from practice provisioning portal
-    
+
   Scenario: verify notification count after filteration for location L1 and arrival entry for location L2 and after remove filter for location L1
     When I schedule an appointment for location L2
     When from setting in notifications curbside check-in reminder checkbox is check
     And I click on save button in notifications tab
     And I schedule an appointment for location L1
     And from curbside check-in filtration is done for location L1
-    And from curbside check-in remove filter for location L1 
+    And from curbside check-in remove filter for location L1
     Then I verify notification count should get updated for all the patients after arrival entry in appointment dashboard for location L2
     And logout from practice provisioning portal
-     
+
   Scenario: verify notification count in appointment dashboard
-  	And I schedule an appointment for three patients 
+    And I schedule an appointment for three patients
     And I go to curbside check-in where three patients are already there in arrival grid
     And I go to appointments dashboard
     Then I verify notification count on top in appointment dashboard should be three
     And logout from practice provisioning portal
-     
+
   Scenario: verify notification count after a new patient confirms the arrival in the parking lot
-  	And I schedule an appointment for three patients
+    And I schedule an appointment for three patients
     And I go to curbside check-in where three patients are already there in arrival tab
-    And I go to appointments dashboard 
+    And I go to appointments dashboard
     And I schedule an appointment
-    And I go to curbside check-in tab after new patient arrival 
+    And I go to curbside check-in tab after new patient arrival
     Then I verify notification count on top in appointment dashboard should get updated to four without refresh
     And logout from practice provisioning portal
-     
-  Scenario: verify that patient comes in the practice and staff marks single or multiple patients as checkedin in curbside checkin grid 
-  	And I schedule an appointment
+
+  Scenario: verify that patient comes in the practice and staff marks single or multiple patients as checkedin in curbside checkin grid
+    And I schedule an appointment
     And I go to curbside check-in where there are patients click one or multiple patients as checkedin
     Then I verify once the patient marked as checkedin that particular entries should not be there in curbside checkin grid
     And logout from practice provisioning portal
- 
+
   Scenario: verify if the staff clicks on the check in when the timer is still on
     And I schedule an appointment
     And I go to curbside check-in where there are patients click one or multiple patients whose timer is still on and check-in
     Then I verify once the patient marked as checkedin that particular entries should get removed from curbside checkin grid
     And logout from practice provisioning portal
-    
-  Scenario: verify the patient status on appointments dashboard on clicking on check in button in curbside checkin 
+
+  Scenario: verify the patient status on appointments dashboard on clicking on check in button in curbside checkin
     And I schedule an appointment
     And I go to curbside check-in where there are patients click one or multiple patients as checkedin
     And I go to appointment dashboard
     Then I verify once the patient marked as checkedin and in appointment dashboard there should be a checkedin symbol for that patient
     And logout from practice provisioning portal
-  
+
   Scenario: verify selecting individual or multiple patients checkbox in the arrival grid
-  	And I schedule an appointment
-  	And I go to curbside check-in tab select individual or multiple patients checkbox 
-  	Then I verify all the patients should be selected on the curbside checkin tab
-  	And logout from practice provisioning portal
-  
+    And I schedule an appointment
+    And I go to curbside check-in tab select individual or multiple patients checkbox
+    Then I verify all the patients should be selected on the curbside checkin tab
+    And logout from practice provisioning portal
+
   Scenario: verify selecting three patients checkbox in the arrival grid
-  	And I schedule an appointment for three patients 
-  	And I go to curbside check-in tab select three patients checkbox 
-  	Then I verify three patients checkbox should be selected on the curbside checkin tab
-  	And logout from practice provisioning portal
+    And I schedule an appointment for three patients
+    And I go to curbside check-in tab select three patients checkbox
+    Then I verify three patients checkbox should be selected on the curbside checkin tab
+    And logout from practice provisioning portal
 
   Scenario: verify in the appointment grid for patient P1
-  	And I schedule an appointment
-  	And I go to appointment tab and see the arrival displayed for the patient in the arrival grid
-  	Then I verify scheduling details are displayed for patient P1 but checked-in icon is not displayed until the staff checks him in
-  	And logout from practice provisioning portal
-  	
+    And I schedule an appointment
+    And I go to appointment tab and see the arrival displayed for the patient in the arrival grid
+    Then I verify scheduling details are displayed for patient P1 but checked-in icon is not displayed until the staff checks him in
+    And logout from practice provisioning portal
+
   Scenario: verify the curbside check-in grid staff member now checks the patient P1 by clicking on the check in button
-  	And I schedule an appointment
-  	And I go to curbside check-in tab and clicks on check-in button for the patient P1
-  	Then I verify patient P1 entry is removed from the curbside check-in grid 
-  	And logout from practice provisioning portal
-  	
+    And I schedule an appointment
+    And I go to curbside check-in tab and clicks on check-in button for the patient P1
+    Then I verify patient P1 entry is removed from the curbside check-in grid
+    And logout from practice provisioning portal
+
   Scenario: verify the patient P1 detail on the appointment dashboard
-  	And I schedule an appointment
-  	And I go to curbside check-in tab and clicks on check-in button for the patient P1
-  	And I go to appointment dashboard
-  	Then I verify checked in icon is added in a new column for patient P1 along with the other data in appointment dashboard
-  	And logout from practice provisioning portal
-  
+    And I schedule an appointment
+    And I go to curbside check-in tab and clicks on check-in button for the patient P1
+    And I go to appointment dashboard
+    Then I verify checked in icon is added in a new column for patient P1 along with the other data in appointment dashboard
+    And logout from practice provisioning portal
+
+  Scenario: verify after sending broadcast message to curbside checkin patient then reminder column section system does not show any entry for broadcast
+    When I schedule an appointment and perform checkin action
+    And I click on setting tab and ON notification setting
+    And I switch on appointment dashboard and send broadcast message for curbside check in patient
+    Then I verify system should not show day prior entry in reminder section
+    And logout from practice provisioning portal
+
+  Scenario: Verify if user is able to edit mail cadence template from cadence editor page
+    When from setting in notifications user click on email edit section of appointment reminders
+    Then I verify user is able to edit "Email" cadence template from cadence editor page
+    And logout from practice provisioning portal
+
+  Scenario: Verify if user is able to edit text cadence template from cadence editor page
+    When from setting in notifications user click on text edit section of appointment reminders
+    Then I verify user is able to edit "SMS" cadence template from cadence editor page
+    And logout from practice provisioning portal
