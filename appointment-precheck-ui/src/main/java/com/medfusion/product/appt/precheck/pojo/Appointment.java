@@ -25,4 +25,5 @@ public class Appointment {
 	public static String minute2;
 	public static String minute3;
 	public static String broadcastMessage;
+    public static String randomNumber;
 }
