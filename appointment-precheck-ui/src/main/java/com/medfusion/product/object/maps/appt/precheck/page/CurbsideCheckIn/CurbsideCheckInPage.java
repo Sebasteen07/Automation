@@ -142,7 +142,7 @@ public class CurbsideCheckInPage extends BasePageObject {
 	@FindBy(how = How.XPATH, using = "//*[@class='react-datepicker__year-select']")
 	private WebElement years;
 	
-	@FindBy(how = How.XPATH, using = "(//input[@id='select-all'])")
+	@FindBy(how = How.XPATH, using = "(//input[@type='checkbox'])[1]")
 	private WebElement selectAllCheckinAppt;
 	
 	@FindAll({ @FindBy(how = How.XPATH, using = "(//input[@type='checkbox'])") })

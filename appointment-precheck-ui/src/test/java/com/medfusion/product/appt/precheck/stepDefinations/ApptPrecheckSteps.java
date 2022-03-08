@@ -4466,6 +4466,49 @@ public class ApptPrecheckSteps extends BaseTest {
 		log("user on notification page");
 	}
 	
+	@When("from setting in notifications user click on curbside checkin tab")
+	public void from_setting_in_notifications_user_click_on_curbside_checkin_tab() throws InterruptedException {
+		mainPage.clickOnSettingTab();
+		notifPage.clickOnNotificationTab();
+		assertTrue(notifPage.getNotificationTitle().contains("Notifications"));
+		log("user on notification page");
+		notifPage.clickOnCurbsideCheckInTabInNotif();
+		scrollAndWait(0, 500, 3000);
+	}
+	
+	@Then("I verify if additional arrival message text box is present and max size limit for additional arrival message for custom fields for English and Spanish")
+	public void i_verify_if_additional_arrival_message_text_box_is_present_and_max_size_limit_for_additional_arrival_message_for_custom_fields_for_english_and_spanish() throws InterruptedException {
+		notifPage.clickOnEnglishButton();
+		assertTrue(notifPage.visibilityOfArrivalInstTextBox());
+		notifPage.clearArrivalInstTextbox();
+		notifPage.enterTextInArrivalInstTextbox(propertyData.getProperty("more.than.size.of.arrival.conf.inst"));
+		notifPage.saveNotification();
+		assertEquals(notifPage.getMaxLengthChar(),"(500/500 characters)","Character count was not same");
+		notifPage.clearArrivalInstTextbox();
+		notifPage.enterTextInArrivalInstTextbox(propertyData.getProperty("add.arrival.instruction.in.en"));
+		notifPage.saveNotification();
+		scrollAndWait(0, 500, 3000);
+		
+		notifPage.clickOnSpanishButton();
+		assertTrue(notifPage.visibilityOfArrivalInstTextBox());
+		notifPage.clearArrivalInstTextbox();
+		notifPage.enterTextInArrivalInstTextbox(propertyData.getProperty("more.than.size.of.arrival.conf.inst"));
+		notifPage.saveNotification();
+		assertEquals(notifPage.getMaxLengthChar(),"(500/500 characters)","Character count was not same");
+		notifPage.clearArrivalInstTextbox();
+		notifPage.enterTextInArrivalInstTextbox(propertyData.getProperty("add.arrival.instruction.in.es"));
+		notifPage.saveNotification();
+	}
+
+	@Then("I verify user is able see default arrival confirmation message in english and Spanish in text box")
+	public void i_verify_user_is_able_see_default_arrival_confirmation_message_in_english_and_spanish_in_text_box() {
+		notifPage.clickOnEnglishButton();
+		assertTrue(notifPage.visibilityOfArrivalConfirmMsg());
+		notifPage.clickOnSpanishButton();
+		assertTrue(notifPage.visibilityOfArrivalConfirmMsg());
+		
+	}
+	
 	@When("in curbside check-in filtration is done for location L1")
 	public void in_curbside_check_in_filtration_is_done_for_location_l1() throws InterruptedException {
 	    mainPage.clickOnCurbsideTab();
@@ -4526,8 +4569,6 @@ public class ApptPrecheckSteps extends BaseTest {
 	public void i_verify_all_the_patients_should_be_selected_and_deselected_on_the_curbside_tab() {
 	   assertTrue(curbsidePage.visibilityOfSelectAllCheckbox());
 	}
-
-
 
 }
 
