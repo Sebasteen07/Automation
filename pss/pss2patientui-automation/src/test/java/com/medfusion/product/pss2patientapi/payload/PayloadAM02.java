@@ -1591,7 +1591,7 @@ public class PayloadAM02 {
 		return payload;
 	}	
 	
-	public String FCTbookappointmenttype(int bookappointmenttypeid,int bookid,int apptid,int locationid,int fct ) {
+	public String fctBookappointmenttype(int bookappointmenttypeid,int bookid,int apptid,int locationid,int fct ) {
 
 		String payload = "{\r\n"
 				+ "  \"isageRule\": false,\r\n"
@@ -1695,7 +1695,7 @@ public class PayloadAM02 {
 
 	}
 	
-	public String FLSbookappt_GE(int bookapptid,int bookid,int apptid,int locationid,int fls ) {
+	public String flsBookappt_GE(int bookapptid,int bookid,int apptid,int locationid,int fls ) {
 
 		String payload="{\r\n"
 				+ "  \"isageRule\": false,\r\n"

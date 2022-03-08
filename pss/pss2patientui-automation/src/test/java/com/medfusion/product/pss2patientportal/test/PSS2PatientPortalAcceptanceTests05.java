@@ -219,7 +219,7 @@ public class PSS2PatientPortalAcceptanceTests05 extends BaseTestNGWebDriver {
 		int locationId=Integer.parseInt(loc);
 		int fctDays=Integer.parseInt(fct);
 		
-		payloadAM02.FCTbookappointmenttype(bookApptId, bookId, apptId, locationId, fctDays);
+		payloadAM02.fctBookappointmenttype(bookApptId, bookId, apptId, locationId, fctDays);
 		apv.responseCodeValidation(response, 200);
 		
 		logStep("Move to PSS patient Portal 2.0 to book an Appointment");
@@ -260,7 +260,7 @@ public class PSS2PatientPortalAcceptanceTests05 extends BaseTestNGWebDriver {
 		
 		assertTrue(actual_BookName.contains("LAST SEEN"));	
 		
-		payloadAM02.FCTbookappointmenttype(bookApptId, bookId, apptId, locationId, 0);
+		payloadAM02.fctBookappointmenttype(bookApptId, bookId, apptId, locationId, 0);
 		apv.responseCodeValidation(response, 200);
 				
 		adminPayload=payloadAM02.lastSeenProviderPyaload(1);
@@ -331,7 +331,7 @@ public class PSS2PatientPortalAcceptanceTests05 extends BaseTestNGWebDriver {
 		int locationId=Integer.parseInt(loc);
 		int fctDays=Integer.parseInt(fct);
 		
-		adminPayload= payloadAM02.FCTbookappointmenttype(bookApptId, bookId, apptId, locationId, fctDays);
+		adminPayload= payloadAM02.fctBookappointmenttype(bookApptId, bookId, apptId, locationId, fctDays);
 		
 		response=postAPIRequestAM.bookAppointmentTypeUpdate(practiceId, adminPayload);
 		apv.responseCodeValidation(response, 200);
@@ -380,7 +380,7 @@ public class PSS2PatientPortalAcceptanceTests05 extends BaseTestNGWebDriver {
 		
 		assertTrue(actual_BookName.contains("LAST SEEN"));	
 		
-		payloadAM02.FCTbookappointmenttype(bookApptId, bookId, apptId, locationId, 0);
+		payloadAM02.fctBookappointmenttype(bookApptId, bookId, apptId, locationId, 0);
 		apv.responseCodeValidation(response, 200);
 				
 		adminPayload=payloadAM02.lastSeenProviderPyaload(1);
@@ -447,7 +447,7 @@ public class PSS2PatientPortalAcceptanceTests05 extends BaseTestNGWebDriver {
 		int locationId=Integer.parseInt(loc);
 		int fctDays=Integer.parseInt(fct);
 		
-		adminPayload=payloadAM02.FLSbookappt_GE(bookApptId, bookId, apptId, locationId, fctDays);
+		adminPayload=payloadAM02.flsBookappt_GE(bookApptId, bookId, apptId, locationId, fctDays);
 		response=postAPIRequestAM.bookAppointmentTypeUpdate(practiceId, adminPayload);
 		apv.responseCodeValidation(response, 200);
 		
@@ -495,7 +495,7 @@ public class PSS2PatientPortalAcceptanceTests05 extends BaseTestNGWebDriver {
 		
 		assertTrue(actual_BookName.contains("LAST SEEN"));	
 		
-		adminPayload=payloadAM02.FLSbookappt_GE(bookApptId, bookId, apptId, locationId, 0);
+		adminPayload=payloadAM02.flsBookappt_GE(bookApptId, bookId, apptId, locationId, 0);
 		response=postAPIRequestAM.bookAppointmentTypeUpdate(practiceId, adminPayload);
 		apv.responseCodeValidation(response, 200);
 				
@@ -564,7 +564,7 @@ public class PSS2PatientPortalAcceptanceTests05 extends BaseTestNGWebDriver {
 		int locationId=Integer.parseInt(loc);
 		int fctDays=Integer.parseInt(fct);
 		
-		payloadAM02.FCTbookappointmenttype(bookApptId, bookId, apptId, locationId, fctDays);
+		payloadAM02.fctBookappointmenttype(bookApptId, bookId, apptId, locationId, fctDays);
 		apv.responseCodeValidation(response, 200);
 		
 		logStep("Move to PSS patient Portal 2.0 to book an Appointment");
@@ -591,7 +591,7 @@ public class PSS2PatientPortalAcceptanceTests05 extends BaseTestNGWebDriver {
 		
 		assertTrue(actual_BookName.contains("LAST SEEN"));	
 		
-		payloadAM02.FCTbookappointmenttype(bookApptId, bookId, apptId, locationId, 0);
+		payloadAM02.fctBookappointmenttype(bookApptId, bookId, apptId, locationId, 0);
 		apv.responseCodeValidation(response, 200);
 				
 		adminPayload=payloadAM02.lastSeenProviderPyaload(1);
