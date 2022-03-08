@@ -64,7 +64,7 @@ public class CurbsideCheckInPage extends BasePageObject {
 	@FindBy(how = How.XPATH, using = "//button[contains(text(),'Check-In')]")
 	private WebElement checkInButton;
 
-	@FindBy(how = How.XPATH, using = "//input[@id='select-all']")
+	@FindBy(how = How.XPATH, using = "(//input[@type='checkbox'])[1]")
 	private WebElement selectAllCheckbox;
 
 	@FindBy(how = How.XPATH, using = "//b[contains(text(),'Appt time')]")
@@ -948,6 +948,22 @@ public class CurbsideCheckInPage extends BasePageObject {
 			WebElement patient = selectPatients.get(patientNo);
 			String getPatient = patient.getText();
 			return getPatient;
+		}
+		
+		public void SelectAllCheckbox() {
+			IHGUtil.PrintMethodName();
+			IHGUtil.waitForElement(driver, 10, selectAllCheckbox);
+			jse.executeScript("arguments[0].click();", selectAllCheckbox);
+			log("checkox is selected");
+			
+		}
+		
+		public void deselectAllCheckbox() {
+			IHGUtil.PrintMethodName();
+			IHGUtil.waitForElement(driver, 10, selectAllCheckbox);
+			jse.executeScript("arguments[0].click();", selectAllCheckbox);
+			log("checkox is deselected");
+			
 		}
 		
 }

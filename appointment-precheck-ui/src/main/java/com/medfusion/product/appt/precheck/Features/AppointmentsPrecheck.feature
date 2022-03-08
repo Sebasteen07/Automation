@@ -1242,3 +1242,18 @@ Feature: Test fuctionality of Appointment precheck
     When from setting in notifications user click on text edit section of appointment reminders
     Then I verify user is able to edit "SMS" cadence template from cadence editor page
     And logout from practice provisioning portal
+    
+  Scenario: verify notification count after filteration for location L1 if new arrival entry comes for Location L1 after user confirmation for arrival
+    When from setting in notifications curbside check-in reminder checkbox is check
+    And I click on save button in notifications tab
+    And I schedule an appointment for location L1
+    And in curbside check-in filtration is done for location L1
+    Then I verify notification count get updated after arrival entry in curbside dashboard without refresh
+    And logout from practice provisioning portal
+    
+  Scenario: verify selecting and deselecting the top checkbox in the arrival grid
+    And I schedule 10 appointments who have confirmed their arrival
+  	And I go to curbside check-in tab select the top checkbox 
+  	And I later deselect top checkbox in the curbside check-in tab
+  	Then I verify all the patients should be selected and deselected on the curbside tab
+  	And logout from practice provisioning portal
